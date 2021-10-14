@@ -40,5 +40,10 @@ Every release includes specific testing instructions for new features and bug fi
 -   [5.6.0](./560.md)
 -   [5.7.0](./570.md)
     -   [5.7.1](./571.md)
+    -   [5.7.2](./572.md)
 -   [5.8.0](./580.md)
 -   [5.9.0](./590.md)
+    -   [5.9.1](./591.md)
+-   [6.0.0](./600.md)
+-   [6.1.0](./610.md)
+

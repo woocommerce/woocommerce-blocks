@@ -6,7 +6,7 @@ import type { ReactNode } from 'react';
 /**
  * Internal dependencies
  */
-import type { CartTotals } from './cart';
+import type { CartTotals, Cart } from './cart';
 import {
 	CartResponseBillingAddress,
 	CartResponseShippingAddress,
@@ -27,6 +27,7 @@ export interface Supports extends SupportsConfiguration {
 }
 
 export interface CanMakePaymentArgument {
+	cart: Cart;
 	cartTotals: CartTotals;
 	cartNeedsShipping: boolean;
 	billingData: CartResponseBillingAddress;
@@ -42,6 +43,10 @@ export type CanMakePaymentReturnType =
 export type CanMakePaymentCallback = (
 	cartData: CanMakePaymentArgument
 ) => CanMakePaymentReturnType;
+
+export type CanMakePaymentExtensionCallback = (
+	cartData: CanMakePaymentArgument
+) => boolean;
 
 export interface PaymentMethodIcon {
 	id: string;
