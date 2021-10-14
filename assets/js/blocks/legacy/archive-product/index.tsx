@@ -11,11 +11,14 @@ import { page } from '@wordpress/icons';
  */
 import metadata from './block.json';
 
-const Edit = (  ) => {
+const Edit = () => {
 	const blockProps = useBlockProps();
 	return (
 		<div { ...blockProps }>
-			<Placeholder icon={ page } label="TODO: add wireframe placeholder here" />
+			<Placeholder
+				icon={ page }
+				label="TODO: add wireframe placeholder here"
+			/>
 		</div>
 	);
 };
