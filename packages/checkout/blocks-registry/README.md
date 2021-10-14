@@ -9,17 +9,18 @@ Registered Inner Blocks can either be forced within the layout of the Cart/Check
 - [How Inner Blocks Work](#how-inner-blocks-work)
 - [Inner Block Areas](#inner-block-areas)
 - [Registering a Block](#registering-a-block)
-  - [Registering a Forced Block](#registering-a-forced-block)
-  - [Registering a Block Component](#registering-a-block-component)
+	- [Registering a Forced Block](#registering-a-forced-block)
+	- [Registering a Block Component](#registering-a-block-component)
 - [`registerCheckoutBlock( options )`](#registercheckoutblock-options-)
-  - [Usage](#usage)
-  - [Options](#options)
-    - [`metadata` (object, required)](#metadata-object-required)
-    - [`component` (function, required)](#component-function-required)
+	- [Passing attributes to your frontend block](#passing-attributes-to-your-frontend-block)
+	- [Usage](#usage)
+	- [Options](#options)
+		- [`metadata` (object, required)](#metadata-object-required)
+		- [`component` (function, required)](#component-function-required)
 - [`getRegisteredBlocks( blockName )`](#getregisteredblocks-blockname-)
-  - [Usage](#usage-1)
+	- [Usage](#usage-1)
 - [`hasInnerBlocks( blockName )`](#hasinnerblocks-blockname-)
-  - [Usage](#usage-2)
+	- [Usage](#usage-2)
 
 ## How Inner Blocks Work
 
@@ -97,6 +98,39 @@ After registering your block, you need to define which component will replace yo
 
 This function registers a block and it's corresponding component with WooCommerce. The register function expects a JavaScript object with options specific to the block you are registering.
 
+
+### Passing attributes to your frontend block
+In order to access your attributes on your frontend component, you need to append them to your saved html.
+
+Blocks whose namespace is `woocommerce` or `woocommerce-checkout` would have this applied to them automaticly.
+
+To add this behavior to your namespace, you can use the `__experimental_woocommerce_blocks_add_data_attributes_to_namespace` filter:
+
+```php
+add_filter(
+	'__experimental_woocommerce_blocks_add_data_attributes_to_namespace',
+	function ( $allowed_namespaces ) {
+		$allowed_namespaces[] = 'namespace';
+		return $allowed_namespaces;
+	},
+	10,
+	1
+);
+```
+
+To add just a single block, you can use `__experimental_woocommerce_blocks_add_data_attributes_to_block` filter:
+
+```php
+add_filter(
+	'__experimental_woocommerce_blocks_add_data_attributes_to_block',
+	function ( $allowed_blocks ) {
+		$allowed_blocks[] = 'namespace/block-name';
+		return $allowed_blocks;
+	},
+	10,
+	1
+);
+```
 ### Usage
 
 ```js
