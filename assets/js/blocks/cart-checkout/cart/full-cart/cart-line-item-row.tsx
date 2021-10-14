@@ -198,7 +198,9 @@ const CartLineItemRow = forwardRef< HTMLTableRowElement, CartLineItemRowProps >(
 			>
 				{ /* If the image has no alt text, this link is unnecessary and can be hidden. */ }
 				<td
-					className="wc-block-cart-item__image"
+					className={ classnames( 'wc-block-cart-item__image', {
+						'wc-block-cart-item__image--placeholder': ! images.length,
+					} ) }
 					aria-hidden={
 						! objectHasProp( firstImage, 'alt' ) || ! firstImage.alt
 					}
