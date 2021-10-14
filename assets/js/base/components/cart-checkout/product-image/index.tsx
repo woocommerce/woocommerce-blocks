@@ -3,6 +3,11 @@
  */
 import { decodeEntities } from '@wordpress/html-entities';
 import { PLACEHOLDER_IMG_SRC } from '@woocommerce/settings';
+import classnames from 'classnames';
+/**
+ * Internal dependencies
+ */
+import './style.scss';
 
 interface ProductImageProps {
 	image: { alt?: string; thumbnail?: string };
@@ -19,7 +24,12 @@ const ProductImage = ( { image = {} }: ProductImageProps ): JSX.Element => {
 		alt: decodeEntities( image.alt ) || '',
 	};
 
-	return <img { ...imageProps } alt={ imageProps.alt } />;
+	return  <img className={ classnames( 'block-order-summary-product-image', {
+				'product-image-placeholder': ! image.thumbnail,
+			} ) }
+			{ ...imageProps }
+			alt={ imageProps.alt }
+			/>
 };
 
 export default ProductImage;
