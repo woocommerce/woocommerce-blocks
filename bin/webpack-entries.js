@@ -57,6 +57,9 @@ const blocks = {
 	'single-product': {
 		isExperimental: true,
 	},
+	'legacy-single-product': {
+		customDir: 'legacy/single-product',
+	},
 };
 
 // Returns the entries for each block given a relative path (ie: `index.js`,

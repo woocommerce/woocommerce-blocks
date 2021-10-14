@@ -1,0 +1,17 @@
+{
+	"name": "woocommerce/legacy-single-product",
+	"version": "1.0.0",
+	"title": "Legacy Single Product",
+	"description": "Outputs the legacy single product view from php template.",
+	"category": "woocommerce",
+	"supports": {
+		"align": false,
+		"html": false,
+		"multiple": false,
+		"reusable": false,
+		"inserter": false
+	},
+	"attributes": {},
+	"textdomain": "woo-gutenberg-products-block",
+	"apiVersion": 2
+}
