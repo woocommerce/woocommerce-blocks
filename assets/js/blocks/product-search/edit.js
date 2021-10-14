@@ -83,7 +83,6 @@ const Edit = ( {
 					<>
 						<label
 							className="screen-reader-text"
-							aria-hidden="true"
 							htmlFor="wc-block-product-search__label"
 						>
 							{ __(
