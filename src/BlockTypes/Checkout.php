@@ -51,8 +51,14 @@ class Checkout extends AbstractBlock {
 	 * @param array $attributes  Any attributes that currently are available from the block.
 	 */
 	protected function enqueue_assets( array $attributes ) {
+		/**
+		 * Fires before checkout block scripts are enqueued.
+		 */
 		do_action( 'woocommerce_blocks_enqueue_checkout_block_scripts_before' );
 		parent::enqueue_assets( $attributes );
+		/**
+		 * Fires after checkout block scripts are enqueued.
+		 */
 		do_action( 'woocommerce_blocks_enqueue_checkout_block_scripts_after' );
 	}
 
@@ -87,7 +93,7 @@ class Checkout extends AbstractBlock {
 			$content = str_replace( '</div>', $inner_blocks_html . '</div>', $content );
 		}
 
-		return $this->inject_html_data_attributes( $content, $attributes );
+		return $content;
 	}
 
 	/**
@@ -253,6 +259,9 @@ class Checkout extends AbstractBlock {
 			$this->hydrate_customer_payment_methods();
 		}
 
+		/**
+		 * Fires after checkout block data is registered.
+		 */
 		do_action( 'woocommerce_blocks_checkout_enqueue_data' );
 	}
 

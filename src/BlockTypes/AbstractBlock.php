@@ -153,6 +153,26 @@ abstract class AbstractBlock {
 	}
 
 	/**
+	 * Injects Chunk Translations into the page so translations work for lazy loaded components.
+	 *
+	 * The chunk names are defined when creating lazy loaded components using webpackChunkName.
+	 *
+	 * @param string[] $chunks Array of chunk names.
+	 */
+	protected function register_chunk_translations( $chunks ) {
+		foreach ( $chunks as $chunk ) {
+			$handle = 'wc-blocks-' . $chunk . '-chunk';
+			$this->asset_api->register_script( $handle, $this->asset_api->get_block_asset_build_path( $chunk ), [], true );
+			wp_add_inline_script(
+				$this->get_block_type_script( 'handle' ),
+				wp_scripts()->print_translations( $handle, false ),
+				'before'
+			);
+			wp_deregister_script( $handle );
+		}
+	}
+
+	/**
 	 * Registers the block type with WordPress.
 	 */
 	protected function register_block_type() {
@@ -297,39 +317,6 @@ abstract class AbstractBlock {
 		$this->enqueue_data( $attributes );
 		$this->enqueue_scripts( $attributes );
 		$this->enqueued_assets = true;
-	}
-
-	/**
-	 * Injects block attributes into the block.
-	 *
-	 * @param string $content HTML content to inject into.
-	 * @param array  $attributes Key value pairs of attributes.
-	 * @return string Rendered block with data attributes.
-	 */
-	protected function inject_html_data_attributes( $content, array $attributes ) {
-		return preg_replace( '/<div /', '<div ' . $this->get_html_data_attributes( $attributes ) . ' ', $content, 1 );
-	}
-
-	/**
-	 * Converts block attributes to HTML data attributes.
-	 *
-	 * @param array $attributes Key value pairs of attributes.
-	 * @return string Rendered HTML attributes.
-	 */
-	protected function get_html_data_attributes( array $attributes ) {
-		$data = [];
-
-		foreach ( $attributes as $key => $value ) {
-			if ( is_bool( $value ) ) {
-				$value = $value ? 'true' : 'false';
-			}
-			if ( ! is_scalar( $value ) ) {
-				$value = wp_json_encode( $value );
-			}
-			$data[] = 'data-' . esc_attr( strtolower( preg_replace( '/(?<!\ )[A-Z]/', '-$0', $key ) ) ) . '="' . esc_attr( $value ) . '"';
-		}
-
-		return implode( ' ', $data );
 	}
 
 	/**

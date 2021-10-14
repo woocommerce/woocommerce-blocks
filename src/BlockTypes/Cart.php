@@ -55,8 +55,14 @@ class Cart extends AbstractBlock {
 	 * @param array $attributes  Any attributes that currently are available from the block.
 	 */
 	protected function enqueue_assets( array $attributes ) {
+		/**
+		 * Fires before cart block scripts are enqueued.
+		 */
 		do_action( 'woocommerce_blocks_enqueue_cart_block_scripts_before' );
 		parent::enqueue_assets( $attributes );
+		/**
+		 * Fires after cart block scripts are enqueued.
+		 */
 		do_action( 'woocommerce_blocks_enqueue_cart_block_scripts_after' );
 	}
 
@@ -74,7 +80,7 @@ class Cart extends AbstractBlock {
 		wp_dequeue_script( 'selectWoo' );
 		wp_dequeue_style( 'select2' );
 
-		return $this->inject_html_data_attributes( $content . $this->get_skeleton(), $attributes );
+		return $content . $this->get_skeleton();
 	}
 
 	/**
@@ -133,6 +139,9 @@ class Cart extends AbstractBlock {
 			$this->hydrate_from_api();
 		}
 
+		/**
+		 * Fires after cart block data is registered.
+		 */
 		do_action( 'woocommerce_blocks_cart_enqueue_data' );
 	}
 
