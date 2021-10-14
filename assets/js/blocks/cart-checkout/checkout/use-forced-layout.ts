@@ -103,6 +103,7 @@ export const useForcedLayout = ( {
 
 		// Find registered locked blocks missing from Inner Blocks and append them.
 		lockedBlockTypes.forEach( ( block ) => {
+			// If the locked block type is already in the layout, we can skip this one.
 			if (
 				innerBlocks.find(
 					( { name }: { name: string } ) => name === block.name
@@ -111,38 +112,37 @@ export const useForcedLayout = ( {
 				return;
 			}
 
-			// Is the forced block part of the default template?
+			// Is the forced block part of the default template, find it's original position.
 			const defaultTemplatePosition = currentDefaultTemplate.current.findIndex(
 				( [ blockName ] ) => blockName === block.name
 			);
 
-			// Not part of the default template, so append at the end.
-			if ( defaultTemplatePosition === -1 ) {
-				appendBlock( block, innerBlocks.length );
-				return;
+			switch ( defaultTemplatePosition ) {
+				case -1:
+					// The block is not part of the default template so we append it to the current layout.
+					appendBlock( block, innerBlocks.length );
+					break;
+				case 0:
+					// The block was the first block in the default layout, so prepend it to the current layout.
+					appendBlock( block, 0 );
+					break;
+				default:
+					// The new layout may have extra blocks compared to the default template, so rather than insert
+					// at the default position, we should append it after another default block.
+					const adjacentBlock =
+						currentDefaultTemplate.current[
+							defaultTemplatePosition - 1
+						];
+					const position = innerBlocks.findIndex(
+						( { name: blockName } ) =>
+							blockName === adjacentBlock[ 0 ]
+					);
+					appendBlock(
+						block,
+						position === -1 ? defaultTemplatePosition : position + 1
+					);
+					break;
 			}
-
-			// If in position 0, just prepend it.
-			if ( defaultTemplatePosition === 0 ) {
-				appendBlock( block, 0 );
-				return;
-			}
-
-			// Looking at the default template, whats in the previous position?
-			const previousBlock =
-				currentDefaultTemplate.current[ defaultTemplatePosition - 1 ];
-
-			// Find the previous block in the current layout and use it's position if possible.
-			const previousBlockPosition = innerBlocks.findIndex(
-				( { name }: { name: string } ) => name === previousBlock[ 0 ]
-			);
-
-			appendBlock(
-				block,
-				previousBlockPosition > -1
-					? previousBlockPosition + 1
-					: defaultTemplatePosition
-			);
 		} );
 	}, [
 		clientId,
