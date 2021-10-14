@@ -4,6 +4,7 @@
 import { useBlockProps, InnerBlocks } from '@wordpress/block-editor';
 import { Sidebar } from '@woocommerce/base-components/sidebar-layout';
 import { innerBlockAreas } from '@woocommerce/blocks-checkout';
+import type { TemplateArray } from '@wordpress/blocks';
 
 /**
  * Internal dependencies
@@ -26,7 +27,7 @@ export const Edit = ( { clientId }: { clientId: string } ): JSX.Element => {
 			},
 			[],
 		],
-	];
+	] as TemplateArray;
 
 	useForcedLayout( {
 		clientId,

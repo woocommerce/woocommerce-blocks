@@ -4,6 +4,7 @@
 import { useBlockProps, InnerBlocks } from '@wordpress/block-editor';
 import { Main } from '@woocommerce/base-components/sidebar-layout';
 import { innerBlockAreas } from '@woocommerce/blocks-checkout';
+import type { TemplateArray } from '@wordpress/blocks';
 
 /**
  * Internal dependencies
@@ -30,7 +31,7 @@ export const Edit = ( { clientId }: { clientId: string } ): JSX.Element => {
 		addressFieldControls: Controls,
 	} = useCheckoutBlockControlsContext();
 
-	const defaultTemplate = [
+	const defaultTemplate = ( [
 		[ 'woocommerce/checkout-express-payment-block', {}, [] ],
 		[ 'woocommerce/checkout-contact-information-block', {}, [] ],
 		[ 'woocommerce/checkout-shipping-address-block', {}, [] ],
@@ -51,7 +52,7 @@ export const Edit = ( { clientId }: { clientId: string } ): JSX.Element => {
 			},
 			[],
 		],
-	].filter( Boolean );
+	].filter( Boolean ) as unknown ) as TemplateArray;
 
 	useForcedLayout( {
 		clientId,

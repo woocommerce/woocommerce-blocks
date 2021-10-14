@@ -29,6 +29,7 @@ import { CHECKOUT_PAGE_ID } from '@woocommerce/block-settings';
 import { createInterpolateElement } from '@wordpress/element';
 import { getAdminLink } from '@woocommerce/settings';
 import { CartCheckoutCompatibilityNotice } from '@woocommerce/editor-components/compatibility-notices';
+import type { TemplateArray } from '@wordpress/blocks';
 
 /**
  * Internal dependencies
@@ -133,7 +134,7 @@ export const Edit = ( {
 	const defaultTemplate = [
 		[ 'woocommerce/checkout-fields-block', {}, [] ],
 		[ 'woocommerce/checkout-totals-block', {}, [] ],
-	];
+	] as TemplateArray;
 
 	const toggleAttribute = ( key: keyof Attributes ): void => {
 		const newAttributes = {} as Partial< Attributes >;
