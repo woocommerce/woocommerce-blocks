@@ -60,6 +60,9 @@ const blocks = {
 	'legacy-single-product': {
 		customDir: 'legacy/single-product',
 	},
+	'legacy-archive-product': {
+		customDir: 'legacy/archive-product',
+	},
 };
 
 // Returns the entries for each block given a relative path (ie: `index.js`,

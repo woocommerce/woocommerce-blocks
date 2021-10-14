@@ -1,0 +1,17 @@
+{
+  "name": "woocommerce/legacy-archive-product",
+  "version": "1.0.0",
+  "title": "Legacy Archive Product",
+  "description": "Outputs the legacy archive product view from php template.",
+  "category": "woocommerce",
+  "supports": {
+	"align": false,
+	"html": false,
+	"multiple": false,
+	"reusable": false,
+	"inserter": false
+  },
+  "attributes": {},
+  "textdomain": "woo-gutenberg-products-block",
+  "apiVersion": 2
+}

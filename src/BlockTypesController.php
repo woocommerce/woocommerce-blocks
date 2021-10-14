@@ -155,6 +155,7 @@ final class BlockTypesController {
 			'FeaturedProduct',
 			'HandpickedProducts',
 			'LegacySingleProduct',
+			'LegacyArchiveProduct',
 			'ProductBestSellers',
 			'ProductCategories',
 			'ProductCategory',
