@@ -76,12 +76,14 @@ export const Block = ( {
 			} );
 		},
 	};
-
 	return (
 		<div
 			className={ classnames(
 				className,
 				'wc-block-components-product-image',
+				{
+					'wc-block-components-product-image--placeholder': ! hasProductImages,
+				},
 				{
 					[ `${ parentClassName }__product-image` ]: parentClassName,
 				}
