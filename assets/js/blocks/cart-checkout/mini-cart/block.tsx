@@ -22,11 +22,11 @@ import CartLineItemsTable from '../cart/cart-line-items-table';
 import './style.scss';
 
 interface MiniCartBlockProps {
-	isPlaceholderOpen?: boolean;
+	isInitiallyOpen?: boolean;
 }
 
 const MiniCartBlock = ( {
-	isPlaceholderOpen = false,
+	isInitiallyOpen = false,
 }: MiniCartBlockProps ): JSX.Element => {
 	const {
 		cartItems,
@@ -34,20 +34,23 @@ const MiniCartBlock = ( {
 		cartIsLoading,
 		cartTotals,
 	} = useStoreCart();
-	const [ isOpen, setIsOpen ] = useState< boolean >( isPlaceholderOpen );
+	const [ isOpen, setIsOpen ] = useState< boolean >( isInitiallyOpen );
 	const emptyCartRef = useRef< HTMLDivElement | null >( null );
 	// We already rendered the HTML drawer placeholder, so we want to skip the
 	// slide in animation.
 	const [ skipSlideIn, setSkipSlideIn ] = useState< boolean >(
-		isPlaceholderOpen
+		isInitiallyOpen
 	);
 
 	useEffect( () => {
-		const openMiniCartAndRefreshData = ( e ) => {
+		const refreshData = ( e ) => {
 			const eventDetail = e.detail;
 			if ( ! eventDetail || ! eventDetail.preserveCartData ) {
 				dispatch( storeKey ).invalidateResolutionForStore();
 			}
+		};
+		const openMiniCartAndRefreshData = ( e ) => {
+			refreshData( e );
 			setSkipSlideIn( false );
 			setIsOpen( true );
 		};
@@ -57,18 +60,31 @@ const MiniCartBlock = ( {
 			'added_to_cart',
 			'wc-blocks_added_to_cart'
 		);
+		const removeJQueryRemovedFromCartEvent = translateJQueryEventToNative(
+			'removed_from_cart',
+			'wc-blocks_removed_from_cart'
+		);
 
 		document.body.addEventListener(
 			'wc-blocks_added_to_cart',
 			openMiniCartAndRefreshData
 		);
+		document.body.addEventListener(
+			'wc-blocks_removed_from_cart',
+			refreshData
+		);
 
 		return () => {
 			removeJQueryAddedToCartEvent();
+			removeJQueryRemovedFromCartEvent();
 
 			document.body.removeEventListener(
 				'wc-blocks_added_to_cart',
 				openMiniCartAndRefreshData
+			);
+			document.body.removeEventListener(
+				'wc-blocks_removed_from_cart',
+				refreshData
 			);
 		};
 	}, [] );
