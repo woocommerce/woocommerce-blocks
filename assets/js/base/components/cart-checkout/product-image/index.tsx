@@ -3,6 +3,7 @@
  */
 import { decodeEntities } from '@wordpress/html-entities';
 import { PLACEHOLDER_IMG_SRC } from '@woocommerce/settings';
+
 /**
  * Internal dependencies
  */
