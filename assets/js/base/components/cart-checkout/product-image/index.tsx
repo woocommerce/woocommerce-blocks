@@ -3,7 +3,6 @@
  */
 import { decodeEntities } from '@wordpress/html-entities';
 import { PLACEHOLDER_IMG_SRC } from '@woocommerce/settings';
-import classnames from 'classnames';
 /**
  * Internal dependencies
  */
@@ -22,17 +21,14 @@ const ProductImage = ( { image = {} }: ProductImageProps ): JSX.Element => {
 	const imageProps = {
 		src: image.thumbnail || PLACEHOLDER_IMG_SRC,
 		alt: decodeEntities( image.alt ) || '',
+		className: '',
 	};
 
-	return (
-		<img
-			className={ classnames( 'block-order-summary-product-image', {
-				'product-image-placeholder': ! image.thumbnail,
-			} ) }
-			{ ...imageProps }
-			alt={ imageProps.alt }
-		/>
-	);
+	if ( ! image.thumbnail ) {
+		imageProps.className = 'block-cart-checkout-product-image--placeholder';
+	}
+
+	return <img { ...imageProps } alt={ imageProps.alt } />;
 };
 
 export default ProductImage;
