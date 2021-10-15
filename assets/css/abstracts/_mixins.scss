@@ -192,3 +192,8 @@ $fontSizes: (
 	$hex: str-slice(ie-hex-str($color), 4);
 	@return "%23" + unquote("#{$hex}");
 }
+
+// Products image placeholder border style.
+@mixin image-placeholder-border {
+	border: 1px solid #f2f2f2;
+}

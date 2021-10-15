@@ -26,7 +26,7 @@
 	}
 
 	img.product-image-placeholder {
-		border: 1px solid #f2f2f2;
+		@include image-placeholder-border;
 	}
 
 	.wc-block-components-product-sale-badge {
