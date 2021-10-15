@@ -25,6 +25,10 @@
 		}
 	}
 
+	img.product-image-placeholder {
+		border: 1px solid #f2f2f2;
+	}
+
 	.wc-block-components-product-sale-badge {
 		&--align-left {
 			position: absolute;
@@ -48,12 +52,6 @@
 			left: auto;
 			margin: 0;
 		}
-	}
-}
-
-.wc-block-components-product-image.wc-block-components-product-image--placeholder {
-	img {
-		border: 1px solid #f2f2f2;
 	}
 }
 
