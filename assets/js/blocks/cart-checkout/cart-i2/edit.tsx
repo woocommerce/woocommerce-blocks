@@ -117,6 +117,7 @@ export const Edit = ( {
 	setAttributes: ( attributes: Record< string, unknown > ) => undefined;
 	clientId: string;
 } ): JSX.Element => {
+	const { hasDarkControls } = attributes;
 	const { currentView, component: ViewSwitcherComponent } = useViewSwitcher(
 		clientId,
 		[
@@ -132,9 +133,6 @@ export const Edit = ( {
 			},
 		]
 	);
-	const cartClassName = classnames( {
-		'has-dark-controls': attributes.hasDarkControls,
-	} );
 	const defaultTemplate = [
 		[ 'woocommerce/filled-cart-block', {}, [] ],
 		[ 'woocommerce/empty-cart-block', {}, [] ],
@@ -162,7 +160,10 @@ export const Edit = ( {
 					'woo-gutenberg-products-block'
 				) }
 			>
-				<EditorProvider previewData={ { previewCart } }>
+				<EditorProvider
+					currentView={ currentView }
+					previewData={ { previewCart } }
+				>
 					<BlockSettings
 						attributes={ attributes }
 						setAttributes={ setAttributes }
@@ -172,17 +173,15 @@ export const Edit = ( {
 					</BlockControls>
 					<CartBlockContext.Provider
 						value={ {
-							currentView,
+							hasDarkControls,
 						} }
 					>
 						<CartProvider>
-							<div className={ cartClassName }>
-								<InnerBlocks
-									allowedBlocks={ ALLOWED_BLOCKS }
-									template={ defaultTemplate }
-									templateLock="insert"
-								/>
-							</div>
+							<InnerBlocks
+								allowedBlocks={ ALLOWED_BLOCKS }
+								template={ defaultTemplate }
+								templateLock="insert"
+							/>
 						</CartProvider>
 					</CartBlockContext.Provider>
 				</EditorProvider>
