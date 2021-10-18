@@ -21,7 +21,7 @@ import {
 	CartProvider,
 } from '@woocommerce/base-context';
 import { createInterpolateElement } from '@wordpress/element';
-import { getAdminLink, getSetting } from '@woocommerce/settings';
+import { getAdminLink } from '@woocommerce/settings';
 import { previewCart } from '@woocommerce/resource-previews';
 import { Icon, filledCart, removeCart } from '@woocommerce/icons';
 
@@ -50,11 +50,7 @@ const BlockSettings = ( {
 	attributes: Attributes;
 	setAttributes: ( attributes: Record< string, unknown > ) => undefined;
 } ): JSX.Element => {
-	const {
-		isShippingCalculatorEnabled,
-		showRateAfterTaxName,
-		hasDarkControls,
-	} = attributes;
+	const { hasDarkControls } = attributes;
 	const { currentPostId } = useEditorContext();
 	return (
 		<InspectorControls>
@@ -84,55 +80,6 @@ const BlockSettings = ( {
 					) }
 				</Notice>
 			) }
-			{ getSetting( 'shippingEnabled', true ) && (
-				<PanelBody
-					title={ __(
-						'Shipping rates',
-						'woo-gutenberg-products-block'
-					) }
-				>
-					<ToggleControl
-						label={ __(
-							'Shipping calculator',
-							'woo-gutenberg-products-block'
-						) }
-						help={ __(
-							'Allow customers to estimate shipping by entering their address.',
-							'woo-gutenberg-products-block'
-						) }
-						checked={ isShippingCalculatorEnabled }
-						onChange={ () =>
-							setAttributes( {
-								isShippingCalculatorEnabled: ! isShippingCalculatorEnabled,
-							} )
-						}
-					/>
-				</PanelBody>
-			) }
-			{ getSetting( 'taxesEnabled' ) &&
-				getSetting( 'displayItemizedTaxes', false ) &&
-				! getSetting( 'displayCartPricesIncludingTax', false ) && (
-					<PanelBody
-						title={ __( 'Taxes', 'woo-gutenberg-products-block' ) }
-					>
-						<ToggleControl
-							label={ __(
-								'Show rate after tax name',
-								'woo-gutenberg-products-block'
-							) }
-							help={ __(
-								'Show the percentage rate alongside each tax line in the summary.',
-								'woo-gutenberg-products-block'
-							) }
-							checked={ showRateAfterTaxName }
-							onChange={ () =>
-								setAttributes( {
-									showRateAfterTaxName: ! showRateAfterTaxName,
-								} )
-							}
-						/>
-					</PanelBody>
-				) }
 			<PanelBody title={ __( 'Style', 'woo-gutenberg-products-block' ) }>
 				<ToggleControl
 					label={ __(
