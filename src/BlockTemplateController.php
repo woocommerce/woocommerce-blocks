@@ -23,8 +23,6 @@ final class BlockTemplateController {
 	 */
 	public function create_template() {
 		add_filter('get_block_templates', function(  $query_result, $query, $template_type ) {
-//			file_put_contents("query.txt", json_encode($query));
-//			file_put_contents("query_result.txt", json_encode($query_result));
 			if ( ! $query ) {
 				$query_result[] = (object) array(
 					"type" => "wp_template",
