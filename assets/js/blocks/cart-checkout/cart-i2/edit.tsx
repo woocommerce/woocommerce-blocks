@@ -50,7 +50,11 @@ const BlockSettings = ( {
 	attributes: Attributes;
 	setAttributes: ( attributes: Record< string, unknown > ) => undefined;
 } ): JSX.Element => {
-	const { isShippingCalculatorEnabled, showRateAfterTaxName } = attributes;
+	const {
+		isShippingCalculatorEnabled,
+		showRateAfterTaxName,
+		hasDarkControls,
+	} = attributes;
 	const { currentPostId } = useEditorContext();
 	return (
 		<InspectorControls>
@@ -129,6 +133,24 @@ const BlockSettings = ( {
 						/>
 					</PanelBody>
 				) }
+			<PanelBody title={ __( 'Style', 'woo-gutenberg-products-block' ) }>
+				<ToggleControl
+					label={ __(
+						'Dark mode inputs',
+						'woo-gutenberg-products-block'
+					) }
+					help={ __(
+						'Inputs styled specifically for use on dark background colors.',
+						'woo-gutenberg-products-block'
+					) }
+					checked={ hasDarkControls }
+					onChange={ () =>
+						setAttributes( {
+							hasDarkControls: ! hasDarkControls,
+						} )
+					}
+				/>
+			</PanelBody>
 			<CartCheckoutFeedbackPrompt />
 		</InspectorControls>
 	);
