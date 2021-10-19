@@ -11,8 +11,7 @@ import { useEditorContext } from '@woocommerce/base-context';
 /**
  * Internal dependencies
  */
-import { useForcedLayout } from '../../use-forced-layout';
-import { getAllowedBlocks } from '../../editor-utils';
+import { useForcedLayout, getAllowedBlocks } from '../../../shared';
 import { Columns } from './../../columns';
 import './editor.scss';
 import { useCartBlockContext } from '../../context';
