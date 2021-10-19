@@ -10,9 +10,9 @@ Registered Inner Blocks can either be forced within the layout of the Cart/Check
 - [Inner Block Areas](#inner-block-areas)
 - [Registering a Block](#registering-a-block)
 	- [Registering a Forced Block](#registering-a-forced-block)
+	- [Passing attributes to your frontend block](#passing-attributes-to-your-frontend-block)
 	- [Registering a Block Component](#registering-a-block-component)
 - [`registerCheckoutBlock( options )`](#registercheckoutblock-options-)
-	- [Passing attributes to your frontend block](#passing-attributes-to-your-frontend-block)
 	- [Usage](#usage)
 	- [Options](#options)
 		- [`metadata` (object, required)](#metadata-object-required)
@@ -90,17 +90,11 @@ If you want your block to appear within the layout of the Checkout without merch
 
 In the above example, the inner block would be inserted automatically, and would not be movable or removable by the merchant.
 
-### Registering a Block Component
-
-After registering your block, you need to define which component will replace your block on the frontend of the store. To do this, use the `registerCheckoutBlock` function from the checkout blocks registry.
-
-## `registerCheckoutBlock( options )`
-
-This function registers a block and it's corresponding component with WooCommerce. The register function expects a JavaScript object with options specific to the block you are registering.
-
-
 ### Passing attributes to your frontend block
-In order to access your attributes on your frontend component, you need to append them to your saved html.
+For your block to dynamically render on the frontend, and for you to access your attributes, you need to pass them in the frontend.
+
+- To render the block on the frontend, you need a `data-block-name` attribute on the HTML with your block name `namespace/block-name`.
+- To access your attributes on frontend, you need to save them as `data-*` attributes on the HTML.
 
 Blocks whose namespace is `woocommerce` or `woocommerce-checkout` will have this applied to them automatically, but you can also add this behaviour to your own namespace or individual blocks.
 
@@ -131,6 +125,14 @@ add_filter(
 	1
 );
 ```
+### Registering a Block Component
+
+After registering your block, you need to define which component will replace your block on the frontend of the store. To do this, use the `registerCheckoutBlock` function from the checkout blocks registry.
+
+## `registerCheckoutBlock( options )`
+
+This function registers a block and it's corresponding component with WooCommerce. The register function expects a JavaScript object with options specific to the block you are registering.
+
 ### Usage
 
 ```js
