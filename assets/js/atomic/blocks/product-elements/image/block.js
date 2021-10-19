@@ -76,6 +76,7 @@ export const Block = ( {
 			} );
 		},
 	};
+
 	return (
 		<div
 			className={ classnames(
