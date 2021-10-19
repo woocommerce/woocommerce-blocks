@@ -175,7 +175,7 @@
 
 	.wc-block-grid__product-image--placeholder {
 		img {
-			@include image-placeholder-border;
+			border: 1px solid $image-placeholder-border-color;
 		}
 	}
 }
