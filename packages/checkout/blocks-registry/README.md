@@ -102,7 +102,7 @@ This function registers a block and it's corresponding component with WooCommerc
 ### Passing attributes to your frontend block
 In order to access your attributes on your frontend component, you need to append them to your saved html.
 
-Blocks whose namespace is `woocommerce` or `woocommerce-checkout` would have this applied to them automaticly.
+Blocks whose namespace is `woocommerce` or `woocommerce-checkout` will have this applied to them automatically, but you can also add this behaviour to your own namespace or individual blocks.
 
 To add this behavior to your namespace, you can use the `__experimental_woocommerce_blocks_add_data_attributes_to_namespace` filter:
 
