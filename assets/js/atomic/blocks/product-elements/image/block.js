@@ -107,13 +107,7 @@ export const Block = ( {
 
 const ImagePlaceholder = () => {
 	return (
-		<img
-			className="product-image-placeholder"
-			src={ PLACEHOLDER_IMG_SRC }
-			alt=""
-			width={ 500 }
-			height={ 500 }
-		/>
+		<img src={ PLACEHOLDER_IMG_SRC } alt="" width={ 500 } height={ 500 } />
 	);
 };
 
