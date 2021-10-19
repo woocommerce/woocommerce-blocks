@@ -91,7 +91,7 @@ If you want your block to appear within the layout of the Checkout without merch
 In the above example, the inner block would be inserted automatically, and would not be movable or removable by the merchant.
 
 ### Passing attributes to your frontend block
-For your block to dynamically render on the frontend, and for you to access your attributes, you need to pass them in the frontend.
+For your block to dynamically render on the frontend and have access to its own attributes, both the block name and the list of block attributes need to be passed via HTML `data-` attributes.
 
 - To render the block on the frontend, you need a `data-block-name` attribute on the HTML with your block name `namespace/block-name`.
 - To access your attributes on frontend, you need to save them as `data-*` attributes on the HTML.
