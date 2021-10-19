@@ -2,22 +2,22 @@
  * External dependencies
  */
 import { __ } from '@wordpress/i18n';
-import { InnerBlocks } from '@wordpress/block-editor';
 import { Icon, cart } from '@woocommerce/icons';
-import classnames from 'classnames';
-import { registerFeaturePluginBlockType } from '@woocommerce/block-settings';
+import { registerExperimentalBlockType } from '@woocommerce/block-settings';
+
 /**
  * Internal dependencies
  */
-import edit from './edit';
+import { Edit, Save } from './edit';
 import './style.scss';
-import blockAttributes from './attributes';
+import { blockName, blockAttributes } from './attributes';
+import './inner-blocks';
 
 /**
  * Register and run the Cart block.
  */
 const settings = {
-	title: __( 'Cart', 'woo-gutenberg-products-block' ),
+	title: __( 'Cart i2', 'woo-gutenberg-products-block' ),
 	icon: {
 		src: <Icon srcElement={ cart } />,
 		foreground: '#7f54b3',
@@ -26,9 +26,10 @@ const settings = {
 	keywords: [ __( 'WooCommerce', 'woo-gutenberg-products-block' ) ],
 	description: __( 'Shopping cart.', 'woo-gutenberg-products-block' ),
 	supports: {
-		align: [ 'wide', 'full' ],
+		align: false,
 		html: false,
 		multiple: false,
+		__experimentalExposeControlsToChildren: true,
 	},
 	example: {
 		attributes: {
@@ -36,16 +37,8 @@ const settings = {
 		},
 	},
 	attributes: blockAttributes,
-	edit,
-
-	// Save the props to post content.
-	save( { attributes } ) {
-		return (
-			<div className={ classnames( 'is-loading', attributes.className ) }>
-				<InnerBlocks.Content />
-			</div>
-		);
-	},
+	edit: Edit,
+	save: Save,
 };
 
-registerFeaturePluginBlockType( 'woocommerce/cart', settings );
+registerExperimentalBlockType( blockName, settings );
