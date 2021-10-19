@@ -20,6 +20,7 @@ export const Edit = ( { clientId }: { clientId: string } ): JSX.Element => {
 		[ 'woocommerce/cart-order-summary-block', {}, [] ],
 		[ 'woocommerce/cart-express-payment-block', {}, [] ],
 		[ 'woocommerce/proceed-to-checkout-block', {}, [] ],
+		[ 'woocommerce/cart-accepted-payment-methods-block', {}, [] ],
 	] as TemplateArray;
 
 	useForcedLayout( {
