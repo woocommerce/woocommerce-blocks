@@ -9,15 +9,7 @@
 		"html": false,
 		"multiple": false,
 		"reusable": false,
-		"inserter": false
-	},
-	"attributes": {
-		"lock": {
-			"default": {
-				"remove": true,
-				"move": true
-			}
-		}
+		"inserter": true
 	},
 	"parent": [ "woocommerce/cart-totals-block" ],
 	"textdomain": "woo-gutenberg-products-block",
