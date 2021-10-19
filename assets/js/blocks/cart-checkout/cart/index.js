@@ -3,7 +3,7 @@
  */
 import { __ } from '@wordpress/i18n';
 import { Icon, cart } from '@woocommerce/icons';
-import { registerExperimentalBlockType } from '@woocommerce/block-settings';
+import { registerFeaturePluginBlockType } from '@woocommerce/block-settings';
 
 /**
  * Internal dependencies
@@ -17,7 +17,7 @@ import './inner-blocks';
  * Register and run the Cart block.
  */
 const settings = {
-	title: __( 'Cart i2', 'woo-gutenberg-products-block' ),
+	title: __( 'Cart', 'woo-gutenberg-products-block' ),
 	icon: {
 		src: <Icon srcElement={ cart } />,
 		foreground: '#7f54b3',
@@ -41,4 +41,4 @@ const settings = {
 	save: Save,
 };
 
-registerExperimentalBlockType( blockName, settings );
+registerFeaturePluginBlockType( blockName, settings );
