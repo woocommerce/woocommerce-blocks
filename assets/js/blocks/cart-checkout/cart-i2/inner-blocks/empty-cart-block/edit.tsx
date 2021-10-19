@@ -13,6 +13,7 @@ import { SHOP_URL } from '@woocommerce/block-settings';
  */
 import { useForcedLayout, getAllowedBlocks } from '../../../shared';
 import iconDataUri from './icon-data-uri.js';
+import './style.scss';
 
 const browseStoreTemplate = SHOP_URL
 	? [
