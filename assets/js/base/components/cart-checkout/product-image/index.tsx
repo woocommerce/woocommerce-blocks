@@ -22,7 +22,6 @@ const ProductImage = ( { image = {} }: ProductImageProps ): JSX.Element => {
 	const imageProps = {
 		src: image.thumbnail || PLACEHOLDER_IMG_SRC,
 		alt: decodeEntities( image.alt ) || '',
-		className: '',
 	};
 
 	if ( ! image.thumbnail ) {

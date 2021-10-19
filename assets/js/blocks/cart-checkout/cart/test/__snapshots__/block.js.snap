@@ -77,7 +77,6 @@ exports[`Testing cart Contains a Taxes section if Core options are set to show i
                   >
                     <img
                       alt=""
-                      class=""
                       src="images/previews/beanie.jpg"
                     />
                   </a>
@@ -225,7 +224,6 @@ exports[`Testing cart Contains a Taxes section if Core options are set to show i
                   >
                     <img
                       alt=""
-                      class=""
                       src="images/previews/cap.jpg"
                     />
                   </a>
@@ -764,7 +762,6 @@ exports[`Testing cart Shows individual tax lines if the store is set to do so 1`
                   >
                     <img
                       alt=""
-                      class=""
                       src="images/previews/beanie.jpg"
                     />
                   </a>
@@ -912,7 +909,6 @@ exports[`Testing cart Shows individual tax lines if the store is set to do so 1`
                   >
                     <img
                       alt=""
-                      class=""
                       src="images/previews/cap.jpg"
                     />
                   </a>
@@ -1456,7 +1452,6 @@ exports[`Testing cart Shows rate percentages after tax lines if the block is set
                   >
                     <img
                       alt=""
-                      class=""
                       src="images/previews/beanie.jpg"
                     />
                   </a>
@@ -1604,7 +1599,6 @@ exports[`Testing cart Shows rate percentages after tax lines if the block is set
                   >
                     <img
                       alt=""
-                      class=""
                       src="images/previews/cap.jpg"
                     />
                   </a>
