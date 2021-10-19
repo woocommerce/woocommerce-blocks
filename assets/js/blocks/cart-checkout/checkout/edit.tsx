@@ -36,7 +36,7 @@ import type { TemplateArray } from '@wordpress/blocks';
  */
 import './styles/editor.scss';
 import { Columns } from './columns';
-import { addClassToBody, useBlockPropsWithLocking } from './hacks';
+import { addClassToBody, useBlockPropsWithLocking } from '../shared';
 import { CheckoutBlockContext, CheckoutBlockControlsContext } from './context';
 import type { Attributes } from './types';
 
