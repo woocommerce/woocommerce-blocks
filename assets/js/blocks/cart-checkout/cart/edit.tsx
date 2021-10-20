@@ -198,7 +198,7 @@ export const Save = (): JSX.Element => {
 	return (
 		<div
 			{ ...useBlockProps.save( {
-				className: 'wc-block-cart is-loading',
+				className: 'is-loading',
 			} ) }
 		>
 			<InnerBlocks.Content />
