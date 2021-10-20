@@ -24,7 +24,11 @@ export const Edit = ( {
 	setAttributes: ( attributes: Record< string, unknown > ) => void;
 } ): JSX.Element => {
 	const blockProps = useBlockProps();
-	const { cartPageId = 0, showReturnToCart = true } = attributes;
+	const {
+		cartPageId = 0,
+		showReturnToCart = true,
+		className = '',
+	} = attributes;
 	const { current: savedCartPageId } = useRef( cartPageId );
 	const currentPostId = useSelect(
 		( select ) => {
@@ -86,6 +90,7 @@ export const Edit = ( {
 				<Block
 					showReturnToCart={ showReturnToCart }
 					cartPageId={ cartPageId }
+					className={ className }
 				/>
 			</Disabled>
 		</div>
