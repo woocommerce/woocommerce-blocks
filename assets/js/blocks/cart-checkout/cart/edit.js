@@ -168,7 +168,7 @@ export const Edit = ( { className, attributes, setAttributes, clientId } ) => {
 							<InnerBlocks
 								allowedBlocks={ ALLOWED_BLOCKS }
 								template={ defaultTemplate }
-								templateLock="insert"
+								templateLock={ false }
 							/>
 						</CartProvider>
 					</CartBlockContext.Provider>

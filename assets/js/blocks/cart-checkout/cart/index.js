@@ -3,9 +3,10 @@
  */
 import { __ } from '@wordpress/i18n';
 import classnames from 'classnames';
+import { InnerBlocks } from '@wordpress/block-editor';
 import { Icon, cart } from '@woocommerce/icons';
 import { registerFeaturePluginBlockType } from '@woocommerce/block-settings';
-
+import { createBlock } from '@wordpress/blocks';
 /**
  * Internal dependencies
  */
@@ -43,15 +44,34 @@ const settings = {
 	// Migrates v1 to v2 checkout.
 	deprecated: [
 		{
-			attributes: blockAttributes,
-			save( { attributes } ) {
+			save: ( { attributes } ) => {
 				return (
 					<div
 						className={ classnames(
 							'is-loading',
 							attributes.className
 						) }
-					/>
+					>
+						<InnerBlocks.Content />
+					</div>
+				);
+			},
+			migrate: ( attributes, innerBlocks ) => {
+				return [
+					attributes,
+					[
+						createBlock( 'woocommerce/filled-cart-block' ),
+						createBlock(
+							'woocommerce/empty-cart-block',
+							{},
+							innerBlocks
+						),
+					],
+				];
+			},
+			isEligible: ( _, innerBlocks ) => {
+				return ! innerBlocks.find(
+					( block ) => block.name === 'woocommerce/filled-cart-block'
 				);
 			},
 		},
