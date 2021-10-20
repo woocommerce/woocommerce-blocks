@@ -27,12 +27,7 @@ import HeadingToolbar from '@woocommerce/editor-components/heading-toolbar';
 import Block from './block';
 import withProductSelector from '../shared/with-product-selector';
 import { BLOCK_TITLE, BLOCK_ICON } from './constants';
-
-interface Attributes {
-	headingLevel: number;
-	showProductLink: boolean;
-	align: string;
-}
+import { Attributes } from './types';
 
 interface Props {
 	color: ColorPalette.Color;

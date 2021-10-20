@@ -18,17 +18,9 @@ import { useStoreEvents } from '@woocommerce/base-context/hooks';
  * Internal dependencies
  */
 import './style.scss';
+import { Attributes } from './types';
 
-interface BlockProps {
-	className: string;
-	headingLevel: number;
-	showProductLink: boolean;
-	align: string;
-	color: string;
-	customColor: string;
-	fontSize: string;
-	customFontSize: string;
-}
+type Props = Attributes & HTMLAttributes< HTMLDivElement >;
 
 interface TagNameProps extends HTMLAttributes< HTMLOrSVGElement > {
 	headingLevel: number;
@@ -68,7 +60,7 @@ export const Block = ( {
 	customColor,
 	fontSize,
 	customFontSize,
-}: BlockProps ): JSX.Element => {
+}: Props ): JSX.Element => {
 	const { parentClassName } = useInnerBlockLayoutContext();
 	const { product } = useProductDataContext();
 	const { dispatchStoreEvent } = useStoreEvents();
