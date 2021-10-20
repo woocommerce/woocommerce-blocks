@@ -33,6 +33,7 @@ import {
 	addClassToBody,
 	useViewSwitcher,
 	useBlockPropsWithLocking,
+	useForcedLayout,
 } from '../shared';
 import { CartBlockContext } from './context';
 
@@ -125,7 +126,11 @@ export const Edit = ( { className, attributes, setAttributes, clientId } ) => {
 			'is-editor-preview': attributes.isPreview,
 		} ),
 	} );
-
+	useForcedLayout( {
+		clientId,
+		registeredBlocks: ALLOWED_BLOCKS,
+		defaultTemplate,
+	} );
 	return (
 		<div { ...blockProps }>
 			<BlockErrorBoundary
