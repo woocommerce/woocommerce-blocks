@@ -5,4 +5,29 @@
 // Reset font size so it doesn't depend on drawer's ancestors.
 .wc-block-mini-cart__drawer {
 	font-size: 1rem;
+
+	.components-modal__content {
+		display: flex;
+		flex-direction: column;
+		height: 100%;
+	}
+
+	.wc-block-mini-cart__items {
+		flex-grow: 1;
+		overflow-y: auto;
+		padding-right: $gap;
+		margin-right: -$gap;
+
+		.wc-block-cart-items__row:last-child::after {
+			content: none;
+		}
+	}
+}
+
+.wc-block-mini-cart__footer {
+	padding: $gap-large;
+	border-top: 1px solid $gray-300;
+	margin-left: -$gap;
+	margin-right: -$gap;
+	margin-bottom: -$gap-largest;
 }
