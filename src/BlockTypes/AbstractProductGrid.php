@@ -396,14 +396,15 @@ abstract class AbstractProductGrid extends AbstractDynamicBlock {
 	 */
 	protected function get_image_html( $product ) {
 
-		$image_alt = get_post_meta( $product->get_image_id(), '_wp_attachment_image_alt', true );
-
 		$attr = array(
-			'alt' => ( $image_alt ? $image_alt : $product->get_name() ),
+			'alt' => '',
 		);
 
-		if ( ! $product->get_image_id() ) {
-			$attr['alt'] = '';
+		if ( $product->get_image_id() ) {
+			$image_alt = get_post_meta( $product->get_image_id(), '_wp_attachment_image_alt', true );
+			$attr      = array(
+				'alt' => ( $image_alt ? $image_alt : $product->get_name() ),
+			);
 		}
 
 		return '<div class="wc-block-grid__product-image">' . $product->get_image( 'woocommerce_thumbnail', $attr ) . '</div>'; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
