@@ -34,25 +34,18 @@ import {
 	useViewSwitcher,
 	useBlockPropsWithLocking,
 } from '../shared';
-import type { Attributes } from './types';
 import { CartBlockContext } from './context';
 
 // This is adds a class to body to signal if the selected block is locked
 addClassToBody();
 
 // Array of allowed block names.
-const ALLOWED_BLOCKS: string[] = [
+const ALLOWED_BLOCKS = [
 	'woocommerce/filled-cart-block',
 	'woocommerce/empty-cart-block',
 ];
 
-const BlockSettings = ( {
-	attributes,
-	setAttributes,
-}: {
-	attributes: Attributes;
-	setAttributes: ( attributes: Record< string, unknown > ) => undefined;
-} ): JSX.Element => {
+const BlockSettings = ( { attributes, setAttributes } ) => {
 	const { hasDarkControls } = attributes;
 	const { currentPostId } = useEditorContext();
 	return (
@@ -106,20 +99,7 @@ const BlockSettings = ( {
 	);
 };
 
-/**
- * Component to handle edit mode of "Cart Block".
- */
-export const Edit = ( {
-	className,
-	attributes,
-	setAttributes,
-	clientId,
-}: {
-	className: string;
-	attributes: Attributes;
-	setAttributes: ( attributes: Record< string, unknown > ) => undefined;
-	clientId: string;
-} ): JSX.Element => {
+export const Edit = ( { className, attributes, setAttributes, clientId } ) => {
 	const { hasDarkControls } = attributes;
 	const { currentView, component: ViewSwitcherComponent } = useViewSwitcher(
 		clientId,
@@ -194,7 +174,7 @@ export const Edit = ( {
 	);
 };
 
-export const Save = (): JSX.Element => {
+export const Save = () => {
 	return (
 		<div
 			{ ...useBlockProps.save( {
