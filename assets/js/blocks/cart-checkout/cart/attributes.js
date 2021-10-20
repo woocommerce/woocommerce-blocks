@@ -14,4 +14,17 @@ export const blockAttributes = {
 		type: 'boolean',
 		default: getSetting( 'hasDarkEditorStyleSupport', false ),
 	},
+	// Deprecated - here for v1 migration support
+	isShippingCalculatorEnabled: {
+		type: 'boolean',
+		default: getSetting( 'isShippingCalculatorEnabled', true ),
+	},
+	checkoutPageId: {
+		type: 'number',
+		default: 0,
+	},
+	showRateAfterTaxName: {
+		type: 'boolean',
+		default: true,
+	},
 };

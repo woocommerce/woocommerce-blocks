@@ -2,6 +2,7 @@
  * External dependencies
  */
 import { __ } from '@wordpress/i18n';
+import classnames from 'classnames';
 import { Icon, cart } from '@woocommerce/icons';
 import { registerFeaturePluginBlockType } from '@woocommerce/block-settings';
 
@@ -39,6 +40,22 @@ const settings = {
 	attributes: blockAttributes,
 	edit: Edit,
 	save: Save,
+	// Migrates v1 to v2 checkout.
+	deprecated: [
+		{
+			attributes: blockAttributes,
+			save( { attributes } ) {
+				return (
+					<div
+						className={ classnames(
+							'is-loading',
+							attributes.className
+						) }
+					/>
+				);
+			},
+		},
+	],
 };
 
 registerFeaturePluginBlockType( blockName, settings );
