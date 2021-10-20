@@ -396,11 +396,12 @@ abstract class AbstractProductGrid extends AbstractDynamicBlock {
 	 */
 	protected function get_image_html( $product ) {
 
-		$placeholder_class = '';
+		$attr = [];
 		if ( ! $product->get_image_id() ) {
-			$placeholder_class = 'wc-block-grid__product-image--placeholder';
+			$attr['alt'] = '';
 		}
-		return '<div class="wc-block-grid__product-image ' . esc_attr( $placeholder_class ) . '">' . $product->get_image( 'woocommerce_thumbnail' ) . '</div>'; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
+
+		return '<div class="wc-block-grid__product-image">' . $product->get_image( 'woocommerce_thumbnail', $attr ) . '</div>'; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
 	}
 
 	/**

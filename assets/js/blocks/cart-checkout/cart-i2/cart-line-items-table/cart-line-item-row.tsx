@@ -199,10 +199,13 @@ const CartLineItemRow = ( {
 			>
 				{ /* We don't need to make it focusable, because product name has the same link. */ }
 				{ isProductHiddenFromCatalog ? (
-					<ProductImage image={ firstImage } />
+					<ProductImage image={ firstImage } fallbackAlt={ name } />
 				) : (
 					<a href={ permalink } tabIndex={ -1 }>
-						<ProductImage image={ firstImage } />
+						<ProductImage
+							image={ firstImage }
+							fallbackAlt={ name }
+						/>
 					</a>
 				) }
 			</td>
