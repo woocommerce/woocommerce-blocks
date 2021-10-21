@@ -24,6 +24,7 @@ import { TotalsItem } from '@woocommerce/blocks-checkout';
 import PaymentMethodIcons from '@woocommerce/base-components/cart-checkout/payment-method-icons';
 import { CART_URL, CHECKOUT_URL } from '@woocommerce/block-settings';
 import Button from '@woocommerce/base-components/button';
+import { PaymentMethodDataProvider } from '@woocommerce/base-context';
 
 /**
  * Internal dependencies
@@ -34,6 +35,15 @@ import './style.scss';
 interface MiniCartBlockProps {
 	isPlaceholderOpen?: boolean;
 }
+
+const PaymentMethodIconsElement = (): JSX.Element => {
+	const { paymentMethods } = usePaymentMethods();
+	return (
+		<PaymentMethodIcons
+			icons={ getIconsFromPaymentMethods( paymentMethods ) }
+		/>
+	);
+};
 
 const MiniCartBlock = ( {
 	isPlaceholderOpen = false,
@@ -51,7 +61,6 @@ const MiniCartBlock = ( {
 	const [ skipSlideIn, setSkipSlideIn ] = useState< boolean >(
 		isPlaceholderOpen
 	);
-	const { paymentMethods } = usePaymentMethods();
 
 	useEffect( () => {
 		const openMiniCartAndRefreshData = ( e ) => {
@@ -162,9 +171,9 @@ const MiniCartBlock = ( {
 							) }
 						</Button>
 					</div>
-					<PaymentMethodIcons
-						icons={ getIconsFromPaymentMethods( paymentMethods ) }
-					/>
+					<PaymentMethodDataProvider>
+						<PaymentMethodIconsElement />
+					</PaymentMethodDataProvider>
 				</div>
 			</>
 		);
