@@ -1,8 +1,7 @@
 /**
  * External dependencies
  */
-import { apiFetch } from '@wordpress/data-controls';
-import { controls } from '@wordpress/data';
+import { select, apiFetch } from '@wordpress/data-controls';
 
 /**
  * Internal dependencies
@@ -21,7 +20,7 @@ import { STORE_KEY } from './constants';
 export function* getRoute( namespace ) {
 	// we call this simply to do any resolution of all endpoints if necessary.
 	// allows for jit population of routes for a given namespace.
-	yield controls.resolveSelect( STORE_KEY, 'getRoutes', namespace );
+	yield select( STORE_KEY, 'getRoutes', namespace );
 }
 
 /**

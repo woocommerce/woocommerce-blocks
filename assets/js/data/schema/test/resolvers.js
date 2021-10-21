@@ -1,8 +1,8 @@
 /**
  * External dependencies
  */
-import { apiFetch } from '@wordpress/data-controls';
-import { controls } from '@wordpress/data';
+import { select, apiFetch } from '@wordpress/data-controls';
+
 /**
  * Internal dependencies
  */
@@ -16,7 +16,7 @@ describe( 'getRoute', () => {
 	it( 'yields select control response', () => {
 		const fulfillment = getRoute( 'wc/blocks' );
 		fulfillment.next();
-		expect( controls.resolveSelect ).toHaveBeenCalledWith(
+		expect( select ).toHaveBeenCalledWith(
 			STORE_KEY,
 			'getRoutes',
 			'wc/blocks'
