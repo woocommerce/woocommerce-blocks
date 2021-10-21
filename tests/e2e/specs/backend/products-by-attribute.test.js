@@ -9,7 +9,7 @@ import { insertBlockDontWaitForInsertClose } from '../../utils.js';
 
 const block = {
 	name: 'Products by Attribute',
-	slug: 'woocommerce/product-tag',
+	slug: 'woocommerce/products-by-attribute',
 	class: '.wc-block-products-by-attribute',
 };
 
