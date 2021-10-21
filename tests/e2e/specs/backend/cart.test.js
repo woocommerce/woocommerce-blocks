@@ -3,6 +3,7 @@
  */
 import {
 	clickButton,
+	clickBlockToolbarButton,
 	openDocumentSettingsSidebar,
 	switchUserToAdmin,
 	getAllBlocks,
@@ -10,6 +11,7 @@ import {
 import {
 	findLabelWithText,
 	visitBlockPage,
+	selectBlockByName,
 } from '@woocommerce/blocks-test-utils';
 import { merchant } from '@woocommerce/e2e-utils';
 
@@ -88,25 +90,25 @@ describe( `${ block.name } Block`, () => {
 						`Could not find an element with class ${ block.class } - the block probably did not load correctly.`
 					);
 				} );
-				await page.click( block.class );
+
 				await expect( page ).toMatchElement(
 					'[hidden] .wc-block-cart__empty-cart__title'
 				);
+
+				await selectBlockByName( block.slug );
+				await clickBlockToolbarButton( 'Switch view', 'ariaLabel' );
+				await page.waitForSelector( '.components-popover__content' );
 				await clickButton( 'Empty Cart' );
+
 				await expect( page ).not.toMatchElement(
 					'[hidden] .wc-block-cart__empty-cart__title'
 				);
-				// Simulate user scrolling up so the block toolbar doesn't cover
-				// the `Full Cart` button.
-				await page.evaluate( () => {
-					document
-						.querySelector( '.wc-block-view-switch-control' )
-						.scrollIntoView( {
-							block: 'center',
-							inline: 'center',
-						} );
-				} );
-				await clickButton( 'Full Cart' );
+
+				await selectBlockByName( block.slug );
+				await clickBlockToolbarButton( 'Switch view', 'ariaLabel' );
+				await page.waitForSelector( '.components-popover__content' );
+				await clickButton( 'Filled Cart' );
+
 				await expect( page ).toMatchElement(
 					'[hidden] .wc-block-cart__empty-cart__title'
 				);
@@ -115,7 +117,9 @@ describe( `${ block.name } Block`, () => {
 			describe( 'attributes', () => {
 				beforeEach( async () => {
 					await openDocumentSettingsSidebar();
-					await page.click( block.class );
+					await selectBlockByName(
+						'woocommerce/cart-order-summary-block'
+					);
 				} );
 
 				it( 'can toggle Shipping calculator', async () => {

@@ -4,6 +4,10 @@
 import { getSetting } from '@woocommerce/settings';
 
 export default {
+	isShippingCalculatorEnabled: {
+		type: 'boolean',
+		default: getSetting( 'isShippingCalculatorEnabled', true ),
+	},
 	showRateAfterTaxName: {
 		type: 'boolean',
 		default: getSetting( 'displayCartPricesIncludingTax', false ),
