@@ -4,11 +4,9 @@
 import classNames from 'classnames';
 import { __, _n, sprintf } from '@wordpress/i18n';
 import { useState, useEffect, useRef } from '@wordpress/element';
-import { dispatch } from '@wordpress/data';
 import { translateJQueryEventToNative } from '@woocommerce/base-utils';
 import { useStoreCart } from '@woocommerce/base-context/hooks';
 import Drawer from '@woocommerce/base-components/drawer';
-import { CART_STORE_KEY as storeKey } from '@woocommerce/block-data';
 import {
 	formatPrice,
 	getCurrencyFromPriceResponse,
@@ -43,14 +41,7 @@ const MiniCartBlock = ( {
 	);
 
 	useEffect( () => {
-		const refreshData = ( e ) => {
-			const eventDetail = e.detail;
-			if ( ! eventDetail || ! eventDetail.preserveCartData ) {
-				dispatch( storeKey ).invalidateResolutionForStore();
-			}
-		};
-		const openMiniCartAndRefreshData = ( e ) => {
-			refreshData( e );
+		const openMiniCart = () => {
 			setSkipSlideIn( false );
 			setIsOpen( true );
 		};
@@ -60,31 +51,18 @@ const MiniCartBlock = ( {
 			'added_to_cart',
 			'wc-blocks_added_to_cart'
 		);
-		const removeJQueryRemovedFromCartEvent = translateJQueryEventToNative(
-			'removed_from_cart',
-			'wc-blocks_removed_from_cart'
-		);
 
 		document.body.addEventListener(
 			'wc-blocks_added_to_cart',
-			openMiniCartAndRefreshData
-		);
-		document.body.addEventListener(
-			'wc-blocks_removed_from_cart',
-			refreshData
+			openMiniCart
 		);
 
 		return () => {
 			removeJQueryAddedToCartEvent();
-			removeJQueryRemovedFromCartEvent();
 
 			document.body.removeEventListener(
 				'wc-blocks_added_to_cart',
-				openMiniCartAndRefreshData
-			);
-			document.body.removeEventListener(
-				'wc-blocks_removed_from_cart',
-				refreshData
+				openMiniCart
 			);
 		};
 	}, [] );
