@@ -464,7 +464,7 @@ class Checkout extends AbstractCartRoute {
 		$this->order->set_customer_note( $request['customer_note'] ?? '' );
 
 		$cart = $this->cart_controller->get_cart_instance();
-		$this->order->set_payment_method( $cart->needs_payment() ? $this->get_request_payment_method( $request ) : '' );
+		$this->order->set_payment_method( $request['payment_method'] ?? '' );
 
 		/**
 		 * Fires when the Checkout Block/Store API updates an order's from the API request data.
