@@ -34,10 +34,10 @@ interface Props {
 	fontSize: {
 		size: number | undefined;
 	};
-	setFontSize: ( size: number ) => undefined;
-	setColor: ( color: ColorPalette.Color ) => undefined;
+	setFontSize: ( size: number ) => void;
+	setColor: ( color: ColorPalette.Color ) => void;
 	attributes: Attributes;
-	setAttributes: ( attributes: Record< string, unknown > ) => undefined;
+	setAttributes: ( attributes: Record< string, unknown > ) => void;
 }
 
 const TitleEdit = ( {
