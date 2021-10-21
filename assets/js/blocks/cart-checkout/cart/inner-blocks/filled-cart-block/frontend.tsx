@@ -15,7 +15,7 @@ import { useCartBlockContext } from '../../context';
 const FrontendBlock = ( {
 	children,
 }: {
-	children: JSX.Element;
+	children: JSX.Element | JSX.Element[];
 } ): JSX.Element | null => {
 	const { cartItems, cartIsLoading, cartItemErrors } = useStoreCart();
 	const { hasDarkControls } = useCartBlockContext();

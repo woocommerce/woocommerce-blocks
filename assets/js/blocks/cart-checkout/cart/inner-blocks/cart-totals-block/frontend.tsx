@@ -11,7 +11,7 @@ import './style.scss';
 const FrontendBlock = ( {
 	children,
 }: {
-	children: JSX.Element;
+	children: JSX.Element | JSX.Element[];
 } ): JSX.Element => {
 	return <Sidebar className="wc-block-cart__sidebar">{ children }</Sidebar>;
 };
