@@ -3,21 +3,20 @@
  */
 import { PaymentMethodIcons } from '@woocommerce/base-components/cart-checkout';
 import { usePaymentMethods } from '@woocommerce/base-context/hooks';
-
-/**
- * Internal dependencies
- */
-import type PaymentMethodConfig from '../../../../../blocks-registry/payment-methods/payment-method-config';
+import type {
+	PaymentMethods,
+	PaymentMethodIcons as PaymentMethodIconsType,
+} from '@woocommerce/type-defs/payments';
 
 const getIconsFromPaymentMethods = (
-	paymentMethods: PaymentMethodConfig[]
-) => {
+	paymentMethods: PaymentMethods
+): PaymentMethodIconsType => {
 	return Object.values( paymentMethods ).reduce( ( acc, paymentMethod ) => {
 		if ( paymentMethod.icons !== null ) {
 			acc = acc.concat( paymentMethod.icons );
 		}
 		return acc;
-	}, [] );
+	}, [] as PaymentMethodIconsType );
 };
 
 const Block = (): JSX.Element => {

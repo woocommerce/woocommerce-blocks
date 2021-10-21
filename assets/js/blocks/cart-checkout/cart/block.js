@@ -48,8 +48,11 @@ const Cart = ( { children, attributes } ) => {
 
 const ScrollOnError = ( { scrollToTop } ) => {
 	useEffect( () => {
-		const invalidateCartData = () => {
-			dispatch( storeKey ).invalidateResolutionForStore();
+		const invalidateCartData = ( e ) => {
+			const eventDetail = e.detail;
+			if ( ! eventDetail || ! eventDetail.preserveCartData ) {
+				dispatch( storeKey ).invalidateResolutionForStore();
+			}
 			scrollToTop();
 		};
 
