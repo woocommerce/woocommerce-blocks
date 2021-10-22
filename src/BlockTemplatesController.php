@@ -1,8 +1,6 @@
 <?php
 namespace Automattic\WooCommerce\Blocks;
 
-use Automattic\WooCommerce\Blocks\Utils\ThemeUtils;
-
 /**
  * BlockTypesController class.
  *
