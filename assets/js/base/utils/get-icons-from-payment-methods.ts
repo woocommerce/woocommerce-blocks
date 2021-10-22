@@ -6,6 +6,12 @@ import type {
 	PaymentMethodIcons as PaymentMethodIconsType,
 } from '@woocommerce/type-defs/payments';
 
+/**
+ * Get the provider icons from payment methods data.
+ *
+ * @param {PaymentMethods} paymentMethods Payment Method data
+ * @return {PaymentMethodIconsType} Payment Method icons data.
+ */
 export const getIconsFromPaymentMethods = (
 	paymentMethods: PaymentMethods
 ): PaymentMethodIconsType => {
