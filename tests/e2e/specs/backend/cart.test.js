@@ -22,6 +22,7 @@ import {
 	closeModalIfExists,
 	openWidgetsEditorBlockInserter,
 } from '../../utils.js';
+import { scrollTo } from '../../../utils';
 
 const block = {
 	name: 'Cart',
@@ -107,6 +108,7 @@ describe( `${ block.name } Block`, () => {
 				await selectBlockByName( block.slug );
 				await clickBlockToolbarButton( 'Switch view', 'ariaLabel' );
 				await page.waitForSelector( '.components-popover__content' );
+				await scrollTo( '.components-popover__content' );
 				await clickButton( 'Filled Cart' );
 
 				await expect( page ).toMatchElement(
