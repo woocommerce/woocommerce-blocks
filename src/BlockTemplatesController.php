@@ -36,7 +36,7 @@ class BlockTemplatesController {
 	 * Initialization method.
 	 */
 	protected function init() {
-		if ( ThemeUtils::supports_block_templates() ) {
+		if ( gutenberg_supports_block_templates() ) {
 			add_filter( 'get_block_templates', array( $this, 'add_block_templates' ), 10, 3 );
 		}
 	}
