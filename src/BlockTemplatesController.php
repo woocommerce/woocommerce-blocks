@@ -1,6 +1,8 @@
 <?php
 namespace Automattic\WooCommerce\Blocks;
 
+use Automattic\WooCommerce\Blocks\Utils\ThemeUtils;
+
 /**
  * BlockTypesController class.
  *
@@ -34,7 +36,7 @@ class BlockTemplatesController {
 	 * Initialization method.
 	 */
 	protected function init() {
-		if ( gutenberg_supports_block_templates() ) {
+		if ( ThemeUtils::supports_block_templates() ) {
 			add_filter( 'get_block_templates', array( $this, 'add_block_templates' ), 10, 3 );
 		}
 	}
