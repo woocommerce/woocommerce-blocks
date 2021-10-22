@@ -45,7 +45,7 @@ class BlockTemplatesController {
 	 * @param array $query_result Array of template objects.
 	 * @return array
 	 */
-	protected function add_block_templates( $query_result ) {
+	public function add_block_templates( $query_result ) {
 		$template_files = $this->get_block_templates();
 
 		foreach ( $template_files as $template_file ) {
@@ -60,16 +60,22 @@ class BlockTemplatesController {
 	 *
 	 * @return array
 	 */
-	protected function get_block_templates() {
+	public function get_block_templates() {
 		$template_files = _gutenberg_get_template_paths( $this->templates_directory );
 		$templates      = array();
 
 		foreach ( $template_files as $template_file ) {
-			$template_slug     = substr(
+			$template_slug = substr(
 				$template_file,
 				strpos( $template_file, self::TEMPLATES_DIR_NAME . DIRECTORY_SEPARATOR ) + 1 + strlen( self::TEMPLATES_DIR_NAME ),
 				-5
 			);
+
+			// If the theme already has a template then there is no need to load ours in.
+			if ( $this->theme_has_template( $template_slug ) ) {
+				continue;
+			}
+
 			$new_template_item = array(
 				'title' => ucwords( str_replace( '-', ' ', $template_slug ) ),
 				'slug'  => $template_slug,
@@ -81,5 +87,15 @@ class BlockTemplatesController {
 		}
 
 		return $templates;
+	}
+
+	/**
+	 * Check if the theme has a template. So we know if to load our own in or not.
+	 *
+	 * @param string $template_name name of the template file without .html extension e.g. 'single-product'.
+	 * @return boolean
+	 */
+	public function theme_has_template( $template_name ) {
+		return is_readable( get_stylesheet_directory() . '/block-templates/' . $template_name . '.html' );
 	}
 }
