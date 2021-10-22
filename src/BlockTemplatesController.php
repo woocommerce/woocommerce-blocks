@@ -34,9 +34,7 @@ class BlockTemplatesController {
 	 * Initialization method.
 	 */
 	protected function init() {
-		if ( gutenberg_supports_block_templates() ) {
-			add_filter( 'get_block_templates', array( $this, 'add_block_templates' ), 10, 3 );
-		}
+		add_filter( 'get_block_templates', array( $this, 'add_block_templates' ), 10, 3 );
 	}
 
 	/**
@@ -46,6 +44,10 @@ class BlockTemplatesController {
 	 * @return array
 	 */
 	public function add_block_templates( $query_result ) {
+		if ( ! gutenberg_supports_block_templates() ) {
+			return $query_result;
+		}
+
 		$template_files = $this->get_block_templates();
 
 		foreach ( $template_files as $template_file ) {
