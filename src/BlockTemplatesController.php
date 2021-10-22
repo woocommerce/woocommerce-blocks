@@ -26,7 +26,7 @@ class BlockTemplatesController {
 	 * Constructor.
 	 */
 	public function __construct() {
-		$this->templates_directory = plugin_dir_path( __FILE__ ) . '../templates/' . self::TEMPLATES_DIR_NAME;
+		$this->templates_directory = plugin_dir_path( __DIR__ ) . 'templates/' . self::TEMPLATES_DIR_NAME;
 		$this->init();
 	}
 
@@ -96,6 +96,6 @@ class BlockTemplatesController {
 	 * @return boolean
 	 */
 	public function theme_has_template( $template_name ) {
-		return is_readable( get_stylesheet_directory() . '/block-templates/' . $template_name . '.html' );
+		return is_readable( get_template_directory() . '/block-templates/' . $template_name . '.html' );
 	}
 }
