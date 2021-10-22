@@ -30,6 +30,10 @@
 	margin-left: -$gap;
 	margin-right: -$gap;
 	padding: $gap-large;
+
+	.wc-block-components-payment-method-icons {
+		margin-top: $gap;
+	}
 }
 
 .wc-block-components-totals-item.wc-block-mini-cart__footer-subtotal {
