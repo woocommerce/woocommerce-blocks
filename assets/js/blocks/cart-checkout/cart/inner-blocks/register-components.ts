@@ -89,7 +89,7 @@ registerCheckoutBlock( {
 	metadata: cartOrderSummaryMetadata,
 	component: lazy( () =>
 		import(
-			/* webpackChunkName: "cart-blocks/order-summary" */ './cart-order-summary-block/block'
+			/* webpackChunkName: "cart-blocks/order-summary" */ './cart-order-summary-block/frontend'
 		)
 	),
 } );
