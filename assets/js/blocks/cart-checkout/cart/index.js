@@ -44,6 +44,7 @@ const settings = {
 	// Migrates v1 to v2 checkout.
 	deprecated: [
 		{
+			attributes: blockAttributes,
 			save: ( { attributes } ) => {
 				return (
 					<div
@@ -57,10 +58,36 @@ const settings = {
 				);
 			},
 			migrate: ( attributes, innerBlocks ) => {
+				const {
+					isShippingCalculatorEnabled,
+					showRateAfterTaxName,
+					checkoutPageId,
+				} = attributes;
 				return [
 					attributes,
 					[
-						createBlock( 'woocommerce/filled-cart-block' ),
+						createBlock( 'woocommerce/filled-cart-block', {}, [
+							createBlock( 'woocommerce/cart-items-block' ),
+							createBlock( 'woocommerce/cart-totals-block', {}, [
+								createBlock(
+									'woocommerce/cart-order-summary-block',
+									{
+										isShippingCalculatorEnabled,
+										showRateAfterTaxName,
+									}
+								),
+								createBlock(
+									'woocommerce/cart-express-payment-block'
+								),
+								createBlock(
+									'woocommerce/proceed-to-checkout-block',
+									{ checkoutPageId }
+								),
+								createBlock(
+									'woocommerce/cart-accepted-payment-methods-block'
+								),
+							] ),
+						] ),
 						createBlock(
 							'woocommerce/empty-cart-block',
 							{},
