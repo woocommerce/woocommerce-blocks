@@ -1,6 +1,8 @@
 <?php
 namespace Automattic\WooCommerce\Blocks;
 
+use Automattic\WooCommerce\Blocks\Utils\BlockTemplateUtils;
+
 /**
  * BlockTypesController class.
  *
@@ -51,7 +53,7 @@ class BlockTemplatesController {
 		$template_files = $this->get_block_templates();
 
 		foreach ( $template_files as $template_file ) {
-			$query_result[] = _gutenberg_build_template_result_from_file( $template_file, 'wp_template' );
+			$query_result[] = BlockTemplateUtils::gutenberg_build_template_result_from_file( $template_file, 'wp_template' );
 		}
 
 		return $query_result;
@@ -63,7 +65,7 @@ class BlockTemplatesController {
 	 * @return array
 	 */
 	public function get_block_templates() {
-		$template_files = _gutenberg_get_template_paths( $this->templates_directory );
+		$template_files = BlockTemplateUtils::gutenberg_get_template_paths( $this->templates_directory );
 		$templates      = array();
 
 		foreach ( $template_files as $template_file ) {
