@@ -7,6 +7,7 @@ import { useBlockProps } from '@wordpress/block-editor';
  * Internal dependencies
  */
 import Block from './block';
+
 export const Edit = ( {
 	attributes,
 }: {

@@ -5,6 +5,11 @@ import { useStoreCart } from '@woocommerce/base-context/hooks';
 import { useEffect } from '@wordpress/element';
 import { dispatchEvent } from '@woocommerce/base-utils';
 
+/**
+ * Internal dependencies
+ */
+import './style.scss';
+
 const FrontendBlock = ( {
 	children,
 	className,

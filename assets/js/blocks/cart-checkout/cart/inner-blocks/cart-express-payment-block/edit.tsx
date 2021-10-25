@@ -60,6 +60,7 @@ export const Edit = ( {
 		} ),
 	} );
 	const { className } = attributes;
+
 	if ( ! isInitialized ) {
 		return null;
 	}
