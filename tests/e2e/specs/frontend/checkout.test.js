@@ -3,11 +3,9 @@
  */
 import {
 	merchant,
-	createSimpleProduct,
 	setCheckbox,
 	settingsPageSaveChanges,
 	verifyCheckboxIsSet,
-	switchUserToAdmin,
 } from '@woocommerce/e2e-utils';
 
 /**
@@ -149,12 +147,6 @@ describe( `${ block.name } Block (frontend)`, () => {
 
 		await scrollTo( '.wc-block-components-radio-control__input' );
 
-		await expect( page ).toClick(
-			'.wc-block-components-payment-method-label',
-			{
-				alt: 'PayPal',
-			}
-		);
 		await expect( page ).toClick(
 			'.wc-block-components-payment-method-label',
 			{

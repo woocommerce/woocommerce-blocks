@@ -51,8 +51,14 @@ class Checkout extends AbstractBlock {
 	 * @param array $attributes  Any attributes that currently are available from the block.
 	 */
 	protected function enqueue_assets( array $attributes ) {
+		/**
+		 * Fires before checkout block scripts are enqueued.
+		 */
 		do_action( 'woocommerce_blocks_enqueue_checkout_block_scripts_before' );
 		parent::enqueue_assets( $attributes );
+		/**
+		 * Fires after checkout block scripts are enqueued.
+		 */
 		do_action( 'woocommerce_blocks_enqueue_checkout_block_scripts_after' );
 	}
 
@@ -82,12 +88,28 @@ class Checkout extends AbstractBlock {
 		$is_empty = preg_match( $regex_for_empty_block, $content );
 
 		if ( $is_empty ) {
-			$inner_blocks_html = '<div data-block-name="woocommerce/checkout-fields-block" class="wp-block-woocommerce-checkout-fields-block"></div><div data-block-name="woocommerce/checkout-totals-block" class="wp-block-woocommerce-checkout-totals-block"></div>';
+			// This fallback needs to match the default templates defined in our Blocks.
+			$inner_blocks_html = '
+				<div data-block-name="woocommerce/checkout-fields-block" class="wp-block-woocommerce-checkout-fields-block">
+					<div data-block-name="woocommerce/checkout-express-payment-block" class="wp-block-woocommerce-checkout-express-payment-block"></div>
+					<div data-block-name="woocommerce/checkout-contact-information-block" class="wp-block-woocommerce-checkout-contact-information-block"></div>
+					<div data-block-name="woocommerce/checkout-shipping-address-block" class="wp-block-woocommerce-checkout-shipping-address-block"></div>
+					<div data-block-name="woocommerce/checkout-billing-address-block" class="wp-block-woocommerce-checkout-billing-address-block"></div>
+					<div data-block-name="woocommerce/checkout-shipping-methods-block" class="wp-block-woocommerce-checkout-shipping-methods-block"></div>
+					<div data-block-name="woocommerce/checkout-payment-block" class="wp-block-woocommerce-checkout-payment-block"></div>
+					<div data-block-name="woocommerce/checkout-order-note-block" class="wp-block-woocommerce-checkout-order-note-block"></div>
+					<div data-block-name="woocommerce/checkout-terms-block" class="wp-block-woocommerce-checkout-terms-block"></div>
+					<div data-block-name="woocommerce/checkout-actions-block" class="wp-block-woocommerce-checkout-actions-block"></div>
+				</div>
+				<div data-block-name="woocommerce/checkout-totals-block" class="wp-block-woocommerce-checkout-totals-block">
+					<div data-block-name="woocommerce/checkout-order-summary-block" class="wp-block-woocommerce-checkout-order-summary-block"></div>
+				</div>
+			';
 
 			$content = str_replace( '</div>', $inner_blocks_html . '</div>', $content );
 		}
 
-		return $this->inject_html_data_attributes( $content, $attributes );
+		return $content;
 	}
 
 	/**
@@ -253,6 +275,9 @@ class Checkout extends AbstractBlock {
 			$this->hydrate_customer_payment_methods();
 		}
 
+		/**
+		 * Fires after checkout block data is registered.
+		 */
 		do_action( 'woocommerce_blocks_checkout_enqueue_data' );
 	}
 

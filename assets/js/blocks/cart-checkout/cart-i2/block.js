@@ -19,14 +19,29 @@ import {
 } from '@woocommerce/base-context/providers';
 import { SlotFillProvider } from '@woocommerce/blocks-checkout';
 
+/**
+ * Internal dependencies
+ */
+import { CartBlockContext } from './context';
+import './style.scss';
+
 const reloadPage = () => void window.location.reload( true );
 
-const Cart = ( { children } ) => {
+const Cart = ( { children, attributes } ) => {
 	const { cartIsLoading } = useStoreCart();
+	const { hasDarkControls } = attributes;
 
 	return (
 		<LoadingMask showSpinner={ true } isLoading={ cartIsLoading }>
-			<ValidationContextProvider>{ children }</ValidationContextProvider>
+			<CartBlockContext.Provider
+				value={ {
+					hasDarkControls,
+				} }
+			>
+				<ValidationContextProvider>
+					{ children }
+				</ValidationContextProvider>
+			</CartBlockContext.Provider>
 		</LoadingMask>
 	);
 };

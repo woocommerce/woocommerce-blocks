@@ -4,6 +4,7 @@
 import { useBlockProps } from '@wordpress/block-editor';
 import type { ReactElement } from 'react';
 import { formatPrice } from '@woocommerce/price-format';
+import { CartCheckoutCompatibilityNotice } from '@woocommerce/editor-components/compatibility-notices';
 
 /**
  * Internal dependencies
@@ -26,6 +27,7 @@ const MiniCartBlock = (): ReactElement => {
 				</span>
 				<QuantityBadge count={ productCount } />
 			</button>
+			<CartCheckoutCompatibilityNotice blockName="mini-cart" />
 		</div>
 	);
 };

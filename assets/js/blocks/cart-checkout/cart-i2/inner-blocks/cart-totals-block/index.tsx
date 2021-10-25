@@ -2,7 +2,7 @@
  * External dependencies
  */
 import { Icon, column } from '@wordpress/icons';
-import { registerFeaturePluginBlockType } from '@woocommerce/block-settings';
+import { registerExperimentalBlockType } from '@woocommerce/block-settings';
 
 /**
  * Internal dependencies
@@ -10,10 +10,10 @@ import { registerFeaturePluginBlockType } from '@woocommerce/block-settings';
 import { Edit, Save } from './edit';
 import metadata from './block.json';
 
-registerFeaturePluginBlockType( metadata, {
+registerExperimentalBlockType( metadata, {
 	icon: {
 		src: <Icon icon={ column } />,
-		foreground: '#874FB9',
+		foreground: '#7f54b3',
 	},
 	edit: Edit,
 	save: Save,
