@@ -8,6 +8,7 @@ import {
 	InspectorControls,
 	BlockControls,
 	AlignmentToolbar,
+	useBlockProps,
 } from '@wordpress/block-editor';
 import { isFeaturePluginBuild } from '@woocommerce/block-settings';
 import HeadingToolbar from '@woocommerce/editor-components/heading-toolbar';
@@ -26,9 +27,10 @@ interface Props {
 }
 
 const TitleEdit = ( { attributes, setAttributes }: Props ): JSX.Element => {
+	const blockProps = useBlockProps();
 	const { headingLevel, showProductLink, align } = attributes;
 	return (
-		<>
+		<div { ...blockProps }>
 			<BlockControls>
 				<HeadingToolbar
 					isCollapsed={ true }
@@ -73,7 +75,7 @@ const TitleEdit = ( { attributes, setAttributes }: Props ): JSX.Element => {
 			<Disabled>
 				<Block { ...attributes } />
 			</Disabled>
-		</>
+		</div>
 	);
 };
 

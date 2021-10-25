@@ -30,7 +30,9 @@ const blockConfig: BlockConfiguration = {
 		color: {
 			background: false,
 		},
-		fontSize: true,
+		typography: {
+			fontSize: true,
+		},
 	},
 };
 
