@@ -2,21 +2,12 @@
  * External dependencies
  */
 import { __ } from '@wordpress/i18n';
-import {
-	ColorPalette,
-	Disabled,
-	PanelBody,
-	ToggleControl,
-} from '@wordpress/components';
+import { Disabled, PanelBody, ToggleControl } from '@wordpress/components';
 import { compose } from '@wordpress/compose';
 import {
 	InspectorControls,
 	BlockControls,
 	AlignmentToolbar,
-	withColors,
-	PanelColorSettings,
-	FontSizePicker,
-	withFontSizes,
 } from '@wordpress/block-editor';
 import { isFeaturePluginBuild } from '@woocommerce/block-settings';
 import HeadingToolbar from '@woocommerce/editor-components/heading-toolbar';
@@ -30,24 +21,11 @@ import { BLOCK_TITLE, BLOCK_ICON } from './constants';
 import { Attributes } from './types';
 
 interface Props {
-	color: ColorPalette.Color;
-	fontSize: {
-		size: number | undefined;
-	};
-	setFontSize: ( size: number ) => void;
-	setColor: ( color: ColorPalette.Color ) => void;
 	attributes: Attributes;
 	setAttributes: ( attributes: Record< string, unknown > ) => void;
 }
 
-const TitleEdit = ( {
-	color,
-	fontSize,
-	setFontSize,
-	setColor,
-	attributes,
-	setAttributes,
-}: Props ): JSX.Element => {
+const TitleEdit = ( { attributes, setAttributes }: Props ): JSX.Element => {
 	const { headingLevel, showProductLink, align } = attributes;
 	return (
 		<>
@@ -91,37 +69,6 @@ const TitleEdit = ( {
 						}
 					/>
 				</PanelBody>
-				{ isFeaturePluginBuild() && (
-					<>
-						<PanelBody
-							title={ __(
-								'Text settings',
-								'woo-gutenberg-products-block'
-							) }
-						>
-							<FontSizePicker
-								value={ fontSize.size }
-								onChange={ setFontSize }
-							/>
-						</PanelBody>
-						<PanelColorSettings
-							title={ __(
-								'Color settings',
-								'woo-gutenberg-products-block'
-							) }
-							colorSettings={ [
-								{
-									value: color,
-									onChange: setColor,
-									label: __(
-										'Text color',
-										'woo-gutenberg-products-block'
-									),
-								},
-							] }
-						></PanelColorSettings>
-					</>
-				) }
 			</InspectorControls>
 			<Disabled>
 				<Block { ...attributes } />
@@ -132,8 +79,6 @@ const TitleEdit = ( {
 
 const Title = isFeaturePluginBuild()
 	? compose( [
-			withFontSizes( 'fontSize' ),
-			withColors( 'color', { textColor: 'color' } ),
 			withProductSelector( {
 				icon: BLOCK_ICON,
 				label: BLOCK_TITLE,

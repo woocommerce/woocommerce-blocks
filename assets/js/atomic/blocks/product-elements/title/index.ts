@@ -17,6 +17,7 @@ import {
 
 const blockConfig: BlockConfiguration = {
 	...sharedConfig,
+	apiVersion: 2,
 	title,
 	description,
 	icon: {
@@ -25,6 +26,12 @@ const blockConfig: BlockConfiguration = {
 	},
 	attributes,
 	edit,
+	supports: {
+		color: {
+			background: false,
+		},
+		fontSize: true,
+	},
 };
 
 registerBlockType( 'woocommerce/product-title', blockConfig );
