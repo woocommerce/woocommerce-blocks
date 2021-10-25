@@ -103,7 +103,7 @@ class Cart extends AbstractBlock {
 			';
 
 			$content = preg_replace( '/<div class="[a-zA-Z0-9_\- ]*wp-block-woocommerce-cart[a-zA-Z0-9_\- ]*">/mi', $inner_blocks_html, $content );
-			$content = substr_replace( $content, '</div></div>', -6 );
+			$content = $content . '</div>';
 		}
 		return $content;
 	}
