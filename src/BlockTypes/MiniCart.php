@@ -204,16 +204,6 @@ class MiniCart extends AbstractBlock {
 			$cart_contents_total += $cart->get_subtotal_tax();
 		}
 
-		$button_text = sprintf(
-			/* translators: %d is the number of products in the cart. */
-			_n(
-				'%d item',
-				'%d items',
-				$cart_contents_count,
-				'woo-gutenberg-products-block'
-			),
-			$cart_contents_count
-		);
 		$aria_label = sprintf(
 			/* translators: %1$d is the number of products in the cart. %2$s is the cart total */
 			_n(
@@ -248,7 +238,6 @@ class MiniCart extends AbstractBlock {
 			</defs>
 		</svg>';
 		$button_html = '<span class="wc-block-mini-cart__amount">' . wp_strip_all_tags( wc_price( $cart_contents_total ) ) . '</span>
-		<span class="wc-block-mini-cart__count">' . $button_text . '</span>
 		<span class="wc-block-mini-cart__quantity-badge">
 			<span class="wc-block-mini-cart__badge">' . $cart_contents_count . '</span>
 			' . $icon . '

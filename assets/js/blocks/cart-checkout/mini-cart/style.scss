@@ -1,12 +1,15 @@
+.wc-block-mini-cart {
+	display: flex;
+	justify-content: flex-end;
+}
+
 .wc-block-mini-cart__button {
-	align-items: baseline;
+	align-items: center;
 	background: transparent;
 	border: none;
 	display: flex;
 	font-weight: 400;
-	padding-left: 0;
 	padding-right: 0;
-	width: 100%;
 
 	&:hover {
 		background: transparent;
@@ -16,13 +19,6 @@
 
 .wc-block-mini-cart__amount {
 	display: none;
-	margin-right: $gap-smaller;
-}
-
-.wc-block-mini-cart__count {
-	display: none;
-	font-size: 0.875em;
-	opacity: 0.5;
 }
 
 .wc-block-mini-cart__quantity-badge {
@@ -30,18 +26,14 @@
 }
 
 @media screen and (min-width: 768px) {
-	.wc-block-mini-cart__count,
 	.wc-block-mini-cart__amount {
 		display: initial;
+		font-weight: 600;
+		margin-right: $gap-smaller;
 	}
 
 	.wc-block-mini-cart__quantity-badge {
 		margin-right: 0;
-
-	}
-
-	.wc-block-mini-cart__badge {
-		display: none;
 	}
 }
 

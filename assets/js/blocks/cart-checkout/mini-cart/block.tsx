@@ -135,18 +135,6 @@ const MiniCartBlock = ( {
 						getCurrencyFromPriceResponse( cartTotals )
 					) }
 				</span>
-				<span className="wc-block-mini-cart__count">
-					{ sprintf(
-						/* translators: %d is the count of items in the cart. */
-						_n(
-							'%d item',
-							'%d items',
-							cartItemsCount,
-							'woo-gutenberg-products-block'
-						),
-						cartItemsCount
-					) }
-				</span>
 				<QuantityBadge count={ cartItemsCount } />
 			</button>
 			<Drawer
