@@ -239,7 +239,7 @@ table.wc-block-cart-items {
 	}
 
 	.wc-block-cart__sidebar {
-		& > div:not( .wc-block-components-totals-wrapper ) {
+		& > div:not(.wc-block-components-totals-wrapper) {
 			margin-left: $gap;
 			margin-right: $gap;
 		}
@@ -261,7 +261,7 @@ table.wc-block-cart-items {
 
 	.wc-block-components-sidebar {
 		.wc-block-components-shipping-calculator,
-		.wc-block-components-shipping-rates-control__package:not( .wc-block-components-panel ) {
+		.wc-block-components-shipping-rates-control__package:not(.wc-block-components-panel) {
 			padding-left: $gap;
 			padding-right: $gap;
 		}
@@ -286,9 +286,7 @@ table.wc-block-cart-items {
 	.wp-block-woocommerce-cart-items-block {
 		box-sizing: border-box;
 		margin: 0;
-		padding-right: percentage(
-			math.div( $gap-largest, 1060px )
-		); // ~1060px is the default width of the content area in Storefront.
+		padding-right: percentage(math.div($gap-largest, 1060px)); // ~1060px is the default width of the content area in Storefront.
 		width: 65%;
 		min-height: 10em;
 	}
@@ -302,7 +300,7 @@ table.wc-block-cart-items {
 	.wp-block-woocommerce-cart-totals-block {
 		box-sizing: border-box;
 		margin: 0;
-		padding-left: percentage( math.div( $gap-large, 1060px ) );
+		padding-left: percentage(math.div($gap-large, 1060px));
 		width: 35%;
 		min-height: 12em;
 	}
