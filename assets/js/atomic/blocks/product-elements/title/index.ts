@@ -27,6 +27,7 @@ const blockConfig: BlockConfiguration = {
 	attributes,
 	edit,
 	supports: {
+		html: false,
 		color: {
 			background: false,
 		},
