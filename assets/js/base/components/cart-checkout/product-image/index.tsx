@@ -24,15 +24,26 @@ const ProductImage = ( {
 	image = {},
 	fallbackAlt = '',
 }: ProductImageProps ): JSX.Element => {
-	const imageProps = {
-		src: image.thumbnail || PLACEHOLDER_IMG_SRC,
-		alt: decodeEntities( image.alt ) || fallbackAlt || '',
-	};
+	const imageProps = image.thumbnail
+		? {
+				src: image.thumbnail,
+				alt:
+					decodeEntities( image.alt ) ||
+					fallbackAlt ||
+					'Product Image',
+		  }
+		: {
+				src: PLACEHOLDER_IMG_SRC,
+				alt: '',
+		  };
 
-	if ( ! image.thumbnail ) {
-		imageProps.alt = '';
-	}
-	return <img { ...imageProps } alt={ imageProps.alt } />;
+	return (
+		<img
+			className="wc-block-components-product-image"
+			{ ...imageProps }
+			alt={ imageProps.alt }
+		/>
+	);
 };
 
 export default ProductImage;
