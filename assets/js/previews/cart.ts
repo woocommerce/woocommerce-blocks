@@ -13,11 +13,15 @@ import { previewShippingRates } from './shipping-rates';
 
 /**
  * Prices from the API may change because of this display setting. This makes the response use either
- * wc_get_price_including_tax or wc_get_price_excluding_tax, so it is correct that this changes the cart preview data.
+ * wc_get_price_including_tax or wc_get_price_excluding_tax. It is correct that this setting changes the cart preview
+ * data.
  *
- * Cart endpoints use displayCartPricesIncludingTax. Other endpoints use displayProductPricesIncludingTax.
+ * WooCommerce core has 2 settings which control this, one for cart (displayCartPricesIncludingTax), and one for the
+ * rest of the store (displayProductPricesIncludingTax). Because of this, Cart endpoints use displayCartPricesIncludingTax
+ * which is the most appropriate.
  *
- * Handling this server side works around rounding/display issues when adding tax to a price.
+ * Handling the display settings server side help work around rounding/display issues that can arrise from manually
+ * adding tax to a price.
  */
 const displayWithTax = getSetting( 'displayCartPricesIncludingTax', false );
 
