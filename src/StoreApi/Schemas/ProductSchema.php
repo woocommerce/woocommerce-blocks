@@ -591,16 +591,33 @@ class ProductSchema extends AbstractSchema {
 			[]
 		);
 
-		// phpcs:disable WordPress.DB.PreparedSQL.NotPrepared
-		$variation_meta_data = $wpdb->get_results(
+		$cache_key   = 'product_' . $product->get_id() . '_variation_meta_data';
+		$cache_group = 'store_api';
+		$cache_value = wp_cache_get( $cache_key, $cache_group );
+
+		if ( false === $cache_value || (string) $product->get_date_modified() !== $cache_value['last_modified'] ) {
+			// phpcs:disable WordPress.DB.PreparedSQL.NotPrepared
+			$variation_meta_data = $wpdb->get_results(
+				"
+				SELECT post_id as variation_id, meta_key as attribute_key, meta_value as attribute_value
+				FROM {$wpdb->postmeta}
+				WHERE post_id IN (" . implode( ',', array_map( 'esc_sql', $variation_ids ) ) . ")
+				AND meta_key IN ('" . implode( "','", array_map( 'esc_sql', array_keys( $default_variation_meta_data ) ) ) . "')
 			"
-			SELECT post_id as variation_id, meta_key as attribute_key, meta_value as attribute_value
-			FROM {$wpdb->postmeta}
-			WHERE post_id IN (" . implode( ',', array_map( 'esc_sql', $variation_ids ) ) . ")
-			AND meta_key IN ('" . implode( "','", array_map( 'esc_sql', array_keys( $default_variation_meta_data ) ) ) . "')
-		"
-		);
-		// phpcs:enable
+			);
+			// phpcs:enable
+
+			wp_cache_set(
+				$cache_key,
+				[
+					'last_modified' => (string) $product->get_date_modified(),
+					'data'          => $variation_meta_data,
+				],
+				$cache_group
+			);
+		} else {
+			$variation_meta_data = $cache_value['data'];
+		}
 
 		$attributes_by_variation = array_reduce(
 			$variation_meta_data,
