@@ -1,6 +1,7 @@
 /**
  * External dependencies
  */
+import classnames from 'classnames';
 import { useBlockProps, InnerBlocks } from '@wordpress/block-editor';
 import { Sidebar } from '@woocommerce/base-components/sidebar-layout';
 import { innerBlockAreas } from '@woocommerce/blocks-checkout';
@@ -10,12 +11,24 @@ import type { TemplateArray } from '@wordpress/blocks';
  * Internal dependencies
  */
 import './style.scss';
-import { useForcedLayout } from '../../use-forced-layout';
-import { getAllowedBlocks } from '../../editor-utils';
+import { useForcedLayout, getAllowedBlocks } from '../../../shared';
 import { useCheckoutBlockContext } from '../../context';
 
-export const Edit = ( { clientId }: { clientId: string } ): JSX.Element => {
-	const blockProps = useBlockProps();
+export const Edit = ( {
+	clientId,
+	attributes,
+}: {
+	clientId: string;
+	attributes: {
+		className?: string;
+	};
+} ): JSX.Element => {
+	const blockProps = useBlockProps( {
+		className: classnames(
+			'wc-block-checkout__sidebar',
+			attributes?.className
+		),
+	} );
 	const { showRateAfterTaxName } = useCheckoutBlockContext();
 	const allowedBlocks = getAllowedBlocks( innerBlockAreas.CHECKOUT_TOTALS );
 
@@ -36,14 +49,13 @@ export const Edit = ( { clientId }: { clientId: string } ): JSX.Element => {
 	} );
 
 	return (
-		<Sidebar className="wc-block-checkout__sidebar">
-			<div { ...blockProps }>
-				<InnerBlocks
-					allowedBlocks={ allowedBlocks }
-					templateLock={ false }
-					template={ defaultTemplate }
-				/>
-			</div>
+		<Sidebar { ...blockProps }>
+			<InnerBlocks
+				allowedBlocks={ allowedBlocks }
+				templateLock={ false }
+				template={ defaultTemplate }
+				renderAppender={ InnerBlocks.ButtonBlockAppender }
+			/>
 		</Sidebar>
 	);
 };
