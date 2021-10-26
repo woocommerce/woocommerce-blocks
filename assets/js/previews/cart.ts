@@ -20,7 +20,7 @@ import { previewShippingRates } from './shipping-rates';
  * rest of the store (displayProductPricesIncludingTax). Because of this, Cart endpoints use displayCartPricesIncludingTax
  * which is the most appropriate.
  *
- * Handling the display settings server side help work around rounding/display issues that can arrise from manually
+ * Handling the display settings server-side helps work around rounding/display issues that can arise from manually
  * adding tax to a price.
  */
 const displayWithTax = getSetting( 'displayCartPricesIncludingTax', false );
