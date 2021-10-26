@@ -16,6 +16,7 @@ The following filters are available for line items:
 | ---------------------- | -------------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------- |
 | `itemName`             | Used to change the name of the item before it is rendered onto the page                                                                | `string`                                                                              |
 | `cartItemPrice`        | This is the price of the item, multiplied by the number of items in the cart.                                                          | `string` and **must** contain the substring `<price/>` where the price should appear. |
+| `cartItemClass`        | This is the className of the item cell.                                                          | `string` |
 | `subtotalPriceFormat`  | This is the price of a single item. Irrespective of the number in the cart, this value will always be the current price of _one_ item. | `string` and **must** contain the substring `<price/>` where the price should appear. |
 | `saleBadgePriceFormat` | This is amount of money saved when buying this item. It is the difference between the item's regular price and its sale price.         | `string` and **must** contain the substring `<price/>` where the price should appear. |
 
