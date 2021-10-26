@@ -1,3 +1,17 @@
+- [Filtering payment methods in the Checkout block](#filtering-payment-methods-in-the-checkout-block)
+  - [The problem](#the-problem)
+  - [The solution](#the-solution)
+  - [Importing](#importing)
+  - [Signature](#signature)
+    - [Extension namespace collision](#extension-namespace-collision)
+  - [Usage example](#usage-example)
+  - [Callbacks registered for payment methods](#callbacks-registered-for-payment-methods)
+- [Filtering payment methods using requirements](#filtering-payment-methods-using-requirements)
+  - [The problem](#the-problem-1)
+  - [The solution](#the-solution-1)
+  - [Basic usage](#basic-usage)
+  - [Putting it all together](#putting-it-all-together)
+
 # Filtering payment methods in the Checkout block
 
 ## The problem
@@ -7,6 +21,8 @@ You're an extension developer, and your extension is conditionally hiding paymen
 ## The solution
 
 WooCommerce Blocks provides a function called `registerPaymentMethodExtensionCallbacks` which allows extensions to register callbacks for specific payment methods to determine if they can make payments.
+
+
 
 ## Importing
 
@@ -81,3 +97,9 @@ interface CanMakePaymentArgument {
 ```
 
 If you need data that is not available in the parameter received by the callback you can consider [exposing your data in the Store API](extend-rest-api-add-data.md).
+
+# Filtering payment methods using requirements
+
+## The problem
+Your extension has registered a payment method that is capable of taking 
+
