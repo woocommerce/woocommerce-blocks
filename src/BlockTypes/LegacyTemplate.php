@@ -34,10 +34,8 @@ class LegacyTemplate extends AbstractDynamicBlock {
 			return;
 		}
 
-		ob_start();
-
 		if ( 'single-product' === $attributes['template'] ) {
-			$this->render_single_product();
+			return $this->render_single_product();
 		} else {
 			ob_start();
 
