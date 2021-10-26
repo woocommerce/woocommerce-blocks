@@ -462,8 +462,6 @@ class Checkout extends AbstractCartRoute {
 	 */
 	private function update_order_from_request( \WP_REST_Request $request ) {
 		$this->order->set_customer_note( $request['customer_note'] ?? '' );
-
-		$cart = $this->cart_controller->get_cart_instance();
 		$this->order->set_payment_method( $request['payment_method'] ?? '' );
 
 		/**
