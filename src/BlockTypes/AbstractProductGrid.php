@@ -309,9 +309,80 @@ abstract class AbstractProductGrid extends AbstractDynamicBlock {
 		// Prime caches to reduce future queries.
 		if ( is_callable( '_prime_post_caches' ) ) {
 			_prime_post_caches( $results );
+			$this->prime_product_variations( $results );
 		}
 
 		return $results;
+	}
+
+	/**
+	 * Prime query cache of product variation meta data.
+	 *
+	 * Prepares values in the product_ID_variation_meta_data cache for later use in the ProductSchema::get_variations()
+	 * method. Doing so here reduces the total number of queries needed.
+	 *
+	 * @param int[] $product_ids Product ids to prime variation cache for.
+	 */
+	protected function prime_product_variations( $product_ids ) {
+		global $wpdb;
+		static $primed_product_ids = [];
+
+		$prime_product_ids = array_diff( wp_parse_id_list( $product_ids ), $primed_product_ids );
+
+		if ( ! $prime_product_ids ) {
+			return;
+		}
+
+		// phpcs:disable WordPress.DB.PreparedSQL.NotPrepared
+		$product_variations      = array_map(
+			function( $row ) {
+				$row['product_id']   = absint( $row['product_id'] );
+				$row['variation_id'] = absint( $row['variation_id'] );
+				return $row;
+			},
+			$wpdb->get_results( "SELECT ID as variation_id, post_parent as product_id from {$wpdb->posts} WHERE post_parent IN ( " . implode( ',', $prime_product_ids ) . ' )', ARRAY_A )
+		);
+		$prime_variation_ids     = array_column( $product_variations, 'variation_id' );
+		$variation_ids_by_parent = array_column( $product_variations, 'product_id', 'variation_id' );
+		$all_variation_meta_data = $wpdb->get_results(
+			$wpdb->prepare(
+				"
+					SELECT post_id as variation_id, meta_key as attribute_key, meta_value as attribute_value
+					FROM {$wpdb->postmeta}
+					WHERE post_id IN (" . implode( ',', array_map( 'esc_sql', $prime_variation_ids ) ) . ')
+					AND meta_key LIKE %s
+				',
+				$wpdb->esc_like( 'attribute_' ) . '%'
+			)
+		);
+		// phpcs:enable
+
+		$primed_data = array_reduce(
+			$all_variation_meta_data,
+			function( $values, $data ) use ( $variation_ids_by_parent ) {
+				$product_id = isset( $variation_ids_by_parent[ (int) $data->variation_id ] ) ? $variation_ids_by_parent[ (int) $data->variation_id ] : 0;
+
+				if ( $product_id ) {
+					$values[ $product_id ][] = $data;
+				}
+				return $values;
+			},
+			array_fill_keys( $prime_product_ids, [] )
+		);
+
+		foreach ( $primed_data as $product_id => $variation_meta_data ) {
+			$cache_key   = 'product_' . $product_id . '_variation_meta_data';
+			$cache_group = 'store_api';
+			wp_cache_set(
+				$cache_key,
+				[
+					'last_modified' => get_the_modified_date( 'U', $product_id ),
+					'data'          => $variation_meta_data,
+				],
+				$cache_group
+			);
+			$primed_product_ids[] = $product_id;
+		}
 	}
 
 	/**

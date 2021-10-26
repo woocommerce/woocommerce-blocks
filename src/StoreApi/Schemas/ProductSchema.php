@@ -566,17 +566,15 @@ class ProductSchema extends AbstractSchema {
 	 * @returns array
 	 */
 	protected function get_variations( \WC_Product $product ) {
-		if ( ! $product->is_type( 'variable' ) ) {
-			return [];
-		}
-		global $wpdb;
-
-		$variation_ids = $product->get_visible_children();
+		$variation_ids = $product->is_type( 'variable' ) ? $product->get_visible_children() : [];
 
 		if ( ! count( $variation_ids ) ) {
 			return [];
 		}
 
+		/**
+		 * Gets default variation data which applies to all of this products variations.
+		 */
 		$attributes                  = array_filter( $product->get_attributes(), [ $this, 'filter_variation_attribute' ] );
 		$default_variation_meta_data = array_reduce(
 			$attributes,
@@ -590,19 +588,25 @@ class ProductSchema extends AbstractSchema {
 			},
 			[]
 		);
+		$default_variation_meta_keys = array_keys( $default_variation_meta_data );
 
-		$cache_key   = 'product_' . $product->get_id() . '_variation_meta_data';
-		$cache_group = 'store_api';
-		$cache_value = wp_cache_get( $cache_key, $cache_group );
+		/**
+		 * Gets individual variation data from the database, using cache where possible.
+		 */
+		$cache_key     = 'product_' . $product->get_id() . '_variation_meta_data';
+		$cache_group   = 'store_api';
+		$cache_value   = wp_cache_get( $cache_key, $cache_group );
+		$last_modified = get_the_modified_date( 'U', $product->get_id() );
 
-		if ( false === $cache_value || (string) $product->get_date_modified() !== $cache_value['last_modified'] ) {
+		if ( false === $cache_value || $last_modified !== $cache_value['last_modified'] ) {
+			global $wpdb;
 			// phpcs:disable WordPress.DB.PreparedSQL.NotPrepared
 			$variation_meta_data = $wpdb->get_results(
 				"
 				SELECT post_id as variation_id, meta_key as attribute_key, meta_value as attribute_value
 				FROM {$wpdb->postmeta}
 				WHERE post_id IN (" . implode( ',', array_map( 'esc_sql', $variation_ids ) ) . ")
-				AND meta_key IN ('" . implode( "','", array_map( 'esc_sql', array_keys( $default_variation_meta_data ) ) ) . "')
+				AND meta_key IN ('" . implode( "','", array_map( 'esc_sql', $default_variation_meta_keys ) ) . "')
 			"
 			);
 			// phpcs:enable
@@ -610,7 +614,7 @@ class ProductSchema extends AbstractSchema {
 			wp_cache_set(
 				$cache_key,
 				[
-					'last_modified' => (string) $product->get_date_modified(),
+					'last_modified' => $last_modified,
 					'data'          => $variation_meta_data,
 				],
 				$cache_group
@@ -619,10 +623,17 @@ class ProductSchema extends AbstractSchema {
 			$variation_meta_data = $cache_value['data'];
 		}
 
+		/**
+		 * Merges and formats default variation data with individual variation data.
+		 */
 		$attributes_by_variation = array_reduce(
 			$variation_meta_data,
-			function( $values, $data ) {
-				$values[ $data->variation_id ][ $data->attribute_key ] = $data->attribute_value;
+			function( $values, $data ) use ( $default_variation_meta_keys ) {
+				// Whilst the query above only includes keys of $default_variation_meta_data, the cache may have been
+				// primed elsewhere.
+				if ( in_array( $data->attribute_key, $default_variation_meta_keys, true ) ) {
+					$values[ $data->variation_id ][ $data->attribute_key ] = $data->attribute_value;
+				}
 				return $values;
 			},
 			array_fill_keys( $variation_ids, [] )
