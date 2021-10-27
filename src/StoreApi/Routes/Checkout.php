@@ -502,7 +502,19 @@ class Checkout extends AbstractCartRoute {
 		 *
 		 * @deprecated Deprecated since version x.x.x, use woocommerce_blocks_checkout_update_order_from_request instead.
 		 */
-		do_action_deprecated( '__experimental_woocommerce_blocks_checkout_update_order_from_request', $this->order, $request );
+		do_action_deprecated(
+			'__experimental_woocommerce_blocks_checkout_update_order_from_request',
+			array(
+				$this->order,
+				$request,
+			),
+			'x.x.x',
+			'woocommerce_blocks_checkout_update_order_from_request',
+			sprintf(
+				'This action was deprecated in WooCommerce Blocks version %s. Please use woocommerce_blocks_checkout_update_order_from_request instead.',
+				'x.x.x'
+			)
+		);
 
 		/**
 		 * Fires when the Checkout Block/Store API updates an order's from the API request data.
