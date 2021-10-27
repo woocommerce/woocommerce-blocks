@@ -250,7 +250,9 @@ class Checkout extends AbstractCartRoute {
 		 */
 		do_action_deprecated(
 			'__experimental_woocommerce_blocks_checkout_order_processed',
-			$this->order,
+			array(
+				$this->order,
+			),
 			'x.x.x',
 			'woocommerce_blocks_checkout_order_processed',
 			sprintf(
