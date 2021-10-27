@@ -141,7 +141,7 @@ const renderBlockInsideWrapper = ( {
  * Renders the block frontend on page load. If the block is contained inside a
  * wrapper element that should be excluded from initial load, it adds the
  * appropriate event listeners to render the block when the
- * `blocks_render_blocks_frontend` event is triggered.
+ * `wc-blocks_render_blocks_frontend` event is triggered.
  *
  * @param {Object}    props                         Render props.
  * @param {Function}  props.Block                   React component to use as a
