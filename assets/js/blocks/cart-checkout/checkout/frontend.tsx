@@ -9,7 +9,6 @@ import {
 	useValidation,
 } from '@woocommerce/base-context/hooks';
 import { getRegisteredBlockComponents } from '@woocommerce/blocks-registry';
-import { withStoreCartApiHydration } from '@woocommerce/block-hocs';
 import { renderParentBlock } from '@woocommerce/atomic-utils';
 
 /**
@@ -54,7 +53,7 @@ const Wrapper = ( {
 };
 
 renderParentBlock( {
-	Block: withStoreCartApiHydration( Block ),
+	Block,
 	blockName,
 	selector: '.wp-block-woocommerce-checkout',
 	getProps,
