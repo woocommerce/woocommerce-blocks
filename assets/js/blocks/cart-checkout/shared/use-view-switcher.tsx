@@ -4,7 +4,7 @@
 import { __ } from '@wordpress/i18n';
 import { useState } from '@wordpress/element';
 import { useDispatch, select } from '@wordpress/data';
-import { Toolbar, ToolbarDropdownMenu } from '@wordpress/components';
+import { ToolbarGroup, ToolbarDropdownMenu } from '@wordpress/components';
 import { Icon, eye } from '@woocommerce/icons';
 import { store as blockEditorStore } from '@wordpress/block-editor';
 
@@ -27,7 +27,7 @@ export const useViewSwitcher = (
 	const { getBlock } = select( blockEditorStore );
 
 	const ViewSwitcherComponent = (
-		<Toolbar>
+		<ToolbarGroup>
 			<ToolbarDropdownMenu
 				label={ __( 'Switch view', 'woo-gutenberg-products-block' ) }
 				text={ currentView.label }
@@ -49,7 +49,7 @@ export const useViewSwitcher = (
 					},
 				} ) ) }
 			/>
-		</Toolbar>
+		</ToolbarGroup>
 	);
 
 	return {
