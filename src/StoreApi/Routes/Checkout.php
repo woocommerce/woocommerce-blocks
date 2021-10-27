@@ -246,7 +246,7 @@ class Checkout extends AbstractCartRoute {
 		 * @internal This Hook is experimental and may change or be removed.
 
 		 * @param \WC_Order $order Order object.
-		 * @depreacted Deprecated since version x.x.x, use woocommerce_blocks_checkout_order_processed instead.
+		 * @deprecated Deprecated since version x.x.x, use woocommerce_blocks_checkout_order_processed instead.
 		 */
 		do_action_deprecated(
 			'__experimental_woocommerce_blocks_checkout_order_processed',
