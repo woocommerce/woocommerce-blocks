@@ -246,8 +246,34 @@ class Checkout extends AbstractCartRoute {
 		 * @internal This Hook is experimental and may change or be removed.
 
 		 * @param \WC_Order $order Order object.
+		 * @depreacted x.x.x
 		 */
-		do_action( '__experimental_woocommerce_blocks_checkout_order_processed', $this->order );
+		do_action_deprecated(
+			'__experimental_woocommerce_blocks_checkout_order_processed',
+			$this->order,
+			'x.x.x',
+			'woocommerce_blocks_checkout_order_processed',
+			sprintf(
+				'This action was deprecated in WooCommerce Blocks version %s. Please use woocommerce_blocks_checkout_order_processed instead.',
+				'x.x.x'
+			)
+		);
+
+		/**
+		 * Fires before an order is processed by the Checkout Block/Store API.
+		 *
+		 * This hook informs extensions that $order has completed processing and is ready for payment.
+		 *
+		 * This is similar to existing core hook woocommerce_checkout_order_processed. We're using a new action:
+		 * - To keep the interface focused (only pass $order, not passing request data).
+		 * - This also explicitly indicates these orders are from checkout block/StoreAPI.
+		 *
+		 * @see https://github.com/woocommerce/woocommerce-gutenberg-products-block/pull/3238
+		 * @example See docs/examples/checkout-order-processed.md
+
+		 * @param \WC_Order $order Order object.
+		 */
+		do_action( 'woocommerce_blocks_checkout_order_processed', $this->order );
 
 		/**
 		 * Process the payment and return the results.
