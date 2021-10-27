@@ -2,6 +2,7 @@
  * External dependencies
  */
 import { registerBlockType, BlockConfiguration } from '@wordpress/blocks';
+import { isFeaturePluginBuild } from '@woocommerce/block-settings';
 
 /**
  * Internal dependencies
@@ -26,15 +27,17 @@ const blockConfig: BlockConfiguration = {
 	},
 	attributes,
 	edit,
-	supports: {
-		html: false,
-		color: {
-			background: false,
-		},
-		typography: {
-			fontSize: true,
-		},
-	},
+	supports: isFeaturePluginBuild()
+		? {
+				html: false,
+				color: {
+					background: false,
+				},
+				typography: {
+					fontSize: true,
+				},
+		  }
+		: {},
 };
 
 registerBlockType( 'woocommerce/product-title', blockConfig );

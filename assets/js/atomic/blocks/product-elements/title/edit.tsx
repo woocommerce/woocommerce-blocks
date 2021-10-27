@@ -73,7 +73,7 @@ const TitleEdit = ( { attributes, setAttributes }: Props ): JSX.Element => {
 				</PanelBody>
 			</InspectorControls>
 			<Disabled>
-				<Block { ...attributes } style={ blockProps.style } />
+				<Block { ...attributes } />
 			</Disabled>
 		</div>
 	);

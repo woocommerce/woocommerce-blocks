@@ -38,14 +38,14 @@ const TagName = ( {
 /**
  * Product Title Block Component.
  *
+ * @param {Object}  props                  Incoming props.
  * @param {string}  [props.className]       CSS Class name for the component.
  * @param {number}  [props.headingLevel]    Heading level (h1, h2 etc)
  * @param {boolean} [props.showProductLink] Whether or not to display a link to the product page.
  * @param {string}  [props.align]           Title alignment.
  * @param {string}  [props.textColor]       Title color name.
- * @param {string}  [props.customColor]     Custom title color value.
  * @param {string}  [props.fontSize]        Title font size name.
- * @param {number } [props.customFontSize]  Custom font size value.
+ * @param {string}  [props.style]           Title inline style.
  * will be used if this is not provided.
  * @return {*} The component.
  */
@@ -55,9 +55,7 @@ export const Block = ( {
 	showProductLink = true,
 	align,
 	textColor,
-	customColor,
 	fontSize,
-	customFontSize,
 	style,
 }: Props ): JSX.Element => {
 	const { parentClassName } = useInnerBlockLayoutContext();
@@ -66,13 +64,18 @@ export const Block = ( {
 
 	const colorClass = getColorClassName( 'color', textColor );
 	const fontSizeClass = getFontSizeClass( fontSize );
-
 	const titleClasses = classnames( {
-		'has-text-color': textColor || customColor,
-		'has-font-size': fontSize || customFontSize,
+		'has-text-color': textColor || style?.color?.text || style?.color,
+		[ `has-font-size` ]:
+			fontSize || style?.typography?.fontSize || style?.fontSize,
 		[ colorClass ]: colorClass,
 		[ fontSizeClass ]: fontSizeClass,
 	} );
+
+	const titleStyle = {
+		fontSize: style?.fontSize || style?.typography?.fontSize,
+		color: style?.color?.text || style?.color,
+	};
 
 	if ( ! product.id ) {
 		return (
@@ -109,7 +112,6 @@ export const Block = ( {
 				className={ classnames( {
 					[ titleClasses ]: isFeaturePluginBuild(),
 				} ) }
-				style={ style }
 				disabled={ ! showProductLink }
 				name={ product.name }
 				permalink={ product.permalink }
@@ -119,6 +121,7 @@ export const Block = ( {
 						product,
 					} );
 				} }
+				style={ isFeaturePluginBuild() ? titleStyle : {} }
 			/>
 		</TagName>
 	);
