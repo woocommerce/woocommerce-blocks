@@ -18,8 +18,8 @@
 		"./assets/js/middleware/**",
 		"./assets/js/blocks/cart-checkout/checkout/inner-blocks/**/index.tsx",
 		"./assets/js/blocks/cart-checkout/checkout/inner-blocks/register-components.ts",
-		"./assets/js/blocks/cart-checkout/cart-i2/inner-blocks/**/index.tsx",
-		"./assets/js/blocks/cart-checkout/cart-i2/inner-blocks/register-components.ts"
+		"./assets/js/blocks/cart-checkout/cart/inner-blocks/**/index.tsx",
+		"./assets/js/blocks/cart-checkout/cart/inner-blocks/register-components.ts"
 	],
 	"repository": {
 		"type": "git",
@@ -101,11 +101,10 @@
 		"@types/gtag.js": "0.0.7",
 		"@types/jest": "26.0.24",
 		"@types/jquery": "3.5.8",
-		"@types/lodash": "4.14.175",
-		"@types/react": "16.14.17",
+		"@types/lodash": "4.14.176",
+		"@types/react": "16.14.20",
 		"@types/wordpress__block-editor": "2.2.9",
-		"@types/wordpress__blocks": "^9.1.1",
-		"@types/wordpress__compose": "^4.0.0",
+		"@types/wordpress__compose": "4.0.0",
 		"@types/wordpress__data": "4.6.10",
 		"@types/wordpress__data-controls": "1.0.5",
 		"@types/wordpress__deprecated": "2.4.3",

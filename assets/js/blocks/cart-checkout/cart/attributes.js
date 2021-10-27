@@ -3,12 +3,18 @@
  */
 import { getSetting } from '@woocommerce/settings';
 
-const blockAttributes = {
+export const blockName = 'woocommerce/cart';
+export const blockAttributes = {
 	isPreview: {
 		type: 'boolean',
 		default: false,
 		save: false,
 	},
+	hasDarkControls: {
+		type: 'boolean',
+		default: getSetting( 'hasDarkEditorStyleSupport', false ),
+	},
+	// Deprecated - here for v1 migration support
 	isShippingCalculatorEnabled: {
 		type: 'boolean',
 		default: getSetting( 'isShippingCalculatorEnabled', true ),
@@ -17,14 +23,11 @@ const blockAttributes = {
 		type: 'number',
 		default: 0,
 	},
-	hasDarkControls: {
-		type: 'boolean',
-		default: getSetting( 'hasDarkEditorStyleSupport', false ),
-	},
 	showRateAfterTaxName: {
 		type: 'boolean',
 		default: true,
 	},
+	align: {
+		type: 'string',
+	},
 };
-
-export default blockAttributes;
