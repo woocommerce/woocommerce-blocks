@@ -57,6 +57,18 @@ class CartItemSchema extends ProductSchema {
 				'context'     => [ 'view', 'edit' ],
 				'readonly'    => true,
 			],
+			'quantity_min'         => [
+				'description' => __( 'The minimum quantity than can be added to the cart at once.', 'woo-gutenberg-products-block' ),
+				'type'        => 'integer',
+				'context'     => [ 'view', 'edit' ],
+				'readonly'    => true,
+			],
+			'quantity_increment'   => [
+				'description' => __( 'The amount quantity can change with.', 'woo-gutenberg-products-block' ),
+				'type'        => 'integer',
+				'context'     => [ 'view', 'edit' ],
+				'readonly'    => true,
+			],
 			'name'                 => [
 				'description' => __( 'Product name.', 'woo-gutenberg-products-block' ),
 				'type'        => 'string',
@@ -314,6 +326,8 @@ class CartItemSchema extends ProductSchema {
 			'id'                   => $product->get_id(),
 			'quantity'             => wc_stock_amount( $cart_item['quantity'] ),
 			'quantity_limit'       => $this->get_product_quantity_limit( $product ),
+			'quantity_min'         => $this->get_item_quantity_min( $cart_item ),
+			'quantity_increment'   => $this->get_item_quantity_increment( $cart_item ),
 			'name'                 => $this->prepare_html_response( $product->get_title() ),
 			'short_description'    => $this->prepare_html_response( wc_format_content( wp_kses_post( $product->get_short_description() ) ) ),
 			'description'          => $this->prepare_html_response( wc_format_content( wp_kses_post( $product->get_description() ) ) ),
@@ -449,6 +463,38 @@ class CartItemSchema extends ProductSchema {
 		 */
 		$item_data = apply_filters( 'woocommerce_get_item_data', array(), $cart_item );
 		return array_map( [ $this, 'format_item_data_element' ], $item_data );
+	}
+
+	/**
+	 * Return the minimum quantity that's allowed for this item.
+	 *
+	 * @param array $cart_item Cart item array.
+	 * @return number
+	 */
+	protected function get_item_quantity_min( $cart_item ) {
+		/**
+		 * Filters the quantity minimum for a cart item in Store API.
+		 *
+		 * @param array $cart_item Cart item array.
+		 * @return number
+		 */
+		return apply_filters( 'woocommerce_store_api_item_quantity_minimum', 1, $cart_item );
+	}
+
+	/**
+	 * Return the increment quantity that an item is allowed to change with.
+	 *
+	 * @param array $cart_item Cart item array.
+	 * @return number
+	 */
+	protected function get_item_quantity_increment( $cart_item ) {
+		/**
+		 * Filters the quantity increment for a cart item in Store API.
+		 *
+		 * @param array $cart_item Cart item array.
+		 * @return number
+		 */
+		return apply_filters( 'woocommerce_store_api_item_quantity_increment', 1, $cart_item );
 	}
 
 	/**
