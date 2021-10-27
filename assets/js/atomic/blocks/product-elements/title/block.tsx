@@ -38,7 +38,7 @@ const TagName = ( {
 /**
  * Product Title Block Component.
  *
- * @param {Object}  props                  Incoming props.
+ * @param {Object}  props                   Incoming props.
  * @param {string}  [props.className]       CSS Class name for the component.
  * @param {number}  [props.headingLevel]    Heading level (h1, h2 etc)
  * @param {boolean} [props.showProductLink] Whether or not to display a link to the product page.
