@@ -19,14 +19,14 @@ export const useViewSwitcher = (
 	views: View[]
 ): {
 	currentView: string;
-	component: () => JSX.Element;
+	component: JSX.Element;
 } => {
 	const initialView = views[ 0 ];
 	const [ currentView, setCurrentView ] = useState( initialView );
 	const { selectBlock } = useDispatch( 'core/block-editor' );
 	const { getBlock } = select( blockEditorStore );
 
-	const ViewSwitcherComponent = () => (
+	const ViewSwitcherComponent = (
 		<Toolbar>
 			<ToolbarDropdownMenu
 				label={ __( 'Switch view', 'woo-gutenberg-products-block' ) }
@@ -37,6 +37,7 @@ export const useViewSwitcher = (
 				controls={ views.map( ( view ) => ( {
 					...view,
 					title: view.label,
+					isActive: view.view === currentView.view,
 					onClick: () => {
 						setCurrentView( view );
 						selectBlock(
