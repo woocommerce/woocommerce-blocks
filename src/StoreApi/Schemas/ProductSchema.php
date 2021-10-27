@@ -593,9 +593,8 @@ class ProductSchema extends AbstractSchema {
 		/**
 		 * Gets individual variation data from the database, using cache where possible.
 		 */
-		$cache_key     = 'product_' . $product->get_id() . '_variation_meta_data';
-		$cache_group   = 'store_api';
-		$cache_value   = wp_cache_get( $cache_key, $cache_group );
+		$cache_group   = 'product_variation_meta_data';
+		$cache_value   = wp_cache_get( $product->get_id(), $cache_group );
 		$last_modified = get_the_modified_date( 'U', $product->get_id() );
 
 		if ( false === $cache_value || $last_modified !== $cache_value['last_modified'] ) {
@@ -612,7 +611,7 @@ class ProductSchema extends AbstractSchema {
 			// phpcs:enable
 
 			wp_cache_set(
-				$cache_key,
+				$product->get_id(),
 				[
 					'last_modified' => $last_modified,
 					'data'          => $variation_meta_data,
