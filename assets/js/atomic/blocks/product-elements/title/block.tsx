@@ -64,7 +64,7 @@ export const Block = ( {
 
 	const colorClass = getColorClassName( 'color', textColor );
 	const fontSizeClass = getFontSizeClass( fontSize );
-	const titleClasses = classnames( {
+	const titleClasses = classnames( 'wp-block-woocommerce-product-title', {
 		'has-text-color': textColor || style?.color?.text || style?.color,
 		[ `has-font-size` ]:
 			fontSize || style?.typography?.fontSize || style?.fontSize,
