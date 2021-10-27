@@ -1,10 +1,7 @@
 /**
  * External dependencies
  */
-import {
-	withStoreCartApiHydration,
-	withRestApiHydration,
-} from '@woocommerce/block-hocs';
+import { withStoreCartApiHydration } from '@woocommerce/block-hocs';
 import { getValidBlockAttributes } from '@woocommerce/base-utils';
 import { Children, cloneElement, isValidElement } from '@wordpress/element';
 import { useStoreCart } from '@woocommerce/base-context';
@@ -45,7 +42,7 @@ const Wrapper = ( { children } ) => {
 };
 
 renderParentBlock( {
-	Block: withStoreCartApiHydration( withRestApiHydration( Block ) ),
+	Block: withStoreCartApiHydration( Block ),
 	blockName,
 	selector: '.wp-block-woocommerce-cart',
 	getProps,

@@ -1,10 +1,7 @@
 /**
  * External dependencies
  */
-import {
-	withStoreCartApiHydration,
-	withRestApiHydration,
-} from '@woocommerce/block-hocs';
+import { withStoreCartApiHydration } from '@woocommerce/block-hocs';
 
 interface MiniCartBlockInterface {
 	// Signals whether the cart data is outdated. That happens when
@@ -27,9 +24,7 @@ export default (
 	}: MiniCartBlockInterface ): JSX.Element => {
 		const Component = isDataOutdated
 			? OriginalComponent
-			: withStoreCartApiHydration(
-					withRestApiHydration( OriginalComponent )
-			  );
+			: withStoreCartApiHydration( OriginalComponent );
 		return <Component { ...props } />;
 	};
 };
