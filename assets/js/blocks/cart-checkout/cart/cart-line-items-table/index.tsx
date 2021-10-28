@@ -6,15 +6,34 @@ import { __ } from '@wordpress/i18n';
 import { CartResponseItem } from '@woocommerce/type-defs/cart-response';
 import { createRef, useEffect, useRef } from '@wordpress/element';
 import type { RefObject } from 'react';
+import Skeleton from '@woocommerce/base-components/skeleton';
 
 /**
  * Internal dependencies
  */
 import CartLineItemRow from './cart-line-item-row';
 
-const placeholderRows = [ ...Array( 3 ) ].map( ( _x, i ) => (
-	<CartLineItemRow lineItem={ {} } key={ i } />
-) );
+const LoadingSkeleton = ( { count }: { count: number } ): JSX.Element => {
+	return (
+		<>
+			{ [ ...Array( count ) ].map( ( _x, i ) => (
+				<tr key={ i } className="wc-block-cart-items__row">
+					<td className="wc-block-cart-item__image">
+						<Skeleton type="img" />
+					</td>
+					<td className="wc-block-cart-item__product">
+						<Skeleton width="150px" />
+						<Skeleton />
+						<Skeleton height="34px" width="107px" />
+					</td>
+					<td className="wc-block-cart-item__total">
+						<Skeleton />
+					</td>
+				</tr>
+			) ) }
+		</>
+	);
+};
 
 interface CartLineItemsTableProps {
 	lineItems: CartResponseItem[];
@@ -53,21 +72,23 @@ const CartLineItemsTable = ( {
 		}
 	};
 
-	const products = isLoading
-		? placeholderRows
-		: lineItems.map( ( lineItem, i ) => {
-				const nextItemKey =
-					lineItems.length > i + 1 ? lineItems[ i + 1 ].key : null;
-				return (
-					<CartLineItemRow
-						key={ lineItem.key }
-						lineItem={ lineItem }
-						onRemove={ onRemoveRow( nextItemKey ) }
-						ref={ rowRefs.current[ lineItem.key ] }
-						tabIndex={ -1 }
-					/>
-				);
-		  } );
+	const products = isLoading ? (
+		<LoadingSkeleton count={ lineItems.length || 3 } />
+	) : (
+		lineItems.map( ( lineItem, i ) => {
+			const nextItemKey =
+				lineItems.length > i + 1 ? lineItems[ i + 1 ].key : null;
+			return (
+				<CartLineItemRow
+					key={ lineItem.key }
+					lineItem={ lineItem }
+					onRemove={ onRemoveRow( nextItemKey ) }
+					ref={ rowRefs.current[ lineItem.key ] }
+					tabIndex={ -1 }
+				/>
+			);
+		} )
+	);
 
 	return (
 		<table
