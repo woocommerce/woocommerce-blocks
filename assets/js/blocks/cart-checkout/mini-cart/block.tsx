@@ -14,7 +14,6 @@ import {
 	usePaymentMethods,
 } from '@woocommerce/base-context/hooks';
 import Drawer from '@woocommerce/base-components/drawer';
-import { CART_STORE_KEY as storeKey } from '@woocommerce/block-data';
 import {
 	formatPrice,
 	getCurrencyFromPriceResponse,
@@ -29,11 +28,11 @@ import { PaymentMethodDataProvider } from '@woocommerce/base-context';
 /**
  * Internal dependencies
  */
-import CartLineItemsTable from '../cart/full-cart/cart-line-items-table';
+import CartLineItemsTable from '../cart/cart-line-items-table';
 import './style.scss';
 
 interface MiniCartBlockProps {
-	isPlaceholderOpen?: boolean;
+	isInitiallyOpen?: boolean;
 }
 
 const PaymentMethodIconsElement = (): JSX.Element => {
@@ -46,7 +45,7 @@ const PaymentMethodIconsElement = (): JSX.Element => {
 };
 
 const MiniCartBlock = ( {
-	isPlaceholderOpen = false,
+	isInitiallyOpen = false,
 }: MiniCartBlockProps ): JSX.Element => {
 	const {
 		cartItems,
@@ -54,20 +53,16 @@ const MiniCartBlock = ( {
 		cartIsLoading,
 		cartTotals,
 	} = useStoreCart();
-	const [ isOpen, setIsOpen ] = useState< boolean >( isPlaceholderOpen );
+	const [ isOpen, setIsOpen ] = useState< boolean >( isInitiallyOpen );
 	const emptyCartRef = useRef< HTMLDivElement | null >( null );
 	// We already rendered the HTML drawer placeholder, so we want to skip the
 	// slide in animation.
 	const [ skipSlideIn, setSkipSlideIn ] = useState< boolean >(
-		isPlaceholderOpen
+		isInitiallyOpen
 	);
 
 	useEffect( () => {
-		const openMiniCartAndRefreshData = ( e ) => {
-			const eventDetail = e.detail;
-			if ( ! eventDetail || ! eventDetail.preserveCartData ) {
-				dispatch( storeKey ).invalidateResolutionForStore();
-			}
+		const openMiniCart = () => {
 			setSkipSlideIn( false );
 			setIsOpen( true );
 		};
@@ -80,7 +75,7 @@ const MiniCartBlock = ( {
 
 		document.body.addEventListener(
 			'wc-blocks_added_to_cart',
-			openMiniCartAndRefreshData
+			openMiniCart
 		);
 
 		return () => {
@@ -88,7 +83,7 @@ const MiniCartBlock = ( {
 
 			document.body.removeEventListener(
 				'wc-blocks_added_to_cart',
-				openMiniCartAndRefreshData
+				openMiniCart
 			);
 		};
 	}, [] );
