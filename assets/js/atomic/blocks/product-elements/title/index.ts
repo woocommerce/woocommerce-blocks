@@ -37,7 +37,7 @@ const blockConfig: BlockConfiguration = {
 					fontSize: true,
 				},
 		  }
-		: {},
+		: sharedConfig.supports,
 };
 
 registerBlockType( 'woocommerce/product-title', blockConfig );
