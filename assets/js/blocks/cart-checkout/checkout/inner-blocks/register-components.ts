@@ -24,15 +24,17 @@ import checkoutShippingAddressMetadata from './checkout-shipping-address-block/b
 import checkoutShippingMethodsMetadata from './checkout-shipping-methods-block/block.json';
 import checkoutTermsMetadata from './checkout-terms-block/block.json';
 import checkoutTotalsMetadata from './checkout-totals-block/block.json';
+import checkoutFieldsComponent from './checkout-fields-block/frontend';
+import checkoutContactInformationComponent from './checkout-contact-information-block/frontend';
+import checkoutShippingAddressComponent from './checkout-shipping-address-block/frontend';
+import checkoutActionsComponent from './checkout-actions-block/frontend';
+import checkoutOrderSummaryComponent from './checkout-order-summary-block/block';
+import checkoutTotalsComponent from './checkout-totals-block/frontend';
 
 // @todo When forcing all blocks at once, they will append based on the order they are registered. Introduce formal sorting param.
 registerCheckoutBlock( {
 	metadata: checkoutFieldsMetadata,
-	component: lazy( () =>
-		import(
-			/* webpackChunkName: "checkout-blocks/fields" */ './checkout-fields-block/frontend'
-		)
-	),
+	component: checkoutFieldsComponent,
 } );
 
 registerCheckoutBlock( {
@@ -46,20 +48,12 @@ registerCheckoutBlock( {
 
 registerCheckoutBlock( {
 	metadata: checkoutContactInformationMetadata,
-	component: lazy( () =>
-		import(
-			/* webpackChunkName: "checkout-blocks/contact-information" */ './checkout-contact-information-block/frontend'
-		)
-	),
+	component: checkoutContactInformationComponent,
 } );
 
 registerCheckoutBlock( {
 	metadata: checkoutShippingAddressMetadata,
-	component: lazy( () =>
-		import(
-			/* webpackChunkName: "checkout-blocks/shipping-address" */ './checkout-shipping-address-block/frontend'
-		)
-	),
+	component: checkoutShippingAddressComponent,
 } );
 
 registerCheckoutBlock( {
@@ -109,27 +103,15 @@ registerCheckoutBlock( {
 
 registerCheckoutBlock( {
 	metadata: checkoutActionsMetadata,
-	component: lazy( () =>
-		import(
-			/* webpackChunkName: "checkout-blocks/actions" */ './checkout-actions-block/frontend'
-		)
-	),
+	component: checkoutActionsComponent,
 } );
 
 registerCheckoutBlock( {
 	metadata: checkoutTotalsMetadata,
-	component: lazy( () =>
-		import(
-			/* webpackChunkName: "checkout-blocks/totals" */ './checkout-totals-block/frontend'
-		)
-	),
+	component: checkoutTotalsComponent,
 } );
 
 registerCheckoutBlock( {
 	metadata: checkoutOrderSummaryMetadata,
-	component: lazy( () =>
-		import(
-			/* webpackChunkName: "checkout-blocks/order-summary" */ './checkout-order-summary-block/block'
-		)
-	),
+	component: checkoutOrderSummaryComponent,
 } );
