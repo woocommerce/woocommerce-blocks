@@ -26,7 +26,7 @@ export enum STATUS {
 	AFTER_PROCESSING = 'after_processing',
 }
 
-const serverCheckoutData = getSetting( 'checkoutData', {} ) as Record<
+const preloadedCheckoutData = getSetting( 'checkoutData', {} ) as Record<
 	string,
 	unknown
 >;
@@ -34,7 +34,7 @@ const serverCheckoutData = getSetting( 'checkoutData', {} ) as Record<
 const checkoutData = {
 	order_id: 0,
 	customer_id: 0,
-	...( serverCheckoutData || {} ),
+	...( preloadedCheckoutData || {} ),
 };
 
 export const DEFAULT_CHECKOUT_STATE_DATA: CheckoutStateContextType = {

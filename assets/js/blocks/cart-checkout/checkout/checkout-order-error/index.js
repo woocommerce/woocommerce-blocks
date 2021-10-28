@@ -27,7 +27,7 @@ const cartItemErrorCodes = [
 	GENERIC_CART_ITEM_ERROR,
 ];
 
-const serverCheckoutData = getSetting( 'checkoutData', {} );
+const preloadedCheckoutData = getSetting( 'checkoutData', {} );
 
 /**
  * When an order was not created for the checkout, for example, when an item
@@ -40,7 +40,7 @@ const CheckoutOrderError = () => {
 	const checkoutData = {
 		code: '',
 		message: '',
-		...( serverCheckoutData || {} ),
+		...( preloadedCheckoutData || {} ),
 	};
 
 	const errorData = {
