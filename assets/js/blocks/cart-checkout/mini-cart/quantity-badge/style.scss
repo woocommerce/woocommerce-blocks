@@ -1,15 +1,16 @@
 .wc-block-mini-cart__quantity-badge {
 	align-items: center;
 	display: flex;
-	margin-left: 10px;
-	margin-right: 10px;
 }
 
 .wc-block-mini-cart__badge {
 	align-items: center;
-	background: $white;
-	border-radius: 999px;
+	background: #fff;
 	border: 2px solid;
+	border-radius: 1em;
+	box-shadow: 0 0 0 2px #fff;
+	box-sizing: border-box;
+	color: #000;
 	display: flex;
 	font-size: 0.875em;
 	font-weight: 600;
@@ -27,4 +28,5 @@
 	display: block;
 	height: em(24px);
 	width: em(24px);
+	stroke: currentColor;
 }

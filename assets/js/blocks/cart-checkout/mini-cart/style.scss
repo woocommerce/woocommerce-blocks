@@ -21,19 +21,11 @@
 	display: none;
 }
 
-.wc-block-mini-cart__quantity-badge {
-	margin-left: auto;
-}
-
 @media screen and (min-width: 768px) {
 	.wc-block-mini-cart__amount {
 		display: initial;
 		font-weight: 600;
 		margin-right: $gap-smaller;
-	}
-
-	.wc-block-mini-cart__quantity-badge {
-		margin-right: 0;
 	}
 }
 
