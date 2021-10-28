@@ -878,11 +878,11 @@
             }
         },
         {
-            "name": "woocommerce_store_api_item_quantity_increment",
+            "name": "woocommerce_store_api_item_quantity_minimum",
             "file": "StoreApi/Schemas/CartItemSchema.php",
             "type": "filter",
             "doc": {
-                "description": "Filters the quantity increment for a cart item in Store API.",
+                "description": "Filters the quantity minimum for a cart item in Store API.",
                 "long_description": "",
                 "tags": [
                     {
@@ -905,11 +905,11 @@
             }
         },
         {
-            "name": "woocommerce_store_api_item_quantity_minimum",
+            "name": "woocommerce_store_api_item_quantity_step",
             "file": "StoreApi/Schemas/CartItemSchema.php",
             "type": "filter",
             "doc": {
-                "description": "Filters the quantity minimum for a cart item in Store API.",
+                "description": "Filters the quantity increment for a cart item in Store API.",
                 "long_description": "",
                 "tags": [
                     {

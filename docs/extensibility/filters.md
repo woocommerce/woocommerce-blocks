@@ -32,8 +32,8 @@
  - [woocommerce_shipping_package_name](#woocommerce_shipping_package_name)
  - [woocommerce_show_page_title](#woocommerce_show_page_title)
  - [woocommerce_store_api_disable_nonce_check](#woocommerce_store_api_disable_nonce_check)
- - [woocommerce_store_api_item_quantity_increment](#woocommerce_store_api_item_quantity_increment)
  - [woocommerce_store_api_item_quantity_minimum](#woocommerce_store_api_item_quantity_minimum)
+ - [woocommerce_store_api_item_quantity_step](#woocommerce_store_api_item_quantity_step)
  - [woocommerce_store_api_product_quantity_limit](#woocommerce_store_api_product_quantity_limit)
  - [woocommerce_variation_option_name](#woocommerce_variation_option_name)
 
@@ -783,13 +783,13 @@ File: [StoreApi/Routes/AbstractCartRoute.php](../src/StoreApi/Routes/AbstractCar
 
 ---
 
-## woocommerce_store_api_item_quantity_increment
+## woocommerce_store_api_item_quantity_minimum
 
 
-Filters the quantity increment for a cart item in Store API.
+Filters the quantity minimum for a cart item in Store API.
 
 ```php
-apply_filters( 'woocommerce_store_api_item_quantity_increment', array $cart_item )
+apply_filters( 'woocommerce_store_api_item_quantity_minimum', array $cart_item )
 ```
 
 ### Parameters
@@ -810,13 +810,13 @@ File: [StoreApi/Schemas/CartItemSchema.php](../src/StoreApi/Schemas/CartItemSche
 
 ---
 
-## woocommerce_store_api_item_quantity_minimum
+## woocommerce_store_api_item_quantity_step
 
 
-Filters the quantity minimum for a cart item in Store API.
+Filters the quantity increment for a cart item in Store API.
 
 ```php
-apply_filters( 'woocommerce_store_api_item_quantity_minimum', array $cart_item )
+apply_filters( 'woocommerce_store_api_item_quantity_step', array $cart_item )
 ```
 
 ### Parameters
