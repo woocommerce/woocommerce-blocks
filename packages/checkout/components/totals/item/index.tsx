@@ -6,6 +6,7 @@ import { isValidElement } from '@wordpress/element';
 import FormattedMonetaryAmount from '@woocommerce/base-components/formatted-monetary-amount';
 import type { ReactElement, ReactNode } from 'react';
 import type { Currency } from '@woocommerce/price-format';
+import Skeleton from '@woocommerce/base-components/skeleton';
 
 /**
  * Internal dependencies
@@ -14,10 +15,10 @@ import './style.scss';
 
 interface TotalsItemProps {
 	className?: string;
-	currency: Currency;
+	currency?: Currency;
 	label: string;
 	// Value may be a number, or react node. Numbers are passed to FormattedMonetaryAmount.
-	value: number | ReactNode;
+	value?: number | ReactNode;
 	description?: ReactNode;
 }
 
@@ -59,10 +60,16 @@ const TotalsItem = ( {
 			<span className="wc-block-components-totals-item__label">
 				{ label }
 			</span>
-			<TotalsItemValue value={ value } currency={ currency } />
-			<div className="wc-block-components-totals-item__description">
-				{ description }
-			</div>
+			{ value === undefined ? (
+				<Skeleton width="60px" inline={ true } />
+			) : (
+				<TotalsItemValue value={ value } currency={ currency } />
+			) }
+			{ description && (
+				<div className="wc-block-components-totals-item__description">
+					{ description }
+				</div>
+			) }
 		</div>
 	);
 };

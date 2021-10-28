@@ -9,6 +9,7 @@ import {
 	TotalsShipping,
 } from '@woocommerce/base-components/cart-checkout';
 import {
+	TotalsItem,
 	Subtotal,
 	TotalsFees,
 	TotalsTaxes,
@@ -24,6 +25,30 @@ import {
 import { getSetting } from '@woocommerce/settings';
 import Title from '@woocommerce/base-components/title';
 
+const TotalsHeading = (): JSX.Element => {
+	return (
+		<Title headingLevel="2" className="wc-block-cart__totals-title">
+			{ __( 'Cart totals', 'woo-gutenberg-products-block' ) }
+		</Title>
+	);
+};
+
+const TotalsCoupons = (): JSX.Element => {
+	const { applyCoupon, isApplyingCoupon } = useStoreCartCoupons();
+
+	if ( ! getSetting( 'couponsEnabled', true ) ) {
+		return null;
+	}
+	return (
+		<TotalsWrapper>
+			<TotalsCoupon
+				onSubmit={ applyCoupon }
+				isLoading={ isApplyingCoupon }
+			/>
+		</TotalsWrapper>
+	);
+};
+
 /**
  * Internal dependencies
  */
@@ -37,12 +62,15 @@ const Block = ( {
 	showRateAfterTaxName: boolean;
 	isShippingCalculatorEnabled: boolean;
 } ): JSX.Element => {
-	const { cartFees, cartTotals, cartNeedsShipping } = useStoreCart();
+	const {
+		cartFees,
+		cartTotals,
+		cartNeedsShipping,
+		cartIsLoading,
+	} = useStoreCart();
 
 	const {
-		applyCoupon,
 		removeCoupon,
-		isApplyingCoupon,
 		isRemovingCoupon,
 		appliedCoupons,
 	} = useStoreCartCoupons();
@@ -63,11 +91,40 @@ const Block = ( {
 		cart,
 	};
 
+	if ( cartIsLoading ) {
+		return (
+			<div className={ className }>
+				<TotalsHeading />
+				<TotalsWrapper>
+					<TotalsItem
+						label={ __(
+							'Subtotal',
+							'woo-gutenberg-products-block'
+						) }
+					/>
+				</TotalsWrapper>
+				<TotalsCoupons />
+				<TotalsWrapper>
+					<TotalsItem
+						label={ __(
+							'Shipping',
+							'woo-gutenberg-products-block'
+						) }
+					/>
+				</TotalsWrapper>
+				<TotalsWrapper>
+					<TotalsItem
+						className="wc-block-components-totals-footer-item"
+						label={ __( 'Total', 'woo-gutenberg-products-block' ) }
+					/>
+				</TotalsWrapper>
+			</div>
+		);
+	}
+
 	return (
 		<div className={ className }>
-			<Title headingLevel="2" className="wc-block-cart__totals-title">
-				{ __( 'Cart totals', 'woo-gutenberg-products-block' ) }
-			</Title>
+			<TotalsHeading />
 			<TotalsWrapper>
 				<Subtotal currency={ totalsCurrency } values={ cartTotals } />
 				<TotalsFees currency={ totalsCurrency } cartFees={ cartFees } />
@@ -79,14 +136,7 @@ const Block = ( {
 					values={ cartTotals }
 				/>
 			</TotalsWrapper>
-			{ getSetting( 'couponsEnabled', true ) && (
-				<TotalsWrapper>
-					<TotalsCoupon
-						onSubmit={ applyCoupon }
-						isLoading={ isApplyingCoupon }
-					/>
-				</TotalsWrapper>
-			) }
+			<TotalsCoupons />
 			<ExperimentalDiscountsMeta.Slot { ...discountsSlotFillProps } />
 			{ cartNeedsShipping && (
 				<TotalsWrapper>
@@ -114,7 +164,6 @@ const Block = ( {
 					values={ cartTotals }
 				/>
 			</TotalsWrapper>
-
 			<ExperimentalOrderMeta.Slot { ...slotFillProps } />
 		</div>
 	);
