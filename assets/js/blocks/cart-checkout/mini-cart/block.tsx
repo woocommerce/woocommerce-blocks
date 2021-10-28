@@ -4,7 +4,6 @@
 import classNames from 'classnames';
 import { __, _n, sprintf } from '@wordpress/i18n';
 import { useState, useEffect, useRef } from '@wordpress/element';
-import { dispatch } from '@wordpress/data';
 import {
 	translateJQueryEventToNative,
 	getIconsFromPaymentMethods,
