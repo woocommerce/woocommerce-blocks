@@ -2,9 +2,9 @@
  * External dependencies
  */
 import { registerExperimentalBlockType } from '@woocommerce/block-settings';
-import { __ } from '@wordpress/i18n';
 import { useBlockProps } from '@wordpress/block-editor';
-import { Placeholder } from 'wordpress-components';
+import { Placeholder } from '@wordpress/components';
+import { __, sprintf } from '@wordpress/i18n';
 
 interface Props {
 	attributes: {
@@ -17,7 +17,14 @@ const Edit = ( { attributes }: Props ) => {
 	return (
 		<div { ...blockProps }>
 			<Placeholder
-				label={ `Wireframe template for ${ attributes.template } will be rendered here` }
+				label={ sprintf(
+					/* translators: %s is the template name */
+					__(
+						'Wireframe template for %s will be rendered here.',
+						'woo-gutenberg-products-block'
+					),
+					attributes.template
+				) }
 			/>
 		</div>
 	);
