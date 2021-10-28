@@ -59,6 +59,12 @@ registerExperimentalBlockType( 'woocommerce/legacy-template', {
 			type: 'string',
 			default: 'any',
 		},
+		lock: {
+			type: 'object',
+			default: {
+				remove: true,
+			},
+		},
 	},
 	edit: Edit,
 	save: () => null,
