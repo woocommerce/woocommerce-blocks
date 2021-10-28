@@ -421,19 +421,16 @@ class Checkout extends AbstractCartRoute {
 		 *
 		 * @param \WC_Order $order Order object.
 		 *
-		 * @deprecated Deprecated since version x.x.x, use woocommerce_blocks_checkout_update_order_meta instead.
+		 * @deprecated 6.3.0 Use woocommerce_blocks_checkout_update_order_meta instead.
 		 */
 		do_action_deprecated(
 			'__experimental_woocommerce_blocks_checkout_update_order_meta',
 			array(
 				$this->order,
 			),
-			'x.x.x',
+			'6.3.0',
 			'woocommerce_blocks_checkout_update_order_meta',
-			sprintf(
-				'This action was deprecated in WooCommerce Blocks version %s. Please use woocommerce_blocks_checkout_update_order_meta instead.',
-				'x.x.x'
-			)
+			'This action was deprecated in WooCommerce Blocks version 6.3.0. Please use woocommerce_blocks_checkout_update_order_meta instead.'
 		);
 
 		/**
