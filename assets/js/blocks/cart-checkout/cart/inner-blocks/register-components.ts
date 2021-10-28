@@ -21,77 +21,41 @@ import cartOrderSummaryMetadata from './cart-order-summary-block/block.json';
 import cartTotalsMetadata from './cart-totals-block/block.json';
 import cartProceedToCheckoutMetadata from './proceed-to-checkout-block/block.json';
 import cartAcceptedPaymentMethodsMetadata from './cart-accepted-payment-methods-block/block.json';
-
-registerCheckoutBlock( {
-	metadata: filledCartMetadata,
-	component: lazy( () =>
-		import(
-			/* webpackChunkName: "cart-blocks/filled-cart" */ './filled-cart-block/frontend'
-		)
-	),
-} );
+import emptyCartComponent from './empty-cart-block/frontend';
+import filledCartComponent from './filled-cart-block/frontend';
+import cartItemsComponent from './cart-items-block/frontend';
+import cartLineItemsComponent from './cart-line-items-block/block';
+import cartTotalsComponent from './cart-totals-block/frontend';
+import cartOrderSummaryComponent from './cart-order-summary-block/frontend';
 
 registerCheckoutBlock( {
 	metadata: emptyCartMetadata,
-	component: lazy( () =>
-		import(
-			/* webpackChunkName: "cart-blocks/empty-cart" */ './empty-cart-block/frontend'
-		)
-	),
+	component: emptyCartComponent,
 } );
 
 registerCheckoutBlock( {
 	metadata: filledCartMetadata,
-	component: lazy( () =>
-		import(
-			/* webpackChunkName: "cart-blocks/filled-cart" */ './filled-cart-block/frontend'
-		)
-	),
-} );
-
-registerCheckoutBlock( {
-	metadata: emptyCartMetadata,
-	component: lazy( () =>
-		import(
-			/* webpackChunkName: "cart-blocks/empty-cart" */ './empty-cart-block/frontend'
-		)
-	),
+	component: filledCartComponent,
 } );
 
 registerCheckoutBlock( {
 	metadata: cartItemsMetadata,
-	component: lazy( () =>
-		import(
-			/* webpackChunkName: "cart-blocks/items" */ './cart-items-block/frontend'
-		)
-	),
+	component: cartItemsComponent,
 } );
 
 registerCheckoutBlock( {
 	metadata: cartLineItemsMetadata,
-	component: lazy( () =>
-		import(
-			/* webpackChunkName: "cart-blocks/line-items" */ './cart-line-items-block/block'
-		)
-	),
+	component: cartLineItemsComponent,
 } );
 
 registerCheckoutBlock( {
 	metadata: cartTotalsMetadata,
-	component: lazy( () =>
-		import(
-			/* webpackChunkName: "cart-blocks/totals" */ './cart-totals-block/frontend'
-		)
-	),
+	component: cartTotalsComponent,
 } );
 
 registerCheckoutBlock( {
 	metadata: cartOrderSummaryMetadata,
-	component: lazy( () =>
-		import(
-			/* webpackChunkName: "cart-blocks/order-summary" */ './cart-order-summary-block/frontend'
-		)
-	),
+	component: cartOrderSummaryComponent,
 } );
 
 registerCheckoutBlock( {
