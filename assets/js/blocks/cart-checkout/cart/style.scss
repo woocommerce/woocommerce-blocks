@@ -85,60 +85,6 @@ table.wc-block-cart-items {
 	}
 }
 
-// Loading placeholder state.
-.wc-block-cart--is-loading,
-.wc-block-mini-cart__drawer.is-loading {
-	th span,
-	h2 span {
-		@include placeholder();
-		@include force-content();
-		min-width: 84px;
-		display: inline-block;
-	}
-	h2 span {
-		min-width: 33%;
-	}
-	.wc-block-components-product-price,
-	.wc-block-components-product-metadata,
-	.wc-block-components-quantity-selector {
-		@include placeholder();
-	}
-	.wc-block-components-product-name {
-		@include placeholder();
-		@include force-content();
-		min-width: 84px;
-		display: inline-block;
-	}
-	.wc-block-components-product-metadata {
-		margin-top: 0.25em;
-		min-width: 8em;
-	}
-	.wc-block-cart-item__remove-link {
-		visibility: hidden;
-	}
-	.wc-block-cart-item__image > a {
-		@include placeholder();
-		display: block;
-	}
-	.wc-block-components-product-price {
-		@include force-content();
-		max-width: 3em;
-		display: block;
-		margin-top: 0.25em;
-	}
-	.wc-block-cart__sidebar .components-card {
-		@include placeholder();
-		@include force-content();
-		min-height: 460px;
-	}
-}
-.wc-block-components-sidebar-layout.wc-block-cart--skeleton {
-	display: none;
-}
-.is-loading + .wc-block-components-sidebar-layout.wc-block-cart--skeleton {
-	display: flex;
-}
-
 .wc-block-cart-item__total-price-and-sale-badge-wrapper {
 	display: flex;
 	flex-direction: column;
@@ -267,13 +213,62 @@ table.wc-block-cart-items {
 		}
 	}
 
-	.wc-block-cart__payment-options {
-		padding: $gap 0 0;
+	.wp-block-woocommerce-cart-order-summary-block {
+		padding: 0 0 $gap;
 	}
 }
 
+
+// Loading placeholder state.
+.wc-block-mini-cart__drawer.is-loading {
+	th span,
+	h2 span {
+		@include placeholder();
+		@include force-content();
+		min-width: 84px;
+		display: inline-block;
+	}
+	h2 span {
+		min-width: 33%;
+	}
+	.wc-block-components-product-price,
+	.wc-block-components-product-metadata,
+	.wc-block-components-quantity-selector {
+		@include placeholder();
+	}
+	.wc-block-components-product-name {
+		@include placeholder();
+		@include force-content();
+		min-width: 84px;
+		display: inline-block;
+	}
+	.wc-block-components-product-metadata {
+		margin-top: 0.25em;
+		min-width: 8em;
+	}
+	.wc-block-cart-item__remove-link {
+		visibility: hidden;
+	}
+	.wc-block-cart-item__image > a {
+		@include placeholder();
+		display: block;
+	}
+	.wc-block-components-product-price {
+		@include force-content();
+		max-width: 3em;
+		display: block;
+		margin-top: 0.25em;
+	}
+	.wc-block-cart__sidebar .components-card {
+		@include placeholder();
+		@include force-content();
+		min-height: 460px;
+	}
+}
 .wp-block-woocommerce-cart.is-loading {
-	.wp-block-woocommerce-empty-cart-block {
+	.wp-block-woocommerce-empty-cart-block,
+	.wp-block-woocommerce-cart-express-payment-block,
+	.wp-block-woocommerce-cart-accepted-payment-methods-block {
 		display: none;
 	}
 	.wp-block-woocommerce-filled-cart-block {
@@ -282,7 +277,6 @@ table.wc-block-cart-items {
 		margin: 0 auto $gap;
 		position: relative;
 	}
-
 	.wp-block-woocommerce-cart-items-block {
 		box-sizing: border-box;
 		margin: 0;
@@ -290,13 +284,11 @@ table.wc-block-cart-items {
 		width: 65%;
 		min-height: 10em;
 	}
-
 	.wp-block-woocommerce-cart-line-items-block {
 		min-height: 15em;
 		display: block;
 		@include placeholder();
 	}
-
 	.wp-block-woocommerce-cart-totals-block {
 		box-sizing: border-box;
 		margin: 0;
@@ -304,17 +296,13 @@ table.wc-block-cart-items {
 		width: 35%;
 		min-height: 12em;
 	}
-
 	.wp-block-woocommerce-cart-order-summary-block,
-	.wp-block-woocommerce-cart-express-payment-block,
-	.wp-block-woocommerce-proceed-to-checkout-block,
-	.wp-block-woocommerce-cart-accepted-payment-methods-block {
+	.wp-block-woocommerce-proceed-to-checkout-block {
 		min-height: 3em;
 		display: block;
 		@include placeholder();
 		margin: 0 0 1em 0;
 	}
-
 	.wp-block-woocommerce-cart-order-summary-block {
 		height: 20em;
 	}
@@ -329,12 +317,10 @@ table.wc-block-cart-items {
 			flex-direction: column;
 			margin: 0 auto $gap;
 		}
-
 		.wp-block-woocommerce-cart-items-block {
 			padding: 0;
 			width: 100%;
 		}
-
 		.wp-block-woocommerce-cart-totals-block {
 			padding: 0;
 			width: 100%;
