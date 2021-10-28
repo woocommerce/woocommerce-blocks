@@ -1,0 +1,4 @@
+.loading-skeleton {
+	@include placeholder();
+	display: inline-flex !important;
+}
