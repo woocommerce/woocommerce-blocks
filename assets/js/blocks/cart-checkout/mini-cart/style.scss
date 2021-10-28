@@ -9,7 +9,7 @@
 	border: none;
 	display: flex;
 	font-weight: 400;
-	padding-right: 0;
+	padding: em($gap-small) em($gap-smaller);
 
 	&:hover {
 		background: transparent;

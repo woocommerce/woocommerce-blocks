@@ -242,8 +242,8 @@ class MiniCart extends AbstractBlock {
 		</svg>';
 		$button_html = '<span class="wc-block-mini-cart__amount">' . wp_strip_all_tags( wc_price( $cart_contents_total ) ) . '</span>
 		<span class="wc-block-mini-cart__quantity-badge">
-			<span class="wc-block-mini-cart__badge">' . $cart_contents_count . '</span>
 			' . $icon . '
+			<span class="wc-block-mini-cart__badge">' . $cart_contents_count . '</span>
 		</span>';
 
 		if ( is_cart() || is_checkout() ) {
