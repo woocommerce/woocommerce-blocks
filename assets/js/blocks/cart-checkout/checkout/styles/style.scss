@@ -11,6 +11,7 @@
 	flex-wrap: wrap;
 	margin: 0 auto $gap;
 	position: relative;
+
 	.wp-block-woocommerce-checkout-totals-block {
 		width: 35%;
 		padding-left: percentage(math.div($gap-large, 1060px));
@@ -19,42 +20,42 @@
 		width: 65%;
 		padding-right: percentage(math.div($gap-largest, 1060px)); // ~1060px is the default width of the content area in Storefront.
 	}
+
 	.wp-block-woocommerce-checkout-totals-block,
 	.wp-block-woocommerce-checkout-fields-block {
 		box-sizing: border-box;
 		margin: 0;
+		display: block;
 
 		> div {
-			@include placeholder();
-			margin: 0 0 1.5em 0;
 			display: none;
 		}
-		.wp-block-woocommerce-checkout-contact-information-block,
-		.wp-block-woocommerce-checkout-payment-block {
+
+		> [class^="wp-block-"] {
+			@include placeholder();
+			@include force-content();
+			margin: 0 0 1em 0;
+			display: none;
+		}
+
+		> .wp-block-woocommerce-checkout-contact-information-block,
+		> .wp-block-woocommerce-checkout-payment-block {
 			min-height: 10em;
 			display: block;
 		}
-		.wp-block-woocommerce-checkout-shipping-address-block {
+		> .wp-block-woocommerce-checkout-shipping-address-block {
 			min-height: 24em;
 			display: block;
 		}
-		.wp-block-woocommerce-checkout-actions-block {
+		> .wp-block-woocommerce-checkout-actions-block {
 			width: 50%;
 			min-height: 4em;
 			margin-left: 50%;
 			display: block;
 		}
-		.wp-block-woocommerce-checkout-order-summary-block {
+		> .wp-block-woocommerce-checkout-order-summary-block {
 			min-height: 47em;
 			display: block;
-		}
-		.wc-block-components-panel > h2 {
-			@include font-size(regular);
-			@include reset-box();
-			@include reset-typography();
-			.wc-block-components-panel__button {
-				font-weight: 400;
-			}
 		}
 		.wc-block-components-totals-item,
 		.wc-block-components-panel {
