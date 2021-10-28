@@ -71,6 +71,8 @@ const CartLineItemRow = forwardRef< HTMLTableRowElement, CartLineItemRowProps >(
 			low_stock_remaining: lowStockRemaining = null,
 			show_backorder_badge: showBackorderBadge = false,
 			quantity_limit: quantityLimit = 99,
+			quantity_min: quantityMin = 1,
+			quantity_step: quantityStep = 1,
 			permalink = '',
 			images = [],
 			variation = [],
@@ -282,6 +284,8 @@ const CartLineItemRow = forwardRef< HTMLTableRowElement, CartLineItemRowProps >(
 							disabled={ isPendingDelete }
 							quantity={ quantity }
 							maximum={ quantityLimit }
+							minimum={ quantityMin }
+							step={ quantityStep }
 							onChange={ ( newQuantity ) => {
 								setItemQuantity( newQuantity );
 								dispatchStoreEvent( 'cart-set-item-quantity', {

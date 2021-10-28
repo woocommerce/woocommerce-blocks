@@ -327,7 +327,7 @@ class CartItemSchema extends ProductSchema {
 			'quantity'             => wc_stock_amount( $cart_item['quantity'] ),
 			'quantity_limit'       => $this->get_product_quantity_limit( $product ),
 			'quantity_min'         => $this->get_item_quantity_min( $cart_item ),
-			'quantity_increment'   => $this->get_item_quantity_increment( $cart_item ),
+			'quantity_step'        => $this->get_item_quantity_step( $cart_item ),
 			'name'                 => $this->prepare_html_response( $product->get_title() ),
 			'short_description'    => $this->prepare_html_response( wc_format_content( wp_kses_post( $product->get_short_description() ) ) ),
 			'description'          => $this->prepare_html_response( wc_format_content( wp_kses_post( $product->get_description() ) ) ),
@@ -487,14 +487,14 @@ class CartItemSchema extends ProductSchema {
 	 * @param array $cart_item Cart item array.
 	 * @return number
 	 */
-	protected function get_item_quantity_increment( $cart_item ) {
+	protected function get_item_quantity_step( $cart_item ) {
 		/**
 		 * Filters the quantity increment for a cart item in Store API.
 		 *
 		 * @param array $cart_item Cart item array.
 		 * @return number
 		 */
-		return apply_filters( 'woocommerce_store_api_item_quantity_increment', 1, $cart_item );
+		return apply_filters( 'woocommerce_store_api_item_quantity_step', 1, $cart_item );
 	}
 
 	/**

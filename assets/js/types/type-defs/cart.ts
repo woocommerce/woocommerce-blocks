@@ -118,6 +118,8 @@ export interface CartItem {
 	quantity: number;
 	catalog_visibility: CatalogVisibility;
 	quantity_limit: number;
+	quantity_min: number;
+	quantity_step: number;
 	name: string;
 	summary: string;
 	short_description: string;
