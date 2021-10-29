@@ -31,12 +31,12 @@ const Edit = ( { attributes }: Props ) => {
 };
 
 registerExperimentalBlockType( 'woocommerce/legacy-template', {
-	title: __( 'Legacy Template', 'woo-gutenberg-products-block' ),
+	title: __( 'WooCommerce Legacy Template', 'woo-gutenberg-products-block' ),
 	category: 'woocommerce',
 	apiVersion: 2,
 	keywords: [ __( 'WooCommerce', 'woo-gutenberg-products-block' ) ],
 	description: __(
-		'Renders legacy PHP templates.',
+		'Renders legacy WooCommerce PHP templates.',
 		'woo-gutenberg-products-block'
 	),
 	supports: {
