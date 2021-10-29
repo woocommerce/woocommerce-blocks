@@ -125,7 +125,7 @@ class BlockTemplatesController {
 	 * Renders the default block template from Woo Blocks if no theme templates exist.
 	 */
 	public function render_block_template() {
-		if ( is_embed() || ! gutenberg_supports_block_templates() ) {
+		if ( is_embed() || function_exists( 'gutenberg_supports_block_templates' ) && ! gutenberg_supports_block_templates() ) {
 			return;
 		}
 
