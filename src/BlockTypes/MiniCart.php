@@ -161,6 +161,11 @@ class MiniCart extends AbstractBlock {
 	 */
 	protected function append_script_and_deps_src( $script ) {
 		$wp_scripts = wp_scripts();
+
+		if ( ! $script ) {
+			return;
+		}
+
 		// This script and its dependencies have already been appended.
 		if ( array_key_exists( $script->handle, $this->scripts_to_lazy_load ) ) {
 			return;
@@ -195,15 +200,17 @@ class MiniCart extends AbstractBlock {
 	 * @return string Rendered block type output.
 	 */
 	protected function render( $attributes, $content ) {
-		return $content . $this->get_markup();
+		return $content . $this->get_markup( $attributes );
 	}
 
 	/**
 	 * Render the markup for the Mini Cart block.
 	 *
+	 * @param array $attributes Block attributes.
+	 *
 	 * @return string The HTML markup.
 	 */
-	protected function get_markup() {
+	protected function get_markup( $attributes ) {
 		if ( is_admin() || WC()->is_rest_api_request() ) {
 			// In the editor we will display the placeholder, so no need to load
 			// real cart data and to print the markup.
@@ -217,6 +224,21 @@ class MiniCart extends AbstractBlock {
 
 		if ( $cart->display_prices_including_tax() ) {
 			$cart_contents_total += $cart->get_subtotal_tax();
+		}
+
+		$classes = 'wc-block-mini-cart wp-block-woocommerce-mini-cart';
+
+		if ( ! empty( $attributes['textColor'] ) ) {
+			$classes .= sprintf(
+				' has-%s-color',
+				esc_attr( $attributes['textColor'] )
+			);
+		}
+
+		if ( ! empty( $attributes['style']['color']['text'] ) ) {
+			$style = 'color: ' . esc_attr( $attributes['style']['color']['text'] );
+		} else {
+			$style = '';
 		}
 
 		$aria_label = sprintf(
@@ -259,12 +281,12 @@ class MiniCart extends AbstractBlock {
 		</span>';
 
 		if ( is_cart() || is_checkout() ) {
-			return '<div class="wc-block-mini-cart">
+			return '<div class="' . $classes . '" style="' . $style . '">
 				<button class="wc-block-mini-cart__button" aria-label="' . $aria_label . '" disabled>' . $button_html . '</button>
 			</div>';
 		}
 
-		return '<div class="wc-block-mini-cart">
+		return '<div class="' . $classes . '" style="' . $style . '">
 			<button class="wc-block-mini-cart__button" aria-label="' . $aria_label . '">' . $button_html . '</button>
 			<div class="wc-block-mini-cart__drawer is-loading is-mobile wc-block-components-drawer__screen-overlay wc-block-components-drawer__screen-overlay--is-hidden" aria-hidden="true">
 				<div class="components-modal__frame wc-block-components-drawer">

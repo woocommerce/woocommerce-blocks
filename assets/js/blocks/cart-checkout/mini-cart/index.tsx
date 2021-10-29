@@ -26,6 +26,9 @@ const settings = {
 	supports: {
 		html: false,
 		multiple: false,
+		color: {
+			background: false,
+		},
 	},
 	example: {
 		attributes: {

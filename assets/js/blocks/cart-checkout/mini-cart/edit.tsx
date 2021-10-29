@@ -13,7 +13,7 @@ import QuantityBadge from './quantity-badge';
 
 const MiniCartBlock = (): ReactElement => {
 	const blockProps = useBlockProps( {
-		className: 'wc-block-mini-cart',
+		className: 'wc-block-mini-cart wp-block-woocommerce-mini-cart',
 	} );
 
 	const productCount = 0;
