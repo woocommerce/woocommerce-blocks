@@ -37,7 +37,7 @@ class BlockTemplatesController {
 	 */
 	protected function init() {
 		add_filter( 'get_block_templates', array( $this, 'add_block_templates' ), 10, 3 );
-		add_action( 'wp', array( $this, 'render_block_template' ) );
+		add_action( 'template_redirect', array( $this, 'render_block_template' ) );
 	}
 
 	/**
