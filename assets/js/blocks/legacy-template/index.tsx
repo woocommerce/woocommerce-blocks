@@ -8,6 +8,7 @@ import {
 import { useBlockProps } from '@wordpress/block-editor';
 import { Placeholder } from '@wordpress/components';
 import { __, sprintf } from '@wordpress/i18n';
+import { page } from '@wordpress/icons';
 
 /**
  * Internal dependencies
@@ -28,6 +29,7 @@ const Edit = ( { attributes }: Props ) => {
 	return (
 		<div { ...blockProps }>
 			<Placeholder
+				icon={ page }
 				label={ templateTitle }
 				className="wp-block-woocommerce-legacy-template__placeholder"
 			>
