@@ -128,4 +128,24 @@ class BlockTemplateUtils {
 		}
 		return $path_list;
 	}
+
+	/**
+	 * Converts template slugs into readable titles.
+	 *
+	 * @param string $template_slug The templates slug (e.g. single-product).
+	 * @return string Human friendly title converted from the slug.
+	 */
+	public static function convert_slug_to_title( $template_slug ) {
+		switch ( $template_slug ) {
+			case 'single-product':
+				return 'Single Product Page';
+			case 'archive-product':
+				return 'Product Archive Page';
+			case 'taxonomy-product_cat':
+				return 'Product Taxonomy Page';
+			default:
+				// Replace all hyphens and underscores with spaces.
+				return ucwords( preg_replace( '/[\-_]/', ' ', $template_slug ) );
+		}
+	}
 }
