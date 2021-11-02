@@ -138,11 +138,11 @@ class BlockTemplateUtils {
 	public static function convert_slug_to_title( $template_slug ) {
 		switch ( $template_slug ) {
 			case 'single-product':
-				return 'Single Product Page';
+				return __( 'Single Product Page', 'woo-gutenberg-products-block' );
 			case 'archive-product':
-				return 'Product Archive Page';
+				return __( 'Product Archive Page', 'woo-gutenberg-products-block' );
 			case 'taxonomy-product_cat':
-				return 'Product Taxonomy Page';
+				return __( 'Product Taxonomy Page', 'woo-gutenberg-products-block' );
 			default:
 				// Replace all hyphens and underscores with spaces.
 				return ucwords( preg_replace( '/[\-_]/', ' ', $template_slug ) );
