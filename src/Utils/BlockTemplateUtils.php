@@ -93,7 +93,7 @@ class BlockTemplateUtils {
 		$template->theme          = $theme;
 		$template->content        = self::gutenberg_inject_theme_attribute_in_content( $template_content );
 		$template->slug           = $template_file['slug'];
-		$template->source         = 'theme';
+		$template->source         = 'woocommerce';
 		$template->type           = $template_type;
 		$template->title          = ! empty( $template_file['title'] ) ? $template_file['title'] : $template_file['slug'];
 		$template->status         = 'publish';
