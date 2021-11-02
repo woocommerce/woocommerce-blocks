@@ -67,8 +67,8 @@ class AssetDataRegistry {
 	 */
 	protected function init() {
 		add_action( 'init', array( $this, 'register_data_script' ) );
-		add_action( 'wp_print_scripts', array( $this, 'enqueue_asset_data' ), 1 );
 		add_action( 'wp_print_footer_scripts', array( $this, 'enqueue_asset_data' ), 1 );
+		add_action( 'admin_print_footer_scripts', array( $this, 'enqueue_asset_data' ), 1 );
 	}
 
 	/**
@@ -340,7 +340,7 @@ class AssetDataRegistry {
 	 * happen for routes that need it.
 	 */
 	public function enqueue_asset_data() {
-		if ( wp_script_is( $this->handle, 'enqueued' ) && ! wp_script_is( $this->handle, 'done' ) ) {
+		if ( wp_script_is( $this->handle, 'enqueued' ) ) {
 			$this->initialize_core_data();
 			$this->execute_lazy_data();
 
