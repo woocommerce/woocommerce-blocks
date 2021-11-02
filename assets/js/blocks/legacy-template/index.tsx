@@ -1,10 +1,19 @@
 /**
  * External dependencies
  */
-import { registerExperimentalBlockType } from '@woocommerce/block-settings';
+import {
+	registerExperimentalBlockType,
+	WC_BLOCKS_IMAGE_URL,
+} from '@woocommerce/block-settings';
 import { useBlockProps } from '@wordpress/block-editor';
 import { Placeholder } from '@wordpress/components';
 import { __, sprintf } from '@wordpress/i18n';
+
+/**
+ * Internal dependencies
+ */
+import './editor.scss';
+import { TEMPLATE_TITLES } from './constants';
 
 interface Props {
 	attributes: {
@@ -14,18 +23,31 @@ interface Props {
 
 const Edit = ( { attributes }: Props ) => {
 	const blockProps = useBlockProps();
+	const templateTitle = TEMPLATE_TITLES[ attributes.template ];
 	return (
 		<div { ...blockProps }>
 			<Placeholder
-				label={ sprintf(
-					/* translators: %s is the template name */
-					__(
-						'Wireframe template for %s will be rendered here.',
-						'woo-gutenberg-products-block'
-					),
-					attributes.template
-				) }
-			/>
+				label={ templateTitle }
+				className="wp-block-woocommerce-legacy-template__placeholder"
+			>
+				<div className="wp-block-woocommerce-legacy-template__placeholder-copy">
+					{ sprintf(
+						/* translators: %s is the template title */
+						__(
+							'This is an editor placeholder for the %s. On your store this will be replaced by the template and display with your product image(s), title, price, etc. You can move this placeholder around and add further blocks around it to extend the template.',
+							'woo-gutenberg-products-block'
+						),
+						templateTitle
+					) }
+				</div>
+				<div className="wp-block-woocommerce-legacy-template__placeholder-wireframe">
+					<img
+						className="wp-block-woocommerce-legacy-template__placeholder-image"
+						src={ `${ WC_BLOCKS_IMAGE_URL }template-placeholders/${ attributes.template }.svg` }
+						alt={ templateTitle }
+					/>
+				</div>
+			</Placeholder>
 		</div>
 	);
 };
