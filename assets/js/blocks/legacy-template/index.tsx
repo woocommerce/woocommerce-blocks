@@ -23,7 +23,8 @@ interface Props {
 
 const Edit = ( { attributes }: Props ) => {
 	const blockProps = useBlockProps();
-	const templateTitle = TEMPLATE_TITLES[ attributes.template ];
+	const templateTitle =
+		TEMPLATE_TITLES[ attributes.template ] ?? attributes.template;
 	return (
 		<div { ...blockProps }>
 			<Placeholder
