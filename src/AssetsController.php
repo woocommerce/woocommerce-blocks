@@ -38,6 +38,7 @@ final class AssetsController {
 		add_action( 'body_class', array( $this, 'add_theme_body_class' ), 1 );
 		add_action( 'admin_body_class', array( $this, 'add_theme_body_class' ), 1 );
 		add_action( 'admin_enqueue_scripts', array( $this, 'update_block_style_dependencies' ), 20 );
+		add_action( 'wp_enqueue_scripts', array( $this, 'update_block_settings_dependencies' ), 1 );
 	}
 
 	/**
@@ -147,6 +148,29 @@ final class AssetsController {
 			! in_array( 'woocommerce-general', $style->deps, true )
 		) {
 			$style->deps[] = 'woocommerce-general';
+		}
+	}
+
+	/**
+	 * Fix scripts with wc-settings dependency.
+	 *
+	 * The wc-settings script only works correctly when enqueued in the footer. This is to give blocks etc time to
+	 * register their settings data before it's printed.
+	 *
+	 * This code will look at registered scripts, and if they have a wc-settings dependency, force them to print in the
+	 * footer instead of the header.
+	 *
+	 * This only supports packages known to require wc-settings!
+	 *
+	 * @see https://github.com/woocommerce/woocommerce-gutenberg-products-block/issues/5052
+	 */
+	public function update_block_settings_dependencies() {
+		$wp_scripts = wp_scripts();
+
+		foreach ( $wp_scripts->registered as $handle => $script ) {
+			if ( in_array( 'wc-settings', $script->deps, true ) || in_array( 'wc-blocks-checkout', $script->deps, true ) ) {
+				$wp_scripts->add_data( $handle, 'group', 1 );
+			}
 		}
 	}
 }
