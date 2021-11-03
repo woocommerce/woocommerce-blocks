@@ -227,8 +227,8 @@ class BlockTemplateUtils {
 		$theme            = wp_get_theme()->get_stylesheet();
 
 		$template                 = new \WP_Block_Template();
-		$template->id             = $theme . '//' . $template_file->slug;
-		$template->theme          = $theme;
+		$template->id             = 'woocommerce//' . $template_file->slug;
+		$template->theme          = 'woocommerce';
 		$template->content        = self::gutenberg_inject_theme_attribute_in_content( $template_content );
 		$template->source         = 'woocommerce';
 		$template->slug           = $template_file->slug;
