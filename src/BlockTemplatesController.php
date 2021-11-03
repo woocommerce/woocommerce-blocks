@@ -38,6 +38,97 @@ class BlockTemplatesController {
 	protected function init() {
 		add_filter( 'get_block_templates', array( $this, 'add_block_templates' ), 10, 3 );
 		add_action( 'template_redirect', array( $this, 'render_block_template' ) );
+		add_filter( 'pre_get_block_template', array( $this, 'maybe_return_blocks_template' ), 10, 3 );
+	}
+
+	/**
+	 * This function checks if there's a blocks template (ultimately it resolves either a saved blocks template from the
+	 * database or a template file in `woo-gutenberg-products/block/templates/block-templates/`)
+	 * to return to pre_get_posts short-circuiting the query in Gutenberg.
+	 *
+	 * @param \WP_Block_Template|null $template Return a block template object to short-circuit the default query,
+	 *                                               or null to allow WP to run its normal queries.
+	 * @param string                  $id Template unique identifier (example: theme_slug//template_slug).
+	 * @param array                   $template_type wp_template or wp_template_part.
+	 *
+	 * @return mixed|\WP_Block_Template|\WP_Error
+	 */
+	public function maybe_return_blocks_template( $template, $id, $template_type ) {
+		$template_name_parts = explode( '//', $id );
+		if ( count( $template_name_parts ) < 2 ) {
+			return $template;
+		}
+		list( , $slug ) = $template_name_parts;
+
+		// Remove the filter at this point because if we don't then this function will infinite loop.
+		remove_filter( 'pre_get_block_template', array( $this, 'maybe_return_blocks_template' ), 10, 3 );
+
+		// Check if the theme has a saved version of this template before falling back to the woo one. Please note how
+		// the slug has not been modified at this point, we're still using the default one passed to this hook.
+		$maybe_template = gutenberg_get_block_template( $id, $template_type );
+		if ( null !== $maybe_template ) {
+			return $maybe_template;
+		}
+
+		// Theme-based template didn't exist, try switching the theme to woocommerce and try again. This function has
+		// been unhooked so won't run again.
+		add_filter( 'get_block_template', array( $this, 'get_single_block_template' ), 10, 3 );
+		$maybe_template = gutenberg_get_block_template( 'woocommerce//' . $slug, $template_type );
+
+		// Re-hook this function, it was only unhooked to stop recursion.
+		add_filter( 'pre_get_block_template', array( $this, 'maybe_return_blocks_template' ), 10, 3 );
+		remove_filter( 'get_block_template', array( $this, 'get_single_block_template' ), 10, 3 );
+		if ( null !== $maybe_template ) {
+			return $maybe_template;
+		}
+
+		// At this point we haven't had any luck finding a template. Give up and let Gutenberg take control again.
+		return $template;
+	}
+
+	/**
+	 * Runs on the get_block_template hook. If a template is already found and passed to this function, then return it
+	 * and don't run.
+	 * If a template is *not* passed, try to look for one that matches the ID in the database, if that's not found defer
+	 * to Blocks templates files. Priority goes: DB-Theme, DB-Blocks, Filesystem-Theme, Filesystem-Blocks.
+	 *
+	 * @param \WP_Block_Template $template The found block template.
+	 * @param string             $id Template unique identifier (example: theme_slug//template_slug).
+	 * @param array              $template_type wp_template or wp_template_part.
+	 *
+	 * @return mixed|null
+	 */
+	public function get_single_block_template( $template, $id, $template_type ) {
+
+		// The template was already found before the filter runs, just return it immediately.
+		if ( null !== $template ) {
+			return $template;
+		}
+
+		$template_name_parts = explode( '//', $id );
+		if ( count( $template_name_parts ) < 2 ) {
+			return $template;
+		}
+		list( , $slug ) = $template_name_parts;
+
+		// If this blocks template doesn't exist then we should just skip the function and let Gutenberg handle it.
+		if ( ! $this->default_block_template_is_available( $slug ) ) {
+			return $template;
+		}
+
+		$available_templates = $this->get_block_templates();
+
+		// array_values is used to rebase the array back to being 0-indexed.
+		$matched_templates = array_values(
+			array_filter(
+				$available_templates,
+				function( $available_template ) use ( $slug ) {
+					$available_template = (object) $available_template;
+					return $available_template->slug === $slug;
+				}
+			)
+		);
+		return count( $matched_templates > 0 ) ? (object) $matched_templates[0] : $template;
 	}
 
 	/**
