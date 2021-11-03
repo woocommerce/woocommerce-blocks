@@ -201,11 +201,14 @@ class BlockTemplatesController {
 				continue;
 			}
 
+			// At this point the template only exists in the Blocks filesystem and has not been saved in the DB,
+			// or superseded by the theme.
 			$new_template_item = array(
-				'slug'  => $template_slug,
-				'path'  => $template_file,
-				'theme' => get_template_directory(),
-				'type'  => 'wp_template',
+				'slug'.       => $template_slug,
+				'path'.       => $template_file,
+				'type'        => 'wp_template',
+				'theme'       => 'woocommerce',
+				'description' => '',
 			);
 			$templates[]       = $new_template_item;
 		}
