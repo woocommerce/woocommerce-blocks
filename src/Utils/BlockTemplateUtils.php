@@ -142,7 +142,7 @@ class BlockTemplateUtils {
 			case 'archive-product':
 				return __( 'Product Archive Page', 'woo-gutenberg-products-block' );
 			case 'taxonomy-product_cat':
-				return __( 'Product Taxonomy Page', 'woo-gutenberg-products-block' );
+				return __( 'Product Category Page', 'woo-gutenberg-products-block' );
 			case 'taxonomy-product_tag':
 				return __( 'Product Tag Page', 'woo-gutenberg-products-block' );
 			default:
