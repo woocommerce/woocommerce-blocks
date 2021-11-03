@@ -189,6 +189,27 @@ class BlockTemplatesController {
 		$template_files = BlockTemplateUtils::gutenberg_get_template_paths( $this->templates_directory );
 		$templates      = array();
 
+		// Check if the template has been saved in the database first.
+		$check_query_args    = array(
+			'post_type'      => 'wp_template',
+			'posts_per_page' => -1,
+			'no_found_rows'  => true,
+			'tax_query'      => array( // phpcs:ignore WordPress.DB.SlowDBQuery.slow_db_query_tax_query
+				array(
+					'taxonomy' => 'wp_theme',
+					'field'    => 'name',
+					'terms'    => 'woocommerce',
+				),
+			),
+		);
+		$check_query         = new \WP_Query( $check_query_args );
+		$saved_woo_templates = $check_query->posts;
+
+		// From a WordPress post, build the template object and add it to our list.
+		foreach ( $saved_woo_templates as $saved_woo_template ) {
+			$templates[] = BlockTemplateUtils::gutenberg_build_template_result_from_post( $saved_woo_template );
+		}
+
 		foreach ( $template_files as $template_file ) {
 			$template_slug = substr(
 				$template_file,
