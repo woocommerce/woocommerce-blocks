@@ -36,7 +36,7 @@ class LegacyTemplate extends AbstractDynamicBlock {
 
 		if ( 'single-product' === $attributes['template'] ) {
 			return $this->render_single_product();
-		} elseif ( 'archive-product' === $attributes['template'] ) {
+		} elseif ( 'archive-product' === $attributes['template'] || 'taxonomy-product_cat' === $attributes['template'] || 'taxonomy-product_tag' === $attributes['template'] ) {
 			return $this->render_archive_product();
 		} else {
 			ob_start();
