@@ -237,7 +237,7 @@ class BlockTemplateUtils {
 		$template->status         = 'publish';
 		$template->has_theme_file = true;
 		$template->is_custom      = false; // Templates loaded from the filesystem aren't custom, ones that have been edited and loaded from the DB are.
-		$template->title          = self::convert_slug_to_title( $template_file['slug'] );
+		$template->title          = self::convert_slug_to_title( $template_file->slug );
 		return $template;
 	}
 

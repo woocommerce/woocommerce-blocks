@@ -149,14 +149,14 @@ class BlockTemplatesController {
 
 		// @todo: Add apply_filters to _gutenberg_get_template_files() in Gutenberg to prevent duplication of logic.
 		foreach ( $template_files as $template_file ) {
-            
-            // It would be custom if the template was modified in the editor, so if it's not custom we can load it from
+
+			// It would be custom if the template was modified in the editor, so if it's not custom we can load it from
 			// the filesystem.
 			if ( $post_type && 'custom' !== $template_file->source ) {
 				$query_result[] = BlockTemplateUtils::gutenberg_build_template_result_from_file( $template_file, 'wp_template' );
 				continue;
 			}
-            
+
 			$template = BlockTemplateUtils::gutenberg_build_template_result_from_file( $template_file, 'wp_template' );
 
 			if ( $post_type &&
@@ -179,7 +179,6 @@ class BlockTemplatesController {
 			if ( $should_include ) {
 				$query_result[] = $template;
 			}
-			
 		}
 
 		return $query_result;
@@ -241,8 +240,8 @@ class BlockTemplatesController {
 			// At this point the template only exists in the Blocks filesystem and has not been saved in the DB,
 			// or superseded by the theme.
 			$new_template_item = array(
-				'slug'.       => $template_slug,
-				'path'.       => $template_file,
+				'slug'        => $template_slug,
+				'path'        => $template_file,
 				'type'        => 'wp_template',
 				'theme'       => 'woocommerce',
 				'description' => '',
