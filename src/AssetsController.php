@@ -166,11 +166,27 @@ final class AssetsController {
 	 * @see https://github.com/woocommerce/woocommerce-gutenberg-products-block/issues/5052
 	 */
 	public function update_block_settings_dependencies() {
-		$wp_scripts = wp_scripts();
+		$wp_scripts     = wp_scripts();
+		$known_packages = [ 'wc-settings', 'wc-blocks-checkout', 'wc-price-format' ];
 
 		foreach ( $wp_scripts->registered as $handle => $script ) {
-			if ( in_array( 'wc-settings', $script->deps, true ) || in_array( 'wc-blocks-checkout', $script->deps, true ) ) {
+			// scripts that are loaded in the footer has extra->group = 1.
+			if ( array_intersect( $known_packages, $script->deps ) && ! isset( $script->extra['group'] ) ) {
+				// Append the script to footer.
 				$wp_scripts->add_data( $handle, 'group', 1 );
+				// Show a warning.
+				$error_handle  = 'wc-settings-dep-in-header';
+				$used_deps     = implode( ', ', array_intersect( $known_packages, $script->deps ) );
+				$error_message = "scripts that has a depenency on [ {$used_deps} ] must be loaded in the footer, {$handle} was loaded in the header but was moved to the footer. See https://github.com/woocommerce/woocommerce-gutenberg-products-block/pull/5059";
+
+				// phpcs:ignore WordPress.WP.EnqueuedResourceParameters.NotInFooter,WordPress.WP.EnqueuedResourceParameters.MissingVersion
+				wp_register_script( $error_handle, '' );
+				wp_enqueue_script( $error_handle );
+				wp_add_inline_script(
+					$error_handle,
+					sprintf( 'console.warn( "%s" );', $error_message )
+				);
+
 			}
 		}
 	}
