@@ -149,11 +149,15 @@ class BlockTemplatesController {
 
 		// @todo: Add apply_filters to _gutenberg_get_template_files() in Gutenberg to prevent duplication of logic.
 		foreach ( $template_files as $template_file ) {
-			$template = BlockTemplateUtils::gutenberg_build_template_result_from_file( $template_file, 'wp_template' );
-
-			if ( $post_type && ! $template->is_custom ) {
+            
+            // It would be custom if the template was modified in the editor, so if it's not custom we can load it from
+			// the filesystem.
+			if ( $post_type && 'custom' !== $template_file->source ) {
+				$query_result[] = BlockTemplateUtils::gutenberg_build_template_result_from_file( $template_file, 'wp_template' );
 				continue;
 			}
+            
+			$template = BlockTemplateUtils::gutenberg_build_template_result_from_file( $template_file, 'wp_template' );
 
 			if ( $post_type &&
 				isset( $template->post_types ) &&
@@ -175,6 +179,7 @@ class BlockTemplatesController {
 			if ( $should_include ) {
 				$query_result[] = $template;
 			}
+			
 		}
 
 		return $query_result;
@@ -217,8 +222,19 @@ class BlockTemplatesController {
 				-5
 			);
 
-			// If the theme already has a template then there is no need to load ours in.
-			if ( $this->theme_has_template( $template_slug ) ) {
+			// If the theme already has a template, or the template is already in the list (i.e. it came from the
+			// database) then we should not overwrite it with the one from the filesystem.
+			if (
+				$this->theme_has_template( $template_slug ) ||
+				count(
+					array_filter(
+						$templates,
+						function ( $template ) use ( $template_slug ) {
+							$template_obj = (object) $template; //phpcs:ignore WordPress.CodeAnalysis.AssignmentInCondition.Found
+							return $template_obj->slug === $template_slug;
+						}
+					)
+				) > 0 ) {
 				continue;
 			}
 
