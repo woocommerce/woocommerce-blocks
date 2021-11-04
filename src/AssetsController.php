@@ -177,8 +177,7 @@ final class AssetsController {
 				// Show a warning.
 				$error_handle  = 'wc-settings-dep-in-header';
 				$used_deps     = implode( ', ', array_intersect( $known_packages, $script->deps ) );
-				$error_message = "scripts that has a depenency on [ {$used_deps} ] must be loaded in the footer, {$handle} was loaded in the header but was moved to the footer. See https://github.com/woocommerce/woocommerce-gutenberg-products-block/pull/5059";
-
+				$error_message = "Scripts that have a dependency on [$used_deps] must be loaded in the footer, {$handle} was registered to load in the header, but has been switched to load in the footer instead. See https://github.com/woocommerce/woocommerce-gutenberg-products-block/pull/5059";
 				// phpcs:ignore WordPress.WP.EnqueuedResourceParameters.NotInFooter,WordPress.WP.EnqueuedResourceParameters.MissingVersion
 				wp_register_script( $error_handle, '' );
 				wp_enqueue_script( $error_handle );
