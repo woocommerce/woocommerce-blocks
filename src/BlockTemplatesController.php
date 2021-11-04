@@ -241,12 +241,14 @@ class BlockTemplatesController {
 			// or superseded by the theme.
 			$new_template_item = array(
 				'slug'        => $template_slug,
+				'id'          => 'woocommerce//' . $template_slug,
 				'path'        => $template_file,
 				'type'        => 'wp_template',
 				'theme'       => 'woocommerce',
+				'source'      => 'theme',
 				'description' => '',
 			);
-			$templates[]       = $new_template_item;
+			$templates[]       = (object) $new_template_item;
 		}
 		return $templates;
 	}
