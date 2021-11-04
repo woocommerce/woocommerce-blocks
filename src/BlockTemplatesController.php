@@ -247,6 +247,7 @@ class BlockTemplatesController {
 				'type'        => 'wp_template',
 				'theme'       => 'woocommerce',
 				'source'      => 'woocommerce',
+				'title'       => BlockTemplateUtils::convert_slug_to_title( $template_slug ),
 				'description' => '',
 			);
 			$templates[]       = (object) $new_template_item;
