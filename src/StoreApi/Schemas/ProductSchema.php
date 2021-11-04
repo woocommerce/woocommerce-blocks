@@ -628,8 +628,10 @@ class ProductSchema extends AbstractSchema {
 		$attributes_by_variation = array_reduce(
 			$variation_meta_data,
 			function( $values, $data ) use ( $default_variation_meta_keys ) {
-				// Whilst the query above only includes keys of $default_variation_meta_data, the cache may have been
-				// primed elsewhere.
+				// The query above only includes the keys of $default_variation_meta_data so we know all of the attributes
+				// being processed here apply to this product. However, we need an additional check here because the
+				// cache may have been primed elsewhere and include keys from other products.
+				// @see AbstractProductGrid::prime_product_variations.
 				if ( in_array( $data->attribute_key, $default_variation_meta_keys, true ) ) {
 					$values[ $data->variation_id ][ $data->attribute_key ] = $data->attribute_value;
 				}
