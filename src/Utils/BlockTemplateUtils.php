@@ -123,16 +123,7 @@ class BlockTemplateUtils {
 					'theme' => $theme_slug,
 					'type'  => $template_type,
 				);
-
-				if ( 'wp_template_part' === $template_type ) {
-					return self::gutenberg_add_template_part_area_info( $new_template_item );
-				}
-
-				if ( 'wp_template' === $template_type ) {
-					return self::gutenberg_add_template_info( $new_template_item );
-				}
-
-				return $new_template_item;
+				return self::gutenberg_add_template_info( $new_template_item );
 			}
 		}
 
@@ -169,8 +160,7 @@ class BlockTemplateUtils {
 	 * @return \WP_Block_Template|\WP_Error Template.
 	 */
 	public static function gutenberg_build_template_result_from_post( $post ) {
-		$default_template_types = gutenberg_get_default_template_types();
-		$terms                  = get_the_terms( $post, 'wp_theme' );
+		$terms = get_the_terms( $post, 'wp_theme' );
 
 		if ( is_wp_error( $terms ) ) {
 			return $terms;
@@ -197,17 +187,6 @@ class BlockTemplateUtils {
 		$template->has_theme_file = $has_theme_file;
 		$template->is_custom      = true;
 
-		if ( 'wp_template' === $post->post_type && isset( $default_template_types[ $template->slug ] ) ) {
-			$template->is_custom = false;
-		}
-
-		if ( 'wp_template_part' === $post->post_type ) {
-			$type_terms = get_the_terms( $post, 'wp_template_part_area' );
-			if ( ! is_wp_error( $type_terms ) && false !== $type_terms ) {
-				$template->area = $type_terms[0]->name;
-			}
-		}
-
 		return $template;
 	}
 
@@ -220,12 +199,9 @@ class BlockTemplateUtils {
 	 * @return \WP_Block_Template Template.
 	 */
 	public static function gutenberg_build_template_result_from_file( $template_file, $template_type ) {
-		$template_file          = (object) $template_file;
-		$default_template_types = function_exists( 'gutenberg_get_default_template_types' ) ? gutenberg_get_default_template_types() : array();
+		$template_file = (object) $template_file;
 		// phpcs:ignore WordPress.WP.AlternativeFunctions.file_get_contents_file_get_contents
-		$template_content = file_get_contents( $template_file->path );
-		$theme            = wp_get_theme()->get_stylesheet();
-
+		$template_content         = file_get_contents( $template_file->path );
 		$template                 = new \WP_Block_Template();
 		$template->id             = 'woocommerce//' . $template_file->slug;
 		$template->theme          = 'woocommerce';
