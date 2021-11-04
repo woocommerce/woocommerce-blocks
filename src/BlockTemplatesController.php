@@ -128,7 +128,7 @@ class BlockTemplatesController {
 				}
 			)
 		);
-		return count( $matched_templates > 0 ) ? (object) $matched_templates[0] : $template;
+		return ( is_array( $matched_templates ) && count( $matched_templates ) > 0 ) ? (object) $matched_templates[0] : $template;
 	}
 
 	/**
@@ -152,12 +152,13 @@ class BlockTemplatesController {
 
 			// It would be custom if the template was modified in the editor, so if it's not custom we can load it from
 			// the filesystem.
-			if ( $post_type && 'custom' !== $template_file->source ) {
-				$query_result[] = BlockTemplateUtils::gutenberg_build_template_result_from_file( $template_file, 'wp_template' );
+			if ( 'custom' !== $template_file->source ) {
+				$template = BlockTemplateUtils::gutenberg_build_template_result_from_file( $template_file, 'wp_template' );
+			} else {
+				$template_file->title = BlockTemplateUtils::convert_slug_to_title( $template_file->slug );
+				$query_result[]       = $template_file;
 				continue;
 			}
-
-			$template = BlockTemplateUtils::gutenberg_build_template_result_from_file( $template_file, 'wp_template' );
 
 			if ( $post_type &&
 				isset( $template->post_types ) &&
@@ -167,14 +168,14 @@ class BlockTemplatesController {
 			}
 
 			$is_not_custom   = false === array_search(
-				wp_get_theme()->get_stylesheet() . '//' . $template_file['slug'],
+				wp_get_theme()->get_stylesheet() . '//' . $template_file->slug,
 				array_column( $query_result, 'id' ),
 				true
 			);
 			$fits_slug_query =
-				! isset( $query['slug__in'] ) || in_array( $template_file['slug'], $query['slug__in'], true );
+				! isset( $query['slug__in'] ) || in_array( $template_file->slug, $query['slug__in'], true );
 			$fits_area_query =
-				! isset( $query['area'] ) || $template_file['area'] === $query['area'];
+				! isset( $query['area'] ) || $template_file->area === $query['area'];
 			$should_include  = $is_not_custom && $fits_slug_query && $fits_area_query;
 			if ( $should_include ) {
 				$query_result[] = $template;
@@ -245,7 +246,7 @@ class BlockTemplatesController {
 				'path'        => $template_file,
 				'type'        => 'wp_template',
 				'theme'       => 'woocommerce',
-				'source'      => 'theme',
+				'source'      => 'woocommerce',
 				'description' => '',
 			);
 			$templates[]       = (object) $new_template_item;
