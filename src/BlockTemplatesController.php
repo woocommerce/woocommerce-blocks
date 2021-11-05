@@ -216,7 +216,7 @@ class BlockTemplatesController {
 				array(
 					'taxonomy' => 'wp_theme',
 					'field'    => 'name',
-					'terms'    => 'woocommerce',
+					'terms'    => array( 'woocommerce', get_stylesheet() ),
 				),
 			),
 		);
