@@ -147,6 +147,18 @@ class BlockTemplatesController {
 		$post_type      = isset( $query['post_type'] ) ? $query['post_type'] : '';
 		$template_files = $this->get_block_templates();
 
+		if ( isset( $query['slug__in'] ) ) {
+			// Get only the template files that match the slugs requested in the query.
+			$template_files = array_values(
+				array_filter(
+					$template_files,
+					function ( $template ) use ( $query ) {
+						return in_array( $template->slug, $query['slug__in'], true );
+					}
+				)
+			);
+		}
+
 		// @todo: Add apply_filters to _gutenberg_get_template_files() in Gutenberg to prevent duplication of logic.
 		foreach ( $template_files as $template_file ) {
 
