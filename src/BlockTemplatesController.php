@@ -163,6 +163,19 @@ class BlockTemplatesController {
 		// @todo: Add apply_filters to _gutenberg_get_template_files() in Gutenberg to prevent duplication of logic.
 		foreach ( $template_files as $template_file ) {
 
+			// Avoid adding the same template if it's already in the array of $query_result.
+			if (
+				array_filter(
+					$query_result,
+					function( $query_result_template ) use ( $template_file ) {
+						return $query_result_template->slug === $template_file->slug &&
+								$query_result_template->theme === $template_file->theme;
+					}
+				)
+			) {
+				continue;
+			}
+
 			// It would be custom if the template was modified in the editor, so if it's not custom we can load it from
 			// the filesystem.
 			if ( 'custom' !== $template_file->source ) {
