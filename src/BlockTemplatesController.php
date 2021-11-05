@@ -43,7 +43,7 @@ class BlockTemplatesController {
 
 	/**
 	 * This function checks if there's a blocks template (ultimately it resolves either a saved blocks template from the
-	 * database or a template file in `woo-gutenberg-products/block/templates/block-templates/`)
+	 * database or a template file in `woo-gutenberg-products-block/templates/block-templates/`)
 	 * to return to pre_get_posts short-circuiting the query in Gutenberg.
 	 *
 	 * @param \WP_Block_Template|null $template Return a block template object to short-circuit the default query,
@@ -191,7 +191,7 @@ class BlockTemplatesController {
 	}
 
 	/**
-	 * Removes templates that were added to a theme's block-templates director, but already had a customised version saved in the database.
+	 * Removes templates that were added to a theme's block-templates directory, but already had a customised version saved in the database.
 	 *
 	 * @param \WP_Block_Template[]|\stdClass[] $templates List of templates to run the filter on.
 	 *
@@ -269,7 +269,7 @@ class BlockTemplatesController {
 	 * in the theme directory.
 	 *
 	 * @param string[] $slugs An array of slugs to filter templates by. Templates whose slug does not match will not be returned.
-	 * @param array    $already_found_templates Templates that have already been found, these will customised templates that are loaded from the database.
+	 * @param array    $already_found_templates Templates that have already been found, these are customised templates that are loaded from the database.
 	 *
 	 * @return array Templates from the WooCommerce blocks plugin directory.
 	 */
