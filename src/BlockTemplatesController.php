@@ -117,19 +117,8 @@ class BlockTemplatesController {
 			return $template;
 		}
 
-		$available_templates = $this->get_block_templates();
-
-		// array_values is used to rebase the array back to being 0-indexed.
-		$matched_templates = array_values(
-			array_filter(
-				$available_templates,
-				function( $available_template ) use ( $slug ) {
-					$available_template = (object) $available_template;
-					return $available_template->slug === $slug;
-				}
-			)
-		);
-		return ( is_array( $matched_templates ) && count( $matched_templates ) > 0 ) ? (object) $matched_templates[0] : $template;
+		$available_templates = $this->get_block_templates( array( $slug ) );
+		return ( is_array( $available_templates ) && count( $available_templates ) > 0 ) ? (object) $available_templates[0] : $template;
 	}
 
 	/**
@@ -146,19 +135,8 @@ class BlockTemplatesController {
 		}
 
 		$post_type      = isset( $query['post_type'] ) ? $query['post_type'] : '';
-		$template_files = $this->get_block_templates();
-
-		if ( isset( $query['slug__in'] ) ) {
-			// Get only the template files that match the slugs requested in the query.
-			$template_files = array_values(
-				array_filter(
-					$template_files,
-					function ( $template ) use ( $query ) {
-						return in_array( $template->slug, $query['slug__in'], true );
-					}
-				)
-			);
-		}
+		$slugs          = isset( $query['slug__in'] ) ? $query['slug__in'] : array();
+		$template_files = $this->get_block_templates( $slugs );
 
 		// @todo: Add apply_filters to _gutenberg_get_template_files() in Gutenberg to prevent duplication of logic.
 		foreach ( $template_files as $template_file ) {
@@ -214,9 +192,10 @@ class BlockTemplatesController {
 	/**
 	 * Get and build the block template objects from the block template files.
 	 *
+	 * @param array $slugs An array of slugs to retrieve templates for.
 	 * @return array
 	 */
-	public function get_block_templates() {
+	public function get_block_templates( $slugs = array() ) {
 		$template_files = BlockTemplateUtils::gutenberg_get_template_paths( $this->templates_directory );
 		$templates      = array();
 
@@ -278,7 +257,15 @@ class BlockTemplatesController {
 			);
 			$templates[]       = (object) $new_template_item;
 		}
-		return $templates;
+		// Get only the template files that match the slugs requested in the query.
+		return count( $slugs ) > 0 ? array_values(
+			array_filter(
+				$templates,
+				function ( $template ) use ( $slugs ) {
+					return in_array( $template->slug, $slugs, true );
+				}
+			)
+		) : $templates;
 	}
 
 	/**
@@ -305,13 +292,7 @@ class BlockTemplatesController {
 
 		return is_readable(
 			$this->templates_directory . '/' . $template_name . '.html'
-		) ||
-		array_filter(
-			$this->get_block_templates(),
-			function ( $template ) use ( $template_name ) {
-				return $template->slug === $template_name;
-			}
-		);
+		) || $this->get_block_templates( array( $template_name ) );
 	}
 
 	/**
