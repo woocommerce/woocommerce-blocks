@@ -291,6 +291,12 @@ class BlockTemplatesController {
 
 		return is_readable(
 			$this->templates_directory . '/' . $template_name . '.html'
+		) ||
+		array_filter(
+			$this->get_block_templates(),
+			function ( $template ) use ( $template_name ) {
+				return $template->slug === $template_name;
+			}
 		);
 	}
 
