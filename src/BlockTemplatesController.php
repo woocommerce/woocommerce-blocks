@@ -195,12 +195,8 @@ class BlockTemplatesController {
 	 * @param array $slugs An array of slugs to retrieve templates for.
 	 * @return array
 	 */
-	public function get_block_templates( $slugs = array() ) {
-		$template_files = BlockTemplateUtils::gutenberg_get_template_paths( $this->templates_directory );
-		$templates      = array();
-
-		// First, retrieve the templates which are saved in the database.
-		$check_query_args    = array(
+	public function get_block_templates_from_db( $slugs = array() ) {
+		$check_query_args = array(
 			'post_type'      => 'wp_template',
 			'posts_per_page' => -1,
 			'no_found_rows'  => true,
@@ -212,14 +208,32 @@ class BlockTemplatesController {
 				),
 			),
 		);
+		if ( is_array( $slugs ) && count( $slugs ) > 0 ) {
+			$check_query_args['post_name__in'] = $slugs;
+		}
 		$check_query         = new \WP_Query( $check_query_args );
 		$saved_woo_templates = $check_query->posts;
 
-		// From a WordPress post, build the template object and add it to our list.
-		foreach ( $saved_woo_templates as $saved_woo_template ) {
-			$templates[] = BlockTemplateUtils::gutenberg_build_template_result_from_post( $saved_woo_template );
-		}
+		return array_map(
+			function( $saved_woo_template ) {
+				return BlockTemplateUtils::gutenberg_build_template_result_from_post( $saved_woo_template );
+			},
+			$saved_woo_templates
+		);
+	}
 
+	/**
+	 * Gets the templates from the WooCommerce blocks directory, skipping those for which a template already exists
+	 * in the theme directory.
+	 *
+	 * @param string[] $slugs An array of slugs to filter templates by. Templates whose slug does not match will not be returned.
+	 * @param array    $already_found_templates Templates that have already been found, these will customised templates that are loaded from the database.
+	 *
+	 * @return array Templates from the WooCommerce blocks plugin directory.
+	 */
+	public function get_block_templates_from_woocommerce( $slugs, $already_found_templates ) {
+		$template_files = BlockTemplateUtils::gutenberg_get_template_paths( $this->templates_directory );
+		$templates      = array();
 		foreach ( $template_files as $template_file ) {
 			$template_slug = substr(
 				$template_file,
@@ -227,13 +241,18 @@ class BlockTemplatesController {
 				-5
 			);
 
+			// This template does not have a slug we're looking for. Skip it.
+			if ( is_array( $slugs ) && count( $slugs ) > 0 && ! in_array( $template_slug, $slugs, true ) ) {
+				continue;
+			}
+
 			// If the theme already has a template, or the template is already in the list (i.e. it came from the
 			// database) then we should not overwrite it with the one from the filesystem.
 			if (
 				$this->theme_has_template( $template_slug ) ||
 				count(
 					array_filter(
-						$templates,
+						$already_found_templates,
 						function ( $template ) use ( $template_slug ) {
 							$template_obj = (object) $template; //phpcs:ignore WordPress.CodeAnalysis.AssignmentInCondition.Found
 							return $template_obj->slug === $template_slug;
@@ -257,15 +276,19 @@ class BlockTemplatesController {
 			);
 			$templates[]       = (object) $new_template_item;
 		}
-		// Get only the template files that match the slugs requested in the query.
-		return count( $slugs ) > 0 ? array_values(
-			array_filter(
-				$templates,
-				function ( $template ) use ( $slugs ) {
-					return in_array( $template->slug, $slugs, true );
-				}
-			)
-		) : $templates;
+		return $templates;
+	}
+
+	/**
+	 * Get and build the block template objects from the block template files.
+	 *
+	 * @param array $slugs An array of slugs to retrieve templates for.
+	 * @return array
+	 */
+	public function get_block_templates( $slugs = array() ) {
+		$templates_from_db  = $this->get_block_templates_from_db( $slugs );
+		$templates_from_woo = $this->get_block_templates_from_woocommerce( $slugs, $templates_from_db );
+		return array_merge( $templates_from_db, $templates_from_woo );
 	}
 
 	/**
