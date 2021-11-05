@@ -67,6 +67,7 @@ class BlockTemplatesController {
 		// the slug has not been modified at this point, we're still using the default one passed to this hook.
 		$maybe_template = gutenberg_get_block_template( $id, $template_type );
 		if ( null !== $maybe_template ) {
+			add_filter( 'pre_get_block_template', array( $this, 'maybe_return_blocks_template' ), 10, 3 );
 			return $maybe_template;
 		}
 
