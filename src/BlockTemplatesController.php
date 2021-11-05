@@ -186,14 +186,56 @@ class BlockTemplatesController {
 			}
 		}
 
+		$query_result = $this->remove_theme_templates_with_custom_alternative( $query_result );
 		return $query_result;
 	}
 
 	/**
-	 * Get and build the block template objects from the block template files.
+	 * Removes templates that were added to a theme's block-templates director, but already had a customised version saved in the database.
+	 *
+	 * @param \WP_Block_Template[]|\stdClass[] $templates List of templates to run the filter on.
+	 *
+	 * @return array List of templates with duplicates removed. The customised alternative is preferred over the theme default.
+	 */
+	public function remove_theme_templates_with_custom_alternative( $templates ) {
+
+		// Get the slugs of all templates that have been customised and saved in the database.
+		$customised_template_slugs = array_map(
+			function( $template ) {
+				return $template->slug;
+			},
+			array_values(
+				array_filter(
+					$templates,
+					function( $template ) {
+						// This template has been customised and saved as a post.
+						return 'custom' === $template->source;
+					}
+				)
+			)
+		);
+
+		// Remove theme (i.e. filesystem) templates that have the same slug as a customised one. We don't need to check
+		// for `woocommerce` in $template->source here because woocommerce templates won't have been added to $templates
+		// if a saved version was found in the db. This only affects saved templates that were saved BEFORE a theme
+		// template with the same slug was added.
+		return array_values(
+			array_filter(
+				$templates,
+				function( $template ) use ( $customised_template_slugs ) {
+					// This template has been customised and saved as a post, so return it.
+					return ! ( 'theme' === $template->source && in_array( $template->slug, $customised_template_slugs, true ) );
+				}
+			)
+		);
+	}
+
+	/**
+	 * Gets the templates saved in the database.
 	 *
 	 * @param array $slugs An array of slugs to retrieve templates for.
-	 * @return array
+	 *
+	 * @return int[]|\WP_Post[] An array of found templates.
 	 */
 	public function get_block_templates_from_db( $slugs = array() ) {
 		$check_query_args = array(
