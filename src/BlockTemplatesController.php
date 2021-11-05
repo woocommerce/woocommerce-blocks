@@ -207,7 +207,7 @@ class BlockTemplatesController {
 		$template_files = BlockTemplateUtils::gutenberg_get_template_paths( $this->templates_directory );
 		$templates      = array();
 
-		// Check if the template has been saved in the database first.
+		// First, retrieve the templates which are saved in the database.
 		$check_query_args    = array(
 			'post_type'      => 'wp_template',
 			'posts_per_page' => -1,
