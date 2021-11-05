@@ -131,11 +131,10 @@ class BlockTemplateUtils {
 		$template->source         = 'woocommerce';
 		$template->slug           = $template_file->slug;
 		$template->type           = $template_type;
-		$template->title          = ! empty( $template_file->title ) ? $template_file->title : $template_file->slug;
+		$template->title          = ! empty( $template_file->title ) ? $template_file->title : self::convert_slug_to_title( $template_file->slug );
 		$template->status         = 'publish';
 		$template->has_theme_file = true;
 		$template->is_custom      = false; // Templates loaded from the filesystem aren't custom, ones that have been edited and loaded from the DB are.
-		$template->title          = self::convert_slug_to_title( $template_file->slug );
 		return $template;
 	}
 
