@@ -62,10 +62,7 @@ module.exports = {
 		'@wordpress/i18n-text-domain': [
 			'error',
 			{
-				allowedTextDomain: [
-					'default',
-					'woo-gutenberg-products-block',
-				],
+				allowedTextDomain: [ 'woo-gutenberg-products-block' ],
 			},
 		],
 		camelcase: [
