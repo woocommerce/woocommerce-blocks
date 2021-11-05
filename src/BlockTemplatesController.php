@@ -112,7 +112,7 @@ class BlockTemplatesController {
 		list( , $slug ) = $template_name_parts;
 
 		// If this blocks template doesn't exist then we should just skip the function and let Gutenberg handle it.
-		if ( ! $this->default_block_template_is_available( $slug ) ) {
+		if ( ! $this->block_template_is_available( $slug ) ) {
 			return $template;
 		}
 
@@ -284,7 +284,7 @@ class BlockTemplatesController {
 	 * @param string $template_name Template to check.
 	 * @return boolean
 	 */
-	public function default_block_template_is_available( $template_name ) {
+	public function block_template_is_available( $template_name ) {
 		if ( ! $template_name ) {
 			return false;
 		}
@@ -311,19 +311,19 @@ class BlockTemplatesController {
 		if (
 			is_singular( 'product' ) &&
 			! $this->theme_has_template( 'single-product' ) &&
-			$this->default_block_template_is_available( 'single-product' )
+			$this->block_template_is_available( 'single-product' )
 		) {
 			add_filter( 'woocommerce_has_block_template', '__return_true', 10, 0 );
 		} elseif (
 			is_tax() &&
 			! $this->theme_has_template( 'taxonomy-product_cat' ) &&
-			$this->default_block_template_is_available( 'taxonomy-product_cat' )
+			$this->block_template_is_available( 'taxonomy-product_cat' )
 		) {
 			add_filter( 'woocommerce_has_block_template', '__return_true', 10, 0 );
 		} elseif (
 			( is_post_type_archive( 'product' ) || is_page( wc_get_page_id( 'shop' ) ) ) &&
 			! $this->theme_has_template( 'archive-product' ) &&
-			$this->default_block_template_is_available( 'archive-product' )
+			$this->block_template_is_available( 'archive-product' )
 		) {
 			add_filter( 'woocommerce_has_block_template', '__return_true', 10, 0 );
 		}
