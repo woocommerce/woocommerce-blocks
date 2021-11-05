@@ -38,8 +38,8 @@ final class AssetsController {
 		add_action( 'body_class', array( $this, 'add_theme_body_class' ), 1 );
 		add_action( 'admin_body_class', array( $this, 'add_theme_body_class' ), 1 );
 		add_action( 'admin_enqueue_scripts', array( $this, 'update_block_style_dependencies' ), 20 );
-		add_action( 'wp_enqueue_scripts', array( $this, 'update_block_settings_dependencies' ), 1 );
-		add_action( 'admin_enqueue_scripts', array( $this, 'update_block_settings_dependencies' ), 1 );
+		add_action( 'wp_enqueue_scripts', array( $this, 'update_block_settings_dependencies' ), 100 );
+		add_action( 'admin_enqueue_scripts', array( $this, 'update_block_settings_dependencies' ), 100 );
 	}
 
 	/**
