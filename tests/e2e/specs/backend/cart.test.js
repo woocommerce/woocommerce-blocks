@@ -2,7 +2,6 @@
  * External dependencies
  */
 import {
-	clickButton,
 	clickBlockToolbarButton,
 	openDocumentSettingsSidebar,
 	switchUserToAdmin,
@@ -22,12 +21,23 @@ import {
 	closeModalIfExists,
 	openWidgetsEditorBlockInserter,
 } from '../../utils.js';
-import { scrollTo } from '../../../utils';
 
 const block = {
 	name: 'Cart',
 	slug: 'woocommerce/cart',
-	class: '.wc-block-cart',
+	class: '.wp-block-woocommerce-cart',
+};
+
+const filledCartBlock = {
+	name: 'Filled Cart',
+	slug: 'woocommerce/filled-cart-block',
+	class: '.wp-block-woocommerce-filled-cart-block',
+};
+
+const emptyCartBlock = {
+	name: 'Empty Cart',
+	slug: 'woocommerce/empty-cart-block',
+	class: '.wp-block-woocommerce-empty-cart-block',
 };
 
 if ( process.env.WOOCOMMERCE_BLOCKS_PHASE < 2 ) {
@@ -83,36 +93,42 @@ describe( `${ block.name } Block`, () => {
 
 			it( 'renders without crashing', async () => {
 				await expect( page ).toRenderBlock( block );
+				await expect( page ).toRenderBlock( filledCartBlock );
+				await expect( page ).toRenderBlock( emptyCartBlock );
 			} );
 
 			it( 'shows empty cart when changing the view', async () => {
-				await page.waitForSelector( block.class ).catch( () => {
-					throw new Error(
-						`Could not find an element with class ${ block.class } - the block probably did not load correctly.`
-					);
+				await selectBlockByName( block.slug );
+				await expect( page ).toMatchElement(
+					`${ emptyCartBlock.class }[hidden]`
+				);
+				await clickBlockToolbarButton( 'Switch view' );
+				const emptyCartButton = await page.waitForXPath(
+					`//button[contains(@class,'components-dropdown-menu__menu-item') and contains(text(),'Empty Cart')]`
+				);
+				await emptyCartButton.evaluate( ( element ) => {
+					document.querySelector( 'html' ).style.scrollBehavior =
+						'auto';
+					element.scrollIntoView();
 				} );
-
-				await expect( page ).toMatchElement(
-					'[hidden] .wc-block-cart__empty-cart__title'
-				);
-
-				await selectBlockByName( block.slug );
-				await clickBlockToolbarButton( 'Switch view', 'ariaLabel' );
-				await page.waitForSelector( '.components-popover__content' );
-				await clickButton( 'Empty Cart' );
-
+				await emptyCartButton.click();
 				await expect( page ).not.toMatchElement(
-					'[hidden] .wc-block-cart__empty-cart__title'
+					`${ block.class } .wp-block-woocommerce-empty-cart-block[hidden]`
 				);
 
 				await selectBlockByName( block.slug );
-				await clickBlockToolbarButton( 'Switch view', 'ariaLabel' );
-				await page.waitForSelector( '.components-popover__content' );
-				await scrollTo( '.components-popover__content' );
-				await clickButton( 'Filled Cart' );
-
+				await clickBlockToolbarButton( 'Switch view' );
+				const filledCartButton = await page.waitForXPath(
+					`//button[contains(@class,'components-dropdown-menu__menu-item') and contains(text(),'Filled Cart')]`
+				);
+				await filledCartButton.evaluate( ( element ) => {
+					document.querySelector( 'html' ).style.scrollBehavior =
+						'auto';
+					element.scrollIntoView();
+				} );
+				await filledCartButton.click();
 				await expect( page ).toMatchElement(
-					'[hidden] .wc-block-cart__empty-cart__title'
+					`${ emptyCartBlock.class }[hidden]`
 				);
 			} );
 
