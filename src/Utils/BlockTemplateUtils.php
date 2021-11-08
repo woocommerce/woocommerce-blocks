@@ -75,39 +75,66 @@ class BlockTemplateUtils {
 	}
 
 	/**
+	 * Build a unified template object based a post Object.
+	 *
+	 * @param \WP_Post $post Template post.
+	 *
+	 * @return \WP_Block_Template|\WP_Error Template.
+	 */
+	public static function gutenberg_build_template_result_from_post( $post ) {
+		$terms = get_the_terms( $post, 'wp_theme' );
+
+		if ( is_wp_error( $terms ) ) {
+			return $terms;
+		}
+
+		if ( ! $terms ) {
+			return new \WP_Error( 'template_missing_theme', __( 'No theme is defined for this template.', 'woo-gutenberg-products-block' ) );
+		}
+
+		$theme          = $terms[0]->name;
+		$has_theme_file = true;
+
+		$template                 = new \WP_Block_Template();
+		$template->wp_id          = $post->ID;
+		$template->id             = $theme . '//' . $post->post_name;
+		$template->theme          = $theme;
+		$template->content        = $post->post_content;
+		$template->slug           = $post->post_name;
+		$template->source         = 'custom';
+		$template->type           = $post->post_type;
+		$template->description    = $post->post_excerpt;
+		$template->title          = $post->post_title;
+		$template->status         = $post->post_status;
+		$template->has_theme_file = $has_theme_file;
+		$template->is_custom      = true;
+
+		return $template;
+	}
+
+	/**
 	 * Build a unified template object based on a theme file.
 	 *
 	 * @param array $template_file Theme file.
 	 * @param array $template_type wp_template or wp_template_part.
 	 *
-	 * @return WP_Block_Template Template.
+	 * @return \WP_Block_Template Template.
 	 */
 	public static function gutenberg_build_template_result_from_file( $template_file, $template_type ) {
-		$default_template_types = gutenberg_get_default_template_types();
+		$template_file = (object) $template_file;
 		// phpcs:ignore WordPress.WP.AlternativeFunctions.file_get_contents_file_get_contents
-		$template_content = file_get_contents( $template_file['path'] );
-		$theme            = wp_get_theme()->get_stylesheet();
-
+		$template_content         = file_get_contents( $template_file->path );
 		$template                 = new \WP_Block_Template();
-		$template->id             = $theme . '//' . $template_file['slug'];
-		$template->theme          = $theme;
+		$template->id             = 'woocommerce//' . $template_file->slug;
+		$template->theme          = 'woocommerce';
 		$template->content        = self::gutenberg_inject_theme_attribute_in_content( $template_content );
-		$template->slug           = $template_file['slug'];
-		$template->source         = 'theme';
+		$template->source         = 'woocommerce';
+		$template->slug           = $template_file->slug;
 		$template->type           = $template_type;
-		$template->title          = ! empty( $template_file['title'] ) ? $template_file['title'] : $template_file['slug'];
+		$template->title          = ! empty( $template_file->title ) ? $template_file->title : self::convert_slug_to_title( $template_file->slug );
 		$template->status         = 'publish';
 		$template->has_theme_file = true;
-
-		if ( 'wp_template' === $template_type && isset( $default_template_types[ $template_file['slug'] ] ) ) {
-			$template->description = $default_template_types[ $template_file['slug'] ]['description'];
-			$template->title       = $default_template_types[ $template_file['slug'] ]['title'];
-		}
-
-		if ( 'wp_template_part' === $template_type && isset( $template_file['area'] ) ) {
-			$template->area = $template_file['area'];
-		}
-
+		$template->is_custom      = false; // Templates loaded from the filesystem aren't custom, ones that have been edited and loaded from the DB are.
 		return $template;
 	}
 
@@ -127,5 +154,27 @@ class BlockTemplateUtils {
 			}
 		}
 		return $path_list;
+	}
+
+	/**
+	 * Converts template slugs into readable titles.
+	 *
+	 * @param string $template_slug The templates slug (e.g. single-product).
+	 * @return string Human friendly title converted from the slug.
+	 */
+	public static function convert_slug_to_title( $template_slug ) {
+		switch ( $template_slug ) {
+			case 'single-product':
+				return __( 'Single Product Page', 'woo-gutenberg-products-block' );
+			case 'archive-product':
+				return __( 'Product Archive Page', 'woo-gutenberg-products-block' );
+			case 'taxonomy-product_cat':
+				return __( 'Product Category Page', 'woo-gutenberg-products-block' );
+			case 'taxonomy-product_tag':
+				return __( 'Product Tag Page', 'woo-gutenberg-products-block' );
+			default:
+				// Replace all hyphens and underscores with spaces.
+				return ucwords( preg_replace( '/[\-_]/', ' ', $template_slug ) );
+		}
 	}
 }

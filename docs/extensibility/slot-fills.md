@@ -1,17 +1,17 @@
-# Slots and Fills
+# Slot and Fill
 
 ## The problem
 You added custom data to the [Store API](./extend-rest-api-add-data.md). You changed several strings using [Checkout filters](./available-filters.md). Now you want to render your own components in specific places in the Cart and Checkout.
 
 ## Solution
 
-Slots and Fills add the possibility to render your own HTML in pre-defined places in the Cart and Checkout. Your component will get access to contextual data and will get re-rendered when needed.
+Slot and Fill are a pair of components that add the possibility to render your own HTML in pre-defined places in the Cart and Checkout. Your component will get access to contextual data and will get re-rendered when needed.
 
-A Slot is a place in the Cart and Checkout that can render an indefinite number of external components.
+A _Slot_ is a place in the Cart and Checkout that can render an indefinite number of external components.
 
-A Fill is the component provided by third-party developers to render inside a Slot.
+A _Fill_ is the component provided by third-party developers to render inside a _Slot_.
 
-Slot and Fill use WordPress' API, and you can learn more about how they work in [the Slot Fill documentation.](https://github.com/WordPress/gutenberg/tree/trunk/packages/components/src/slot-fill).
+Slot and Fill use WordPress' API, and you can learn more about how they work in [the Slot and Fill documentation.](https://github.com/WordPress/gutenberg/tree/trunk/packages/components/src/slot-fill).
 
 ## Basic Usage
 
@@ -47,4 +47,4 @@ In the above example, we're using `registerPlugin`. This plugin will take our co
 You use `registerPlugin` to feed in your plugin namespace, your component `render`, and the scope of your `registerPlugin`. The value of scope should always be `woocommerce-checkout`.
 
 ## Requirements
-For this to work, your script must be enqueued after Cart and Checkout. You can follow the `IntegrationInterface` documentation to enqueue your script (TBD).
+For this to work, your script must be enqueued after Cart and Checkout. You can follow the [IntegrationInterface](https://github.com/woocommerce/woocommerce-gutenberg-products-block/blob/50f9b3e8d012f425d318908cc13d9c601d97bd68/docs/extensibility/integration-interface.md) documentation for enqueueing your script.
