@@ -8,6 +8,7 @@
 	background: transparent;
 	border: none;
 	color: inherit;
+	cursor: pointer;
 	display: flex;
 	font-weight: 400;
 	padding: em($gap-small) em($gap-smaller);
@@ -39,6 +40,7 @@
 	font-size: 1rem;
 
 	.components-modal__content {
+		box-sizing: border-box;
 		display: flex;
 		flex-direction: column;
 		height: 100%;
