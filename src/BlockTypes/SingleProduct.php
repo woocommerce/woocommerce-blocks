@@ -19,7 +19,7 @@ class SingleProduct extends AbstractBlock {
 	 */
 	protected function enqueue_assets( array $attributes ) {
 		parent::enqueue_assets( $attributes );
-		$product_id = $attributes['productId'];
+		$product_id = intval( $attributes['productId'] );
 		$this->hydrate_from_api( $product_id );
 	}
 
