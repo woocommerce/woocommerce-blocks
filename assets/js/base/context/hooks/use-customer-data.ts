@@ -95,6 +95,39 @@ export const useCustomerData = (): {
 	// Store values last sent to the server in a ref to avoid requests unless important fields are changed.
 	const previousCustomerData = useRef< CustomerData >( customerData );
 
+	// Need to sync shipping and billing address from wp/store/cart to local state, because `customerData` is
+	// populated before the wc/store/cart is hydrated. We only need to run this the first time they're out of sync
+	// because subsequent times will be the result of this effect or client side changes.
+	const [ hasCustomerDataSynced, setHasCustomerDataSynced ] = useState<
+		boolean
+	>( false );
+
+	useEffect( () => {
+		if (
+			! hasCustomerDataSynced &&
+			( ! isShallowEqual(
+				customerData.billingData,
+				initialBillingAddress
+			) ||
+				! isShallowEqual(
+					customerData.shippingAddress,
+					initialShippingAddress
+				) )
+		) {
+			setHasCustomerDataSynced( true );
+			const newCustomerData = {
+				shippingAddress: initialShippingAddress,
+				billingData: initialBillingAddress,
+			};
+			previousCustomerData.current = newCustomerData;
+			setCustomerData( newCustomerData );
+		}
+	}, [
+		initialBillingAddress,
+		initialShippingAddress,
+		customerData,
+		hasCustomerDataSynced,
+	] );
 	// Debounce updates to the customerData state so it's not triggered excessively.
 	const [ debouncedCustomerData ] = useDebounce( customerData, 1000, {
 		// Default equalityFn is prevData === newData.
