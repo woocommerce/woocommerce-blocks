@@ -1,4 +1,5 @@
-.wc-block-mini-cart {
+.wc-block-mini-cart.wp-block-woocommerce-mini-cart {
+	background-color: transparent !important;
 	display: flex;
 	justify-content: flex-end;
 }

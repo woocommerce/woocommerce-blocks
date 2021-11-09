@@ -26,9 +26,7 @@ const settings = {
 	supports: {
 		html: false,
 		multiple: false,
-		color: {
-			background: false,
-		},
+		color: true,
 	},
 	example: {
 		attributes: {
@@ -40,6 +38,10 @@ const settings = {
 			type: 'boolean',
 			default: false,
 			save: false,
+		},
+		transparentButton: {
+			type: 'boolean',
+			default: true,
 		},
 	},
 

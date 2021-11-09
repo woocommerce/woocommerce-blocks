@@ -29,11 +29,8 @@ import { PaymentMethodDataProvider } from '@woocommerce/base-context';
  */
 import CartLineItemsTable from '../cart/cart-line-items-table';
 import QuantityBadge from './quantity-badge';
+import { Attributes } from './types';
 import './style.scss';
-
-interface MiniCartBlockProps {
-	isInitiallyOpen?: boolean;
-}
 
 const PaymentMethodIconsElement = (): JSX.Element => {
 	const { paymentMethods } = usePaymentMethods();
@@ -46,7 +43,9 @@ const PaymentMethodIconsElement = (): JSX.Element => {
 
 const MiniCartBlock = ( {
 	isInitiallyOpen = false,
-}: MiniCartBlockProps ): JSX.Element => {
+	backgroundColor,
+	style,
+}: Attributes ): JSX.Element => {
 	const {
 		cartItems,
 		cartItemsCount,
@@ -191,7 +190,12 @@ const MiniCartBlock = ( {
 						getCurrencyFromPriceResponse( cartTotals )
 					) }
 				</span>
-				<QuantityBadge count={ cartItemsCount } />
+				<QuantityBadge
+					count={ cartItemsCount }
+					backgroundColor={
+						backgroundColor || style?.color?.background
+					}
+				/>
 			</button>
 			<Drawer
 				className={ classNames(

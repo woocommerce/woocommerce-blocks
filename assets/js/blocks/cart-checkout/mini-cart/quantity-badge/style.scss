@@ -30,3 +30,8 @@
 	width: em(24px);
 	stroke: currentColor;
 }
+
+.wc-block-mini-cart__badge.has-background {
+	box-shadow: none;
+	color: inherit;
+}

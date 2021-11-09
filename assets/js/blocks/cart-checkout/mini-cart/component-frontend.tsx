@@ -31,6 +31,8 @@ const renderMiniCartFrontend = () => {
 		getProps: ( el: HTMLElement ) => ( {
 			isDataOutdated: el.dataset.isDataOutdated,
 			isInitiallyOpen: el.dataset.isInitiallyOpen === 'true',
+			backgroundColor: el.dataset.backgroundColor,
+			style: el.dataset.style ? JSON.parse( el.dataset.style ) : {},
 		} ),
 	} );
 

@@ -226,19 +226,30 @@ class MiniCart extends AbstractBlock {
 			$cart_contents_total += $cart->get_subtotal_tax();
 		}
 
-		$classes = 'wc-block-mini-cart wp-block-woocommerce-mini-cart';
+		$classes    = 'wc-block-mini-cart wp-block-woocommerce-mini-cart';
+		$style      = '';
+		$bg_classes = '';
+		$bg_style   = '';
 
 		if ( ! empty( $attributes['textColor'] ) ) {
 			$classes .= sprintf(
-				' has-%s-color',
+				' has-%s-color has-text-color',
 				esc_attr( $attributes['textColor'] )
 			);
+		} elseif ( ! empty( $attributes['style']['color']['text'] ) ) {
+			$style   .= 'color: ' . esc_attr( $attributes['style']['color']['text'] ) . ';';
+			$classes .= ' has-text-color';
 		}
 
-		if ( ! empty( $attributes['style']['color']['text'] ) ) {
-			$style = 'color: ' . esc_attr( $attributes['style']['color']['text'] );
-		} else {
-			$style = '';
+		if ( ! empty( $attributes['backgroundColor'] ) ) {
+			$classes    .= ' has-background';
+			$bg_classes .= sprintf(
+				' has-%s-background-color has-background',
+				esc_attr( $attributes['backgroundColor'] )
+			);
+		} elseif ( ! empty( $attributes['style']['color']['background'] ) ) {
+			$bg_style   .= 'background-color: ' . esc_attr( $attributes['style']['color']['background'] ) . ';';
+			$bg_classes .= ' has-background';
 		}
 
 		$aria_label = sprintf(
@@ -277,17 +288,17 @@ class MiniCart extends AbstractBlock {
 		$button_html = '<span class="wc-block-mini-cart__amount">' . wp_strip_all_tags( wc_price( $cart_contents_total ) ) . '</span>
 		<span class="wc-block-mini-cart__quantity-badge">
 			' . $icon . '
-			<span class="wc-block-mini-cart__badge">' . $cart_contents_count . '</span>
+			<span class="wc-block-mini-cart__badge ' . $bg_classes . '" style="' . $bg_style . '">' . $cart_contents_count . '</span>
 		</span>';
 
 		if ( is_cart() || is_checkout() ) {
 			return '<div class="' . $classes . '" style="' . $style . '">
-				<button class="wc-block-mini-cart__button" aria-label="' . $aria_label . '" disabled>' . $button_html . '</button>
+				<button class="wc-block-mini-cart__button ' . $bg_classes . '" aria-label="' . $aria_label . '" style="' . $bg_style . '" disabled>' . $button_html . '</button>
 			</div>';
 		}
 
 		return '<div class="' . $classes . '" style="' . $style . '">
-			<button class="wc-block-mini-cart__button" aria-label="' . $aria_label . '">' . $button_html . '</button>
+			<button class="wc-block-mini-cart__button ' . $bg_classes . '" aria-label="' . $aria_label . '" style="' . $bg_style . '">' . $button_html . '</button>
 			<div class="wc-block-mini-cart__drawer is-loading is-mobile wc-block-components-drawer__screen-overlay wc-block-components-drawer__screen-overlay--is-hidden" aria-hidden="true">
 				<div class="components-modal__frame wc-block-components-drawer">
 					<div class="components-modal__content">
