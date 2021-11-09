@@ -178,7 +178,7 @@ const getMainConfig = ( options = {} ) => {
 			// i18n system relies on the hash of the filename, so changing that frequently would result in broken
 			// translations which we must avoid.
 			// @see https://github.com/Automattic/jetpack/pull/20926
-			chunkFilename: `[name]-frontend${ fileSuffix }.js?ver=[contenthash]`,
+			chunkFilename: `[name]${ fileSuffix }.js?ver=[contenthash]`,
 			filename: `[name]${ fileSuffix }.js`,
 			library: [ 'wc', 'blocks', '[name]' ],
 			libraryTarget: 'this',
