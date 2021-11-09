@@ -18,8 +18,12 @@ import {
 	previewCart,
 	previewSavedPaymentMethods,
 } from '@woocommerce/resource-previews';
-import { PanelBody, ToggleControl, Notice } from '@wordpress/components';
-import { CheckboxControl } from '@woocommerce/blocks-checkout';
+import {
+	PanelBody,
+	ToggleControl,
+	Notice,
+	CheckboxControl,
+} from '@wordpress/components';
 import { CartCheckoutFeedbackPrompt } from '@woocommerce/editor-components/feedback-prompt';
 import { CHECKOUT_PAGE_ID } from '@woocommerce/block-settings';
 import { createInterpolateElement } from '@wordpress/element';
