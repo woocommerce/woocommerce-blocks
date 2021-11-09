@@ -98,37 +98,40 @@ describe( `${ block.name } Block`, () => {
 			} );
 
 			it( 'shows empty cart when changing the view', async () => {
+				await page.waitForSelector( block.class ).catch( () => {
+					throw new Error(
+						`Could not find an element with class ${ block.class } - the block probably did not load correctly.`
+					);
+				} );
 				await selectBlockByName( block.slug );
-				await expect( page ).toMatchElement(
+				await clickBlockToolbarButton( 'Switch view', 'ariaLabel' );
+				const emptyCartButton = await page.waitForXPath(
+					`//button[contains(@class,'components-dropdown-menu__menu-item')]//span[contains(text(), 'Empty Cart')]`
+				);
+				// Clicks the element by running the JavaScript HTMLElement.click() method on the given element in the
+				// browser context, which fires a click event. It doesn't scroll the page or move the mouse and works
+				// even if the element is off-screen.
+				await emptyCartButton.evaluate( ( b ) => b.click() );
+
+				await expect( page ).not.toMatchElement(
 					`${ emptyCartBlock.class }[hidden]`
 				);
-				await clickBlockToolbarButton( 'Switch view' );
-				const emptyCartButton = await page.waitForXPath(
-					`//button[contains(@class,'components-dropdown-menu__menu-item') and contains(text(),'Empty Cart')]`
-				);
-				await emptyCartButton.evaluate( ( element ) => {
-					document.querySelector( 'html' ).style.scrollBehavior =
-						'auto';
-					element.scrollIntoView();
-				} );
-				await emptyCartButton.click();
-				await expect( page ).not.toMatchElement(
-					`${ block.class } .wp-block-woocommerce-empty-cart-block[hidden]`
+				await expect( page ).toMatchElement(
+					`${ filledCartBlock.class }[hidden]`
 				);
 
 				await selectBlockByName( block.slug );
-				await clickBlockToolbarButton( 'Switch view' );
+				await clickBlockToolbarButton( 'Switch view', 'ariaLabel' );
 				const filledCartButton = await page.waitForXPath(
-					`//button[contains(@class,'components-dropdown-menu__menu-item') and contains(text(),'Filled Cart')]`
+					`//button[contains(@class,'components-dropdown-menu__menu-item')]//span[contains(text(), 'Filled Cart')]`
 				);
-				await filledCartButton.evaluate( ( element ) => {
-					document.querySelector( 'html' ).style.scrollBehavior =
-						'auto';
-					element.scrollIntoView();
-				} );
-				await filledCartButton.click();
+				await filledCartButton.evaluate( ( b ) => b.click() );
+
 				await expect( page ).toMatchElement(
 					`${ emptyCartBlock.class }[hidden]`
+				);
+				await expect( page ).not.toMatchElement(
+					`${ filledCartBlock.class }[hidden]`
 				);
 			} );
 
