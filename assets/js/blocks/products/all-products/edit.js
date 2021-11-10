@@ -149,7 +149,7 @@ class Editor extends Component {
 						{
 							icon: 'edit',
 							title: __(
-								'Rearrange inner blocks',
+								'Edit inner product layout',
 								'woo-gutenberg-products-block'
 							),
 							onClick: () => this.togglePreview(),
