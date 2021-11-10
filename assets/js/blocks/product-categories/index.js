@@ -13,6 +13,7 @@ import './style.scss';
 import Block from './block.js';
 
 registerBlockType( 'woocommerce/product-categories', {
+	apiVersion: 2,
 	title: __( 'Product Categories List', 'woo-gutenberg-products-block' ),
 	icon: {
 		src: <Icon srcElement={ list } />,
@@ -27,6 +28,14 @@ registerBlockType( 'woocommerce/product-categories', {
 	supports: {
 		align: [ 'wide', 'full' ],
 		html: false,
+		color: {
+			background: false,
+			link: true,
+		},
+		typography: {
+			fontSize: true,
+			lineHeight: true,
+		},
 	},
 	example: {
 		attributes: {
