@@ -20,6 +20,7 @@ import { isObject } from '@woocommerce/types';
 import './style.scss';
 import { constrainRangeSliderValues } from './constrain-range-slider-values';
 import FilterSubmitButton from '../filter-submit-button';
+import { withMaxValueLimit, withMinValueLimit } from './utils';
 
 /**
  * Price slider component.
@@ -212,9 +213,27 @@ const PriceSlider = ( {
 			) {
 				return;
 			}
+
 			const isMin = event.target.classList.contains(
 				'wc-block-price-filter__amount--min'
 			);
+
+			// When user insert in the minimum price input a value greater than the max price,
+			// we update the value of the slider to 0 - max.
+			if ( minPriceInput > maxPriceInput ) {
+				const values = constrainRangeSliderValues(
+					[ 0, maxPriceInput ],
+					null,
+					null,
+					stepValue,
+					isMin
+				);
+				return onChange( [
+					parseInt( values[ 0 ], 10 ),
+					parseInt( values[ 1 ], 10 ),
+				] );
+			}
+
 			const values = constrainRangeSliderValues(
 				[ minPriceInput, maxPriceInput ],
 				null,
@@ -322,6 +341,12 @@ const PriceSlider = ( {
 								'Filter products by minimum price',
 								'woo-gutenberg-products-block'
 							) }
+							allowNegative={ false }
+							isAllowed={ withMinValueLimit( {
+								minConstraint,
+								minorUnit: currency.minorUnit,
+								currentMaxValue: maxPriceInput,
+							} ) }
 							onValueChange={ ( value ) => {
 								if ( value === minPriceInput ) {
 									return;
@@ -340,6 +365,10 @@ const PriceSlider = ( {
 								'Filter products by maximum price',
 								'woo-gutenberg-products-block'
 							) }
+							isAllowed={ withMaxValueLimit( {
+								maxConstraint,
+								minorUnit: currency.minorUnit,
+							} ) }
 							onValueChange={ ( value ) => {
 								if ( value === maxPriceInput ) {
 									return;
