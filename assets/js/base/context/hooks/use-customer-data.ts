@@ -82,8 +82,10 @@ export const useCustomerData = (): {
 	const {
 		billingAddress: initialBillingAddress,
 		shippingAddress: initialShippingAddress,
+		cartIsHydrated,
 	}: Omit< CustomerData, 'billingData' > & {
 		billingAddress: CartResponseBillingAddress;
+		cartIsHydrated: boolean;
 	} = useStoreCart();
 
 	// State of customer data is tracked here from this point, using the initial values from the useStoreCart hook.
@@ -103,29 +105,18 @@ export const useCustomerData = (): {
 	>( false );
 
 	useEffect( () => {
-		if (
-			! hasCustomerDataSynced &&
-			( ! isShallowEqual(
-				customerData.billingData,
-				initialBillingAddress
-			) ||
-				! isShallowEqual(
-					customerData.shippingAddress,
-					initialShippingAddress
-				) )
-		) {
-			setHasCustomerDataSynced( true );
+		if ( cartIsHydrated && ! hasCustomerDataSynced ) {
 			const newCustomerData = {
 				shippingAddress: initialShippingAddress,
 				billingData: initialBillingAddress,
 			};
-			previousCustomerData.current = newCustomerData;
 			setCustomerData( newCustomerData );
+			setHasCustomerDataSynced( true );
 		}
 	}, [
+		cartIsHydrated,
 		initialBillingAddress,
 		initialShippingAddress,
-		customerData,
 		hasCustomerDataSynced,
 	] );
 	// Debounce updates to the customerData state so it's not triggered excessively.

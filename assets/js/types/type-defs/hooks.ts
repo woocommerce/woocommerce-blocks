@@ -51,4 +51,5 @@ export interface StoreCart {
 	cartHasCalculatedShipping: boolean;
 	paymentRequirements: Array< string >;
 	receiveCart: ( cart: CartResponse ) => void;
+	cartIsHydrated: boolean;
 }
