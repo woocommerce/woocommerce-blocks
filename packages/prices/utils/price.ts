@@ -134,7 +134,12 @@ export const formatPrice = (
 	}
 
 	const currency: Currency = getCurrency( currencyData );
-	const formattedPrice: number = priceInt / 10 ** currency.minorUnit;
+	let formattedPrice: unknown = priceInt / 10 ** currency.minorUnit;
+	if ( formattedPrice === 0 ) {
+		formattedPrice = `0${
+			currency.decimalSeparator
+		}${ formattedPrice.toString().repeat( currency.minorUnit ) }`;
+	}
 	const formattedValue: string =
 		currency.prefix + formattedPrice + currency.suffix;
 
