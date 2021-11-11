@@ -268,13 +268,6 @@ class MiniCart extends AbstractBlock {
 			$cart_contents_count,
 			wp_strip_all_tags( wc_price( $cart_contents_total ) )
 		);
-
-		if ( is_cart() || is_checkout() ) {
-			return '<div class="wc-block-mini-cart">
-				<button class="wc-block-mini-cart__button" aria-label="' . $aria_label . '" disabled>' . $button_text . '</button>
-			</div>';
-		}
-
 		$title = sprintf(
 			/* translators: %d is the count of items in the cart. */
 			_n(
