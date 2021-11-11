@@ -222,14 +222,18 @@ class MiniCart extends AbstractBlock {
 		$cart_contents       = $cart->get_cart();
 		$cart_contents_total = $cart->get_subtotal();
 
+		$global_style = gutenberg_get_global_styles( array(), $this->get_block_type() );
+
 		if ( $cart->display_prices_including_tax() ) {
 			$cart_contents_total += $cart->get_subtotal_tax();
 		}
 
-		$classes    = 'wc-block-mini-cart wp-block-woocommerce-mini-cart';
-		$style      = '';
-		$bg_classes = '';
-		$bg_style   = '';
+		$classes        = 'wc-block-mini-cart wp-block-woocommerce-mini-cart';
+		$style          = '';
+		$badge_classes  = '';
+		$badge_style    = '';
+		$button_classes = '';
+		$button_style   = '';
 
 		if ( ! empty( $attributes['textColor'] ) ) {
 			$classes .= sprintf(
@@ -243,13 +247,32 @@ class MiniCart extends AbstractBlock {
 
 		if ( ! empty( $attributes['backgroundColor'] ) ) {
 			$classes    .= ' has-background';
-			$bg_classes .= sprintf(
+			$badge_classes .= sprintf(
 				' has-%s-background-color has-background',
 				esc_attr( $attributes['backgroundColor'] )
 			);
 		} elseif ( ! empty( $attributes['style']['color']['background'] ) ) {
-			$bg_style   .= 'background-color: ' . esc_attr( $attributes['style']['color']['background'] ) . ';';
-			$bg_classes .= ' has-background';
+			$badge_style   .= 'background-color: ' . esc_attr( $attributes['style']['color']['background'] ) . ';';
+			$badge_classes .= ' has-background';
+		}
+
+		if ( false === strpos( $badge_classes, 'has-background' ) && ! empty( $global_style['color']['background'] ) ) {
+			$background = explode( ':', $global_style['color']['background'] );
+			if ( 'var' === $background[0] ) {
+				$background_class = explode( '|', $background[1] );
+				$badge_classes .= sprintf(
+					' has-%s-background-color has-background',
+					esc_attr( $background_class['2'] )
+				);
+			} else {
+				$badge_style   .= 'background-color: ' . esc_attr( $background[0] ) . ';';
+				$badge_classes .= ' has-background';
+			}
+		}
+
+		if( isset( $attributes['transparentButton'] ) && ! $attributes['transparentButton'] ) {
+			$button_classes = $badge_classes;
+			$button_style   = $badge_style;
 		}
 
 		$aria_label = sprintf(
@@ -288,17 +311,17 @@ class MiniCart extends AbstractBlock {
 		$button_html = '<span class="wc-block-mini-cart__amount">' . wp_strip_all_tags( wc_price( $cart_contents_total ) ) . '</span>
 		<span class="wc-block-mini-cart__quantity-badge">
 			' . $icon . '
-			<span class="wc-block-mini-cart__badge ' . $bg_classes . '" style="' . $bg_style . '">' . $cart_contents_count . '</span>
+			<span class="wc-block-mini-cart__badge ' . $badge_classes . '" style="' . $badge_style . '">' . $cart_contents_count . '</span>
 		</span>';
 
 		if ( is_cart() || is_checkout() ) {
 			return '<div class="' . $classes . '" style="' . $style . '">
-				<button class="wc-block-mini-cart__button ' . $bg_classes . '" aria-label="' . $aria_label . '" style="' . $bg_style . '" disabled>' . $button_html . '</button>
+				<button class="wc-block-mini-cart__button ' . $button_classes . '" aria-label="' . $aria_label . '" style="' . $button_style . '" disabled>' . $button_html . '</button>
 			</div>';
 		}
 
 		return '<div class="' . $classes . '" style="' . $style . '">
-			<button class="wc-block-mini-cart__button ' . $bg_classes . '" aria-label="' . $aria_label . '" style="' . $bg_style . '">' . $button_html . '</button>
+			<button class="wc-block-mini-cart__button ' . $button_classes . '" aria-label="' . $aria_label . '" style="' . $button_style . '">' . $button_html . '</button>
 			<div class="wc-block-mini-cart__drawer is-loading is-mobile wc-block-components-drawer__screen-overlay wc-block-components-drawer__screen-overlay--is-hidden" aria-hidden="true">
 				<div class="components-modal__frame wc-block-components-drawer">
 					<div class="components-modal__content">
