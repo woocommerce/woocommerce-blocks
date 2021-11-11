@@ -82,11 +82,17 @@ export const useCustomerData = (): {
 	const {
 		billingAddress: initialBillingAddress,
 		shippingAddress: initialShippingAddress,
-		cartIsHydrated,
 	}: Omit< CustomerData, 'billingData' > & {
 		billingAddress: CartResponseBillingAddress;
-		cartIsHydrated: boolean;
 	} = useStoreCart();
+
+	// We need to store a ref to the shipping and billing addresses in order to re-populate the local state
+	// here with the hydrated values once they change. The refs keep track of the changing values of the addresses
+	// as they are hydrated.
+	const billingDataRef = useRef( {} );
+	const shippingAddressRef = useRef( {} );
+	billingDataRef.current = initialBillingAddress;
+	shippingAddressRef.current = initialShippingAddress;
 
 	// State of customer data is tracked here from this point, using the initial values from the useStoreCart hook.
 	const [ customerData, setCustomerData ] = useState< CustomerData >( {
@@ -94,31 +100,29 @@ export const useCustomerData = (): {
 		shippingAddress: initialShippingAddress,
 	} );
 
-	// Store values last sent to the server in a ref to avoid requests unless important fields are changed.
-	const previousCustomerData = useRef< CustomerData >( customerData );
-
-	// Need to sync shipping and billing address from wp/store/cart to local state, because `customerData` is
-	// populated before the wc/store/cart is hydrated. We only need to run this the first time they're out of sync
-	// because subsequent times will be the result of this effect or client side changes.
+	// We only want to update the local state once, otherwise the data on the checkout page gets overwritten
+	// with the initial state of the addresses here
 	const [ hasCustomerDataSynced, setHasCustomerDataSynced ] = useState<
 		boolean
 	>( false );
 
-	useEffect( () => {
-		if ( cartIsHydrated && ! hasCustomerDataSynced ) {
-			const newCustomerData = {
-				shippingAddress: initialShippingAddress,
-				billingData: initialBillingAddress,
-			};
-			setCustomerData( newCustomerData );
-			setHasCustomerDataSynced( true );
-		}
-	}, [
-		cartIsHydrated,
-		initialBillingAddress,
-		initialShippingAddress,
-		hasCustomerDataSynced,
-	] );
+	if (
+		! hasCustomerDataSynced &&
+		shouldUpdateAddressStore(
+			billingDataRef.current,
+			customerData.billingData
+		)
+	) {
+		setCustomerData( {
+			billingData: billingDataRef.current,
+			shippingAddress: shippingAddressRef.current,
+		} );
+		setHasCustomerDataSynced( true );
+	}
+
+	// Store values last sent to the server in a ref to avoid requests unless important fields are changed.
+	const previousCustomerData = useRef< CustomerData >( customerData );
+
 	// Debounce updates to the customerData state so it's not triggered excessively.
 	const [ debouncedCustomerData ] = useDebounce( customerData, 1000, {
 		// Default equalityFn is prevData === newData.

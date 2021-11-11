@@ -116,7 +116,6 @@ export const defaultCartData: StoreCart = {
 	paymentRequirements: EMPTY_PAYMENT_REQUIREMENTS,
 	receiveCart: () => undefined,
 	extensions: EMPTY_EXTENSIONS,
-	cartIsHydrated: false,
 };
 
 /**
@@ -139,7 +138,6 @@ export const useStoreCart = (
 	const previewCart = previewData?.previewCart;
 	const { shouldSelect } = options;
 	const currentResults = useRef();
-	const cartIsHydrated = useRef< boolean >( false );
 
 	// This will keep track of jQuery and DOM events triggered by other blocks
 	// or components and will invalidate the store resolution accordingly.
@@ -176,7 +174,6 @@ export const useStoreCart = (
 						typeof previewCart?.receiveCart === 'function'
 							? previewCart.receiveCart
 							: () => undefined,
-					cartIsHydrated: true,
 				};
 			}
 
@@ -187,13 +184,6 @@ export const useStoreCart = (
 			const cartIsLoading = ! store.hasFinishedResolution(
 				'getCartData'
 			);
-
-			if (
-				! cartIsHydrated.current &&
-				store.hasFinishedResolution( 'getCartData' )
-			) {
-				cartIsHydrated.current = true;
-			}
 
 			const shippingRatesLoading = store.isCustomerDataUpdating();
 			const { receiveCart } = dispatch( storeKey );
@@ -241,7 +231,6 @@ export const useStoreCart = (
 				cartHasCalculatedShipping: cartData.hasCalculatedShipping,
 				paymentRequirements: cartData.paymentRequirements,
 				receiveCart,
-				cartIsHydrated: cartIsHydrated.current,
 			};
 		},
 		[ shouldSelect ]
