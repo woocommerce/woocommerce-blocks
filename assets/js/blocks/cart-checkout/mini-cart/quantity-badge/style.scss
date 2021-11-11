@@ -6,9 +6,8 @@
 .wc-block-mini-cart__badge {
 	align-items: center;
 	background: #fff;
-	border: 0.1em solid;
+	border: 0.15em solid;
 	border-radius: 1em;
-	box-shadow: 0 0 0 0.1em #fff;
 	box-sizing: border-box;
 	color: #000;
 	display: flex;
@@ -29,9 +28,4 @@
 	height: em(24px);
 	width: em(24px);
 	stroke: currentColor;
-}
-
-.wc-block-mini-cart__badge.has-background {
-	box-shadow: none;
-	color: inherit;
 }

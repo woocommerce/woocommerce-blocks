@@ -2,6 +2,10 @@
 	background-color: transparent !important;
 	display: flex;
 	justify-content: flex-end;
+
+	&.transparent-button .wc-block-mini-cart__button {
+		background: transparent !important;
+	}
 }
 
 .wc-block-mini-cart__button {

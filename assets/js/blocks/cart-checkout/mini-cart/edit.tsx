@@ -27,52 +27,56 @@ const MiniCartBlock = ( {
 	attributes,
 	setAttributes,
 }: Props ): ReactElement => {
-	const { transparentButton, backgroundColor, style } = attributes;
+	const { transparentButton, backgroundColor, textColor, style } = attributes;
 	const blockProps = useBlockProps( {
-		className: 'wc-block-mini-cart wp-block-woocommerce-mini-cart',
+		className: classnames(
+			'wc-block-mini-cart wp-block-woocommerce-mini-cart',
+			{
+				'transparent-button': transparentButton,
+			}
+		),
 	} );
 
 	const backgroundClass = getColorClassName(
 		'background-color',
 		backgroundColor
 	);
+	const textColorClass = getColorClassName( 'color', textColor );
 
 	const productCount = 0;
 	const productTotal = 0;
 
 	return (
 		<div { ...blockProps }>
-			{ backgroundClass || style?.color?.background ? (
-				<InspectorControls>
-					<PanelBody
-						title={ __(
-							'Button style',
+			<InspectorControls>
+				<PanelBody
+					title={ __(
+						'Button style',
+						'woo-gutenberg-products-block'
+					) }
+				>
+					<ToggleControl
+						label={ __(
+							'Use transparent button',
 							'woo-gutenberg-products-block'
 						) }
-					>
-						<ToggleControl
-							label={ __(
-								'Use transparent button',
-								'woo-gutenberg-products-block'
-							) }
-							checked={ transparentButton }
-							onChange={ () =>
-								setAttributes( {
-									transparentButton: ! transparentButton,
-								} )
-							}
-						/>
-					</PanelBody>
-				</InspectorControls>
-			) : null }
+						checked={ transparentButton }
+						onChange={ () =>
+							setAttributes( {
+								transparentButton: ! transparentButton,
+							} )
+						}
+					/>
+				</PanelBody>
+			</InspectorControls>
 			<button
 				className={ classnames( 'wc-block-mini-cart__button', {
-					[ backgroundClass ]: backgroundClass && ! transparentButton,
+					[ backgroundClass ]: backgroundClass,
+					[ textColorClass ]: textColorClass,
 				} ) }
 				style={ {
-					backgroundColor: transparentButton
-						? undefined
-						: style?.color?.background,
+					backgroundColor: style?.color?.background,
+					color: style?.color?.text,
 				} }
 			>
 				<span className="wc-block-mini-cart__amount">
@@ -83,6 +87,7 @@ const MiniCartBlock = ( {
 					backgroundColor={
 						backgroundColor || style?.color?.background
 					}
+					textColor={ textColor || style?.color?.text }
 				/>
 			</button>
 			<CartCheckoutCompatibilityNotice blockName="mini-cart" />

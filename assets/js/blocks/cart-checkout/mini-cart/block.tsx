@@ -1,7 +1,7 @@
 /**
  * External dependencies
  */
-import classNames from 'classnames';
+import classnames from 'classnames';
 import { __, _n, sprintf } from '@wordpress/i18n';
 import { useState, useEffect, useRef } from '@wordpress/element';
 import {
@@ -23,6 +23,7 @@ import PaymentMethodIcons from '@woocommerce/base-components/cart-checkout/payme
 import { CART_URL, CHECKOUT_URL } from '@woocommerce/block-settings';
 import Button from '@woocommerce/base-components/button';
 import { PaymentMethodDataProvider } from '@woocommerce/base-context';
+import { getColorClassName } from '@wordpress/block-editor';
 
 /**
  * Internal dependencies
@@ -44,6 +45,7 @@ const PaymentMethodIconsElement = (): JSX.Element => {
 const MiniCartBlock = ( {
 	isInitiallyOpen = false,
 	backgroundColor,
+	textColor,
 	style,
 }: Attributes ): JSX.Element => {
 	const {
@@ -172,10 +174,23 @@ const MiniCartBlock = ( {
 			</>
 		);
 
+	const backgroundClass = getColorClassName(
+		'background-color',
+		backgroundColor
+	);
+	const textColorClass = getColorClassName( 'color', textColor );
+
 	return (
 		<>
 			<button
-				className="wc-block-mini-cart__button"
+				className={ classnames( 'wc-block-mini-cart__button', {
+					[ backgroundClass ]: backgroundClass,
+					[ textColorClass ]: textColorClass,
+				} ) }
+				style={ {
+					backgroundColor: style?.color?.background,
+					color: style?.color?.text,
+				} }
 				onClick={ () => {
 					if ( ! isOpen ) {
 						setIsOpen( true );
@@ -195,10 +210,11 @@ const MiniCartBlock = ( {
 					backgroundColor={
 						backgroundColor || style?.color?.background
 					}
+					textColor={ textColor || style?.color?.text }
 				/>
 			</button>
 			<Drawer
-				className={ classNames(
+				className={ classnames(
 					'wc-block-mini-cart__drawer',
 					'is-mobile',
 					{

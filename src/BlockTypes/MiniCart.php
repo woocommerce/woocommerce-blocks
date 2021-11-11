@@ -226,12 +226,13 @@ class MiniCart extends AbstractBlock {
 			$cart_contents_total += $cart->get_subtotal_tax();
 		}
 
-		$classes        = 'wc-block-mini-cart wp-block-woocommerce-mini-cart';
-		$style          = '';
-		$badge_classes  = '';
-		$badge_style    = '';
-		$button_classes = '';
-		$button_style   = '';
+		$wrapper_classes = 'wc-block-mini-cart wp-block-woocommerce-mini-cart';
+		$classes         = '';
+		$style           = '';
+
+		if ( ! isset( $attributes['transparentButton'] ) || $attributes['transparentButton'] ) {
+			$wrapper_classes .= ' transparent-button';
+		}
 
 		if ( ! empty( $attributes['textColor'] ) ) {
 			$classes .= sprintf(
@@ -244,18 +245,13 @@ class MiniCart extends AbstractBlock {
 		}
 
 		if ( ! empty( $attributes['backgroundColor'] ) ) {
-			$badge_classes .= sprintf(
+			$classes .= sprintf(
 				' has-%s-background-color has-background',
 				esc_attr( $attributes['backgroundColor'] )
 			);
 		} elseif ( ! empty( $attributes['style']['color']['background'] ) ) {
-			$badge_style   .= 'background-color: ' . esc_attr( $attributes['style']['color']['background'] ) . ';';
-			$badge_classes .= ' has-background';
-		}
-
-		if ( isset( $attributes['transparentButton'] ) && ! $attributes['transparentButton'] ) {
-			$button_classes = $badge_classes;
-			$button_style   = $badge_style;
+			$style   .= 'background-color: ' . esc_attr( $attributes['style']['color']['background'] ) . ';';
+			$classes .= ' has-background';
 		}
 
 		$aria_label = sprintf(
@@ -294,17 +290,17 @@ class MiniCart extends AbstractBlock {
 		$button_html = '<span class="wc-block-mini-cart__amount">' . wp_strip_all_tags( wc_price( $cart_contents_total ) ) . '</span>
 		<span class="wc-block-mini-cart__quantity-badge">
 			' . $icon . '
-			<span class="wc-block-mini-cart__badge ' . $badge_classes . '" style="' . $badge_style . '">' . $cart_contents_count . '</span>
+			<span class="wc-block-mini-cart__badge ' . $classes . '" style="' . $style . '">' . $cart_contents_count . '</span>
 		</span>';
 
 		if ( is_cart() || is_checkout() ) {
 			return '<div class="' . $classes . '" style="' . $style . '">
-				<button class="wc-block-mini-cart__button ' . $button_classes . '" aria-label="' . $aria_label . '" style="' . $button_style . '" disabled>' . $button_html . '</button>
+				<button class="wc-block-mini-cart__button ' . $classes . '" aria-label="' . $aria_label . '" style="' . $style . '" disabled>' . $button_html . '</button>
 			</div>';
 		}
 
-		return '<div class="' . $classes . '" style="' . $style . '">
-			<button class="wc-block-mini-cart__button ' . $button_classes . '" aria-label="' . $aria_label . '" style="' . $button_style . '">' . $button_html . '</button>
+		return '<div class="' . $wrapper_classes . '">
+			<button class="wc-block-mini-cart__button ' . $classes . '" aria-label="' . $aria_label . '" style="' . $style . '">' . $button_html . '</button>
 			<div class="wc-block-mini-cart__drawer is-loading is-mobile wc-block-components-drawer__screen-overlay wc-block-components-drawer__screen-overlay--is-hidden" aria-hidden="true">
 				<div class="components-modal__frame wc-block-components-drawer">
 					<div class="components-modal__content">
@@ -370,5 +366,23 @@ class MiniCart extends AbstractBlock {
 				</div>
 			</td>
 		</tr>';
+	}
+
+	/**
+	 * Get the supports array for this block type.
+	 *
+	 * @see $this->register_block_type()
+	 * @return string;
+	 */
+	protected function get_block_type_supports() {
+		return array_merge(
+			parent::get_block_type_supports(),
+			array(
+				'html'                   => false,
+				'multiple'               => false,
+				'color'                  => true,
+				'__experimentalSelector' => '.wc-block-mini-cart__button, .wc-block-mini-cart__badge',
+			)
+		);
 	}
 }

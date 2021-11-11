@@ -27,6 +27,8 @@ const settings = {
 		html: false,
 		multiple: false,
 		color: true,
+		__experimentalSelector:
+			'.wc-block-mini-cart__button, .wc-block-mini-cart__badge',
 	},
 	example: {
 		attributes: {
