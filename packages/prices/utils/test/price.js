@@ -8,7 +8,7 @@ import {
 	getCurrency,
 } from '../price';
 
-describe( 'testInteger', () => {
+describe( 'The getIntegerValue() function', () => {
 	test.each`
 		value           | thousandSeparator | minorUnit | expected
 		${ 1 }          | ${ ',' }          | ${ 2 }    | ${ '0' }
@@ -27,7 +27,7 @@ describe( 'testInteger', () => {
 		${ 1234567890 } | ${ ',' }          | ${ 0 }    | ${ '1,234,567,890' }
 		${ 1234567890 } | ${ '.' }          | ${ 0 }    | ${ '1.234.567.890' }
 	`(
-		'correctly returns integer value given "$value", "$thousandSeparator" thousandSeparator and "$minorUnit" minorUnit',
+		"correctly returns the integer value given {thousandSeparator: '$thousandSeparator', minorUnit: '$minorUnit', value: '$value'}",
 		( { value, thousandSeparator, minorUnit, expected } ) => {
 			const formattedPrice = getIntegerValue(
 				value,
@@ -40,7 +40,7 @@ describe( 'testInteger', () => {
 	);
 } );
 
-describe( 'testDecimal', () => {
+describe( 'The getDecimalValue() function', () => {
 	test.each`
 		value          | minorUnit | expected
 		${ 0 }         | ${ 0 }    | ${ '' }
@@ -55,7 +55,7 @@ describe( 'testDecimal', () => {
 		${ 123456789 } | ${ 5 }    | ${ '56789' }
 		${ 123456789 } | ${ 6 }    | ${ '456789' }
 	`(
-		'correctly returns integer value given "$value" and "$minorUnit" minorUnit',
+		"correctly returns decimal value given {minorUnit: '$minorUnit' , value:'$value' }",
 		( { value, minorUnit, expected } ) => {
 			const formattedPrice = getDecimalValue( value, minorUnit );
 
@@ -64,7 +64,7 @@ describe( 'testDecimal', () => {
 	);
 } );
 
-describe( 'formatPrice', () => {
+describe( 'The getDecimalValue() formatPrice', () => {
 	test.each`
 		value            | prefix     | suffix    | thousandSeparator | decimalSeparator | minorUnit | expected
 		${ 1000 }        | ${ '€' }   | ${ '' }   | ${ '.' }          | ${ ',' }         | ${ 2 }    | ${ '€10,00' }
@@ -80,7 +80,7 @@ describe( 'formatPrice', () => {
 		${ null }        | ${ '€' }   | ${ '' }   | ${ '.' }          | ${ ',' }         | ${ 2 }    | ${ '' }
 		${ undefined }   | ${ '€' }   | ${ '' }   | ${ '.' }          | ${ ',' }         | ${ 2 }    | ${ '' }
 	`(
-		'correctly formats price given "$value", "$prefix" prefix, "$suffix" suffix, "$thousandSeparator" thousandSeparator, "$decimalSeparator" decimalSeparator and "$minorUnit" minorUnit',
+		"correctly returns decimal value given { thousandSeparator: '$thousandSeparator', decimalSeparator: '$decimalSeparator', minorUnit: '$minorUnit', prefix: '$prefix', suffix: '$suffix', value: '$value' }",
 		( {
 			value,
 			prefix,
@@ -113,7 +113,7 @@ describe( 'formatPrice', () => {
 		${ null }      | ${ '' }
 		${ undefined } | ${ '' }
 	`(
-		'correctly formats price given "$value" only',
+		"correctly formats price given { value: '$value' }",
 		( { value, expected } ) => {
 			const formattedPrice = formatPrice( value );
 
