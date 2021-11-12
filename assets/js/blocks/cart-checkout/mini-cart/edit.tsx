@@ -17,8 +17,15 @@ import classnames from 'classnames';
  * Internal dependencies
  */
 import QuantityBadge from './quantity-badge';
-import { Attributes } from './types';
-export interface Props {
+
+interface Attributes {
+	isInitiallyOpen?: boolean;
+	transparentButton: boolean;
+	colorClassNames?: string;
+	style?: Record< string, Record< string, string > >;
+}
+
+interface Props {
 	attributes: Attributes;
 	setAttributes: ( attributes: Record< string, unknown > ) => void;
 }
@@ -84,10 +91,14 @@ const MiniCartBlock = ( {
 				</span>
 				<QuantityBadge
 					count={ productCount }
-					backgroundColor={
-						backgroundColor || style?.color?.background
-					}
-					textColor={ textColor || style?.color?.text }
+					colorClassNames={ classnames( {
+						[ backgroundClass ]: backgroundClass,
+						[ textColorClass ]: textColorClass,
+						'has-background':
+							backgroundClass || style?.color?.background,
+						'has-text-color': textColorClass || style?.color?.text,
+					} ) }
+					style={ style }
 				/>
 			</button>
 			<CartCheckoutCompatibilityNotice blockName="mini-cart" />

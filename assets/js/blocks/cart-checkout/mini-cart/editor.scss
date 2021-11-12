@@ -1,0 +1,5 @@
+// We need this style because the preset color classes in the block editor
+// comes with !important suffix that overrides our styling.
+.editor-styles-wrapper .wp-block-woocommerce-mini-cart.wc-block-mini-cart {
+	background-color: transparent !important;
+}

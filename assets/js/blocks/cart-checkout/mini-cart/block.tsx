@@ -23,14 +23,12 @@ import PaymentMethodIcons from '@woocommerce/base-components/cart-checkout/payme
 import { CART_URL, CHECKOUT_URL } from '@woocommerce/block-settings';
 import Button from '@woocommerce/base-components/button';
 import { PaymentMethodDataProvider } from '@woocommerce/base-context';
-import { getColorClassName } from '@wordpress/block-editor';
 
 /**
  * Internal dependencies
  */
 import CartLineItemsTable from '../cart/cart-line-items-table';
 import QuantityBadge from './quantity-badge';
-import { Attributes } from './types';
 import './style.scss';
 
 const PaymentMethodIconsElement = (): JSX.Element => {
@@ -42,12 +40,18 @@ const PaymentMethodIconsElement = (): JSX.Element => {
 	);
 };
 
+interface Props {
+	isInitiallyOpen?: boolean;
+	transparentButton: boolean;
+	colorClassNames?: string;
+	style?: Record< string, Record< string, string > >;
+}
+
 const MiniCartBlock = ( {
 	isInitiallyOpen = false,
-	backgroundColor,
-	textColor,
+	colorClassNames,
 	style,
-}: Attributes ): JSX.Element => {
+}: Props ): JSX.Element => {
 	const {
 		cartItems,
 		cartItemsCount,
@@ -174,19 +178,10 @@ const MiniCartBlock = ( {
 			</>
 		);
 
-	const backgroundClass = getColorClassName(
-		'background-color',
-		backgroundColor
-	);
-	const textColorClass = getColorClassName( 'color', textColor );
-
 	return (
 		<>
 			<button
-				className={ classnames( 'wc-block-mini-cart__button', {
-					[ backgroundClass ]: backgroundClass,
-					[ textColorClass ]: textColorClass,
-				} ) }
+				className={ `wc-block-mini-cart__button ${ colorClassNames }` }
 				style={ {
 					backgroundColor: style?.color?.background,
 					color: style?.color?.text,
@@ -207,10 +202,7 @@ const MiniCartBlock = ( {
 				</span>
 				<QuantityBadge
 					count={ cartItemsCount }
-					backgroundColor={
-						backgroundColor || style?.color?.background
-					}
-					textColor={ textColor || style?.color?.text }
+					{ ...{ colorClassNames, style } }
 				/>
 			</button>
 			<Drawer

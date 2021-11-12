@@ -2,8 +2,6 @@
  * External dependencies
  */
 import { Icon, miniCart } from '@woocommerce/icons';
-import classnames from 'classnames';
-import { getColorClassName } from '@wordpress/block-editor';
 
 /**
  * Internal dependencies
@@ -12,30 +10,15 @@ import './style.scss';
 
 interface Props {
 	count: number;
-	backgroundColor?: string;
-	textColor?: string;
+	colorClassNames?: string;
+	style?: Record< string, Record< string, string > >;
 }
-
-const isColorValue = ( color?: string ) => {
-	if ( ! color ) return false;
-	return (
-		color.startsWith( 'rgb(' ) ||
-		color.startsWith( 'rgba(' ) ||
-		color.startsWith( '#' ) ||
-		color.startsWith( 'hsl(' )
-	);
-};
 
 const QuantityBadge = ( {
 	count,
-	backgroundColor,
-	textColor,
+	colorClassNames,
+	style,
 }: Props ): JSX.Element => {
-	const colorClass = getColorClassName( 'color', textColor );
-	const backgroundClass = getColorClassName(
-		'background-color',
-		backgroundColor
-	);
 	return (
 		<span className="wc-block-mini-cart__quantity-badge">
 			<Icon
@@ -44,16 +27,10 @@ const QuantityBadge = ( {
 				srcElement={ miniCart }
 			/>
 			<span
-				className={ classnames( 'wc-block-mini-cart__badge', {
-					[ colorClass ]: colorClass,
-					[ backgroundClass ]: backgroundClass,
-					'has-background': backgroundClass,
-				} ) }
+				className={ `wc-block-mini-cart__badge ${ colorClassNames }` }
 				style={ {
-					backgroundColor: isColorValue( backgroundColor )
-						? backgroundColor
-						: undefined,
-					color: isColorValue( textColor ) ? textColor : undefined,
+					color: style?.color?.text,
+					backgroundColor: style?.color?.background,
 				} }
 			>
 				{ count }
