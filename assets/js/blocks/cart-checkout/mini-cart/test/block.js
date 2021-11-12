@@ -50,7 +50,7 @@ const mockFullCart = () => {
 	} );
 };
 
-describe( 'Testing cart', () => {
+describe( 'Testing Mini Cart', () => {
 	beforeEach( async () => {
 		mockFullCart();
 		// need to clear the store resolution state between tests.
