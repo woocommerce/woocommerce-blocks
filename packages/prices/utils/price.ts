@@ -134,12 +134,16 @@ export const formatPrice = (
 	}
 
 	const currency: Currency = getCurrency( currencyData );
-	let formattedPrice: unknown = priceInt / 10 ** currency.minorUnit;
-	if ( formattedPrice === 0 && currency.minorUnit > 0 ) {
-		formattedPrice = `0${
-			currency.decimalSeparator
-		}${ formattedPrice.toString().repeat( currency.minorUnit ) }`;
-	}
+	const integerValue: string = ( priceInt / 10 ** currency.minorUnit )
+		.toString()
+		.replace( /\B(?=(\d{3})+(?!\d))/g, currency.thousandSeparator );
+	const decimalValue: RegExpMatchArray | null = priceInt
+		.toString()
+		.match( new RegExp( `[0-9]{${ currency.minorUnit }}$` ) );
+	const formattedPrice: string =
+		currency.minorUnit > 0
+			? integerValue + currency.decimalSeparator + decimalValue
+			: integerValue;
 	const formattedValue: string =
 		currency.prefix + formattedPrice + currency.suffix;
 
