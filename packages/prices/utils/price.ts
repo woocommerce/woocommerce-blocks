@@ -9,6 +9,8 @@ import type {
 	SymbolPosition,
 } from '@woocommerce/types';
 
+type decimalType = string | RegExpMatchArray | null;
+
 /**
  * Get currency prefix.
  */
@@ -114,6 +116,47 @@ export const getCurrency = (
 };
 
 /**
+ * Get the integer value from the decimal price.
+ *
+ * @param {number} priceInt The price in decimals.
+ * @param {string} thousandSeparator The thousand separator.
+ * @param {number} minorUnit The number of decimals to display.
+ * @return {string} The extracted integer value.
+ */
+export const getIntegerValue = (
+	priceInt: number,
+	thousandSeparator: string,
+	minorUnit: number
+) => {
+	return Math.floor( priceInt / 10 ** minorUnit )
+		.toString()
+		.replace( /\B(?=(\d{3})+(?!\d))/g, thousandSeparator );
+};
+
+/**
+ * Get the decimal value from the decimal price.
+ *
+ * @param {number} priceInt The price in decimals.
+ * @param {number} minorUnit The number of decimals to display.
+ * @return {string} The extracted decimal value.
+ */
+export const getDecimalValue = ( priceInt: number, minorUnit: number ) => {
+	if ( minorUnit === 0 ) return '';
+
+	const decimalValue: decimalType = priceInt
+		.toString()
+		.match( new RegExp( `[0-9]{${ minorUnit }}$` ) );
+
+	if ( decimalValue === null && minorUnit > 0 ) {
+		return '0'.repeat( minorUnit );
+	}
+
+	if ( Array.isArray( decimalValue ) ) {
+		return decimalValue[ 0 ];
+	}
+};
+
+/**
  * Format a price, provided using the smallest unit of the currency, as a
  * decimal complete with currency symbols using current store settings.
  */
@@ -135,22 +178,16 @@ export const formatPrice = (
 
 	const currency: Currency = getCurrency( currencyData );
 
-	const integerValue: string = Math.floor(
-		priceInt / 10 ** currency.minorUnit
-	)
-		.toString()
-		.replace( /\B(?=(\d{3})+(?!\d))/g, currency.thousandSeparator );
+	const integerValue: string = getIntegerValue(
+		priceInt,
+		currency.thousandSeparator,
+		currency.minorUnit
+	);
 
-	let decimalValue:
-		| RegExpMatchArray
-		| null
-		| string = priceInt
-		.toString()
-		.match( new RegExp( `[0-9]{${ currency.minorUnit }}$` ) );
-
-	if ( decimalValue === null && currency.minorUnit > 0 ) {
-		decimalValue = '0'.repeat( currency.minorUnit );
-	}
+	const decimalValue: string | undefined = getDecimalValue(
+		priceInt,
+		currency.minorUnit
+	);
 
 	const formattedPrice: string =
 		currency.minorUnit > 0
