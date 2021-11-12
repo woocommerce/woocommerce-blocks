@@ -112,9 +112,9 @@ describe( 'Testing Mini Cart', () => {
 
 		mockFullCart();
 		// eslint-disable-next-line no-undef
-		const removedFromCartEvent = new Event( 'wc-blocks_added_to_cart' );
+		const addedToCartEvent = new Event( 'wc-blocks_added_to_cart' );
 		act( () => {
-			document.body.dispatchEvent( removedFromCartEvent );
+			document.body.dispatchEvent( addedToCartEvent );
 		} );
 
 		await waitForElementToBeRemoved( () =>
