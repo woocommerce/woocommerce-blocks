@@ -3,9 +3,15 @@
  */
 import classnames from 'classnames';
 import { __, _n, sprintf } from '@wordpress/i18n';
-import { RawHTML, useState, useEffect } from '@wordpress/element';
 import {
-	renderFrontend,
+	RawHTML,
+	useState,
+	useEffect,
+	useRef,
+	unmountComponentAtNode,
+} from '@wordpress/element';
+import {
+	renderBlock,
 	translateJQueryEventToNative,
 } from '@woocommerce/base-utils';
 import { useStoreCart } from '@woocommerce/base-context/hooks';
@@ -45,14 +51,37 @@ const MiniCartBlock = ( {
 		isInitiallyOpen
 	);
 
+	const contentsRef = useRef();
+
 	useEffect( () => {
-		if ( isOpen ) {
-			renderFrontend( {
-				selector: '.wc-block-mini-cart-contents',
-				Block: MiniCartContentsBlock,
-			} );
+		if ( contentsRef.current instanceof Node ) {
+			const container = contentsRef.current.querySelector(
+				'.wc-block-mini-cart-contents'
+			);
+			if ( isOpen ) {
+				renderBlock( {
+					Block: MiniCartContentsBlock,
+					container,
+					props: {
+						testProp: 'test',
+					},
+				} );
+			} else {
+				unmountComponentAtNode( container );
+			}
 		}
 	}, [ isOpen ] );
+
+	useEffect( () => {
+		return () => {
+			if ( contentsRef.current instanceof Node ) {
+				const container = contentsRef.current.querySelector(
+					'.wc-block-mini-cart-contents'
+				);
+				unmountComponentAtNode( container );
+			}
+		};
+	} );
 
 	useEffect( () => {
 		const openMiniCart = () => {
@@ -156,7 +185,9 @@ const MiniCartBlock = ( {
 				} }
 				slideIn={ ! skipSlideIn }
 			>
-				<RawHTML>{ contents }</RawHTML>
+				<div ref={ contentsRef }>
+					<RawHTML>{ contents }</RawHTML>
+				</div>
 			</Drawer>
 		</>
 	);

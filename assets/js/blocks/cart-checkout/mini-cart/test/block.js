@@ -98,10 +98,12 @@ describe( 'Testing Mini Cart', () => {
 		} );
 
 		await waitForElementToBeRemoved( () =>
-			screen.queryByLabelText( /3 items/i )
+			screen.queryByLabelText( /3 items in cart/i )
 		);
 		await waitFor( () =>
-			expect( screen.getByLabelText( /0 items/i ) ).toBeInTheDocument()
+			expect(
+				screen.getByLabelText( /0 items in cart/i )
+			).toBeInTheDocument()
 		);
 	} );
 
@@ -118,10 +120,12 @@ describe( 'Testing Mini Cart', () => {
 		} );
 
 		await waitForElementToBeRemoved( () =>
-			screen.queryByLabelText( /0 items/i )
+			screen.queryByLabelText( /0 items in cart/i )
 		);
 		await waitFor( () =>
-			expect( screen.getAllByLabelText( /3 items/i ).length > 0 )
+			expect(
+				screen.getByLabelText( /3 items in cart/i )
+			).toBeInTheDocument()
 		);
 	} );
 } );

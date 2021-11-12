@@ -53,15 +53,45 @@ const renderBlockInContainers = ( {
 		};
 		el.classList.remove( 'is-loading' );
 
-		render(
-			<BlockErrorBoundary { ...errorBoundaryProps }>
-				<Suspense fallback={ <div className="wc-block-placeholder" /> }>
-					<Block { ...props } attributes={ attributes } />
-				</Suspense>
-			</BlockErrorBoundary>,
-			el
-		);
+		renderBlock( {
+			Block,
+			container: el,
+			props,
+			attributes,
+			errorBoundaryProps,
+		} );
 	} );
+};
+
+/**
+ * Renders a block component in a single `container` node.
+ *
+ * @param {Object}    props                         Render props.
+ * @param {Function}  props.Block                   React component to use as a
+ *                                                  replacement.
+ * @param {Node}      props.container               Container to replace with
+ *                                                  the Block component.
+ * @param {Object}    [props.attributes]            Attributes object for the
+ *                                                  block.
+ * @param {Object}    [props.props]                 Props object for the block.
+ * @param {Object}    [props.errorBoundaryProps]    Props object for the error
+ *                                                  boundary.
+ */
+export const renderBlock = ( {
+	Block,
+	container,
+	attributes = {},
+	props = {},
+	errorBoundaryProps = {},
+} ) => {
+	render(
+		<BlockErrorBoundary { ...errorBoundaryProps }>
+			<Suspense fallback={ <div className="wc-block-placeholder" /> }>
+				<Block { ...props } attributes={ attributes } />
+			</Suspense>
+		</BlockErrorBoundary>,
+		container
+	);
 };
 
 /**
