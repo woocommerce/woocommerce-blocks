@@ -47,7 +47,6 @@ const MiniCartBlock = ( {
 
 	useEffect( () => {
 		if ( isOpen ) {
-			// @todo replace with a `wc-blocks_render_blocks_frontend` event
 			renderFrontend( {
 				selector: '.wc-block-mini-cart-contents',
 				Block: MiniCartContentsBlock,

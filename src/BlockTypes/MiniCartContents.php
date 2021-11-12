@@ -23,6 +23,7 @@ class MiniCartContents extends AbstractBlock {
 	 * Get the editor script handle for this block type.
 	 *
 	 * @param string $key Data to get, or default to everything.
+	 *
 	 * @return array|string;
 	 */
 	protected function get_block_type_editor_script( $key = null ) {
@@ -37,21 +38,18 @@ class MiniCartContents extends AbstractBlock {
 	/**
 	 * Get the frontend script handle for this block type.
 	 *
-	 * @see $this->register_block_type()
 	 * @param string $key Data to get, or default to everything.
-	 * @return array|string
+	 *
+	 * @return null
 	 */
 	protected function get_block_type_script( $key = null ) {
-		$script = [
-			'handle'       => 'wc-' . $this->block_name . '-block-frontend',
-			'path'         => $this->asset_api->get_block_asset_build_path( $this->block_name . '-frontend' ),
-			'dependencies' => [],
-		];
-		return $key ? $script[ $key ] : $script;
+		// The frontend script is a dependency of the Mini Cart block so it's
+		// already lazy-loaded.
+		return null;
 	}
 
 	/**
-	 * Append frontend scripts when rendering the Mini Cart block.
+	 * Render the markup for the Mini Cart contents block.
 	 *
 	 * @param array  $attributes Block attributes.
 	 * @param string $content    Block content.
@@ -59,15 +57,6 @@ class MiniCartContents extends AbstractBlock {
 	 * @return string Rendered block type output.
 	 */
 	protected function render( $attributes, $content ) {
-		return $content . $this->get_markup();
-	}
-
-	/**
-	 * Render the markup for the Mini Cart block.
-	 *
-	 * @return string The HTML markup.
-	 */
-	protected function get_markup() {
 		if ( is_admin() || WC()->is_rest_api_request() ) {
 			// In the editor we will display the placeholder, so no need to load
 			// real cart data and to print the markup.
