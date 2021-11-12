@@ -127,7 +127,7 @@ export const getIntegerValue = (
 	priceInt: number,
 	thousandSeparator: string,
 	minorUnit: number
-) => {
+): string => {
 	return Math.floor( priceInt / 10 ** minorUnit )
 		.toString()
 		.replace( /\B(?=(\d{3})+(?!\d))/g, thousandSeparator );
@@ -140,7 +140,10 @@ export const getIntegerValue = (
  * @param {number} minorUnit The number of decimals to display.
  * @return {string} The extracted decimal value.
  */
-export const getDecimalValue = ( priceInt: number, minorUnit: number ) => {
+export const getDecimalValue = (
+	priceInt: number,
+	minorUnit: number
+): string | undefined => {
 	if ( minorUnit === 0 ) return '';
 
 	const decimalValue: decimalType = priceInt
