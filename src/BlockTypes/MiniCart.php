@@ -231,7 +231,7 @@ class MiniCart extends AbstractBlock {
 		$style           = '';
 
 		if ( ! isset( $attributes['transparentButton'] ) || $attributes['transparentButton'] ) {
-			$wrapper_classes .= ' transparent-button';
+			$wrapper_classes .= ' is-transparent';
 		}
 
 		if ( ! empty( $attributes['textColor'] ) ) {

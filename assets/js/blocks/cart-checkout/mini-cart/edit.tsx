@@ -32,7 +32,7 @@ const MiniCartBlock = ( {
 		className: classnames(
 			'wc-block-mini-cart wp-block-woocommerce-mini-cart',
 			{
-				'transparent-button': transparentButton,
+				'is-transparent': transparentButton,
 			}
 		),
 	} );
