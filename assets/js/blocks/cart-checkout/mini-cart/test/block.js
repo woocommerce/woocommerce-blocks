@@ -80,9 +80,7 @@ describe( 'Testing Mini Cart', () => {
 		await waitFor( () => expect( fetchMock ).toHaveBeenCalled() );
 		fireEvent.click( screen.getByLabelText( /items/i ) );
 
-		await waitFor( () =>
-			expect( screen.getByText( /Cart is empty/i ) ).toBeInTheDocument()
-		);
+		expect( screen.getByText( /Cart is empty/i ) ).toBeInTheDocument();
 		expect( fetchMock ).toHaveBeenCalledTimes( 1 );
 	} );
 
