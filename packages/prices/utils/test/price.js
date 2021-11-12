@@ -18,7 +18,7 @@ describe( 'formatPrice', () => {
 		${ null }        | ${ '€' }   | ${ '' }  | ${ '.' }          | ${ ',' }         | ${ 2 }    | ${ '' }
 		${ undefined }   | ${ '€' }   | ${ '' }  | ${ '.' }          | ${ ',' }         | ${ 2 }    | ${ '' }
 	`(
-		'correctly formats price given "$value", "$prefix" prefix, and "$suffix" suffix',
+		'correctly formats price given "$value", "$prefix" prefix, "$suffix" suffix, "$thousandSeparator" thousandSeparator, "$decimalSeparator" decimalSeparator and "$minorUnit" minorUnit',
 		( {
 			value,
 			prefix,
