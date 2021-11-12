@@ -23,7 +23,10 @@ import { defaultCartState } from '../../../../data/default-states';
 
 const MiniCartBlock = ( props ) => (
 	<SlotFillProvider>
-		<Block { ...props } />
+		<Block
+			contents='<div class="wc-block-mini-cart-contents"></div>'
+			{ ...props }
+		/>
 	</SlotFillProvider>
 );
 
@@ -77,7 +80,9 @@ describe( 'Testing cart', () => {
 		await waitFor( () => expect( fetchMock ).toHaveBeenCalled() );
 		fireEvent.click( screen.getByLabelText( /items/i ) );
 
-		expect( screen.getByText( /Cart is empty/i ) ).toBeInTheDocument();
+		await waitFor( () =>
+			expect( screen.getByText( /Cart is empty/i ) ).toBeInTheDocument()
+		);
 		expect( fetchMock ).toHaveBeenCalledTimes( 1 );
 	} );
 
