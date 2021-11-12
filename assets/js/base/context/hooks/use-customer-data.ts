@@ -11,9 +11,13 @@ import {
 	pluckAddress,
 	pluckEmail,
 } from '@woocommerce/base-utils';
-import type {
+import {
 	CartResponseBillingAddress,
 	CartResponseShippingAddress,
+	objectHasProp,
+	BillingAddressShippingAddress,
+	CartBillingAddress,
+	CartShippingAddress,
 } from '@woocommerce/types';
 
 declare type CustomerData = {
@@ -89,8 +93,8 @@ export const useCustomerData = (): {
 	// We need to store a ref to the shipping and billing addresses in order to re-populate the local state
 	// here with the hydrated values once they change. The refs keep track of the changing values of the addresses
 	// as they are hydrated.
-	const billingDataRef = useRef( {} );
-	const shippingAddressRef = useRef( {} );
+	const billingDataRef = useRef( initialBillingAddress );
+	const shippingAddressRef = useRef( initialShippingAddress );
 	billingDataRef.current = initialBillingAddress;
 	shippingAddressRef.current = initialShippingAddress;
 
@@ -109,8 +113,8 @@ export const useCustomerData = (): {
 	if (
 		! hasCustomerDataSynced &&
 		shouldUpdateAddressStore(
-			billingDataRef.current,
-			customerData.billingData
+			customerData.shippingAddress,
+			shippingAddressRef.current
 		)
 	) {
 		setCustomerData( {
@@ -174,23 +178,46 @@ export const useCustomerData = (): {
 	 */
 	useEffect( () => {
 		// Only push updates when enough fields are populated.
+		const shouldUpdateBillingAddress = shouldUpdateAddressStore(
+			previousCustomerData.current.billingData,
+			debouncedCustomerData.billingData
+		);
+
+		const shouldUpdateShippingAddress = shouldUpdateAddressStore(
+			previousCustomerData.current.shippingAddress,
+			debouncedCustomerData.shippingAddress
+		);
+
+		if ( ! shouldUpdateBillingAddress && ! shouldUpdateShippingAddress ) {
+			return;
+		}
+
+		const customerDataToUpdate:
+			| Partial< BillingAddressShippingAddress >
+			| Record<
+					keyof BillingAddressShippingAddress,
+					CartBillingAddress | CartShippingAddress
+			  > = {};
+
+		if ( shouldUpdateBillingAddress ) {
+			customerDataToUpdate.billing_address =
+				debouncedCustomerData.billingData;
+		}
+		if ( shouldUpdateShippingAddress ) {
+			customerDataToUpdate.shipping_address =
+				debouncedCustomerData.shippingAddress;
+		}
+
 		if (
-			! shouldUpdateAddressStore(
-				previousCustomerData.current.billingData,
-				debouncedCustomerData.billingData
-			) &&
-			! shouldUpdateAddressStore(
-				previousCustomerData.current.shippingAddress,
-				debouncedCustomerData.shippingAddress
-			)
+			! objectHasProp( customerDataToUpdate, 'billing_address' ) &&
+			! objectHasProp( customerDataToUpdate, 'shipping_address' )
 		) {
 			return;
 		}
 		previousCustomerData.current = debouncedCustomerData;
-		updateCustomerData( {
-			billing_address: debouncedCustomerData.billingData,
-			shipping_address: debouncedCustomerData.shippingAddress,
-		} )
+		updateCustomerData(
+			customerDataToUpdate as Partial< BillingAddressShippingAddress >
+		)
 			.then( () => {
 				removeNotice( 'checkout' );
 			} )
