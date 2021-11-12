@@ -19,10 +19,24 @@ describe( 'formatPrice', () => {
 		${ undefined }   | ${ '€' }   | ${ '' }  | ${ '.' }          | ${ ',' }         | ${ 2 }    | ${ '' }
 	`(
 		'correctly formats price given "$value", "$prefix" prefix, and "$suffix" suffix',
-		( { value, prefix, suffix, expected } ) => {
+		( {
+			value,
+			prefix,
+			suffix,
+			thousandSeparator,
+			decimalSeparator,
+			minorUnit,
+			expected,
+		} ) => {
 			const formattedPrice = formatPrice(
 				value,
-				getCurrency( { prefix, suffix } )
+				getCurrency( {
+					prefix,
+					suffix,
+					thousandSeparator,
+					decimalSeparator,
+					minorUnit,
+				} )
 			);
 
 			expect( formattedPrice ).toEqual( expected );
