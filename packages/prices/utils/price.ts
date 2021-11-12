@@ -135,7 +135,9 @@ export const formatPrice = (
 
 	const currency: Currency = getCurrency( currencyData );
 
-	const integerValue: string = ( priceInt / 10 ** currency.minorUnit )
+	const integerValue: string = Math.floor(
+		priceInt / 10 ** currency.minorUnit
+	)
 		.toString()
 		.replace( /\B(?=(\d{3})+(?!\d))/g, currency.thousandSeparator );
 
