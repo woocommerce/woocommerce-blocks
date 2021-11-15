@@ -1,7 +1,7 @@
 /**
  * External dependencies
  */
-import { useMemo } from '@wordpress/element';
+import { useMemo, useRef } from '@wordpress/element';
 import { __, sprintf } from '@wordpress/i18n';
 import { CURRENT_USER_IS_ADMIN } from '@woocommerce/settings';
 import deprecated from '@wordpress/deprecated';
@@ -179,9 +179,16 @@ export const __experimentalApplyCheckoutFilter = < T >( {
 	/** Function that needs to return true when the filtered value is passed in order for the filter to be applied. */
 	validation?: ( value: T ) => true | Error;
 } ): T => {
-	return useMemo( () => {
-		const filters = getCheckoutFilters( filterName );
+	const cachedValues = useRef< Record< string, T > >( {} );
 
+	return useMemo( () => {
+		if (
+			! shouldReRunFilters( filterName, arg, extensions ) &&
+			cachedValues.current[ filterName ]
+		) {
+			return cachedValues.current[ filterName ];
+		}
+		const filters = getCheckoutFilters( filterName );
 		let value = defaultValue;
 		filters.forEach( ( filter ) => {
 			try {
@@ -209,6 +216,7 @@ export const __experimentalApplyCheckoutFilter = < T >( {
 				}
 			}
 		} );
+		cachedValues.current[ filterName ] = value;
 		return value;
 	}, [ filterName, defaultValue, extensions, arg, validation ] );
 };
