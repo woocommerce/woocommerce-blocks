@@ -100,7 +100,10 @@ class MiniCart extends AbstractBlock {
 
 		foreach ( $payment_methods as $payment_method ) {
 			$payment_method_script = $this->get_script_from_handle( $payment_method );
-			$this->append_script_and_deps_src( $payment_method_script );
+
+			if ( ! is_null( $payment_method_script ) ) {
+				$this->append_script_and_deps_src( $payment_method_script );
+			}
 		}
 
 		$this->scripts_to_lazy_load['wc-block-mini-cart-component-frontend'] = array(
@@ -157,16 +160,20 @@ class MiniCart extends AbstractBlock {
 	 */
 	protected function append_script_and_deps_src( $script ) {
 		$wp_scripts = wp_scripts();
+
 		// This script and its dependencies have already been appended.
-		if ( array_key_exists( $script->handle, $this->scripts_to_lazy_load ) ) {
+		if ( ! $script || array_key_exists( $script->handle, $this->scripts_to_lazy_load ) ) {
 			return;
 		}
 
-		if ( count( $script->deps ) > 0 ) {
+		if ( count( $script->deps ) ) {
 			foreach ( $script->deps as $dep ) {
 				if ( ! array_key_exists( $dep, $this->scripts_to_lazy_load ) ) {
 					$dep_script = $this->get_script_from_handle( $dep );
-					$this->append_script_and_deps_src( $dep_script );
+
+					if ( ! is_null( $dep_script ) ) {
+						$this->append_script_and_deps_src( $dep_script );
+					}
 				}
 			}
 		}
