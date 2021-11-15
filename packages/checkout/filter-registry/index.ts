@@ -6,7 +6,7 @@ import { __, sprintf } from '@wordpress/i18n';
 import { CURRENT_USER_IS_ADMIN } from '@woocommerce/settings';
 import deprecated from '@wordpress/deprecated';
 import isShallowEqual, { ComparableObject } from '@wordpress/is-shallow-equal';
-import { isObject, objectHasProp } from '@woocommerce/types';
+import { isNull, isObject, objectHasProp } from '@woocommerce/types';
 
 /**
  * A function that always return true.
@@ -90,7 +90,10 @@ const getCheckoutFilters = ( filterName: string ): CheckoutFilterFunction[] => {
 
 const cachedFilterRuns: Record<
 	string,
-	Record< 'arg' | 'extensions', unknown >
+	{
+		arg?: CheckoutFilterArguments;
+		extensions?: Record< string, unknown > | null;
+	} & Record< string, unknown >
 > = {};
 
 const updatePreviousFilterRun = (
@@ -103,26 +106,43 @@ const updatePreviousFilterRun = (
 		extensions,
 	};
 };
+
+/**
+ * A function that checks the shallow equality of an object's members.
+ */
 const checkMembersShallowEqual = <
-	T extends Record< string, unknown >,
-	U extends Record< string, unknown >
+	T extends Record< string, unknown > | null,
+	U extends Record< string, unknown > | null
 >(
 	a: T,
 	b: U
-) =>
-	isObject( a ) &&
-	isObject( b ) &&
-	Object.keys( a ).length === Object.keys( b ).length &&
-	Object.keys( a ).every( ( aKey ) => {
-		return (
-			objectHasProp( b, aKey ) &&
-			isShallowEqual(
-				a[ aKey ] as ComparableObject,
-				b[ aKey ] as ComparableObject
-			)
-		);
-	} );
+) => {
+	// For the case when extensions is null across runs.
+	if ( isNull( a ) && isNull( b ) ) {
+		return true;
+	}
 
+	return (
+		isObject( a ) &&
+		isObject( b ) &&
+		Object.keys( a ).length === Object.keys( b ).length &&
+		Object.keys( a ).every( ( aKey ) => {
+			return (
+				objectHasProp( b, aKey ) &&
+				isShallowEqual(
+					a[ aKey ] as ComparableObject,
+					b[ aKey ] as ComparableObject
+				)
+			);
+		} )
+	);
+};
+
+/**
+ * A function that checks the arg and extensions that were passed the last time a specific filter ran.
+ * If they are shallowly equal, then return the cached value and prevent third party code running. If they are
+ * different then the third party filters are run and the result is cached.
+ */
 const shouldReRunFilters = (
 	filterName: string,
 	arg: CheckoutFilterArguments,
@@ -136,8 +156,8 @@ const shouldReRunFilters = (
 		return true;
 	}
 	const {
-		arg: previousArg = {},
-		extensions: previousExtensions = {},
+		arg: previousArg = {} as Record< string, unknown >,
+		extensions: previousExtensions = {} as Record< string, unknown >,
 	} = previousFilterRun;
 
 	// Check length of arg and previousArg, and that all keys are present in both arg and previousArg
