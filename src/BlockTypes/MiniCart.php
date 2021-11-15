@@ -255,7 +255,7 @@ class MiniCart extends AbstractBlock {
 				</clipPath>
 			</defs>
 		</svg>';
-		$button_html = '<span class="wc-block-mini-cart__amount">' . wp_strip_all_tags( wc_price( $cart_contents_total ) ) . '</span>
+		$button_html = '<span class="wc-block-mini-cart__amount">' . esc_html( wp_strip_all_tags( wc_price( $cart_contents_total ) ) ) . '</span>
 		<span class="wc-block-mini-cart__quantity-badge">
 			' . $icon . '
 			<span class="wc-block-mini-cart__badge">' . $cart_contents_count . '</span>
@@ -263,18 +263,18 @@ class MiniCart extends AbstractBlock {
 
 		if ( is_cart() || is_checkout() ) {
 			return '<div class="wc-block-mini-cart">
-				<button class="wc-block-mini-cart__button" aria-label="' . $aria_label . '" disabled>' . $button_html . '</button>
+				<button class="wc-block-mini-cart__button" aria-label="' . esc_attr( $aria_label ) . '" disabled>' . $button_html . '</button>
 			</div>';
 		}
 
 		return '<div class="wc-block-mini-cart">
-			<button class="wc-block-mini-cart__button" aria-label="' . $aria_label . '">' . $button_html . '</button>
+			<button class="wc-block-mini-cart__button" aria-label="' . esc_attr( $aria_label ) . '">' . $button_html . '</button>
 			<div class="wc-block-mini-cart__drawer is-loading is-mobile wc-block-components-drawer__screen-overlay wc-block-components-drawer__screen-overlay--is-hidden" aria-hidden="true">
 				<div class="components-modal__frame wc-block-components-drawer">
 					<div class="components-modal__content">
 						<div class="components-modal__header">
 							<div class="components-modal__header-heading-container">
-								<h1 id="components-modal-header-1" class="components-modal__header-heading">' . $title . '</h1>
+								<h1 id="components-modal-header-1" class="components-modal__header-heading">' . wp_kses_post( $title ) . '</h1>
 							</div>
 						</div>'
 						. $this->get_cart_contents_markup( $cart_contents ) .
