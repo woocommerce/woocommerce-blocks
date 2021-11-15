@@ -14,7 +14,6 @@ import {
 import {
 	CartResponseBillingAddress,
 	CartResponseShippingAddress,
-	objectHasProp,
 	BillingAddressShippingAddress,
 	CartBillingAddress,
 	CartShippingAddress,
@@ -208,12 +207,6 @@ export const useCustomerData = (): {
 				debouncedCustomerData.shippingAddress;
 		}
 
-		if (
-			! objectHasProp( customerDataToUpdate, 'billing_address' ) &&
-			! objectHasProp( customerDataToUpdate, 'shipping_address' )
-		) {
-			return;
-		}
 		previousCustomerData.current = debouncedCustomerData;
 		updateCustomerData(
 			customerDataToUpdate as Partial< BillingAddressShippingAddress >
