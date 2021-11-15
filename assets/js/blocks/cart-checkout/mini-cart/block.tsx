@@ -65,9 +65,6 @@ const MiniCartBlock = ( {
 				renderBlock( {
 					Block: MiniCartContentsBlock,
 					container,
-					props: {
-						testProp: 'test',
-					},
 				} );
 			} else {
 				unmountComponentAtNode( container );
