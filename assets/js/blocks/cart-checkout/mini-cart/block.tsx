@@ -51,13 +51,16 @@ const MiniCartBlock = ( {
 		isInitiallyOpen
 	);
 
-	const contentsRef = useRef();
+	const contentsRef = useRef() as React.MutableRefObject< HTMLDivElement >;
 
 	useEffect( () => {
-		if ( contentsRef.current instanceof Node ) {
+		if ( contentsRef.current instanceof Element ) {
 			const container = contentsRef.current.querySelector(
 				'.wc-block-mini-cart-contents'
 			);
+			if ( ! container ) {
+				return;
+			}
 			if ( isOpen ) {
 				renderBlock( {
 					Block: MiniCartContentsBlock,
@@ -73,12 +76,16 @@ const MiniCartBlock = ( {
 	}, [ isOpen ] );
 
 	useEffect( () => {
+		const contentsNode = contentsRef.current as unknown;
+
 		return () => {
-			if ( contentsRef.current instanceof Node ) {
-				const container = contentsRef.current.querySelector(
+			if ( contentsNode instanceof Element ) {
+				const container = contentsNode.querySelector(
 					'.wc-block-mini-cart-contents'
 				);
-				unmountComponentAtNode( container );
+				if ( container ) {
+					unmountComponentAtNode( container );
+				}
 			}
 		};
 	} );
