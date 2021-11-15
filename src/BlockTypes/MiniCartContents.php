@@ -58,8 +58,8 @@ class MiniCartContents extends AbstractBlock {
 	 */
 	protected function render( $attributes, $content ) {
 		if ( is_admin() || WC()->is_rest_api_request() ) {
-			// In the editor we will display the placeholder, so no need to load
-			// real cart data and to print the markup.
+			// In the editor we will display the placeholder, so no need to
+			// print the markup.
 			return '';
 		}
 
