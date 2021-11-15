@@ -30,8 +30,11 @@ const INPUT_FIELD_NODE_NAMES = [
  */
 const Noninteractive = ( {
 	children,
+	style = {},
+	...props
 }: {
 	children: React.ReactChildren;
+	style?: Record< string, string >;
 } ): JSX.Element => {
 	const node = useRef( null );
 
@@ -85,7 +88,9 @@ const Noninteractive = ( {
 			style={ {
 				userSelect: 'none',
 				pointerEvents: 'none',
+				...style,
 			} }
+			{ ...props }
 		>
 			{ children }
 		</div>
