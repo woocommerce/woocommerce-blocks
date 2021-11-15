@@ -101,6 +101,26 @@ const updatePreviousFilterRun = (
 		extensions,
 	};
 };
+const checkMembersShallowEqual = <
+	T extends Record< string, unknown >,
+	U extends Record< string, unknown >
+>(
+	a: T,
+	b: U
+) =>
+	isObject( a ) &&
+	isObject( b ) &&
+	Object.keys( a ).length === Object.keys( b ).length &&
+	Object.keys( a ).every( ( aKey ) => {
+		return (
+			objectHasProp( b, aKey ) &&
+			isShallowEqual(
+				a[ aKey ] as ComparableObject,
+				b[ aKey ] as ComparableObject
+			)
+		);
+	} );
+
 /**
  * Apply a filter.
  */
