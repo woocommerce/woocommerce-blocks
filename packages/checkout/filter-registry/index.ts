@@ -86,6 +86,21 @@ const getCheckoutFilters = ( filterName: string ): CheckoutFilterFunction[] => {
 	return filters;
 };
 
+const cachedFilterRuns: Record<
+	string,
+	Record< 'arg' | 'extensions', unknown >
+> = {};
+
+const updatePreviousFilterRun = (
+	filterName: string,
+	arg: CheckoutFilterArguments,
+	extensions: Record< string, unknown > | null
+): void => {
+	cachedFilterRuns[ filterName ] = {
+		arg,
+		extensions,
+	};
+};
 /**
  * Apply a filter.
  */
