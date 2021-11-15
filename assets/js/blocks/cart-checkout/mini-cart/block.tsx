@@ -73,9 +73,8 @@ const MiniCartBlock = ( {
 	}, [ isOpen ] );
 
 	useEffect( () => {
-		const contentsNode = contentsRef.current as unknown;
-
 		return () => {
+			const contentsNode = contentsRef.current as unknown;
 			if ( contentsNode instanceof Element ) {
 				const container = contentsNode.querySelector(
 					'.wc-block-mini-cart-contents'
@@ -85,7 +84,7 @@ const MiniCartBlock = ( {
 				}
 			}
 		};
-	} );
+	}, [] );
 
 	useEffect( () => {
 		const openMiniCart = () => {
