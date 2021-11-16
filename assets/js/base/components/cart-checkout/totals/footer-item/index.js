@@ -8,6 +8,7 @@ import PropTypes from 'prop-types';
 import {
 	__experimentalApplyCheckoutFilter,
 	TotalsItem,
+	mustContain,
 } from '@woocommerce/blocks-checkout';
 import { useStoreCart } from '@woocommerce/base-context/hooks';
 import { getSetting } from '@woocommerce/settings';
@@ -37,34 +38,46 @@ const TotalsFooterItem = ( { currency, values } ) => {
 
 	const parsedTaxValue = parseInt( totalTax, 10 );
 
+	const TaxLabel = ( SHOW_TAXES && parsedTaxValue !== 0 && (
+		<p className="wc-block-components-totals-footer-item-tax">
+			{ createInterpolateElement(
+				__(
+					'Including <TaxAmount/> in taxes',
+					'woo-gutenberg-products-block'
+				),
+				{
+					TaxAmount: (
+						<FormattedMonetaryAmount
+							className="wc-block-components-totals-footer-item-tax-value"
+							currency={ currency }
+							value={ parsedTaxValue }
+						/>
+					),
+				}
+			) }
+		</p>
+	) ) || <></>;
+
+	const filteredTotalDescription = createInterpolateElement(
+		__experimentalApplyCheckoutFilter( {
+			filterName: 'totalDescription',
+			defaultValue: __( '<TaxLabel/>', 'woo-gutenberg-products-block' ),
+			extensions: cart.extensions,
+			arg: { cart },
+			validation: ( value ) => mustContain( value, '<TaxLabel/>' ),
+		} ),
+		{
+			TaxLabel,
+		}
+	);
+
 	return (
 		<TotalsItem
 			className="wc-block-components-totals-footer-item"
 			currency={ currency }
 			label={ label }
 			value={ parseInt( totalPrice, 10 ) }
-			description={
-				SHOW_TAXES &&
-				parsedTaxValue !== 0 && (
-					<p className="wc-block-components-totals-footer-item-tax">
-						{ createInterpolateElement(
-							__(
-								'Including <TaxAmount/> in taxes',
-								'woo-gutenberg-products-block'
-							),
-							{
-								TaxAmount: (
-									<FormattedMonetaryAmount
-										className="wc-block-components-totals-footer-item-tax-value"
-										currency={ currency }
-										value={ parsedTaxValue }
-									/>
-								),
-							}
-						) }
-					</p>
-				)
-			}
+			description={ filteredTotalDescription }
 		/>
 	);
 };
