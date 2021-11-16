@@ -21,7 +21,8 @@ import QuantityBadge from './quantity-badge';
 interface Attributes {
 	isInitiallyOpen?: boolean;
 	transparentButton: boolean;
-	colorClassNames?: string;
+	backgroundColor?: string;
+	textColor?: string;
 	style?: Record< string, Record< string, string > >;
 }
 
@@ -36,14 +37,15 @@ const MiniCartBlock = ( {
 }: Props ): ReactElement => {
 	const { transparentButton, backgroundColor, textColor, style } = attributes;
 	const blockProps = useBlockProps( {
-		className: classnames(
-			'wc-block-mini-cart wp-block-woocommerce-mini-cart',
-			{
-				'is-transparent': transparentButton,
-			}
-		),
+		className: classnames( 'wc-block-mini-cart', {
+			'is-transparent': transparentButton,
+		} ),
 	} );
 
+	/**
+	 * @todo Replace `getColorClassName` and manual style manipulation with
+	 * `useColorProps` once the hook is no longer experimental.
+	 */
 	const backgroundClass = getColorClassName(
 		'background-color',
 		backgroundColor
