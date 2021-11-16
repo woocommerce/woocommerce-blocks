@@ -89,14 +89,6 @@ export const useCustomerData = (): {
 		billingAddress: CartResponseBillingAddress;
 	} = useStoreCart();
 
-	// We need to store a ref to the shipping and billing addresses in order to re-populate the local state
-	// here with the hydrated values once they change. The refs keep track of the changing values of the addresses
-	// as they are hydrated.
-	const billingDataRef = useRef( initialBillingAddress );
-	const shippingAddressRef = useRef( initialShippingAddress );
-	billingDataRef.current = initialBillingAddress;
-	shippingAddressRef.current = initialShippingAddress;
-
 	// State of customer data is tracked here from this point, using the initial values from the useStoreCart hook.
 	const [ customerData, setCustomerData ] = useState< CustomerData >( {
 		billingData: initialBillingAddress,
@@ -113,12 +105,12 @@ export const useCustomerData = (): {
 		! hasCustomerDataSynced &&
 		shouldUpdateAddressStore(
 			customerData.shippingAddress,
-			shippingAddressRef.current
+			initialShippingAddress
 		)
 	) {
 		setCustomerData( {
-			billingData: billingDataRef.current,
-			shippingAddress: shippingAddressRef.current,
+			billingData: initialBillingAddress,
+			shippingAddress: initialShippingAddress,
 		} );
 		setHasCustomerDataSynced( true );
 	}
