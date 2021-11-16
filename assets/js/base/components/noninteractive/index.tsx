@@ -1,14 +1,14 @@
 /**
  * External dependencies
  */
-import { useRef, useLayoutEffect, useCallback } from '@wordpress/element';
-import { debounce } from 'lodash';
+import { useRef, useLayoutEffect } from '@wordpress/element';
 import { focus } from '@wordpress/dom';
+import { useDebouncedCallback } from 'use-debounce';
 
 /**
  * Names of control nodes which need to be disabled.
  */
-const INPUT_FIELD_NODE_NAMES = [
+const FOCUSABLE_NODE_NAMES = [
 	'BUTTON',
 	'FIELDSET',
 	'INPUT',
@@ -16,6 +16,7 @@ const INPUT_FIELD_NODE_NAMES = [
 	'OPTION',
 	'SELECT',
 	'TEXTAREA',
+	'A',
 ];
 
 /**
@@ -36,38 +37,31 @@ const Noninteractive = ( {
 	children: React.ReactChildren;
 	style?: Record< string, string >;
 } ): JSX.Element => {
-	const node = useRef( null );
+	const node = useRef< HTMLDivElement >( null );
 
-	const disable = () => {
-		if ( ! node.current ) {
-			return;
+	const disableFocus = () => {
+		if ( node.current ) {
+			focus.focusable.find( node.current ).forEach( ( focusable ) => {
+				if ( FOCUSABLE_NODE_NAMES.includes( focusable.nodeName ) ) {
+					focusable.setAttribute( 'tabindex', '-1' );
+				}
+				if ( focusable.hasAttribute( 'contenteditable' ) ) {
+					focusable.setAttribute( 'contenteditable', 'false' );
+				}
+			} );
 		}
-
-		focus.focusable.find( node.current ).forEach( ( focusable ) => {
-			if (
-				INPUT_FIELD_NODE_NAMES.includes( focusable.nodeName ) ||
-				focusable.nodeName === 'A'
-			) {
-				focusable.setAttribute( 'tabindex', '-1' );
-			}
-			if ( focusable.hasAttribute( 'contenteditable' ) ) {
-				focusable.setAttribute( 'contenteditable', 'false' );
-			}
-		} );
 	};
 
 	// Debounce re-disable since disabling process itself will incur additional mutations which should be ignored.
-	// eslint-disable-next-line react-hooks/exhaustive-deps
-	const debouncedDisable = useCallback(
-		debounce( disable, undefined, { leading: true } ),
-		[]
-	);
+	const debounced = useDebouncedCallback( disableFocus, 0, {
+		leading: true,
+	} );
 
 	useLayoutEffect( () => {
-		disable();
 		let observer: MutationObserver | undefined;
+		disableFocus();
 		if ( node.current ) {
-			observer = new window.MutationObserver( debouncedDisable );
+			observer = new window.MutationObserver( debounced );
 			observer.observe( node.current, {
 				childList: true,
 				attributes: true,
@@ -78,9 +72,9 @@ const Noninteractive = ( {
 			if ( observer ) {
 				observer.disconnect();
 			}
-			debouncedDisable.cancel();
+			debounced.cancel();
 		};
-	}, [ debouncedDisable ] );
+	}, [ debounced ] );
 
 	return (
 		<div
@@ -88,6 +82,7 @@ const Noninteractive = ( {
 			style={ {
 				userSelect: 'none',
 				pointerEvents: 'none',
+				cursor: 'normal',
 				...style,
 			} }
 			{ ...props }
