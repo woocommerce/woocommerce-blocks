@@ -48,7 +48,7 @@ const withSearchedProducts = (
 					setIsLoading( false );
 				} )
 				.catch( setErrorState );
-		}, [ selected ] );
+		}, [] );
 
 		const [ debouncedSearch ] = useDebouncedCallback(
 			( search: string ) => {
