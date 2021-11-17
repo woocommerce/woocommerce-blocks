@@ -8,7 +8,7 @@ The release pull request has been created! This checklist is a guide to follow f
   * [ ] Copy the changelog from the pull request description above into this new section
 * [ ] Update compatibility sections (if applicable). __Note:__ Do not change the stable tag or plugin version; this is automated.
   * [ ] Update _Requires at least_, _Tested up to_, and _Requires PHP_ sections at the top of `readme.txt`. Note, this should also be the latest WordPress version available at time of release.
-  * [ ] Update _Requires at least_, _Requires PHP_, _WC requires at least_, and _WC tested up to_ at the top of `woocommerce-gutenberg-products-block.php`. Note, this should include requiring the latest WP and WC versions at the time of the plugin release.
+  * [ ] Update _Requires at least_, _Requires PHP_, _WC requires at least_, and _WC tested up to_ at the top of `woocommerce-gutenberg-products-block.php`. Note, this should include requiring the latest WP version at the time of release. For _WC requires at least_, use L1 (we publicly communicate L0 but technically support L1 to provide some space for folks to update). So this means if the current version of WooCommerce core is 5.8.0, then you'll want to put 5.7.0 here.
   * [ ] If necessary, update the value of `$minimum_wp_version` at the top of the `woocommerce-gutenberg-products-block.php` file to the latest available version of WordPress.
   * [ ] If necessary, update the `phpcs.xml` file to reference the minimum WP version supported by **WooCommerce Core**. It would be this line: `<config name="minimum_supported_wp_version" value="5.6" />`.
 * [ ] Push above changes to the release branch.
@@ -28,7 +28,7 @@ Additionally, make sure to differentiate between things in the testing notes tha
 * [ ] Copy a link to the release zip you created earlier into the testing notes. To generate the link you can upload the zip as an attachment in a GitHub comment and then just copy the path (without publishing the comment).
 * [ ] Commit and push the testing docs to the release branch.
 * [ ] Smoke test built release zip using the testing instructions you created:
-  * At least one other person should test the built zip - ask a teammate to help out.
+  * At least one other person should test the built zip - ping the current Rubik porter to be this person.
   * Test in a clean environment, e.g. Jurassic.Ninja site.
   * Test existing WooCommerce Blocks content works correctly after update (no block validation errors).
   * Test to confirm blocks are available and work correctly in oldest supported WordPress version (e.g. 5.3).

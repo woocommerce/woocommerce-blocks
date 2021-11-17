@@ -118,7 +118,9 @@ class BlockTemplatesController {
 		}
 
 		$available_templates = $this->get_block_templates( array( $slug ) );
-		return ( is_array( $available_templates ) && count( $available_templates ) > 0 ) ? (object) $available_templates[0] : $template;
+		return ( is_array( $available_templates ) && count( $available_templates ) > 0 )
+			? BlockTemplateUtils::gutenberg_build_template_result_from_file( $available_templates[0], $available_templates[0]->type )
+			: $template;
 	}
 
 	/**
@@ -383,7 +385,7 @@ class BlockTemplatesController {
 		} elseif (
 			( is_product_taxonomy() && is_tax( 'product_tag' ) ) &&
 			! $this->theme_has_template( 'taxonomy-product_tag' ) &&
-			$this->default_block_template_is_available( 'taxonomy-product_tag' )
+			$this->block_template_is_available( 'taxonomy-product_tag' )
 		) {
 			add_filter( 'woocommerce_has_block_template', '__return_true', 10, 0 );
 		} elseif (
