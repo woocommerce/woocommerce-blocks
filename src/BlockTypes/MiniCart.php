@@ -234,6 +234,9 @@ class MiniCart extends AbstractBlock {
 			$wrapper_classes .= ' is-transparent';
 		}
 
+		/**
+		 * @todo refactor the logic of color class and style using StyleAttributesUtils.
+		 */
 		if ( ! empty( $attributes['textColor'] ) ) {
 			$classes .= sprintf(
 				' has-%s-color has-text-color',
