@@ -85,6 +85,14 @@ Release and roadmap notes available on the [WooCommerce Developers Blog](https:/
 
 == Changelog ==
 
+= 6.3.1 - 2021-11-17 =
+
+#### Bug Fixes
+
+- Fix 'Country is required' error on the Cart block when updating shipping address ([5129](https://github.com/woocommerce/woocommerce-gutenberg-products-block/pull/5129))
+- Fix state validation to compare state codes, and only validate if a country is given ([5132](https://github.com/woocommerce/woocommerce-gutenberg-products-block/pull/5132))
+- Make order note block removable ([5139](https://github.com/woocommerce/woocommerce-gutenberg-products-block/pull/5139))
+
 = 6.3.0 - 2021-11-16 =
 
 #### Enhancements
@@ -107,12 +115,9 @@ Release and roadmap notes available on the [WooCommerce Developers Blog](https:/
 
 #### Bug Fixes
 
-- Fix 'Country is required' error on the Cart block when updating shipping address ([5129](https://github.com/woocommerce/woocommerce-gutenberg-products-block/pull/5129))
 - Fix label alignment of the product search in the editor. ([5072](https://github.com/woocommerce/woocommerce-gutenberg-products-block/pull/5072))
 - Fix sale badge alignment on smaller screen. ([5061](https://github.com/woocommerce/woocommerce-gutenberg-products-block/pull/5061))
-- Fix state validation to compare state codes, and only validate if a country is given ([5132](https://github.com/woocommerce/woocommerce-gutenberg-products-block/pull/5132))
 - FSE: Fix missing `is_custom` property for WooCommerce block template objects. ([5067](https://github.com/woocommerce/woocommerce-gutenberg-products-block/pull/5067))
-- Make order note block removable ([5139](https://github.com/woocommerce/woocommerce-gutenberg-products-block/pull/5139))
 - Replace incorrect with correct text domain. ([5020](https://github.com/woocommerce/woocommerce-gutenberg-products-block/pull/5020))
 - Scripts using `wc-settings` or script that depend on it would be enqueued in the footer if they're enqueued in the header. ([5059](https://github.com/woocommerce/woocommerce-gutenberg-products-block/pull/5059))
 
