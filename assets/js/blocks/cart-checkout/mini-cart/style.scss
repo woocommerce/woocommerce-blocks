@@ -1,6 +1,14 @@
 .wc-block-mini-cart {
 	display: flex;
 	justify-content: flex-end;
+
+	&.align-center {
+		justify-content: center;
+	}
+
+	&.align-left {
+		justify-content: flex-start;
+	}
 }
 
 .wc-block-mini-cart__button {

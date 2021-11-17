@@ -198,15 +198,17 @@ class MiniCart extends AbstractBlock {
 	 * @return string Rendered block type output.
 	 */
 	protected function render( $attributes, $content ) {
-		return $content . $this->get_markup();
+		return $content . $this->get_markup( $attributes );
 	}
 
 	/**
 	 * Render the markup for the Mini Cart block.
 	 *
+	 * @param array $attributes Block attributes.
+	 *
 	 * @return string The HTML markup.
 	 */
-	protected function get_markup() {
+	protected function get_markup( $attributes ) {
 		if ( is_admin() || WC()->is_rest_api_request() ) {
 			// In the editor we will display the placeholder, so no need to load
 			// real cart data and to print the markup.
@@ -220,6 +222,12 @@ class MiniCart extends AbstractBlock {
 
 		if ( $cart->display_prices_including_tax() ) {
 			$cart_contents_total += $cart->get_subtotal_tax();
+		}
+
+		$wrapper_classes = 'wc-block-mini-cart';
+
+		if ( ! empty( $attributes['align'] ) ) {
+			$wrapper_classes .= ' align-' . $attributes['align'];
 		}
 
 		$aria_label = sprintf(
@@ -262,12 +270,12 @@ class MiniCart extends AbstractBlock {
 		</span>';
 
 		if ( is_cart() || is_checkout() ) {
-			return '<div class="wc-block-mini-cart">
+			return '<div class="' . $wrapper_classes . '">
 				<button class="wc-block-mini-cart__button" aria-label="' . esc_attr( $aria_label ) . '" disabled>' . $button_html . '</button>
 			</div>';
 		}
 
-		return '<div class="wc-block-mini-cart">
+		return '<div class="' . $wrapper_classes . '">
 			<button class="wc-block-mini-cart__button" aria-label="' . esc_attr( $aria_label ) . '">' . $button_html . '</button>
 			<div class="wc-block-mini-cart__drawer is-loading is-mobile wc-block-components-drawer__screen-overlay wc-block-components-drawer__screen-overlay--is-hidden" aria-hidden="true">
 				<div class="components-modal__frame wc-block-components-drawer">
