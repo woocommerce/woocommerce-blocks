@@ -1,9 +1,12 @@
 .wc-block-components-checkbox {
 	@include reset-typography();
-	align-items: flex-start;
-	display: flex;
-	position: relative;
 	margin-top: em($gap-large);
+
+	label {
+		align-items: flex-start;
+		display: flex;
+		position: relative;
+	}
 
 	.wc-block-components-checkbox__input[type="checkbox"] {
 		font-size: 1em;
@@ -14,6 +17,7 @@
 		height: em(24px);
 		width: em(24px);
 		margin: 0;
+		margin-right: $gap;
 		min-height: 24px;
 		min-width: 24px;
 		overflow: hidden;
@@ -91,7 +95,6 @@
 
 	> span,
 	.wc-block-components-checkbox__label {
-		padding-left: $gap;
 		vertical-align: middle;
 		line-height: em(24px);
 	}
