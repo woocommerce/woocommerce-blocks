@@ -187,7 +187,7 @@ class BlockTemplatesController {
 			// It would be custom if the template was modified in the editor, so if it's not custom we can load it from
 			// the filesystem.
 			if ( 'custom' !== $template_file->source ) {
-				$template = BlockTemplateUtils::gutenberg_build_template_result_from_file( $template_file, 'wp_template' );
+				$template = BlockTemplateUtils::gutenberg_build_template_result_from_file( $template_file, $template_type );
 			} else {
 				$template_file->title = BlockTemplateUtils::convert_slug_to_title( $template_file->slug );
 				$query_result[]       = $template_file;
@@ -343,7 +343,7 @@ class BlockTemplatesController {
 				'slug'        => $template_slug,
 				'id'          => 'woocommerce//' . $template_slug,
 				'path'        => $template_file,
-				'type'        => 'wp_template',
+				'type'        => $template_type,
 				'theme'       => 'woocommerce',
 				'source'      => 'woocommerce',
 				'title'       => BlockTemplateUtils::convert_slug_to_title( $template_slug ),
