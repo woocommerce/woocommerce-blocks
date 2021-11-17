@@ -30,20 +30,22 @@ const ProductDetails = ( {
 	return (
 		<ul className="wc-block-components-product-details">
 			{ details.map( ( detail ) => {
-				const className = detail.name
+				// Support both `key` and `name` props
+				detail.key = detail.key ? detail.key : detail.name || '';
+				const className = detail.key
 					? `wc-block-components-product-details__${ kebabCase(
-							detail.name
+							detail.key
 					  ) }`
 					: '';
 				return (
 					<li
-						key={ detail.name + ( detail.display || detail.value ) }
+						key={ detail.key + ( detail.display || detail.value ) }
 						className={ className }
 					>
-						{ detail.name && (
+						{ detail.key && (
 							<>
 								<span className="wc-block-components-product-details__name">
-									{ decodeEntities( detail.name ) }:
+									{ decodeEntities( detail.key ) }:
 								</span>{ ' ' }
 							</>
 						) }

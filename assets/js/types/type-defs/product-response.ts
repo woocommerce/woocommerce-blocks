@@ -17,7 +17,8 @@ export interface ProductResponseItemPrices extends CurrencyResponse {
 }
 
 export interface ProductResponseItemData {
-	name: string;
+	name?: string;
+	key?: string;
 	value: string;
 	display?: string;
 	hidden?: boolean;
