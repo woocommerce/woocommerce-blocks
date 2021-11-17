@@ -87,6 +87,7 @@
 		margin-top: em(1px);
 		width: em(18px);
 		height: em(18px);
+		pointer-events: none;
 
 		.has-dark-controls & {
 			fill: #fff;
