@@ -224,7 +224,7 @@ class MiniCart extends AbstractBlock {
 			$cart_contents_total += $cart->get_subtotal_tax();
 		}
 
-		$wrapper_classes = 'wc-block-mini-cart wp-block-woocommerce-mini-cart';
+		$wrapper_classes = 'wc-block-mini-cart';
 		$classes         = '';
 		$style           = '';
 
