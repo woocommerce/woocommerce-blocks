@@ -11,7 +11,7 @@ import './style.scss';
 interface Props {
 	count: number;
 	colorClassNames?: string;
-	style?: Record< string, Record< string, string > >;
+	style?: Record< string, string | undefined >;
 }
 
 const QuantityBadge = ( {
@@ -28,10 +28,7 @@ const QuantityBadge = ( {
 			/>
 			<span
 				className={ `wc-block-mini-cart__badge ${ colorClassNames }` }
-				style={ {
-					color: style?.color?.text,
-					backgroundColor: style?.color?.background,
-				} }
+				style={ style }
 			>
 				{ count }
 			</span>

@@ -120,6 +120,11 @@ const MiniCartBlock = ( {
 		formatPrice( subTotal, getCurrencyFromPriceResponse( cartTotals ) )
 	);
 
+	const colorStyle = {
+		backgroundColor: style?.color?.background,
+		color: style?.color?.text,
+	};
+
 	const contents =
 		! cartIsLoading && cartItems.length === 0 ? (
 			<div
@@ -182,10 +187,7 @@ const MiniCartBlock = ( {
 		<>
 			<button
 				className={ `wc-block-mini-cart__button ${ colorClassNames }` }
-				style={ {
-					backgroundColor: style?.color?.background,
-					color: style?.color?.text,
-				} }
+				style={ colorStyle }
 				onClick={ () => {
 					if ( ! isOpen ) {
 						setIsOpen( true );
@@ -202,7 +204,8 @@ const MiniCartBlock = ( {
 				</span>
 				<QuantityBadge
 					count={ cartItemsCount }
-					{ ...{ colorClassNames, style } }
+					colorClassNames={ colorClassNames }
+					style={ colorStyle }
 				/>
 			</button>
 			<Drawer

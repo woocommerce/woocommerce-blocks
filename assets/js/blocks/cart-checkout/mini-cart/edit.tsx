@@ -52,6 +52,11 @@ const MiniCartBlock = ( {
 	);
 	const textColorClass = getColorClassName( 'color', textColor );
 
+	const colorStyle = {
+		backgroundColor: style?.color?.background,
+		color: style?.color?.text,
+	};
+
 	const productCount = 0;
 	const productTotal = 0;
 
@@ -80,13 +85,10 @@ const MiniCartBlock = ( {
 			</InspectorControls>
 			<button
 				className={ classnames( 'wc-block-mini-cart__button', {
-					[ backgroundClass ]: backgroundClass,
-					[ textColorClass ]: textColorClass,
+					backgroundClass,
+					textColorClass,
 				} ) }
-				style={ {
-					backgroundColor: style?.color?.background,
-					color: style?.color?.text,
-				} }
+				style={ colorStyle }
 			>
 				<span className="wc-block-mini-cart__amount">
 					{ formatPrice( productTotal ) }
@@ -94,13 +96,13 @@ const MiniCartBlock = ( {
 				<QuantityBadge
 					count={ productCount }
 					colorClassNames={ classnames( {
-						[ backgroundClass ]: backgroundClass,
-						[ textColorClass ]: textColorClass,
+						backgroundClass,
+						textColorClass,
 						'has-background':
 							backgroundClass || style?.color?.background,
 						'has-text-color': textColorClass || style?.color?.text,
 					} ) }
-					style={ style }
+					style={ colorStyle }
 				/>
 			</button>
 			<CartCheckoutCompatibilityNotice blockName="mini-cart" />
