@@ -5,6 +5,7 @@ import { __ } from '@wordpress/i18n';
 import { createBlock, registerBlockType } from '@wordpress/blocks';
 import { Icon, list } from '@woocommerce/icons';
 
+import { isFeaturePluginBuild } from '@woocommerce/block-settings';
 /**
  * Internal dependencies
  */
@@ -28,14 +29,16 @@ registerBlockType( 'woocommerce/product-categories', {
 	supports: {
 		align: [ 'wide', 'full' ],
 		html: false,
-		color: {
-			background: false,
-			link: true,
-		},
-		typography: {
-			fontSize: true,
-			lineHeight: true,
-		},
+		...( isFeaturePluginBuild() && {
+			color: {
+				background: false,
+				link: true,
+			},
+			typography: {
+				fontSize: true,
+				lineHeight: true,
+			},
+		} ),
 	},
 	example: {
 		attributes: {
