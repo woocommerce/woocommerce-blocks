@@ -76,6 +76,41 @@ class StyleAttributesUtils {
 
 	}
 
+	/**
+	 * Get class and style for link-color from attributes.
+	 *
+	 * @param array $attributes Block attributes.
+	 *
+	 * @return (array | null)
+	 */
+	public static function get_link_color_class_and_style( $attributes ) {
+
+		if ( ! isset( $attributes['style']['elements']['link']['color']['text'] ) ) {
+			return null;
+		};
+
+		$link_color = $attributes['style']['elements']['link']['color']['text'];
+
+		// If the link color is selected from the theme color picker, the value of $link_color is var:preset|color|slug.
+		// If the link color is selected from the core color picker, the value of $link_color is an hex value.
+		// When the link color is a string var:preset|color|slug we parsed it for get the slug, otherwise we use the hex value.
+		$index_named_link_color = strrpos( $link_color, '|' );
+
+		if ( ! empty( $index_named_link_color ) ) {
+			$parsed_named_link_color = substr( $link_color, $index_named_link_color + 1 );
+			return array(
+				'class' => null,
+				'style' => sprintf( 'color: %s;', $parsed_named_link_color ),
+			);
+		} else {
+			return array(
+				'class' => null,
+				'style' => sprintf( 'color: %s;', $link_color ),
+			);
+		}
+
+	}
+
 
 	/**
 	 * Get class and style for line height from attributes.
@@ -112,6 +147,7 @@ class StyleAttributesUtils {
 			line_height => self::get_line_height_class_and_style( $attributes ),
 			text_color  => self::get_text_color_class_and_style( $attributes ),
 			font_size   => self::get_font_size_class_and_style( $attributes ),
+			link_color  => self::get_link_color_class_and_style( $attributes ),
 		);
 
 		return array_filter(

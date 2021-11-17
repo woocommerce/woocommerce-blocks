@@ -90,7 +90,7 @@ class ProductCategories extends AbstractDynamicBlock {
 		$classes            = $classes_and_styles[0];
 		$styles             = $classes_and_styles[1];
 
-		$output  = '<div class="' . esc_attr( $classes ) . '" style="' . esc_attr( $styles ) . '">';
+		$output  = '<div class="wp-block-woocommerce-product-categories ' . esc_attr( $classes ) . '" style="' . esc_attr( $styles ) . '">';
 		$output .= ! empty( $attributes['isDropdown'] ) ? $this->renderDropdown( $categories, $attributes, $uid ) : $this->renderList( $categories, $attributes, $uid );
 		$output .= '</div>';
 
@@ -338,10 +338,14 @@ class ProductCategories extends AbstractDynamicBlock {
 	protected function renderListItems( $categories, $attributes, $uid, $depth = 0 ) {
 		$output = '';
 
+		$link_color_class_and_style = StyleAttributesUtils::get_link_color_class_and_style( $attributes );
+
+		$link_color_style = $link_color_class_and_style['style'];
+
 		foreach ( $categories as $category ) {
 			$output .= '
 				<li class="wc-block-product-categories-list-item">
-				<a href="' . esc_attr( get_term_link( $category->term_id, 'product_cat' ) ) . '">' . $this->get_image_html( $category, $attributes ) . esc_html( $category->name ) . '</a>
+				<a style="' . esc_attr( $link_color_style ) . '" href="' . esc_attr( get_term_link( $category->term_id, 'product_cat' ) ) . '">' . $this->get_image_html( $category, $attributes ) . esc_html( $category->name ) . '</a>
 				' . $this->getCount( $category, $attributes ) . '
 					' . ( ! empty( $category->children ) ? $this->renderList( $category->children, $attributes, $uid, $depth + 1 ) : '' ) . '
 				</li>
