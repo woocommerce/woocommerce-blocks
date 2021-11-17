@@ -320,7 +320,7 @@ class BlockTemplatesController {
 				'source'      => 'woocommerce',
 				'title'       => BlockTemplateUtils::convert_slug_to_title( $template_slug ),
 				'description' => '',
-				'post_types'  => array(), // Don't appear in any Edit Post template selector dropdowns.
+				'post_types'  => array(), // Don't appear in any Edit Post template selector dropdown.
 			);
 			$templates[]       = (object) $new_template_item;
 		}
