@@ -45,12 +45,14 @@
 .is-large {
 	.wc-block-components-sidebar {
 		.wc-block-components-totals-item,
-		.wc-block-components-panel {
+		.wc-block-components-panel,
+		.wc-block-components-footer-total-meta {
 			padding-left: $gap;
 			padding-right: $gap;
 		}
 
-		.wc-block-components-panel {
+		.wc-block-components-panel,
+		.wc-block-components-footer-total-meta {
 			.wc-block-components-totals-item {
 				padding: 0;
 			}

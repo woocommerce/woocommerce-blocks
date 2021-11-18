@@ -7,7 +7,6 @@ import classnames from 'classnames';
  * Internal dependencies
  */
 import { createSlotFill, hasValidFills, useSlot } from '../../slot';
-import './style.scss';
 
 const slotName = '__experimentalFooterTotalMeta';
 
