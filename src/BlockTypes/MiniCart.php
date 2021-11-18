@@ -29,7 +29,6 @@ class MiniCart extends AbstractBlock {
 	 */
 	protected $scripts_to_lazy_load = array();
 
-
 	/**
 	 *  Inc Tax label.
 	 *
@@ -234,7 +233,7 @@ class MiniCart extends AbstractBlock {
 	 *
 	 * @return string
 	 */
-	private function get_include_tax_label_markup() {
+	protected function get_include_tax_label_markup() {
 		$cart_controller     = $this->get_cart_controller();
 		$cart                = $cart_controller->get_cart_instance();
 		$cart_contents_total = $cart->get_subtotal();
@@ -251,15 +250,17 @@ class MiniCart extends AbstractBlock {
 	 * @return string Rendered block type output.
 	 */
 	protected function render( $attributes, $content ) {
-		return $content . $this->get_markup();
+		return $content . $this->get_markup( $attributes );
 	}
 
 	/**
 	 * Render the markup for the Mini Cart block.
 	 *
+	 * @param array $attributes Block attributes.
+	 *
 	 * @return string The HTML markup.
 	 */
-	protected function get_markup() {
+	protected function get_markup( $attributes ) {
 		if ( is_admin() || WC()->is_rest_api_request() ) {
 			// In the editor we will display the placeholder, so no need to load
 			// real cart data and to print the markup.
@@ -274,6 +275,39 @@ class MiniCart extends AbstractBlock {
 
 		if ( $cart->display_prices_including_tax() ) {
 			$cart_contents_total += $cart->get_subtotal_tax();
+		}
+
+		$wrapper_classes = 'wc-block-mini-cart';
+		$classes         = '';
+		$style           = '';
+
+		if ( ! isset( $attributes['transparentButton'] ) || $attributes['transparentButton'] ) {
+			$wrapper_classes .= ' is-transparent';
+		}
+
+		/**
+		 * Get the color class and inline style.
+		 *
+		 * @todo refactor the logic of color class and style using StyleAttributesUtils.
+		 */
+		if ( ! empty( $attributes['textColor'] ) ) {
+			$classes .= sprintf(
+				' has-%s-color has-text-color',
+				esc_attr( $attributes['textColor'] )
+			);
+		} elseif ( ! empty( $attributes['style']['color']['text'] ) ) {
+			$style   .= 'color: ' . esc_attr( $attributes['style']['color']['text'] ) . ';';
+			$classes .= ' has-text-color';
+		}
+
+		if ( ! empty( $attributes['backgroundColor'] ) ) {
+			$classes .= sprintf(
+				' has-%s-background-color has-background',
+				esc_attr( $attributes['backgroundColor'] )
+			);
+		} elseif ( ! empty( $attributes['style']['color']['background'] ) ) {
+			$style   .= 'background-color: ' . esc_attr( $attributes['style']['color']['background'] ) . ';';
+			$classes .= ' has-background';
 		}
 
 		$aria_label = sprintf(
@@ -313,17 +347,17 @@ class MiniCart extends AbstractBlock {
 		' . $this->get_include_tax_label_markup() . '
 		<span class="wc-block-mini-cart__quantity-badge">
 			' . $icon . '
-			<span class="wc-block-mini-cart__badge">' . $cart_contents_count . '</span>
+			<span class="wc-block-mini-cart__badge ' . $classes . '" style="' . $style . '">' . $cart_contents_count . '</span>
 		</span>';
 
 		if ( is_cart() || is_checkout() ) {
-			return '<div class="wc-block-mini-cart">
-				<button class="wc-block-mini-cart__button" aria-label="' . esc_attr( $aria_label ) . '" disabled>' . $button_html . '</button>
+			return '<div class="' . $wrapper_classes . '">
+				<button class="wc-block-mini-cart__button ' . $classes . '" aria-label="' . esc_attr( $aria_label ) . '" style="' . $style . '" disabled>' . $button_html . '</button>
 			</div>';
 		}
 
-		return '<div class="wc-block-mini-cart">
-			<button class="wc-block-mini-cart__button" aria-label="' . esc_attr( $aria_label ) . '">' . $button_html . '</button>
+		return '<div class="' . $wrapper_classes . '">
+			<button class="wc-block-mini-cart__button ' . $classes . '" aria-label="' . esc_attr( $aria_label ) . '" style="' . $style . '">' . $button_html . '</button>
 			<div class="wc-block-mini-cart__drawer is-loading is-mobile wc-block-components-drawer__screen-overlay wc-block-components-drawer__screen-overlay--is-hidden" aria-hidden="true">
 				<div class="components-modal__frame wc-block-components-drawer">
 					<div class="components-modal__content">
@@ -396,7 +430,25 @@ class MiniCart extends AbstractBlock {
 	 *
 	 * @return CartController CartController class instance.
 	 */
-	private function get_cart_controller() {
+	protected function get_cart_controller() {
 		return new CartController();
+	}
+
+	/**
+	 * Get the supports array for this block type.
+	 *
+	 * @see $this->register_block_type()
+	 * @return string;
+	 */
+	protected function get_block_type_supports() {
+		return array_merge(
+			parent::get_block_type_supports(),
+			array(
+				'html'                   => false,
+				'multiple'               => false,
+				'color'                  => true,
+				'__experimentalSelector' => '.wc-block-mini-cart__button, .wc-block-mini-cart__badge',
+			)
+		);
 	}
 }

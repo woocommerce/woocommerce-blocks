@@ -1,7 +1,7 @@
 /**
  * External dependencies
  */
-import classNames from 'classnames';
+import classnames from 'classnames';
 import { __, _n, sprintf } from '@wordpress/i18n';
 import { useState, useEffect, useRef } from '@wordpress/element';
 import {
@@ -32,10 +32,6 @@ import CartLineItemsTable from '../cart/cart-line-items-table';
 import QuantityBadge from './quantity-badge';
 import './style.scss';
 
-interface MiniCartBlockProps {
-	isInitiallyOpen?: boolean;
-}
-
 const PaymentMethodIconsElement = (): JSX.Element => {
 	const { paymentMethods } = usePaymentMethods();
 	return (
@@ -45,9 +41,18 @@ const PaymentMethodIconsElement = (): JSX.Element => {
 	);
 };
 
+interface Props {
+	isInitiallyOpen?: boolean;
+	transparentButton: boolean;
+	colorClassNames?: string;
+	style?: Record< string, Record< string, string > >;
+}
+
 const MiniCartBlock = ( {
 	isInitiallyOpen = false,
-}: MiniCartBlockProps ): JSX.Element => {
+	colorClassNames,
+	style,
+}: Props ): JSX.Element => {
 	const {
 		cartItems,
 		cartItemsCount,
@@ -128,6 +133,11 @@ const MiniCartBlock = ( {
 		formatPrice( subTotal, getCurrencyFromPriceResponse( cartTotals ) )
 	);
 
+	const colorStyle = {
+		backgroundColor: style?.color?.background,
+		color: style?.color?.text,
+	};
+
 	const contents =
 		! cartIsLoading && cartItems.length === 0 ? (
 			<div
@@ -189,7 +199,8 @@ const MiniCartBlock = ( {
 	return (
 		<>
 			<button
-				className="wc-block-mini-cart__button"
+				className={ `wc-block-mini-cart__button ${ colorClassNames }` }
+				style={ colorStyle }
 				onClick={ () => {
 					if ( ! isOpen ) {
 						setIsOpen( true );
@@ -209,10 +220,14 @@ const MiniCartBlock = ( {
 						{ labelTaxName }
 					</small>
 				) }
-				<QuantityBadge count={ cartItemsCount } />
+				<QuantityBadge
+					count={ cartItemsCount }
+					colorClassNames={ colorClassNames }
+					style={ colorStyle }
+				/>
 			</button>
 			<Drawer
-				className={ classNames(
+				className={ classnames(
 					'wc-block-mini-cart__drawer',
 					'is-mobile',
 					{
