@@ -17,12 +17,13 @@ import {
 	formatPrice,
 	getCurrencyFromPriceResponse,
 } from '@woocommerce/price-format';
-import { getSetting } from '@woocommerce/settings';
+import { getSettingWithCoercion } from '@woocommerce/settings';
 import { TotalsItem } from '@woocommerce/blocks-checkout';
 import PaymentMethodIcons from '@woocommerce/base-components/cart-checkout/payment-method-icons';
 import { CART_URL, CHECKOUT_URL } from '@woocommerce/block-settings';
 import Button from '@woocommerce/base-components/button';
 import { PaymentMethodDataProvider } from '@woocommerce/base-context';
+import { isString, isBoolean } from '@woocommerce/types';
 
 /**
  * Internal dependencies
@@ -98,7 +99,19 @@ const MiniCartBlock = ( {
 		}
 	}, [ isOpen, cartIsLoading, cartItems.length, emptyCartRef ] );
 
-	const subTotal = getSetting( 'displayCartPricesIncludingTax', false )
+	const showIncludingTax = getSettingWithCoercion(
+		'displayCartPricesIncludingTax',
+		false,
+		isBoolean
+	);
+
+	const labelTaxName = getSettingWithCoercion(
+		'labelIncludingTax',
+		'',
+		isString
+	);
+
+	const subTotal = showIncludingTax
 		? parseInt( cartTotals.total_items, 10 ) +
 		  parseInt( cartTotals.total_items_tax, 10 )
 		: parseInt( cartTotals.total_items, 10 );
@@ -191,6 +204,11 @@ const MiniCartBlock = ( {
 						getCurrencyFromPriceResponse( cartTotals )
 					) }
 				</span>
+				{ showIncludingTax && subTotal !== 0 && (
+					<small className="wc-block-mini-cart__tax_label">
+						{ labelTaxName }
+					</small>
+				) }
 				<QuantityBadge count={ cartItemsCount } />
 			</button>
 			<Drawer
