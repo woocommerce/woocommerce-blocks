@@ -109,6 +109,9 @@ class BlockTemplateUtils {
 		$template->has_theme_file = $has_theme_file;
 		$template->is_custom      = true;
 		$template->post_types     = array(); // Don't appear in any Edit Post template selector dropdown.
+		if ( 'wp_template_part' === $post->post_type ) {
+			$template->area = 'uncategorized';
+		}
 
 		return $template;
 	}
@@ -137,6 +140,9 @@ class BlockTemplateUtils {
 		$template->has_theme_file = true;
 		$template->is_custom      = false; // Templates loaded from the filesystem aren't custom, ones that have been edited and loaded from the DB are.
 		$template->post_types     = array(); // Don't appear in any Edit Post template selector dropdown.
+		if ( 'wp_template_part' === $template_type ) {
+			$template->area = 'uncategorized';
+		}
 		return $template;
 	}
 
