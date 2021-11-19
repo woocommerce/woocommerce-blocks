@@ -110,7 +110,10 @@ class BlockTemplateUtils {
 		$template->is_custom      = true;
 		$template->post_types     = array(); // Don't appear in any Edit Post template selector dropdown.
 		if ( 'wp_template_part' === $post->post_type ) {
-			$template->area = 'uncategorized';
+			$type_terms = get_the_terms( $post, 'wp_template_part_area' );
+			if ( ! is_wp_error( $type_terms ) && false !== $type_terms ) {
+				$template->area = $type_terms[0]->name;
+			}
 		}
 
 		return $template;
@@ -141,7 +144,11 @@ class BlockTemplateUtils {
 		$template->is_custom      = false; // Templates loaded from the filesystem aren't custom, ones that have been edited and loaded from the DB are.
 		$template->post_types     = array(); // Don't appear in any Edit Post template selector dropdown.
 		if ( 'wp_template_part' === $template_type ) {
-			$template->area = 'uncategorized';
+			if ( 'mini-cart' === $template_file->slug ) {
+				$template->area = 'mini-cart';
+			} else {
+				$template->area = 'uncategorized';
+			}
 		}
 		return $template;
 	}
