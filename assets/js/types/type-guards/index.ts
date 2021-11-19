@@ -3,7 +3,7 @@ export const isNull = < T >( term: T | null ): term is null => {
 };
 
 export const isNumber = < U >( term: number | U ): term is number => {
-	return ! Number.isNaN( term );
+	return typeof term === 'number';
 };
 
 export const isString = < U >( term: string | U ): term is string => {
