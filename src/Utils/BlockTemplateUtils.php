@@ -207,4 +207,26 @@ class BlockTemplateUtils {
 			-5
 		);
 	}
+
+	/**
+	 * Check if the theme has a template. So we know if to load our own in or not.
+	 *
+	 * @param string $template_name name of the template file without .html extension e.g. 'single-product'.
+	 * @return boolean
+	 */
+	public static function theme_has_template( $template_name ) {
+		return is_readable( get_template_directory() . '/block-templates/' . $template_name . '.html' ) ||
+			is_readable( get_stylesheet_directory() . '/block-templates/' . $template_name . '.html' );
+	}
+
+	/**
+	 * Check if the theme has a template. So we know if to load our own in or not.
+	 *
+	 * @param string $template_name name of the template file without .html extension e.g. 'single-product'.
+	 * @return boolean
+	 */
+	public static function theme_has_template_part( $template_name ) {
+		return is_readable( get_template_directory() . '/block-template-parts/' . $template_name . '.html' ) ||
+			is_readable( get_stylesheet_directory() . '/block-template-parts/' . $template_name . '.html' );
+	}
 }
