@@ -315,11 +315,7 @@ class BlockTemplatesController {
 		}
 
 		foreach ( $template_files as $template_file ) {
-			$template_slug = substr(
-				$template_file,
-				strpos( $template_file, $dir_name . DIRECTORY_SEPARATOR ) + 1 + strlen( $dir_name ),
-				-5
-			);
+			$template_slug = BlockTemplateUtils::generate_template_slug_from_path( $template_file, $dir_name );
 
 			// This template does not have a slug we're looking for. Skip it.
 			if ( is_array( $slugs ) && count( $slugs ) > 0 && ! in_array( $template_slug, $slugs, true ) ) {
