@@ -15,6 +15,7 @@ import {
 	ExperimentalOrderMeta,
 	TotalsWrapper,
 	ExperimentalDiscountsMeta,
+	ExperimentalFooterTotalMeta,
 } from '@woocommerce/blocks-checkout';
 
 import { getCurrencyFromPriceResponse } from '@woocommerce/price-format';
@@ -103,10 +104,12 @@ const Block = ( {
 					</TotalsWrapper>
 				) }
 			<TotalsWrapper>
+				{ /* This TotalsFooterItem renders into the slot below */ }
 				<TotalsFooterItem
 					currency={ totalsCurrency }
 					values={ cartTotals }
 				/>
+				<ExperimentalFooterTotalMeta.Slot { ...slotFillProps } />
 			</TotalsWrapper>
 			<ExperimentalOrderMeta.Slot { ...slotFillProps } />
 		</div>
