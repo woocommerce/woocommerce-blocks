@@ -76,11 +76,7 @@ export const getCurrencyFromPriceResponse = (
 		| Record< string, never >
 		| CartShippingPackageShippingRate
 ): Currency => {
-	if (
-		! currencyData ||
-		typeof currencyData !== 'object' ||
-		! currencyData?.currency_code
-	) {
+	if ( ! currencyData?.currency_code ) {
 		return siteCurrencySettings;
 	}
 
