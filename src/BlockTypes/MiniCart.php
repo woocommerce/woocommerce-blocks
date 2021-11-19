@@ -123,6 +123,18 @@ class MiniCart extends AbstractBlock {
 			true
 		);
 
+		$this->asset_data_registry->add(
+			'themeSlug',
+			wp_get_theme()->get_stylesheet(),
+			''
+		);
+
+		$this->asset_data_registry->add(
+			'isSiteEditorAvailable',
+			gutenberg_experimental_is_site_editor_available(),
+			false
+		);
+
 		/**
 		 * Fires after cart block data is registered.
 		 */
