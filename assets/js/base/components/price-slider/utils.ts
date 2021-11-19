@@ -3,7 +3,10 @@
  */
 import { NumberFormatValues } from 'react-number-format';
 
-export const withMaxValueLimit = ( {
+/**
+ Check if that the value is minor than the max price and greater than 0.
+ */
+export const isValidMaxValue = ( {
 	maxConstraint,
 	minorUnit,
 }: {
@@ -12,10 +15,13 @@ export const withMaxValueLimit = ( {
 } ) => ( { floatValue }: NumberFormatValues ): boolean => {
 	const maxPrice = maxConstraint / 10 ** minorUnit;
 
-	return floatValue !== undefined && floatValue <= maxPrice;
+	return floatValue !== undefined && floatValue <= maxPrice && floatValue > 0;
 };
 
-export const withMinValueLimit = ( {
+/**
+ Check if that the value is minor than the max price and greater than 0.
+ */
+export const isValidMinValue = ( {
 	minConstraint,
 	currentMaxValue,
 	minorUnit,
