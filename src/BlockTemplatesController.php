@@ -302,14 +302,14 @@ class BlockTemplatesController {
 		$directory      = $this->get_templates_directory( $template_type );
 		$template_files = BlockTemplateUtils::gutenberg_get_template_paths( $directory );
 		$templates      = array();
+
+		if ( 'wp_template_part' === $template_type ) {
+			$dir_name = self::TEMPLATE_PARTS_DIR_NAME;
+		} else {
+			$dir_name = self::TEMPLATES_DIR_NAME;
+		}
+
 		foreach ( $template_files as $template_file ) {
-
-			if ( 'wp_template_part' === $template_type ) {
-				$dir_name = self::TEMPLATE_PARTS_DIR_NAME;
-			} else {
-				$dir_name = self::TEMPLATES_DIR_NAME;
-			}
-
 			$template_slug = substr(
 				$template_file,
 				strpos( $template_file, $dir_name . DIRECTORY_SEPARATOR ) + 1 + strlen( $dir_name ),
