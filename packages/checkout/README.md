@@ -33,12 +33,12 @@ Now, you can include this plugin in your Webpack configuration:
 
 ```js
 // webpack.config.js
-const WooCommerceDependencyExtractionWebpackPlugin = require( '@wordpress/dependency-extraction-webpack-plugin' );
+const WooCommerceDependencyExtractionWebpackPlugin = require( '@woocommerce/dependency-extraction-webpack-plugin' );
 
 module.exports = {
 	// …snip
 	plugins: [
-		new WooCommerceDependencyExtractionWebpackPlugin,
+		new WooCommerceDependencyExtractionWebpackPlugin(),
 	],
 };
 ```
