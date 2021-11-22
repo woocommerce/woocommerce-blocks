@@ -15,9 +15,6 @@ exports[`TotalsFooterItem Does not show the "including %s of tax" line if tax is
     >
       £85.00
     </span>
-    <div
-      class="wc-block-components-totals-item__description"
-    />
   </div>
 </div>
 `;
@@ -37,9 +34,6 @@ exports[`TotalsFooterItem Does not show the "including %s of tax" line if tax is
     >
       £85.00
     </span>
-    <div
-      class="wc-block-components-totals-item__description"
-    />
   </div>
 </div>
 `;
