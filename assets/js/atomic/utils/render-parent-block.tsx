@@ -7,6 +7,7 @@ import {
 	Suspense,
 	isValidElement,
 	cloneElement,
+	Children,
 } from '@wordpress/element';
 import parse from 'html-react-parser';
 import {
@@ -153,8 +154,7 @@ const renderInnerBlocks = ( {
 		 */
 		if ( ! InnerBlockComponent ) {
 			const parsedElement = parse(
-				element?.outerHTML || element?.textContent || '',
-				{ trim: false }
+				element?.outerHTML || element?.textContent || ''
 			);
 
 			// Returns text nodes without manipulation.
@@ -191,6 +191,33 @@ const renderInnerBlocks = ( {
 			? blockWrapper
 			: Fragment;
 
+		/**
+		 * Within this Inner Block Component we also need to recursively render it's children. This
+		 * is done here with a depth+1. The same block map and parent is used, but we pass new
+		 * children from this element.
+		 */
+		const innerChildren = renderInnerBlocks( {
+			block,
+			blockMap,
+			children: element.childNodes,
+			depth: depth + 1,
+			blockWrapper,
+		} );
+
+		/**
+		 * In addition to the inner blocks, we may also need to render FORCED blocks which have not
+		 * yet been added to the inner block template. We do this by comparing the current children
+		 * to the list of registered forced blocks.
+		 *
+		 * @see registerCheckoutBlock
+		 */
+		const innerForcedChildren = renderForcedBlocks(
+			blockName,
+			blockMap,
+			element.childNodes,
+			blockWrapper
+		);
+
 		return (
 			<Suspense
 				key={ `${ block }_${ depth }_${ index }_suspense` }
@@ -198,35 +225,15 @@ const renderInnerBlocks = ( {
 			>
 				<InnerBlockComponentWrapper>
 					<InnerBlockComponent { ...componentProps }>
-						{
-							/**
-							 * Within this Inner Block Component we also need to recursively render it's children. This
-							 * is done here with a depth+1. The same block map and parent is used, but we pass new
-							 * children from this element.
-							 */
-							renderInnerBlocks( {
-								block,
-								blockMap,
-								children: element.childNodes,
-								depth: depth + 1,
-								blockWrapper,
-							} )
-						}
-						{
-							/**
-							 * In addition to the inner blocks, we may also need to render FORCED blocks which have not
-							 * yet been added to the inner block template. We do this by comparing the current children
-							 * to the list of registered forced blocks.
-							 *
-							 * @see registerCheckoutBlock
-							 */
-							renderForcedBlocks(
-								blockName,
-								blockMap,
-								element.childNodes,
-								blockWrapper
-							)
-						}
+						{ Children.toArray( [
+							innerChildren,
+							innerForcedChildren,
+						] ).length
+							? Children.toArray( [
+									innerChildren,
+									innerForcedChildren,
+							  ] )
+							: null }
 					</InnerBlockComponent>
 				</InnerBlockComponentWrapper>
 			</Suspense>
@@ -277,7 +284,10 @@ export const renderParentBlock = ( {
 			children: element.children || [],
 			blockWrapper,
 		} );
-		return { ...getProps( element, i ), children };
+		return {
+			...getProps( element, i ),
+			children,
+		};
 	};
 	/**
 	 * The only difference between using renderParentBlock and renderFrontend is that here we provide children.
