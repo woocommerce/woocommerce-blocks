@@ -83,11 +83,6 @@ const getCoreConfig = ( options = {} ) => {
 						loader: 'babel-loader?cacheDirectory',
 						options: {
 							presets: [ '@wordpress/babel-preset-default' ],
-							plugins: [
-								require.resolve(
-									'@babel/plugin-proposal-class-properties'
-								),
-							].filter( Boolean ),
 						},
 					},
 				},
@@ -201,9 +196,6 @@ const getMainConfig = ( options = {} ) => {
 											'babel-plugin-transform-react-remove-prop-types'
 									  )
 									: false,
-								require.resolve(
-									'@babel/plugin-proposal-class-properties'
-								),
 							].filter( Boolean ),
 						},
 					},
@@ -322,12 +314,6 @@ const getFrontConfig = ( options = {} ) => {
 								],
 							],
 							plugins: [
-								require.resolve(
-									'@babel/plugin-transform-runtime'
-								),
-								require.resolve(
-									'@babel/plugin-proposal-class-properties'
-								),
 								isProduction
 									? require.resolve(
 											'babel-plugin-transform-react-remove-prop-types'
@@ -430,12 +416,6 @@ const getPaymentsConfig = ( options = {} ) => {
 								],
 							],
 							plugins: [
-								require.resolve(
-									'@babel/plugin-transform-runtime'
-								),
-								require.resolve(
-									'@babel/plugin-proposal-class-properties'
-								),
 								isProduction
 									? require.resolve(
 											'babel-plugin-transform-react-remove-prop-types'
@@ -538,12 +518,6 @@ const getExtensionsConfig = ( options = {} ) => {
 								],
 							],
 							plugins: [
-								require.resolve(
-									'@babel/plugin-transform-runtime'
-								),
-								require.resolve(
-									'@babel/plugin-proposal-class-properties'
-								),
 								isProduction
 									? require.resolve(
 											'babel-plugin-transform-react-remove-prop-types'

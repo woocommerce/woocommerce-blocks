@@ -79,8 +79,6 @@
 		"@automattic/data-stores": "2.0.1",
 		"@babel/cli": "7.16.0",
 		"@babel/core": "7.16.0",
-		"@babel/plugin-proposal-class-properties": "7.16.0",
-		"@babel/plugin-transform-runtime": "7.16.4",
 		"@babel/polyfill": "7.12.1",
 		"@babel/preset-typescript": "7.16.0",
 		"@octokit/graphql": "4.6.4",
