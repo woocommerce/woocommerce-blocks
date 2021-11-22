@@ -15,17 +15,17 @@ import { termsConsentDefaultText, termsCheckboxDefaultText } from './constants';
 import './style.scss';
 
 const FrontendBlock = ( {
+	text,
 	checkbox,
 	instanceId,
 	validation,
 	className,
-	children,
 }: {
+	text: string;
 	checkbox: boolean;
 	instanceId: string;
 	validation: ValidationData;
 	className?: string;
-	children?: JSX.Element;
 } ): JSX.Element => {
 	const [ checked, setChecked ] = useState( false );
 
@@ -39,7 +39,7 @@ const FrontendBlock = ( {
 	} = validation;
 
 	const error = getValidationError( validationErrorId ) || {};
-	const hasError = !! error.message && ! error.hidden;
+	const hasError = error.message && ! error.hidden;
 
 	// Track validation errors for this input.
 	useEffect( () => {
@@ -89,11 +89,19 @@ const FrontendBlock = ( {
 						hasError={ hasError }
 						disabled={ isDisabled }
 					>
-						{ children || termsCheckboxDefaultText }
+						<span
+							dangerouslySetInnerHTML={ {
+								__html: text || termsCheckboxDefaultText,
+							} }
+						/>
 					</CheckboxControl>
 				</>
 			) : (
-				<>{ children || termsConsentDefaultText }</>
+				<span
+					dangerouslySetInnerHTML={ {
+						__html: text || termsConsentDefaultText,
+					} }
+				/>
 			) }
 		</div>
 	);
