@@ -87,9 +87,6 @@ const getCoreConfig = ( options = {} ) => {
 								require.resolve(
 									'@babel/plugin-proposal-class-properties'
 								),
-								require.resolve(
-									'@babel/plugin-proposal-nullish-coalescing-operator'
-								),
 							].filter( Boolean ),
 						},
 					},
@@ -206,9 +203,6 @@ const getMainConfig = ( options = {} ) => {
 									: false,
 								require.resolve(
 									'@babel/plugin-proposal-class-properties'
-								),
-								require.resolve(
-									'@babel/plugin-proposal-nullish-coalescing-operator'
 								),
 							].filter( Boolean ),
 						},
@@ -329,19 +323,10 @@ const getFrontConfig = ( options = {} ) => {
 							],
 							plugins: [
 								require.resolve(
-									'@babel/plugin-proposal-object-rest-spread'
-								),
-								require.resolve(
-									'@babel/plugin-transform-react-jsx'
-								),
-								require.resolve(
 									'@babel/plugin-transform-runtime'
 								),
 								require.resolve(
 									'@babel/plugin-proposal-class-properties'
-								),
-								require.resolve(
-									'@babel/plugin-proposal-nullish-coalescing-operator'
 								),
 								isProduction
 									? require.resolve(
@@ -446,19 +431,10 @@ const getPaymentsConfig = ( options = {} ) => {
 							],
 							plugins: [
 								require.resolve(
-									'@babel/plugin-proposal-object-rest-spread'
-								),
-								require.resolve(
-									'@babel/plugin-transform-react-jsx'
-								),
-								require.resolve(
 									'@babel/plugin-transform-runtime'
 								),
 								require.resolve(
 									'@babel/plugin-proposal-class-properties'
-								),
-								require.resolve(
-									'@babel/plugin-proposal-nullish-coalescing-operator'
 								),
 								isProduction
 									? require.resolve(
@@ -563,19 +539,10 @@ const getExtensionsConfig = ( options = {} ) => {
 							],
 							plugins: [
 								require.resolve(
-									'@babel/plugin-proposal-object-rest-spread'
-								),
-								require.resolve(
-									'@babel/plugin-transform-react-jsx'
-								),
-								require.resolve(
 									'@babel/plugin-transform-runtime'
 								),
 								require.resolve(
 									'@babel/plugin-proposal-class-properties'
-								),
-								require.resolve(
-									'@babel/plugin-proposal-nullish-coalescing-operator'
 								),
 								isProduction
 									? require.resolve(
