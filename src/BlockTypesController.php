@@ -110,6 +110,12 @@ final class BlockTypesController {
 			if ( in_array( $key, $exclude_attributes, true ) ) {
 				continue;
 			}
+
+			// Attributes already persisted in HTML should be skipped.
+			if ( is_string( $value ) && is_int( strrpos( $content, $value ) ) ) {
+				continue;
+			}
+
 			if ( is_bool( $value ) ) {
 				$value = $value ? 'true' : 'false';
 			}

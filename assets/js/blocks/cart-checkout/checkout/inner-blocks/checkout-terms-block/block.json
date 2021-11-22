@@ -21,6 +21,8 @@
 		},
 		"text": {
 			"type": "string",
+			"source": "html",
+			"selector": ".wp-block-woocommerce-checkout-terms-block",
 			"required": false
 		}
 	},

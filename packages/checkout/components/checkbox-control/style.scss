@@ -1,12 +1,9 @@
 .wc-block-components-checkbox {
 	@include reset-typography();
 	margin-top: em($gap-large);
-
-	label {
-		align-items: flex-start;
-		display: flex;
-		position: relative;
-	}
+	align-items: flex-start;
+	display: inline-flex;
+	position: relative;
 
 	.wc-block-components-checkbox__input[type="checkbox"] {
 		font-size: 1em;

@@ -137,7 +137,7 @@ const renderInnerBlocks = ( {
 		const { blockName = '', ...componentProps } = {
 			key: `${ block }_${ depth }_${ index }`,
 			...( element instanceof HTMLElement ? element.dataset : {} ),
-			className: element.className || '',
+			className: element.className || undefined,
 		};
 
 		const InnerBlockComponent = getBlockComponentFromMap(
@@ -153,7 +153,8 @@ const renderInnerBlocks = ( {
 		 */
 		if ( ! InnerBlockComponent ) {
 			const parsedElement = parse(
-				element?.outerHTML || element?.textContent || ''
+				element?.outerHTML || element?.textContent || '',
+				{ trim: false }
 			);
 
 			// Returns text nodes without manipulation.
@@ -206,7 +207,7 @@ const renderInnerBlocks = ( {
 							renderInnerBlocks( {
 								block,
 								blockMap,
-								children: element.children,
+								children: element.childNodes,
 								depth: depth + 1,
 								blockWrapper,
 							} )
@@ -222,7 +223,7 @@ const renderInnerBlocks = ( {
 							renderForcedBlocks(
 								blockName,
 								blockMap,
-								element.children,
+								element.childNodes,
 								blockWrapper
 							)
 						}

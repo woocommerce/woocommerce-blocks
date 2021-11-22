@@ -178,6 +178,15 @@ export const Edit = ( {
 	);
 };
 
-export const Save = (): JSX.Element => {
-	return <div { ...useBlockProps.save() } />;
+export const Save = ( {
+	attributes,
+}: {
+	attributes: { text: string };
+} ): JSX.Element => {
+	const { text } = attributes;
+	return (
+		<div { ...useBlockProps.save() }>
+			<RichText.Content value={ text } />
+		</div>
+	);
 };
