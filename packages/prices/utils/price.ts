@@ -193,7 +193,9 @@ export const formatPrice = (
 	);
 
 	const formattedPrice: string =
-		currency.minorUnit > 0 && decimalValue !== 'undefined'
+		currency.minorUnit > 0 &&
+		currency.decimalSeparator !== '' &&
+		decimalValue !== 'undefined'
 			? integerValue + currency.decimalSeparator + decimalValue
 			: integerValue;
 
