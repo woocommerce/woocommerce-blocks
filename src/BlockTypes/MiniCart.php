@@ -332,7 +332,7 @@ class MiniCart extends AbstractBlock {
 							</div>
 						</div>
 						<div class="wc-block-mini-cart__template-part">'
-						. $template_part_contents .
+						. wp_kses_post( $template_part_contents ) .
 						'</div>
 					</div>
 				</div>
