@@ -116,7 +116,7 @@ export const getCurrency = (
 };
 
 /**
- * Get the integer value from the decimal price.
+ * Get the integer value from the minor unit value.
  *
  * @param {number} priceInt The price in minor unit value, e.g. 100 for $1.00.
  * @param {string} thousandSeparator The thousand separator.
@@ -134,7 +134,7 @@ export const getIntegerValue = (
 };
 
 /**
- * Get the decimal value from the decimal price.
+ * Get the decimal value from the minor unit value.
  *
  * @param {number} priceInt The price in minor unit value, e.g. 100 for $1.00.
  * @param {number} minorUnit The number of decimals to display.
