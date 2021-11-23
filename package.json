@@ -2,7 +2,7 @@
 	"name": "@woocommerce/block-library",
 	"title": "WooCommerce Blocks",
 	"author": "Automattic",
-	"version": "6.4.0-dev",
+	"version": "6.5.0-dev",
 	"description": "WooCommerce blocks for the Gutenberg editor.",
 	"homepage": "https://github.com/woocommerce/woocommerce-gutenberg-products-block/",
 	"keywords": [
@@ -49,6 +49,7 @@
 		"lint:js:report": "npm run lint:js -- --output-file eslint_report.json --ext=js,ts,tsx --format json",
 		"lint:js-fix": "eslint assets/js --ext=js,jsx,ts,tsx --fix",
 		"lint:php": "composer run-script phpcs ./src",
+		"lint:php-fix": "composer run-script phpcbf ./src",
 		"package-plugin": "rimraf woocommerce-gutenberg-products-block.zip && ./bin/build-plugin-zip.sh",
 		"package-plugin:dev": "rimraf woocommerce-gutenberg-products-block.zip && ./bin/build-plugin-zip.sh -d",
 		"package-plugin:zip-only": "rimraf woocommerce-gutenberg-products-block.zip && ./bin/build-plugin-zip.sh -z",
