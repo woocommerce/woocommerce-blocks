@@ -68,8 +68,6 @@ const siteCurrencySettings: Currency = {
 
 /**
  * Gets currency information in normalized format from an API response or the server.
- *
- * If no currency was provided, or currency_code is empty, the default store currency will be used.
  */
 export const getCurrencyFromPriceResponse = (
 	// Currency data object, for example an API response containing currency formatting data.
@@ -78,7 +76,7 @@ export const getCurrencyFromPriceResponse = (
 		| Record< string, never >
 		| CartShippingPackageShippingRate
 ): Currency => {
-	if ( ! currencyData?.currency_code ) {
+	if ( ! currencyData || typeof currencyData !== 'object' ) {
 		return siteCurrencySettings;
 	}
 
@@ -114,28 +112,6 @@ export const getCurrency = (
 	return {
 		...siteCurrencySettings,
 		...currencyData,
-	};
-};
-
-const applyThousandSeparator = (
-	numberString: string,
-	thousandSeparator: string
-): string => {
-	return numberString.replace( /\B(?=(\d{3})+(?!\d))/g, thousandSeparator );
-};
-
-const splitDecimal = (
-	numberString: string
-): {
-	beforeDecimal: string;
-	afterDecimal: string;
-} => {
-	const parts = numberString.split( '.' );
-	const beforeDecimal = parts[ 0 ];
-	const afterDecimal = parts[ 1 ] || '';
-	return {
-		beforeDecimal,
-		afterDecimal,
 	};
 };
 
@@ -205,26 +181,24 @@ export const formatPrice = (
 
 	const currency: Currency = getCurrency( currencyData );
 
-	const {
-		minorUnit,
-		prefix,
-		suffix,
-		decimalSeparator,
-		thousandSeparator,
-	} = currency;
-
-	const formattedPrice: number = priceInt / 10 ** minorUnit;
-
-	const { beforeDecimal, afterDecimal } = splitDecimal(
-		formattedPrice.toString()
+	const integerValue: string = getIntegerValue(
+		priceInt,
+		currency.thousandSeparator,
+		currency.minorUnit
 	);
 
-	const formattedValue = `${ prefix }${ applyThousandSeparator(
-		beforeDecimal,
-		thousandSeparator
-	) }${
-		afterDecimal ? `${ decimalSeparator }${ afterDecimal }` : ''
-	}${ suffix }`;
+	const decimalValue: string | undefined = getDecimalValue(
+		priceInt,
+		currency.minorUnit
+	);
+
+	const formattedPrice: string =
+		currency.minorUnit > 0 && decimalValue !== 'undefined'
+			? integerValue + currency.decimalSeparator + decimalValue
+			: integerValue;
+
+	const formattedValue: string =
+		currency.prefix + formattedPrice + currency.suffix;
 
 	// This uses a textarea to magically decode HTML currency symbols.
 	const txt = document.createElement( 'textarea' );
