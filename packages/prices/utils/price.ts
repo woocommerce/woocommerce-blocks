@@ -142,7 +142,7 @@ const splitDecimal = (
 /**
  * Get the integer value from the decimal price.
  *
- * @param {number} priceInt The price in decimals.
+ * @param {number} priceInt The price in minor unit value, e.g. 100 for $1.00.
  * @param {string} thousandSeparator The thousand separator.
  * @param {number} minorUnit The number of decimals to display.
  * @return {string} The extracted integer value.
@@ -160,7 +160,7 @@ export const getIntegerValue = (
 /**
  * Get the decimal value from the decimal price.
  *
- * @param {number} priceInt The price in decimals.
+ * @param {number} priceInt The price in minor unit value, e.g. 100 for $1.00.
  * @param {number} minorUnit The number of decimals to display.
  * @return {string} The extracted decimal value.
  */
@@ -205,24 +205,26 @@ export const formatPrice = (
 
 	const currency: Currency = getCurrency( currencyData );
 
-	const integerValue: string = getIntegerValue(
-		priceInt,
-		currency.thousandSeparator,
-		currency.minorUnit
+	const {
+		minorUnit,
+		prefix,
+		suffix,
+		decimalSeparator,
+		thousandSeparator,
+	} = currency;
+
+	const formattedPrice: number = priceInt / 10 ** minorUnit;
+
+	const { beforeDecimal, afterDecimal } = splitDecimal(
+		formattedPrice.toString()
 	);
 
-	const decimalValue: string | undefined = getDecimalValue(
-		priceInt,
-		currency.minorUnit
-	);
-
-	const formattedPrice: string =
-		currency.minorUnit > 0
-			? integerValue + currency.decimalSeparator + decimalValue
-			: integerValue;
-
-	const formattedValue: string =
-		currency.prefix + formattedPrice + currency.suffix;
+	const formattedValue = `${ prefix }${ applyThousandSeparator(
+		beforeDecimal,
+		thousandSeparator
+	) }${
+		afterDecimal ? `${ decimalSeparator }${ afterDecimal }` : ''
+	}${ suffix }`;
 
 	// This uses a textarea to magically decode HTML currency symbols.
 	const txt = document.createElement( 'textarea' );
