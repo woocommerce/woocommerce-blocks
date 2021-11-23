@@ -68,6 +68,8 @@ const siteCurrencySettings: Currency = {
 
 /**
  * Gets currency information in normalized format from an API response or the server.
+ *
+ * If no currency was provided, or currency_code is empty, the default store currency will be used.
  */
 export const getCurrencyFromPriceResponse = (
 	// Currency data object, for example an API response containing currency formatting data.
@@ -76,7 +78,7 @@ export const getCurrencyFromPriceResponse = (
 		| Record< string, never >
 		| CartShippingPackageShippingRate
 ): Currency => {
-	if ( ! currencyData || typeof currencyData !== 'object' ) {
+	if ( ! currencyData?.currency_code ) {
 		return siteCurrencySettings;
 	}
 
@@ -112,6 +114,28 @@ export const getCurrency = (
 	return {
 		...siteCurrencySettings,
 		...currencyData,
+	};
+};
+
+const applyThousandSeparator = (
+	numberString: string,
+	thousandSeparator: string
+): string => {
+	return numberString.replace( /\B(?=(\d{3})+(?!\d))/g, thousandSeparator );
+};
+
+const splitDecimal = (
+	numberString: string
+): {
+	beforeDecimal: string;
+	afterDecimal: string;
+} => {
+	const parts = numberString.split( '.' );
+	const beforeDecimal = parts[ 0 ];
+	const afterDecimal = parts[ 1 ] || '';
+	return {
+		beforeDecimal,
+		afterDecimal,
 	};
 };
 

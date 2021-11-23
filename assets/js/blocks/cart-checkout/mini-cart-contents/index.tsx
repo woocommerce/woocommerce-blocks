@@ -12,7 +12,7 @@ import edit from './edit';
 
 const settings = {
 	apiVersion: 2,
-	title: __( 'Mini Cart', 'woo-gutenberg-products-block' ),
+	title: __( 'Mini Cart Contents', 'woo-gutenberg-products-block' ),
 	icon: {
 		src: <Icon srcElement={ cart } />,
 		foreground: '#7f54b3',
@@ -24,21 +24,20 @@ const settings = {
 		'woo-gutenberg-products-block'
 	),
 	supports: {
+		align: false,
 		html: false,
 		multiple: false,
-		color: {
-			/**
-			 * Because we don't target the wrapper element, we don't need
-			 * to add color classes and style to the wrapper.
-			 */
-			__experimentalSkipSerialization: true,
+		reusable: false,
+		inserter: false,
+	},
+	attributes: {
+		lock: {
+			type: 'object',
+			default: {
+				remove: true,
+				move: true,
+			},
 		},
-		/**
-		 * We need this experimental flag because we don't want to style the
-		 * wrapper but inner elements.
-		 */
-		__experimentalSelector:
-			'.wc-block-mini-cart__button, .wc-block-mini-cart__badge',
 	},
 	example: {
 		attributes: {
@@ -46,18 +45,10 @@ const settings = {
 		},
 	},
 	attributes: {
-		align: {
-			type: 'string',
-			default: 'right',
-		},
 		isPreview: {
 			type: 'boolean',
 			default: false,
 			save: false,
-		},
-		transparentButton: {
-			type: 'boolean',
-			default: true,
 		},
 	},
 
@@ -68,4 +59,4 @@ const settings = {
 	},
 };
 
-registerExperimentalBlockType( 'woocommerce/mini-cart', settings );
+registerExperimentalBlockType( 'woocommerce/mini-cart-contents', settings );
