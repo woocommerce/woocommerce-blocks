@@ -64,7 +64,7 @@ describe( 'The getDecimalValue() function', () => {
 	);
 } );
 
-describe( 'The getDecimalValue() formatPrice', () => {
+describe( 'The formatPrice() function', () => {
 	test.each`
 		value            | prefix     | suffix    | thousandSeparator | decimalSeparator | minorUnit | expected
 		${ 1000 }        | ${ '€' }   | ${ '' }   | ${ '.' }          | ${ ',' }         | ${ 2 }    | ${ '€10,00' }
