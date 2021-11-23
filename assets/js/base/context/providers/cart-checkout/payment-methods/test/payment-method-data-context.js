@@ -1,7 +1,13 @@
 /**
  * External dependencies
  */
-import { render, screen, fireEvent, waitFor } from '@testing-library/react';
+import {
+	render,
+	screen,
+	fireEvent,
+	waitFor,
+	act,
+} from '@testing-library/react';
 import { previewCart } from '@woocommerce/resource-previews';
 import { dispatch } from '@wordpress/data';
 import { CART_STORE_KEY as storeKey } from '@woocommerce/block-data';
@@ -124,17 +130,19 @@ const resetMockPaymentMethods = () => {
 };
 
 describe( 'Testing Payment Method Data Context Provider', () => {
-	beforeEach( async () => {
-		registerMockPaymentMethods();
-		fetchMock.mockResponse( ( req ) => {
-			if ( req.url.match( /wc\/store\/cart/ ) ) {
-				return Promise.resolve( JSON.stringify( previewCart ) );
-			}
-			return Promise.resolve( '' );
+	beforeEach( () => {
+		act( () => {
+			registerMockPaymentMethods();
+			fetchMock.mockResponse( ( req ) => {
+				if ( req.url.match( /wc\/store\/cart/ ) ) {
+					return Promise.resolve( JSON.stringify( previewCart ) );
+				}
+				return Promise.resolve( '' );
+			} );
+			// need to clear the store resolution state between tests.
+			dispatch( storeKey ).invalidateResolutionForStore();
+			dispatch( storeKey ).receiveCart( defaultCartState.cartData );
 		} );
-		// need to clear the store resolution state between tests.
-		await dispatch( storeKey ).invalidateResolutionForStore();
-		await dispatch( storeKey ).receiveCart( defaultCartState.cartData );
 	} );
 	afterEach( async () => {
 		resetMockPaymentMethods();
