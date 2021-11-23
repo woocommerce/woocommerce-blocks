@@ -106,28 +106,6 @@ describe( 'The getDecimalValue() formatPrice', () => {
 	);
 
 	test.each`
-		value           | prefix   | decimalSeparator | thousandSeparator | expected
-		${ 1000000099 } | ${ '$' } | ${ '.' }         | ${ ',' }          | ${ '$10,000,000.99' }
-		${ 1000000099 } | ${ '$' } | ${ ',' }         | ${ '.' }          | ${ '$10.000.000,99' }
-	`(
-		'correctly formats price given "$value", "$prefix" prefix, "$decimalSeparator" decimal separator, "$thousandSeparator" thousand separator as "$expected"',
-		( {
-			value,
-			prefix,
-			decimalSeparator,
-			thousandSeparator,
-			expected,
-		} ) => {
-			const formattedPrice = formatPrice(
-				value,
-				getCurrency( { prefix, decimalSeparator, thousandSeparator } )
-			);
-
-			expect( formattedPrice ).toEqual( expected );
-		}
-	);
-
-	test.each`
 		value          | expected
 		${ 1000 }      | ${ '$10.00' }
 		${ 0 }         | ${ '$0.00' }
