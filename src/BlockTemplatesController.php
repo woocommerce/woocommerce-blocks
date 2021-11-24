@@ -521,7 +521,7 @@ class BlockTemplatesController {
 			return;
 		}
 
-		// Remove the filter temporaryly for wp_update_post below.
+		// Remove the filter temporarily for wp_update_post below.
 		remove_filter( 'wp_insert_post', array( $this, 'add_mini_cart_content_to_template_part' ), 10, 3 );
 
 		$block_template = null;
