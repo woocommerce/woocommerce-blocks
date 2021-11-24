@@ -42,9 +42,12 @@ class BlockTemplatesController {
 	 * Constructor.
 	 */
 	public function __construct() {
-		$this->templates_directory      = plugin_dir_path( __DIR__ ) . 'templates/' . self::TEMPLATES_DIR_NAME;
-		$this->template_parts_directory = plugin_dir_path( __DIR__ ) . 'templates/' . self::TEMPLATE_PARTS_DIR_NAME;
-		$this->init();
+		// This feature is gated for WooCommerce versions 6.0.0 and above.
+		if ( defined( 'WC_VERSION' ) && version_compare( WC_VERSION, '6.0.0', '>=' ) ) {
+			$this->templates_directory      = plugin_dir_path( __DIR__ ) . 'templates/' . self::TEMPLATES_DIR_NAME;
+			$this->template_parts_directory = plugin_dir_path( __DIR__ ) . 'templates/' . self::TEMPLATE_PARTS_DIR_NAME;
+			$this->init();
+		}
 	}
 
 	/**
@@ -54,6 +57,7 @@ class BlockTemplatesController {
 		add_action( 'template_redirect', array( $this, 'render_block_template' ) );
 		add_filter( 'pre_get_block_template', array( $this, 'maybe_return_blocks_template' ), 10, 3 );
 		add_filter( 'get_block_templates', array( $this, 'add_block_templates' ), 10, 3 );
+		add_filter( 'default_wp_template_part_areas', array( $this, 'add_template_part_areas' ) );
 	}
 
 	/**
@@ -447,5 +451,25 @@ class BlockTemplatesController {
 		) {
 			add_filter( 'woocommerce_has_block_template', '__return_true', 10, 0 );
 		}
+	}
+
+	/**
+	 * Add template part areas for our blocks.
+	 *
+	 * @param array $area_definitions An array of supported area objects.
+	 */
+	public function add_template_part_areas( $area_definitions ) {
+		return array_merge(
+			$area_definitions,
+			array(
+				array(
+					'area'        => 'mini-cart',
+					'label'       => __( 'Mini Cart', 'woo-gutenberg-products-block' ),
+					'description' => __( 'The Mini Cart template defines a page area that contains the content of the Mini Cart block.', 'woo-gutenberg-products-block' ),
+					'icon'        => 'sidebar',
+					'area_tag'    => 'div',
+				),
+			)
+		);
 	}
 }
