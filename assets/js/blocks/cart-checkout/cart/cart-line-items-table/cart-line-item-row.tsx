@@ -229,7 +229,7 @@ const CartLineItemRow = forwardRef< HTMLTableRowElement, CartLineItemRowProps >(
 					) }
 				</td>
 				<td className="wc-block-cart-item__product">
-					<div className="wc-block-cart-item__wrap">
+					<div className={ classnames( 'wc-block-cart-item__wrap' ) }>
 						<ProductName
 							disabled={
 								isPendingDelete || isProductHiddenFromCatalog
