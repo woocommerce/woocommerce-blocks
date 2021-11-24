@@ -10,20 +10,41 @@ import BlockErrorBoundary from '@woocommerce/base-components/block-error-boundar
 // the event `wc-blocks_render_blocks_frontend` to render its inner blocks.
 const selectorsToSkipOnLoad = [ '.wp-block-woocommerce-cart' ];
 
-// Given an element and a list of wrappers, check if the element is inside at
-// least one of the wrappers.
-const isElementInsideWrappers = (
-	el: Element,
-	wrappers: NodeListOf< Element >
-): boolean => {
-	return Array.prototype.some.call(
-		wrappers,
-		( wrapper ) => wrapper.contains( el ) && ! wrapper.isSameNode( el )
-	);
-};
-
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 type blockType = ( props: any ) => JSX.Element;
+
+interface renderBlockParams {
+	// React component to use as a replacement.
+	Block: blockType;
+	// Container to replace with the Block component.
+	container: HTMLElement;
+	// Attributes object for the block.
+	attributes?: Record< string, unknown >;
+	// Props object for the block.
+	props?: Record< string, unknown >;
+	// Props object for the error boundary.
+	errorBoundaryProps?: Record< string, unknown >;
+}
+
+/**
+ * Renders a block component in a single `container` node.
+ */
+export const renderBlock = ( {
+	Block,
+	container,
+	attributes = {},
+	props = {},
+	errorBoundaryProps = {},
+}: renderBlockParams ): void => {
+	render(
+		<BlockErrorBoundary { ...errorBoundaryProps }>
+			<Suspense fallback={ <div className="wc-block-placeholder" /> }>
+				<Block { ...props } attributes={ attributes } />
+			</Suspense>
+		</BlockErrorBoundary>,
+		container
+	);
+};
 
 interface propsWithAttributes {
 	attributes?: Record< string, unknown >;
@@ -77,36 +98,15 @@ const renderBlockInContainers = ( {
 	} );
 };
 
-interface renderBlockParams {
-	// React component to use as a replacement.
-	Block: blockType;
-	// Container to replace with the Block component.
-	container: HTMLElement;
-	// Attributes object for the block.
-	attributes?: Record< string, unknown >;
-	// Props object for the block.
-	props?: Record< string, unknown >;
-	// Props object for the error boundary.
-	errorBoundaryProps?: Record< string, unknown >;
-}
-
-/**
- * Renders a block component in a single `container` node.
- */
-export const renderBlock = ( {
-	Block,
-	container,
-	attributes = {},
-	props = {},
-	errorBoundaryProps = {},
-}: renderBlockParams ): void => {
-	render(
-		<BlockErrorBoundary { ...errorBoundaryProps }>
-			<Suspense fallback={ <div className="wc-block-placeholder" /> }>
-				<Block { ...props } attributes={ attributes } />
-			</Suspense>
-		</BlockErrorBoundary>,
-		container
+// Given an element and a list of wrappers, check if the element is inside at
+// least one of the wrappers.
+const isElementInsideWrappers = (
+	el: Element,
+	wrappers: NodeListOf< Element >
+): boolean => {
+	return Array.prototype.some.call(
+		wrappers,
+		( wrapper ) => wrapper.contains( el ) && ! wrapper.isSameNode( el )
 	);
 };
 
