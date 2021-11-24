@@ -6,12 +6,12 @@ import FormattedMonetaryAmount from '@woocommerce/base-components/formatted-mone
 import classNames from 'classnames';
 import { formatPrice } from '@woocommerce/price-format';
 import { createInterpolateElement } from '@wordpress/element';
+import { Currency } from '@woocommerce/type-defs/currency';
 
 /**
  * Internal dependencies
  */
 import './style.scss';
-import { Currency } from '../../../types/type-defs/currency';
 
 interface PriceRangeProps {
 	currency: Currency | Record< string, never >; // Currency configuration object;
