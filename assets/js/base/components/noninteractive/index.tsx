@@ -79,6 +79,7 @@ const Noninteractive = ( {
 	return (
 		<div
 			ref={ node }
+			aria-disabled="true"
 			style={ {
 				userSelect: 'none',
 				pointerEvents: 'none',
