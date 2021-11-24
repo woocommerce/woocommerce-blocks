@@ -57,7 +57,7 @@ const MiniCartBlock = ( {
 		if ( contentsRef.current instanceof Element ) {
 			const container = contentsRef.current.querySelector(
 				'.wc-block-mini-cart-contents'
-			);
+			) as HTMLElement;
 			if ( ! container ) {
 				return;
 			}

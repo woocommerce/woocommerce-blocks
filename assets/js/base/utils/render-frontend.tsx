@@ -12,33 +12,47 @@ const selectorsToSkipOnLoad = [ '.wp-block-woocommerce-cart' ];
 
 // Given an element and a list of wrappers, check if the element is inside at
 // least one of the wrappers.
-const isElementInsideWrappers = ( el, wrappers ) => {
+const isElementInsideWrappers = (
+	el: Element,
+	wrappers: NodeListOf< Element >
+): boolean => {
 	return Array.prototype.some.call(
 		wrappers,
 		( wrapper ) => wrapper.contains( el ) && ! wrapper.isSameNode( el )
 	);
 };
 
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+type blockType = ( props: any ) => JSX.Element;
+
+interface propsWithAttributes {
+	attributes?: Record< string, unknown >;
+	[ key: string ]: unknown;
+}
+
+interface renderBlockInContainersParams {
+	// React component to use as a replacement.
+	Block: blockType;
+	// Containers to replace with the Block component.
+	containers: NodeListOf< Element >;
+	// Function to generate the props object for the block.
+	getProps?: ( el: HTMLElement, i: number ) => propsWithAttributes;
+	// Function to generate the props object for the error boundary.
+	getErrorBoundaryProps?: (
+		el: HTMLElement,
+		i: number
+	) => Record< string, unknown >;
+}
+
 /**
  * Renders a block component in each `containers` node.
- *
- * @param {Object}    props                         Render props.
- * @param {Function}  props.Block                   React component to use as a
- *                                                  replacement.
- * @param {NodeList}  props.containers              Containers to replace with
- *                                                  the Block component.
- * @param {Function}  [props.getProps]              Function to generate the
- *                                                  props object for the block.
- * @param {Function}  [props.getErrorBoundaryProps] Function to generate the
- *                                                  props object for the error
- *                                                  boundary.
  */
 const renderBlockInContainers = ( {
 	Block,
 	containers,
 	getProps = () => ( {} ),
 	getErrorBoundaryProps = () => ( {} ),
-} ) => {
+}: renderBlockInContainersParams ): void => {
 	if ( containers.length === 0 ) {
 		return;
 	}
@@ -63,19 +77,21 @@ const renderBlockInContainers = ( {
 	} );
 };
 
+interface renderBlockParams {
+	// React component to use as a replacement.
+	Block: blockType;
+	// Container to replace with the Block component.
+	container: HTMLElement;
+	// Attributes object for the block.
+	attributes?: Record< string, unknown >;
+	// Props object for the block.
+	props?: Record< string, unknown >;
+	// Props object for the error boundary.
+	errorBoundaryProps?: Record< string, unknown >;
+}
+
 /**
  * Renders a block component in a single `container` node.
- *
- * @param {Object}    props                         Render props.
- * @param {Function}  props.Block                   React component to use as a
- *                                                  replacement.
- * @param {Node}      props.container               Container to replace with
- *                                                  the Block component.
- * @param {Object}    [props.attributes]            Attributes object for the
- *                                                  block.
- * @param {Object}    [props.props]                 Props object for the block.
- * @param {Object}    [props.errorBoundaryProps]    Props object for the error
- *                                                  boundary.
  */
 export const renderBlock = ( {
 	Block,
@@ -83,7 +99,7 @@ export const renderBlock = ( {
 	attributes = {},
 	props = {},
 	errorBoundaryProps = {},
-} ) => {
+}: renderBlockParams ): void => {
 	render(
 		<BlockErrorBoundary { ...errorBoundaryProps }>
 			<Suspense fallback={ <div className="wc-block-placeholder" /> }>
@@ -94,23 +110,14 @@ export const renderBlock = ( {
 	);
 };
 
+interface renderBlockOutsideWrappersParams extends renderFrontendParams {
+	// All elements matched by the selector which are inside the wrapper will be ignored.
+	wrappers: NodeListOf< Element >;
+}
+
 /**
  * Renders the block frontend in the elements matched by the selector which are
  * outside the wrapper elements.
- *
- * @param {Object}    props                         Render props.
- * @param {Function}  props.Block                   React component to use as a
- *                                                  replacement.
- * @param {string}    props.selector                CSS selector to match the
- *                                                  elements to replace.
- * @param {Function}  [props.getProps]              Function to generate the
- *                                                  props object for the block.
- * @param {Function}  [props.getErrorBoundaryProps] Function to generate the
- *                                                  props object for the error
- *                                                  boundary.
- * @param {NodeList}  props.wrappers                All elements matched by the
- *                                                  selector which are inside
- *                                                  the wrapper will be ignored.
  */
 const renderBlockOutsideWrappers = ( {
 	Block,
@@ -118,7 +125,7 @@ const renderBlockOutsideWrappers = ( {
 	getErrorBoundaryProps,
 	selector,
 	wrappers,
-} ) => {
+}: renderBlockOutsideWrappersParams ): void => {
 	const containers = document.body.querySelectorAll( selector );
 	// Filter out blocks inside the wrappers.
 	if ( wrappers.length > 0 ) {
@@ -134,22 +141,14 @@ const renderBlockOutsideWrappers = ( {
 	} );
 };
 
+interface renderBlockInsideWrapperParams extends renderFrontendParams {
+	// Wrapper element to query the selector inside.
+	wrapper: HTMLElement;
+}
+
 /**
  * Renders the block frontend in the elements matched by the selector inside the
  * wrapper element.
- *
- * @param {Object}    props                         Render props.
- * @param {Function}  props.Block                   React component to use as a
- *                                                  replacement.
- * @param {string}    props.selector                CSS selector to match the
- *                                                  elements to replace.
- * @param {Function}  [props.getProps]              Function to generate the
- *                                                  props object for the block.
- * @param {Function}  [props.getErrorBoundaryProps] Function to generate the
- *                                                  props object for the error
- *                                                  boundary.
- * @param {Element}   props.wrapper                 Wrapper element to query the
- *                                                  selector inside.
  */
 const renderBlockInsideWrapper = ( {
 	Block,
@@ -157,7 +156,7 @@ const renderBlockInsideWrapper = ( {
 	getErrorBoundaryProps,
 	selector,
 	wrapper,
-} ) => {
+}: renderBlockInsideWrapperParams ): void => {
 	const containers = wrapper.querySelectorAll( selector );
 	renderBlockInContainers( {
 		Block,
@@ -167,24 +166,27 @@ const renderBlockInsideWrapper = ( {
 	} );
 };
 
+interface renderFrontendParams {
+	// React component to use as a replacement.
+	Block: blockType;
+	// CSS selector to match the elements to replace.
+	selector: string;
+	// Function to generate the props object for the block.
+	getProps?: ( el: HTMLElement, i: number ) => propsWithAttributes;
+	// Function to generate the props object for the error boundary.
+	getErrorBoundaryProps?: (
+		el: HTMLElement,
+		i: number
+	) => Record< string, unknown >;
+}
+
 /**
  * Renders the block frontend on page load. If the block is contained inside a
  * wrapper element that should be excluded from initial load, it adds the
  * appropriate event listeners to render the block when the
  * `wc-blocks_render_blocks_frontend` event is triggered.
- *
- * @param {Object}    props                         Render props.
- * @param {Function}  props.Block                   React component to use as a
- *                                                  replacement.
- * @param {string}    props.selector                CSS selector to match the
- *                                                  elements to replace.
- * @param {Function}  [props.getProps]              Function to generate the
- *                                                  props object for the block.
- * @param {Function}  [props.getErrorBoundaryProps] Function to generate the
- *                                                  props object for the error
- *                                                  boundary.
  */
-export const renderFrontend = ( props ) => {
+export const renderFrontend = ( props: renderFrontendParams ): void => {
 	const wrappersToSkipOnLoad = document.body.querySelectorAll(
 		selectorsToSkipOnLoad.join( ',' )
 	);
