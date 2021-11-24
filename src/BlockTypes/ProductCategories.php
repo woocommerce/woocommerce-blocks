@@ -3,7 +3,6 @@ namespace Automattic\WooCommerce\Blocks\BlockTypes;
 
 use Automattic\WooCommerce\Blocks\Utils\StyleAttributesUtils;
 
-
 /**
  * ProductCategories class.
  */
@@ -50,7 +49,6 @@ class ProductCategories extends AbstractDynamicBlock {
 				'fontSize'       => $this->get_schema_string(),
 				'lineHeight'     => $this->get_schema_string(),
 				'style'          => array( 'type' => 'object' ),
-
 			)
 		);
 	}
@@ -86,7 +84,7 @@ class ProductCategories extends AbstractDynamicBlock {
 			}
 		}
 
-		$classes_and_styles = $this->get_container_classes( $attributes );
+		$classes_and_styles = $this->get_container_classes_and_styles( $attributes );
 		$classes            = $classes_and_styles[0];
 		$styles             = $classes_and_styles[1];
 
@@ -101,9 +99,9 @@ class ProductCategories extends AbstractDynamicBlock {
 	 * Get the list of classes to apply to this block.
 	 *
 	 * @param array $attributes Block attributes. Default empty array.
-	 * @return string space-separated list of classes.
+	 * @return array space-separated list of classes.
 	 */
-	protected function get_container_classes( $attributes = array() ) {
+	protected function get_container_classes_and_styles( $attributes = array() ) {
 
 		$classes = array( 'wc-block-product-categories' );
 
@@ -130,7 +128,7 @@ class ProductCategories extends AbstractDynamicBlock {
 		$font_size_class   = isset( $font_size_class_and_style['class'] ) ? $font_size_class_and_style['class'] : null;
 
 		$classes = array_filter(
-			[ $line_height_class, $text_color_class, $font_size_class ]
+			array( $line_height_class, $text_color_class, $font_size_class )
 		);
 
 		$line_height_style = isset( $line_height_class_and_style['style'] ) ? $line_height_class_and_style['style'] : null;
@@ -138,7 +136,7 @@ class ProductCategories extends AbstractDynamicBlock {
 		$font_size_style   = isset( $font_size_class_and_style['style'] ) ? $font_size_class_and_style['style'] : null;
 
 		$styles = array_filter(
-			[ $line_height_style, $text_color_style, $font_size_style ]
+			array( $line_height_style, $text_color_style, $font_size_style )
 		);
 
 		$string_classes = implode( ' ', $classes );
@@ -146,8 +144,6 @@ class ProductCategories extends AbstractDynamicBlock {
 
 		return array( $string_classes, $string_styles );
 	}
-
-
 
 	/**
 	 * Get categories (terms) from the db.
@@ -340,12 +336,12 @@ class ProductCategories extends AbstractDynamicBlock {
 
 		$link_color_class_and_style = StyleAttributesUtils::get_link_color_class_and_style( $attributes );
 
-		$link_color_style = $link_color_class_and_style['style'];
+		$link_color_style = isset( $link_color_class_and_style['style'] ) ? $link_color_class_and_style['style'] : '';
 
 		foreach ( $categories as $category ) {
 			$output .= '
 				<li class="wc-block-product-categories-list-item">
-				<a style="' . esc_attr( $link_color_style ) . '" href="' . esc_attr( get_term_link( $category->term_id, 'product_cat' ) ) . '">' . $this->get_image_html( $category, $attributes ) . esc_html( $category->name ) . '</a>
+					<a style="' . esc_attr( $link_color_style ) . '" href="' . esc_attr( get_term_link( $category->term_id, 'product_cat' ) ) . '">' . $this->get_image_html( $category, $attributes ) . esc_html( $category->name ) . '</a>
 				' . $this->getCount( $category, $attributes ) . '
 					' . ( ! empty( $category->children ) ? $this->renderList( $category->children, $attributes, $uid, $depth + 1 ) : '' ) . '
 				</li>
