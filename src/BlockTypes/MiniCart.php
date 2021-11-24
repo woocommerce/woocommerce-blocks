@@ -308,8 +308,7 @@ class MiniCart extends AbstractBlock {
 
 		$template_part_contents = '';
 		if ( function_exists( 'gutenberg_get_block_template' ) ) {
-			$part          = 'mini-cart';
-			$template_part = gutenberg_get_block_template( get_stylesheet() . '//' . $part, 'wp_template_part' );
+			$template_part = gutenberg_get_block_template( get_stylesheet() . '//mini-cart', 'wp_template_part' );
 			if ( $template_part && ! empty( $template_part->content ) ) {
 				$template_part_contents = do_blocks( $template_part->content );
 			}
