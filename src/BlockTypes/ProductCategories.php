@@ -99,7 +99,7 @@ class ProductCategories extends AbstractDynamicBlock {
 	 * Get the list of classes to apply to this block.
 	 *
 	 * @param array $attributes Block attributes. Default empty array.
-	 * @return array space-separated list of classes.
+	 * @return array space-separated list of classes and space-separated list of inline styles.
 	 */
 	protected function get_container_classes_and_styles( $attributes = array() ) {
 
