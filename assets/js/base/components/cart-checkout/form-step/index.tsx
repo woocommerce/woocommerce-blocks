@@ -2,7 +2,6 @@
  * External dependencies
  */
 import classnames from 'classnames';
-import PropTypes from 'prop-types';
 import Title from '@woocommerce/base-components/title';
 
 /**
@@ -33,15 +32,15 @@ const StepHeading = ( { title, stepHeadingContent }: StepHeadingProps ) => (
 );
 
 interface FormStepProps {
-	id: string;
-	className: string;
+	id?: string;
+	className?: string;
 	title?: string;
 	legend?: string;
-	description: string;
-	children: JSX.Element | JSX.Element[] | string | string[];
-	disabled: boolean;
-	showStepNumber: boolean;
-	stepHeadingContent: () => JSX.Element | undefined;
+	description?: string;
+	children?: JSX.Element | JSX.Element[] | string | string[];
+	disabled?: boolean;
+	showStepNumber?: boolean;
+	stepHeadingContent?: () => JSX.Element | undefined;
 }
 
 const FormStep = ( {
@@ -95,18 +94,6 @@ const FormStep = ( {
 			</div>
 		</Element>
 	);
-};
-
-FormStep.propTypes = {
-	id: PropTypes.string,
-	className: PropTypes.string,
-	title: PropTypes.string,
-	description: PropTypes.string,
-	children: PropTypes.node,
-	showStepNumber: PropTypes.bool,
-	stepHeadingContent: PropTypes.func,
-	disabled: PropTypes.bool,
-	legend: PropTypes.string,
 };
 
 export default FormStep;
