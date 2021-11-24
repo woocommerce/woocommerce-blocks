@@ -17,8 +17,8 @@ interface PriceRangeProps {
 	currency: Currency | Record< string, never >; // Currency configuration object;
 	maxPrice: string | number;
 	minPrice: string | number;
-	priceClassName: string;
-	priceStyle: Record< string, string >;
+	priceClassName?: string;
+	priceStyle?: Record< string, string >;
 }
 
 const PriceRange = ( {
@@ -68,11 +68,11 @@ const PriceRange = ( {
 
 interface SalePriceProps {
 	currency: Currency | Record< string, never >; // Currency configuration object.
-	regularPriceClassName: string;
-	regularPriceStyle: Record< string, string >;
+	regularPriceClassName?: string;
+	regularPriceStyle?: Record< string, string >;
 	regularPrice: number | string;
-	priceClassName: string;
-	priceStyle: Record< string, string >;
+	priceClassName?: string;
+	priceStyle?: Record< string, string >;
 	price: number | string;
 }
 
@@ -129,18 +129,18 @@ const SalePrice = ( {
 };
 
 interface ProductPriceProps {
-	align: 'left' | 'center' | 'right';
-	className: string;
+	align?: 'left' | 'center' | 'right';
+	className?: string;
 	currency: Currency | Record< string, never >; // Currency configuration object.
 	format: string;
 	price: number | string;
-	priceClassName: string;
-	priceStyle: Record< string, string >;
-	maxPrice: number | string;
-	minPrice: number | string;
-	regularPrice: number | string;
-	regularPriceClassName: string;
-	regularPriceStyle: Record< string, string >;
+	priceClassName?: string;
+	priceStyle?: Record< string, string >;
+	maxPrice?: number | string;
+	minPrice?: number | string;
+	regularPrice?: number | string;
+	regularPriceClassName?: string;
+	regularPriceStyle?: Record< string, string >;
 }
 
 const ProductPrice = ( {
@@ -194,7 +194,7 @@ const ProductPrice = ( {
 				regularPriceStyle={ regularPriceStyle }
 			/>
 		);
-	} else if ( minPrice !== null && maxPrice !== null ) {
+	} else if ( minPrice && maxPrice ) {
 		priceComponent = (
 			<PriceRange
 				currency={ currency }
@@ -204,7 +204,7 @@ const ProductPrice = ( {
 				priceStyle={ priceStyle }
 			/>
 		);
-	} else if ( price !== null ) {
+	} else if ( price ) {
 		priceComponent = (
 			<FormattedMonetaryAmount
 				className={ classNames(
