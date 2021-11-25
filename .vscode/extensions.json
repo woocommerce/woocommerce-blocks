@@ -2,10 +2,12 @@
 	"recommendations": [
 		"dbaeumer.vscode-eslint",
 		"esbenp.prettier-vscode",
-		"felixfbecker.php-pack",
 		"wordpresstoolbox.wordpress-toolbox",
 		"claudiosanches.woocommerce",
 		"andys8.jest-snippets",
-		"eamodio.gitlens"
+		"eamodio.gitlens",
+		"bmewburn.vscode-intelephense-client",
+		"neilbrayfield.php-docblocker",
+		"valeryanm.vscode-phpsab"
 	]
 }
