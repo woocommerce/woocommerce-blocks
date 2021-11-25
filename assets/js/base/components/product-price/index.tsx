@@ -194,7 +194,7 @@ const ProductPrice = ( {
 				regularPriceStyle={ regularPriceStyle }
 			/>
 		);
-	} else if ( minPrice && maxPrice ) {
+	} else if ( minPrice !== undefined && maxPrice !== undefined ) {
 		priceComponent = (
 			<PriceRange
 				currency={ currency }
