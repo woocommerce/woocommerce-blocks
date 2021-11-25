@@ -85,6 +85,12 @@ Release and roadmap notes available on the [WooCommerce Developers Blog](https:/
 
 == Changelog ==
 
+= 6.3.3 - 2021-11-25 =
+
+#### Bug Fixes
+
+- Fix fatal error in certain WP 5.9 pre-release versions. ([5183](https://github.com/woocommerce/woocommerce-gutenberg-products-block/pull/5183))
+
 = 6.3.2 - 2021-11-17 =
 
 #### Enhancements
