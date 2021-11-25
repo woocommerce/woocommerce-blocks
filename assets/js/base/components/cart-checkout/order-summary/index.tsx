@@ -4,13 +4,13 @@
 import { __ } from '@wordpress/i18n';
 import { useContainerWidthContext } from '@woocommerce/base-context';
 import { Panel } from '@woocommerce/blocks-checkout';
+import type { CartItem } from '@woocommerce/types';
 
 /**
  * Internal dependencies
  */
 import OrderSummaryItem from './order-summary-item';
 import './style.scss';
-import { CartItem } from '../../../../types/type-defs/cart';
 
 interface OrderSummaryProps {
 	cartItems: CartItem[];

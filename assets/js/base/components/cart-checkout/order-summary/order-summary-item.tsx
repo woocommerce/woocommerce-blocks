@@ -18,6 +18,7 @@ import Dinero from 'dinero.js';
 import { getSetting } from '@woocommerce/settings';
 import { useMemo } from '@wordpress/element';
 import { useStoreCart } from '@woocommerce/base-context/hooks';
+import type { CartItem } from '@woocommerce/types';
 
 /**
  * Internal dependencies
@@ -26,9 +27,8 @@ import ProductBackorderBadge from '../product-backorder-badge';
 import ProductImage from '../product-image';
 import ProductLowStockBadge from '../product-low-stock-badge';
 import ProductMetadata from '../product-metadata';
-import { CartItem } from '../../../../types/type-defs/cart';
 
-const productPriceValidation = ( value: string ): true | Error =>
+const productPriceValidation = ( value: string ): true | never =>
 	mustContain( value, '<price/>' );
 
 interface OrderSummaryProps {

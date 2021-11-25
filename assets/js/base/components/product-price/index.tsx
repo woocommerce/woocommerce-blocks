@@ -6,7 +6,7 @@ import FormattedMonetaryAmount from '@woocommerce/base-components/formatted-mone
 import classNames from 'classnames';
 import { formatPrice } from '@woocommerce/price-format';
 import { createInterpolateElement } from '@wordpress/element';
-import { Currency } from '@woocommerce/type-defs/currency';
+import type { Currency } from '@woocommerce/types';
 
 /**
  * Internal dependencies
@@ -18,7 +18,7 @@ interface PriceRangeProps {
 	maxPrice: string | number;
 	minPrice: string | number;
 	priceClassName?: string;
-	priceStyle?: Record< string, string >;
+	priceStyle?: React.CSSProperties;
 }
 
 const PriceRange = ( {

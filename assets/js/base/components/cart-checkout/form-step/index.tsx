@@ -37,7 +37,7 @@ interface FormStepProps {
 	title?: string;
 	legend?: string;
 	description?: string;
-	children?: JSX.Element | JSX.Element[] | string | string[];
+	children?: React.ReactNode;
 	disabled?: boolean;
 	showStepNumber?: boolean;
 	stepHeadingContent?: () => JSX.Element | undefined;
