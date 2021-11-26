@@ -18,7 +18,7 @@ import Dinero from 'dinero.js';
 import { getSetting } from '@woocommerce/settings';
 import { useMemo } from '@wordpress/element';
 import { useStoreCart } from '@woocommerce/base-context/hooks';
-import type { CartItem } from '@woocommerce/types';
+import { CartItem, isString } from '@woocommerce/types';
 
 /**
  * Internal dependencies
@@ -77,7 +77,9 @@ const OrderSummaryItem = ( { cartItem }: OrderSummaryProps ): JSX.Element => {
 
 	const regularPriceSingle = Dinero( {
 		amount: parseInt( prices.raw_prices.regular_price, 10 ),
-		precision: prices.raw_prices.precision,
+		precision: isString( prices.raw_prices.precision )
+			? parseInt( prices.raw_prices.precision, 10 )
+			: prices.raw_prices.precision,
 	} )
 		.convertPrecision( priceCurrency.minorUnit )
 		.getAmount();
