@@ -18,6 +18,13 @@ class BlockTemplatesController {
 	private $templates_directory;
 
 	/**
+	 * Holds the path for the directory where the block template parts will be kept.
+	 *
+	 * @var string
+	 */
+	private $template_parts_directory;
+
+	/**
 	 * Directory name of the block template directory.
 	 *
 	 * @var string
@@ -25,11 +32,22 @@ class BlockTemplatesController {
 	const TEMPLATES_DIR_NAME = 'block-templates';
 
 	/**
+	 * Directory name of the block template parts directory.
+	 *
+	 * @var string
+	 */
+	const TEMPLATE_PARTS_DIR_NAME = 'block-template-parts';
+
+	/**
 	 * Constructor.
 	 */
 	public function __construct() {
-		$this->templates_directory = plugin_dir_path( __DIR__ ) . 'templates/' . self::TEMPLATES_DIR_NAME;
-		$this->init();
+		// This feature is gated for WooCommerce versions 6.0.0 and above.
+		if ( defined( 'WC_VERSION' ) && version_compare( WC_VERSION, '6.0.0', '>=' ) ) {
+			$this->templates_directory      = plugin_dir_path( __DIR__ ) . 'templates/' . self::TEMPLATES_DIR_NAME;
+			$this->template_parts_directory = plugin_dir_path( __DIR__ ) . 'templates/' . self::TEMPLATE_PARTS_DIR_NAME;
+			$this->init();
+		}
 	}
 
 	/**
@@ -39,6 +57,8 @@ class BlockTemplatesController {
 		add_action( 'template_redirect', array( $this, 'render_block_template' ) );
 		add_filter( 'pre_get_block_template', array( $this, 'maybe_return_blocks_template' ), 10, 3 );
 		add_filter( 'get_block_templates', array( $this, 'add_block_templates' ), 10, 3 );
+		add_filter( 'default_wp_template_part_areas', array( $this, 'add_template_part_areas' ) );
+		add_filter( 'wp_insert_post', array( $this, 'add_mini_cart_content_to_template_part' ), 10, 3 );
 	}
 
 	/**
@@ -54,6 +74,9 @@ class BlockTemplatesController {
 	 * @return mixed|\WP_Block_Template|\WP_Error
 	 */
 	public function maybe_return_blocks_template( $template, $id, $template_type ) {
+		if ( ! function_exists( 'gutenberg_get_block_template' ) ) {
+			return $template;
+		}
 		$template_name_parts = explode( '//', $id );
 		if ( count( $template_name_parts ) < 2 ) {
 			return $template;
@@ -113,11 +136,11 @@ class BlockTemplatesController {
 		list( , $slug ) = $template_name_parts;
 
 		// If this blocks template doesn't exist then we should just skip the function and let Gutenberg handle it.
-		if ( ! $this->block_template_is_available( $slug ) ) {
+		if ( ! $this->block_template_is_available( $slug, $template_type ) ) {
 			return $template;
 		}
 
-		$available_templates = $this->get_block_templates( array( $slug ) );
+		$available_templates = $this->get_block_templates( array( $slug ), $template_type );
 		return ( is_array( $available_templates ) && count( $available_templates ) > 0 )
 			? BlockTemplateUtils::gutenberg_build_template_result_from_file( $available_templates[0], $available_templates[0]->type )
 			: $template;
@@ -132,13 +155,13 @@ class BlockTemplatesController {
 	 * @return array
 	 */
 	public function add_block_templates( $query_result, $query, $template_type ) {
-		if ( ! gutenberg_supports_block_templates() || 'wp_template' !== $template_type ) {
+		if ( ! function_exists( 'gutenberg_supports_block_templates' ) || ! gutenberg_supports_block_templates() ) {
 			return $query_result;
 		}
 
 		$post_type      = isset( $query['post_type'] ) ? $query['post_type'] : '';
 		$slugs          = isset( $query['slug__in'] ) ? $query['slug__in'] : array();
-		$template_files = $this->get_block_templates( $slugs );
+		$template_files = $this->get_block_templates( $slugs, $template_type );
 
 		// @todo: Add apply_filters to _gutenberg_get_template_files() in Gutenberg to prevent duplication of logic.
 		foreach ( $template_files as $template_file ) {
@@ -169,7 +192,7 @@ class BlockTemplatesController {
 			// It would be custom if the template was modified in the editor, so if it's not custom we can load it from
 			// the filesystem.
 			if ( 'custom' !== $template_file->source ) {
-				$template = BlockTemplateUtils::gutenberg_build_template_result_from_file( $template_file, 'wp_template' );
+				$template = BlockTemplateUtils::gutenberg_build_template_result_from_file( $template_file, $template_type );
 			} else {
 				$template_file->title = BlockTemplateUtils::convert_slug_to_title( $template_file->slug );
 				$query_result[]       = $template_file;
@@ -239,12 +262,13 @@ class BlockTemplatesController {
 	 * Gets the templates saved in the database.
 	 *
 	 * @param array $slugs An array of slugs to retrieve templates for.
+	 * @param array $template_type wp_template or wp_template_part.
 	 *
 	 * @return int[]|\WP_Post[] An array of found templates.
 	 */
-	public function get_block_templates_from_db( $slugs = array() ) {
+	public function get_block_templates_from_db( $slugs = array(), $template_type = 'wp_template' ) {
 		$check_query_args = array(
-			'post_type'      => 'wp_template',
+			'post_type'      => $template_type,
 			'posts_per_page' => -1,
 			'no_found_rows'  => true,
 			'tax_query'      => array( // phpcs:ignore WordPress.DB.SlowDBQuery.slow_db_query_tax_query
@@ -275,16 +299,25 @@ class BlockTemplatesController {
 	 *
 	 * @param string[] $slugs An array of slugs to filter templates by. Templates whose slug does not match will not be returned.
 	 * @param array    $already_found_templates Templates that have already been found, these are customised templates that are loaded from the database.
+	 * @param string   $template_type wp_template or wp_template_part.
 	 *
 	 * @return array Templates from the WooCommerce blocks plugin directory.
 	 */
-	public function get_block_templates_from_woocommerce( $slugs, $already_found_templates ) {
-		$template_files = BlockTemplateUtils::gutenberg_get_template_paths( $this->templates_directory );
+	public function get_block_templates_from_woocommerce( $slugs, $already_found_templates, $template_type = 'wp_template' ) {
+		$directory      = $this->get_templates_directory( $template_type );
+		$template_files = BlockTemplateUtils::gutenberg_get_template_paths( $directory );
 		$templates      = array();
+
+		if ( 'wp_template_part' === $template_type ) {
+			$dir_name = self::TEMPLATE_PARTS_DIR_NAME;
+		} else {
+			$dir_name = self::TEMPLATES_DIR_NAME;
+		}
+
 		foreach ( $template_files as $template_file ) {
 			$template_slug = substr(
 				$template_file,
-				strpos( $template_file, self::TEMPLATES_DIR_NAME . DIRECTORY_SEPARATOR ) + 1 + strlen( self::TEMPLATES_DIR_NAME ),
+				strpos( $template_file, $dir_name . DIRECTORY_SEPARATOR ) + 1 + strlen( $dir_name ),
 				-5
 			);
 
@@ -315,9 +348,9 @@ class BlockTemplatesController {
 				'slug'        => $template_slug,
 				'id'          => 'woocommerce//' . $template_slug,
 				'path'        => $template_file,
-				'type'        => 'wp_template',
+				'type'        => $template_type,
 				'theme'       => 'woocommerce',
-				'source'      => 'woocommerce',
+				'source'      => 'plugin',
 				'title'       => BlockTemplateUtils::convert_slug_to_title( $template_slug ),
 				'description' => '',
 				'post_types'  => array(), // Don't appear in any Edit Post template selector dropdown.
@@ -331,12 +364,29 @@ class BlockTemplatesController {
 	 * Get and build the block template objects from the block template files.
 	 *
 	 * @param array $slugs An array of slugs to retrieve templates for.
+	 * @param array $template_type wp_template or wp_template_part.
+	 *
 	 * @return array
 	 */
-	public function get_block_templates( $slugs = array() ) {
-		$templates_from_db  = $this->get_block_templates_from_db( $slugs );
-		$templates_from_woo = $this->get_block_templates_from_woocommerce( $slugs, $templates_from_db );
+	public function get_block_templates( $slugs = array(), $template_type = 'wp_template' ) {
+		$templates_from_db  = $this->get_block_templates_from_db( $slugs, $template_type );
+		$templates_from_woo = $this->get_block_templates_from_woocommerce( $slugs, $templates_from_db, $template_type );
 		return array_merge( $templates_from_db, $templates_from_woo );
+	}
+
+
+	/**
+	 * Gets the directory where templates of a specific template type can be found.
+	 *
+	 * @param array $template_type wp_template or wp_template_part.
+	 *
+	 * @return string
+	 */
+	protected function get_templates_directory( $template_type = 'wp_template' ) {
+		if ( 'wp_template_part' === $template_type ) {
+			return $this->template_parts_directory;
+		}
+		return $this->templates_directory;
 	}
 
 	/**
@@ -351,19 +401,33 @@ class BlockTemplatesController {
 	}
 
 	/**
+	 * Check if the theme has a template. So we know if to load our own in or not.
+	 *
+	 * @param string $template_name name of the template file without .html extension e.g. 'single-product'.
+	 * @return boolean
+	 */
+	public function theme_has_template_part( $template_name ) {
+		return is_readable( get_template_directory() . '/block-template-parts/' . $template_name . '.html' ) ||
+			is_readable( get_stylesheet_directory() . '/block-template-parts/' . $template_name . '.html' );
+	}
+
+	/**
 	 * Checks whether a block template with that name exists in Woo Blocks
 	 *
 	 * @param string $template_name Template to check.
+	 * @param array  $template_type wp_template or wp_template_part.
+	 *
 	 * @return boolean
 	 */
-	public function block_template_is_available( $template_name ) {
+	public function block_template_is_available( $template_name, $template_type = 'wp_template' ) {
 		if ( ! $template_name ) {
 			return false;
 		}
+		$directory = $this->get_templates_directory( $template_type ) . '/' . $template_name . '.html';
 
 		return is_readable(
-			$this->templates_directory . '/' . $template_name . '.html'
-		) || $this->get_block_templates( array( $template_name ) );
+			$directory
+		) || $this->get_block_templates( array( $template_name ), $template_type );
 	}
 
 	/**
@@ -399,5 +463,90 @@ class BlockTemplatesController {
 		) {
 			add_filter( 'woocommerce_has_block_template', '__return_true', 10, 0 );
 		}
+	}
+
+	/**
+	 * Add template part areas for our blocks.
+	 *
+	 * @param array $area_definitions An array of supported area objects.
+	 */
+	public function add_template_part_areas( $area_definitions ) {
+		return array_merge(
+			$area_definitions,
+			array(
+				array(
+					'area'        => 'mini-cart',
+					'label'       => __( 'Mini Cart', 'woo-gutenberg-products-block' ),
+					'description' => __( 'The Mini Cart template defines a page area that contains the content of the Mini Cart block.', 'woo-gutenberg-products-block' ),
+					'icon'        => 'sidebar',
+					'area_tag'    => 'div',
+				),
+			)
+		);
+	}
+
+	/**
+	 * Add mini cart content block to new template part for Mini Cart area.
+	 *
+	 * @param int      $post_id Post ID.
+	 * @param \WP_Post $post    Post object.
+	 * @param bool     $update  Whether this is an existing post being updated.
+	 */
+	public function add_mini_cart_content_to_template_part( $post_id, $post, $update ) {
+		// We only inject the mini cart content when the template part is created.
+		if ( $update ) {
+			return;
+		}
+
+		// If by somehow, the template part was created with content, bail.
+		if ( ! empty( $post->content ) ) {
+			return;
+		}
+
+		if ( ! function_exists( 'get_block_file_template' ) ) {
+			return;
+		}
+
+		if ( 'wp_template_part' !== $post->post_type ) {
+			return;
+		}
+
+		$type_terms = get_the_terms( $post, 'wp_template_part_area' );
+
+		if ( is_wp_error( $type_terms ) || false === $type_terms ) {
+			return;
+		}
+
+		if ( 'mini-cart' !== $type_terms[0]->name ) {
+			return;
+		}
+
+		// Remove the filter temporarily for wp_update_post below.
+		remove_filter( 'wp_insert_post', array( $this, 'add_mini_cart_content_to_template_part' ), 10, 3 );
+
+		$block_template = null;
+
+		/**
+		 * We only use the mini cart content from file.
+		 */
+		if ( $this->theme_has_template_part( 'mini-cart' ) ) {
+			$template_id    = sprintf( '%s//mini-cart', wp_get_theme()->get_stylesheet() );
+			$block_template = get_block_file_template( $template_id, 'wp_template_part' );
+		} else {
+			$available_templates = $this->get_block_templates_from_woocommerce( array( 'mini-cart' ), array(), 'wp_template_part' );
+			if ( is_array( $available_templates ) && count( $available_templates ) > 0 ) {
+				$block_template = BlockTemplateUtils::gutenberg_build_template_result_from_file( $available_templates[0], $available_templates[0]->type );
+			}
+		}
+
+		if ( is_a( $block_template, 'WP_Block_Template' ) ) {
+			$post->post_content = $block_template->content;
+		} else { // Just for extra safety.
+			$post->post_content = '<!-- wp:woocommerce/mini-cart-contents /-->';
+		}
+
+		wp_update_post( $post );
+
+		add_filter( 'wp_insert_post', array( $this, 'add_mini_cart_content_to_template_part' ), 10, 3 );
 	}
 }

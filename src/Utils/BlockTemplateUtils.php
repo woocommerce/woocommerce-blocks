@@ -109,6 +109,12 @@ class BlockTemplateUtils {
 		$template->has_theme_file = $has_theme_file;
 		$template->is_custom      = true;
 		$template->post_types     = array(); // Don't appear in any Edit Post template selector dropdown.
+		if ( 'wp_template_part' === $post->post_type ) {
+			$type_terms = get_the_terms( $post, 'wp_template_part_area' );
+			if ( ! is_wp_error( $type_terms ) && false !== $type_terms ) {
+				$template->area = $type_terms[0]->name;
+			}
+		}
 
 		return $template;
 	}
@@ -129,7 +135,7 @@ class BlockTemplateUtils {
 		$template->id             = 'woocommerce//' . $template_file->slug;
 		$template->theme          = 'woocommerce';
 		$template->content        = self::gutenberg_inject_theme_attribute_in_content( $template_content );
-		$template->source         = 'woocommerce';
+		$template->source         = 'plugin';
 		$template->slug           = $template_file->slug;
 		$template->type           = $template_type;
 		$template->title          = ! empty( $template_file->title ) ? $template_file->title : self::convert_slug_to_title( $template_file->slug );
@@ -137,6 +143,13 @@ class BlockTemplateUtils {
 		$template->has_theme_file = true;
 		$template->is_custom      = false; // Templates loaded from the filesystem aren't custom, ones that have been edited and loaded from the DB are.
 		$template->post_types     = array(); // Don't appear in any Edit Post template selector dropdown.
+		if ( 'wp_template_part' === $template_type ) {
+			if ( 'mini-cart' === $template_file->slug ) {
+				$template->area = 'mini-cart';
+			} else {
+				$template->area = 'uncategorized';
+			}
+		}
 		return $template;
 	}
 

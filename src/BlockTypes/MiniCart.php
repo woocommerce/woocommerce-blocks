@@ -288,9 +288,13 @@ class MiniCart extends AbstractBlock {
 			$cart_contents_total += $cart->get_subtotal_tax();
 		}
 
-		$wrapper_classes = 'wc-block-mini-cart';
+		$wrapper_classes = 'wc-block-mini-cart  wp-block-woocommerce-mini-cart';
 		$classes         = '';
 		$style           = '';
+
+		if ( ! empty( $attributes['align'] ) ) {
+			$wrapper_classes .= ' align-' . $attributes['align'];
+		}
 
 		if ( ! isset( $attributes['transparentButton'] ) || $attributes['transparentButton'] ) {
 			$wrapper_classes .= ' is-transparent';
@@ -367,6 +371,20 @@ class MiniCart extends AbstractBlock {
 			</div>';
 		}
 
+		$template_part_contents = '';
+		if ( function_exists( 'gutenberg_get_block_template' ) ) {
+			$template_part = gutenberg_get_block_template( get_stylesheet() . '//mini-cart', 'wp_template_part' );
+			if ( $template_part && ! empty( $template_part->content ) ) {
+				$template_part_contents = do_blocks( $template_part->content );
+			}
+		}
+		if ( '' === $template_part_contents ) {
+			$template_part_contents = do_blocks(
+				// phpcs:ignore WordPress.WP.AlternativeFunctions.file_get_contents_file_get_contents
+				file_get_contents( Package::get_path() . 'templates/block-template-parts/mini-cart.html' )
+			);
+		}
+
 		return '<div class="' . $wrapper_classes . '">
 			<button class="wc-block-mini-cart__button ' . $classes . '" aria-label="' . esc_attr( $aria_label ) . '" style="' . $style . '">' . $button_html . '</button>
 			<div class="wc-block-mini-cart__drawer is-loading is-mobile wc-block-components-drawer__screen-overlay wc-block-components-drawer__screen-overlay--is-hidden" aria-hidden="true">
@@ -376,9 +394,11 @@ class MiniCart extends AbstractBlock {
 							<div class="components-modal__header-heading-container">
 								<h1 id="components-modal-header-1" class="components-modal__header-heading">' . wp_kses_post( $title ) . '</h1>
 							</div>
-						</div>'
-					. $this->get_cart_contents_markup( $cart_contents ) .
-				'</div>
+						</div>
+						<div class="wc-block-mini-cart__template-part">'
+						. wp_kses_post( $template_part_contents ) .
+						'</div>
+					</div>
 				</div>
 			</div>
 		</div>';
