@@ -10,10 +10,21 @@ import { Component } from 'react';
 import BlockError from './block-error';
 import './style.scss';
 
+interface DerivedStateReturn {
+	errorMessage: JSX.Element | string;
+	hasError: boolean;
+}
+
+interface Error {
+	status: string;
+	statusText: string;
+	message: string;
+}
+
 class BlockErrorBoundary extends Component {
 	state = { errorMessage: '', hasError: false };
 
-	static getDerivedStateFromError( error ) {
+	static getDerivedStateFromError( error: Error ): DerivedStateReturn {
 		if (
 			typeof error.statusText !== 'undefined' &&
 			typeof error.status !== 'undefined'
