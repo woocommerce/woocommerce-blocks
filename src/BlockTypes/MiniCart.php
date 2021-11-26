@@ -53,9 +53,6 @@ class MiniCart extends AbstractBlock {
 	public function __construct( AssetApi $asset_api, AssetDataRegistry $asset_data_registry, IntegrationRegistry $integration_registry ) {
 		parent::__construct( $asset_api, $asset_data_registry, $integration_registry, $this->block_name );
 
-		$this->label_including_tax = WC()->countries->inc_tax_or_vat();
-
-		$this->display_cart_prices_including_tax = get_option( 'woocommerce_tax_display_cart' ) === 'incl';
 	}
 
 	/**
@@ -107,10 +104,24 @@ class MiniCart extends AbstractBlock {
 
 		parent::enqueue_data( $attributes );
 
+		$label_info = $this->get_tax_label();
+
+		$label_including_tax               = $label_info['label_including_tax'];
+		$display_cart_prices_including_tax = $label_info['display_cart_prices_including_tax'];
+
+		$this->label_including_tax               = $label_including_tax;
+		$this->display_cart_prices_including_tax = $display_cart_prices_including_tax;
+
 		$this->asset_data_registry->add(
 			'labelIncludingTax',
 			$this->label_including_tax,
-			true
+			''
+		);
+
+		$this->asset_data_registry->add(
+			'displayCartPricesIncludingTax',
+			$this->display_cart_prices_including_tax,
+			false
 		);
 
 		// Hydrate the following data depending on admin or frontend context.
@@ -238,7 +249,7 @@ class MiniCart extends AbstractBlock {
 		$cart                = $cart_controller->get_cart_instance();
 		$cart_contents_total = $cart->get_subtotal();
 
-		return ( ! empty( $this->label_including_tax ) && $this->display_cart_prices_including_tax && 0 !== $cart_contents_total ) ? ( "<small class='wc-block-mini-cart__tax_label'>" . $this->label_including_tax . '</small>' ) : '';
+		return ( ! empty( $this->label_including_tax ) && 0 !== $cart_contents_total ) ? ( "<small class='wc-block-mini-cart__tax_label'>" . $this->label_including_tax . '</small>' ) : '';
 	}
 
 	/**
@@ -311,7 +322,7 @@ class MiniCart extends AbstractBlock {
 		}
 
 		$aria_label = sprintf(
-			/* translators: %1$d is the number of products in the cart. %2$s is the cart total */
+		/* translators: %1$d is the number of products in the cart. %2$s is the cart total */
 			_n(
 				'%1$d item in cart, total price of %2$s',
 				'%1$d items in cart, total price of %2$s',
@@ -322,7 +333,7 @@ class MiniCart extends AbstractBlock {
 			wp_strip_all_tags( wc_price( $cart_contents_total ) )
 		);
 		$title = sprintf(
-			/* translators: %d is the count of items in the cart. */
+		/* translators: %d is the count of items in the cart. */
 			_n(
 				'Your cart (%d item)',
 				'Your cart (%d items)',
@@ -366,8 +377,8 @@ class MiniCart extends AbstractBlock {
 								<h1 id="components-modal-header-1" class="components-modal__header-heading">' . wp_kses_post( $title ) . '</h1>
 							</div>
 						</div>'
-						. $this->get_cart_contents_markup( $cart_contents ) .
-					'</div>
+					. $this->get_cart_contents_markup( $cart_contents ) .
+				'</div>
 				</div>
 			</div>
 		</div>';
@@ -450,5 +461,48 @@ class MiniCart extends AbstractBlock {
 				'__experimentalSelector' => '.wc-block-mini-cart__button, .wc-block-mini-cart__badge',
 			)
 		);
+	}
+
+	/**
+	 * Get array with data for handle the tax label.
+	 * the entire logic of this function is was taken from:
+	 * https://github.com/woocommerce/woocommerce/blob/e730f7463c25b50258e97bf56e31e9d7d3bc7ae7/includes/class-wc-cart.php#L1582
+	 *
+	 * @return array;
+	 */
+	protected function get_tax_label() {
+
+		$cart = WC()->cart;
+
+		if ( $cart->display_prices_including_tax() ) {
+			if ( $cart->get_subtotal_tax() > 0 && ! wc_prices_include_tax() ) {
+				$label_including_tax               = WC()->countries->inc_tax_or_vat();
+				$display_cart_prices_including_tax = true;
+				return array(
+					'label_including_tax'               => $label_including_tax,
+					'display_cart_prices_including_tax' => $display_cart_prices_including_tax,
+				);
+			}
+			return array(
+				'label_including_tax'               => '',
+				'display_cart_prices_including_tax' => true,
+			);
+
+		}
+
+		if ( $cart->get_subtotal_tax() > 0 && wc_prices_include_tax() ) {
+			$label_including_tax               = WC()->countries->ex_tax_or_vat();
+			$display_cart_prices_including_tax = true;
+			return array(
+				'label_including_tax'               => $label_including_tax,
+				'display_cart_prices_including_tax' => false,
+			);
+		};
+
+		return array(
+			'label_including_tax'               => '',
+			'display_cart_prices_including_tax' => false,
+		);
+
 	}
 }

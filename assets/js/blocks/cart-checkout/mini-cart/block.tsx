@@ -215,7 +215,7 @@ const MiniCartBlock = ( {
 						getCurrencyFromPriceResponse( cartTotals )
 					) }
 				</span>
-				{ showIncludingTax && subTotal !== 0 && (
+				{ labelTaxName !== '' && subTotal !== 0 && (
 					<small className="wc-block-mini-cart__tax_label">
 						{ labelTaxName }
 					</small>
