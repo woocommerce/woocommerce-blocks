@@ -7,8 +7,8 @@ import { WC_BLOCKS_IMAGE_URL } from '@woocommerce/block-settings';
 interface BlockErrorProps {
 	imageUrl: string;
 	header: string;
-	text: string;
-	errorMessage: string;
+	text: React.ReactNode;
+	errorMessage: string | null;
 	errorMessagePrefix: string;
 	button: React.ReactNode;
 }

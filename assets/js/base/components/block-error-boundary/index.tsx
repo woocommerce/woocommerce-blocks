@@ -1,7 +1,6 @@
 /**
  * External dependencies
  */
-import PropTypes from 'prop-types';
 import { Component } from 'react';
 
 /**
@@ -21,7 +20,23 @@ interface Error {
 	message: string;
 }
 
-class BlockErrorBoundary extends Component {
+type RenderError = ( props: RenderErrorProps ) => React.ReactNode | null;
+
+interface RenderErrorProps {
+	errorMessage: React.ReactNode;
+}
+
+interface BlockErrorBoundaryProps {
+	header: string;
+	imageUrl: string;
+	showErrorMessage: boolean;
+	text: React.ReactNode;
+	errorMessagePrefix: string;
+	renderError: RenderError;
+	button: React.ReactNode;
+}
+
+class BlockErrorBoundary extends Component< BlockErrorBoundaryProps > {
 	state = { errorMessage: '', hasError: false };
 
 	static getDerivedStateFromError( error: Error ): DerivedStateReturn {
@@ -43,11 +58,11 @@ class BlockErrorBoundary extends Component {
 		return { errorMessage: error.message, hasError: true };
 	}
 
-	render() {
+	render(): JSX.Element | React.ReactNode {
 		const {
 			header,
 			imageUrl,
-			showErrorMessage,
+			showErrorMessage = true,
 			text,
 			errorMessagePrefix,
 			renderError,
@@ -74,42 +89,5 @@ class BlockErrorBoundary extends Component {
 		return this.props.children;
 	}
 }
-
-BlockErrorBoundary.propTypes = {
-	/**
-	 * Text to display as the heading of the error block.
-	 * If it's `null` or an empty string, no header will be displayed.
-	 * If it's not defined, the default header will be used.
-	 */
-	header: PropTypes.string,
-	/**
-	 * URL of the image to display.
-	 * If it's `null` or an empty string, no image will be displayed.
-	 * If it's not defined, the default image will be used.
-	 */
-	imageUrl: PropTypes.string,
-	/**
-	 * Whether to display the JS error message.
-	 */
-	showErrorMessage: PropTypes.bool,
-	/**
-	 * Text to display in the error block below the header.
-	 * If it's `null` or an empty string, nothing will be displayed.
-	 * If it's not defined, the default text will be used.
-	 */
-	text: PropTypes.node,
-	/**
-	 * Text preceeding the error message.
-	 */
-	errorMessagePrefix: PropTypes.string,
-	/**
-	 * Render function to show a custom error component.
-	 */
-	renderError: PropTypes.func,
-};
-
-BlockErrorBoundary.defaultProps = {
-	showErrorMessage: true,
-};
 
 export default BlockErrorBoundary;
