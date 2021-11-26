@@ -24,7 +24,7 @@ export interface ChipProps {
  * a wrapperElement.
  *
  */
-const Chip = ( {
+const Chip: React.FC< ChipProps > = ( {
 	text,
 	screenReaderText = '',
 	element = 'li',
@@ -32,7 +32,7 @@ const Chip = ( {
 	radius = 'small',
 	children = null,
 	...props
-}: ChipProps ): JSX.Element => {
+} ) => {
 	const Wrapper = element;
 	const wrapperClassName = classNames(
 		className,
