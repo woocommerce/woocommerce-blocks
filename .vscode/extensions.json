@@ -8,6 +8,7 @@
 		"eamodio.gitlens",
 		"bmewburn.vscode-intelephense-client",
 		"neilbrayfield.php-docblocker",
-		"valeryanm.vscode-phpsab"
+		"valeryanm.vscode-phpsab",
+		"editorconfig.editorconfig"
 	]
 }
