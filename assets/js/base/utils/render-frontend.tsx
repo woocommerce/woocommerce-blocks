@@ -14,16 +14,18 @@ type BlockProps<
 	TProps extends Record< string, unknown >,
 	TAttribute extends Record< string, unknown >
 > = TProps & {
-	attributes: TAttribute;
+	attributes?: TAttribute;
 };
 
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
 type BlockType<
 	TProps extends Record< string, unknown >,
 	TAttribute extends Record< string, unknown >
-> = (
-	props: Partial< BlockProps< TProps, TAttribute > >
-) => JSX.Element | null;
+> = ( props: BlockProps< TProps, TAttribute > ) => JSX.Element | null;
+
+export type GetPropsFn<
+	TProps extends Record< string, unknown >,
+	TAttributes extends Record< string, unknown >
+> = ( el: HTMLElement, i: number ) => BlockProps< TProps, TAttributes >;
 
 interface RenderBlockParams<
 	TProps extends Record< string, unknown >,
@@ -36,7 +38,7 @@ interface RenderBlockParams<
 	// Attributes object for the block.
 	attributes: TAttributes;
 	// Props object for the block.
-	props: Partial< BlockProps< TProps, TAttributes > >;
+	props: BlockProps< TProps, TAttributes >;
 	// Props object for the error boundary.
 	errorBoundaryProps?: Record< string, unknown >;
 }
@@ -73,10 +75,7 @@ interface RenderBlockInContainersParams<
 	// Containers to replace with the Block component.
 	containers: NodeListOf< Element >;
 	// Function to generate the props object for the block.
-	getProps?: (
-		el: HTMLElement,
-		i: number
-	) => Partial< BlockProps< TProps, TAttributes > >;
+	getProps?: GetPropsFn< TProps, TAttributes >;
 	// Function to generate the props object for the error boundary.
 	getErrorBoundaryProps?: (
 		el: HTMLElement,
@@ -138,7 +137,7 @@ interface RenderBlockOutsideWrappersParams<
 	TAttributes extends Record< string, unknown >
 > extends RenderFrontendParams< TProps, TAttributes > {
 	// All elements matched by the selector which are inside the wrapper will be ignored.
-	wrappers: NodeListOf< Element >;
+	wrappers?: NodeListOf< Element >;
 }
 
 /**
@@ -157,7 +156,7 @@ const renderBlockOutsideWrappers = <
 }: RenderBlockOutsideWrappersParams< TProps, TAttributes > ): void => {
 	const containers = document.body.querySelectorAll( selector );
 	// Filter out blocks inside the wrappers.
-	if ( wrappers.length > 0 ) {
+	if ( wrappers && wrappers.length > 0 ) {
 		Array.prototype.filter.call( containers, ( el ) => {
 			return ! isElementInsideWrappers( el, wrappers );
 		} );
@@ -210,10 +209,7 @@ interface RenderFrontendParams<
 	// CSS selector to match the elements to replace.
 	selector: string;
 	// Function to generate the props object for the block.
-	getProps?: (
-		el: HTMLElement,
-		i: number
-	) => Partial< BlockProps< TProps, TAttributes > >;
+	getProps?: GetPropsFn< TProps, TAttributes >;
 	// Function to generate the props object for the error boundary.
 	getErrorBoundaryProps?: (
 		el: HTMLElement,
