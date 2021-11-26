@@ -1,7 +1,6 @@
 /**
  * External dependencies
  */
-import PropTypes from 'prop-types';
 import classNames from 'classnames';
 
 /**
@@ -9,7 +8,14 @@ import classNames from 'classnames';
  */
 import './style.scss';
 
-/** @typedef {import('react')} React */
+export interface ChipProps {
+	text: React.ReactNode;
+	screenReaderText?: string;
+	element?: string;
+	className?: string;
+	children?: React.ReactNode | React.ReactNode[];
+	radius?: 'none' | 'small' | 'medium' | 'large';
+}
 
 /**
  * Component used to render a "chip" -- a list item containing some text.
@@ -17,14 +23,6 @@ import './style.scss';
  * Each chip defaults to a list element but this can be customized by providing
  * a wrapperElement.
  *
- * @param {Object} props Incoming props for the component.
- * @param {string} props.text Text for chip content.
- * @param {string} props.screenReaderText Screenreader text for the content.
- * @param {string} props.element The element type for the chip.
- * @param {string} props.className CSS class used.
- * @param {string} props.radius Radius size.
- * @param {React.ReactChildren|null} props.children React children.
- * @param {Object} props.props Rest of props passed through to component.
  */
 const Chip = ( {
 	text,
@@ -34,7 +32,7 @@ const Chip = ( {
 	radius = 'small',
 	children = null,
 	...props
-} ) => {
+}: ChipProps ): JSX.Element => {
 	const Wrapper = element;
 	const wrapperClassName = classNames(
 		className,
@@ -47,7 +45,6 @@ const Chip = ( {
 	);
 
 	return (
-		// @ts-ignore
 		<Wrapper className={ wrapperClassName } { ...props }>
 			<span
 				aria-hidden={ showScreenReaderText }
@@ -62,13 +59,4 @@ const Chip = ( {
 		</Wrapper>
 	);
 };
-
-Chip.propTypes = {
-	text: PropTypes.node.isRequired,
-	screenReaderText: PropTypes.string,
-	element: PropTypes.elementType,
-	className: PropTypes.string,
-	radius: PropTypes.oneOf( [ 'none', 'small', 'medium', 'large' ] ),
-};
-
 export default Chip;

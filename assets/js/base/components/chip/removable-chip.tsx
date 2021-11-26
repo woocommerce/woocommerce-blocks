@@ -1,7 +1,6 @@
 /**
  * External dependencies
  */
-import PropTypes from 'prop-types';
 import classNames from 'classnames';
 import { __, sprintf } from '@wordpress/i18n';
 import { Icon, noAlt } from '@woocommerce/icons';
@@ -9,7 +8,18 @@ import { Icon, noAlt } from '@woocommerce/icons';
 /**
  * Internal dependencies
  */
-import Chip from './chip.js';
+import Chip from './chip.jsx';
+import type { ChipProps } from './chip';
+
+interface RemovableChipProps extends ChipProps {
+	text: React.ReactNode;
+	ariaLabel?: string;
+	className?: string;
+	disabled?: boolean;
+	onRemove?: () => void;
+	removeOnAnyClick?: boolean;
+	screenReaderText?: string;
+}
 
 /**
  * Component used to render a "chip" -- an item containing some text with
@@ -34,7 +44,7 @@ const RemovableChip = ( {
 	text,
 	screenReaderText = '',
 	...props
-} ) => {
+}: RemovableChipProps ): JSX.Element => {
 	const RemoveElement = removeOnAnyClick ? 'span' : 'button';
 
 	if ( ! ariaLabel ) {
@@ -57,7 +67,7 @@ const RemovableChip = ( {
 		'aria-label': ariaLabel,
 		disabled,
 		onClick: onRemove,
-		onKeyDown: ( e ) => {
+		onKeyDown: ( e: React.KeyboardEvent ) => {
 			if ( e.key === 'Backspace' || e.key === 'Delete' ) {
 				onRemove();
 			}
@@ -90,16 +100,6 @@ const RemovableChip = ( {
 			</RemoveElement>
 		</Chip>
 	);
-};
-
-RemovableChip.propTypes = {
-	text: PropTypes.node.isRequired,
-	ariaLabel: PropTypes.string,
-	className: PropTypes.string,
-	disabled: PropTypes.bool,
-	onRemove: PropTypes.func,
-	removeOnAnyClick: PropTypes.bool,
-	screenReaderText: PropTypes.string,
 };
 
 export default RemovableChip;

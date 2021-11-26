@@ -39,7 +39,7 @@ interface CheckboxListProps {
  */
 const CheckboxList = ( {
 	className,
-	onChange = () => null,
+	onChange = () => void null,
 	options = [],
 	checked = [],
 	isLoading = false,
