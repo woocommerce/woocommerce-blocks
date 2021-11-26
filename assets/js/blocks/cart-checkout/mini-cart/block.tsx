@@ -114,16 +114,6 @@ const MiniCartBlock = ( {
 		};
 	}, [] );
 
-	useEffect( () => {
-		// If the cart has been completely emptied, move focus to empty cart
-		// element.
-		if ( isOpen && ! cartIsLoading && cartItems.length === 0 ) {
-			if ( emptyCartRef.current instanceof HTMLElement ) {
-				emptyCartRef.current.focus();
-			}
-		}
-	}, [ isOpen, cartIsLoading, cartItems.length, emptyCartRef ] );
-
 	const showIncludingTax = getSettingWithCoercion(
 		'displayCartPricesIncludingTax',
 		false,

@@ -405,82 +405,12 @@ class MiniCart extends AbstractBlock {
 	}
 
 	/**
-	 * Render the markup of the Cart contents.
-	 *
-	 * @param array $cart_contents Array of contents in the cart.
-	 *
-	 * @return string The HTML markup.
-	 */
-	protected function get_cart_contents_markup( $cart_contents ) {
-		// Force mobile styles.
-		return '<table class="wc-block-cart-items">
-			<thead>
-				<tr class="wc-block-cart-items__header">
-					<th class="wc-block-cart-items__header-image"><span /></th>
-					<th class="wc-block-cart-items__header-product"><span /></th>
-					<th class="wc-block-cart-items__header-total"><span /></th>
-				</tr>
-			</thead>
-			<tbody>' . implode( array_map( array( $this, 'get_cart_item_markup' ), $cart_contents ) ) . '</tbody>
-		</table>';
-	}
-
-	/**
-	 * Render the skeleton of a Cart item.
-	 *
-	 * @return string The skeleton HTML markup.
-	 */
-	protected function get_cart_item_markup() {
-		return '<tr class="wc-block-cart-items__row">
-			<td class="wc-block-cart-item__image">
-				<a href=""><img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mNk+A8AAQUBAScY42YAAAAASUVORK5CYII=" width="1" height="1" /></a>
-			</td>
-			<td class="wc-block-cart-item__product">
-				<div class="wc-block-components-product-name"></div>
-				<div class="wc-block-components-product-price"></div>
-				<div class="wc-block-components-product-metadata"></div>
-				<div class="wc-block-cart-item__quantity">
-					<div class="wc-block-components-quantity-selector">
-						<input class="wc-block-components-quantity-selector__input" type="number" step="1" min="0" value="1" />
-						<button class="wc-block-components-quantity-selector__button wc-block-components-quantity-selector__button--minus">－</button>
-						<button class="wc-block-components-quantity-selector__button wc-block-components-quantity-selector__button--plus">＋</button>
-					</div>
-					<button class="wc-block-cart-item__remove-link"></button>
-				</div>
-			</td>
-			<td class="wc-block-cart-item__total">
-				<div class="wc-block-cart-item__total-price-and-sale-badge-wrapper">
-					<div class="wc-block-components-product-price"></div>
-				</div>
-			</td>
-		</tr>';
-	}
-
-	/**
 	 * Return an instace of the CartController class.
 	 *
 	 * @return CartController CartController class instance.
 	 */
 	protected function get_cart_controller() {
 		return new CartController();
-	}
-
-	/**
-	 * Get the supports array for this block type.
-	 *
-	 * @see $this->register_block_type()
-	 * @return string;
-	 */
-	protected function get_block_type_supports() {
-		return array_merge(
-			parent::get_block_type_supports(),
-			array(
-				'html'                   => false,
-				'multiple'               => false,
-				'color'                  => true,
-				'__experimentalSelector' => '.wc-block-mini-cart__button, .wc-block-mini-cart__badge',
-			)
-		);
 	}
 
 	/**
@@ -491,7 +421,6 @@ class MiniCart extends AbstractBlock {
 	 * @return array;
 	 */
 	protected function get_tax_label() {
-
 		$cart = WC()->cart;
 
 		if ( $cart->display_prices_including_tax() ) {
@@ -507,7 +436,6 @@ class MiniCart extends AbstractBlock {
 				'label_including_tax'               => '',
 				'display_cart_prices_including_tax' => true,
 			);
-
 		}
 
 		if ( $cart->get_subtotal_tax() > 0 && wc_prices_include_tax() ) {
@@ -523,6 +451,5 @@ class MiniCart extends AbstractBlock {
 			'label_including_tax'               => '',
 			'display_cart_prices_including_tax' => false,
 		);
-
 	}
 }
