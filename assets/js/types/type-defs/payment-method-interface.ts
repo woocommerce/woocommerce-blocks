@@ -83,9 +83,9 @@ export interface ComponentProps {
 
 export interface EmitResponseProps {
 	// Response types that can be returned from emitter observers.
-	responseTypes: responseTypes;
+	responseTypes: typeof responseTypes;
 	// Available contexts that can be returned as the value for the messageContext property on the object  returned from an emitter observer.
-	noticeContexts: noticeContexts;
+	noticeContexts: typeof noticeContexts;
 }
 
 export interface EventRegistrationProps {
