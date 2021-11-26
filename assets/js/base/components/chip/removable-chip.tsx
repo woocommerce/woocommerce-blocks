@@ -8,8 +8,7 @@ import { Icon, noAlt } from '@woocommerce/icons';
 /**
  * Internal dependencies
  */
-import Chip from './chip.jsx';
-import type { ChipProps } from './chip';
+import Chip, { ChipProps } from './chip';
 
 interface RemovableChipProps extends ChipProps {
 	text: React.ReactNode;
