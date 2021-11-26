@@ -104,25 +104,27 @@ class MiniCart extends AbstractBlock {
 
 		parent::enqueue_data( $attributes );
 
-		$label_info = $this->get_tax_label();
+		if ( ! is_admin() ) {
+			$label_info = $this->get_tax_label();
 
-		$label_including_tax               = $label_info['label_including_tax'];
-		$display_cart_prices_including_tax = $label_info['display_cart_prices_including_tax'];
+			$label_including_tax               = $label_info['label_including_tax'];
+			$display_cart_prices_including_tax = $label_info['display_cart_prices_including_tax'];
 
-		$this->label_including_tax               = $label_including_tax;
-		$this->display_cart_prices_including_tax = $display_cart_prices_including_tax;
+			$this->label_including_tax               = $label_including_tax;
+			$this->display_cart_prices_including_tax = $display_cart_prices_including_tax;
 
-		$this->asset_data_registry->add(
-			'labelIncludingTax',
-			$this->label_including_tax,
-			''
-		);
+			$this->asset_data_registry->add(
+				'labelIncludingTax',
+				$this->label_including_tax,
+				''
+			);
 
-		$this->asset_data_registry->add(
-			'displayCartPricesIncludingTax',
-			$this->display_cart_prices_including_tax,
-			false
-		);
+			$this->asset_data_registry->add(
+				'displayCartPricesIncludingTax',
+				$this->display_cart_prices_including_tax,
+				false
+			);
+		}
 
 		// Hydrate the following data depending on admin or frontend context.
 		if ( ! is_admin() && ! WC()->is_rest_api_request() ) {
@@ -424,7 +426,7 @@ class MiniCart extends AbstractBlock {
 		$cart = WC()->cart;
 
 		if ( $cart->display_prices_including_tax() ) {
-			if ( $cart->get_subtotal_tax() > 0 && ! wc_prices_include_tax() ) {
+			if ( ! wc_prices_include_tax() ) {
 				$label_including_tax               = WC()->countries->inc_tax_or_vat();
 				$display_cart_prices_including_tax = true;
 				return array(
@@ -438,7 +440,7 @@ class MiniCart extends AbstractBlock {
 			);
 		}
 
-		if ( $cart->get_subtotal_tax() > 0 && wc_prices_include_tax() ) {
+		if ( wc_prices_include_tax() ) {
 			$label_including_tax               = WC()->countries->ex_tax_or_vat();
 			$display_cart_prices_including_tax = true;
 			return array(
