@@ -85,7 +85,9 @@ const OrderSummaryItem = ( { cartItem }: OrderSummaryProps ): JSX.Element => {
 		.getAmount();
 	const priceSingle = Dinero( {
 		amount: parseInt( prices.raw_prices.price, 10 ),
-		precision: prices.raw_prices.precision,
+		precision: isString( prices.raw_prices.precision )
+			? parseInt( prices.raw_prices.precision, 10 )
+			: prices.raw_prices.precision,
 	} )
 		.convertPrecision( priceCurrency.minorUnit )
 		.getAmount();
