@@ -104,7 +104,10 @@ class MiniCart extends AbstractBlock {
 
 		parent::enqueue_data( $attributes );
 
-		if ( ! is_admin() ) {
+		// Hydrate the following data depending on admin or frontend context.
+		if ( ! is_admin() && ! WC()->is_rest_api_request() ) {
+			$this->hydrate_from_api();
+
 			$label_info = $this->get_tax_label();
 
 			$label_including_tax               = $label_info['label_including_tax'];
@@ -124,11 +127,6 @@ class MiniCart extends AbstractBlock {
 				$this->display_cart_prices_including_tax,
 				false
 			);
-		}
-
-		// Hydrate the following data depending on admin or frontend context.
-		if ( ! is_admin() && ! WC()->is_rest_api_request() ) {
-			$this->hydrate_from_api();
 		}
 
 		$script_data = $this->asset_api->get_script_data( 'build/mini-cart-component-frontend.js' );
