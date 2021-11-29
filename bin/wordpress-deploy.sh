@@ -177,15 +177,15 @@ if [ $IS_PRE_RELEASE = false ]; then
 fi
 
 # Do the remove all deleted files
-run_command "svn st | grep -v '^.[ \t]*\..*' | grep '^\!' | awk '{print $2'@'}' | xargs svn rm" False
+run_command "svn st | grep -v '^.[ \t]*\..*' | grep '^\!' | awk '{print $2'@'}' | xargs svn rm" True
 
 # Do the add all not know files
-run_command "svn st | grep -v '^.[ \t]*\..*' | grep '^?' | awk '{print $2'@'}' | xargs svn add" False
+run_command "svn st | grep -v '^.[ \t]*\..*' | grep '^?' | awk '{print $2'@'}' | xargs svn add" True
 
 # Copy trunk to tag/$VERSION
 if [ ! -d "tags/${VERSION}" ]; then
 	output 2 "Creating SVN tags/${VERSION}..."
-	run_command "svn 'cp trunk tags/'${VERSION}''" False
+	run_command "svn 'cp trunk tags/'${VERSION}''" True
 fi
 
 # Remove the GIT directory
