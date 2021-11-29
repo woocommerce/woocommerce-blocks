@@ -6,7 +6,8 @@ project.properties
 .project
 .settings*
 .idea
-vscode
+.vscode
+!.vscode/extensions.json
 *.sublime-project
 *.sublime-workspace
 .sublimelinterrc
