@@ -70,4 +70,3 @@ export const LegacyFeedbackPrompt = () => (
 		url="https://github.com/woocommerce/woocommerce-gutenberg-products-block/issues/new?template=--legacy-block-feedback.md"
 	/>
 );
-
