@@ -3,7 +3,8 @@
  */
 import { registerBlockType } from '@wordpress/blocks';
 import { WC_BLOCKS_IMAGE_URL } from '@woocommerce/block-settings';
-import { useBlockProps } from '@wordpress/block-editor';
+import { LegacyFeedbackPrompt } from '@woocommerce/editor-components/feedback-prompt';
+import { InspectorControls, useBlockProps } from '@wordpress/block-editor';
 import { Placeholder } from '@wordpress/components';
 import { __, sprintf } from '@wordpress/i18n';
 import { box, Icon } from '@wordpress/icons';
@@ -20,6 +21,14 @@ interface Props {
 	};
 }
 
+const BlockSettings = (): JSX.Element => {
+	return (
+		<InspectorControls>
+			<LegacyFeedbackPrompt />
+		</InspectorControls>
+	);
+};
+
 const Edit = ( { attributes }: Props ) => {
 	const blockProps = useBlockProps();
 	const templateTitle =
@@ -28,12 +37,25 @@ const Edit = ( { attributes }: Props ) => {
 		TEMPLATES[ attributes.template ]?.placeholder ?? 'fallback';
 	return (
 		<div { ...blockProps }>
+			<BlockSettings />
 			<Placeholder
 				icon={ box }
 				label={ templateTitle }
 				className="wp-block-woocommerce-legacy-template__placeholder"
 			>
 				<div className="wp-block-woocommerce-legacy-template__placeholder-copy">
+					<p className="wp-block-woocommerce-legacy-template__placeholder-warning">
+						<strong>
+							{ __(
+								'Attention: Do not remove this block!',
+								'woo-gutenberg-products-block'
+							) }
+						</strong>{ ' ' }
+						{ __(
+							'Removal will cause unintended effects on your store.',
+							'woo-gutenberg-products-block'
+						) }
+					</p>
 					<p>
 						{ sprintf(
 							/* translators: %s is the template title */
@@ -42,18 +64,6 @@ const Edit = ( { attributes }: Props ) => {
 								'woo-gutenberg-products-block'
 							),
 							templateTitle
-						) }
-					</p>
-					<p>
-						<strong>
-							{ __(
-								'Attention: do not remove this block.',
-								'woo-gutenberg-products-block'
-							) }
-						</strong>{ ' ' }
-						{ __(
-							'Removing this will likely cause unintended effects on your store. We are working for a better editing experience which will replace legacy blocks. Keep an eye for updates!',
-							'woo-gutenberg-products-block'
 						) }
 					</p>
 				</div>
