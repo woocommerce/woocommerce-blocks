@@ -6,7 +6,6 @@ namespace Automattic\WooCommerce\Blocks\Utils;
  */
 class StyleAttributesUtils {
 
-
 	/**
 	 * Get class and style for font-size from attributes.
 	 *
@@ -73,7 +72,6 @@ class StyleAttributesUtils {
 			);
 		}
 		return null;
-
 	}
 
 	/**
@@ -108,9 +106,7 @@ class StyleAttributesUtils {
 				'style' => sprintf( 'color: %s;', $link_color ),
 			);
 		}
-
 	}
-
 
 	/**
 	 * Get class and style for line height from attributes.
@@ -144,17 +140,14 @@ class StyleAttributesUtils {
 	 */
 	public static function get_classes_and_styles_by_attributes( $attributes ) {
 		$classes_and_styles = array(
-			line_height => self::get_line_height_class_and_style( $attributes ),
-			text_color  => self::get_text_color_class_and_style( $attributes ),
-			font_size   => self::get_font_size_class_and_style( $attributes ),
-			link_color  => self::get_link_color_class_and_style( $attributes ),
+			'line_height' => self::get_line_height_class_and_style( $attributes ),
+			'text_color'  => self::get_text_color_class_and_style( $attributes ),
+			'font_size'   => self::get_font_size_class_and_style( $attributes ),
+			'link_color'  => self::get_link_color_class_and_style( $attributes ),
 		);
 
 		return array_filter(
 			$classes_and_styles
 		);
-
 	}
-
-
 }

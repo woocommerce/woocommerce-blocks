@@ -96,7 +96,7 @@ class ProductCategories extends AbstractDynamicBlock {
 	}
 
 	/**
-	 * Get the list of classes to apply to this block.
+	 * Get the list of classes and styles to apply to this block.
 	 *
 	 * @param array $attributes Block attributes. Default empty array.
 	 * @return array space-separated list of classes and space-separated list of inline styles.
