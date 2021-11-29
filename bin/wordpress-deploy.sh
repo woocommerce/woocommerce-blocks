@@ -7,6 +7,12 @@ GITHUB_SLUG="woocommerce-gutenberg-products-block"
 IS_PRE_RELEASE=false
 BUILD_PATH="${HOME}/blocks-deployment"
 
+# When it is set to True, the commands are just printed but not executed.
+DRY_RUN_MODE=False
+
+# When it is set to True, the commands that affect the local env are executed (e.g. git commit), while the commands that affect the remote env are not executed but just printed (e.g. git push)
+SIMULATE_RELEASE_MODE=False
+
 # Functions
 # Check if string contains substring
 is_substring() {
@@ -38,6 +44,25 @@ output() {
 # Output colorized list
 output_list() {
   echo "$(tput setaf "$1") • $2:$(tput sgr0) \"$3\""
+}
+
+simulate() {
+  if $2 ; then
+	eval "$1"
+  else
+	output 3 "DRY RUN: $1"
+  fi
+}
+
+
+run_command() {
+  if $DRY_RUN_MODE; then
+	output 3 "DRY RUN: $1"
+  elif $SIMULATE_RELEASE_MODE; then
+		simulate "$1" $2
+  else
+	eval "$1"
+  fi
 }
 
 # Release script
@@ -106,7 +131,7 @@ rm -rf "$GIT_PATH"
 
 # Clone GIT repository
 output 2 "Cloning GIT repository..."
-git clone "$GIT_REPO" "$GIT_PATH" --branch "$BRANCH" --single-branch || exit "$?"
+run_command "git clone '$GIT_REPO' '$GIT_PATH' --branch '$BRANCH' --single-branch || exit '$?'" True
 
 if [ ! -d "$GIT_PATH/build" ]; then
 	output 3 "Build directory not found in tag. Aborting."
@@ -122,50 +147,50 @@ fi
 if [ ! -d "$SVN_PATH" ]; then
 	output 2 "No SVN directory found, fetching files..."
 	# Checkout project without any file
-	svn co --depth=files "$SVN_REPO" "$SVN_PATH"
+	run_command "svn co --depth=files '$SVN_REPO' '$SVN_PATH'" True
 
 	cd "$SVN_PATH" || exit
 
 	# Fetch main directories
-	svn up assets branches trunk
+	run_command "svn up assets branches trunk" True
 
 	# Fetch tags directories without content
-	svn up --set-depth=immediates tags
+	run_command "svn up --set-depth=immediates tags" True
 	# To fetch content for a tag, use:
 	# svn up --set-depth=infinity tags/<tag_number>
 else
 	# Update SVN
 	cd "$SVN_PATH" || exit
 	output 2 "Updating SVN..."
-	svn up
+	run_command "svn up" True
 fi
 
 # Copy GIT directory to trunk
 output 2 "Copying project files to SVN trunk..."
-sh "${RELEASER_PATH}/bin/copy-plugin-files.sh" "$GIT_PATH" "$SVN_PATH/trunk"
+run_command "sh '${RELEASER_PATH}/bin/copy-plugin-files.sh' '$GIT_PATH' '$SVN_PATH/trunk'" True
 cd "$SVN_PATH"
 
 # Update stable tag on trunk/readme.txt
 if [ $IS_PRE_RELEASE = false ]; then
 	output 2 "Updating \"Stable tag\" to ${VERSION} on trunk/readme.txt..."
-	perl -i -pe"s/Stable tag: .*/Stable tag: ${VERSION}/" trunk/readme.txt
+	run_command "perl -i -pe's/Stable tag: .*/Stable tag: ${VERSION}/' trunk/readme.txt"
 fi
 
 # Do the remove all deleted files
-svn st | grep -v "^.[ \t]*\..*" | grep "^\!" | awk '{print $2"@"}' | xargs svn rm
+run_command "svn st | grep -v '^.[ \t]*\..*' | grep '^\!' | awk '{print $2'@'}' | xargs svn rm" False
 
 # Do the add all not know files
-svn st | grep -v "^.[ \t]*\..*" | grep "^?" | awk '{print $2"@"}' | xargs svn add
+run_command "svn st | grep -v '^.[ \t]*\..*' | grep '^?' | awk '{print $2'@'}' | xargs svn add" False
 
 # Copy trunk to tag/$VERSION
 if [ ! -d "tags/${VERSION}" ]; then
 	output 2 "Creating SVN tags/${VERSION}..."
-	svn cp trunk tags/"${VERSION}"
+	run_command "svn 'cp trunk tags/'${VERSION}''" False
 fi
 
 # Remove the GIT directory
 output 2 "Removing GIT directory..."
-rm -rf "$GIT_PATH"
+run_command "rm -rf '$GIT_PATH'" True
 
 # SVN commit messsage
 output 2 "Ready to commit into WordPress.org Plugin's Directory!"

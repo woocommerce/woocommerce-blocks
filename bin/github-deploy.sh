@@ -3,6 +3,11 @@
 RELEASER_PATH="$(pwd)"
 IS_PRE_RELEASE=false
 
+# When it is set to True, the commands are just printed but not executed.
+DRY_RUN_MODE=False
+# When it is set to True, the commands that affect the local env are executed (e.g. git commit), while the commands that affect the remote env are not executed but just printed (e.g. git push)
+SIMULATE_RELEASE_MODE=False
+
 # Functions
 # Check if string contains substring
 is_substring() {
@@ -30,6 +35,26 @@ is_substring() {
 output() {
   echo "$(tput setaf "$1")$2$(tput sgr0)"
 }
+
+simulate() {
+  if $2 ; then
+	eval "$1"
+  else
+	output 3 "DRY RUN: $1"
+  fi
+}
+
+
+run_command() {
+  if $DRY_RUN_MODE; then
+	output 3 "DRY RUN: $1"
+  elif $SIMULATE_RELEASE_MODE; then
+		simulate "$1" $2
+  else
+	eval "$1"
+  fi
+}
+
 
 if ! [ -x "$(command -v hub)" ]; then
   echo 'Error: hub is not installed. Install from https://github.com/github/hub' >&2
@@ -133,58 +158,59 @@ source "$RELEASER_PATH/bin/version-changes.sh"
 composer dump-autoload
 
 # remove composer.json version bump after autoload regen (we don't commit it)
-git checkout -- composer.json
+run_command "git checkout -- composer.json" True
 
 output 2 "Committing version change..."
 echo
 
-git commit -am "Bumping version strings to new version." --no-verify
-git push origin $CURRENTBRANCH
+run_command "git commit -am 'Bumping version strings to new bbb.' --no-verify" True
+run_command "git push origin $CURRENTBRANCH" False
 
 # Tag existing version for reference
 output 2 "Creating tag for current non-built branch on GitHub..."
 echo
 DEVTAG="v${VERSION}-dev"
-git tag $DEVTAG
-git push origin $DEVTAG
+run_command "git tag $DEVTAG" True
+run_command "git push origin $DEVTAG" False
 
 output 2 "Prepping release for GitHub..."
 echo
 
 # Create a release branch.
 BRANCH="build/${VERSION}"
-git checkout -b $BRANCH
+
+run_command "git checkout -b $BRANCH" True
 
 # Force add build directory and commit.
-git add build/. --force
-git add .
-git commit -m "Adding /build directory to release" --no-verify
+run_command "git add build/. --force" True
+run_command "git add ." True
+run_command "git commit -m 'Adding /build directory to release' --no-verify" True
 
-# Force add vendor directory and commit.
-git add vendor/. --force
-git add .
-git commit -m "Adding /vendor directory to release" --no-verify
+# # Force add vendor directory and commit.
+run_command "git add vendor/. --force" True
+run_command "git add ." True
+run_command "git commit -m 'Adding /vendor directory to release' --no-verify" True
 
-# Push branch upstream
-git push origin $BRANCH
+# # Push branch upstream
+run_command "git push origin $BRANCH" False
 
 # Create the new release.
 if [ "$(echo "${DO_WP_DEPLOY:-n}" | tr "[:upper:]" "[:lower:]")" = "y" ]; then
 	if [ $IS_PRE_RELEASE = true ]; then
-		hub release create -m $VERSION -m "Release of version $VERSION. See readme.txt for details." -t $BRANCH --prerelease "v${VERSION}"
+		run_command "hub release create -m $VERSION -m 'Release of version $VERSION. See readme.txt for details.' -t $BRANCH --prerelease 'v${VERSION}'" False
 	else
-		hub release create -m $VERSION -m "Release of version $VERSION. See readme.txt for details." -t $BRANCH "v${VERSION}"
+		run_command "hub release create -m $VERSION -m 'Release of version $VERSION. See readme.txt for details.' -t $BRANCH 'v${VERSION}'" False
 	fi
 else
-	git tag "v${VERSION}"
-	git push origin "v${VERSION}"
+	run_command "git tag 'v${VERSION}'" True
+	run_command "git push origin 'v${VERSION}'" False
 fi
 
-git checkout $CURRENTBRANCH
-git branch -D $BRANCH
-git push origin --delete $BRANCH
+run_command "git checkout $CURRENTBRANCH" True
+run_command "git branch -D $BRANCH" True
+run_command "git push origin --delete $BRANCH" False
 
 # regenerate classmap for development
-composer dump-autoload
+run_command "composer dump-autoload" False
 
 output 2 "GitHub release complete."

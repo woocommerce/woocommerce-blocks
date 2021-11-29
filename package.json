@@ -60,7 +60,7 @@
 		"start": "rimraf build/* && cross-env BABEL_ENV=default CHECK_CIRCULAR_DEPS=true webpack --watch --info-verbosity none",
 		"storybook": "start-storybook  -c ./storybook -p 6006 --ci",
 		"storybook:build": "build-storybook  -c ./storybook -o ./storybook/dist",
-		"storybook:deploy": "rimraf ./storybook/dist/* && npm run storybook:build && gh-pages -d ./storybook/dist",
+		"storybook:deploy": "./bin/storybook-deploy.sh",
 		"test": "wp-scripts test-unit-js --config tests/js/jest.config.json",
 		"test:e2e": "npm run wp-env:config && cross-env NODE_CONFIG_DIR=tests/e2e/config wp-scripts test-e2e --config tests/e2e/config/jest.config.js",
 		"test:e2e-dev": "npm run wp-env:config && cross-env NODE_CONFIG_DIR=tests/e2e/config wp-scripts test-e2e --config tests/e2e/config/jest.config.js --puppeteer-interactive",
@@ -207,7 +207,7 @@
 		"react-number-format": "4.4.3",
 		"reakit": "1.3.11",
 		"trim-html": "0.1.9",
-		"use-debounce": "7.0.1",
+		"use-debounce": "3.4.3",
 		"wordpress-components": "npm:@wordpress/components@11.1.6"
 	},
 	"husky": {
