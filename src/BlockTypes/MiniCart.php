@@ -129,11 +129,19 @@ class MiniCart extends AbstractBlock {
 			''
 		);
 
-		$this->asset_data_registry->add(
-			'isSiteEditorAvailable',
-			gutenberg_experimental_is_site_editor_available(),
-			false
-		);
+		if ( function_exists( 'gutenberg_experimental_is_site_editor_available' ) ) {
+			$this->asset_data_registry->add(
+				'isSiteEditorAvailable',
+				gutenberg_experimental_is_site_editor_available(),
+				false
+			);
+		} else {
+			$this->asset_data_registry->add(
+				'isSiteEditorAvailable',
+				false,
+				false
+			);
+		}
 
 		/**
 		 * Fires after cart block data is registered.
