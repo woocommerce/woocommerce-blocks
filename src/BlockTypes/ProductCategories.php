@@ -84,9 +84,13 @@ class ProductCategories extends AbstractDynamicBlock {
 			}
 		}
 
-		$classes_and_styles = $this->get_container_classes_and_styles( $attributes );
-		$classes            = $classes_and_styles[0];
-		$styles             = $classes_and_styles[1];
+		$classes_and_styles = StyleAttributesUtils::get_classes_and_styles_by_attributes(
+			$attributes,
+			array( 'line_height', 'text_color', 'font_size' )
+		);
+
+		$classes = $this->get_container_classes( $attributes ) . ' ' . $classes_and_styles['classes'];
+		$styles  = $classes_and_styles['styles'];
 
 		$output  = '<div class="wp-block-woocommerce-product-categories ' . esc_attr( $classes ) . '" style="' . esc_attr( $styles ) . '">';
 		$output .= ! empty( $attributes['isDropdown'] ) ? $this->renderDropdown( $categories, $attributes, $uid ) : $this->renderList( $categories, $attributes, $uid );
@@ -96,12 +100,12 @@ class ProductCategories extends AbstractDynamicBlock {
 	}
 
 	/**
-	 * Get the list of classes and styles to apply to this block.
+	 * Get the list of classes to apply to this block.
 	 *
 	 * @param array $attributes Block attributes. Default empty array.
-	 * @return array space-separated list of classes and space-separated list of inline styles.
+	 * @return string space-separated list of classes.
 	 */
-	protected function get_container_classes_and_styles( $attributes = array() ) {
+	protected function get_container_classes( $attributes = array() ) {
 
 		$classes = array( 'wc-block-product-categories' );
 
@@ -119,30 +123,7 @@ class ProductCategories extends AbstractDynamicBlock {
 			$classes[] = 'is-list';
 		}
 
-		$line_height_class_and_style = StyleAttributesUtils::get_line_height_class_and_style( $attributes );
-		$text_color_class_and_style  = StyleAttributesUtils::get_text_color_class_and_style( $attributes );
-		$font_size_class_and_style   = StyleAttributesUtils::get_font_size_class_and_style( $attributes );
-
-		$line_height_class = isset( $line_height_class_and_style['class'] ) ? $line_height_class_and_style['class'] : null;
-		$text_color_class  = isset( $text_color_class_and_style['class'] ) ? $text_color_class_and_style['class'] : null;
-		$font_size_class   = isset( $font_size_class_and_style['class'] ) ? $font_size_class_and_style['class'] : null;
-
-		$classes = array_filter(
-			array( $line_height_class, $text_color_class, $font_size_class )
-		);
-
-		$line_height_style = isset( $line_height_class_and_style['style'] ) ? $line_height_class_and_style['style'] : null;
-		$text_color_style  = isset( $text_color_class_and_style['style'] ) ? $text_color_class_and_style['style'] : null;
-		$font_size_style   = isset( $font_size_class_and_style['style'] ) ? $font_size_class_and_style['style'] : null;
-
-		$styles = array_filter(
-			array( $line_height_style, $text_color_style, $font_size_style )
-		);
-
-		$string_classes = implode( ' ', $classes );
-		$string_styles  = implode( ' ', $styles );
-
-		return array( $string_classes, $string_styles );
+		return implode( ' ', $classes );
 	}
 
 	/**
