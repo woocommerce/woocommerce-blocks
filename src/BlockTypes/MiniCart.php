@@ -34,7 +34,7 @@ class MiniCart extends AbstractBlock {
 	 *
 	 * @var string
 	 */
-	protected $label_including_tax = '';
+	protected $tax_label = '';
 
 	/**
 	 *  Visibility of price including tax.
@@ -110,15 +110,12 @@ class MiniCart extends AbstractBlock {
 
 			$label_info = $this->get_tax_label();
 
-			$label_including_tax               = $label_info['label_including_tax'];
-			$display_cart_prices_including_tax = $label_info['display_cart_prices_including_tax'];
-
-			$this->label_including_tax               = $label_including_tax;
-			$this->display_cart_prices_including_tax = $display_cart_prices_including_tax;
+			$this->tax_label                         = $label_info['tax_label'];
+			$this->display_cart_prices_including_tax = $label_info['display_cart_prices_including_tax'];
 
 			$this->asset_data_registry->add(
-				'labelIncludingTax',
-				$this->label_including_tax,
+				'taxLabel',
+				$this->tax_label,
 				''
 			);
 
@@ -249,7 +246,7 @@ class MiniCart extends AbstractBlock {
 		$cart                = $cart_controller->get_cart_instance();
 		$cart_contents_total = $cart->get_subtotal();
 
-		return ( ! empty( $this->label_including_tax ) && 0 !== $cart_contents_total ) ? ( "<small class='wc-block-mini-cart__tax_label'>" . $this->label_including_tax . '</small>' ) : '';
+		return ( ! empty( $this->tax_label ) && 0 !== $cart_contents_total ) ? ( "<small class='wc-block-mini-cart__tax-label'>" . esc_html( $this->tax_label ) . '</small>' ) : '';
 	}
 
 	/**
@@ -425,10 +422,10 @@ class MiniCart extends AbstractBlock {
 
 		if ( $cart->display_prices_including_tax() ) {
 			if ( ! wc_prices_include_tax() ) {
-				$label_including_tax               = WC()->countries->inc_tax_or_vat();
+				$tax_label                         = WC()->countries->inc_tax_or_vat();
 				$display_cart_prices_including_tax = true;
 				return array(
-					'label_including_tax'               => $label_including_tax,
+					'tax_label'                         => $tax_label,
 					'display_cart_prices_including_tax' => $display_cart_prices_including_tax,
 				);
 			}
@@ -439,16 +436,15 @@ class MiniCart extends AbstractBlock {
 		}
 
 		if ( wc_prices_include_tax() ) {
-			$label_including_tax               = WC()->countries->ex_tax_or_vat();
-			$display_cart_prices_including_tax = true;
+			$tax_label = WC()->countries->ex_tax_or_vat();
 			return array(
-				'label_including_tax'               => $label_including_tax,
+				'tax_label'                         => $tax_label,
 				'display_cart_prices_including_tax' => false,
 			);
 		};
 
 		return array(
-			'label_including_tax'               => '',
+			'tax_label'                         => '',
 			'display_cart_prices_including_tax' => false,
 		);
 	}

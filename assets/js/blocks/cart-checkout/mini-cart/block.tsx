@@ -120,11 +120,7 @@ const MiniCartBlock = ( {
 		isBoolean
 	);
 
-	const labelTaxName = getSettingWithCoercion(
-		'labelIncludingTax',
-		'',
-		isString
-	);
+	const taxLabel = getSettingWithCoercion( 'taxLabel', '', isString );
 
 	const subTotal = showIncludingTax
 		? parseInt( cartTotals.total_items, 10 ) +
@@ -167,9 +163,9 @@ const MiniCartBlock = ( {
 						getCurrencyFromPriceResponse( cartTotals )
 					) }
 				</span>
-				{ labelTaxName !== '' && subTotal !== 0 && (
-					<small className="wc-block-mini-cart__tax_label">
-						{ labelTaxName }
+				{ taxLabel !== '' && subTotal !== 0 && (
+					<small className="wc-block-mini-cart__tax-label">
+						{ taxLabel }
 					</small>
 				) }
 				<QuantityBadge
