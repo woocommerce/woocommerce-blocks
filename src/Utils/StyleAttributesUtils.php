@@ -17,7 +17,7 @@ class StyleAttributesUtils {
 
 		$font_size = $attributes['fontSize'];
 
-		$custom_font_size = isset( $attributes['style']['color']['fontSize'] ) ? $attributes['style']['color']['fontSize'] : null;
+		$custom_font_size = isset( $attributes['style']['typography']['fontSize'] ) ? $attributes['style']['typography']['fontSize'] : null;
 
 		if ( ! isset( $font_size ) && ! isset( $custom_font_size ) ) {
 			return null;
@@ -117,7 +117,7 @@ class StyleAttributesUtils {
 	 */
 	public static function get_line_height_class_and_style( $attributes ) {
 
-		$line_height = isset( $attributes['style']['color']['lineHeight'] ) ? $attributes['style']['color']['lineHeight'] : null;
+		$line_height = isset( $attributes['style']['typography']['lineHeight'] ) ? $attributes['style']['typography']['lineHeight'] : null;
 
 		if ( ! isset( $line_height ) ) {
 			return null;
@@ -135,10 +135,11 @@ class StyleAttributesUtils {
 	 * Get classes and styles from attributes.
 	 *
 	 * @param array $attributes Block attributes.
+	 * @param array $properties Properties to get classes/styles from.
 	 *
 	 * @return array
 	 */
-	public static function get_classes_and_styles_by_attributes( $attributes ) {
+	public static function get_classes_and_styles_by_attributes( $attributes, $properties = array() ) {
 		$classes_and_styles = array(
 			'line_height' => self::get_line_height_class_and_style( $attributes ),
 			'text_color'  => self::get_text_color_class_and_style( $attributes ),
@@ -146,8 +147,64 @@ class StyleAttributesUtils {
 			'link_color'  => self::get_link_color_class_and_style( $attributes ),
 		);
 
-		return array_filter(
+		if ( ! empty( $properties ) ) {
+			foreach ( $classes_and_styles as $key => $value ) {
+				if ( ! in_array( $key, $properties, true ) ) {
+					unset( $classes_and_styles[ $key ] );
+				}
+			}
+		}
+
+		$classes_and_styles = array_filter( $classes_and_styles );
+
+		$classes = array_map(
+			function( $item ) {
+				return $item['class'];
+			},
 			$classes_and_styles
 		);
+
+		$styles = array_map(
+			function( $item ) {
+				return $item['style'];
+			},
+			$classes_and_styles
+		);
+
+		$classes = array_filter( $classes );
+		$styles  = array_filter( $styles );
+
+		return array(
+			'classes' => implode( ' ', $classes ),
+			'styles'  => implode( ' ', $styles ),
+		);
+	}
+
+	/**
+	 * Get space-separated classes from block attributes.
+	 *
+	 * @param array $attributes Block attributes.
+	 * @param array $properties Properties to get classes from.
+	 *
+	 * @return string Space-separated classes.
+	 */
+	public static function get_classes_by_attributes( $attributes, $properties = array() ) {
+		$classes_and_styles = self::get_classes_and_styles_by_attributes( $attributes, $properties );
+
+		return $classes_and_styles['classes'];
+	}
+
+	/**
+	 * Get space-separated style rules from block attributes.
+	 *
+	 * @param array $attributes Block attributes.
+	 * @param array $properties Properties to get styles from.
+	 *
+	 * @return string Space-separated style rules.
+	 */
+	public static function get_styles_by_attributes( $attributes, $properties = array() ) {
+		$classes_and_styles = self::get_classes_and_styles_by_attributes( $attributes, $properties );
+
+		return $classes_and_styles['styles'];
 	}
 }
