@@ -15,6 +15,11 @@ describe( 'getSettingWithCoercion', () => {
 			getSettingWithCoercion( 'nada', 'really nada', isString )
 		).toBe( 'really nada' );
 	} );
+	it( 'returns provided default value when the typeguard returns false', () => {
+		expect(
+			getSettingWithCoercion( 'currentUserIsAdmin', '', isString )
+		).toBe( '' );
+	} );
 	it( 'returns expected value for existing setting', () => {
 		expect(
 			getSettingWithCoercion( 'adminUrl', 'not this', isString )
