@@ -13,6 +13,7 @@ import {
 	getRegisteredBlocks,
 	hasInnerBlocks,
 } from '@woocommerce/blocks-checkout';
+import BlockErrorBoundary from '@woocommerce/base-components/block-error-boundary';
 
 /**
  * This file contains logic used on the frontend to convert DOM elements (saved by the block editor) to React
@@ -195,39 +196,42 @@ const renderInnerBlocks = ( {
 				key={ `${ block }_${ depth }_${ index }_suspense` }
 				fallback={ <div className="wc-block-placeholder" /> }
 			>
-				<InnerBlockComponentWrapper>
-					<InnerBlockComponent { ...componentProps }>
-						{
-							/**
-							 * Within this Inner Block Component we also need to recursively render it's children. This
-							 * is done here with a depth+1. The same block map and parent is used, but we pass new
-							 * children from this element.
-							 */
-							renderInnerBlocks( {
-								block,
-								blockMap,
-								children: element.children,
-								depth: depth + 1,
-								blockWrapper,
-							} )
-						}
-						{
-							/**
-							 * In addition to the inner blocks, we may also need to render FORCED blocks which have not
-							 * yet been added to the inner block template. We do this by comparing the current children
-							 * to the list of registered forced blocks.
-							 *
-							 * @see registerCheckoutBlock
-							 */
-							renderForcedBlocks(
-								blockName,
-								blockMap,
-								element.children,
-								blockWrapper
-							)
-						}
-					</InnerBlockComponent>
-				</InnerBlockComponentWrapper>
+				{ /* Prevent third party components from breaking the entire checkout */ }
+				<BlockErrorBoundary renderError={ () => null }>
+					<InnerBlockComponentWrapper>
+						<InnerBlockComponent { ...componentProps }>
+							{
+								/**
+								 * Within this Inner Block Component we also need to recursively render it's children. This
+								 * is done here with a depth+1. The same block map and parent is used, but we pass new
+								 * children from this element.
+								 */
+								renderInnerBlocks( {
+									block,
+									blockMap,
+									children: element.children,
+									depth: depth + 1,
+									blockWrapper,
+								} )
+							}
+							{
+								/**
+								 * In addition to the inner blocks, we may also need to render FORCED blocks which have not
+								 * yet been added to the inner block template. We do this by comparing the current children
+								 * to the list of registered forced blocks.
+								 *
+								 * @see registerCheckoutBlock
+								 */
+								renderForcedBlocks(
+									blockName,
+									blockMap,
+									element.children,
+									blockWrapper
+								)
+							}
+						</InnerBlockComponent>
+					</InnerBlockComponentWrapper>
+				</BlockErrorBoundary>
 			</Suspense>
 		);
 	} );
