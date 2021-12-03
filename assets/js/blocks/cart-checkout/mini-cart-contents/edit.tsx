@@ -19,8 +19,8 @@ import { useViewSwitcher, useForcedLayout } from '../shared';
 
 // Array of allowed block names.
 const ALLOWED_BLOCKS = [
-	'woocommerce/filled-cart-block',
-	'woocommerce/empty-cart-block',
+	'woocommerce/filled-mini-cart-contents-block',
+	'woocommerce/empty-mini-cart-contents-block',
 ];
 interface Props {
 	clientId: string;
@@ -65,7 +65,7 @@ const Edit = ( { clientId }: Props ): ReactElement => {
 				<InnerBlocks
 					allowedBlocks={ ALLOWED_BLOCKS }
 					template={ defaultTemplate }
-					templateLock={ true }
+					templateLock={ false }
 				/>
 			</EditorProvider>
 		</div>

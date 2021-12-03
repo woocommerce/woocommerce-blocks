@@ -30,6 +30,7 @@ const settings = {
 		multiple: false,
 		reusable: false,
 		inserter: false,
+		__experimentalExposeControlsToChildren: true,
 	},
 	attributes: {
 		lock: {
