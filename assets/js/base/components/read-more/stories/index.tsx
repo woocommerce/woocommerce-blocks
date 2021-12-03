@@ -1,15 +1,21 @@
 /**
+ * External dependencies
+ */
+import { Story, Meta } from '@storybook/react';
+
+/**
  * Internal dependencies
  */
-import ReadMore from '../';
+import ReadMore, { defaultProps, ReadMoreProps } from '..';
 
 export default {
 	title: 'WooCommerce Blocks/@base-components/ReadMore',
 	component: ReadMore,
-};
+	args: defaultProps,
+} as Meta< ReadMoreProps >;
 
-export const Default = () => (
-	<ReadMore maxLines={ 2 }>
+const Template: Story< ReadMoreProps > = ( args ) => (
+	<ReadMore { ...args }>
 		<h1>
 			No! Alderaan is peaceful. We have no weapons. You can&apos;t
 			possibly…
@@ -51,3 +57,8 @@ export const Default = () => (
 		</aside>
 	</ReadMore>
 );
+
+export const Default = Template.bind( {} );
+Default.args = {
+	maxLines: 2,
+};
