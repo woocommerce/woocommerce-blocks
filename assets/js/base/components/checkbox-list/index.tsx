@@ -16,13 +16,13 @@ interface CheckboxListOptions {
 }
 
 interface CheckboxListProps {
-	className: string;
-	isLoading: boolean;
-	isDisabled: boolean;
-	limit: number;
-	checked: string[];
-	onChange: ( value: string ) => void;
-	options: CheckboxListOptions[];
+	className?: string;
+	isLoading?: boolean;
+	isDisabled?: boolean;
+	limit?: number;
+	checked?: string[];
+	onChange?: ( value: string ) => void;
+	options?: CheckboxListOptions[];
 }
 
 /**
@@ -39,7 +39,7 @@ interface CheckboxListProps {
  */
 const CheckboxList = ( {
 	className,
-	onChange = () => void null,
+	onChange = () => void 0,
 	options = [],
 	checked = [],
 	isLoading = false,

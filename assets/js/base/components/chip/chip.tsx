@@ -9,11 +9,29 @@ import classNames from 'classnames';
 import './style.scss';
 
 export interface ChipProps {
-	text: React.ReactNode;
+	/**
+	 * Text for chip content.
+	 */
+	text: string;
+	/**
+	 * Screenreader text for the content.
+	 */
 	screenReaderText?: string;
+	/**
+	 * The element type for the chip. Default 'li'.
+	 */
 	element?: string;
+	/**
+	 * CSS class used.
+	 */
 	className?: string;
+	/**
+	 * React children.
+	 */
 	children?: React.ReactNode | React.ReactNode[];
+	/**
+	 * Radius size.
+	 */
 	radius?: 'none' | 'small' | 'medium' | 'large';
 }
 

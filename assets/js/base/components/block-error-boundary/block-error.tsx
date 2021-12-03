@@ -4,15 +4,10 @@
 import { __ } from '@wordpress/i18n';
 import { WC_BLOCKS_IMAGE_URL } from '@woocommerce/block-settings';
 
-interface BlockErrorProps {
-	imageUrl: string;
-	header: string;
-	text: React.ReactNode;
-	errorMessage: string | null;
-	errorMessagePrefix: string;
-	button: React.ReactNode;
-}
-
+/**
+ * Internal dependencies
+ */
+import type { BlockErrorProps } from './types';
 const BlockError = ( {
 	imageUrl = `${ WC_BLOCKS_IMAGE_URL }/block-error.svg`,
 	header = __( 'Oops!', 'woo-gutenberg-products-block' ),

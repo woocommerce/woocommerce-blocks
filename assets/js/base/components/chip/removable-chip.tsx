@@ -11,13 +11,26 @@ import { Icon, noAlt } from '@woocommerce/icons';
 import Chip, { ChipProps } from './chip';
 
 interface RemovableChipProps extends ChipProps {
-	text: React.ReactNode;
+	/**
+	 * Aria label content.
+	 */
 	ariaLabel?: string;
+	/**
+	 * CSS class used.
+	 */
 	className?: string;
+	/**
+	 * Whether action is disabled or not.
+	 */
 	disabled?: boolean;
+	/**
+	 * Function to call when remove event is fired.
+	 */
 	onRemove?: () => void;
+	/**
+	 * Whether to expand click area for remove event.
+	 */
 	removeOnAnyClick?: boolean;
-	screenReaderText?: string;
 }
 
 /**
@@ -38,7 +51,7 @@ const RemovableChip: React.FC< RemovableChipProps > = ( {
 	ariaLabel = '',
 	className = '',
 	disabled = false,
-	onRemove = () => void null,
+	onRemove = () => void 0,
 	removeOnAnyClick = false,
 	text,
 	screenReaderText = '',

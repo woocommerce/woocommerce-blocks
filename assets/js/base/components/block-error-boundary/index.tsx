@@ -9,37 +9,16 @@ import { Component } from 'react';
 import BlockError from './block-error';
 import './style.scss';
 
-interface DerivedStateReturn {
-	errorMessage: JSX.Element | string;
-	hasError: boolean;
-}
-
-interface Error {
-	status: string;
-	statusText: string;
-	message: string;
-}
-
-type RenderError = ( props: RenderErrorProps ) => React.ReactNode | null;
-
-interface RenderErrorProps {
-	errorMessage: React.ReactNode;
-}
-
-interface BlockErrorBoundaryProps {
-	header: string;
-	imageUrl: string;
-	showErrorMessage: boolean;
-	text: React.ReactNode;
-	errorMessagePrefix: string;
-	renderError: RenderError;
-	button: React.ReactNode;
-}
+import type {
+	DerivedStateReturn,
+	ReactError,
+	BlockErrorBoundaryProps,
+} from './types';
 
 class BlockErrorBoundary extends Component< BlockErrorBoundaryProps > {
 	state = { errorMessage: '', hasError: false };
 
-	static getDerivedStateFromError( error: Error ): DerivedStateReturn {
+	static getDerivedStateFromError( error: ReactError ): DerivedStateReturn {
 		if (
 			typeof error.statusText !== 'undefined' &&
 			typeof error.status !== 'undefined'
