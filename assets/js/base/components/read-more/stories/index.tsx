@@ -12,10 +12,13 @@ export default {
 	title: 'WooCommerce Blocks/@base-components/ReadMore',
 	component: ReadMore,
 	args: defaultProps,
+	argTypes: {
+		children: { control: { disable: true } },
+	},
 } as Meta< ReadMoreProps >;
 
-const Template: Story< ReadMoreProps > = ( args ) => (
-	<ReadMore { ...args }>
+const LongText = (
+	<>
 		<h1>
 			No! Alderaan is peaceful. We have no weapons. You can&apos;t
 			possibly…
@@ -55,10 +58,13 @@ const Template: Story< ReadMoreProps > = ( args ) => (
 				Content from http://fillerama.io &quot;Star Wars&quot;
 			</a>
 		</aside>
-	</ReadMore>
+	</>
 );
+
+const Template: Story< ReadMoreProps > = ( args ) => <ReadMore { ...args } />;
 
 export const Default = Template.bind( {} );
 Default.args = {
-	maxLines: 2,
+	children: LongText,
+	maxLines: 6,
 };
