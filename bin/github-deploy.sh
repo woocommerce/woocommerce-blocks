@@ -3,10 +3,10 @@
 RELEASER_PATH="$(pwd)"
 IS_PRE_RELEASE=false
 
-# When it is set to True, the commands are just printed but not executed.
-DRY_RUN_MODE=False
-# When it is set to True, the commands that affect the local env are executed (e.g. git commit), while the commands that affect the remote env are not executed but just printed (e.g. git push)
-SIMULATE_RELEASE_MODE=False
+# When it is set to true, the commands are just printed but not executed.
+DRY_RUN_MODE=false
+# When it is set to false, the commands that affect the local env are executed (e.g. git commit), while the commands that affect the remote env are not executed but just printed (e.g. git push)
+SIMULATE_RELEASE_MODE=false
 
 # Functions
 # Check if string contains substring
@@ -37,7 +37,7 @@ output() {
 }
 
 simulate() {
-  if $2 ; then
+  if $2 = true ; then
 	eval "$1"
   else
 	output 3 "DRY RUN: $1"
@@ -46,9 +46,9 @@ simulate() {
 
 
 run_command() {
-  if $DRY_RUN_MODE; then
+  if $DRY_RUN_MODE = true; then
 	output 3 "DRY RUN: $1"
-  elif $SIMULATE_RELEASE_MODE; then
+  elif $SIMULATE_RELEASE_MODE = true; then
 		simulate "$1" $2
   else
 	eval "$1"
@@ -153,25 +153,25 @@ fi
 
 # Version changes
 output 2 "Updating version numbers in files and regenerating php autoload classmap (note pre-releases will not have the readme.txt stable tag updated)..."
-source "$RELEASER_PATH/bin/version-changes.sh"
+run_command "source '$RELEASER_PATH/bin/version-changes.sh'" true
 
 composer dump-autoload
 
 # remove composer.json version bump after autoload regen (we don't commit it)
-run_command "git checkout -- composer.json" True
+run_command "git checkout -- composer.json" true
 
 output 2 "Committing version change..."
 echo
 
-run_command "git commit -am 'Bumping version strings to new bbb.' --no-verify" True
-run_command "git push origin $CURRENTBRANCH" False
+run_command "git commit -am 'Bumping version strings to new bbb.' --no-verify" true
+run_command "git push origin $CURRENTBRANCH" false
 
 # Tag existing version for reference
 output 2 "Creating tag for current non-built branch on GitHub..."
 echo
 DEVTAG="v${VERSION}-dev"
-run_command "git tag $DEVTAG" True
-run_command "git push origin $DEVTAG" False
+run_command "git tag $DEVTAG" true
+run_command "git push origin $DEVTAG" false
 
 output 2 "Prepping release for GitHub..."
 echo
@@ -179,38 +179,38 @@ echo
 # Create a release branch.
 BRANCH="build/${VERSION}"
 
-run_command "git checkout -b $BRANCH" True
+run_command "git checkout -b $BRANCH" true
 
 # Force add build directory and commit.
-run_command "git add build/. --force" True
-run_command "git add ." True
-run_command "git commit -m 'Adding /build directory to release' --no-verify" True
+run_command "git add build/. --force" true
+run_command "git add ." true
+run_command "git commit -m 'Adding /build directory to release' --no-verify" true
 
 # # Force add vendor directory and commit.
-run_command "git add vendor/. --force" True
-run_command "git add ." True
-run_command "git commit -m 'Adding /vendor directory to release' --no-verify" True
+run_command "git add vendor/. --force" true
+run_command "git add ." true
+run_command "git commit -m 'Adding /vendor directory to release' --no-verify" true
 
 # # Push branch upstream
-run_command "git push origin $BRANCH" False
+run_command "git push origin $BRANCH" false
 
 # Create the new release.
 if [ "$(echo "${DO_WP_DEPLOY:-n}" | tr "[:upper:]" "[:lower:]")" = "y" ]; then
 	if [ $IS_PRE_RELEASE = true ]; then
-		run_command "hub release create -m $VERSION -m 'Release of version $VERSION. See readme.txt for details.' -t $BRANCH --prerelease 'v${VERSION}'" False
+		run_command "hub release create -m $VERSION -m 'Release of version $VERSION. See readme.txt for details.' -t $BRANCH --prerelease 'v${VERSION}'" false
 	else
-		run_command "hub release create -m $VERSION -m 'Release of version $VERSION. See readme.txt for details.' -t $BRANCH 'v${VERSION}'" False
+		run_command "hub release create -m $VERSION -m 'Release of version $VERSION. See readme.txt for details.' -t $BRANCH 'v${VERSION}'" false
 	fi
 else
-	run_command "git tag 'v${VERSION}'" True
-	run_command "git push origin 'v${VERSION}'" False
+	run_command "git tag 'v${VERSION}'" true
+	run_command "git push origin 'v${VERSION}'" false
 fi
 
-run_command "git checkout $CURRENTBRANCH" True
-run_command "git branch -D $BRANCH" True
-run_command "git push origin --delete $BRANCH" False
+run_command "git checkout $CURRENTBRANCH" true
+run_command "git branch -D $BRANCH" true
+run_command "git push origin --delete $BRANCH" false
 
 # regenerate classmap for development
-run_command "composer dump-autoload" False
+run_command "composer dump-autoload" false
 
 output 2 "GitHub release complete."

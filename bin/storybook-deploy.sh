@@ -1,10 +1,10 @@
 #!/bin/sh
 
-# When it is set to True, the commands are just printed but not executed.
-DRY_RUN_MODE=False
+# When it is set to true, the commands are just printed but not executed.
+DRY_RUN_MODE=false
 
-# When it is set to True, the commands that affect the local env are executed (e.g. git commit), while the commands that affect the remote env are not executed but just printed (e.g. git push)
-SIMULATE_RELEASE_MODE=False
+# When it is set to true, the commands that affect the local env are executed (e.g. git commit), while the commands that affect the remote env are not executed but just printed (e.g. git push)
+SIMULATE_RELEASE_MODE=false
 
 
 # Output colorized strings
@@ -24,7 +24,7 @@ output() {
 
 
 simulate() {
-  if $2 ; then
+  if $2 = true ; then
 	eval "$1"
   else
 	output 3 "DRY RUN: $1"
@@ -33,9 +33,9 @@ simulate() {
 
 
 run_command() {
-  if $DRY_RUN_MODE; then
+  if $DRY_RUN_MODE = true; then
 	output 3 "DRY RUN: $1"
-  elif $SIMULATE_RELEASE_MODE; then
+  elif $SIMULATE_RELEASE_MODE = true; then
 		simulate "$1" $2
   else
 	eval "$1"
@@ -43,6 +43,6 @@ run_command() {
 }
 
 
-run_command "rimraf ./storybook/dist/*" True
-run_command "npm run storybook:build" True
-run_command "gh-pages -d ./storybook/dist" False
+run_command "rimraf ./storybook/dist/*" true
+run_command "npm run storybook:build" true
+run_command "gh-pages -d ./storybook/dist" false
