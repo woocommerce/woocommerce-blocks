@@ -29,13 +29,13 @@ import QuantityBadge from './quantity-badge';
 import MiniCartContentsBlock from '../mini-cart-contents/block';
 import './style.scss';
 
-type Props = {
+interface Props {
 	isInitiallyOpen?: boolean;
 	transparentButton: boolean;
 	colorClassNames?: string;
 	style?: Record< string, Record< string, string > >;
 	contents: string;
-};
+}
 
 const MiniCartBlock = ( {
 	isInitiallyOpen = false,
