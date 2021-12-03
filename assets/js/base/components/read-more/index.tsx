@@ -114,12 +114,15 @@ class ReadMore extends Component< ReadMoreProps, ReadMoreState > {
 		if ( this.props.children ) {
 			const { maxLines, ellipsis } = this.props;
 
-			if ( ! this.reviewSummary.current || ! this.reviewContent.current )
+			if (
+				! this.reviewSummary.current ||
+				! this.reviewContent.current
+			) {
 				return;
+			}
 
 			const lineHeight = this.reviewSummary.current.clientHeight + 1;
 			const reviewHeight = this.reviewContent.current.clientHeight + 1;
-
 			const maxHeight = lineHeight * maxLines + 1;
 			const clampEnabled = reviewHeight > maxHeight;
 

@@ -40,7 +40,7 @@ const moveMarkers = (
 	markers: Markers,
 	currentHeight: number,
 	maxHeight: number
-) => {
+): Markers => {
 	if ( currentHeight <= maxHeight ) {
 		markers.start = markers.middle + 1;
 	} else {
@@ -61,7 +61,7 @@ const calculateLength = (
 	originalContent: string,
 	targetElement: HTMLElement,
 	maxHeight: number
-) => {
+): number => {
 	let markers: Markers = {
 		start: 0,
 		middle: 0,
