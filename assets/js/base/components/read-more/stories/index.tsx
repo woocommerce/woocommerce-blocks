@@ -17,7 +17,7 @@ export default {
 	},
 } as Meta< ReadMoreProps >;
 
-const LongText: JSX.Element = (
+const LongText = (
 	<>
 		<h1>
 			No! Alderaan is peaceful. We have no weapons. You can&apos;t
