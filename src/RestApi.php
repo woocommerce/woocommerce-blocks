@@ -50,7 +50,7 @@ class RestApi {
 	 * Get routes for a namespace.
 	 *
 	 * @param string $namespace Namespace to retrieve.
-	 * @return array|null
+	 * @return array
 	 */
 	public function get_routes_from_namespace( $namespace ) {
 		$rest_server     = rest_get_server();
@@ -61,9 +61,13 @@ class RestApi {
 			]
 		);
 
+		if ( is_wp_error( $namespace_index ) ) {
+			return [];
+		}
+
 		$response_data = $namespace_index->get_data();
 
-		return isset( $response_data['routes'] ) ? $response_data['routes'] : null;
+		return $response_data['routes'] ?? [];
 	}
 
 	/**
