@@ -10,7 +10,7 @@ import { Icon, noAlt } from '@woocommerce/icons';
  */
 import Chip, { ChipProps } from './chip';
 
-interface RemovableChipProps extends ChipProps {
+export interface RemovableChipProps extends ChipProps {
 	/**
 	 * Aria label content.
 	 */
