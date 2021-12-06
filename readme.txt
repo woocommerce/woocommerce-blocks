@@ -85,6 +85,17 @@ Release and roadmap notes available on the [WooCommerce Developers Blog](https:/
 
 == Changelog ==
 
+= 6.5.0 - 2021-12-06 =
+
+#### Enhancements
+
+- Added global styles (text color, link color, line height, and font size) to the Product Title block. ([5133](https://github.com/woocommerce/woocommerce-gutenberg-products-block/pull/5133))
+
+#### Bug Fixes
+
+- Ensure that expected numbers of decimals are visible, if wanted my the merchant, even if the price is $0 or has no decimals, such as $50. ([5219](https://github.com/woocommerce/woocommerce-gutenberg-products-block/pull/5219))
+- Fixed Featured Product Block search not working for large stores. ([5156](https://github.com/woocommerce/woocommerce-gutenberg-products-block/pull/5156))
+
 = 6.4.0 - 2021-11-22 =
 
 #### Enhancements
