@@ -85,6 +85,16 @@ Release and roadmap notes available on the [WooCommerce Developers Blog](https:/
 
 == Changelog ==
 
+= 6.5.0 - 2021-12-06 =
+
+#### Enhancements
+
+- Added global styles (text color, link color, line height, and font size) to the Product Title block. ([5133](https://github.com/woocommerce/woocommerce-gutenberg-products-block/pull/5133))
+
+#### Bug Fixes
+
+- Fixed Featured Product Block search not working for large stores. ([5156](https://github.com/woocommerce/woocommerce-gutenberg-products-block/pull/5156))
+
 = 6.4.0 - 2021-11-22 =
 
 #### Enhancements
