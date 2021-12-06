@@ -1,9 +1,10 @@
 <?php
 namespace Automattic\WooCommerce\Blocks\StoreApi\Routes;
 
-use Automattic\WooCommerce\Blocks\StoreApi\Utilities\CartController;
 use Automattic\WooCommerce\Blocks\StoreApi\Schemas\AbstractSchema;
 use Automattic\WooCommerce\Blocks\StoreApi\Schemas\CartSchema;
+use Automattic\WooCommerce\Blocks\StoreApi\Utilities\CartController;
+use Automattic\WooCommerce\Blocks\StoreApi\Utilities\DraftOrderTrait;
 
 /**
  * Abstract Cart Route
@@ -11,6 +12,8 @@ use Automattic\WooCommerce\Blocks\StoreApi\Schemas\CartSchema;
  * @internal This API is used internally by Blocks--it is still in flux and may be subject to revisions.
  */
 abstract class AbstractCartRoute extends AbstractRoute {
+	use DraftOrderTrait;
+
 	/**
 	 * Schema class for this route's response.
 	 *
@@ -118,13 +121,13 @@ abstract class AbstractCartRoute extends AbstractRoute {
 	 * @return void
 	 */
 	protected function maybe_release_stock() {
-		$draft_order = wc()->session->get( 'store_api_draft_order', 0 );
+		$draft_order_id = $this->get_draft_order_id();
 
-		if ( ! $draft_order ) {
+		if ( ! $draft_order_id ) {
 			return;
 		}
 
-		wc_release_stock_for_order( $draft_order );
+		wc_release_stock_for_order( $draft_order_id );
 	}
 
 	/**
