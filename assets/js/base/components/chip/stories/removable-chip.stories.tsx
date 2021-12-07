@@ -6,7 +6,7 @@ import { Story, Meta } from '@storybook/react';
 /**
  * Internal dependencies
  */
-import RemovableChip, { RemovableChipProps } from '../removable-chip';
+import { RemovableChip, RemovableChipProps } from '../removable-chip';
 
 export default {
 	title: 'WooCommerce Blocks/@base-components/RemovableChip',
@@ -19,9 +19,9 @@ const Template: Story< RemovableChipProps > = ( args ) => (
 
 export const Default = Template.bind( {} );
 Default.args = {
+	text: 'Take me to the casino',
 	screenReaderText: "I'm a removable chip, me",
-	ariaLabel: '',
-	className: '',
-	disabled: false,
-	removeOnAnyClick: false,
+	onRemove: () => {
+		window.alert( 'Chip Removed!' ); //eslint-disable-line
+	},
 };

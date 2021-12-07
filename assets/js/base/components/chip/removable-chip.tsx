@@ -47,7 +47,7 @@ export interface RemovableChipProps extends ChipProps {
  * @param {string} props.screenReaderText The screen reader text for the chip.
  * @param {Object} props.props Rest of props passed into component.
  */
-const RemovableChip: React.FC< RemovableChipProps > = ( {
+export const RemovableChip = ( {
 	ariaLabel = '',
 	className = '',
 	disabled = false,
@@ -56,7 +56,7 @@ const RemovableChip: React.FC< RemovableChipProps > = ( {
 	text,
 	screenReaderText = '',
 	...props
-} ) => {
+}: RemovableChipProps ): JSX.Element => {
 	const RemoveElement = removeOnAnyClick ? 'span' : 'button';
 
 	if ( ! ariaLabel ) {
