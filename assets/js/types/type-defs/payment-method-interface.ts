@@ -152,6 +152,8 @@ export type PaymentMethodInterface = {
 	activePaymentMethod: string;
 	// Various billing data items.
 	billing: BillingDataProps;
+	// Data exposed from the cart including items, fees, and any registered extension data. Note that this data should
+	// be treated as immutable (should not be modified/mutated) or it will result in errors in your application.
 	cartData: CartDataProps;
 	// The current checkout status exposed as various boolean state.
 	checkoutStatus: CheckoutStatusProps;
