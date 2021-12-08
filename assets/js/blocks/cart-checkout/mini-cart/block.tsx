@@ -79,7 +79,7 @@ const MiniCartBlock = ( {
 		return () => {
 			if ( contentsNode instanceof Element && isOpen ) {
 				const container = contentsNode.querySelector(
-					'.wc-block-mini-cart-contents'
+					'.wp-block-woocommerce-mini-cart-contents'
 				);
 				if ( container ) {
 					unmountComponentAtNode( container );
