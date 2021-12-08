@@ -3,7 +3,7 @@
  */
 import classNames from 'classnames';
 import { __, sprintf } from '@wordpress/i18n';
-import { Icon, noAlt } from '@woocommerce/icons';
+import { Icon, close, noAlt } from '@woocommerce/icons'; //eslint-disable-line
 
 /**
  * Internal dependencies
@@ -104,9 +104,19 @@ export const RemovableChip = ( {
 				className="wc-block-components-chip__remove"
 				{ ...removeProps }
 			>
+				<span
+					style={ {
+						color: 'rgba(30, 30, 30, 0.2)',
+						borderLeft: '1px inset rgba(30, 30, 30, 0.2)',
+						position: 'relative',
+						top: '2px',
+					} }
+				>
+					{ ' ' }
+				</span>
 				<Icon
 					className="wc-block-components-chip__remove-icon"
-					srcElement={ noAlt }
+					srcElement={ close }
 					size={ 16 }
 				/>
 			</RemoveElement>

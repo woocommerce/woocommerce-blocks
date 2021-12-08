@@ -49,6 +49,10 @@
 	.wc-block-components-chip__remove-icon {
 		vertical-align: middle;
 	}
+	.wc-block-components-chip__remove-icon-circle {
+		fill: transparent;
+		stroke: $gray-600;
+	}
 }
 
 .theme-twentytwentyone {
@@ -68,6 +72,9 @@ button.wc-block-components-chip:focus > .wc-block-components-chip__remove,
 .wc-block-components-chip__remove:hover,
 .wc-block-components-chip__remove:focus {
 	fill: $alert-red;
+	.wc-block-components-chip__remove-icon-circle {
+		stroke: $alert-red;
+	}
 }
 
 button.wc-block-components-chip:disabled > .wc-block-components-chip__remove,
