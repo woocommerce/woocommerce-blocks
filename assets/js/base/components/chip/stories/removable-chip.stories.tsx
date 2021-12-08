@@ -11,7 +11,7 @@ import { RemovableChip, RemovableChipProps } from '../removable-chip';
 const availableElements = [ 'li', 'div', 'span' ];
 
 export default {
-	title: 'WooCommerce Blocks/@base-components/RemovableChip',
+	title: 'WooCommerce Blocks/@base-components/Chip/RemovableChip',
 	component: RemovableChip,
 	argTypes: {
 		element: {
