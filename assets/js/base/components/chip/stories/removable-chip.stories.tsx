@@ -8,9 +8,17 @@ import { Story, Meta } from '@storybook/react';
  */
 import { RemovableChip, RemovableChipProps } from '../removable-chip';
 
+const availableElements = [ 'li', 'div', 'span' ];
+
 export default {
 	title: 'WooCommerce Blocks/@base-components/RemovableChip',
 	component: RemovableChip,
+	argTypes: {
+		element: {
+			control: 'radio',
+			options: availableElements,
+		},
+	},
 } as Meta< RemovableChipProps >;
 
 const Template: Story< RemovableChipProps > = ( args ) => (
@@ -19,9 +27,7 @@ const Template: Story< RemovableChipProps > = ( args ) => (
 
 export const Default = Template.bind( {} );
 Default.args = {
+	element: 'li',
 	text: 'Take me to the casino',
 	screenReaderText: "I'm a removable chip, me",
-	onRemove: () => {
-		window.alert( 'Chip Removed!' ); //eslint-disable-line
-	},
 };

@@ -8,25 +8,22 @@ import { Story, Meta } from '@storybook/react';
  */
 import Chip, { ChipProps } from '../chip';
 const availableElements = [ 'li', 'div', 'span' ];
-const availableRadius = [ 'none', 'small', 'medium', 'large' ];
+const availableRadii = [ 'none', 'small', 'medium', 'large' ];
 
 export default {
 	title: 'WooCommerce Blocks/@base-components/Chip',
 	component: Chip,
 	argTypes: {
 		element: {
-			control: 'select',
+			control: 'radio',
 			options: availableElements,
 		},
 		className: {
 			control: 'text',
 		},
 		radius: {
-			control: 'select',
-			options: availableRadius,
-		},
-		children: {
-			control: 'text',
+			control: 'radio',
+			options: availableRadii,
 		},
 	},
 } as Meta< ChipProps >;
@@ -35,7 +32,7 @@ const Template: Story< ChipProps > = ( args ) => <Chip { ...args } />;
 
 export const Default = Template.bind( {} );
 Default.args = {
-	text: 'Take me to the casino!',
 	element: 'li',
+	text: 'Take me to the casino!',
 	screenReaderText: "I'm a chip, me",
 };
