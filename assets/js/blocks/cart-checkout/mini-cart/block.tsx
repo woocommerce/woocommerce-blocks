@@ -1,33 +1,32 @@
 /**
  * External dependencies
  */
-import classnames from 'classnames';
-import { __, _n, sprintf } from '@wordpress/i18n';
-import {
-	RawHTML,
-	useState,
-	useEffect,
-	useCallback,
-	unmountComponentAtNode,
-} from '@wordpress/element';
-import {
-	renderBlock,
-	translateJQueryEventToNative,
-} from '@woocommerce/base-utils';
-import { useStoreCart } from '@woocommerce/base-context/hooks';
+import { renderParentBlock } from '@woocommerce/atomic-utils';
 import Drawer from '@woocommerce/base-components/drawer';
+import { useStoreCart } from '@woocommerce/base-context/hooks';
+import { translateJQueryEventToNative } from '@woocommerce/base-utils';
+import { getRegisteredBlockComponents } from '@woocommerce/blocks-registry';
 import {
 	formatPrice,
 	getCurrencyFromPriceResponse,
 } from '@woocommerce/price-format';
 import { getSettingWithCoercion } from '@woocommerce/settings';
-import { isString, isBoolean } from '@woocommerce/types';
-
+import { isBoolean, isString } from '@woocommerce/types';
+import {
+	RawHTML,
+	unmountComponentAtNode,
+	useCallback,
+	useEffect,
+	useState,
+} from '@wordpress/element';
+import { sprintf, _n, __ } from '@wordpress/i18n';
+import classnames from 'classnames';
 /**
  * Internal dependencies
  */
 import QuantityBadge from './quantity-badge';
-import MiniCartContentsBlock from '../mini-cart-contents/block';
+import { blockName } from '../mini-cart-contents';
+import { MiniCartContentsBlock } from '../mini-cart-contents/block';
 import './style.scss';
 
 interface Props {
@@ -62,15 +61,17 @@ const MiniCartBlock = ( {
 	useEffect( () => {
 		if ( contentsNode instanceof Element ) {
 			const container = contentsNode.querySelector(
-				'.wc-block-mini-cart-contents'
+				'.wp-block-woocommerce-mini-cart-contents'
 			);
 			if ( ! container ) {
 				return;
 			}
 			if ( isOpen ) {
-				renderBlock( {
+				renderParentBlock( {
 					Block: MiniCartContentsBlock,
-					container,
+					blockName,
+					selector: '.wp-block-woocommerce-mini-cart-contents',
+					blockMap: getRegisteredBlockComponents( blockName ),
 				} );
 			}
 		}

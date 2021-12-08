@@ -11,6 +11,8 @@ import { registerExperimentalBlockType } from '@woocommerce/block-settings';
 import edit, { Save as save } from './edit';
 import './inner-blocks';
 
+export const blockName = 'woocommerce/mini-cart-contents';
+
 const settings = {
 	apiVersion: 2,
 	title: __( 'Mini Cart Contents', 'woo-gutenberg-products-block' ),
