@@ -40,6 +40,7 @@ export interface PaymentStatusDispatchers {
 	started: ( paymentMethodData?: ObjectType | EmptyObjectType ) => void;
 	processing: () => void;
 	completed: () => void;
+	idle: () => void;
 	error: ( error: string ) => void;
 	failed: (
 		error?: string,
@@ -66,6 +67,8 @@ export interface PaymentMethodDataContextState {
 export type PaymentMethodCurrentStatusType = {
 	// If true then the payment method state in checkout is pristine.
 	isPristine: boolean;
+	// If true then the payment method state in checkout is modified, but isn't doing anyting.
+	isIdle: boolean;
 	// If true then the payment method has been initialized and has started.
 	isStarted: boolean;
 	// If true then the payment method is processing payment.

@@ -45,6 +45,7 @@ export const usePaymentMethodDataDispatchers = (
 	const setPaymentStatus = useCallback(
 		(): PaymentStatusDispatchers => ( {
 			pristine: () => dispatch( actions.statusOnly( STATUS.PRISTINE ) ),
+			idle: () => dispatch( actions.statusOnly( STATUS.IDLE ) ),
 			started: ( paymentMethodData ) => {
 				dispatch(
 					actions.started( {

@@ -222,7 +222,7 @@ export const PaymentMethodDataProvider = ( {
 	// When checkout is returned to idle, set payment status to pristine but only if payment status is already not finished.
 	useEffect( () => {
 		if ( checkoutIsIdle && ! currentStatus.isSuccessful ) {
-			setPaymentStatus().started();
+			setPaymentStatus().idle();
 		}
 	}, [ checkoutIsIdle, currentStatus.isSuccessful, setPaymentStatus ] );
 

@@ -99,6 +99,15 @@ const reducer = (
 				},
 				shouldSavePaymentMethod: state.shouldSavePaymentMethod,
 			};
+		case STATUS.IDLE:
+			return {
+				...state,
+				currentStatus: STATUS.IDLE,
+				paymentMethodData: paymentMethodData || state.paymentMethodData,
+				hasSavedToken: hasSavedPaymentToken(
+					paymentMethodData || state.paymentMethodData
+				),
+			};
 		case ACTION.SET_REGISTERED_PAYMENT_METHODS:
 			return {
 				...state,

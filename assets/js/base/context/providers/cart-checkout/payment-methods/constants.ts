@@ -8,6 +8,7 @@ import type {
 
 export enum STATUS {
 	PRISTINE = 'pristine',
+	IDLE = 'idle',
 	STARTED = 'started',
 	PROCESSING = 'processing',
 	ERROR = 'has_error',
@@ -38,6 +39,7 @@ export const DEFAULT_PAYMENT_DATA_CONTEXT_STATE: PaymentMethodDataContextState =
 export const DEFAULT_PAYMENT_METHOD_DATA: PaymentMethodDataContextType = {
 	setPaymentStatus: () => ( {
 		pristine: () => void null,
+		idle: () => void null,
 		started: () => void null,
 		processing: () => void null,
 		completed: () => void null,
@@ -50,6 +52,7 @@ export const DEFAULT_PAYMENT_METHOD_DATA: PaymentMethodDataContextType = {
 	currentStatus: {
 		isPristine: true,
 		isStarted: false,
+		isIdle: false,
 		isProcessing: false,
 		isFinished: false,
 		hasError: false,
