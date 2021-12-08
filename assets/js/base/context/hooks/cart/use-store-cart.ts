@@ -106,7 +106,7 @@ export const defaultCartData: StoreCart = {
 	cartNeedsShipping: true,
 	cartItemErrors: EMPTY_CART_ITEM_ERRORS,
 	cartTotals: defaultCartTotals,
-	cartIsLoading: true,
+	cartIsLoading: false,
 	cartErrors: EMPTY_CART_ERRORS,
 	billingAddress: defaultBillingAddress,
 	shippingAddress: defaultShippingAddress,
