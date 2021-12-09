@@ -1,4 +1,9 @@
 /**
+ * External dependencies
+ */
+import { PaymentMethods } from '@woocommerce/type-defs/payments';
+
+/**
  * Internal dependencies
  */
 import {
@@ -8,14 +13,6 @@ import {
 } from './constants';
 import type { PaymentMethodDataContextState } from './types';
 import type { ActionType } from './actions';
-
-const hasSavedPaymentToken = (
-	paymentMethodData: Record< string, unknown > | undefined
-): boolean => {
-	return !! (
-		typeof paymentMethodData === 'object' && paymentMethodData.isSavedToken
-	);
-};
 
 /**
  * Reducer for payment data state
@@ -28,17 +25,30 @@ const reducer = (
 		shouldSavePaymentMethod = false,
 		errorMessage = '',
 		paymentMethods = {},
+		paymentMethod = '',
 	}: ActionType
 ): PaymentMethodDataContextState => {
 	switch ( type ) {
+		case STATUS.PRISTINE:
+			return {
+				...DEFAULT_PAYMENT_DATA_CONTEXT_STATE,
+				currentStatus: STATUS.PRISTINE,
+				// This keeps payment method registration state and any set data. This effectively just resets the
+				// status and any error messages.
+				paymentMethods: {
+					...state.paymentMethods,
+				},
+				expressPaymentMethods: {
+					...state.expressPaymentMethods,
+				},
+				shouldSavePaymentMethod: state.shouldSavePaymentMethod,
+				activePaymentMethod: state.activePaymentMethod,
+				paymentMethodData: state.paymentMethodData,
+			};
 		case STATUS.STARTED:
 			return {
 				...state,
 				currentStatus: STATUS.STARTED,
-				paymentMethodData: paymentMethodData || state.paymentMethodData,
-				hasSavedToken: hasSavedPaymentToken(
-					paymentMethodData || state.paymentMethodData
-				),
 			};
 		case STATUS.ERROR:
 			return state.currentStatus !== STATUS.ERROR
@@ -65,9 +75,6 @@ const reducer = (
 						currentStatus: STATUS.SUCCESS,
 						paymentMethodData:
 							paymentMethodData || state.paymentMethodData,
-						hasSavedToken: hasSavedPaymentToken(
-							paymentMethodData || state.paymentMethodData
-						),
 				  }
 				: state;
 		case STATUS.PROCESSING:
@@ -85,24 +92,10 @@ const reducer = (
 						currentStatus: STATUS.COMPLETE,
 				  }
 				: state;
-
-		case STATUS.PRISTINE:
-			return {
-				...DEFAULT_PAYMENT_DATA_CONTEXT_STATE,
-				currentStatus: STATUS.PRISTINE,
-				// keep payment method registration state
-				paymentMethods: {
-					...state.paymentMethods,
-				},
-				expressPaymentMethods: {
-					...state.expressPaymentMethods,
-				},
-				shouldSavePaymentMethod: state.shouldSavePaymentMethod,
-			};
 		case ACTION.SET_REGISTERED_PAYMENT_METHODS:
 			return {
 				...state,
-				paymentMethods,
+				paymentMethods: paymentMethods as PaymentMethods,
 			};
 		case ACTION.SET_REGISTERED_EXPRESS_PAYMENT_METHODS:
 			return {
@@ -113,6 +106,12 @@ const reducer = (
 			return {
 				...state,
 				shouldSavePaymentMethod,
+			};
+		case ACTION.SET_ACTIVE_PAYMENT_METHOD:
+			return {
+				...state,
+				activePaymentMethod: paymentMethod,
+				paymentMethodData: paymentMethodData || state.paymentMethodData,
 			};
 	}
 };

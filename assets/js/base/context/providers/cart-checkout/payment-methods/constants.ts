@@ -31,7 +31,6 @@ export const DEFAULT_PAYMENT_DATA_CONTEXT_STATE: PaymentMethodDataContextState =
 	paymentMethodData: {
 		payment_method: '',
 	},
-	hasSavedToken: false,
 	errorMessage: '',
 	paymentMethods: {},
 	expressPaymentMethods: {},

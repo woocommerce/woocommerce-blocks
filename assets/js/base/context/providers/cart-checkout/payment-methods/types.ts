@@ -62,7 +62,6 @@ export interface PaymentMethodDataContextState {
 	shouldSavePaymentMethod: boolean;
 	activePaymentMethod: string;
 	paymentMethodData: ObjectType | EmptyObjectType;
-	hasSavedToken: boolean;
 	errorMessage: string;
 	paymentMethods: PaymentMethods;
 	expressPaymentMethods: ExpressPaymentMethods;
