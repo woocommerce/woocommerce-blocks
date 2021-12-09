@@ -31,19 +31,12 @@ const reducer = (
 	switch ( type ) {
 		case STATUS.PRISTINE:
 			return {
-				...DEFAULT_PAYMENT_DATA_CONTEXT_STATE,
-				currentStatus: STATUS.PRISTINE,
-				// This keeps payment method registration state and any set data. This effectively just resets the
+			// This keeps payment method registration state and any set data. This effectively just resets the
 				// status and any error messages.
-				paymentMethods: {
-					...state.paymentMethods,
-				},
-				expressPaymentMethods: {
-					...state.expressPaymentMethods,
-				},
-				shouldSavePaymentMethod: state.shouldSavePaymentMethod,
-				activePaymentMethod: state.activePaymentMethod,
-				paymentMethodData: state.paymentMethodData,
+				...DEFAULT_PAYMENT_DATA_CONTEXT_STATE,
+				...state,
+				errorMessage: '',
+				currentStatus: STATUS.PRISTINE,
 			};
 		case STATUS.STARTED:
 			return {
