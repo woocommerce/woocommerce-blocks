@@ -75,27 +75,25 @@ class CartUpdateCustomer extends AbstractCartRoute {
 	 */
 	protected function get_route_post_response( \WP_REST_Request $request ) {
 		$cart     = $this->cart_controller->get_cart_instance();
-		$customer = wc()->customer;
-		$billing  = $request['billing_address'] ?? [];
-		$shipping = $request['shipping_address'] ?? [];
+		$billing  = isset( $request['billing_address'] ) ? $request['billing_address'] : [];
+		$shipping = isset( $request['shipping_address'] ) ? $request['shipping_address'] : [];
 
 		// If the cart does not need shipping, shipping address is forced to match billing address unless defined.
 		if ( ! $cart->needs_shipping() && ! isset( $request['shipping_address'] ) ) {
-			$shipping = $request['billing_address'] ?? [
-				'first_name' => $customer->get_billing_first_name(),
-				'last_name'  => $customer->get_billing_last_name(),
-				'company'    => $customer->get_billing_company(),
-				'address_1'  => $customer->get_billing_address_1(),
-				'address_2'  => $customer->get_billing_address_2(),
-				'city'       => $customer->get_billing_city(),
-				'state'      => $customer->get_billing_state(),
-				'postcode'   => $customer->get_billing_postcode(),
-				'country'    => $customer->get_billing_country(),
-				'phone'      => $customer->get_billing_phone(),
+			$shipping = isset( $request['billing_address'] ) ? $request['billing_address'] : [
+				'first_name' => wc()->customer->get_billing_first_name(),
+				'last_name'  => wc()->customer->get_billing_last_name(),
+				'company'    => wc()->customer->get_billing_company(),
+				'address_1'  => wc()->customer->get_billing_address_1(),
+				'address_2'  => wc()->customer->get_billing_address_2(),
+				'city'       => wc()->customer->get_billing_city(),
+				'state'      => wc()->customer->get_billing_state(),
+				'postcode'   => wc()->customer->get_billing_postcode(),
+				'country'    => wc()->customer->get_billing_country(),
+				'phone'      => wc()->customer->get_billing_phone(),
 			];
 		}
-
-		$customer->set_props(
+		wc()->customer->set_props(
 			array(
 				'billing_first_name'  => $billing['first_name'] ?? null,
 				'billing_last_name'   => $billing['last_name'] ?? null,
@@ -121,18 +119,10 @@ class CartUpdateCustomer extends AbstractCartRoute {
 			)
 		);
 
-		/**
-		 * Fires when the Checkout Block/Store API updates a customer from the API request data.
-		 *
-		 * @param \WC_Customer $order Order object.
-		 * @param \WP_REST_Request $request Full details about the request.
-		 */
-		do_action( 'woocommerce_blocks_cart_update_customer_from_request', $customer, $request );
-
-		$customer->save();
+		wc()->customer->save();
 
 		$this->calculate_totals();
-		$this->maybe_update_order_from_customer();
+		$this->maybe_update_order();
 
 		return rest_ensure_response( $this->schema->get_item_response( $cart ) );
 	}
@@ -143,7 +133,7 @@ class CartUpdateCustomer extends AbstractCartRoute {
 	 *
 	 * @return void
 	 */
-	protected function maybe_update_order_from_customer() {
+	protected function maybe_update_order() {
 		$draft_order = $this->get_draft_order();
 
 		if ( ! $draft_order ) {
