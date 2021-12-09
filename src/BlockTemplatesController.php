@@ -55,7 +55,7 @@ class BlockTemplatesController {
 	 */
 	protected function init() {
 		add_action( 'template_redirect', array( $this, 'render_block_template' ) );
-		add_filter( 'pre_get_block_template', array( $this, 'maybe_return_blocks_template' ), 10, 3 );
+		add_filter( 'pre_get_block_file_template', array( $this, 'maybe_return_blocks_template' ), 10, 3 );
 		add_filter( 'get_block_templates', array( $this, 'add_block_templates' ), 10, 3 );
 		add_filter( 'default_wp_template_part_areas', array( $this, 'add_template_part_areas' ) );
 		add_filter( 'wp_insert_post', array( $this, 'add_mini_cart_content_to_template_part' ), 10, 3 );
@@ -90,7 +90,7 @@ class BlockTemplatesController {
 		list( , $slug ) = $template_name_parts;
 
 		// Remove the filter at this point because if we don't then this function will infinite loop.
-		remove_filter( 'pre_get_block_template', array( $this, 'maybe_return_blocks_template' ), 10, 3 );
+		remove_filter( 'pre_get_block_file_template', array( $this, 'maybe_return_blocks_template' ), 10, 3 );
 
 		// Check if the theme has a saved version of this template before falling back to the woo one. Please note how
 		// the slug has not been modified at this point, we're still using the default one passed to this hook.
@@ -99,7 +99,7 @@ class BlockTemplatesController {
 			get_block_template( $id, $template_type );
 
 		if ( null !== $maybe_template ) {
-			add_filter( 'pre_get_block_template', array( $this, 'maybe_return_blocks_template' ), 10, 3 );
+			add_filter( 'pre_get_block_file_template', array( $this, 'maybe_return_blocks_template' ), 10, 3 );
 			return $maybe_template;
 		}
 
@@ -111,8 +111,8 @@ class BlockTemplatesController {
 			get_block_template( 'woocommerce//' . $slug, $template_type );
 
 		// Re-hook this function, it was only unhooked to stop recursion.
-		add_filter( 'pre_get_block_template', array( $this, 'maybe_return_blocks_template' ), 10, 3 );
-		remove_filter( 'get_block_template', array( $this, 'get_single_block_template' ), 10, 3 );
+		add_filter( 'pre_get_block_file_template', array( $this, 'maybe_return_blocks_template' ), 10, 3 );
+		remove_filter( 'get_block_file_template', array( $this, 'get_single_block_template' ), 10, 3 );
 		if ( null !== $maybe_template ) {
 			return $maybe_template;
 		}
