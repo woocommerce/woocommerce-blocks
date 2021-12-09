@@ -180,13 +180,13 @@ class MiniCart extends AbstractBlock {
 			$this->asset_data_registry->add(
 				'isSiteEditorAvailable',
 				wp_is_block_theme(),
-				false
+				true
 			);
 		} else {
 			$this->asset_data_registry->add(
 				'isSiteEditorAvailable',
 				false,
-				false
+				true
 			);
 		}
 
