@@ -150,9 +150,8 @@ const MiniCartBlock = ( {
 						>
 							<ExternalLink
 								href={ addQueryArgs(
-									`${ ADMIN_URL }themes.php`,
+									`${ ADMIN_URL }site-editor.php`,
 									{
-										page: 'gutenberg-edit-site',
 										postId: `${ themeSlug }//mini-cart`,
 										postType: 'wp_template_part',
 									}
