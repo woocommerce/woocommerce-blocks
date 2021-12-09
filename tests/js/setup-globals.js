@@ -102,18 +102,3 @@ global.IntersectionObserver = function () {
 };
 
 global.__webpack_public_path__ = '';
-
-const wordPressPackages = [
-	'blocks',
-	'components',
-	'date',
-	'editor',
-	'element',
-	'i18n',
-];
-
-wordPressPackages.forEach( ( lib ) => {
-	Object.defineProperty( global.wp, lib, {
-		get: () => require( `@wordpress/${ lib }` ),
-	} );
-} );

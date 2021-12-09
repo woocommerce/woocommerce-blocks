@@ -21,14 +21,6 @@ import { default as fetchMock } from 'jest-fetch-mock';
 import Block from '../block';
 import { defaultCartState } from '../../../../data/default-states';
 
-jest.mock(
-	'@wordpress/block-editor',
-	() => {
-		/* module impl */
-	},
-	{ virtual: true }
-);
-
 const MiniCartBlock = ( props ) => (
 	<SlotFillProvider>
 		<Block
