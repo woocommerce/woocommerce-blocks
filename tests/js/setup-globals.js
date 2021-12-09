@@ -101,6 +101,8 @@ global.IntersectionObserver = function () {
 	};
 };
 
+global.__webpack_public_path__ = '';
+
 const wordPressPackages = [
 	'blocks',
 	'components',

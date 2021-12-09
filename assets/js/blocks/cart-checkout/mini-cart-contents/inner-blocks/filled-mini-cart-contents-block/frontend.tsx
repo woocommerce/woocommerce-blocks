@@ -39,58 +39,51 @@ const FilledMiniCartContentsBlock = ( {}: FilledMiniCartContentsBlockProps ): JS
 		? parseInt( cartTotals.total_items, 10 ) +
 		  parseInt( cartTotals.total_items_tax, 10 )
 		: parseInt( cartTotals.total_items, 10 );
+
+	if ( cartIsLoading || cartItems.length === 0 ) {
+		return null;
+	}
+
 	return (
 		<>
-			{ ! cartIsLoading && cartItems.length > 0 && (
-				<>
-					<div className="wc-block-mini-cart__items">
-						<CartLineItemsTable
-							lineItems={ cartItems }
-							isLoading={ cartIsLoading }
-						/>
-					</div>
-					<div className="wc-block-mini-cart__footer">
-						<TotalsItem
-							className="wc-block-mini-cart__footer-subtotal"
-							currency={ getCurrencyFromPriceResponse(
-								cartTotals
-							) }
-							label={ __(
-								'Subtotal',
-								'woo-gutenberg-products-block'
-							) }
-							value={ subTotal }
-							description={ __(
-								'Shipping, taxes, and discounts calculated at checkout.',
-								'woo-gutenberg-products-block'
-							) }
-						/>
-						<div className="wc-block-mini-cart__footer-actions">
-							<Button
-								className="wc-block-mini-cart__footer-cart"
-								href={ CART_URL }
-							>
-								{ __(
-									'View my cart',
-									'woo-gutenberg-products-block'
-								) }
-							</Button>
-							<Button
-								className="wc-block-mini-cart__footer-checkout"
-								href={ CHECKOUT_URL }
-							>
-								{ __(
-									'Go to checkout',
-									'woo-gutenberg-products-block'
-								) }
-							</Button>
-						</div>
-						<PaymentMethodDataProvider>
-							<PaymentMethodIconsElement />
-						</PaymentMethodDataProvider>
-					</div>
-				</>
-			) }
+			<div className="wc-block-mini-cart__items">
+				<CartLineItemsTable
+					lineItems={ cartItems }
+					isLoading={ cartIsLoading }
+				/>
+			</div>
+			<div className="wc-block-mini-cart__footer">
+				<TotalsItem
+					className="wc-block-mini-cart__footer-subtotal"
+					currency={ getCurrencyFromPriceResponse( cartTotals ) }
+					label={ __( 'Subtotal', 'woo-gutenberg-products-block' ) }
+					value={ subTotal }
+					description={ __(
+						'Shipping, taxes, and discounts calculated at checkout.',
+						'woo-gutenberg-products-block'
+					) }
+				/>
+				<div className="wc-block-mini-cart__footer-actions">
+					<Button
+						className="wc-block-mini-cart__footer-cart"
+						href={ CART_URL }
+					>
+						{ __( 'View my cart', 'woo-gutenberg-products-block' ) }
+					</Button>
+					<Button
+						className="wc-block-mini-cart__footer-checkout"
+						href={ CHECKOUT_URL }
+					>
+						{ __(
+							'Go to checkout',
+							'woo-gutenberg-products-block'
+						) }
+					</Button>
+				</div>
+				<PaymentMethodDataProvider>
+					<PaymentMethodIconsElement />
+				</PaymentMethodDataProvider>
+			</div>
 		</>
 	);
 };
