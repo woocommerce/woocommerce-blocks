@@ -14,8 +14,7 @@ import {
 import { TotalsCoupon, TotalsCouponProps } from '..';
 
 export default {
-	title:
-		'WooCommerce Blocks/@base-components/cart-checkout/totals/TotalsCoupon',
+	title: 'WooCommerce Blocks/@base-components/cart-checkout/totals/Coupon',
 	component: TotalsCoupon,
 	args: {
 		initialOpen: true,
