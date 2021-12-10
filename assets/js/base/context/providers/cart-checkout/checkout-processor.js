@@ -219,7 +219,7 @@ const CheckoutProcessor = () => {
 				let errorNotice = sprintf(
 					// Translators: %s Error text.
 					__(
-						'Error: %s Please try placing your order again.',
+						'Something went wrong. %s Please try placing your order again.',
 						'woo-gutenberg-products-block'
 					),
 					errorResponse?.message ??
