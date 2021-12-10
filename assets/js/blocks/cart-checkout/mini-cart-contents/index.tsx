@@ -9,9 +9,8 @@ import { registerExperimentalBlockType } from '@woocommerce/block-settings';
  * Internal dependencies
  */
 import edit, { Save as save } from './edit';
+import { blockName } from './attributes';
 import './inner-blocks';
-
-export const blockName = 'woocommerce/mini-cart-contents';
 
 const settings = {
 	apiVersion: 2,
@@ -59,4 +58,4 @@ const settings = {
 	save,
 };
 
-registerExperimentalBlockType( 'woocommerce/mini-cart-contents', settings );
+registerExperimentalBlockType( blockName, settings );
