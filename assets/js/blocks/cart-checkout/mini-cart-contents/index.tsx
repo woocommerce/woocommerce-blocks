@@ -34,6 +34,11 @@ const settings = {
 		__experimentalExposeControlsToChildren: true,
 	},
 	attributes: {
+		isPreview: {
+			type: 'boolean',
+			default: false,
+			save: false,
+		},
 		lock: {
 			type: 'object',
 			default: {
@@ -45,13 +50,6 @@ const settings = {
 	example: {
 		attributes: {
 			isPreview: true,
-		},
-	},
-	attributes: {
-		isPreview: {
-			type: 'boolean',
-			default: false,
-			save: false,
 		},
 	},
 	edit,
