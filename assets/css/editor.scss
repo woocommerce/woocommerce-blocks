@@ -45,6 +45,18 @@
 	}
 }
 
+svg.wc-block-editor-components-block-icon {
+	color: rgb(127, 84, 179);
+}
+
+.block-editor-list-view-leaf.is-selected {
+	.block-editor-list-view-block-contents {
+		svg.wc-block-editor-components-block-icon {
+			color: currentColor;
+		}
+	}
+}
+
 // Selectors with extra specificity to override some editor styles.
 .woocommerce-search-list__list.woocommerce-search-list__list {
 	box-sizing: border-box;
