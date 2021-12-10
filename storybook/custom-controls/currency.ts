@@ -1,7 +1,8 @@
 /**
  * External dependencies
  */
-import { Currency } from '@woocommerce/types';
+import { Currency, CurrencyResponse } from '@woocommerce/types';
+import snakecaseKeys from 'snakecase-keys';
 
 export const currencies: Record< string, Currency > = {
 	EUR: {
@@ -22,7 +23,17 @@ export const currencies: Record< string, Currency > = {
 		prefix: '$',
 		suffix: '',
 	},
-};
+} as const;
+
+export const currenciesAPIShape: Record<
+	string,
+	CurrencyResponse
+> = Object.fromEntries(
+	Object.entries( currencies ).map( ( [ key, value ] ) => [
+		key,
+		snakecaseKeys( value ),
+	] )
+);
 
 export const currencyControl = {
 	control: 'select',

@@ -24,7 +24,7 @@ import './style.scss';
 export interface TotalsDiscountProps {
 	cartCoupons: LooselyMustHave<
 		CartResponseCouponItemWithLabel,
-		'code' | 'label'
+		'code' | 'label' | 'totals'
 	>[];
 	currency: Currency;
 	isRemovingCoupon: boolean;

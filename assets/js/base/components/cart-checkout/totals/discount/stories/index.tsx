@@ -3,12 +3,67 @@
  */
 import { useArgs } from '@storybook/client-api';
 import { Story, Meta } from '@storybook/react';
-import { currencyControl } from '@woocommerce/storybook-controls';
+import {
+	currenciesAPIShape as currencies,
+	currencyControl,
+} from '@woocommerce/storybook-controls';
+import { LooselyMustHave } from '@woocommerce/type-defs/utils';
+import {
+	CartResponseCouponItemWithLabel,
+	CartTotalsItem,
+} from '@woocommerce/types';
 
 /**
  * Internal dependencies
  */
 import Discount, { TotalsDiscountProps } from '..';
+
+const EXAMPLE_COUPONS: CartResponseCouponItemWithLabel[] = [
+	{
+		code: 'AWSMSB',
+		discount_type: '',
+		label: 'Awesome Storybook coupon',
+		totals: {
+			...currencies.EUR,
+			total_discount: '5000',
+			total_discount_tax: '250',
+		},
+	},
+	{
+		code: 'STONKS',
+		discount_type: '',
+		label: 'Most valuable coupon',
+		totals: {
+			...currencies.EUR,
+			total_discount: '10000',
+			total_discount_tax: '1000',
+		},
+	},
+];
+
+function extractValuesFromCoupons(
+	coupons: LooselyMustHave< CartResponseCouponItemWithLabel, 'totals' >[]
+) {
+	return coupons.reduce(
+		( acc, curr ) => {
+			const totalDiscount =
+				Number( acc.total_discount ) +
+				Number( curr.totals.total_discount );
+			const totalDiscountTax =
+				Number( acc.total_discount_tax ) +
+				Number( curr.totals.total_discount_tax );
+
+			return {
+				total_discount: String( totalDiscount ),
+				total_discount_tax: String( totalDiscountTax ),
+			};
+		},
+		{ total_discount: '0', total_discount_tax: '0' } as LooselyMustHave<
+			CartTotalsItem,
+			'total_discount' | 'total_discount_tax'
+		>
+	);
+}
 
 export default {
 	title: 'WooCommerce Blocks/@base-components/cart-checkout/totals/Discount',
@@ -18,9 +73,9 @@ export default {
 		removeCoupon: { action: 'Removing coupon with code' },
 	},
 	args: {
-		cartCoupons: [ { code: 'AWSMSB', label: 'Awesome Storybook coupon' } ],
+		cartCoupons: EXAMPLE_COUPONS,
 		isRemovingCoupon: false,
-		values: { total_discount: '5000', total_discount_tax: '250' },
+		values: extractValuesFromCoupons( EXAMPLE_COUPONS ),
 	},
 } as Meta< TotalsDiscountProps >;
 
@@ -35,8 +90,10 @@ const Template: Story< TotalsDiscountProps > = ( args ) => {
 			( coupon ) => coupon.code !== code
 		);
 
+		const values = extractValuesFromCoupons( cartCoupons );
+
 		setTimeout(
-			() => setArgs( { cartCoupons, isRemovingCoupon: false } ),
+			() => setArgs( { cartCoupons, values, isRemovingCoupon: false } ),
 			3500
 		);
 	};
