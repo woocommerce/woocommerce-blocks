@@ -55,10 +55,8 @@ class BlockTemplatesController {
 	 */
 	protected function init() {
 		add_action( 'template_redirect', array( $this, 'render_block_template' ) );
-		add_filter( 'pre_get_block_template', array( $this, 'maybe_return_blocks_template' ), 10, 3 );
+		add_filter( 'pre_get_block_file_template', array( $this, 'maybe_return_blocks_template' ), 10, 3 );
 		add_filter( 'get_block_templates', array( $this, 'add_block_templates' ), 10, 3 );
-		add_filter( 'default_wp_template_part_areas', array( $this, 'add_template_part_areas' ) );
-		add_filter( 'wp_insert_post', array( $this, 'add_mini_cart_content_to_template_part' ), 10, 3 );
 	}
 
 	/**
@@ -84,24 +82,24 @@ class BlockTemplatesController {
 		list( , $slug ) = $template_name_parts;
 
 		// Remove the filter at this point because if we don't then this function will infinite loop.
-		remove_filter( 'pre_get_block_template', array( $this, 'maybe_return_blocks_template' ), 10, 3 );
+		remove_filter( 'pre_get_block_file_template', array( $this, 'maybe_return_blocks_template' ), 10, 3 );
 
 		// Check if the theme has a saved version of this template before falling back to the woo one. Please note how
 		// the slug has not been modified at this point, we're still using the default one passed to this hook.
 		$maybe_template = gutenberg_get_block_template( $id, $template_type );
 		if ( null !== $maybe_template ) {
-			add_filter( 'pre_get_block_template', array( $this, 'maybe_return_blocks_template' ), 10, 3 );
+			add_filter( 'pre_get_block_file_template', array( $this, 'maybe_return_blocks_template' ), 10, 3 );
 			return $maybe_template;
 		}
 
 		// Theme-based template didn't exist, try switching the theme to woocommerce and try again. This function has
 		// been unhooked so won't run again.
-		add_filter( 'get_block_template', array( $this, 'get_single_block_template' ), 10, 3 );
+		add_filter( 'get_block_file_template', array( $this, 'get_single_block_template' ), 10, 3 );
 		$maybe_template = gutenberg_get_block_template( 'woocommerce//' . $slug, $template_type );
 
 		// Re-hook this function, it was only unhooked to stop recursion.
-		add_filter( 'pre_get_block_template', array( $this, 'maybe_return_blocks_template' ), 10, 3 );
-		remove_filter( 'get_block_template', array( $this, 'get_single_block_template' ), 10, 3 );
+		add_filter( 'pre_get_block_file_template', array( $this, 'maybe_return_blocks_template' ), 10, 3 );
+		remove_filter( 'get_block_file_template', array( $this, 'get_single_block_template' ), 10, 3 );
 		if ( null !== $maybe_template ) {
 			return $maybe_template;
 		}
@@ -155,7 +153,10 @@ class BlockTemplatesController {
 	 * @return array
 	 */
 	public function add_block_templates( $query_result, $query, $template_type ) {
-		if ( ! function_exists( 'gutenberg_supports_block_templates' ) || ! gutenberg_supports_block_templates() ) {
+		if (
+			( ! function_exists( 'wp_is_block_theme' ) || ! wp_is_block_theme() ) &&
+			( ! function_exists( 'gutenberg_supports_block_templates' ) || ! gutenberg_supports_block_templates() )
+		) {
 			return $query_result;
 		}
 
@@ -408,7 +409,11 @@ class BlockTemplatesController {
 	 * Renders the default block template from Woo Blocks if no theme templates exist.
 	 */
 	public function render_block_template() {
-		if ( is_embed() || ! function_exists( 'gutenberg_supports_block_templates' ) || ! gutenberg_supports_block_templates() ) {
+		if (
+			is_embed() ||
+			( ! function_exists( 'wp_is_block_theme' ) || ! wp_is_block_theme() ) &&
+			( ! function_exists( 'gutenberg_supports_block_templates' ) || ! gutenberg_supports_block_templates() )
+		) {
 			return;
 		}
 
@@ -439,88 +444,4 @@ class BlockTemplatesController {
 		}
 	}
 
-	/**
-	 * Add template part areas for our blocks.
-	 *
-	 * @param array $area_definitions An array of supported area objects.
-	 */
-	public function add_template_part_areas( $area_definitions ) {
-		return array_merge(
-			$area_definitions,
-			array(
-				array(
-					'area'        => 'mini-cart',
-					'label'       => __( 'Mini Cart', 'woo-gutenberg-products-block' ),
-					'description' => __( 'The Mini Cart template defines a page area that contains the content of the Mini Cart block.', 'woo-gutenberg-products-block' ),
-					'icon'        => 'sidebar',
-					'area_tag'    => 'div',
-				),
-			)
-		);
-	}
-
-	/**
-	 * Add mini cart content block to new template part for Mini Cart area.
-	 *
-	 * @param int      $post_id Post ID.
-	 * @param \WP_Post $post    Post object.
-	 * @param bool     $update  Whether this is an existing post being updated.
-	 */
-	public function add_mini_cart_content_to_template_part( $post_id, $post, $update ) {
-		// We only inject the mini cart content when the template part is created.
-		if ( $update ) {
-			return;
-		}
-
-		// If by somehow, the template part was created with content, bail.
-		if ( ! empty( $post->content ) ) {
-			return;
-		}
-
-		if ( ! function_exists( 'get_block_file_template' ) ) {
-			return;
-		}
-
-		if ( 'wp_template_part' !== $post->post_type ) {
-			return;
-		}
-
-		$type_terms = get_the_terms( $post, 'wp_template_part_area' );
-
-		if ( is_wp_error( $type_terms ) || false === $type_terms ) {
-			return;
-		}
-
-		if ( 'mini-cart' !== $type_terms[0]->name ) {
-			return;
-		}
-
-		// Remove the filter temporarily for wp_update_post below.
-		remove_filter( 'wp_insert_post', array( $this, 'add_mini_cart_content_to_template_part' ), 10, 3 );
-
-		$block_template = null;
-
-		/**
-		 * We only use the mini cart content from file.
-		 */
-		if ( BlockTemplateUtils::theme_has_template_part( 'mini-cart' ) ) {
-			$template_id    = sprintf( '%s//mini-cart', wp_get_theme()->get_stylesheet() );
-			$block_template = get_block_file_template( $template_id, 'wp_template_part' );
-		} else {
-			$available_templates = $this->get_block_templates_from_woocommerce( array( 'mini-cart' ), array(), 'wp_template_part' );
-			if ( is_array( $available_templates ) && count( $available_templates ) > 0 ) {
-				$block_template = BlockTemplateUtils::gutenberg_build_template_result_from_file( $available_templates[0], $available_templates[0]->type );
-			}
-		}
-
-		if ( is_a( $block_template, 'WP_Block_Template' ) ) {
-			$post->post_content = $block_template->content;
-		} else { // Just for extra safety.
-			$post->post_content = '<!-- wp:woocommerce/mini-cart-contents /-->';
-		}
-
-		wp_update_post( $post );
-
-		add_filter( 'wp_insert_post', array( $this, 'add_mini_cart_content_to_template_part' ), 10, 3 );
-	}
 }

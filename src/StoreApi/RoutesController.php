@@ -1,9 +1,10 @@
 <?php
 namespace Automattic\WooCommerce\Blocks\StoreApi;
 
-use Routes\AbstractRoute;
 use Automattic\WooCommerce\Blocks\StoreApi\Utilities\CartController;
 use Automattic\WooCommerce\Blocks\StoreApi\Utilities\OrderController;
+use Exception;
+use Routes\AbstractRoute;
 
 /**
  * RoutesController class.
@@ -39,14 +40,14 @@ class RoutesController {
 	/**
 	 * Get a route class instance.
 	 *
-	 * @throws Exception If the schema does not exist.
+	 * @throws \Exception If the schema does not exist.
 	 *
 	 * @param string $name Name of schema.
 	 * @return AbstractRoute
 	 */
 	public function get( $name ) {
 		if ( ! isset( $this->routes[ $name ] ) ) {
-			throw new Exception( $name . ' route does not exist' );
+			throw new \Exception( $name . ' route does not exist' );
 		}
 		return $this->routes[ $name ];
 	}

@@ -18,6 +18,7 @@ import { __ } from '@wordpress/i18n';
 import { positionCenter, positionRight, positionLeft } from '@wordpress/icons';
 import classnames from 'classnames';
 import { isString } from '@woocommerce/types';
+import Noninteractive from '@woocommerce/base-components/noninteractive';
 
 /**
  * Internal dependencies
@@ -57,7 +58,7 @@ const MiniCartBlock = ( {
 
 	const themeSlug = getSetting( 'themeSlug', '' );
 
-	const isSiteEditorAvailable = getSetting( 'isSiteEditorAvailable', false );
+	const isBlockTheme = getSetting( 'isBlockTheme', false );
 
 	/**
 	 * @todo Replace `getColorClassName` and manual style manipulation with
@@ -138,7 +139,7 @@ const MiniCartBlock = ( {
 						}
 					/>
 				</PanelBody>
-				{ isSiteEditorAvailable &&
+				{ isBlockTheme &&
 					isString( themeSlug ) &&
 					themeSlug.length > 0 && (
 						<PanelBody
@@ -149,9 +150,8 @@ const MiniCartBlock = ( {
 						>
 							<ExternalLink
 								href={ addQueryArgs(
-									`${ ADMIN_URL }themes.php`,
+									`${ ADMIN_URL }site-editor.php`,
 									{
-										page: 'gutenberg-edit-site',
 										postId: `${ themeSlug }//mini-cart`,
 										postType: 'wp_template_part',
 									}
@@ -165,22 +165,24 @@ const MiniCartBlock = ( {
 						</PanelBody>
 					) }
 			</InspectorControls>
-			<button
-				className={ classnames(
-					'wc-block-mini-cart__button',
-					colorClassNames
-				) }
-				style={ colorStyle }
-			>
-				<span className="wc-block-mini-cart__amount">
-					{ formatPrice( productTotal ) }
-				</span>
-				<QuantityBadge
-					count={ productCount }
-					colorClassNames={ colorClassNames }
+			<Noninteractive>
+				<button
+					className={ classnames(
+						'wc-block-mini-cart__button',
+						colorClassNames
+					) }
 					style={ colorStyle }
-				/>
-			</button>
+				>
+					<span className="wc-block-mini-cart__amount">
+						{ formatPrice( productTotal ) }
+					</span>
+					<QuantityBadge
+						count={ productCount }
+						colorClassNames={ colorClassNames }
+						style={ colorStyle }
+					/>
+				</button>
+			</Noninteractive>
 			<CartCheckoutCompatibilityNotice blockName="mini-cart" />
 		</div>
 	);
