@@ -202,7 +202,6 @@
 		"@wordpress/plugins": "4.0.6",
 		"@wordpress/server-side-render": "3.0.8",
 		"@wordpress/wordcount": "3.2.3",
-		"@wordpress/block-editor": "8.0.9",
 		"classnames": "2.3.1",
 		"compare-versions": "3.6.0",
 		"config": "3.3.6",
