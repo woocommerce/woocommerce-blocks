@@ -23,7 +23,6 @@ export const useViewSwitcher = (
 } => {
 	const initialView = views[ 0 ];
 	const [ currentView, setCurrentView ] = useState( initialView );
-	const viewNames = views.map( ( { view } ) => view );
 	const { selectBlock } = useDispatch( 'core/block-editor' );
 	const {
 		getBlock,
@@ -33,6 +32,7 @@ export const useViewSwitcher = (
 	const selectedBlockClientId = getSelectedBlockClientId();
 
 	useEffect( () => {
+		const viewNames = views.map( ( { view } ) => view );
 		const parentBlockIds = getBlockParentsByBlockName(
 			selectedBlockClientId,
 			viewNames
@@ -59,7 +59,6 @@ export const useViewSwitcher = (
 	}, [
 		getBlockParentsByBlockName,
 		selectedBlockClientId,
-		viewNames,
 		getBlock,
 		currentView.view,
 		views,
