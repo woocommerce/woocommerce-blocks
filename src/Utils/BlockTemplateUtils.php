@@ -116,6 +116,10 @@ class BlockTemplateUtils {
 			}
 		}
 
+		if ( 'woocommerce' === $theme ) {
+			$template->origin = 'plugin';
+		}
+
 		return $template;
 	}
 
