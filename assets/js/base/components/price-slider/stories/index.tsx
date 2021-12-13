@@ -2,29 +2,19 @@
  * External dependencies
  */
 import { Story, Meta } from '@storybook/react';
-import { Currency } from '@woocommerce/types';
 import { useState } from '@wordpress/element';
+import { currencies, currencyControl } from '@woocommerce/storybook-controls';
 
 /**
  * Internal dependencies
  */
 import PriceSlider, { PriceSliderProps } from '..';
 
-const NZD: Currency = {
-	code: 'nzd',
-	symbol: '$',
-	thousandSeparator: ' ',
-	decimalSeparator: '.',
-	minorUnit: 2,
-	prefix: '$',
-	suffix: '',
-};
-
 export default {
 	title: 'WooCommerce Blocks/@base-components/PriceSlider',
 	component: PriceSlider,
 	args: {
-		currency: NZD,
+		currency: currencies.USD,
 		maxPrice: 5000,
 		maxConstraint: 5000,
 		minConstraint: 1000,
@@ -32,6 +22,7 @@ export default {
 		step: 250,
 	},
 	argTypes: {
+		currency: currencyControl,
 		maxPrice: { control: { disable: true } },
 		minPrice: { control: { disable: true } },
 	},
@@ -57,3 +48,13 @@ const Template: Story< PriceSliderProps > = ( args ) => {
 };
 
 export const Default = Template.bind( {} );
+
+export const WithoutInputs = Template.bind( {} );
+WithoutInputs.args = {
+	showInputFields: false,
+};
+
+export const WithButton = Template.bind( {} );
+WithButton.args = {
+	showFilterButton: true,
+};
