@@ -216,19 +216,6 @@ const CheckoutProcessor = () => {
 				setIsProcessingOrder( false );
 			} )
 			.catch( ( errorResponse ) => {
-				let errorNotice = sprintf(
-					// Translators: %s Error text.
-					__(
-						'Something went wrong. %s Please try placing your order again.',
-						'woo-gutenberg-products-block'
-					),
-					errorResponse?.message ??
-						__(
-							'Something went wrong.',
-							'woo-gutenberg-products-block'
-						)
-				);
-
 				try {
 					if ( errorResponse?.headers ) {
 						processCheckoutResponseHeaders(
@@ -242,8 +229,11 @@ const CheckoutProcessor = () => {
 						if ( response.data?.cart ) {
 							receiveCart( response.data.cart );
 						}
-						errorNotice = formatStoreApiErrorMessage( response );
-						response.additional_errors?.forEach?.(
+						addErrorNotice(
+							formatStoreApiErrorMessage( response ),
+							{ id: 'checkout' }
+						);
+						response?.additional_errors?.forEach?.(
 							( additionalError ) => {
 								addErrorNotice( additionalError.message, {
 									id: additionalError.error_code,
@@ -252,10 +242,25 @@ const CheckoutProcessor = () => {
 						);
 						dispatchActions.setAfterProcessing( response );
 					} );
-				} catch {}
+				} catch {
+					addErrorNotice(
+						sprintf(
+							// Translators: %s Error text.
+							__(
+								'%s Please try placing your order again.',
+								'woo-gutenberg-products-block'
+							),
+							errorResponse?.message ??
+								__(
+									'Something went wrong.',
+									'woo-gutenberg-products-block'
+								)
+						),
+						{ id: 'checkout' }
+					);
+				}
 				dispatchActions.setHasError( true );
 				setIsProcessingOrder( false );
-				addErrorNotice( errorNotice, { id: 'checkout' } );
 			} );
 	}, [
 		isProcessingOrder,
