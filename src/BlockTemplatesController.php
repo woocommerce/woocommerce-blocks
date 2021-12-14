@@ -57,6 +57,28 @@ class BlockTemplatesController {
 		add_action( 'template_redirect', array( $this, 'render_block_template' ) );
 		add_filter( 'pre_get_block_file_template', array( $this, 'maybe_return_blocks_template' ), 10, 3 );
 		add_filter( 'get_block_templates', array( $this, 'add_block_templates' ), 10, 3 );
+		add_filter( 'taxonomy_template_hierarchy', array( $this, 'modify_taxonomy_block_template_hierachy' ), 10, 1 );
+	}
+
+	/**
+	 * If a theme has an archive-product.html file, but not a taxonomy-product_cat/taxonomy-product_tag file then we will
+	 * use the archive-product.html file in place of those as they are often then same template.
+	 *
+	 * @param array $templates list of templates in order of preference.
+	 *
+	 * @return array
+	 */
+	public function modify_taxonomy_block_template_hierachy( $templates ) {
+		if ( ! BlockTemplateUtils::supports_block_templates() ) {
+			return $templates;
+		}
+
+		if ( function_exists( 'is_product_taxonomy' ) && is_product_taxonomy() ) {
+			// Add archive-product.php second last, as archive.php will always be last.
+			array_splice( $templates, count( $templates ) - 1, 0, 'archive-product.php' );
+		}
+
+		return $templates;
 	}
 
 	/**
@@ -153,10 +175,7 @@ class BlockTemplatesController {
 	 * @return array
 	 */
 	public function add_block_templates( $query_result, $query, $template_type ) {
-		if (
-			( ! function_exists( 'wp_is_block_theme' ) || ! wp_is_block_theme() ) &&
-			( ! function_exists( 'gutenberg_supports_block_templates' ) || ! gutenberg_supports_block_templates() )
-		) {
+		if ( ! BlockTemplateUtils::supports_block_templates() ) {
 			return $query_result;
 		}
 
@@ -323,6 +342,16 @@ class BlockTemplatesController {
 				continue;
 			}
 
+			// If the theme has an archive-product.html template, but not a taxonomy-product_cat.html template let's use the themes archive-product.html template.
+			if ( 'taxonomy-product_cat' === $template_slug && ! BlockTemplateUtils::theme_has_template( 'taxonomy-product_cat' ) && BlockTemplateUtils::theme_has_template( 'archive-product' ) ) {
+				continue;
+			}
+
+			// If the theme has an archive-product.html template, but not a taxonomy-product_tag.html template let's use the themes archive-product.html template.
+			if ( 'taxonomy-product_tag' === $template_slug && ! BlockTemplateUtils::theme_has_template( 'taxonomy-product_tag' ) && BlockTemplateUtils::theme_has_template( 'archive-product' ) ) {
+				continue;
+			}
+
 			// If the theme already has a template, or the template is already in the list (i.e. it came from the
 			// database) then we should not overwrite it with the one from the filesystem.
 			if (
@@ -409,11 +438,7 @@ class BlockTemplatesController {
 	 * Renders the default block template from Woo Blocks if no theme templates exist.
 	 */
 	public function render_block_template() {
-		if (
-			is_embed() ||
-			( ! function_exists( 'wp_is_block_theme' ) || ! wp_is_block_theme() ) &&
-			( ! function_exists( 'gutenberg_supports_block_templates' ) || ! gutenberg_supports_block_templates() )
-		) {
+		if ( is_embed() || ! BlockTemplateUtils::supports_block_templates() ) {
 			return;
 		}
 
@@ -425,7 +450,10 @@ class BlockTemplatesController {
 			add_filter( 'woocommerce_has_block_template', '__return_true', 10, 0 );
 		} elseif (
 			( is_product_taxonomy() && is_tax( 'product_cat' ) ) &&
-			! BlockTemplateUtils::theme_has_template( 'taxonomy-product_cat' ) &&
+			(
+				! BlockTemplateUtils::theme_has_template( 'taxonomy-product_cat' ) &&
+				! BlockTemplateUtils::theme_has_template( 'archive-product' )
+			) &&
 			$this->block_template_is_available( 'taxonomy-product_cat' )
 		) {
 			add_filter( 'woocommerce_has_block_template', '__return_true', 10, 0 );

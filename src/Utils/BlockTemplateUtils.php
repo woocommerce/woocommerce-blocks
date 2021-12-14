@@ -224,4 +224,20 @@ class BlockTemplateUtils {
 		return is_readable( get_template_directory() . '/block-template-parts/' . $template_name . '.html' ) ||
 			is_readable( get_stylesheet_directory() . '/block-template-parts/' . $template_name . '.html' );
 	}
+
+	/**
+	 * Checks to see if they are using a compatible version of WP, or if not they have a compatible version of the Gutenberg plugin installed.
+	 *
+	 * @return boolean
+	 */
+	public static function supports_block_templates() {
+		if (
+			( ! function_exists( 'wp_is_block_theme' ) || ! wp_is_block_theme() ) &&
+			( ! function_exists( 'gutenberg_supports_block_templates' ) || ! gutenberg_supports_block_templates() )
+		) {
+			return false;
+		}
+
+		return true;
+	}
 }
