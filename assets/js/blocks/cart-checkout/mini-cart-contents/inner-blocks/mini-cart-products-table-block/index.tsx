@@ -1,7 +1,7 @@
 /**
  * External dependencies
  */
-import { Icon, bookmark } from '@woocommerce/icons';
+import { Icon, list } from '@woocommerce/icons';
 import { registerFeaturePluginBlockType } from '@woocommerce/block-settings';
 
 /**
@@ -14,7 +14,7 @@ registerFeaturePluginBlockType( metadata, {
 	icon: {
 		src: (
 			<Icon
-				srcElement={ bookmark }
+				srcElement={ list }
 				className="wc-block-editor-components-block-icon"
 			/>
 		),
