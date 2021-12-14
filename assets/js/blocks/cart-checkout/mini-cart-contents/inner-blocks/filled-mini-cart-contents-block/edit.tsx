@@ -1,7 +1,6 @@
 /**
  * External dependencies
  */
-import { __ } from '@wordpress/i18n';
 import { useBlockProps, InnerBlocks } from '@wordpress/block-editor';
 import { innerBlockAreas } from '@woocommerce/blocks-checkout';
 import type { TemplateArray } from '@wordpress/blocks';
@@ -18,16 +17,7 @@ export const Edit = ( { clientId }: { clientId: string } ): JSX.Element => {
 	const { currentView } = useEditorContext();
 
 	const defaultTemplate = ( [
-		[
-			'core/heading',
-			{
-				content: __(
-					'Filled mini cart content',
-					'woo-gutenberg-products-block'
-				),
-				level: 2,
-			},
-		],
+		[ 'woocommerce/mini-cart-title-block', {} ],
 	].filter( Boolean ) as unknown ) as TemplateArray;
 
 	useForcedLayout( {
@@ -44,6 +34,7 @@ export const Edit = ( { clientId }: { clientId: string } ): JSX.Element => {
 			}
 		>
 			<InnerBlocks
+				template={ defaultTemplate }
 				allowedBlocks={ allowedBlocks }
 				templateLock="insert"
 			/>

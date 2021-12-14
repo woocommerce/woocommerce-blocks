@@ -9,6 +9,7 @@ import { lazy } from '@wordpress/element';
  */
 import emptyMiniCartContentsMetadata from './empty-mini-cart-contents-block/block.json';
 import filledMiniCartMetadata from './filled-mini-cart-contents-block/block.json';
+import miniCartContentsTitleMetadata from './mini-cart-title-block/block.json';
 
 // Modify webpack publicPath at runtime based on location of WordPress Plugin.
 // eslint-disable-next-line no-undef,camelcase
@@ -28,6 +29,15 @@ registerCheckoutBlock( {
 	component: lazy( () =>
 		import(
 			/* webpackChunkName: "mini-cart-contents-block/empty-cart" */ './empty-mini-cart-contents-block/frontend'
+		)
+	),
+} );
+
+registerCheckoutBlock( {
+	metadata: miniCartContentsTitleMetadata,
+	component: lazy( () =>
+		import(
+			/* webpackChunkName: "mini-cart-contents-block/title" */ './mini-cart-title-block/block'
 		)
 	),
 } );
