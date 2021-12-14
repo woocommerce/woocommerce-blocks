@@ -19,6 +19,7 @@ export const Edit = ( { clientId }: { clientId: string } ): JSX.Element => {
 	const defaultTemplate = ( [
 		[ 'woocommerce/mini-cart-title-block', {} ],
 		[ 'woocommerce/mini-cart-products-table-block', {} ],
+		[ 'woocommerce/mini-cart-footer-block', {} ],
 	].filter( Boolean ) as unknown ) as TemplateArray;
 
 	useForcedLayout( {
