@@ -1,12 +1,22 @@
 /**
  * External dependencies
  */
+import { useStoreCart } from '@woocommerce/base-context/hooks';
+
+/**
+ * Internal dependencies
+ */
+import CartLineItemsTable from '../../../cart/cart-line-items-table';
 
 const Block = (): JSX.Element => {
+	const { cartItems, cartIsLoading } = useStoreCart();
 	return (
-		<h2 className="mini-cart-products-table-block">
-			Mini cart products table
-		</h2>
+		<div className="wc-block-mini-cart__items">
+			<CartLineItemsTable
+				lineItems={ cartItems }
+				isLoading={ cartIsLoading }
+			/>
+		</div>
 	);
 };
 
