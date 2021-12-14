@@ -2,13 +2,7 @@
  * External dependencies
  */
 import { __ } from '@wordpress/i18n';
-import {
-	useCallback,
-	useRef,
-	useEffect,
-	useLayoutEffect,
-	useState,
-} from 'react';
+import { useCallback, useRef, useEffect, useState } from 'react';
 import classnames from 'classnames';
 import {
 	ValidationInputError,
@@ -106,7 +100,7 @@ const ValidatedTextInput = ( {
 	 *
 	 * If the input is in pristine state, focus the element.
 	 */
-	useLayoutEffect( () => {
+	useEffect( () => {
 		if ( isPristine && focusOnMount ) {
 			inputRef.current?.focus();
 		}
@@ -119,7 +113,7 @@ const ValidatedTextInput = ( {
 	 * Runs validation on state change if the current element is not in focus. This is because autofilled elements do not
 	 * trigger the blur() event, and so values can be validated in the background if the state changes elsewhere.
 	 */
-	useLayoutEffect( () => {
+	useEffect( () => {
 		if (
 			inputRef.current?.ownerDocument?.activeElement !== inputRef.current
 		) {
