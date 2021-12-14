@@ -64,13 +64,6 @@ abstract class AbstractSchema {
 	abstract public function get_properties();
 
 	/**
-	 * Return an object or array suitable for the response.
-	 *
-	 * @return array|object
-	 */
-	abstract public function get_item_response();
-
-	/**
 	 * Recursive removal of arg_options.
 	 *
 	 * @param array $properties Schema properties.
