@@ -86,6 +86,8 @@ abstract class AbstractCartRoute extends AbstractRoute {
 
 		if ( is_wp_error( $response ) ) {
 			$response = $this->error_to_response( $response );
+		} elseif ( in_array( $request->get_method(), [ 'POST', 'PUT', 'PATCH', 'DELETE' ], true ) ) {
+			$this->cart_updated( $request );
 		}
 
 		return $this->add_nonce_headers( $response );
@@ -118,15 +120,22 @@ abstract class AbstractCartRoute extends AbstractRoute {
 	 * Triggered after an update to cart data. Re-calculates totals and updates draft orders (if they already exist) to
 	 * keep all data in sync.
 	 *
-	 * @return void
+	 * @param \WP_REST_Request $request Request object.
 	 */
-	protected function cart_updated() {
-		$this->calculate_totals();
-
+	protected function cart_updated( \WP_REST_Request $request ) {
 		$draft_order = $this->get_draft_order();
 
 		if ( $draft_order ) {
 			$this->order_controller->update_order_from_cart( $draft_order );
+
+			/**
+			 * Fires when the order is synced with cart data from a cart route.
+			 *
+			 * @param \WC_Order $draft_order Order object.
+			 * @param \WC_Customer $customer Customer object.
+			 * @param \WP_REST_Request $request Full details about the request.
+			 */
+			do_action( 'woocommerce_blocks_cart_update_order_from_request', $draft_order, $request );
 		}
 	}
 
