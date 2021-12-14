@@ -4,7 +4,8 @@
 import { useBlockProps, InnerBlocks } from '@wordpress/block-editor';
 import { innerBlockAreas } from '@woocommerce/blocks-checkout';
 import type { TemplateArray } from '@wordpress/blocks';
-import { useEditorContext } from '@woocommerce/base-context';
+import { EditorProvider, useEditorContext } from '@woocommerce/base-context';
+import { previewCart } from '@woocommerce/resource-previews';
 
 /**
  * Internal dependencies
@@ -35,11 +36,16 @@ export const Edit = ( { clientId }: { clientId: string } ): JSX.Element => {
 				currentView !== 'woocommerce/filled-mini-cart-contents-block'
 			}
 		>
-			<InnerBlocks
-				template={ defaultTemplate }
-				allowedBlocks={ allowedBlocks }
-				templateLock="insert"
-			/>
+			<EditorProvider
+				currentView={ currentView }
+				previewData={ { previewCart } }
+			>
+				<InnerBlocks
+					template={ defaultTemplate }
+					allowedBlocks={ allowedBlocks }
+					templateLock="insert"
+				/>
+			</EditorProvider>
 		</div>
 	);
 };
