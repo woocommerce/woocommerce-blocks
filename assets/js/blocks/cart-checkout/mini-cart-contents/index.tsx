@@ -53,17 +53,6 @@ const settings = {
 				move: true,
 			},
 		},
-		backgroundColor: {
-			type: 'string',
-		},
-		style: {
-			type: 'object',
-			default: {
-				color: {
-					background: '#ffffff',
-				},
-			},
-		},
 	},
 	example: {
 		attributes: {
