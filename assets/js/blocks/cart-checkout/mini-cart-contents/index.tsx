@@ -36,6 +36,9 @@ const settings = {
 		reusable: false,
 		inserter: false,
 		__experimentalExposeControlsToChildren: true,
+		color: {
+			text: false,
+		},
 	},
 	attributes: {
 		isPreview: {
@@ -48,6 +51,17 @@ const settings = {
 			default: {
 				remove: true,
 				move: true,
+			},
+		},
+		backgroundColor: {
+			type: 'string',
+		},
+		style: {
+			type: 'object',
+			default: {
+				color: {
+					background: '#ffffff',
+				},
 			},
 		},
 	},
