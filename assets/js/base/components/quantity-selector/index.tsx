@@ -156,7 +156,7 @@ const QuantitySelector = ( {
 					value = isNaN( value ) ? quantity : value;
 
 					if ( value !== quantity ) {
-						// we commit this value immideatly.
+						// we commit this value immediately.
 						onChange( value );
 						// but once the customer has stopped typing, we make sure his value is respecting the bounds (maximum value, minimum value, step value), and commit the normlized value.
 						normalizeQuantity( value );
