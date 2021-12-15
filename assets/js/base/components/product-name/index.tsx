@@ -23,13 +23,13 @@ export interface ProductNameProps
 	 */
 	name: string;
 	/**
-	 * Link for the product
-	 */
-	permalink?: string;
-	/**
 	 * Click handler
 	 */
 	onClick?: () => void;
+	/**
+	 * Link for the product
+	 */
+	permalink?: string;
 }
 
 /**

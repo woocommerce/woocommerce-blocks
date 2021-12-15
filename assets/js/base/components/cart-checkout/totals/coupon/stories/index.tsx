@@ -7,6 +7,7 @@ import {
 	useValidationContext,
 	ValidationContextProvider,
 } from '@woocommerce/base-context';
+import { INTERACTION_TIMEOUT } from '@woocommerce/storybook-controls';
 
 /**
  * Internal dependencies
@@ -33,7 +34,10 @@ const Template: Story< TotalsCouponProps > = ( args ) => {
 		args.onSubmit?.( code );
 		setArgs( { isLoading: true } );
 
-		setTimeout( () => setArgs( { isLoading: false } ), 3500 );
+		setTimeout(
+			() => setArgs( { isLoading: false } ),
+			INTERACTION_TIMEOUT
+		);
 	};
 
 	return <TotalsCoupon { ...args } onSubmit={ onSubmit } />;

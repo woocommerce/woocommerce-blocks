@@ -6,6 +6,7 @@ import { Story, Meta } from '@storybook/react';
 import {
 	currenciesAPIShape as currencies,
 	currencyControl,
+	INTERACTION_TIMEOUT,
 } from '@woocommerce/storybook-controls';
 import { LooselyMustHave } from '@woocommerce/type-defs/utils';
 import {
@@ -94,7 +95,7 @@ const Template: Story< TotalsDiscountProps > = ( args ) => {
 
 		setTimeout(
 			() => setArgs( { cartCoupons, values, isRemovingCoupon: false } ),
-			3500
+			INTERACTION_TIMEOUT
 		);
 	};
 
