@@ -2,7 +2,7 @@
  * External dependencies
  */
 import { useSelect, useDispatch } from '@wordpress/data';
-import { useCallback, useState, useEffect } from '@wordpress/element';
+import { useCallback, useEffect } from '@wordpress/element';
 import { CART_STORE_KEY as storeKey } from '@woocommerce/block-data';
 import { useDebouncedCallback } from 'use-debounce';
 import { triggerFragmentRefresh } from '@woocommerce/base-utils';
@@ -60,7 +60,10 @@ export const useStoreCartItemQuantity = (
 		editCartItemQuantity,
 	} = useDispatch( storeKey );
 
-	const debounced = useDebouncedCallback( changeCartItemQuantity, 400 );
+	const debouncedChangeCartItemQuantity = useDebouncedCallback(
+		changeCartItemQuantity,
+		400
+	);
 	// Track when things are already pending updates.
 	const isPending = useSelect(
 		( select ) => {
@@ -90,29 +93,12 @@ export const useStoreCartItemQuantity = (
 
 	const setQuantity = useCallback(
 		( newQuantity ) => {
-			debounced( key, newQuantity );
+			debouncedChangeCartItemQuantity( key, newQuantity );
 			editCartItemQuantity( key, newQuantity );
 		},
-		[ editCartItemQuantity, debounced, key ]
+		[ editCartItemQuantity, debouncedChangeCartItemQuantity, key ]
 	);
-	/*
-	// Observe debounced quantity value, fire action to update server on change.
-	useEffect( () => {
-		if (
-			key &&
-			isNumber( previousDebouncedQuantity ) &&
-			Number.isFinite( previousDebouncedQuantity ) &&
-			previousDebouncedQuantity !== debouncedQuantity
-		) {
-			changeCartItemQuantity( key, debouncedQuantity );
-		}
-	}, [
-		key,
-		changeCartItemQuantity,
-		debouncedQuantity,
-		previousDebouncedQuantity,
-	] );
-*/
+
 	useEffect( () => {
 		if ( isPending.delete ) {
 			dispatchActions.incrementCalculating();
