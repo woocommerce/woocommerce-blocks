@@ -1,7 +1,6 @@
 /**
  * External dependencies
  */
-import { select } from '@wordpress/data-controls';
 import type {
 	Cart,
 	CartResponse,
@@ -16,7 +15,6 @@ import type { AddToCartEventDetail } from '@woocommerce/type-defs/events';
  * Internal dependencies
  */
 import { ACTION_TYPES as types } from './action-types';
-import { STORE_KEY as CART_STORE_KEY } from './constants';
 import { apiFetchWithHeaders } from '../shared-controls';
 import type { ResponseError } from '../types';
 import { ReturnOrGeneratorYieldUnion } from '../mapped-types';
@@ -392,10 +390,6 @@ export function* changeCartItemQuantity(
 	quantity: number
 	// eslint-disable-next-line @typescript-eslint/no-explicit-any -- unclear how to represent multiple different yields as type
 ): Generator< unknown, void, any > {
-	const cartItem = yield select( CART_STORE_KEY, 'getCartItem', cartItemKey );
-	if ( cartItem?.quantity === quantity ) {
-		return;
-	}
 	yield itemIsPendingQuantity( cartItemKey );
 	try {
 		const { response } = yield apiFetchWithHeaders( {
@@ -420,6 +414,22 @@ export function* changeCartItemQuantity(
 	}
 	yield itemIsPendingQuantity( cartItemKey, false );
 }
+
+/**
+ * Persists a quantity change the for specified cart item:
+ * - Calls API to set quantity.
+ * - If successful, yields action to update store.
+ * - If error, yields action to store error.
+ *
+ * @param {string} cartItemKey Cart item being updated.
+ * @param {number} quantity    Specified (new) quantity.
+ */
+export const editCartItemQuantity = ( cartItemKey: string, quantity: number ) =>
+	( {
+		type: types.EDIT_ITEM,
+		cartItemKey,
+		quantity,
+	} as const );
 
 /**
  * Selects a shipping rate.
@@ -513,6 +523,7 @@ export type CartAction = ReturnOrGeneratorYieldUnion<
 	| typeof updateCustomerData
 	| typeof removeItemFromCart
 	| typeof changeCartItemQuantity
+	| typeof editCartItemQuantity
 	| typeof addItemToCart
 	| typeof updateCartFragments
 >;

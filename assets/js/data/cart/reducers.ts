@@ -95,7 +95,26 @@ const reducer: Reducer< CartState > = (
 				};
 			}
 			break;
-
+		case types.EDIT_ITEM:
+			const item = state.cartData.items.find(
+				( item ) => item.key === action.cartItemKey
+			);
+			if ( item && item !== action.quantity ) {
+				const items = state.cartData.items.map( ( cartItem ) => {
+					if ( cartItem.key === action.cartItemKey ) {
+						cartItem.quantity = action.quantity;
+					}
+					return cartItem;
+				} );
+				state = {
+					...state,
+					cartData: {
+						...state.cartData,
+						items,
+					},
+				};
+			}
+			break;
 		case types.ITEM_PENDING_QUANTITY:
 			// Remove key by default - handles isQuantityPending==false
 			// and prevents duplicates when isQuantityPending===true.
