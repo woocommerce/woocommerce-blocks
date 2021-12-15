@@ -320,16 +320,6 @@ class BlockTemplatesController {
 				continue;
 			}
 
-			// If the theme has an archive-product.html template, but not a taxonomy-product_cat.html template let's use the themes archive-product.html template.
-			if ( 'taxonomy-product_cat' === $template_slug && ! BlockTemplateUtils::theme_has_template( 'taxonomy-product_cat' ) && BlockTemplateUtils::theme_has_template( 'archive-product' ) ) {
-				continue;
-			}
-
-			// If the theme has an archive-product.html template, but not a taxonomy-product_tag.html template let's use the themes archive-product.html template.
-			if ( 'taxonomy-product_tag' === $template_slug && ! BlockTemplateUtils::theme_has_template( 'taxonomy-product_tag' ) && BlockTemplateUtils::theme_has_template( 'archive-product' ) ) {
-				continue;
-			}
-
 			// If the theme already has a template, or the template is already in the list (i.e. it came from the
 			// database) then we should not overwrite it with the one from the filesystem.
 			if (
@@ -346,21 +336,25 @@ class BlockTemplatesController {
 				continue;
 			}
 
+			// If the theme has an archive-product.html template, but not a taxonomy-product_cat.html template let's use the themes archive-product.html template.
+			if ( 'taxonomy-product_cat' === $template_slug && ! BlockTemplateUtils::theme_has_template( 'taxonomy-product_cat' ) && BlockTemplateUtils::theme_has_template( 'archive-product' ) ) {
+				$template_file = get_stylesheet_directory() . '/' . self::TEMPLATES_DIR_NAME . '/archive-product.html';
+				$templates[]   = BlockTemplateUtils::create_new_block_template_object( $template_file, $template_type, $template_slug, true );
+				continue;
+			}
+
+			// If the theme has an archive-product.html template, but not a taxonomy-product_tag.html template let's use the themes archive-product.html template.
+			if ( 'taxonomy-product_tag' === $template_slug && ! BlockTemplateUtils::theme_has_template( 'taxonomy-product_tag' ) && BlockTemplateUtils::theme_has_template( 'archive-product' ) ) {
+				$template_file = get_stylesheet_directory() . '/' . self::TEMPLATES_DIR_NAME . '/archive-product.html';
+				$templates[]   = BlockTemplateUtils::create_new_block_template_object( $template_file, $template_type, $template_slug, true );
+				continue;
+			}
+
 			// At this point the template only exists in the Blocks filesystem and has not been saved in the DB,
 			// or superseded by the theme.
-			$new_template_item = array(
-				'slug'        => $template_slug,
-				'id'          => 'woocommerce//' . $template_slug,
-				'path'        => $template_file,
-				'type'        => $template_type,
-				'theme'       => 'woocommerce',
-				'source'      => 'plugin',
-				'title'       => BlockTemplateUtils::convert_slug_to_title( $template_slug ),
-				'description' => '',
-				'post_types'  => array(), // Don't appear in any Edit Post template selector dropdown.
-			);
-			$templates[]       = (object) $new_template_item;
+			$templates[] = BlockTemplateUtils::create_new_block_template_object( $template_file, $template_type, $template_slug );
 		}
+
 		return $templates;
 	}
 
@@ -377,7 +371,6 @@ class BlockTemplatesController {
 		$templates_from_woo = $this->get_block_templates_from_woocommerce( $slugs, $templates_from_db, $template_type );
 		return array_merge( $templates_from_db, $templates_from_woo );
 	}
-
 
 	/**
 	 * Gets the directory where templates of a specific template type can be found.
@@ -428,19 +421,13 @@ class BlockTemplatesController {
 			add_filter( 'woocommerce_has_block_template', '__return_true', 10, 0 );
 		} elseif (
 			( is_product_taxonomy() && is_tax( 'product_cat' ) ) &&
-			(
-				! BlockTemplateUtils::theme_has_template( 'taxonomy-product_cat' ) &&
-				! BlockTemplateUtils::theme_has_template( 'archive-product' )
-			) &&
+			! BlockTemplateUtils::theme_has_template( 'taxonomy-product_cat' ) &&
 			$this->block_template_is_available( 'taxonomy-product_cat' )
 		) {
 			add_filter( 'woocommerce_has_block_template', '__return_true', 10, 0 );
 		} elseif (
 			( is_product_taxonomy() && is_tax( 'product_tag' ) ) &&
-			(
-				! BlockTemplateUtils::theme_has_template( 'taxonomy-product_tag' ) &&
-				! BlockTemplateUtils::theme_has_template( 'archive-product' )
-			) &&
+			! BlockTemplateUtils::theme_has_template( 'taxonomy-product_tag' ) &&
 			$this->block_template_is_available( 'taxonomy-product_tag' )
 		) {
 			add_filter( 'woocommerce_has_block_template', '__return_true', 10, 0 );
