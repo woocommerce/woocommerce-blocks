@@ -193,7 +193,7 @@ const QuantitySelector = ( {
 					);
 				} }
 			>
-				&#65293;
+				{ step === 1 || quantity < step ? `－` : quantity - step }
 			</button>
 			<button
 				aria-label={ __(
@@ -217,7 +217,7 @@ const QuantitySelector = ( {
 					);
 				} }
 			>
-				&#65291;
+				{ step === 1 ? '＋' : quantity + step }
 			</button>
 		</div>
 	);
