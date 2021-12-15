@@ -57,28 +57,6 @@ class BlockTemplatesController {
 		add_action( 'template_redirect', array( $this, 'render_block_template' ) );
 		add_filter( 'pre_get_block_file_template', array( $this, 'maybe_return_blocks_template' ), 10, 3 );
 		add_filter( 'get_block_templates', array( $this, 'add_block_templates' ), 10, 3 );
-		add_filter( 'taxonomy_template_hierarchy', array( $this, 'modify_taxonomy_block_template_hierachy' ), 10, 1 );
-	}
-
-	/**
-	 * If a theme has an archive-product.html file, but not a taxonomy-product_cat/taxonomy-product_tag file then we will
-	 * use the archive-product.html file in place of those as they are often then same template.
-	 *
-	 * @param array $templates list of templates in order of preference.
-	 *
-	 * @return array
-	 */
-	public function modify_taxonomy_block_template_hierachy( $templates ) {
-		if ( ! BlockTemplateUtils::supports_block_templates() ) {
-			return $templates;
-		}
-
-		if ( function_exists( 'is_product_taxonomy' ) && is_product_taxonomy() ) {
-			// Add archive-product.php second last, as archive.php will always be last.
-			array_splice( $templates, count( $templates ) - 1, 0, 'archive-product.php' );
-		}
-
-		return $templates;
 	}
 
 	/**
