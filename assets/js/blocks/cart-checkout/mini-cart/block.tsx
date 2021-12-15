@@ -190,7 +190,11 @@ const MiniCartBlock = ( {
 				} }
 				slideIn={ ! skipSlideIn }
 			>
-				<div ref={ contentsRef }>
+				<div
+					className="wc-block-mini-cart__template-part"
+					ref={ contentsRef }
+				>
+					{ /* @todo The `div` wrapper of RawHTML isn't removed on the front end. */ }
 					<RawHTML>{ contents }</RawHTML>
 				</div>
 			</Drawer>
