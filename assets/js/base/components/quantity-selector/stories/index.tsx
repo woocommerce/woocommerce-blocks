@@ -1,8 +1,8 @@
 /**
  * External dependencies
  */
+import { useArgs } from '@storybook/client-api';
 import { Story, Meta } from '@storybook/react';
-import { useState } from '@wordpress/element';
 
 /**
  * Internal dependencies
@@ -14,27 +14,19 @@ export default {
 	component: QuantitySelector,
 	args: {
 		itemName: 'widgets',
-	},
-	argTypes: {
-		quantity: { control: { disable: true } },
+		quantity: 1,
 	},
 } as Meta< QuantitySelectorProps >;
 
 const Template: Story< QuantitySelectorProps > = ( args ) => {
-	const [ quantity, setQuantity ] = useState( 1 );
+	const [ {}, setArgs ] = useArgs();
 
 	const onChange = ( newVal: number ) => {
 		args.onChange?.( newVal );
-		setQuantity( newVal );
+		setArgs( { quantity: newVal } );
 	};
 
-	return (
-		<QuantitySelector
-			{ ...args }
-			quantity={ quantity }
-			onChange={ onChange }
-		/>
-	);
+	return <QuantitySelector { ...args } onChange={ onChange } />;
 };
 
 export const Default = Template.bind( {} );
