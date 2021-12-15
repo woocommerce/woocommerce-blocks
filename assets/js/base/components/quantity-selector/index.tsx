@@ -76,7 +76,7 @@ const QuantitySelector = ( {
 	 * but after the customer has stopped typing.
 	 *
 	 * It's important to wait before normalizing or we end up with
-	 * a frustrating expiernce, for example, if the minimun is 2 and
+	 * a frustrating experience, for example, if the minimum is 2 and
 	 * the customer is trying to type "10", premature normalizing would
 	 * always kick in at "1" and turn that into 2.
 	 */
