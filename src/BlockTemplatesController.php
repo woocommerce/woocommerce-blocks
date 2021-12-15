@@ -459,7 +459,10 @@ class BlockTemplatesController {
 			add_filter( 'woocommerce_has_block_template', '__return_true', 10, 0 );
 		} elseif (
 			( is_product_taxonomy() && is_tax( 'product_tag' ) ) &&
-			! BlockTemplateUtils::theme_has_template( 'taxonomy-product_tag' ) &&
+			(
+				! BlockTemplateUtils::theme_has_template( 'taxonomy-product_tag' ) &&
+				! BlockTemplateUtils::theme_has_template( 'archive-product' )
+			) &&
 			$this->block_template_is_available( 'taxonomy-product_tag' )
 		) {
 			add_filter( 'woocommerce_has_block_template', '__return_true', 10, 0 );
