@@ -47,27 +47,36 @@ class CartItemSchema extends ProductSchema {
 			],
 			'quantity'             => [
 				'description' => __( 'Quantity of this item in the cart.', 'woo-gutenberg-products-block' ),
-				'type'        => 'integer',
+				'type'        => 'number',
 				'context'     => [ 'view', 'edit' ],
 				'readonly'    => true,
 			],
-			'quantity_limit'       => [
-				'description' => __( 'The maximum quantity than can be added to the cart at once.', 'woo-gutenberg-products-block' ),
-				'type'        => 'integer',
+			'quantity_limits'      => [
+				'description' => __( 'How the quantity of this item should be controlled, for example, any limits in place. This returns false if the input is disabled.', 'woo-gutenberg-products-block' ),
+				'type'        => [ 'object', 'boolean' ],
 				'context'     => [ 'view', 'edit' ],
 				'readonly'    => true,
-			],
-			'quantity_min'         => [
-				'description' => __( 'The minimum quantity than can be added to the cart at once.', 'woo-gutenberg-products-block' ),
-				'type'        => 'integer',
-				'context'     => [ 'view', 'edit' ],
-				'readonly'    => true,
-			],
-			'quantity_step'        => [
-				'description' => __( 'The amount quantity can change with.', 'woo-gutenberg-products-block' ),
-				'type'        => 'integer',
-				'context'     => [ 'view', 'edit' ],
-				'readonly'    => true,
+				'properties'  => [
+					'minimum'    => [
+						'description' => __( 'The minimum quantity allowed in the cart for this line item.', 'woo-gutenberg-products-block' ),
+						'type'        => 'integer',
+						'context'     => [ 'view', 'edit' ],
+						'readonly'    => true,
+					],
+					'maximum'    => [
+						'description' => __( 'The maximum quantity allowed in the cart for this line item.', 'woo-gutenberg-products-block' ),
+						'type'        => 'integer',
+						'context'     => [ 'view', 'edit' ],
+						'readonly'    => true,
+					],
+					'multipleOf' => [
+						'description' => __( 'The amount that quantities increment by. Quantity must be an increment of this value.', 'woo-gutenberg-products-block' ),
+						'type'        => 'integer',
+						'context'     => [ 'view', 'edit' ],
+						'readonly'    => true,
+						'default'     => 1,
+					],
+				],
 			],
 			'name'                 => [
 				'description' => __( 'Product name.', 'woo-gutenberg-products-block' ),
@@ -313,6 +322,60 @@ class CartItemSchema extends ProductSchema {
 	}
 
 	/**
+	 * Return quantity limits e.g. min, max, and allowed multiples.
+	 *
+	 * @param array $cart_item Cart item array.
+	 * @return object|boolean
+	 */
+	protected function get_quantity_limits( $cart_item ) {
+		$product = $cart_item['data'];
+
+		/**
+		* Filters the quantity input for a cart item in Store API.
+		*
+		* @param array $product Product being added/updated in the cart.
+		* @return number
+		*/
+		$disabled = apply_filters( 'woocommerce_store_api_cart_item_quantity_disabled', $product->is_sold_individually(), $cart_item );
+
+		if ( $disabled ) {
+			return false;
+		}
+
+		$remaining_stock = $this->get_remaining_stock( $product );
+
+		/**
+		* Filters the quantity minimum for a cart item in Store API.
+		*
+		* @param array $product Product being added/updated in the cart.
+		* @return number
+		*/
+		$minimum = (int) apply_filters( 'woocommerce_store_api_cart_item_quantity_minimum', 1, $cart_item );
+
+		/**
+		* Filters the quantity maximum for a cart item in Store API.
+		*
+		* @param array $product Product being added/updated in the cart.
+		* @return number
+		*/
+		$maximum = (int) apply_filters( 'woocommerce_store_api_cart_item_quantity_maximum', is_null( $remaining_stock ) ? 99 : $remaining_stock, $cart_item );
+
+		/**
+		* Filters the quantity increment for a cart item in Store API.
+		*
+		* @param array $product Product being added/updated in the cart.
+		* @return number
+		*/
+		$multiple_of = (int) apply_filters( 'woocommerce_store_api_cart_item_quantity_multiple_of', 1, $cart_item );
+
+		return (object) [
+			'minimum'    => ceil( $minimum / $multiple_of ) * $multiple_of,
+			'maximum'    => floor( $maximum / $multiple_of ) * $multiple_of,
+			'multipleOf' => $multiple_of,
+		];
+	}
+
+	/**
 	 * Convert a WooCommerce cart item to an object suitable for the response.
 	 *
 	 * @param array $cart_item Cart item array.
@@ -325,9 +388,7 @@ class CartItemSchema extends ProductSchema {
 			'key'                  => $cart_item['key'],
 			'id'                   => $product->get_id(),
 			'quantity'             => wc_stock_amount( $cart_item['quantity'] ),
-			'quantity_limit'       => $this->get_product_quantity_limit( $product ),
-			'quantity_min'         => $this->get_item_quantity_min( $cart_item ),
-			'quantity_step'        => $this->get_item_quantity_step( $cart_item ),
+			'quantity_limits'      => $this->get_quantity_limits( $cart_item ),
 			'name'                 => $this->prepare_html_response( $product->get_title() ),
 			'short_description'    => $this->prepare_html_response( wc_format_content( wp_kses_post( $product->get_short_description() ) ) ),
 			'description'          => $this->prepare_html_response( wc_format_content( wp_kses_post( $product->get_description() ) ) ),
@@ -463,38 +524,6 @@ class CartItemSchema extends ProductSchema {
 		 */
 		$item_data = apply_filters( 'woocommerce_get_item_data', array(), $cart_item );
 		return array_map( [ $this, 'format_item_data_element' ], $item_data );
-	}
-
-	/**
-	 * Return the minimum quantity that's allowed for this item.
-	 *
-	 * @param array $cart_item Cart item array.
-	 * @return number
-	 */
-	protected function get_item_quantity_min( $cart_item ) {
-		/**
-		 * Filters the quantity minimum for a cart item in Store API.
-		 *
-		 * @param array $cart_item Cart item array.
-		 * @return number
-		 */
-		return apply_filters( 'woocommerce_store_api_item_quantity_minimum', 1, $cart_item );
-	}
-
-	/**
-	 * Return the increment quantity that an item is allowed to change with.
-	 *
-	 * @param array $cart_item Cart item array.
-	 * @return number
-	 */
-	protected function get_item_quantity_step( $cart_item ) {
-		/**
-		 * Filters the quantity increment for a cart item in Store API.
-		 *
-		 * @param array $cart_item Cart item array.
-		 * @return number
-		 */
-		return apply_filters( 'woocommerce_store_api_item_quantity_step', 1, $cart_item );
 	}
 
 	/**

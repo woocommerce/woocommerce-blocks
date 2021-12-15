@@ -69,7 +69,7 @@ const QuantitySelector = ( {
 
 	const hasMaximum = typeof maximum !== 'undefined';
 	const canDecrease = quantity - step > minimum;
-	const canIncrease = ! hasMaximum || quantity + step < maximum;
+	const canIncrease = ! hasMaximum || quantity + step <= maximum;
 
 	/**
 	 * The goal of this function is to normalize what was inserted,
@@ -146,6 +146,7 @@ const QuantitySelector = ( {
 				type="number"
 				step={ step }
 				min={ minimum }
+				max={ maximum }
 				value={ quantity }
 				onKeyDown={ quantityInputOnKeyDown }
 				onChange={ ( event ) => {
