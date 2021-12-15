@@ -6,7 +6,7 @@ import { speak } from '@wordpress/a11y';
 import classNames from 'classnames';
 import { useCallback } from '@wordpress/element';
 import { DOWN, UP } from '@wordpress/keycodes';
-import useDebouncedCallback from 'use-debounce/lib/useDebouncedCallback';
+import { useDebouncedCallback } from 'use-debounce';
 
 /**
  * Internal dependencies
@@ -80,7 +80,7 @@ const QuantitySelector = ( {
 	 * the customer is trying to type "10", premature normalizing would
 	 * always kick in at "1" and turn that into 2.
 	 */
-	const [ normalizeQuantity ] = useDebouncedCallback(
+	const normalizeQuantity = useDebouncedCallback(
 		( initialValue: number ) => {
 			// We copy the starting value.
 			let value = initialValue;
@@ -105,7 +105,7 @@ const QuantitySelector = ( {
 				onChange( value );
 			}
 		},
-		// This value is delibrtly smaller than what's in useStoreCartItemQuantity so we don't end up with two requests.
+		// This value is deliberately smaller than what's in useStoreCartItemQuantity so we don't end up with two requests.
 		300
 	);
 
