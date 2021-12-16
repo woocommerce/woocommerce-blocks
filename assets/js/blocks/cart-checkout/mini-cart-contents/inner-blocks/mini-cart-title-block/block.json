@@ -2,7 +2,7 @@
 	"name": "woocommerce/mini-cart-title-block",
 	"version": "1.0.0",
 	"title": "Mini Cart Title",
-	"description": "Block that display the title of the Mini Cart block.",
+	"description": "Block that displays the title of the Mini Cart block.",
 	"category": "woocommerce",
 	"supports": {
 		"align": false,

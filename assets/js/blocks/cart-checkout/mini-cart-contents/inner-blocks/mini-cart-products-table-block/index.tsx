@@ -11,13 +11,11 @@ import { Edit } from './edit';
 import metadata from './block.json';
 
 registerFeaturePluginBlockType( metadata, {
-	icon: {
-		src: (
-			<Icon
-				srcElement={ list }
-				className="wc-block-editor-components-block-icon"
-			/>
-		),
-	},
+	icon: (
+		<Icon
+			srcElement={ list }
+			className="wc-block-editor-components-block-icon"
+		/>
+	)
 	edit: Edit,
 } );
