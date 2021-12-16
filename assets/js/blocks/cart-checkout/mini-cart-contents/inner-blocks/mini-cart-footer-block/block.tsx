@@ -43,18 +43,25 @@ const Block = (): JSX.Element => {
 				) }
 			/>
 			<div className="wc-block-mini-cart__footer-actions">
-				<Button
-					className="wc-block-mini-cart__footer-cart"
-					href={ CART_URL }
-				>
-					{ __( 'View my cart', 'woo-gutenberg-products-block' ) }
-				</Button>
-				<Button
-					className="wc-block-mini-cart__footer-checkout"
-					href={ CHECKOUT_URL }
-				>
-					{ __( 'Go to checkout', 'woo-gutenberg-products-block' ) }
-				</Button>
+				{ CART_URL && (
+					<Button
+						className="wc-block-mini-cart__footer-cart"
+						href={ CART_URL }
+					>
+						{ __( 'View my cart', 'woo-gutenberg-products-block' ) }
+					</Button>
+				) }
+				{ CHECKOUT_URL && (
+					<Button
+						className="wc-block-mini-cart__footer-checkout"
+						href={ CHECKOUT_URL || '' }
+					>
+						{ __(
+							'Go to checkout',
+							'woo-gutenberg-products-block'
+						) }
+					</Button>
+				) }
 			</div>
 			<PaymentMethodDataProvider>
 				<PaymentMethodIconsElement />
