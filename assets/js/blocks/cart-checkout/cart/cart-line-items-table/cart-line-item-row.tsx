@@ -73,8 +73,9 @@ const CartLineItemRow = forwardRef< HTMLTableRowElement, CartLineItemRowProps >(
 			quantity_limits: quantityLimits = {
 				minimum: 1,
 				maximum: 99,
-				multipleOf: 1,
+				multiple_of: 1,
 			},
+			sold_individually: soldIndividually = false,
 			permalink = '',
 			images = [],
 			variation = [],
@@ -282,13 +283,13 @@ const CartLineItemRow = forwardRef< HTMLTableRowElement, CartLineItemRowProps >(
 					/>
 
 					<div className="wc-block-cart-item__quantity">
-						{ !! quantityLimits && (
+						{ ! soldIndividually && (
 							<QuantitySelector
 								disabled={ isPendingDelete }
 								quantity={ quantity }
 								minimum={ quantityLimits.minimum }
 								maximum={ quantityLimits.maximum }
-								step={ quantityLimits.multipleOf }
+								step={ quantityLimits.multiple_of }
 								onChange={ ( newQuantity ) => {
 									setItemQuantity( newQuantity );
 									dispatchStoreEvent(

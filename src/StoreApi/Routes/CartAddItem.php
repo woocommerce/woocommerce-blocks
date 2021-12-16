@@ -35,7 +35,7 @@ class CartAddItem extends AbstractCartRoute {
 						'sanitize_callback' => 'absint',
 					],
 					'quantity'  => [
-						'description' => __( 'Quantity of this item in the cart.', 'woo-gutenberg-products-block' ),
+						'description' => __( 'Quantity of this item to add to the cart.', 'woo-gutenberg-products-block' ),
 						'type'        => 'integer',
 						'context'     => [ 'view', 'edit' ],
 						'arg_options' => [

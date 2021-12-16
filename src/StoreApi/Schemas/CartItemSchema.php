@@ -2,7 +2,7 @@
 namespace Automattic\WooCommerce\Blocks\StoreApi\Schemas;
 
 use Automattic\WooCommerce\Blocks\StoreApi\Utilities\DraftOrderTrait;
-use Automattic\WooCommerce\Checkout\Helpers\ReserveStock;
+use Automattic\WooCommerce\Blocks\StoreApi\Utilities\QuantityLimits;
 /**
  * CartItemSchema class.
  *
@@ -52,24 +52,24 @@ class CartItemSchema extends ProductSchema {
 				'readonly'    => true,
 			],
 			'quantity_limits'      => [
-				'description' => __( 'How the quantity of this item should be controlled, for example, any limits in place. This returns false if the input is disabled.', 'woo-gutenberg-products-block' ),
+				'description' => __( 'How the quantity of this item should be controlled, for example, any limits in place.', 'woo-gutenberg-products-block' ),
 				'type'        => [ 'object', 'boolean' ],
 				'context'     => [ 'view', 'edit' ],
 				'readonly'    => true,
 				'properties'  => [
-					'minimum'    => [
+					'minimum'     => [
 						'description' => __( 'The minimum quantity allowed in the cart for this line item.', 'woo-gutenberg-products-block' ),
 						'type'        => 'integer',
 						'context'     => [ 'view', 'edit' ],
 						'readonly'    => true,
 					],
-					'maximum'    => [
+					'maximum'     => [
 						'description' => __( 'The maximum quantity allowed in the cart for this line item.', 'woo-gutenberg-products-block' ),
 						'type'        => 'integer',
 						'context'     => [ 'view', 'edit' ],
 						'readonly'    => true,
 					],
-					'multipleOf' => [
+					'multiple_of' => [
 						'description' => __( 'The amount that quantities increment by. Quantity must be an increment of this value.', 'woo-gutenberg-products-block' ),
 						'type'        => 'integer',
 						'context'     => [ 'view', 'edit' ],
@@ -322,57 +322,17 @@ class CartItemSchema extends ProductSchema {
 	}
 
 	/**
-	 * Return quantity limits e.g. min, max, and allowed multiples.
+	 * Return quantity limits e.g. min, max, and allowed multiples, for line items.
+	 *
+	 * These values will be enforced when adding and updating items in the cart.
 	 *
 	 * @param array $cart_item Cart item array.
-	 * @return object|boolean
+	 * @return object
 	 */
-	protected function get_quantity_limits( $cart_item ) {
-		$product = $cart_item['data'];
+	public function get_quantity_limits( $cart_item ) {
+		$quantity_limits = new QuantityLimits();
 
-		/**
-		* Filters the quantity input for a cart item in Store API.
-		*
-		* @param array $product Product being added/updated in the cart.
-		* @return number
-		*/
-		$disabled = apply_filters( 'woocommerce_store_api_cart_item_quantity_disabled', $product->is_sold_individually(), $cart_item );
-
-		if ( $disabled ) {
-			return false;
-		}
-
-		$remaining_stock = $this->get_remaining_stock( $product );
-
-		/**
-		* Filters the quantity minimum for a cart item in Store API.
-		*
-		* @param array $product Product being added/updated in the cart.
-		* @return number
-		*/
-		$minimum = (int) apply_filters( 'woocommerce_store_api_cart_item_quantity_minimum', 1, $cart_item );
-
-		/**
-		* Filters the quantity maximum for a cart item in Store API.
-		*
-		* @param array $product Product being added/updated in the cart.
-		* @return number
-		*/
-		$maximum = (int) apply_filters( 'woocommerce_store_api_cart_item_quantity_maximum', is_null( $remaining_stock ) ? 99 : $remaining_stock, $cart_item );
-
-		/**
-		* Filters the quantity increment for a cart item in Store API.
-		*
-		* @param array $product Product being added/updated in the cart.
-		* @return number
-		*/
-		$multiple_of = (int) apply_filters( 'woocommerce_store_api_cart_item_quantity_multiple_of', 1, $cart_item );
-
-		return (object) [
-			'minimum'    => ceil( $minimum / $multiple_of ) * $multiple_of,
-			'maximum'    => floor( $maximum / $multiple_of ) * $multiple_of,
-			'multipleOf' => $multiple_of,
-		];
+		return $quantity_limits->get_quantity_limits( $cart_item );
 	}
 
 	/**
@@ -436,25 +396,6 @@ class CartItemSchema extends ProductSchema {
 		];
 
 		return $prices;
-	}
-
-	/**
-	 * Returns the remaining stock for a product if it has stock.
-	 *
-	 * This also factors in draft orders.
-	 *
-	 * @param \WC_Product $product Product instance.
-	 * @return integer|null
-	 */
-	protected function get_remaining_stock( \WC_Product $product ) {
-		if ( is_null( $product->get_stock_quantity() ) ) {
-			return null;
-		}
-
-		$reserve_stock  = new ReserveStock();
-		$reserved_stock = $reserve_stock->get_reserved_stock( $product, $this->get_draft_order_id() );
-
-		return $product->get_stock_quantity() - $reserved_stock;
 	}
 
 	/**
