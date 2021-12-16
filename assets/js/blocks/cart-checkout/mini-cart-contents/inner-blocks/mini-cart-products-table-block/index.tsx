@@ -16,6 +16,6 @@ registerFeaturePluginBlockType( metadata, {
 			srcElement={ list }
 			className="wc-block-editor-components-block-icon"
 		/>
-	)
+	),
 	edit: Edit,
 } );
