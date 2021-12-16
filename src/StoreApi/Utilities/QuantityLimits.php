@@ -16,12 +16,70 @@ class QuantityLimits {
 	use DraftOrderTrait;
 
 	/**
-	 * Check that a given quantity is valid according to any limits in place.
+	 * Get quantity limits (min, max, step/multiple) for a product or cart item.
 	 *
-	 * @param integer           $quantity Quantity to validate.
 	 * @param \WC_Product|array $cart_item_or_product Either a cart item or a product instance.
-	 * @return \WP_Error|true
+	 * @return object
 	 */
+	public function get_quantity_limits( $cart_item_or_product ) {
+		$product = $cart_item_or_product instanceof \WC_Product ? $cart_item_or_product : $cart_item_or_product['data'];
+
+		if ( ! $product instanceof \WC_Product ) {
+			return [
+				'minimum'     => 1,
+				'maximum'     => null,
+				'multiple_of' => 1,
+			];
+		}
+
+		$multiple_of = $this->filter_value( 1, 'multiple_of', $cart_item_or_product );
+		$minimum     = $this->filter_value( 1, 'minimum', $cart_item_or_product );
+		$maximum     = $this->filter_value( $this->get_product_quantity_limit( $product ), 'maximum', $cart_item_or_product );
+
+		return (object) [
+			'minimum'     => $this->limit_to_multiple( $minimum, $multiple_of, 'ceil' ),
+			'maximum'     => $this->limit_to_multiple( $maximum, $multiple_of, 'floor' ),
+			'multiple_of' => $multiple_of,
+		];
+	}
+
+	/**
+	 * Get the limit for the total number of a product allowed in the cart.
+	 *
+	 * This is based on product properties, including remaining stock, and defaults to a maximum of 99 of any product
+	 * in the cart at once.
+	 *
+	 * @param \WC_Product $product Product instance.
+	 * @return int
+	 */
+	protected function get_product_quantity_limit( \WC_Product $product ) {
+		$limits = [ 99 ];
+
+		if ( $product->is_sold_individually() ) {
+			$limits[] = 1;
+		} elseif ( ! $product->backorders_allowed() ) {
+			$limits[] = $this->get_remaining_stock( $product );
+		}
+
+		/**
+		 * Filters the quantity limit for a product being added to the cart via the Store API.
+		 *
+		 * Filters the variation option name for custom option slugs.
+		 *
+		 * @param integer $quantity_limit Quantity limit which defaults to 99 unless sold individually.
+		 * @param \WC_Product $product Product instance.
+		 * @return integer
+		 */
+		return apply_filters( 'woocommerce_store_api_product_quantity_limit', max( min( array_filter( $limits ) ), 1 ), $product );
+	}
+
+		/**
+		 * Check that a given quantity is valid according to any limits in place.
+		 *
+		 * @param integer           $quantity Quantity to validate.
+		 * @param \WC_Product|array $cart_item_or_product Either a cart item or a product instance.
+		 * @return \WP_Error|true
+		 */
 	public function validate_quantity( $quantity, $cart_item_or_product ) {
 		$limits = $this->get_quantity_limits( $cart_item_or_product );
 
@@ -62,35 +120,6 @@ class QuantityLimits {
 	}
 
 	/**
-	 * Get quantity limits (min, max, step/multiple) for a product or cart item.
-	 *
-	 * @param \WC_Product|array $cart_item_or_product Either a cart item or a product instance.
-	 * @return object
-	 */
-	public function get_quantity_limits( $cart_item_or_product ) {
-		$product = $cart_item_or_product instanceof \WC_Product ? $cart_item_or_product : $cart_item_or_product['data'];
-
-		if ( ! $product instanceof \WC_Product ) {
-			return [
-				'minimum'     => 1,
-				'maximum'     => null,
-				'multiple_of' => 1,
-			];
-		}
-
-		$product_limit = $product->is_sold_individually() ? 1 : $this->get_remaining_stock( $product );
-		$multiple_of   = $this->filter_value( 1, 'multiple_of', $cart_item_or_product );
-		$minimum       = $this->filter_value( 1, 'minimum', $cart_item_or_product );
-		$maximum       = $this->filter_value( $product_limit ? $product_limit : $this->limit_to_multiple( 99, $multiple_of, 'ceil' ), 'maximum', $cart_item_or_product );
-
-		return (object) [
-			'minimum'     => $this->limit_to_multiple( $minimum, $multiple_of, 'ceil' ),
-			'maximum'     => $this->limit_to_multiple( $maximum, $multiple_of, 'floor' ),
-			'multiple_of' => $multiple_of,
-		];
-	}
-
-	/**
 	 * Returns the remaining stock for a product if it has stock.
 	 *
 	 * This also factors in draft orders.
@@ -107,6 +136,22 @@ class QuantityLimits {
 		$reserved_stock = $reserve_stock->get_reserved_stock( $product, $this->get_draft_order_id() );
 
 		return $product->get_stock_quantity() - $reserved_stock;
+	}
+
+	/**
+	 * Return a number using the closest multiple of another number. Used to enforce step/multiple values.
+	 *
+	 * @param int    $number Number to round.
+	 * @param int    $multiple_of The multiple.
+	 * @param string $rounding_function ceil, floor, or round.
+	 * @return int
+	 */
+	protected function limit_to_multiple( int $number, int $multiple_of, string $rounding_function = 'ceil' ) {
+		if ( $multiple_of <= 1 ) {
+			return $number;
+		}
+		$rounding_function = in_array( $rounding_function, [ 'ceil', 'floor', 'round' ], true ) ? $rounding_function : 'round';
+		return $rounding_function( $number / $multiple_of ) * $multiple_of;
 	}
 
 	/**
@@ -132,21 +177,5 @@ class QuantityLimits {
 		 * @return integer
 		 */
 		return (int) apply_filters( "woocommerce_store_api_{$type}_quantity_{$value_type}", $value, $cart_item_or_product );
-	}
-
-	/**
-	 * Return a number using the closest multiple of another number. Used to enforce step/multiple values.
-	 *
-	 * @param int    $number Number to round.
-	 * @param int    $multiple_of The multiple.
-	 * @param string $rounding_function ceil, floor, or round.
-	 * @return int
-	 */
-	protected function limit_to_multiple( int $number, int $multiple_of, string $rounding_function = 'ceil' ) {
-		if ( $multiple_of <= 1 ) {
-			return $number;
-		}
-		$rounding_function = in_array( $rounding_function, [ 'ceil', 'floor', 'round' ], true ) ? $rounding_function : 'round';
-		return $rounding_function( $number / $multiple_of ) * $multiple_of;
 	}
 }

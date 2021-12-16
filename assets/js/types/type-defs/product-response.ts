@@ -86,7 +86,11 @@ export interface ProductResponseItem {
 	is_on_backorder: boolean;
 	low_stock_remaining: null | number;
 	sold_individually: boolean;
-	quantity_limit: number;
+	quantity_limits: {
+		minimum: number;
+		maximum: number;
+		multiple_of: number;
+	};
 	add_to_cart: {
 		text: string;
 		description: string;

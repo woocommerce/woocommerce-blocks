@@ -298,7 +298,7 @@ export const AddToCartFormStateContextProvider = ( {
 		showFormElements: showFormElements && supportsFormElements,
 		quantity: addToCartFormState.quantity,
 		minQuantity: 1,
-		maxQuantity: product.quantity_limit || 99,
+		maxQuantity: product?.quantity_limits?.maximum || 99,
 		requestParams: addToCartFormState.requestParams,
 		isIdle: addToCartFormState.status === STATUS.IDLE,
 		isDisabled: addToCartFormState.status === STATUS.DISABLED,

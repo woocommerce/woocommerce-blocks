@@ -322,20 +322,6 @@ class CartItemSchema extends ProductSchema {
 	}
 
 	/**
-	 * Return quantity limits e.g. min, max, and allowed multiples, for line items.
-	 *
-	 * These values will be enforced when adding and updating items in the cart.
-	 *
-	 * @param array $cart_item Cart item array.
-	 * @return object
-	 */
-	public function get_quantity_limits( $cart_item ) {
-		$quantity_limits = new QuantityLimits();
-
-		return $quantity_limits->get_quantity_limits( $cart_item );
-	}
-
-	/**
 	 * Convert a WooCommerce cart item to an object suitable for the response.
 	 *
 	 * @param array $cart_item Cart item array.
@@ -348,7 +334,7 @@ class CartItemSchema extends ProductSchema {
 			'key'                  => $cart_item['key'],
 			'id'                   => $product->get_id(),
 			'quantity'             => wc_stock_amount( $cart_item['quantity'] ),
-			'quantity_limits'      => $this->get_quantity_limits( $cart_item ),
+			'quantity_limits'      => ( new QuantityLimits() )->get_quantity_limits( $cart_item ),
 			'name'                 => $this->prepare_html_response( $product->get_title() ),
 			'short_description'    => $this->prepare_html_response( wc_format_content( wp_kses_post( $product->get_short_description() ) ) ),
 			'description'          => $this->prepare_html_response( wc_format_content( wp_kses_post( $product->get_description() ) ) ),

@@ -203,7 +203,11 @@ curl "https://example-store.com/wp-json/wc/store/cart/items/e369853df766fa44e1ed
 	"key": "e369853df766fa44e1ed0ff613f563bd",
 	"id": 34,
 	"quantity": 1,
-	"quantity_limit": 99,
+	"quantity_limits": {
+		"minimum": 1,
+		"maximum": 99,
+		"multiple_of": 1
+	},
 	"name": "WordPress Pennant",
 	"summary": "<p>This is an external product.</p>",
 	"short_description": "<p>This is an external product.</p>",

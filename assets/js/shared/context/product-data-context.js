@@ -45,7 +45,11 @@ const defaultProductData = {
 	is_on_backorder: false,
 	low_stock_remaining: null,
 	sold_individually: false,
-	quantity_limit: 99,
+	quantity_limits: {
+		minimum: 1,
+		maximum: 99,
+		multiple_of: 1,
+	},
 	add_to_cart: {
 		text: 'Add to cart',
 		description: 'Add to cart',
