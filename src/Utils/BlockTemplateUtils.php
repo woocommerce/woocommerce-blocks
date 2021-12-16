@@ -116,6 +116,11 @@ class BlockTemplateUtils {
 			}
 		}
 
+		if ( 'woocommerce' === $theme ) {
+			$template->theme  = 'woocommerce/woocommerce';
+			$template->origin = 'plugin';
+		}
+
 		return $template;
 	}
 
@@ -139,7 +144,7 @@ class BlockTemplateUtils {
 		$template_content         = file_get_contents( $template_file->path );
 		$template                 = new \WP_Block_Template();
 		$template->id             = $template_is_from_theme ? strtolower( $theme_name ) . '//' . $template_file->slug : 'woocommerce//' . $template_file->slug;
-		$template->theme          = $template_is_from_theme ? $theme_name : 'WooCommerce';
+		$template->theme          = $template_is_from_theme ? $theme_name : 'woocommerce/woocommerce';
 		$template->content        = self::gutenberg_inject_theme_attribute_in_content( $template_content );
 		$template->source         = $template_file->source || 'plugin';
 		$template->slug           = $template_file->slug;
