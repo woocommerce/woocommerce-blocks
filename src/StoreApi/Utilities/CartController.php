@@ -68,7 +68,7 @@ class CartController {
 
 		if ( $existing_cart_id ) {
 			$cart_item           = $cart->cart_contents[ $existing_cart_id ];
-			$quantity_validation = $quantity_limits->validate_quantity( $request['quantity'] + $cart_item['quantity'], $cart_item );
+			$quantity_validation = $quantity_limits->validate_cart_item_quantity( $request['quantity'] + $cart_item['quantity'], $cart_item );
 
 			if ( is_wp_error( $quantity_validation ) ) {
 				throw new RouteException( $quantity_validation->get_error_code(), $quantity_validation->get_error_message(), 400 );
@@ -170,7 +170,7 @@ class CartController {
 			throw new RouteException( 'woocommerce_rest_cart_invalid_product', __( 'Cart item is invalid.', 'woo-gutenberg-products-block' ), 404 );
 		}
 
-		$quantity_validation = ( new QuantityLimits() )->validate_quantity( $quantity, $cart_item );
+		$quantity_validation = ( new QuantityLimits() )->validate_cart_item_quantity( $quantity, $cart_item );
 
 		if ( is_wp_error( $quantity_validation ) ) {
 			throw new RouteException( $quantity_validation->get_error_code(), $quantity_validation->get_error_message(), 400 );

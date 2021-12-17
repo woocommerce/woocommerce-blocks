@@ -84,14 +84,17 @@ final class QuantityLimits {
 	 * Check that a given quantity is valid according to any limits in place.
 	 *
 	 * @param integer           $quantity Quantity to validate.
-	 * @param \WC_Product|array $cart_item_or_product Either a cart item or a product instance.
+	 * @param \WC_Product|array $cart_item Cart item.
 	 * @return \WP_Error|true
 	 */
-	public function validate_quantity( $quantity, $cart_item_or_product ) {
-		$limits = $this->get_quantity_limits( $cart_item_or_product );
+	public function validate_cart_item_quantity( $quantity, $cart_item ) {
+		$limits = $this->get_quantity_limits( $cart_item );
 
-		if ( ! $limits ) {
-			return true;
+		if ( ! $limits['editable'] ) {
+			return new \WP_Error(
+				'readonly_quantity',
+				__( 'This item is already in the cart and it\'s quantity cannot be edited', 'woo-gutenberg-products-block' )
+			);
 		}
 
 		if ( $quantity < $limits['minimum'] ) {
