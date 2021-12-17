@@ -64,7 +64,6 @@ describe( `${ block.name } Block`, () => {
 				{ text: 'New Title' }
 			);
 
-			expect( await getEditedPostContent() ).toMatchSnapshot();
 			await clearAndFillInput(
 				'.wp-block[data-type="woocommerce/price-filter"] textarea.wc-block-editor-components-title',
 				'Filter by price'
@@ -122,7 +121,6 @@ describe( `${ block.name } Block`, () => {
 			await expect( page ).toMatchElement(
 				'button.wc-block-filter-submit-button.wc-block-price-filter__button'
 			);
-			expect( await getEditedPostContent() ).toMatchSnapshot();
 			await showGoButton.click();
 		} );
 	} );

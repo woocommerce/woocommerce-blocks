@@ -64,7 +64,6 @@ describe( `${ block.name } Block`, () => {
 			{ text: 'New Title' }
 		);
 
-		expect( await getEditedPostContent() ).toMatchSnapshot();
 		await clearAndFillInput(
 			'.wp-block[data-type="woocommerce/active-filters"] textarea.wc-block-editor-components-title',
 			'Active filters'
