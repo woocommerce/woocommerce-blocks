@@ -30,4 +30,4 @@ const Template: Story< TotalShippingProps > = ( args ) => (
 export const Default = Template.bind( {} );
 Default.args = {};
 
-// @todo Revise Storybook entry for `TotalsShipping` component
+// @todo Revise Storybook entry for `Checkout Blocks/totals` component
