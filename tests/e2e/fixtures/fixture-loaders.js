@@ -353,20 +353,6 @@ const deleteBlockPages = ( ids ) => {
 };
 
 /**
- * Ensure attributes are removed from the site before setting up. This exists in case
- * the teardown didn't happen properly for any reason. This function exists mostly as a
- * dev-ex improvement tool while working on tests.
- *
- * @return {Promise<void>}
- */
-const ensureCleanAttributes = async () => {
-	const attributeIds = await WooCommerce.get( 'products/attributes' );
-	await deleteProductAttributes(
-		attributeIds.data.map( ( attribute ) => attribute.id )
-	);
-};
-
-/**
  * Create Products attributes and terms.
  *
  * @param {Object[]} fixture An array of objects describing our data, defaults
@@ -419,7 +405,6 @@ const deleteProductAttributes = ( ids ) => {
 };
 
 module.exports = {
-	ensureCleanAttributes,
 	createProductAttributes,
 	deleteProductAttributes,
 	setupSettings,

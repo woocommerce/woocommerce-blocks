@@ -17,7 +17,6 @@ import {
 	createBlockPages,
 	enablePaymentGateways,
 	createProductAttributes,
-	ensureCleanAttributes,
 } from '../fixtures/fixture-loaders';
 
 module.exports = async ( globalConfig ) => {
@@ -29,7 +28,6 @@ module.exports = async ( globalConfig ) => {
 		// to be configured before the others are executed.
 		await setupSettings();
 		const pages = await createBlockPages();
-		await ensureCleanAttributes();
 
 		/**
 		 * Promise.all will return an array of all promises resolved values.
