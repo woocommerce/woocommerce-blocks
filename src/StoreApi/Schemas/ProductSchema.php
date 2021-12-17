@@ -392,33 +392,6 @@ class ProductSchema extends AbstractSchema {
 				'context'     => [ 'view', 'edit' ],
 				'readonly'    => true,
 			],
-			'quantity_limits'     => [
-				'description' => __( 'How the quantity of this item should be controlled, for example, any limits in place.', 'woo-gutenberg-products-block' ),
-				'type'        => [ 'object', 'boolean' ],
-				'context'     => [ 'view', 'edit' ],
-				'readonly'    => true,
-				'properties'  => [
-					'minimum'     => [
-						'description' => __( 'The minimum quantity allowed in the cart for this line item.', 'woo-gutenberg-products-block' ),
-						'type'        => 'integer',
-						'context'     => [ 'view', 'edit' ],
-						'readonly'    => true,
-					],
-					'maximum'     => [
-						'description' => __( 'The maximum quantity allowed in the cart for this line item.', 'woo-gutenberg-products-block' ),
-						'type'        => 'integer',
-						'context'     => [ 'view', 'edit' ],
-						'readonly'    => true,
-					],
-					'multiple_of' => [
-						'description' => __( 'The amount that quantities increment by. Quantity must be an increment of this value.', 'woo-gutenberg-products-block' ),
-						'type'        => 'integer',
-						'context'     => [ 'view', 'edit' ],
-						'readonly'    => true,
-						'default'     => 1,
-					],
-				],
-			],
 			'add_to_cart'         => [
 				'description' => __( 'Add to cart button parameters.', 'woo-gutenberg-products-block' ),
 				'type'        => 'object',
@@ -442,6 +415,25 @@ class ProductSchema extends AbstractSchema {
 						'type'        => 'string',
 						'context'     => [ 'view', 'edit' ],
 						'readonly'    => true,
+					],
+					'minimum'     => [
+						'description' => __( 'The minimum quantity that can be added to the cart.', 'woo-gutenberg-products-block' ),
+						'type'        => 'integer',
+						'context'     => [ 'view', 'edit' ],
+						'readonly'    => true,
+					],
+					'maximum'     => [
+						'description' => __( 'The maximum quantity that can be added to the cart.', 'woo-gutenberg-products-block' ),
+						'type'        => 'integer',
+						'context'     => [ 'view', 'edit' ],
+						'readonly'    => true,
+					],
+					'multiple_of' => [
+						'description' => __( 'The amount that quantities increment by. Quantity must be an multiple of this value.', 'woo-gutenberg-products-block' ),
+						'type'        => 'integer',
+						'context'     => [ 'view', 'edit' ],
+						'readonly'    => true,
+						'default'     => 1,
 					],
 				],
 			],
@@ -481,13 +473,13 @@ class ProductSchema extends AbstractSchema {
 			'is_on_backorder'     => 'onbackorder' === $product->get_stock_status(),
 			'low_stock_remaining' => $this->get_low_stock_remaining( $product ),
 			'sold_individually'   => $product->is_sold_individually(),
-			'quantity_limits'     => ( new QuantityLimits() )->get_quantity_limits( $product ),
-			'add_to_cart'         => (object) $this->prepare_html_response(
+			'add_to_cart'         => (object) array_merge(
 				[
-					'text'        => $product->add_to_cart_text(),
-					'description' => $product->add_to_cart_description(),
-					'url'         => $product->add_to_cart_url(),
-				]
+					'text'        => $this->prepare_html_response( $product->add_to_cart_text() ),
+					'description' => $this->prepare_html_response( $product->add_to_cart_description() ),
+					'url'         => $this->prepare_html_response( $product->add_to_cart_url() ),
+				],
+				( new QuantityLimits() )->get_add_to_cart_limits( $product )
 			),
 		];
 	}

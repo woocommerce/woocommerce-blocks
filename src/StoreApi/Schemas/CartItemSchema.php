@@ -53,7 +53,7 @@ class CartItemSchema extends ProductSchema {
 			],
 			'quantity_limits'      => [
 				'description' => __( 'How the quantity of this item should be controlled, for example, any limits in place.', 'woo-gutenberg-products-block' ),
-				'type'        => [ 'object', 'boolean' ],
+				'type'        => 'object',
 				'context'     => [ 'view', 'edit' ],
 				'readonly'    => true,
 				'properties'  => [
@@ -70,11 +70,18 @@ class CartItemSchema extends ProductSchema {
 						'readonly'    => true,
 					],
 					'multiple_of' => [
-						'description' => __( 'The amount that quantities increment by. Quantity must be an increment of this value.', 'woo-gutenberg-products-block' ),
+						'description' => __( 'The amount that quantities increment by. Quantity must be an multiple of this value.', 'woo-gutenberg-products-block' ),
 						'type'        => 'integer',
 						'context'     => [ 'view', 'edit' ],
 						'readonly'    => true,
 						'default'     => 1,
+					],
+					'editable'    => [
+						'description' => __( 'If the quantity in the cart is editable or fixed.', 'woo-gutenberg-products-block' ),
+						'type'        => 'boolean',
+						'context'     => [ 'view', 'edit' ],
+						'readonly'    => true,
+						'default'     => true,
 					],
 				],
 			],
@@ -334,7 +341,7 @@ class CartItemSchema extends ProductSchema {
 			'key'                  => $cart_item['key'],
 			'id'                   => $product->get_id(),
 			'quantity'             => wc_stock_amount( $cart_item['quantity'] ),
-			'quantity_limits'      => ( new QuantityLimits() )->get_quantity_limits( $cart_item ),
+			'quantity_limits'      => (object) ( new QuantityLimits() )->get_quantity_limits( $cart_item ),
 			'name'                 => $this->prepare_html_response( $product->get_title() ),
 			'short_description'    => $this->prepare_html_response( wc_format_content( wp_kses_post( $product->get_short_description() ) ) ),
 			'description'          => $this->prepare_html_response( wc_format_content( wp_kses_post( $product->get_description() ) ) ),

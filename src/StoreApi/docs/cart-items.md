@@ -30,7 +30,8 @@ curl "https://example-store.com/wp-json/wc/store/cart/items"
 		"quantity_limits": {
 			"minimum": 1,
 			"maximum": 99,
-			"multiple_of": 1
+			"multiple_of": 1,
+			"editable": true
 		},
 		"name": "Beanie",
 		"summary": "<p>This is a simple product.</p>",
@@ -107,7 +108,8 @@ curl "https://example-store.com/wp-json/wc/store/cart/items"
 		"quantity_limits": {
 			"minimum": 1,
 			"maximum": 99,
-			"multiple_of": 1
+			"multiple_of": 1,
+			"editable": true
 		},
 		"name": "WordPress Pennant",
 		"summary": "<p>This is an external product.</p>",
@@ -206,7 +208,8 @@ curl "https://example-store.com/wp-json/wc/store/cart/items/e369853df766fa44e1ed
 	"quantity_limits": {
 		"minimum": 1,
 		"maximum": 99,
-		"multiple_of": 1
+		"multiple_of": 1,
+		"editable": true
 	},
 	"name": "WordPress Pennant",
 	"summary": "<p>This is an external product.</p>",

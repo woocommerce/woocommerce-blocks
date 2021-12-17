@@ -121,6 +121,7 @@ export interface CartItem {
 		minimum: number;
 		maximum: number;
 		multiple_of: number;
+		editable: boolean;
 	};
 	name: string;
 	summary: string;

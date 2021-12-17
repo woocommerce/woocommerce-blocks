@@ -74,6 +74,7 @@ const CartLineItemRow = forwardRef< HTMLTableRowElement, CartLineItemRowProps >(
 				minimum: 1,
 				maximum: 99,
 				multiple_of: 1,
+				editable: true,
 			},
 			sold_individually: soldIndividually = false,
 			permalink = '',
@@ -283,7 +284,7 @@ const CartLineItemRow = forwardRef< HTMLTableRowElement, CartLineItemRowProps >(
 					/>
 
 					<div className="wc-block-cart-item__quantity">
-						{ ! soldIndividually && (
+						{ ! soldIndividually && !! quantityLimits.editable && (
 							<QuantitySelector
 								disabled={ isPendingDelete }
 								quantity={ quantity }

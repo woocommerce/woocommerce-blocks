@@ -110,7 +110,8 @@ All endpoints under `/cart` (listed in this doc) return responses in the same fo
 			"quantity_limits": {
 				"minimum": 1,
 				"maximum": 99,
-				"multiple_of": 1
+				"multiple_of": 1,
+				"editable": true
 			},
 			"name": "Beanie",
 			"summary": "<p>This is a simple product.</p>",
@@ -174,7 +175,8 @@ All endpoints under `/cart` (listed in this doc) return responses in the same fo
 			"quantity_limits": {
 				"minimum": 1,
 				"maximum": 99,
-				"multiple_of": 1
+				"multiple_of": 1,
+				"editable": true
 			},
 			"name": "WordPress Pennant",
 			"summary": "<p>This is an external product.</p>",
