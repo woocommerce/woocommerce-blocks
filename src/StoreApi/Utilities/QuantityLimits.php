@@ -21,7 +21,7 @@ final class QuantityLimits {
 	 * @param array $cart_item A cart item array.
 	 * @return array
 	 */
-	public function get_quantity_limits( $cart_item ) {
+	public function get_cart_item_quantity_limits( $cart_item ) {
 		$product = $cart_item['data'] ?? false;
 
 		if ( ! $product instanceof \WC_Product ) {
@@ -88,7 +88,7 @@ final class QuantityLimits {
 	 * @return \WP_Error|true
 	 */
 	public function validate_cart_item_quantity( $quantity, $cart_item ) {
-		$limits = $this->get_quantity_limits( $cart_item );
+		$limits = $this->get_cart_item_quantity_limits( $cart_item );
 
 		if ( ! $limits['editable'] ) {
 			return new \WP_Error(
@@ -191,19 +191,21 @@ final class QuantityLimits {
 	 * @return mixed
 	 */
 	protected function filter_value( $value, string $value_type, $cart_item_or_product ) {
-		$type = $cart_item_or_product instanceof \WC_Product ? 'product' : 'cart_item';
+		$is_product = $cart_item_or_product instanceof \WC_Product;
+		$product    = $is_product ? $cart_item_or_product : $cart_item_or_product['data'];
+		$cart_item  = $is_product ? null : $cart_item_or_product;
 		/**
 		 * Filters the quantity minimum for a cart item in Store API. This allows extensions to control the minimum qty
 		 * of items already within the cart.
 		 *
-		 * Hook name will reflect the product or cart item depending on what is provided, so either:
-		 *  - woocommerce_store_api_product_quantity_minimum
-		 *  - woocommerce_store_api_cart_item_quantity_minimum
+		 * The suffix of the hook will vary depending on the value being filtered.
+		 * For example, minimum, maximum, multiple_of, editable.
 		 *
-		 * @param integer $minimum Minimum qty which defaults to 1.
-		 * @param array $cart_item_or_product Product or cart item being added/updated in the cart.
-		 * @return integer
+		 * @param mixed $value The value being filtered.
+		 * @param \WC_Product $product The product object.
+		 * @param array|null $cart_item The cart item if the product exists in the cart, or null.
+		 * @return mixed
 		 */
-		return apply_filters( "woocommerce_store_api_{$type}_quantity_{$value_type}", $value, $cart_item_or_product );
+		return apply_filters( "woocommerce_store_api_product_quantity_{$value_type}", $value, $product, $cart_item );
 	}
 }

@@ -341,7 +341,7 @@ class CartItemSchema extends ProductSchema {
 			'key'                  => $cart_item['key'],
 			'id'                   => $product->get_id(),
 			'quantity'             => wc_stock_amount( $cart_item['quantity'] ),
-			'quantity_limits'      => (object) ( new QuantityLimits() )->get_quantity_limits( $cart_item ),
+			'quantity_limits'      => (object) ( new QuantityLimits() )->get_cart_item_quantity_limits( $cart_item ),
 			'name'                 => $this->prepare_html_response( $product->get_title() ),
 			'short_description'    => $this->prepare_html_response( wc_format_content( wp_kses_post( $product->get_short_description() ) ) ),
 			'description'          => $this->prepare_html_response( wc_format_content( wp_kses_post( $product->get_description() ) ) ),
