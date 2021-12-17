@@ -133,12 +133,14 @@ class BlockTemplateUtils {
 	 * @return \WP_Block_Template Template.
 	 */
 	public static function gutenberg_build_template_result_from_file( $template_file, $template_type ) {
+		$theme = 'woocommerce/woocommerce';
+
 		$template_file = (object) $template_file;
 		// phpcs:ignore WordPress.WP.AlternativeFunctions.file_get_contents_file_get_contents
 		$template_content         = file_get_contents( $template_file->path );
 		$template                 = new \WP_Block_Template();
-		$template->id             = 'woocommerce//' . $template_file->slug;
-		$template->theme          = 'woocommerce/woocommerce';
+		$template->theme          = $theme;
+		$template->id             = $theme . '//' . $template_file->slug;
 		$template->content        = self::gutenberg_inject_theme_attribute_in_content( $template_content );
 		$template->source         = 'plugin';
 		$template->slug           = $template_file->slug;
