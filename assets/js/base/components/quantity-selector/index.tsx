@@ -85,7 +85,7 @@ const QuantitySelector = ( {
 			// We copy the starting value.
 			let value = initialValue;
 
-			// We check if we have a maximum value, and select the lowest between what was inserted, and the maximum.
+			// We check if we have a maximum value, and select the lowest between what was inserted and the maximum.
 			if ( hasMaximum ) {
 				value = Math.min(
 					value,
@@ -159,7 +159,7 @@ const QuantitySelector = ( {
 					if ( value !== quantity ) {
 						// we commit this value immediately.
 						onChange( value );
-						// but once the customer has stopped typing, we make sure his value is respecting the bounds (maximum value, minimum value, step value), and commit the normlized value.
+						// but once the customer has stopped typing, we make sure his value is respecting the bounds (maximum value, minimum value, step value), and commit the normalized value.
 						normalizeQuantity( value );
 					}
 				} }
@@ -192,6 +192,7 @@ const QuantitySelector = ( {
 							newQuantity
 						)
 					);
+					normalizeQuantity( newQuantity );
 				} }
 			>
 				{ step === 1 || quantity < step ? `－` : quantity - step }
@@ -216,6 +217,7 @@ const QuantitySelector = ( {
 							newQuantity
 						)
 					);
+					normalizeQuantity( newQuantity );
 				} }
 			>
 				{ step === 1 ? '＋' : quantity + step }
