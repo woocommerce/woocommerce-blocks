@@ -23,7 +23,10 @@ import { defaultCartState } from '../../../../data/default-states';
 
 const MiniCartBlock = ( props ) => (
 	<SlotFillProvider>
-		<Block { ...props } />
+		<Block
+			contents='<div class="wc-block-mini-cart-contents"></div>'
+			{ ...props }
+		/>
 	</SlotFillProvider>
 );
 
@@ -47,12 +50,14 @@ const mockFullCart = () => {
 	} );
 };
 
-describe( 'Testing cart', () => {
-	beforeEach( async () => {
-		mockFullCart();
-		// need to clear the store resolution state between tests.
-		await dispatch( storeKey ).invalidateResolutionForStore();
-		await dispatch( storeKey ).receiveCart( defaultCartState.cartData );
+describe( 'Testing Mini Cart', () => {
+	beforeEach( () => {
+		act( () => {
+			mockFullCart();
+			// need to clear the store resolution state between tests.
+			dispatch( storeKey ).invalidateResolutionForStore();
+			dispatch( storeKey ).receiveCart( defaultCartState.cartData );
+		} );
 	} );
 
 	afterEach( () => {
@@ -62,7 +67,9 @@ describe( 'Testing cart', () => {
 	it( 'opens Mini Cart drawer when clicking on button', async () => {
 		render( <MiniCartBlock /> );
 		await waitFor( () => expect( fetchMock ).toHaveBeenCalled() );
-		fireEvent.click( screen.getByLabelText( /items/i ) );
+		act( () => {
+			fireEvent.click( screen.getByLabelText( /items/i ) );
+		} );
 
 		expect( screen.getByText( /Your cart/i ) ).toBeInTheDocument();
 		expect( fetchMock ).toHaveBeenCalledTimes( 1 );
@@ -75,9 +82,11 @@ describe( 'Testing cart', () => {
 		render( <MiniCartBlock /> );
 
 		await waitFor( () => expect( fetchMock ).toHaveBeenCalled() );
-		fireEvent.click( screen.getByLabelText( /items/i ) );
+		act( () => {
+			fireEvent.click( screen.getByLabelText( /items/i ) );
+		} );
 
-		expect( screen.getByText( /Cart is empty/i ) ).toBeInTheDocument();
+		expect( screen.getByText( /0 items/i ) ).toBeInTheDocument();
 		expect( fetchMock ).toHaveBeenCalledTimes( 1 );
 	} );
 
@@ -93,10 +102,12 @@ describe( 'Testing cart', () => {
 		} );
 
 		await waitForElementToBeRemoved( () =>
-			screen.queryByLabelText( /3 items/i )
+			screen.queryByLabelText( /3 items in cart/i )
 		);
 		await waitFor( () =>
-			expect( screen.getByLabelText( /0 items/i ) ).toBeInTheDocument()
+			expect(
+				screen.getByLabelText( /0 items in cart/i )
+			).toBeInTheDocument()
 		);
 	} );
 
@@ -107,16 +118,18 @@ describe( 'Testing cart', () => {
 
 		mockFullCart();
 		// eslint-disable-next-line no-undef
-		const removedFromCartEvent = new Event( 'wc-blocks_added_to_cart' );
+		const addedToCartEvent = new Event( 'wc-blocks_added_to_cart' );
 		act( () => {
-			document.body.dispatchEvent( removedFromCartEvent );
+			document.body.dispatchEvent( addedToCartEvent );
 		} );
 
 		await waitForElementToBeRemoved( () =>
-			screen.queryByLabelText( /0 items/i )
+			screen.queryByLabelText( /0 items in cart/i )
 		);
 		await waitFor( () =>
-			expect( screen.getAllByLabelText( /3 items/i ).length > 0 )
+			expect(
+				screen.getByLabelText( /3 items in cart/i )
+			).toBeInTheDocument()
 		);
 	} );
 } );

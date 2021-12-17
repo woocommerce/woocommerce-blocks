@@ -73,7 +73,7 @@ The payment method data context exposes the api interfaces for the following thi
 -   `paymentMethodData`: This is the current extra data tracked in the context state. This is arbitrary data provided by the payment method extension after it has completed payment for checkout to include in the processing request. Typically this would contain things like payment `token` or `payment_method` name.
 -   `errorMessage`: This exposes the current set error message provided by the active payment method (if present).
 -   `activePaymentMethod`: This is the current active payment method in the checkout.
--   `setActivePaymentMethod`: This is used to set the active payment method.
+-   `setActivePaymentMethod`: This is used to set the active payment method and any related payment method data.
 -   `onPaymentProcessing`: This is an event subscriber that can be used to subscribe observers to be called when the status for the context is `PROCESSING`.
 -   `customerPaymentMethods`: This is an object containing any saved payment method information for the current logged in user. It is provided via the server and used to generate the ui for the shopper to select a saved payment method from a previous purchase.
 -   `paymentMethods`: This is an object containing all the _initialized_ registered payment methods.
@@ -117,7 +117,7 @@ These docs currently don't go into detail for all the hooks as that is fairly st
 
 ### `usePaymentMethodInterface`
 
-This hook is used to expose all the interfaces for the registered payment method components to utilize. Essentially the result from this hook is fed in as props on the registered payment components when they are setup by checkout. You can use the typedef ([`RegisteredPaymentMethodProps`](https://github.com/woocommerce/woocommerce-gutenberg-products-block/blob/trunk/assets/js/type-defs/registered-payment-method-props.js)) to see what is fed to payment methods as props from this hook.
+This hook is used to expose all the interfaces for the registered payment method components to utilize. Essentially the result from this hook is fed in as props on the registered payment components when they are setup by checkout. You can use the typedef ([`PaymentMethodInterface`](https://github.com/woocommerce/woocommerce-gutenberg-products-block/blob/trunk/assets/js/type-defs/payment-method-interface.ts)) to see what is fed to payment methods as props from this hook.
 
 _Why don't payment methods just implement this hook_?
 

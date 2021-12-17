@@ -6,15 +6,16 @@ import NumberFormat, {
 	NumberFormatProps,
 } from 'react-number-format';
 import classNames from 'classnames';
-import type { Currency } from '@woocommerce/price-format';
 import type { ReactElement } from 'react';
+import type { Currency } from '@woocommerce/types';
 
 /**
  * Internal dependencies
  */
 import './style.scss';
 
-interface FormattedMonetaryAmountProps {
+interface FormattedMonetaryAmountProps
+	extends Omit< NumberFormatProps, 'onValueChange' > {
 	className?: string;
 	displayType?: NumberFormatProps[ 'displayType' ];
 	allowNegative?: boolean;
@@ -22,6 +23,8 @@ interface FormattedMonetaryAmountProps {
 	value: number | string; // Value of money amount.
 	currency: Currency | Record< string, never >; // Currency configuration object.
 	onValueChange?: ( unit: number ) => void; // Function to call when value changes.
+	style?: React.CSSProperties;
+	renderText?: ( value: string ) => JSX.Element;
 }
 
 /**
@@ -83,14 +86,10 @@ const FormattedMonetaryAmount = ( {
 	// Wrapper for NumberFormat onValueChange which handles subunit conversion.
 	const onValueChangeWrapper = onValueChange
 		? ( values: NumberFormatValues ) => {
-				const minorUnitValue =
-					( ( values.value as unknown ) as number ) *
-					10 ** currency.minorUnit;
+				const minorUnitValue = +values.value * 10 ** currency.minorUnit;
 				onValueChange( minorUnitValue );
 		  }
-		: () => {
-				/* not used */
-		  };
+		: () => void 0;
 
 	return (
 		<NumberFormat

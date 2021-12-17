@@ -9,7 +9,7 @@ import { __, sprintf } from '@wordpress/i18n';
 export const mustContain = (
 	value: string,
 	requiredValue: string
-): true | Error => {
+): true | never => {
 	if ( ! value.includes( requiredValue ) ) {
 		throw Error(
 			sprintf(
@@ -18,8 +18,8 @@ export const mustContain = (
 					'Returned value must include %1$s, you passed "%2$s"',
 					'woo-gutenberg-products-block'
 				),
-				value,
-				requiredValue
+				requiredValue,
+				value
 			)
 		);
 	}

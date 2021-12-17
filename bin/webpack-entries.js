@@ -50,6 +50,10 @@ const blocks = {
 		customDir: 'cart-checkout/mini-cart',
 		isExperimental: true,
 	},
+	'mini-cart-contents': {
+		customDir: 'cart-checkout/mini-cart-contents',
+		isExperimental: true,
+	},
 	'single-product': {
 		isExperimental: true,
 	},
@@ -89,8 +93,6 @@ const entries = {
 		// @wordpress/components styles
 		'custom-select-control-style':
 			'./node_modules/wordpress-components/src/custom-select-control/style.scss',
-		'spinner-style':
-			'./node_modules/wordpress-components/src/spinner/style.scss',
 		'snackbar-notice-style':
 			'./node_modules/wordpress-components/src/snackbar/style.scss',
 		'combobox-control-style':

@@ -1,7 +1,7 @@
 /**
  * External dependencies
  */
-import { render, screen, waitFor } from '@testing-library/react';
+import { render, screen, waitFor, act } from '@testing-library/react';
 import { previewCart } from '@woocommerce/resource-previews';
 import { dispatch } from '@wordpress/data';
 import { CART_STORE_KEY as storeKey } from '@woocommerce/block-data';
@@ -64,16 +64,18 @@ const CartBlock = ( {
 };
 
 describe( 'Testing cart', () => {
-	beforeEach( async () => {
-		fetchMock.mockResponse( ( req ) => {
-			if ( req.url.match( /wc\/store\/cart/ ) ) {
-				return Promise.resolve( JSON.stringify( previewCart ) );
-			}
-			return Promise.resolve( '' );
+	beforeEach( () => {
+		act( () => {
+			fetchMock.mockResponse( ( req ) => {
+				if ( req.url.match( /wc\/store\/cart/ ) ) {
+					return Promise.resolve( JSON.stringify( previewCart ) );
+				}
+				return Promise.resolve( '' );
+			} );
+			// need to clear the store resolution state between tests.
+			dispatch( storeKey ).invalidateResolutionForStore();
+			dispatch( storeKey ).receiveCart( defaultCartState.cartData );
 		} );
-		// need to clear the store resolution state between tests.
-		await dispatch( storeKey ).invalidateResolutionForStore();
-		await dispatch( storeKey ).receiveCart( defaultCartState.cartData );
 	} );
 
 	afterEach( () => {
@@ -175,5 +177,32 @@ describe( 'Testing cart', () => {
 
 		await waitFor( () => expect( fetchMock ).toHaveBeenCalled() );
 		expect( screen.getAllByRole( 'cell' )[ 1 ] ).toHaveTextContent( '16€' );
+	} );
+
+	it( 'updates quantity when changed in server', async () => {
+		const cart = {
+			...previewCart,
+			// Make it so there is only one item to simplify things.
+			items: [
+				{
+					...previewCart.items[ 0 ],
+					quantity: 5,
+				},
+			],
+		};
+		const itemName = cart.items[ 0 ].name;
+		render( <CartBlock /> );
+
+		await waitFor( () => expect( fetchMock ).toHaveBeenCalled() );
+		const quantityInput = screen.getByLabelText(
+			`Quantity of ${ itemName } in your cart.`
+		);
+		expect( quantityInput.value ).toBe( '2' );
+
+		act( () => {
+			dispatch( storeKey ).receiveCart( cart );
+		} );
+
+		expect( quantityInput.value ).toBe( '5' );
 	} );
 } );

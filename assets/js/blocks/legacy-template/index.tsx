@@ -1,14 +1,12 @@
 /**
  * External dependencies
  */
-import {
-	registerExperimentalBlockType,
-	WC_BLOCKS_IMAGE_URL,
-} from '@woocommerce/block-settings';
+import { registerBlockType } from '@wordpress/blocks';
+import { WC_BLOCKS_IMAGE_URL } from '@woocommerce/block-settings';
 import { useBlockProps } from '@wordpress/block-editor';
 import { Placeholder } from '@wordpress/components';
 import { __, sprintf } from '@wordpress/i18n';
-import { page } from '@wordpress/icons';
+import { box, Icon } from '@wordpress/icons';
 
 /**
  * Internal dependencies
@@ -31,7 +29,7 @@ const Edit = ( { attributes }: Props ) => {
 	return (
 		<div { ...blockProps }>
 			<Placeholder
-				icon={ page }
+				icon={ box }
 				label={ templateTitle }
 				className="wp-block-woocommerce-legacy-template__placeholder"
 			>
@@ -57,8 +55,11 @@ const Edit = ( { attributes }: Props ) => {
 	);
 };
 
-registerExperimentalBlockType( 'woocommerce/legacy-template', {
+registerBlockType( 'woocommerce/legacy-template', {
 	title: __( 'WooCommerce Legacy Template', 'woo-gutenberg-products-block' ),
+	icon: (
+		<Icon icon={ box } className="wc-block-editor-components-block-icon" />
+	),
 	category: 'woocommerce',
 	apiVersion: 2,
 	keywords: [ __( 'WooCommerce', 'woo-gutenberg-products-block' ) ],
@@ -85,12 +86,6 @@ registerExperimentalBlockType( 'woocommerce/legacy-template', {
 		template: {
 			type: 'string',
 			default: 'any',
-		},
-		lock: {
-			type: 'object',
-			default: {
-				remove: true,
-			},
 		},
 	},
 	edit: Edit,
