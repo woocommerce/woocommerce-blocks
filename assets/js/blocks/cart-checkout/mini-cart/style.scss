@@ -87,7 +87,7 @@
 }
 
 .wc-block-mini-cart__title {
-	font-size: xx-large;
+	@include font-size(large);
 	margin-top: 0;
 }
 
