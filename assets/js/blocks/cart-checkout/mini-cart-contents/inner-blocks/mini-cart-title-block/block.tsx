@@ -10,9 +10,6 @@ import { useStoreCart } from '@woocommerce/base-context/hooks';
 
 const Block = (): JSX.Element => {
 	const { cartItemsCount, cartIsLoading } = useStoreCart();
-	/**
-	 * @todo Allow the user to edit the title of the mini cart.
-	 */
 	return (
 		<h2 className="wc-block-mini-cart__title">
 			{ cartIsLoading
