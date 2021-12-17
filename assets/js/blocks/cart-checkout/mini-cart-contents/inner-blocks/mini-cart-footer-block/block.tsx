@@ -54,7 +54,7 @@ const Block = (): JSX.Element => {
 				{ CHECKOUT_URL && (
 					<Button
 						className="wc-block-mini-cart__footer-checkout"
-						href={ CHECKOUT_URL || '' }
+						href={ CHECKOUT_URL }
 					>
 						{ __(
 							'Go to checkout',
