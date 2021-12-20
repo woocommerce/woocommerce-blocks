@@ -104,7 +104,6 @@ Release and roadmap notes available on the [WooCommerce Developers Blog](https:/
 - Site Editor template list: Fix wrong icon displayed on WooCommerce templates after they have been edited. ([5375](https://github.com/woocommerce/woocommerce-gutenberg-products-block/pull/5375))
 - Fix validation error handling after using browser autofill. ([5373](https://github.com/woocommerce/woocommerce-gutenberg-products-block/pull/5373))
 - Update loading skeleton animations. ([5362](https://github.com/woocommerce/woocommerce-gutenberg-products-block/pull/5362))
-- Mini Cart Block: Render the empty state set on Mini Cart template parts. ([5338](https://github.com/woocommerce/woocommerce-gutenberg-products-block/pull/5338))
 - Add error handling to `get_routes_from_namespace` method. ([5319](https://github.com/woocommerce/woocommerce-gutenberg-products-block/pull/5319))
 
 = 6.5.0 - 2021-12-06 =
