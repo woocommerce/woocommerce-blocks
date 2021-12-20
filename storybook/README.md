@@ -148,7 +148,7 @@ Full official docs: https://storybook.js.org/docs/react/writing-stories/introduc
 
 If you are using [VSCode](https://code.visualstudio.com/), this repo includes some helpful snippets that will become available inside `.ts` and `.tsx` files. You can find them inside `.vscode/storybook.code-snippets`.
 
-The `sbs` (“Storybook story”) will scaffold the entire code in the [section above](#scaffold-tour). If you have respected the naming conventions, it will also property import your component and the properties with the correct names, saving you a bunch of time.
+The `sbs` (“Storybook story”) will scaffold the entire code in the [section above](#scaffold-tour). If you have respected the naming conventions, it will also properly import your component and the properties with the correct names, saving you a bunch of time.
 
 The `sbt` (“Storybook story template”) will create a new story by binding your default template and prompting you to provide specific arguments.
 
@@ -227,7 +227,7 @@ See: https://github.com/strothj/react-docgen-typescript-loader/issues/75
 
 ### Controlled components
 
-Your component is not managing its own state, and expects it to be passed as a prop, but you want to create a self-contained story. You can then edit your main `Template` function to manage the state, for example through hooks.
+Your component is not managing its own state and expects it to be passed as a prop, but you want to create a self-contained story. You can then edit your main `Template` function to manage the state, for example through hooks.
 
 ```tsx
 const Template: Story< MyControlledComponentProps > = ( args ) => {
@@ -275,7 +275,7 @@ At the time of writing, there is a known bug that doesn't keep number inputs in 
 
 ### Simulating interactions
 
-First of all, note that all the props starting with `on` as described above trigger “actions” in Storybook, which is basically just a way to see how data gets passed to an handler via the _Actions_ tab.
+First of all, note that all the props starting with `on` as described above trigger “actions” in Storybook, which is basically just a way to see how data gets passed to a handler via the _Actions_ tab.
 
 You can also manually mark props as actions in the `argTypes`, like so:
 
