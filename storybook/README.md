@@ -37,7 +37,7 @@ The above code will already generate a story that you can tweak, but let's look 
 
 First of all, by using TypeScript and exporting your component's props, Storybook will automatically show the documentation associated with your props and also generate the controls which are more appropriate for each property.
 
-Also, if you follow the naming convention of starting your event handlers with `on` (e.g. `onChange`, `onRemove` etc.), Storybook will automatically make those props uncontrollable and generate events from them (this convention can be changed in `preview.js`).
+Also, if you follow the naming convention of starting your event handlers with `on` (e.g. `onChange`, `onRemove`, etc.), Storybook will automatically make those props uncontrollable and generate events from them (this convention can be changed in `preview.js`).
 
 Sometimes you will need to manually change those assumptions, and we'll see how in a moment. But let's go step-by-step:
 
