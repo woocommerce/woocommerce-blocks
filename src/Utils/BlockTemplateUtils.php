@@ -146,7 +146,7 @@ class BlockTemplateUtils {
 		$template->theme   = $template_is_from_theme ? $theme_name : 'WooCommerce';
 		$template->content = self::gutenberg_inject_theme_attribute_in_content( $template_content );
 		// Plugin was agreed as a valid source value despite existing inline docs at the time of creating: https://github.com/WordPress/gutenberg/issues/36597#issuecomment-976232909.
-		$template->source         = $template_file->source || 'plugin';
+		$template->source         = $template_file->source ? $template_file->source : 'plugin';
 		$template->slug           = $template_file->slug;
 		$template->type           = $template_type;
 		$template->title          = ! empty( $template_file->title ) ? $template_file->title : self::convert_slug_to_title( $template_file->slug );
