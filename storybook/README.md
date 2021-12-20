@@ -56,7 +56,7 @@ The default export defines the metadata for your component. The most important t
   title: string;
 
   /**
-   * You should basically always pass your component here.
+   * You should always pass your component here.
    */
   component: ComponentType< any >;
 
