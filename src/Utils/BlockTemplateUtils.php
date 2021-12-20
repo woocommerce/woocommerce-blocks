@@ -136,7 +136,7 @@ class BlockTemplateUtils {
 
 		// If the theme has an archive-products.html template but does not have product taxonomy templates
 		// then we will load in the archive-product.html template from the theme to use for product taxonomies on the frontend.
-		$template_is_from_theme = 'theme' === $template_file->source ? true : false;
+		$template_is_from_theme = 'theme' === $template_file->source;
 		$theme_name             = wp_get_theme()->get( 'TextDomain' );
 
 		// phpcs:ignore WordPress.WP.AlternativeFunctions.file_get_contents_file_get_contents
