@@ -137,12 +137,12 @@ class BlockTemplateUtils {
 		// If the theme has an archive-products.html template but does not have product taxonomy templates
 		// then we will load in the archive-product.html template from the theme to use for product taxonomies on the frontend.
 		$template_is_from_theme = 'theme' === $template_file->source ? true : false;
-		$theme_name             = wp_get_theme()->get( 'Name' );
+		$theme_name             = wp_get_theme()->get( 'TextDomain' );
 
 		// phpcs:ignore WordPress.WP.AlternativeFunctions.file_get_contents_file_get_contents
 		$template_content  = file_get_contents( $template_file->path );
 		$template          = new \WP_Block_Template();
-		$template->id      = $template_is_from_theme ? strtolower( $theme_name ) . '//' . $template_file->slug : 'woocommerce//' . $template_file->slug;
+		$template->id      = $template_is_from_theme ? $theme_name . '//' . $template_file->slug : 'woocommerce//' . $template_file->slug;
 		$template->theme   = $template_is_from_theme ? $theme_name : 'WooCommerce';
 		$template->content = self::gutenberg_inject_theme_attribute_in_content( $template_content );
 		// Plugin was agreed as a valid source value despite existing inline docs at the time of creating: https://github.com/WordPress/gutenberg/issues/36597#issuecomment-976232909.
@@ -170,7 +170,7 @@ class BlockTemplateUtils {
 	 * @return object Block template object.
 	 */
 	public static function create_new_block_template_object( $template_file, $template_type, $template_slug, $template_is_from_theme = false ) {
-		$theme_name = strtolower( wp_get_theme()->get( 'Name' ) );
+		$theme_name = wp_get_theme()->get( 'TextDomain' );
 
 		$new_template_item = array(
 			'slug'        => $template_slug,
