@@ -117,7 +117,6 @@ class BlockTemplateUtils {
 		}
 
 		if ( 'woocommerce' === $theme ) {
-			$template->theme  = 'woocommerce/woocommerce';
 			$template->origin = 'plugin';
 		}
 
@@ -141,11 +140,12 @@ class BlockTemplateUtils {
 		$theme_name             = wp_get_theme()->get( 'Name' );
 
 		// phpcs:ignore WordPress.WP.AlternativeFunctions.file_get_contents_file_get_contents
-		$template_content         = file_get_contents( $template_file->path );
-		$template                 = new \WP_Block_Template();
-		$template->id             = $template_is_from_theme ? strtolower( $theme_name ) . '//' . $template_file->slug : 'woocommerce//' . $template_file->slug;
-		$template->theme          = $template_is_from_theme ? $theme_name : 'woocommerce/woocommerce';
-		$template->content        = self::gutenberg_inject_theme_attribute_in_content( $template_content );
+		$template_content  = file_get_contents( $template_file->path );
+		$template          = new \WP_Block_Template();
+		$template->id      = $template_is_from_theme ? strtolower( $theme_name ) . '//' . $template_file->slug : 'woocommerce//' . $template_file->slug;
+		$template->theme   = $template_is_from_theme ? $theme_name : 'WooCommerce';
+		$template->content = self::gutenberg_inject_theme_attribute_in_content( $template_content );
+		// Plugin was agreed as a valid source value despite existing inline docs at the time of creating: https://github.com/WordPress/gutenberg/issues/36597#issuecomment-976232909.
 		$template->source         = $template_file->source || 'plugin';
 		$template->slug           = $template_file->slug;
 		$template->type           = $template_type;
@@ -178,6 +178,7 @@ class BlockTemplateUtils {
 			'path'        => $template_file,
 			'type'        => $template_type,
 			'theme'       => $template_is_from_theme ? $theme_name : 'woocommerce',
+			// Plugin was agreed as a valid source value despite existing inline docs at the time of creating: https://github.com/WordPress/gutenberg/issues/36597#issuecomment-976232909.
 			'source'      => $template_is_from_theme ? 'theme' : 'plugin',
 			'title'       => self::convert_slug_to_title( $template_slug ),
 			'description' => '',
