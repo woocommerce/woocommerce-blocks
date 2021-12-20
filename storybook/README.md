@@ -1,6 +1,6 @@
 # Working with Storybook
 
-This document is meant to make contributing to our Storybook a bit easier by giving some tips, pointing out a few gotchas and make the editing experience smoother and reduce the friction to adding a new story.
+This document is meant to make contributing to our Storybook a bit easier by giving some tips, pointing out a few gotchas, making the editing experience smoother, and reducing the friction to adding a new story.
 
 ## Adding new stories
 
