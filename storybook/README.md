@@ -112,7 +112,7 @@ const Template: Story< MyComponentProps > = ( args ) => (
 );
 ```
 
-In this way you are rendering the component in the viewport and binding the component properties to the Storybook controls.
+In this way, you are rendering the component in the viewport and binding the component properties to the Storybook controls.
 
 In this template function, however, you might put any extra logic that your component rendering might need. Common use-cases are [wrapping them in context providers](#context-providers), or [simulating controlled components](#controlled-components).
 
