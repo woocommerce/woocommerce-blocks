@@ -182,7 +182,7 @@ E.g. compare `Chip/RemovableChip` with `ProductPrice/Sale/Range`. In the latter 
 
 Sometimes the inferred text input is not good enough, and you need something more complex. If those controls happen to be shared among many components, please write them in `storybook/custom-controls`.
 
-An example there is the `currency` control. Since many of our components expect `Currency` objects in their props, we can make sure we give a few example Storybook users can play with, without having to manually create the object themselves.
+An example there is the `currency` control. Since many of our components expect `Currency` objects in their props, we can make sure we give a few examples Storybook users can play with, without having to manually create the object themselves.
 
 Let's take a look:
 
