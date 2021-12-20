@@ -119,6 +119,7 @@ const ValidatedTextInput = ( {
 		) {
 			validateInput( true );
 		}
+		// We need to track value even if it is not directly used so we know when it changes.
 	}, [ value, validateInput ] );
 
 	// Remove validation errors when unmounted.
