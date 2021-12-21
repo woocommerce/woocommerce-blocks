@@ -1,6 +1,8 @@
 <?php
 namespace Automattic\WooCommerce\Blocks\BlockTypes;
 
+use Automattic\WooCommerce\Blocks\Utils\StyleAttributesUtils;
+
 /**
  * Legacy Single Product class
  *
@@ -64,6 +66,7 @@ class LegacyTemplate extends AbstractDynamicBlock {
 	 * @return string Rendered block type output.
 	 */
 	protected function render_single_product() {
+		add_filter( 'render_block', array( $this, 'get_markup_with_classes_by_attributes' ), 10, 2 );
 		ob_start();
 
 		/**
@@ -99,6 +102,7 @@ class LegacyTemplate extends AbstractDynamicBlock {
 	 * @return string Rendered block type output.
 	 */
 	protected function render_archive_product() {
+		add_filter( 'render_block', array( $this, 'get_markup_with_classes_by_attributes' ), 10, 2 );
 		ob_start();
 
 		/**
@@ -180,4 +184,22 @@ class LegacyTemplate extends AbstractDynamicBlock {
 		wp_reset_postdata();
 		return ob_get_clean();
 	}
+
+	/**
+	 * Get HTML markup with the right classes by attributes.
+	 *
+	 * @param string $content Block content.
+	 * @param array  $block Parsed block data.
+	 * @return string Rendered block type output.
+	 */
+	public function get_markup_with_classes_by_attributes( string $content, array $block ) {
+		$pattern     = '/(?<=class=\")[^"]+(?=\")/';
+		$attributes  = (array) $block['attrs'];
+		$align_class = StyleAttributesUtils::get_align_class_and_style( $attributes );
+		$matches     = array();
+		preg_match( $pattern, $content, $matches );
+
+		return preg_replace( $pattern, $matches[0] . ' ' . $align_class['class'], $content, 1 );
+	}
+
 }
