@@ -3,8 +3,7 @@
  */
 import { registerBlockType } from '@wordpress/blocks';
 import { WC_BLOCKS_IMAGE_URL } from '@woocommerce/block-settings';
-import { LegacyFeedbackPrompt } from '@woocommerce/editor-components/feedback-prompt';
-import { InspectorControls, useBlockProps } from '@wordpress/block-editor';
+import { useBlockProps } from '@wordpress/block-editor';
 import { Placeholder } from '@wordpress/components';
 import { __, sprintf } from '@wordpress/i18n';
 import { box, Icon } from '@wordpress/icons';
@@ -21,14 +20,6 @@ interface Props {
 	};
 }
 
-const BlockSettings = (): JSX.Element => {
-	return (
-		<InspectorControls>
-			<LegacyFeedbackPrompt />
-		</InspectorControls>
-	);
-};
-
 const Edit = ( { attributes }: Props ) => {
 	const blockProps = useBlockProps();
 	const templateTitle =
@@ -37,7 +28,6 @@ const Edit = ( { attributes }: Props ) => {
 		TEMPLATES[ attributes.template ]?.placeholder ?? 'fallback';
 	return (
 		<div { ...blockProps }>
-			<BlockSettings />
 			<Placeholder
 				icon={ box }
 				label={ templateTitle }
