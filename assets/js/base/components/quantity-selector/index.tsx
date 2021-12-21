@@ -4,7 +4,7 @@
 import { __, sprintf } from '@wordpress/i18n';
 import { speak } from '@wordpress/a11y';
 import classNames from 'classnames';
-import { useCallback } from '@wordpress/element';
+import { useCallback, useLayoutEffect } from '@wordpress/element';
 import { DOWN, UP } from '@wordpress/keycodes';
 import { useDebouncedCallback } from 'use-debounce';
 
@@ -74,13 +74,8 @@ const QuantitySelector = ( {
 	/**
 	 * The goal of this function is to normalize what was inserted,
 	 * but after the customer has stopped typing.
-	 *
-	 * It's important to wait before normalizing or we end up with
-	 * a frustrating experience, for example, if the minimum is 2 and
-	 * the customer is trying to type "10", premature normalizing would
-	 * always kick in at "1" and turn that into 2.
 	 */
-	const normalizeQuantity = useDebouncedCallback(
+	const normalizeQuantity = useCallback(
 		( initialValue: number ) => {
 			// We copy the starting value.
 			let value = initialValue;
@@ -105,9 +100,27 @@ const QuantitySelector = ( {
 				onChange( value );
 			}
 		},
+		[ hasMaximum, maximum, minimum, onChange, step ]
+	);
+
+	/*
+	 * It's important to wait before normalizing or we end up with
+	 * a frustrating experience, for example, if the minimum is 2 and
+	 * the customer is trying to type "10", premature normalizing would
+	 * always kick in at "1" and turn that into 2.
+	 */
+	const debouncedNormalizeQuantity = useDebouncedCallback(
+		normalizeQuantity,
 		// This value is deliberately smaller than what's in useStoreCartItemQuantity so we don't end up with two requests.
 		300
 	);
+
+	/**
+	 * Normalize qty on mount before render.
+	 */
+	useLayoutEffect( () => {
+		normalizeQuantity( quantity );
+	}, [ quantity, normalizeQuantity ] );
 
 	/**
 	 * Handles keyboard up and down keys to change quantity value.
@@ -160,7 +173,7 @@ const QuantitySelector = ( {
 						// we commit this value immediately.
 						onChange( value );
 						// but once the customer has stopped typing, we make sure his value is respecting the bounds (maximum value, minimum value, step value), and commit the normalized value.
-						normalizeQuantity( value );
+						debouncedNormalizeQuantity( value );
 					}
 				} }
 				aria-label={ sprintf(
