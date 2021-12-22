@@ -90,10 +90,15 @@ const NoShippingPlaceholder = ( {
 	if ( ! showCalculator ) {
 		return (
 			<em>
-				{ __(
-					'Calculated during checkout',
-					'woo-gutenberg-products-block'
-				) }
+				{ isCheckout
+					? __(
+							'No shipping options available',
+							'woo-gutenberg-products-block'
+					  )
+					: __(
+							'Calculated during checkout',
+							'woo-gutenberg-products-block'
+					  ) }
 			</em>
 		);
 	}
