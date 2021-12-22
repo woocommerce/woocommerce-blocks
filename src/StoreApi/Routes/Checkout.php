@@ -415,7 +415,7 @@ class Checkout extends AbstractCartRoute {
 	 */
 	private function update_order_from_request( \WP_REST_Request $request ) {
 		$this->order->set_customer_note( $request['customer_note'] ?? '' );
-		$this->order->set_payment_method( $request['payment_method'] ?? '' );
+		$this->order->set_payment_method( $this->get_request_payment_method_id( $request ) );
 
 		/**
 		 * Fires when the Checkout Block/Store API updates an order's from the API request data.
@@ -518,17 +518,7 @@ class Checkout extends AbstractCartRoute {
 	 * @return string
 	 */
 	private function get_request_payment_method_id( \WP_REST_Request $request ) {
-		$payment_method_id = wc_clean( wp_unslash( $request['payment_method'] ?? '' ) );
-
-		if ( empty( $payment_method_id ) ) {
-			throw new RouteException(
-				'woocommerce_rest_checkout_missing_payment_method',
-				__( 'No payment method provided.', 'woo-gutenberg-products-block' ),
-				400
-			);
-		}
-
-		return $payment_method_id;
+		return $this->get_request_payment_method( $request )->id;
 	}
 
 	/**
@@ -539,18 +529,30 @@ class Checkout extends AbstractCartRoute {
 	 * @return \WC_Payment_Gateway
 	 */
 	private function get_request_payment_method( \WP_REST_Request $request ) {
-		$payment_method_id  = $this->get_request_payment_method_id( $request );
-		$available_gateways = WC()->payment_gateways->get_available_payment_gateways();
+		$available_gateways     = WC()->payment_gateways->get_available_payment_gateways();
+		$request_payment_method = wc_clean( wp_unslash( $request['payment_method'] ?? '' ) );
 
-		if ( ! isset( $available_gateways[ $payment_method_id ] ) ) {
+		if ( empty( $request_payment_method ) ) {
 			throw new RouteException(
-				'woocommerce_rest_checkout_payment_method_disabled',
-				__( 'This payment gateway is not available.', 'woo-gutenberg-products-block' ),
+				'woocommerce_rest_checkout_missing_payment_method',
+				__( 'No payment method provided.', 'woo-gutenberg-products-block' ),
 				400
 			);
 		}
 
-		return $available_gateways[ $payment_method_id ];
+		if ( ! isset( $available_gateways[ $request_payment_method ] ) ) {
+			throw new RouteException(
+				'woocommerce_rest_checkout_payment_method_disabled',
+				sprintf(
+					// Translators: %s Payment method ID.
+					__( 'The %s payment gateway is not available.', 'woo-gutenberg-products-block' ),
+					esc_html( $request_payment_method )
+				),
+				400
+			);
+		}
+
+		return $available_gateways[ $request_payment_method ];
 	}
 
 	/**
