@@ -85,6 +85,18 @@ Release and roadmap notes available on the [WooCommerce Developers Blog](https:/
 
 == Changelog ==
 
+= 6.5.1 - 2021-12-22 =
+
+#### Bug Fixes
+
+- Fixed error reporting block templates do not exist after editing WooCommerce templates on WP 5.8. ([5425](https://github.com/woocommerce/woocommerce-gutenberg-products-block/pull/5425))
+- Added By template column value is user friendly for modified WooCommerce block templates. ([5420](https://github.com/woocommerce/woocommerce-gutenberg-products-block/pull/5420))
+- Avoid WooCommerce template names being editable. ([5385](https://github.com/woocommerce/woocommerce-gutenberg-products-block/pull/5385))
+- Use the themes product archive block template for product category & product tag pages if the theme does not have more specific templates for those. ([5380](https://github.com/woocommerce/woocommerce-gutenberg-products-block/pull/5380))
+- Fixed issue with variable products add to cart error, and gallery not updating to show correct product variant image. ([5346](https://github.com/woocommerce/woocommerce-gutenberg-products-block/pull/5346))
+- Fix error when reverting WooCommerce templates. ([5342](https://github.com/woocommerce/woocommerce-gutenberg-products-block/pull/5342))
+- Fix: WooCommerce block templates loading for WP 5.9 without Gutenberg plugin. ([5335](https://github.com/woocommerce/woocommerce-gutenberg-products-block/pull/5335))
+
 = 6.5.0 - 2021-12-06 =
 
 #### Enhancements
