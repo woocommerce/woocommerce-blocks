@@ -37,7 +37,8 @@ const settings = {
 		inserter: false,
 		__experimentalExposeControlsToChildren: true,
 		color: {
-			text: false,
+			text: true,
+			link: true,
 		},
 	},
 	attributes: {

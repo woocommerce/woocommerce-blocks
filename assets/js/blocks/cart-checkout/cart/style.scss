@@ -27,6 +27,7 @@ table.wc-block-cart-items td {
 .editor-styles-wrapper table.wc-block-cart-items,
 table.wc-block-cart-items {
 	width: 100%;
+	color: inherit;
 
 	.wc-block-cart-items__header {
 		@include font-size( smaller );
