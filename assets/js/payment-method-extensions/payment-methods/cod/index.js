@@ -11,6 +11,8 @@ import { decodeEntities } from '@wordpress/html-entities';
  */
 import { PAYMENT_METHOD_NAME } from './constants';
 
+/** @typedef { import('@woocommerce/type-defs/hooks').StoreCart } StoreCart */
+
 const settings = getSetting( 'cod_data', {} );
 const defaultLabel = __( 'Cash on delivery', 'woo-gutenberg-products-block' );
 const label = decodeEntities( settings.title ) || defaultLabel;
@@ -36,12 +38,17 @@ const Label = ( props ) => {
  * Determine whether COD is available for this cart/order.
  *
  * @param {Object} props Incoming props for the component.
+ * @param {StoreCart} props.cart Cart Object.
  * @param {boolean} props.cartNeedsShipping True if the cart contains any physical/shippable products.
  * @param {boolean} props.selectedShippingMethods
  *
  * @return {boolean}  True if COD payment method should be displayed as a payment option.
  */
-const canMakePayment = ( { cartNeedsShipping, selectedShippingMethods } ) => {
+const canMakePayment = ( {
+	cart,
+	cartNeedsShipping,
+	selectedShippingMethods,
+} ) => {
 	if ( ! settings.enableForVirtual && ! cartNeedsShipping ) {
 		// Store doesn't allow COD for virtual orders AND
 		// order doesn't contain any shippable products.
@@ -51,6 +58,12 @@ const canMakePayment = ( { cartNeedsShipping, selectedShippingMethods } ) => {
 	if ( ! settings.enableForShippingMethods.length ) {
 		// Store does not limit COD to specific shipping methods.
 		return true;
+	}
+
+	const available = cart.availablePaymentMethods.includes( 'cod' );
+
+	if ( ! available ) {
+		return false;
 	}
 
 	// Look for a supported shipping method in the user's selected

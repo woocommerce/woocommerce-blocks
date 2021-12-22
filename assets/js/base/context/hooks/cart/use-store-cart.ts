@@ -14,6 +14,7 @@ import {
 	EMPTY_CART_ERRORS,
 	EMPTY_SHIPPING_RATES,
 	EMPTY_TAX_LINES,
+	EMPTY_PAYMENT_METHODS,
 	EMPTY_PAYMENT_REQUIREMENTS,
 	EMPTY_EXTENSIONS,
 } from '@woocommerce/block-data';
@@ -113,6 +114,7 @@ export const defaultCartData: StoreCart = {
 	shippingRates: EMPTY_SHIPPING_RATES,
 	shippingRatesLoading: false,
 	cartHasCalculatedShipping: false,
+	availablePaymentMethods: EMPTY_PAYMENT_METHODS,
 	paymentRequirements: EMPTY_PAYMENT_REQUIREMENTS,
 	receiveCart: () => undefined,
 	extensions: EMPTY_EXTENSIONS,
@@ -169,6 +171,8 @@ export const useStoreCart = (
 					shippingRatesLoading: false,
 					cartHasCalculatedShipping:
 						previewCart.has_calculated_shipping,
+					availablePaymentMethods:
+						previewCart.availablePaymentMethods,
 					paymentRequirements: previewCart.paymentRequirements,
 					receiveCart:
 						typeof previewCart?.receiveCart === 'function'
@@ -229,6 +233,7 @@ export const useStoreCart = (
 				shippingRates: cartData.shippingRates,
 				shippingRatesLoading,
 				cartHasCalculatedShipping: cartData.hasCalculatedShipping,
+				availablePaymentMethods: cartData.availablePaymentMethods,
 				paymentRequirements: cartData.paymentRequirements,
 				receiveCart,
 			};

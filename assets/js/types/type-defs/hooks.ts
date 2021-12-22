@@ -49,6 +49,7 @@ export interface StoreCart {
 	extensions: Record< string, unknown >;
 	shippingRatesLoading: boolean;
 	cartHasCalculatedShipping: boolean;
+	availablePaymentMethods: Array< string >;
 	paymentRequirements: Array< string >;
 	receiveCart: ( cart: CartResponse ) => void;
 }

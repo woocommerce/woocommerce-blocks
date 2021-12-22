@@ -116,7 +116,7 @@ class CartSchema extends AbstractSchema {
 	 */
 	public function get_properties() {
 		return [
-			'coupons'                 => [
+			'coupons'                   => [
 				'description' => __( 'List of applied cart coupons.', 'woo-gutenberg-products-block' ),
 				'type'        => 'array',
 				'context'     => [ 'view', 'edit' ],
@@ -126,7 +126,7 @@ class CartSchema extends AbstractSchema {
 					'properties' => $this->force_schema_readonly( $this->coupon_schema->get_properties() ),
 				],
 			],
-			'shipping_rates'          => [
+			'shipping_rates'            => [
 				'description' => __( 'List of available shipping rates for the cart.', 'woo-gutenberg-products-block' ),
 				'type'        => 'array',
 				'context'     => [ 'view', 'edit' ],
@@ -136,21 +136,21 @@ class CartSchema extends AbstractSchema {
 					'properties' => $this->force_schema_readonly( $this->shipping_rate_schema->get_properties() ),
 				],
 			],
-			'shipping_address'        => [
+			'shipping_address'          => [
 				'description' => __( 'Current set shipping address for the customer.', 'woo-gutenberg-products-block' ),
 				'type'        => 'object',
 				'context'     => [ 'view', 'edit' ],
 				'readonly'    => true,
 				'properties'  => $this->force_schema_readonly( $this->shipping_address_schema->get_properties() ),
 			],
-			'billing_address'         => [
+			'billing_address'           => [
 				'description' => __( 'Current set billing address for the customer.', 'woo-gutenberg-products-block' ),
 				'type'        => 'object',
 				'context'     => [ 'view', 'edit' ],
 				'readonly'    => true,
 				'properties'  => $this->force_schema_readonly( $this->billing_address_schema->get_properties() ),
 			],
-			'items'                   => [
+			'items'                     => [
 				'description' => __( 'List of cart items.', 'woo-gutenberg-products-block' ),
 				'type'        => 'array',
 				'context'     => [ 'view', 'edit' ],
@@ -160,37 +160,37 @@ class CartSchema extends AbstractSchema {
 					'properties' => $this->force_schema_readonly( $this->item_schema->get_properties() ),
 				],
 			],
-			'items_count'             => [
+			'items_count'               => [
 				'description' => __( 'Number of items in the cart.', 'woo-gutenberg-products-block' ),
 				'type'        => 'integer',
 				'context'     => [ 'view', 'edit' ],
 				'readonly'    => true,
 			],
-			'items_weight'            => [
+			'items_weight'              => [
 				'description' => __( 'Total weight (in grams) of all products in the cart.', 'woo-gutenberg-products-block' ),
 				'type'        => 'number',
 				'context'     => [ 'view', 'edit' ],
 				'readonly'    => true,
 			],
-			'needs_payment'           => [
+			'needs_payment'             => [
 				'description' => __( 'True if the cart needs payment. False for carts with only free products and no shipping costs.', 'woo-gutenberg-products-block' ),
 				'type'        => 'boolean',
 				'context'     => [ 'view', 'edit' ],
 				'readonly'    => true,
 			],
-			'needs_shipping'          => [
+			'needs_shipping'            => [
 				'description' => __( 'True if the cart needs shipping. False for carts with only digital goods or stores with no shipping methods set-up.', 'woo-gutenberg-products-block' ),
 				'type'        => 'boolean',
 				'context'     => [ 'view', 'edit' ],
 				'readonly'    => true,
 			],
-			'has_calculated_shipping' => [
+			'has_calculated_shipping'   => [
 				'description' => __( 'True if the cart meets the criteria for showing shipping costs, and rates have been calculated and included in the totals.', 'woo-gutenberg-products-block' ),
 				'type'        => 'boolean',
 				'context'     => [ 'view', 'edit' ],
 				'readonly'    => true,
 			],
-			'fees'                    => [
+			'fees'                      => [
 				'description' => __( 'List of cart fees.', 'woo-gutenberg-products-block' ),
 				'type'        => 'array',
 				'context'     => [ 'view', 'edit' ],
@@ -200,7 +200,7 @@ class CartSchema extends AbstractSchema {
 					'properties' => $this->force_schema_readonly( $this->fee_schema->get_properties() ),
 				],
 			],
-			'totals'                  => [
+			'totals'                    => [
 				'description' => __( 'Cart total amounts provided using the smallest unit of the currency.', 'woo-gutenberg-products-block' ),
 				'type'        => 'object',
 				'context'     => [ 'view', 'edit' ],
@@ -300,7 +300,7 @@ class CartSchema extends AbstractSchema {
 					]
 				),
 			],
-			'errors'                  => [
+			'errors'                    => [
 				'description' => __( 'List of cart item errors, for example, items in the cart which are out of stock.', 'woo-gutenberg-products-block' ),
 				'type'        => 'array',
 				'context'     => [ 'view', 'edit' ],
@@ -310,13 +310,19 @@ class CartSchema extends AbstractSchema {
 					'properties' => $this->force_schema_readonly( $this->error_schema->get_properties() ),
 				],
 			],
-			'payment_requirements'    => [
+			'available_payment_methods' => [
+				'description' => __( 'List of available payment gateways that can be used to process the order.', 'woo-gutenberg-products-block' ),
+				'type'        => 'array',
+				'context'     => [ 'view', 'edit' ],
+				'readonly'    => true,
+			],
+			'payment_requirements'      => [
 				'description' => __( 'List of required payment gateway features to process the order.', 'woo-gutenberg-products-block' ),
 				'type'        => 'array',
 				'context'     => [ 'view', 'edit' ],
 				'readonly'    => true,
 			],
-			self::EXTENDING_KEY       => $this->get_extended_schema( self::IDENTIFIER ),
+			self::EXTENDING_KEY         => $this->get_extended_schema( self::IDENTIFIER ),
 		];
 	}
 
@@ -341,18 +347,18 @@ class CartSchema extends AbstractSchema {
 		$shipping_packages = $has_calculated_shipping ? $controller->get_shipping_packages() : [];
 
 		return [
-			'coupons'                 => $this->get_item_responses_from_schema( $this->coupon_schema, $cart->get_applied_coupons() ),
-			'shipping_rates'          => $this->get_item_responses_from_schema( $this->shipping_rate_schema, $shipping_packages ),
-			'shipping_address'        => $this->shipping_address_schema->get_item_response( wc()->customer ),
-			'billing_address'         => $this->billing_address_schema->get_item_response( wc()->customer ),
-			'items'                   => $this->get_item_responses_from_schema( $this->item_schema, $cart->get_cart() ),
-			'items_count'             => $cart->get_cart_contents_count(),
-			'items_weight'            => wc_get_weight( $cart->get_cart_contents_weight(), 'g' ),
-			'needs_payment'           => $cart->needs_payment(),
-			'needs_shipping'          => $cart->needs_shipping(),
-			'has_calculated_shipping' => $has_calculated_shipping,
-			'fees'                    => $this->get_item_responses_from_schema( $this->fee_schema, $cart->get_fees() ),
-			'totals'                  => (object) $this->prepare_currency_response(
+			'coupons'                   => $this->get_item_responses_from_schema( $this->coupon_schema, $cart->get_applied_coupons() ),
+			'shipping_rates'            => $this->get_item_responses_from_schema( $this->shipping_rate_schema, $shipping_packages ),
+			'shipping_address'          => $this->shipping_address_schema->get_item_response( wc()->customer ),
+			'billing_address'           => $this->billing_address_schema->get_item_response( wc()->customer ),
+			'items'                     => $this->get_item_responses_from_schema( $this->item_schema, $cart->get_cart() ),
+			'items_count'               => $cart->get_cart_contents_count(),
+			'items_weight'              => wc_get_weight( $cart->get_cart_contents_weight(), 'g' ),
+			'needs_payment'             => $cart->needs_payment(),
+			'needs_shipping'            => $cart->needs_shipping(),
+			'has_calculated_shipping'   => $has_calculated_shipping,
+			'fees'                      => $this->get_item_responses_from_schema( $this->fee_schema, $cart->get_fees() ),
+			'totals'                    => (object) $this->prepare_currency_response(
 				[
 					'total_items'        => $this->prepare_money_response( $cart->get_subtotal(), wc_get_price_decimals() ),
 					'total_items_tax'    => $this->prepare_money_response( $cart->get_subtotal_tax(), wc_get_price_decimals() ),
@@ -369,9 +375,10 @@ class CartSchema extends AbstractSchema {
 					'tax_lines'          => $this->get_tax_lines( $cart ),
 				]
 			),
-			'errors'                  => $cart_errors,
-			'payment_requirements'    => $this->extend->get_payment_requirements(),
-			self::EXTENDING_KEY       => $this->get_extended_data( self::IDENTIFIER ),
+			'errors'                    => $cart_errors,
+			'available_payment_methods' => array_keys( WC()->payment_gateways->get_available_payment_gateways() ),
+			'payment_requirements'      => $this->extend->get_payment_requirements(),
+			self::EXTENDING_KEY         => $this->get_extended_data( self::IDENTIFIER ),
 		];
 	}
 

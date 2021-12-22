@@ -230,6 +230,7 @@ export const previewCart: CartResponse = {
 		],
 	},
 	errors: [],
+	available_payment_methods: [],
 	payment_requirements: [ 'products' ],
 	extensions: {},
 };

@@ -11,6 +11,8 @@ import { decodeEntities } from '@wordpress/html-entities';
  */
 import { PAYMENT_METHOD_NAME } from './constants';
 
+/** @typedef { import('@woocommerce/type-defs/hooks').StoreCart } StoreCart */
+
 const settings = getSetting( 'bacs_data', {} );
 const defaultLabel = __(
 	'Direct bank transfer',
@@ -36,6 +38,18 @@ const Label = ( props ) => {
 };
 
 /**
+ * Determine whether the gateway is available for this cart/order.
+ *
+ * @param {Object} props Incoming props for the component.
+ * @param {StoreCart} props.cart Cart Object.
+ *
+ * @return {boolean}  True if payment method should be displayed as a payment option.
+ */
+const canMakePayment = ( { cart } ) => {
+	return cart.availablePaymentMethods.includes( 'bacs' );
+};
+
+/**
  * Bank transfer (BACS) payment method config object.
  */
 const bankTransferPaymentMethod = {
@@ -43,7 +57,7 @@ const bankTransferPaymentMethod = {
 	label: <Label />,
 	content: <Content />,
 	edit: <Content />,
-	canMakePayment: () => true,
+	canMakePayment,
 	ariaLabel: label,
 	supports: {
 		features: settings?.supports ?? [],
