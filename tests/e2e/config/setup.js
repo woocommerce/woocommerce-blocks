@@ -8,6 +8,7 @@ import { setup as setupPuppeteer } from 'jest-environment-puppeteer';
  */
 import {
 	setupSettings,
+	setupPageSettings,
 	createTaxes,
 	createCoupons,
 	createProducts,
@@ -41,6 +42,7 @@ module.exports = async ( globalConfig ) => {
 			createShippingZones(),
 			createProductAttributes(),
 			enablePaymentGateways(),
+			setupPageSettings()
 		] );
 		const [
 			taxes,
