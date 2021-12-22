@@ -23,6 +23,15 @@ class LegacyTemplate extends AbstractDynamicBlock {
 	 */
 	protected $api_version = '2';
 
+
+	/**
+	 * Initialize this block.
+	 */
+	protected function initialize() {
+		parent::initialize();
+		add_filter( 'render_block', array( $this, 'get_markup_with_classes_by_attributes' ), 10, 2 );
+	}
+
 	/**
 	 * Render method for the Legacy Template block. This method will determine which template to render.
 	 *
@@ -66,7 +75,6 @@ class LegacyTemplate extends AbstractDynamicBlock {
 	 * @return string Rendered block type output.
 	 */
 	protected function render_single_product() {
-		add_filter( 'render_block', array( $this, 'get_markup_with_classes_by_attributes' ), 10, 2 );
 		ob_start();
 
 		/**
@@ -102,7 +110,6 @@ class LegacyTemplate extends AbstractDynamicBlock {
 	 * @return string Rendered block type output.
 	 */
 	protected function render_archive_product() {
-		add_filter( 'render_block', array( $this, 'get_markup_with_classes_by_attributes' ), 10, 2 );
 		ob_start();
 
 		/**
@@ -198,6 +205,10 @@ class LegacyTemplate extends AbstractDynamicBlock {
 		$align_class = StyleAttributesUtils::get_align_class_and_style( $attributes );
 		$matches     = array();
 		preg_match( $pattern, $content, $matches );
+
+		if ( ! isset( $matches[0] ) ) {
+			return $content;
+		}
 
 		return preg_replace( $pattern, $matches[0] . ' ' . $align_class['class'], $content, 1 );
 	}
