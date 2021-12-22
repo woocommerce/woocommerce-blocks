@@ -7,13 +7,11 @@ import {
 	switchUserToAdmin,
 	openDocumentSettingsSidebar,
 } from '@wordpress/e2e-test-utils';
-import { find, configure } from 'puppeteer-testing-library';
 
 import {
 	visitBlockPage,
-	clearAndFillInput,
+	selectBlockByName,
 } from '@woocommerce/blocks-test-utils';
-import { getDocument, queries } from 'pptr-testing-library';
 
 /**
  * Internal dependencies
@@ -41,64 +39,43 @@ describe( `${ block.name } Block`, () => {
 		await expect( page ).toRenderBlock( block );
 	} );
 
-	it( "allows changing the block's title", async () => {
-		const document = getDocument( page );
-		await openDocumentSettingsSidebar();
-		await clearAndFillInput(
-			'.wp-block[data-type="woocommerce/active-filters"] textarea.wc-block-editor-components-title',
-			'New Title'
-		);
+	describe( 'attributes', () => {
+		beforeEach( async () => {
+			await openDocumentSettingsSidebar();
+			await selectBlockByName( block.slug );
+		} );
 
-		// Convert the title to H6.
-		const heading6Button = await find(
-			{
-				name: 'Heading 6',
-			},
-			{ page }
-		);
-		await heading6Button.click();
-		await expect(
-			page
-		).toMatchElement(
-			'.wp-block[data-type="woocommerce/active-filters"] h6 textarea',
-			{ text: 'New Title' }
-		);
+		it( "allows changing the block's title", async () => {
+			const textareaSelector = `.wp-block[data-type="${ block.slug }"] textarea.wc-block-editor-components-title`;
+			await expect( page ).toFill( textareaSelector, 'New Title' );
+			await page.click(
+				'.components-toolbar button[aria-label="Heading 6"]'
+			);
+			await expect(
+				page
+			).toMatchElement(
+				`.wp-block[data-type="${ block.slug }"] h6 textarea`,
+				{ text: 'New Title' }
+			);
+			// reset
+			await expect( page ).toFill( textareaSelector, block.name );
+			await page.click(
+				'.components-toolbar button[aria-label="Heading 3"]'
+			);
+		} );
 
-		await clearAndFillInput(
-			'.wp-block[data-type="woocommerce/active-filters"] textarea.wc-block-editor-components-title',
-			'Active filters'
-		);
-		// Convert the title back to H3.
-		const heading3Button = await queries.getByLabelText(
-			document,
-			/Heading 3/i,
-			{ selector: '.components-toolbar button' }
-		);
-		await heading3Button.click();
-	} );
+		it( 'allows changing the Display Style', async () => {
+			// Click the button to convert the display style to Chips.
+			await expect( page ).toClick( 'button', { text: 'Chips' } );
+			await expect( page ).toMatchElement(
+				'.wc-block-active-filters__list.wc-block-active-filters__list--chips'
+			);
 
-	it( 'allows changing the Display Style', async () => {
-		const document = await getDocument( page );
-		await openDocumentSettingsSidebar();
-
-		// Click the button to convert the display style to Chips.
-		const chipStyleButton = await queries.getByLabelText(
-			document,
-			/Display Style: Chips/i
-		);
-		await chipStyleButton.click();
-		await expect( page ).toMatchElement(
-			'.wc-block-active-filters__list.wc-block-active-filters__list--chips'
-		);
-
-		// Click the button to convert the display style to List.
-		const listStyleButton = await queries.getByLabelText(
-			document,
-			/Display Style: List/i
-		);
-		await listStyleButton.click();
-		await expect( page ).not.toMatchElement(
-			'.wc-block-active-filters__list.wc-block-active-filters__list--chips'
-		);
+			// Click the button to convert the display style to List.
+			await expect( page ).toClick( 'button', { text: 'List' } );
+			await expect( page ).not.toMatchElement(
+				'.wc-block-active-filters__list.wc-block-active-filters__list--chips'
+			);
+		} );
 	} );
 } );

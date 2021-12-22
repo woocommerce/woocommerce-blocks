@@ -8,10 +8,9 @@ import {
 	getEditedPostContent,
 } from '@wordpress/e2e-test-utils';
 import {
-	clearAndFillInput,
 	visitBlockPage,
+	selectBlockByName,
 } from '@woocommerce/blocks-test-utils';
-import { queries, getDocument } from 'pptr-testing-library';
 
 /**
  * Internal dependencies
@@ -40,88 +39,74 @@ describe( `${ block.name } Block`, () => {
 			await expect( page ).toRenderBlock( block );
 		} );
 
-		it( "allows changing the block's title", async () => {
-			const document = await getDocument( page );
-			// we focus on the block
-			await page.click( block.class );
-			await openDocumentSettingsSidebar();
-			await clearAndFillInput(
-				'.wp-block[data-type="woocommerce/price-filter"] textarea.wc-block-editor-components-title',
-				'New Title'
-			);
-			await page.click( block.class );
+		describe( 'Attributes', () => {
+			beforeEach( async () => {
+				await openDocumentSettingsSidebar();
+				await selectBlockByName( block.slug );
+			} );
 
-			// Change title to h6.
-			const heading6Button = await queries.getByLabelText(
-				document,
-				/Heading 6/i
-			);
-			await heading6Button.click();
-			await expect(
-				page
-			).toMatchElement(
-				'.wp-block[data-type="woocommerce/price-filter"] h6 textarea',
-				{ text: 'New Title' }
-			);
+			it( "allows changing the block's title", async () => {
+				const textareaSelector = `.wp-block[data-type="${ block.slug }"] textarea.wc-block-editor-components-title`;
+				await expect( page ).toFill( textareaSelector, 'New Title' );
+				await page.click( block.class );
 
-			await clearAndFillInput(
-				'.wp-block[data-type="woocommerce/price-filter"] textarea.wc-block-editor-components-title',
-				'Filter by price'
-			);
-			// Change title to h3.
-			const heading3Button = await queries.getByLabelText(
-				document,
-				/Heading 3/i
-			);
-			await heading3Button.click();
-			await expect(
-				page
-			).not.toMatchElement(
-				'.wp-block[data-type="woocommerce/price-filter"] h6 textarea',
-				{ text: 'New Title' }
-			);
-		} );
+				// Change title to h6.
+				await page.click(
+					'.components-toolbar button[aria-label="Heading 6"]'
+				);
+				await expect(
+					page
+				).toMatchElement(
+					`.wp-block[data-type="${ block.slug }"] h6 textarea`,
+					{ text: 'New Title' }
+				);
+				await expect( page ).toFill(
+					textareaSelector,
+					'Filter by price'
+				);
+				// Change title to h3.
+				await page.click(
+					'.components-toolbar button[aria-label="Heading 3"]'
+				);
+				await expect(
+					page
+				).not.toMatchElement(
+					`.wp-block[data-type="${ block.slug }"] h6 textarea`,
+					{ text: 'New Title' }
+				);
+			} );
 
-		it( 'allows changing the Display Style', async () => {
-			await openDocumentSettingsSidebar();
-			const document = await getDocument( page );
+			it( 'allows changing the Display Style', async () => {
+				// Turn the display style to Price Range: Text
+				await expect( page ).toClick( 'button', { text: 'Text' } );
 
-			// Turn the display style to Price Range: Text
-			const priceRangeTextButton = await queries.getByLabelText(
-				document,
-				/Price Range: Text/i
-			);
-			await priceRangeTextButton.click();
+				await page.waitForSelector(
+					'.wc-block-price-filter__range-text'
+				);
+				await expect( page ).toMatchElement(
+					'.wc-block-price-filter__range-text'
+				);
+				// Turn the display style to Price Range: Editable
+				await expect( page ).toClick( 'button', {
+					text: 'Editable',
+				} );
 
-			await expect( page ).toMatchElement(
-				'.wc-block-price-filter__range-text'
-			);
-			// Turn the display style to Price Range: Text
-			const priceRangeEditableButton = await queries.getByLabelText(
-				document,
-				/Price Range: Editable/i
-			);
-			await priceRangeEditableButton.click();
+				await expect( page ).not.toMatchElement(
+					'.wc-block-price-filter__range-text'
+				);
+			} );
 
-			await expect( page ).not.toMatchElement(
-				'.wc-block-price-filter__range-text'
-			);
-		} );
-
-		it( 'allows you to toggle go button', async () => {
-			await openDocumentSettingsSidebar();
-
-			const { getByLabelText } = queries;
-			const document = await getDocument( page );
-			const showGoButton = await getByLabelText(
-				document,
-				/Filter button/i
-			);
-			await showGoButton.click();
-			await expect( page ).toMatchElement(
-				'button.wc-block-filter-submit-button.wc-block-price-filter__button'
-			);
-			await showGoButton.click();
+			it( 'allows you to toggle go button', async () => {
+				await expect( page ).toClick( 'label', {
+					text: 'Filter button',
+				} );
+				await expect( page ).toMatchElement(
+					'button.wc-block-filter-submit-button.wc-block-price-filter__button'
+				);
+				await expect( page ).toClick( 'label', {
+					text: 'Filter button',
+				} );
+			} );
 		} );
 	} );
 } );
