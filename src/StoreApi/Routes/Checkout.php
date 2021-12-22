@@ -83,12 +83,6 @@ class Checkout extends AbstractCartRoute {
 					$this->schema->get_endpoint_args_for_item_schema( \WP_REST_Server::CREATABLE )
 				),
 			],
-			[
-				'methods'             => \WP_REST_Server::EDITABLE,
-				'callback'            => array( $this, 'get_response' ),
-				'permission_callback' => '__return_true',
-				'args'                => $this->schema->get_endpoint_args_for_item_schema( \WP_REST_Server::EDITABLE ),
-			],
 			'schema'      => [ $this->schema, 'get_public_item_schema' ],
 			'allow_batch' => [ 'v1' => true ],
 		];
@@ -137,30 +131,7 @@ class Checkout extends AbstractCartRoute {
 	}
 
 	/**
-	 * Update the current order.
-	 *
-	 * @internal Customer data is updated first so OrderController::update_addresses_from_cart uses up to date data.
-	 *
-	 * @throws RouteException On error.
-	 * @param \WP_REST_Request $request Request object.
-	 * @return \WP_REST_Response
-	 */
-	protected function get_route_update_response( \WP_REST_Request $request ) {
-		$this->update_customer_from_request( $request );
-		$this->create_or_update_draft_order();
-		$this->update_order_from_request( $request );
-
-		return $this->prepare_item_for_response(
-			(object) [
-				'order'          => $this->order,
-				'payment_result' => new PaymentResult(),
-			],
-			$request
-		);
-	}
-
-	/**
-	 * Update and process an order.
+	 * Process an order.
 	 *
 	 * 1. Obtain Draft Order
 	 * 2. Process Request
