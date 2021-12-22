@@ -167,32 +167,29 @@ export const TotalsShipping = ( {
 			<TotalsItem
 				label={ __( 'Shipping', 'woo-gutenberg-products-block' ) }
 				value={
-					cartHasCalculatedShipping ? (
+					hasRates && cartHasCalculatedShipping ? (
 						totalShippingValue
 					) : (
 						<NoShippingPlaceholder
 							showCalculator={ showCalculator }
+							isCheckout={ isCheckout }
 							{ ...calculatorButtonProps }
 						/>
 					)
 				}
 				description={
-					<>
-						{ cartHasCalculatedShipping && (
-							<>
-								<ShippingVia
-									selectedShippingRates={
-										selectedShippingRates
-									}
-								/>
-								<ShippingAddress
-									shippingAddress={ shippingAddress }
-									showCalculator={ showCalculator }
-									{ ...calculatorButtonProps }
-								/>
-							</>
-						) }
-					</>
+					hasRates && cartHasCalculatedShipping ? (
+						<>
+							<ShippingVia
+								selectedShippingRates={ selectedShippingRates }
+							/>
+							<ShippingAddress
+								shippingAddress={ shippingAddress }
+								showCalculator={ showCalculator }
+								{ ...calculatorButtonProps }
+							/>
+						</>
+					) : null
 				}
 				currency={ currency }
 			/>
