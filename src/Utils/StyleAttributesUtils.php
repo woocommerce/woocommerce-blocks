@@ -163,7 +163,7 @@ class StyleAttributesUtils {
 	 */
 	public static function get_align_class_and_style( $attributes ) {
 
-		$align_attribute = $attributes['align'];
+		$align_attribute = isset( $attributes['align'] ) ? $attributes['align'] : null;
 
 		if ( ! $align_attribute ) {
 			return null;
