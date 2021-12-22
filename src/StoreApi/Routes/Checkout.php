@@ -5,12 +5,8 @@ use Automattic\WooCommerce\Blocks\Domain\Services\CreateAccount;
 use Automattic\WooCommerce\Blocks\Package;
 use Automattic\WooCommerce\Blocks\Payments\PaymentContext;
 use Automattic\WooCommerce\Blocks\Payments\PaymentResult;
-use Automattic\WooCommerce\Blocks\StoreApi\Schemas\AbstractSchema;
-use Automattic\WooCommerce\Blocks\StoreApi\Schemas\CartSchema;
-use Automattic\WooCommerce\Blocks\StoreApi\Utilities\CartController;
 use Automattic\WooCommerce\Blocks\StoreApi\Utilities\DraftOrderTrait;
 use Automattic\WooCommerce\Blocks\StoreApi\Utilities\InvalidStockLevelsInCartException;
-use Automattic\WooCommerce\Blocks\StoreApi\Utilities\OrderController;
 use Automattic\WooCommerce\Checkout\Helpers\ReserveStock;
 use Automattic\WooCommerce\Checkout\Helpers\ReserveStockException;
 /**
