@@ -47,6 +47,7 @@ To set up to run e2e tests:
 
 When you're iterating on a new test you'll often run this repeatedly, as you develop, until your test is just right.
 
+Between tests, especially when they rely on the fixture data added, it might help to run `npm run wp-env clean`.
 When you're done, you may want to shut down the test environment:
 
 -   `npm run wp-env stop` to stop the test environment

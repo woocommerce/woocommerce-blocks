@@ -18,20 +18,17 @@ const block = {
 	class: '.wc-block-attribute-filter',
 };
 
-describe.skip( `${ block.name } Block`, () => {
+describe( `${ block.name } Block`, () => {
 	beforeAll( async () => {
 		await switchUserToAdmin();
 		await visitBlockPage( `${ block.name } Block` );
 
-		// Search for the capacity attribute.
-		await expect( page ).toFill(
-			'.woocommerce-product-attributes input[type="search"]',
-			'Capacity'
-		);
-
-		await expect( page ).toClick( 'span', { text: 'Capacity' } );
+		await expect( page ).toClick( 'span.woocommerce-search-list__item-name', { text: 'Capacity' } );
+		//needed for attributes list to load correctly
+		await page.waitFor(1000);
 
 		await expect( page ).toClick( 'button', { text: 'Done' } );
+		await page.waitForNetworkIdle();
 	} );
 
 	it( 'renders without crashing', async () => {
@@ -44,7 +41,7 @@ describe.skip( `${ block.name } Block`, () => {
 				'.wc-block-attribute-filter-list li',
 				( attributes ) => attributes.length
 			)
-			// our test data loads 5 for the color attribute.
+			// our test data loads 2 for the Capacity attribute.
 		).toBeGreaterThanOrEqual( 2 );
 	} );
 
@@ -76,12 +73,12 @@ describe.skip( `${ block.name } Block`, () => {
 		} );
 
 		it( 'can hide product count', async () => {
-			await expect( page ).not.toMatchElement(
-				'.wc-block-attribute-filter-list-count'
+			await expect( page ).toMatchElement(
+				'.wc-filter-element-label-list-count'
 			);
 			await expect( page ).toClick( 'label', { text: 'Product count' } );
-			await expect( page ).toMatchElement(
-				'.wc-block-attribute-filter-list-count'
+			await expect( page ).not.toMatchElement(
+				'.wc-filter-element-label-list-count'
 			);
 			// reset
 			await expect( page ).toClick( 'label', { text: 'Product count' } );
@@ -118,10 +115,9 @@ describe.skip( `${ block.name } Block`, () => {
 					'.wc-block-attribute-filter-list li',
 					( reviews ) => reviews.length
 				)
-				// Capacity has only three attributes
+				// Capacity has only 2 attributes
 			).toEqual( 2 );
 
-			await shadeAttributeButton.click();
 
 			await expect( page ).toClick(
 				'span.woocommerce-search-list__item-name',
@@ -129,6 +125,9 @@ describe.skip( `${ block.name } Block`, () => {
 					text: 'Shade',
 				}
 			);
+			//needed for attributes list to load correctly
+			await page.waitFor(1000);
+
 			// reset
 			await expect( page ).toClick(
 				'span.woocommerce-search-list__item-name',
@@ -136,6 +135,8 @@ describe.skip( `${ block.name } Block`, () => {
 					text: 'Capacity',
 				}
 			);
+			//needed for attributes list to load correctly
+			await page.waitFor(1000);
 		} );
 
 		it( 'renders on the frontend', async () => {
