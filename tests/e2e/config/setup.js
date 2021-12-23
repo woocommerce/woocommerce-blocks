@@ -42,7 +42,7 @@ module.exports = async ( globalConfig ) => {
 			createShippingZones(),
 			createProductAttributes(),
 			enablePaymentGateways(),
-			setupPageSettings()
+			setupPageSettings(),
 		] );
 		const [
 			taxes,
