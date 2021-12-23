@@ -324,22 +324,29 @@ class BlockTemplateUtils {
 	 */
 	public static function confirm_theme_file_when_fallback_is_available( $query_result, $template ) {
 		$template_with_fallback_idx = null;
+		$is_duplicate               = false;
 
 		array_walk(
 			$query_result,
-			function( $query_result_template, $idx ) use ( $template, &$template_with_fallback_idx ) {
+			function( $query_result_template, $idx ) use ( $template, &$template_with_fallback_idx, &$is_duplicate ) {
 				if (
 					$query_result_template->slug === $template->slug
 					&& $query_result_template->theme === $template->theme
-					&& self::template_is_eligible_for_product_archive_fallback( $template->slug )
 				) {
+					$is_duplicate = true;
+
+					if ( self::template_is_eligible_for_product_archive_fallback( $template->slug ) ) {
 						$template_with_fallback_idx = $idx;
+					}
 				}
 			}
 		);
 
-		if ( is_int( $template_with_fallback_idx ) ) {
-			$query_result[ $template_with_fallback_idx ]->has_theme_file = true;
+		if ( $is_duplicate ) {
+			if ( is_int( $template_with_fallback_idx ) ) {
+				$query_result[ $template_with_fallback_idx ]->has_theme_file = true;
+			}
+
 			return true;
 		}
 
