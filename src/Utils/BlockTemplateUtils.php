@@ -281,4 +281,28 @@ class BlockTemplateUtils {
 
 		return true;
 	}
+
+	/**
+	 * Retrieves a single unified template object using its id.
+	 *
+	 * @param string $id            Template unique identifier (example: theme_slug//template_slug).
+	 * @param string $template_type Optional. Template type: `'wp_template'` or '`wp_template_part'`.
+	 *                             Default `'wp_template'`.
+	 *
+	 * @return WP_Block_Template|null Template.
+	 */
+	public static function fse_get_block_template( $id, $template_type ) {
+		if ( function_exists( 'get_block_template' ) ) {
+			return get_block_template( $id, $template_type );
+		}
+
+		if ( function_exists( 'gutenberg_get_block_template' ) ) {
+			return gutenberg_get_block_template( $id, $template_type );
+		}
+
+		return null;
+
+	}
+
+
 }
