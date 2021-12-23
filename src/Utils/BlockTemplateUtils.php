@@ -281,4 +281,68 @@ class BlockTemplateUtils {
 
 		return true;
 	}
+
+	/**
+	 * Checks if we can fallback to the `archive-product` template for a given slug
+	 *
+	 * `taxonomy-product_cat` and `taxonomy-product_tag` templates can generally use the
+	 * `archive-product` as a fallback if there are no specific overrides.
+	 *
+	 * @param string $template_slug Slug to check for fallbacks.
+	 * @return boolean
+	 */
+	public static function template_is_eligible_for_product_archive_fallback( $template_slug ) {
+		$eligible_for_fallbacks = array( 'taxonomy-product_cat', 'taxonomy-product_tag' );
+
+		if (
+			in_array( $template_slug, $eligible_for_fallbacks, true )
+			&& ! self::theme_has_template( $template_slug )
+			&& self::theme_has_template( 'archive-product' )
+		) {
+			return true;
+		}
+
+		return false;
+	}
+
+	/**
+	 * Sets the `has_theme_file` to `true` for templates with fallbacks
+	 *
+	 * There are cases (such as tags and categories) in which fallback templates
+	 * can be used; so, while *technically* the theme doesn't have a specific file
+	 * for them, it is important that we tell Gutenberg that we do, in fact,
+	 * have a theme file (i.e. the fallback one).
+	 *
+	 * **Note:** this function changes the array that has been passed.
+	 *
+	 * It returns `true` if anything was changed, `false` otherwise.
+	 *
+	 * @param array $query_result Array of template objects.
+	 * @param array $template A specific template object which could have a fallback.
+	 *
+	 * @return boolean
+	 */
+	public static function confirm_theme_file_when_fallback_is_available( $query_result, $template ) {
+		$template_with_fallback_idx = null;
+
+		array_walk(
+			$query_result,
+			function( $query_result_template, $idx ) use ( $template, &$template_with_fallback_idx ) {
+				if (
+					$query_result_template->slug === $template->slug
+					&& $query_result_template->theme === $template->theme
+					&& self::template_is_eligible_for_product_archive_fallback( $template->slug )
+				) {
+						$template_with_fallback_idx = $idx;
+				}
+			}
+		);
+
+		if ( is_int( $template_with_fallback_idx ) ) {
+			$query_result[ $template_with_fallback_idx ]->has_theme_file = true;
+			return true;
+		}
+
+		return false;
+	}
 }
