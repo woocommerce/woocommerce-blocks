@@ -23,6 +23,12 @@ class LegacyTemplate extends AbstractDynamicBlock {
 	 */
 	protected $api_version = '2';
 
+	/**
+	 * List of archive legacy template.
+	 *
+	 * @var array
+	 */
+	protected $archive_templates = array( 'archive-product', 'taxonomy-product_cat', 'taxonomy-product_tag' );
 
 	/**
 	 * Initialize this block.
@@ -53,11 +59,9 @@ class LegacyTemplate extends AbstractDynamicBlock {
 			$frontend_scripts::load_scripts();
 		}
 
-		$archive_templates = array( 'archive-product', 'taxonomy-product_cat', 'taxonomy-product_tag' );
-
 		if ( 'single-product' === $attributes['template'] ) {
 			return $this->render_single_product();
-		} elseif ( in_array( $attributes['template'], $archive_templates, true ) ) {
+		} elseif ( in_array( $attributes['template'], $this->archive_templates, true ) ) {
 			return $this->render_archive_product();
 		} else {
 			ob_start();
@@ -194,23 +198,40 @@ class LegacyTemplate extends AbstractDynamicBlock {
 
 	/**
 	 * Get HTML markup with the right classes by attributes.
+	 * This function appends the classname at the first element that have the class attribute.
+	 * Based on the experience, all the wrapper elements have a class attribute.
 	 *
 	 * @param string $content Block content.
 	 * @param array  $block Parsed block data.
 	 * @return string Rendered block type output.
 	 */
 	public function get_markup_with_classes_by_attributes( string $content, array $block ) {
-		$pattern     = '/(?<=class=\")[^"]+(?=\")/';
-		$attributes  = (array) $block['attrs'];
-		$align_class = StyleAttributesUtils::get_align_class_and_style( $attributes );
-		$matches     = array();
-		preg_match( $pattern, $content, $matches );
-
-		if ( ! isset( $matches[0] ) ) {
+		if ( ! $this->is_legacy_template( $block ) ) {
 			return $content;
 		}
 
-		return preg_replace( $pattern, $matches[0] . ' ' . $align_class['class'], $content, 1 );
+		$pattern               = '/(?<=class=\")[^"]+(?=\")/';
+		$attributes            = (array) $block['attrs'];
+		$align_class_and_style = StyleAttributesUtils::get_align_class_and_style( $attributes );
+		$matches               = array();
+		preg_match( $pattern, $content, $matches );
+
+		if ( ! isset( $matches[0] ) || ! isset( $align_class_and_style['class'] ) ) {
+			return $content;
+		}
+
+		return preg_replace( $pattern, $matches[0] . ' ' . $align_class_and_style['class'], $content, 1 );
+	}
+
+	/**
+	 * Check if the block is a legacy template.
+	 *
+	 * @param array $block Parsed block data.
+	 * @return boolean
+	 */
+	protected function is_legacy_template( $block ) {
+		$attributes = (array) $block['attrs'];
+		return isset( $attributes['template'] ) && ( in_array( $attributes['template'], $this->archive_templates, true ) || 'single-product' === $attributes['template'] );
 	}
 
 }
