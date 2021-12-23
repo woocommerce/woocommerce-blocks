@@ -294,15 +294,9 @@ class BlockTemplateUtils {
 	public static function template_is_eligible_for_product_archive_fallback( $template_slug ) {
 		$eligible_for_fallbacks = array( 'taxonomy-product_cat', 'taxonomy-product_tag' );
 
-		if (
-			in_array( $template_slug, $eligible_for_fallbacks, true )
+		return in_array( $template_slug, $eligible_for_fallbacks, true )
 			&& ! self::theme_has_template( $template_slug )
-			&& self::theme_has_template( 'archive-product' )
-		) {
-			return true;
-		}
-
-		return false;
+			&& self::theme_has_template( 'archive-product' );
 	}
 
 	/**
@@ -322,32 +316,18 @@ class BlockTemplateUtils {
 	 *
 	 * @return boolean
 	 */
-	public static function confirm_theme_file_when_fallback_is_available( $query_result, $template ) {
-		$template_with_fallback_idx = null;
-		$is_duplicate               = false;
-
-		array_walk(
-			$query_result,
-			function( $query_result_template, $idx ) use ( $template, &$template_with_fallback_idx, &$is_duplicate ) {
-				if (
-					$query_result_template->slug === $template->slug
-					&& $query_result_template->theme === $template->theme
-				) {
-					$is_duplicate = true;
-
-					if ( self::template_is_eligible_for_product_archive_fallback( $template->slug ) ) {
-						$template_with_fallback_idx = $idx;
-					}
+	public static function set_has_theme_file_if_fallback_is_available( $query_result, $template ) {
+		foreach ( $query_result as $i => &$query_result_template ) {
+			if (
+				$query_result_template->slug === $template->slug
+				&& $query_result_template->theme === $template->theme
+			) {
+				if ( self::template_is_eligible_for_product_archive_fallback( $template->slug ) ) {
+					$query_result_template->has_theme_file = true;
 				}
-			}
-		);
 
-		if ( $is_duplicate ) {
-			if ( is_int( $template_with_fallback_idx ) ) {
-				$query_result[ $template_with_fallback_idx ]->has_theme_file = true;
+				return true;
 			}
-
-			return true;
 		}
 
 		return false;
