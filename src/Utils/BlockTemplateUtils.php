@@ -317,7 +317,7 @@ class BlockTemplateUtils {
 	 * @return boolean
 	 */
 	public static function set_has_theme_file_if_fallback_is_available( $query_result, $template ) {
-		foreach ( $query_result as $query_result_template ) {
+		foreach ( $query_result as &$query_result_template ) {
 			if (
 				$query_result_template->slug === $template->slug
 				&& $query_result_template->theme === $template->theme
