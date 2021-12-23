@@ -278,9 +278,9 @@ describe( 'Testing Payment Method Data Context Provider with saved cards turned 
 			const activePaymentMethod = screen.queryByText(
 				/Active Payment Method: credit-card/
 			);
-			const credit-cardToken = screen.queryByText( /credit-card token/ );
+			const creditCardToken = screen.queryByText( /credit-card token/ );
 			expect( activePaymentMethod ).not.toBeNull();
-			expect( credit-cardToken ).not.toBeNull();
+			expect( creditCardToken ).not.toBeNull();
 		} );
 
 		act( () => {
@@ -294,9 +294,9 @@ describe( 'Testing Payment Method Data Context Provider with saved cards turned 
 			const activePaymentMethod = screen.queryByText(
 				/Active Payment Method: express-payment/
 			);
-			const credit-cardToken = screen.queryByText( /credit-card token/ );
+			const creditCardToken = screen.queryByText( /credit-card token/ );
 			expect( activePaymentMethod ).not.toBeNull();
-			expect( credit-cardToken ).toBeNull();
+			expect( creditCardToken ).toBeNull();
 		} );
 
 		act( () => {
@@ -312,9 +312,9 @@ describe( 'Testing Payment Method Data Context Provider with saved cards turned 
 			const activePaymentMethod = screen.queryByText(
 				/Active Payment Method: credit-card/
 			);
-			const credit-cardToken = screen.queryByText( /credit-card token/ );
+			const creditCardToken = screen.queryByText( /credit-card token/ );
 			expect( activePaymentMethod ).not.toBeNull();
-			expect( credit-cardToken ).not.toBeNull();
+			expect( creditCardToken ).not.toBeNull();
 		} );
 	} );
 } );
