@@ -1,6 +1,8 @@
 <?php
 namespace Automattic\WooCommerce\Blocks\Utils;
 
+use Automattic\WooCommerce\Blocks\BlockTemplatesController;
+
 /**
  * BlockTemplateUtils class used for serving block templates from Woo Blocks.
  * IMPORTANT: These methods have been duplicated from Gutenberg/lib/full-site-editing/block-templates.php as those functions are not for public usage.
@@ -233,15 +235,63 @@ class BlockTemplateUtils {
 	 * Converts template paths into a slug
 	 *
 	 * @param string $path The template's path.
-	 * @param string $directory_name The template's directory name.
 	 * @return string slug
 	 */
-	public static function generate_template_slug_from_path( $path, $directory_name = 'block-templates' ) {
-		return substr(
-			$path,
-			strpos( $path, $directory_name . DIRECTORY_SEPARATOR ) + 1 + strlen( $directory_name ),
-			-5
+	public static function generate_template_slug_from_path( $path ) {
+		$template_extension = '.html';
+
+		return basename( $path, $template_extension );
+	}
+
+	/**
+	 * Gets the first matching template part within themes directories
+	 *
+	 * Since [Gutenberg 12.1.0](https://github.com/WordPress/gutenberg/releases/tag/v12.1.0), the conventions for
+	 * block templates and parts directory has changed from `block-templates` and `block-templates-parts`
+	 * to `templates` and `parts` respectively.
+	 *
+	 * This function traverses all possible combinations of directory paths where a template or part
+	 * could be located and returns the first one which is readable, prioritizing the new convention
+	 * over the deprecated one, but maintaining that one for backwards compatibility.
+	 *
+	 * @param string $template_slug  The slug of the template (i.e. without the file extension).
+	 * @param string $template_type  Either `wp_template` or `wp_template_part`.
+	 *
+	 * @return string|null  The matched path or `null` if no match was found.
+	 */
+	public static function get_theme_template_path( $template_slug, $template_type = 'wp_template' ) {
+		$template_filename      = $template_slug . '.html';
+		$possible_templates_dir = 'wp_template' === $template_type ? array(
+			BlockTemplatesController::TEMPLATES_DIR_NAME,
+			BlockTemplatesController::DEPRECATED_TEMPLATES_DIR_NAME,
+		) : array(
+			BlockTemplatesController::TEMPLATE_PARTS_DIR_NAME,
+			BlockTemplatesController::DEPRECATED_TEMPLATE_PARTS_DIR_NAME,
 		);
+
+		// Combine the possible root directory names with either the template directory
+		// or the stylesheet directory for child themes.
+		$possible_paths = array_reduce(
+			$possible_templates_dir,
+			function( $carry, $item ) use ( $template_filename ) {
+				$filepath = DIRECTORY_SEPARATOR . $item . DIRECTORY_SEPARATOR . $template_filename;
+
+				$carry[] = get_template_directory() . $filepath;
+				$carry[] = get_stylesheet_directory() . $filepath;
+
+				return $carry;
+			},
+			array()
+		);
+
+		// Return the first matching.
+		foreach ( $possible_paths as $path ) {
+			if ( is_readable( $path ) ) {
+				return $path;
+			}
+		}
+
+		return null;
 	}
 
 	/**
@@ -251,8 +301,7 @@ class BlockTemplateUtils {
 	 * @return boolean
 	 */
 	public static function theme_has_template( $template_name ) {
-		return is_readable( get_template_directory() . '/block-templates/' . $template_name . '.html' ) ||
-			is_readable( get_stylesheet_directory() . '/block-templates/' . $template_name . '.html' );
+		return ! ! self::get_theme_template_path( $template_name, 'wp_template' );
 	}
 
 	/**
@@ -262,8 +311,7 @@ class BlockTemplateUtils {
 	 * @return boolean
 	 */
 	public static function theme_has_template_part( $template_name ) {
-		return is_readable( get_template_directory() . '/block-template-parts/' . $template_name . '.html' ) ||
-			is_readable( get_stylesheet_directory() . '/block-template-parts/' . $template_name . '.html' );
+		return ! ! self::get_theme_template_path( $template_name, 'wp_template_part' );
 	}
 
 	/**
@@ -311,8 +359,8 @@ class BlockTemplateUtils {
 	 *
 	 * It returns `true` if anything was changed, `false` otherwise.
 	 *
-	 * @param array $query_result Array of template objects.
-	 * @param array $template A specific template object which could have a fallback.
+	 * @param array  $query_result Array of template objects.
+	 * @param object $template A specific template object which could have a fallback.
 	 *
 	 * @return boolean
 	 */
