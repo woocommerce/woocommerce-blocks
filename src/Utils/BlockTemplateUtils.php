@@ -1,13 +1,54 @@
 <?php
 namespace Automattic\WooCommerce\Blocks\Utils;
 
-use Automattic\WooCommerce\Blocks\BlockTemplatesController;
-
 /**
  * BlockTemplateUtils class used for serving block templates from Woo Blocks.
  * IMPORTANT: These methods have been duplicated from Gutenberg/lib/full-site-editing/block-templates.php as those functions are not for public usage.
  */
 class BlockTemplateUtils {
+	/**
+	 * Directory name of all the templates.
+	 *
+	 * @var string
+	 */
+	const TEMPLATES_ROOT_DIR = 'templates';
+
+	/**
+	 * Old directory name of the block templates directory.
+	 *
+	 * The convention has changed with Gutenberg 12.1.0, but we need to keep this
+	 * for backwards compatibility.
+	 *
+	 * @deprecated
+	 * @var string
+	 */
+	const DEPRECATED_TEMPLATES_DIR_NAME = 'block-templates';
+
+	/**
+	 * Old directory name of the block template parts directory.
+	 *
+	 * The convention has changed with Gutenberg 12.1.0, but we need to keep this
+	 * for backwards compatibility.
+	 *
+	 * @deprecated
+	 * @var string
+	 */
+	const DEPRECATED_TEMPLATE_PARTS_DIR_NAME = 'block-templates-parts';
+
+	/**
+	 * Directory name of the block templates directory.
+	 *
+	 * @var string
+	 */
+	const TEMPLATES_DIR_NAME = 'templates';
+
+	/**
+	 * Directory name of the block template parts directory.
+	 *
+	 * @var string
+	 */
+	const TEMPLATE_PARTS_DIR_NAME = 'parts';
+
 	/**
 	 * Returns an array containing the references of
 	 * the passed blocks and their inner blocks.
@@ -235,12 +276,15 @@ class BlockTemplateUtils {
 	 * Converts template paths into a slug
 	 *
 	 * @param string $path The template's path.
+	 * @param string $directory_name The template's directory name.
 	 * @return string slug
 	 */
-	public static function generate_template_slug_from_path( $path ) {
-		$template_extension = '.html';
-
-		return basename( $path, $template_extension );
+	public static function generate_template_slug_from_path( $path, $directory_name = 'block-templates' ) {
+		return substr(
+			$path,
+			strpos( $path, $directory_name . DIRECTORY_SEPARATOR ) + 1 + strlen( $directory_name ),
+			-5
+		);
 	}
 
 	/**
@@ -262,11 +306,11 @@ class BlockTemplateUtils {
 	public static function get_theme_template_path( $template_slug, $template_type = 'wp_template' ) {
 		$template_filename      = $template_slug . '.html';
 		$possible_templates_dir = 'wp_template' === $template_type ? array(
-			BlockTemplatesController::TEMPLATES_DIR_NAME,
-			BlockTemplatesController::DEPRECATED_TEMPLATES_DIR_NAME,
+			self::TEMPLATES_DIR_NAME,
+			self::DEPRECATED_TEMPLATES_DIR_NAME,
 		) : array(
-			BlockTemplatesController::TEMPLATE_PARTS_DIR_NAME,
-			BlockTemplatesController::DEPRECATED_TEMPLATE_PARTS_DIR_NAME,
+			self::TEMPLATE_PARTS_DIR_NAME,
+			self::DEPRECATED_TEMPLATE_PARTS_DIR_NAME,
 		);
 
 		// Combine the possible root directory names with either the template directory
