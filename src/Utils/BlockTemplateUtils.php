@@ -7,40 +7,25 @@ namespace Automattic\WooCommerce\Blocks\Utils;
  */
 class BlockTemplateUtils {
 	/**
-	 * Old directory name of the block templates directory.
+	 * Directory names for block templates
 	 *
-	 * The convention has changed with Gutenberg 12.1.0, but we need to keep this
-	 * for backwards compatibility.
+	 * Directory names conventions for block templates have changed with Gutenberg 12.1.0,
+	 * however, for backwards-compatibility, we also keep the older conventions, prefixed
+	 * with `DEPRECATED_`.
 	 *
-	 * @deprecated
-	 * @var string
+	 * @var array {
+	 *     @var string DEPRECATED_TEMPLATES  Old directory name of the block templates directory.
+	 *     @var string DEPRECATED_TEMPLATE_PARTS  Old directory name of the block template parts directory.
+	 *     @var string TEMPLATES_DIR_NAME  Directory name of the block templates directory.
+	 *     @var string TEMPLATE_PARTS_DIR_NAME  Directory name of the block template parts directory.
+	 * }
 	 */
-	const DEPRECATED_TEMPLATES_DIR_NAME = 'block-templates';
-
-	/**
-	 * Old directory name of the block template parts directory.
-	 *
-	 * The convention has changed with Gutenberg 12.1.0, but we need to keep this
-	 * for backwards compatibility.
-	 *
-	 * @deprecated
-	 * @var string
-	 */
-	const DEPRECATED_TEMPLATE_PARTS_DIR_NAME = 'block-templates-parts';
-
-	/**
-	 * Directory name of the block templates directory.
-	 *
-	 * @var string
-	 */
-	const TEMPLATES_DIR_NAME = 'templates';
-
-	/**
-	 * Directory name of the block template parts directory.
-	 *
-	 * @var string
-	 */
-	const TEMPLATE_PARTS_DIR_NAME = 'parts';
+	const DIRECTORY_NAMES = array(
+		'DEPRECATED_TEMPLATES'      => 'block-templates',
+		'DEPRECATED_TEMPLATE_PARTS' => 'parts',
+		'TEMPLATES'                 => 'templates',
+		'TEMPLATE_PARTS'            => 'parts',
+	);
 
 	/**
 	 * Returns an array containing the references of
@@ -299,11 +284,11 @@ class BlockTemplateUtils {
 	public static function get_theme_template_path( $template_slug, $template_type = 'wp_template' ) {
 		$template_filename      = $template_slug . '.html';
 		$possible_templates_dir = 'wp_template' === $template_type ? array(
-			self::TEMPLATES_DIR_NAME,
-			self::DEPRECATED_TEMPLATES_DIR_NAME,
+			self::DIRECTORY_NAMES['TEMPLATES'],
+			self::DIRECTORY_NAMES['DEPRECATED_TEMPLATES'],
 		) : array(
-			self::TEMPLATE_PARTS_DIR_NAME,
-			self::DEPRECATED_TEMPLATE_PARTS_DIR_NAME,
+			self::DIRECTORY_NAMES['TEMPLATE_PARTS'],
+			self::DIRECTORY_NAMES['DEPRECATED_TEMPLATE_PARTS'],
 		);
 
 		// Combine the possible root directory names with either the template directory
