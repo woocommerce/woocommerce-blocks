@@ -24,18 +24,11 @@ class LegacyTemplate extends AbstractDynamicBlock {
 	protected $api_version = '2';
 
 	/**
-	 * List of archive legacy template.
-	 *
-	 * @var array
-	 */
-	protected $archive_templates = array( 'archive-product', 'taxonomy-product_cat', 'taxonomy-product_tag' );
-
-	/**
 	 * Initialize this block.
 	 */
 	protected function initialize() {
 		parent::initialize();
-		add_filter( 'render_block', array( $this, 'get_markup_with_classes_by_attributes' ), 10, 2 );
+		add_filter( 'render_block', array( $this, 'add_alignment_class_to_wrapper' ), 10, 2 );
 	}
 
 	/**
@@ -59,9 +52,11 @@ class LegacyTemplate extends AbstractDynamicBlock {
 			$frontend_scripts::load_scripts();
 		}
 
+		$archive_templates = array( 'archive-product', 'taxonomy-product_cat', 'taxonomy-product_tag' );
+
 		if ( 'single-product' === $attributes['template'] ) {
 			return $this->render_single_product();
-		} elseif ( in_array( $attributes['template'], $this->archive_templates, true ) ) {
+		} elseif ( in_array( $attributes['template'], $archive_templates, true ) ) {
 			return $this->render_archive_product();
 		} else {
 			ob_start();
@@ -205,8 +200,8 @@ class LegacyTemplate extends AbstractDynamicBlock {
 	 * @param array  $block Parsed block data.
 	 * @return string Rendered block type output.
 	 */
-	public function get_markup_with_classes_by_attributes( string $content, array $block ) {
-		if ( ! $this->is_legacy_template( $block ) ) {
+	public function add_alignment_class_to_wrapper( string $content, array $block ) {
+		if ( ( 'woocommerce/' . $this->block_name ) !== $block['blockName'] ) {
 			return $content;
 		}
 
@@ -223,15 +218,5 @@ class LegacyTemplate extends AbstractDynamicBlock {
 		return preg_replace( $pattern, $matches[0] . ' ' . $align_class_and_style['class'], $content, 1 );
 	}
 
-	/**
-	 * Check if the block is a legacy template.
-	 *
-	 * @param array $block Parsed block data.
-	 * @return boolean
-	 */
-	protected function is_legacy_template( $block ) {
-		$attributes = (array) $block['attrs'];
-		return isset( $attributes['template'] ) && ( in_array( $attributes['template'], $this->archive_templates, true ) || 'single-product' === $attributes['template'] );
-	}
 
 }
