@@ -25,47 +25,18 @@ class BlockTemplatesController {
 	private $template_parts_directory;
 
 	/**
-	 * Directory name of all the templates.
+	 * Directory name of the block template directory.
 	 *
 	 * @var string
 	 */
-	const TEMPLATES_ROOT_DIR = 'templates';
-
-	/**
-	 * Old directory name of the block templates directory.
-	 *
-	 * The convention has changed with Gutenberg 12.1.0, but we need to keep this
-	 * for backwards compatibility.
-	 *
-	 * @deprecated
-	 * @var string
-	 */
-	const DEPRECATED_TEMPLATES_DIR_NAME = 'block-templates';
-
-	/**
-	 * Old directory name of the block template parts directory.
-	 *
-	 * The convention has changed with Gutenberg 12.1.0, but we need to keep this
-	 * for backwards compatibility.
-	 *
-	 * @deprecated
-	 * @var string
-	 */
-	const DEPRECATED_TEMPLATE_PARTS_DIR_NAME = 'block-templates-parts';
-
-	/**
-	 * Directory name of the block templates directory.
-	 *
-	 * @var string
-	 */
-	const TEMPLATES_DIR_NAME = 'templates';
+	const TEMPLATES_DIR_NAME = 'block-templates';
 
 	/**
 	 * Directory name of the block template parts directory.
 	 *
 	 * @var string
 	 */
-	const TEMPLATE_PARTS_DIR_NAME = 'parts';
+	const TEMPLATE_PARTS_DIR_NAME = 'block-template-parts';
 
 	/**
 	 * Constructor.
@@ -73,10 +44,8 @@ class BlockTemplatesController {
 	public function __construct() {
 		// This feature is gated for WooCommerce versions 6.0.0 and above.
 		if ( defined( 'WC_VERSION' ) && version_compare( WC_VERSION, '6.0.0', '>=' ) ) {
-			$root_path = plugin_dir_path( __DIR__ ) . self::TEMPLATES_ROOT_DIR . DIRECTORY_SEPARATOR;
-
-			$this->templates_directory      = $root_path . self::TEMPLATES_DIR_NAME;
-			$this->template_parts_directory = $root_path . self::TEMPLATE_PARTS_DIR_NAME;
+			$this->templates_directory      = plugin_dir_path( __DIR__ ) . 'templates/' . self::TEMPLATES_DIR_NAME;
+			$this->template_parts_directory = plugin_dir_path( __DIR__ ) . 'templates/' . self::TEMPLATE_PARTS_DIR_NAME;
 			$this->init();
 		}
 	}
@@ -342,8 +311,15 @@ class BlockTemplatesController {
 		$template_files = BlockTemplateUtils::gutenberg_get_template_paths( $directory );
 		$templates      = array();
 
+		if ( 'wp_template_part' === $template_type ) {
+			$dir_name = self::TEMPLATE_PARTS_DIR_NAME;
+		} else {
+			$dir_name = self::TEMPLATES_DIR_NAME;
+		}
+
 		foreach ( $template_files as $template_file ) {
-			$template_slug = BlockTemplateUtils::generate_template_slug_from_path( $template_file );
+			$template_slug = BlockTemplateUtils::generate_template_slug_from_path( $template_file, $dir_name );
+
 			// This template does not have a slug we're looking for. Skip it.
 			if ( is_array( $slugs ) && count( $slugs ) > 0 && ! in_array( $template_slug, $slugs, true ) ) {
 				continue;
@@ -367,7 +343,7 @@ class BlockTemplatesController {
 
 			// If the theme has an archive-product.html template, but not a taxonomy-product_cat.html template let's use the themes archive-product.html template.
 			if ( BlockTemplateUtils::template_is_eligible_for_product_archive_fallback( $template_slug ) ) {
-				$template_file = BlockTemplateUtils::get_theme_template_path( 'archive-product' );
+				$template_file = get_stylesheet_directory() . '/' . self::TEMPLATES_DIR_NAME . '/archive-product.html';
 				$templates[]   = BlockTemplateUtils::create_new_block_template_object( $template_file, $template_type, $template_slug, true );
 				continue;
 			}
