@@ -7,13 +7,6 @@ namespace Automattic\WooCommerce\Blocks\Utils;
  */
 class BlockTemplateUtils {
 	/**
-	 * Directory name of all the templates.
-	 *
-	 * @var string
-	 */
-	const TEMPLATES_ROOT_DIR = 'templates';
-
-	/**
 	 * Old directory name of the block templates directory.
 	 *
 	 * The convention has changed with Gutenberg 12.1.0, but we need to keep this
