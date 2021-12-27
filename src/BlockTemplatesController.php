@@ -57,6 +57,7 @@ class BlockTemplatesController {
 		add_action( 'template_redirect', array( $this, 'render_block_template' ) );
 		add_filter( 'pre_get_block_file_template', array( $this, 'maybe_return_blocks_template' ), 10, 3 );
 		add_filter( 'get_block_templates', array( $this, 'add_block_templates' ), 10, 3 );
+		add_filter( 'woocommerce_has_block_template', array( $this, 'maybe_has_template' ), 10, 2 );
 	}
 
 	/**
@@ -438,4 +439,27 @@ class BlockTemplatesController {
 		}
 	}
 
+	/**
+	 * Checks alternative paths for block templates
+	 *
+	 * This function is supposed to be hooked to the `woocommerce_has_block_template` filter.
+	 * Since Gutenberg 12.1.0, directory names conventions for block templates have changed,
+	 * however, WooCommerce still doesn't support that. Because of that, we patch the support
+	 * by using our own checking functionality here.
+	 *
+	 * @see woocommerce/includes/class-wc-template-loader.php#L110-L126
+	 * @see WooCommerce/woocommerce#31518
+	 *
+	 * @param bool   $has_template   Whether or not the block template was located.
+	 * @param string $template_name  Which template are we looking for.
+	 *
+	 * @return bool  Whether a template with that name exists
+	 */
+	public function maybe_has_template( $has_template, $template_name ) {
+		if ( $has_template ) {
+			return $has_template;
+		}
+
+		return BlockTemplateUtils::theme_has_template( $template_name );
+	}
 }
