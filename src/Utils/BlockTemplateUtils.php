@@ -254,15 +254,12 @@ class BlockTemplateUtils {
 	 * Converts template paths into a slug
 	 *
 	 * @param string $path The template's path.
-	 * @param string $directory_name The template's directory name.
 	 * @return string slug
 	 */
-	public static function generate_template_slug_from_path( $path, $directory_name = 'block-templates' ) {
-		return substr(
-			$path,
-			strpos( $path, $directory_name . DIRECTORY_SEPARATOR ) + 1 + strlen( $directory_name ),
-			-5
-		);
+	public static function generate_template_slug_from_path( $path ) {
+		$template_extension = '.html';
+
+		return basename( $path, $template_extension );
 	}
 
 	/**

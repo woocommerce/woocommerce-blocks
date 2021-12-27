@@ -306,14 +306,8 @@ class BlockTemplatesController {
 		$template_files = BlockTemplateUtils::gutenberg_get_template_paths( $directory );
 		$templates      = array();
 
-		if ( 'wp_template_part' === $template_type ) {
-			$dir_name = self::TEMPLATE_PARTS_DIR_NAME;
-		} else {
-			$dir_name = self::TEMPLATES_DIR_NAME;
-		}
-
 		foreach ( $template_files as $template_file ) {
-			$template_slug = BlockTemplateUtils::generate_template_slug_from_path( $template_file, $dir_name );
+			$template_slug = BlockTemplateUtils::generate_template_slug_from_path( $template_file );
 
 			// This template does not have a slug we're looking for. Skip it.
 			if ( is_array( $slugs ) && count( $slugs ) > 0 && ! in_array( $template_slug, $slugs, true ) ) {
