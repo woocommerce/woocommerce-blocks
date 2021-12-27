@@ -39,8 +39,8 @@ class BlockTemplatesController {
 		if ( defined( 'WC_VERSION' ) && version_compare( WC_VERSION, '6.0.0', '>=' ) ) {
 			$root_path = plugin_dir_path( __DIR__ ) . self::TEMPLATES_ROOT_DIR . DIRECTORY_SEPARATOR;
 
-			$this->templates_directory      = $root_path . BlockTemplateUtils::TEMPLATES_DIR_NAME;
-			$this->template_parts_directory = $root_path . BlockTemplateUtils::TEMPLATE_PARTS_DIR_NAME;
+			$this->templates_directory      = $root_path . BlockTemplateUtils::DIRECTORY_NAMES['TEMPLATES'];
+			$this->template_parts_directory = $root_path . BlockTemplateUtils::DIRECTORY_NAMES['TEMPLATE_PARTS'];
 			$this->init();
 		}
 	}
