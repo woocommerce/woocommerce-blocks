@@ -76,6 +76,10 @@ $drawer-width-mobile: 100vw;
 	transform: translateX(-$drawer-width);
 	width: $drawer-width;
 
+	button {
+		color: inherit;
+	}
+
 	@media only screen and (max-width: 480px) {
 		transform: translateX(-$drawer-width-mobile);
 		width: $drawer-width-mobile;

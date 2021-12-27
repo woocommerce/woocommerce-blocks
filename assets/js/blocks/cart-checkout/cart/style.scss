@@ -204,6 +204,10 @@ table.wc-block-cart-items {
 				padding-right: $gap;
 				align-self: end;
 				padding-top: $gap;
+
+				input {
+					color: inherit;
+				}
 			}
 			.wc-block-cart-item__total {
 				grid-row-start: 1;

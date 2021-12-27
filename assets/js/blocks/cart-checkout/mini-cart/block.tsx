@@ -28,6 +28,7 @@ import QuantityBadge from './quantity-badge';
 import { MiniCartContentsBlock } from '../mini-cart-contents/block';
 import './style.scss';
 import { blockName } from '../mini-cart-contents/attributes';
+import { getClassAndStyleTextColorFromDataset } from '../../../utils/global-style';
 
 interface Props {
 	isInitiallyOpen?: boolean;
@@ -57,6 +58,14 @@ const MiniCartBlock = ( {
 	const contentsRef = useCallback( ( node ) => {
 		setContentsNode( node );
 	}, [] );
+
+	const nestedBlock = contentsNode?.getElementsByClassName(
+		'wp-block-woocommerce-mini-cart-contents'
+	)[ 0 ] as HTMLElement | undefined;
+
+	const textColorClassAndStyle = nestedBlock
+		? getClassAndStyleTextColorFromDataset( nestedBlock )
+		: null;
 
 	useEffect( () => {
 		if ( contentsNode instanceof Element ) {
@@ -179,12 +188,17 @@ const MiniCartBlock = ( {
 				className={ classnames(
 					'wc-block-mini-cart__drawer',
 					'is-mobile',
+					textColorClassAndStyle?.class,
 					{
 						'is-loading': cartIsLoading,
 					}
 				) }
 				title=""
 				isOpen={ isOpen }
+				style={ {
+					color: textColorClassAndStyle?.style || undefined,
+					fill: 'currentcolor',
+				} }
 				onClose={ () => {
 					setIsOpen( false );
 				} }

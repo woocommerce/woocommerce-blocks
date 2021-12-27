@@ -5,6 +5,7 @@ import { __ } from '@wordpress/i18n';
 import { Modal } from '@wordpress/components';
 import { useDebounce } from 'use-debounce';
 import classNames from 'classnames';
+import { CSSProperties } from 'react';
 
 /**
  * Internal dependencies
@@ -19,6 +20,7 @@ interface DrawerProps {
 	slideIn?: boolean;
 	slideOut?: boolean;
 	title: string;
+	style?: CSSProperties;
 }
 
 const Drawer = ( {
@@ -29,6 +31,7 @@ const Drawer = ( {
 	slideIn = true,
 	slideOut = true,
 	title,
+	style,
 }: DrawerProps ): JSX.Element | null => {
 	const [ debouncedIsOpen ] = useDebounce< boolean >( isOpen, 300 );
 	const isClosing = ! isOpen && debouncedIsOpen;
@@ -55,6 +58,7 @@ const Drawer = ( {
 				'Close mini cart',
 				'woo-gutenberg-products-block'
 			) }
+			style={ style }
 		>
 			{ children }
 		</Modal>
