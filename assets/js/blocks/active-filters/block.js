@@ -16,12 +16,13 @@ import './style.scss';
 import { getAttributeFromTaxonomy } from '../../utils/attributes';
 import { formatPriceRange, renderRemovableListItem } from './utils';
 import ActiveAttributeFilters from './active-attribute-filters';
+import { getTextColorClassAndStyleFromAttributeObject } from '../../utils/style-attributes';
 
 /**
  * Component displaying active filters.
  *
  * @param {Object} props Incoming props for the component.
- * @param {Object} props.attributes Incoming attributes for the block.
+ * @param {Record<string, unknown>} props.attributes Incoming attributes for the block.
  * @param {boolean} props.isEditor Whether or not in the editor context.
  */
 const ActiveFiltersBlock = ( {
@@ -38,6 +39,13 @@ const ActiveFiltersBlock = ( {
 	);
 	const [ minPrice, setMinPrice ] = useQueryStateByKey( 'min_price' );
 	const [ maxPrice, setMaxPrice ] = useQueryStateByKey( 'max_price' );
+
+	const textColorClassAndStyle = getTextColorClassAndStyleFromAttributeObject(
+		blockAttributes
+	);
+
+	const textColorClass = textColorClassAndStyle.class;
+	const textColorStyle = textColorClassAndStyle.style;
 
 	const STOCK_STATUS_OPTIONS = getSetting( 'stockStatusOptions', [] );
 	const activeStockStatusFilters = useMemo( () => {
@@ -117,19 +125,34 @@ const ActiveFiltersBlock = ( {
 	}
 
 	const TagName = `h${ blockAttributes.headingLevel }`;
-	const listClasses = classnames( 'wc-block-active-filters__list', {
-		'wc-block-active-filters__list--chips':
-			blockAttributes.displayStyle === 'chips',
-	} );
+	const listClasses = classnames(
+		'wc-block-active-filters__list',
+		textColorClass,
+		{
+			'wc-block-active-filters__list--chips':
+				blockAttributes.displayStyle === 'chips',
+		}
+	);
 
 	return (
 		<>
 			{ ! isEditor && blockAttributes.heading && (
-				<TagName className="wc-block-active-filters__title">
+				<TagName
+					className={ classnames(
+						'wc-block-active-filters__title',
+						textColorClass
+					) }
+					style={ textColorStyle }
+				>
 					{ blockAttributes.heading }
 				</TagName>
 			) }
-			<div className="wc-block-active-filters">
+			<div
+				className={ classnames(
+					'wc-block-active-filters',
+					textColorClass
+				) }
+			>
 				<ul className={ listClasses }>
 					{ isEditor ? (
 						<>
@@ -174,6 +197,8 @@ const ActiveFiltersBlock = ( {
 					} }
 				>
 					<Label
+						className={ textColorClass }
+						style={ textColorStyle }
 						label={ __(
 							'Clear All',
 							'woo-gutenberg-products-block'

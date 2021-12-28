@@ -17,10 +17,11 @@ const BlockTitle = ( {
 	onChange,
 	heading,
 	instanceId,
+	style,
 } ) => {
 	const TagName = `h${ headingLevel }`;
 	return (
-		<TagName className={ className }>
+		<TagName style={ style } className={ className }>
 			<label
 				className="screen-reader-text"
 				htmlFor={ `block-title-${ instanceId }` }

@@ -12,6 +12,7 @@ import classNames from 'classnames';
 import edit from './edit.js';
 
 registerBlockType( 'woocommerce/active-filters', {
+	apiVersion: 2,
 	title: __( 'Active Product Filters', 'woo-gutenberg-products-block' ),
 	icon: {
 		src: (
@@ -30,6 +31,10 @@ registerBlockType( 'woocommerce/active-filters', {
 	supports: {
 		html: false,
 		multiple: false,
+		color: {
+			text: true,
+			background: false,
+		},
 	},
 	example: {
 		attributes: {},
