@@ -295,8 +295,8 @@ class BlockTemplateUtils {
 			function( $carry, $item ) use ( $template_filename ) {
 				$filepath = DIRECTORY_SEPARATOR . $item . DIRECTORY_SEPARATOR . $template_filename;
 
-				$carry[] = get_template_directory() . $filepath;
 				$carry[] = get_stylesheet_directory() . $filepath;
+				$carry[] = get_template_directory() . $filepath;
 
 				return $carry;
 			},
