@@ -7,13 +7,11 @@ import { Disabled, PanelBody, withSpokenMessages } from '@wordpress/components';
 import HeadingToolbar from '@woocommerce/editor-components/heading-toolbar';
 import BlockTitle from '@woocommerce/editor-components/block-title';
 import ToggleButtonControl from '@woocommerce/editor-components/toggle-button-control';
-import classNames from 'classnames';
 
 /**
  * Internal dependencies
  */
 import Block from './block.js';
-import { getTextColorClassAndStyleFromAttributeObject } from '../../utils/style-attributes';
 
 const Edit = ( { attributes, setAttributes } ) => {
 	const { className, displayStyle, heading, headingLevel } = attributes;
@@ -21,10 +19,6 @@ const Edit = ( { attributes, setAttributes } ) => {
 	const blockProps = useBlockProps( {
 		className,
 	} );
-
-	const textColorClassAndStyle = getTextColorClassAndStyleFromAttributeObject(
-		attributes
-	);
 
 	const getInspectorControls = () => {
 		return (
@@ -88,11 +82,7 @@ const Edit = ( { attributes, setAttributes } ) => {
 		<div { ...blockProps }>
 			{ getInspectorControls() }
 			<BlockTitle
-				className={ classNames(
-					'wc-block-active-filters__title',
-					textColorClassAndStyle.class
-				) }
-				style={ textColorClassAndStyle.style }
+				className="wc-block-active-filters__title"
 				headingLevel={ headingLevel }
 				heading={ heading }
 				onChange={ ( value ) => setAttributes( { heading: value } ) }
