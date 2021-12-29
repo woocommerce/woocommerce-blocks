@@ -56,7 +56,7 @@ class BlockTemplatesController {
 
 	/**
 	 * This function checks if there's a blocks template (ultimately it resolves either a saved blocks template from the
-	 * database or a template file in `woo-gutenberg-products-block/templates/block-templates/`)
+	 * database or a template file in `woo-gutenberg-products-block/templates/templates/`)
 	 * to return to pre_get_posts short-circuiting the query in Gutenberg.
 	 *
 	 * @param \WP_Block_Template|null $template Return a block template object to short-circuit the default query,
