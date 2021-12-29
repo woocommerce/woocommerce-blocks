@@ -5,6 +5,7 @@ import { __ } from '@wordpress/i18n';
 import { registerBlockType } from '@wordpress/blocks';
 import { Icon, toggle } from '@woocommerce/icons';
 import classNames from 'classnames';
+import { useBlockProps } from '@wordpress/block-editor';
 
 /**
  * Internal dependencies
@@ -62,9 +63,12 @@ registerBlockType( 'woocommerce/active-filters', {
 			'data-heading': heading,
 			'data-heading-level': headingLevel,
 		};
+
 		return (
 			<div
-				className={ classNames( 'is-loading', className ) }
+				{ ...useBlockProps.save( {
+					className: classNames( 'is-loading', className ),
+				} ) }
 				{ ...data }
 			>
 				<span

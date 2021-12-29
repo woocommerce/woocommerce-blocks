@@ -3,7 +3,7 @@
  */
 import { getTextColorClassAndStyleFromAttributeObject } from '../style-attributes';
 
-fdescribe( 'getTextColorClassAndStyleFromAttributeObject', () => {
+describe( 'getTextColorClassAndStyleFromAttributeObject', () => {
 	const attributesObjectWithTextColor = {
 		textColor: 'red',
 	};

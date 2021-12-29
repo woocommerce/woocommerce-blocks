@@ -2,7 +2,7 @@
  * External dependencies
  */
 import { __ } from '@wordpress/i18n';
-import { InspectorControls } from '@wordpress/block-editor';
+import { InspectorControls, useBlockProps } from '@wordpress/block-editor';
 import { Disabled, PanelBody, withSpokenMessages } from '@wordpress/components';
 import HeadingToolbar from '@woocommerce/editor-components/heading-toolbar';
 import BlockTitle from '@woocommerce/editor-components/block-title';
@@ -17,6 +17,10 @@ import { getTextColorClassAndStyleFromAttributeObject } from '../../utils/style-
 
 const Edit = ( { attributes, setAttributes } ) => {
 	const { className, displayStyle, heading, headingLevel } = attributes;
+
+	const blockProps = useBlockProps( {
+		className,
+	} );
 
 	const textColorClassAndStyle = getTextColorClassAndStyleFromAttributeObject(
 		attributes
@@ -81,7 +85,7 @@ const Edit = ( { attributes, setAttributes } ) => {
 	};
 
 	return (
-		<div className={ className }>
+		<div { ...blockProps }>
 			{ getInspectorControls() }
 			<BlockTitle
 				className={ classNames(
