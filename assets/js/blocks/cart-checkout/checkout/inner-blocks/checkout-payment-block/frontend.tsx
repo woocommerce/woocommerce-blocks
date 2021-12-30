@@ -2,13 +2,10 @@
  * External dependencies
  */
 import classnames from 'classnames';
-import { useStoreCart, useEmitResponse } from '@woocommerce/base-context/hooks';
+import { useStoreCart } from '@woocommerce/base-context/hooks';
 import { withFilteredAttributes } from '@woocommerce/shared-hocs';
 import { FormStep } from '@woocommerce/base-components/cart-checkout';
-import {
-	useCheckoutContext,
-	StoreNoticesProvider,
-} from '@woocommerce/base-context';
+import { useCheckoutContext } from '@woocommerce/base-context';
 
 /**
  * Internal dependencies
@@ -31,7 +28,6 @@ const FrontendBlock = ( {
 } ) => {
 	const { isProcessing: checkoutIsProcessing } = useCheckoutContext();
 	const { cartNeedsPayment } = useStoreCart();
-	const { noticeContexts } = useEmitResponse();
 
 	if ( ! cartNeedsPayment ) {
 		return null;
@@ -48,9 +44,7 @@ const FrontendBlock = ( {
 			description={ description }
 			showStepNumber={ showStepNumber }
 		>
-			<StoreNoticesProvider context={ noticeContexts.PAYMENTS }>
-				<Block />
-			</StoreNoticesProvider>
+			<Block />
 			{ children }
 		</FormStep>
 	);
