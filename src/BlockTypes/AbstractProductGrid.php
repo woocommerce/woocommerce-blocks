@@ -366,7 +366,7 @@ abstract class AbstractProductGrid extends AbstractDynamicBlock {
 		if ( empty( $prime_variation_ids ) ) {
 			return;
 		}
-		
+
 		$all_variation_meta_data = $wpdb->get_results(
 			$wpdb->prepare(
 				"SELECT post_id as variation_id, meta_key as attribute_key, meta_value as attribute_value FROM {$wpdb->postmeta} WHERE post_id IN (" . implode( ',', array_map( 'esc_sql', $prime_variation_ids ) ) . ') AND meta_key LIKE %s',
