@@ -361,7 +361,7 @@ class BlockTemplateUtils {
 	 *
 	 * @return WP_Block_Template|null Template.
 	 */
-	public static function fse_get_block_template( $id, $template_type ) {
+	public static function get_block_template( $id, $template_type ) {
 		if ( function_exists( 'get_block_template' ) ) {
 			return get_block_template( $id, $template_type );
 		}
