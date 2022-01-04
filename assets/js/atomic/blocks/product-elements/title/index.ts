@@ -24,17 +24,25 @@ const blockConfig: BlockConfiguration = {
 	icon: { src: icon },
 	attributes,
 	edit,
-	supports: isFeaturePluginBuild()
-		? {
-				html: false,
-				color: {
-					background: false,
-				},
-				typography: {
-					fontSize: true,
-				},
-		  }
-		: sharedConfig.supports,
+	supports: {
+		typography: {
+			fontSize: true,
+			lineHeight: true,
+			...( isFeaturePluginBuild() && {
+				__experimentalFontWeight: true,
+				__experimentalTextTransform: true,
+				__experimentalFontFamily: true,
+			} ),
+		},
+		color: {
+			text: false,
+			background: true,
+			gradients: true,
+		},
+		spacing: {
+			margin: true,
+		},
+	},
 };
 
 registerBlockType( 'woocommerce/product-title', blockConfig );
