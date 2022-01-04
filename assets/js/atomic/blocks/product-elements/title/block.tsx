@@ -7,7 +7,6 @@ import {
 	useInnerBlockLayoutContext,
 	useProductDataContext,
 } from '@woocommerce/shared-context';
-import { getColorClassName, getFontSizeClass } from '@wordpress/block-editor';
 import { isFeaturePluginBuild } from '@woocommerce/block-settings';
 import { withProductDataContext } from '@woocommerce/shared-hocs';
 import ProductName from '@woocommerce/base-components/product-name';
@@ -18,6 +17,11 @@ import { useStoreEvents } from '@woocommerce/base-context/hooks';
  */
 import './style.scss';
 import { Attributes } from './types';
+import {
+	useSpacingProps,
+	useTypographyProps,
+	useColorProps,
+} from '../../../../utils/style-attributes-utils';
 
 type Props = Attributes & HTMLAttributes< HTMLDivElement >;
 
@@ -49,33 +53,26 @@ const TagName = ( {
  * will be used if this is not provided.
  * @return {*} The component.
  */
-export const Block = ( {
-	className,
-	headingLevel = 2,
-	showProductLink = true,
-	align,
-	textColor,
-	fontSize,
-	style,
-}: Props ): JSX.Element => {
+export const Block = ( props: Props ): JSX.Element => {
+	const {
+		className,
+		headingLevel = 2,
+		showProductLink = true,
+		align,
+	} = props;
+
 	const { parentClassName } = useInnerBlockLayoutContext();
 	const { product } = useProductDataContext();
 	const { dispatchStoreEvent } = useStoreEvents();
 
-	const colorClass = getColorClassName( 'color', textColor );
-	const fontSizeClass = getFontSizeClass( fontSize );
-	const titleClasses = classnames( 'wp-block-woocommerce-product-title', {
-		'has-text-color': textColor || style?.color?.text || style?.color,
-		[ `has-font-size` ]:
-			fontSize || style?.typography?.fontSize || style?.fontSize,
-		[ colorClass ]: colorClass,
-		[ fontSizeClass ]: fontSizeClass,
-	} );
+	const colorProps = useColorProps( props );
+	const spacingProps = useSpacingProps( props );
+	const typographyProps = useTypographyProps( props );
 
-	const titleStyle = {
-		fontSize: style?.fontSize || style?.typography?.fontSize,
-		color: style?.color?.text || style?.color,
-	};
+	const titleClasses = classnames(
+		'wp-block-woocommerce-product-title',
+		colorProps.className
+	);
 
 	if ( ! product.id ) {
 		return (
@@ -88,7 +85,6 @@ export const Block = ( {
 						[ `${ parentClassName }__product-title` ]: parentClassName,
 						[ `wc-block-components-product-title--align-${ align }` ]:
 							align && isFeaturePluginBuild(),
-						[ titleClasses ]: isFeaturePluginBuild(),
 					}
 				) }
 			/>
@@ -109,9 +105,7 @@ export const Block = ( {
 			) }
 		>
 			<ProductName
-				className={ classnames( {
-					[ titleClasses ]: isFeaturePluginBuild(),
-				} ) }
+				className={ titleClasses }
 				disabled={ ! showProductLink }
 				name={ product.name }
 				permalink={ product.permalink }
@@ -121,7 +115,14 @@ export const Block = ( {
 						product,
 					} );
 				} }
-				style={ isFeaturePluginBuild() ? titleStyle : {} }
+				style={
+					isFeaturePluginBuild()
+						? {
+								...spacingProps.style,
+								...typographyProps.style,
+						  }
+						: {}
+				}
 			/>
 		</TagName>
 	);
