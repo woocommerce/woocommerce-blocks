@@ -5,12 +5,14 @@
 	margin: 0 auto !important;
 }
 
-.wp-block-woocommerce-filled-mini-cart-contents-block {
-	.block-editor-block-list__layout {
-		display: flex;
-		flex-direction: column;
-		min-height: 100vh;
-	}
+.wp-block-woocommerce-filled-mini-cart-contents-block > .block-editor-inner-blocks > .block-editor-block-list__layout {
+	display: flex;
+	flex-direction: column;
+	min-height: 100vh;
+}
+
+.wp-block-woocommerce-mini-cart-items-block {
+	flex-grow: 1;
 }
 
 .wp-block-woocommerce-mini-cart-products-table-block {
