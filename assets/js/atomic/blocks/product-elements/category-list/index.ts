@@ -18,11 +18,22 @@ import {
 
 const blockConfig: BlockConfiguration = {
 	...sharedConfig,
+	apiVersion: 2,
 	title,
 	description,
 	icon: { src: icon },
 	attributes,
 	edit,
+	supports: {
+		color: {
+			text: true,
+			link: true,
+			background: false,
+		},
+		typography: {
+			fontSize: true,
+		},
+	},
 };
 
 registerExperimentalBlockType(
