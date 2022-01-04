@@ -120,6 +120,7 @@ export const Block = ( props: Props ): JSX.Element => {
 						? {
 								...spacingProps.style,
 								...typographyProps.style,
+								...colorProps.style,
 						  }
 						: {}
 				}

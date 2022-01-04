@@ -10,6 +10,14 @@ import { __experimentalUseColorProps } from '@wordpress/block-editor';
 import { isFeaturePluginBuild } from '../settings/blocks/feature-flags';
 import { isString, isObject } from '../types/type-guards';
 
+type WithClass = {
+	className: string;
+};
+
+type WithStyle = {
+	style: Record< string, unknown >;
+};
+
 const parseStyle = ( style: unknown ): Record< string, unknown > => {
 	if ( isString( style ) ) {
 		return JSON.parse( style ) || {};
@@ -53,11 +61,7 @@ const parseSpacingStyle = (
 	}, {} );
 };
 
-export const useSpacingProps = (
-	attributes: unknown
-): {
-	style: Record< string, unknown >;
-} => {
+export const useSpacingProps = ( attributes: unknown ): WithStyle => {
 	const style = isObject( attributes ) ? parseStyle( attributes.style ) : {};
 	const spacingStyles = isObject( style.spacing ) ? style.spacing : {};
 
@@ -66,11 +70,7 @@ export const useSpacingProps = (
 	};
 };
 
-export const useTypographyProps = (
-	attributes: unknown
-): {
-	style: Record< string, unknown >;
-} => {
+export const useTypographyProps = ( attributes: unknown ): WithStyle => {
 	const attributesObject = isObject( attributes ) ? attributes : {};
 	const style = parseStyle( attributesObject.style );
 	const typography = isObject( style.typography )
@@ -88,12 +88,7 @@ export const useTypographyProps = (
 	};
 };
 
-export const useColorProps = (
-	attributes: unknown
-): {
-	className: string;
-	style: Record< string, unknown >;
-} => {
+export const useColorProps = ( attributes: unknown ): WithStyle & WithClass => {
 	if ( ! isFeaturePluginBuild() ) {
 		return {
 			className: '',
@@ -101,5 +96,8 @@ export const useColorProps = (
 		};
 	}
 
-	return __experimentalUseColorProps( attributes );
+	const attributesObject = isObject( attributes ) ? attributes : {};
+	const style = parseStyle( attributesObject.style );
+
+	return __experimentalUseColorProps( { ...attributesObject, style } );
 };

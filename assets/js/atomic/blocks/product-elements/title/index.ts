@@ -28,12 +28,11 @@ const blockConfig: BlockConfiguration = {
 		typography: {
 			fontSize: true,
 			lineHeight: true,
-			...( isFeaturePluginBuild() &
-				{
-					__experimentalFontWeight: true,
-					__experimentalTextTransform: true,
-					__experimentalFontFamily: true,
-				} ),
+			...( isFeaturePluginBuild() && {
+				__experimentalFontWeight: true,
+				__experimentalTextTransform: true,
+				__experimentalFontFamily: true,
+			} ),
 		},
 		color: {
 			text: false,
