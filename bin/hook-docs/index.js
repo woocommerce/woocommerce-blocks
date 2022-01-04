@@ -3,7 +3,7 @@
 /* eslint no-console: 0 */
 const chalk = require( 'chalk' );
 
-const groupByHook = ( hooks, hook, index, allHooks ) => {
+const groupByHook = ( hooks, hook ) => {
 	if ( hooks[ hook.name ] !== undefined ) {
 		if ( hooks[ hook.name ].file !== hook.file ) {
 			hooks[ hook.name ].file.push( hook.file );
