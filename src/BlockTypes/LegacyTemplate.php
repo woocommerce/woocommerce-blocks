@@ -205,17 +205,31 @@ class LegacyTemplate extends AbstractDynamicBlock {
 			return $content;
 		}
 
-		$pattern               = '/(?<=class=\")[^"]+(?=\")/';
 		$attributes            = (array) $block['attrs'];
 		$align_class_and_style = StyleAttributesUtils::get_align_class_and_style( $attributes );
-		$matches               = array();
-		preg_match( $pattern, $content, $matches );
 
-		if ( ! isset( $matches[0] ) || ! isset( $align_class_and_style['class'] ) ) {
+		if ( ! isset( $align_class_and_style['class'] ) ) {
 			return $content;
 		}
 
-		return preg_replace( $pattern, $matches[0] . ' ' . $align_class_and_style['class'], $content, 1 );
+		// Find the first tag.
+		$first_tag = '<[^<>]+>';
+		$matches   = array();
+		preg_match( $first_tag, $content, $matches );
+
+		// If there is a tag, but it doesn't have a class attribute, add the class attribute.
+		if ( isset( $matches[0] ) && strpos( $matches[0], 'class' ) === false ) {
+			$pattern_before_tag_closing = '/.+?(?=>)/';
+			$matches                    = array();
+			preg_match( $pattern_before_tag_closing, $content, $matches );
+			return preg_replace( $pattern_before_tag_closing, $matches[0] . ' class="' . $align_class_and_style['class'] . '"', $content, 1 );
+		}
+
+		// If there is a tag, and it has a class already, add the class attribute.
+		$pattern_get_class = '/(?<=class=\")[^"]+(?=\")/';
+		$matches_class     = array();
+		preg_match( $pattern_get_class, $content, $matches_class );
+		return preg_replace( $pattern_get_class, $matches_class[0] . ' ' . $align_class_and_style['class'], $content, 1 );
 	}
 
 
