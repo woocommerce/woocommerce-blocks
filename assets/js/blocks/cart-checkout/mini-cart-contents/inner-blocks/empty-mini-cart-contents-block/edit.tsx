@@ -9,7 +9,7 @@ import { getBlockTypes } from '@wordpress/blocks';
  * Internal dependencies
  */
 
-const excludedBlocks = [
+const EXCLUDED_BLOCKS: readonly string[] = [
 	'woocommerce/mini-cart',
 	'core/template-part',
 	'core/post-template',
@@ -19,21 +19,15 @@ const excludedBlocks = [
 export const Edit = (): JSX.Element => {
 	const blockProps = useBlockProps();
 	const { currentView } = useEditorContext();
-	const allowedBlocks = [
-		...getBlockTypes()
-			.filter( ( block ) => {
-				if ( excludedBlocks.includes( block.name ) ) {
-					return false;
-				}
+	const allowedBlocks = getBlockTypes()
+		.filter( ( block ) => {
+			if ( EXCLUDED_BLOCKS.includes( block.name ) ) {
+				return false;
+			}
 
-				if ( block.parent && block.parent.length > 0 ) {
-					return false;
-				}
-
-				return true;
-			} )
-			.map( ( { name } ) => name ),
-	];
+			return true;
+		} )
+		.map( ( { name } ) => name );
 
 	return (
 		<div
