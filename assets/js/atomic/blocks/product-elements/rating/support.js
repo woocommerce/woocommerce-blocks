@@ -1,7 +1,14 @@
+/**
+ * External dependencies
+ */
+import { isFeaturePluginBuild } from '@woocommerce/block-settings';
+
 export const supports = {
-	color: {
-		text: true,
-		background: false,
-		link: false,
-	},
+	...( isFeaturePluginBuild() && {
+		color: {
+			text: true,
+			background: false,
+			link: false,
+		},
+	} ),
 };
