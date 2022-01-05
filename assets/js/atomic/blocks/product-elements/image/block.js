@@ -18,6 +18,10 @@ import { useStoreEvents } from '@woocommerce/base-context/hooks';
  */
 import ProductSaleBadge from './../sale-badge/block';
 import './style.scss';
+import {
+	useTypographyProps,
+	useBorderProps,
+} from '../../../../utils/style-attributes-utils';
 
 /**
  * Product Image Block Component.
@@ -30,17 +34,20 @@ import './style.scss';
  * @param {string} [props.saleBadgeAlign] How should the sale badge be aligned if displayed.
  * @return {*} The component.
  */
-export const Block = ( {
-	className,
-	imageSizing = 'full-size',
-	showProductLink = true,
-	showSaleBadge,
-	saleBadgeAlign = 'right',
-} ) => {
+export const Block = ( props ) => {
+	const {
+		className,
+		imageSizing = 'full-size',
+		showProductLink = true,
+		showSaleBadge,
+		saleBadgeAlign = 'right',
+	} = props;
 	const { parentClassName } = useInnerBlockLayoutContext();
 	const { product } = useProductDataContext();
 	const [ imageLoaded, setImageLoaded ] = useState( false );
 	const { dispatchStoreEvent } = useStoreEvents();
+
+	const typographyProps = useTypographyProps( props );
 
 	if ( ! product.id ) {
 		return (
@@ -54,7 +61,7 @@ export const Block = ( {
 					}
 				) }
 			>
-				<ImagePlaceholder />
+				<ImagePlaceholder style={ borderProps.style } />
 			</div>
 		);
 	}

@@ -16,6 +16,7 @@
 	img {
 		vertical-align: middle;
 		width: 100%;
+		border-radius: inherit;
 
 		&[hidden] {
 			display: none;
@@ -24,6 +25,8 @@
 
 	img[alt=""] {
 		border: 1px solid $image-placeholder-border-color;
+		border-radius: inherit;
+
 	}
 
 	.wc-block-components-product-sale-badge {
