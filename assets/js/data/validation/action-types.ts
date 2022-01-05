@@ -1,0 +1,3 @@
+export const ACTION_TYPES = {
+	SET_VALIDATION_ERRORS: 'SET_VALIDATION_ERRORS',
+} as const;
