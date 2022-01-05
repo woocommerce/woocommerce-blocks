@@ -15,6 +15,7 @@ import {
 	BLOCK_ICON as icon,
 	BLOCK_DESCRIPTION as description,
 } from './constants';
+import { Save } from './save';
 
 const blockConfig: BlockConfiguration = {
 	...sharedConfig,
@@ -24,17 +25,33 @@ const blockConfig: BlockConfiguration = {
 	icon: { src: icon },
 	attributes,
 	edit,
-	supports: isFeaturePluginBuild()
-		? {
-				html: false,
-				color: {
-					background: false,
-				},
-				typography: {
-					fontSize: true,
-				},
-		  }
-		: sharedConfig.supports,
+	save: Save,
+	supports: {
+		...( isFeaturePluginBuild() && {
+			typography: {
+				fontSize: true,
+				lineHeight: true,
+				__experimentalFontWeight: true,
+				__experimentalTextTransform: true,
+				__experimentalFontFamily: true,
+			},
+		} ),
+		...( isFeaturePluginBuild() && {
+			color: {
+				text: true,
+				background: true,
+				link: false,
+				gradients: true,
+				__experimentalSkipSerialization: true,
+			},
+		} ),
+		...( isFeaturePluginBuild() && {
+			spacing: {
+				margin: true,
+				__experimentalSkipSerialization: true,
+			},
+		} ),
+	},
 };
 
 registerBlockType( 'woocommerce/product-title', blockConfig );
