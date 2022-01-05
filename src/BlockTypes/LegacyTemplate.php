@@ -218,7 +218,7 @@ class LegacyTemplate extends AbstractDynamicBlock {
 		preg_match( $first_tag, $content, $matches );
 
 		// If there is a tag, but it doesn't have a class attribute, add the class attribute.
-		if ( isset( $matches[0] ) && strpos( $matches[0], 'class' ) === false ) {
+		if ( isset( $matches[0] ) && strpos( $matches[0], ' class=' ) === false ) {
 			$pattern_before_tag_closing = '/.+?(?=>)/';
 			$matches                    = array();
 			preg_match( $pattern_before_tag_closing, $content, $matches );
@@ -226,7 +226,7 @@ class LegacyTemplate extends AbstractDynamicBlock {
 		}
 
 		// If there is a tag, and it has a class already, add the class attribute.
-		$pattern_get_class = '/(?<=class=\")[^"]+(?=\")/';
+		$pattern_get_class = '/(?<=class=\"|\')[^"|\']+(?=\"|\')/';
 		$matches_class     = array();
 		preg_match( $pattern_get_class, $content, $matches_class );
 		return preg_replace( $pattern_get_class, $matches_class[0] . ' ' . $align_class_and_style['class'], $content, 1 );
