@@ -12,6 +12,7 @@ import {
 	ColorPalette,
 	FontSizePicker,
 	withFontSizes,
+	useBlockProps,
 } from '@wordpress/block-editor';
 import { isFeaturePluginBuild } from '@woocommerce/block-settings';
 /**
@@ -54,8 +55,9 @@ const PriceEdit = ( {
 	setAttributes,
 } ) => {
 	const { align } = attributes;
+	const blockProps = useBlockProps();
 	return (
-		<>
+		<div { ...blockProps }>
 			{ isFeaturePluginBuild() && (
 				<BlockControls>
 					<AlignmentToolbar
@@ -107,7 +109,7 @@ const PriceEdit = ( {
 				) }
 			</InspectorControls>
 			<Block { ...attributes } />
-		</>
+		</div>
 	);
 };
 

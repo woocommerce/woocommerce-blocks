@@ -9,6 +9,9 @@ import { registerBlockType } from '@wordpress/blocks';
 import sharedConfig from '../shared/config';
 import edit from './edit';
 import attributes from './attributes';
+import { supports } from './supports';
+import { Save } from './save';
+
 import {
 	BLOCK_TITLE as title,
 	BLOCK_ICON as icon,
@@ -16,11 +19,15 @@ import {
 } from './constants';
 
 const blockConfig = {
+	apiVersion: 2,
+	supports,
 	title,
 	description,
 	icon: { src: icon },
 	attributes,
 	edit,
+	supports,
+	save: Save,
 };
 
 registerBlockType( 'woocommerce/product-price', {
