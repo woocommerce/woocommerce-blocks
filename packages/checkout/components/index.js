@@ -1,4 +1,5 @@
 export * from './totals';
+export { default as ValidatedTextInput } from './text-input/validated-text-input';
 export { default as TotalsWrapper } from './totals-wrapper';
 export { default as ExperimentalOrderMeta } from './order-meta';
 export { default as ExperimentalDiscountsMeta } from './discounts-meta';
