@@ -30,13 +30,34 @@ const parseStyle = ( style: unknown ): Record< string, unknown > => {
 	return {};
 };
 
+const getSpacingStyleInline = (
+	key: string,
+	values: {
+		top: string | null;
+		right: string | null;
+		bottom: string | null;
+		left: string | null;
+	}
+) => {
+	return {
+		...( isString( values.top ) && { [ `${ key }Top` ]: values.top } ),
+		...( isString( values.right ) && {
+			[ `${ key }Right` ]: values.right,
+		} ),
+		...( isString( values.bottom ) && {
+			[ `${ key }Bottom` ]: values.bottom,
+		} ),
+		...( isString( values.left ) && { [ `${ key }Left` ]: values.left } ),
+	};
+};
+
 const parseSpacingStyle = (
 	spacing: Record< string, unknown >
 ): Record< string, unknown > => {
 	const keys = [ 'margin' ];
 
 	const getValueOrDefault = ( value: unknown ) => {
-		return isString( value ) && value.length > 0 ? value : '0';
+		return isString( value ) && value.length > 0 ? value : null;
 	};
 
 	return Object.keys( spacing ).reduce( ( acc, key ) => {
@@ -47,13 +68,12 @@ const parseSpacingStyle = (
 		if ( keys.includes( key ) ) {
 			return {
 				...acc,
-				[ key ]: `${ getValueOrDefault(
-					spacingProperty.top
-				) } ${ getValueOrDefault(
-					spacingProperty.right
-				) } ${ getValueOrDefault(
-					spacingProperty.bottom
-				) } ${ getValueOrDefault( spacingProperty.left ) }`,
+				...getSpacingStyleInline( key, {
+					top: getValueOrDefault( spacingProperty.top ),
+					right: getValueOrDefault( spacingProperty.right ),
+					bottom: getValueOrDefault( spacingProperty.bottom ),
+					left: getValueOrDefault( spacingProperty.left ),
+				} ),
 			};
 		}
 

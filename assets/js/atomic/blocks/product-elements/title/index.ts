@@ -15,6 +15,7 @@ import {
 	BLOCK_ICON as icon,
 	BLOCK_DESCRIPTION as description,
 } from './constants';
+import { Save } from './save';
 
 const blockConfig: BlockConfiguration = {
 	...sharedConfig,
@@ -24,24 +25,32 @@ const blockConfig: BlockConfiguration = {
 	icon: { src: icon },
 	attributes,
 	edit,
+	save: Save,
 	supports: {
-		typography: {
-			fontSize: true,
-			lineHeight: true,
-			...( isFeaturePluginBuild() && {
+		...( isFeaturePluginBuild() && {
+			typography: {
+				fontSize: true,
+				lineHeight: true,
 				__experimentalFontWeight: true,
 				__experimentalTextTransform: true,
 				__experimentalFontFamily: true,
-			} ),
-		},
-		color: {
-			text: false,
-			background: true,
-			gradients: true,
-		},
-		spacing: {
-			margin: true,
-		},
+			},
+		} ),
+		...( isFeaturePluginBuild() && {
+			color: {
+				text: true,
+				background: true,
+				link: false,
+				gradients: true,
+				__experimentalSkipSerialization: true,
+			},
+		} ),
+		...( isFeaturePluginBuild() && {
+			spacing: {
+				margin: true,
+				__experimentalSkipSerialization: true,
+			},
+		} ),
 	},
 };
 
