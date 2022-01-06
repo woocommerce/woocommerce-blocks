@@ -6,6 +6,10 @@ $fontSizes: (
 	"larger": 2,
 );
 
+$placeholders: "-webkit-input-placeholder",
+	"-moz-placeholder",
+	"-ms-input-placeholder";
+
 // Maps a named font-size to its predefined size. Units default to em, but can
 // be changed using the multiplier parameter.
 @mixin font-size($sizeName, $multiplier: 1em) {
@@ -215,4 +219,30 @@ $fontSizes: (
 
 	$hex: str-slice(ie-hex-str($color), 4);
 	@return "%23" + unquote("#{$hex}");
+}
+
+@mixin placeholder-auto-prefixer {
+	@each $placeholder in $placeholders {
+		@if $placeholder == "-webkit-input-placeholder" {
+			::#{$placeholder} {
+				@content;
+			}
+		}
+		@else if $placeholder == "-moz-placeholder" {
+			// FF 18-
+			:#{$placeholder} {
+				@content;
+			}
+
+			// FF 19+
+			::#{$placeholder} {
+				@content;
+			}
+		}
+		@else {
+			:#{$placeholder} {
+				@content;
+			}
+		}
+	}
 }
