@@ -4,11 +4,15 @@
 import { __ } from '@wordpress/i18n';
 import { useCallback, useRef, useEffect, useState } from 'react';
 import classnames from 'classnames';
-import { ValidationInputError } from '@woocommerce/base-context/providers/validation';
 import { withInstanceId } from '@wordpress/compose';
 import { isString } from '@woocommerce/types';
-import { VALIDATION_STORE_KEY } from '@woocommerce/block-data';
 import { dispatch, useSelect } from '@wordpress/data';
+
+/**
+ * Internal dependencies
+ */
+import { ValidationInputError } from '../validation-input-error';
+import { VALIDATION_STORE_KEY } from '../../validation';
 
 /**
  * Internal dependencies
