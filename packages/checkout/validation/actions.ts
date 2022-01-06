@@ -2,7 +2,7 @@
  * Internal dependencies
  */
 import { ACTION_TYPES as types } from './action-types';
-import { ReturnOrGeneratorYieldUnion } from '../mapped-types';
+import { ReturnOrGeneratorYieldUnion } from '../../../assets/js/data/mapped-types';
 import { FieldValidationStatus } from './reducers';
 
 export const setValidationErrors = (
