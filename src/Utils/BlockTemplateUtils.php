@@ -254,15 +254,12 @@ class BlockTemplateUtils {
 	 * Converts template paths into a slug
 	 *
 	 * @param string $path The template's path.
-	 * @param string $directory_name The template's directory name.
 	 * @return string slug
 	 */
-	public static function generate_template_slug_from_path( $path, $directory_name = 'block-templates' ) {
-		return substr(
-			$path,
-			strpos( $path, $directory_name . DIRECTORY_SEPARATOR ) + 1 + strlen( $directory_name ),
-			-5
-		);
+	public static function generate_template_slug_from_path( $path ) {
+		$template_extension = '.html';
+
+		return basename( $path, $template_extension );
 	}
 
 	/**
@@ -298,8 +295,8 @@ class BlockTemplateUtils {
 			function( $carry, $item ) use ( $template_filename ) {
 				$filepath = DIRECTORY_SEPARATOR . $item . DIRECTORY_SEPARATOR . $template_filename;
 
-				$carry[] = get_template_directory() . $filepath;
 				$carry[] = get_stylesheet_directory() . $filepath;
+				$carry[] = get_template_directory() . $filepath;
 
 				return $carry;
 			},
@@ -350,6 +347,28 @@ class BlockTemplateUtils {
 		}
 
 		return true;
+	}
+
+	/**
+	 * Retrieves a single unified template object using its id.
+	 *
+	 * @param string $id            Template unique identifier (example: theme_slug//template_slug).
+	 * @param string $template_type Optional. Template type: `'wp_template'` or '`wp_template_part'`.
+	 *                             Default `'wp_template'`.
+	 *
+	 * @return WP_Block_Template|null Template.
+	 */
+	public static function get_block_template( $id, $template_type ) {
+		if ( function_exists( 'get_block_template' ) ) {
+			return get_block_template( $id, $template_type );
+		}
+
+		if ( function_exists( 'gutenberg_get_block_template' ) ) {
+			return gutenberg_get_block_template( $id, $template_type );
+		}
+
+		return null;
+
 	}
 
 	/**
