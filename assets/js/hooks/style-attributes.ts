@@ -2,7 +2,10 @@
 /**
  * External dependencies
  */
-import { __experimentalUseColorProps } from '@wordpress/block-editor';
+import {
+	__experimentalUseColorProps,
+	__experimentalGetSpacingClassesAndStyles,
+} from '@wordpress/block-editor';
 
 /**
  * Internal dependencies
@@ -30,64 +33,19 @@ const parseStyle = ( style: unknown ): Record< string, unknown > => {
 	return {};
 };
 
-const getSpacingStyleInline = (
-	key: string,
-	values: {
-		top: string | null;
-		right: string | null;
-		bottom: string | null;
-		left: string | null;
-	}
-) => {
-	return {
-		...( isString( values.top ) && { [ `${ key }Top` ]: values.top } ),
-		...( isString( values.right ) && {
-			[ `${ key }Right` ]: values.right,
-		} ),
-		...( isString( values.bottom ) && {
-			[ `${ key }Bottom` ]: values.bottom,
-		} ),
-		...( isString( values.left ) && { [ `${ key }Left` ]: values.left } ),
-	};
-};
-
-const parseSpacingStyle = (
-	spacing: Record< string, unknown >
-): Record< string, unknown > => {
-	const keys = [ 'margin' ];
-
-	const getValueOrDefault = ( value: unknown ) => {
-		return isString( value ) && value.length > 0 ? value : null;
-	};
-
-	return Object.keys( spacing ).reduce( ( acc, key ) => {
-		const spacingProperty = isObject( spacing[ key ] )
-			? ( spacing[ key ] as Record< string, unknown > )
-			: {};
-
-		if ( keys.includes( key ) ) {
-			return {
-				...acc,
-				...getSpacingStyleInline( key, {
-					top: getValueOrDefault( spacingProperty.top ),
-					right: getValueOrDefault( spacingProperty.right ),
-					bottom: getValueOrDefault( spacingProperty.bottom ),
-					left: getValueOrDefault( spacingProperty.left ),
-				} ),
-			};
-		}
-
-		return acc;
-	}, {} );
-};
-
 export const useSpacingProps = ( attributes: unknown ): WithStyle => {
-	const style = isObject( attributes ) ? parseStyle( attributes.style ) : {};
-	const spacingStyles = isObject( style.spacing ) ? style.spacing : {};
+	if ( ! isFeaturePluginBuild() ) {
+		return {
+			style: {},
+		};
+	}
+	const attributesObject = isObject( attributes ) ? attributes : {};
+	const style = parseStyle( attributesObject.style );
 
-	return {
-		style: parseSpacingStyle( spacingStyles ),
-	};
+	return __experimentalGetSpacingClassesAndStyles( {
+		...attributesObject,
+		style,
+	} );
 };
 
 export const useTypographyProps = ( attributes: unknown ): WithStyle => {
