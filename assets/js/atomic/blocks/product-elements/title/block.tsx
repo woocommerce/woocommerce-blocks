@@ -21,7 +21,7 @@ import {
 	useSpacingProps,
 	useTypographyProps,
 	useColorProps,
-} from '../../../../utils/style-attributes-utils';
+} from '../../../../hooks/style-attributes';
 
 type Props = Attributes & HTMLAttributes< HTMLDivElement >;
 
