@@ -63,7 +63,7 @@ const Edit = ( { clientId }: Props ): ReactElement => {
 	return (
 		<div { ...blockProps }>
 			<EditorProvider currentView={ currentView }>
-				<BlockControls __experimentalShareWithChildBlocks>
+				<BlockControls>
 					{ ViewSwitcherComponent }
 				</BlockControls>
 				<InnerBlocks
