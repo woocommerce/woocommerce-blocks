@@ -240,7 +240,6 @@ abstract class AbstractProductGrid extends AbstractDynamicBlock {
 				'taxonomy'         => 'product_cat',
 				'terms'            => $categories,
 				'field'            => 'term_id',
-				'operator'         => 'all' === $this->attributes['catOperator'] ? 'AND' : 'IN',
 
 				/*
 				 * When cat_operator is AND, the children categories should be excluded,
