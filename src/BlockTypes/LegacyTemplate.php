@@ -225,9 +225,7 @@ class LegacyTemplate extends AbstractDynamicBlock {
 
 		// If there is a tag, and it has a class already, add the class attribute.
 		$pattern_get_class = '/(?<=class=\"|\')[^"|\']+(?=\"|\')/';
-		$matches_class     = array();
-		preg_match( $pattern_get_class, $content, $matches_class );
-		return preg_replace( $pattern_get_class, $matches_class[0] . ' ' . $align_class_and_style['class'], $content, 1 );
+		return preg_replace( $pattern_get_class, '$0 ' . $align_class_and_style['class'], $content, 1 );
 	}
 
 
