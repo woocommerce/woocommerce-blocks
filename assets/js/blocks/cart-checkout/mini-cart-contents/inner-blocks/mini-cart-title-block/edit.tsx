@@ -19,7 +19,5 @@ export const Edit = (): JSX.Element => {
 };
 
 export const Save = (): JSX.Element => {
-	return (
-		<div { ...useBlockProps.save() }></div>
-	);
+	return <div { ...useBlockProps.save() }></div>;
 };
