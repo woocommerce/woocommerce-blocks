@@ -16,6 +16,7 @@ import {
 	BLOCK_DESCRIPTION as description,
 } from './constants';
 import { Save } from './save';
+import { hasSpacingStyleSupport } from '../../../../utils/global-style';
 
 const blockConfig: BlockConfiguration = {
 	...sharedConfig,
@@ -45,12 +46,13 @@ const blockConfig: BlockConfiguration = {
 				__experimentalSkipSerialization: true,
 			},
 		} ),
-		...( isFeaturePluginBuild() && {
-			spacing: {
-				margin: true,
-				__experimentalSkipSerialization: true,
-			},
-		} ),
+		...( isFeaturePluginBuild() &&
+			hasSpacingStyleSupport() && {
+				spacing: {
+					margin: true,
+					__experimentalSkipSerialization: true,
+				},
+			} ),
 	},
 };
 

@@ -12,6 +12,7 @@ import {
  */
 import { isFeaturePluginBuild } from '../settings/blocks/feature-flags';
 import { isString, isObject } from '../types/type-guards';
+import { hasSpacingStyleSupport } from '../utils/global-style';
 
 type WithClass = {
 	className: string;
@@ -34,7 +35,7 @@ const parseStyle = ( style: unknown ): Record< string, unknown > => {
 };
 
 export const useSpacingProps = ( attributes: unknown ): WithStyle => {
-	if ( ! isFeaturePluginBuild() ) {
+	if ( ! isFeaturePluginBuild() || ! hasSpacingStyleSupport() ) {
 		return {
 			style: {},
 		};
