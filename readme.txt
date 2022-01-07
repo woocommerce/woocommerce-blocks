@@ -85,6 +85,12 @@ Release and roadmap notes available on the [WooCommerce Developers Blog](https:/
 
 == Changelog ==
 
+= 6.7.1 - 2022-01-07 =
+
+#### Bug Fixes
+
+- Convert token to string when setting the active payment method. ([5535](https://github.com/woocommerce/woocommerce-gutenberg-products-block/pull/5535))
+
 = 6.7.0 - 2022-01-03 =
 
 #### Enhancements
