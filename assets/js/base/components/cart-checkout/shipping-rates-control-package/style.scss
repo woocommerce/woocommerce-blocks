@@ -1,9 +1,4 @@
 .wc-block-components-shipping-rates-control__package {
-	margin-bottom: em($gap-large);
-
-	&:last-of-type {
-		margin-bottom: 0;
-	}
 
 	.wc-block-components-panel__button {
 		margin-bottom: 0;
@@ -46,4 +41,14 @@
 .wc-block-components-shipping-rates-control__package-item:not(:last-child)::after {
 	content: ", ";
 	white-space: pre;
+}
+
+// Target the shipping selection in checkout only, the Cart block has enough spacing because of the buttons on the panel.
+.wc-block-checkout .wc-block-components-shipping-rates-control__package {
+	margin-bottom: em($gap-large);
+
+	&:last-of-type {
+		margin-bottom: 0;
+	}
+
 }
