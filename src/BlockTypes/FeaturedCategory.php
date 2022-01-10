@@ -1,6 +1,9 @@
 <?php
 namespace Automattic\WooCommerce\Blocks\BlockTypes;
 
+use Automattic\WooCommerce\Blocks\Utils\StyleAttributesUtils;
+
+
 /**
  * FeaturedCategory class.
  */
@@ -11,6 +14,14 @@ class FeaturedCategory extends AbstractDynamicBlock {
 	 * @var string
 	 */
 	protected $block_name = 'featured-category';
+
+
+	/**
+	 * Global style enabled for this block.
+	 *
+	 * @var array
+	 */
+	protected $global_style_wrapper = array( 'text_color', 'font_size', 'border_color', 'border_radius', 'border_width' );
 
 	/**
 	 * Default attribute values, should match what's set in JS `registerBlockType`.
@@ -29,6 +40,23 @@ class FeaturedCategory extends AbstractDynamicBlock {
 	);
 
 	/**
+	 * Get block attributes.
+	 *
+	 * @return array
+	 */
+	protected function get_block_type_attributes() {
+		return array_merge(
+			parent::get_block_type_attributes(),
+			array(
+				'textColor'  => $this->get_schema_string(),
+				'fontSize'   => $this->get_schema_string(),
+				'lineHeight' => $this->get_schema_string(),
+				'style'      => array( 'type' => 'object' ),
+			)
+		);
+	}
+
+	/**
 	 * Render the Featured Category block.
 	 *
 	 * @param array  $attributes Block attributes.
@@ -36,6 +64,7 @@ class FeaturedCategory extends AbstractDynamicBlock {
 	 * @return string Rendered block type output.
 	 */
 	protected function render( $attributes, $content ) {
+
 		$id       = absint( isset( $attributes['categoryId'] ) ? $attributes['categoryId'] : 0 );
 		$category = get_term( $id, 'product_cat' );
 
@@ -57,7 +86,13 @@ class FeaturedCategory extends AbstractDynamicBlock {
 			wc_format_content( wp_kses_post( $category->description ) )
 		);
 
-		$output  = sprintf( '<div class="%1$s" style="%2$s">', esc_attr( $this->get_classes( $attributes ) ), esc_attr( $this->get_styles( $attributes, $category ) ) );
+		$background_color_class_and_style = $this->get_background_color_class_and_style_with_default( $attributes );
+		$text_color_class_and_style       = $this->get_text_color_class_and_style_with_default( $attributes );
+
+		$styles  = $this->get_styles( $attributes, $category ) . ' ' . $text_color_class_and_style['style'] . ' ' . $background_color_class_and_style['style'];
+		$classes = $this->get_classes( $attributes ) . ' ' . $text_color_class_and_style['class'] . ' ' . $background_color_class_and_style['class'];
+
+		$output  = sprintf( '<div class="%1$s wp-block-woocommerce-featured-category" style="%2$s">', esc_attr( $classes ), esc_attr( $styles ) );
 		$output .= '<div class="wc-block-featured-category__wrapper">';
 		$output .= $title;
 		if ( $attributes['showDesc'] ) {
@@ -109,6 +144,10 @@ class FeaturedCategory extends AbstractDynamicBlock {
 			);
 		}
 
+		$global_style_style = StyleAttributesUtils::get_styles_by_attributes( $attributes, $this->global_style_wrapper );
+
+		$style .= $global_style_style;
+
 		return $style;
 	}
 
@@ -145,6 +184,10 @@ class FeaturedCategory extends AbstractDynamicBlock {
 			$classes[] = $attributes['className'];
 		}
 
+		$global_style_classes = StyleAttributesUtils::get_classes_by_attributes( $attributes, $this->global_style_wrapper );
+
+		$classes[] = $global_style_classes;
+
 		return implode( ' ', $classes );
 	}
 
@@ -164,6 +207,50 @@ class FeaturedCategory extends AbstractDynamicBlock {
 		}
 
 		return $image;
+	}
+
+	/**
+	 * Returns the background color.
+	 * If the background color is not defined from user,
+	 * it will be used the same fallback that it is defined in the block configuration.
+	 *
+	 * @param array $attributes Block attributes. Default empty array.
+	 * @return array
+	 */
+	public function get_background_color_class_and_style_with_default( $attributes ) {
+		$background_styles = StyleAttributesUtils::get_background_color_class_and_style( $attributes );
+
+		if ( isset( $background_styles['class'] ) || isset( $background_styles['style'] ) ) {
+			return $background_styles;
+		}
+
+		return array(
+			'class' => '',
+			'style' => 'background-color: #000000;',
+		);
+
+	}
+
+	/**
+	 * Returns the text color.
+	 * If the text color is not defined from user,
+	 * it will be used the same fallback that it is defined in the block configuration.
+	 *
+	 * @param array $attributes Block attributes. Default empty array.
+	 * @return array
+	 */
+	public function get_text_color_class_and_style_with_default( $attributes ) {
+		$text_color_style = StyleAttributesUtils::get_text_color_class_and_style( $attributes );
+
+		if ( isset( $text_color_style['class'] ) || isset( $text_color_style['style'] ) ) {
+			return $text_color_style;
+		}
+
+		return array(
+			'class' => '',
+			'style' => 'color: #ffff;',
+		);
+
 	}
 
 	/**
