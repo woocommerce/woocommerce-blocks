@@ -7,8 +7,6 @@ import { useBlockProps } from '@wordpress/block-editor';
 import { Placeholder } from '@wordpress/components';
 import { __, sprintf } from '@wordpress/i18n';
 import { box, Icon } from '@wordpress/icons';
-import { useEffect } from 'react';
-import { useSelect } from '@wordpress/data';
 
 /**
  * Internal dependencies
@@ -20,29 +18,14 @@ interface Props {
 	attributes: {
 		template: string;
 	};
-	setAttributes: ( attributes: Record< string, unknown > ) => void;
 }
 
-const Edit = ( { attributes, setAttributes }: Props ) => {
+const Edit = ( { attributes }: Props ) => {
 	const blockProps = useBlockProps();
 	const templateTitle =
 		TEMPLATES[ attributes.template ]?.title ?? attributes.template;
 	const templatePlaceholder =
 		TEMPLATES[ attributes.template ]?.placeholder ?? 'fallback';
-
-	const templateId = useSelect( ( select ) => {
-		const store = select( 'core/edit-site' );
-		return store.getEditedPostId();
-	} );
-
-	useEffect( () => {
-		if ( attributes.template === 'any' && typeof templateId === 'string' ) {
-			const templateParts = templateId.split( '//' );
-			setAttributes( {
-				template: templateParts[ 1 ],
-			} );
-		}
-	}, [ templateId ] );
 
 	return (
 		<div { ...blockProps }>
@@ -87,20 +70,27 @@ const Edit = ( { attributes, setAttributes }: Props ) => {
 	);
 };
 
-function isEligibleForInserter() {
+function getAppropriateLegacyTemplateBlock() {
 	try {
-		const queryString = window.location.search;
-		const urlParams = new URLSearchParams( queryString );
-		const currentTemplateId = urlParams.get( 'postId' ) || '';
-		const currentTemplateParts = currentTemplateId.split( '//' );
-		return TEMPLATES[ currentTemplateParts[ 1 ] ] !== undefined;
-	} catch ( err ) {
-		return false;
+		const urlParams = new URLSearchParams( window.location.search );
+		const currentPostType = urlParams.get( 'postType' );
+		const currentTemplateId = urlParams.get( 'postId' );
+		const currentTemplateSlug = currentTemplateId?.split( '//' )[ 1 ];
+
+		if ( currentPostType !== 'wp_template' || ! currentTemplateSlug ) {
+			return TEMPLATES.default;
+		}
+
+		return TEMPLATES[ currentTemplateSlug ] ?? TEMPLATES.default;
+	} catch ( ok ) {
+		return TEMPLATES.default;
 	}
 }
 
+const legacyTemplateBlock = getAppropriateLegacyTemplateBlock();
+
 registerBlockType( 'woocommerce/legacy-template', {
-	title: __( 'WooCommerce Legacy Template', 'woo-gutenberg-products-block' ),
+	title: legacyTemplateBlock.title,
 	icon: (
 		<Icon icon={ box } className="wc-block-editor-components-block-icon" />
 	),
@@ -116,7 +106,7 @@ registerBlockType( 'woocommerce/legacy-template', {
 		html: false,
 		multiple: false,
 		reusable: false,
-		inserter: isEligibleForInserter(),
+		inserter: legacyTemplateBlock.placeholder !== 'any',
 	},
 	example: {
 		attributes: {
@@ -129,7 +119,7 @@ registerBlockType( 'woocommerce/legacy-template', {
 		 */
 		template: {
 			type: 'string',
-			default: 'any',
+			default: legacyTemplateBlock.placeholder,
 		},
 	},
 	edit: Edit,

@@ -3,7 +3,19 @@
  */
 import { __ } from '@wordpress/i18n';
 
-export const TEMPLATES: Record< string, Record< string, string > > = {
+type TemplateAttributes = {
+	title: string;
+	placeholder: string;
+};
+
+export const TEMPLATES: Record< string, TemplateAttributes > = {
+	default: {
+		title: __(
+			'WooCommerce Legacy Template',
+			'woo-gutenberg-products-block'
+		),
+		placeholder: 'any',
+	},
 	'single-product': {
 		title: __(
 			'WooCommerce Single Product Block',
