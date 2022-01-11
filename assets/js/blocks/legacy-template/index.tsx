@@ -87,6 +87,18 @@ const Edit = ( { attributes, setAttributes }: Props ) => {
 	);
 };
 
+function isEligibleForInserter() {
+	try {
+		const queryString = window.location.search;
+		const urlParams = new URLSearchParams( queryString );
+		const currentTemplateId = urlParams.get( 'postId' ) || '';
+		const currentTemplateParts = currentTemplateId.split( '//' );
+		return TEMPLATES[ currentTemplateParts[ 1 ] ] !== undefined;
+	} catch ( err ) {
+		return false;
+	}
+}
+
 registerBlockType( 'woocommerce/legacy-template', {
 	title: __( 'WooCommerce Legacy Template', 'woo-gutenberg-products-block' ),
 	icon: (
@@ -104,7 +116,7 @@ registerBlockType( 'woocommerce/legacy-template', {
 		html: false,
 		multiple: false,
 		reusable: false,
-		inserter: true,
+		inserter: isEligibleForInserter(),
 	},
 	example: {
 		attributes: {
