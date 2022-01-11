@@ -1,6 +1,12 @@
+.wp-block-woocommerce-featured-category {
+	border-color: transparent;
+	overflow: hidden;
+	color: #fff;
+	background-color: #000;
+}
+
 .wc-block-featured-category {
 	position: relative;
-	background-color: inherit;
 	background-size: cover;
 	background-position: center center;
 	width: 100%;

@@ -10,8 +10,11 @@ import Block from './block';
 
 export const Edit = ( props: unknown ) => {
 	const blockProps = useBlockProps();
+
+	const { color, ...styles } = blockProps.style;
+
 	return (
-		<div { ...blockProps }>
+		<div { ...blockProps } style={ styles }>
 			<Block { ...props } />
 		</div>
 	);

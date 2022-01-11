@@ -156,14 +156,6 @@ registerBlockType( 'woocommerce/featured-category', {
 			type: 'object',
 			default: null,
 		},
-		backgroundColor: {
-			type: 'string',
-			default: 'black',
-		},
-		textColor: {
-			type: 'string',
-			default: 'white',
-		},
 	},
 
 	/**
