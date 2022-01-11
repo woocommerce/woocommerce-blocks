@@ -1,8 +1,4 @@
 .wc-block-product-search {
-	@include placeholder-auto-prefixer {
-		color: $placeholder-color;
-	}
-
 	.wc-block-product-search__fields {
 		display: flex;
 	}
@@ -10,6 +6,11 @@
 		padding: 6px 8px;
 		line-height: 1.8;
 		flex-grow: 1;
+
+		&::placeholder,
+		input::placeholder {
+			color: $placeholder-color;
+		}
 	}
 	.wc-block-product-search__button {
 		display: flex;
