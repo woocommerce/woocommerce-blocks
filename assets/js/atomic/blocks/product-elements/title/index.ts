@@ -28,6 +28,7 @@ const blockConfig: BlockConfiguration = {
 	edit,
 	save: Save,
 	supports: {
+		...sharedConfig.supports,
 		...( isFeaturePluginBuild() && {
 			typography: {
 				fontSize: true,
@@ -36,8 +37,6 @@ const blockConfig: BlockConfiguration = {
 				__experimentalTextTransform: true,
 				__experimentalFontFamily: true,
 			},
-		} ),
-		...( isFeaturePluginBuild() && {
 			color: {
 				text: true,
 				background: true,
@@ -45,14 +44,13 @@ const blockConfig: BlockConfiguration = {
 				gradients: true,
 				__experimentalSkipSerialization: true,
 			},
-		} ),
-		...( isFeaturePluginBuild() &&
-			hasSpacingStyleSupport() && {
+			...( hasSpacingStyleSupport() && {
 				spacing: {
 					margin: true,
 					__experimentalSkipSerialization: true,
 				},
 			} ),
+		} ),
 	},
 };
 
