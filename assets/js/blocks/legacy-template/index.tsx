@@ -7,6 +7,8 @@ import { useBlockProps } from '@wordpress/block-editor';
 import { Placeholder } from '@wordpress/components';
 import { __, sprintf } from '@wordpress/i18n';
 import { box, Icon } from '@wordpress/icons';
+import { useEffect } from 'react';
+import { useSelect } from '@wordpress/data';
 
 /**
  * Internal dependencies
@@ -18,14 +20,30 @@ interface Props {
 	attributes: {
 		template: string;
 	};
+	setAttributes: ( attributes: Record< string, unknown > ) => void;
 }
 
-const Edit = ( { attributes }: Props ) => {
+const Edit = ( { attributes, setAttributes }: Props ) => {
 	const blockProps = useBlockProps();
 	const templateTitle =
 		TEMPLATES[ attributes.template ]?.title ?? attributes.template;
 	const templatePlaceholder =
 		TEMPLATES[ attributes.template ]?.placeholder ?? 'fallback';
+
+	const templateId = useSelect( ( select ) => {
+		const store = select( 'core/edit-site' );
+		return store.getEditedPostId();
+	} );
+
+	useEffect( () => {
+		if ( attributes.template === 'any' && typeof templateId === 'string' ) {
+			const templateParts = templateId.split( '//' );
+			setAttributes( {
+				template: templateParts[ 1 ],
+			} );
+		}
+	}, [ templateId ] );
+
 	return (
 		<div { ...blockProps }>
 			<Placeholder
@@ -86,7 +104,7 @@ registerBlockType( 'woocommerce/legacy-template', {
 		html: false,
 		multiple: false,
 		reusable: false,
-		inserter: false,
+		inserter: true,
 	},
 	example: {
 		attributes: {
