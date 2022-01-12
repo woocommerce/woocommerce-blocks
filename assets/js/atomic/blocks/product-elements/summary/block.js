@@ -34,7 +34,7 @@ const Block = ( props ) => {
 	const { parentClassName } = useInnerBlockLayoutContext();
 	const { product } = useProductDataContext();
 	const colorProps = useColorProps( props );
-	const typograhyProps = useTypographyProps( props );
+	const typographyProps = useTypographyProps( props );
 
 	if ( ! product ) {
 		return (
@@ -73,7 +73,7 @@ const Block = ( props ) => {
 			countType={ blocksConfig.wordCountType || 'words' }
 			style={ {
 				...colorProps.style,
-				...typograhyProps.style,
+				...typographyProps.style,
 			} }
 		/>
 	);
