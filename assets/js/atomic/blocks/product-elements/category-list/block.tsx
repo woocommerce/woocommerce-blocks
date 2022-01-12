@@ -19,7 +19,7 @@ import { Attributes } from './types';
 import {
 	useColorProps,
 	useTypographyProps,
-} from '../../../../utils/style-attributes-utils';
+} from '../../../../hooks/style-attributes';
 
 type Props = Attributes & HTMLAttributes< HTMLDivElement >;
 
