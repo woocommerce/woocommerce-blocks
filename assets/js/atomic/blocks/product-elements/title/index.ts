@@ -16,6 +16,7 @@ import {
 	BLOCK_DESCRIPTION as description,
 } from './constants';
 import { Save } from './save';
+import { hasSpacingStyleSupport } from '../../../../utils/global-style';
 
 const blockConfig: BlockConfiguration = {
 	...sharedConfig,
@@ -27,6 +28,7 @@ const blockConfig: BlockConfiguration = {
 	edit,
 	save: Save,
 	supports: {
+		...sharedConfig.supports,
 		...( isFeaturePluginBuild() && {
 			typography: {
 				fontSize: true,
@@ -35,8 +37,6 @@ const blockConfig: BlockConfiguration = {
 				__experimentalTextTransform: true,
 				__experimentalFontFamily: true,
 			},
-		} ),
-		...( isFeaturePluginBuild() && {
 			color: {
 				text: true,
 				background: true,
@@ -44,12 +44,12 @@ const blockConfig: BlockConfiguration = {
 				gradients: true,
 				__experimentalSkipSerialization: true,
 			},
-		} ),
-		...( isFeaturePluginBuild() && {
-			spacing: {
-				margin: true,
-				__experimentalSkipSerialization: true,
-			},
+			...( hasSpacingStyleSupport() && {
+				spacing: {
+					margin: true,
+					__experimentalSkipSerialization: true,
+				},
+			} ),
 		} ),
 	},
 };
