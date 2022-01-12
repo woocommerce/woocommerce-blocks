@@ -1,6 +1,7 @@
 /**
  * External dependencies
  */
+import { select, subscribe } from '@wordpress/data';
 import { registerBlockType } from '@wordpress/blocks';
 import { WC_BLOCKS_IMAGE_URL } from '@woocommerce/block-settings';
 import { useBlockProps } from '@wordpress/block-editor';
@@ -70,58 +71,58 @@ const Edit = ( { attributes }: Props ) => {
 	);
 };
 
-function getAppropriateLegacyTemplateBlock() {
-	try {
-		const urlParams = new URLSearchParams( window.location.search );
-		const currentPostType = urlParams.get( 'postType' );
-		const currentTemplateId = urlParams.get( 'postId' );
-		const currentTemplateSlug = currentTemplateId?.split( '//' )[ 1 ];
+let templateId: string | undefined;
 
-		if ( currentPostType !== 'wp_template' || ! currentTemplateSlug ) {
-			return TEMPLATES.default;
-		}
+const unsubscribe = subscribe( () => {
+	const store = select( 'core/edit-site' );
+	templateId = store.getEditedPostId();
 
-		return TEMPLATES[ currentTemplateSlug ] ?? TEMPLATES.default;
-	} catch ( ok ) {
-		return TEMPLATES.default;
+	if ( templateId !== undefined ) {
+		unsubscribe();
+		const currentTemplateSlug = templateId?.split( '//' )[ 1 ];
+		const eligibleForInserter =
+			TEMPLATES[ currentTemplateSlug ] !== undefined;
+		const blockTitle =
+			TEMPLATES[ currentTemplateSlug ]?.title ?? currentTemplateSlug;
+
+		registerBlockType( 'woocommerce/legacy-template', {
+			title: blockTitle,
+			icon: (
+				<Icon
+					icon={ box }
+					className="wc-block-editor-components-block-icon"
+				/>
+			),
+			category: 'woocommerce',
+			apiVersion: 2,
+			keywords: [ __( 'WooCommerce', 'woo-gutenberg-products-block' ) ],
+			description: __(
+				'Renders legacy WooCommerce PHP templates.',
+				'woo-gutenberg-products-block'
+			),
+			supports: {
+				align: [ 'wide', 'full' ],
+				html: false,
+				multiple: false,
+				reusable: false,
+				inserter: eligibleForInserter,
+			},
+			example: {
+				attributes: {
+					isPreview: true,
+				},
+			},
+			attributes: {
+				/**
+				 * Template attribute is used to determine which core PHP template gets rendered.
+				 */
+				template: {
+					type: 'string',
+					default: currentTemplateSlug,
+				},
+			},
+			edit: Edit,
+			save: () => null,
+		} );
 	}
-}
-
-const legacyTemplateBlock = getAppropriateLegacyTemplateBlock();
-
-registerBlockType( 'woocommerce/legacy-template', {
-	title: legacyTemplateBlock.title,
-	icon: (
-		<Icon icon={ box } className="wc-block-editor-components-block-icon" />
-	),
-	category: 'woocommerce',
-	apiVersion: 2,
-	keywords: [ __( 'WooCommerce', 'woo-gutenberg-products-block' ) ],
-	description: __(
-		'Renders legacy WooCommerce PHP templates.',
-		'woo-gutenberg-products-block'
-	),
-	supports: {
-		align: [ 'wide', 'full' ],
-		html: false,
-		multiple: false,
-		reusable: false,
-		inserter: legacyTemplateBlock.placeholder !== 'any',
-	},
-	example: {
-		attributes: {
-			isPreview: true,
-		},
-	},
-	attributes: {
-		/**
-		 * Template attribute is used to determine which core PHP template gets rendered.
-		 */
-		template: {
-			type: 'string',
-			default: legacyTemplateBlock.placeholder,
-		},
-	},
-	edit: Edit,
-	save: () => null,
 } );

@@ -9,13 +9,6 @@ type TemplateAttributes = {
 };
 
 export const TEMPLATES: Record< string, TemplateAttributes > = {
-	default: {
-		title: __(
-			'WooCommerce Legacy Template',
-			'woo-gutenberg-products-block'
-		),
-		placeholder: 'any',
-	},
 	'single-product': {
 		title: __(
 			'WooCommerce Single Product Block',
