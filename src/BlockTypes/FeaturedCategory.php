@@ -3,7 +3,6 @@ namespace Automattic\WooCommerce\Blocks\BlockTypes;
 
 use Automattic\WooCommerce\Blocks\Utils\StyleAttributesUtils;
 
-
 /**
  * FeaturedCategory class.
  */

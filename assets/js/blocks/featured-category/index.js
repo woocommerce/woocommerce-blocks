@@ -164,6 +164,10 @@ registerBlockType( 'woocommerce/featured-category', {
 	 * @param {Object} props Props to pass to block.
 	 */
 	edit: Edit,
+
+	/**
+	 * Block content is rendered in PHP, not via save function.
+	 */
 	save: () => {
 		return <InnerBlocks.Content />;
 	},

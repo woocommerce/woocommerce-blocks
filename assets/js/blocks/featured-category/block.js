@@ -274,13 +274,7 @@ const FeaturedCategory = ( {
 	};
 
 	const renderCategory = () => {
-		const {
-			contentAlign,
-			dimRatio,
-			focalPoint,
-			height,
-			showDesc,
-		} = attributes;
+		const { contentAlign, dimRatio, focalPoint, showDesc } = attributes;
 
 		const classes = classnames(
 			'wc-block-featured-category',
