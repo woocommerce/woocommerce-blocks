@@ -21,7 +21,7 @@ import {
 	useSpacingProps,
 	useTypographyProps,
 	useColorProps,
-} from '../../../../utils/style-attributes-utils';
+} from '../../../../hooks/style-attributes';
 
 type Props = Attributes & HTMLAttributes< HTMLDivElement >;
 
@@ -69,11 +69,6 @@ export const Block = ( props: Props ): JSX.Element => {
 	const spacingProps = useSpacingProps( props );
 	const typographyProps = useTypographyProps( props );
 
-	const titleClasses = classnames(
-		'wp-block-woocommerce-product-title',
-		colorProps.className
-	);
-
 	if ( ! product.id ) {
 		return (
 			<TagName
@@ -105,7 +100,7 @@ export const Block = ( props: Props ): JSX.Element => {
 			) }
 		>
 			<ProductName
-				className={ titleClasses }
+				className={ colorProps.className }
 				disabled={ ! showProductLink }
 				name={ product.name }
 				permalink={ product.permalink }
