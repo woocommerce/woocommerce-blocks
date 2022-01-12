@@ -19,7 +19,7 @@ import './style.scss';
 import {
 	useColorProps,
 	useTypographyProps,
-} from '../../../../utils/style-attributes-utils';
+} from '../../../../hooks/style-attributes';
 
 /**
  * Product Summary Block Component.
