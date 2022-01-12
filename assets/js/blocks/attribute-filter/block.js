@@ -26,6 +26,8 @@ import { getAttributeFromID } from '../../utils/attributes';
 import { updateAttributeFilter } from '../../utils/attributes-query';
 import { previewAttributeObject, previewOptions } from './preview';
 import './style.scss';
+import { useBorderProps } from '../../hooks/style-attributes';
+import classNames from 'classnames';
 
 /**
  * Component displaying an attribute filter.
@@ -49,6 +51,8 @@ const AttributeFilterBlock = ( {
 			? previewOptions
 			: []
 	);
+
+	const borderProps = useBorderProps( blockAttributes );
 
 	const [ queryState ] = useQueryStateByContext();
 	const [
@@ -381,7 +385,11 @@ const AttributeFilterBlock = ( {
 					<DropdownSelector
 						attributeLabel={ attributeObject.label }
 						checked={ checked }
-						className={ 'wc-block-attribute-filter-dropdown' }
+						className={ classNames(
+							'wc-block-attribute-filter-dropdown',
+							borderProps.className
+						) }
+						style={ { ...borderProps.style, borderStyle: 'none' } }
 						inputLabel={ blockAttributes.heading }
 						isLoading={ isLoading }
 						multiple={ multiple }

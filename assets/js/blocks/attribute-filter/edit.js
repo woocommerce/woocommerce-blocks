@@ -21,6 +21,7 @@ import HeadingToolbar from '@woocommerce/editor-components/heading-toolbar';
 import BlockTitle from '@woocommerce/editor-components/block-title';
 import ToggleButtonControl from '@woocommerce/editor-components/toggle-button-control';
 import classnames from 'classnames';
+import { useBlockProps } from '@wordpress/block-editor';
 
 /**
  * Internal dependencies
@@ -46,6 +47,8 @@ const Edit = ( { attributes, setAttributes, debouncedSpeak } ) => {
 	const [ isEditing, setIsEditing ] = useState(
 		! attributeId && ! isPreview
 	);
+
+	const blockProps = useBlockProps();
 
 	const getBlockControls = () => {
 		return (
@@ -379,7 +382,7 @@ const Edit = ( { attributes, setAttributes, debouncedSpeak } ) => {
 	return Object.keys( ATTRIBUTES ).length === 0 ? (
 		noAttributesPlaceholder()
 	) : (
-		<>
+		<div { ...blockProps }>
 			{ getBlockControls() }
 			{ getInspectorControls() }
 			{ isEditing ? (
@@ -404,7 +407,7 @@ const Edit = ( { attributes, setAttributes, debouncedSpeak } ) => {
 					</Disabled>
 				</div>
 			) }
-		</>
+		</div>
 	);
 };
 
