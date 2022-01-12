@@ -12,7 +12,7 @@ import {
 } from '@woocommerce/base-context/hooks';
 import { useCallback, useEffect, useState, useMemo } from '@wordpress/element';
 import CheckboxList from '@woocommerce/base-components/checkbox-list';
-import DropdownSelector from '@woocommerce/base-components/dropdown-selector';
+import { DropdownSelector } from '@woocommerce/blocks-checkout';
 import Label from '@woocommerce/base-components/filter-element-label';
 import FilterSubmitButton from '@woocommerce/base-components/filter-submit-button';
 import isShallowEqual from '@wordpress/is-shallow-equal';
