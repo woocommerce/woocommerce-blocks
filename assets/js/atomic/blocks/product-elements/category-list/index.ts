@@ -1,7 +1,10 @@
 /**
  * External dependencies
  */
-import { registerExperimentalBlockType } from '@woocommerce/block-settings';
+import {
+	isFeaturePluginBuild,
+	registerExperimentalBlockType,
+} from '@woocommerce/block-settings';
 import { BlockConfiguration } from '@wordpress/blocks';
 
 /**
@@ -25,11 +28,13 @@ const blockConfig: BlockConfiguration = {
 	icon: { src: icon },
 	attributes,
 	supports: {
-		color: {
-			text: true,
-			link: true,
-			background: false,
-		},
+		...( isFeaturePluginBuild() && {
+			color: {
+				text: true,
+				link: true,
+				background: false,
+			},
+		} ),
 		typography: {
 			fontSize: true,
 		},
