@@ -14,7 +14,7 @@ import { withProductDataContext } from '@woocommerce/shared-hocs';
  * Internal dependencies
  */
 import './style.scss';
-import { useColorProps } from '../../../../utils/style-attributes-utils';
+import { useColorProps } from '../../../../hooks/style-attributes';
 
 /**
  * Product Rating Block Component.
