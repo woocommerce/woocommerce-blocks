@@ -9,7 +9,7 @@ import { useBlockProps } from '@wordpress/block-editor';
 import Block from './block';
 import './editor.scss';
 
-export const Edit = ( props: unknown ) => {
+export const Edit = ( props: unknown ): JSX.Element => {
 	const blockProps = useBlockProps();
 
 	return (

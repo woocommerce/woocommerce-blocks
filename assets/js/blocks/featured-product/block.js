@@ -42,7 +42,6 @@ import {
 	getImageSrcFromProduct,
 	getImageIdFromProduct,
 } from '../../utils/products';
-import { useColorProps } from '../../hooks/style-attributes';
 
 /**
  * Component to handle edit mode of "Featured Product".
@@ -248,11 +247,9 @@ const FeaturedProduct = ( {
 
 	const renderProduct = () => {
 		const {
-			className,
 			contentAlign,
 			dimRatio,
 			focalPoint,
-			height,
 			showDesc,
 			showPrice,
 		} = attributes;
