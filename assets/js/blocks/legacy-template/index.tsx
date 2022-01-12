@@ -18,21 +18,20 @@ import { TEMPLATES } from './constants';
 interface Props {
 	attributes: {
 		template: string;
+		title: string;
+		placeholder: string;
 	};
 }
 
 const Edit = ( { attributes }: Props ) => {
 	const blockProps = useBlockProps();
-	const templateTitle =
-		TEMPLATES[ attributes.template ]?.title ?? attributes.template;
-	const templatePlaceholder =
-		TEMPLATES[ attributes.template ]?.placeholder ?? 'fallback';
+	const { title, placeholder } = attributes;
 
 	return (
 		<div { ...blockProps }>
 			<Placeholder
 				icon={ box }
-				label={ templateTitle }
+				label={ title }
 				className="wp-block-woocommerce-legacy-template__placeholder"
 			>
 				<div className="wp-block-woocommerce-legacy-template__placeholder-copy">
@@ -55,15 +54,15 @@ const Edit = ( { attributes }: Props ) => {
 								'This is an editor placeholder for the %s. On your store this will be replaced by the template and display with your product image(s), title, price, etc. You can move this placeholder around and add further blocks around it to extend the template.',
 								'woo-gutenberg-products-block'
 							),
-							templateTitle
+							title
 						) }
 					</p>
 				</div>
 				<div className="wp-block-woocommerce-legacy-template__placeholder-wireframe">
 					<img
 						className="wp-block-woocommerce-legacy-template__placeholder-image"
-						src={ `${ WC_BLOCKS_IMAGE_URL }template-placeholders/${ templatePlaceholder }.svg` }
-						alt={ templateTitle }
+						src={ `${ WC_BLOCKS_IMAGE_URL }template-placeholders/${ placeholder }.svg` }
+						alt={ title }
 					/>
 				</div>
 			</Placeholder>
@@ -77,16 +76,19 @@ const unsubscribe = subscribe( () => {
 	const store = select( 'core/edit-site' );
 	templateId = store.getEditedPostId();
 
-	if ( templateId !== undefined ) {
+	if ( templateId ) {
 		unsubscribe();
 		const currentTemplateSlug = templateId?.split( '//' )[ 1 ];
+		// We only want this block to be available for use in specified WooCommerce templates.
 		const eligibleForInserter =
 			TEMPLATES[ currentTemplateSlug ] !== undefined;
-		const blockTitle =
+		const title =
 			TEMPLATES[ currentTemplateSlug ]?.title ?? currentTemplateSlug;
+		const placeholder =
+			TEMPLATES[ currentTemplateSlug ]?.placeholder ?? 'fallback';
 
 		registerBlockType( 'woocommerce/legacy-template', {
-			title: blockTitle,
+			title,
 			icon: (
 				<Icon
 					icon={ box }
@@ -119,6 +121,14 @@ const unsubscribe = subscribe( () => {
 				template: {
 					type: 'string',
 					default: currentTemplateSlug,
+				},
+				title: {
+					type: 'string',
+					default: title,
+				},
+				placeholder: {
+					type: 'string',
+					default: placeholder,
 				},
 			},
 			edit: Edit,
