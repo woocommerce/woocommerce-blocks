@@ -88,12 +88,14 @@ final class AssetsController {
 	 * @return array URLs to print for resource hints.
 	 */
 	public function add_resource_hints( $urls, $relation_type ) {
-		if ( ! Package::feature()->is_feature_plugin_build() ) {
+		if ( ! Package::feature()->is_feature_plugin_build() || ! in_array( $relation_type, [ 'prefetch', 'prerender' ], true ) ) {
 			return $urls;
 		}
 
 		// We only need to prefetch when the cart has contents.
-		if ( ! in_array( $relation_type, [ 'prefetch', 'prerender' ], true ) || 0 === WC()->cart->get_cart_contents_count() ) {
+		$cart = wc()->cart;
+
+		if ( ! $cart || ! $cart instanceof \WC_Cart || 0 === $cart->get_cart_contents_count() ) {
 			return $urls;
 		}
 
