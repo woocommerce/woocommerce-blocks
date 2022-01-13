@@ -119,11 +119,8 @@ registerBlockType( 'woocommerce/attribute-filter', {
 			<div
 				{ ...useBlockProps.save( {
 					className: classNames( 'is-loading', className ),
-					style: {
-						border: 'unset',
-					},
-					data,
 				} ) }
+				{ ...data }
 			>
 				<span
 					aria-hidden
