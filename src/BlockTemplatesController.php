@@ -261,10 +261,22 @@ class BlockTemplatesController {
 				continue;
 			}
 
-			// If the theme has an archive-product.html template, but not a taxonomy-product_cat.html template let's use the themes archive-product.html template.
+			// Category and tags template are eligible to fallback to the Product Archive if available.
 			if ( BlockTemplateUtils::template_is_eligible_for_product_archive_fallback( $template_slug ) ) {
-				$template_file = BlockTemplateUtils::get_theme_template_path( 'archive-product' );
-				$templates[]   = BlockTemplateUtils::create_new_block_template_object( $template_file, $template_type, $template_slug, true );
+				$customized_archive_template_idx = array_search( 'archive-product', array_column( $already_found_templates, 'slug' ), true );
+
+				// If the `archive-product` has been customized by the user, and the theme does *not* have a more
+				// specific appropriate template, we clone the customized `archive-product`.
+				if ( false !== $customized_archive_template_idx ) {
+					$customized_archive_template = $already_found_templates[ $customized_archive_template_idx ];
+					$templates[]                 = BlockTemplateUtils::clone_template_with_new_slug( $customized_archive_template, $template_slug );
+
+					// If `archive-product` has not been customized, and theme has `archive-product`, we fallback to that.
+				} elseif ( BlockTemplateUtils::theme_has_template( 'archive-product' ) ) {
+					$template_file = BlockTemplateUtils::get_theme_template_path( 'archive-product' );
+					$templates[]   = BlockTemplateUtils::create_new_block_template_object( $template_file, $template_type, $template_slug, true );
+				}
+
 				continue;
 			}
 

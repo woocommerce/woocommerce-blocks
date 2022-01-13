@@ -410,8 +410,7 @@ class BlockTemplateUtils {
 		$eligible_for_fallbacks = array( 'taxonomy-product_cat', 'taxonomy-product_tag' );
 
 		return in_array( $template_slug, $eligible_for_fallbacks, true )
-			&& ! self::theme_has_template( $template_slug )
-			&& self::theme_has_template( 'archive-product' );
+			&& ! self::theme_has_template( $template_slug );
 	}
 
 	/**
@@ -515,5 +514,30 @@ class BlockTemplateUtils {
 				}
 			)
 		);
+	}
+
+	/**
+	 * Clones a template and assigns a new slug and id
+	 *
+	 * @param object $template The template object to clone.
+	 * @param string $slug The new slug to assign.
+	 *
+	 * @return object The cloned template.
+	 */
+	public static function clone_template_with_new_slug( $template, $slug ) {
+		$clone = clone $template;
+
+		$clone->slug  = $slug;
+		$clone->title = self::convert_slug_to_title( $slug );
+
+		$template_name_parts = explode( '//', $clone->id );
+
+		if ( count( $template_name_parts ) > 1 ) {
+			$clone->id = $template_name_parts[0] . '//' . $slug;
+		} else {
+			$clone->id = $slug;
+		}
+
+		return $clone;
 	}
 }
