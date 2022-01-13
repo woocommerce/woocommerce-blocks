@@ -14,6 +14,7 @@ import { box, Icon } from '@wordpress/icons';
  */
 import './editor.scss';
 import { TEMPLATES } from './constants';
+import { getMatchingTemplateData } from './utils';
 
 interface Props {
 	attributes: {
@@ -79,13 +80,14 @@ const unsubscribe = subscribe( () => {
 	if ( templateId ) {
 		unsubscribe();
 		const currentTemplateSlug = templateId?.split( '//' )[ 1 ];
+		const templateData = getMatchingTemplateData(
+			TEMPLATES,
+			currentTemplateSlug
+		);
 		// We only want this block to be available for use in specified WooCommerce templates.
-		const eligibleForInserter =
-			TEMPLATES[ currentTemplateSlug ] !== undefined;
-		const title =
-			TEMPLATES[ currentTemplateSlug ]?.title ?? currentTemplateSlug;
-		const placeholder =
-			TEMPLATES[ currentTemplateSlug ]?.placeholder ?? 'fallback';
+		const eligibleForInserter = templateData !== null;
+		const title = templateData?.title ?? currentTemplateSlug;
+		const placeholder = templateData?.placeholder ?? 'fallback';
 
 		registerBlockType( 'woocommerce/legacy-template', {
 			title,

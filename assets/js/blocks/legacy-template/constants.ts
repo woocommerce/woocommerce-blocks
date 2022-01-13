@@ -3,10 +3,10 @@
  */
 import { __ } from '@wordpress/i18n';
 
-type TemplateAttributes = {
-	title: string;
-	placeholder: string;
-};
+/**
+ * Internal dependencies
+ */
+import { TemplateAttributes } from './types';
 
 export const TEMPLATES: Record< string, TemplateAttributes > = {
 	'single-product': {
