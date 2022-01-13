@@ -3,7 +3,11 @@
  */
 import { __, sprintf, _n } from '@wordpress/i18n';
 import { useState } from '@wordpress/element';
-import { InspectorControls, BlockControls } from '@wordpress/block-editor';
+import {
+	InspectorControls,
+	BlockControls,
+	useBlockProps,
+} from '@wordpress/block-editor';
 import {
 	Placeholder,
 	Disabled,
@@ -21,7 +25,6 @@ import HeadingToolbar from '@woocommerce/editor-components/heading-toolbar';
 import BlockTitle from '@woocommerce/editor-components/block-title';
 import ToggleButtonControl from '@woocommerce/editor-components/toggle-button-control';
 import classnames from 'classnames';
-import { useBlockProps } from '@wordpress/block-editor';
 
 /**
  * Internal dependencies

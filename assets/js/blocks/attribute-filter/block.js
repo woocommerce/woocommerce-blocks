@@ -18,6 +18,7 @@ import FilterSubmitButton from '@woocommerce/base-components/filter-submit-butto
 import isShallowEqual from '@wordpress/is-shallow-equal';
 import { decodeEntities } from '@wordpress/html-entities';
 import { Notice } from '@wordpress/components';
+import classNames from 'classnames';
 
 /**
  * Internal dependencies
@@ -25,9 +26,8 @@ import { Notice } from '@wordpress/components';
 import { getAttributeFromID } from '../../utils/attributes';
 import { updateAttributeFilter } from '../../utils/attributes-query';
 import { previewAttributeObject, previewOptions } from './preview';
-import './style.scss';
 import { useBorderProps } from '../../hooks/style-attributes';
-import classNames from 'classnames';
+import './style.scss';
 
 /**
  * Component displaying an attribute filter.
