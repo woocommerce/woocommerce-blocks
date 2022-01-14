@@ -2,25 +2,7 @@
  * Internal dependencies
  */
 import { getMatchingTemplateData } from '../utils';
-
-export const TEMPLATES = {
-	'single-product': {
-		title: 'WooCommerce Single Product Block',
-		placeholder: 'single-product',
-	},
-	'archive-product': {
-		title: 'WooCommerce Product Grid Block',
-		placeholder: 'archive-product',
-	},
-	'taxonomy-product_cat': {
-		title: 'WooCommerce Product Taxonomy Block',
-		placeholder: 'archive-product',
-	},
-	'taxonomy-product_tag': {
-		title: 'WooCommerce Product Tag Block',
-		placeholder: 'archive-product',
-	},
-};
+import { TEMPLATES } from '../constants';
 
 describe( 'getMatchingTemplateData', () => {
 	it( 'should return template data if a correct match has been found', () => {
