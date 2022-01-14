@@ -113,8 +113,27 @@ class BlockTemplatesController {
 			return $template_built;
 		}
 
-		// Hand back over to Gutenberg if we can't find a template.
-		return $template;
+		$slugs = array( $slug );
+
+		if ( BlockTemplateUtils::template_is_eligible_for_product_archive_fallback( $slug ) ) {
+			$slugs[] = 'archive-product';
+		}
+
+		$available_templates = $this->get_block_templates_from_woocommerce(
+			$slugs,
+			$this->get_block_templates_from_db( $slugs, $template_type ),
+			$template_type
+		);
+
+		if ( is_array( $available_templates ) && count( $available_templates ) > 0 ) {
+			$existing_template = $available_templates[0];
+
+			return $existing_template instanceof \WP_Block_Template
+				? $existing_template
+				: BlockTemplateUtils::build_template_result_from_file( $existing_template, $existing_template->type );
+		} else {
+			return $template;
+		}
 	}
 
 	/**
@@ -130,8 +149,20 @@ class BlockTemplatesController {
 			return $query_result;
 		}
 
-		$post_type      = isset( $query['post_type'] ) ? $query['post_type'] : '';
-		$slugs          = isset( $query['slug__in'] ) ? $query['slug__in'] : array();
+		$post_type = isset( $query['post_type'] ) ? $query['post_type'] : '';
+		$slugs     = isset( $query['slug__in'] ) ? $query['slug__in'] : array();
+
+		if (
+			count(
+				array_filter(
+					$slugs,
+					array( BlockTemplateUtils::class, 'template_is_eligible_for_product_archive_fallback' )
+				)
+			) > 0
+		) {
+			$slugs[] = 'archive-product';
+		}
+
 		$template_files = $this->get_block_templates( $slugs, $template_type );
 
 		// @todo: Add apply_filters to _gutenberg_get_template_files() in Gutenberg to prevent duplication of logic.
