@@ -302,14 +302,14 @@ class BlockTemplatesController {
 				if ( false !== $customized_archive_template_index ) {
 					$customized_archive_template = $already_found_templates[ $customized_archive_template_index ];
 					$templates[]                 = BlockTemplateUtils::clone_template_with_new_slug( $customized_archive_template, $template_slug );
+					continue;
 
 					// If `archive-product` has not been customized, and theme has `archive-product`, we fallback to that.
 				} elseif ( BlockTemplateUtils::theme_has_template( 'archive-product' ) ) {
 					$template_file = BlockTemplateUtils::get_theme_template_path( 'archive-product' );
 					$templates[]   = BlockTemplateUtils::create_new_block_template_object( $template_file, $template_type, $template_slug, true );
+					continue;
 				}
-
-				continue;
 			}
 
 			// At this point the template only exists in the Blocks filesystem and has not been saved in the DB,
