@@ -263,12 +263,12 @@ class BlockTemplatesController {
 
 			// Category and tags template are eligible to fallback to the Product Archive if available.
 			if ( BlockTemplateUtils::template_is_eligible_for_product_archive_fallback( $template_slug ) ) {
-				$customized_archive_template_idx = array_search( 'archive-product', array_column( $already_found_templates, 'slug' ), true );
+				$customized_archive_template_index = array_search( 'archive-product', array_column( $already_found_templates, 'slug' ), true );
 
 				// If the `archive-product` has been customized by the user, and the theme does *not* have a more
 				// specific appropriate template, we clone the customized `archive-product`.
-				if ( false !== $customized_archive_template_idx ) {
-					$customized_archive_template = $already_found_templates[ $customized_archive_template_idx ];
+				if ( false !== $customized_archive_template_index ) {
+					$customized_archive_template = $already_found_templates[ $customized_archive_template_index ];
 					$templates[]                 = BlockTemplateUtils::clone_template_with_new_slug( $customized_archive_template, $template_slug );
 
 					// If `archive-product` has not been customized, and theme has `archive-product`, we fallback to that.
