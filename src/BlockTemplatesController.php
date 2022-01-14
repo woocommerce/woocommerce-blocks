@@ -51,6 +51,7 @@ class BlockTemplatesController {
 		add_action( 'template_redirect', array( $this, 'render_block_template' ) );
 		add_filter( 'pre_get_block_file_template', array( $this, 'get_block_file_template' ), 10, 3 );
 		add_filter( 'get_block_templates', array( $this, 'add_block_templates' ), 10, 3 );
+		add_filter( 'taxonomy_template_hierarchy', array( BlockTemplateUtils::class, 'adjust_template_hierarchy' ), 10, 1 );
 	}
 
 	/**

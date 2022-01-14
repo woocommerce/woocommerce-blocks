@@ -540,4 +540,35 @@ class BlockTemplateUtils {
 
 		return $clone;
 	}
+
+	/**
+	 * Adds the `archive-product` within the hierarchy of templates for taxonomies
+	 *
+	 * This is hooked into {@see 'taxonomy_template_hierarchy'} to add our fallback logic
+	 * to the template hierarchy. Otherwise, the least specific template being considered
+	 * for categories and tags, would be `taxonomy`. In our case, for eligible templates,
+	 * we want to use `archive-product` too.
+	 *
+	 * @param string[] $template_hierarchy An ordered array of template names.
+	 *
+	 * @return string[] The hierarchy with `archive-product` added if is eligible.
+	 */
+	public static function adjust_template_hierarchy( $template_hierarchy ) {
+		$slugs = array_map(
+			'gutenberg_strip_php_suffix',
+			$template_hierarchy
+		);
+
+		if (
+			count(
+				array_filter(
+					$slugs,
+					array( __CLASS__, 'template_is_eligible_for_product_archive_fallback' )
+				)
+			) > 0 ) {
+			$template_hierarchy[] = 'archive-product.php';
+		}
+
+		return $template_hierarchy;
+	}
 }
