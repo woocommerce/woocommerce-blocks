@@ -175,6 +175,7 @@ final class BlockTypesController {
 			'StockFilter',
 			'ActiveFilters',
 			'LegacyTemplate',
+			'ProductSaleBadge',
 		];
 
 		if ( Package::feature()->is_feature_plugin_build() ) {
@@ -221,7 +222,6 @@ final class BlockTypesController {
 			'product-image',
 			'product-price',
 			'product-rating',
-			'product-sale-badge',
 			'product-summary',
 			'product-sku',
 			'product-category-list',

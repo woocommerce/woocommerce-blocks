@@ -186,6 +186,8 @@ abstract class AbstractBlock {
 		];
 
 		if ( isset( $this->api_version ) && '2' === $this->api_version ) {
+			do_action( 'qm/debug', $this->block_name );
+
 			$block_settings['api_version'] = 2;
 		}
 

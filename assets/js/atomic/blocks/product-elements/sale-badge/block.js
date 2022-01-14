@@ -10,11 +10,18 @@ import {
 	useProductDataContext,
 } from '@woocommerce/shared-context';
 import { withProductDataContext } from '@woocommerce/shared-hocs';
+import { isString } from '@woocommerce/types';
 
 /**
  * Internal dependencies
  */
 import './style.scss';
+import {
+	useBorderProps,
+	useColorProps,
+	useSpacingProps,
+	useTypographyProps,
+} from '../../../../hooks/style-attributes';
 
 /**
  * Product Sale Badge Block Component.
@@ -24,9 +31,14 @@ import './style.scss';
  * @param {string} [props.align]     Alignment of the badge.
  * @return {*} The component.
  */
-const Block = ( { className, align } ) => {
+const Block = ( props ) => {
+	const { className, align } = props;
 	const { parentClassName } = useInnerBlockLayoutContext();
 	const { product } = useProductDataContext();
+	const borderProps = useBorderProps( props );
+	const colorProps = useColorProps( props );
+	const typographyProps = useTypographyProps( props );
+	const spacingProps = useSpacingProps( props );
 
 	if ( ! product.id || ! product.on_sale ) {
 		return null;
@@ -47,6 +59,32 @@ const Block = ( { className, align } ) => {
 					[ `${ parentClassName }__product-onsale` ]: parentClassName,
 				}
 			) }
+			ref={ ( el ) => {
+				if ( ! el ) {
+					return null;
+				}
+
+				if ( isString( colorProps.style?.color ) ) {
+					el.style.setProperty(
+						'color',
+						colorProps.style?.color,
+						'important'
+					);
+				}
+
+				if ( isString( colorProps.style?.background ) ) {
+					el.style.setProperty(
+						'background',
+						colorProps.style?.background,
+						'important'
+					);
+				}
+			} }
+			style={ {
+				...borderProps.style,
+				...typographyProps.style,
+				...spacingProps.style,
+			} }
 		>
 			<Label
 				label={ __( 'Sale', 'woo-gutenberg-products-block' ) }
