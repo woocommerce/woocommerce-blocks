@@ -14,11 +14,13 @@ import {
 	BLOCK_ICON as icon,
 	BLOCK_DESCRIPTION as description,
 } from './constants';
+import { Save } from './save';
 
 const blockConfig = {
 	title,
 	description,
 	icon: { src: icon },
+	apiVersion: 2,
 	supports: {
 		html: false,
 		color: {
@@ -45,6 +47,7 @@ const blockConfig = {
 	},
 	attributes,
 	edit,
+	save: Save,
 };
 
 registerBlockType( 'woocommerce/product-sale-badge', {

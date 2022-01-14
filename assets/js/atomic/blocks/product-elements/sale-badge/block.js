@@ -37,6 +37,7 @@ const Block = ( props ) => {
 	const { product } = useProductDataContext();
 	const borderProps = useBorderProps( props );
 	const colorProps = useColorProps( props );
+
 	const typographyProps = useTypographyProps( props );
 	const spacingProps = useSpacingProps( props );
 
@@ -57,30 +58,12 @@ const Block = ( props ) => {
 				alignClass,
 				{
 					[ `${ parentClassName }__product-onsale` ]: parentClassName,
-				}
+				},
+				colorProps.className,
+				borderProps.className
 			) }
-			ref={ ( el ) => {
-				if ( ! el ) {
-					return null;
-				}
-
-				if ( isString( colorProps.style?.color ) ) {
-					el.style.setProperty(
-						'color',
-						colorProps.style?.color,
-						'important'
-					);
-				}
-
-				if ( isString( colorProps.style?.background ) ) {
-					el.style.setProperty(
-						'background',
-						colorProps.style?.background,
-						'important'
-					);
-				}
-			} }
 			style={ {
+				...colorProps.style,
 				...borderProps.style,
 				...typographyProps.style,
 				...spacingProps.style,
