@@ -13,7 +13,7 @@ export function getMatchingTemplateData(
 ): TemplateAttributes | null {
 	const templateSlugs = Object.keys( templates );
 	const matchingSlugs = templateSlugs.filter( ( templateSlug ) =>
-		beginsWith( templateSlug, slug )
+		slug.startsWith( templateSlug )
 	);
 
 	if ( matchingSlugs.length === 0 ) {

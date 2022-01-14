@@ -1,7 +1,7 @@
 /**
  * Internal dependencies
  */
-import { beginsWith, getMatchingTemplateData } from '../utils';
+import { getMatchingTemplateData } from '../utils';
 
 export const TEMPLATES = {
 	'single-product': {
@@ -21,44 +21,6 @@ export const TEMPLATES = {
 		placeholder: 'archive-product',
 	},
 };
-
-describe( 'beginsWith', () => {
-	it( 'should return true for matching first part of a given string', () => {
-		expect(
-			beginsWith(
-				'taxonomy-product_tag',
-				'taxonomy-product_tag-clothing'
-			)
-		).toBe( true );
-		expect(
-			beginsWith(
-				'taxonomy-product_cat',
-				'taxonomy-product_cat-winter-collection'
-			)
-		).toBe( true );
-	} );
-
-	it( 'should return false if first part of a given string does not match', () => {
-		expect(
-			beginsWith(
-				'taxonomy-product_tag',
-				'taxonomies-product_tag-clothing'
-			)
-		).toBe( false );
-		expect(
-			beginsWith(
-				'taxonomy-product_cat',
-				'taxonomy-products_cat-winter-collection'
-			)
-		).toBe( false );
-		expect(
-			beginsWith(
-				'taxonomy-product_tag',
-				'taxonomy-product_cat-winter-collection'
-			)
-		).toBe( false );
-	} );
-} );
 
 describe( 'getMatchingTemplateData', () => {
 	it( 'should return template data if a correct match has been found', () => {
