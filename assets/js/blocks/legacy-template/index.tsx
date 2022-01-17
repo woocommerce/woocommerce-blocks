@@ -75,7 +75,7 @@ let templateId: string | undefined;
 
 const unsubscribe = subscribe( () => {
 	const store = select( 'core/edit-site' );
-	templateId = store.getEditedPostId();
+	templateId = store?.getEditedPostId();
 
 	if ( templateId ) {
 		unsubscribe();
