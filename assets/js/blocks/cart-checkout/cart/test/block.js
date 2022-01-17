@@ -90,8 +90,6 @@ describe( 'Testing cart', () => {
 		).toBeInTheDocument();
 
 		expect( fetchMock ).toHaveBeenCalledTimes( 1 );
-		// ["`select` control in `@wordpress/data-controls` is deprecated. Please use built-in `resolveSelect` control in `@wordpress/data` instead."]
-		expect( console ).toHaveWarned();
 	} );
 
 	it( 'Contains a Taxes section if Core options are set to show it', async () => {
@@ -133,13 +131,15 @@ describe( 'Testing cart', () => {
 	} );
 
 	it( 'renders empty cart if there are no items in the cart', async () => {
-		fetchMock.mockResponse( ( req ) => {
-			if ( req.url.match( /wc\/store\/v1\/cart/ ) ) {
-				return Promise.resolve(
-					JSON.stringify( defaultCartState.cartData )
-				);
-			}
-			return Promise.resolve( '' );
+		act( () => {
+			fetchMock.mockResponse( ( req ) => {
+				if ( req.url.match( /wc\/store\/v1\/cart/ ) ) {
+					return Promise.resolve(
+						JSON.stringify( defaultCartState.cartData )
+					);
+				}
+				return Promise.resolve( '' );
+			} );
 		} );
 		render( <CartBlock /> );
 
