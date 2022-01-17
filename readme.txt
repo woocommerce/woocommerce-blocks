@@ -85,6 +85,39 @@ Release and roadmap notes available on the [WooCommerce Developers Blog](https:/
 
 == Changelog ==
 
+= 6.8.0 - 2022-01-17 =
+
+#### Enhancements
+
+- Add support for the global style for the Price Filter block. ([5559](https://github.com/woocommerce/woocommerce-gutenberg-products-block/pull/5559))
+- Hold stock for 60mins if the order is pending payment. ([5546](https://github.com/woocommerce/woocommerce-gutenberg-products-block/pull/5546))
+- Allow users to reinsert the WooCommerce Legacy Template block in their block template if it is a WooCommerce block template. ([5545](https://github.com/woocommerce/woocommerce-gutenberg-products-block/pull/5545))
+- Add support for the global style for the Stock Indicator block. ([5525](https://github.com/woocommerce/woocommerce-gutenberg-products-block/pull/5525))
+- Add support for the global style for the Summary Product block. ([5524](https://github.com/woocommerce/woocommerce-gutenberg-products-block/pull/5524))
+- Add support for the global style for the Product Title block. ([5515](https://github.com/woocommerce/woocommerce-gutenberg-products-block/pull/5515))
+- Fix duplicated checkout error notices. ([5476](https://github.com/woocommerce/woocommerce-gutenberg-products-block/pull/5476))
+- Store API: Throw errors when attempting to pay with a non-available payment method. ([5440](https://github.com/woocommerce/woocommerce-gutenberg-products-block/pull/5440))
+- Add support for the wide and full alignment for the legacy template block. ([5433](https://github.com/woocommerce/woocommerce-gutenberg-products-block/pull/5433))
+- Store API and Cart block now support defining a quantity stepper and a minimum quantity. ([5406](https://github.com/woocommerce/woocommerce-gutenberg-products-block/pull/5406))
+- Added controls to product grid blocks for filtering by stock levels. ([4943](https://github.com/woocommerce/woocommerce-gutenberg-products-block/pull/4943))
+
+#### Bug Fixes
+
+- Use consistent HTML code for all rating sections, so that screen readers pronounce the rating correctly. ([5552](https://github.com/woocommerce/woocommerce-gutenberg-products-block/pull/5552))
+- All Products block displays thumbnails. ([5551](https://github.com/woocommerce/woocommerce-gutenberg-products-block/pull/5551))
+- Fixed a styling issue in the Checkout block when an order has multiple shipping packages. ([5529](https://github.com/woocommerce/woocommerce-gutenberg-products-block/pull/5529))
+- Fixed a visual bug (#5152) with the points and rewards plugin. ([5430](https://github.com/woocommerce/woocommerce-gutenberg-products-block/pull/5430))
+- Filter Products By Price block: Don't allow to insert negative values on inputs. ([5123](https://github.com/woocommerce/woocommerce-gutenberg-products-block/pull/5123))
+
+#### technical debt
+
+- Remove invalid `$wpdb->prepare()` statement in Featured Category Block. ([5471](https://github.com/woocommerce/woocommerce-gutenberg-products-block/pull/5471))
+- Remove Stripe Payment Method Integration (which is now part of the Stripe Payment Method extension itself). ([5449](https://github.com/woocommerce/woocommerce-gutenberg-products-block/pull/5449))
+
+#### Various
+
+- Update the block theme folders to latest Gutenberg convention (i.e. `templates` and `parts`). ([5464](https://github.com/woocommerce/woocommerce-gutenberg-products-block/pull/5464))
+
 = 6.7.1 - 2022-01-07 =
 
 #### Bug Fixes
