@@ -35,6 +35,7 @@ module.exports = async ( globalConfig ) => {
 		// We only want to run ensureCleanAttributes when running locally, and not in CI.
 		// This env variable should not exist on someone's local machine
 		if ( ! process.env.GITHUB_RUN_ID ) {
+			console.log( 'cleaning attributes' );
 			await ensureCleanAttributes();
 		}
 		/**
