@@ -55,4 +55,5 @@ Every release includes specific testing instructions for new features and bug fi
 -   [6.5.0](./650.md)
 -   [6.6.0](./660.md)
 -   [6.7.0](./670.md)
--   [6.7.1](./671.md)
+    -   [6.7.1](./671.md)
+    -   [6.7.2](./672.md)
