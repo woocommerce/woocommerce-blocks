@@ -75,6 +75,13 @@ let templateId: string | undefined;
 
 const unsubscribe = subscribe( () => {
 	const store = select( 'core/edit-site' );
+
+	if ( ! store ) {
+		// The store will only exist in the Site Editor so we need to unsubscribe and early return for Posts / Pages.
+		unsubscribe();
+		return;
+	}
+
 	templateId = store?.getEditedPostId();
 
 	if ( templateId ) {
