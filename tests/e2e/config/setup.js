@@ -17,6 +17,7 @@ import {
 	createShippingZones,
 	createBlockPages,
 	enablePaymentGateways,
+	ensureCleanAttributes,
 	createProductAttributes,
 } from '../fixtures/fixture-loaders';
 
@@ -30,6 +31,12 @@ module.exports = async ( globalConfig ) => {
 		await setupSettings();
 		const pages = await createBlockPages();
 
+		// Check if there's a github actions run ID set in the environment variables.
+		// We only want to run ensureCleanAttributes when running locally, and not in CI.
+		// This env variable should not exist on someone's local machine
+		if ( ! process.env.GITHUB_RUN_ID ) {
+			await ensureCleanAttributes();
+		}
 		/**
 		 * Promise.all will return an array of all promises resolved values.
 		 * Some functions like setupSettings and enablePaymentGateways resolve
