@@ -85,6 +85,12 @@ Release and roadmap notes available on the [WooCommerce Developers Blog](https:/
 
 == Changelog ==
 
+= 6.5.2 - 2022-01-17 =
+
+#### Bug Fixes
+
+- Update WooCommerce plugin slug for Block Templates. ([5519](https://github.com/woocommerce/woocommerce-gutenberg-products-block/pull/5519))
+
 = 6.5.1 - 2021-12-22 =
 
 #### Bug Fixes
