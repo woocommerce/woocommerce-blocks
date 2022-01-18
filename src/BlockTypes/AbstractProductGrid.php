@@ -57,7 +57,10 @@ abstract class AbstractProductGrid extends AbstractDynamicBlock {
 			'align'             => $this->get_schema_align(),
 			'alignButtons'      => $this->get_schema_boolean( false ),
 			'isPreview'         => $this->get_schema_boolean( false ),
-			'stockStatus'       => array_keys( wc_get_product_stock_status_options() ),
+			'stockStatus'       => array(
+				'type'    => 'array',
+				'default' => array_keys( wc_get_product_stock_status_options() ),
+			),
 		);
 	}
 
