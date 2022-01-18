@@ -15,6 +15,13 @@ class Checkout extends AbstractBlock {
 	protected $block_name = 'checkout';
 
 	/**
+	 * Block title.
+	 *
+	 * @var string
+	 */
+	protected $block_title = 'Checkout';
+
+	/**
 	 * Get the editor script handle for this block type.
 	 *
 	 * @param string $key Data to get, or default to everything.
