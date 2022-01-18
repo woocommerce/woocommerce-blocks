@@ -28,6 +28,13 @@ abstract class AbstractBlock {
 	protected $block_name = '';
 
 	/**
+	 * Block title.
+	 *
+	 * @var string
+	 */
+	protected $block_title = '';
+
+	/**
 	 * Tracks if assets have been enqueued.
 	 *
 	 * @var boolean
@@ -183,6 +190,7 @@ abstract class AbstractBlock {
 			'style'           => $this->get_block_type_style(),
 			'attributes'      => $this->get_block_type_attributes(),
 			'supports'        => $this->get_block_type_supports(),
+			'title'           => $this->get_block_title(),
 		];
 
 		if ( isset( $this->api_version ) && '2' === $this->api_version ) {
@@ -266,6 +274,15 @@ abstract class AbstractBlock {
 	 */
 	protected function get_block_type_style() {
 		return 'wc-blocks-style';
+	}
+
+	/**
+	 * Gets the block title.
+	 *
+	 * @return string
+	 */
+	protected function get_block_title() {
+		return $this->block_title;
 	}
 
 	/**
