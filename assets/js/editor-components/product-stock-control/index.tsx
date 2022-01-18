@@ -3,7 +3,8 @@
  */
 import CheckboxList from '@woocommerce/base-components/checkbox-list';
 import { getSetting } from '@woocommerce/settings';
-import { useCallback, useState } from '@wordpress/element';
+import { useCallback, useState, useEffect } from '@wordpress/element';
+import { useDebounce } from 'use-debounce';
 
 export interface ProductStockControlProps {
 	value: Array< string >;
@@ -37,6 +38,12 @@ const ProductStockControl = ( {
 	// Set the initial state to the default or saved value.
 	const [ checkedOptions, setChecked ] = useState( value );
 
+	// Debounce checked options for updates.
+	const [ debouncedCheckedOptions ] = useDebounce< string[] >(
+		checkedOptions,
+		400
+	);
+
 	/**
 	 * Valid options must be in an array of [ 'value' : 'mystatus', 'label' : 'My label' ] format.
 	 * stockStatusOptions are returned as [ 'mystatus' : 'My label' ].
@@ -48,6 +55,15 @@ const ProductStockControl = ( {
 			.filter( ( status ) => !! status.label )
 			.sort( ( a, b ) => a.value.localeCompare( b.value ) )
 	);
+
+	/**
+	 * Dobounce changes to attributes based on checked items.
+	 */
+	useEffect( () => {
+		setAttributes( {
+			stockStatus: debouncedCheckedOptions,
+		} );
+	}, [ debouncedCheckedOptions, setAttributes ] );
 
 	/**
 	 * When a checkbox in the list changes, update state.
@@ -66,11 +82,8 @@ const ProductStockControl = ( {
 			}
 
 			setChecked( newChecked );
-			setAttributes( {
-				stockStatus: newChecked,
-			} );
 		},
-		[ checkedOptions, setAttributes ]
+		[ checkedOptions ]
 	);
 
 	return (
