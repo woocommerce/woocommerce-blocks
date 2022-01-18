@@ -53,7 +53,12 @@ const usePaymentMethodRegistration = (
 	const selectedShippingMethods = useShallowEqual( selectedRates );
 	const paymentMethodsOrder = useShallowEqual( paymentMethodsSortOrder );
 	const cart = useStoreCart();
-	const { cartTotals, cartNeedsShipping, paymentRequirements } = cart;
+	const {
+		cartTotals,
+		cartIsLoading,
+		cartNeedsShipping,
+		paymentRequirements,
+	} = cart;
 	const canPayArgument = useRef( {
 		cart,
 		cartTotals,
@@ -130,7 +135,7 @@ const usePaymentMethodRegistration = (
 			} catch ( e ) {
 				if ( CURRENT_USER_IS_ADMIN || isEditor ) {
 					const errorText = sprintf(
-						/* translators: %s the id of the payment method being registered (bank transfer, Stripe...) */
+						/* translators: %s the id of the payment method being registered (bank transfer, cheque...) */
 						__(
 							`There was an error registering the payment method with id '%s': `,
 							'woo-gutenberg-products-block'
@@ -148,8 +153,7 @@ const usePaymentMethodRegistration = (
 		// Re-dispatch available payment methods to store.
 		dispatcher( availablePaymentMethods );
 
-		// Note: some payment methods use the `canMakePayment` callback to initialize / setup.
-		// Example: Stripe CC, Stripe Payment Request.
+		// Note: Some 4rd party payment methods use the `canMakePayment` callback to initialize / setup.
 		// That's why we track "is initialized" state here.
 		setIsInitialized( true );
 	}, [
@@ -163,19 +167,25 @@ const usePaymentMethodRegistration = (
 
 	const debouncedRefreshCanMakePayments = useDebouncedCallback(
 		refreshCanMakePayments,
-		500
+		500,
+		{
+			leading: true,
+		}
 	);
 
 	// Determine which payment methods are available initially and whenever
 	// shipping methods, cart or the billing data change.
 	// Some payment methods (e.g. COD) can be disabled for specific shipping methods.
 	useEffect( () => {
-		debouncedRefreshCanMakePayments();
+		if ( ! cartIsLoading ) {
+			debouncedRefreshCanMakePayments();
+		}
 	}, [
 		debouncedRefreshCanMakePayments,
 		cart,
 		selectedShippingMethods,
 		billingData,
+		cartIsLoading,
 	] );
 
 	return isInitialized;

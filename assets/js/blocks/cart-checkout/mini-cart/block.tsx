@@ -1,33 +1,33 @@
 /**
  * External dependencies
  */
-import classnames from 'classnames';
-import { __, _n, sprintf } from '@wordpress/i18n';
-import {
-	RawHTML,
-	useState,
-	useEffect,
-	useRef,
-	unmountComponentAtNode,
-} from '@wordpress/element';
-import {
-	renderBlock,
-	translateJQueryEventToNative,
-} from '@woocommerce/base-utils';
-import { useStoreCart } from '@woocommerce/base-context/hooks';
+import { renderParentBlock } from '@woocommerce/atomic-utils';
 import Drawer from '@woocommerce/base-components/drawer';
+import { useStoreCart } from '@woocommerce/base-context/hooks';
+import { translateJQueryEventToNative } from '@woocommerce/base-utils';
+import { getRegisteredBlockComponents } from '@woocommerce/blocks-registry';
 import {
 	formatPrice,
 	getCurrencyFromPriceResponse,
 } from '@woocommerce/price-format';
-import { getSetting } from '@woocommerce/settings';
-
+import { getSettingWithCoercion } from '@woocommerce/settings';
+import { isBoolean, isString } from '@woocommerce/types';
+import {
+	RawHTML,
+	unmountComponentAtNode,
+	useCallback,
+	useEffect,
+	useState,
+} from '@wordpress/element';
+import { sprintf, _n } from '@wordpress/i18n';
+import classnames from 'classnames';
 /**
  * Internal dependencies
  */
 import QuantityBadge from './quantity-badge';
-import MiniCartContentsBlock from '../mini-cart-contents/block';
+import { MiniCartContentsBlock } from '../mini-cart-contents/block';
 import './style.scss';
+import { blockName } from '../mini-cart-contents/attributes';
 
 interface Props {
 	isInitiallyOpen?: boolean;
@@ -50,41 +50,43 @@ const MiniCartBlock = ( {
 	const [ skipSlideIn, setSkipSlideIn ] = useState< boolean >(
 		isInitiallyOpen
 	);
+	const [ contentsNode, setContentsNode ] = useState< HTMLDivElement | null >(
+		null
+	);
 
-	const contentsRef = useRef() as React.MutableRefObject< HTMLDivElement >;
+	const contentsRef = useCallback( ( node ) => {
+		setContentsNode( node );
+	}, [] );
 
 	useEffect( () => {
-		if ( contentsRef.current instanceof Element ) {
-			const container = contentsRef.current.querySelector(
-				'.wc-block-mini-cart-contents'
+		if ( contentsNode instanceof Element ) {
+			const container = contentsNode.querySelector(
+				'.wp-block-woocommerce-mini-cart-contents'
 			);
 			if ( ! container ) {
 				return;
 			}
 			if ( isOpen ) {
-				renderBlock( {
+				renderParentBlock( {
 					Block: MiniCartContentsBlock,
-					container,
+					blockName,
+					selector: '.wp-block-woocommerce-mini-cart-contents',
+					blockMap: getRegisteredBlockComponents( blockName ),
 				} );
-			} else {
-				unmountComponentAtNode( container );
 			}
 		}
-	}, [ isOpen ] );
 
-	useEffect( () => {
 		return () => {
-			const contentsNode = contentsRef.current as unknown;
-			if ( contentsNode instanceof Element ) {
+			if ( contentsNode instanceof Element && isOpen ) {
 				const container = contentsNode.querySelector(
-					'.wc-block-mini-cart-contents'
+					'.wp-block-woocommerce-mini-cart-contents'
 				);
 				if ( container ) {
 					unmountComponentAtNode( container );
 				}
 			}
 		};
-	}, [] );
+	}, [ isOpen, contentsNode ] );
 
 	useEffect( () => {
 		const openMiniCart = () => {
@@ -113,7 +115,15 @@ const MiniCartBlock = ( {
 		};
 	}, [] );
 
-	const subTotal = getSetting( 'displayCartPricesIncludingTax', false )
+	const showIncludingTax = getSettingWithCoercion(
+		'displayCartPricesIncludingTax',
+		false,
+		isBoolean
+	);
+
+	const taxLabel = getSettingWithCoercion( 'taxLabel', '', isString );
+
+	const subTotal = showIncludingTax
 		? parseInt( cartTotals.total_items, 10 ) +
 		  parseInt( cartTotals.total_items_tax, 10 )
 		: parseInt( cartTotals.total_items, 10 );
@@ -154,6 +164,11 @@ const MiniCartBlock = ( {
 						getCurrencyFromPriceResponse( cartTotals )
 					) }
 				</span>
+				{ taxLabel !== '' && subTotal !== 0 && (
+					<small className="wc-block-mini-cart__tax-label">
+						{ taxLabel }
+					</small>
+				) }
 				<QuantityBadge
 					count={ cartItemsCount }
 					colorClassNames={ colorClassNames }
@@ -168,27 +183,18 @@ const MiniCartBlock = ( {
 						'is-loading': cartIsLoading,
 					}
 				) }
-				title={
-					cartIsLoading
-						? __( 'Your cart', 'woo-gutenberg-products-block' )
-						: sprintf(
-								/* translators: %d is the count of items in the cart. */
-								_n(
-									'Your cart (%d item)',
-									'Your cart (%d items)',
-									cartItemsCount,
-									'woo-gutenberg-products-block'
-								),
-								cartItemsCount
-						  )
-				}
+				title=""
 				isOpen={ isOpen }
 				onClose={ () => {
 					setIsOpen( false );
 				} }
 				slideIn={ ! skipSlideIn }
 			>
-				<div ref={ contentsRef }>
+				<div
+					className="wc-block-mini-cart__template-part"
+					ref={ contentsRef }
+				>
+					{ /* @todo The `div` wrapper of RawHTML isn't removed on the front end. */ }
 					<RawHTML>{ contents }</RawHTML>
 				</div>
 			</Drawer>

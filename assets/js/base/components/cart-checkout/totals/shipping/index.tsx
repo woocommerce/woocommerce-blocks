@@ -77,6 +77,7 @@ const ShippingAddress = ( {
 interface NoShippingPlaceholderProps {
 	showCalculator: boolean;
 	isShippingCalculatorOpen: boolean;
+	isCheckout?: boolean;
 	setIsShippingCalculatorOpen: CalculatorButtonProps[ 'setIsShippingCalculatorOpen' ];
 }
 
@@ -84,14 +85,20 @@ const NoShippingPlaceholder = ( {
 	showCalculator,
 	isShippingCalculatorOpen,
 	setIsShippingCalculatorOpen,
+	isCheckout = false,
 }: NoShippingPlaceholderProps ): ReactElement => {
 	if ( ! showCalculator ) {
 		return (
 			<em>
-				{ __(
-					'Calculated during checkout',
-					'woo-gutenberg-products-block'
-				) }
+				{ isCheckout
+					? __(
+							'No shipping options available',
+							'woo-gutenberg-products-block'
+					  )
+					: __(
+							'Calculated during checkout',
+							'woo-gutenberg-products-block'
+					  ) }
 			</em>
 		);
 	}
@@ -104,7 +111,7 @@ const NoShippingPlaceholder = ( {
 	);
 };
 
-interface TotalShippingProps {
+export interface TotalShippingProps {
 	currency: Currency;
 	values: {
 		total_shipping: string;
@@ -113,13 +120,15 @@ interface TotalShippingProps {
 	showCalculator?: boolean; //Whether to display the rate selector below the shipping total.
 	showRateSelector?: boolean; // Whether to show shipping calculator or not.
 	className?: string;
+	isCheckout?: boolean;
 }
 
-const TotalsShipping = ( {
+export const TotalsShipping = ( {
 	currency,
 	values,
 	showCalculator = true,
 	showRateSelector = true,
+	isCheckout = false,
 	className,
 }: TotalShippingProps ): ReactElement => {
 	const [ isShippingCalculatorOpen, setIsShippingCalculatorOpen ] = useState(
@@ -163,32 +172,29 @@ const TotalsShipping = ( {
 			<TotalsItem
 				label={ __( 'Shipping', 'woo-gutenberg-products-block' ) }
 				value={
-					cartHasCalculatedShipping ? (
+					hasRates && cartHasCalculatedShipping ? (
 						totalShippingValue
 					) : (
 						<NoShippingPlaceholder
 							showCalculator={ showCalculator }
+							isCheckout={ isCheckout }
 							{ ...calculatorButtonProps }
 						/>
 					)
 				}
 				description={
-					<>
-						{ cartHasCalculatedShipping && (
-							<>
-								<ShippingVia
-									selectedShippingRates={
-										selectedShippingRates
-									}
-								/>
-								<ShippingAddress
-									shippingAddress={ shippingAddress }
-									showCalculator={ showCalculator }
-									{ ...calculatorButtonProps }
-								/>
-							</>
-						) }
-					</>
+					hasRates && cartHasCalculatedShipping ? (
+						<>
+							<ShippingVia
+								selectedShippingRates={ selectedShippingRates }
+							/>
+							<ShippingAddress
+								shippingAddress={ shippingAddress }
+								showCalculator={ showCalculator }
+								{ ...calculatorButtonProps }
+							/>
+						</>
+					) : null
 				}
 				currency={ currency }
 			/>

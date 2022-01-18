@@ -5,6 +5,8 @@ import { __ } from '@wordpress/i18n';
 import { registerBlockType } from '@wordpress/blocks';
 import classNames from 'classnames';
 import { Icon, bill } from '@woocommerce/icons';
+import { isFeaturePluginBuild } from '@woocommerce/block-settings';
+import { useBlockProps } from '@wordpress/block-editor';
 
 /**
  * Internal dependencies
@@ -12,10 +14,15 @@ import { Icon, bill } from '@woocommerce/icons';
 import edit from './edit.js';
 
 registerBlockType( 'woocommerce/price-filter', {
+	apiVersion: 2,
 	title: __( 'Filter Products by Price', 'woo-gutenberg-products-block' ),
 	icon: {
-		src: <Icon srcElement={ bill } />,
-		foreground: '#7f54b3',
+		src: (
+			<Icon
+				srcElement={ bill }
+				className="wc-block-editor-components-block-icon"
+			/>
+		),
 	},
 	category: 'woocommerce',
 	keywords: [ __( 'WooCommerce', 'woo-gutenberg-products-block' ) ],
@@ -26,6 +33,17 @@ registerBlockType( 'woocommerce/price-filter', {
 	supports: {
 		html: false,
 		multiple: false,
+		color: {
+			text: true,
+			background: false,
+		},
+		...( isFeaturePluginBuild() && {
+			__experimentalBorder: {
+				radius: true,
+				color: true,
+				width: false,
+			},
+		} ),
 	},
 	example: {},
 	attributes: {
@@ -66,7 +84,9 @@ registerBlockType( 'woocommerce/price-filter', {
 		};
 		return (
 			<div
-				className={ classNames( 'is-loading', className ) }
+				{ ...useBlockProps.save( {
+					className: classNames( 'is-loading', className ),
+				} ) }
 				{ ...data }
 			>
 				<span

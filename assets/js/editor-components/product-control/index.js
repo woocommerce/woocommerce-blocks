@@ -4,14 +4,17 @@
 import { __, _n, sprintf } from '@wordpress/i18n';
 import { isEmpty } from 'lodash';
 import PropTypes from 'prop-types';
-import { SearchListControl, SearchListItem } from '@woocommerce/components';
+import {
+	SearchListControl,
+	SearchListItem,
+} from '@woocommerce/editor-components/search-list-control';
 import { withInstanceId } from '@wordpress/compose';
 import {
 	withProductVariations,
 	withSearchedProducts,
 	withTransformSingleSelectToMultipleSelect,
 } from '@woocommerce/block-hocs';
-import ErrorMessage from '@woocommerce/editor-components/error-placeholder/error-message.js';
+import ErrorMessage from '@woocommerce/editor-components/error-placeholder/error-message';
 import classNames from 'classnames';
 import ExpandableSearchListItem from '@woocommerce/editor-components/expandable-search-list-item/expandable-search-list-item.tsx';
 

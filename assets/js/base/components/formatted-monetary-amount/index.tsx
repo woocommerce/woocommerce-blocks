@@ -14,9 +14,12 @@ import type { Currency } from '@woocommerce/types';
  */
 import './style.scss';
 
-interface FormattedMonetaryAmountProps {
+interface FormattedMonetaryAmountProps
+	extends Omit< NumberFormatProps, 'onValueChange' > {
 	className?: string;
 	displayType?: NumberFormatProps[ 'displayType' ];
+	allowNegative?: boolean;
+	isAllowed?: ( formattedValue: NumberFormatValues ) => boolean;
 	value: number | string; // Value of money amount.
 	currency: Currency | Record< string, never >; // Currency configuration object.
 	onValueChange?: ( unit: number ) => void; // Function to call when value changes.
@@ -83,14 +86,10 @@ const FormattedMonetaryAmount = ( {
 	// Wrapper for NumberFormat onValueChange which handles subunit conversion.
 	const onValueChangeWrapper = onValueChange
 		? ( values: NumberFormatValues ) => {
-				const minorUnitValue =
-					( ( values.value as unknown ) as number ) *
-					10 ** currency.minorUnit;
+				const minorUnitValue = +values.value * 10 ** currency.minorUnit;
 				onValueChange( minorUnitValue );
 		  }
-		: () => {
-				/* not used */
-		  };
+		: () => void 0;
 
 	return (
 		<NumberFormat

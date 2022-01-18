@@ -9,7 +9,6 @@ import type {
 	ExtensionCartUpdateArgs,
 	BillingAddressShippingAddress,
 } from '@woocommerce/types';
-import { ReturnOrGeneratorYieldUnion } from '@automattic/data-stores';
 import { camelCase, mapKeys } from 'lodash';
 import type { AddToCartEventDetail } from '@woocommerce/type-defs/events';
 
@@ -20,6 +19,7 @@ import { ACTION_TYPES as types } from './action-types';
 import { STORE_KEY as CART_STORE_KEY } from './constants';
 import { apiFetchWithHeaders } from '../shared-controls';
 import type { ResponseError } from '../types';
+import { ReturnOrGeneratorYieldUnion } from '../mapped-types';
 
 /**
  * Returns an action object used in updating the store with the provided items
@@ -393,11 +393,10 @@ export function* changeCartItemQuantity(
 	// eslint-disable-next-line @typescript-eslint/no-explicit-any -- unclear how to represent multiple different yields as type
 ): Generator< unknown, void, any > {
 	const cartItem = yield select( CART_STORE_KEY, 'getCartItem', cartItemKey );
-	yield itemIsPendingQuantity( cartItemKey );
-
 	if ( cartItem?.quantity === quantity ) {
 		return;
 	}
+	yield itemIsPendingQuantity( cartItemKey );
 	try {
 		const { response } = yield apiFetchWithHeaders( {
 			path: '/wc/store/cart/update-item',

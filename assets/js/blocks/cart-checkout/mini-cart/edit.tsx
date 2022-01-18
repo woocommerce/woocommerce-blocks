@@ -12,12 +12,11 @@ import type { ReactElement } from 'react';
 import { formatPrice } from '@woocommerce/price-format';
 import { CartCheckoutCompatibilityNotice } from '@woocommerce/editor-components/compatibility-notices';
 import { PanelBody, ExternalLink, ToggleControl } from '@wordpress/components';
-import { addQueryArgs } from '@wordpress/url';
-import { ADMIN_URL, getSetting } from '@woocommerce/settings';
+import { getSetting } from '@woocommerce/settings';
 import { __ } from '@wordpress/i18n';
 import { positionCenter, positionRight, positionLeft } from '@wordpress/icons';
 import classnames from 'classnames';
-import { isString } from '@woocommerce/types';
+import Noninteractive from '@woocommerce/base-components/noninteractive';
 
 /**
  * Internal dependencies
@@ -55,9 +54,10 @@ const MiniCartBlock = ( {
 		} ),
 	} );
 
-	const themeSlug = getSetting( 'themeSlug', '' );
-
-	const isSiteEditorAvailable = getSetting( 'isSiteEditorAvailable', false );
+	const templatePartEditUri = getSetting(
+		'templatePartEditUri',
+		''
+	) as string;
 
 	/**
 	 * @todo Replace `getColorClassName` and manual style manipulation with
@@ -138,49 +138,40 @@ const MiniCartBlock = ( {
 						}
 					/>
 				</PanelBody>
-				{ isSiteEditorAvailable &&
-					isString( themeSlug ) &&
-					themeSlug.length > 0 && (
-						<PanelBody
-							title={ __(
-								'Template Editor',
+				{ templatePartEditUri && (
+					<PanelBody
+						title={ __(
+							'Template Editor',
+							'woo-gutenberg-products-block'
+						) }
+					>
+						<ExternalLink href={ templatePartEditUri }>
+							{ __(
+								'Edit template part',
 								'woo-gutenberg-products-block'
 							) }
-						>
-							<ExternalLink
-								href={ addQueryArgs(
-									`${ ADMIN_URL }themes.php`,
-									{
-										page: 'gutenberg-edit-site',
-										postId: `${ themeSlug }//mini-cart`,
-										postType: 'wp_template_part',
-									}
-								) }
-							>
-								{ __(
-									'Edit template part',
-									'woo-gutenberg-products-block'
-								) }
-							</ExternalLink>
-						</PanelBody>
-					) }
-			</InspectorControls>
-			<button
-				className={ classnames(
-					'wc-block-mini-cart__button',
-					colorClassNames
+						</ExternalLink>
+					</PanelBody>
 				) }
-				style={ colorStyle }
-			>
-				<span className="wc-block-mini-cart__amount">
-					{ formatPrice( productTotal ) }
-				</span>
-				<QuantityBadge
-					count={ productCount }
-					colorClassNames={ colorClassNames }
+			</InspectorControls>
+			<Noninteractive>
+				<button
+					className={ classnames(
+						'wc-block-mini-cart__button',
+						colorClassNames
+					) }
 					style={ colorStyle }
-				/>
-			</button>
+				>
+					<span className="wc-block-mini-cart__amount">
+						{ formatPrice( productTotal ) }
+					</span>
+					<QuantityBadge
+						count={ productCount }
+						colorClassNames={ colorClassNames }
+						style={ colorStyle }
+					/>
+				</button>
+			</Noninteractive>
 			<CartCheckoutCompatibilityNotice blockName="mini-cart" />
 		</div>
 	);
