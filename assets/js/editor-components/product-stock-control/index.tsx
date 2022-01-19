@@ -12,7 +12,7 @@ export interface ProductStockControlProps {
 	setAttributes: ( attributes: Record< string, unknown > ) => void;
 }
 
-// Should out of stock items be hidden globally?
+// Look up whether or not out of stock items should be hidden globally.
 const hideOutOfStockItems = getSetting( 'hideOutOfStockItems', false );
 
 // Get the stock status options.
@@ -31,6 +31,15 @@ const ProductStockControl = ( {
 		? otherStockStatusOptions
 		: allStockStatusOptions;
 
+	/**
+	 * Valid options must be in an array of [ 'value' : 'mystatus', 'label' : 'My label' ] format.
+	 * stockStatusOptions are returned as [ 'mystatus' : 'My label' ].
+	 * Formatting is corrected here.
+	 */
+	const displayOptions = Object.entries( stockStatusOptions )
+		.map( ( [ slug, name ] ) => ( { value: slug, label: name } ) )
+		.filter( ( status ) => !! status.label );
+
 	// Set the initial state to the default or saved value.
 	const [ checkedOptions, setChecked ] = useState( value );
 
@@ -38,18 +47,6 @@ const ProductStockControl = ( {
 	const [ debouncedCheckedOptions ] = useDebounce< string[] >(
 		checkedOptions,
 		400
-	);
-
-	/**
-	 * Valid options must be in an array of [ 'value' : 'mystatus', 'label' : 'My label' ] format.
-	 * stockStatusOptions are returned as [ 'mystatus' : 'My label' ].
-	 * Formatting is corrected here.
-	 */
-	const [ displayOptions ] = useState(
-		Object.entries( stockStatusOptions )
-			.map( ( [ slug, name ] ) => ( { value: slug, label: name } ) )
-			.filter( ( status ) => !! status.label )
-			.sort( ( a, b ) => a.value.localeCompare( b.value ) )
 	);
 
 	/**
