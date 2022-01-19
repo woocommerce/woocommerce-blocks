@@ -4,7 +4,6 @@ export { default as address } from './library/address';
 export { default as arrowBack } from './library/arrow-back';
 export { default as arrowDownAlt2 } from './library/arrow-down-alt2';
 export { default as asterisk } from './library/asterisk';
-export { default as atom } from './library/atom';
 export { default as bank } from './library/bank';
 export { default as barcode } from './library/barcode';
 export { default as bill } from './library/bill';

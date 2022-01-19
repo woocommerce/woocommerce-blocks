@@ -5,20 +5,13 @@ WooCommerce Blocks Icons Library.
 ## Usage
 
 ```js
-import { Icon, bill, woo } from '@woocommerce/icons';
+import { bill, woo } from '@woocommerce/icons';
+import { Icon } from '@wordpress/icons';
 
-<Icon srcElement={ bill } />
-
-<Icon srcElement={ bill } size={ 16 } />
-
-<Icon srcElement={ woo } width={ 20 } height={ Math.floor( 20 * 1.67 ) } />
+<Icon icon={ bill } />
+<Icon icon={ bill } size={ 16 } />
+<Icon icon={ woo } width={ 20 } height={ Math.floor( 20 * 1.67 ) } />
 ```
-
-## Props
-
-| Name   | Type      | Default | Description             |
-| ------ | --------- | ------- | ----------------------- |
-| `size` | `integer` | `24`    | Size of icon in pixels. |
 
 ## Adding Icons
 
