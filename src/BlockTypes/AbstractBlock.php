@@ -28,13 +28,6 @@ abstract class AbstractBlock {
 	protected $block_name = '';
 
 	/**
-	 * Block title.
-	 *
-	 * @var string
-	 */
-	protected $block_title = '';
-
-	/**
 	 * Tracks if assets have been enqueued.
 	 *
 	 * @var boolean
@@ -282,7 +275,7 @@ abstract class AbstractBlock {
 	 * @return string
 	 */
 	protected function get_block_title() {
-		return $this->block_title;
+		return '';
 	}
 
 	/**

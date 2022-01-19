@@ -15,13 +15,6 @@ class Checkout extends AbstractBlock {
 	protected $block_name = 'checkout';
 
 	/**
-	 * Block title.
-	 *
-	 * @var string
-	 */
-	protected $block_title = '';
-
-	/**
 	 * Gets the translated block title.
 	 *
 	 * @return string
