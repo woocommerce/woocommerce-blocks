@@ -10,10 +10,9 @@ import { Icon } from '@wordpress/icons';
  * Internal dependencies
  */
 import * as icons from '../index';
-import { IconProps } from '../icon';
 const { ...availableIcons } = icons;
 
-export const Library: Story< IconProps > = ( args ) => {
+export const Library: Story = ( args ) => {
 	const [ filter, setFilter ] = useState( '' );
 	const filteredIcons = omitBy( availableIcons, ( _, name ) => {
 		return ! name.includes( filter );
