@@ -14,4 +14,5 @@ export const supports = {
 	typography: {
 		fontSize: true,
 	},
+	__experimentalSelector: '.wc-block-components-product-summary',
 };
