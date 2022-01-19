@@ -2,6 +2,7 @@
  * External dependencies
  */
 import { renderFrontend } from '@woocommerce/base-utils';
+import { CURRENT_USER_IS_ADMIN } from '@woocommerce/settings';
 import {
 	Fragment,
 	Suspense,
@@ -91,9 +92,14 @@ const renderForcedBlocks = (
 						? component
 						: getBlockComponentFromMap( blockName, blockMap );
 					return ForcedComponent ? (
-						<ForcedComponent
-							key={ `${ blockName }_forced_${ index }` }
-						/>
+						<BlockErrorBoundary
+							text={ `Unexpected error in: ${ blockName } }` }
+							showErrorBlock={ CURRENT_USER_IS_ADMIN as boolean }
+						>
+							<ForcedComponent
+								key={ `${ blockName }_forced_${ index }` }
+							/>
+						</BlockErrorBoundary>
 					) : null;
 				}
 			) }
@@ -197,7 +203,10 @@ const renderInnerBlocks = ( {
 				fallback={ <div className="wc-block-placeholder" /> }
 			>
 				{ /* Prevent third party components from breaking the entire checkout */ }
-				<BlockErrorBoundary renderError={ () => null }>
+				<BlockErrorBoundary
+					text={ `Unexpected error in: ${ blockName } }` }
+					showErrorBlock={ CURRENT_USER_IS_ADMIN as boolean }
+				>
 					<InnerBlockComponentWrapper>
 						<InnerBlockComponent { ...componentProps }>
 							{
