@@ -15,15 +15,6 @@ class Checkout extends AbstractBlock {
 	protected $block_name = 'checkout';
 
 	/**
-	 * Gets the translated block title.
-	 *
-	 * @return string
-	 */
-	protected function get_block_title() {
-		return __( 'Checkout', 'woo-gutenberg-products-block' );
-	}
-
-	/**
 	 * Metadata path
 	 *
 	 * @var string;

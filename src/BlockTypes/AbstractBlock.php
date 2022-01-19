@@ -285,15 +285,6 @@ abstract class AbstractBlock {
 	}
 
 	/**
-	 * Gets the translated block title.
-	 *
-	 * @return string
-	 */
-	protected function get_block_title() {
-		return '';
-	}
-
-	/**
 	 * Get the supports array for this block type.
 	 *
 	 * @see $this->register_block_type()
