@@ -248,7 +248,7 @@ class ProductsByTagBlock extends Component {
 					<Placeholder
 						icon={
 							<Icon
-								icon={ more }
+								icon={ tag }
 								className="block-editor-block-icon"
 							/>
 						}
@@ -302,7 +302,7 @@ class ProductsByTagBlock extends Component {
 		) : (
 			<Placeholder
 				icon={
-					<Icon icon={ more } className="block-editor-block-icon" />
+					<Icon icon={ tag } className="block-editor-block-icon" />
 				}
 				label={ __(
 					'Products by Tag',
