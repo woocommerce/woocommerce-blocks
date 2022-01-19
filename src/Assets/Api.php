@@ -69,7 +69,7 @@ class Api {
 	 *
 	 * @throws Exception Throws if there is no metadata file at the path specified.
 	 */
-	public function get_block_metadata( $path_to_metadata ) {
+	public function get_block_metadata_path( $path_to_metadata ) {
 		$path_to_metadata_from_plugin_root = $this->package->get_path( 'assets/js/blocks/' . $path_to_metadata );
 		if ( ! file_exists( $path_to_metadata_from_plugin_root ) ) {
 			throw new Exception( 'Block metadata at ' . $path_to_metadata_from_plugin_root . ' does not exist' );
