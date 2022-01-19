@@ -188,8 +188,6 @@ abstract class AbstractBlock {
 			'editor_script'   => $this->get_block_type_editor_script( 'handle' ),
 			'editor_style'    => $this->get_block_type_editor_style(),
 			'style'           => $this->get_block_type_style(),
-			'attributes'      => $this->get_block_type_attributes(),
-			'supports'        => $this->get_block_type_supports(),
 		];
 
 		if ( isset( $this->api_version ) && '2' === $this->api_version ) {
@@ -204,6 +202,11 @@ abstract class AbstractBlock {
 			);
 			return;
 		}
+
+		// Insert attributes and supports if we're not registering the block using metadata.
+		// These are added after because registering with metadata caused attributes and supports to be empty arrays.
+		$block_settings['attributes'] = $this->get_block_type_attributes();
+		$block_settings['supports']   = $this->get_block_type_supports();
 
 		register_block_type(
 			$this->get_block_type(),
