@@ -177,7 +177,7 @@ final class BlockTypesController {
 			'LegacyTemplate',
 			'ProductTitle',
 			'ProductSummary',
-			'ProductStockIndicator'
+			'ProductStockIndicator',
 		];
 
 		if ( Package::feature()->is_feature_plugin_build() ) {

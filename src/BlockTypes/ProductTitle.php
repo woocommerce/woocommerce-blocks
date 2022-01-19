@@ -30,25 +30,25 @@ class ProductTitle extends AbstractBlock {
 		return array(
 			'color'                  =>
 			array(
-				'gradients'  => true,
-				'background' => true,
-				'link' 	 => false,
-				'text' => true,
+				'gradients'                       => true,
+				'background'                      => true,
+				'link'                            => false,
+				'text'                            => true,
 				'__experimentalSkipSerialization' => true,
 
 			),
 			'typography'             =>
 			array(
-				'fontSize'   => true,
-				'lineHeight' => true,
-				'__experimentalFontWeight' => true,
+				'fontSize'                    => true,
+				'lineHeight'                  => true,
+				'__experimentalFontWeight'    => true,
 				'__experimentalTextTransform' => true,
-				'__experimentalFontFamily' => true,
+				'__experimentalFontFamily'    => true,
 
 			),
 			'spacing'                =>
 			array(
-				'margin'                         => true,
+				'margin'                          => true,
 				'__experimentalSkipSerialization' => true,
 			),
 			'__experimentalSelector' => '.wc-block-components-product-title',
