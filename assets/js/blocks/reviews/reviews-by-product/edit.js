@@ -123,7 +123,7 @@ const ReviewsByProductEditor = ( {
 			<Placeholder
 				icon={
 					<Icon
-						icon={ comment }
+						icon={ commentContent }
 						className="block-editor-block-icon"
 					/>
 				}
