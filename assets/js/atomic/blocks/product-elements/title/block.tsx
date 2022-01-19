@@ -3,10 +3,7 @@
  */
 import classnames from 'classnames';
 import { HTMLAttributes } from 'react';
-import {
-	useInnerBlockLayoutContext,
-	useProductDataContext,
-} from '@woocommerce/shared-context';
+import { useProductDataContext } from '@woocommerce/shared-context';
 import { isFeaturePluginBuild } from '@woocommerce/block-settings';
 import { withProductDataContext } from '@woocommerce/shared-hocs';
 import ProductName from '@woocommerce/base-components/product-name';
@@ -61,7 +58,6 @@ export const Block = ( props: Props ): JSX.Element => {
 		align,
 	} = props;
 
-	const { parentClassName } = useInnerBlockLayoutContext();
 	const { product } = useProductDataContext();
 	const { dispatchStoreEvent } = useStoreEvents();
 
@@ -78,7 +74,6 @@ export const Block = ( props: Props ): JSX.Element => {
 					colorProps.className,
 					'wc-block-components-product-title',
 					{
-						[ `${ parentClassName }__product-title` ]: parentClassName,
 						[ `wc-block-components-product-title--align-${ align }` ]:
 							align && isFeaturePluginBuild(),
 					}
@@ -104,7 +99,6 @@ export const Block = ( props: Props ): JSX.Element => {
 				colorProps.className,
 				'wc-block-components-product-title',
 				{
-					[ `${ parentClassName }__product-title` ]: parentClassName,
 					[ `wc-block-components-product-title--align-${ align }` ]:
 						align && isFeaturePluginBuild(),
 				}

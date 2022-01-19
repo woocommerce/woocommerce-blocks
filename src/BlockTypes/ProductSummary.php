@@ -30,14 +30,13 @@ class ProductSummary extends AbstractBlock {
 		return array(
 			'color'                  =>
 			array(
-				'link'  => true,
+				'link'       => true,
 				'background' => false,
-				'text' => true,
-
+				'text'       => true,
 			),
 			'typography'             =>
 			array(
-				'fontSize'   => true,
+				'fontSize' => true,
 			),
 			'__experimentalSelector' => '.wc-block-components-product-summary',
 		);

@@ -35,7 +35,6 @@ class ProductTitle extends AbstractBlock {
 				'link'                            => false,
 				'text'                            => true,
 				'__experimentalSkipSerialization' => true,
-
 			),
 			'typography'             =>
 			array(
@@ -44,7 +43,6 @@ class ProductTitle extends AbstractBlock {
 				'__experimentalFontWeight'    => true,
 				'__experimentalTextTransform' => true,
 				'__experimentalFontFamily'    => true,
-
 			),
 			'spacing'                =>
 			array(

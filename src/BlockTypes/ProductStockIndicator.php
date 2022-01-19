@@ -30,14 +30,13 @@ class ProductStockIndicator extends AbstractBlock {
 		return array(
 			'color'                  =>
 			array(
-				'link'  => false,
+				'link'       => false,
 				'background' => false,
-				'text' => true,
-
+				'text'       => true,
 			),
 			'typography'             =>
 			array(
-				'fontSize'   => true,
+				'fontSize' => true,
 			),
 			'__experimentalSelector' => '.wc-block-components-product-stock-indicator',
 		);
