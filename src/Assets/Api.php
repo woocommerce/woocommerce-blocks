@@ -61,6 +61,23 @@ class Api {
 	}
 
 	/**
+	 * Get the path to a block's metadata
+	 *
+	 * @param string $path_to_metadata The path to the metadata file for a block relative to the "assets/js/blocks" directory.
+	 *
+	 * @return string
+	 *
+	 * @throws Exception Throws if there is no metadata file at the path specified.
+	 */
+	public function get_block_metadata( $path_to_metadata ) {
+		$path_to_metadata_from_plugin_root = $this->package->get_path( 'assets/js/blocks/' . $path_to_metadata );
+		if ( ! file_exists( $path_to_metadata_from_plugin_root ) ) {
+			throw new Exception( 'Block metadata at ' . $path_to_metadata_from_plugin_root . ' does not exist' );
+		}
+		return $path_to_metadata_from_plugin_root;
+	}
+
+	/**
 	 * Get src, version and dependencies given a script relative src.
 	 *
 	 * @param string $relative_src Relative src to the script.
