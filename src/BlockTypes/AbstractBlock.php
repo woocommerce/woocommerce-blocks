@@ -190,11 +190,19 @@ abstract class AbstractBlock {
 			'style'           => $this->get_block_type_style(),
 			'attributes'      => $this->get_block_type_attributes(),
 			'supports'        => $this->get_block_type_supports(),
-			'title'           => $this->get_block_title(),
 		];
 
 		if ( isset( $this->api_version ) && '2' === $this->api_version ) {
 			$block_settings['api_version'] = 2;
+		}
+
+		// Prefer to register with metadata if the path is set in the block's class.
+		if ( isset( $this->metadata_path ) && '' !== $this->metadata_path ) {
+			register_block_type(
+				$this->asset_api->get_block_metadata( $this->metadata_path ),
+				$block_settings
+			);
+			return;
 		}
 
 		register_block_type(
