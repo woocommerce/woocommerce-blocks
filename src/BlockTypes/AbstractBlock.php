@@ -56,6 +56,13 @@ abstract class AbstractBlock {
 	protected $integration_registry;
 
 	/**
+	 * Metadata path
+	 *
+	 * @var string;
+	 */
+	protected $metadata_path = '';
+
+	/**
 	 * Constructor.
 	 *
 	 * @param AssetApi            $asset_api Instance of the asset API.
