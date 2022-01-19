@@ -4,7 +4,7 @@
 import { __ } from '@wordpress/i18n';
 import { registerBlockType } from '@wordpress/blocks';
 import { getSetting } from '@woocommerce/settings';
-import { Icon, widgets } from '@woocommerce/icons';
+import { Icon, category } from '@wordpress/icons';
 
 /**
  * Internal dependencies
@@ -17,7 +17,7 @@ registerBlockType( 'woocommerce/handpicked-products', {
 	icon: {
 		src: (
 			<Icon
-				srcElement={ widgets }
+				icon={ category }
 				className="wc-block-editor-components-block-icon"
 			/>
 		),
