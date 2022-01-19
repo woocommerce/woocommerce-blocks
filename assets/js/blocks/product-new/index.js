@@ -20,7 +20,7 @@ registerBlockType( 'woocommerce/product-new', {
 		src: (
 			<Icon
 				icon={ sparkles }
-				className="wc-block-editor-components-block-icon"
+				className="wc-block-editor-components-block-icon wc-block-editor-components-block-icon--sparkles"
 			/>
 		),
 	},
