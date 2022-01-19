@@ -555,7 +555,7 @@ class BlockTemplateUtils {
 	 */
 	public static function adjust_template_hierarchy( $template_hierarchy ) {
 		$slugs = array_map(
-			'gutenberg_strip_php_suffix',
+			'gutenberg_strip_template_file_suffix',
 			$template_hierarchy
 		);
 
