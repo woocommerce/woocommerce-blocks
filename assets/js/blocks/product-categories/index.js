@@ -3,7 +3,7 @@
  */
 import { __ } from '@wordpress/i18n';
 import { createBlock, registerBlockType } from '@wordpress/blocks';
-import { Icon, list } from '@wordpress/icons';
+import { Icon, listView } from '@wordpress/icons';
 
 import { isFeaturePluginBuild } from '@woocommerce/block-settings';
 /**
@@ -19,7 +19,7 @@ registerBlockType( 'woocommerce/product-categories', {
 	icon: {
 		src: (
 			<Icon
-				icon={ list }
+				icon={ listView }
 				className="wc-block-editor-components-block-icon"
 			/>
 		),
