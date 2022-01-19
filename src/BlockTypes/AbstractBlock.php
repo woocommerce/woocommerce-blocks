@@ -277,7 +277,7 @@ abstract class AbstractBlock {
 	}
 
 	/**
-	 * Gets the block title.
+	 * Gets the translated block title.
 	 *
 	 * @return string
 	 */
