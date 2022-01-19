@@ -10,9 +10,9 @@ export const supports = {
 			background: false,
 			link: false,
 		},
+		typography: {
+			fontSize: true,
+		},
+		__experimentalSelector: '.wc-block-components-product-summary',
 	} ),
-	typography: {
-		fontSize: true,
-	},
-	__experimentalSelector: '.wc-block-components-product-summary',
 };
