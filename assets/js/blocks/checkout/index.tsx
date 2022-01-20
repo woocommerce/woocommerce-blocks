@@ -10,7 +10,7 @@ import { BlockInstance, createBlock } from '@wordpress/blocks';
  * Internal dependencies
  */
 import { Edit, Save } from './edit';
-import { blockAttributes } from './attributes';
+import { blockAttributes, deprecatedAttributes } from './attributes';
 import './inner-blocks';
 import metadata from './block.json';
 
@@ -23,7 +23,11 @@ const settings = {
 			/>
 		),
 	},
-	attributes: { ...metadata.attributes, ...blockAttributes },
+	attributes: {
+		...metadata.attributes,
+		...blockAttributes,
+		...deprecatedAttributes,
+	},
 	edit: Edit,
 	save: Save,
 	// Migrates v1 to v2 checkout.

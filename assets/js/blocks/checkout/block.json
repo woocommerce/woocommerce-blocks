@@ -39,22 +39,6 @@
 	"requirePhoneField": {
 	  "type": "boolean",
 	  "default": false
-	},
-	"showOrderNotes": {
-	  "type": "boolean",
-	  "default": true
-	},
-	"showPolicyLinks": {
-	  "type": "boolean",
-	  "default": true
-	},
-	"showReturnToCart": {
-	  "type": "boolean",
-	  "default": true
-	},
-	"cartPageId": {
-	  "type": "number",
-	  "default": 0
 	}
   },
   "textdomain": "woo-gutenberg-products-block",
