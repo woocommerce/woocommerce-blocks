@@ -3,7 +3,7 @@
  */
 import { Children, cloneElement, isValidElement } from '@wordpress/element';
 import { getValidBlockAttributes } from '@woocommerce/base-utils';
-import { useStoreCart } from '@woocommerce/base-context';
+import { useStoreCart, useCheckoutContext } from '@woocommerce/base-context';
 import {
 	useCheckoutExtensionData,
 	useValidation,
@@ -45,6 +45,7 @@ const Wrapper = ( {
 				cart,
 				checkoutExtensionData,
 				validation,
+				useCheckoutContext,
 			};
 			return cloneElement( child, componentProps );
 		}
