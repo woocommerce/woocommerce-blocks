@@ -16,12 +16,14 @@ export interface ProductResponseItemPrices extends CurrencyResponse {
 	};
 }
 
-export interface ProductResponseItemData {
-	name: string;
+export interface ProductResponseItemBaseData {
 	value: string;
 	display?: string;
 	hidden?: boolean;
 }
+
+export type ProductResponseItemData = ProductResponseItemBaseData &
+	( { key: string; name?: never } | { key?: never; name: string } );
 
 export interface ProductResponseImageItem {
 	id: number;
@@ -84,10 +86,12 @@ export interface ProductResponseItem {
 	is_on_backorder: boolean;
 	low_stock_remaining: null | number;
 	sold_individually: boolean;
-	quantity_limit: number;
 	add_to_cart: {
 		text: string;
 		description: string;
 		url: string;
+		minimum: number;
+		maximum: number;
+		multiple_of: number;
 	};
 }

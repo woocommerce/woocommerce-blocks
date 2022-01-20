@@ -2,7 +2,7 @@
  * External dependencies
  */
 import { __ } from '@wordpress/i18n';
-import { useState } from '@wordpress/element';
+import { useState, useEffect } from '@wordpress/element';
 import { useDispatch, select } from '@wordpress/data';
 import { ToolbarGroup, ToolbarDropdownMenu } from '@wordpress/components';
 import { Icon, eye } from '@woocommerce/icons';
@@ -12,6 +12,10 @@ interface View {
 	view: string;
 	label: string;
 	icon: string | JSX.Element;
+}
+
+function getView( viewName: string, views: View[] ) {
+	return views.find( ( view ) => view.view === viewName );
 }
 
 export const useViewSwitcher = (
@@ -24,7 +28,59 @@ export const useViewSwitcher = (
 	const initialView = views[ 0 ];
 	const [ currentView, setCurrentView ] = useState( initialView );
 	const { selectBlock } = useDispatch( 'core/block-editor' );
-	const { getBlock } = select( blockEditorStore );
+	const {
+		getBlock,
+		getSelectedBlockClientId,
+		getBlockParentsByBlockName,
+	} = select( blockEditorStore );
+	const selectedBlockClientId = getSelectedBlockClientId();
+
+	useEffect( () => {
+		const selectedBlock = getBlock( selectedBlockClientId );
+
+		if ( ! selectedBlock ) {
+			return;
+		}
+
+		if ( currentView.view === selectedBlock.name ) {
+			return;
+		}
+
+		const viewNames = views.map( ( { view } ) => view );
+
+		if ( viewNames.includes( selectedBlock.name ) ) {
+			const newView = getView( selectedBlock.name, views );
+			if ( newView ) {
+				return setCurrentView( newView );
+			}
+		}
+
+		const parentBlockIds = getBlockParentsByBlockName(
+			selectedBlockClientId,
+			viewNames
+		);
+
+		if ( parentBlockIds.length !== 1 ) {
+			return;
+		}
+		const parentBlock = getBlock( parentBlockIds[ 0 ] );
+
+		if ( currentView.view === parentBlock.name ) {
+			return;
+		}
+
+		const newView = getView( parentBlock.name, views );
+
+		if ( newView ) {
+			setCurrentView( newView );
+		}
+	}, [
+		getBlockParentsByBlockName,
+		selectedBlockClientId,
+		getBlock,
+		currentView.view,
+		views,
+	] );
 
 	const ViewSwitcherComponent = (
 		<ToolbarGroup>

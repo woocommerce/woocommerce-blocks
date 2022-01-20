@@ -1,9 +1,10 @@
 <?php
 namespace Automattic\WooCommerce\Blocks\StoreApi;
 
-use Routes\AbstractRoute;
 use Automattic\WooCommerce\Blocks\StoreApi\Utilities\CartController;
 use Automattic\WooCommerce\Blocks\StoreApi\Utilities\OrderController;
+use Exception;
+use Routes\AbstractRoute;
 
 /**
  * RoutesController class.
@@ -39,14 +40,14 @@ class RoutesController {
 	/**
 	 * Get a route class instance.
 	 *
-	 * @throws Exception If the schema does not exist.
+	 * @throws \Exception If the schema does not exist.
 	 *
 	 * @param string $name Name of schema.
 	 * @return AbstractRoute
 	 */
 	public function get( $name ) {
 		if ( ! isset( $this->routes[ $name ] ) ) {
-			throw new Exception( $name . ' route does not exist' );
+			throw new \Exception( $name . ' route does not exist' );
 		}
 		return $this->routes[ $name ];
 	}
@@ -74,19 +75,19 @@ class RoutesController {
 		$order_controller = new OrderController();
 
 		$this->routes = [
-			'cart'                      => new Routes\Cart( $this->schemas->get( 'cart' ), null, $cart_controller ),
-			'cart-add-item'             => new Routes\CartAddItem( $this->schemas->get( 'cart' ), null, $cart_controller ),
-			'cart-apply-coupon'         => new Routes\CartApplyCoupon( $this->schemas->get( 'cart' ), null, $cart_controller ),
-			'cart-coupons'              => new Routes\CartCoupons( $this->schemas->get( 'cart' ), $this->schemas->get( 'cart-coupon' ), $cart_controller ),
-			'cart-coupons-by-code'      => new Routes\CartCouponsByCode( $this->schemas->get( 'cart' ), $this->schemas->get( 'cart-coupon' ), $cart_controller ),
-			'cart-extensions'           => new Routes\CartExtensions( $this->schemas->get( 'cart' ), $this->schemas->get( 'cart-extensions' ), $cart_controller ),
-			'cart-items'                => new Routes\CartItems( $this->schemas->get( 'cart' ), $this->schemas->get( 'cart-item' ), $cart_controller ),
-			'cart-items-by-key'         => new Routes\CartItemsByKey( $this->schemas->get( 'cart' ), $this->schemas->get( 'cart-item' ), $cart_controller ),
-			'cart-remove-coupon'        => new Routes\CartRemoveCoupon( $this->schemas->get( 'cart' ), null, $cart_controller ),
-			'cart-remove-item'          => new Routes\CartRemoveItem( $this->schemas->get( 'cart' ), null, $cart_controller ),
-			'cart-select-shipping-rate' => new Routes\CartSelectShippingRate( $this->schemas->get( 'cart' ), null, $cart_controller ),
-			'cart-update-item'          => new Routes\CartUpdateItem( $this->schemas->get( 'cart' ), null, $cart_controller ),
-			'cart-update-customer'      => new Routes\CartUpdateCustomer( $this->schemas->get( 'cart' ), null, $cart_controller ),
+			'cart'                      => new Routes\Cart( $this->schemas->get( 'cart' ), null, $cart_controller, $order_controller ),
+			'cart-add-item'             => new Routes\CartAddItem( $this->schemas->get( 'cart' ), null, $cart_controller, $order_controller ),
+			'cart-apply-coupon'         => new Routes\CartApplyCoupon( $this->schemas->get( 'cart' ), null, $cart_controller, $order_controller ),
+			'cart-coupons'              => new Routes\CartCoupons( $this->schemas->get( 'cart' ), $this->schemas->get( 'cart-coupon' ), $cart_controller, $order_controller ),
+			'cart-coupons-by-code'      => new Routes\CartCouponsByCode( $this->schemas->get( 'cart' ), $this->schemas->get( 'cart-coupon' ), $cart_controller, $order_controller ),
+			'cart-extensions'           => new Routes\CartExtensions( $this->schemas->get( 'cart' ), $this->schemas->get( 'cart-extensions' ), $cart_controller, $order_controller ),
+			'cart-items'                => new Routes\CartItems( $this->schemas->get( 'cart' ), $this->schemas->get( 'cart-item' ), $cart_controller, $order_controller ),
+			'cart-items-by-key'         => new Routes\CartItemsByKey( $this->schemas->get( 'cart' ), $this->schemas->get( 'cart-item' ), $cart_controller, $order_controller ),
+			'cart-remove-coupon'        => new Routes\CartRemoveCoupon( $this->schemas->get( 'cart' ), null, $cart_controller, $order_controller ),
+			'cart-remove-item'          => new Routes\CartRemoveItem( $this->schemas->get( 'cart' ), null, $cart_controller, $order_controller ),
+			'cart-select-shipping-rate' => new Routes\CartSelectShippingRate( $this->schemas->get( 'cart' ), null, $cart_controller, $order_controller ),
+			'cart-update-item'          => new Routes\CartUpdateItem( $this->schemas->get( 'cart' ), null, $cart_controller, $order_controller ),
+			'cart-update-customer'      => new Routes\CartUpdateCustomer( $this->schemas->get( 'cart' ), null, $cart_controller, $order_controller ),
 			'checkout'                  => new Routes\Checkout( $this->schemas->get( 'cart' ), $this->schemas->get( 'checkout' ), $cart_controller, $order_controller ),
 			'product-attributes'        => new Routes\ProductAttributes( $this->schemas->get( 'product-attribute' ) ),
 			'product-attributes-by-id'  => new Routes\ProductAttributesById( $this->schemas->get( 'product-attribute' ) ),

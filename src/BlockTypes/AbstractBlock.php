@@ -81,7 +81,7 @@ abstract class AbstractBlock {
 	 */
 	public function render_callback( $attributes = [], $content = '' ) {
 		$render_callback_attributes = $this->parse_render_callback_attributes( $attributes );
-		if ( ! is_admin() ) {
+		if ( ! is_admin() && ! WC()->is_rest_api_request() ) {
 			$this->enqueue_assets( $render_callback_attributes );
 		}
 		return $this->render( $render_callback_attributes, $content );
@@ -373,38 +373,5 @@ abstract class AbstractBlock {
 		if ( null !== $this->get_block_type_script() ) {
 			wp_enqueue_script( $this->get_block_type_script( 'handle' ) );
 		}
-	}
-
-	/**
-	 * Script to append the correct sizing class to a block skeleton.
-	 *
-	 * @return string
-	 */
-	protected function get_skeleton_inline_script() {
-		return "<script>
-			var containers = document.querySelectorAll( 'div.wc-block-skeleton' );
-
-			if ( containers.length ) {
-				Array.prototype.forEach.call( containers, function( el, i ) {
-					var w = el.offsetWidth;
-					var classname = '';
-
-					if ( w > 700 )
-						classname = 'is-large';
-					else if ( w > 520 )
-						classname = 'is-medium';
-					else if ( w > 400 )
-						classname = 'is-small';
-					else
-						classname = 'is-mobile';
-
-					if ( ! el.classList.contains( classname ) )  {
-						el.classList.add( classname );
-					}
-
-					el.classList.remove( 'hidden' );
-				} );
-			}
-		</script>";
 	}
 }

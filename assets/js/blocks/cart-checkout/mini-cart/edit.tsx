@@ -11,10 +11,12 @@ import {
 import type { ReactElement } from 'react';
 import { formatPrice } from '@woocommerce/price-format';
 import { CartCheckoutCompatibilityNotice } from '@woocommerce/editor-components/compatibility-notices';
+import { PanelBody, ExternalLink, ToggleControl } from '@wordpress/components';
+import { getSetting } from '@woocommerce/settings';
 import { __ } from '@wordpress/i18n';
 import { positionCenter, positionRight, positionLeft } from '@wordpress/icons';
-import { PanelBody, ToggleControl } from '@wordpress/components';
 import classnames from 'classnames';
+import Noninteractive from '@woocommerce/base-components/noninteractive';
 
 /**
  * Internal dependencies
@@ -51,6 +53,11 @@ const MiniCartBlock = ( {
 			'is-transparent': transparentButton,
 		} ),
 	} );
+
+	const templatePartEditUri = getSetting(
+		'templatePartEditUri',
+		''
+	) as string;
 
 	/**
 	 * @todo Replace `getColorClassName` and manual style manipulation with
@@ -131,23 +138,40 @@ const MiniCartBlock = ( {
 						}
 					/>
 				</PanelBody>
-			</InspectorControls>
-			<button
-				className={ classnames(
-					'wc-block-mini-cart__button',
-					colorClassNames
+				{ templatePartEditUri && (
+					<PanelBody
+						title={ __(
+							'Template Editor',
+							'woo-gutenberg-products-block'
+						) }
+					>
+						<ExternalLink href={ templatePartEditUri }>
+							{ __(
+								'Edit template part',
+								'woo-gutenberg-products-block'
+							) }
+						</ExternalLink>
+					</PanelBody>
 				) }
-				style={ colorStyle }
-			>
-				<span className="wc-block-mini-cart__amount">
-					{ formatPrice( productTotal ) }
-				</span>
-				<QuantityBadge
-					count={ productCount }
-					colorClassNames={ colorClassNames }
+			</InspectorControls>
+			<Noninteractive>
+				<button
+					className={ classnames(
+						'wc-block-mini-cart__button',
+						colorClassNames
+					) }
 					style={ colorStyle }
-				/>
-			</button>
+				>
+					<span className="wc-block-mini-cart__amount">
+						{ formatPrice( productTotal ) }
+					</span>
+					<QuantityBadge
+						count={ productCount }
+						colorClassNames={ colorClassNames }
+						style={ colorStyle }
+					/>
+				</button>
+			</Noninteractive>
 			<CartCheckoutCompatibilityNotice blockName="mini-cart" />
 		</div>
 	);

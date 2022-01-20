@@ -17,8 +17,12 @@ import './inner-blocks';
 const settings = {
 	title: __( 'Checkout', 'woo-gutenberg-products-block' ),
 	icon: {
-		src: <Icon srcElement={ fields } />,
-		foreground: '#7f54b3',
+		src: (
+			<Icon
+				srcElement={ fields }
+				className="wc-block-editor-components-block-icon"
+			/>
+		),
 	},
 	category: 'woocommerce',
 	keywords: [ __( 'WooCommerce', 'woo-gutenberg-products-block' ) ],
@@ -27,7 +31,7 @@ const settings = {
 		'woo-gutenberg-products-block'
 	),
 	supports: {
-		align: [ 'wide', 'full' ],
+		align: [ 'wide' ],
 		html: false,
 		multiple: false,
 	},

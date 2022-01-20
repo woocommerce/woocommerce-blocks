@@ -8,9 +8,15 @@
 
 
  - [woocommerce_add_to_cart](#woocommerce_add_to_cart)
+ - [woocommerce_after_main_content](#woocommerce_after_main_content)
+ - [woocommerce_after_shop_loop](#woocommerce_after_shop_loop)
  - [woocommerce_applied_coupon](#woocommerce_applied_coupon)
+ - [woocommerce_archive_description](#woocommerce_archive_description)
+ - [woocommerce_before_main_content](#woocommerce_before_main_content)
+ - [woocommerce_before_shop_loop](#woocommerce_before_shop_loop)
  - [woocommerce_blocks_cart_enqueue_data](#woocommerce_blocks_cart_enqueue_data)
- - [woocommerce_blocks_cart_enqueue_data](#woocommerce_blocks_cart_enqueue_data-1)
+ - [woocommerce_blocks_cart_update_customer_from_request](#woocommerce_blocks_cart_update_customer_from_request)
+ - [woocommerce_blocks_cart_update_order_from_request](#woocommerce_blocks_cart_update_order_from_request)
  - [woocommerce_blocks_checkout_enqueue_data](#woocommerce_blocks_checkout_enqueue_data)
  - [woocommerce_blocks_checkout_order_processed](#woocommerce_blocks_checkout_order_processed)
  - [woocommerce_blocks_checkout_update_order_from_request](#woocommerce_blocks_checkout_update_order_from_request)
@@ -23,8 +29,10 @@
  - [woocommerce_blocks_{$this->registry_identifier}_registration](#woocommerce_blocks_-this--registry_identifier-_registration)
  - [woocommerce_check_cart_items](#woocommerce_check_cart_items)
  - [woocommerce_created_customer](#woocommerce_created_customer)
+ - [woocommerce_no_products_found](#woocommerce_no_products_found)
  - [woocommerce_register_post](#woocommerce_register_post)
  - [woocommerce_rest_checkout_process_payment_with_context](#woocommerce_rest_checkout_process_payment_with_context)
+ - [woocommerce_shop_loop](#woocommerce_shop_loop)
  - [wooocommerce_store_api_validate_add_to_cart](#wooocommerce_store_api_validate_add_to_cart)
  - [wooocommerce_store_api_validate_cart_item](#wooocommerce_store_api_validate_cart_item)
 
@@ -36,7 +44,7 @@
 Fires when an item is added to the cart.
 
 ```php
-do_action( 'woocommerce_add_to_cart', string $cart_id, integer $product_id, integer $quantity, integer $variation_id, array $variation, array $cart_item_data )
+do_action( 'woocommerce_add_to_cart', string $cart_id, integer $product_id, integer $request_quantity, integer $variation_id, array $variation, array $cart_item_data )
 ```
 
 ### Description
@@ -49,7 +57,7 @@ do_action( 'woocommerce_add_to_cart', string $cart_id, integer $product_id, inte
 | -------- | ---- | ----------- |
 | $cart_id | string | ID of the item in the cart. |
 | $product_id | integer | ID of the product added to the cart. |
-| $quantity | integer | Quantity of the item added to the cart. |
+| $request_quantity | integer | Quantity of the item added to the cart. |
 | $variation_id | integer | Variation ID of the product added to the cart. |
 | $variation | array | Array of variation data. |
 | $cart_item_data | array | Array of other cart item data. |
@@ -57,7 +65,54 @@ do_action( 'woocommerce_add_to_cart', string $cart_id, integer $product_id, inte
 ### Source
 
 
-File: [StoreApi/Utilities/CartController.php](../src/StoreApi/Utilities/CartController.php)
+ - [StoreApi/Utilities/CartController.php](../src/StoreApi/Utilities/CartController.php)
+
+---
+
+## woocommerce_after_main_content
+
+
+Hook: woocommerce_after_main_content
+
+```php
+do_action( 'woocommerce_after_main_content' )
+```
+
+### Description
+
+<p>Called after rendering the main content for a product.</p>
+
+### See
+
+
+ - woocommerce_output_content_wrapper_end() - Outputs closing DIV for the content (priority 10)
+
+### Source
+
+
+ - [BlockTypes/LegacyTemplate.php](../src/BlockTypes/LegacyTemplate.php)
+ - [BlockTypes/LegacyTemplate.php](../src/BlockTypes/LegacyTemplate.php)
+
+---
+
+## woocommerce_after_shop_loop
+
+
+Hook: woocommerce_after_shop_loop.
+
+```php
+do_action( 'woocommerce_after_shop_loop' )
+```
+
+### See
+
+
+ - woocommerce_pagination() - Renders pagination (priority 10)
+
+### Source
+
+
+ - [BlockTypes/LegacyTemplate.php](../src/BlockTypes/LegacyTemplate.php)
 
 ---
 
@@ -79,7 +134,80 @@ do_action( 'woocommerce_applied_coupon', string $coupon_code )
 ### Source
 
 
-File: [StoreApi/Utilities/CartController.php](../src/StoreApi/Utilities/CartController.php)
+ - [StoreApi/Utilities/CartController.php](../src/StoreApi/Utilities/CartController.php)
+
+---
+
+## woocommerce_archive_description
+
+
+Hook: woocommerce_archive_description.
+
+```php
+do_action( 'woocommerce_archive_description' )
+```
+
+### See
+
+
+ - woocommerce_taxonomy_archive_description() - Renders the taxonomy archive description (priority 10)
+ - woocommerce_product_archive_description() - Renders the product archive description (priority 10)
+
+### Source
+
+
+ - [BlockTypes/LegacyTemplate.php](../src/BlockTypes/LegacyTemplate.php)
+
+---
+
+## woocommerce_before_main_content
+
+
+Hook: woocommerce_before_main_content
+
+```php
+do_action( 'woocommerce_before_main_content' )
+```
+
+### Description
+
+<p>Called before rendering the main content for a product.</p>
+
+### See
+
+
+ - woocommerce_output_content_wrapper() - Outputs opening DIV for the content (priority 10)
+ - woocommerce_breadcrumb() - Outputs breadcrumb trail to the current product (priority 20)
+ - WC_Structured_Data::generate_website_data() - Outputs schema markup (priority 30)
+
+### Source
+
+
+ - [BlockTypes/LegacyTemplate.php](../src/BlockTypes/LegacyTemplate.php)
+ - [BlockTypes/LegacyTemplate.php](../src/BlockTypes/LegacyTemplate.php)
+
+---
+
+## woocommerce_before_shop_loop
+
+
+Hook: woocommerce_before_shop_loop.
+
+```php
+do_action( 'woocommerce_before_shop_loop' )
+```
+
+### See
+
+
+ - woocommerce_output_all_notices() - Render error notices (priority 10)
+ - woocommerce_result_count() - Show number of results found (priority 20)
+ - woocommerce_catalog_ordering() - Show form to control sort order (priority 30)
+
+### Source
+
+
+ - [BlockTypes/LegacyTemplate.php](../src/BlockTypes/LegacyTemplate.php)
 
 ---
 
@@ -95,23 +223,55 @@ do_action( 'woocommerce_blocks_cart_enqueue_data' )
 ### Source
 
 
-File: [BlockTypes/Cart.php](../src/BlockTypes/Cart.php)
+ - [BlockTypes/MiniCart.php](../src/BlockTypes/MiniCart.php)
+ - [BlockTypes/Cart.php](../src/BlockTypes/Cart.php)
 
 ---
 
-## woocommerce_blocks_cart_enqueue_data
+## woocommerce_blocks_cart_update_customer_from_request
 
 
-Fires after cart block data is registered.
+Fires when the Checkout Block/Store API updates a customer from the API request data.
 
 ```php
-do_action( 'woocommerce_blocks_cart_enqueue_data' )
+do_action( 'woocommerce_blocks_cart_update_customer_from_request', \WC_Customer $customer, \WP_REST_Request $request )
 ```
+
+### Parameters
+
+| Argument | Type | Description |
+| -------- | ---- | ----------- |
+| $customer | \WC_Customer | Customer object. |
+| $request | \WP_REST_Request | Full details about the request. |
 
 ### Source
 
 
-File: [BlockTypes/MiniCart.php](../src/BlockTypes/MiniCart.php)
+ - [StoreApi/Routes/CartUpdateCustomer.php](../src/StoreApi/Routes/CartUpdateCustomer.php)
+
+---
+
+## woocommerce_blocks_cart_update_order_from_request
+
+
+Fires when the order is synced with cart data from a cart route.
+
+```php
+do_action( 'woocommerce_blocks_cart_update_order_from_request', \WC_Order $draft_order, \WC_Customer $customer, \WP_REST_Request $request )
+```
+
+### Parameters
+
+| Argument | Type | Description |
+| -------- | ---- | ----------- |
+| $draft_order | \WC_Order | Order object. |
+| $customer | \WC_Customer | Customer object. |
+| $request | \WP_REST_Request | Full details about the request. |
+
+### Source
+
+
+ - [StoreApi/Routes/AbstractCartRoute.php](../src/StoreApi/Routes/AbstractCartRoute.php)
 
 ---
 
@@ -127,7 +287,7 @@ do_action( 'woocommerce_blocks_checkout_enqueue_data' )
 ### Source
 
 
-File: [BlockTypes/Checkout.php](../src/BlockTypes/Checkout.php)
+ - [BlockTypes/Checkout.php](../src/BlockTypes/Checkout.php)
 
 ---
 
@@ -163,7 +323,7 @@ add_action( 'woocommerce_blocks_checkout_order_processed', 'my_function_callback
 ```
 
 
-### Related
+### See
 
 
  - https://github.com/woocommerce/woocommerce-gutenberg-products-block/pull/3238
@@ -171,7 +331,7 @@ add_action( 'woocommerce_blocks_checkout_order_processed', 'my_function_callback
 ### Source
 
 
-File: [StoreApi/Routes/Checkout.php](../src/StoreApi/Routes/Checkout.php)
+ - [StoreApi/Routes/Checkout.php](../src/StoreApi/Routes/Checkout.php)
 
 ---
 
@@ -198,7 +358,7 @@ do_action( 'woocommerce_blocks_checkout_update_order_from_request', \WC_Order $o
 ### Source
 
 
-File: [StoreApi/Routes/Checkout.php](../src/StoreApi/Routes/Checkout.php)
+ - [StoreApi/Routes/Checkout.php](../src/StoreApi/Routes/Checkout.php)
 
 ---
 
@@ -221,7 +381,7 @@ do_action( 'woocommerce_blocks_checkout_update_order_meta', \WC_Order $order )
 | -------- | ---- | ----------- |
 | $order | \WC_Order | Order object. |
 
-### Related
+### See
 
 
  - https://github.com/woocommerce/woocommerce-gutenberg-products-block/pull/3686
@@ -229,7 +389,7 @@ do_action( 'woocommerce_blocks_checkout_update_order_meta', \WC_Order $order )
 ### Source
 
 
-File: [StoreApi/Routes/Checkout.php](../src/StoreApi/Routes/Checkout.php)
+ - [StoreApi/Routes/Checkout.php](../src/StoreApi/Routes/Checkout.php)
 
 ---
 
@@ -245,7 +405,7 @@ do_action( 'woocommerce_blocks_enqueue_cart_block_scripts_after' )
 ### Source
 
 
-File: [BlockTypes/Cart.php](../src/BlockTypes/Cart.php)
+ - [BlockTypes/Cart.php](../src/BlockTypes/Cart.php)
 
 ---
 
@@ -261,7 +421,7 @@ do_action( 'woocommerce_blocks_enqueue_cart_block_scripts_before' )
 ### Source
 
 
-File: [BlockTypes/Cart.php](../src/BlockTypes/Cart.php)
+ - [BlockTypes/Cart.php](../src/BlockTypes/Cart.php)
 
 ---
 
@@ -277,7 +437,7 @@ do_action( 'woocommerce_blocks_enqueue_checkout_block_scripts_after' )
 ### Source
 
 
-File: [BlockTypes/Checkout.php](../src/BlockTypes/Checkout.php)
+ - [BlockTypes/Checkout.php](../src/BlockTypes/Checkout.php)
 
 ---
 
@@ -293,7 +453,7 @@ do_action( 'woocommerce_blocks_enqueue_checkout_block_scripts_before' )
 ### Source
 
 
-File: [BlockTypes/Checkout.php](../src/BlockTypes/Checkout.php)
+ - [BlockTypes/Checkout.php](../src/BlockTypes/Checkout.php)
 
 ---
 
@@ -313,7 +473,7 @@ do_action( 'woocommerce_blocks_loaded' )
 ### Source
 
 
-File: [Domain/Bootstrap.php](../src/Domain/Bootstrap.php)
+ - [Domain/Bootstrap.php](../src/Domain/Bootstrap.php)
 
 ---
 
@@ -339,7 +499,7 @@ do_action( 'woocommerce_blocks_{$this->registry_identifier}_registration', \Auto
 ### Source
 
 
-File: [Integrations/IntegrationRegistry.php](../src/Integrations/IntegrationRegistry.php)
+ - [Integrations/IntegrationRegistry.php](../src/Integrations/IntegrationRegistry.php)
 
 ---
 
@@ -359,7 +519,7 @@ do_action( 'woocommerce_check_cart_items' )
 ### Source
 
 
-File: [StoreApi/Utilities/CartController.php](../src/StoreApi/Utilities/CartController.php)
+ - [StoreApi/Utilities/CartController.php](../src/StoreApi/Utilities/CartController.php)
 
 ---
 
@@ -387,7 +547,28 @@ do_action( 'woocommerce_created_customer', integer $customer_id, array $new_cust
 ### Source
 
 
-File: [Domain/Services/CreateAccount.php](../src/Domain/Services/CreateAccount.php)
+ - [Domain/Services/CreateAccount.php](../src/Domain/Services/CreateAccount.php)
+
+---
+
+## woocommerce_no_products_found
+
+
+Hook: woocommerce_no_products_found.
+
+```php
+do_action( 'woocommerce_no_products_found' )
+```
+
+### See
+
+
+ - wc_no_products_found() - Default no products found content (priority 10)
+
+### Source
+
+
+ - [BlockTypes/LegacyTemplate.php](../src/BlockTypes/LegacyTemplate.php)
 
 ---
 
@@ -415,7 +596,7 @@ do_action( 'woocommerce_register_post', string $username, string $user_email, \W
 ### Source
 
 
-File: [Domain/Services/CreateAccount.php](../src/Domain/Services/CreateAccount.php)
+ - [Domain/Services/CreateAccount.php](../src/Domain/Services/CreateAccount.php)
 
 ---
 
@@ -443,7 +624,23 @@ do_action_ref_array( 'woocommerce_rest_checkout_process_payment_with_context', [
 ### Source
 
 
-File: [StoreApi/Routes/Checkout.php](../src/StoreApi/Routes/Checkout.php)
+ - [StoreApi/Routes/Checkout.php](../src/StoreApi/Routes/Checkout.php)
+
+---
+
+## woocommerce_shop_loop
+
+
+Hook: woocommerce_shop_loop.
+
+```php
+do_action( 'woocommerce_shop_loop' )
+```
+
+### Source
+
+
+ - [BlockTypes/LegacyTemplate.php](../src/BlockTypes/LegacyTemplate.php)
 
 ---
 
@@ -470,7 +667,7 @@ do_action( 'wooocommerce_store_api_validate_add_to_cart', \WC_Product $product, 
 ### Source
 
 
-File: [StoreApi/Utilities/CartController.php](../src/StoreApi/Utilities/CartController.php)
+ - [StoreApi/Utilities/CartController.php](../src/StoreApi/Utilities/CartController.php)
 
 ---
 
@@ -493,6 +690,6 @@ do_action( 'wooocommerce_store_api_validate_cart_item', \WC_Product $product, ar
 ### Source
 
 
-File: [StoreApi/Utilities/CartController.php](../src/StoreApi/Utilities/CartController.php)
+ - [StoreApi/Utilities/CartController.php](../src/StoreApi/Utilities/CartController.php)
 
 ---

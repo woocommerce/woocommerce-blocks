@@ -17,6 +17,7 @@ import { getCurrencyFromPriceResponse } from '@woocommerce/price-format';
  * Internal dependencies
  */
 import usePriceConstraints from './use-price-constraints.js';
+import './style.scss';
 
 /**
  * Component displaying a price filter.
@@ -69,7 +70,7 @@ const PriceFilterBlock = ( { attributes, isEditor = false } ) => {
 	);
 
 	// Updates the query after a short delay.
-	const [ debouncedUpdateQuery ] = useDebouncedCallback( onSubmit, 500 );
+	const debouncedUpdateQuery = useDebouncedCallback( onSubmit, 500 );
 
 	// Callback when slider or input fields are changed.
 	const onChange = useCallback(

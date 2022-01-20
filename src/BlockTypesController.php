@@ -76,7 +76,7 @@ final class BlockTypesController {
 	 */
 	public function add_data_attributes( $content, $block ) {
 		$block_name      = $block['blockName'];
-		$block_namespace = strtok( $block_name, '/' );
+		$block_namespace = strtok( $block_name ?? '', '/' );
 
 		/**
 		 * Filters the list of allowed block namespaces.
@@ -175,6 +175,9 @@ final class BlockTypesController {
 			'StockFilter',
 			'ActiveFilters',
 			'LegacyTemplate',
+			'ProductTitle',
+			'ProductSummary',
+			'ProductStockIndicator',
 		];
 
 		if ( Package::feature()->is_feature_plugin_build() ) {
@@ -191,7 +194,7 @@ final class BlockTypesController {
 		/**
 		 * This disables specific blocks in Widget Areas by not registering them.
 		 */
-		if ( in_array( $pagenow, [ 'widgets.php', 'themes.php', 'customize.php' ], true ) ) {
+		if ( in_array( $pagenow, [ 'widgets.php', 'themes.php', 'customize.php' ], true ) && ( empty( $_GET['page'] ) || 'gutenberg-edit-site' !== $_GET['page'] ) ) { // phpcs:ignore WordPress.Security.NonceVerification
 			$block_types = array_diff(
 				$block_types,
 				[
@@ -216,17 +219,14 @@ final class BlockTypesController {
 	 */
 	protected function get_atomic_blocks() {
 		return [
-			'product-title',
 			'product-button',
 			'product-image',
 			'product-price',
 			'product-rating',
 			'product-sale-badge',
-			'product-summary',
 			'product-sku',
 			'product-category-list',
 			'product-tag-list',
-			'product-stock-indicator',
 			'product-add-to-cart',
 		];
 	}
