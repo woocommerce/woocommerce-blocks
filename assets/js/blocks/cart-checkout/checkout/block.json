@@ -6,9 +6,9 @@
   "category": "woocommerce",
   "keywords": [ "WooCommerce" ],
   "supports": {
-	"align": [ "wide" ],
-	"html": false,
-	"multiple": false
+  "align": [ "wide" ],
+  "html": false,
+  "multiple": false
   },
   "attributes": {
 	"isPreview": {
