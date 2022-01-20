@@ -15,13 +15,6 @@ class Checkout extends AbstractBlock {
 	protected $block_name = 'checkout';
 
 	/**
-	 * Metadata path
-	 *
-	 * @var string;
-	 */
-	protected $metadata_path = 'cart-checkout/checkout/block.json';
-
-	/**
 	 * Get the editor script handle for this block type.
 	 *
 	 * @param string $key Data to get, or default to everything.
