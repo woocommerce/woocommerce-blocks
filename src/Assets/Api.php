@@ -63,16 +63,14 @@ class Api {
 	/**
 	 * Get the path to a block's metadata
 	 *
-	 * @param string $path_to_metadata The path to the metadata file for a block relative to the "assets/js/blocks" directory.
+	 * @param string $block_name The block to get metadata for.
 	 *
-	 * @return string
-	 *
-	 * @throws Exception Throws if there is no metadata file at the path specified.
+	 * @return string|boolean False if metadata file is not found for the block.
 	 */
-	public function get_block_metadata_path( $path_to_metadata ) {
-		$path_to_metadata_from_plugin_root = $this->package->get_path( 'assets/js/blocks/' . $path_to_metadata );
+	public function get_block_metadata_path( $block_name ) {
+		$path_to_metadata_from_plugin_root = $this->package->get_path( 'assets/js/blocks/' . $block_name . '/block.json' );
 		if ( ! file_exists( $path_to_metadata_from_plugin_root ) ) {
-			throw new Exception( 'Block metadata at ' . $path_to_metadata_from_plugin_root . ' does not exist' );
+			return false;
 		}
 		return $path_to_metadata_from_plugin_root;
 	}
