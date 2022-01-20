@@ -203,8 +203,11 @@ abstract class AbstractBlock {
 			return;
 		}
 
-		// Insert attributes and supports if we're not registering the block using metadata.
-		// These are added after because registering with metadata caused attributes and supports to be empty arrays.
+		/*
+		 * Insert attributes and supports if we're not registering the block using metadata.
+		 * These are left unset until now and only added here because if they were set when registering with metadata,
+		 * the attributes and supports from $block_settings would override the values from metadata.
+		 */
 		$block_settings['attributes'] = $this->get_block_type_attributes();
 		$block_settings['supports']   = $this->get_block_type_supports();
 
