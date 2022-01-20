@@ -1,7 +1,6 @@
 /**
  * External dependencies
  */
-import PropTypes from 'prop-types';
 import { useCallback, useRef } from '@wordpress/element';
 import classNames from 'classnames';
 import Downshift from 'downshift';
@@ -15,6 +14,7 @@ import DropdownSelectorInputWrapper from './input-wrapper';
 import DropdownSelectorMenu from './menu';
 import DropdownSelectorSelectedChip from './selected-chip';
 import DropdownSelectorSelectedValue from './selected-value';
+import { DropdownSelectorProps } from './types';
 import './style.scss';
 
 /**
@@ -39,10 +39,10 @@ const DropdownSelector = ( {
 	isDisabled = false,
 	isLoading = false,
 	multiple = false,
-	onChange = () => {},
+	onChange = () => void 0,
 	options = [],
-} ) => {
-	const inputRef = useRef( null );
+}: DropdownSelectorProps ): JSX.Element => {
+	const inputRef = useRef< HTMLDivElement >( null );
 
 	const classes = classNames(
 		className,
@@ -115,16 +115,19 @@ const DropdownSelector = ( {
 						{ inputLabel }
 					</label>
 					<DropdownSelectorInputWrapper
-						isOpen={ isOpen }
-						onClick={ () => inputRef.current.focus() }
+						onClick={ () =>
+							inputRef.current && inputRef.current.focus()
+						}
 					>
 						{ checked.map( ( value ) => {
 							const option = options.find(
 								( o ) => o.value === value
 							);
-							const onRemoveItem = ( val ) => {
+							const onRemoveItem = ( val: string | null ) => {
 								onChange( val );
-								inputRef.current.focus();
+								if ( inputRef.current ) {
+									inputRef.current.focus();
+								}
 							};
 							return multiple ? (
 								<DropdownSelectorSelectedChip
@@ -135,7 +138,10 @@ const DropdownSelector = ( {
 							) : (
 								<DropdownSelectorSelectedValue
 									key={ value }
-									onClick={ () => inputRef.current.focus() }
+									onClick={ () =>
+										inputRef.current &&
+										inputRef.current.focus()
+									}
 									onRemoveItem={ onRemoveItem }
 									option={ option }
 								/>
@@ -149,7 +155,9 @@ const DropdownSelector = ( {
 							onFocus={ openMenu }
 							onRemoveItem={ ( val ) => {
 								onChange( val );
-								inputRef.current.focus();
+								if ( inputRef.current ) {
+									inputRef.current.focus();
+								}
 							} }
 							placeholder={
 								checked.length > 0 && multiple
@@ -190,23 +198,6 @@ const DropdownSelector = ( {
 			) }
 		</Downshift>
 	);
-};
-
-DropdownSelector.propTypes = {
-	attributeLabel: PropTypes.string,
-	checked: PropTypes.array,
-	className: PropTypes.string,
-	inputLabel: PropTypes.string,
-	isDisabled: PropTypes.bool,
-	isLoading: PropTypes.bool,
-	limit: PropTypes.number,
-	onChange: PropTypes.func,
-	options: PropTypes.arrayOf(
-		PropTypes.shape( {
-			label: PropTypes.node.isRequired,
-			value: PropTypes.string.isRequired,
-		} )
-	),
 };
 
 export default DropdownSelector;

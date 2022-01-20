@@ -1,4 +1,12 @@
-const DropdownSelectorInputWrapper = ( { children, onClick } ) => {
+/**
+ * Internal dependencies
+ */
+import { DropdownSelectorInputWrapperProps } from './types';
+
+const DropdownSelectorInputWrapper = ( {
+	children,
+	onClick,
+}: DropdownSelectorInputWrapperProps ): JSX.Element => {
 	return (
 		/* eslint-disable-next-line jsx-a11y/click-events-have-key-events, jsx-a11y/no-static-element-interactions */
 		<div

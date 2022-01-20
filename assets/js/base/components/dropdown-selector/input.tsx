@@ -1,3 +1,8 @@
+/**
+ * Internal dependencies
+ */
+import { DropdownSelectorInputProps } from './types';
+
 const DropdownSelectorInput = ( {
 	checked,
 	getInputProps,
@@ -8,7 +13,7 @@ const DropdownSelectorInput = ( {
 	placeholder,
 	tabIndex,
 	value,
-} ) => {
+}: DropdownSelectorInputProps ): JSX.Element => {
 	return (
 		<input
 			{ ...getInputProps( {
