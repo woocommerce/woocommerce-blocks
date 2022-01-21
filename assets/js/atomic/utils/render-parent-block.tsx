@@ -82,7 +82,7 @@ const renderForcedBlocks = (
 	const InnerBlockComponentWrapper = blockWrapper ? blockWrapper : Fragment;
 
 	return (
-		<InnerBlockComponentWrapper>
+		<>
 			{ forcedBlocks.map(
 				(
 					{ blockName, component },
@@ -93,17 +93,19 @@ const renderForcedBlocks = (
 						: getBlockComponentFromMap( blockName, blockMap );
 					return ForcedComponent ? (
 						<BlockErrorBoundary
-							text={ `Unexpected error in: ${ blockName } }` }
+							text={ `Unexpected error in: ${ blockName }` }
 							showErrorBlock={ CURRENT_USER_IS_ADMIN as boolean }
 						>
-							<ForcedComponent
-								key={ `${ blockName }_forced_${ index }` }
-							/>
+							<InnerBlockComponentWrapper>
+								<ForcedComponent
+									key={ `${ blockName }_forced_${ index }` }
+								/>
+							</InnerBlockComponentWrapper>
 						</BlockErrorBoundary>
 					) : null;
 				}
 			) }
-		</InnerBlockComponentWrapper>
+		</>
 	);
 };
 
@@ -204,7 +206,7 @@ const renderInnerBlocks = ( {
 			>
 				{ /* Prevent third party components from breaking the entire checkout */ }
 				<BlockErrorBoundary
-					text={ `Unexpected error in: ${ blockName } }` }
+					text={ `Unexpected error in: ${ blockName }` }
 					showErrorBlock={ CURRENT_USER_IS_ADMIN as boolean }
 				>
 					<InnerBlockComponentWrapper>
