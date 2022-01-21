@@ -274,13 +274,7 @@ const FeaturedCategory = ( {
 	};
 
 	const renderCategory = () => {
-		const {
-			contentAlign,
-			dimRatio,
-			focalPoint,
-			height,
-			showDesc,
-		} = attributes;
+		const { contentAlign, dimRatio, focalPoint, showDesc } = attributes;
 
 		const classes = classnames(
 			'wc-block-featured-category',
@@ -308,7 +302,10 @@ const FeaturedCategory = ( {
 		return (
 			<ResizableBox
 				className={ classes }
-				size={ { height } }
+				size={ {
+					height: '',
+					width: '',
+				} }
 				minHeight={ getSetting( 'min_height', 500 ) }
 				enable={ { bottom: true } }
 				onResizeStop={ onResizeStop }

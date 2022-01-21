@@ -156,14 +156,6 @@ registerBlockType( 'woocommerce/featured-category', {
 			type: 'object',
 			default: null,
 		},
-		backgroundColor: {
-			type: 'string',
-			default: 'black',
-		},
-		textColor: {
-			type: 'string',
-			default: 'white',
-		},
 	},
 
 	/**
@@ -172,6 +164,10 @@ registerBlockType( 'woocommerce/featured-category', {
 	 * @param {Object} props Props to pass to block.
 	 */
 	edit: Edit,
+
+	/**
+	 * Block content is rendered in PHP, not via save function.
+	 */
 	save: () => {
 		return <InnerBlocks.Content />;
 	},

@@ -260,13 +260,13 @@ class StyleAttributesUtils {
 		);
 	}
 
-		/**
-		 * Get class and style for background-color from attributes.
-		 *
-		 * @param array $attributes Block attributes.
-		 *
-		 * @return (array | null)
-		 */
+	/**
+	 * Get class and style for border width from attributes.
+	 *
+	 * @param array $attributes Block attributes.
+	 *
+	 * @return (array | null)
+	 */
 	public static function get_border_width_class_and_style( $attributes ) {
 
 		$custom_border_width = $attributes['style']['border']['width'] ?? '';

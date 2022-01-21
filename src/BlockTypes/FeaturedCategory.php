@@ -3,7 +3,6 @@ namespace Automattic\WooCommerce\Blocks\BlockTypes;
 
 use Automattic\WooCommerce\Blocks\Utils\StyleAttributesUtils;
 
-
 /**
  * FeaturedCategory class.
  */
@@ -21,7 +20,7 @@ class FeaturedCategory extends AbstractDynamicBlock {
 	 *
 	 * @var array
 	 */
-	protected $global_style_wrapper = array( 'text_color', 'font_size', 'border_color', 'border_radius', 'border_width' );
+	protected $global_style_wrapper = array( 'text_color', 'font_size', 'border_color', 'border_radius', 'border_width', 'background_color', 'text_color' );
 
 	/**
 	 * Default attribute values, should match what's set in JS `registerBlockType`.
@@ -86,13 +85,10 @@ class FeaturedCategory extends AbstractDynamicBlock {
 			wc_format_content( wp_kses_post( $category->description ) )
 		);
 
-		$background_color_class_and_style = $this->get_background_color_class_and_style_with_default( $attributes );
-		$text_color_class_and_style       = $this->get_text_color_class_and_style_with_default( $attributes );
+		$styles  = $this->get_styles( $attributes, $category );
+		$classes = $this->get_classes( $attributes );
 
-		$styles  = $this->get_styles( $attributes, $category ) . ' ' . $text_color_class_and_style['style'] . ' ' . $background_color_class_and_style['style'];
-		$classes = $this->get_classes( $attributes ) . ' ' . $text_color_class_and_style['class'] . ' ' . $background_color_class_and_style['class'];
-
-		$output  = sprintf( '<div class="%1$s wp-block-woocommerce-featured-category" style="%2$s">', esc_attr( $classes ), esc_attr( $styles ) );
+		$output  = sprintf( '<div class="%1$s wp-block-woocommerce-featured-category" style="%2$s">', esc_attr( trim( $classes ) ), esc_attr( $styles ) );
 		$output .= '<div class="wc-block-featured-category__wrapper">';
 		$output .= $title;
 		if ( $attributes['showDesc'] ) {
@@ -138,7 +134,7 @@ class FeaturedCategory extends AbstractDynamicBlock {
 
 		if ( is_array( $attributes['focalPoint'] ) && 2 === count( $attributes['focalPoint'] ) ) {
 			$style .= sprintf(
-				'background-position: %s%% %s%%',
+				'background-position: %s%% %s%%;',
 				$attributes['focalPoint']['x'] * 100,
 				$attributes['focalPoint']['y'] * 100
 			);
@@ -176,10 +172,6 @@ class FeaturedCategory extends AbstractDynamicBlock {
 			$classes[] = "has-{$attributes['contentAlign']}-content";
 		}
 
-		if ( isset( $attributes['overlayColor'] ) ) {
-			$classes[] = "has-{$attributes['overlayColor']}-background-color";
-		}
-
 		if ( isset( $attributes['className'] ) ) {
 			$classes[] = $attributes['className'];
 		}
@@ -208,51 +200,6 @@ class FeaturedCategory extends AbstractDynamicBlock {
 
 		return $image;
 	}
-
-	/**
-	 * Returns the background color.
-	 * If the background color is not defined from user,
-	 * it will be used the same fallback that it is defined in the block configuration.
-	 *
-	 * @param array $attributes Block attributes. Default empty array.
-	 * @return array
-	 */
-	public function get_background_color_class_and_style_with_default( $attributes ) {
-		$background_styles = StyleAttributesUtils::get_background_color_class_and_style( $attributes );
-
-		if ( isset( $background_styles['class'] ) || isset( $background_styles['style'] ) ) {
-			return $background_styles;
-		}
-
-		return array(
-			'class' => '',
-			'style' => 'background-color: #000000;',
-		);
-
-	}
-
-	/**
-	 * Returns the text color.
-	 * If the text color is not defined from user,
-	 * it will be used the same fallback that it is defined in the block configuration.
-	 *
-	 * @param array $attributes Block attributes. Default empty array.
-	 * @return array
-	 */
-	public function get_text_color_class_and_style_with_default( $attributes ) {
-		$text_color_style = StyleAttributesUtils::get_text_color_class_and_style( $attributes );
-
-		if ( isset( $text_color_style['class'] ) || isset( $text_color_style['style'] ) ) {
-			return $text_color_style;
-		}
-
-		return array(
-			'class' => '',
-			'style' => 'color: #ffff;',
-		);
-
-	}
-
 	/**
 	 * Extra data passed through from server to client for block.
 	 *
