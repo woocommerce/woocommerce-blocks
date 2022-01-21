@@ -91,7 +91,7 @@ $border-radius: 5px;
 			width: 50%;
 		}
 
-		> li:first-child:nth-last-child(1) {
+		> li:only-child {
 			display: block;
 			width: 100%;
 		}
