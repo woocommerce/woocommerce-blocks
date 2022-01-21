@@ -55,7 +55,7 @@ const renderForcedBlocks = (
 	block: string,
 	blockMap: Record< string, React.ReactNode >,
 	// Current children from the parent (siblings of the forced block)
-	blockChildren: HTMLCollection | null,
+	blockChildren: NodeListOf< ChildNode > | null,
 	// Wrapper for inner components.
 	blockWrapper?: React.ElementType
 ) => {
@@ -65,9 +65,9 @@ const renderForcedBlocks = (
 
 	const currentBlocks = blockChildren
 		? ( Array.from( blockChildren )
-				.map( ( element: Element ) =>
-					element instanceof HTMLElement
-						? element?.dataset.blockName || null
+				.map( ( node: Node ) =>
+					node instanceof HTMLElement
+						? node?.dataset.blockName || null
 						: null
 				)
 				.filter( Boolean ) as string[] )
@@ -109,6 +109,19 @@ const renderForcedBlocks = (
 	);
 };
 
+interface renderInnerBlocksProps {
+	// Block (parent) being rendered. Used for inner block component mapping.
+	block: string;
+	// Map of block names to block components for children.
+	blockMap: Record< string, React.ReactNode >;
+	// Wrapper for inner components.
+	blockWrapper?: React.ElementType | undefined;
+	// Elements from the DOM being converted to components.
+	children: HTMLCollection | NodeList;
+	// Depth within the DOM hierarchy.
+	depth?: number;
+}
+
 /**
  * Recursively replace block markup in the DOM with React Components.
  */
@@ -123,30 +136,19 @@ const renderInnerBlocks = ( {
 	children,
 	// Current depth of the children. Used to ensure keys are unique.
 	depth = 1,
-}: {
-	// Block (parent) being rendered. Used for inner block component mapping.
-	block: string;
-	// Map of block names to block components for children.
-	blockMap: Record< string, React.ReactNode >;
-	// Wrapper for inner components.
-	blockWrapper?: React.ElementType;
-	// Elements from the DOM being converted to components.
-	children: HTMLCollection | NodeList;
-	// Depth within the DOM hierarchy.
-	depth?: number;
-} ): ( JSX.Element | null )[] | null => {
+}: renderInnerBlocksProps ): ( JSX.Element | null )[] | null => {
 	if ( ! children || children.length === 0 ) {
 		return null;
 	}
-	return Array.from( children ).map( ( element: Element, index: number ) => {
+	return Array.from( children ).map( ( node: Node, index: number ) => {
 		/**
 		 * This will grab the blockName from the data- attributes stored in block markup. Without a blockName, we cannot
 		 * convert the HTMLElement to a React component.
 		 */
 		const { blockName = '', ...componentProps } = {
 			key: `${ block }_${ depth }_${ index }`,
-			...( element instanceof HTMLElement ? element.dataset : {} ),
-			className: element.className || '',
+			...( node instanceof HTMLElement ? node.dataset : {} ),
+			className: node instanceof Element ? node?.className : '',
 		};
 
 		const InnerBlockComponent = getBlockComponentFromMap(
@@ -162,7 +164,9 @@ const renderInnerBlocks = ( {
 		 */
 		if ( ! InnerBlockComponent ) {
 			const parsedElement = parse(
-				element?.outerHTML || element?.textContent || ''
+				( node instanceof Element && node?.outerHTML ) ||
+					node?.textContent ||
+					''
 			);
 
 			// Returns text nodes without manipulation.
@@ -175,11 +179,11 @@ const renderInnerBlocks = ( {
 				return null;
 			}
 
-			const renderedChildren = element.childNodes.length
+			const renderedChildren = node.childNodes.length
 				? renderInnerBlocks( {
 						block,
 						blockMap,
-						children: element.childNodes,
+						children: node.childNodes,
 						depth: depth + 1,
 						blockWrapper,
 				  } )
@@ -220,7 +224,7 @@ const renderInnerBlocks = ( {
 								renderInnerBlocks( {
 									block,
 									blockMap,
-									children: element.children,
+									children: node.childNodes,
 									depth: depth + 1,
 									blockWrapper,
 								} )
@@ -236,7 +240,7 @@ const renderInnerBlocks = ( {
 								renderForcedBlocks(
 									blockName,
 									blockMap,
-									element.children,
+									node.childNodes,
 									blockWrapper
 								)
 							}
