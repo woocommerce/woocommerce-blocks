@@ -36,6 +36,7 @@ const settings = {
 			attributes: {
 				...metadata.attributes,
 				...blockAttributes,
+				...deprecatedAttributes,
 			},
 			save( { attributes }: { attributes: { className: string } } ) {
 				return (
