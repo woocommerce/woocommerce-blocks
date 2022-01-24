@@ -7,6 +7,7 @@ import type { TemplateArray } from '@wordpress/blocks';
 /**
  * Internal dependencies
  */
+import { allowedBlocks } from '../allowed-blocks';
 
 export const Edit = (): JSX.Element => {
 	const blockProps = useBlockProps();
@@ -21,6 +22,7 @@ export const Edit = (): JSX.Element => {
 				template={ defaultTemplate }
 				renderAppender={ InnerBlocks.ButtonBlockAppender }
 				templateLock={ false }
+				allowedBlocks={ allowedBlocks }
 			/>
 		</div>
 	);
