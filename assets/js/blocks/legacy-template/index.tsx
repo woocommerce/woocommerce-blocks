@@ -2,7 +2,7 @@
  * External dependencies
  */
 import { select, subscribe } from '@wordpress/data';
-import { registerBlockType } from '@wordpress/blocks';
+import { registerBlockType, unregisterBlockType } from '@wordpress/blocks';
 import { WC_BLOCKS_IMAGE_URL } from '@woocommerce/block-settings';
 import { useBlockProps } from '@wordpress/block-editor';
 import { Placeholder } from '@wordpress/components';
@@ -72,29 +72,38 @@ const Edit = ( { attributes }: Props ) => {
 };
 
 let templateId: string | undefined;
+let prevTemplateId: string | undefined;
 
-const unsubscribe = subscribe( () => {
+subscribe( () => {
 	const store = select( 'core/edit-site' );
 
 	if ( ! store ) {
-		// The store will only exist in the Site Editor so we need to unsubscribe and early return for Posts / Pages.
-		unsubscribe();
+		// The store will only exist in the Site Editor so we need to early return for Posts / Pages.
 		return;
 	}
 
 	templateId = store?.getEditedPostId();
 
-	if ( templateId ) {
-		unsubscribe();
+	// Legacy template block changes depending on the context of currently edited template.
+	// To avoid infinite loop on store updates we need to put a guard here to update the registerd Block Type
+	// only if the current edited post template id has changed.
+	if ( templateId && templateId !== prevTemplateId ) {
 		const currentTemplateSlug = templateId?.split( '//' )[ 1 ];
 		const templateData = getMatchingTemplateData(
 			TEMPLATES,
 			currentTemplateSlug
 		);
+
+		prevTemplateId = templateId;
+
 		// We only want this block to be available for use in specified WooCommerce templates.
 		const eligibleForInserter = templateData !== null;
 		const title = templateData?.title ?? currentTemplateSlug;
 		const placeholder = templateData?.placeholder ?? 'fallback';
+
+		// We need to unregister the block before we can register its new variant again
+		// (ie. Single Product, Product Archive).
+		unregisterBlockType( 'woocommerce/legacy-template' );
 
 		registerBlockType( 'woocommerce/legacy-template', {
 			title,
