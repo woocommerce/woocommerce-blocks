@@ -20,7 +20,10 @@ interface FilterElementLabelProps {
  * @param {string} props.name The name for the label.
  * @param {number} props.count The count of products this status is attached to.
  */
-const FilterElementLabel = ( { name, count }: FilterElementLabelProps ) => {
+const FilterElementLabel = ( {
+	name,
+	count,
+}: FilterElementLabelProps ): JSX.Element => {
 	return (
 		<>
 			{ name }
