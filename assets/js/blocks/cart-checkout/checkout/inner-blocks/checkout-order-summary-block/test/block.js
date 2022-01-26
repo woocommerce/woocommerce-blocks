@@ -1,7 +1,16 @@
 /**
  * External dependencies
  */
-import { render, findByText, screen } from '@testing-library/react';
+import {
+	render,
+	findByText,
+	findByRole,
+	screen,
+	findByLabelText,
+	queryByLabelText,
+	queryByText,
+} from '@testing-library/react';
+import userEvent from '@testing-library/user-event';
 
 /**
  * Internal dependencies
@@ -13,6 +22,7 @@ import {
 import { previewCart as mockPreviewCart } from '../../../../../../previews/cart';
 import Block from '../block';
 const baseContextHooks = jest.requireMock( '@woocommerce/base-context/hooks' );
+const woocommerceSettings = jest.requireMock( '@woocommerce/settings' );
 
 /**
  * This function will match text over several elements, the standard matcher
@@ -69,20 +79,6 @@ const textContentMatcherAcrossSiblings = ( text ) => {
 	};
 };
 
-jest.mock( '@woocommerce/settings', () => {
-	const originalModule = jest.requireActual( '@woocommerce/settings' );
-
-	return {
-		...originalModule,
-		getSetting: ( setting, ...rest ) => {
-			if ( setting === 'couponsEnabled' ) {
-				return true;
-			}
-			return originalModule.getSetting( setting, ...rest );
-		},
-	};
-} );
-
 const defaultUseStoreCartValue = {
 	cartItems: mockPreviewCart.items,
 	cartTotals: mockPreviewCart.totals,
@@ -113,8 +109,26 @@ jest.mock( '@woocommerce/base-context', () => ( {
 	} ),
 } ) );
 
+jest.mock( '@woocommerce/settings', () => {
+	const originalModule = jest.requireActual( '@woocommerce/settings' );
+
+	return {
+		...originalModule,
+		getSetting: jest.fn().mockImplementation( ( setting, ...rest ) => {
+			if ( setting === 'couponsEnabled' ) {
+				return true;
+			}
+			return originalModule.getSetting( setting, ...rest );
+		} ),
+	};
+} );
+
 const setUseStoreCartValue = ( value = defaultUseStoreCartValue ) => {
 	baseContextHooks.useStoreCart.mockReturnValue( value );
+};
+
+const setGetSettingImplementation = ( func ) => {
+	woocommerceSettings.getSetting.mockImplementation( func );
 };
 
 describe( 'Checkout Order Summary', () => {
@@ -209,5 +223,45 @@ describe( 'Checkout Order Summary', () => {
 				textContentMatcherAcrossSiblings( 'Fee $10.00' )
 			)
 		).toBeInTheDocument();
+	} );
+
+	it( 'Shows the coupon entry form when coupons are enabled', async () => {
+		setUseStoreCartValue();
+		const { container } = render( <Block showRateAfterTaxName={ true } /> );
+		expect(
+			await findByText( container, 'Coupon code' )
+		).toBeInTheDocument();
+		const couponButton = await findByRole( container, 'button', {
+			name: /apply a coupon code/i,
+		} );
+		await userEvent.click( couponButton );
+		const couponCodeInput = await findByLabelText(
+			container,
+			'Enter code'
+		);
+		expect( couponCodeInput ).toBeInTheDocument();
+		await userEvent.click( couponButton );
+		const notPresentCouponCodeInput = queryByLabelText(
+			container,
+			'Enter code'
+		);
+		expect( notPresentCouponCodeInput ).not.toBeInTheDocument();
+	} );
+
+	it( 'Does not show the coupon entry if coupons are not enabled', () => {
+		setUseStoreCartValue();
+		setGetSettingImplementation( ( setting, ...rest ) => {
+			if ( setting === 'couponsEnabled' ) {
+				return false;
+			}
+			const originalModule = jest.requireActual(
+				'@woocommerce/settings'
+			);
+			return originalModule.getSetting( setting, ...rest );
+		} );
+		const { container } = render( <Block showRateAfterTaxName={ true } /> );
+		expect(
+			queryByText( container, 'Coupon code' )
+		).not.toBeInTheDocument();
 	} );
 } );
