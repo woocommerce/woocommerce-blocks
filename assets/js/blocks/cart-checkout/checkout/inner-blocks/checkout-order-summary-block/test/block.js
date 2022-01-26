@@ -1,14 +1,7 @@
 /**
  * External dependencies
  */
-import {
-	render,
-	findByText,
-	findByRole,
-	screen,
-	findByLabelText,
-} from '@testing-library/react';
-import userEvent from '@testing-library/user-event';
+import { render, findByText, screen } from '@testing-library/react';
 
 /**
  * Internal dependencies
@@ -186,6 +179,34 @@ describe( 'Checkout Order Summary', () => {
 			await findByText(
 				container,
 				textContentMatcherAcrossSiblings( 'Discount -$10.00' )
+			)
+		).toBeInTheDocument();
+	} );
+
+	it( 'Shows fees if the cart_fees are set', async () => {
+		setUseStoreCartValue( {
+			...defaultUseStoreCartValue,
+			cartFees: [
+				{
+					totals: {
+						currency_code: 'USD',
+						currency_decimal_separator: '.',
+						currency_minor_unit: 2,
+						currency_prefix: '$',
+						currency_suffix: '',
+						currency_symbol: '$',
+						currency_thousand_separator: ',',
+						total: 1000,
+						total_tax: '0',
+					},
+				},
+			],
+		} );
+		const { container } = render( <Block showRateAfterTaxName={ true } /> );
+		expect(
+			await findByText(
+				container,
+				textContentMatcherAcrossSiblings( 'Fee $10.00' )
 			)
 		).toBeInTheDocument();
 	} );
