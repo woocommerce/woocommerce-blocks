@@ -148,4 +148,15 @@ describe( 'Checkout Order Summary', () => {
 			await findByText( container, 'WooCommerce logo ($10.00):' )
 		).toBeInTheDocument();
 	} );
+
+	it( 'Renders the items subtotal correctly', async () => {
+		const { container } = render( <Block showRateAfterTaxName={ true } /> );
+
+		expect(
+			await findByText(
+				container,
+				textContentMatcherAcrossSiblings( 'Subtotal $40.00' )
+			)
+		).toBeInTheDocument();
+	} );
 } );
