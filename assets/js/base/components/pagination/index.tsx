@@ -23,11 +23,11 @@ interface PaginationProps {
 	/**
 	 * Displays first and last pages if they are not in the current range of pages displayed.
 	 */
-	displayFirstAndLastPages: boolean;
+	displayFirstAndLastPages?: boolean;
 	/**
 	 * Displays arrows to navigate to the previous and next pages.
 	 */
-	displayNextAndPreviousArrows: boolean;
+	displayNextAndPreviousArrows?: boolean;
 	/**
 	 * Callback function called when the user triggers a page change.
 	 */
@@ -37,7 +37,7 @@ interface PaginationProps {
 	 * and the pages displayed before and after it. It doesn't include the first
 	 * and last pages.
 	 */
-	pagesToDisplay: number;
+	pagesToDisplay?: number;
 }
 
 const Pagination = ( {

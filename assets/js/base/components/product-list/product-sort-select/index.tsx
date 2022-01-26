@@ -2,19 +2,32 @@
  * External dependencies
  */
 import { __ } from '@wordpress/i18n';
-import PropTypes from 'prop-types';
 import SortSelect from '@woocommerce/base-components/sort-select';
+import { ChangeEventHandler } from 'react';
 
 /**
  * Internal dependencies
  */
 import './style.scss';
 
-const ProductSortSelect = ( { onChange, readOnly, value } ) => {
+interface ProductSortSelectProps {
+	onChange: ChangeEventHandler;
+	value:
+		| 'menu_order'
+		| 'popularity'
+		| 'rating'
+		| 'date'
+		| 'price'
+		| 'price-desc';
+}
+
+const ProductSortSelect = ( {
+	onChange,
+	value,
+}: ProductSortSelectProps ): JSX.Element => {
 	return (
 		<SortSelect
 			className="wc-block-product-sort-select wc-block-components-product-sort-select"
-			name="orderby"
 			onChange={ onChange }
 			options={ [
 				{
@@ -54,7 +67,6 @@ const ProductSortSelect = ( { onChange, readOnly, value } ) => {
 					),
 				},
 			] }
-			readOnly={ readOnly }
 			screenReaderLabel={ __(
 				'Order products by',
 				'woo-gutenberg-products-block'
@@ -62,19 +74,6 @@ const ProductSortSelect = ( { onChange, readOnly, value } ) => {
 			value={ value }
 		/>
 	);
-};
-
-ProductSortSelect.propTypes = {
-	onChange: PropTypes.func,
-	readOnly: PropTypes.bool,
-	value: PropTypes.oneOf( [
-		'menu_order',
-		'popularity',
-		'rating',
-		'date',
-		'price',
-		'price-desc',
-	] ),
 };
 
 export default ProductSortSelect;
