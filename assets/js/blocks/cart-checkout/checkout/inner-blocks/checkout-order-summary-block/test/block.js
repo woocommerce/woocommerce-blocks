@@ -1,12 +1,22 @@
 /**
  * External dependencies
  */
-import { render, findByText, screen } from '@testing-library/react';
+import {
+	render,
+	findByText,
+	findByRole,
+	screen,
+	findByLabelText,
+} from '@testing-library/react';
+import userEvent from '@testing-library/user-event';
 
 /**
  * Internal dependencies
  */
-import { addonsItems as mockAddonsItems } from '../../../../../../../../tests/js/fixtures/cart/items';
+import {
+	onSaleItems as mockOnSaleItems,
+	addonsItems as mockAddonsItems,
+} from '../../../../../../../../tests/js/fixtures/cart/items';
 import { previewCart as mockPreviewCart } from '../../../../../../previews/cart';
 import Block from '../block';
 const baseContextHooks = jest.requireMock( '@woocommerce/base-context/hooks' );
@@ -156,6 +166,26 @@ describe( 'Checkout Order Summary', () => {
 			await findByText(
 				container,
 				textContentMatcherAcrossSiblings( 'Subtotal $40.00' )
+			)
+		).toBeInTheDocument();
+	} );
+
+	// The cart_totals value of useStoreCart is what drives this
+	it( 'If discounted items are in the cart the discount subtotal is shown correctly', async () => {
+		setUseStoreCartValue( {
+			...defaultUseStoreCartValue,
+			cartItems: [ ...mockPreviewCart.items, ...mockOnSaleItems ],
+			cartTotals: {
+				...mockPreviewCart.totals,
+				total_discount: 1000,
+				total_price: 3800,
+			},
+		} );
+		const { container } = render( <Block showRateAfterTaxName={ true } /> );
+		expect(
+			await findByText(
+				container,
+				textContentMatcherAcrossSiblings( 'Discount -$10.00' )
 			)
 		).toBeInTheDocument();
 	} );
