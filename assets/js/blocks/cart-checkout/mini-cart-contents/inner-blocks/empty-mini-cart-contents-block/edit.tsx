@@ -7,7 +7,7 @@ import { useEditorContext } from '@woocommerce/base-context';
 /**
  * Internal dependencies
  */
-import { allowedBlocks } from '../allowed-blocks';
+import { getMiniCartAllowedBlocks } from '../allowed-blocks';
 
 export const Edit = (): JSX.Element => {
 	const blockProps = useBlockProps();
@@ -21,7 +21,7 @@ export const Edit = (): JSX.Element => {
 			}
 		>
 			<InnerBlocks
-				allowedBlocks={ allowedBlocks }
+				allowedBlocks={ getMiniCartAllowedBlocks() }
 				renderAppender={ InnerBlocks.ButtonBlockAppender }
 			/>
 		</div>

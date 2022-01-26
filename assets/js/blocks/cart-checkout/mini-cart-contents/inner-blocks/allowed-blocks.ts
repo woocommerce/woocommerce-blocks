@@ -17,22 +17,23 @@ const EXCLUDED_BLOCKS: readonly string[] = [
 	'core/post-navigation-link',
 ];
 
-export const allowedBlocks = getBlockTypes()
-	.filter( ( block ) => {
-		if ( EXCLUDED_BLOCKS.includes( block.name ) ) {
-			return false;
-		}
+export const getMiniCartAllowedBlocks = (): string[] =>
+	getBlockTypes()
+		.filter( ( block ) => {
+			if ( EXCLUDED_BLOCKS.includes( block.name ) ) {
+				return false;
+			}
 
-		// Exclude child blocks of EXCLUDED_BLOCKS.
-		if (
-			block.parent &&
-			block.parent.filter( ( value ) =>
-				EXCLUDED_BLOCKS.includes( value )
-			).length > 0
-		) {
-			return false;
-		}
+			// Exclude child blocks of EXCLUDED_BLOCKS.
+			if (
+				block.parent &&
+				block.parent.filter( ( value ) =>
+					EXCLUDED_BLOCKS.includes( value )
+				).length > 0
+			) {
+				return false;
+			}
 
-		return true;
-	} )
-	.map( ( { name } ) => name );
+			return true;
+		} )
+		.map( ( { name } ) => name );
