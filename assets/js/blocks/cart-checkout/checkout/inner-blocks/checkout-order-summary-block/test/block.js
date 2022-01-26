@@ -6,6 +6,7 @@ import { render, findByText, screen } from '@testing-library/react';
 /**
  * Internal dependencies
  */
+import { addonsItems as mockAddonsItems } from '../../../../../../../../tests/js/fixtures/cart/items';
 import { previewCart as mockPreviewCart } from '../../../../../../previews/cart';
 import Block from '../block';
 const baseContextHooks = jest.requireMock( '@woocommerce/base-context/hooks' );
@@ -94,6 +95,20 @@ describe( 'Checkout Order Summary', () => {
 		).toBeInTheDocument();
 		expect(
 			await screen.findByText( textContentMatcher( 'Size: Small' ) )
+		).toBeInTheDocument();
+	} );
+
+	it( 'Renders items with item data in the sidebar', async () => {
+		setUseStoreCartValue( {
+			...defaultUseStoreCartValue,
+			cartItems: [ ...mockAddonsItems ],
+		} );
+		const { container } = render( <Block showRateAfterTaxName={ true } /> );
+		expect(
+			await findByText( container, 'WooCommerce style ($5.00):' )
+		).toBeInTheDocument();
+		expect(
+			await findByText( container, 'WooCommerce logo ($10.00):' )
 		).toBeInTheDocument();
 	} );
 } );
