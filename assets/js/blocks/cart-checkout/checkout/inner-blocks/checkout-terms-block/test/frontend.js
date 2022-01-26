@@ -1,7 +1,11 @@
 /**
  * External dependencies
  */
-import { render, findByLabelText, screen } from '@testing-library/react';
+import {
+	render,
+	findByLabelText,
+	queryByLabelText,
+} from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 
 /**
@@ -27,8 +31,8 @@ describe( 'FrontendBlock', () => {
 		};
 	} );
 
-	it( "Renders a checkbox if the checkbox prop is passed and doesn't if it's not.", async () => {
-		const { container, rerender } = render(
+	it( 'Renders a checkbox if the checkbox prop is true', async () => {
+		const { container } = render(
 			<FrontendBlock
 				checkbox={ true }
 				text={ 'I agree to the terms and conditions' }
@@ -41,20 +45,24 @@ describe( 'FrontendBlock', () => {
 			'I agree to the terms and conditions'
 		);
 
-		expect( checkbox ).toBeTruthy();
-		expect( checkbox.getAttribute( 'type' ) ).toEqual( 'checkbox' );
+		expect( checkbox ).toBeInTheDocument();
+	} );
 
-		rerender(
+	it( 'Does not render a checkbox if the checkbox prop is false', async () => {
+		const { container } = render(
 			<FrontendBlock
-				checkbox={ true }
+				checkbox={ false }
 				text={ 'I agree to the terms and conditions' }
 				validation={ validationData }
 			/>
 		);
-		const textOnly = await screen.findByLabelText(
+
+		const checkbox = queryByLabelText(
+			container,
 			'I agree to the terms and conditions'
 		);
-		expect( textOnly.tagName ).not.toEqual( 'input' );
+
+		expect( checkbox ).not.toBeInTheDocument();
 	} );
 
 	it( 'Clears any validation errors when the checkbox is checked', async () => {
