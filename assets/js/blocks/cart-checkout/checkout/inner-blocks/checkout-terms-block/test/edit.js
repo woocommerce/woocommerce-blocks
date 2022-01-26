@@ -28,7 +28,7 @@ describe( 'Edit', () => {
 					text: 'I agree to the terms and conditions',
 					checkbox: true,
 				} }
-				setAttributes={ () => {} }
+				setAttributes={ () => void 0 }
 			/>
 		);
 
