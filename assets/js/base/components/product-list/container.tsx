@@ -9,11 +9,7 @@ import { HTMLElementEvent } from '@woocommerce/type-defs/utils';
  * Internal dependencies
  */
 import ProductList from './product-list';
-import { Attributes } from './types';
-
-interface ProductListContainerProps {
-	attributes: Attributes;
-}
+import { ProductListContainerProps } from './types';
 
 const ProductListContainer = ( {
 	attributes,

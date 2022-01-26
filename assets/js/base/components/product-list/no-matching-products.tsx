@@ -5,9 +5,10 @@ import { __ } from '@wordpress/i18n';
 import { useInnerBlockLayoutContext } from '@woocommerce/shared-context';
 import { Icon, search } from '@woocommerce/icons';
 
-interface NoMatchingProductsProps {
-	resetCallback: () => void;
-}
+/**
+ * Internal dependencies
+ */
+import { NoMatchingProductsProps } from './types';
 
 const NoMatchingProducts = ( {
 	resetCallback = () => void 0,

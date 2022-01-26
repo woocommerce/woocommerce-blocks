@@ -3,23 +3,12 @@
  */
 import { __ } from '@wordpress/i18n';
 import SortSelect from '@woocommerce/base-components/sort-select';
-import { ChangeEventHandler } from 'react';
 
 /**
  * Internal dependencies
  */
 import './style.scss';
-
-interface ProductSortSelectProps {
-	onChange: ChangeEventHandler;
-	value:
-		| 'menu_order'
-		| 'popularity'
-		| 'rating'
-		| 'date'
-		| 'price'
-		| 'price-desc';
-}
+import { ProductSortSelectProps } from '../types';
 
 const ProductSortSelect = ( {
 	onChange,

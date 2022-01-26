@@ -3,6 +3,12 @@
  */
 import { getBlockMap } from '@woocommerce/atomic-utils';
 import { Suspense } from '@wordpress/element';
+import { ProductResponseItem } from '@woocommerce/type-defs/product-response';
+
+/**
+ * Internal dependencies
+ */
+import { LayoutConfig } from '../types';
 
 /**
  * Maps a layout config into atomic components.
@@ -13,11 +19,11 @@ import { Suspense } from '@wordpress/element';
  * @param {number} componentId Parent component ID needed for key generation.
  */
 export const renderProductLayout = (
-	blockName,
-	product,
-	layoutConfig,
-	componentId
-) => {
+	blockName: string,
+	product: Partial< ProductResponseItem >,
+	layoutConfig: LayoutConfig,
+	componentId: number
+): ( JSX.Element | null )[] | undefined => {
 	if ( ! layoutConfig ) {
 		return;
 	}
@@ -25,7 +31,7 @@ export const renderProductLayout = (
 	const blockMap = getBlockMap( blockName );
 
 	return layoutConfig.map( ( [ name, props = {} ], index ) => {
-		let children = [];
+		let children = [] as ( React.ReactChildren | null )[] | undefined;
 
 		if ( !! props.children && props.children.length > 0 ) {
 			children = renderProductLayout(

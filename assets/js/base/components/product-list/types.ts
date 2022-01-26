@@ -2,6 +2,15 @@
  * External dependencies
  */
 import { ChangeEventHandler } from 'react';
+import { ProductResponseItem } from '@woocommerce/type-defs/product-response';
+
+interface GenerateQueryProps {
+	sortValue: string;
+	currentPage: number;
+	attributes: Attributes;
+}
+
+export type LayoutConfig = [ string, { children?: React.ReactNodeArray } ][];
 
 export type Attributes = {
 	columns: number;
@@ -13,13 +22,8 @@ export type Attributes = {
 	};
 	orderby?: string;
 	order?: string;
+	layoutConfig?: LayoutConfig;
 };
-
-interface GenerateQueryProps {
-	sortValue: string;
-	currentPage: number;
-	attributes: Attributes;
-}
 
 export type Query = {
 	catalog_visibility: 'catalog';
@@ -55,6 +59,38 @@ export interface ProductListProps {
 	currentPage: number;
 	onPageChange: ( page: number ) => void;
 	onSortChange: ChangeEventHandler;
-	sortValue: string;
+	sortValue:
+		| 'menu_order'
+		| 'popularity'
+		| 'rating'
+		| 'date'
+		| 'price'
+		| 'price-desc';
 	scrollToTop: ( opts: { focusableSelector: string } ) => void;
+}
+
+export interface ProductSortSelectProps {
+	onChange: ChangeEventHandler;
+	value: ProductListProps[ 'sortValue' ];
+}
+
+export interface ProductListContainerProps {
+	attributes: Attributes;
+}
+
+export interface NoMatchingProductsProps {
+	resetCallback: () => void;
+}
+
+export interface ProductListItemProps {
+	product?: Partial< ProductResponseItem >;
+	attributes: Attributes;
+	instanceId: number;
+}
+
+export interface RenderProductLayoutProps {
+	blockName: string;
+	product: Partial< ProductResponseItem >;
+	layoutConfig: LayoutConfig;
+	componentId: number;
 }
