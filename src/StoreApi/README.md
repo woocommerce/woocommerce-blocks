@@ -100,7 +100,7 @@ Available resources in the Store API are listed below, with links to more detail
 |                                                              | `POST`                         | [`/wc/store/cart/update-customer`](docs/cart.md#update-customer)                           |
 |                                                              | `POST`                         | [`/wc/store/cart/select-shipping-rate`](docs/cart.md#select-shipping-rate)                 |
 | [`Cart Items`](docs/cart-items.md)                           | `GET`, `POST`, `DELETE`        | [`/wc/store/cart/items`](docs/cart-items.md#list-cart-items)                               |
-|                                                              | `GET`, `POST`, `PUT`, `DELETE` | [`/wc/store/cart/items/:key`](docs/cart-items.md#list-cart-items#single-cart-item)         |
+|                                                              | `GET`, `POST`, `PUT`, `DELETE` | [`/wc/store/cart/items/:key`](docs/cart-items.md#single-cart-item)                         |
 | [`Cart Coupons`](docs/cart-coupons.md)                       | `GET`, `POST`, `DELETE`        | [`/wc/store/cart/coupons`](docs/cart-coupons.md#list-cart-coupons)                         |
 |                                                              | `GET`, `DELETE`                | [`/wc/store/cart/coupon/:code`](docs/cart-coupons.md#single-cart-coupon)                   |
 | [`Checkout`](docs/checkout.md)                               | `GET`, `POST`                  | [`/wc/store/checkout`](docs/checkout.md)                                                   |
@@ -110,3 +110,12 @@ Available resources in the Store API are listed below, with links to more detail
 | [`Product Attributes`](docs/product-attributes.md)           | `GET`                          | [`/wc/store/products/attributes`](docs/product-attributes.md#list-product-attributes)      |
 |                                                              | `GET`                          | [`/wc/store/products/attributes/:id`](docs/product-attributes.md#single-product-attribute) |
 | [`Product Attribute Terms`](docs/product-attribute-terms.md) | `GET`                          | [`/wc/store/products/attributes/:id/terms`](docs/product-attribute-terms.md)               |
+
+<!-- FEEDBACK -->
+---
+
+[We're hiring!](https://woocommerce.com/careers/) Come work with us!
+
+🐞 Found a mistake, or have a suggestion? [Leave feedback about this document here.](https://github.com/woocommerce/woocommerce-gutenberg-products-block/issues/new?assignees=&labels=type%3A+documentation&template=--doc-feedback.md&title=Feedback%20on%20./src/StoreApi/README.md)
+<!-- /FEEDBACK -->
+
