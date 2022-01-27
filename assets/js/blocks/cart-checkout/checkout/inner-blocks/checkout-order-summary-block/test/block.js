@@ -22,6 +22,7 @@ import {
 import { previewCart as mockPreviewCart } from '../../../../../../previews/cart';
 import Block from '../block';
 const baseContextHooks = jest.requireMock( '@woocommerce/base-context/hooks' );
+const baseContext = jest.requireMock( '@woocommerce/base-context' );
 const woocommerceSettings = jest.requireMock( '@woocommerce/settings' );
 
 /**
@@ -84,6 +85,11 @@ const defaultUseStoreCartValue = {
 	cartTotals: mockPreviewCart.totals,
 	cartCoupons: mockPreviewCart.coupons,
 	cartFees: mockPreviewCart.fees,
+	needsShipping: mockPreviewCart.needs_shipping,
+	shippingRates: mockPreviewCart.shipping_rates,
+	shippingAddress: mockPreviewCart.shipping_address,
+	billingAddress: mockPreviewCart.billing_address,
+	cartHasCalculatedShipping: mockPreviewCart.has_calculated_shipping,
 };
 
 jest.mock( '@woocommerce/base-context/hooks', () => ( {
@@ -98,6 +104,11 @@ jest.mock( '@woocommerce/base-context/hooks', () => ( {
 		cartTotals: mockPreviewCart.totals,
 		cartCoupons: mockPreviewCart.coupons,
 		cartFees: mockPreviewCart.fees,
+		needsShipping: mockPreviewCart.needs_shipping,
+		shippingRates: mockPreviewCart.shipping_rates,
+		shippingAddress: mockPreviewCart.shipping_address,
+		billingAddress: mockPreviewCart.billing_address,
+		cartHasCalculatedShipping: mockPreviewCart.has_calculated_shipping,
 	} ),
 } ) );
 
