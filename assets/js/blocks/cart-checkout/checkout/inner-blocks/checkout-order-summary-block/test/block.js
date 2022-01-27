@@ -118,6 +118,112 @@ jest.mock( '@woocommerce/base-context', () => ( {
 		hasContainerWidth: true,
 		isLarge: true,
 	} ),
+	useShippingDataContext: jest.fn().mockReturnValue( {
+		needsShipping: true,
+		shippingRates: [
+			{
+				package_id: 0,
+				name: 'Shipping method',
+				destination: {
+					address_1: '',
+					address_2: '',
+					city: '',
+					state: '',
+					postcode: '',
+					country: '',
+				},
+				items: [
+					{
+						key: 'fb0c0a746719a7596f296344b80cb2b6',
+						name: 'Hoodie - Blue, Yes',
+						quantity: 1,
+					},
+					{
+						key: '1f0e3dad99908345f7439f8ffabdffc4',
+						name: 'Beanie',
+						quantity: 1,
+					},
+				],
+				shipping_rates: [
+					{
+						rate_id: 'flat_rate:1',
+						name: 'Flat rate',
+						description: '',
+						delivery_time: '',
+						price: '500',
+						taxes: '0',
+						instance_id: 1,
+						method_id: 'flat_rate',
+						meta_data: [
+							{
+								key: 'Items',
+								value:
+									'Hoodie - Blue, Yes &times; 1, Beanie &times; 1',
+							},
+						],
+						selected: false,
+						currency_code: 'USD',
+						currency_symbol: '$',
+						currency_minor_unit: 2,
+						currency_decimal_separator: '.',
+						currency_thousand_separator: ',',
+						currency_prefix: '$',
+						currency_suffix: '',
+					},
+					{
+						rate_id: 'local_pickup:2',
+						name: 'Local pickup',
+						description: '',
+						delivery_time: '',
+						price: '0',
+						taxes: '0',
+						instance_id: 2,
+						method_id: 'local_pickup',
+						meta_data: [
+							{
+								key: 'Items',
+								value:
+									'Hoodie - Blue, Yes &times; 1, Beanie &times; 1',
+							},
+						],
+						selected: false,
+						currency_code: 'USD',
+						currency_symbol: '$',
+						currency_minor_unit: 2,
+						currency_decimal_separator: '.',
+						currency_thousand_separator: ',',
+						currency_prefix: '$',
+						currency_suffix: '',
+					},
+					{
+						rate_id: 'free_shipping:5',
+						name: 'Free shipping',
+						description: '',
+						delivery_time: '',
+						price: '0',
+						taxes: '0',
+						instance_id: 5,
+						method_id: 'free_shipping',
+						meta_data: [
+							{
+								key: 'Items',
+								value:
+									'Hoodie - Blue, Yes &times; 1, Beanie &times; 1',
+							},
+						],
+						selected: true,
+						currency_code: 'USD',
+						currency_symbol: '$',
+						currency_minor_unit: 2,
+						currency_decimal_separator: '.',
+						currency_thousand_separator: ',',
+						currency_prefix: '$',
+						currency_suffix: '',
+					},
+				],
+			},
+		],
+	} ),
 } ) );
 
 jest.mock( '@woocommerce/settings', () => {
