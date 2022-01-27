@@ -9,7 +9,9 @@
 		"../../../../packages/checkout",
 		"../context",
 		"../../type-defs",
-		"../hocs"
+		"../hocs",
+		"../../atomic/utils",
+		"../../shared/context"
 	],
 	"exclude": [ "**/test/**" ]
 }

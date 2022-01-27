@@ -3,7 +3,6 @@
  */
 import { __ } from '@wordpress/i18n';
 import SortSelect from '@woocommerce/base-components/sort-select';
-
 /**
  * Internal dependencies
  */

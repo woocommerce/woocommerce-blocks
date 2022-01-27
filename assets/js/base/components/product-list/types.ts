@@ -10,7 +10,7 @@ interface GenerateQueryProps {
 	attributes: Attributes;
 }
 
-export type LayoutConfig = [ string, { children?: React.ReactNodeArray } ][];
+export type LayoutConfig = [ string, { children?: LayoutConfig } ][];
 
 export type Attributes = {
 	columns: number;

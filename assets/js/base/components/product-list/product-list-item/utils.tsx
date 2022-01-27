@@ -21,7 +21,7 @@ import { LayoutConfig } from '../types';
 export const renderProductLayout = (
 	blockName: string,
 	product: Partial< ProductResponseItem >,
-	layoutConfig: LayoutConfig,
+	layoutConfig: LayoutConfig | undefined,
 	componentId: number
 ): ( JSX.Element | null )[] | undefined => {
 	if ( ! layoutConfig ) {
@@ -29,11 +29,12 @@ export const renderProductLayout = (
 	}
 
 	const blockMap = getBlockMap( blockName );
-
 	return layoutConfig.map( ( [ name, props = {} ], index ) => {
-		let children = [] as ( React.ReactChildren | null )[] | undefined;
+		let children = [] as ( JSX.Element | null )[] | undefined;
 
 		if ( !! props.children && props.children.length > 0 ) {
+			// Qprops.children here refers to the children stored in the block attributes. which
+			// has the same shape as `layoutConfig`, not React children, which has a different shape */
 			children = renderProductLayout(
 				blockName,
 				product,
