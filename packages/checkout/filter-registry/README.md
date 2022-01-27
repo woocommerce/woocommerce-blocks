@@ -4,20 +4,20 @@ The filter registry allows callbacks to be registered to manipulate certain valu
 
 ## Table of Contents <!-- omit in toc -->
 
-- [\_\_experimentalRegisterCheckoutFilters](#__experimentalregistercheckoutfilters)
-  - [Usage](#usage)
-  - [Options](#options)
-    - [`namespace (string)`](#namespace-string)
-    - [`filters (object)`](#filters-object)
-- [\_\_experimentalApplyCheckoutFilter](#__experimentalapplycheckoutfilter)
-  - [Usage](#usage-1)
-  - [Options](#options-1)
-    - [`filterName (string, required)`](#filtername-string-required)
-    - [`defaultValue (mixed, required)`](#defaultvalue-mixed-required)
-    - [`extensions`](#extensions)
-    - [`arg (object)`](#arg-object)
-    - [`validation (function)`](#validation-function)
-- [Available Filters](#available-filters)
+-   [\_\_experimentalRegisterCheckoutFilters](#__experimentalregistercheckoutfilters)
+    -   [Usage](#usage)
+    -   [Options](#options)
+        -   [`namespace (string)`](#namespace-string)
+        -   [`filters (object)`](#filters-object)
+-   [\_\_experimentalApplyCheckoutFilter](#__experimentalapplycheckoutfilter)
+    -   [Usage](#usage-1)
+    -   [Options](#options-1)
+        -   [`filterName (string, required)`](#filtername-string-required)
+        -   [`defaultValue (mixed, required)`](#defaultvalue-mixed-required)
+        -   [`extensions`](#extensions)
+        -   [`arg (object)`](#arg-object)
+        -   [`validation (function)`](#validation-function)
+-   [Available Filters](#available-filters)
 
 ## \_\_experimentalRegisterCheckoutFilters
 
@@ -129,9 +129,3 @@ A function that needs to return true when the filtered value is passed in order 
 ## Available Filters
 
 Filters are implemented throughout the Cart and Checkout Blocks, as well as some components. For a list of filters, [see this document](https://github.com/woocommerce/woocommerce-gutenberg-products-block/blob/trunk/docs/extensibility/available-filters.md). You can also search for [usage of `__experimentalApplyCheckoutFilter` within the source code](https://github.com/woocommerce/woocommerce-gutenberg-products-block/search?q=__experimentalApplyCheckoutFilter).
-
-<br/><br/><p align="center">
-<a href="https://woocommerce.com/">
-<img src="https://woocommerce.com/wp-content/themes/woo/images/logo-woocommerce@2x.png" alt="WooCommerce" height="28px" style="filter: grayscale(100%);
-	opacity: 0.2;" />
-</a><br/><a href="https://woocommerce.com/careers/">We're hiring</a>! Come work with us!</p>
