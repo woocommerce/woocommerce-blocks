@@ -4,13 +4,9 @@
 import {
 	render,
 	findByText,
-	findByRole,
 	screen,
-	findByLabelText,
-	queryByLabelText,
 	queryByText,
 } from '@testing-library/react';
-import userEvent from '@testing-library/user-event';
 
 /**
  * Internal dependencies
@@ -315,6 +311,40 @@ describe( 'Checkout Order Summary', () => {
 				container,
 				textContentMatcherAcrossSiblings( 'Discount -$10.00' )
 			)
+		).toBeInTheDocument();
+	} );
+
+	it( 'If coupons are in the cart they are shown correctly', async () => {
+		setUseStoreCartReturnValue( {
+			...defaultUseStoreCartValue,
+			cartItems: [ ...mockPreviewCart.items, ...mockOnSaleItems ],
+			cartTotals: {
+				...mockPreviewCart.totals,
+				total_discount: 1000,
+				total_price: 3800,
+			},
+			cartCoupons: [
+				{
+					code: '10off',
+					discount_type: 'fixed_cart',
+					totals: {
+						total_discount: '1000',
+						total_discount_tax: '0',
+						currency_code: 'USD',
+						currency_symbol: '$',
+						currency_minor_unit: 2,
+						currency_decimal_separator: '.',
+						currency_thousand_separator: ',',
+						currency_prefix: '$',
+						currency_suffix: '',
+					},
+					label: '10off',
+				},
+			],
+		} );
+		const { container } = render( <Block showRateAfterTaxName={ true } /> );
+		expect(
+			await findByText( container, 'Coupon: 10off' )
 		).toBeInTheDocument();
 	} );
 
