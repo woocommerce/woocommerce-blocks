@@ -248,6 +248,10 @@ const setGetSettingImplementation = ( func ) => {
 	woocommerceSettings.getSetting.mockImplementation( func );
 };
 
+const setUseShippingDataContextReturnValue = ( value ) => {
+	baseContext.useShippingDataContext.mockReturnValue( value );
+};
+
 describe( 'Checkout Order Summary', () => {
 	beforeEach( () => setUseStoreCartReturnValue() );
 
@@ -365,5 +369,90 @@ describe( 'Checkout Order Summary', () => {
 		expect(
 			queryByText( container, 'Coupon code' )
 		).not.toBeInTheDocument();
+	} );
+
+	it( 'Does not show the shipping section if needsShipping is false on the cart', () => {
+		setUseStoreCartReturnValue( {
+			...defaultUseStoreCartValue,
+			needsShipping: false,
+		} );
+		setUseShippingDataContextReturnValue( { needsShipping: false } );
+		const { container } = render( <Block showRateAfterTaxName={ true } /> );
+		expect( queryByText( container, 'Shipping' ) ).not.toBeInTheDocument();
+	} );
+
+	it( 'Correctly shows the shipping section if the cart requires shipping', async () => {
+		setUseStoreCartReturnValue( {
+			...defaultUseStoreCartValue,
+			cartTotals: {
+				...defaultUseStoreCartValue.cartTotals,
+				total_shipping: '4000',
+			},
+		} );
+		setUseShippingDataContextReturnValue( {
+			needsShipping: true,
+			shippingRates: [
+				{
+					package_id: 0,
+					name: 'Shipping method',
+					destination: {
+						address_1: '',
+						address_2: '',
+						city: '',
+						state: '',
+						postcode: '',
+						country: '',
+					},
+					items: [
+						{
+							key: 'fb0c0a746719a7596f296344b80cb2b6',
+							name: 'Hoodie - Blue, Yes',
+							quantity: 1,
+						},
+						{
+							key: '1f0e3dad99908345f7439f8ffabdffc4',
+							name: 'Beanie',
+							quantity: 1,
+						},
+					],
+					shipping_rates: [
+						{
+							rate_id: 'free_shipping:5',
+							name: 'Free shipping',
+							description: '',
+							delivery_time: '',
+							price: '4000',
+							taxes: '0',
+							instance_id: 5,
+							method_id: 'free_shipping',
+							meta_data: [
+								{
+									key: 'Items',
+									value:
+										'Hoodie - Blue, Yes &times; 1, Beanie &times; 1',
+								},
+							],
+							selected: true,
+							currency_code: 'USD',
+							currency_symbol: '$',
+							currency_minor_unit: 2,
+							currency_decimal_separator: '.',
+							currency_thousand_separator: ',',
+							currency_prefix: '$',
+							currency_suffix: '',
+						},
+					],
+				},
+			],
+		} );
+		const { container } = render( <Block showRateAfterTaxName={ true } /> );
+		expect(
+			await findByText(
+				container,
+				textContentMatcherAcrossSiblings(
+					'Shipping $40.00 via Free shipping'
+				)
+			)
+		).toBeInTheDocument();
 	} );
 } );
