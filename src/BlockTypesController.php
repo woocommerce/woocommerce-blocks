@@ -187,8 +187,14 @@ final class BlockTypesController {
 
 		if ( Package::feature()->is_experimental_build() ) {
 			$block_types[] = 'SingleProduct';
-			$block_types[] = 'MiniCart';
-			$block_types[] = 'MiniCartContents';
+
+			/**
+			 * Mini Cart blocks shouldn't be available in the Blocks Editor.
+			 */
+			if ( 'post.php' !== $pagenow ) {
+				$block_types[] = 'MiniCart';
+				$block_types[] = 'MiniCartContents';
+			}
 		}
 
 		/**
