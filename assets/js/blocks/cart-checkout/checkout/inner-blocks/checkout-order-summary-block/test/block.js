@@ -11,70 +11,15 @@ import {
 /**
  * Internal dependencies
  */
-import {
-	onSaleItems as mockOnSaleItems,
-	addonsItems as mockAddonsItems,
-} from '../../../../../../../../tests/js/fixtures/cart/items';
 import { previewCart as mockPreviewCart } from '../../../../../../previews/cart';
 import Block from '../block';
+import {
+	textContentMatcher,
+	textContentMatcherAcrossSiblings,
+} from '../../../../../../../../tests/utils/find-by-text';
 const baseContextHooks = jest.requireMock( '@woocommerce/base-context/hooks' );
 const baseContext = jest.requireMock( '@woocommerce/base-context' );
 const woocommerceSettings = jest.requireMock( '@woocommerce/settings' );
-
-/**
- * This function will match text over several elements, the standard matcher
- * will only find strings if they are within the same element.
- *
- * @param {string} text The text to find.
- * @return {function(*, ?)} The matcher function for RTL to use.
- */
-const textContentMatcher = ( text ) => {
-	return function ( _content, node ) {
-		const hasText = ( _node ) => _node.textContent === text;
-		const nodeHasText = hasText( node );
-		const childrenDontHaveText = Array.from( node?.children || [] ).every(
-			( child ) => ! hasText( child )
-		);
-		return nodeHasText && childrenDontHaveText;
-	};
-};
-
-/**
- * This will check if the text is present an the container, it can be within
- * multiple elements, for example:
- * <div>
- *     <span>Text</span>
- *     <span>is</span>
- *     <span>present</span>
- * </div>
- *
- * @param {string} text The text to find
- * @return {function(*, ?)} the matcher function for RTL to use.
- */
-const textContentMatcherAcrossSiblings = ( text ) => {
-	return function ( _content, node ) {
-		/*
-		If the element in question is not the first child, then skip, as we
-		will have already run this check for its siblings (when we ran it on the
-		first child).
-		*/
-		const siblings =
-			node?.parentElement?.children[ 0 ] === node
-				? node?.parentElement?.children
-				: [];
-		let siblingText = '';
-
-		// Get the text of all siblings and put it into a single string.
-		if ( siblings?.length > 0 ) {
-			siblingText = Array.from( siblings )
-				.map( ( child ) => child.textContent )
-				.filter( Boolean )
-				.join( ' ' )
-				.trim();
-		}
-		return siblingText !== '' && siblingText === text;
-	};
-};
 
 const defaultUseStoreCartValue = {
 	cartItems: mockPreviewCart.items,
@@ -240,8 +185,8 @@ const setUseStoreCartReturnValue = ( value = defaultUseStoreCartValue ) => {
 	baseContextHooks.useStoreCart.mockReturnValue( value );
 };
 
-const setGetSettingImplementation = ( func ) => {
-	woocommerceSettings.getSetting.mockImplementation( func );
+const setGetSettingImplementation = ( implementation ) => {
+	woocommerceSettings.getSetting.mockImplementation( implementation );
 };
 
 const setUseShippingDataContextReturnValue = ( value ) => {
@@ -269,20 +214,6 @@ describe( 'Checkout Order Summary', () => {
 		).toBeInTheDocument();
 	} );
 
-	it( 'Renders items with item data in the sidebar', async () => {
-		setUseStoreCartReturnValue( {
-			...defaultUseStoreCartValue,
-			cartItems: [ ...mockAddonsItems ],
-		} );
-		const { container } = render( <Block showRateAfterTaxName={ true } /> );
-		expect(
-			await findByText( container, 'WooCommerce style ($5.00):' )
-		).toBeInTheDocument();
-		expect(
-			await findByText( container, 'WooCommerce logo ($10.00):' )
-		).toBeInTheDocument();
-	} );
-
 	it( 'Renders the items subtotal correctly', async () => {
 		const { container } = render( <Block showRateAfterTaxName={ true } /> );
 
@@ -298,7 +229,6 @@ describe( 'Checkout Order Summary', () => {
 	it( 'If discounted items are in the cart the discount subtotal is shown correctly', async () => {
 		setUseStoreCartReturnValue( {
 			...defaultUseStoreCartValue,
-			cartItems: [ ...mockPreviewCart.items, ...mockOnSaleItems ],
 			cartTotals: {
 				...mockPreviewCart.totals,
 				total_discount: 1000,
@@ -317,7 +247,6 @@ describe( 'Checkout Order Summary', () => {
 	it( 'If coupons are in the cart they are shown correctly', async () => {
 		setUseStoreCartReturnValue( {
 			...defaultUseStoreCartValue,
-			cartItems: [ ...mockPreviewCart.items, ...mockOnSaleItems ],
 			cartTotals: {
 				...mockPreviewCart.totals,
 				total_discount: 1000,
