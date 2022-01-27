@@ -348,21 +348,6 @@ describe( 'Checkout Order Summary', () => {
 		expect(
 			await findByText( container, 'Coupon code' )
 		).toBeInTheDocument();
-		const couponButton = await findByRole( container, 'button', {
-			name: /apply a coupon code/i,
-		} );
-		await userEvent.click( couponButton );
-		const couponCodeInput = await findByLabelText(
-			container,
-			'Enter code'
-		);
-		expect( couponCodeInput ).toBeInTheDocument();
-		await userEvent.click( couponButton );
-		const notPresentCouponCodeInput = queryByLabelText(
-			container,
-			'Enter code'
-		);
-		expect( notPresentCouponCodeInput ).not.toBeInTheDocument();
 	} );
 
 	it( 'Does not show the coupon entry if coupons are not enabled', () => {
