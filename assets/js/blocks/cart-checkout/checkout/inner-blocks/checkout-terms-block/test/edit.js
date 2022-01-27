@@ -44,7 +44,7 @@ describe( 'Edit', () => {
 					text: 'I agree to the terms and conditions',
 					checkbox: true,
 				} }
-				setAttributes={ () => {} }
+				setAttributes={ () => void 0 }
 			/>
 		);
 
@@ -73,7 +73,7 @@ describe( 'Edit', () => {
 					text: 'I agree to the terms and conditions',
 					checkbox: true,
 				} }
-				setAttributes={ () => {} }
+				setAttributes={ () => void 0 }
 			/>
 		);
 
@@ -95,7 +95,7 @@ describe( 'Edit', () => {
 						'I agree to the <a href="/terms">terms</a> and <a href="/privacy">privacy</a>',
 					checkbox: true,
 				} }
-				setAttributes={ () => {} }
+				setAttributes={ () => void 0 }
 			/>
 		);
 
