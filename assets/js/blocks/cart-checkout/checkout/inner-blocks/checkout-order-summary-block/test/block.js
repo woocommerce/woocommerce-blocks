@@ -240,7 +240,7 @@ jest.mock( '@woocommerce/settings', () => {
 	};
 } );
 
-const setUseStoreCartValue = ( value = defaultUseStoreCartValue ) => {
+const setUseStoreCartReturnValue = ( value = defaultUseStoreCartValue ) => {
 	baseContextHooks.useStoreCart.mockReturnValue( value );
 };
 
@@ -249,7 +249,7 @@ const setGetSettingImplementation = ( func ) => {
 };
 
 describe( 'Checkout Order Summary', () => {
-	beforeEach( () => setUseStoreCartValue() );
+	beforeEach( () => setUseStoreCartReturnValue() );
 
 	it( 'Renders the standard preview items in the sidebar', async () => {
 		const { container } = render( <Block showRateAfterTaxName={ true } /> );
@@ -270,7 +270,7 @@ describe( 'Checkout Order Summary', () => {
 	} );
 
 	it( 'Renders items with item data in the sidebar', async () => {
-		setUseStoreCartValue( {
+		setUseStoreCartReturnValue( {
 			...defaultUseStoreCartValue,
 			cartItems: [ ...mockAddonsItems ],
 		} );
@@ -296,7 +296,7 @@ describe( 'Checkout Order Summary', () => {
 
 	// The cart_totals value of useStoreCart is what drives this
 	it( 'If discounted items are in the cart the discount subtotal is shown correctly', async () => {
-		setUseStoreCartValue( {
+		setUseStoreCartReturnValue( {
 			...defaultUseStoreCartValue,
 			cartItems: [ ...mockPreviewCart.items, ...mockOnSaleItems ],
 			cartTotals: {
@@ -315,7 +315,7 @@ describe( 'Checkout Order Summary', () => {
 	} );
 
 	it( 'Shows fees if the cart_fees are set', async () => {
-		setUseStoreCartValue( {
+		setUseStoreCartReturnValue( {
 			...defaultUseStoreCartValue,
 			cartFees: [
 				{
@@ -343,7 +343,7 @@ describe( 'Checkout Order Summary', () => {
 	} );
 
 	it( 'Shows the coupon entry form when coupons are enabled', async () => {
-		setUseStoreCartValue();
+		setUseStoreCartReturnValue();
 		const { container } = render( <Block showRateAfterTaxName={ true } /> );
 		expect(
 			await findByText( container, 'Coupon code' )
@@ -366,7 +366,7 @@ describe( 'Checkout Order Summary', () => {
 	} );
 
 	it( 'Does not show the coupon entry if coupons are not enabled', () => {
-		setUseStoreCartValue();
+		setUseStoreCartReturnValue();
 		setGetSettingImplementation( ( setting, ...rest ) => {
 			if ( setting === 'couponsEnabled' ) {
 				return false;
