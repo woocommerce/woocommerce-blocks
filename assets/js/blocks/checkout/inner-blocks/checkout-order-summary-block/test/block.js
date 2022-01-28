@@ -11,12 +11,12 @@ import {
 /**
  * Internal dependencies
  */
-import { previewCart as mockPreviewCart } from '../../../../../../previews/cart';
+import { previewCart as mockPreviewCart } from '../../../../../previews/cart';
 import Block from '../block';
 import {
 	textContentMatcher,
 	textContentMatcherAcrossSiblings,
-} from '../../../../../../../../tests/utils/find-by-text';
+} from '../../../../../../../tests/utils/find-by-text';
 const baseContextHooks = jest.requireMock( '@woocommerce/base-context/hooks' );
 const baseContext = jest.requireMock( '@woocommerce/base-context' );
 const woocommerceSettings = jest.requireMock( '@woocommerce/settings' );
@@ -338,6 +338,83 @@ describe( 'Checkout Order Summary', () => {
 		setUseShippingDataContextReturnValue( { needsShipping: false } );
 		const { container } = render( <Block showRateAfterTaxName={ true } /> );
 		expect( queryByText( container, 'Shipping' ) ).not.toBeInTheDocument();
+	} );
+
+	it( 'Does not show the taxes section if displayCartPricesIncludingTax is true', () => {
+		setUseStoreCartReturnValue( {
+			...defaultUseStoreCartValue,
+			cartTotals: {
+				...mockPreviewCart.totals,
+				total_tax: '1000',
+				tax_lines: [ { name: 'Tax', price: '1000', rate: '5%' } ],
+			},
+		} );
+		setUseShippingDataContextReturnValue( { needsShipping: false } );
+		setGetSettingImplementation( ( setting, ...rest ) => {
+			if ( setting === 'displayCartPricesIncludingTax' ) {
+				return true;
+			}
+			if ( setting === 'taxesEnabled' ) {
+				return true;
+			}
+			const originalModule = jest.requireActual(
+				'@woocommerce/settings'
+			);
+			return originalModule.getSetting( setting, ...rest );
+		} );
+		const { container } = render( <Block showRateAfterTaxName={ true } /> );
+
+		expect(
+			queryByText( container, 'Tax $10.00' )
+		).not.toBeInTheDocument();
+	} );
+
+	it( 'Shows the taxes section if displayCartPricesIncludingTax is false and a tax total is set', async () => {
+		setUseStoreCartReturnValue( {
+			...defaultUseStoreCartValue,
+			cartTotals: {
+				...mockPreviewCart.totals,
+				total_tax: '1000',
+				tax_lines: [ { name: 'Tax', price: '1000', rate: '5%' } ],
+			},
+		} );
+		setUseShippingDataContextReturnValue( { needsShipping: false } );
+		setGetSettingImplementation( ( setting, ...rest ) => {
+			if ( setting === 'displayCartPricesIncludingTax' ) {
+				return false;
+			}
+			if ( setting === 'taxesEnabled' ) {
+				return true;
+			}
+			const originalModule = jest.requireActual(
+				'@woocommerce/settings'
+			);
+			return originalModule.getSetting( setting, ...rest );
+		} );
+		const { container } = render( <Block showRateAfterTaxName={ true } /> );
+		expect(
+			await findByText(
+				container,
+				textContentMatcherAcrossSiblings( 'Taxes $10.00' )
+			)
+		).toBeInTheDocument();
+	} );
+
+	it( 'Shows the grand total correctly', async () => {
+		setUseStoreCartReturnValue( {
+			...defaultUseStoreCartValue,
+			cartTotals: {
+				...mockPreviewCart.totals,
+			},
+		} );
+		setUseShippingDataContextReturnValue( { needsShipping: false } );
+		const { container } = render( <Block showRateAfterTaxName={ true } /> );
+		expect(
+			await findByText(
+				container,
+				textContentMatcherAcrossSiblings( 'Total $48.00' )
+			)
+		).toBeInTheDocument();
 	} );
 
 	it( 'Correctly shows the shipping section if the cart requires shipping', async () => {
