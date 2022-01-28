@@ -20,10 +20,6 @@ const counter = 0;
 async function visitPage( link ) {
 	await page.goto( link );
 	try {
-		const errorScreenshotPath = `reports/e2e/${ counter }.png`;
-		await page.screenshot( {
-			path: errorScreenshotPath,
-		} );
 		await page.waitForSelector( '.edit-post-layout' );
 	} catch ( e ) {
 		const errorScreenshotPath = `reports/e2e/${ counter }.png`;
