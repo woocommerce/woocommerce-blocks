@@ -6,10 +6,7 @@ const { addAttach } = require( 'jest-html-reporters/helper' );
 
 class E2EEnvironment extends PuppeteerEnvironment {
 	async handleTestEvent( event ) {
-		if (
-			event.name === 'test_fn_failure' ||
-			event.name === 'hook_failure'
-		) {
+		if ( event.name === 'test_fn_failure' ) {
 			const data = await this.global.page.screenshot();
 			await addAttach( data, 'Full Page Screenshot', this.global );
 		}
