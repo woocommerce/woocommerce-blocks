@@ -10,7 +10,7 @@ import {
 import { outputFile } from 'fs-extra';
 import { dirname } from 'path';
 import kebabCase from 'lodash/kebabCase';
-
+const counter = 0;
 /**
  *
  * @param {string} link the page or post you want to visit.
@@ -22,10 +22,7 @@ async function visitPage( link ) {
 	try {
 		await page.waitForSelector( '.edit-post-layout' );
 	} catch ( e ) {
-		const errorScreenshotPath = `reports/e2e/${ link.replace(
-			/ /g,
-			'_'
-		) }.png`;
+		const errorScreenshotPath = `reports/e2e/${ counter }.png`;
 		await page.screenshot( {
 			path: errorScreenshotPath,
 		} );
