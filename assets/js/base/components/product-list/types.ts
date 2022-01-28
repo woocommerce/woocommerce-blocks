@@ -29,7 +29,9 @@ export type Query = {
 	catalog_visibility: 'catalog';
 	per_page: number;
 	page: number;
-} & Partial< ReturnType< GetSortArgs > >;
+	orderby?: string;
+	order?: string;
+};
 
 export type TotalQuery = Pick< Query, 'catalog_visibility' >;
 

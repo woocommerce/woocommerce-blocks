@@ -207,11 +207,11 @@ const ProductList = ( {
 		! Number.isFinite( totalProducts ) &&
 		Number.isFinite( previousQueryTotals?.totalProducts ) &&
 		isEqual( totalQuery, previousQueryTotals?.totalQuery )
-			? Math.ceil( previousQueryTotals?.totalProducts / perPage )
+			? Math.ceil( ( previousQueryTotals?.totalProducts || 0 ) / perPage )
 			: Math.ceil( totalProducts / perPage );
 	const listProducts = products.length
 		? products
-		: Array.from( { length: perPage } );
+		: Array.from< undefined >( { length: perPage } );
 	const hasProducts = products.length !== 0 || productsLoading;
 	const hasFilters =
 		productAttributes.length > 0 ||
