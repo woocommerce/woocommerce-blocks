@@ -2,6 +2,7 @@
  * External dependencies
  */
 import { getRegisteredBlockComponents } from '@woocommerce/blocks-registry';
+import { React } from 'assets/js/base/context/providers/validation';
 
 /**
  * Internal dependencies
@@ -13,5 +14,7 @@ import '../blocks/component-init';
  *
  * @param {string} blockName Name of the parent block.
  */
-export const getBlockMap = ( blockName ) =>
+export const getBlockMap = (
+	blockName: string
+): Record< string, React.ComponentType > =>
 	getRegisteredBlockComponents( blockName );

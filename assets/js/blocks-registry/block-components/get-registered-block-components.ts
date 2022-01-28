@@ -21,7 +21,9 @@ import { registeredBlockComponents } from './registered-block-components-init';
  *                         as well as any Components registered under all contexts.
  * @return {Object} List of React Components registered under the provided context.
  */
-export function getRegisteredBlockComponents( context ) {
+export function getRegisteredBlockComponents(
+	context: string
+): Record< string, React.ComponentType > {
 	const parentInnerBlocks =
 		typeof registeredBlockComponents[ context ] === 'object' &&
 		Object.keys( registeredBlockComponents[ context ] ).length > 0
@@ -40,7 +42,9 @@ export function getRegisteredBlockComponents( context ) {
  * @param {string} main Name of the parent block to retrieve children of.
  * @return {Object} List of registered inner blocks.
  */
-export function getRegisteredInnerBlocks( main ) {
+export function getRegisteredInnerBlocks(
+	main: string
+): Record< string, unknown > {
 	deprecated( 'getRegisteredInnerBlocks', {
 		version: '2.8.0',
 		alternative: 'getRegisteredBlockComponents',

@@ -43,7 +43,9 @@ export const renderProductLayout = (
 			);
 		}
 
-		const LayoutComponent = blockMap[ name ];
+		const LayoutComponent = blockMap[ name ] as React.ComponentType< {
+			product: Partial< ProductResponseItem >;
+		} >;
 
 		if ( ! LayoutComponent ) {
 			return null;
