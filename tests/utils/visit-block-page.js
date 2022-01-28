@@ -10,7 +10,6 @@ import {
 import { outputFile } from 'fs-extra';
 import { dirname } from 'path';
 import kebabCase from 'lodash/kebabCase';
-import { addAttach } from 'jest-html-reporters/helper';
 
 /**
  *
@@ -20,13 +19,7 @@ import { addAttach } from 'jest-html-reporters/helper';
  */
 async function visitPage( link ) {
 	await page.goto( link );
-	try {
-		await page.waitForSelector( '.edit-post-layoutxx' );
-	} catch ( e ) {
-		const data = await this.global.page.screenshot();
-		await addAttach( data, 'Full Page Screenshot', this.global );
-		throw e;
-	}
+	await page.waitForSelector( '.edit-post-layout' );
 	const isWelcomeGuideActive = await page.evaluate( () =>
 		wp.data.select( 'core/edit-post' ).isFeatureActive( 'welcomeGuide' )
 	);
