@@ -10,6 +10,7 @@ import {
 import { outputFile } from 'fs-extra';
 import { dirname } from 'path';
 import kebabCase from 'lodash/kebabCase';
+import { addAttach } from 'jest-html-reporters/helper';
 
 /**
  *
@@ -20,15 +21,10 @@ import kebabCase from 'lodash/kebabCase';
 async function visitPage( link ) {
 	await page.goto( link );
 	try {
-		await page.waitForSelector( '.edit-post-layout' );
+		await page.waitForSelector( '.edit-post-layoutxx' );
 	} catch ( e ) {
-		const errorScreenshotPath = `reports/e2e/${ link.replace(
-			/ /g,
-			'_'
-		) }.png`;
-		await page.screenshot( {
-			path: errorScreenshotPath,
-		} );
+		const data = await this.global.page.screenshot();
+		await addAttach( data, 'Full Page Screenshot', this.global );
 		throw e;
 	}
 	const isWelcomeGuideActive = await page.evaluate( () =>
