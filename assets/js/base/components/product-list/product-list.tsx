@@ -211,7 +211,7 @@ const ProductList = ( {
 			: Math.ceil( totalProducts / perPage );
 	const listProducts = products.length
 		? products
-		: Array.from< undefined >( { length: perPage } );
+		: Array.from( { length: perPage } );
 	const hasProducts = products.length !== 0 || productsLoading;
 	const hasFilters =
 		productAttributes.length > 0 ||

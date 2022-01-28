@@ -20,7 +20,7 @@ interface FilterSubmitButtonProps {
 
 const FilterSubmitButton = ( {
 	className,
-	disabled = false,
+	disabled,
 	/* translators: Submit button text for filters. */
 	label = __( 'Go', 'woo-gutenberg-products-block' ),
 	onClick,

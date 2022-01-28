@@ -44,7 +44,7 @@ export function getRegisteredBlockComponents(
  */
 export function getRegisteredInnerBlocks(
 	main: string
-): Record< string, unknown > {
+): Record< string, React.ComponentType > {
 	deprecated( 'getRegisteredInnerBlocks', {
 		version: '2.8.0',
 		alternative: 'getRegisteredBlockComponents',

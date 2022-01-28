@@ -6,7 +6,7 @@ import { FormEvent } from 'react';
 
 interface FormProps {
 	className: string;
-	children: React.ReactChildren | undefined;
+	children?: React.ReactChildren;
 	onSubmit: ( event: FormEvent ) => void;
 }
 

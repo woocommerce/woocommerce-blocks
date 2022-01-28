@@ -2,7 +2,6 @@
  * External dependencies
  */
 import { getRegisteredBlockComponents } from '@woocommerce/blocks-registry';
-import { React } from 'assets/js/base/context/providers/validation';
 
 /**
  * Internal dependencies
