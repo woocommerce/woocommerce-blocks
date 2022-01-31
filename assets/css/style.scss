@@ -328,6 +328,12 @@
 			display: block;
 		}
 	}
+
+	.wc-block-components-product-price {
+		ins {
+			text-decoration: none;
+		}
+	}
 }
 
 // Default screen-reader styles. Included as a fallback for themes that don't have support.
