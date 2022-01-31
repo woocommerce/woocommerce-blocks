@@ -38,13 +38,7 @@ registerBlockType( 'woocommerce/featured-product', {
 	supports: {
 		align: [ 'wide', 'full' ],
 		html: false,
-		color: {
-			text: true,
-			background: true,
-		},
-		typography: {
-			fontSize: true,
-		},
+		color: true,
 		...( isFeaturePluginBuild() && {
 			__experimentalBorder: {
 				color: true,
