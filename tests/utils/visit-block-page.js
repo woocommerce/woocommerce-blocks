@@ -19,6 +19,7 @@ import kebabCase from 'lodash/kebabCase';
  */
 async function visitPage( link ) {
 	await page.goto( link );
+	await page.waitForNavigation();
 	await page.waitForSelector( '.edit-post-layout' );
 	const isWelcomeGuideActive = await page.evaluate( () =>
 		wp.data.select( 'core/edit-post' ).isFeatureActive( 'welcomeGuide' )
