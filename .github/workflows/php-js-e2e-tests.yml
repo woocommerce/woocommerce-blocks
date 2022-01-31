@@ -80,11 +80,6 @@ jobs:
               with:
                   node-version: 14.x
 
-            - name: Npm install and build
-              run: |
-                  npm ci
-                  FORCE_REDUCED_MOTION=true npm run build:e2e-test
-
             - name: blocks.ini setup
               run: |
                   echo -e 'woocommerce_blocks_phase = 3\nwoocommerce_blocks_env = tests' > blocks.ini
