@@ -39,10 +39,7 @@ registerBlockType( 'woocommerce/featured-category', {
 	supports: {
 		align: [ 'wide', 'full' ],
 		html: false,
-		color: {
-			text: true,
-			background: true,
-		},
+		color: true,
 		typography: {
 			fontSize: true,
 		},

@@ -58,11 +58,13 @@ class StyleAttributesUtils {
 			return array(
 				'class' => sprintf( 'has-text-color has-%s-color', $text_color ),
 				'style' => null,
+				'value' => self::get_preset_value( $text_color ),
 			);
 		} elseif ( $custom_text_color ) {
 			return array(
 				'class' => null,
 				'style' => sprintf( 'color: %s;', $custom_text_color ),
+				'value' => $custom_text_color,
 			);
 		}
 		return null;
@@ -92,12 +94,14 @@ class StyleAttributesUtils {
 			$parsed_named_link_color = substr( $link_color, $index_named_link_color + 1 );
 			return array(
 				'class' => null,
-				'style' => sprintf( 'color: %s;', $parsed_named_link_color ),
+				'style' => sprintf( 'color: %s;', self::get_preset_value( $parsed_named_link_color ) ),
+				'value' => self::get_preset_value( $parsed_named_link_color ),
 			);
 		} else {
 			return array(
 				'class' => null,
 				'style' => sprintf( 'color: %s;', $link_color ),
+				'value' => $link_color,
 			);
 		}
 	}
@@ -144,72 +148,20 @@ class StyleAttributesUtils {
 			return array(
 				'class' => sprintf( 'has-background has-%s-background-color', $background_color ),
 				'style' => null,
+				'value' => self::get_preset_value( $background_color ),
 			);
 		} elseif ( '' !== $custom_background_color ) {
 			return array(
 				'class' => null,
 				'style' => sprintf( 'background-color: %s;', $custom_background_color ),
+				'value' => $custom_background_color,
 			);
 		}
 		return null;
 	}
 
 	/**
-	 * Get class and style for align from attributes.
-	 *
-	 * @param array $attributes Block attributes.
-	 *
-	 * @return (array | null)
-	 */
-	public static function get_align_class_and_style( $attributes ) {
-
-		$align_attribute = isset( $attributes['align'] ) ? $attributes['align'] : null;
-
-		if ( ! $align_attribute ) {
-			return null;
-		};
-
-		if ( 'wide' === $align_attribute ) {
-			return array(
-				'class' => 'alignwide',
-				'style' => null,
-			);
-		}
-
-		if ( 'full' === $align_attribute ) {
-			return array(
-				'class' => 'alignfull',
-				'style' => null,
-			);
-		}
-
-		if ( 'left' === $align_attribute ) {
-			return array(
-				'class' => 'alignleft',
-				'style' => null,
-			);
-		}
-
-		if ( 'right' === $align_attribute ) {
-			return array(
-				'class' => 'alignright',
-				'style' => null,
-			);
-		}
-
-		if ( 'center' === $align_attribute ) {
-			return array(
-				'class' => 'aligncenter',
-				'style' => null,
-			);
-		}
-
-		return null;
-
-	}
-
-	/**
-	 * Get class and style for border color from attributes.
+	 * Get class and style for border-color from attributes.
 	 *
 	 * @param array $attributes Block attributes.
 	 *
@@ -279,6 +231,59 @@ class StyleAttributesUtils {
 			'class' => null,
 			'style' => sprintf( 'border-width: %s;', $custom_border_width ),
 		);
+	}
+
+	/**
+	 * Get class and style for align from attributes.
+	 *
+	 * @param array $attributes Block attributes.
+	 *
+	 * @return (array | null)
+	 */
+	public static function get_align_class_and_style( $attributes ) {
+
+		$align_attribute = isset( $attributes['align'] ) ? $attributes['align'] : null;
+
+		if ( ! $align_attribute ) {
+			return null;
+		};
+
+		if ( 'wide' === $align_attribute ) {
+			return array(
+				'class' => 'alignwide',
+				'style' => null,
+			);
+		}
+
+		if ( 'full' === $align_attribute ) {
+			return array(
+				'class' => 'alignfull',
+				'style' => null,
+			);
+		}
+
+		if ( 'left' === $align_attribute ) {
+			return array(
+				'class' => 'alignleft',
+				'style' => null,
+			);
+		}
+
+		if ( 'right' === $align_attribute ) {
+			return array(
+				'class' => 'alignright',
+				'style' => null,
+			);
+		}
+
+		if ( 'center' === $align_attribute ) {
+			return array(
+				'class' => 'aligncenter',
+				'style' => null,
+			);
+		}
+
+		return null;
 	}
 
 	/**
@@ -360,5 +365,16 @@ class StyleAttributesUtils {
 		$classes_and_styles = self::get_classes_and_styles_by_attributes( $attributes, $properties );
 
 		return $classes_and_styles['styles'];
+	}
+
+	/**
+	 * Get CSS value for color preset.
+	 *
+	 * @param string $preset_name Preset name.
+	 *
+	 * @return string CSS value for color preset.
+	 */
+	public static function get_preset_value( $preset_name ) {
+		return "var(--wp--preset--color--$preset_name)";
 	}
 }
