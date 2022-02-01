@@ -250,6 +250,7 @@ const FeaturedProduct = ( {
 			contentAlign,
 			dimRatio,
 			focalPoint,
+			height,
 			showDesc,
 			showPrice,
 		} = attributes;
@@ -282,10 +283,7 @@ const FeaturedProduct = ( {
 		return (
 			<ResizableBox
 				className={ classes }
-				size={ {
-					height: '',
-					width: '',
-				} }
+				size={ { height } }
 				minHeight={ getSetting( 'min_height', 500 ) }
 				enable={ { bottom: true } }
 				onResizeStop={ onResizeStop }
