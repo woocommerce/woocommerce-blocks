@@ -8,7 +8,7 @@ Note we use the `Icon` component from `@wordpress/icons`. We use some SVG icons 
 
 ```js
 import { woo } from '@woocommerce/icons';
-import { Icon } from '@wordpress/icons';
+import { Icon, postComments } from '@wordpress/icons';
 
 <Icon icon={ woo } />
 <Icon icon={ woo } size={ 16 } />
