@@ -7,6 +7,7 @@ import { registerBlockType } from '@wordpress/blocks';
 import { getSetting } from '@woocommerce/settings';
 import { folderStarred } from '@woocommerce/icons';
 import { Icon } from '@wordpress/icons';
+import { isFeaturePluginBuild } from '@woocommerce/block-settings';
 
 /**
  * Internal dependencies
