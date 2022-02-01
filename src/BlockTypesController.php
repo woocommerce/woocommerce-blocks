@@ -189,11 +189,11 @@ final class BlockTypesController {
 			$block_types[] = 'SingleProduct';
 
 			/**
-			 * Mini Cart blocks should be available in Site Editor and Widgets only.
+			 * Mini Cart blocks should be available in Site Editor, Widgets and frontend (is_admin function checks this) only.
 			 */
 			if (
 				'widgets.php' === $pagenow ||
-				'site-editor.php' === $pagenow ||
+				'site-editor.php' === $pagenow || ! is_admin() ||
 				! empty( $_GET['page'] ) && 'gutenberg-edit-site' === $_GET['page'] // phpcs:ignore WordPress.Security.NonceVerification
 			) {
 				$block_types[] = 'MiniCart';
