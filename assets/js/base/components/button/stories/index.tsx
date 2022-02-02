@@ -41,8 +41,8 @@ Disabled.args = {
 	disabled: true,
 };
 
-export const WithSpinner = Template.bind( {} );
-WithSpinner.args = {
+export const Loading = Template.bind( {} );
+Loading.args = {
 	...Default.args,
 	disabled: true,
 	showSpinner: true,
