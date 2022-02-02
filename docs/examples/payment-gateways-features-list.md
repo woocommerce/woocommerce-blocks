@@ -10,7 +10,6 @@ function my_function_callback( $features, $gateway ) {
 
 add_filter( '__experimental_woocommerce_blocks_payment_gateway_features_list', 'my_function_callback', 10, 2 );
 ```
-
 <!-- FEEDBACK -->
 ---
 

@@ -17,7 +17,7 @@ function update_footer {
 	printf '%s\n' "<!-- FEEDBACK -->$REPLACEWITH<!-- /FEEDBACK -->" '' >> $1
 }
 
-find ./docs -name "*.md"|while read filename; do
+find ./docs  -not -path "./docs/examples" -name "*.md"|while read filename; do
   update_footer $filename
 done
 

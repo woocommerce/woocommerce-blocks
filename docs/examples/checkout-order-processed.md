@@ -7,7 +7,6 @@ function my_function_callback( $order ) {
 
 add_action( 'woocommerce_blocks_checkout_order_processed', 'my_function_callback', 10 );
 ```
-
 <!-- FEEDBACK -->
 ---
 
