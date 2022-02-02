@@ -1,4 +1,6 @@
 .wp-block-woocommerce-attribute-filter {
+	// We need to override it because by default the global styles applied the border-style: solid;
+	// Our goal is not to have a border on main wrapper DOM element
 	border-style: none !important;
 }
 
