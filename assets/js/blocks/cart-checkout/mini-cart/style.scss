@@ -145,6 +145,12 @@ h2.wc-block-mini-cart__title {
 			flex-grow: 1;
 			font-weight: 600;
 
+			&:hover {
+				background-color: $gray-900;
+				color: $white;
+				opacity: 1;
+			}
+
 			@media only screen and (min-width: 480px) {
 				display: inline-flex;
 			}
