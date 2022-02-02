@@ -29,7 +29,7 @@
 
 	&:focus {
 		box-shadow: 0 0 0 2px $studio-blue;
-		box-shadow: inset 0 0 0 1px #fff, 0 0 0 2px $studio-blue;
+		box-shadow: inset 0 0 0 1px $white, 0 0 0 2px $studio-blue;
 		outline: 3px solid transparent;
 	}
 
