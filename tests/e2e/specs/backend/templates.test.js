@@ -1,12 +1,17 @@
 import {
 	activateTheme,
 	canvas,
-	getAllBlocks,
 	getCurrentSiteEditorContent,
+	insertBlock,
 	trashAllPosts,
 } from '@wordpress/e2e-test-utils';
 import { addQueryArgs } from '@wordpress/url';
-import { getTextContent, goToSiteEditor } from '../../utils';
+import {
+	elementExists,
+	getTextContent,
+	goToSiteEditor,
+	saveTemplate,
+} from '../../utils';
 
 function legacyBlockSelector( title ) {
 	return `[data-type="woocommerce/legacy-template"][data-title="${ title }"]`;
@@ -19,6 +24,7 @@ const SELECTORS = {
 		),
 	},
 	templatesListTable: {
+		actionsContainer: '.edit-site-list-table__actions',
 		cells: '.edit-site-list-table-column',
 		headings: 'thead th.edit-site-list-table-column',
 		root: '.edit-site-list-table',
@@ -42,6 +48,10 @@ async function getAllTemplates() {
 			addedBy: (
 				await getTextContent( templatesListTable.cells, row )
 			 )[ 1 ],
+			hasActions: await elementExists(
+				templatesListTable.actionsContainer,
+				row
+			),
 			templateTitle: (
 				await getTextContent( templatesListTable.templateTitle, row )
 			 )[ 0 ],
@@ -63,7 +73,8 @@ describe( 'Store Editing Templates', () => {
 	describe( 'Single Product block template', () => {
 		it( 'default template from WooCommerce Blocks is available on an FSE theme', async () => {
 			const EXPECTED_TEMPLATE = {
-				addedBy: 'woocommerce/woocommerce',
+				addedBy: 'WooCommerce',
+				hasActions: false,
 				templateTitle: 'Single Product',
 			};
 
@@ -86,6 +97,28 @@ describe( 'Store Editing Templates', () => {
 				SELECTORS.blocks.singleProduct
 			);
 			expect( await getCurrentSiteEditorContent() ).toMatchSnapshot();
+		} );
+
+		it.only( 'should show the action menu if the template has been customized by the user', async () => {
+			const EXPECTED_TEMPLATE = {
+				addedBy: 'WooCommerce',
+				hasActions: true,
+				templateTitle: 'Single Product',
+			};
+
+			const templateQuery = addQueryArgs( '', {
+				postId: 'woocommerce/woocommerce//single-product',
+				postType: 'wp_template',
+			} );
+
+			await goToSiteEditor( templateQuery );
+			await insertBlock( 'Paragraph' );
+			await saveTemplate();
+
+			await goToSiteEditor( 'postType=wp_template' );
+			expect( await getAllTemplates() ).toContainEqual(
+				EXPECTED_TEMPLATE
+			);
 		} );
 	} );
 } );

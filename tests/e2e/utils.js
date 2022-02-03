@@ -15,8 +15,17 @@ import { WP_ADMIN_DASHBOARD } from '@woocommerce/e2e-utils';
  * @typedef {import('@types/puppeteer').ElementHandle} ElementHandle
  */
 
-const INSERTER_SEARCH_SELECTOR =
-	'.components-search-control__input,.block-editor-inserter__search input,.block-editor-inserter__search-input,input.block-editor-inserter__search';
+const SELECTORS = {
+	inserter: {
+		search:
+			'.components-search-control__input,.block-editor-inserter__search input,.block-editor-inserter__search-input,input.block-editor-inserter__search',
+	},
+	toolbar: {
+		confirmSave: '.editor-entities-saved-states__save-button',
+		saveButton: '.edit-site-save-button__button',
+		savePrompt: '.entities-saved-states__text-prompt',
+	},
+};
 
 /**
  * Search for block in the global inserter.
@@ -26,8 +35,8 @@ const INSERTER_SEARCH_SELECTOR =
  * @param {string} searchTerm The text to search the inserter for.
  */
 export async function searchForBlock( searchTerm ) {
-	await page.waitForSelector( INSERTER_SEARCH_SELECTOR );
-	await page.focus( INSERTER_SEARCH_SELECTOR );
+	await page.waitForSelector( SELECTORS.inserter.search );
+	await page.focus( SELECTORS.inserter.search );
 	await pressKeyWithModifier( 'primary', 'a' );
 	await page.keyboard.type( searchTerm );
 }
@@ -126,7 +135,7 @@ export async function goToSiteEditor( query, editorContext = 'core' ) {
  * If the element is an `input` it will get the `value`, otherwise,
  * it will get the `textContent`.
  *
- * @param {string} selector The selector of the desired element
+ * @param {string} selector The selector for the desired element
  * @param {Page | ElementHandle} [root=page] The root from which to search for the selector
  *
  * @return {Promise<string[]>} An array of text contained in those selected elements
@@ -137,4 +146,28 @@ export async function getTextContent( selector, root = page ) {
 			( $element ) => $element.value || $element.textContent
 		);
 	} );
+}
+
+/**
+ * Checks whether an element exists under a certain context
+ *
+ * @param {string} selector The selector for the desired element
+ * @param {Page | ElementHandle} [root=page] The root from which to search for the selector
+ *
+ * @return {Promise<boolean>} Whether the element exists or not
+ */
+export async function elementExists( selector, root = page ) {
+	return !! ( await root.$( selector ) );
+}
+
+/**
+ * Saves a template
+ */
+export async function saveTemplate() {
+	const { confirmSave, saveButton, savePrompt } = SELECTORS.toolbar;
+
+	await page.click( saveButton );
+	await page.waitForSelector( savePrompt );
+	await page.click( confirmSave );
+	await page.waitForSelector( `${ saveButton }[aria-disabled="true"]` );
 }
