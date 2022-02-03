@@ -7,6 +7,10 @@ import {
 } from '@wordpress/e2e-test-utils';
 import { addQueryArgs } from '@wordpress/url';
 import {
+	getNormalPagePermalink,
+	visitPostOfType,
+} from '@woocommerce/blocks-test-utils';
+import {
 	elementExists,
 	getTextContent,
 	goToSiteEditor,
@@ -32,6 +36,8 @@ const SELECTORS = {
 		templateTitle: '[data-wp-component="Heading"]',
 	},
 };
+
+const CUSTOMIZED_STRING = 'My awesome customization';
 
 async function getAllTemplates() {
 	const { templatesListTable } = SELECTORS;
@@ -99,7 +105,7 @@ describe( 'Store Editing Templates', () => {
 			expect( await getCurrentSiteEditorContent() ).toMatchSnapshot();
 		} );
 
-		it.only( 'should show the action menu if the template has been customized by the user', async () => {
+		it( 'should show the action menu if the template has been customized by the user', async () => {
 			const EXPECTED_TEMPLATE = {
 				addedBy: 'WooCommerce',
 				hasActions: true,
@@ -113,12 +119,26 @@ describe( 'Store Editing Templates', () => {
 
 			await goToSiteEditor( templateQuery );
 			await insertBlock( 'Paragraph' );
+			await page.keyboard.type( CUSTOMIZED_STRING );
 			await saveTemplate();
 
 			await goToSiteEditor( 'postType=wp_template' );
 			expect( await getAllTemplates() ).toContainEqual(
 				EXPECTED_TEMPLATE
 			);
+		} );
+
+		it( 'should show the user customization on the front-end', async () => {
+			const exampleProductName = 'Woo Single #1';
+
+			await visitPostOfType( exampleProductName, 'product' );
+			const permalink = await getNormalPagePermalink();
+
+			await page.goto( permalink );
+
+			await expect( page ).toMatchElement( 'p', {
+				text: CUSTOMIZED_STRING,
+			} );
 		} );
 	} );
 } );
