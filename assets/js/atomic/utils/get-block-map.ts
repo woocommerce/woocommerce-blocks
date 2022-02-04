@@ -2,6 +2,7 @@
  * External dependencies
  */
 import { getRegisteredBlockComponents } from '@woocommerce/blocks-registry';
+import type { RegisteredBlockComponent } from '@woocommerce/types';
 
 /**
  * Internal dependencies
@@ -15,5 +16,5 @@ import '../blocks/component-init';
  */
 export const getBlockMap = (
 	blockName: string
-): Record< string, React.ComponentType > =>
-	getRegisteredBlockComponents( blockName );
+): Record<string, RegisteredBlockComponent> =>
+	getRegisteredBlockComponents(blockName);

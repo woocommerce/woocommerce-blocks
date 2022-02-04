@@ -2,6 +2,7 @@
  * External dependencies
  */
 import deprecated from '@wordpress/deprecated';
+import type { RegisteredBlockComponent } from '@woocommerce/types';
 
 /**
  * Internal dependencies
@@ -23,11 +24,11 @@ import { registeredBlockComponents } from './registered-block-components-init';
  */
 export function getRegisteredBlockComponents(
 	context: string
-): Record< string, React.ComponentType > {
+): Record<string, RegisteredBlockComponent> {
 	const parentInnerBlocks =
-		typeof registeredBlockComponents[ context ] === 'object' &&
-		Object.keys( registeredBlockComponents[ context ] ).length > 0
-			? registeredBlockComponents[ context ]
+		typeof registeredBlockComponents[context] === 'object' &&
+		Object.keys(registeredBlockComponents[context]).length > 0
+			? registeredBlockComponents[context]
 			: {};
 
 	return {
@@ -44,11 +45,11 @@ export function getRegisteredBlockComponents(
  */
 export function getRegisteredInnerBlocks(
 	main: string
-): Record< string, React.ComponentType > {
-	deprecated( 'getRegisteredInnerBlocks', {
+): Record<string, RegisteredBlockComponent> {
+	deprecated('getRegisteredInnerBlocks', {
 		version: '2.8.0',
 		alternative: 'getRegisteredBlockComponents',
 		plugin: 'WooCommerce Blocks',
-	} );
-	return getRegisteredBlockComponents( main );
+	});
+	return getRegisteredBlockComponents(main);
 }
