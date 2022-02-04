@@ -15,6 +15,10 @@ import { WP_ADMIN_DASHBOARD } from '@woocommerce/e2e-utils';
  * @typedef {import('@types/puppeteer').ElementHandle} ElementHandle
  */
 
+/**
+ * @typedef {{ addedBy: string, hasActions: boolean, templateTitle: string }} TemplateTableItem
+ */
+
 export const DEFAULT_TIMEOUT = 30000;
 
 const SELECTORS = {
@@ -22,6 +26,14 @@ const SELECTORS = {
 	inserter: {
 		search:
 			'.components-search-control__input,.block-editor-inserter__search input,.block-editor-inserter__search-input,input.block-editor-inserter__search',
+	},
+	templatesListTable: {
+		actionsContainer: '.edit-site-list-table__actions',
+		cells: '.edit-site-list-table-column',
+		headings: 'thead th.edit-site-list-table-column',
+		root: '.edit-site-list-table',
+		rows: '.edit-site-list-table-row',
+		templateTitle: '[data-wp-component="Heading"]',
 	},
 	toolbar: {
 		confirmSave: '.editor-entities-saved-states__save-button',
@@ -182,4 +194,35 @@ export async function saveTemplate() {
 	await page.waitForSelector( savePrompt );
 	await page.click( confirmSave );
 	await page.waitForSelector( `${ saveButton }[aria-disabled="true"]` );
+}
+
+/**
+ * Gets all available templates from the template list table UI
+ *
+ * @return {Promise<TemplateTableItem[]>} A promise of an array of informations about the templates extracted from the UI
+ */
+export async function getAllTemplates() {
+	const { templatesListTable } = SELECTORS;
+
+	await page.waitForSelector( templatesListTable.root );
+	const table = await page.$( templatesListTable.root );
+
+	if ( ! table ) throw new Error( 'Templates table not found' );
+
+	const rows = await table.$$( templatesListTable.rows );
+
+	return Promise.all(
+		rows.map( async ( row ) => ( {
+			addedBy: (
+				await getTextContent( templatesListTable.cells, row )
+			 )[ 1 ],
+			hasActions: await elementExists(
+				templatesListTable.actionsContainer,
+				row
+			),
+			templateTitle: (
+				await getTextContent( templatesListTable.templateTitle, row )
+			 )[ 0 ],
+		} ) )
+	);
 }
