@@ -15,7 +15,10 @@ import { WP_ADMIN_DASHBOARD } from '@woocommerce/e2e-utils';
  * @typedef {import('@types/puppeteer').ElementHandle} ElementHandle
  */
 
+export const DEFAULT_TIMEOUT = 30000;
+
 const SELECTORS = {
+	canvas: 'iframe[name="editor-canvas"]',
 	inserter: {
 		search:
 			'.components-search-control__input,.block-editor-inserter__search input,.block-editor-inserter__search-input,input.block-editor-inserter__search',
@@ -127,6 +130,15 @@ export async function goToSiteEditor( query, editorContext = 'core' ) {
 		await visitAdminPage( 'site-editor.php', query );
 		await disableSiteEditorWelcomeGuide();
 	}
+}
+
+/**
+ * Waits for the Gutenberg canvas to be available
+ *
+ * @param {number} [timeout=DEFAULT_TIMEOUT] The amount of ms to wait for the element
+ */
+export async function waitForCanvas( timeout = DEFAULT_TIMEOUT ) {
+	await page.waitForSelector( SELECTORS.canvas, { timeout } );
 }
 
 /**
