@@ -12,12 +12,14 @@ const TerserPlugin = require( 'terser-webpack-plugin' );
 const CreateFileWebpack = require( 'create-file-webpack' );
 const CircularDependencyPlugin = require( 'circular-dependency-plugin' );
 const { BundleAnalyzerPlugin } = require( 'webpack-bundle-analyzer' );
+const CopyWebpackPlugin = require( 'copy-webpack-plugin' );
 
 /**
  * Internal dependencies
  */
 const { getEntryConfig } = require( './webpack-entries' );
 const {
+	ASSET_CHECK,
 	NODE_ENV,
 	CHECK_CIRCULAR_DEPS,
 	requestToExternal,
@@ -44,6 +46,8 @@ const sharedPlugins = [
 	process.env.WP_BUNDLE_ANALYZER && new BundleAnalyzerPlugin(),
 	new DependencyExtractionWebpackPlugin( {
 		injectPolyfill: true,
+		combineAssets: ASSET_CHECK,
+		outputFormat: ASSET_CHECK ? 'json' : 'php',
 		requestToExternal,
 		requestToHandle,
 	} ),
@@ -253,6 +257,14 @@ const getMainConfig = ( options = {} ) => {
 			new ProgressBarPlugin(
 				getProgressBarPluginConfig( 'Main', options.fileSuffix )
 			),
+			new CopyWebpackPlugin( {
+				patterns: [
+					{
+						from: './assets/js/blocks/checkout/block.json',
+						to: './checkout/block.json',
+					},
+				],
+			} ),
 		],
 		resolve: {
 			...resolve,
