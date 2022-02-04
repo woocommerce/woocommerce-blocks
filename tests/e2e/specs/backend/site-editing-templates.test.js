@@ -12,8 +12,7 @@ import {
 } from '@woocommerce/blocks-test-utils';
 import {
 	DEFAULT_TIMEOUT,
-	elementExists,
-	getTextContent,
+	getAllTemplates,
 	goToSiteEditor,
 	saveTemplate,
 	waitForCanvas,
@@ -44,44 +43,11 @@ const SELECTORS = {
 			'WooCommerce Single Product Block'
 		),
 	},
-	templatesListTable: {
-		actionsContainer: '.edit-site-list-table__actions',
-		cells: '.edit-site-list-table-column',
-		headings: 'thead th.edit-site-list-table-column',
-		root: '.edit-site-list-table',
-		rows: '.edit-site-list-table-row',
-		templateTitle: '[data-wp-component="Heading"]',
-	},
 };
 
 const CUSTOMIZED_STRING = 'My awesome customization';
 const WOOCOMMERCE_ID = 'woocommerce/woocommerce';
 const WOOCOMMERCE_PARSED_ID = 'WooCommerce';
-
-async function getAllTemplates() {
-	const { templatesListTable } = SELECTORS;
-
-	const table = await page.$( templatesListTable.root );
-
-	if ( ! table ) throw new Error( 'Templates table not found' );
-
-	const rows = await table.$$( templatesListTable.rows );
-
-	return Promise.all(
-		rows.map( async ( row ) => ( {
-			addedBy: (
-				await getTextContent( templatesListTable.cells, row )
-			 )[ 1 ],
-			hasActions: await elementExists(
-				templatesListTable.actionsContainer,
-				row
-			),
-			templateTitle: (
-				await getTextContent( templatesListTable.templateTitle, row )
-			 )[ 0 ],
-		} ) )
-	);
-}
 
 describe( 'Store Editing Templates', () => {
 	beforeAll( async () => {
@@ -99,7 +65,6 @@ describe( 'Store Editing Templates', () => {
 			const EXPECTED_TEMPLATE = defaultTemplateProps( 'Single Product' );
 
 			await goToSiteEditor( 'postType=wp_template' );
-			await page.waitForSelector( SELECTORS.templatesListTable.root );
 
 			const templates = await getAllTemplates();
 
