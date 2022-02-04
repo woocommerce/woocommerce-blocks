@@ -8,8 +8,6 @@ import {
 	InnerBlocks,
 	InspectorControls,
 	MediaReplaceFlow,
-	PanelColorSettings,
-	withColors,
 	RichText,
 } from '@wordpress/block-editor';
 import {
@@ -30,7 +28,8 @@ import { withSelect } from '@wordpress/data';
 import { compose, createHigherOrderComponent } from '@wordpress/compose';
 import PropTypes from 'prop-types';
 import { getSetting } from '@woocommerce/settings';
-import { Icon, folderStarred } from '@woocommerce/icons';
+import { folderStarred } from '@woocommerce/icons';
+import { Icon } from '@wordpress/icons';
 import ProductCategoryControl from '@woocommerce/editor-components/product-category-control';
 import ErrorPlaceholder from '@woocommerce/editor-components/error-placeholder';
 
@@ -56,8 +55,6 @@ import { withCategory } from '../../hocs';
  * @param {function(any):any} props.getCategory Function for getting category details.
  * @param {boolean} props.isLoading Whether loading or not.
  * @param {Object} props.category The product category object.
- * @param {Object} props.overlayColor Overlay color object for content.
- * @param {function(any):any} props.setOverlayColor Setter for overlay color.
  * @param {function(any):any} props.debouncedSpeak Function for delayed speak.
  * @param {function():void} props.triggerUrlUpdate Function to update Shop now button Url.
  */
@@ -69,8 +66,6 @@ const FeaturedCategory = ( {
 	getCategory,
 	isLoading,
 	category,
-	overlayColor,
-	setOverlayColor,
 	debouncedSpeak,
 	triggerUrlUpdate = () => void null,
 } ) => {
@@ -148,21 +143,14 @@ const FeaturedCategory = ( {
 						}
 					/>
 				</PanelBody>
-				<PanelColorSettings
-					title={ __( 'Overlay', 'woo-gutenberg-products-block' ) }
-					colorSettings={ [
-						{
-							value: overlayColor.color,
-							onChange: setOverlayColor,
-							label: __(
-								'Overlay Color',
+				{ !! url && (
+					<>
+						<PanelBody
+							title={ __(
+								'Overlay',
 								'woo-gutenberg-products-block'
-							),
-						},
-					] }
-				>
-					{ !! url && (
-						<>
+							) }
+						>
 							<RangeControl
 								label={ __(
 									'Background Opacity',
@@ -189,9 +177,9 @@ const FeaturedCategory = ( {
 									}
 								/>
 							) }
-						</>
-					) }
-				</PanelColorSettings>
+						</PanelBody>
+					</>
+				) }
 			</InspectorControls>
 		);
 	};
@@ -209,7 +197,7 @@ const FeaturedCategory = ( {
 
 		return (
 			<Placeholder
-				icon={ <Icon srcElement={ folderStarred } /> }
+				icon={ <Icon icon={ folderStarred } /> }
 				label={ __(
 					'Featured Category',
 					'woo-gutenberg-products-block'
@@ -288,13 +276,13 @@ const FeaturedCategory = ( {
 
 	const renderCategory = () => {
 		const {
-			className,
+			height,
 			contentAlign,
 			dimRatio,
 			focalPoint,
-			height,
 			showDesc,
 		} = attributes;
+
 		const classes = classnames(
 			'wc-block-featured-category',
 			{
@@ -304,14 +292,10 @@ const FeaturedCategory = ( {
 				'has-background-dim': dimRatio !== 0,
 			},
 			dimRatioToClass( dimRatio ),
-			contentAlign !== 'center' && `has-${ contentAlign }-content`,
-			className
+			contentAlign !== 'center' && `has-${ contentAlign }-content`
 		);
 		const mediaSrc = attributes.mediaSrc || getCategoryImageSrc( category );
 		const style = !! category ? getBackgroundImageStyles( mediaSrc ) : {};
-		if ( overlayColor.color ) {
-			style.backgroundColor = overlayColor.color;
-		}
 		if ( focalPoint ) {
 			const bgPosX = focalPoint.x * 100;
 			const bgPosY = focalPoint.y * 100;
@@ -357,7 +341,7 @@ const FeaturedCategory = ( {
 	const renderNoCategory = () => (
 		<Placeholder
 			className="wc-block-featured-category"
-			icon={ <Icon srcElement={ folderStarred } /> }
+			icon={ <Icon icon={ folderStarred } /> }
 			label={ __( 'Featured Category', 'woo-gutenberg-products-block' ) }
 		>
 			{ isLoading ? (
@@ -416,9 +400,6 @@ FeaturedCategory.propTypes = {
 		description: PropTypes.node,
 		permalink: PropTypes.string,
 	} ),
-	// from withColors
-	overlayColor: PropTypes.object,
-	setOverlayColor: PropTypes.func.isRequired,
 	// from withSpokenMessages
 	debouncedSpeak: PropTypes.func.isRequired,
 	triggerUrlUpdate: PropTypes.func,
@@ -426,7 +407,6 @@ FeaturedCategory.propTypes = {
 
 export default compose( [
 	withCategory,
-	withColors( { overlayColor: 'background-color' } ),
 	withSpokenMessages,
 	withSelect( ( select, { clientId }, { dispatch } ) => {
 		const Block = select( 'core/block-editor' ).getBlock( clientId );
