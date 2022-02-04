@@ -33,7 +33,7 @@ export const renderProductLayout = (
 		let children = [] as ( JSX.Element | null )[] | undefined;
 
 		if ( !! props.children && props.children.length > 0 ) {
-			// Qprops.children here refers to the children stored in the block attributes. which
+			// props.children here refers to the children stored in the block attributes. which
 			// has the same shape as `layoutConfig`, not React children, which has a different shape */
 			children = renderProductLayout(
 				blockName,

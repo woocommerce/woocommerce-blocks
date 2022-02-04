@@ -3,7 +3,7 @@
  */
 import { useState, useEffect } from '@wordpress/element';
 import PropTypes from 'prop-types';
-import { HTMLElementEvent } from '@woocommerce/type-defs/utils';
+import type { HTMLElementEvent } from '@woocommerce/types';
 
 /**
  * Internal dependencies

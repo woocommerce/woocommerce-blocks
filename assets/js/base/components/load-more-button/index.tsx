@@ -3,7 +3,7 @@
  */
 import { __ } from '@wordpress/i18n';
 import Label from '@woocommerce/base-components/label';
-import { MouseEventHandler } from 'react';
+import type { MouseEventHandler } from 'react';
 
 /**
  * Internal dependencies

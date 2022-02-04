@@ -25,7 +25,7 @@ export enum innerBlockAreas {
 	MINI_CART_ITEMS = 'woocommerce/mini-cart-items-block',
 }
 
-interface CheckoutBlockOptionsMetadata extends Partial<BlockConfiguration> {
+interface CheckoutBlockOptionsMetadata extends Partial< BlockConfiguration > {
 	name: string;
 	parent: string[];
 }
@@ -37,12 +37,12 @@ export type RegisteredBlock = {
 	force: boolean;
 };
 
-export type RegisteredBlocks = Record<string, RegisteredBlock>;
+export type RegisteredBlocks = Record< string, RegisteredBlock >;
 
 export type CheckoutBlockOptions = {
 	metadata: CheckoutBlockOptionsMetadata;
 	component:
-		| LazyExoticComponent<React.ComponentType<unknown>>
-		| (() => JSX.Element | null)
+		| LazyExoticComponent< React.ComponentType< unknown > >
+		| ( () => JSX.Element | null )
 		| null;
 };

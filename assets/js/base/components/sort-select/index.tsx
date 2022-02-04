@@ -31,7 +31,7 @@ interface SortSelectProps {
 	/**
 	 * Option values for the select.
 	 */
-	options?: {
+	options: {
 		key: string;
 		label: string;
 	}[];

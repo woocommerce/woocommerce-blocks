@@ -2,7 +2,7 @@
  * External dependencies
  */
 import classnames from 'classnames';
-import { FormEvent } from 'react';
+import type { FormEvent } from 'react';
 
 interface FormProps {
 	className: string;

@@ -11,7 +11,7 @@ import './style.scss';
 import Spinner from '../spinner';
 
 interface LoadingMaskProps {
-	children?: React.ReactChildren;
+	children?: React.ReactNode | React.ReactNode[];
 	className?: string;
 	screenReaderLabel?: string;
 	showSpinner?: boolean;

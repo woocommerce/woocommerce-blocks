@@ -16,5 +16,5 @@ import '../blocks/component-init';
  */
 export const getBlockMap = (
 	blockName: string
-): Record<string, RegisteredBlockComponent> =>
-	getRegisteredBlockComponents(blockName);
+): Record< string, RegisteredBlockComponent > =>
+	getRegisteredBlockComponents( blockName );
