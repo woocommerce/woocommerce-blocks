@@ -63,11 +63,13 @@ const Block = ( props ) => {
 		<div
 			className={ classnames(
 				className,
+				colorProps.className,
 				'wc-block-components-product-rating',
 				{
 					[ `${ parentClassName }__product-rating` ]: parentClassName,
 				}
 			) }
+			style={ colorProps.style }
 		>
 			<div
 				className={ classnames(
@@ -78,7 +80,7 @@ const Block = ( props ) => {
 				aria-label={ ratingText }
 			>
 				<span
-					style={ { ...starStyle, ...colorProps.style } }
+					style={ starStyle }
 					dangerouslySetInnerHTML={ ratingHTML }
 				/>
 			</div>

@@ -178,6 +178,7 @@ final class BlockTypesController {
 			'ProductTitle',
 			'ProductSummary',
 			'ProductStockIndicator',
+			'ProductRating',
 		];
 
 		if ( Package::feature()->is_feature_plugin_build() ) {
@@ -222,7 +223,6 @@ final class BlockTypesController {
 			'product-button',
 			'product-image',
 			'product-price',
-			'product-rating',
 			'product-sale-badge',
 			'product-sku',
 			'product-category-list',
