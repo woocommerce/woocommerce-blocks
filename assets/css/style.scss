@@ -22,7 +22,8 @@
 
 	img {
 		height: auto;
-		width: 100%;
+		width: auto;
+		max-width: 100%;
 
 		&[hidden] {
 			display: none;
@@ -316,6 +317,21 @@
 		.wc-block-grid__products .wc-block-grid__product-onsale {
 			@include font-size(small);
 			padding: em($gap-smaller);
+		}
+	}
+}
+
+.theme-twentytwentytwo {
+	.wc-block-grid__product-add-to-cart {
+		.added_to_cart {
+			margin-top: $gap-small;
+			display: block;
+		}
+	}
+
+	.wc-block-components-product-price {
+		ins {
+			text-decoration: none;
 		}
 	}
 }

@@ -58,11 +58,13 @@ class StyleAttributesUtils {
 			return array(
 				'class' => sprintf( 'has-text-color has-%s-color', $text_color ),
 				'style' => null,
+				'value' => self::get_preset_value( $text_color ),
 			);
 		} elseif ( $custom_text_color ) {
 			return array(
 				'class' => null,
 				'style' => sprintf( 'color: %s;', $custom_text_color ),
+				'value' => $custom_text_color,
 			);
 		}
 		return null;
@@ -92,12 +94,14 @@ class StyleAttributesUtils {
 			$parsed_named_link_color = substr( $link_color, $index_named_link_color + 1 );
 			return array(
 				'class' => null,
-				'style' => sprintf( 'color: %s;', $parsed_named_link_color ),
+				'style' => sprintf( 'color: %s;', self::get_preset_value( $parsed_named_link_color ) ),
+				'value' => self::get_preset_value( $parsed_named_link_color ),
 			);
 		} else {
 			return array(
 				'class' => null,
 				'style' => sprintf( 'color: %s;', $link_color ),
+				'value' => $link_color,
 			);
 		}
 	}
@@ -144,14 +148,89 @@ class StyleAttributesUtils {
 			return array(
 				'class' => sprintf( 'has-background has-%s-background-color', $background_color ),
 				'style' => null,
+				'value' => self::get_preset_value( $background_color ),
 			);
 		} elseif ( '' !== $custom_background_color ) {
 			return array(
 				'class' => null,
 				'style' => sprintf( 'background-color: %s;', $custom_background_color ),
+				'value' => $custom_background_color,
 			);
 		}
 		return null;
+	}
+
+	/**
+	 * Get class and style for border-color from attributes.
+	 *
+	 * @param array $attributes Block attributes.
+	 *
+	 * @return (array | null)
+	 */
+	public static function get_border_color_class_and_style( $attributes ) {
+
+		$border_color = $attributes['borderColor'] ?? '';
+
+		$custom_border_color = $attributes['style']['border']['color'] ?? '';
+
+		if ( ! $border_color && '' === $custom_border_color ) {
+			return null;
+		};
+
+		if ( $border_color ) {
+			return array(
+				'class' => sprintf( 'has-border-color has-%s-border-color', $border_color ),
+				'style' => null,
+			);
+		} elseif ( '' !== $custom_border_color ) {
+			return array(
+				'class' => null,
+				'style' => sprintf( 'border-color: %s;', $custom_border_color ),
+			);
+		}
+		return null;
+	}
+
+	/**
+	 * Get class and style for border-radius from attributes.
+	 *
+	 * @param array $attributes Block attributes.
+	 *
+	 * @return (array | null)
+	 */
+	public static function get_border_radius_class_and_style( $attributes ) {
+
+		$custom_border_radius = $attributes['style']['border']['radius'] ?? '';
+
+		if ( '' === $custom_border_radius ) {
+			return null;
+		};
+
+		return array(
+			'class' => null,
+			'style' => sprintf( 'border-radius: %s;', $custom_border_radius ),
+		);
+	}
+
+	/**
+	 * Get class and style for border width from attributes.
+	 *
+	 * @param array $attributes Block attributes.
+	 *
+	 * @return (array | null)
+	 */
+	public static function get_border_width_class_and_style( $attributes ) {
+
+		$custom_border_width = $attributes['style']['border']['width'] ?? '';
+
+		if ( '' === $custom_border_width ) {
+			return null;
+		};
+
+		return array(
+			'class' => null,
+			'style' => sprintf( 'border-width: %s;', $custom_border_width ),
+		);
 	}
 
 	/**
@@ -222,6 +301,9 @@ class StyleAttributesUtils {
 			'font_size'        => self::get_font_size_class_and_style( $attributes ),
 			'link_color'       => self::get_link_color_class_and_style( $attributes ),
 			'background_color' => self::get_background_color_class_and_style( $attributes ),
+			'border_color'     => self::get_border_color_class_and_style( $attributes ),
+			'border_radius'    => self::get_border_radius_class_and_style( $attributes ),
+			'border_width'     => self::get_border_width_class_and_style( $attributes ),
 		);
 
 		if ( ! empty( $properties ) ) {
@@ -283,5 +365,16 @@ class StyleAttributesUtils {
 		$classes_and_styles = self::get_classes_and_styles_by_attributes( $attributes, $properties );
 
 		return $classes_and_styles['styles'];
+	}
+
+	/**
+	 * Get CSS value for color preset.
+	 *
+	 * @param string $preset_name Preset name.
+	 *
+	 * @return string CSS value for color preset.
+	 */
+	public static function get_preset_value( $preset_name ) {
+		return "var(--wp--preset--color--$preset_name)";
 	}
 }

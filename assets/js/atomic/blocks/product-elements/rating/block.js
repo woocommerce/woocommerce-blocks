@@ -2,7 +2,7 @@
  * External dependencies
  */
 import PropTypes from 'prop-types';
-import { __, sprintf } from '@wordpress/i18n';
+import { __, _n, sprintf } from '@wordpress/i18n';
 import classnames from 'classnames';
 import {
 	useInnerBlockLayoutContext,
@@ -44,6 +44,21 @@ const Block = ( props ) => {
 		rating
 	);
 
+	const reviews = getRatingCount( product );
+	const ratingHTML = {
+		__html: sprintf(
+			/* translators: %1$s is referring to the average rating value, %2$s is referring to the number of ratings */
+			_n(
+				'Rated %1$s out of 5 based on %2$s customer rating',
+				'Rated %1$s out of 5 based on %2$s customer ratings',
+				reviews,
+				'woo-gutenberg-products-block'
+			),
+			sprintf( '<strong class="rating">%f</strong>', rating ),
+			sprintf( '<span class="rating">%d</span>', reviews )
+		),
+	};
+
 	return (
 		<div
 			className={ classnames(
@@ -62,9 +77,10 @@ const Block = ( props ) => {
 				role="img"
 				aria-label={ ratingText }
 			>
-				<span style={ { ...starStyle, ...colorProps.style } }>
-					{ ratingText }
-				</span>
+				<span
+					style={ { ...starStyle, ...colorProps.style } }
+					dangerouslySetInnerHTML={ ratingHTML }
+				/>
 			</div>
 		</div>
 	);
@@ -74,6 +90,12 @@ const getAverageRating = ( product ) => {
 	const rating = parseFloat( product.average_rating );
 
 	return Number.isFinite( rating ) && rating > 0 ? rating : 0;
+};
+
+const getRatingCount = ( product ) => {
+	const count = parseInt( product.review_count, 10 );
+
+	return Number.isFinite( count ) && count > 0 ? count : 0;
 };
 
 Block.propTypes = {
