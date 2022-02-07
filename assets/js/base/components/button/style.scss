@@ -1,8 +1,6 @@
 .wc-block-components-button:not(.is-link) {
 	@include reset-typography();
 	align-items: center;
-	background-color: $gray-900;
-	color: $white;
 	display: inline-flex;
 	font-weight: bold;
 	min-height: 3em;
@@ -14,18 +12,6 @@
 	text-transform: none;
 	position: relative;
 	transition: box-shadow 0.1s linear;
-
-	&:disabled,
-	&:hover,
-	&:focus,
-	&:active {
-		background-color: $gray-900;
-		color: $white;
-	}
-
-	&:hover {
-		opacity: 0.9;
-	}
 
 	&:focus {
 		box-shadow: 0 0 0 2px $studio-blue;
@@ -42,5 +28,50 @@
 	}
 	.wc-block-components-spinner + .wc-block-components-button__text {
 		visibility: hidden;
+	}
+
+	&.text {
+		color: $gray-900;
+
+		&:hover {
+			opacity: 0.9;
+		}
+	}
+
+	&.contained {
+		background-color: $gray-900;
+		color: $white;
+
+		&:disabled,
+		&:hover,
+		&:focus,
+		&:active {
+			background-color: $gray-900;
+			color: $white;
+		}
+
+		&:hover {
+			opacity: 0.9;
+		}
+	}
+
+	&.outlined {
+		background-color: transparent;
+		border: 1px solid $gray-900;
+		color: $gray-900;
+
+		&:disabled,
+		&:hover,
+		&:focus,
+		&:active {
+			background-color: $gray-900;
+			color: $white;
+		}
+
+		&:hover {
+			background-color: $gray-900;
+			color: $white;
+			opacity: 1;
+		}
 	}
 }
