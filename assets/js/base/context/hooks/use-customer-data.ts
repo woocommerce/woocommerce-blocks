@@ -1,8 +1,8 @@
 /**
  * External dependencies
  */
-import { useDispatch } from '@wordpress/data';
-import { useEffect, useState, useCallback, useRef } from '@wordpress/element';
+import { useDispatch, useSelect } from '@wordpress/data';
+import { useEffect, useState, useRef } from '@wordpress/element';
 import { CART_STORE_KEY as storeKey } from '@woocommerce/block-data';
 import { useDebouncedCallback } from 'use-debounce';
 import isShallowEqual from '@wordpress/is-shallow-equal';
@@ -72,9 +72,11 @@ const shouldUpdateAddressStore = <
  */
 export const useCustomerData = (): {
 	billingData: CartResponseBillingAddress;
+	shippingAsBilling: boolean;
 	shippingAddress: CartResponseShippingAddress;
 	setBillingData: ( data: CartResponseBillingAddress ) => void;
 	setShippingAddress: ( data: CartResponseShippingAddress ) => void;
+	setShippingAsBilling: ( data: boolean ) => void;
 } => {
 	const { updateCustomerData } = useDispatch( storeKey );
 	const { addErrorNotice, removeNotice } = useStoreNotices();
@@ -92,10 +94,9 @@ export const useCustomerData = (): {
 	// initial data has fully initialized. Track that header.
 	const [ isInitialized, setIsInitialized ] = useState< boolean >( false );
 
-	// State of customer data is tracked here from this point, using the initial values from the useStoreCart hook.
-	const [ customerData, setCustomerData ] = useState< CustomerData >( {
-		billingData: initialBillingAddress,
-		shippingAddress: initialShippingAddress,
+	const customerData = useSelect( ( select ) => {
+		const store = select( storeKey );
+		return store.getCustomerData();
 	} );
 
 	// Store values last sent to the server in a ref to avoid requests unless important fields are changed.
@@ -107,13 +108,12 @@ export const useCustomerData = (): {
 		if ( isInitialized || cartIsLoading ) {
 			return;
 		}
-		const initializedCustomerData = {
+		// Updates local state to the now-resolved cart address.
+		previousCustomerData.current = {
 			billingData: initialBillingAddress,
 			shippingAddress: initialShippingAddress,
 		};
-		// Updates local state to the now-resolved cart address.
-		previousCustomerData.current = initializedCustomerData;
-		setCustomerData( initializedCustomerData );
+		//setCustomerData( initializedCustomerData );
 		// We are now initialized.
 		setIsInitialized( true );
 	}, [
@@ -123,44 +123,11 @@ export const useCustomerData = (): {
 		initialShippingAddress,
 	] );
 
-	/**
-	 * Set billing data.
-	 *
-	 * Callback used to set billing data for the customer. This merges the previous and new state, and in turn,
-	 * will trigger an update to the server if enough data has changed (see the useEffect call below).
-	 *
-	 * This callback contains special handling for the "email" address field so that field is never overwritten if
-	 * simply updating the billing address and not the email address.
-	 */
-	const setBillingData = useCallback( ( newData ) => {
-		setCustomerData( ( prevState ) => {
-			return {
-				...prevState,
-				billingData: {
-					...prevState.billingData,
-					...newData,
-				},
-			};
-		} );
-	}, [] );
-
-	/**
-	 * Set shipping address.
-	 *
-	 * Callback used to set shipping data for the customer. This merges the previous and new state, and in turn, will
-	 * trigger an update to the server if enough data has changed (see the useEffect call below).
-	 */
-	const setShippingAddress = useCallback( ( newData ) => {
-		setCustomerData( ( prevState ) => {
-			return {
-				...prevState,
-				shippingAddress: {
-					...prevState.shippingAddress,
-					...newData,
-				},
-			};
-		} );
-	}, [] );
+	const {
+		setBillingData,
+		setShippingAddress,
+		setShippingAsBilling,
+	} = useDispatch( storeKey );
 
 	/**
 	 * This pushes changes to the API when the local state differs from the address in the cart.
@@ -222,6 +189,8 @@ export const useCustomerData = (): {
 	return {
 		billingData: customerData.billingData,
 		shippingAddress: customerData.shippingAddress,
+		shippingAsBilling: customerData.shippingAsBilling,
+		setShippingAsBilling,
 		setBillingData,
 		setShippingAddress,
 	};
