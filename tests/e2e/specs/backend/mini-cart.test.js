@@ -62,7 +62,7 @@ describe( `${ block.name } Block`, () => {
 			expect( compatibilityNoticeTitle.length ).toBe( 1 );
 		} );
 
-		it( "after the compatibility notice is dismissed, this latter doesn't appear anymore", async () => {
+		it( "after the compatibility notice is dismissed, it doesn't appear again", async () => {
 			await page.evaluate( () => {
 				localStorage.setItem(
 					'wc-blocks_dismissed_compatibility_notices',
@@ -86,6 +86,6 @@ describe( `${ block.name } Block`, () => {
 		} );
 	} );
 
-	// @todo Add tests for the block for FSE editor
+	// @todo Add tests for the Mini Cart block in FSE editor
 	// describe( 'in FSE editor', () => {} );
 } );
