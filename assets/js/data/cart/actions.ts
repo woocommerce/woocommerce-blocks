@@ -11,6 +11,7 @@ import type {
 } from '@woocommerce/types';
 import { camelCase, mapKeys } from 'lodash';
 import type { AddToCartEventDetail } from '@woocommerce/type-defs/events';
+import { BillingAddress, ShippingAddress } from '@woocommerce/settings';
 
 /**
  * Internal dependencies
@@ -462,6 +463,24 @@ export function* selectShippingRate(
 }
 
 /**
+ * Sets billing data locally, as opposed to updateCustomerData which sends it to the server.
+ */
+export const setBillingData = ( billingData: Partial< BillingAddress > ) =>
+	( { type: types.SET_BILLING_DATA, billingData } as const );
+
+/**
+ * Sets shipping address locally, as opposed to updateCustomerData which sends it to the server.
+ */
+export const setShippingAddress = (
+	shippingAddress: Partial< ShippingAddress >
+) => ( { type: types.SET_SHIPPING_ADDRESS, shippingAddress } as const );
+
+/**
+ * Sets whether the shipping address is also being used as the billing address.
+ */
+export const setShippingAsBilling = ( shippingAsBilling: boolean ) =>
+	( { type: types.SET_SHIPPING_AS_BILLING, shippingAsBilling } as const );
+/**
  * Updates the shipping and/or billing address for the customer and returns an
  * updated cart.
  *
@@ -501,6 +520,9 @@ export function* updateCustomerData(
 
 export type CartAction = ReturnOrGeneratorYieldUnion<
 	| typeof receiveCart
+	| typeof setBillingData
+	| typeof setShippingAddress
+	| typeof setShippingAsBilling
 	| typeof receiveError
 	| typeof receiveApplyingCoupon
 	| typeof receiveRemovingCoupon
