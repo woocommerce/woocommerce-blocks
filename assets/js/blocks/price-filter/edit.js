@@ -2,8 +2,7 @@
  * External dependencies
  */
 import { __ } from '@wordpress/i18n';
-import classNames from 'classnames';
-import { InspectorControls } from '@wordpress/block-editor';
+import { InspectorControls, useBlockProps } from '@wordpress/block-editor';
 import {
 	Placeholder,
 	Disabled,
@@ -16,7 +15,7 @@ import { blocksConfig } from '@woocommerce/block-settings';
 import HeadingToolbar from '@woocommerce/editor-components/heading-toolbar';
 import BlockTitle from '@woocommerce/editor-components/block-title';
 import ToggleButtonControl from '@woocommerce/editor-components/toggle-button-control';
-import { Icon, bill, external } from '@woocommerce/icons';
+import { Icon, currencyDollar, external } from '@wordpress/icons';
 
 /**
  * Internal dependencies
@@ -26,12 +25,13 @@ import './editor.scss';
 
 export default function ( { attributes, setAttributes } ) {
 	const {
-		className,
 		heading,
 		headingLevel,
 		showInputFields,
 		showFilterButton,
 	} = attributes;
+
+	const blockProps = useBlockProps();
 
 	const getInspectorControls = () => {
 		return (
@@ -116,7 +116,7 @@ export default function ( { attributes, setAttributes } ) {
 	const noProductsPlaceholder = () => (
 		<Placeholder
 			className="wc-block-price-slider"
-			icon={ <Icon srcElement={ bill } /> }
+			icon={ <Icon icon={ currencyDollar } /> }
 			label={ __(
 				'Filter Products by Price',
 				'woo-gutenberg-products-block'
@@ -139,7 +139,7 @@ export default function ( { attributes, setAttributes } ) {
 			>
 				{ __( 'Add new product', 'woo-gutenberg-products-block' ) +
 					' ' }
-				<Icon srcElement={ external } />
+				<Icon icon={ external } />
 			</Button>
 			<Button
 				className="wc-block-price-slider__read_more_button"
@@ -152,16 +152,11 @@ export default function ( { attributes, setAttributes } ) {
 	);
 
 	return (
-		<>
+		<div { ...blockProps }>
 			{ blocksConfig.productCount === 0 ? (
 				noProductsPlaceholder()
 			) : (
-				<div
-					className={ classNames(
-						className,
-						'wp-block-woocommerce-price-filter'
-					) }
-				>
+				<>
 					{ getInspectorControls() }
 					<BlockTitle
 						className="wc-block-price-filter__title"
@@ -174,8 +169,8 @@ export default function ( { attributes, setAttributes } ) {
 					<Disabled>
 						<Block attributes={ attributes } isEditor={ true } />
 					</Disabled>
-				</div>
+				</>
 			) }
-		</>
+		</div>
 	);
 }
