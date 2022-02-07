@@ -61,6 +61,7 @@ export const defaultCartState: CartState = {
 			phone: '',
 			email: '',
 		},
+		shippingAsBilling: true,
 		items: EMPTY_CART_ITEMS,
 		itemsCount: 0,
 		itemsWeight: 0,
