@@ -2,15 +2,13 @@
  * External dependencies
  */
 import { defaultAddressFields } from '@woocommerce/settings';
-import { useEffect, useCallback, useRef } from '@wordpress/element';
+import { useCallback } from '@wordpress/element';
 
 /**
  * Internal dependencies
  */
-import {
-	useShippingDataContext,
-	useCustomerDataContext,
-} from '../providers/cart-checkout';
+import { useShippingDataContext } from '../providers/cart-checkout';
+import { useCustomerData } from './use-customer-data';
 
 /**
  * Custom hook for exposing address related functionality for the checkout address form.
@@ -24,62 +22,17 @@ export const useCheckoutAddress = () => {
 		setShippingAddress,
 		shippingAsBilling,
 		setShippingAsBilling,
-	} = useCustomerDataContext();
-
-	const currentShippingAsBilling = useRef( shippingAsBilling );
-	const previousBillingData = useRef();
+	} = useCustomerData();
 
 	/**
 	 * Sets shipping address data, and also billing if using the same address.
 	 */
-	const setShippingFields = useCallback(
-		( value ) => {
-			setShippingAddress( value );
-
-			if ( shippingAsBilling ) {
-				setBillingData( value );
-			}
-		},
-		[ shippingAsBilling, setShippingAddress, setBillingData ]
-	);
+	const setShippingFields = setShippingAddress;
 
 	/**
 	 * Sets billing address data, and also shipping if shipping is disabled.
 	 */
-	const setBillingFields = useCallback(
-		( value ) => {
-			setBillingData( value );
-
-			if ( ! needsShipping ) {
-				setShippingAddress( value );
-			}
-		},
-		[ needsShipping, setShippingAddress, setBillingData ]
-	);
-
-	// When the "Use same address" checkbox is toggled we need to update the current billing address to reflect this.
-	// This either sets the billing address to the shipping address, or restores the billing address to it's previous state.
-	useEffect( () => {
-		if ( currentShippingAsBilling.current !== shippingAsBilling ) {
-			if ( shippingAsBilling ) {
-				previousBillingData.current = billingData;
-				setBillingData( shippingAddress );
-			} else {
-				const {
-					// We need to pluck out email from previous billing data because they can be empty, causing the current email to get emptied. See issue #4155
-					/* eslint-disable no-unused-vars */
-					email,
-					/* eslint-enable no-unused-vars */
-					...billingAddress
-				} = previousBillingData.current || billingData;
-
-				setBillingData( {
-					...billingAddress,
-				} );
-			}
-			currentShippingAsBilling.current = shippingAsBilling;
-		}
-	}, [ shippingAsBilling, setBillingData, shippingAddress, billingData ] );
+	const setBillingFields = setBillingData;
 
 	const setEmail = useCallback(
 		( value ) =>
@@ -119,7 +72,6 @@ export const useCheckoutAddress = () => {
 		shippingAsBilling,
 		setShippingAsBilling,
 		showShippingFields: needsShipping,
-		showBillingFields:
-			! needsShipping || ! currentShippingAsBilling.current,
+		showBillingFields: ! needsShipping || ! shippingAsBilling,
 	};
 };
