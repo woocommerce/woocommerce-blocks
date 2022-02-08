@@ -16,6 +16,7 @@ import Noninteractive from '@woocommerce/base-components/noninteractive';
  * Internal dependencies
  */
 import PhoneNumber from '../../phone-number';
+import { useShippingAsBillingCheckbox } from '../../../../base/context/hooks/use-shipping-as-billing-checkbox';
 
 const Block = ( {
 	showCompanyField = false,
@@ -34,10 +35,10 @@ const Block = ( {
 		defaultAddressFields,
 		setShippingFields,
 		shippingFields,
-		setShippingAsBilling,
 		shippingAsBilling,
 		setShippingPhone,
 	} = useCheckoutAddress();
+	const { setShippingAsBilling } = useShippingAsBillingCheckbox();
 	const { dispatchCheckoutEvent } = useStoreEvents();
 	const { isEditor } = useEditorContext();
 
