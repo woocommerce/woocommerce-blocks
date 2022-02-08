@@ -10,7 +10,6 @@ import {
 	useProductDataContext,
 } from '@woocommerce/shared-context';
 import { withProductDataContext } from '@woocommerce/shared-hocs';
-import { isString } from '@woocommerce/types';
 
 /**
  * Internal dependencies
