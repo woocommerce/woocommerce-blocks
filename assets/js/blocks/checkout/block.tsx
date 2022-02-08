@@ -28,6 +28,7 @@ import CheckoutOrderError from './checkout-order-error';
 import { LOGIN_TO_CHECKOUT_URL, isLoginRequired, reloadPage } from './utils';
 import type { Attributes } from './types';
 import { CheckoutBlockContext } from './context';
+import { useUpdateCustomerData } from '../../base/context/hooks/use-update-customer-data';
 
 const LoginPrompt = () => {
 	return (
@@ -55,6 +56,9 @@ const Checkout = ( {
 } ): JSX.Element => {
 	const { hasOrder, customerId } = useCheckoutContext();
 	const { cartItems, cartIsLoading } = useStoreCart();
+
+	// This is here to handle syncing the checkout form with the server.
+	useUpdateCustomerData();
 
 	const {
 		allowCreateAccount,
