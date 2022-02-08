@@ -110,10 +110,10 @@ describe( 'Store Editing Templates', () => {
 			await goToSiteEditor( templateQuery );
 			await waitForCanvas();
 
-			const cvs = canvas();
-			console.log( '??', cvs === page );
-
-			await canvas().waitForSelector( SELECTORS.blocks.singleProduct );
+			await expect( canvas() ).toMatchElement(
+				SELECTORS.blocks.singleProduct,
+				{ timeout: DEFAULT_TIMEOUT }
+			);
 			expect( await getCurrentSiteEditorContent() ).toMatchSnapshot();
 		} );
 
@@ -171,8 +171,8 @@ describe( 'Store Editing Templates', () => {
 		} );
 	} );
 
-	describe.only( 'Product Archive block template', () => {
-		it.skip( 'default template from WooCommerce Blocks is available on an FSE theme', async () => {
+	describe( 'Product Archive block template', () => {
+		it( 'default template from WooCommerce Blocks is available on an FSE theme', async () => {
 			const EXPECTED_TEMPLATE = defaultTemplateProps( 'Product Archive' );
 
 			await goToSiteEditor( 'postType=wp_template' );
@@ -192,7 +192,7 @@ describe( 'Store Editing Templates', () => {
 			}
 		} );
 
-		it.skip( 'should contain the "WooCommerce Product Archive Block" legacy template', async () => {
+		it( 'should contain the "WooCommerce Product Archive Block" legacy template', async () => {
 			const templateQuery = addQueryArgs( '', {
 				postId: 'woocommerce/woocommerce//archive-product',
 				postType: 'wp_template',
