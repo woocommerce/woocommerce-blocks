@@ -1,3 +1,5 @@
+import { URL } from 'url';
+
 import {
 	activateTheme,
 	canvas,
@@ -11,12 +13,29 @@ import {
 	visitPostOfType,
 } from '@woocommerce/blocks-test-utils';
 import {
+	BASE_URL,
 	DEFAULT_TIMEOUT,
 	getAllTemplates,
 	goToSiteEditor,
 	saveTemplate,
 	waitForCanvas,
 } from '../../utils';
+
+async function addCustomParagraph(
+	templateSlug,
+	customText = CUSTOMIZED_STRING
+) {
+	const templateQuery = addQueryArgs( '', {
+		postId: `woocommerce/woocommerce//${ templateSlug }`,
+		postType: 'wp_template',
+	} );
+
+	await goToSiteEditor( templateQuery );
+	await waitForCanvas();
+	await insertBlock( 'Paragraph' );
+	await page.keyboard.type( customText );
+	await saveTemplate();
+}
 
 function blockSelector( id ) {
 	return `[data-type="${ id }"]`;
@@ -39,6 +58,7 @@ function legacyBlockSelector( title ) {
 const SELECTORS = {
 	blocks: {
 		paragraph: blockSelector( 'core/paragraph' ),
+		productArchive: legacyBlockSelector( 'WooCommerce Legacy Template' ),
 		singleProduct: legacyBlockSelector(
 			'WooCommerce Single Product Block'
 		),
@@ -103,16 +123,7 @@ describe( 'Store Editing Templates', () => {
 				hasActions: true,
 			};
 
-			const templateQuery = addQueryArgs( '', {
-				postId: 'woocommerce/woocommerce//single-product',
-				postType: 'wp_template',
-			} );
-
-			await goToSiteEditor( templateQuery );
-			await waitForCanvas();
-			await insertBlock( 'Paragraph' );
-			await page.keyboard.type( CUSTOMIZED_STRING );
-			await saveTemplate();
+			await addCustomParagraph( 'single-product' );
 
 			await goToSiteEditor( 'postType=wp_template' );
 			const templates = await getAllTemplates();
@@ -152,6 +163,92 @@ describe( 'Store Editing Templates', () => {
 			const permalink = await getNormalPagePermalink();
 
 			await page.goto( permalink );
+
+			await expect( page ).toMatchElement( 'p', {
+				text: CUSTOMIZED_STRING,
+				timeout: DEFAULT_TIMEOUT,
+			} );
+		} );
+	} );
+
+	describe.only( 'Product Archive block template', () => {
+		it.skip( 'default template from WooCommerce Blocks is available on an FSE theme', async () => {
+			const EXPECTED_TEMPLATE = defaultTemplateProps( 'Product Archive' );
+
+			await goToSiteEditor( 'postType=wp_template' );
+
+			const templates = await getAllTemplates();
+
+			try {
+				expect( templates ).toContainEqual( EXPECTED_TEMPLATE );
+			} catch ( ok ) {
+				// Depending on the speed of the execution and whether Chrome is headless or not
+				// the id might be parsed or not
+
+				expect( templates ).toContainEqual( {
+					...EXPECTED_TEMPLATE,
+					addedBy: WOOCOMMERCE_PARSED_ID,
+				} );
+			}
+		} );
+
+		it.skip( 'should contain the "WooCommerce Product Archive Block" legacy template', async () => {
+			const templateQuery = addQueryArgs( '', {
+				postId: 'woocommerce/woocommerce//archive-product',
+				postType: 'wp_template',
+			} );
+
+			await goToSiteEditor( templateQuery );
+			await waitForCanvas();
+
+			await expect( canvas() ).toMatchElement(
+				SELECTORS.blocks.productArchive,
+				{ timeout: DEFAULT_TIMEOUT }
+			);
+			expect( await getCurrentSiteEditorContent() ).toMatchSnapshot();
+		} );
+
+		it( 'should show the action menu if the template has been customized by the user', async () => {
+			const EXPECTED_TEMPLATE = {
+				...defaultTemplateProps( 'Product Archive' ),
+				hasActions: true,
+			};
+
+			await addCustomParagraph( 'archive-product' );
+
+			await goToSiteEditor( 'postType=wp_template' );
+			const templates = await getAllTemplates();
+
+			try {
+				expect( templates ).toContainEqual( EXPECTED_TEMPLATE );
+			} catch ( ok ) {
+				// Depending on the speed of the execution and whether Chrome is headless or not
+				// the id might be parsed or not
+
+				expect( templates ).toContainEqual( {
+					...EXPECTED_TEMPLATE,
+					addedBy: WOOCOMMERCE_PARSED_ID,
+				} );
+			}
+		} );
+
+		it( 'should preserve and correctly show the user customization on the back-end', async () => {
+			const templateQuery = addQueryArgs( '', {
+				postId: 'woocommerce/woocommerce//archive-product',
+				postType: 'wp_template',
+			} );
+
+			await goToSiteEditor( templateQuery );
+			await waitForCanvas();
+
+			await expect( canvas() ).toMatchElement(
+				SELECTORS.blocks.paragraph,
+				{ text: CUSTOMIZED_STRING, timeout: DEFAULT_TIMEOUT }
+			);
+		} );
+
+		it( 'should show the user customization on the front-end', async () => {
+			await page.goto( new URL( '/?post_type=product', BASE_URL ) );
 
 			await expect( page ).toMatchElement( 'p', {
 				text: CUSTOMIZED_STRING,
