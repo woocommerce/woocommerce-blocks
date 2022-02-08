@@ -92,7 +92,9 @@ export const useUpdateCustomerData = (): void => {
 	} = useCustomerData();
 
 	// Store values last sent to the server in a ref to avoid requests unless important fields are changed.
-	const previousCustomerData = useRef< CustomerData >( customerData );
+	const previousCustomerData = useRef<
+		Omit< CustomerData, 'shippingAsBilling' >
+	>( customerData );
 
 	// When the cart data is resolved from server for the first time (using cartIsLoading) we need to update
 	// the initial billing and shipping values to respect customer data from the server.
