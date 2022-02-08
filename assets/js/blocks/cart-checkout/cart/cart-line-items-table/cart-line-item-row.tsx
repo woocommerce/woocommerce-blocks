@@ -200,6 +200,12 @@ const CartLineItemRow = forwardRef< HTMLTableRowElement, CartLineItemRowProps >(
 			validation: productPriceValidation,
 		} );
 
+		// If this item is set as a Sync Force Sell (by the Woocommerce Force Sells plugin).
+		// we want to disable the quantity selector and remove item link
+		const isSyncForcedItem = !! itemData.find(
+			( item ) => item?.name === 'Linked to'
+		);
+
 		return (
 			<tr
 				className={ classnames(
@@ -288,7 +294,9 @@ const CartLineItemRow = forwardRef< HTMLTableRowElement, CartLineItemRowProps >(
 							{ ! soldIndividually &&
 								!! quantityLimits.editable && (
 									<QuantitySelector
-										disabled={ isPendingDelete }
+										disabled={
+											isPendingDelete || isSyncForcedItem
+										}
 										quantity={ quantity }
 										minimum={ quantityLimits.minimum }
 										maximum={ quantityLimits.maximum }
@@ -326,7 +334,7 @@ const CartLineItemRow = forwardRef< HTMLTableRowElement, CartLineItemRowProps >(
 										)
 									);
 								} }
-								disabled={ isPendingDelete }
+								disabled={ isPendingDelete || isSyncForcedItem }
 							>
 								{ __(
 									'Remove item',
