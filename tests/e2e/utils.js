@@ -1,6 +1,7 @@
 /**
  * External dependencies
  */
+import config from 'config';
 import {
 	disableSiteEditorWelcomeGuide,
 	openGlobalBlockInserter,
@@ -19,6 +20,7 @@ import { WP_ADMIN_DASHBOARD } from '@woocommerce/e2e-utils';
  * @typedef {{ addedBy: string, hasActions: boolean, templateTitle: string }} TemplateTableItem
  */
 
+export const BASE_URL = config.get( 'url' );
 export const DEFAULT_TIMEOUT = 30000;
 
 const SELECTORS = {
