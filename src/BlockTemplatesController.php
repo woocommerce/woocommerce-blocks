@@ -80,6 +80,20 @@ class BlockTemplatesController {
 			return BlockTemplateUtils::build_template_result_from_file( $template_object, $template_type );
 		}
 
+		// This is a real edge-case, we are supporting users who have saved templates under the deprecated slug. See its definition for more information.
+		// You can likely ignore this code unless you're supporting/debugging early customised templates.
+		if ( BlockTemplateUtils::DEPRECATED_PLUGIN_SLUG === strtolower( $template_id ) ) {
+			// Because we are using get_block_templates we have to unhook this method to prevent a recursive loop where this filter is applied.
+			remove_filter( 'pre_get_block_file_template', array( $this, 'get_block_file_template' ), 10, 3 );
+			$template_with_deprecated_id = BlockTemplateUtils::get_block_template( $id, $template_type );
+			// Let's hook this method back now that we have used the function.
+			add_filter( 'pre_get_block_file_template', array( $this, 'get_block_file_template' ), 10, 3 );
+
+			if ( null !== $template_with_deprecated_id ) {
+				return $template_with_deprecated_id;
+			}
+		}
+
 		// If we are not dealing with a WooCommerce template let's return early and let it continue through the process.
 		if ( BlockTemplateUtils::PLUGIN_SLUG !== $template_id ) {
 			return $template;
@@ -218,11 +232,6 @@ class BlockTemplatesController {
 	 * @return int[]|\WP_Post[] An array of found templates.
 	 */
 	public function get_block_templates_from_db( $slugs = array(), $template_type = 'wp_template' ) {
-		// This was the previously incorrect slug used to save DB templates against.
-		// To maintain compatibility with users sites who have already customised WooCommerce block templates using this slug we have to still use it to query those.
-		// More context found here: https://github.com/woocommerce/woocommerce-gutenberg-products-block/issues/5423.
-		$invalid_plugin_slug = 'woocommerce';
-
 		$check_query_args = array(
 			'post_type'      => $template_type,
 			'posts_per_page' => -1,
@@ -231,7 +240,7 @@ class BlockTemplatesController {
 				array(
 					'taxonomy' => 'wp_theme',
 					'field'    => 'name',
-					'terms'    => array( $invalid_plugin_slug, BlockTemplateUtils::PLUGIN_SLUG, get_stylesheet() ),
+					'terms'    => array( BlockTemplateUtils::DEPRECATED_PLUGIN_SLUG, BlockTemplateUtils::PLUGIN_SLUG, get_stylesheet() ),
 				),
 			),
 		);

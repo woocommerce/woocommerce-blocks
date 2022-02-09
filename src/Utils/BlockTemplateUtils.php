@@ -40,6 +40,16 @@ class BlockTemplateUtils {
 	const PLUGIN_SLUG = 'woocommerce/woocommerce';
 
 	/**
+	 * Deprecated WooCommerce plugin slug
+	 *
+	 * For supporting users who have customized templates under the incorrect plugin slug during the first release.
+	 * More context found here: https://github.com/woocommerce/woocommerce-gutenberg-products-block/issues/5423.
+	 *
+	 * @var string
+	 */
+	const DEPRECATED_PLUGIN_SLUG = 'woocommerce';
+
+	/**
 	 * Returns an array containing the references of
 	 * the passed blocks and their inner blocks.
 	 *
@@ -153,7 +163,7 @@ class BlockTemplateUtils {
 		// We are checking 'woocommerce' to maintain legacy templates which are saved to the DB,
 		// prior to updating to use the correct slug.
 		// More information found here: https://github.com/woocommerce/woocommerce-gutenberg-products-block/issues/5423.
-		if ( self::PLUGIN_SLUG === $theme || 'woocommerce' === strtolower( $theme ) ) {
+		if ( self::PLUGIN_SLUG === $theme || self::DEPRECATED_PLUGIN_SLUG === strtolower( $theme ) ) {
 			$template->origin = 'plugin';
 		}
 
