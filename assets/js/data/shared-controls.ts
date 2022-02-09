@@ -63,28 +63,79 @@ const setNonceOnFetch = ( headers: Headers ): void => {
 	}
 };
 
+interface BatchAbortController {
+	paths: string[];
+	controller: AbortController;
+	id: number;
+}
+let controllers: BatchAbortController[] = [];
+
+const findAbortControllerForBatchRequest = (
+	requests: APIFetchOptions[]
+): AbortController | undefined => {
+	const paths = requests.map( ( request ) => request?.path );
+	const matchedController = controllers.find( ( controller ) => {
+		return controller.paths.every( ( path ) => paths.includes( path ) );
+	} );
+	return matchedController?.controller;
+};
+
+const addAbortControllerForBatchRequest = (
+	requests: APIFetchOptions[]
+): BatchAbortController => {
+	const paths = requests
+		.map( ( request ) => request.path )
+		.filter( Boolean ) as string[];
+	const newController = {
+		paths,
+		controller: new AbortController(),
+		id: controllers.length,
+	};
+	controllers.push( newController );
+	return newController;
+};
+
 /**
  * Trigger a fetch from the API using the batch endpoint.
  */
 const triggerBatchFetch = ( keys: readonly APIFetchOptions[] ) => {
+	const requests = keys.map( ( request: APIFetchOptions ) => {
+		return {
+			...request,
+			body: request?.data,
+		};
+	} );
+	const matchedAbortController = findAbortControllerForBatchRequest(
+		requests
+	);
+	if ( matchedAbortController ) {
+		matchedAbortController.abort();
+	}
+	const { id: requestId, controller } = addAbortControllerForBatchRequest(
+		requests
+	);
 	return triggerFetch( {
 		path: `/wc/store/batch`,
 		method: 'POST',
+		signal: controller?.signal,
 		data: {
-			requests: keys.map( ( request: APIFetchOptions ) => {
-				return {
-					...request,
-					body: request?.data,
-				};
-			} ),
+			requests,
 		},
-	} ).then( ( response: unknown ) => {
-		assertBatchResponseIsValid( response );
-		return keys.map(
-			( key, index: number ) =>
-				response.responses[ index ] || EMPTY_OBJECT
-		);
-	} );
+	} )
+		.then( ( response: unknown ) => {
+			assertBatchResponseIsValid( response );
+			return keys.map(
+				( key, index: number ) =>
+					response.responses[ index ] || EMPTY_OBJECT
+			);
+		} )
+		.finally( () => {
+			// Reset controllers to not contain this one, now the requst has expired
+			controllers = controllers.filter(
+				( batchAbortController ) =>
+					batchAbortController.id !== requestId
+			);
+		} );
 };
 
 /**
