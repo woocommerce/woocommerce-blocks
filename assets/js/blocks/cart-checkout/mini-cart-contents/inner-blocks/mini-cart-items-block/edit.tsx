@@ -20,7 +20,6 @@ export const Edit = (): JSX.Element => {
 		<div { ...blockProps }>
 			<InnerBlocks
 				template={ defaultTemplate }
-				renderAppender={ InnerBlocks.ButtonBlockAppender }
 				templateLock={ false }
 				allowedBlocks={ getMiniCartAllowedBlocks() }
 			/>
