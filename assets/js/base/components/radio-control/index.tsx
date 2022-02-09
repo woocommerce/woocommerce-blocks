@@ -15,7 +15,6 @@ const RadioControl = ( {
 	className = '',
 	id,
 	selected,
-	defaultChecked,
 	onChange = () => void 0,
 	options = [],
 }: RadioControlProps ): JSX.Element | null => {
@@ -37,8 +36,7 @@ const RadioControl = ( {
 				<RadioControlOption
 					key={ `${ radioControlId }-${ option.value }` }
 					name={ `radio-control-${ radioControlId }` }
-					checked={ selected ? option.value === selected : undefined }
-					defaultChecked={ option.value === defaultChecked }
+					checked={ option.value === selected }
 					option={ option }
 					onChange={ ( value: string ) => {
 						onChange( value );
@@ -53,3 +51,5 @@ const RadioControl = ( {
 };
 
 export default RadioControl;
+export { default as RadioControlOption } from './option';
+export { default as RadioControlOptionLayout } from './option-layout';

@@ -5,13 +5,11 @@ import type { ReactElement } from 'react';
 
 export interface RadioControlProps {
 	// Class name for control.
-	className?: string | undefined;
+	className?: string;
 	// ID for the control.
 	id?: string;
 	// Selected should be passed if using this as a controlled component.
-	selected?: string | undefined;
-	// For uncontrolled components, this sets the default checked option.
-	defaultChecked?: string | undefined;
+	selected: string;
 	// Fired when an option is changed.
 	onChange: ( value: string ) => void;
 	// List of radio control options.
@@ -19,27 +17,24 @@ export interface RadioControlProps {
 }
 
 export interface RadioControlOptionProps {
-	checked?: boolean | undefined;
-	defaultChecked?: boolean | undefined;
+	checked: boolean;
 	name?: string;
 	onChange: ( value: string ) => void;
 	option: RadioControlOption;
 }
 
-export interface RadioControlOption {
-	value: string;
+interface RadioControlOptionContent {
 	label: string;
 	description?: string | ReactElement | undefined;
 	secondaryLabel?: string | ReactElement | undefined;
 	secondaryDescription?: string | undefined;
+}
+
+export interface RadioControlOption extends RadioControlOptionContent {
+	value: string;
 	onChange?: ( value: string ) => void;
 }
 
-export interface RadioControlOptionLayout {
+export interface RadioControlOptionLayout extends RadioControlOptionContent {
 	id?: string;
-	label: string;
-	description?: string | ReactElement | undefined;
-	secondaryLabel?: string | ReactElement | undefined;
-	secondaryDescription?: string | undefined;
-	onChange?: ( value: string ) => void;
 }
