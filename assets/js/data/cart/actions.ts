@@ -243,6 +243,10 @@ export function* applyCoupon(
 		yield receiveApplyingCoupon( '' );
 		yield updateCartFragments();
 	} catch ( error ) {
+		// Error will be undefined if the batch request was cancelled, so we shouldn't do anything.
+		if ( error === undefined ) {
+			return false;
+		}
 		yield receiveError( error );
 		yield receiveApplyingCoupon( '' );
 
@@ -284,6 +288,10 @@ export function* removeCoupon(
 		yield receiveRemovingCoupon( '' );
 		yield updateCartFragments();
 	} catch ( error ) {
+		// Error will be undefined if the batch request was cancelled, so we shouldn't do anything.
+		if ( error === undefined ) {
+			return false;
+		}
 		yield receiveError( error );
 		yield receiveRemovingCoupon( '' );
 
@@ -329,6 +337,10 @@ export function* addItemToCart(
 		yield triggerAddedToCartEvent( { preserveCartData: true } );
 		yield updateCartFragments();
 	} catch ( error ) {
+		// Error will be undefined if the batch request was cancelled, so we shouldn't do anything.
+		if ( error === undefined ) {
+			return;
+		}
 		yield receiveError( error );
 
 		// If updated cart state was returned, also update that.
@@ -368,6 +380,10 @@ export function* removeItemFromCart(
 		yield receiveCart( response );
 		yield updateCartFragments();
 	} catch ( error ) {
+		// Error will be undefined if the batch request was cancelled, so we shouldn't do anything.
+		if ( error === undefined ) {
+			return;
+		}
 		yield receiveError( error );
 
 		// If updated cart state was returned, also update that.
@@ -411,6 +427,10 @@ export function* changeCartItemQuantity(
 		yield receiveCart( response );
 		yield updateCartFragments();
 	} catch ( error ) {
+		// Error will be undefined if the batch request was cancelled, so we shouldn't do anything.
+		if ( error === undefined ) {
+			return;
+		}
 		yield receiveError( error );
 
 		// If updated cart state was returned, also update that.
@@ -446,6 +466,10 @@ export function* selectShippingRate(
 
 		yield receiveCart( response );
 	} catch ( error ) {
+		// Error will be undefined if the batch request was cancelled, so we shouldn't do anything.
+		if ( error === undefined ) {
+			return false;
+		}
 		yield receiveError( error );
 		yield shippingRatesBeingSelected( false );
 
@@ -483,6 +507,10 @@ export function* updateCustomerData(
 
 		yield receiveCart( response );
 	} catch ( error ) {
+		// Error will be undefined if the batch request was cancelled, so we shouldn't do anything.
+		if ( error === undefined ) {
+			return false;
+		}
 		yield receiveError( error );
 		yield updatingCustomerData( false );
 
