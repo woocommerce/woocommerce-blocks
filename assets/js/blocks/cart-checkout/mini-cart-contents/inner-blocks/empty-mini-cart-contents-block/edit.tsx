@@ -20,7 +20,10 @@ export const Edit = (): JSX.Element => {
 				currentView !== 'woocommerce/empty-mini-cart-contents-block'
 			}
 		>
-			<InnerBlocks allowedBlocks={ getMiniCartAllowedBlocks() } />
+			<InnerBlocks
+				allowedBlocks={ getMiniCartAllowedBlocks() }
+				renderAppender={ InnerBlocks.ButtonBlockAppender }
+			/>
 		</div>
 	);
 };

@@ -94,7 +94,11 @@ export const Edit = ( { clientId }: { clientId: string } ): JSX.Element => {
 			{ ...blockProps }
 			hidden={ currentView !== 'woocommerce/empty-cart-block' }
 		>
-			<InnerBlocks template={ defaultTemplate } templateLock={ false } />
+			<InnerBlocks
+				template={ defaultTemplate }
+				templateLock={ false }
+				renderAppender={ InnerBlocks.ButtonBlockAppender }
+			/>
 		</div>
 	);
 };

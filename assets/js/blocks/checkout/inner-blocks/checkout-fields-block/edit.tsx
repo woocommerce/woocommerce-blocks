@@ -64,6 +64,7 @@ export const Edit = ( {
 					allowedBlocks={ allowedBlocks }
 					templateLock={ false }
 					template={ defaultTemplate }
+					renderAppender={ InnerBlocks.ButtonBlockAppender }
 				/>
 			</form>
 		</Main>
