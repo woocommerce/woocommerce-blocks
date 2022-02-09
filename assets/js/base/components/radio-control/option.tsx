@@ -7,8 +7,15 @@ import classnames from 'classnames';
  * Internal dependencies
  */
 import OptionLayout from './option-layout';
+import type { RadioControlOptionProps } from './types';
 
-const Option = ( { checked, name, onChange, option } ) => {
+const Option = ( {
+	checked,
+	defaultChecked,
+	name,
+	onChange,
+	option,
+}: RadioControlOptionProps ): JSX.Element => {
 	const {
 		value,
 		label,
@@ -16,7 +23,8 @@ const Option = ( { checked, name, onChange, option } ) => {
 		secondaryLabel,
 		secondaryDescription,
 	} = option;
-	const onChangeValue = ( event ) => onChange( event.target.value );
+	const onChangeValue = ( event: React.ChangeEvent< HTMLInputElement > ) =>
+		onChange( event.target.value );
 
 	return (
 		<label
@@ -36,6 +44,7 @@ const Option = ( { checked, name, onChange, option } ) => {
 				value={ value }
 				onChange={ onChangeValue }
 				checked={ checked }
+				defaultChecked={ defaultChecked }
 				aria-describedby={ classnames( {
 					[ `${ name }-${ value }__label` ]: label,
 					[ `${ name }-${ value }__secondary-label` ]: secondaryLabel,

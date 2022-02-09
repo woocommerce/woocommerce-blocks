@@ -43,7 +43,7 @@ const PackageRates = ( {
 				onChange={ ( selectedRateId: string ) => {
 					onSelectRate( selectedRateId );
 				} }
-				selected={ selected }
+				defaultChecked={ selected }
 				options={ rates.map( renderOption ) }
 			/>
 		);
