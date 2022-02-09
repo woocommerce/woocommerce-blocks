@@ -5,6 +5,7 @@ import { __ } from '@wordpress/i18n';
 import triggerFetch from '@wordpress/api-fetch';
 import { useEffect, useCallback, useState } from '@wordpress/element';
 import { decodeEntities } from '@wordpress/html-entities';
+import { triggerAddedToCartEvent } from '@woocommerce/base-utils';
 
 /**
  * Internal dependencies
@@ -13,7 +14,6 @@ import { useAddToCartFormContext } from '../../form-state';
 import { useValidationContext } from '../../../validation';
 import { useStoreCart } from '../../../../hooks/cart/use-store-cart';
 import { useStoreNotices } from '../../../../hooks/use-store-notices';
-import { triggerAddedToCartEvent } from '@woocommerce/base-utils';
 
 /**
  * FormSubmit.
