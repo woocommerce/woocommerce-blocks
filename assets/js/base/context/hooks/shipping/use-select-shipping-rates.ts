@@ -7,21 +7,32 @@ import { CART_STORE_KEY as storeKey } from '@woocommerce/block-data';
 import { useThrowError } from '@woocommerce/base-hooks';
 
 /**
- * This is a custom hook for selecting shipping rates
+ * Internal dependencies
+ */
+import { useStoreEvents } from '../use-store-events';
+
+/**
+ * This is a custom hook for selecting shipping rates for a shipping package.
  *
  * @return {Object} This hook will return an object with these properties:
  * 		- selectShippingRate: A function that immediately returns the selected rate and dispatches an action generator.
  *		- isSelectingRate: True when rates are being resolved to the API.
  */
 export const useSelectShippingRates = (): {
+	// Returns a function that accepts a shipping rate ID and a package ID.
 	selectShippingRate: (
 		newShippingRateId: string,
 		packageId: string | number
 	) => unknown;
+	// True when a rate is currently being selected and persisted to the server.
 	isSelectingRate: boolean;
 } => {
 	const throwError = useThrowError();
-	const { selectShippingRate } = ( useDispatch( storeKey ) as {
+	const { dispatchCheckoutEvent } = useStoreEvents();
+
+	const { selectShippingRate: dispatchSelectShippingRate } = ( useDispatch(
+		storeKey
+	) as {
 		selectShippingRate: unknown;
 	} ) as {
 		selectShippingRate: (
@@ -30,17 +41,21 @@ export const useSelectShippingRates = (): {
 		) => Promise< unknown >;
 	};
 
-	// Sets a rate for a package in state (so changes are shown right away to consumers of the hook) and in the stores.
-	const setRate = useCallback(
+	// Selects a shipping rate, fires an event, and catch any errors.
+	const selectShippingRate = useCallback(
 		( newShippingRateId, packageId ) => {
-			selectShippingRate( newShippingRateId, packageId ).catch(
-				( error ) => {
-					// we throw this error because an error on selecting a rate is problematic.
+			dispatchSelectShippingRate( newShippingRateId, packageId )
+				.then( () => {
+					dispatchCheckoutEvent( 'set-selected-shipping-rate', {
+						shippingRateId: newShippingRateId,
+					} );
+				} )
+				.catch( ( error ) => {
+					// Throw an error because an error when selecting a rate is problematic.
 					throwError( error );
-				}
-			);
+				} );
 		},
-		[ throwError, selectShippingRate ]
+		[ dispatchSelectShippingRate, dispatchCheckoutEvent, throwError ]
 	);
 
 	// See if rates are being selected.
@@ -49,7 +64,7 @@ export const useSelectShippingRates = (): {
 	}, [] );
 
 	return {
-		selectShippingRate: setRate,
+		selectShippingRate,
 		isSelectingRate,
 	};
 };
