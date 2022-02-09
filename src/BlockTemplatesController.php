@@ -50,7 +50,7 @@ class BlockTemplatesController {
 	 */
 	protected function init() {
 		add_action( 'template_redirect', array( $this, 'render_block_template' ) );
-		add_filter( 'pre_get_block_file_template', array( $this, 'get_woocommerce_block_file_template' ), 10, 3 );
+		add_filter( 'pre_get_block_file_template', array( $this, 'get_block_file_template' ), 10, 3 );
 		add_filter( 'get_block_templates', array( $this, 'add_block_templates' ), 10, 3 );
 	}
 
@@ -65,7 +65,7 @@ class BlockTemplatesController {
 	 *
 	 * @return mixed|\WP_Block_Template|\WP_Error
 	 */
-	public function get_woocommerce_block_file_template( $template, $id, $template_type ) {
+	public function get_block_file_template( $template, $id, $template_type ) {
 		$template_name_parts = explode( '//', $id );
 
 		if ( count( $template_name_parts ) < 2 ) {
@@ -89,46 +89,6 @@ class BlockTemplatesController {
 
 		$template_object = BlockTemplateUtils::create_new_block_template_object( $template_file_path, $template_type, $template_slug );
 		return BlockTemplateUtils::build_template_result_from_file( $template_object, $template_type );
-	}
-
-	/**
-	 * Runs on the get_block_template hook. If a template is already found and passed to this function, then return it
-	 * and don't run.
-	 * If a template is *not* passed, try to look for one that matches the ID in the database, if that's not found defer
-	 * to Blocks templates files. Priority goes: DB-Theme, DB-Blocks, Filesystem-Theme, Filesystem-Blocks.
-	 *
-	 * @param \WP_Block_Template $template The found block template.
-	 * @param string             $id Template unique identifier (example: theme_slug//template_slug).
-	 * @param array              $template_type wp_template or wp_template_part.
-	 *
-	 * @return mixed|null
-	 */
-	public function get_single_block_template( $template, $id, $template_type ) {
-
-		// The template was already found before the filter runs, just return it immediately.
-		if ( null !== $template ) {
-			return $template;
-		}
-
-		$template_name_parts = explode( '//', $id );
-		if ( count( $template_name_parts ) < 2 ) {
-			return $template;
-		}
-		list( , $slug ) = $template_name_parts;
-
-		// If this blocks template doesn't exist then we should just skip the function and let Gutenberg handle it.
-		if ( ! $this->block_template_is_available( $slug, $template_type ) ) {
-			return $template;
-		}
-
-		$available_templates = $this->get_block_templates_from_woocommerce(
-			array( $slug ),
-			$this->get_block_templates_from_db( array( $slug ), $template_type ),
-			$template_type
-		);
-		return ( is_array( $available_templates ) && count( $available_templates ) > 0 )
-			? BlockTemplateUtils::build_template_result_from_file( $available_templates[0], $available_templates[0]->type )
-			: $template;
 	}
 
 	/**
