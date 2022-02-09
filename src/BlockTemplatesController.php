@@ -37,8 +37,7 @@ class BlockTemplatesController {
 	public function __construct() {
 		// This feature is gated for WooCommerce versions 6.0.0 and above.
 		if ( defined( 'WC_VERSION' ) && version_compare( WC_VERSION, '6.0.0', '>=' ) ) {
-			$root_path = plugin_dir_path( __DIR__ ) . self::TEMPLATES_ROOT_DIR . DIRECTORY_SEPARATOR;
-
+			$root_path                      = plugin_dir_path( __DIR__ ) . self::TEMPLATES_ROOT_DIR . DIRECTORY_SEPARATOR;
 			$this->templates_directory      = $root_path . BlockTemplateUtils::DIRECTORY_NAMES['TEMPLATES'];
 			$this->template_parts_directory = $root_path . BlockTemplateUtils::DIRECTORY_NAMES['TEMPLATE_PARTS'];
 			$this->init();
@@ -55,7 +54,7 @@ class BlockTemplatesController {
 	}
 
 	/**
-	 * This function checks if there's a blocks template file in `woo-gutenberg-products-block/templates/templates/`
+	 * This function checks if there's a block template file in `woo-gutenberg-products-block/templates/templates/`
 	 * to return to pre_get_posts short-circuiting the query in Gutenberg.
 	 *
 	 * @param \WP_Block_Template|null $template Return a block template object to short-circuit the default query,
@@ -74,21 +73,34 @@ class BlockTemplatesController {
 
 		list( $template_id, $template_slug ) = $template_name_parts;
 
+		// If the theme has an archive-product.html template, but not a taxonomy-product_cat/tag.html template let's use the themes archive-product.html template.
+		if ( BlockTemplateUtils::template_is_eligible_for_product_archive_fallback( $template_slug ) ) {
+			$template_path   = BlockTemplateUtils::get_theme_template_path( 'archive-product' );
+			$template_object = BlockTemplateUtils::create_new_block_template_object( $template_path, $template_type, $template_slug, true );
+			return BlockTemplateUtils::build_template_result_from_file( $template_object, $template_type );
+		}
+
 		// If we are not dealing with a WooCommerce template let's return early and let it continue through the process.
 		if ( BlockTemplateUtils::PLUGIN_SLUG !== $template_id ) {
 			return $template;
 		}
 
-		// If we don't have a template lets let Gutenberg do it's thing.
+		// If we don't have a template let Gutenberg do its thing.
 		if ( ! $this->block_template_is_available( $template_slug, $template_type ) ) {
 			return $template;
 		}
 
 		$directory          = $this->get_templates_directory( $template_type );
 		$template_file_path = $directory . '/' . $template_slug . '.html';
+		$template_object    = BlockTemplateUtils::create_new_block_template_object( $template_file_path, $template_type, $template_slug );
+		$template_built     = BlockTemplateUtils::build_template_result_from_file( $template_object, $template_type );
 
-		$template_object = BlockTemplateUtils::create_new_block_template_object( $template_file_path, $template_type, $template_slug );
-		return BlockTemplateUtils::build_template_result_from_file( $template_object, $template_type );
+		if ( null !== $template_built ) {
+			return $template_built;
+		}
+
+		// Hand back over to Gutenberg if we can't find a template.
+		return $template;
 	}
 
 	/**
