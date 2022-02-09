@@ -20,8 +20,10 @@ const EmptyMiniCartContentsBlock = ( {
 	const elementRef = useRef< HTMLDivElement >( null );
 
 	useEffect( () => {
-		elementRef.current?.focus();
-	} );
+		if ( cartItems.length === 0 && ! cartIsLoading ) {
+			elementRef.current?.focus();
+		}
+	}, [ cartItems, cartIsLoading ] );
 
 	if ( cartIsLoading || cartItems.length > 0 ) {
 		return null;
@@ -29,7 +31,7 @@ const EmptyMiniCartContentsBlock = ( {
 
 	return (
 		<div
-			tabIndex={ 0 }
+			tabIndex={ -1 }
 			ref={ elementRef }
 			className="wp-block-woocommerce-empty-mini-cart-contents-block"
 		>
