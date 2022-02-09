@@ -130,7 +130,7 @@ const triggerBatchFetch = ( keys: readonly APIFetchOptions[] ) => {
 			);
 		} )
 		.finally( () => {
-			// Reset controllers to not contain this one, now the requst has expired
+			// Reset controllers to not contain this one, now the request has completed.
 			controllers = controllers.filter(
 				( batchAbortController ) =>
 					batchAbortController.id !== requestId
