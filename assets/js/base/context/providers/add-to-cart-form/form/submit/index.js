@@ -13,6 +13,7 @@ import { useAddToCartFormContext } from '../../form-state';
 import { useValidationContext } from '../../../validation';
 import { useStoreCart } from '../../../../hooks/cart/use-store-cart';
 import { useStoreNotices } from '../../../../hooks/use-store-notices';
+import { triggerAddedToCartEvent } from '@woocommerce/base-utils';
 
 /**
  * FormSubmit.
@@ -107,6 +108,7 @@ const FormSubmit = () => {
 					} else {
 						receiveCart( response );
 					}
+					triggerAddedToCartEvent( { preserveCartData: true } );
 					dispatchActions.setAfterProcessing( response );
 					setIsSubmitting( false );
 				} );
