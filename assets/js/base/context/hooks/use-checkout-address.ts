@@ -1,7 +1,7 @@
 /**
  * External dependencies
  */
-import { defaultAddressFields } from '@woocommerce/settings';
+import { defaultAddressFields, AddressFields } from '@woocommerce/settings';
 import { useCallback } from '@wordpress/element';
 
 /**
@@ -11,11 +11,21 @@ import {
 	useShippingDataContext,
 	useCustomerDataContext,
 } from '../providers/cart-checkout';
+import type { CustomerDataContextType } from '../providers/cart-checkout/customer/types';
+
+interface CheckoutAddress extends Partial< CustomerDataContextType > {
+	setEmail: ( value: string ) => void;
+	setPhone: ( value: string ) => void;
+	setShippingPhone: ( value: string ) => void;
+	defaultAddressFields: AddressFields;
+	showShippingFields: boolean;
+	showBillingFields: boolean;
+}
 
 /**
  * Custom hook for exposing address related functionality for the checkout address form.
  */
-export const useCheckoutAddress = () => {
+export const useCheckoutAddress = (): CheckoutAddress => {
 	const { needsShipping } = useShippingDataContext();
 	const {
 		billingData,
