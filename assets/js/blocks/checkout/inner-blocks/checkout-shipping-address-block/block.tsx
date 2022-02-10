@@ -32,8 +32,8 @@ const Block = ( {
 } ): JSX.Element => {
 	const {
 		defaultAddressFields,
-		setShippingFields,
-		shippingFields,
+		setShippingAddress,
+		shippingAddress,
 		setShippingAsBilling,
 		shippingAsBilling,
 		setShippingPhone,
@@ -69,10 +69,10 @@ const Block = ( {
 					id="shipping"
 					type="shipping"
 					onChange={ ( values: Record< string, unknown > ) => {
-						setShippingFields( values );
+						setShippingAddress( values );
 						dispatchCheckoutEvent( 'set-shipping-address' );
 					} }
-					values={ shippingFields }
+					values={ shippingAddress }
 					fields={ Object.keys( defaultAddressFields ) }
 					fieldConfig={ addressFieldsConfig }
 				/>
@@ -80,7 +80,7 @@ const Block = ( {
 					<PhoneNumber
 						id="shipping-phone"
 						isRequired={ requirePhoneField }
-						value={ shippingFields.phone }
+						value={ shippingAddress.phone }
 						onChange={ ( value ) => {
 							setShippingPhone( value );
 							dispatchCheckoutEvent( 'set-phone-number', {

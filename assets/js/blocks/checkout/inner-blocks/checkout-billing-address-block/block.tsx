@@ -30,8 +30,8 @@ const Block = ( {
 } ): JSX.Element => {
 	const {
 		defaultAddressFields,
-		billingFields,
-		setBillingFields,
+		billingData,
+		setBillingData,
 		setPhone,
 	} = useCheckoutAddress();
 	const { dispatchCheckoutEvent } = useStoreEvents();
@@ -64,17 +64,17 @@ const Block = ( {
 				id="billing"
 				type="billing"
 				onChange={ ( values: Record< string, unknown > ) => {
-					setBillingFields( values );
+					setBillingData( values );
 					dispatchCheckoutEvent( 'set-billing-address' );
 				} }
-				values={ billingFields }
+				values={ billingData }
 				fields={ Object.keys( defaultAddressFields ) }
 				fieldConfig={ addressFieldsConfig }
 			/>
 			{ showPhoneField && (
 				<PhoneNumber
 					isRequired={ requirePhoneField }
-					value={ billingFields.phone }
+					value={ billingData.phone }
 					onChange={ ( value ) => {
 						setPhone( value );
 						dispatchCheckoutEvent( 'set-phone-number', {

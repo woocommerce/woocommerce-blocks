@@ -1,7 +1,12 @@
 /**
  * External dependencies
  */
-import { createContext, useContext, useState } from '@wordpress/element';
+import {
+	createContext,
+	useContext,
+	useState,
+	useCallback,
+} from '@wordpress/element';
 
 /**
  * Internal dependencies
@@ -37,15 +42,66 @@ export const CustomerDataProvider = ( {
 	const {
 		billingData,
 		shippingAddress,
-		setBillingData,
-		setShippingAddress,
+		setBillingData: setCustomerBillingData,
+		setShippingAddress: setCustomerShippingAddress,
 	} = useCustomerData();
 	const { cartNeedsShipping } = useStoreCart();
 	const { customerId } = useCheckoutContext();
-	const [ shippingAsBilling, setShippingAsBilling ] = useState(
+	const [ shippingAsBilling, setShippingAsBillingState ] = useState(
 		() =>
 			cartNeedsShipping &&
 			( ! customerId || isSameAddress( shippingAddress, billingData ) )
+	);
+
+	// When shippingAsBilling changes, update billing address to match.
+	const setShippingAsBilling = useCallback(
+		( newShippingAsBilling: boolean ) => {
+			setShippingAsBillingState( newShippingAsBilling );
+			if ( newShippingAsBilling ) {
+				setCustomerBillingData( shippingAddress );
+			}
+		},
+		[ setCustomerBillingData, shippingAddress ]
+	);
+
+	/**
+	 * Update shipping address, and maybe billing address.
+	 */
+	const setShippingAddress = useCallback(
+		(
+			value: Partial< CustomerDataContextType[ 'shippingAddress' ] >
+		): void => {
+			setCustomerShippingAddress( value );
+
+			if ( shippingAsBilling ) {
+				setCustomerBillingData( value );
+			}
+		},
+		[
+			setCustomerShippingAddress,
+			shippingAsBilling,
+			setCustomerBillingData,
+		]
+	);
+
+	/**
+	 * Update billing address, and maybe shipping address.
+	 */
+	const setBillingData = useCallback(
+		(
+			value: Partial< CustomerDataContextType[ 'billingData' ] >
+		): void => {
+			setCustomerBillingData( value );
+
+			if ( ! cartNeedsShipping ) {
+				setCustomerShippingAddress( value );
+			}
+		},
+		[
+			cartNeedsShipping,
+			setCustomerShippingAddress,
+			setCustomerBillingData,
+		]
 	);
 
 	const contextValue: CustomerDataContextType = {
