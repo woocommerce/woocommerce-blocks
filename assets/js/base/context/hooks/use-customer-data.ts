@@ -71,6 +71,7 @@ const shouldUpdateAddressStore = <
  * This is a custom hook for syncing customer address data (billing and shipping) with the server.
  */
 export const useCustomerData = (): {
+	isInitialized: boolean;
 	billingData: CartBillingAddress;
 	shippingAddress: CartShippingAddress;
 	setBillingData: ( data: Partial< CartBillingAddress > ) => void;
@@ -220,6 +221,7 @@ export const useCustomerData = (): {
 	}, [ isInitialized, customerData, debouncedPushCustomerData ] );
 
 	return {
+		isInitialized,
 		billingData: customerData.billingData,
 		shippingAddress: customerData.shippingAddress,
 		setBillingData,

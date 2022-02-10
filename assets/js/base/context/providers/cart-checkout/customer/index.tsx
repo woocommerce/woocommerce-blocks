@@ -6,6 +6,8 @@ import {
 	useContext,
 	useState,
 	useCallback,
+	useRef,
+	useEffect,
 } from '@wordpress/element';
 
 /**
@@ -40,18 +42,31 @@ export const CustomerDataProvider = ( {
 	children: JSX.Element | JSX.Element[];
 } ): JSX.Element => {
 	const {
+		isInitialized: customerDataIsInitialized,
 		billingData,
 		shippingAddress,
 		setBillingData: setCustomerBillingData,
 		setShippingAddress: setCustomerShippingAddress,
 	} = useCustomerData();
 	const { cartNeedsShipping } = useStoreCart();
-	const { customerId } = useCheckoutContext();
-	const [ shippingAsBilling, setShippingAsBillingState ] = useState(
-		() =>
-			cartNeedsShipping &&
-			( ! customerId || isSameAddress( shippingAddress, billingData ) )
-	);
+	const [ shippingAsBilling, setShippingAsBillingState ] = useState( false );
+	const initShippingAsBilling = useRef( false );
+
+	// Wait for init before setting shipping as billing state, otherwise addresses will both be blank.
+	useEffect( () => {
+		if ( customerDataIsInitialized && ! initShippingAsBilling.current ) {
+			setShippingAsBillingState(
+				cartNeedsShipping &&
+					isSameAddress( shippingAddress, billingData )
+			);
+			initShippingAsBilling.current = true;
+		}
+	}, [
+		billingData,
+		cartNeedsShipping,
+		customerDataIsInitialized,
+		shippingAddress,
+	] );
 
 	// When shippingAsBilling changes, update billing address to match.
 	const setShippingAsBilling = useCallback(
