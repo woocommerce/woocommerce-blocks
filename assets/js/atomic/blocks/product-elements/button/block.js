@@ -21,6 +21,11 @@ import { withProductDataContext } from '@woocommerce/shared-hocs';
  * Internal dependencies
  */
 import './style.scss';
+import {
+	useBorderProps,
+	useColorProps,
+	useTypographyProps,
+} from '../../../../hooks/style-attributes';
 
 /**
  * Product Button Block Component.
@@ -29,9 +34,14 @@ import './style.scss';
  * @param {string} [props.className] CSS Class name for the component.
  * @return {*} The component.
  */
-const Block = ( { className } ) => {
+const Block = ( props ) => {
+	const { className } = props;
+
 	const { parentClassName } = useInnerBlockLayoutContext();
 	const { product } = useProductDataContext();
+	const colorProps = useColorProps( props );
+	const borderProps = useBorderProps( props );
+	const typographyProps = useTypographyProps( props );
 
 	return (
 		<div
@@ -45,15 +55,40 @@ const Block = ( { className } ) => {
 			) }
 		>
 			{ product.id ? (
-				<AddToCartButton product={ product } />
+				<AddToCartButton
+					product={ product }
+					colorStyles={ colorProps }
+					borderStyles={ borderProps }
+					typographyStyles={ typographyProps }
+				/>
 			) : (
-				<AddToCartButtonPlaceholder />
+				<AddToCartButtonPlaceholder
+					colorStyles={ colorProps }
+					borderStyles={ borderProps }
+					typographyStyles={ typographyProps }
+				/>
 			) }
 		</div>
 	);
 };
 
-const AddToCartButton = ( { product } ) => {
+/**
+ * Product Button Block Component.
+ *
+ * @param {Object} props             Incoming props.
+ * @param {Object} [props.product] Product.
+ * @param {Object} [props.colorStyles] Object contains CSS class and CSS style for color.
+ * @param {Object} [props.borderStyles] Object contains CSS class and CSS style for border.
+ * @param {Object} [props.typographyStyles] Object contains CSS class and CSS style for typography.
+ *
+ * @return {*} The component.
+ */
+const AddToCartButton = ( {
+	product,
+	colorStyles,
+	borderStyles,
+	typographyStyles,
+} ) => {
 	const {
 		id,
 		permalink,
@@ -116,14 +151,22 @@ const AddToCartButton = ( { product } ) => {
 		<ButtonTag
 			aria-label={ buttonAriaLabel }
 			className={ classnames(
+				'wc-block-components-product-button__button--global-style',
 				'wp-block-button__link',
 				'add_to_cart_button',
 				'wc-block-components-product-button__button',
+				colorStyles.className,
+				borderStyles.className,
 				{
 					loading: addingToCart,
 					added: addedToCart,
 				}
 			) }
+			style={ {
+				...colorStyles.style,
+				...borderStyles.style,
+				...typographyStyles.style,
+			} }
 			disabled={ addingToCart }
 			{ ...buttonProps }
 		>
@@ -132,15 +175,37 @@ const AddToCartButton = ( { product } ) => {
 	);
 };
 
-const AddToCartButtonPlaceholder = () => {
+/**
+ * Product Button Block Component.
+ *
+ * @param {Object} props             Incoming props.
+ * @param {Object} [props.colorStyles] Object contains CSS class and CSS style for color.
+ * @param {Object} [props.borderStyles] Object contains CSS class and CSS style for border.
+ * @param {Object} [props.typographyStyles] Object contains CSS class and CSS style for typography.
+ *
+ * @return {*} The component.
+ */
+const AddToCartButtonPlaceholder = ( {
+	colorStyles,
+	borderStyles,
+	typographyStyles,
+} ) => {
 	return (
 		<button
 			className={ classnames(
 				'wp-block-button__link',
 				'add_to_cart_button',
 				'wc-block-components-product-button__button',
-				'wc-block-components-product-button__button--placeholder'
+				'wc-block-components-product-button__button--global-style',
+				'wc-block-components-product-button__button--placeholder',
+				colorStyles.className,
+				borderStyles.className
 			) }
+			style={ {
+				...colorStyles.style,
+				...borderStyles.style,
+				...typographyStyles.style,
+			} }
 			disabled={ true }
 		/>
 	);
