@@ -8,7 +8,7 @@ export interface RadioControlProps {
 	className?: string;
 	// ID for the control.
 	id?: string;
-	// Selected should be passed if using this as a controlled component.
+	// The selected option. This is a controlled component.
 	selected: string;
 	// Fired when an option is changed.
 	onChange: ( value: string ) => void;

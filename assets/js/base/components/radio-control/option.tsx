@@ -11,7 +11,6 @@ import type { RadioControlOptionProps } from './types';
 
 const Option = ( {
 	checked,
-	defaultChecked,
 	name,
 	onChange,
 	option,
@@ -44,7 +43,6 @@ const Option = ( {
 				value={ value }
 				onChange={ onChangeValue }
 				checked={ checked }
-				defaultChecked={ defaultChecked }
 				aria-describedby={ classnames( {
 					[ `${ name }-${ value }__label` ]: label,
 					[ `${ name }-${ value }__secondary-label` ]: secondaryLabel,
