@@ -1,11 +1,19 @@
-.wp-block-button.wc-block-components-product-button {
+.wp-block-button.wc-block-components-product-button.wp-block-button__link {
 	word-break: break-word;
 	white-space: normal;
 	margin-top: 0;
 	margin-bottom: $gap-small;
+	padding: 0.5em 1em;
+	background-color: initial;
+	font-weight: initial;
 
 	.wc-block-components-product-button__button {
 		word-break: break-word;
+		color: inherit;
+		border-radius: inherit;
+		font-size: inherit;
+		padding: inherit;
+		border-width: inherit;
 		white-space: normal;
 		margin: 0 auto;
 		display: inline-flex;
@@ -28,7 +36,7 @@
 
 .theme-twentytwentyone {
 	// Prevent buttons appearing disabled in the editor.
-	.editor-styles-wrapper .wc-block-components-product-button .wp-block-button__link {
+	.editor-styles-wrapper .wc-block-components-product-button.wp-block-button__link {
 		background-color: var(--button--color-background);
 		color: var(--button--color-text);
 		border-color: var(--button--color-background);
