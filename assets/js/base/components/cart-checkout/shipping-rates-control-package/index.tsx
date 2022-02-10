@@ -8,7 +8,7 @@ import type { ReactElement } from 'react';
 import type { PackageRateOption } from '@woocommerce/type-defs/shipping';
 import { Panel } from '@woocommerce/blocks-checkout';
 import Label from '@woocommerce/base-components/label';
-import { useSelectShippingRates } from '@woocommerce/base-context/hooks';
+import { useSelectShippingRate } from '@woocommerce/base-context/hooks';
 import type { CartShippingPackageShippingRate } from '@woocommerce/type-defs/cart';
 
 /**
@@ -65,7 +65,7 @@ export const ShippingRatesControlPackage = ( {
 	collapse = false,
 	showItems = false,
 }: PackageProps ): ReactElement => {
-	const { selectShippingRate } = useSelectShippingRates();
+	const { selectShippingRate } = useSelectShippingRate();
 
 	const header = (
 		<>

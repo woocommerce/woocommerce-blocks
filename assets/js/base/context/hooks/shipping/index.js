@@ -1,1 +1,1 @@
-export * from './use-select-shipping-rates';
+export * from './use-select-shipping-rate';

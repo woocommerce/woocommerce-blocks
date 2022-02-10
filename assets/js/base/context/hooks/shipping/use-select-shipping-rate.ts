@@ -18,7 +18,7 @@ import { useStoreEvents } from '../use-store-events';
  * 		- selectShippingRate: A function that immediately returns the selected rate and dispatches an action generator.
  *		- isSelectingRate: True when rates are being resolved to the API.
  */
-export const useSelectShippingRates = (): {
+export const useSelectShippingRate = (): {
 	// Returns a function that accepts a shipping rate ID and a package ID.
 	selectShippingRate: (
 		newShippingRateId: string,
