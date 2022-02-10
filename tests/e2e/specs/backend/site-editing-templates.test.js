@@ -93,10 +93,7 @@ describe( 'Store Editing Templates', () => {
 			const cvs = canvas();
 			console.log( '??', cvs === page );
 
-			await expect( canvas() ).toMatchElement(
-				SELECTORS.blocks.singleProduct,
-				{ timeout: DEFAULT_TIMEOUT }
-			);
+			await canvas().waitForSelector( SELECTORS.blocks.singleProduct );
 			expect( await getCurrentSiteEditorContent() ).toMatchSnapshot();
 		} );
 
