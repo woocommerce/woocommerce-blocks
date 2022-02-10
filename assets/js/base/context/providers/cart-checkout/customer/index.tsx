@@ -17,7 +17,6 @@ import type { CustomerDataContextType } from './types';
 import { defaultBillingData, defaultShippingAddress } from './constants';
 import { isSameAddress } from './utils';
 import { useCustomerData } from '../../../hooks/use-customer-data';
-import { useCheckoutContext } from '../checkout-state';
 import { useStoreCart } from '../../../hooks/cart/use-store-cart';
 
 const CustomerDataContext = createContext< CustomerDataContextType >( {
