@@ -12,14 +12,14 @@ import {
 	pluckEmail,
 } from '@woocommerce/base-utils';
 import {
-	CartResponseBillingAddress,
-	CartResponseShippingAddress,
+	CartBillingAddress,
+	CartShippingAddress,
 	BillingAddressShippingAddress,
 } from '@woocommerce/types';
 
 declare type CustomerData = {
-	billingData: CartResponseBillingAddress;
-	shippingAddress: CartResponseShippingAddress;
+	billingData: CartBillingAddress;
+	shippingAddress: CartShippingAddress;
 };
 
 /**
@@ -28,9 +28,9 @@ declare type CustomerData = {
 import { useStoreCart } from './cart/use-store-cart';
 import { useStoreNotices } from './use-store-notices';
 
-function instanceOfCartResponseBillingAddress(
-	address: CartResponseBillingAddress | CartResponseShippingAddress
-): address is CartResponseBillingAddress {
+function instanceOfCartBillingAddress(
+	address: CartBillingAddress | CartShippingAddress
+): address is CartBillingAddress {
 	return 'email' in address;
 }
 
@@ -45,15 +45,15 @@ function instanceOfCartResponseBillingAddress(
  * @return {boolean} True if the store needs updating due to changed data.
  */
 const shouldUpdateAddressStore = <
-	T extends CartResponseBillingAddress | CartResponseShippingAddress
+	T extends CartBillingAddress | CartShippingAddress
 >(
 	previousAddress: T,
 	address: T
 ): boolean => {
 	if (
-		instanceOfCartResponseBillingAddress( address ) &&
+		instanceOfCartBillingAddress( address ) &&
 		pluckEmail( address ) !==
-			pluckEmail( previousAddress as CartResponseBillingAddress )
+			pluckEmail( previousAddress as CartBillingAddress )
 	) {
 		return true;
 	}
@@ -71,10 +71,10 @@ const shouldUpdateAddressStore = <
  * This is a custom hook for syncing customer address data (billing and shipping) with the server.
  */
 export const useCustomerData = (): {
-	billingData: CartResponseBillingAddress;
-	shippingAddress: CartResponseShippingAddress;
-	setBillingData: ( data: CartResponseBillingAddress ) => void;
-	setShippingAddress: ( data: CartResponseShippingAddress ) => void;
+	billingData: CartBillingAddress;
+	shippingAddress: CartShippingAddress;
+	setBillingData: ( data: Partial< CartBillingAddress > ) => void;
+	setShippingAddress: ( data: Partial< CartShippingAddress > ) => void;
 } => {
 	const { updateCustomerData } = useDispatch( storeKey );
 	const { addErrorNotice, removeNotice } = useStoreNotices();
