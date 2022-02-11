@@ -228,8 +228,8 @@ describe( 'Store Editing Templates', () => {
 				( block ) => block.name === BLOCK_DATA[ 'archive-product' ].name
 			);
 
-			expect( legacyBlock.attributes ).toEqual(
-				BLOCK_DATA[ 'archive-product' ].attributes
+			expect( legacyBlock.attributes.template ).toBe(
+				BLOCK_DATA[ 'archive-product' ].attributes.template
 			);
 			expect( await getCurrentSiteEditorContent() ).toMatchSnapshot();
 		} );
