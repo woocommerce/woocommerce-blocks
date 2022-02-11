@@ -182,7 +182,6 @@ export interface Cart {
 	shippingRates: Array< CartShippingRate >;
 	shippingAddress: CartShippingAddress;
 	billingAddress: CartBillingAddress;
-	shippingAsBilling: boolean;
 	items: Array< CartItem >;
 	itemsCount: number;
 	itemsWeight: number;

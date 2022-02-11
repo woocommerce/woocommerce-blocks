@@ -33,7 +33,6 @@ export const CustomerDataProvider = ( {
 	children: JSX.Element | JSX.Element[];
 } ): JSX.Element => {
 	const contextValue = useCustomerData();
-
 	return (
 		<CustomerDataContext.Provider value={ contextValue }>
 			{ children }

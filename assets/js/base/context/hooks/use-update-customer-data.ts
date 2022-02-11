@@ -27,7 +27,6 @@ import { useStoreCart } from './cart';
 declare type CustomerData = {
 	billingData: CartResponseBillingAddress;
 	shippingAddress: CartResponseShippingAddress;
-	shippingAsBilling: boolean;
 };
 
 function instanceOfCartResponseBillingAddress(
@@ -85,16 +84,13 @@ export const useUpdateCustomerData = (): void => {
 	// initial data has fully initialized. Track that header.
 	const [ isInitialized, setIsInitialized ] = useState< boolean >( false );
 	const {
-		setShippingAsBilling,
 		setShippingAddress,
 		setBillingData,
 		...customerData
 	} = useCustomerData();
 
 	// Store values last sent to the server in a ref to avoid requests unless important fields are changed.
-	const previousCustomerData = useRef<
-		Omit< CustomerData, 'shippingAsBilling' >
-	>( customerData );
+	const previousCustomerData = useRef< CustomerData >( customerData );
 
 	// When the cart data is resolved from server for the first time (using cartIsLoading) we need to update
 	// the initial billing and shipping values to respect customer data from the server.
