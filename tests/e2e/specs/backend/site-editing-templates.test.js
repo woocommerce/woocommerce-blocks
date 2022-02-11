@@ -65,6 +65,14 @@ const BLOCK_DATA = {
 		},
 		name: 'woocommerce/legacy-template',
 	},
+	'single-product': {
+		attributes: {
+			placeholder: 'single-product',
+			template: 'single-product',
+			title: 'WooCommerce Single Product Block',
+		},
+		name: 'woocommerce/legacy-template',
+	},
 };
 
 const SELECTORS = {
@@ -122,9 +130,12 @@ describe( 'Store Editing Templates', () => {
 			await goToSiteEditor( templateQuery );
 			await waitForCanvas();
 
-			await expect( canvas() ).toMatchElement(
-				SELECTORS.blocks.singleProduct,
-				{ timeout: DEFAULT_TIMEOUT }
+			const [ legacyBlock ] = await filterCurrentBlocks(
+				( block ) => block.name === BLOCK_DATA[ 'single-product' ].name
+			);
+
+			expect( legacyBlock.attributes ).toEqual(
+				BLOCK_DATA[ 'single-product' ].attributes
 			);
 			expect( await getCurrentSiteEditorContent() ).toMatchSnapshot();
 		} );

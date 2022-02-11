@@ -46,16 +46,6 @@ const SELECTORS = {
 };
 
 /**
- * Gets all serializeable data from a block
- *
- * @param {WPBlock} block A Gutenberg Block
- * @return {Partial<WPBlock>} A block with unserializeable values turned to `null`
- */
-function getSerializeableBlockData( block ) {
-	return JSON.parse( JSON.stringify( block ) );
-}
-
-/**
  * Search for block in the global inserter.
  *
  * @see https://github.com/WordPress/gutenberg/blob/2356b2d3165acd0af980d52bc93fb1e42748bb25/packages/e2e-test-utils/src/inserter.js#L95
@@ -251,6 +241,16 @@ export async function filterCurrentBlocks( predicate ) {
 	 * @type {WPBlock[]}
 	 */
 	const blocks = await page.evaluate( () => {
+		/**
+		 * Gets all serializeable data from a block
+		 *
+		 * @param {WPBlock} block A Gutenberg Block
+		 * @return {Partial<WPBlock>} A block with unserializeable values turned to `null`
+		 */
+		function getSerializeableBlockData( block ) {
+			return JSON.parse( JSON.stringify( block ) );
+		}
+
 		const blockEditorStore = window.wp.data.select( 'core/block-editor' );
 		/**
 		 * @type {string[]}
