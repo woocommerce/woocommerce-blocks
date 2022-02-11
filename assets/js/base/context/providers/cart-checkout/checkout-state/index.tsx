@@ -381,6 +381,9 @@ export const CheckoutStateProvider = ( {
 		hasOrder: !! checkoutState.orderId,
 		customerId: checkoutState.customerId,
 		orderNotes: checkoutState.orderNotes,
+		shippingAsBilling: checkoutState.shippingAsBilling,
+		setShippingAsBilling: ( value ) =>
+			dispatch( actions.setShippingAsBilling( value ) ),
 		shouldCreateAccount: checkoutState.shouldCreateAccount,
 		setShouldCreateAccount: ( value ) =>
 			dispatch( actions.setShouldCreateAccount( value ) ),

@@ -9,6 +9,11 @@ import {
 } from '@woocommerce/base-context';
 import { AddressForm } from '@woocommerce/base-components/cart-checkout';
 import Noninteractive from '@woocommerce/base-components/noninteractive';
+import type {
+	BillingAddress,
+	AddressField,
+	AddressFields,
+} from '@woocommerce/settings';
 
 /**
  * Internal dependencies
@@ -54,7 +59,11 @@ const Block = ( {
 				hidden: ! showApartmentField,
 			},
 		};
-	}, [ showCompanyField, requireCompanyField, showApartmentField ] );
+	}, [
+		showCompanyField,
+		requireCompanyField,
+		showApartmentField,
+	] ) as Record< keyof AddressFields, Partial< AddressField > >;
 
 	const AddressFormWrapperComponent = isEditor ? Noninteractive : Fragment;
 
@@ -63,12 +72,16 @@ const Block = ( {
 			<AddressForm
 				id="billing"
 				type="billing"
-				onChange={ ( values: Record< string, unknown > ) => {
+				onChange={ ( values: Partial< BillingAddress > ) => {
 					setBillingData( values );
 					dispatchCheckoutEvent( 'set-billing-address' );
 				} }
 				values={ billingData }
-				fields={ Object.keys( defaultAddressFields ) }
+				fields={
+					Object.keys(
+						defaultAddressFields
+					) as ( keyof AddressFields )[]
+				}
 				fieldConfig={ addressFieldsConfig }
 			/>
 			{ showPhoneField && (

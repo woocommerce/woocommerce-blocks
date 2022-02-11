@@ -1,21 +1,35 @@
 /**
  * External dependencies
  */
-import { defaultAddressFields, AddressFields } from '@woocommerce/settings';
+import {
+	defaultAddressFields,
+	AddressFields,
+	EnteredAddress,
+	ShippingAddress,
+	BillingAddress,
+} from '@woocommerce/settings';
 import { useCallback } from '@wordpress/element';
 
 /**
  * Internal dependencies
  */
-import { useShippingDataContext } from '../providers/cart-checkout';
+import {
+	useShippingDataContext,
+	useCheckoutContext,
+} from '../providers/cart-checkout';
 import type { CustomerDataContextType } from '../providers/cart-checkout/customer/types';
 import { useCustomerData } from './use-customer-data';
 
 interface CheckoutAddress extends Partial< CustomerDataContextType > {
+	shippingAddress: ShippingAddress;
+	billingData: BillingAddress;
+	setShippingAddress: ( data: Partial< EnteredAddress > ) => void;
+	setBillingData: ( data: Partial< EnteredAddress > ) => void;
 	setEmail: ( value: string ) => void;
 	setPhone: ( value: string ) => void;
 	setShippingPhone: ( value: string ) => void;
-	setShippingAsBilling: ( value: boolean ) => void;
+	shippingAsBilling: boolean;
+	setShippingAsBilling: ( shippingAsBilling: boolean ) => void;
 	defaultAddressFields: AddressFields;
 	showShippingFields: boolean;
 	showBillingFields: boolean;
@@ -26,13 +40,12 @@ interface CheckoutAddress extends Partial< CustomerDataContextType > {
  */
 export const useCheckoutAddress = (): CheckoutAddress => {
 	const { needsShipping } = useShippingDataContext();
+	const { shippingAsBilling, setShippingAsBilling } = useCheckoutContext();
 	const {
 		billingData,
 		setBillingData,
 		shippingAddress,
 		setShippingAddress,
-		shippingAsBilling,
-		setShippingAsBilling,
 	} = useCustomerData();
 
 	const setEmail = useCallback(
@@ -62,14 +75,14 @@ export const useCheckoutAddress = (): CheckoutAddress => {
 	return {
 		shippingAddress,
 		billingData,
-		shippingAsBilling,
 		setShippingAddress,
 		setBillingData,
 		setEmail,
 		setPhone,
 		setShippingPhone,
-		setShippingAsBilling,
 		defaultAddressFields,
+		shippingAsBilling,
+		setShippingAsBilling,
 		showShippingFields: needsShipping,
 		showBillingFields: ! needsShipping || ! shippingAsBilling,
 	};

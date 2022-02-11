@@ -15,8 +15,6 @@ const CustomerDataContext = createContext< CustomerDataContextType >( {
 	shippingAddress: defaultShippingAddress,
 	setBillingData: () => void 0,
 	setShippingAddress: () => void 0,
-	shippingAsBilling: true,
-	setShippingAsBilling: () => void 0,
 } );
 
 export const useCustomerDataContext = (): CustomerDataContextType => {
@@ -34,10 +32,8 @@ export const CustomerDataProvider = ( {
 	const {
 		billingData,
 		shippingAddress,
-		shippingAsBilling,
 		setBillingData,
 		setShippingAddress,
-		setShippingAsBilling,
 	} = useCustomerData();
 
 	const contextValue: CustomerDataContextType = {
@@ -45,8 +41,6 @@ export const CustomerDataProvider = ( {
 		shippingAddress,
 		setBillingData,
 		setShippingAddress,
-		shippingAsBilling,
-		setShippingAsBilling,
 	};
 
 	return (
