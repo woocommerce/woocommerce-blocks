@@ -15,6 +15,7 @@ import {
 import {
 	BASE_URL,
 	DEFAULT_TIMEOUT,
+	filterCurrentBlocks,
 	getAllTemplates,
 	goToSiteEditor,
 	saveTemplate,
@@ -55,10 +56,21 @@ function legacyBlockSelector( title ) {
 	) }[data-title="${ title }"]`;
 }
 
+const BLOCK_DATA = {
+	'archive-product': {
+		attributes: {
+			placeholder: 'archive-product',
+			template: 'archive-product',
+			title: 'WooCommerce Product Grid Block',
+		},
+		name: 'woocommerce/legacy-template',
+	},
+};
+
 const SELECTORS = {
 	blocks: {
 		paragraph: blockSelector( 'core/paragraph' ),
-		productArchive: legacyBlockSelector( 'WooCommerce Legacy Template' ),
+		productArchive: legacyBlockSelector( 'WooCommerce Product Grid Block' ),
 		singleProduct: legacyBlockSelector(
 			'WooCommerce Single Product Block'
 		),
@@ -201,9 +213,12 @@ describe( 'Store Editing Templates', () => {
 			await goToSiteEditor( templateQuery );
 			await waitForCanvas();
 
-			await expect( canvas() ).toMatchElement(
-				SELECTORS.blocks.productArchive,
-				{ timeout: DEFAULT_TIMEOUT }
+			const [ legacyBlock ] = await filterCurrentBlocks(
+				( block ) => block.name === BLOCK_DATA[ 'archive-product' ].name
+			);
+
+			expect( legacyBlock.attributes ).toEqual(
+				BLOCK_DATA[ 'archive-product' ].attributes
 			);
 			expect( await getCurrentSiteEditorContent() ).toMatchSnapshot();
 		} );

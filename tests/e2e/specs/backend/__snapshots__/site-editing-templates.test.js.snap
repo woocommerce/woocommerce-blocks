@@ -4,7 +4,7 @@ exports[`Store Editing Templates Product Archive block template should contain t
 "<!-- wp:template-part {\\"slug\\":\\"header\\",\\"theme\\":\\"emptytheme\\"} /-->
 
 <!-- wp:group {\\"layout\\":{\\"inherit\\":true}} -->
-<div class=\\"wp-block-group\\"><!-- wp:woocommerce/legacy-template {\\"template\\":\\"archive-product\\"} /--></div>
+<div class=\\"wp-block-group\\"><!-- wp:woocommerce/legacy-template /--></div>
 <!-- /wp:group -->
 
 <!-- wp:template-part {\\"slug\\":\\"footer\\",\\"theme\\":\\"emptytheme\\"} /-->"
