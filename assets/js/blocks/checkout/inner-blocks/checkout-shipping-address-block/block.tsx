@@ -98,7 +98,7 @@ const Block = ( {
 					<PhoneNumber
 						id="shipping-phone"
 						isRequired={ requirePhoneField }
-						value={ shippingAddress.phone }
+						value={ shippingAddress?.phone || '' }
 						onChange={ ( value ) => {
 							setShippingPhone( value );
 							dispatchCheckoutEvent( 'set-phone-number', {

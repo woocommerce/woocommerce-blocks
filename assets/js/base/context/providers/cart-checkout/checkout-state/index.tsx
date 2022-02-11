@@ -381,6 +381,7 @@ export const CheckoutStateProvider = ( {
 		hasOrder: !! checkoutState.orderId,
 		customerId: checkoutState.customerId,
 		orderNotes: checkoutState.orderNotes,
+
 		useShippingAsBilling: checkoutState.useShippingAsBilling,
 		setUseShippingAsBilling: ( value ) =>
 			dispatch( actions.setUseShippingAsBilling( value ) ),

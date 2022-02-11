@@ -1,7 +1,6 @@
 /**
  * External dependencies
  */
-<<<<<<< HEAD
 import {
 	defaultAddressFields,
 	AddressFields,
@@ -9,15 +8,11 @@ import {
 	ShippingAddress,
 	BillingAddress,
 } from '@woocommerce/settings';
-=======
-import { defaultAddressFields, AddressFields } from '@woocommerce/settings';
->>>>>>> 26258afe5 (Merge with #5810 changes)
 import { useCallback } from '@wordpress/element';
 
 /**
  * Internal dependencies
  */
-<<<<<<< HEAD
 import {
 	useShippingDataContext,
 	useCheckoutContext,
@@ -34,17 +29,6 @@ interface CheckoutAddress {
 	setShippingPhone: ( value: string ) => void;
 	useShippingAsBilling: boolean;
 	setUseShippingAsBilling: ( useShippingAsBilling: boolean ) => void;
-=======
-import { useShippingDataContext } from '../providers/cart-checkout';
-import type { CustomerDataContextType } from '../providers/cart-checkout/customer/types';
-import { useCustomerData } from './use-customer-data';
-
-interface CheckoutAddress extends Partial< CustomerDataContextType > {
-	setEmail: ( value: string ) => void;
-	setPhone: ( value: string ) => void;
-	setShippingPhone: ( value: string ) => void;
-	setShippingAsBilling: ( value: boolean ) => void;
->>>>>>> 26258afe5 (Merge with #5810 changes)
 	defaultAddressFields: AddressFields;
 	showShippingFields: boolean;
 	showBillingFields: boolean;
@@ -56,22 +40,14 @@ interface CheckoutAddress extends Partial< CustomerDataContextType > {
 export const useCheckoutAddress = (): CheckoutAddress => {
 	const { needsShipping } = useShippingDataContext();
 	const {
-<<<<<<< HEAD
 		useShippingAsBilling,
 		setUseShippingAsBilling,
 	} = useCheckoutContext();
 	const {
-=======
->>>>>>> 26258afe5 (Merge with #5810 changes)
 		billingData,
 		setBillingData,
 		shippingAddress,
 		setShippingAddress,
-<<<<<<< HEAD
-=======
-		shippingAsBilling,
-		setShippingAsBilling,
->>>>>>> 26258afe5 (Merge with #5810 changes)
 	} = useCustomerData();
 
 	const setEmail = useCallback(
@@ -82,11 +58,7 @@ export const useCheckoutAddress = (): CheckoutAddress => {
 		[ setBillingData ]
 	);
 
-<<<<<<< HEAD
 	const setBillingPhone = useCallback(
-=======
-	const setPhone = useCallback(
->>>>>>> 26258afe5 (Merge with #5810 changes)
 		( value ) =>
 			void setBillingData( {
 				phone: value,
@@ -105,7 +77,6 @@ export const useCheckoutAddress = (): CheckoutAddress => {
 	return {
 		shippingAddress,
 		billingData,
-<<<<<<< HEAD
 		setShippingAddress,
 		setBillingData,
 		setEmail,
@@ -116,17 +87,5 @@ export const useCheckoutAddress = (): CheckoutAddress => {
 		setUseShippingAsBilling,
 		showShippingFields: needsShipping,
 		showBillingFields: ! needsShipping || ! useShippingAsBilling,
-=======
-		shippingAsBilling,
-		setShippingAddress,
-		setBillingData,
-		setEmail,
-		setPhone,
-		setShippingPhone,
-		setShippingAsBilling,
-		defaultAddressFields,
-		showShippingFields: needsShipping,
-		showBillingFields: ! needsShipping || ! shippingAsBilling,
->>>>>>> 26258afe5 (Merge with #5810 changes)
 	};
 };
