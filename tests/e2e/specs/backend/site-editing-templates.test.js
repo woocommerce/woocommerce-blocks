@@ -106,6 +106,11 @@ describe( 'Store Editing Templates', () => {
 				( block ) => block.name === BLOCK_DATA[ 'single-product' ].name
 			);
 
+			console.log( {
+				legacyBlock,
+				expected: BLOCK_DATA[ 'single-product' ],
+			} );
+
 			expect( legacyBlock.attributes ).toEqual(
 				BLOCK_DATA[ 'single-product' ].attributes
 			);
