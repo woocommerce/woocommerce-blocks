@@ -12,6 +12,7 @@ import {
 } from '@woocommerce/blocks-test-utils';
 import {
 	DEFAULT_TIMEOUT,
+	filterCurrentBlocks,
 	getAllTemplates,
 	goToSiteEditor,
 	saveTemplate,
@@ -35,6 +36,17 @@ function legacyBlockSelector( title ) {
 		'woocommerce/legacy-template'
 	) }[data-title="${ title }"]`;
 }
+
+const BLOCK_DATA = {
+	'single-product': {
+		attributes: {
+			placeholder: 'single-product',
+			template: 'single-product',
+			title: 'WooCommerce Single Product Block',
+		},
+		name: 'woocommerce/legacy-template',
+	},
+};
 
 const SELECTORS = {
 	blocks: {
@@ -90,10 +102,13 @@ describe( 'Store Editing Templates', () => {
 			await goToSiteEditor( templateQuery );
 			await waitForCanvas();
 
-			const cvs = canvas();
-			console.log( '??', cvs === page );
+			const [ legacyBlock ] = await filterCurrentBlocks(
+				( block ) => block.name === BLOCK_DATA[ 'single-product' ].name
+			);
 
-			await canvas().waitForSelector( SELECTORS.blocks.singleProduct );
+			expect( legacyBlock.attributes ).toEqual(
+				BLOCK_DATA[ 'single-product' ].attributes
+			);
 			expect( await getCurrentSiteEditorContent() ).toMatchSnapshot();
 		} );
 

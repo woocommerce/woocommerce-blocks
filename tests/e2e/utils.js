@@ -13,6 +13,7 @@ import { WP_ADMIN_DASHBOARD } from '@woocommerce/e2e-utils';
 /**
  * @typedef {import('@types/puppeteer').Page} Page
  * @typedef {import('@types/puppeteer').ElementHandle} ElementHandle
+ * @typedef {import('@wordpress/blocks').Block} WPBlock
  */
 
 /**
@@ -225,4 +226,39 @@ export async function getAllTemplates() {
 			 )[ 0 ],
 		} ) )
 	);
+}
+
+/**
+ * Gets all the blocks that fulfill a given predicate
+ *
+ * @param {( block: WPBlock ) => boolean} predicate The function invoked per iteration
+ * @return {Promise< Partial< WPBlock >[] >} The blocks which have been found
+ */
+export async function filterCurrentBlocks( predicate ) {
+	/**
+	 * @type {WPBlock[]}
+	 */
+	const blocks = await page.evaluate( () => {
+		/**
+		 * Gets all serializeable data from a block
+		 *
+		 * @param {WPBlock} block A Gutenberg Block
+		 * @return {Partial<WPBlock>} A block with unserializeable values turned to `null`
+		 */
+		function getSerializeableBlockData( block ) {
+			return JSON.parse( JSON.stringify( block ) );
+		}
+
+		const blockEditorStore = window.wp.data.select( 'core/block-editor' );
+		/**
+		 * @type {string[]}
+		 */
+		const allClientIds = blockEditorStore.getClientIdsWithDescendants();
+
+		return allClientIds.map( ( id ) =>
+			getSerializeableBlockData( blockEditorStore.getBlock( id ) )
+		);
+	} );
+
+	return blocks.filter( predicate );
 }
