@@ -25,12 +25,10 @@ export const getCustomerData = (
 ): {
 	shippingAddress: ShippingAddress;
 	billingData: BillingAddress;
-	shippingAsBilling: boolean;
 } => {
 	return {
 		shippingAddress: state.cartData.shippingAddress,
 		billingData: state.cartData.billingAddress,
-		shippingAsBilling: state.cartData.shippingAsBilling,
 	};
 };
 

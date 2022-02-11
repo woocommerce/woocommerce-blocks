@@ -1,19 +1,30 @@
 /**
  * External dependencies
  */
-import { defaultAddressFields } from '@woocommerce/settings';
+import { defaultAddressFields, AddressFields } from '@woocommerce/settings';
 import { useCallback } from '@wordpress/element';
 
 /**
  * Internal dependencies
  */
 import { useShippingDataContext } from '../providers/cart-checkout';
+import type { CustomerDataContextType } from '../providers/cart-checkout/customer/types';
 import { useCustomerData } from './use-customer-data';
+
+interface CheckoutAddress extends Partial< CustomerDataContextType > {
+	setEmail: ( value: string ) => void;
+	setPhone: ( value: string ) => void;
+	setShippingPhone: ( value: string ) => void;
+	setShippingAsBilling: ( value: boolean ) => void;
+	defaultAddressFields: AddressFields;
+	showShippingFields: boolean;
+	showBillingFields: boolean;
+}
 
 /**
  * Custom hook for exposing address related functionality for the checkout address form.
  */
-export const useCheckoutAddress = () => {
+export const useCheckoutAddress = (): CheckoutAddress => {
 	const { needsShipping } = useShippingDataContext();
 	const {
 		billingData,
@@ -23,16 +34,6 @@ export const useCheckoutAddress = () => {
 		shippingAsBilling,
 		setShippingAsBilling,
 	} = useCustomerData();
-
-	/**
-	 * Sets shipping address data, and also billing if using the same address.
-	 */
-	const setShippingFields = setShippingAddress;
-
-	/**
-	 * Sets billing address data, and also shipping if shipping is disabled.
-	 */
-	const setBillingFields = setBillingData;
 
 	const setEmail = useCallback(
 		( value ) =>
@@ -52,25 +53,23 @@ export const useCheckoutAddress = () => {
 
 	const setShippingPhone = useCallback(
 		( value ) =>
-			void setShippingFields( {
+			void setShippingAddress( {
 				phone: value,
 			} ),
-		[ setShippingFields ]
+		[ setShippingAddress ]
 	);
 
-	// Note that currentShippingAsBilling is returned rather than the current state of shippingAsBilling--this is so that
-	// the billing fields are not rendered before sync (billing field values are debounced and would be outdated)
 	return {
-		defaultAddressFields,
-		shippingFields: shippingAddress,
-		setShippingFields,
-		billingFields: billingData,
-		setBillingFields,
+		shippingAddress,
+		billingData,
+		shippingAsBilling,
+		setShippingAddress,
+		setBillingData,
 		setEmail,
 		setPhone,
 		setShippingPhone,
-		shippingAsBilling,
 		setShippingAsBilling,
+		defaultAddressFields,
 		showShippingFields: needsShipping,
 		showBillingFields: ! needsShipping || ! shippingAsBilling,
 	};

@@ -70,7 +70,6 @@ const reducer: Reducer< CartState > = (
 					...state,
 					errors: EMPTY_CART_ERRORS,
 					cartData: {
-						shippingAsBilling: state.cartData.shippingAsBilling,
 						...action.response,
 					},
 				};
@@ -108,15 +107,6 @@ const reducer: Reducer< CartState > = (
 						...state.cartData.shippingAddress,
 						...action.shippingAddress,
 					},
-				},
-			};
-			break;
-		case types.SET_SHIPPING_AS_BILLING:
-			state = {
-				...state,
-				cartData: {
-					...state.cartData,
-					shippingAsBilling: action.shippingAsBilling,
 				},
 			};
 			break;

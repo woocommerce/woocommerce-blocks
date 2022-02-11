@@ -16,7 +16,6 @@ import Noninteractive from '@woocommerce/base-components/noninteractive';
  * Internal dependencies
  */
 import PhoneNumber from '../../phone-number';
-import { useShippingAsBillingCheckbox } from '../../../../base/context/hooks/use-shipping-as-billing-checkbox';
 
 const Block = ( {
 	showCompanyField = false,
@@ -33,12 +32,12 @@ const Block = ( {
 } ): JSX.Element => {
 	const {
 		defaultAddressFields,
-		setShippingFields,
-		shippingFields,
+		setShippingAddress,
+		shippingAddress,
 		shippingAsBilling,
 		setShippingPhone,
+		setShippingAsBilling,
 	} = useCheckoutAddress();
-	const { setShippingAsBilling } = useShippingAsBillingCheckbox();
 	const { dispatchCheckoutEvent } = useStoreEvents();
 	const { isEditor } = useEditorContext();
 
@@ -70,10 +69,10 @@ const Block = ( {
 					id="shipping"
 					type="shipping"
 					onChange={ ( values: Record< string, unknown > ) => {
-						setShippingFields( values );
+						setShippingAddress( values );
 						dispatchCheckoutEvent( 'set-shipping-address' );
 					} }
-					values={ shippingFields }
+					values={ shippingAddress }
 					fields={ Object.keys( defaultAddressFields ) }
 					fieldConfig={ addressFieldsConfig }
 				/>
@@ -81,7 +80,7 @@ const Block = ( {
 					<PhoneNumber
 						id="shipping-phone"
 						isRequired={ requirePhoneField }
-						value={ shippingFields.phone }
+						value={ shippingAddress.phone }
 						onChange={ ( value ) => {
 							setShippingPhone( value );
 							dispatchCheckoutEvent( 'set-phone-number', {

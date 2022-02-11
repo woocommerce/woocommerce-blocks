@@ -476,11 +476,6 @@ export const setShippingAddress = (
 ) => ( { type: types.SET_SHIPPING_ADDRESS, shippingAddress } as const );
 
 /**
- * Sets whether the shipping address is also being used as the billing address.
- */
-export const setShippingAsBilling = ( shippingAsBilling: boolean ) =>
-	( { type: types.SET_SHIPPING_AS_BILLING, shippingAsBilling } as const );
-/**
  * Updates the shipping and/or billing address for the customer and returns an
  * updated cart.
  *
@@ -522,7 +517,6 @@ export type CartAction = ReturnOrGeneratorYieldUnion<
 	| typeof receiveCart
 	| typeof setBillingData
 	| typeof setShippingAddress
-	| typeof setShippingAsBilling
 	| typeof receiveError
 	| typeof receiveApplyingCoupon
 	| typeof receiveRemovingCoupon
