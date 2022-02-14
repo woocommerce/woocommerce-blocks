@@ -153,6 +153,7 @@ final class BlockTypesController {
 	protected function get_block_types() {
 		global $wp_version, $pagenow;
 
+		// @todo Add a comment why some atomic blocks are included in this array.
 		$block_types = [
 			'AllReviews',
 			'FeaturedCategory',
