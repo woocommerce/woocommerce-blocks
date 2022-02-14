@@ -179,7 +179,6 @@ table.wc-block-cart-items {
 			display: none;
 		}
 		.wc-block-cart-items__row {
-			@include with-translucent-border( 0 0 1px );
 			display: grid;
 			grid-template-columns: 80px 132px;
 			padding: $gap 0;
@@ -262,6 +261,18 @@ table.wc-block-cart-items {
 
 	.wc-block-cart__payment-options {
 		padding: $gap 0 0;
+	}
+}
+
+// Remove the border from cart items inside the Mini Cart drawer
+// https://github.com/woocommerce/woocommerce-gutenberg-products-block/issues/5679
+.is-medium,
+.is-small,
+.is-mobile:not(.wc-block-mini-cart__drawer) {
+	table.wc-block-cart-items {
+		.wc-block-cart-items__row {
+			@include with-translucent-border( 0 0 1px );
+		}
 	}
 }
 

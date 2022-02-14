@@ -112,10 +112,6 @@ h2.wc-block-mini-cart__title {
 			padding-top: $gap-smaller;
 			padding-bottom: $gap-smaller;
 
-			&::after {
-				border-bottom-width: 0 !important;
-			}
-
 			&:last-child::after {
 				content: none;
 			}
