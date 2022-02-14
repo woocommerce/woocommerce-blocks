@@ -43,7 +43,11 @@ interface Props {
 }
 
 const Edit = ( { clientId }: Props ): ReactElement => {
-	const blockProps = useBlockProps();
+	const blockProps = useBlockProps( {
+		style: {
+			minHeight: '100vh',
+		},
+	} );
 
 	const defaultTemplate = [
 		[ 'woocommerce/filled-mini-cart-contents-block', {}, [] ],
