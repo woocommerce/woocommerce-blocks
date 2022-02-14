@@ -562,7 +562,7 @@ abstract class AbstractProductGrid extends AbstractDynamicBlock {
 
 		if ( $rating_count > 0 ) {
 			return sprintf(
-				'<div class="wc-block-grid__product-rating wc-block-components-product-rating">%s</div>',
+				'<div class="wc-block-grid__product-rating">%s</div>',
 				wc_get_rating_html( $average, $rating_count ) // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
 			);
 		}
