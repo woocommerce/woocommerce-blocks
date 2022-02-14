@@ -45,10 +45,9 @@ wp wc payment_gateway update bacs --enabled=1 --user=1
 wp wc payment_gateway update cheque --enabled=1 --user=1
 
 # SHIPPING SETTINGS #############################################################
-
-# free shipping -> USD 0.00
-# standard shipping -> USD 10.00
-# express shipping -> USD 20.00
+wp wc shipping_zone_method create 0 --order=0 --enabled=true --settings='{"title":"Express rate", "cost": "20"}' --method_id=flat_rate --user=1
+wp wc shipping_zone_method create 0 --order=1 --enabled=true --settings='{"title":"Standard rate", "cost": "10"}' --method_id=flat_rate --user=1
+wp wc shipping_zone_method create 0 --order=2 --enabled=true --settings='{"title":"Free Shipping"}' --method_id=free_shipping --user=1
 
 # COUPON SETTINGS ###############################################################
 wp wc shop_coupon create --code=single --amount=10 --discount_type=percent --usage_limit=1 --user=1
