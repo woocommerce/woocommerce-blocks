@@ -151,7 +151,6 @@ const AddToCartButton = ( {
 		<ButtonTag
 			aria-label={ buttonAriaLabel }
 			className={ classnames(
-				'wc-block-components-product-button__button--global-style',
 				'wp-block-button__link',
 				'add_to_cart_button',
 				'wc-block-components-product-button__button',
@@ -196,7 +195,6 @@ const AddToCartButtonPlaceholder = ( {
 				'wp-block-button__link',
 				'add_to_cart_button',
 				'wc-block-components-product-button__button',
-				'wc-block-components-product-button__button--global-style',
 				'wc-block-components-product-button__button--placeholder',
 				colorStyles.className,
 				borderStyles.className

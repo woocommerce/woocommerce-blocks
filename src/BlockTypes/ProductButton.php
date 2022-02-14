@@ -50,18 +50,12 @@ class ProductButton extends AbstractBlock {
 				'text'                            => true,
 				'__experimentalSkipSerialization' => true,
 			),
-			'typography'             =>
-			array(
-				'fontSize'                        => true,
-				'__experimentalSkipSerialization' => true,
-
-			),
 			'__experimentalBorder'   =>
 			array(
 				'radius'                          => true,
 				'__experimentalSkipSerialization' => true,
 			),
-			'__experimentalSelector' => '.wc-block-components-product-button__button--global-style',
+			'__experimentalSelector' => '.wc-block-components-product-button__button',
 		);
 	}
 
