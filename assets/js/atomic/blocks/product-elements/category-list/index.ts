@@ -34,10 +34,12 @@ const blockConfig: BlockConfiguration = {
 				link: true,
 				background: false,
 			},
+			typography: {
+				fontSize: true,
+			},
+			__experimentalSelector:
+				'.wc-block-components-product-category-list',
 		} ),
-		typography: {
-			fontSize: true,
-		},
 	},
 	save: Save,
 	edit,

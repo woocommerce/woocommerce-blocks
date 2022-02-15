@@ -180,6 +180,9 @@ final class BlockTypesController {
 			'ProductSummary',
 			'ProductStockIndicator',
 			'ProductSaleBadge',
+			'ProductImage',
+			'ProductTagList',
+			'ProductCategoryList',
 		];
 
 		if ( Package::feature()->is_feature_plugin_build() ) {
@@ -232,12 +235,9 @@ final class BlockTypesController {
 	protected function get_atomic_blocks() {
 		return [
 			'product-button',
-			'product-image',
 			'product-price',
 			'product-rating',
 			'product-sku',
-			'product-category-list',
-			'product-tag-list',
 			'product-add-to-cart',
 		];
 	}
