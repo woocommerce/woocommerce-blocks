@@ -87,7 +87,7 @@ const updateCustomerData = (): void => {
 			);
 		} );
 };
-const denbouncedUpdateCustomerData = debounce( updateCustomerData, 1000 );
+const debouncedUpdateCustomerData = debounce( updateCustomerData, 1000 );
 
 export const pushChanges = (): void => {
 	const store = select( STORE_KEY );
@@ -129,7 +129,7 @@ export const pushChanges = (): void => {
 	}
 
 	// Debounce the update to the server.
-	denbouncedUpdateCustomerData();
+	debouncedUpdateCustomerData();
 
 	// Update our local cache to the new values.
 	customerData = newCustomerData;
