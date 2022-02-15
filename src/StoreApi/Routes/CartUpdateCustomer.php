@@ -122,7 +122,7 @@ class CartUpdateCustomer extends AbstractCartRoute {
 
 		$this->calculate_totals();
 
-		return rest_ensure_response( $this->schema->get_item_response( $cart ) );
+		return rest_ensure_response( $this->schema->get_item_response( $cart, [ 'shipping_address', 'billing_address' ] ) );
 	}
 
 	/**
