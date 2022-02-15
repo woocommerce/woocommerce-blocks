@@ -1,6 +1,8 @@
 <?php
 namespace Automattic\WooCommerce\Blocks\Utils;
 
+use \Exception;
+
 /**
  * ArrayUtils class used for custom functions to operate on arrays
  */
@@ -32,5 +34,26 @@ class ArrayUtils {
 			);
 		}
 		return $last;
+	}
+
+	/**
+	 * A utility function to remove items from an array based on their key.
+	 *
+	 * @param array    $array The array to remove items from.
+	 * @param string[] $keys_to_remove The keys of the items that should be removed from the array.
+	 *
+	 * @return array Returns the array with keys removed.
+	 * @throws Exception Throws when either the original array, or keys to remove is not an array.
+	 */
+	public static function remove_keys( $array, $keys_to_remove ) {
+		if ( ! is_array( $keys_to_remove ) || ! is_array( $array ) ) {
+			throw new Exception( '$array and $keys_to_remove must both be arrays.' );
+		}
+		foreach ( $keys_to_remove as $key_to_remove ) {
+			if ( isset( $array[ $key_to_remove ] ) ) {
+				unset( $array[ $key_to_remove ] );
+			}
+		}
+		return $array;
 	}
 }
