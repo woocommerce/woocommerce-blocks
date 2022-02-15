@@ -155,7 +155,6 @@ export const pushChanges = (): void => {
 	) {
 		dirtyProps.shippingAddress = true;
 	}
-
 	customerData = newCustomerData;
 
 	if ( dirtyProps.billingData || dirtyProps.shippingAddress ) {
