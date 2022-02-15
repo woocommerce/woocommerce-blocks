@@ -67,7 +67,7 @@ const shouldUpdateAddressStore = <
 let customerData = <CustomerData>null;
 let customerDataToUpdate: Partial< BillingAddressShippingAddress > = {};
 
-const updateCustomerData = debounce( (): void => {
+const updateCustomerData = (): void => {
 	if ( Object.keys( customerDataToUpdate ).length === 0 ) {
 		return;
 	}
@@ -86,7 +86,8 @@ const updateCustomerData = debounce( (): void => {
 				}
 			);
 		} );
-}, 1000 );
+};
+const denbouncedUpdateCustomerData = debounce( updateCustomerData, 1000 );
 
 export const pushChanges = (): void => {
 	const store = select( STORE_KEY );
@@ -128,7 +129,7 @@ export const pushChanges = (): void => {
 	}
 
 	// Debounce the update to the server.
-	updateCustomerData();
+	denbouncedUpdateCustomerData();
 
 	// Update our local cache to the new values.
 	customerData = newCustomerData;
