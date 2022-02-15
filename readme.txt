@@ -90,10 +90,8 @@ Release and roadmap notes available on the [WooCommerce Developers Blog](https:/
 #### Enhancements
 
 - Add a remove image button to the WooCommerce Feature Category block. ([5719](https://github.com/woocommerce/woocommerce-gutenberg-products-block/pull/5719))
-- Add support for the global style for the Sale Product block. ([5565](https://github.com/woocommerce/woocommerce-gutenberg-products-block/pull/5565))
-- Add support for the global style for the Product Image block. ([5562](https://github.com/woocommerce/woocommerce-gutenberg-products-block/pull/5562))
+- Add support for the global style for the On-Sale Badge block. ([5565](https://github.com/woocommerce/woocommerce-gutenberg-products-block/pull/5565))
 - Add support for the global style for the Attribute Filter block. ([5557](https://github.com/woocommerce/woocommerce-gutenberg-products-block/pull/5557))
-- Add support for the global style for the Tag List block. ([5528](https://github.com/woocommerce/woocommerce-gutenberg-products-block/pull/5528))
 - Category List block: Add support for global style. ([5516](https://github.com/woocommerce/woocommerce-gutenberg-products-block/pull/5516))
 
 #### Bug Fixes
