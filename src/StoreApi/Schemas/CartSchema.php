@@ -3,6 +3,7 @@ namespace Automattic\WooCommerce\Blocks\StoreApi\Schemas;
 
 use Automattic\WooCommerce\Blocks\StoreApi\Utilities\CartController;
 use Automattic\WooCommerce\Blocks\Domain\Services\ExtendRestApi;
+use Automattic\WooCommerce\Blocks\Utils\ArrayUtils;
 use WC_Tax;
 use WP_Error;
 
@@ -324,9 +325,10 @@ class CartSchema extends AbstractSchema {
 	 * Convert a woo cart into an object suitable for the response.
 	 *
 	 * @param \WC_Cart $cart Cart class instance.
+	 * @param string[] $omit_keys An array of keys to omit from the response.
 	 * @return array
 	 */
-	public function get_item_response( $cart ) {
+	public function get_item_response( $cart, $omit_keys = [] ) {
 		$controller = new CartController();
 
 		// Get cart errors first so if recalculations are performed, it's reflected in the response.
@@ -340,39 +342,42 @@ class CartSchema extends AbstractSchema {
 		// Get shipping packages to return in the response from the cart.
 		$shipping_packages = $has_calculated_shipping ? $controller->get_shipping_packages() : [];
 
-		return [
-			'coupons'                 => $this->get_item_responses_from_schema( $this->coupon_schema, $cart->get_applied_coupons() ),
-			'shipping_rates'          => $this->get_item_responses_from_schema( $this->shipping_rate_schema, $shipping_packages ),
-			'shipping_address'        => $this->shipping_address_schema->get_item_response( wc()->customer ),
-			'billing_address'         => $this->billing_address_schema->get_item_response( wc()->customer ),
-			'items'                   => $this->get_item_responses_from_schema( $this->item_schema, $cart->get_cart() ),
-			'items_count'             => $cart->get_cart_contents_count(),
-			'items_weight'            => wc_get_weight( $cart->get_cart_contents_weight(), 'g' ),
-			'needs_payment'           => $cart->needs_payment(),
-			'needs_shipping'          => $cart->needs_shipping(),
-			'has_calculated_shipping' => $has_calculated_shipping,
-			'fees'                    => $this->get_item_responses_from_schema( $this->fee_schema, $cart->get_fees() ),
-			'totals'                  => (object) $this->prepare_currency_response(
-				[
-					'total_items'        => $this->prepare_money_response( $cart->get_subtotal(), wc_get_price_decimals() ),
-					'total_items_tax'    => $this->prepare_money_response( $cart->get_subtotal_tax(), wc_get_price_decimals() ),
-					'total_fees'         => $this->prepare_money_response( $cart->get_fee_total(), wc_get_price_decimals() ),
-					'total_fees_tax'     => $this->prepare_money_response( $cart->get_fee_tax(), wc_get_price_decimals() ),
-					'total_discount'     => $this->prepare_money_response( $cart->get_discount_total(), wc_get_price_decimals() ),
-					'total_discount_tax' => $this->prepare_money_response( $cart->get_discount_tax(), wc_get_price_decimals() ),
-					'total_shipping'     => $has_calculated_shipping ? $this->prepare_money_response( $cart->get_shipping_total(), wc_get_price_decimals() ) : null,
-					'total_shipping_tax' => $has_calculated_shipping ? $this->prepare_money_response( $cart->get_shipping_tax(), wc_get_price_decimals() ) : null,
+		return ArrayUtils::remove_keys(
+			[
+				'coupons'                 => $this->get_item_responses_from_schema( $this->coupon_schema, $cart->get_applied_coupons() ),
+				'shipping_rates'          => $this->get_item_responses_from_schema( $this->shipping_rate_schema, $shipping_packages ),
+				'shipping_address'        => $this->shipping_address_schema->get_item_response( wc()->customer ),
+				'billing_address'         => $this->billing_address_schema->get_item_response( wc()->customer ),
+				'items'                   => $this->get_item_responses_from_schema( $this->item_schema, $cart->get_cart() ),
+				'items_count'             => $cart->get_cart_contents_count(),
+				'items_weight'            => wc_get_weight( $cart->get_cart_contents_weight(), 'g' ),
+				'needs_payment'           => $cart->needs_payment(),
+				'needs_shipping'          => $cart->needs_shipping(),
+				'has_calculated_shipping' => $has_calculated_shipping,
+				'fees'                    => $this->get_item_responses_from_schema( $this->fee_schema, $cart->get_fees() ),
+				'totals'                  => (object) $this->prepare_currency_response(
+					[
+						'total_items'        => $this->prepare_money_response( $cart->get_subtotal(), wc_get_price_decimals() ),
+						'total_items_tax'    => $this->prepare_money_response( $cart->get_subtotal_tax(), wc_get_price_decimals() ),
+						'total_fees'         => $this->prepare_money_response( $cart->get_fee_total(), wc_get_price_decimals() ),
+						'total_fees_tax'     => $this->prepare_money_response( $cart->get_fee_tax(), wc_get_price_decimals() ),
+						'total_discount'     => $this->prepare_money_response( $cart->get_discount_total(), wc_get_price_decimals() ),
+						'total_discount_tax' => $this->prepare_money_response( $cart->get_discount_tax(), wc_get_price_decimals() ),
+						'total_shipping'     => $has_calculated_shipping ? $this->prepare_money_response( $cart->get_shipping_total(), wc_get_price_decimals() ) : null,
+						'total_shipping_tax' => $has_calculated_shipping ? $this->prepare_money_response( $cart->get_shipping_tax(), wc_get_price_decimals() ) : null,
 
-					// Explicitly request context='edit'; default ('view') will render total as markup.
-					'total_price'        => $this->prepare_money_response( $cart->get_total( 'edit' ), wc_get_price_decimals() ),
-					'total_tax'          => $this->prepare_money_response( $cart->get_total_tax(), wc_get_price_decimals() ),
-					'tax_lines'          => $this->get_tax_lines( $cart ),
-				]
-			),
-			'errors'                  => $cart_errors,
-			'payment_requirements'    => $this->extend->get_payment_requirements(),
-			self::EXTENDING_KEY       => $this->get_extended_data( self::IDENTIFIER ),
-		];
+						// Explicitly request context='edit'; default ('view') will render total as markup.
+						'total_price'        => $this->prepare_money_response( $cart->get_total( 'edit' ), wc_get_price_decimals() ),
+						'total_tax'          => $this->prepare_money_response( $cart->get_total_tax(), wc_get_price_decimals() ),
+						'tax_lines'          => $this->get_tax_lines( $cart ),
+					]
+				),
+				'errors'                  => $cart_errors,
+				'payment_requirements'    => $this->extend->get_payment_requirements(),
+				self::EXTENDING_KEY       => $this->get_extended_data( self::IDENTIFIER ),
+			],
+			$omit_keys
+		);
 	}
 
 	/**
