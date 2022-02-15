@@ -6,18 +6,21 @@ import { createContext, useContext } from '@wordpress/element';
 /**
  * Internal dependencies
  */
-import type { CustomerDataContextType } from './types';
 import { defaultBillingData, defaultShippingAddress } from './constants';
-import { useCustomerData } from '../../../hooks/use-customer-data';
+import {
+	useCustomerData,
+	customerDataType,
+} from '../../../hooks/use-customer-data';
 
-const CustomerDataContext = createContext< CustomerDataContextType >( {
+const CustomerDataContext = createContext< customerDataType >( {
+	isInitialized: false,
 	billingData: defaultBillingData,
 	shippingAddress: defaultShippingAddress,
 	setBillingData: () => void 0,
 	setShippingAddress: () => void 0,
 } );
 
-export const useCustomerDataContext = (): CustomerDataContextType => {
+export const useCustomerDataContext = (): customerDataType => {
 	return useContext( CustomerDataContext );
 };
 
@@ -29,19 +32,7 @@ export const CustomerDataProvider = ( {
 }: {
 	children: JSX.Element | JSX.Element[];
 } ): JSX.Element => {
-	const {
-		billingData,
-		shippingAddress,
-		setBillingData,
-		setShippingAddress,
-	} = useCustomerData();
-
-	const contextValue: CustomerDataContextType = {
-		billingData,
-		shippingAddress,
-		setBillingData,
-		setShippingAddress,
-	};
+	const contextValue = useCustomerData();
 
 	return (
 		<CustomerDataContext.Provider value={ contextValue }>

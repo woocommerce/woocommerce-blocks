@@ -5,16 +5,18 @@ import { useDispatch, useSelect } from '@wordpress/data';
 import { CART_STORE_KEY as storeKey } from '@woocommerce/block-data';
 import type { BillingAddress, ShippingAddress } from '@woocommerce/settings';
 
-/**
- * This is a custom hook for syncing customer address data (billing and shipping) with the server.
- */
-export const useCustomerData = (): {
+export interface customerDataType {
 	isInitialized: boolean;
 	billingData: BillingAddress;
 	shippingAddress: ShippingAddress;
 	setBillingData: ( data: Partial< BillingAddress > ) => void;
 	setShippingAddress: ( data: Partial< ShippingAddress > ) => void;
-} => {
+}
+
+/**
+ * This is a custom hook for syncing customer address data (billing and shipping) with the server.
+ */
+export const useCustomerData = (): customerDataType => {
 	const { customerData, isInitialized } = useSelect( ( select ) => {
 		const store = select( storeKey );
 		return {
