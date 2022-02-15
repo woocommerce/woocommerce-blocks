@@ -9,10 +9,10 @@ import { createContext, useContext } from '@wordpress/element';
 import { defaultBillingData, defaultShippingAddress } from './constants';
 import {
 	useCustomerData,
-	customerDataType,
+	CustomerDataType,
 } from '../../../hooks/use-customer-data';
 
-const CustomerDataContext = createContext< customerDataType >( {
+const CustomerDataContext = createContext< CustomerDataType >( {
 	isInitialized: false,
 	billingData: defaultBillingData,
 	shippingAddress: defaultShippingAddress,
@@ -20,7 +20,7 @@ const CustomerDataContext = createContext< customerDataType >( {
 	setShippingAddress: () => void 0,
 } );
 
-export const useCustomerDataContext = (): customerDataType => {
+export const useCustomerDataContext = (): CustomerDataType => {
 	return useContext( CustomerDataContext );
 };
 

@@ -1,9 +1,9 @@
 /**
  * Internal dependencies
  */
-import type { CustomerDataContextType } from './types';
+import type { CustomerDataType } from '../../../hooks/use-customer-data';
 
-export const defaultBillingData: CustomerDataContextType[ 'billingData' ] = {
+export const defaultBillingData: CustomerDataType[ 'billingData' ] = {
 	first_name: '',
 	last_name: '',
 	company: '',
@@ -17,7 +17,7 @@ export const defaultBillingData: CustomerDataContextType[ 'billingData' ] = {
 	phone: '',
 };
 
-export const defaultShippingAddress: CustomerDataContextType[ 'shippingAddress' ] = {
+export const defaultShippingAddress: CustomerDataType[ 'shippingAddress' ] = {
 	first_name: '',
 	last_name: '',
 	company: '',

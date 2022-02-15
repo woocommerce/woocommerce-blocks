@@ -17,10 +17,9 @@ import {
 	useShippingDataContext,
 	useCheckoutContext,
 } from '../providers/cart-checkout';
-import type { CustomerDataContextType } from '../providers/cart-checkout/customer/types';
 import { useCustomerData } from './use-customer-data';
 
-interface CheckoutAddress extends Partial< CustomerDataContextType > {
+interface CheckoutAddress {
 	shippingAddress: ShippingAddress;
 	billingData: BillingAddress;
 	setShippingAddress: ( data: Partial< EnteredAddress > ) => void;
