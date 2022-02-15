@@ -70,6 +70,7 @@ const reducer: Reducer< CartState > = (
 					...state,
 					errors: EMPTY_CART_ERRORS,
 					cartData: {
+						...state.cartData,
 						...action.response,
 					},
 				};

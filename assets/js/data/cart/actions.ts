@@ -43,6 +43,26 @@ export const receiveCart = (
 };
 
 /**
+ * Returns an action object used in updating the store with the provided cart. This omits the customer addresses.
+ *
+ * This is a generic response action.
+ *
+ * @param  {CartResponse}      response
+ */
+export const receiveCartContents = (
+	response: CartResponse
+): { type: string; response: Partial< Cart > } => {
+	const cart = ( mapKeys( response, ( _, key ) =>
+		camelCase( key )
+	) as unknown ) as Cart;
+	const { shippingAddress, billingAddress, ...cartWithoutAddress } = cart;
+	return {
+		type: types.RECEIVE_CART,
+		response: cartWithoutAddress,
+	};
+};
+
+/**
  * Returns an action object used for receiving customer facing errors from the API.
  *
  * @param   {ResponseError|null} [error=null]     An error object containing the error
@@ -495,7 +515,7 @@ export function* updateCustomerData(
 			cache: 'no-store',
 		} );
 
-		yield receiveCart( response );
+		yield receiveCartContents( response );
 	} catch ( error ) {
 		yield receiveError( error );
 		yield updatingCustomerData( false );
@@ -515,6 +535,7 @@ export function* updateCustomerData(
 
 export type CartAction = ReturnOrGeneratorYieldUnion<
 	| typeof receiveCart
+	| typeof receiveCartContents
 	| typeof setBillingData
 	| typeof setShippingAddress
 	| typeof receiveError
