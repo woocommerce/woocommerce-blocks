@@ -31,29 +31,6 @@ const instanceOfCartResponseBillingAddress = (
 	return 'email' in address;
 };
 
-let customerData = <CustomerData>null;
-
-const updateCustomerData = (
-	customerDataToUpdate: Partial< BillingAddressShippingAddress >
-): void => {
-	dispatch( STORE_KEY )
-		.updateCustomerData( customerDataToUpdate )
-		.then( () => {
-			dispatch( 'core/notices' ).removeNotice( 'checkout' );
-		} )
-		.catch( ( response ) => {
-			dispatch( 'core/notices' ).createNotice(
-				'error',
-				formatStoreApiErrorMessage( response ),
-				{
-					id: 'checkout',
-				}
-			);
-		} );
-};
-
-const debouncedUpdateCustomerData = debounce( updateCustomerData, 1000 );
-
 /**
  * Does a shallow compare of important address data to determine if the cart needs updating on the server.
  *
@@ -87,6 +64,30 @@ const shouldUpdateAddressStore = <
 	);
 };
 
+let customerData = <CustomerData>null;
+let customerDataToUpdate: Partial< BillingAddressShippingAddress > = {};
+
+const updateCustomerData = debounce( (): void => {
+	if ( Object.keys( customerDataToUpdate ).length === 0 ) {
+		return;
+	}
+	dispatch( STORE_KEY )
+		.updateCustomerData( customerDataToUpdate )
+		.then( () => {
+			customerDataToUpdate = {};
+			dispatch( 'core/notices' ).removeNotice( 'checkout' );
+		} )
+		.catch( ( response ) => {
+			dispatch( 'core/notices' ).createNotice(
+				'error',
+				formatStoreApiErrorMessage( response ),
+				{
+					id: 'checkout',
+				}
+			);
+		} );
+}, 1000 );
+
 export const pushChanges = (): void => {
 	const store = select( STORE_KEY );
 	const isInitialized = store.hasFinishedResolution( 'getCartData' );
@@ -103,8 +104,6 @@ export const pushChanges = (): void => {
 		customerData = newCustomerData;
 		return;
 	}
-
-	const customerDataToUpdate: Partial< BillingAddressShippingAddress > = {};
 
 	if (
 		shouldUpdateAddressStore(
@@ -129,7 +128,7 @@ export const pushChanges = (): void => {
 	}
 
 	// Debounce the update to the server.
-	debouncedUpdateCustomerData( customerDataToUpdate );
+	updateCustomerData();
 
 	// Update our local cache to the new values.
 	customerData = newCustomerData;
