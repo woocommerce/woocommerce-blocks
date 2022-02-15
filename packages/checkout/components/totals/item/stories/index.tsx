@@ -22,7 +22,7 @@ export default {
 				This item is <strong>so interesting</strong>
 			</span>
 		),
-		label: 'Intersting item',
+		label: 'Interesting item',
 		value: 2000,
 	},
 } as Meta< TotalsItemProps >;
