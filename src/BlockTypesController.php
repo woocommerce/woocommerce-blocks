@@ -235,7 +235,6 @@ final class BlockTypesController {
 			'product-button',
 			'product-image',
 			'product-price',
-			'product-sale-badge',
 			'product-sku',
 			'product-category-list',
 			'product-tag-list',
