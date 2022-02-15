@@ -65,17 +65,27 @@ const shouldUpdateAddressStore = <
 };
 
 let customerData = <CustomerData>null;
-let customerDataToUpdate: Partial< BillingAddressShippingAddress > = {};
 
-const updateCustomerData = (): void => {
-	if ( Object.keys( customerDataToUpdate ).length === 0 ) {
+const updateCustomerData = (
+	customerDataToUpdate: Partial< BillingAddressShippingAddress >
+): void => {
+	if ( customerData === null ) {
 		return;
+	}
+	// Update our local cache to the new values.
+	if ( customerDataToUpdate.billing_address ) {
+		customerData.billingData = customerDataToUpdate.billing_address;
+	}
+	if ( customerDataToUpdate.shipping_address ) {
+		customerData.shippingAddress = customerDataToUpdate.shipping_address;
 	}
 	dispatch( STORE_KEY )
 		.updateCustomerData( customerDataToUpdate )
 		.then( () => {
-			customerDataToUpdate = {};
-			dispatch( 'core/notices' ).removeNotice( 'checkout' );
+			dispatch( 'core/notices' ).removeNotice(
+				'checkout',
+				'wc/checkout'
+			);
 		} )
 		.catch( ( response ) => {
 			dispatch( 'core/notices' ).createNotice(
@@ -83,10 +93,12 @@ const updateCustomerData = (): void => {
 				formatStoreApiErrorMessage( response ),
 				{
 					id: 'checkout',
+					context: 'wc/checkout',
 				}
 			);
 		} );
 };
+
 const debouncedUpdateCustomerData = debounce( updateCustomerData, 1000 );
 
 export const pushChanges = (): void => {
@@ -106,6 +118,8 @@ export const pushChanges = (): void => {
 		return;
 	}
 
+	const customerDataToUpdate = {} as Partial< BillingAddressShippingAddress >;
+
 	if (
 		shouldUpdateAddressStore(
 			customerData.billingData,
@@ -124,13 +138,8 @@ export const pushChanges = (): void => {
 		customerDataToUpdate.shipping_address = newCustomerData.shippingAddress;
 	}
 
-	if ( Object.keys( customerDataToUpdate ).length === 0 ) {
-		return;
+	// Debounce the update to the server if something has changed.
+	if ( Object.keys( customerDataToUpdate ).length ) {
+		debouncedUpdateCustomerData( customerDataToUpdate );
 	}
-
-	// Debounce the update to the server.
-	debouncedUpdateCustomerData();
-
-	// Update our local cache to the new values.
-	customerData = newCustomerData;
 };
