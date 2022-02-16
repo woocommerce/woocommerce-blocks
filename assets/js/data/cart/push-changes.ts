@@ -127,6 +127,7 @@ const updateCustomerData = debounce( (): void => {
 export const pushChanges = (): void => {
 	const store = select( STORE_KEY );
 	const isInitialized = store.hasFinishedResolution( 'getCartData' );
+	const newCustomerData = isInitialized ? store.getCustomerData() : null;
 
 	if ( ! isInitialized ) {
 		return;
