@@ -55,7 +55,7 @@ class ProductButton extends AbstractBlock {
 				'radius'                          => true,
 				'__experimentalSkipSerialization' => true,
 			),
-			'__experimentalSelector' => '.wc-block-components-product-button__button',
+			'__experimentalSelector' => '.wp-block-button.wc-block-components-product-button .wc-block-components-product-button__button',
 		);
 	}
 

@@ -15,6 +15,11 @@ export const supports = {
 			radius: true,
 			__experimentalSkipSerialization: true,
 		},
-		__experimentalSelector: '.wc-block-components-product-button__button',
+		spacing: {
+			padding: true,
+			__experimentalSkipSerialization: true,
+		},
+		__experimentalSelector:
+			'.wp-block-button.wc-block-components-product-button .wc-block-components-product-button__button',
 	} ),
 };
