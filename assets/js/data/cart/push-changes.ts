@@ -25,30 +25,29 @@ declare type CustomerData = {
 	shippingAddress: CartResponseShippingAddress;
 } | null;
 
-const instanceOfCartResponseBillingAddress = (
+/**
+ * Checks if a cart response contains an email property.
+ */
+const isCartResponseBillingAddress = (
 	address: CartResponseBillingAddress | CartResponseShippingAddress
 ): address is CartResponseBillingAddress => {
 	return 'email' in address;
 };
 
 /**
- * Does a shallow compare of important address data to determine if the cart needs updating on the server.
- *
- * This takes the current and previous address into account, as well as the billing email field.
- *
- * @param {Object} previousAddress An object containing all previous address information
- * @param {Object} address An object containing all address information
- *
- * @return {boolean} True if the store needs updating due to changed data.
+ * Does a shallow compare of important address data to determine if the cart needs updating on the server. This takes
+ * the current and previous address into account, as well as the billing email field.
  */
-const shouldUpdateAddressStore = <
+const isAddressDirty = <
 	T extends CartResponseBillingAddress | CartResponseShippingAddress
 >(
+	// An object containing all previous address information
 	previousAddress: T,
+	// An object containing all address information.
 	address: T
 ): boolean => {
 	if (
-		instanceOfCartResponseBillingAddress( address ) &&
+		isCartResponseBillingAddress( address ) &&
 		pluckEmail( address ) !==
 			pluckEmail( previousAddress as CartResponseBillingAddress )
 	) {
@@ -64,82 +63,86 @@ const shouldUpdateAddressStore = <
 	);
 };
 
+/**
+ * Local cache of customerData used for comparisons.
+ */
 let customerData = <CustomerData>null;
 
-const updateCustomerData = (
-	customerDataToUpdate: Partial< BillingAddressShippingAddress >
-): void => {
-	if ( customerData === null ) {
-		return;
-	}
-	// Update our local cache to the new values.
-	if ( customerDataToUpdate.billing_address ) {
-		customerData.billingData = customerDataToUpdate.billing_address;
-	}
-	if ( customerDataToUpdate.shipping_address ) {
-		customerData.shippingAddress = customerDataToUpdate.shipping_address;
-	}
-	dispatch( STORE_KEY )
-		.updateCustomerData( customerDataToUpdate )
-		.then( () => {
-			dispatch( 'core/notices' ).removeNotice(
-				'checkout',
-				'wc/checkout'
-			);
-		} )
-		.catch( ( response ) => {
-			dispatch( 'core/notices' ).createNotice(
-				'error',
-				formatStoreApiErrorMessage( response ),
-				{
-					id: 'checkout',
-					context: 'wc/checkout',
-				}
-			);
-		} );
+/**
+ * Tracks which props have changed so the correct data gets pushed to the server.
+ */
+const dirtyProps = {
+	billingData: false,
+	shippingAddress: false,
 };
 
-const debouncedUpdateCustomerData = debounce( updateCustomerData, 1000 );
+/**
+ * Function to dispatch an update to the server. This is debounced.
+ */
+const updateCustomerData = debounce( (): void => {
+	const customerDataToUpdate = {} as Partial< BillingAddressShippingAddress >;
 
+	if ( dirtyProps.billingData && customerData?.billingData ) {
+		customerDataToUpdate.billing_address = customerData?.billingData;
+		dirtyProps.billingData = false;
+	}
+
+	if ( dirtyProps.shippingAddress && customerData?.shippingAddress ) {
+		customerDataToUpdate.shipping_address = customerData.shippingAddress;
+		dirtyProps.shippingAddress = false;
+	}
+
+	if ( Object.keys( customerDataToUpdate ).length ) {
+		dispatch( STORE_KEY )
+			.updateCustomerData( customerDataToUpdate )
+			.then( () => {
+				dispatch( 'core/notices' ).removeNotice(
+					'checkout',
+					'wc/checkout'
+				);
+			} )
+			.catch( ( response ) => {
+				dispatch( 'core/notices' ).createNotice(
+					'error',
+					formatStoreApiErrorMessage( response ),
+					{
+						id: 'checkout',
+						context: 'wc/checkout',
+					}
+				);
+			} );
+	}
+}, 1000 );
+
+/**
+ * After cart has fully initialized, pushes changes to the server when data in the store is changed. Updates to the
+ * server are debounced to prevent excessive requests.
+ */
 export const pushChanges = (): void => {
 	const store = select( STORE_KEY );
 	const isInitialized = store.hasFinishedResolution( 'getCartData' );
+	const newCustomerData = isInitialized ? store.getCustomerData() : null;
 
-	// Wait for cart to fully initialize before syncing anything back to the server.
-	if ( ! isInitialized ) {
-		return;
-	}
-
-	const newCustomerData = store.getCustomerData();
-
-	// When first initialized, update the local cache once.
-	if ( customerData === null ) {
+	if ( newCustomerData === null || customerData === null ) {
 		customerData = newCustomerData;
 		return;
 	}
 
-	const customerDataToUpdate = {} as Partial< BillingAddressShippingAddress >;
-
 	if (
-		shouldUpdateAddressStore(
-			customerData.billingData,
-			newCustomerData.billingData
-		)
+		isAddressDirty( customerData.billingData, newCustomerData.billingData )
 	) {
-		customerDataToUpdate.billing_address = newCustomerData.billingData;
+		dirtyProps.billingData = true;
 	}
 
 	if (
-		shouldUpdateAddressStore(
+		isAddressDirty(
 			customerData.shippingAddress,
 			newCustomerData.shippingAddress
 		)
 	) {
-		customerDataToUpdate.shipping_address = newCustomerData.shippingAddress;
+		dirtyProps.shippingAddress = true;
 	}
 
-	// Debounce the update to the server if something has changed.
-	if ( Object.keys( customerDataToUpdate ).length ) {
-		debouncedUpdateCustomerData( customerDataToUpdate );
-	}
+	customerData = newCustomerData;
+	updateCustomerData();
 };
