@@ -25,6 +25,7 @@ import {
 	useBorderProps,
 	useColorProps,
 	useTypographyProps,
+	useSpacingProps,
 } from '../../../../hooks/style-attributes';
 
 /**
@@ -42,6 +43,7 @@ const Block = ( props ) => {
 	const colorProps = useColorProps( props );
 	const borderProps = useBorderProps( props );
 	const typographyProps = useTypographyProps( props );
+	const spacingProps = useSpacingProps( props );
 
 	return (
 		<div
@@ -60,12 +62,14 @@ const Block = ( props ) => {
 					colorStyles={ colorProps }
 					borderStyles={ borderProps }
 					typographyStyles={ typographyProps }
+					spacingStyles={ spacingProps }
 				/>
 			) : (
 				<AddToCartButtonPlaceholder
 					colorStyles={ colorProps }
 					borderStyles={ borderProps }
 					typographyStyles={ typographyProps }
+					spacingStyles={ spacingProps }
 				/>
 			) }
 		</div>
@@ -80,6 +84,7 @@ const Block = ( props ) => {
  * @param {Object} [props.colorStyles] Object contains CSS class and CSS style for color.
  * @param {Object} [props.borderStyles] Object contains CSS class and CSS style for border.
  * @param {Object} [props.typographyStyles] Object contains CSS class and CSS style for typography.
+ * @param {Object} [props.spacingStyles] Object contains CSS style for spacing.
  *
  * @return {*} The component.
  */
@@ -88,6 +93,7 @@ const AddToCartButton = ( {
 	colorStyles,
 	borderStyles,
 	typographyStyles,
+	spacingStyles,
 } ) => {
 	const {
 		id,
@@ -165,6 +171,7 @@ const AddToCartButton = ( {
 				...colorStyles.style,
 				...borderStyles.style,
 				...typographyStyles.style,
+				...spacingStyles.style,
 			} }
 			disabled={ addingToCart }
 			{ ...buttonProps }
@@ -181,6 +188,7 @@ const AddToCartButton = ( {
  * @param {Object} [props.colorStyles] Object contains CSS class and CSS style for color.
  * @param {Object} [props.borderStyles] Object contains CSS class and CSS style for border.
  * @param {Object} [props.typographyStyles] Object contains CSS class and CSS style for typography.
+ * @param {Object} [props.spacingStyles] Object contains CSS style for spacing.
  *
  * @return {*} The component.
  */
@@ -188,6 +196,7 @@ const AddToCartButtonPlaceholder = ( {
 	colorStyles,
 	borderStyles,
 	typographyStyles,
+	spacingStyles,
 } ) => {
 	return (
 		<button
@@ -203,6 +212,7 @@ const AddToCartButtonPlaceholder = ( {
 				...colorStyles.style,
 				...borderStyles.style,
 				...typographyStyles.style,
+				...spacingStyles.style,
 			} }
 			disabled={ true }
 		/>
