@@ -128,6 +128,7 @@ export const pushChanges = (): void => {
 		return;
 	}
 
+	// An address is dirty and needs pushing to the server if the email, country, state, city, or postcode have changed.
 	if (
 		isAddressDirty( customerData.billingData, newCustomerData.billingData )
 	) {
