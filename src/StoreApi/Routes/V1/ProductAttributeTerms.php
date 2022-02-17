@@ -1,19 +1,19 @@
 <?php
-namespace Automattic\WooCommerce\Blocks\StoreApi\Routes;
+namespace Automattic\WooCommerce\Blocks\StoreApi\Routes\V1;
 
 /**
- * ProductAttributes class.
+ * ProductAttributeTerms class.
  *
  * @internal This API is used internally by Blocks--it is still in flux and may be subject to revisions.
  */
-class ProductAttributes extends AbstractRoute {
+class ProductAttributeTerms extends AbstractTermsRoute {
 	/**
 	 * Get the path of this REST route.
 	 *
 	 * @return string
 	 */
 	public function get_path() {
-		return '/products/attributes';
+		return '/products/attributes/(?P<attribute_id>[\d]+)/terms';
 	}
 
 	/**
@@ -23,6 +23,12 @@ class ProductAttributes extends AbstractRoute {
 	 */
 	public function get_args() {
 		return [
+			'args'   => array(
+				'attribute_id' => array(
+					'description' => __( 'Unique identifier for the attribute.', 'woo-gutenberg-products-block' ),
+					'type'        => 'integer',
+				),
+			),
 			[
 				'methods'             => \WP_REST_Server::READABLE,
 				'callback'            => [ $this, 'get_response' ],
@@ -34,22 +40,19 @@ class ProductAttributes extends AbstractRoute {
 	}
 
 	/**
-	 * Get a collection of attributes.
+	 * Get a collection of attribute terms.
 	 *
 	 * @throws RouteException On error.
 	 * @param \WP_REST_Request $request Request object.
 	 * @return \WP_REST_Response
 	 */
 	protected function get_route_response( \WP_REST_Request $request ) {
-		$ids    = wc_get_attribute_taxonomy_ids();
-		$return = [];
+		$attribute = wc_get_attribute( $request['attribute_id'] );
 
-		foreach ( $ids as $id ) {
-			$object   = wc_get_attribute( $id );
-			$data     = $this->prepare_item_for_response( $object, $request );
-			$return[] = $this->prepare_response_for_collection( $data );
+		if ( ! $attribute || ! taxonomy_exists( $attribute->slug ) ) {
+			throw new RouteException( 'woocommerce_rest_taxonomy_invalid', __( 'Attribute does not exist.', 'woo-gutenberg-products-block' ), 404 );
 		}
 
-		return rest_ensure_response( $return );
+		return $this->get_terms_response( $attribute->slug, $request );
 	}
 }

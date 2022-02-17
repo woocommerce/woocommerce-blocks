@@ -1,5 +1,5 @@
 <?php
-namespace Automattic\WooCommerce\Blocks\StoreApi\Routes;
+namespace Automattic\WooCommerce\Blocks\StoreApi\Routes\V1;
 
 use Automattic\WooCommerce\Blocks\StoreApi\Utilities\Pagination;
 use Automattic\WooCommerce\Blocks\StoreApi\Utilities\ProductQuery;

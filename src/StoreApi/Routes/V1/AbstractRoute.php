@@ -1,6 +1,7 @@
 <?php
-namespace Automattic\WooCommerce\Blocks\StoreApi\Routes;
+namespace Automattic\WooCommerce\Blocks\StoreApi\Routes\V1;
 
+use Automattic\WooCommerce\Blocks\StoreApi\Routes\RouteInterface;
 use Automattic\WooCommerce\Blocks\StoreApi\Exceptions\InvalidStockLevelsInCartException;
 use Automattic\WooCommerce\Blocks\StoreApi\Schemas\AbstractSchema;
 use WP_Error;
@@ -33,7 +34,7 @@ abstract class AbstractRoute implements RouteInterface {
 	 * @return string
 	 */
 	public function get_namespace() {
-		return 'wc/store';
+		return 'wc/store/v1';
 	}
 
 	/**

@@ -1,19 +1,19 @@
 <?php
-namespace Automattic\WooCommerce\Blocks\StoreApi\Routes;
+namespace Automattic\WooCommerce\Blocks\StoreApi\Routes\V1;
 
 /**
- * CartItemsByKey class.
+ * CartItems class.
  *
  * @internal This API is used internally by Blocks--it is still in flux and may be subject to revisions.
  */
-class CartItemsByKey extends AbstractCartRoute {
+class CartItems extends AbstractCartRoute {
 	/**
 	 * Get the path of this REST route.
 	 *
 	 * @return string
 	 */
 	public function get_path() {
-		return '/cart/items/(?P<key>[\w-]{32})';
+		return '/cart/items';
 	}
 
 	/**
@@ -23,12 +23,6 @@ class CartItemsByKey extends AbstractCartRoute {
 	 */
 	public function get_args() {
 		return [
-			'args'        => [
-				'key' => [
-					'description' => __( 'Unique identifier for the item within the cart.', 'woo-gutenberg-products-block' ),
-					'type'        => 'string',
-				],
-			],
 			[
 				'methods'             => \WP_REST_Server::READABLE,
 				'callback'            => [ $this, 'get_response' ],
@@ -38,10 +32,10 @@ class CartItemsByKey extends AbstractCartRoute {
 				],
 			],
 			[
-				'methods'             => \WP_REST_Server::EDITABLE,
+				'methods'             => \WP_REST_Server::CREATABLE,
 				'callback'            => array( $this, 'get_response' ),
 				'permission_callback' => '__return_true',
-				'args'                => $this->schema->get_endpoint_args_for_item_schema( \WP_REST_Server::EDITABLE ),
+				'args'                => $this->schema->get_endpoint_args_for_item_schema( \WP_REST_Server::CREATABLE ),
 			],
 			[
 				'methods'             => \WP_REST_Server::DELETABLE,
@@ -54,60 +48,62 @@ class CartItemsByKey extends AbstractCartRoute {
 	}
 
 	/**
-	 * Get a single cart items.
+	 * Get a collection of cart items.
 	 *
 	 * @throws RouteException On error.
 	 * @param \WP_REST_Request $request Request object.
 	 * @return \WP_REST_Response
 	 */
 	protected function get_route_response( \WP_REST_Request $request ) {
-		$cart_item = $this->cart_controller->get_cart_item( $request['key'] );
+		$cart_items = $this->cart_controller->get_cart_items();
+		$items      = [];
 
-		if ( empty( $cart_item ) ) {
-			throw new RouteException( 'woocommerce_rest_cart_invalid_key', __( 'Cart item does not exist.', 'woo-gutenberg-products-block' ), 404 );
+		foreach ( $cart_items as $cart_item ) {
+			$data    = $this->prepare_item_for_response( $cart_item, $request );
+			$items[] = $this->prepare_response_for_collection( $data );
 		}
 
-		$data     = $this->prepare_item_for_response( $cart_item, $request );
-		$response = rest_ensure_response( $data );
+		$response = rest_ensure_response( $items );
 
 		return $response;
 	}
 
 	/**
-	 * Update a single cart item.
+	 * Creates one item from the collection.
 	 *
 	 * @throws RouteException On error.
 	 * @param \WP_REST_Request $request Request object.
 	 * @return \WP_REST_Response
 	 */
-	protected function get_route_update_response( \WP_REST_Request $request ) {
-		$cart = $this->cart_controller->get_cart_instance();
-
-		if ( isset( $request['quantity'] ) ) {
-			$this->cart_controller->set_cart_item_quantity( $request['key'], $request['quantity'] );
+	protected function get_route_post_response( \WP_REST_Request $request ) {
+		// Do not allow key to be specified during creation.
+		if ( ! empty( $request['key'] ) ) {
+			throw new RouteException( 'woocommerce_rest_cart_item_exists', __( 'Cannot create an existing cart item.', 'woo-gutenberg-products-block' ), 400 );
 		}
 
-		return rest_ensure_response( $this->prepare_item_for_response( $this->cart_controller->get_cart_item( $request['key'] ), $request ) );
+		$result = $this->cart_controller->add_to_cart(
+			[
+				'id'        => $request['id'],
+				'quantity'  => $request['quantity'],
+				'variation' => $request['variation'],
+			]
+		);
+
+		$response = rest_ensure_response( $this->prepare_item_for_response( $this->cart_controller->get_cart_item( $result ), $request ) );
+		$response->set_status( 201 );
+		return $response;
 	}
 
 	/**
-	 * Delete a single cart item.
+	 * Deletes all items in the cart.
 	 *
 	 * @throws RouteException On error.
 	 * @param \WP_REST_Request $request Request object.
 	 * @return \WP_REST_Response
 	 */
 	protected function get_route_delete_response( \WP_REST_Request $request ) {
-		$cart      = $this->cart_controller->get_cart_instance();
-		$cart_item = $this->cart_controller->get_cart_item( $request['key'] );
-
-		if ( empty( $cart_item ) ) {
-			throw new RouteException( 'woocommerce_rest_cart_invalid_key', __( 'Cart item does not exist.', 'woo-gutenberg-products-block' ), 404 );
-		}
-
-		$cart->remove_cart_item( $request['key'] );
-
-		return new \WP_REST_Response( null, 204 );
+		$this->cart_controller->empty_cart();
+		return new \WP_REST_Response( [], 200 );
 	}
 
 	/**

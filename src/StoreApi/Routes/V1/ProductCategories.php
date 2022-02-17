@@ -1,19 +1,19 @@
 <?php
-namespace Automattic\WooCommerce\Blocks\StoreApi\Routes;
+namespace Automattic\WooCommerce\Blocks\StoreApi\Routes\V1;
 
 /**
- * ProductAttributeTerms class.
+ * ProductCategories class.
  *
  * @internal This API is used internally by Blocks--it is still in flux and may be subject to revisions.
  */
-class ProductAttributeTerms extends AbstractTermsRoute {
+class ProductCategories extends AbstractTermsRoute {
 	/**
 	 * Get the path of this REST route.
 	 *
 	 * @return string
 	 */
 	public function get_path() {
-		return '/products/attributes/(?P<attribute_id>[\d]+)/terms';
+		return '/products/categories';
 	}
 
 	/**
@@ -23,12 +23,6 @@ class ProductAttributeTerms extends AbstractTermsRoute {
 	 */
 	public function get_args() {
 		return [
-			'args'   => array(
-				'attribute_id' => array(
-					'description' => __( 'Unique identifier for the attribute.', 'woo-gutenberg-products-block' ),
-					'type'        => 'integer',
-				),
-			),
 			[
 				'methods'             => \WP_REST_Server::READABLE,
 				'callback'            => [ $this, 'get_response' ],
@@ -40,19 +34,13 @@ class ProductAttributeTerms extends AbstractTermsRoute {
 	}
 
 	/**
-	 * Get a collection of attribute terms.
+	 * Get a collection of terms.
 	 *
 	 * @throws RouteException On error.
 	 * @param \WP_REST_Request $request Request object.
 	 * @return \WP_REST_Response
 	 */
 	protected function get_route_response( \WP_REST_Request $request ) {
-		$attribute = wc_get_attribute( $request['attribute_id'] );
-
-		if ( ! $attribute || ! taxonomy_exists( $attribute->slug ) ) {
-			throw new RouteException( 'woocommerce_rest_taxonomy_invalid', __( 'Attribute does not exist.', 'woo-gutenberg-products-block' ), 404 );
-		}
-
-		return $this->get_terms_response( $attribute->slug, $request );
+		return $this->get_terms_response( 'product_cat', $request );
 	}
 }

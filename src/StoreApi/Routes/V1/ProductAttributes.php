@@ -1,19 +1,19 @@
 <?php
-namespace Automattic\WooCommerce\Blocks\StoreApi\Routes;
+namespace Automattic\WooCommerce\Blocks\StoreApi\Routes\V1;
 
 /**
- * Cart class.
+ * ProductAttributes class.
  *
  * @internal This API is used internally by Blocks--it is still in flux and may be subject to revisions.
  */
-class Cart extends AbstractCartRoute {
+class ProductAttributes extends AbstractRoute {
 	/**
 	 * Get the path of this REST route.
 	 *
 	 * @return string
 	 */
 	public function get_path() {
-		return '/cart';
+		return '/products/attributes';
 	}
 
 	/**
@@ -27,22 +27,29 @@ class Cart extends AbstractCartRoute {
 				'methods'             => \WP_REST_Server::READABLE,
 				'callback'            => [ $this, 'get_response' ],
 				'permission_callback' => '__return_true',
-				'args'                => [
-					'context' => $this->get_context_param( [ 'default' => 'view' ] ),
-				],
+				'args'                => $this->get_collection_params(),
 			],
 			'schema' => [ $this->schema, 'get_public_item_schema' ],
 		];
 	}
 
 	/**
-	 * Handle the request and return a valid response for this endpoint.
+	 * Get a collection of attributes.
 	 *
 	 * @throws RouteException On error.
 	 * @param \WP_REST_Request $request Request object.
 	 * @return \WP_REST_Response
 	 */
 	protected function get_route_response( \WP_REST_Request $request ) {
-		return rest_ensure_response( $this->schema->get_item_response( $this->cart_controller->get_cart_instance() ) );
+		$ids    = wc_get_attribute_taxonomy_ids();
+		$return = [];
+
+		foreach ( $ids as $id ) {
+			$object   = wc_get_attribute( $id );
+			$data     = $this->prepare_item_for_response( $object, $request );
+			$return[] = $this->prepare_response_for_collection( $data );
+		}
+
+		return rest_ensure_response( $return );
 	}
 }

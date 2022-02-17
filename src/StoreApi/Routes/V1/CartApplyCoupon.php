@@ -1,19 +1,19 @@
 <?php
-namespace Automattic\WooCommerce\Blocks\StoreApi\Routes;
+namespace Automattic\WooCommerce\Blocks\StoreApi\Routes\V1;
 
 /**
- * CartRemoveCoupon class.
+ * CartApplyCoupon class.
  *
  * @internal This API is used internally by Blocks--it is still in flux and may be subject to revisions.
  */
-class CartRemoveCoupon extends AbstractCartRoute {
+class CartApplyCoupon extends AbstractCartRoute {
 	/**
 	 * Get the path of this REST route.
 	 *
 	 * @return string
 	 */
 	public function get_path() {
-		return '/cart/remove-coupon';
+		return '/cart/apply-coupon';
 	}
 
 	/**
@@ -52,20 +52,13 @@ class CartRemoveCoupon extends AbstractCartRoute {
 		}
 
 		$cart        = $this->cart_controller->get_cart_instance();
-		$coupon_code = wc_format_coupon_code( $request['code'] );
-		$coupon      = new \WC_Coupon( $coupon_code );
+		$coupon_code = wc_format_coupon_code( wp_unslash( $request['code'] ) );
 
-		if ( $coupon->get_code() !== $coupon_code || ! $coupon->is_valid() ) {
-			throw new RouteException( 'woocommerce_rest_cart_coupon_error', __( 'Invalid coupon code.', 'woo-gutenberg-products-block' ), 400 );
+		try {
+			$this->cart_controller->apply_coupon( $coupon_code );
+		} catch ( \WC_REST_Exception $e ) {
+			throw new RouteException( $e->getErrorCode(), $e->getMessage(), $e->getCode() );
 		}
-
-		if ( ! $this->cart_controller->has_coupon( $coupon_code ) ) {
-			throw new RouteException( 'woocommerce_rest_cart_coupon_invalid_code', __( 'Coupon cannot be removed because it is not already applied to the cart.', 'woo-gutenberg-products-block' ), 409 );
-		}
-
-		$cart = $this->cart_controller->get_cart_instance();
-		$cart->remove_coupon( $coupon_code );
-		$cart->calculate_totals();
 
 		return rest_ensure_response( $this->schema->get_item_response( $cart ) );
 	}

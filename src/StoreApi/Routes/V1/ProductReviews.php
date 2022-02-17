@@ -1,5 +1,5 @@
 <?php
-namespace Automattic\WooCommerce\Blocks\StoreApi\Routes;
+namespace Automattic\WooCommerce\Blocks\StoreApi\Routes\V1;
 
 use WP_Comment_Query;
 use Automattic\WooCommerce\Blocks\StoreApi\Utilities\Pagination;
