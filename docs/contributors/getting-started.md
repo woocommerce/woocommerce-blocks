@@ -125,6 +125,19 @@ To use Prettier, you should install the [Prettier - Code formatter](https://mark
 
 This will use the `.prettierrc.js` file in the root folder of the Blocks plugin repository and the version of Prettier that is installed in the root `node_modules` folder.
 
+## Testing
+
+You’ll find a handful of scripts in `package.json` that performs the automated tests and linting. You can run the following commands to execute automated tests in your terminal:
+
+- JS tests: `npm run test`
+- End-to-End `tests:npm run test:e2e` 
+- PHP tests: `npm run test:php` 
+
+You can also use [Docker](https://www.docker.com/) to run end-to-end or php tests.
+
+- Run `npm run wp-env` command to setup the development environment in Docker.
+
+
 <!-- FEEDBACK -->
 ---
 
