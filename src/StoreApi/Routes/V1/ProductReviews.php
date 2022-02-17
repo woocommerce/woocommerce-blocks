@@ -39,7 +39,6 @@ class ProductReviews extends AbstractRoute {
 	/**
 	 * Get a collection of reviews.
 	 *
-	 * @throws RouteException On error.
 	 * @param \WP_REST_Request $request Request object.
 	 * @return \WP_REST_Response
 	 */

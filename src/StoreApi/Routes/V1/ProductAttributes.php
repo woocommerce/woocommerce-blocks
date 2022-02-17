@@ -36,7 +36,6 @@ class ProductAttributes extends AbstractRoute {
 	/**
 	 * Get a collection of attributes.
 	 *
-	 * @throws RouteException On error.
 	 * @param \WP_REST_Request $request Request object.
 	 * @return \WP_REST_Response
 	 */

@@ -2,6 +2,7 @@
 namespace Automattic\WooCommerce\Blocks\StoreApi\Routes\V1;
 
 use Automattic\WooCommerce\Blocks\StoreApi\Utilities\DraftOrderTrait;
+use Automattic\WooCommerce\Blocks\StoreApi\Exceptions\RouteException;
 
 /**
  * CartRemoveItem class.

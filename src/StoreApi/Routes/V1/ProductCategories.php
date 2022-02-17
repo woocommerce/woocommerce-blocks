@@ -36,7 +36,6 @@ class ProductCategories extends AbstractTermsRoute {
 	/**
 	 * Get a collection of terms.
 	 *
-	 * @throws RouteException On error.
 	 * @param \WP_REST_Request $request Request object.
 	 * @return \WP_REST_Response
 	 */

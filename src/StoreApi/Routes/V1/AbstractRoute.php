@@ -2,6 +2,7 @@
 namespace Automattic\WooCommerce\Blocks\StoreApi\Routes\V1;
 
 use Automattic\WooCommerce\Blocks\StoreApi\Routes\RouteInterface;
+use Automattic\WooCommerce\Blocks\StoreApi\Exceptions\RouteException;
 use Automattic\WooCommerce\Blocks\StoreApi\Exceptions\InvalidStockLevelsInCartException;
 use Automattic\WooCommerce\Blocks\StoreApi\Schemas\AbstractSchema;
 use WP_Error;

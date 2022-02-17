@@ -69,7 +69,6 @@ class CartUpdateCustomer extends AbstractCartRoute {
 	/**
 	 * Handle the request and return a valid response for this endpoint.
 	 *
-	 * @throws RouteException On error.
 	 * @param \WP_REST_Request $request Request object.
 	 * @return \WP_REST_Response
 	 */
