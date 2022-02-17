@@ -137,6 +137,7 @@ You can also use [Docker](https://www.docker.com/) to run end-to-end or php test
 
 - Run `npm run wp-env` command to setup the development environment in Docker.
 
+To find out more about how to run automated JavaScript tests, check out the documentation on [JavaScript Testing](https://github.com/woocommerce/woocommerce-gutenberg-products-block/blob/trunk/docs/contributors/javascript-testing.md).
 
 <!-- FEEDBACK -->
 ---
