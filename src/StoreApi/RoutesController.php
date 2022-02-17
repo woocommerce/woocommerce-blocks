@@ -75,6 +75,7 @@ class RoutesController {
 		$order_controller = new OrderController();
 
 		$this->routes = [
+			'batch'                     => new Routes\Batch(),
 			'cart'                      => new Routes\Cart( $this->schemas->get( 'cart' ), null, $cart_controller, $order_controller ),
 			'cart-add-item'             => new Routes\CartAddItem( $this->schemas->get( 'cart' ), null, $cart_controller, $order_controller ),
 			'cart-apply-coupon'         => new Routes\CartApplyCoupon( $this->schemas->get( 'cart' ), null, $cart_controller, $order_controller ),
@@ -100,10 +101,5 @@ class RoutesController {
 			'products'                  => new Routes\Products( $this->schemas->get( 'product' ) ),
 			'products-by-id'            => new Routes\ProductsById( $this->schemas->get( 'product' ) ),
 		];
-
-		// Batching requires WP 5.6.
-		if ( version_compare( $wp_version, '5.6', '>=' ) ) {
-			$this->routes['batch'] = new Routes\Batch();
-		}
 	}
 }
