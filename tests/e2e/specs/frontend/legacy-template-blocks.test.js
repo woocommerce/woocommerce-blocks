@@ -21,6 +21,8 @@ const SELECTORS = {
  * number of products).
  */
 function extractPaginationData() {
+	const { productArchivePage } = SELECTORS;
+
 	return page.$eval( productArchivePage.resultsCount, ( $el ) => {
 		const resultsCountRegEx = /1–(\d+)|\d+/;
 		const matches = $el.textContent.match( resultsCountRegEx );
