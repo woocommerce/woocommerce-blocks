@@ -1,7 +1,6 @@
 <?php
-namespace Automattic\WooCommerce\Blocks\StoreApi\Schemas;
+namespace Automattic\WooCommerce\Blocks\StoreApi\Schemas\V1;
 
-use AutomateWoo\Exception;
 use Automattic\WooCommerce\Blocks\StoreApi\Routes\RouteException;
 
 /**

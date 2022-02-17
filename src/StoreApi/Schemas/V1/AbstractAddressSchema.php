@@ -1,7 +1,5 @@
 <?php
-namespace Automattic\WooCommerce\Blocks\StoreApi\Schemas;
-
-use Automattic\WooCommerce\Blocks\RestApi\Routes;
+namespace Automattic\WooCommerce\Blocks\StoreApi\Schemas\V1;
 
 /**
  * AddressSchema class.
