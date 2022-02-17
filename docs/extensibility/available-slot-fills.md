@@ -2,29 +2,37 @@
 
 This document presents the list of available Slots that you can use for adding your custom content (Fill):
 
-- [ExperimentalOrderMeta](#experimentalordermeta)
-- [ExperimentalOrderShippingPackages](#experimentalordershippingpackages)
-- [ExperimentalDiscountsMeta](#experimentaldiscountsmeta)
+-   [ExperimentalOrderMeta](#experimentalordermeta)
+-   [ExperimentalOrderShippingPackages](#experimentalordershippingpackages)
+-   [ExperimentalDiscountsMeta](#experimentaldiscountsmeta)
 
-***
+---
 
 If you want to add a new SlotFill component, check the [Checkout - Slot Fill document](../../packages/checkout/slot/README.md). To read more about Slot and Fill, check the [Slot and Fill document](./slot-fills.md).
 
 **Note About Naming:** Slots that are prefixed with `Experimental` are experimental and subject to change or remove. Once they graduate from the experimental stage, the naming would change and the `Experimental` prefix would be dropped.
 Check the [Feature Gating document](../blocks/feature-flags-and-experimental-interfaces.md) from more information.
 
-
 ## ExperimentalOrderMeta
+
 This Slot renders below the Checkout summary section and above the "Proceed to Checkout" button in the Cart.
 
-<img width="1135" alt="image" src="https://user-images.githubusercontent.com/6165348/118398683-a0202700-b651-11eb-8a4f-cd8b6ebff53f.png">
+Cart:
+
+<img width="865" alt="Screenshot 2022-02-17 at 16 42 33" src="https://user-images.githubusercontent.com/1628454/154517779-117bb4e4-568e-413c-904c-855fc3450dfa.png">
+
+Checkout:
+
+<img width="1233" alt="image" src="https://user-images.githubusercontent.com/6165348/118399133-90094700-b653-11eb-8ff0-c917947c199f.png">
 
 ### Passed parameters
 
-- `cart`: `wc/store/cart` data but in `camelCase` instead of `snake_case`. [Object breakdown.](https://github.com/woocommerce/woocommerce-gutenberg-products-block/blob/c00da597efe4c16fcf5481c213d8052ec5df3766/assets/js/type-defs/cart.ts#L172-L188)
-- `extensions`: external data registered by third-party developers using `ExtendRestAPI`. If you used `ExtendRestAPI` on `wc/store/cart` you would find your data under your namespace here.
+-   `cart`: `wc/store/cart` data but in `camelCase` instead of `snake_case`. [Object breakdown.](https://github.com/woocommerce/woocommerce-gutenberg-products-block/blob/c00da597efe4c16fcf5481c213d8052ec5df3766/assets/js/type-defs/cart.ts#L172-L188)
+-   `extensions`: external data registered by third-party developers using `ExtendRestAPI`. If you used `ExtendRestAPI` on `wc/store/cart` you would find your data under your namespace here.
+-   `context`, equal to `wc/cart` or `wc/checkout` depending on which Block the fill is rendered in
 
 ## ExperimentalOrderShippingPackages
+
 This slot renders inside the shipping step of Checkout and inside the shipping options in Cart.
 
 Cart:
@@ -37,17 +45,19 @@ Checkout:
 
 ### Passed parameters
 
-- `collapsible`: `Boolean` If a shipping package panel should be collapsible or not, this is false in Checkout and true in Cart.
-- `collapse`: `Boolean` If a panel should be collapsed by default, this is true if there's more than 1 fill registered (Core Shipping options are registered as a fill and they're counted).
-- `showItems`: `Boolean` If we should show the content of each package, this is true if there's more than 1 fill registered (Core Shipping options are registered as a fill and they're counted).
-- `noResultsMessage`: A React element that you can render if there are no shipping options.
-- `renderOption`: a render function that takes a rate object and returns a render option.
-- `cart`: `wc/store/cart` data but in `camelCase` instead of `snake_case`. [Object breakdown.](https://github.com/woocommerce/woocommerce-gutenberg-products-block/blob/c00da597efe4c16fcf5481c213d8052ec5df3766/assets/js/type-defs/cart.ts#L172-L188)
-- `extensions`: external data registered by third-party developers using `ExtendRestAPI`, if you used `ExtendRestAPI` on `wc/store/cart` you would find your data under your namespace here.
-- `components`: an object containing components you can use to render your own shipping rates, it contains `ShippingRatesControlPackage`.
+-   `collapsible`: `Boolean` If a shipping package panel should be collapsible or not, this is false in Checkout and true in Cart.
+-   `collapse`: `Boolean` If a panel should be collapsed by default, this is true if there's more than 1 fill registered (Core Shipping options are registered as a fill and they're counted).
+-   `showItems`: `Boolean` If we should show the content of each package, this is true if there's more than 1 fill registered (Core Shipping options are registered as a fill and they're counted).
+-   `noResultsMessage`: A React element that you can render if there are no shipping options.
+-   `renderOption`: a render function that takes a rate object and returns a render option.
+-   `cart`: `wc/store/cart` data but in `camelCase` instead of `snake_case`. [Object breakdown.](https://github.com/woocommerce/woocommerce-gutenberg-products-block/blob/c00da597efe4c16fcf5481c213d8052ec5df3766/assets/js/type-defs/cart.ts#L172-L188)
+-   `extensions`: external data registered by third-party developers using `ExtendRestAPI`, if you used `ExtendRestAPI` on `wc/store/cart` you would find your data under your namespace here.
+-   `components`: an object containing components you can use to render your own shipping rates, it contains `ShippingRatesControlPackage`.
+-   `context`, equal to `wc/cart` or `wc/checkout` depending on which Block the fill is rendered in
 
 ## ExperimentalDiscountsMeta
-This slot renders below the `CouponCode` input. 
+
+This slot renders below the `CouponCode` input.
 
 Cart:
 <img alt="Cart showing ExperimentalDiscountsMeta location" src="https://user-images.githubusercontent.com/5656702/122774218-ea27a880-d2a0-11eb-9450-11f119567f26.png" />
@@ -56,14 +66,15 @@ Checkout:
 <img alt="Checkout showing ExperimentalDiscountsMeta location" src="https://user-images.githubusercontent.com/5656702/122779606-efd3bd00-d2a5-11eb-8c84-6525eca5d704.png" />
 
 ### Passed paramters
-- `cart`: `wc/store/cart` data but in `camelCase` instead of `snake_case`. [Object breakdown.](https://github.com/woocommerce/woocommerce-gutenberg-products-block/blob/c00da597efe4c16fcf5481c213d8052ec5df3766/assets/js/type-defs/cart.ts#L172-L188)
-- `extensions`: external data registered by third-party developers using `ExtendRestAPI`, if you used `ExtendRestAPI` on `wc/store/cart` you would find your data under your namespace here.
 
-<!-- FEEDBACK -->
----
+-   `cart`: `wc/store/cart` data but in `camelCase` instead of `snake_case`. [Object breakdown.](https://github.com/woocommerce/woocommerce-gutenberg-products-block/blob/c00da597efe4c16fcf5481c213d8052ec5df3766/assets/js/type-defs/cart.ts#L172-L188)
+-   `extensions`: external data registered by third-party developers using `ExtendRestAPI`, if you used `ExtendRestAPI` on `wc/store/cart` you would find your data under your namespace here.
+-   `context`, equal to `wc/cart` or `wc/checkout` depending on which Block the fill is rendered in
+
+## <!-- FEEDBACK -->
 
 [We're hiring!](https://woocommerce.com/careers/) Come work with us!
 
 🐞 Found a mistake, or have a suggestion? [Leave feedback about this document here.](https://github.com/woocommerce/woocommerce-gutenberg-products-block/issues/new?assignees=&labels=type%3A+documentation&template=--doc-feedback.md&title=Feedback%20on%20./docs/extensibility/available-slot-fills.md)
-<!-- /FEEDBACK -->
 
+<!-- /FEEDBACK -->
