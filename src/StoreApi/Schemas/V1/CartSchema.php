@@ -400,7 +400,7 @@ class CartSchema extends AbstractSchema {
 			 *
 			 * @param \WC_Cart $cart Cart object.
 			 */
-			do_action( 'wooocommerce_store_api_validate_cart', $cart );
+			do_action( '__experimental_wooocommerce_store_api_validate_cart', $cart );
 		} catch ( RouteException $error ) {
 			$cart_errors[] = new WP_Error( $error->getErrorCode(), $error->getMessage() );
 		}
