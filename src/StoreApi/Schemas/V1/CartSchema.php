@@ -390,14 +390,27 @@ class CartSchema extends AbstractSchema {
 	 */
 	protected function get_cart_errors( $cart ) {
 		$controller    = new CartController();
-		$item_errors   = array_filter(
-			$controller->get_cart_item_errors(),
+		$cart_errors   = [];
+		$item_errors   = $controller->get_cart_item_errors();
+		$coupon_errors = $controller->get_cart_coupon_errors();
+
+		try {
+			/**
+			 * Fire action to validate cart. Functions hooking into this should throw a \RouteException.
+			 *
+			 * @param \WC_Cart $cart Cart object.
+			 */
+			do_action( 'wooocommerce_store_api_validate_cart', $cart );
+		} catch ( RouteException $error ) {
+			$cart_errors[] = new WP_Error( $error->getErrorCode(), $error->getMessage() );
+		}
+
+		$cart_errors = array_filter( array_merge( $cart_errors, $item_errors, $coupon_errors ),
 			function ( WP_Error $error ) {
 				return $error->has_errors();
 			}
 		);
-		$coupon_errors = $controller->get_cart_coupon_errors();
 
-		return array_values( array_map( [ $this->error_schema, 'get_item_response' ], array_merge( $item_errors, $coupon_errors ) ) );
+		return array_values( array_map( [ $this->error_schema, 'get_item_response' ], $cart_errors ) );
 	}
 }
