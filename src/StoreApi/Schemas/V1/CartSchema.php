@@ -405,7 +405,8 @@ class CartSchema extends AbstractSchema {
 			$cart_errors[] = new WP_Error( $error->getErrorCode(), $error->getMessage() );
 		}
 
-		$cart_errors = array_filter( array_merge( $cart_errors, $item_errors, $coupon_errors ),
+		$cart_errors = array_filter(
+			array_merge( $cart_errors, $item_errors, $coupon_errors ),
 			function ( WP_Error $error ) {
 				return $error->has_errors();
 			}
