@@ -1,5 +1,5 @@
 <?php
-namespace Automattic\WooCommerce\Blocks\StoreApi\Utilities;
+namespace Automattic\WooCommerce\Blocks\StoreApi\Exceptions;
 
 /**
  * PartialOutOfStockException class.
@@ -7,6 +7,4 @@ namespace Automattic\WooCommerce\Blocks\StoreApi\Utilities;
  * @internal This API is used internally by Blocks, this exception is thrown when an item in a draft order has a
  * quantity greater than what is available in stock.
  */
-class PartialOutOfStockException extends StockAvailabilityException {
-
-}
+class PartialOutOfStockException extends StockAvailabilityException {}

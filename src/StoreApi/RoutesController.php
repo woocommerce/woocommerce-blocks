@@ -69,8 +69,6 @@ class RoutesController {
 	 * Load route class instances.
 	 */
 	protected function initialize() {
-		global $wp_version;
-
 		$cart_controller  = new CartController();
 		$order_controller = new OrderController();
 

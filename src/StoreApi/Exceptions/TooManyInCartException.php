@@ -1,5 +1,5 @@
 <?php
-namespace Automattic\WooCommerce\Blocks\StoreApi\Utilities;
+namespace Automattic\WooCommerce\Blocks\StoreApi\Exceptions;
 
 /**
  * TooManyInCartException class.
@@ -7,6 +7,4 @@ namespace Automattic\WooCommerce\Blocks\StoreApi\Utilities;
  * @internal This API is used internally by Blocks, this exception is thrown when more than one of a product that
  * can only be purchased individually is in a cart.
  */
-class TooManyInCartException extends StockAvailabilityException {
-
-}
+class TooManyInCartException extends StockAvailabilityException {}

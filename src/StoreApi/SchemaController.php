@@ -22,7 +22,6 @@ use Automattic\WooCommerce\Blocks\StoreApi\Schemas\ProductReviewSchema;
 use Automattic\WooCommerce\Blocks\StoreApi\Schemas\TermSchema;
 use Automattic\WooCommerce\Blocks\Domain\Services\ExtendRestApi;
 
-
 /**
  * SchemaController class.
  *

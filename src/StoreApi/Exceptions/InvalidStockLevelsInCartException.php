@@ -1,5 +1,5 @@
 <?php
-namespace Automattic\WooCommerce\Blocks\StoreApi\Utilities;
+namespace Automattic\WooCommerce\Blocks\StoreApi\Exceptions;
 
 use WP_Error;
 
@@ -71,5 +71,4 @@ class InvalidStockLevelsInCartException extends \Exception {
 	public function getAdditionalData() {
 		return $this->additional_data;
 	}
-
 }
