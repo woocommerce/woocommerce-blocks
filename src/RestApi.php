@@ -40,10 +40,27 @@ class RestApi {
 	}
 
 	/**
+	 * Get the requested version of the Store API from the route request.
+	 *
+	 * @return int
+	 */
+	protected function get_route_version() {
+		preg_match( '/\/v(?P<version>\d)\//', untrailingslashit( $GLOBALS['wp']->query_vars['rest_route'] ), $matches );
+
+		return (int) $matches['version'] ?: 1;
+	}
+
+	/**
 	 * Register REST API routes.
 	 */
 	public function register_rest_routes() {
-		$this->routes->register_routes();
+		$version = $this->get_route_version();
+
+		$this->routes->register_routes( $version );
+
+		if ( 1 === $version ) {
+			$this->routes->register_routes( 1, 'wc/store' );
+		}
 	}
 
 	/**
