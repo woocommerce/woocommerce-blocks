@@ -1,8 +1,7 @@
 <?php
 namespace Automattic\WooCommerce\Blocks\StoreApi\Schemas;
 
-use Automattic\WooCommerce\Blocks\RestApi\Routes;
-
+use Automattic\WooCommerce\Blocks\StoreApi\Routes\RouteException;
 
 /**
  * BillingAddressSchema class.
