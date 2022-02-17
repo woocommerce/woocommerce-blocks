@@ -325,18 +325,6 @@ class Checkout extends AbstractCartRoute {
 			$this->order_controller->update_order_from_cart( $this->order );
 		}
 
-		// Confirm order is valid before proceeding further.
-		if ( ! $this->order instanceof \WC_Order ) {
-			throw new RouteException(
-				'woocommerce_rest_checkout_missing_order',
-				__( 'Unable to create order', 'woo-gutenberg-products-block' ),
-				500
-			);
-		}
-
-		// Store order ID to session.
-		$this->set_draft_order_id( $this->order->get_id() );
-
 		/**
 		 * Fires when the Checkout Block/Store API updates an order's meta data.
 		 *
@@ -380,6 +368,18 @@ class Checkout extends AbstractCartRoute {
 		 */
 		do_action( 'woocommerce_blocks_checkout_update_order_meta', $this->order );
 
+		// Confirm order is valid before proceeding further.
+		if ( ! $this->order instanceof \WC_Order ) {
+			throw new RouteException(
+				'woocommerce_rest_checkout_missing_order',
+				__( 'Unable to create order', 'woo-gutenberg-products-block' ),
+				500
+			);
+		}
+
+		// Store order ID to session.
+		$this->set_draft_order_id( $this->order->get_id() );
+
 		/**
 		 * Try to reserve stock for the order.
 		 *
@@ -397,14 +397,6 @@ class Checkout extends AbstractCartRoute {
 				$e->getCode()
 			);
 		}
-
-		/**
-		 * Fire action after draft order creation/update.
-		 * Functions hooking into this can throw a \RouteException to force the checkout block into an error state that prevents access to its contents.
-		 *
-		 * @param \WC_Order $order Order object.
-		 */
-		do_action( 'wooocommerce_blocks_draft_order_updated', $this->order );
 	}
 
 	/**
