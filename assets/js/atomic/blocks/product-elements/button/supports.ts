@@ -19,6 +19,10 @@ export const supports = {
 			padding: true,
 			__experimentalSkipSerialization: true,
 		},
+		typography: {
+			fontSize: true,
+			__experimentalSkipSerialization: true,
+		},
 		__experimentalSelector:
 			'.wp-block-button.wc-block-components-product-button .wc-block-components-product-button__button',
 	} ),
