@@ -22,6 +22,7 @@ import {
 	unmountComponentAtNode,
 	useCallback,
 	useEffect,
+	useRef,
 	useState,
 } from '@wordpress/element';
 import { sprintf, _n } from '@wordpress/i18n';
@@ -53,6 +54,14 @@ const MiniCartBlock = ( {
 		cartIsLoading,
 		cartTotals: cartTotalsFromApi,
 	} = useStoreCart();
+
+	const isFirstLoadingCompleted = useRef( cartIsLoading );
+
+	useEffect( () => {
+		if ( isFirstLoadingCompleted.current && ! cartIsLoading ) {
+			isFirstLoadingCompleted.current = false;
+		}
+	}, [ cartIsLoading, isFirstLoadingCompleted ] );
 
 	const [ isOpen, setIsOpen ] = useState< boolean >( isInitiallyOpen );
 	// We already rendered the HTML drawer placeholder, so we want to skip the
@@ -146,11 +155,11 @@ const MiniCartBlock = ( {
 	const taxLabel = getSettingWithCoercion( 'taxLabel', '', isString );
 
 	const cartTotals =
-		! cartIsLoading || preFetchedCartTotals === null
+		! isFirstLoadingCompleted.current || preFetchedCartTotals === null
 			? cartTotalsFromApi
 			: preFetchedCartTotals;
 
-	const cartItemsCount = ! cartIsLoading
+	const cartItemsCount = ! isFirstLoadingCompleted.current
 		? cartItemsCountFromApi
 		: preFetchedCartItemsCount;
 
