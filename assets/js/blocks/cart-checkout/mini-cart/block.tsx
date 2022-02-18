@@ -11,7 +11,13 @@ import {
 	getCurrencyFromPriceResponse,
 } from '@woocommerce/price-format';
 import { getSettingWithCoercion } from '@woocommerce/settings';
-import { isBoolean, isString } from '@woocommerce/types';
+import {
+	CartResponseTotals,
+	isBoolean,
+	isString,
+	isCartResponseTotals,
+	isNumber,
+} from '@woocommerce/types';
 import {
 	unmountComponentAtNode,
 	useCallback,
@@ -42,7 +48,12 @@ const MiniCartBlock = ( {
 	style,
 	contents = '',
 }: Props ): JSX.Element => {
-	const { cartItemsCount, cartIsLoading, cartTotals } = useStoreCart();
+	const {
+		cartItemsCount: cartItemsCountFromApi,
+		cartIsLoading,
+		cartTotals: cartTotalsFromApi,
+	} = useStoreCart();
+
 	const [ isOpen, setIsOpen ] = useState< boolean >( isInitiallyOpen );
 	// We already rendered the HTML drawer placeholder, so we want to skip the
 	// slide in animation.
@@ -120,7 +131,28 @@ const MiniCartBlock = ( {
 		isBoolean
 	);
 
+	const preFetchedCartTotals = getSettingWithCoercion< CartResponseTotals | null >(
+		'cartTotals',
+		null,
+		isCartResponseTotals
+	);
+
+	const preFetchedCartItemsCount = getSettingWithCoercion< number >(
+		'cartItemsCount',
+		0,
+		isNumber
+	);
+
 	const taxLabel = getSettingWithCoercion( 'taxLabel', '', isString );
+
+	const cartTotals =
+		! cartIsLoading || preFetchedCartTotals === null
+			? cartTotalsFromApi
+			: preFetchedCartTotals;
+
+	const cartItemsCount = ! cartIsLoading
+		? cartItemsCountFromApi
+		: preFetchedCartItemsCount;
 
 	const subTotal = showIncludingTax
 		? parseInt( cartTotals.total_items, 10 ) +
