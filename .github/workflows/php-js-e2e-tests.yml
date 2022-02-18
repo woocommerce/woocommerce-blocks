@@ -68,7 +68,7 @@ jobs:
                   echo $JSON > .wp-env.override.json
                   npm run wp-env start
                   npm run wp-env clean all
-                  npm run test:e2e -- tests/e2e/specs/shopper/mini-cart.test.js
+                  npm run test:e2e
 
             - name: Upload artifacts on failure
               if: ${{ failure() }}
@@ -136,7 +136,7 @@ jobs:
               run: |
                   npm run wp-env start
                   npm run wp-env clean all
-                  npm run test:e2e -- tests/e2e/specs/shopper/mini-cart.test.js
+                  npm run test:e2e
                 
             - name: Upload artifacts on failure
               if: ${{ failure() }}
