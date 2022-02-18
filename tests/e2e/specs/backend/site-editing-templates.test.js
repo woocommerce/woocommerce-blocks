@@ -393,7 +393,7 @@ describe( 'Store Editing Templates', () => {
 		} );
 	} );
 
-	describe.only( 'Product Tag block template', () => {
+	describe( 'Product Tag block template', () => {
 		it( 'default template from WooCommerce Blocks is available on an FSE theme', async () => {
 			const EXPECTED_TEMPLATE = defaultTemplateProps( 'Product Tag' );
 

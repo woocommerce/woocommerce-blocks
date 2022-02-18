@@ -227,6 +227,7 @@ const Products = () => [
 			},
 		],
 		categories: [ 'Music' ],
+		tags: [ 'Newest' ],
 	},
 ];
 
