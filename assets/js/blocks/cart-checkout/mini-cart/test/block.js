@@ -50,7 +50,7 @@ const mockFullCart = () => {
 	} );
 };
 
-describe( 'Testing Mini Cart', () => {
+describe.only( 'Testing Mini Cart', () => {
 	beforeEach( () => {
 		act( () => {
 			mockFullCart();
@@ -95,13 +95,15 @@ describe( 'Testing Mini Cart', () => {
 		mockEmptyCart();
 		// eslint-disable-next-line no-undef
 		const removedFromCartEvent = new Event( 'wc-blocks_removed_from_cart' );
+
+		waitForElementToBeRemoved( () =>
+			screen.queryByLabelText( /3 items in cart/i )
+		).then();
+
 		act( () => {
 			document.body.dispatchEvent( removedFromCartEvent );
 		} );
 
-		await waitForElementToBeRemoved( () =>
-			screen.queryByLabelText( /3 items in cart/i )
-		);
 		await waitFor( () =>
 			expect(
 				screen.getByLabelText( /0 items in cart/i )
