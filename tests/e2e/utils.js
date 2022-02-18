@@ -92,3 +92,60 @@ export const isBlockInsertedInWidgetsArea = async ( blockName ) => {
 				.length ) > 0
 	);
 };
+
+/**
+ *
+ * @param {Array} taxRates - An array of tax objects, usually from e2e fixture data
+ * @param {string} country - A shortcode for the country to apply taxes for
+ * @param {Array} products - products to calculate taxes for
+ * @return {Object} of the form: { labbel: 'VAT', value: '$12.30' }
+ */
+export function getExpectedTaxes( taxRates, country, products = [] ) {
+	const taxRatesForCountry = taxRates.filter(
+		( taxRate ) => taxRate.country === country
+	);
+
+	const total = products.reduce(
+		( previous, current ) =>
+			parseFloat( previous.regular_price ) +
+			parseFloat( current.regular_price ),
+		{ regular_price: 0 }
+	);
+
+	return taxRatesForCountry.map( ( taxRate ) => {
+		const taxCalc = (
+			parseFloat( total ) *
+			( parseFloat( taxRate.rate ) / 100 )
+		).toFixed( 2 );
+
+		return { label: taxRate.name, value: `$${ taxCalc }` };
+	} );
+}
+
+/**
+ * Return the taxes from the checkout or cart pages as an array of objects
+ * that can be used in comparison operations
+ *
+ * @return {Object} of the form: { labbel: 'VAT', value: '$12.30' }
+ */
+export async function getTaxesFromCurrentPage() {
+	return await page.$$eval(
+		'.wc-block-components-totals-taxes .wc-block-components-totals-item',
+		( nodes ) =>
+			nodes.map( ( node ) => {
+				const label = node.querySelector(
+					'.wc-block-components-totals-item__label'
+				)?.innerText;
+				const value = node.querySelector(
+					'.wc-block-components-totals-item__value'
+				)?.innerText;
+				return { label, value };
+			} )
+	);
+}
+
+export async function sleep( seconds ) {
+	return await new Promise( ( resolve ) =>
+		setTimeout( resolve, seconds * 1000 )
+	);
+}
