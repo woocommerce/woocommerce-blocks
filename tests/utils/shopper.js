@@ -22,6 +22,15 @@ export const shopper = {
 		await page.waitForSelector( 'h1', { text: 'Checkout' } );
 	},
 
+	goToCartBlock: async () => {
+		const cartBlockPermalink = await getBlockPagePermalink( `Cart Block` );
+
+		await page.goto( cartBlockPermalink, {
+			waitUntil: 'networkidle0',
+		} );
+		await page.waitForSelector( 'h1', { text: 'Cart' } );
+	},
+
 	productIsInCheckoutBlock: async ( productTitle, quantity, total ) => {
 		// Make sure Order summary is expanded
 		const [ button ] = await page.$x(
