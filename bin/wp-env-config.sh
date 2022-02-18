@@ -18,5 +18,12 @@ wp rewrite flush
 wp core version --extra
 wp plugin list
 wp theme activate storefront
+wp plugin is-installed Basic-Auth
+if [ $? -eq 1 ]
+then
+  wp plugin install https://github.com/WP-API/Basic-Auth/archive/master.zip --activate
+else 
+  wp plugin activate Basic-Auth
+fi
 
 exit $EXIT_CODE
