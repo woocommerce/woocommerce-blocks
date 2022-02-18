@@ -1,0 +1,19 @@
+```php
+// The action callback function.
+function my_function_callback( $cart ) {
+  // Validate the $cart object and throw a RouteException. For example, to create an error if the cart contains more than 10 items:
+  if ( $cart->get_cart_contents_count() > 10 ) {
+    throw new Automattic\WooCommerce\Blocks\StoreApi\Routes\RouteException( 'my_exception_code', 'Too many cart items!' );
+  }
+}
+
+add_action( '__experimental_woocommerce_store_api_validate_cart', 'my_function_callback', 10 );
+```
+<!-- FEEDBACK -->
+---
+
+[We're hiring!](https://woocommerce.com/careers/) Come work with us!
+
+🐞 Found a mistake, or have a suggestion? [Leave feedback about this document here.](https://github.com/woocommerce/woocommerce-gutenberg-products-block/issues/new?assignees=&labels=type%3A+documentation&template=--doc-feedback.md&title=Feedback%20on%20./docs/examples/checkout-order-processed.md)
+<!-- /FEEDBACK -->
+

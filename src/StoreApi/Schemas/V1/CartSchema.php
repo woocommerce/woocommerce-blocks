@@ -397,6 +397,7 @@ class CartSchema extends AbstractSchema {
 		try {
 			/**
 			 * Fire action to validate cart. Functions hooking into this should throw a \RouteException.
+			 * @example See docs/examples/validate-cart.md
 			 *
 			 * @param \WC_Cart $cart Cart object.
 			 */
