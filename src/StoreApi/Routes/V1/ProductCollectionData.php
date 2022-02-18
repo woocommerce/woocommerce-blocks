@@ -13,6 +13,13 @@ use Automattic\WooCommerce\Blocks\StoreApi\Utilities\ProductQueryFilters;
  */
 class ProductCollectionData extends AbstractRoute {
 	/**
+	 * The route identifier.
+	 *
+	 * @var string
+	 */
+	const IDENTIFIER = 'product-collection-data';
+
+	/**
 	 * Get the path of this REST route.
 	 *
 	 * @return string

@@ -13,6 +13,13 @@ class CartRemoveItem extends AbstractCartRoute {
 	use DraftOrderTrait;
 
 	/**
+	 * The route identifier.
+	 *
+	 * @var string
+	 */
+	const IDENTIFIER = 'cart-remove-item';
+
+	/**
 	 * Get the path of this REST route.
 	 *
 	 * @return string

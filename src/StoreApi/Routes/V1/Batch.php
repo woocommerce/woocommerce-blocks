@@ -13,6 +13,13 @@ use WP_REST_Response;
  */
 class Batch extends AbstractRoute implements RouteInterface {
 	/**
+	 * The route identifier.
+	 *
+	 * @var string
+	 */
+	const IDENTIFIER = 'batch';
+
+	/**
 	 * Get the path of this REST route.
 	 *
 	 * @return string

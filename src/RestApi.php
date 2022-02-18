@@ -45,9 +45,13 @@ class RestApi {
 	 * @return int
 	 */
 	protected function get_route_version() {
-		preg_match( '/\/v(?P<version>\d)\//', untrailingslashit( $GLOBALS['wp']->query_vars['rest_route'] ), $matches );
+		$rest_route = untrailingslashit( $GLOBALS['wp']->query_vars['rest_route'] ?? '' );
 
-		return (int) $matches['version'] ?: 1;
+		if ( preg_match( '/\/v(?P<version>\d)\//', $rest_route, $matches ) ) {
+			return (int) $matches['version'];
+		}
+
+		return 1;
 	}
 
 	/**

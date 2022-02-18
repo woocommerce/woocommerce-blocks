@@ -11,6 +11,13 @@ use Automattic\WooCommerce\Blocks\StoreApi\Utilities\ProductQuery;
  */
 class Products extends AbstractRoute {
 	/**
+	 * The route identifier.
+	 *
+	 * @var string
+	 */
+	const IDENTIFIER = 'products';
+
+	/**
 	 * Get the path of this REST route.
 	 *
 	 * @return string

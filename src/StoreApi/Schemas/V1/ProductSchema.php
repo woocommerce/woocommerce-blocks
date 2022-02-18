@@ -1,6 +1,7 @@
 <?php
 namespace Automattic\WooCommerce\Blocks\StoreApi\Schemas\V1;
 
+use Automattic\WooCommerce\Blocks\StoreApi\SchemaController;
 use Automattic\WooCommerce\Blocks\Domain\Services\ExtendRestApi;
 use Automattic\WooCommerce\Blocks\StoreApi\Utilities\QuantityLimits;
 
@@ -35,12 +36,12 @@ class ProductSchema extends AbstractSchema {
 	/**
 	 * Constructor.
 	 *
-	 * @param ExtendRestApi         $extend Rest Extending instance.
-	 * @param ImageAttachmentSchema $image_attachment_schema Image attachment schema instance.
+	 * @param ExtendRestApi    $extend Rest Extending instance.
+	 * @param SchemaController $controller Schema Controller instance.
 	 */
-	public function __construct( ExtendRestApi $extend, ImageAttachmentSchema $image_attachment_schema ) {
-		$this->image_attachment_schema = $image_attachment_schema;
-		parent::__construct( $extend );
+	public function __construct( ExtendRestApi $extend, SchemaController $controller ) {
+		parent::__construct( $extend, $controller );
+		$this->image_attachment_schema = $this->controller->get( ImageAttachmentSchema::IDENTIFIER );
 	}
 
 	/**

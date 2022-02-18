@@ -10,6 +10,13 @@ use Automattic\WooCommerce\Blocks\StoreApi\Exceptions\RouteException;
  */
 class ProductAttributeTerms extends AbstractTermsRoute {
 	/**
+	 * The route identifier.
+	 *
+	 * @var string
+	 */
+	const IDENTIFIER = 'product-attribute-terms';
+
+	/**
 	 * Get the path of this REST route.
 	 *
 	 * @return string

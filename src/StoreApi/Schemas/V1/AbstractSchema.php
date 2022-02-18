@@ -1,6 +1,7 @@
 <?php
 namespace Automattic\WooCommerce\Blocks\StoreApi\Schemas\V1;
 
+use Automattic\WooCommerce\Blocks\StoreApi\SchemaController;
 use Automattic\WooCommerce\Blocks\Domain\Services\ExtendRestApi;
 
 /**
@@ -20,11 +21,18 @@ abstract class AbstractSchema {
 	protected $title = 'Schema';
 
 	/**
-	 * Rest extend instance
+	 * Rest extend instance.
 	 *
 	 * @var ExtendRestApi
 	 */
 	protected $extend;
+
+	/**
+	 * Schema Controller instance.
+	 *
+	 * @var SchemaController
+	 */
+	protected $controller;
 
 	/**
 	 * Extending key that gets added to endpoint.
@@ -36,10 +44,12 @@ abstract class AbstractSchema {
 	/**
 	 * Constructor.
 	 *
-	 * @param ExtendRestApi $extend Rest Extending instance.
+	 * @param ExtendRestApi    $extend Rest Extending instance.
+	 * @param SchemaController $controller Schema Controller instance.
 	 */
-	public function __construct( ExtendRestApi $extend ) {
-		$this->extend = $extend;
+	public function __construct( ExtendRestApi $extend, SchemaController $controller ) {
+		$this->extend     = $extend;
+		$this->controller = $controller;
 	}
 
 	/**

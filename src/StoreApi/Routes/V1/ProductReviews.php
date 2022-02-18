@@ -11,6 +11,13 @@ use Automattic\WooCommerce\Blocks\StoreApi\Utilities\Pagination;
  */
 class ProductReviews extends AbstractRoute {
 	/**
+	 * The route identifier.
+	 *
+	 * @var string
+	 */
+	const IDENTIFIER = 'product-reviews';
+
+	/**
 	 * Get the path of this REST route.
 	 *
 	 * @return string

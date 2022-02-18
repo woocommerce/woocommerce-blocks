@@ -1,6 +1,7 @@
 <?php
 namespace Automattic\WooCommerce\Blocks\StoreApi\Schemas\V1;
 
+use Automattic\WooCommerce\Blocks\StoreApi\SchemaController;
 use Automattic\WooCommerce\Blocks\StoreApi\Utilities\CartController;
 use Automattic\WooCommerce\Blocks\Domain\Services\ExtendRestApi;
 use WC_Tax;
@@ -80,33 +81,18 @@ class CartSchema extends AbstractSchema {
 	/**
 	 * Constructor.
 	 *
-	 * @param ExtendRestApi          $extend Rest Extending instance.
-	 * @param CartItemSchema         $item_schema Item schema instance.
-	 * @param CartCouponSchema       $coupon_schema Coupon schema instance.
-	 * @param CartFeeSchema          $fee_schema Fee schema instance.
-	 * @param CartShippingRateSchema $shipping_rate_schema Shipping rates schema instance.
-	 * @param ShippingAddressSchema  $shipping_address_schema Shipping address schema instance.
-	 * @param BillingAddressSchema   $billing_address_schema Billing address schema instance.
-	 * @param ErrorSchema            $error_schema Error schema instance.
+	 * @param ExtendRestApi    $extend Rest Extending instance.
+	 * @param SchemaController $controller Schema Controller instance.
 	 */
-	public function __construct(
-		ExtendRestApi $extend,
-		CartItemSchema $item_schema,
-		CartCouponSchema $coupon_schema,
-		CartFeeSchema $fee_schema,
-		CartShippingRateSchema $shipping_rate_schema,
-		ShippingAddressSchema $shipping_address_schema,
-		BillingAddressSchema $billing_address_schema,
-		ErrorSchema $error_schema
-	) {
-		$this->item_schema             = $item_schema;
-		$this->coupon_schema           = $coupon_schema;
-		$this->fee_schema              = $fee_schema;
-		$this->shipping_rate_schema    = $shipping_rate_schema;
-		$this->shipping_address_schema = $shipping_address_schema;
-		$this->billing_address_schema  = $billing_address_schema;
-		$this->error_schema            = $error_schema;
-		parent::__construct( $extend );
+	public function __construct( ExtendRestApi $extend, SchemaController $controller ) {
+		parent::__construct( $extend, $controller );
+		$this->item_schema             = $this->controller->get( CartItemSchema::IDENTIFIER );
+		$this->coupon_schema           = $this->controller->get( CartCouponSchema::IDENTIFIER );
+		$this->fee_schema              = $this->controller->get( CartFeeSchema::IDENTIFIER );
+		$this->shipping_rate_schema    = $this->controller->get( CartShippingRateSchema::IDENTIFIER );
+		$this->shipping_address_schema = $this->controller->get( ShippingAddressSchema::IDENTIFIER );
+		$this->billing_address_schema  = $this->controller->get( BillingAddressSchema::IDENTIFIER );
+		$this->error_schema            = $this->controller->get( ErrorSchema::IDENTIFIER );
 	}
 
 	/**

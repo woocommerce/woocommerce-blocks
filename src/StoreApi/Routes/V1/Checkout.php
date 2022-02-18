@@ -19,6 +19,13 @@ class Checkout extends AbstractCartRoute {
 	use DraftOrderTrait;
 
 	/**
+	 * The route identifier.
+	 *
+	 * @var string
+	 */
+	const IDENTIFIER = 'checkout';
+
+	/**
 	 * Holds the current order being processed.
 	 *
 	 * @var \WC_Order

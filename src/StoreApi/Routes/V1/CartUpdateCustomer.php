@@ -14,6 +14,12 @@ class CartUpdateCustomer extends AbstractCartRoute {
 	use DraftOrderTrait;
 
 	/**
+	 * The route identifier.
+	 *
+	 * @var string
+	 */
+	const IDENTIFIER = 'cart-update-customer';
+	/**
 	 * Get the namespace for this route.
 	 *
 	 * @return string

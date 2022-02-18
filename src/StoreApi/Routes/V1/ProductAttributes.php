@@ -8,6 +8,13 @@ namespace Automattic\WooCommerce\Blocks\StoreApi\Routes\V1;
  */
 class ProductAttributes extends AbstractRoute {
 	/**
+	 * The route identifier.
+	 *
+	 * @var string
+	 */
+	const IDENTIFIER = 'product-attributes';
+
+	/**
 	 * Get the path of this REST route.
 	 *
 	 * @return string

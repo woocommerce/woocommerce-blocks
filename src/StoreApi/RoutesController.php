@@ -90,6 +90,7 @@ class RoutesController {
 		$cart_controller  = new CartController();
 		$order_controller = new OrderController();
 
+		// TODO: Schema versioning here!
 		$this->routes = [
 			'v1' => [
 				'batch'                     => new Routes\Batch(),

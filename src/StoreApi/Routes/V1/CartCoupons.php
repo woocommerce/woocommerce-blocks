@@ -10,6 +10,13 @@ use Automattic\WooCommerce\Blocks\StoreApi\Exceptions\RouteException;
  */
 class CartCoupons extends AbstractCartRoute {
 	/**
+	 * The route identifier.
+	 *
+	 * @var string
+	 */
+	const IDENTIFIER = 'cart-coupons';
+
+	/**
 	 * Get the path of this REST route.
 	 *
 	 * @return string

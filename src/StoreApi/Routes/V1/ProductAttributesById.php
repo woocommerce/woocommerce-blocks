@@ -10,6 +10,13 @@ use Automattic\WooCommerce\Blocks\StoreApi\Exceptions\RouteException;
  */
 class ProductAttributesById extends AbstractRoute {
 	/**
+	 * The route identifier.
+	 *
+	 * @var string
+	 */
+	const IDENTIFIER = 'product-attributes-by-id';
+
+	/**
 	 * Get the path of this REST route.
 	 *
 	 * @return string
