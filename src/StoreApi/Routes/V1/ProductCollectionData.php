@@ -20,6 +20,13 @@ class ProductCollectionData extends AbstractRoute {
 	const IDENTIFIER = 'product-collection-data';
 
 	/**
+	 * The routes schema.
+	 *
+	 * @var string
+	 */
+	const SCHEMA_TYPE = 'product-collection-data';
+
+	/**
 	 * Get the path of this REST route.
 	 *
 	 * @return string
@@ -161,7 +168,7 @@ class ProductCollectionData extends AbstractRoute {
 	 * @return array
 	 */
 	public function get_collection_params() {
-		$params = ( new Products( $this->schema ) )->get_collection_params();
+		$params = ( new Products( $this->schema_controller, $this->schema ) )->get_collection_params();
 
 		$params['calculate_price_range'] = [
 			'description' => __( 'If true, calculates the minimum and maximum product prices for the collection.', 'woo-gutenberg-products-block' ),

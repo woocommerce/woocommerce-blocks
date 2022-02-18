@@ -17,6 +17,13 @@ class CartCouponsByCode extends AbstractCartRoute {
 	const IDENTIFIER = 'cart-coupons-by-code';
 
 	/**
+	 * The routes schema.
+	 *
+	 * @var string
+	 */
+	const SCHEMA_TYPE = 'cart-coupon';
+
+	/**
 	 * Get the path of this REST route.
 	 *
 	 * @return string

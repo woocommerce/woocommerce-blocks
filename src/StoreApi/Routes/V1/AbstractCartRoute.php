@@ -2,8 +2,10 @@
 namespace Automattic\WooCommerce\Blocks\StoreApi\Routes\V1;
 
 use Automattic\WooCommerce\Blocks\StoreApi\Exceptions\RouteException;
-use Automattic\WooCommerce\Blocks\StoreApi\Schemas\AbstractSchema;
-use Automattic\WooCommerce\Blocks\StoreApi\Schemas\CartSchema;
+use Automattic\WooCommerce\Blocks\StoreApi\SchemaController;
+use Automattic\WooCommerce\Blocks\StoreApi\Schemas\V1\AbstractSchema;
+use Automattic\WooCommerce\Blocks\StoreApi\Schemas\V1\CartSchema;
+use Automattic\WooCommerce\Blocks\StoreApi\Schemas\V1\CartItemSchema;
 use Automattic\WooCommerce\Blocks\StoreApi\Utilities\CartController;
 use Automattic\WooCommerce\Blocks\StoreApi\Utilities\DraftOrderTrait;
 use Automattic\WooCommerce\Blocks\StoreApi\Utilities\OrderController;
@@ -16,11 +18,11 @@ abstract class AbstractCartRoute extends AbstractRoute {
 	use DraftOrderTrait;
 
 	/**
-	 * Schema class for this route's response.
+	 * The routes schema.
 	 *
-	 * @var AbstractSchema|CartSchema
+	 * @var string
 	 */
-	protected $schema;
+	const SCHEMA_TYPE = 'cart';
 
 	/**
 	 * Schema class for the cart.
@@ -44,19 +46,17 @@ abstract class AbstractCartRoute extends AbstractRoute {
 	protected $order_controller;
 
 	/**
-	 * Constructor accepts two types of schema; one for the item being returned, and one for the cart as a whole. These
-	 * may be the same depending on the route.
+	 * Constructor.
 	 *
-	 * @param CartSchema      $cart_schema Schema class for the cart.
-	 * @param AbstractSchema  $item_schema Schema class for this route's items if it differs from the cart schema.
-	 * @param CartController  $cart_controller Cart controller class.
-	 * @param OrderController $order_controller Order controller class.
+	 * @param SchemaController $schema_controller Schema Controller instance.
+	 * @param AbstractSchema   $schema Schema class for this route.
 	 */
-	public function __construct( CartSchema $cart_schema, AbstractSchema $item_schema = null, CartController $cart_controller, OrderController $order_controller ) {
-		$this->schema           = is_null( $item_schema ) ? $cart_schema : $item_schema;
-		$this->cart_schema      = $cart_schema;
-		$this->cart_controller  = $cart_controller;
-		$this->order_controller = $order_controller;
+	public function __construct( SchemaController $schema_controller, AbstractSchema $schema ) {
+		$this->schema_controller = $schema_controller;
+		$this->schema            = $schema;
+		$this->cart_item_schema  = $this->schema_controller->get( CartItemSchema::IDENTIFIER );
+		$this->cart_controller   = new CartController();
+		$this->order_controller  = new OrderController();
 	}
 
 	/**

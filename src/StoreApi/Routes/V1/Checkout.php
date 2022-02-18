@@ -26,6 +26,13 @@ class Checkout extends AbstractCartRoute {
 	const IDENTIFIER = 'checkout';
 
 	/**
+	 * The routes schema.
+	 *
+	 * @var string
+	 */
+	const SCHEMA_TYPE = 'checkout';
+
+	/**
 	 * Holds the current order being processed.
 	 *
 	 * @var \WC_Order

@@ -11,6 +11,13 @@ use WP_Term_Query;
  */
 abstract class AbstractTermsRoute extends AbstractRoute {
 	/**
+	 * The routes schema.
+	 *
+	 * @var string
+	 */
+	const SCHEMA_TYPE = 'term';
+
+	/**
 	 * Get the query params for collections of attributes.
 	 *
 	 * @return array

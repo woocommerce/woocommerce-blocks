@@ -15,6 +15,13 @@ class ProductAttributes extends AbstractRoute {
 	const IDENTIFIER = 'product-attributes';
 
 	/**
+	 * The routes schema.
+	 *
+	 * @var string
+	 */
+	const SCHEMA_TYPE = 'product-attribute';
+
+	/**
 	 * Get the path of this REST route.
 	 *
 	 * @return string

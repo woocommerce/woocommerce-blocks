@@ -18,6 +18,13 @@ class ProductReviews extends AbstractRoute {
 	const IDENTIFIER = 'product-reviews';
 
 	/**
+	 * The routes schema.
+	 *
+	 * @var string
+	 */
+	const SCHEMA_TYPE = 'product-review';
+
+	/**
 	 * Get the path of this REST route.
 	 *
 	 * @return string

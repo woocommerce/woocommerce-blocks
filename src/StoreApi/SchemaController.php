@@ -13,7 +13,7 @@ class SchemaController {
 	/**
 	 * Stores schema class instances.
 	 *
-	 * @var Schemas\AbstractSchema[]
+	 * @var Schemas\V1\AbstractSchema[]
 	 */
 	protected $schemas = [];
 
@@ -41,19 +41,16 @@ class SchemaController {
 	 *
 	 * @param string $name Name of schema.
 	 * @param int    $version API Version being requested.
-	 * @return Schemas\AbstractSchema A new instance of the requested schema.
+	 * @return Schemas\V1\AbstractSchema A new instance of the requested schema.
 	 */
 	public function get( $name, $version = 1 ) {
-		if ( ! isset( $this->schemas[ "v${version}" ], $this->schemas[ "v${version}" ][ $name ] ) ) {
+		$schema = $this->schemas[ "v${version}" ][ $name ] ?? false;
+
+		if ( ! $schema ) {
 			throw new \Exception( "${name} v{$version} schema does not exist" );
 		}
 
-		$schema_class = $this->schemas[ "v${version}" ][ $name ];
-
-		/**
-		 * Initialize each schema with the extend API and the SchemaController.
-		 */
-		return new $schema_class( $this->extend, $this );
+		return new $schema( $this->extend, $this );
 	}
 
 	/**
@@ -62,24 +59,25 @@ class SchemaController {
 	protected function initialize() {
 		$this->schemas = [
 			'v1' => [
-				Schemas\ErrorSchema::IDENTIFIER            => Schemas\ErrorSchema::class,
-				Schemas\ImageAttachmentSchema::IDENTIFIER  => Schemas\ImageAttachmentSchema::class,
-				Schemas\TermSchema::IDENTIFIER             => Schemas\TermSchema::class,
-				Schemas\BillingAddressSchema::IDENTIFIER   => Schemas\BillingAddressSchema::class,
-				Schemas\ShippingAddressSchema::IDENTIFIER  => Schemas\ShippingAddressSchema::class,
-				Schemas\CartShippingRateSchema::IDENTIFIER => Schemas\CartShippingRateSchema::class,
-				Schemas\CartShippingRateSchema::IDENTIFIER => Schemas\CartShippingRateSchema::class,
-				Schemas\CartCouponSchema::IDENTIFIER       => Schemas\CartCouponSchema::class,
-				Schemas\CartFeeSchema::IDENTIFIER          => Schemas\CartFeeSchema::class,
-				Schemas\CartItemSchema::IDENTIFIER         => Schemas\CartItemSchema::class,
-				Schemas\CartSchema::IDENTIFIER             => Schemas\CartSchema::class,
-				Schemas\CartExtensionsSchema::IDENTIFIER   => Schemas\CartExtensionsSchema::class,
-				Schemas\CheckoutSchema::IDENTIFIER         => Schemas\CheckoutSchema::class,
-				Schemas\ProductSchema::IDENTIFIER          => Schemas\ProductSchema::class,
-				Schemas\ProductAttributeSchema::IDENTIFIER => Schemas\ProductAttributeSchema::class,
-				Schemas\ProductCategorySchema::IDENTIFIER  => Schemas\ProductCategorySchema::class,
-				Schemas\ProductCollectionDataSchema::IDENTIFIER => Schemas\ProductCollectionDataSchema::class,
-				Schemas\ProductReviewSchema::IDENTIFIER    => Schemas\ProductReviewSchema::class,
+				Schemas\V1\BatchSchema::IDENTIFIER         => Schemas\V1\BatchSchema::class,
+				Schemas\V1\ErrorSchema::IDENTIFIER         => Schemas\V1\ErrorSchema::class,
+				Schemas\V1\ImageAttachmentSchema::IDENTIFIER => Schemas\V1\ImageAttachmentSchema::class,
+				Schemas\V1\TermSchema::IDENTIFIER          => Schemas\V1\TermSchema::class,
+				Schemas\V1\BillingAddressSchema::IDENTIFIER => Schemas\V1\BillingAddressSchema::class,
+				Schemas\V1\ShippingAddressSchema::IDENTIFIER => Schemas\V1\ShippingAddressSchema::class,
+				Schemas\V1\CartShippingRateSchema::IDENTIFIER => Schemas\V1\CartShippingRateSchema::class,
+				Schemas\V1\CartShippingRateSchema::IDENTIFIER => Schemas\V1\CartShippingRateSchema::class,
+				Schemas\V1\CartCouponSchema::IDENTIFIER    => Schemas\V1\CartCouponSchema::class,
+				Schemas\V1\CartFeeSchema::IDENTIFIER       => Schemas\V1\CartFeeSchema::class,
+				Schemas\V1\CartItemSchema::IDENTIFIER      => Schemas\V1\CartItemSchema::class,
+				Schemas\V1\CartSchema::IDENTIFIER          => Schemas\V1\CartSchema::class,
+				Schemas\V1\CartExtensionsSchema::IDENTIFIER => Schemas\V1\CartExtensionsSchema::class,
+				Schemas\V1\CheckoutSchema::IDENTIFIER      => Schemas\V1\CheckoutSchema::class,
+				Schemas\V1\ProductSchema::IDENTIFIER       => Schemas\V1\ProductSchema::class,
+				Schemas\V1\ProductAttributeSchema::IDENTIFIER => Schemas\V1\ProductAttributeSchema::class,
+				Schemas\V1\ProductCategorySchema::IDENTIFIER => Schemas\V1\ProductCategorySchema::class,
+				Schemas\V1\ProductCollectionDataSchema::IDENTIFIER => Schemas\V1\ProductCollectionDataSchema::class,
+				Schemas\V1\ProductReviewSchema::IDENTIFIER => Schemas\V1\ProductReviewSchema::class,
 			],
 		];
 	}

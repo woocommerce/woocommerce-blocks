@@ -15,6 +15,13 @@ class ProductCategories extends AbstractTermsRoute {
 	const IDENTIFIER = 'product-categories';
 
 	/**
+	 * The routes schema.
+	 *
+	 * @var string
+	 */
+	const SCHEMA_TYPE = 'product-category';
+
+	/**
 	 * Get the path of this REST route.
 	 *
 	 * @return string

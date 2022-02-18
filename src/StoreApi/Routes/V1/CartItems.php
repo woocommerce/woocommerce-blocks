@@ -17,6 +17,13 @@ class CartItems extends AbstractCartRoute {
 	const IDENTIFIER = 'cart-items';
 
 	/**
+	 * The routes schema.
+	 *
+	 * @var string
+	 */
+	const SCHEMA_TYPE = 'cart-item';
+
+	/**
 	 * Get the path of this REST route.
 	 *
 	 * @return string

@@ -17,6 +17,13 @@ class ProductCategoriesById extends AbstractRoute {
 	const IDENTIFIER = 'product-categories-by-id';
 
 	/**
+	 * The routes schema.
+	 *
+	 * @var string
+	 */
+	const SCHEMA_TYPE = 'product-category';
+
+	/**
 	 * Get the path of this REST route.
 	 *
 	 * @return string

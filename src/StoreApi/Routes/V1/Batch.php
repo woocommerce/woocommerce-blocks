@@ -20,6 +20,13 @@ class Batch extends AbstractRoute implements RouteInterface {
 	const IDENTIFIER = 'batch';
 
 	/**
+	 * The schema item identifier.
+	 *
+	 * @var string
+	 */
+	const SCHEMA_TYPE = 'batch';
+
+	/**
 	 * Get the path of this REST route.
 	 *
 	 * @return string
@@ -27,11 +34,6 @@ class Batch extends AbstractRoute implements RouteInterface {
 	public function get_path() {
 		return '/batch';
 	}
-
-	/**
-	 * Constructor.
-	 */
-	public function __construct() {}
 
 	/**
 	 * Get arguments for this REST route.

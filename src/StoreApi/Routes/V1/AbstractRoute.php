@@ -1,6 +1,7 @@
 <?php
 namespace Automattic\WooCommerce\Blocks\StoreApi\Routes\V1;
 
+use Automattic\WooCommerce\Blocks\StoreApi\SchemaController;
 use Automattic\WooCommerce\Blocks\StoreApi\Routes\RouteInterface;
 use Automattic\WooCommerce\Blocks\StoreApi\Exceptions\RouteException;
 use Automattic\WooCommerce\Blocks\StoreApi\Exceptions\InvalidStockLevelsInCartException;
@@ -21,12 +22,35 @@ abstract class AbstractRoute implements RouteInterface {
 	protected $schema;
 
 	/**
+	 * Schema Controller instance.
+	 *
+	 * @var SchemaController
+	 */
+	protected $schema_controller;
+
+	/**
+	 * The routes schema.
+	 *
+	 * @var string
+	 */
+	const SCHEMA_TYPE = '';
+
+	/**
+	 * The routes schema version.
+	 *
+	 * @var integer
+	 */
+	const SCHEMA_VERSION = 1;
+
+	/**
 	 * Constructor.
 	 *
-	 * @param AbstractSchema $schema Schema class for this route.
+	 * @param SchemaController $schema_controller Schema Controller instance.
+	 * @param AbstractSchema   $schema Schema class for this route.
 	 */
-	public function __construct( AbstractSchema $schema ) {
-		$this->schema = $schema;
+	public function __construct( SchemaController $schema_controller, AbstractSchema $schema ) {
+		$this->schema_controller = $schema_controller;
+		$this->schema            = $schema;
 	}
 
 	/**
