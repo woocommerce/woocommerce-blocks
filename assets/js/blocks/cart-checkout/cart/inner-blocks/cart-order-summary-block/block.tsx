@@ -56,13 +56,13 @@ const Block = ( {
 	const slotFillProps = {
 		extensions,
 		cart,
-		context: 'wc/cart',
+		context: 'woocommerce/cart',
 	};
 
 	const discountsSlotFillProps = {
 		extensions,
 		cart,
-		context: 'wc/cart',
+		context: 'woocommerce/cart',
 	};
 
 	return (
