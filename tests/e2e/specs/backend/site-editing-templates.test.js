@@ -76,7 +76,7 @@ describe( 'Store Editing Templates', () => {
 		it( 'default template from WooCommerce Blocks is available on an FSE theme', async () => {
 			const EXPECTED_TEMPLATE = defaultTemplateProps( 'Single Product' );
 
-			await goToSiteEditor( 'postType=wp_template' );
+			await goToSiteEditor( '?postType=wp_template' );
 
 			const templates = await getAllTemplates();
 
@@ -132,7 +132,7 @@ describe( 'Store Editing Templates', () => {
 			await page.keyboard.type( CUSTOMIZED_STRING );
 			await saveTemplate();
 
-			await goToSiteEditor( 'postType=wp_template' );
+			await goToSiteEditor( '?postType=wp_template' );
 			const templates = await getAllTemplates();
 
 			try {

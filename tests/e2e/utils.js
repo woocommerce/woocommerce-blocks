@@ -8,6 +8,7 @@ import {
 	visitAdminPage,
 	visitSiteEditor,
 } from '@wordpress/e2e-test-utils';
+import { getQueryArgs } from '@wordpress/url';
 import { WP_ADMIN_DASHBOARD } from '@woocommerce/e2e-utils';
 
 /**
@@ -142,7 +143,9 @@ export const isBlockInsertedInWidgetsArea = async ( blockName ) => {
  */
 export async function goToSiteEditor( query, editorContext = 'core' ) {
 	if ( editorContext === 'gutenberg' ) {
-		await visitSiteEditor( query );
+		const queryArgs = getQueryArgs( query );
+
+		await visitSiteEditor( queryArgs );
 	} else {
 		await visitAdminPage( 'site-editor.php', query );
 		await disableSiteEditorWelcomeGuide();
