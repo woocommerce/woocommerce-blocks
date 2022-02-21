@@ -18,6 +18,8 @@ describe( 'Shopper → Mini Cart → Can open/close the drawer', () => {
 		} );
 		await expect( page ).toMatchElement( 'h1', { text: block.name } );
 
+		await page.hover( '.wc-block-mini-cart__button' );
+
 		await expect( page ).toClick( '.wc-block-mini-cart__button' );
 
 		await expect( page ).toMatchElement( '.wc-block-mini-cart__drawer', {
@@ -31,6 +33,8 @@ describe( 'Shopper → Mini Cart → Can open/close the drawer', () => {
 			waitUntil: 'networkidle0',
 		} );
 		await expect( page ).toMatchElement( 'h1', { text: block.name } );
+
+		await page.hover( '.wc-block-mini-cart__button' );
 
 		await expect( page ).toClick( '.wc-block-mini-cart__button' );
 
@@ -57,6 +61,8 @@ describe( 'Shopper → Mini Cart → Can open/close the drawer', () => {
 			waitUntil: 'networkidle0',
 		} );
 		await expect( page ).toMatchElement( 'h1', { text: block.name } );
+
+		await page.hover( '.wc-block-mini-cart__button' );
 
 		await expect( page ).toClick( '.wc-block-mini-cart__button' );
 
