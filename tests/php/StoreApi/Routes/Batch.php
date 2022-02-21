@@ -41,7 +41,7 @@ class Batch extends ControllerTestCase {
 	 * Test that a batch of requests are successful.
 	 */
 	public function test_success_cart_route_batch() {
-		$request = new \WP_REST_Request( 'POST', '/wc/store/batch' );
+		$request = new \WP_REST_Request( 'POST', '/wc/store/v1/batch' );
 		$request->set_header( 'X-WC-Store-API-Nonce', wp_create_nonce( 'wc_store_api' ) );
 		$request->set_body_params(
 			array(
@@ -84,7 +84,7 @@ class Batch extends ControllerTestCase {
 	 * Test for a mixture of successful and non-successful requests in a batch.
 	 */
 	public function test_mix_cart_route_batch() {
-		$request = new \WP_REST_Request( 'POST', '/wc/store/batch' );
+		$request = new \WP_REST_Request( 'POST', '/wc/store/v1/batch' );
 		$request->set_header( 'X-WC-Store-API-Nonce', wp_create_nonce( 'wc_store_api' ) );
 		$request->set_body_params(
 			array(
@@ -126,7 +126,7 @@ class Batch extends ControllerTestCase {
 	 * Get Requests not supported by batch.
 	 */
 	public function test_get_cart_route_batch() {
-		$request = new \WP_REST_Request( 'POST', '/wc/store/batch' );
+		$request = new \WP_REST_Request( 'POST', '/wc/store/v1/batch' );
 		$request->set_header( 'X-WC-Store-API-Nonce', wp_create_nonce( 'wc_store_api' ) );
 		$request->set_body_params(
 			array(
