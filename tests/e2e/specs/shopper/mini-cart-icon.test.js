@@ -1,7 +1,7 @@
 /**
  * Internal dependencies
  */
-import { getBlockPagePermalink } from '../../../utils';
+import { shopper } from '../../../utils';
 
 const block = {
 	name: 'Mini Cart Block',
@@ -13,10 +13,7 @@ if ( process.env.WOOCOMMERCE_BLOCKS_PHASE < 3 )
 
 describe( 'Shopper → Mini Cart → Can see the icon with a badge', () => {
 	it( 'Shopper can see the Mini Cart icon and it badge on the front end', async () => {
-		await page.goto( await getBlockPagePermalink( block.name ), {
-			waitUntil: 'networkidle0',
-		} );
-		await expect( page ).toMatchElement( 'h1', { text: block.name } );
+		await shopper.goToBlockPage( block.name );
 
 		await expect( page ).toMatchElement( '.wc-block-mini-cart' );
 		await expect( page ).toMatchElement( '.wc-block-mini-cart__button' );
