@@ -2,10 +2,12 @@
  * Internal dependencies
  */
 import { shopper } from '../../../utils';
+import { sleep } from '../../utils';
 import { Taxes, Products } from '../../fixtures/fixture-data';
 import {
 	getExpectedTaxes,
 	getTaxesFromCurrentPage,
+	getTaxesFromOrderSummaryPage,
 	showTaxes,
 } from '../../../utils/taxes';
 
@@ -18,6 +20,7 @@ describe( 'Tax', () => {
 	beforeEach( async () => {
 		await shopper.emptyCart();
 	} );
+
 	describe( '"Enable tax rate calculations" is unchecked in WC settings -> general', () => {
 		it( 'Tax is not displayed', async () => {
 			await showTaxes( false );
@@ -28,6 +31,19 @@ describe( 'Tax', () => {
 
 			const cartTaxes = await getTaxesFromCurrentPage();
 			expect( cartTaxes ).toEqual( [] );
+
+			await shopper.goToCheckoutBlock();
+			const checkoutTaxes = await getTaxesFromCurrentPage();
+			expect( checkoutTaxes ).toEqual( [] );
+
+			await shopper.fillInCheckoutWithTestData();
+			await shopper.placeOrder();
+			await page.waitForNavigation();
+			await page.waitForSelector( 'h1.entry-title' );
+			const orderSummaryTaxes = await getTaxesFromOrderSummaryPage(
+				taxRates.filter( ( taxRate ) => taxRate.country === 'US' )
+			);
+			expect( orderSummaryTaxes ).toEqual( [] );
 		} );
 	} );
 
@@ -48,6 +64,15 @@ describe( 'Tax', () => {
 			await shopper.goToCheckoutBlock();
 			const checkoutTaxes = await getTaxesFromCurrentPage();
 			expect( checkoutTaxes.sort() ).toEqual( expectedTaxes.sort() );
+
+			await shopper.fillInCheckoutWithTestData();
+			await shopper.placeOrder();
+			await page.waitForNavigation();
+			await page.waitForSelector( 'h1.entry-title' );
+			const orderSummaryTaxes = await getTaxesFromOrderSummaryPage(
+				taxRates.filter( ( taxRate ) => taxRate.country === 'US' )
+			);
+			expect( orderSummaryTaxes.sort() ).toEqual( expectedTaxes.sort() );
 		} );
 	} );
 } );

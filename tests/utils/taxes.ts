@@ -58,3 +58,36 @@ export async function getTaxesFromCurrentPage(): Promise<
 			} )
 	);
 }
+
+export async function getTaxesFromOrderSummaryPage(
+	taxRates: TaxRate
+): Promise<
+	Array< {
+		label: string;
+		value: string;
+	} >
+> {
+	return await page.evaluate( ( taxRatesEval ) => {
+		return Array.from(
+			document.querySelectorAll(
+				'.woocommerce-table--order-details > tfoot > tr'
+			)
+		)
+			.filter( ( node ) => {
+				const taxLabel = node.getElementsByTagName( 'th' )[ 0 ]
+					.innerHTML;
+				return taxRatesEval.some(
+					// We need to remove the ":" on the end of the string before we compare
+					( taxRate ) => taxRate.name === taxLabel.slice( 0, -1 )
+				);
+			} )
+			.map( ( node ) => {
+				const label = node.getElementsByTagName( 'th' )[ 0 ].innerHTML;
+				const value = node.getElementsByTagName( 'td' )[ 0 ].innerText;
+				return {
+					label: label.slice( 0, -1 ),
+					value,
+				};
+			} );
+	}, taxRates );
+}

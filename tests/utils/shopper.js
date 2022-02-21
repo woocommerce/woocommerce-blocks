@@ -2,10 +2,10 @@
  * External dependencies
  */
 import { shopper as wcShopper } from '@woocommerce/e2e-utils';
-
 /**
  * Internal dependencies
  */
+import { sleep } from '../e2e/utils';
 import { getBlockPagePermalink } from './get-block-page-permalink';
 
 export const shopper = {
@@ -131,5 +131,72 @@ export const shopper = {
 		await page.waitForSelector( '.wc-block-components-chip__text', {
 			text: couponCode,
 		} );
+	},
+
+	fillInCheckoutWithTestData: async () => {
+		const shippingOrBilling = ( await page.$( '#shipping-first_name' ) )
+			? 'shipping'
+			: 'billing';
+		const testData = {
+			first_name: 'John',
+			last_name: 'Doe',
+			shipping_address_1: '123 Easy Street',
+			country: 'United States (US)',
+			city: 'New York',
+			state: 'New York',
+			postcode: '90210',
+		};
+		await shopper.fillInCheckoutAddress( testData, shippingOrBilling );
+	},
+
+	fillInCheckoutAddress: async (
+		address,
+		shippingOrBilling = 'shipping'
+	) => {
+		await shopper.clearAndTypeInput(
+			`#${ shippingOrBilling }-first_name`,
+			address.first_name
+		);
+		await shopper.clearAndTypeInput(
+			`#${ shippingOrBilling }-last_name`,
+			address.last_name
+		);
+		await shopper.clearAndTypeInput(
+			`#${ shippingOrBilling }-address_1`,
+			address.shipping_address_1
+		);
+		await shopper.clearAndTypeInput(
+			`#${ shippingOrBilling }-country input`,
+			address.country
+		);
+		await shopper.clearAndTypeInput(
+			`#${ shippingOrBilling }-city`,
+			address.city
+		);
+		await shopper.clearAndTypeInput(
+			`#${ shippingOrBilling }-state input`,
+			address.state
+		);
+		await shopper.clearAndTypeInput(
+			`#${ shippingOrBilling }-postcode`,
+			address.postcode
+		);
+	},
+
+	placeOrder: async () => {
+		await sleep( 1 );
+		await page.click( '.wc-block-components-checkout-place-order-button' );
+	},
+
+	clearAndTypeInput: async ( selector, text ) => {
+		await page.focus( selector );
+		const inputValue = await page.$eval( selector, ( el ) => el.value );
+		if ( inputValue === text ) {
+			return Promise.resolve();
+		}
+		for ( let i = 0; i < inputValue.length; i++ ) {
+			await page.keyboard.press( 'Backspace' );
+		}
+		await page.type( selector, text );
 	},
 };
