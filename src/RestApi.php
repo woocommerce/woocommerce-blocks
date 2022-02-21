@@ -52,7 +52,7 @@ class RestApi {
 			$route_version = $matches['version'];
 		}
 
-		return (int) apply_filters( 'woocommerce_store_api_route_version', $route_version );
+		return (int) $route_version;
 	}
 
 	/**

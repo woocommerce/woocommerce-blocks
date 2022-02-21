@@ -896,18 +896,6 @@
             "args": 3
         },
         {
-            "name": "woocommerce_store_api_route_version",
-            "file": "RestApi.php",
-            "type": "filter",
-            "doc": {
-                "description": "",
-                "long_description": "",
-                "tags": [],
-                "long_description_html": ""
-            },
-            "args": 1
-        },
-        {
             "name": "woocommerce_variation_option_name",
             "file": "StoreApi/Schemas/V1/CartItemSchema.php",
             "type": "filter",

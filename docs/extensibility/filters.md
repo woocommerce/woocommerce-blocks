@@ -31,7 +31,6 @@
  - [woocommerce_store_api_disable_nonce_check](#woocommerce_store_api_disable_nonce_check)
  - [woocommerce_store_api_product_quantity_limit](#woocommerce_store_api_product_quantity_limit)
  - [woocommerce_store_api_product_quantity_{$value_type}](#woocommerce_store_api_product_quantity_-value_type)
- - [woocommerce_store_api_route_version](#woocommerce_store_api_route_version)
  - [woocommerce_variation_option_name](#woocommerce_variation_option_name)
 
 ---

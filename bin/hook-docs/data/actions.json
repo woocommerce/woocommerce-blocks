@@ -246,7 +246,7 @@
         },
         {
             "name": "woocommerce_blocks_cart_enqueue_data",
-            "file": "BlockTypes/Cart.php",
+            "file": "BlockTypes/MiniCart.php",
             "type": "action",
             "doc": {
                 "description": "Fires after cart block data is registered.",
@@ -258,7 +258,7 @@
         },
         {
             "name": "woocommerce_blocks_cart_enqueue_data",
-            "file": "BlockTypes/MiniCart.php",
+            "file": "BlockTypes/Cart.php",
             "type": "action",
             "doc": {
                 "description": "Fires after cart block data is registered.",
