@@ -22,7 +22,7 @@ import {
 	waitForCanvas,
 } from '../../utils';
 
-async function addCustomParagraph(
+async function visitTemplateAndAddCustomParagraph(
 	templateSlug,
 	customText = CUSTOMIZED_STRING
 ) {
@@ -120,7 +120,7 @@ describe( 'Store Editing Templates', () => {
 		it( 'default template from WooCommerce Blocks is available on an FSE theme', async () => {
 			const EXPECTED_TEMPLATE = defaultTemplateProps( 'Single Product' );
 
-			await goToSiteEditor( 'postType=wp_template' );
+			await goToSiteEditor( '?postType=wp_template' );
 
 			const templates = await getAllTemplates();
 
@@ -150,6 +150,10 @@ describe( 'Store Editing Templates', () => {
 				( block ) => block.name === BLOCK_DATA[ 'single-product' ].name
 			);
 
+
+			// Comparing only the `template` property currently
+			// because the other properties seem to be slightly unreliable.
+			// Investigation pending.
 			expect( legacyBlock.attributes.template ).toBe(
 				BLOCK_DATA[ 'single-product' ].attributes.template
 			);
@@ -162,7 +166,7 @@ describe( 'Store Editing Templates', () => {
 				hasActions: true,
 			};
 
-			await addCustomParagraph( 'single-product' );
+			await visitTemplateAndAddCustomParagraph( 'single-product' );
 
 			await goToSiteEditor( 'postType=wp_template' );
 			const templates = await getAllTemplates();
@@ -214,7 +218,7 @@ describe( 'Store Editing Templates', () => {
 		it( 'default template from WooCommerce Blocks is available on an FSE theme', async () => {
 			const EXPECTED_TEMPLATE = defaultTemplateProps( 'Product Archive' );
 
-			await goToSiteEditor( 'postType=wp_template' );
+			await goToSiteEditor( '?postType=wp_template' );
 
 			const templates = await getAllTemplates();
 
@@ -256,7 +260,7 @@ describe( 'Store Editing Templates', () => {
 				hasActions: true,
 			};
 
-			await addCustomParagraph( 'archive-product' );
+			await visitTemplateAndAddCustomParagraph( 'archive-product' );
 
 			await goToSiteEditor( 'postType=wp_template' );
 			const templates = await getAllTemplates();
@@ -291,6 +295,12 @@ describe( 'Store Editing Templates', () => {
 
 		it( 'should show the user customization on the front-end', async () => {
 			await page.goto( new URL( '/?post_type=product', BASE_URL ) );
+			const exampleProductName = 'Woo Single #1';
+
+			await visitPostOfType( exampleProductName, 'product' );
+			const permalink = await getNormalPagePermalink();
+
+			await page.goto( permalink );
 
 			await expect( page ).toMatchElement( 'p', {
 				text: CUSTOMIZED_STRING,
@@ -348,7 +358,7 @@ describe( 'Store Editing Templates', () => {
 				hasActions: true,
 			};
 
-			await addCustomParagraph( 'taxonomy-product_cat' );
+			await visitTemplateAndAddCustomParagraph( 'taxonomy-product_cat' );
 
 			await goToSiteEditor( 'postType=wp_template' );
 			const templates = await getAllTemplates();
