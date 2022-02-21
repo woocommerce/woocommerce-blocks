@@ -72,9 +72,10 @@ class RoutesController {
 		$route_identifiers = array_keys( $this->routes[ $version ] );
 		foreach ( $route_identifiers as $route ) {
 			$route_instance = $this->get( $route, $version );
+			$route_instance->set_namespace( $namespace );
 
 			register_rest_route(
-				$namespace,
+				$route_instance->get_namespace(),
 				$route_instance->get_path(),
 				$route_instance->get_args()
 			);

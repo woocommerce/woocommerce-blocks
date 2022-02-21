@@ -22,6 +22,13 @@ abstract class AbstractRoute implements RouteInterface {
 	protected $schema;
 
 	/**
+	 * Route namespace.
+	 *
+	 * @var string
+	 */
+	protected $namespace;
+
+	/**
 	 * Schema Controller instance.
 	 *
 	 * @var SchemaController
@@ -51,6 +58,24 @@ abstract class AbstractRoute implements RouteInterface {
 	public function __construct( SchemaController $schema_controller, AbstractSchema $schema ) {
 		$this->schema_controller = $schema_controller;
 		$this->schema            = $schema;
+	}
+
+	/**
+	 * Get the namespace for this route.
+	 *
+	 * @return string
+	 */
+	public function get_namespace() {
+		return $this->namespace;
+	}
+
+	/**
+	 * Set the namespace for this route.
+	 *
+	 * @param string $namespace Given namespace.
+	 */
+	public function set_namespace( $namespace ) {
+		$this->namespace = $namespace;
 	}
 
 	/**
