@@ -449,7 +449,7 @@ describe( 'Store Editing Templates', () => {
 				hasActions: true,
 			};
 
-			await addCustomParagraph( 'taxonomy-product_tag' );
+			await visitTemplateAndAddCustomParagraph( 'taxonomy-product_tag' );
 
 			await goToSiteEditor( '?postType=wp_template' );
 			const templates = await getAllTemplates();
