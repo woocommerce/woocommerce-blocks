@@ -159,7 +159,7 @@ describe( 'Store Editing Templates', () => {
 
 			await visitTemplateAndAddCustomParagraph( 'single-product' );
 
-			await goToSiteEditor( 'postType=wp_template' );
+			await goToSiteEditor( '?postType=wp_template' );
 			const templates = await getAllTemplates();
 
 			try {
@@ -253,7 +253,7 @@ describe( 'Store Editing Templates', () => {
 
 			await visitTemplateAndAddCustomParagraph( 'archive-product' );
 
-			await goToSiteEditor( 'postType=wp_template' );
+			await goToSiteEditor( '?postType=wp_template' );
 			const templates = await getAllTemplates();
 
 			try {
@@ -306,7 +306,7 @@ describe( 'Store Editing Templates', () => {
 				'Product Category'
 			);
 
-			await goToSiteEditor( 'postType=wp_template' );
+			await goToSiteEditor( '?postType=wp_template' );
 
 			const templates = await getAllTemplates();
 
@@ -351,7 +351,7 @@ describe( 'Store Editing Templates', () => {
 
 			await visitTemplateAndAddCustomParagraph( 'taxonomy-product_cat' );
 
-			await goToSiteEditor( 'postType=wp_template' );
+			await goToSiteEditor( '?postType=wp_template' );
 			const templates = await getAllTemplates();
 
 			try {
