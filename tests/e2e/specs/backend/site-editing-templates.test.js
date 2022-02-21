@@ -150,7 +150,6 @@ describe( 'Store Editing Templates', () => {
 				( block ) => block.name === BLOCK_DATA[ 'single-product' ].name
 			);
 
-
 			// Comparing only the `template` property currently
 			// because the other properties seem to be slightly unreliable.
 			// Investigation pending.
@@ -168,7 +167,7 @@ describe( 'Store Editing Templates', () => {
 
 			await visitTemplateAndAddCustomParagraph( 'single-product' );
 
-			await goToSiteEditor( 'postType=wp_template' );
+			await goToSiteEditor( '?postType=wp_template' );
 			const templates = await getAllTemplates();
 
 			try {
@@ -262,7 +261,7 @@ describe( 'Store Editing Templates', () => {
 
 			await visitTemplateAndAddCustomParagraph( 'archive-product' );
 
-			await goToSiteEditor( 'postType=wp_template' );
+			await goToSiteEditor( '?postType=wp_template' );
 			const templates = await getAllTemplates();
 
 			try {
@@ -315,7 +314,7 @@ describe( 'Store Editing Templates', () => {
 				'Product Category'
 			);
 
-			await goToSiteEditor( 'postType=wp_template' );
+			await goToSiteEditor( '?postType=wp_template' );
 
 			const templates = await getAllTemplates();
 
@@ -360,7 +359,7 @@ describe( 'Store Editing Templates', () => {
 
 			await visitTemplateAndAddCustomParagraph( 'taxonomy-product_cat' );
 
-			await goToSiteEditor( 'postType=wp_template' );
+			await goToSiteEditor( '?postType=wp_template' );
 			const templates = await getAllTemplates();
 
 			try {
@@ -407,7 +406,7 @@ describe( 'Store Editing Templates', () => {
 		it( 'default template from WooCommerce Blocks is available on an FSE theme', async () => {
 			const EXPECTED_TEMPLATE = defaultTemplateProps( 'Product Tag' );
 
-			await goToSiteEditor( 'postType=wp_template' );
+			await goToSiteEditor( '?postType=wp_template' );
 
 			const templates = await getAllTemplates();
 
@@ -452,7 +451,7 @@ describe( 'Store Editing Templates', () => {
 
 			await addCustomParagraph( 'taxonomy-product_tag' );
 
-			await goToSiteEditor( 'postType=wp_template' );
+			await goToSiteEditor( '?postType=wp_template' );
 			const templates = await getAllTemplates();
 
 			try {
