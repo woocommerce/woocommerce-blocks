@@ -22,7 +22,7 @@ import {
 	waitForCanvas,
 } from '../../utils';
 
-async function addCustomParagraph(
+async function visitTemplateAndAddCustomParagraph(
 	templateSlug,
 	customText = CUSTOMIZED_STRING
 ) {
@@ -146,7 +146,7 @@ describe( 'Store Editing Templates', () => {
 				hasActions: true,
 			};
 
-			await addCustomParagraph( 'single-product' );
+			await visitTemplateAndAddCustomParagraph( 'single-product' );
 
 			await goToSiteEditor( 'postType=wp_template' );
 			const templates = await getAllTemplates();
@@ -240,7 +240,7 @@ describe( 'Store Editing Templates', () => {
 				hasActions: true,
 			};
 
-			await addCustomParagraph( 'archive-product' );
+			await visitTemplateAndAddCustomParagraph( 'archive-product' );
 
 			await goToSiteEditor( 'postType=wp_template' );
 			const templates = await getAllTemplates();
