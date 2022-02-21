@@ -14,7 +14,7 @@ const productWooSingle1 = Products().find(
 	( prod ) => prod.name === 'Woo Single #1'
 );
 
-describe( 'Checkout Tax', () => {
+describe( 'Tax', () => {
 	beforeEach( async () => {
 		await shopper.emptyCart();
 	} );
