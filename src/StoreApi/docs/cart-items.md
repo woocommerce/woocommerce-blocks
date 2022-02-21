@@ -6,6 +6,7 @@
 - [Edit Single Cart Item](#edit-single-cart-item)
 - [Delete Single Cart Item](#delete-single-cart-item)
 - [Delete All Cart Items](#delete-all-cart-items)
+- [](#)
 
 ## List Cart Items
 
@@ -16,7 +17,7 @@ GET /cart/items
 There are no parameters required for this endpoint.
 
 ```http
-curl "https://example-store.com/wp-json/wc/store/cart/items"
+curl "https://example-store.com/wp-json/wc/store/v1/cart/items"
 ```
 
 **Example response:**
@@ -91,12 +92,12 @@ curl "https://example-store.com/wp-json/wc/store/cart/items"
 		"_links": {
 			"self": [
 				{
-					"href": "https://local.wordpress.test/wp-json/wc/store/cart/items/9bf31c7ff062936a96d3c8bd1f8f2ff3"
+					"href": "https://local.wordpress.test/wp-json/wc/store/v1/cart/items/9bf31c7ff062936a96d3c8bd1f8f2ff3"
 				}
 			],
 			"collection": [
 				{
-					"href": "https://local.wordpress.test/wp-json/wc/store/cart/items"
+					"href": "https://local.wordpress.test/wp-json/wc/store/v1/cart/items"
 				}
 			]
 		}
@@ -169,12 +170,12 @@ curl "https://example-store.com/wp-json/wc/store/cart/items"
 		"_links": {
 			"self": [
 				{
-					"href": "https://local.wordpress.test/wp-json/wc/store/cart/items/e369853df766fa44e1ed0ff613f563bd"
+					"href": "https://local.wordpress.test/wp-json/wc/store/v1/cart/items/e369853df766fa44e1ed0ff613f563bd"
 				}
 			],
 			"collection": [
 				{
-					"href": "https://local.wordpress.test/wp-json/wc/store/cart/items"
+					"href": "https://local.wordpress.test/wp-json/wc/store/v1/cart/items"
 				}
 			]
 		}
@@ -195,7 +196,7 @@ GET /cart/items/:key
 | `key`     | string |   Yes    | The key of the cart item to retrieve. |
 
 ```http
-curl "https://example-store.com/wp-json/wc/store/cart/items/e369853df766fa44e1ed0ff613f563bd"
+curl "https://example-store.com/wp-json/wc/store/v1/cart/items/e369853df766fa44e1ed0ff613f563bd"
 ```
 
 **Example response:**
@@ -269,12 +270,12 @@ curl "https://example-store.com/wp-json/wc/store/cart/items/e369853df766fa44e1ed
 	"_links": {
 		"self": [
 			{
-				"href": "https://local.wordpress.test/wp-json/wc/store/cart/items/(?P<key>[\\w-]{32})/e369853df766fa44e1ed0ff613f563bd"
+				"href": "https://local.wordpress.test/wp-json/wc/store/v1/cart/items/(?P<key>[\\w-]{32})/e369853df766fa44e1ed0ff613f563bd"
 			}
 		],
 		"collection": [
 			{
-				"href": "https://local.wordpress.test/wp-json/wc/store/cart/items/(?P<key>[\\w-]{32})"
+				"href": "https://local.wordpress.test/wp-json/wc/store/v1/cart/items/(?P<key>[\\w-]{32})"
 			}
 		]
 	}
@@ -296,7 +297,7 @@ POST /cart/items/
 | `variation` | array   |   Yes    | Chosen attributes (for variations) containing an array of objects with keys `attribute` and `value`. |
 
 ```http
-curl --request POST https://example-store.com/wp-json/wc/store/cart/items?id=100&quantity=1
+curl --request POST https://example-store.com/wp-json/wc/store/v1/cart/items?id=100&quantity=1
 ```
 
 For an example response, see [Single Cart Item](#single-cart-item).
@@ -315,7 +316,7 @@ PUT /cart/items/:key
 | `quantity` | integer |   Yes    | Quantity of this item in the cart. |
 
 ```http
-curl --request PUT https://example-store.com/wp-json/wc/store/cart/items/e369853df766fa44e1ed0ff613f563bd?quantity=10
+curl --request PUT https://example-store.com/wp-json/wc/store/v1/cart/items/e369853df766fa44e1ed0ff613f563bd?quantity=10
 ```
 
 For an example response, see [Single Cart Item](#single-cart-item).
@@ -333,7 +334,7 @@ DELETE /cart/items/:key
 | `key`     | string |   Yes    | The key of the cart item to edit. |
 
 ```http
-curl --request DELETE https://example-store.com/wp-json/wc/store/cart/items/e369853df766fa44e1ed0ff613f563bd
+curl --request DELETE https://example-store.com/wp-json/wc/store/v1/cart/items/e369853df766fa44e1ed0ff613f563bd
 ```
 
 ## Delete All Cart Items
@@ -347,7 +348,7 @@ DELETE /cart/items/
 There are no parameters required for this endpoint.
 
 ```http
-curl --request DELETE https://example-store.com/wp-json/wc/store/cart/items
+curl --request DELETE https://example-store.com/wp-json/wc/store/v1/cart/items
 ```
 
 **Example response:**
@@ -356,11 +357,10 @@ curl --request DELETE https://example-store.com/wp-json/wc/store/cart/items
 []
 ```
 
-<!-- FEEDBACK -->
----
+## <!-- FEEDBACK -->
 
 [We're hiring!](https://woocommerce.com/careers/) Come work with us!
 
 🐞 Found a mistake, or have a suggestion? [Leave feedback about this document here.](https://github.com/woocommerce/woocommerce-gutenberg-products-block/issues/new?assignees=&labels=type%3A+documentation&template=--doc-feedback.md&title=Feedback%20on%20./src/StoreApi/docs/cart-items.md)
-<!-- /FEEDBACK -->
 
+<!-- /FEEDBACK -->
