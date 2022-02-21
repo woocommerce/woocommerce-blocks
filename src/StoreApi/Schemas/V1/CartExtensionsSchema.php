@@ -49,6 +49,6 @@ class CartExtensionsSchema extends AbstractSchema {
 		if ( is_callable( $callback ) ) {
 			$callback( $request['data'] );
 		}
-		return rest_ensure_response( wc()->api->get_endpoint_data( '/wc/store/cart' ) );
+		return rest_ensure_response( wc()->api->get_endpoint_data( '/wc/store/v1/cart' ) );
 	}
 }

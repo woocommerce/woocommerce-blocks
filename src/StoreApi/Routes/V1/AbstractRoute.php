@@ -26,7 +26,7 @@ abstract class AbstractRoute implements RouteInterface {
 	 *
 	 * @var string
 	 */
-	protected $namespace;
+	protected $namespace = 'wc/store/v1';
 
 	/**
 	 * Schema Controller instance.

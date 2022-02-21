@@ -85,6 +85,19 @@ abstract class ControllerTestCase extends \WP_Test_REST_TestCase {
 			$this->assertSame( $field_value, $object->$field_name, $message . " Value of property $field_name is not $field_value." );
 		}
 	}
+	/**
+	 * Asserts that the contents of two un-keyed, single arrays are equal, without accounting for the order of elements.
+	 *
+	 * @since 3.5.0
+	 *
+	 * @param array $expected Expected array.
+	 * @param array $actual   Array to check.
+	 */
+	public function assertEqualSets( $expected, $actual ) {
+		sort( $expected );
+		sort( $actual );
+		$this->assertEquals( $expected, $actual );
+	}
 
 	/**
 	 * Custom assertion of an API response to confirm data and response code is expected.
@@ -138,7 +151,7 @@ abstract class ControllerTestCase extends \WP_Test_REST_TestCase {
 					$this->assertAPIFieldValue( $actual_value_value, $expected_value[ $actual_value_key ] );
 				}
 			}
-			$this->assertEquals( $asserted_keys, array_keys( $expected_value ) );
+			$this->assertEqualSets( $asserted_keys, array_keys( $expected_value ) );
 			return;
 		}
 		$this->assertEquals( $expected_value, $actual_value );
