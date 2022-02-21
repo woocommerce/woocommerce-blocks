@@ -10,5 +10,11 @@ export const supports = {
 			background: false,
 			link: false,
 		},
+		typography: {
+			fontSize: true,
+		},
+		spacing: {
+			margin: true,
+		},
 	} ),
 };

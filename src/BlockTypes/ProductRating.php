@@ -49,6 +49,14 @@ class ProductRating extends AbstractBlock {
 				'background' => false,
 				'link'       => false,
 			),
+			'typography'             =>
+			array(
+				'fontSize' => true,
+			),
+			'spacing'                =>
+			array(
+				'margin' => true,
+			),
 			'__experimentalSelector' => '.wc-block-components-product-rating',
 		);
 	}
