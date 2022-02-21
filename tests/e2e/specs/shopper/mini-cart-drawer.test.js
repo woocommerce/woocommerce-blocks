@@ -1,7 +1,7 @@
 /**
  * Internal dependencies
  */
-import { getBlockPagePermalink } from '../../../utils';
+import { shopper } from '../../../utils';
 
 const block = {
 	name: 'Mini Cart Block',
@@ -13,10 +13,7 @@ if ( process.env.WOOCOMMERCE_BLOCKS_PHASE < 3 )
 
 describe( 'Shopper → Mini Cart → Can open/close the drawer', () => {
 	it( 'The drawer opens when shopper clicks on the mini cart icon', async () => {
-		await page.goto( await getBlockPagePermalink( block.name ), {
-			waitUntil: 'networkidle0',
-		} );
-		await expect( page ).toMatchElement( 'h1', { text: block.name } );
+		await shopper.goToBlockPage( block.name );
 
 		await page.hover( '.wc-block-mini-cart__button' );
 
@@ -32,10 +29,7 @@ describe( 'Shopper → Mini Cart → Can open/close the drawer', () => {
 	} );
 
 	it( 'The drawer closes when shopper clicks on the drawer close button', async () => {
-		await page.goto( await getBlockPagePermalink( block.name ), {
-			waitUntil: 'networkidle0',
-		} );
-		await expect( page ).toMatchElement( 'h1', { text: block.name } );
+		await shopper.goToBlockPage( block.name );
 
 		await page.hover( '.wc-block-mini-cart__button' );
 
@@ -58,10 +52,7 @@ describe( 'Shopper → Mini Cart → Can open/close the drawer', () => {
 	} );
 
 	it( 'The drawer closes when shopper clicks outside the drawer', async () => {
-		await page.goto( await getBlockPagePermalink( block.name ), {
-			waitUntil: 'networkidle0',
-		} );
-		await expect( page ).toMatchElement( 'h1', { text: block.name } );
+		await shopper.goToBlockPage( block.name );
 
 		await page.hover( '.wc-block-mini-cart__button' );
 
