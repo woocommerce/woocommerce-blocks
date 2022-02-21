@@ -22,6 +22,10 @@ describe( 'Shopper → Mini Cart → Can open/close the drawer', () => {
 
 		await expect( page ).toClick( '.wc-block-mini-cart__button' );
 
+		await page.screenshot( {
+			path: `reports/e2e/screenshots/test.jpeg`,
+		} );
+
 		await expect( page ).toMatchElement( '.wc-block-mini-cart__drawer', {
 			text: 'Start shopping',
 		} );
