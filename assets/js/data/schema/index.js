@@ -21,4 +21,4 @@ registerStore( STORE_KEY, {
 	resolvers,
 } );
 
-export const SCHEMA_TYPE_STORE_KEY = STORE_KEY;
+export const SCHEMA_STORE_KEY = STORE_KEY;
