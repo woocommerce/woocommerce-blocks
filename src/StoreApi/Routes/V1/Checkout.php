@@ -166,8 +166,7 @@ class Checkout extends AbstractCartRoute {
 		 * Validate items etc are allowed in the order before the order is processed. This will fix violations and tell
 		 * the customer.
 		 */
-		$this->cart_controller->validate_cart_items();
-		$this->cart_controller->validate_cart_coupons();
+		$this->cart_controller->validate_cart();
 
 		/**
 		 * Obtain Draft Order and process request data.
