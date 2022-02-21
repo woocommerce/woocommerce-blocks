@@ -24,7 +24,6 @@ describe( 'Shopper → Mini Cart → Can open/close the drawer', () => {
 
 		await expect( page ).toMatchElement( '.wc-block-mini-cart__drawer', {
 			text: 'Start shopping',
-			timeout: 30000,
 		} );
 	} );
 
@@ -40,7 +39,6 @@ describe( 'Shopper → Mini Cart → Can open/close the drawer', () => {
 
 		await expect( page ).toMatchElement( '.wc-block-mini-cart__drawer', {
 			text: 'Start shopping',
-			timeout: 30000,
 		} );
 
 		await expect( page ).toClick(
@@ -51,7 +49,6 @@ describe( 'Shopper → Mini Cart → Can open/close the drawer', () => {
 			'.wc-block-mini-cart__drawer',
 			{
 				text: 'Start shopping',
-				timeout: 30000,
 			}
 		);
 	} );
@@ -68,7 +65,6 @@ describe( 'Shopper → Mini Cart → Can open/close the drawer', () => {
 
 		await expect( page ).toMatchElement( '.wc-block-mini-cart__drawer', {
 			text: 'Start shopping',
-			timeout: 30000,
 		} );
 
 		await page.mouse.click( 100, 100 );
@@ -77,7 +73,6 @@ describe( 'Shopper → Mini Cart → Can open/close the drawer', () => {
 			'.wc-block-mini-cart__drawer',
 			{
 				text: 'Start shopping',
-				timeout: 30000,
 			}
 		);
 	} );
