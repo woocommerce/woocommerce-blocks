@@ -145,6 +145,6 @@ class Batch extends ControllerTestCase {
 		$response      = rest_get_server()->dispatch( $request );
 		$response_data = $response->get_data();
 
-		$this->assertEquals( 'rest_invalid_param', $response_data['code'], print_r( $response_data, true ) );
+		$this->assertEquals( 'rest_invalid_param', $response_data['code'] );
 	}
 }

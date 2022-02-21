@@ -27,7 +27,7 @@ class_alias( Automattic\WooCommerce\Blocks\StoreApi\Schemas\V1\ProductSchema::cl
 class_alias( Automattic\WooCommerce\Blocks\StoreApi\Schemas\V1\ShippingAddressSchema::class, Automattic\WooCommerce\Blocks\StoreApi\Schemas\ShippingAddressSchema::class );
 class_alias( Automattic\WooCommerce\Blocks\StoreApi\Schemas\V1\TermSchema::class, Automattic\WooCommerce\Blocks\StoreApi\Schemas\TermSchema::class );
 
-// Exceptions
+// Exceptions.
 class_alias( Automattic\WooCommerce\Blocks\StoreApi\Exceptions\RouteException::class, Automattic\WooCommerce\Blocks\StoreApi\Routes\RouteException::class );
 
 // Unversioned routes to v1 routes.
