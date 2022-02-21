@@ -12,9 +12,12 @@ export const supports = {
 		},
 		typography: {
 			fontSize: true,
+			__experimentalSkipSerialization: true,
 		},
 		spacing: {
+			__experimentalSkipSerialization: true,
 			margin: true,
 		},
+		__experimentalSelector: '.wc-block-components-product-rating',
 	} ),
 };

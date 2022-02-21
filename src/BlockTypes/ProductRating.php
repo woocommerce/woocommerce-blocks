@@ -51,7 +51,8 @@ class ProductRating extends AbstractBlock {
 			),
 			'typography'             =>
 			array(
-				'fontSize' => true,
+				'fontSize'                        => true,
+				'__experimentalSkipSerialization' => true,
 			),
 			'spacing'                =>
 			array(
