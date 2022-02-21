@@ -4,6 +4,8 @@
  * We're using the older version of wordpress/scripts, so this is needed to
  * fix the issue of the sidebar not opening.
  *
+ * @todo Remove custom ensureSidebarOpened() once we upgrade to the latest version of wordpress/scripts.
+ *
  * @return {Promise} Promise resolving once the edit post sidebar is opened.
  */
 export async function ensureSidebarOpened(): Promise< void > {
