@@ -43,14 +43,14 @@ class RoutesController {
 	 *
 	 * @throws \Exception If the schema does not exist.
 	 * @param string $name Name of schema.
-	 * @param int    $version API Version being requested.
+	 * @param string $version API Version being requested.
 	 * @return AbstractRoute
 	 */
-	public function get( $name, $version = 1 ) {
-		$route = $this->routes[ "v${version}" ][ $name ] ?? false;
+	public function get( $name, $version = 'v1' ) {
+		$route = $this->routes[ $version ][ $name ] ?? false;
 
 		if ( ! $route ) {
-			throw new \Exception( "${name} v{$version} route does not exist" );
+			throw new \Exception( "${name} {$version} route does not exist" );
 		}
 
 		return new $route(
@@ -62,20 +62,19 @@ class RoutesController {
 	/**
 	 * Register defined list of routes with WordPress.
 	 *
-	 * @param int    $version API Version being requested.
-	 * @param string $namespace Overrides the route namespace.
+	 * @param string $version API Version being registered..
+	 * @param string $namespace Overrides the default route namespace.
 	 */
-	public function register_routes( $version = 1, $namespace = '' ) {
-		if ( ! isset( $this->routes[ "v${version}" ] ) ) {
+	public function register_routes( $version = 'v1', $namespace = 'wc/store/v1' ) {
+		if ( ! isset( $this->routes[ $version ] ) ) {
 			return;
 		}
-		$route_identifiers = array_keys( $this->routes[ "v${version}" ] );
+		$route_identifiers = array_keys( $this->routes[ $version ] );
 		foreach ( $route_identifiers as $route ) {
-			$route_instance  = $this->get( $route, $version );
-			$route_namespace = $namespace ?: $route_instance->get_namespace();
+			$route_instance = $this->get( $route, $version );
 
 			register_rest_route(
-				$route_namespace,
+				$namespace,
 				$route_instance->get_path(),
 				$route_instance->get_args()
 			);

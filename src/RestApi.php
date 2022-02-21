@@ -45,25 +45,26 @@ class RestApi {
 	 * @return int
 	 */
 	protected function get_route_version() {
-		$rest_route = untrailingslashit( $GLOBALS['wp']->query_vars['rest_route'] ?? '' );
+		// Default to version 1.
+		$route_version = 1;
 
-		if ( preg_match( '/\/v(?P<version>\d)\//', $rest_route, $matches ) ) {
-			return (int) $matches['version'];
+		if ( preg_match( '/\/v(?P<version>\d)\//', untrailingslashit( $GLOBALS['wp']->query_vars['rest_route'] ?? '' ), $matches ) ) {
+			$route_version = $matches['version'];
 		}
 
-		return 1;
+		return (int) apply_filters( 'woocommerce_store_api_route_version', $route_version );
 	}
 
 	/**
 	 * Register REST API routes.
 	 */
 	public function register_rest_routes() {
-		$version = $this->get_route_version();
-
-		$this->routes->register_routes( $version );
-
-		if ( 1 === $version ) {
-			$this->routes->register_routes( 1, 'wc/store' );
+		$api_versions = [
+			'wc/store'    => 'v1',
+			'wc/store/v1' => 'v1',
+		];
+		foreach ( $api_versions as $api_namespace => $api_version ) {
+			$this->routes->register_routes( $api_version, $api_namespace );
 		}
 	}
 

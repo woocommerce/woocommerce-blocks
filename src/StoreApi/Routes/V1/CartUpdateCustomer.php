@@ -19,14 +19,6 @@ class CartUpdateCustomer extends AbstractCartRoute {
 	 * @var string
 	 */
 	const IDENTIFIER = 'cart-update-customer';
-	/**
-	 * Get the namespace for this route.
-	 *
-	 * @return string
-	 */
-	public function get_namespace() {
-		return 'wc/store';
-	}
 
 	/**
 	 * Get the path of this REST route.

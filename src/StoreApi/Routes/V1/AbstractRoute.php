@@ -54,15 +54,6 @@ abstract class AbstractRoute implements RouteInterface {
 	}
 
 	/**
-	 * Get the namespace for this route.
-	 *
-	 * @return string
-	 */
-	public function get_namespace() {
-		return 'wc/store/v1';
-	}
-
-	/**
 	 * Get item schema properties.
 	 *
 	 * @return array
