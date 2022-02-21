@@ -158,7 +158,7 @@ const FeaturedProduct = ( {
 								setAttributes( { mediaId: 0, mediaSrc: '' } )
 							}
 						>
-							{ __( 'Remove', 'woo-gutenberg-products-block' ) }
+							{ __( 'Reset', 'woo-gutenberg-products-block' ) }
 						</TextToolbarButton>
 					) : null }
 				</ToolbarGroup>
