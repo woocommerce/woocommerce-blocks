@@ -108,7 +108,7 @@ describe( 'Legacy Template blocks', () => {
 				productArchivePage.productContainers
 			);
 
-			expect( $productElements ).toHaveLength( displayedCount );
+			expect( $productElements ).toHaveLength( Number( displayedCount ) );
 		} );
 	} );
 } );
