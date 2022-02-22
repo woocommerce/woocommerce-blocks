@@ -1,4 +1,9 @@
 /**
+ * External dependencies
+ */
+import { SHOP_PAGE } from '@woocommerce/e2e-utils';
+
+/**
  * Internal dependencies
  */
 import { shopper } from '../../../utils';
@@ -20,11 +25,20 @@ describe( 'Shopper → Mini Cart → Can view empty cart message and start shopp
 		await page.click( '.wc-block-mini-cart__button' );
 
 		await expect( page ).toMatchElement( '.wc-block-mini-cart__drawer', {
-			text: 'Start shopping',
+			text: 'Your cart is currently empty!',
 		} );
 
 		await expect( page ).toMatchElement( '.wc-block-mini-cart__drawer', {
-			text: 'Your cart is currently empty!',
+			text: 'Start shopping',
 		} );
+
+		const shopLink = await page.$eval(
+			'.wc-block-mini-cart__shopping-button a',
+			( el ) => {
+				return el.getAttribute( 'href' );
+			}
+		);
+
+		expect( shopLink ).toMatch( SHOP_PAGE );
 	} );
 } );
