@@ -103,7 +103,7 @@ class Cart extends ControllerTestCase {
 	}
 
 	/**
-	 * Test removing a nonexistent cart item. This should return 404.
+	 * Test removing a nonexistent cart item. This should return 409 conflict with updated cart data.
 	 */
 	public function test_remove_bad_cart_item() {
 		$request = new \WP_REST_Request( 'POST', '/wc/store/v1/cart/remove-item' );
