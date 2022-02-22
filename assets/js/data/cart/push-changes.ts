@@ -23,7 +23,7 @@ import { STORE_KEY } from './constants';
 declare type CustomerData = {
 	billingData: CartResponseBillingAddress;
 	shippingAddress: CartResponseShippingAddress;
-} | null;
+};
 
 /**
  * Checks if a cart response contains an email property.
@@ -66,7 +66,12 @@ const isAddressDirty = <
 /**
  * Local cache of customerData used for comparisons.
  */
-let customerData = <CustomerData>null;
+let customerData = <CustomerData>{
+	billingData: {},
+	shippingAddress: {},
+};
+// Tracks if customerData has been populated.
+let customerDataIsInitialized = false;
 
 /**
  * Tracks which props have changed so the correct data gets pushed to the server.
@@ -80,15 +85,16 @@ const dirtyProps = {
  * Function to dispatch an update to the server. This is debounced.
  */
 const updateCustomerData = debounce( (): void => {
+	const { billingData, shippingAddress } = customerData;
 	const customerDataToUpdate = {} as Partial< BillingAddressShippingAddress >;
 
-	if ( dirtyProps.billingData && customerData?.billingData ) {
-		customerDataToUpdate.billing_address = customerData?.billingData;
+	if ( dirtyProps.billingData ) {
+		customerDataToUpdate.billing_address = billingData;
 		dirtyProps.billingData = false;
 	}
 
-	if ( dirtyProps.shippingAddress && customerData?.shippingAddress ) {
-		customerDataToUpdate.shipping_address = customerData.shippingAddress;
+	if ( dirtyProps.shippingAddress ) {
+		customerDataToUpdate.shipping_address = shippingAddress;
 		dirtyProps.shippingAddress = false;
 	}
 
@@ -121,10 +127,16 @@ const updateCustomerData = debounce( (): void => {
 export const pushChanges = (): void => {
 	const store = select( STORE_KEY );
 	const isInitialized = store.hasFinishedResolution( 'getCartData' );
-	const newCustomerData = isInitialized ? store.getCustomerData() : null;
 
-	if ( newCustomerData === null || customerData === null ) {
+	if ( ! isInitialized ) {
+		return;
+	}
+
+	const newCustomerData = store.getCustomerData();
+
+	if ( ! customerDataIsInitialized ) {
 		customerData = newCustomerData;
+		customerDataIsInitialized = true;
 		return;
 	}
 
@@ -145,5 +157,8 @@ export const pushChanges = (): void => {
 	}
 
 	customerData = newCustomerData;
-	updateCustomerData();
+
+	if ( dirtyProps.billingData || dirtyProps.shippingAddress ) {
+		updateCustomerData();
+	}
 };
