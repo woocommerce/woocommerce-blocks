@@ -118,9 +118,7 @@ const Block = ( {
 				onChange={ ( checked: boolean ) => {
 					setShippingAsBilling( checked );
 					if ( checked ) {
-						setBillingData(
-							( shippingAddress || {} ) as BillingAddress
-						);
+						setBillingData( shippingAddress as BillingAddress );
 					}
 				} }
 			/>
