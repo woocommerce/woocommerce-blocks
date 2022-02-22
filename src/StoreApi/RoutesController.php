@@ -83,19 +83,6 @@ class RoutesController {
 	}
 
 	/**
-	 * Get the requested version of the Store API from the route request.
-	 *
-	 * This defaults to v1 - unversioned endpoints should always default to 1 to avoid breakage for consumers.
-	 *
-	 * @return int
-	 */
-	protected function get_route_version() {
-		preg_match( '/\/v(?P<version>\d)\//', untrailingslashit( $GLOBALS['wp']->query_vars['rest_route'] ), $matches );
-
-		return (int) $matches['version'] ?? 1;
-	}
-
-	/**
 	 * Load route class instances.
 	 */
 	protected function initialize() {
