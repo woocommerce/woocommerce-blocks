@@ -21,9 +21,9 @@ describe( 'Tax', () => {
 		await shopper.emptyCart();
 	} );
 
-	describe.skip( '"Enable tax rate calculations" is unchecked in WC settings -> general', () => {
+	describe( '"Enable tax rate calculations" is unchecked in WC settings -> general', () => {
 		it( 'Tax is not displayed', async () => {
-			jest.setTimeout( 100000 );
+			jest.setTimeout( 120000 );
 			await showTaxes( false );
 			await shopper.goToShop();
 			await shopper.searchForProduct( productWooSingle1.name );
@@ -50,7 +50,8 @@ describe( 'Tax', () => {
 
 	describe( '"Enable tax rate calculations" is checked in WC settings -> general', () => {
 		it( 'Tax is displayed correctly on Cart & Checkout ', async () => {
-			// await showTaxes( true );
+			jest.setTimeout( 120000 );
+			await showTaxes( true );
 			await shopper.goToShop();
 			await shopper.searchForProduct( productWooSingle1.name );
 			await shopper.addToCart();
