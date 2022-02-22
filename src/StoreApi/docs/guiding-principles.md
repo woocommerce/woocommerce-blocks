@@ -74,7 +74,7 @@ Error messages should be localized, but do not need to be written with language 
 
 ### Cart Operations
 
-Some endpoints are designed around operations to avoid client’s needing to make multiple round trips to the API. This is purely for convenience.
+Some endpoints are designed around operations to avoid clients needing to make multiple round trips to the API. This is purely for convenience.
 
 An example would be the `wc/store/cart/add-item` endpoint which accepts a quantity and product ID, but returns a full cart object, rather than just an updated list of items.
 
