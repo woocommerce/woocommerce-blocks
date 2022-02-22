@@ -43,7 +43,10 @@ export const receiveCart = (
 };
 
 /**
- * Returns an action object used in updating the store with the provided cart. This omits the customer addresses.
+ * Returns an action object used in updating the store with the provided cart.
+ *
+ * This omits the customer addresses so that only updates to cart items and totals are received. This is useful when
+ * currently editing address information to prevent it being overwritten from the server.
  *
  * This is a generic response action.
  *
