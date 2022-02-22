@@ -17,7 +17,7 @@ export const reducer = (
 		orderId,
 		orderNotes,
 		extensionData,
-		shippingAsBilling,
+		useShippingAsBilling,
 		shouldCreateAccount,
 		data,
 	}: ActionType
@@ -155,12 +155,12 @@ export const reducer = (
 			break;
 		case ACTION.SET_SHIPPING_ADDRESS_AS_BILLING_ADDRESS:
 			if (
-				shippingAsBilling !== undefined &&
-				shippingAsBilling !== state.shippingAsBilling
+				useShippingAsBilling !== undefined &&
+				useShippingAsBilling !== state.useShippingAsBilling
 			) {
 				newState = {
 					...state,
-					shippingAsBilling,
+					useShippingAsBilling,
 				};
 			}
 			break;

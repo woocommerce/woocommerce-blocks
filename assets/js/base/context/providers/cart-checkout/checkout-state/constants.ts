@@ -71,8 +71,8 @@ export const DEFAULT_CHECKOUT_STATE_DATA: CheckoutStateContextType = {
 	onCheckoutValidationBeforeProcessing: () => () => void null,
 	hasOrder: false,
 	isCart: false,
-	shippingAsBilling: false,
-	setShippingAsBilling: ( value ) => void value,
+	useShippingAsBilling: false,
+	setUseShippingAsBilling: ( value ) => void value,
 	shouldCreateAccount: false,
 	setShouldCreateAccount: ( value ) => void value,
 	extensionData: {},
@@ -86,7 +86,7 @@ export const DEFAULT_STATE: CheckoutStateContextState = {
 	orderId: checkoutData.order_id,
 	orderNotes: '',
 	customerId: checkoutData.customer_id,
-	shippingAsBilling: isSameAddress(
+	useShippingAsBilling: isSameAddress(
 		checkoutData.billing_address,
 		checkoutData.shipping_address
 	),

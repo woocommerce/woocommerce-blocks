@@ -93,10 +93,10 @@ export const actions = {
 			type: ACTION.SET_ORDER_ID,
 			orderId,
 		} as const ),
-	setShippingAsBilling: ( shippingAsBilling: boolean ) =>
+	setUseShippingAsBilling: ( useShippingAsBilling: boolean ) =>
 		( {
 			type: ACTION.SET_SHIPPING_ADDRESS_AS_BILLING_ADDRESS,
-			shippingAsBilling,
+			useShippingAsBilling,
 		} as const ),
 	setShouldCreateAccount: ( shouldCreateAccount: boolean ) =>
 		( {

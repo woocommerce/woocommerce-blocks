@@ -27,8 +27,8 @@ interface CheckoutAddress {
 	setEmail: ( value: string ) => void;
 	setBillingPhone: ( value: string ) => void;
 	setShippingPhone: ( value: string ) => void;
-	shippingAsBilling: boolean;
-	setShippingAsBilling: ( shippingAsBilling: boolean ) => void;
+	useShippingAsBilling: boolean;
+	setUseShippingAsBilling: ( useShippingAsBilling: boolean ) => void;
 	defaultAddressFields: AddressFields;
 	showShippingFields: boolean;
 	showBillingFields: boolean;
@@ -39,7 +39,10 @@ interface CheckoutAddress {
  */
 export const useCheckoutAddress = (): CheckoutAddress => {
 	const { needsShipping } = useShippingDataContext();
-	const { shippingAsBilling, setShippingAsBilling } = useCheckoutContext();
+	const {
+		useShippingAsBilling,
+		setUseShippingAsBilling,
+	} = useCheckoutContext();
 	const {
 		billingData,
 		setBillingData,
@@ -80,9 +83,9 @@ export const useCheckoutAddress = (): CheckoutAddress => {
 		setBillingPhone,
 		setShippingPhone,
 		defaultAddressFields,
-		shippingAsBilling,
-		setShippingAsBilling,
+		useShippingAsBilling,
+		setUseShippingAsBilling,
 		showShippingFields: needsShipping,
-		showBillingFields: ! needsShipping || ! shippingAsBilling,
+		showBillingFields: ! needsShipping || ! useShippingAsBilling,
 	};
 };

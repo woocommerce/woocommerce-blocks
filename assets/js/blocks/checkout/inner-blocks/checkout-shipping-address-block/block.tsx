@@ -42,8 +42,8 @@ const Block = ( {
 		setBillingData,
 		shippingAddress,
 		setShippingPhone,
-		shippingAsBilling,
-		setShippingAsBilling,
+		useShippingAsBilling,
+		setUseShippingAsBilling,
 	} = useCheckoutAddress();
 	const { dispatchCheckoutEvent } = useStoreEvents();
 	const { isEditor } = useEditorContext();
@@ -81,7 +81,7 @@ const Block = ( {
 					type="shipping"
 					onChange={ ( values: Partial< ShippingAddress > ) => {
 						setShippingAddress( values );
-						if ( shippingAsBilling ) {
+						if ( useShippingAsBilling ) {
 							setBillingData( values );
 						}
 						dispatchCheckoutEvent( 'set-shipping-address' );
@@ -114,9 +114,9 @@ const Block = ( {
 					'Use same address for billing',
 					'woo-gutenberg-products-block'
 				) }
-				checked={ shippingAsBilling }
+				checked={ useShippingAsBilling }
 				onChange={ ( checked: boolean ) => {
-					setShippingAsBilling( checked );
+					setUseShippingAsBilling( checked );
 					if ( checked ) {
 						setBillingData( shippingAddress as BillingAddress );
 					}
