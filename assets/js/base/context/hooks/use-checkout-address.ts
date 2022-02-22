@@ -25,7 +25,7 @@ interface CheckoutAddress {
 	setShippingAddress: ( data: Partial< EnteredAddress > ) => void;
 	setBillingData: ( data: Partial< EnteredAddress > ) => void;
 	setEmail: ( value: string ) => void;
-	setPhone: ( value: string ) => void;
+	setBillingPhone: ( value: string ) => void;
 	setShippingPhone: ( value: string ) => void;
 	shippingAsBilling: boolean;
 	setShippingAsBilling: ( shippingAsBilling: boolean ) => void;
@@ -55,7 +55,7 @@ export const useCheckoutAddress = (): CheckoutAddress => {
 		[ setBillingData ]
 	);
 
-	const setPhone = useCallback(
+	const setBillingPhone = useCallback(
 		( value ) =>
 			void setBillingData( {
 				phone: value,
@@ -77,7 +77,7 @@ export const useCheckoutAddress = (): CheckoutAddress => {
 		setShippingAddress,
 		setBillingData,
 		setEmail,
-		setPhone,
+		setBillingPhone,
 		setShippingPhone,
 		defaultAddressFields,
 		shippingAsBilling,

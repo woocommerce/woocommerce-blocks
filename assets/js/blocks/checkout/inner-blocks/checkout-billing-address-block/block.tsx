@@ -37,7 +37,7 @@ const Block = ( {
 		defaultAddressFields,
 		billingData,
 		setBillingData,
-		setPhone,
+		setBillingPhone,
 	} = useCheckoutAddress();
 	const { dispatchCheckoutEvent } = useStoreEvents();
 	const { isEditor } = useEditorContext();
@@ -45,9 +45,9 @@ const Block = ( {
 	// Clears data if fields are hidden.
 	useEffect( () => {
 		if ( ! showPhoneField ) {
-			setPhone( '' );
+			setBillingPhone( '' );
 		}
-	}, [ showPhoneField, setPhone ] );
+	}, [ showPhoneField, setBillingPhone ] );
 
 	const addressFieldsConfig = useMemo( () => {
 		return {
@@ -89,7 +89,7 @@ const Block = ( {
 					isRequired={ requirePhoneField }
 					value={ billingData.phone }
 					onChange={ ( value ) => {
-						setPhone( value );
+						setBillingPhone( value );
 						dispatchCheckoutEvent( 'set-phone-number', {
 							step: 'billing',
 						} );
