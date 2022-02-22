@@ -50,7 +50,7 @@ describe( `${ block.name } Block (frontend)`, () => {
 		// Set base location with state CA.
 		await expect( page ).toSelect(
 			'select[name="woocommerce_default_country"]',
-			'United States (US) — Caliifornia'
+			'United States (US) — California'
 		);
 		// Sell to all countries
 		await expect( page ).toSelect(
