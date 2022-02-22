@@ -24,15 +24,19 @@ export async function elementExists( selector, root = page ) {
  * Gets data from an HTML element
  *
  * @param {string} selector The selector for the desired element
- * @param {string} key The key in the element data to look for
+ * @param {string} dataKey The key in the element data to look for
  * @param {Page | ElementHandle} root The root from which to search for the selector
  *
  * @return {Promise<string | undefined>} The data of that element if it exists
  */
-export async function getElementData( selector, key, root = page ) {
-	return root.$eval( selector, ( $element ) => {
-		return $element.dataset[ key ];
-	} );
+export async function getElementData( selector, dataKey, root = page ) {
+	return root.$eval(
+		selector,
+		( $element, key ) => {
+			return $element.dataset[ key ];
+		},
+		dataKey
+	);
 }
 
 /**
