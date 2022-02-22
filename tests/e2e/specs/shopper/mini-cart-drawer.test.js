@@ -17,8 +17,6 @@ describe( 'Shopper → Mini Cart → Can open/close the drawer', () => {
 
 		await page.click( '.wc-block-mini-cart__button' );
 
-		await page.waitForTimeout( 500 ); // Mini Cart Drawer takes 300ms to open.
-
 		await expect( page ).toMatchElement( '.wc-block-mini-cart__drawer', {
 			text: 'Start shopping',
 		} );
@@ -28,8 +26,6 @@ describe( 'Shopper → Mini Cart → Can open/close the drawer', () => {
 		await shopper.goToBlockPage( block.name );
 
 		await page.click( '.wc-block-mini-cart__button' );
-
-		await page.waitForTimeout( 500 ); // Mini Cart Drawer takes 300ms to open.
 
 		await expect( page ).toMatchElement( '.wc-block-mini-cart__drawer', {
 			text: 'Start shopping',
@@ -51,8 +47,6 @@ describe( 'Shopper → Mini Cart → Can open/close the drawer', () => {
 		await shopper.goToBlockPage( block.name );
 
 		await page.click( '.wc-block-mini-cart__button' );
-
-		await page.waitForTimeout( 500 ); // Mini Cart Drawer takes 300ms to open.
 
 		await expect( page ).toMatchElement( '.wc-block-mini-cart__drawer', {
 			text: 'Start shopping',
