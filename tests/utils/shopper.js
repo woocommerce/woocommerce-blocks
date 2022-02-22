@@ -46,4 +46,12 @@ export const shopper = {
 			}
 		);
 	},
+
+	goToBlockPage: async ( title ) => {
+		await page.goto( await getBlockPagePermalink( title ), {
+			waitUntil: 'networkidle0',
+		} );
+
+		await expect( page ).toMatchElement( 'h1', { text: title } );
+	},
 };
