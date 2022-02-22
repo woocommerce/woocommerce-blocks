@@ -85,6 +85,8 @@ class RoutesController {
 	/**
 	 * Get the requested version of the Store API from the route request.
 	 *
+	 * This defaults to v1 - unversioned endpoints should always default to 1 to avoid breakage for consumers.
+	 *
 	 * @return int
 	 */
 	protected function get_route_version() {
