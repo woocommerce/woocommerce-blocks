@@ -68,9 +68,6 @@ abstract class ControllerTestCase extends \WP_Test_REST_TestCase {
 	/**
 	 * Asserts that the given fields are present in the given object.
 	 *
-	 * @since UT (3.7.0)
-	 * @since 5.9.0 Added the `$message` parameter.
-	 *
 	 * @param object $object  The object to check.
 	 * @param array  $fields  The fields to check.
 	 * @param string $message Optional. Message to display when the assertion fails.
@@ -87,8 +84,6 @@ abstract class ControllerTestCase extends \WP_Test_REST_TestCase {
 	}
 	/**
 	 * Asserts that the contents of two un-keyed, single arrays are equal, without accounting for the order of elements.
-	 *
-	 * @since 3.5.0
 	 *
 	 * @param array $expected Expected array.
 	 * @param array $actual   Array to check.
