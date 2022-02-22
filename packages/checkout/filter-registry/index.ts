@@ -204,7 +204,7 @@ export const __experimentalApplyCheckoutFilter = < T >( {
 	return useMemo( () => {
 		if (
 			! shouldReRunFilters( filterName, arg, extensions ) &&
-			cachedValues.current[ filterName ]
+			cachedValues.current[ filterName ] !== undefined
 		) {
 			return cachedValues.current[ filterName ];
 		}
