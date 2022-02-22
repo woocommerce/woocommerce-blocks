@@ -199,4 +199,12 @@ export const shopper = {
 		}
 		await page.type( selector, text );
 	},
+
+	goToBlockPage: async ( title ) => {
+		await page.goto( await getBlockPagePermalink( title ), {
+			waitUntil: 'networkidle0',
+		} );
+
+		await expect( page ).toMatchElement( 'h1', { text: title } );
+	},
 };
