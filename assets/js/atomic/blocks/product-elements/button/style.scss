@@ -6,11 +6,12 @@
 
 	.wc-block-components-product-button__button {
 		border-style: none;
-		word-break: break-word;
-		white-space: normal;
-		margin: 0 auto;
 		display: inline-flex;
+		font-weight: inherit;
 		justify-content: center;
+		margin: 0 auto;
+		white-space: normal;
+		word-break: break-word;
 	}
 
 	.wc-block-components-product-button__button--placeholder {
