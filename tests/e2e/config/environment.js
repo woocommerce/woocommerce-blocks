@@ -8,6 +8,7 @@ class E2EEnvironment extends PuppeteerEnvironment {
 	async handleTestEvent( event ) {
 		if ( event.name === 'test_fn_failure' ) {
 			const attach = await this.global.page.screenshot();
+			console.log( 'taking screenshot' );
 			await addAttach( {
 				attach,
 				description: 'Full Page Screenshot',
