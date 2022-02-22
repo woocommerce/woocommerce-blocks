@@ -45,13 +45,15 @@ class ProductCategoryList extends AbstractBlock {
 		return array(
 			'color'                  =>
 			array(
-				'text'       => true,
-				'link'       => true,
-				'background' => false,
+				'text'                            => true,
+				'link'                            => true,
+				'background'                      => false,
+				'__experimentalSkipSerialization' => true,
 			),
 			'typography'             =>
 			array(
-				'fontSize' => true,
+				'fontSize'                        => true,
+				'__experimentalSkipSerialization' => true,
 			),
 			'__experimentalSelector' => '.wc-block-components-product-category-list',
 		);

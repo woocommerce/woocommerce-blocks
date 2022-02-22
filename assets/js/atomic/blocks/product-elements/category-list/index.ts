@@ -33,9 +33,11 @@ const blockConfig: BlockConfiguration = {
 				text: true,
 				link: true,
 				background: false,
+				__experimentalSkipSerialization: true,
 			},
 			typography: {
 				fontSize: true,
+				__experimentalSkipSerialization: true,
 			},
 			__experimentalSelector:
 				'.wc-block-components-product-category-list',
