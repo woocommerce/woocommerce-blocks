@@ -35,5 +35,5 @@ module.exports = {
 	],
 
 	transformIgnorePatterns: [ 'node_modules/(?!(woocommerce)/)' ],
-	timeout: 120000,
+	testTimeout: 120000,
 };
