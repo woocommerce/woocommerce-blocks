@@ -48,7 +48,7 @@ class Batch extends ControllerTestCase {
 				'requests' => array(
 					array(
 						'method'  => 'POST',
-						'path'    => '/wc/store/cart/add-item',
+						'path'    => '/wc/store/v1/cart/add-item',
 						'body'    => array(
 							'id'       => $this->products[0]->get_id(),
 							'quantity' => 1,
@@ -59,7 +59,7 @@ class Batch extends ControllerTestCase {
 					),
 					array(
 						'method'  => 'POST',
-						'path'    => '/wc/store/cart/add-item',
+						'path'    => '/wc/store/v1/cart/add-item',
 						'body'    => array(
 							'id'       => $this->products[1]->get_id(),
 							'quantity' => 1,
@@ -91,7 +91,7 @@ class Batch extends ControllerTestCase {
 				'requests' => array(
 					array(
 						'method'  => 'POST',
-						'path'    => '/wc/store/cart/add-item',
+						'path'    => '/wc/store/v1/cart/add-item',
 						'body'    => array(
 							'id'       => 99,
 							'quantity' => 1,
@@ -102,7 +102,7 @@ class Batch extends ControllerTestCase {
 					),
 					array(
 						'method'  => 'POST',
-						'path'    => '/wc/store/cart/add-item',
+						'path'    => '/wc/store/v1/cart/add-item',
 						'body'    => array(
 							'id'       => $this->products[1]->get_id(),
 							'quantity' => 1,
@@ -133,7 +133,7 @@ class Batch extends ControllerTestCase {
 				'requests' => array(
 					array(
 						'method' => 'GET',
-						'path'   => '/wc/store/cart',
+						'path'   => '/wc/store/v1/cart',
 						'body'   => array(
 							'id'       => 99,
 							'quantity' => 1,

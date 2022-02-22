@@ -80,7 +80,7 @@ class CartCoupons extends ControllerTestCase {
 	public function test_create_item() {
 		wc()->cart->remove_coupons();
 
-		$request = new \WP_REST_Request( 'POST', '/wc/store/cart/coupons' );
+		$request = new \WP_REST_Request( 'POST', '/wc/store/v1/cart/coupons' );
 		$request->set_header( 'X-WC-Store-API-Nonce', wp_create_nonce( 'wc_store_api' ) );
 		$request->set_body_params(
 			array(
@@ -102,7 +102,7 @@ class CartCoupons extends ControllerTestCase {
 	public function test_invalid_create_item() {
 		wc()->cart->remove_coupons();
 
-		$request = new \WP_REST_Request( 'POST', '/wc/store/cart/coupons' );
+		$request = new \WP_REST_Request( 'POST', '/wc/store/v1/cart/coupons' );
 		$request->set_header( 'X-WC-Store-API-Nonce', wp_create_nonce( 'wc_store_api' ) );
 		$request->set_body_params(
 			array(
@@ -119,21 +119,21 @@ class CartCoupons extends ControllerTestCase {
 	 * Test delete item.
 	 */
 	public function test_delete_item() {
-		$request = new \WP_REST_Request( 'DELETE', '/wc/store/cart/coupons/' . $this->coupon->get_code() );
+		$request = new \WP_REST_Request( 'DELETE', '/wc/store/v1/cart/coupons/' . $this->coupon->get_code() );
 		$request->set_header( 'X-WC-Store-API-Nonce', wp_create_nonce( 'wc_store_api' ) );
 		$this->assertAPIResponse(
 			$request,
 			204
 		);
 
-		$request = new \WP_REST_Request( 'DELETE', '/wc/store/cart/coupons/' . $this->coupon->get_code() );
+		$request = new \WP_REST_Request( 'DELETE', '/wc/store/v1/cart/coupons/' . $this->coupon->get_code() );
 		$request->set_header( 'X-WC-Store-API-Nonce', wp_create_nonce( 'wc_store_api' ) );
 		$this->assertAPIResponse(
 			$request,
 			404
 		);
 
-		$request = new \WP_REST_Request( 'DELETE', '/wc/store/cart/coupons/i-do-not-exist' );
+		$request = new \WP_REST_Request( 'DELETE', '/wc/store/v1/cart/coupons/i-do-not-exist' );
 		$request->set_header( 'X-WC-Store-API-Nonce', wp_create_nonce( 'wc_store_api' ) );
 		$this->assertAPIResponse(
 			$request,
@@ -145,7 +145,7 @@ class CartCoupons extends ControllerTestCase {
 	 * Test delete all items.
 	 */
 	public function test_delete_items() {
-		$request = new \WP_REST_Request( 'DELETE', '/wc/store/cart/coupons' );
+		$request = new \WP_REST_Request( 'DELETE', '/wc/store/v1/cart/coupons' );
 		$request->set_header( 'X-WC-Store-API-Nonce', wp_create_nonce( 'wc_store_api' ) );
 		$this->assertAPIResponse(
 			$request,
