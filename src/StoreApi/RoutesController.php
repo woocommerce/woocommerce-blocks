@@ -39,7 +39,7 @@ class RoutesController {
 	/**
 	 * Get a route class instance.
 	 *
-	 * Each route class is instantized with the SchemaController instance, and it's main Schema Type.
+	 * Each route class is instantized with the SchemaController instance, and its main Schema Type.
 	 *
 	 * @throws \Exception If the schema does not exist.
 	 * @param string $name Name of schema.
