@@ -6,8 +6,6 @@
 - [Edit Single Cart Item](#edit-single-cart-item)
 - [Delete Single Cart Item](#delete-single-cart-item)
 - [Delete All Cart Items](#delete-all-cart-items)
-- [](#)
-
 ## List Cart Items
 
 ```http
