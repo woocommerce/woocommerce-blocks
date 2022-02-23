@@ -205,7 +205,7 @@ function woocommerce_blocks_get_i18n_data_json( $translations, $file, $handle, $
 JS;
 
 	// phpcs:ignore WordPress.WP.EnqueuedResourceParameters.NoExplicitVersion
-	wp_register_script( $handle_filename, '', array(), false, true );
+	wp_register_script( $handle_filename, '', array( 'wp-i18n' ), false, true );
 	wp_enqueue_script( $handle_filename );
 	wp_add_inline_script(
 		$handle_filename,
