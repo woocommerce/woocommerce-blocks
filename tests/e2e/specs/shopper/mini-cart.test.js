@@ -13,10 +13,12 @@ if ( process.env.WOOCOMMERCE_BLOCKS_PHASE < 3 ) {
 }
 
 describe( 'Shopper → Mini Cart', () => {
+	beforeEach( async () => {
+		await shopper.goToBlockPage( block.name );
+	} );
+
 	describe( 'Icon', () => {
 		it( 'Shopper can see the Mini Cart icon and it badge on the front end', async () => {
-			await shopper.goToBlockPage( block.name );
-
 			await expect( page ).toMatchElement( '.wc-block-mini-cart' );
 			await expect( page ).toMatchElement(
 				'.wc-block-mini-cart__button'
@@ -40,8 +42,6 @@ describe( 'Shopper → Mini Cart', () => {
 
 	describe( 'Drawer', () => {
 		it( 'The drawer opens when shopper clicks on the mini cart icon', async () => {
-			await shopper.goToBlockPage( block.name );
-
 			await page.click( '.wc-block-mini-cart__button' );
 
 			await expect( page ).toMatchElement(
@@ -53,8 +53,6 @@ describe( 'Shopper → Mini Cart', () => {
 		} );
 
 		it( 'The drawer closes when shopper clicks on the drawer close button', async () => {
-			await shopper.goToBlockPage( block.name );
-
 			await page.click( '.wc-block-mini-cart__button' );
 
 			await expect( page ).toMatchElement(
@@ -77,8 +75,6 @@ describe( 'Shopper → Mini Cart', () => {
 		} );
 
 		it( 'The drawer closes when shopper clicks outside the drawer', async () => {
-			await shopper.goToBlockPage( block.name );
-
 			await page.click( '.wc-block-mini-cart__button' );
 
 			await expect( page ).toMatchElement(
