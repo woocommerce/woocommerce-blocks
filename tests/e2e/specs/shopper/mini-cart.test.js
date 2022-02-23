@@ -94,4 +94,19 @@ describe( 'Shopper → Mini Cart', () => {
 			);
 		} );
 	} );
+
+	describe( 'Filled mini cart', () => {
+		afterAll( async () => {
+			await shopper.emptyCart();
+		} );
+
+		it( 'The Mini Cart drawer opens and shows filled view after adding product to cart.', async () => {
+			await page.click( '.add_to_cart_button' );
+
+			await expect( page ).toMatchElement( '.wc-block-mini-cart__title', {
+				text: 'Your cart',
+				timeout: 5000,
+			} );
+		} );
+	} );
 } );
