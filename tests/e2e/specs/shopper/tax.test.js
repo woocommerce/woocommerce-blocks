@@ -23,7 +23,6 @@ describe( 'Tax', () => {
 
 	describe( '"Enable tax rate calculations" is unchecked in WC settings -> general', () => {
 		it( 'Tax is not displayed', async () => {
-			await sleep( 120 );
 			await showTaxes( false );
 			await shopper.goToShop();
 			await shopper.searchForProduct( productWooSingle1.name );
@@ -37,14 +36,14 @@ describe( 'Tax', () => {
 			const checkoutTaxes = await getTaxesFromCurrentPage();
 			expect( checkoutTaxes ).toEqual( [] );
 
-			await shopper.fillInCheckoutWithTestData();
-			await shopper.placeOrder();
-			await page.waitForNavigation();
-			await page.waitForSelector( 'h1.entry-title' );
-			const orderSummaryTaxes = await getTaxesFromOrderSummaryPage(
-				taxRates.filter( ( taxRate ) => taxRate.country === 'US' )
-			);
-			expect( orderSummaryTaxes ).toEqual( [] );
+			// await shopper.fillInCheckoutWithTestData();
+			// await shopper.placeOrder();
+			// await page.waitForNavigation();
+			// await page.waitForSelector( 'h1.entry-title' );
+			// const orderSummaryTaxes = await getTaxesFromOrderSummaryPage(
+			// 	taxRates.filter( ( taxRate ) => taxRate.country === 'US' )
+			// );
+			// expect( orderSummaryTaxes ).toEqual( [] );
 		} );
 	} );
 
@@ -66,14 +65,14 @@ describe( 'Tax', () => {
 			const checkoutTaxes = await getTaxesFromCurrentPage();
 			expect( checkoutTaxes.sort() ).toEqual( expectedTaxes.sort() );
 
-			await shopper.fillInCheckoutWithTestData();
-			await shopper.placeOrder();
-			await page.waitForNavigation();
-			await page.waitForSelector( 'h1.entry-title' );
-			const orderSummaryTaxes = await getTaxesFromOrderSummaryPage(
-				taxRates.filter( ( taxRate ) => taxRate.country === 'US' )
-			);
-			expect( orderSummaryTaxes.sort() ).toEqual( expectedTaxes.sort() );
+			// await shopper.fillInCheckoutWithTestData();
+			// await shopper.placeOrder();
+			// await page.waitForNavigation();
+			// await page.waitForSelector( 'h1.entry-title' );
+			// const orderSummaryTaxes = await getTaxesFromOrderSummaryPage(
+			// 	taxRates.filter( ( taxRate ) => taxRate.country === 'US' )
+			// );
+			// expect( orderSummaryTaxes.sort() ).toEqual( expectedTaxes.sort() );
 		} );
 	} );
 } );
