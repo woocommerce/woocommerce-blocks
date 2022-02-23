@@ -16,6 +16,7 @@ const productWooSingle1 = Products().find(
 	( prod ) => prod.name === 'Woo Single #1'
 );
 
+jest.setTimeout( 120000 );
 describe( 'Tax', () => {
 	beforeEach( async () => {
 		await shopper.emptyCart();
@@ -25,25 +26,25 @@ describe( 'Tax', () => {
 		it( 'Tax is not displayed', async () => {
 			await showTaxes( false );
 			await shopper.goToShop();
-			// await shopper.searchForProduct( productWooSingle1.name );
-			// await shopper.addToCart();
-			// await shopper.goToCartBlock();
+			await shopper.searchForProduct( productWooSingle1.name );
+			await shopper.addToCart();
+			await shopper.goToCartBlock();
 
-			// const cartTaxes = await getTaxesFromCurrentPage();
-			// expect( cartTaxes ).toEqual( [] );
+			const cartTaxes = await getTaxesFromCurrentPage();
+			expect( cartTaxes ).toEqual( [] );
 
-			// await shopper.goToCheckoutBlock();
-			// const checkoutTaxes = await getTaxesFromCurrentPage();
-			// expect( checkoutTaxes ).toEqual( [] );
+			await shopper.goToCheckoutBlock();
+			const checkoutTaxes = await getTaxesFromCurrentPage();
+			expect( checkoutTaxes ).toEqual( [] );
 
-			// await shopper.fillInCheckoutWithTestData();
-			// await shopper.placeOrder();
-			// await page.waitForNavigation();
-			// await page.waitForSelector( 'h1.entry-title' );
-			// const orderSummaryTaxes = await getTaxesFromOrderSummaryPage(
-			// 	taxRates.filter( ( taxRate ) => taxRate.country === 'US' )
-			// );
-			// expect( orderSummaryTaxes ).toEqual( [] );
+			await shopper.fillInCheckoutWithTestData();
+			await shopper.placeOrder();
+			await page.waitForNavigation();
+			await page.waitForSelector( 'h1.entry-title' );
+			const orderSummaryTaxes = await getTaxesFromOrderSummaryPage(
+				taxRates.filter( ( taxRate ) => taxRate.country === 'US' )
+			);
+			expect( orderSummaryTaxes ).toEqual( [] );
 		} );
 	} );
 
@@ -51,28 +52,29 @@ describe( 'Tax', () => {
 		it( 'Tax is displayed correctly on Cart & Checkout ', async () => {
 			await showTaxes( true );
 			await shopper.goToShop();
-			// await shopper.searchForProduct( productWooSingle1.name );
-			// await shopper.addToCart();
-			// await shopper.goToCartBlock();
+			await shopper.searchForProduct( productWooSingle1.name );
+			await shopper.addToCart();
+			await shopper.goToCartBlock();
 
-			// const expectedTaxes = getExpectedTaxes( taxRates, 'US', [
-			// 	productWooSingle1,
-			// ] );
-			// const cartTaxes = await getTaxesFromCurrentPage();
-			// expect( cartTaxes.sort() ).toEqual( expectedTaxes.sort() );
+			const expectedTaxes = getExpectedTaxes( taxRates, 'US', [
+				productWooSingle1,
+			] );
+			const cartTaxes = await getTaxesFromCurrentPage();
+			expect( cartTaxes.sort() ).toEqual( expectedTaxes.sort() );
 
-			// await shopper.goToCheckoutBlock();
-			// const checkoutTaxes = await getTaxesFromCurrentPage();
-			// expect( checkoutTaxes.sort() ).toEqual( expectedTaxes.sort() );
+			await shopper.goToCheckoutBlock();
+			const checkoutTaxes = await getTaxesFromCurrentPage();
+			expect( checkoutTaxes.sort() ).toEqual( expectedTaxes.sort() );
 
-			// await shopper.fillInCheckoutWithTestData();
-			// await shopper.placeOrder();
-			// await page.waitForNavigation();
-			// await page.waitForSelector( 'h1.entry-title' );
-			// const orderSummaryTaxes = await getTaxesFromOrderSummaryPage(
-			// 	taxRates.filter( ( taxRate ) => taxRate.country === 'US' )
-			// );
-			// expect( orderSummaryTaxes.sort() ).toEqual( expectedTaxes.sort() );
+			await shopper.fillInCheckoutWithTestData();
+			await shopper.placeOrder();
+			await page.waitForNavigation();
+			await page.waitForSelector( 'h1.entry-title' );
+			const orderSummaryTaxes = await getTaxesFromOrderSummaryPage(
+				taxRates.filter( ( taxRate ) => taxRate.country === 'US' )
+			);
+			expect( orderSummaryTaxes.sort() ).toEqual( expectedTaxes.sort() );
 		} );
 	} );
 } );
+jest.setTimeout( 60000 );
