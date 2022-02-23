@@ -32,7 +32,7 @@ export const useStoreProducts = (
 	productsLoading: boolean;
 } => {
 	const collectionOptions = {
-		namespace: '/wc/store',
+		namespace: '/wc/store/v1',
 		resourceName: 'products',
 	};
 	const { results: products, isLoading: productsLoading } = useCollection( {

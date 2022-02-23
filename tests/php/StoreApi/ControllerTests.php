@@ -62,7 +62,7 @@ class ControllerTests extends \WP_Test_REST_TestCase {
 	 */
 	public function test_unversioned_routes() {
 		$routes     = rest_get_server()->get_routes();
-		$namespace  = '/wc/store';
+		$namespace  = '/wc/store/v1';
 		$test_paths = array(
 			'/batch',
 			'/cart',
