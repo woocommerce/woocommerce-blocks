@@ -19,7 +19,7 @@ export const shopper = {
 		await page.goto( checkoutBlockPermalink, {
 			waitUntil: 'networkidle0',
 		} );
-		await page.waitForSelector( 'h1', { text: 'Cart' } );
+		await expect( page ).toMatchElement( 'h1', { text: 'Cart' } );
 	},
 
 	goToCheckoutBlock: async () => {
@@ -30,7 +30,7 @@ export const shopper = {
 		await page.goto( checkoutBlockPermalink, {
 			waitUntil: 'networkidle0',
 		} );
-		await page.waitForSelector( 'h1', { text: 'Checkout' } );
+		await expect( page ).toMatchElement( 'h1', { text: 'Checkout' } );
 	},
 
 	productIsInCheckoutBlock: async ( productTitle, quantity, total ) => {
@@ -44,13 +44,15 @@ export const shopper = {
 		await page.waitForSelector( 'span', {
 			text: productTitle,
 		} );
-		await page.waitForSelector(
+
+		await expect(
+			page
+		).toMatchElement(
 			'div.wc-block-components-order-summary-item__quantity',
-			{
-				text: quantity,
-			}
+			{ text: quantity }
 		);
-		await page.waitForSelector(
+
+		await expect( page ).toMatchElement(
 			'span.wc-block-components-product-price__value',
 			{
 				text: total,
@@ -64,9 +66,7 @@ export const shopper = {
 		*/
 	searchForProduct: async ( productname ) => {
 		const searchFieldSelector = 'input.wp-block-search__input';
-		await page.waitForSelector( searchFieldSelector, {
-			timeout: 100000,
-		} );
+		await expect( page ).toMatchElement( searchFieldSelector );
 		await expect( page ).toFill( searchFieldSelector, productname );
 		await expect( page ).toClick( '.wp-block-search__button' );
 		// Single search results may go directly to product page
@@ -128,9 +128,10 @@ export const shopper = {
 			couponCode
 		);
 		await page.click( '.wc-block-components-totals-coupon__button' );
-		await page.waitForSelector( '.wc-block-components-chip__text', {
-			text: couponCode,
-		} );
+		await expect( page ).toMatchElement(
+			'.wc-block-components-chip__text',
+			{ text: couponCode }
+		);
 	},
 
 	fillInCheckoutWithTestData: async () => {
@@ -153,31 +154,35 @@ export const shopper = {
 		address,
 		shippingOrBilling = 'shipping'
 	) => {
-		await shopper.clearAndTypeInput(
+		await expect( page ).toFill(
 			`#${ shippingOrBilling }-first_name`,
 			address.first_name
 		);
-		await shopper.clearAndTypeInput(
+		await expect( page ).toFill(
+			`#${ shippingOrBilling }-first_name`,
+			address.first_name
+		);
+		await expect( page ).toFill(
 			`#${ shippingOrBilling }-last_name`,
 			address.last_name
 		);
-		await shopper.clearAndTypeInput(
+		await expect( page ).toFill(
 			`#${ shippingOrBilling }-address_1`,
 			address.shipping_address_1
 		);
-		await shopper.clearAndTypeInput(
+		await expect( page ).toFill(
 			`#${ shippingOrBilling }-country input`,
 			address.country
 		);
-		await shopper.clearAndTypeInput(
+		await expect( page ).toFill(
 			`#${ shippingOrBilling }-city`,
 			address.city
 		);
-		await shopper.clearAndTypeInput(
+		await expect( page ).toFill(
 			`#${ shippingOrBilling }-state input`,
 			address.state
 		);
-		await shopper.clearAndTypeInput(
+		await expect( page ).toFill(
 			`#${ shippingOrBilling }-postcode`,
 			address.postcode
 		);
@@ -186,18 +191,6 @@ export const shopper = {
 	placeOrder: async () => {
 		await sleep( 1 );
 		await page.click( '.wc-block-components-checkout-place-order-button' );
-	},
-
-	clearAndTypeInput: async ( selector, text ) => {
-		await page.focus( selector );
-		const inputValue = await page.$eval( selector, ( el ) => el.value );
-		if ( inputValue === text ) {
-			return Promise.resolve();
-		}
-		for ( let i = 0; i < inputValue.length; i++ ) {
-			await page.keyboard.press( 'Backspace' );
-		}
-		await page.type( selector, text );
 	},
 
 	goToBlockPage: async ( title ) => {

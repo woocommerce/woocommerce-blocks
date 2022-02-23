@@ -19,11 +19,14 @@ const productWooSingle1 = Products().find(
 jest.setTimeout( 120000 );
 describe( 'Tax', () => {
 	beforeEach( async () => {
+		jest.setTimeout( 120000 );
 		await shopper.emptyCart();
 	} );
 
 	describe( '"Enable tax rate calculations" is unchecked in WC settings -> general', () => {
+		jest.setTimeout( 120000 );
 		it( 'Tax is not displayed', async () => {
+			jest.setTimeout( 120000 );
 			await showTaxes( false );
 			await shopper.goToShop();
 			await shopper.searchForProduct( productWooSingle1.name );
@@ -49,7 +52,9 @@ describe( 'Tax', () => {
 	} );
 
 	describe( '"Enable tax rate calculations" is checked in WC settings -> general', () => {
+		jest.setTimeout( 120000 );
 		it( 'Tax is displayed correctly on Cart & Checkout ', async () => {
+			jest.setTimeout( 120000 );
 			await showTaxes( true );
 			await shopper.goToShop();
 			await shopper.searchForProduct( productWooSingle1.name );
@@ -77,4 +82,3 @@ describe( 'Tax', () => {
 		} );
 	} );
 } );
-jest.setTimeout( 60000 );
