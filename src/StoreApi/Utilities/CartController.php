@@ -463,18 +463,8 @@ class CartController {
 			);
 		}
 
-		$errors = $this->stock_exceptions_to_wp_errors( $too_many_in_cart_products, $not_purchasable_products, $partial_out_of_stock_products, $out_of_stock_products );
-
-		if ( ! empty( $errors ) ) {
-
-			$error = new WP_Error();
-			foreach ( $errors as $wp_error ) {
-				$error->add(
-					$wp_error->get_error_code(),
-					$wp_error->get_error_message(),
-					$wp_error->get_error_data()
-				);
-			}
+		$error = $this->stock_exceptions_to_wp_errors( $too_many_in_cart_products, $not_purchasable_products, $partial_out_of_stock_products, $out_of_stock_products );
+		if ( $error->has_errors() ) {
 
 			throw new InvalidCartException(
 				'woocommerce_stock_availability_error',
@@ -492,20 +482,17 @@ class CartController {
 	 * @param PartialOutOfStockException[] $partial_out_of_stock_products Array of PartialOutOfStockExceptions.
 	 * @param OutOfStockException[]        $out_of_stock_products         Array of OutOfStockExceptions.
 	 *
-	 * @return WP_Error[] The WP_Error object returned. Will have errors if any exceptions were in the args. It will be empty if they do not.
+	 * @return WP_Error  The WP_Error object returned. Will have errors if any exceptions were in the args. It will be empty if they do not.
 	 */
 	private function stock_exceptions_to_wp_errors( $too_many_in_cart_products, $not_purchasable_products, $partial_out_of_stock_products, $out_of_stock_products ) {
-		$too_many_in_cart_error     = new WP_Error();
-		$out_of_stock_error         = new WP_Error();
-		$partial_out_of_stock_error = new WP_Error();
-		$not_purchasable_error      = new WP_Error();
+		$error = new WP_Error();
 
 		if ( count( $out_of_stock_products ) > 0 ) {
 
 			$singular_error = $this->get_error_message_for_stock_exception_type( 'out_of_stock', 'singular' );
 			$plural_error   = $this->get_error_message_for_stock_exception_type( 'out_of_stock', 'plural' );
 
-			$out_of_stock_error->add(
+			$error->add(
 				'woocommerce-blocks-product-out-of-stock',
 				$this->add_product_names_to_message( $singular_error, $plural_error, $out_of_stock_products )
 			);
@@ -515,7 +502,7 @@ class CartController {
 			$singular_error = $this->get_error_message_for_stock_exception_type( 'not_purchasable', 'singular' );
 			$plural_error   = $this->get_error_message_for_stock_exception_type( 'not_purchasable', 'plural' );
 
-			$not_purchasable_error->add(
+			$error->add(
 				'woocommerce-blocks-product-not-purchasable',
 				$this->add_product_names_to_message( $singular_error, $plural_error, $not_purchasable_products )
 			);
@@ -525,7 +512,7 @@ class CartController {
 			$singular_error = $this->get_error_message_for_stock_exception_type( 'too_many_in_cart', 'singular' );
 			$plural_error   = $this->get_error_message_for_stock_exception_type( 'too_many_in_cart', 'plural' );
 
-			$too_many_in_cart_error->add(
+			$error->add(
 				'woocommerce-blocks-too-many-of-product-in-cart',
 				$this->add_product_names_to_message( $singular_error, $plural_error, $too_many_in_cart_products )
 			);
@@ -535,23 +522,13 @@ class CartController {
 			$singular_error = $this->get_error_message_for_stock_exception_type( 'partial_out_of_stock', 'singular' );
 			$plural_error   = $this->get_error_message_for_stock_exception_type( 'partial_out_of_stock', 'plural' );
 
-			$partial_out_of_stock_error->add(
+			$error->add(
 				'woocommerce-blocks-product-partially-out-of-stock',
 				$this->add_product_names_to_message( $singular_error, $plural_error, $partial_out_of_stock_products )
 			);
 		}
 
-		return array_filter(
-			[
-				$too_many_in_cart_error,
-				$partial_out_of_stock_error,
-				$out_of_stock_error,
-				$not_purchasable_error,
-			],
-			function( $error ) {
-				return $error->has_errors();
-			}
-		);
+		return $error;
 	}
 
 	/**
