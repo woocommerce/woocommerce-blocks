@@ -96,17 +96,87 @@ describe( 'Shopper → Mini Cart', () => {
 	} );
 
 	describe( 'Filled mini cart', () => {
-		afterAll( async () => {
+		beforeAll( async () => {
 			await shopper.emptyCart();
 		} );
 
-		it( 'The Mini Cart drawer opens and shows filled view after adding product to cart.', async () => {
+		afterEach( async () => {
+			await shopper.emptyCart();
+		} );
+
+		it( 'The Mini Cart title shows correct amount', async () => {
+			await page.click( '.add_to_cart_button' );
+
+			await expect( page ).toMatchElement( '.wc-block-mini-cart__title', {
+				text: 'Your cart (1 item)',
+				timeout: 5000,
+			} );
+
+			await page.mouse.click( 50, 200 );
+
+			await page.click( '.add_to_cart_button' );
+
+			await expect( page ).toMatchElement( '.wc-block-mini-cart__title', {
+				text: 'Your cart (2 items)',
+				timeout: 5000,
+			} );
+		} );
+
+		it( 'The Mini Cart products table show added products', async () => {
+			const products = await page.$$(
+				'.wc-block-all-products .wc-block-grid__product'
+			);
+			if ( products.length === 0 ) {
+				return;
+			}
+
+			// Get a random product to ensure the test isn't false positive.
+			const product =
+				products[ Math.floor( Math.random() * products.length ) ];
+			const productTitle = await page.evaluate( ( el ) => {
+				return el.querySelector( '.wc-block-components-product-name' )
+					.textContent;
+			}, product );
+			await page.evaluate( ( el ) => {
+				el.querySelector( '.add_to_cart_button' ).click();
+			}, product );
+			await expect( page ).toMatchElement(
+				'.wc-block-mini-cart__products-table',
+				{
+					text: productTitle,
+					timeout: 5000,
+				}
+			);
+		} );
+
+		it( 'Filled Mini Cart footer contains subtotal, view cart button, and go to checkout buttons', async () => {
 			await page.click( '.add_to_cart_button' );
 
 			await expect( page ).toMatchElement( '.wc-block-mini-cart__title', {
 				text: 'Your cart',
 				timeout: 5000,
 			} );
+
+			await expect( page ).toMatchElement(
+				'.wc-block-mini-cart__footer',
+				{
+					text: 'Subtotal',
+				}
+			);
+
+			await expect( page ).toMatchElement(
+				'.wc-block-mini-cart__footer-cart',
+				{
+					text: 'View my cart',
+				}
+			);
+
+			await expect( page ).toMatchElement(
+				'.wc-block-mini-cart__footer-checkout',
+				{
+					text: 'Go to checkout',
+				}
+			);
 		} );
 	} );
 } );
