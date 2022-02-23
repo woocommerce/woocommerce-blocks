@@ -10,7 +10,10 @@ class E2EEnvironment extends PuppeteerEnvironment {
 			event.name === 'test_fn_failure' ||
 			event.name === 'hook_failure'
 		) {
-			const attach = await this.global.page.screenshot();
+			console.log( event );
+			const attach = await this.global.page.screenshot( {
+				fullPage: event.name !== 'hook_failure',
+			} );
 			await addAttach( {
 				attach,
 				description: 'Full Page Screenshot',
