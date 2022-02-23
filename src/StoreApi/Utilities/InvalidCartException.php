@@ -37,7 +37,7 @@ class InvalidCartException extends \Exception {
 	 * @param WP_Error $error           The WP_Error object containing all errors relating to stock availability.
 	 * @param array    $additional_data Extra data (key value pairs) to expose in the error response.
 	 */
-	public function __construct( $error_code, $error, $additional_data = [] ) {
+	public function __construct( $error_code, WP_Error $error, $additional_data = [] ) {
 		$this->error_code      = $error_code;
 		$this->error           = $error;
 		$this->additional_data = array_filter( (array) $additional_data );
