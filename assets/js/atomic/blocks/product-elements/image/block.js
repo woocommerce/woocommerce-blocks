@@ -20,6 +20,7 @@ import ProductSaleBadge from './../sale-badge/block';
 import './style.scss';
 import {
 	useBorderProps,
+	useSpacingProps,
 	useTypographyProps,
 } from '../../../../hooks/style-attributes';
 
@@ -50,6 +51,7 @@ export const Block = ( props ) => {
 
 	const typographyProps = useTypographyProps( props );
 	const borderProps = useBorderProps( props );
+	const spacingProps = useSpacingProps( props );
 
 	if ( ! product.id ) {
 		return (
@@ -96,7 +98,11 @@ export const Block = ( props ) => {
 				},
 				borderProps.className
 			) }
-			style={ { ...typographyProps.style, ...borderProps.style } }
+			style={ {
+				...typographyProps.style,
+				...borderProps.style,
+				...spacingProps.style,
+			} }
 		>
 			<ParentComponent { ...( showProductLink && anchorProps ) }>
 				{ !! showSaleBadge && (
