@@ -602,7 +602,7 @@ class CartController {
 			'wooocommerce_store_api_validate_cart_item',
 			array(
 				$product,
-				$request,
+				$cart_item,
 			),
 			'7.1.0',
 			'woocommerce_store_api_validate_cart_item',
