@@ -404,7 +404,7 @@ describe( 'Store Editing Templates', () => {
 
 	describe( 'Products by Tag block template', () => {
 		it( 'default template from WooCommerce Blocks is available on an FSE theme', async () => {
-			const EXPECTED_TEMPLATE = defaultTemplateProps( 'Product Tag' );
+			const EXPECTED_TEMPLATE = defaultTemplateProps( 'Products by Tag' );
 
 			await goToSiteEditor( '?postType=wp_template' );
 
