@@ -308,7 +308,7 @@ final class ExtendSchema {
 	 * @param string|\Throwable $exception_or_error Error message or \Exception.
 	 * @throws \Exception An error to throw if we have debug enabled and user is admin.
 	 */
-	private function throw_exception( $exception_or_error, $silent = false ) {
+	private function throw_exception( $exception_or_error ) {
 		$exception = is_string( $exception_or_error ) ? new \Exception( $exception_or_error ) : $exception_or_error;
 
 		wc_caught_exception( $exception );
