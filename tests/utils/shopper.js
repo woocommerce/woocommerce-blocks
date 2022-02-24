@@ -78,8 +78,8 @@ export const shopper = {
 					await page.evaluate( ( el ) => {
 						return el.click();
 					}, product );
-					await uiUnblocked();
 				} );
+				await uiUnblocked();
 				products = await page.$$( '.remove' );
 			}
 		}
