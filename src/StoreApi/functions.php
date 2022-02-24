@@ -5,8 +5,6 @@
  * This file is autoloaded via composer.json and maps the old namespaces to new namespaces.
  */
 
-defined( 'ABSPATH' ) || exit;
-
 use Automattic\WooCommerce\Blocks\Package;
 use Automattic\WooCommerce\Blocks\StoreApi\Schemas\ExtendSchema;
 use Automattic\WooCommerce\Blocks\StoreApi\Formatters\FormatterInterface;

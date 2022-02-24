@@ -10,6 +10,7 @@ use Automattic\WooCommerce\Blocks\StoreApi\Formatters;
  * Provides utility functions to extend Store API schemas.
  *
  * Note there are also helpers that map to these methods.
+ *
  * @see woocommerce_store_api_register_endpoint_data()
  * @see woocommerce_store_api_register_update_callback()
  * @see woocommerce_store_api_register_payment_requirements()
@@ -87,7 +88,7 @@ final class ExtendSchema {
 				'namespace'       => '',
 				'schema_callback' => null,
 				'data_callback'   => null,
-				'schema_type'     => ARRAY_N,
+				'schema_type'     => ARRAY_A,
 			]
 		);
 
@@ -115,7 +116,11 @@ final class ExtendSchema {
 			);
 		}
 
-		$this->extend_data[ $args['endpoint'] ][ $args['namespace'] ] = $args;
+		$this->extend_data[ $args['endpoint'] ][ $args['namespace'] ] = [
+			'schema_callback' => $args['schema_callback'],
+			'data_callback'   => $args['data_callback'],
+			'schema_type'     => $args['schema_type'],
+		];
 	}
 
 	/**
@@ -140,11 +145,11 @@ final class ExtendSchema {
 		);
 
 		if ( ! is_string( $args['namespace'] ) || empty( $args['namespace'] ) ) {
-			$this->throw_exception( 'You must provide a plugin namespace when extending a Store REST endpoint.' );
+			throw new \Exception( 'You must provide a plugin namespace when extending a Store REST endpoint.' );
 		}
 
 		if ( ! is_callable( $args['callback'] ) ) {
-			$this->throw_exception( 'There is no valid callback supplied to register_update_callback.' );
+			throw new \Exception( 'There is no valid callback supplied to register_update_callback.' );
 		}
 
 		$this->callback_methods[ $args['namespace'] ] = $args;
@@ -188,15 +193,15 @@ final class ExtendSchema {
 	 */
 	public function get_update_callback( $namespace ) {
 		if ( ! is_string( $namespace ) ) {
-			$this->throw_exception( 'You must provide a plugin namespace when extending a Store REST endpoint.' );
+			throw new \Exception( 'You must provide a plugin namespace when extending a Store REST endpoint.' );
 		}
 
 		if ( ! array_key_exists( $namespace, $this->callback_methods ) ) {
-			$this->throw_exception( sprintf( 'There is no such namespace registered: %1$s.', $namespace ) );
+			throw new \Exception( sprintf( 'There is no such namespace registered: %1$s.', $namespace ) );
 		}
 
 		if ( ! array_key_exists( 'callback', $this->callback_methods[ $namespace ] ) || ! is_callable( $this->callback_methods[ $namespace ]['callback'] ) ) {
-			$this->throw_exception( sprintf( 'There is no valid callback registered for: %1$s.', $namespace ) );
+			throw new \Exception( sprintf( 'There is no valid callback registered for: %1$s.', $namespace ) );
 		}
 
 		return $this->callback_methods[ $namespace ]['callback'];
@@ -222,13 +227,14 @@ final class ExtendSchema {
 					$data = $callbacks['data_callback']( ...$passed_args );
 
 					if ( ! is_array( $data ) ) {
+						$data = [];
 						throw new \Exception( '$data_callback must return an array.' );
 					}
-
-					$registered_data[ $namespace ] = $data;
 				} catch ( \Throwable $e ) {
 					$this->throw_exception( $e );
 				}
+
+				$registered_data[ $namespace ] = $data;
 			}
 		}
 
@@ -255,13 +261,14 @@ final class ExtendSchema {
 					$schema = $callbacks['schema_callback']( ...$passed_args );
 
 					if ( ! is_array( $schema ) ) {
+						$schema = [];
 						throw new \Exception( '$schema_callback must return an array.' );
 					}
-
-					$registered_schema[ $namespace ] = $this->format_extensions_properties( $namespace, $schema, $callbacks['schema_type'] );
 				} catch ( \Throwable $e ) {
 					$this->throw_exception( $e );
 				}
+
+				$registered_schema[ $namespace ] = $this->format_extensions_properties( $namespace, $schema, $callbacks['schema_type'] );
 			}
 		}
 
@@ -301,7 +308,7 @@ final class ExtendSchema {
 	 * @param string|\Throwable $exception_or_error Error message or \Exception.
 	 * @throws \Exception An error to throw if we have debug enabled and user is admin.
 	 */
-	private function throw_exception( $exception_or_error ) {
+	private function throw_exception( $exception_or_error, $silent = false ) {
 		$exception = is_string( $exception_or_error ) ? new \Exception( $exception_or_error ) : $exception_or_error;
 
 		wc_caught_exception( $exception );
@@ -320,12 +327,21 @@ final class ExtendSchema {
 	 * @return array Formatted schema.
 	 */
 	private function format_extensions_properties( $namespace, $schema, $schema_type ) {
+		if ( ARRAY_N === $schema_type ) {
+			return [
+				/* translators: %s: extension namespace */
+				'description' => sprintf( __( 'Extension data registered by %s', 'woo-gutenberg-products-block' ), $namespace ),
+				'type'        => 'array',
+				'context'     => [ 'view', 'edit' ],
+				'items'       => $schema,
+			];
+		}
 		return [
 			/* translators: %s: extension namespace */
 			'description' => sprintf( __( 'Extension data registered by %s', 'woo-gutenberg-products-block' ), $namespace ),
-			'type'        => ARRAY_N === $schema_type ? 'array' : 'object',
+			'type'        => 'object',
 			'context'     => [ 'view', 'edit' ],
-			'items'       => $schema,
+			'properties'  => $schema,
 		];
 	}
 }

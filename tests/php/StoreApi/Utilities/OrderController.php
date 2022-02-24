@@ -27,5 +27,6 @@ class OrderControllerTests extends TestCase {
 		$class->validate_selected_shipping_methods( true, array( 'free-shipping' ) );
 		$class->validate_selected_shipping_methods( false, array( 'free-shipping' ) );
 		$class->validate_selected_shipping_methods( true, null );
+		$this->assertTrue( true );
 	}
 }

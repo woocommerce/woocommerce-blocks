@@ -104,7 +104,7 @@ class Checkout extends MockeryTestCase {
 				'type'        => 'boolean',
 			),
 			$data['schema']['properties']['extensions']['properties']['extension_namespace']['properties']['extension_key'],
-			print_r( $data, true )
+			print_r( $data['schema']['properties']['extensions']['properties']['extension_namespace'], true )
 		);
 	}
 
