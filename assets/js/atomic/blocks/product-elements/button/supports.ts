@@ -21,6 +21,7 @@ export const supports = {
 		},
 		typography: {
 			fontSize: true,
+			__experimentalFontWeight: true,
 			__experimentalSkipSerialization: true,
 		},
 		__experimentalSelector:

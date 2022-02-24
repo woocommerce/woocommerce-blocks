@@ -236,7 +236,6 @@ final class BlockTypesController {
 	 */
 	protected function get_atomic_blocks() {
 		return [
-			'product-button',
 			'product-price',
 			'product-sku',
 			'product-add-to-cart',
