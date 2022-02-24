@@ -61,7 +61,7 @@ const BLOCK_DATA = {
 		attributes: {
 			placeholder: 'archive-product',
 			template: 'archive-product',
-			title: 'WooCommerce Product Grid Block',
+			title: 'WooCommerce Product Catalog Template',
 		},
 		name: 'woocommerce/legacy-template',
 	},
@@ -69,7 +69,7 @@ const BLOCK_DATA = {
 		attributes: {
 			placeholder: 'single-product',
 			template: 'single-product',
-			title: 'WooCommerce Single Product Block',
+			title: 'WooCommerce Single Product Template',
 		},
 		name: 'woocommerce/legacy-template',
 	},
@@ -77,7 +77,7 @@ const BLOCK_DATA = {
 		attributes: {
 			placeholder: 'archive-product',
 			template: 'taxonomy-product_cat',
-			title: 'WooCommerce Product Taxonomy Block',
+			title: 'WooCommerce Products by Category Template',
 		},
 		name: 'woocommerce/legacy-template',
 	},
@@ -85,7 +85,7 @@ const BLOCK_DATA = {
 		attributes: {
 			placeholder: 'archive-product',
 			template: 'taxonomy-product_tag',
-			title: 'WooCommerce Product Tag Block',
+			title: 'WooCommerce Products by Tags Template',
 		},
 		name: 'woocommerce/legacy-template',
 	},
@@ -94,9 +94,11 @@ const BLOCK_DATA = {
 const SELECTORS = {
 	blocks: {
 		paragraph: blockSelector( 'core/paragraph' ),
-		productArchive: legacyBlockSelector( 'WooCommerce Product Grid Block' ),
+		productArchive: legacyBlockSelector(
+			'WooCommerce Product Catalog Template'
+		),
 		singleProduct: legacyBlockSelector(
-			'WooCommerce Single Product Block'
+			'WooCommerce Single Product Template'
 		),
 	},
 };
@@ -137,7 +139,7 @@ describe( 'Store Editing Templates', () => {
 			}
 		} );
 
-		it( 'should contain the "WooCommerce Single Product Block" legacy template', async () => {
+		it( 'should contain the "WooCommerce Single Product Template" classic template', async () => {
 			const templateQuery = addQueryArgs( '', {
 				postId: 'woocommerce/woocommerce//single-product',
 				postType: 'wp_template',
@@ -234,7 +236,7 @@ describe( 'Store Editing Templates', () => {
 			}
 		} );
 
-		it( 'should contain the "WooCommerce Product Grid Block" legacy template', async () => {
+		it( 'should contain the "WooCommerce Product Catalog Template" classic template', async () => {
 			const templateQuery = addQueryArgs( '', {
 				postId: 'woocommerce/woocommerce//archive-product',
 				postType: 'wp_template',
@@ -331,7 +333,7 @@ describe( 'Store Editing Templates', () => {
 			}
 		} );
 
-		it( 'should contain the "WooCommerce Product Taxonomy Block" legacy template', async () => {
+		it( 'should contain the "WooCommerce Products by Category Template" classic template', async () => {
 			const templateQuery = addQueryArgs( '', {
 				postId: 'woocommerce/woocommerce//taxonomy-product_cat',
 				postType: 'wp_template',
@@ -423,7 +425,7 @@ describe( 'Store Editing Templates', () => {
 			}
 		} );
 
-		it( 'should contain the "WooCommerce Product Taxonomy Block" legacy template', async () => {
+		it( 'should contain the "WooCommerce Products by Tags Template" classic template', async () => {
 			const templateQuery = addQueryArgs( '', {
 				postId: 'woocommerce/woocommerce//taxonomy-product_tag',
 				postType: 'wp_template',

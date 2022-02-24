@@ -64,7 +64,7 @@ class LegacyTemplate extends AbstractDynamicBlock {
 		} else {
 			ob_start();
 
-			echo "You're using the LegacyTemplate block";
+			echo "You're using the ClassicTemplate block";
 
 			wp_reset_postdata();
 			return ob_get_clean();
