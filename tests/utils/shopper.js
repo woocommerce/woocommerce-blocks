@@ -40,17 +40,15 @@ export const shopper = {
 		if ( button ) {
 			await button.click();
 		}
-		await page.waitForSelector( 'span', {
+		await expect( page ).toMatchElement( 'span', {
 			text: productTitle,
 		} );
-
 		await expect(
 			page
 		).toMatchElement(
 			'div.wc-block-components-order-summary-item__quantity',
 			{ text: quantity }
 		);
-
 		await expect( page ).toMatchElement(
 			'span.wc-block-components-product-price__value',
 			{
