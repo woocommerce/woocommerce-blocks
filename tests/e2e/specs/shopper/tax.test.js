@@ -37,7 +37,6 @@ describe( 'Tax', () => {
 
 			await shopper.fillInCheckoutWithTestData();
 			await shopper.placeOrder();
-			await page.waitForNavigation();
 			await page.waitForSelector( 'h1.entry-title' );
 			const orderSummaryTaxes = await getTaxesFromOrderSummaryPage(
 				taxRates.filter( ( taxRate ) => taxRate.country === 'US' )
@@ -66,7 +65,6 @@ describe( 'Tax', () => {
 
 			await shopper.fillInCheckoutWithTestData();
 			await shopper.placeOrder();
-			await page.waitForNavigation();
 			await page.waitForSelector( 'h1.entry-title' );
 			const orderSummaryTaxes = await getTaxesFromOrderSummaryPage(
 				taxRates.filter( ( taxRate ) => taxRate.country === 'US' )

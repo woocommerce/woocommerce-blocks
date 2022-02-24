@@ -5,7 +5,6 @@ import { shopper as wcShopper } from '@woocommerce/e2e-utils';
 /**
  * Internal dependencies
  */
-import { sleep } from '../e2e/utils';
 import { getBlockPagePermalink } from './get-block-page-permalink';
 
 export const shopper = {
@@ -191,8 +190,15 @@ export const shopper = {
 	},
 
 	placeOrder: async () => {
-		await sleep( 1 );
-		await page.click( '.wc-block-components-checkout-place-order-button' );
+		await Promise.all( [
+			expect( page ).toClick(
+				'.wc-block-components-checkout-place-order-button',
+				{
+					text: 'Place Order',
+				}
+			),
+			page.waitForNavigation( { waitUntil: 'networkidle0' } ),
+		] );
 	},
 
 	goToBlockPage: async ( title ) => {
