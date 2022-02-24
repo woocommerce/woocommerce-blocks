@@ -127,6 +127,17 @@ const Categories = () => [
 ];
 
 /**
+ * Product tags fixture data, using the create batch endpoint
+ *
+ * @see {@link https://woocommerce.github.io/woocommerce-rest-api-docs/#batch-update-product-tags|Batch update product tags}
+ */
+const Tags = () => [
+	{
+		name: 'Newest',
+	},
+];
+
+/**
  * Product fixture data, using the create batch endpoint
  *
  * @see {@link https://woocommerce.github.io/woocommerce-rest-api-docs/#batch-update-products|Batch update products}
@@ -173,6 +184,7 @@ const Products = () => [
 				options: [ '128gb' ],
 			},
 		],
+		tags: [ 'Newest' ],
 	},
 	{
 		name: '32GB USB Stick',
@@ -215,6 +227,7 @@ const Products = () => [
 			},
 		],
 		categories: [ 'Music' ],
+		tags: [ 'Newest' ],
 	},
 ];
 
@@ -302,8 +315,8 @@ const PageSettings = ( pages = [] ) => {
  * location, and shipping method endpoint.
  *
  * @see {@link https://woocommerce.github.io/woocommerce-rest-api-docs/#create-a-shipping-zone|Create a shipping zone}
- *  * @see {@link https://woocommerce.github.io/woocommerce-rest-api-docs/#update-a-locations-of-a-shipping-zone|Update a locations of a shipping zone}
- *  * @see {@link https://woocommerce.github.io/woocommerce-rest-api-docs/#include-a-shipping-method-to-a-shipping-zone|Include a shipping method to a shipping zone}
+ * @see {@link https://woocommerce.github.io/woocommerce-rest-api-docs/#update-a-locations-of-a-shipping-zone|Update a locations of a shipping zone}
+ * @see {@link https://woocommerce.github.io/woocommerce-rest-api-docs/#include-a-shipping-method-to-a-shipping-zone|Include a shipping method to a shipping zone}
  */
 const Shipping = () => [
 	{
@@ -370,5 +383,6 @@ module.exports = {
 	Settings,
 	PageSettings,
 	Shipping,
+	Tags,
 	Taxes,
 };

@@ -17,11 +17,7 @@ export default {
 		description: { control: { type: 'text' } },
 	},
 	args: {
-		description: (
-			<span>
-				This item is <strong>so interesting</strong>
-			</span>
-		),
+		description: 'This item is so interesting',
 		label: 'Interesting item',
 		value: 2000,
 	},

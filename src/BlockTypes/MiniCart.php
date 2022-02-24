@@ -107,8 +107,6 @@ class MiniCart extends AbstractBlock {
 
 		// Hydrate the following data depending on admin or frontend context.
 		if ( ! is_admin() && ! WC()->is_rest_api_request() ) {
-			$this->hydrate_from_api();
-
 			$label_info = $this->get_tax_label();
 
 			$this->tax_label                         = $label_info['tax_label'];
@@ -120,10 +118,18 @@ class MiniCart extends AbstractBlock {
 				''
 			);
 
+			$cart_payload = $this->get_cart_payload();
+
 			$this->asset_data_registry->add(
-				'displayCartPricesIncludingTax',
-				$this->display_cart_prices_including_tax,
-				false
+				'cartTotals',
+				isset( $cart_payload['totals'] ) ? $cart_payload['totals'] : null,
+				null
+			);
+
+			$this->asset_data_registry->add(
+				'cartItemsCount',
+				isset( $cart_payload['items_count'] ) ? $cart_payload['items_count'] : null,
+				null
 			);
 		}
 
@@ -207,13 +213,6 @@ class MiniCart extends AbstractBlock {
 		 * Fires after cart block data is registered.
 		 */
 		do_action( 'woocommerce_blocks_cart_enqueue_data' );
-	}
-
-	/**
-	 * Hydrate the cart block with data from the API.
-	 */
-	protected function hydrate_from_api() {
-		$this->asset_data_registry->hydrate_api_request( '/wc/store/cart' );
 	}
 
 	/**
@@ -378,7 +377,7 @@ class MiniCart extends AbstractBlock {
 		}
 
 		$template_part_contents = '';
-		$template_part          = BlockTemplateUtils::get_block_template( get_stylesheet() . '//mini-cart', 'wp_template_part' );
+		$template_part          = BlockTemplateUtils::get_block_template( BlockTemplateUtils::PLUGIN_SLUG . '//mini-cart', 'wp_template_part' );
 
 		if ( $template_part && ! empty( $template_part->content ) ) {
 			$template_part_contents = do_blocks( $template_part->content );
@@ -455,6 +454,17 @@ class MiniCart extends AbstractBlock {
 			'display_cart_prices_including_tax' => false,
 		);
 	}
+
+
+	/**
+	 * Get Cart Payload.
+	 *
+	 * @return object;
+	 */
+	protected function get_cart_payload() {
+		return WC()->api->get_endpoint_data( '/wc/store/cart' );
+	}
+
 
 	/**
 	 * Get the supports array for this block type.

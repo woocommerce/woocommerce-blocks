@@ -1,7 +1,7 @@
 /**
  * External dependencies
  */
-import { Query, ProductResponseItem, isString } from '@woocommerce/types';
+import { Query, ProductResponseItem } from '@woocommerce/types';
 /**
  * Internal dependencies
  */
@@ -9,7 +9,7 @@ import { useCollectionHeader, useCollection } from './collections';
 
 /**
  * This is a custom hook that is wired up to the `wc/store/collections` data
- * store for the `wc/store/products` route. Given a query object, this
+ * store for the `wc/store/v1/products` route. Given a query object, this
  * will ensure a component is kept up to date with the products matching that
  * query in the store state.
  *
@@ -32,7 +32,7 @@ export const useStoreProducts = (
 	productsLoading: boolean;
 } => {
 	const collectionOptions = {
-		namespace: '/wc/store',
+		namespace: '/wc/store/v1',
 		resourceName: 'products',
 	};
 	const { results: products, isLoading: productsLoading } = useCollection( {
@@ -45,7 +45,7 @@ export const useStoreProducts = (
 	} );
 	return {
 		products: products as ProductResponseItem[], // TODO: Remove this once getCollection selector and resolver is converted to TS.
-		totalProducts: parseInt( isString( totalProducts ).toString(), 10 ),
+		totalProducts: parseInt( totalProducts as string, 10 ),
 		productsLoading,
 	};
 };

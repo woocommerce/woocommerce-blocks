@@ -31,6 +31,7 @@ import PropTypes from 'prop-types';
 import { getSetting } from '@woocommerce/settings';
 import ProductControl from '@woocommerce/editor-components/product-control';
 import ErrorPlaceholder from '@woocommerce/editor-components/error-placeholder';
+import TextToolbarButton from '@woocommerce/editor-components/text-toolbar-button';
 import { withProduct } from '@woocommerce/block-hocs';
 import { Icon, starEmpty } from '@wordpress/icons';
 
@@ -138,19 +139,29 @@ const FeaturedProduct = ( {
 						setAttributes( { contentAlign: nextAlign } );
 					} }
 				/>
-				<MediaReplaceFlow
-					mediaId={ mediaId }
-					mediaURL={ mediaSrc }
-					accept="image/*"
-					onSelect={ ( media ) => {
-						setAttributes( {
-							mediaId: media.id,
-							mediaSrc: media.url,
-						} );
-					} }
-					allowedTypes={ [ 'image' ] }
-				/>
-
+				<ToolbarGroup>
+					<MediaReplaceFlow
+						mediaId={ mediaId }
+						mediaURL={ mediaSrc }
+						accept="image/*"
+						onSelect={ ( media ) => {
+							setAttributes( {
+								mediaId: media.id,
+								mediaSrc: media.url,
+							} );
+						} }
+						allowedTypes={ [ 'image' ] }
+					/>
+					{ mediaId && mediaSrc ? (
+						<TextToolbarButton
+							onClick={ () =>
+								setAttributes( { mediaId: 0, mediaSrc: '' } )
+							}
+						>
+							{ __( 'Reset', 'woo-gutenberg-products-block' ) }
+						</TextToolbarButton>
+					) : null }
+				</ToolbarGroup>
 				<ToolbarGroup
 					controls={ [
 						{
@@ -356,15 +367,21 @@ const FeaturedProduct = ( {
 			<InnerBlocks
 				template={ [
 					[
-						'core/button',
-						{
-							text: __(
-								'Shop now',
-								'woo-gutenberg-products-block'
-							),
-							url: product.permalink,
-							align: 'center',
-						},
+						'core/buttons',
+						{},
+						[
+							[
+								'core/button',
+								{
+									text: __(
+										'Shop now',
+										'woo-gutenberg-products-block'
+									),
+									url: product.permalink,
+									align: 'center',
+								},
+							],
+						],
 					],
 				] }
 				templateLock="all"
