@@ -36,7 +36,7 @@ class ProductSchema extends AbstractSchema {
 	/**
 	 * Constructor.
 	 *
-	 * @param ExtendSchema           $extend Rest Extending instance.
+	 * @param ExtendSchema     $extend Rest Extending instance.
 	 * @param SchemaController $controller Schema Controller instance.
 	 */
 	public function __construct( ExtendSchema $extend, SchemaController $controller ) {
