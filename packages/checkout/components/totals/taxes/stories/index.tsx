@@ -14,6 +14,9 @@ export default {
 	component: Taxes,
 	argTypes: {
 		currency: currencyControl,
+		showRateAfterTaxName: {
+			table: { disable: true },
+		},
 	},
 	args: {
 		values: {

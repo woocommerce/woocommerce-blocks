@@ -32,4 +32,5 @@ const Template: Story< TotalsItemProps > = ( args ) => <Item { ...args } />;
 export const Default = Template.bind( {} );
 Default.args = {
 	currency: currencies.USD,
+	description: 'This item is so interesting',
 };
