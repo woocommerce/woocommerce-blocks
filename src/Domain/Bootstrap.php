@@ -261,6 +261,14 @@ class Bootstrap {
 				return new SchemaController( $container->get( ExtendSchema::class ) );
 			}
 		);
+		// Backwards compatibility with old name space.
+		$this->container->register(
+			'Automattic\WooCommerce\Blocks\Domain\Services\ExtendRestApi',
+			function( Container $container ) {
+				_deprecated_function( 'Automattic\WooCommerce\Blocks\Domain\Services\ExtendRestApi', '7.1.0', 'Automattic\WooCommerce\Blocks\StoreApi\Schemas\ExtendSchema' );
+				return $container->get( ExtendSchema::class );
+			}
+		);
 		$this->container->register(
 			RoutesController::class,
 			function( Container $container ) {
@@ -270,7 +278,7 @@ class Bootstrap {
 		$this->container->register(
 			ExtendSchema::class,
 			function( Container $container ) {
-				return new ExtendSchema( $container->get( Package::class ), $container->get( Formatters::class ) );
+				return new ExtendSchema( $container->get( Formatters::class ) );
 			}
 		);
 		$this->container->register(

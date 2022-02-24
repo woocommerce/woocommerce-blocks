@@ -8,6 +8,12 @@ use Automattic\WooCommerce\Blocks\StoreApi\Formatters;
 
 /**
  * Provides utility functions to extend Store API schemas.
+ *
+ * Note there are also helpers that map to these methods.
+ * @see woocommerce_store_api_register_endpoint_data()
+ * @see woocommerce_store_api_register_update_callback()
+ * @see woocommerce_store_api_register_payment_requirements()
+ * @see woocommerce_store_api_get_formatter()
  */
 final class ExtendSchema {
 	/**

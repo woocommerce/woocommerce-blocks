@@ -1,7 +1,6 @@
 <?php
 
-
-namespace Automattic\WooCommerce\Blocks\Tests\Library;
+namespace Automattic\WooCommerce\Blocks\Tests\StoreApi;
 
 use Yoast\PHPUnitPolyfills\TestCases\TestCase;
 use Automattic\WooCommerce\Blocks\StoreApi\Schemas\ExtendSchema;
@@ -12,11 +11,11 @@ use Automattic\WooCommerce\Blocks\StoreApi\Formatters\MoneyFormatter;
 use Exception;
 
 /**
- * Tests Delete Draft Orders functionality
+ * Tests Extend Schema Functionality and helpers.
  *
  * @since $VID:$
  */
-class TestExtendSchema extends TestCase {
+class ExtendSchemaTests extends TestCase {
 	/**
 	 * Extend mock.
 	 *
