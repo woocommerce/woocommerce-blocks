@@ -122,10 +122,8 @@ describe( `${ block.name } Block (frontend)`, () => {
 		await shopper.goToCheckoutBlock();
 		const html = await page.content();
 
-		expect( page ).toMatchElement( 'h1', { text: 'Checkout Block' } );
-		expect( page ).toMatchElement( 'strong', {
-			text: 'Your cart is empty!',
-		} );
+		await page.waitForSelector( 'h1', { text: 'Checkout block' } );
+		await page.waitForSelector( 'strong', { text: 'Your cart is empty!' } );
 	} );
 
 	it( 'allows customer to choose available payment methods', async () => {
