@@ -59,7 +59,7 @@ final class ExtendSchema {
 	}
 
 	/**
-	 * An endpoint that validates registration method call
+	 * Register endpoint data under a specified namespace
 	 *
 	 * @param array $args {
 	 *     An array of elements that make up a post to update or insert.
