@@ -7,7 +7,7 @@ use Automattic\WooCommerce\Blocks\StoreApi\Formatters\DefaultFormatter;
 /**
  * Formatters class.
  *
- * Allows formatter classes to be registered. Formatters are exposed to extensions via the Schemas\Extend class.
+ * Allows formatter classes to be registered. Formatters are exposed to extensions via the ExtendSchema class.
  */
 class Formatters {
 	/**

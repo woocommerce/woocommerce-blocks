@@ -346,7 +346,7 @@ do_action( 'woocommerce_blocks_checkout_update_order_from_request', \WC_Order $o
 
 ### Description
 
-<p>This hook gives extensions the chance to update orders based on the data in the request. This can be used in conjunction with the Schema\Extend class to post custom data and then process it.</p>
+<p>This hook gives extensions the chance to update orders based on the data in the request. This can be used in conjunction with the ExtendSchema class to post custom data and then process it.</p>
 
 ### Parameters
 
