@@ -57,7 +57,7 @@ During step 2 it's important we hook into the `pre_get_block_file_template` beca
 
 ### Return value
 
-This method will return `WP_Block_Template`
+This method will return `WP_Block_Template` or `null`
 
 ## render_block_template()
 
