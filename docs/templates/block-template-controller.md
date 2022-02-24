@@ -1,4 +1,5 @@
 # BlockTemplateController
+[Source file](https://github.com/woocommerce/woocommerce-gutenberg-products-block/blob/trunk/src/BlockTemplatesController.php)
 
 The BlockTemplateController class contains all the business logic which loads the templates into the Site Editor or on the front-end through various hooks available in WordPress & WooCommerce core. Without documenting every method individually, I will look to provide some insight into key functionality. 
 
