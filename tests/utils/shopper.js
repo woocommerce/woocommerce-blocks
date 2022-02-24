@@ -74,8 +74,12 @@ export const shopper = {
 		if ( ( await page.$( '.remove' ) ) !== null ) {
 			let products = await page.$$( '.remove' );
 			while ( products && products.length > 0 ) {
-				await page.click( '.remove' );
-				await uiUnblocked();
+				products.forEach( async ( product ) => {
+					await page.evaluate( ( el ) => {
+						return el.click();
+					}, product );
+					await uiUnblocked();
+				} );
 				products = await page.$$( '.remove' );
 			}
 		}
@@ -87,6 +91,7 @@ export const shopper = {
 		}
 
 		await page.waitForSelector( '.woocommerce-info' );
+		// eslint-disable-next-line jest/no-standalone-expect
 		await expect( page ).toMatchElement( '.woocommerce-info', {
 			text: 'Your cart is currently empty.',
 		} );
