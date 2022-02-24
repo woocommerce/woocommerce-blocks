@@ -200,9 +200,7 @@ describe( 'Shopper → Mini Cart', () => {
 				timeout: 5000,
 			} );
 
-			await page.waitForSelector( '.wc-block-cart-item__remove-link', {
-				timeout: 5000,
-			} );
+			await page.waitForTimeout( 500 ); // Ensure the drawer is fully opened.
 
 			await page.click( '.wc-block-cart-item__remove-link' );
 
