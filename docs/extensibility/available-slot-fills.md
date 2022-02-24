@@ -2,9 +2,14 @@
 
 This document presents the list of available Slots that you can use for adding your custom content (Fill):
 
--   [ExperimentalOrderMeta](#experimentalordermeta)
--   [ExperimentalOrderShippingPackages](#experimentalordershippingpackages)
--   [ExperimentalDiscountsMeta](#experimentaldiscountsmeta)
+- [Available Slots](#available-slots)
+  - [ExperimentalOrderMeta](#experimentalordermeta)
+    - [Passed parameters](#passed-parameters)
+  - [ExperimentalOrderShippingPackages](#experimentalordershippingpackages)
+    - [Passed parameters](#passed-parameters-1)
+  - [ExperimentalDiscountsMeta](#experimentaldiscountsmeta)
+    - [Passed paramters](#passed-paramters)
+  - [](#)
 
 ---
 
@@ -28,7 +33,7 @@ Checkout:
 ### Passed parameters
 
 -   `cart`: `wc/store/cart` data but in `camelCase` instead of `snake_case`. [Object breakdown.](https://github.com/woocommerce/woocommerce-gutenberg-products-block/blob/c00da597efe4c16fcf5481c213d8052ec5df3766/assets/js/type-defs/cart.ts#L172-L188)
--   `extensions`: external data registered by third-party developers using `ExtendRestAPI`. If you used `ExtendRestAPI` on `wc/store/cart` you would find your data under your namespace here.
+-   `extensions`: external data registered by third-party developers using `ExtendSchema`. If you used `ExtendSchema` on `wc/store/cart` you would find your data under your namespace here.
 -   `context`, equal to the name of the Block in which the fill is rendered: `woocommerce/cart` or `woocommerce/checkout`
 
 ## ExperimentalOrderShippingPackages
@@ -51,7 +56,7 @@ Checkout:
 -   `noResultsMessage`: A React element that you can render if there are no shipping options.
 -   `renderOption`: a render function that takes a rate object and returns a render option.
 -   `cart`: `wc/store/cart` data but in `camelCase` instead of `snake_case`. [Object breakdown.](https://github.com/woocommerce/woocommerce-gutenberg-products-block/blob/c00da597efe4c16fcf5481c213d8052ec5df3766/assets/js/type-defs/cart.ts#L172-L188)
--   `extensions`: external data registered by third-party developers using `ExtendRestAPI`, if you used `ExtendRestAPI` on `wc/store/cart` you would find your data under your namespace here.
+-   `extensions`: external data registered by third-party developers using `ExtendSchema`, if you used `ExtendSchema` on `wc/store/cart` you would find your data under your namespace here.
 -   `components`: an object containing components you can use to render your own shipping rates, it contains `ShippingRatesControlPackage`.
 -   `context`, equal to the name of the Block in which the fill is rendered: `woocommerce/cart` or `woocommerce/checkout`
 
@@ -68,13 +73,14 @@ Checkout:
 ### Passed paramters
 
 -   `cart`: `wc/store/cart` data but in `camelCase` instead of `snake_case`. [Object breakdown.](https://github.com/woocommerce/woocommerce-gutenberg-products-block/blob/c00da597efe4c16fcf5481c213d8052ec5df3766/assets/js/type-defs/cart.ts#L172-L188)
--   `extensions`: external data registered by third-party developers using `ExtendRestAPI`, if you used `ExtendRestAPI` on `wc/store/cart` you would find your data under your namespace here.
+-   `extensions`: external data registered by third-party developers using `ExtendSchema`, if you used `ExtendSchema` on `wc/store/cart` you would find your data under your namespace here.
 -   `context`, equal to the name of the Block in which the fill is rendered: `woocommerce/cart` or `woocommerce/checkout`
 
-## <!-- FEEDBACK -->
+<!-- FEEDBACK -->
+---
 
 [We're hiring!](https://woocommerce.com/careers/) Come work with us!
 
 🐞 Found a mistake, or have a suggestion? [Leave feedback about this document here.](https://github.com/woocommerce/woocommerce-gutenberg-products-block/issues/new?assignees=&labels=type%3A+documentation&template=--doc-feedback.md&title=Feedback%20on%20./docs/extensibility/available-slot-fills.md)
-
 <!-- /FEEDBACK -->
+

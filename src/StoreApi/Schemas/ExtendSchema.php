@@ -9,7 +9,7 @@ use Automattic\WooCommerce\Blocks\StoreApi\Formatters;
 /**
  * Provides utility functions to extend Store API schemas.
  */
-final class Extend {
+final class ExtendSchema {
 	/**
 	 * List of Store API schema that is allowed to be extended by extensions.
 	 *

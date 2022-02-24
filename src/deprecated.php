@@ -30,6 +30,9 @@ class_alias( Automattic\WooCommerce\Blocks\StoreApi\Schemas\V1\TermSchema::class
 // Exceptions.
 class_alias( Automattic\WooCommerce\Blocks\StoreApi\Exceptions\RouteException::class, Automattic\WooCommerce\Blocks\StoreApi\Routes\RouteException::class );
 
+// Extend.
+class_alias( Automattic\WooCommerce\Blocks\StoreApi\Schemas\ExtendSchema::class, Automattic\WooCommerce\Blocks\Domain\Services\ExtendRestApi::class );
+
 // Unversioned routes to v1 routes.
 class_alias( Automattic\WooCommerce\Blocks\StoreApi\Routes\V1\AbstractCartRoute::class, Automattic\WooCommerce\Blocks\StoreApi\Routes\AbstractCartRoute::class );
 class_alias( Automattic\WooCommerce\Blocks\StoreApi\Routes\V1\AbstractRoute::class, Automattic\WooCommerce\Blocks\StoreApi\Routes\AbstractRoute::class );

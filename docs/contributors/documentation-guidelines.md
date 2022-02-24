@@ -17,6 +17,7 @@
   - [Sort releases descending](#sort-releases-descending)
   - [Structure “How to” instructions](#structure-how-to-instructions)
   - [Link references](#link-references)
+  - [](#)
 
 ## Use active instead of passive voice
 
@@ -63,7 +64,7 @@ Classes and tokens from the codebase must be written exactly as they appear in t
 
 **Example**
 
--   **ExtendRestApi:** The `p` and the `i` of `ExtendRestApi` are written in lowercase
+-   **RestApi:** The `p` and the `i` of `RestApi` are written in lowercase
 -   **Composer:** The `C` of `Composer` is written in uppercase.
 -   **ESLint:** The `E`, the `S` and the `L` of `ESLint` are written in uppercase.
 

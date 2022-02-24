@@ -8,6 +8,7 @@ These documents are all dealing with extensibility in the various WooCommerce Bl
 - [REST API](#rest-api)
 - [Checkout Payment Methods](#checkout-payment-methods)
 - [Checkout Block](#checkout-block)
+- [](#)
 
 ## Hooks (actions and filters)
 
@@ -18,12 +19,12 @@ These documents are all dealing with extensibility in the various WooCommerce Bl
 
 ## REST API
 
-| Document                                                                                | Description                                                                         |
-| --------------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------- |
-| [Exposing your data in the Store API.](./extend-rest-api-add-data.md)                   | Explains how you can add additional data to Store API endpoints.                    |
-| [Available endpoints to extend with ExtendRestAPI.](./available-endpoints-to-extend.md) | A list of all available endpoints to extend.                                        |
-| [Adding an endpoint to ExtendRestAPI.](./extend-rest-api-new-endpoint.md)               | A step by step process for contributors to expose a new endpoint via ExtendRestApi. |
-| [Available Formatters](./extend-rest-api-formatters.md)                                 | Available `Formatters` to format data for use in the Store API.                     |
+| Document                                                                              | Description                                                                        |
+| ------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------- |
+| [Exposing your data in the Store API.](./extend-rest-api-add-data.md)                 | Explains how you can add additional data to Store API endpoints.                   |
+| [Available endpoints to extend with ExtendSchema](./available-endpoints-to-extend.md) | A list of all available endpoints to extend.                                       |
+| [Adding an endpoint to ExtendSchema.](./extend-rest-api-new-endpoint.md)              | A step by step process for contributors to expose a new endpoint via ExtendSchema. |
+| [Available Formatters](./extend-rest-api-formatters.md)                               | Available `Formatters` to format data for use in the Store API.                    |
 
 ## Checkout Payment Methods
 

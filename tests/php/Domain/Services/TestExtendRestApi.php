@@ -4,21 +4,24 @@
 namespace Automattic\WooCommerce\Blocks\Tests\Library;
 
 use Yoast\PHPUnitPolyfills\TestCases\TestCase;
-use Automattic\WooCommerce\Blocks\Domain\Services\ExtendRestApi;
+use Automattic\WooCommerce\Blocks\StoreApi\Schemas\ExtendSchema;
 use Automattic\WooCommerce\Blocks\StoreApi\Formatters;
 use Automattic\WooCommerce\Blocks\StoreApi\Formatters\CurrencyFormatter;
 use Automattic\WooCommerce\Blocks\StoreApi\Formatters\HtmlFormatter;
 use Automattic\WooCommerce\Blocks\StoreApi\Formatters\MoneyFormatter;
 use Exception;
-use Automattic\WooCommerce\Blocks\Domain\Services\FeatureGating;
-use Automattic\WooCommerce\Blocks\Domain\Package as DomainPackage;
 
 /**
  * Tests Delete Draft Orders functionality
  *
  * @since $VID:$
  */
-class TestExtendRestApi extends TestCase {
+class TestExtendSchema extends TestCase {
+	/**
+	 * Extend mock.
+	 *
+	 * @var ExtendSchema
+	 */
 	private $mock_extend;
 
 	/**
@@ -28,31 +31,18 @@ class TestExtendRestApi extends TestCase {
 	private $dummy;
 
 	/**
-	 * Tracking caught exceptions from API.
-	 */
-	private $caught_exception;
-
-	/**
 	 * Setup test products data. Called before every test.
 	 */
-	public function setUp() {
+	protected function setUp(): void {
 		parent::setUp();
 		$formatters = new Formatters();
 		$formatters->register( 'money', MoneyFormatter::class );
 		$formatters->register( 'html', HtmlFormatter::class );
 		$formatters->register( 'currency', CurrencyFormatter::class );
-		$this->mock_extend = new ExtendRestApi( new DomainPackage( '', '', new FeatureGating( 2 ) ), $formatters );
+		$this->mock_extend = new ExtendSchema( $formatters );
 		$this->dummy       = function () {
 			return null;
 		};
-		// set listening for exceptions
-		add_action(
-			'woocommerce_caught_exception',
-			function( $exception_object ) {
-				$this->caught_exception = $exception_object;
-				throw $exception_object;
-			}
-		);
 	}
 
 	/**
