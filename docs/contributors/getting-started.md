@@ -130,10 +130,6 @@ This will use the `.prettierrc.js` file in the root folder of the Blocks plugin 
 You’ll find a handful of scripts in `package.json` that performs the automated tests and linting. You can run the following commands to execute automated tests in your terminal:
 
 - JS tests: `npm run test`
-- End-to-End `tests:npm run test:e2e` 
-- PHP tests: `npm run test:php` 
-
-You can also use [Docker](https://www.docker.com/) to run end-to-end or php tests.
 
 - Run `npm run wp-env` command to setup the development environment in Docker.
 
