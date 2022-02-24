@@ -105,7 +105,9 @@ describe( 'Shopper → Mini Cart', () => {
 		} );
 
 		it( 'The Mini Cart title shows correct amount', async () => {
-			await page.click( '.add_to_cart_button' );
+			await page.click(
+				'.wc-block-grid__product:first-child .add_to_cart_button'
+			);
 
 			await expect( page ).toMatchElement( '.wc-block-mini-cart__title', {
 				text: 'Your cart (1 item)',
@@ -114,7 +116,9 @@ describe( 'Shopper → Mini Cart', () => {
 
 			await page.mouse.click( 50, 200 );
 
-			await page.click( '.add_to_cart_button' );
+			await page.click(
+				'.wc-block-grid__product:last-child .add_to_cart_button'
+			);
 
 			await expect( page ).toMatchElement( '.wc-block-mini-cart__title', {
 				text: 'Your cart (2 items)',
