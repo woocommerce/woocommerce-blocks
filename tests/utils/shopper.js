@@ -8,13 +8,15 @@ import { shopper as wcShopper } from '@woocommerce/e2e-utils';
  */
 import { getBlockPagePermalink } from './get-block-page-permalink';
 
-async function goToBlockPage( title ) {
-	await page.goto( await getBlockPagePermalink( title ), {
-		waitUntil: 'networkidle0',
-	} );
+const goToBlockPage = ( title ) => {
+	return async () => {
+		await page.goto( await getBlockPagePermalink( title ), {
+			waitUntil: 'networkidle0',
+		} );
 
-	await expect( page ).toMatchElement( 'h1', { text: title } );
-}
+		await expect( page ).toMatchElement( 'h1', { text: title } );
+	};
+};
 
 export const shopper = {
 	...wcShopper,
