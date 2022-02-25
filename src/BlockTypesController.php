@@ -177,6 +177,7 @@ final class BlockTypesController {
 			'ActiveFilters',
 			'LegacyTemplate',
 			'ProductTitle',
+			'ProductPrice',
 			'ProductSummary',
 			'ProductStockIndicator',
 			'ProductButton',

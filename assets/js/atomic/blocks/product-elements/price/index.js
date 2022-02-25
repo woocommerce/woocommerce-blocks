@@ -41,6 +41,7 @@ const blockConfig = {
 				__experimentalFontStyle: true,
 				__experimentalSkipSerialization: true,
 			},
+			__experimentalSelector: '.wc-block-components-product-price',
 		} ),
 	},
 };

@@ -38,9 +38,14 @@ const Block = ( props ) => {
 	const colorProps = useColorProps( props );
 	const typographyProps = useTypographyProps( props );
 
-	const wrapperClassName = classnames( className, colorProps.className, {
-		[ `${ parentClassName }__product-price` ]: parentClassName,
-	} );
+	const wrapperClassName = classnames(
+		'wc-block-components-product-price',
+		className,
+		colorProps.className,
+		{
+			[ `${ parentClassName }__product-price` ]: parentClassName,
+		}
+	);
 
 	const style = {
 		...typographyProps.style,
