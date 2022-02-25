@@ -24,6 +24,7 @@ You can read more about the Full Site Editing (FSE) feature [here](https://devel
 |-----------------|------------------|
 | WordPress       | 5.9              |
 | WooCommerce     | 6.0              |
+| Block theme     | -                |
 
 ## Technical Overview
 
