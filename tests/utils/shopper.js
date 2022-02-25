@@ -7,25 +7,22 @@ import { shopper as wcShopper } from '@woocommerce/e2e-utils';
  * Internal dependencies
  */
 import { getBlockPagePermalink } from './get-block-page-permalink';
-
-const goToBlockPage = ( title ) => {
-	return async () => {
-		await page.goto( await getBlockPagePermalink( title ), {
-			waitUntil: 'networkidle0',
-		} );
-
-		await expect( page ).toMatchElement( 'h1', { text: title } );
-	};
-};
+import { SHOP_CART_BLOCK_PAGE, SHOP_CHECKOUT_BLOCK_PAGE } from './constants';
 
 export const shopper = {
 	...wcShopper,
 
-	goToBlockPage,
+	goToCheckoutBlock: async () => {
+		await page.goto( SHOP_CHECKOUT_BLOCK_PAGE, {
+			waitUntil: 'networkidle0',
+		} );
+	},
 
-	goToCheckoutBlock: goToBlockPage( 'Checkout Block' ),
-
-	goToCartBlock: goToBlockPage( 'Cart Block' ),
+	goToCartBlock: async () => {
+		await page.goto( SHOP_CART_BLOCK_PAGE, {
+			waitUntil: 'networkidle0',
+		} );
+	},
 
 	productIsInCheckoutBlock: async ( productTitle, quantity, total ) => {
 		// Make sure Order summary is expanded
@@ -50,5 +47,13 @@ export const shopper = {
 				text: total,
 			}
 		);
+	},
+
+	goToBlockPage: async ( title ) => {
+		await page.goto( await getBlockPagePermalink( title ), {
+			waitUntil: 'networkidle0',
+		} );
+
+		await expect( page ).toMatchElement( 'h1', { text: title } );
 	},
 };
