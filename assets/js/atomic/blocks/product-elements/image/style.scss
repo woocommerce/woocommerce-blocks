@@ -53,7 +53,7 @@
 }
 
 .is-loading .wc-block-components-product-image {
-	@include placeholder($include-border-radius: true);
+	@include placeholder($include-border-radius: false);
 	width: auto;
 }
 
