@@ -12,7 +12,7 @@ import cartFixture from '../e2e/specs/backend/__fixtures__/cart.fixture.json';
 import checkoutFixture from '../e2e/specs/backend/__fixtures__/checkout.fixture.json';
 
 export const cart = {
-	title: cartFixture.title, // Checkout block
+	title: cartFixture.title, // Cart block
 	name: 'Cart',
 	slug: 'woocommerce/cart',
 	class: '.wp-block-woocommerce-cart',
