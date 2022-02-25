@@ -64,7 +64,7 @@ export const shopper = {
 	searchForProduct: async ( productname ) => {
 		const searchFieldSelector = 'input.wp-block-search__input';
 		await expect( page ).toMatchElement( searchFieldSelector, {
-			timeout: 2000,
+			timeout: 5000,
 		} );
 		await expect( page ).toFill( searchFieldSelector, productname );
 		await expect( page ).toClick( '.wp-block-search__button' );
