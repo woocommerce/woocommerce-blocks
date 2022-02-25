@@ -66,7 +66,6 @@ export const shopper = {
 		await expect( page ).toMatchElement( searchFieldSelector, {
 			timeout: 30000,
 		} );
-		// await page.waitForSelector( searchFieldSelector, { timeout: 5000 } );
 		await expect( page ).toFill( searchFieldSelector, productname );
 		await expect( page ).toClick( '.wp-block-search__button' );
 		// Single search results may go directly to product page
