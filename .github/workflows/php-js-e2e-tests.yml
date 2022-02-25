@@ -65,7 +65,7 @@ jobs:
               run: |
                   npm run wp-env start
                   npm run wp-env clean all
-                  npm run test:e2e debug
+                  npm run test:e2e
 
             - name: Upload artifacts on failure
               if: ${{ failure() }}
