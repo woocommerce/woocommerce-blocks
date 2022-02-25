@@ -74,7 +74,7 @@ class InboxNotifications {
 			return;
 		}
 
-		if( !apply_filters( 'woocommerce_admin_disabled', false ) ) {
+		if ( ! apply_filters( 'woocommerce_admin_disabled', false ) ) {
 			$data_store = \WC_Data_Store::load( 'admin-note' );
 			$note_ids   = $data_store->get_notes_with_name( self::SURFACE_CART_CHECKOUT_NOTE_NAME );
 		}
