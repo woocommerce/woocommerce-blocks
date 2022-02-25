@@ -62,10 +62,9 @@ export const shopper = {
 		We can delete this function once the PR is merged
 		*/
 	searchForProduct: async ( productname ) => {
-		await expect( page ).toFill(
-			'input.wp-block-search__input',
-			productname
-		);
+		const searchFieldSelector = '.wp-block-search__input';
+		await page.waitForSelector( searchFieldSelector );
+		await expect( page ).toFill( searchFieldSelector, productname );
 		await expect( page ).toClick( '.wp-block-search__button' );
 		// Single search results may go directly to product page
 		if ( await page.waitForSelector( 'h2.entry-title' ) ) {
