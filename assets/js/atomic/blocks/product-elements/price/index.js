@@ -27,8 +27,8 @@ const blockConfig = {
 	edit,
 	save: Save,
 	supports: {
+		...sharedConfig.supports,
 		...( isFeaturePluginBuild() && {
-			...sharedConfig.supports,
 			color: {
 				text: true,
 				background: false,
