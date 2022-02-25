@@ -7,19 +7,20 @@ import { shopper as wcShopper } from '@woocommerce/e2e-utils';
  * Internal dependencies
  */
 import { getBlockPagePermalink } from './get-block-page-permalink';
-import { SHOP_CART_BLOCK_PAGE, SHOP_CHECKOUT_BLOCK_PAGE } from './constants';
+import { cart, checkout } from '../e2e/blocks';
+import { getBlockPageURL } from '../e2e/utils';
 
 export const shopper = {
 	...wcShopper,
 
 	goToCheckoutBlock: async () => {
-		await page.goto( SHOP_CHECKOUT_BLOCK_PAGE, {
+		await page.goto( getBlockPageURL( checkout ), {
 			waitUntil: 'networkidle0',
 		} );
 	},
 
 	goToCartBlock: async () => {
-		await page.goto( SHOP_CART_BLOCK_PAGE, {
+		await page.goto( getBlockPageURL( cart ), {
 			waitUntil: 'networkidle0',
 		} );
 	},

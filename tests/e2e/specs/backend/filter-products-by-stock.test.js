@@ -1,10 +1,4 @@
 /**
- * Internal dependencies
- */
-import { closeInserter, insertBlockDontWaitForInsertClose } from '../../utils';
-import { findLabelWithText } from '../../../utils';
-
-/**
  * External dependencies
  */
 import {
@@ -15,11 +9,12 @@ import {
 } from '@wordpress/e2e-test-utils';
 import { visitBlockPage } from '@woocommerce/blocks-test-utils';
 
-const block = {
-	name: 'Filter Products by Stock',
-	slug: 'woocommerce/stock-filter',
-	class: '.wc-block-stock-filter',
-};
+/**
+ * Internal dependencies
+ */
+import { closeInserter, insertBlockDontWaitForInsertClose } from '../../utils';
+import { findLabelWithText } from '../../../utils';
+import { filterProductsByStock as block } from '../../blocks';
 
 describe( `${ block.name } Block`, () => {
 	beforeAll( async () => {

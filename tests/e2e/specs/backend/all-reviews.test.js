@@ -2,14 +2,12 @@
  * External dependencies
  */
 import { switchUserToAdmin } from '@wordpress/e2e-test-utils';
-
 import { visitBlockPage } from '@woocommerce/blocks-test-utils';
 
-const block = {
-	name: 'All Reviews',
-	slug: 'woocommerce/all-reviews',
-	class: '.wc-block-all-reviews',
-};
+/**
+ * Internal dependencies
+ */
+import { allReviews as block } from '../../blocks';
 
 describe( `${ block.name } Block`, () => {
 	beforeAll( async () => {

@@ -2,6 +2,7 @@
  * External dependencies
  */
 import config from 'config';
+const baseUrl = config.get( 'url' );
 import {
 	disableSiteEditorWelcomeGuide,
 	openGlobalBlockInserter,
@@ -242,3 +243,6 @@ export async function filterCurrentBlocks( predicate ) {
 
 	return blocks.filter( predicate );
 }
+
+export const getBlockPageURL = ( block ) =>
+	baseUrl + block.title.toLowerCase().split( ' ' ).join( '-' );

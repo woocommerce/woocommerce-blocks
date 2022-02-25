@@ -14,6 +14,9 @@ import {
 } from '@woocommerce/blocks-test-utils';
 import { merchant } from '@woocommerce/e2e-utils';
 
+/**
+ * Internal dependencies
+ */
 import {
 	searchForBlock,
 	insertBlockDontWaitForInsertClose,
@@ -21,24 +24,11 @@ import {
 	closeModalIfExists,
 	openWidgetsEditorBlockInserter,
 } from '../../utils.js';
-
-const block = {
-	name: 'Cart',
-	slug: 'woocommerce/cart',
-	class: '.wp-block-woocommerce-cart',
-};
-
-const filledCartBlock = {
-	name: 'Filled Cart',
-	slug: 'woocommerce/filled-cart-block',
-	class: '.wp-block-woocommerce-filled-cart-block',
-};
-
-const emptyCartBlock = {
-	name: 'Empty Cart',
-	slug: 'woocommerce/empty-cart-block',
-	class: '.wp-block-woocommerce-empty-cart-block',
-};
+import {
+	cart as block,
+	filledCart as filledCartBlock,
+	emptyCart as emptyCartBlock,
+} from '../../blocks';
 
 if ( process.env.WOOCOMMERCE_BLOCKS_PHASE < 2 ) {
 	// eslint-disable-next-line jest/no-focused-tests

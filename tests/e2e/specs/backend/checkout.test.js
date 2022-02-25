@@ -13,6 +13,9 @@ import {
 } from '@woocommerce/blocks-test-utils';
 import { merchant } from '@woocommerce/e2e-utils';
 
+/**
+ * Internal dependencies
+ */
 import {
 	searchForBlock,
 	insertBlockDontWaitForInsertClose,
@@ -21,12 +24,7 @@ import {
 	openWidgetsEditorBlockInserter,
 	closeInserter,
 } from '../../utils.js';
-
-const block = {
-	name: 'Checkout',
-	slug: 'woocommerce/checkout',
-	class: '.wp-block-woocommerce-checkout',
-};
+import { checkout as block } from '../../blocks';
 
 if ( process.env.WOOCOMMERCE_BLOCKS_PHASE < 2 ) {
 	// eslint-disable-next-line jest/no-focused-tests

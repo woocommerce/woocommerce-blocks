@@ -12,11 +12,10 @@ import {
 	visitBlockPage,
 } from '@woocommerce/blocks-test-utils';
 
-const block = {
-	name: 'Product Search',
-	slug: 'woocommerce/product-search',
-	class: '.wc-block-product-search',
-};
+/**
+ * Internal dependencies
+ */
+import { productSearch as block } from '../../blocks';
 
 describe( `${ block.name } Block`, () => {
 	beforeAll( async () => {

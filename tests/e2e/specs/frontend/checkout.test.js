@@ -18,9 +18,7 @@ import {
 	visitPostOfType,
 } from '../../../utils';
 
-const block = {
-	name: 'Checkout',
-};
+import { checkout as block } from '../../blocks';
 
 const productPrice = 21.99;
 const simpleProductName = 'Woo Single #1';

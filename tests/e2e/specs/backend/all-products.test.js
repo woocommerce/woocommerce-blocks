@@ -5,6 +5,9 @@ import { getAllBlocks, switchUserToAdmin } from '@wordpress/e2e-test-utils';
 import { visitBlockPage } from '@woocommerce/blocks-test-utils';
 import { merchant } from '@woocommerce/e2e-utils';
 
+/**
+ * Internal dependencies
+ */
 import {
 	searchForBlock,
 	insertBlockDontWaitForInsertClose,
@@ -12,12 +15,7 @@ import {
 	closeModalIfExists,
 	openWidgetsEditorBlockInserter,
 } from '../../utils.js';
-
-const block = {
-	name: 'All Products',
-	slug: 'woocommerce/all-products',
-	class: '.wc-block-all-products',
-};
+import { allProducts as block } from '../../blocks';
 
 describe( `${ block.name } Block`, () => {
 	describe( 'in page editor', () => {

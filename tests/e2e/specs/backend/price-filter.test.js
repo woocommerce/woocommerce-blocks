@@ -16,12 +16,7 @@ import {
  * Internal dependencies
  */
 import { insertBlockDontWaitForInsertClose } from '../../utils.js';
-
-const block = {
-	name: 'Filter Products by Price',
-	slug: 'woocommerce/price-filter',
-	class: '.wp-block-woocommerce-price-filter',
-};
+import { filterProductsByPrice as block } from '../../blocks';
 
 describe( `${ block.name } Block`, () => {
 	describe( 'after compatibility notice is dismissed', () => {

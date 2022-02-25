@@ -7,7 +7,6 @@ import {
 	switchUserToAdmin,
 	openDocumentSettingsSidebar,
 } from '@wordpress/e2e-test-utils';
-
 import {
 	visitBlockPage,
 	selectBlockByName,
@@ -17,12 +16,7 @@ import {
  * Internal dependencies
  */
 import { insertBlockDontWaitForInsertClose } from '../../utils';
-
-const block = {
-	name: 'Active Product Filters',
-	slug: 'woocommerce/active-filters',
-	class: '.wc-block-active-filters',
-};
+import { activeProductFilters as block } from '../../blocks';
 
 describe( `${ block.name } Block`, () => {
 	beforeAll( async () => {

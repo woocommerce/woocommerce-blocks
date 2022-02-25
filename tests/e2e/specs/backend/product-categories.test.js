@@ -2,16 +2,13 @@
  * External dependencies
  */
 import { getAllBlocks, switchUserToAdmin } from '@wordpress/e2e-test-utils';
-
 import { visitBlockPage } from '@woocommerce/blocks-test-utils';
 
+/**
+ * Internal dependencies
+ */
 import { insertBlockDontWaitForInsertClose } from '../../utils.js';
-
-const block = {
-	name: 'Product Categories List',
-	slug: 'woocommerce/product-categories',
-	class: '.wc-block-product-categories',
-};
+import { productCategoriesList as block } from '../../blocks';
 
 describe( `${ block.name } Block`, () => {
 	beforeAll( async () => {

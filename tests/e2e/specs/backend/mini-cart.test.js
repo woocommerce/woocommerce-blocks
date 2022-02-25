@@ -8,12 +8,7 @@ import {
 	searchForBlock,
 	isBlockInsertedInWidgetsArea,
 } from '../../utils.js';
-
-const block = {
-	name: 'Mini Cart',
-	slug: 'woocommerce/mini-cart',
-	class: '.wc-block-mini-cart',
-};
+import { miniCart as block } from '../../blocks';
 
 if ( process.env.WOOCOMMERCE_BLOCKS_PHASE < 3 ) {
 	// eslint-disable-next-line jest/no-focused-tests

@@ -26,6 +26,7 @@ export async function getBlockPagePermalink( blockPage ) {
 	const panelButton = await findSidebarPanelToggleButtonWithTitle(
 		'Permalink'
 	);
+
 	const ensureLinkClickable = async ( page ) => {
 		let linkVisible =
 			( await page.$( '.edit-post-post-link__link' ) ) !== null;

@@ -4,11 +4,10 @@
 import { switchUserToAdmin, clickButton } from '@wordpress/e2e-test-utils';
 import { visitBlockPage } from '@woocommerce/blocks-test-utils';
 
-const block = {
-	name: 'Reviews by Category',
-	slug: 'woocommerce/reviews-by-category',
-	class: '.wc-block-reviews-by-category',
-};
+/**
+ * Internal dependencies
+ */
+import { reviewsByCategory as block } from '../../blocks';
 
 describe( `${ block.name } Block`, () => {
 	beforeAll( async () => {
