@@ -59,11 +59,16 @@ export const Block = ( props ) => {
 				className={ classnames(
 					className,
 					'wc-block-components-product-image',
-					'wc-block-components-product-image--placeholder',
 					{
 						[ `${ parentClassName }__product-image` ]: parentClassName,
-					}
+					},
+					borderProps.className
 				) }
+				style={ {
+					...typographyProps.style,
+					...borderProps.style,
+					...spacingProps.style,
+				} }
 			>
 				<ImagePlaceholder />
 			</div>

@@ -53,15 +53,10 @@
 }
 
 .is-loading .wc-block-components-product-image {
-	@include placeholder();
+	@include placeholder($include-border-radius: true);
+	width: auto;
 }
 
 .wc-block-components-product-image {
 	margin: 0 0 $gap-small;
-}
-
-
-// Don't use global style while skeleton is visible.
-.wc-block-components-product-image--placeholder {
-	margin: 0 0 $gap-small !important;
 }
