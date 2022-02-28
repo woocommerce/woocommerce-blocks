@@ -396,9 +396,9 @@ class CartController {
 		 * @example See docs/examples/validate-cart.md
 		 *
 		 * @param WP_Error $errors  WP_Error object.
-		 * @param WC_Cart $cart     Cart object.
+		 * @param WC_Cart  $cart    Cart object.
 		 *
-		 * @return WP_Error  The WP_Error object returned.
+		 * @return WP_Error         The WP_Error object returned.
 		 */
 		$cart_errors = apply_filters( '__experimental_woocommerce_store_api_cart_errors', new \WP_Error(), $cart );
 
@@ -425,7 +425,7 @@ class CartController {
 		 *
 		 * Allow 3rd parties to validate cart items. This is a legacy hook from Woo core.
 		 * This filter will be deprecated because it encourages usage of wc_add_notice. For the API we need to capture
-		 * notices and convert to exceptions instead.
+		 * notices and convert to wp errors instead.
 		 */
 		do_action( 'woocommerce_check_cart_items' );
 
