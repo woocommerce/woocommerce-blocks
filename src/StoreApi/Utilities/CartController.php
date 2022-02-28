@@ -428,7 +428,16 @@ class CartController {
 		 * notices and convert to exceptions instead.
 		 */
 		do_action( 'woocommerce_check_cart_items' );
-		NoticeHandler::convert_notices_to_exceptions( 'woocommerce_rest_cart_item_error' );
+
+		$error_notices = NoticeHandler::convert_notices_to_wp_errors( 'woocommerce_rest_cart_item_error' );
+		if ( $error_notices->has_errors() ) {
+
+			throw new InvalidCartException(
+				'woocommerce_cart_error',
+				$error_notices,
+				409
+			);
+		}
 	}
 
 	/**
