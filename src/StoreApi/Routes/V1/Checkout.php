@@ -37,6 +37,27 @@ class Checkout extends AbstractCartRoute {
 	private $order = null;
 
 	/**
+	 * String based identifier for this routes rate limit.
+	 *
+	 * @var string
+	 */
+	protected $rate_limit_id = 'checkout';
+
+	/**
+	 * Number of requests allowed per window.
+	 *
+	 * @var integer
+	 */
+	protected $rate_limit_limit = 5;
+
+	/**
+	 * Rate limit window size in seconds.
+	 *
+	 * @var integer
+	 */
+	protected $rate_limit_reset = 60;
+
+	/**
 	 * Get the path of this REST route.
 	 *
 	 * @return string
@@ -44,13 +65,6 @@ class Checkout extends AbstractCartRoute {
 	public function get_path() {
 		return '/checkout';
 	}
-
-	/**
-	 * Request rate limit.
-	 *
-	 * @var integer
-	 */
-	protected $rate_limit = 10;
 
 	/**
 	 * Checks if a nonce is required for the route.
@@ -492,6 +506,7 @@ class Checkout extends AbstractCartRoute {
 	 */
 	private function process_payment( \WP_REST_Request $request, PaymentResult $payment_result ) {
 		try {
+			throw new \Exception( 'payment error' );
 			// Transition the order to pending before making payment.
 			$this->order->update_status( 'pending' );
 

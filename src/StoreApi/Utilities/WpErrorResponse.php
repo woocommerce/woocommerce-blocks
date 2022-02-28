@@ -55,7 +55,7 @@ class WpErrorResponse {
 		foreach ( (array) $error->errors as $code => $messages ) {
 			foreach ( (array) $messages as $message ) {
 				$error_data = $error->get_error_data( $code );
-				unset( $error_data['headers'], $error_data['status'] );
+				unset( $error_data['headers'] );
 				$errors[] = array(
 					'code'    => $code,
 					'message' => $message,
