@@ -1,4 +1,9 @@
 /**
+ * External dependencies
+ */
+import { setDefaultOptions, getDefaultOptions } from 'expect-puppeteer';
+
+/**
  * Internal dependencies
  */
 import { shopper } from '../../../utils';
@@ -6,6 +11,7 @@ import { shopper } from '../../../utils';
 const block = {
 	name: 'Mini Cart Block',
 };
+const options = getDefaultOptions();
 
 if ( process.env.WOOCOMMERCE_BLOCKS_PHASE < 3 ) {
 	// eslint-disable-next-line jest/no-focused-tests
@@ -13,6 +19,15 @@ if ( process.env.WOOCOMMERCE_BLOCKS_PHASE < 3 ) {
 }
 
 describe( 'Shopper → Mini Cart', () => {
+	beforeAll( async () => {
+		setDefaultOptions( { ...options, timeout: 5000 } );
+	} );
+
+	afterAll( async () => {
+		// Reset default options.
+		setDefaultOptions( options );
+	} );
+
 	beforeEach( async () => {
 		await shopper.goToBlockPage( block.name );
 	} );
@@ -111,7 +126,6 @@ describe( 'Shopper → Mini Cart', () => {
 
 			await expect( page ).toMatchElement( '.wc-block-mini-cart__title', {
 				text: 'Your cart (1 item)',
-				timeout: 5000,
 			} );
 
 			await page.mouse.click( 50, 200 );
@@ -122,7 +136,6 @@ describe( 'Shopper → Mini Cart', () => {
 
 			await expect( page ).toMatchElement( '.wc-block-mini-cart__title', {
 				text: 'Your cart (2 items)',
-				timeout: 5000,
 			} );
 		} );
 
@@ -148,7 +161,6 @@ describe( 'Shopper → Mini Cart', () => {
 				'.wc-block-mini-cart__products-table',
 				{
 					text: productTitle,
-					timeout: 5000,
 				}
 			);
 		} );
@@ -158,7 +170,6 @@ describe( 'Shopper → Mini Cart', () => {
 
 			await expect( page ).toMatchElement( '.wc-block-mini-cart__title', {
 				text: 'Your cart',
-				timeout: 5000,
 			} );
 
 			await expect( page ).toMatchElement(
