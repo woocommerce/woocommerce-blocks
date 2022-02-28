@@ -506,7 +506,6 @@ class Checkout extends AbstractCartRoute {
 	 */
 	private function process_payment( \WP_REST_Request $request, PaymentResult $payment_result ) {
 		try {
-			throw new \Exception( 'payment error' );
 			// Transition the order to pending before making payment.
 			$this->order->update_status( 'pending' );
 
