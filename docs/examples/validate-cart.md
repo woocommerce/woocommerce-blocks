@@ -1,13 +1,16 @@
 ```php
 // The action callback function.
-function my_function_callback( $cart ) {
-  // Validate the $cart object and throw a RouteException. For example, to create an error if the cart contains more than 10 items:
+function my_function_callback( $errors, $cart ) {
+
+  // Validate the $cart object and add errors. For example, to create an error if the cart contains more than 10 items:
   if ( $cart->get_cart_contents_count() > 10 ) {
-    throw new Automattic\WooCommerce\Blocks\StoreApi\Routes\RouteException( 'my_exception_code', 'Too many cart items!' );
+    $errors->add( 'my_error_code', 'Too many cart items!' );
   }
+
+  return $errors;
 }
 
-add_action( '__experimental_woocommerce_store_api_validate_cart', 'my_function_callback', 10 );
+add_filter( '__experimental_woocommerce_store_api_cart_errors', 'my_function_callback', 10 );
 ```
 <!-- FEEDBACK -->
 ---

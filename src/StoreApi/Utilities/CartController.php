@@ -395,10 +395,10 @@ class CartController {
 		 *
 		 * @example See docs/examples/validate-cart.md
 		 *
-		 * @param \WP_Error $errors  WP_Error object.
-		 * @param \WC_Cart $cart     Cart object.
+		 * @param WP_Error $errors  WP_Error object.
+		 * @param WC_Cart $cart     Cart object.
 		 *
-		 * @return \WP_Error  The WP_Error object returned.
+		 * @return WP_Error  The WP_Error object returned.
 		 */
 		$cart_errors = apply_filters( '__experimental_woocommerce_store_api_cart_errors', new \WP_Error(), $cart );
 
