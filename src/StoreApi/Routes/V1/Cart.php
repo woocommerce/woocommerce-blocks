@@ -31,7 +31,7 @@ class Cart extends AbstractCartRoute {
 			[
 				'methods'             => \WP_REST_Server::READABLE,
 				'callback'            => [ $this, 'get_response' ],
-				'permission_callback' => '__return_true',
+				'permission_callback' => [ $this, 'permission_callback' ],
 				'args'                => [
 					'context' => $this->get_context_param( [ 'default' => 'view' ] ),
 				],

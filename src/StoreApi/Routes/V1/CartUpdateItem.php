@@ -31,7 +31,7 @@ class CartUpdateItem extends AbstractCartRoute {
 			[
 				'methods'             => \WP_REST_Server::CREATABLE,
 				'callback'            => [ $this, 'get_response' ],
-				'permission_callback' => '__return_true',
+				'permission_callback' => [ $this, 'permission_callback' ],
 				'args'                => [
 					'key'      => [
 						'description' => __( 'Unique identifier (key) for the cart item to update.', 'woo-gutenberg-products-block' ),

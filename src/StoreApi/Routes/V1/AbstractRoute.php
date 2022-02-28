@@ -6,6 +6,7 @@ use Automattic\WooCommerce\StoreApi\Routes\RouteInterface;
 use Automattic\WooCommerce\StoreApi\Exceptions\RouteException;
 use Automattic\WooCommerce\StoreApi\Exceptions\InvalidCartException;
 use Automattic\WooCommerce\StoreApi\Schemas\v1\AbstractSchema;
+use Automattic\WooCommerce\Blocks\StoreApi\Utilities\WpErrorResponse;
 use WP_Error;
 
 /**
@@ -131,27 +132,8 @@ abstract class AbstractRoute implements RouteInterface {
 	 * @return \WP_REST_Response List of associative arrays with code and message keys.
 	 */
 	protected function error_to_response( $error ) {
-		$error_data = $error->get_error_data();
-		$status     = isset( $error_data, $error_data['status'] ) ? $error_data['status'] : 500;
-		$errors     = [];
-
-		foreach ( (array) $error->errors as $code => $messages ) {
-			foreach ( (array) $messages as $message ) {
-				$errors[] = array(
-					'code'    => $code,
-					'message' => $message,
-					'data'    => $error->get_error_data( $code ),
-				);
-			}
-		}
-
-		$data = array_shift( $errors );
-
-		if ( count( $errors ) ) {
-			$data['additional_errors'] = $errors;
-		}
-
-		return new \WP_REST_Response( $data, $status );
+		$error_response = new WpErrorResponse( $error );
+		return $error_response->get_response();
 	}
 
 	/**

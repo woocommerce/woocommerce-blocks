@@ -40,7 +40,7 @@ class CartExtensions extends AbstractCartRoute {
 			[
 				'methods'             => \WP_REST_Server::CREATABLE,
 				'callback'            => [ $this, 'get_response' ],
-				'permission_callback' => '__return_true',
+				'permission_callback' => [ $this, 'permission_callback' ],
 				'args'                => [
 					'namespace' => [
 						'description' => __( 'Extension\'s name - this will be used to ensure the data in the request is routed appropriately.', 'woo-gutenberg-products-block' ),
