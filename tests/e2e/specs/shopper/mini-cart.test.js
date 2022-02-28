@@ -11,7 +11,18 @@ import { shopper } from '../../../utils';
 const block = {
 	name: 'Mini Cart Block',
 };
+
 const options = getDefaultOptions();
+
+const clickMiniCartButton = async () => {
+	await page.hover( '.wc-block-mini-cart__button' );
+
+	await expect( page ).not.toMatchElement(
+		'.wc-block-mini-cart__drawer.is-loading'
+	);
+
+	await page.click( '.wc-block-mini-cart__button' );
+};
 
 if ( process.env.WOOCOMMERCE_BLOCKS_PHASE < 3 ) {
 	// eslint-disable-next-line jest/no-focused-tests
@@ -57,7 +68,7 @@ describe( 'Shopper → Mini Cart', () => {
 
 	describe( 'Drawer', () => {
 		it( 'The drawer opens when shopper clicks on the mini cart icon', async () => {
-			await page.click( '.wc-block-mini-cart__button' );
+			await clickMiniCartButton();
 
 			await expect( page ).toMatchElement(
 				'.wc-block-mini-cart__drawer',
@@ -68,7 +79,7 @@ describe( 'Shopper → Mini Cart', () => {
 		} );
 
 		it( 'The drawer closes when shopper clicks on the drawer close button', async () => {
-			await page.click( '.wc-block-mini-cart__button' );
+			await clickMiniCartButton();
 
 			await expect( page ).toMatchElement(
 				'.wc-block-mini-cart__drawer',
@@ -93,7 +104,7 @@ describe( 'Shopper → Mini Cart', () => {
 		} );
 
 		it( 'The drawer closes when shopper clicks outside the drawer', async () => {
-			await page.click( '.wc-block-mini-cart__button' );
+			await clickMiniCartButton();
 
 			await expect( page ).toMatchElement(
 				'.wc-block-mini-cart__drawer',
