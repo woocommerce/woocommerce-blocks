@@ -391,13 +391,30 @@ class CartController {
 		$this->validate_cart_coupons();
 
 		/**
-		 * Fire action to validate cart. Functions hooking into this should throw a \InvalidCartException.
+		 * Fire action to validate cart. Functions hooking into this should return the \WP_Error enchanced with custom errors.
 		 *
 		 * @example See docs/examples/validate-cart.md
 		 *
-		 * @param \WC_Cart $cart Cart object.
+		 * @param \WP_Error $errors  WP_Error object.
+		 * @param \WC_Cart $cart     Cart object.
+		 *
+		 * @return \WP_Error  The WP_Error object returned.
 		 */
-		do_action( '__experimental_woocommerce_store_api_validate_cart', $cart );
+		$cart_errors = apply_filters( '__experimental_woocommerce_store_api_cart_errors', new \WP_Error(), $cart );
+
+		if ( ! is_wp_error( $cart_errors ) ) {
+
+			throw new RouteException( 'missing_cart_validation_server_error', __( 'There was an error with your cart.', 'woo-gutenberg-products-block' ) );
+		}
+
+		if ( $cart_errors->has_errors() ) {
+
+			throw new InvalidCartException(
+				'woocommerce_cart_error',
+				$cart_errors,
+				409
+			);
+		}
 
 		// Before running the woocommerce_check_cart_items hook, unhook validation from the core cart.
 		remove_action( 'woocommerce_check_cart_items', array( $cart, 'check_cart_items' ), 1 );
