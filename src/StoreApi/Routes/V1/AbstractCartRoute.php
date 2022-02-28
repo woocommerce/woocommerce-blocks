@@ -44,6 +44,13 @@ abstract class AbstractCartRoute extends AbstractRoute {
 	protected $order_controller;
 
 	/**
+	 * Request rate limit.
+	 *
+	 * @var integer
+	 */
+	protected $rate_limit = 1;
+
+	/**
 	 * Constructor.
 	 *
 	 * @param SchemaController $schema_controller Schema Controller instance.
@@ -59,6 +66,16 @@ abstract class AbstractCartRoute extends AbstractRoute {
 	}
 
 	/**
+	 * Are we updating data or getting data?
+	 *
+	 * @param \WP_REST_Request $request Request object.
+	 * @return boolean
+	 */
+	protected function is_update_request( \WP_REST_Request $request ) {
+		return in_array( $request->get_method(), [ 'POST', 'PUT', 'PATCH', 'DELETE' ], true );
+	}
+
+	/**
 	 * Get the route response based on the type of request.
 	 *
 	 * @param \WP_REST_Request $request Request object.
@@ -69,10 +86,11 @@ abstract class AbstractCartRoute extends AbstractRoute {
 		$this->calculate_totals();
 
 		if ( $this->requires_nonce( $request ) ) {
+			$this->add_nonce_headers();
 			$nonce_check = $this->check_nonce( $request );
 
 			if ( is_wp_error( $nonce_check ) ) {
-				return $this->add_nonce_headers( $this->error_to_response( $nonce_check ) );
+				return $nonce_check;
 			}
 		}
 
@@ -86,9 +104,11 @@ abstract class AbstractCartRoute extends AbstractRoute {
 
 		if ( is_wp_error( $response ) ) {
 			$response = $this->error_to_response( $response );
-		} elseif ( in_array( $request->get_method(), [ 'POST', 'PUT', 'PATCH', 'DELETE' ], true ) ) {
+		} elseif ( $this->is_update_request( $request ) ) {
 			$this->cart_updated( $request );
 		}
+
+		$response = $this->add_rate_limit_headers( $response );
 
 		return $this->add_nonce_headers( $response );
 	}
@@ -239,5 +259,58 @@ abstract class AbstractCartRoute extends AbstractRoute {
 				);
 		}
 		return new \WP_Error( $error_code, $error_message, [ 'status' => $http_status_code ] );
+	}
+
+	/**
+	 * Check if rate limit was exceeded.
+	 *
+	 * @return boolean
+	 */
+	protected function is_rate_limit_exceeded() {
+		$next_try_time = wc()->session->get( 'store-api-rate-limit' );
+
+		return ( self::SCHEMA_TYPE === 'batch' || ! defined( 'STORE_API_DOING_BATCH' ) ) && $next_try_time && time() < $next_try_time;
+	}
+
+	/**
+	 * Update session rate limit after successful response.
+	 *
+	 * @param int $delay Delay in seconds.
+	 */
+	protected function update_rate_limit( int $delay ) {
+		add_action(
+			'shutdown',
+			function() use ( $delay ) {
+				if ( $delay ) {
+					wc()->session->set( 'store-api-rate-limit', time() + $delay );
+				} else {
+					wc()->session->set( 'store-api-rate-limit', null );
+				}
+			}
+		);
+	}
+
+	/**
+	 * Add rate limit headers to a response object.
+	 *
+	 * @param \WP_REST_Response $response The response object.
+	 * @return \WP_REST_Response
+	 */
+	protected function add_rate_limit_headers( \WP_REST_Response $response ) {
+		$rate_limit = wc()->session->get( 'store-api-rate-limit' );
+
+		if ( ! $rate_limit ) {
+			return $response;
+		}
+
+		$response->header( 'X-RateLimit-Limit', 1 );
+		$response->header( 'X-RateLimit-Remaining', 0 );
+		$response->header( 'X-RateLimit-Reset', wc()->session->get( 'store-api-rate-limit' ) );
+
+		if ( $this->is_rate_limit_exceeded() ) {
+			$response->header( 'Retry-After', wc()->session->get( 'store-api-rate-limit' ) - time() );
+		}
+
+		return $response;
 	}
 }
