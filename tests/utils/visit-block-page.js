@@ -33,16 +33,7 @@ async function visitPage( link ) {
 	}
 }
 
-/**
- *
- * @param {string} title the page title, written as `BLOCK_NAME block`
- *
- * This function will attempt to search for a page with the `title`
- * if that block is found, it will open it, if it's not found, it will open
- * a new page, insert the block, save the page content and title as a fixture file.
- * In both cases, this page will end up with a page open with the block inserted.
- */
-export async function visitBlockPage( title ) {
+export async function getBlockPageEditLink( title ) {
 	let link = '';
 	// Visit Import Products page.
 	await visitAdminPage( 'edit.php', 'post_type=page' );
@@ -61,6 +52,22 @@ export async function visitBlockPage( title ) {
 			);
 		}
 	}
+
+	return link;
+}
+
+/**
+ *
+ * @param {string} title the page title, written as `BLOCK_NAME block`
+ *
+ * This function will attempt to search for a page with the `title`
+ * if that block is found, it will open it, if it's not found, it will open
+ * a new page, insert the block, save the page content and title as a fixture file.
+ * In both cases, this page will end up with a page open with the block inserted.
+ */
+export async function visitBlockPage( title ) {
+	const link = await getBlockPageEditLink( title );
+
 	if ( link ) {
 		await visitPage( link );
 	} else {

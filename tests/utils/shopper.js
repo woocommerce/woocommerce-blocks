@@ -6,7 +6,7 @@ import { shopper as wcShopper } from '@woocommerce/e2e-utils';
 /**
  * Internal dependencies
  */
-import { getBlockPagePermalink } from './get-block-page-permalink';
+import { getBlockPageEditLink } from './visit-block-page';
 import { SHOP_CART_BLOCK_PAGE, SHOP_CHECKOUT_BLOCK_PAGE } from './constants';
 
 export const shopper = {
@@ -49,11 +49,28 @@ export const shopper = {
 		);
 	},
 
+	/**
+	 * Find a page with the given title then navigate to it.
+	 *
+	 * @param {string} title Page title
+	 */
 	goToBlockPage: async ( title ) => {
-		await page.goto( await getBlockPagePermalink( title ), {
-			waitUntil: 'networkidle0',
-		} );
+		const editLink = await getBlockPageEditLink( title );
 
-		await expect( page ).toMatchElement( 'h1', { text: title } );
+		if ( editLink ) {
+			const url = new URL( editLink );
+
+			await page.goto(
+				`${ url.origin }/?p=${ url.searchParams.get( 'post' ) }`,
+				{
+					waitUntil: 'networkidle0',
+				}
+			);
+
+			// eslint-disable-next-line jest/no-standalone-expect
+			await expect( page ).toMatchElement( 'h1', { text: title } );
+		} else {
+			throw new Error( `Could not find block page: ${ title }` );
+		}
 	},
 };
