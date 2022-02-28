@@ -12,6 +12,31 @@ if ( process.env.WOOCOMMERCE_BLOCKS_PHASE < 3 ) {
 	test.only( `skipping ${ block.name } tests`, () => {} );
 }
 
+const expectToMatchStartShopping = async ( shouldMatch = true ) => {
+	// We need longer timeout to ensure there is enough time
+	// in the test env to dynamically load mini cart code.
+	const config = {
+		text: 'Start shopping',
+		timeout: 5000,
+	};
+
+	if ( ! shouldMatch ) {
+		return await expect( page ).not.toMatchElement(
+			'.wc-block-mini-cart__drawer',
+			config
+		);
+	}
+
+	return await expect( page ).toMatchElement(
+		'.wc-block-mini-cart__drawer',
+		config
+	);
+};
+
+const expectNotToMatchStartShopping = async () => {
+	return await expectToMatchStartShopping( false );
+};
+
 describe( 'Shopper → Mini Cart', () => {
 	beforeEach( async () => {
 		await shopper.goToBlockPage( block.name );
@@ -44,54 +69,29 @@ describe( 'Shopper → Mini Cart', () => {
 		it( 'The drawer opens when shopper clicks on the mini cart icon', async () => {
 			await page.click( '.wc-block-mini-cart__button' );
 
-			await expect( page ).toMatchElement(
-				'.wc-block-mini-cart__drawer',
-				{
-					text: 'Start shopping',
-				}
-			);
+			await expectToMatchStartShopping();
 		} );
 
 		it( 'The drawer closes when shopper clicks on the drawer close button', async () => {
 			await page.click( '.wc-block-mini-cart__button' );
 
-			await expect( page ).toMatchElement(
-				'.wc-block-mini-cart__drawer',
-				{
-					text: 'Start shopping',
-				}
-			);
+			await expectToMatchStartShopping();
 
 			await page.click(
 				'.wc-block-mini-cart__drawer .components-modal__header button'
 			);
 
-			await expect( page ).not.toMatchElement(
-				'.wc-block-mini-cart__drawer',
-				{
-					text: 'Start shopping',
-				}
-			);
+			await expectNotToMatchStartShopping();
 		} );
 
 		it( 'The drawer closes when shopper clicks outside the drawer', async () => {
 			await page.click( '.wc-block-mini-cart__button' );
 
-			await expect( page ).toMatchElement(
-				'.wc-block-mini-cart__drawer',
-				{
-					text: 'Start shopping',
-				}
-			);
+			await expectToMatchStartShopping();
 
 			await page.mouse.click( 50, 200 );
 
-			await expect( page ).not.toMatchElement(
-				'.wc-block-mini-cart__drawer',
-				{
-					text: 'Start shopping',
-				}
-			);
+			await expectNotToMatchStartShopping();
 		} );
 	} );
 } );
