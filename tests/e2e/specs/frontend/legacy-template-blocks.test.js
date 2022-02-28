@@ -74,7 +74,7 @@ describe( 'Legacy Template blocks', () => {
 		} );
 	} );
 
-	describe( 'Product by Category block', () => {
+	describe( 'Products by Category block', () => {
 		it( 'renders a list of products with their count, pagination and the category title', async () => {
 			const CATEGORY_NAME = 'Uncategorized';
 			const { productArchivePage } = SELECTORS;
