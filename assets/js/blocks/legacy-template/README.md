@@ -1,10 +1,14 @@
-# Legacy Template Block
+# Classic Template Block
 
-The Legacy Template block is a placeholder block for specific WooCommerce block templates which are rendered on the server-side when a block theme is active.
+The Classic Template block is a placeholder block for specific WooCommerce block templates which are rendered on the server-side when a block theme is active.
 
-Given a specific template attribute prop, the block will render a specific template both on the front-end and in the Site Editor in the form of a placeholder.
+By assigning a template identifier to the attribute prop, the block will render that specific template on the front-end, and a placeholder for said template in the Site Editor.
+
+It's worth noting that in the Site Editor where a placeholder merely represents a front-end view, this representation will not always be completely accurate.
 
 ## Usage
+
+This block does not have any customizable options available, so any style or customization updates will not be reflected on the placeholder.
 
 ### Props
 
@@ -15,4 +19,4 @@ Given a specific template attribute prop, the block will render a specific templ
 <!-- wp:woocommerce/legacy-template {"template":"single-product"} /-->
 ```
 
-![Legacy Template Block Single Product](./assets/doc-image-single-product-legacy-block.png)
+![Classic Template Block Single Product](./assets/doc-image-single-product-classic-block.png)

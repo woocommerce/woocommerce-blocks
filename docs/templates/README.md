@@ -14,9 +14,9 @@ This page includes documentation related to WooCommerce Block Templates.
 
 ## Overview
 
-At the highest level, WooCommerce Block Templates are a collection of WooCommere core templates that are available in the WordPress Full Site Editing feature introduced as part of WordPress 5.9. Enabling you to customize these templates with blocks via the Site Editor. 
+At the highest level, WooCommerce Block Templates are a collection of WooCommerce core templates that are made available in the WordPress Full Site Editing experience introduced as part of WordPress 5.9, enabling you to customize these templates with blocks via the Site Editor. 
 
-You can read more about the Full Site Editing (FSE) feature [here](https://developer.wordpress.org/block-editor/getting-started/full-site-editing/).
+You can read more about the Full Site Editing (FSE) experience [here](https://developer.wordpress.org/block-editor/getting-started/full-site-editing/).
 
 ### Requirements
 
@@ -24,7 +24,7 @@ You can read more about the Full Site Editing (FSE) feature [here](https://devel
 |-----------------|------------------|
 | WordPress       | 5.9              |
 | WooCommerce     | 6.0              |
-| Block theme     | -                |
+| Any block theme | -                |
 
 ## Technical Overview
 
@@ -50,8 +50,8 @@ The BlockTemplateController class is primarily responsible for hooking into both
 | File                        | Description                                                                                                                                                                     | Source                                                                                                                          | Docs                                                      |
 | --------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------- | --------------------------------------------------------- |
 | templates/templates/\*      | Location in the filesystem where WooCommerce block template HTML files are stored.                                                                                              | [Source files](https://github.com/woocommerce/woocommerce-gutenberg-products-block/tree/trunk/templates/templates)              |                                                           |
-| legacy-template/\*          | The JavaScript block rendered in the Site Editor. This is a server-side rendered component which is handled by LegacyTemplate.php                                               | [Source file](https://github.com/woocommerce/woocommerce-gutenberg-products-block/tree/trunk/assets/js/blocks/legacy-template)  | [README](../../assets/js/blocks/legacy-template/README.md)|
-| LegacyTemplate.php          | Class used to setup the block on the server-side and render the correct template                                                                                                | [Source file](https://github.com/woocommerce/woocommerce-gutenberg-products-block/blob/trunk/src/BlockTypes/LegacyTemplate.php) | [README](./legacy-template.md)                            |
+| classic-template/\*         | The JavaScript block rendered in the Site Editor. This is a server-side rendered component which is handled by ClassicTemplate.php                                              | [Source file](https://github.com/woocommerce/woocommerce-gutenberg-products-block/tree/trunk/assets/js/blocks/classic-template)  | [README](../../assets/js/blocks/classic-template/README.md)|
+| ClassicTemplate.php         | Class used to setup the block on the server-side and render the correct template                                                                                                | [Source file](https://github.com/woocommerce/woocommerce-gutenberg-products-block/blob/trunk/src/BlockTypes/ClassicTemplate.php) | [README](./classic-template.md)                            |
 | BlockTemplateController.php | Class which contains all the business logic which loads the templates into the Site Editor or on the front-end through various hooks available in WordPress & WooCommerce core. | [Source file](https://github.com/woocommerce/woocommerce-gutenberg-products-block/blob/trunk/src/BlockTemplatesController.php)  | [README](./block-template-controller.md)                  |
 | BlockTemplateUtils.php      | Class containing a collection of useful utility methods.                                                                                                                        | [Source file](https://github.com/woocommerce/woocommerce-gutenberg-products-block/blob/trunk/src/Utils/BlockTemplateUtils.php)  |                                                           |
 
