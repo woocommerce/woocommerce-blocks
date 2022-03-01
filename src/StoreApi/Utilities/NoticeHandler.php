@@ -1,6 +1,8 @@
 <?php
 namespace Automattic\WooCommerce\Blocks\StoreApi\Utilities;
 
+use WP_Error;
+
 /**
  * NoticeHandler class.
  * Helper class to convert notices to wp errors.

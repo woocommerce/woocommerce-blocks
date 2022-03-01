@@ -391,7 +391,7 @@ class CartController {
 		$this->validate_cart_coupons();
 
 		/**
-		 * Fire action to validate cart. Functions hooking into this should return the \WP_Error enchanced with custom errors.
+		 * Fire action to validate cart. Functions hooking into this should return the WP_Error enchanced with custom errors.
 		 *
 		 * @example See docs/examples/validate-cart.md
 		 *
@@ -400,7 +400,7 @@ class CartController {
 		 *
 		 * @return WP_Error         The WP_Error object returned.
 		 */
-		$cart_errors = apply_filters( '__experimental_woocommerce_store_api_cart_errors', new \WP_Error(), $cart );
+		$cart_errors = apply_filters( '__experimental_woocommerce_store_api_cart_errors', new WP_Error(), $cart );
 
 		if ( ! is_wp_error( $cart_errors ) ) {
 
@@ -650,7 +650,7 @@ class CartController {
 			try {
 				$this->validate_cart_coupon( $coupon );
 			} catch ( RouteException $error ) {
-				$errors[] = new \WP_Error( $error->getErrorCode(), $error->getMessage(), $error->getAdditionalData() );
+				$errors[] = new WP_Error( $error->getErrorCode(), $error->getMessage(), $error->getAdditionalData() );
 			}
 		}
 
@@ -684,18 +684,18 @@ class CartController {
 		try {
 			$this->validate_cart();
 		} catch ( RouteException $error ) {
-			$errors[] = new \WP_Error( $error->getErrorCode(), $error->getMessage(), $error->getAdditionalData() );
+			$errors[] = new WP_Error( $error->getErrorCode(), $error->getMessage(), $error->getAdditionalData() );
 		} catch ( InvalidCartException $error ) {
 
 			$wp_error = $error->getError();
 			foreach ( (array) $wp_error->errors as $code => $messages ) {
 				foreach ( (array) $messages as $message ) {
 					$additional_data = $wp_error->get_error_data( $code );
-					$errors[]        = new \WP_Error( $code, $message, $additional_data );
+					$errors[]        = new WP_Error( $code, $message, $additional_data );
 				}
 			}
 		} catch ( \Exception $error ) {
-			$errors[] = new \WP_Error( $error->getCode(), $error->getMessage() );
+			$errors[] = new WP_Error( $error->getCode(), $error->getMessage() );
 		}
 
 		$cart_errors = array_filter(
