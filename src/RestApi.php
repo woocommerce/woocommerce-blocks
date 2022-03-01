@@ -109,7 +109,7 @@ class RestApi {
 		 */
 		if ( ! apply_filters( 'woocommerce_store_api_disable_rate_limit_check', false ) ) {
 			$action_id          = 'store_api_request_' . ( is_user_logged_in() ? get_current_user_id() : md5( $this->get_ip_address() ) );
-			$rate_limit_limit   = 2;
+			$rate_limit_limit   = 25;
 			$rate_limit_seconds = 10;
 			$retry              = RateLimits::is_exceeded_retry_after( $action_id );
 			$server             = rest_get_server();
