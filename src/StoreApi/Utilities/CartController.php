@@ -475,11 +475,7 @@ class CartController {
 
 			$error = new WP_Error();
 			foreach ( $errors as $wp_error ) {
-				$error->add(
-					$wp_error->get_error_code(),
-					$wp_error->get_error_message(),
-					$wp_error->get_error_data()
-				);
+				$error->merge_from( $wp_error );
 			}
 
 			throw new InvalidCartException(
@@ -658,11 +654,7 @@ class CartController {
 
 			$error = new WP_Error();
 			foreach ( $errors as $wp_error ) {
-				$error->add(
-					$wp_error->get_error_code(),
-					$wp_error->get_error_message(),
-					$wp_error->get_error_data()
-				);
+				$error->merge_from( $wp_error );
 			}
 
 			throw new InvalidCartException(
