@@ -218,7 +218,7 @@ describe( 'Shopper → Mini Cart', () => {
 		} );
 
 		it( 'Can remove product from Mini Cart', async () => {
-			await clickMiniCartButton();
+			await page.click( '.add_to_cart_button' );
 
 			await expect( page ).toMatchElement( '.wc-block-mini-cart__title', {
 				text: 'Your cart (1 item)',
