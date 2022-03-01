@@ -73,7 +73,7 @@ class CartControllerTests extends TestCase {
 		];
 
 		foreach( $expected_errors as $expected_error ) {
-			$this->assertContains( $expected_error, $errors );
+			$this->assertContains( $expected_error, $error_codes );
 		}
 
 	}
