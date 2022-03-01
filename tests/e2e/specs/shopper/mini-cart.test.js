@@ -17,9 +17,9 @@ const options = getDefaultOptions();
 const clickMiniCartButton = async () => {
 	await page.hover( '.wc-block-mini-cart__button' );
 
-	await expect( page ).not.toMatchElement(
-		'.wc-block-mini-cart__drawer.is-loading'
-	);
+	await page.waitForSelector( '.wc-block-mini-cart__drawer.is-loading', {
+		hidden: true,
+	} );
 
 	await page.click( '.wc-block-mini-cart__button' );
 };
@@ -31,6 +31,10 @@ if ( process.env.WOOCOMMERCE_BLOCKS_PHASE < 3 ) {
 
 describe( 'Shopper → Mini Cart', () => {
 	beforeAll( async () => {
+		/**
+		 * Mini Cart takes time to open. Sometimes, on slow machines, 500ms
+		 * is not enough. So, we increase the default timeout to 5 seconds.
+		 */
 		setDefaultOptions( { ...options, timeout: 5000 } );
 	} );
 
@@ -157,20 +161,26 @@ describe( 'Shopper → Mini Cart', () => {
 			const products = await page.$$(
 				'.wc-block-all-products .wc-block-grid__product'
 			);
+
 			if ( products.length === 0 ) {
-				return;
+				throw new Error(
+					'No products found on the Mini Cart Block page.'
+				);
 			}
 
-			// Get a random product to ensure the test isn't false positive.
+			// Get a random product to better replicate human behavior.
 			const product =
 				products[ Math.floor( Math.random() * products.length ) ];
-			const productTitle = await page.evaluate( ( el ) => {
-				return el.querySelector( '.wc-block-components-product-name' )
-					.textContent;
-			}, product );
-			await page.evaluate( ( el ) => {
-				el.querySelector( '.add_to_cart_button' ).click();
-			}, product );
+			const productTitleEl = await product.$(
+				'.wc-block-components-product-name'
+			);
+			const productTitle = await productTitleEl.getProperty(
+				'textContent'
+			);
+			const addToCartButton = await product.$( '.add_to_cart_button' );
+
+			await addToCartButton.click();
+
 			await expect( page ).toMatchElement(
 				'.wc-block-mini-cart__products-table',
 				{
@@ -208,6 +218,7 @@ describe( 'Shopper → Mini Cart', () => {
 			);
 		} );
 	} );
+
 	describe( 'Update quantity', () => {
 		beforeAll( async () => {
 			await shopper.emptyCart();
