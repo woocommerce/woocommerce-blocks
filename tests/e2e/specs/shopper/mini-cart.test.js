@@ -17,9 +17,9 @@ const options = getDefaultOptions();
 const clickMiniCartButton = async () => {
 	await page.hover( '.wc-block-mini-cart__button' );
 
-	await page.waitForFunction(
-		'document.querySelector(".wc-block-mini-cart__drawer.is-loading") === null'
-	);
+	await page.waitForSelector( '.wc-block-mini-cart__drawer.is-loading', {
+		hidden: true,
+	} );
 
 	await page.click( '.wc-block-mini-cart__button' );
 };
