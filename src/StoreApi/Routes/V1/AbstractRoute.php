@@ -133,20 +133,6 @@ abstract class AbstractRoute implements RouteInterface {
 	}
 
 	/**
-	 * Add rate limit headers to a response object.
-	 *
-	 * @param \WP_REST_Response $response The response object.
-	 * @param array             $headers Headers to append.
-	 * @return \WP_REST_Response
-	 */
-	protected function add_response_headers( \WP_REST_Response $response, $headers ) {
-		foreach ( $headers as $header => $value ) {
-			$response->header( $header, $value );
-		}
-		return $response;
-	}
-
-	/**
 	 * Converts an error to a response object. Based on \WP_REST_Server.
 	 *
 	 * @param \WP_Error $error WP_Error instance.
