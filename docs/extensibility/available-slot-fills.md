@@ -9,7 +9,6 @@ This document presents the list of available Slots that you can use for adding y
     - [Passed parameters](#passed-parameters-1)
   - [ExperimentalDiscountsMeta](#experimentaldiscountsmeta)
     - [Passed paramters](#passed-paramters)
-  - [](#)
 
 ---
 

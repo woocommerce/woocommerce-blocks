@@ -11,7 +11,6 @@
   - [The solution](#the-solution-1)
   - [Basic usage](#basic-usage)
   - [Putting it all together](#putting-it-all-together)
-  - [](#)
 
 # Filtering payment methods in the Checkout block
 

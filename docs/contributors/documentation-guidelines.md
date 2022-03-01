@@ -17,7 +17,6 @@
   - [Sort releases descending](#sort-releases-descending)
   - [Structure “How to” instructions](#structure-how-to-instructions)
   - [Link references](#link-references)
-  - [](#)
 
 ## Use active instead of passive voice
 
