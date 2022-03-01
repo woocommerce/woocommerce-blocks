@@ -8,7 +8,6 @@ These documents are all dealing with extensibility in the various WooCommerce Bl
 - [REST API](#rest-api)
 - [Checkout Payment Methods](#checkout-payment-methods)
 - [Checkout Block](#checkout-block)
-- [](#)
 
 ## Hooks (actions and filters)
 
