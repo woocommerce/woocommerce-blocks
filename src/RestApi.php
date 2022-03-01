@@ -2,8 +2,8 @@
 namespace Automattic\WooCommerce\Blocks;
 
 use Automattic\WooCommerce\Blocks\StoreApi\RoutesController;
+use Automattic\WooCommerce\Blocks\StoreApi\Utilities\RateLimits;
 use Automattic\WooCommerce\Blocks\StoreApi\Utilities\WpErrorResponse;
-
 
 /**
  * RestApi class.
@@ -77,17 +77,67 @@ class RestApi {
 	}
 
 	/**
-	 * The Store API does not require authentication.
+	 * Get current user IP Address.
+	 *
+	 * Note for HTTP_X_FORWARDED_FOR, Proxy servers can send through this header like this: X-Forwarded-For: client1, proxy1, proxy2.
+	 * Make sure we always only send through the first IP in the list which should always be the client IP.
+	 *
+	 * @return string
+	 */
+	public static function get_ip_address() {
+		$ip_address = trim( current( explode( ',', sanitize_text_field( wp_unslash( $_SERVER['HTTP_X_REAL_IP'] ?? $_SERVER['HTTP_X_FORWARDED_FOR'] ?? $_SERVER['REMOTE_ADDR'] ?? '' ) ) ) ) );
+
+		return (string) rest_is_ip_address( $ip_address );
+	}
+
+	/**
+	 * The Store API does not require authentication but does have rate limits in place.
 	 *
 	 * @param \WP_Error|mixed $result Error from another authentication handler, null if we should handle it, or another value if not.
 	 * @return \WP_Error|null|bool
 	 */
 	public function store_api_authentication( $result ) {
-		// Pass through errors from other authentication methods used before this one.
-		if ( ! empty( $result ) || ! $this->is_request_to_store_api() ) {
+		if ( ! $this->is_request_to_store_api() ) {
 			return $result;
 		}
-		return true;
+
+		/**
+		 * Filters the Store API rate limit check.
+		 *
+		 * This can be used to disable the rate limit check when testing API endpoints via a REST API client.
+		 *
+		 * @param boolean $disable_rate_limit_check If true, checks will be disabled.
+		 * @return boolean
+		 */
+		if ( ! apply_filters( 'woocommerce_store_api_disable_rate_limit_check', false ) ) {
+			$server                = rest_get_server();
+			$action_id             = 'store_api_request_' . ( is_user_logged_in() ? get_current_user_id() : $this->get_ip_address() );
+			$allowed_request_limit = 25; // 25 requests.
+			$allowed_request_reset = 10; // 10 seconds.
+			$rate_limit            = RateLimits::update_rate_limit( $action_id, $allowed_request_reset, $allowed_request_limit );
+
+			$server->send_header( 'X-RateLimit-Limit', 10 );
+			$server->send_header( 'X-RateLimit-Remaining', $rate_limit->remaining );
+			$server->send_header( 'X-RateLimit-Reset', $rate_limit->reset );
+
+			if ( RateLimits::is_rate_limit_exceeded( $action_id ) ) {
+				$server->send_header( 'Retry-After', $rate_limit->reset - time() );
+
+				return new \WP_Error(
+					'rate_limit_exceeded',
+					sprintf(
+						'Too many requests. Please wait %d seconds before trying again.',
+						$rate_limit->reset - time()
+					),
+					[
+						'status' => 429,
+					]
+				);
+			}
+		}
+
+		// Pass through errors from other authentication methods used before this one.
+		return ! empty( $result ) ? $result : true;
 	}
 
 	/**
