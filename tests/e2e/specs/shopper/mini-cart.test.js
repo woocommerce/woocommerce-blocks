@@ -1,4 +1,9 @@
 /**
+ * External dependencies
+ */
+import { setDefaultOptions, getDefaultOptions } from 'expect-puppeteer';
+
+/**
  * Internal dependencies
  */
 import { shopper } from '../../../utils';
@@ -7,12 +12,33 @@ const block = {
 	name: 'Mini Cart Block',
 };
 
+const options = getDefaultOptions();
+
+const clickMiniCartButton = async () => {
+	await page.hover( '.wc-block-mini-cart__button' );
+
+	await expect( page ).not.toMatchElement(
+		'.wc-block-mini-cart__drawer.is-loading'
+	);
+
+	await page.click( '.wc-block-mini-cart__button' );
+};
+
 if ( process.env.WOOCOMMERCE_BLOCKS_PHASE < 3 ) {
 	// eslint-disable-next-line jest/no-focused-tests
 	test.only( `skipping ${ block.name } tests`, () => {} );
 }
 
 describe( 'Shopper → Mini Cart', () => {
+	beforeAll( async () => {
+		setDefaultOptions( { ...options, timeout: 5000 } );
+	} );
+
+	afterAll( async () => {
+		// Reset default options.
+		setDefaultOptions( options );
+	} );
+
 	beforeEach( async () => {
 		await shopper.goToBlockPage( block.name );
 	} );
@@ -42,7 +68,7 @@ describe( 'Shopper → Mini Cart', () => {
 
 	describe( 'Drawer', () => {
 		it( 'The drawer opens when shopper clicks on the mini cart icon', async () => {
-			await page.click( '.wc-block-mini-cart__button' );
+			await clickMiniCartButton();
 
 			await expect( page ).toMatchElement(
 				'.wc-block-mini-cart__drawer',
@@ -53,7 +79,7 @@ describe( 'Shopper → Mini Cart', () => {
 		} );
 
 		it( 'The drawer closes when shopper clicks on the drawer close button', async () => {
-			await page.click( '.wc-block-mini-cart__button' );
+			await clickMiniCartButton();
 
 			await expect( page ).toMatchElement(
 				'.wc-block-mini-cart__drawer',
@@ -61,6 +87,9 @@ describe( 'Shopper → Mini Cart', () => {
 					text: 'Start shopping',
 				}
 			);
+
+			// Wait for the drawer to fully open.
+			await page.waitForTimeout( 500 );
 
 			await page.click(
 				'.wc-block-mini-cart__drawer .components-modal__header button'
@@ -75,7 +104,7 @@ describe( 'Shopper → Mini Cart', () => {
 		} );
 
 		it( 'The drawer closes when shopper clicks outside the drawer', async () => {
-			await page.click( '.wc-block-mini-cart__button' );
+			await clickMiniCartButton();
 
 			await expect( page ).toMatchElement(
 				'.wc-block-mini-cart__drawer',
@@ -111,7 +140,6 @@ describe( 'Shopper → Mini Cart', () => {
 
 			await expect( page ).toMatchElement( '.wc-block-mini-cart__title', {
 				text: 'Your cart (1 item)',
-				timeout: 5000,
 			} );
 
 			await page.mouse.click( 50, 200 );
@@ -122,7 +150,6 @@ describe( 'Shopper → Mini Cart', () => {
 
 			await expect( page ).toMatchElement( '.wc-block-mini-cart__title', {
 				text: 'Your cart (2 items)',
-				timeout: 5000,
 			} );
 		} );
 
@@ -148,7 +175,6 @@ describe( 'Shopper → Mini Cart', () => {
 				'.wc-block-mini-cart__products-table',
 				{
 					text: productTitle,
-					timeout: 5000,
 				}
 			);
 		} );
@@ -158,7 +184,6 @@ describe( 'Shopper → Mini Cart', () => {
 
 			await expect( page ).toMatchElement( '.wc-block-mini-cart__title', {
 				text: 'Your cart',
-				timeout: 5000,
 			} );
 
 			await expect( page ).toMatchElement(

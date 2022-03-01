@@ -11,19 +11,21 @@ import {
  * Internal dependencies
  */
 import { getBlockPagePermalink } from './get-block-page-permalink';
+import { SHOP_CART_BLOCK_PAGE, SHOP_CHECKOUT_BLOCK_PAGE } from './constants';
 
 export const shopper = {
 	...wcShopper,
 
 	goToCheckoutBlock: async () => {
-		const checkoutBlockPermalink = await getBlockPagePermalink(
-			`Checkout Block`
-		);
-
-		await page.goto( checkoutBlockPermalink, {
+		await page.goto( SHOP_CHECKOUT_BLOCK_PAGE, {
 			waitUntil: 'networkidle0',
 		} );
-		await page.waitForSelector( 'h1', { text: 'Checkout' } );
+	},
+
+	goToCartBlock: async () => {
+		await page.goto( SHOP_CART_BLOCK_PAGE, {
+			waitUntil: 'networkidle0',
+		} );
 	},
 
 	productIsInCheckoutBlock: async ( productTitle, quantity, total ) => {
@@ -34,16 +36,16 @@ export const shopper = {
 		if ( button ) {
 			await button.click();
 		}
-		await page.waitForSelector( 'span', {
+		await expect( page ).toMatchElement( 'span', {
 			text: productTitle,
 		} );
-		await page.waitForSelector(
+		await expect( page ).toMatchElement(
 			'div.wc-block-components-order-summary-item__quantity',
 			{
 				text: quantity,
 			}
 		);
-		await page.waitForSelector(
+		await expect( page ).toMatchElement(
 			'span.wc-block-components-product-price__value',
 			{
 				text: total,
