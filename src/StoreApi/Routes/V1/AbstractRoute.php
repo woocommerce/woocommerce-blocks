@@ -35,13 +35,6 @@ abstract class AbstractRoute implements RouteInterface {
 	protected $schema_controller;
 
 	/**
-	 * The routes identifier.
-	 *
-	 * @var string
-	 */
-	const IDENTIFIER = '';
-
-	/**
 	 * The routes schema.
 	 *
 	 * @var string
