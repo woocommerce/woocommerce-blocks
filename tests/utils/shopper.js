@@ -11,11 +11,7 @@ import {
  * Internal dependencies
  */
 import { getBlockPagePermalink } from './get-block-page-permalink';
-import {
-	SHOP_CART_BLOCK_PAGE,
-	SHOP_CHECKOUT_BLOCK_PAGE,
-	SHOP_CART_PAGE,
-} from './constants';
+import { SHOP_CART_BLOCK_PAGE, SHOP_CHECKOUT_BLOCK_PAGE } from './constants';
 
 export const shopper = {
 	...wcShopper,
@@ -64,7 +60,7 @@ export const shopper = {
 
 		await expect( page ).toMatchElement( 'h1', { text: title } );
 	},
- 
+
 	block: {
 		goToCart: async () => {
 			await page.goto( SHOP_CART_BLOCK_PAGE, {
@@ -103,7 +99,7 @@ export const shopper = {
 				text: 'Your cart is currently empty.',
 			} );
 		},
-  },
+	},
 
 	/**
 	 * Override the @woocommerce/e2e-utils `emptyCart` method to fix the
