@@ -13,13 +13,6 @@ class WpErrorResponse {
 	private $data = [];
 
 	/**
-	 * Error headers for response.
-	 *
-	 * @var array
-	 */
-	private $headers = [];
-
-	/**
 	 * Status code for response.
 	 *
 	 * @var integer
@@ -42,21 +35,12 @@ class WpErrorResponse {
 			500
 		);
 
-		$this->headers = array_reduce(
-			$error_data,
-			static function ( $headers, $error_data ) {
-				return is_array( $error_data ) && isset( $error_data['headers'] ) ? array_merge( $headers, $error_data['headers'] ) : $headers;
-			},
-			[]
-		);
-
 		$errors = [];
 
 		foreach ( (array) $error->errors as $code => $messages ) {
 			foreach ( (array) $messages as $message ) {
 				$error_data = $error->get_error_data( $code );
-				unset( $error_data['headers'] );
-				$errors[] = array(
+				$errors[]   = array(
 					'code'    => $code,
 					'message' => $message,
 					'data'    => $error_data,

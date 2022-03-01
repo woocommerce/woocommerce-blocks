@@ -35,7 +35,6 @@ class RestApi {
 	protected function init() {
 		add_action( 'rest_api_init', array( $this, 'register_rest_routes' ), 10 );
 		add_filter( 'rest_authentication_errors', array( $this, 'store_api_authentication' ) );
-		add_filter( 'rest_request_after_callbacks', array( $this, 'store_api_error_headers' ) );
 		add_action( 'set_logged_in_cookie', array( $this, 'store_api_logged_in_cookie' ) );
 	}
 
@@ -138,20 +137,6 @@ class RestApi {
 
 		// Pass through errors from other authentication methods used before this one.
 		return ! empty( $result ) ? $result : true;
-	}
-
-	/**
-	 * For error responses, adds support for custom headers.
-	 *
-	 * @param \WP_Error|\WP_Rest_response $response Response from route.
-	 * @return \WP_Error|\WP_Rest_response
-	 */
-	public function store_api_error_headers( $response ) {
-		if ( is_wp_error( $response ) ) {
-			$error_response = new WpErrorResponse( $response );
-			return $error_response->get_response();
-		}
-		return $response;
 	}
 
 	/**
