@@ -3,7 +3,6 @@ namespace Automattic\WooCommerce\Blocks;
 
 use Automattic\WooCommerce\Blocks\StoreApi\RoutesController;
 use Automattic\WooCommerce\Blocks\StoreApi\Utilities\RateLimits;
-use Automattic\WooCommerce\Blocks\StoreApi\Utilities\WpErrorResponse;
 
 /**
  * RestApi class.
