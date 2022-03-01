@@ -59,7 +59,6 @@ class InboxNotifications {
 	 * Creates a notification letting merchants know about the Cart and Checkout Blocks.
 	 */
 	public static function create_surface_cart_checkout_blocks_notification() {
-		$node_ids = [];
 		// If this is the feature plugin, then we don't need to do this. This should only show when Blocks is bundled
 		// with WooCommerce Core.
 		if ( Package::feature()->is_feature_plugin_build() ) {
