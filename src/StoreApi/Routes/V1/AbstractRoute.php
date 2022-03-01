@@ -153,8 +153,35 @@ abstract class AbstractRoute implements RouteInterface {
 	 * @return \WP_REST_Response List of associative arrays with code and message keys.
 	 */
 	protected function error_to_response( $error ) {
-		$error_response = new WpErrorResponse( $error );
-		return $error_response->get_response();
+		$error_data = $error->get_all_error_data();
+		$status     = array_reduce(
+			$error_data,
+			static function ( $status, $error_data ) {
+				return is_array( $error_data ) && isset( $error_data['status'] ) ? $error_data['status'] : $status;
+			},
+			500
+		);
+
+		$errors = [];
+
+		foreach ( (array) $error->errors as $code => $messages ) {
+			foreach ( (array) $messages as $message ) {
+				$error_data = $error->get_error_data( $code );
+				$errors[]   = array(
+					'code'    => $code,
+					'message' => $message,
+					'data'    => $error_data,
+				);
+			}
+		}
+
+		$data = array_shift( $errors );
+
+		if ( count( $errors ) ) {
+			$data['additional_errors'] = $errors;
+		}
+
+		return new \WP_REST_Response( $data, $status );
 	}
 
 	/**
