@@ -100,38 +100,4 @@ export const shopper = {
 			} );
 		},
 	},
-
-	/**
-	 * Override the @woocommerce/e2e-utils `emptyCart` method to fix the
-	 * ReferenceError issue and remove the cart items.
-	 *
-	 * @todo Remove shopper.emptyCart overload once the upstream  is fixed
-	 */
-	emptyCart: async () => {
-		await page.goto( SHOP_CART_PAGE, {
-			waitUntil: 'networkidle0',
-		} );
-
-		// Remove products if they exist
-		if ( ( await page.$( '.remove' ) ) !== null ) {
-			let products = await page.$$( '.remove' );
-			while ( products && products.length > 0 ) {
-				await page.click( '.remove' );
-				await uiUnblocked();
-				products = await page.$$( '.remove' );
-			}
-		}
-
-		// Remove coupons if they exist
-		if ( ( await page.$( '.woocommerce-remove-coupon' ) ) !== null ) {
-			await page.click( '.woocommerce-remove-coupon' );
-			await uiUnblocked();
-		}
-
-		await page.waitForSelector( '.woocommerce-info' );
-		// eslint-disable-next-line jest/no-standalone-expect
-		await expect( page ).toMatchElement( '.woocommerce-info', {
-			text: 'Your cart is currently empty.',
-		} );
-	},
 };
