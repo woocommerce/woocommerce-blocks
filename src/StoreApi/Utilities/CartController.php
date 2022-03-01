@@ -668,7 +668,7 @@ class CartController {
 	/**
 	 * Validate the cart and get a list of errors.
 	 *
-	 * @return WP_Error[] An array of WP_Errors describing the cart's error state.
+	 * @return WP_Error A WP_Error instance containing the cart's errors.
 	 */
 	public function get_cart_errors() {
 		$errors = [];
@@ -676,73 +676,18 @@ class CartController {
 		try {
 			$this->validate_cart();
 		} catch ( RouteException $error ) {
-			$errors[] = new WP_Error( $error->getErrorCode(), $error->getMessage(), $error->getAdditionalData() );
+			$errors->add( $error->getErrorCode(), $error->getMessage(), $error->getAdditionalData() );
 		} catch ( InvalidCartException $error ) {
 
 			$wp_error = $error->getError();
 			foreach ( (array) $wp_error->errors as $code => $messages ) {
 				foreach ( (array) $messages as $message ) {
 					$additional_data = $wp_error->get_error_data( $code );
-					$errors[]        = new WP_Error( $code, $message, $additional_data );
+					$errors->add( $code, $message, $additional_data );
 				}
 			}
 		} catch ( \Exception $error ) {
-			$errors[] = new WP_Error( $error->getCode(), $error->getMessage() );
-		}
-
-		$cart_errors = array_filter(
-			$errors,
-			function ( WP_Error $error ) {
-				return $error->has_errors();
-			}
-		);
-
-		return $cart_errors;
-	}
-
-	/**
-	 * Validate all items in the cart and get a list of errors.
-	 *
-	 * @return WP_Error[] An array of WP_Errors describing the cart's error state.
-	 */
-	public function get_cart_item_errors() {
-		$errors = [];
-
-		try {
-			$this->validate_cart_items();
-		} catch ( InvalidCartException $error ) {
-
-			$wp_error = $error->getError();
-			foreach ( (array) $wp_error->errors as $code => $messages ) {
-				foreach ( (array) $messages as $message ) {
-					$additional_data = $wp_error->get_error_data( $code );
-					$errors[]        = new \WP_Error( $code, $message, $additional_data );
-				}
-			}
-		}
-
-		return $errors;
-	}
-
-	/**
-	 * Validate all coupons in the cart and get a list of errors.
-	 *
-	 * @return WP_Error[] An array of WP_Errors describing coupons error state.
-	 */
-	public function get_cart_coupon_errors() {
-		$errors = [];
-
-		try {
-			$this->validate_cart_coupons();
-		} catch ( InvalidCartException $error ) {
-
-			$wp_error = $error->getError();
-			foreach ( (array) $wp_error->errors as $code => $messages ) {
-				foreach ( (array) $messages as $message ) {
-					$additional_data = $wp_error->get_error_data( $code );
-					$errors[]        = new \WP_Error( $code, $message, $additional_data );
-				}
-			}
+			$errors->add( $error->getCode(), $error->getMessage() );
 		}
 
 		return $errors;
