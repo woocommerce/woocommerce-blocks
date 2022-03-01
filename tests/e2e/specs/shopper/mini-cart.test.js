@@ -17,8 +17,8 @@ const options = getDefaultOptions();
 const clickMiniCartButton = async () => {
 	await page.hover( '.wc-block-mini-cart__button' );
 
-	await expect( page ).not.toMatchElement(
-		'.wc-block-mini-cart__drawer.is-loading'
+	await page.waitForFunction(
+		'document.querySelector(".wc-block-mini-cart__drawer.is-loading") === null'
 	);
 
 	await page.click( '.wc-block-mini-cart__button' );
@@ -31,6 +31,10 @@ if ( process.env.WOOCOMMERCE_BLOCKS_PHASE < 3 ) {
 
 describe( 'Shopper → Mini Cart', () => {
 	beforeAll( async () => {
+		/**
+		 * Mini Cart takes time to open. Sometimes, on slow machines, 500ms
+		 * is not enough. So, we increase the default timeout to 5 seconds.
+		 */
 		setDefaultOptions( { ...options, timeout: 5000 } );
 	} );
 
@@ -158,10 +162,12 @@ describe( 'Shopper → Mini Cart', () => {
 				'.wc-block-all-products .wc-block-grid__product'
 			);
 			if ( products.length === 0 ) {
-				return;
+				throw new Error(
+					'No products found on the Mini Cart Block page.'
+				);
 			}
 
-			// Get a random product to ensure the test isn't false positive.
+			// Get a random product to better replicate human behavior.
 			const product =
 				products[ Math.floor( Math.random() * products.length ) ];
 			const productTitle = await page.evaluate( ( el ) => {
