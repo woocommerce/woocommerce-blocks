@@ -71,7 +71,6 @@ const reducer: Reducer< CartState > = (
 					errors: EMPTY_CART_ERRORS,
 					cartData: {
 						...state.cartData,
-						shippingAsBilling: state.cartData.shippingAsBilling,
 						...action.response,
 					},
 				};
@@ -112,6 +111,7 @@ const reducer: Reducer< CartState > = (
 				},
 			};
 			break;
+
 		case types.REMOVING_COUPON:
 			if ( action.couponCode || action.couponCode === '' ) {
 				state = {
