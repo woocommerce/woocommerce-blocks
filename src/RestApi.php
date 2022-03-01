@@ -108,30 +108,34 @@ class RestApi {
 		 * @return boolean
 		 */
 		if ( ! apply_filters( 'woocommerce_store_api_disable_rate_limit_check', false ) ) {
-			$server                = rest_get_server();
-			$action_id             = 'store_api_request_' . ( is_user_logged_in() ? get_current_user_id() : $this->get_ip_address() );
-			$allowed_request_limit = 2; // 25 requests.
-			$allowed_request_reset = 10; // 10 seconds.
-			$rate_limit            = RateLimits::update_rate_limit( $action_id, $allowed_request_reset, $allowed_request_limit );
+			$action_id          = 'store_api_request_' . ( is_user_logged_in() ? get_current_user_id() : md5( $this->get_ip_address() ) );
+			$rate_limit_limit   = 2;
+			$rate_limit_seconds = 10;
+			$retry              = RateLimits::is_exceeded_retry_after( $action_id );
+			$server             = rest_get_server();
+			$server->send_header( 'X-RateLimit-Limit', $rate_limit_limit );
 
-			$server->send_header( 'X-RateLimit-Limit', 10 );
-			$server->send_header( 'X-RateLimit-Remaining', $rate_limit->remaining );
-			$server->send_header( 'X-RateLimit-Reset', $rate_limit->reset );
-
-			if ( RateLimits::is_rate_limit_exceeded( $action_id ) ) {
-				$server->send_header( 'Retry-After', $rate_limit->reset - time() );
+			if ( false !== $retry ) {
+				$server->send_header( 'Retry-After', $retry );
+				$server->send_header( 'X-RateLimit-Remaining', 0 );
+				$server->send_header( 'X-RateLimit-Reset', time() + $retry );
 
 				return new \WP_Error(
 					'rate_limit_exceeded',
 					sprintf(
 						'Too many requests. Please wait %d seconds before trying again.',
-						$rate_limit->reset - time()
+						$retry
 					),
 					[
 						'status' => 429,
 					]
 				);
 			}
+
+			// 25 requests per 10 seconds.
+			$rate_limit = RateLimits::update_rate_limit( $action_id, $rate_limit_seconds, $rate_limit_limit );
+			$server->send_header( 'X-RateLimit-Remaining', $rate_limit->remaining );
+			$server->send_header( 'X-RateLimit-Reset', $rate_limit->reset );
 		}
 
 		// Pass through errors from other authentication methods used before this one.

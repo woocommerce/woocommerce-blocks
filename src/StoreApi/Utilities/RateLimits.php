@@ -19,7 +19,7 @@ class RateLimits extends WC_Rate_Limiter {
 	 * Get current rate limit row from DB and normalize types. This query is not cached.
 	 *
 	 * @param string $action_id Identifier of the action.
-	 * @return object Object containing reset and remaining.
+	 * @return object|null Object containing reset and remaining.
 	 */
 	protected static function get_rate_limit_row( $action_id ) {
 		global $wpdb;
@@ -36,25 +36,37 @@ class RateLimits extends WC_Rate_Limiter {
 			'OBJECT'
 		);
 
-		return (object) [
+		return $row ? (object) [
 			'reset'     => (int) $row->reset,
 			'remaining' => (int) $row->remaining,
-		];
+		] : null;
 	}
 
 	/**
-	 * Returns true if the rate limit has been exceeded within the current rate period.
+	 * Returns current rate limit values using cache where possible.
 	 *
 	 * @param string $action_id Identifier of the action.
-	 * @return bool
+	 * @return object|null
 	 */
-	public static function is_rate_limit_exceeded( $action_id ) {
+	public static function get_rate_limit( $action_id ) {
 		$current_limit = self::get_cached( $action_id );
 
 		if ( false === $current_limit ) {
 			$current_limit = self::get_rate_limit_row( $action_id );
 			self::set_cache( $action_id, $current_limit );
 		}
+
+		return $current_limit;
+	}
+
+	/**
+	 * If exceeded, seconds until reset.
+	 *
+	 * @param string $action_id Identifier of the action.
+	 * @return bool
+	 */
+	public static function is_exceeded_retry_after( $action_id ) {
+		$current_limit = self::get_rate_limit( $action_id );
 
 		// No record of action running, so action is allowed to run.
 		if ( null === $current_limit ) {
@@ -63,7 +75,7 @@ class RateLimits extends WC_Rate_Limiter {
 
 		// Before the next run is allowed, retry forbidden.
 		if ( time() <= $current_limit->reset && $current_limit->remaining <= 0 ) {
-			return true;
+			return (int) $current_limit->reset - time();
 		}
 
 		// After the next run is allowed, retry allowed.
