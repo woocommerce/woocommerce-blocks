@@ -60,6 +60,10 @@ class CartControllerTests extends TestCase {
 		}, 10, 2 );
 
 		$errors          = $class->get_cart_errors();
+
+		$this->assertTrue( is_wp_error( $errors ) );
+		$this->assertTrue( $errors->has_errors() );
+
 		$error_codes     = $errors->get_error_codes();
 		$expected_errors = [
 			'woocommerce-blocks-product-partially-out-of-stock',

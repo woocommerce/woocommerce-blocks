@@ -671,21 +671,14 @@ class CartController {
 	 * @return WP_Error A WP_Error instance containing the cart's errors.
 	 */
 	public function get_cart_errors() {
-		$errors = [];
+		$errors = new WP_Error();
 
 		try {
 			$this->validate_cart();
 		} catch ( RouteException $error ) {
 			$errors->add( $error->getErrorCode(), $error->getMessage(), $error->getAdditionalData() );
 		} catch ( InvalidCartException $error ) {
-
-			$wp_error = $error->getError();
-			foreach ( (array) $wp_error->errors as $code => $messages ) {
-				foreach ( (array) $messages as $message ) {
-					$additional_data = $wp_error->get_error_data( $code );
-					$errors->add( $code, $message, $additional_data );
-				}
-			}
+			$errors->merge_from( $error->getError() );
 		} catch ( \Exception $error ) {
 			$errors->add( $error->getCode(), $error->getMessage() );
 		}
