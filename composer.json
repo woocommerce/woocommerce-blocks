@@ -27,7 +27,8 @@
 			"Automattic\\WooCommerce\\Blocks\\": "src/"
 		},
 		"files": [
-			"src/deprecated.php"
+			"src/StoreApi/deprecated.php",
+			"src/StoreApi/functions.php"
 		]
 	},
 	"autoload-dev": {
@@ -46,6 +47,11 @@
 	"config": {
 		"platform": {
 			"php": "7.4.24"
+		},
+		"allow-plugins": {
+			"automattic/jetpack-autoloader": true,
+			"composer/installers": true,
+			"dealerdirect/phpcodesniffer-composer-installer": true
 		}
 	},
 	"extra": {
