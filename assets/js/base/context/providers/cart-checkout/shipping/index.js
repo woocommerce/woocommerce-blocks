@@ -25,7 +25,7 @@ import {
 	emitEvent,
 } from './event-emit';
 import { useCheckoutContext } from '../checkout-state';
-import { useCustomerDataContext } from '../customer';
+import { useCustomerData } from '../../../hooks/use-customer-data';
 import { useStoreCart } from '../../../hooks/cart/use-store-cart';
 import { useSelectShippingRate } from '../../../hooks/shipping/use-select-shipping-rate';
 
@@ -52,7 +52,7 @@ export const useShippingDataContext = () => {
  */
 export const ShippingDataProvider = ( { children } ) => {
 	const { dispatchActions } = useCheckoutContext();
-	const { shippingAddress, setShippingAddress } = useCustomerDataContext();
+	const { shippingAddress, setShippingAddress } = useCustomerData();
 	const {
 		cartNeedsShipping: needsShipping,
 		cartHasCalculatedShipping: hasCalculatedShipping,
