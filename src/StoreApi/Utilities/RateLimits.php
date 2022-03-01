@@ -49,8 +49,6 @@ class RateLimits extends WC_Rate_Limiter {
 	 * @return bool
 	 */
 	public static function is_rate_limit_exceeded( $action_id ) {
-		global $wpdb;
-
 		$current_limit = self::get_cached( $action_id );
 
 		if ( false === $current_limit ) {

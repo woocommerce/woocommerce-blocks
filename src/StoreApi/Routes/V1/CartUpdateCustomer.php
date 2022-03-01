@@ -37,7 +37,7 @@ class CartUpdateCustomer extends AbstractCartRoute {
 			[
 				'methods'             => \WP_REST_Server::CREATABLE,
 				'callback'            => [ $this, 'get_response' ],
-				'permission_callback' => [ $this, 'permission_callback' ],
+				'permission_callback' => '__return_true',
 				'args'                => [
 					'billing_address'  => [
 						'description'       => __( 'Billing address.', 'woo-gutenberg-products-block' ),

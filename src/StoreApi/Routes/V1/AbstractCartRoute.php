@@ -251,31 +251,4 @@ abstract class AbstractCartRoute extends AbstractRoute {
 		}
 		return new \WP_Error( $error_code, $error_message, [ 'status' => $http_status_code ] );
 	}
-
-	/**
-	 * Runs before a request is handled.
-	 *
-	 * @param \WP_REST_Request $request Request.
-	 * @return boolean True if the user has permission to make the request.
-	 */
-	public function permission_callback( \WP_REST_Request $request ) {
-		// Load cart early so sessions are available.
-		$this->cart_controller->load_cart();
-
-		if ( $this->requires_nonce( $request ) ) {
-			$nonce_error = $this->check_nonce( $request );
-
-			if ( is_wp_error( $nonce_error ) ) {
-				$server = rest_get_server();
-
-				foreach ( $this->get_nonce_headers() as $header => $value ) {
-					$server->send_header( $header, $value );
-				}
-
-				return $nonce_error;
-			}
-		}
-
-		return true;
-	}
 }
