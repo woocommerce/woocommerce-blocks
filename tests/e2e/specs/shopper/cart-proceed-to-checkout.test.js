@@ -1,62 +1,30 @@
 /**
- * External dependencies
- */
-import { merchant } from '@woocommerce/e2e-utils';
-
-/**
  * Internal dependencies
  */
-import {
-	getNormalPagePermalink,
-	shopper,
-	visitPostOfType,
-} from '../../../utils';
+import { shopper } from '../../../utils';
+import { simpleProductName } from '../../../utils/constants';
 
 const block = {
 	name: 'Cart',
 };
-
-const simpleProductName = 'Woo Single #1';
 
 if ( process.env.WOOCOMMERCE_BLOCKS_PHASE < 2 )
 	// eslint-disable-next-line jest/no-focused-tests
 	test.only( `skipping ${ block.name } tests`, () => {} );
 
 describe( 'Shopper → Cart → Can proceed to checkout', () => {
-	let productPermalink;
-
 	beforeAll( async () => {
-		// prevent CartCheckoutCompatibilityNotice from appearing
-		await page.evaluate( () => {
-			localStorage.setItem(
-				'wc-blocks_dismissed_compatibility_notices',
-				'["checkout"]'
-			);
-		} );
-		await merchant.login();
-
-		// Get product page permalink.
-		await visitPostOfType( simpleProductName, 'product' );
-		productPermalink = await getNormalPagePermalink();
-
-		await merchant.logout();
+		await shopper.block.emptyCart();
 	} );
 
 	afterAll( async () => {
-		// empty cart from shortcode page
-		await shopper.goToCart();
-		await shopper.removeFromCart( simpleProductName );
-		await page.evaluate( () => {
-			localStorage.removeItem(
-				'wc-blocks_dismissed_compatibility_notices'
-			);
-		} );
+		await shopper.block.emptyCart();
 	} );
 
 	it( 'allows customer to proceed to checkout', async () => {
-		await page.goto( productPermalink );
-		await shopper.addToCart();
-		await shopper.goToCartBlock();
+		await shopper.goToShop();
+		await shopper.addToCartFromShopPage( simpleProductName );
+		await shopper.block.goToCart();
 
 		// Click on "Proceed to Checkout" button
 		await Promise.all( [
