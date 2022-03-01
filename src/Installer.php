@@ -1,8 +1,6 @@
 <?php
 namespace Automattic\WooCommerce\Blocks;
 
-use Automattic\WooCommerce\Internal\Utilities\DatabaseUtil;
-
 /**
  * Installer class.
  * Handles installation of Blocks plugin dependencies.
