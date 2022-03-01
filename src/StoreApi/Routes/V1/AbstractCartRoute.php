@@ -307,7 +307,7 @@ abstract class AbstractCartRoute extends AbstractRoute {
 				[
 					'headers' => array_merge(
 						$this->requires_nonce( $request ) ? $this->get_nonce_headers() : [],
-						$this->has_rate_limit( $request ) ? $this->get_rate_limit_headers() : [],
+						$this->has_rate_limit( $request ) ? $this->get_rate_limit_headers() : []
 					),
 				]
 			);
