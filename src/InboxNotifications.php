@@ -74,10 +74,12 @@ class InboxNotifications {
 			return;
 		}
 
-		if ( ! apply_filters( 'woocommerce_admin_disabled', false ) ) {
-			$data_store = \WC_Data_Store::load( 'admin-note' );
-			$note_ids   = $data_store->get_notes_with_name( self::SURFACE_CART_CHECKOUT_NOTE_NAME );
+		if ( apply_filters( 'woocommerce_admin_disabled', false ) ) {
+			return;
 		}
+
+		$data_store = \WC_Data_Store::load( 'admin-note' );
+		$note_ids   = $data_store->get_notes_with_name( self::SURFACE_CART_CHECKOUT_NOTE_NAME );
 		// Calculate store's eligibility to be shown the notice, starting with whether they have any plugins we know to
 		// be incompatible with Blocks. This check is done before checking if the note exists already because we want to
 		// delete the note if the merchant activates an ineligible plugin.
