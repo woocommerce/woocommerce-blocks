@@ -4,6 +4,9 @@ namespace Automattic\WooCommerce\Blocks\StoreApi\Utilities;
 use WC_Rate_Limiter;
 use WC_Cache_Helper;
 
+/**
+ * RateLimits class.
+ */
 class RateLimits extends WC_Rate_Limiter {
 	/**
 	 * Gets a cache prefix.
