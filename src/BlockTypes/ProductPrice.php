@@ -2,16 +2,16 @@
 namespace Automattic\WooCommerce\Blocks\BlockTypes;
 
 /**
- * ProductImage class.
+ * ProductPrice class.
  */
-class ProductImage extends AbstractBlock {
+class ProductPrice extends AbstractBlock {
 
 	/**
 	 * Block name.
 	 *
 	 * @var string
 	 */
-	protected $block_name = 'product-image';
+	protected $block_name = 'product-price';
 
 	/**
 	 * API version name.
@@ -29,7 +29,7 @@ class ProductImage extends AbstractBlock {
 	protected function get_block_type_editor_script( $key = null ) {
 		$script = [
 			'handle'       => 'wc-' . $this->block_name . '-block',
-			'path'         => $this->asset_api->get_block_asset_build_path( 'atomic-block-components/image' ),
+			'path'         => $this->asset_api->get_block_asset_build_path( 'atomic-block-components/price' ),
 			'dependencies' => [ 'wc-blocks' ],
 		];
 		return $key ? $script[ $key ] : $script;
@@ -43,22 +43,19 @@ class ProductImage extends AbstractBlock {
 	 */
 	protected function get_block_type_supports() {
 		return array(
-			'__experimentalBorder'   =>
+			'color'                  =>
 			array(
-				'radius'                          => true,
-				'__experimentalSkipSerialization' => true,
+				'text'       => true,
+				'background' => true,
+				'link'       => false,
 			),
 			'typography'             =>
 			array(
-				'fontSize'                        => true,
-				'__experimentalSkipSerialization' => true,
+				'fontSize'                 => true,
+				'__experimentalFontWeight' => true,
+				'__experimentalFontStyle'  => true,
 			),
-			'spacing'                =>
-			array(
-				'margin'                          => true,
-				'__experimentalSkipSerialization' => true,
-			),
-			'__experimentalSelector' => '.wc-block-components-product-image',
+			'__experimentalSelector' => '.wc-block-components-product-price',
 		);
 	}
 
