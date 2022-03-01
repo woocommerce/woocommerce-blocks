@@ -218,11 +218,10 @@ describe( 'Shopper → Mini Cart', () => {
 		} );
 
 		it( 'Can remove product from Mini Cart', async () => {
-			await page.click( '.add_to_cart_button' );
+			await clickMiniCartButton();
 
 			await expect( page ).toMatchElement( '.wc-block-mini-cart__title', {
 				text: 'Your cart (1 item)',
-				timeout: 5000,
 			} );
 
 			await page.waitForTimeout( 500 ); // Ensure the drawer is fully opened.
@@ -233,7 +232,6 @@ describe( 'Shopper → Mini Cart', () => {
 				'.wc-block-mini-cart__drawer',
 				{
 					text: 'Your cart is currently empty!',
-					timeout: 5000,
 				}
 			);
 		} );
