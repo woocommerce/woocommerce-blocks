@@ -105,19 +105,6 @@ abstract class AbstractCartRoute extends AbstractRoute {
 	}
 
 	/**
-	 * Get a list of nonce headers.
-	 *
-	 * @return array
-	 */
-	protected function get_nonce_headers() {
-		return [
-			'X-WC-Store-API-Nonce'           => wp_create_nonce( 'wc_store_api' ),
-			'X-WC-Store-API-Nonce-Timestamp' => time(),
-			'X-WC-Store-API-User'            => get_current_user_id(),
-		];
-	}
-
-	/**
 	 * Add nonce headers to a response object.
 	 *
 	 * @param \WP_REST_Response $response The response object.
@@ -188,16 +175,6 @@ abstract class AbstractCartRoute extends AbstractRoute {
 	 */
 	protected function requires_nonce( \WP_REST_Request $request ) {
 		return $this->is_update_request( $request );
-	}
-
-	/**
-	 * Checks if rate limits are enabled for the route.
-	 *
-	 * @param \WP_REST_Request $request Request.
-	 * @return bool
-	 */
-	protected function has_rate_limit( \WP_REST_Request $request ) {
-		return ! empty( $this->rate_limit_id ) && $this->is_update_request( $request );
 	}
 
 	/**
@@ -284,131 +261,21 @@ abstract class AbstractCartRoute extends AbstractRoute {
 	public function permission_callback( \WP_REST_Request $request ) {
 		// Load cart early so sessions are available.
 		$this->cart_controller->load_cart();
-		$return = true;
 
 		if ( $this->requires_nonce( $request ) ) {
-			$result = $this->check_nonce( $request );
+			$nonce_error = $this->check_nonce( $request );
 
-			if ( is_wp_error( $result ) ) {
-				$return = $result;
+			if ( is_wp_error( $nonce_error ) ) {
+				$server = rest_get_server();
+
+				foreach ( $this->get_nonce_headers() as $header => $value ) {
+					$server->send_header( $header, $value );
+				}
+
+				return $nonce_error;
 			}
-		}
-
-		if ( $this->has_rate_limit( $request ) ) {
-			$result = $this->check_rate_limit();
-
-			if ( is_wp_error( $result ) ) {
-				$return = $result;
-			}
-		}
-
-		if ( is_wp_error( $return ) ) {
-			$return->add_data(
-				[
-					'headers' => array_merge(
-						$this->requires_nonce( $request ) ? $this->get_nonce_headers() : [],
-						$this->has_rate_limit( $request ) ? $this->get_rate_limit_headers() : []
-					),
-				]
-			);
-		}
-
-		return $return;
-	}
-
-	/**
-	 * Get list of rate limit headers.
-	 *
-	 * @return array
-	 */
-	protected function get_rate_limit_headers() {
-		$rate_limit = $this->get_rate_limit();
-		$headers    = [
-			'X-RateLimit-Limit'     => $rate_limit->limit,
-			'X-RateLimit-Remaining' => $rate_limit->remaining,
-			'X-RateLimit-Reset'     => $rate_limit->reset,
-		];
-
-		if ( $this->is_rate_limit_exceeded() ) {
-			$headers['Retry-After'] = $rate_limit->reset - time();
-		}
-
-		return $headers;
-	}
-
-	/**
-	 * Check the current rate limits and return an error if exceeded..
-	 *
-	 * @return \WP_Error|boolean
-	 */
-	protected function check_rate_limit() {
-		/**
-		 * Filters the Store API rate limit check.
-		 *
-		 * This can be used to disable the rate limit check when testing API endpoints via a REST API client.
-		 *
-		 * @param boolean $disable_rate_limit_check If true, checks will be disabled.
-		 * @return boolean
-		 */
-		if ( apply_filters( 'woocommerce_store_api_disable_rate_limit_check', false ) ) {
-			return true;
-		}
-
-		if ( $this->is_rate_limit_exceeded() ) {
-			$rate_limit = $this->get_rate_limit();
-
-			return $this->get_route_error_response(
-				'woocommerce_store_api_rate_limit_exceeded',
-				sprintf(
-					'Too many requests. Please wait %d seconds before trying again.',
-					$rate_limit->reset - time()
-				),
-				429
-			);
 		}
 
 		return true;
-	}
-
-	/**
-	 * Get current rate limits.
-	 *
-	 * @return object
-	 */
-	protected function get_rate_limit() {
-		$session = (array) wc()->session->get( $this->rate_limit_id . '-rate-limit', [] );
-
-		return (object) [
-			'limit'     => $this->rate_limit_limit,
-			'remaining' => $session['remaining'] ?? $this->rate_limit_limit,
-			'reset'     => $session['reset'] ?? time() + $this->rate_limit_reset,
-		];
-	}
-
-	/**
-	 * Check if rate limit was exceeded.
-	 *
-	 * @return boolean
-	 */
-	protected function is_rate_limit_exceeded() {
-		$rate_limit = $this->get_rate_limit();
-
-		return ! $rate_limit->remaining && time() < $rate_limit->reset;
-	}
-
-	/**
-	 * Update session rate limit after successful response.
-	 */
-	public function update_rate_limit() {
-		$rate_limit = $this->get_rate_limit();
-		$expired    = time() >= $rate_limit->reset;
-
-		wc()->session->set(
-			$this->rate_limit_id . '-rate-limit',
-			[
-				'remaining' => $expired ? $rate_limit->limit - 1 : max( 0, $rate_limit->remaining - 1 ),
-				'reset'     => $expired ? time() + $this->rate_limit_reset : $rate_limit->reset,
-			]
-		);
 	}
 }

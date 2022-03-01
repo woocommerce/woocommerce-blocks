@@ -37,27 +37,6 @@ class Checkout extends AbstractCartRoute {
 	private $order = null;
 
 	/**
-	 * String based identifier for this routes rate limit.
-	 *
-	 * @var string
-	 */
-	protected $rate_limit_id = 'checkout';
-
-	/**
-	 * Number of requests allowed per window.
-	 *
-	 * @var integer
-	 */
-	protected $rate_limit_limit = 5;
-
-	/**
-	 * Rate limit window size in seconds.
-	 *
-	 * @var integer
-	 */
-	protected $rate_limit_reset = 60;
-
-	/**
 	 * Get the path of this REST route.
 	 *
 	 * @return string
