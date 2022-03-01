@@ -26,14 +26,15 @@ This method is applied to the filter `get_block_templates`, which is executed be
 
 **Typically executed when:**
 * Loading the "All Templates" view in the Site Editor
-* Loading one of the templates on the frontend where the query would build a list of relevant templates based on a hierarchy (for example, the product page hierarchy could be an array containing  `single-product-[product-name].html`, `single-product.html`, `single.html`).
+* Loading one of the templates on the front-end where the query would build a list of relevant templates based on a hierarchy (for example, the product page hierarchy could be an array containing  `single-product-[product-name].html`, `single-product.html`, `single.html`).
+* Loading the "Edit Product" view.
 
 **This method is responsible for:**
 
 * Giving our templates a user-friendly title (e.g. turning "single-product" into "Product Page").
 * It collects all the WooCommerce templates from both the filesystem and the database (customized templates are stored in the database as posts) and adds them to the returned list.
 * In the event the theme has a `archive-product.html` template file, but not category/tag template files, it is eligible to use the `archive-product.html` file in their place. So we trick Gutenberg in thinking some templates (e.g. category/tag) have a theme file available if it is using the `archive-product.html` template, even though _technically_ the theme does not have a specific file for them.
-* If the query is targeting templates for a specific post type (e.g. on the Edit Post view), we do not add ineligible WooCommerce templates to the returned list.
+* Ensuring we do not add irrelevant WooCommerce templates in the returned list. For example, if  `$query['post_type']` has a value (e.g. `product`) this means the query is requesting templates related to that specific post type, so we filter out any irrelevant ones. This _could_ be used to show/hide templates from the template dropdown on the "Edit Product" screen in WP Admin.
 
 ### Return value
 
