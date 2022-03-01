@@ -9,10 +9,11 @@ import {
 	ToolbarGroup,
 	RangeControl,
 	SelectControl,
+	__experimentalToggleGroupControl as ToggleGroupControl,
+	__experimentalToggleGroupControlOption as ToggleGroupControlOption,
 } from '@wordpress/components';
 import { BlockControls } from '@wordpress/block-editor';
 import { getAdminLink, getSetting } from '@woocommerce/settings';
-import ToggleButtonControl from '@woocommerce/editor-components/toggle-button-control';
 
 export const getBlockControls = ( editMode, setAttributes, buttonTitle ) => (
 	<BlockControls>
@@ -106,32 +107,31 @@ export const getSharedReviewContentControls = ( attributes, setAttributes ) => {
 			/>
 			{ attributes.showReviewImage && (
 				<>
-					<ToggleButtonControl
+					<ToggleGroupControl
 						label={ __(
 							'Review image',
 							'woo-gutenberg-products-block'
 						) }
 						value={ attributes.imageType }
-						options={ [
-							{
-								label: __(
-									'Reviewer photo',
-									'woo-gutenberg-products-block'
-								),
-								value: 'reviewer',
-							},
-							{
-								label: __(
-									'Product',
-									'woo-gutenberg-products-block'
-								),
-								value: 'product',
-							},
-						] }
 						onChange={ ( value ) =>
 							setAttributes( { imageType: value } )
 						}
-					/>
+					>
+						<ToggleGroupControlOption
+							value="reviewer"
+							label={ __(
+								'Reviewer photo',
+								'woo-gutenberg-products-block'
+							) }
+						/>
+						<ToggleGroupControlOption
+							value="product"
+							label={ __(
+								'Product',
+								'woo-gutenberg-products-block'
+							) }
+						/>
+					</ToggleGroupControl>
 					{ attributes.imageType === 'reviewer' && ! showAvatars && (
 						<Notice
 							className="wc-block-base-control-notice"
