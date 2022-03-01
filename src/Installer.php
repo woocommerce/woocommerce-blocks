@@ -1,6 +1,8 @@
 <?php
 namespace Automattic\WooCommerce\Blocks;
 
+use Automattic\WooCommerce\Internal\Utilities\DatabaseUtil;
+
 /**
  * Installer class.
  * Handles installation of Blocks plugin dependencies.
@@ -35,17 +37,18 @@ class Installer {
 	public function maybe_create_tables() {
 		global $wpdb;
 
-		$schema_version    = 260;
+		$schema_version    = 720;
 		$db_schema_version = (int) get_option( 'wc_blocks_db_schema_version', 0 );
 
 		if ( $db_schema_version >= $schema_version && 0 !== $db_schema_version ) {
 			return;
 		}
 
-		$show_errors = $wpdb->hide_errors();
-		$table_name  = $wpdb->prefix . 'wc_reserved_stock';
-		$collate     = $wpdb->has_cap( 'collation' ) ? $wpdb->get_charset_collate() : '';
-		$exists      = $this->maybe_create_table(
+		$show_errors      = $wpdb->hide_errors();
+		$table_name       = $wpdb->prefix . 'wc_reserved_stock';
+		$collate          = $wpdb->has_cap( 'collation' ) ? $wpdb->get_charset_collate() : '';
+		$max_index_length = 191;
+		$exists           = $this->maybe_create_table(
 			$wpdb->prefix . 'wc_reserved_stock',
 			"
 			CREATE TABLE {$wpdb->prefix}wc_reserved_stock (
@@ -57,6 +60,22 @@ class Installer {
 				PRIMARY KEY  (`order_id`, `product_id`)
 			) $collate;
 			"
+		);
+
+		require_once ABSPATH . 'wp-admin/includes/upgrade.php';
+
+		// Modify wc_rate_limits to include extra column.
+		dbDelta(
+			"
+		CREATE TABLE {$wpdb->prefix}wc_rate_limits (
+			rate_limit_id BIGINT UNSIGNED NOT NULL AUTO_INCREMENT,
+			rate_limit_key varchar(200) NOT NULL,
+			rate_limit_expiry BIGINT UNSIGNED NOT NULL,
+			rate_limit_remaining smallint(10) NOT NULL DEFAULT '0',
+			PRIMARY KEY  (rate_limit_id),
+			UNIQUE KEY rate_limit_key (rate_limit_key($max_index_length))
+		  ) $collate;
+		  "
 		);
 
 		if ( $show_errors ) {
