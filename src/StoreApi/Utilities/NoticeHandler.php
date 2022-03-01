@@ -1,11 +1,12 @@
 <?php
 namespace Automattic\WooCommerce\Blocks\StoreApi\Utilities;
 
+use Automattic\WooCommerce\Blocks\StoreApi\Exceptions\RouteException;
 use WP_Error;
 
 /**
  * NoticeHandler class.
- * Helper class to convert notices to wp errors.
+ * Helper class to handle notices.
  *
  * @internal This API is used internally by Blocks--it is still in flux and may be subject to revisions.
  */
