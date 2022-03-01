@@ -161,6 +161,7 @@ describe( 'Shopper → Mini Cart', () => {
 			const products = await page.$$(
 				'.wc-block-all-products .wc-block-grid__product'
 			);
+
 			if ( products.length === 0 ) {
 				throw new Error(
 					'No products found on the Mini Cart Block page.'
@@ -170,13 +171,16 @@ describe( 'Shopper → Mini Cart', () => {
 			// Get a random product to better replicate human behavior.
 			const product =
 				products[ Math.floor( Math.random() * products.length ) ];
-			const productTitle = await page.evaluate( ( el ) => {
-				return el.querySelector( '.wc-block-components-product-name' )
-					.textContent;
-			}, product );
-			await page.evaluate( ( el ) => {
-				el.querySelector( '.add_to_cart_button' ).click();
-			}, product );
+			const productTitleEl = await product.$(
+				'.wc-block-components-product-name'
+			);
+			const productTitle = await productTitleEl.getProperty(
+				'textContent'
+			);
+			const addToCartButton = await product.$( '.add_to_cart_button' );
+
+			await addToCartButton.click();
+
 			await expect( page ).toMatchElement(
 				'.wc-block-mini-cart__products-table',
 				{
