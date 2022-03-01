@@ -1,10 +1,10 @@
 # Cart Coupons API <!-- omit in toc -->
 
-- [List Cart Coupons](#list-cart-coupons)
-- [Single Cart Coupon](#single-cart-coupon)
-- [Add Cart Coupon](#add-cart-coupon)
-- [Delete Single Cart Coupon](#delete-single-cart-coupon)
-- [Delete All Cart Coupons](#delete-all-cart-coupons)
+-   [List Cart Coupons](#list-cart-coupons)
+-   [Single Cart Coupon](#single-cart-coupon)
+-   [Add Cart Coupon](#add-cart-coupon)
+-   [Delete Single Cart Coupon](#delete-single-cart-coupon)
+-   [Delete All Cart Coupons](#delete-all-cart-coupons)
 
 ## List Cart Coupons
 
@@ -14,8 +14,8 @@ GET /cart/coupons
 
 There are no parameters required for this endpoint.
 
-```http
-curl "https://example-store.com/wp-json/wc/store/cart/coupons"
+```sh
+curl "https://example-store.com/wp-json/wc/store/v1/cart/coupons"
 ```
 
 **Example response:**
@@ -39,12 +39,12 @@ curl "https://example-store.com/wp-json/wc/store/cart/coupons"
 		"_links": {
 			"self": [
 				{
-					"href": "http://local.wordpress.test/wp-json/wc/store/cart/coupons/20off"
+					"href": "http://local.wordpress.test/wp-json/wc/store/v1/cart/coupons/20off"
 				}
 			],
 			"collection": [
 				{
-					"href": "http://local.wordpress.test/wp-json/wc/store/cart/coupons"
+					"href": "http://local.wordpress.test/wp-json/wc/store/v1/cart/coupons"
 				}
 			]
 		}
@@ -64,8 +64,8 @@ GET /cart/coupons/:code
 | :-------- | :----- | :------: | :---------------------------------------------- |
 | `code`    | string |   Yes    | The coupon code of the cart coupon to retrieve. |
 
-```http
-curl "https://example-store.com/wp-json/wc/store/cart/coupons/20off"
+```sh
+curl "https://example-store.com/wp-json/wc/store/v1/cart/coupons/20off"
 ```
 
 **Example response:**
@@ -100,8 +100,8 @@ POST /cart/coupons/
 | :-------- | :----- | :------: | :--------------------------------------------- |
 | `code`    | string |   Yes    | The coupon code you wish to apply to the cart. |
 
-```http
-curl --request POST https://example-store.com/wp-json/wc/store/cart/coupons?code=20off
+```sh
+curl --request POST https://example-store.com/wp-json/wc/store/v1/cart/coupons?code=20off
 ```
 
 **Example response:**
@@ -136,8 +136,8 @@ DELETE /cart/coupons/:code
 | :-------- | :----- | :------: | :------------------------------------------------ |
 | `code`    | string |   Yes    | The coupon code you wish to remove from the cart. |
 
-```http
-curl --request DELETE https://example-store.com/wp-json/wc/store/cart/coupons/20off
+```sh
+curl --request DELETE https://example-store.com/wp-json/wc/store/v1/cart/coupons/20off
 ```
 
 ## Delete All Cart Coupons
@@ -150,8 +150,8 @@ DELETE /cart/coupons/
 
 There are no parameters required for this endpoint.
 
-```http
-curl --request DELETE https://example-store.com/wp-json/wc/store/cart/coupons
+```sh
+curl --request DELETE https://example-store.com/wp-json/wc/store/v1/cart/coupons
 ```
 
 **Example response:**
