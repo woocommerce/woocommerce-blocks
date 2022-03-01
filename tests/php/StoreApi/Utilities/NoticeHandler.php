@@ -22,7 +22,7 @@ class NoticeHandlerTests extends TestCase {
 		$errors = NoticeHandler::convert_notices_to_wp_errors( 'test_error' );
 		$this->assertTrue( is_wp_error( $errors ) );
 		$this->assertEquals( 1, count( $errors->get_error_codes() ) );
-		$this->assertEquals( 'This is an error message with Some HTML in it', $errors->get_error_message() );
+		$this->assertEquals( 'This is an error message with Some HTML in it.', $errors->get_error_message() );
 		$this->assertEquals( 'test_error', $errors->get_error_code() );
 	}
 }
