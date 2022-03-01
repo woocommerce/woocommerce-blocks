@@ -1,7 +1,7 @@
 /**
  * External dependencies
  */
-import { groupBy, keyBy, forEach } from 'lodash';
+import { groupBy, keyBy } from 'lodash';
 import { __, _n, sprintf } from '@wordpress/i18n';
 import { Fragment } from '@wordpress/element';
 
@@ -77,7 +77,7 @@ export const buildTermsTree = (
 	delete termsByParent[ '0' ];
 
 	// anything left in termsByParent has no visible parent
-	forEach( termsByParent, ( terms ) => {
+	Object.values( termsByParent ).forEach( ( terms ) => {
 		tree.push( ...fillWithChildren( terms || [] ) );
 	} );
 
