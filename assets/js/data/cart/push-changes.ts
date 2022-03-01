@@ -127,7 +127,6 @@ const updateCustomerData = debounce( (): void => {
 export const pushChanges = (): void => {
 	const store = select( STORE_KEY );
 	const isInitialized = store.hasFinishedResolution( 'getCartData' );
-	const newCustomerData = isInitialized ? store.getCustomerData() : null;
 
 	if ( ! isInitialized ) {
 		return;
@@ -156,7 +155,9 @@ export const pushChanges = (): void => {
 	) {
 		dirtyProps.shippingAddress = true;
 	}
+
 	customerData = newCustomerData;
+
 	if ( dirtyProps.billingData || dirtyProps.shippingAddress ) {
 		updateCustomerData();
 	}
