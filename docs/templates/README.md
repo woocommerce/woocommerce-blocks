@@ -30,7 +30,7 @@ You can read more about the Full Site Editing (FSE) experience [here](https://de
 
 ### The Problem
 
-The FSE feature does not accommodate for loading templates from plugins such as WooCommerce (or WooCommerce Blocks). Instead all template files loaded natively with this feature are to be present within the active themes files. This is a problem because we would like WooCommerce specific templates to be compatible with every theme, and to do this we have to provide themes that don't have WooCommerce specific templates with them from our plugin.
+Currently, the FSE feature does not accommodate loading block templates from plugins such as WooCommerce (or WooCommerce Blocks). Instead, all template files loaded natively must be present within the active theme's templates folder. When the active block theme doesn't come with WooCommerce specific templates, we want to be able to provide sensible defaults, though.
 
 ### The Solution
 
