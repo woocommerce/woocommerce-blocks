@@ -6,7 +6,6 @@ use Automattic\WooCommerce\Blocks\StoreApi\Routes\RouteInterface;
 use Automattic\WooCommerce\Blocks\StoreApi\Exceptions\RouteException;
 use Automattic\WooCommerce\Blocks\StoreApi\Exceptions\InvalidCartException;
 use Automattic\WooCommerce\Blocks\StoreApi\Schemas\v1\AbstractSchema;
-use Automattic\WooCommerce\Blocks\StoreApi\Utilities\InvalidCartException;
 use WP_Error;
 
 /**
