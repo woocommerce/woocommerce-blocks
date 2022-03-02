@@ -251,6 +251,8 @@ describe( 'Shopper → Mini Cart', () => {
 
 			await page.goto( checkoutUrl, { waitUntil: 'networkidle0' } );
 
+			await expect( page ).toMatchElement( 'h1', { text: 'Checkout' } );
+
 			await expect( page ).toMatch( productTitle );
 		} );
 	} );
