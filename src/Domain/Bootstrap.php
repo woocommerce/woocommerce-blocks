@@ -3,7 +3,7 @@ namespace Automattic\WooCommerce\Blocks\Domain;
 
 use Automattic\WooCommerce\Blocks\Assets\Api as AssetApi;
 use Automattic\WooCommerce\Blocks\Assets\AssetDataRegistry;
-use Automattic\WooCommerce\Blocks\AssetsController as AssetsController;
+use Automattic\WooCommerce\Blocks\AssetsController;
 use Automattic\WooCommerce\Blocks\BlockTemplatesController;
 use Automattic\WooCommerce\Blocks\BlockTypesController;
 use Automattic\WooCommerce\Blocks\Domain\Services\CreateAccount;
@@ -19,11 +19,8 @@ use Automattic\WooCommerce\Blocks\Payments\Integrations\Cheque;
 use Automattic\WooCommerce\Blocks\Payments\Integrations\PayPal;
 use Automattic\WooCommerce\Blocks\Payments\PaymentMethodRegistry;
 use Automattic\WooCommerce\Blocks\Registry\Container;
-use Automattic\WooCommerce\Blocks\RestApi;
+use Automattic\WooCommerce\StoreApi\StoreApi;
 use Automattic\WooCommerce\StoreApi\Formatters;
-use Automattic\WooCommerce\StoreApi\Formatters\CurrencyFormatter;
-use Automattic\WooCommerce\StoreApi\Formatters\HtmlFormatter;
-use Automattic\WooCommerce\StoreApi\Formatters\MoneyFormatter;
 use Automattic\WooCommerce\StoreApi\RoutesController;
 use Automattic\WooCommerce\StoreApi\SchemaController;
 use Automattic\WooCommerce\StoreApi\Schemas\ExtendSchema;
@@ -96,8 +93,7 @@ class Bootstrap {
 		}
 		$this->container->get( DraftOrders::class )->init();
 		$this->container->get( CreateAccount::class )->init();
-		$this->container->get( ExtendSchema::class );
-		$this->container->get( RestApi::class );
+		$this->container->get( StoreApi::class );
 		$this->container->get( GoogleAnalytics::class );
 		$this->container->get( BlockTypesController::class );
 		$this->container->get( BlockTemplatesController::class );
@@ -179,7 +175,7 @@ class Bootstrap {
 	protected function register_dependencies() {
 		$this->container->register(
 			FeatureGating::class,
-			function ( Container $container ) {
+			function () {
 				return new FeatureGating();
 			}
 		);
@@ -203,19 +199,13 @@ class Bootstrap {
 		);
 		$this->container->register(
 			PaymentMethodRegistry::class,
-			function( Container $container ) {
+			function() {
 				return new PaymentMethodRegistry();
 			}
 		);
 		$this->container->register(
-			RestApi::class,
-			function ( Container $container ) {
-				return new RestApi( $container->get( RoutesController::class ) );
-			}
-		);
-		$this->container->register(
 			Installer::class,
-			function ( Container $container ) {
+			function () {
 				return new Installer();
 			}
 		);
@@ -229,7 +219,7 @@ class Bootstrap {
 		);
 		$this->container->register(
 			BlockTemplatesController::class,
-			function ( Container $container ) {
+			function () {
 				return new BlockTemplatesController();
 			}
 		);
@@ -243,34 +233,6 @@ class Bootstrap {
 			CreateAccount::class,
 			function( Container $container ) {
 				return new CreateAccount( $container->get( Package::class ) );
-			}
-		);
-		$this->container->register(
-			Formatters::class,
-			function( Container $container ) {
-				$formatters = new Formatters();
-				$formatters->register( 'money', MoneyFormatter::class );
-				$formatters->register( 'html', HtmlFormatter::class );
-				$formatters->register( 'currency', CurrencyFormatter::class );
-				return $formatters;
-			}
-		);
-		$this->container->register(
-			SchemaController::class,
-			function( Container $container ) {
-				return new SchemaController( $container->get( ExtendSchema::class ) );
-			}
-		);
-		$this->container->register(
-			RoutesController::class,
-			function( Container $container ) {
-				return new RoutesController( $container->get( SchemaController::class ) );
-			}
-		);
-		$this->container->register(
-			ExtendSchema::class,
-			function( Container $container ) {
-				return new ExtendSchema( $container->get( Formatters::class ) );
 			}
 		);
 		$this->container->register(
@@ -294,29 +256,48 @@ class Bootstrap {
 				}
 			);
 		}
-		// Maintains backwards compatibility with previous Store API namespace.
 		$this->container->register(
-			'Automattic\WooCommerce\Blocks\StoreApi\Formatters',
-			function( Container $container ) {
-				return $container->get( Formatters::class );
+			StoreApi::class,
+			function () {
+				return new StoreApi();
 			}
 		);
+		// The following definitions are here for backwards compatibility and reference the instances from the StoreApi class.
+		$this->container->register(
+			Formatters::class,
+			function( Container $container ) {
+				$storeapi = $container->get( StoreApi::class );
+				return $storeapi->formatters;
+			}
+		);
+		$this->container->register(
+			RoutesController::class,
+			function( Container $container ) {
+				$storeapi = $container->get( StoreApi::class );
+				return $storeapi->routes;
+
+			}
+		);
+		$this->container->register(
+			SchemaController::class,
+			function( Container $container ) {
+				$storeapi = $container->get( StoreApi::class );
+				return $storeapi->schema;
+			}
+		);
+		$this->container->register(
+			ExtendSchema::class,
+			function( Container $container ) {
+				$storeapi = $container->get( StoreApi::class );
+				return $storeapi->extend;
+			}
+		);
+		// Backwards compatibility with old name space.
 		$this->container->register(
 			'Automattic\WooCommerce\Blocks\Domain\Services\ExtendRestApi',
 			function( Container $container ) {
+				_deprecated_function( 'Automattic\WooCommerce\Blocks\Domain\Services\ExtendRestApi', '7.1.0', 'Automattic\WooCommerce\StoreApi\Schemas\ExtendSchema' );
 				return $container->get( ExtendSchema::class );
-			}
-		);
-		$this->container->register(
-			'Automattic\WooCommerce\Blocks\StoreApi\SchemaController',
-			function( Container $container ) {
-				return $container->get( SchemaController::class );
-			}
-		);
-		$this->container->register(
-			'Automattic\WooCommerce\Blocks\StoreApi\RoutesController',
-			function( Container $container ) {
-				return $container->get( RoutesController::class );
 			}
 		);
 	}

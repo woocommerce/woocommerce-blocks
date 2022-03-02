@@ -2,7 +2,7 @@
 /**
  * Helper functions for interacting with the Store API.
  *
- * This file is autoloaded via composer.json and maps the old namespaces to new namespaces.
+ * This file is autoloaded via composer.json.
  */
 
 use Automattic\WooCommerce\Blocks\Package;
