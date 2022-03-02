@@ -9,14 +9,15 @@ export const supports = {
 			text: true,
 			background: false,
 			link: false,
+			__experimentalSkipSerialization: true,
 		},
 		typography: {
 			fontSize: true,
 			__experimentalSkipSerialization: true,
 		},
 		spacing: {
-			__experimentalSkipSerialization: true,
 			margin: true,
+			__experimentalSkipSerialization: true,
 		},
 		__experimentalSelector: '.wc-block-components-product-rating',
 	} ),
