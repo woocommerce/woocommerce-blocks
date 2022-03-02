@@ -14,7 +14,7 @@ This page includes documentation related to WooCommerce Block Templates.
 
 ## Overview
 
-At the highest level, WooCommerce Block Templates are a collection of WooCommerce core templates that are made available in the WordPress Full Site Editing experience introduced as part of WordPress 5.9, enabling you to customize these templates with blocks via the Site Editor. 
+WooCommerce Block Templates are a collection of WooCommerce Core templates for the WordPress Full Site Editing experience introduced in WordPress 5.9. You can customize these templates in the Site Editor. 
 
 You can read more about the Full Site Editing (FSE) experience [here](https://developer.wordpress.org/block-editor/getting-started/full-site-editing/).
 
