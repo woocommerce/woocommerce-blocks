@@ -22,8 +22,8 @@ This example below uses the Cart endpoint, [see passed parameters.](./available-
 ```PHP
 
 use Automattic\WooCommerce\Blocks\Package;
-use Automattic\WooCommerce\Blocks\Domain\Services\ExtendSchema;
-use Automattic\WooCommerce\Blocks\StoreApi\Schemas\CartSchema;
+use Automattic\WooCommerce\StoreApi\Schemas\ExtendSchema;
+use Automattic\WooCommerce\StoreApi\Schemas\V1\CartSchema;
 
 add_action('woocommerce_blocks_loaded', function() {
  // ExtendSchema is stored in the container as a shared instance between the API and consumers.
@@ -137,8 +137,8 @@ This example uses [Formatters](./extend-rest-api-formatters.md), utility classes
  */
 
 use Automattic\WooCommerce\Blocks\Package;
-use Automattic\WooCommerce\Blocks\Domain\Services\ExtendSchema;
-use Automattic\WooCommerce\Blocks\StoreApi\Schemas\CartItemSchema;
+use Automattic\WooCommerce\StoreApi\Schemas\ExtendSchema;
+use Automattic\WooCommerce\StoreApi\Schemas\V1\CartItemSchema;
 
 if ( class_exists( 'Package' ) && version_compare( Package::get_version(), '4.8.0', '>=' ) ) {
 	// This class needs to run after WooCommerce Blocks is ready.
@@ -329,11 +329,10 @@ class WC_Subscriptions_Extend_Store_Endpoint {
 You may wish to use our pre-existing Formatters to ensure your data is passed through the Store API in the
 correct format. More information on the Formatters can be found in the [StoreApi Formatters documentation](./extend-rest-api-formatters.md).
 
-<!-- FEEDBACK -->
----
+## <!-- FEEDBACK -->
 
 [We're hiring!](https://woocommerce.com/careers/) Come work with us!
 
 🐞 Found a mistake, or have a suggestion? [Leave feedback about this document here.](https://github.com/woocommerce/woocommerce-gutenberg-products-block/issues/new?assignees=&labels=type%3A+documentation&template=--doc-feedback.md&title=Feedback%20on%20./docs/extensibility/extend-rest-api-add-data.md)
-<!-- /FEEDBACK -->
 
+<!-- /FEEDBACK -->

@@ -5,15 +5,15 @@
 
 namespace Automattic\WooCommerce\Blocks\Tests\StoreApi\Routes;
 
-use Automattic\WooCommerce\Blocks\StoreApi\Schemas\ExtendSchema;
-use Automattic\WooCommerce\Blocks\StoreApi\Formatters;
-use Automattic\WooCommerce\Blocks\StoreApi\Formatters\MoneyFormatter;
-use Automattic\WooCommerce\Blocks\StoreApi\Formatters\HtmlFormatter;
-use Automattic\WooCommerce\Blocks\StoreApi\Formatters\CurrencyFormatter;
-use Automattic\WooCommerce\Blocks\StoreApi\Schemas\V1\CheckoutSchema;
+use Automattic\WooCommerce\StoreApi\Schemas\ExtendSchema;
+use Automattic\WooCommerce\StoreApi\Formatters;
+use Automattic\WooCommerce\StoreApi\Formatters\MoneyFormatter;
+use Automattic\WooCommerce\StoreApi\Formatters\HtmlFormatter;
+use Automattic\WooCommerce\StoreApi\Formatters\CurrencyFormatter;
+use Automattic\WooCommerce\StoreApi\Schemas\V1\CheckoutSchema;
 use Automattic\WooCommerce\Blocks\Tests\Helpers\FixtureData;
-use Automattic\WooCommerce\Blocks\StoreApi\Routes\V1\Checkout as CheckoutRoute;
-use Automattic\WooCommerce\Blocks\StoreApi\SchemaController;
+use Automattic\WooCommerce\StoreApi\Routes\V1\Checkout as CheckoutRoute;
+use Automattic\WooCommerce\StoreApi\SchemaController;
 
 use Mockery\Adapter\Phpunit\MockeryTestCase;
 

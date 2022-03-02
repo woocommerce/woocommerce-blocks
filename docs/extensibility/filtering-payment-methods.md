@@ -11,6 +11,7 @@
   - [The solution](#the-solution-1)
   - [Basic usage](#basic-usage)
   - [Putting it all together](#putting-it-all-together)
+  - [](#)
 
 # Filtering payment methods in the Checkout block
 
@@ -165,7 +166,7 @@ To do this you could use the following code:
 
 ```php
 use Automattic\WooCommerce\Blocks\Package;
-use Automattic\WooCommerce\Blocks\Domain\Services\ExtendSchema;
+use Automattic\WooCommerce\StoreApi\Schemas\ExtendSchema;
 
 add_action('woocommerce_blocks_loaded', function() {
  // ExtendSchema is stored in the container as a shared instance between the API and consumers.
@@ -187,11 +188,10 @@ If you've added your payment method correctly with the correct `supports` values
 with a `Bookable` item in your cart, any method that does not `supports` the `booking_availability` requirement should
 not display, while yours, the one that _does_ support this requirement _will_ display.
 
-<!-- FEEDBACK -->
----
+## <!-- FEEDBACK -->
 
 [We're hiring!](https://woocommerce.com/careers/) Come work with us!
 
 🐞 Found a mistake, or have a suggestion? [Leave feedback about this document here.](https://github.com/woocommerce/woocommerce-gutenberg-products-block/issues/new?assignees=&labels=type%3A+documentation&template=--doc-feedback.md&title=Feedback%20on%20./docs/extensibility/filtering-payment-methods.md)
-<!-- /FEEDBACK -->
 
+<!-- /FEEDBACK -->

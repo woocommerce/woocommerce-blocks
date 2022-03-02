@@ -1,7 +1,7 @@
 <?php
 namespace Automattic\WooCommerce\Blocks;
 
-use Automattic\WooCommerce\Blocks\StoreApi\RoutesController;
+use Automattic\WooCommerce\StoreApi\RoutesController;
 
 /**
  * RestApi class.

@@ -82,7 +82,7 @@ Example:
 <?php
 
 use Automattic\WooCommerce\Blocks\Package;
-use Automattic\WooCommerce\Blocks\Domain\Services\ExtendSchema;
+use Automattic\WooCommerce\StoreApi\Schemas\ExtendSchema;
 
 function add_discount() {
     /* Do some processing here */
@@ -190,7 +190,7 @@ omitted. All that is important to note is that it modifies the WooCommerce cart.
 <?php
 
 use Automattic\WooCommerce\Blocks\Package;
-use Automattic\WooCommerce\Blocks\Domain\Services\ExtendSchema;
+use Automattic\WooCommerce\StoreApi\Schemas\ExtendSchema;
 
 function redeem_points( $points ) {
     /* Do some processing here that applies a discount to the WC cart based on the value of $points */
@@ -215,11 +215,10 @@ Now that this is registered, when the button is pressed, the `cart/extensions` e
 `super-coupons` our `redeem_points` function will be executed. After this has finished processing, the client-side cart
 will be updated by WooCommerce Blocks.
 
-<!-- FEEDBACK -->
----
+## <!-- FEEDBACK -->
 
 [We're hiring!](https://woocommerce.com/careers/) Come work with us!
 
 🐞 Found a mistake, or have a suggestion? [Leave feedback about this document here.](https://github.com/woocommerce/woocommerce-gutenberg-products-block/issues/new?assignees=&labels=type%3A+documentation&template=--doc-feedback.md&title=Feedback%20on%20./docs/extensibility/extend-rest-api-update-cart.md)
-<!-- /FEEDBACK -->
 
+<!-- /FEEDBACK -->
