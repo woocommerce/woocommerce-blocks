@@ -384,23 +384,25 @@ class CartController {
 	 * @throws InvalidCartException Exception if invalid data is detected in the cart.
 	 */
 	public function validate_cart() {
-
-		$cart = $this->get_cart_instance();
 		$this->validate_cart_items();
 		$this->validate_cart_coupons();
 
+		$cart        = $this->get_cart_instance();
+		$cart_errors = new WP_Error();
+
 		/**
-		 * Fire action to validate cart. Functions hooking into this should add custom errors into the WP_Error instance.
+		 * Fires an action to validate the cart.
+		 *
+		 * Functions hooking into this should add custom errors using the provided WP_Error instance.
 		 *
 		 * @example See docs/examples/validate-cart.md
 		 *
-		 * @param WP_Error $errors  WP_Error object.
-		 * @param WC_Cart  $cart    Cart object.
+		 * @param \WP_Error $errors  WP_Error object.
+		 * @param \WC_Cart  $cart    Cart object.
 		 */
-		$cart_errors = new WP_Error();
 		do_action( '__experimental_woocommerce_store_api_cart_errors', $cart_errors, $cart );
-		if ( $cart_errors->has_errors() ) {
 
+		if ( $cart_errors->has_errors() ) {
 			throw new InvalidCartException(
 				'woocommerce_cart_error',
 				$cart_errors,
@@ -418,15 +420,17 @@ class CartController {
 		 * Allow 3rd parties to validate cart items. This is a legacy hook from Woo core.
 		 * This filter will be deprecated because it encourages usage of wc_add_notice. For the API we need to capture
 		 * notices and convert to wp errors instead.
+		 *
+		 * @deprecated
 		 */
 		do_action( 'woocommerce_check_cart_items' );
 
-		$error_notices = NoticeHandler::convert_notices_to_wp_errors( 'woocommerce_rest_cart_item_error' );
-		if ( $error_notices->has_errors() ) {
+		$cart_errors = NoticeHandler::convert_notices_to_wp_errors( 'woocommerce_rest_cart_item_error' );
 
+		if ( $cart_errors->has_errors() ) {
 			throw new InvalidCartException(
 				'woocommerce_cart_error',
-				$error_notices,
+				$cart_errors,
 				409
 			);
 		}
