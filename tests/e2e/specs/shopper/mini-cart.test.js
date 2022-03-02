@@ -244,9 +244,7 @@ describe( 'Shopper → Mini Cart', () => {
 
 			const shopLink = await page.$eval(
 				'.wc-block-mini-cart__shopping-button a',
-				( el ) => {
-					return el.getAttribute( 'href' );
-				}
+				( el ) => el.href
 			);
 
 			expect( shopLink ).toMatch( SHOP_PAGE );
