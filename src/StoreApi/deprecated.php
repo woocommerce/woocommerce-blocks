@@ -8,6 +8,8 @@
 // Map old to new namespaces for utils and exceptions.
 class_alias( Automattic\WooCommerce\StoreApi\Exceptions\RouteException::class, Automattic\WooCommerce\Blocks\StoreApi\Routes\RouteException::class );
 class_alias( Automattic\WooCommerce\StoreApi\Schemas\ExtendSchema::class, Automattic\WooCommerce\Blocks\Domain\Services\ExtendRestApi::class );
+class_alias( Automattic\WooCommerce\StoreApi\Payments\PaymentResult::class, Automattic\WooCommerce\Blocks\Payments\PaymentResult::class );
+class_alias( Automattic\WooCommerce\StoreApi\Payments\PaymentContext::class, Automattic\WooCommerce\Blocks\Payments\PaymentContext::class );
 
 // Map old schemas to V1 schemas under new namespace.
 class_alias( Automattic\WooCommerce\StoreApi\Schemas\V1\AbstractAddressSchema::class, Automattic\WooCommerce\Blocks\StoreApi\Schemas\AbstractAddressSchema::class );
