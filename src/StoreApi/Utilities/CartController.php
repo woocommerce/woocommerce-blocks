@@ -382,7 +382,6 @@ class CartController {
 	 * Validate cart and check for errors.
 	 *
 	 * @throws InvalidCartException Exception if invalid data is detected in the cart.
-	 * @throws RouteException Exception if invalid data is detected in the cart.
 	 */
 	public function validate_cart() {
 
@@ -391,22 +390,15 @@ class CartController {
 		$this->validate_cart_coupons();
 
 		/**
-		 * Fire action to validate cart. Functions hooking into this should return the WP_Error enchanced with custom errors.
+		 * Fire action to validate cart. Functions hooking into this should add custom errors into the WP_Error instance.
 		 *
 		 * @example See docs/examples/validate-cart.md
 		 *
 		 * @param WP_Error $errors  WP_Error object.
 		 * @param WC_Cart  $cart    Cart object.
-		 *
-		 * @return WP_Error         The WP_Error object returned.
 		 */
-		$cart_errors = apply_filters( '__experimental_woocommerce_store_api_cart_errors', new WP_Error(), $cart );
-
-		if ( ! is_wp_error( $cart_errors ) ) {
-
-			throw new RouteException( 'missing_cart_validation_server_error', __( 'There was an error with your cart.', 'woo-gutenberg-products-block' ) );
-		}
-
+		$cart_errors = new WP_Error();
+		do_action( '__experimental_woocommerce_store_api_cart_errors', $cart_errors, $cart );
 		if ( $cart_errors->has_errors() ) {
 
 			throw new InvalidCartException(
