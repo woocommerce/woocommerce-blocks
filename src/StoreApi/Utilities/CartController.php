@@ -400,7 +400,7 @@ class CartController {
 		 * @param \WP_Error $errors  WP_Error object.
 		 * @param \WC_Cart  $cart    Cart object.
 		 */
-		do_action( '__experimental_woocommerce_store_api_cart_errors', $cart_errors, $cart );
+		do_action( 'woocommerce_store_api_cart_errors', $cart_errors, $cart );
 
 		if ( $cart_errors->has_errors() ) {
 			throw new InvalidCartException(

@@ -2,7 +2,7 @@
     "$schema": "https://raw.githubusercontent.com/johnbillion/wp-hooks-generator/0.7.0/schema.json",
     "hooks": [
         {
-            "name": "__experimental_woocommerce_store_api_cart_errors",
+            "name": "woocommerce_store_api_cart_errors",
             "file": "StoreApi/Utilities/CartController.php",
             "type": "action",
             "doc": {
