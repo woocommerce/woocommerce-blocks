@@ -6,11 +6,9 @@ function my_function_callback( $errors, $cart ) {
   if ( $cart->get_cart_contents_count() > 10 ) {
     $errors->add( 'my_error_code', 'Too many cart items!' );
   }
-
-  return $errors;
 }
 
-add_filter( '__experimental_woocommerce_store_api_cart_errors', 'my_function_callback', 10 );
+add_action( '__experimental_woocommerce_store_api_cart_errors', 'my_function_callback', 10 );
 ```
 <!-- FEEDBACK -->
 ---
