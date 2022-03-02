@@ -4,7 +4,7 @@ The Classic Template block is a placeholder block for specific WooCommerce block
 
 By assigning a template identifier to the attribute prop, the block will render that specific template on the front-end, and a placeholder for said template in the Site Editor.
 
-It's worth noting that in the Site Editor where a placeholder merely represents a front-end view, this representation will not always be completely accurate.
+It's worth noting that the placeholder in the Site Editor is merely an approximate representation of a template's front-end view.
 
 ## Usage
 
