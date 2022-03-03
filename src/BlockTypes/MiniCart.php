@@ -341,16 +341,6 @@ class MiniCart extends AbstractBlock {
 			$cart_contents_count,
 			wp_strip_all_tags( wc_price( $cart_contents_total ) )
 		);
-		$title = sprintf(
-		/* translators: %d is the count of items in the cart. */
-			_n(
-				'Your cart (%d item)',
-				'Your cart (%d items)',
-				$cart_contents_count,
-				'woo-gutenberg-products-block'
-			),
-			$cart_contents_count
-		);
 		$icon        = '<svg class="wc-block-mini-cart__icon" width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
 			<path fill-rule="evenodd" clip-rule="evenodd" d="M7.84614 18.2769C7.89712 18.2769 7.93845 18.2356 7.93845 18.1846C7.93845 18.1336 7.89712 18.0923 7.84614 18.0923C7.79516 18.0923 7.75384 18.1336 7.75384 18.1846C7.75384 18.2356 7.79516 18.2769 7.84614 18.2769ZM6.03076 18.1846C6.03076 17.182 6.84353 16.3692 7.84614 16.3692C8.84875 16.3692 9.66152 17.182 9.66152 18.1846C9.66152 19.1872 8.84875 20 7.84614 20C6.84353 20 6.03076 19.1872 6.03076 18.1846Z" fill="currentColor"/>
 			<path fill-rule="evenodd" clip-rule="evenodd" d="M17.3231 18.2769C17.3741 18.2769 17.4154 18.2356 17.4154 18.1846C17.4154 18.1336 17.3741 18.0923 17.3231 18.0923C17.2721 18.0923 17.2308 18.1336 17.2308 18.1846C17.2308 18.2356 17.2721 18.2769 17.3231 18.2769ZM15.5077 18.1846C15.5077 17.182 16.3205 16.3692 17.3231 16.3692C18.3257 16.3692 19.1385 17.182 19.1385 18.1846C19.1385 19.1872 18.3257 20 17.3231 20C16.3205 20 15.5077 19.1872 15.5077 18.1846Z" fill="currentColor"/>
@@ -360,7 +350,7 @@ class MiniCart extends AbstractBlock {
 		' . $this->get_include_tax_label_markup() . '
 		<span class="wc-block-mini-cart__quantity-badge">
 			' . $icon . '
-			<span class="wc-block-mini-cart__badge ' . $classes . '" style="' . $style . '">' . $cart_contents_count . '</span>
+			<span class="wc-block-mini-cart__badge">' . $cart_contents_count . '</span>
 		</span>';
 
 		if ( is_cart() || is_checkout() ) {
@@ -460,18 +450,5 @@ class MiniCart extends AbstractBlock {
 	 */
 	protected function get_cart_payload() {
 		return WC()->api->get_endpoint_data( '/wc/store/cart' );
-	}
-
-
-	/**
-	 * Get the supports array for this block type.
-	 *
-	 * @see $this->register_block_type()
-	 * @return string;
-	 */
-	protected function get_block_type_supports() {
-		return [
-			'__experimentalSelector' => '.wc-block-mini-cart__button, .wc-block-mini-cart__badge',
-		];
 	}
 }
