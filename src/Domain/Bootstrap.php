@@ -23,7 +23,6 @@ use Automattic\WooCommerce\StoreApi\StoreApi;
 use Automattic\WooCommerce\StoreApi\Formatters;
 use Automattic\WooCommerce\StoreApi\RoutesController;
 use Automattic\WooCommerce\StoreApi\SchemaController;
-use Automattic\WooCommerce\StoreApi\Schemas\ExtendSchema;
 
 /**
  * Takes care of bootstrapping the plugin.
@@ -93,7 +92,7 @@ class Bootstrap {
 		}
 		$this->container->get( DraftOrders::class )->init();
 		$this->container->get( CreateAccount::class )->init();
-		$this->container->get( StoreApi::class );
+		$this->container->get( StoreApi::class )->init();
 		$this->container->get( GoogleAnalytics::class );
 		$this->container->get( BlockTypesController::class );
 		$this->container->get( BlockTemplatesController::class );
@@ -262,42 +261,33 @@ class Bootstrap {
 				return new StoreApi();
 			}
 		);
-		// The following definitions are here for backwards compatibility and reference the instances from the StoreApi class.
+		// Maintains backwards compatibility with previous Store API namespace.
 		$this->container->register(
-			Formatters::class,
+			'Automattic\WooCommerce\Blocks\StoreApi\Formatters',
 			function( Container $container ) {
-				$storeapi = $container->get( StoreApi::class );
-				return $storeapi->formatters;
+				_deprecated_function( 'Automattic\WooCommerce\Blocks\StoreApi\Formatters', '7.2.0', 'Automattic\WooCommerce\StoreApi\Formatters' );
+				return $container->get( StoreApi::class )->get( Automattic\WooCommerce\StoreApi\Formatters::class );
 			}
 		);
-		$this->container->register(
-			RoutesController::class,
-			function( Container $container ) {
-				$storeapi = $container->get( StoreApi::class );
-				return $storeapi->routes;
-
-			}
-		);
-		$this->container->register(
-			SchemaController::class,
-			function( Container $container ) {
-				$storeapi = $container->get( StoreApi::class );
-				return $storeapi->schema;
-			}
-		);
-		$this->container->register(
-			ExtendSchema::class,
-			function( Container $container ) {
-				$storeapi = $container->get( StoreApi::class );
-				return $storeapi->extend;
-			}
-		);
-		// Backwards compatibility with old name space.
 		$this->container->register(
 			'Automattic\WooCommerce\Blocks\Domain\Services\ExtendRestApi',
 			function( Container $container ) {
-				_deprecated_function( 'Automattic\WooCommerce\Blocks\Domain\Services\ExtendRestApi', '7.1.0', 'Automattic\WooCommerce\StoreApi\Schemas\ExtendSchema' );
-				return $container->get( ExtendSchema::class );
+				_deprecated_function( 'Automattic\WooCommerce\Blocks\Domain\Services\ExtendRestApi', '7.2.0', 'Automattic\WooCommerce\StoreApi\Schemas\ExtendSchema' );
+				return $container->get( StoreApi::class )->get( Automattic\WooCommerce\StoreApi\Schemas\ExtendSchema::class );
+			}
+		);
+		$this->container->register(
+			'Automattic\WooCommerce\Blocks\StoreApi\SchemaController',
+			function( Container $container ) {
+				_deprecated_function( 'Automattic\WooCommerce\Blocks\StoreApi\SchemaController', '7.2.0', 'Automattic\WooCommerce\StoreApi\SchemaController' );
+				return $container->get( StoreApi::class )->get( Automattic\WooCommerce\StoreApi\SchemaController::class );
+			}
+		);
+		$this->container->register(
+			'Automattic\WooCommerce\Blocks\StoreApi\RoutesController',
+			function( Container $container ) {
+				_deprecated_function( 'Automattic\WooCommerce\Blocks\StoreApi\RoutesController', '7.2.0', 'Automattic\WooCommerce\StoreApi\RoutesController' );
+				return $container->get( StoreApi::class )->get( Automattic\WooCommerce\StoreApi\RoutesController::class );
 			}
 		);
 	}

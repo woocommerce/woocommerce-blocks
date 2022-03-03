@@ -64,6 +64,14 @@ class RoutesController {
 	}
 
 	/**
+	 * Register all Store API routes. This includes routes under specific version namespaces.
+	 */
+	public function register_all_routes() {
+		$this->register_routes( 'v1', 'wc/store' );
+		$this->register_routes( 'v1', 'wc/store/v1' );
+	}
+
+	/**
 	 * Get a route class instance.
 	 *
 	 * Each route class is instantized with the SchemaController instance, and its main Schema Type.
@@ -92,7 +100,7 @@ class RoutesController {
 	 * @param string $version API Version being registered..
 	 * @param string $namespace Overrides the default route namespace.
 	 */
-	public function register_routes( $version = 'v1', $namespace = 'wc/store/v1' ) {
+	protected function register_routes( $version = 'v1', $namespace = 'wc/store/v1' ) {
 		if ( ! isset( $this->routes[ $version ] ) ) {
 			return;
 		}
