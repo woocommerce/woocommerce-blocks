@@ -31,8 +31,8 @@ final class StoreApi {
 	/**
 	 * Loads the DI container for Store API.
 	 *
-	 * @internal This uses the simple DI container under Automattic\WooCommerce\Blocks\Registry\Container. If Store API
-	 * were to move to core, this container could be replaced with a compatible container in core.
+	 * @internal This uses the Blocks DI container. If Store API were to move to core, this container could be replaced
+	 * with a different compatible container.
 	 *
 	 * @param boolean $reset Used to reset the container to a fresh instance. Note: this means all dependencies will be reconstructed.
 	 * @return mixed
@@ -44,6 +44,7 @@ final class StoreApi {
 			$container = null;
 		}
 
+		// phpcs:ignore Squiz.PHP.DisallowMultipleAssignments.Found
 		return $container = $container ?: ( function() {
 			$container = new Container();
 			$container->register(
