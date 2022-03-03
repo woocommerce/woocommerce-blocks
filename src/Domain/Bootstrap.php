@@ -280,14 +280,14 @@ class Bootstrap {
 			'Automattic\WooCommerce\Blocks\StoreApi\SchemaController',
 			function( Container $container ) {
 				_deprecated_function( 'Automattic\WooCommerce\Blocks\StoreApi\SchemaController', '7.2.0', 'Automattic\WooCommerce\StoreApi\SchemaController' );
-				return $container->get( StoreApi::class )->get( Automattic\WooCommerce\StoreApi\SchemaController::class );
+				return $container->get( StoreApi::class )->get( SchemaController::class );
 			}
 		);
 		$this->container->register(
 			'Automattic\WooCommerce\Blocks\StoreApi\RoutesController',
 			function( Container $container ) {
 				_deprecated_function( 'Automattic\WooCommerce\Blocks\StoreApi\RoutesController', '7.2.0', 'Automattic\WooCommerce\StoreApi\RoutesController' );
-				return $container->get( StoreApi::class )->get( Automattic\WooCommerce\StoreApi\RoutesController::class );
+				return $container->get( StoreApi::class )->get( RoutesController::class );
 			}
 		);
 	}

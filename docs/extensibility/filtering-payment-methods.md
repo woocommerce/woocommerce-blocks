@@ -165,20 +165,12 @@ The next step will tell the `ExtendSchema` class to execute this callback when c
 To do this you could use the following code:
 
 ```php
-use Automattic\WooCommerce\Blocks\Package;
-use Automattic\WooCommerce\StoreApi\Schemas\ExtendSchema;
-
 add_action('woocommerce_blocks_loaded', function() {
- // ExtendSchema is stored in the container as a shared instance between the API and consumers.
- // You shouldn't initiate your own ExtendSchema instance using `new ExtendSchema` but should
- // always use the shared instance from the Package dependency injection container.
- $extend = Package::container()->get( ExtendSchema::class );
-
- $extend->register_payment_requirements(
-	array(
-		'data_callback' => 'inject_payment_feature_requirements_for_cart_api',
+ woocommerce_store_api_register_payment_requirements(
+   	array(
+		  'data_callback' => 'inject_payment_feature_requirements_for_cart_api',
 		)
-	);
+ );
 });
 ```
 
