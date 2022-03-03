@@ -206,7 +206,7 @@ class CartController {
 
 		if ( ! $product->is_in_stock() ) {
 			throw new RouteException(
-				'woocommerce_rest_cart_product_no_stock',
+				'woocommerce_rest_product_out_of_stock',
 				sprintf(
 					/* translators: %s: product name */
 					__( 'You cannot add &quot;%s&quot; to the cart because the product is out of stock.', 'woo-gutenberg-products-block' ),
@@ -222,7 +222,7 @@ class CartController {
 
 			if ( $qty_remaining < $qty_in_cart + $request['quantity'] ) {
 				throw new RouteException(
-					'woocommerce_rest_cart_product_no_stock',
+					'woocommerce_rest_product_partially_out_of_stock',
 					sprintf(
 						/* translators: 1: product name 2: quantity in stock */
 						__( 'You cannot add that amount of &quot;%1$s&quot; to the cart because there is not enough stock (%2$s remaining).', 'woo-gutenberg-products-block' ),
@@ -575,21 +575,21 @@ class CartController {
 
 		if ( ! $product->is_purchasable() ) {
 			throw new NotPurchasableException(
-				'woocommerce_rest_cart_product_not_purchasable',
+				'woocommerce_rest_product_not_purchasable',
 				$product->get_name()
 			);
 		}
 
 		if ( $product->is_sold_individually() && $cart_item['quantity'] > 1 ) {
 			throw new TooManyInCartException(
-				'woocommerce_rest_cart_product_sold_individually',
+				'woocommerce_rest_product_too_many_in_cart',
 				$product->get_name()
 			);
 		}
 
 		if ( ! $product->is_in_stock() ) {
 			throw new OutOfStockException(
-				'woocommerce_rest_cart_product_no_stock',
+				'woocommerce_rest_product_out_of_stock',
 				$product->get_name()
 			);
 		}
@@ -600,7 +600,7 @@ class CartController {
 
 			if ( $qty_remaining < $qty_in_cart ) {
 				throw new PartialOutOfStockException(
-					'woocommerce_rest_cart_product_partially_no_stock',
+					'woocommerce_rest_product_partially_out_of_stock',
 					$product->get_name()
 				);
 			}
@@ -1067,13 +1067,13 @@ class CartController {
 	/**
 	 * Default exception thrown when an item cannot be added to the cart.
 	 *
-	 * @throws RouteException Exception with code woocommerce_rest_cart_product_is_not_purchasable.
+	 * @throws RouteException Exception with code woocommerce_rest_product_not_purchasable.
 	 *
 	 * @param \WC_Product $product Product object associated with the cart item.
 	 */
 	protected function throw_default_product_exception( \WC_Product $product ) {
 		throw new RouteException(
-			'woocommerce_rest_cart_product_is_not_purchasable',
+			'woocommerce_rest_product_not_purchasable',
 			sprintf(
 				/* translators: %s: product name */
 				__( '&quot;%s&quot; is not available for purchase.', 'woo-gutenberg-products-block' ),
