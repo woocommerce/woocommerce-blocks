@@ -110,7 +110,7 @@ const FeaturedCategory = ( {
 								setAttributes( { mediaId: 0, mediaSrc: '' } )
 							}
 						>
-							{ __( 'Remove', 'woo-gutenberg-products-block' ) }
+							{ __( 'Reset', 'woo-gutenberg-products-block' ) }
 						</TextToolbarButton>
 					) : null }
 				</ToolbarGroup>
@@ -270,15 +270,21 @@ const FeaturedCategory = ( {
 			<InnerBlocks
 				template={ [
 					[
-						'core/button',
-						{
-							text: __(
-								'Shop now',
-								'woo-gutenberg-products-block'
-							),
-							url: category.permalink,
-							align: 'center',
-						},
+						'core/buttons',
+						{},
+						[
+							[
+								'core/button',
+								{
+									text: __(
+										'Shop now',
+										'woo-gutenberg-products-block'
+									),
+									url: category.permalink,
+									align: 'center',
+								},
+							],
+						],
 					],
 				] }
 				templateLock="all"

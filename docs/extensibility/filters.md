@@ -510,7 +510,7 @@ apply_filters( 'woocommerce_get_item_data', array $item_data, array $cart_item )
 ### Source
 
 
- - [StoreApi/Schemas/CartItemSchema.php](../src/StoreApi/Schemas/CartItemSchema.php)
+ - [StoreApi/Schemas/V1/CartItemSchema.php](../src/StoreApi/Schemas/V1/CartItemSchema.php)
 
 ---
 
@@ -689,7 +689,7 @@ apply_filters( 'woocommerce_store_api_disable_nonce_check', boolean $disable_non
 ### Source
 
 
- - [StoreApi/Routes/AbstractCartRoute.php](../src/StoreApi/Routes/AbstractCartRoute.php)
+ - [StoreApi/Routes/V1/AbstractCartRoute.php](../src/StoreApi/Routes/V1/AbstractCartRoute.php)
 
 ---
 
@@ -788,7 +788,7 @@ apply_filters( 'woocommerce_variation_option_name', string $value, null $unused,
 ### Source
 
 
- - [StoreApi/Schemas/CartItemSchema.php](../src/StoreApi/Schemas/CartItemSchema.php)
+ - [StoreApi/Schemas/V1/CartItemSchema.php](../src/StoreApi/Schemas/V1/CartItemSchema.php)
 
 ---
 <!-- FEEDBACK -->

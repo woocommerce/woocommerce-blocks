@@ -2,9 +2,6 @@
 namespace Automattic\WooCommerce\Blocks;
 
 use Automattic\WooCommerce\Blocks\StoreApi\RoutesController;
-use Automattic\WooCommerce\Blocks\StoreApi\SchemaController;
-use Automattic\WooCommerce\Blocks\Domain\Services\ExtendRestApi;
-
 
 /**
  * RestApi class.
@@ -43,7 +40,13 @@ class RestApi {
 	 * Register REST API routes.
 	 */
 	public function register_rest_routes() {
-		$this->routes->register_routes();
+		$api_versions = [
+			'wc/store'    => 'v1',
+			'wc/store/v1' => 'v1',
+		];
+		foreach ( $api_versions as $api_namespace => $api_version ) {
+			$this->routes->register_routes( $api_version, $api_namespace );
+		}
 	}
 
 	/**

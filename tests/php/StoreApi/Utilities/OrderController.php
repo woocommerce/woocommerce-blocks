@@ -5,7 +5,7 @@
 
 namespace Automattic\WooCommerce\Blocks\Tests\StoreApi\Utilities;
 
-use Automattic\WooCommerce\Blocks\StoreApi\Routes\RouteException;
+use Automattic\WooCommerce\Blocks\StoreApi\Exceptions\RouteException;
 use Yoast\PHPUnitPolyfills\Polyfills\ExpectException;
 use Automattic\WooCommerce\Blocks\StoreApi\Utilities\OrderController;
 use Yoast\PHPUnitPolyfills\TestCases\TestCase;
@@ -27,5 +27,8 @@ class OrderControllerTests extends TestCase {
 		$class->validate_selected_shipping_methods( true, array( 'free-shipping' ) );
 		$class->validate_selected_shipping_methods( false, array( 'free-shipping' ) );
 		$class->validate_selected_shipping_methods( true, null );
+		// The above methods throw Exception on error, but this is classed as a risky test because there are no
+		// assertions. Assert true to work around this warning.
+		$this->assertTrue( true );
 	}
 }

@@ -24,7 +24,7 @@
 	font-weight: 400;
 	padding: em($gap-small) em($gap-smaller);
 
-	&:hover {
+	&:hover:not([disabled]) {
 		opacity: 0.6;
 	}
 }
@@ -74,7 +74,7 @@
 	}
 }
 
-.wc-block-mini-cart__contents {
+.wp-block-woocommerce-mini-cart-contents {
 	background: #fff;
 	box-sizing: border-box;
 	display: flex;

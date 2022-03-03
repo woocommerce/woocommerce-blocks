@@ -6,7 +6,9 @@
 		"."
 	],
 	"themes": [
-		"https://downloads.wordpress.org/theme/storefront.latest-stable.zip"
+		"https://downloads.wordpress.org/theme/storefront.latest-stable.zip",
+		"./tests/mocks/emptytheme",
+		"./tests/mocks/theme-with-woo-templates"
 	],
 	"mappings": {
 		".htaccess": "./bin/.htaccess"
