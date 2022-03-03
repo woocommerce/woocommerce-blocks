@@ -26,7 +26,7 @@ import { useStoreCart } from '../../../hooks/cart/use-store-cart';
 import { useStoreNotices } from '../../../hooks/use-store-notices';
 import { useEmitResponse } from '../../../hooks/use-emit-response';
 import type { PaymentMethodsDispatcherType } from './types';
-import { useShippingData } from '../../../hooks/use-shipping-data';
+import { useShippingData } from '../../../hooks/shipping/use-shipping-data';
 
 /**
  * This hook handles initializing registered payment methods and exposing all

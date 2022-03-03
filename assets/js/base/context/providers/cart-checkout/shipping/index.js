@@ -25,7 +25,7 @@ import {
 import { useCheckoutContext } from '../checkout-state';
 import { useStoreCart } from '../../../hooks/cart/use-store-cart';
 import { useSelectShippingRate } from '../../../hooks/shipping/use-select-shipping-rate';
-import { useShippingData } from '../../../hooks/use-shipping-data';
+import { useShippingData } from '../../../hooks/shipping/use-shipping-data';
 
 /**
  * @typedef {import('@woocommerce/type-defs/contexts').ShippingDataContext} ShippingDataContext

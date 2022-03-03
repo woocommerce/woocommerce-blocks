@@ -15,7 +15,7 @@ import { useCallback } from '@wordpress/element';
  */
 import { useCheckoutContext } from '../providers/cart-checkout';
 import { useCustomerData } from './use-customer-data';
-import { useShippingData } from './use-shipping-data';
+import { useShippingData } from './shipping/use-shipping-data';
 
 interface CheckoutAddress {
 	shippingAddress: ShippingAddress;

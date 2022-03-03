@@ -23,7 +23,7 @@ import { usePaymentMethodDataContext } from '../../providers/cart-checkout/payme
 import { useShippingDataContext } from '../../providers/cart-checkout/shipping';
 import { useCustomerDataContext } from '../../providers/cart-checkout/customer';
 import { prepareTotalItems } from './utils';
-import { useShippingData } from '../use-shipping-data';
+import { useShippingData } from '../shipping/use-shipping-data';
 
 /**
  * Returns am interface to use as payment method props.

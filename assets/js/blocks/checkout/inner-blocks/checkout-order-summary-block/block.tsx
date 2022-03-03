@@ -21,13 +21,9 @@ import { getCurrencyFromPriceResponse } from '@woocommerce/price-format';
 import {
 	useStoreCartCoupons,
 	useStoreCart,
+	useShippingData,
 } from '@woocommerce/base-context/hooks';
 import { getSetting } from '@woocommerce/settings';
-
-/**
- * Internal dependencies
- */
-import { useShippingData } from '../../../../base/context/hooks/use-shipping-data';
 
 const Block = ( {
 	showRateAfterTaxName = false,

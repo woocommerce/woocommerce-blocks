@@ -2,6 +2,7 @@
  * External dependencies
  */
 import { __ } from '@wordpress/i18n';
+import { useShippingData } from '@woocommerce/base-context/hooks';
 import { ShippingRatesControl } from '@woocommerce/base-components/cart-checkout';
 import { getShippingRatesPackageCount } from '@woocommerce/base-utils';
 import { getCurrencyFromPriceResponse } from '@woocommerce/price-format';
@@ -19,7 +20,6 @@ import type { CartShippingPackageShippingRate } from '@woocommerce/type-defs/car
  */
 import NoShippingPlaceholder from './no-shipping-placeholder';
 import './style.scss';
-import { useShippingData } from '../../../../base/context/hooks/use-shipping-data';
 
 /**
  * Renders a shipping rate control option.

@@ -13,7 +13,7 @@ import { isObject } from '@woocommerce/types';
 /**
  * Internal dependencies
  */
-import { useSelectShippingRate } from './shipping';
+import { useSelectShippingRate } from './use-select-shipping-rate';
 
 type ShippingData = Pick<
 	Cart,
