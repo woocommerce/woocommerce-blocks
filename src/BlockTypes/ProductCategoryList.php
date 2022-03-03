@@ -20,20 +20,6 @@ class ProductCategoryList extends AbstractBlock {
 	 */
 	protected $api_version = '2';
 
-	/**
-	 * Get the editor script handle for this block type.
-	 *
-	 * @param string $key Data to get, or default to everything.
-	 * @return array|string;
-	 */
-	protected function get_block_type_editor_script( $key = null ) {
-		$script = [
-			'handle'       => 'wc-' . $this->block_name . '-block',
-			'path'         => $this->asset_api->get_block_asset_build_path( 'atomic-block-components/category-list' ),
-			'dependencies' => [ 'wc-blocks' ],
-		];
-		return $key ? $script[ $key ] : $script;
-	}
 
 	/**
 	 * Get block supports. Shared with the frontend.
