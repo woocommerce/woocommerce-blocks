@@ -37,7 +37,6 @@ import { blockName } from '../mini-cart-contents/attributes';
 
 interface Props {
 	isInitiallyOpen?: boolean;
-	transparentButton: boolean;
 	colorClassNames?: string;
 	style?: Record< string, Record< string, string > >;
 	contents: string;

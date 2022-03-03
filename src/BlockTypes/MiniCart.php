@@ -326,10 +326,6 @@ class MiniCart extends AbstractBlock {
 			$wrapper_classes .= ' align-' . $attributes['align'];
 		}
 
-		if ( ! isset( $attributes['transparentButton'] ) || $attributes['transparentButton'] ) {
-			$wrapper_classes .= ' is-transparent';
-		}
-
 		$aria_label = sprintf(
 		/* translators: %1$d is the number of products in the cart. %2$s is the cart total */
 			_n(

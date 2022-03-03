@@ -10,11 +10,10 @@ import {
 import type { ReactElement } from 'react';
 import { formatPrice } from '@woocommerce/price-format';
 import { CartCheckoutCompatibilityNotice } from '@woocommerce/editor-components/compatibility-notices';
-import { PanelBody, ExternalLink, ToggleControl } from '@wordpress/components';
+import { PanelBody, ExternalLink } from '@wordpress/components';
 import { getSetting } from '@woocommerce/settings';
 import { __ } from '@wordpress/i18n';
 import { positionCenter, positionRight, positionLeft } from '@wordpress/icons';
-import classnames from 'classnames';
 import Noninteractive from '@woocommerce/base-components/noninteractive';
 
 /**
@@ -25,7 +24,6 @@ import QuantityBadge from './quantity-badge';
 interface Attributes {
 	align: string;
 	isInitiallyOpen?: boolean;
-	transparentButton: boolean;
 	backgroundColor?: string;
 	textColor?: string;
 	style?: Record< string, Record< string, string > >;
@@ -40,11 +38,9 @@ const MiniCartBlock = ( {
 	attributes,
 	setAttributes,
 }: Props ): ReactElement => {
-	const { transparentButton, align } = attributes;
+	const { align } = attributes;
 	const blockProps = useBlockProps( {
-		className: classnames( `wc-block-mini-cart align-${ align }`, {
-			'is-transparent': transparentButton,
-		} ),
+		className: `wc-block-mini-cart align-${ align }`,
 	} );
 
 	const templatePartEditUri = getSetting(
@@ -92,25 +88,6 @@ const MiniCartBlock = ( {
 				/>
 			</BlockControls>
 			<InspectorControls>
-				<PanelBody
-					title={ __(
-						'Button style',
-						'woo-gutenberg-products-block'
-					) }
-				>
-					<ToggleControl
-						label={ __(
-							'Use transparent button',
-							'woo-gutenberg-products-block'
-						) }
-						checked={ transparentButton }
-						onChange={ () =>
-							setAttributes( {
-								transparentButton: ! transparentButton,
-							} )
-						}
-					/>
-				</PanelBody>
 				{ templatePartEditUri && (
 					<PanelBody
 						title={ __(

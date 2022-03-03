@@ -50,10 +50,6 @@ const settings = {
 			default: false,
 			save: false,
 		},
-		transparentButton: {
-			type: 'boolean',
-			default: true,
-		},
 	},
 
 	edit,
