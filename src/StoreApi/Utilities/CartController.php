@@ -511,7 +511,7 @@ class CartController {
 			$plural_error   = $this->get_error_message_for_stock_exception_type( 'out_of_stock', 'plural' );
 
 			$error->add(
-				'woocommerce-blocks-product-out-of-stock',
+				'woocommerce_rest_product_out_of_stock',
 				$this->add_product_names_to_message( $singular_error, $plural_error, $out_of_stock_products )
 			);
 		}
@@ -521,7 +521,7 @@ class CartController {
 			$plural_error   = $this->get_error_message_for_stock_exception_type( 'not_purchasable', 'plural' );
 
 			$error->add(
-				'woocommerce-blocks-product-not-purchasable',
+				'woocommerce_rest_product_not_purchasable',
 				$this->add_product_names_to_message( $singular_error, $plural_error, $not_purchasable_products )
 			);
 		}
@@ -531,7 +531,7 @@ class CartController {
 			$plural_error   = $this->get_error_message_for_stock_exception_type( 'too_many_in_cart', 'plural' );
 
 			$error->add(
-				'woocommerce-blocks-too-many-of-product-in-cart',
+				'woocommerce_rest_product_too_many_in_cart',
 				$this->add_product_names_to_message( $singular_error, $plural_error, $too_many_in_cart_products )
 			);
 		}
@@ -541,7 +541,7 @@ class CartController {
 			$plural_error   = $this->get_error_message_for_stock_exception_type( 'partial_out_of_stock', 'plural' );
 
 			$error->add(
-				'woocommerce-blocks-product-partially-out-of-stock',
+				'woocommerce_rest_product_partially_out_of_stock',
 				$this->add_product_names_to_message( $singular_error, $plural_error, $partial_out_of_stock_products )
 			);
 		}
