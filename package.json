@@ -70,6 +70,8 @@
 		"test:e2e-dev": "npm run wp-env:config && cross-env NODE_CONFIG_DIR=tests/e2e/config wp-scripts test-e2e --config tests/e2e/config/jest.config.js --puppeteer-interactive",
 		"test:e2e-dev-watch": "npm run wp-env:config && cross-env NODE_CONFIG_DIR=tests/e2e/config wp-scripts test-e2e --config tests/e2e/config/jest.config.js --watch --puppeteer-interactive",
 		"test:e2e:update": "npm run wp-env:config && cross-env NODE_CONFIG_DIR=tests/e2e/config wp-scripts test-e2e --config tests/e2e/config/jest.config.js --updateSnapshot",
+		"test:e2e-cypress": "cypress run --browser chrome",
+		"test:e2e-cypress-dev": "cypress open",
 		"test:help": "wp-scripts test-unit-js --help",
 		"pretest:php": "npm run wp-env run composer 'install --no-interaction'",
 		"test:php": "npm run wp-env run phpunit 'phpunit -c /var/www/html/wp-content/plugins/woocommerce-gutenberg-products-block/phpunit.xml.dist'",
@@ -77,7 +79,8 @@
 		"test:watch": "npm run test -- --watch",
 		"ts:check": "tsc --build",
 		"wp-env": "wp-env",
-		"wp-env:config": "./bin/wp-env-pre-config.sh"
+		"wp-env:config": "./bin/wp-env-pre-config.sh",
+		"wp-env:config-cypress": "./bin/wp-env-pre-config-cypress.sh"
 	},
 	"devDependencies": {
 		"@actions/core": "1.6.0",
@@ -153,9 +156,11 @@
 		"create-file-webpack": "1.0.2",
 		"cross-env": "6.0.3",
 		"cssnano": "4.1.11",
+		"cypress": "9.5.1",
 		"deep-freeze": "0.0.1",
 		"eslint-import-resolver-typescript": "2.5.0",
 		"eslint-import-resolver-webpack": "0.13.2",
+		"eslint-plugin-cypress": "2.12.1",
 		"eslint-plugin-import": "2.25.4",
 		"eslint-plugin-woocommerce": "file:bin/eslint-plugin-woocommerce",
 		"eslint-plugin-you-dont-need-lodash-underscore": "6.12.0",
@@ -213,6 +218,7 @@
 		"@wordpress/primitives": "3.0.4",
 		"@wordpress/server-side-render": "3.0.17",
 		"@wordpress/wordcount": "3.2.3",
+		"caniuse-lite": "1.0.30001312",
 		"classnames": "2.3.1",
 		"compare-versions": "3.6.0",
 		"config": "3.3.7",

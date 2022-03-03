@@ -2,6 +2,7 @@ module.exports = {
 	extends: [
 		'plugin:@woocommerce/eslint-plugin/recommended',
 		'plugin:you-dont-need-lodash-underscore/compatible',
+		'plugin:cypress/recommended',
 	],
 	globals: {
 		wcBlocksMiddlewareConfig: 'readonly',
@@ -54,6 +55,7 @@ module.exports = {
 		},
 	},
 	rules: {
+		'cypress/no-unnecessary-waiting': 'warn',
 		'woocommerce/feature-flag': 'off',
 		'react-hooks/exhaustive-deps': 'error',
 		'react/jsx-fragments': [ 'error', 'syntax' ],

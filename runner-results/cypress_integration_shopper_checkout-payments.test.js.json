@@ -1,0 +1,10 @@
+{
+  "suites": 1,
+  "tests": 3,
+  "passes": 3,
+  "pending": 0,
+  "failures": 0,
+  "start": "2022-03-02T19:11:41.253Z",
+  "duration": 58618,
+  "file": "cypress/integration/shopper/checkout-payments.test.js"
+}

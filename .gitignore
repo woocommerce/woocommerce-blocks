@@ -59,3 +59,7 @@ blocks.ini
 /.wp-env.override.json
 /eslint_report.json
 /storybook/dist
+
+# e2e tests
+Cypress/screenshots
+Cypress/videos

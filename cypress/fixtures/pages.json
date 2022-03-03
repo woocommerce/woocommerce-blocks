@@ -1,0 +1,5 @@
+{
+	"SHOP_URL": "/shop",
+	"CART_BLOCK_URL": "/cart-block",
+	"CHECKOUT_BLOCK_URL": "/checkout-block"
+}
