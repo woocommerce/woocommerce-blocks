@@ -46,18 +46,18 @@ class AllProducts extends AbstractBlock {
 		parent::register_block_type_assets();
 		$this->register_chunk_translations(
 			[
-				'atomic-block-components/price',
-				'atomic-block-components/image',
-				'atomic-block-components/title',
-				'atomic-block-components/rating',
-				'atomic-block-components/button',
-				'atomic-block-components/summary',
-				'atomic-block-components/sale-badge',
-				'atomic-block-components/sku',
-				'atomic-block-components/category-list',
-				'atomic-block-components/tag-list',
-				'atomic-block-components/stock-indicator',
-				'atomic-block-components/add-to-cart',
+				'product-price',
+				'product-image',
+				'product-title',
+				'product-rating',
+				'product-button',
+				'product-summary',
+				'product-sale-badge',
+				'product-sku',
+				'product-category-list',
+				'product-tag-list',
+				'product-stock-indicator',
+				'product-add-to-cart',
 			]
 		);
 	}
