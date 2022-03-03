@@ -35,7 +35,7 @@ export const useShippingData = (): ShippingData => {
 			shippingRates: store.getShippingRates(),
 			needsShipping: store.getNeedsShipping(),
 			hasCalculatedShipping: store.getHasCalculatedShipping(),
-			shippingRatesLoading: store.isShippingRateBeingSelected(),
+			shippingRatesLoading: store.isCustomerDataUpdating(),
 		};
 	} );
 	const { isSelectingRate, selectShippingRate } = useSelectShippingRate();
