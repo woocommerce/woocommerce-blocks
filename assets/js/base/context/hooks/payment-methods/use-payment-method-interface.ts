@@ -61,7 +61,7 @@ export const usePaymentMethodInterface = (): PaymentMethodInterface => {
 		shippingRatesLoading,
 		selectedRates,
 		isSelectingRate,
-		setSelectedRates,
+		selectShippingRate,
 		needsShipping,
 	} = useShippingData();
 	const {
@@ -160,7 +160,7 @@ export const usePaymentMethodInterface = (): PaymentMethodInterface => {
 			isSelectingRate,
 			needsShipping,
 			selectedRates,
-			setSelectedRates,
+			selectShippingRate,
 			setShippingAddress,
 			shippingAddress,
 			shippingRates,
