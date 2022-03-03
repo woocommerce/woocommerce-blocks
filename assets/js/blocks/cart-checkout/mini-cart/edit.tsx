@@ -6,7 +6,6 @@ import {
 	BlockControls,
 	InspectorControls,
 	useBlockProps,
-	getColorClassName,
 } from '@wordpress/block-editor';
 import type { ReactElement } from 'react';
 import { formatPrice } from '@woocommerce/price-format';
@@ -41,13 +40,7 @@ const MiniCartBlock = ( {
 	attributes,
 	setAttributes,
 }: Props ): ReactElement => {
-	const {
-		transparentButton,
-		backgroundColor,
-		textColor,
-		style,
-		align,
-	} = attributes;
+	const { transparentButton, align } = attributes;
 	const blockProps = useBlockProps( {
 		className: classnames( `wc-block-mini-cart align-${ align }`, {
 			'is-transparent': transparentButton,
@@ -58,26 +51,6 @@ const MiniCartBlock = ( {
 		'templatePartEditUri',
 		''
 	) as string;
-
-	/**
-	 * @todo Replace `getColorClassName` and manual style manipulation with
-	 * `useColorProps` once the hook is no longer experimental.
-	 */
-	const backgroundClass = getColorClassName(
-		'background-color',
-		backgroundColor
-	);
-	const textColorClass = getColorClassName( 'color', textColor );
-
-	const colorStyle = {
-		backgroundColor: style?.color?.background,
-		color: style?.color?.text,
-	};
-
-	const colorClassNames = classnames( backgroundClass, textColorClass, {
-		'has-background': backgroundClass || style?.color?.background,
-		'has-text-color': textColorClass || style?.color?.text,
-	} );
 
 	const productCount = 0;
 	const productTotal = 0;
@@ -155,21 +128,11 @@ const MiniCartBlock = ( {
 				) }
 			</InspectorControls>
 			<Noninteractive>
-				<button
-					className={ classnames(
-						'wc-block-mini-cart__button',
-						colorClassNames
-					) }
-					style={ colorStyle }
-				>
+				<button className="wc-block-mini-cart__button">
 					<span className="wc-block-mini-cart__amount">
 						{ formatPrice( productTotal ) }
 					</span>
-					<QuantityBadge
-						count={ productCount }
-						colorClassNames={ colorClassNames }
-						style={ colorStyle }
-					/>
+					<QuantityBadge count={ productCount } />
 				</button>
 			</Noninteractive>
 			<CartCheckoutCompatibilityNotice blockName="mini-cart" />

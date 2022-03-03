@@ -209,11 +209,7 @@ const MiniCartBlock = ( {
 						{ taxLabel }
 					</small>
 				) }
-				<QuantityBadge
-					count={ cartItemsCount }
-					colorClassNames={ colorClassNames }
-					style={ colorStyle }
-				/>
+				<QuantityBadge count={ cartItemsCount } />
 			</button>
 			<Drawer
 				className={ classnames(
