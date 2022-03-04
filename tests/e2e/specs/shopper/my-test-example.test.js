@@ -3,14 +3,6 @@
  */
 import { shopper } from '../../../utils';
 
-const block = {
-	name: 'Cart',
-};
-
-if ( process.env.WOOCOMMERCE_BLOCKS_PHASE < 2 )
-	// eslint-disable-next-line jest/no-focused-tests
-	test.only( `skipping ${ block.name } tests`, () => {} );
-
 const simpleProductName = 'Woo Single #1';
 
 describe( 'Shopper → Checkout → Can see warnings when form is incomplete', () => {
