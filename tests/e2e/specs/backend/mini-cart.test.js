@@ -1,4 +1,13 @@
 /**
+ * External dependencies
+ */
+import {
+	insertBlock,
+	canvas,
+	searchForBlock as searchForBlockFSE,
+} from '@wordpress/e2e-test-utils';
+
+/**
  * Internal dependencies
  */
 import {
@@ -7,6 +16,9 @@ import {
 	openWidgetEditor,
 	searchForBlock,
 	isBlockInsertedInWidgetsArea,
+	goToSiteEditor,
+	useTheme,
+	waitForCanvas,
 } from '../../utils.js';
 
 const block = {
@@ -35,6 +47,16 @@ const addBlockToWidgetsArea = async () => {
 	);
 
 	await miniCartButton[ 0 ].click();
+};
+
+// insertBlock gets focus on the canvas, so the compatibility notices popup doesn't appear.
+// I created this function to avoid that.
+const addBlockToFSEArea = async () => {
+	await searchForBlockFSE( block.name );
+	const insertButton = await page.waitForXPath(
+		`//button//span[contains(text(), '${ block.name }')]`
+	);
+	await insertButton.click();
 };
 
 describe( `${ block.name } Block`, () => {
@@ -86,6 +108,49 @@ describe( `${ block.name } Block`, () => {
 		} );
 	} );
 
-	// @todo Add tests for the Mini Cart block in FSE editor
-	// describe( 'in FSE editor', () => {} );
+	describe( 'in FSE editor', () => {
+		useTheme( 'emptytheme' );
+
+		beforeEach( async () => {
+			await goToSiteEditor();
+			await removeDismissedCompatibilityNoticesFromLocalStorage();
+			await waitForCanvas();
+		} );
+
+		it( 'can be inserted in FSE area', async () => {
+			await insertBlock( block.name );
+			await expect( canvas() ).toMatchElement( block.class );
+		} );
+
+		it( 'the compatibility notice appears', async () => {
+			await addBlockToFSEArea();
+			const compatibilityNoticeTitle = await page.$x(
+				`//h1[contains(text(), 'Compatibility notice')]`
+			);
+			expect( compatibilityNoticeTitle.length ).toBe( 1 );
+		} );
+
+		it( "after the compatibility notice is dismissed, it doesn't appear again", async () => {
+			await page.evaluate( () => {
+				localStorage.setItem(
+					'wc-blocks_dismissed_compatibility_notices',
+					'["mini-cart"]'
+				);
+			} );
+			await addBlockToFSEArea();
+			const compatibilityNoticeTitle = await page.$x(
+				`//h1[contains(text(), 'Compatibility notice')]`
+			);
+			expect( compatibilityNoticeTitle.length ).toBe( 0 );
+		} );
+
+		it( 'can only be inserted once', async () => {
+			await insertBlock( block.name );
+			await searchForBlockFSE( block.name );
+			const miniCartButton = await page.$x(
+				`//button[@aria-disabled]//span[text()='${ block.name }']`
+			);
+			expect( miniCartButton ).toHaveLength( 1 );
+		} );
+	} );
 } );
