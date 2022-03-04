@@ -8,6 +8,7 @@ import { SHOP_CART_PAGE, SHOP_CHECKOUT_PAGE } from '@woocommerce/e2e-utils';
  * Internal dependencies
  */
 import { shopper } from '../../../utils';
+import { getTextContent } from '../../page-utils';
 
 const block = {
 	name: 'Mini Cart Block',
@@ -226,9 +227,8 @@ describe( 'Shopper → Mini Cart', () => {
 		} );
 
 		it( 'Can go to cart page from the Mini Cart Footer', async () => {
-			const productTitle = await page.$eval(
-				'.wc-block-grid__product:first-child .wc-block-components-product-name',
-				( el ) => el.textContent
+			const [ productTitle ] = await getTextContent(
+				'.wc-block-grid__product:first-child .wc-block-components-product-name'
 			);
 
 			await page.click(
