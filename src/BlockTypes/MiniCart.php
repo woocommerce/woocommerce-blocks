@@ -447,4 +447,16 @@ class MiniCart extends AbstractBlock {
 	protected function get_cart_payload() {
 		return WC()->api->get_endpoint_data( '/wc/store/cart' );
 	}
+
+	/**
+	 * Get the supports array for this block type.
+	 *
+	 * @see $this->register_block_type()
+	 * @return string;
+	 */
+	protected function get_block_type_supports() {
+		return [
+			'__experimentalSelector' => '.wc-block-mini-cart__button',
+		];
+	}
 }

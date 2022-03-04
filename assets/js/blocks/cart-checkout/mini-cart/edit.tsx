@@ -20,6 +20,7 @@ import Noninteractive from '@woocommerce/base-components/noninteractive';
  * Internal dependencies
  */
 import QuantityBadge from './quantity-badge';
+import { useColorProps } from '../../../hooks/style-attributes';
 
 interface Attributes {
 	align: string;
@@ -42,6 +43,7 @@ const MiniCartBlock = ( {
 	const blockProps = useBlockProps( {
 		className: `wc-block-mini-cart align-${ align }`,
 	} );
+	const colorProps = useColorProps( attributes );
 
 	const templatePartEditUri = getSetting(
 		'templatePartEditUri',
@@ -105,7 +107,10 @@ const MiniCartBlock = ( {
 				) }
 			</InspectorControls>
 			<Noninteractive>
-				<button className="wc-block-mini-cart__button">
+				<button
+					className="wc-block-mini-cart__button"
+					style={ colorProps.style }
+				>
 					<span className="wc-block-mini-cart__amount">
 						{ formatPrice( productTotal ) }
 					</span>
