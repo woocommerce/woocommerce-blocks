@@ -371,7 +371,10 @@ class MiniCart extends AbstractBlock {
 		</span>';
 
 		if ( is_cart() || is_checkout() ) {
-			return;
+			// It is not necessary to load the Mini Cart Block on Cart and Checkout page.
+				return '<div class="' . $wrapper_classes . '" style="visibility:hidden" aria-hidden="true">
+				<button class="wc-block-mini-cart__button ' . $classes . '" aria-label="' . esc_attr( $aria_label ) . '" style="' . $style . '" disabled>' . $button_html . '</button>
+			</div>';
 		}
 
 		$template_part_contents = '';
