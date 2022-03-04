@@ -2,7 +2,7 @@
 namespace Automattic\WooCommerce\StoreApi\Schemas\V1;
 
 use Automattic\WooCommerce\StoreApi\SchemaController;
-use Automattic\WooCommerce\Blocks\Payments\PaymentResult;
+use Automattic\WooCommerce\StoreApi\Payments\PaymentResult;
 use Automattic\WooCommerce\StoreApi\Schemas\ExtendSchema;
 
 

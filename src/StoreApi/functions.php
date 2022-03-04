@@ -2,12 +2,11 @@
 /**
  * Helper functions for interacting with the Store API.
  *
- * This file is autoloaded via composer.json and maps the old namespaces to new namespaces.
+ * This file is autoloaded via composer.json.
  */
 
-use Automattic\WooCommerce\Blocks\Package;
+use Automattic\WooCommerce\StoreApi\StoreApi;
 use Automattic\WooCommerce\StoreApi\Schemas\ExtendSchema;
-use Automattic\WooCommerce\StoreApi\Formatters\FormatterInterface;
 
 if ( ! function_exists( 'woocommerce_store_api_register_endpoint_data' ) ) {
 
@@ -21,10 +20,10 @@ if ( ! function_exists( 'woocommerce_store_api_register_endpoint_data' ) ) {
 	 */
 	function woocommerce_store_api_register_endpoint_data( $args ) {
 		try {
-			$extend = Package::container()->get( ExtendSchema::class );
+			$extend = StoreApi::container()->get( ExtendSchema::class );
 			$extend->register_endpoint_data( $args );
 		} catch ( \Exception $error ) {
-			return new WP_Error( 'error', $error->getMessage() );
+			return new \WP_Error( 'error', $error->getMessage() );
 		}
 		return true;
 	}
@@ -42,10 +41,10 @@ if ( ! function_exists( 'woocommerce_store_api_register_update_callback' ) ) {
 	 */
 	function woocommerce_store_api_register_update_callback( $args ) {
 		try {
-			$extend = Package::container()->get( ExtendSchema::class );
+			$extend = StoreApi::container()->get( ExtendSchema::class );
 			$extend->register_update_callback( $args );
 		} catch ( \Exception $error ) {
-			return new WP_Error( 'error', $error->getMessage() );
+			return new \WP_Error( 'error', $error->getMessage() );
 		}
 		return true;
 	}
@@ -63,10 +62,10 @@ if ( ! function_exists( 'woocommerce_store_api_register_payment_requirements' ) 
 	 */
 	function woocommerce_store_api_register_payment_requirements( $args ) {
 		try {
-			$extend = Package::container()->get( ExtendSchema::class );
+			$extend = StoreApi::container()->get( ExtendSchema::class );
 			$extend->register_payment_requirements( $args );
 		} catch ( \Exception $error ) {
-			return new WP_Error( 'error', $error->getMessage() );
+			return new \WP_Error( 'error', $error->getMessage() );
 		}
 		return true;
 	}
@@ -80,9 +79,9 @@ if ( ! function_exists( 'woocommerce_store_api_get_formatter' ) ) {
 	 * @see Automattic\WooCommerce\StoreApi\Schemas\ExtendSchema::get_formatter()
 	 *
 	 * @param string $name Formatter name.
-	 * @return FormatterInterface
+	 * @return Automattic\WooCommerce\StoreApi\Formatters\FormatterInterface
 	 */
 	function woocommerce_store_api_get_formatter( $name ) {
-		return Package::container()->get( ExtendSchema::class )->get_formatter( $name );
+		return StoreApi::container()->get( ExtendSchema::class )->get_formatter( $name );
 	}
 }

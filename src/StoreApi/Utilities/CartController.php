@@ -1,17 +1,17 @@
 <?php
 namespace Automattic\WooCommerce\StoreApi\Utilities;
 
+use Automattic\WooCommerce\Checkout\Helpers\ReserveStock;
+use Automattic\WooCommerce\StoreApi\Exceptions\InvalidCartException;
 use Automattic\WooCommerce\StoreApi\Exceptions\NotPurchasableException;
 use Automattic\WooCommerce\StoreApi\Exceptions\OutOfStockException;
 use Automattic\WooCommerce\StoreApi\Exceptions\PartialOutOfStockException;
-use Automattic\WooCommerce\StoreApi\Exceptions\TooManyInCartException;
 use Automattic\WooCommerce\StoreApi\Exceptions\RouteException;
-use Automattic\WooCommerce\StoreApi\Exceptions\InvalidCartException;
+use Automattic\WooCommerce\StoreApi\Exceptions\TooManyInCartException;
+use Automattic\WooCommerce\StoreApi\Utilities\ArrayUtils;
 use Automattic\WooCommerce\StoreApi\Utilities\DraftOrderTrait;
 use Automattic\WooCommerce\StoreApi\Utilities\NoticeHandler;
 use Automattic\WooCommerce\StoreApi\Utilities\QuantityLimits;
-use Automattic\WooCommerce\Blocks\Utils\ArrayUtils;
-use Automattic\WooCommerce\Checkout\Helpers\ReserveStock;
 use WP_Error;
 
 /**

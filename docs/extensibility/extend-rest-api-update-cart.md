@@ -26,14 +26,8 @@ executed, and the latest server-side cart data gets returned and the block is up
 In your extension's server-side integration code:
 
 ```PHP
-use Automattic\WooCommerce\Blocks\Package;
-use Automattic\WooCommerce\Blocks\ExtendSchema;
-
 add_action('woocommerce_blocks_loaded', function() {
- // Extend is stored in the container as a shared instance between the API and consumers.
- // You shouldn't initiate your own Extend instance but should always use the shared instance from the Package dependency injection container.
- $extend = Package::container()->get( ExtendSchema::class );
- $extend->register_update_callback(
+ woocommerce_store_api_register_update_callback(
    [
     'namespace' => 'extension-unique-namespace',
     'callback'  => /* Add your callable here */
@@ -80,10 +74,6 @@ Example:
 
 ```PHP
 <?php
-
-use Automattic\WooCommerce\Blocks\Package;
-use Automattic\WooCommerce\StoreApi\Schemas\ExtendSchema;
-
 function add_discount() {
     /* Do some processing here */
 }
@@ -92,10 +82,7 @@ function remove_discount() {
 }
 
 add_action('woocommerce_blocks_loaded', function() {
- // ExtendSchema is stored in the container as a shared instance between the API and consumers.
- // You shouldn't initiate your own ExtendSchema instance using `new ExtendSchema` but should always use the shared instance from the Package dependency injection container.
- $extend = Package::container()->get( ExtendSchema::class );
- $extend->register_update_callback(
+ woocommerce_store_api_register_update_callback(
    [
     'namespace' => 'extension-unique-namespace',
     'callback'  => function( $data ) {
@@ -188,19 +175,12 @@ omitted. All that is important to note is that it modifies the WooCommerce cart.
 
 ```PHP
 <?php
-
-use Automattic\WooCommerce\Blocks\Package;
-use Automattic\WooCommerce\StoreApi\Schemas\ExtendSchema;
-
 function redeem_points( $points ) {
     /* Do some processing here that applies a discount to the WC cart based on the value of $points */
 }
 
 add_action('woocommerce_blocks_loaded', function() {
- // ExtendSchema is stored in the container as a shared instance between the API and consumers.
- // You shouldn't initiate your own ExtendSchema instance using `new ExtendSchema` but should always use the shared instance from the Package dependency injection container.
- $extend = Package::container()->get( ExtendSchema::class );
- $extend->register_update_callback(
+ woocommerce_store_api_register_update_callback(
    [
     'namespace' => 'super-coupons',
     'callback'  => function( $data ) {
@@ -215,10 +195,11 @@ Now that this is registered, when the button is pressed, the `cart/extensions` e
 `super-coupons` our `redeem_points` function will be executed. After this has finished processing, the client-side cart
 will be updated by WooCommerce Blocks.
 
-## <!-- FEEDBACK -->
+<!-- FEEDBACK -->
+---
 
 [We're hiring!](https://woocommerce.com/careers/) Come work with us!
 
 🐞 Found a mistake, or have a suggestion? [Leave feedback about this document here.](https://github.com/woocommerce/woocommerce-gutenberg-products-block/issues/new?assignees=&labels=type%3A+documentation&template=--doc-feedback.md&title=Feedback%20on%20./docs/extensibility/extend-rest-api-update-cart.md)
-
 <!-- /FEEDBACK -->
+
