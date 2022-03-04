@@ -371,9 +371,7 @@ class MiniCart extends AbstractBlock {
 		</span>';
 
 		if ( is_cart() || is_checkout() ) {
-			return '<div class="' . $wrapper_classes . '">
-				<button class="wc-block-mini-cart__button ' . $classes . '" aria-label="' . esc_attr( $aria_label ) . '" style="' . $style . '" disabled>' . $button_html . '</button>
-			</div>';
+			return;
 		}
 
 		$template_part_contents = '';
