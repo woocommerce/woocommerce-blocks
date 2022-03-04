@@ -58,7 +58,7 @@ export const usePaymentMethodInterface = (): PaymentMethodInterface => {
 	} = useShippingDataContext();
 	const {
 		shippingRates,
-		shippingRatesLoading,
+		isLoadingRates,
 		selectedRates,
 		isSelectingRate,
 		selectShippingRate,
@@ -164,7 +164,7 @@ export const usePaymentMethodInterface = (): PaymentMethodInterface => {
 			setShippingAddress,
 			shippingAddress,
 			shippingRates,
-			shippingRatesLoading,
+			isLoadingRates,
 		},
 		shippingStatus: {
 			shippingErrorStatus,
