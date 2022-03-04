@@ -1,5 +1,5 @@
 <?php
-namespace Automattic\WooCommerce\Blocks\StoreApi\Utilities;
+namespace Automattic\WooCommerce\StoreApi\Utilities;
 
 use WC_Rate_Limiter;
 use WC_Cache_Helper;

@@ -1,6 +1,8 @@
 <?php
 namespace Automattic\WooCommerce\StoreApi;
 
+use Automattic\WooCommerce\StoreApi\Utilities\RateLimits;
+
 /**
  * Authentication class.
  */
@@ -20,15 +22,51 @@ class Authentication {
 	 * @return \WP_Error|null|bool
 	 */
 	public function check_authentication( $result ) {
-		if ( ! empty( $result ) ) {
+		if ( ! $this->is_request_to_store_api() ) {
 			return $result;
 		}
 
-		if ( $this->is_request_to_store_api() ) {
-			return true;
+		/**
+		 * Filters the Store API rate limit check.
+		 *
+		 * This can be used to disable the rate limit check when testing API endpoints via a REST API client.
+		 *
+		 * @param boolean $disable_rate_limit_check If true, checks will be disabled.
+		 * @return boolean
+		 */
+		if ( ! apply_filters( 'woocommerce_store_api_disable_rate_limit_check', false ) ) {
+			$action_id          = 'store_api_request_' . ( is_user_logged_in() ? get_current_user_id() : md5( $this->get_ip_address() ) );
+			$rate_limit_limit   = 25;
+			$rate_limit_seconds = 10;
+			$retry              = RateLimits::is_exceeded_retry_after( $action_id );
+			$server             = rest_get_server();
+			$server->send_header( 'X-RateLimit-Limit', $rate_limit_limit );
+
+			if ( false !== $retry ) {
+				$server->send_header( 'Retry-After', $retry );
+				$server->send_header( 'X-RateLimit-Remaining', 0 );
+				$server->send_header( 'X-RateLimit-Reset', time() + $retry );
+
+				return new \WP_Error(
+					'rate_limit_exceeded',
+					sprintf(
+						'Too many requests. Please wait %d seconds before trying again.',
+						$retry
+					),
+					[
+						'status' => 429,
+					]
+				);
+			}
+
+			// 25 requests per 10 seconds.
+			$rate_limit = RateLimits::update_rate_limit( $action_id, $rate_limit_seconds, $rate_limit_limit );
+			$server->send_header( 'X-RateLimit-Remaining', $rate_limit->remaining );
+			$server->send_header( 'X-RateLimit-Reset', $rate_limit->reset );
 		}
 
-		return $result;
+		// Pass through errors from other authentication methods used before this one.
+		return ! empty( $result ) ? $result : true;
 	}
 
 	/**
@@ -54,5 +92,19 @@ class Authentication {
 			return false;
 		}
 		return 0 === strpos( $GLOBALS['wp']->query_vars['rest_route'], '/wc/store/' );
+	}
+
+	/**
+	 * Get current user IP Address.
+	 *
+	 * Note for HTTP_X_FORWARDED_FOR, Proxy servers can send through this header like this: X-Forwarded-For: client1, proxy1, proxy2.
+	 * Make sure we always only send through the first IP in the list which should always be the client IP.
+	 *
+	 * @return string
+	 */
+	protected static function get_ip_address() {
+		$ip_address = trim( current( explode( ',', sanitize_text_field( wp_unslash( $_SERVER['HTTP_X_REAL_IP'] ?? $_SERVER['HTTP_X_FORWARDED_FOR'] ?? $_SERVER['REMOTE_ADDR'] ?? '' ) ) ) ) );
+
+		return (string) rest_is_ip_address( $ip_address );
 	}
 }
