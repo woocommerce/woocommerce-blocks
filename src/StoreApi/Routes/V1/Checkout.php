@@ -703,7 +703,7 @@ class Checkout extends AbstractCartRoute {
 		 * of errors.
 		 *
 		 * This could be used to add extra validation logic and append errors to the array.
-		 * 
+		 *
 		 * @internal Matches filter name in WooCommerce core.
 		 *
 		 * @param string $username Customer username.
@@ -717,7 +717,7 @@ class Checkout extends AbstractCartRoute {
 		 *
 		 * This hook filters registration errors. This can be used to manipulate the array of errors before
 		 * they are displayed.
-		 * 
+		 *
 		 * @internal Matches filter name in WooCommerce core.
 		 *
 		 * @param \WP_Error $errors Error object.
@@ -766,7 +766,7 @@ class Checkout extends AbstractCartRoute {
 		 * Fires after a customer account has been registered.
 		 *
 		 * This hook fires after customer accounts are created and passes the customer data.
-		 * 
+		 *
 		 * @internal Matches filter name in WooCommerce core.
 		 *
 		 * @param integer $customer_id New customer (user) ID.
