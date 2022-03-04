@@ -261,14 +261,6 @@ class Bootstrap {
 				return new SchemaController( $container->get( ExtendSchema::class ) );
 			}
 		);
-		// Backwards compatibility with old name space.
-		$this->container->register(
-			'Automattic\WooCommerce\Blocks\Domain\Services\ExtendRestApi',
-			function( Container $container ) {
-				_deprecated_function( 'Automattic\WooCommerce\Blocks\Domain\Services\ExtendRestApi', '7.1.0', 'Automattic\WooCommerce\StoreApi\Schemas\ExtendSchema' );
-				return $container->get( ExtendSchema::class );
-			}
-		);
 		$this->container->register(
 			RoutesController::class,
 			function( Container $container ) {
@@ -302,6 +294,31 @@ class Bootstrap {
 				}
 			);
 		}
+		// Maintains backwards compatibility with previous Store API namespace.
+		$this->container->register(
+			'Automattic\WooCommerce\Blocks\StoreApi\Formatters',
+			function( Container $container ) {
+				return $container->get( Formatters::class );
+			}
+		);
+		$this->container->register(
+			'Automattic\WooCommerce\Blocks\Domain\Services\ExtendRestApi',
+			function( Container $container ) {
+				return $container->get( ExtendSchema::class );
+			}
+		);
+		$this->container->register(
+			'Automattic\WooCommerce\Blocks\StoreApi\SchemaController',
+			function( Container $container ) {
+				return $container->get( SchemaController::class );
+			}
+		);
+		$this->container->register(
+			'Automattic\WooCommerce\Blocks\StoreApi\RoutesController',
+			function( Container $container ) {
+				return $container->get( RoutesController::class );
+			}
+		);
 	}
 
 	/**
