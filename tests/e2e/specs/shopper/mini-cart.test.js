@@ -2,7 +2,7 @@
  * External dependencies
  */
 import { setDefaultOptions, getDefaultOptions } from 'expect-puppeteer';
-import { SHOP_CHECKOUT_PAGE } from '@woocommerce/e2e-utils';
+import { SHOP_CART_PAGE, SHOP_CHECKOUT_PAGE } from '@woocommerce/e2e-utils';
 const WooCommerceRestApi = require( '@woocommerce/woocommerce-rest-api' )
 	.default;
 
@@ -18,6 +18,16 @@ const block = {
 
 const options = getDefaultOptions();
 
+const clickMiniCartButton = async () => {
+	await page.hover( '.wc-block-mini-cart__button' );
+
+	await page.waitForSelector( '.wc-block-mini-cart__drawer.is-loading', {
+		hidden: true,
+	} );
+
+	await page.click( '.wc-block-mini-cart__button' );
+};
+
 const WooCommerce = new WooCommerceRestApi( {
 	url: `${ process.env.WORDPRESS_BASE_URL }/`,
 	consumerKey: 'consumer_key', // Your consumer key
@@ -30,16 +40,6 @@ const WooCommerce = new WooCommerceRestApi( {
 		},
 	},
 } );
-
-const clickMiniCartButton = async () => {
-	await page.hover( '.wc-block-mini-cart__button' );
-
-	await page.waitForSelector( '.wc-block-mini-cart__drawer.is-loading', {
-		hidden: true,
-	} );
-
-	await page.click( '.wc-block-mini-cart__button' );
-};
 
 if ( process.env.WOOCOMMERCE_BLOCKS_PHASE < 3 ) {
 	// eslint-disable-next-line jest/no-focused-tests
@@ -234,43 +234,6 @@ describe( 'Shopper → Mini Cart', () => {
 		} );
 	} );
 
-	describe( 'Checkout page', () => {
-		beforeAll( async () => {
-			await shopper.emptyCart();
-		} );
-
-		it( 'Can go to checkout page from the Mini Cart Footer', async () => {
-			const productTitle = await page.$eval(
-				'.wc-block-grid__product:first-child .wc-block-components-product-name',
-				( el ) => el.textContent
-			);
-
-			await page.click(
-				'.wc-block-grid__product:first-child .add_to_cart_button'
-			);
-
-			await expect( page ).toMatchElement(
-				'.wc-block-mini-cart__products-table',
-				{
-					text: productTitle,
-				}
-			);
-
-			const checkoutUrl = await page.$eval(
-				'.wc-block-mini-cart__footer-checkout',
-				( el ) => el.href
-			);
-
-			expect( checkoutUrl ).toMatch( SHOP_CHECKOUT_PAGE );
-
-			await page.goto( checkoutUrl, { waitUntil: 'networkidle0' } );
-
-			await expect( page ).toMatchElement( 'h1', { text: 'Checkout' } );
-
-			await expect( page ).toMatch( productTitle );
-		} );
-	} );
-
 	describe( 'Tax included', () => {
 		let taxSettings;
 		beforeAll( async () => {
@@ -352,6 +315,79 @@ describe( 'Shopper → Mini Cart', () => {
 					text: '(incl.',
 				}
 			);
+		} );
+	} );
+
+	describe( 'Cart page', () => {
+		beforeAll( async () => {
+			await shopper.emptyCart();
+		} );
+
+		it( 'Can go to cart page from the Mini Cart Footer', async () => {
+			const [ productTitle ] = await getTextContent(
+				'.wc-block-grid__product:first-child .wc-block-components-product-name'
+			);
+
+			await page.click(
+				'.wc-block-grid__product:first-child .add_to_cart_button'
+			);
+
+			await expect( page ).toMatchElement(
+				'.wc-block-mini-cart__products-table',
+				{
+					text: productTitle,
+				}
+			);
+
+			const cartUrl = await page.$eval(
+				'.wc-block-mini-cart__footer-cart',
+				( el ) => el.href
+			);
+
+			expect( cartUrl ).toMatch( SHOP_CART_PAGE );
+
+			await page.goto( cartUrl, { waitUntil: 'networkidle0' } );
+
+			await expect( page ).toMatchElement( 'h1', { text: 'Cart' } );
+
+			await expect( page ).toMatch( productTitle );
+		} );
+	} );
+
+	describe( 'Checkout page', () => {
+		beforeAll( async () => {
+			await shopper.emptyCart();
+		} );
+
+		it( 'Can go to checkout page from the Mini Cart Footer', async () => {
+			const productTitle = await page.$eval(
+				'.wc-block-grid__product:first-child .wc-block-components-product-name',
+				( el ) => el.textContent
+			);
+
+			await page.click(
+				'.wc-block-grid__product:first-child .add_to_cart_button'
+			);
+
+			await expect( page ).toMatchElement(
+				'.wc-block-mini-cart__products-table',
+				{
+					text: productTitle,
+				}
+			);
+
+			const checkoutUrl = await page.$eval(
+				'.wc-block-mini-cart__footer-checkout',
+				( el ) => el.href
+			);
+
+			expect( checkoutUrl ).toMatch( SHOP_CHECKOUT_PAGE );
+
+			await page.goto( checkoutUrl, { waitUntil: 'networkidle0' } );
+
+			await expect( page ).toMatchElement( 'h1', { text: 'Checkout' } );
+
+			await expect( page ).toMatch( productTitle );
 		} );
 	} );
 } );
