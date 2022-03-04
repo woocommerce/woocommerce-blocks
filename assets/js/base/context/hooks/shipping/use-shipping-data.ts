@@ -15,13 +15,13 @@ import { isObject } from '@woocommerce/types';
  */
 import { useSelectShippingRate } from './use-select-shipping-rate';
 
-type ShippingData = Pick<
-	Cart,
-	'shippingRates' | 'needsShipping' | 'hasCalculatedShipping'
-> & {
+interface ShippingData extends SelectShippingRateType {
+	needsShipping: Cart[ 'needsShipping' ];
+	hasCalculatedShipping: Cart[ 'hasCalculatedShipping' ];
+	shippingRates: Cart[ 'shippingRates' ];
 	shippingRatesLoading: boolean;
 	selectedRates: Record< string, string | unknown >;
-} & SelectShippingRateType;
+}
 
 export const useShippingData = (): ShippingData => {
 	const {
