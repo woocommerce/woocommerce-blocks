@@ -1,10 +1,13 @@
+Warning: Class 'Automattic\WooCommerce\StoreApi\Routes\V1\Batch' not found in /Users/mikejolley/Developer/plugins/woocommerce-gutenberg-products-block/src/StoreApi/deprecated.php on line 43
+
+Warning: Class 'Automattic\WooCommerce\StoreApi\Routes\V1\Checkout' not found in /Users/mikejolley/Developer/plugins/woocommerce-gutenberg-products-block/src/StoreApi/deprecated.php on line 57
+
+Warning: Class 'Automattic\WooCommerce\StoreApi\Routes\V1\ProductReviews' not found in /Users/mikejolley/Developer/plugins/woocommerce-gutenberg-products-block/src/StoreApi/deprecated.php on line 64
 <?php
 namespace Automattic\WooCommerce\StoreApi\Routes\V1;
 
 /**
  * Cart class.
- *
- * @internal This API is used internally by Blocks--it is still in flux and may be subject to revisions.
  */
 class Cart extends AbstractCartRoute {
 	/**
