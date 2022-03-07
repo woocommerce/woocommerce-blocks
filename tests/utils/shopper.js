@@ -68,6 +68,12 @@ export const shopper = {
 			} );
 		},
 
+		goToCheckout: async () => {
+			await page.goto( SHOP_CHECKOUT_BLOCK_PAGE, {
+				waitUntil: 'networkidle0',
+			} );
+		},
+
 		/**
 		 * For some reason "wcShopper.emptyCart" sometimes result in an error, but using the same
 		 * implementation here fixes the problem.
