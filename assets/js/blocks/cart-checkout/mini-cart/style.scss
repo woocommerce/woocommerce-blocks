@@ -1,15 +1,5 @@
 .wc-block-mini-cart {
-	background-color: transparent !important;
-	display: flex;
-	justify-content: flex-end;
-
-	&.align-center {
-		justify-content: center;
-	}
-
-	&.align-left {
-		justify-content: flex-start;
-	}
+	display: inline-block;
 }
 
 .wc-block-mini-cart__button {
