@@ -25,18 +25,18 @@ describe( 'Shopper -> Tax', () => {
 			await showTaxes( false );
 			await shopper.goToShop();
 			await shopper.searchForProduct( productWooSingle1.name );
-			await shopper.addToCart();
-			await shopper.goToCartBlock();
+			await shopper.block.addToCart();
+			await shopper.block.goToCart();
 
 			const cartTaxes = await getTaxesFromCurrentPage();
 			expect( cartTaxes ).toEqual( [] );
 
-			await shopper.goToCheckoutBlock();
+			await shopper.block.goToCheckout();
 			const checkoutTaxes = await getTaxesFromCurrentPage();
 			expect( checkoutTaxes ).toEqual( [] );
 
 			await shopper.fillInCheckoutWithTestData();
-			await shopper.placeOrder();
+			await shopper.block.placeOrder();
 			await page.waitForSelector( 'h1.entry-title' );
 			const orderSummaryTaxes = await getTaxesFromOrderSummaryPage(
 				taxRates.filter( ( taxRate ) => taxRate.country === 'US' )
@@ -50,8 +50,8 @@ describe( 'Shopper -> Tax', () => {
 			await showTaxes( true );
 			await shopper.goToShop();
 			await shopper.searchForProduct( productWooSingle1.name );
-			await shopper.addToCart();
-			await shopper.goToCartBlock();
+			await shopper.block.addToCart();
+			await shopper.block.goToCart();
 
 			const expectedTaxes = getExpectedTaxes( taxRates, 'US', [
 				productWooSingle1,
@@ -59,12 +59,12 @@ describe( 'Shopper -> Tax', () => {
 			const cartTaxes = await getTaxesFromCurrentPage();
 			expect( cartTaxes.sort() ).toEqual( expectedTaxes.sort() );
 
-			await shopper.goToCheckoutBlock();
+			await shopper.block.goToCheckout();
 			const checkoutTaxes = await getTaxesFromCurrentPage();
 			expect( checkoutTaxes.sort() ).toEqual( expectedTaxes.sort() );
 
 			await shopper.fillInCheckoutWithTestData();
-			await shopper.placeOrder();
+			await shopper.block.placeOrder();
 			await page.waitForSelector( 'h1.entry-title' );
 			const orderSummaryTaxes = await getTaxesFromOrderSummaryPage(
 				taxRates.filter( ( taxRate ) => taxRate.country === 'US' )

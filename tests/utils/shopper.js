@@ -16,29 +16,6 @@ import { SHOP_CART_BLOCK_PAGE, SHOP_CHECKOUT_BLOCK_PAGE } from './constants';
 export const shopper = {
 	...wcShopper,
 
-	goToCartBlock: async () => {
-		const checkoutBlockPermalink = await getBlockPagePermalink(
-			`Cart Block`
-		);
-
-		await page.goto( checkoutBlockPermalink, {
-			waitUntil: 'networkidle0',
-		} );
-		await expect( page ).toMatchElement( 'h1', { text: 'Cart' } );
-	},
-
-	goToCheckoutBlock: async () => {
-		await page.goto( SHOP_CHECKOUT_BLOCK_PAGE, {
-			waitUntil: 'networkidle0',
-		} );
-	},
-
-	goToCartBlock: async () => {
-		await page.goto( SHOP_CART_BLOCK_PAGE, {
-			waitUntil: 'networkidle0',
-		} );
-	},
-
 	productIsInCheckoutBlock: async ( productTitle, quantity, total ) => {
 		// Make sure Order summary is expanded
 		const [ button ] = await page.$x(
@@ -88,34 +65,6 @@ export const shopper = {
 		await expect( page ).toMatchElement( 'h1.entry-title', productname );
 	},
 
-	// The wcShopper.emptyCart is broken. This one works with the Cart block for extra snaz
-	emptyCart: async () => {
-		await shopper.goToCartBlock();
-
-		// Remove coupons
-		let couponRemoveLinks = await page.$$(
-			'.wc-block-components-chip__remove'
-		);
-		while ( couponRemoveLinks.length > 0 ) {
-			await couponRemoveLinks[ 0 ].click();
-			couponRemoveLinks = await page.$$(
-				'.wc-block-cart-item__remove-link'
-			);
-		}
-
-		// Remove products if they exist
-		let productRemoveLinks = await page.$$(
-			'.wc-block-cart-item__remove-link'
-		);
-		while ( productRemoveLinks.length > 0 ) {
-			await productRemoveLinks[ 0 ].click();
-			productRemoveLinks = await page.$$(
-				'.wc-block-cart-item__remove-link'
-			);
-		}
-		await page.waitForSelector( '.wp-block-woocommerce-empty-cart-block' );
-	},
-
 	addCoupon: async ( couponCode ) => {
 		const title = await page.title();
 		if ( ! title.includes( 'Cart Block' ) ) {
@@ -135,7 +84,9 @@ export const shopper = {
 		await page.click( '.wc-block-components-totals-coupon__button' );
 		await expect( page ).toMatchElement(
 			'.wc-block-components-chip__text',
-			{ text: couponCode }
+			{
+				text: couponCode,
+			}
 		);
 	},
 
@@ -193,18 +144,6 @@ export const shopper = {
 		);
 	},
 
-	placeOrder: async () => {
-		await Promise.all( [
-			expect( page ).toClick(
-				'.wc-block-components-checkout-place-order-button',
-				{
-					text: 'Place Order',
-				}
-			),
-			page.waitForNavigation( { waitUntil: 'networkidle0' } ),
-		] );
-	},
-
 	goToBlockPage: async ( title ) => {
 		await page.goto( await getBlockPagePermalink( title ), {
 			waitUntil: 'networkidle0',
@@ -214,8 +153,21 @@ export const shopper = {
 	},
 
 	block: {
+		addToCart: async () => {
+			await Promise.all( [
+				page.click( '.single_add_to_cart_button' ),
+				page.waitForNavigation( { waitUntil: 'networkidle0' } ),
+			] );
+		},
+
 		goToCart: async () => {
 			await page.goto( SHOP_CART_BLOCK_PAGE, {
+				waitUntil: 'networkidle0',
+			} );
+		},
+
+		goToCheckout: async () => {
+			await page.goto( SHOP_CHECKOUT_BLOCK_PAGE, {
 				waitUntil: 'networkidle0',
 			} );
 		},
@@ -250,6 +202,18 @@ export const shopper = {
 			await expect( page ).toMatchElement( '.woocommerce-info', {
 				text: 'Your cart is currently empty.',
 			} );
+		},
+
+		placeOrder: async () => {
+			await Promise.all( [
+				expect( page ).toClick(
+					'.wc-block-components-checkout-place-order-button',
+					{
+						text: 'Place Order',
+					}
+				),
+				page.waitForNavigation( { waitUntil: 'networkidle0' } ),
+			] );
 		},
 	},
 };
