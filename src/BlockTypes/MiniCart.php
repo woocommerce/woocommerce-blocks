@@ -317,10 +317,10 @@ class MiniCart extends AbstractBlock {
 			$cart_contents_total += $cart->get_subtotal_tax();
 		}
 
-		$wrapper_classes = 'wc-block-mini-cart  wp-block-woocommerce-mini-cart';
+		$wrapper_classes = 'wc-block-mini-cart wp-block-woocommerce-mini-cart';
 		$classes_styles  = StyleAttributesUtils::get_classes_and_styles_by_attributes( $attributes, array( 'text_color', 'background_color' ) );
-		$classes         = $classes_styles['classes'];
-		$style           = $classes_styles['styles'];
+		$wrapper_classes = sprintf( '%1$s %2$s', $wrapper_classes, $classes_styles['classes'] );
+		$wrapper_styles  = $classes_styles['styles'];
 
 		$aria_label = sprintf(
 		/* translators: %1$d is the number of products in the cart. %2$s is the cart total */
@@ -347,7 +347,7 @@ class MiniCart extends AbstractBlock {
 
 		if ( is_cart() || is_checkout() ) {
 			return '<div class="' . $wrapper_classes . '">
-				<button class="wc-block-mini-cart__button ' . $classes . '" aria-label="' . esc_attr( $aria_label ) . '" style="' . $style . '" disabled>' . $button_html . '</button>
+				<button class="wc-block-mini-cart__button" aria-label="' . esc_attr( $aria_label ) . '" disabled>' . $button_html . '</button>
 			</div>';
 		}
 
@@ -369,8 +369,8 @@ class MiniCart extends AbstractBlock {
 			);
 		}
 
-		return '<div class="' . $wrapper_classes . '">
-			<button class="wc-block-mini-cart__button ' . $classes . '" aria-label="' . esc_attr( $aria_label ) . '" style="' . $style . '">' . $button_html . '</button>
+		return '<div class="' . $wrapper_classes . '" style="' . $wrapper_styles . '">
+			<button class="wc-block-mini-cart__button" aria-label="' . esc_attr( $aria_label ) . '">' . $button_html . '</button>
 			<div class="wc-block-mini-cart__drawer is-loading is-mobile wc-block-components-drawer__screen-overlay wc-block-components-drawer__screen-overlay--is-hidden" aria-hidden="true">
 				<div class="components-modal__frame wc-block-components-drawer">
 					<div class="components-modal__content">

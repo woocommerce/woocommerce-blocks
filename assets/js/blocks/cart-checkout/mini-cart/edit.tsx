@@ -14,25 +14,11 @@ import Noninteractive from '@woocommerce/base-components/noninteractive';
  * Internal dependencies
  */
 import QuantityBadge from './quantity-badge';
-import { useColorProps } from '../../../hooks/style-attributes';
 
-interface Attributes {
-	isInitiallyOpen?: boolean;
-	backgroundColor?: string;
-	textColor?: string;
-	style?: Record< string, Record< string, string > >;
-}
-
-interface Props {
-	attributes: Attributes;
-	setAttributes: ( attributes: Record< string, unknown > ) => void;
-}
-
-const MiniCartBlock = ( { attributes }: Props ): ReactElement => {
+const MiniCartBlock = (): ReactElement => {
 	const blockProps = useBlockProps( {
 		className: `wc-block-mini-cart`,
 	} );
-	const colorProps = useColorProps( attributes );
 
 	const templatePartEditUri = getSetting(
 		'templatePartEditUri',
@@ -62,10 +48,7 @@ const MiniCartBlock = ( { attributes }: Props ): ReactElement => {
 				) }
 			</InspectorControls>
 			<Noninteractive>
-				<button
-					className="wc-block-mini-cart__button"
-					style={ colorProps.style }
-				>
+				<button className="wc-block-mini-cart__button">
 					<span className="wc-block-mini-cart__amount">
 						{ formatPrice( productTotal ) }
 					</span>
