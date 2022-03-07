@@ -16,6 +16,7 @@ import {
 	BLOCK_DESCRIPTION as description,
 } from './constants';
 import { Save } from './save';
+import { hasSpacingStyleSupport } from '../../../../utils/global-style';
 
 const blockConfig = {
 	title,
@@ -41,11 +42,14 @@ const blockConfig = {
 				width: true,
 				__experimentalSkipSerialization: true,
 			},
-			spacing: {
-				padding: true,
-				__experimentalSkipSerialization: true,
-			},
-			__experimentalSelector: '.wc-block-components-product-sale-badge',
+			...( hasSpacingStyleSupport() && {
+				spacing: {
+					padding: true,
+					__experimentalSkipSerialization: true,
+				},
+				__experimentalSelector:
+					'.wc-block-components-product-sale-badge',
+			} ),
 		} ),
 	},
 	attributes,
