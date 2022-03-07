@@ -411,7 +411,7 @@
             "type": "action",
             "doc": {
                 "description": "Fires when the Checkout Block/Store API updates an order's meta data.",
-                "long_description": "This hook gives extensions the chance to add or update meta data on the $order.\n This is similar to existing core hook woocommerce_checkout_update_order_meta. We're using a new action: - To keep the interface focused (only pass $order, not passing request data). - This also explicitly indicates these orders are from checkout block/StoreAPI.",
+                "long_description": "This hook gives extensions the chance to add or update meta data on the $order. Throwing an exception from a callback attached to this action will make the Checkout Block render in a warning state, effectively preventing checkout.\n This is similar to existing core hook woocommerce_checkout_update_order_meta. We're using a new action: - To keep the interface focused (only pass $order, not passing request data). - This also explicitly indicates these orders are from checkout block/StoreAPI.",
                 "tags": [
                     {
                         "name": "see",
@@ -427,7 +427,7 @@
                         "variable": "$order"
                     }
                 ],
-                "long_description_html": "<p>This hook gives extensions the chance to add or update meta data on the $order.</p> <p>This is similar to existing core hook woocommerce_checkout_update_order_meta. We're using a new action:</p> <ul> <li>To keep the interface focused (only pass $order, not passing request data).</li> <li>This also explicitly indicates these orders are from checkout block/StoreAPI.</li> </ul>"
+                "long_description_html": "<p>This hook gives extensions the chance to add or update meta data on the $order. Throwing an exception from a callback attached to this action will make the Checkout Block render in a warning state, effectively preventing checkout.</p> <p>This is similar to existing core hook woocommerce_checkout_update_order_meta. We're using a new action:</p> <ul> <li>To keep the interface focused (only pass $order, not passing request data).</li> <li>This also explicitly indicates these orders are from checkout block/StoreAPI.</li> </ul>"
             },
             "args": 1
         },
@@ -518,15 +518,20 @@
             "type": "action",
             "doc": {
                 "description": "Fires when cart items are being validated.",
-                "long_description": "Allow 3rd parties to validate cart items. This is a legacy hook from Woo core. This filter will be deprecated because it encourages usage of wc_add_notice. For the API we need to capture notices and convert to exceptions instead.",
-                "tags": [],
-                "long_description_html": "<p>Allow 3rd parties to validate cart items. This is a legacy hook from Woo core. This filter will be deprecated because it encourages usage of wc_add_notice. For the API we need to capture notices and convert to exceptions instead.</p>"
+                "long_description": "Allow 3rd parties to validate cart items. This is a legacy hook from Woo core. This filter will be deprecated because it encourages usage of wc_add_notice. For the API we need to capture notices and convert to wp errors instead.",
+                "tags": [
+                    {
+                        "name": "deprecated",
+                        "content": ""
+                    }
+                ],
+                "long_description_html": "<p>Allow 3rd parties to validate cart items. This is a legacy hook from Woo core. This filter will be deprecated because it encourages usage of wc_add_notice. For the API we need to capture notices and convert to wp errors instead.</p>"
             },
             "args": 0
         },
         {
             "name": "woocommerce_created_customer",
-            "file": "Domain/Services/CreateAccount.php",
+            "file": "StoreApi/Routes/V1/Checkout.php",
             "type": "action",
             "doc": {
                 "description": "Fires after a customer account has been registered.",
@@ -581,7 +586,7 @@
         },
         {
             "name": "woocommerce_register_post",
-            "file": "Domain/Services/CreateAccount.php",
+            "file": "StoreApi/Routes/V1/Checkout.php",
             "type": "action",
             "doc": {
                 "description": "Fires before a customer account is registered.",
@@ -639,7 +644,7 @@
                         "name": "param",
                         "content": "Holds context for the payment, including order ID and payment method.",
                         "types": [
-                            "\\Automattic\\WooCommerce\\Blocks\\Payments\\PaymentContext"
+                            "\\Automattic\\WooCommerce\\StoreApi\\Payments\\PaymentContext"
                         ],
                         "variable": "$context"
                     },
@@ -647,7 +652,7 @@
                         "name": "param",
                         "content": "Result object for the transaction.",
                         "types": [
-                            "\\Automattic\\WooCommerce\\Blocks\\Payments\\PaymentResult"
+                            "\\Automattic\\WooCommerce\\StoreApi\\Payments\\PaymentResult"
                         ],
                         "variable": "$payment_result"
                     }
@@ -667,6 +672,39 @@
                 "long_description_html": ""
             },
             "args": 0
+        },
+        {
+            "name": "woocommerce_store_api_cart_errors",
+            "file": "StoreApi/Utilities/CartController.php",
+            "type": "action",
+            "doc": {
+                "description": "Fires an action to validate the cart.",
+                "long_description": "Functions hooking into this should add custom errors using the provided WP_Error instance.",
+                "tags": [
+                    {
+                        "name": "example",
+                        "content": "docs/examples/validate-cart.md"
+                    },
+                    {
+                        "name": "param",
+                        "content": "WP_Error object.",
+                        "types": [
+                            "\\WP_Error"
+                        ],
+                        "variable": "$errors"
+                    },
+                    {
+                        "name": "param",
+                        "content": "Cart object.",
+                        "types": [
+                            "\\WC_Cart"
+                        ],
+                        "variable": "$cart"
+                    }
+                ],
+                "long_description_html": "<p>Functions hooking into this should add custom errors using the provided WP_Error instance.</p>"
+            },
+            "args": 2
         },
         {
             "name": "woocommerce_store_api_validate_add_to_cart",
