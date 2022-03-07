@@ -4,7 +4,7 @@
 
 Example of a valid API request using cURL:
 
-```http
+```sh
 curl "https://example-store.com/wp-json/wc/store/v1/products"
 ```
 
@@ -87,7 +87,7 @@ If collections contain many results, they may be paginated. When listing resourc
 
 In the example below, we list 20 products per page and return page 2.
 
-```http
+```sh
 curl "https://example-store.com/wp-json/wc/store/v1/products?page=2&per_page=20"
 ```
 
@@ -143,9 +143,9 @@ Please review the [Store API Guiding principles](./docs/guiding-principles.md). 
 
 ## Extensibility
 
-The approach to extensibility within the Store API is to expose certain routes and schema to the ExtendRestApi class. [Documentation for contributors on this can be found here](https://github.com/woocommerce/woocommerce-gutenberg-products-block/blob/trunk/docs/extensibility/extend-rest-api-new-endpoint.md).
+The approach to extensibility within the Store API is to expose certain routes and schema to the ExtendSchema class. [Documentation for contributors on this can be found here](https://github.com/woocommerce/woocommerce-gutenberg-products-block/blob/trunk/docs/extensibility/extend-rest-api-new-endpoint.md).
 
-If a route includes the extensibility interface, 3rd party developers can use the shared `ExtendRestApi::class` instance to register additional endpoint data and additional schema.
+If a route includes the extensibility interface, 3rd party developers can use the shared `ExtendSchema::class` instance to register additional endpoint data and additional schema.
 
 This differs from the traditional filter hook approach in that it is more limiting, but it reduces the likelihood of a 3rd party extension breaking routes and endpoints or overwriting returned data which other apps may rely upon.
 
