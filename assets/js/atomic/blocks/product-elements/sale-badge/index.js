@@ -2,6 +2,7 @@
  * External dependencies
  */
 import { registerBlockType } from '@wordpress/blocks';
+import { isFeaturePluginBuild } from '@woocommerce/block-settings';
 
 /**
  * Internal dependencies
@@ -23,27 +24,29 @@ const blockConfig = {
 	apiVersion: 2,
 	supports: {
 		html: false,
-		color: {
-			gradients: true,
-			background: true,
-			link: false,
-			__experimentalSkipSerialization: true,
-		},
-		typography: {
-			fontSize: true,
-			__experimentalSkipSerialization: true,
-		},
-		__experimentalBorder: {
-			color: true,
-			radius: true,
-			width: true,
-			__experimentalSkipSerialization: true,
-		},
-		spacing: {
-			padding: true,
-			__experimentalSkipSerialization: true,
-		},
-		__experimentalSelector: '.wc-block-components-product-sale-badge',
+		...( isFeaturePluginBuild() && {
+			color: {
+				gradients: true,
+				background: true,
+				link: false,
+				__experimentalSkipSerialization: true,
+			},
+			typography: {
+				fontSize: true,
+				__experimentalSkipSerialization: true,
+			},
+			__experimentalBorder: {
+				color: true,
+				radius: true,
+				width: true,
+				__experimentalSkipSerialization: true,
+			},
+			spacing: {
+				padding: true,
+				__experimentalSkipSerialization: true,
+			},
+			__experimentalSelector: '.wc-block-components-product-sale-badge',
+		} ),
 	},
 	attributes,
 	edit,
