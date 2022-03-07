@@ -28,10 +28,7 @@ import type {
 	CartResponseCouponItem,
 	CartResponseCoupons,
 } from '@woocommerce/types';
-import {
-	emptyHiddenAddressFields,
-	fromEntriesPolyfill,
-} from '@woocommerce/base-utils';
+import { emptyHiddenAddressFields } from '@woocommerce/base-utils';
 
 /**
  * Internal dependencies
@@ -85,7 +82,7 @@ const defaultCartTotals: CartResponseTotals = {
 const decodeValues = (
 	object: Record< string, unknown >
 ): Record< string, unknown > =>
-	fromEntriesPolyfill(
+	Object.fromEntries(
 		Object.entries( object ).map( ( [ key, value ] ) => [
 			key,
 			decodeEntities( value ),
@@ -119,7 +116,7 @@ export const defaultCartData: StoreCart = {
 };
 
 /**
- * This is a custom hook that is wired up to the `wc/store/v1/cart` data
+ * This is a custom hook that is wired up to the `wc/store/cart` data
  * store.
  *
  * @param {Object} options                An object declaring the various

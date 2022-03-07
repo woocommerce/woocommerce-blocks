@@ -1,5 +1,5 @@
 <?php
-namespace Automattic\WooCommerce\Blocks\StoreApi\Utilities;
+namespace Automattic\WooCommerce\StoreApi\Utilities;
 
 use WC_Tax;
 
@@ -455,6 +455,8 @@ class ProductQuery {
 			 * The woocommerce_adjust_non_base_location_prices filter can stop base taxes being taken off when dealing
 			 * with out of base locations. e.g. If a product costs 10 including tax, all users will pay 10
 			 * regardless of location and taxes.
+			 *
+			 * @internal Matches filter name in WooCommerce core.
 			 *
 			 * @param boolean $adjust_non_base_location_prices True by default.
 			 * @return boolean

@@ -204,7 +204,7 @@ class Cart extends ControllerTestCase {
 		$action_callback = \Mockery::mock( 'ActionCallback' );
 		$action_callback->shouldReceive( 'do_customer_callback' )->once();
 
-		add_action( 'woocommerce_blocks_cart_update_customer_from_request', array( $action_callback, 'do_customer_callback' ) );
+		add_action( 'woocommerce_store_api_cart_update_customer_from_request', array( $action_callback, 'do_customer_callback' ) );
 
 		$this->assertAPIResponse(
 			$request,
@@ -225,7 +225,7 @@ class Cart extends ControllerTestCase {
 			)
 		);
 
-		remove_action( 'woocommerce_blocks_cart_update_customer_from_request', array( $action_callback, 'do_customer_callback' ) );
+		remove_action( 'woocommerce_store_api_cart_update_customer_from_request', array( $action_callback, 'do_customer_callback' ) );
 	}
 
 	/**
@@ -461,7 +461,7 @@ class Cart extends ControllerTestCase {
 	 * Test conversion of cart item to rest response.
 	 */
 	public function test_prepare_item() {
-		$routes     = new \Automattic\WooCommerce\Blocks\StoreApi\RoutesController( new \Automattic\WooCommerce\Blocks\StoreApi\SchemaController( $this->mock_extend ) );
+		$routes     = new \Automattic\WooCommerce\StoreApi\RoutesController( new \Automattic\WooCommerce\StoreApi\SchemaController( $this->mock_extend ) );
 		$controller = $routes->get( 'cart', 'v1' );
 		$cart       = wc()->cart;
 		$response   = $controller->prepare_item_for_response( $cart, new \WP_REST_Request() );
@@ -481,7 +481,7 @@ class Cart extends ControllerTestCase {
 	 * Test schema matches responses.
 	 */
 	public function test_get_item_schema() {
-		$routes     = new \Automattic\WooCommerce\Blocks\StoreApi\RoutesController( new \Automattic\WooCommerce\Blocks\StoreApi\SchemaController( $this->mock_extend ) );
+		$routes     = new \Automattic\WooCommerce\StoreApi\RoutesController( new \Automattic\WooCommerce\StoreApi\SchemaController( $this->mock_extend ) );
 		$controller = $routes->get( 'cart', 'v1' );
 		$schema     = $controller->get_item_schema();
 		$cart       = wc()->cart;

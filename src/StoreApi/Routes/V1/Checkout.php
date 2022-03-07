@@ -1,15 +1,14 @@
 <?php
-namespace Automattic\WooCommerce\Blocks\StoreApi\Routes\V1;
+namespace Automattic\WooCommerce\StoreApi\Routes\V1;
 
-use Automattic\WooCommerce\Blocks\Domain\Services\CreateAccount;
-use Automattic\WooCommerce\Blocks\Package;
-use Automattic\WooCommerce\Blocks\Payments\PaymentContext;
-use Automattic\WooCommerce\Blocks\Payments\PaymentResult;
-use Automattic\WooCommerce\Blocks\StoreApi\Exceptions\InvalidStockLevelsInCartException;
-use Automattic\WooCommerce\Blocks\StoreApi\Exceptions\RouteException;
-use Automattic\WooCommerce\Blocks\StoreApi\Utilities\DraftOrderTrait;
+use Automattic\WooCommerce\StoreApi\Payments\PaymentContext;
+use Automattic\WooCommerce\StoreApi\Payments\PaymentResult;
+use Automattic\WooCommerce\StoreApi\Exceptions\InvalidStockLevelsInCartException;
+use Automattic\WooCommerce\StoreApi\Exceptions\RouteException;
+use Automattic\WooCommerce\StoreApi\Utilities\DraftOrderTrait;
 use Automattic\WooCommerce\Checkout\Helpers\ReserveStock;
 use Automattic\WooCommerce\Checkout\Helpers\ReserveStockException;
+
 /**
  * Checkout class.
  *
@@ -166,8 +165,7 @@ class Checkout extends AbstractCartRoute {
 		 * Validate items etc are allowed in the order before the order is processed. This will fix violations and tell
 		 * the customer.
 		 */
-		$this->cart_controller->validate_cart_items();
-		$this->cart_controller->validate_cart_coupons();
+		$this->cart_controller->validate_cart();
 
 		/**
 		 * Obtain Draft Order and process request data.
@@ -193,30 +191,24 @@ class Checkout extends AbstractCartRoute {
 		 */
 		$this->order_controller->validate_order_before_payment( $this->order );
 
-		/**
-		 * Fires before an order is processed by the Checkout Block/Store API.
-		 *
-		 * This hook informs extensions that $order has completed processing and is ready for payment.
-		 *
-		 * This is similar to existing core hook woocommerce_checkout_order_processed. We're using a new action:
-		 * - To keep the interface focused (only pass $order, not passing request data).
-		 * - This also explicitly indicates these orders are from checkout block/StoreAPI.
-		 *
-		 * @see https://github.com/woocommerce/woocommerce-gutenberg-products-block/pull/3238
-		 * @example See docs/examples/checkout-order-processed.md
-		 * @internal This Hook is experimental and may change or be removed.
-
-		 * @param \WC_Order $order Order object.
-		 * @deprecated 6.3.0 Use woocommerce_blocks_checkout_order_processed instead.
-		 */
 		wc_do_deprecated_action(
 			'__experimental_woocommerce_blocks_checkout_order_processed',
 			array(
 				$this->order,
 			),
 			'6.3.0',
+			'woocommerce_store_api_checkout_order_processed',
+			'This action was deprecated in WooCommerce Blocks version 6.3.0. Please use woocommerce_store_api_checkout_order_processed instead.'
+		);
+
+		wc_do_deprecated_action(
 			'woocommerce_blocks_checkout_order_processed',
-			'This action was deprecated in WooCommerce Blocks version 6.3.0. Please use woocommerce_blocks_checkout_order_processed instead.'
+			array(
+				$this->order,
+			),
+			'7.2.0',
+			'woocommerce_store_api_checkout_order_processed',
+			'This action was deprecated in WooCommerce Blocks version 7.2.0. Please use woocommerce_store_api_checkout_order_processed instead.'
 		);
 
 		/**
@@ -233,7 +225,7 @@ class Checkout extends AbstractCartRoute {
 
 		 * @param \WC_Order $order Order object.
 		 */
-		do_action( 'woocommerce_blocks_checkout_order_processed', $this->order );
+		do_action( 'woocommerce_store_api_checkout_order_processed', $this->order );
 
 		/**
 		 * Process the payment and return the results.
@@ -325,37 +317,31 @@ class Checkout extends AbstractCartRoute {
 			$this->order_controller->update_order_from_cart( $this->order );
 		}
 
-		/**
-		 * Fires when the Checkout Block/Store API updates an order's meta data.
-		 *
-		 * This hook gives extensions the chance to add or update meta data on the $order.
-		 *
-		 * This is similar to existing core hook woocommerce_checkout_update_order_meta.
-		 * We're using a new action:
-		 * - To keep the interface focused (only pass $order, not passing request data).
-		 * - This also explicitly indicates these orders are from checkout block/StoreAPI.
-		 *
-		 * @see https://github.com/woocommerce/woocommerce-gutenberg-products-block/pull/3686
-		 * @internal This Hook is experimental and may change or be removed.
-		 *
-		 * @param \WC_Order $order Order object.
-		 *
-		 * @deprecated 6.3.0 Use woocommerce_blocks_checkout_update_order_meta instead.
-		 */
 		wc_do_deprecated_action(
 			'__experimental_woocommerce_blocks_checkout_update_order_meta',
 			array(
 				$this->order,
 			),
 			'6.3.0',
+			'woocommerce_store_api_checkout_update_order_meta',
+			'This action was deprecated in WooCommerce Blocks version 6.3.0. Please use woocommerce_store_api_checkout_update_order_meta instead.'
+		);
+
+		wc_do_deprecated_action(
 			'woocommerce_blocks_checkout_update_order_meta',
-			'This action was deprecated in WooCommerce Blocks version 6.3.0. Please use woocommerce_blocks_checkout_update_order_meta instead.'
+			array(
+				$this->order,
+			),
+			'7.2.0',
+			'woocommerce_store_api_checkout_update_order_meta',
+			'This action was deprecated in WooCommerce Blocks version 7.2.0. Please use woocommerce_store_api_checkout_update_order_meta instead.'
 		);
 
 		/**
 		 * Fires when the Checkout Block/Store API updates an order's meta data.
 		 *
 		 * This hook gives extensions the chance to add or update meta data on the $order.
+		 * Throwing an exception from a callback attached to this action will make the Checkout Block render in a warning state, effectively preventing checkout.
 		 *
 		 * This is similar to existing core hook woocommerce_checkout_update_order_meta.
 		 * We're using a new action:
@@ -366,7 +352,7 @@ class Checkout extends AbstractCartRoute {
 		 *
 		 * @param \WC_Order $order Order object.
 		 */
-		do_action( 'woocommerce_blocks_checkout_update_order_meta', $this->order );
+		do_action( 'woocommerce_store_api_checkout_update_order_meta', $this->order );
 
 		// Confirm order is valid before proceeding further.
 		if ( ! $this->order instanceof \WC_Order ) {
@@ -439,19 +425,6 @@ class Checkout extends AbstractCartRoute {
 		$this->order->set_customer_note( $request['customer_note'] ?? '' );
 		$this->order->set_payment_method( $this->get_request_payment_method_id( $request ) );
 
-		/**
-		 * Fires when the Checkout Block/Store API updates an order's from the API request data.
-		 *
-		 * This hook gives extensions the chance to update orders based on the data in the request. This can be used in
-		 * conjunction with the ExtendSchema class to post custom data and then process it.
-		 *
-		 * @internal This Hook is experimental and may change or be removed.
-		 *
-		 * @param \WC_Order $order Order object.
-		 * @param \WP_REST_Request $request Full details about the request.
-		 *
-		 * @deprecated 6.3.0 Use woocommerce_blocks_checkout_update_order_from_request instead.
-		 */
 		wc_do_deprecated_action(
 			'__experimental_woocommerce_blocks_checkout_update_order_from_request',
 			array(
@@ -459,8 +432,18 @@ class Checkout extends AbstractCartRoute {
 				$request,
 			),
 			'6.3.0',
+			'woocommerce_store_api_checkout_update_order_from_request',
+			'This action was deprecated in WooCommerce Blocks version 6.3.0. Please use woocommerce_store_api_checkout_update_order_from_request instead.'
+		);
+
+		wc_do_deprecated_action(
 			'woocommerce_blocks_checkout_update_order_from_request',
-			'This action was deprecated in WooCommerce Blocks version 6.3.0. Please use woocommerce_blocks_checkout_update_order_from_request instead.'
+			array(
+				$this->order,
+			),
+			'7.2.0',
+			'woocommerce_store_api_checkout_update_order_from_request',
+			'This action was deprecated in WooCommerce Blocks version 7.2.0. Please use woocommerce_store_api_checkout_update_order_from_request instead.'
 		);
 
 		/**
@@ -472,7 +455,7 @@ class Checkout extends AbstractCartRoute {
 		 * @param \WC_Order $order Order object.
 		 * @param \WP_REST_Request $request Full details about the request.
 		 */
-		do_action( 'woocommerce_blocks_checkout_update_order_from_request', $this->order, $request );
+		do_action( 'woocommerce_store_api_checkout_update_order_from_request', $this->order, $request );
 
 		$this->order->save();
 	}
@@ -613,10 +596,19 @@ class Checkout extends AbstractCartRoute {
 	 */
 	private function process_customer( \WP_REST_Request $request ) {
 		try {
-			$create_account = Package::container()->get( CreateAccount::class );
-			$create_account->from_order_request( $request );
-			$this->order->set_customer_id( get_current_user_id() );
-			$this->order->save();
+			if ( $this->should_create_customer_account( $request ) ) {
+				$customer_id = $this->create_customer_account(
+					$request['billing_address']['email'],
+					$request['billing_address']['first_name'],
+					$request['billing_address']['last_name']
+				);
+				// Log the customer in.
+				wc_set_customer_auth_cookie( $customer_id );
+
+				// Associate customer with the order.
+				$this->order->set_customer_id( $customer_id );
+				$this->order->save();
+			}
 		} catch ( \Exception $error ) {
 			switch ( $error->getMessage() ) {
 				case 'registration-error-invalid-email':
@@ -636,5 +628,173 @@ class Checkout extends AbstractCartRoute {
 
 		// Persist customer address data to account.
 		$this->order_controller->sync_customer_data_with_order( $this->order );
+	}
+
+	/**
+	 * Check request options and store (shop) config to determine if a user account should be created as part of order
+	 * processing.
+	 *
+	 * @param \WP_REST_Request $request The current request object being handled.
+	 * @return boolean True if a new user account should be created.
+	 */
+	private function should_create_customer_account( \WP_REST_Request $request ) {
+		if ( is_user_logged_in() ) {
+			return false;
+		}
+
+		// Return false if registration is not enabled for the store.
+		if ( false === filter_var( wc()->checkout()->is_registration_enabled(), FILTER_VALIDATE_BOOLEAN ) ) {
+			return false;
+		}
+
+		// Return true if the store requires an account for all purchases. Note - checkbox is not displayed to shopper in this case.
+		if ( true === filter_var( wc()->checkout()->is_registration_required(), FILTER_VALIDATE_BOOLEAN ) ) {
+			return true;
+		}
+
+		// Create an account if requested via the endpoint.
+		if ( true === filter_var( $request['create_account'], FILTER_VALIDATE_BOOLEAN ) ) {
+			// User has requested an account as part of checkout processing.
+			return true;
+		}
+
+		return false;
+	}
+
+	/**
+	 * Create a new account for a customer.
+	 *
+	 * The account is created with a generated username. The customer is sent
+	 * an email notifying them about the account and containing a link to set
+	 * their (initial) password.
+	 *
+	 * Intended as a replacement for wc_create_new_customer in WC core.
+	 *
+	 * @throws \Exception If an error is encountered when creating the user account.
+	 *
+	 * @param string $user_email The email address to use for the new account.
+	 * @param string $first_name The first name to use for the new account.
+	 * @param string $last_name  The last name to use for the new account.
+	 *
+	 * @return int User id if successful
+	 */
+	private function create_customer_account( $user_email, $first_name, $last_name ) {
+		if ( empty( $user_email ) || ! is_email( $user_email ) ) {
+			throw new \Exception( 'registration-error-invalid-email' );
+		}
+
+		if ( email_exists( $user_email ) ) {
+			throw new \Exception( 'registration-error-email-exists' );
+		}
+
+		$username = wc_create_new_customer_username( $user_email );
+
+		// Handle password creation.
+		$password           = wp_generate_password();
+		$password_generated = true;
+
+		// Use WP_Error to handle registration errors.
+		$errors = new \WP_Error();
+
+		/**
+		 * Fires before a customer account is registered.
+		 *
+		 * This hook fires before customer accounts are created and passes the form data (username, email) and an array
+		 * of errors.
+		 *
+		 * This could be used to add extra validation logic and append errors to the array.
+		 *
+		 * @internal Matches filter name in WooCommerce core.
+		 *
+		 * @param string $username Customer username.
+		 * @param string $user_email Customer email address.
+		 * @param \WP_Error $errors Error object.
+		 */
+		do_action( 'woocommerce_register_post', $username, $user_email, $errors );
+
+		/**
+		 * Filters registration errors before a customer account is registered.
+		 *
+		 * This hook filters registration errors. This can be used to manipulate the array of errors before
+		 * they are displayed.
+		 *
+		 * @internal Matches filter name in WooCommerce core.
+		 *
+		 * @param \WP_Error $errors Error object.
+		 * @param string $username Customer username.
+		 * @param string $user_email Customer email address.
+		 * @return \WP_Error
+		 */
+		$errors = apply_filters( 'woocommerce_registration_errors', $errors, $username, $user_email );
+
+		if ( is_wp_error( $errors ) && $errors->get_error_code() ) {
+			throw new \Exception( $errors->get_error_code() );
+		}
+
+		/**
+		 * Filters customer data before a customer account is registered.
+		 *
+		 * This hook filters customer data. It allows user data to be changed, for example, username, password, email,
+		 * first name, last name, and role.
+		 *
+		 * @param array $customer_data An array of customer (user) data.
+		 * @return array
+		 */
+		$new_customer_data = apply_filters(
+			'woocommerce_new_customer_data',
+			array(
+				'user_login' => $username,
+				'user_pass'  => $password,
+				'user_email' => $user_email,
+				'first_name' => $first_name,
+				'last_name'  => $last_name,
+				'role'       => 'customer',
+				'source'     => 'store-api,',
+			)
+		);
+
+		$customer_id = wp_insert_user( $new_customer_data );
+
+		if ( is_wp_error( $customer_id ) ) {
+			throw $this->map_create_account_error( $customer_id );
+		}
+
+		// Set account flag to remind customer to update generated password.
+		update_user_option( $customer_id, 'default_password_nag', true, true );
+
+		/**
+		 * Fires after a customer account has been registered.
+		 *
+		 * This hook fires after customer accounts are created and passes the customer data.
+		 *
+		 * @internal Matches filter name in WooCommerce core.
+		 *
+		 * @param integer $customer_id New customer (user) ID.
+		 * @param array $new_customer_data Array of customer (user) data.
+		 * @param string $password_generated The generated password for the account.
+		 */
+		do_action( 'woocommerce_created_customer', $customer_id, $new_customer_data, $password_generated );
+
+		return $customer_id;
+	}
+
+	/**
+	 * Convert an account creation error to an exception.
+	 *
+	 * @param \WP_Error $error An error object.
+	 * @return \Exception.
+	 */
+	private function map_create_account_error( \WP_Error $error ) {
+		switch ( $error->get_error_code() ) {
+			// WordPress core error codes.
+			case 'empty_username':
+			case 'invalid_username':
+			case 'empty_email':
+			case 'invalid_email':
+			case 'email_exists':
+			case 'registerfail':
+				return new \Exception( 'woocommerce_rest_checkout_create_account_failure' );
+		}
+		return new \Exception( 'woocommerce_rest_checkout_create_account_failure' );
 	}
 }
