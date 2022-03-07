@@ -3,8 +3,7 @@
  */
 import { setDefaultOptions, getDefaultOptions } from 'expect-puppeteer';
 import { SHOP_CART_PAGE, SHOP_CHECKOUT_PAGE } from '@woocommerce/e2e-utils';
-const WooCommerceRestApi = require( '@woocommerce/woocommerce-rest-api' )
-	.default;
+import { default as WooCommerceRestApi } from '@woocommerce/woocommerce-rest-api';
 
 /**
  * Internal dependencies
@@ -28,6 +27,14 @@ const clickMiniCartButton = async () => {
 	await page.click( '.wc-block-mini-cart__button' );
 };
 
+const closeMiniCartDrawer = async () => {
+	await page.keyboard.press( 'Escape' );
+};
+
+/**
+ * ConsumerKey and ConsumerSecret are not used, we use basic auth, but
+ * not providing them will throw an error.
+ */
 const WooCommerce = new WooCommerceRestApi( {
 	url: `${ process.env.WORDPRESS_BASE_URL }/`,
 	consumerKey: 'consumer_key', // Your consumer key
@@ -163,7 +170,7 @@ describe( 'Shopper → Mini Cart', () => {
 				text: 'Your cart (1 item)',
 			} );
 
-			await page.mouse.click( 50, 200 );
+			await closeMiniCartDrawer();
 
 			await page.click(
 				'.wc-block-grid__product:last-child .add_to_cart_button'
@@ -300,7 +307,7 @@ describe( 'Shopper → Mini Cart', () => {
 
 			expect( priceInLoop ).not.toMatch( priceInCart );
 
-			await page.mouse.click( 50, 200 );
+			await closeMiniCartDrawer();
 
 			const [ priceInMiniCartButton ] = await getTextContent(
 				'.wc-block-mini-cart__amount'
