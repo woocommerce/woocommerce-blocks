@@ -1,19 +1,13 @@
 /**
  * External dependencies
  */
-import {
-	AlignmentControl,
-	BlockControls,
-	InspectorControls,
-	useBlockProps,
-} from '@wordpress/block-editor';
+import { InspectorControls, useBlockProps } from '@wordpress/block-editor';
 import type { ReactElement } from 'react';
 import { formatPrice } from '@woocommerce/price-format';
 import { CartCheckoutCompatibilityNotice } from '@woocommerce/editor-components/compatibility-notices';
 import { PanelBody, ExternalLink } from '@wordpress/components';
 import { getSetting } from '@woocommerce/settings';
 import { __ } from '@wordpress/i18n';
-import { positionCenter, positionRight, positionLeft } from '@wordpress/icons';
 import Noninteractive from '@woocommerce/base-components/noninteractive';
 
 /**
@@ -23,7 +17,6 @@ import QuantityBadge from './quantity-badge';
 import { useColorProps } from '../../../hooks/style-attributes';
 
 interface Attributes {
-	align: string;
 	isInitiallyOpen?: boolean;
 	backgroundColor?: string;
 	textColor?: string;
@@ -35,13 +28,9 @@ interface Props {
 	setAttributes: ( attributes: Record< string, unknown > ) => void;
 }
 
-const MiniCartBlock = ( {
-	attributes,
-	setAttributes,
-}: Props ): ReactElement => {
-	const { align } = attributes;
+const MiniCartBlock = ( { attributes }: Props ): ReactElement => {
 	const blockProps = useBlockProps( {
-		className: `wc-block-mini-cart align-${ align }`,
+		className: `wc-block-mini-cart`,
 	} );
 	const colorProps = useColorProps( attributes );
 
@@ -55,40 +44,6 @@ const MiniCartBlock = ( {
 
 	return (
 		<div { ...blockProps }>
-			<BlockControls>
-				<AlignmentControl
-					value={ align }
-					alignmentControls={ [
-						{
-							icon: positionLeft,
-							title: __(
-								'Align button left',
-								'woo-gutenberg-products-block'
-							),
-							align: 'left',
-						},
-						{
-							icon: positionCenter,
-							title: __(
-								'Align button center',
-								'woo-gutenberg-products-block'
-							),
-							align: 'center',
-						},
-						{
-							icon: positionRight,
-							title: __(
-								'Align button right',
-								'woo-gutenberg-products-block'
-							),
-							align: 'right',
-						},
-					] }
-					onChange={ ( newAlign: string ) =>
-						setAttributes( { align: newAlign } )
-					}
-				/>
-			</BlockControls>
 			<InspectorControls>
 				{ templatePartEditUri && (
 					<PanelBody

@@ -322,10 +322,6 @@ class MiniCart extends AbstractBlock {
 		$classes         = $classes_styles['classes'];
 		$style           = $classes_styles['styles'];
 
-		if ( ! empty( $attributes['align'] ) ) {
-			$wrapper_classes .= ' align-' . $attributes['align'];
-		}
-
 		$aria_label = sprintf(
 		/* translators: %1$d is the number of products in the cart. %2$s is the cart total */
 			_n(
