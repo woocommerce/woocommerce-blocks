@@ -188,7 +188,7 @@ describe( 'Shopper → Mini Cart', () => {
 			// Get a random product to better replicate human behavior.
 			const product =
 				products[ Math.floor( Math.random() * products.length ) ];
-			const productTitle = await getTextContent(
+			const [ productTitle ] = await getTextContent(
 				'.wc-block-components-product-name',
 				product
 			);
