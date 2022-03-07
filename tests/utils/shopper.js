@@ -16,6 +16,18 @@ import { SHOP_CART_BLOCK_PAGE, SHOP_CHECKOUT_BLOCK_PAGE } from './constants';
 export const shopper = {
 	...wcShopper,
 
+	goToCheckoutBlock: async () => {
+		await page.goto( SHOP_CHECKOUT_BLOCK_PAGE, {
+			waitUntil: 'networkidle0',
+		} );
+	},
+
+	goToCartBlock: async () => {
+		await page.goto( SHOP_CART_BLOCK_PAGE, {
+			waitUntil: 'networkidle0',
+		} );
+	},
+
 	productIsInCheckoutBlock: async ( productTitle, quantity, total ) => {
 		// Make sure Order summary is expanded
 		const [ button ] = await page.$x(
@@ -154,10 +166,8 @@ export const shopper = {
 
 	block: {
 		addToCart: async () => {
-			await Promise.all( [
-				page.click( '.single_add_to_cart_button' ),
-				page.waitForNavigation( { waitUntil: 'networkidle0' } ),
-			] );
+			page.click( '.single_add_to_cart_button' );
+			page.waitForNavigation( { waitUntil: 'networkidle0' } );
 		},
 
 		goToCart: async () => {
