@@ -106,6 +106,17 @@ export const shopper = {
 			} );
 		},
 
+		placeOrder: async () => {
+			await Promise.all( [
+				page.waitForNavigation( {
+					waitUntil: 'networkidle0',
+				} ),
+				expect( page ).toClick( '.wc-block-components-button__text', {
+					text: 'Place Order',
+				} ),
+			] );
+		},
+
 		fillBillingDetails: async ( customerBillingDetails ) => {
 			await expect( page ).toFill(
 				'#billing-first_name',
