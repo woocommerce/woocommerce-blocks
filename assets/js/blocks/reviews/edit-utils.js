@@ -9,7 +9,9 @@ import {
 	ToolbarGroup,
 	RangeControl,
 	SelectControl,
+	// eslint-disable-next-line @wordpress/no-unsafe-wp-apis
 	__experimentalToggleGroupControl as ToggleGroupControl,
+	// eslint-disable-next-line @wordpress/no-unsafe-wp-apis
 	__experimentalToggleGroupControlOption as ToggleGroupControlOption,
 } from '@wordpress/components';
 import { BlockControls } from '@wordpress/block-editor';

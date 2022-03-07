@@ -7,7 +7,9 @@ import {
 	Disabled,
 	PanelBody,
 	withSpokenMessages,
+	// eslint-disable-next-line @wordpress/no-unsafe-wp-apis
 	__experimentalToggleGroupControl as ToggleGroupControl,
+	// eslint-disable-next-line @wordpress/no-unsafe-wp-apis
 	__experimentalToggleGroupControlOption as ToggleGroupControlOption,
 } from '@wordpress/components';
 import HeadingToolbar from '@woocommerce/editor-components/heading-toolbar';
