@@ -27,12 +27,7 @@ describe( 'Shopper → Cart → Can proceed to checkout', () => {
 		await shopper.block.goToCart();
 
 		// Click on "Proceed to Checkout" button
-		await Promise.all( [
-			expect( page ).toClick( 'a.wc-block-cart__submit-button', {
-				text: 'Proceed to Checkout',
-			} ),
-			page.waitForNavigation( { waitUntil: 'networkidle0' } ),
-		] );
+		await shopper.block.proceedToCheckout();
 
 		// Verify that you see the Checkout Block page
 		await expect( page ).toMatchElement( 'h1', { text: 'Checkout' } );
