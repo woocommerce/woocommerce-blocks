@@ -51,7 +51,7 @@ const StoreNoticesContainer = ( { className, notices, removeNotice } ) => {
 						}
 					} }
 				>
-					{ decodeEntities( props.content ) }
+					{ props.content }
 				</Notice>
 			) ) }
 		</div>
