@@ -1,8 +1,8 @@
 <?php
-namespace Automattic\WooCommerce\Blocks\StoreApi\Schemas\V1;
+namespace Automattic\WooCommerce\StoreApi\Schemas\V1;
 
-use Automattic\WooCommerce\Blocks\Domain\Services\ExtendRestApi;
-use Automattic\WooCommerce\Blocks\StoreApi\SchemaController;
+use Automattic\WooCommerce\StoreApi\Schemas\ExtendSchema;
+use Automattic\WooCommerce\StoreApi\SchemaController;
 
 /**
  * ProductReviewSchema class.
@@ -34,10 +34,10 @@ class ProductReviewSchema extends AbstractSchema {
 	/**
 	 * Constructor.
 	 *
-	 * @param ExtendRestApi    $extend Rest Extending instance.
+	 * @param ExtendSchema     $extend Rest Extending instance.
 	 * @param SchemaController $controller Schema Controller instance.
 	 */
-	public function __construct( ExtendRestApi $extend, SchemaController $controller ) {
+	public function __construct( ExtendSchema $extend, SchemaController $controller ) {
 		parent::__construct( $extend, $controller );
 		$this->image_attachment_schema = $this->controller->get( ImageAttachmentSchema::IDENTIFIER );
 	}

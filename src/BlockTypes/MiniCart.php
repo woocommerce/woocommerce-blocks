@@ -2,7 +2,7 @@
 namespace Automattic\WooCommerce\Blocks\BlockTypes;
 
 use Automattic\WooCommerce\Blocks\Package;
-use Automattic\WooCommerce\Blocks\StoreApi\Utilities\CartController;
+use Automattic\WooCommerce\StoreApi\Utilities\CartController;
 use Automattic\WooCommerce\Blocks\Payments\PaymentMethodRegistry;
 use Automattic\WooCommerce\Blocks\Assets\AssetDataRegistry;
 use Automattic\WooCommerce\Blocks\Assets\Api as AssetApi;
@@ -371,13 +371,18 @@ class MiniCart extends AbstractBlock {
 		</span>';
 
 		if ( is_cart() || is_checkout() ) {
-			return '<div class="' . $wrapper_classes . '">
+			// It is not necessary to load the Mini Cart Block on Cart and Checkout page.
+				return '<div class="' . $wrapper_classes . '" style="visibility:hidden" aria-hidden="true">
 				<button class="wc-block-mini-cart__button ' . $classes . '" aria-label="' . esc_attr( $aria_label ) . '" style="' . $style . '" disabled>' . $button_html . '</button>
 			</div>';
 		}
 
 		$template_part_contents = '';
-		$template_part          = BlockTemplateUtils::get_block_template( BlockTemplateUtils::PLUGIN_SLUG . '//mini-cart', 'wp_template_part' );
+
+		// Determine if we need to load the template part from the theme, or WooCommerce in that order.
+		$theme_has_mini_cart   = BlockTemplateUtils::theme_has_template_part( 'mini-cart' );
+		$template_slug_to_load = $theme_has_mini_cart ? get_stylesheet() : BlockTemplateUtils::PLUGIN_SLUG;
+		$template_part         = BlockTemplateUtils::get_block_template( $template_slug_to_load . '//mini-cart', 'wp_template_part' );
 
 		if ( $template_part && ! empty( $template_part->content ) ) {
 			$template_part_contents = do_blocks( $template_part->content );

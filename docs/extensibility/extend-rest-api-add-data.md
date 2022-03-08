@@ -7,31 +7,23 @@ You don't want to create your own endpoints or Ajax actions. You want to piggyba
 
 ## Solution
 
-ExtendRestApi offers the possibility to add contextual custom data to Store API endpoints, like `wc/store/cart` and `wc/store/cart/items` endpoints.
+ExtendSchema offers the possibility to add contextual custom data to Store API endpoints, like `wc/store/cart` and `wc/store/cart/items` endpoints.
 That data is namespaced to your plugin and protected from other plugins causing it to malfunction.
 The data is available on all frontend filters and slotFills for you to consume.
 
 ## Basic usage
 
-You can use ExtendRestApi by registering a couple of functions, `schema_callback` and `data_callback` on a specific endpoint namespace. ExtendRestApi will call them at execution time and will pass them relevant data as well.
+You can use ExtendSchema by registering a couple of functions, `schema_callback` and `data_callback` on a specific endpoint namespace. ExtendSchema will call them at execution time and will pass them relevant data as well.
 
 This example below uses the Cart endpoint, [see passed parameters.](./available-endpoints-to-extend.md#wcstorecart)
 
 **Note: Make sure to read the "Things to consider" section below.**
 
 ```PHP
-
-use Automattic\WooCommerce\Blocks\Package;
-use Automattic\WooCommerce\Blocks\Domain\Services\ExtendRestApi;
-use Automattic\WooCommerce\Blocks\StoreApi\Schemas\CartSchema;
+use Automattic\WooCommerce\StoreApi\Schemas\V1\CartSchema;
 
 add_action('woocommerce_blocks_loaded', function() {
- // ExtendRestApi is stored in the container as a shared instance between the API and consumers.
- // You shouldn't initiate your own ExtendRestApi instance using `new ExtendRestApi` but should
- // always use the shared instance from the Package dependency injection container.
- $extend = Package::container()->get( ExtendRestApi::class );
-
- $extend->register_endpoint_data(
+ woocommerce_store_api_register_endpoint_data(
 	array(
 		'endpoint' => CartSchema::IDENTIFIER,
 		'namespace' => 'plugin_namespace',
@@ -78,25 +70,33 @@ $product = $cart_item['data'];
 
 ## Things To Consider
 
-### ExtendRestApi is a shared instance
+### ExtendSchema is a shared instance
 
-The ExtendRestApi is stored as a shared instance between the API and consumers (third-party developers). So you shouldn't initiate the class yourself with `new ExtendRestApi` because it would not work.
-Instead, you should always use the shared instance from the Package dependency injection container like this.
+The ExtendSchema is stored as a shared instance between the API and consumers (third-party developers). So you shouldn't initiate the class yourself with `new ExtendSchema` because it would not work.
+Instead, you should always use the shared instance from the StoreApi dependency injection container like this.
 
 ```php
-$extend = Package::container()->get( ExtendRestApi::class );
+$extend = StoreApi::container()->get( ExtendSchema::class );
 ```
 
-### Dependency injection container is not always available
-
-You can't call `Package::container()` and expect it to work. The Package class is only available after the `woocommerce_blocks_loaded` action has been fired, so you should hook your file that action
+Also note that the dependency injection container is not available until after the `woocommerce_blocks_loaded` action has been fired, so you should hook your file that action:
 
 ```php
+use Automattic\WooCommerce\StoreApi\StoreApi;
+use Automattic\WooCommerce\StoreApi\Schemas\ExtendSchema;
+
 add_action( 'woocommerce_blocks_loaded', function() {
-	$extend = Package::container()->get( ExtendRestApi::class );
+	$extend = StoreApi::container()->get( ExtendSchema::class );
 	// my logic.
 });
 ```
+
+Or use the global helper functions:
+
+-   `woocommerce_store_api_register_endpoint_data( $args )`
+-   `woocommerce_store_api_register_update_callback( $args )`
+-   `woocommerce_store_api_register_payment_requirements( $args )`
+-   `woocommerce_store_api_get_formatter( $name )`
 
 ### Errors and fatals are silence for non-admins
 
@@ -109,7 +109,7 @@ To reduce the chances of breaking your client code or passing the wrong type, an
 
 ## API Definition
 
--   `ExtendRestApi::register_endpoint_data`: Used to register data to a custom endpoint. It takes an array of arguments:
+-   `ExtendSchema::register_endpoint_data`: Used to register data to a custom endpoint. It takes an array of arguments:
 
 | Attribute         | Type     |         Required         | Description                                                                                                                                          |
 | :---------------- | :------- | :----------------------: | :--------------------------------------------------------------------------------------------------------------------------------------------------- |
@@ -135,26 +135,20 @@ This example uses [Formatters](./extend-rest-api-formatters.md), utility classes
  *
  * @package WooCommerce Subscriptions
  */
+use Automattic\WooCommerce\StoreApi\StoreApi;
+use Automattic\WooCommerce\StoreApi\Schemas\ExtendSchema;
+use Automattic\WooCommerce\StoreApi\Schemas\V1\CartItemSchema;
 
-use Automattic\WooCommerce\Blocks\Package;
-use Automattic\WooCommerce\Blocks\Domain\Services\ExtendRestApi;
-use Automattic\WooCommerce\Blocks\StoreApi\Schemas\CartItemSchema;
-
-if ( class_exists( 'Package' ) && version_compare( Package::get_version(), '4.8.0', '>=' ) ) {
-	// This class needs to run after WooCommerce Blocks is ready.
-	add_action( 'woocommerce_blocks_loaded', function() {
-
-		$extend = Package::container()->get( ExtendRestApi::class );
-		WC_Subscriptions_Extend_Store_Endpoint::init( $extend );
-
-	} );
-}
+add_action( 'woocommerce_blocks_loaded', function() {
+	$extend = StoreApi::container()->get( ExtendSchema::class );
+	WC_Subscriptions_Extend_Store_Endpoint::init( $extend );
+});
 
 class WC_Subscriptions_Extend_Store_Endpoint {
 	/**
 	 * Stores Rest Extending instance.
 	 *
-	 * @var ExtendRestApi
+	 * @var ExtendSchema
 	 */
 	private static $extend;
 
@@ -168,11 +162,11 @@ class WC_Subscriptions_Extend_Store_Endpoint {
 	/**
 	 * Bootstraps the class and hooks required data.
 	 *
-	 * @param ExtendRestApi $extend_rest_api An instance of the ExtendRestApi class.
+	 * @param ExtendSchema $extend_rest_api An instance of the ExtendSchema class.
 	 *
 	 * @since 3.1.0
 	 */
-	public static function init( ExtendRestApi $extend_rest_api ) {
+	public static function init( ExtendSchema $extend_rest_api ) {
 		self::$extend = $extend_rest_api;
 		self::extend_store();
 	}

@@ -1,7 +1,11 @@
 /**
  * External dependencies
  */
-import { shopper as wcShopper } from '@woocommerce/e2e-utils';
+import {
+	shopper as wcShopper,
+	uiUnblocked,
+	SHOP_CART_PAGE,
+} from '@woocommerce/e2e-utils';
 
 /**
  * Internal dependencies
@@ -55,5 +59,45 @@ export const shopper = {
 		} );
 
 		await expect( page ).toMatchElement( 'h1', { text: title } );
+	},
+
+	block: {
+		goToCart: async () => {
+			await page.goto( SHOP_CART_BLOCK_PAGE, {
+				waitUntil: 'networkidle0',
+			} );
+		},
+
+		/**
+		 * For some reason "wcShopper.emptyCart" sometimes result in an error, but using the same
+		 * implementation here fixes the problem.
+		 */
+		emptyCart: async () => {
+			await page.goto( SHOP_CART_PAGE, {
+				waitUntil: 'networkidle0',
+			} );
+
+			// Remove products if they exist
+			if ( ( await page.$( '.remove' ) ) !== null ) {
+				let products = await page.$$( '.remove' );
+				while ( products && products.length > 0 ) {
+					await page.click( '.remove' );
+					await uiUnblocked();
+					products = await page.$$( '.remove' );
+				}
+			}
+
+			// Remove coupons if they exist
+			if ( ( await page.$( '.woocommerce-remove-coupon' ) ) !== null ) {
+				await page.click( '.woocommerce-remove-coupon' );
+				await uiUnblocked();
+			}
+
+			await page.waitForSelector( '.woocommerce-info' );
+			// eslint-disable-next-line jest/no-standalone-expect
+			await expect( page ).toMatchElement( '.woocommerce-info', {
+				text: 'Your cart is currently empty.',
+			} );
+		},
 	},
 };
