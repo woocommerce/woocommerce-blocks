@@ -7,71 +7,60 @@ import {
 	SHOP_CART_PAGE,
 } from '@woocommerce/e2e-utils';
 
-/**
- * Internal dependencies
- */
-import { getBlockPagePermalink } from './get-block-page-permalink';
-import { SHOP_CART_BLOCK_PAGE, SHOP_CHECKOUT_BLOCK_PAGE } from './constants';
-
 export const shopper = {
 	...wcShopper,
 
-	goToCheckoutBlock: async () => {
-		await page.goto( SHOP_CHECKOUT_BLOCK_PAGE, {
-			waitUntil: 'networkidle0',
-		} );
-	},
-
-	goToCartBlock: async () => {
-		await page.goto( SHOP_CART_BLOCK_PAGE, {
-			waitUntil: 'networkidle0',
-		} );
-	},
-
-	productIsInCheckoutBlock: async ( productTitle, quantity, total ) => {
-		// Make sure Order summary is expanded
-		const [ button ] = await page.$x(
-			`//button[contains(@aria-expanded, 'false')]//span[contains(text(), 'Order summary')]`
-		);
-		if ( button ) {
-			await button.click();
-		}
-		await expect( page ).toMatchElement( 'span', {
-			text: productTitle,
-		} );
-		await expect(
-			page
-		).toMatchElement(
-			'div.wc-block-components-order-summary-item__quantity',
-			{ text: quantity }
-		);
-		await expect( page ).toMatchElement(
-			'span.wc-block-components-product-price__value',
-			{
-				text: total,
-			}
-		);
-	},
-
-	goToBlockPage: async ( title ) => {
-		await page.goto( await getBlockPagePermalink( title ), {
-			waitUntil: 'networkidle0',
-		} );
-
-		await expect( page ).toMatchElement( 'h1', { text: title } );
-	},
-
+	// We use the .block property to avoid overriding any wcShopper functionality
+	// This is important as we might one day merge this into core WC.
 	block: {
-		goToCart: async () => {
-			await page.goto( SHOP_CART_BLOCK_PAGE, {
+		// All block pages have a title composed of the block name followed by "Block".
+		// E.g. "Checkout Block or Mini Cart Block". The permalinks are generated from
+		// the page title so we can derive them directly
+		goToBlockPage: async ( blockName ) => {
+			const config = require( 'config' );
+			const baseUrl = config.get( 'url' );
+			const pageTitle = `${ blockName } Block`;
+			const url = baseUrl + pageTitle.toLowerCase().replace( / /g, '-' );
+			await page.goto( url, {
 				waitUntil: 'networkidle0',
+			} );
+
+			await expect( page ).toMatchElement( 'h1', {
+				text: blockName,
 			} );
 		},
 
+		goToCart: async () => {
+			await shopper.block.goToBlockPage( 'Cart' );
+		},
+
 		goToCheckout: async () => {
-			await page.goto( SHOP_CHECKOUT_BLOCK_PAGE, {
-				waitUntil: 'networkidle0',
+			await shopper.block.goToBlockPage( 'Checkout' );
+		},
+
+		productIsInCheckout: async ( productTitle, quantity, total ) => {
+			// Make sure Order summary is expanded
+			const [ button ] = await page.$x(
+				`//button[contains(@aria-expanded, 'false')]//span[contains(text(), 'Order summary')]`
+			);
+			if ( button ) {
+				await button.click();
+			}
+			await expect( page ).toMatchElement( 'span', {
+				text: productTitle,
 			} );
+			await expect(
+				page
+			).toMatchElement(
+				'div.wc-block-components-order-summary-item__quantity',
+				{ text: quantity }
+			);
+			await expect( page ).toMatchElement(
+				'span.wc-block-components-product-price__value',
+				{
+					text: total,
+				}
+			);
 		},
 
 		/**
@@ -148,7 +137,7 @@ export const shopper = {
 		addCoupon: async ( couponCode ) => {
 			const title = await page.title();
 			if ( ! title.includes( 'Cart Block' ) ) {
-				await shopper.goToCartBlock();
+				await shopper.block.goToCart();
 			}
 			// Make sure the coupon panel is open
 			const applyButton = await page.$(
