@@ -1,8 +1,8 @@
 <?php
-namespace Automattic\WooCommerce\Blocks\StoreApi\Routes\V1;
+namespace Automattic\WooCommerce\StoreApi\Routes\V1;
 
-use Automattic\WooCommerce\Blocks\StoreApi\Routes\RouteInterface;
-use Automattic\WooCommerce\Blocks\StoreApi\Exceptions\RouteException;
+use Automattic\WooCommerce\StoreApi\Routes\RouteInterface;
+use Automattic\WooCommerce\StoreApi\Exceptions\RouteException;
 use WP_REST_Request;
 use WP_REST_Response;
 
@@ -111,7 +111,7 @@ class Batch extends AbstractRoute implements RouteInterface {
 		} catch ( RouteException $error ) {
 			$response = $this->get_route_error_response( $error->getErrorCode(), $error->getMessage(), $error->getCode(), $error->getAdditionalData() );
 		} catch ( \Exception $error ) {
-			$response = $this->get_route_error_response( 'unknown_server_error', $error->getMessage(), 500 );
+			$response = $this->get_route_error_response( 'woocommerce_rest_unknown_server_error', $error->getMessage(), 500 );
 		}
 
 		if ( is_wp_error( $response ) ) {

@@ -199,11 +199,11 @@ There may be some cases where the fallback legacy processing of Checkout request
 
 This hook is the _preferred_ place to hook in your payment processing and if you set a status on the provided `PaymentResult` object, then the legacy processing will be ignored for your payment method. Hook callbacks will receive:
 
-[`Automattic\WooCommerce\Blocks\Payments\PaymentContext`](https://github.com/woocommerce/woocommerce-gutenberg-products-block/blob/trunk/src/Payments/PaymentContext.php)
+[`Automattic\WooCommerce\StoreApi\Payments\PaymentContext`](https://github.com/woocommerce/woocommerce-gutenberg-products-block/blob/trunk/src/StoreApi/Payments/PaymentContext.php)
 
 This contains various details about the payment extracted from the checkout processing request. Notably is the `payment_data` property that will contain an associative array of data your payment method client side provided to checkout. It also contains a string value for `payment_method` which contains the `paymentMethodId` value for the active payment method used during checkout processing. So you can use this to determine whether your payment method processes this data or not.
 
-[`Automattic\WooCommerce\Blocks\Payments\PaymentResult`](https://github.com/woocommerce/woocommerce-gutenberg-products-block/blob/trunk/src/Payments/PaymentResult.php)
+[`Automattic\WooCommerce\StoreApi\Payments\PaymentResult`](https://github.com/woocommerce/woocommerce-gutenberg-products-block/blob/trunk/src/StoreApi/Payments/PaymentResult.php)
 
 This contains various details about the payment result returned to the client and exposed on the `onAfterCheckoutProcessingWithSucces/WithError` event. Server side, your payment method can use this to:
 
