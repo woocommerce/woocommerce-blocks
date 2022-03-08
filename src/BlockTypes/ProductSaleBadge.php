@@ -2,7 +2,7 @@
 namespace Automattic\WooCommerce\Blocks\BlockTypes;
 
 /**
- * ProductTag class.
+ * ProductSaleBadge class.
  */
 class ProductSaleBadge extends AbstractBlock {
 
