@@ -25,7 +25,7 @@ describe( 'Shopper -> Tax', () => {
 			await showTaxes( false );
 			await shopper.goToShop();
 			await shopper.searchForProduct( productWooSingle1.name );
-			await shopper.block.addToCart();
+			await shopper.addToCart();
 			await shopper.block.goToCart();
 
 			const cartTaxes = await getTaxesFromCurrentPage();
@@ -50,7 +50,7 @@ describe( 'Shopper -> Tax', () => {
 			await showTaxes( true );
 			await shopper.goToShop();
 			await shopper.searchForProduct( productWooSingle1.name );
-			await shopper.block.addToCart();
+			await shopper.addToCart();
 			await shopper.block.goToCart();
 
 			const expectedTaxes = getExpectedTaxes( taxRates, 'US', [
