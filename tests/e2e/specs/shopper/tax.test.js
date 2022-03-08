@@ -35,7 +35,7 @@ describe( 'Shopper -> Tax', () => {
 			const checkoutTaxes = await getTaxesFromCurrentPage();
 			expect( checkoutTaxes ).toEqual( [] );
 
-			await shopper.fillInCheckoutWithTestData();
+			await shopper.block.fillInCheckoutWithTestData();
 			await shopper.block.placeOrder();
 			await page.waitForSelector( 'h1.entry-title' );
 			const orderSummaryTaxes = await getTaxesFromOrderSummaryPage(
@@ -63,7 +63,7 @@ describe( 'Shopper -> Tax', () => {
 			const checkoutTaxes = await getTaxesFromCurrentPage();
 			expect( checkoutTaxes.sort() ).toEqual( expectedTaxes.sort() );
 
-			await shopper.bock.fillInCheckoutWithTestData();
+			await shopper.block.fillInCheckoutWithTestData();
 			await shopper.block.placeOrder();
 			await page.waitForSelector( 'h1.entry-title' );
 			const orderSummaryTaxes = await getTaxesFromOrderSummaryPage(
