@@ -66,7 +66,7 @@ class RateLimits extends WC_Rate_Limiter {
 	 * If exceeded, seconds until reset.
 	 *
 	 * @param string $action_id Identifier of the action.
-	 * @return bool
+	 * @return bool|int
 	 */
 	public static function is_exceeded_retry_after( $action_id ) {
 		$current_limit = self::get_rate_limit( $action_id );
