@@ -36,29 +36,4 @@ class AllProducts extends AbstractBlock {
 	protected function hydrate_from_api() {
 		$this->asset_data_registry->hydrate_api_request( '/wc/store/v1/cart' );
 	}
-
-	/**
-	 * Register script and style assets for the block type before it is registered.
-	 *
-	 * This registers the scripts; it does not enqueue them.
-	 */
-	protected function register_block_type_assets() {
-		parent::register_block_type_assets();
-		$this->register_chunk_translations(
-			[
-				'product-price',
-				'product-image',
-				'product-title',
-				'product-rating',
-				'product-button',
-				'product-summary',
-				'product-sale-badge',
-				'product-sku',
-				'product-category-list',
-				'product-tag-list',
-				'product-stock-indicator',
-				'product-add-to-cart',
-			]
-		);
-	}
 }
