@@ -13,7 +13,7 @@ if ( process.env.WOOCOMMERCE_BLOCKS_PHASE < 2 )
 	test.only( `skipping ${ block.name } tests`, () => {} );
 
 describe( 'Shopper → Cart → Can proceed to checkout', () => {
-	beforeAll( async () => {
+	beforeEach( async () => {
 		await shopper.block.emptyCart();
 	} );
 
