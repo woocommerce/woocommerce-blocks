@@ -166,8 +166,10 @@ export const shopper = {
 
 	block: {
 		addToCart: async () => {
-			page.click( '.single_add_to_cart_button' );
-			page.waitForNavigation( { waitUntil: 'networkidle0' } );
+			await Promise.all( [
+				page.click( '.single_add_to_cart_button' ),
+				page.waitForNavigation( { waitUntil: 'networkidle0' } ),
+			] );
 		},
 
 		goToCart: async () => {

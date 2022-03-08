@@ -17,7 +17,7 @@ const productWooSingle1 = Products().find(
 
 describe( 'Shopper -> Tax', () => {
 	beforeEach( async () => {
-		await shopper.emptyCart();
+		await shopper.block.emptyCart();
 	} );
 
 	describe( '"Enable tax rate calculations" is unchecked in WC settings -> general', () => {
