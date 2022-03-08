@@ -37,13 +37,13 @@ function extractPaginationData() {
 	} );
 }
 
-describe.skip( 'Legacy Template blocks', () => {
+describe( 'Legacy Template blocks', () => {
 	beforeAll( async () => {
 		await activateTheme( 'emptytheme' );
 	} );
 
 	afterAll( async () => {
-		await activateTheme( 'twentytwentyone' );
+		await activateTheme( 'storefront' );
 	} );
 
 	describe( 'Product Archive block', () => {
