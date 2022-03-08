@@ -8,6 +8,13 @@ import {
 	BlockControls,
 	useBlockProps,
 } from '@wordpress/block-editor';
+import { Icon, category, external } from '@wordpress/icons';
+import { SearchListControl } from '@woocommerce/editor-components/search-list-control';
+import { mapValues, toArray, sortBy } from 'lodash';
+import { getAdminLink, getSetting } from '@woocommerce/settings';
+import HeadingToolbar from '@woocommerce/editor-components/heading-toolbar';
+import BlockTitle from '@woocommerce/editor-components/block-title';
+import classnames from 'classnames';
 import {
 	Placeholder,
 	Disabled,
@@ -21,13 +28,6 @@ import {
 	// eslint-disable-next-line @wordpress/no-unsafe-wp-apis
 	__experimentalToggleGroupControlOption as ToggleGroupControlOption,
 } from '@wordpress/components';
-import { Icon, category, external } from '@wordpress/icons';
-import { SearchListControl } from '@woocommerce/editor-components/search-list-control';
-import { mapValues, toArray, sortBy } from 'lodash';
-import { getAdminLink, getSetting } from '@woocommerce/settings';
-import HeadingToolbar from '@woocommerce/editor-components/heading-toolbar';
-import BlockTitle from '@woocommerce/editor-components/block-title';
-import classnames from 'classnames';
 
 /**
  * Internal dependencies

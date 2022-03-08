@@ -3,6 +3,8 @@
  */
 import { __ } from '@wordpress/i18n';
 import { createInterpolateElement } from '@wordpress/element';
+import { BlockControls } from '@wordpress/block-editor';
+import { getAdminLink, getSetting } from '@woocommerce/settings';
 import {
 	Notice,
 	ToggleControl,
@@ -14,8 +16,6 @@ import {
 	// eslint-disable-next-line @wordpress/no-unsafe-wp-apis
 	__experimentalToggleGroupControlOption as ToggleGroupControlOption,
 } from '@wordpress/components';
-import { BlockControls } from '@wordpress/block-editor';
-import { getAdminLink, getSetting } from '@woocommerce/settings';
 
 export const getBlockControls = ( editMode, setAttributes, buttonTitle ) => (
 	<BlockControls>

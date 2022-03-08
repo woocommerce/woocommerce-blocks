@@ -2,6 +2,9 @@
  * External dependencies
  */
 import { __ } from '@wordpress/i18n';
+import { InspectorControls, useBlockProps } from '@wordpress/block-editor';
+import { createInterpolateElement } from '@wordpress/element';
+import { getAdminLink } from '@woocommerce/settings';
 import {
 	Disabled,
 	PanelBody,
@@ -11,9 +14,6 @@ import {
 	// eslint-disable-next-line @wordpress/no-unsafe-wp-apis
 	__experimentalToggleGroupControlOption as ToggleGroupControlOption,
 } from '@wordpress/components';
-import { InspectorControls, useBlockProps } from '@wordpress/block-editor';
-import { createInterpolateElement } from '@wordpress/element';
-import { getAdminLink } from '@woocommerce/settings';
 
 /**
  * Internal dependencies

@@ -5,6 +5,7 @@ import { __ } from '@wordpress/i18n';
 import { InspectorControls, useBlockProps } from '@wordpress/block-editor';
 import ServerSideRender from '@wordpress/server-side-render';
 import PropTypes from 'prop-types';
+import { Icon, listView } from '@wordpress/icons';
 import {
 	Disabled,
 	PanelBody,
@@ -15,7 +16,6 @@ import {
 	// eslint-disable-next-line @wordpress/no-unsafe-wp-apis
 	__experimentalToggleGroupControlOption as ToggleGroupControlOption,
 } from '@wordpress/components';
-import { Icon, listView } from '@wordpress/icons';
 
 const EmptyPlaceholder = () => (
 	<Placeholder
