@@ -37,7 +37,7 @@ function extractPaginationData() {
 	} );
 }
 
-describe( 'Legacy Template blocks', () => {
+describe( 'Legacy Template blocks Shopper', () => {
 	beforeAll( async () => {
 		await activateTheme( 'emptytheme' );
 	} );
