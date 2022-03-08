@@ -138,11 +138,6 @@ export const isBlockInsertedInWidgetsArea = async ( blockName ) => {
 	);
 };
 
-export async function sleep( seconds ) {
-	return await new Promise( ( resolve ) =>
-		setTimeout( resolve, seconds * 1000 )
-	);
-}
 /**
  * Visits the Site Editor main page in Core WordPress
  *

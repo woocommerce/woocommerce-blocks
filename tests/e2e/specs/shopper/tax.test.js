@@ -24,7 +24,7 @@ describe( 'Shopper -> Tax', () => {
 		it( 'Tax is not displayed', async () => {
 			await showTaxes( false );
 			await shopper.goToShop();
-			await shopper.searchForProduct( productWooSingle1.name );
+			await shopper.block.searchForProduct( productWooSingle1.name );
 			await shopper.addToCart();
 			await shopper.block.goToCart();
 
@@ -49,7 +49,7 @@ describe( 'Shopper -> Tax', () => {
 		it( 'Tax is displayed correctly on Cart & Checkout ', async () => {
 			await showTaxes( true );
 			await shopper.goToShop();
-			await shopper.searchForProduct( productWooSingle1.name );
+			await shopper.block.searchForProduct( productWooSingle1.name );
 			await shopper.addToCart();
 			await shopper.block.goToCart();
 
@@ -63,7 +63,7 @@ describe( 'Shopper -> Tax', () => {
 			const checkoutTaxes = await getTaxesFromCurrentPage();
 			expect( checkoutTaxes.sort() ).toEqual( expectedTaxes.sort() );
 
-			await shopper.fillInCheckoutWithTestData();
+			await shopper.bock.fillInCheckoutWithTestData();
 			await shopper.block.placeOrder();
 			await page.waitForSelector( 'h1.entry-title' );
 			const orderSummaryTaxes = await getTaxesFromOrderSummaryPage(

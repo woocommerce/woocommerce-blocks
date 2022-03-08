@@ -53,109 +53,6 @@ export const shopper = {
 		);
 	},
 
-	/* We need to overwrite this function from wcShopper because clicking through to the
-		product doesn't work. There is a fix in https://github.com/woocommerce/woocommerce/pull/31915
-		We can delete this function once the PR is merged
-		*/
-	searchForProduct: async ( productname ) => {
-		const searchFieldSelector = '.wp-block-search__input';
-		await expect( page ).toMatchElement( searchFieldSelector );
-		// await page.waitForSelector( searchFieldSelector, { timeout: 5000 } );
-		await expect( page ).toFill( searchFieldSelector, productname );
-		await expect( page ).toClick( '.wp-block-search__button' );
-		// Single search results may go directly to product page
-		if ( await page.waitForSelector( 'h2.entry-title' ) ) {
-			await expect( page ).toMatchElement( 'h2.entry-title', {
-				text: productname,
-			} );
-			await expect( page ).toClick( 'h2.entry-title > a', {
-				text: productname,
-			} );
-		}
-		await page.waitForSelector( 'h1.entry-title' );
-		await expect( page.title() ).resolves.toMatch( productname );
-		await expect( page ).toMatchElement( 'h1.entry-title', productname );
-	},
-
-	addCoupon: async ( couponCode ) => {
-		const title = await page.title();
-		if ( ! title.includes( 'Cart Block' ) ) {
-			await shopper.goToCartBlock();
-		}
-		// Make sure the coupon panel is open
-		const applyButton = await page.$(
-			'.wc-block-components-totals-coupon__button'
-		);
-		if ( ! applyButton ) {
-			await page.click( '.wc-block-components-panel__button' );
-		}
-		await page.type(
-			'.wc-block-components-totals-coupon__input input',
-			couponCode
-		);
-		await page.click( '.wc-block-components-totals-coupon__button' );
-		await expect( page ).toMatchElement(
-			'.wc-block-components-chip__text',
-			{
-				text: couponCode,
-			}
-		);
-	},
-
-	fillInCheckoutWithTestData: async () => {
-		const shippingOrBilling = ( await page.$( '#shipping-first_name' ) )
-			? 'shipping'
-			: 'billing';
-		const testData = {
-			first_name: 'John',
-			last_name: 'Doe',
-			shipping_address_1: '123 Easy Street',
-			country: 'United States (US)',
-			city: 'New York',
-			state: 'New York',
-			postcode: '90210',
-		};
-		await shopper.fillInCheckoutAddress( testData, shippingOrBilling );
-	},
-
-	fillInCheckoutAddress: async (
-		address,
-		shippingOrBilling = 'shipping'
-	) => {
-		await expect( page ).toFill(
-			`#${ shippingOrBilling }-first_name`,
-			address.first_name
-		);
-		await expect( page ).toFill(
-			`#${ shippingOrBilling }-first_name`,
-			address.first_name
-		);
-		await expect( page ).toFill(
-			`#${ shippingOrBilling }-last_name`,
-			address.last_name
-		);
-		await expect( page ).toFill(
-			`#${ shippingOrBilling }-address_1`,
-			address.shipping_address_1
-		);
-		await expect( page ).toFill(
-			`#${ shippingOrBilling }-country input`,
-			address.country
-		);
-		await expect( page ).toFill(
-			`#${ shippingOrBilling }-city`,
-			address.city
-		);
-		await expect( page ).toFill(
-			`#${ shippingOrBilling }-state input`,
-			address.state
-		);
-		await expect( page ).toFill(
-			`#${ shippingOrBilling }-postcode`,
-			address.postcode
-		);
-	},
-
 	goToBlockPage: async ( title ) => {
 		await page.goto( await getBlockPagePermalink( title ), {
 			waitUntil: 'networkidle0',
@@ -165,13 +62,6 @@ export const shopper = {
 	},
 
 	block: {
-		addToCart: async () => {
-			await Promise.all( [
-				page.click( '.single_add_to_cart_button' ),
-				page.waitForNavigation( { waitUntil: 'networkidle0' } ),
-			] );
-		},
-
 		goToCart: async () => {
 			await page.goto( SHOP_CART_BLOCK_PAGE, {
 				waitUntil: 'networkidle0',
@@ -226,6 +116,115 @@ export const shopper = {
 				),
 				page.waitForNavigation( { waitUntil: 'networkidle0' } ),
 			] );
+		},
+
+		/* We need to overwrite this function from wcShopper because clicking through to the
+		product doesn't work. There is a fix in https://github.com/woocommerce/woocommerce/pull/31915
+		We can delete this function once the PR is merged
+		*/
+		searchForProduct: async ( productname ) => {
+			const searchFieldSelector = '.wp-block-search__input';
+			await expect( page ).toMatchElement( searchFieldSelector );
+			// await page.waitForSelector( searchFieldSelector, { timeout: 5000 } );
+			await expect( page ).toFill( searchFieldSelector, productname );
+			await expect( page ).toClick( '.wp-block-search__button' );
+			// Single search results may go directly to product page
+			if ( await page.waitForSelector( 'h2.entry-title' ) ) {
+				await expect( page ).toMatchElement( 'h2.entry-title', {
+					text: productname,
+				} );
+				await expect( page ).toClick( 'h2.entry-title > a', {
+					text: productname,
+				} );
+			}
+			await page.waitForSelector( 'h1.entry-title' );
+			await expect( page.title() ).resolves.toMatch( productname );
+			await expect( page ).toMatchElement(
+				'h1.entry-title',
+				productname
+			);
+		},
+
+		addCoupon: async ( couponCode ) => {
+			const title = await page.title();
+			if ( ! title.includes( 'Cart Block' ) ) {
+				await shopper.goToCartBlock();
+			}
+			// Make sure the coupon panel is open
+			const applyButton = await page.$(
+				'.wc-block-components-totals-coupon__button'
+			);
+			if ( ! applyButton ) {
+				await page.click( '.wc-block-components-panel__button' );
+			}
+			await page.type(
+				'.wc-block-components-totals-coupon__input input',
+				couponCode
+			);
+			await page.click( '.wc-block-components-totals-coupon__button' );
+			await expect( page ).toMatchElement(
+				'.wc-block-components-chip__text',
+				{
+					text: couponCode,
+				}
+			);
+		},
+
+		fillInCheckoutWithTestData: async () => {
+			const shippingOrBilling = ( await page.$( '#shipping-first_name' ) )
+				? 'shipping'
+				: 'billing';
+			const testData = {
+				first_name: 'John',
+				last_name: 'Doe',
+				shipping_address_1: '123 Easy Street',
+				country: 'United States (US)',
+				city: 'New York',
+				state: 'New York',
+				postcode: '90210',
+			};
+			await shopper.block.fillInCheckoutAddress(
+				testData,
+				shippingOrBilling
+			);
+		},
+
+		fillInCheckoutAddress: async (
+			address,
+			shippingOrBilling = 'shipping'
+		) => {
+			await expect( page ).toFill(
+				`#${ shippingOrBilling }-first_name`,
+				address.first_name
+			);
+			await expect( page ).toFill(
+				`#${ shippingOrBilling }-first_name`,
+				address.first_name
+			);
+			await expect( page ).toFill(
+				`#${ shippingOrBilling }-last_name`,
+				address.last_name
+			);
+			await expect( page ).toFill(
+				`#${ shippingOrBilling }-address_1`,
+				address.shipping_address_1
+			);
+			await expect( page ).toFill(
+				`#${ shippingOrBilling }-country input`,
+				address.country
+			);
+			await expect( page ).toFill(
+				`#${ shippingOrBilling }-city`,
+				address.city
+			);
+			await expect( page ).toFill(
+				`#${ shippingOrBilling }-state input`,
+				address.state
+			);
+			await expect( page ).toFill(
+				`#${ shippingOrBilling }-postcode`,
+				address.postcode
+			);
 		},
 	},
 };
