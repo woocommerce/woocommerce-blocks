@@ -33,8 +33,10 @@ class RateLimits extends WC_Rate_Limiter {
 					SELECT rate_limit_expiry as reset, rate_limit_remaining as remaining
 					FROM {$wpdb->prefix}wc_rate_limits
 					WHERE rate_limit_key = %s
+					AND rate_limit_expiry > %s
 				",
-				$action_id
+				$action_id,
+				time()
 			),
 			'OBJECT'
 		);
