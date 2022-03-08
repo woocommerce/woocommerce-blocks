@@ -364,7 +364,7 @@ describe( 'Shopper → Mini Cart', () => {
 					},
 				],
 			} );
-			await shopper.emptyCart();
+			await shopper.block.emptyCart();
 		} );
 
 		afterAll( async () => {
@@ -386,7 +386,7 @@ describe( 'Shopper → Mini Cart', () => {
 					},
 				],
 			} );
-			await shopper.emptyCart();
+			await shopper.block.emptyCart();
 		} );
 
 		it( 'Mini Cart show tax label and price including tax', async () => {
