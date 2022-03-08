@@ -226,8 +226,8 @@ export const shopper = {
 				address.postcode
 			);
 		},
-    
-    fillBillingDetails: async ( customerBillingDetails ) => {
+
+		fillBillingDetails: async ( customerBillingDetails ) => {
 			await expect( page ).toFill(
 				'#billing-first_name',
 				customerBillingDetails.firstname
