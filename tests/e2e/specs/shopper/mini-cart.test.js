@@ -134,13 +134,40 @@ describe( 'Shopper → Mini Cart', () => {
 		} );
 	} );
 
+	describe( 'Empty mini cart', () => {
+		it( 'When the cart is empty, the Mini Cart Drawer show empty cart message and start shopping button', async () => {
+			await clickMiniCartButton();
+
+			await expect( page ).toMatchElement(
+				'.wc-block-mini-cart__drawer',
+				{
+					text: 'Your cart is currently empty!',
+				}
+			);
+
+			await expect( page ).toMatchElement(
+				'.wc-block-mini-cart__drawer',
+				{
+					text: 'Start shopping',
+				}
+			);
+
+			const shopLink = await page.$eval(
+				'.wc-block-mini-cart__shopping-button a',
+				( el ) => el.href
+			);
+
+			expect( shopLink ).toMatch( SHOP_PAGE );
+		} );
+	} );
+
 	describe( 'Filled mini cart', () => {
 		beforeAll( async () => {
-			await shopper.emptyCart();
+			await shopper.block.emptyCart();
 		} );
 
 		afterEach( async () => {
-			await shopper.emptyCart();
+			await shopper.block.emptyCart();
 		} );
 
 		it( 'The Mini Cart title shows correct amount', async () => {
@@ -225,36 +252,111 @@ describe( 'Shopper → Mini Cart', () => {
 		} );
 	} );
 
-	describe( 'Empty mini cart', () => {
-		it( 'When the cart is empty, the Mini Cart Drawer show empty cart message and start shopping button', async () => {
-			await clickMiniCartButton();
+	describe( 'Update quantity', () => {
+		beforeAll( async () => {
+			await shopper.block.emptyCart();
+		} );
 
-			await expect( page ).toMatchElement(
-				'.wc-block-mini-cart__drawer',
-				{
-					text: 'Your cart is currently empty!',
-				}
+		afterEach( async () => {
+			await shopper.block.emptyCart();
+		} );
+
+		it( 'The quantity of a product can be updated using plus and minus button', async () => {
+			await page.click(
+				'.wc-block-grid__product:first-child .add_to_cart_button'
 			);
 
-			await expect( page ).toMatchElement(
-				'.wc-block-mini-cart__drawer',
-				{
-					text: 'Start shopping',
-				}
+			await expect( page ).toMatchElement( '.wc-block-mini-cart__title', {
+				text: 'Your cart (1 item)',
+			} );
+
+			await page.waitForSelector(
+				'.wc-block-components-quantity-selector__button--plus'
 			);
 
-			const shopLink = await page.$eval(
-				'.wc-block-mini-cart__shopping-button a',
-				( el ) => el.href
+			await page.waitForTimeout( 500 );
+
+			await page.click(
+				'.wc-block-components-quantity-selector__button--plus'
 			);
 
-			expect( shopLink ).toMatch( SHOP_PAGE );
+			await expect( page ).toMatchElement( '.wc-block-mini-cart__title', {
+				text: 'Your cart (2 items)',
+			} );
+
+			await page.click(
+				'.wc-block-components-quantity-selector__button--plus'
+			);
+			await page.click(
+				'.wc-block-components-quantity-selector__button--plus'
+			);
+			await page.click(
+				'.wc-block-components-quantity-selector__button--plus'
+			);
+
+			await expect( page ).toMatchElement( '.wc-block-mini-cart__title', {
+				text: 'Your cart (5 items)',
+			} );
+
+			await page.click(
+				'.wc-block-components-quantity-selector__button--minus'
+			);
+
+			await expect( page ).toMatchElement( '.wc-block-mini-cart__title', {
+				text: 'Your cart (4 items)',
+			} );
+		} );
+
+		it( 'Minus button is disabled if product quantity is 1', async () => {
+			await page.click(
+				'.wc-block-grid__product:first-child .add_to_cart_button'
+			);
+
+			await expect( page ).toMatchElement( '.wc-block-mini-cart__title', {
+				text: 'Your cart (1 item)',
+			} );
+
+			await page.waitForTimeout( 500 );
+
+			expect(
+				await page.$(
+					'button.wc-block-components-quantity-selector__button--minus[disabled]'
+				)
+			).toBeTruthy();
+
+			await page.click(
+				'.wc-block-components-quantity-selector__button--plus'
+			);
+
+			await expect( page ).toMatchElement( '.wc-block-mini-cart__title', {
+				text: 'Your cart (2 items)',
+			} );
+
+			expect(
+				await page.$(
+					'button.wc-block-components-quantity-selector__button--minus[disabled]'
+				)
+			).toBeFalsy();
+
+			await page.click(
+				'.wc-block-components-quantity-selector__button--minus'
+			);
+
+			await expect( page ).toMatchElement( '.wc-block-mini-cart__title', {
+				text: 'Your cart (1 item)',
+			} );
+
+			expect(
+				await page.$(
+					'button.wc-block-components-quantity-selector__button--minus[disabled]'
+				)
+			).toBeTruthy();
 		} );
 	} );
 
 	describe( 'Cart page', () => {
 		beforeAll( async () => {
-			await shopper.emptyCart();
+			await shopper.block.emptyCart();
 		} );
 
 		it( 'Can go to cart page from the Mini Cart Footer', async () => {
@@ -290,7 +392,7 @@ describe( 'Shopper → Mini Cart', () => {
 
 	describe( 'Checkout page', () => {
 		beforeAll( async () => {
-			await shopper.emptyCart();
+			await shopper.block.emptyCart();
 		} );
 
 		it( 'Can go to checkout page from the Mini Cart Footer', async () => {
