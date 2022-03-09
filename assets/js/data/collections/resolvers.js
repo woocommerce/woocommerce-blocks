@@ -108,5 +108,5 @@ export function* getCollectionHeader(
 		( arg ) => typeof arg !== 'undefined'
 	);
 	// we call this simply to do any resolution of the collection if necessary.
-	yield controls.select( STORE_KEY, 'getCollection', ...args );
+	yield controls.resolveSelect( STORE_KEY, 'getCollection', ...args );
 }
