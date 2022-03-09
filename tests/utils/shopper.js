@@ -261,5 +261,18 @@ export const shopper = {
 				customerBillingDetails.email
 			);
 		},
+
+		/**
+		 * Instead of using the permalink to go to checkout (e.g. "shopper.block.goToCheckout"),
+		 * with this method we actually click on the "Proceed to Checkout" button
+		 */
+		proceedToCheckout: async () => {
+			await Promise.all( [
+				expect( page ).toClick( 'a.wc-block-cart__submit-button', {
+					text: 'Proceed to Checkout',
+				} ),
+				page.waitForNavigation( { waitUntil: 'networkidle0' } ),
+			] );
+		},
 	},
 };
