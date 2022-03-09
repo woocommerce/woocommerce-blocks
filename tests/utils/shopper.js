@@ -310,5 +310,15 @@ export const shopper = {
 			await quantityInput.type( quantityValue.toString() );
 			await quantityInput.evaluate( ( e ) => e.blur() );
 		},
+
+		productIsInCart: async ( productTitle, quantity = null ) => {
+			const cartItemArgs = quantity ? { qty: quantity } : {};
+			const cartItemXPath = getCartItemExpression(
+				productTitle,
+				cartItemArgs
+			);
+
+			await expect( page.$x( cartItemXPath ) ).resolves.toHaveLength( 1 );
+		},
 	},
 };
