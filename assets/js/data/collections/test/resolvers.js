@@ -27,7 +27,7 @@ describe( 'getCollection', () => {
 		test( 'with getRoute call invoked to retrieve route', () => {
 			rewind();
 			fulfillment.next();
-			expect( controls.select ).toHaveBeenCalledWith(
+			expect( controls.resolveSelect ).toHaveBeenCalledWith(
 				SCHEMA_STORE_KEY,
 				'getRoute',
 				testArgs[ 0 ],
@@ -133,7 +133,7 @@ describe( 'getCollectionHeader', () => {
 		rewind( 'x-wp-total', '/wc/blocks', 'products' );
 		const { value } = fulfillment.next();
 		expect( value ).toEqual(
-			controls.select(
+			controls.resolveSelect(
 				STORE_KEY,
 				'getCollection',
 				'/wc/blocks',
@@ -152,7 +152,7 @@ describe( 'getCollectionHeader', () => {
 		rewind( ...args );
 		const { value } = fulfillment.next();
 		expect( value ).toEqual(
-			controls.select(
+			controls.resolveSelect(
 				STORE_KEY,
 				'/wc/blocks',
 				'products/attributes',

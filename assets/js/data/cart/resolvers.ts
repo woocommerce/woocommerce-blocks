@@ -33,5 +33,5 @@ export function* getCartData(): Generator< unknown, void, CartResponse > {
  * Resolver for retrieving cart totals.
  */
 export function* getCartTotals(): Generator< unknown, void, Cart > {
-	yield controls.select( STORE_KEY, 'getCartData' );
+	yield controls.resolveSelect( STORE_KEY, 'getCartData' );
 }

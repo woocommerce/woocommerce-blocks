@@ -416,7 +416,7 @@ export function* changeCartItemQuantity(
 	quantity: number
 	// eslint-disable-next-line @typescript-eslint/no-explicit-any -- unclear how to represent multiple different yields as type
 ): Generator< unknown, void, any > {
-	const cartItem = yield controls.select(
+	const cartItem = yield controls.resolveSelect(
 		CART_STORE_KEY,
 		'getCartItem',
 		cartItemKey

@@ -18,7 +18,7 @@ describe( 'getRoute', () => {
 	it( 'yields select control response', () => {
 		const fulfillment = getRoute( 'wc/blocks' );
 		fulfillment.next();
-		expect( controls.select ).toHaveBeenCalledWith(
+		expect( controls.resolveSelect ).toHaveBeenCalledWith(
 			STORE_KEY,
 			'getRoutes',
 			'wc/blocks'

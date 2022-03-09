@@ -18,7 +18,7 @@ import { apiFetchWithHeaders } from '../shared-controls';
  * @param {number} timestamp Last update timestamp.
  */
 function* invalidateModifiedCollection( timestamp ) {
-	const lastModified = yield controls.select(
+	const lastModified = yield controls.resolveSelect(
 		STORE_KEY,
 		'getCollectionLastModified'
 	);
@@ -40,7 +40,7 @@ function* invalidateModifiedCollection( timestamp ) {
  * @param {Array}  ids
  */
 export function* getCollection( namespace, resourceName, query, ids ) {
-	const route = yield controls.select(
+	const route = yield controls.resolveSelect(
 		SCHEMA_STORE_KEY,
 		'getRoute',
 		namespace,
