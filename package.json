@@ -107,8 +107,14 @@
 		"@types/jest": "26.0.24",
 		"@types/jquery": "3.5.14",
 		"@types/lodash": "4.14.179",
+<<<<<<< HEAD
 		"@types/puppeteer": "5.4.4",
 		"@types/react": "16.14.23",
+=======
+		"@types/puppeteer": "5.4.5",
+		"@types/react": "17.0.39",
+		"@types/react-dom": "17.0.13",
+>>>>>>> set react and react-dom as peerDeps
 		"@types/wordpress__block-editor": "6.0.5",
 		"@types/wordpress__compose": "4.0.1",
 		"@types/wordpress__data": "4.6.10",
@@ -124,7 +130,7 @@
 		"@wordpress/api-fetch": "5.2.6",
 		"@wordpress/babel-preset-default": "6.4.1",
 		"@wordpress/base-styles": "4.0.4",
-		"@wordpress/block-editor": "8.0.13",
+		"@wordpress/block-editor": "8.2.0",
 		"@wordpress/blocks": "11.1.5",
 		"@wordpress/browserslist-config": "4.1.0",
 		"@wordpress/components": "19.1.5",
@@ -226,6 +232,10 @@
 		"trim-html": "0.1.9",
 		"use-debounce": "7.0.1",
 		"wordpress-components": "npm:@wordpress/components@14.2.0"
+	},
+	"peerDependencies": {
+		"react": "^17.0.2",
+		"react-dom": "^17.0.2"
 	},
 	"husky": {
 		"hooks": {
