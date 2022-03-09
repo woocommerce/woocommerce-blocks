@@ -32,8 +32,6 @@ describe( 'Shopper → Cart → Can update product quantity', () => {
 		);
 		await page.waitForNetworkIdle();
 		await expect( page ).toMatchElement( 'a.wc-block-cart__submit-button' );
-		// await expect( page ).toClick( 'button', { text: 'Update cart' } );
-		// await uiUnblocked();
 
 		await shopper.block.productIsInCart( SIMPLE_PRODUCT_NAME, 4 );
 	} );
