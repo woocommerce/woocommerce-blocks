@@ -260,8 +260,5 @@
 		"languages/**/*.json",
 		"license.txt",
 		"woocommerce-gutenberg-products-block.php"
-	],
-	"optionalDependencies": {
-		"puppeteer": "^13.5.0"
-	}
+	]
 }
