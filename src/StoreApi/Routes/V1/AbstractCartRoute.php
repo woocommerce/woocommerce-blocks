@@ -4,11 +4,14 @@ namespace Automattic\WooCommerce\StoreApi\Routes\V1;
 use Automattic\WooCommerce\StoreApi\Exceptions\RouteException;
 use Automattic\WooCommerce\StoreApi\SchemaController;
 use Automattic\WooCommerce\StoreApi\Schemas\V1\AbstractSchema;
-use Automattic\WooCommerce\StoreApi\Schemas\V1\CartSchema;
 use Automattic\WooCommerce\StoreApi\Schemas\V1\CartItemSchema;
+use Automattic\WooCommerce\StoreApi\Schemas\V1\CartSchema;
+use Automattic\WooCommerce\StoreApi\SessionHandler;
 use Automattic\WooCommerce\StoreApi\Utilities\CartController;
 use Automattic\WooCommerce\StoreApi\Utilities\DraftOrderTrait;
 use Automattic\WooCommerce\StoreApi\Utilities\OrderController;
+use ReallySimpleJWT\Token;
+
 /**
  * Abstract Cart Route
  */
@@ -65,14 +68,14 @@ abstract class AbstractCartRoute extends AbstractRoute {
 	 * @return \WP_Error|\WP_REST_Response
 	 */
 	public function get_response( \WP_REST_Request $request ) {
-		$this->cart_controller->load_cart();
+		$this->load_cart_session( $request );
 		$this->calculate_totals();
 
 		if ( $this->requires_nonce( $request ) ) {
 			$nonce_check = $this->check_nonce( $request );
 
 			if ( is_wp_error( $nonce_check ) ) {
-				return $this->add_nonce_headers( $this->error_to_response( $nonce_check ) );
+				return $this->add_response_headers( $this->error_to_response( $nonce_check ) );
 			}
 		}
 
@@ -90,7 +93,7 @@ abstract class AbstractCartRoute extends AbstractRoute {
 			$this->cart_updated( $request );
 		}
 
-		return $this->add_nonce_headers( $response );
+		return $this->add_response_headers( $response );
 	}
 
 	/**
@@ -99,11 +102,63 @@ abstract class AbstractCartRoute extends AbstractRoute {
 	 * @param \WP_REST_Response $response The response object.
 	 * @return \WP_REST_Response
 	 */
-	protected function add_nonce_headers( \WP_REST_Response $response ) {
+	protected function add_response_headers( \WP_REST_Response $response ) {
 		$response->header( 'X-WC-Store-API-Nonce', wp_create_nonce( 'wc_store_api' ) );
 		$response->header( 'X-WC-Store-API-Nonce-Timestamp', time() );
 		$response->header( 'X-WC-Store-API-User', get_current_user_id() );
+		$response->header( 'Cart-Token', $this->get_cart_token( wc()->session->get_customer_id() ) );
 		return $response;
+	}
+
+	/**
+	 * Load the cart session before handling responses.
+	 *
+	 * @param \WP_REST_Request $request Request object.
+	 */
+	protected function load_cart_session( \WP_REST_Request $request ) {
+		$cart_token = $request->get_header( 'Cart-Token' );
+
+		if ( $cart_token && Token::validate( $cart_token, '@' . wp_salt() ) ) {
+			// Overrides the core session class.
+			add_filter(
+				'woocommerce_session_handler',
+				function() {
+					return SessionHandler::class;
+				}
+			);
+		}
+
+		$this->cart_controller->load_cart();
+	}
+
+	/**
+	 * Generates a cart token for the response headers.
+	 *
+	 * Current namespace is used as the token Issuer.
+	 *
+	 * @param string $customer_id Session (customer ID) for the token.
+	 * @return string
+	 */
+	protected function get_cart_token( $customer_id ) {
+		return Token::create( $customer_id, $this->get_cart_token_secret(), $this->get_cart_token_expiration(), $this->namespace );
+	}
+
+	/**
+	 * Gets the secret for the cart token using wp_salt.
+	 *
+	 * @return string
+	 */
+	protected function get_cart_token_secret() {
+		return '@' . wp_salt();
+	}
+
+	/**
+	 * Gets the experation of the cart token. Defaults to 48h.
+	 *
+	 * @return string
+	 */
+	protected function get_cart_token_expiration() {
+		return time() + intval( apply_filters( 'wc_session_expiration', 60 * 60 * 48 ) );
 	}
 
 	/**
