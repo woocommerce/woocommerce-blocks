@@ -37,8 +37,8 @@ const closeMiniCartDrawer = async () => {
  */
 const WooCommerce = new WooCommerceRestApi( {
 	url: `${ process.env.WORDPRESS_BASE_URL }/`,
-	consumerKey: 'consumer_key', // Your consumer key
-	consumerSecret: 'consumer_secret', // Your consumer secret
+	consumerKey: 'consumer_key',
+	consumerSecret: 'consumer_secret',
 	version: 'wc/v3',
 	axiosConfig: {
 		auth: {
