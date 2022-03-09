@@ -118,7 +118,7 @@ class BlockTemplateUtils {
 
 	/**
 	 * Build a unified template object based a post Object.
-	 * Important: This method was initially duplicated from wp-includes/block-template-utils.php as it was not intended for public use.
+	 * Important: This method is an almost identical duplicate from wp-includes/block-template-utils.php as it was not intended for public use.
 	 *
 	 * @param \WP_Post $post Template post.
 	 *
@@ -172,7 +172,7 @@ class BlockTemplateUtils {
 
 	/**
 	 * Build a unified template object based on a theme file.
-	 * Important: This method was initially duplicated from wp-includes/block-template-utils.php as it was not intended for public use.
+	 * Important: This method is an almost identical duplicate from wp-includes/block-template-utils.php as it was not intended for public use.
 	 *
 	 * @param array|object $template_file Theme file.
 	 * @param string       $template_type wp_template or wp_template_part.
