@@ -6,11 +6,16 @@ import {
 	uiUnblocked,
 	SHOP_CART_PAGE,
 } from '@woocommerce/e2e-utils';
+import { pressKeyWithModifier } from '@wordpress/e2e-test-utils';
 
 /**
  * Internal dependencies
  */
 import { BASE_URL } from '../e2e/utils';
+import {
+	getCartItemExpression,
+	getQtyInputExpression,
+} from '../utils/expressions';
 
 export const shopper = {
 	...wcShopper,
@@ -292,6 +297,18 @@ export const shopper = {
 					text: shippingPrice,
 				}
 			);
+		},
+
+		setCartQuantity: async ( productTitle, quantityValue ) => {
+			const cartItemXPath = getCartItemExpression( productTitle );
+			const quantityInputXPath =
+				cartItemXPath + '//' + getQtyInputExpression();
+
+			const [ quantityInput ] = await page.$x( quantityInputXPath );
+			await quantityInput.focus();
+			await pressKeyWithModifier( 'primary', 'a' );
+			await quantityInput.type( quantityValue.toString() );
+			await quantityInput.evaluate( ( e ) => e.blur() );
 		},
 	},
 };
