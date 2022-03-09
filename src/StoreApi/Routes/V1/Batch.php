@@ -116,9 +116,9 @@ class Batch extends AbstractRoute implements RouteInterface {
 			$response = $this->error_to_response( $response );
 		}
 
-		$response->header( 'X-WC-Store-API-Nonce', wp_create_nonce( 'wc_store_api' ) );
-		$response->header( 'X-WC-Store-API-Nonce-Timestamp', time() );
-		$response->header( 'X-WC-Store-API-User', get_current_user_id() );
+		$response->header( 'Nonce', wp_create_nonce( 'wc_store_api' ) );
+		$response->header( 'Nonce-Timestamp', time() );
+		$response->header( 'User-ID', get_current_user_id() );
 
 		return $response;
 	}
