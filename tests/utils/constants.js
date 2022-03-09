@@ -10,3 +10,4 @@ const config = require( 'config' );
  */
 export const SIMPLE_PRODUCT_NAME = 'Woo Single #1';
 export const BILLING_DETAILS = config.get( 'addresses.customer.billing' );
+export const SHIPPING_DETAILS = config.get( 'addresses.customer.shipping' );
