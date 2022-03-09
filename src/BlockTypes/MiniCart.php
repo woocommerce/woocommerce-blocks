@@ -317,9 +317,8 @@ class MiniCart extends AbstractBlock {
 			$cart_contents_total += $cart->get_subtotal_tax();
 		}
 
-		$wrapper_classes = 'wc-block-mini-cart wp-block-woocommerce-mini-cart';
 		$classes_styles  = StyleAttributesUtils::get_classes_and_styles_by_attributes( $attributes, array( 'text_color', 'background_color' ) );
-		$wrapper_classes = sprintf( '%1$s %2$s', $wrapper_classes, $classes_styles['classes'] );
+		$wrapper_classes = sprintf( 'wc-block-mini-cart wp-block-woocommerce-mini-cart %s', $classes_styles['classes'] );
 		$wrapper_styles  = $classes_styles['styles'];
 
 		$aria_label = sprintf(
