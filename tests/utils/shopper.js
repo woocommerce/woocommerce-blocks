@@ -7,6 +7,11 @@ import {
 	SHOP_CART_PAGE,
 } from '@woocommerce/e2e-utils';
 
+/**
+ * Internal dependencies
+ */
+import { BASE_URL } from '../e2e/utils';
+
 export const shopper = {
 	...wcShopper,
 
@@ -17,10 +22,8 @@ export const shopper = {
 		// E.g. "Checkout Block or Mini Cart Block". The permalinks are generated from
 		// the page title so we can derive them directly
 		goToBlockPage: async ( blockName ) => {
-			const config = require( 'config' );
-			const baseUrl = config.get( 'url' );
 			const pageTitle = `${ blockName } Block`;
-			const url = baseUrl + pageTitle.toLowerCase().replace( / /g, '-' );
+			const url = BASE_URL + pageTitle.toLowerCase().replace( / /g, '-' );
 			await page.goto( url, {
 				waitUntil: 'networkidle0',
 			} );
