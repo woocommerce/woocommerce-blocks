@@ -7,12 +7,12 @@ if ( process.env.WOOCOMMERCE_BLOCKS_PHASE < 2 )
 	// eslint-disable-next-line jest/no-focused-tests
 	test.only( `skipping ${ block.name } tests`, () => {} );
 
-describe( 'Shopper → Cart → Can remove product', () => {
+describe( 'Shopper → Cart → Can view empty cart message', () => {
 	beforeAll( async () => {
 		await shopper.block.emptyCart();
 	} );
 
-	it( 'Can remove product from cart', async () => {
+	it( 'Shopper Can view empty cart message', async () => {
 		await shopper.block.goToCart();
 
 		// Verify cart is empty'
