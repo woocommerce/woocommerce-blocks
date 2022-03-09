@@ -50,9 +50,9 @@ function defaultTemplateProps( templateTitle ) {
 	};
 }
 
-function legacyBlockSelector( title ) {
+function classicBlockSelector( title ) {
 	return `${ blockSelector(
-		'woocommerce/legacy-template'
+		'woocommerce/classic-template'
 	) }[data-title="${ title }"]`;
 }
 
@@ -63,7 +63,7 @@ const BLOCK_DATA = {
 			template: 'archive-product',
 			title: 'WooCommerce Product Grid Block',
 		},
-		name: 'woocommerce/legacy-template',
+		name: 'woocommerce/classic-template',
 	},
 	'single-product': {
 		attributes: {
@@ -71,7 +71,7 @@ const BLOCK_DATA = {
 			template: 'single-product',
 			title: 'WooCommerce Single Product Block',
 		},
-		name: 'woocommerce/legacy-template',
+		name: 'woocommerce/classic-template',
 	},
 	'taxonomy-product_cat': {
 		attributes: {
@@ -79,7 +79,7 @@ const BLOCK_DATA = {
 			template: 'taxonomy-product_cat',
 			title: 'WooCommerce Product Taxonomy Block',
 		},
-		name: 'woocommerce/legacy-template',
+		name: 'woocommerce/classic-template',
 	},
 	'taxonomy-product_tag': {
 		attributes: {
@@ -87,15 +87,17 @@ const BLOCK_DATA = {
 			template: 'taxonomy-product_tag',
 			title: 'WooCommerce Product Tag Block',
 		},
-		name: 'woocommerce/legacy-template',
+		name: 'woocommerce/classic-template',
 	},
 };
 
 const SELECTORS = {
 	blocks: {
 		paragraph: blockSelector( 'core/paragraph' ),
-		productArchive: legacyBlockSelector( 'WooCommerce Product Grid Block' ),
-		singleProduct: legacyBlockSelector(
+		productArchive: classicBlockSelector(
+			'WooCommerce Product Grid Block'
+		),
+		singleProduct: classicBlockSelector(
 			'WooCommerce Single Product Block'
 		),
 	},
@@ -134,7 +136,7 @@ describe( 'Store Editing Templates', () => {
 			}
 		} );
 
-		it( 'should contain the "WooCommerce Single Product Block" legacy template', async () => {
+		it( 'should contain the "WooCommerce Single Product Block" classic template', async () => {
 			const templateQuery = addQueryArgs( '', {
 				postId: 'woocommerce/woocommerce//single-product',
 				postType: 'wp_template',
@@ -143,14 +145,14 @@ describe( 'Store Editing Templates', () => {
 			await goToSiteEditor( templateQuery );
 			await waitForCanvas();
 
-			const [ legacyBlock ] = await filterCurrentBlocks(
+			const [ classicBlock ] = await filterCurrentBlocks(
 				( block ) => block.name === BLOCK_DATA[ 'single-product' ].name
 			);
 
 			// Comparing only the `template` property currently
 			// because the other properties seem to be slightly unreliable.
 			// Investigation pending.
-			expect( legacyBlock.attributes.template ).toBe(
+			expect( classicBlock.attributes.template ).toBe(
 				BLOCK_DATA[ 'single-product' ].attributes.template
 			);
 			expect( await getCurrentSiteEditorContent() ).toMatchSnapshot();
@@ -191,7 +193,10 @@ describe( 'Store Editing Templates', () => {
 
 			await expect( canvas() ).toMatchElement(
 				SELECTORS.blocks.paragraph,
-				{ text: CUSTOMIZED_STRING, timeout: DEFAULT_TIMEOUT }
+				{
+					text: CUSTOMIZED_STRING,
+					timeout: DEFAULT_TIMEOUT,
+				}
 			);
 		} );
 
@@ -231,7 +236,7 @@ describe( 'Store Editing Templates', () => {
 			}
 		} );
 
-		it( 'should contain the "WooCommerce Product Grid Block" legacy template', async () => {
+		it( 'should contain the "WooCommerce Product Grid Block" classic template', async () => {
 			const templateQuery = addQueryArgs( '', {
 				postId: 'woocommerce/woocommerce//archive-product',
 				postType: 'wp_template',
@@ -240,11 +245,11 @@ describe( 'Store Editing Templates', () => {
 			await goToSiteEditor( templateQuery );
 			await waitForCanvas();
 
-			const [ legacyBlock ] = await filterCurrentBlocks(
+			const [ classicBlock ] = await filterCurrentBlocks(
 				( block ) => block.name === BLOCK_DATA[ 'archive-product' ].name
 			);
 
-			expect( legacyBlock.attributes.template ).toBe(
+			expect( classicBlock.attributes.template ).toBe(
 				BLOCK_DATA[ 'archive-product' ].attributes.template
 			);
 			expect( await getCurrentSiteEditorContent() ).toMatchSnapshot();
@@ -285,7 +290,10 @@ describe( 'Store Editing Templates', () => {
 
 			await expect( canvas() ).toMatchElement(
 				SELECTORS.blocks.paragraph,
-				{ text: CUSTOMIZED_STRING, timeout: DEFAULT_TIMEOUT }
+				{
+					text: CUSTOMIZED_STRING,
+					timeout: DEFAULT_TIMEOUT,
+				}
 			);
 		} );
 
@@ -328,7 +336,7 @@ describe( 'Store Editing Templates', () => {
 			}
 		} );
 
-		it( 'should contain the "WooCommerce Product Taxonomy Block" legacy template', async () => {
+		it( 'should contain the "WooCommerce Product Taxonomy Block" classic template', async () => {
 			const templateQuery = addQueryArgs( '', {
 				postId: 'woocommerce/woocommerce//taxonomy-product_cat',
 				postType: 'wp_template',
@@ -337,12 +345,12 @@ describe( 'Store Editing Templates', () => {
 			await goToSiteEditor( templateQuery );
 			await waitForCanvas();
 
-			const [ legacyBlock ] = await filterCurrentBlocks(
+			const [ classicBlock ] = await filterCurrentBlocks(
 				( block ) =>
 					block.name === BLOCK_DATA[ 'taxonomy-product_cat' ].name
 			);
 
-			expect( legacyBlock.attributes.template ).toBe(
+			expect( classicBlock.attributes.template ).toBe(
 				BLOCK_DATA[ 'taxonomy-product_cat' ].attributes.template
 			);
 			expect( await getCurrentSiteEditorContent() ).toMatchSnapshot();
@@ -383,7 +391,10 @@ describe( 'Store Editing Templates', () => {
 
 			await expect( canvas() ).toMatchElement(
 				SELECTORS.blocks.paragraph,
-				{ text: CUSTOMIZED_STRING, timeout: DEFAULT_TIMEOUT }
+				{
+					text: CUSTOMIZED_STRING,
+					timeout: DEFAULT_TIMEOUT,
+				}
 			);
 		} );
 
@@ -420,7 +431,7 @@ describe( 'Store Editing Templates', () => {
 			}
 		} );
 
-		it( 'should contain the "WooCommerce Product Taxonomy Block" legacy template', async () => {
+		it( 'should contain the "WooCommerce Product Taxonomy Block" classic template', async () => {
 			const templateQuery = addQueryArgs( '', {
 				postId: 'woocommerce/woocommerce//taxonomy-product_tag',
 				postType: 'wp_template',
@@ -429,12 +440,12 @@ describe( 'Store Editing Templates', () => {
 			await goToSiteEditor( templateQuery );
 			await waitForCanvas();
 
-			const [ legacyBlock ] = await filterCurrentBlocks(
+			const [ classicBlock ] = await filterCurrentBlocks(
 				( block ) =>
 					block.name === BLOCK_DATA[ 'taxonomy-product_tag' ].name
 			);
 
-			expect( legacyBlock.attributes.template ).toBe(
+			expect( classicBlock.attributes.template ).toBe(
 				BLOCK_DATA[ 'taxonomy-product_tag' ].attributes.template
 			);
 			expect( await getCurrentSiteEditorContent() ).toMatchSnapshot();
@@ -475,7 +486,10 @@ describe( 'Store Editing Templates', () => {
 
 			await expect( canvas() ).toMatchElement(
 				SELECTORS.blocks.paragraph,
-				{ text: CUSTOMIZED_STRING, timeout: DEFAULT_TIMEOUT }
+				{
+					text: CUSTOMIZED_STRING,
+					timeout: DEFAULT_TIMEOUT,
+				}
 			);
 		} );
 

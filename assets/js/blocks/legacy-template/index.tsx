@@ -31,10 +31,10 @@ const Edit = ( { attributes }: Props ) => {
 			<Placeholder
 				icon={ box }
 				label={ templateTitle }
-				className="wp-block-woocommerce-legacy-template__placeholder"
+				className="wp-block-woocommerce-classic-template__placeholder"
 			>
-				<div className="wp-block-woocommerce-legacy-template__placeholder-copy">
-					<p className="wp-block-woocommerce-legacy-template__placeholder-warning">
+				<div className="wp-block-woocommerce-classic-template__placeholder-copy">
+					<p className="wp-block-woocommerce-classic-template__placeholder-warning">
 						<strong>
 							{ __(
 								'Attention: Do not remove this block!',
@@ -57,9 +57,9 @@ const Edit = ( { attributes }: Props ) => {
 						) }
 					</p>
 				</div>
-				<div className="wp-block-woocommerce-legacy-template__placeholder-wireframe">
+				<div className="wp-block-woocommerce-classic-template__placeholder-wireframe">
 					<img
-						className="wp-block-woocommerce-legacy-template__placeholder-image"
+						className="wp-block-woocommerce-classic-template__placeholder-image"
 						src={ `${ WC_BLOCKS_IMAGE_URL }template-placeholders/${ templatePlaceholder }.svg` }
 						alt={ templateTitle }
 					/>
@@ -69,8 +69,8 @@ const Edit = ( { attributes }: Props ) => {
 	);
 };
 
-registerBlockType( 'woocommerce/legacy-template', {
-	title: __( 'WooCommerce Legacy Template', 'woo-gutenberg-products-block' ),
+registerBlockType( 'woocommerce/classic-template', {
+	title: __( 'WooCommerce Classic Template', 'woo-gutenberg-products-block' ),
 	icon: (
 		<Icon icon={ box } className="wc-block-editor-components-block-icon" />
 	),
@@ -78,7 +78,7 @@ registerBlockType( 'woocommerce/legacy-template', {
 	apiVersion: 2,
 	keywords: [ __( 'WooCommerce', 'woo-gutenberg-products-block' ) ],
 	description: __(
-		'Renders legacy WooCommerce PHP templates.',
+		'Renders classic WooCommerce PHP templates.',
 		'woo-gutenberg-products-block'
 	),
 	supports: {

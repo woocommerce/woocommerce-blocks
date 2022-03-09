@@ -16,7 +16,7 @@ This block does not have any customizable options available, so any style or cus
   * `template`: `single-product` | `archive-product` | `taxonomy-product_cat` | `taxonomy-product_tag`
 
 ```html
-<!-- wp:woocommerce/legacy-template {"template":"single-product"} /-->
+<!-- wp:woocommerce/classic-template {"template":"single-product"} /-->
 ```
 
 ![Classic Template Block Single Product](./assets/doc-image-single-product-classic-block.png)
