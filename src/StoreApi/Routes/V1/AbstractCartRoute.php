@@ -103,9 +103,9 @@ abstract class AbstractCartRoute extends AbstractRoute {
 	 * @return \WP_REST_Response
 	 */
 	protected function add_response_headers( \WP_REST_Response $response ) {
-		$response->header( 'X-WC-Store-API-Nonce', wp_create_nonce( 'wc_store_api' ) );
-		$response->header( 'X-WC-Store-API-Nonce-Timestamp', time() );
-		$response->header( 'X-WC-Store-API-User', get_current_user_id() );
+		$response->header( 'Nonce', wp_create_nonce( 'wc_store_api' ) );
+		$response->header( 'Nonce-Timestamp', time() );
+		$response->header( 'User-ID', get_current_user_id() );
 		$response->header( 'Cart-Token', $this->get_cart_token( wc()->session->get_customer_id() ) );
 		return $response;
 	}
@@ -225,7 +225,7 @@ abstract class AbstractCartRoute extends AbstractRoute {
 	 * @return \WP_Error|boolean
 	 */
 	protected function check_nonce( \WP_REST_Request $request ) {
-		$nonce = $request->get_header( 'X-WC-Store-API-Nonce' );
+		$nonce = $request->get_header( 'Nonce' );
 
 		/**
 		 * Filters the Store API nonce check.
@@ -240,11 +240,11 @@ abstract class AbstractCartRoute extends AbstractRoute {
 		}
 
 		if ( null === $nonce ) {
-			return $this->get_route_error_response( 'woocommerce_rest_missing_nonce', __( 'Missing the X-WC-Store-API-Nonce header. This endpoint requires a valid nonce.', 'woo-gutenberg-products-block' ), 401 );
+			return $this->get_route_error_response( 'woocommerce_rest_missing_nonce', __( 'Missing the Nonce header. This endpoint requires a valid nonce.', 'woo-gutenberg-products-block' ), 401 );
 		}
 
 		if ( ! wp_verify_nonce( $nonce, 'wc_store_api' ) ) {
-			return $this->get_route_error_response( 'woocommerce_rest_invalid_nonce', __( 'X-WC-Store-API-Nonce is invalid.', 'woo-gutenberg-products-block' ), 403 );
+			return $this->get_route_error_response( 'woocommerce_rest_invalid_nonce', __( 'Nonce is invalid.', 'woo-gutenberg-products-block' ), 403 );
 		}
 
 		return true;
