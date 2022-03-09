@@ -14,7 +14,7 @@ class ClassicTemplate extends AbstractDynamicBlock {
 	 *
 	 * @var string
 	 */
-	protected $block_name = 'classic-template';
+	protected $block_name = 'legacy-template';
 
 	/**
 	 * API version.
