@@ -2,7 +2,12 @@
  * External dependencies
  */
 import { setDefaultOptions, getDefaultOptions } from 'expect-puppeteer';
-import { SHOP_CART_PAGE, SHOP_CHECKOUT_PAGE } from '@woocommerce/e2e-utils';
+import { default as WooCommerceRestApi } from '@woocommerce/woocommerce-rest-api';
+import {
+	SHOP_PAGE,
+	SHOP_CART_PAGE,
+	SHOP_CHECKOUT_PAGE,
+} from '@woocommerce/e2e-utils';
 import { default as WooCommerceRestApi } from '@woocommerce/woocommerce-rest-api';
 
 /**
@@ -149,6 +154,33 @@ describe( 'Shopper → Mini Cart', () => {
 					text: 'Start shopping',
 				}
 			);
+		} );
+	} );
+
+	describe( 'Empty mini cart', () => {
+		it( 'When the cart is empty, the Mini Cart Drawer show empty cart message and start shopping button', async () => {
+			await clickMiniCartButton();
+
+			await expect( page ).toMatchElement(
+				'.wc-block-mini-cart__drawer',
+				{
+					text: 'Your cart is currently empty!',
+				}
+			);
+
+			await expect( page ).toMatchElement(
+				'.wc-block-mini-cart__drawer',
+				{
+					text: 'Start shopping',
+				}
+			);
+
+			const shopLink = await page.$eval(
+				'.wc-block-mini-cart__shopping-button a',
+				( el ) => el.href
+			);
+
+			expect( shopLink ).toMatch( SHOP_PAGE );
 		} );
 	} );
 
