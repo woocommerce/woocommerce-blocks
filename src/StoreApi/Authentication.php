@@ -40,12 +40,12 @@ class Authentication {
 			$rate_limit_seconds = 10;
 			$retry              = RateLimits::is_exceeded_retry_after( $action_id );
 			$server             = rest_get_server();
-			$server->send_header( 'X-RateLimit-Limit', $rate_limit_limit );
+			$server->send_header( 'RateLimit-Limit', $rate_limit_limit );
 
 			if ( false !== $retry ) {
 				$server->send_header( 'Retry-After', $retry );
-				$server->send_header( 'X-RateLimit-Remaining', 0 );
-				$server->send_header( 'X-RateLimit-Reset', time() + $retry );
+				$server->send_header( 'RateLimit-Remaining', 0 );
+				$server->send_header( 'RateLimit-Reset', time() + $retry );
 
 				return new \WP_Error(
 					'rate_limit_exceeded',
@@ -61,8 +61,8 @@ class Authentication {
 
 			// 25 requests per 10 seconds.
 			$rate_limit = RateLimits::update_rate_limit( $action_id, $rate_limit_seconds, $rate_limit_limit );
-			$server->send_header( 'X-RateLimit-Remaining', $rate_limit->remaining );
-			$server->send_header( 'X-RateLimit-Reset', $rate_limit->reset );
+			$server->send_header( 'RateLimit-Remaining', $rate_limit->remaining );
+			$server->send_header( 'RateLimit-Reset', $rate_limit->reset );
 		}
 
 		// Pass through errors from other authentication methods used before this one.
