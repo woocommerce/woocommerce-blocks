@@ -20,7 +20,7 @@ jobs:
                   npm ci --no-optional
                   npm run build:check-assets
             - name: Upload Artifact
-              uses: actions/upload-artifact@v2
+              uses: actions/upload-artifact@v3
               with:
                   name: assets-list
                   path: ./build/assets.json
@@ -40,7 +40,7 @@ jobs:
                   npm ci --no-optional
                   npm run build:check-assets
             - name: Download assets (trunk)
-              uses: actions/download-artifact@v2
+              uses: actions/download-artifact@v3
               with:
                   name: assets-list
                   path: assets-list
