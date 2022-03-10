@@ -45,16 +45,16 @@ jobs:
 
     PHPUnitTests:
         name: PHP Unit Tests
+        needs: Setup
         runs-on: ubuntu-latest
+
         steps:
             - uses: actions/checkout@v2
-
             - name: Setup node version and npm cache
               uses: actions/setup-node@v2
               with:
                   node-version-file: '.nvmrc'
                   cache: 'npm'
-
             - name: Npm install #build is not needed
               run: |
                   npm ci
@@ -77,7 +77,6 @@ jobs:
     JSUnitTests:
         name: JS Unit Tests
         needs: Setup
-
         runs-on: ubuntu-latest
 
         steps:
