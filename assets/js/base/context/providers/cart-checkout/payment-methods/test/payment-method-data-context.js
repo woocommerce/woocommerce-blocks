@@ -130,7 +130,7 @@ describe( 'Testing Payment Method Data Context Provider', () => {
 			registerMockPaymentMethods( false );
 
 			fetchMock.mockResponse( ( req ) => {
-				if ( req.url.match( /wc\/store\/cart/ ) ) {
+				if ( req.url.match( /wc\/store\/v1\/cart/ ) ) {
 					return Promise.resolve( JSON.stringify( previewCart ) );
 				}
 				return Promise.resolve( '' );
@@ -208,9 +208,6 @@ describe( 'Testing Payment Method Data Context Provider', () => {
 			);
 			expect( activePaymentMethod ).not.toBeNull();
 		} );
-
-		// ["`select` control in `@wordpress/data-controls` is deprecated. Please use built-in `resolveSelect` control in `@wordpress/data` instead."]
-		expect( console ).toHaveWarned();
 	} );
 } );
 
@@ -220,7 +217,7 @@ describe( 'Testing Payment Method Data Context Provider with saved cards turned 
 			registerMockPaymentMethods( true );
 
 			fetchMock.mockResponse( ( req ) => {
-				if ( req.url.match( /wc\/store\/cart/ ) ) {
+				if ( req.url.match( /wc\/store\/v1\/cart/ ) ) {
 					return Promise.resolve( JSON.stringify( previewCart ) );
 				}
 				return Promise.resolve( '' );

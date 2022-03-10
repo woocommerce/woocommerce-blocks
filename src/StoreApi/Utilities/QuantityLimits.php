@@ -1,16 +1,13 @@
 <?php
-namespace Automattic\WooCommerce\Blocks\StoreApi\Utilities;
+namespace Automattic\WooCommerce\StoreApi\Utilities;
 
 use Automattic\WooCommerce\Checkout\Helpers\ReserveStock;
-use Automattic\WooCommerce\Blocks\StoreApi\Utilities\DraftOrderTrait;
+use Automattic\WooCommerce\StoreApi\Utilities\DraftOrderTrait;
 
 /**
  * QuantityLimits class.
  *
  * Returns limits for products and cart items when using the StoreAPI and supporting classes.
- *
- * @internal This API is used internally by Blocks--it is still in flux and may be subject to revisions.
- * @since 2.5.0
  */
 final class QuantityLimits {
 	use DraftOrderTrait;
@@ -93,7 +90,7 @@ final class QuantityLimits {
 		if ( ! $limits['editable'] ) {
 			return new \WP_Error(
 				'readonly_quantity',
-				__( 'This item is already in the cart and it\'s quantity cannot be edited', 'woo-gutenberg-products-block' )
+				__( 'This item is already in the cart and its quantity cannot be edited', 'woo-gutenberg-products-block' )
 			);
 		}
 

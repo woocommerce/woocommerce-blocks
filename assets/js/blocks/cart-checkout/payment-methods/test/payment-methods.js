@@ -70,7 +70,7 @@ const resetMockPaymentMethods = () => {
 describe( 'PaymentMethods', () => {
 	beforeEach( () => {
 		fetchMock.mockResponse( ( req ) => {
-			if ( req.url.match( /wc\/store\/cart/ ) ) {
+			if ( req.url.match( /wc\/store\/v1\/cart/ ) ) {
 				return Promise.resolve( JSON.stringify( previewCart ) );
 			}
 			return Promise.resolve( '' );
@@ -99,8 +99,6 @@ describe( 'PaymentMethods', () => {
 			// creates an extra `div` with the notice contents used for a11y.
 			expect( noPaymentMethods.length ).toBeGreaterThanOrEqual( 1 );
 		} );
-		// ["`select` control in `@wordpress/data-controls` is deprecated. Please use built-in `resolveSelect` control in `@wordpress/data` instead."]
-		expect( console ).toHaveWarned();
 	} );
 
 	test( 'selecting new payment method', async () => {

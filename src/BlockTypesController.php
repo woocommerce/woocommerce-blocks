@@ -62,9 +62,6 @@ final class BlockTypesController {
 			$block_type_instance = new $block_type_class( $this->asset_api, $this->asset_data_registry, new IntegrationRegistry() );
 		}
 
-		foreach ( self::get_atomic_blocks() as $block_type ) {
-			$block_type_instance = new AtomicBlock( $this->asset_api, $this->asset_data_registry, new IntegrationRegistry(), $block_type );
-		}
 	}
 
 	/**
@@ -153,7 +150,6 @@ final class BlockTypesController {
 	protected function get_block_types() {
 		global $wp_version, $pagenow;
 
-		// @todo Add a comment why some atomic blocks are included in this array.
 		$block_types = [
 			'AllReviews',
 			'FeaturedCategory',
@@ -176,11 +172,18 @@ final class BlockTypesController {
 			'StockFilter',
 			'ActiveFilters',
 			'LegacyTemplate',
-			'ProductTitle',
-			'ProductSummary',
-			'ProductStockIndicator',
+			'ProductAddToCart',
+			'ProductButton',
+			'ProductCategoryList',
+			'ProductImage',
+			'ProductPrice',
 			'ProductRating',
 			'ProductSaleBadge',
+			'ProductSKU',
+			'ProductStockIndicator',
+			'ProductSummary',
+			'ProductTagList',
+			'ProductTitle',
 		];
 
 		if ( Package::feature()->is_feature_plugin_build() ) {
@@ -225,20 +228,4 @@ final class BlockTypesController {
 		return $block_types;
 	}
 
-	/**
-	 * Get atomic blocks types.
-	 *
-	 * @return array
-	 */
-	protected function get_atomic_blocks() {
-		return [
-			'product-button',
-			'product-image',
-			'product-price',
-			'product-sku',
-			'product-category-list',
-			'product-tag-list',
-			'product-add-to-cart',
-		];
-	}
 }

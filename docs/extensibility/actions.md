@@ -15,26 +15,26 @@
  - [woocommerce_before_main_content](#woocommerce_before_main_content)
  - [woocommerce_before_shop_loop](#woocommerce_before_shop_loop)
  - [woocommerce_blocks_cart_enqueue_data](#woocommerce_blocks_cart_enqueue_data)
- - [woocommerce_blocks_cart_update_customer_from_request](#woocommerce_blocks_cart_update_customer_from_request)
- - [woocommerce_blocks_cart_update_order_from_request](#woocommerce_blocks_cart_update_order_from_request)
  - [woocommerce_blocks_checkout_enqueue_data](#woocommerce_blocks_checkout_enqueue_data)
- - [woocommerce_blocks_checkout_order_processed](#woocommerce_blocks_checkout_order_processed)
- - [woocommerce_blocks_checkout_update_order_from_request](#woocommerce_blocks_checkout_update_order_from_request)
- - [woocommerce_blocks_checkout_update_order_meta](#woocommerce_blocks_checkout_update_order_meta)
  - [woocommerce_blocks_enqueue_cart_block_scripts_after](#woocommerce_blocks_enqueue_cart_block_scripts_after)
  - [woocommerce_blocks_enqueue_cart_block_scripts_before](#woocommerce_blocks_enqueue_cart_block_scripts_before)
  - [woocommerce_blocks_enqueue_checkout_block_scripts_after](#woocommerce_blocks_enqueue_checkout_block_scripts_after)
  - [woocommerce_blocks_enqueue_checkout_block_scripts_before](#woocommerce_blocks_enqueue_checkout_block_scripts_before)
- - [woocommerce_blocks_loaded](#woocommerce_blocks_loaded)
  - [woocommerce_blocks_{$this->registry_identifier}_registration](#woocommerce_blocks_-this--registry_identifier-_registration)
- - [woocommerce_check_cart_items](#woocommerce_check_cart_items)
+ - [woocommerce_check_cart_items](#-woocommerce_check_cart_items)
  - [woocommerce_created_customer](#woocommerce_created_customer)
  - [woocommerce_no_products_found](#woocommerce_no_products_found)
  - [woocommerce_register_post](#woocommerce_register_post)
  - [woocommerce_rest_checkout_process_payment_with_context](#woocommerce_rest_checkout_process_payment_with_context)
  - [woocommerce_shop_loop](#woocommerce_shop_loop)
- - [wooocommerce_store_api_validate_add_to_cart](#wooocommerce_store_api_validate_add_to_cart)
- - [wooocommerce_store_api_validate_cart_item](#wooocommerce_store_api_validate_cart_item)
+ - [woocommerce_store_api_cart_errors](#woocommerce_store_api_cart_errors)
+ - [woocommerce_store_api_cart_update_customer_from_request](#woocommerce_store_api_cart_update_customer_from_request)
+ - [woocommerce_store_api_cart_update_order_from_request](#woocommerce_store_api_cart_update_order_from_request)
+ - [woocommerce_store_api_checkout_order_processed](#woocommerce_store_api_checkout_order_processed)
+ - [woocommerce_store_api_checkout_update_order_from_request](#woocommerce_store_api_checkout_update_order_from_request)
+ - [woocommerce_store_api_checkout_update_order_meta](#woocommerce_store_api_checkout_update_order_meta)
+ - [woocommerce_store_api_validate_add_to_cart](#woocommerce_store_api_validate_add_to_cart)
+ - [woocommerce_store_api_validate_cart_item](#woocommerce_store_api_validate_cart_item)
 
 ---
 
@@ -46,6 +46,9 @@ Fires when an item is added to the cart.
 ```php
 do_action( 'woocommerce_add_to_cart', string $cart_id, integer $product_id, integer $request_quantity, integer $variation_id, array $variation, array $cart_item_data )
 ```
+
+
+**Note: Matches action name in WooCommerce core.**
 
 ### Description
 
@@ -124,6 +127,9 @@ Fires after a coupon has been applied to the cart.
 ```php
 do_action( 'woocommerce_applied_coupon', string $coupon_code )
 ```
+
+
+**Note: Matches action name in WooCommerce core.**
 
 ### Parameters
 
@@ -228,53 +234,6 @@ do_action( 'woocommerce_blocks_cart_enqueue_data' )
 
 ---
 
-## woocommerce_blocks_cart_update_customer_from_request
-
-
-Fires when the Checkout Block/Store API updates a customer from the API request data.
-
-```php
-do_action( 'woocommerce_blocks_cart_update_customer_from_request', \WC_Customer $customer, \WP_REST_Request $request )
-```
-
-### Parameters
-
-| Argument | Type | Description |
-| -------- | ---- | ----------- |
-| $customer | \WC_Customer | Customer object. |
-| $request | \WP_REST_Request | Full details about the request. |
-
-### Source
-
-
- - [StoreApi/Routes/CartUpdateCustomer.php](../src/StoreApi/Routes/CartUpdateCustomer.php)
-
----
-
-## woocommerce_blocks_cart_update_order_from_request
-
-
-Fires when the order is synced with cart data from a cart route.
-
-```php
-do_action( 'woocommerce_blocks_cart_update_order_from_request', \WC_Order $draft_order, \WC_Customer $customer, \WP_REST_Request $request )
-```
-
-### Parameters
-
-| Argument | Type | Description |
-| -------- | ---- | ----------- |
-| $draft_order | \WC_Order | Order object. |
-| $customer | \WC_Customer | Customer object. |
-| $request | \WP_REST_Request | Full details about the request. |
-
-### Source
-
-
- - [StoreApi/Routes/AbstractCartRoute.php](../src/StoreApi/Routes/AbstractCartRoute.php)
-
----
-
 ## woocommerce_blocks_checkout_enqueue_data
 
 
@@ -288,108 +247,6 @@ do_action( 'woocommerce_blocks_checkout_enqueue_data' )
 
 
  - [BlockTypes/Checkout.php](../src/BlockTypes/Checkout.php)
-
----
-
-## woocommerce_blocks_checkout_order_processed
-
-
-Fires before an order is processed by the Checkout Block/Store API.
-
-```php
-do_action( 'woocommerce_blocks_checkout_order_processed', \WC_Order $order )
-```
-
-### Description
-
-<p>This hook informs extensions that $order has completed processing and is ready for payment.</p> <p>This is similar to existing core hook woocommerce_checkout_order_processed. We're using a new action:</p> <ul> <li>To keep the interface focused (only pass $order, not passing request data).</li> <li>This also explicitly indicates these orders are from checkout block/StoreAPI.</li> </ul>
-
-### Parameters
-
-| Argument | Type | Description |
-| -------- | ---- | ----------- |
-| $order | \WC_Order | Order object. |
-
-### Example
-
-```php
-// The action callback function.
-function my_function_callback( $order ) {
-  // Do something with the $order object.
-  $order->save();
-}
-
-add_action( 'woocommerce_blocks_checkout_order_processed', 'my_function_callback', 10 );
-```
-
-
-### See
-
-
- - https://github.com/woocommerce/woocommerce-gutenberg-products-block/pull/3238
-
-### Source
-
-
- - [StoreApi/Routes/Checkout.php](../src/StoreApi/Routes/Checkout.php)
-
----
-
-## woocommerce_blocks_checkout_update_order_from_request
-
-
-Fires when the Checkout Block/Store API updates an order's from the API request data.
-
-```php
-do_action( 'woocommerce_blocks_checkout_update_order_from_request', \WC_Order $order, \WP_REST_Request $request )
-```
-
-### Description
-
-<p>This hook gives extensions the chance to update orders based on the data in the request. This can be used in conjunction with the ExtendRestAPI class to post custom data and then process it.</p>
-
-### Parameters
-
-| Argument | Type | Description |
-| -------- | ---- | ----------- |
-| $order | \WC_Order | Order object. |
-| $request | \WP_REST_Request | Full details about the request. |
-
-### Source
-
-
- - [StoreApi/Routes/Checkout.php](../src/StoreApi/Routes/Checkout.php)
-
----
-
-## woocommerce_blocks_checkout_update_order_meta
-
-
-Fires when the Checkout Block/Store API updates an order's meta data.
-
-```php
-do_action( 'woocommerce_blocks_checkout_update_order_meta', \WC_Order $order )
-```
-
-### Description
-
-<p>This hook gives extensions the chance to add or update meta data on the $order.</p> <p>This is similar to existing core hook woocommerce_checkout_update_order_meta. We're using a new action:</p> <ul> <li>To keep the interface focused (only pass $order, not passing request data).</li> <li>This also explicitly indicates these orders are from checkout block/StoreAPI.</li> </ul>
-
-### Parameters
-
-| Argument | Type | Description |
-| -------- | ---- | ----------- |
-| $order | \WC_Order | Order object. |
-
-### See
-
-
- - https://github.com/woocommerce/woocommerce-gutenberg-products-block/pull/3686
-
-### Source
-
-
- - [StoreApi/Routes/Checkout.php](../src/StoreApi/Routes/Checkout.php)
 
 ---
 
@@ -457,26 +314,6 @@ do_action( 'woocommerce_blocks_enqueue_checkout_block_scripts_before' )
 
 ---
 
-## woocommerce_blocks_loaded
-
-
-Fires after WooCommerce Blocks plugin has loaded.
-
-```php
-do_action( 'woocommerce_blocks_loaded' )
-```
-
-### Description
-
-<p>This hook is intended to be used as a safe event hook for when the plugin has been loaded, and all dependency requirements have been met.</p>
-
-### Source
-
-
- - [Domain/Bootstrap.php](../src/Domain/Bootstrap.php)
-
----
-
 ## woocommerce_blocks_{$this->registry_identifier}_registration
 
 
@@ -503,7 +340,7 @@ do_action( 'woocommerce_blocks_{$this->registry_identifier}_registration', \Auto
 
 ---
 
-## woocommerce_check_cart_items
+## ~~woocommerce_check_cart_items~~
 
 
 Fires when cart items are being validated.
@@ -512,9 +349,15 @@ Fires when cart items are being validated.
 do_action( 'woocommerce_check_cart_items' )
 ```
 
+
+**Deprecated: This hook is deprecated and will be removed**
+
+
+**Note: Matches action name in WooCommerce core.**
+
 ### Description
 
-<p>Allow 3rd parties to validate cart items. This is a legacy hook from Woo core. This filter will be deprecated because it encourages usage of wc_add_notice. For the API we need to capture notices and convert to exceptions instead.</p>
+<p>Allow 3rd parties to validate cart items. This is a legacy hook from Woo core. This filter will be deprecated because it encourages usage of wc_add_notice. For the API we need to capture notices and convert to wp errors instead.</p>
 
 ### Source
 
@@ -532,6 +375,9 @@ Fires after a customer account has been registered.
 do_action( 'woocommerce_created_customer', integer $customer_id, array $new_customer_data, string $password_generated )
 ```
 
+
+**Note: Matches filter name in WooCommerce core.**
+
 ### Description
 
 <p>This hook fires after customer accounts are created and passes the customer data.</p>
@@ -547,7 +393,7 @@ do_action( 'woocommerce_created_customer', integer $customer_id, array $new_cust
 ### Source
 
 
- - [Domain/Services/CreateAccount.php](../src/Domain/Services/CreateAccount.php)
+ - [StoreApi/Routes/V1/Checkout.php](../src/StoreApi/Routes/V1/Checkout.php)
 
 ---
 
@@ -581,6 +427,9 @@ Fires before a customer account is registered.
 do_action( 'woocommerce_register_post', string $username, string $user_email, \WP_Error $errors )
 ```
 
+
+**Note: Matches filter name in WooCommerce core.**
+
 ### Description
 
 <p>This hook fires before customer accounts are created and passes the form data (username, email) and an array of errors.</p> <p>This could be used to add extra validation logic and append errors to the array.</p>
@@ -596,7 +445,7 @@ do_action( 'woocommerce_register_post', string $username, string $user_email, \W
 ### Source
 
 
- - [Domain/Services/CreateAccount.php](../src/Domain/Services/CreateAccount.php)
+ - [StoreApi/Routes/V1/Checkout.php](../src/StoreApi/Routes/V1/Checkout.php)
 
 ---
 
@@ -606,15 +455,15 @@ do_action( 'woocommerce_register_post', string $username, string $user_email, \W
 Process payment with context.
 
 ```php
-do_action_ref_array( 'woocommerce_rest_checkout_process_payment_with_context', [ \Automattic\WooCommerce\Blocks\Payments\PaymentContext $context, \Automattic\WooCommerce\Blocks\Payments\PaymentResult $payment_result ] )
+do_action_ref_array( 'woocommerce_rest_checkout_process_payment_with_context', [ \Automattic\WooCommerce\StoreApi\Payments\PaymentContext $context, \Automattic\WooCommerce\StoreApi\Payments\PaymentResult $payment_result ] )
 ```
 
 ### Parameters
 
 | Argument | Type | Description |
 | -------- | ---- | ----------- |
-| $context | \Automattic\WooCommerce\Blocks\Payments\PaymentContext | Holds context for the payment, including order ID and payment method. |
-| $payment_result | \Automattic\WooCommerce\Blocks\Payments\PaymentResult | Result object for the transaction. |
+| $context | \Automattic\WooCommerce\StoreApi\Payments\PaymentContext | Holds context for the payment, including order ID and payment method. |
+| $payment_result | \Automattic\WooCommerce\StoreApi\Payments\PaymentResult | Result object for the transaction. |
 
 ### Exceptions
 
@@ -624,7 +473,7 @@ do_action_ref_array( 'woocommerce_rest_checkout_process_payment_with_context', [
 ### Source
 
 
- - [StoreApi/Routes/Checkout.php](../src/StoreApi/Routes/Checkout.php)
+ - [StoreApi/Routes/V1/Checkout.php](../src/StoreApi/Routes/V1/Checkout.php)
 
 ---
 
@@ -644,13 +493,205 @@ do_action( 'woocommerce_shop_loop' )
 
 ---
 
-## wooocommerce_store_api_validate_add_to_cart
+## woocommerce_store_api_cart_errors
+
+
+Fires an action to validate the cart.
+
+```php
+do_action( 'woocommerce_store_api_cart_errors', \WP_Error $errors, \WC_Cart $cart )
+```
+
+### Description
+
+<p>Functions hooking into this should add custom errors using the provided WP_Error instance.</p>
+
+### Parameters
+
+| Argument | Type | Description |
+| -------- | ---- | ----------- |
+| $errors | \WP_Error | WP_Error object. |
+| $cart | \WC_Cart | Cart object. |
+
+### Example
+
+```php
+// The action callback function.
+function my_function_callback( $errors, $cart ) {
+
+  // Validate the $cart object and add errors. For example, to create an error if the cart contains more than 10 items:
+  if ( $cart->get_cart_contents_count() > 10 ) {
+    $errors->add( 'my_error_code', 'Too many cart items!' );
+  }
+}
+
+add_action( 'woocommerce_store_api_cart_errors', 'my_function_callback', 10 );
+```
+
+
+### Source
+
+
+ - [StoreApi/Utilities/CartController.php](../src/StoreApi/Utilities/CartController.php)
+
+---
+
+## woocommerce_store_api_cart_update_customer_from_request
+
+
+Fires when the Checkout Block/Store API updates a customer from the API request data.
+
+```php
+do_action( 'woocommerce_store_api_cart_update_customer_from_request', \WC_Customer $customer, \WP_REST_Request $request )
+```
+
+### Parameters
+
+| Argument | Type | Description |
+| -------- | ---- | ----------- |
+| $customer | \WC_Customer | Customer object. |
+| $request | \WP_REST_Request | Full details about the request. |
+
+### Source
+
+
+ - [StoreApi/Routes/V1/CartUpdateCustomer.php](../src/StoreApi/Routes/V1/CartUpdateCustomer.php)
+
+---
+
+## woocommerce_store_api_cart_update_order_from_request
+
+
+Fires when the order is synced with cart data from a cart route.
+
+```php
+do_action( 'woocommerce_store_api_cart_update_order_from_request', \WC_Order $draft_order, \WC_Customer $customer, \WP_REST_Request $request )
+```
+
+### Parameters
+
+| Argument | Type | Description |
+| -------- | ---- | ----------- |
+| $draft_order | \WC_Order | Order object. |
+| $customer | \WC_Customer | Customer object. |
+| $request | \WP_REST_Request | Full details about the request. |
+
+### Source
+
+
+ - [StoreApi/Routes/V1/AbstractCartRoute.php](../src/StoreApi/Routes/V1/AbstractCartRoute.php)
+
+---
+
+## woocommerce_store_api_checkout_order_processed
+
+
+Fires before an order is processed by the Checkout Block/Store API.
+
+```php
+do_action( 'woocommerce_store_api_checkout_order_processed', \WC_Order $order )
+```
+
+### Description
+
+<p>This hook informs extensions that $order has completed processing and is ready for payment.</p> <p>This is similar to existing core hook woocommerce_checkout_order_processed. We're using a new action:</p> <ul> <li>To keep the interface focused (only pass $order, not passing request data).</li> <li>This also explicitly indicates these orders are from checkout block/StoreAPI.</li> </ul>
+
+### Parameters
+
+| Argument | Type | Description |
+| -------- | ---- | ----------- |
+| $order | \WC_Order | Order object. |
+
+### Example
+
+```php
+// The action callback function.
+function my_function_callback( $order ) {
+  // Do something with the $order object.
+  $order->save();
+}
+
+add_action( 'woocommerce_blocks_checkout_order_processed', 'my_function_callback', 10 );
+```
+
+
+### See
+
+
+ - https://github.com/woocommerce/woocommerce-gutenberg-products-block/pull/3238
+
+### Source
+
+
+ - [StoreApi/Routes/V1/Checkout.php](../src/StoreApi/Routes/V1/Checkout.php)
+
+---
+
+## woocommerce_store_api_checkout_update_order_from_request
+
+
+Fires when the Checkout Block/Store API updates an order's from the API request data.
+
+```php
+do_action( 'woocommerce_store_api_checkout_update_order_from_request', \WC_Order $order, \WP_REST_Request $request )
+```
+
+### Description
+
+<p>This hook gives extensions the chance to update orders based on the data in the request. This can be used in conjunction with the ExtendSchema class to post custom data and then process it.</p>
+
+### Parameters
+
+| Argument | Type | Description |
+| -------- | ---- | ----------- |
+| $order | \WC_Order | Order object. |
+| $request | \WP_REST_Request | Full details about the request. |
+
+### Source
+
+
+ - [StoreApi/Routes/V1/Checkout.php](../src/StoreApi/Routes/V1/Checkout.php)
+
+---
+
+## woocommerce_store_api_checkout_update_order_meta
+
+
+Fires when the Checkout Block/Store API updates an order's meta data.
+
+```php
+do_action( 'woocommerce_store_api_checkout_update_order_meta', \WC_Order $order )
+```
+
+### Description
+
+<p>This hook gives extensions the chance to add or update meta data on the $order. Throwing an exception from a callback attached to this action will make the Checkout Block render in a warning state, effectively preventing checkout.</p> <p>This is similar to existing core hook woocommerce_checkout_update_order_meta. We're using a new action:</p> <ul> <li>To keep the interface focused (only pass $order, not passing request data).</li> <li>This also explicitly indicates these orders are from checkout block/StoreAPI.</li> </ul>
+
+### Parameters
+
+| Argument | Type | Description |
+| -------- | ---- | ----------- |
+| $order | \WC_Order | Order object. |
+
+### See
+
+
+ - https://github.com/woocommerce/woocommerce-gutenberg-products-block/pull/3686
+
+### Source
+
+
+ - [StoreApi/Routes/V1/Checkout.php](../src/StoreApi/Routes/V1/Checkout.php)
+
+---
+
+## woocommerce_store_api_validate_add_to_cart
 
 
 Fires during validation when adding an item to the cart via the Store API.
 
 ```php
-do_action( 'wooocommerce_store_api_validate_add_to_cart', \WC_Product $product, array $request )
+do_action( 'woocommerce_store_api_validate_add_to_cart', \WC_Product $product, array $request )
 ```
 
 ### Description
@@ -671,13 +712,13 @@ do_action( 'wooocommerce_store_api_validate_add_to_cart', \WC_Product $product, 
 
 ---
 
-## wooocommerce_store_api_validate_cart_item
+## woocommerce_store_api_validate_cart_item
 
 
 Fire action to validate add to cart. Functions hooking into this should throw an \Exception to prevent add to cart from occurring.
 
 ```php
-do_action( 'wooocommerce_store_api_validate_cart_item', \WC_Product $product, array $cart_item )
+do_action( 'woocommerce_store_api_validate_cart_item', \WC_Product $product, array $cart_item )
 ```
 
 ### Parameters

@@ -1,7 +1,8 @@
 /**
  * External dependencies
  */
-import { select, apiFetch } from '@wordpress/data-controls';
+import { apiFetch } from '@wordpress/data-controls';
+import { controls } from '@wordpress/data';
 import { CartResponse, Cart } from '@woocommerce/types';
 
 /**
@@ -15,7 +16,7 @@ import { STORE_KEY, CART_API_ERROR } from './constants';
  */
 export function* getCartData(): Generator< unknown, void, CartResponse > {
 	const cartData = yield apiFetch( {
-		path: '/wc/store/cart',
+		path: '/wc/store/v1/cart',
 		method: 'GET',
 		cache: 'no-store',
 	} );
@@ -32,5 +33,5 @@ export function* getCartData(): Generator< unknown, void, CartResponse > {
  * Resolver for retrieving cart totals.
  */
 export function* getCartTotals(): Generator< unknown, void, Cart > {
-	yield select( STORE_KEY, 'getCartData' );
+	yield controls.resolveSelect( STORE_KEY, 'getCartData' );
 }

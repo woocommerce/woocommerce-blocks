@@ -1,20 +1,17 @@
 <?php
-namespace Automattic\WooCommerce\Blocks\StoreApi\Utilities;
+namespace Automattic\WooCommerce\StoreApi\Utilities;
 
-use Automattic\WooCommerce\Blocks\StoreApi\Utilities\ProductQuery;
+use Automattic\WooCommerce\StoreApi\Utilities\ProductQuery;
 
 /**
  * Product Query filters class.
- *
- * @internal This API is used internally by Blocks--it is still in flux and may be subject to revisions.
- * @since 2.5.0
  */
 class ProductQueryFilters {
 	/**
 	 * Get filtered min price for current products.
 	 *
 	 * @param \WP_REST_Request $request The request object.
-	 * @return array
+	 * @return object
 	 */
 	public function get_filtered_price( $request ) {
 		global $wpdb;

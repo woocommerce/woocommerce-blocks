@@ -1,19 +1,10 @@
 <?php
-namespace Automattic\WooCommerce\Blocks\StoreApi\Routes;
+namespace Automattic\WooCommerce\StoreApi\Routes;
 
 /**
  * RouteInterface.
- *
- * @internal This API is used internally by Blocks--it is still in flux and may be subject to revisions.
  */
 interface RouteInterface {
-	/**
-	 * Get the namespace for this route.
-	 *
-	 * @return string
-	 */
-	public function get_namespace();
-
 	/**
 	 * Get the path of this REST route.
 	 *

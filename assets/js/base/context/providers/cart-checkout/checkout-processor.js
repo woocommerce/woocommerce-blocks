@@ -189,13 +189,13 @@ const CheckoutProcessor = () => {
 				currentShippingAddress.current
 			),
 			customer_note: orderNotes,
-			should_create_account: shouldCreateAccount,
+			create_account: shouldCreateAccount,
 			...paymentData,
 			extensions: { ...extensionData },
 		};
 
 		triggerFetch( {
-			path: '/wc/store/checkout',
+			path: '/wc/store/v1/checkout',
 			method: 'POST',
 			data,
 			cache: 'no-store',

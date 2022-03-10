@@ -32,7 +32,7 @@ const MiniCartBlock = ( props ) => (
 
 const mockEmptyCart = () => {
 	fetchMock.mockResponse( ( req ) => {
-		if ( req.url.match( /wc\/store\/cart/ ) ) {
+		if ( req.url.match( /wc\/store\/v1\/cart/ ) ) {
 			return Promise.resolve(
 				JSON.stringify( defaultCartState.cartData )
 			);
@@ -43,7 +43,7 @@ const mockEmptyCart = () => {
 
 const mockFullCart = () => {
 	fetchMock.mockResponse( ( req ) => {
-		if ( req.url.match( /wc\/store\/cart/ ) ) {
+		if ( req.url.match( /wc\/store\/v1\/cart/ ) ) {
 			return Promise.resolve( JSON.stringify( previewCart ) );
 		}
 		return Promise.resolve( '' );
@@ -72,8 +72,6 @@ describe( 'Testing Mini Cart', () => {
 		} );
 
 		expect( fetchMock ).toHaveBeenCalledTimes( 1 );
-		// ["`select` control in `@wordpress/data-controls` is deprecated. Please use built-in `resolveSelect` control in `@wordpress/data` instead."]
-		expect( console ).toHaveWarned();
 	} );
 
 	it( 'renders empty cart if there are no items in the cart', async () => {

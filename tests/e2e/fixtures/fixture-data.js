@@ -127,6 +127,17 @@ const Categories = () => [
 ];
 
 /**
+ * Product tags fixture data, using the create batch endpoint
+ *
+ * @see {@link https://woocommerce.github.io/woocommerce-rest-api-docs/#batch-update-product-tags|Batch update product tags}
+ */
+const Tags = () => [
+	{
+		name: 'Newest',
+	},
+];
+
+/**
  * Product fixture data, using the create batch endpoint
  *
  * @see {@link https://woocommerce.github.io/woocommerce-rest-api-docs/#batch-update-products|Batch update products}
@@ -173,6 +184,7 @@ const Products = () => [
 				options: [ '128gb' ],
 			},
 		],
+		tags: [ 'Newest' ],
 	},
 	{
 		name: '32GB USB Stick',
@@ -215,6 +227,7 @@ const Products = () => [
 			},
 		],
 		categories: [ 'Music' ],
+		tags: [ 'Newest' ],
 	},
 ];
 
@@ -331,6 +344,30 @@ const Shipping = () => [
 			},
 		],
 	},
+	{
+		name: 'US',
+		locations: [
+			{
+				code: 'US',
+			},
+		],
+		methods: [
+			{
+				method_id: 'flat_rate',
+				settings: {
+					title: 'Normal Shipping',
+					cost: '20.00',
+				},
+			},
+			{
+				method_id: 'free_shipping',
+				settings: {
+					title: 'Free Shipping',
+					cost: '00.00',
+				},
+			},
+		],
+	},
 ];
 
 /**
@@ -370,5 +407,6 @@ module.exports = {
 	Settings,
 	PageSettings,
 	Shipping,
+	Tags,
 	Taxes,
 };
