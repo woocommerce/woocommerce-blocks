@@ -170,7 +170,12 @@ abstract class AbstractCartRoute extends AbstractRoute {
 	 * @return \WP_Error|boolean
 	 */
 	protected function check_nonce( \WP_REST_Request $request ) {
-		$nonce = $request->get_header( 'Nonce' );
+		if ( $request->get_header( 'X-WC-Store-API-Nonce' ) ) {
+			rest_handle_deprecated_argument( 'X-WC-Store-API-Nonce', 'Use the "Nonce" Header instead', '7.2.0' );
+			$nonce = $request->get_header( 'X-WC-Store-API-Nonce' );
+		} else {
+			$nonce = $request->get_header( 'Nonce' );
+		}
 
 		/**
 		 * Filters the Store API nonce check.
