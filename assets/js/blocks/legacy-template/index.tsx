@@ -69,7 +69,7 @@ const Edit = ( { attributes }: Props ) => {
 	);
 };
 
-registerBlockType( 'woocommerce/classic-template', {
+registerBlockType( 'woocommerce/legacy-template', {
 	title: __( 'WooCommerce Classic Template', 'woo-gutenberg-products-block' ),
 	icon: (
 		<Icon icon={ box } className="wc-block-editor-components-block-icon" />

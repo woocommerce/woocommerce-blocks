@@ -52,7 +52,7 @@ function defaultTemplateProps( templateTitle ) {
 
 function classicBlockSelector( title ) {
 	return `${ blockSelector(
-		'woocommerce/classic-template'
+		'woocommerce/legacy-template'
 	) }[data-title="${ title }"]`;
 }
 
@@ -63,7 +63,7 @@ const BLOCK_DATA = {
 			template: 'archive-product',
 			title: 'WooCommerce Product Grid Block',
 		},
-		name: 'woocommerce/classic-template',
+		name: 'woocommerce/legacy-template',
 	},
 	'single-product': {
 		attributes: {
@@ -71,7 +71,7 @@ const BLOCK_DATA = {
 			template: 'single-product',
 			title: 'WooCommerce Single Product Block',
 		},
-		name: 'woocommerce/classic-template',
+		name: 'woocommerce/legacy-template',
 	},
 	'taxonomy-product_cat': {
 		attributes: {
@@ -79,7 +79,7 @@ const BLOCK_DATA = {
 			template: 'taxonomy-product_cat',
 			title: 'WooCommerce Product Taxonomy Block',
 		},
-		name: 'woocommerce/classic-template',
+		name: 'woocommerce/legacy-template',
 	},
 	'taxonomy-product_tag': {
 		attributes: {
@@ -87,7 +87,7 @@ const BLOCK_DATA = {
 			template: 'taxonomy-product_tag',
 			title: 'WooCommerce Product Tag Block',
 		},
-		name: 'woocommerce/classic-template',
+		name: 'woocommerce/legacy-template',
 	},
 };
 
