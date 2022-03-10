@@ -177,7 +177,8 @@ abstract class AbstractCartRoute extends AbstractRoute {
 	 */
 	protected function check_nonce( \WP_REST_Request $request ) {
 		if ( $request->get_header( 'X-WC-Store-API-Nonce' ) ) {
-			rest_handle_deprecated_argument( 'X-WC-Store-API-Nonce', 'Use the "Nonce" Header instead', '7.2.0' );
+			// @todo Blocks 7.5.0: Remove handling and sendinf of deprecated X-WC-Store-API-Nonce Header.
+			rest_handle_deprecated_argument( 'X-WC-Store-API-Nonce', 'Use the "Nonce" Header instead. This header will be removed after Blocks release 7.5', '7.2.0' );
 			$nonce = $request->get_header( 'X-WC-Store-API-Nonce' );
 		} else {
 			$nonce = $request->get_header( 'Nonce' );
