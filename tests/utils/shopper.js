@@ -200,11 +200,11 @@ export const shopper = {
 		fillBillingDetails: async ( customerBillingDetails ) => {
 			await expect( page ).toFill( '#billing-first_name', customerBillingDetails.firstname );
 			await expect( page ).toFill( '#billing-last_name', customerBillingDetails.lastname );
-			await expect( page ).toFill( '#shipping-country input', customerBillingDetails.country );
+			await expect( page ).toFill( '#billing-country input', customerBillingDetails.country );
 			await expect( page ).toFill( '#billing-address_1', customerBillingDetails.addressfirstline );
 			await expect( page ).toFill( '#billing-address_2', customerBillingDetails.addresssecondline );
 			await expect( page ).toFill( '#billing-city', customerBillingDetails.city );
-			await expect( page ).toFill( '#shipping-state input', customerBillingDetails.state );
+			await expect( page ).toFill( '#billing-state input', customerBillingDetails.state );
 			await expect( page ).toFill( '#billing-postcode', customerBillingDetails.postcode );
 			await expect( page ).toFill( '#phone', customerBillingDetails.phone );
 			await expect( page ).toFill( '#email', customerBillingDetails.email );
