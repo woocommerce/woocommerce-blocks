@@ -18,7 +18,7 @@ jobs:
                   cache: 'npm'
             - name: Npm install and build
               run: |
-                  npm ci
+                  npm ci --no-optional
                   FORCE_REDUCED_MOTION=true npm run build:e2e-test
 
             - name: blocks.ini setup
@@ -76,7 +76,7 @@ jobs:
                   cache: 'npm'
             - name: Npm install and build
               run: |
-                  npm ci
+                  npm ci --no-optional
                   FORCE_REDUCED_MOTION=true npm run build:e2e-test
 
             - name: blocks.ini setup

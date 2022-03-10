@@ -19,7 +19,7 @@ jobs:
                   node-version-file: '.nvmrc'
                   cache: 'npm'
             - name: Install Node dependencies
-              run: npm ci
+              run: npm ci --no-optional
 
     JSLintingCheck:
         name: Lint JavaScript
@@ -34,7 +34,7 @@ jobs:
                   node-version-file: '.nvmrc'
                   cache: 'npm'
             - name: Install Node dependencies
-              run: npm ci
+              run: npm ci --no-optional
             - name: Save code linting report JSON
               run: npm run lint:js:report
               # Continue to the next step even if this fails
@@ -63,6 +63,6 @@ jobs:
                   node-version-file: '.nvmrc'
                   cache: 'npm'
             - name: Install Node dependencies
-              run: npm ci
+              run: npm ci --no-optional
             - name: Lint CSS
               run: npm run lint:css

@@ -17,7 +17,7 @@ jobs:
                   cache: 'npm'
             - name: npm install and build
               run: |
-                  npm ci
+                  npm ci --no-optional
                   npm run build:check-assets
             - name: Upload Artifact
               uses: actions/upload-artifact@v2
@@ -37,7 +37,7 @@ jobs:
                   cache: 'npm'
             - name: npm install
               run: |
-                  npm ci
+                  npm ci --no-optional
                   npm run build:check-assets
             - name: Download assets (trunk)
               uses: actions/download-artifact@v2
