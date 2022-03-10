@@ -6,41 +6,20 @@ on:
         branches: [trunk]
 
 jobs:
-    Setup:
-        name: Setup for Jobs
-        runs-on: ubuntu-latest
-
-        steps:
-            - uses: actions/checkout@v2
-            - name: Cache node modules
-              uses: actions/cache@v2
-              with:
-                  path: node_modules
-                  key: ${{ runner.OS }}-build-${{ secrets.CACHE_VERSION }}-${{ env.cache-name }}-${{ hashFiles('**/package-lock.json') }}
-                  restore-keys: |
-                      ${{ runner.OS }}-build-${{ secrets.CACHE_VERSION }}-${{ env.cache-name }}-
-                      ${{ runner.OS }}-build-${{ secrets.CACHE_VERSION }}-
-            - name: Install Node Dependencies
-              run: npm install
-
     JSLintingCheck:
         name: Lint JavaScript
-        needs: Setup
         runs-on: ubuntu-latest
 
         steps:
             - uses: actions/checkout@v2
-            - name: Cache node modules
-              uses: actions/cache@v2
+            - name: Setup node version and npm cache
+              uses: actions/setup-node@v2
               with:
-                  path: node_modules
-                  key: ${{ runner.OS }}-build-${{ secrets.CACHE_VERSION }}-${{ env.cache-name }}-${{ hashFiles('**/package-lock.json') }}
-                  restore-keys: |
-                      ${{ runner.OS }}-build-${{ secrets.CACHE_VERSION }}-${{ env.cache-name }}-
-                      ${{ runner.OS }}-build-${{ secrets.CACHE_VERSION }}-
-            - name: Install Node Dependencies
-              run: npm install
-            - name: Save Code Linting Report JSON
+                  node-version-file: '.nvmrc'
+                  cache: 'npm'
+            - name: Install Node dependencies
+              run: npm ci
+            - name: Save code linting report JSON
               run: npm run lint:js:report
               # Continue to the next step even if this fails
               continue-on-error: true
@@ -49,7 +28,7 @@ jobs:
               with:
                   name: eslint_report.json
                   path: eslint_report.json
-            - name: Annotate Code Linting Results
+            - name: Annotate code linting results
               uses: ataylorme/eslint-annotate-action@1.2.0
               with:
                   repo-token: '${{ secrets.GITHUB_TOKEN }}'
@@ -57,20 +36,16 @@ jobs:
 
     CSSLintingCheck:
         name: Lint CSS
-        needs: Setup
         runs-on: ubuntu-latest
 
         steps:
             - uses: actions/checkout@v2
-            - name: Cache node modules
-              uses: actions/cache@v2
+            - name: Setup node version and npm cache
+              uses: actions/setup-node@v2
               with:
-                  path: node_modules
-                  key: ${{ runner.OS }}-build-${{ secrets.CACHE_VERSION }}-${{ env.cache-name }}-${{ hashFiles('**/package-lock.json') }}
-                  restore-keys: |
-                      ${{ runner.OS }}-build-${{ secrets.CACHE_VERSION }}-${{ env.cache-name }}-
-                      ${{ runner.OS }}-build-${{ secrets.CACHE_VERSION }}-
-            - name: Install Node Dependencies
-              run: npm install
+                  node-version-file: '.nvmrc'
+                  cache: 'npm'
+            - name: Install Node dependencies
+              run: npm ci
             - name: Lint CSS
               run: npm run lint:css
