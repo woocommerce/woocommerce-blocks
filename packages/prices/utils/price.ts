@@ -90,7 +90,7 @@ export const getCurrencyFromPriceResponse = (
 		currency_suffix: suffix,
 	} = currencyData;
 
-	return {
+	return <Currency>{
 		code: code || 'USD',
 		symbol: symbol || '$',
 		thousandSeparator:
