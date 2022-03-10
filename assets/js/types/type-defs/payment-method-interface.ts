@@ -114,7 +114,7 @@ export interface ShippingDataProps {
 	// An object containing package IDs as the key and selected rate as the value (rate ids).
 	selectedRates: Record< string, unknown >;
 	// A function for setting selected rates (receives id).
-	setSelectedRates: (
+	selectShippingRate: (
 		newShippingRateId: string,
 		packageId: string | number
 	) => unknown;
