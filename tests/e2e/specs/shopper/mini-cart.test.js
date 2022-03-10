@@ -2,7 +2,11 @@
  * External dependencies
  */
 import { setDefaultOptions, getDefaultOptions } from 'expect-puppeteer';
-import { SHOP_CART_PAGE, SHOP_CHECKOUT_PAGE } from '@woocommerce/e2e-utils';
+import {
+	SHOP_PAGE,
+	SHOP_CART_PAGE,
+	SHOP_CHECKOUT_PAGE,
+} from '@woocommerce/e2e-utils';
 
 /**
  * Internal dependencies
@@ -11,7 +15,7 @@ import { shopper } from '../../../utils';
 import { getTextContent } from '../../page-utils';
 
 const block = {
-	name: 'Mini Cart Block',
+	name: 'Mini Cart',
 };
 
 const options = getDefaultOptions();
@@ -46,7 +50,7 @@ describe( 'Shopper → Mini Cart', () => {
 	} );
 
 	beforeEach( async () => {
-		await shopper.goToBlockPage( block.name );
+		await shopper.block.goToBlockPage( block.name );
 	} );
 
 	describe( 'Icon', () => {
@@ -130,13 +134,40 @@ describe( 'Shopper → Mini Cart', () => {
 		} );
 	} );
 
+	describe( 'Empty mini cart', () => {
+		it( 'When the cart is empty, the Mini Cart Drawer show empty cart message and start shopping button', async () => {
+			await clickMiniCartButton();
+
+			await expect( page ).toMatchElement(
+				'.wc-block-mini-cart__drawer',
+				{
+					text: 'Your cart is currently empty!',
+				}
+			);
+
+			await expect( page ).toMatchElement(
+				'.wc-block-mini-cart__drawer',
+				{
+					text: 'Start shopping',
+				}
+			);
+
+			const shopLink = await page.$eval(
+				'.wc-block-mini-cart__shopping-button a',
+				( el ) => el.href
+			);
+
+			expect( shopLink ).toMatch( SHOP_PAGE );
+		} );
+	} );
+
 	describe( 'Filled mini cart', () => {
 		beforeAll( async () => {
-			await shopper.emptyCart();
+			await shopper.block.emptyCart();
 		} );
 
 		afterEach( async () => {
-			await shopper.emptyCart();
+			await shopper.block.emptyCart();
 		} );
 
 		it( 'The Mini Cart title shows correct amount', async () => {
@@ -223,11 +254,11 @@ describe( 'Shopper → Mini Cart', () => {
 
 	describe( 'Update quantity', () => {
 		beforeAll( async () => {
-			await shopper.emptyCart();
+			await shopper.block.emptyCart();
 		} );
 
 		afterEach( async () => {
-			await shopper.emptyCart();
+			await shopper.block.emptyCart();
 		} );
 
 		it( 'The quantity of a product can be updated using plus and minus button', async () => {
@@ -325,7 +356,7 @@ describe( 'Shopper → Mini Cart', () => {
 
 	describe( 'Cart page', () => {
 		beforeAll( async () => {
-			await shopper.emptyCart();
+			await shopper.block.emptyCart();
 		} );
 
 		it( 'Can go to cart page from the Mini Cart Footer', async () => {
@@ -361,7 +392,7 @@ describe( 'Shopper → Mini Cart', () => {
 
 	describe( 'Checkout page', () => {
 		beforeAll( async () => {
-			await shopper.emptyCart();
+			await shopper.block.emptyCart();
 		} );
 
 		it( 'Can go to checkout page from the Mini Cart Footer', async () => {
