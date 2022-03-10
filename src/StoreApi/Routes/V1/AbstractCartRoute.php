@@ -100,9 +100,15 @@ abstract class AbstractCartRoute extends AbstractRoute {
 	 * @return \WP_REST_Response
 	 */
 	protected function add_nonce_headers( \WP_REST_Response $response ) {
-		$response->header( 'Nonce', wp_create_nonce( 'wc_store_api' ) );
+		$nonce = wp_create_nonce( 'wc_store_api' );
+
+		$response->header( 'Nonce', $nonce );
 		$response->header( 'Nonce-Timestamp', time() );
 		$response->header( 'User-ID', get_current_user_id() );
+
+		// The following headers are deprecated and should be removed in a future version.
+		$response->header( 'X-WC-Store-API-Nonce', $nonce );
+
 		return $response;
 	}
 
