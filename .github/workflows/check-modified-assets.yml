@@ -21,10 +21,10 @@ jobs:
                   restore-keys: |
                       ${{ runner.OS }}-build-${{ secrets.CACHE_VERSION }}-${{ env.cache-name }}-
                       ${{ runner.OS }}-build-${{ secrets.CACHE_VERSION }}-
-            - name: Use Node.js 16.13.2
-              uses: actions/setup-node@v1
+            - name: Use .nvmrc version of node
+              uses: actions/setup-node@v2
               with:
-                  node-version: 16.13.2
+                  node-version-file: '.nvmrc'
             - name: npm install and build
               run: |
                   npm ci
@@ -51,10 +51,10 @@ jobs:
                   restore-keys: |
                       ${{ runner.OS }}-build-${{ secrets.CACHE_VERSION }}-${{ env.cache-name }}-
                       ${{ runner.OS }}-build-${{ secrets.CACHE_VERSION }}-
-            - name: Use Node.js 16.13.2
-              uses: actions/setup-node@v1
+            - name: Use .nvmrc version of node
+              uses: actions/setup-node@v2
               with:
-                  node-version: 16.13.2
+                  node-version-file: '.nvmrc'
             - name: npm install
               run: |
                   npm ci
