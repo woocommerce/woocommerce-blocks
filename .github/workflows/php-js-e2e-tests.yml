@@ -10,7 +10,7 @@ jobs:
         name: JavaScript E2E Tests (WP latest with Gutenberg plugin)
         runs-on: ubuntu-latest
         steps:
-            - uses: actions/checkout@v2
+            - uses: actions/checkout@v3
             - name: Setup node version and npm cache
               uses: actions/setup-node@v3
               with:
@@ -68,7 +68,7 @@ jobs:
         name: JavaScript E2E Tests (latest)
         runs-on: ubuntu-latest
         steps:
-            - uses: actions/checkout@v2
+            - uses: actions/checkout@v3
             - name: Setup node version and npm cache
               uses: actions/setup-node@v3
               with:
