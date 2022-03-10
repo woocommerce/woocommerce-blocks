@@ -125,7 +125,7 @@ export interface ShippingDataProps {
 	// All the available shipping rates.
 	shippingRates: CartShippingRate[];
 	// Whether the rates are loading or not.
-	isLoadingRates: boolean;
+	shippingRatesLoading: boolean;
 }
 
 export interface ShippingStatusProps {
