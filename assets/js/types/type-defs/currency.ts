@@ -34,7 +34,7 @@ export interface Currency {
 }
 
 export interface CurrencyResponse {
-	currency_code: CurrencyCode;
+	currency_code: string;
 	currency_symbol: string;
 	currency_minor_unit: number;
 	currency_decimal_separator: string;
@@ -45,7 +45,7 @@ export interface CurrencyResponse {
 
 export type SymbolPosition = 'left' | 'left_space' | 'right' | 'right_space';
 
-type CurrencyCode =
+export type CurrencyCode =
 	| 'AED'
 	| 'AFN'
 	| 'ALL'
