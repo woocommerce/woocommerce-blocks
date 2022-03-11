@@ -204,7 +204,7 @@ function woocommerce_blocks_get_i18n_data_json( $translations, $file, $handle, $
 	} )( "{$domain}", {$json_translations} );
 JS;
 
-	if ( count( $wp_scripts->done ) === 0 ) {
+	if ( empty( $wp_scripts->done ) ) {
 		// If we hadn't printed any script into the page, let's enqueue the translations.
 		// phpcs:ignore WordPress.WP.EnqueuedResourceParameters.NoExplicitVersion
 		wp_register_script( $handle_filename, '', array( 'wp-i18n' ), false, true );
