@@ -20,6 +20,14 @@ export const getQtyInputExpression = ( args = {} ) => {
 	);
 };
 
+export const getQtyPlusButtonExpression = () => {
+	return 'button[contains(@class, "wc-block-components-quantity-selector__button--plus")]';
+};
+
+export const getQtyMinusButtonExpression = () => {
+	return 'button[contains(@class, "wc-block-components-quantity-selector__button--minus")]';
+};
+
 export const getCartItemExpression = ( productTitle, args ) =>
 	'//tr[contains(@class, "wc-block-cart-items__row") and ' +
 	'td[@class="wc-block-cart-item__product" and div[@class="wc-block-cart-item__wrap" and ' +

@@ -15,6 +15,8 @@ import { BASE_URL } from '../e2e/utils';
 import {
 	getCartItemExpression,
 	getQtyInputExpression,
+	getQtyPlusButtonExpression,
+	getQtyMinusButtonExpression,
 } from '../utils/expressions';
 
 export const shopper = {
@@ -309,6 +311,29 @@ export const shopper = {
 			await pressKeyWithModifier( 'primary', 'a' );
 			await quantityInput.type( quantityValue.toString() );
 			await quantityInput.evaluate( ( e ) => e.blur() );
+		},
+
+		increaseCartQuantityByOne: async ( productTitle ) => {
+			const cartItemXPath = getCartItemExpression( productTitle );
+
+			const quantityPlusButtonXPath =
+				cartItemXPath + '//' + getQtyPlusButtonExpression();
+
+			const [ quantityPlusButton ] = await page.$x(
+				quantityPlusButtonXPath
+			);
+			await quantityPlusButton.click();
+		},
+
+		decreaseCartQuantityByOne: async ( productTitle ) => {
+			const cartItemXPath = getCartItemExpression( productTitle );
+			const quantityMinusButtonXPath =
+				cartItemXPath + '//' + getQtyMinusButtonExpression();
+
+			const [ quantityMinusButton ] = await page.$x(
+				quantityMinusButtonXPath
+			);
+			await quantityMinusButton.click();
 		},
 
 		productIsInCart: async ( productTitle, quantity = null ) => {
