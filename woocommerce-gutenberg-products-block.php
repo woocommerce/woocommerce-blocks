@@ -214,7 +214,7 @@ JS;
 			$output
 		);
 	} else {
-		// If we have already printed scripts into the page, there is the change that
+		// If we have already printed scripts into the page, there is a chance that
 		// scripts have finished being printed. That means that if we enqueued them here,
 		// they would never be printed. Instead of enqueuing, then, let's print directly
 		// the script tag.
