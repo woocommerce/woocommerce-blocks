@@ -85,6 +85,29 @@ Release and roadmap notes available on the [WooCommerce Developers Blog](https:/
 
 == Changelog ==
 
+= 7.2.0 - 2022-03-14 =
+
+#### Bug Fixes
+
+- Mini Cart Contents Block: not show `wc-block-mini-cart__contents` in additional classes section  [#5984](https://github.com/woocommerce/woocommerce-gutenberg-products-block/pull/5984)
+- StoreAPI: Clear all wc notice types in the cart validation context [#5983](https://github.com/woocommerce/woocommerce-gutenberg-products-block/pull/5983)
+- Fix loading more WC core translations in locales where WC Blocks is not localized for some strings.
+
+#### Enhancements
+
+- Memoize/cache filter results so that we don't call third party filters too often [#5143](https://github.com/woocommerce/woocommerce-gutenberg-products-block/pull/5143)
+- Add font-style and font-weight support for the Product Categories List block. ([5928](https://github.com/woocommerce/woocommerce-gutenberg-products-block/pull/5928))
+
+#### Various
+
+- Remove v1 string from Store Keys. ([5987](https://github.com/woocommerce/woocommerce-gutenberg-products-block/pull/5987))
+- Introduce the `InvalidCartException` for handling cart validation. ([5904](https://github.com/woocommerce/woocommerce-gutenberg-products-block/pull/5904))
+- Renamed Store API custom headers to remove `X-WC-Store-API` prefixes. [#5983](https://github.com/woocommerce/woocommerce-gutenberg-products-block/pull/5983)
+- Normalized Store API error codes [#5992](https://github.com/woocommerce/woocommerce-gutenberg-products-block/pull/5992)
+- Deprecated `woocommerce_blocks_checkout_order_processed` in favour of `woocommerce_store_api_checkout_order_processed`
+- Deprecated `woocommerce_blocks_checkout_update_order_meta` in favour of `woocommerce_store_api_checkout_update_order_meta`
+- Deprecated `woocommerce_blocks_checkout_update_order_from_request` in favour of `woocommerce_store_api_checkout_update_order_from_request`
+
 = 7.1.0 - 2022-02-28 =
 
 #### Enhancements
