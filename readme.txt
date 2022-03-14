@@ -92,6 +92,7 @@ Release and roadmap notes available on the [WooCommerce Developers Blog](https:/
 - Mini Cart Contents Block: not show `wc-block-mini-cart__contents` in additional classes section  [#5984](https://github.com/woocommerce/woocommerce-gutenberg-products-block/pull/5984)
 - StoreAPI: Clear all wc notice types in the cart validation context [#5983](https://github.com/woocommerce/woocommerce-gutenberg-products-block/pull/5983)
 - Fix loading more WC core translations in locales where WC Blocks is not localized for some strings.
+- Ensure shipping address is set for virtual orders to prevent missing country errors. [#6050](https://github.com/woocommerce/woocommerce-gutenberg-products-block/pull/6050)
 
 #### Enhancements
 
