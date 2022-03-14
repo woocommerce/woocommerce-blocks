@@ -97,7 +97,6 @@ Release and roadmap notes available on the [WooCommerce Developers Blog](https:/
 #### Enhancements
 
 - Memoize/cache filter results so that we don't call third party filters too often [#5143](https://github.com/woocommerce/woocommerce-gutenberg-products-block/pull/5143)
-- Add font-style and font-weight support for the Product Categories List block. ([5928](https://github.com/woocommerce/woocommerce-gutenberg-products-block/pull/5928))
 
 #### Various
 
