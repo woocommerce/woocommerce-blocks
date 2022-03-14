@@ -5,7 +5,7 @@ import { InspectorControls, useBlockProps } from '@wordpress/block-editor';
 import type { ReactElement } from 'react';
 import { formatPrice } from '@woocommerce/price-format';
 import { CartCheckoutCompatibilityNotice } from '@woocommerce/editor-components/compatibility-notices';
-import { PanelBody, ExternalLink } from '@wordpress/components';
+import { PanelBody, ExternalLink, ToggleControl } from '@wordpress/components';
 import { getSetting } from '@woocommerce/settings';
 import { __ } from '@wordpress/i18n';
 import Noninteractive from '@woocommerce/base-components/noninteractive';
@@ -15,7 +15,17 @@ import Noninteractive from '@woocommerce/base-components/noninteractive';
  */
 import QuantityBadge from './quantity-badge';
 
-const MiniCartBlock = (): ReactElement => {
+interface Attributes {
+	openDrawerOnAddedToCart: boolean;
+}
+
+interface Props {
+	attributes: Attributes;
+	setAttributes: ( attributes: Record< string, unknown > ) => void;
+}
+
+const MiniCartBlock = ({attributes,setAttributes}: Props): ReactElement => {
+	const {openDrawerOnAddedToCart} = attributes;
 	const blockProps = useBlockProps( {
 		className: `wc-block-mini-cart`,
 	} );
@@ -31,6 +41,25 @@ const MiniCartBlock = (): ReactElement => {
 	return (
 		<div { ...blockProps }>
 			<InspectorControls>
+			<PanelBody
+					title={ __(
+						'Mini Cart Settings',
+						'woo-gutenberg-products-block'
+					) }
+				>
+					<ToggleControl
+						label={ __(
+							'Open the drawer when a product is added to the cart',
+							'woo-gutenberg-products-block'
+						) }
+						checked={ openDrawerOnAddedToCart }
+						onChange={ () =>
+							setAttributes( {
+								openDrawerOnAddedToCart: ! openDrawerOnAddedToCart,
+							} )
+						}
+					/>
+				</PanelBody>
 				{ templatePartEditUri && (
 					<PanelBody
 						title={ __(
