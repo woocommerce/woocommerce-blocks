@@ -24,8 +24,11 @@ interface Props {
 	setAttributes: ( attributes: Record< string, unknown > ) => void;
 }
 
-const MiniCartBlock = ({attributes,setAttributes}: Props): ReactElement => {
-	const {openDrawerOnAddedToCart} = attributes;
+const MiniCartBlock = ( {
+	attributes,
+	setAttributes,
+}: Props ): ReactElement => {
+	const { openDrawerOnAddedToCart } = attributes;
 	const blockProps = useBlockProps( {
 		className: `wc-block-mini-cart`,
 	} );
@@ -41,7 +44,7 @@ const MiniCartBlock = ({attributes,setAttributes}: Props): ReactElement => {
 	return (
 		<div { ...blockProps }>
 			<InspectorControls>
-			<PanelBody
+				<PanelBody
 					title={ __(
 						'Mini Cart Settings',
 						'woo-gutenberg-products-block'

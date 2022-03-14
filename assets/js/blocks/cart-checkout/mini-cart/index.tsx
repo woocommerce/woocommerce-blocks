@@ -47,7 +47,7 @@ const settings = {
 		openDrawerOnAddedToCart: {
 			type: 'boolean',
 			default: false,
-		}
+		},
 	},
 
 	edit,
