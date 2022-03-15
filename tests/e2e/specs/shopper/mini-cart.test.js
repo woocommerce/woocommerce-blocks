@@ -8,7 +8,6 @@ import {
 	SHOP_CART_PAGE,
 	SHOP_CHECKOUT_PAGE,
 } from '@woocommerce/e2e-utils';
-import { default as WooCommerceRestApi } from '@woocommerce/woocommerce-rest-api';
 
 /**
  * Internal dependencies
