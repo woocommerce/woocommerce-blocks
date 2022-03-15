@@ -40,6 +40,7 @@ interface Props {
 	colorClassNames?: string;
 	style?: Record< string, Record< string, string > >;
 	contents: string;
+	openDrawerOnAddedToCart?: boolean;
 }
 
 const MiniCartBlock = ( {
@@ -47,6 +48,7 @@ const MiniCartBlock = ( {
 	colorClassNames,
 	style,
 	contents = '',
+	openDrawerOnAddedToCart = false,
 }: Props ): JSX.Element => {
 	const {
 		cartItemsCount: cartItemsCountFromApi,
@@ -108,8 +110,10 @@ const MiniCartBlock = ( {
 
 	useEffect( () => {
 		const openMiniCart = () => {
-			setSkipSlideIn( false );
-			setIsOpen( true );
+			if ( openDrawerOnAddedToCart ) {
+				setSkipSlideIn( false );
+				setIsOpen( true );
+			}
 		};
 
 		// Make it so we can read jQuery events triggered by WC Core elements.
