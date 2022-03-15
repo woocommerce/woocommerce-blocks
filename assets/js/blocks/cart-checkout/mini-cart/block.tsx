@@ -40,7 +40,7 @@ interface Props {
 	colorClassNames?: string;
 	style?: Record< string, Record< string, string > >;
 	contents: string;
-	openDrawerOnAddedToCart?: boolean;
+	addedToCartBehavior: string;
 }
 
 const MiniCartBlock = ( {
@@ -48,7 +48,7 @@ const MiniCartBlock = ( {
 	colorClassNames,
 	style,
 	contents = '',
-	openDrawerOnAddedToCart = false,
+	addedToCartBehavior = 'none',
 }: Props ): JSX.Element => {
 	const {
 		cartItemsCount: cartItemsCountFromApi,
@@ -110,7 +110,7 @@ const MiniCartBlock = ( {
 
 	useEffect( () => {
 		const openMiniCart = () => {
-			if ( openDrawerOnAddedToCart ) {
+			if ( addedToCartBehavior === 'open_drawer' ) {
 				setSkipSlideIn( false );
 				setIsOpen( true );
 			}

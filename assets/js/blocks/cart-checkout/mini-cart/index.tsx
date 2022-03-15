@@ -44,9 +44,9 @@ const settings = {
 			default: false,
 			save: false,
 		},
-		openDrawerOnAddedToCart: {
-			type: 'boolean',
-			default: false,
+		addedToCartBehavior: {
+			type: 'string',
+			default: 'boolean',
 		},
 	},
 

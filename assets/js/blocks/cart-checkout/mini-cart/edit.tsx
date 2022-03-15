@@ -5,7 +5,7 @@ import { InspectorControls, useBlockProps } from '@wordpress/block-editor';
 import type { ReactElement } from 'react';
 import { formatPrice } from '@woocommerce/price-format';
 import { CartCheckoutCompatibilityNotice } from '@woocommerce/editor-components/compatibility-notices';
-import { PanelBody, ExternalLink, ToggleControl } from '@wordpress/components';
+import { PanelBody, ExternalLink, SelectControl } from '@wordpress/components';
 import { getSetting } from '@woocommerce/settings';
 import { __ } from '@wordpress/i18n';
 import Noninteractive from '@woocommerce/base-components/noninteractive';
@@ -16,7 +16,7 @@ import Noninteractive from '@woocommerce/base-components/noninteractive';
 import QuantityBadge from './quantity-badge';
 
 interface Attributes {
-	openDrawerOnAddedToCart: boolean;
+	addedToCartBehavior: string;
 }
 
 interface Props {
@@ -28,7 +28,7 @@ const MiniCartBlock = ( {
 	attributes,
 	setAttributes,
 }: Props ): ReactElement => {
-	const { openDrawerOnAddedToCart } = attributes;
+	const { addedToCartBehavior } = attributes;
 	const blockProps = useBlockProps( {
 		className: `wc-block-mini-cart`,
 	} );
@@ -50,17 +50,31 @@ const MiniCartBlock = ( {
 						'woo-gutenberg-products-block'
 					) }
 				>
-					<ToggleControl
+					<SelectControl
 						label={ __(
-							'Open the drawer when a product is added to the cart',
+							'When customers add products to the cart:',
 							'woo-gutenberg-products-block'
 						) }
-						checked={ openDrawerOnAddedToCart }
-						onChange={ () =>
-							setAttributes( {
-								openDrawerOnAddedToCart: ! openDrawerOnAddedToCart,
-							} )
-						}
+						value={ addedToCartBehavior }
+						onChange={ ( value ) => {
+							setAttributes( { addedToCartBehavior: value } );
+						} }
+						options={ [
+							{
+								value: 'none',
+								label: __(
+									'Do not show anything',
+									'woo-gutenberg-products-block'
+								),
+							},
+							{
+								value: 'open_drawer',
+								label: __(
+									'Open the drawer',
+									'woo-gutenberg-products-block'
+								),
+							},
+						] }
 					/>
 				</PanelBody>
 				{ templatePartEditUri && (
