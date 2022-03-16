@@ -1,114 +1,61 @@
 /**
  * External dependencies
  */
-import { __ } from '@wordpress/i18n';
-import { useBlockProps, InspectorControls } from '@wordpress/block-editor';
-import { PanelBody, ToggleControl } from '@wordpress/components';
-import { getSetting } from '@woocommerce/settings';
-import Noninteractive from '@woocommerce/base-components/noninteractive';
+import { useBlockProps, InnerBlocks } from '@wordpress/block-editor';
+import type { TemplateArray } from '@wordpress/blocks';
+import { useStoreCart } from '@woocommerce/base-context/hooks';
+import {
+	innerBlockAreas,
+	ExperimentalOrderMeta,
+} from '@woocommerce/blocks-checkout';
 
 /**
  * Internal dependencies
  */
-import Block from './block';
+import { useForcedLayout, getAllowedBlocks } from '../../../shared';
 
-export const Edit = ( {
-	attributes,
-	setAttributes,
-}: {
-	attributes: {
-		showRateAfterTaxName: boolean;
-		isShippingCalculatorEnabled: boolean;
-		className: string;
-		lock: {
-			move: boolean;
-			remove: boolean;
-		};
-	};
-	setAttributes: ( attributes: Record< string, unknown > ) => void;
-} ): JSX.Element => {
-	const {
-		showRateAfterTaxName,
-		isShippingCalculatorEnabled,
-		className,
-	} = attributes;
+export const Edit = ( { clientId }: { clientId: string } ): JSX.Element => {
 	const blockProps = useBlockProps();
-	const taxesEnabled = getSetting( 'taxesEnabled' ) as boolean;
-	const displayItemizedTaxes = getSetting(
-		'displayItemizedTaxes',
-		false
-	) as boolean;
-	const displayCartPricesIncludingTax = getSetting(
-		'displayCartPricesIncludingTax',
-		false
-	) as boolean;
+	const allowedBlocks = getAllowedBlocks(
+		innerBlockAreas.CART_ORDER_SUMMARY
+	);
+	const defaultTemplate = [
+		[ 'woocommerce/order-summary-subtotal-block', {}, [] ],
+		[ 'woocommerce/order-summary-fee-block', {}, [] ],
+		[ 'woocommerce/order-summary-total-block', {}, [] ],
+	] as TemplateArray;
+	// Prepare props to pass to the ExperimentalOrderMeta slot fill.
+	// We need to pluck out receiveCart.
+	// eslint-disable-next-line no-unused-vars
+	const { extensions, receiveCart, ...cart } = useStoreCart();
+	const slotFillProps = {
+		extensions,
+		cart,
+		context: 'woocommerce/cart',
+	};
+
+	useForcedLayout( {
+		clientId,
+		registeredBlocks: allowedBlocks,
+		defaultTemplate,
+	} );
+
 	return (
 		<div { ...blockProps }>
-			<InspectorControls>
-				{ getSetting( 'shippingEnabled', true ) && (
-					<PanelBody
-						title={ __(
-							'Shipping rates',
-							'woo-gutenberg-products-block'
-						) }
-					>
-						<ToggleControl
-							label={ __(
-								'Shipping calculator',
-								'woo-gutenberg-products-block'
-							) }
-							help={ __(
-								'Allow customers to estimate shipping by entering their address.',
-								'woo-gutenberg-products-block'
-							) }
-							checked={ isShippingCalculatorEnabled }
-							onChange={ () =>
-								setAttributes( {
-									isShippingCalculatorEnabled: ! isShippingCalculatorEnabled,
-								} )
-							}
-						/>
-					</PanelBody>
-				) }
-				{ taxesEnabled &&
-					displayItemizedTaxes &&
-					! displayCartPricesIncludingTax && (
-						<PanelBody
-							title={ __(
-								'Taxes',
-								'woo-gutenberg-products-block'
-							) }
-						>
-							<ToggleControl
-								label={ __(
-									'Show rate after tax name',
-									'woo-gutenberg-products-block'
-								) }
-								help={ __(
-									'Show the percentage rate alongside each tax line in the summary.',
-									'woo-gutenberg-products-block'
-								) }
-								checked={ showRateAfterTaxName }
-								onChange={ () =>
-									setAttributes( {
-										showRateAfterTaxName: ! showRateAfterTaxName,
-									} )
-								}
-							/>
-						</PanelBody>
-					) }
-			</InspectorControls>
-			<Noninteractive>
-				<Block
-					className={ className }
-					showRateAfterTaxName={ showRateAfterTaxName }
-					isShippingCalculatorEnabled={ isShippingCalculatorEnabled }
-				/>
-			</Noninteractive>
+			<InnerBlocks
+				allowedBlocks={ allowedBlocks }
+				template={ defaultTemplate }
+				templateLock="insert"
+			/>
+			<ExperimentalOrderMeta.Slot { ...slotFillProps } />
 		</div>
 	);
 };
 
 export const Save = (): JSX.Element => {
-	return <div { ...useBlockProps.save() } />;
+	return (
+		<div { ...useBlockProps.save() }>
+			<InnerBlocks.Content />
+		</div>
+	);
 };

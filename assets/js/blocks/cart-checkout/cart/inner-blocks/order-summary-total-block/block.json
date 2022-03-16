@@ -1,0 +1,22 @@
+{
+	"name": "woocommerce/order-summary-total-block",
+	"version": "1.0.0",
+	"title": "Total",
+	"description": "Shows the cart total row.",
+	"category": "woocommerce",
+	"supports": {
+		"align": false,
+		"html": false,
+		"multiple": false,
+		"reusable": false
+	},
+	"attributes": {
+		"className": {
+			"type": "string",
+			"default": ""
+		}
+	},
+	"parent": [ "woocommerce/cart-order-summary-block" ],
+	"textdomain": "woo-gutenberg-products-block",
+	"apiVersion": 2
+}
