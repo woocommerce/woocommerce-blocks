@@ -3,16 +3,13 @@
  */
 import { useBlockProps, InnerBlocks } from '@wordpress/block-editor';
 import type { TemplateArray } from '@wordpress/blocks';
-import { useStoreCart } from '@woocommerce/base-context/hooks';
-import {
-	innerBlockAreas,
-	ExperimentalOrderMeta,
-} from '@woocommerce/blocks-checkout';
+import { innerBlockAreas } from '@woocommerce/blocks-checkout';
 
 /**
  * Internal dependencies
  */
 import { useForcedLayout, getAllowedBlocks } from '../../../shared';
+import { OrderMetaSlotFill } from './slotfills';
 
 export const Edit = ( { clientId }: { clientId: string } ): JSX.Element => {
 	const blockProps = useBlockProps();
@@ -22,17 +19,12 @@ export const Edit = ( { clientId }: { clientId: string } ): JSX.Element => {
 	const defaultTemplate = [
 		[ 'woocommerce/order-summary-subtotal-block', {}, [] ],
 		[ 'woocommerce/order-summary-fee-block', {}, [] ],
+		[ 'woocommerce/order-summary-discount-block', {}, [] ],
+		[ 'woocommerce/order-summary-coupon-form-block', {}, [] ],
+		[ 'woocommerce/order-summary-shipping-block', {}, [] ],
+		[ 'woocommerce/order-summary-taxes-block', {}, [] ],
 		[ 'woocommerce/order-summary-total-block', {}, [] ],
 	] as TemplateArray;
-	// Prepare props to pass to the ExperimentalOrderMeta slot fill.
-	// We need to pluck out receiveCart.
-	// eslint-disable-next-line no-unused-vars
-	const { extensions, receiveCart, ...cart } = useStoreCart();
-	const slotFillProps = {
-		extensions,
-		cart,
-		context: 'woocommerce/cart',
-	};
 
 	useForcedLayout( {
 		clientId,
@@ -47,7 +39,7 @@ export const Edit = ( { clientId }: { clientId: string } ): JSX.Element => {
 				template={ defaultTemplate }
 				templateLock="insert"
 			/>
-			<ExperimentalOrderMeta.Slot { ...slotFillProps } />
+			<OrderMetaSlotFill />
 		</div>
 	);
 };

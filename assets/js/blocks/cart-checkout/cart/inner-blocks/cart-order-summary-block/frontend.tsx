@@ -10,6 +10,7 @@ import { withFilteredAttributes } from '@woocommerce/shared-hocs';
  * Internal dependencies
  */
 import attributes from './attributes';
+import { OrderMetaSlotFill } from './slotfills';
 
 const FrontendBlock = ( {
 	children,
@@ -23,7 +24,8 @@ const FrontendBlock = ( {
 			<Title headingLevel="2" className="wc-block-cart__totals-title">
 				{ __( 'Cart totals', 'woo-gutenberg-products-block' ) }
 			</Title>
-			<TotalsWrapper>{ children }</TotalsWrapper>
+			{ children }
+			<OrderMetaSlotFill />
 		</div>
 	);
 };

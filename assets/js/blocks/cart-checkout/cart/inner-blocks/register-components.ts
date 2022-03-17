@@ -9,6 +9,7 @@ import { registerCheckoutBlock } from '@woocommerce/blocks-checkout';
  * Internal dependencies
  */
 import metadata from './component-metadata';
+import './cart-order-summary-block/register';
 
 // Modify webpack publicPath at runtime based on location of WordPress Plugin.
 // eslint-disable-next-line no-undef,camelcase
@@ -75,16 +76,6 @@ registerCheckoutBlock( {
 } );
 
 registerCheckoutBlock( {
-	metadata: metadata.CART_ORDER_SUMMARY,
-	component: lazy( () =>
-		import(
-			/* webpackChunkName: "cart-blocks/cart-order-summary" */
-			'./cart-order-summary-block/frontend'
-		)
-	),
-} );
-
-registerCheckoutBlock( {
 	metadata: metadata.CART_EXPRESS_PAYMENT,
 	component: lazy( () =>
 		import(
@@ -110,36 +101,6 @@ registerCheckoutBlock( {
 		import(
 			/* webpackChunkName: "cart-blocks/cart-accepted-payment-methods" */
 			'./cart-accepted-payment-methods-block/frontend'
-		)
-	),
-} );
-
-registerCheckoutBlock( {
-	metadata: metadata.ORDER_SUMMARY_FEE,
-	component: lazy( () =>
-		import(
-			/* webpackChunkName: "cart-blocks/order-summary-fee" */
-			'./order-summary-fee-block/frontend'
-		)
-	),
-} );
-
-registerCheckoutBlock( {
-	metadata: metadata.ORDER_SUMMARY_SUBTOTAL,
-	component: lazy( () =>
-		import(
-			/* webpackChunkName: "cart-blocks/order-summary-subtotal" */
-			'./order-summary-subtotal-block/frontend'
-		)
-	),
-} );
-
-registerCheckoutBlock( {
-	metadata: metadata.ORDER_SUMMARY_TOTAL,
-	component: lazy( () =>
-		import(
-			/* webpackChunkName: "cart-blocks/order-summary-total" */
-			'./order-summary-total-block/frontend'
 		)
 	),
 } );

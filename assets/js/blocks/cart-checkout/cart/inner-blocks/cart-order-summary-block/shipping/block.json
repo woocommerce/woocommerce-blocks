@@ -1,0 +1,22 @@
+{
+	"name": "woocommerce/order-summary-shipping-block",
+	"version": "1.0.0",
+	"title": "Shipping",
+	"description": "Shows the cart shipping row.",
+	"category": "woocommerce",
+	"supports": {
+		"align": false,
+		"html": false,
+		"multiple": false,
+		"reusable": false
+	},
+	"attributes": {
+		"className": {
+			"type": "string",
+			"default": ""
+		}
+	},
+	"parent": [ "woocommerce/cart-order-summary-block" ],
+	"textdomain": "woo-gutenberg-products-block",
+	"apiVersion": 2
+}

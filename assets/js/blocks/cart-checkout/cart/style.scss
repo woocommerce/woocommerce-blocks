@@ -266,6 +266,10 @@ table.wc-block-cart-items {
 
 	.wc-block-cart__payment-options {
 		padding: $gap 0 0;
+
+		&:empty {
+			padding: 0;
+		}
 	}
 }
 
