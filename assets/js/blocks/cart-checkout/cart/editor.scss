@@ -29,3 +29,14 @@ body.wc-lock-selected-block--remove {
 		position: relative;
 	}
 }
+
+.wp-block-woocommerce-cart-order-summary-block {
+	.block-editor-block-list__layout > div {
+		margin: 0 !important;
+	}
+	.wc-block-components-totals-item,
+	.wc-block-components-totals-coupon,
+	.wc-block-components-totals-shipping {
+		box-sizing: border-box;
+	}
+}

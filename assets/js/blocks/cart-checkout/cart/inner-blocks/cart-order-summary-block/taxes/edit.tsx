@@ -3,7 +3,6 @@
  */
 import { __ } from '@wordpress/i18n';
 import { useBlockProps, InspectorControls } from '@wordpress/block-editor';
-import Noninteractive from '@woocommerce/base-components/noninteractive';
 import { PanelBody, ToggleControl } from '@wordpress/components';
 import { getSetting } from '@woocommerce/settings';
 
@@ -64,12 +63,10 @@ export const Edit = ( {
 						</PanelBody>
 					) }
 			</InspectorControls>
-			<Noninteractive>
-				<Block
-					className={ className }
-					showRateAfterTaxName={ showRateAfterTaxName }
-				/>
-			</Noninteractive>
+			<Block
+				className={ className }
+				showRateAfterTaxName={ showRateAfterTaxName }
+			/>
 		</div>
 	);
 };

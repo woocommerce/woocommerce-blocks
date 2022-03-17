@@ -3,7 +3,8 @@
 	flex-wrap: wrap;
 }
 
-.wc-block-components-totals-item,
+.wp-block > .wc-block-components-totals-item,
+.wp-block-woocommerce-cart-order-summary-block > .wc-block-components-totals-item,
 .wc-block-components-totals-coupon,
 .wc-block-components-totals-shipping {
 	@include with-translucent-border(1px 0 0);
@@ -11,17 +12,6 @@
 	width: 100%;
 	padding-top: $gap;
 	padding-bottom: $gap;
-
-	// First row in list.
-	&:first-child::after {
-		border-top: 0;
-	}
-
-	// Nested items.
-	> .wc-block-components-totals-item {
-		padding-top: 0;
-		padding-bottom: 0;
-	}
 }
 
 .wc-block-components-totals-item__label {

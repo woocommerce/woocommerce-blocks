@@ -2,7 +2,6 @@
  * External dependencies
  */
 import { useBlockProps } from '@wordpress/block-editor';
-import Noninteractive from '@woocommerce/base-components/noninteractive';
 
 /**
  * Internal dependencies
@@ -21,9 +20,7 @@ export const Edit = ( {
 	const blockProps = useBlockProps();
 	return (
 		<div { ...blockProps }>
-			<Noninteractive>
-				<Block className={ className } />
-			</Noninteractive>
+			<Block className={ className } />
 		</div>
 	);
 };
