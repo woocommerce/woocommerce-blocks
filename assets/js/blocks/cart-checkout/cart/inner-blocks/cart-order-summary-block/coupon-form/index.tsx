@@ -1,7 +1,7 @@
 /**
  * External dependencies
  */
-import { Icon, customPostType } from '@wordpress/icons';
+import { Icon, tag } from '@wordpress/icons';
 import { registerFeaturePluginBlockType } from '@woocommerce/block-settings';
 
 /**
@@ -14,7 +14,7 @@ registerFeaturePluginBlockType( metadata, {
 	icon: {
 		src: (
 			<Icon
-				icon={ customPostType }
+				icon={ tag }
 				className="wc-block-editor-components-block-icon"
 			/>
 		),

@@ -2,7 +2,6 @@
  * External dependencies
  */
 import { __ } from '@wordpress/i18n';
-import { TotalsWrapper } from '@woocommerce/blocks-checkout';
 import Title from '@woocommerce/base-components/title';
 import { withFilteredAttributes } from '@woocommerce/shared-hocs';
 

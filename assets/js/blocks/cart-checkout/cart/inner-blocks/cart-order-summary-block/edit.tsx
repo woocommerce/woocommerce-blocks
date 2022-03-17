@@ -4,6 +4,8 @@
 import { useBlockProps, InnerBlocks } from '@wordpress/block-editor';
 import type { TemplateArray } from '@wordpress/blocks';
 import { innerBlockAreas } from '@woocommerce/blocks-checkout';
+import { __ } from '@wordpress/i18n';
+import Title from '@woocommerce/base-components/title';
 
 /**
  * Internal dependencies
@@ -34,6 +36,9 @@ export const Edit = ( { clientId }: { clientId: string } ): JSX.Element => {
 
 	return (
 		<div { ...blockProps }>
+			<Title headingLevel="2" className="wc-block-cart__totals-title">
+				{ __( 'Cart totals', 'woo-gutenberg-products-block' ) }
+			</Title>
 			<InnerBlocks
 				allowedBlocks={ allowedBlocks }
 				template={ defaultTemplate }

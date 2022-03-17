@@ -11,9 +11,12 @@
 		"reusable": false
 	},
 	"attributes": {
-		"className": {
-			"type": "string",
-			"default": ""
+		"lock": {
+			"type": "object",
+			"default": {
+				"remove": true,
+				"move": true
+			}
 		}
 	},
 	"parent": [ "woocommerce/cart-order-summary-block" ],
