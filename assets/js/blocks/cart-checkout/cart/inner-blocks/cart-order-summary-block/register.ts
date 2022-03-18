@@ -81,3 +81,13 @@ registerCheckoutBlock( {
 		)
 	),
 } );
+
+registerCheckoutBlock( {
+	metadata: require( './heading/block.json' ),
+	component: lazy( () =>
+		import(
+			/* webpackChunkName: "cart-blocks/cart-order-summary-heading" */
+			'./heading/frontend'
+		)
+	),
+} );

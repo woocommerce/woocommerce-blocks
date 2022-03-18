@@ -5,7 +5,6 @@ import { useBlockProps, InnerBlocks } from '@wordpress/block-editor';
 import type { TemplateArray } from '@wordpress/blocks';
 import { innerBlockAreas } from '@woocommerce/blocks-checkout';
 import { __ } from '@wordpress/i18n';
-import Title from '@woocommerce/base-components/title';
 import { TotalsFooterItem } from '@woocommerce/base-components/cart-checkout';
 import { getCurrencyFromPriceResponse } from '@woocommerce/price-format';
 import { useStoreCart } from '@woocommerce/base-context/hooks';
@@ -24,6 +23,13 @@ export const Edit = ( { clientId }: { clientId: string } ): JSX.Element => {
 		innerBlockAreas.CART_ORDER_SUMMARY
 	);
 	const defaultTemplate = [
+		[
+			'woocommerce/order-summary-heading-block',
+			{
+				content: __( 'Cart totals', 'woo-gutenberg-products-block' ),
+			},
+			[],
+		],
 		[ 'woocommerce/order-summary-subtotal-block', {}, [] ],
 		[ 'woocommerce/order-summary-fee-block', {}, [] ],
 		[ 'woocommerce/order-summary-discount-block', {}, [] ],
@@ -40,9 +46,6 @@ export const Edit = ( { clientId }: { clientId: string } ): JSX.Element => {
 
 	return (
 		<div { ...blockProps }>
-			<Title headingLevel="2" className="wc-block-cart__totals-title">
-				{ __( 'Cart totals', 'woo-gutenberg-products-block' ) }
-			</Title>
 			<InnerBlocks
 				allowedBlocks={ allowedBlocks }
 				template={ defaultTemplate }

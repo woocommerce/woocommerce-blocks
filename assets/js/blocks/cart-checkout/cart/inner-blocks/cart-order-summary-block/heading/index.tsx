@@ -9,15 +9,7 @@ import { registerFeaturePluginBlockType } from '@woocommerce/block-settings';
  * Internal dependencies
  */
 import { Edit, Save } from './edit';
-import attributes from './attributes';
 import metadata from './block.json';
-import './subtotal';
-import './fee';
-import './discount';
-import './shipping';
-import './coupon-form';
-import './taxes';
-import './heading';
 
 registerFeaturePluginBlockType( metadata, {
 	icon: {
@@ -28,7 +20,6 @@ registerFeaturePluginBlockType( metadata, {
 			/>
 		),
 	},
-	attributes,
 	edit: Edit,
 	save: Save,
 } );

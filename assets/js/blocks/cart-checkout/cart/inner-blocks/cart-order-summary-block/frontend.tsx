@@ -26,9 +26,6 @@ const FrontendBlock = ( {
 
 	return (
 		<div className={ className }>
-			<Title headingLevel="2" className="wc-block-cart__totals-title">
-				{ __( 'Cart totals', 'woo-gutenberg-products-block' ) }
-			</Title>
 			{ children }
 			<TotalsFooterItem
 				currency={ totalsCurrency }
