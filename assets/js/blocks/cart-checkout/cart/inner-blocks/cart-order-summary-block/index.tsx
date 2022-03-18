@@ -13,7 +13,6 @@ import attributes from './attributes';
 import metadata from './block.json';
 import './subtotal';
 import './fee';
-import './total';
 import './discount';
 import './shipping';
 import './coupon-form';

@@ -5,6 +5,7 @@ import { __ } from '@wordpress/i18n';
 import { useBlockProps, InspectorControls } from '@wordpress/block-editor';
 import { PanelBody, ToggleControl } from '@wordpress/components';
 import { getSetting } from '@woocommerce/settings';
+import Noninteractive from '@woocommerce/base-components/noninteractive';
 
 /**
  * Internal dependencies
@@ -57,10 +58,12 @@ export const Edit = ( {
 					</PanelBody>
 				) }
 			</InspectorControls>
-			<Block
-				className={ className }
-				isShippingCalculatorEnabled={ isShippingCalculatorEnabled }
-			/>
+			<Noninteractive>
+				<Block
+					className={ className }
+					isShippingCalculatorEnabled={ isShippingCalculatorEnabled }
+				/>
+			</Noninteractive>
 		</div>
 	);
 };

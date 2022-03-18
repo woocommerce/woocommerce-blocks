@@ -43,16 +43,6 @@ registerCheckoutBlock( {
 } );
 
 registerCheckoutBlock( {
-	metadata: require( './total/block.json' ),
-	component: lazy( () =>
-		import(
-			/* webpackChunkName: "cart-blocks/cart-order-summary-total" */
-			'./total/frontend'
-		)
-	),
-} );
-
-registerCheckoutBlock( {
 	metadata: require( './discount/block.json' ),
 	component: lazy( () =>
 		import(

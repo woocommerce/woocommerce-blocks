@@ -6,6 +6,9 @@ import type { TemplateArray } from '@wordpress/blocks';
 import { innerBlockAreas } from '@woocommerce/blocks-checkout';
 import { __ } from '@wordpress/i18n';
 import Title from '@woocommerce/base-components/title';
+import { TotalsFooterItem } from '@woocommerce/base-components/cart-checkout';
+import { getCurrencyFromPriceResponse } from '@woocommerce/price-format';
+import { useStoreCart } from '@woocommerce/base-context/hooks';
 
 /**
  * Internal dependencies
@@ -15,6 +18,8 @@ import { OrderMetaSlotFill } from './slotfills';
 
 export const Edit = ( { clientId }: { clientId: string } ): JSX.Element => {
 	const blockProps = useBlockProps();
+	const { cartTotals } = useStoreCart();
+	const totalsCurrency = getCurrencyFromPriceResponse( cartTotals );
 	const allowedBlocks = getAllowedBlocks(
 		innerBlockAreas.CART_ORDER_SUMMARY
 	);
@@ -25,7 +30,6 @@ export const Edit = ( { clientId }: { clientId: string } ): JSX.Element => {
 		[ 'woocommerce/order-summary-coupon-form-block', {}, [] ],
 		[ 'woocommerce/order-summary-shipping-block', {}, [] ],
 		[ 'woocommerce/order-summary-taxes-block', {}, [] ],
-		[ 'woocommerce/order-summary-total-block', {}, [] ],
 	] as TemplateArray;
 
 	useForcedLayout( {
@@ -43,6 +47,10 @@ export const Edit = ( { clientId }: { clientId: string } ): JSX.Element => {
 				allowedBlocks={ allowedBlocks }
 				template={ defaultTemplate }
 				templateLock="insert"
+			/>
+			<TotalsFooterItem
+				currency={ totalsCurrency }
+				values={ cartTotals }
 			/>
 			<OrderMetaSlotFill />
 		</div>
