@@ -1,7 +1,6 @@
 /**
  * External dependencies
  */
-import classnames from 'classnames';
 import { useBlockProps, InnerBlocks } from '@wordpress/block-editor';
 import { Sidebar } from '@woocommerce/base-components/sidebar-layout';
 import { innerBlockAreas } from '@woocommerce/blocks-checkout';
@@ -16,25 +15,14 @@ import {
 	getAllowedBlocks,
 } from '../../../cart-checkout/shared';
 
-export const Edit = ( {
-	clientId,
-	attributes,
-}: {
-	clientId: string;
-	attributes: {
-		className?: string;
-	};
-} ): JSX.Element => {
-	const blockProps = useBlockProps( {
-		className: classnames(
-			'wc-block-checkout__sidebar',
-			attributes?.className
-		),
-	} );
-	const allowedBlocks = getAllowedBlocks( innerBlockAreas.CHECKOUT_TOTALS );
-
+export const Edit = ( { clientId }: { clientId: string } ): JSX.Element => {
+	const blockProps = useBlockProps( { className: 'wc-block-cart__sidebar' } );
+	const allowedBlocks = getAllowedBlocks( innerBlockAreas.CART_TOTALS );
 	const defaultTemplate = [
-		[ 'woocommerce/checkout-order-summary-block', {}, [] ],
+		[ 'woocommerce/cart-order-summary-block', {}, [] ],
+		[ 'woocommerce/cart-express-payment-block', {}, [] ],
+		[ 'woocommerce/proceed-to-checkout-block', {}, [] ],
+		[ 'woocommerce/cart-accepted-payment-methods-block', {}, [] ],
 	] as TemplateArray;
 
 	useForcedLayout( {
@@ -47,8 +35,8 @@ export const Edit = ( {
 		<Sidebar { ...blockProps }>
 			<InnerBlocks
 				allowedBlocks={ allowedBlocks }
-				templateLock={ false }
 				template={ defaultTemplate }
+				templateLock={ false }
 				renderAppender={ InnerBlocks.ButtonBlockAppender }
 			/>
 		</Sidebar>

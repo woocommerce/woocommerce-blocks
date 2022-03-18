@@ -2,6 +2,7 @@
  * External dependencies
  */
 import { __ } from '@wordpress/i18n';
+import classnames from 'classnames';
 import { useContainerWidthContext } from '@woocommerce/base-context';
 import { Panel } from '@woocommerce/blocks-checkout';
 import type { CartItem } from '@woocommerce/types';
@@ -13,21 +14,26 @@ import OrderSummaryItem from './order-summary-item';
 import './style.scss';
 
 interface OrderSummaryProps {
+	className: string;
 	cartItems: CartItem[];
 }
 
 const OrderSummary = ( {
+	className = '',
 	cartItems = [],
 }: OrderSummaryProps ): null | JSX.Element => {
 	const { isLarge, hasContainerWidth } = useContainerWidthContext();
 
 	if ( ! hasContainerWidth ) {
-		return null;
+		//return null;
 	}
 
 	return (
 		<Panel
-			className="wc-block-components-order-summary"
+			className={ classnames(
+				'wc-block-components-order-summary',
+				className
+			) }
 			initialOpen={ isLarge }
 			hasBorder={ false }
 			title={

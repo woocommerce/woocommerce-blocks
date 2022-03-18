@@ -72,3 +72,15 @@ body.wc-lock-selected-block--remove {
 	max-height: 1000px;
 	overflow: hidden;
 }
+
+.wp-block-woocommerce-checkout-order-summary-block {
+	.block-editor-block-list__layout > div {
+		margin: 0 !important;
+	}
+	.wc-block-components-totals-item,
+	.wc-block-components-totals-coupon,
+	.wc-block-components-order-summary,
+	.wc-block-components-totals-shipping {
+		box-sizing: border-box;
+	}
+}
