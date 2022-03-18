@@ -8,5 +8,6 @@ const config = require( 'config' );
  *
  * @type {string}
  */
-export const SIMPLE_PRODUCT_NAME = 'Woo Single #1';
+export const SIMPLE_VIRTUAL_PRODUCT_NAME = 'Woo Single #1';
+export const SIMPLE_PHYSICAL_PRODUCT_NAME = '128GB USB Stick';
 export const BILLING_DETAILS = config.get( 'addresses.customer.billing' );
