@@ -6,6 +6,7 @@ import { useBlockProps, InspectorControls } from '@wordpress/block-editor';
 import { PanelBody, ToggleControl } from '@wordpress/components';
 import { getSetting } from '@woocommerce/settings';
 import Noninteractive from '@woocommerce/base-components/noninteractive';
+import { useCheckoutContext } from '@woocommerce/base-context';
 
 /**
  * Internal dependencies
@@ -27,12 +28,16 @@ export const Edit = ( {
 	setAttributes: ( attributes: Record< string, unknown > ) => void;
 } ): JSX.Element => {
 	const { isShippingCalculatorEnabled, className } = attributes;
+	const { isCart, ...rest } = useCheckoutContext();
 	const shippingEnabled = getSetting( 'shippingEnabled', true );
 	const blockProps = useBlockProps();
+
+	// @todo isCart broken in editor due to the context
+
 	return (
 		<div { ...blockProps }>
 			<InspectorControls>
-				{ shippingEnabled && (
+				{ shippingEnabled && isCart && (
 					<PanelBody
 						title={ __(
 							'Shipping rates',

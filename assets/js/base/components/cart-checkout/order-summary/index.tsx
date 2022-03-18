@@ -25,6 +25,7 @@ const OrderSummary = ( {
 	const { isLarge, hasContainerWidth } = useContainerWidthContext();
 
 	if ( ! hasContainerWidth ) {
+		// @todo broken in editor due to the context
 		//return null;
 	}
 
