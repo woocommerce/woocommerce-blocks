@@ -7,8 +7,6 @@ use Automattic\WooCommerce\StoreApi\Utilities\DraftOrderTrait;
  * CartUpdateCustomer class.
  *
  * Updates the customer billing and shipping address and returns an updated cart--things such as taxes may be recalculated.
- *
- * @internal This API is used internally by Blocks--it is still in flux and may be subject to revisions.
  */
 class CartUpdateCustomer extends AbstractCartRoute {
 	use DraftOrderTrait;
@@ -107,13 +105,24 @@ class CartUpdateCustomer extends AbstractCartRoute {
 			)
 		);
 
+		wc_do_deprecated_action(
+			'woocommerce_blocks_cart_update_customer_from_request',
+			array(
+				$customer,
+				$request,
+			),
+			'7.2.0',
+			'woocommerce_store_api_cart_update_customer_from_request',
+			'This action was deprecated in WooCommerce Blocks version 7.2.0. Please use woocommerce_store_api_cart_update_customer_from_request instead.'
+		);
+
 		/**
 		 * Fires when the Checkout Block/Store API updates a customer from the API request data.
 		 *
 		 * @param \WC_Customer $customer Customer object.
 		 * @param \WP_REST_Request $request Full details about the request.
 		 */
-		do_action( 'woocommerce_blocks_cart_update_customer_from_request', $customer, $request );
+		do_action( 'woocommerce_store_api_cart_update_customer_from_request', $customer, $request );
 
 		$customer->save();
 

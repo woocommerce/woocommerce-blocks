@@ -3,11 +3,9 @@ namespace Automattic\WooCommerce\StoreApi\Schemas\V1;
 
 use Automattic\WooCommerce\StoreApi\Utilities\DraftOrderTrait;
 use Automattic\WooCommerce\StoreApi\Utilities\QuantityLimits;
+
 /**
  * CartItemSchema class.
- *
- * @internal This API is used internally by Blocks--it is still in flux and may be subject to revisions.
- * @since 2.5.0
  */
 class CartItemSchema extends ProductSchema {
 	use DraftOrderTrait;
@@ -421,6 +419,8 @@ class CartItemSchema extends ProductSchema {
 				 *
 				 * Filters the variation option name for custom option slugs.
 				 *
+				 * @internal Matches filter name in WooCommerce core.
+				 *
 				 * @param string $value The name to display.
 				 * @param null $unused Unused because this is not a variation taxonomy.
 				 * @param string $taxonomy Taxonomy or product attribute name.
@@ -451,6 +451,8 @@ class CartItemSchema extends ProductSchema {
 		 * Filters cart item data.
 		 *
 		 * Filters the variation option name for custom option slugs.
+		 *
+		 * @internal Matches filter name in WooCommerce core.
 		 *
 		 * @param array $item_data Cart item data. Empty by default.
 		 * @param array $cart_item Cart item array.
