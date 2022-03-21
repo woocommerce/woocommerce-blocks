@@ -9,7 +9,7 @@ import CART_LINE_ITEMS from './cart-line-items-block/block.json';
 import CART_TOTALS from './cart-totals-block/block.json';
 import PROCEED_TO_CHECKOUT from './proceed-to-checkout-block/block.json';
 import CART_ACCEPTED_PAYMENT_METHODS from './cart-accepted-payment-methods-block/block.json';
-import CART_ORDER_SUMMARY from './cart-order-summary/block.json';
+import CART_ORDER_SUMMARY from './cart-order-summary-block/block.json';
 import CART_ORDER_SUMMARY_SUBTOTAL from './cart-order-summary-subtotal/block.json';
 import CART_ORDER_SUMMARY_FEE from './cart-order-summary-fee/block.json';
 import CART_ORDER_SUMMARY_DISCOUNT from './cart-order-summary-discount/block.json';

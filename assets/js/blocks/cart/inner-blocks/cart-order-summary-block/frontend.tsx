@@ -12,10 +12,10 @@ import { OrderMetaSlotFill } from './slotfills';
 
 const FrontendBlock = ( {
 	children,
-	className,
+	className = '',
 }: {
 	children: JSX.Element | JSX.Element[];
-	className: string;
+	className?: string;
 } ): JSX.Element | null => {
 	const { cartTotals } = useStoreCart();
 	const totalsCurrency = getCurrencyFromPriceResponse( cartTotals );

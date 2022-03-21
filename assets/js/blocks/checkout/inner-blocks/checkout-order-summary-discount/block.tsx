@@ -22,7 +22,7 @@ const DiscountSlotFill = (): JSX.Element => {
 	return <ExperimentalDiscountsMeta.Slot { ...discountsSlotFillProps } />;
 };
 
-const Block = ( { className }: { className: string } ): JSX.Element => {
+const Block = ( { className = '' }: { className?: string } ): JSX.Element => {
 	const { cartTotals } = useStoreCart();
 
 	const {

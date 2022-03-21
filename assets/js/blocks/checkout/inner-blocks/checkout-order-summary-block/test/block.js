@@ -12,13 +12,30 @@ import {
  * Internal dependencies
  */
 import { previewCart as mockPreviewCart } from '../../../../../previews/cart';
-import Block from '../block';
 import {
 	textContentMatcher,
 	textContentMatcherAcrossSiblings,
 } from '../../../../../../../tests/utils/find-by-text';
 const baseContextHooks = jest.requireMock( '@woocommerce/base-context/hooks' );
 const woocommerceSettings = jest.requireMock( '@woocommerce/settings' );
+import SummaryBlock from '../frontend';
+import SubtotalBlock from '../../checkout-order-summary-subtotal/frontend';
+import FeeBlock from '../../checkout-order-summary-fee/frontend';
+import TaxesBlock from '../../checkout-order-summary-taxes/frontend';
+import DiscountBlock from '../../checkout-order-summary-discount/frontend';
+import CouponsBlock from '../../checkout-order-summary-coupon-form/frontend';
+import ShippingBlock from '../../checkout-order-summary-shipping/frontend';
+
+const Block = ( { showRateAfterTaxName = false } ) => (
+	<SummaryBlock>
+		<SubtotalBlock />
+		<FeeBlock />
+		<DiscountBlock />
+		<CouponsBlock />
+		<ShippingBlock />
+		<TaxesBlock showRateAfterTaxName={ showRateAfterTaxName } />
+	</SummaryBlock>
+);
 
 const defaultUseStoreCartValue = {
 	cartItems: mockPreviewCart.items,

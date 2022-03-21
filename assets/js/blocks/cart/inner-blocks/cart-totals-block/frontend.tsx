@@ -11,10 +11,10 @@ import './style.scss';
 
 const FrontendBlock = ( {
 	children,
-	className,
+	className = '',
 }: {
 	children: JSX.Element | JSX.Element[];
-	className: string;
+	className?: string;
 } ): JSX.Element => {
 	return (
 		<Sidebar
