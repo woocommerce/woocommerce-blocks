@@ -223,7 +223,7 @@ class ProductQuery {
 			$args['meta_key'] = $ordering_args['meta_key']; // phpcs:ignore
 		}
 
-		return $args;
+		return apply_filters( 'store_api_product_query_args', $args, $request );
 	}
 
 	/**
