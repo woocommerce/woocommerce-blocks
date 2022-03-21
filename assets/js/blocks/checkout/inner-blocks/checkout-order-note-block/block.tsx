@@ -4,7 +4,8 @@
 import classnames from 'classnames';
 import { __ } from '@wordpress/i18n';
 import { FormStep } from '@woocommerce/base-components/cart-checkout';
-import { useCheckoutContext, useShippingData } from '@woocommerce/base-context';
+import { useCheckoutContext } from '@woocommerce/base-context';
+import { useShippingData } from '@woocommerce/base-context/hooks';
 
 /**
  * Internal dependencies

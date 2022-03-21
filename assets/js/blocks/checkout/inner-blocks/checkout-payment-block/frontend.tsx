@@ -2,14 +2,13 @@
  * External dependencies
  */
 import classnames from 'classnames';
+import { useStoreCart, useEmitResponse } from '@woocommerce/base-context/hooks';
+import { withFilteredAttributes } from '@woocommerce/shared-hocs';
+import { FormStep } from '@woocommerce/base-components/cart-checkout';
 import {
-	useStoreCart,
-	useEmitResponse,
 	useCheckoutContext,
 	StoreNoticesProvider,
 } from '@woocommerce/base-context';
-import { withFilteredAttributes } from '@woocommerce/shared-hocs';
-import { FormStep } from '@woocommerce/base-components/cart-checkout';
 
 /**
  * Internal dependencies

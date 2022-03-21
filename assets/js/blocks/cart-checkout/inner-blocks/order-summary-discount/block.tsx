@@ -6,9 +6,9 @@ import { getCurrencyFromPriceResponse } from '@woocommerce/price-format';
 import {
 	useStoreCartCoupons,
 	useStoreCart,
-	useCheckoutContext,
-} from '@woocommerce/base-context';
+} from '@woocommerce/base-context/hooks';
 import { ExperimentalDiscountsMeta } from '@woocommerce/blocks-checkout';
+import { useCheckoutContext } from '@woocommerce/base-context';
 
 const DiscountSlotFill = (): JSX.Element => {
 	const { isCart } = useCheckoutContext();

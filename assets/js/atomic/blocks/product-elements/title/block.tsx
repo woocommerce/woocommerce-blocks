@@ -10,7 +10,7 @@ import {
 import { isFeaturePluginBuild } from '@woocommerce/block-settings';
 import { withProductDataContext } from '@woocommerce/shared-hocs';
 import ProductName from '@woocommerce/base-components/product-name';
-import { useStoreEvents } from '@woocommerce/base-context';
+import { useStoreEvents } from '@woocommerce/base-context/hooks';
 
 /**
  * Internal dependencies

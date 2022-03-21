@@ -3,6 +3,7 @@
  */
 import { useMemo, cloneElement } from '@wordpress/element';
 import { __, sprintf } from '@wordpress/i18n';
+import { usePaymentMethodDataContext } from '@woocommerce/base-context';
 import RadioControl from '@woocommerce/base-components/radio-control';
 import {
 	usePaymentMethodInterface,
@@ -10,8 +11,7 @@ import {
 	useStoreNotices,
 	useStoreEvents,
 	useEmitResponse,
-	usePaymentMethodDataContext,
-} from '@woocommerce/base-context';
+} from '@woocommerce/base-context/hooks';
 
 /**
  * @typedef {import('@woocommerce/type-defs/contexts').CustomerPaymentMethod} CustomerPaymentMethod

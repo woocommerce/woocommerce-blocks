@@ -11,7 +11,7 @@ import {
 	useStoreCartItemQuantity,
 	useStoreEvents,
 	useStoreCart,
-} from '@woocommerce/base-context';
+} from '@woocommerce/base-context/hooks';
 import {
 	ProductBackorderBadge,
 	ProductImage,

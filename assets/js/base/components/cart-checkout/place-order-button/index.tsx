@@ -1,7 +1,7 @@
 /**
  * External dependencies
  */
-import { useCheckoutSubmit } from '@woocommerce/base-context';
+import { useCheckoutSubmit } from '@woocommerce/base-context/hooks';
 import { Icon, check } from '@wordpress/icons';
 import Button from '@woocommerce/base-components/button';
 

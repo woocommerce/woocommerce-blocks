@@ -5,6 +5,8 @@ import { __ } from '@wordpress/i18n';
 import {
 	useEmitResponse,
 	useExpressPaymentMethods,
+} from '@woocommerce/base-context/hooks';
+import {
 	StoreNoticesProvider,
 	useCheckoutContext,
 	usePaymentMethodDataContext,

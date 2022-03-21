@@ -20,7 +20,6 @@ const wcDepMap = {
 	'@woocommerce/shared-hocs': [ 'wc', 'wcBlocksSharedHocs' ],
 	'@woocommerce/price-format': [ 'wc', 'priceFormat' ],
 	'@woocommerce/blocks-checkout': [ 'wc', 'blocksCheckout' ],
-	'@woocommerce/base-context': [ 'wc', 'wcBaseContext' ],
 };
 
 const wcHandleMap = {
@@ -32,7 +31,6 @@ const wcHandleMap = {
 	'@woocommerce/shared-hocs': 'wc-blocks-shared-hocs',
 	'@woocommerce/price-format': 'wc-price-format',
 	'@woocommerce/blocks-checkout': 'wc-blocks-checkout',
-	'@woocommerce/base-context': 'wc-blocks-base-context',
 };
 
 const getAlias = ( options = {} ) => {
@@ -50,6 +48,10 @@ const getAlias = ( options = {} ) => {
 		'@woocommerce/base-components': path.resolve(
 			__dirname,
 			`../assets/js/${ pathPart }base/components/`
+		),
+		'@woocommerce/base-context': path.resolve(
+			__dirname,
+			`../assets/js/${ pathPart }base/context/`
 		),
 		'@woocommerce/base-hocs': path.resolve(
 			__dirname,

@@ -1,7 +1,7 @@
 /**
  * External dependencies
  */
-import { useStoreCart } from '@woocommerce/base-context';
+import { useStoreCart } from '@woocommerce/base-context/hooks';
 
 type FilledMiniCartContentsBlockProps = {
 	children: JSX.Element;

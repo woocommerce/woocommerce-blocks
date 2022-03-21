@@ -17,7 +17,7 @@ import {
 import Dinero from 'dinero.js';
 import { getSetting } from '@woocommerce/settings';
 import { useMemo } from '@wordpress/element';
-import { useStoreCart } from '@woocommerce/base-context';
+import { useStoreCart } from '@woocommerce/base-context/hooks';
 import { CartItem, isString } from '@woocommerce/types';
 
 /**

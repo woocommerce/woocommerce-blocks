@@ -5,7 +5,7 @@ import { __ } from '@wordpress/i18n';
 import {
 	useExpressPaymentMethods,
 	usePaymentMethodInterface,
-} from '@woocommerce/base-context';
+} from '@woocommerce/base-context/hooks';
 import {
 	cloneElement,
 	isValidElement,

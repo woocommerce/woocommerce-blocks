@@ -2,12 +2,12 @@
  * External dependencies
  */
 import { render, act } from '@testing-library/react';
+import { StoreNoticesProvider } from '@woocommerce/base-context';
 
 /**
  * Internal dependencies
  */
 import { useStoreNotices } from '../use-store-notices';
-import { StoreNoticesProvider } from '../../providers/store-notices';
 
 describe( 'useStoreNotices', () => {
 	function setup() {

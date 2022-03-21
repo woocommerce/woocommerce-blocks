@@ -2,11 +2,7 @@
  * External dependencies
  */
 import { useMemo, useRef, useEffect } from '@wordpress/element';
-
-/**
- * Internal dependencies
- */
-import { useStoreSnackbarNoticesContext } from '../providers/store-snackbar-notices';
+import { useStoreSnackbarNoticesContext } from '@woocommerce/base-context/providers';
 
 export const useStoreSnackbarNotices = () => {
 	const {

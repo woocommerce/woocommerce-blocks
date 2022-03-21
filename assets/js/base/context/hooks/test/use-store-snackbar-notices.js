@@ -2,12 +2,12 @@
  * External dependencies
  */
 import { render, act } from '@testing-library/react';
+import { StoreSnackbarNoticesProvider } from '@woocommerce/base-context/providers';
 
 /**
  * Internal dependencies
  */
 import { useStoreSnackbarNotices } from '../use-store-snackbar-notices';
-import { StoreSnackbarNoticesProvider } from '../../providers/store-snackbar-notices';
 
 describe( 'useStoreNoticesWithSnackbar', () => {
 	function setup() {

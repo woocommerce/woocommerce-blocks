@@ -8,7 +8,7 @@ import {
 	useQueryStateByKey,
 	useQueryStateByContext,
 	useCollectionData,
-} from '@woocommerce/base-context';
+} from '@woocommerce/base-context/hooks';
 import { getSetting } from '@woocommerce/settings';
 import { useCallback, useEffect, useState, useMemo } from '@wordpress/element';
 import CheckboxList from '@woocommerce/base-components/checkbox-list';
