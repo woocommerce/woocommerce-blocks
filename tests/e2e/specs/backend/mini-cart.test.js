@@ -91,7 +91,7 @@ describe( `${ block.name } Block`, () => {
 		it( 'can only be inserted once', async () => {
 			await addBlockToWidgetsArea();
 			const miniCartButton = await page.$x(
-				blocks.selectors.insertButtonDisabled
+				block.selectors.insertButtonDisabled
 			);
 
 			expect( miniCartButton ).toHaveLength( 1 );
