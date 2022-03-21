@@ -17,7 +17,7 @@ import {
 	textContentMatcher,
 	textContentMatcherAcrossSiblings,
 } from '../../../../../../../tests/utils/find-by-text';
-const baseContextHooks = jest.requireMock( '@woocommerce/base-context/hooks' );
+const baseContextHooks = jest.requireMock( '@woocommerce/base-context' );
 const woocommerceSettings = jest.requireMock( '@woocommerce/settings' );
 
 const defaultUseStoreCartValue = {
@@ -32,8 +32,8 @@ const defaultUseStoreCartValue = {
 	cartHasCalculatedShipping: mockPreviewCart.has_calculated_shipping,
 };
 
-jest.mock( '@woocommerce/base-context/hooks', () => ( {
-	...jest.requireActual( '@woocommerce/base-context/hooks' ),
+jest.mock( '@woocommerce/base-context', () => ( {
+	...jest.requireActual( '@woocommerce/base-context' ),
 
 	/*
 	We need to redefine this here despite the defaultUseStoreCartValue above

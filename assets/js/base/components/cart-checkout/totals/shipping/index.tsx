@@ -4,7 +4,7 @@
 import classnames from 'classnames';
 import { __ } from '@wordpress/i18n';
 import { useState } from '@wordpress/element';
-import { useStoreCart } from '@woocommerce/base-context/hooks';
+import { useStoreCart } from '@woocommerce/base-context';
 import { TotalsItem } from '@woocommerce/blocks-checkout';
 import type { Currency } from '@woocommerce/price-format';
 import type { ReactElement } from 'react';

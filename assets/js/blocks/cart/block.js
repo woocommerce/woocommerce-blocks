@@ -2,19 +2,19 @@
  * External dependencies
  */
 import { __ } from '@wordpress/i18n';
-import { useStoreCart } from '@woocommerce/base-context/hooks';
+import {
+	useStoreCart,
+	ValidationContextProvider,
+	StoreNoticesProvider,
+	StoreSnackbarNoticesProvider,
+	CartProvider,
+} from '@woocommerce/base-context';
 import { useEffect } from '@wordpress/element';
 import LoadingMask from '@woocommerce/base-components/loading-mask';
-import { ValidationContextProvider } from '@woocommerce/base-context';
 import { CURRENT_USER_IS_ADMIN } from '@woocommerce/settings';
 import BlockErrorBoundary from '@woocommerce/base-components/block-error-boundary';
 import { translateJQueryEventToNative } from '@woocommerce/base-utils';
 import withScrollToTop from '@woocommerce/base-hocs/with-scroll-to-top';
-import {
-	StoreNoticesProvider,
-	StoreSnackbarNoticesProvider,
-	CartProvider,
-} from '@woocommerce/base-context/providers';
 import { SlotFillProvider } from '@woocommerce/blocks-checkout';
 
 /**

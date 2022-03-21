@@ -1,7 +1,7 @@
 /**
  * External dependencies
  */
-import { useStoreCart } from '@woocommerce/base-context/hooks';
+import { useStoreCart } from '@woocommerce/base-context';
 
 /**
  * Internal dependencies

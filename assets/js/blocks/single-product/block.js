@@ -7,8 +7,10 @@ import {
 	InnerBlockLayoutContextProvider,
 	ProductDataContextProvider,
 } from '@woocommerce/shared-context';
-import { StoreNoticesProvider } from '@woocommerce/base-context';
-import { useStoreEvents } from '@woocommerce/base-context/hooks';
+import {
+	StoreNoticesProvider,
+	useStoreEvents,
+} from '@woocommerce/base-context';
 
 /**
  * Internal dependencies

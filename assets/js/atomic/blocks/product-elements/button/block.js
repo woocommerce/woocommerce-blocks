@@ -4,10 +4,7 @@
 import PropTypes from 'prop-types';
 import classnames from 'classnames';
 import { __, _n, sprintf } from '@wordpress/i18n';
-import {
-	useStoreEvents,
-	useStoreAddToCart,
-} from '@woocommerce/base-context/hooks';
+import { useStoreEvents, useStoreAddToCart } from '@woocommerce/base-context';
 import { decodeEntities } from '@wordpress/html-entities';
 import { CART_URL } from '@woocommerce/block-settings';
 import { getSetting } from '@woocommerce/settings';

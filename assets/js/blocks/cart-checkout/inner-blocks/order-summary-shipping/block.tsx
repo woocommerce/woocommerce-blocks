@@ -3,8 +3,7 @@
  */
 import { TotalsShipping } from '@woocommerce/base-components/cart-checkout';
 import { getCurrencyFromPriceResponse } from '@woocommerce/price-format';
-import { useStoreCart } from '@woocommerce/base-context/hooks';
-import { useCheckoutContext } from '@woocommerce/base-context';
+import { useStoreCart, useCheckoutContext } from '@woocommerce/base-context';
 
 const Block = ( {
 	className,

@@ -58,14 +58,15 @@ final class AssetsController {
 		$this->api->register_script( 'wc-blocks', $this->api->get_block_asset_build_path( 'wc-blocks' ), [ 'wc-blocks-vendors' ], false );
 		$this->api->register_script( 'wc-blocks-shared-context', 'build/wc-blocks-shared-context.js', [] );
 		$this->api->register_script( 'wc-blocks-shared-hocs', 'build/wc-blocks-shared-hocs.js', [], false );
+		$this->api->register_script( 'wc-blocks-base-context', 'build/wc-base-context.js', [] );
 
 		// The price package is shared externally so has no blocks prefix.
 		$this->api->register_script( 'wc-price-format', 'build/price-format.js', [], false );
 
-		if ( Package::feature()->is_feature_plugin_build() ) {
+		// if ( Package::feature()->is_feature_plugin_build() ) {
 			$this->api->register_script( 'wc-blocks-checkout-inner-blocks-frontend', 'build/checkout-inner-blocks-frontend.js', [] );
 			$this->api->register_script( 'wc-blocks-checkout', 'build/blocks-checkout.js', [] );
-		}
+		// }
 
 		wp_add_inline_script(
 			'wc-blocks-middleware',

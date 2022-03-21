@@ -5,11 +5,11 @@ import { __, _n, sprintf } from '@wordpress/i18n';
 import Button from '@woocommerce/base-components/button';
 import { Icon, check } from '@wordpress/icons';
 import { useState, useEffect } from '@wordpress/element';
-import { useAddToCartFormContext } from '@woocommerce/base-context';
 import {
 	useStoreEvents,
 	useStoreAddToCart,
-} from '@woocommerce/base-context/hooks';
+	useAddToCartFormContext,
+} from '@woocommerce/base-context';
 import { useInnerBlockLayoutContext } from '@woocommerce/shared-context';
 
 /**

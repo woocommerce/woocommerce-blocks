@@ -2,7 +2,7 @@
  * External dependencies
  */
 import { ExperimentalOrderMeta } from '@woocommerce/blocks-checkout';
-import { useStoreCart } from '@woocommerce/base-context/hooks';
+import { useStoreCart } from '@woocommerce/base-context';
 
 // @todo Consider deprecating OrderMetaSlotFill and DiscountSlotFill in favour of inner block areas.
 export const OrderMetaSlotFill = (): JSX.Element => {

@@ -2,7 +2,7 @@
  * External dependencies
  */
 import { __ } from '@wordpress/i18n';
-import { useQueryStateByKey } from '@woocommerce/base-context/hooks';
+import { useQueryStateByKey } from '@woocommerce/base-context';
 import { getSetting } from '@woocommerce/settings';
 import { useMemo } from '@wordpress/element';
 import classnames from 'classnames';

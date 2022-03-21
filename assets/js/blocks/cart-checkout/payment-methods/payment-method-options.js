@@ -7,12 +7,10 @@ import {
 	useEmitResponse,
 	useStoreNotices,
 	useStoreEvents,
-} from '@woocommerce/base-context/hooks';
-import { cloneElement, useCallback } from '@wordpress/element';
-import {
 	useEditorContext,
 	usePaymentMethodDataContext,
 } from '@woocommerce/base-context';
+import { cloneElement, useCallback } from '@wordpress/element';
 import classNames from 'classnames';
 import RadioControlAccordion from '@woocommerce/base-components/radio-control-accordion';
 

@@ -3,7 +3,7 @@
  */
 import classnames from 'classnames';
 import { SidebarLayout } from '@woocommerce/base-components/sidebar-layout';
-import { useStoreCart, useStoreNotices } from '@woocommerce/base-context/hooks';
+import { useStoreCart, useStoreNotices } from '@woocommerce/base-context';
 import { useEffect } from '@wordpress/element';
 import { decodeEntities } from '@wordpress/html-entities';
 

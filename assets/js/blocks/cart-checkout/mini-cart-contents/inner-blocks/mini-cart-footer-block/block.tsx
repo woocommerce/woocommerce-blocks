@@ -7,13 +7,13 @@ import { getCurrencyFromPriceResponse } from '@woocommerce/price-format';
 import {
 	usePaymentMethods,
 	useStoreCart,
-} from '@woocommerce/base-context/hooks';
+	PaymentMethodDataProvider,
+} from '@woocommerce/base-context';
 import PaymentMethodIcons from '@woocommerce/base-components/cart-checkout/payment-method-icons';
 import { getIconsFromPaymentMethods } from '@woocommerce/base-utils';
 import { getSetting } from '@woocommerce/settings';
 import { CART_URL, CHECKOUT_URL } from '@woocommerce/block-settings';
 import Button from '@woocommerce/base-components/button';
-import { PaymentMethodDataProvider } from '@woocommerce/base-context';
 import classNames from 'classnames';
 
 const PaymentMethodIconsElement = (): JSX.Element => {

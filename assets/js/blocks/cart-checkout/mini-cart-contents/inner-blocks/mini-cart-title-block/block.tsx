@@ -2,7 +2,7 @@
  * External dependencies
  */
 import { sprintf, _n, __ } from '@wordpress/i18n';
-import { useStoreCart } from '@woocommerce/base-context/hooks';
+import { useStoreCart } from '@woocommerce/base-context';
 import classNames from 'classnames';
 
 /**

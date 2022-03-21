@@ -3,7 +3,7 @@
  */
 import classnames from 'classnames';
 import { useBlockProps } from '@wordpress/block-editor';
-import { useCheckoutAddress } from '@woocommerce/base-context/hooks';
+import { useCheckoutAddress } from '@woocommerce/base-context';
 import { innerBlockAreas } from '@woocommerce/blocks-checkout';
 
 /**

@@ -4,8 +4,10 @@
 import classnames from 'classnames';
 import { withFilteredAttributes } from '@woocommerce/shared-hocs';
 import { FormStep } from '@woocommerce/base-components/cart-checkout';
-import { useCheckoutContext } from '@woocommerce/base-context';
-import { useCheckoutAddress } from '@woocommerce/base-context/hooks';
+import {
+	useCheckoutContext,
+	useCheckoutAddress,
+} from '@woocommerce/base-context';
 
 /**
  * Internal dependencies

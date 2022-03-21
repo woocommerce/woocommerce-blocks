@@ -19,6 +19,7 @@ This document gives an overview of the flow for the checkout in the WooCommerce 
     - [`onShippingRateFail`](#onshippingratefail)
     - [`onShippingRateSelectSuccess`](#onshippingrateselectsuccess)
     - [`onShippingRateSelectFail`](#onshippingrateselectfail)
+- [](#)
 
 The architecture of the Checkout Block is derived from the following principles:
 
@@ -165,7 +166,7 @@ const MyComponent = ( { onCheckoutValidationBeforeProcessing } ) => {
 This internal hook contains a collection of API interfaces for event emitter related usage. It can be used by simply adding this to a component:
 
 ```jsx
-import { useEmitResponse } from '@woocommerce/base-context/hooks';
+import { useEmitResponse } from '@woocommerce/base-context';
 
 const Component = () => {
 	const {
@@ -473,11 +474,10 @@ This event emitter is fired when a shipping rate selection is not being persiste
 
 This event emitter doesn't care about any registered observer response and will simply execute all registered observers passing them the current error status in the context.
 
-<!-- FEEDBACK -->
----
+## <!-- FEEDBACK -->
 
 [We're hiring!](https://woocommerce.com/careers/) Come work with us!
 
 🐞 Found a mistake, or have a suggestion? [Leave feedback about this document here.](https://github.com/woocommerce/woocommerce-gutenberg-products-block/issues/new?assignees=&labels=type%3A+documentation&template=--doc-feedback.md&title=Feedback%20on%20./docs/extensibility/checkout-flow-and-events.md)
-<!-- /FEEDBACK -->
 
+<!-- /FEEDBACK -->

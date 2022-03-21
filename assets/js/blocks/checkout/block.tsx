@@ -4,15 +4,16 @@
 import { __ } from '@wordpress/i18n';
 import classnames from 'classnames';
 import { createInterpolateElement, useEffect } from '@wordpress/element';
-import { useStoreCart, useStoreNotices } from '@woocommerce/base-context/hooks';
 import {
+	useStoreCart,
+	useStoreNotices,
 	useCheckoutContext,
 	useValidationContext,
 	ValidationContextProvider,
 	StoreNoticesProvider,
 	CheckoutProvider,
+	StoreSnackbarNoticesProvider,
 } from '@woocommerce/base-context';
-import { StoreSnackbarNoticesProvider } from '@woocommerce/base-context/providers';
 import BlockErrorBoundary from '@woocommerce/base-components/block-error-boundary';
 import { SidebarLayout } from '@woocommerce/base-components/sidebar-layout';
 import { CURRENT_USER_IS_ADMIN, getSetting } from '@woocommerce/settings';

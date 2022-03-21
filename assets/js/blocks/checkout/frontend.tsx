@@ -3,11 +3,11 @@
  */
 import { Children, cloneElement, isValidElement } from '@wordpress/element';
 import { getValidBlockAttributes } from '@woocommerce/base-utils';
-import { useStoreCart } from '@woocommerce/base-context';
 import {
+	useStoreCart,
 	useCheckoutExtensionData,
 	useValidation,
-} from '@woocommerce/base-context/hooks';
+} from '@woocommerce/base-context';
 import { getRegisteredBlockComponents } from '@woocommerce/blocks-registry';
 import { renderParentBlock } from '@woocommerce/atomic-utils';
 

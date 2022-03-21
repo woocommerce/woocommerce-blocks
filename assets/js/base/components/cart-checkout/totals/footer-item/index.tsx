@@ -9,7 +9,7 @@ import {
 	__experimentalApplyCheckoutFilter,
 	TotalsItem,
 } from '@woocommerce/blocks-checkout';
-import { useStoreCart } from '@woocommerce/base-context/hooks';
+import { useStoreCart } from '@woocommerce/base-context';
 import { getSetting } from '@woocommerce/settings';
 import { CartResponseTotals, Currency } from '@woocommerce/types';
 import { LooselyMustHave } from '@woocommerce/type-defs/utils';

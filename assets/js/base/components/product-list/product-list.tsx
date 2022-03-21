@@ -12,7 +12,7 @@ import {
 	useStoreProducts,
 	useSynchronizedQueryState,
 	useQueryStateByKey,
-} from '@woocommerce/base-context/hooks';
+} from '@woocommerce/base-context';
 import withScrollToTop from '@woocommerce/base-hocs/with-scroll-to-top';
 import { useInnerBlockLayoutContext } from '@woocommerce/shared-context';
 import { speak } from '@wordpress/a11y';

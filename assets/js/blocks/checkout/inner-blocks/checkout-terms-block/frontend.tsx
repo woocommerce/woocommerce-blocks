@@ -5,7 +5,7 @@ import { __ } from '@wordpress/i18n';
 import classnames from 'classnames';
 import { useState, useEffect } from '@wordpress/element';
 import { CheckboxControl } from '@woocommerce/blocks-checkout';
-import { useCheckoutSubmit } from '@woocommerce/base-context/hooks';
+import { useCheckoutSubmit } from '@woocommerce/base-context';
 import { withInstanceId } from '@wordpress/compose';
 import type { ValidationData } from '@woocommerce/type-defs/contexts';
 /**
