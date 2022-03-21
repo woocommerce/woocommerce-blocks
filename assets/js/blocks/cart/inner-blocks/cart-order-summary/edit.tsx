@@ -27,18 +27,18 @@ export const Edit = ( { clientId }: { clientId: string } ): JSX.Element => {
 	);
 	const defaultTemplate = [
 		[
-			'woocommerce/order-summary-heading-block',
+			'woocommerce/cart-order-summary-heading-block',
 			{
 				content: __( 'Cart totals', 'woo-gutenberg-products-block' ),
 			},
 			[],
 		],
-		[ 'woocommerce/order-summary-subtotal-block', {}, [] ],
-		[ 'woocommerce/order-summary-fee-block', {}, [] ],
-		[ 'woocommerce/order-summary-discount-block', {}, [] ],
-		[ 'woocommerce/order-summary-coupon-form-block', {}, [] ],
-		[ 'woocommerce/order-summary-shipping-block', {}, [] ],
-		[ 'woocommerce/order-summary-taxes-block', {}, [] ],
+		[ 'woocommerce/cart-order-summary-subtotal-block', {}, [] ],
+		[ 'woocommerce/cart-order-summary-fee-block', {}, [] ],
+		[ 'woocommerce/cart-order-summary-discount-block', {}, [] ],
+		[ 'woocommerce/cart-order-summary-coupon-form-block', {}, [] ],
+		[ 'woocommerce/cart-order-summary-shipping-block', {}, [] ],
+		[ 'woocommerce/cart-order-summary-taxes-block', {}, [] ],
 	] as TemplateArray;
 
 	useForcedLayout( {

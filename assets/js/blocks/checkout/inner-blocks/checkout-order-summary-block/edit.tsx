@@ -25,13 +25,13 @@ export const Edit = ( { clientId }: { clientId: string } ): JSX.Element => {
 		innerBlockAreas.CHECKOUT_ORDER_SUMMARY
 	);
 	const defaultTemplate = [
-		[ 'woocommerce/order-summary-cart-items-block', {}, [] ],
-		[ 'woocommerce/order-summary-subtotal-block', {}, [] ],
-		[ 'woocommerce/order-summary-fee-block', {}, [] ],
-		[ 'woocommerce/order-summary-discount-block', {}, [] ],
-		[ 'woocommerce/order-summary-coupon-form-block', {}, [] ],
-		[ 'woocommerce/order-summary-shipping-block', {}, [] ],
-		[ 'woocommerce/order-summary-taxes-block', {}, [] ],
+		[ 'woocommerce/checkout-order-summary-cart-items-block', {}, [] ],
+		[ 'woocommerce/checkout-order-summary-subtotal-block', {}, [] ],
+		[ 'woocommerce/checkout-order-summary-fee-block', {}, [] ],
+		[ 'woocommerce/checkout-order-summary-discount-block', {}, [] ],
+		[ 'woocommerce/checkout-order-summary-coupon-form-block', {}, [] ],
+		[ 'woocommerce/checkout-order-summary-shipping-block', {}, [] ],
+		[ 'woocommerce/checkout-order-summary-taxes-block', {}, [] ],
 	] as TemplateArray;
 
 	useForcedLayout( {

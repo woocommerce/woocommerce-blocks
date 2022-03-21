@@ -20,8 +20,6 @@
 		"./assets/js/blocks/checkout/inner-blocks/register-components.ts",
 		"./assets/js/blocks/cart/inner-blocks/**/index.tsx",
 		"./assets/js/blocks/cart/inner-blocks/register-components.ts",
-		"./assets/js/blocks/cart-checkout/inner-blocks/**/index.tsx",
-		"./assets/js/blocks/cart-checkout/inner-blocks/register-components.ts",
 		"./assets/js/blocks/cart-checkout/mini-cart-contents/inner-blocks/**/index.tsx",
 		"./assets/js/blocks/cart-checkout/mini-cart-contents/inner-blocks/register-components.ts"
 	],

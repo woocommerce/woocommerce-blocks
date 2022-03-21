@@ -44,7 +44,7 @@ class Cart extends AbstractBlock {
 		$script = [
 			'handle'       => 'wc-' . $this->block_name . '-block-frontend',
 			'path'         => $this->asset_api->get_block_asset_build_path( $this->block_name . '-frontend' ),
-			'dependencies' => [ 'wc-blocks-checkout-inner-blocks-frontend' ],
+			'dependencies' => [],
 		];
 		return $key ? $script[ $key ] : $script;
 	}

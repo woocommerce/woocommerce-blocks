@@ -122,3 +122,73 @@ registerCheckoutBlock( {
 		)
 	),
 } );
+
+registerCheckoutBlock( {
+	metadata: metadata.CHECKOUT_ORDER_SUMMARY_SUBTOTAL,
+	component: lazy( () =>
+		import(
+			/* webpackChunkName: "checkout-blocks/order-summary-subtotal" */
+			'./checkout-order-summary-subtotal/frontend'
+		)
+	),
+} );
+
+registerCheckoutBlock( {
+	metadata: metadata.CHECKOUT_ORDER_SUMMARY_FEE,
+	component: lazy( () =>
+		import(
+			/* webpackChunkName: "checkout-blocks/order-summary-fee" */
+			'./checkout-order-summary-fee/frontend'
+		)
+	),
+} );
+
+registerCheckoutBlock( {
+	metadata: metadata.CHECKOUT_ORDER_SUMMARY_DISCOUNT,
+	component: lazy( () =>
+		import(
+			/* webpackChunkName: "checkout-blocks/order-summary-discount" */
+			'./checkout-order-summary-discount/frontend'
+		)
+	),
+} );
+
+registerCheckoutBlock( {
+	metadata: metadata.CHECKOUT_ORDER_SUMMARY_SHIPPING,
+	component: lazy( () =>
+		import(
+			/* webpackChunkName: "checkout-blocks/order-summary-shipping" */
+			'./checkout-order-summary-shipping/frontend'
+		)
+	),
+} );
+
+registerCheckoutBlock( {
+	metadata: metadata.CHECKOUT_ORDER_SUMMARY_COUPON_FORM,
+	component: lazy( () =>
+		import(
+			/* webpackChunkName: "checkout-blocks/order-summary-coupon-form" */
+			'./checkout-order-summary-coupon-form/frontend'
+		)
+	),
+} );
+
+registerCheckoutBlock( {
+	metadata: metadata.CHECKOUT_ORDER_SUMMARY_TAXES,
+	component: lazy( () =>
+		import(
+			/* webpackChunkName: "checkout-blocks/order-summary-taxes" */
+			'./checkout-order-summary-taxes/frontend'
+		)
+	),
+} );
+
+registerCheckoutBlock( {
+	metadata: metadata.CHECKOUT_ORDER_SUMMARY_CART_ITEMS,
+	component: lazy( () =>
+		import(
+			/* webpackChunkName: "checkout-blocks/order-summary-cart-items" */
+			'./checkout-order-summary-cart-items/frontend'
+		)
+	),
+} );

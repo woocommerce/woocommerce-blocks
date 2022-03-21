@@ -42,9 +42,6 @@ const blocks = {
 	'active-filters': {},
 	cart: {},
 	checkout: {},
-	'checkout-inner-blocks': {
-		customDir: 'cart-checkout/inner-blocks',
-	},
 	'mini-cart': {
 		customDir: 'cart-checkout/mini-cart',
 		isExperimental: true,

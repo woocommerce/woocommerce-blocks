@@ -29,6 +29,7 @@ import { Icon } from '@wordpress/icons';
 /**
  * Internal dependencies
  */
+import './inner-blocks';
 import './editor.scss';
 import {
 	addClassToBody,
