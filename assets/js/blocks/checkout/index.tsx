@@ -13,6 +13,7 @@ import { BlockInstance, createBlock } from '@wordpress/blocks';
 import { Edit, Save } from './edit';
 import { blockAttributes, deprecatedAttributes } from './attributes';
 import './inner-blocks';
+import '../cart-checkout/inner-blocks';
 import metadata from './block.json';
 
 const settings = {

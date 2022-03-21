@@ -63,6 +63,7 @@ final class AssetsController {
 		$this->api->register_script( 'wc-price-format', 'build/price-format.js', [], false );
 
 		if ( Package::feature()->is_feature_plugin_build() ) {
+			$this->api->register_script( 'wc-blocks-checkout-inner-blocks-frontend', 'build/checkout-inner-blocks-frontend.js', [] );
 			$this->api->register_script( 'wc-blocks-checkout', 'build/blocks-checkout.js', [] );
 		}
 

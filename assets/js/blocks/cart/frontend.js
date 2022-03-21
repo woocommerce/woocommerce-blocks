@@ -11,7 +11,6 @@ import { renderParentBlock } from '@woocommerce/atomic-utils';
 /**
  * Internal dependencies
  */
-import './inner-blocks/register-components';
 import Block from './block';
 import { blockName, blockAttributes } from './attributes';
 

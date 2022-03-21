@@ -9,7 +9,6 @@ import { registerCheckoutBlock } from '@woocommerce/blocks-checkout';
  * Internal dependencies
  */
 import metadata from './component-metadata';
-import '../../cart-checkout/inner-blocks/register';
 
 // Modify webpack publicPath at runtime based on location of WordPress Plugin.
 // eslint-disable-next-line no-undef,camelcase
