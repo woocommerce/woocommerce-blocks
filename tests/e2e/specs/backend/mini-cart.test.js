@@ -1,11 +1,7 @@
 /**
  * External dependencies
  */
-import {
-	insertBlock,
-	canvas,
-	searchForBlock as searchForBlockFSE,
-} from '@wordpress/e2e-test-utils';
+import { insertBlock, canvas, searchForBlock } from '@wordpress/e2e-test-utils';
 
 /**
  * Internal dependencies
@@ -14,17 +10,24 @@ import {
 	openWidgetsEditorBlockInserter,
 	closeModalIfExists,
 	openWidgetEditor,
-	searchForBlock,
 	isBlockInsertedInWidgetsArea,
 	goToSiteEditor,
 	useTheme,
 	waitForCanvas,
+	addBlockToFSEArea,
 } from '../../utils.js';
 
 const block = {
 	name: 'Mini Cart',
 	slug: 'woocommerce/mini-cart',
 	class: '.wc-block-mini-cart',
+	selectors: {
+		insertButton: "//button//span[text()='Mini Cart']",
+		insertButtonDisabled:
+			"//button[@aria-disabled]//span[text()='Mini Cart']",
+		compatibilityNoticeTitle:
+			"//h1[contains(text(), 'Compatibility notice')]",
+	},
 };
 
 if ( process.env.WOOCOMMERCE_BLOCKS_PHASE < 3 ) {
@@ -42,21 +45,8 @@ const addBlockToWidgetsArea = async () => {
 	await closeModalIfExists();
 	await openWidgetsEditorBlockInserter();
 	await searchForBlock( block.name );
-	const miniCartButton = await page.$x(
-		`//button//span[text()='${ block.name }']`
-	);
-
+	const miniCartButton = await page.$x( block.selectors.insertButton );
 	await miniCartButton[ 0 ].click();
-};
-
-// insertBlock gets focus on the canvas, so the compatibility notices popup doesn't appear.
-// I created this function to avoid that.
-const addBlockToFSEArea = async () => {
-	await searchForBlockFSE( block.name );
-	const insertButton = await page.waitForXPath(
-		`//button//span[contains(text(), '${ block.name }')]`
-	);
-	await insertButton.click();
 };
 
 describe( `${ block.name } Block`, () => {
@@ -79,7 +69,7 @@ describe( `${ block.name } Block`, () => {
 		it( 'the compatibility notice appears', async () => {
 			await addBlockToWidgetsArea();
 			const compatibilityNoticeTitle = await page.$x(
-				`//h1[contains(text(), 'Compatibility notice')]`
+				block.selectors.compatibilityNoticeTitle
 			);
 			expect( compatibilityNoticeTitle.length ).toBe( 1 );
 		} );
@@ -93,7 +83,7 @@ describe( `${ block.name } Block`, () => {
 			} );
 			await addBlockToWidgetsArea();
 			const compatibilityNoticeTitle = await page.$x(
-				`//h1[contains(text(), 'Compatibility notice')]`
+				block.selectors.compatibilityNoticeTitle
 			);
 			expect( compatibilityNoticeTitle.length ).toBe( 0 );
 		} );
@@ -101,7 +91,7 @@ describe( `${ block.name } Block`, () => {
 		it( 'can only be inserted once', async () => {
 			await addBlockToWidgetsArea();
 			const miniCartButton = await page.$x(
-				`//button[@aria-disabled]//span[text()='${ block.name }']`
+				blocks.selectors.insertButtonDisabled
 			);
 
 			expect( miniCartButton ).toHaveLength( 1 );
@@ -123,9 +113,9 @@ describe( `${ block.name } Block`, () => {
 		} );
 
 		it( 'the compatibility notice appears', async () => {
-			await addBlockToFSEArea();
+			await addBlockToFSEArea( block.name );
 			const compatibilityNoticeTitle = await page.$x(
-				`//h1[contains(text(), 'Compatibility notice')]`
+				block.selectors.compatibilityNoticeTitle
 			);
 			expect( compatibilityNoticeTitle.length ).toBe( 1 );
 		} );
@@ -137,18 +127,18 @@ describe( `${ block.name } Block`, () => {
 					'["mini-cart"]'
 				);
 			} );
-			await addBlockToFSEArea();
+			await addBlockToFSEArea( block.name );
 			const compatibilityNoticeTitle = await page.$x(
-				`//h1[contains(text(), 'Compatibility notice')]`
+				block.selectors.compatibilityNoticeTitle
 			);
 			expect( compatibilityNoticeTitle.length ).toBe( 0 );
 		} );
 
 		it( 'can only be inserted once', async () => {
 			await insertBlock( block.name );
-			await searchForBlockFSE( block.name );
+			await searchForBlock( block.name );
 			const miniCartButton = await page.$x(
-				`//button[@aria-disabled]//span[text()='${ block.name }']`
+				block.selectors.insertButtonDisabled
 			);
 			expect( miniCartButton ).toHaveLength( 1 );
 		} );
