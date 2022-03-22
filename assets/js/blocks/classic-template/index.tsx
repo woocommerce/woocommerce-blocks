@@ -69,6 +69,14 @@ const Edit = ( { attributes }: Props ) => {
 	);
 };
 
+/**
+ * The 'WooCommerce Legacy Template' block was renamed to 'WooCommerce Classic Template', however, the internal block
+ * name 'woocommerce/legacy-template' needs to remain the same. Otherwise, it would result in a corrupt block when
+ * loaded for users who have customized templates using the legacy-template (since the internal block name is
+ * stored in the database).
+ *
+ * See https://github.com/woocommerce/woocommerce-gutenberg-products-block/issues/5861 for more context
+ */
 registerBlockType( 'woocommerce/legacy-template', {
 	title: __( 'WooCommerce Classic Template', 'woo-gutenberg-products-block' ),
 	icon: (
