@@ -4,7 +4,7 @@
 import { shopper, getLoadingDurations } from '../../../utils';
 import { SIMPLE_PHYSICAL_PRODUCT_NAME } from '../../../utils/constants';
 import { getClickEventDurations } from '../../../../../gutenberg/packages/e2e-tests/specs/performance/utils';
-import { readFile} from '../../../../../gutenberg/packages/e2e-tests/specs/performance/utils';
+import { readFile } from '../../../../../gutenberg/packages/e2e-tests/specs/performance/utils';
 
 describe( 'Cart performance tests', () => {
 	beforeAll( async () => {
