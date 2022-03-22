@@ -14,7 +14,7 @@ const Block = ( {
 	showRateAfterTaxName: boolean;
 } ): JSX.Element | null => {
 	const { cartTotals } = useStoreCart();
-	const totalsCurrency = getCurrencyFromPriceResponse( cartTotals );
+
 	const displayCartPricesIncludingTax = getSetting(
 		'displayCartPricesIncludingTax',
 		false
@@ -26,6 +26,8 @@ const Block = ( {
 	) {
 		return null;
 	}
+
+	const totalsCurrency = getCurrencyFromPriceResponse( cartTotals );
 
 	return (
 		<TotalsTaxes
