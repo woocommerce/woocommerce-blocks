@@ -1,7 +1,6 @@
 /**
  * Internal dependencies
  */
-import { uiUnblocked } from '@woocommerce/e2e-utils/build/page-utils';
 import { shopper } from '../../../utils';
 import { SIMPLE_PRODUCT_NAME } from '../../../utils/constants';
 
