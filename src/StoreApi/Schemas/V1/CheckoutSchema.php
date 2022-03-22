@@ -8,8 +8,6 @@ use Automattic\WooCommerce\StoreApi\Schemas\ExtendSchema;
 
 /**
  * CheckoutSchema class.
- *
- * @internal This API is used internally by Blocks--it is still in flux and may be subject to revisions.
  */
 class CheckoutSchema extends AbstractSchema {
 	/**
@@ -109,7 +107,6 @@ class CheckoutSchema extends AbstractSchema {
 					'sanitize_callback' => [ $this->shipping_address_schema, 'sanitize_callback' ],
 					'validate_callback' => [ $this->shipping_address_schema, 'validate_callback' ],
 				],
-				'required'    => true,
 			],
 			'payment_method'    => [
 				'description' => __( 'The ID of the payment method being used to process the payment.', 'woo-gutenberg-products-block' ),

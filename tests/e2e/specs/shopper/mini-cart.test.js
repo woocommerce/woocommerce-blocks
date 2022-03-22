@@ -2,7 +2,12 @@
  * External dependencies
  */
 import { setDefaultOptions, getDefaultOptions } from 'expect-puppeteer';
-import { SHOP_CART_PAGE, SHOP_CHECKOUT_PAGE } from '@woocommerce/e2e-utils';
+import { default as WooCommerceRestApi } from '@woocommerce/woocommerce-rest-api';
+import {
+	SHOP_PAGE,
+	SHOP_CART_PAGE,
+	SHOP_CHECKOUT_PAGE,
+} from '@woocommerce/e2e-utils';
 
 /**
  * Internal dependencies
@@ -11,7 +16,7 @@ import { shopper } from '../../../utils';
 import { getTextContent } from '../../page-utils';
 
 const block = {
-	name: 'Mini Cart Block',
+	name: 'Mini Cart',
 };
 
 const options = getDefaultOptions();
@@ -25,6 +30,27 @@ const clickMiniCartButton = async () => {
 
 	await page.click( '.wc-block-mini-cart__button' );
 };
+
+const closeMiniCartDrawer = async () => {
+	await page.keyboard.press( 'Escape' );
+};
+
+/**
+ * ConsumerKey and ConsumerSecret are not used, we use basic auth, but
+ * not providing them will throw an error.
+ */
+const WooCommerce = new WooCommerceRestApi( {
+	url: `${ process.env.WORDPRESS_BASE_URL }/`,
+	consumerKey: 'consumer_key',
+	consumerSecret: 'consumer_secret',
+	version: 'wc/v3',
+	axiosConfig: {
+		auth: {
+			username: process.env.WORDPRESS_LOGIN,
+			password: process.env.WORDPRESS_PASSWORD,
+		},
+	},
+} );
 
 if ( process.env.WOOCOMMERCE_BLOCKS_PHASE < 3 ) {
 	// eslint-disable-next-line jest/no-focused-tests
@@ -46,7 +72,7 @@ describe( 'Shopper → Mini Cart', () => {
 	} );
 
 	beforeEach( async () => {
-		await shopper.goToBlockPage( block.name );
+		await shopper.block.goToBlockPage( block.name );
 	} );
 
 	describe( 'Icon', () => {
@@ -130,6 +156,33 @@ describe( 'Shopper → Mini Cart', () => {
 		} );
 	} );
 
+	describe( 'Empty mini cart', () => {
+		it( 'When the cart is empty, the Mini Cart Drawer show empty cart message and start shopping button', async () => {
+			await clickMiniCartButton();
+
+			await expect( page ).toMatchElement(
+				'.wc-block-mini-cart__drawer',
+				{
+					text: 'Your cart is currently empty!',
+				}
+			);
+
+			await expect( page ).toMatchElement(
+				'.wc-block-mini-cart__drawer',
+				{
+					text: 'Start shopping',
+				}
+			);
+
+			const shopLink = await page.$eval(
+				'.wc-block-mini-cart__shopping-button a',
+				( el ) => el.href
+			);
+
+			expect( shopLink ).toMatch( SHOP_PAGE );
+		} );
+	} );
+
 	describe( 'Filled mini cart', () => {
 		beforeAll( async () => {
 			await shopper.block.emptyCart();
@@ -148,7 +201,7 @@ describe( 'Shopper → Mini Cart', () => {
 				text: 'Your cart (1 item)',
 			} );
 
-			await page.mouse.click( 50, 200 );
+			await closeMiniCartDrawer();
 
 			await page.click(
 				'.wc-block-grid__product:last-child .add_to_cart_button'
@@ -173,11 +226,9 @@ describe( 'Shopper → Mini Cart', () => {
 			// Get a random product to better replicate human behavior.
 			const product =
 				products[ Math.floor( Math.random() * products.length ) ];
-			const productTitleEl = await product.$(
-				'.wc-block-components-product-name'
-			);
-			const productTitle = await productTitleEl.getProperty(
-				'textContent'
+			const [ productTitle ] = await getTextContent(
+				'.wc-block-components-product-name',
+				product
 			);
 			const addToCartButton = await product.$( '.add_to_cart_button' );
 
@@ -320,6 +371,90 @@ describe( 'Shopper → Mini Cart', () => {
 					'button.wc-block-components-quantity-selector__button--minus[disabled]'
 				)
 			).toBeTruthy();
+		} );
+	} );
+
+	describe( 'Tax included', () => {
+		let taxSettings;
+		beforeAll( async () => {
+			taxSettings = ( await WooCommerce.get( 'settings/tax' ) ).data;
+			/**
+			 * Set the tax display settings to show prices including tax during
+			 * cart and checkout. The price displayed in the product loop are
+			 * tax excluded.
+			 */
+			await WooCommerce.post( 'settings/tax/batch', {
+				update: [
+					{
+						id: 'woocommerce_tax_display_shop',
+						value: 'excl',
+					},
+					{
+						id: 'woocommerce_tax_display_cart',
+						value: 'incl',
+					},
+				],
+			} );
+			await shopper.block.emptyCart();
+		} );
+
+		afterAll( async () => {
+			const displayShop = taxSettings.find(
+				( setting ) => setting.id === 'woocommerce_tax_display_shop'
+			);
+			const displayCart = taxSettings.find(
+				( setting ) => setting.id === 'woocommerce_tax_display_cart'
+			);
+			await WooCommerce.post( 'settings/tax/batch', {
+				update: [
+					{
+						id: 'woocommerce_tax_display_shop',
+						value: displayShop.value,
+					},
+					{
+						id: 'woocommerce_tax_display_cart',
+						value: displayCart.value,
+					},
+				],
+			} );
+			await shopper.block.emptyCart();
+		} );
+
+		it( 'Mini Cart show tax label and price including tax', async () => {
+			const [ priceInLoop ] = await getTextContent(
+				'.wc-block-grid__product:first-child .wc-block-grid__product-price'
+			);
+
+			await page.click(
+				'.wc-block-grid__product:first-child .add_to_cart_button'
+			);
+
+			await expect( page ).toMatchElement( '.wc-block-mini-cart__title', {
+				text: 'Your cart (1 item)',
+			} );
+
+			await page.waitForSelector( '.wc-block-cart-item__prices' );
+			const [ priceInCart ] = await getTextContent(
+				'.wc-block-cart-item__prices'
+			);
+
+			expect( priceInLoop ).not.toMatch( priceInCart );
+
+			await closeMiniCartDrawer();
+
+			const [ priceInMiniCartButton ] = await getTextContent(
+				'.wc-block-mini-cart__amount'
+			);
+
+			expect( priceInLoop ).not.toMatch( priceInMiniCartButton );
+			expect( priceInCart ).toMatch( priceInMiniCartButton );
+
+			await expect( page ).toMatchElement(
+				'.wc-block-mini-cart__button',
+				{
+					text: '(incl.',
+				}
+			);
 		} );
 	} );
 
