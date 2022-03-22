@@ -28,4 +28,8 @@
 .wc-block-components-totals-item__description {
 	@include font-size(small);
 	width: 100%;
+
+	> div:last-child {
+		margin-bottom: 0;
+	}
 }
