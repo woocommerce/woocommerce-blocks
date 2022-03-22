@@ -83,7 +83,6 @@ describe( 'Shopper → Checkout → Can have different shipping and billing addr
 		await shopper.block.fillShippingDetails( SHIPPING_DETAILS );
 		await shopper.block.fillBillingDetails( BILLING_DETAILS );
 		await shopper.block.placeOrder();
-		await page.waitForTimeout( 1000 );
 		await shopper.block.verifyShippingDetails( SHIPPING_DETAILS );
 		await shopper.block.verifyBillingDetails( BILLING_DETAILS );
 	} );
