@@ -4,6 +4,7 @@
 import {
 	merchant,
 	openDocumentSettingsSidebar,
+	setCheckbox,
 	uiUnblocked,
 } from '@woocommerce/e2e-utils';
 
@@ -41,11 +42,7 @@ describe( 'Shopper → Checkout → Can have different shipping and billing addr
 		await selectBlockByName(
 			'woocommerce/checkout-shipping-address-block'
 		);
-		await expect( page ).toClick( 'label', { text: 'Company' } );
-		await expect( page ).toClick( 'label', {
-			text: 'Apartment, suite, etc.',
-		} );
-		await expect( page ).toClick( 'label', { text: 'Phone' } );
+		await setCheckbox( '#inspector-toggle-control-1' );
 		await saveOrPublish();
 	} );
 
