@@ -55,6 +55,7 @@ const blocks = {
 	'single-product': {
 		isExperimental: true,
 	},
+	// We need to keep the legacy-template id, so we need to add a custom config to point to the renamed classic-template folder
 	'legacy-template': {
 		customDir: 'classic-template',
 	},
