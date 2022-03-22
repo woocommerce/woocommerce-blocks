@@ -23,20 +23,16 @@ const DiscountSlotFill = (): JSX.Element => {
 };
 
 const Block = ( { className = '' }: { className?: string } ): JSX.Element => {
-	const { cartTotals } = useStoreCart();
+	const { cartTotals, cartCoupons } = useStoreCart();
 
-	const {
-		removeCoupon,
-		isRemovingCoupon,
-		appliedCoupons,
-	} = useStoreCartCoupons();
+	const { removeCoupon, isRemovingCoupon } = useStoreCartCoupons();
 	const totalsCurrency = getCurrencyFromPriceResponse( cartTotals );
 
 	return (
 		<>
 			<TotalsDiscount
 				className={ className }
-				cartCoupons={ appliedCoupons }
+				cartCoupons={ cartCoupons }
 				currency={ totalsCurrency }
 				isRemovingCoupon={ isRemovingCoupon }
 				removeCoupon={ removeCoupon }
