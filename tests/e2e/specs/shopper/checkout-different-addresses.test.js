@@ -5,6 +5,7 @@ import {
 	merchant,
 	openDocumentSettingsSidebar,
 	setCheckbox,
+	unsetCheckbox,
 	uiUnblocked,
 } from '@woocommerce/e2e-utils';
 
@@ -36,7 +37,7 @@ describe( 'Shopper → Checkout → Can have different shipping and billing addr
 		await preventCompatibilityNotice();
 		await merchant.login();
 
-		// Activate all address fields.
+		// Activate the "Company" field
 		await visitBlockPage( 'Checkout Block' );
 		await openDocumentSettingsSidebar();
 		await selectBlockByName(
@@ -47,17 +48,13 @@ describe( 'Shopper → Checkout → Can have different shipping and billing addr
 	} );
 
 	afterAll( async () => {
-		// Deactivate all address fields.
+		// Deactivate the "Company" field
 		await visitBlockPage( 'Checkout Block' );
 		await openDocumentSettingsSidebar();
 		await selectBlockByName(
 			'woocommerce/checkout-shipping-address-block'
 		);
-		await expect( page ).toClick( 'label', { text: 'Company' } );
-		await expect( page ).toClick( 'label', {
-			text: 'Apartment, suite, etc.',
-		} );
-		await expect( page ).toClick( 'label', { text: 'Phone' } );
+		await unsetCheckbox( '#inspector-toggle-control-1' );
 		await saveOrPublish();
 		await merchant.logout();
 		await reactivateCompatibilityNotice();
