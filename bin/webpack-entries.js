@@ -55,7 +55,9 @@ const blocks = {
 	'single-product': {
 		isExperimental: true,
 	},
-	'classic-template': {},
+	'legacy-template': {
+		customDir: 'classic-template',
+	},
 };
 
 // Returns the entries for each block given a relative path (ie: `index.js`,
