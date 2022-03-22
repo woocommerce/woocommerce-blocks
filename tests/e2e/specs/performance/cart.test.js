@@ -1,17 +1,13 @@
 /**
- * External dependencies
- */
-import { getByLabelText } from '@testing-library/react';
-
-/**
  * Internal dependencies
  */
 import { shopper, getLoadingDurations } from '../../../utils';
 import { SIMPLE_PHYSICAL_PRODUCT_NAME } from '../../../utils/constants';
 import { getClickEventDurations } from '../../../../../gutenberg/packages/e2e-tests/specs/performance/utils';
+import { readFile} from '../../../../../gutenberg/packages/e2e-tests/specs/performance/utils';
 
 describe( 'Cart performance tests', () => {
-	beforeAll(async () => {
+	beforeAll( async () => {
 		await shopper.goToShop();
 		await shopper.addToCartFromShopPage( SIMPLE_PHYSICAL_PRODUCT_NAME );
 	} );
@@ -57,12 +53,12 @@ describe( 'Cart performance tests', () => {
 			results.firstBlock.push( firstBlock );
 		}
 
-		console.log(results);
+		console.log( results );
 
 		expect( true ).toBe( true );
 	} );
 
-	it('Quantity change performance', async () => {
+	it( 'Quantity change performance', async () => {
 		await shopper.block.goToCart();
 
 		const traceFile = __dirname + '/trace.json';
@@ -73,7 +69,9 @@ describe( 'Cart performance tests', () => {
 		} );
 		let i = 98;
 		while ( i-- ) {
-			await expect( page ).toClick( 'button.wc-block-components-quantity-selector__button--plus' );
+			await expect( page ).toClick(
+				'button.wc-block-components-quantity-selector__button--plus'
+			);
 		}
 		await page.tracing.stop();
 		const traceResults = JSON.parse( readFile( traceFile ) );
@@ -97,5 +95,5 @@ describe( 'Cart performance tests', () => {
 		// );
 		//
 		// deleteFile( traceFile );
-	});
+	} );
 } );
