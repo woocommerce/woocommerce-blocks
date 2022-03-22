@@ -109,7 +109,7 @@ registerCheckoutBlock( {
 	component: lazy( () =>
 		import(
 			/* webpackChunkName: "cart-blocks/cart-order-summary" */
-			'./cart-order-summary/frontend'
+			'./cart-order-summary-block/frontend'
 		)
 	),
 } );
