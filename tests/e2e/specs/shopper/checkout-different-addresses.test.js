@@ -71,7 +71,6 @@ describe( 'Shopper → Checkout → Can have different shipping and billing addr
 				checkbox.click();
 			}
 		} );
-		await uiUnblocked();
 		await shopper.block.fillShippingDetails( SHIPPING_DETAILS );
 		await shopper.block.fillBillingDetails( BILLING_DETAILS );
 		await shopper.block.placeOrder();
