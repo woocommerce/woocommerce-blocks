@@ -14,12 +14,7 @@ export const Edit = ( {
 }: {
 	attributes: {
 		className: string;
-		lock: {
-			move: boolean;
-			remove: boolean;
-		};
 	};
-	setAttributes: ( attributes: Record< string, unknown > ) => void;
 } ): JSX.Element => {
 	const { className } = attributes;
 	const blockProps = useBlockProps();
