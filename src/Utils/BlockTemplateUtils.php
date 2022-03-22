@@ -5,7 +5,7 @@ use Automattic\WooCommerce\Blocks\Domain\Services\FeatureGating;
 
 /**
  * Utility methods used for serving block templates from WooCommerce Blocks.
- * {@internal This class and its methods should only be used within the BlockTemplateController.php and is not intended for public use. }}
+ * {@internal This class and its methods should only be used within the BlockTemplateController.php and is not intended for public use.}
  */
 class BlockTemplateUtils {
 	/**
@@ -118,7 +118,7 @@ class BlockTemplateUtils {
 
 	/**
 	 * Build a unified template object based a post Object.
-	 * Important: This method is an almost identical duplicate from wp-includes/block-template-utils.php as it was not intended for public use.
+	 * Important: This method is an almost identical duplicate from wp-includes/block-template-utils.php as it was not intended for public use. It has been modified to build templates from plugins rather than themes.
 	 *
 	 * @param \WP_Post $post Template post.
 	 *
@@ -172,7 +172,7 @@ class BlockTemplateUtils {
 
 	/**
 	 * Build a unified template object based on a theme file.
-	 * Important: This method is an almost identical duplicate from wp-includes/block-template-utils.php as it was not intended for public use.
+	 * Important: This method is an almost identical duplicate from wp-includes/block-template-utils.php as it was not intended for public use. It has been modified to build templates from plugins rather than themes.
 	 *
 	 * @param array|object $template_file Theme file.
 	 * @param string       $template_type wp_template or wp_template_part.
