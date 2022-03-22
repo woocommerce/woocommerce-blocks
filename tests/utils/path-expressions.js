@@ -1,12 +1,12 @@
-export const getProductNameExpression = ( productTitle ) =>
+export const getProductNamePathExpression = ( productTitle ) =>
 	`a[contains(text(), "${ productTitle }")]`;
 
-export const getQtyItemExpression = ( args ) =>
+export const getQtyItemPathExpression = ( args ) =>
 	'div[@class="wc-block-cart-item__quantity" and div[@class="wc-block-components-quantity-selector" and ' +
-	getQtyInputExpression( args ) +
+	getQtyInputPathExpression( args ) +
 	']]';
 
-export const getQtyInputExpression = ( args = {} ) => {
+export const getQtyInputPathExpression = ( args = {} ) => {
 	let qtyValue = '';
 
 	if ( args.qty ) {
@@ -20,17 +20,17 @@ export const getQtyInputExpression = ( args = {} ) => {
 	);
 };
 
-export const getQtyPlusButtonExpression = () => {
+export const getQtyPlusButtonPathExpression = () => {
 	return 'button[contains(@class, "wc-block-components-quantity-selector__button--plus")]';
 };
 
-export const getQtyMinusButtonExpression = () => {
+export const getQtyMinusButtonPathExpression = () => {
 	return 'button[contains(@class, "wc-block-components-quantity-selector__button--minus")]';
 };
 
-export const getCartItemExpression = ( productTitle, args ) =>
+export const getCartItemPathExpression = ( productTitle, args ) =>
 	'//div[@class="wc-block-cart-item__wrap" and ' +
-	getProductNameExpression( productTitle ) +
+	getProductNamePathExpression( productTitle ) +
 	' and ' +
-	getQtyItemExpression( args ) +
+	getQtyItemPathExpression( args ) +
 	']';

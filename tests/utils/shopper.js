@@ -13,11 +13,11 @@ import { pressKeyWithModifier } from '@wordpress/e2e-test-utils';
  */
 import { BASE_URL } from '../e2e/utils';
 import {
-	getCartItemExpression,
-	getQtyInputExpression,
-	getQtyPlusButtonExpression,
-	getQtyMinusButtonExpression,
-} from '../utils/expressions';
+	getCartItemPathExpression,
+	getQtyInputPathExpression,
+	getQtyPlusButtonPathExpression,
+	getQtyMinusButtonPathExpression,
+} from './path-expressions';
 
 export const shopper = {
 	...wcShopper,
@@ -302,9 +302,9 @@ export const shopper = {
 		},
 
 		setCartQuantity: async ( productTitle, quantityValue ) => {
-			const cartItemXPath = getCartItemExpression( productTitle );
+			const cartItemXPath = getCartItemPathExpression( productTitle );
 			const quantityInputXPath =
-				cartItemXPath + '//' + getQtyInputExpression();
+				cartItemXPath + '//' + getQtyInputPathExpression();
 
 			const [ quantityInput ] = await page.$x( quantityInputXPath );
 			await quantityInput.focus();
@@ -314,10 +314,10 @@ export const shopper = {
 		},
 
 		increaseCartQuantityByOne: async ( productTitle ) => {
-			const cartItemXPath = getCartItemExpression( productTitle );
+			const cartItemXPath = getCartItemPathExpression( productTitle );
 
 			const quantityPlusButtonXPath =
-				cartItemXPath + '//' + getQtyPlusButtonExpression();
+				cartItemXPath + '//' + getQtyPlusButtonPathExpression();
 
 			const [ quantityPlusButton ] = await page.$x(
 				quantityPlusButtonXPath
@@ -326,9 +326,9 @@ export const shopper = {
 		},
 
 		decreaseCartQuantityByOne: async ( productTitle ) => {
-			const cartItemXPath = getCartItemExpression( productTitle );
+			const cartItemXPath = getCartItemPathExpression( productTitle );
 			const quantityMinusButtonXPath =
-				cartItemXPath + '//' + getQtyMinusButtonExpression();
+				cartItemXPath + '//' + getQtyMinusButtonPathExpression();
 
 			const [ quantityMinusButton ] = await page.$x(
 				quantityMinusButtonXPath
@@ -338,7 +338,7 @@ export const shopper = {
 
 		productIsInCart: async ( productTitle, quantity = null ) => {
 			const cartItemArgs = quantity ? { qty: quantity } : {};
-			const cartItemXPath = getCartItemExpression(
+			const cartItemXPath = getCartItemPathExpression(
 				productTitle,
 				cartItemArgs
 			);
