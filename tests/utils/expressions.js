@@ -29,9 +29,8 @@ export const getQtyMinusButtonExpression = () => {
 };
 
 export const getCartItemExpression = ( productTitle, args ) =>
-	'//tr[contains(@class, "wc-block-cart-items__row") and ' +
-	'td[@class="wc-block-cart-item__product" and div[@class="wc-block-cart-item__wrap" and ' +
+	'//div[@class="wc-block-cart-item__wrap" and ' +
 	getProductNameExpression( productTitle ) +
 	' and ' +
 	getQtyItemExpression( args ) +
-	']]]';
+	']';
