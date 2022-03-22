@@ -25,8 +25,6 @@ import {
 import { BILLING_DETAILS, SHIPPING_DETAILS } from '../../../utils/constants';
 const SIMPLE_PRODUCT_NAME = '128GB USB Stick';
 
-const config = require( 'config' );
-
 if ( process.env.WOOCOMMERCE_BLOCKS_PHASE < 2 )
 	// eslint-disable-next-line jest/no-focused-tests
 	test.only( 'Skipping Checkout tests', () => {} );
