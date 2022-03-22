@@ -4,7 +4,6 @@
 import { CURRENCY } from '@woocommerce/settings';
 import type {
 	Currency,
-	CurrencyCode,
 	CurrencyResponse,
 	CartShippingPackageShippingRate,
 	SymbolPosition,
@@ -92,7 +91,7 @@ export const getCurrencyFromPriceResponse = (
 	} = currencyData;
 
 	return {
-		code: ( code as CurrencyCode ) || 'USD',
+		code: code || 'USD',
 		symbol: symbol || '$',
 		thousandSeparator:
 			typeof thousandSeparator === 'string' ? thousandSeparator : ',',
