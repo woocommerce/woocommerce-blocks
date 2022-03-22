@@ -32,6 +32,7 @@
  - [woocommerce_store_api_disable_nonce_check](#woocommerce_store_api_disable_nonce_check)
  - [woocommerce_store_api_product_quantity_limit](#woocommerce_store_api_product_quantity_limit)
  - [woocommerce_store_api_product_quantity_{$value_type}](#woocommerce_store_api_product_quantity_-value_type)
+ - [woocommerce_store_api_product_query_args](#woocommerce_store_api_product_query_args)
  - [woocommerce_variation_option_name](#woocommerce_variation_option_name)
 
 ---
@@ -805,6 +806,34 @@ apply_filters( 'woocommerce_store_api_product_quantity_{$value_type}', mixed $va
 
 
  - [StoreApi/Utilities/QuantityLimits.php](../src/StoreApi/Utilities/QuantityLimits.php)
+
+---
+
+## woocommerce_store_api_product_query_args
+
+
+Filters the arguments for the products WP_Query.
+
+```php
+apply_filters( 'woocommerce_store_api_product_query_args', array $args, \WP_REST_Request $request )
+```
+
+### Parameters
+
+| Argument | Type | Description |
+| -------- | ---- | ----------- |
+| $args | array | WP_Query args. |
+| $request | \WP_REST_Request | Request object. |
+
+### Returns
+
+
+`array` 
+
+### Source
+
+
+ - [StoreApi/Utilities/ProductQuery.php](../src/StoreApi/Utilities/ProductQuery.php)
 
 ---
 

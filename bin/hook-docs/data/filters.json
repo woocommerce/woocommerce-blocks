@@ -952,6 +952,42 @@
             "args": 3
         },
         {
+            "name": "woocommerce_store_api_product_query_args",
+            "file": "StoreApi/Utilities/ProductQuery.php",
+            "type": "filter",
+            "doc": {
+                "description": "Filters the arguments for the products WP_Query.",
+                "long_description": "",
+                "tags": [
+                    {
+                        "name": "param",
+                        "content": "WP_Query args.",
+                        "types": [
+                            "array"
+                        ],
+                        "variable": "$args"
+                    },
+                    {
+                        "name": "param",
+                        "content": "Request object.",
+                        "types": [
+                            "\\WP_REST_Request"
+                        ],
+                        "variable": "$request"
+                    },
+                    {
+                        "name": "return",
+                        "content": "",
+                        "types": [
+                            "array"
+                        ]
+                    }
+                ],
+                "long_description_html": ""
+            },
+            "args": 2
+        },
+        {
             "name": "woocommerce_variation_option_name",
             "file": "StoreApi/Schemas/V1/CartItemSchema.php",
             "type": "filter",

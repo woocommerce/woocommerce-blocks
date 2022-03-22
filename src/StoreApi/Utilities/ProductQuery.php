@@ -223,7 +223,14 @@ class ProductQuery {
 			$args['meta_key'] = $ordering_args['meta_key']; // phpcs:ignore
 		}
 
-		return apply_filters( 'store_api_product_query_args', $args, $request );
+		/**
+		 * Filters the arguments for the products WP_Query.
+		 *
+		 * @param array $args WP_Query args.
+		 * @param \WP_REST_Request $request Request object.
+		 * @return array
+		 */
+		return apply_filters( 'woocommerce_store_api_product_query_args', $args, $request );
 	}
 
 	/**
