@@ -188,12 +188,12 @@ const DropdownSelector = ( {
 								if ( isCaseSensitive ) {
 									return (
 										! inputValue ||
-										option.value.includes( inputValue )
+										option.name.includes( inputValue )
 									);
 								}
 								return (
 									! inputValue ||
-									option.value
+									option.name
 										.toLowerCase()
 										.includes( inputValue.toLowerCase() )
 								);
