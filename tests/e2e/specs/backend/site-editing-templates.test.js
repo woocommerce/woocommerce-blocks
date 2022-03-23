@@ -170,7 +170,7 @@ describe( 'Store Editing Templates', () => {
 			await visitTemplateAndAddCustomParagraph( 'single-product' );
 
 			await goToSiteEditor( '?postType=wp_template' );
-			// we need to wait for the selctor to show up, sometimes the loading is delayed and test becomes falky
+			// we need to wait for the selector to show up, sometimes the loading is delayed and test becomes flaky
 			await page.waitForSelector( SELECTORS.templates.templateActions );
 			const templates = await getAllTemplates();
 
