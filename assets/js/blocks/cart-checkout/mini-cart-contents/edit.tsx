@@ -1,3 +1,4 @@
+/* eslint-disable jsdoc/check-alignment */
 /**
  * External dependencies
  */
@@ -81,6 +82,26 @@ const Edit = ( { clientId }: Props ): ReactElement => {
 					templateLock={ false }
 				/>
 			</EditorProvider>
+			{ /**
+			 * This is a workaround to style inner blocks using the color
+			 * settings of the Mini Cart Contents block. This is needed because
+			 * we reuse the <CartLineItemsTable/> component from the Cart block
+			 * and we don't want to change anything to that component.
+			 *
+			 * This is only needed for the Site Editor. On the frontend, we
+			 * manipulate the style using block attributes.
+			 */ }
+			<style>
+				{ `
+				.wc-block-mini-cart__products-table .wc-block-components-quantity-selector {
+					border-color: ${ blockProps.style.color };
+				}
+				.wc-block-mini-cart__products-table input.wc-block-components-quantity-selector__input,
+				.wc-block-mini-cart__products-table .wc-block-components-quantity-selector .wc-block-components-quantity-selector__button {
+					color: ${ blockProps.style.color };
+				}
+			` }
+			</style>
 		</div>
 	);
 };
