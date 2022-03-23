@@ -145,6 +145,7 @@ export const isBlockInsertedInWidgetsArea = async ( blockName ) => {
  * There are two different possible site editor pages:
  *
  * 1. `themes.php?page=gutenberg-edit-site` this is legacy editor access used for wp <=5.8 compatibility
+ * 	  themes.php is not accessible in 5.9+ when local Gutenberg is active.
  * 2. `site-editor.php` is going to be the new way of accessing the editor 6.0+.
  *
  * @param {string} query String to be serialized as query portion of URL.
@@ -154,9 +155,10 @@ export async function goToSiteEditor(
 	query,
 	editorContext = GUTENBERG_EDITOR_CONTEXT
 ) {
-	// There is a bug in Gutenberg/WPCore now that makes it impossible to rely on site-editor.php.
-	// details in https://github.com/WordPress/gutenberg/issues/39639
-	// @todo: update to navigate to site-editor.php and use visitSiteEditor util once WordPress 6.0 is released.
+	// There is a bug in Gutenberg/WPCore now that makes it impossible to rely on site-editor.php on setups
+	// with installed Gutenberg. Details in https://github.com/WordPress/gutenberg/issues/39639.
+	// @todo: update to always use site-editor.php once WordPress 6.0 is released and verified.
+	// 		  Remove usage of GUTENBERG_EDITOR_CONTEXT from from here and from workflows.
 
 	let editorPath = 'site-editor.php';
 	let queryString = query;
@@ -191,6 +193,7 @@ export async function saveTemplate() {
 
 	await page.click( saveButton );
 	await page.waitForSelector( savePrompt );
+
 	await page.click( confirmSave );
 	await page.waitForSelector( `${ saveButton }[aria-disabled="true"]` );
 }
