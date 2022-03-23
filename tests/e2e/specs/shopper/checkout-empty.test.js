@@ -5,7 +5,7 @@ import { shopper } from '../../../utils';
 
 if ( process.env.WOOCOMMERCE_BLOCKS_PHASE < 2 )
 	// eslint-disable-next-line jest/no-focused-tests
-	test.only( `skipping ${ block.name } tests`, () => {} );
+	test.only( `Skipping checkout tests`, () => {} );
 
 describe( 'Shopper → Checkout → Can view empty checkout message', () => {
 	beforeAll( async () => {
