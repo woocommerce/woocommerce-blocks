@@ -126,7 +126,7 @@ class MiniCartContents extends AbstractBlock {
 		$parsed_style = '';
 
 		foreach ( $styles as $style ) {
-			$selector = is_array( $style['selector'] ) ? implode( ', ', $style['selector'] ) : $style['selector'];
+			$selector = is_array( $style['selector'] ) ? implode( ',', $style['selector'] ) : $style['selector'];
 
 			$properties = array_filter(
 				$style['properties'],
