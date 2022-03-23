@@ -44,6 +44,7 @@ const SELECTORS = {
 		headings: 'thead th.edit-site-list-table-column',
 		root: '.edit-site-list-table',
 		rows: '.edit-site-list-table-row',
+		templateActions: '.edit-site-list-table button[aria-label="Actions"]',
 		templateTitle: '[data-wp-component="Heading"]',
 	},
 	themesPage: {
@@ -140,37 +141,57 @@ export const isBlockInsertedInWidgetsArea = async ( blockName ) => {
 };
 
 /**
- * Visits the Site Editor main page in Core WordPress
+ * Visits the Site Editor main page in Core WordPress.
  *
  * There are two different possible site editor pages:
  *
  * 1. `themes.php?page=gutenberg-edit-site` this is a legacy editor access used for WP <=5.8.
  * 2. `site-editor.php` is the new way of accessing the editor in WP >=5.9+.
  *
- * @param {string} query String to be serialized as query portion of URL.
- * @param {'core' | 'gutenberg'} [editorContext='core'] Whether to go to the Gutenberg URL or the Core one.
+ * @param {Object} [params]
+ * @param {'core' | 'gutenberg'} [params.editorContext='core'] Whether to go to the Gutenberg URL or the Core one.
+ * @param {'wp_template' | 'wp_template_part'} [params.postType='wp_template'] Type of template.
+ * @param {boolean} [params.waitForActions=false] Tempalte actions can take a moment to load, we can wait for them to be present if needed.
+ * @param {string} [params.postId] ID of the template if we want to access template editor.
  */
-export async function goToSiteEditor(
-	query,
-	editorContext = GUTENBERG_EDITOR_CONTEXT
-) {
+export async function goToSiteEditor( {
+	postId,
+	waitForActions = false,
+	postType = 'wp_template',
+	editorContext = GUTENBERG_EDITOR_CONTEXT,
+} = {} ) {
 	// There is a bug in Gutenberg/WPCore now that makes it impossible to rely on site-editor.php on setups
 	// with locally installed Gutenberg. Details in https://github.com/WordPress/gutenberg/issues/39639.
 	// TODO: Update to always use site-editor.php once WordPress 6.0 is released and fix is verified.
 	// 		 Remove usage of GUTENBERG_EDITOR_CONTEXT from from here and from workflows.
 
-	let editorPath = 'site-editor.php';
-	let queryString = query;
+	const queryParams = {
+		postType,
+		postId,
+	};
+
+	let editorPath;
 
 	if ( editorContext === 'gutenberg' ) {
 		editorPath = 'themes.php';
-		queryString = addQueryArgs( queryString, {
-			page: 'gutenberg-edit-site',
-		} );
+		queryParams.page = 'gutenberg-edit-site';
+	} else {
+		editorPath = 'site-editor.php';
 	}
 
-	await visitAdminPage( editorPath, queryString );
-	await disableSiteEditorWelcomeGuide();
+	await visitAdminPage( editorPath, addQueryArgs( '', queryParams ) );
+
+	// If it's an editor page we want to wait for canvas to be present.
+	if ( postId ) {
+		await disableSiteEditorWelcomeGuide();
+		await waitForCanvas();
+	} else if ( waitForActions ) {
+		await page.waitForSelector(
+			SELECTORS.templatesListTable.templateActions
+		);
+	} else {
+		await page.waitForSelector( SELECTORS.templatesListTable.root );
+	}
 }
 
 /**
@@ -192,9 +213,7 @@ export async function saveTemplate() {
 
 	await page.click( saveButton );
 	await page.waitForSelector( savePrompt );
-
 	await page.click( confirmSave );
-	await page.waitForSelector( `${ saveButton }[aria-disabled="true"]` );
 	await page.waitForResponse( ( res ) => {
 		// Will match both templates and template_parts endpoints.
 		return res.url().includes( '/wp/v2/template' );
