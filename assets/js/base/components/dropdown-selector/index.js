@@ -185,7 +185,9 @@ const DropdownSelector = ( {
 							options={ options.filter(
 								( option ) =>
 									! inputValue ||
-									option.value.startsWith( inputValue )
+									option.value.startsWith(
+										inputValue.toLowerCase()
+									)
 							) }
 						/>
 					) }
