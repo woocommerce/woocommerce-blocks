@@ -116,6 +116,22 @@ h2.wc-block-mini-cart__title {
 			}
 		}
 	}
+
+	.wp-block-woocommerce-mini-cart-contents.has-text-color & {
+		.wc-block-components-quantity-selector,
+		input.wc-block-components-quantity-selector__input:focus {
+			background: transparent;
+		}
+
+		.wc-block-components-quantity-selector__button {
+			opacity: 0.5;
+
+			&:hover,
+			&:focus {
+				opacity: 1;
+			}
+		}
+	}
 }
 
 .wc-block-mini-cart__footer {

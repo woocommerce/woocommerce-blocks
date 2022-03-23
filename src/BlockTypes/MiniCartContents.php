@@ -117,11 +117,46 @@ class MiniCartContents extends AbstractBlock {
 					),
 				),
 			),
+			array(
+				'selector'   => '.wc-block-mini-cart__products-table .wc-block-components-quantity-selector',
+				'properties' => array(
+					array(
+						'property' => 'border-color',
+						'value'    => $text_color ? $text_color['value'] : false,
+					),
+				),
+			),
+			array(
+				'selector'   => array(
+					'.wc-block-mini-cart__products-table input.wc-block-components-quantity-selector__input',
+					'.wc-block-mini-cart__products-table .wc-block-components-quantity-selector .wc-block-components-quantity-selector__button',
+				),
+				'properties' => array(
+					array(
+						'property' => 'color',
+						'value'    => $text_color ? $text_color['value'] : false,
+					),
+				),
+			),
+			array(
+				'selector'   => array(
+					'.wc-block-mini-cart__products-table input.wc-block-components-quantity-selector__input:focus',
+					'.wc-block-mini-cart__products-table .wc-block-components-quantity-selector .wc-block-components-quantity-selector__button:focus',
+				),
+				'properties' => array(
+					array(
+						'property' => 'outline',
+						'value'    => $text_color ? "1px solid {$text_color['value']}" : false,
+					),
+				),
+			),
 		);
 
 		$parsed_style = '';
 
 		foreach ( $styles as $style ) {
+			$selector = is_array( $style['selector'] ) ? implode( ', ', $style['selector'] ) : $style['selector'];
+
 			$properties = array_filter(
 				$style['properties'],
 				function( $property ) {
@@ -130,7 +165,7 @@ class MiniCartContents extends AbstractBlock {
 			);
 
 			if ( ! empty( $properties ) ) {
-				$parsed_style .= $style['selector'] . '{' . PHP_EOL;
+				$parsed_style .= $selector . '{' . PHP_EOL;
 				foreach ( $properties as $property ) {
 					$parsed_style .= $property['property'] . ':' . $property['value'] . ';' . PHP_EOL;
 				}
