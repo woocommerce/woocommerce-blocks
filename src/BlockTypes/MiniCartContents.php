@@ -136,11 +136,11 @@ class MiniCartContents extends AbstractBlock {
 			);
 
 			if ( ! empty( $properties ) ) {
-				$parsed_style .= $selector . '{' . PHP_EOL;
+				$parsed_style .= $selector . '{';
 				foreach ( $properties as $property ) {
-					$parsed_style .= $property['property'] . ':' . $property['value'] . ';' . PHP_EOL;
+					$parsed_style .= sprintf( '%1$s:%2$s;', $property['property'], $property['value'] );
 				}
-				$parsed_style .= '}' . PHP_EOL;
+				$parsed_style .= '}';
 			}
 		}
 
