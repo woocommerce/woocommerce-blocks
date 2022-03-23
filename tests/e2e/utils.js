@@ -209,8 +209,7 @@ export async function saveTemplate() {
 export async function getAllTemplates() {
 	const { templatesListTable } = SELECTORS;
 
-	await page.waitForSelector( templatesListTable.root );
-	const table = await page.$( templatesListTable.root );
+	const table = await page.waitForSelector( templatesListTable.root );
 
 	if ( ! table ) throw new Error( 'Templates table not found' );
 
