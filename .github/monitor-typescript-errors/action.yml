@@ -1,0 +1,15 @@
+name: 'Typescript Monitor'
+description: 'Check Typescript Errors'
+inputs:
+    repo-token:
+        description: 'GitHub token'
+        required: true
+    compare:
+        description: 'Path file'
+        required: true
+    main_branch_folder:
+        description: 'Path Folder'
+        required: true
+runs:
+    using: 'node16'
+    main: 'index.js'
