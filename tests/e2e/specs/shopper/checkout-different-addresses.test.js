@@ -45,9 +45,11 @@ describe( 'Shopper → Checkout → Can have different shipping and billing addr
 		);
 		await setCheckbox( '#inspector-toggle-control-1' );
 		await saveOrPublish();
+		await shopper.block.emptyCart();
 	} );
 
 	afterAll( async () => {
+		await shopper.block.emptyCart();
 		// Deactivate the "Company" field
 		await visitBlockPage( 'Checkout Block' );
 		await openDocumentSettingsSidebar();
