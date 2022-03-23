@@ -14,6 +14,14 @@ if ( process.env.WOOCOMMERCE_BLOCKS_PHASE < 2 )
 	test.only( `Skipping checkout tests`, () => {} );
 
 describe( 'Shopper → Checkout → Can choose payment option', () => {
+	beforeEach( async () => {
+		await shopper.block.emptyCart();
+	} );
+
+	afterAll( async () => {
+		await shopper.block.emptyCart();
+	} );
+
 	it( 'allows customer to pay using Direct bank transfer', async () => {
 		await shopper.goToShop();
 		await shopper.addToCartFromShopPage( SIMPLE_PRODUCT_NAME );
