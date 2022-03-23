@@ -24,6 +24,7 @@ describe( 'Shopper → Checkout → Can place an order', () => {
 		await shopper.goToShop();
 		await shopper.addToCartFromShopPage( SIMPLE_PRODUCT_NAME );
 		await shopper.block.goToCheckout();
+		await shopper.block.fillBillingDetails( BILLING_DETAILS );
 		await shopper.block.placeOrder();
 		await expect( page ).toMatch( 'Your order has been received.' );
 		await shopper.logout();
