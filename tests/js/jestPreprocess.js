@@ -3,4 +3,6 @@ const babelOptions = {
 	plugins: [ '@babel/plugin-proposal-class-properties' ],
 };
 
-module.exports = require( 'babel-jest' ).createTransformer( babelOptions );
+module.exports = require( 'babel-jest' ).default.createTransformer(
+	babelOptions
+);
