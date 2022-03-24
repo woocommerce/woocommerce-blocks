@@ -88,20 +88,26 @@ class MiniCartContents extends AbstractBlock {
 				),
 			),
 			array(
-				'selector'   => '.wc-block-mini-cart__footer .wc-block-mini-cart__footer-actions .wc-block-mini-cart__footer-cart.wc-block-components-button',
+				'selector'   => '.wc-block-mini-cart__footer .wc-block-mini-cart__footer-actions .wc-block-mini-cart__footer-cart',
 				'properties' => array(
 					array(
 						'property' => 'color',
 						'value'    => $text_color ? $text_color['value'] : false,
 					),
 					array(
-						'property' => 'border-color',
-						'value'    => $text_color ? $text_color['value'] : false,
+						'property' => 'box-shadow',
+						'value'    => $text_color ? "inset 0 0 0 1px {$text_color['value']}" : false,
 					),
 				),
 			),
 			array(
-				'selector'   => '.wc-block-mini-cart__footer .wc-block-mini-cart__footer-actions .wc-block-mini-cart__footer-checkout',
+				'selector'   => array(
+					'.wc-block-mini-cart__footer .wc-block-mini-cart__footer-actions .wc-block-mini-cart__footer-checkout',
+					'.wc-block-mini-cart__footer .wc-block-mini-cart__footer-actions .wc-block-mini-cart__footer-cart:hover',
+					'.wc-block-mini-cart__footer .wc-block-mini-cart__footer-actions .wc-block-mini-cart__footer-cart:focus',
+					'.wc-block-mini-cart__footer .wc-block-mini-cart__footer-actions .wc-block-mini-cart__footer-checkout:hover',
+					'.wc-block-mini-cart__footer .wc-block-mini-cart__footer-actions .wc-block-mini-cart__footer-checkout:focus',
+				),
 				'properties' => array(
 					array(
 						'property' => 'color',
