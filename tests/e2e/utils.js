@@ -213,11 +213,13 @@ export async function saveTemplate() {
 
 	await page.click( saveButton );
 	await page.waitForSelector( savePrompt );
-	await page.click( confirmSave );
-	await page.waitForResponse( ( res ) => {
-		// Will match both templates and template_parts endpoints.
-		return res.url().includes( '/wp/v2/template' );
-	} );
+	await Promise.all( [
+		await page.waitForResponse( ( res ) => {
+			// Will match both templates and template_parts endpoints.
+			return res.url().includes( '/wp/v2/template' );
+		} ),
+		await page.click( confirmSave ),
+	] );
 }
 
 /**
