@@ -156,9 +156,9 @@ export const isBlockInsertedInWidgetsArea = async ( blockName ) => {
  */
 export async function goToSiteEditor( {
 	postId,
-	waitForActions = false,
 	postType = 'wp_template',
 	editorContext = GUTENBERG_EDITOR_CONTEXT,
+	waitForActions = false,
 } = {} ) {
 	// There is a bug in Gutenberg/WPCore now that makes it impossible to rely on site-editor.php on setups
 	// with locally installed Gutenberg. Details in https://github.com/WordPress/gutenberg/issues/39639.
