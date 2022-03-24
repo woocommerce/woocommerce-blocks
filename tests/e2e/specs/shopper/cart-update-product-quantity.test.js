@@ -26,7 +26,16 @@ describe( 'Shopper → Cart → Can update product quantity', () => {
 		await shopper.addToCartFromShopPage( SIMPLE_PRODUCT_NAME );
 		await shopper.block.goToCart();
 
+		const traceFile = `${ __dirname }/${
+			expect.getState().currentTestName
+		}-trace.json`;
+		await page.tracing.start( {
+			path: traceFile,
+			screenshots: false,
+			categories: [ 'devtools.timeline' ],
+		} );
 		await shopper.block.setCartQuantity( SIMPLE_PRODUCT_NAME, 4 );
+		await page.tracing.stop();
 		await expect( page ).toMatchElement(
 			'button.wc-block-cart__submit-button[disabled]'
 		);
