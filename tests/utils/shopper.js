@@ -354,5 +354,11 @@ export const shopper = {
 
 			await expect( page.$x( cartItemXPath ) ).resolves.toHaveLength( 1 );
 		},
+
+		isLoggedIn: async () => {
+			const adminBar = await page.$( '#wpadminbar' );
+
+			return !! adminBar;
+		},
 	},
 };
