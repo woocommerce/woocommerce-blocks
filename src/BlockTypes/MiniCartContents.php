@@ -128,7 +128,7 @@ class MiniCartContents extends AbstractBlock {
 				'properties' => array(
 					array(
 						'property' => 'box-shadow',
-						'value'    => $text_color ? "inset 0 0 2px 0 {$text_color['value']}" : false,
+						'value'    => $text_color ? "inset 0 0 1px 0 {$text_color['value']}" : false,
 					),
 				),
 			),
