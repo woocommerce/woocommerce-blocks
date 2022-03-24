@@ -127,8 +127,8 @@ class MiniCartContents extends AbstractBlock {
 				'selector'   => '.wc-block-mini-cart__products-table .wc-block-components-quantity-selector',
 				'properties' => array(
 					array(
-						'property' => 'border-color',
-						'value'    => $text_color ? $text_color['value'] : false,
+						'property' => 'box-shadow',
+						'value'    => $text_color ? "inset 0 0 2px 0 {$text_color['value']}" : false,
 					),
 				),
 			),

@@ -103,7 +103,7 @@ const Edit = ( { clientId }: Props ): ReactElement => {
 				<style>
 					{ `
 						.wc-block-mini-cart__products-table .wc-block-components-quantity-selector {
-							border-color: ${ blockProps.style.color };
+							box-shadow: inset 0 0 2px 0 ${ blockProps.style.color };
 						}
 						.wc-block-mini-cart__products-table input.wc-block-components-quantity-selector__input,
 						.wc-block-mini-cart__products-table .wc-block-components-quantity-selector .wc-block-components-quantity-selector__button {
