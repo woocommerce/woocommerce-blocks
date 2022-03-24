@@ -88,7 +88,7 @@ class MiniCartContents extends AbstractBlock {
 				),
 			),
 			array(
-				'selector'   => '.wc-block-mini-cart__footer .wc-block-mini-cart__footer-actions .wc-block-mini-cart__footer-cart.wc-block-components-button',
+				'selector'   => '.wc-block-mini-cart__footer .wc-block-mini-cart__footer-actions .wc-block-mini-cart__footer-cart',
 				'properties' => array(
 					array(
 						'property' => 'color',
