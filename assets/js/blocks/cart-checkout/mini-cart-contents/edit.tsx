@@ -98,7 +98,8 @@ const Edit = ( { clientId }: Props ): ReactElement => {
 			 * manipulate the style using block attributes and inject the CSS
 			 * via `wp_add_inline_style()` function.
 			 */ }
-			{ blockProps.style.color && (
+			{ ( blockProps.style.color ||
+				blockProps.style.backgroundColor ) && (
 				<style>
 					{ `
 						.wc-block-mini-cart__products-table .wc-block-components-quantity-selector {
