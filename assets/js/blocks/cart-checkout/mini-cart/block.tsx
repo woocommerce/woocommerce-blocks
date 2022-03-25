@@ -40,7 +40,7 @@ interface Props {
 	colorClassNames?: string;
 	style?: Record< string, Record< string, string > >;
 	contents: string;
-	addedToCartBehavior: string;
+	addToCartBehavior: string;
 }
 
 const MiniCartBlock = ( {
@@ -48,7 +48,7 @@ const MiniCartBlock = ( {
 	colorClassNames,
 	style,
 	contents = '',
-	addedToCartBehavior = 'none',
+	addToCartBehavior = 'none',
 }: Props ): JSX.Element => {
 	const {
 		cartItemsCount: cartItemsCountFromApi,
@@ -110,7 +110,7 @@ const MiniCartBlock = ( {
 
 	useEffect( () => {
 		const openMiniCart = () => {
-			if ( addedToCartBehavior === 'open_drawer' ) {
+			if ( addToCartBehavior === 'open_drawer' ) {
 				setSkipSlideIn( false );
 				setIsOpen( true );
 			}
@@ -135,7 +135,7 @@ const MiniCartBlock = ( {
 				openMiniCart
 			);
 		};
-	}, [] );
+	}, [ addToCartBehavior ] );
 
 	const showIncludingTax = getSettingWithCoercion(
 		'displayCartPricesIncludingTax',

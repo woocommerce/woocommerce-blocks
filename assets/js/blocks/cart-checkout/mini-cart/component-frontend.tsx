@@ -41,7 +41,7 @@ const renderMiniCartFrontend = () => {
 				isInitiallyOpen: el.dataset.isInitiallyOpen === 'true',
 				colorClassNames,
 				style: el.dataset.style ? JSON.parse( el.dataset.style ) : {},
-				addedToCartBehavior: el.dataset.addedToCartBehavior || 'none',
+				addToCartBehavior: el.dataset.addToCartBehavior || 'none',
 				contents:
 					el.querySelector( '.wc-block-mini-cart__template-part' )
 						?.innerHTML ?? '',
