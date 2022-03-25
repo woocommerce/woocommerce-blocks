@@ -52,12 +52,18 @@ describe( 'Cart performance', () => {
 			results.firstBlock.push( firstBlock );
 		}
 
-		console.log( results );
+		Object.entries( results ).forEach( ( [name, value] ) => {
+			if ( Array.isArray( value ) && value.every( x => typeof x === 'number' ) && value.length === 0 ) {
+				return;
+			}
+			logPerformanceResult( `Cart block loading: (${ name })`, value );
+		} );
 
+		// To stop warning about no assertions.
 		expect( true ).toBe( true );
 	} );
 
-	it.only( 'Quantity change', async () => {
+	it( 'Quantity change', async () => {
 		await shopper.block.goToCart();
 		await page.waitForNetworkIdle( { idleTime: 2000 } );
 		await page.waitForSelector(
@@ -85,7 +91,7 @@ describe( 'Cart performance', () => {
 		);
 	} );
 
-	it.only( 'Coupon entry', async () => {
+	it.skip( 'Coupon entry', async () => {
 		await shopper.block.goToCart();
 		await page.waitForNetworkIdle( { idleTime: 2000 } );
 		await page.waitForSelector(
