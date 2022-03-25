@@ -52,25 +52,29 @@ const MiniCartBlock = ( {
 				>
 					<SelectControl
 						label={ __(
-							'Add to cart behavior',
+							'Add-to-Cart behaviour',
 							'woo-gutenberg-products-block'
 						) }
 						value={ addToCartBehavior }
 						onChange={ ( value ) => {
 							setAttributes( { addToCartBehavior: value } );
 						} }
+						help={ __(
+							'Select what happens when a customer adds a product to the cart.',
+							'woo-gutenberg-products-block'
+						) }
 						options={ [
 							{
 								value: 'none',
 								label: __(
-									'Do not show anything',
+									'Do nothing',
 									'woo-gutenberg-products-block'
 								),
 							},
 							{
 								value: 'open_drawer',
 								label: __(
-									'Open the drawer',
+									'Open cart drawer',
 									'woo-gutenberg-products-block'
 								),
 							},
