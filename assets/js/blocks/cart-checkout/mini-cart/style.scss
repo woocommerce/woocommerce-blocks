@@ -198,7 +198,8 @@ h2.wc-block-mini-cart__title {
 	justify-content: center;
 
 	a {
-		border: 2px solid;
+		border: 2px solid currentColor;
+		color: currentColor;
 		padding: $gap-small $gap-large;
 		text-decoration: none;
 	}
