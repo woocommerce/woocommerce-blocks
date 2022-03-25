@@ -112,9 +112,7 @@ describe( 'Cart performance', () => {
 				'[aria-label="Enter code"]',
 				'test_coupon'
 			);
-			console.log('done entering code')
 			await expect( page ).toClick( 'button', { text: 'Apply' } );
-			console.log('done clicking button');
 			await page.waitForResponse(
 				( response ) =>
 					response.url().indexOf( '/wc/store/v1/batch' ) !== -1 &&
