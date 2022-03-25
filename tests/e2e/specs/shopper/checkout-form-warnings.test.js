@@ -1,13 +1,12 @@
 /**
- * External dependencies
- */
-import { MY_ACCOUNT_ACCOUNT_DETAILS } from '@woocommerce/e2e-utils';
-
-/**
  * Internal dependencies
  */
 import { shopper } from '../../../utils';
-import { SIMPLE_PRODUCT_NAME } from '../../../utils/constants';
+import {
+	SIMPLE_PRODUCT_NAME,
+	CUSTOMER_USERNAME,
+	CUSTOMER_PASSWORD,
+} from '../../../utils/constants';
 
 const block = {
 	name: 'Checkout',
@@ -19,13 +18,23 @@ if ( process.env.WOOCOMMERCE_BLOCKS_PHASE < 2 )
 
 describe( 'Shopper → Checkout → Can see warnings when form is incomplete', () => {
 	beforeAll( async () => {
-		const isShopperLoggedIn = await shopper.block.isLoggedIn();
+		const isShopperLoggedIn = await shopper.isLoggedIn();
 
 		// @todo Find a better way to reset the checkout form instead of login then logout
-		if ( isShopperLoggedIn ) await shopper.logout();
-		else {
-			await shopper.login();
-			await shopper.logout();
+		if ( isShopperLoggedIn ) {
+			// Click on the "Log out" link in "My account" page
+			await await page.click(
+				'.woocommerce-MyAccount-navigation-link--customer-logout a'
+			);
+		} else {
+			await shopper.loginFromMyAccountPage(
+				CUSTOMER_USERNAME,
+				CUSTOMER_PASSWORD
+			);
+
+			await await page.click(
+				'.woocommerce-MyAccount-navigation-link--customer-logout a'
+			);
 		}
 	} );
 

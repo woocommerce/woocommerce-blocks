@@ -354,11 +354,24 @@ export const shopper = {
 
 			await expect( page.$x( cartItemXPath ) ).resolves.toHaveLength( 1 );
 		},
+	},
 
-		isLoggedIn: async () => {
-			const adminBar = await page.$( '#wpadminbar' );
+	isLoggedIn: async () => {
+		await shopper.gotoMyAccount();
 
-			return !! adminBar;
-		},
+		await expect( page.title() ).resolves.toMatch( 'My account' );
+		const loginForm = await page.$( 'form.woocommerce-form-login' );
+
+		return ! loginForm;
+	},
+
+	loginFromMyAccountPage: async ( username, password ) => {
+		await page.type( '#username', username );
+		await page.type( '#password', password );
+
+		await Promise.all( [
+			page.waitForNavigation( { waitUntil: 'networkidle0' } ),
+			page.click( 'button[name="login"]' ),
+		] );
 	},
 };
