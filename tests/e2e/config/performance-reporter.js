@@ -6,13 +6,14 @@ const chalk = require( 'chalk' );
 const { PERFORMANCE_REPORT_FILENAME } = require( '../../utils/constants' );
 
 class PerformanceReporter {
-	onTestResult() {
+	onRunComplete() {
 		if ( statSync( PERFORMANCE_REPORT_FILENAME ).size === 0 ) {
 			return;
 		}
 		const reportFileContents = readFileSync( PERFORMANCE_REPORT_FILENAME )
 			.toString()
 			.split( '\n' )
+			.slice( 0, -1 )
 			.map( ( line ) => JSON.parse( line ) );
 
 		reportFileContents.forEach( ( testReport ) => {
@@ -21,15 +22,16 @@ class PerformanceReporter {
 				chalk.bgGreenBright.underline.bold( testReport.description )
 			);
 			// eslint-disable-next-line no-console
-			console.log( chalk.red( `Longest: ${ testReport.longest }` ) );
+			console.log( chalk.red( `Longest: ${ testReport.longest }ms` ) );
 			// eslint-disable-next-line no-console
-			console.log( chalk.green( `Shortest: ${ testReport.shortest }` ) );
+			console.log(
+				chalk.green( `Shortest: ${ testReport.shortest }ms` )
+			);
 			// eslint-disable-next-line no-console
-			console.log( chalk.yellow( `Average: ${ testReport.average } ` ) );
+			console.log( chalk.yellow( `Average: ${ testReport.average }ms` ) );
+			// eslint-disable-next-line no-console
+			console.log( '' );
 		} );
-
-		// eslint-disable-next-line no-console
-		console.log( '' );
 	}
 }
 
