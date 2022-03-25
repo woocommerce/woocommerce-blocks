@@ -314,13 +314,16 @@ const average = ( array ) => array.reduce( ( a, b ) => a + b ) / array.length;
  * @param {Array} times array of times to record.
  */
 export const logPerformanceResult = ( description, times ) => {
+	const roundedTimes = times.map(
+		( time ) => Math.round( time + Number.EPSILON * 100 ) / 100
+	);
 	fs.appendFileSync(
 		PERFORMANCE_REPORT_FILENAME,
 		JSON.stringify( {
 			description,
-			longest: Math.max( ...times ),
-			shortest: Math.min( ...times ),
-			average: average( times ),
-		} )
+			longest: Math.max( ...roundedTimes ),
+			shortest: Math.min( ...roundedTimes ),
+			average: average( roundedTimes ),
+		} ) + '\n'
 	);
 };
