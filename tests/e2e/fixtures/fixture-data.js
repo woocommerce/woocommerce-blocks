@@ -83,6 +83,12 @@ const Coupons = () => [
 		amount: '0',
 		free_shipping: true,
 	},
+	{
+		code: 'singleuse',
+		discount_type: 'fixed_cart',
+		usage_limit: 1,
+		amount: '5',
+	},
 ];
 
 /**
