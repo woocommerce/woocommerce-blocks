@@ -1,12 +1,15 @@
 /**
  * External dependencies
  */
-const { readFileSync } = require( 'fs' );
+const { readFileSync, statSync } = require( 'fs' );
 const chalk = require( 'chalk' );
 const { PERFORMANCE_REPORT_FILENAME } = require( '../../utils/constants' );
 
 class PerformanceReporter {
 	onTestResult() {
+		if ( statSync( PERFORMANCE_REPORT_FILENAME ).size === 0 ) {
+			return;
+		}
 		const reportFileContents = readFileSync( PERFORMANCE_REPORT_FILENAME )
 			.toString()
 			.split( '\n' )
