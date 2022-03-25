@@ -16,7 +16,7 @@ import Noninteractive from '@woocommerce/base-components/noninteractive';
 import QuantityBadge from './quantity-badge';
 
 interface Attributes {
-	addToCartBehavior: string;
+	addToCartBehaviour: string;
 }
 
 interface Props {
@@ -28,7 +28,7 @@ const MiniCartBlock = ( {
 	attributes,
 	setAttributes,
 }: Props ): ReactElement => {
-	const { addToCartBehavior } = attributes;
+	const { addToCartBehaviour } = attributes;
 	const blockProps = useBlockProps( {
 		className: `wc-block-mini-cart`,
 	} );
@@ -55,9 +55,9 @@ const MiniCartBlock = ( {
 							'Add-to-Cart behaviour',
 							'woo-gutenberg-products-block'
 						) }
-						value={ addToCartBehavior }
+						value={ addToCartBehaviour }
 						onChange={ ( value ) => {
-							setAttributes( { addToCartBehavior: value } );
+							setAttributes( { addToCartBehaviour: value } );
 						} }
 						help={ __(
 							'Select what happens when a customer adds a product to the cart.',

@@ -44,7 +44,7 @@ const settings = {
 			default: false,
 			save: false,
 		},
-		addToCartBehavior: {
+		addToCartBehaviour: {
 			type: 'string',
 			default: 'none',
 		},
