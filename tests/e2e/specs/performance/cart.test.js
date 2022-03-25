@@ -96,7 +96,7 @@ describe( 'Cart performance', () => {
 		);
 	} );
 
-	it.skip( 'Coupon entry', async () => {
+	it( 'Coupon entry', async () => {
 		await shopper.block.goToCart();
 		await page.waitForNetworkIdle( { idleTime: 2000 } );
 		await page.waitForSelector(
@@ -109,10 +109,12 @@ describe( 'Cart performance', () => {
 			const start = performance.now();
 			await expect( page ).toClick( 'button', { text: 'Coupon code' } );
 			await expect( page ).toFill(
-				'aria-label["Enter code"]',
+				'[aria-label="Enter code"]',
 				'test_coupon'
 			);
+			console.log('done entering code')
 			await expect( page ).toClick( 'button', { text: 'Apply' } );
+			console.log('done clicking button');
 			await page.waitForResponse(
 				( response ) =>
 					response.url().indexOf( '/wc/store/v1/batch' ) !== -1 &&
