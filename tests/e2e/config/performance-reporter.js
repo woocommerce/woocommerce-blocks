@@ -28,7 +28,11 @@ class PerformanceReporter {
 				chalk.green( `Shortest: ${ testReport.shortest }ms` )
 			);
 			// eslint-disable-next-line no-console
-			console.log( chalk.yellow( `Average: ${ testReport.average }ms` ) );
+			console.log(
+				chalk.yellow(
+					`Average: ${ testReport.average.toFixed( 2 ) }ms`
+				)
+			);
 			// eslint-disable-next-line no-console
 			console.log( '' );
 		} );

@@ -52,8 +52,12 @@ describe( 'Cart performance', () => {
 			results.firstBlock.push( firstBlock );
 		}
 
-		Object.entries( results ).forEach( ( [name, value] ) => {
-			if ( Array.isArray( value ) && value.every( x => typeof x === 'number' ) && value.length === 0 ) {
+		Object.entries( results ).forEach( ( [ name, value ] ) => {
+			if (
+				Array.isArray( value ) &&
+				value.every( ( x ) => typeof x === 'number' ) &&
+				value.length === 0
+			) {
 				return;
 			}
 			logPerformanceResult( `Cart block loading: (${ name })`, value );
