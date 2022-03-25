@@ -104,8 +104,16 @@ class BlockTemplatesController {
 			return $template;
 		}
 
-		$directory          = $this->get_templates_directory( $template_type );
-		$template_file_path = $directory . '/' . $template_slug . '.html';
+		$directory = $this->get_templates_directory( $template_type );
+		/**
+		 * Filters the path of the template file. This filter will only be run for WooCommerce (woocommerce/woocommerce//template_slug) templates.
+		 *
+		 * @since x.x.x
+		 *
+		 * @param string $template_file_path File path of the template.
+		 * @param string $id                 Template unique identifier (example: theme_slug//template_slug).
+		 */
+		$template_file_path = apply_filters( 'woocommerce_block_template_file_path', $directory . '/' . $template_slug . '.html', $id );
 		$template_object    = BlockTemplateUtils::create_new_block_template_object( $template_file_path, $template_type, $template_slug );
 		$template_built     = BlockTemplateUtils::build_template_result_from_file( $template_object, $template_type );
 
@@ -233,8 +241,15 @@ class BlockTemplatesController {
 	 * @return array Templates from the WooCommerce blocks plugin directory.
 	 */
 	public function get_block_templates_from_woocommerce( $slugs, $already_found_templates, $template_type = 'wp_template' ) {
-		$directory      = $this->get_templates_directory( $template_type );
-		$template_files = BlockTemplateUtils::get_template_paths( $directory );
+		$directory = $this->get_templates_directory( $template_type );
+		/**
+		 * Filters an array of template paths.
+		 *
+		 * @since x.x.x
+		 *
+		 * @param array $template_paths Array of strings containing block template file paths.
+		 */
+		$template_files = apply_filters( 'woocommerce_get_block_template_file_paths', BlockTemplateUtils::get_template_paths( $directory ) );
 		$templates      = array();
 
 		foreach ( $template_files as $template_file ) {
@@ -289,7 +304,6 @@ class BlockTemplatesController {
 		$templates_from_woo = $this->get_block_templates_from_woocommerce( $slugs, $templates_from_db, $template_type );
 		$templates          = array_merge( $templates_from_db, $templates_from_woo );
 		return BlockTemplateUtils::filter_block_templates_by_feature_flag( $templates );
-
 	}
 
 	/**
