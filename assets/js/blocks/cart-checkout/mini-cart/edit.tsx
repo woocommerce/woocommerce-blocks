@@ -80,13 +80,19 @@ const MiniCartBlock = ( {
 				{ templatePartEditUri && (
 					<PanelBody
 						title={ __(
-							'Template Editor',
+							'Template settings',
 							'woo-gutenberg-products-block'
 						) }
 					>
+						<p>
+							{ __(
+								'Edit the appearance of your empty and filled mini cart contents.',
+								'woo-gutenberg-products-block'
+							) }
+						</p>
 						<ExternalLink href={ templatePartEditUri }>
 							{ __(
-								'Edit template part',
+								'Edit Mini Cart template part',
 								'woo-gutenberg-products-block'
 							) }
 						</ExternalLink>
