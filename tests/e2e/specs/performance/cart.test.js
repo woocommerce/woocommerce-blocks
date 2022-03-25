@@ -3,10 +3,9 @@
  */
 import { shopper, getLoadingDurations } from '../../../utils';
 import { SIMPLE_PHYSICAL_PRODUCT_NAME } from '../../../utils/constants';
-import { getClickEventDurations } from '../../../../../gutenberg/packages/e2e-tests/specs/performance/utils';
-import { readFile } from '../../../../../gutenberg/packages/e2e-tests/specs/performance/utils';
+import { logPerformanceResult } from '../../utils';
 
-describe( 'Cart performance tests', () => {
+describe( 'Cart performance', () => {
 	beforeAll( async () => {
 		await shopper.goToShop();
 		await shopper.addToCartFromShopPage( SIMPLE_PHYSICAL_PRODUCT_NAME );
@@ -58,42 +57,61 @@ describe( 'Cart performance tests', () => {
 		expect( true ).toBe( true );
 	} );
 
-	it( 'Quantity change performance', async () => {
+	it.only( 'Quantity change', async () => {
 		await shopper.block.goToCart();
+		await page.waitForNetworkIdle( { idleTime: 2000 } );
+		await page.waitForSelector(
+			'button.wc-block-components-quantity-selector__button--plus'
+		);
+		let i = 10;
 
-		const traceFile = __dirname + '/trace.json';
-		await page.tracing.start( {
-			path: traceFile,
-			screenshots: false,
-			categories: [ 'devtools.timeline' ],
-		} );
-		let i = 98;
+		const timesForResponse = [];
 		while ( i-- ) {
+			const start = performance.now();
 			await expect( page ).toClick(
 				'button.wc-block-components-quantity-selector__button--plus'
 			);
+			await page.waitForResponse(
+				( response ) =>
+					response.url().indexOf( '/wc/store/v1/batch' ) !== -1 &&
+					response.status() === 207
+			);
+			const end = performance.now();
+			timesForResponse.push( end - start );
 		}
-		await page.tracing.stop();
-		const traceResults = JSON.parse( readFile( traceFile ) );
-		const [
-			keyDownEvents,
-			keyPressEvents,
-			keyUpEvents,
-		] = getClickEventDurations( traceResults );
-		//
-		// for ( let j = 0; j < keyDownEvents.length; j++ ) {
-		// 	results.type.push(
-		// 		keyDownEvents[ j ] + keyPressEvents[ j ] + keyUpEvents[ j ]
-		// 	);
-		// }
-		//
-		// const resultsFilename = basename( __filename, '.js' ) + '.results.json';
-		//
-		// writeFileSync(
-		// 	join( __dirname, resultsFilename ),
-		// 	JSON.stringify( results, null, 2 )
-		// );
-		//
-		// deleteFile( traceFile );
+		logPerformanceResult(
+			'Cart block: Change cart item quantity',
+			timesForResponse
+		);
+	} );
+
+	it.only( 'Coupon entry', async () => {
+		await shopper.block.goToCart();
+		await page.waitForNetworkIdle( { idleTime: 2000 } );
+		await page.waitForSelector(
+			'button.wc-block-components-quantity-selector__button--plus'
+		);
+		let i = 10;
+
+		const timesForResponse = [];
+		while ( i-- ) {
+			const start = performance.now();
+			await expect( page ).toClick( 'button', { text: 'Coupon code' } );
+			await expect( page ).toFill(
+				'aria-label["Enter code"]',
+				'test_coupon'
+			);
+			await expect( page ).toClick( 'button', { text: 'Apply' } );
+			await page.waitForResponse(
+				( response ) =>
+					response.url().indexOf( '/wc/store/v1/batch' ) !== -1 &&
+					response.status() === 207
+			);
+			const end = performance.now();
+			// Close the coupon panel.
+			await expect( page ).toClick( 'button', { text: 'Coupon code' } );
+			timesForResponse.push( end - start );
+		}
+		logPerformanceResult( 'Cart block: Coupon entry', timesForResponse );
 	} );
 } );
