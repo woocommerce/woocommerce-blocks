@@ -44,12 +44,13 @@ describe( 'Cart performance', () => {
 				firstBlock,
 			} = await getLoadingDurations();
 
-			results.serverResponse.push( serverResponse );
-			results.firstPaint.push( firstPaint );
-			results.domContentLoaded.push( domContentLoaded );
-			results.loaded.push( loaded );
-			results.firstContentfulPaint.push( firstContentfulPaint );
-			results.firstBlock.push( firstBlock );
+			// Multiply by 1000 to get time in ms
+			results.serverResponse.push( serverResponse * 1000 );
+			results.firstPaint.push( firstPaint * 1000 );
+			results.domContentLoaded.push( domContentLoaded * 1000 );
+			results.loaded.push( loaded * 1000 );
+			results.firstContentfulPaint.push( firstContentfulPaint * 1000 );
+			results.firstBlock.push( firstBlock * 1000 );
 		}
 
 		Object.entries( results ).forEach( ( [ name, value ] ) => {
