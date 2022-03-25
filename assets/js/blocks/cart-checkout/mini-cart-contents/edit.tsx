@@ -102,21 +102,10 @@ const Edit = ( { clientId }: Props ): ReactElement => {
 				blockProps.style.backgroundColor ) && (
 				<style>
 					{ `
-						.wc-block-mini-cart__products-table .wc-block-components-quantity-selector {
-							box-shadow: inset 0 0 1px 0 ${ blockProps.style.color };
-						}
-						.wc-block-mini-cart__products-table input.wc-block-components-quantity-selector__input,
-						.wc-block-mini-cart__products-table .wc-block-components-quantity-selector .wc-block-components-quantity-selector__button {
-							color: ${ blockProps.style.color };
-						}
 						.wc-block-mini-cart__footer .wc-block-mini-cart__footer-actions .wc-block-mini-cart__footer-checkout {
 							color: ${ blockProps.style.backgroundColor };
 							background-color: ${ blockProps.style.color };
 							border-color: ${ blockProps.style.color };
-						}
-						.wc-block-mini-cart__footer .wc-block-mini-cart__footer-actions .wc-block-mini-cart__footer-cart {
-							color: ${ blockProps.style.color };
-							box-shadow: inset 0 0 0 1px ${ blockProps.style.color };
 						}
 					` }
 				</style>

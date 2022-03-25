@@ -88,25 +88,12 @@ class MiniCartContents extends AbstractBlock {
 				),
 			),
 			array(
-				'selector'   => '.wc-block-mini-cart__footer .wc-block-mini-cart__footer-actions .wc-block-mini-cart__footer-cart',
-				'properties' => array(
-					array(
-						'property' => 'color',
-						'value'    => $text_color ? $text_color['value'] : false,
-					),
-					array(
-						'property' => 'box-shadow',
-						'value'    => $text_color ? "inset 0 0 0 1px {$text_color['value']}" : false,
-					),
-				),
-			),
-			array(
 				'selector'   => array(
 					'.wc-block-mini-cart__footer .wc-block-mini-cart__footer-actions .wc-block-mini-cart__footer-checkout',
-					'.wc-block-mini-cart__footer .wc-block-mini-cart__footer-actions .wc-block-mini-cart__footer-cart:hover',
-					'.wc-block-mini-cart__footer .wc-block-mini-cart__footer-actions .wc-block-mini-cart__footer-cart:focus',
 					'.wc-block-mini-cart__footer .wc-block-mini-cart__footer-actions .wc-block-mini-cart__footer-checkout:hover',
 					'.wc-block-mini-cart__footer .wc-block-mini-cart__footer-actions .wc-block-mini-cart__footer-checkout:focus',
+					'.wc-block-mini-cart__footer .wc-block-mini-cart__footer-actions .wc-block-mini-cart__footer-cart:hover',
+					'.wc-block-mini-cart__footer .wc-block-mini-cart__footer-actions .wc-block-mini-cart__footer-cart:focus',
 				),
 				'properties' => array(
 					array(
@@ -120,39 +107,6 @@ class MiniCartContents extends AbstractBlock {
 					array(
 						'property' => 'background-color',
 						'value'    => $text_color ? $text_color['value'] : false,
-					),
-				),
-			),
-			array(
-				'selector'   => '.wc-block-mini-cart__products-table .wc-block-components-quantity-selector',
-				'properties' => array(
-					array(
-						'property' => 'box-shadow',
-						'value'    => $text_color ? "inset 0 0 1px 0 {$text_color['value']}" : false,
-					),
-				),
-			),
-			array(
-				'selector'   => array(
-					'.wc-block-mini-cart__products-table input.wc-block-components-quantity-selector__input',
-					'.wc-block-mini-cart__products-table .wc-block-components-quantity-selector .wc-block-components-quantity-selector__button',
-				),
-				'properties' => array(
-					array(
-						'property' => 'color',
-						'value'    => $text_color ? $text_color['value'] : false,
-					),
-				),
-			),
-			array(
-				'selector'   => array(
-					'.wc-block-mini-cart__products-table input.wc-block-components-quantity-selector__input:focus',
-					'.wc-block-mini-cart__products-table .wc-block-components-quantity-selector .wc-block-components-quantity-selector__button:focus',
-				),
-				'properties' => array(
-					array(
-						'property' => 'outline',
-						'value'    => $text_color ? "1px solid {$text_color['value']}" : false,
 					),
 				),
 			),
