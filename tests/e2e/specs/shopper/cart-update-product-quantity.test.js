@@ -2,7 +2,7 @@
  * Internal dependencies
  */
 import { shopper } from '../../../utils';
-import { SIMPLE_PHYSICAL_PRODUCT_NAME } from '../../../utils/constants';
+import { SIMPLE_VIRTUAL_PRODUCT_NAME } from '../../../utils/constants';
 
 const block = {
 	name: 'Cart',
@@ -23,9 +23,9 @@ describe( 'Shopper → Cart → Can update product quantity', () => {
 
 	it.only( 'allows customer to update product quantity via the input field', async () => {
 		await shopper.goToShop();
-		await shopper.addToCartFromShopPage( SIMPLE_PHYSICAL_PRODUCT_NAME );
+		await shopper.addToCartFromShopPage( SIMPLE_VIRTUAL_PRODUCT_NAME );
 		await shopper.block.goToCart();
-		await shopper.block.setCartQuantity( SIMPLE_PHYSICAL_PRODUCT_NAME, 4 );
+		await shopper.block.setCartQuantity( SIMPLE_VIRTUAL_PRODUCT_NAME, 4 );
 
 		await expect( page ).toMatchElement(
 			'button.wc-block-cart__submit-button[disabled]'
@@ -35,12 +35,12 @@ describe( 'Shopper → Cart → Can update product quantity', () => {
 		await page.waitForNetworkIdle( { idleTime: 1000 } );
 		await expect( page ).toMatchElement( 'a.wc-block-cart__submit-button' );
 
-		await shopper.block.productIsInCart( SIMPLE_PHYSICAL_PRODUCT_NAME, 4 );
+		await shopper.block.productIsInCart( SIMPLE_VIRTUAL_PRODUCT_NAME, 4 );
 	} );
 
 	it( 'allows customer to increase product quantity via the plus button', async () => {
 		await shopper.block.increaseCartQuantityByOne(
-			SIMPLE_PHYSICAL_PRODUCT_NAME
+			SIMPLE_VIRTUAL_PRODUCT_NAME
 		);
 		await expect( page ).toMatchElement(
 			'button.wc-block-cart__submit-button[disabled]'
@@ -50,12 +50,12 @@ describe( 'Shopper → Cart → Can update product quantity', () => {
 		await page.waitForNetworkIdle( { idleTime: 1000 } );
 		await expect( page ).toMatchElement( 'a.wc-block-cart__submit-button' );
 
-		await shopper.block.productIsInCart( SIMPLE_PHYSICAL_PRODUCT_NAME, 5 );
+		await shopper.block.productIsInCart( SIMPLE_VIRTUAL_PRODUCT_NAME, 5 );
 	} );
 
 	it( 'allows customer to decrease product quantity via the minus button', async () => {
 		await shopper.block.decreaseCartQuantityByOne(
-			SIMPLE_PHYSICAL_PRODUCT_NAME
+			SIMPLE_VIRTUAL_PRODUCT_NAME
 		);
 		await expect( page ).toMatchElement(
 			'button.wc-block-cart__submit-button[disabled]'
@@ -65,6 +65,6 @@ describe( 'Shopper → Cart → Can update product quantity', () => {
 		await page.waitForNetworkIdle( { idleTime: 1000 } );
 		await expect( page ).toMatchElement( 'a.wc-block-cart__submit-button' );
 
-		await shopper.block.productIsInCart( SIMPLE_PHYSICAL_PRODUCT_NAME, 4 );
+		await shopper.block.productIsInCart( SIMPLE_VIRTUAL_PRODUCT_NAME, 4 );
 	} );
 } );
