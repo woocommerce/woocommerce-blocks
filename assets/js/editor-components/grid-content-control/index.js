@@ -13,9 +13,25 @@ import { ToggleControl } from '@wordpress/components';
  * @param {Object} props.settings
  */
 const GridContentControl = ( { onChange, settings } ) => {
-	const { button, price, rating, title } = settings;
+	const { button, price, rating, title, image } = settings;
 	return (
 		<>
+			<ToggleControl
+				label={ __( 'Image', 'woo-gutenberg-products-block' ) }
+				help={
+					image
+						? __(
+								'Product image is visible.',
+								'woo-gutenberg-products-block'
+						  )
+						: __(
+								'Product image is hidden.',
+								'woo-gutenberg-products-block'
+						  )
+				}
+				checked={ image }
+				onChange={ () => onChange( { ...settings, image: ! image } ) }
+			/>
 			<ToggleControl
 				label={ __( 'Product title', 'woo-gutenberg-products-block' ) }
 				help={
@@ -96,6 +112,7 @@ GridContentControl.propTypes = {
 		price: PropTypes.bool.isRequired,
 		rating: PropTypes.bool.isRequired,
 		title: PropTypes.bool.isRequired,
+		image: PropTypes.bool.isRequired,
 	} ).isRequired,
 	/**
 	 * Callback to update the layout settings.

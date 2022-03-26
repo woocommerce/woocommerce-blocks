@@ -131,6 +131,7 @@ abstract class AbstractProductGrid extends AbstractDynamicBlock {
 		return array(
 			'type'       => 'object',
 			'properties' => array(
+				'image'  => $this->get_schema_boolean( true ),
 				'title'  => $this->get_schema_boolean( true ),
 				'price'  => $this->get_schema_boolean( true ),
 				'rating' => $this->get_schema_boolean( true ),
@@ -167,6 +168,7 @@ abstract class AbstractProductGrid extends AbstractDynamicBlock {
 			'categories'        => array(),
 			'catOperator'       => 'any',
 			'contentVisibility' => array(
+				'image'  => true,
 				'title'  => true,
 				'price'  => true,
 				'rating' => true,
