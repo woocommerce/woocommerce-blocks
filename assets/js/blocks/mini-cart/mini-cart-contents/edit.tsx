@@ -16,7 +16,7 @@ import type { TemplateArray } from '@wordpress/blocks';
 /**
  * Internal dependencies
  */
-import { useViewSwitcher, useForcedLayout } from '../shared';
+import { useViewSwitcher, useForcedLayout } from '../../shared';
 import './editor.scss';
 
 // Array of allowed block names.
