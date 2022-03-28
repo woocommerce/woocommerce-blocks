@@ -12,6 +12,14 @@ let blockAttributes: Record< string, Record< string, unknown > > = {
 		type: 'boolean',
 		default: true,
 	},
+	linkTarget: {
+		type: 'string',
+		default: '_self',
+	},
+	rel: {
+		type: 'string',
+		default: '',
+	},
 	productId: {
 		type: 'number',
 		default: 0,
