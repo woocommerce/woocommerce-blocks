@@ -43,15 +43,6 @@ describe( 'Shopper → Cart → Can view translated cart & checkout blocks', () 
 	} );
 
 	it( 'should be able to view translated Cart block ', async () => {
-		// [x] Install woo-blocks plugin using CLI
-		// [x] Install language for all plugins
-		// [x] Navigate to the Settings page
-		// [x] Change language to German
-		// [x] Navigate to Shop page
-		// [x] Add product to cart
-		// [x] Go to CArt page and check all translated fields
-		// [] Go toCheckout and check all translated fields
-
 		await shopper.goToShop();
 		await shopper.addToCartFromShopPage( '128GB USB Stick' );
 		await shopper.block.goToCart();
