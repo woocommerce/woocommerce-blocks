@@ -94,6 +94,8 @@ class MiniCartContents extends AbstractBlock {
 					'.wc-block-mini-cart__footer .wc-block-mini-cart__footer-actions .wc-block-mini-cart__footer-checkout:focus',
 					'.wc-block-mini-cart__footer .wc-block-mini-cart__footer-actions .wc-block-mini-cart__footer-cart:hover',
 					'.wc-block-mini-cart__footer .wc-block-mini-cart__footer-actions .wc-block-mini-cart__footer-cart:focus',
+					'.wc-block-mini-cart__shopping-button a:hover',
+					'.wc-block-mini-cart__shopping-button a:focus',
 				),
 				'properties' => array(
 					array(
