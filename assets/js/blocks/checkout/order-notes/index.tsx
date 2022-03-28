@@ -4,15 +4,26 @@
 import { __ } from '@wordpress/i18n';
 import { useState } from '@wordpress/element';
 import { CheckboxControl } from '@woocommerce/blocks-checkout';
-import Textarea from '@woocommerce/base-components/textarea';
-import PropTypes from 'prop-types';
+import { Textarea } from '@woocommerce/base-components/textarea';
 
 /**
  * Internal dependencies
  */
 import './style.scss';
 
-const CheckoutOrderNotes = ( { disabled, onChange, placeholder, value } ) => {
+interface CheckoutOrderNotesProps {
+	disabled: boolean;
+	onChange: ( orderNotes: string ) => void;
+	placeholder: string;
+	value: string;
+}
+
+const CheckoutOrderNotes = ( {
+	disabled,
+	onChange,
+	placeholder,
+	value,
+}: CheckoutOrderNotesProps ): JSX.Element => {
 	const [ withOrderNotes, setWithOrderNotes ] = useState( false );
 	// Store order notes when the textarea is hidden. This allows us to recover
 	// text entered previously by the user when the checkbox is re-enabled
@@ -56,13 +67,6 @@ const CheckoutOrderNotes = ( { disabled, onChange, placeholder, value } ) => {
 			) }
 		</div>
 	);
-};
-
-Textarea.propTypes = {
-	onTextChange: PropTypes.func.isRequired,
-	disabled: PropTypes.bool,
-	placeholder: PropTypes.string,
-	value: PropTypes.string,
 };
 
 export default CheckoutOrderNotes;

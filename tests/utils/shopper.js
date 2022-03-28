@@ -6,11 +6,18 @@ import {
 	uiUnblocked,
 	SHOP_CART_PAGE,
 } from '@woocommerce/e2e-utils';
+import { pressKeyWithModifier } from '@wordpress/e2e-test-utils';
 
 /**
  * Internal dependencies
  */
 import { BASE_URL } from '../e2e/utils';
+import {
+	getCartItemPathExpression,
+	getQtyInputPathExpression,
+	getQtyPlusButtonPathExpression,
+	getQtyMinusButtonPathExpression,
+} from './path-expressions';
 
 export const shopper = {
 	...wcShopper,
@@ -293,5 +300,109 @@ export const shopper = {
 				}
 			);
 		},
+
+		/* The express payment button added by Woo Pay or WC Stripe Gateway needs HTTPS and a logged in
+			 account on Google Pay or other express payment methods. This is impossible in this env,
+			 so instead we mock an express payment method using the `registerExpressPaymentMethod()` function
+			 from the wc.wcBlocksRegistry global. This function needs to be run for each page navigation as the
+			 update to the block resgistry is not persisted.
+
+			 eslint-disable because we use global vars within the page context
+		*/
+		mockExpressPaymentMethod: async () => {
+			await page.evaluate( () => {
+				// eslint-disable-next-line
+				const { registerExpressPaymentMethod } = wc.wcBlocksRegistry;
+				registerExpressPaymentMethod( {
+					name: 'mock_express_payment',
+					// eslint-disable-next-line
+					content: React.createElement(
+						'div',
+						[],
+						[ 'Mock Express Payment' ]
+					),
+					// eslint-disable-next-line
+					edit: React.createElement(
+						'div',
+						[],
+						[ 'Mock Express Payment' ]
+					),
+					canMakePayment: () => true,
+				} );
+			} );
+		},
+
+		selectPayment: async ( payment ) => {
+			await expect( page ).toClick(
+				'.wc-block-components-payment-method-label',
+				{
+					text: payment,
+				}
+			);
+		},
+
+		setCartQuantity: async ( productTitle, quantityValue ) => {
+			const cartItemXPath = getCartItemPathExpression( productTitle );
+			const quantityInputXPath =
+				cartItemXPath + '//' + getQtyInputPathExpression();
+
+			const [ quantityInput ] = await page.$x( quantityInputXPath );
+			await quantityInput.focus();
+			await pressKeyWithModifier( 'primary', 'a' );
+			await quantityInput.type( quantityValue.toString() );
+			await quantityInput.evaluate( ( e ) => e.blur() );
+		},
+
+		increaseCartQuantityByOne: async ( productTitle ) => {
+			const cartItemXPath = getCartItemPathExpression( productTitle );
+
+			const quantityPlusButtonXPath =
+				cartItemXPath + '//' + getQtyPlusButtonPathExpression();
+
+			const [ quantityPlusButton ] = await page.$x(
+				quantityPlusButtonXPath
+			);
+			await quantityPlusButton.click();
+		},
+
+		decreaseCartQuantityByOne: async ( productTitle ) => {
+			const cartItemXPath = getCartItemPathExpression( productTitle );
+			const quantityMinusButtonXPath =
+				cartItemXPath + '//' + getQtyMinusButtonPathExpression();
+
+			const [ quantityMinusButton ] = await page.$x(
+				quantityMinusButtonXPath
+			);
+			await quantityMinusButton.click();
+		},
+
+		productIsInCart: async ( productTitle, quantity = null ) => {
+			const cartItemArgs = quantity ? { qty: quantity } : {};
+			const cartItemXPath = getCartItemPathExpression(
+				productTitle,
+				cartItemArgs
+			);
+
+			await expect( page.$x( cartItemXPath ) ).resolves.toHaveLength( 1 );
+		},
+	},
+
+	isLoggedIn: async () => {
+		await shopper.gotoMyAccount();
+
+		await expect( page.title() ).resolves.toMatch( 'My account' );
+		const loginForm = await page.$( 'form.woocommerce-form-login' );
+
+		return ! loginForm;
+	},
+
+	loginFromMyAccountPage: async ( username, password ) => {
+		await page.type( '#username', username );
+		await page.type( '#password', password );
+
+		await Promise.all( [
+			page.waitForNavigation( { waitUntil: 'networkidle0' } ),
+			page.click( 'button[name="login"]' ),
+		] );
 	},
 };
