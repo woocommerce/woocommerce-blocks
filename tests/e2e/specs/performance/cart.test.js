@@ -12,7 +12,6 @@ describe( 'Cart performance', () => {
 	} );
 
 	it( 'Loading', async () => {
-		console.log( 'running test...' );
 		await shopper.block.goToCart();
 
 		const results = {
@@ -35,7 +34,7 @@ describe( 'Cart performance', () => {
 		// Measuring loading time.
 		while ( i-- ) {
 			await page.reload();
-			await page.waitForSelector( '.wc-block-cart', { timeout: 120000 } );
+			await page.waitForSelector( '.wc-block-cart' );
 			const {
 				serverResponse,
 				firstPaint,
@@ -70,7 +69,6 @@ describe( 'Cart performance', () => {
 	} );
 
 	it( 'Quantity change', async () => {
-		console.log( 'running quantity test' );
 		await shopper.block.goToCart();
 		await page.waitForSelector(
 			'button.wc-block-components-quantity-selector__button--plus'
@@ -97,8 +95,7 @@ describe( 'Cart performance', () => {
 		);
 	} );
 
-	it.skip( 'Coupon entry', async () => {
-		console.log( 'running coupon test' );
+	it( 'Coupon entry', async () => {
 		await shopper.block.goToCart();
 		await page.waitForSelector(
 			'button.wc-block-components-quantity-selector__button--plus'

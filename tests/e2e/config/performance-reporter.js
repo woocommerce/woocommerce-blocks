@@ -29,9 +29,7 @@ class PerformanceReporter {
 			);
 			// eslint-disable-next-line no-console
 			console.log(
-				chalk.yellow(
-					`Average: ${ testReport.average.toFixed( 2 ) }ms`
-				)
+				chalk.yellow( `Average: ${ testReport.average.toFixed() }ms` )
 			);
 			// eslint-disable-next-line no-console
 			console.log( '' );
