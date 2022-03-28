@@ -60,7 +60,7 @@ const TitleEdit = ( { attributes, setAttributes }: Props ): JSX.Element => {
 				>
 					<ToggleControl
 						label={ __(
-							'Link to Product Page',
+							'Make title a link',
 							'woo-gutenberg-products-block'
 						) }
 						help={ __(
