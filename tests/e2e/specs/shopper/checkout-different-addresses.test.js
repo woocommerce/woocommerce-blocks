@@ -6,7 +6,6 @@ import {
 	openDocumentSettingsSidebar,
 	setCheckbox,
 	unsetCheckbox,
-	uiUnblocked,
 } from '@woocommerce/e2e-utils';
 
 import {
