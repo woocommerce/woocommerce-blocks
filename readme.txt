@@ -97,7 +97,6 @@ Release and roadmap notes available on the [WooCommerce Developers Blog](https:/
 
 #### Bug Fixes
 
-- Show warnings when form is incomplete on Checkout. ([6116](https://github.com/woocommerce/woocommerce-gutenberg-products-block/pull/6116))
 - Filter Products by Attribute: Make dropdown search case sensitive. ([6096](https://github.com/woocommerce/woocommerce-gutenberg-products-block/pull/6096))
 - Stop showing the price slider skeleton when moving the slider handles. ([6078](https://github.com/woocommerce/woocommerce-gutenberg-products-block/pull/6078))
 
