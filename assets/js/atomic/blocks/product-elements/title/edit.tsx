@@ -53,7 +53,10 @@ const TitleEdit = ( { attributes, setAttributes }: Props ): JSX.Element => {
 			</BlockControls>
 			<InspectorControls>
 				<PanelBody
-					title={ __( 'Content', 'woo-gutenberg-products-block' ) }
+					title={ __(
+						'Link settings',
+						'woo-gutenberg-products-block'
+					) }
 				>
 					<ToggleControl
 						label={ __(
