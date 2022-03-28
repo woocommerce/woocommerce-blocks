@@ -85,6 +85,25 @@ Release and roadmap notes available on the [WooCommerce Developers Blog](https:/
 
 == Changelog ==
 
+= 7.3.0 - 2022-03-28 =
+
+#### Enhancements
+
+- Prevent deprecation messages causing PHP warnings. ([6074](https://github.com/woocommerce/woocommerce-gutenberg-products-block/pull/6074))
+- Remove experimental features from Mini Cart block. ([6002](https://github.com/woocommerce/woocommerce-gutenberg-products-block/pull/6002))
+- Product Ratings: Add Global Styles font size and spacing support. ([5927](https://github.com/woocommerce/woocommerce-gutenberg-products-block/pull/5927))
+- Add resource hinting for cart and checkout blocks to improve first time performance. ([5553](https://github.com/woocommerce/woocommerce-gutenberg-products-block/pull/5553))
+
+#### Bug Fixes
+
+- Show warnings when form is incomplete on Checkout. ([6116](https://github.com/woocommerce/woocommerce-gutenberg-products-block/pull/6116))
+- Filter Products by Attribute: Make dropdown search case sensitive. ([6096](https://github.com/woocommerce/woocommerce-gutenberg-products-block/pull/6096))
+- Stop showing the price slider skeleton when moving the slider handles. ([6078](https://github.com/woocommerce/woocommerce-gutenberg-products-block/pull/6078))
+
+#### Various
+
+- Rename Legacy Template block to Classic Template block. ([6021](https://github.com/woocommerce/woocommerce-gutenberg-products-block/pull/6021))
+
 = 7.2.0 - 2022-03-14 =
 
 #### Bug Fixes
