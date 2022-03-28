@@ -19,6 +19,15 @@ import { getCurrencyFromPriceResponse } from '@woocommerce/price-format';
 import usePriceConstraints from './use-price-constraints.js';
 import './style.scss';
 
+const useAsPhpFilter = true;
+
+function findGetParameter( paramName ) {
+	const url = new URL( window.location );
+	const params = new URLSearchParams( url.search );
+
+	return params.get( paramName );
+}
+
 /**
  * Component displaying a price filter.
  *
@@ -29,11 +38,11 @@ import './style.scss';
 const PriceFilterBlock = ( { attributes, isEditor = false } ) => {
 	const [ minPriceQuery, setMinPriceQuery ] = useQueryStateByKey(
 		'min_price',
-		null
+		findGetParameter( 'min_price' ) * 100 || null
 	);
 	const [ maxPriceQuery, setMaxPriceQuery ] = useQueryStateByKey(
 		'max_price',
-		null
+		findGetParameter( 'max_price' ) * 100 || null
 	);
 	const [ queryState ] = useQueryStateByContext();
 	const { results, isLoading } = useCollectionData( {
@@ -41,8 +50,12 @@ const PriceFilterBlock = ( { attributes, isEditor = false } ) => {
 		queryState,
 	} );
 
-	const [ minPrice, setMinPrice ] = useState();
-	const [ maxPrice, setMaxPrice ] = useState();
+	const [ minPrice, setMinPrice ] = useState(
+		findGetParameter( 'min_price' ) * 100 || null
+	);
+	const [ maxPrice, setMaxPrice ] = useState(
+		findGetParameter( 'max_price' ) * 100 || null
+	);
 
 	const currency = getCurrencyFromPriceResponse( results.price_range );
 
@@ -59,12 +72,29 @@ const PriceFilterBlock = ( { attributes, isEditor = false } ) => {
 	// Updates the query based on slider values.
 	const onSubmit = useCallback(
 		( newMinPrice, newMaxPrice ) => {
-			setMinPriceQuery(
-				newMinPrice === minConstraint ? undefined : newMinPrice
-			);
-			setMaxPriceQuery(
-				newMaxPrice === maxConstraint ? undefined : newMaxPrice
-			);
+			if ( useAsPhpFilter ) {
+				const url = new URL( window.location );
+				const params = new URLSearchParams( url.search );
+				if ( newMinPrice === minConstraint ) {
+					params.delete( 'min_price' );
+				} else {
+					params.set( 'min_price', newMinPrice / 100 );
+				}
+				if ( newMaxPrice === maxConstraint ) {
+					params.delete( 'max_price' );
+				} else {
+					params.set( 'max_price', newMaxPrice / 100 );
+				}
+				window.location =
+					url.origin + url.pathname + '?' + params.toString();
+			} else {
+				setMinPriceQuery(
+					newMinPrice === minConstraint ? undefined : newMinPrice
+				);
+				setMaxPriceQuery(
+					newMaxPrice === maxConstraint ? undefined : newMaxPrice
+				);
+			}
 		},
 		[ minConstraint, maxConstraint, setMinPriceQuery, setMaxPriceQuery ]
 	);
