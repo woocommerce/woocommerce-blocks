@@ -90,10 +90,6 @@ const Edit = ( { clientId }: Props ): ReactElement => {
 			 * the Mini Cart Contents block, so we need to apply the styles here
 			 * to avoid duplication.
 			 *
-			 * Another reason for this is we reuse the <CartLineItemsTable/>
-			 * component from the Cart block and we don't want to change
-			 * anything to that component.
-			 *
 			 * We only use this hack for the Site Editor. On the frontend, we
 			 * manipulate the style using block attributes and inject the CSS
 			 * via `wp_add_inline_style()` function.
