@@ -151,7 +151,7 @@ export const isBlockInsertedInWidgetsArea = async ( blockName ) => {
  * @param {string} [params.postId] ID of the template if we want to access template editor.
  * @param {'wp_template' | 'wp_template_part'} [params.postType='wp_template'] Type of template.
  */
-async function goToSiteEditor( editorContext = 'core', params ) {
+export async function goToSiteEditor( editorContext = 'core', params ) {
 	// There is a bug in Gutenberg/WPCore now that makes it impossible to rely on site-editor.php on setups
 	// with locally installed Gutenberg. Details in https://github.com/WordPress/gutenberg/issues/39639.
 	// TODO: Update to always use site-editor.php once WordPress 6.0 is released and fix is verified.
