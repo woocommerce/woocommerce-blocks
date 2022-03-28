@@ -45,7 +45,7 @@ const Block = ( {
 		isApplyingCoupon,
 		isRemovingCoupon,
 		appliedCoupons,
-	} = useStoreCartCoupons();
+	} = useStoreCartCoupons( 'wc/cart' );
 
 	const totalsCurrency = getCurrencyFromPriceResponse( cartTotals );
 
