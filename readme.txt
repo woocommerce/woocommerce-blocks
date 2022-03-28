@@ -90,7 +90,6 @@ Release and roadmap notes available on the [WooCommerce Developers Blog](https:/
 
 #### Enhancements
 
-- Prevent deprecation messages causing PHP warnings. ([6074](https://github.com/woocommerce/woocommerce-gutenberg-products-block/pull/6074))
 - Product Ratings: Add Global Styles font size and spacing support. ([5927](https://github.com/woocommerce/woocommerce-gutenberg-products-block/pull/5927))
 - Add resource hinting for cart and checkout blocks to improve first time performance. ([5553](https://github.com/woocommerce/woocommerce-gutenberg-products-block/pull/5553))
 - Add Mini Cart block to feature plugin ([6127](https://github.com/woocommerce/woocommerce-gutenberg-products-block/pull/6127))
