@@ -21,21 +21,6 @@ class ProductRating extends AbstractBlock {
 	protected $api_version = '2';
 
 	/**
-	 * Get the editor script handle for this block type.
-	 *
-	 * @param string $key Data to get, or default to everything.
-	 * @return array|string;
-	 */
-	protected function get_block_type_editor_script( $key = null ) {
-		$script = [
-			'handle'       => 'wc-' . $this->block_name . '-block',
-			'path'         => $this->asset_api->get_block_asset_build_path( 'atomic-block-components/rating' ),
-			'dependencies' => [ 'wc-blocks' ],
-		];
-		return $key ? $script[ $key ] : $script;
-	}
-
-	/**
 	 * Get block supports. Shared with the frontend.
 	 * IMPORTANT: If you change anything here, make sure to update the JS file too.
 	 *
@@ -45,12 +30,32 @@ class ProductRating extends AbstractBlock {
 		return array(
 			'color'                  =>
 			array(
-				'text'       => true,
-				'background' => false,
-				'link'       => false,
+				'text'                            => true,
+				'background'                      => false,
+				'link'                            => false,
+				'__experimentalSkipSerialization' => true,
+			),
+			'typography'             =>
+			array(
+				'fontSize'                        => true,
+				'__experimentalSkipSerialization' => true,
+			),
+			'spacing'                =>
+			array(
+				'margin'                          => true,
+				'__experimentalSkipSerialization' => true,
 			),
 			'__experimentalSelector' => '.wc-block-components-product-rating',
 		);
 	}
 
+	/**
+	 * Register script and style assets for the block type before it is registered.
+	 *
+	 * This registers the scripts; it does not enqueue them.
+	 */
+	protected function register_block_type_assets() {
+		parent::register_block_type_assets();
+		$this->register_chunk_translations( [ $this->block_name ] );
+	}
 }

@@ -3,6 +3,7 @@
 	border-color: transparent;
 	color: #fff;
 	overflow: hidden;
+	box-sizing: border-box;
 }
 
 .wc-block-featured-product {
@@ -96,7 +97,7 @@
 	.wc-block-featured-product__description {
 		p {
 			margin: 0;
-			line-height: 1.5em;
+			line-height: 1.5;
 		}
 	}
 
