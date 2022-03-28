@@ -42,6 +42,7 @@ export const ProductName = ( {
 	disabled = false,
 	name,
 	permalink = '',
+	target = '_self',
 	rel,
 	style,
 	onClick,
@@ -65,6 +66,7 @@ export const ProductName = ( {
 		<a
 			className={ classes }
 			href={ permalink }
+			target={ target }
 			rel={ rel }
 			{ ...props }
 			dangerouslySetInnerHTML={ {
