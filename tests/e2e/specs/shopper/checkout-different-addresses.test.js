@@ -32,11 +32,8 @@ if ( process.env.WOOCOMMERCE_BLOCKS_PHASE < 2 )
 
 describe( 'Shopper → Checkout → Can have different shipping and billing addresses', () => {
 	beforeAll( async () => {
-		// prevent CartCheckoutCompatibilityNotice from appearing
 		await preventCompatibilityNotice();
 		await merchant.login();
-
-		// Activate the "Company" field
 		await visitBlockPage( 'Checkout Block' );
 		await openDocumentSettingsSidebar();
 		await selectBlockByName(
@@ -49,7 +46,6 @@ describe( 'Shopper → Checkout → Can have different shipping and billing addr
 
 	afterAll( async () => {
 		await shopper.block.emptyCart();
-		// Deactivate the "Company" field
 		await visitBlockPage( 'Checkout Block' );
 		await openDocumentSettingsSidebar();
 		await selectBlockByName(
@@ -65,13 +61,7 @@ describe( 'Shopper → Checkout → Can have different shipping and billing addr
 		await shopper.goToShop();
 		await shopper.addToCartFromShopPage( SIMPLE_PRODUCT_NAME );
 		await shopper.block.goToCheckout();
-
-		await page.evaluate( () => {
-			const checkbox = document.querySelector( '#checkbox-control-0' );
-			if ( checkbox.checked ) {
-				checkbox.click();
-			}
-		} );
+		await unsetCheckbox( '#checkbox-control-0' );
 		await shopper.block.fillShippingDetails( SHIPPING_DETAILS );
 		await shopper.block.fillBillingDetails( BILLING_DETAILS );
 		await shopper.block.placeOrder();
