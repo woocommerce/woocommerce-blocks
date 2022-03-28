@@ -161,9 +161,9 @@ async function goToSiteEditor( editorContext = 'core', params ) {
 
 	if ( editorContext === 'gutenberg' ) {
 		editorPath = 'themes.php';
+		queryParams.page = 'gutenberg-edit-site';
 	} else {
 		editorPath = 'site-editor.php';
-		queryParams.page = 'gutenberg-edit-site';
 	}
 
 	return await visitAdminPage( editorPath, addQueryArgs( '', queryParams ) );
