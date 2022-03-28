@@ -13,7 +13,7 @@ import './style.scss';
 
 interface CheckoutOrderNotesProps {
 	disabled: boolean;
-	onChange: ( newText: string ) => void;
+	onChange: ( orderNotes: string ) => void;
 	placeholder: string;
 	value: string;
 }
