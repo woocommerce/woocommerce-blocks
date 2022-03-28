@@ -1,4 +1,11 @@
-export async function getLoadingDurations() {
+/**
+ * External dependencies
+ */
+import type { Page } from 'puppeteer';
+
+export async function getLoadingDurations(): Promise<
+	ReturnType< Page[ 'evaluate' ] >
+> {
 	return await page.evaluate( () => {
 		const [
 			{
@@ -8,7 +15,10 @@ export async function getLoadingDurations() {
 				domContentLoadedEventEnd,
 				loadEventEnd,
 			},
-		] = performance.getEntriesByType( 'navigation' );
+		] = performance.getEntriesByType(
+			'navigation'
+		) as PerformanceNavigationTiming[];
+
 		const paintTimings = performance.getEntriesByType( 'paint' );
 		return {
 			// Server side metric.

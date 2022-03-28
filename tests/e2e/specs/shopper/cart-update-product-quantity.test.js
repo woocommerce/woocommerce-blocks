@@ -21,7 +21,7 @@ describe( 'Shopper → Cart → Can update product quantity', () => {
 		await shopper.block.emptyCart();
 	} );
 
-	it.only( 'allows customer to update product quantity via the input field', async () => {
+	it( 'allows customer to update product quantity via the input field', async () => {
 		await shopper.goToShop();
 		await shopper.addToCartFromShopPage( SIMPLE_VIRTUAL_PRODUCT_NAME );
 		await shopper.block.goToCart();

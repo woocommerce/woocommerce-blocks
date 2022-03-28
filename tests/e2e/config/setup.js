@@ -66,10 +66,8 @@ module.exports = async ( globalConfig ) => {
 			await createReviews( productId );
 		} );
 
-		if ( fs.existsSync( PERFORMANCE_REPORT_FILENAME ).size ) {
-			// Wipe the performance e2e file.
-			fs.truncateSync( PERFORMANCE_REPORT_FILENAME );
-		}
+		// Wipe the performance e2e file at the start of every run
+		fs.truncateSync( PERFORMANCE_REPORT_FILENAME );
 
 		global.fixtureData = {
 			taxes,

@@ -12,6 +12,7 @@ describe( 'Cart performance', () => {
 	} );
 
 	it( 'Loading', async () => {
+		console.log( 'running test...' );
 		await shopper.block.goToCart();
 
 		const results = {
@@ -69,12 +70,12 @@ describe( 'Cart performance', () => {
 	} );
 
 	it( 'Quantity change', async () => {
+		console.log( 'running quantity test' );
 		await shopper.block.goToCart();
-		await page.waitForNetworkIdle( { idleTime: 2000 } );
 		await page.waitForSelector(
 			'button.wc-block-components-quantity-selector__button--plus'
 		);
-		let i = 10;
+		let i = 3;
 
 		const timesForResponse = [];
 		while ( i-- ) {
@@ -96,13 +97,13 @@ describe( 'Cart performance', () => {
 		);
 	} );
 
-	it( 'Coupon entry', async () => {
+	it.skip( 'Coupon entry', async () => {
+		console.log( 'running coupon test' );
 		await shopper.block.goToCart();
-		await page.waitForNetworkIdle( { idleTime: 2000 } );
 		await page.waitForSelector(
 			'button.wc-block-components-quantity-selector__button--plus'
 		);
-		let i = 10;
+		let i = 3;
 
 		const timesForResponse = [];
 		while ( i-- ) {

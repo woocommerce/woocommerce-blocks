@@ -19,7 +19,7 @@ class PerformanceReporter {
 		reportFileContents.forEach( ( testReport ) => {
 			// eslint-disable-next-line no-console
 			console.log(
-				chalk.bgGreenBright.underline.bold( testReport.description )
+				chalk.black.bgGreen.underline.bold( testReport.description )
 			);
 			// eslint-disable-next-line no-console
 			console.log( chalk.red( `Longest: ${ testReport.longest }ms` ) );
