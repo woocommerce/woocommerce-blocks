@@ -6,7 +6,6 @@ import {
 	openDocumentSettingsSidebar,
 	switchUserToAdmin,
 	getAllBlocks,
-	searchForBlock,
 } from '@wordpress/e2e-test-utils';
 import {
 	findLabelWithText,
@@ -16,6 +15,7 @@ import {
 import { merchant } from '@woocommerce/e2e-utils';
 
 import {
+	searchForBlock,
 	insertBlockDontWaitForInsertClose,
 	openWidgetEditor,
 	closeModalIfExists,

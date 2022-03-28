@@ -1,7 +1,7 @@
 /**
  * External dependencies
  */
-import { insertBlock, canvas, searchForBlock } from '@wordpress/e2e-test-utils';
+import { insertBlock, canvas } from '@wordpress/e2e-test-utils';
 
 /**
  * Internal dependencies
@@ -10,6 +10,7 @@ import {
 	openWidgetsEditorBlockInserter,
 	closeModalIfExists,
 	openWidgetEditor,
+	searchForBlock,
 	isBlockInsertedInWidgetsArea,
 	goToSiteEditor,
 	useTheme,
