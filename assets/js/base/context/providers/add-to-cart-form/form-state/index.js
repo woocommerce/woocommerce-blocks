@@ -14,7 +14,7 @@ import {
 	productIsPurchasable,
 	productSupportsAddToCartForm,
 } from '@woocommerce/base-utils';
-
+import { useDispatch } from '@wordpress/data';
 /**
  * Internal dependencies
  */
@@ -29,7 +29,6 @@ import {
 	reducer as emitReducer,
 } from './event-emit';
 import { useValidationContext } from '../../validation';
-import { useStoreNotices } from '../../../hooks/use-store-notices';
 import { useEmitResponse } from '../../../hooks/use-emit-response';
 
 /**
@@ -99,7 +98,7 @@ export const AddToCartFormStateContextProvider = ( {
 	);
 	const [ observers, observerDispatch ] = useReducer( emitReducer, {} );
 	const currentObservers = useShallowEqual( observers );
-	const { addErrorNotice, removeNotices } = useStoreNotices();
+	const { createErrorNotice, removeNotices } = useDispatch( 'core/notices' );
 	const { setValidationErrors } = useValidationContext();
 	const {
 		isSuccessResponse,
@@ -178,7 +177,7 @@ export const AddToCartFormStateContextProvider = ( {
 						response.forEach(
 							( { errorMessage, validationErrors } ) => {
 								if ( errorMessage ) {
-									addErrorNotice( errorMessage );
+									createErrorNotice( errorMessage );
 								}
 								if ( validationErrors ) {
 									setValidationErrors( validationErrors );
@@ -195,7 +194,7 @@ export const AddToCartFormStateContextProvider = ( {
 	}, [
 		addToCartFormState.status,
 		setValidationErrors,
-		addErrorNotice,
+		createErrorNotice,
 		removeNotices,
 		dispatch,
 		currentObservers,
@@ -227,7 +226,7 @@ export const AddToCartFormStateContextProvider = ( {
 							? { context: messageContext }
 							: undefined;
 						handled = true;
-						addErrorNotice( message, errorOptions );
+						createErrorNotice( message, errorOptions );
 					}
 				} );
 				return handled;
@@ -248,7 +247,7 @@ export const AddToCartFormStateContextProvider = ( {
 								'Something went wrong. Please contact us to get assistance.',
 								'woo-gutenberg-products-block'
 							);
-						addErrorNotice( message, {
+						createErrorNotice( message, {
 							id: 'add-to-cart',
 						} );
 					}
@@ -277,7 +276,7 @@ export const AddToCartFormStateContextProvider = ( {
 		addToCartFormState.hasError,
 		addToCartFormState.processingResponse,
 		dispatchActions,
-		addErrorNotice,
+		createErrorNotice,
 		isErrorResponse,
 		isFailResponse,
 		isSuccessResponse,
