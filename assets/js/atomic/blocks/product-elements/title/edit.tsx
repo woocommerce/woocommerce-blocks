@@ -63,10 +63,6 @@ const TitleEdit = ( { attributes, setAttributes }: Props ): JSX.Element => {
 							'Make title a link',
 							'woo-gutenberg-products-block'
 						) }
-						help={ __(
-							'Links the image to the single product listing.',
-							'woo-gutenberg-products-block'
-						) }
 						checked={ showProductLink }
 						onChange={ () =>
 							setAttributes( {
