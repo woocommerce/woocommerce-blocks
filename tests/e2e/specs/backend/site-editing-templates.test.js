@@ -15,7 +15,8 @@ import {
 	DEFAULT_TIMEOUT,
 	filterCurrentBlocks,
 	getAllTemplates,
-	goToSiteEditor,
+	goToTemplateEditor,
+	goToTemplatesList,
 	saveTemplate,
 	useTheme,
 } from '../../utils';
@@ -24,7 +25,7 @@ async function visitTemplateAndAddCustomParagraph(
 	templateSlug,
 	customText = CUSTOMIZED_STRING
 ) {
-	await goToSiteEditor( {
+	await goToTemplateEditor( {
 		postId: `woocommerce/woocommerce//${ templateSlug }`,
 	} );
 
@@ -118,7 +119,7 @@ describe( 'Store Editing Templates', () => {
 		it( 'default template from WooCommerce Blocks is available on an FSE theme', async () => {
 			const EXPECTED_TEMPLATE = defaultTemplateProps( 'Single Product' );
 
-			await goToSiteEditor();
+			await goToTemplatesList();
 
 			const templates = await getAllTemplates();
 
@@ -136,7 +137,7 @@ describe( 'Store Editing Templates', () => {
 		} );
 
 		it( 'should contain the "WooCommerce Single Product Block" classic template', async () => {
-			await goToSiteEditor( {
+			await goToTemplateEditor( {
 				postId: 'woocommerce/woocommerce//single-product',
 			} );
 
@@ -161,7 +162,7 @@ describe( 'Store Editing Templates', () => {
 
 			await visitTemplateAndAddCustomParagraph( 'single-product' );
 
-			await goToSiteEditor( { waitForActions: true } );
+			await goToTemplatesList( { waitFor: 'actions' } );
 
 			const templates = await getAllTemplates();
 
@@ -179,7 +180,7 @@ describe( 'Store Editing Templates', () => {
 		} );
 
 		it( 'should preserve and correctly show the user customization on the back-end', async () => {
-			await goToSiteEditor( {
+			await goToTemplateEditor( {
 				postId: 'woocommerce/woocommerce//single-product',
 			} );
 
@@ -211,7 +212,7 @@ describe( 'Store Editing Templates', () => {
 		it( 'default template from WooCommerce Blocks is available on an FSE theme', async () => {
 			const EXPECTED_TEMPLATE = defaultTemplateProps( 'Product Catalog' );
 
-			await goToSiteEditor();
+			await goToTemplatesList();
 
 			const templates = await getAllTemplates();
 
@@ -229,7 +230,7 @@ describe( 'Store Editing Templates', () => {
 		} );
 
 		it( 'should contain the "WooCommerce Product Grid Block" classic template', async () => {
-			await goToSiteEditor( {
+			await goToTemplateEditor( {
 				postId: 'woocommerce/woocommerce//archive-product',
 			} );
 
@@ -251,7 +252,7 @@ describe( 'Store Editing Templates', () => {
 
 			await visitTemplateAndAddCustomParagraph( 'archive-product' );
 
-			await goToSiteEditor( { waitForActions: true } );
+			await goToTemplatesList( { waitFor: 'actions' } );
 
 			const templates = await getAllTemplates();
 
@@ -269,7 +270,7 @@ describe( 'Store Editing Templates', () => {
 		} );
 
 		it( 'should preserve and correctly show the user customization on the back-end', async () => {
-			await goToSiteEditor( {
+			await goToTemplateEditor( {
 				postId: 'woocommerce/woocommerce//archive-product',
 			} );
 
@@ -304,7 +305,7 @@ describe( 'Store Editing Templates', () => {
 				'Products by Category'
 			);
 
-			await goToSiteEditor();
+			await goToTemplatesList();
 
 			const templates = await getAllTemplates();
 
@@ -322,7 +323,7 @@ describe( 'Store Editing Templates', () => {
 		} );
 
 		it( 'should contain the "WooCommerce Product Taxonomy Block" classic template', async () => {
-			await goToSiteEditor( {
+			await goToTemplateEditor( {
 				postId: 'woocommerce/woocommerce//taxonomy-product_cat',
 			} );
 
@@ -345,7 +346,7 @@ describe( 'Store Editing Templates', () => {
 
 			await visitTemplateAndAddCustomParagraph( 'taxonomy-product_cat' );
 
-			await goToSiteEditor( { waitForActions: true } );
+			await goToTemplatesList( { waitFor: 'actions' } );
 
 			const templates = await getAllTemplates();
 
@@ -363,7 +364,7 @@ describe( 'Store Editing Templates', () => {
 		} );
 
 		it( 'should preserve and correctly show the user customization on the back-end', async () => {
-			await goToSiteEditor( {
+			await goToTemplateEditor( {
 				postId: 'woocommerce/woocommerce//taxonomy-product_cat',
 			} );
 
@@ -392,7 +393,7 @@ describe( 'Store Editing Templates', () => {
 		it( 'default template from WooCommerce Blocks is available on an FSE theme', async () => {
 			const EXPECTED_TEMPLATE = defaultTemplateProps( 'Products by Tag' );
 
-			await goToSiteEditor();
+			await goToTemplatesList();
 
 			const templates = await getAllTemplates();
 
@@ -410,7 +411,7 @@ describe( 'Store Editing Templates', () => {
 		} );
 
 		it( 'should contain the "WooCommerce Product Taxonomy Block" classic template', async () => {
-			await goToSiteEditor( {
+			await goToTemplateEditor( {
 				postId: 'woocommerce/woocommerce//taxonomy-product_tag',
 			} );
 
@@ -433,7 +434,7 @@ describe( 'Store Editing Templates', () => {
 
 			await visitTemplateAndAddCustomParagraph( 'taxonomy-product_tag' );
 
-			await goToSiteEditor( { waitForActions: true } );
+			await goToTemplatesList( { waitFor: 'actions' } );
 
 			const templates = await getAllTemplates();
 
@@ -451,7 +452,7 @@ describe( 'Store Editing Templates', () => {
 		} );
 
 		it( 'should preserve and correctly show the user customization on the back-end', async () => {
-			await goToSiteEditor( {
+			await goToTemplateEditor( {
 				postId: 'woocommerce/woocommerce//taxonomy-product_tag',
 			} );
 

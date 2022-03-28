@@ -141,51 +141,72 @@ export const isBlockInsertedInWidgetsArea = async ( blockName ) => {
 };
 
 /**
- * Visits the Site Editor main page in Core WordPress.
- *
- * There are two different possible site editor pages:
+ * Visits site editor dependening on used WordPress version and how Gutenberg is installed.
  *
  * 1. `themes.php?page=gutenberg-edit-site` this is a legacy editor access used for WP <=5.8.
  * 2. `site-editor.php` is the new way of accessing the editor in WP >=5.9+.
  *
- * @param {Object} [params]
- * @param {'core' | 'gutenberg'} [params.editorContext='core'] Whether to go to the Gutenberg URL or the Core one.
- * @param {'wp_template' | 'wp_template_part'} [params.postType='wp_template'] Type of template.
- * @param {boolean} [params.waitForActions=false] Tempalte actions can take a moment to load, we can wait for them to be present if needed.
+ * @param {'core' | 'gutenberg'} [editorContext='core'] Whether to go to the Gutenberg URL or the Core one.
+ * @param {Object} params Query parameters to add to the URL.
  * @param {string} [params.postId] ID of the template if we want to access template editor.
+ * @param {'wp_template' | 'wp_template_part'} [params.postType='wp_template'] Type of template.
  */
-export async function goToSiteEditor( {
-	postId,
-	postType = 'wp_template',
-	editorContext = GUTENBERG_EDITOR_CONTEXT,
-	waitForActions = false,
-} = {} ) {
+async function goToSiteEditor( editorContext = 'core', params ) {
 	// There is a bug in Gutenberg/WPCore now that makes it impossible to rely on site-editor.php on setups
 	// with locally installed Gutenberg. Details in https://github.com/WordPress/gutenberg/issues/39639.
 	// TODO: Update to always use site-editor.php once WordPress 6.0 is released and fix is verified.
-	// 		 Remove usage of GUTENBERG_EDITOR_CONTEXT from from here and from workflows.
-
-	const queryParams = {
-		postType,
-		postId,
-	};
-
+	// 		 Remove usage of goToSiteEditor and GUTENBERG_EDITOR_CONTEXT from from here and from workflows.
 	let editorPath;
+	const queryParams = { ...params };
 
 	if ( editorContext === 'gutenberg' ) {
 		editorPath = 'themes.php';
-		queryParams.page = 'gutenberg-edit-site';
 	} else {
 		editorPath = 'site-editor.php';
+		queryParams.page = 'gutenberg-edit-site';
 	}
 
-	await visitAdminPage( editorPath, addQueryArgs( '', queryParams ) );
+	return await visitAdminPage( editorPath, addQueryArgs( '', queryParams ) );
+}
 
-	// If it's an editor page we want to wait for canvas to be present.
-	if ( postId ) {
-		await disableSiteEditorWelcomeGuide();
-		await waitForCanvas();
-	} else if ( waitForActions ) {
+/**
+ * Visits the Site Editor template edit view.
+ *
+ * @param {Object} params
+ * @param {string} params.postId ID of the template if we want to access template editor.
+ * @param {'core' | 'gutenberg'} [params.editorContext='core'] Whether to go to the Gutenberg URL or the Core one.
+ * @param {'wp_template' | 'wp_template_part'} [params.postType='wp_template'] Type of template.
+ */
+export async function goToTemplateEditor( {
+	postId,
+	postType = 'wp_template',
+	editorContext = GUTENBERG_EDITOR_CONTEXT,
+} = {} ) {
+	await goToSiteEditor( editorContext, {
+		postType,
+		postId,
+	} );
+
+	await disableSiteEditorWelcomeGuide();
+	await waitForCanvas();
+}
+
+/**
+ * Visits the Site Editor templates list view.
+ *
+ * @param {Object} params
+ * @param {'core' | 'gutenberg'} [params.editorContext='core'] Whether to go to the Gutenberg URL or the Core one.
+ * @param {'wp_template' | 'wp_template_part'} [params.postType='wp_template'] Type of template.
+ * @param {'list' | 'actions'} [params.waitFor='false'] Wait for list or for actions to be present - tempalte actions can take a moment to load, we can wait for them to be present if needed.
+ */
+export async function goToTemplatesList( {
+	postType = 'wp_template',
+	editorContext = GUTENBERG_EDITOR_CONTEXT,
+	waitFor = 'list',
+} = {} ) {
+	await goToSiteEditor( editorContext, { postType } );
+
+	if ( waitFor === 'actions' ) {
 		await page.waitForSelector(
 			SELECTORS.templatesListTable.templateActions
 		);
