@@ -13,7 +13,8 @@ import {
 import { __ } from '@wordpress/i18n';
 import { usePrevious } from '@woocommerce/base-hooks';
 import deprecated from '@wordpress/deprecated';
-import { isObject } from '@woocommerce/types';
+import { isObject, isString } from '@woocommerce/types';
+import { useDispatch } from '@wordpress/data';
 
 /**
  * Internal dependencies
@@ -38,7 +39,6 @@ import {
 	reducer as emitReducer,
 } from './event-emit';
 import { useValidationContext } from '../../validation';
-import { useStoreNotices } from '../../../hooks/use-store-notices';
 import { useStoreEvents } from '../../../hooks/use-store-events';
 import { useCheckoutNotices } from '../../../hooks/use-checkout-notices';
 import { useEmitResponse } from '../../../hooks/use-emit-response';
@@ -76,7 +76,7 @@ export const CheckoutStateProvider = ( {
 	DEFAULT_STATE.redirectUrl = redirectUrl;
 	const [ checkoutState, dispatch ] = useReducer( reducer, DEFAULT_STATE );
 	const { setValidationErrors } = useValidationContext();
-	const { addErrorNotice, removeNotices } = useStoreNotices();
+	const { createErrorNotice, removeNotices } = useDispatch( 'core/notices' );
 	const { dispatchCheckoutEvent } = useStoreEvents();
 	const isCalculating = checkoutState.calculatingCount > 0;
 	const {
@@ -172,7 +172,7 @@ export const CheckoutStateProvider = ( {
 					if ( Array.isArray( response ) ) {
 						response.forEach(
 							( { errorMessage, validationErrors } ) => {
-								addErrorNotice( errorMessage );
+								createErrorNotice( errorMessage );
 								setValidationErrors( validationErrors );
 							}
 						);
@@ -187,7 +187,7 @@ export const CheckoutStateProvider = ( {
 	}, [
 		checkoutState.status,
 		setValidationErrors,
-		addErrorNotice,
+		createErrorNotice,
 		removeNotices,
 		dispatch,
 	] );
@@ -210,12 +210,15 @@ export const CheckoutStateProvider = ( {
 					isErrorResponse( response ) ||
 					isFailResponse( response )
 				) {
-					if ( response.message ) {
-						const errorOptions = response.messageContext
-							? { context: response.messageContext }
-							: undefined;
+					if ( response.message && isString( response.message ) ) {
+						const errorOptions =
+							response.messageContext &&
+							isString( response.messageContent )
+								? // The `as string` is OK here because of the type guard above.
+								  { context: response.messageContext as string }
+								: undefined;
 						errorResponse = response;
-						addErrorNotice( response.message, errorOptions );
+						createErrorNotice( response.message, errorOptions );
 					}
 				}
 			} );
@@ -271,7 +274,7 @@ export const CheckoutStateProvider = ( {
 									'Something went wrong. Please contact us to get assistance.',
 									'woo-gutenberg-products-block'
 								);
-							addErrorNotice( message, {
+							createErrorNotice( message, {
 								id: 'checkout',
 							} );
 						}
@@ -311,11 +314,16 @@ export const CheckoutStateProvider = ( {
 					if ( successResponse && ! errorResponse ) {
 						dispatch( actions.setComplete( successResponse ) );
 					} else if ( isObject( errorResponse ) ) {
-						if ( errorResponse.message ) {
-							const errorOptions = errorResponse.messageContext
-								? { context: errorResponse.messageContext }
-								: undefined;
-							addErrorNotice(
+						if (
+							errorResponse.message &&
+							isString( errorResponse.message )
+						) {
+							const errorOptions =
+								errorResponse.messageContext &&
+								isString( errorResponse.messageContext )
+									? { context: errorResponse.messageContext }
+									: undefined;
+							createErrorNotice(
 								errorResponse.message,
 								errorOptions
 							);
@@ -346,7 +354,7 @@ export const CheckoutStateProvider = ( {
 		previousStatus,
 		previousHasError,
 		dispatchActions,
-		addErrorNotice,
+		createErrorNotice,
 		isErrorResponse,
 		isFailResponse,
 		isSuccessResponse,

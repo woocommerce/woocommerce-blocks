@@ -14,6 +14,7 @@ import {
 	emptyHiddenAddressFields,
 	formatStoreApiErrorMessage,
 } from '@woocommerce/base-utils';
+import { useDispatch } from '@wordpress/data';
 
 /**
  * Internal dependencies
@@ -58,7 +59,8 @@ const CheckoutProcessor = () => {
 		paymentMethods,
 		shouldSavePayment,
 	} = usePaymentMethodDataContext();
-	const { addErrorNotice, removeNotice, setIsSuppressed } = useStoreNotices();
+	const { setIsSuppressed } = useStoreNotices();
+	const { createErrorNotice, removeNotice } = useDispatch( 'core/notices' );
 	const currentBillingData = useRef( billingData );
 	const currentShippingAddress = useRef( shippingAddress );
 	const currentRedirectUrl = useRef( redirectUrl );
@@ -232,13 +234,13 @@ const CheckoutProcessor = () => {
 						if ( response.data?.cart ) {
 							receiveCart( response.data.cart );
 						}
-						addErrorNotice(
+						createErrorNotice(
 							formatStoreApiErrorMessage( response ),
 							{ id: 'checkout' }
 						);
 						response?.additional_errors?.forEach?.(
 							( additionalError ) => {
-								addErrorNotice( additionalError.message, {
+								createErrorNotice( additionalError.message, {
 									id: additionalError.error_code,
 								} );
 							}
@@ -246,7 +248,7 @@ const CheckoutProcessor = () => {
 						dispatchActions.setAfterProcessing( response );
 					} );
 				} catch {
-					addErrorNotice(
+					createErrorNotice(
 						sprintf(
 							// Translators: %s Error text.
 							__(
@@ -278,7 +280,7 @@ const CheckoutProcessor = () => {
 		extensionData,
 		cartNeedsShipping,
 		dispatchActions,
-		addErrorNotice,
+		createErrorNotice,
 		receiveCart,
 	] );
 

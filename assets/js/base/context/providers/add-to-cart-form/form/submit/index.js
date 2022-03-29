@@ -6,6 +6,7 @@ import triggerFetch from '@wordpress/api-fetch';
 import { useEffect, useCallback, useState } from '@wordpress/element';
 import { decodeEntities } from '@wordpress/html-entities';
 import { triggerAddedToCartEvent } from '@woocommerce/base-utils';
+import { useDispatch } from '@wordpress/data';
 
 /**
  * Internal dependencies
@@ -13,7 +14,6 @@ import { triggerAddedToCartEvent } from '@woocommerce/base-utils';
 import { useAddToCartFormContext } from '../../form-state';
 import { useValidationContext } from '../../../validation';
 import { useStoreCart } from '../../../../hooks/cart/use-store-cart';
-import { useStoreNotices } from '../../../../hooks/use-store-notices';
 
 /**
  * FormSubmit.
@@ -34,7 +34,7 @@ const FormSubmit = () => {
 		hasValidationErrors,
 		showAllValidationErrors,
 	} = useValidationContext();
-	const { addErrorNotice, removeNotice } = useStoreNotices();
+	const { createErrorNotice, removeNotice } = useDispatch( 'core/notices' );
 	const { receiveCart } = useStoreCart();
 	const [ isSubmitting, setIsSubmitting ] = useState( false );
 	const doSubmit = ! hasError && isProcessing;
@@ -87,14 +87,14 @@ const FormSubmit = () => {
 					if ( ! fetchResponse.ok ) {
 						// We received an error response.
 						if ( response.body && response.body.message ) {
-							addErrorNotice(
+							createErrorNotice(
 								decodeEntities( response.body.message ),
 								{
 									id: 'add-to-cart',
 								}
 							);
 						} else {
-							addErrorNotice(
+							createErrorNotice(
 								__(
 									'Something went wrong. Please contact us to get assistance.',
 									'woo-gutenberg-products-block'
@@ -126,7 +126,7 @@ const FormSubmit = () => {
 			} );
 	}, [
 		product,
-		addErrorNotice,
+		createErrorNotice,
 		removeNotice,
 		receiveCart,
 		dispatchActions,
