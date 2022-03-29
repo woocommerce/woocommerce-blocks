@@ -1,12 +1,15 @@
 /**
  * External dependencies
  */
-import { getAllBlocks, switchUserToAdmin } from '@wordpress/e2e-test-utils';
+import {
+	getAllBlocks,
+	switchUserToAdmin,
+	searchForBlock,
+} from '@wordpress/e2e-test-utils';
 import { visitBlockPage } from '@woocommerce/blocks-test-utils';
 import { merchant } from '@woocommerce/e2e-utils';
 
 import {
-	searchForBlock,
 	insertBlockDontWaitForInsertClose,
 	openWidgetEditor,
 	closeModalIfExists,
