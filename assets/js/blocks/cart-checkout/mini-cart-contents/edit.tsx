@@ -18,7 +18,7 @@ import type { TemplateArray } from '@wordpress/blocks';
  * Internal dependencies
  */
 import { useViewSwitcher, useForcedLayout } from '../shared';
-import { InnerBlocksStyle } from './inner-blocks-style';
+import { MiniCartInnerBlocksStyle } from './inner-blocks-style';
 import './editor.scss';
 
 // Array of allowed block names.
@@ -83,7 +83,7 @@ const Edit = ( { clientId }: Props ): ReactElement => {
 					templateLock={ false }
 				/>
 			</EditorProvider>
-			<InnerBlocksStyle style={ blockProps.style } />
+			<MiniCartInnerBlocksStyle style={ blockProps.style } />
 		</div>
 	);
 };

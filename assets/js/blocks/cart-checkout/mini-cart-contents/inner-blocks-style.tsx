@@ -10,7 +10,7 @@
  * manipulate the style using block attributes and inject the CSS
  * via `wp_add_inline_style()` function.
  */
-export const InnerBlocksStyle = ( {
+export const MiniCartInnerBlocksStyle = ( {
 	style,
 }: {
 	style: Record< string, unknown >;
