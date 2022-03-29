@@ -42,7 +42,7 @@ export const ProductName = ( {
 	disabled = false,
 	name,
 	permalink = '',
-	target = '_self',
+	target,
 	rel,
 	style,
 	onClick,

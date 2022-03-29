@@ -57,8 +57,8 @@ export const Block = ( props: Props ): JSX.Element => {
 		className,
 		headingLevel = 2,
 		showProductLink = true,
-		linkTarget = '_self',
-		rel = '',
+		linkTarget,
+		rel,
 		align,
 	} = props;
 
@@ -124,8 +124,8 @@ export const Block = ( props: Props ): JSX.Element => {
 				disabled={ ! showProductLink }
 				name={ product.name }
 				permalink={ product.permalink }
-				rel={ showProductLink ? 'nofollow ' + rel : '' }
-				target={ linkTarget }
+				rel={ 'nofollow' + ' ' + ( rel || '' ) }
+				target={ linkTarget || undefined }
 				onClick={ () => {
 					dispatchStoreEvent( 'product-view-link', {
 						product,

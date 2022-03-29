@@ -1,8 +1,8 @@
 export interface Attributes {
 	headingLevel: number;
 	showProductLink: boolean;
-	linkTarget: string;
-	rel: string;
+	linkTarget?: string;
+	rel?: string;
 	productId: number;
 	align: string;
 }
