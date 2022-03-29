@@ -260,11 +260,10 @@ class MiniCart extends AbstractBlock {
 			return;
 		}
 		$this->scripts_to_lazy_load[ $script->handle ] = array(
-			'src'          => $script->src,
-			'version'      => $script->ver,
-			'before'       => $wp_scripts->print_inline_script( $script->handle, 'before', false ),
-			'after'        => $wp_scripts->print_inline_script( $script->handle, 'after', false ),
-			'translations' => $wp_scripts->print_translations( $script->handle, false ),
+			'src'     => $script->src,
+			'version' => $script->ver,
+			'before'  => $wp_scripts->print_inline_script( $script->handle, 'before', false ),
+			'after'   => $wp_scripts->print_inline_script( $script->handle, 'after', false ),
 		);
 	}
 
@@ -441,5 +440,27 @@ class MiniCart extends AbstractBlock {
 	 */
 	protected function get_cart_payload() {
 		return WC()->api->get_endpoint_data( '/wc/store/cart' );
+	}
+
+	/**
+	 * Register script and style assets for the block type before it is registered.
+	 *
+	 * This registers the scripts; it does not enqueue them.
+	 * The children blocks are register here because this block handles the loading of the frontend scripts.
+	 */
+	protected function register_block_type_assets() {
+		parent::register_block_type_assets();
+		$blocks = [
+			'mini-cart-contents-block/filled-cart',
+			'mini-cart-contents-block/empty-cart',
+			'mini-cart-contents-block/title',
+			'mini-cart-contents-block/items',
+			'mini-cart-contents-block/products-table',
+			'mini-cart-contents-block/footer',
+			'mini-cart-contents-block/shopping-button',
+		];
+		$chunks = preg_filter( '/$/', '-frontend', $blocks );
+
+		$this->register_chunk_translations( $chunks );
 	}
 }
