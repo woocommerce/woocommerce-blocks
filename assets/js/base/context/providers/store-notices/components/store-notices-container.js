@@ -4,6 +4,7 @@
 import PropTypes from 'prop-types';
 import classnames from 'classnames';
 import { Notice } from 'wordpress-components';
+import { useDispatch } from '@wordpress/data';
 
 /**
  * Internal dependencies
@@ -23,7 +24,8 @@ const getWooClassName = ( { status = 'default' } ) => {
 	return '';
 };
 
-const StoreNoticesContainer = ( { className, notices, removeNotice } ) => {
+export const StoreNoticesContainer = ( { className, notices } ) => {
+	const { removeNotice } = useDispatch( 'core/notices' );
 	const regularNotices = notices.filter(
 		( notice ) => notice.type !== 'snackbar'
 	);
@@ -69,5 +71,3 @@ StoreNoticesContainer.propTypes = {
 		} )
 	),
 };
-
-export default StoreNoticesContainer;
