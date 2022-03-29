@@ -8,7 +8,8 @@ import {
 	openGlobalBlockInserter,
 	switchUserToAdmin,
 	visitAdminPage,
-	searchForBlock,
+	pressKeyWithModifier,
+	searchForBlock as searchForFSEBlock,
 } from '@wordpress/e2e-test-utils';
 import { addQueryArgs } from '@wordpress/url';
 import { WP_ADMIN_DASHBOARD } from '@woocommerce/e2e-utils';
@@ -56,6 +57,20 @@ const SELECTORS = {
 		savePrompt: '.entities-saved-states__text-prompt',
 	},
 };
+
+/**
+ * Search for block in the global inserter.
+ *
+ * @see https://github.com/WordPress/gutenberg/blob/2356b2d3165acd0af980d52bc93fb1e42748bb25/packages/e2e-test-utils/src/inserter.js#L95
+ *
+ * @param {string} searchTerm The text to search the inserter for.
+ */
+export async function searchForBlock( searchTerm ) {
+	await page.waitForSelector( SELECTORS.inserter.search );
+	await page.focus( SELECTORS.inserter.search );
+	await pressKeyWithModifier( 'primary', 'a' );
+	await page.keyboard.type( searchTerm );
+}
 
 /**
  * Opens the inserter, searches for the given term, then selects the first
@@ -331,7 +346,7 @@ export function useTheme( themeSlug ) {
  * @param {string} blockName Block name.
  */
 export const addBlockToFSEArea = async ( blockName ) => {
-	await searchForBlock( blockName );
+	await searchForFSEBlock( blockName );
 	const insertButton = await page.waitForXPath(
 		`//button//span[contains(text(), '${ blockName }')]`
 	);

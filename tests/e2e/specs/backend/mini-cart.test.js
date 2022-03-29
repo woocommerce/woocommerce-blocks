@@ -1,7 +1,11 @@
 /**
  * External dependencies
  */
-import { insertBlock, canvas, searchForBlock } from '@wordpress/e2e-test-utils';
+import {
+	insertBlock,
+	canvas,
+	searchForBlock as searchForFSEBlock,
+} from '@wordpress/e2e-test-utils';
 
 /**
  * Internal dependencies
@@ -10,6 +14,7 @@ import {
 	openWidgetsEditorBlockInserter,
 	closeModalIfExists,
 	openWidgetEditor,
+	searchForBlock,
 	isBlockInsertedInWidgetsArea,
 	goToSiteEditor,
 	useTheme,
@@ -136,7 +141,7 @@ describe( `${ block.name } Block`, () => {
 
 		it( 'can only be inserted once', async () => {
 			await insertBlock( block.name );
-			await searchForBlock( block.name );
+			await searchForFSEBlock( block.name );
 			const miniCartButton = await page.$x(
 				block.selectors.insertButtonDisabled
 			);
