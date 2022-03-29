@@ -11,7 +11,10 @@ import {
 	ValidationContextProvider,
 	CheckoutProvider,
 } from '@woocommerce/base-context';
-import { StoreSnackbarNoticesProvider } from '@woocommerce/base-context/providers';
+import {
+	StoreSnackbarNoticesProvider,
+	StoreNoticesContainer,
+} from '@woocommerce/base-context/providers';
 import BlockErrorBoundary from '@woocommerce/base-components/block-error-boundary';
 import { SidebarLayout } from '@woocommerce/base-components/sidebar-layout';
 import { CURRENT_USER_IS_ADMIN, getSetting } from '@woocommerce/settings';
@@ -29,7 +32,6 @@ import { LOGIN_TO_CHECKOUT_URL, isLoginRequired, reloadPage } from './utils';
 import type { Attributes } from './types';
 import { CheckoutBlockContext } from './context';
 import { hasNoticesOfType } from '../../utils/notices';
-import StoreNoticesContainer from '../../base/context/providers/store-notices/components/store-notices-container';
 import { StoreNoticesProvider } from '../../base/context/providers';
 
 const LoginPrompt = () => {
