@@ -5,7 +5,10 @@ import { __ } from '@wordpress/i18n';
 import { useStoreCart } from '@woocommerce/base-context/hooks';
 import { useEffect } from '@wordpress/element';
 import LoadingMask from '@woocommerce/base-components/loading-mask';
-import { ValidationContextProvider } from '@woocommerce/base-context';
+import {
+	ValidationContextProvider,
+	StoreNoticesContainer,
+} from '@woocommerce/base-context';
 import { CURRENT_USER_IS_ADMIN } from '@woocommerce/settings';
 import BlockErrorBoundary from '@woocommerce/base-components/block-error-boundary';
 import { translateJQueryEventToNative } from '@woocommerce/base-utils';
@@ -16,6 +19,7 @@ import {
 	CartProvider,
 } from '@woocommerce/base-context/providers';
 import { SlotFillProvider } from '@woocommerce/blocks-checkout';
+import { useSelect } from '@wordpress/data';
 
 /**
  * Internal dependencies
@@ -69,30 +73,42 @@ const ScrollOnError = ( { scrollToTop } ) => {
 
 	return null;
 };
-const Block = ( { attributes, children, scrollToTop } ) => (
-	<BlockErrorBoundary
-		header={ __( 'Something went wrong…', 'woo-gutenberg-products-block' ) }
-		text={ __(
-			'The cart has encountered an unexpected error. If the error persists, please get in touch with us for help.',
-			'woo-gutenberg-products-block'
-		) }
-		button={
-			<button className="wc-block-button" onClick={ reloadPage }>
-				{ __( 'Reload the page', 'woo-gutenberg-products-block' ) }
-			</button>
-		}
-		showErrorMessage={ CURRENT_USER_IS_ADMIN }
-	>
-		<StoreSnackbarNoticesProvider context="wc/cart">
-			<StoreNoticesProvider context="wc/cart">
-				<SlotFillProvider>
-					<CartProvider>
-						<Cart attributes={ attributes }>{ children }</Cart>
-						<ScrollOnError scrollToTop={ scrollToTop } />
-					</CartProvider>
-				</SlotFillProvider>
-			</StoreNoticesProvider>
-		</StoreSnackbarNoticesProvider>
-	</BlockErrorBoundary>
-);
+const Block = ( { attributes, children, scrollToTop } ) => {
+	const { notices } = useSelect( ( select ) => {
+		const store = select( 'core/notices' );
+		return {
+			notices: store.getNotices( 'wc/cart' ),
+		};
+	} );
+	return (
+		<BlockErrorBoundary
+			header={ __(
+				'Something went wrong…',
+				'woo-gutenberg-products-block'
+			) }
+			text={ __(
+				'The cart has encountered an unexpected error. If the error persists, please get in touch with us for help.',
+				'woo-gutenberg-products-block'
+			) }
+			button={
+				<button className="wc-block-button" onClick={ reloadPage }>
+					{ __( 'Reload the page', 'woo-gutenberg-products-block' ) }
+				</button>
+			}
+			showErrorMessage={ CURRENT_USER_IS_ADMIN }
+		>
+			<StoreSnackbarNoticesProvider context="wc/cart">
+				<StoreNoticesProvider>
+					<StoreNoticesContainer notices={ notices } />
+					<SlotFillProvider>
+						<CartProvider>
+							<Cart attributes={ attributes }>{ children }</Cart>
+							<ScrollOnError scrollToTop={ scrollToTop } />
+						</CartProvider>
+					</SlotFillProvider>
+				</StoreNoticesProvider>
+			</StoreSnackbarNoticesProvider>
+		</BlockErrorBoundary>
+	);
+};
 export default withScrollToTop( Block );
