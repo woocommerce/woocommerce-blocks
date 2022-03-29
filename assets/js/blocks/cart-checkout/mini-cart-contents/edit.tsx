@@ -18,6 +18,7 @@ import type { TemplateArray } from '@wordpress/blocks';
  * Internal dependencies
  */
 import { useViewSwitcher, useForcedLayout } from '../shared';
+import { InnerBlocksStyle } from './inner-blocks-style';
 import './editor.scss';
 
 // Array of allowed block names.
@@ -82,30 +83,7 @@ const Edit = ( { clientId }: Props ): ReactElement => {
 					templateLock={ false }
 				/>
 			</EditorProvider>
-			{ /**
-			 * This is a workaround to style inner blocks using the color
-			 * settings of the Mini Cart Contents block. It's possible to get
-			 * the Mini Cart Contents block's attributes inside the inner blocks
-			 * components, but we have 4 out of 7 inner blocks that inherit
-			 * style from the Mini Cart Contents block, so we need to apply the
-			 * styles here to avoid duplication.
-			 *
-			 * We only use this hack for the Site Editor. On the frontend, we
-			 * manipulate the style using block attributes and inject the CSS
-			 * via `wp_add_inline_style()` function.
-			 */ }
-			{ ( blockProps.style.color ||
-				blockProps.style.backgroundColor ) && (
-				<style>
-					{ `
-						.wc-block-mini-cart__footer .wc-block-mini-cart__footer-actions .wc-block-mini-cart__footer-checkout {
-							color: ${ blockProps.style.backgroundColor };
-							background-color: ${ blockProps.style.color };
-							border-color: ${ blockProps.style.color };
-						}
-					` }
-				</style>
-			) }
+			<InnerBlocksStyle style={ blockProps.style } />
 		</div>
 	);
 };
