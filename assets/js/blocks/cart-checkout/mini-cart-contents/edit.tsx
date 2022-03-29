@@ -86,9 +86,9 @@ const Edit = ( { clientId }: Props ): ReactElement => {
 			 * This is a workaround to style inner blocks using the color
 			 * settings of the Mini Cart Contents block. It's possible to get
 			 * the Mini Cart Contents block's attributes inside the inner blocks
-			 * components, but we have 4/7 inner blocks that inherit style from
-			 * the Mini Cart Contents block, so we need to apply the styles here
-			 * to avoid duplication.
+			 * components, but we have 4 out of 7 inner blocks that inherit
+			 * style from the Mini Cart Contents block, so we need to apply the
+			 * styles here to avoid duplication.
 			 *
 			 * We only use this hack for the Site Editor. On the frontend, we
 			 * manipulate the style using block attributes and inject the CSS
