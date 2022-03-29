@@ -26,8 +26,7 @@ import { useCustomerDataContext } from './customer';
 import { usePaymentMethodDataContext } from './payment-methods';
 import { useValidationContext } from '../validation';
 import { useStoreCart } from '../../hooks/cart/use-store-cart';
-import { useStoreNotices } from '../../hooks/use-store-notices';
-
+import { useStoreNoticesContext } from '../store-notices';
 /**
  * CheckoutProcessor component.
  *
@@ -59,7 +58,7 @@ const CheckoutProcessor = () => {
 		paymentMethods,
 		shouldSavePayment,
 	} = usePaymentMethodDataContext();
-	const { setIsSuppressed } = useStoreNotices();
+	const { setIsSuppressed } = useStoreNoticesContext();
 	const { createErrorNotice, removeNotice } = useDispatch( 'core/notices' );
 	const currentBillingData = useRef( billingData );
 	const currentShippingAddress = useRef( shippingAddress );
