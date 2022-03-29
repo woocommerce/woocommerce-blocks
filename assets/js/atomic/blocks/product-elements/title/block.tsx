@@ -124,7 +124,7 @@ export const Block = ( props: Props ): JSX.Element => {
 				disabled={ ! showProductLink }
 				name={ product.name }
 				permalink={ product.permalink }
-				rel={ 'nofollow' + ' ' + ( rel || '' ) }
+				rel={ 'nofollow' + ( rel && ' ' + rel ) }
 				target={ linkTarget || undefined }
 				onClick={ () => {
 					dispatchStoreEvent( 'product-view-link', {
