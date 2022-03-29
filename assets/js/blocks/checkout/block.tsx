@@ -30,6 +30,7 @@ import type { Attributes } from './types';
 import { CheckoutBlockContext } from './context';
 import { hasNoticesOfType } from '../../utils/notices';
 import StoreNoticesContainer from '../../base/context/providers/store-notices/components/store-notices-container';
+import { StoreNoticesProvider } from '../../base/context/providers';
 
 const LoginPrompt = () => {
 	return (
@@ -175,30 +176,37 @@ const Block = ( {
 			) }
 			showErrorMessage={ CURRENT_USER_IS_ADMIN }
 		>
-			<StoreSnackbarNoticesProvider context="wc/checkout">
-				<StoreNoticesContainer
-					notices={ notices }
-					removeNotice={ removeNotice }
-				/>
-				<ValidationContextProvider>
-					{ /* SlotFillProvider need to be defined before CheckoutProvider so fills have the SlotFill context ready when they mount. */ }
-					<SlotFillProvider>
-						<CheckoutProvider>
-							<SidebarLayout
-								className={ classnames( 'wc-block-checkout', {
-									'has-dark-controls':
-										attributes.hasDarkControls,
-								} ) }
-							>
-								<Checkout attributes={ attributes }>
-									{ children }
-								</Checkout>
-								<ScrollOnError scrollToTop={ scrollToTop } />
-							</SidebarLayout>
-						</CheckoutProvider>
-					</SlotFillProvider>
-				</ValidationContextProvider>
-			</StoreSnackbarNoticesProvider>
+			<StoreNoticesProvider>
+				<StoreSnackbarNoticesProvider context="wc/checkout">
+					<StoreNoticesContainer
+						notices={ notices }
+						removeNotice={ removeNotice }
+					/>
+					<ValidationContextProvider>
+						{ /* SlotFillProvider need to be defined before CheckoutProvider so fills have the SlotFill context ready when they mount. */ }
+						<SlotFillProvider>
+							<CheckoutProvider>
+								<SidebarLayout
+									className={ classnames(
+										'wc-block-checkout',
+										{
+											'has-dark-controls':
+												attributes.hasDarkControls,
+										}
+									) }
+								>
+									<Checkout attributes={ attributes }>
+										{ children }
+									</Checkout>
+									<ScrollOnError
+										scrollToTop={ scrollToTop }
+									/>
+								</SidebarLayout>
+							</CheckoutProvider>
+						</SlotFillProvider>
+					</ValidationContextProvider>
+				</StoreSnackbarNoticesProvider>
+			</StoreNoticesProvider>
 		</BlockErrorBoundary>
 	);
 };
