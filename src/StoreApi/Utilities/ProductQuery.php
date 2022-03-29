@@ -95,11 +95,15 @@ class ProductQuery {
 			'and'    => 'AND',
 		];
 
+		$all_product_taxonomies = get_taxonomies( array( 'object_type' => array( 'product' ) ), 'names' );
+
 		// Map between taxonomy name and arg key.
-		$taxonomies = [
+		$default_taxonomies = [
 			'product_cat' => 'category',
 			'product_tag' => 'tag',
 		];
+
+		$taxonomies = array_merge( $default_taxonomies, $all_product_taxonomies );
 
 		// Set tax_query for each passed arg.
 		foreach ( $taxonomies as $taxonomy => $key ) {
