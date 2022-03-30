@@ -205,6 +205,12 @@ export const shopper = {
 
 		// prettier-ignore
 		fillBillingDetails: async ( customerBillingDetails ) => {
+			const companyInputField = await page.$( '#billing-company' );
+
+			if ( companyInputField ) {
+				await expect( page ).toFill( '#billing-company', customerBillingDetails.company );
+			}
+
 			await expect( page ).toFill( '#billing-first_name', customerBillingDetails.firstname );
 			await expect( page ).toFill( '#billing-last_name', customerBillingDetails.lastname );
 			await expect( page ).toFill( '#billing-country input', customerBillingDetails.country );
@@ -220,6 +226,12 @@ export const shopper = {
 
 		// prettier-ignore
 		fillShippingDetails: async ( customerShippingDetails ) => {
+			const companyInputField = await page.$( '#shipping-company' );
+
+			if ( companyInputField ) {
+				await expect( page ).toFill( '#shipping-company', customerShippingDetails.company );
+			}
+
 			await expect( page ).toFill( '#shipping-first_name', customerShippingDetails.firstname );
 			await expect( page ).toFill( '#shipping-last_name', customerShippingDetails.lastname );
 			await expect( page ).toFill( '#shipping-country input', customerShippingDetails.country );
