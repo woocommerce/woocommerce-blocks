@@ -28,6 +28,22 @@ function findGetParameter( paramName ) {
 	return params.get( paramName );
 }
 
+function formatParams( url, paramSettings ) {
+	const params = new URLSearchParams( url.search );
+	const keys = Object.keys( paramSettings );
+
+	for ( let i = 0; keys.length > i; i++ ) {
+		const { value, constraint } = paramSettings[ keys[ i ] ];
+		if ( value === constraint ) {
+			params.delete( keys[ i ] );
+		} else {
+			params.set( keys[ i ], value / 100 );
+		}
+	}
+
+	return params.toString();
+}
+
 /**
  * Component displaying a price filter.
  *
@@ -72,21 +88,24 @@ const PriceFilterBlock = ( { attributes, isEditor = false } ) => {
 	// Updates the query based on slider values.
 	const onSubmit = useCallback(
 		( newMinPrice, newMaxPrice ) => {
-			if ( useAsPhpFilter ) {
+			if ( useAsPhpFilter && window ) {
 				const url = new URL( window.location );
-				const params = new URLSearchParams( url.search );
-				if ( newMinPrice === minConstraint ) {
-					params.delete( 'min_price' );
-				} else {
-					params.set( 'min_price', newMinPrice / 100 );
+				const currentParams = new URLSearchParams( url.search );
+				const newParams = formatParams( url, {
+					max_price: {
+						value: newMaxPrice,
+						constraint: maxConstraint,
+					},
+					min_price: {
+						value: newMinPrice,
+						constraint: minConstraint,
+					},
+				} );
+
+				if ( currentParams.toString() !== newParams ) {
+					window.location =
+						url.origin + url.pathname + '?' + newParams;
 				}
-				if ( newMaxPrice === maxConstraint ) {
-					params.delete( 'max_price' );
-				} else {
-					params.set( 'max_price', newMaxPrice / 100 );
-				}
-				window.location =
-					url.origin + url.pathname + '?' + params.toString();
 			} else {
 				setMinPriceQuery(
 					newMinPrice === minConstraint ? undefined : newMinPrice
