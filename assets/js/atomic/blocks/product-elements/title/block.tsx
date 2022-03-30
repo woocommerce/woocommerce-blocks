@@ -97,6 +97,8 @@ export const Block = ( props: Props ): JSX.Element => {
 		);
 	}
 
+	const linkRel = rel ? ` ${ rel }` : '';
+
 	return (
 		<TagName
 			headingLevel={ headingLevel }
@@ -124,7 +126,7 @@ export const Block = ( props: Props ): JSX.Element => {
 				disabled={ ! showProductLink }
 				name={ product.name }
 				permalink={ product.permalink }
-				rel={ 'nofollow' + ( rel && ' ' + rel ) }
+				rel={ 'nofollow' + linkRel }
 				target={ linkTarget || undefined }
 				onClick={ () => {
 					dispatchStoreEvent( 'product-view-link', {
