@@ -42,12 +42,10 @@ export const shopper = {
 
 		goToCart: async () => {
 			await shopper.block.goToBlockPage( 'Cart' );
-			await page.waitForNetworkIdle();
 		},
 
 		goToCheckout: async () => {
 			await shopper.block.goToBlockPage( 'Checkout' );
-			await page.waitForNetworkIdle();
 		},
 
 		productIsInCheckout: async ( productTitle, quantity, total ) => {
