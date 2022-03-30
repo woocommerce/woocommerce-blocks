@@ -26,7 +26,7 @@ import { useValidationContext } from '../../providers/validation';
  */
 export const useStoreCartCoupons = ( context = '' ): StoreCartCoupon => {
 	const { cartCoupons, cartIsLoading } = useStoreCart();
-	const { createErrorNotice: addErrorNotice } = useDispatch( 'core/notices' );
+	const { createErrorNotice } = useDispatch( 'core/notices' );
 	const { addSnackbarNotice } = useStoreSnackbarNotices();
 	const { setValidationErrors } = useValidationContext();
 
@@ -99,7 +99,7 @@ export const useStoreCartCoupons = ( context = '' ): StoreCartCoupon => {
 						}
 					} )
 					.catch( ( error ) => {
-						addErrorNotice( error.message, {
+						createErrorNotice( error.message, {
 							id: 'coupon-form',
 							context,
 						} );
@@ -115,7 +115,7 @@ export const useStoreCartCoupons = ( context = '' ): StoreCartCoupon => {
 				isRemovingCoupon,
 			};
 		},
-		[ addErrorNotice, addSnackbarNotice ]
+		[ createErrorNotice, addSnackbarNotice ]
 	);
 
 	return {
