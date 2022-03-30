@@ -21,6 +21,9 @@ import usePriceConstraints from './use-price-constraints.js';
 import './style.scss';
 
 function findGetParameter( paramName ) {
+	if ( ! window ) {
+		return;
+	}
 	const url = new URL( window.location );
 	const params = new URLSearchParams( url.search );
 
@@ -92,7 +95,8 @@ const PriceFilterBlock = ( { attributes, isEditor = false } ) => {
 	// Updates the query based on slider values.
 	const onSubmit = useCallback(
 		( newMinPrice, newMaxPrice ) => {
-			if ( filteringForPhpTemplate ) {
+			if ( filteringForPhpTemplate && window ) {
+				// For block templates that render the PHP Classic Template block we need to add the filters as params and reload the page.
 				const url = new URL( window.location );
 				const currentParams = new URLSearchParams( url.search );
 				const newParams = formatParams( url, {
@@ -119,7 +123,13 @@ const PriceFilterBlock = ( { attributes, isEditor = false } ) => {
 				);
 			}
 		},
-		[ minConstraint, maxConstraint, setMinPriceQuery, setMaxPriceQuery, filteringForPhpTemplate ]
+		[
+			minConstraint,
+			maxConstraint,
+			setMinPriceQuery,
+			setMaxPriceQuery,
+			filteringForPhpTemplate,
+		]
 	);
 
 	// Updates the query after a short delay.
