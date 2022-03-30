@@ -127,7 +127,7 @@ export const Block = ( props: Props ): JSX.Element => {
 				name={ product.name }
 				permalink={ product.permalink }
 				rel={ 'nofollow' + linkRel }
-				target={ linkTarget || undefined }
+				target={ linkTarget }
 				onClick={ () => {
 					dispatchStoreEvent( 'product-view-link', {
 						product,
