@@ -447,6 +447,15 @@ class MiniCart extends AbstractBlock {
 	 * Prepare translations for inner blocks and dependencies.
 	 */
 	protected function get_dependencies_translations() {
+		/**
+		 * Temporary remove the this filter so $wp_scripts->print_translations
+		 * calls won't accident print the translations scripts for the block.
+		 *
+		 * $wp_scripts->print_translations() calls load_script_textdomain()
+		 * which calls load_script_translations() containing the below filter.
+		 */
+		remove_filter( 'pre_load_script_translations', 'woocommerce_blocks_get_i18n_data_json', 10, 4 );
+
 		$wp_scripts   = wp_scripts();
 		$translations = array();
 
@@ -468,7 +477,14 @@ class MiniCart extends AbstractBlock {
 			wp_deregister_script( $handle );
 		}
 
+		foreach ( array_keys( $this->scripts_to_lazy_load ) as $script ) {
+			$translations[] = $wp_scripts->print_translations( $script, false );
+		}
+
 		$translations = array_filter( $translations );
+
+		// Re-add the filter.
+		add_filter( 'pre_load_script_translations', 'woocommerce_blocks_get_i18n_data_json', 10, 4 );
 
 		return implode( '', $translations );
 	}
