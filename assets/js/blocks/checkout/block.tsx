@@ -20,7 +20,6 @@ import { SidebarLayout } from '@woocommerce/base-components/sidebar-layout';
 import { CURRENT_USER_IS_ADMIN, getSetting } from '@woocommerce/settings';
 import { SlotFillProvider } from '@woocommerce/blocks-checkout';
 import withScrollToTop from '@woocommerce/base-hocs/with-scroll-to-top';
-import { useDispatch, useSelect } from '@wordpress/data';
 
 /**
  * Internal dependencies
@@ -149,13 +148,6 @@ const Block = ( {
 	children: React.ReactChildren;
 	scrollToTop: ( props: Record< string, unknown > ) => void;
 } ): JSX.Element => {
-	const { removeNotice } = useDispatch( 'core/notices' );
-	const { notices } = useSelect( ( select ) => {
-		const store = select( 'core/notices' );
-		return {
-			notices: store.getNotices( 'wc/checkout' ),
-		};
-	} );
 	return (
 		<BlockErrorBoundary
 			header={ __(
@@ -178,12 +170,9 @@ const Block = ( {
 			) }
 			showErrorMessage={ CURRENT_USER_IS_ADMIN }
 		>
-			<StoreNoticesProvider>
-				<StoreSnackbarNoticesProvider context="wc/checkout">
-					<StoreNoticesContainer
-						notices={ notices }
-						removeNotice={ removeNotice }
-					/>
+			<StoreSnackbarNoticesProvider context="wc/checkout">
+				<StoreNoticesProvider>
+					<StoreNoticesContainer context="wc/checkout" />
 					<ValidationContextProvider>
 						{ /* SlotFillProvider need to be defined before CheckoutProvider so fills have the SlotFill context ready when they mount. */ }
 						<SlotFillProvider>
@@ -207,8 +196,8 @@ const Block = ( {
 							</CheckoutProvider>
 						</SlotFillProvider>
 					</ValidationContextProvider>
-				</StoreSnackbarNoticesProvider>
-			</StoreNoticesProvider>
+				</StoreNoticesProvider>
+			</StoreSnackbarNoticesProvider>
 		</BlockErrorBoundary>
 	);
 };

@@ -19,7 +19,6 @@ import {
 	CartProvider,
 } from '@woocommerce/base-context/providers';
 import { SlotFillProvider } from '@woocommerce/blocks-checkout';
-import { useSelect } from '@wordpress/data';
 
 /**
  * Internal dependencies
@@ -73,42 +72,31 @@ const ScrollOnError = ( { scrollToTop } ) => {
 
 	return null;
 };
-const Block = ( { attributes, children, scrollToTop } ) => {
-	const { notices } = useSelect( ( select ) => {
-		const store = select( 'core/notices' );
-		return {
-			notices: store.getNotices( 'wc/cart' ),
-		};
-	} );
-	return (
-		<BlockErrorBoundary
-			header={ __(
-				'Something went wrong…',
-				'woo-gutenberg-products-block'
-			) }
-			text={ __(
-				'The cart has encountered an unexpected error. If the error persists, please get in touch with us for help.',
-				'woo-gutenberg-products-block'
-			) }
-			button={
-				<button className="wc-block-button" onClick={ reloadPage }>
-					{ __( 'Reload the page', 'woo-gutenberg-products-block' ) }
-				</button>
-			}
-			showErrorMessage={ CURRENT_USER_IS_ADMIN }
-		>
-			<StoreSnackbarNoticesProvider context="wc/cart">
-				<StoreNoticesProvider>
-					<StoreNoticesContainer notices={ notices } />
-					<SlotFillProvider>
-						<CartProvider>
-							<Cart attributes={ attributes }>{ children }</Cart>
-							<ScrollOnError scrollToTop={ scrollToTop } />
-						</CartProvider>
-					</SlotFillProvider>
-				</StoreNoticesProvider>
-			</StoreSnackbarNoticesProvider>
-		</BlockErrorBoundary>
-	);
-};
+const Block = ( { attributes, children, scrollToTop } ) => (
+	<BlockErrorBoundary
+		header={ __( 'Something went wrong…', 'woo-gutenberg-products-block' ) }
+		text={ __(
+			'The cart has encountered an unexpected error. If the error persists, please get in touch with us for help.',
+			'woo-gutenberg-products-block'
+		) }
+		button={
+			<button className="wc-block-button" onClick={ reloadPage }>
+				{ __( 'Reload the page', 'woo-gutenberg-products-block' ) }
+			</button>
+		}
+		showErrorMessage={ CURRENT_USER_IS_ADMIN }
+	>
+		<StoreSnackbarNoticesProvider context="wc/cart">
+			<StoreNoticesProvider>
+				<StoreNoticesContainer context="wc/cart" />
+				<SlotFillProvider>
+					<CartProvider>
+						<Cart attributes={ attributes }>{ children }</Cart>
+						<ScrollOnError scrollToTop={ scrollToTop } />
+					</CartProvider>
+				</SlotFillProvider>
+			</StoreNoticesProvider>
+		</StoreSnackbarNoticesProvider>
+	</BlockErrorBoundary>
+);
 export default withScrollToTop( Block );
