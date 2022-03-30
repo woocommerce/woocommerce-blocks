@@ -55,6 +55,12 @@ class ClassicTemplate extends AbstractDynamicBlock {
 			$frontend_scripts::load_scripts();
 		}
 
+		$this->asset_data_registry->add(
+			'is_rendering_php_template',
+			true,
+			null
+		);
+
 		$archive_templates = array( 'archive-product', 'taxonomy-product_cat', 'taxonomy-product_tag' );
 
 		if ( 'single-product' === $attributes['template'] ) {

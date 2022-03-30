@@ -12,14 +12,13 @@ import PriceSlider from '@woocommerce/base-components/price-slider';
 import { useDebouncedCallback } from 'use-debounce';
 import PropTypes from 'prop-types';
 import { getCurrencyFromPriceResponse } from '@woocommerce/price-format';
+import { getSetting } from '@woocommerce/settings';
 
 /**
  * Internal dependencies
  */
 import usePriceConstraints from './use-price-constraints.js';
 import './style.scss';
-
-const useAsPhpFilter = true;
 
 function findGetParameter( paramName ) {
 	const url = new URL( window.location );
@@ -52,6 +51,11 @@ function formatParams( url, paramSettings ) {
  * @param {boolean} props.isEditor Whether in editor context or not.
  */
 const PriceFilterBlock = ( { attributes, isEditor = false } ) => {
+	const filteringForPhpTemplate = getSetting(
+		'is_rendering_php_template',
+		''
+	);
+
 	const [ minPriceQuery, setMinPriceQuery ] = useQueryStateByKey(
 		'min_price',
 		findGetParameter( 'min_price' ) * 100 || null
@@ -88,7 +92,7 @@ const PriceFilterBlock = ( { attributes, isEditor = false } ) => {
 	// Updates the query based on slider values.
 	const onSubmit = useCallback(
 		( newMinPrice, newMaxPrice ) => {
-			if ( useAsPhpFilter && window ) {
+			if ( filteringForPhpTemplate ) {
 				const url = new URL( window.location );
 				const currentParams = new URLSearchParams( url.search );
 				const newParams = formatParams( url, {
@@ -115,7 +119,7 @@ const PriceFilterBlock = ( { attributes, isEditor = false } ) => {
 				);
 			}
 		},
-		[ minConstraint, maxConstraint, setMinPriceQuery, setMaxPriceQuery ]
+		[ minConstraint, maxConstraint, setMinPriceQuery, setMaxPriceQuery, filteringForPhpTemplate ]
 	);
 
 	// Updates the query after a short delay.
