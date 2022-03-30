@@ -461,8 +461,6 @@ class MiniCart extends AbstractBlock {
 		];
 		$chunks = preg_filter( '/$/', '-frontend', $blocks );
 
-		$this->register_chunk_translations( $chunks );
-
 		foreach ( $chunks as $chunk ) {
 			$handle = 'wc-blocks-' . $chunk . '-chunk';
 			$this->asset_api->register_script( $handle, $this->asset_api->get_block_asset_build_path( $chunk ), [], true );
