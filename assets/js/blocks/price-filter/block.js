@@ -110,6 +110,7 @@ const PriceFilterBlock = ( { attributes, isEditor = false } ) => {
 					},
 				} );
 
+				// If the params have changed, lets reload the page.
 				if ( currentParams.toString() !== newParams ) {
 					window.location =
 						url.origin + url.pathname + '?' + newParams;
