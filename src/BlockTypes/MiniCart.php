@@ -161,8 +161,9 @@ class MiniCart extends AbstractBlock {
 		}
 
 		$this->scripts_to_lazy_load['wc-block-mini-cart-component-frontend'] = array(
-			'src'     => $script_data['src'],
-			'version' => $script_data['version'],
+			'src'          => $script_data['src'],
+			'version'      => $script_data['version'],
+			'translations' => $this->get_dependencies_translations(),
 		);
 
 		$this->asset_data_registry->add(
@@ -443,13 +444,12 @@ class MiniCart extends AbstractBlock {
 	}
 
 	/**
-	 * Register script and style assets for the block type before it is registered.
-	 *
-	 * This registers the scripts; it does not enqueue them.
-	 * The children blocks are register here because this block handles the loading of the frontend scripts.
+	 * Prepare translations for inner blocks and dependencies.
 	 */
-	protected function register_block_type_assets() {
-		parent::register_block_type_assets();
+	protected function get_dependencies_translations() {
+		$wp_scripts   = wp_scripts();
+		$translations = array();
+
 		$blocks = [
 			'mini-cart-contents-block/filled-cart',
 			'mini-cart-contents-block/empty-cart',
@@ -461,6 +461,15 @@ class MiniCart extends AbstractBlock {
 		];
 		$chunks = preg_filter( '/$/', '-frontend', $blocks );
 
-		$this->register_chunk_translations( $chunks );
+		foreach ( $chunks as $chunk ) {
+			$handle = 'wc-blocks-' . $chunk . '-chunk';
+			$this->asset_api->register_script( $handle, $this->asset_api->get_block_asset_build_path( $chunk ), [], true );
+			$translations[] = $wp_scripts->print_translations( $handle, false );
+			wp_deregister_script( $handle );
+		}
+
+		$translations = array_filter( $translations );
+
+		return implode( '', $translations );
 	}
 }
