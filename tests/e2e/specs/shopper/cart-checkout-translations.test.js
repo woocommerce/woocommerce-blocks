@@ -49,7 +49,7 @@ describe( 'Shopper → Cart → Can view translated cart & checkout blocks', () 
 		const productHeader = await page.$(
 			'.wc-block-cart-items .wc-block-cart-items__header span'
 		);
-		await expect( productHeader ).toMatch( 'Produit', { timeout: 2000 } );
+		await expect( productHeader ).toMatch( 'Produit', { timeout: 30000 } );
 
 		const removeLink = await page.$( '.wc-block-cart-item__remove-link' );
 		await expect( removeLink ).toMatch( 'Retirer l’élément' );
@@ -73,7 +73,7 @@ describe( 'Shopper → Cart → Can view translated cart & checkout blocks', () 
 			'#contact-fields .wc-block-components-checkout-step__title'
 		);
 		await expect( contactHeading ).toMatch( 'Coordonnées', {
-			timeout: 2000,
+			timeout: 30000,
 		} );
 
 		const shippingHeading = await page.$(
