@@ -30,6 +30,8 @@ if ( process.env.WOOCOMMERCE_BLOCKS_PHASE < 2 )
 	// eslint-disable-next-line jest/no-focused-tests
 	test.only( 'Skipping Checkout tests', () => {} );
 
+let companyCheckboxId = null;
+
 describe( 'Shopper → Checkout → Can have different shipping and billing addresses', () => {
 	beforeAll( async () => {
 		await preventCompatibilityNotice();
@@ -39,7 +41,17 @@ describe( 'Shopper → Checkout → Can have different shipping and billing addr
 		await selectBlockByName(
 			'woocommerce/checkout-shipping-address-block'
 		);
-		await setCheckbox( '#inspector-toggle-control-1' );
+
+		// This checkbox ID is unstable, so, we're getting its value from "for" attribute of the label
+		const [ companyCheckboxLabel ] = await page.$x(
+			`//label[contains(text(), "Company") and contains(@class, "components-toggle-control__label")]`
+		);
+		companyCheckboxId = await page.evaluate(
+			( label ) => `#${ label.getAttribute( 'for' ) }`,
+			companyCheckboxLabel
+		);
+
+		await setCheckbox( companyCheckboxId );
 		await saveOrPublish();
 		await shopper.block.emptyCart();
 	} );
@@ -51,7 +63,7 @@ describe( 'Shopper → Checkout → Can have different shipping and billing addr
 		await selectBlockByName(
 			'woocommerce/checkout-shipping-address-block'
 		);
-		await unsetCheckbox( '#inspector-toggle-control-1' );
+		await unsetCheckbox( companyCheckboxId );
 		await saveOrPublish();
 		await merchant.logout();
 		await reactivateCompatibilityNotice();
