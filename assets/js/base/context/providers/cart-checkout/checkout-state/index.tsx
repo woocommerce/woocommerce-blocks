@@ -42,6 +42,7 @@ import { useValidationContext } from '../../validation';
 import { useStoreEvents } from '../../../hooks/use-store-events';
 import { useCheckoutNotices } from '../../../hooks/use-checkout-notices';
 import { useEmitResponse } from '../../../hooks/use-emit-response';
+import { removeNoticesByStatus } from '../../../../../utils/notices';
 
 /**
  * @typedef {import('@woocommerce/type-defs/contexts').CheckoutDataContext} CheckoutDataContext
@@ -76,7 +77,8 @@ export const CheckoutStateProvider = ( {
 	DEFAULT_STATE.redirectUrl = redirectUrl;
 	const [ checkoutState, dispatch ] = useReducer( reducer, DEFAULT_STATE );
 	const { setValidationErrors } = useValidationContext();
-	const { createErrorNotice, removeNotices } = useDispatch( 'core/notices' );
+	const { createErrorNotice } = useDispatch( 'core/notices' );
+
 	const { dispatchCheckoutEvent } = useStoreEvents();
 	const isCalculating = checkoutState.calculatingCount > 0;
 	const {
@@ -162,7 +164,7 @@ export const CheckoutStateProvider = ( {
 	useEffect( () => {
 		const status = checkoutState.status;
 		if ( status === STATUS.BEFORE_PROCESSING ) {
-			removeNotices( 'error' );
+			removeNoticesByStatus( 'error' );
 			emitEvent(
 				currentObservers.current,
 				EMIT_TYPES.CHECKOUT_VALIDATION_BEFORE_PROCESSING,
@@ -188,7 +190,7 @@ export const CheckoutStateProvider = ( {
 		checkoutState.status,
 		setValidationErrors,
 		createErrorNotice,
-		removeNotices,
+		removeNoticesByStatus,
 		dispatch,
 	] );
 
