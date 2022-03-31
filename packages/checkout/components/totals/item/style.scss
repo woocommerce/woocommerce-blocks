@@ -1,19 +1,7 @@
 .wc-block-components-totals-item {
 	display: flex;
 	flex-wrap: wrap;
-}
-
-.wp-block > .wc-block-components-totals-item,
-.wp-block-woocommerce-cart-order-summary-block > .wc-block-components-totals-item,
-.wp-block-woocommerce-checkout-order-summary-block > .wc-block-components-totals-item,
-.wc-block-components-order-summary,
-.wc-block-components-totals-coupon,
-.wc-block-components-totals-shipping {
-	@include with-translucent-border(1px 0 0);
-	margin: 0;
 	width: 100%;
-	padding-top: $gap;
-	padding-bottom: $gap;
 }
 
 .wc-block-components-totals-item__label {
@@ -28,8 +16,4 @@
 .wc-block-components-totals-item__description {
 	@include font-size(small);
 	width: 100%;
-
-	> div:last-child {
-		margin-bottom: 0;
-	}
 }

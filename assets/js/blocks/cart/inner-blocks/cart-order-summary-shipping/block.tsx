@@ -22,7 +22,7 @@ const Block = ( {
 
 	return (
 		<TotalsShipping
-			className={ className }
+			className={ `${ className } wc-block-components-totals-wrapper` }
 			showCalculator={ isShippingCalculatorEnabled }
 			showRateSelector={ true }
 			values={ cartTotals }

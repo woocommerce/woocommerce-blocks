@@ -77,10 +77,7 @@ body.wc-lock-selected-block--remove {
 	.block-editor-block-list__layout > div {
 		margin: 0 !important;
 	}
-	.wc-block-components-totals-item,
-	.wc-block-components-totals-coupon,
-	.wc-block-components-order-summary,
-	.wc-block-components-totals-shipping {
+	.wc-block-components-totals-wrapper {
 		box-sizing: border-box;
 	}
 }

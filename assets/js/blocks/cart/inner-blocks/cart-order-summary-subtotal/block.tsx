@@ -11,7 +11,7 @@ const Block = ( { className = '' }: { className?: string } ): JSX.Element => {
 
 	return (
 		<Subtotal
-			className={ className }
+			className={ `${ className } wc-block-components-totals-wrapper` }
 			currency={ totalsCurrency }
 			values={ cartTotals }
 		/>

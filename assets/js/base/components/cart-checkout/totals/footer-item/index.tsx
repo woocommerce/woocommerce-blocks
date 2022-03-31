@@ -31,7 +31,6 @@ export interface TotalsFooterItemProps {
 	 * convenience, but will use only these two properties.
 	 */
 	values: LooselyMustHave< CartResponseTotals, 'total_price' | 'total_tax' >;
-	// CSS classname.
 	className?: string;
 }
 

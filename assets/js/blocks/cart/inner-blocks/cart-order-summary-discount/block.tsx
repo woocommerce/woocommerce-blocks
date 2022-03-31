@@ -31,7 +31,7 @@ const Block = ( { className }: { className: string } ): JSX.Element => {
 	return (
 		<>
 			<TotalsDiscount
-				className={ className }
+				className={ `${ className } wc-block-components-totals-wrapper` }
 				cartCoupons={ cartCoupons }
 				currency={ totalsCurrency }
 				isRemovingCoupon={ isRemovingCoupon }

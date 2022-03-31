@@ -16,7 +16,7 @@ const Block = ( { className }: { className: string } ): JSX.Element | null => {
 
 	return (
 		<TotalsCoupon
-			className={ className }
+			className={ `${ className } wc-block-components-totals-wrapper` }
 			onSubmit={ applyCoupon }
 			isLoading={ isApplyingCoupon }
 		/>

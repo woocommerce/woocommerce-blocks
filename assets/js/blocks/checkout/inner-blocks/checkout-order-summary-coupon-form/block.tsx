@@ -20,7 +20,7 @@ const Block = ( {
 
 	return (
 		<TotalsCoupon
-			className={ className }
+			className={ `${ className } wc-block-components-totals-wrapper` }
 			onSubmit={ applyCoupon }
 			isLoading={ isApplyingCoupon }
 		/>

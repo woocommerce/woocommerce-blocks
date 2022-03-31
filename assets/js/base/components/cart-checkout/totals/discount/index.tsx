@@ -15,6 +15,7 @@ import {
 	Currency,
 } from '@woocommerce/types';
 import { LooselyMustHave } from '@woocommerce/type-defs/utils';
+import classNames from 'classnames';
 
 /**
  * Internal dependencies
@@ -33,6 +34,7 @@ export interface TotalsDiscountProps {
 		CartTotalsItem,
 		'total_discount' | 'total_discount_tax'
 	>;
+	className?: string;
 }
 
 const filteredCartCouponsFilterArg = {
@@ -45,6 +47,7 @@ const TotalsDiscount = ( {
 	isRemovingCoupon,
 	removeCoupon,
 	values,
+	className,
 }: TotalsDiscountProps ): JSX.Element | null => {
 	const {
 		total_discount: totalDiscount,
@@ -72,7 +75,10 @@ const TotalsDiscount = ( {
 
 	return (
 		<TotalsItem
-			className="wc-block-components-totals-discount"
+			className={ classNames(
+				className,
+				'wc-block-components-totals-discount'
+			) }
 			currency={ currency }
 			description={
 				filteredCartCoupons.length !== 0 && (

@@ -23,10 +23,12 @@ const FrontendBlock = ( {
 	return (
 		<div className={ className }>
 			{ children }
-			<TotalsFooterItem
-				currency={ totalsCurrency }
-				values={ cartTotals }
-			/>
+			<div className="wc-block-components-totals-wrapper">
+				<TotalsFooterItem
+					currency={ totalsCurrency }
+					values={ cartTotals }
+				/>
+			</div>
 			<OrderMetaSlotFill />
 		</div>
 	);

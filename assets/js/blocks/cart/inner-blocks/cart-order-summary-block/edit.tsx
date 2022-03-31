@@ -53,10 +53,13 @@ export const Edit = ( { clientId }: { clientId: string } ): JSX.Element => {
 				allowedBlocks={ allowedBlocks }
 				template={ defaultTemplate }
 			/>
-			<TotalsFooterItem
-				currency={ totalsCurrency }
-				values={ cartTotals }
-			/>
+			<div className="wc-block-components-totals-wrapper">
+				<TotalsFooterItem
+					currency={ totalsCurrency }
+					values={ cartTotals }
+				/>
+			</div>
+			{ /* do I put an totals wrapper here? */ }
 			<OrderMetaSlotFill />
 		</div>
 	);

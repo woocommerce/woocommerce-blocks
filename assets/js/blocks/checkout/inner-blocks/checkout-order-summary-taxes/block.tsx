@@ -30,7 +30,7 @@ const Block = ( {
 
 	return (
 		<TotalsTaxes
-			className={ className }
+			className={ `${ className } wc-block-components-totals-wrapper` }
 			showRateAfterTaxName={ showRateAfterTaxName }
 			currency={ totalsCurrency }
 			values={ cartTotals }
