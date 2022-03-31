@@ -59,18 +59,5 @@ describe( 'Product Title Block', () => {
 			expect( anchor.getAttribute( 'href' ) ).toBe( product.permalink );
 			expect( anchor.getAttribute( 'target' ) ).toBe( '_blank' );
 		} );
-
-		test( 'should render an anchor with the product title and a rel', () => {
-			const component = render(
-				<ProductDataContextProvider product={ product }>
-					<Block showProductLink={ true } rel="some_rel" />
-				</ProductDataContextProvider>
-			);
-
-			const productName = component.getByText( product.name );
-			const anchor = productName.closest( 'a' );
-
-			expect( anchor.getAttribute( 'href' ) ).toBe( product.permalink );
-		} );
 	} );
 } );

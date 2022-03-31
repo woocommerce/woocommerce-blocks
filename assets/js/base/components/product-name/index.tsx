@@ -67,7 +67,6 @@ export const ProductName = ( {
 			className={ classes }
 			href={ permalink }
 			target={ target }
-			rel={ rel }
 			{ ...props }
 			dangerouslySetInnerHTML={ {
 				__html: decodeEntities( name ),
