@@ -2,12 +2,7 @@
  * External dependencies
  */
 import { __ } from '@wordpress/i18n';
-import {
-	Disabled,
-	PanelBody,
-	TextControl,
-	ToggleControl,
-} from '@wordpress/components';
+import { Disabled, PanelBody, ToggleControl } from '@wordpress/components';
 import { compose } from '@wordpress/compose';
 import {
 	InspectorControls,
@@ -34,13 +29,7 @@ interface Props {
 
 const TitleEdit = ( { attributes, setAttributes }: Props ): JSX.Element => {
 	const blockProps = useBlockProps();
-	const {
-		headingLevel,
-		showProductLink,
-		align,
-		linkTarget,
-		rel,
-	} = attributes;
+	const { headingLevel, showProductLink, align, linkTarget } = attributes;
 	return (
 		<div { ...blockProps }>
 			<BlockControls>
@@ -94,16 +83,6 @@ const TitleEdit = ( { attributes, setAttributes }: Props ): JSX.Element => {
 									} )
 								}
 								checked={ linkTarget === '_blank' }
-							/>
-							<TextControl
-								label={ __(
-									'Link rel',
-									'woo-gutenberg-products-block'
-								) }
-								value={ rel }
-								onChange={ ( newRel ) =>
-									setAttributes( { rel: newRel } )
-								}
 							/>
 						</>
 					) }

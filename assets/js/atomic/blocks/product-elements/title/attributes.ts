@@ -15,9 +15,6 @@ let blockAttributes: Record< string, Record< string, unknown > > = {
 	linkTarget: {
 		type: 'string',
 	},
-	rel: {
-		type: 'string',
-	},
 	productId: {
 		type: 'number',
 		default: 0,
