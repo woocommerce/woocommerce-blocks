@@ -14,7 +14,6 @@ let blockAttributes: Record< string, Record< string, unknown > > = {
 	},
 	linkTarget: {
 		type: 'string',
-		default: '_self',
 	},
 	rel: {
 		type: 'string',
