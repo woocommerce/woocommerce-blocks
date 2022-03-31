@@ -30,6 +30,7 @@ import {
 } from './event-emit';
 import { useValidationContext } from '../../validation';
 import { useEmitResponse } from '../../../hooks/use-emit-response';
+import { removeNoticesByStatus } from '../../../../../utils/notices';
 
 /**
  * @typedef {import('@woocommerce/type-defs/add-to-cart-form').AddToCartFormDispatchActions} AddToCartFormDispatchActions
@@ -98,7 +99,7 @@ export const AddToCartFormStateContextProvider = ( {
 	);
 	const [ observers, observerDispatch ] = useReducer( emitReducer, {} );
 	const currentObservers = useShallowEqual( observers );
-	const { createErrorNotice, removeNotices } = useDispatch( 'core/notices' );
+	const { createErrorNotice } = useDispatch( 'core/notices' );
 	const { setValidationErrors } = useValidationContext();
 	const {
 		isSuccessResponse,
@@ -166,7 +167,7 @@ export const AddToCartFormStateContextProvider = ( {
 		const status = addToCartFormState.status;
 
 		if ( status === STATUS.BEFORE_PROCESSING ) {
-			removeNotices( 'error' );
+			removeNoticesByStatus( 'error', 'wc/add-to-cart' );
 			emitEvent(
 				currentObservers,
 				EMIT_TYPES.ADD_TO_CART_BEFORE_PROCESSING,
@@ -177,11 +178,10 @@ export const AddToCartFormStateContextProvider = ( {
 						response.forEach(
 							( { errorMessage, validationErrors } ) => {
 								if ( errorMessage ) {
-									createErrorNotice( errorMessage, {
-										context: `woocommerce/single-product/${
-											product?.id || 0
-										}`,
-									} );
+									createErrorNotice(
+										errorMessage,
+										'wc/add-to-cart'
+									);
 								}
 								if ( validationErrors ) {
 									setValidationErrors( validationErrors );
@@ -199,7 +199,6 @@ export const AddToCartFormStateContextProvider = ( {
 		addToCartFormState.status,
 		setValidationErrors,
 		createErrorNotice,
-		removeNotices,
 		dispatch,
 		currentObservers,
 		product?.id,
