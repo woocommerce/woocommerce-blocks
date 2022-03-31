@@ -133,6 +133,16 @@ class MiniCart extends AbstractBlock {
 			);
 		}
 
+		/**
+		 * Temporary remove the this filter so $wp_scripts->print_translations
+		 * calls won't accident print the translations scripts for the block
+		 * when inserted as a widget.
+		 *
+		 * $wp_scripts->print_translations() calls load_script_textdomain()
+		 * which calls load_script_translations() containing the below filter.
+		 */
+		remove_filter( 'pre_load_script_translations', 'woocommerce_blocks_get_i18n_data_json', 10, 4 );
+
 		$script_data = $this->asset_api->get_script_data( 'build/mini-cart-component-frontend.js' );
 
 		$num_dependencies = count( $script_data['dependencies'] );
@@ -163,8 +173,11 @@ class MiniCart extends AbstractBlock {
 		$this->scripts_to_lazy_load['wc-block-mini-cart-component-frontend'] = array(
 			'src'          => $script_data['src'],
 			'version'      => $script_data['version'],
-			'translations' => $this->get_dependencies_translations(),
+			'translations' => $this->get_inner_blocks_translations(),
 		);
+
+		// Re-add the filter.
+		add_filter( 'pre_load_script_translations', 'woocommerce_blocks_get_i18n_data_json', 10, 4 );
 
 		$this->asset_data_registry->add(
 			'mini_cart_block_frontend_dependencies',
@@ -261,10 +274,11 @@ class MiniCart extends AbstractBlock {
 			return;
 		}
 		$this->scripts_to_lazy_load[ $script->handle ] = array(
-			'src'     => $script->src,
-			'version' => $script->ver,
-			'before'  => $wp_scripts->print_inline_script( $script->handle, 'before', false ),
-			'after'   => $wp_scripts->print_inline_script( $script->handle, 'after', false ),
+			'src'          => $script->src,
+			'version'      => $script->ver,
+			'before'       => $wp_scripts->print_inline_script( $script->handle, 'before', false ),
+			'after'        => $wp_scripts->print_inline_script( $script->handle, 'after', false ),
+			'translations' => $wp_scripts->print_translations( $script->handle, false ),
 		);
 	}
 
@@ -446,16 +460,7 @@ class MiniCart extends AbstractBlock {
 	/**
 	 * Prepare translations for inner blocks and dependencies.
 	 */
-	protected function get_dependencies_translations() {
-		/**
-		 * Temporary remove the this filter so $wp_scripts->print_translations
-		 * calls won't accident print the translations scripts for the block.
-		 *
-		 * $wp_scripts->print_translations() calls load_script_textdomain()
-		 * which calls load_script_translations() containing the below filter.
-		 */
-		remove_filter( 'pre_load_script_translations', 'woocommerce_blocks_get_i18n_data_json', 10, 4 );
-
+	protected function get_inner_blocks_translations() {
 		$wp_scripts   = wp_scripts();
 		$translations = array();
 
@@ -477,14 +482,7 @@ class MiniCart extends AbstractBlock {
 			wp_deregister_script( $handle );
 		}
 
-		foreach ( array_keys( $this->scripts_to_lazy_load ) as $script ) {
-			$translations[] = $wp_scripts->print_translations( $script, false );
-		}
-
 		$translations = array_filter( $translations );
-
-		// Re-add the filter.
-		add_filter( 'pre_load_script_translations', 'woocommerce_blocks_get_i18n_data_json', 10, 4 );
 
 		return implode( '', $translations );
 	}
