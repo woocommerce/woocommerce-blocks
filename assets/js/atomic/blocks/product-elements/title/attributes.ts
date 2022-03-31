@@ -17,7 +17,6 @@ let blockAttributes: Record< string, Record< string, unknown > > = {
 	},
 	rel: {
 		type: 'string',
-		default: '',
 	},
 	productId: {
 		type: 'number',

@@ -43,8 +43,8 @@ describe( 'Product Title Block', () => {
 			const anchor = productName.closest( 'a' );
 
 			expect( anchor.getAttribute( 'href' ) ).toBe( product.permalink );
-			expect( anchor.getAttribute( 'target' ) ).toBe( null );
-			expect( anchor.getAttribute( 'rel' ) ).toContain( 'nofollow' );
+			expect( anchor.getAttribute( 'target' ) ).toBeNull();
+			expect( anchor.getAttribute( 'rel' ) ).toBeNull();
 		} );
 
 		test( 'should render an anchor with the product title and target blank', () => {
@@ -59,7 +59,7 @@ describe( 'Product Title Block', () => {
 
 			expect( anchor.getAttribute( 'href' ) ).toBe( product.permalink );
 			expect( anchor.getAttribute( 'target' ) ).toBe( '_blank' );
-			expect( anchor.getAttribute( 'rel' ) ).toContain( 'nofollow' );
+			expect( anchor.getAttribute( 'rel' ) ).toBeNull();
 		} );
 
 		test( 'should render an anchor with the product title and a rel', () => {
@@ -73,8 +73,7 @@ describe( 'Product Title Block', () => {
 			const anchor = productName.closest( 'a' );
 
 			expect( anchor.getAttribute( 'href' ) ).toBe( product.permalink );
-			expect( anchor.getAttribute( 'rel' ) ).toContain( 'some_rel' );
-			expect( anchor.getAttribute( 'rel' ) ).toContain( 'nofollow' );
+			expect( anchor.getAttribute( 'rel' ) ).toBe( 'some_rel' );
 		} );
 	} );
 } );
