@@ -12,11 +12,11 @@ export const hasNoticesOfType = (
 	return notices.some( ( notice: Notice ) => notice.type === type );
 };
 
-export const removeNoticesByStatus = ( status: string ): void => {
+export const removeNoticesByStatus = ( status: string, context = '' ): void => {
 	const notices = select( 'core/notices' ).getNotices();
 	const { removeNotice } = dispatch( 'core/notices' );
 	const noticesOfType = notices.filter(
 		( notice ) => notice.status === status
 	);
-	noticesOfType.forEach( ( notice ) => removeNotice( notice.id ) );
+	noticesOfType.forEach( ( notice ) => removeNotice( notice.id, context ) );
 };
