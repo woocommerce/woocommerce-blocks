@@ -354,5 +354,20 @@ export const shopper = {
 
 			await expect( page.$x( cartItemXPath ) ).resolves.toHaveLength( 1 );
 		},
+
+		applyCouponFromCheckout: async ( couponCode ) => {
+			const couponInputSelector =
+				'#wc-block-components-totals-coupon__input-0';
+			const couponApplyButtonSelector =
+				'.wc-block-components-totals-coupon__button';
+			const couponExpandButtonSelector =
+				'.wc-block-components-totals-coupon button';
+
+			await expect( page ).toClick( couponExpandButtonSelector );
+			await page.waitForSelector( couponInputSelector );
+			await expect( page ).toFill( couponInputSelector, couponCode );
+			await expect( page ).toClick( couponApplyButtonSelector );
+			await page.waitForNetworkIdle();
+		},
 	},
 };
