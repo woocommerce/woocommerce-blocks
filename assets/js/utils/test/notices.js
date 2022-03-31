@@ -97,11 +97,13 @@ describe( 'Notice utils', () => {
 			removeNoticesByStatus( 'error' );
 			expect( dispatch().removeNotice ).toHaveBeenNthCalledWith(
 				1,
-				'coupon-form'
+				'coupon-form',
+				''
 			);
 			expect( dispatch().removeNotice ).toHaveBeenNthCalledWith(
 				2,
-				'address-form'
+				'address-form',
+				''
 			);
 		} );
 
