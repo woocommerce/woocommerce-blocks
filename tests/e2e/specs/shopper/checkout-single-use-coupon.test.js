@@ -4,6 +4,7 @@
 import { shopper } from '../../../utils';
 import { createCoupon } from '../../utils';
 import { SIMPLE_PRODUCT_NAME } from '../../../utils/constants';
+import { getOrderDetailsDiscountPathExpression } from '../../../utils/path-expressions';
 
 if ( process.env.WOOCOMMERCE_BLOCKS_PHASE < 2 )
 	// eslint-disable-next-line jest/no-focused-tests
@@ -54,9 +55,10 @@ describe( 'Shopper → Checkout → Can apply single-use coupon once', () => {
 		await expect( page ).toMatch( 'Your order has been received.' );
 
 		// Verify that the discount had been applied correctly on the order confirmation page.
-		const [ discountRow ] = await page.$x(
-			'//tr[th[contains(text(), "Discount:")] and //span[contains(text(), "5.00")]]'
+		const discountRowXPath = getOrderDetailsDiscountPathExpression(
+			'5.00'
 		);
+		const [ discountRow ] = await page.$x( discountRowXPath );
 		expect( discountRow ).toBeDefined();
 	} );
 
