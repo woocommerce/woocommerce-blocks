@@ -44,11 +44,15 @@ const getQuantityFromCartItems = (
  *
  *
  * @param {number} productId  The product id to be added to the cart.
+ * @param {string} noticeContext  The context for notices added to the `core/notices` data store.
  *
  * @return {StoreCartItemAddToCart} An object exposing data and actions relating
  *                                  to add to cart functionality.
  */
-export const useStoreAddToCart = ( productId: number ): StoreAddToCart => {
+export const useStoreAddToCart = (
+	productId: number,
+	noticeContext = ''
+): StoreAddToCart => {
 	const { addItemToCart } = useDispatch( storeKey );
 	const { cartItems, cartIsLoading } = useStoreCart();
 	const { createErrorNotice, removeNotice } = useDispatch( 'core/notices' );
@@ -62,11 +66,11 @@ export const useStoreAddToCart = ( productId: number ): StoreAddToCart => {
 		setAddingToCart( true );
 		return addItemToCart( productId, quantity )
 			.then( () => {
-				removeNotice( 'add-to-cart' );
+				removeNotice( 'add-to-cart', noticeContext );
 			} )
 			.catch( ( error ) => {
 				createErrorNotice( decodeEntities( error.message ), {
-					context: 'wc/all-products',
+					context: noticeContext,
 					id: 'add-to-cart',
 					isDismissible: true,
 				} );

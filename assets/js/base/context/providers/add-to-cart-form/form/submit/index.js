@@ -63,7 +63,10 @@ const FormSubmit = () => {
 	// Triggers form submission to the API.
 	const submitFormCallback = useCallback( () => {
 		setIsSubmitting( true );
-		removeNotice( 'add-to-cart' );
+		removeNotice(
+			'add-to-cart',
+			`woocommerce/single-product/${ product?.id || 0 }`
+		);
 
 		const fetchData = {
 			id: product.id || 0,
@@ -91,6 +94,9 @@ const FormSubmit = () => {
 								decodeEntities( response.body.message ),
 								{
 									id: 'add-to-cart',
+									context: `woocommerce/single-product/${
+										product?.id || 0
+									}`,
 								}
 							);
 						} else {
@@ -100,7 +106,7 @@ const FormSubmit = () => {
 									'woo-gutenberg-products-block'
 								),
 								{
-									id: 'add-to-cart',
+									id: 'dadd-to-cart',
 								}
 							);
 						}
