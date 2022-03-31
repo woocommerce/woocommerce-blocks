@@ -190,7 +190,6 @@ export const CheckoutStateProvider = ( {
 		checkoutState.status,
 		setValidationErrors,
 		createErrorNotice,
-		removeNoticesByStatus,
 		dispatch,
 	] );
 
