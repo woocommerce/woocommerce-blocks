@@ -400,7 +400,6 @@ export const shopper = {
 				'.wc-block-components-totals-coupon button';
 
 			await expect( page ).toClick( couponExpandButtonSelector );
-			await page.waitForSelector( couponInputSelector );
 			await expect( page ).toFill( couponInputSelector, couponCode );
 			await expect( page ).toClick( couponApplyButtonSelector );
 			await page.waitForNetworkIdle();
