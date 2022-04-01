@@ -51,7 +51,7 @@ function formatParams( selectAttributes ) {
 		return `${ accumulator }${
 			multipleFilters ? '&' : ''
 		}filter_${ attributeName }=${ attributeValues }&${ operator }`;
-	}, '?' );
+	}, '' );
 
 	return params === '?' ? '' : params;
 }
