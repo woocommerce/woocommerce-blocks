@@ -47,9 +47,7 @@ describe( 'Shopper → Cart → Can view translated cart & checkout blocks', () 
 		await shopper.addToCartFromShopPage( '128GB USB Stick' );
 		await shopper.block.goToCart();
 
-		await page.waitForSelector( '.wp-block-woocommerce-cart-items-block' );
-
-		const productHeader = await page.$(
+		const productHeader = await page.waitForSelector(
 			'.wc-block-cart-items .wc-block-cart-items__header span'
 		);
 		await expect( productHeader ).toMatch( 'Produit', { timeout: 30000 } );
