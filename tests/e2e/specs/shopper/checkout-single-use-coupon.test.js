@@ -4,7 +4,6 @@
 import { shopper } from '../../../utils';
 import { createCoupon } from '../../utils';
 import { SIMPLE_PRODUCT_NAME } from '../../../utils/constants';
-import { getOrderDetailsDiscountPathExpression } from '../../../utils/path-expressions';
 
 if ( process.env.WOOCOMMERCE_BLOCKS_PHASE < 2 )
 	// eslint-disable-next-line jest/no-focused-tests
@@ -50,11 +49,10 @@ describe( 'Shopper → Checkout → Can apply single-use coupon once', () => {
 		await expect( page ).toMatch( 'Your order has been received.' );
 
 		// Verify that the discount had been applied correctly on the order confirmation page.
-		const discountRowXPath = getOrderDetailsDiscountPathExpression(
-			'5.00'
-		);
-		const [ discountRow ] = await page.$x( discountRowXPath );
-		expect( discountRow ).toBeDefined();
+		await expect( page ).toMatchElement( `th`, { text: 'Discount' } );
+		await expect( page ).toMatchElement( `span.woocommerce-Price-amount`, {
+			text: '5.00',
+		} );
 	} );
 
 	it( 'Prevents checkout applying single-use coupon twice', async () => {

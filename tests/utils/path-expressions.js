@@ -34,7 +34,3 @@ export const getCartItemPathExpression = ( productTitle, args ) =>
 	' and ' +
 	getQtyItemPathExpression( args ) +
 	']';
-
-export const getOrderDetailsDiscountPathExpression = ( amount ) => {
-	return `//tr[th[contains(text(), "Discount:")] and //span[contains(text(), "${ amount }")]]`;
-};
