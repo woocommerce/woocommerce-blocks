@@ -48,10 +48,7 @@ const getDefaultLabel = ( { method } ) => {
 	if ( method.brand && method.last4 ) {
 		return sprintf(
 			/* translators: %1$s is referring to the payment method brand, %2$s is referring to the last 4 digits of the payment card. */
-			__(
-				'%1$s ending in %2$s',
-				'woo-gutenberg-products-block'
-			),
+			__( '%1$s ending in %2$s', 'woo-gutenberg-products-block' ),
 			method.brand,
 			method.last4
 		);
