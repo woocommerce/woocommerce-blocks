@@ -26,24 +26,19 @@ describe( 'Shopper → Checkout → Can apply single-use coupon once', () => {
 		await shopper.goToShop();
 		await shopper.addToCartFromShopPage( SIMPLE_PRODUCT_NAME );
 		await shopper.block.goToCheckout();
-
-		// Apply the single-use coupon.
 		await shopper.block.applyCouponFromCheckout( couponCode );
 
-		// Verify that the discount had been applied correctly on the checkout page.
-		// Selectors
 		const discountBlockSelector = '.wc-block-components-totals-discount';
 		const discountAppliedCouponCodeSelector =
 			'.wc-block-components-totals-discount__coupon-list-item span.wc-block-components-chip__text';
 		const discountValueSelector =
 			'.wc-block-components-totals-discount .wc-block-components-totals-item__value';
 
+		// Verify that the discount had been applied correctly on the checkout page.
 		await page.waitForSelector( discountBlockSelector );
-		// Verify the applied discount amount
 		await expect( page ).toMatchElement( discountValueSelector, {
 			text: '-$5.00',
 		} );
-		// Verify the applied discount code
 		await expect( page ).toMatchElement(
 			discountAppliedCouponCodeSelector,
 			{
@@ -66,11 +61,7 @@ describe( 'Shopper → Checkout → Can apply single-use coupon once', () => {
 		await shopper.goToShop();
 		await shopper.addToCartFromShopPage( SIMPLE_PRODUCT_NAME );
 		await shopper.block.goToCheckout();
-
-		// Apply the same single-use coupon as in the first test case.
 		await shopper.block.applyCouponFromCheckout( couponCode );
-
-		// Verify that an error appears, showing that the coupon can no longer be used.
 		await expect( page ).toMatch( 'Coupon usage limit has been reached.' );
 	} );
 } );
