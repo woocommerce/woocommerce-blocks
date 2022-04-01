@@ -103,7 +103,7 @@ class ProductQuery {
 			'product_tag' => 'tag',
 		];
 
-		$taxonomies = array_merge( $default_taxonomies, $all_product_taxonomies );
+		$taxonomies = array_merge( $all_product_taxonomies, $default_taxonomies );
 
 		// Set tax_query for each passed arg.
 		foreach ( $taxonomies as $taxonomy => $key ) {
