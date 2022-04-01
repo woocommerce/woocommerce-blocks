@@ -47,7 +47,7 @@ describe( 'Shopper → Cart → Can view translated cart & checkout blocks', () 
 		await shopper.addToCartFromShopPage( '128GB USB Stick' );
 		await shopper.block.goToCart();
 
-		// await page.waitForNetworkIdle();
+		await page.waitForNetworkIdle();
 
 		const productHeader = await page.waitForSelector(
 			'.wc-block-cart-items .wc-block-cart-items__header span'
