@@ -1,4 +1,9 @@
 /**
+ * External dependencies
+ */
+import { withRestApi } from '@woocommerce/e2e-utils';
+
+/**
  * Internal dependencies
  */
 import { shopper } from '../../../utils';
@@ -9,14 +14,15 @@ if ( process.env.WOOCOMMERCE_BLOCKS_PHASE < 2 )
 	// eslint-disable-next-line jest/no-focused-tests
 	test.only( `Skipping checkout tests`, () => {} );
 
-let couponCode;
+let coupon;
 
 beforeAll( async () => {
-	couponCode = await createCoupon( { usageLimit: 1 } );
+	coupon = await createCoupon( { usageLimit: 1 } );
 	await shopper.block.emptyCart();
 } );
 
 afterAll( async () => {
+	await withRestApi.deleteCoupon( coupon.id );
 	await shopper.block.emptyCart();
 } );
 
@@ -25,7 +31,7 @@ describe( 'Shopper → Checkout → Can apply single-use coupon once', () => {
 		await shopper.goToShop();
 		await shopper.addToCartFromShopPage( SIMPLE_PRODUCT_NAME );
 		await shopper.block.goToCheckout();
-		await shopper.block.applyCouponFromCheckout( couponCode );
+		await shopper.block.applyCouponFromCheckout( coupon.code );
 
 		const discountBlockSelector = '.wc-block-components-totals-discount';
 		const discountAppliedCouponCodeSelector =
@@ -36,12 +42,12 @@ describe( 'Shopper → Checkout → Can apply single-use coupon once', () => {
 		// Verify that the discount had been applied correctly on the checkout page.
 		await page.waitForSelector( discountBlockSelector );
 		await expect( page ).toMatchElement( discountValueSelector, {
-			text: '-$5.00',
+			text: coupon.amount,
 		} );
 		await expect( page ).toMatchElement(
 			discountAppliedCouponCodeSelector,
 			{
-				text: couponCode,
+				text: coupon.code,
 			}
 		);
 
@@ -51,7 +57,7 @@ describe( 'Shopper → Checkout → Can apply single-use coupon once', () => {
 		// Verify that the discount had been applied correctly on the order confirmation page.
 		await expect( page ).toMatchElement( `th`, { text: 'Discount' } );
 		await expect( page ).toMatchElement( `span.woocommerce-Price-amount`, {
-			text: '5.00',
+			text: coupon.amount,
 		} );
 	} );
 
@@ -59,7 +65,7 @@ describe( 'Shopper → Checkout → Can apply single-use coupon once', () => {
 		await shopper.goToShop();
 		await shopper.addToCartFromShopPage( SIMPLE_PRODUCT_NAME );
 		await shopper.block.goToCheckout();
-		await shopper.block.applyCouponFromCheckout( couponCode );
+		await shopper.block.applyCouponFromCheckout( coupon.code );
 		await expect( page ).toMatch( 'Coupon usage limit has been reached.' );
 	} );
 } );
