@@ -1,114 +1,71 @@
 /**
  * External dependencies
  */
+import { useBlockProps, InnerBlocks } from '@wordpress/block-editor';
+import type { TemplateArray } from '@wordpress/blocks';
+import { innerBlockAreas } from '@woocommerce/blocks-checkout';
 import { __ } from '@wordpress/i18n';
-import { useBlockProps, InspectorControls } from '@wordpress/block-editor';
-import { PanelBody, ToggleControl } from '@wordpress/components';
-import { getSetting } from '@woocommerce/settings';
-import Noninteractive from '@woocommerce/base-components/noninteractive';
+import { TotalsFooterItem } from '@woocommerce/base-components/cart-checkout';
+import { getCurrencyFromPriceResponse } from '@woocommerce/price-format';
+import { useStoreCart } from '@woocommerce/base-context/hooks';
 
 /**
  * Internal dependencies
  */
-import Block from './block';
+import { useForcedLayout, getAllowedBlocks } from '../../../shared';
+import { OrderMetaSlotFill } from './slotfills';
 
-export const Edit = ( {
-	attributes,
-	setAttributes,
-}: {
-	attributes: {
-		showRateAfterTaxName: boolean;
-		isShippingCalculatorEnabled: boolean;
-		className: string;
-		lock: {
-			move: boolean;
-			remove: boolean;
-		};
-	};
-	setAttributes: ( attributes: Record< string, unknown > ) => void;
-} ): JSX.Element => {
-	const {
-		showRateAfterTaxName,
-		isShippingCalculatorEnabled,
-		className,
-	} = attributes;
+export const Edit = ( { clientId }: { clientId: string } ): JSX.Element => {
 	const blockProps = useBlockProps();
-	const taxesEnabled = getSetting( 'taxesEnabled' ) as boolean;
-	const displayItemizedTaxes = getSetting(
-		'displayItemizedTaxes',
-		false
-	) as boolean;
-	const displayCartPricesIncludingTax = getSetting(
-		'displayCartPricesIncludingTax',
-		false
-	) as boolean;
+	const { cartTotals } = useStoreCart();
+	const totalsCurrency = getCurrencyFromPriceResponse( cartTotals );
+	const allowedBlocks = getAllowedBlocks(
+		innerBlockAreas.CART_ORDER_SUMMARY
+	);
+	const defaultTemplate = [
+		[
+			'woocommerce/cart-order-summary-heading-block',
+			{
+				content: __( 'Cart totals', 'woo-gutenberg-products-block' ),
+			},
+			[],
+		],
+		[ 'woocommerce/cart-order-summary-subtotal-block', {}, [] ],
+		[ 'woocommerce/cart-order-summary-fee-block', {}, [] ],
+		[ 'woocommerce/cart-order-summary-discount-block', {}, [] ],
+		[ 'woocommerce/cart-order-summary-coupon-form-block', {}, [] ],
+		[ 'woocommerce/cart-order-summary-shipping-block', {}, [] ],
+		[ 'woocommerce/cart-order-summary-taxes-block', {}, [] ],
+	] as TemplateArray;
+
+	useForcedLayout( {
+		clientId,
+		registeredBlocks: allowedBlocks,
+		defaultTemplate,
+	} );
+
 	return (
 		<div { ...blockProps }>
-			<InspectorControls>
-				{ getSetting( 'shippingEnabled', true ) && (
-					<PanelBody
-						title={ __(
-							'Shipping rates',
-							'woo-gutenberg-products-block'
-						) }
-					>
-						<ToggleControl
-							label={ __(
-								'Shipping calculator',
-								'woo-gutenberg-products-block'
-							) }
-							help={ __(
-								'Allow customers to estimate shipping by entering their address.',
-								'woo-gutenberg-products-block'
-							) }
-							checked={ isShippingCalculatorEnabled }
-							onChange={ () =>
-								setAttributes( {
-									isShippingCalculatorEnabled: ! isShippingCalculatorEnabled,
-								} )
-							}
-						/>
-					</PanelBody>
-				) }
-				{ taxesEnabled &&
-					displayItemizedTaxes &&
-					! displayCartPricesIncludingTax && (
-						<PanelBody
-							title={ __(
-								'Taxes',
-								'woo-gutenberg-products-block'
-							) }
-						>
-							<ToggleControl
-								label={ __(
-									'Show rate after tax name',
-									'woo-gutenberg-products-block'
-								) }
-								help={ __(
-									'Show the percentage rate alongside each tax line in the summary.',
-									'woo-gutenberg-products-block'
-								) }
-								checked={ showRateAfterTaxName }
-								onChange={ () =>
-									setAttributes( {
-										showRateAfterTaxName: ! showRateAfterTaxName,
-									} )
-								}
-							/>
-						</PanelBody>
-					) }
-			</InspectorControls>
-			<Noninteractive>
-				<Block
-					className={ className }
-					showRateAfterTaxName={ showRateAfterTaxName }
-					isShippingCalculatorEnabled={ isShippingCalculatorEnabled }
+			<InnerBlocks
+				allowedBlocks={ allowedBlocks }
+				template={ defaultTemplate }
+			/>
+			<div className="wc-block-components-totals-wrapper">
+				<TotalsFooterItem
+					currency={ totalsCurrency }
+					values={ cartTotals }
 				/>
-			</Noninteractive>
+			</div>
+			{ /* do I put an totals wrapper here? */ }
+			<OrderMetaSlotFill />
 		</div>
 	);
 };
 
 export const Save = (): JSX.Element => {
-	return <div { ...useBlockProps.save() } />;
+	return (
+		<div { ...useBlockProps.save() }>
+			<InnerBlocks.Content />
+		</div>
+	);
 };

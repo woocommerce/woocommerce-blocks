@@ -21,10 +21,13 @@ import ItemsBlock from '../inner-blocks/cart-items-block/frontend';
 import TotalsBlock from '../inner-blocks/cart-totals-block/frontend';
 
 import LineItemsBlock from '../inner-blocks/cart-line-items-block/block';
-import OrderSummaryBlock from '../inner-blocks/cart-order-summary-block/block';
+import OrderSummaryBlock from '../inner-blocks/cart-order-summary-block/frontend';
 import ExpressPaymentBlock from '../inner-blocks/cart-express-payment-block/block';
 import ProceedToCheckoutBlock from '../inner-blocks/proceed-to-checkout-block/block';
 import AcceptedPaymentMethodsIcons from '../inner-blocks/cart-accepted-payment-methods-block/block';
+import OrderSummarySubtotalBlock from '../inner-blocks/cart-order-summary-subtotal/frontend';
+import OrderSummaryShippingBlock from '../inner-blocks/cart-order-summary-shipping/frontend';
+import OrderSummaryTaxesBlock from '../inner-blocks/cart-order-summary-taxes/frontend';
 
 const CartBlock = ( {
 	attributes = {
@@ -45,12 +48,17 @@ const CartBlock = ( {
 					<LineItemsBlock />
 				</ItemsBlock>
 				<TotalsBlock>
-					<OrderSummaryBlock
-						showRateAfterTaxName={ showRateAfterTaxName }
-						isShippingCalculatorEnabled={
-							isShippingCalculatorEnabled
-						}
-					/>
+					<OrderSummaryBlock>
+						<OrderSummarySubtotalBlock />
+						<OrderSummaryShippingBlock
+							isShippingCalculatorEnabled={
+								isShippingCalculatorEnabled
+							}
+						/>
+						<OrderSummaryTaxesBlock
+							showRateAfterTaxName={ showRateAfterTaxName }
+						/>
+					</OrderSummaryBlock>
 					<ExpressPaymentBlock />
 					<ProceedToCheckoutBlock checkoutPageId={ checkoutPageId } />
 					<AcceptedPaymentMethodsIcons />

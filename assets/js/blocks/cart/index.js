@@ -63,12 +63,7 @@ const settings = {
 				);
 			},
 			migrate: ( attributes, innerBlocks ) => {
-				const {
-					isShippingCalculatorEnabled,
-					showRateAfterTaxName,
-					checkoutPageId,
-					align,
-				} = attributes;
+				const { checkoutPageId, align } = attributes;
 				return [
 					attributes,
 					[
@@ -83,10 +78,7 @@ const settings = {
 									[
 										createBlock(
 											'woocommerce/cart-order-summary-block',
-											{
-												isShippingCalculatorEnabled,
-												showRateAfterTaxName,
-											}
+											{}
 										),
 										createBlock(
 											'woocommerce/cart-express-payment-block'
