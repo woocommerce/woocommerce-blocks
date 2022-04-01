@@ -47,29 +47,35 @@ describe( 'Shopper → Cart → Can view translated cart & checkout blocks', () 
 		await shopper.addToCartFromShopPage( '128GB USB Stick' );
 		await shopper.block.goToCart();
 
-		const productHeader = await page.$(
+		// await page.waitForNetworkIdle();
+
+		const productHeader = await page.waitForSelector(
 			'.wc-block-cart-items .wc-block-cart-items__header span'
 		);
 		await expect( productHeader ).toMatch( 'Produit', { timeout: 30000 } );
 
-		const removeLink = await page.$( '.wc-block-cart-item__remove-link' );
+		const removeLink = await page.waitForSelector(
+			'.wc-block-cart-item__remove-link'
+		);
 		await expect( removeLink ).toMatch( 'Retirer l’élément' );
 
-		const submitButton = await page.$( '.wc-block-cart__submit-button' );
+		const submitButton = await page.waitForSelector(
+			'.wc-block-cart__submit-button'
+		);
 		await expect( submitButton ).toMatch( 'Procéder au paiement' );
 
-		const orderSummary = await page.$(
+		const orderSummary = await page.waitForSelector(
 			'.wp-block-woocommerce-cart-order-summary-block'
 		);
 
-		const orderHeading = await page.$(
-			'.wp-block-woocommerce-cart-order-summary-heading-block'
+		const orderHeading = await page.waitForSelector(
+			'.wc-block-components-title'
 		);
-		const orderSummarySubtotal = await page.$(
-			'.wp-block-woocommerce-cart-order-summary-subtotal-block'
+		const orderSummarySubtotal = await page.waitForSelector(
+			'.wc-block-components-totals-item__label'
 		);
-		const orderSummaryCoupon = await page.$(
-			'.wp-block-woocommerce-cart-order-summary-coupon-form-block'
+		const orderSummaryCoupon = await page.waitForSelector(
+			'.wc-block-components-totals-coupon'
 		);
 
 		await expect( orderHeading ).toMatch( 'Total panier' );
