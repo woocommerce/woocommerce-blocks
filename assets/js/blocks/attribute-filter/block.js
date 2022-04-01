@@ -36,6 +36,26 @@ import './style.scss';
  * @param {Object} props.attributes Incoming block attributes.
  * @param {boolean} props.isEditor
  */
+
+const usePhpFilter = true;
+
+function formatParams( selectAttributes ) {
+	const params = selectAttributes.reduce( ( accumulator, current ) => {
+		const multipleFilters = selectAttributes.length > 1;
+		// Custom filters are prefix with `pa_` so we need to remove this.
+		const attributeName = current.attribute.replace( 'pa_', '' );
+		const operator = `query_type_${ attributeName }=${
+			current.operator === 'or' ? 'in' : 'and'
+		}`;
+		const attributeValues = current.slug.join( ',' );
+		return `${ accumulator }${
+			multipleFilters ? '&' : ''
+		}filter_${ attributeName }=${ attributeValues }&${ operator }`;
+	}, '?' );
+
+	return params === '?' ? '' : params;
+}
+
 const AttributeFilterBlock = ( {
 	attributes: blockAttributes,
 	isEditor = false,
@@ -331,6 +351,16 @@ const AttributeFilterBlock = ( {
 			blockAttributes.showFilterButton,
 		]
 	);
+
+	useEffect( () => {
+		if ( usePhpFilter ) {
+			const params = formatParams( productAttributesQuery );
+			if ( params ) {
+				const url = new URL( window.location );
+				window.location = url.origin + url.pathname + '?' + params;
+			}
+		}
+	}, [ productAttributesQuery ] );
 
 	// Short-circuit if no attribute is selected.
 	if ( ! attributeObject ) {
