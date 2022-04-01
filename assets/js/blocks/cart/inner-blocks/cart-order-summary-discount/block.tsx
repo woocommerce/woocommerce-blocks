@@ -7,7 +7,10 @@ import {
 	useStoreCartCoupons,
 	useStoreCart,
 } from '@woocommerce/base-context/hooks';
-import { ExperimentalDiscountsMeta } from '@woocommerce/blocks-checkout';
+import {
+	ExperimentalDiscountsMeta,
+	TotalsWrapper,
+} from '@woocommerce/blocks-checkout';
 
 const DiscountSlotFill = (): JSX.Element => {
 	// Prepare props to pass to the ExperimentalOrderMeta slot fill. We need to pluck out receiveCart.
@@ -24,20 +27,20 @@ const DiscountSlotFill = (): JSX.Element => {
 
 const Block = ( { className }: { className: string } ): JSX.Element => {
 	const { cartTotals, cartCoupons } = useStoreCart();
-
 	const { removeCoupon, isRemovingCoupon } = useStoreCartCoupons();
 	const totalsCurrency = getCurrencyFromPriceResponse( cartTotals );
 
 	return (
 		<>
-			<TotalsDiscount
-				className={ `${ className } wc-block-components-totals-wrapper` }
-				cartCoupons={ cartCoupons }
-				currency={ totalsCurrency }
-				isRemovingCoupon={ isRemovingCoupon }
-				removeCoupon={ removeCoupon }
-				values={ cartTotals }
-			/>
+			<TotalsWrapper className={ className }>
+				<TotalsDiscount
+					cartCoupons={ cartCoupons }
+					currency={ totalsCurrency }
+					isRemovingCoupon={ isRemovingCoupon }
+					removeCoupon={ removeCoupon }
+					values={ cartTotals }
+				/>
+			</TotalsWrapper>
 			<DiscountSlotFill />
 		</>
 	);

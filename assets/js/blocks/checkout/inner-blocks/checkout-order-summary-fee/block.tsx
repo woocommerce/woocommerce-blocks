@@ -1,7 +1,7 @@
 /**
  * External dependencies
  */
-import { TotalsFees } from '@woocommerce/blocks-checkout';
+import { TotalsFees, TotalsWrapper } from '@woocommerce/blocks-checkout';
 import { getCurrencyFromPriceResponse } from '@woocommerce/price-format';
 import { useStoreCart } from '@woocommerce/base-context/hooks';
 
@@ -10,11 +10,9 @@ const Block = ( { className = '' }: { className?: string } ): JSX.Element => {
 	const totalsCurrency = getCurrencyFromPriceResponse( cartTotals );
 
 	return (
-		<TotalsFees
-			className={ `${ className } wc-block-components-totals-wrapper` }
-			currency={ totalsCurrency }
-			cartFees={ cartFees }
-		/>
+		<TotalsWrapper className={ className }>
+			<TotalsFees currency={ totalsCurrency } cartFees={ cartFees } />
+		</TotalsWrapper>
 	);
 };
 

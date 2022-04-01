@@ -7,6 +7,14 @@
 			border-bottom-width: 1px;
 		}
 	}
+	// TotalWrappers like Discount and Fee are sometimes empty
+	// this prevents displaying the empty areas in Order Summary
+	&:empty {
+		padding: 0;
+		&::after {
+			content: none;
+		}
+	}
 
 	&.slot-wrapper {
 		padding: 0;
@@ -15,6 +23,8 @@
 			@include with-translucent-border(0 0 1px);
 			padding: $gap 0;
 
+
+			// removes the border bottom for the last slot inserted
 			&:last-child::after {
 				border-bottom-width: 0;
 			}

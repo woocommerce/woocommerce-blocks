@@ -1,7 +1,7 @@
 /**
  * External dependencies
  */
-import { TotalsTaxes } from '@woocommerce/blocks-checkout';
+import { TotalsTaxes, TotalsWrapper } from '@woocommerce/blocks-checkout';
 import { getCurrencyFromPriceResponse } from '@woocommerce/price-format';
 import { useStoreCart } from '@woocommerce/base-context/hooks';
 import { getSetting } from '@woocommerce/settings';
@@ -29,12 +29,13 @@ const Block = ( {
 	const totalsCurrency = getCurrencyFromPriceResponse( cartTotals );
 
 	return (
-		<TotalsTaxes
-			className={ `${ className } wc-block-components-totals-wrapper` }
-			showRateAfterTaxName={ showRateAfterTaxName }
-			currency={ totalsCurrency }
-			values={ cartTotals }
-		/>
+		<TotalsWrapper className={ className }>
+			<TotalsTaxes
+				showRateAfterTaxName={ showRateAfterTaxName }
+				currency={ totalsCurrency }
+				values={ cartTotals }
+			/>
+		</TotalsWrapper>
 	);
 };
 

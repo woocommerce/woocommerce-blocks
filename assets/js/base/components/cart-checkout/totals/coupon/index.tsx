@@ -13,7 +13,6 @@ import {
 	useValidationContext,
 } from '@woocommerce/base-context';
 import { Panel } from '@woocommerce/blocks-checkout';
-import classnames from 'classnames';
 
 /**
  * Internal dependencies
@@ -37,10 +36,6 @@ export interface TotalsCouponProps {
 	 * Submit handler
 	 */
 	onSubmit?: ( couponValue: string ) => void;
-	/**
-	 * User defined classname in the block settings
-	 */
-	className?: string;
 }
 
 export const TotalsCoupon = ( {
@@ -48,7 +43,6 @@ export const TotalsCoupon = ( {
 	isLoading = false,
 	initialOpen = false,
 	onSubmit = () => void 0,
-	className = '',
 }: TotalsCouponProps ): JSX.Element => {
 	const [ couponValue, setCouponValue ] = useState( '' );
 	const currentIsLoading = useRef( false );
@@ -68,10 +62,7 @@ export const TotalsCoupon = ( {
 
 	return (
 		<Panel
-			className={ classnames(
-				className,
-				'wc-block-components-totals-coupon'
-			) }
+			className="wc-block-components-totals-coupon"
 			hasBorder={ false }
 			initialOpen={ initialOpen }
 			title={
