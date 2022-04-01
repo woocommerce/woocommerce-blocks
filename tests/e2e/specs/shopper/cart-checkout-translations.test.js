@@ -47,8 +47,6 @@ describe( 'Shopper → Cart → Can view translated cart & checkout blocks', () 
 		await shopper.addToCartFromShopPage( '128GB USB Stick' );
 		await shopper.block.goToCart();
 
-		await page.waitForNetworkIdle( { idleTime: 1000 } );
-
 		const productHeader = await page.$(
 			'.wc-block-cart-items .wc-block-cart-items__header span'
 		);
@@ -63,10 +61,20 @@ describe( 'Shopper → Cart → Can view translated cart & checkout blocks', () 
 		const orderSummary = await page.$(
 			'.wp-block-woocommerce-cart-order-summary-block'
 		);
-		await expect( orderSummary ).toMatch( 'Total panier' );
-		await expect( orderSummary ).toMatch( 'Sous-total' );
-		await expect( orderSummary ).toMatch( 'Coupon code' );
-		await expect( orderSummary ).toMatch( 'Appliquer un code promo' );
+
+		const orderHeading = await page.$(
+			'.wp-block-woocommerce-cart-order-summary-heading-block'
+		);
+		const orderSummarySubtotal = await page.$(
+			'.wp-block-woocommerce-cart-order-summary-subtotal-block'
+		);
+		const orderSummaryCoupon = await page.$(
+			'.wp-block-woocommerce-cart-order-summary-coupon-form-block'
+		);
+
+		await expect( orderHeading ).toMatch( 'Total panier' );
+		await expect( orderSummarySubtotal ).toMatch( 'Sous-total' );
+		await expect( orderSummaryCoupon ).toMatch( 'Coupon code' );
 	} );
 
 	it( 'should be able to view translated Checkout block', async () => {
