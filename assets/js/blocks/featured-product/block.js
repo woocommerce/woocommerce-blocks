@@ -38,7 +38,7 @@ import { Icon, starEmpty } from '@wordpress/icons';
 /**
  * Internal dependencies
  */
-import { dimRatioToClass, getBackgroundImageStyles } from './utils';
+import { calculateBackgroundImagePosition, dimRatioToClass } from './utils';
 import {
 	getImageSrcFromProduct,
 	getImageIdFromProduct,
@@ -217,6 +217,26 @@ const FeaturedProduct = ( {
 				</PanelBody>
 				{ !! url && (
 					<>
+						{ focalPointPickerExists && (
+							<PanelBody
+								title={ __(
+									'Media settings',
+									'woo-gutenberg-products-block'
+								) }
+							>
+								<FocalPointPicker
+									label={ __(
+										'Focal Point Picker',
+										'woo-gutenberg-products-block'
+									) }
+									url={ url }
+									value={ focalPoint }
+									onChange={ ( value ) =>
+										setAttributes( { focalPoint: value } )
+									}
+								/>
+							</PanelBody>
+						) }
 						<PanelBody
 							title={ __(
 								'Overlay',
@@ -236,19 +256,6 @@ const FeaturedProduct = ( {
 								max={ 100 }
 								step={ 10 }
 							/>
-							{ focalPointPickerExists && (
-								<FocalPointPicker
-									label={ __(
-										'Focal Point Picker',
-										'woo-gutenberg-products-block'
-									) }
-									url={ url }
-									value={ focalPoint }
-									onChange={ ( value ) =>
-										setAttributes( { focalPoint: value } )
-									}
-								/>
-							) }
 						</PanelBody>
 					</>
 				) }
@@ -262,6 +269,7 @@ const FeaturedProduct = ( {
 			dimRatio,
 			focalPoint,
 			height,
+			mediaSrc,
 			showDesc,
 			showPrice,
 		} = attributes;
@@ -277,15 +285,12 @@ const FeaturedProduct = ( {
 			contentAlign !== 'center' && `has-${ contentAlign }-content`
 		);
 
-		const style = getBackgroundImageStyles(
-			attributes.mediaSrc || product
-		);
+		const backgroundImageSrc =
+			mediaSrc || getImageSrcFromProduct( product );
 
-		if ( focalPoint ) {
-			const bgPosX = focalPoint.x * 100;
-			const bgPosY = focalPoint.y * 100;
-			style.backgroundPosition = `${ bgPosX }% ${ bgPosY }%`;
-		}
+		const backgroundImageStyle = {
+			...calculateBackgroundImagePosition( focalPoint ),
+		};
 
 		const onResizeStop = ( event, direction, elt ) => {
 			setAttributes( { height: parseInt( elt.style.height, 10 ) } );
@@ -298,9 +303,14 @@ const FeaturedProduct = ( {
 				minHeight={ getSetting( 'min_height', 500 ) }
 				enable={ { bottom: true } }
 				onResizeStop={ onResizeStop }
-				style={ style }
 			>
 				<div className="wc-block-featured-product__wrapper">
+					<img
+						alt={ product.short_description }
+						className="wc-block-featured-product__background-image"
+						src={ backgroundImageSrc }
+						style={ backgroundImageStyle }
+					/>
 					<h2
 						className="wc-block-featured-product__title"
 						dangerouslySetInnerHTML={ {

@@ -101,6 +101,11 @@
 		}
 	}
 
+	.wc-block-featured-product__background-image {
+		@include absolute-stretch();
+		object-fit: none;
+	}
+
 	.wp-block-button.aligncenter {
 		text-align: center;
 	}
