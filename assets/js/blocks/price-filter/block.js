@@ -13,6 +13,7 @@ import { useDebouncedCallback } from 'use-debounce';
 import PropTypes from 'prop-types';
 import { getCurrencyFromPriceResponse } from '@woocommerce/price-format';
 import { getSetting } from '@woocommerce/settings';
+import { getQueryArg, addQueryArgs, removeQueryArgs } from '@wordpress/url';
 
 /**
  * Internal dependencies
@@ -20,30 +21,41 @@ import { getSetting } from '@woocommerce/settings';
 import usePriceConstraints from './use-price-constraints.js';
 import './style.scss';
 
+/**
+ * Returns specified parameter from URL
+ *
+ * @param {string} paramName Parameter you want the value of.
+ */
 function findGetParameter( paramName ) {
 	if ( ! window ) {
-		return;
+		return null;
 	}
-	const url = new URL( window.location );
-	const params = new URLSearchParams( url.search );
-
-	return params.get( paramName );
+	return getQueryArg( window.location.href, paramName );
 }
 
-function formatParams( url, paramSettings ) {
-	const params = new URLSearchParams( url.search );
-	const keys = Object.keys( paramSettings );
+/**
+ * Formats filter values into a string for the URL parameters needed for filtering PHP templates.
+ *
+ * @param {string} url Current page URL.
+ * @param {Object} params Parameters and their constraints.
+ *
+ * @return {string} New URL with query parameters in it.
+ */
+function formatParams( url, params ) {
+	const paramObject = {};
 
-	for ( let i = 0; keys.length > i; i++ ) {
-		const { value, constraint } = paramSettings[ keys[ i ] ];
-		if ( value === constraint ) {
-			params.delete( keys[ i ] );
+	for ( const [ key, value ] of Object.entries( params ) ) {
+		if ( value ) {
+			paramObject[ key ] = ( value / 100 ).toString();
 		} else {
-			params.set( keys[ i ], value / 100 );
+			delete paramObject[ key ];
 		}
 	}
 
-	return params.toString();
+	// Clean the URL before we add our new query parameters to it.
+	const cleanUrl = removeQueryArgs( url, ...Object.keys( params ) );
+
+	return addQueryArgs( cleanUrl, paramObject );
 }
 
 /**
@@ -59,13 +71,16 @@ const PriceFilterBlock = ( { attributes, isEditor = false } ) => {
 		''
 	);
 
+	const minPriceParam = findGetParameter( 'min_price' );
+	const maxPriceParam = findGetParameter( 'max_price' );
+
 	const [ minPriceQuery, setMinPriceQuery ] = useQueryStateByKey(
 		'min_price',
-		findGetParameter( 'min_price' ) * 100 || null
+		Number( minPriceParam ) * 100 || null
 	);
 	const [ maxPriceQuery, setMaxPriceQuery ] = useQueryStateByKey(
 		'max_price',
-		findGetParameter( 'max_price' ) * 100 || null
+		Number( maxPriceParam ) * 100 || null
 	);
 	const [ queryState ] = useQueryStateByContext();
 	const { results, isLoading } = useCollectionData( {
@@ -74,10 +89,10 @@ const PriceFilterBlock = ( { attributes, isEditor = false } ) => {
 	} );
 
 	const [ minPrice, setMinPrice ] = useState(
-		findGetParameter( 'min_price' ) * 100 || null
+		Number( minPriceParam ) * 100 || null
 	);
 	const [ maxPrice, setMaxPrice ] = useState(
-		findGetParameter( 'max_price' ) * 100 || null
+		Number( maxPriceParam ) * 100 || null
 	);
 
 	const currency = getCurrencyFromPriceResponse( results.price_range );
@@ -95,33 +110,30 @@ const PriceFilterBlock = ( { attributes, isEditor = false } ) => {
 	// Updates the query based on slider values.
 	const onSubmit = useCallback(
 		( newMinPrice, newMaxPrice ) => {
+			// Using snake_case, just for ease of assignment to URL params.
+			const finalMaxPrice =
+				newMaxPrice >= Number( maxConstraint )
+					? undefined
+					: newMaxPrice;
+			const finalMinPrice =
+				newMinPrice <= Number( minConstraint )
+					? undefined
+					: newMinPrice;
+
+			// For block templates that render the PHP Classic Template block we need to add the filters as params and reload the page.
 			if ( filteringForPhpTemplate && window ) {
-				// For block templates that render the PHP Classic Template block we need to add the filters as params and reload the page.
-				const url = new URL( window.location );
-				const currentParams = new URLSearchParams( url.search );
-				const newParams = formatParams( url, {
-					max_price: {
-						value: newMaxPrice,
-						constraint: maxConstraint,
-					},
-					min_price: {
-						value: newMinPrice,
-						constraint: minConstraint,
-					},
+				const newUrl = formatParams( window.location.href, {
+					min_price: finalMinPrice,
+					max_price: finalMaxPrice,
 				} );
 
 				// If the params have changed, lets reload the page.
-				if ( currentParams.toString() !== newParams ) {
-					window.location =
-						url.origin + url.pathname + '?' + newParams;
+				if ( window.location.href !== newUrl ) {
+					window.location = newUrl;
 				}
 			} else {
-				setMinPriceQuery(
-					newMinPrice === minConstraint ? undefined : newMinPrice
-				);
-				setMaxPriceQuery(
-					newMaxPrice === maxConstraint ? undefined : newMaxPrice
-				);
+				setMinPriceQuery( finalMaxPrice );
+				setMaxPriceQuery( finalMinPrice );
 			}
 		},
 		[
