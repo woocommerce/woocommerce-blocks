@@ -19,7 +19,9 @@ import { default as ExpressPaymentMethodConfig } from './express-payment-method-
 import { canMakePaymentExtensionsCallbacks } from './extensions-config';
 
 type LegacyRegisterPaymentMethodFunction = ( config: unknown ) => unknown;
-type LegacyRegisterExpessPaymentMethodFunction = ( config: unknown ) => unknown;
+type LegacyRegisterExpressPaymentMethodFunction = (
+	config: unknown
+) => unknown;
 
 const paymentMethods: PaymentMethods = {};
 const expressPaymentMethods: ExpressPaymentMethods = {};
@@ -55,7 +57,7 @@ export const registerPaymentMethod = (
 export const registerExpressPaymentMethod = (
 	options:
 		| ExpressPaymentMethodConfiguration
-		| LegacyRegisterExpessPaymentMethodFunction
+		| LegacyRegisterExpressPaymentMethodFunction
 ): void => {
 	let paymentMethodConfig;
 	if ( typeof options === 'function' ) {
