@@ -34,11 +34,9 @@ import type { TemplateArray } from '@wordpress/blocks';
 /**
  * Internal dependencies
  */
+import './inner-blocks';
 import './styles/editor.scss';
-import {
-	addClassToBody,
-	useBlockPropsWithLocking,
-} from '../cart-checkout/shared';
+import { addClassToBody, useBlockPropsWithLocking } from '../shared';
 import { CheckoutBlockContext, CheckoutBlockControlsContext } from './context';
 import type { Attributes } from './types';
 
