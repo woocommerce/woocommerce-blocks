@@ -132,8 +132,8 @@ const PriceFilterBlock = ( { attributes, isEditor = false } ) => {
 					window.location = newUrl;
 				}
 			} else {
-				setMinPriceQuery( finalMaxPrice );
-				setMaxPriceQuery( finalMinPrice );
+				setMinPriceQuery( finalMinPrice );
+				setMaxPriceQuery( finalMaxPrice );
 			}
 		},
 		[
