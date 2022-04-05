@@ -32,10 +32,6 @@ export const usePaymentMethodDataDispatchers = (
 				void dispatch(
 					actions.setRegisteredExpressPaymentMethods( paymentMethods )
 				),
-			setShouldSavePayment: ( shouldSave ) =>
-				void dispatch(
-					actions.setShouldSavePaymentMethod( shouldSave )
-				),
 			setActivePaymentMethod: ( paymentMethod, paymentMethodData = {} ) =>
 				void dispatch(
 					actions.setActivePaymentMethod(
