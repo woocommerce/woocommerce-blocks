@@ -2,7 +2,6 @@
  * External dependencies
  */
 import {
-	usePaymentMethods,
 	usePaymentMethodInterface,
 	useEmitResponse,
 	useStoreEvents,
@@ -13,13 +12,15 @@ import {
 	usePaymentMethodDataContext,
 } from '@woocommerce/base-context';
 import classNames from 'classnames';
-import RadioControlAccordion from '@woocommerce/base-components/radio-control-accordion';
-import { useDispatch } from '@wordpress/data';
+import RadioControlAccordion from '@woocommerce/base-components/radio-control-accordion'
+import { useDispatch, useSelect } from '@wordpress/data';
+import { getPaymentMethods } from '@woocommerce/blocks-registry';
 
 /**
  * Internal dependencies
  */
 import PaymentMethodCard from './payment-method-card';
+import { STORE_KEY as PAYMENT_METHOD_DATA_STORE_KEY } from '../../../data/payment-method-data/constants';
 
 /**
  * Component used to render all non-saved payment method options.
@@ -28,16 +29,23 @@ import PaymentMethodCard from './payment-method-card';
  */
 const PaymentMethodOptions = () => {
 	const {
-		setActivePaymentMethod,
-		activeSavedToken,
 		isExpressPaymentMethodActive,
 		customerPaymentMethods,
 	} = usePaymentMethodDataContext();
-	const { paymentMethods } = usePaymentMethods();
-	const {
-		activePaymentMethod,
-		...paymentMethodInterface
-	} = usePaymentMethodInterface();
+
+	const { activeSavedToken, activePaymentMethod } = useSelect( ( select ) => {
+		const store = select( PAYMENT_METHOD_DATA_STORE_KEY );
+		return {
+			activeSavedToken: store.getActiveSavedToken(),
+			activePaymentMethod: store.getActivePaymentMethod(),
+		};
+	} );
+	const { setActivePaymentMethod } = useDispatch(
+		PAYMENT_METHOD_DATA_STORE_KEY
+	);
+	const paymentMethods = getPaymentMethods();
+	const { ...paymentMethodInterface } = usePaymentMethodInterface();
+
 	const { noticeContexts } = useEmitResponse();
 	const { removeNotice } = useDispatch( 'core/notices' );
 	const { dispatchCheckoutEvent } = useStoreEvents();
@@ -89,7 +97,6 @@ const PaymentMethodOptions = () => {
 	const singleOptionClass = classNames( {
 		'disable-radio-control': isSinglePaymentMethod,
 	} );
-
 	return isExpressPaymentMethodActive ? null : (
 		<RadioControlAccordion
 			id={ 'wc-payment-method-options' }
