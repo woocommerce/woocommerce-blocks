@@ -6,6 +6,10 @@ import type {
 	PaymentMethods,
 	ExpressPaymentMethods,
 } from '@woocommerce/type-defs/payments';
+import {
+	getPaymentMethods,
+	getExpressPaymentMethods,
+} from '@woocommerce/blocks-registry';
 
 /**
  * Internal dependencies
@@ -25,11 +29,12 @@ const usePaymentMethodState = (
 	express = false
 ): PaymentMethodState | ExpressPaymentMethodState => {
 	const {
-		paymentMethods,
-		expressPaymentMethods,
 		paymentMethodsInitialized,
 		expressPaymentMethodsInitialized,
 	} = usePaymentMethodDataContext();
+
+	const paymentMethods = getPaymentMethods();
+	const expressPaymentMethods = getExpressPaymentMethods();
 
 	const currentPaymentMethods = useShallowEqual( paymentMethods );
 	const currentExpressPaymentMethods = useShallowEqual(

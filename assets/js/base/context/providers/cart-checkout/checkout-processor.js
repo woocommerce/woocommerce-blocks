@@ -16,6 +16,10 @@ import {
 } from '@woocommerce/base-utils';
 import { useDispatch, useSelect } from '@wordpress/data';
 import { CHECKOUT_STORE_KEY } from '@woocommerce/block-data';
+import {
+	getPaymentMethods,
+	getExpressPaymentMethods,
+} from '@woocommerce/blocks-registry';
 
 /**
  * Internal dependencies
@@ -68,12 +72,13 @@ const CheckoutProcessor = () => {
 		isExpressPaymentMethodActive,
 		currentStatus: currentPaymentStatus,
 		paymentMethodData,
-		expressPaymentMethods,
-		paymentMethods,
 		shouldSavePayment,
 	} = usePaymentMethodDataContext();
 	const { setIsSuppressed } = useStoreNoticesContext();
 	const { createErrorNotice, removeNotice } = useDispatch( 'core/notices' );
+
+	const paymentMethods = getPaymentMethods();
+	const expressPaymentMethods = getExpressPaymentMethods();
 	const currentBillingData = useRef( billingData );
 	const currentShippingAddress = useRef( shippingAddress );
 	const currentRedirectUrl = useRef( redirectUrl );
