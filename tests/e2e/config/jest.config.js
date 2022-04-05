@@ -4,9 +4,6 @@ module.exports = {
 	// Automatically clear mock calls and instances between every test
 	clearMocks: true,
 
-	// An array of file extensions your modules use
-	moduleFileExtensions: [ 'js', 'ts' ],
-
 	moduleNameMapper: {
 		'@woocommerce/blocks-test-utils': '<rootDir>/tests/utils',
 	},
@@ -17,6 +14,7 @@ module.exports = {
 			'jest-html-reporters',
 			{ publicPath: './reports/e2e', filename: 'index.html' },
 		],
+		'<rootDir>/tests/e2e/config/performance-reporter.js',
 	],
 
 	testEnvironment: '<rootDir>/tests/e2e/config/environment.js',
