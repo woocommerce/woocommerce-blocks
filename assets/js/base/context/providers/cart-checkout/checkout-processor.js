@@ -15,7 +15,10 @@ import {
 	formatStoreApiErrorMessage,
 } from '@woocommerce/base-utils';
 import { useDispatch } from '@wordpress/data';
-
+import {
+	getPaymentMethods,
+	getExpressPaymentMethods,
+} from '@woocommerce/blocks-registry';
 /**
  * Internal dependencies
  */
@@ -54,12 +57,13 @@ const CheckoutProcessor = () => {
 		isExpressPaymentMethodActive,
 		currentStatus: currentPaymentStatus,
 		paymentMethodData,
-		expressPaymentMethods,
-		paymentMethods,
 		shouldSavePayment,
 	} = usePaymentMethodDataContext();
 	const { setIsSuppressed } = useStoreNoticesContext();
 	const { createErrorNotice, removeNotice } = useDispatch( 'core/notices' );
+
+	const paymentMethods = getPaymentMethods();
+	const expressPaymentMethods = getExpressPaymentMethods();
 	const currentBillingData = useRef( billingData );
 	const currentShippingAddress = useRef( shippingAddress );
 	const currentRedirectUrl = useRef( redirectUrl );
