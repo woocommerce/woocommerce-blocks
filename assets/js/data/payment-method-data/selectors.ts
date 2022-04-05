@@ -19,6 +19,9 @@ export const getActiveSavedToken = ( state: PaymentMethodDataState ) => {
 export const getActivePaymentMethod = ( state: PaymentMethodDataState ) => {
 	return state.activePaymentMethod;
 };
+export const getAvailablePaymentMethods = ( state: PaymentMethodDataState ) => {
+	return state.availablePaymentMethods;
+};
 
 export const shouldSavePaymentMethod = ( state: PaymentMethodDataState ) => {
 	return state.shouldSavePaymentMethod;
