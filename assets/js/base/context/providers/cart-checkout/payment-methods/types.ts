@@ -32,7 +32,6 @@ export interface PaymentMethodDispatchers {
 	setRegisteredExpressPaymentMethods: (
 		paymentMethods: ExpressPaymentMethods
 	) => void;
-	setShouldSavePayment: ( shouldSave: boolean ) => void;
 	setActivePaymentMethod: (
 		paymentMethod: string,
 		paymentMethodData?: ObjectType | EmptyObjectType
