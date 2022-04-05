@@ -17,23 +17,35 @@ import {
 	usePaymentMethodDataContext,
 } from '@woocommerce/base-context';
 import deprecated from '@wordpress/deprecated';
+import { useDispatch, useSelect } from '@wordpress/data';
 
 /**
  * Internal dependencies
  */
 import PaymentMethodErrorBoundary from './payment-method-error-boundary';
+import { STORE_KEY as PAYMENT_METHOD_DATA_STORE_KEY } from '../../../data/payment-method-data/constants';
 
 const ExpressPaymentMethods = () => {
 	const { isEditor } = useEditorContext();
 	const {
-		setActivePaymentMethod,
 		setExpressPaymentError,
-		activePaymentMethod,
 		paymentMethodData,
 		setPaymentStatus,
 	} = usePaymentMethodDataContext();
-	const paymentMethodInterface = usePaymentMethodInterface();
+
+	const { activePaymentMethod } = useSelect( ( select ) => {
+		const store = select( PAYMENT_METHOD_DATA_STORE_KEY );
+		return {
+			activeSavedToken: store.getActiveSavedToken(),
+			activePaymentMethod: store.getActivePaymentMethod(),
+		};
+	} );
+	const { setActivePaymentMethod } = useDispatch(
+		PAYMENT_METHOD_DATA_STORE_KEY
+	);
 	const { paymentMethods } = useExpressPaymentMethods();
+
+	const paymentMethodInterface = usePaymentMethodInterface();
 	const previousActivePaymentMethod = useRef( activePaymentMethod );
 	const previousPaymentMethodData = useRef( paymentMethodData );
 
