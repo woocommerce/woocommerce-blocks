@@ -6,19 +6,32 @@
 	box-shadow: none;
 
 	&:focus {
-		box-shadow: inset 0 0 2px 0 currentColor;
+		box-shadow: inset 0 0 1px 1px currentColor;
 		outline: none;
 	}
 }
 
 .wc-block-components-quantity-selector {
 	border-radius: 5px;
-	box-shadow: inset 0 0 2px 0 currentColor;
 	// needed so that buttons fill the container.
 	box-sizing: content-box;
 	display: flex;
 	margin: 0 0 0.25em 0;
+	position: relative;
 	width: 107px;
+
+	&::after {
+		border-radius: 5px;
+		border: 1px solid currentColor;
+		bottom: 0;
+		content: "";
+		left: 0;
+		opacity: 0.45;
+		pointer-events: none;
+		position: absolute;
+		right: 0;
+		top: 0;
+	}
 
 	// Extra label for specificity needed in the editor.
 	input.wc-block-components-quantity-selector__input {
@@ -39,7 +52,7 @@
 		vertical-align: middle;
 
 		&:focus {
-			box-shadow: inset 0 0 2px 0 currentColor;
+			box-shadow: inset 0 0 1px 1px currentColor;
 			outline: none;
 		}
 		&:disabled {
