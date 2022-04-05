@@ -1,3 +1,5 @@
+/* eslint-disable @wordpress/no-unsafe-wp-apis */
+
 /**
  * External dependencies
  */
@@ -9,6 +11,9 @@ import {
 	InspectorControls,
 	MediaReplaceFlow,
 	RichText,
+	__experimentalGetSpacingClassesAndStyles as getSpacingClassesAndStyles,
+	__experimentalPanelColorGradientSettings as PanelColorGradientSettings,
+	__experimentalUseGradient as useGradient,
 } from '@wordpress/block-editor';
 import { withSelect } from '@wordpress/data';
 import {
@@ -69,6 +74,8 @@ const FeaturedProduct = ( {
 	setAttributes,
 	triggerUrlUpdate = () => void null,
 } ) => {
+	const { gradientValue } = useGradient();
+
 	const renderApiError = () => (
 		<ErrorPlaceholder
 			className="wc-block-featured-product-error"
@@ -198,9 +205,8 @@ const FeaturedProduct = ( {
 							'woo-gutenberg-products-block'
 						) }
 						checked={ attributes.showDesc }
-						onChange={
-							// prettier-ignore
-							() => setAttributes( { showDesc: ! attributes.showDesc } )
+						onChange={ () =>
+							setAttributes( { showDesc: ! attributes.showDesc } )
 						}
 					/>
 					<ToggleControl
@@ -209,9 +215,10 @@ const FeaturedProduct = ( {
 							'woo-gutenberg-products-block'
 						) }
 						checked={ attributes.showPrice }
-						onChange={
-							// prettier-ignore
-							() => setAttributes( { showPrice: ! attributes.showPrice } )
+						onChange={ () =>
+							setAttributes( {
+								showPrice: ! attributes.showPrice,
+							} )
 						}
 					/>
 				</PanelBody>
@@ -237,26 +244,44 @@ const FeaturedProduct = ( {
 								/>
 							</PanelBody>
 						) }
-						<PanelBody
+						<PanelColorGradientSettings
+							__experimentalHasMultipleOrigins
+							__experimentalIsRenderedInSidebar
 							title={ __(
 								'Overlay',
 								'woo-gutenberg-products-block'
 							) }
+							initialOpen={ true }
+							settings={ [
+								{
+									gradientValue,
+									colorValue: attributes.overlayColor,
+									onColorChange: ( overlayColor ) =>
+										setAttributes( { overlayColor } ),
+									onGradientChange: ( overlayGradient ) =>
+										setAttributes( { overlayGradient } ),
+									label: __(
+										'Color',
+										'woo-gutenberg-products-block'
+									),
+								},
+							] }
 						>
 							<RangeControl
 								label={ __(
-									'Background Opacity',
+									'Opacity',
 									'woo-gutenberg-products-block'
 								) }
 								value={ attributes.dimRatio }
-								onChange={ ( ratio ) =>
-									setAttributes( { dimRatio: ratio } )
+								onChange={ ( dimRatio ) =>
+									setAttributes( { dimRatio } )
 								}
 								min={ 0 }
 								max={ 100 }
 								step={ 10 }
+								required
 							/>
-						</PanelBody>
+						</PanelColorGradientSettings>
 					</>
 				) }
 			</InspectorControls>
@@ -270,26 +295,36 @@ const FeaturedProduct = ( {
 			focalPoint,
 			height,
 			mediaSrc,
+			overlayColor,
+			overlayGradient,
 			showDesc,
 			showPrice,
 		} = attributes;
+
 		const classes = classnames(
 			'wc-block-featured-product',
+			dimRatioToClass( dimRatio ),
 			{
 				'is-selected': isSelected && attributes.productId !== 'preview',
 				'is-loading': ! product && isLoading,
 				'is-not-found': ! product && ! isLoading,
 				'has-background-dim': dimRatio !== 0,
 			},
-			dimRatioToClass( dimRatio ),
 			contentAlign !== 'center' && `has-${ contentAlign }-content`
 		);
+
+		const wrapperStyle = getSpacingClassesAndStyles( attributes ).style;
 
 		const backgroundImageSrc =
 			mediaSrc || getImageSrcFromProduct( product );
 
 		const backgroundImageStyle = {
 			...calculateBackgroundImagePosition( focalPoint ),
+		};
+
+		const overlayStyle = {
+			background: overlayGradient,
+			backgroundColor: overlayColor,
 		};
 
 		const onResizeStop = ( event, direction, elt ) => {
@@ -304,7 +339,14 @@ const FeaturedProduct = ( {
 				enable={ { bottom: true } }
 				onResizeStop={ onResizeStop }
 			>
-				<div className="wc-block-featured-product__wrapper">
+				<div
+					className="wc-block-featured-product__wrapper"
+					style={ wrapperStyle }
+				>
+					<div
+						className="wc-block-featured-product__overlay"
+						style={ overlayStyle }
+					/>
 					<img
 						alt={ product.short_description }
 						className="wc-block-featured-product__background-image"

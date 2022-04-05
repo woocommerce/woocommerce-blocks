@@ -41,11 +41,12 @@ registerBlockType( 'woocommerce/featured-product', {
 		color: {
 			__experimentalDuotone:
 				'.wc-block-featured-product__background-image',
-			background: true,
+			background: false,
 			text: true,
 		},
 		spacing: {
 			padding: true,
+			__experimentalSkipSerialization: true,
 		},
 		...( isFeaturePluginBuild() && {
 			__experimentalBorder: {
@@ -122,10 +123,33 @@ registerBlockType( 'woocommerce/featured-product', {
 		},
 
 		/**
+		 * Color for the overlay layer on top of the product image.
+		 */
+		overlayColor: {
+			type: 'string',
+			default: '#000000',
+		},
+
+		/**
+		 * Gradient for the overlay layer on top of the product image.
+		 */
+		overlayGradient: {
+			type: 'string',
+		},
+
+		/**
 		 * The product ID to display.
 		 */
 		productId: {
 			type: 'number',
+		},
+
+		/**
+		 * Product preview.
+		 */
+		previewProduct: {
+			type: 'object',
+			default: null,
 		},
 
 		/**
@@ -142,14 +166,6 @@ registerBlockType( 'woocommerce/featured-product', {
 		showPrice: {
 			type: 'boolean',
 			default: true,
-		},
-
-		/**
-		 * Product preview.
-		 */
-		previewProduct: {
-			type: 'object',
-			default: null,
 		},
 	},
 
