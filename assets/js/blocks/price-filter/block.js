@@ -110,7 +110,6 @@ const PriceFilterBlock = ( { attributes, isEditor = false } ) => {
 	// Updates the query based on slider values.
 	const onSubmit = useCallback(
 		( newMinPrice, newMaxPrice ) => {
-			// Using snake_case, just for ease of assignment to URL params.
 			const finalMaxPrice =
 				newMaxPrice >= Number( maxConstraint )
 					? undefined
@@ -129,7 +128,7 @@ const PriceFilterBlock = ( { attributes, isEditor = false } ) => {
 
 				// If the params have changed, lets reload the page.
 				if ( window.location.href !== newUrl ) {
-					window.location = newUrl;
+					window.location.href = newUrl;
 				}
 			} else {
 				setMinPriceQuery( finalMinPrice );
