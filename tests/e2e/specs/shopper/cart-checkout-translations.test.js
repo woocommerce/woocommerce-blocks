@@ -47,8 +47,6 @@ describe( 'Shopper → Cart → Can view translated cart & checkout blocks', () 
 		await shopper.addToCartFromShopPage( '128GB USB Stick' );
 		await shopper.block.goToCart();
 
-		await page.waitForSelector( '.wp-block-woocommerce-filled-cart-block' );
-
 		const productHeader = await page.waitForSelector(
 			'.wc-block-cart-items .wc-block-cart-items__header span'
 		);
@@ -72,23 +70,13 @@ describe( 'Shopper → Cart → Can view translated cart & checkout blocks', () 
 			'.wp-block-woocommerce-cart-order-summary-block'
 		);
 
-		const orderHeading = await page.waitForSelector(
-			'.wc-block-components-title'
-		);
-		const orderSummarySubtotal = await page.waitForSelector(
-			'.wc-block-components-totals-item__label'
-		);
-		const orderSummaryCoupon = await page.waitForSelector(
-			'.wc-block-components-totals-coupon'
-		);
-
-		await expect( orderHeading ).toMatch( 'Total panier', {
+		await expect( orderSummary ).toMatch( 'Total panier', {
 			timeout: 60000,
 		} );
-		await expect( orderSummarySubtotal ).toMatch( 'Sous-total', {
+		await expect( orderSummary ).toMatch( 'Sous-total', {
 			timeout: 60000,
 		} );
-		await expect( orderSummaryCoupon ).toMatch( 'Coupon code', {
+		await expect( orderSummary ).toMatch( 'Coupon code', {
 			timeout: 60000,
 		} );
 	} );
