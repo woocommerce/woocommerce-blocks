@@ -120,6 +120,8 @@ export interface PaymentMethodDataState {
 	activeSavedToken: string;
 	registeredPaymentMethods: string[];
 	registeredExpressPaymentMethods: string[];
+	availablePaymentMethods: string[];
+	availableExpressPaymentMethods: string[];
 	paymentMethodData: Record< string, unknown >;
 	paymentMethodsInitialized: boolean;
 	expressPaymentMethodsInitialized: boolean;
@@ -140,6 +142,8 @@ export const defaultPaymentMethodDataState: PaymentMethodDataState = {
 	},
 	registeredPaymentMethods: [],
 	registeredExpressPaymentMethods: [],
+	availablePaymentMethods: [],
+	availableExpressPaymentMethods: [],
 	paymentMethodData: {},
 	paymentMethodsInitialized: false,
 	expressPaymentMethodsInitialized: false,

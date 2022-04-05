@@ -30,6 +30,11 @@ export const setActivePaymentMethod = (
 	paymentMethodData,
 } );
 
+export const setAvailablePaymentMethods = ( methods: string[] ) => ( {
+	type: ACTION_TYPES.SET_AVAILABLE_PAYMENT_METHODS,
+	methods,
+} );
+
 export const addRegisteredPaymentMethod = ( name: string ) => ( {
 	type: ACTION_TYPES.ADD_REGISTERED_PAYMENT_METHOD,
 	name,
@@ -48,8 +53,4 @@ export const addRegisteredExpressPaymentMethod = ( name: string ) => ( {
 export const removeRegisteredExpressPaymentMethod = ( name: string ) => ( {
 	type: ACTION_TYPES.ADD_REGISTERED_EXPRESS_PAYMENT_METHOD,
 	name,
-} );
-
-export const initializePaymentMethods = () => ( {
-	type: ACTION_TYPES.INITIALIZE_PAYMENT_METHODS,
 } );
