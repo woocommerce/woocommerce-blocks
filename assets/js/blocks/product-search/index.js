@@ -1,52 +1,83 @@
 /**
  * External dependencies
  */
+import { store as blockEditorStore } from '@wordpress/block-editor';
+import { useDispatch } from '@wordpress/data';
 import { __ } from '@wordpress/i18n';
-import { createBlock, registerBlockType } from '@wordpress/blocks';
 import { Icon, search } from '@wordpress/icons';
-/**
- * Internal dependencies
- */
-import './style.scss';
-import './editor.scss';
-import Block from './block.js';
-import edit from './edit.js';
+import {
+	// @ts-ignore-line
+	registerBlockVariation,
+	registerBlockType,
+	createBlock,
+} from '@wordpress/blocks';
 
-const attributes = {
-	/**
-	 * Whether to show the field label.
-	 */
-	hasLabel: {
-		type: 'boolean',
-		default: true,
-	},
+const PRODUCT_SEARCH_ATTRIBUTES = {
+	postType: 'product',
+	label: __( 'Search', 'woo-gutenberg-products-block' ),
+	buttonText: __( 'Search', 'woo-gutenberg-products-block' ),
+	placeholder: __( 'Search products…', 'woo-gutenberg-products-block' ),
+};
 
-	/**
-	 * Search field label.
-	 */
-	label: {
-		type: 'string',
-		default: __( 'Search', 'woo-gutenberg-products-block' ),
-	},
+const DeprecatedEdit = ( { clientId } ) => {
+	const { replaceBlocks } = useDispatch( blockEditorStore );
+	const updateBlock = () => {
+		replaceBlocks(
+			clientId,
+			createBlock( 'core/search', PRODUCT_SEARCH_ATTRIBUTES )
+		);
+	};
 
-	/**
-	 * Search field placeholder.
-	 */
-	placeholder: {
-		type: 'string',
-		default: __( 'Search products…', 'woo-gutenberg-products-block' ),
-	},
+	// useEffect( () => {
+	// 	replaceBlocks(
+	// 		clientId,
+	// 		createBlock( 'core/search', PRODUCT_SEARCH_ATTRIBUTES )
+	// 	);
+	// }, [ clientId, replaceBlocks ] );
 
-	/**
-	 * Store the instance ID.
-	 */
-	formId: {
-		type: 'string',
-		default: '',
-	},
+	// return null;
+
+	return (
+		<div>
+			Old Product Search block is deprecated.
+			<br />
+			<small>
+				<button onClick={ updateBlock }>
+					Update to Search Block variant
+				</button>
+				.
+			</small>
+		</div>
+	);
 };
 
 registerBlockType( 'woocommerce/product-search', {
+	name: 'woocommerce/product-search',
+	title: __( 'Product Search', 'woo-gutenberg-products-block' ),
+	category: 'woocommerce',
+	attributes: {},
+	supports: {
+		inserter: false,
+	},
+	edit: DeprecatedEdit,
+	transforms: {
+		to: [
+			{
+				type: 'block',
+				blocks: [ 'core/search' ],
+				transform: () => {
+					return createBlock(
+						'core/search',
+						PRODUCT_SEARCH_ATTRIBUTES
+					);
+				},
+			},
+		],
+	},
+} );
+
+registerBlockVariation( 'core/search', {
+	name: 'woocommerce/product-search',
 	title: __( 'Product Search', 'woo-gutenberg-products-block' ),
 	icon: {
 		src: (
@@ -56,53 +87,15 @@ registerBlockType( 'woocommerce/product-search', {
 			/>
 		),
 	},
+	// @ts-ignore
+	isActive: ( blockAttributes, variationAttributes ) => {
+		return blockAttributes.postType === variationAttributes.postType;
+	},
 	category: 'woocommerce',
 	keywords: [ __( 'WooCommerce', 'woo-gutenberg-products-block' ) ],
 	description: __(
 		'A search box to allow customers to search for products by keyword.',
 		'woo-gutenberg-products-block'
 	),
-	supports: {
-		align: [ 'wide', 'full' ],
-	},
-	example: {
-		attributes: {
-			hasLabel: true,
-		},
-	},
-	attributes,
-	transforms: {
-		from: [
-			{
-				type: 'block',
-				blocks: [ 'core/legacy-widget' ],
-				// We can't transform if raw instance isn't shown in the REST API.
-				isMatch: ( { idBase, instance } ) =>
-					idBase === 'woocommerce_product_search' && !! instance?.raw,
-				transform: ( { instance } ) =>
-					createBlock( 'woocommerce/product-search', {
-						label:
-							instance.raw.title === ''
-								? __( 'Search', 'woo-gutenberg-products-block' )
-								: instance.raw.title,
-					} ),
-			},
-		],
-	},
-	deprecated: [
-		{
-			attributes,
-			save( props ) {
-				return (
-					<div>
-						<Block { ...props } />
-					</div>
-				);
-			},
-		},
-	],
-	edit,
-	save() {
-		return null;
-	},
+	attributes: PRODUCT_SEARCH_ATTRIBUTES,
 } );
