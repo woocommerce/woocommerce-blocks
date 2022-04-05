@@ -47,38 +47,40 @@ describe( 'Shopper → Cart → Can view translated cart & checkout blocks', () 
 		await shopper.addToCartFromShopPage( '128GB USB Stick' );
 		await shopper.block.goToCart();
 
+		await page.waitForSelector( '.wp-block-woocommerce-filled-cart-block' );
+
 		const productHeader = await page.waitForSelector(
 			'.wc-block-cart-items .wc-block-cart-items__header span'
 		);
-		await expect( productHeader ).toMatch( 'Produit', { timeout: 60000 } );
+		await expect( productHeader ).toMatch( 'Produit' );
 
 		const removeLink = await page.waitForSelector(
 			'.wc-block-cart-item__remove-link'
 		);
-		await expect( removeLink ).toMatch( 'Retirer l’élément', {
-			timeout: 60000,
-		} );
+		await expect( removeLink ).toMatch( 'Retirer l’élément' );
 
 		const submitButton = await page.waitForSelector(
 			'.wc-block-cart__submit-button'
 		);
-		await expect( submitButton ).toMatch( 'Procéder au paiement', {
-			timeout: 60000,
-		} );
+		await expect( submitButton ).toMatch( 'Procéder au paiement' );
 
 		const orderSummary = await page.waitForSelector(
 			'.wp-block-woocommerce-cart-order-summary-block'
 		);
 
-		await expect( orderSummary ).toMatch( 'Total panier', {
-			timeout: 60000,
-		} );
-		await expect( orderSummary ).toMatch( 'Sous-total', {
-			timeout: 60000,
-		} );
-		await expect( orderSummary ).toMatch( 'Coupon code', {
-			timeout: 60000,
-		} );
+		const orderHeading = await page.waitForSelector(
+			'.wc-block-components-title'
+		);
+		const orderSummarySubtotal = await page.waitForSelector(
+			'.wc-block-components-totals-item__label'
+		);
+		const orderSummaryCoupon = await page.waitForSelector(
+			'.wc-block-components-totals-coupon'
+		);
+
+		await expect( orderHeading ).toMatch( 'Total panier' );
+		await expect( orderSummarySubtotal ).toMatch( 'Sous-total' );
+		await expect( orderSummaryCoupon ).toMatch( 'Coupon code' );
 	} );
 
 	it( 'should be able to view translated Checkout block', async () => {
@@ -87,16 +89,12 @@ describe( 'Shopper → Cart → Can view translated cart & checkout blocks', () 
 		const contactHeading = await page.$(
 			'#contact-fields .wc-block-components-checkout-step__title'
 		);
-		await expect( contactHeading ).toMatch( 'Coordonnées', {
-			timeout: 60000,
-		} );
+		await expect( contactHeading ).toMatch( 'Coordonnées' );
 
 		const shippingHeading = await page.$(
 			'#shipping-fields .wc-block-components-checkout-step__title'
 		);
-		await expect( shippingHeading ).toMatch( 'Adresse de livraison', {
-			timeout: 60000,
-		} );
+		await expect( shippingHeading ).toMatch( 'Adresse de livraison' );
 
 		const shippingOptionsHeading = await page.$(
 			'#shipping-option .wc-block-components-checkout-step__title'
@@ -109,36 +107,24 @@ describe( 'Shopper → Cart → Can view translated cart & checkout blocks', () 
 		const paymentMethodHeading = await page.$(
 			'#payment-method .wc-block-components-checkout-step__title'
 		);
-		await expect( paymentMethodHeading ).toMatch( 'Options de paiement', {
-			timeout: 60000,
-		} );
+		await expect( paymentMethodHeading ).toMatch( 'Options de paiement' );
 
 		const returnToCart = await page.$(
 			'.wc-block-components-checkout-return-to-cart-button'
 		);
-		await expect( returnToCart ).toMatch( 'Retour au panier', {
-			timeout: 60000,
-		} );
+		await expect( returnToCart ).toMatch( 'Retour au panier' );
 
 		const submitButton = await page.$(
 			'.wc-block-components-checkout-place-order-button'
 		);
-		await expect( submitButton ).toMatch( 'Passer la commande', {
-			timeout: 60000,
-		} );
+		await expect( submitButton ).toMatch( 'Passer la commande' );
 
 		const orderSummary = await page.$(
 			'.wp-block-woocommerce-checkout-order-summary-block'
 		);
-		await expect( orderSummary ).toMatch( 'Récapitulatif de commande', {
-			timeout: 60000,
-		} );
-		await expect( orderSummary ).toMatch( 'Sous-total', {
-			timeout: 60000,
-		} );
-		await expect( orderSummary ).toMatch( 'Coupon code', {
-			timeout: 60000,
-		} );
-		await expect( orderSummary ).toMatch( 'Livraison', { timeout: 60000 } );
+		await expect( orderSummary ).toMatch( 'Récapitulatif de commande' );
+		await expect( orderSummary ).toMatch( 'Sous-total' );
+		await expect( orderSummary ).toMatch( 'Coupon code' );
+		await expect( orderSummary ).toMatch( 'Livraison' );
 	} );
 } );
