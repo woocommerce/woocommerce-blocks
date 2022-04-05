@@ -6,6 +6,7 @@ import type { Cart, CartMeta } from '@woocommerce/types';
 /**
  * Internal dependencies
  */
+import { STATUS as PAYMENT_METHOD_STATUS } from '../base/context/providers/cart-checkout/payment-methods/constants';
 import {
 	EMPTY_CART_COUPONS,
 	EMPTY_CART_ITEMS,
@@ -100,4 +101,47 @@ export const defaultCartState: CartState = {
 		isCartDataStale: false,
 	},
 	errors: EMPTY_CART_ERRORS,
+};
+
+export interface PaymentMethodDataState {
+	paymentStatuses: typeof PAYMENT_METHOD_STATUS;
+	currentStatus: {
+		isPristine: boolean;
+		isStarted: boolean;
+		isProcessing: boolean;
+		isFinished: boolean;
+		hasError: boolean;
+		hasFailed: boolean;
+		isSuccessful: boolean;
+		isDoingExpressPayment: boolean;
+	};
+	errorMessage: string;
+	activePaymentMethod: string;
+	activeSavedToken: string;
+	paymentMethodData: Record< string, unknown >;
+	paymentMethodsInitialized: boolean;
+	expressPaymentMethodsInitialized: boolean;
+	shouldSavePaymentMethod: boolean;
+	isExpressPaymentMethodActive: boolean;
+}
+export const defaultPaymentMethodDataState: PaymentMethodDataState = {
+	paymentStatuses: PAYMENT_METHOD_STATUS,
+	currentStatus: {
+		isPristine: true,
+		isStarted: false,
+		isProcessing: false,
+		isFinished: false,
+		hasError: false,
+		hasFailed: false,
+		isSuccessful: false,
+		isDoingExpressPayment: false,
+	},
+	paymentMethodData: {},
+	paymentMethodsInitialized: false,
+	expressPaymentMethodsInitialized: false,
+	isExpressPaymentMethodActive: false,
+	shouldSavePaymentMethod: false,
+	errorMessage: '',
+	activePaymentMethod: '',
+	activeSavedToken: '',
 };
