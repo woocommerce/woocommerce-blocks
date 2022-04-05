@@ -68,19 +68,9 @@ describe( 'Shopper → Cart → Can view translated cart & checkout blocks', () 
 			'.wp-block-woocommerce-cart-order-summary-block'
 		);
 
-		const orderHeading = await page.waitForSelector(
-			'.wc-block-components-title'
-		);
-		const orderSummarySubtotal = await page.waitForSelector(
-			'.wc-block-components-totals-item__label'
-		);
-		const orderSummaryCoupon = await page.waitForSelector(
-			'.wc-block-components-totals-coupon'
-		);
-
-		await expect( orderHeading ).toMatch( 'Total panier' );
-		await expect( orderSummarySubtotal ).toMatch( 'Sous-total' );
-		await expect( orderSummaryCoupon ).toMatch( 'Coupon code' );
+		await expect( orderSummary ).toMatch( 'Total panier' );
+		await expect( orderSummary ).toMatch( 'Sous-total' );
+		await expect( orderSummary ).toMatch( 'Coupon code' );
 	} );
 
 	it( 'should be able to view translated Checkout block', async () => {
@@ -100,8 +90,7 @@ describe( 'Shopper → Cart → Can view translated cart & checkout blocks', () 
 			'#shipping-option .wc-block-components-checkout-step__title'
 		);
 		await expect( shippingOptionsHeading ).toMatch(
-			'Options de livraison',
-			{ timeout: 60000 }
+			'Options de livraison'
 		);
 
 		const paymentMethodHeading = await page.$(
