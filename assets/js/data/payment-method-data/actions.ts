@@ -21,7 +21,35 @@ export const setShouldSavePaymentMethod = (
 	shouldSavePaymentMethod,
 } );
 
-export const setActivePaymentMethod = ( activePaymentMethod: string ) => ( {
+export const setActivePaymentMethod = (
+	activePaymentMethod: string,
+	paymentMethodData: Record< string, unknown > = {}
+) => ( {
 	type: ACTION_TYPES.SET_ACTIVE_PAYMENT_METHOD,
 	activePaymentMethod,
+	paymentMethodData,
+} );
+
+export const addRegisteredPaymentMethod = ( name: string ) => ( {
+	type: ACTION_TYPES.ADD_REGISTERED_PAYMENT_METHOD,
+	name,
+} );
+
+export const removeRegisteredPaymentMethod = ( name: string ) => ( {
+	type: ACTION_TYPES.ADD_REGISTERED_PAYMENT_METHOD,
+	name,
+} );
+
+export const addRegisteredExpressPaymentMethod = ( name: string ) => ( {
+	type: ACTION_TYPES.ADD_REGISTERED_EXPRESS_PAYMENT_METHOD,
+	name,
+} );
+
+export const removeRegisteredExpressPaymentMethod = ( name: string ) => ( {
+	type: ACTION_TYPES.ADD_REGISTERED_EXPRESS_PAYMENT_METHOD,
+	name,
+} );
+
+export const initializePaymentMethods = () => ( {
+	type: ACTION_TYPES.INITIALIZE_PAYMENT_METHODS,
 } );

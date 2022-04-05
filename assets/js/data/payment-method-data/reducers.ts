@@ -2,6 +2,7 @@
  * External dependencies
  */
 import type { Reducer } from 'redux';
+import { objectHasProp } from '@woocommerce/types';
 
 /**
  * Internal dependencies
@@ -23,10 +24,52 @@ const reducer: Reducer< PaymentMethodDataState > = (
 				shouldSavePaymentMethod: action.shouldSavePaymentMethod,
 			};
 			break;
-		case ACTION_TYPES.SET_ACTIVE_PAYMENT_METHOD:
+		case ACTION_TYPES.ADD_REGISTERED_PAYMENT_METHOD:
 			state = {
 				...state,
+				registeredPaymentMethods: [
+					...state.registeredPaymentMethods,
+					action.name,
+				],
+			};
+			break;
+		case ACTION_TYPES.REMOVE_REGISTERED_PAYMENT_METHOD:
+			state = {
+				...state,
+				registeredPaymentMethods: state.registeredPaymentMethods.filter(
+					( name ) => name !== action.name
+				),
+			};
+			break;
+		case ACTION_TYPES.ADD_REGISTERED_EXPRESS_PAYMENT_METHOD:
+			state = {
+				...state,
+				registeredExpressPaymentMethods: [
+					...state.registeredExpressPaymentMethods,
+					action.name,
+				],
+			};
+			break;
+		case ACTION_TYPES.REMOVE_REGISTERED_EXPRESS_PAYMENT_METHOD:
+			state = {
+				...state,
+				registeredExpressPaymentMethods: state.registeredExpressPaymentMethods.filter(
+					( name ) => name !== action.name
+				),
+			};
+			break;
+		case ACTION_TYPES.SET_ACTIVE_PAYMENT_METHOD:
+			const activeSavedToken =
+				typeof state.paymentMethodData === 'object' &&
+				objectHasProp( action.paymentMethodData, 'token' )
+					? action.paymentMethodData.token + ''
+					: '';
+			state = {
+				...state,
+				activeSavedToken,
 				activePaymentMethod: action.activePaymentMethod,
+				paymentMethodData:
+					action.paymentMethodData || state.paymentMethodData,
 			};
 			break;
 		default:
