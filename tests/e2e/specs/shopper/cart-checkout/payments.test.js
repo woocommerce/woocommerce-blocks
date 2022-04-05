@@ -1,19 +1,20 @@
 /**
  * Internal dependencies
  */
-import { shopper } from '../../../utils';
-import { SIMPLE_PRODUCT_NAME } from '../../../utils/constants';
-
-const PAYMENT_COD = 'Cash on delivery';
-const PAYMENT_BACS = 'Direct bank transfer';
-const PAYMENT_CHEQUE = 'Check payments';
+import { shopper } from '../../../../utils';
+import {
+	SIMPLE_VIRTUAL_PRODUCT_NAME,
+	PAYMENT_BACS,
+	PAYMENT_CHEQUE,
+	PAYMENT_COD,
+} from '../../../../utils/constants';
 
 if ( process.env.WOOCOMMERCE_BLOCKS_PHASE < 2 ) {
 	// eslint-disable-next-line jest/no-focused-tests
 	test.only( `skipping Cart & Checkout tests`, () => {} );
 }
 
-describe( 'Shopper → Cart/Checkout → Payments', () => {
+describe( 'Shopper → Cart & Checkout → Payments', () => {
 	beforeEach( async () => {
 		await shopper.block.emptyCart();
 	} );
@@ -23,7 +24,7 @@ describe( 'Shopper → Cart/Checkout → Payments', () => {
 	} );
 	it( 'Express Payment button is available on both Cart & Checkout pages', async () => {
 		await shopper.goToShop();
-		await shopper.addToCartFromShopPage( SIMPLE_PRODUCT_NAME );
+		await shopper.addToCartFromShopPage( SIMPLE_VIRTUAL_PRODUCT_NAME );
 		await shopper.block.goToCart();
 		await shopper.block.mockExpressPaymentMethod();
 		// We need to re-render the cart for the express payments block to be updated,
@@ -47,7 +48,7 @@ describe( 'Shopper → Cart/Checkout → Payments', () => {
 
 	it( 'Customer can pay using Direct bank transfer', async () => {
 		await shopper.goToShop();
-		await shopper.addToCartFromShopPage( SIMPLE_PRODUCT_NAME );
+		await shopper.addToCartFromShopPage( SIMPLE_VIRTUAL_PRODUCT_NAME );
 		await shopper.block.goToCheckout();
 		await shopper.block.selectPayment( PAYMENT_BACS );
 		await shopper.block.fillInCheckoutWithTestData();
@@ -58,7 +59,7 @@ describe( 'Shopper → Cart/Checkout → Payments', () => {
 
 	it( 'Customer can pay using Cash on delivery', async () => {
 		await shopper.goToShop();
-		await shopper.addToCartFromShopPage( SIMPLE_PRODUCT_NAME );
+		await shopper.addToCartFromShopPage( SIMPLE_VIRTUAL_PRODUCT_NAME );
 		await shopper.block.goToCheckout();
 		await shopper.block.selectPayment( PAYMENT_COD );
 		await shopper.block.fillInCheckoutWithTestData();
@@ -69,7 +70,7 @@ describe( 'Shopper → Cart/Checkout → Payments', () => {
 
 	it( 'Customer can pay using Check payments', async () => {
 		await shopper.goToShop();
-		await shopper.addToCartFromShopPage( SIMPLE_PRODUCT_NAME );
+		await shopper.addToCartFromShopPage( SIMPLE_VIRTUAL_PRODUCT_NAME );
 		await shopper.block.goToCheckout();
 		await shopper.block.selectPayment( PAYMENT_CHEQUE );
 		await shopper.block.fillInCheckoutWithTestData();
