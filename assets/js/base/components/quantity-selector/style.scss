@@ -27,7 +27,7 @@
 	// Extra label for specificity needed in the editor.
 	input.wc-block-components-quantity-selector__input {
 		@include font-size(regular);
-		-moz-appearance: textfield;
+		appearance: textfield;
 		background: transparent;
 		border: 0;
 		box-shadow: none;
@@ -87,6 +87,7 @@
 			outline: none;
 		}
 		&:disabled {
+			box-shadow: none;
 			cursor: default;
 			opacity: 0.6;
 		}
