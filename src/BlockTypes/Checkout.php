@@ -82,13 +82,22 @@ class Checkout extends AbstractBlock {
 		wp_dequeue_script( 'selectWoo' );
 		wp_dequeue_style( 'select2' );
 
-		// If the content is empty, we may still be in the older checkout block. Insert the default list of blocks.
-		$regex_for_empty_block = '/<div class="[a-zA-Z0-9_\- ]*wp-block-woocommerce-checkout[a-zA-Z0-9_\- ]*"><\/div>/mi';
+		/**
+		 * We need to check if the structure from $content has one of the newly added blocks from the last iteration
+		 * The new block needs to be always in the structure, so only test for blocks with the locked:{remove:true} attribute.
+		 * If it does, we are in the latest version of the block
+		 * If not, we need to add a fallback to assure a successful migration of the block to the new structure
+		 * woocommerce/checkout-order-summary-subtotal-block was added in C&C i3 and is a locked block, that should always appear
+		 */
+		$regex_for_new_block = '/<div[\n\r\s\ta-zA-Z0-9_\-=\'"]*data-block-name="woocommerce\/checkout-order-summary-subtotal-block"[\n\r\s\ta-zA-Z0-9_\-=\'"]*>/mi';
 
-		$is_empty = preg_match( $regex_for_empty_block, $content );
+		$block_has_older_structure = ! preg_match( $regex_for_new_block, $content );
 
-		if ( $is_empty ) {
-			// This fallback needs to match the default templates defined in our Blocks.
+		if ( $block_has_older_structure ) {
+			/**
+			 * This fallback needs to match the defaultTemplate variables defined in the block's edit.tsx files,
+			 * starting from the parent block and going down each inner block
+			 */
 			$inner_blocks_html = '
 				<div data-block-name="woocommerce/checkout-fields-block" class="wp-block-woocommerce-checkout-fields-block">
 					<div data-block-name="woocommerce/checkout-express-payment-block" class="wp-block-woocommerce-checkout-express-payment-block"></div>
@@ -102,7 +111,15 @@ class Checkout extends AbstractBlock {
 					'<div data-block-name="woocommerce/checkout-actions-block" class="wp-block-woocommerce-checkout-actions-block"></div>
 				</div>
 				<div data-block-name="woocommerce/checkout-totals-block" class="wp-block-woocommerce-checkout-totals-block">
-					<div data-block-name="woocommerce/checkout-order-summary-block" class="wp-block-woocommerce-checkout-order-summary-block"></div>
+					<div data-block-name="woocommerce/checkout-order-summary-block" class="wp-block-woocommerce-checkout-order-summary-block">
+						<div data-block-name="woocommerce/checkout-order-summary-cart-items-block" class="wp-block-woocommerce-checkout-order-summary-cart-items-block" />
+						<div data-block-name="woocommerce/checkout-order-summary-subtotal-block" class="wp-block-woocommerce-checkout-order-summary-subtotal-block" />
+						<div data-block-name="woocommerce/checkout-order-summary-fee-block" class="wp-block-woocommerce-checkout-order-summary-fee-block" />
+						<div data-block-name="woocommerce/checkout-order-summary-discount-block" class="wp-block-woocommerce-checkout-order-summary-discount-block" />
+						<div data-block-name="woocommerce/checkout-order-summary-coupon-form-block" class="wp-block-woocommerce-checkout-order-summary-coupon-form-block" />
+						<div data-block-name="woocommerce/checkout-order-summary-shipping-block" class="wp-block-woocommerce-checkout-order-summary-shipping-block" />
+						<div data-block-name="woocommerce/checkout-order-summary-taxes-block" class="wp-block-woocommerce-checkout-order-summary-taxes-block" />
+					</div>
 				</div>
 			';
 
