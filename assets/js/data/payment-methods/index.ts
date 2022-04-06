@@ -11,7 +11,6 @@ import reducer, { State } from './reducers';
 import { STORE_KEY } from './constants';
 import * as actions from './actions';
 import { controls as sharedControls } from '../shared-controls';
-import controls from './controls';
 import * as selectors from './selectors';
 import { DispatchFromMap, SelectFromMap } from '../mapped-types';
 
@@ -19,7 +18,7 @@ registerStore< State >( STORE_KEY, {
 	reducer,
 	actions,
 	// eslint-disable-next-line @typescript-eslint/no-explicit-any
-	controls: { ...dataControls, ...sharedControls, ...controls } as any,
+	controls: { ...dataControls, ...sharedControls } as any,
 	selectors,
 } );
 
