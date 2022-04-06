@@ -111,9 +111,12 @@ export const checkPaymentMethodsCanPay = async ( express = false ) => {
 			}
 		}
 	}
-	const currentlyAvailablePaymentMethods = select(
-		PAYMENT_METHOD_DATA_STORE_KEY
-	).getAvailablePaymentMethods();
+	const currentlyAvailablePaymentMethods = express
+		? select(
+				PAYMENT_METHOD_DATA_STORE_KEY
+		  ).getAvailableExpressPaymentMethods()
+		: select( PAYMENT_METHOD_DATA_STORE_KEY ).getAvailablePaymentMethods();
+
 	const availablePaymentMethodNames = Object.keys( availablePaymentMethods );
 	if (
 		currentlyAvailablePaymentMethods.length ===
@@ -126,9 +129,14 @@ export const checkPaymentMethodsCanPay = async ( express = false ) => {
 		return true;
 	}
 
-	const { setAvailablePaymentMethods } = dispatch(
-		PAYMENT_METHOD_DATA_STORE_KEY
-	);
+	const {
+		setAvailablePaymentMethods,
+		setAvailableExpressPaymentMethods,
+	} = dispatch( PAYMENT_METHOD_DATA_STORE_KEY );
+	if ( express ) {
+		setAvailableExpressPaymentMethods( availablePaymentMethodNames );
+		return true;
+	}
 	setAvailablePaymentMethods( availablePaymentMethodNames );
 	return true;
 };
