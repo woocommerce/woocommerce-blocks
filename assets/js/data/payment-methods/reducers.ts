@@ -50,10 +50,28 @@ const reducer: Reducer< PaymentMethodDataState > = (
 				],
 			};
 			break;
+		case ACTION_TYPES.SET_PAYMENT_METHODS_INITIALIZED:
+			state = {
+				...state,
+				paymentMethodsInitialized: action.initialized,
+			};
+			break;
+		case ACTION_TYPES.SET_EXPRESS_PAYMENT_METHODS_INITIALIZED:
+			state = {
+				...state,
+				expressPaymentMethodsInitialized: action.initialized,
+			};
+			break;
 		case ACTION_TYPES.SET_AVAILABLE_PAYMENT_METHODS:
 			state = {
 				...state,
 				availablePaymentMethods: action.methods,
+			};
+			break;
+		case ACTION_TYPES.SET_AVAILABLE_EXPRESS_PAYMENT_METHODS:
+			state = {
+				...state,
+				availableExpressPaymentMethods: action.methods,
 			};
 			break;
 		case ACTION_TYPES.REMOVE_REGISTERED_EXPRESS_PAYMENT_METHOD:
