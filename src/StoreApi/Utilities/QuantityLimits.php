@@ -140,7 +140,7 @@ final class QuantityLimits {
 	 * @return int
 	 */
 	protected function get_product_quantity_limit( \WC_Product $product ) {
-		$limits = [ 99 ];
+		$limits = [ 9999 ];
 
 		if ( $product->is_sold_individually() ) {
 			$limits[] = 1;
