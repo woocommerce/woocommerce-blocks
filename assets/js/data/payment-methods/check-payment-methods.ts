@@ -17,7 +17,7 @@ import {
  * Internal dependencies
  */
 import { STORE_KEY as CART_STORE_KEY } from '../cart/constants';
-import { STORE_KEY as PAYMENT_METHOD_DATA_STORE_KEY } from '../payment-method-data/constants';
+import { STORE_KEY as PAYMENT_METHOD_DATA_STORE_KEY } from '../payment-methods/constants';
 
 export const checkPaymentMethodsCanPay = async ( express = false ) => {
 	let availablePaymentMethods = {};
@@ -43,9 +43,19 @@ export const checkPaymentMethodsCanPay = async ( express = false ) => {
 			[ paymentMethod.name ]: paymentMethod,
 		};
 	};
+	const isInitialized = express
+		? select(
+				PAYMENT_METHOD_DATA_STORE_KEY
+		  ).expressPaymentMethodsInitialized()
+		: select( PAYMENT_METHOD_DATA_STORE_KEY ).paymentMethodsInitialized();
 
+	if (
+		! isInitialized &&
+		displayOrder.length !== Object.keys( paymentMethods ).length
+	) {
+		return false;
+	}
 	const cart = select( CART_STORE_KEY ).getCartData();
-
 	const selectedShippingMethods = deriveSelectedShippingRates(
 		cart.shippingRates
 	);
@@ -97,6 +107,7 @@ export const checkPaymentMethodsCanPay = async ( express = false ) => {
 				// 	context: noticeContext,
 				// 	id: `wc-${ paymentMethod.paymentMethodId }-registration-error`,
 				// } );
+				return false;
 			}
 		}
 	}
@@ -112,11 +123,12 @@ export const checkPaymentMethodsCanPay = async ( express = false ) => {
 		)
 	) {
 		// All the names are the same, no need to dispatch more actions.
-		return;
+		return true;
 	}
 
 	const { setAvailablePaymentMethods } = dispatch(
 		PAYMENT_METHOD_DATA_STORE_KEY
 	);
 	setAvailablePaymentMethods( availablePaymentMethodNames );
+	return true;
 };
