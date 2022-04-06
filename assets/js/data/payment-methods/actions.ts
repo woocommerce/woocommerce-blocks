@@ -58,6 +58,12 @@ export const setAvailablePaymentMethods = ( methods: string[] ) => {
 		} );
 	};
 };
+
+export const setAvailableExpressPaymentMethods = ( methods: string[] ) => ( {
+	type: ACTION_TYPES.SET_AVAILABLE_EXPRESS_PAYMENT_METHODS,
+	methods,
+} );
+
 export function addRegisteredPaymentMethod() {
 	return async ( { dispatch } ) => {
 		const registered = await checkPaymentMethodsCanPay();
