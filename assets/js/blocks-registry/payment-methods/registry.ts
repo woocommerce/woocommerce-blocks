@@ -53,7 +53,7 @@ export const registerPaymentMethod = (
 			PAYMENT_METHOD_DATA_STORE_KEY
 		);
 		paymentMethods[ paymentMethodConfig.name ] = paymentMethodConfig;
-		addRegisteredPaymentMethod( paymentMethodConfig.name );
+		addRegisteredPaymentMethod();
 	}
 };
 
@@ -84,7 +84,7 @@ export const registerExpressPaymentMethod = (
 			PAYMENT_METHOD_DATA_STORE_KEY
 		);
 		expressPaymentMethods[ paymentMethodConfig.name ] = paymentMethodConfig;
-		addRegisteredExpressPaymentMethod( paymentMethodConfig.name );
+		addRegisteredExpressPaymentMethod();
 	}
 };
 
