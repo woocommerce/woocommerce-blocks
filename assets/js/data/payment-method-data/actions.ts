@@ -3,6 +3,10 @@
  */
 import { ACTION_TYPES } from './action-types';
 import { STATUS } from '../../base/context/providers/cart-checkout/payment-methods/constants';
+import {
+	initializePaymentMethods as initializePaymentMethodsControl,
+	initializeExpressPaymentMethods as initializeExpressPaymentMethodsControl,
+} from './controls';
 
 export const setPaymentStatus = ( status: STATUS ) => ( {
 	type: ACTION_TYPES.SET_PAYMENT_STATUS,
@@ -35,20 +39,26 @@ export const setAvailablePaymentMethods = ( methods: string[] ) => ( {
 	methods,
 } );
 
-export const addRegisteredPaymentMethod = ( name: string ) => ( {
-	type: ACTION_TYPES.ADD_REGISTERED_PAYMENT_METHOD,
-	name,
-} );
+export function* addRegisteredPaymentMethod(): Generator<
+	unknown,
+	string,
+	string
+> {
+	return yield initializePaymentMethodsControl();
+}
 
 export const removeRegisteredPaymentMethod = ( name: string ) => ( {
 	type: ACTION_TYPES.ADD_REGISTERED_PAYMENT_METHOD,
 	name,
 } );
 
-export const addRegisteredExpressPaymentMethod = ( name: string ) => ( {
-	type: ACTION_TYPES.ADD_REGISTERED_EXPRESS_PAYMENT_METHOD,
-	name,
-} );
+export function* addRegisteredExpressPaymentMethod(): Generator<
+	unknown,
+	string,
+	string
+> {
+	return yield initializeExpressPaymentMethodsControl();
+}
 
 export const removeRegisteredExpressPaymentMethod = ( name: string ) => ( {
 	type: ACTION_TYPES.ADD_REGISTERED_EXPRESS_PAYMENT_METHOD,
