@@ -242,7 +242,7 @@ describe( 'Shopper → Checkout', () => {
 		} );
 	} );
 
-	describe.only( 'Coupons', () => {
+	describe( 'Coupons', () => {
 		beforeAll( async () => {
 			coupon = await createCoupon( { usageLimit: 1 } );
 		} );
