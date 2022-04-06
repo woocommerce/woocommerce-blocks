@@ -19,15 +19,49 @@ import isShallowEqual from '@wordpress/is-shallow-equal';
 import { decodeEntities } from '@wordpress/html-entities';
 import { Notice } from '@wordpress/components';
 import classNames from 'classnames';
+import { getSetting } from '@woocommerce/settings';
+import { addQueryArgs, removeQueryArgs } from '@wordpress/url';
 
 /**
  * Internal dependencies
  */
+import { getUrlParameter } from '../../utils/filters';
 import { getAttributeFromID } from '../../utils/attributes';
 import { updateAttributeFilter } from '../../utils/attributes-query';
 import { previewAttributeObject, previewOptions } from './preview';
 import { useBorderProps } from '../../hooks/style-attributes';
 import './style.scss';
+
+/**
+ * Formats filter values into a string for the URL parameters needed for filtering PHP templates.
+ *
+ * @param {string} url Current page URL.
+ * @param {Array} params Parameters and their constraints.
+ *
+ * @return {string} New URL with query parameters in it.
+ */
+function formatParams( url, params = [] ) {
+	const paramObject = {};
+
+	params.forEach( ( param ) => {
+		const { attribute, operator, slug } = param;
+
+		// Custom filters are prefix with `pa_` so we need to remove this.
+		const name = attribute.replace( 'pa_', '' );
+		const values = slug.join( ',' );
+		const queryType = `query_type_${ name }`;
+		const type = operator === 'or' ? 'in' : 'and';
+
+		// The URL parameter requires the prefix filter_ with the attribute name.
+		paramObject[ `filter_${ name }` ] = values;
+		paramObject[ queryType ] = type;
+	} );
+
+	// Clean the URL before we add our new query parameters to it.
+	const cleanUrl = removeQueryArgs( url, ...Object.keys( paramObject ) );
+
+	return addQueryArgs( cleanUrl, paramObject );
+}
 
 /**
  * Component displaying an attribute filter.
@@ -40,6 +74,14 @@ const AttributeFilterBlock = ( {
 	attributes: blockAttributes,
 	isEditor = false,
 } ) => {
+	const filteringForPhpTemplate = getSetting(
+		'is_rendering_php_template',
+		''
+	);
+	const [ hasSetPhpFilterDefaults, setHasSetPhpFilterDefaults ] = useState(
+		false
+	);
+
 	const attributeObject =
 		blockAttributes.isPreview && ! blockAttributes.attributeId
 			? previewAttributeObject
@@ -331,6 +373,66 @@ const AttributeFilterBlock = ( {
 			blockAttributes.showFilterButton,
 		]
 	);
+
+	/**
+	 * Important: For PHP rendered block templates only.
+	 *
+	 * When we render the PHP block template (e.g. Classic Block) we need to set the default checked values,
+	 * and also update the URL when the filters are clicked/updated.
+	 */
+	useEffect( () => {
+		if ( filteringForPhpTemplate && attributeObject ) {
+			const defaultAttributeParam = getUrlParameter(
+				`filter_${ attributeObject.name }`
+			);
+			const defaultCheckedValue =
+				typeof defaultAttributeParam === 'string'
+					? defaultAttributeParam.split( ',' )
+					: [];
+
+			if ( defaultCheckedValue.length > 0 && checked.length === 0 ) {
+				setChecked( defaultCheckedValue );
+			}
+
+			const newUrl = formatParams(
+				window.location.href,
+				productAttributesQuery
+			);
+			if ( window.location.href !== newUrl ) {
+				window.location.href = newUrl;
+			}
+		}
+	}, [
+		filteringForPhpTemplate,
+		productAttributesQuery,
+		checked.length,
+		attributeObject,
+	] );
+
+	/**
+	 * Important: For PHP rendered block templates only.
+	 *
+	 * When we set the default parameter values which we get from the URL in the above useEffect(),
+	 * we need to run onSubmit which will set these values in state for the Active Filters block.
+	 */
+	useEffect( () => {
+		if ( filteringForPhpTemplate ) {
+			if (
+				checked.length > 0 &&
+				! hasSetPhpFilterDefaults &&
+				! attributeTermsLoading
+			) {
+				setHasSetPhpFilterDefaults( true );
+				onSubmit( checked );
+			}
+		}
+	}, [
+		onSubmit,
+		filteringForPhpTemplate,
+		checked,
+		hasSetPhpFilterDefaults,
+		attributeTermsLoading,
+	] );
 
 	// Short-circuit if no attribute is selected.
 	if ( ! attributeObject ) {
