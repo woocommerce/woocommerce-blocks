@@ -27,7 +27,7 @@ export const getAvailablePaymentMethods = ( state: PaymentMethodDataState ) => {
 export const getAvailableExpressPaymentMethods = (
 	state: PaymentMethodDataState
 ) => {
-	return state.availablePaymentMethods;
+	return state.availableExpressPaymentMethods;
 };
 
 export const shouldSavePaymentMethod = ( state: PaymentMethodDataState ) => {
