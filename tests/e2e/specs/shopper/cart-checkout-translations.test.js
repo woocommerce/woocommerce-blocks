@@ -64,7 +64,7 @@ describe( 'Shopper → Cart → Can view translated cart & checkout blocks', () 
 		);
 		await expect( submitButton ).toMatch( 'Procéder au paiement' );
 
-		const orderSummary = await page.waitForSelector(
+		const orderSummary = await page.$(
 			'.wp-block-woocommerce-cart-order-summary-block'
 		);
 
