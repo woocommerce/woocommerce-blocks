@@ -44,6 +44,12 @@ const PaymentMethodOptions = () => {
 		PAYMENT_METHOD_DATA_STORE_KEY
 	);
 	const paymentMethods = getPaymentMethods();
+	const { availablePaymentMethods } = useSelect( ( select ) => {
+		const store = select( PAYMENT_METHOD_DATA_STORE_KEY );
+		return {
+			availablePaymentMethods: store.getAvailablePaymentMethods(),
+		};
+	} );
 	const { ...paymentMethodInterface } = usePaymentMethodInterface();
 
 	const { noticeContexts } = useEmitResponse();
@@ -51,7 +57,7 @@ const PaymentMethodOptions = () => {
 	const { dispatchCheckoutEvent } = useStoreEvents();
 	const { isEditor } = useEditorContext();
 
-	const options = Object.keys( paymentMethods ).map( ( name ) => {
+	const options = availablePaymentMethods.map( ( name ) => {
 		const { edit, content, label, supports } = paymentMethods[ name ];
 		const component = isEditor ? edit : content;
 		return {
