@@ -8,7 +8,7 @@ import { MatcherFunction } from '@testing-library/react';
  * will only find strings if they are within the same element.
  *
  * @param {string} text The text to find.
- * @return {function(*, ?)} The matcher function for RTL to use.
+ * @return {function()} The matcher function for RTL to use.
  */
 export const textContentMatcher = ( text: string ): MatcherFunction => {
 	return ( _content, node ) => {
@@ -31,7 +31,7 @@ export const textContentMatcher = ( text: string ): MatcherFunction => {
  * </div>
  *
  * @param {string} text The text to find
- * @return {function(*, ?)} the matcher function for RTL to use.
+ * @return {function()} the matcher function for RTL to use.
  */
 export const textContentMatcherAcrossSiblings = (
 	text: string

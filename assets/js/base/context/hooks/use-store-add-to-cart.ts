@@ -27,7 +27,7 @@ interface StoreAddToCart {
  * Get the quantity of a product in the cart.
  *
  * @param {Object} cartItems Array of items.
- * @param {number} productId  The product id to look for.
+ * @param {number} productId The product id to look for.
  * @return {number} Quantity in the cart.
  */
 const getQuantityFromCartItems = (
@@ -44,7 +44,7 @@ const getQuantityFromCartItems = (
  * action for adding a single quantity of the product _to_ the cart.
  *
  *
- * @param {number} productId  The product id to be added to the cart.
+ * @param {number} productId The product id to be added to the cart.
  *
  * @return {StoreCartItemAddToCart} An object exposing data and actions relating
  *                                  to add to cart functionality.

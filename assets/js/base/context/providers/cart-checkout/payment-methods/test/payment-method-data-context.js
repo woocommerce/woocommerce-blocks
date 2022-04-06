@@ -167,9 +167,7 @@ describe( 'Testing Payment Method Data Context Provider', () => {
 			);
 		};
 
-		act( () => {
-			render( <TestComponent /> );
-		} );
+		render( <TestComponent /> );
 
 		// should initialize by default the first payment method.
 		await waitFor( () => {
@@ -179,12 +177,10 @@ describe( 'Testing Payment Method Data Context Provider', () => {
 			expect( activePaymentMethod ).not.toBeNull();
 		} );
 
-		act( () => {
-			// Express payment method clicked.
-			userEvent.click(
-				screen.getByText( 'express-payment express payment method' )
-			);
-		} );
+		// Express payment method clicked.
+		userEvent.click(
+			screen.getByText( 'express-payment express payment method' )
+		);
 
 		await waitFor( () => {
 			const activePaymentMethod = screen.queryByText(
@@ -193,14 +189,10 @@ describe( 'Testing Payment Method Data Context Provider', () => {
 			expect( activePaymentMethod ).not.toBeNull();
 		} );
 
-		act( () => {
-			// Express payment method closed.
-			userEvent.click(
-				screen.getByText(
-					'express-payment express payment method close'
-				)
-			);
-		} );
+		// Express payment method closed.
+		userEvent.click(
+			screen.getByText( 'express-payment express payment method close' )
+		);
 
 		await waitFor( () => {
 			const activePaymentMethod = screen.queryByText(
@@ -261,9 +253,7 @@ describe( 'Testing Payment Method Data Context Provider with saved cards turned 
 			);
 		};
 
-		act( () => {
-			render( <TestComponent /> );
-		} );
+		render( <TestComponent /> );
 
 		// Should initialize by default the default saved payment method.
 		await waitFor( () => {
@@ -275,12 +265,10 @@ describe( 'Testing Payment Method Data Context Provider with saved cards turned 
 			expect( creditCardToken ).not.toBeNull();
 		} );
 
-		act( () => {
-			// Express payment method clicked.
-			userEvent.click(
-				screen.getByText( 'express-payment express payment method' )
-			);
-		} );
+		// Express payment method clicked.
+		userEvent.click(
+			screen.getByText( 'express-payment express payment method' )
+		);
 
 		await waitFor( () => {
 			const activePaymentMethod = screen.queryByText(

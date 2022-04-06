@@ -76,7 +76,7 @@ export const __experimentalRegisterCheckoutFilters = (
 /**
  * Get all filters with a specific name.
  *
- * @param {string} filterName   Name of the filter to search for.
+ * @param {string} filterName Name of the filter to search for.
  * @return {Function[]} Array of functions that are registered for that filter
  *                      name.
  */
