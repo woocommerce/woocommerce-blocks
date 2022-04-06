@@ -28,7 +28,10 @@ const registeredStore = registerStore< State >( STORE_KEY, {
 } );
 
 registeredStore.subscribe( pushChanges );
-registeredStore.subscribe( checkPaymentMethodsCanPay );
+registeredStore.subscribe( async () => {
+	await checkPaymentMethodsCanPay();
+	await checkPaymentMethodsCanPay( true );
+} );
 
 export const CART_STORE_KEY = STORE_KEY;
 
