@@ -20,8 +20,8 @@
 		"./assets/js/blocks/checkout/inner-blocks/register-components.ts",
 		"./assets/js/blocks/cart/inner-blocks/**/index.tsx",
 		"./assets/js/blocks/cart/inner-blocks/register-components.ts",
-		"./assets/js/blocks/mini-cart/mini-cart-contents/inner-blocks/**/index.tsx",
-		"./assets/js/blocks/mini-cart/mini-cart-contents/inner-blocks/register-components.ts"
+		"./assets/js/blocks/cart-checkout/mini-cart-contents/inner-blocks/**/index.tsx",
+		"./assets/js/blocks/cart-checkout/mini-cart-contents/inner-blocks/register-components.ts"
 	],
 	"repository": {
 		"type": "git",
@@ -36,7 +36,7 @@
 		"build:e2e-test": "npm run build",
 		"prebuild:docs": "rimraf docs/extensibility/actions.md & rimraf docs/extensibility/filters.md",
 		"build:docs": "./vendor/bin/wp-hooks-generator --input=src --output=bin/hook-docs/data && node ./bin/hook-docs",
-		"postbuild:docs": "sh ./bin/add-doc-footer.sh",
+		"postbuild:docs": "./bin/add-doc-footer.sh",
 		"changelog": "node ./bin/changelog",
 		"changelog:zenhub": "node ./bin/changelog --changelogSrcType='ZENHUB_RELEASE'",
 		"deploy": "npm run build:deploy && sh ./bin/github-deploy.sh",
@@ -214,6 +214,7 @@
 		"@wordpress/plugins": "4.0.7",
 		"@wordpress/primitives": "3.0.4",
 		"@wordpress/server-side-render": "3.0.17",
+		"@wordpress/url": "^3.6.0",
 		"@wordpress/wordcount": "3.2.3",
 		"classnames": "2.3.1",
 		"compare-versions": "3.6.0",
