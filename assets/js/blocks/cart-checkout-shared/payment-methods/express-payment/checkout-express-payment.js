@@ -2,10 +2,7 @@
  * External dependencies
  */
 import { __ } from '@wordpress/i18n';
-import {
-	useEmitResponse,
-	useExpressPaymentMethods,
-} from '@woocommerce/base-context/hooks';
+import { useEmitResponse } from '@woocommerce/base-context/hooks';
 import {
 	StoreNoticesContainer,
 	useCheckoutContext,
@@ -15,6 +12,8 @@ import {
 import Title from '@woocommerce/base-components/title';
 import LoadingMask from '@woocommerce/base-components/loading-mask';
 import { CURRENT_USER_IS_ADMIN } from '@woocommerce/settings';
+import { PAYMENT_METHOD_DATA_STORE_KEY } from '@woocommerce/block-data';
+import { useSelect } from '@wordpress/data';
 
 /**
  * Internal dependencies
@@ -32,13 +31,23 @@ const CheckoutExpressPayment = () => {
 		hasError,
 	} = useCheckoutContext();
 	const { currentStatus: paymentStatus } = usePaymentMethodDataContext();
-	const { paymentMethods, isInitialized } = useExpressPaymentMethods();
+	const {
+		availableExpressPaymentMethods,
+		expressPaymentMethodsInitialized,
+	} = useSelect( ( select ) => {
+		const store = select( PAYMENT_METHOD_DATA_STORE_KEY );
+		return {
+			availableExpressPaymentMethods: store.getAvailableExpressPaymentMethods(),
+			expressPaymentMethodsInitialized: store.expressPaymentMethodsInitialized(),
+		};
+	} );
 	const { isEditor } = useEditorContext();
 	const { noticeContexts } = useEmitResponse();
 
 	if (
-		! isInitialized ||
-		( isInitialized && Object.keys( paymentMethods ).length === 0 )
+		! expressPaymentMethodsInitialized ||
+		( expressPaymentMethodsInitialized &&
+			availableExpressPaymentMethods.length === 0 )
 	) {
 		// Make sure errors are shown in the editor and for admins. For example,
 		// when a payment method fails to register.
