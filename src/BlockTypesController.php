@@ -195,6 +195,7 @@ final class BlockTypesController {
 			 */
 			if (
 				'widgets.php' === $pagenow ||
+				'customize.php' === $pagenow ||
 				'site-editor.php' === $pagenow || ! is_admin() ||
 				! empty( $_GET['page'] ) && 'gutenberg-edit-site' === $_GET['page'] // phpcs:ignore WordPress.Security.NonceVerification
 			) {
