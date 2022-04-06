@@ -42,7 +42,7 @@ describe( 'Shopper → Cart & Checkout → Translations', () => {
 		expect( resultUninstallLanguages.code ).toEqual( 0 );
 	} );
 
-	it( 'USer can view translated Cart block ', async () => {
+	it( 'User can view translated Cart block ', async () => {
 		await shopper.goToShop();
 		await shopper.addToCartFromShopPage( '128GB USB Stick' );
 		await shopper.block.goToCart();
