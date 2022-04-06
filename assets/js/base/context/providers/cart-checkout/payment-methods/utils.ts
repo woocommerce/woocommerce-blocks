@@ -2,6 +2,7 @@
  * External dependencies
  */
 import { getSetting } from '@woocommerce/settings';
+import { getPaymentMethods } from '@woocommerce/blocks-registry';
 
 /**
  * Internal dependencies
@@ -17,7 +18,17 @@ export const getCustomerPaymentMethods = (
 	if ( Object.keys( availablePaymentMethods ).length === 0 ) {
 		return {};
 	}
-	const customerPaymentMethods = getSetting( 'customerPaymentMethods', {} );
+	const registeredPaymentMethods = getPaymentMethods();
+	const availablePaymentMethodsWithConfig = Object.fromEntries(
+		Object.keys( availablePaymentMethods ).map( ( name ) => [
+			name,
+			registeredPaymentMethods[ name ],
+		] )
+	);
+	const customerPaymentMethods = getSetting<
+		Record< string, CustomerPaymentMethod[] >
+	>( 'customerPaymentMethods', {} );
+
 	const paymentMethodKeys = Object.keys( customerPaymentMethods );
 	const enabledCustomerPaymentMethods = {} as Record<
 		string,
@@ -32,8 +43,9 @@ export const getCustomerPaymentMethods = (
 					gateway: string;
 				};
 			} ) =>
-				gateway in availablePaymentMethods &&
-				availablePaymentMethods[ gateway ].supports?.showSavedCards
+				gateway in availablePaymentMethodsWithConfig &&
+				availablePaymentMethodsWithConfig[ gateway ].supports
+					?.showSavedCards
 		);
 		if ( methods.length ) {
 			enabledCustomerPaymentMethods[ type ] = methods;
