@@ -28,7 +28,7 @@ export interface CustomerPaymentMethod {
 	actions: ObjectType;
 }
 export type CustomerPaymentMethods =
-	| Record< string, CustomerPaymentMethod >
+	| Record< string, CustomerPaymentMethod[] >
 	| EmptyObjectType;
 
 export interface PaymentMethodDispatchers {
