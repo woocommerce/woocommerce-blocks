@@ -6,9 +6,10 @@ import { STATUS } from '../../base/context/providers/cart-checkout/payment-metho
 import { checkPaymentMethodsCanPay } from './check-payment-methods';
 import { setDefaultPaymentMethod } from './set-default-payment-method';
 
-export const setPaymentStatus = ( status: STATUS ) => ( {
+export const setPaymentStatus = ( status: STATUS, errorMessage = '' ) => ( {
 	type: ACTION_TYPES.SET_PAYMENT_STATUS,
 	status,
+	errorMessage,
 } );
 
 export const setPaymentMethodsInitialized = ( initialized: boolean ) => {

@@ -24,6 +24,13 @@ const reducer: Reducer< PaymentMethodDataState > = (
 				shouldSavePaymentMethod: action.shouldSavePaymentMethod,
 			};
 			break;
+		case ACTION_TYPES.SET_PAYMENT_STATUS:
+			state = {
+				...state,
+				currentStatus: action.status,
+				errorMessage: action.errorMessage,
+			};
+			break;
 		case ACTION_TYPES.ADD_REGISTERED_PAYMENT_METHOD:
 			state = {
 				...state,
