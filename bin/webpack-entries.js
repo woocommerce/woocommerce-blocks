@@ -46,7 +46,6 @@ const blocks = {
 		isExperimental: true,
 	},
 	'mini-cart-contents': {
-		customDir: 'mini-cart/mini-cart-contents',
 		isExperimental: true,
 	},
 	'single-product': {
