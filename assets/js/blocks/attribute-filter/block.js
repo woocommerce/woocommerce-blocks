@@ -390,7 +390,12 @@ const AttributeFilterBlock = ( {
 					? defaultAttributeParam.split( ',' )
 					: [];
 
-			if ( defaultCheckedValue.length > 0 && checked.length === 0 ) {
+			// When the component mounts let's set the active filters in state.
+			if (
+				defaultCheckedValue.length > 0 &&
+				checked.length === 0 &&
+				! hasSetPhpFilterDefaults
+			) {
 				setChecked( defaultCheckedValue );
 			}
 
@@ -407,6 +412,7 @@ const AttributeFilterBlock = ( {
 		productAttributesQuery,
 		checked.length,
 		attributeObject,
+		hasSetPhpFilterDefaults,
 	] );
 
 	/**
@@ -423,7 +429,9 @@ const AttributeFilterBlock = ( {
 				! attributeTermsLoading
 			) {
 				setHasSetPhpFilterDefaults( true );
-				onSubmit( checked );
+				if ( ! blockAttributes.showFilterButton ) {
+					onSubmit( checked );
+				}
 			}
 		}
 	}, [
@@ -432,6 +440,7 @@ const AttributeFilterBlock = ( {
 		checked,
 		hasSetPhpFilterDefaults,
 		attributeTermsLoading,
+		blockAttributes.showFilterButton,
 	] );
 
 	// Short-circuit if no attribute is selected.
