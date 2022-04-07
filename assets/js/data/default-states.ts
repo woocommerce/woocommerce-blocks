@@ -1,7 +1,8 @@
 /**
  * External dependencies
  */
-import type { Cart, CartMeta } from '@woocommerce/types';
+import type { Cart, CartMeta, EmptyObjectType } from '@woocommerce/types';
+import { getSetting } from '@woocommerce/settings';
 
 /**
  * Internal dependencies
@@ -19,6 +20,7 @@ import {
 	EMPTY_EXTENSIONS,
 } from './constants';
 import type { ResponseError } from './types';
+import { CustomerPaymentMethod } from '../base/context/providers/cart-checkout/payment-methods/types';
 
 export interface CartState {
 	cartItemsPendingQuantity: Array< string >;
@@ -127,6 +129,9 @@ export interface PaymentMethodDataState {
 	expressPaymentMethodsInitialized: boolean;
 	shouldSavePaymentMethod: boolean;
 	isExpressPaymentMethodActive: boolean;
+	customerPaymentMethods:
+		| Record< string, CustomerPaymentMethod[] >
+		| EmptyObjectType;
 }
 export const defaultPaymentMethodDataState: PaymentMethodDataState = {
 	paymentStatuses: PAYMENT_METHOD_STATUS,
@@ -140,6 +145,9 @@ export const defaultPaymentMethodDataState: PaymentMethodDataState = {
 		isSuccessful: false,
 		isDoingExpressPayment: false,
 	},
+	customerPaymentMethods: getSetting<
+		Record< string, CustomerPaymentMethod[] > | EmptyObjectType
+	>( 'customerPaymentMethods', {} ),
 	registeredPaymentMethods: [],
 	registeredExpressPaymentMethods: [],
 	availablePaymentMethods: [],

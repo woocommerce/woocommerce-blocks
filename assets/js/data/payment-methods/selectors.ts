@@ -34,6 +34,10 @@ export const getPaymentMethodData = ( state: PaymentMethodDataState ) => {
 	return state.paymentMethodData;
 };
 
+export const getCustomerPaymentMethods = ( state: PaymentMethodDataState ) => {
+	return state.customerPaymentMethods;
+};
+
 export const shouldSavePaymentMethod = ( state: PaymentMethodDataState ) => {
 	return state.shouldSavePaymentMethod;
 };
