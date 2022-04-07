@@ -2,6 +2,7 @@
  * External dependencies
  */
 import { select, dispatch } from '@wordpress/data';
+import { PaymentMethods } from '@woocommerce/type-defs/payments';
 
 /**
  * Internal dependencies
@@ -10,7 +11,7 @@ import { STORE_KEY as PAYMENT_METHOD_DATA_STORE_KEY } from './constants';
 import { STATUS } from '../../base/context/providers/cart-checkout/payment-methods/constants';
 import { getCustomerPaymentMethods } from '../../base/context/providers/cart-checkout/payment-methods/utils';
 
-export const setDefaultPaymentMethod = async ( methods ) => {
+export const setDefaultPaymentMethod = async ( methods: string[] ) => {
 	const paymentMethodKeys = methods;
 
 	const expressPaymentMethodKeys = select(
@@ -22,7 +23,7 @@ export const setDefaultPaymentMethod = async ( methods ) => {
 
 	const allPaymentMethodKeys = [
 		...paymentMethodKeys,
-		expressPaymentMethodKeys,
+		...expressPaymentMethodKeys,
 	];
 
 	// Return if current method is valid.
@@ -36,10 +37,13 @@ export const setDefaultPaymentMethod = async ( methods ) => {
 	dispatch( PAYMENT_METHOD_DATA_STORE_KEY ).setPaymentStatus(
 		STATUS.PRISTINE
 	);
-	const objectOfPaymentMethods = allPaymentMethodKeys.reduce( ( a, curr ) => {
-		a[ curr ] = null;
-		return a;
+	const objectOfPaymentMethods = allPaymentMethodKeys.reduce<
+		PaymentMethods
+	>( ( accumulator, current ) => {
+		accumulator[ current ] = null;
+		return accumulator;
 	}, {} );
+
 	const customerPaymentMethods = getCustomerPaymentMethods(
 		objectOfPaymentMethods
 	);
