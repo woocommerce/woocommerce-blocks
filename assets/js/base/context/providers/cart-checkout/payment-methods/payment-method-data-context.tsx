@@ -11,6 +11,7 @@ import {
 	useMemo,
 } from '@wordpress/element';
 import { objectHasProp } from '@woocommerce/types';
+import { STORE_KEY as PAYMENT_METHOD_DATA_STORE_KEY } from '@woocommerce/block-data';
 import { useDispatch } from '@wordpress/data';
 
 /**
@@ -91,6 +92,10 @@ export const PaymentMethodDataProvider = ( {
 	const [ paymentData, dispatch ] = useReducer(
 		reducer,
 		DEFAULT_PAYMENT_DATA_CONTEXT_STATE
+	);
+
+	const { setPaymentStatus: setDataStorePaymentStatus } = useDispatch(
+		PAYMENT_METHOD_DATA_STORE_KEY
 	);
 
 	const {
@@ -232,6 +237,7 @@ export const PaymentMethodDataProvider = ( {
 			! currentStatus.isFinished
 		) {
 			setPaymentStatus().processing();
+			setDataStorePaymentStatus( STATUS.PROCESSING );
 		}
 	}, [
 		checkoutIsProcessing,
@@ -245,6 +251,7 @@ export const PaymentMethodDataProvider = ( {
 	useEffect( () => {
 		if ( checkoutIsIdle && ! currentStatus.isSuccessful ) {
 			setPaymentStatus().pristine();
+			setDataStorePaymentStatus( STATUS.PRISTINE );
 		}
 	}, [ checkoutIsIdle, currentStatus.isSuccessful, setPaymentStatus ] );
 
@@ -252,6 +259,7 @@ export const PaymentMethodDataProvider = ( {
 	useEffect( () => {
 		if ( checkoutHasError && currentStatus.isSuccessful ) {
 			setPaymentStatus().pristine();
+			setDataStorePaymentStatus( STATUS.PRISTINE );
 		}
 	}, [ checkoutHasError, currentStatus.isSuccessful, setPaymentStatus ] );
 
@@ -286,6 +294,7 @@ export const PaymentMethodDataProvider = ( {
 						successResponse?.meta?.billingData,
 						successResponse?.meta?.shippingData
 					);
+					setDataStorePaymentStatus( STATUS.SUCCESS );
 				} else if ( errorResponse && isFailResponse( errorResponse ) ) {
 					if (
 						errorResponse.message &&
