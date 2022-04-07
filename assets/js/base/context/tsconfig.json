@@ -11,7 +11,7 @@
 		"../../data/",
 		"../../types/",
 		"../components",
-		"../../blocks/shared/payment-methods"
+		"../../blocks/cart-checkout-shared/payment-methods"
 	],
 	"exclude": [ "**/test/**" ]
 }
