@@ -30,6 +30,10 @@ export const getAvailableExpressPaymentMethods = (
 	return state.availableExpressPaymentMethods;
 };
 
+export const getPaymentMethodData = ( state: PaymentMethodDataState ) => {
+	return state.paymentMethodData;
+};
+
 export const shouldSavePaymentMethod = ( state: PaymentMethodDataState ) => {
 	return state.shouldSavePaymentMethod;
 };
