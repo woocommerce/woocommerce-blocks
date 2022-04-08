@@ -3,6 +3,7 @@
  * External dependencies
  */
 import { setup as setupPuppeteer } from 'jest-environment-puppeteer';
+const { truncateSync, existsSync } = require( 'fs' );
 /**
  * Internal dependencies
  */
@@ -20,6 +21,7 @@ import {
 	enablePaymentGateways,
 	createProductAttributes,
 } from '../fixtures/fixture-loaders';
+import { PERFORMANCE_REPORT_FILENAME } from '../../utils/constants';
 
 module.exports = async ( globalConfig ) => {
 	// we need to load puppeteer global setup here.
@@ -63,6 +65,11 @@ module.exports = async ( globalConfig ) => {
 		products.forEach( async ( productId ) => {
 			await createReviews( productId );
 		} );
+
+		// Wipe the performance e2e file at the start of every run
+		if ( existsSync( PERFORMANCE_REPORT_FILENAME ) ) {
+			truncateSync( PERFORMANCE_REPORT_FILENAME );
+		}
 
 		global.fixtureData = {
 			taxes,
