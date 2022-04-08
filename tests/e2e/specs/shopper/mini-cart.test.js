@@ -12,7 +12,13 @@ import {
 /**
  * Internal dependencies
  */
+import { useTheme } from '../../utils';
+
+/**
+ * Internal dependencies
+ */
 import { shopper } from '../../../utils';
+import { merchant } from '../../../utils/merchant';
 import { getTextContent } from '../../page-utils';
 
 const block = {
@@ -557,6 +563,81 @@ describe( 'Shopper → Mini Cart', () => {
 			await expect( page ).toMatchElement( 'h1', { text: 'Checkout' } );
 
 			await expect( page ).toMatch( productTitle );
+		} );
+	} );
+
+	describe( 'Translated Mini Cart', () => {
+		beforeAll( async () => {
+			await merchant.changeLanguage( 'nl_NL' );
+			await shopper.block.emptyCart();
+		} );
+
+		afterAll( async () => {
+			await merchant.changeLanguage( '' );
+		} );
+
+		describe( 'Classic Themes', () => {
+			useTheme( 'storefront' );
+
+			afterAll( async () => {
+				await shopper.block.emptyCart();
+			} );
+
+			it( 'Empty Mini Cart', async () => {
+				await clickMiniCartButton();
+
+				await expect( page ).toMatchElement(
+					'.wc-block-mini-cart__drawer',
+					{
+						text: 'Begin met winkelen',
+					}
+				);
+			} );
+
+			it( 'Filled Mini Cart', async () => {
+				await page.click(
+					'.wc-block-grid__product:first-child .add_to_cart_button'
+				);
+
+				await expect( page ).toMatchElement(
+					'.wc-block-mini-cart__title',
+					{
+						text: 'Je winkelwagen (1 stuk)',
+					}
+				);
+			} );
+		} );
+
+		describe( 'Block Themes', () => {
+			useTheme( 'twentytwentytwo' );
+
+			afterAll( async () => {
+				await shopper.block.emptyCart();
+			} );
+
+			it( 'Empty Mini Cart', async () => {
+				await clickMiniCartButton();
+
+				await expect( page ).toMatchElement(
+					'.wc-block-mini-cart__drawer',
+					{
+						text: 'Begin met winkelen',
+					}
+				);
+			} );
+
+			it( 'Filled Mini Cart', async () => {
+				await page.click(
+					'.wc-block-grid__product:first-child .add_to_cart_button'
+				);
+
+				await expect( page ).toMatchElement(
+					'.wc-block-mini-cart__title',
+					{
+						text: 'Je winkelwagen (1 stuk)',
+					}
+				);
+			} );
 		} );
 	} );
 } );
