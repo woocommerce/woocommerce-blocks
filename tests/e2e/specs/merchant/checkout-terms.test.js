@@ -22,7 +22,7 @@ import {
 	reactivateCompatibilityNotice,
 } from '../../../utils';
 import {
-	SHIPPING_DETAILS,
+	BILLING_DETAILS,
 	SIMPLE_VIRTUAL_PRODUCT_NAME,
 } from '../../../utils/constants';
 
@@ -75,7 +75,7 @@ describe( 'Merchant → Checkout → Can adjust T&S and Privacy Policy options',
 		await shopper.goToShop();
 		await shopper.addToCartFromShopPage( SIMPLE_VIRTUAL_PRODUCT_NAME );
 		await shopper.block.goToCheckout();
-		await shopper.block.fillShippingDetails( SHIPPING_DETAILS );
+		await shopper.block.fillBillingDetails( BILLING_DETAILS );
 
 		// Placing an order now, must lead to an error.
 		await page.click( '.wc-block-components-checkout-place-order-button' );
