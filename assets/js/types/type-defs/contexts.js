@@ -1,3 +1,5 @@
+// Disabling eslint here as we are moving to typescript and this file will soon be redundant
+/* eslint-disable jsdoc/valid-types */
 /**
  * @typedef {import('./billing').BillingData} BillingData
  * @typedef {import('./cart').CartShippingOption} CartShippingOption

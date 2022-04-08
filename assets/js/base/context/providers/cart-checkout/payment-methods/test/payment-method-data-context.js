@@ -260,8 +260,11 @@ describe( 'Testing Payment Method Data Context Provider with saved cards turned 
 			const activePaymentMethod = screen.queryByText(
 				/Active Payment Method: credit-card/
 			);
-			const creditCardToken = screen.queryByText( /credit-card token/ );
 			expect( activePaymentMethod ).not.toBeNull();
+		} );
+
+		await waitFor( () => {
+			const creditCardToken = screen.queryByText( /credit-card token/ );
 			expect( creditCardToken ).not.toBeNull();
 		} );
 
@@ -274,26 +277,28 @@ describe( 'Testing Payment Method Data Context Provider with saved cards turned 
 			const activePaymentMethod = screen.queryByText(
 				/Active Payment Method: express-payment/
 			);
-			const creditCardToken = screen.queryByText( /credit-card token/ );
 			expect( activePaymentMethod ).not.toBeNull();
+		} );
+
+		await waitFor( () => {
+			const creditCardToken = screen.queryByText( /credit-card token/ );
 			expect( creditCardToken ).toBeNull();
 		} );
 
-		act( () => {
-			// Express payment method closed.
-			userEvent.click(
-				screen.getByText(
-					'express-payment express payment method close'
-				)
-			);
-		} );
+		// Express payment method closed.
+		userEvent.click(
+			screen.getByText( 'express-payment express payment method close' )
+		);
 
 		await waitFor( () => {
 			const activePaymentMethod = screen.queryByText(
 				/Active Payment Method: credit-card/
 			);
-			const creditCardToken = screen.queryByText( /credit-card token/ );
 			expect( activePaymentMethod ).not.toBeNull();
+		} );
+
+		await waitFor( () => {
+			const creditCardToken = screen.queryByText( /credit-card token/ );
 			expect( creditCardToken ).not.toBeNull();
 		} );
 	} );
