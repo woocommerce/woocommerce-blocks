@@ -21,6 +21,13 @@ class ProductImage extends AbstractBlock {
 	protected $api_version = '2';
 
 	/**
+	 * Manually register the i18n dependency for the frontend block script.
+	 *
+	 * @var boolean
+	 */
+	protected $script_has_i18n = true;
+
+	/**
 	 * Get block supports. Shared with the frontend.
 	 * IMPORTANT: If you change anything here, make sure to update the JS file too.
 	 *
@@ -45,15 +52,5 @@ class ProductImage extends AbstractBlock {
 			),
 			'__experimentalSelector' => '.wc-block-components-product-image',
 		);
-	}
-
-	/**
-	 * Register script and style assets for the block type before it is registered.
-	 *
-	 * This registers the scripts; it does not enqueue them.
-	 */
-	protected function register_block_type_assets() {
-		parent::register_block_type_assets();
-		$this->register_chunk_translations( [ $this->block_name ] );
 	}
 }

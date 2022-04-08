@@ -55,6 +55,20 @@ abstract class AbstractBlock {
 	protected $integration_registry;
 
 	/**
+	 * Manually register the i18n dependency for the frontend block script.
+	 *
+	 * @var boolean
+	 */
+	protected $script_has_i18n = false;
+
+	/**
+	 * Manually register the i18n dependency for the editor block script.
+	 *
+	 * @var boolean
+	 */
+	protected $editor_script_has_i18n = false;
+
+	/**
 	 * Constructor.
 	 *
 	 * @param AssetApi            $asset_api Instance of the asset API.
@@ -132,7 +146,7 @@ abstract class AbstractBlock {
 					$this->get_block_type_editor_script( 'dependencies' ),
 					$this->integration_registry->get_all_registered_editor_script_handles()
 				),
-				$has_i18n
+				$has_i18n || $this->editor_script_has_i18n
 			);
 		}
 		if ( null !== $this->get_block_type_script() ) {
@@ -146,7 +160,7 @@ abstract class AbstractBlock {
 					$this->get_block_type_script( 'dependencies' ),
 					$this->integration_registry->get_all_registered_script_handles()
 				),
-				$has_i18n
+				$has_i18n || $this->script_has_i18n
 			);
 		}
 	}
