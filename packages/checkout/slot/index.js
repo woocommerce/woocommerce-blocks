@@ -2,13 +2,13 @@
  * External dependencies
  */
 import deprecated from '@wordpress/deprecated';
+import { CURRENT_USER_IS_ADMIN } from '@woocommerce/settings';
+import { Children, cloneElement } from '@wordpress/element';
 import {
 	createSlotFill as baseCreateSlotFill,
 	__experimentalUseSlot,
-	useSlot as __useSlot,
+	useSlot as __useSlot, //eslint-disable-line
 } from 'wordpress-components';
-import { CURRENT_USER_IS_ADMIN } from '@woocommerce/settings';
-import { Children, cloneElement } from '@wordpress/element';
 
 /**
  * Internal dependencies

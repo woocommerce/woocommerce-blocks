@@ -1,7 +1,7 @@
 /**
  * External dependencies
  */
-import { NumberFormatValues } from 'react-number-format';
+import type { NumberFormatValues } from 'react-number-format';
 
 /**
   Check if that the value is minor than the max price and greater than 0.
