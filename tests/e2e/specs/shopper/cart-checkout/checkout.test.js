@@ -255,7 +255,6 @@ describe( 'Shopper → Checkout', () => {
 			await shopper.goToShop();
 			await shopper.addToCartFromShopPage( SIMPLE_VIRTUAL_PRODUCT_NAME );
 			await shopper.block.goToCheckout();
-			await page.waitForTimeout( 60000 );
 			await shopper.block.applyCouponFromCheckout( coupon.code );
 
 			const discountBlockSelector =
