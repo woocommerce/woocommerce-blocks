@@ -4,19 +4,32 @@
 import { SnackbarList } from 'wordpress-components';
 import classnames from 'classnames';
 import { __experimentalApplyCheckoutFilter } from '@woocommerce/blocks-checkout';
+import { useDispatch, useSelect } from '@wordpress/data';
+
+/**
+ * Internal dependencies
+ */
+import { useEditorContext } from '../../editor-context';
 
 const EMPTY_SNACKBAR_NOTICES = {};
 
-const SnackbarNoticesContainer = ( {
+export const SnackbarNoticesContainer = ( {
 	className,
-	notices,
-	removeNotice,
-	isEditor,
+	context = 'default',
 } ) => {
+	const { isEditor } = useEditorContext();
+
 	if ( isEditor ) {
 		return null;
 	}
 
+	const { notices } = useSelect( ( select ) => {
+		const store = select( 'core/notices' );
+		return {
+			notices: store.getNotices( context ),
+		};
+	} );
+	const { removeNotice } = useDispatch( 'core/notices' );
 	const snackbarNotices = notices.filter(
 		( notice ) => notice.type === 'snackbar'
 	);
@@ -51,5 +64,3 @@ const SnackbarNoticesContainer = ( {
 		/>
 	);
 };
-
-export default SnackbarNoticesContainer;

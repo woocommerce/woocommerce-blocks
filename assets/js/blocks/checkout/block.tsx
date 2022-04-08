@@ -12,8 +12,8 @@ import {
 	CheckoutProvider,
 } from '@woocommerce/base-context';
 import {
-	StoreSnackbarNoticesProvider,
 	StoreNoticesContainer,
+	SnackbarNoticesContainer,
 } from '@woocommerce/base-context/providers';
 import BlockErrorBoundary from '@woocommerce/base-components/block-error-boundary';
 import { SidebarLayout } from '@woocommerce/base-components/sidebar-layout';
@@ -170,7 +170,7 @@ const Block = ( {
 			) }
 			showErrorMessage={ CURRENT_USER_IS_ADMIN }
 		>
-			<StoreSnackbarNoticesProvider context="wc/checkout">
+			<SnackbarNoticesContainer context="wc/checkout">
 				<StoreNoticesProvider>
 					<StoreNoticesContainer context="wc/checkout" />
 					<ValidationContextProvider>
@@ -197,7 +197,7 @@ const Block = ( {
 						</SlotFillProvider>
 					</ValidationContextProvider>
 				</StoreNoticesProvider>
-			</StoreSnackbarNoticesProvider>
+			</SnackbarNoticesContainer>
 		</BlockErrorBoundary>
 	);
 };
