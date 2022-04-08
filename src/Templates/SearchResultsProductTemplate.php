@@ -9,7 +9,7 @@ namespace Automattic\WooCommerce\Blocks\Templates;
 class SearchResultsProductTemplate {
 
 	const SLUG        = 'search-results-product';
-	const TITLE       = 'Search Results Product';
+	const TITLE       = 'Product Search Results';
 	const DESCRIPTION = 'Template used to display search results for products';
 
 	/**
