@@ -80,11 +80,14 @@ describe( 'Merchant → Checkout → Can adjust T&S and Privacy Policy options',
 		// Placing an order now, must lead to an error.
 		await page.click( '.wc-block-components-checkout-place-order-button' );
 
-		const termsCheckbox = container.querySelector(
+		const termsCheckbox = await page.$(
 			'.wp-block-woocommerce-checkout-terms-block div'
 		);
-		await expect( termsCheckbox ).toHaveClass( 'has-error' );
-		await setCheckbox( 'terms-and-conditions' );
+		const termsCheckboxClassList = (
+			await ( await termsCheckbox.getProperty( 'className' ) ).jsonValue()
+		 ).split( ' ' );
+		expect( termsCheckboxClassList ).toContain( 'has-error' );
+		await setCheckbox( '#terms-and-conditions' );
 
 		// Placing an order now, must succeed.
 		await shopper.block.placeOrder();
