@@ -4,18 +4,16 @@
 import { __ } from '@wordpress/i18n';
 import { cart } from '@woocommerce/icons';
 import { Icon } from '@wordpress/icons';
-import { registerFeaturePluginBlockType } from '@woocommerce/block-settings';
+import { registerBlockType, BlockConfiguration } from '@wordpress/blocks';
 
 /**
  * Internal dependencies
  */
-import edit, { Save as save } from './edit';
-import { blockName } from './attributes';
-import './inner-blocks';
+import edit from './edit';
 
-const settings = {
+const settings: BlockConfiguration = {
 	apiVersion: 2,
-	title: __( 'Mini Cart Contents', 'woo-gutenberg-products-block' ),
+	title: __( 'Mini Cart', 'woo-gutenberg-products-block' ),
 	icon: {
 		src: (
 			<Icon
@@ -31,13 +29,13 @@ const settings = {
 		'woo-gutenberg-products-block'
 	),
 	supports: {
-		align: false,
 		html: false,
 		multiple: false,
-		reusable: false,
-		inserter: false,
-		color: {
-			link: true,
+		color: true,
+	},
+	example: {
+		attributes: {
+			isPreview: true,
 		},
 	},
 	attributes: {
@@ -46,21 +44,17 @@ const settings = {
 			default: false,
 			save: false,
 		},
-		lock: {
-			type: 'object',
-			default: {
-				remove: true,
-				move: true,
-			},
+		addToCartBehaviour: {
+			type: 'string',
+			default: 'none',
 		},
 	},
-	example: {
-		attributes: {
-			isPreview: true,
-		},
-	},
+
 	edit,
-	save,
+
+	save() {
+		return null;
+	},
 };
 
-registerFeaturePluginBlockType( blockName, settings );
+registerBlockType( 'woocommerce/mini-cart', settings );
