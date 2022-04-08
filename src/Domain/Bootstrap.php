@@ -12,6 +12,7 @@ use Automattic\WooCommerce\Blocks\Domain\Services\FeatureGating;
 use Automattic\WooCommerce\Blocks\Domain\Services\GoogleAnalytics;
 use Automattic\WooCommerce\Blocks\InboxNotifications;
 use Automattic\WooCommerce\Blocks\Installer;
+use Automattic\WooCommerce\Blocks\Templates\SearchResultsProductTemplate;
 use Automattic\WooCommerce\Blocks\Payments\Api as PaymentsApi;
 use Automattic\WooCommerce\Blocks\Payments\Integrations\BankTransfer;
 use Automattic\WooCommerce\Blocks\Payments\Integrations\CashOnDelivery;
@@ -95,6 +96,7 @@ class Bootstrap {
 		$this->container->get( GoogleAnalytics::class );
 		$this->container->get( BlockTypesController::class );
 		$this->container->get( BlockTemplatesController::class );
+		$this->container->get( SearchResultsProductTemplate::class );
 		if ( $this->package->feature()->is_feature_plugin_build() ) {
 			$this->container->get( PaymentsApi::class );
 		}
@@ -219,6 +221,12 @@ class Bootstrap {
 			BlockTemplatesController::class,
 			function () {
 				return new BlockTemplatesController();
+			}
+		);
+		$this->container->register(
+			SearchResultsProductTemplate::class,
+			function () {
+				return new SearchResultsProductTemplate();
 			}
 		);
 		$this->container->register(
