@@ -45,7 +45,7 @@ describe( 'Merchant → Checkout → Can adjust T&S and Privacy Policy options',
 		await expect( page ).toMatch( 'Terms & Privacy pages teared down.' );
 	} );
 
-	it( 'Merchant can see T&S and Privacy Policy links without checkbox', async () => {
+	it.skip( 'Merchant can see T&S and Privacy Policy links without checkbox', async () => {
 		await shopper.goToShop();
 		await shopper.addToCartFromShopPage( SIMPLE_VIRTUAL_PRODUCT_NAME );
 		await shopper.block.goToCheckout();
@@ -56,7 +56,7 @@ describe( 'Merchant → Checkout → Can adjust T&S and Privacy Policy options',
 		await expect( page ).toMatch( 'Order received' );
 	} );
 
-	it.skip( 'Merchant can see T&S and Privacy Policy links with checkbox', async () => {
+	it( 'Merchant can see T&S and Privacy Policy links with checkbox', async () => {
 		// Activate checkboxes for T&S and Privacy Policy links.
 		await preventCompatibilityNotice();
 		await merchant.login();
@@ -97,7 +97,7 @@ describe( 'Merchant → Checkout → Can adjust T&S and Privacy Policy options',
 		await visitBlockPage( 'Checkout Block' );
 		await openDocumentSettingsSidebar();
 		await selectBlockByName( 'woocommerce/checkout-terms-block' );
-		await unsetCheckbox( companyCheckboxId );
+		await unsetCheckbox( termsCheckboxId );
 		await saveOrPublish();
 		await merchant.logout();
 		await reactivateCompatibilityNotice();
