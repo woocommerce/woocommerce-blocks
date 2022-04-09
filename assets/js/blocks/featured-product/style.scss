@@ -4,6 +4,19 @@
 	color: #fff;
 	overflow: hidden;
 	box-sizing: border-box;
+
+	.components-resizable-box__container {
+		position: absolute !important;
+		top: 0;
+		left: 0;
+		right: 0;
+		bottom: 0;
+		min-height: 50px;
+
+		&:not(.is-resizing) {
+			height: auto !important;
+		}
+	}
 }
 
 .wc-block-featured-product {

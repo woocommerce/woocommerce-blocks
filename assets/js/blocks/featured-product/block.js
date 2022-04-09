@@ -3,6 +3,7 @@
 /**
  * External dependencies
  */
+import { useCallback, useState } from 'react';
 import { __ } from '@wordpress/i18n';
 import {
 	AlignmentToolbar,
@@ -33,7 +34,6 @@ import { Component } from '@wordpress/element';
 import { compose, createHigherOrderComponent } from '@wordpress/compose';
 import { isEmpty } from 'lodash';
 import PropTypes from 'prop-types';
-import { getSetting } from '@woocommerce/settings';
 import ProductControl from '@woocommerce/editor-components/product-control';
 import ErrorPlaceholder from '@woocommerce/editor-components/error-placeholder';
 import TextToolbarButton from '@woocommerce/editor-components/text-toolbar-button';
@@ -48,6 +48,36 @@ import {
 	getImageSrcFromProduct,
 	getImageIdFromProduct,
 } from '../../utils/products';
+import { useThrottle } from '../../utils/useThrottle';
+
+const ConstrainedResizable = ( { className = '', onResize, ...props } ) => {
+	const [ isResizing, setIsResizing ] = useState( false );
+
+	const classNames = classnames( className, {
+		'is-resizing': isResizing,
+	} );
+	const throttledResize = useThrottle(
+		( event, direction, elt ) => {
+			if ( ! isResizing ) setIsResizing( true );
+			onResize( event, direction, elt );
+		},
+		50,
+		{ leading: true }
+	);
+
+	return (
+		<ResizableBox
+			className={ classNames }
+			enable={ { bottom: true } }
+			onResize={ throttledResize }
+			onResizeStop={ ( ...args ) => {
+				onResize( ...args );
+				setIsResizing( false );
+			} }
+			{ ...props }
+		/>
+	);
+};
 
 /**
  * Component to handle edit mode of "Featured Product".
@@ -75,6 +105,12 @@ const FeaturedProduct = ( {
 	triggerUrlUpdate = () => void null,
 } ) => {
 	const { gradientValue } = useGradient();
+	const onResize = useCallback(
+		( _event, _direction, elt ) => {
+			setAttributes( { minHeight: parseInt( elt.style.height, 10 ) } );
+		},
+		[ setAttributes ]
+	);
 
 	const renderApiError = () => (
 		<ErrorPlaceholder
@@ -195,96 +231,106 @@ const FeaturedProduct = ( {
 		const focalPointPickerExists = typeof FocalPointPicker === 'function';
 
 		return (
-			<InspectorControls key="inspector">
-				<PanelBody
-					title={ __( 'Content', 'woo-gutenberg-products-block' ) }
-				>
-					<ToggleControl
-						label={ __(
-							'Show description',
+			<>
+				<InspectorControls key="inspector">
+					<PanelBody
+						title={ __(
+							'Content',
 							'woo-gutenberg-products-block'
 						) }
-						checked={ attributes.showDesc }
-						onChange={ () =>
-							setAttributes( { showDesc: ! attributes.showDesc } )
-						}
-					/>
-					<ToggleControl
-						label={ __(
-							'Show price',
-							'woo-gutenberg-products-block'
-						) }
-						checked={ attributes.showPrice }
-						onChange={ () =>
-							setAttributes( {
-								showPrice: ! attributes.showPrice,
-							} )
-						}
-					/>
-				</PanelBody>
-				{ !! url && (
-					<>
-						{ focalPointPickerExists && (
-							<PanelBody
-								title={ __(
-									'Media settings',
-									'woo-gutenberg-products-block'
-								) }
-							>
-								<FocalPointPicker
-									label={ __(
-										'Focal Point Picker',
-										'woo-gutenberg-products-block'
-									) }
-									url={ url }
-									value={ focalPoint }
-									onChange={ ( value ) =>
-										setAttributes( { focalPoint: value } )
-									}
-								/>
-							</PanelBody>
-						) }
-						<PanelColorGradientSettings
-							__experimentalHasMultipleOrigins
-							__experimentalIsRenderedInSidebar
-							title={ __(
-								'Overlay',
+					>
+						<ToggleControl
+							label={ __(
+								'Show description',
 								'woo-gutenberg-products-block'
 							) }
-							initialOpen={ true }
-							settings={ [
-								{
-									gradientValue,
-									colorValue: attributes.overlayColor,
-									onColorChange: ( overlayColor ) =>
-										setAttributes( { overlayColor } ),
-									onGradientChange: ( overlayGradient ) =>
-										setAttributes( { overlayGradient } ),
-									label: __(
-										'Color',
+							checked={ attributes.showDesc }
+							onChange={ () =>
+								setAttributes( {
+									showDesc: ! attributes.showDesc,
+								} )
+							}
+						/>
+						<ToggleControl
+							label={ __(
+								'Show price',
+								'woo-gutenberg-products-block'
+							) }
+							checked={ attributes.showPrice }
+							onChange={ () =>
+								setAttributes( {
+									showPrice: ! attributes.showPrice,
+								} )
+							}
+						/>
+					</PanelBody>
+					{ !! url && (
+						<>
+							{ focalPointPickerExists && (
+								<PanelBody
+									title={ __(
+										'Media settings',
 										'woo-gutenberg-products-block'
-									),
-								},
-							] }
-						>
-							<RangeControl
-								label={ __(
-									'Opacity',
+									) }
+								>
+									<FocalPointPicker
+										label={ __(
+											'Focal Point Picker',
+											'woo-gutenberg-products-block'
+										) }
+										url={ url }
+										value={ focalPoint }
+										onChange={ ( value ) =>
+											setAttributes( {
+												focalPoint: value,
+											} )
+										}
+									/>
+								</PanelBody>
+							) }
+							<PanelColorGradientSettings
+								__experimentalHasMultipleOrigins
+								__experimentalIsRenderedInSidebar
+								title={ __(
+									'Overlay',
 									'woo-gutenberg-products-block'
 								) }
-								value={ attributes.dimRatio }
-								onChange={ ( dimRatio ) =>
-									setAttributes( { dimRatio } )
-								}
-								min={ 0 }
-								max={ 100 }
-								step={ 10 }
-								required
-							/>
-						</PanelColorGradientSettings>
-					</>
-				) }
-			</InspectorControls>
+								initialOpen={ true }
+								settings={ [
+									{
+										gradientValue,
+										colorValue: attributes.overlayColor,
+										onColorChange: ( overlayColor ) =>
+											setAttributes( { overlayColor } ),
+									onGradientChange: ( overlayGradient ) =>
+										setAttributes( { overlayGradient } ),
+										label: __(
+											'Color',
+											'woo-gutenberg-products-block'
+										),
+									},
+								] }
+							>
+								<RangeControl
+									label={ __(
+										'Opacity',
+										'woo-gutenberg-products-block'
+									) }
+									value={ attributes.dimRatio }
+									onChange={ ( dimRatio ) =>
+										setAttributes( { dimRatio } )
+									}
+									min={ 0 }
+									max={ 100 }
+									step={ 10 }
+									required
+								/>
+							</PanelColorGradientSettings>
+						</>
+					) }
+				</InspectorControls>
+				<InspectorControls __experimentalGroup="dimensions"></InspectorControls>
+			</>
 		);
 	};
 
@@ -293,8 +339,8 @@ const FeaturedProduct = ( {
 			contentAlign,
 			dimRatio,
 			focalPoint,
-			height,
 			mediaSrc,
+			minHeight,
 			overlayColor,
 			overlayGradient,
 			showDesc,
@@ -313,7 +359,10 @@ const FeaturedProduct = ( {
 			contentAlign !== 'center' && `has-${ contentAlign }-content`
 		);
 
-		const wrapperStyle = getSpacingClassesAndStyles( attributes ).style;
+		const wrapperStyle = {
+			...getSpacingClassesAndStyles( attributes ).style,
+			minHeight,
+		};
 
 		const backgroundImageSrc =
 			mediaSrc || getImageSrcFromProduct( product );
@@ -327,67 +376,65 @@ const FeaturedProduct = ( {
 			backgroundColor: overlayColor,
 		};
 
-		const onResizeStop = ( event, direction, elt ) => {
-			setAttributes( { height: parseInt( elt.style.height, 10 ) } );
-		};
-
 		return (
-			<ResizableBox
-				className={ classes }
-				size={ { height } }
-				minHeight={ getSetting( 'min_height', 500 ) }
-				enable={ { bottom: true } }
-				onResizeStop={ onResizeStop }
-			>
-				<div
-					className="wc-block-featured-product__wrapper"
-					style={ wrapperStyle }
-				>
+			<>
+				<ConstrainedResizable
+					enable={ { bottom: true } }
+					onResize={ onResize }
+					showHandle={ isSelected }
+					style={ { minHeight } }
+				/>
+				<div className={ classes }>
 					<div
-						className="wc-block-featured-product__overlay"
-						style={ overlayStyle }
-					/>
-					<img
-						alt={ product.short_description }
-						className="wc-block-featured-product__background-image"
-						src={ backgroundImageSrc }
-						style={ backgroundImageStyle }
-					/>
-					<h2
-						className="wc-block-featured-product__title"
-						dangerouslySetInnerHTML={ {
-							__html: product.name,
-						} }
-					/>
-					{ ! isEmpty( product.variation ) && (
-						<h3
-							className="wc-block-featured-product__variation"
-							dangerouslySetInnerHTML={ {
-								__html: product.variation,
-							} }
-						/>
-					) }
-					{ showDesc && (
+						className="wc-block-featured-product__wrapper"
+						style={ wrapperStyle }
+					>
 						<div
-							className="wc-block-featured-product__description"
+							className="wc-block-featured-product__overlay"
+							style={ overlayStyle }
+						/>
+						<img
+							alt={ product.short_description }
+							className="wc-block-featured-product__background-image"
+							src={ backgroundImageSrc }
+							style={ backgroundImageStyle }
+						/>
+						<h2
+							className="wc-block-featured-product__title"
 							dangerouslySetInnerHTML={ {
-								__html: product.short_description,
+								__html: product.name,
 							} }
 						/>
-					) }
-					{ showPrice && (
-						<div
-							className="wc-block-featured-product__price"
-							dangerouslySetInnerHTML={ {
-								__html: product.price_html,
-							} }
-						/>
-					) }
-					<div className="wc-block-featured-product__link">
-						{ renderButton() }
+						{ ! isEmpty( product.variation ) && (
+							<h3
+								className="wc-block-featured-product__variation"
+								dangerouslySetInnerHTML={ {
+									__html: product.variation,
+								} }
+							/>
+						) }
+						{ showDesc && (
+							<div
+								className="wc-block-featured-product__description"
+								dangerouslySetInnerHTML={ {
+									__html: product.short_description,
+								} }
+							/>
+						) }
+						{ showPrice && (
+							<div
+								className="wc-block-featured-product__price"
+								dangerouslySetInnerHTML={ {
+									__html: product.price_html,
+								} }
+							/>
+						) }
+						<div className="wc-block-featured-product__link">
+							{ renderButton() }
+						</div>
 					</div>
 				</div>
-			</ResizableBox>
+			</>
 		);
 	};
 
