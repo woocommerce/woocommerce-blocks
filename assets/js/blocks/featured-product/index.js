@@ -120,6 +120,20 @@ registerBlockType( 'woocommerce/featured-product', {
 		},
 
 		/**
+		 * A minimum height for the block.
+		 *
+		 * Note: if padding is increased, this way the inner content will never
+		 * overflow, but instead will resize the container.
+		 *
+		 * It was decided to change this to make this block more in line with
+		 * the “Cover” block.
+		 */
+		minHeight: {
+			type: 'number',
+			default: getSetting( 'default_height', 500 ),
+		},
+
+		/**
 		 * Text for the product link.
 		 */
 		linkText: {
