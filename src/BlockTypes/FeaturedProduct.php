@@ -24,7 +24,8 @@ class FeaturedProduct extends AbstractDynamicBlock {
 		'contentAlign' => 'center',
 		'dimRatio'     => 50,
 		'focalPoint'   => false,
-		'height'       => false,
+		'imageFit'     => 'none',
+		'minHeight'    => false,
 		'mediaId'      => 0,
 		'mediaSrc'     => '',
 		'showDesc'     => true,
@@ -127,6 +128,8 @@ class FeaturedProduct extends AbstractDynamicBlock {
 			$image_size = 'full';
 		}
 
+		$style .= sprintf( 'object-fit: %s;', $attributes['imageFit'] );
+
 		if ( $attributes['mediaId'] ) {
 			$image = wp_get_attachment_image_url( $attributes['mediaId'], $image_size );
 		} else {
@@ -182,8 +185,8 @@ class FeaturedProduct extends AbstractDynamicBlock {
 	public function get_styles( $attributes ) {
 		$style = '';
 
-		if ( isset( $attributes['height'] ) ) {
-			$style .= sprintf( 'min-height:%dpx;', intval( $attributes['height'] ) );
+		if ( isset( $attributes['minHeight'] ) ) {
+			$style .= sprintf( 'min-height:%dpx;', intval( $attributes['minHeight'] ) );
 		}
 
 		$global_style_style = StyleAttributesUtils::get_styles_by_attributes( $attributes, $this->global_style_wrapper );
