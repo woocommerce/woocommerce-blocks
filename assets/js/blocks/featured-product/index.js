@@ -46,7 +46,12 @@ registerBlockType( 'woocommerce/featured-product', {
 		},
 		spacing: {
 			padding: true,
-			__experimentalSkipSerialization: true,
+			...( isFeaturePluginBuild() && {
+				__experimentalDefaultControls: {
+					padding: true,
+				},
+				__experimentalSkipSerialization: true,
+			} ),
 		},
 		...( isFeaturePluginBuild() && {
 			__experimentalBorder: {
