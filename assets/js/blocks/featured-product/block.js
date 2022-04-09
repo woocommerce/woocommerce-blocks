@@ -35,6 +35,7 @@ import { compose, createHigherOrderComponent } from '@wordpress/compose';
 import { isEmpty } from 'lodash';
 import PropTypes from 'prop-types';
 import ProductControl from '@woocommerce/editor-components/product-control';
+import ToggleButtonControl from '@woocommerce/editor-components/toggle-button-control';
 import ErrorPlaceholder from '@woocommerce/editor-components/error-placeholder';
 import TextToolbarButton from '@woocommerce/editor-components/text-toolbar-button';
 import { withProduct } from '@woocommerce/block-hocs';
@@ -273,6 +274,51 @@ const FeaturedProduct = ( {
 										'woo-gutenberg-products-block'
 									) }
 								>
+									<ToggleButtonControl
+										help={
+											<>
+												<p>
+													{ __(
+														'Choose “Cover” if you want the image to scale automatically to always fit its container.',
+														'woo-gutenberg-products-block'
+													) }
+												</p>
+												<p>
+													{ __(
+														'Note: by choosing “Cover” you will lose the ability to freely move the focal point precisely.',
+														'woo-gutenberg-products-block'
+													) }
+												</p>
+											</>
+										}
+										label={ __(
+											'Image fit',
+											'woo-gutenberg-products-block'
+										) }
+										value={ attributes.imageFit }
+										options={ [
+											{
+												label: __(
+													'None',
+													'woo-gutenberg-products-block'
+												),
+												value: 'none',
+											},
+											{
+												/* translators: "Cover" is a verb that indicates an image covering the entire container. */
+												label: __(
+													'Cover',
+													'woo-gutenberg-products-block'
+												),
+												value: 'cover',
+											},
+										] }
+										onChange={ ( value ) =>
+											setAttributes( {
+												imageFit: value,
+											} )
+										}
+									/>
 									<FocalPointPicker
 										label={ __(
 											'Focal Point Picker',
@@ -345,6 +391,7 @@ const FeaturedProduct = ( {
 			contentAlign,
 			dimRatio,
 			focalPoint,
+			imageFit,
 			mediaSrc,
 			minHeight,
 			overlayColor,
@@ -375,6 +422,7 @@ const FeaturedProduct = ( {
 
 		const backgroundImageStyle = {
 			...calculateBackgroundImagePosition( focalPoint ),
+			objectFit: imageFit,
 		};
 
 		const overlayStyle = {

@@ -96,11 +96,14 @@ registerBlockType( 'woocommerce/featured-product', {
 		},
 
 		/**
-		 * A fixed height for the block.
+		 * Whether the image should fit the container or not be resized
+		 *
+		 * Note: when the image is resized to fit the container, the user loses
+		 * the ability to have full control over the focus.
 		 */
-		height: {
-			type: 'number',
-			default: getSetting( 'default_height', 500 ),
+		imageFit: {
+			type: 'string',
+			default: 'none',
 		},
 
 		/**
