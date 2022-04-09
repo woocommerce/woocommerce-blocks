@@ -104,7 +104,7 @@ const FeaturedProduct = ( {
 	setAttributes,
 	triggerUrlUpdate = () => void null,
 } ) => {
-	const { gradientValue } = useGradient();
+	const { gradientValue, setGradient } = useGradient();
 	const onResize = useCallback(
 		( _event, _direction, elt ) => {
 			setAttributes( { minHeight: parseInt( elt.style.height, 10 ) } );
@@ -302,8 +302,14 @@ const FeaturedProduct = ( {
 										colorValue: attributes.overlayColor,
 										onColorChange: ( overlayColor ) =>
 											setAttributes( { overlayColor } ),
-									onGradientChange: ( overlayGradient ) =>
-										setAttributes( { overlayGradient } ),
+										onGradientChange: (
+											overlayGradient
+										) => {
+											setGradient( overlayGradient );
+											setAttributes( {
+												overlayGradient,
+											} );
+										},
 										label: __(
 											'Color',
 											'woo-gutenberg-products-block'
