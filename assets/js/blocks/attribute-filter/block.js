@@ -19,18 +19,19 @@ import isShallowEqual from '@wordpress/is-shallow-equal';
 import { decodeEntities } from '@wordpress/html-entities';
 import { Notice } from '@wordpress/components';
 import classNames from 'classnames';
-import { getSetting } from '@woocommerce/settings';
-import { addQueryArgs, removeQueryArgs } from '@wordpress/url';
+import { getSettingWithCoercion } from '@woocommerce/settings';
+import { getQueryArgs, removeQueryArgs } from '@wordpress/url';
+import { isBoolean } from '@woocommerce/types';
 
 /**
  * Internal dependencies
  */
-import { getUrlParameter } from '../../utils/filters';
 import { getAttributeFromID } from '../../utils/attributes';
 import { updateAttributeFilter } from '../../utils/attributes-query';
 import { previewAttributeObject, previewOptions } from './preview';
 import { useBorderProps } from '../../hooks/style-attributes';
 import './style.scss';
+import { formatParams, getActiveFilters, areAllFiltersRemoved } from './utils';
 
 /**
  * Formats filter values into a string for the URL parameters needed for filtering PHP templates.
@@ -40,28 +41,6 @@ import './style.scss';
  *
  * @return {string} New URL with query parameters in it.
  */
-function formatParams( url, params = [] ) {
-	const paramObject = {};
-
-	params.forEach( ( param ) => {
-		const { attribute, operator, slug } = param;
-
-		// Custom filters are prefix with `pa_` so we need to remove this.
-		const name = attribute.replace( 'pa_', '' );
-		const values = slug.join( ',' );
-		const queryType = `query_type_${ name }`;
-		const type = operator === 'or' ? 'in' : 'and';
-
-		// The URL parameter requires the prefix filter_ with the attribute name.
-		paramObject[ `filter_${ name }` ] = values;
-		paramObject[ queryType ] = type;
-	} );
-
-	// Clean the URL before we add our new query parameters to it.
-	const cleanUrl = removeQueryArgs( url, ...Object.keys( paramObject ) );
-
-	return addQueryArgs( cleanUrl, paramObject );
-}
 
 /**
  * Component displaying an attribute filter.
@@ -74,10 +53,12 @@ const AttributeFilterBlock = ( {
 	attributes: blockAttributes,
 	isEditor = false,
 } ) => {
-	const filteringForPhpTemplate = getSetting(
+	const filteringForPhpTemplate = getSettingWithCoercion(
 		'is_rendering_php_template',
-		''
+		false,
+		isBoolean
 	);
+
 	const [ hasSetPhpFilterDefaults, setHasSetPhpFilterDefaults ] = useState(
 		false
 	);
@@ -87,7 +68,10 @@ const AttributeFilterBlock = ( {
 			? previewAttributeObject
 			: getAttributeFromID( blockAttributes.attributeId );
 
-	const [ checked, setChecked ] = useState( [] );
+	const [ checked, setChecked ] = useState(
+		getActiveFilters( filteringForPhpTemplate, attributeObject )
+	);
+
 	const [ displayedOptions, setDisplayedOptions ] = useState(
 		blockAttributes.isPreview && ! blockAttributes.attributeId
 			? previewOptions
@@ -125,6 +109,10 @@ const AttributeFilterBlock = ( {
 		},
 		queryState: {
 			...queryState,
+			// The PHP template renders only the products with the visibility set to catalog
+			...( filteringForPhpTemplate && {
+				catalog_visibility: 'catalog',
+			} ),
 			attributes: filterAvailableTerms ? queryState.attributes : null,
 		},
 	} );
@@ -382,26 +370,31 @@ const AttributeFilterBlock = ( {
 	 */
 	useEffect( () => {
 		if ( filteringForPhpTemplate && attributeObject ) {
-			const defaultAttributeParam = getUrlParameter(
-				`filter_${ attributeObject.name }`
-			);
-			const defaultCheckedValue =
-				typeof defaultAttributeParam === 'string'
-					? defaultAttributeParam.split( ',' )
-					: [];
-
-			// When the component mounts let's set the active filters in state.
 			if (
-				defaultCheckedValue.length > 0 &&
-				checked.length === 0 &&
-				! hasSetPhpFilterDefaults
+				areAllFiltersRemoved( {
+					currentCheckedFilters: checked,
+					hasSetPhpFilterDefaults,
+				} )
 			) {
-				setChecked( defaultCheckedValue );
+				setChecked( [] );
+				const currentQueryArgs = Object.keys(
+					getQueryArgs( window.location.href )
+				);
+
+				const url = currentQueryArgs.reduce(
+					( currentUrl, queryArg ) =>
+						removeQueryArgs( currentUrl, queryArg ),
+					window.location.href
+				);
+
+				window.location.href = url;
 			}
 
+			setChecked( checked );
 			const newUrl = formatParams(
 				window.location.href,
-				productAttributesQuery
+				productAttributesQuery,
+				blockAttributes.queryType
 			);
 			if ( window.location.href !== newUrl ) {
 				window.location.href = newUrl;
@@ -410,9 +403,10 @@ const AttributeFilterBlock = ( {
 	}, [
 		filteringForPhpTemplate,
 		productAttributesQuery,
-		checked.length,
 		attributeObject,
 		hasSetPhpFilterDefaults,
+		checked,
+		blockAttributes.queryType,
 	] );
 
 	/**
