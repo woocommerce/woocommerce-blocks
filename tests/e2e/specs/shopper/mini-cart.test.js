@@ -584,8 +584,6 @@ describe( 'Shopper → Mini Cart', () => {
 		} );
 
 		describe( 'Classic Themes', () => {
-			useTheme( 'storefront' );
-
 			afterAll( async () => {
 				await shopper.block.emptyCart();
 			} );
