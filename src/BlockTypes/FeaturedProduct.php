@@ -68,7 +68,7 @@ class FeaturedProduct extends AbstractDynamicBlock {
 		}
 		$attributes = wp_parse_args( $attributes, $this->defaults );
 
-		$attributes['height'] = $attributes['height'] ? $attributes['height'] : wc_get_theme_support( 'featured_block::default_height', 500 );
+		$attributes['height'] = isset( $attributes['height'] ) ? $attributes['height'] : wc_get_theme_support( 'featured_block::default_height', 500 );
 
 		$title = sprintf(
 			'<h2 class="wc-block-featured-product__title">%s</h2>',
