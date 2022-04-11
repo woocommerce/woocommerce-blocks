@@ -4,14 +4,15 @@
 import { __ } from '@wordpress/i18n';
 import { cart } from '@woocommerce/icons';
 import { Icon } from '@wordpress/icons';
-import { registerFeaturePluginBlockType } from '@woocommerce/block-settings';
+import { registerBlockType } from '@wordpress/blocks';
+import type { BlockConfiguration } from '@wordpress/blocks';
 
 /**
  * Internal dependencies
  */
 import edit from './edit';
 
-const settings = {
+const settings: BlockConfiguration = {
 	apiVersion: 2,
 	title: __( 'Mini Cart', 'woo-gutenberg-products-block' ),
 	icon: {
@@ -57,4 +58,4 @@ const settings = {
 	},
 };
 
-registerFeaturePluginBlockType( 'woocommerce/mini-cart', settings );
+registerBlockType( 'woocommerce/mini-cart', settings );
