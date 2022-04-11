@@ -81,20 +81,18 @@ class Cart extends AbstractBlock {
 		wp_dequeue_style( 'select2' );
 
 		/**
-		 * We need to check if $content has the latest template, searching for one of the newly added blocks from the last iteration
-		 * The new block needs to be always in the template, so only test for blocks with the locked:{remove:true} attribute.
-		 * If it does, we are in the latest version of the block
-		 * If not, we need to add a fallback to assure a successful migration of the block to the new template
-		 * woocommerce/cart-order-summary-subtotal-block was added in C&C i3 and is a locked block, that should always appear
+		 * We need to check if $content has any templates from prior iterations of the block, in order to update to the latest iteration
+		 * When testing for inner blocks presence, only test for blocks with the locked:{remove:true} attribute.
 		 */
-		$regex_for_new_block = '/<div[\n\r\s\ta-zA-Z0-9_\-=\'"]*data-block-name="woocommerce\/cart-order-summary-subtotal-block"[\n\r\s\ta-zA-Z0-9_\-=\'"]*>/mi';
 
-		$block_has_older_structure = ! preg_match( $regex_for_new_block, $content );
+		$regex_for_filled_cart_block = '/<div[\n\r\s\ta-zA-Z0-9_\-=\'"]*data-block-name="woocommerce\/filled-cart-block"[\n\r\s\ta-zA-Z0-9_\-=\'"]*>/mi';
+		// Filled Cart block was added in i2, so we search for it to see if we have a Cart i1 template.
+		$has_i1_template = ! preg_match( $regex_for_filled_cart_block, $content );
 
-		if ( $block_has_older_structure ) {
+		if ( $has_i1_template ) {
 			/**
-			 * This fallback needs to match the defaultTemplate variables defined in the block's edit.tsx files,
-			 * starting from the parent block and going down each inner block
+			 * This fallback structure needs to match the defaultTemplate variables defined in the block's edit.tsx files,
+			 * starting from the parent block and going down each inner block, in the order the blocks were registered.
 			 */
 			$inner_blocks_html = '$0
 			<div data-block-name="woocommerce/filled-cart-block" class="wp-block-woocommerce-filled-cart-block">
@@ -102,15 +100,7 @@ class Cart extends AbstractBlock {
 					<div data-block-name="woocommerce/cart-line-items-block" class="wp-block-woocommerce-cart-line-items-block"></div>
 				</div>
 				<div data-block-name="woocommerce/cart-totals-block" class="wp-block-woocommerce-cart-totals-block">
-					<div data-block-name="woocommerce/cart-order-summary-block" class="wp-block-woocommerce-cart-order-summary-block">
-						<div data-block-name="woocommerce/cart-order-summary-heading-block" class="wp-block-woocommerce-cart-order-summary-heading-block"></div>
-						<div data-block-name="woocommerce/cart-order-summary-subtotal-block" class="wp-block-woocommerce-cart-order-summary-subtotal-block"></div>
-						<div data-block-name="woocommerce/cart-order-summary-fee-block" class="wp-block-woocommerce-cart-order-summary-fee-block"></div>
-						<div data-block-name="woocommerce/cart-order-summary-discount-block" class="wp-block-woocommerce-cart-order-summary-discount-block"></div>
-						<div data-block-name="woocommerce/cart-order-summary-coupon-form-block" class="wp-block-woocommerce-cart-order-summary-coupon-form-block"></div>
-						<div data-block-name="woocommerce/cart-order-summary-shipping-form-block" class="wp-block-woocommerce-cart-order-summary-shipping-block"></div>
-						<div data-block-name="woocommerce/cart-order-summary-taxes-block" class="wp-block-woocommerce-cart-order-summary-taxes-block"></div>
-					</div>
+					<div data-block-name="woocommerce/cart-order-summary-block" class="wp-block-woocommerce-cart-order-summary-block"></div>
 					<div data-block-name="woocommerce/cart-express-payment-block" class="wp-block-woocommerce-cart-express-payment-block"></div>
 					<div data-block-name="woocommerce/proceed-to-checkout-block" class="wp-block-woocommerce-proceed-to-checkout-block"></div>
 					<div data-block-name="woocommerce/cart-accepted-payment-methods-block" class="wp-block-woocommerce-cart-accepted-payment-methods-block"></div>
@@ -122,6 +112,29 @@ class Cart extends AbstractBlock {
 			$content = preg_replace( '/<div class="[a-zA-Z0-9_\- ]*wp-block-woocommerce-cart[a-zA-Z0-9_\- ]*">/mi', $inner_blocks_html, $content );
 			$content = $content . '</div>';
 		}
+
+		/**
+		 * Cart i3 added inner blocks for Order summary. We need to add them to Cart i2 templates.
+		 * The order needs to match the order in which these blocks were registered.
+		 */
+		$order_summary_with_inner_blocks = '$0
+			<div data-block-name="woocommerce/cart-order-summary-heading-block" class="wp-block-woocommerce-cart-order-summary-heading-block"></div>
+			<div data-block-name="woocommerce/cart-order-summary-subtotal-block" class="wp-block-woocommerce-cart-order-summary-subtotal-block"></div>
+			<div data-block-name="woocommerce/cart-order-summary-fee-block" class="wp-block-woocommerce-cart-order-summary-fee-block"></div>
+			<div data-block-name="woocommerce/cart-order-summary-discount-block" class="wp-block-woocommerce-cart-order-summary-discount-block"></div>
+			<div data-block-name="woocommerce/cart-order-summary-coupon-form-block" class="wp-block-woocommerce-cart-order-summary-coupon-form-block"></div>
+			<div data-block-name="woocommerce/cart-order-summary-shipping-form-block" class="wp-block-woocommerce-cart-order-summary-shipping-block"></div>
+			<div data-block-name="woocommerce/cart-order-summary-taxes-block" class="wp-block-woocommerce-cart-order-summary-taxes-block"></div>
+		';
+		// Order summary subtotal block was added in i3, so we search for it to see if we have a Cart i2 template.
+		$regex_for_order_summary_subtotal = '/<div[\n\r\s\ta-zA-Z0-9_\-=\'"]*data-block-name="woocommerce\/cart-order-summary-subtotal-block"[\n\r\s\ta-zA-Z0-9_\-=\'"]*>/mi';
+		$regex_for_order_summary          = '/<div[\n\r\s\ta-zA-Z0-9_\-=\'"]*data-block-name="woocommerce\/cart-order-summary-block"[\n\r\s\ta-zA-Z0-9_\-=\'"]*>/mi';
+		$has_i2_template                  = ! preg_match( $regex_for_order_summary_subtotal, $content );
+
+		if ( $has_i2_template ) {
+			$content = preg_replace( $regex_for_order_summary, $order_summary_with_inner_blocks, $content );
+		}
+
 		return $content;
 	}
 

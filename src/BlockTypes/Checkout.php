@@ -83,21 +83,14 @@ class Checkout extends AbstractBlock {
 		wp_dequeue_style( 'select2' );
 
 		/**
-		 * We need to check if the structure from $content has one of the newly added blocks from the last iteration
-		 * The new block needs to be always in the structure, so only test for blocks with the locked:{remove:true} attribute.
-		 * If it does, we are in the latest version of the block
-		 * If not, we need to add a fallback to assure a successful migration of the block to the new structure
-		 * woocommerce/checkout-order-summary-subtotal-block was added in C&C i3 and is a locked block, that should always appear
+		 * We need to check if $content has any templates from prior iterations of the block, in order to update to the latest iteration
+		 * Checkout i1's content was returning an empty div, with no data-block-name attribute
 		 */
-		$regex_for_new_block = '/<div[\n\r\s\ta-zA-Z0-9_\-=\'"]*data-block-name="woocommerce\/checkout-order-summary-subtotal-block"[\n\r\s\ta-zA-Z0-9_\-=\'"]*>/mi';
+		$regex_for_empty_block = '/<div class="[a-zA-Z0-9_\- ]*wp-block-woocommerce-checkout[a-zA-Z0-9_\- ]*"><\/div>/mi';
+		$has_i1_template       = preg_match( $regex_for_empty_block, $content );
 
-		$block_has_older_structure = ! preg_match( $regex_for_new_block, $content );
-
-		if ( $block_has_older_structure ) {
-			/**
-			 * This fallback needs to match the defaultTemplate variables defined in the block's edit.tsx files,
-			 * starting from the parent block and going down each inner block
-			 */
+		if ( $has_i1_template ) {
+			// This fallback needs to match the default templates defined in our Blocks.
 			$inner_blocks_html = '
 				<div data-block-name="woocommerce/checkout-fields-block" class="wp-block-woocommerce-checkout-fields-block">
 					<div data-block-name="woocommerce/checkout-express-payment-block" class="wp-block-woocommerce-checkout-express-payment-block"></div>
@@ -111,21 +104,34 @@ class Checkout extends AbstractBlock {
 					'<div data-block-name="woocommerce/checkout-actions-block" class="wp-block-woocommerce-checkout-actions-block"></div>
 				</div>
 				<div data-block-name="woocommerce/checkout-totals-block" class="wp-block-woocommerce-checkout-totals-block">
-					<div data-block-name="woocommerce/checkout-order-summary-block" class="wp-block-woocommerce-checkout-order-summary-block">
-						<div data-block-name="woocommerce/checkout-order-summary-cart-items-block" class="wp-block-woocommerce-checkout-order-summary-cart-items-block" />
-						<div data-block-name="woocommerce/checkout-order-summary-subtotal-block" class="wp-block-woocommerce-checkout-order-summary-subtotal-block" />
-						<div data-block-name="woocommerce/checkout-order-summary-fee-block" class="wp-block-woocommerce-checkout-order-summary-fee-block" />
-						<div data-block-name="woocommerce/checkout-order-summary-discount-block" class="wp-block-woocommerce-checkout-order-summary-discount-block" />
-						<div data-block-name="woocommerce/checkout-order-summary-coupon-form-block" class="wp-block-woocommerce-checkout-order-summary-coupon-form-block" />
-						<div data-block-name="woocommerce/checkout-order-summary-shipping-block" class="wp-block-woocommerce-checkout-order-summary-shipping-block" />
-						<div data-block-name="woocommerce/checkout-order-summary-taxes-block" class="wp-block-woocommerce-checkout-order-summary-taxes-block" />
-					</div>
+					<div data-block-name="woocommerce/checkout-order-summary-block" class="wp-block-woocommerce-checkout-order-summary-block"></div>
 				</div>
 			';
 
-			$content = preg_replace( '/<div class="[a-zA-Z0-9_\- ]*wp-block-woocommerce-checkout[a-zA-Z0-9_\- ]*">/mi', $inner_blocks_html, $content );
-			$content = $content . '</div>';
+			$content = str_replace( '</div>', $inner_blocks_html . '</div>', $content );
+		}
 
+		/**
+		 * Checkout i3 added inner blocks for Order summary.
+		 * We need to add them to Checkout i2 templates.
+		 * The order needs to match the order in which these blocks were registered.
+		 */
+		$order_summary_with_inner_blocks = '$0
+			<div data-block-name="woocommerce/checkout-order-summary-cart-items-block" class="wp-block-woocommerce-checkout-order-summary-cart-items-block"></div>
+			<div data-block-name="woocommerce/checkout-order-summary-subtotal-block" class="wp-block-woocommerce-checkout-order-summary-subtotal-block"></div>
+			<div data-block-name="woocommerce/checkout-order-summary-fee-block" class="wp-block-woocommerce-checkout-order-summary-fee-block"></div>
+			<div data-block-name="woocommerce/checkout-order-summary-discount-block" class="wp-block-woocommerce-checkout-order-summary-discount-block"></div>
+			<div data-block-name="woocommerce/checkout-order-summary-coupon-form-block" class="wp-block-woocommerce-checkout-order-summary-coupon-form-block"></div>
+			<div data-block-name="woocommerce/checkout-order-summary-shipping-block" class="wp-block-woocommerce-checkout-order-summary-shipping-block"></div>
+			<div data-block-name="woocommerce/checkout-order-summary-taxes-block" class="wp-block-woocommerce-checkout-order-summary-taxes-block"></div>
+		';
+		// Order summary subtotal block was added in i3, so we search for it to see if we have a Checkout i2 template.
+		$regex_for_order_summary_subtotal = '/<div[\n\r\s\ta-zA-Z0-9_\-=\'"]*data-block-name="woocommerce\/checkout-order-summary-subtotal-block"[\n\r\s\ta-zA-Z0-9_\-=\'"]*>/mi';
+		$regex_for_order_summary          = '/<div[\n\r\s\ta-zA-Z0-9_\-=\'"]*data-block-name="woocommerce\/checkout-order-summary-block"[\n\r\s\ta-zA-Z0-9_\-=\'"]*>/mi';
+		$has_i2_template                  = ! preg_match( $regex_for_order_summary_subtotal, $content );
+
+		if ( $has_i2_template ) {
+			$content = preg_replace( $regex_for_order_summary, $order_summary_with_inner_blocks, $content );
 		}
 
 		return $content;
