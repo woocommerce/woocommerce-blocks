@@ -1,9 +1,7 @@
 /**
  * Internal dependencies
  */
-import { cli } from '../../../../utils/run-cli-from-test';
-import { merchant } from '../../../../utils/merchant';
-import { shopper } from '../../../../utils/shopper';
+import { cli, merchant, shopper } from '../../../../utils/run-cli-from-test';
 
 if ( process.env.WOOCOMMERCE_BLOCKS_PHASE < 2 ) {
 	// eslint-disable-next-line jest/no-focused-tests

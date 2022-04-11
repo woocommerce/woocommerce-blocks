@@ -22,16 +22,13 @@ import {
 	shopper,
 	preventCompatibilityNotice,
 	reactivateCompatibilityNotice,
-} from '../../../../utils';
-
-import { createCoupon } from '../../../utils';
-
-import {
 	BILLING_DETAILS,
 	SHIPPING_DETAILS,
 	SIMPLE_PHYSICAL_PRODUCT_NAME,
 	SIMPLE_VIRTUAL_PRODUCT_NAME,
-} from '../../../../utils/constants';
+} from '../../../../utils';
+
+import { createCoupon } from '../../../utils';
 
 if ( process.env.WOOCOMMERCE_BLOCKS_PHASE < 2 ) {
 	// eslint-disable-next-line jest/no-focused-tests

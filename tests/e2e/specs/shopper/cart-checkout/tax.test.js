@@ -1,21 +1,24 @@
 /**
  * Internal dependencies
  */
-import { shopper } from '../../../../utils';
-import { Taxes } from '../../../fixtures/fixture-data';
-import { SIMPLE_VIRTUAL_PRODUCT_NAME } from '../../../../utils/constants';
 import {
+	shopper,
 	getExpectedTaxes,
 	getTaxesFromCurrentPage,
 	getTaxesFromOrderSummaryPage,
 	showTaxes,
-} from '../../../../utils/taxes';
+	SIMPLE_VIRTUAL_PRODUCT_NAME,
+} from '../../../../utils';
+import { Taxes, Products } from '../../../fixtures/fixture-data';
 
 const taxRates = Taxes();
+const productWooSingle1 = Products().find(
+	( prod ) => prod.name === 'Woo Single #1'
+);
 
 if ( process.env.WOOCOMMERCE_BLOCKS_PHASE < 2 ) {
 	// eslint-disable-next-line jest/no-focused-tests
-	test.only( `skipping Cart & Checkout tests`, () => {} );
+	test.only( `Skipping Cart & Checkout tests`, () => {} );
 }
 
 describe( 'Shopper → Cart & Checkout → Taxes', () => {

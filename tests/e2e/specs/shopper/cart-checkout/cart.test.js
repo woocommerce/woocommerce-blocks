@@ -1,12 +1,11 @@
 /**
  * Internal dependencies
  */
-import { shopper } from '../../../../utils';
-import { SIMPLE_VIRTUAL_PRODUCT_NAME } from '../../../../utils/constants';
+import { shopper, SIMPLE_VIRTUAL_PRODUCT_NAME } from '../../../../utils';
 
 if ( process.env.WOOCOMMERCE_BLOCKS_PHASE < 2 ) {
 	// eslint-disable-next-line jest/no-focused-tests
-	test.only( `skipping Cart & Checkout tests`, () => {} );
+	test.only( `Skipping Cart & Checkout tests`, () => {} );
 }
 
 describe( 'Shopper → Cart', () => {
