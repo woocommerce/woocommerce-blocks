@@ -28,6 +28,8 @@ import {
 	ToggleControl,
 	ToolbarGroup,
 	withSpokenMessages,
+	__experimentalToggleGroupControl as ToggleGroupControl,
+	__experimentalToggleGroupControlOption as ToggleGroupControlOption,
 } from '@wordpress/components';
 import classnames from 'classnames';
 import { Component } from '@wordpress/element';
@@ -35,7 +37,6 @@ import { compose, createHigherOrderComponent } from '@wordpress/compose';
 import { isEmpty } from 'lodash';
 import PropTypes from 'prop-types';
 import ProductControl from '@woocommerce/editor-components/product-control';
-import ToggleButtonControl from '@woocommerce/editor-components/toggle-button-control';
 import ErrorPlaceholder from '@woocommerce/editor-components/error-placeholder';
 import TextToolbarButton from '@woocommerce/editor-components/text-toolbar-button';
 import { withProduct } from '@woocommerce/block-hocs';
@@ -274,7 +275,7 @@ const FeaturedProduct = ( {
 										'woo-gutenberg-products-block'
 									) }
 								>
-									<ToggleButtonControl
+									<ToggleGroupControl
 										help={
 											<>
 												<p>
@@ -296,29 +297,28 @@ const FeaturedProduct = ( {
 											'woo-gutenberg-products-block'
 										) }
 										value={ attributes.imageFit }
-										options={ [
-											{
-												label: __(
-													'None',
-													'woo-gutenberg-products-block'
-												),
-												value: 'none',
-											},
-											{
-												/* translators: "Cover" is a verb that indicates an image covering the entire container. */
-												label: __(
-													'Cover',
-													'woo-gutenberg-products-block'
-												),
-												value: 'cover',
-											},
-										] }
 										onChange={ ( value ) =>
 											setAttributes( {
 												imageFit: value,
 											} )
 										}
-									/>
+									>
+										<ToggleGroupControlOption
+											label={ __(
+												'None',
+												'woo-gutenberg-products-block'
+											) }
+											value="none"
+										/>
+										<ToggleGroupControlOption
+											/* translators: "Cover" is a verb that indicates an image covering the entire container. */
+											label={ __(
+												'Cover',
+												'woo-gutenberg-products-block'
+											) }
+											value="cover"
+										/>
+									</ToggleGroupControl>
 									<FocalPointPicker
 										label={ __(
 											'Focal Point Picker',
