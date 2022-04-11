@@ -25,7 +25,7 @@ import './style.scss';
 /**
  * Formats filter values into a string for the URL parameters needed for filtering PHP templates.
  *
- * @param {string} url Current page URL.
+ * @param {string} url    Current page URL.
  * @param {Object} params Parameters and their constraints.
  *
  * @return {string} New URL with query parameters in it.
@@ -50,9 +50,9 @@ function formatParams( url, params ) {
 /**
  * Component displaying a price filter.
  *
- * @param {Object} props Component props.
- * @param {Object} props.attributes Incoming block attributes.
- * @param {boolean} props.isEditor Whether in editor context or not.
+ * @param {Object}  props            Component props.
+ * @param {Object}  props.attributes Incoming block attributes.
+ * @param {boolean} props.isEditor   Whether in editor context or not.
  */
 const PriceFilterBlock = ( { attributes, isEditor = false } ) => {
 	const filteringForPhpTemplate = getSetting(
