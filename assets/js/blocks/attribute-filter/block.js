@@ -21,7 +21,7 @@ import { Notice } from '@wordpress/components';
 import classNames from 'classnames';
 import { getSettingWithCoercion } from '@woocommerce/settings';
 import { getQueryArgs, removeQueryArgs } from '@wordpress/url';
-import { isBoolean } from '@woocommerce/types';
+import { isBoolean, isString } from '@woocommerce/types';
 
 /**
  * Internal dependencies
@@ -57,6 +57,12 @@ const AttributeFilterBlock = ( {
 		'is_rendering_php_template',
 		false,
 		isBoolean
+	);
+
+	const pageUrl = getSettingWithCoercion(
+		'page_url',
+		window.location.href,
+		isString
 	);
 
 	const [ hasSetPhpFilterDefaults, setHasSetPhpFilterDefaults ] = useState(
@@ -392,11 +398,12 @@ const AttributeFilterBlock = ( {
 
 			setChecked( checked );
 			const newUrl = formatParams(
-				window.location.href,
+				pageUrl,
 				productAttributesQuery,
 				blockAttributes.queryType
 			);
-			if ( window.location.href !== newUrl ) {
+
+			if ( pageUrl !== newUrl ) {
 				window.location.href = newUrl;
 			}
 		}
@@ -407,6 +414,7 @@ const AttributeFilterBlock = ( {
 		hasSetPhpFilterDefaults,
 		checked,
 		blockAttributes.queryType,
+		pageUrl,
 	] );
 
 	/**
