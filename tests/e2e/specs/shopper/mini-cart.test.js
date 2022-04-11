@@ -568,6 +568,10 @@ describe( 'Shopper → Mini Cart', () => {
 			await cli(
 				'npm run wp-env run tests-cli "wp language plugin install woo-gutenberg-products-block nl_NL"'
 			);
+			/**
+			 * We need to run update after installing the langauge to update it
+			 * to the latest version. Otherwise, new strings won't be available.
+			 */
 			await cli(
 				'npm run wp-env run tests-cli "wp language plugin update woo-gutenberg-products-block nl_NL"'
 			);
