@@ -578,7 +578,7 @@ describe( 'Shopper → Mini Cart', () => {
 				await shopper.block.emptyCart();
 			} );
 
-			it( 'Empty Mini Cart', async () => {
+			it( 'User can see translation in empty Mini Cart', async () => {
 				await clickMiniCartButton();
 
 				await expect( page ).toMatchElement(
@@ -589,7 +589,7 @@ describe( 'Shopper → Mini Cart', () => {
 				);
 			} );
 
-			it( 'Filled Mini Cart', async () => {
+			it( 'User can see translation in filled Mini Cart', async () => {
 				await page.click(
 					'.wc-block-grid__product:first-child .add_to_cart_button'
 				);
@@ -610,7 +610,7 @@ describe( 'Shopper → Mini Cart', () => {
 				await shopper.block.emptyCart();
 			} );
 
-			it( 'Empty Mini Cart', async () => {
+			it( 'User can see translation in empty Mini Cart', async () => {
 				await clickMiniCartButton();
 
 				await expect( page ).toMatchElement(
@@ -621,7 +621,7 @@ describe( 'Shopper → Mini Cart', () => {
 				);
 			} );
 
-			it( 'Filled Mini Cart', async () => {
+			it( 'User can see translation in filled Mini Cart', async () => {
 				await page.click(
 					'.wc-block-grid__product:first-child .add_to_cart_button'
 				);
