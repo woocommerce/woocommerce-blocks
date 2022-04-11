@@ -20,6 +20,8 @@ export function useThrottle< T extends ( ...args: unknown[] ) => unknown >(
 		cbRef.current = cb;
 	} );
 
+	// Disabling because we can't pass an arrow function in this case
+	// eslint-disable-next-line react-hooks/exhaustive-deps
 	const throttledCb = useCallback(
 		throttle( ( ...args ) => cbRef.current( ...args ), delay, options ),
 		[ delay ]
