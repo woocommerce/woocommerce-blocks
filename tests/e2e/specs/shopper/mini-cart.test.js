@@ -12,14 +12,11 @@ import {
 /**
  * Internal dependencies
  */
-import { useTheme } from '../../utils';
-
-/**
- * Internal dependencies
- */
 import { shopper } from '../../../utils';
 import { merchant } from '../../../utils/merchant';
 import { getTextContent } from '../../page-utils';
+import { useTheme } from '../../utils';
+import { cli } from '../../../utils/run-cli-from-test';
 
 const block = {
 	name: 'Mini Cart',
@@ -568,6 +565,12 @@ describe( 'Shopper → Mini Cart', () => {
 
 	describe( 'Translated Mini Cart', () => {
 		beforeAll( async () => {
+			await cli(
+				'npm run wp-env run tests-cli "wp language plugin install woo-gutenberg-products-block nl_NL"'
+			);
+			await cli(
+				'npm run wp-env run tests-cli "wp language plugin update woo-gutenberg-products-block nl_NL"'
+			);
 			await merchant.changeLanguage( 'nl_NL' );
 			await shopper.block.emptyCart();
 		} );
