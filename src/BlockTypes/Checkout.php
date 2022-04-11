@@ -123,7 +123,9 @@ class Checkout extends AbstractBlock {
 				</div>
 			';
 
-			$content = str_replace( '</div>', $inner_blocks_html . '</div>', $content );
+			$content = preg_replace( '/<div class="[a-zA-Z0-9_\- ]*wp-block-woocommerce-checkout[a-zA-Z0-9_\- ]*">/mi', $inner_blocks_html, $content );
+			$content = $content . '</div>';
+
 		}
 
 		return $content;
