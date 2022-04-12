@@ -1,25 +1,28 @@
 /**
+ * External dependencies
+ */
+import { isSameAddress } from '@woocommerce/base-utils';
+
+/**
  * Internal dependencies
  */
-import { STATUS } from './constants';
+import { STATUS, checkoutData } from './constants';
+import { CheckoutState } from './types';
 
-export const defaultState = {
+export const defaultState: CheckoutState = {
 	redirectUrl: '',
 	status: STATUS.PRISTINE,
-	isComplete: false,
-	isIdle: false,
 	isCalculating: false,
-	isProcessing: false,
-	isBeforeProcessing: false,
-	isAfterProcessing: false,
 	isCart: false,
 	hasError: false,
-	hasOrder: false,
-	orderId: 0,
-	customerId: 0,
+	orderId: checkoutData.order_id,
+	customerId: checkoutData.customer_id,
 	calculatingCount: 0,
 	orderNotes: '',
-	useShippingAsBilling: false,
+	useShippingAsBilling: isSameAddress(
+		checkoutData.billing_address,
+		checkoutData.shipping_address
+	),
 	shouldCreateAccount: false,
 	processingResponse: null,
 	extensionData: {},

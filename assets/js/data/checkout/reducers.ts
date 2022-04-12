@@ -1,4 +1,9 @@
 /**
+ * External dependencies
+ */
+import type { Reducer } from 'redux';
+
+/**
  * Internal dependencies
  */
 import { ACTION_TYPES as types } from './action-types';
@@ -6,8 +11,8 @@ import { STATUS } from './constants';
 import { defaultState } from './default-state';
 import { PaymentResultDataType } from './types';
 
-const reducer = ( state = defaultState, action ) => {
-	let newState;
+const reducer: Reducer = ( state = defaultState, action ) => {
+	let newState = state;
 	switch ( action.type ) {
 		case types.SET_PRISTINE:
 			newState = defaultState;

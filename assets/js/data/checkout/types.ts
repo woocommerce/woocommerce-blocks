@@ -4,14 +4,6 @@
 import { STATUS } from './constants';
 import type { emitterCallback } from '../../base/context/event-emit';
 
-export interface CheckoutResponseError {
-	code: string;
-	message: string;
-	data: {
-		status: number;
-	};
-}
-
 export enum ACTION {
 	SET_IDLE = 'SET_IDLE',
 	SET_PRISTINE = 'SET_PRISTINE',
@@ -31,6 +23,14 @@ export enum ACTION {
 	SET_SHIPPING_ADDRESS_AS_BILLING_ADDRESS = 'SET_SHIPPING_ADDRESS_AS_BILLING_ADDRESS',
 	SET_SHOULD_CREATE_ACCOUNT = 'SET_SHOULD_CREATE_ACCOUNT',
 	SET_EXTENSION_DATA = 'SET_EXTENSION_DATA',
+}
+
+export interface CheckoutResponseError {
+	code: string;
+	message: string;
+	data: {
+		status: number;
+	};
 }
 
 export interface ActionType extends Partial< CheckoutStateContextState > {
@@ -94,22 +94,12 @@ export type CheckoutStateDispatchActions = {
 };
 
 export type CheckoutState = {
-	// Dispatch actions to the checkout provider.
-	dispatchActions: CheckoutStateDispatchActions;
+	// Status of the checkout
+	status: STATUS;
 	// Submits the checkout and begins processing.
 	onSubmit: () => void;
-	// True when checkout is complete and ready for redirect.
-	isComplete: boolean;
-	// True when the checkout state has changed and checkout has no activity.
-	isIdle: boolean;
 	// True when something in the checkout is resulting in totals being calculated.
 	isCalculating: boolean;
-	// True when checkout has been submitted and is being processed. Note, payment related processing happens during this state. When payment status is success, processing happens on the server.
-	isProcessing: boolean;
-	// True during any observers executing logic before checkout processing (eg. validation).
-	isBeforeProcessing: boolean;
-	// True when checkout status is AFTER_PROCESSING.
-	isAfterProcessing: boolean;
 	// Used to register a callback that will fire after checkout has been processed and there are no errors.
 	onCheckoutAfterProcessingWithSuccess: ReturnType< typeof emitterCallback >;
 	// Used to register a callback that will fire when the checkout has been processed and has an error.
@@ -126,6 +116,8 @@ export type CheckoutState = {
 	hasOrder: boolean;
 	// When true, means the provider is providing data for the cart.
 	isCart: boolean;
+	calculatingCount: number;
+	processingResponse: PaymentResultDataType | null;
 	// True when the checkout is in an error state. Whatever caused the error (validation/payment method) will likely have triggered a notice.
 	hasError: CheckoutStateContextState[ 'hasError' ];
 	// This is the url that checkout will redirect to when it's ready.

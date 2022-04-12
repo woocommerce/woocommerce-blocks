@@ -20,6 +20,8 @@ import { SidebarLayout } from '@woocommerce/base-components/sidebar-layout';
 import { CURRENT_USER_IS_ADMIN, getSetting } from '@woocommerce/settings';
 import { SlotFillProvider } from '@woocommerce/blocks-checkout';
 import withScrollToTop from '@woocommerce/base-hocs/with-scroll-to-top';
+import { useSelect } from '@wordpress/data';
+import { CHECKOUT_STORE_KEY } from '@woocommerce/block-data';
 
 /**
  * Internal dependencies
@@ -57,7 +59,13 @@ const Checkout = ( {
 	attributes: Attributes;
 	children: React.ReactChildren;
 } ): JSX.Element => {
-	const { hasOrder, customerId } = useCheckoutContext();
+	const { hasOrder, customerId } = useSelect( ( select ) => {
+		const store = select( CHECKOUT_STORE_KEY );
+		return {
+			hasOrder: store.hasOrder(),
+			customerId: store.getCustomerId(),
+		};
+	} );
 	const { cartItems, cartIsLoading } = useStoreCart();
 
 	const {
