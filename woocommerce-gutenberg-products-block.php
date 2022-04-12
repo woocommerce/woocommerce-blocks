@@ -9,8 +9,8 @@
  * Text Domain:  woo-gutenberg-products-block
  * Requires at least: 5.9
  * Requires PHP: 7.0
- * WC requires at least: 6.0
- * WC tested up to: 6.1
+ * WC requires at least: 6.2
+ * WC tested up to: 6.3
  *
  * @package WooCommerce\Blocks
  * @internal This file is only used when running as a feature plugin.
