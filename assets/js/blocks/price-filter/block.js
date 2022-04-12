@@ -36,18 +36,17 @@ function findGetParameter( paramName ) {
 /**
  * Formats filter values into a string for the URL parameters needed for filtering PHP templates.
  *
- * @param {string} url       Current page URL.
- * @param {Object} params    Parameters and their constraints.
- * @param {number} precision Number of decimal places to round to.
+ * @param {string} url    Current page URL.
+ * @param {Object} params Parameters and their constraints.
  *
  * @return {string} New URL with query parameters in it.
  */
-function formatParams( url, params, precision ) {
+function formatParams( url, params ) {
 	const paramObject = {};
 
 	for ( const [ key, value ] of Object.entries( params ) ) {
 		if ( value ) {
-			paramObject[ key ] = ( value / 10 ** precision ).toString();
+			paramObject[ key ] = value.toString();
 		} else {
 			delete paramObject[ key ];
 		}
@@ -123,14 +122,10 @@ const PriceFilterBlock = ( { attributes, isEditor = false } ) => {
 
 			// For block templates that render the PHP Classic Template block we need to add the filters as params and reload the page.
 			if ( filteringForPhpTemplate && window ) {
-				const newUrl = formatParams(
-					window.location.href,
-					{
-						min_price: finalMinPrice,
-						max_price: finalMaxPrice,
-					},
-					currency.minorUnit
-				);
+				const newUrl = formatParams( window.location.href, {
+					min_price: finalMinPrice / 10 ** currency.minorUnit,
+					max_price: finalMaxPrice / 10 ** currency.minorUnit,
+				} );
 
 				// If the params have changed, lets reload the page.
 				if ( window.location.href !== newUrl ) {
