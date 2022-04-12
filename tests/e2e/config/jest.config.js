@@ -31,8 +31,6 @@ module.exports = {
 		'expect-puppeteer',
 	],
 
-	transformIgnorePatterns: [
-		'node_modules/(?!(woocommerce)/)',
-		'tests/e2e/specs/performance',
-	],
+	testPathIgnorePatterns: [ '<rootDir>/tests/e2e/specs/performance' ],
+	transformIgnorePatterns: [ 'node_modules/(?!(woocommerce)/)' ],
 };

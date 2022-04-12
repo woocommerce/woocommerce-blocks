@@ -15,8 +15,9 @@ module.exports = {
 
 	testEnvironment: '<rootDir>/tests/e2e/config/environment.js',
 	testRunner: 'jest-circus/runner',
+
 	// Where to look for test files
-	roots: [ '<rootDir>/tests/e2e/specs' ],
+	roots: [ '<rootDir>/tests/e2e/specs/performance' ],
 	globalSetup: '<rootDir>/tests/e2e/config/setup.js',
 	globalTeardown: '<rootDir>/tests/e2e/config/teardown.js',
 	setupFiles: [],
