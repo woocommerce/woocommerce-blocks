@@ -2,15 +2,15 @@
 namespace Automattic\WooCommerce\Blocks\Templates;
 
 /**
- * ProductSearchTemplate class.
+ * ProductSearchResultsTemplate class.
  *
  * @internal
  */
-class SearchResultsProductTemplate {
+class ProductSearchResultsTemplate {
 
-	const SLUG        = 'search-results-product';
+	const SLUG        = 'product-search-results';
 	const TITLE       = 'Product Search Results';
-	const DESCRIPTION = 'Template used to display search results for products';
+	const DESCRIPTION = 'Template used to display search results for products.';
 
 	/**
 	 * Constructor.
@@ -28,7 +28,7 @@ class SearchResultsProductTemplate {
 	}
 
 	/**
-	 * When the search is for products and it used a block theme the Product Search Template is rendered.
+	 * When the search is for products and a block theme is active, render the Product Search Template.
 	 *
 	 * @param array $templates Templates that match the search hierarchy.
 	 */
