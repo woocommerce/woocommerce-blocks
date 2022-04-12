@@ -16,7 +16,6 @@ import { shopper } from '../../../utils';
 import { merchant } from '../../../utils/merchant';
 import { getTextContent } from '../../page-utils';
 import { useTheme } from '../../utils';
-import { cli } from '../../../utils/run-cli-from-test';
 
 const block = {
 	name: 'Mini Cart',
@@ -563,7 +562,7 @@ describe( 'Shopper → Mini Cart', () => {
 		} );
 	} );
 
-	describe( 'Shopper → Mini Cart → Translations', () => {
+	describe( 'Translations', () => {
 		beforeAll( async () => {
 			await merchant.changeLanguage( 'nl_NL' );
 			await shopper.block.emptyCart();
