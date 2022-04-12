@@ -72,31 +72,32 @@ const PriceFilterBlock = ( { attributes, isEditor = false } ) => {
 		''
 	);
 
-	const minPriceParam = findGetParameter( 'min_price' );
-	const maxPriceParam = findGetParameter( 'max_price' );
-
-	const [ minPriceQuery, setMinPriceQuery ] = useQueryStateByKey(
-		'min_price',
-		Number( minPriceParam ) * 100 || null
-	);
-	const [ maxPriceQuery, setMaxPriceQuery ] = useQueryStateByKey(
-		'max_price',
-		Number( maxPriceParam ) * 100 || null
-	);
 	const [ queryState ] = useQueryStateByContext();
 	const { results, isLoading } = useCollectionData( {
 		queryPrices: true,
 		queryState,
 	} );
 
-	const [ minPrice, setMinPrice ] = useState(
-		Number( minPriceParam ) * 100 || null
+	const currency = getCurrencyFromPriceResponse( results.price_range );
+
+	const minPriceParam = findGetParameter( 'min_price' );
+	const maxPriceParam = findGetParameter( 'max_price' );
+
+	const [ minPriceQuery, setMinPriceQuery ] = useQueryStateByKey(
+		'min_price',
+		Number( minPriceParam ) * 10 ** currency.minorUnit || null
 	);
-	const [ maxPrice, setMaxPrice ] = useState(
-		Number( maxPriceParam ) * 100 || null
+	const [ maxPriceQuery, setMaxPriceQuery ] = useQueryStateByKey(
+		'max_price',
+		Number( maxPriceParam ) * 10 ** currency.minorUnit || null
 	);
 
-	const currency = getCurrencyFromPriceResponse( results.price_range );
+	const [ minPrice, setMinPrice ] = useState(
+		Number( minPriceParam ) * 10 ** currency.minorUnit || null
+	);
+	const [ maxPrice, setMaxPrice ] = useState(
+		Number( maxPriceParam ) * 10 ** currency.minorUnit || null
+	);
 
 	const { minConstraint, maxConstraint } = usePriceConstraints( {
 		minPrice: results.price_range
