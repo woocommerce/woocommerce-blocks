@@ -2,6 +2,7 @@
  * External dependencies
  */
 import { addQueryArgs, removeQueryArgs } from '@wordpress/url';
+import { QueryArgs } from '@wordpress/url/build-types/get-query-args';
 
 /**
  * Internal dependencies
@@ -14,21 +15,17 @@ interface Param {
 	slug: Array< string >;
 }
 
-export const formatParams = (
-	url: string,
-	params: Array< Param > = [],
-	blockOperator: 'or' | 'and'
-) => {
+export const formatParams = ( url: string, params: Array< Param > = [] ) => {
 	const paramObject: Record< string, string > = {};
 
 	params.forEach( ( param ) => {
-		const { attribute, slug } = param;
+		const { attribute, slug, operator } = param;
 
 		// Custom filters are prefix with `pa_` so we need to remove this.
 		const name = attribute.replace( 'pa_', '' );
 		const values = slug.join( ',' );
 		const queryType = `query_type_${ name }`;
-		const type = blockOperator === 'or' ? 'or' : 'and';
+		const type = operator === 'in' ? 'or' : 'and';
 
 		// The URL parameter requires the prefix filter_ with the attribute name.
 		paramObject[ `filter_${ name }` ] = values;
@@ -66,4 +63,29 @@ export const getActiveFilters = (
 	}
 
 	return [];
+};
+
+export const isQueryArgsEqual = (
+	currentQueryArgs: QueryArgs,
+	newQueryArgs: QueryArgs
+) => {
+	// The user can add same two filter blocks for the same attribute.
+	// We removed the query type from the check to avoid refresh loop.
+	const filteredNewQueryArgs = Object.entries( newQueryArgs ).reduce(
+		( acc, [ key, value ] ) => {
+			return key.includes( 'query_type' )
+				? acc
+				: {
+						...acc,
+						[ key ]: value,
+				  };
+		},
+		{}
+	);
+
+	return Object.entries( filteredNewQueryArgs ).reduce(
+		( isEqual, [ key, value ] ) =>
+			currentQueryArgs[ key ] === value ? isEqual : false,
+		true
+	);
 };

@@ -31,7 +31,12 @@ import { updateAttributeFilter } from '../../utils/attributes-query';
 import { previewAttributeObject, previewOptions } from './preview';
 import { useBorderProps } from '../../hooks/style-attributes';
 import './style.scss';
-import { formatParams, getActiveFilters, areAllFiltersRemoved } from './utils';
+import {
+	formatParams,
+	getActiveFilters,
+	areAllFiltersRemoved,
+	isQueryArgsEqual,
+} from './utils';
 
 /**
  * Formats filter values into a string for the URL parameters needed for filtering PHP templates.
@@ -383,27 +388,26 @@ const AttributeFilterBlock = ( {
 				} )
 			) {
 				setChecked( [] );
-				const currentQueryArgs = Object.keys(
+				const currentQueryArgKeys = Object.keys(
 					getQueryArgs( window.location.href )
 				);
 
-				const url = currentQueryArgs.reduce(
+				const url = currentQueryArgKeys.reduce(
 					( currentUrl, queryArg ) =>
 						removeQueryArgs( currentUrl, queryArg ),
 					window.location.href
 				);
 
-				window.location.href = url;
+				const newUrl = formatParams( url, productAttributesQuery );
+				window.location.href = newUrl;
 			}
 
 			setChecked( checked );
-			const newUrl = formatParams(
-				pageUrl,
-				productAttributesQuery,
-				blockAttributes.queryType
-			);
+			const newUrl = formatParams( pageUrl, productAttributesQuery );
+			const currentQueryArgs = getQueryArgs( window.location.href );
+			const newUrlQueryArgs = getQueryArgs( newUrl );
 
-			if ( pageUrl !== newUrl ) {
+			if ( ! isQueryArgsEqual( currentQueryArgs, newUrlQueryArgs ) ) {
 				window.location.href = newUrl;
 			}
 		}
@@ -411,10 +415,10 @@ const AttributeFilterBlock = ( {
 		filteringForPhpTemplate,
 		productAttributesQuery,
 		attributeObject,
-		hasSetPhpFilterDefaults,
 		checked,
 		blockAttributes.queryType,
 		pageUrl,
+		hasSetPhpFilterDefaults,
 	] );
 
 	/**
