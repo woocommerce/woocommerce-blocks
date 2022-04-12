@@ -83,7 +83,9 @@ class Checkout extends AbstractBlock {
 		wp_dequeue_style( 'select2' );
 
 		/**
-		 * We need to check if $content has any templates from prior iterations of the block, in order to update to the latest iteration
+		 * We need to check if $content has any templates from prior iterations of the block, in order to update to the latest iteration.
+		 * We test the iteration version by searching for new blocks brought in by it.
+		 * The blocks used for testing should be always available in the block (not removable by the user).
 		 * Checkout i1's content was returning an empty div, with no data-block-name attribute
 		 */
 		$regex_for_empty_block = '/<div class="[a-zA-Z0-9_\- ]*wp-block-woocommerce-checkout[a-zA-Z0-9_\- ]*"><\/div>/mi';
