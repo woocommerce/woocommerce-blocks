@@ -11,7 +11,7 @@ import {
 	useMemo,
 } from '@wordpress/element';
 import { objectHasProp } from '@woocommerce/types';
-import { STORE_KEY as PAYMENT_METHOD_DATA_STORE_KEY } from '@woocommerce/block-data';
+import { PAYMENT_METHOD_DATA_STORE_KEY } from '@woocommerce/block-data';
 import { useDispatch } from '@wordpress/data';
 
 /**
