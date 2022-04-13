@@ -472,6 +472,7 @@ class MiniCart extends AbstractBlock {
 			'mini-cart-contents-block/products-table',
 			'mini-cart-contents-block/footer',
 			'mini-cart-contents-block/shopping-button',
+			'mini-cart-contents-block/empty-cart-message',
 		];
 		$chunks = preg_filter( '/$/', '-frontend', $blocks );
 
