@@ -84,7 +84,13 @@ const PriceFilterBlock = ( { attributes, isEditor = false } ) => {
 		''
 	);
 
-	const [ hasSetPriceDefault, setHasSetPriceDefault ] = useState( false );
+	/**
+	 * Important: Only used on the PHP rendered Block pages to track
+	 * the price filter defaults coming from the URL
+	 */
+	const [ hasSetPhpFilterDefaults, setHasSetPhpFilterDefaults ] = useState(
+		false
+	);
 
 	const [ queryState ] = useQueryStateByContext();
 	const { results, isLoading } = useCollectionData( {
@@ -128,9 +134,10 @@ const PriceFilterBlock = ( { attributes, isEditor = false } ) => {
 	 *
 	 * When we render the PHP block template (e.g. Classic Block) we need
 	 * to set the default min_price and max_price values from the URL
+	 * for the filter to work alongside the Active Filters block.
 	 */
 	useEffect( () => {
-		if ( ! hasSetPriceDefault && filteringForPhpTemplate ) {
+		if ( ! hasSetPhpFilterDefaults && filteringForPhpTemplate ) {
 			setMinPriceQuery(
 				formatPrice( minPriceParam, currency.minorUnit )
 			);
@@ -138,12 +145,12 @@ const PriceFilterBlock = ( { attributes, isEditor = false } ) => {
 				formatPrice( maxPriceParam, currency.minorUnit )
 			);
 
-			setHasSetPriceDefault( true );
+			setHasSetPhpFilterDefaults( true );
 		}
 	}, [
 		currency.minorUnit,
 		filteringForPhpTemplate,
-		hasSetPriceDefault,
+		hasSetPhpFilterDefaults,
 		maxPriceParam,
 		minPriceParam,
 		setMaxPriceQuery,
