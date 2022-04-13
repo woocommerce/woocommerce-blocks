@@ -500,7 +500,7 @@ describe( 'Store Editing Templates', () => {
 
 		it( 'should contain the "WooCommerce Product Grid Block" classic template', async () => {
 			await goToTemplateEditor( {
-				postId: 'woocommerce/woocommerce//search-results-product',
+				postId: 'woocommerce/woocommerce//product-search-results',
 			} );
 
 			const [ classicBlock ] = await filterCurrentBlocks(
@@ -520,7 +520,7 @@ describe( 'Store Editing Templates', () => {
 			};
 
 			await visitTemplateAndAddCustomParagraph(
-				'search-results-product'
+				'product-search-results'
 			);
 
 			await goToTemplatesList( { waitFor: 'actions' } );
@@ -542,7 +542,7 @@ describe( 'Store Editing Templates', () => {
 
 		it( 'should preserve and correctly show the user customization on the back-end', async () => {
 			await goToTemplateEditor( {
-				postId: 'woocommerce/woocommerce//search-results-product',
+				postId: 'woocommerce/woocommerce//product-search-results',
 			} );
 
 			await expect( canvas() ).toMatchElement(
