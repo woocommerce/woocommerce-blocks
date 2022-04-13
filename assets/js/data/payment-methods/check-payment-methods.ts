@@ -5,7 +5,7 @@ import {
 	ExpressPaymentMethodConfigInstance,
 	PaymentMethodConfigInstance,
 } from '@woocommerce/type-defs/payments';
-import { CURRENT_USER_IS_ADMIN, getSetting } from '@woocommerce/settings';
+import { CURRENT_USER_IS_ADMIN } from '@woocommerce/settings';
 import { dispatch, select } from '@wordpress/data';
 import { deriveSelectedShippingRates } from '@woocommerce/base-utils';
 import {
@@ -24,14 +24,6 @@ export const checkPaymentMethodsCanPay = async ( express = false ) => {
 	const paymentMethods = express
 		? getExpressPaymentMethods()
 		: getPaymentMethods();
-	const displayOrder = express
-		? Object.keys( paymentMethods )
-		: Array.from(
-				new Set( [
-					...( getSetting( 'paymentGatewaySortOrder', [] ) as [  ] ),
-					...Object.keys( paymentMethods ),
-				] )
-		  );
 
 	const addAvailablePaymentMethod = (
 		paymentMethod:
@@ -43,18 +35,7 @@ export const checkPaymentMethodsCanPay = async ( express = false ) => {
 			[ paymentMethod.name ]: paymentMethod,
 		};
 	};
-	const isInitialized = express
-		? select(
-				PAYMENT_METHOD_DATA_STORE_KEY
-		  ).expressPaymentMethodsInitialized()
-		: select( PAYMENT_METHOD_DATA_STORE_KEY ).paymentMethodsInitialized();
 
-	if (
-		! isInitialized &&
-		displayOrder.length !== Object.keys( paymentMethods ).length
-	) {
-		return false;
-	}
 	const cart = select( CART_STORE_KEY ).getCartData();
 	const selectedShippingMethods = deriveSelectedShippingRates(
 		cart.shippingRates
@@ -69,9 +50,7 @@ export const checkPaymentMethodsCanPay = async ( express = false ) => {
 		paymentRequirements: cart.paymentRequirements,
 	};
 
-	for ( let i = 0; i < displayOrder.length; i++ ) {
-		const paymentMethodName = displayOrder[ i ];
-		const paymentMethod = paymentMethods[ paymentMethodName ];
+	for ( const paymentMethod of Object.values( paymentMethods ) ) {
 		if ( ! paymentMethod ) {
 			continue;
 		}
