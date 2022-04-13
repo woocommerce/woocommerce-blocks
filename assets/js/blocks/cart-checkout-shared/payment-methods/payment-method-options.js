@@ -12,7 +12,7 @@ import {
 	usePaymentMethodDataContext,
 } from '@woocommerce/base-context';
 import classNames from 'classnames';
-import RadioControlAccordion from '@woocommerce/base-components/radio-control-accordion'
+import RadioControlAccordion from '@woocommerce/base-components/radio-control-accordion';
 import { useDispatch, useSelect } from '@wordpress/data';
 import { getPaymentMethods } from '@woocommerce/blocks-registry';
 
