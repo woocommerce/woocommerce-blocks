@@ -498,7 +498,7 @@ class MiniCart extends AbstractBlock {
 	}
 
 	/**
-	 * Register block patter for Empty Cart Message to make it translatable.
+	 * Register block pattern for Empty Cart Message to make it translatable.
 	 */
 	public function register_block_pattern() {
 		register_block_pattern(
