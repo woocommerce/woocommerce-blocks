@@ -71,6 +71,8 @@ const PriceFilterBlock = ( { attributes, isEditor = false } ) => {
 		''
 	);
 
+	const [ hasSetPriceDefault, setHasSetPriceDefault ] = useState( false );
+
 	const [ queryState ] = useQueryStateByContext();
 	const { results, isLoading } = useCollectionData( {
 		queryPrices: true,
@@ -107,6 +109,33 @@ const PriceFilterBlock = ( { attributes, isEditor = false } ) => {
 			: undefined,
 		minorUnit: currency.minorUnit,
 	} );
+
+	/**
+	 * Important: For PHP rendered block templates only.
+	 *
+	 * When we render the PHP block template (e.g. Classic Block) we need
+	 * to set the default min_price and max_price values from the URL
+	 */
+	useEffect( () => {
+		if ( ! hasSetPriceDefault && filteringForPhpTemplate ) {
+			setMinPriceQuery(
+				Number( minPriceParam ) * 10 ** currency.minorUnit
+			);
+			setMaxPriceQuery(
+				Number( maxPriceParam ) * 10 ** currency.minorUnit
+			);
+
+			setHasSetPriceDefault( true );
+		}
+	}, [
+		currency.minorUnit,
+		filteringForPhpTemplate,
+		hasSetPriceDefault,
+		maxPriceParam,
+		minPriceParam,
+		setMaxPriceQuery,
+		setMinPriceQuery,
+	] );
 
 	// Updates the query based on slider values.
 	const onSubmit = useCallback(
