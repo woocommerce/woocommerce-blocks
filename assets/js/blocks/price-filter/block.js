@@ -59,6 +59,19 @@ function formatParams( url, params ) {
 }
 
 /**
+ * Formats price values taking into account precision
+ *
+ * @param {string} value
+ * @param {number} minorUnit
+ *
+ * @return {number} Formatted price.
+ */
+
+function formatPrice( value, minorUnit ) {
+	return Number( value ) * 10 ** minorUnit;
+}
+
+/**
  * Component displaying a price filter.
  *
  * @param {Object}  props            Component props.
@@ -86,18 +99,18 @@ const PriceFilterBlock = ( { attributes, isEditor = false } ) => {
 
 	const [ minPriceQuery, setMinPriceQuery ] = useQueryStateByKey(
 		'min_price',
-		Number( minPriceParam ) * 10 ** currency.minorUnit || null
+		formatPrice( minPriceParam, currency.minorUnit ) || null
 	);
 	const [ maxPriceQuery, setMaxPriceQuery ] = useQueryStateByKey(
 		'max_price',
-		Number( maxPriceParam ) * 10 ** currency.minorUnit || null
+		formatPrice( maxPriceParam, currency.minorUnit ) || null
 	);
 
 	const [ minPrice, setMinPrice ] = useState(
-		Number( minPriceParam ) * 10 ** currency.minorUnit || null
+		formatPrice( minPriceParam, currency.minorUnit ) || null
 	);
 	const [ maxPrice, setMaxPrice ] = useState(
-		Number( maxPriceParam ) * 10 ** currency.minorUnit || null
+		formatPrice( maxPriceParam, currency.minorUnit ) || null
 	);
 
 	const { minConstraint, maxConstraint } = usePriceConstraints( {
@@ -119,10 +132,10 @@ const PriceFilterBlock = ( { attributes, isEditor = false } ) => {
 	useEffect( () => {
 		if ( ! hasSetPriceDefault && filteringForPhpTemplate ) {
 			setMinPriceQuery(
-				Number( minPriceParam ) * 10 ** currency.minorUnit
+				formatPrice( minPriceParam, currency.minorUnit )
 			);
 			setMaxPriceQuery(
-				Number( maxPriceParam ) * 10 ** currency.minorUnit
+				formatPrice( maxPriceParam, currency.minorUnit )
 			);
 
 			setHasSetPriceDefault( true );
@@ -155,7 +168,6 @@ const PriceFilterBlock = ( { attributes, isEditor = false } ) => {
 					min_price: finalMinPrice / 10 ** currency.minorUnit,
 					max_price: finalMaxPrice / 10 ** currency.minorUnit,
 				} );
-
 				// If the params have changed, lets reload the page.
 				if ( window.location.href !== newUrl ) {
 					window.location.href = newUrl;
