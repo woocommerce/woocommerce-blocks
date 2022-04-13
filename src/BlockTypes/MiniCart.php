@@ -63,7 +63,7 @@ class MiniCart extends AbstractBlock {
 	 */
 	protected function initialize() {
 		parent::initialize();
-		add_action( 'wp_loaded', array( $this, 'register_block_pattern' ) );
+		add_action( 'wp_loaded', array( $this, 'register_empty_cart_message_block_pattern' ) );
 	}
 
 	/**
@@ -500,7 +500,7 @@ class MiniCart extends AbstractBlock {
 	/**
 	 * Register block pattern for Empty Cart Message to make it translatable.
 	 */
-	public function register_block_pattern() {
+	public function register_empty_cart_message_block_pattern() {
 		register_block_pattern(
 			'woocommerce/mini-cart-empty-cart-message',
 			array(
