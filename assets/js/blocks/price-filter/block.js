@@ -60,6 +60,8 @@ const PriceFilterBlock = ( { attributes, isEditor = false } ) => {
 		''
 	);
 
+	const minPriceParam = getUrlParameter( 'min_price' );
+	const maxPriceParam = getUrlParameter( 'max_price' );
 	const [ queryState ] = useQueryStateByContext();
 	const { results, isLoading } = useCollectionData( {
 		queryPrices: true,
@@ -67,9 +69,6 @@ const PriceFilterBlock = ( { attributes, isEditor = false } ) => {
 	} );
 
 	const currency = getCurrencyFromPriceResponse( results.price_range );
-
-	const minPriceParam = getUrlParameter( 'min_price' );
-	const maxPriceParam = getUrlParameter( 'max_price' );
 
 	const [ minPriceQuery, setMinPriceQuery ] = useQueryStateByKey(
 		'min_price',
