@@ -31,6 +31,4 @@ export const defaultState: CheckoutState = {
 	onCheckoutAfterProcessingWithError: () => () => void null,
 	onCheckoutBeforeProcessing: () => () => void null, // deprecated for onCheckoutValidationBeforeProcessing
 	onCheckoutValidationBeforeProcessing: () => () => void null,
-	setUseShippingAsBilling: ( value ) => void value, // turn into an action
-	setShouldCreateAccount: ( value ) => void value, // turn into an action
 };

@@ -70,10 +70,13 @@ export const CheckoutStateProvider = ( {
 	isCart: boolean;
 } ): JSX.Element => {
 	const actions = useDispatch( CHECKOUT_STORE_KEY );
-	actions.setRedirectUrl( redirectUrl );
 	const checkoutState: CheckoutState = useSelect( ( select ) =>
 		select( CHECKOUT_STORE_KEY ).getCheckoutState()
 	);
+	// Test this!
+	if ( redirectUrl && redirectUrl !== checkoutState.redirectUrl ) {
+		actions.setRedirectUrl( redirectUrl );
+	}
 	const { setValidationErrors } = useValidationContext();
 	const { createErrorNotice } = useDispatch( 'core/notices' );
 
