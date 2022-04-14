@@ -86,6 +86,12 @@ Release and roadmap notes available on the [WooCommerce Developers Blog](https:/
 
 == Changelog ==
 
+= 7.4.1 - 2022-04-14 =
+
+#### Bug Fixes
+
+- Fix page load problem due to incorrect URL to certain assets. ([6260](https://github.com/woocommerce/woocommerce-gutenberg-products-block/pull/6260))
+
 = 7.4.0 - 2022-04-11 =
 
 #### Enhancements
