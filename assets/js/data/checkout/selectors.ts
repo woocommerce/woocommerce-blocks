@@ -39,4 +39,8 @@ export const isProcessing = ( state ) => {
 	return state.status === STATUS.PROCESSING;
 };
 
+export const isCalculating = ( state ) => {
+	return state.isCalculating;
+};
+
 export const getCheckoutState = ( state ) => state;
