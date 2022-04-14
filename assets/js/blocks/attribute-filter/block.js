@@ -397,19 +397,17 @@ const AttributeFilterBlock = ( {
 					getQueryArgs( window.location.href )
 				);
 
-				const parsedTaxonomyToGenerateURL = parseTaxonomyToGenerateURL(
+				const parsedTaxonomy = parseTaxonomyToGenerateURL(
 					attributeObject?.taxonomy
 				);
 
 				const url = currentQueryArgKeys.reduce(
 					( currentUrl, queryArg ) =>
 						queryArg.includes(
-							PREFIX_QUERY_ARG_QUERY_TYPE +
-								parsedTaxonomyToGenerateURL
+							PREFIX_QUERY_ARG_QUERY_TYPE + parsedTaxonomy
 						) ||
 						queryArg.includes(
-							PREFIX_QUERY_ARG_FILTER_TYPE +
-								parsedTaxonomyToGenerateURL
+							PREFIX_QUERY_ARG_FILTER_TYPE + parsedTaxonomy
 						)
 							? removeQueryArgs( currentUrl, queryArg )
 							: currentUrl,

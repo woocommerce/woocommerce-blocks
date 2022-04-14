@@ -261,7 +261,7 @@ class ClassicTemplate extends AbstractDynamicBlock {
 
 
 	/**
-	 * Filter product by stock when as query param there is "filter_stock_status"
+	 * Filter products by stock status when as query param there is "filter_stock_status"
 	 *
 	 * @param array $meta_query Meta query.
 	 * @return array
