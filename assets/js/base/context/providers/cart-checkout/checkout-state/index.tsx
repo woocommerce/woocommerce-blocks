@@ -22,11 +22,7 @@ import { CHECKOUT_STORE_KEY } from '@woocommerce/block-data';
  * Internal dependencies
  */
 import { getPaymentResultFromCheckoutResponse } from './utils';
-import {
-	DEFAULT_STATE,
-	STATUS,
-	DEFAULT_CHECKOUT_STATE_DATA,
-} from './constants';
+import { STATUS, DEFAULT_CHECKOUT_STATE_DATA } from './constants';
 import type {
 	CheckoutStateDispatchActions,
 	CheckoutStateContextType,
@@ -73,14 +69,11 @@ export const CheckoutStateProvider = ( {
 	redirectUrl: string;
 	isCart: boolean;
 } ): JSX.Element => {
-	// note, this is done intentionally so that the default state now has
-	// the redirectUrl for when checkout is reset to PRISTINE state.
-	DEFAULT_STATE.redirectUrl = redirectUrl;
-	// const [ checkoutState, dispatch ] = useReducer( reducer, DEFAULT_STATE );
+	const actions = useDispatch( CHECKOUT_STORE_KEY );
+	actions.setRedirectUrl( redirectUrl );
 	const checkoutState: CheckoutState = useSelect( ( select ) =>
 		select( CHECKOUT_STORE_KEY ).getCheckoutState()
 	);
-	const actions = useDispatch( CHECKOUT_STORE_KEY );
 	const { setValidationErrors } = useValidationContext();
 	const { createErrorNotice } = useDispatch( 'core/notices' );
 

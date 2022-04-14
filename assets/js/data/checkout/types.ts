@@ -112,8 +112,6 @@ export type CheckoutState = {
 	setUseShippingAsBilling: ( useShippingAsBilling: boolean ) => void;
 	// Set if user account should be created.
 	setShouldCreateAccount: ( shouldCreateAccount: boolean ) => void;
-	// True when the checkout has a draft order from the API.
-	hasOrder: boolean;
 	// When true, means the provider is providing data for the cart.
 	isCart: boolean;
 	calculatingCount: number;

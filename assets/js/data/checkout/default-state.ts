@@ -12,9 +12,9 @@ import { CheckoutState } from './types';
 export const defaultState: CheckoutState = {
 	redirectUrl: '',
 	status: STATUS.PRISTINE,
+	hasError: false,
 	isCalculating: false,
 	isCart: false,
-	hasError: false,
 	orderId: checkoutData.order_id,
 	customerId: checkoutData.customer_id,
 	calculatingCount: 0,
