@@ -14,7 +14,11 @@ import Label from '@woocommerce/base-components/label';
  */
 import './style.scss';
 import { getAttributeFromTaxonomy } from '../../utils/attributes';
-import { formatPriceRange, renderRemovableListItem } from './utils';
+import {
+	formatPriceRange,
+	renderRemovableListItem,
+	updateFilterUrl,
+} from './utils';
 import ActiveAttributeFilters from './active-attribute-filters';
 
 /**
@@ -75,6 +79,10 @@ const ActiveFiltersBlock = ( {
 			removeCallback: () => {
 				setMinPrice( undefined );
 				setMaxPrice( undefined );
+				updateFilterUrl( {
+					min_price: undefined,
+					max_price: undefined,
+				} );
 			},
 			displayStyle: blockAttributes.displayStyle,
 		} );

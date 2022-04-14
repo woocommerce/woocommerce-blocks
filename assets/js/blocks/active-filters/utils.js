@@ -5,6 +5,8 @@ import { __, sprintf } from '@wordpress/i18n';
 import { formatPrice } from '@woocommerce/price-format';
 import { RemovableChip } from '@woocommerce/base-components/chip';
 import Label from '@woocommerce/base-components/label';
+import { getSetting } from '@woocommerce/settings';
+import { getQueryArgs, addQueryArgs, removeQueryArgs } from '@wordpress/url';
 
 /**
  * Format a min/max price range to display.
@@ -137,4 +139,41 @@ export const renderRemovableListItem = ( {
 			) }
 		</li>
 	);
+};
+
+/**
+ * Update the current URL to update or remove provided query arguments.
+ *
+ *
+ * @param {Object} args Query arguments to inject into the URL.
+ */
+export const updateFilterUrl = ( args ) => {
+	const filteringForPhpTemplate = getSetting(
+		'is_rendering_php_template',
+		''
+	);
+
+	if ( ! filteringForPhpTemplate ) {
+		return;
+	}
+
+	if ( ! window ) {
+		return null;
+	}
+
+	const url = window.location.href;
+	const currentQuery = getQueryArgs( url );
+
+	// removeQueryArgs only works if we remove existing arguments.
+	const argsToClean = Object.keys( args ).filter( ( arg ) =>
+		Object.keys( currentQuery ).includes( arg )
+	);
+
+	// We filter out the args with value set to undefined to remove them from the URL.
+	const filteredQuery = Object.fromEntries(
+		Object.entries( args ).filter( ( [ , value ] ) => value !== undefined )
+	);
+
+	const cleanUrl = removeQueryArgs( url, argsToClean );
+	window.location.href = addQueryArgs( cleanUrl, filteredQuery );
 };
