@@ -9,19 +9,25 @@ import {
 	useQueryStateByContext,
 	useCollectionData,
 } from '@woocommerce/base-context/hooks';
-import { getSetting } from '@woocommerce/settings';
+import { getSetting, getSettingWithCoercion } from '@woocommerce/settings';
 import { useCallback, useEffect, useState, useMemo } from '@wordpress/element';
 import CheckboxList from '@woocommerce/base-components/checkbox-list';
 import FilterSubmitButton from '@woocommerce/base-components/filter-submit-button';
 import Label from '@woocommerce/base-components/filter-element-label';
 import isShallowEqual from '@wordpress/is-shallow-equal';
 import { decodeEntities } from '@wordpress/html-entities';
+import { isBoolean } from '@woocommerce/types';
+import { addQueryArgs, removeQueryArgs } from '@wordpress/url';
+import { PREFIX_QUERY_ARG_FILTER_TYPE } from '@woocommerce/utils';
 
 /**
  * Internal dependencies
  */
 import { previewOptions } from './preview';
 import './style.scss';
+import { getActiveFilters } from './utils';
+
+export const QUERY_PARAM_KEY = PREFIX_QUERY_ARG_FILTER_TYPE + 'stock_status';
 
 /**
  * Component displaying an stock status filter.
@@ -34,6 +40,12 @@ const StockStatusFilterBlock = ( {
 	attributes: blockAttributes,
 	isEditor = false,
 } ) => {
+	const isRenderingPHPTemplate = getSettingWithCoercion(
+		'is_rendering_php_template',
+		false,
+		isBoolean
+	);
+
 	const [ hideOutOfStockItems ] = useState(
 		getSetting( 'hideOutOfStockItems', false )
 	);
@@ -46,7 +58,9 @@ const StockStatusFilterBlock = ( {
 			: { outofstock, ...otherStockStatusOptions }
 	);
 
-	const [ checked, setChecked ] = useState( [] );
+	const [ checked, setChecked ] = useState(
+		getActiveFilters( STOCK_STATUS_OPTIONS, QUERY_PARAM_KEY )
+	);
 	const [ displayedOptions, setDisplayedOptions ] = useState(
 		blockAttributes.isPreview ? previewOptions : []
 	);
@@ -183,6 +197,35 @@ const StockStatusFilterBlock = ( {
 		}
 	}, [ checked, currentCheckedQuery, previousCheckedQuery ] );
 
+	useEffect( () => {
+		if ( isRenderingPHPTemplate ) {
+			if ( checked.length === 0 ) {
+				const url = removeQueryArgs(
+					window.location.href,
+					QUERY_PARAM_KEY
+				);
+
+				if ( url !== window.location.href ) {
+					window.location.href = url;
+				}
+				return;
+			}
+
+			setChecked( checked );
+			const newUrl = addQueryArgs( window.location.href, {
+				[ QUERY_PARAM_KEY ]: checked.join( ',' ),
+			} );
+
+			if ( newUrl !== window.location.href ) {
+				window.location.href = newUrl;
+			}
+		}
+	}, [
+		isRenderingPHPTemplate,
+		productStockStatusQuery,
+		checked,
+		blockAttributes.queryType,
+	] );
 	/**
 	 * When a checkbox in the list changes, update state.
 	 */
