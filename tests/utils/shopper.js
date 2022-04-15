@@ -244,33 +244,59 @@ export const shopper = {
 
 		// prettier-ignore
 		verifyBillingDetails: async ( customerBillingDetails ) => {
+			const opts = { timeout: 2000 };
 			await Promise.all( [
-				expect( page ).toMatch( customerBillingDetails.firstname ),
-				expect( page ).toMatch( customerBillingDetails.lastname ),
-				expect( page ).toMatch( customerBillingDetails.company ),
-				expect( page ).toMatch( customerBillingDetails.addressfirstline ),
-				expect( page ).toMatch( customerBillingDetails.addresssecondline ),
+				expect( page ).toMatch(
+					customerBillingDetails.firstname,
+					opts
+				),
+				expect( page ).toMatch( customerBillingDetails.lastname, opts ),
+				expect( page ).toMatch( customerBillingDetails.company, opts ),
+				expect( page ).toMatch(
+					customerBillingDetails.addressfirstline,
+					opts
+				),
+				expect( page ).toMatch(
+					customerBillingDetails.addresssecondline,
+					opts
+				),
 				// expect( page ).toMatch( customerBillingDetails.country ),
-				expect( page ).toMatch( customerBillingDetails.city ),
-				expect( page ).toMatch( customerBillingDetails.state ),
-				expect( page ).toMatch( customerBillingDetails.postcode ),
-				expect( page ).toMatch( customerBillingDetails.phone ),
+				expect( page ).toMatch( customerBillingDetails.city, opts ),
+				expect( page ).toMatch( customerBillingDetails.state, opts ),
+				expect( page ).toMatch( customerBillingDetails.postcode, opts ),
+				expect( page ).toMatch( customerBillingDetails.phone, opts ),
 			] );
 		},
 
 		// prettier-ignore
 		verifyShippingDetails: async ( customerShippingDetails ) => {
+			const opts = { timeout: 2000 };
 			await Promise.all( [
-				expect( page ).toMatch( customerShippingDetails.firstname ),
-				expect( page ).toMatch( customerShippingDetails.lastname ),
-				expect( page ).toMatch( customerShippingDetails.company ),
-				expect( page ).toMatch( customerShippingDetails.addressfirstline ),
-				expect( page ).toMatch( customerShippingDetails.addresssecondline ),
+				expect( page ).toMatch(
+					customerShippingDetails.firstname,
+					opts
+				),
+				expect( page ).toMatch(
+					customerShippingDetails.lastname,
+					opts
+				),
+				expect( page ).toMatch( customerShippingDetails.company, opts ),
+				expect( page ).toMatch(
+					customerShippingDetails.addressfirstline,
+					opts
+				),
+				expect( page ).toMatch(
+					customerShippingDetails.addresssecondline,
+					opts
+				),
 				// expect( page ).toMatch( customerShippingDetails.country ),
-				expect( page ).toMatch( customerShippingDetails.city ),
-				expect( page ).toMatch( customerShippingDetails.state ),
-				expect( page ).toMatch( customerShippingDetails.postcode ),
-				expect( page ).toMatch( customerShippingDetails.phone ),
+				expect( page ).toMatch( customerShippingDetails.city, opts ),
+				expect( page ).toMatch( customerShippingDetails.state, opts ),
+				expect( page ).toMatch(
+					customerShippingDetails.postcode,
+					opts
+				),
+				expect( page ).toMatch( customerShippingDetails.phone, opts ),
 			] );
 		},
 
