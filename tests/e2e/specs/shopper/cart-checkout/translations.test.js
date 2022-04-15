@@ -1,7 +1,7 @@
 /**
  * Internal dependencies
  */
-import { cli, merchant, shopper } from '../../../../utils';
+import { merchant, shopper } from '../../../../utils';
 
 if ( process.env.WOOCOMMERCE_BLOCKS_PHASE < 2 ) {
 	// eslint-disable-next-line jest/no-focused-tests
@@ -9,18 +9,12 @@ if ( process.env.WOOCOMMERCE_BLOCKS_PHASE < 2 ) {
 }
 
 describe( 'Shopper → Cart & Checkout → Translations', () => {
-	// We need to install the language files for the blocks plugin.
-	// We also need to install the plugin from w.org via the cli. This is because
-	// on w.org, the slug is `woo-gutenberg-products-block` where as here it's
-	// `woocommerce-gutenberg-products-block`. If we try to install the language files
-	// directly, it won't find them because of the slug mismatch.
 	beforeAll( async () => {
 		await merchant.changeLanguage( 'nl_NL' );
 	} );
 
-	// We need to clean up here by changing the language back to English
-	// and uninstalling the w.org version of Woo Blocks plugin and the language files
 	afterAll( async () => {
+		// default value empty in the select menu for English (United States)
 		await merchant.changeLanguage( 'en_EN' );
 	} );
 
