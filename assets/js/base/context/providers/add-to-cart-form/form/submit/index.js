@@ -107,6 +107,9 @@ const FormSubmit = () => {
 								),
 								{
 									id: 'add-to-cart',
+									context: `woocommerce/single-product/${
+										product?.id || 0
+									}`,
 								}
 							);
 						}
