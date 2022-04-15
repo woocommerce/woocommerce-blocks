@@ -13,25 +13,14 @@ import { useDebouncedCallback } from 'use-debounce';
 import PropTypes from 'prop-types';
 import { getCurrencyFromPriceResponse } from '@woocommerce/price-format';
 import { getSetting } from '@woocommerce/settings';
-import { getQueryArg, addQueryArgs, removeQueryArgs } from '@wordpress/url';
+import { addQueryArgs, removeQueryArgs } from '@wordpress/url';
 
 /**
  * Internal dependencies
  */
 import usePriceConstraints from './use-price-constraints.js';
+import { getUrlParameter } from '../../utils/filters';
 import './style.scss';
-
-/**
- * Returns specified parameter from URL
- *
- * @param {string} paramName Parameter you want the value of.
- */
-function findGetParameter( paramName ) {
-	if ( ! window ) {
-		return null;
-	}
-	return getQueryArg( window.location.href, paramName );
-}
 
 /**
  * Formats filter values into a string for the URL parameters needed for filtering PHP templates.
@@ -46,7 +35,7 @@ function formatParams( url, params ) {
 
 	for ( const [ key, value ] of Object.entries( params ) ) {
 		if ( value ) {
-			paramObject[ key ] = ( value / 100 ).toString();
+			paramObject[ key ] = value.toString();
 		} else {
 			delete paramObject[ key ];
 		}
@@ -71,31 +60,31 @@ const PriceFilterBlock = ( { attributes, isEditor = false } ) => {
 		''
 	);
 
-	const minPriceParam = findGetParameter( 'min_price' );
-	const maxPriceParam = findGetParameter( 'max_price' );
-
-	const [ minPriceQuery, setMinPriceQuery ] = useQueryStateByKey(
-		'min_price',
-		Number( minPriceParam ) * 100 || null
-	);
-	const [ maxPriceQuery, setMaxPriceQuery ] = useQueryStateByKey(
-		'max_price',
-		Number( maxPriceParam ) * 100 || null
-	);
+	const minPriceParam = getUrlParameter( 'min_price' );
+	const maxPriceParam = getUrlParameter( 'max_price' );
 	const [ queryState ] = useQueryStateByContext();
 	const { results, isLoading } = useCollectionData( {
 		queryPrices: true,
 		queryState,
 	} );
 
-	const [ minPrice, setMinPrice ] = useState(
-		Number( minPriceParam ) * 100 || null
+	const currency = getCurrencyFromPriceResponse( results.price_range );
+
+	const [ minPriceQuery, setMinPriceQuery ] = useQueryStateByKey(
+		'min_price',
+		Number( minPriceParam ) * 10 ** currency.minorUnit || null
 	);
-	const [ maxPrice, setMaxPrice ] = useState(
-		Number( maxPriceParam ) * 100 || null
+	const [ maxPriceQuery, setMaxPriceQuery ] = useQueryStateByKey(
+		'max_price',
+		Number( maxPriceParam ) * 10 ** currency.minorUnit || null
 	);
 
-	const currency = getCurrencyFromPriceResponse( results.price_range );
+	const [ minPrice, setMinPrice ] = useState(
+		Number( minPriceParam ) * 10 ** currency.minorUnit || null
+	);
+	const [ maxPrice, setMaxPrice ] = useState(
+		Number( maxPriceParam ) * 10 ** currency.minorUnit || null
+	);
 
 	const { minConstraint, maxConstraint } = usePriceConstraints( {
 		minPrice: results.price_range
@@ -122,8 +111,8 @@ const PriceFilterBlock = ( { attributes, isEditor = false } ) => {
 			// For block templates that render the PHP Classic Template block we need to add the filters as params and reload the page.
 			if ( filteringForPhpTemplate && window ) {
 				const newUrl = formatParams( window.location.href, {
-					min_price: finalMinPrice,
-					max_price: finalMaxPrice,
+					min_price: finalMinPrice / 10 ** currency.minorUnit,
+					max_price: finalMaxPrice / 10 ** currency.minorUnit,
 				} );
 
 				// If the params have changed, lets reload the page.
@@ -141,6 +130,7 @@ const PriceFilterBlock = ( { attributes, isEditor = false } ) => {
 			setMinPriceQuery,
 			setMaxPriceQuery,
 			filteringForPhpTemplate,
+			currency,
 		]
 	);
 
