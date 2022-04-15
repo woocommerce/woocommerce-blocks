@@ -317,11 +317,12 @@ export const shopper = {
 					text: shippingName,
 				}
 			);
-			await page.waitForTimeout( 1000 );
+
 			await expect( page ).toMatchElement(
 				'.wc-block-components-totals-shipping .wc-block-formatted-money-amount',
 				{
 					text: shippingPrice,
+					timeout: 5000,
 				}
 			);
 		},
