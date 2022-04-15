@@ -86,6 +86,12 @@ Release and roadmap notes available on the [WooCommerce Developers Blog](https:/
 
 == Changelog ==
 
+= 7.4.2 - 2022-04-15 =
+
+#### Bug Fixes
+
+- Ensure errors during cart/checkout API requests are shown on the front-end. ([6268](https://github.com/woocommerce/woocommerce-gutenberg-products-block/pull/6268))
+
 = 7.4.1 - 2022-04-14 =
 
 #### Bug Fixes
