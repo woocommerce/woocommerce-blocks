@@ -422,7 +422,7 @@ export const shopper = {
 			await expect( page ).toClick( couponExpandButtonSelector );
 			await expect( page ).toFill( couponInputSelector, couponCode );
 			await expect( page ).toClick( couponApplyButtonSelector );
-			await page.waitForNetworkIdle();
+			await page.waitForNetworkIdle( { idleTime: 2000 } );
 		},
 	},
 
