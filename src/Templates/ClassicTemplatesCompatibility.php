@@ -33,7 +33,9 @@ class ClassicTemplatesCompatibility {
 	 * Initialization method.
 	 */
 	protected function init() {
-		add_action( 'template_redirect', array( $this, 'set_classic_template_data' ) );
+		if ( ! wc_current_theme_is_fse_theme() ) {
+			add_action( 'template_redirect', array( $this, 'set_classic_template_data' ) );
+		}
 	}
 
 	/**
@@ -65,8 +67,6 @@ class ClassicTemplatesCompatibility {
 	 * @return void
 	 */
 	public function set_php_template_data() {
-		if ( ! wc_current_theme_is_fse_theme() ) {
-			$this->asset_data_registry->add( 'is_rendering_php_template', true, null );
-		}
+		$this->asset_data_registry->add( 'is_rendering_php_template', true, null );
 	}
 }
