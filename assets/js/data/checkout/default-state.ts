@@ -13,7 +13,6 @@ export const defaultState: CheckoutState = {
 	redirectUrl: '',
 	status: STATUS.PRISTINE,
 	hasError: false,
-	isCalculating: false,
 	isCart: false,
 	orderId: checkoutData.order_id,
 	customerId: checkoutData.customer_id,

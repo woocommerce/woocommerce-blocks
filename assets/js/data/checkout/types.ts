@@ -98,8 +98,6 @@ export type CheckoutState = {
 	status: STATUS;
 	// Submits the checkout and begins processing.
 	onSubmit: () => void;
-	// True when something in the checkout is resulting in totals being calculated.
-	isCalculating: boolean;
 	// Used to register a callback that will fire after checkout has been processed and there are no errors.
 	onCheckoutAfterProcessingWithSuccess: ReturnType< typeof emitterCallback >;
 	// Used to register a callback that will fire when the checkout has been processed and has an error.

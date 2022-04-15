@@ -40,7 +40,7 @@ export const isProcessing = ( state ) => {
 };
 
 export const isCalculating = ( state ) => {
-	return state.isCalculating;
+	return state.calculatingCount > 0;
 };
 
 export const getCheckoutState = ( state ) => state;
