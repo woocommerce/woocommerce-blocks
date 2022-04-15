@@ -3,12 +3,13 @@
  */
 import { __ } from '@wordpress/i18n';
 import {
-	useCheckoutContext,
 	useEditorContext,
 	usePaymentMethodDataContext,
 } from '@woocommerce/base-context';
 import { CheckboxControl } from '@woocommerce/blocks-checkout';
 import PropTypes from 'prop-types';
+import { useSelect } from '@wordpress/data';
+import { CHECKOUT_STORE_KEY } from '@woocommerce/block-data';
 
 /**
  * Internal dependencies
@@ -31,8 +32,9 @@ const PaymentMethodCard = ( { children, showSaveOption } ) => {
 		shouldSavePayment,
 		setShouldSavePayment,
 	} = usePaymentMethodDataContext();
-	const { customerId } = useCheckoutContext();
-
+	const customerId = useSelect( ( select ) =>
+		select( CHECKOUT_STORE_KEY ).getCustomerId()
+	);
 	return (
 		<PaymentMethodErrorBoundary isEditor={ isEditor }>
 			{ children }

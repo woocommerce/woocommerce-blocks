@@ -11,6 +11,10 @@ export const getCustomerId = ( state ) => {
 	return state.customerId;
 };
 
+export const getOrderNotes = ( state ) => {
+	return state.orderNotes;
+};
+
 export const hasError = ( state ) => {
 	return state.hasError;
 };

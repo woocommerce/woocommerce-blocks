@@ -6,7 +6,6 @@ import classnames from 'classnames';
 import { createInterpolateElement, useEffect } from '@wordpress/element';
 import { useStoreCart } from '@woocommerce/base-context/hooks';
 import {
-	useCheckoutContext,
 	useValidationContext,
 	ValidationContextProvider,
 	CheckoutProvider,
@@ -114,10 +113,15 @@ const ScrollOnError = ( {
 }: {
 	scrollToTop: ( props: Record< string, unknown > ) => void;
 } ): null => {
-	const {
-		hasError: checkoutHasError,
-		isIdle: checkoutIsIdle,
-	} = useCheckoutContext();
+	const { hasError: checkoutHasError, isIdle: checkoutIsIdle } = useSelect(
+		( select ) => {
+			const store = select( CHECKOUT_STORE_KEY );
+			return {
+				isIdle: store.isIdle(),
+				hasError: store.hasError(),
+			};
+		}
+	);
 	const {
 		hasValidationErrors,
 		showAllValidationErrors,
