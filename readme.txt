@@ -4,7 +4,7 @@ Tags: gutenberg, woocommerce, woo commerce, products, blocks, woocommerce blocks
 Requires at least: 5.9
 Tested up to: 5.9
 Requires PHP: 7.0
-Stable tag: 7.4.0-dev
+Stable tag: 7.5.0-dev
 License: GPLv3
 License URI: https://www.gnu.org/licenses/gpl-3.0.html
 
@@ -85,6 +85,21 @@ Release and roadmap notes available on the [WooCommerce Developers Blog](https:/
 5. WooCommerce Product Blocks in the block inserter menu
 
 == Changelog ==
+
+= 7.4.0 - 2022-04-14 =
+
+#### Enhancements
+
+- Allow adding the Filter Products by Price block to Product Catalog templates to filter products. ([6146](https://github.com/woocommerce/woocommerce-gutenberg-products-block/pull/6146))
+- The order summary area for the Cart and Checkout Blocks is now powered by Inner Blocks allowing for more customizations and extensibility. ([6065](https://github.com/woocommerce/woocommerce-gutenberg-products-block/pull/6065))
+
+#### Bug Fixes
+
+- Increase Cart product quantity limit. ([6202](https://github.com/woocommerce/woocommerce-gutenberg-products-block/pull/6202))
+- Mini Cart block: Fix translations loading. ([6158](https://github.com/woocommerce/woocommerce-gutenberg-products-block/pull/6158))
+- Fix Featured Product and Featured Category buttons misalignment in Twenty Twenty Two theme. ([6156](https://github.com/woocommerce/woocommerce-gutenberg-products-block/pull/6156))
+- Remove the ToggleButtonControl in favor of ToggleGroupControl. ([5967](https://github.com/woocommerce/woocommerce-gutenberg-products-block/pull/5967))
+- Decode HTML entities when formatting Store API error messages. ([5870](https://github.com/woocommerce/woocommerce-gutenberg-products-block/pull/5870))
 
 = 7.3.0 - 2022-03-28 =
 
