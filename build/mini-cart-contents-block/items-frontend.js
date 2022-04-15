@@ -1,0 +1,1 @@
+(window.webpackWcBlocksJsonp=window.webpackWcBlocksJsonp||[]).push([[38],{401:function(c,e,t){"use strict";t.r(e);var n=t(0);e.default=c=>{let{children:e}=c;return Object(n.createElement)("div",{className:"wc-block-mini-cart__items"},e)}}}]);
