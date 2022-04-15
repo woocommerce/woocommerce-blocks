@@ -59,7 +59,7 @@ class ClassicTemplatesCompatibility {
 	}
 
 	/**
-	 * This method passes the value `is_rendering_php_template` to the front-end,
+	 * This method passes the value `is_rendering_php_template` to the front-end of Classic themes,
 	 * so that widget product filter blocks are aware of how to filter the products.
 	 *
 	 * @return void
