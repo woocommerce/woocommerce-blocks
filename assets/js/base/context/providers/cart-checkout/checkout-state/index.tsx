@@ -77,11 +77,15 @@ export const CheckoutStateProvider = ( {
 	if ( redirectUrl && redirectUrl !== checkoutState.redirectUrl ) {
 		actions.setRedirectUrl( redirectUrl );
 	}
+
+	useEffect( () => {
+		actions.setIsCart( isCart );
+	}, [ isCart, actions ] );
+
 	const { setValidationErrors } = useValidationContext();
 	const { createErrorNotice } = useDispatch( 'core/notices' );
 
 	const { dispatchCheckoutEvent } = useStoreEvents();
-	const isCalculating = checkoutState.calculatingCount > 0;
 	const {
 		isSuccessResponse,
 		isErrorResponse,
@@ -366,31 +370,10 @@ export const CheckoutStateProvider = ( {
 
 	const checkoutData: CheckoutStateContextType = {
 		onSubmit,
-		isComplete: checkoutState.status === STATUS.COMPLETE,
-		isIdle: checkoutState.status === STATUS.IDLE,
-		isCalculating,
-		isProcessing: checkoutState.status === STATUS.PROCESSING,
-		isBeforeProcessing: checkoutState.status === STATUS.BEFORE_PROCESSING,
-		isAfterProcessing: checkoutState.status === STATUS.AFTER_PROCESSING,
-		hasError: checkoutState.hasError,
-		redirectUrl: checkoutState.redirectUrl,
 		onCheckoutBeforeProcessing,
 		onCheckoutValidationBeforeProcessing,
 		onCheckoutAfterProcessingWithSuccess,
 		onCheckoutAfterProcessingWithError,
-		dispatchActions,
-		isCart,
-		orderId: checkoutState.orderId,
-		hasOrder: !! checkoutState.orderId,
-		customerId: checkoutState.customerId,
-		orderNotes: checkoutState.orderNotes,
-		useShippingAsBilling: checkoutState.useShippingAsBilling,
-		setUseShippingAsBilling: ( value ) =>
-			actions.setUseShippingAsBilling( value ),
-		shouldCreateAccount: checkoutState.shouldCreateAccount,
-		setShouldCreateAccount: ( value ) =>
-			actions.setShouldCreateAccount( value ),
-		extensionData: checkoutState.extensionData,
 	};
 	return (
 		<CheckoutContext.Provider value={ checkoutData }>

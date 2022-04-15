@@ -47,4 +47,8 @@ export const isCalculating = ( state ) => {
 	return state.calculatingCount > 0;
 };
 
+export const isCart = ( state ) => {
+	return state.isCart;
+};
+
 export const getCheckoutState = ( state ) => state;

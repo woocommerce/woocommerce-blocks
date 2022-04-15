@@ -39,6 +39,11 @@ export const setAfterProcessing = () => ( {
 	type: types.SET_AFTER_PROCESSING,
 } );
 
+export const setIsCart = ( isCart: boolean ) => ( {
+	type: types.SET_IS_CART,
+	isCart,
+} );
+
 export const setHasError = ( hasError = true ) => ( {
 	type: hasError ? types.SET_HAS_ERROR : types.SET_NO_ERROR,
 } );
