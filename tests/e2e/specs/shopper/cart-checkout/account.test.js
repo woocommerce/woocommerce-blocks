@@ -31,12 +31,6 @@ describe( 'Shopper → Checkout → Account', () => {
 		await setCheckbox( '#woocommerce_enable_guest_checkout' );
 		await page.click( 'button[name="save"]' );
 		await page.waitForNavigation( { waitUntil: 'networkidle0' } );
-		// await page.evaluate( () => {
-		// 	localStorage.setItem(
-		// 		'wc-blocks_dismissed_compatibility_notices',
-		// 		'["checkout"]'
-		// 	);
-		// } );
 		await visitBlockPage( `${ block.name } Block` );
 		await openDocumentSettingsSidebar();
 		await selectBlockByName( block.slug );
