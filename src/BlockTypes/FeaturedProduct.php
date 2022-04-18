@@ -171,6 +171,8 @@ class FeaturedProduct extends AbstractDynamicBlock {
 			$overlay_styles = sprintf( 'background-color: %s', $attributes['overlayColor'] );
 		} elseif ( isset( $attributes['overlayGradient'] ) ) {
 			$overlay_styles = sprintf( 'background-image: %s', $attributes['overlayGradient'] );
+		} else {
+			$overlay_styles = 'background-color: #000000';
 		}
 
 		return sprintf( '<div class="wc-block-featured-product__overlay" style="%s"></div>', esc_attr( $overlay_styles ) );
