@@ -410,7 +410,7 @@ const FeaturedCategory = ( {
 		);
 
 		const containerStyle = {
-			borderRadius: style.border.radius,
+			borderRadius: style?.border?.radius,
 		};
 
 		const backgroundImageSrc = mediaSrc || getCategoryImageSrc( category );
