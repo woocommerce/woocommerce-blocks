@@ -196,7 +196,7 @@ describe( 'Shopper → Checkout', () => {
 		} );
 	} );
 
-	describe.only( `Shipping`, () => {
+	describe( `Shipping`, () => {
 		const FREE_SHIPPING_NAME = 'Free Shipping';
 		const FREE_SHIPPING_PRICE = '$0.00';
 		const NORMAL_SHIPPING_NAME = 'Normal Shipping';
