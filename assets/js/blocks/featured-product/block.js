@@ -52,7 +52,11 @@ import {
 } from '../../utils/products';
 import { useThrottle } from '../../utils/useThrottle';
 
-const ConstrainedResizable = ( { className = '', onResize, ...props } ) => {
+export const ConstrainedResizable = ( {
+	className = '',
+	onResize,
+	...props
+} ) => {
 	const [ isResizing, setIsResizing ] = useState( false );
 
 	const classNames = classnames( className, {
