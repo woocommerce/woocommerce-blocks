@@ -418,7 +418,7 @@ const FeaturedProduct = ( {
 		);
 
 		const containerStyle = {
-			borderRadius: style.border.radius,
+			borderRadius: style?.border?.radius,
 		};
 
 		const wrapperStyle = {
