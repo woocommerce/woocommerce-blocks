@@ -24,7 +24,7 @@ class ClassicTemplate extends AbstractDynamicBlock {
 	 */
 	protected $api_version = '2';
 
-	const FILTER_PRODUCTS_BY_STOCK_QUERY_PARAM = 'filter_products_by_stock';
+	const FILTER_PRODUCTS_BY_STOCK_QUERY_PARAM = 'filter_stock_status';
 
 	/**
 	 * Initialize this block.
