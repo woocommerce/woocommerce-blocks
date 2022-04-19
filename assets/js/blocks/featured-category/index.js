@@ -41,11 +41,11 @@ registerBlockType( 'woocommerce/featured-category', {
 		align: [ 'wide', 'full' ],
 		html: false,
 		color: {
+			background: false,
+			text: true,
 			...( isFeaturePluginBuild() && {
 				__experimentalDuotone:
-					'.wc-block-featured-category__background-image',
-				background: false,
-				text: true,
+					'.wc-block-featured-product__background-image',
 			} ),
 		},
 		spacing: {
