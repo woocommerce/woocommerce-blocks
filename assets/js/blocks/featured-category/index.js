@@ -62,7 +62,7 @@ registerBlockType( 'woocommerce/featured-category', {
 				color: true,
 				radius: true,
 				width: true,
-				__experimentalSkipSerialization: false,
+				__experimentalSkipSerialization: true,
 			},
 		} ),
 	},

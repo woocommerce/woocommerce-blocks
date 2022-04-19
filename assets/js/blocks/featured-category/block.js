@@ -394,6 +394,7 @@ const FeaturedCategory = ( {
 			overlayColor,
 			overlayGradient,
 			showDesc,
+			style,
 		} = attributes;
 
 		const classes = classnames(
@@ -407,6 +408,11 @@ const FeaturedCategory = ( {
 			dimRatioToClass( dimRatio ),
 			contentAlign !== 'center' && `has-${ contentAlign }-content`
 		);
+
+		const containerStyle = {
+			borderRadius: style.border.radius,
+		};
+
 		const backgroundImageSrc = mediaSrc || getCategoryImageSrc( category );
 
 		const wrapperStyle = {
@@ -432,7 +438,7 @@ const FeaturedCategory = ( {
 					showHandle={ isSelected }
 					style={ { minHeight } }
 				/>
-				<div className={ classes }>
+				<div className={ classes } style={ containerStyle }>
 					<div
 						className="wc-block-featured-category__wrapper"
 						style={ wrapperStyle }

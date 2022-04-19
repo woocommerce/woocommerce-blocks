@@ -60,7 +60,7 @@ registerBlockType( 'woocommerce/featured-product', {
 				color: true,
 				radius: true,
 				width: true,
-				__experimentalSkipSerialization: false,
+				__experimentalSkipSerialization: true,
 			},
 		} ),
 	},

@@ -402,6 +402,7 @@ const FeaturedProduct = ( {
 			overlayGradient,
 			showDesc,
 			showPrice,
+			style,
 		} = attributes;
 
 		const classes = classnames(
@@ -415,6 +416,10 @@ const FeaturedProduct = ( {
 			},
 			contentAlign !== 'center' && `has-${ contentAlign }-content`
 		);
+
+		const containerStyle = {
+			borderRadius: style.border.radius,
+		};
 
 		const wrapperStyle = {
 			...getSpacingClassesAndStyles( attributes ).style,
@@ -442,7 +447,7 @@ const FeaturedProduct = ( {
 					showHandle={ isSelected }
 					style={ { minHeight } }
 				/>
-				<div className={ classes }>
+				<div className={ classes } style={ containerStyle }>
 					<div
 						className="wc-block-featured-product__wrapper"
 						style={ wrapperStyle }
