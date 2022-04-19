@@ -28,7 +28,6 @@ class FeaturedProduct extends AbstractDynamicBlock {
 		'mediaId'      => 0,
 		'mediaSrc'     => '',
 		'minHeight'    => 500,
-		'overlayColor' => '#000000',
 		'showDesc'     => true,
 		'showPrice'    => true,
 	);

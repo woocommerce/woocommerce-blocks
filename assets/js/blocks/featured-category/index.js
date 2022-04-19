@@ -45,7 +45,7 @@ registerBlockType( 'woocommerce/featured-category', {
 			text: true,
 			...( isFeaturePluginBuild() && {
 				__experimentalDuotone:
-					'.wc-block-featured-product__background-image',
+					'.wc-block-featured-category__background-image',
 			} ),
 		},
 		spacing: {

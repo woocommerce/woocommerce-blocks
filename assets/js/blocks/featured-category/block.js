@@ -77,7 +77,11 @@ const FeaturedCategory = ( {
 	debouncedSpeak,
 	triggerUrlUpdate = () => void null,
 } ) => {
-	const { gradientValue, setGradient } = useGradient();
+	const { setGradient } = useGradient( {
+		gradientAttribute: 'overlayGradient',
+		customGradientAttribute: 'overlayGradient',
+	} );
+
 	const onResize = useCallback(
 		( _event, _direction, elt ) => {
 			setAttributes( { minHeight: parseInt( elt.style.height, 10 ) } );
@@ -248,8 +252,8 @@ const FeaturedCategory = ( {
 							initialOpen={ true }
 							settings={ [
 								{
-									gradientValue,
 									colorValue: attributes.overlayColor,
+									gradientValue: attributes.overlayGradient,
 									onColorChange: ( overlayColor ) =>
 										setAttributes( { overlayColor } ),
 									onGradientChange: ( overlayGradient ) => {
