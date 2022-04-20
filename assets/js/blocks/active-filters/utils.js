@@ -6,7 +6,7 @@ import { formatPrice } from '@woocommerce/price-format';
 import { RemovableChip } from '@woocommerce/base-components/chip';
 import Label from '@woocommerce/base-components/label';
 import { getSetting } from '@woocommerce/settings';
-import { getQueryArgs, addQueryArgs, removeQueryArgs } from '@wordpress/url';
+import { addQueryArgs, removeQueryArgs } from '@wordpress/url';
 
 /**
  * Format a min/max price range to display.
@@ -162,18 +162,12 @@ export const updateFilterUrl = ( args ) => {
 	}
 
 	const url = window.location.href;
-	const currentQuery = getQueryArgs( url );
-
-	// removeQueryArgs only works if we remove existing arguments.
-	const argsToClean = Object.keys( args ).filter( ( arg ) =>
-		Object.keys( currentQuery ).includes( arg )
-	);
 
 	// We filter out the args with value set to undefined to remove them from the URL.
 	const filteredQuery = Object.fromEntries(
 		Object.entries( args ).filter( ( [ , value ] ) => value !== undefined )
 	);
 
-	const cleanUrl = removeQueryArgs( url, argsToClean );
+	const cleanUrl = removeQueryArgs( url, ...Object.keys( args ) );
 	window.location.href = addQueryArgs( cleanUrl, filteredQuery );
 };
