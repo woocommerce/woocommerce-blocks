@@ -206,7 +206,7 @@ const StockStatusFilterBlock = ( {
 			isEditor,
 			setProductStockStatusQuery,
 			checked,
-			isRenderingPHPTemplate
+			isRenderingPHPTemplate,
 		]
 	);
 
@@ -257,10 +257,6 @@ const StockStatusFilterBlock = ( {
 		blockAttributes.queryType,
 		blockAttributes.showFilterButton,
 	] );
-
-	useEffect( () => {
-
-	}, [] )
 
 	/**
 	 * When a checkbox in the list changes, update state.
