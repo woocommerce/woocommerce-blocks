@@ -100,7 +100,7 @@ class ProductQuery {
 		// eg an `sku` taxonomy will be mapped to `tax_sku`.
 		$all_product_taxonomies = array_map(
 			function ( $value ) {
-				return 'tax_' . $value;
+				return '_unstable_tax_' . $value;
 			},
 			get_taxonomies( array( 'object_type' => array( 'product' ) ), 'names' )
 		);
