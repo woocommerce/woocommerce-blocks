@@ -46,7 +46,9 @@ const StockStatusFilterBlock = ( {
 		isBoolean
 	);
 
-	const [ hasSetPhpFilterDefaults, setHasSetPhpFilterDefaults ] = useState( false );
+	const [ hasSetPhpFilterDefaults, setHasSetPhpFilterDefaults ] = useState(
+		false
+	);
 
 	const [ hideOutOfStockItems ] = useState(
 		getSetting( 'hideOutOfStockItems', false )
