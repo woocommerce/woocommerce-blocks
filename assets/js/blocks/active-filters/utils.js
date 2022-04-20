@@ -140,34 +140,3 @@ export const renderRemovableListItem = ( {
 		</li>
 	);
 };
-
-/**
- * Update the current URL to update or remove provided query arguments.
- *
- *
- * @param {Object} args Query arguments to inject into the URL.
- */
-export const updateFilterUrl = ( args ) => {
-	const filteringForPhpTemplate = getSetting(
-		'is_rendering_php_template',
-		''
-	);
-
-	if ( ! filteringForPhpTemplate ) {
-		return;
-	}
-
-	if ( ! window ) {
-		return null;
-	}
-
-	const url = window.location.href;
-
-	// We filter out the args with value set to undefined to remove them from the URL.
-	const filteredQuery = Object.fromEntries(
-		Object.entries( args ).filter( ( [ , value ] ) => value !== undefined )
-	);
-
-	const cleanUrl = removeQueryArgs( url, ...Object.keys( args ) );
-	window.location.href = addQueryArgs( cleanUrl, filteredQuery );
-};

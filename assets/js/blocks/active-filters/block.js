@@ -2,23 +2,23 @@
  * External dependencies
  */
 import { __ } from '@wordpress/i18n';
-import { useQueryStateByKey } from '@woocommerce/base-context/hooks';
-import { getSetting } from '@woocommerce/settings';
-import { useMemo } from '@wordpress/element';
+import {
+	useQueryStateByContext,
+	useQueryStateByKey,
+} from '@woocommerce/base-context/hooks';
+import { getSetting, getSettingWithCoercion } from '@woocommerce/settings';
+import { useMemo, useState, useEffect } from '@wordpress/element';
 import classnames from 'classnames';
 import PropTypes from 'prop-types';
 import Label from '@woocommerce/base-components/label';
+import { isBoolean } from '@woocommerce/types';
 
 /**
  * Internal dependencies
  */
 import './style.scss';
 import { getAttributeFromTaxonomy } from '../../utils/attributes';
-import {
-	formatPriceRange,
-	renderRemovableListItem,
-	updateFilterUrl,
-} from './utils';
+import { formatPriceRange, renderRemovableListItem } from './utils';
 import ActiveAttributeFilters from './active-attribute-filters';
 
 /**
@@ -32,6 +32,13 @@ const ActiveFiltersBlock = ( {
 	attributes: blockAttributes,
 	isEditor = false,
 } ) => {
+	const filteringForPhpTemplate = getSettingWithCoercion(
+		'is_rendering_php_template',
+		false,
+		isBoolean
+	);
+	const [ queryState ] = useQueryStateByContext();
+	const [ filterRemoved, setFilterRemoved ] = useState( false );
 	const [ productAttributes, setProductAttributes ] = useQueryStateByKey(
 		'attributes',
 		[]
@@ -57,6 +64,7 @@ const ActiveFiltersBlock = ( {
 							}
 						);
 						setProductStockStatus( newStatuses );
+						setFilterRemoved( true );
 					},
 					displayStyle: blockAttributes.displayStyle,
 				} );
@@ -79,10 +87,7 @@ const ActiveFiltersBlock = ( {
 			removeCallback: () => {
 				setMinPrice( undefined );
 				setMaxPrice( undefined );
-				updateFilterUrl( {
-					min_price: undefined,
-					max_price: undefined,
-				} );
+				setFilterRemoved( true );
 			},
 			displayStyle: blockAttributes.displayStyle,
 		} );
@@ -106,10 +111,26 @@ const ActiveFiltersBlock = ( {
 					slugs={ attribute.slug }
 					key={ attribute.attribute }
 					operator={ attribute.operator }
+					setFilterRemoved={ setFilterRemoved }
 				/>
 			);
 		} );
 	}, [ productAttributes, blockAttributes.displayStyle ] );
+
+	useEffect( () => {
+		if ( ! filteringForPhpTemplate ) {
+			return;
+		}
+		if ( ! filterRemoved ) {
+			return;
+		}
+
+		if ( ! window ) {
+			return;
+		}
+
+		console.log( queryState );
+	}, [ filteringForPhpTemplate, filterRemoved, queryState ] );
 
 	const hasFilters = () => {
 		return (
