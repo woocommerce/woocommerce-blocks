@@ -222,21 +222,63 @@ const AttributeFilterBlock = ( {
 		[ attributeTerms ]
 	);
 
+	/**
+	 * Appends query params to the current pages URL and redirects them to the new URL for PHP rendered templates.
+	 *
+	 * @param {Object} query The object containing the active filter query.
+	 * @param {boolean} allFiltersRemoved If there are active filters or not.
+	 */
+	const redirectPageForPhpTemplate = useCallback(
+		( query, allFiltersRemoved = false ) => {
+			if ( allFiltersRemoved ) {
+				const currentQueryArgKeys = Object.keys(
+					getQueryArgs( window.location.href )
+				);
+
+				const url = currentQueryArgKeys.reduce(
+					( currentUrl, queryArg ) =>
+						removeQueryArgs( currentUrl, queryArg ),
+					window.location.href
+				);
+
+				const newUrl = formatParams( url, query );
+				window.location.href = newUrl;
+			} else {
+				const newUrl = formatParams( pageUrl, query );
+				const currentQueryArgs = getQueryArgs( window.location.href );
+				const newUrlQueryArgs = getQueryArgs( newUrl );
+
+				if ( ! isQueryArgsEqual( currentQueryArgs, newUrlQueryArgs ) ) {
+					window.location.href = newUrl;
+				}
+			}
+		},
+		[ pageUrl ]
+	);
+
 	const onSubmit = useCallback(
 		( isChecked ) => {
 			if ( isEditor ) {
 				return;
 			}
 
-			updateAttributeFilter(
+			const query = updateAttributeFilter(
 				productAttributesQuery,
 				setProductAttributesQuery,
 				attributeObject,
 				getSelectedTerms( isChecked ),
 				blockAttributes.queryType === 'or' ? 'in' : 'and'
 			);
+
+			// This is for PHP rendered template filtering only.
+			if ( filteringForPhpTemplate && hasSetPhpFilterDefaults ) {
+				redirectPageForPhpTemplate( query, isChecked.length === 0 );
+			}
 		},
 		[
+			hasSetPhpFilterDefaults,
+			filteringForPhpTemplate,
+			redirectPageForPhpTemplate,
 			isEditor,
 			productAttributesQuery,
 			setProductAttributesQuery,
@@ -388,37 +430,25 @@ const AttributeFilterBlock = ( {
 				} )
 			) {
 				setChecked( [] );
-				const currentQueryArgKeys = Object.keys(
-					getQueryArgs( window.location.href )
-				);
-
-				const url = currentQueryArgKeys.reduce(
-					( currentUrl, queryArg ) =>
-						removeQueryArgs( currentUrl, queryArg ),
-					window.location.href
-				);
-
-				const newUrl = formatParams( url, productAttributesQuery );
-				window.location.href = newUrl;
+				if ( ! blockAttributes.showFilterButton ) {
+					redirectPageForPhpTemplate( productAttributesQuery, true );
+				}
 			}
 
 			setChecked( checked );
-			const newUrl = formatParams( pageUrl, productAttributesQuery );
-			const currentQueryArgs = getQueryArgs( window.location.href );
-			const newUrlQueryArgs = getQueryArgs( newUrl );
 
-			if ( ! isQueryArgsEqual( currentQueryArgs, newUrlQueryArgs ) ) {
-				window.location.href = newUrl;
+			if ( ! blockAttributes.showFilterButton ) {
+				redirectPageForPhpTemplate( productAttributesQuery, false );
 			}
 		}
 	}, [
+		hasSetPhpFilterDefaults,
+		redirectPageForPhpTemplate,
 		filteringForPhpTemplate,
 		productAttributesQuery,
 		attributeObject,
 		checked,
-		blockAttributes.queryType,
-		pageUrl,
-		hasSetPhpFilterDefaults,
+		blockAttributes.showFilterButton,
 	] );
 
 	/**

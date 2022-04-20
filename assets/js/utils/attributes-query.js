@@ -79,4 +79,6 @@ export const updateAttributeFilter = (
 		} );
 		setQuery( sortBy( returnQuery, 'attribute' ) );
 	}
+
+	return returnQuery;
 };
