@@ -14,6 +14,7 @@ import {
 	emptyHiddenAddressFields,
 	formatStoreApiErrorMessage,
 } from '@woocommerce/base-utils';
+import { useDispatch } from '@wordpress/data';
 
 /**
  * Internal dependencies
@@ -25,8 +26,7 @@ import { useCustomerDataContext } from './customer';
 import { usePaymentMethodDataContext } from './payment-methods';
 import { useValidationContext } from '../validation';
 import { useStoreCart } from '../../hooks/cart/use-store-cart';
-import { useStoreNotices } from '../../hooks/use-store-notices';
-
+import { useStoreNoticesContext } from '../store-notices';
 /**
  * CheckoutProcessor component.
  *
@@ -58,7 +58,8 @@ const CheckoutProcessor = () => {
 		paymentMethods,
 		shouldSavePayment,
 	} = usePaymentMethodDataContext();
-	const { addErrorNotice, removeNotice, setIsSuppressed } = useStoreNotices();
+	const { setIsSuppressed } = useStoreNoticesContext();
+	const { createErrorNotice, removeNotice } = useDispatch( 'core/notices' );
 	const currentBillingData = useRef( billingData );
 	const currentShippingAddress = useRef( shippingAddress );
 	const currentRedirectUrl = useRef( redirectUrl );
@@ -232,21 +233,22 @@ const CheckoutProcessor = () => {
 						if ( response.data?.cart ) {
 							receiveCart( response.data.cart );
 						}
-						addErrorNotice(
+						createErrorNotice(
 							formatStoreApiErrorMessage( response ),
-							{ id: 'checkout' }
+							{ id: 'checkout', context: 'wc/checkout' }
 						);
 						response?.additional_errors?.forEach?.(
 							( additionalError ) => {
-								addErrorNotice( additionalError.message, {
+								createErrorNotice( additionalError.message, {
 									id: additionalError.error_code,
+									context: 'wc/checkout',
 								} );
 							}
 						);
 						dispatchActions.setAfterProcessing( response );
 					} );
 				} catch {
-					addErrorNotice(
+					createErrorNotice(
 						sprintf(
 							// Translators: %s Error text.
 							__(
@@ -259,7 +261,7 @@ const CheckoutProcessor = () => {
 									'woo-gutenberg-products-block'
 								)
 						),
-						{ id: 'checkout' }
+						{ id: 'checkout', context: 'wc/checkout' }
 					);
 				}
 				dispatchActions.setHasError( true );
@@ -278,7 +280,7 @@ const CheckoutProcessor = () => {
 		extensionData,
 		cartNeedsShipping,
 		dispatchActions,
-		addErrorNotice,
+		createErrorNotice,
 		receiveCart,
 	] );
 
