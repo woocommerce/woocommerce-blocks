@@ -129,7 +129,31 @@ const ActiveFiltersBlock = ( {
 			return;
 		}
 
-		console.log( queryState );
+		const queryStringIndex = window.location.href.indexOf( '?' );
+		if ( queryStringIndex === -1 ) {
+			return;
+		}
+
+		const baseURL = window.location.href.substr( 0, queryStringIndex );
+
+		const filteredQuery = Object.fromEntries(
+			Object.entries( queryState ).filter( ( [ , value ] ) => {
+				if ( value?.length === 0 ) {
+					return false;
+				}
+				if ( ! value ) {
+					return false;
+				}
+
+				return true;
+			} )
+		);
+
+		console.log( queryState, filteredQuery );
+
+		if ( Object.keys( filteredQuery ).length === 0 ) {
+			window.location.href = baseURL;
+		}
 	}, [ filteringForPhpTemplate, filterRemoved, queryState ] );
 
 	const hasFilters = () => {
@@ -200,6 +224,7 @@ const ActiveFiltersBlock = ( {
 						setMaxPrice( undefined );
 						setProductAttributes( [] );
 						setProductStockStatus( [] );
+						setFilterRemoved( true );
 					} }
 				>
 					<Label
