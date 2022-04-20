@@ -40,11 +40,13 @@ const StockStatusFilterBlock = ( {
 	attributes: blockAttributes,
 	isEditor = false,
 } ) => {
-	const isRenderingPHPTemplate = getSettingWithCoercion(
+	const filteringForPhpTemplate = getSettingWithCoercion(
 		'is_rendering_php_template',
 		false,
 		isBoolean
 	);
+
+	const [ hasSetPhpFilterDefaults, setHasSetPhpFilterDefaults ] = useState( false );
 
 	const [ hideOutOfStockItems ] = useState(
 		getSetting( 'hideOutOfStockItems', false )
@@ -198,7 +200,7 @@ const StockStatusFilterBlock = ( {
 				setProductStockStatusQuery( checked );
 			}
 			// For PHP templates when the filter button is enabled.
-			if ( isRenderingPHPTemplate ) {
+			if ( filteringForPhpTemplate ) {
 				redirectPageForPhpTemplate( checked );
 			}
 		},
@@ -206,7 +208,7 @@ const StockStatusFilterBlock = ( {
 			isEditor,
 			setProductStockStatusQuery,
 			checked,
-			isRenderingPHPTemplate,
+			filteringForPhpTemplate,
 		]
 	);
 
@@ -237,25 +239,37 @@ const StockStatusFilterBlock = ( {
 	 * Important: For PHP rendered block templates only.
 	 */
 	useEffect( () => {
-		if ( isRenderingPHPTemplate ) {
+		if ( filteringForPhpTemplate ) {
 			setChecked( checked );
 			// Only automatically redirect if the filter button is not active.
 			if ( ! blockAttributes.showFilterButton ) {
 				redirectPageForPhpTemplate( checked );
-			} else {
-				setProductStockStatusQuery(
-					getActiveFilters( STOCK_STATUS_OPTIONS, QUERY_PARAM_KEY )
-				);
 			}
 		}
 	}, [
-		STOCK_STATUS_OPTIONS,
-		setProductStockStatusQuery,
-		isRenderingPHPTemplate,
+		filteringForPhpTemplate,
 		productStockStatusQuery,
 		checked,
 		blockAttributes.queryType,
 		blockAttributes.showFilterButton,
+	] );
+
+	/**
+	 * Important: For PHP rendered block templates only.
+	 */
+	useEffect( () => {
+		if ( ! hasSetPhpFilterDefaults && filteringForPhpTemplate ) {
+			setProductStockStatusQuery(
+				getActiveFilters( STOCK_STATUS_OPTIONS, QUERY_PARAM_KEY )
+			);
+			setHasSetPhpFilterDefaults( true );
+		}
+	}, [
+		STOCK_STATUS_OPTIONS,
+		filteringForPhpTemplate,
+		setProductStockStatusQuery,
+		hasSetPhpFilterDefaults,
+		setHasSetPhpFilterDefaults,
 	] );
 
 	/**
