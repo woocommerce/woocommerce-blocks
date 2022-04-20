@@ -162,6 +162,33 @@ const StockStatusFilterBlock = ( {
 		initialOptions,
 	] );
 
+	/**
+	 * Used to redirect the page when filters are changed so templates using the Classic Template block can filter.
+	 *
+	 * @param {Array} checkedOptions Array of checked stock options.
+	 */
+	const redirectPageForPhpTemplate = ( checkedOptions ) => {
+		if ( checkedOptions.length === 0 ) {
+			const url = removeQueryArgs(
+				window.location.href,
+				QUERY_PARAM_KEY
+			);
+
+			if ( url !== window.location.href ) {
+				window.location.href = url;
+			}
+			return;
+		}
+
+		const newUrl = addQueryArgs( window.location.href, {
+			[ QUERY_PARAM_KEY ]: checkedOptions.join( ',' ),
+		} );
+
+		if ( newUrl !== window.location.href ) {
+			window.location.href = newUrl;
+		}
+	};
+
 	const onSubmit = useCallback(
 		( isChecked ) => {
 			if ( isEditor ) {
@@ -170,8 +197,17 @@ const StockStatusFilterBlock = ( {
 			if ( isChecked ) {
 				setProductStockStatusQuery( checked );
 			}
+			// For PHP templates when the filter button is enabled.
+			if ( isRenderingPHPTemplate ) {
+				redirectPageForPhpTemplate( checked );
+			}
 		},
-		[ isEditor, setProductStockStatusQuery, checked ]
+		[
+			isEditor,
+			setProductStockStatusQuery,
+			checked,
+			isRenderingPHPTemplate
+		]
 	);
 
 	// Track checked STATE changes - if state changes, update the query.
@@ -197,35 +233,35 @@ const StockStatusFilterBlock = ( {
 		}
 	}, [ checked, currentCheckedQuery, previousCheckedQuery ] );
 
+	/**
+	 * Important: For PHP rendered block templates only.
+	 */
 	useEffect( () => {
 		if ( isRenderingPHPTemplate ) {
-			if ( checked.length === 0 ) {
-				const url = removeQueryArgs(
-					window.location.href,
-					QUERY_PARAM_KEY
-				);
-
-				if ( url !== window.location.href ) {
-					window.location.href = url;
-				}
-				return;
-			}
-
 			setChecked( checked );
-			const newUrl = addQueryArgs( window.location.href, {
-				[ QUERY_PARAM_KEY ]: checked.join( ',' ),
-			} );
-
-			if ( newUrl !== window.location.href ) {
-				window.location.href = newUrl;
+			// Only automatically redirect if the filter button is not active.
+			if ( ! blockAttributes.showFilterButton ) {
+				redirectPageForPhpTemplate( checked );
+			} else {
+				setProductStockStatusQuery(
+					getActiveFilters( STOCK_STATUS_OPTIONS, QUERY_PARAM_KEY )
+				);
 			}
 		}
 	}, [
+		STOCK_STATUS_OPTIONS,
+		setProductStockStatusQuery,
 		isRenderingPHPTemplate,
 		productStockStatusQuery,
 		checked,
 		blockAttributes.queryType,
+		blockAttributes.showFilterButton,
 	] );
+
+	useEffect( () => {
+
+	}, [] )
+
 	/**
 	 * When a checkbox in the list changes, update state.
 	 */
