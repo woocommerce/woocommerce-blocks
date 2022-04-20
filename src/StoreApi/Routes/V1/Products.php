@@ -275,7 +275,7 @@ class Products extends AbstractRoute {
 		$params['category_operator'] = array(
 			'description'       => __( 'Operator to compare product category terms.', 'woo-gutenberg-products-block' ),
 			'type'              => 'string',
-			'enum'              => [ 'in', 'not in', 'and' ],
+			'enum'              => [ 'in', 'not_in', 'and' ],
 			'default'           => 'in',
 			'sanitize_callback' => 'sanitize_key',
 			'validate_callback' => 'rest_validate_request_arg',
@@ -295,7 +295,7 @@ class Products extends AbstractRoute {
 				$params[ $param ] = array(
 					'description'       => __( 'Operator to compare product category terms.', 'woo-gutenberg-products-block' ),
 					'type'              => 'string',
-					'enum'              => [ 'in', 'not in', 'and' ],
+					'enum'              => [ 'in', 'not_in', 'and' ],
 					'default'           => 'in',
 					'sanitize_callback' => 'sanitize_key',
 					'validate_callback' => 'rest_validate_request_arg',
@@ -313,7 +313,7 @@ class Products extends AbstractRoute {
 		$params['tag_operator'] = array(
 			'description'       => __( 'Operator to compare product tags.', 'woo-gutenberg-products-block' ),
 			'type'              => 'string',
-			'enum'              => [ 'in', 'not in', 'and' ],
+			'enum'              => [ 'in', 'not_in', 'and' ],
 			'default'           => 'in',
 			'sanitize_callback' => 'sanitize_key',
 			'validate_callback' => 'rest_validate_request_arg',
