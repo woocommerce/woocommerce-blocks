@@ -248,13 +248,7 @@ const StockStatusFilterBlock = ( {
 				redirectPageForPhpTemplate( checked );
 			}
 		}
-	}, [
-		filteringForPhpTemplate,
-		productStockStatusQuery,
-		checked,
-		blockAttributes.queryType,
-		blockAttributes.showFilterButton,
-	] );
+	}, [ filteringForPhpTemplate, checked, blockAttributes.showFilterButton ] );
 
 	/**
 	 * Important: For PHP rendered block templates only.
