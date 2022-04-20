@@ -3,6 +3,7 @@
  */
 import { ACTION_TYPES as types } from './action-types';
 import { PaymentResultDataType } from './types';
+import { getPaymentResultFromCheckoutResponse } from '../../base/context/providers/cart-checkout/checkout-state/utils';
 
 export const setPristine = () => ( {
 	type: types.SET_PRISTINE,
@@ -38,6 +39,15 @@ export const setBeforeProcessing = () => ( {
 export const setAfterProcessing = () => ( {
 	type: types.SET_AFTER_PROCESSING,
 } );
+
+export const processCheckoutResponse = ( response ) => {
+	return async ( { dispatch } ) => {
+		const paymentResult = getPaymentResultFromCheckoutResponse( response );
+		dispatch( setRedirectUrl( paymentResult?.redirectUrl || '' ) );
+		dispatch( setProcessingResponse( paymentResult ) );
+		dispatch( setAfterProcessing() );
+	};
+};
 
 export const setIsCart = ( isCart: boolean ) => ( {
 	type: types.SET_IS_CART,

@@ -15,6 +15,7 @@ registerStore( STORE_KEY, {
 	reducer,
 	selectors,
 	actions,
+	__experimentalUseThunks: true,
 } );
 
 export const CHECKOUT_STORE_KEY = STORE_KEY;

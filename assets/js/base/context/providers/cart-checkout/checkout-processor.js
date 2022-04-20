@@ -55,7 +55,7 @@ const CheckoutProcessor = () => {
 		};
 	} );
 
-	const { setCustomerId, setHasError, setAfterProcessing } = useDispatch(
+	const { setCustomerId, setHasError, processCheckoutResponse } = useDispatch(
 		CHECKOUT_STORE_KEY
 	);
 
@@ -230,7 +230,7 @@ const CheckoutProcessor = () => {
 				return response.json();
 			} )
 			.then( ( responseJson ) => {
-				setAfterProcessing( responseJson );
+				processCheckoutResponse( responseJson );
 				setIsProcessingOrder( false );
 			} )
 			.catch( ( errorResponse ) => {
@@ -258,7 +258,7 @@ const CheckoutProcessor = () => {
 								} );
 							}
 						);
-						setAfterProcessing( response );
+						processCheckoutResponse( response );
 					} );
 				} catch {
 					createErrorNotice(
@@ -295,7 +295,7 @@ const CheckoutProcessor = () => {
 		createErrorNotice,
 		receiveCart,
 		setHasError,
-		setAfterProcessing,
+		processCheckoutResponse,
 		setCustomerId,
 	] );
 
