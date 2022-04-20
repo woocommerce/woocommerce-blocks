@@ -382,7 +382,7 @@ class Products extends AbstractRoute {
 					'operator'  => array(
 						'description' => __( 'Operator to compare product attribute terms.', 'woo-gutenberg-products-block' ),
 						'type'        => 'string',
-						'enum'        => [ 'in', 'not in', 'and' ],
+						'enum'        => [ 'in', 'not_in', 'and' ],
 					),
 				),
 			),
