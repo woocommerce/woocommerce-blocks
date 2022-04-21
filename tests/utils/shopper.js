@@ -412,7 +412,7 @@ export const shopper = {
 			);
 
 			const $cartItem = await page.$x( cartItemXPath );
-			await expect( $cartItem ).resolves.toHaveLength( 1 );
+			await expect( $cartItem ).toHaveLength( 1 );
 		},
 
 		applyCouponFromCheckout: async ( couponCode ) => {
