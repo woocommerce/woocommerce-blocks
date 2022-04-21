@@ -1,3 +1,8 @@
+/**
+ * External dependencies
+ */
+import { getSetting, EnteredAddress } from '@woocommerce/settings';
+
 export const STORE_KEY = 'wc/store/checkout';
 
 export enum STATUS {
@@ -14,3 +19,16 @@ export enum STATUS {
 	// After server side checkout processing is completed this status is set
 	AFTER_PROCESSING = 'after_processing',
 }
+
+const preloadedCheckoutData = getSetting( 'checkoutData', {} ) as Record<
+	string,
+	unknown
+>;
+
+export const checkoutData = {
+	order_id: 0,
+	customer_id: 0,
+	billing_address: {} as EnteredAddress,
+	shipping_address: {} as EnteredAddress,
+	...( preloadedCheckoutData || {} ),
+};
