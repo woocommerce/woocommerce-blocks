@@ -87,6 +87,7 @@ describe( 'Shopper → Checkout → Account', () => {
 		await switchUserToAdmin();
 		await visitAdminPage( 'users.php' );
 		//Confirm account is being created with the email.
+		await page.waitForSelector( '.wp-list-table.users' );
 		await expect( page ).toMatch( testEmail );
 	} );
 } );
