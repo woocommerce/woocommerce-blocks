@@ -39,16 +39,14 @@ export interface PaymentResultDataType {
 	redirectUrl: string;
 }
 
-type extensionDataNamespace = string;
-type extensionDataItem = Record< string, unknown >;
-export type extensionData = Record< extensionDataNamespace, extensionDataItem >;
-
 export type CheckoutState = {
 	// Status of the checkout
 	status: STATUS;
 	// When true, means the provider is providing data for the cart.
 	isCart: boolean;
+	// If any of the totals, taxes, shipping, etc need to be calculated, the count will be increased here
 	calculatingCount: number;
+	// The result of the payment processing
 	processingResponse: PaymentResultDataType | null;
 	// True when the checkout is in an error state. Whatever caused the error (validation/payment method) will likely have triggered a notice.
 	hasError: boolean;
@@ -65,5 +63,5 @@ export type CheckoutState = {
 	// Should a user account be created?
 	shouldCreateAccount: boolean;
 	// Custom checkout data passed to the store API on processing.
-	extensionData: Record< extensionDataNamespace, Record< string, unknown > >;
+	extensionData: Record< string, Record< string, unknown > >;
 };
