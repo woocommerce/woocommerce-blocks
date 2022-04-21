@@ -252,7 +252,7 @@ abstract class AbstractSchema {
 	 * @return array Array of values from the callback function.
 	 */
 	protected function get_item_responses_from_schema( AbstractSchema $schema, $items ) {
-		$items = array_filter( $items );
+		$items = apply_filters( 'woocommerce_get_items_from_schema', array_filter( $items ) );
 
 		if ( empty( $items ) ) {
 			return [];
