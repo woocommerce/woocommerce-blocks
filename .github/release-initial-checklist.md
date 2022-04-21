@@ -40,7 +40,11 @@ Additionally, make sure to differentiate between things in the testing notes tha
 ## Update Pull Request description and get approvals
 
 * [ ] Go through the description of the release pull request and edit it to update all the sections and checklist instructions there.
-* [ ] Ask a team member to review the changes in the release pull request and for anyone who has done testing that they approve the pull request.
+* [ ] Ask the porter of Rubik and Kirigami to review the changes in the release pull request and to approve the PR if everything looks good. The porter of each team is responsible for testing the PRs created by members of their own team. That means Rubik porter will mostly test Cart & Checkout changes while Kirigami porter will test other blocks.
+  * If all PRs are testing as expected, continue with the release.
+  * If one or more PRs are not testing as expected: ping the PR authors and the porter of the relevant team and ask them if the change is a release blocker or not (you can also ping the team lead if any of them is not available). In general, if it's not a regression or there is no product/marketing reason why that PR is a blocker, all other PRs should default to not being blockers.
+    * If there are blockers: stop the release and ask the PR author and team porter to fix them.
+    * If some PRs are not testing as expected but they are not blockers: remove the from testing steps and changelog, open an issue (or reopen the original one) and proceed with the release.
 
 ## Ensure hub is set up and you're authenticated
 * [ ] Make sure you've got `hub` installed (`brew install hub`)
@@ -85,19 +89,6 @@ Additionally, make sure to differentiate between things in the testing notes tha
   * [ ] Close the milestone.
   * [ ] Remove any unfinished issues from the Zenhub epics completed by this release and then close the epics.
 
-## Publish posts
-
-* [ ] Post release announcement on [WooCommerce Developer Blog](https://developer.woocommerce.com/category/release-post/woocommerce-blocks-release-notes/). Use previous posts for inspiration. If the release contains new features, or API changes, explain what's new so Woo devs/builders/merchants can get excited about it. This post can take time to get right - get feedback from the team, and don't rush it :)
-  - Ensure the release notes are included in the post verbatim.
-  - Don't forget to use category `WooCommerce Blocks Release Notes` for the post.
-* [ ] Announce the release internally (`#woo-announcements` slack).
-* [ ] Update user-facing documentation as needed. When the plugin is released, ensure user-facing documentation is kept up to date with new blocks and compatibility information. The dev team should update documents in collaboration with support team and WooCommerce docs guild. In particular, please review and update as needed:
-  - Are there any new blocks in this release? Ensure they have adequate user documentation.
-  - Ensure any major improvements or changes are documented.
-  - Update minimum supported versions (WordPress, WooCommerce Core) and other requirements where necessary, including:
-    - [WCCOM product page](https://woocommerce.com/products/woocommerce-gutenberg-products-block/)
-    - [WooCommerce blocks main documentation page](https://docs.woocommerce.com/document/woocommerce-blocks/)
-
 ## Pull request in WooCommerce Core for Package update
 
 This only needs to be done if this release is the last release of the feature plugin before code freeze in the WooCommerce core cycle. If this condition doesn't exist you can skip this section.
@@ -123,4 +114,16 @@ This only needs to be done if this release is the last release of the feature pl
   * After the checklist is complete and the testing is done, it will be up to the WooCommerce core team to approve and merge the pull request.
 * [ ] Make sure you join the `#woo-core-releases` Slack channel to represent Woo Blocks for the release of WooCommerce core this version is included in.
 
+## Publish posts
 
+* [ ] Post release announcement on [WooCommerce Developer Blog](https://developer.woocommerce.com/category/release-post/woocommerce-blocks-release-notes/).
+  - Ping porters from each team to know which changelog entries need to be highlighted. Ask them to write a short text and optionally provide a screenshot. They can use previous posts for inspiration, we usually try to highlight new features or API changes.
+  - Ensure the release notes are included in the post verbatim.
+  - Don't forget to use category `WooCommerce Blocks Release Notes` for the post.
+* [ ] Announce the release internally (`#woo-announcements` slack).
+* [ ] Update user-facing documentation as needed. When the plugin is released, ensure user-facing documentation is kept up to date with new blocks and compatibility information. The dev team should update documents in collaboration with support team and WooCommerce docs guild. In particular, please review and update as needed:
+  - Are there any new blocks in this release? Ensure they have adequate user documentation.
+  - Ensure any major improvements or changes are documented.
+  - Update minimum supported versions (WordPress, WooCommerce Core) and other requirements where necessary, including:
+    - [WCCOM product page](https://woocommerce.com/products/woocommerce-gutenberg-products-block/)
+    - [WooCommerce blocks main documentation page](https://docs.woocommerce.com/document/woocommerce-blocks/)

@@ -36,7 +36,11 @@ Additionally, make sure to differentiate between things in the testing notes tha
 ## Update Pull Request description and get approvals
 
 * [ ] Go through the description of the release pull request and edit it to update all the sections and checklist instructions there.
-* [ ] Ask a team member to review the changes in the release pull request and for anyone who has done testing that they approve the pull request.
+* [ ] Ask the porter of Rubik and Kirigami to review the changes in the release pull request and to approve the PR if everything looks good. The porter of each team is responsible for testing the PRs created by members of their own team. That means Rubik porter will mostly test Cart & Checkout changes while Kirigami porter will test other blocks.
+  * If all PRs are testing as expected, continue with the release.
+  * If one or more PRs are not testing as expected: ping the PR authors and the porter of the relevant team and ask them if the change is a release blocker or not (you can also ping the team lead if any of them is not available). In general, if it's not a regression or there is no product/marketing reason why that PR is a blocker, all other PRs should default to not being blockers.
+    * If there are blockers: stop the release and ask the PR author and team porter to fix them.
+    * If some PRs are not testing as expected but they are not blockers: remove the from testing steps and changelog, open an issue (or reopen the original one) and proceed with the release.
 * [ ] Execute `npm run deploy`
   * Note: the script automatically updates version numbers (commits on your behalf).
   * **ALERT**: This script will ask you if this release will be deployed to WordPress.org. You should only answer yes for this release **if it's the latest release and you want to deploy to WordPress.org**. Otherwise, answer no. If you answer yes, you will get asked additional verification by the `npm run deploy` script about deploying a patch release to WordPress.org.
@@ -64,19 +68,6 @@ Additionally, make sure to differentiate between things in the testing notes tha
   * [ ] Edit the GitHub milestone and add the current date as the due date (this is used to track ship date as well).
   * [ ] Close the milestone.
 
-## Publish Posts
-
-You only need to post public release announcements and update relevant public facing docs if this patch release is deployed to WP.org. Otherwise, you can skip this section.
-
-* [ ] Post release announcement on [WooCommerce Developer Blog](https://developer.woocommerce.com/category/release-post/woocommerce-blocks-release-notes/). Use previous posts for inspiration. If the release contains new features, or API changes, explain what's new so Woo devs/builders/merchants can get excited about it. This post can take time to get right - get feedback from the team, and don't rush it :)
-  - Ensure the release notes are included in the post verbatim.
-  - Don't forget to use category `WooCommerce Blocks Release Notes` for the post.
-* [ ] Announce the release internally (`#woo-announcements` slack).
-* [ ] Update user-facing documentation as needed. When the plugin is released, ensure user-facing documentation is kept up to date with new blocks and compatibility information.
-  - Update minimum supported versions (WordPress, WooCommerce Core) and other requirements where necessary, including:
-    - [WCCOM product page](https://woocommerce.com/products/woocommerce-gutenberg-products-block/)
-    - [WooCommerce blocks main documentation page](https://docs.woocommerce.com/document/woocommerce-blocks/)
-
 ## Pull request in WooCommerce Core for Package update
 
 This only needs done if the patch release needs to be included in WooCommerce Core.
@@ -90,3 +81,17 @@ This only needs done if the patch release needs to be included in WooCommerce Co
   - Verify and make any additional edits to the pull request description for things like: Changelog to be included with WooCommerce core, additional communication that might be needed elsewhere, additional marketing communication notes that may be needed etc.
   - After the checklist is complete and the testing is done, it will be up to the WooCommerce core team to approve and merge the pull request.
 * [ ] Make sure you join the `#woo-core-releases` Slack channel to represent Woo Blocks for the release of WooCommerce core this version is included in.
+
+## Publish Posts
+
+You only need to post public release announcements and update relevant public facing docs if this patch release is deployed to WP.org. Otherwise, you can skip this section.
+
+* [ ] Post release announcement on [WooCommerce Developer Blog](https://developer.woocommerce.com/category/release-post/woocommerce-blocks-release-notes/).
+  - Ping porters from each team to know which changelog entries need to be highlighted. Ask them to write a short text and optionally provide a screenshot. They can use previous posts for inspiration, we usually try to highlight new features or API changes.
+  - Ensure the release notes are included in the post verbatim.
+  - Don't forget to use category `WooCommerce Blocks Release Notes` for the post.
+* [ ] Announce the release internally (`#woo-announcements` slack).
+* [ ] Update user-facing documentation as needed. When the plugin is released, ensure user-facing documentation is kept up to date with new blocks and compatibility information.
+  - Update minimum supported versions (WordPress, WooCommerce Core) and other requirements where necessary, including:
+    - [WCCOM product page](https://woocommerce.com/products/woocommerce-gutenberg-products-block/)
+    - [WooCommerce blocks main documentation page](https://docs.woocommerce.com/document/woocommerce-blocks/)
