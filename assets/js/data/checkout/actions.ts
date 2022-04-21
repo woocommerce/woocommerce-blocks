@@ -55,7 +55,8 @@ export const setIsCart = ( isCart: boolean ) => ( {
 } );
 
 export const setHasError = ( hasError = true ) => ( {
-	type: hasError ? types.SET_HAS_ERROR : types.SET_NO_ERROR,
+	type: types.SET_HAS_ERROR,
+	hasError,
 } );
 
 export const incrementCalculating = () => ( {

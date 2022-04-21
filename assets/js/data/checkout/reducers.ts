@@ -97,29 +97,15 @@ const reducer: Reducer = ( state = defaultState, action ) => {
 			break;
 
 		case types.SET_HAS_ERROR:
-			newState = state.hasError
-				? state
-				: {
-						...state,
-						hasError: true,
-				  };
-			newState =
-				state.status === STATUS.PROCESSING ||
-				state.status === STATUS.BEFORE_PROCESSING
-					? {
-							...newState,
-							status: STATUS.IDLE,
-					  }
-					: newState;
-			break;
-
-		case types.SET_NO_ERROR:
-			newState = state.hasError
-				? {
-						...state,
-						hasError: false,
-				  }
-				: state;
+			newState = {
+				...state,
+				hasError: action.hasError,
+				status:
+					state.status === STATUS.PROCESSING ||
+					state.status === STATUS.BEFORE_PROCESSING
+						? STATUS.IDLE
+						: state.status,
+			};
 			break;
 
 		case types.INCREMENT_CALCULATING:
