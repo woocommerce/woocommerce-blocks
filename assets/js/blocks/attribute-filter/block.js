@@ -240,9 +240,20 @@ const AttributeFilterBlock = ( {
 					getQueryArgs( window.location.href )
 				);
 
+				const parsedTaxonomy = parseTaxonomyToGenerateURL(
+					attributeObject?.taxonomy
+				);
+
 				const url = currentQueryArgKeys.reduce(
 					( currentUrl, queryArg ) =>
-						removeQueryArgs( currentUrl, queryArg ),
+						queryArg.includes(
+							PREFIX_QUERY_ARG_QUERY_TYPE + parsedTaxonomy
+						) ||
+						queryArg.includes(
+							PREFIX_QUERY_ARG_FILTER_TYPE + parsedTaxonomy
+						)
+							? removeQueryArgs( currentUrl, queryArg )
+							: currentUrl,
 					window.location.href
 				);
 
@@ -258,7 +269,7 @@ const AttributeFilterBlock = ( {
 				}
 			}
 		},
-		[ pageUrl ]
+		[ pageUrl, attributeObject?.taxonomy ]
 	);
 
 	const onSubmit = useCallback(
