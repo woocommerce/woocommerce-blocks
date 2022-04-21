@@ -464,17 +464,26 @@ const AttributeFilterBlock = ( {
 				! hasSetPhpFilterDefaults &&
 				! attributeTermsLoading
 			) {
-				onSubmit( checked );
 				setHasSetPhpFilterDefaults( true );
+				updateAttributeFilter(
+					productAttributesQuery,
+					setProductAttributesQuery,
+					attributeObject,
+					getSelectedTerms( checked ),
+					blockAttributes.queryType === 'or' ? 'in' : 'and'
+				);
 			}
 		}
 	}, [
-		onSubmit,
+		productAttributesQuery,
+		setProductAttributesQuery,
+		attributeObject,
+		blockAttributes.queryType,
+		getSelectedTerms,
 		filteringForPhpTemplate,
 		checked,
 		hasSetPhpFilterDefaults,
 		attributeTermsLoading,
-		blockAttributes.showFilterButton,
 	] );
 
 	// Short-circuit if no attribute is selected.
