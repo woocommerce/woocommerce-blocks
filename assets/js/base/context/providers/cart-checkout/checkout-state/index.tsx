@@ -138,7 +138,9 @@ export const CheckoutStateProvider = ( {
 					if ( Array.isArray( response ) ) {
 						response.forEach(
 							( { errorMessage, validationErrors } ) => {
-								createErrorNotice( errorMessage );
+								createErrorNotice( errorMessage, {
+									context: 'wc/checkout',
+								} );
 								setValidationErrors( validationErrors );
 							}
 						);
@@ -241,6 +243,7 @@ export const CheckoutStateProvider = ( {
 								);
 							createErrorNotice( message, {
 								id: 'checkout',
+								context: 'wc/checkout',
 							} );
 						}
 

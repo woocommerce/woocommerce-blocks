@@ -249,12 +249,13 @@ const CheckoutProcessor = () => {
 						}
 						createErrorNotice(
 							formatStoreApiErrorMessage( response ),
-							{ id: 'checkout' }
+							{ id: 'checkout', context: 'wc/checkout' }
 						);
 						response?.additional_errors?.forEach?.(
 							( additionalError ) => {
 								createErrorNotice( additionalError.message, {
 									id: additionalError.error_code,
+									context: 'wc/checkout',
 								} );
 							}
 						);
@@ -274,7 +275,7 @@ const CheckoutProcessor = () => {
 									'woo-gutenberg-products-block'
 								)
 						),
-						{ id: 'checkout' }
+						{ id: 'checkout', context: 'wc/checkout' }
 					);
 				}
 				setHasError( true );
