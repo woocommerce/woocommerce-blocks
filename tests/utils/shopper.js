@@ -319,11 +319,12 @@ export const shopper = {
 				}
 			);
 
+			await page.waitForNetworkIdle( { idleTime: 2000 } );
 			await expect( page ).toMatchElement(
 				'.wc-block-components-totals-shipping .wc-block-formatted-money-amount',
 				{
 					text: shippingPrice,
-					timeout: 5000,
+					timeout: 30000,
 				}
 			);
 		},
