@@ -47,53 +47,36 @@ const reducer: Reducer = ( state = defaultState, action ) => {
 			break;
 
 		case types.SET_COMPLETE:
-			newState =
-				state.status !== STATUS.COMPLETE
-					? {
-							...state,
-							status: STATUS.COMPLETE,
-							redirectUrl:
-								typeof action.data?.redirectUrl === 'string'
-									? action.data.redirectUrl
-									: state.redirectUrl,
-					  }
-					: state;
+			newState = {
+				...state,
+				status: STATUS.COMPLETE,
+				redirectUrl:
+					typeof action.data?.redirectUrl === 'string'
+						? action.data.redirectUrl
+						: state.redirectUrl,
+			};
 			break;
 		case types.SET_PROCESSING:
-			newState =
-				state.status !== STATUS.PROCESSING
-					? {
-							...state,
-							status: STATUS.PROCESSING,
-							hasError: false,
-					  }
-					: state;
-			// clear any error state.
-			newState =
-				newState.hasError === false
-					? newState
-					: { ...newState, hasError: false };
+			newState = {
+				...state,
+				status: STATUS.PROCESSING,
+				hasError: false,
+			};
 			break;
 
 		case types.SET_BEFORE_PROCESSING:
-			newState =
-				state.status !== STATUS.BEFORE_PROCESSING
-					? {
-							...state,
-							status: STATUS.BEFORE_PROCESSING,
-							hasError: false,
-					  }
-					: state;
+			newState = {
+				...state,
+				status: STATUS.BEFORE_PROCESSING,
+				hasError: false,
+			};
 			break;
 
 		case types.SET_AFTER_PROCESSING:
-			newState =
-				state.status !== STATUS.AFTER_PROCESSING
-					? {
-							...state,
-							status: STATUS.AFTER_PROCESSING,
-					  }
-					: state;
+			newState = {
+				...state,
+				status: STATUS.AFTER_PROCESSING,
+			};
 			break;
 
 		case types.SET_HAS_ERROR:
@@ -123,23 +106,21 @@ const reducer: Reducer = ( state = defaultState, action ) => {
 			break;
 
 		case types.SET_CUSTOMER_ID:
-			newState =
-				action.customerId !== undefined
-					? {
-							...state,
-							customerId: action.customerId,
-					  }
-					: state;
+			if ( action.customerId !== undefined ) {
+				newState = {
+					...state,
+					customerId: action.customerId,
+				};
+			}
 			break;
 
 		case types.SET_ORDER_ID:
-			newState =
-				action.orderId !== undefined
-					? {
-							...state,
-							orderId: action.orderId,
-					  }
-					: state;
+			if ( action.orderId !== undefined ) {
+				newState = {
+					...state,
+					orderId: action.orderId,
+				};
+			}
 			break;
 
 		case types.SET_SHIPPING_ADDRESS_AS_BILLING_ADDRESS:

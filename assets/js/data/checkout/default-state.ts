@@ -25,9 +25,4 @@ export const defaultState: CheckoutState = {
 	shouldCreateAccount: false,
 	processingResponse: null,
 	extensionData: {},
-	onSubmit: () => void null,
-	onCheckoutAfterProcessingWithSuccess: () => () => void null,
-	onCheckoutAfterProcessingWithError: () => () => void null,
-	onCheckoutBeforeProcessing: () => () => void null, // deprecated for onCheckoutValidationBeforeProcessing
-	onCheckoutValidationBeforeProcessing: () => () => void null,
 };
