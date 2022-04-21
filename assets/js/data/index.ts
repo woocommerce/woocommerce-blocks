@@ -12,3 +12,4 @@ export { CART_STORE_KEY } from './cart';
 export { CHECKOUT_STORE_KEY } from './checkout';
 export { QUERY_STATE_STORE_KEY } from './query-state';
 export * from './constants';
+export * from './types';
