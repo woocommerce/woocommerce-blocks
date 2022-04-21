@@ -445,15 +445,14 @@ const AttributeFilterBlock = ( {
 					hasSetPhpFilterDefaults,
 				} )
 			) {
-				setChecked( [] );
 				if ( ! blockAttributes.showFilterButton ) {
+					setChecked( [] );
 					redirectPageForPhpTemplate( productAttributesQuery, true );
 				}
 			}
 
-			setChecked( checked );
-
 			if ( ! blockAttributes.showFilterButton ) {
+				setChecked( checked );
 				redirectPageForPhpTemplate( productAttributesQuery, false );
 			}
 		}
@@ -475,8 +474,11 @@ const AttributeFilterBlock = ( {
 	 */
 	useEffect( () => {
 		if ( filteringForPhpTemplate ) {
+			const activeFilters = getActiveFilters(
+				filteringForPhpTemplate, attributeObject
+			);
 			if (
-				checked.length > 0 &&
+				activeFilters.length > 0 &&
 				! hasSetPhpFilterDefaults &&
 				! attributeTermsLoading
 			) {
@@ -485,7 +487,7 @@ const AttributeFilterBlock = ( {
 					productAttributesQuery,
 					setProductAttributesQuery,
 					attributeObject,
-					getSelectedTerms( checked ),
+					getSelectedTerms( activeFilters ),
 					blockAttributes.queryType === 'or' ? 'in' : 'and'
 				);
 			}
@@ -497,7 +499,6 @@ const AttributeFilterBlock = ( {
 		blockAttributes.queryType,
 		getSelectedTerms,
 		filteringForPhpTemplate,
-		checked,
 		hasSetPhpFilterDefaults,
 		attributeTermsLoading,
 	] );
