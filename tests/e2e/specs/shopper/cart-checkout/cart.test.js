@@ -21,6 +21,7 @@ describe( 'Shopper → Cart', () => {
 		await shopper.block.goToCart();
 
 		// Verify cart is empty'
+		await page.waitForSelector( '.wp-block-woocommerce-empty-cart-block' );
 		await expect( page ).toMatchElement( 'h2', {
 			text: 'Your cart is currently empty!',
 		} );

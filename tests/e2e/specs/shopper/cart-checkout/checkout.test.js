@@ -239,7 +239,7 @@ describe( 'Shopper → Checkout', () => {
 		} );
 	} );
 
-	describe( 'Coupons', () => {
+	describe.only( 'Coupons', () => {
 		beforeAll( async () => {
 			coupon = await createCoupon( { usageLimit: 1 } );
 			await merchant.login();
@@ -292,6 +292,9 @@ describe( 'Shopper → Checkout', () => {
 			await shopper.addToCartFromShopPage( SIMPLE_VIRTUAL_PRODUCT_NAME );
 			await shopper.block.goToCheckout();
 			await shopper.block.applyCouponFromCheckout( coupon.code );
+			await page.waitForSelector(
+				'.wc-block-components-totals-coupon__content > .wc-block-components-validation-error'
+			);
 			await expect( page ).toMatch(
 				'Coupon usage limit has been reached.'
 			);

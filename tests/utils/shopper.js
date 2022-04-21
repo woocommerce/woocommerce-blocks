@@ -35,6 +35,7 @@ export const shopper = {
 				waitUntil: 'networkidle0',
 			} );
 
+			await page.waitForSelector( 'h1' );
 			await expect( page ).toMatchElement( 'h1', {
 				text: blockName,
 			} );
@@ -409,7 +410,8 @@ export const shopper = {
 				cartItemArgs
 			);
 
-			await expect( page.$x( cartItemXPath ) ).resolves.toHaveLength( 1 );
+			const $cartItem = await page.$x( cartItemXPath );
+			await expect( $cartItem ).resolves.toHaveLength( 1 );
 		},
 
 		applyCouponFromCheckout: async ( couponCode ) => {
