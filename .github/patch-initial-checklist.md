@@ -40,7 +40,7 @@ Additionally, make sure to differentiate between things in the testing notes tha
   * If all PRs are testing as expected, continue with the release.
   * If one or more PRs are not testing as expected: ping the PR authors and the porter of the relevant team and ask them if the change is a release blocker or not (you can also ping the team lead if any of them is not available). In general, if it's not a regression or there is no product/marketing reason why that PR is a blocker, all other PRs should default to not being blockers.
     * If there are blockers: stop the release and ask the PR author and team porter to fix them.
-    * If some PRs are not testing as expected but they are not blockers: remove the from testing steps and changelog, open an issue (or reopen the original one) and proceed with the release.
+    * If some PRs are not testing as expected but they are not blockers: revert the relevant commits, remove the changes from testing steps and changelog, open an issue (or reopen the original one) and proceed with the release.
 * [ ] Execute `npm run deploy`
   * Note: the script automatically updates version numbers (commits on your behalf).
   * **ALERT**: This script will ask you if this release will be deployed to WordPress.org. You should only answer yes for this release **if it's the latest release and you want to deploy to WordPress.org**. Otherwise, answer no. If you answer yes, you will get asked additional verification by the `npm run deploy` script about deploying a patch release to WordPress.org.
