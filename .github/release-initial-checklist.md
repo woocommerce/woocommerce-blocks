@@ -13,16 +13,13 @@ The release pull request has been created! This checklist is a guide to follow f
   * [ ] If necessary, update the `phpcs.xml` file to reference the minimum WP version supported by **WooCommerce Core**. It would be this line: `<config name="minimum_supported_wp_version" value="5.6" />`.
 * [ ] Push above changes to the release branch.
 
-## Write Testing Notes
-
-When creating testing notes, please write them from the perspective of a "user" (merchant) familiar with WooCommerce. So you don't have to spell out exact steps for common setup scenarios (eg. "Create a product"), but do be specific about the thing being tested. Include screenshots demonstrating expectations where that will be helpful.
-
-Additionally, make sure to differentiate between things in the testing notes that only apply to the feature plugin and things that apply when included in WooCommerce core as there may be variations there.
+## Create the Testing Notes
 
 * [ ] Run `npm ci`
 * [ ] Run `npm run package-plugin:deploy`. This will create a zip of the current branch build locally.
   *  Note: The zip file is functionally equivalent to what gets released except the version bump.
-* [ ] Create testing notes for the release. You can usually go through the pull requests linked in the changelog and grab testing notes from each pull.
+* [ ] Create the testing notes for the release. 
+  * [ ] For each pull request linked in the changelog grab the `User Facing Testing` notes from the PR's description. 
   * [ ] Add the notes to `docs/testing/releases`
   * [ ] Update the `docs/testing/releases/README.md` file index.
 * [ ] Copy a link to the release zip you created earlier into the testing notes. To generate the link you can upload the zip as an attachment in a GitHub comment and then just copy the path (without publishing the comment).
@@ -40,7 +37,7 @@ Additionally, make sure to differentiate between things in the testing notes tha
 ## Update Pull Request description and get approvals
 
 * [ ] Go through the description of the release pull request and edit it to update all the sections and checklist instructions there.
-* [ ] Ask the porter of Rubik and Kirigami to review the changes in the release pull request and to approve the PR if everything looks good. The porter of each team is responsible for testing the PRs created by members of their own team. That means Rubik porter will mostly test Cart & Checkout changes while Kirigami porter will test other blocks.
+* [ ] Ask the porter of Rubik and Kirigami to review the changes in the release pull request and to approve the PR if everything looks good. Each porter is responsible for testing the PRs that fall under the focus of their own team. Shared functionality should be tested by both porters. This means that the Rubik porter will mostly test Cart & Checkout changes while Kirigami porter will test the other blocks.
   * If all PRs are testing as expected, continue with the release.
   * If one or more PRs are not testing as expected: ping the PR authors and the porter of the relevant team and ask them if the change is a release blocker or not (you can also ping the team lead if any of them is not available). In general, if it's not a regression or there is no product/marketing reason why that PR is a blocker, all other PRs should default to not being blockers.
     * If there are blockers: stop the release and ask the PR author and team porter to fix them.
@@ -97,7 +94,7 @@ This only needs to be done if this release is the last release of the feature pl
 * [ ] Create a pull request for updating the package in the [WooCommerce Core Repository](https://github.com/woocommerce/woocommerce/) that [bumps the package version](https://github.com/woocommerce/woocommerce/blob/747cb6b7184ba9fdc875ab104da5839cfda8b4be/plugins/woocommerce/composer.json) for the Woo Blocks package to the version being pulled in.
   * The content for the pull release can follow [this example](https://github.com/woocommerce/woocommerce/pull/32627). 
      * In the PR description you will link to all the important things that have already been prepared since the version you replaced. Note, you need to make sure you link to all the related documents for the plugin releases since the last package version bump in Woo Core.
-     * Please add a changelog to the content which is aggregated from all the releases included in the package bump. The changelog should only list things surfaced to users of the package in WooCommerce core (i.e. excluding things only available in the feature plugin or development builds). This changelog will be used in the release notes for the WooCommerce release.  
+     * The PR's changelog should be aggregated from all the releases included in the package bump. This changelog will be used in the release notes for the WooCommerce release. That's why it should only list the PRs that have WooCoomerce Core in the WooCommerce Visibility section of their description. Don't include changes available in the feature plugin or development builds.
       * Update the `plugins/woocommerce/composer.json` file and then run `composer update`. 
 
       * Since WooCommerce Blocks 7.4.0, the changelog entry for WooCommerce core must include the fields `Significance` and `Type`. In our case, we're using the following definition as seen on [plugins/woocommerce/changelog/update-woocommerce-blocks-7.4.0](https://github.com/woocommerce/woocommerce/pull/32627/commits/99bf4afd262280ad4e45386ce4ad00ce3425af93) file:
