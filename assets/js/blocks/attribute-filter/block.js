@@ -464,10 +464,8 @@ const AttributeFilterBlock = ( {
 				! hasSetPhpFilterDefaults &&
 				! attributeTermsLoading
 			) {
+				onSubmit( checked );
 				setHasSetPhpFilterDefaults( true );
-				if ( ! blockAttributes.showFilterButton ) {
-					onSubmit( checked );
-				}
 			}
 		}
 	}, [
