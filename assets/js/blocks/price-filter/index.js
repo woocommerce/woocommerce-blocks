@@ -2,7 +2,7 @@
  * External dependencies
  */
 import { __ } from '@wordpress/i18n';
-import { registerBlockType } from '@wordpress/blocks';
+import { createBlock, registerBlockType } from '@wordpress/blocks';
 import classNames from 'classnames';
 import { Icon, currencyDollar } from '@wordpress/icons';
 import { isFeaturePluginBuild } from '@woocommerce/block-settings';
@@ -64,10 +64,28 @@ registerBlockType( 'woocommerce/price-filter', {
 			default: 3,
 		},
 	},
-
+	transforms: {
+		from: [
+			{
+				type: 'block',
+				blocks: [ 'core/legacy-widget' ],
+				// We can't transform if raw instance isn't shown in the REST API.
+				isMatch: ( { idBase } ) =>
+					idBase === 'woocommerce_price_filter',
+				transform: () =>
+					createBlock( 'woocommerce/price-filter', {
+						showInputFields: true,
+						showFilterButton: false,
+						heading: __(
+							'Filter by price',
+							'woo-gutenberg-products-block'
+						),
+						headingLevel: 3,
+					} ),
+			},
+		],
+	},
 	edit,
-
-	// Save the props to post content.
 	save( { attributes } ) {
 		const {
 			className,
