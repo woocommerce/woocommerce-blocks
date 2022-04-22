@@ -319,7 +319,15 @@ export const shopper = {
 				}
 			);
 
-			await page.waitForNetworkIdle( { idleTime: 2000 } );
+			// We need to wait for the UI to update after the store API call,
+			// so we wait for the "Place Order" to not be disabled again to indicate
+			// the call has finished. Tried `page.waitForNetworkIdle()` here but it's flakey
+			await page.waitForSelector(
+				'button.wc-block-components-checkout-place-order-button[disabled]',
+				{
+					hidden: true,
+				}
+			);
 			await expect( page ).toMatchElement(
 				'.wc-block-components-totals-shipping .wc-block-formatted-money-amount',
 				{
