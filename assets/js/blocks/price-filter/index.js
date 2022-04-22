@@ -71,16 +71,17 @@ registerBlockType( 'woocommerce/price-filter', {
 				blocks: [ 'core/legacy-widget' ],
 				// We can't transform if raw instance isn't shown in the REST API.
 				isMatch: ( { idBase, instance } ) =>
-					idBase === 'woocommerce_price_filter' &&
-					!! instance?.raw,
+					idBase === 'woocommerce_price_filter' && !! instance?.raw,
 				transform: ( { instance } ) =>
 					createBlock( 'woocommerce/price-filter', {
 						showInputFields: true,
 						showFilterButton: false,
-						heading: instance?.raw?.title || __(
-							'Filter by price',
-							'woo-gutenberg-products-block'
-						),
+						heading:
+							instance?.raw?.title ||
+							__(
+								'Filter by price',
+								'woo-gutenberg-products-block'
+							),
 						headingLevel: 3,
 					} ),
 			},
