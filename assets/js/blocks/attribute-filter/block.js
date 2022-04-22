@@ -125,10 +125,6 @@ const AttributeFilterBlock = ( {
 		},
 		queryState: {
 			...queryState,
-			// The PHP template renders only the products with the visibility set to catalog
-			...( filteringForPhpTemplate && {
-				catalog_visibility: 'catalog',
-			} ),
 			attributes: filterAvailableTerms ? queryState.attributes : null,
 		},
 	} );
