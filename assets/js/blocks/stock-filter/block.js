@@ -40,7 +40,6 @@ const StockStatusFilterBlock = ( {
 	attributes: blockAttributes,
 	isEditor = false,
 } ) => {
-
 	const filteringForPhpTemplate = getSettingWithCoercion(
 		'is_rendering_php_template',
 		false,

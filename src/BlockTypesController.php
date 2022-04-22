@@ -144,7 +144,8 @@ final class BlockTypesController {
 			'woocommerce_product_categories',
 			'woocommerce_recent_reviews',
 			'woocommerce_price_filter',
-			'woocommerce_layered_nav'
+			'woocommerce_layered_nav',
+			'woocommerce_layered_nav_filters'
 		);
 
 		return $widget_types;
@@ -223,7 +224,6 @@ final class BlockTypesController {
 				$block_types,
 				[
 					'AllProducts',
-					'ActiveFilters',
 					'Cart',
 					'Checkout',
 				]
