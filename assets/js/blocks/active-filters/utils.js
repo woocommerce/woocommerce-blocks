@@ -147,10 +147,6 @@ export const renderRemovableListItem = ( {
  * @param {Array<string|Record<string, string>>} args Args to remove
  */
 export const removeArgsFromFilterUrl = ( ...args ) => {
-	if ( ! window ) {
-		return null;
-	}
-
 	const url = window.location.href;
 	const currentQuery = getQueryArgs( url );
 	const cleanUrl = removeQueryArgs( url, ...Object.keys( currentQuery ) );
@@ -173,4 +169,20 @@ export const removeArgsFromFilterUrl = ( ...args ) => {
 	);
 
 	window.location.href = addQueryArgs( cleanUrl, filteredQuery );
+};
+
+/**
+ * Get the base URL for the current page.
+ *
+ * @return {string} The current URL without the query args.
+ */
+export const getBaseUrl = () => {
+	const url = window.location.href;
+
+	const queryStringIndex = url.indexOf( '?' );
+	if ( queryStringIndex === -1 ) {
+		return url;
+	}
+
+	return url.substring( 0, queryStringIndex );
 };

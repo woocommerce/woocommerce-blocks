@@ -19,6 +19,7 @@ import {
 	formatPriceRange,
 	renderRemovableListItem,
 	removeArgsFromFilterUrl,
+	getBaseUrl,
 } from './utils';
 import ActiveAttributeFilters from './active-attribute-filters';
 
@@ -187,6 +188,10 @@ const ActiveFiltersBlock = ( {
 				<button
 					className="wc-block-active-filters__clear-all"
 					onClick={ () => {
+						if ( filteringForPhpTemplate ) {
+							window.location.href = getBaseUrl();
+							return;
+						}
 						setMinPrice( undefined );
 						setMaxPrice( undefined );
 						setProductAttributes( [] );
