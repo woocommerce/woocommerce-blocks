@@ -49,7 +49,7 @@ import {
  * @param {string} url    Current page URL.
  * @param {Array}  params Parameters and their constraints.
  *
- * @return {string} New URL with query parameters in it.
+ * @return {string}       New URL with query parameters in it.
  */
 
 /**
