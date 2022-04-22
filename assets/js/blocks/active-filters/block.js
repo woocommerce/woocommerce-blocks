@@ -14,7 +14,11 @@ import Label from '@woocommerce/base-components/label';
  */
 import './style.scss';
 import { getAttributeFromTaxonomy } from '../../utils/attributes';
-import { formatPriceRange, renderRemovableListItem } from './utils';
+import {
+	formatPriceRange,
+	renderRemovableListItem,
+	removeArgsFromFilterUrl,
+} from './utils';
 import ActiveAttributeFilters from './active-attribute-filters';
 
 /**
@@ -28,6 +32,10 @@ const ActiveFiltersBlock = ( {
 	attributes: blockAttributes,
 	isEditor = false,
 } ) => {
+	const filteringForPhpTemplate = getSetting(
+		'is_rendering_php_template',
+		false
+	);
 	const [ productAttributes, setProductAttributes ] = useQueryStateByKey(
 		'attributes',
 		[]
@@ -47,6 +55,11 @@ const ActiveFiltersBlock = ( {
 					type: __( 'Stock Status', 'woo-gutenberg-products-block' ),
 					name: STOCK_STATUS_OPTIONS[ slug ],
 					removeCallback: () => {
+						if ( filteringForPhpTemplate ) {
+							return removeArgsFromFilterUrl( {
+								filter_stock_status: slug,
+							} );
+						}
 						const newStatuses = productStockStatus.filter(
 							( status ) => {
 								return status !== slug;
@@ -63,6 +76,7 @@ const ActiveFiltersBlock = ( {
 		productStockStatus,
 		setProductStockStatus,
 		blockAttributes.displayStyle,
+		filteringForPhpTemplate,
 	] );
 
 	const activePriceFilters = useMemo( () => {
@@ -73,6 +87,9 @@ const ActiveFiltersBlock = ( {
 			type: __( 'Price', 'woo-gutenberg-products-block' ),
 			name: formatPriceRange( minPrice, maxPrice ),
 			removeCallback: () => {
+				if ( filteringForPhpTemplate ) {
+					return removeArgsFromFilterUrl( 'max_price', 'min_price' );
+				}
 				setMinPrice( undefined );
 				setMaxPrice( undefined );
 			},
@@ -84,6 +101,7 @@ const ActiveFiltersBlock = ( {
 		blockAttributes.displayStyle,
 		setMinPrice,
 		setMaxPrice,
+		filteringForPhpTemplate,
 	] );
 
 	const activeAttributeFilters = useMemo( () => {
