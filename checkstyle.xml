@@ -2781,6 +2781,7 @@
       Types of property &apos;children&apos; are incompatible.
         Type &apos;ReactNode&apos; is not assignable to type &apos;Element | Element[]&apos;.
           Type &apos;undefined&apos; is not assignable to type &apos;Element | Element[]&apos;." source="TS2322" />
+<error line="115" column="16" severity="error" message="Argument of type &apos;&quot;true&quot;&apos; is not assignable to parameter of type &apos;SetStateAction&lt;boolean&gt;&apos;." source="TS2345" />
 </file>
 <file name="assets/js/blocks/cart-checkout/mini-cart/component-frontend.tsx">
 <error line="30" column="3" severity="error" message="Type &apos;({ isInitiallyOpen, colorClassNames, style, contents, addToCartBehaviour, }: Props) =&gt; JSX.Element&apos; is not assignable to type &apos;BlockType&lt;Record&lt;string, unknown&gt;, Record&lt;string, unknown&gt;&gt;&apos;.
