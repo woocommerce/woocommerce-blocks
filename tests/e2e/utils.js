@@ -11,6 +11,7 @@ import {
 	visitAdminPage,
 	pressKeyWithModifier,
 	searchForBlock as searchForFSEBlock,
+	insertBlock,
 } from '@wordpress/e2e-test-utils';
 import { addQueryArgs } from '@wordpress/url';
 import { WP_ADMIN_DASHBOARD } from '@woocommerce/e2e-utils';
@@ -41,7 +42,11 @@ export const GUTENBERG_EDITOR_CONTEXT =
 	process.env.GUTENBERG_EDITOR_CONTEXT || 'core';
 export const DEFAULT_TIMEOUT = 30000;
 
-const SELECTORS = {
+export const SELECTORS = {
+	blocks: {
+		byType: ( blockType, index = 0 ) =>
+			`[data-type="${ blockType }"]:nth-of-type(${ index + 1 })`,
+	},
 	canvas: 'iframe[name="editor-canvas"]',
 	inserter: {
 		search:
@@ -431,3 +436,29 @@ export const createCoupon = async ( coupon ) => {
 
 	return createdCoupon;
 };
+
+/**
+ * Visits a template and adds a paragraph
+ *
+ * Useful util for simple template customization testing.
+ *
+ * @param {string} templateSlug The slug for the template to customize
+ * @param {Record<string, string>?} opts
+ * @param {string} opts.customText The custom text to add to the paragraph
+ * @param {string} opts.prefix The prefix for the template to customize
+ */
+export async function visitTemplateAndAddCustomParagraph(
+	templateSlug,
+	{ customText, prefix }
+) {
+	customText = customText || 'My awesome customization';
+	prefix = prefix || 'woocommerce/woocommerce';
+
+	await goToTemplateEditor( {
+		postId: `${ prefix }//${ templateSlug }`,
+	} );
+
+	await insertBlock( 'Paragraph' );
+	await page.keyboard.type( customText );
+	await saveTemplate();
+}

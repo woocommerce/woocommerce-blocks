@@ -4,7 +4,6 @@ import {
 	canvas,
 	deleteAllTemplates,
 	getCurrentSiteEditorContent,
-	insertBlock,
 } from '@wordpress/e2e-test-utils';
 import {
 	getNormalPagePermalink,
@@ -17,22 +16,9 @@ import {
 	getAllTemplates,
 	goToTemplateEditor,
 	goToTemplatesList,
-	saveTemplate,
 	useTheme,
+	visitTemplateAndAddCustomParagraph,
 } from '../../utils';
-
-async function visitTemplateAndAddCustomParagraph(
-	templateSlug,
-	customText = CUSTOMIZED_STRING
-) {
-	await goToTemplateEditor( {
-		postId: `woocommerce/woocommerce//${ templateSlug }`,
-	} );
-
-	await insertBlock( 'Paragraph' );
-	await page.keyboard.type( customText );
-	await saveTemplate();
-}
 
 function blockSelector( id ) {
 	return `[data-type="${ id }"]`;
