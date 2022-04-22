@@ -72,7 +72,14 @@ registerBlockType( metadata, {
 		} ),
 	},
 	example,
+
+	/**
+	 * Renders and manages the block.
+	 *
+	 * @param {Object} props Props to pass to block.
+	 */
 	edit: Edit,
+
 	/**
 	 * Block content is rendered in PHP, not via save function.
 	 */
