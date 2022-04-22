@@ -328,16 +328,6 @@ export const shopper = {
 					hidden: true,
 				}
 			);
-
-			// testing purposes
-			const name = await page.$eval(
-				'.wc-block-components-totals-shipping .wc-block-formatted-money-amount',
-				( el ) => el.innerText
-			);
-			// eslint-disable-next-line no-console
-			console.log( name );
-
-			// eslint-disable-next-line jest/no-standalone-expect
 			await expect( page ).toMatchElement(
 				'.wc-block-components-totals-shipping .wc-block-formatted-money-amount',
 				{
