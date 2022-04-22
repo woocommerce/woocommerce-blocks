@@ -112,7 +112,7 @@ const MiniCartBlock = ( {
 		const openMiniCart = () => {
 			if ( addToCartBehaviour === 'open_drawer' ) {
 				setSkipSlideIn( false );
-				setIsOpen( true );
+				setIsOpen( 'true' );
 			}
 		};
 
