@@ -30,7 +30,7 @@ jobs:
             - name: Clone trunk branch
               uses: actions/checkout@v2
               with:
-                  ref: trunk
+                  ref: try/typescript-monitor-second-branch
                   path: trunk
 
             - name: Get branch name
