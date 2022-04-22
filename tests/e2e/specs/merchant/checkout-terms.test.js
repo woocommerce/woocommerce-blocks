@@ -45,7 +45,7 @@ describe( 'Merchant → Checkout → Can adjust T&S and Privacy Policy options',
 		await expect( page ).toMatch( 'Terms & Privacy pages teared down.' );
 	} );
 
-	it.skip( 'Merchant can see T&S and Privacy Policy links without checkbox', async () => {
+	it( 'Merchant can see T&S and Privacy Policy links without checkbox', async () => {
 		await shopper.goToShop();
 		await shopper.addToCartFromShopPage( SIMPLE_VIRTUAL_PRODUCT_NAME );
 		await shopper.block.goToCheckout();
