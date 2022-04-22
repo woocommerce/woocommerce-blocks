@@ -138,7 +138,7 @@ final class BlockTypesController {
 	 * @return array $widget_types An array inluding the WooCommerce widgets to hide.
 	 */
 	public function hide_legacy_widgets_with_block_equivalent( $widget_types ) {
-		array_push( $widget_types, 'woocommerce_product_search', 'woocommerce_product_categories', 'woocommerce_recent_reviews' );
+		array_push( $widget_types, 'woocommerce_product_search', 'woocommerce_product_categories', 'woocommerce_recent_reviews', 'woocommerce_price_filter' );
 		return $widget_types;
 	}
 
