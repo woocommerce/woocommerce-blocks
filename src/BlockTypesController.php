@@ -215,7 +215,6 @@ final class BlockTypesController {
 				$block_types,
 				[
 					'AllProducts',
-					'PriceFilter',
 					'AttributeFilter',
 					'StockFilter',
 					'ActiveFilters',
