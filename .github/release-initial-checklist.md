@@ -25,7 +25,6 @@ The release pull request has been created! This checklist is a guide to follow f
 * [ ] Copy a link to the release zip you created earlier into the testing notes. To generate the link you can upload the zip as an attachment in a GitHub comment and then just copy the path (without publishing the comment).
 * [ ] Commit and push the testing docs to the release branch.
 * [ ] Smoke test built release zip using the testing instructions you created:
-  * At least one other person should test the built zip - ping the current Rubik porter to be this person.
   * Test in a clean environment, e.g. Jurassic.Ninja site.
   * Test existing WooCommerce Blocks content works correctly after update (no block validation errors).
   * Test to confirm blocks are available and work correctly in oldest supported WordPress version (e.g. 5.3).
@@ -33,15 +32,15 @@ The release pull request has been created! This checklist is a guide to follow f
   * Test to confirm new features/fixes are working correctly.
   * Test any UI changes in mobile and desktop views.
   * Smoke test – test a cross section of core functionality.
-
-## Update Pull Request description and get approvals
-
-* [ ] Go through the description of the release pull request and edit it to update all the sections and checklist instructions there.
-* [ ] Ask the porter of Rubik and Kirigami to review the changes in the release pull request and to approve the PR if everything looks good. Each porter is responsible for testing the PRs that fall under the focus of their own team. Shared functionality should be tested by both porters. This means that the Rubik porter will mostly test Cart & Checkout changes while Kirigami porter will test the other blocks.
+* [ ] Ask the porter of Rubik and Kirigami to review the changes as well and to approve the PR if everything looks good. Each porter is responsible for testing the PRs that fall under the focus of their own team. Shared functionality should be tested by both porters. This means that the Rubik porter will mostly test Cart & Checkout changes while Kirigami porter will test the other blocks.
   * If all PRs are testing as expected, continue with the release.
   * If one or more PRs are not testing as expected: ping the PR authors and the porter of the relevant team and ask them if the change is a release blocker or not (you can also ping the team lead if any of them is not available). In general, if it's not a regression or there is no product/marketing reason why that PR is a blocker, all other PRs should default to not being blockers.
     * If there are blockers: stop the release and ask the PR author and team porter to fix them.
     * If some PRs are not testing as expected but they are not blockers: revert the relevant commits, remove the changes from testing steps and changelog, open an issue (or reopen the original one) and proceed with the release.
+
+## Update Pull Request description and get approvals
+
+* [ ] Go through the description of the release pull request and edit it to update all the sections and checklist instructions there.
 
 ## Ensure hub is set up and you're authenticated
 * [ ] Make sure you've got `hub` installed (`brew install hub`)
