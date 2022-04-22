@@ -7,7 +7,8 @@ import {
 } from '@woocommerce/base-context/hooks';
 import { decodeEntities } from '@wordpress/html-entities';
 import { __ } from '@wordpress/i18n';
-import { getSetting } from '@woocommerce/settings';
+import { getSettingWithCoercion } from '@woocommerce/settings';
+import { isBoolean } from '@woocommerce/types';
 
 /**
  * Internal dependencies
@@ -47,9 +48,10 @@ const ActiveAttributeFilters = ( {
 
 	const attributeLabel = attributeObject.label;
 
-	const filteringForPhpTemplate = getSetting(
+	const filteringForPhpTemplate = getSettingWithCoercion(
 		'is_rendering_php_template',
-		false
+		false,
+		isBoolean
 	);
 
 	return (

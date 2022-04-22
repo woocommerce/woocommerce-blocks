@@ -3,11 +3,12 @@
  */
 import { __ } from '@wordpress/i18n';
 import { useQueryStateByKey } from '@woocommerce/base-context/hooks';
-import { getSetting } from '@woocommerce/settings';
+import { getSetting, getSettingWithCoercion } from '@woocommerce/settings';
 import { useMemo } from '@wordpress/element';
 import classnames from 'classnames';
 import PropTypes from 'prop-types';
 import Label from '@woocommerce/base-components/label';
+import { isBoolean } from '@woocommerce/types';
 
 /**
  * Internal dependencies
@@ -32,9 +33,10 @@ const ActiveFiltersBlock = ( {
 	attributes: blockAttributes,
 	isEditor = false,
 } ) => {
-	const filteringForPhpTemplate = getSetting(
+	const filteringForPhpTemplate = getSettingWithCoercion(
 		'is_rendering_php_template',
-		false
+		false,
+		isBoolean
 	);
 	const [ productAttributes, setProductAttributes ] = useQueryStateByKey(
 		'attributes',
