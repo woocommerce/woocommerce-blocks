@@ -40,6 +40,7 @@ const StockStatusFilterBlock = ( {
 	attributes: blockAttributes,
 	isEditor = false,
 } ) => {
+
 	const filteringForPhpTemplate = getSettingWithCoercion(
 		'is_rendering_php_template',
 		false,
@@ -339,6 +340,16 @@ const StockStatusFilterBlock = ( {
 	const TagName = `h${ blockAttributes.headingLevel }`;
 	const isLoading = ! blockAttributes.isPreview && ! STOCK_STATUS_OPTIONS;
 	const isDisabled = ! blockAttributes.isPreview && filteredCountsLoading;
+
+	const hasFilterableProducts = getSettingWithCoercion(
+		'has_filterable_products',
+		false,
+		isBoolean
+	);
+
+	if ( ! hasFilterableProducts ) {
+		return null;
+	}
 
 	return (
 		<>
