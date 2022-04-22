@@ -1,6 +1,9 @@
 <?php
 namespace Automattic\WooCommerce\Blocks\BlockTypes;
 
+use Automattic\WooCommerce\Blocks\Assets\Api as AssetApi;
+use Automattic\WooCommerce\Blocks\Assets\AssetDataRegistry;
+use Automattic\WooCommerce\Blocks\Integrations\IntegrationRegistry;
 use Automattic\WooCommerce\Blocks\Utils\StyleAttributesUtils;
 
 /**
@@ -15,21 +18,12 @@ class FeaturedProduct extends AbstractDynamicBlock {
 	protected $block_name = 'featured-product';
 
 	/**
-	 * Default attribute values, should match what's set in JS `registerBlockType`.
+	 * Default attribute values.
 	 *
 	 * @var array
 	 */
 	protected $defaults = array(
-		'align'        => 'none',
-		'contentAlign' => 'center',
-		'dimRatio'     => 50,
-		'focalPoint'   => false,
-		'imageFit'     => 'none',
-		'mediaId'      => 0,
-		'mediaSrc'     => '',
-		'minHeight'    => 500,
-		'showDesc'     => true,
-		'showPrice'    => true,
+		'align' => 'none',
 	);
 
 	/**
@@ -37,7 +31,29 @@ class FeaturedProduct extends AbstractDynamicBlock {
 	 *
 	 * @var array
 	 */
-	protected $global_style_wrapper = array( 'text_color', 'font_size', 'border_color', 'border_radius', 'border_width', 'background_color', 'text_color', 'padding' );
+	protected $global_style_wrapper = array(
+		'text_color',
+		'font_size',
+		'border_color',
+		'border_radius',
+		'border_width',
+		'background_color',
+		'text_color',
+		'padding',
+	);
+
+	/**
+	 * Constructor.
+	 *
+	 * @param AssetApi            $asset_api Instance of the asset API.
+	 * @param AssetDataRegistry   $asset_data_registry Instance of the asset data registry.
+	 * @param IntegrationRegistry $integration_registry Instance of the integration registry.
+	 */
+	public function __construct( AssetApi $asset_api, AssetDataRegistry $asset_data_registry, IntegrationRegistry $integration_registry ) {
+		parent::__construct( $asset_api, $asset_data_registry, $integration_registry, $this->block_name );
+
+		$this->defaults = $this->get_block_metadata_defaults();
+	}
 
 	/**
 	 * Get the supports array for this block type.
@@ -266,5 +282,28 @@ class FeaturedProduct extends AbstractDynamicBlock {
 		parent::enqueue_data( $attributes );
 		$this->asset_data_registry->add( 'min_height', wc_get_theme_support( 'featured_block::min_height', 500 ), true );
 		$this->asset_data_registry->add( 'default_height', wc_get_theme_support( 'featured_block::default_height', 500 ), true );
+	}
+
+	/**
+	 * Get the default attributes values from the block.json metadata file
+	 *
+	 * @return array
+	 */
+	private function get_block_metadata_defaults(): array {
+		$default_attributes = [];
+
+		$metadata_path = $this->asset_api->get_block_metadata_path( $this->block_name );
+		if ( $metadata_path ) {
+			$metadata = wp_json_file_decode( $metadata_path, [ 'associative' => true ] );
+
+			$default_attributes = array_map(
+				function ( $attribute ) {
+					return $attribute['default'] ?? false;
+				},
+				$metadata['attributes']
+			);
+		}
+
+		return wp_parse_args( $this->defaults, $default_attributes );
 	}
 }
