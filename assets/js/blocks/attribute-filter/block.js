@@ -22,6 +22,10 @@ import classNames from 'classnames';
 import { getSettingWithCoercion } from '@woocommerce/settings';
 import { getQueryArgs, removeQueryArgs } from '@wordpress/url';
 import { isBoolean, isString } from '@woocommerce/types';
+import {
+	PREFIX_QUERY_ARG_FILTER_TYPE,
+	PREFIX_QUERY_ARG_QUERY_TYPE,
+} from '@woocommerce/utils';
 
 /**
  * Internal dependencies
@@ -36,15 +40,16 @@ import {
 	getActiveFilters,
 	areAllFiltersRemoved,
 	isQueryArgsEqual,
+	parseTaxonomyToGenerateURL,
 } from './utils';
 
 /**
  * Formats filter values into a string for the URL parameters needed for filtering PHP templates.
  *
- * @param {string} url Current page URL.
- * @param {Array} params Parameters and their constraints.
+ * @param {string} url    Current page URL.
+ * @param {Array}  params Parameters and their constraints.
  *
- * @return {string} New URL with query parameters in it.
+ * @return {string}       New URL with query parameters in it.
  */
 
 /**
@@ -120,10 +125,6 @@ const AttributeFilterBlock = ( {
 		},
 		queryState: {
 			...queryState,
-			// The PHP template renders only the products with the visibility set to catalog
-			...( filteringForPhpTemplate && {
-				catalog_visibility: 'catalog',
-			} ),
 			attributes: filterAvailableTerms ? queryState.attributes : null,
 		},
 	} );
@@ -222,21 +223,74 @@ const AttributeFilterBlock = ( {
 		[ attributeTerms ]
 	);
 
+	/**
+	 * Appends query params to the current pages URL and redirects them to the new URL for PHP rendered templates.
+	 *
+	 * @param {Object}  query             The object containing the active filter query.
+	 * @param {boolean} allFiltersRemoved If there are active filters or not.
+	 */
+	const redirectPageForPhpTemplate = useCallback(
+		( query, allFiltersRemoved = false ) => {
+			if ( allFiltersRemoved ) {
+				const currentQueryArgKeys = Object.keys(
+					getQueryArgs( window.location.href )
+				);
+
+				const parsedTaxonomy = parseTaxonomyToGenerateURL(
+					attributeObject?.taxonomy
+				);
+
+				const url = currentQueryArgKeys.reduce(
+					( currentUrl, queryArg ) =>
+						queryArg.includes(
+							PREFIX_QUERY_ARG_QUERY_TYPE + parsedTaxonomy
+						) ||
+						queryArg.includes(
+							PREFIX_QUERY_ARG_FILTER_TYPE + parsedTaxonomy
+						)
+							? removeQueryArgs( currentUrl, queryArg )
+							: currentUrl,
+					window.location.href
+				);
+
+				const newUrl = formatParams( url, query );
+				window.location.href = newUrl;
+			} else {
+				const newUrl = formatParams( pageUrl, query );
+				const currentQueryArgs = getQueryArgs( window.location.href );
+				const newUrlQueryArgs = getQueryArgs( newUrl );
+
+				if ( ! isQueryArgsEqual( currentQueryArgs, newUrlQueryArgs ) ) {
+					window.location.href = newUrl;
+				}
+			}
+		},
+		[ pageUrl, attributeObject?.taxonomy ]
+	);
+
 	const onSubmit = useCallback(
 		( isChecked ) => {
 			if ( isEditor ) {
 				return;
 			}
 
-			updateAttributeFilter(
+			const query = updateAttributeFilter(
 				productAttributesQuery,
 				setProductAttributesQuery,
 				attributeObject,
 				getSelectedTerms( isChecked ),
 				blockAttributes.queryType === 'or' ? 'in' : 'and'
 			);
+
+			// This is for PHP rendered template filtering only.
+			if ( filteringForPhpTemplate && hasSetPhpFilterDefaults ) {
+				redirectPageForPhpTemplate( query, isChecked.length === 0 );
+			}
 		},
 		[
+			hasSetPhpFilterDefaults,
+			filteringForPhpTemplate,
+			redirectPageForPhpTemplate,
 			isEditor,
 			productAttributesQuery,
 			setProductAttributesQuery,
@@ -387,38 +441,25 @@ const AttributeFilterBlock = ( {
 					hasSetPhpFilterDefaults,
 				} )
 			) {
-				setChecked( [] );
-				const currentQueryArgKeys = Object.keys(
-					getQueryArgs( window.location.href )
-				);
-
-				const url = currentQueryArgKeys.reduce(
-					( currentUrl, queryArg ) =>
-						removeQueryArgs( currentUrl, queryArg ),
-					window.location.href
-				);
-
-				const newUrl = formatParams( url, productAttributesQuery );
-				window.location.href = newUrl;
+				if ( ! blockAttributes.showFilterButton ) {
+					setChecked( [] );
+					redirectPageForPhpTemplate( productAttributesQuery, true );
+				}
 			}
 
-			setChecked( checked );
-			const newUrl = formatParams( pageUrl, productAttributesQuery );
-			const currentQueryArgs = getQueryArgs( window.location.href );
-			const newUrlQueryArgs = getQueryArgs( newUrl );
-
-			if ( ! isQueryArgsEqual( currentQueryArgs, newUrlQueryArgs ) ) {
-				window.location.href = newUrl;
+			if ( ! blockAttributes.showFilterButton ) {
+				setChecked( checked );
+				redirectPageForPhpTemplate( productAttributesQuery, false );
 			}
 		}
 	}, [
+		hasSetPhpFilterDefaults,
+		redirectPageForPhpTemplate,
 		filteringForPhpTemplate,
 		productAttributesQuery,
 		attributeObject,
 		checked,
-		blockAttributes.queryType,
-		pageUrl,
-		hasSetPhpFilterDefaults,
+		blockAttributes.showFilterButton,
 	] );
 
 	/**
@@ -429,24 +470,34 @@ const AttributeFilterBlock = ( {
 	 */
 	useEffect( () => {
 		if ( filteringForPhpTemplate ) {
+			const activeFilters = getActiveFilters(
+				filteringForPhpTemplate,
+				attributeObject
+			);
 			if (
-				checked.length > 0 &&
+				activeFilters.length > 0 &&
 				! hasSetPhpFilterDefaults &&
 				! attributeTermsLoading
 			) {
 				setHasSetPhpFilterDefaults( true );
-				if ( ! blockAttributes.showFilterButton ) {
-					onSubmit( checked );
-				}
+				updateAttributeFilter(
+					productAttributesQuery,
+					setProductAttributesQuery,
+					attributeObject,
+					getSelectedTerms( activeFilters ),
+					blockAttributes.queryType === 'or' ? 'in' : 'and'
+				);
 			}
 		}
 	}, [
-		onSubmit,
+		productAttributesQuery,
+		setProductAttributesQuery,
+		attributeObject,
+		blockAttributes.queryType,
+		getSelectedTerms,
 		filteringForPhpTemplate,
-		checked,
 		hasSetPhpFilterDefaults,
 		attributeTermsLoading,
-		blockAttributes.showFilterButton,
 	] );
 
 	// Short-circuit if no attribute is selected.
