@@ -74,8 +74,8 @@ registerBlockType( 'woocommerce/price-filter', {
 					idBase === 'woocommerce_price_filter' && !! instance?.raw,
 				transform: ( { instance } ) =>
 					createBlock( 'woocommerce/price-filter', {
-						showInputFields: true,
-						showFilterButton: false,
+						showInputFields: false,
+						showFilterButton: true,
 						heading:
 							instance?.raw?.title ||
 							__(
