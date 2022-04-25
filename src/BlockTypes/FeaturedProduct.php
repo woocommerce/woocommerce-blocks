@@ -25,9 +25,9 @@ class FeaturedProduct extends AbstractDynamicBlock {
 		'dimRatio'     => 50,
 		'focalPoint'   => false,
 		'imageFit'     => 'none',
-		'minHeight'    => false,
 		'mediaId'      => 0,
 		'mediaSrc'     => '',
+		'minHeight'    => 500,
 		'showDesc'     => true,
 		'showPrice'    => true,
 	);
@@ -170,6 +170,8 @@ class FeaturedProduct extends AbstractDynamicBlock {
 			$overlay_styles = sprintf( 'background-color: %s', $attributes['overlayColor'] );
 		} elseif ( isset( $attributes['overlayGradient'] ) ) {
 			$overlay_styles = sprintf( 'background-image: %s', $attributes['overlayGradient'] );
+		} else {
+			$overlay_styles = 'background-color: #000000';
 		}
 
 		return sprintf( '<div class="wc-block-featured-product__overlay" style="%s"></div>', esc_attr( $overlay_styles ) );
@@ -185,8 +187,10 @@ class FeaturedProduct extends AbstractDynamicBlock {
 	public function get_styles( $attributes ) {
 		$style = '';
 
+		$min_height = isset( $attributes['minHeight'] ) ? $attributes['minHeight'] : wc_get_theme_support( 'featured_block::default_height', 500 );
+
 		if ( isset( $attributes['minHeight'] ) ) {
-			$style .= sprintf( 'min-height:%dpx;', intval( $attributes['minHeight'] ) );
+			$style .= sprintf( 'min-height:%dpx;', intval( $min_height ) );
 		}
 
 		$global_style_style = StyleAttributesUtils::get_styles_by_attributes( $attributes, $this->global_style_wrapper );
