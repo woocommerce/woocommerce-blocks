@@ -109,7 +109,7 @@ registerBlockType( 'woocommerce/attribute-filter', {
 								'woo-gutenberg-products-block'
 							),
 						headingLevel: 3,
-						displayStyle: instance?.raw?.title || 'list',
+						displayStyle: instance?.raw?.display_type || 'list',
 						showFilterButton: false,
 						isPreview: false,
 					} ),
