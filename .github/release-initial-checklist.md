@@ -35,7 +35,7 @@ The release pull request has been created! This checklist is a guide to follow f
 * [ ] Ask the porter of Rubik and Kirigami to review the changes as well and to approve the PR if everything looks good. Each porter is responsible for testing the PRs that fall under the focus of their own team. Shared functionality should be tested by both porters. This means that the Rubik porter will mostly test Cart & Checkout changes while Kirigami porter will test the other blocks.
   * If all PRs are testing as expected, continue with the release.
   * If one or more PRs are not testing as expected: ping the PR authors and the porter of the relevant team and ask them if the change is a release blocker or not (you can also ping the team lead if any of them is not available). In general, if it's not a regression or there is no product/marketing reason why that PR is a blocker, all other PRs should default to not being blockers.
-    * If there are blockers: stop the release and ask the PR author and team porter to fix them.
+    * If there are blockers: stop the release and ask the PR author to fix them. If the PR author is AFK, ping the porter of their team.
     * If some PRs are not testing as expected but they are not blockers: revert the relevant commits, remove the changes from testing steps and changelog, open an issue (or reopen the original one) and proceed with the release.
 
 ## Update Pull Request description and get approvals
