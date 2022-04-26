@@ -126,7 +126,7 @@ const ActiveFiltersBlock = ( {
 	}, [ productAttributes, blockAttributes.displayStyle ] );
 
 	const [ productRatings, setProductRatings ] = useQueryStateByKey(
-		'rating'
+		'ratings'
 	);
 
 	/**
