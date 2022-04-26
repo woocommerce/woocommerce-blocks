@@ -6,20 +6,22 @@ import { useDispatch } from '@wordpress/data';
 import { __ } from '@wordpress/i18n';
 import { Icon, search } from '@wordpress/icons';
 import {
-	// @ts-ignore-line
 	registerBlockVariation,
 	registerBlockType,
 	createBlock,
 } from '@wordpress/blocks';
 
 const PRODUCT_SEARCH_ATTRIBUTES = {
-	postType: 'product',
 	label: __( 'Search', 'woo-gutenberg-products-block' ),
 	buttonText: __( 'Search', 'woo-gutenberg-products-block' ),
 	placeholder: __( 'Search products…', 'woo-gutenberg-products-block' ),
+	query: {
+		post_type: 'product',
+	},
 };
 
 const DeprecatedEdit = ( { clientId } ) => {
+	// @ts-ignore
 	const { replaceBlocks } = useDispatch( blockEditorStore );
 	const updateBlock = () => {
 		replaceBlocks(
@@ -87,9 +89,11 @@ registerBlockVariation( 'core/search', {
 			/>
 		),
 	},
-	// @ts-ignore
 	isActive: ( blockAttributes, variationAttributes ) => {
-		return blockAttributes.postType === variationAttributes.postType;
+		return (
+			blockAttributes.query?.post_type ===
+			variationAttributes.query.postType
+		);
 	},
 	category: 'woocommerce',
 	keywords: [ __( 'WooCommerce', 'woo-gutenberg-products-block' ) ],
