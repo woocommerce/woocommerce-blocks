@@ -236,10 +236,16 @@ const FeaturedProduct = ( {
 
 	const getInspectorControls = () => {
 		const url = attributes.mediaSrc || getImageSrcFromProduct( product );
-		const { focalPoint = { x: 0.5, y: 0.5 } } = attributes;
+		const {
+			focalPoint = { x: 0.5, y: 0.5 },
+			hasParallax,
+			isRepeated,
+		} = attributes;
 		// FocalPointPicker was introduced in Gutenberg 5.0 (WordPress 5.2),
 		// so we need to check if it exists before using it.
-		const focalPointPickerExists = typeof FocalPointPicker === 'function';
+		const focalPointPickerExists =
+			typeof FocalPointPicker === 'function' &&
+			( ! hasParallax || isRepeated );
 
 		return (
 			<>
@@ -277,96 +283,128 @@ const FeaturedProduct = ( {
 					</PanelBody>
 					{ !! url && (
 						<>
-							{ focalPointPickerExists && (
-								<PanelBody
-									title={ __(
-										'Media settings',
+							<PanelBody
+								title={ __(
+									'Media settings',
+									'woo-gutenberg-products-block'
+								) }
+							>
+								<ToggleControl
+									label={ __(
+										'Fixed background',
 										'woo-gutenberg-products-block'
 									) }
-								>
-									<ToggleGroupControl
-										help={
-											<>
-												<p>
-													{ __(
-														'Choose “Cover” if you want the image to scale automatically to always fit its container.',
-														'woo-gutenberg-products-block'
-													) }
-												</p>
-												<p>
-													{ __(
-														'Note: by choosing “Cover” you will lose the ability to freely move the focal point precisely.',
-														'woo-gutenberg-products-block'
-													) }
-												</p>
-											</>
-										}
-										label={ __(
-											'Image fit',
-											'woo-gutenberg-products-block'
-										) }
-										value={ attributes.imageFit }
-										onChange={ ( value ) =>
-											setAttributes( {
-												imageFit: value,
-											} )
-										}
-									>
-										<ToggleGroupControlOption
-											label={ __(
-												'None',
-												'woo-gutenberg-products-block'
-											) }
-											value="none"
-										/>
-										<ToggleGroupControlOption
-											/* translators: "Cover" is a verb that indicates an image covering the entire container. */
-											label={ __(
-												'Cover',
-												'woo-gutenberg-products-block'
-											) }
-											value="cover"
-										/>
-									</ToggleGroupControl>
-									<FocalPointPicker
-										label={ __(
-											'Focal Point Picker',
-											'woo-gutenberg-products-block'
-										) }
-										url={ url }
-										value={ focalPoint }
-										onChange={ ( value ) =>
-											setAttributes( {
-												focalPoint: value,
-											} )
-										}
-									/>
-									<TextareaControl
-										label={ __(
-											'Alt text (alternative text)',
-											'woo-gutenberg-products-block'
-										) }
-										value={ attributes.alt }
-										onChange={ ( newAlt ) => {
-											setAttributes( { alt: newAlt } );
-										} }
-										help={
-											<>
-												<ExternalLink href="https://www.w3.org/WAI/tutorials/images/decision-tree">
-													{ __(
-														'Describe the purpose of the image',
-														'woo-gutenberg-products-block'
-													) }
-												</ExternalLink>
+									checked={ hasParallax }
+									onChange={ () => {
+										setAttributes( {
+											hasParallax: ! hasParallax,
+											...( ! hasParallax
+												? { focalPoint: undefined }
+												: {} ),
+										} );
+									} }
+								/>
+
+								<ToggleControl
+									label={ __(
+										'Repeated background',
+										'woo-gutenberg-products-block'
+									) }
+									checked={ isRepeated }
+									onChange={ () => {
+										setAttributes( {
+											isRepeated: ! isRepeated,
+										} );
+									} }
+								/>
+								<ToggleGroupControl
+									help={
+										<>
+											<p>
 												{ __(
-													'Leave empty if the image is purely decorative.',
+													'Choose “Cover” if you want the image to scale automatically to always fit its container.',
 													'woo-gutenberg-products-block'
 												) }
-											</>
-										}
+											</p>
+											<p>
+												{ __(
+													'Note: by choosing “Cover” you will lose the ability to freely move the focal point precisely.',
+													'woo-gutenberg-products-block'
+												) }
+											</p>
+										</>
+									}
+									label={ __(
+										'Image fit',
+										'woo-gutenberg-products-block'
+									) }
+									value={ attributes.imageFit }
+									onChange={ ( value ) =>
+										setAttributes( {
+											imageFit: value,
+										} )
+									}
+								>
+									<ToggleGroupControlOption
+										label={ __(
+											'None',
+											'woo-gutenberg-products-block'
+										) }
+										value="none"
 									/>
-								</PanelBody>
-							) }
+									<ToggleGroupControlOption
+										/* translators: "Cover" is a verb that indicates an image covering the entire container. */
+										label={ __(
+											'Cover',
+											'woo-gutenberg-products-block'
+										) }
+										value="cover"
+									/>
+								</ToggleGroupControl>
+								{ focalPointPickerExists && (
+									<>
+										<FocalPointPicker
+											label={ __(
+												'Focal Point Picker',
+												'woo-gutenberg-products-block'
+											) }
+											url={ url }
+											value={ focalPoint }
+											onChange={ ( value ) =>
+												setAttributes( {
+													focalPoint: value,
+												} )
+											}
+										/>
+										<TextareaControl
+											label={ __(
+												'Alt text (alternative text)',
+												'woo-gutenberg-products-block'
+											) }
+											value={ attributes.alt }
+											onChange={ ( newAlt ) => {
+												setAttributes( {
+													alt: newAlt,
+												} );
+											} }
+											help={
+												<>
+													<ExternalLink href="https://www.w3.org/WAI/tutorials/images/decision-tree">
+														{ __(
+															'Describe the purpose of the image',
+															'woo-gutenberg-products-block'
+														) }
+													</ExternalLink>
+													{ __(
+														'Leave empty if the image is purely decorative.',
+														'woo-gutenberg-products-block'
+													) }
+												</>
+											}
+										/>
+									</>
+								) }
+							</PanelBody>
 							<PanelColorGradientSettings
 								__experimentalHasMultipleOrigins
 								__experimentalIsRenderedInSidebar
@@ -425,6 +463,8 @@ const FeaturedProduct = ( {
 			contentAlign,
 			dimRatio,
 			focalPoint,
+			hasParallax,
+			isRepeated,
 			imageFit,
 			mediaSrc,
 			minHeight,
@@ -456,6 +496,8 @@ const FeaturedProduct = ( {
 			minHeight,
 		};
 
+		const isImgElement = ! ( hasParallax || isRepeated );
+
 		const backgroundImageSrc =
 			mediaSrc || getImageSrcFromProduct( product );
 
@@ -486,12 +528,14 @@ const FeaturedProduct = ( {
 							className="wc-block-featured-product__overlay"
 							style={ overlayStyle }
 						/>
-						<img
-							alt={ product.short_description }
-							className="wc-block-featured-product__background-image"
-							src={ backgroundImageSrc }
-							style={ backgroundImageStyle }
-						/>
+						{ isImgElement && (
+							<img
+								alt={ product.short_description }
+								className="wc-block-featured-product__background-image"
+								src={ backgroundImageSrc }
+								style={ backgroundImageStyle }
+							/>
+						) }
 						<h2
 							className="wc-block-featured-product__title"
 							dangerouslySetInnerHTML={ {

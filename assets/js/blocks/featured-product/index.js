@@ -70,6 +70,7 @@ registerBlockType( 'woocommerce/featured-product', {
 			type: 'string',
 			default: '',
 		},
+
 		/**
 		 * Alignment of content inside block.
 		 */
@@ -99,6 +100,16 @@ registerBlockType( 'woocommerce/featured-product', {
 		 */
 		focalPoint: {
 			type: 'object',
+		},
+
+		hasParallax: {
+			type: 'boolean',
+			default: false,
+		},
+
+		isRepeated: {
+			type: 'boolean',
+			default: false,
 		},
 
 		/**
