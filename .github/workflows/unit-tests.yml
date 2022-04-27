@@ -1,100 +1,100 @@
-name: Unit tests
+# name: Unit tests
 
-on:
-    push:
-        branches: [trunk]
-    pull_request:
+# on:
+#     push:
+#         branches: [trunk]
+#     pull_request:
 
-jobs:
-    Setup:
-        runs-on: ubuntu-latest
-        name: Setup
-        steps:
-            - uses: actions/checkout@v3
-            - name: Setup node version and npm cache
-              uses: actions/setup-node@v3
-              with:
-                  node-version-file: '.nvmrc'
-                  cache: 'npm'
-            - name: Npm install and build
-              run: |
-                  npm ci --no-optional
-                  FORCE_REDUCED_MOTION=true npm run build:e2e-test
+# jobs:
+#     Setup:
+#         runs-on: ubuntu-latest
+#         name: Setup
+#         steps:
+#             - uses: actions/checkout@v3
+#             - name: Setup node version and npm cache
+#               uses: actions/setup-node@v3
+#               with:
+#                   node-version-file: '.nvmrc'
+#                   cache: 'npm'
+#             - name: Npm install and build
+#               run: |
+#                   npm ci --no-optional
+#                   FORCE_REDUCED_MOTION=true npm run build:e2e-test
 
-            - name: Get Composer Cache Directory
-              id: composer-cache
-              run: |
-                  echo "::set-output name=dir::$(composer config cache-files-dir)"
-            - uses: actions/cache@v2
-              with:
-                  path: ${{ steps.composer-cache.outputs.dir }}
-                  key: ${{ runner.os }}-composer-${{ hashFiles('**/composer.lock') }}
-                  restore-keys: |
-                      ${{ runner.os }}-composer-
+#             - name: Get Composer Cache Directory
+#               id: composer-cache
+#               run: |
+#                   echo "::set-output name=dir::$(composer config cache-files-dir)"
+#             - uses: actions/cache@v2
+#               with:
+#                   path: ${{ steps.composer-cache.outputs.dir }}
+#                   key: ${{ runner.os }}-composer-${{ hashFiles('**/composer.lock') }}
+#                   restore-keys: |
+#                       ${{ runner.os }}-composer-
 
-            - name: Set up PHP
-              uses: shivammathur/setup-php@v2
-              with:
-                  php-version: 7.4
-                  coverage: none
-                  tools: composer
+#             - name: Set up PHP
+#               uses: shivammathur/setup-php@v2
+#               with:
+#                   php-version: 7.4
+#                   coverage: none
+#                   tools: composer
 
-            - name: Composer install
-              run: |
-                  composer install
+#             - name: Composer install
+#               run: |
+#                   composer install
 
-    PHPUnitTests:
-        name: PHP Unit Tests
-        needs: Setup
-        runs-on: ubuntu-latest
+#     PHPUnitTests:
+#         name: PHP Unit Tests
+#         needs: Setup
+#         runs-on: ubuntu-latest
 
-        steps:
-            - uses: actions/checkout@v3
-            - name: Setup node version and npm cache
-              uses: actions/setup-node@v3
-              with:
-                  node-version-file: '.nvmrc'
-                  cache: 'npm'
-            - name: Npm install #build is not needed
-              run: |
-                  npm ci --no-optional
-            - name: blocks.ini setup
-              run: |
-                  echo 'woocommerce_blocks_phase = 3' > blocks.ini
-            - name: Setup Environment
-              run: |
-                  chmod -R 767 ./ #TODO: Might get implemented in wp-env
-                  npm run wp-env start
-            - name: Run PHPUnit tests
-              run: npm run test:php
-            - name: Run PHPUnit tests (WooCommerce Development Version)
-              run: |
-                  JSON='{"plugins": [".","https://downloads.wordpress.org/plugin/woocommerce.zip"]}'
-                  echo $JSON > .wp-env.override.json
-                  npm run wp-env start
-                  npm run test:php
+#         steps:
+#             - uses: actions/checkout@v3
+#             - name: Setup node version and npm cache
+#               uses: actions/setup-node@v3
+#               with:
+#                   node-version-file: '.nvmrc'
+#                   cache: 'npm'
+#             - name: Npm install #build is not needed
+#               run: |
+#                   npm ci --no-optional
+#             - name: blocks.ini setup
+#               run: |
+#                   echo 'woocommerce_blocks_phase = 3' > blocks.ini
+#             - name: Setup Environment
+#               run: |
+#                   chmod -R 767 ./ #TODO: Might get implemented in wp-env
+#                   npm run wp-env start
+#             - name: Run PHPUnit tests
+#               run: npm run test:php
+#             - name: Run PHPUnit tests (WooCommerce Development Version)
+#               run: |
+#                   JSON='{"plugins": [".","https://downloads.wordpress.org/plugin/woocommerce.zip"]}'
+#                   echo $JSON > .wp-env.override.json
+#                   npm run wp-env start
+#                   npm run test:php
 
-    JSUnitTests:
-        name: JS Unit Tests
-        needs: Setup
-        runs-on: ubuntu-latest
+#     JSUnitTests:
+#         name: JS Unit Tests
+#         needs: Setup
+#         runs-on: ubuntu-latest
 
-        steps:
-            - uses: actions/checkout@v3
-            - name: Setup node version and npm cache
-              uses: actions/setup-node@v3
-              with:
-                  node-version-file: '.nvmrc'
-                  cache: 'npm'
-            - name: Npm install and build
-              run: |
-                  npm ci --no-optional
-                  FORCE_REDUCED_MOTION=true npm run build:e2e-test
+#         steps:
+#             - uses: actions/checkout@v3
+#             - name: Setup node version and npm cache
+#               uses: actions/setup-node@v3
+#               with:
+#                   node-version-file: '.nvmrc'
+#                   cache: 'npm'
+#             - name: Npm install and build
+#               run: |
+#                   npm ci --no-optional
+#                   FORCE_REDUCED_MOTION=true npm run build:e2e-test
 
-            - name: blocks.ini setup
-              run: |
-                  echo -e 'woocommerce_blocks_phase = 3\nwoocommerce_blocks_env = tests' > blocks.ini
+#             - name: blocks.ini setup
+#               run: |
+#                   echo -e 'woocommerce_blocks_phase = 3\nwoocommerce_blocks_env = tests' > blocks.ini
 
-            - name: Run JavaScript Unit tests
-              run: |
-                  npm run test
+#             - name: Run JavaScript Unit tests
+#               run: |
+#                   npm run test

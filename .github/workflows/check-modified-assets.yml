@@ -1,51 +1,51 @@
-name: Check Modified Assets
+# name: Check Modified Assets
 
-on:
-    pull_request:
+# on:
+#     pull_request:
 
-jobs:
-    build-trunk:
-        runs-on: ubuntu-latest
-        steps:
-            - uses: actions/checkout@v3
-              with:
-                  ref: trunk
-            - name: Setup node version and npm cache
-              uses: actions/setup-node@v3
-              with:
-                  node-version-file: '.nvmrc'
-                  cache: 'npm'
-            - name: npm install and build
-              run: |
-                  npm ci --no-optional
-                  npm run build:check-assets
-            - name: Upload Artifact
-              uses: actions/upload-artifact@v3
-              with:
-                  name: assets-list
-                  path: ./build/assets.json
+# jobs:
+#     build-trunk:
+#         runs-on: ubuntu-latest
+#         steps:
+#             - uses: actions/checkout@v3
+#               with:
+#                   ref: trunk
+#             - name: Setup node version and npm cache
+#               uses: actions/setup-node@v3
+#               with:
+#                   node-version-file: '.nvmrc'
+#                   cache: 'npm'
+#             - name: npm install and build
+#               run: |
+#                   npm ci --no-optional
+#                   npm run build:check-assets
+#             - name: Upload Artifact
+#               uses: actions/upload-artifact@v3
+#               with:
+#                   name: assets-list
+#                   path: ./build/assets.json
 
-    compare-assets-with-trunk:
-        needs: [build-trunk]
-        runs-on: ubuntu-latest
-        steps:
-            - uses: actions/checkout@v3
-            - name: Setup node version and npm cache
-              uses: actions/setup-node@v3
-              with:
-                  node-version-file: '.nvmrc'
-                  cache: 'npm'
-            - name: npm install
-              run: |
-                  npm ci --no-optional
-                  npm run build:check-assets
-            - name: Download assets (trunk)
-              uses: actions/download-artifact@v3
-              with:
-                  name: assets-list
-                  path: assets-list
-            - name: Compare Assets
-              uses: ./.github/compare-assets
-              with:
-                  repo-token: '${{ secrets.GITHUB_TOKEN }}'
-                  compare: assets-list/assets.json
+#     compare-assets-with-trunk:
+#         needs: [build-trunk]
+#         runs-on: ubuntu-latest
+#         steps:
+#             - uses: actions/checkout@v3
+#             - name: Setup node version and npm cache
+#               uses: actions/setup-node@v3
+#               with:
+#                   node-version-file: '.nvmrc'
+#                   cache: 'npm'
+#             - name: npm install
+#               run: |
+#                   npm ci --no-optional
+#                   npm run build:check-assets
+#             - name: Download assets (trunk)
+#               uses: actions/download-artifact@v3
+#               with:
+#                   name: assets-list
+#                   path: assets-list
+#             - name: Compare Assets
+#               uses: ./.github/compare-assets
+#               with:
+#                   repo-token: '${{ secrets.GITHUB_TOKEN }}'
+#                   compare: assets-list/assets.json
