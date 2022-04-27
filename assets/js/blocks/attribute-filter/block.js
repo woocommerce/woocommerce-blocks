@@ -268,29 +268,36 @@ const AttributeFilterBlock = ( {
 		[ pageUrl, attributeObject?.taxonomy ]
 	);
 
+	const onClickSubmit = ( isChecked ) => {
+		const query = updateAttributeFilter(
+			productAttributesQuery,
+			setProductAttributesQuery,
+			attributeObject,
+			getSelectedTerms( isChecked ),
+			blockAttributes.queryType === 'or' ? 'in' : 'and'
+		);
+
+		// This is for PHP rendered template filtering only.
+		if ( filteringForPhpTemplate ) {
+			redirectPageForPhpTemplate( query, isChecked.length === 0 );
+		}
+	};
+
 	const onSubmit = useCallback(
 		( isChecked ) => {
 			if ( isEditor ) {
 				return;
 			}
 
-			const query = updateAttributeFilter(
+			updateAttributeFilter(
 				productAttributesQuery,
 				setProductAttributesQuery,
 				attributeObject,
 				getSelectedTerms( isChecked ),
 				blockAttributes.queryType === 'or' ? 'in' : 'and'
 			);
-
-			// This is for PHP rendered template filtering only.
-			if ( filteringForPhpTemplate && hasSetPhpFilterDefaults ) {
-				redirectPageForPhpTemplate( query, isChecked.length === 0 );
-			}
 		},
 		[
-			hasSetPhpFilterDefaults,
-			filteringForPhpTemplate,
-			redirectPageForPhpTemplate,
 			isEditor,
 			productAttributesQuery,
 			setProductAttributesQuery,
@@ -578,7 +585,7 @@ const AttributeFilterBlock = ( {
 					<FilterSubmitButton
 						className="wc-block-attribute-filter__button"
 						disabled={ isLoading || isDisabled }
-						onClick={ () => onSubmit( checked ) }
+						onClick={ () => onClickSubmit( checked ) }
 					/>
 				) }
 			</div>
