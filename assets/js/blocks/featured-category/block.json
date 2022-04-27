@@ -46,7 +46,8 @@
             "default": true
         },
         "focalPoint": {
-            "type": "object"
+            "type": "object",
+            "default": false
         },
         "imageFit": {
             "type": "string",
