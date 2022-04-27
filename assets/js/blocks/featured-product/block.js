@@ -347,8 +347,8 @@ const FeaturedProduct = ( {
 											'woo-gutenberg-products-block'
 										) }
 										value={ attributes.alt }
-										onChange={ ( newAlt ) => {
-											setAttributes( { alt: newAlt } );
+										onChange={ ( alt ) => {
+											setAttributes( { alt } );
 										} }
 										help={
 											<>
