@@ -56,6 +56,10 @@ describe( 'Shopper → Checkout → Account', () => {
 		} );
 		await saveOrPublish();
 		await shopper.logout();
+	} );
+
+	beforeEach( async () => {
+		await shopper.block.emptyCart();
 		await shopper.goToShop();
 		await shopper.addToCartFromShopPage( SIMPLE_PHYSICAL_PRODUCT_NAME );
 		await shopper.block.goToCheckout();
