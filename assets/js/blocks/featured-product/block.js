@@ -359,7 +359,7 @@ const FeaturedProduct = ( {
 													) }
 												</ExternalLink>
 												{ __(
-													'Leave empty if the image is purely decorative.',
+													'Leaving it empty will use the product name.',
 													'woo-gutenberg-products-block'
 												) }
 											</>
