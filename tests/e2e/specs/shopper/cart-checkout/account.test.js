@@ -90,6 +90,12 @@ describe( 'Shopper → Checkout → Account', () => {
 		await expect( page ).toMatch( 'Order received' );
 		await switchUserToAdmin();
 		await visitAdminPage( 'users.php' );
+		await page.screenshot( {
+			path: `reports/e2e/screenshots/${
+				expect.getState().currentTestName
+			}.jpg`,
+			fullPage: true,
+		} );
 		//Confirm account is being created with the email.
 		await expect( page ).toMatch( testEmail );
 	} );
