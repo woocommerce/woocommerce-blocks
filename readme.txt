@@ -86,6 +86,12 @@ Release and roadmap notes available on the [WooCommerce Developers Blog](https:/
 
 == Changelog ==
 
+= 7.4.3 - 27-04-2022 =
+
+#### Bug Fixes
+
+- Fix Customizer fatal error on PHP 8. ([6317](https://github.com/woocommerce/woocommerce-gutenberg-products-block/pull/6317))
+
 = 7.4.2 - 2022-04-15 =
 
 #### Bug Fixes
