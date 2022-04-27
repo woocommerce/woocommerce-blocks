@@ -7,7 +7,6 @@ import {
 	saveOrPublish,
 } from '@woocommerce/blocks-test-utils';
 import {
-	merchant,
 	setCheckbox,
 	openDocumentSettingsSidebar,
 } from '@woocommerce/e2e-utils';
@@ -16,7 +15,7 @@ import { switchUserToAdmin, visitAdminPage } from '@wordpress/e2e-test-utils';
 /**
  * Internal dependencies
  */
-import { shopper } from '../../../../utils';
+import { shopper, merchant } from '../../../../utils';
 import { SIMPLE_PHYSICAL_PRODUCT_NAME } from '.../../../../utils/constants';
 
 const block = {
@@ -88,7 +87,7 @@ describe( 'Shopper → Checkout → Account', () => {
 		await shopper.block.fillInCheckoutWithTestData();
 		await shopper.block.placeOrder();
 		await expect( page ).toMatch( 'Order received' );
-		await switchUserToAdmin();
+		await merchant.login();
 		await visitAdminPage( 'users.php' );
 		await page.screenshot( {
 			path: `screenshots/${ expect.getState().currentTestName }.jpg`,
