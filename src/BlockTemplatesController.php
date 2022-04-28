@@ -158,14 +158,14 @@ class BlockTemplatesController {
 			// It would be custom if the template was modified in the editor, so if it's not custom we can load it from
 			// the filesystem.
 			if ( 'custom' !== $template_file->source ) {
-				$template = BlockTemplateUtils::build_template_result_from_file( $template_file, $template_type );
+				$template              = BlockTemplateUtils::build_template_result_from_file( $template_file, $template_type );
+				$template->description = BlockTemplateUtils::get_block_template_description( $template_file->slug );
 			} else {
-				$template_file->title = BlockTemplateUtils::get_block_template_title( $template_file->slug );
-				$query_result[]       = $template_file;
+				$template_file->title       = BlockTemplateUtils::get_block_template_title( $template_file->slug );
+				$template_file->description = BlockTemplateUtils::get_block_template_description( $template_file->slug );
+				$query_result[]             = $template_file;
 				continue;
 			}
-
-			$template->description = BlockTemplateUtils::get_block_template_description( $template_file->slug );
 
 			$is_not_custom   = false === array_search(
 				wp_get_theme()->get_stylesheet() . '//' . $template_file->slug,
