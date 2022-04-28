@@ -108,7 +108,7 @@ jobs:
                   mkdir -p reports/e2e/screenshots
                   npm run test:e2e
 
-            - name: Upload artifacts
+            - name: Upload artifacts on failure
               if: ${{ failure() }}
               uses: actions/upload-artifact@v3
               with:
