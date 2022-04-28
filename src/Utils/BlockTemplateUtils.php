@@ -301,11 +301,11 @@ class BlockTemplateUtils {
 			),
 			'taxonomy-product_cat'   => array(
 				'title'       => _x( 'Products by Category', 'Template name', 'woo-gutenberg-products-block' ),
-				'description' => __( 'Template used to display product by category.', 'woo-gutenberg-products-block' ),
+				'description' => __( 'Template used to display products by category.', 'woo-gutenberg-products-block' ),
 			),
 			'taxonomy-product_tag'   => array(
 				'title'       => _x( 'Products by Tag', 'Template name', 'woo-gutenberg-products-block' ),
-				'description' => __( 'Template used to display product by tag.', 'woo-gutenberg-products-block' ),
+				'description' => __( 'Template used to display products by tag.', 'woo-gutenberg-products-block' ),
 			),
 			'product-search-results' => array(
 				'title'       => _x( 'Product Search Results', 'Template name', 'woo-gutenberg-products-block' ),
