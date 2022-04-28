@@ -68,7 +68,9 @@ class FeaturedProduct extends AbstractDynamicBlock {
 		}
 		$attributes = wp_parse_args( $attributes, $this->defaults );
 
-		$attributes['height'] = isset( $attributes['height'] ) ? $attributes['height'] : wc_get_theme_support( 'featured_block::default_height', 500 );
+		$default_height       = wc_get_theme_support( 'featured_block::default_height', 500 );
+		$min_height           = $attributes['minHeight'] ?? $default_height;
+		$attributes['height'] = $attributes['height'] ?? $default_height;
 
 		$title = sprintf(
 			'<h2 class="wc-block-featured-product__title">%s</h2>',
@@ -95,10 +97,19 @@ class FeaturedProduct extends AbstractDynamicBlock {
 		$styles  = $this->get_styles( $attributes );
 		$classes = $this->get_classes( $attributes );
 
-		$output  = sprintf( '<div class="%1$s wp-block-woocommerce-featured-product" style="%2$s">', esc_attr( trim( $classes ) ), esc_attr( $styles ) );
-		$output .= '<div class="wc-block-featured-product__wrapper">';
+		$output = sprintf( '<div class="%1$s wp-block-woocommerce-featured-product" style="%2$s">', esc_attr( trim( $classes ) ), esc_attr( $styles ) );
+
+		$image_url = esc_url( $this->get_image_url( $attributes, $product ) );
+
+		$wrapper_styles = $this->get_wrapper_styles( $attributes, $image_url, $min_height );
+
+		$output .= sprintf( '<div class="wc-block-featured-product__wrapper" style="%s">', esc_attr( $wrapper_styles ) );
 		$output .= $this->render_overlay( $attributes );
-		$output .= $this->render_image( $attributes, $product );
+
+		if ( ! $attributes['isRepeated'] ) {
+			$output .= $this->render_image( $attributes, $product, $image_url );
+		}
+
 		$output .= $title;
 		if ( $attributes['showDesc'] ) {
 			$output .= $desc_str;
@@ -139,13 +150,12 @@ class FeaturedProduct extends AbstractDynamicBlock {
 	 *
 	 * @param array       $attributes Block attributes. Default empty array.
 	 * @param \WC_Product $product Product object.
+	 * @param string      $image_url Product image url.
 	 *
 	 * @return string
 	 */
-	private function render_image( $attributes, $product ) {
+	private function render_image( $attributes, $product, $image_url ) {
 		$style = sprintf( 'object-fit: %s;', $attributes['imageFit'] );
-
-		$image = $this->get_image_url( $attributes, $product );
 
 		if ( is_array( $attributes['focalPoint'] ) && 2 === count( $attributes['focalPoint'] ) ) {
 			$style .= sprintf(
@@ -155,11 +165,11 @@ class FeaturedProduct extends AbstractDynamicBlock {
 			);
 		}
 
-		if ( ! empty( $image ) ) {
+		if ( ! empty( $image_url ) ) {
 			return sprintf(
 				'<img alt="%1$s" class="wc-block-featured-product__background-image" src="%2$s" style="%3$s" />',
-				wp_kses_post( $attributes['alt'] ?: $product->get_name() ),
-				esc_url( $image ),
+				wp_kses_post( $product->get_short_description() ),
+				$image_url,
 				$style
 			);
 		}
@@ -239,6 +249,10 @@ class FeaturedProduct extends AbstractDynamicBlock {
 			$classes[] = $attributes['className'];
 		}
 
+		if ( $attributes['isRepeated'] ) {
+			$classes[] = 'is-repeated';
+		}
+
 		$global_style_classes = StyleAttributesUtils::get_classes_by_attributes( $attributes, $this->global_style_wrapper );
 		$classes[]            = $global_style_classes;
 
@@ -264,6 +278,30 @@ class FeaturedProduct extends AbstractDynamicBlock {
 		}
 
 		return $image;
+	}
+
+	/**
+	 * Get the styles for the feature product wrapper.
+	 *
+	 * @param array  $attributes Block attributes. Default empty array.
+	 * @param string $image_url Product image url.
+	 * @param string $min_height Block min-height.
+	 *
+	 * @return string
+	 */
+	public function get_wrapper_styles( $attributes, $image_url, $min_height ) {
+		$wrapper_styles = sprintf( 'min-height:%dpx;', intval( $min_height ) );
+
+		if ( $attributes['isRepeated'] ) {
+			$wrapper_styles .= "background-image: url($image_url);";
+			$wrapper_styles .= sprintf(
+				'background-position: %s%% %s%%;',
+				$attributes['focalPoint']['x'] * 100,
+				$attributes['focalPoint']['y'] * 100
+			);
+		}
+
+		return $wrapper_styles;
 	}
 
 	/**
