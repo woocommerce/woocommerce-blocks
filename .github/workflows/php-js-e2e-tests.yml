@@ -49,9 +49,7 @@ jobs:
                   GUTENBERG_EDITOR_CONTEXT: 'gutenberg'
               run: |
                   chmod -R 767 ./ #needed for permissions issues
-                  JSON='{"plugins": ["https://downloads.wordpress.org/plugin/woocommerce.latest-stable.zip","https://github.com/WP-API/Basic-Auth/archive/master.zip","https://downloads.wordpress.org/plugin/gutenberg.latest-stable.zip", "./tests/mocks/woo-test-helper", "."] }'
-                  echo $JSON > .wp-env.override.json
-                  echo $NODE_ENV
+                  node ./bin/wp-env-with-gutenberg.js
                   npm run wp-env start
                   npm run wp-env clean all
                   npm run test:e2e -- checkout-terms.test.js
