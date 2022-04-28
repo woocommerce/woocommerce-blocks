@@ -50,7 +50,11 @@ import { crop, Icon, starEmpty } from '@wordpress/icons';
 /**
  * Internal dependencies
  */
-import { calculateBackgroundImagePosition, dimRatioToClass } from './utils';
+import {
+	backgroundImageStyles,
+	calculateImagePosition,
+	dimRatioToClass,
+} from './utils';
 import {
 	getImageSrcFromProduct,
 	getImageIdFromProduct,
@@ -344,50 +348,52 @@ const FeaturedProduct = ( {
 											} );
 										} }
 									/>
-									<ToggleGroupControl
-										help={
-											<>
-												<p>
-													{ __(
-														'Choose “Cover” if you want the image to scale automatically to always fit its container.',
-														'woo-gutenberg-products-block'
-													) }
-												</p>
-												<p>
-													{ __(
-														'Note: by choosing “Cover” you will lose the ability to freely move the focal point precisely.',
-														'woo-gutenberg-products-block'
-													) }
-												</p>
-											</>
-										}
-										label={ __(
-											'Image fit',
-											'woo-gutenberg-products-block'
-										) }
-										value={ attributes.imageFit }
-										onChange={ ( value ) =>
-											setAttributes( {
-												imageFit: value,
-											} )
-										}
-									>
-										<ToggleGroupControlOption
+									{ ! isRepeated && (
+										<ToggleGroupControl
+											help={
+												<>
+													<p>
+														{ __(
+															'Choose “Cover” if you want the image to scale automatically to always fit its container.',
+															'woo-gutenberg-products-block'
+														) }
+													</p>
+													<p>
+														{ __(
+															'Note: by choosing “Cover” you will lose the ability to freely move the focal point precisely.',
+															'woo-gutenberg-products-block'
+														) }
+													</p>
+												</>
+											}
 											label={ __(
-												'None',
+												'Image fit',
 												'woo-gutenberg-products-block'
 											) }
-											value="none"
-										/>
-										<ToggleGroupControlOption
-											/* translators: "Cover" is a verb that indicates an image covering the entire container. */
-											label={ __(
-												'Cover',
-												'woo-gutenberg-products-block'
-											) }
-											value="cover"
-										/>
-									</ToggleGroupControl>
+											value={ attributes.imageFit }
+											onChange={ ( value ) =>
+												setAttributes( {
+													imageFit: value,
+												} )
+											}
+										>
+											<ToggleGroupControlOption
+												label={ __(
+													'None',
+													'woo-gutenberg-products-block'
+												) }
+												value="none"
+											/>
+											<ToggleGroupControlOption
+												/* translators: "Cover" is a verb that indicates an image covering the entire container. */
+												label={ __(
+													'Cover',
+													'woo-gutenberg-products-block'
+												) }
+												value="cover"
+											/>
+										</ToggleGroupControl>
+									) }
 									<FocalPointPicker
 										label={ __(
 											'Focal Point Picker',
@@ -485,6 +491,7 @@ const FeaturedProduct = ( {
 			contentAlign,
 			dimRatio,
 			focalPoint,
+			isRepeated,
 			imageFit,
 			minHeight,
 			overlayColor,
@@ -502,6 +509,7 @@ const FeaturedProduct = ( {
 				'is-loading': ! product && isLoading,
 				'is-not-found': ! product && ! isLoading,
 				'has-background-dim': dimRatio !== 0,
+				'is-repeated': isRepeated,
 			},
 			contentAlign !== 'center' && `has-${ contentAlign }-content`
 		);
@@ -510,14 +518,27 @@ const FeaturedProduct = ( {
 			borderRadius: style?.border?.radius,
 		};
 
-		const wrapperStyle = {
-			...getSpacingClassesAndStyles( attributes ).style,
-			minHeight,
-		};
+		const backgroundImageSrc =
+			mediaSrc || getImageSrcFromProduct( product );
 
 		const backgroundImageStyle = {
-			...calculateBackgroundImagePosition( focalPoint ),
+			objectPosition: calculateImagePosition( focalPoint ),
 			objectFit: imageFit,
+		};
+
+		const isImgElement = ! isRepeated;
+
+		const wrapperStyle = {
+			...( ! isImgElement
+				? {
+						...backgroundImageStyles( backgroundImageSrc ),
+						backgroundPosition: calculateImagePosition(
+							focalPoint
+						),
+				  }
+				: undefined ),
+			...getSpacingClassesAndStyles( attributes ).style,
+			minHeight,
 		};
 
 		const overlayStyle = {
@@ -542,18 +563,20 @@ const FeaturedProduct = ( {
 							className="wc-block-featured-product__overlay"
 							style={ overlayStyle }
 						/>
-						<img
-							alt={ product.short_description }
-							className="wc-block-featured-product__background-image"
-							src={ backgroundImageSrc }
-							style={ backgroundImageStyle }
-							onLoad={ ( e ) => {
-								setBackgroundImageSize( {
-									height: e.target?.naturalHeight,
-									width: e.target?.naturalWidth,
-								} );
-							} }
-						/>
+						{ isImgElement && (
+							<img
+								alt={ product.short_description }
+								className="wc-block-featured-product__background-image"
+								src={ backgroundImageSrc }
+								style={ backgroundImageStyle }
+								onLoad={ ( e ) => {
+									setBackgroundImageSize( {
+										height: e.target?.naturalHeight,
+										width: e.target?.naturalWidth,
+									} );
+								} }
+							/>
+						) }
 						<h2
 							className="wc-block-featured-product__title"
 							dangerouslySetInnerHTML={ {
