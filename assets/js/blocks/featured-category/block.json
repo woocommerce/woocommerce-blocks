@@ -33,6 +33,10 @@
         }
     },
     "attributes": {
+        "alt": {
+            "type": "string",
+            "default": ""
+        },
         "contentAlign": {
             "type": "string",
             "default": "center"
