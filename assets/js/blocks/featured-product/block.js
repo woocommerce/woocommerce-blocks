@@ -265,7 +265,11 @@ const FeaturedProduct = ( {
 
 	const getInspectorControls = () => {
 		const url = attributes.mediaSrc || getImageSrcFromProduct( product );
-		const { focalPoint = { x: 0.5, y: 0.5 } } = attributes;
+		const {
+			focalPoint = { x: 0.5, y: 0.5 },
+			hasParallax,
+			isRepeated,
+		} = attributes;
 		// FocalPointPicker was introduced in Gutenberg 5.0 (WordPress 5.2),
 		// so we need to check if it exists before using it.
 		const focalPointPickerExists = typeof FocalPointPicker === 'function';
@@ -313,6 +317,33 @@ const FeaturedProduct = ( {
 										'woo-gutenberg-products-block'
 									) }
 								>
+									<ToggleControl
+										label={ __(
+											'Fixed background',
+											'woo-gutenberg-products-block'
+										) }
+										checked={ hasParallax }
+										onChange={ () => {
+											setAttributes( {
+												hasParallax: ! hasParallax,
+												...( ! hasParallax
+													? { focalPoint: undefined }
+													: {} ),
+											} );
+										} }
+									/>
+									<ToggleControl
+										label={ __(
+											'Repeated background',
+											'woo-gutenberg-products-block'
+										) }
+										checked={ isRepeated }
+										onChange={ () => {
+											setAttributes( {
+												isRepeated: ! isRepeated,
+											} );
+										} }
+									/>
 									<ToggleGroupControl
 										help={
 											<>
