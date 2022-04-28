@@ -51,6 +51,7 @@ class BlockTemplatesController {
 		add_action( 'template_redirect', array( $this, 'render_block_template' ) );
 		add_filter( 'pre_get_block_file_template', array( $this, 'get_block_file_template' ), 10, 3 );
 		add_filter( 'get_block_templates', array( $this, 'add_block_templates' ), 10, 3 );
+		add_filter( 'search_template_hierarchy', array( $this, 'update_search_template_hierarchy' ), 10, 3 );
 	}
 
 	/**
@@ -159,10 +160,12 @@ class BlockTemplatesController {
 			if ( 'custom' !== $template_file->source ) {
 				$template = BlockTemplateUtils::build_template_result_from_file( $template_file, $template_type );
 			} else {
-				$template_file->title = BlockTemplateUtils::convert_slug_to_title( $template_file->slug );
+				$template_file->title = BlockTemplateUtils::get_block_template_title( $template_file->slug );
 				$query_result[]       = $template_file;
 				continue;
 			}
+
+			$template->description = BlockTemplateUtils::get_block_template_description( $template_file->slug );
 
 			$is_not_custom   = false === array_search(
 				wp_get_theme()->get_stylesheet() . '//' . $template_file->slug,
@@ -360,4 +363,16 @@ class BlockTemplatesController {
 		}
 	}
 
+	/**
+	 * When the search is for products and a block theme is active, render the Product Search Template.
+	 *
+	 * @param array $templates Templates that match the search hierarchy.
+	 */
+	public function update_search_template_hierarchy( $templates ) {
+		if ( ( is_search() && is_post_type_archive( 'product' ) ) && wp_is_block_theme() ) {
+			array_unshift( $templates, 'product-search-results' );
+			return $templates;
+		}
+		return $templates;
+	}
 }
