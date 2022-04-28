@@ -114,6 +114,27 @@ class FeaturedProduct extends AbstractDynamicBlock {
 	}
 
 	/**
+	 * Returns the url of a product image
+	 *
+	 * @param array       $attributes Block attributes. Default empty array.
+	 * @param \WC_Product $product Product object.
+	 *
+	 * @return string
+	 */
+	private function get_image_url( $attributes, $product ) {
+		$image_size = 'large';
+		if ( 'none' !== $attributes['align'] || $attributes['height'] > 800 ) {
+			$image_size = 'full';
+		}
+
+		if ( $attributes['mediaId'] ) {
+			return wp_get_attachment_image_url( $attributes['mediaId'], $image_size );
+		}
+
+		return $this->get_image( $product, $image_size );
+	}
+
+	/**
 	 * Renders the featured image
 	 *
 	 * @param array       $attributes Block attributes. Default empty array.
@@ -122,19 +143,9 @@ class FeaturedProduct extends AbstractDynamicBlock {
 	 * @return string
 	 */
 	private function render_image( $attributes, $product ) {
-		$style      = '';
-		$image_size = 'large';
-		if ( 'none' !== $attributes['align'] || $attributes['height'] > 800 ) {
-			$image_size = 'full';
-		}
+		$style = sprintf( 'object-fit: %s;', $attributes['imageFit'] );
 
-		$style .= sprintf( 'object-fit: %s;', $attributes['imageFit'] );
-
-		if ( $attributes['mediaId'] ) {
-			$image = wp_get_attachment_image_url( $attributes['mediaId'], $image_size );
-		} else {
-			$image = $this->get_image( $product, $image_size );
-		}
+		$image = $this->get_image_url( $attributes, $product );
 
 		if ( is_array( $attributes['focalPoint'] ) && 2 === count( $attributes['focalPoint'] ) ) {
 			$style .= sprintf(
