@@ -371,7 +371,6 @@ class BlockTemplatesController {
 	public function update_search_template_hierarchy( $templates ) {
 		if ( ( is_search() && is_post_type_archive( 'product' ) ) && wp_is_block_theme() ) {
 			array_unshift( $templates, 'product-search-results' );
-			return $templates;
 		}
 		return $templates;
 	}
