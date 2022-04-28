@@ -2,6 +2,7 @@
  * External dependencies
  */
 import { useBlockProps, InnerBlocks } from '@wordpress/block-editor';
+import { applyFilters } from '@wordpress/hooks';
 import type { TemplateArray } from '@wordpress/blocks';
 import { innerBlockAreas } from '@woocommerce/blocks-checkout';
 import { __ } from '@wordpress/i18n';
@@ -25,7 +26,7 @@ export const Edit = ( { clientId }: { clientId: string } ): JSX.Element => {
 	const allowedBlocks = getAllowedBlocks(
 		innerBlockAreas.CART_ORDER_SUMMARY
 	);
-	const defaultTemplate = [
+	const defaultTemplate = applyFilters( 'woocommerce_blocks_cart_order_summary_default_template', [
 		[
 			'woocommerce/cart-order-summary-heading-block',
 			{
@@ -39,7 +40,7 @@ export const Edit = ( { clientId }: { clientId: string } ): JSX.Element => {
 		[ 'woocommerce/cart-order-summary-coupon-form-block', {}, [] ],
 		[ 'woocommerce/cart-order-summary-shipping-block', {}, [] ],
 		[ 'woocommerce/cart-order-summary-taxes-block', {}, [] ],
-	] as TemplateArray;
+	] ) as TemplateArray;
 
 	useForcedLayout( {
 		clientId,

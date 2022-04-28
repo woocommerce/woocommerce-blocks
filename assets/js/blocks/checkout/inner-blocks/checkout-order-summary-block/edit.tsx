@@ -2,6 +2,7 @@
  * External dependencies
  */
 import { useBlockProps, InnerBlocks } from '@wordpress/block-editor';
+import { applyFilters } from '@wordpress/hooks';
 import type { TemplateArray } from '@wordpress/blocks';
 import { innerBlockAreas } from '@woocommerce/blocks-checkout';
 import { TotalsFooterItem } from '@woocommerce/base-components/cart-checkout';
@@ -24,7 +25,7 @@ export const Edit = ( { clientId }: { clientId: string } ): JSX.Element => {
 	const allowedBlocks = getAllowedBlocks(
 		innerBlockAreas.CHECKOUT_ORDER_SUMMARY
 	);
-	const defaultTemplate = [
+	const defaultTemplate = applyFilters( 'woocommerce_blocks_checkout_order_summary_default_template', [
 		[ 'woocommerce/checkout-order-summary-cart-items-block', {}, [] ],
 		[ 'woocommerce/checkout-order-summary-subtotal-block', {}, [] ],
 		[ 'woocommerce/checkout-order-summary-fee-block', {}, [] ],
@@ -32,7 +33,7 @@ export const Edit = ( { clientId }: { clientId: string } ): JSX.Element => {
 		[ 'woocommerce/checkout-order-summary-coupon-form-block', {}, [] ],
 		[ 'woocommerce/checkout-order-summary-shipping-block', {}, [] ],
 		[ 'woocommerce/checkout-order-summary-taxes-block', {}, [] ],
-	] as TemplateArray;
+	] ) as TemplateArray;
 
 	useForcedLayout( {
 		clientId,
