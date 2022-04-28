@@ -10,7 +10,7 @@ import {
 	setCheckbox,
 	openDocumentSettingsSidebar,
 } from '@woocommerce/e2e-utils';
-import { switchUserToAdmin, visitAdminPage } from '@wordpress/e2e-test-utils';
+import { visitAdminPage } from '@wordpress/e2e-test-utils';
 
 /**
  * Internal dependencies
@@ -89,10 +89,6 @@ describe( 'Shopper → Checkout → Account', () => {
 		await expect( page ).toMatch( 'Order received' );
 		await merchant.login();
 		await visitAdminPage( 'users.php' );
-		await page.screenshot( {
-			path: `screenshots/${ expect.getState().currentTestName }.jpg`,
-			fullPage: true,
-		} );
 		//Confirm account is being created with the email.
 		await expect( page ).toMatch( testEmail );
 	} );
