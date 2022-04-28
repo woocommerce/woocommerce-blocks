@@ -42,10 +42,19 @@ export const shopper = {
 
 		goToCart: async () => {
 			await shopper.block.goToBlockPage( 'Cart' );
+			await page.waitForSelector(
+				'.wp-block-woocommerce-cart.is-loading',
+				{ hidden: true }
+			);
 		},
 
 		goToCheckout: async () => {
 			await shopper.block.goToBlockPage( 'Checkout' );
+			// Wait for Checkout block to finish loading
+			await page.waitForSelector(
+				'.wp-block-woocommerce-checkout.is-loading',
+				{ hidden: true }
+			);
 		},
 
 		productIsInCheckout: async ( productTitle, quantity, total ) => {
@@ -322,7 +331,7 @@ export const shopper = {
 				'.wc-block-components-totals-shipping .wc-block-formatted-money-amount',
 				{
 					text: shippingPrice,
-					timeout: 5000,
+					timeout: 30000,
 				}
 			);
 		},
