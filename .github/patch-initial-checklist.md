@@ -4,6 +4,7 @@ The release pull request has been created! This checklist is a guide to follow f
 
 ## Initial Preparation
 
+* [ ] Close the milestone of the release you are going to ship. That will prevent newly approved PRs to be automatically assigned to that milestone.
 * [ ] Add the changelog to `readme.txt`
   * [ ] Add the version and date to the changelog section within `readme.txt`, e.g. `= {{version}} - YYYY-MM-DD =`
   * [ ] Copy the changelog from the pull request description above into this new section
@@ -63,9 +64,7 @@ Each porter is responsible for testing the PRs that fall under the focus of thei
   * If the base branch is the release branch this patch release is for, then merge branch into release branch and then merge the release branch back to `trunk` if the patch release is the latest released version. Otherwise just merge back into the release branch.
 * [ ] If you merged the branch to `trunk`, then update version on the `trunk` branch to be for the next version of the plugin and include the `dev` suffix (e.g. something like [`2.6-dev`](https://github.com/woocommerce/woocommerce-gutenberg-products-block/commit/e27f053e7be0bf7c1d376f5bdb9d9999190ce158)) for the next version.
 * [ ] Update the schedules p2 with the shipped date for the release (Pca54o-1N-p2).
-* [ ] Clean up the release milestone.
-  * [ ] Edit the GitHub milestone and add the current date as the due date (this is used to track ship date as well).
-  * [ ] Close the milestone.
+* [ ] Edit the GitHub milestone of the release you just shipped and add the current date as the due date (this is used to track ship date as well).
 
 ## Pull request in WooCommerce Core for Package update
 

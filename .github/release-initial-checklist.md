@@ -3,6 +3,8 @@ The release pull request has been created! This checklist is a guide to follow f
 * [ ] Checkout the release branch locally.
 
 ## Initial Preparation
+
+* [ ] Close the milestone of the release you are going to ship. That will prevent newly approved PRs to be automatically assigned to that milestone.
 * [ ] Add the changelog to `readme.txt`
   * [ ] Add the version and date to the changelog section within `readme.txt`, e.g. `= {{version}} - YYYY-MM-DD =`
   * [ ] Copy the changelog from the pull request description above into this new section
@@ -83,10 +85,7 @@ Each porter is responsible for testing the PRs that fall under the focus of thei
     * [ ] `src/Package.php`
     * [ ] `woocommerce-gutenberg-products-block.php`.
 * [ ] Update the schedules p2 with the shipped date for the release (Pca54o-1N-p2).
-* [ ] Clean up the release milestone and Zenhub.
-  * [ ] Edit the [GitHub milestone](https://github.com/woocommerce/woocommerce-gutenberg-products-block/milestones) and add the current date as the due date (this is used to track ship date as well).
-  * [ ] Close the milestone.
-  * [ ] Remove any unfinished issues from the Zenhub epics completed by this release and then close the epics.
+* [ ] Edit the GitHub milestone of the release you just shipped and add the current date as the due date (this is used to track ship date as well).
 
 ## Pull request in WooCommerce Core for Package update
 
