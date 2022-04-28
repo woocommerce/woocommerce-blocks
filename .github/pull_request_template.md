@@ -36,20 +36,10 @@ Fixes #
 * [ ] Changes in this PR are covered by Automated Tests.
   * [ ] Unit tests
   * [ ] E2E tests
-### Manual Testing
 
-How to test the changes in this Pull Request:
-
-1.
-2.
-3.
-
-### User Facing Testing
+#### User Facing Testing
 
 <!-- Write these steps from the perspective of a "user" (merchant) familiar with WooCommerce. No need to spell out the steps for common setup scenarios (eg. "Create a product"), but do be specific about the thing being tested. Include screenshots demonstrating expectations where that will be helpful. -->
-
-* [ ] Same as above, or
-* [ ] See steps below.
 
 1.
 2.
