@@ -48,8 +48,10 @@ export async function visitBlockPage( title ) {
 	if ( await page.$( '#post-search-input' ) ) {
 		// search for the page.
 		await page.type( '#post-search-input', title );
-		await page.click( '#search-submit' );
-		await page.waitForNavigation( { waitUntil: 'networkidle0' } );
+		await Promise.all( [
+			page.waitForNavigation( { waitUntil: 'networkidle0' } ),
+			page.click( '#search-submit' ),
+		] );
 		const pageLink = await page.$x( `//a[contains(text(), '${ title }')]` );
 		if ( pageLink.length > 0 ) {
 			// clicking the link directly caused racing issues, so I used goto.
