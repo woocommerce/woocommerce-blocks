@@ -354,6 +354,7 @@ export const shopper = {
 				'.wc-block-components-totals-shipping .wc-block-formatted-money-amount',
 				{
 					text: shippingPrice,
+					timeout: 30000,
 				}
 			);
 		},
