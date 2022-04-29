@@ -105,7 +105,6 @@ jobs:
               run: |
                   npm run wp-env start
                   npm run wp-env clean all
-                  mkdir -p reports/e2e/screenshots
                   npm run test:e2e
 
             - name: Upload artifacts on failure
