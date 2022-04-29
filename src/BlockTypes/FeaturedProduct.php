@@ -94,16 +94,13 @@ class FeaturedProduct extends AbstractDynamicBlock {
 			wp_kses_post( $product->get_price_html() )
 		);
 
-		$styles  = $this->get_styles( $attributes );
-		$classes = $this->get_classes( $attributes );
-
-		$output = sprintf( '<div class="%1$s wp-block-woocommerce-featured-product" style="%2$s">', esc_attr( trim( $classes ) ), esc_attr( $styles ) );
-
 		$image_url = esc_url( $this->get_image_url( $attributes, $product ) );
 
-		$wrapper_styles = $this->get_wrapper_styles( $attributes, $image_url, $min_height );
+		$styles  = $this->get_styles( $attributes, $image_url );
+		$classes = $this->get_classes( $attributes );
 
-		$output .= sprintf( '<div class="wc-block-featured-product__wrapper" style="%s">', esc_attr( $wrapper_styles ) );
+		$output  = sprintf( '<div class="%1$s wp-block-woocommerce-featured-product">', esc_attr( trim( $classes ) ) );
+		$output .= sprintf( '<div class="wc-block-featured-product__wrapper" style="%s">', esc_attr( $styles ) );
 		$output .= $this->render_overlay( $attributes );
 
 		if ( ! $attributes['isRepeated'] ) {
@@ -201,14 +198,24 @@ class FeaturedProduct extends AbstractDynamicBlock {
 	/**
 	 * Get the styles for the wrapper element (background image, color).
 	 *
-	 * @param array $attributes Block attributes. Default empty array.
+	 * @param array  $attributes Block attributes. Default empty array.
+	 * @param string $image_url Url of the product image.
 	 *
 	 * @return string
 	 */
-	public function get_styles( $attributes ) {
+	public function get_styles( $attributes, $image_url ) {
 		$style = '';
 
-		$min_height = isset( $attributes['minHeight'] ) ? $attributes['minHeight'] : wc_get_theme_support( 'featured_block::default_height', 500 );
+		if ( $attributes['isRepeated'] ) {
+			$style .= "background-image: url($image_url);";
+			$style .= sprintf(
+				'background-position: %s%% %s%%;',
+				$attributes['focalPoint']['x'] * 100,
+				$attributes['focalPoint']['y'] * 100
+			);
+		}
+
+		$min_height = $attributes['minHeight'] ?? wc_get_theme_support( 'featured_block::default_height', 500 );
 
 		if ( isset( $attributes['minHeight'] ) ) {
 			$style .= sprintf( 'min-height:%dpx;', intval( $min_height ) );
