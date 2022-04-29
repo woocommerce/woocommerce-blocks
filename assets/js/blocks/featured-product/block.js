@@ -407,30 +407,32 @@ const FeaturedProduct = ( {
 											} )
 										}
 									/>
-									<TextareaControl
-										label={ __(
-											'Alt text (alternative text)',
-											'woo-gutenberg-products-block'
-										) }
-										value={ attributes.alt }
-										onChange={ ( alt ) => {
-											setAttributes( { alt } );
-										} }
-										help={
-											<>
-												<ExternalLink href="https://www.w3.org/WAI/tutorials/images/decision-tree">
+									{ ! isRepeated && (
+										<TextareaControl
+											label={ __(
+												'Alt text (alternative text)',
+												'woo-gutenberg-products-block'
+											) }
+											value={ attributes.alt }
+											onChange={ ( alt ) => {
+												setAttributes( { alt } );
+											} }
+											help={
+												<>
+													<ExternalLink href="https://www.w3.org/WAI/tutorials/images/decision-tree">
+														{ __(
+															'Describe the purpose of the image',
+															'woo-gutenberg-products-block'
+														) }
+													</ExternalLink>
 													{ __(
-														'Describe the purpose of the image',
+														'Leaving it empty will use the product name.',
 														'woo-gutenberg-products-block'
 													) }
-												</ExternalLink>
-												{ __(
-													'Leaving it empty will use the product name.',
-													'woo-gutenberg-products-block'
-												) }
-											</>
-										}
-									/>
+												</>
+											}
+										/>
+									) }
 								</PanelBody>
 							) }
 							<PanelColorGradientSettings
