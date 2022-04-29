@@ -44,7 +44,7 @@ export const formatPriceRange = ( minPrice, maxPrice ) => {
  * @param {Object}   listItem                  The removable item to render.
  * @param {string}   listItem.type             Type string.
  * @param {string}   listItem.name             Name string.
- * @param {string}   listItem.prefix           Prefix shown before item name.
+ * @param {string}   [listItem.prefix='']      Prefix shown before item name.
  * @param {Function} listItem.removeCallback   Callback to remove item.
  * @param {string}   listItem.displayStyle     Whether it's a list or chips.
  * @param {boolean}  [listItem.showLabel=true] Should the label be shown for
@@ -53,7 +53,7 @@ export const formatPriceRange = ( minPrice, maxPrice ) => {
 export const renderRemovableListItem = ( {
 	type,
 	name,
-	prefix,
+	prefix = '',
 	removeCallback = () => {},
 	showLabel = true,
 	displayStyle,
@@ -172,17 +172,29 @@ export const removeArgsFromFilterUrl = ( ...args ) => {
 };
 
 /**
- * Get the base URL for the current page.
- *
- * @return {string} The current URL without the query args.
+ * Clean the filter URL.
  */
-export const getBaseUrl = () => {
+export const cleanFilterUrl = () => {
 	const url = window.location.href;
+	const args = getQueryArgs( url );
+	const cleanUrl = removeQueryArgs( url, ...Object.keys( args ) );
+	const remainingArgs = Object.fromEntries(
+		Object.keys( args )
+			.filter( ( arg ) => {
+				if (
+					arg.includes( 'min_price' ) ||
+					arg.includes( 'max_price' ) ||
+					arg.includes( 'rating_filter' ) ||
+					arg.includes( 'filter_' ) ||
+					arg.includes( 'query_type_' )
+				) {
+					return false;
+				}
 
-	const queryStringIndex = url.indexOf( '?' );
-	if ( queryStringIndex === -1 ) {
-		return url;
-	}
+				return true;
+			} )
+			.map( ( key ) => [ key, args[ key ] ] )
+	);
 
-	return url.substring( 0, queryStringIndex );
+	window.location.href = addQueryArgs( cleanUrl, remainingArgs );
 };
