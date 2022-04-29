@@ -96,14 +96,15 @@ class FeaturedProduct extends AbstractDynamicBlock {
 
 		$image_url = esc_url( $this->get_image_url( $attributes, $product ) );
 
-		$styles  = $this->get_styles( $attributes, $image_url );
-		$classes = $this->get_classes( $attributes );
+		$styles          = $this->get_styles( $attributes, $image_url );
+		$classes         = $this->get_classes( $attributes );
+		$wrapper_classes = $this->get_wrapper_classes( $attributes );
 
 		$output  = sprintf( '<div class="%1$s wp-block-woocommerce-featured-product">', esc_attr( trim( $classes ) ) );
-		$output .= sprintf( '<div class="wc-block-featured-product__wrapper" style="%s">', esc_attr( $styles ) );
+		$output .= sprintf( '<div class="%s" style="%s">', esc_attr( $wrapper_classes ), esc_attr( $styles ) );
 		$output .= $this->render_overlay( $attributes );
 
-		if ( ! $attributes['isRepeated'] ) {
+		if ( ! $attributes['isRepeated'] && ! $attributes['hasParallax'] ) {
 			$output .= $this->render_image( $attributes, $product, $image_url );
 		}
 
@@ -154,7 +155,7 @@ class FeaturedProduct extends AbstractDynamicBlock {
 	private function render_image( $attributes, $product, $image_url ) {
 		$style = sprintf( 'object-fit: %s;', $attributes['imageFit'] );
 
-		if ( is_array( $attributes['focalPoint'] ) && 2 === count( $attributes['focalPoint'] ) ) {
+		if ( $this->hasFocalPoint( $attributes ) ) {
 			$style .= sprintf(
 				'object-position: %s%% %s%%;',
 				$attributes['focalPoint']['x'] * 100,
@@ -206,8 +207,16 @@ class FeaturedProduct extends AbstractDynamicBlock {
 	public function get_styles( $attributes, $image_url ) {
 		$style = '';
 
-		if ( $attributes['isRepeated'] ) {
+		if ( $attributes['isRepeated'] || $attributes['hasParallax'] ) {
 			$style .= "background-image: url($image_url);";
+		}
+
+		if ( ! $attributes['isRepeated'] ) {
+			$style .= "background-repeat: 'no-repeat';";
+			$style .= 'background-size: ' . ( 'cover' === $attributes['imageFit'] ? $attributes['imageFit'] : 'auto' ) . ';';
+		}
+
+		if ( $this->hasFocalPoint( $attributes ) ) {
 			$style .= sprintf(
 				'background-position: %s%% %s%%;',
 				$attributes['focalPoint']['x'] * 100,
@@ -225,6 +234,22 @@ class FeaturedProduct extends AbstractDynamicBlock {
 		$style             .= $global_style_style;
 
 		return $style;
+	}
+
+	/**
+	 * Get class names for the block wrapper.
+	 *
+	 * @param array $attributes Block attributes. Default empty array.
+	 * @return string
+	 */
+	private function get_wrapper_classes( $attributes ) {
+		$classes[] = 'wc-block-featured-product__wrapper';
+
+		if ( $attributes['hasParallax'] ) {
+			$classes[] = ' has-parallax';
+		}
+
+		return implode( ' ', $classes );
 	}
 
 	/**
@@ -285,6 +310,17 @@ class FeaturedProduct extends AbstractDynamicBlock {
 		}
 
 		return $image;
+	}
+
+	/**
+	 * Returns whether the focal point is defined for the block.
+	 *
+	 * @param array $attributes Block attributes. Default empty array.
+	 *
+	 * @return bool
+	 */
+	private function hasFocalPoint( $attributes ): bool {
+		return is_array( $attributes['focalPoint'] ) && 2 === count( $attributes['focalPoint'] );
 	}
 
 	/**

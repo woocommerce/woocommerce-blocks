@@ -493,6 +493,7 @@ const FeaturedProduct = ( {
 			contentAlign,
 			dimRatio,
 			focalPoint,
+			hasParallax,
 			isRepeated,
 			imageFit,
 			minHeight,
@@ -528,7 +529,7 @@ const FeaturedProduct = ( {
 			objectFit: imageFit,
 		};
 
-		const isImgElement = ! isRepeated;
+		const isImgElement = ! isRepeated && ! hasParallax;
 
 		const wrapperStyle = {
 			...( ! isImgElement
@@ -541,6 +542,10 @@ const FeaturedProduct = ( {
 				: undefined ),
 			...getSpacingClassesAndStyles( attributes ).style,
 			minHeight,
+			...( ! isRepeated && {
+				backgroundRepeat: 'no-repeat',
+				backgroundSize: imageFit === 'cover' ? imageFit : 'auto',
+			} ),
 		};
 
 		const overlayStyle = {
@@ -558,7 +563,10 @@ const FeaturedProduct = ( {
 				/>
 				<div className={ classes } style={ containerStyle }>
 					<div
-						className="wc-block-featured-product__wrapper"
+						className={ classnames(
+							'wc-block-featured-product__wrapper',
+							{ 'has-parallax': hasParallax }
+						) }
 						style={ wrapperStyle }
 					>
 						<div
