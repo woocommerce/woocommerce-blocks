@@ -187,7 +187,9 @@ export const shopper = {
 				city: 'New York',
 				state: 'New York',
 				postcode: '90210',
+				email: 'john.doe@test.com',
 			};
+			await expect( page ).toFill( `#email`, testData.email );
 			await shopper.block.fillInCheckoutAddress(
 				testData,
 				shippingOrBilling

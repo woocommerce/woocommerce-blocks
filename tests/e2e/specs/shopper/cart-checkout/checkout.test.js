@@ -135,6 +135,10 @@ describe( 'Shopper → Checkout', () => {
 				}
 			);
 
+			await page.waitForSelector(
+				'.wc-block-components-validation-error'
+			);
+
 			// Verify that all required fields show the correct warning.
 			await expect( page ).toMatchElement(
 				'#email ~ .wc-block-components-validation-error p',
@@ -240,12 +244,12 @@ describe( 'Shopper → Checkout', () => {
 	describe( 'Coupons', () => {
 		beforeAll( async () => {
 			coupon = await createCoupon( { usageLimit: 1 } );
-			await merchant.login();
+			await shopper.login();
 		} );
 
 		afterAll( async () => {
 			await withRestApi.deleteCoupon( coupon.id );
-			await merchant.logout();
+			await shopper.logout();
 		} );
 
 		it( 'Logged in user can apply single-use coupon and place order', async () => {
@@ -272,6 +276,8 @@ describe( 'Shopper → Checkout', () => {
 					text: coupon.code,
 				}
 			);
+
+			await shopper.block.fillInCheckoutWithTestData();
 			await shopper.block.placeOrder();
 			await expect( page ).toMatch( 'Your order has been received.' );
 
