@@ -326,27 +326,30 @@ export const shopper = {
 				}
 			);
 
+			//eslint-disable-next-line no-shadow
+			const checkIfShippingHasChanged = ( el, shippingName ) => {
+				const checkShippingTotal = () => {
+					if ( el.textContent === `via ${ shippingName }` ) {
+						clearInterval( intervalId );
+						clearTimeout( timeoutId );
+					}
+				};
+				const intervalId = setInterval( checkShippingTotal, 500 );
+				const timeoutId = setInterval( () => {
+					clearInterval( intervalId );
+				}, 30000 );
+			};
+
 			// We need to wait for the shipping total to update before we assert.
 			// As no dom elements are being added or removed, we cannot use `await page.waitForSelectot()`
 			// so instead we check when the `via <Shipping Method>` text changes
 			await page.$eval(
 				'.wc-block-components-totals-shipping .wc-block-components-totals-shipping__via',
-				// eslint-disable-next-line
-				( el, shippingName ) => {
-					const checkShippingTotal = () => {
-						if ( el.textContent === `via ${ shippingName }` ) {
-							clearInterval( intervalId );
-							clearTimeout( timeoutId );
-						}
-					};
-					const intervalId = setInterval( checkShippingTotal, 500 );
-					const timeoutId = setInterval( () => {
-						clearInterval( intervalId );
-					}, 30000 );
-				},
+				checkIfShippingHasChanged,
 				shippingName
 			);
 
+			// eslint throws an errors saying this is aoutside
 			await expect( page ).toMatchElement(
 				'.wc-block-components-totals-shipping .wc-block-formatted-money-amount',
 				{
