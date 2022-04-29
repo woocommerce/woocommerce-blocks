@@ -199,7 +199,7 @@ class FeaturedProduct extends AbstractDynamicBlock {
 	 * Get the styles for the wrapper element (background image, color).
 	 *
 	 * @param array  $attributes Block attributes. Default empty array.
-	 * @param string $image_url Url of the product image.
+	 * @param string $image_url Product image url.
 	 *
 	 * @return string
 	 */
@@ -285,30 +285,6 @@ class FeaturedProduct extends AbstractDynamicBlock {
 		}
 
 		return $image;
-	}
-
-	/**
-	 * Get the styles for the feature product wrapper.
-	 *
-	 * @param array  $attributes Block attributes. Default empty array.
-	 * @param string $image_url Product image url.
-	 * @param string $min_height Block min-height.
-	 *
-	 * @return string
-	 */
-	public function get_wrapper_styles( $attributes, $image_url, $min_height ) {
-		$wrapper_styles = sprintf( 'min-height:%dpx;', intval( $min_height ) );
-
-		if ( $attributes['isRepeated'] ) {
-			$wrapper_styles .= "background-image: url($image_url);";
-			$wrapper_styles .= sprintf(
-				'background-position: %s%% %s%%;',
-				$attributes['focalPoint']['x'] * 100,
-				$attributes['focalPoint']['y'] * 100
-			);
-		}
-
-		return $wrapper_styles;
 	}
 
 	/**
