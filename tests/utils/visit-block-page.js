@@ -49,7 +49,7 @@ export async function visitBlockPage( title ) {
 		// search for the page.
 		await page.type( '#post-search-input', title );
 		await page.click( '#search-submit' );
-		await page.waitForNavigation( { waitUntil: 'domcontentloaded' } );
+		await page.waitForNavigation( { waitUntil: 'networkidle0' } );
 		const pageLink = await page.$x( `//a[contains(text(), '${ title }')]` );
 		if ( pageLink.length > 0 ) {
 			// clicking the link directly caused racing issues, so I used goto.
@@ -102,7 +102,7 @@ export async function visitPostOfType( title, postType ) {
 		// search for the page.
 		await page.type( '#post-search-input', title );
 		await page.click( '#search-submit' );
-		await page.waitForNavigation( { waitUntil: 'domcontentloaded' } );
+		await page.waitForNavigation( { waitUntil: 'networkidle0' } );
 		const pageLink = await page.$x( `//a[contains(text(), '${ title }')]` );
 		if ( pageLink.length > 0 ) {
 			// clicking the link directly caused racing issues, so I used goto.
