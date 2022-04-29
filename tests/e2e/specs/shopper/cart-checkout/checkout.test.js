@@ -96,6 +96,10 @@ describe( 'Shopper → Checkout', () => {
 			await shopper.addToCartFromShopPage( SIMPLE_PHYSICAL_PRODUCT_NAME );
 			await shopper.block.goToCheckout();
 			await unsetCheckbox( '#checkbox-control-0' );
+			await page.screenshot( {
+				path: 'reports/e2e/screenshot.jpg',
+				fullPage: true,
+			} );
 			await shopper.block.fillShippingDetails( SHIPPING_DETAILS );
 			await shopper.block.fillBillingDetails( BILLING_DETAILS );
 			await shopper.block.placeOrder();
@@ -202,14 +206,6 @@ describe( 'Shopper → Checkout', () => {
 		const NORMAL_SHIPPING_NAME = 'Normal Shipping';
 		const NORMAL_SHIPPING_PRICE = '$20.00';
 
-		beforeAll( async () => {
-			await merchant.login();
-		} );
-
-		afterAll( async () => {
-			await merchant.logout();
-		} );
-
 		it( 'User can choose free shipping', async () => {
 			await shopper.goToShop();
 			await shopper.addToCartFromShopPage( SIMPLE_PHYSICAL_PRODUCT_NAME );
@@ -218,6 +214,7 @@ describe( 'Shopper → Checkout', () => {
 				FREE_SHIPPING_NAME,
 				FREE_SHIPPING_PRICE
 			);
+			await shopper.block.fillInCheckoutWithTestData();
 			await shopper.block.placeOrder();
 			await page.waitForSelector( '.woocommerce-order' );
 			await expect( page ).toMatch( 'Order received' );
@@ -232,6 +229,7 @@ describe( 'Shopper → Checkout', () => {
 				NORMAL_SHIPPING_NAME,
 				NORMAL_SHIPPING_PRICE
 			);
+			await shopper.block.fillInCheckoutWithTestData();
 			await shopper.block.placeOrder();
 			await page.waitForSelector( '.woocommerce-order' );
 			await expect( page ).toMatch( 'Order received' );
@@ -278,7 +276,9 @@ describe( 'Shopper → Checkout', () => {
 			await expect( page ).toMatch( 'Your order has been received.' );
 
 			// Verify that the discount had been applied correctly on the order confirmation page.
-			await expect( page ).toMatchElement( `th`, { text: 'Discount' } );
+			await expect( page ).toMatchElement( `th`, {
+				text: 'Discount',
+			} );
 			await expect( page ).toMatchElement(
 				`span.woocommerce-Price-amount`,
 				{
@@ -292,6 +292,9 @@ describe( 'Shopper → Checkout', () => {
 			await shopper.addToCartFromShopPage( SIMPLE_VIRTUAL_PRODUCT_NAME );
 			await shopper.block.goToCheckout();
 			await shopper.block.applyCouponFromCheckout( coupon.code );
+			await page.waitForSelector(
+				'.wc-block-components-validation-error'
+			);
 			await expect( page ).toMatch(
 				'Coupon usage limit has been reached.'
 			);

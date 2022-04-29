@@ -116,11 +116,8 @@ export const shopper = {
 
 		placeOrder: async () => {
 			await Promise.all( [
-				expect( page ).toClick(
-					'.wc-block-components-checkout-place-order-button',
-					{
-						text: 'Place Order',
-					}
+				page.click(
+					'.wc-block-components-checkout-place-order-button'
 				),
 				page.waitForNavigation( { waitUntil: 'networkidle0' } ),
 			] );
@@ -327,6 +324,27 @@ export const shopper = {
 				}
 			);
 
+			// We need to wait for the shipping total to update before we assert.
+			// As no dom elements are being added or removed, we cannot use `await page.waitForSelectot()`
+			// so instead we check when the `via <Shipping Method>` text changes
+			await page.$eval(
+				'.wc-block-components-totals-shipping .wc-block-components-totals-shipping__via',
+				// eslint-disable-next-line
+				( el, shippingName ) => {
+					const checkShippingTotal = () => {
+						if ( el.textContent === `via ${ shippingName }` ) {
+							clearInterval( intervalId );
+							clearTimeout( timeoutId );
+						}
+					};
+					const intervalId = setInterval( checkShippingTotal, 500 );
+					const timeoutId = setInterval( () => {
+						clearInterval( intervalId );
+					}, 30000 );
+				},
+				shippingName
+			);
+
 			await expect( page ).toMatchElement(
 				'.wc-block-components-totals-shipping .wc-block-formatted-money-amount',
 				{
@@ -432,7 +450,6 @@ export const shopper = {
 			await expect( page ).toClick( couponExpandButtonSelector );
 			await expect( page ).toFill( couponInputSelector, couponCode );
 			await expect( page ).toClick( couponApplyButtonSelector );
-			await page.waitForNetworkIdle( { idleTime: 2000 } );
 		},
 	},
 
