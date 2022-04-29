@@ -95,6 +95,7 @@ describe( 'Shopper → Checkout', () => {
 			await shopper.goToShop();
 			await shopper.addToCartFromShopPage( SIMPLE_PHYSICAL_PRODUCT_NAME );
 			await shopper.block.goToCheckout();
+			await page.waitForSelector( '#checkbox-control-0' );
 			await unsetCheckbox( '#checkbox-control-0' );
 			await shopper.block.fillShippingDetails( SHIPPING_DETAILS );
 			await shopper.block.fillBillingDetails( BILLING_DETAILS );
