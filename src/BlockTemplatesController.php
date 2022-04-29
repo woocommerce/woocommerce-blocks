@@ -158,8 +158,7 @@ class BlockTemplatesController {
 			// It would be custom if the template was modified in the editor, so if it's not custom we can load it from
 			// the filesystem.
 			if ( 'custom' !== $template_file->source ) {
-				$template              = BlockTemplateUtils::build_template_result_from_file( $template_file, $template_type );
-				$template->description = BlockTemplateUtils::get_block_template_description( $template_file->slug );
+				$template = BlockTemplateUtils::build_template_result_from_file( $template_file, $template_type );
 			} else {
 				$template_file->title       = BlockTemplateUtils::get_block_template_title( $template_file->slug );
 				$template_file->description = BlockTemplateUtils::get_block_template_description( $template_file->slug );
