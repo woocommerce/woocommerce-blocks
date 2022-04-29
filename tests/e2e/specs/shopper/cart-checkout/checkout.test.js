@@ -96,10 +96,6 @@ describe( 'Shopper → Checkout', () => {
 			await shopper.addToCartFromShopPage( SIMPLE_PHYSICAL_PRODUCT_NAME );
 			await shopper.block.goToCheckout();
 			await unsetCheckbox( '#checkbox-control-0' );
-			await page.screenshot( {
-				path: 'reports/e2e/screenshot.jpg',
-				fullPage: true,
-			} );
 			await shopper.block.fillShippingDetails( SHIPPING_DETAILS );
 			await shopper.block.fillBillingDetails( BILLING_DETAILS );
 			await shopper.block.placeOrder();
