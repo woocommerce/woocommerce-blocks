@@ -165,7 +165,7 @@ class FeaturedProduct extends AbstractDynamicBlock {
 		if ( ! empty( $image_url ) ) {
 			return sprintf(
 				'<img alt="%1$s" class="wc-block-featured-product__background-image" src="%2$s" style="%3$s" />',
-				wp_kses_post( $product->get_short_description() ),
+				wp_kses_post( $attributes['alt'] ?: $product->get_name() ),
 				$image_url,
 				$style
 			);
