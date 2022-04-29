@@ -42,6 +42,7 @@ export const shopper = {
 
 		goToCart: async () => {
 			await shopper.block.goToBlockPage( 'Cart' );
+			// Wait for Cart block to finish loading, otherwise we get flakey tests
 			await page.waitForSelector(
 				'.wp-block-woocommerce-cart.is-loading',
 				{ hidden: true }
@@ -50,7 +51,7 @@ export const shopper = {
 
 		goToCheckout: async () => {
 			await shopper.block.goToBlockPage( 'Checkout' );
-			// Wait for Checkout block to finish loading
+			// Wait for Checkout block to finish loading, otherwise we get flakey tests
 			await page.waitForSelector(
 				'.wp-block-woocommerce-checkout.is-loading',
 				{ hidden: true }
@@ -349,12 +350,10 @@ export const shopper = {
 				shippingName
 			);
 
-			// eslint throws an errors saying this is aoutside
 			await expect( page ).toMatchElement(
 				'.wc-block-components-totals-shipping .wc-block-formatted-money-amount',
 				{
 					text: shippingPrice,
-					timeout: 30000,
 				}
 			);
 		},
