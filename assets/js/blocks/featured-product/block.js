@@ -55,6 +55,11 @@ import {
 } from '../../utils/products';
 import { useThrottle } from '../../utils/useThrottle';
 
+const DEFAULT_EDITOR_SIZE = {
+	height: 500,
+	width: 500,
+};
+
 export const ConstrainedResizable = ( {
 	className = '',
 	onResize,
@@ -116,6 +121,7 @@ const FeaturedProduct = ( {
 	const { mediaId, mediaSrc } = attributes;
 
 	const [ isEditingImage, setIsEditingImage ] = useState( false );
+	const [ backgroundImageSize, setBackgroundImageSize ] = useState( {} );
 	const { setGradient } = useGradient( {
 		gradientAttribute: 'overlayGradient',
 		customGradientAttribute: 'overlayGradient',
@@ -484,6 +490,12 @@ const FeaturedProduct = ( {
 							className="wc-block-featured-product__background-image"
 							src={ backgroundImageSrc }
 							style={ backgroundImageStyle }
+							onLoad={ ( e ) => {
+								setBackgroundImageSize( {
+									height: e.target?.naturalHeight,
+									width: e.target?.naturalWidth,
+								} );
+							} }
 						/>
 						<h2
 							className="wc-block-featured-product__title"
@@ -589,17 +601,6 @@ const FeaturedProduct = ( {
 		</Placeholder>
 	);
 
-	const renderImageEditor = () => (
-		<ImageEditor
-			url={ backgroundImageSrc }
-			width={ 500 }
-			height={ 500 }
-			clientWidth={ 500 }
-			naturalHeight={ 500 }
-			naturalWidth={ 500 }
-		/>
-	);
-
 	const { editMode } = attributes;
 
 	if ( error ) {
@@ -616,16 +617,29 @@ const FeaturedProduct = ( {
 				<ImageEditingProvider
 					id={ backgroundImageId }
 					url={ backgroundImageSrc }
-					naturalWidth={ 500 }
-					naturalHeight={ 500 }
-					clientWidth={ 500 }
+					naturalHeight={
+						backgroundImageSize.height || DEFAULT_EDITOR_SIZE.height
+					}
+					naturalWidth={
+						backgroundImageSize.width || DEFAULT_EDITOR_SIZE.width
+					}
 					onSaveImage={ ( { id, url } ) => {
 						setAttributes( { mediaId: id, mediaSrc: url } );
 					} }
 					isEditing={ isEditingImage }
 					onFinishEditing={ () => setIsEditingImage( false ) }
 				>
-					{ renderImageEditor() }
+					<ImageEditor
+						url={ backgroundImageSrc }
+						height={
+							backgroundImageSize.height ||
+							DEFAULT_EDITOR_SIZE.height
+						}
+						width={
+							backgroundImageSize.width ||
+							DEFAULT_EDITOR_SIZE.width
+						}
+					/>
 				</ImageEditingProvider>
 			</>
 		);
