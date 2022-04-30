@@ -194,7 +194,7 @@ final class BlockTypesController {
 			'ProductTagList',
 			'ProductTitle',
 			'MiniCart',
-			'MiniCartContent',
+			'MiniCartContents',
 		];
 
 		if ( Package::feature()->is_feature_plugin_build() ) {
