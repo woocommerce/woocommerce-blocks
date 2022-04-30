@@ -157,7 +157,7 @@ final class BlockTypesController {
 	 * @return array
 	 */
 	protected function get_block_types() {
-		global $wp_version, $pagenow;
+		global $pagenow;
 
 		$block_types = [
 			'AllReviews',
