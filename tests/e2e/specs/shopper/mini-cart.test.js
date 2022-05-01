@@ -55,7 +55,7 @@ const WooCommerce = new WooCommerceRestApi( {
 } );
 
 if ( process.env.WOOCOMMERCE_BLOCKS_PHASE < 3 ) {
-	// eslint-disable-next-line jest/no-focused-tests
+	// Skips all the tests if it's a WooCommerce Core process environment.
 	test.only( `Skipping ${ block.name } tests`, () => {} );
 }
 

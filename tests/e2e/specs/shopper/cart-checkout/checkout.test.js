@@ -31,7 +31,7 @@ import {
 import { createCoupon } from '../../../utils';
 
 if ( process.env.WOOCOMMERCE_BLOCKS_PHASE < 2 ) {
-	// eslint-disable-next-line jest/no-focused-tests
+	// Skips all the tests if it's a WooCommerce Core process environment.
 	test.only( 'Skipping Cart & Checkout tests', () => {} );
 }
 
