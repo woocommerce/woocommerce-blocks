@@ -31,6 +31,7 @@ if ( process.env.WOOCOMMERCE_BLOCKS_PHASE < 2 ) {
 
 describe( 'Shopper → Checkout → Account', () => {
 	beforeAll( async () => {
+		await merchant.login();
 		await merchant.openSettings( 'account' );
 		//Enable create an account at checkout option.
 		await setCheckbox( '#woocommerce_enable_checkout_login_reminder' );
@@ -64,7 +65,7 @@ describe( 'Shopper → Checkout → Account', () => {
 		await shopper.block.goToCheckout();
 	} );
 
-	it( 'user can login to existing account', async () => {
+	it.only( 'user can login to existing account', async () => {
 		//Get the login link from checkout page.
 		const loginLink = await page.$eval(
 			'span.wc-block-components-checkout-step__heading-content a',
