@@ -55,7 +55,7 @@ describe( 'Shopper → Checkout → Account', () => {
 				'Allow shoppers to sign up for a user account during checkout',
 		} );
 		await saveOrPublish();
-		await shopper.logout();
+		await merchant.logout();
 	} );
 
 	beforeEach( async () => {
