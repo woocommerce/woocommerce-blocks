@@ -106,10 +106,14 @@ const withReviews = ( OriginalComponent ) => {
 				offset: reviewsToSkip,
 			};
 
-			if ( categoryIds && categoryIds.length ) {
-				args.category_id = Array.isArray( categoryIds )
-					? categoryIds.join( ',' )
-					: categoryIds;
+			const categories = Array.isArray( categoryIds )
+				? categoryIds
+				: JSON.parse( categoryIds );
+
+			if ( categories && categories.length ) {
+				args.category_id = Array.isArray( categories )
+					? categories.join( ',' )
+					: categories;
 			}
 
 			if ( productId ) {
