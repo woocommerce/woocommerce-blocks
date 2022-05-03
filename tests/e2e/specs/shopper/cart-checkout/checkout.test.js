@@ -53,14 +53,9 @@ describe( 'Shopper → Checkout', () => {
 			}
 		);
 	} );
-	describe( 'Shopper can change the payment method', () => {
-		beforeAll( async () => {
+	describe( 'Payment Methods', () => {
+		it( 'User can change payment methods', async () => {
 			await shopper.block.emptyCart();
-		} );
-		afterAll( async () => {
-			await shopper.block.emptyCart();
-		} );
-		it( 'allows customer to choose available payment methods', async () => {
 			await shopper.goToShop();
 			await shopper.addToCartFromShopPage( SIMPLE_PHYSICAL_PRODUCT_NAME );
 			await shopper.block.goToCheckout();
