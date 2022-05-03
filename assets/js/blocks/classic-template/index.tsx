@@ -12,6 +12,7 @@ import { box, Icon } from '@wordpress/icons';
  * Internal dependencies
  */
 import './editor.scss';
+import './style.scss';
 import { TEMPLATES } from './constants';
 
 interface Props {
