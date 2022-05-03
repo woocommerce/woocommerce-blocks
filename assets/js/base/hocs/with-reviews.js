@@ -106,11 +106,11 @@ const withReviews = ( OriginalComponent ) => {
 				offset: reviewsToSkip,
 			};
 
-			const categories = Array.isArray( categoryIds )
-				? categoryIds
-				: JSON.parse( categoryIds );
+			if ( categoryIds ) {
+				const categories = Array.isArray( categoryIds )
+					? categoryIds
+					: JSON.parse( categoryIds );
 
-			if ( categories && categories.length ) {
 				args.category_id = Array.isArray( categories )
 					? categories.join( ',' )
 					: categories;
