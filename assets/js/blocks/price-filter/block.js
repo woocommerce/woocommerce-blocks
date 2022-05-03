@@ -208,7 +208,7 @@ const PriceFilterBlock = ( { attributes, isEditor = false } ) => {
 				hasSetPhpFilterDefaults &&
 				! attributes.showFilterButton
 			) {
-				onSubmit( prices[ 0 ], prices[ 1 ] );
+				debouncedUpdateQuery( prices[ 0 ], prices[ 1 ] );
 			}
 		},
 		[
@@ -218,7 +218,7 @@ const PriceFilterBlock = ( { attributes, isEditor = false } ) => {
 			setMaxPrice,
 			filteringForPhpTemplate,
 			hasSetPhpFilterDefaults,
-			onSubmit,
+			debouncedUpdateQuery,
 			attributes.showFilterButton,
 		]
 	);
