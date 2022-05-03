@@ -17,6 +17,7 @@ import { TEMPLATES } from './constants';
 interface Props {
 	attributes: {
 		template: string;
+		align: string;
 	};
 }
 
@@ -108,6 +109,10 @@ registerBlockType( 'woocommerce/legacy-template', {
 		template: {
 			type: 'string',
 			default: 'any',
+		},
+		align: {
+			type: 'string',
+			default: 'wide',
 		},
 	},
 	edit: Edit,
