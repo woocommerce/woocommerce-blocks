@@ -212,7 +212,7 @@ class FeaturedProduct extends AbstractDynamicBlock {
 		}
 
 		if ( ! $attributes['isRepeated'] ) {
-			$style .= "background-repeat: 'no-repeat';";
+			$style .= 'background-repeat: no-repeat;';
 			$style .= 'background-size: ' . ( 'cover' === $attributes['imageFit'] ? $attributes['imageFit'] : 'auto' ) . ';';
 		}
 
