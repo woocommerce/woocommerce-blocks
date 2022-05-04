@@ -3,11 +3,10 @@
  */
 import { __ } from '@wordpress/i18n';
 import { decodeEntities } from '@wordpress/html-entities';
-
-/**
- * Internal dependencies
- */
-import type { PaymentResultDataType, CheckoutResponse } from './types';
+import type {
+	PaymentResultDataType,
+	CheckoutResponse,
+} from '@woocommerce/types';
 
 /**
  * Prepares the payment_result data from the server checkout endpoint response.

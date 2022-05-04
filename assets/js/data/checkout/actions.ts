@@ -1,8 +1,13 @@
 /**
+ * External dependencies
+ */
+import { CheckoutResponse, PaymentResultDataType } from '@woocommerce/types';
+
+/**
  * Internal dependencies
  */
 import { ACTION_TYPES as types } from './action-types';
-import { PaymentResultDataType } from './types';
+import { ActionType } from './types';
 import { getPaymentResultFromCheckoutResponse } from '../../base/context/providers/cart-checkout/checkout-state/utils';
 
 export const setPristine = () => ( {
@@ -40,8 +45,12 @@ export const setAfterProcessing = () => ( {
 	type: types.SET_AFTER_PROCESSING,
 } );
 
-export const processCheckoutResponse = ( response ) => {
-	return async ( { dispatch } ) => {
+export const processCheckoutResponse = ( response: CheckoutResponse ) => {
+	return async ( {
+		dispatch,
+	}: {
+		dispatch: React.Dispatch< ActionType >;
+	} ) => {
 		const paymentResult = getPaymentResultFromCheckoutResponse( response );
 		dispatch( setRedirectUrl( paymentResult?.redirectUrl || '' ) );
 		dispatch( setProcessingResponse( paymentResult ) );

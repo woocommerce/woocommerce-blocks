@@ -1,4 +1,9 @@
 /**
+ * External dependencies
+ */
+import { PaymentResultDataType } from '@woocommerce/types';
+
+/**
  * Internal dependencies
  */
 import { STATUS } from './constants';
@@ -24,19 +29,20 @@ export enum ACTION {
 	SET_EXTENSION_DATA = 'SET_EXTENSION_DATA',
 }
 
-export interface ActionType extends Partial< CheckoutState > {
+export interface ActionType {
 	type: ACTION;
 	data?:
 		| Record< string, unknown >
 		| Record< string, never >
 		| PaymentResultDataType;
-}
-
-export interface PaymentResultDataType {
-	message: string;
-	paymentStatus: string;
-	paymentDetails: Record< string, string > | Record< string, never >;
-	redirectUrl: string;
+	redirectUrl?: string;
+	isCart?: boolean;
+	hasError?: boolean;
+	customerId?: number;
+	orderId?: number;
+	shouldCreateAccount?: boolean;
+	orderNotes?: string;
+	extensionData?: Record< string, Record< string, unknown > >;
 }
 
 export type CheckoutState = {
