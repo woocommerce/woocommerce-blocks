@@ -1,14 +1,13 @@
 /**
  * External dependencies
  */
-import { CheckoutResponse, PaymentResultDataType } from '@woocommerce/types';
+import { CheckoutResponse, PaymentResult } from '@woocommerce/types';
 
 /**
  * Internal dependencies
  */
-import { ACTION_TYPES as types } from './action-types';
-import { ActionType } from './types';
 import { getPaymentResultFromCheckoutResponse } from '../../base/context/providers/cart-checkout/checkout-state/utils';
+import { ACTION_TYPES as types } from './action-types';
 
 export const setPristine = () => ( {
 	type: types.SET_PRISTINE,
@@ -27,7 +26,7 @@ export const setRedirectUrl = ( redirectUrl: string ) => ( {
 	redirectUrl,
 } );
 
-export const setProcessingResponse = ( data: PaymentResultDataType ) => ( {
+export const setProcessingResponse = ( data: PaymentResult ) => ( {
 	type: types.SET_PROCESSING_RESPONSE,
 	data,
 } );
@@ -46,11 +45,7 @@ export const setAfterProcessing = () => ( {
 } );
 
 export const processCheckoutResponse = ( response: CheckoutResponse ) => {
-	return async ( {
-		dispatch,
-	}: {
-		dispatch: React.Dispatch< ActionType >;
-	} ) => {
+	return async ( { dispatch }: { dispatch: React.Dispatch< Action > } ) => {
 		const paymentResult = getPaymentResultFromCheckoutResponse( response );
 		dispatch( setRedirectUrl( paymentResult?.redirectUrl || '' ) );
 		dispatch( setProcessingResponse( paymentResult ) );
@@ -107,3 +102,24 @@ export const setExtensionData = (
 	type: types.SET_EXTENSION_DATA,
 	extensionData,
 } );
+
+type Action = ReturnType<
+	| typeof setPristine
+	| typeof setIdle
+	| typeof setComplete
+	| typeof setProcessing
+	| typeof setProcessingResponse
+	| typeof setBeforeProcessing
+	| typeof setAfterProcessing
+	| typeof setRedirectUrl
+	| typeof setIsCart
+	| typeof setHasError
+	| typeof incrementCalculating
+	| typeof decrementCalculating
+	| typeof setCustomerId
+	| typeof setOrderId
+	| typeof setUseShippingAsBilling
+	| typeof setShouldCreateAccount
+	| typeof setOrderNotes
+	| typeof setExtensionData
+>;

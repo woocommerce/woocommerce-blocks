@@ -3,13 +3,13 @@
  */
 import type { Reducer } from 'redux';
 
+import { PaymentResult } from '@woocommerce/types';
 /**
  * Internal dependencies
  */
 import { ACTION_TYPES as types } from './action-types';
 import { STATUS } from './constants';
 import { defaultState } from './default-state';
-import { PaymentResultDataType } from './types';
 
 const reducer: Reducer = ( state = defaultState, action ) => {
 	let newState = state;
@@ -42,7 +42,7 @@ const reducer: Reducer = ( state = defaultState, action ) => {
 		case types.SET_PROCESSING_RESPONSE:
 			newState = {
 				...state,
-				processingResponse: action.data as PaymentResultDataType,
+				processingResponse: action.data as PaymentResult,
 			};
 			break;
 

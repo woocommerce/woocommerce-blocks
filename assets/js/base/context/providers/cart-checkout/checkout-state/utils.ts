@@ -3,23 +3,20 @@
  */
 import { __ } from '@wordpress/i18n';
 import { decodeEntities } from '@wordpress/html-entities';
-import type {
-	PaymentResultDataType,
-	CheckoutResponse,
-} from '@woocommerce/types';
+import type { PaymentResult, CheckoutResponse } from '@woocommerce/types';
 
 /**
  * Prepares the payment_result data from the server checkout endpoint response.
  */
 export const getPaymentResultFromCheckoutResponse = (
 	response: CheckoutResponse
-): PaymentResultDataType => {
+): PaymentResult => {
 	const paymentResult = {
 		message: '',
 		paymentStatus: '',
 		redirectUrl: '',
 		paymentDetails: {},
-	} as PaymentResultDataType;
+	} as PaymentResult;
 
 	// payment_result is present in successful responses.
 	if ( 'payment_result' in response ) {

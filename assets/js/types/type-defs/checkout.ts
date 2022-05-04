@@ -1,7 +1,7 @@
 /**
  * External dependencies
  */
-import { PaymentResult, Address } from '@woocommerce/types';
+import { Address } from '@woocommerce/types';
 
 export interface CheckoutResponseSuccess {
 	billing_address: Address;
@@ -11,7 +11,11 @@ export interface CheckoutResponseSuccess {
 	order_id: number;
 	order_key: string;
 	payment_method: string;
-	payment_result: PaymentResult;
+	payment_result: {
+		payment_details: Record< string, string > | Record< string, never >;
+		payment_status: 'success' | 'failure' | 'pending' | 'error';
+		redirect_url: string;
+	};
 	shipping_address: Address;
 	status: string;
 }

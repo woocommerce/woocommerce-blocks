@@ -1,4 +1,8 @@
 /**
+ * External dependencies
+ */
+import { PaymentResult } from '@woocommerce/types';
+/**
  * Internal dependencies
  */
 import { STATUS } from './constants';
@@ -26,13 +30,6 @@ export interface CheckoutResponseSuccess {
 
 export type CheckoutResponse = CheckoutResponseSuccess | CheckoutResponseError;
 
-export interface PaymentResultDataType {
-	message: string;
-	paymentStatus: string;
-	paymentDetails: Record< string, string > | Record< string, never >;
-	redirectUrl: string;
-}
-
 type extensionDataNamespace = string;
 type extensionDataItem = Record< string, unknown >;
 export type extensionData = Record< extensionDataNamespace, extensionDataItem >;
@@ -47,7 +44,7 @@ export interface CheckoutStateContextState {
 	customerId: number;
 	useShippingAsBilling: boolean;
 	shouldCreateAccount: boolean;
-	processingResponse: PaymentResultDataType | null;
+	processingResponse: PaymentResult | null;
 	extensionData: extensionData;
 }
 

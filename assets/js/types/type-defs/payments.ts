@@ -120,12 +120,6 @@ export interface ExpressPaymentMethodConfigInstance {
 }
 
 export interface PaymentResult {
-	payment_details: Record< string, string > | Record< string, never >;
-	payment_status: 'success' | 'failure' | 'pending' | 'error';
-	redirect_url: string;
-}
-
-export interface PaymentResultDataType {
 	message: string;
 	paymentStatus: string;
 	paymentDetails: Record< string, string > | Record< string, never >;
