@@ -521,9 +521,6 @@ const FeaturedProduct = ( {
 			borderRadius: style?.border?.radius,
 		};
 
-		const backgroundImageSrc =
-			mediaSrc || getImageSrcFromProduct( product );
-
 		const backgroundImageStyle = {
 			objectPosition: calculateImagePosition( focalPoint ),
 			objectFit: imageFit,
