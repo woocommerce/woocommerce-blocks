@@ -60,10 +60,7 @@
 
 		> .block-editor-inner-blocks {
 			box-sizing: border-box;
-			display: flex;
-			flex-direction: column;
-			height: 100vh;
-			justify-content: center;
+			max-height: 100vh;
 			overflow-y: auto;
 			padding: $gap-largest $gap $gap;
 		}
