@@ -1,11 +1,13 @@
+/* eslint-disable @typescript-eslint/ban-ts-comment */
 /**
  * External dependencies
  */
-import { store as blockEditorStore } from '@wordpress/block-editor';
+import { store as blockEditorStore, Warning } from '@wordpress/block-editor';
 import { useDispatch } from '@wordpress/data';
 import { __ } from '@wordpress/i18n';
 import { Icon, search } from '@wordpress/icons';
 import {
+	// @ts-ignore waiting for @types/wordpress__blocks update
 	registerBlockVariation,
 	registerBlockType,
 	createBlock,
@@ -20,8 +22,12 @@ const PRODUCT_SEARCH_ATTRIBUTES = {
 	},
 };
 
-const DeprecatedEdit = ( { clientId } ) => {
-	// @ts-ignore
+/**
+ * editor.scss and style.scss are required
+ * to gracefully handle old block deprecation
+ */
+const DeprecatedBlockEdit = ( { clientId }: { clientId: string } ) => {
+	// @ts-ignore @wordpress/block-editor/store types not provided
 	const { replaceBlocks } = useDispatch( blockEditorStore );
 	const updateBlock = () => {
 		replaceBlocks(
@@ -40,7 +46,7 @@ const DeprecatedEdit = ( { clientId } ) => {
 	// return null;
 
 	return (
-		<div>
+		<Warning>
 			Old Product Search block is deprecated.
 			<br />
 			<small>
@@ -49,7 +55,7 @@ const DeprecatedEdit = ( { clientId } ) => {
 				</button>
 				.
 			</small>
-		</div>
+		</Warning>
 	);
 };
 
@@ -61,7 +67,7 @@ registerBlockType( 'woocommerce/product-search', {
 	supports: {
 		inserter: false,
 	},
-	edit: DeprecatedEdit,
+	edit: DeprecatedBlockEdit,
 	transforms: {
 		to: [
 			{
@@ -89,6 +95,7 @@ registerBlockVariation( 'core/search', {
 			/>
 		),
 	},
+	// @ts-ignore waiting for @types/wordpress__blocks update
 	isActive: ( blockAttributes, variationAttributes ) => {
 		return (
 			blockAttributes.query?.post_type ===
