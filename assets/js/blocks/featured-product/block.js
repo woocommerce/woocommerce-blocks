@@ -330,9 +330,6 @@ const FeaturedProduct = ( {
 										onChange={ () => {
 											setAttributes( {
 												hasParallax: ! hasParallax,
-												...( ! hasParallax
-													? { focalPoint: undefined }
-													: {} ),
 											} );
 										} }
 									/>
