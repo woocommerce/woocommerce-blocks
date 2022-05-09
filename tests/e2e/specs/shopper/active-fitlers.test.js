@@ -21,7 +21,6 @@ describe( 'Shopper → Active Filters Block', () => {
 			await deleteAllTemplates( 'wp_template' );
 			await goToTemplateEditor( {
 				postId: 'woocommerce/woocommerce//archive-product',
-				editorContext: 'gutenberg',
 			} );
 			await insertBlock( 'Active Product Filters' );
 			await insertBlock( 'Filter Products by Price' );
