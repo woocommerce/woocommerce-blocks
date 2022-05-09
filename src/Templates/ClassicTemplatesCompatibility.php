@@ -60,9 +60,7 @@ class ClassicTemplatesCompatibility {
 		global $pagenow;
 
 		if ( is_shop() || is_product_taxonomy() || 'widgets.php' === $pagenow ) {
-			if ( ! $this->asset_data_registry->exists( 'has_filterable_products' ) ) {
-				$this->asset_data_registry->add( 'has_filterable_products', true, null );
-			}
+			$this->asset_data_registry->add( 'has_filterable_products', true, true );
 		}
 	}
 
@@ -77,9 +75,7 @@ class ClassicTemplatesCompatibility {
 	 */
 	public function set_php_template_data() {
 		if ( is_shop() || is_product_taxonomy() ) {
-			if ( ! $this->asset_data_registry->exists( 'is_rendering_php_template' ) ) {
-				$this->asset_data_registry->add( 'is_rendering_php_template', true, null );
-			}
+			$this->asset_data_registry->add( 'is_rendering_php_template', true, true );
 		}
 	}
 }
