@@ -35,7 +35,7 @@ import { useStoreEvents } from '../../../hooks/use-store-events';
 import { useCheckoutNotices } from '../../../hooks/use-checkout-notices';
 import { useEmitResponse } from '../../../hooks/use-emit-response';
 import { removeNoticesByStatus } from '../../../../../utils/notices';
-import { CheckoutState } from '../../../../../data/checkout/types';
+import { CheckoutState } from '../../../../../data/checkout/default-state';
 
 const CheckoutContext = createContext( DEFAULT_CHECKOUT_STATE_DATA );
 
