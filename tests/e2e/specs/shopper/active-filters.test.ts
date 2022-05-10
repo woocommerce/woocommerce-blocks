@@ -1,7 +1,11 @@
 /**
  * External dependencies
  */
-import { insertBlock, deleteAllTemplates } from '@wordpress/e2e-test-utils';
+import {
+	insertBlock,
+	deleteAllTemplates,
+	canvas,
+} from '@wordpress/e2e-test-utils';
 import { SHOP_PAGE } from '@woocommerce/e2e-utils';
 
 /**
@@ -36,15 +40,14 @@ describe( 'Shopper → Active Filters Block', () => {
 			await insertBlock( 'Filter Products by Stock' );
 			await insertBlock( 'Filter Products by Attribute' );
 
-			const editor = page
-				.frames()
-				.find( ( frame ) => frame.name() === 'editor-canvas' );
-			const [ attribute ] = await editor.$x(
+			const canvasEl = canvas();
+
+			const [ attribute ] = await canvasEl.$x(
 				"//span[@class='woocommerce-search-list__item-label']/span[contains(., 'Capacity')]"
 			);
 			if ( attribute ) {
 				await attribute.click();
-				await editor.click(
+				await canvasEl.click(
 					'.wc-block-attribute-filter__selection button'
 				);
 			}
@@ -56,7 +59,7 @@ describe( 'Shopper → Active Filters Block', () => {
 			await deleteAllTemplates( 'wp_template' );
 		} );
 
-		it( 'Active Filters is hiddden if there is no filter selected', async () => {
+		it( 'Active Filters is hidden if there is no filter selected', async () => {
 			await shopper.goToShop();
 
 			expect( page ).not.toMatch( 'Active Filters' );
