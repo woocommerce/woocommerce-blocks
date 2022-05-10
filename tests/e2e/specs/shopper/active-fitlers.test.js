@@ -2,12 +2,25 @@
  * External dependencies
  */
 import { insertBlock, deleteAllTemplates } from '@wordpress/e2e-test-utils';
+import { SHOP_PAGE } from '@woocommerce/e2e-utils';
 
 /**
  * Internal dependencies
  */
 import { goToTemplateEditor, useTheme, saveTemplate } from '../../utils';
 import { shopper } from '../../../utils';
+
+/**
+ * Click a link and wait for the page to load.
+ *
+ * @param {string} selector The CSS selector of the link to click.
+ */
+const clickLink = async ( selector ) => {
+	await Promise.all( [
+		page.click( selector ),
+		page.waitForNavigation( { waitUntil: 'networkidle0' } ),
+	] );
+};
 
 describe( 'Shopper → Active Filters Block', () => {
 	useTheme( 'twentytwentytwo' );
@@ -37,6 +50,10 @@ describe( 'Shopper → Active Filters Block', () => {
 			}
 
 			await saveTemplate();
+		} );
+
+		afterAll( async () => {
+			await deleteAllTemplates( 'wp_template' );
 		} );
 
 		it( 'Active Filters is hiddden if there is no filter selected', async () => {
@@ -112,23 +129,48 @@ describe( 'Shopper → Active Filters Block', () => {
 				text: '128gb',
 			} );
 
+			await page.waitForNavigation( { waitUntil: 'networkidle0' } );
+
 			await page.waitForSelector(
 				'.wp-block-woocommerce-active-filters'
 			);
-
-			await page.waitForNavigation( { waitUntil: 'networkidle0' } );
 
 			expect( page ).toMatchElement( '.wc-block-active-filters__list', {
 				text: 'In stock',
 			} );
 
-			await Promise.all( [
-				page.click( '.wc-block-active-filters__list-item-remove' ),
-				page.waitForNavigation( { waitUntil: 'networkidle0' } ),
-			] );
+			await clickLink( '.wc-block-active-filters__list-item-remove' );
 
 			await expect( page.url() ).not.toMatch( 'instock' );
 			await expect( page.url() ).toMatch( '128gb' );
+		} );
+
+		it( 'Clicking "Clear All" button removes all active filter and the page redirects to the base URL', async () => {
+			await shopper.goToShop();
+
+			await page.waitForSelector( '.wp-block-woocommerce-stock-filter' );
+
+			await expect( page ).toClick( 'label', {
+				text: 'In stock',
+			} );
+
+			await page.waitForNavigation( { waitUntil: 'networkidle0' } );
+
+			await page.waitForSelector(
+				'.wp-block-woocommerce-active-filters'
+			);
+
+			expect( page ).toMatchElement(
+				'.wc-block-active-filters__clear-all',
+				{
+					text: 'Clear All',
+				}
+			);
+
+			await clickLink( '.wc-block-active-filters__clear-all' );
+
+			await expect( page.url() ).not.toMatch( 'instock' );
+			await expect( page.url() ).toMatch( SHOP_PAGE );
 		} );
 	} );
 } );
