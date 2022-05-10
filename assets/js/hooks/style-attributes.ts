@@ -65,7 +65,7 @@ export const useTypographyProps = ( attributes: unknown ): WithStyle => {
 			lineHeight: typography.lineHeight,
 			fontWeight: typography.fontWeight,
 			textTransform: typography.textTransform,
-			fontFamily: attributesObject.fontFamily,
+			fontFamily: attributesObject.attributes.fontFamily,
 		},
 	};
 };

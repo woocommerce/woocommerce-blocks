@@ -33,6 +33,10 @@ const settings: BlockConfiguration = {
 		html: false,
 		multiple: false,
 		color: true,
+		typography: {
+			fontSize: true,
+			__experimentalFontFamily: true,
+		},
 	},
 	example: {
 		attributes: {
