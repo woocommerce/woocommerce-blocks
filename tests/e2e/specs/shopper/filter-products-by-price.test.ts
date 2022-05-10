@@ -1,5 +1,4 @@
 import {
-	canvas,
 	createNewPost,
 	deleteAllTemplates,
 	insertBlock,
@@ -13,7 +12,6 @@ import {
 	openBlockEditorSettings,
 	saveTemplate,
 	useTheme,
-	waitForCanvas,
 } from '../../utils';
 
 const block = {
@@ -52,15 +50,14 @@ const setMaxPrice = async () => {
 	await page.click( selectors.frontend.priceMaxAmount, {
 		clickCount: 3,
 	} );
-	await page.type( selectors.frontend.priceMaxAmount, '1.99' );
+	await page.keyboard.type( '1.99' );
 	await page.$eval( selectors.frontend.priceMaxAmount, ( el ) =>
 		( el as HTMLElement ).blur()
 	);
 };
 
 describe( `${ block.name } Block`, () => {
-	describe( 'with All Product Block', () => {
-		let link = '';
+	describe( 'with All Products Block', () => {
 		beforeAll( async () => {
 			await switchUserToAdmin();
 			await createNewPost( {
@@ -72,13 +69,13 @@ describe( `${ block.name } Block`, () => {
 			await insertBlock( 'All Products' );
 			await publishPost();
 
-			link = await page.evaluate( () =>
+			const link = await page.evaluate( () =>
 				wp.data.select( 'core/editor' ).getPermalink()
 			);
+			await page.goto( link );
 		} );
 
 		it( 'should render', async () => {
-			await page.goto( link );
 			await waitForAllProductsBlockLoaded();
 			const products = await page.$$( selectors.frontend.productsList );
 
@@ -89,6 +86,7 @@ describe( `${ block.name } Block`, () => {
 			const isRefreshed = jest.fn( () => void 0 );
 			page.on( 'load', isRefreshed );
 			await setMaxPrice();
+			await page.waitForTimeout( 1000 );
 			await waitForAllProductsBlockLoaded();
 			const products = await page.$$( selectors.frontend.productsList );
 
@@ -135,11 +133,12 @@ describe( `${ block.name } Block`, () => {
 				hidden: true,
 			} );
 
-			await setMaxPrice();
-
-			await page.waitForNavigation( {
-				waitUntil: 'networkidle0',
-			} );
+			await Promise.all( [
+				setMaxPrice(),
+				page.waitForNavigation( {
+					waitUntil: 'networkidle0',
+				} ),
+			] );
 
 			const products = await page.$$(
 				selectors.frontend.classicProductsList
@@ -180,10 +179,12 @@ describe( `${ block.name } Block`, () => {
 
 			await setMaxPrice();
 
-			await page.click( selectors.frontend.submitButton );
-			await page.waitForNavigation( {
-				waitUntil: 'networkidle0',
-			} );
+			await Promise.all( [
+				page.click( selectors.frontend.submitButton ),
+				page.waitForNavigation( {
+					waitUntil: 'networkidle0',
+				} ),
+			] );
 
 			const products = await page.$$(
 				selectors.frontend.classicProductsList
