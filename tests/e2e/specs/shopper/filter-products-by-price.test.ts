@@ -127,7 +127,7 @@ describe( `${ block.name } Block`, () => {
 			expect( products ).toHaveLength( 5 );
 		} );
 
-		fit( 'should show only products that match the filter', async () => {
+		it( 'should show only products that match the filter', async () => {
 			const isRefreshed = jest.fn( () => void 0 );
 			page.on( 'load', isRefreshed );
 
