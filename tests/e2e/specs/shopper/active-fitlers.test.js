@@ -6,12 +6,8 @@ import { insertBlock, deleteAllTemplates } from '@wordpress/e2e-test-utils';
 /**
  * Internal dependencies
  */
-import {
-	goToTemplateEditor,
-	useTheme,
-	saveTemplate,
-	BASE_URL,
-} from '../../utils';
+import { goToTemplateEditor, useTheme, saveTemplate } from '../../utils';
+import { shopper } from '../../../utils';
 
 describe( 'Shopper → Active Filters Block', () => {
 	useTheme( 'twentytwentytwo' );
@@ -43,10 +39,96 @@ describe( 'Shopper → Active Filters Block', () => {
 			await saveTemplate();
 		} );
 
+		it( 'Active Filters is hiddden if there is no filter selected', async () => {
+			await shopper.goToShop();
+
+			expect( page ).not.toMatch( 'Active Filters' );
+		} );
+
 		it( 'Shows selected filters', async () => {
-			await page.goto( BASE_URL + '/shop', {
-				waitUntil: 'networkidle0',
+			await shopper.goToShop();
+
+			await page.waitForSelector( '.wc-block-attribute-filter' );
+
+			await expect( page ).toClick( 'label', {
+				text: '128gb',
 			} );
+
+			await page.waitForNavigation( { waitUntil: 'networkidle0' } );
+
+			await page.waitForSelector(
+				'.wp-block-woocommerce-active-filters'
+			);
+
+			expect( page ).toMatchElement(
+				'.wc-block-active-filters__list-item-type',
+				{
+					text: 'Capacity',
+				}
+			);
+
+			expect( page ).toMatchElement( '.wc-block-active-filters__list', {
+				text: '128gb',
+			} );
+
+			await page.waitForSelector( '.wp-block-woocommerce-stock-filter' );
+
+			await expect( page ).toClick( 'label', {
+				text: 'In stock',
+			} );
+
+			await page.waitForNavigation( { waitUntil: 'networkidle0' } );
+
+			await page.waitForSelector(
+				'.wp-block-woocommerce-active-filters'
+			);
+
+			expect( page ).toMatchElement(
+				'.wc-block-active-filters__list-item-type',
+				{
+					text: 'Stock Status',
+				}
+			);
+
+			expect( page ).toMatchElement( '.wc-block-active-filters__list', {
+				text: 'In stock',
+			} );
+		} );
+
+		it( 'When clicking the X on a filter it removes a filter and triggers a page refresh', async () => {
+			await shopper.goToShop();
+
+			await page.waitForSelector( '.wp-block-woocommerce-stock-filter' );
+
+			await expect( page ).toClick( 'label', {
+				text: 'In stock',
+			} );
+
+			await page.waitForNavigation( { waitUntil: 'networkidle0' } );
+
+			await page.waitForSelector( '.wc-block-attribute-filter' );
+
+			await expect( page ).toClick( 'label', {
+				text: '128gb',
+			} );
+
+			await page.waitForSelector(
+				'.wp-block-woocommerce-active-filters'
+			);
+
+			await page.waitForNavigation( { waitUntil: 'networkidle0' } );
+
+			expect( page ).toMatchElement( '.wc-block-active-filters__list', {
+				text: 'In stock',
+			} );
+
+			await Promise.all( [
+				page.click( '.wc-block-active-filters__list-item-remove' ),
+				page.waitForNavigation( { waitUntil: 'networkidle0' } ),
+			] );
+
+			await expect( page.url() ).not.toMatch( 'instock' );
+			await expect( page.url() ).toMatch( '128gb' );
 		} );
 	} );
 } );
