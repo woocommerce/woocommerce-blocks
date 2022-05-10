@@ -46,7 +46,7 @@ See also https://developer.wordpress.org/plugins/internationalization/how-to-int
 
 ### `__()`
 
-The function `__()` retrieves the translation of `$text`.
+The function `__()` retrieves the translation of `$text`. This function is available both for PHP & JS/TS.
 
 ```php
 // Schema
@@ -60,7 +60,7 @@ See also https://developer.wordpress.org/reference/functions/__/.
 
 ### `_e()`
 
-The function `_e()` displays the translation of `$text`.
+The function `_e()` displays the translation of `$text`. This function is only available for PHP.
 
 ```php
 // Schema
@@ -74,7 +74,7 @@ See also https://developer.wordpress.org/reference/functions/_e/.
 
 ### `_ex()`
 
-The function `_ex()` displaya the translated string with gettext context.
+The function `_ex()` displaya the translated string with gettext context. This function is only available for PHP.
 
 ```php
 // Schema
@@ -88,7 +88,7 @@ See also https://developer.wordpress.org/reference/functions/_ex/.
 
 ### `_n()`
 
-The function `_n()` translates and retrieves the singular or plural form based on the supplied number.
+The function `_n()` translates and retrieves the singular or plural form based on the supplied number. This function is available both for PHP & JS/TS.
 
 ```php
 // Schema
@@ -111,7 +111,7 @@ See also https://developer.wordpress.org/reference/functions/_n/.
 
 ### `_x()`
 
-The function `_x()` retrieves a translated string with gettext context.
+The function `_x()` retrieves a translated string with gettext context. This function is available both for PHP & JS/TS.
 
 ```php
 // Schema
@@ -125,7 +125,7 @@ See also https://developer.wordpress.org/reference/functions/_x/.
 
 ### `_nx()`
 
-The function `_nx()` translates and retrieves the singular or plural form based on the supplied number, with gettext context.
+The function `_nx()` translates and retrieves the singular or plural form based on the supplied number, with gettext context. This function is available both for PHP & JS/TS.
 
 ```php
 // Schema
@@ -149,7 +149,7 @@ See also https://developer.wordpress.org/reference/functions/_nx/.
 
 ### `esc_html__()`
 
-The function `esc_html__()` retrieves the translation of `$text` and escapes it for safe use in HTML output.
+The function `esc_html__()` retrieves the translation of `$text` and escapes it for safe use in HTML output. This function is only available for PHP.
 
 ```php
 // Schema
@@ -163,7 +163,7 @@ See also https://developer.wordpress.org/reference/functions/esc_html__/.
 
 ### `esc_html_e()`
 
-The function `esc_html_e()` displays the translated text that has been escaped for safe use in HTML output.
+The function `esc_html_e()` displays the translated text that has been escaped for safe use in HTML output. This function is only available for PHP.
 
 ```php
 // Schema
@@ -177,7 +177,7 @@ See also https://developer.wordpress.org/reference/functions/esc_html_e/.
 
 ### `esc_html_x()`
 
-The function `esc_html_x()` translates a string with gettext context, and escapes it for safe use in HTML output.
+The function `esc_html_x()` translates a string with gettext context, and escapes it for safe use in HTML output. This function is only available for PHP.
 
 ```php
 // Schema
@@ -191,7 +191,7 @@ See also https://developer.wordpress.org/reference/functions/esc_html_x/.
 
 ### `esc_attr__()`
 
-The function `esc_attr__()` retrieve the translation of `$text` and escapes it for safe use in an attribute.
+The function `esc_attr__()` retrieve the translation of `$text` and escapes it for safe use in an attribute. This function is only available for PHP.
 
 ```php
 // Schema
@@ -205,7 +205,7 @@ See also https://developer.wordpress.org/reference/functions/esc_attr__/.
 
 ### `esc_attr_e()`
 
-The function `esc_attr_e()` displays the translated text that has been escaped for safe use in an attribute.
+The function `esc_attr_e()` displays the translated text that has been escaped for safe use in an attribute. This function is only available for PHP.
 
 ```php
 // Schema
@@ -219,7 +219,7 @@ See also https://developer.wordpress.org/reference/functions/esc_attr_e/.
 
 ### `esc_attr_x()`
 
-The function `esc_attr_x()` translates the string with gettext context, and escapes it for safe use in an attribute.
+The function `esc_attr_x()` translates the string with gettext context, and escapes it for safe use in an attribute. This function is only available for PHP.
 
 ```php
 // Schema
