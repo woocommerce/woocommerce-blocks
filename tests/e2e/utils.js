@@ -431,3 +431,19 @@ export const createCoupon = async ( coupon ) => {
 
 	return createdCoupon;
 };
+
+/**
+ * Open the block editor settings menu.
+ */
+export const openBlockEditorSettings = async () => {
+	const buttonSelector =
+		'.edit-site-header__actions button[aria-label="Settings"]';
+
+	const isButtonPressed = await page.$eval( buttonSelector, ( el ) =>
+		el.getAttribute( 'aria-pressed' )
+	);
+
+	if ( isButtonPressed === 'false' ) {
+		await page.click( buttonSelector );
+	}
+};
