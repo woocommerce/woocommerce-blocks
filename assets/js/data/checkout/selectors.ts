@@ -4,10 +4,6 @@
 import { STATUS } from './constants';
 import { CheckoutState } from './default-state';
 
-export const getRedirectUrl = ( state: CheckoutState ) => {
-	return state.redirectUrl;
-};
-
 export const getCustomerId = ( state: CheckoutState ) => {
 	return state.customerId;
 };

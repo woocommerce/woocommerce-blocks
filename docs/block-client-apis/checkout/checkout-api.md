@@ -2,9 +2,13 @@
 
 This document gives an overview of some of the major architectural components/APIs for the checkout block. If you haven't already, you may also want to read about the [Checkout Flow and Events](../../extensibility/checkout-flow-and-events.md).
 
+**Note on migration:** We are in the process of moving much of the data from contexts into data stores, so this portion of the docs may change often as we do this. We will endavour to keep it up to date while the work is carried out
+
 ## Table of Contents <!-- omit in toc -->
 
 -   [Checkout Block API overview](#checkout-block-api-overview)
+    -   [Data Stores](#data-stores)
+        -   [Checkout Data Store](#checkout-data-store)
     -   [Contexts](#contexts)
         -   [Notices Context](#notices-context)
         -   [Billing Data Context](#billing-data-context)
@@ -13,6 +17,68 @@ This document gives an overview of some of the major architectural components/AP
         -   [Checkout Context](#checkout-context)
     -   [Hooks](#hooks)
         -   [`usePaymentMethodInterface`](#usepaymentmethodinterface)
+
+### Data Stores
+
+We are transitioning much of what is now available in Contexts, to @wordpress/data stores.
+
+#### Checkout Data Store
+
+This is responsible for holding all the data required for the checkout process.
+
+The following data is available:
+
+-   `status`: The status of the current checkout. Possible values are `pristine`, `idle`, `processing`, `complete`, `before_processing` or `after_processing`
+-   `hasError`: This is true when anything in the checkout has created an error condition state. This might be validation errors, request errors, coupon application errors, payment processing errors etc.
+-   `redirectUrl`: The current set url that the checkout will redirect to when it is complete.
+-   `orderId`: The order id for the order attached to the current checkout.
+-   `customerId`: The ID of the customer if the customer has an account, or `0` for guests.
+-   `calculatingCount`: If any of the totals, taxes, shipping, etc need to be calculated, the count will be increased here
+-   `processingResponse`:The result of the payment processing
+-   `useShippingAsBilling`: Should the billing form be hidden and inherit the shipping address?
+-   `shouldCreateAccount`: Should a user account be created with this order?
+-   `extensionData`: Custom checkout data passed to the store API on processing.
+-   `orderNotes`: Order notes introduced by the user in the checkout form.
+
+##### Selectors
+
+Data can be accessed through the following selectors:
+
+-   `getCheckoutState()`: Returns all the data above
+-   `isComplete()`: True when checkout has finished processing and the subscribed checkout processing callbacks have all been invoked along with a successful processing of the checkout by the server.
+-   `isIdle()`: When the checkout status is `IDLE` this flag is true. Checkout will be this status after any change to checkout state after the block is loaded. It will also be this status when retrying a purchase is possible after processing happens with an error.
+-   `isBeforeProcessing()`: When the checkout status is `BEFORE_PROCESSING` this flag is true. Checkout will be this status when the user submits checkout for processing.
+-   `isProcessing()`: When the checkout status is `PROCESSING` this flag is true. Checkout will be this status when all the observers on the event emitted with the `BEFORE_PROCESSING` status are completed without error. It is during this status that the block will be sending a request to the server on the checkout endpoint for processing the order.
+-   `isAfterProcessing()`: When the checkout status is `AFTER_PROCESSING` this flag is true. Checkout will have this status after the the block receives the response from the server side processing request.
+-   `isComplete()`: When the checkout status is `COMPLETE` this flag is true. Checkout will have this status after all observers on the events emitted during the `AFTER_PROCESSING` status are completed successfully. When checkout is at this status, the shopper's browser will be redirected to the value of `redirectUrl` at that point (usually the `order-received` route).
+-   `isCalculating()`: This is true when the total is being re-calculated for the order. There are numerous things that might trigger a recalculation of the total: coupons being added or removed, shipping rates updated, shipping rate selected etc. This flag consolidates all activity that might be occurring (including requests to the server that potentially affect calculation of totals). So instead of having to check each of those individual states you can reliably just check if this boolean is true (calculating) or false (not calculating).
+-   `hasOrder()`: This is true when orderId is truthy.
+-   `hasError()`: This is true when the checkout has an error
+-   `getOrderNotes()`: Returns the order notes
+-   `getCustomerId()`: Returns the customer ID
+
+##### Actions
+
+The following actions can be dispatched from the Checkout data store:
+
+-   `setPristine()`: Set `state.status` to `pristine`
+-   `setIdle()`: Set `state.status` to `idle`
+-   `setComplete()`: Set `state.status` to `complete`
+-   `setProcessing()`: Set `state.status` to `processing`
+-   `setProcessingResponse( response: PaymentResult )`: Set `state.processingResponse` to `response`
+-   `setBeforeProcessing()`: Set `state.status` to `before_processing`
+-   `setAfterProcessing()`: Set `state.status` to `after_processing`
+-   `processCheckoutResponse( response: CheckoutResponse )`: This is a thunk that will extract the paymentResult from the CheckoutResponse, and dispatch 3 actions: `setRedirectUrl`, `setProcessingResponse` and `setAfterProcessing`.
+-   `setRedirectUrl( url: string )`: Set `state.redirectUrl` to `url`
+-   `setHasError( trueOrFalse: bool )`: Set `state.hasError` to `trueOrFalse`
+-   `incrementCalculating()`: Increment `state.calculatingCount`
+-   `decrementCalculating()`: Decrement `state.calculatingCount`
+-   `setCustomerId( id: number )`: Set `state.customerId` to `id`
+-   `setOrderId( id: number )`: Set `state.orderId` to `id`
+-   `setUseShippingAsBilling( useShippingAsBilling: boolean )`: Set `state.useShippingAsBilling` to `useShippingAsBilling`
+-   `setShouldCreateAccount( shouldCreateAccount: boolean )`: Set `state.shouldCreateAccount` to `shouldCreateAccount`
+-   `setOrderNotes( orderNotes: string )`: Set `state.orderNotes` to `orderNotes`
+-   `setExtensionData( extensionData: Record< string, Record< string, unknown > > )`: Set `state.extensionData` to `extensionData`
 
 ### Contexts
 
@@ -47,13 +113,13 @@ The customer data context exposes the api interfaces for the following things vi
 
 The shipping method data context exposes the api interfaces for the following things (typedef `ShippingMethodDataContext`) via the `useShippingMethodData` hook:
 
-- `shippingErrorStatus`: The current error status for the context.
-- `dispatchErrorStatus`: A function for dispatching a shipping error status. Used in combination with...
-- `shippingErrorTypes`: An object with the various error statuses that can be dispatched (`NONE`, `INVALID_ADDRESS`, `UNKNOWN`)
-- `onShippingRateSuccess`: This is a function for registering a callback to be invoked when shipping rates are retrieved successfully. Callbacks will receive the new rates as an argument.
-- `onShippingRateFail`: This is a function for registering a callback to be invoked when shipping rates fail to be retrieved. Callbacks will receive the error status as an argument.
-- `onShippingRateSelectSuccess`: This is a function for registering a callback to be invoked when shipping rate selection is successful.
-- `onShippingRateSelectFail`: This is a function for registering a callback to be invoked when shipping rates selection is unsuccessful.
+-   `shippingErrorStatus`: The current error status for the context.
+-   `dispatchErrorStatus`: A function for dispatching a shipping error status. Used in combination with...
+-   `shippingErrorTypes`: An object with the various error statuses that can be dispatched (`NONE`, `INVALID_ADDRESS`, `UNKNOWN`)
+-   `onShippingRateSuccess`: This is a function for registering a callback to be invoked when shipping rates are retrieved successfully. Callbacks will receive the new rates as an argument.
+-   `onShippingRateFail`: This is a function for registering a callback to be invoked when shipping rates fail to be retrieved. Callbacks will receive the error status as an argument.
+-   `onShippingRateSelectSuccess`: This is a function for registering a callback to be invoked when shipping rate selection is successful.
+-   `onShippingRateSelectFail`: This is a function for registering a callback to be invoked when shipping rates selection is unsuccessful.
 
 #### Payment Method Data Context
 
@@ -115,11 +181,10 @@ _Why don't payment methods just implement this hook_?
 
 The contract is established through props fed to the payment method components via props. This allows us to avoid having to expose the hook publicly and experiment with how the props are retrieved and exposed in the future.
 
-<!-- FEEDBACK -->
----
+## <!-- FEEDBACK -->
 
 [We're hiring!](https://woocommerce.com/careers/) Come work with us!
 
 🐞 Found a mistake, or have a suggestion? [Leave feedback about this document here.](https://github.com/woocommerce/woocommerce-gutenberg-products-block/issues/new?assignees=&labels=type%3A+documentation&template=--doc-feedback.md&title=Feedback%20on%20./docs/block-client-apis/checkout/checkout-api.md)
-<!-- /FEEDBACK -->
 
+<!-- /FEEDBACK -->
