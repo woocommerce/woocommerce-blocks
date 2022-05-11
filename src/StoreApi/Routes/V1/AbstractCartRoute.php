@@ -124,6 +124,16 @@ abstract class AbstractCartRoute extends AbstractRoute {
 	}
 
 	/**
+	 * Checks if a nonce is required for the route.
+	 *
+	 * @param \WP_REST_Request $request Request.
+	 * @return bool
+	 */
+	protected function requires_nonce( \WP_REST_Request $request ) {
+		return $this->is_update_request( $request );
+	}
+
+	/**
 	 * Triggered after an update to cart data. Re-calculates totals and updates draft orders (if they already exist) to
 	 * keep all data in sync.
 	 *
@@ -165,16 +175,6 @@ abstract class AbstractCartRoute extends AbstractRoute {
 		wc()->cart->calculate_fees();
 		wc()->cart->calculate_shipping();
 		wc()->cart->calculate_totals();
-	}
-
-	/**
-	 * Checks if a nonce is required for the route.
-	 *
-	 * @param \WP_REST_Request $request Request.
-	 * @return bool
-	 */
-	protected function requires_nonce( \WP_REST_Request $request ) {
-		return $this->is_update_request( $request );
 	}
 
 	/**
