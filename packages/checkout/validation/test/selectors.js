@@ -9,7 +9,7 @@ import {
 //Test suite for validation selectors
 describe( 'Validation selectors', () => {
 	//Checks if it get existing validation error
-	it( 'Can get the validation error ', () => {
+	it( 'Can get the validation error', () => {
 		const state = {
 			validationError: {
 				message: 'This is a test message',

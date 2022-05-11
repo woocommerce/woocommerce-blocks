@@ -65,7 +65,7 @@ describe( 'Validation reducer', () => {
 		expect( nextState ).not.toHaveProperty( 'integerError' );
 	} );
 	//Checks if it updates the existing error in the state
-	it( 'Updates existing error if message or hidden changes ', () => {
+	it( 'Updates existing error if message or hidden changes', () => {
 		const state = {
 			existingValidationError: {
 				message: 'This is an existing error message',
@@ -90,7 +90,7 @@ describe( 'Validation reducer', () => {
 		} );
 	} );
 	//Checks if it appends a new error to the state
-	it( 'Appends new errors to list of existing errors ', () => {
+	it( 'Appends new errors to list of existing errors', () => {
 		const state = {
 			existingError: {
 				message: 'This is an existing error message',
