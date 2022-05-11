@@ -4,12 +4,12 @@
 import type { Reducer } from 'redux';
 import { pickBy } from 'lodash';
 import isShallowEqual from '@wordpress/is-shallow-equal';
+import { isString } from '@woocommerce/types';
 /**
  * Internal dependencies
  */
 import { ValidationAction } from './actions';
 import { ACTION_TYPES as types } from './action-types';
-import { isString } from '@woocommerce/types';
 
 export interface FieldValidationStatus {
 	message: string;
