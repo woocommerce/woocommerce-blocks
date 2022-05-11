@@ -79,7 +79,7 @@ abstract class AbstractCartRoute extends AbstractRoute {
 		$this->calculate_totals();
 
 		if ( $this->requires_nonce( $request ) ) {
-			$this->add_nonce_headers();
+			$this->add_nonce_headers( $request );
 			$nonce_check = $this->check_nonce( $request );
 
 			if ( is_wp_error( $nonce_check ) ) {
