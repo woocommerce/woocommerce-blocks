@@ -53,8 +53,8 @@ import {
 	getCategoryImageId,
 	getCategoryImageSrc,
 } from './utils';
-import { withCategory } from '../../hocs';
-import { calculateBackgroundImagePosition } from '../featured-product/utils';
+import { withCategory } from '../../../hocs';
+import { calculateBackgroundImagePosition } from '../utils';
 import { ConstrainedResizable } from '../featured-product/block';
 
 const DEFAULT_EDITOR_SIZE = {

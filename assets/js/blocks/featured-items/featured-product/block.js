@@ -50,12 +50,12 @@ import { crop, Icon, starEmpty } from '@wordpress/icons';
 /**
  * Internal dependencies
  */
-import { calculateBackgroundImagePosition, dimRatioToClass } from './utils';
+import { calculateBackgroundImagePosition, dimRatioToClass } from '../utils';
 import {
 	getImageSrcFromProduct,
 	getImageIdFromProduct,
-} from '../../utils/products';
-import { useThrottle } from '../../utils/useThrottle';
+} from '../../../utils/products';
+import { useThrottle } from '../../../utils/useThrottle';
 
 const DEFAULT_EDITOR_SIZE = {
 	height: 500,

@@ -1,0 +1,155 @@
+@mixin with-content-selection {
+	background-color: inherit;
+
+	&__selection {
+		width: 100%;
+	}
+}
+
+%with-media-controls {
+	// Applying image edits
+	.is-applying {
+		.components-spinner {
+			position: absolute;
+			top: 50%;
+			left: 50%;
+			margin-top: -9px;
+			margin-left: -9px;
+		}
+
+		img {
+			opacity: 0.3;
+		}
+	}
+}
+
+%with-resizable-box {
+	.components-resizable-box__container {
+		position: absolute !important;
+		top: 0;
+		left: 0;
+		right: 0;
+		bottom: 0;
+		min-height: 50px;
+
+		&:not(.is-resizing) {
+			height: auto !important;
+		}
+	}
+
+	.components-resizable-box__handle {
+		z-index: 10;
+	}
+}
+
+%wp-block-featured-item {
+	background-color: $gray-900;
+	border-color: transparent;
+	color: #fff;
+	overflow: hidden;
+	box-sizing: border-box;
+}
+
+@mixin wc-block-featured-item {
+	$block: &;
+
+	align-content: center;
+	align-items: center;
+	background-position: center center;
+	background-size: cover;
+	display: flex;
+	flex-wrap: wrap;
+	justify-content: center;
+	margin: 0;
+	position: relative;
+	width: 100%;
+
+	&.has-background-dim {
+		@include with-background-dim();
+	}
+
+	&.has-left-content {
+		justify-content: flex-start;
+
+		#{$block}__description,
+		#{$block}__price,
+		#{$block}__title,
+		#{$block}__variation {
+			margin-left: 0;
+			text-align: left;
+		}
+	}
+
+	&.has-right-content {
+		justify-content: flex-end;
+
+		#{$block}__description,
+		#{$block}__price,
+		#{$block}__title,
+		#{$block}__variation {
+			margin-right: 0;
+			text-align: right;
+		}
+	}
+
+	&__description,
+	&__price,
+	&__title,
+	&__variation {
+		line-height: 1.25;
+		margin-bottom: 0;
+		text-align: center;
+
+		a,
+		a:hover,
+		a:focus,
+		a:active {
+			color: $white;
+		}
+	}
+
+	&__description,
+	&__link,
+	&__price,
+	&__title,
+	&__variation {
+		color: inherit;
+		width: 100%;
+		padding: 0 48px 16px 48px;
+		z-index: 1;
+	}
+
+	&__description {
+		color: inherit;
+
+		p {
+			margin: 0;
+		}
+	}
+
+	&__title {
+		margin-top: 0;
+
+		div {
+			color: inherit;
+		}
+
+		&::before {
+			display: none;
+		}
+	}
+
+	&__wrapper {
+		align-content: center;
+		align-items: center;
+		display: flex;
+		flex-wrap: wrap;
+		height: 100%;
+		justify-content: center;
+		overflow: hidden;
+	}
+
+	.wp-block-button.aligncenter {
+		text-align: center;
+	}
+}
