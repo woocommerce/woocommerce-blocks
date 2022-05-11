@@ -12,8 +12,6 @@ import { STATUS, checkoutData } from './constants';
 export type CheckoutState = {
 	// Status of the checkout
 	status: STATUS;
-	// When true, means the provider is providing data for the cart.
-	isCart: boolean;
 	// If any of the totals, taxes, shipping, etc need to be calculated, the count will be increased here
 	calculatingCount: number;
 	// The result of the payment processing
@@ -40,7 +38,6 @@ export const defaultState: CheckoutState = {
 	redirectUrl: '',
 	status: STATUS.PRISTINE,
 	hasError: false,
-	isCart: false,
 	orderId: checkoutData.order_id,
 	customerId: checkoutData.customer_id,
 	calculatingCount: 0,

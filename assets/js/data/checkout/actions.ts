@@ -53,11 +53,6 @@ export const processCheckoutResponse = ( response: CheckoutResponse ) => {
 	};
 };
 
-export const setIsCart = ( isCart: boolean ) => ( {
-	type: types.SET_IS_CART,
-	isCart,
-} );
-
 export const setHasError = ( hasError = true ) => ( {
 	type: types.SET_HAS_ERROR,
 	hasError,
@@ -112,7 +107,6 @@ type Action = ReturnType<
 	| typeof setBeforeProcessing
 	| typeof setAfterProcessing
 	| typeof setRedirectUrl
-	| typeof setIsCart
 	| typeof setHasError
 	| typeof incrementCalculating
 	| typeof decrementCalculating
