@@ -2,12 +2,14 @@
  * External dependencies
  */
 import type { Reducer } from 'redux';
-
+import { pickBy } from 'lodash';
+import isShallowEqual from '@wordpress/is-shallow-equal';
 /**
  * Internal dependencies
  */
 import { ValidationAction } from './actions';
 import { ACTION_TYPES as types } from './action-types';
+import { isString } from '@woocommerce/types';
 
 export interface FieldValidationStatus {
 	message: string;
@@ -20,10 +22,59 @@ const reducer: Reducer< Record< string, FieldValidationStatus > > = (
 ) => {
 	switch ( action.type ) {
 		case types.SET_VALIDATION_ERRORS:
-			return {
-				...state,
-				...action.errors,
-			};
+			const newErrors = pickBy( action.errors, ( error, property ) => {
+				if ( typeof error.message !== 'string' ) {
+					return false;
+				}
+				if ( state.hasOwnProperty( property ) ) {
+					return ! isShallowEqual( state[ property ], error );
+				}
+				return true;
+			} );
+			if ( Object.values( newErrors ).length === 0 ) {
+				return state;
+			}
+			state = { ...state, ...action.errors };
+			return state;
+		case types.CLEAR_ALL_VALIDATION_ERRORS:
+			state = {};
+			return state;
+
+		case types.CLEAR_VALIDATION_ERROR:
+			if (
+				! isString( action.error ) ||
+				! state.hasOwnProperty( action.error )
+			) {
+				return state;
+			}
+			delete state[ action.error ];
+			return state;
+		case types.HIDE_VALIDATION_ERROR:
+			if (
+				! isString( action.error ) ||
+				! state.hasOwnProperty( action.error )
+			) {
+				return state;
+			}
+			state[ action.error ].hidden = true;
+			return state;
+		case types.SHOW_VALIDATION_ERROR:
+			if (
+				! isString( action.error ) ||
+				! state.hasOwnProperty( action.error )
+			) {
+				return state;
+			}
+			state[ action.error ].hidden = false;
+			return state;
+		case types.SHOW_ALL_VALIDATION_ERRORS:
+			Object.keys( state ).forEach( ( property ) => {
+				if ( state[ property ].hidden ) {
+					state[ property ].hidden = false;
+				}
+			} );
+			return state;
+
 		default:
 			return state;
 	}
