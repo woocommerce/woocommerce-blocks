@@ -29,12 +29,27 @@
         },
         "contentVisibility": {
             "type": "object",
-            "default": {
-                "image": true,
-                "title": true,
-                "price": true,
-                "rating": true,
-                "button": true
+            "properties": {
+                "image": {
+                    "type": "boolean",
+                    "image": true
+                },
+                "title": {
+                    "type": "boolean",
+                    "title": true
+                },
+                "price": {
+                    "type": "boolean",
+                    "price": true
+                },
+                "rating": {
+                    "type": "boolean",
+                    "rating": true
+                },
+                "button": {
+                    "type": "boolean",
+                    "button": true
+                }
             }
         },
         "orderby": {
