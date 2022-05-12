@@ -43,15 +43,17 @@
 }
 
 %wp-block-featured-item {
-	background-color: $gray-900;
+	background-color: transparent;
 	border-color: transparent;
 	color: #fff;
-	overflow: hidden;
 	box-sizing: border-box;
 }
 
 @mixin wc-block-featured-item {
 	$block: &;
+
+	@include with-background-dim();
+	@include with-content-selection();
 
 	align-content: center;
 	align-items: center;
@@ -61,12 +63,9 @@
 	flex-wrap: wrap;
 	justify-content: center;
 	margin: 0;
+	overflow: hidden;
 	position: relative;
 	width: 100%;
-
-	&.has-background-dim {
-		@include with-background-dim();
-	}
 
 	&.has-left-content {
 		justify-content: flex-start;
@@ -119,6 +118,11 @@
 		z-index: 1;
 	}
 
+	& &__background-image {
+		@include absolute-stretch();
+		object-fit: none;
+	}
+
 	&__description {
 		color: inherit;
 
@@ -142,6 +146,7 @@
 	&__wrapper {
 		align-content: center;
 		align-items: center;
+		box-sizing: border-box;
 		display: flex;
 		flex-wrap: wrap;
 		height: 100%;

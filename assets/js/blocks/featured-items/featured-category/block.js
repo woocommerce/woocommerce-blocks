@@ -498,7 +498,7 @@ const FeaturedCategory = ( {
 						style={ wrapperStyle }
 					>
 						<div
-							className="wc-block-featured-category__overlay"
+							className="background-dim__overlay"
 							style={ overlayStyle }
 						/>
 						{ backgroundImageSrc && (

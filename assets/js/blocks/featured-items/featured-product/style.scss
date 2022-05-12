@@ -7,11 +7,6 @@
 
 .wc-block-featured-product {
 	@include wc-block-featured-item();
-	overflow: hidden;
-
-	.wc-block-featured-product__wrapper {
-		box-sizing: border-box;
-	}
 
 	.wc-block-featured-product__title,
 	.wc-block-featured-product__variation {
@@ -33,10 +28,5 @@
 			margin: 0;
 			line-height: 1.5;
 		}
-	}
-
-	.wc-block-featured-product__background-image {
-		@include absolute-stretch();
-		object-fit: none;
 	}
 }

@@ -1,7 +1,6 @@
 @import "../style.scss";
 
-.wc-block-featured-category {
+.wp-block-woocommerce-featured-category {
 	@extend %with-media-controls;
 	@extend %with-resizable-box;
-	@include with-content-selection();
 }

@@ -508,7 +508,7 @@ const FeaturedProduct = ( {
 						style={ wrapperStyle }
 					>
 						<div
-							className="wc-block-featured-product__overlay"
+							className="background-dim__overlay"
 							style={ overlayStyle }
 						/>
 						<img
