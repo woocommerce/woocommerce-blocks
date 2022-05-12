@@ -33,14 +33,10 @@ jobs:
 
             - name: Build Assets
               run: FORCE_REDUCED_MOTION=true npm run build:e2e-test
-
-            - name: Store node_modules & build folders
               uses: actions/upload-artifact@v3
               with:
-                  name: node-modules-and-build-assets
-                  path: |
-                      build/
-                      node_modules/
+                  name: build-assets
+                  path: build/
 
             - name: Get Composer Cache Directory
               id: composer-cache
@@ -69,10 +65,25 @@ jobs:
 
         steps:
             - uses: actions/checkout@v3
-            - name: Download Node Modules & Build Assets
+
+            - name: Cache node_modules
+              id: cache-node-modules
+              uses: actions/cache@v3
+              env:
+                  cache-name: cache-node-modules
+              with:
+                  path: node_modules
+                  key: ${{ runner.os }}-build-${{ env.cache-name }}-${{ hashFiles('**/package-lock.json') }}
+
+            - name: Setup node version and npm cache
+              uses: actions/setup-node@v3
+              with:
+                  node-version-file: '.nvmrc'
+                  cache: 'npm'
+            - name: Download Build Assets
               uses: actions/download-artifact@v3
               with:
-                  name: node-modules-and-build-assets
+                  name: build-assets
 
             - name: blocks.ini setup
               run: echo 'woocommerce_blocks_phase = 3' > blocks.ini
@@ -99,10 +110,25 @@ jobs:
 
         steps:
             - uses: actions/checkout@v3
-            - name: Download Node Modules & Build Assets
+
+            - name: Cache node_modules
+              id: cache-node-modules
+              uses: actions/cache@v3
+              env:
+                  cache-name: cache-node-modules
+              with:
+                  path: node_modules
+                  key: ${{ runner.os }}-build-${{ env.cache-name }}-${{ hashFiles('**/package-lock.json') }}
+
+            - name: Setup node version and npm cache
+              uses: actions/setup-node@v3
+              with:
+                  node-version-file: '.nvmrc'
+                  cache: 'npm'
+            - name: Download Build Assets
               uses: actions/download-artifact@v3
               with:
-                  name: node-modules-and-build-assets
+                  name: build-assets
 
             - name: blocks.ini setup
               run: echo -e 'woocommerce_blocks_phase = 3\nwoocommerce_blocks_env = tests' > blocks.ini
