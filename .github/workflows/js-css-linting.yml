@@ -22,10 +22,6 @@ jobs:
               with:
                   path: node_modules
                   key: ${{ runner.os }}-build-${{ env.cache-name }}-${{ hashFiles('**/package-lock.json') }}
-                  restore-keys: |
-                      ${{ runner.os }}-build-${{ env.cache-name }}-
-                      ${{ runner.os }}-build-
-                      ${{ runner.os }}-
 
             - name: Setup node version and npm cache
               uses: actions/setup-node@v3
@@ -44,13 +40,26 @@ jobs:
 
         steps:
             - uses: actions/checkout@v3
+
+            - name: Cache node_modules
+              id: cache-node-modules
+              uses: actions/cache@v3
+              env:
+                  cache-name: cache-node-modules
+              with:
+                  path: node_modules
+                  key: ${{ runner.os }}-build-${{ env.cache-name }}-${{ hashFiles('**/package-lock.json') }}
+
             - name: Setup node version and npm cache
               uses: actions/setup-node@v3
               with:
                   node-version-file: '.nvmrc'
                   cache: 'npm'
+
             - name: Install Node dependencies
+              if: steps.cache-node-modules.outputs.cache-hit != 'true'
               run: npm ci --no-optional
+
             - name: Save code linting report JSON
               run: npm run lint:js:report
               # Continue to the next step even if this fails
@@ -73,12 +82,24 @@ jobs:
 
         steps:
             - uses: actions/checkout@v3
+            - name: Cache node_modules
+              id: cache-node-modules
+              uses: actions/cache@v3
+              env:
+                  cache-name: cache-node-modules
+              with:
+                  path: node_modules
+                  key: ${{ runner.os }}-build-${{ env.cache-name }}-${{ hashFiles('**/package-lock.json') }}
+
             - name: Setup node version and npm cache
               uses: actions/setup-node@v3
               with:
                   node-version-file: '.nvmrc'
                   cache: 'npm'
+
             - name: Install Node dependencies
+              if: steps.cache-node-modules.outputs.cache-hit != 'true'
               run: npm ci --no-optional
+
             - name: Lint CSS
               run: npm run lint:css
