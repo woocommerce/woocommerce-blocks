@@ -53,14 +53,10 @@ import {
 	getCategoryImageId,
 	getCategoryImageSrc,
 } from './utils';
+import { DEFAULT_EDITOR_SIZE } from '../constants';
+import { ConstrainedResizable } from '../constrained-resizable';
 import { withCategory } from '../../../hocs';
 import { calculateBackgroundImagePosition } from '../utils';
-import { ConstrainedResizable } from '../constrained-resizable';
-
-const DEFAULT_EDITOR_SIZE = {
-	height: 500,
-	width: 500,
-};
 
 /**
  * Component to handle edit mode of "Featured Category".

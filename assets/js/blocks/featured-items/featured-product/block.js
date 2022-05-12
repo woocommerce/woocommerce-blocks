@@ -49,17 +49,13 @@ import { crop, Icon, starEmpty } from '@wordpress/icons';
 /**
  * Internal dependencies
  */
+import { DEFAULT_EDITOR_SIZE } from '../constants';
 import { ConstrainedResizable } from '../constrained-resizable';
 import { calculateBackgroundImagePosition, dimRatioToClass } from '../utils';
 import {
 	getImageSrcFromProduct,
 	getImageIdFromProduct,
 } from '../../../utils/products';
-
-const DEFAULT_EDITOR_SIZE = {
-	height: 500,
-	width: 500,
-};
 
 /**
  * Component to handle edit mode of "Featured Product".
