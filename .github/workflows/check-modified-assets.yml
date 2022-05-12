@@ -34,7 +34,8 @@ jobs:
             - name: Cache node_modules
               id: cache-node-modules
               uses: actions/cache@v3
-              cache-name: cache-node-modules
+              env:
+                  cache-name: cache-node-modules
               with:
                   path: node_modules
                   key: ${{ runner.os }}-build-${{ env.cache-name }}-${{ hashFiles('**/package-lock.json') }}
