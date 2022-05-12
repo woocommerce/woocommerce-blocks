@@ -1,6 +1,5 @@
 {
     "name": "woocommerce/handpicked-products",
-    "version": "1.0.0",
     "title": "Hand-picked Products",
     "category": "woocommerce",
     "keywords": [
@@ -70,5 +69,6 @@
         }
     },
     "textdomain": "woo-gutenberg-products-block",
-    "apiVersion": 2
+    "apiVersion": 2,
+    "$schema": "https://schemas.wp.org/trunk/block.json"
 }
