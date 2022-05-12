@@ -1,1 +1,1 @@
-export const STORE_KEY = Symbol( 'wc/store/validation' );
+export const STORE_KEY = 'wc/store/validation';
