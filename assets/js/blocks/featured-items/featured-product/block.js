@@ -24,7 +24,6 @@ import { Component } from '@wordpress/element';
 import { compose, createHigherOrderComponent } from '@wordpress/compose';
 import { isEmpty } from 'lodash';
 import PropTypes from 'prop-types';
-import ErrorPlaceholder from '@woocommerce/editor-components/error-placeholder';
 import TextToolbarButton from '@woocommerce/editor-components/text-toolbar-button';
 import { withProduct } from '@woocommerce/block-hocs';
 import { crop, Icon, starEmpty } from '@wordpress/icons';
@@ -40,6 +39,7 @@ import { useSetup } from '../use-setup';
 import { calculateBackgroundImagePosition, dimRatioToClass } from '../utils';
 import { CallToAction } from '../call-to-action';
 import { withEditMode } from '../with-edit-mode';
+import { withApiError } from '../with-api-error';
 
 const EDIT_MODE_CONFIG = {
 	description: __(
@@ -59,8 +59,6 @@ const EDIT_MODE_CONFIG = {
  *
  * @param {Object}            props                  Incoming props for the component.
  * @param {Object}            props.attributes       Incoming block attributes.
- * @param {string}            props.error            Error message.
- * @param {function(any):any} props.getProduct       Function for getting the product.
  * @param {boolean}           props.isLoading        Whether product is loading or not.
  * @param {boolean}           props.isSelected       Whether block is selected or not.
  * @param {Object}            props.product          Product object.
@@ -68,8 +66,6 @@ const EDIT_MODE_CONFIG = {
  */
 const FeaturedProduct = ( {
 	attributes,
-	error,
-	getProduct,
 	isLoading,
 	isSelected,
 	product,
@@ -94,15 +90,6 @@ const FeaturedProduct = ( {
 		setAttributes,
 		item: product,
 	} );
-
-	const renderApiError = () => (
-		<ErrorPlaceholder
-			className="wc-block-featured-product-error"
-			error={ error }
-			isLoading={ isLoading }
-			onRetry={ getProduct }
-		/>
-	);
 
 	const getBlockControls = () => {
 		const { contentAlign, editMode } = attributes;
@@ -347,10 +334,6 @@ const FeaturedProduct = ( {
 		</Placeholder>
 	);
 
-	if ( error ) {
-		return renderApiError();
-	}
-
 	if ( isEditingImage ) {
 		return (
 			<ImageEditor
@@ -465,4 +448,5 @@ export default compose( [
 		return WrappedComponent;
 	}, 'withUpdateButtonAttributes' ),
 	withEditMode( EDIT_MODE_CONFIG ),
+	withApiError,
 ] )( FeaturedProduct );

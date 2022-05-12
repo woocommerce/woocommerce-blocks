@@ -24,7 +24,6 @@ import { compose, createHigherOrderComponent } from '@wordpress/compose';
 import PropTypes from 'prop-types';
 import { folderStarred } from '@woocommerce/icons';
 import { crop, Icon } from '@wordpress/icons';
-import ErrorPlaceholder from '@woocommerce/editor-components/error-placeholder';
 import TextToolbarButton from '@woocommerce/editor-components/text-toolbar-button';
 
 /**
@@ -40,6 +39,7 @@ import { calculateBackgroundImagePosition } from '../utils';
 import { CallToAction } from '../call-to-action';
 import { useSetup } from '../use-setup';
 import { withEditMode } from '../with-edit-mode';
+import { withApiError } from '../with-api-error';
 
 const EDIT_MODE_CONFIG = {
 	description: __(
@@ -61,8 +61,6 @@ const EDIT_MODE_CONFIG = {
  * @param {Object}            props.attributes       Incoming block attributes.
  * @param {boolean}           props.isSelected       Whether block is selected or not.
  * @param {function(any):any} props.setAttributes    Function for setting new attributes.
- * @param {string}            props.error            Error message
- * @param {function(any):any} props.getCategory      Function for getting category details.
  * @param {boolean}           props.isLoading        Whether loading or not.
  * @param {Object}            props.category         The product category object.
  */
@@ -70,8 +68,6 @@ const FeaturedCategory = ( {
 	attributes,
 	isSelected,
 	setAttributes,
-	error,
-	getCategory,
 	isLoading,
 	category,
 } ) => {
@@ -94,15 +90,6 @@ const FeaturedCategory = ( {
 		setAttributes,
 		item: category,
 	} );
-
-	const renderApiError = () => (
-		<ErrorPlaceholder
-			className="wc-block-featured-category-error"
-			error={ error }
-			isLoading={ isLoading }
-			onRetry={ getCategory }
-		/>
-	);
 
 	const getBlockControls = () => {
 		const { contentAlign, editMode } = attributes;
@@ -321,10 +308,6 @@ const FeaturedCategory = ( {
 		</Placeholder>
 	);
 
-	if ( error ) {
-		return renderApiError();
-	}
-
 	if ( isEditingImage ) {
 		return (
 			<ImageEditor
@@ -437,4 +420,5 @@ export default compose( [
 		return WrappedComponent;
 	}, 'withUpdateButtonAttributes' ),
 	withEditMode( EDIT_MODE_CONFIG ),
+	withApiError,
 ] )( FeaturedCategory );
