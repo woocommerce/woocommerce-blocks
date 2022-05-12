@@ -31,7 +31,7 @@ const block = {
 		},
 	},
 	urlSearchParamWhenFilterIsApplied: '?filter_stock_status=outofstock',
-	foundProduct: 'Woo Single #3 - Limited Edition',
+	foundProduct: 'Woo Single #3',
 };
 
 const waitForAllProductsBlockLoaded = () =>
@@ -145,7 +145,7 @@ describe( `${ block.name } Block`, () => {
 			);
 		} );
 
-		it( 'should refresh the page only if the user click on button', async () => {
+		fit( 'should refresh the page only if the user click on button', async () => {
 			await goToTemplateEditor( {
 				postId: productCatalogTemplateId,
 			} );
