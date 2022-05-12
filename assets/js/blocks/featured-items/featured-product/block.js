@@ -13,8 +13,6 @@ import {
 	MediaReplaceFlow,
 	RichText,
 	__experimentalGetSpacingClassesAndStyles as getSpacingClassesAndStyles,
-	__experimentalImageEditingProvider as ImageEditingProvider,
-	__experimentalImageEditor as ImageEditor,
 	__experimentalPanelColorGradientSettings as PanelColorGradientSettings,
 	__experimentalUseGradient as useGradient,
 } from '@wordpress/block-editor';
@@ -49,8 +47,8 @@ import { crop, Icon, starEmpty } from '@wordpress/icons';
 /**
  * Internal dependencies
  */
-import { DEFAULT_EDITOR_SIZE } from '../constants';
 import { ConstrainedResizable } from '../constrained-resizable';
+import { ImageEditor } from '../image-editor';
 import { calculateBackgroundImagePosition, dimRatioToClass } from '../utils';
 import {
 	getImageSrcFromProduct,
@@ -601,35 +599,14 @@ const FeaturedProduct = ( {
 
 	if ( isEditingImage ) {
 		return (
-			<>
-				<ImageEditingProvider
-					id={ backgroundImageId }
-					url={ backgroundImageSrc }
-					naturalHeight={
-						backgroundImageSize.height || DEFAULT_EDITOR_SIZE.height
-					}
-					naturalWidth={
-						backgroundImageSize.width || DEFAULT_EDITOR_SIZE.width
-					}
-					onSaveImage={ ( { id, url } ) => {
-						setAttributes( { mediaId: id, mediaSrc: url } );
-					} }
-					isEditing={ isEditingImage }
-					onFinishEditing={ () => setIsEditingImage( false ) }
-				>
-					<ImageEditor
-						url={ backgroundImageSrc }
-						height={
-							backgroundImageSize.height ||
-							DEFAULT_EDITOR_SIZE.height
-						}
-						width={
-							backgroundImageSize.width ||
-							DEFAULT_EDITOR_SIZE.width
-						}
-					/>
-				</ImageEditingProvider>
-			</>
+			<ImageEditor
+				backgroundImageId={ backgroundImageId }
+				backgroundImageSize={ backgroundImageSize }
+				backgroundImageSrc={ backgroundImageSrc }
+				isEditingImage={ isEditingImage }
+				setAttributes={ setAttributes }
+				setIsEditingImage={ setIsEditingImage }
+			/>
 		);
 	}
 
