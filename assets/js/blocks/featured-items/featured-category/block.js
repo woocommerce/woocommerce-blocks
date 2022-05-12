@@ -11,7 +11,6 @@ import {
 	__experimentalGetSpacingClassesAndStyles as getSpacingClassesAndStyles,
 } from '@wordpress/block-editor';
 import {
-	Button,
 	Placeholder,
 	Spinner,
 	ToolbarButton,
@@ -25,7 +24,6 @@ import { compose, createHigherOrderComponent } from '@wordpress/compose';
 import PropTypes from 'prop-types';
 import { folderStarred } from '@woocommerce/icons';
 import { crop, Icon } from '@wordpress/icons';
-import ProductCategoryControl from '@woocommerce/editor-components/product-category-control';
 import ErrorPlaceholder from '@woocommerce/editor-components/error-placeholder';
 import TextToolbarButton from '@woocommerce/editor-components/text-toolbar-button';
 
@@ -41,6 +39,20 @@ import { withCategory } from '../../../hocs';
 import { calculateBackgroundImagePosition } from '../utils';
 import { CallToAction } from '../call-to-action';
 import { useSetup } from '../use-setup';
+import { withEditMode } from '../with-edit-mode';
+
+const EDIT_MODE_CONFIG = {
+	description: __(
+		'Visually highlight a product category and encourage prompt action.',
+		'woo-gutenberg-products-block'
+	),
+	editLabel: __(
+		'Showing Featured Product block preview.',
+		'woo-gutenberg-products-block'
+	),
+	icon: folderStarred,
+	label: __( 'Featured Category', 'woo-gutenberg-products-block' ),
+};
 
 /**
  * Component to handle edit mode of "Featured Category".
@@ -53,8 +65,6 @@ import { useSetup } from '../use-setup';
  * @param {function(any):any} props.getCategory      Function for getting category details.
  * @param {boolean}           props.isLoading        Whether loading or not.
  * @param {Object}            props.category         The product category object.
- * @param {function(any):any} props.debouncedSpeak   Function for delayed speak.
- * @param {function():void}   props.triggerUrlUpdate Function to update Shop now button Url.
  */
 const FeaturedCategory = ( {
 	attributes,
@@ -64,8 +74,6 @@ const FeaturedCategory = ( {
 	getCategory,
 	isLoading,
 	category,
-	debouncedSpeak,
-	triggerUrlUpdate = () => void null,
 } ) => {
 	const { mediaId, mediaSrc } = attributes;
 
@@ -182,52 +190,6 @@ const FeaturedCategory = ( {
 				setGradient={ setGradient }
 				showDesc={ showDesc }
 			/>
-		);
-	};
-
-	const renderEditMode = () => {
-		const onDone = () => {
-			setAttributes( { editMode: false } );
-			debouncedSpeak(
-				__(
-					'Showing Featured Product block preview.',
-					'woo-gutenberg-products-block'
-				)
-			);
-		};
-
-		return (
-			<Placeholder
-				icon={ <Icon icon={ folderStarred } /> }
-				label={ __(
-					'Featured Category',
-					'woo-gutenberg-products-block'
-				) }
-				className="wc-block-featured-category"
-			>
-				{ __(
-					'Visually highlight a product category and encourage prompt action.',
-					'woo-gutenberg-products-block'
-				) }
-				<div className="wc-block-featured-category__selection">
-					<ProductCategoryControl
-						selected={ [ attributes.categoryId ] }
-						onChange={ ( value = [] ) => {
-							const id = value[ 0 ] ? value[ 0 ].id : 0;
-							setAttributes( {
-								categoryId: id,
-								mediaId: 0,
-								mediaSrc: '',
-							} );
-							triggerUrlUpdate();
-						} }
-						isSingle
-					/>
-					<Button isPrimary onClick={ onDone }>
-						{ __( 'Done', 'woo-gutenberg-products-block' ) }
-					</Button>
-				</div>
-			</Placeholder>
 		);
 	};
 
@@ -359,14 +321,8 @@ const FeaturedCategory = ( {
 		</Placeholder>
 	);
 
-	const { editMode } = attributes;
-
 	if ( error ) {
 		return renderApiError();
-	}
-
-	if ( editMode ) {
-		return renderEditMode();
 	}
 
 	if ( isEditingImage ) {
@@ -480,4 +436,5 @@ export default compose( [
 		}
 		return WrappedComponent;
 	}, 'withUpdateButtonAttributes' ),
+	withEditMode( EDIT_MODE_CONFIG ),
 ] )( FeaturedCategory );

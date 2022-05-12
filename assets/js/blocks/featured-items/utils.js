@@ -23,6 +23,16 @@ export function getBackgroundImageStyles( url ) {
 }
 
 /**
+ * Generates the CSS class prefix for scoping elements to a block.
+ *
+ * @param {string} blockName The name of the block.
+ * @return {string} The prefix for the HTML elements belonging to that block.
+ */
+export function getClassPrefixFromName( blockName ) {
+	return `wc-block-${ blockName.split( '/' )[ 1 ] }`;
+}
+
+/**
  * Convert the selected ratio to the correct background class.
  *
  * @param {number} ratio Selected opacity from 0 to 100.

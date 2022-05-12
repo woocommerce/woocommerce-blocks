@@ -12,7 +12,6 @@ import {
 } from '@wordpress/block-editor';
 import { withSelect } from '@wordpress/data';
 import {
-	Button,
 	Placeholder,
 	Spinner,
 	ToggleControl,
@@ -25,7 +24,6 @@ import { Component } from '@wordpress/element';
 import { compose, createHigherOrderComponent } from '@wordpress/compose';
 import { isEmpty } from 'lodash';
 import PropTypes from 'prop-types';
-import ProductControl from '@woocommerce/editor-components/product-control';
 import ErrorPlaceholder from '@woocommerce/editor-components/error-placeholder';
 import TextToolbarButton from '@woocommerce/editor-components/text-toolbar-button';
 import { withProduct } from '@woocommerce/block-hocs';
@@ -41,31 +39,41 @@ import { InspectorControls } from '../inspector-controls';
 import { useSetup } from '../use-setup';
 import { calculateBackgroundImagePosition, dimRatioToClass } from '../utils';
 import { CallToAction } from '../call-to-action';
+import { withEditMode } from '../with-edit-mode';
+
+const EDIT_MODE_CONFIG = {
+	description: __(
+		'Visually highlight a product or variation and encourage prompt action',
+		'woo-gutenberg-products-block'
+	),
+	editLabel: __(
+		'Showing Featured Product block preview.',
+		'woo-gutenberg-products-block'
+	),
+	icon: starEmpty,
+	label: __( 'Featured Product', 'woo-gutenberg-products-block' ),
+};
 
 /**
  * Component to handle edit mode of "Featured Product".
  *
  * @param {Object}            props                  Incoming props for the component.
  * @param {Object}            props.attributes       Incoming block attributes.
- * @param {function(any):any} props.debouncedSpeak   Function for delayed speak.
  * @param {string}            props.error            Error message.
  * @param {function(any):any} props.getProduct       Function for getting the product.
  * @param {boolean}           props.isLoading        Whether product is loading or not.
  * @param {boolean}           props.isSelected       Whether block is selected or not.
  * @param {Object}            props.product          Product object.
  * @param {function(any):any} props.setAttributes    Setter for attributes.
- * @param {function():any}    props.triggerUrlUpdate Function for triggering a url update for product.
  */
 const FeaturedProduct = ( {
 	attributes,
-	debouncedSpeak,
 	error,
 	getProduct,
 	isLoading,
 	isSelected,
 	product,
 	setAttributes,
-	triggerUrlUpdate = () => void null,
 } ) => {
 	const { mediaId, mediaSrc } = attributes;
 
@@ -95,55 +103,6 @@ const FeaturedProduct = ( {
 			onRetry={ getProduct }
 		/>
 	);
-
-	const renderEditMode = () => {
-		const onDone = () => {
-			setAttributes( { editMode: false } );
-			debouncedSpeak(
-				__(
-					'Showing Featured Product block preview.',
-					'woo-gutenberg-products-block'
-				)
-			);
-		};
-
-		return (
-			<>
-				{ getBlockControls() }
-				<Placeholder
-					icon={ <Icon icon={ starEmpty } /> }
-					label={ __(
-						'Featured Product',
-						'woo-gutenberg-products-block'
-					) }
-					className="wc-block-featured-product"
-				>
-					{ __(
-						'Visually highlight a product or variation and encourage prompt action',
-						'woo-gutenberg-products-block'
-					) }
-					<div className="wc-block-featured-product__selection">
-						<ProductControl
-							selected={ attributes.productId || 0 }
-							showVariations
-							onChange={ ( value = [] ) => {
-								const id = value[ 0 ] ? value[ 0 ].id : 0;
-								setAttributes( {
-									productId: id,
-									mediaId: 0,
-									mediaSrc: '',
-								} );
-								triggerUrlUpdate();
-							} }
-						/>
-						<Button isPrimary onClick={ onDone }>
-							{ __( 'Done', 'woo-gutenberg-products-block' ) }
-						</Button>
-					</div>
-				</Placeholder>
-			</>
-		);
-	};
 
 	const getBlockControls = () => {
 		const { contentAlign, editMode } = attributes;
@@ -388,14 +347,8 @@ const FeaturedProduct = ( {
 		</Placeholder>
 	);
 
-	const { editMode } = attributes;
-
 	if ( error ) {
 		return renderApiError();
-	}
-
-	if ( editMode ) {
-		return renderEditMode();
 	}
 
 	if ( isEditingImage ) {
@@ -511,4 +464,5 @@ export default compose( [
 		}
 		return WrappedComponent;
 	}, 'withUpdateButtonAttributes' ),
+	withEditMode( EDIT_MODE_CONFIG ),
 ] )( FeaturedProduct );
