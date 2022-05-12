@@ -39,6 +39,7 @@ const block = {
 	},
 	urlSearchParamWhenFilterIsApplied:
 		'?filter_capacity=128gb&query_type_capacity=or',
+	foundProduct: '128GB USB Stick',
 };
 
 const waitForAllProductsBlockLoaded = () =>
@@ -91,6 +92,7 @@ describe( `${ block.name } Block`, () => {
 
 			expect( isRefreshed ).not.toBeCalled();
 			expect( products ).toHaveLength( 1 );
+			await expect( page ).toMatch( block.foundProduct );
 		} );
 	} );
 
@@ -140,6 +142,8 @@ describe( `${ block.name } Block`, () => {
 				hidden: true,
 			} );
 
+			expect( isRefreshed ).not.toBeCalled();
+
 			await Promise.all( [
 				page.waitForNavigation( {
 					waitUntil: 'networkidle0',
@@ -156,12 +160,13 @@ describe( `${ block.name } Block`, () => {
 
 			expect( isRefreshed ).toBeCalledTimes( 1 );
 			expect( products ).toHaveLength( 1 );
+			await expect( page ).toMatch( block.foundProduct );
 			expect( parsedURL.search ).toEqual(
 				block.urlSearchParamWhenFilterIsApplied
 			);
 		} );
 
-		it( 'should refresh the page only if the user click on button', async () => {
+		fit( 'should refresh the page only if the user click on button', async () => {
 			await goToTemplateEditor( {
 				postId: productCatalogTemplateId,
 			} );
@@ -182,6 +187,9 @@ describe( `${ block.name } Block`, () => {
 			} );
 			await page.waitForSelector( selectors.frontend.filter );
 			await page.click( selectors.frontend.filter );
+
+			expect( isRefreshed ).not.toBeCalled();
+
 			await Promise.all( [
 				page.waitForNavigation( {
 					waitUntil: 'networkidle0',
@@ -197,6 +205,7 @@ describe( `${ block.name } Block`, () => {
 
 			expect( isRefreshed ).toBeCalledTimes( 1 );
 			expect( products ).toHaveLength( 1 );
+			await expect( page ).toMatch( block.foundProduct );
 			expect( parsedURL.search ).toEqual(
 				block.urlSearchParamWhenFilterIsApplied
 			);
