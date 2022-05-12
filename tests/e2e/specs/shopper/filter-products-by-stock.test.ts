@@ -31,7 +31,7 @@ const block = {
 		},
 	},
 	urlSearchParamWhenFilterIsApplied: '?filter_stock_status=outofstock',
-	foundProduct: 'Woo Single #3 - Limited Edition',
+	foundProduct: 'Woo Single #3',
 };
 
 const waitForAllProductsBlockLoaded = () =>
