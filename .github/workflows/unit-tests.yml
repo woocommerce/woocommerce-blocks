@@ -62,6 +62,7 @@ jobs:
         runs-on: ubuntu-latest
 
         steps:
+            - uses: actions/checkout@v3
             - name: blocks.ini setup
               run: echo 'woocommerce_blocks_phase = 3' > blocks.ini
 
@@ -86,6 +87,7 @@ jobs:
         runs-on: ubuntu-latest
 
         steps:
+            - uses: actions/checkout@v3
             - name: blocks.ini setup
               run: echo -e 'woocommerce_blocks_phase = 3\nwoocommerce_blocks_env = tests' > blocks.ini
 
