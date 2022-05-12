@@ -26,7 +26,6 @@ import {
 	PanelBody,
 	Placeholder,
 	RangeControl,
-	ResizableBox,
 	Spinner,
 	TextareaControl,
 	ToggleControl,
@@ -50,49 +49,16 @@ import { crop, Icon, starEmpty } from '@wordpress/icons';
 /**
  * Internal dependencies
  */
+import { ConstrainedResizable } from '../constrained-resizable';
 import { calculateBackgroundImagePosition, dimRatioToClass } from '../utils';
 import {
 	getImageSrcFromProduct,
 	getImageIdFromProduct,
 } from '../../../utils/products';
-import { useThrottle } from '../../../utils/useThrottle';
 
 const DEFAULT_EDITOR_SIZE = {
 	height: 500,
 	width: 500,
-};
-
-export const ConstrainedResizable = ( {
-	className = '',
-	onResize,
-	...props
-} ) => {
-	const [ isResizing, setIsResizing ] = useState( false );
-
-	const classNames = classnames( className, {
-		'is-resizing': isResizing,
-	} );
-	const throttledResize = useThrottle(
-		( event, direction, elt ) => {
-			if ( ! isResizing ) setIsResizing( true );
-			onResize( event, direction, elt );
-		},
-		50,
-		{ leading: true }
-	);
-
-	return (
-		<ResizableBox
-			className={ classNames }
-			enable={ { bottom: true } }
-			onResize={ throttledResize }
-			onResizeStop={ ( ...args ) => {
-				onResize( ...args );
-				setIsResizing( false );
-			} }
-			{ ...props }
-		/>
-	);
 };
 
 /**

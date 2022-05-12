@@ -55,7 +55,7 @@ import {
 } from './utils';
 import { withCategory } from '../../../hocs';
 import { calculateBackgroundImagePosition } from '../utils';
-import { ConstrainedResizable } from '../featured-product/block';
+import { ConstrainedResizable } from '../constrained-resizable';
 
 const DEFAULT_EDITOR_SIZE = {
 	height: 500,
