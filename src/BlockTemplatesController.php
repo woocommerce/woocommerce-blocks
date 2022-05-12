@@ -51,7 +51,6 @@ class BlockTemplatesController {
 		add_action( 'template_redirect', array( $this, 'render_block_template' ) );
 		add_filter( 'pre_get_block_file_template', array( $this, 'get_block_file_template' ), 10, 3 );
 		add_filter( 'get_block_templates', array( $this, 'add_block_templates' ), 10, 3 );
-		add_filter( 'search_template_hierarchy', array( $this, 'update_search_template_hierarchy' ), 10, 3 );
 	}
 
 	/**
@@ -360,17 +359,5 @@ class BlockTemplatesController {
 		) {
 			add_filter( 'woocommerce_has_block_template', '__return_true', 10, 0 );
 		}
-	}
-
-	/**
-	 * When the search is for products and a block theme is active, render the Product Search Template.
-	 *
-	 * @param array $templates Templates that match the search hierarchy.
-	 */
-	public function update_search_template_hierarchy( $templates ) {
-		if ( ( is_search() && is_post_type_archive( 'product' ) ) && wp_is_block_theme() ) {
-			array_unshift( $templates, 'product-search-results' );
-		}
-		return $templates;
 	}
 }

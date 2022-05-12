@@ -314,12 +314,7 @@ class BlockTemplateUtils {
 			),
 		);
 
-		/**
-		 * Filters the list of template types.
-		 *
-		 * @param array $plugin_template_types An array of template types, formatted as [ slug => [ title, description ] ].
-		 */
-		return apply_filters( 'woocommerce_gutenberg_products_block_template_types', $plugin_template_types );
+		return $plugin_template_types;
 	}
 
 	/**
