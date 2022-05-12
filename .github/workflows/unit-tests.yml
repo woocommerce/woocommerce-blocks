@@ -62,34 +62,17 @@ jobs:
         runs-on: ubuntu-latest
 
         steps:
-            - uses: actions/checkout@v3
-            - name: Cache node_modules
-              id: cache-node-modules
-              uses: actions/cache@v3
-              env:
-                  cache-name: cache-node-modules
-              with:
-                  path: node_modules
-                  key: ${{ runner.os }}-build-${{ env.cache-name }}-${{ hashFiles('**/package-lock.json') }}
-
-            - name: Setup node version and npm cache
-              uses: actions/setup-node@v3
-              with:
-                  node-version-file: '.nvmrc'
-                  cache: 'npm'
-
-            - name: Install Node dependencies
-              if: steps.cache-node-modules.outputs.cache-hit != 'true'
-              run: npm ci --no-optional
-
             - name: blocks.ini setup
               run: echo 'woocommerce_blocks_phase = 3' > blocks.ini
+
             - name: Setup Environment
               run: |
                   chmod -R 767 ./ #TODO: Might get implemented in wp-env
                   npm run wp-env start
+
             - name: Run PHPUnit tests
               run: npm run test:php
+
             - name: Run PHPUnit tests (WooCommerce Development Version)
               run: |
                   JSON='{"plugins": [".","https://downloads.wordpress.org/plugin/woocommerce.zip"]}'
@@ -103,30 +86,6 @@ jobs:
         runs-on: ubuntu-latest
 
         steps:
-            - uses: actions/checkout@v3
-
-            - name: Cache node_modules
-              id: cache-node-modules
-              uses: actions/cache@v3
-              env:
-                  cache-name: cache-node-modules
-              with:
-                  path: node_modules
-                  key: ${{ runner.os }}-build-${{ env.cache-name }}-${{ hashFiles('**/package-lock.json') }}
-
-            - name: Setup node version and npm cache
-              uses: actions/setup-node@v3
-              with:
-                  node-version-file: '.nvmrc'
-                  cache: 'npm'
-
-            - name: Install Node dependencies
-              if: steps.cache-node-modules.outputs.cache-hit != 'true'
-              run: npm ci --no-optional
-
-            - name: build assets
-              run: FORCE_REDUCED_MOTION=true npm run build:e2e-test
-
             - name: blocks.ini setup
               run: echo -e 'woocommerce_blocks_phase = 3\nwoocommerce_blocks_env = tests' > blocks.ini
 
