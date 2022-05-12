@@ -9,6 +9,7 @@ This folder contains documentation around translation handling of WooCommerce Bl
 | [Translations in JS/TS files](translations-in-JS-TS-files.md)     | This doc explains how to handle translations in JS/TS files.   |
 | [Translations in FSE templates](translations-in-FSE-templates.md) | This doc explains how to handle translations in FSE templates. |
 | [Lazy-load translations](lazy-load-translations.md)               | This doc explains how to lazy-load translations.               |
+| [Translation management](translation-management.md)               | This doc explains how to manage translations.                  |
 
 <!-- FEEDBACK -->
 
