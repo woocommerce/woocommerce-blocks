@@ -3,14 +3,12 @@
 /**
  * External dependencies
  */
-import { useCallback, useEffect, useState } from 'react';
 import { __ } from '@wordpress/i18n';
 import {
 	AlignmentToolbar,
 	BlockControls,
 	MediaReplaceFlow,
 	__experimentalGetSpacingClassesAndStyles as getSpacingClassesAndStyles,
-	__experimentalUseGradient as useGradient,
 } from '@wordpress/block-editor';
 import { withSelect } from '@wordpress/data';
 import {
@@ -36,14 +34,12 @@ import { crop, Icon, starEmpty } from '@wordpress/icons';
 /**
  * Internal dependencies
  */
+import metadata from './block.json';
 import { ConstrainedResizable } from '../constrained-resizable';
 import { ImageEditor } from '../image-editor';
 import { InspectorControls } from '../inspector-controls';
+import { useSetup } from '../use-setup';
 import { calculateBackgroundImagePosition, dimRatioToClass } from '../utils';
-import {
-	getImageSrcFromProduct,
-	getImageIdFromProduct,
-} from '../../../utils/products';
 import { CallToAction } from '../call-to-action';
 
 /**
@@ -73,22 +69,23 @@ const FeaturedProduct = ( {
 } ) => {
 	const { mediaId, mediaSrc } = attributes;
 
-	const [ isEditingImage, setIsEditingImage ] = useState( false );
-	const [ backgroundImageSize, setBackgroundImageSize ] = useState( {} );
-	const { setGradient } = useGradient( {
-		gradientAttribute: 'overlayGradient',
-		customGradientAttribute: 'overlayGradient',
+	const {
+		backgroundImageId,
+		backgroundImageSize,
+		backgroundImageSrc,
+		isEditingImage,
+		onResize,
+		setBackgroundImageSize,
+		setGradient,
+		setIsEditingImage,
+	} = useSetup( {
+		isSelected,
+		mediaId,
+		mediaSrc,
+		metadata,
+		setAttributes,
+		item: product,
 	} );
-
-	const backgroundImageSrc = mediaSrc || getImageSrcFromProduct( product );
-	const backgroundImageId = mediaId || getImageIdFromProduct( product );
-
-	const onResize = useCallback(
-		( _event, _direction, elt ) => {
-			setAttributes( { minHeight: parseInt( elt.style.height, 10 ) } );
-		},
-		[ setAttributes ]
-	);
 
 	const renderApiError = () => (
 		<ErrorPlaceholder
@@ -98,10 +95,6 @@ const FeaturedProduct = ( {
 			onRetry={ getProduct }
 		/>
 	);
-
-	useEffect( () => {
-		setIsEditingImage( false );
-	}, [ isSelected ] );
 
 	const renderEditMode = () => {
 		const onDone = () => {

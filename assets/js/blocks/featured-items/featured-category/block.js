@@ -3,14 +3,12 @@
 /**
  * External dependencies
  */
-import { useCallback, useEffect, useState } from 'react';
 import { __ } from '@wordpress/i18n';
 import {
 	AlignmentToolbar,
 	BlockControls,
 	MediaReplaceFlow,
 	__experimentalGetSpacingClassesAndStyles as getSpacingClassesAndStyles,
-	__experimentalUseGradient as useGradient,
 } from '@wordpress/block-editor';
 import {
 	Button,
@@ -34,17 +32,15 @@ import TextToolbarButton from '@woocommerce/editor-components/text-toolbar-butto
 /**
  * Internal dependencies
  */
-import {
-	dimRatioToClass,
-	getCategoryImageId,
-	getCategoryImageSrc,
-} from './utils';
+import metadata from './block.json';
+import { dimRatioToClass } from './utils';
 import { ConstrainedResizable } from '../constrained-resizable';
 import { ImageEditor } from '../image-editor';
 import { InspectorControls } from '../inspector-controls';
 import { withCategory } from '../../../hocs';
 import { calculateBackgroundImagePosition } from '../utils';
 import { CallToAction } from '../call-to-action';
+import { useSetup } from '../use-setup';
 
 /**
  * Component to handle edit mode of "Featured Category".
@@ -73,26 +69,23 @@ const FeaturedCategory = ( {
 } ) => {
 	const { mediaId, mediaSrc } = attributes;
 
-	const [ isEditingImage, setIsEditingImage ] = useState( false );
-	const [ backgroundImageSize, setBackgroundImageSize ] = useState( {} );
-	const { setGradient } = useGradient( {
-		gradientAttribute: 'overlayGradient',
-		customGradientAttribute: 'overlayGradient',
+	const {
+		backgroundImageId,
+		backgroundImageSize,
+		backgroundImageSrc,
+		isEditingImage,
+		onResize,
+		setBackgroundImageSize,
+		setGradient,
+		setIsEditingImage,
+	} = useSetup( {
+		isSelected,
+		mediaId,
+		mediaSrc,
+		metadata,
+		setAttributes,
+		item: category,
 	} );
-
-	const backgroundImageSrc = mediaSrc || getCategoryImageSrc( category );
-	const backgroundImageId = mediaId || getCategoryImageId( category );
-
-	const onResize = useCallback(
-		( _event, _direction, elt ) => {
-			setAttributes( { minHeight: parseInt( elt.style.height, 10 ) } );
-		},
-		[ setAttributes ]
-	);
-
-	useEffect( () => {
-		setIsEditingImage( false );
-	}, [ isSelected ] );
 
 	const renderApiError = () => (
 		<ErrorPlaceholder
