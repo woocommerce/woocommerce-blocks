@@ -25,18 +25,14 @@ jobs:
                       ${{ runner.os }}-build-
                       ${{ runner.os }}-
 
-            - if: ${{ steps.cache-node-modules.outputs.cache-hit == false }}
-              name: List the state of node modules
-              continue-on-error: true
-              run: npm list
-
             - name: Setup node version and npm cache
               uses: actions/setup-node@v3
               with:
                   node-version-file: '.nvmrc'
                   cache: 'npm'
-            - if: ${{ steps.cache-node-modules.outputs.cache-hit == false }}
-              name: Npm install and buildd
+
+            - name: Install Node dependencies
+              if: steps.cache-node-modules.outputs.cache-hit != 'true'
               run: npm ci --no-optional
 
             - name: build assets
