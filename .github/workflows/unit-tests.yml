@@ -101,7 +101,6 @@ jobs:
 
             - name: Run PHPUnit tests (WooCommerce Development Version)
               run: |
-                  chmod -R 767 ./ #needed for permissions issues
                   node ./bin/wp-env-override.js --plugins https://downloads.wordpress.org/plugin/woocommerce.zip
                   npm run wp-env start
                   npm run test:php
