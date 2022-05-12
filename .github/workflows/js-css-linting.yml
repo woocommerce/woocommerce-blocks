@@ -29,7 +29,7 @@ jobs:
                   node-version-file: '.nvmrc'
                   cache: 'npm'
 
-            - name: Install Node dependencies
+            - name: Install Node Dependencies
               if: steps.cache-node-modules.outputs.cache-hit != 'true'
               run: npm ci --no-optional
 
@@ -55,10 +55,6 @@ jobs:
               with:
                   node-version-file: '.nvmrc'
                   cache: 'npm'
-
-            - name: Install Node dependencies
-              if: steps.cache-node-modules.outputs.cache-hit != 'true'
-              run: npm ci --no-optional
 
             - name: Save code linting report JSON
               run: npm run lint:js:report
@@ -96,10 +92,6 @@ jobs:
               with:
                   node-version-file: '.nvmrc'
                   cache: 'npm'
-
-            - name: Install Node dependencies
-              if: steps.cache-node-modules.outputs.cache-hit != 'true'
-              run: npm ci --no-optional
 
             - name: Lint CSS
               run: npm run lint:css

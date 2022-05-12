@@ -27,11 +27,11 @@ jobs:
                   node-version-file: '.nvmrc'
                   cache: 'npm'
 
-            - name: Install Node dependencies
+            - name: Install Node Dependencies
               if: steps.cache-node-modules.outputs.cache-hit != 'true'
               run: npm ci --no-optional
 
-            - name: build assets
+            - name: Build Assets
               run: FORCE_REDUCED_MOTION=true npm run build:e2e-test
 
             - name: blocks.ini setup
@@ -94,11 +94,11 @@ jobs:
                   node-version-file: '.nvmrc'
                   cache: 'npm'
 
-            - name: Install Node dependencies
+            - name: Install Node Dependencies
               if: steps.cache-node-modules.outputs.cache-hit != 'true'
               run: npm ci --no-optional
 
-            - name: build assets
+            - name: Build Assets
               run: FORCE_REDUCED_MOTION=true npm run build:e2e-test
 
             - name: blocks.ini setup
