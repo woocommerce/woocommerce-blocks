@@ -38,6 +38,7 @@ const block = {
 	},
 	urlSearchParamWhenFilterIsApplied:
 		'?filter_capacity=128gb&query_type_capacity=or',
+	foundProduct: '128GB USB Stick',
 };
 
 const waitForAllProductsBlockLoaded = () =>
@@ -53,8 +54,7 @@ const goToShopPage = () =>
 const { selectors } = block;
 
 describe( `${ block.name } Block`, () => {
-	describe( 'with All Product Block', () => {
-		let link = '';
+	describe( 'with All Products Block', () => {
 		beforeAll( async () => {
 			await switchUserToAdmin();
 			await createNewPost( {
@@ -68,13 +68,14 @@ describe( `${ block.name } Block`, () => {
 			await insertBlock( 'All Products' );
 			await publishPost();
 
-			link = await page.evaluate( () =>
+			const link = await page.evaluate( () =>
 				wp.data.select( 'core/editor' ).getPermalink()
 			);
+
+			await page.goto( link );
 		} );
 
 		it( 'should render', async () => {
-			await page.goto( link );
 			await waitForAllProductsBlockLoaded();
 			const products = await page.$$( selectors.frontend.productsList );
 
@@ -90,6 +91,7 @@ describe( `${ block.name } Block`, () => {
 
 			expect( isRefreshed ).not.toBeCalled();
 			expect( products ).toHaveLength( 1 );
+			await expect( page ).toMatch( block.foundProduct );
 		} );
 	} );
 
@@ -139,6 +141,8 @@ describe( `${ block.name } Block`, () => {
 				hidden: true,
 			} );
 
+			expect( isRefreshed ).not.toBeCalled();
+
 			await Promise.all( [
 				page.waitForNavigation( {
 					waitUntil: 'networkidle0',
@@ -155,6 +159,7 @@ describe( `${ block.name } Block`, () => {
 
 			expect( isRefreshed ).toBeCalledTimes( 1 );
 			expect( products ).toHaveLength( 1 );
+			await expect( page ).toMatch( block.foundProduct );
 			expect( parsedURL.search ).toEqual(
 				block.urlSearchParamWhenFilterIsApplied
 			);
@@ -181,6 +186,9 @@ describe( `${ block.name } Block`, () => {
 			} );
 			await page.waitForSelector( selectors.frontend.filter );
 			await page.click( selectors.frontend.filter );
+
+			expect( isRefreshed ).not.toBeCalled();
+
 			await Promise.all( [
 				page.waitForNavigation( {
 					waitUntil: 'networkidle0',
@@ -196,6 +204,7 @@ describe( `${ block.name } Block`, () => {
 
 			expect( isRefreshed ).toBeCalledTimes( 1 );
 			expect( products ).toHaveLength( 1 );
+			await expect( page ).toMatch( block.foundProduct );
 			expect( parsedURL.search ).toEqual(
 				block.urlSearchParamWhenFilterIsApplied
 			);

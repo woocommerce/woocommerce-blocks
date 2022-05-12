@@ -30,6 +30,7 @@ const block = {
 		},
 	},
 	urlSearchParamWhenFilterIsApplied: '?max_price=1.99',
+	foundProduct: '32GB USB Stick',
 };
 
 const waitForAllProductsBlockLoaded = () =>
@@ -92,6 +93,7 @@ describe( `${ block.name } Block`, () => {
 
 			expect( isRefreshed ).not.toBeCalled();
 			expect( products ).toHaveLength( 1 );
+			await expect( page ).toMatch( block.foundProduct );
 		} );
 	} );
 
@@ -133,6 +135,9 @@ describe( `${ block.name } Block`, () => {
 				hidden: true,
 			} );
 
+			await expect( page ).toMatch( block.foundProduct );
+			expect( isRefreshed ).not.toBeCalled();
+
 			await Promise.all( [
 				setMaxPrice(),
 				page.waitForNavigation( {
@@ -152,6 +157,7 @@ describe( `${ block.name } Block`, () => {
 			expect( parsedURL.search ).toEqual(
 				block.urlSearchParamWhenFilterIsApplied
 			);
+			await expect( page ).toMatch( block.foundProduct );
 		} );
 
 		it( 'should refresh the page only if the user click on button', async () => {
@@ -176,6 +182,7 @@ describe( `${ block.name } Block`, () => {
 			await page.waitForSelector( block.class + '.is-loading', {
 				hidden: true,
 			} );
+			expect( isRefreshed ).not.toBeCalled();
 
 			await setMaxPrice();
 
@@ -194,6 +201,7 @@ describe( `${ block.name } Block`, () => {
 
 			expect( isRefreshed ).toBeCalledTimes( 1 );
 			expect( products ).toHaveLength( 1 );
+			await expect( page ).toMatch( block.foundProduct );
 			expect( parsedURL.search ).toEqual(
 				block.urlSearchParamWhenFilterIsApplied
 			);

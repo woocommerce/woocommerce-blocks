@@ -31,6 +31,7 @@ const block = {
 		},
 	},
 	urlSearchParamWhenFilterIsApplied: '?filter_stock_status=outofstock',
+	foundProduct: 'Woo Single #3',
 };
 
 const waitForAllProductsBlockLoaded = () =>
@@ -46,7 +47,7 @@ const goToShopPage = () =>
 const { selectors } = block;
 
 describe( `${ block.name } Block`, () => {
-	describe( 'with All Product Block', () => {
+	describe( 'with All Products Block', () => {
 		let link = '';
 		beforeAll( async () => {
 			await switchUserToAdmin();
@@ -78,9 +79,9 @@ describe( `${ block.name } Block`, () => {
 			await page.click( selectors.frontend.filter );
 			await waitForAllProductsBlockLoaded();
 			const products = await page.$$( selectors.frontend.productsList );
-
 			expect( isRefreshed ).not.toBeCalled();
 			expect( products ).toHaveLength( 1 );
+			await expect( page ).toMatch( block.foundProduct );
 		} );
 	} );
 
@@ -121,6 +122,8 @@ describe( `${ block.name } Block`, () => {
 				hidden: true,
 			} );
 
+			expect( isRefreshed ).not.toBeCalled();
+
 			await Promise.all( [
 				page.waitForNavigation( {
 					waitUntil: 'networkidle0',
@@ -136,6 +139,7 @@ describe( `${ block.name } Block`, () => {
 
 			expect( isRefreshed ).toBeCalledTimes( 1 );
 			expect( products ).toHaveLength( 1 );
+			await expect( page ).toMatch( block.foundProduct );
 			expect( parsedURL.search ).toEqual(
 				block.urlSearchParamWhenFilterIsApplied
 			);
@@ -165,6 +169,9 @@ describe( `${ block.name } Block`, () => {
 			await page.waitForSelector( block.class + '.is-loading', {
 				hidden: true,
 			} );
+
+			expect( isRefreshed ).not.toBeCalled();
+
 			await page.waitForSelector( selectors.frontend.filter );
 			await page.click( selectors.frontend.filter );
 			await Promise.all( [
@@ -186,6 +193,7 @@ describe( `${ block.name } Block`, () => {
 
 			expect( isRefreshed ).toBeCalledTimes( 1 );
 			expect( products ).toHaveLength( 1 );
+			await expect( page ).toMatch( block.foundProduct );
 			expect( parsedURL.search ).toEqual(
 				block.urlSearchParamWhenFilterIsApplied
 			);
