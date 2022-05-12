@@ -16,7 +16,9 @@ describe( 'Validation selectors', () => {
 				hidden: false,
 			},
 		};
-		const validationError = getValidationError( state, 'validationError' );
+		const validationError = getValidationError( state )(
+			'validationError'
+		);
 		expect( validationError ).toEqual( {
 			message: 'This is a test message',
 			hidden: false,
@@ -30,8 +32,7 @@ describe( 'Validation selectors', () => {
 				hidden: false,
 			},
 		};
-		const validationErrorID = getValidationErrorId(
-			state,
+		const validationErrorID = getValidationErrorId( state )(
 			'validationError'
 		);
 		expect( validationErrorID ).toEqual( `validate-error-validationError` );
