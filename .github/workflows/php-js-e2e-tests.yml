@@ -11,15 +11,36 @@ jobs:
         runs-on: ubuntu-latest
         steps:
             - uses: actions/checkout@v3
+
+            - name: Cache node_modules
+              id: cache-node-modules
+              uses: actions/cache@v3
+              cache-name: cache-node-modules
+              with:
+                  path: node_modules
+                  key: ${{ runner.os }}-build-${{ env.cache-name }}-${{ hashFiles('**/package-lock.json') }}
+                  restore-keys: |
+                      ${{ runner.os }}-build-${{ env.cache-name }}-
+                      ${{ runner.os }}-build-
+                      ${{ runner.os }}-
+
+            - if: ${{ steps.cache-node-modules.outputs.cache-hit == false }}
+              name: List the state of node modules
+              continue-on-error: true
+              run: npm list
+
             - name: Setup node version and npm cache
               uses: actions/setup-node@v3
               with:
                   node-version-file: '.nvmrc'
                   cache: 'npm'
-            - name: Npm install and buildd
-              run: |
-                  npm ci --no-optional
-                  FORCE_REDUCED_MOTION=true npm run build:e2e-test
+            - if: ${{ steps.cache-node-modules.outputs.cache-hit == false }}
+              name: Npm install and buildd
+              run: npm ci --no-optional
+
+            - name: build assets
+              run: FORCE_REDUCED_MOTION=true npm run build:e2e-test
+
             - name: blocks.ini setup
               run: |
                   echo -e 'woocommerce_blocks_phase = 3\nwoocommerce_blocks_env = tests' > blocks.ini
