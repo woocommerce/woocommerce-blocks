@@ -33,6 +33,8 @@ jobs:
 
             - name: Build Assets
               run: FORCE_REDUCED_MOTION=true npm run build:e2e-test
+
+            - name: Store Build Assets
               uses: actions/upload-artifact@v3
               with:
                   name: build-assets
@@ -80,6 +82,7 @@ jobs:
               with:
                   node-version-file: '.nvmrc'
                   cache: 'npm'
+
             - name: Download Build Assets
               uses: actions/download-artifact@v3
               with:
@@ -107,7 +110,6 @@ jobs:
         name: JS Unit Tests
         needs: Setup
         runs-on: ubuntu-latest
-
         steps:
             - uses: actions/checkout@v3
 
@@ -125,6 +127,7 @@ jobs:
               with:
                   node-version-file: '.nvmrc'
                   cache: 'npm'
+
             - name: Download Build Assets
               uses: actions/download-artifact@v3
               with:
