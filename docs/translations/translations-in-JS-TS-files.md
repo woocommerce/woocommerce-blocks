@@ -1,6 +1,101 @@
 # Translations in JS/TS files
 
-...
+In comparison to PHP files, translations in JS/TS files require a few additional steps. First, the Node package [`@wordpress/i18n`](https://developer.wordpress.org/block-editor/reference-guides/packages/packages-i18n/) needs to be installed:
+
+```sh
+npm install @wordpress/i18n --save
+```
+
+Next, each JS/TS file, that hold strings which should be translated, needs to import the corresponding functions from `@wordpress/i18n`:
+
+```ts
+import { sprintf, _n } from '@wordpress/i18n';
+```
+
+## Usage of localization functions
+
+### `__()`
+
+The function `__()` retrieves the translation of `$text`.
+
+```ts
+// Schema
+const translation = __( string text, string domain = 'default' );
+
+// Example
+import { __ } from '@wordpress/i18n';
+
+const translation = __( 'Place Order', 'woo-gutenberg-products-block' );
+```
+
+See also https://developer.wordpress.org/reference/functions/__/.
+
+### `_n()`
+
+The function `_n()` translates and retrieves the singular or plural form based on the supplied number.
+
+```ts
+// Schema
+const translation = _n( string single, string plural, int number, string domain = 'default' );
+
+// Example
+import { sprintf, _n } from '@wordpress/i18n';
+
+const translation = sprintf(
+    /* translators: %s number of products in cart. */
+    _n(
+        '%d product',
+        '%d products',
+        Math.abs( category->count ),
+        'woo-gutenberg-products-block'
+    ),
+    Math.abs( category->count )
+);
+```
+
+See also https://developer.wordpress.org/reference/functions/_n/.
+
+### `_x()`
+
+The function `_x()` retrieves a translated string with gettext context.
+
+```ts
+// Schema
+const translation = _x( string text, string context, string domain = 'default' );
+
+// Example
+import { _x } from '@wordpress/i18n';
+
+const translation = _x( 'Draft', 'Order status', 'woo-gutenberg-products-block' );
+```
+
+See also https://developer.wordpress.org/reference/functions/_x/.
+
+### `_nx()`
+
+The function `_nx()` translates and retrieves the singular or plural form based on the supplied number, with gettext context.
+
+```ts
+// Schema
+const translation = _nx( string single, string plural, int number, string context, string domain = 'default' );
+
+// Example
+import { sprintf, _nx } from '@wordpress/i18n';
+
+const translation = sprintf(
+    /* translators: %s number of products in cart. */
+    _nx(
+        '%d product',
+        '%d products',
+        Math.abs( category->count ),
+        'Number of products in the cart',
+        'woo-gutenberg-products-block'
+    ),
+    Math.abs( category->count )
+);
+```
+
+See also https://developer.wordpress.org/reference/functions/_nx/.
 
 <!-- FEEDBACK -->
 
