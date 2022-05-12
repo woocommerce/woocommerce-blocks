@@ -40,6 +40,7 @@ const block = {
 			classicProductsList: '.products.columns-3 > li',
 		},
 	},
+	foundProduct: '128GB USB Stick',
 };
 
 const { selectors } = block;
@@ -98,7 +99,7 @@ describe( 'Shopper → Active Filters Block', () => {
 			expect( page ).not.toMatch( 'Active Filters' );
 		} );
 
-		fit( 'Shows selected filters', async () => {
+		it( 'Shows selected filters', async () => {
 			const isRefreshed = jest.fn( () => void 0 );
 
 			await page.waitForSelector( block.class );
@@ -148,6 +149,7 @@ describe( 'Shopper → Active Filters Block', () => {
 			const products = await page.$$( selectors.frontend.productsList );
 			expect( products ).toHaveLength( 1 );
 			expect( isRefreshed ).not.toHaveBeenCalled();
+			await expect( page ).toMatch( block.foundProduct );
 		} );
 
 		fit( 'When clicking the X on a filter it removes a filter', async () => {
@@ -300,6 +302,7 @@ describe( 'Shopper → Active Filters Block', () => {
 
 			expect( isRefreshed ).toHaveBeenCalledTimes( 2 );
 			expect( products ).toHaveLength( 1 );
+			await expect( page ).toMatch( block.foundProduct );
 		} );
 
 		it( 'When clicking the X on a filter it removes a filter and triggers a page refresh', async () => {
@@ -307,6 +310,7 @@ describe( 'Shopper → Active Filters Block', () => {
 			page.on( 'load', isRefreshed );
 			await page.waitForSelector( selectors.frontend.stockFilterBlock );
 
+			expect( isRefreshed ).not.toHaveBeenCalled();
 			await expect( page ).toClick( 'label', {
 				text: 'In stock',
 			} );
@@ -340,6 +344,7 @@ describe( 'Shopper → Active Filters Block', () => {
 			expect( page.url() ).toMatch( '128gb' );
 			expect( isRefreshed ).toHaveBeenCalledTimes( 3 );
 			expect( products ).toHaveLength( 1 );
+			await expect( page ).toMatch( block.foundProduct );
 		} );
 
 		it( 'Clicking "Clear All" button removes all active filter and the page redirects to the base URL', async () => {
