@@ -220,15 +220,15 @@ class Bootstrap {
 			}
 		);
 		$this->container->register(
-			ProductSearchResultsTemplate::class,
-			function () {
-				return new ProductSearchResultsTemplate();
-			}
-		);
-		$this->container->register(
 			BlockTemplatesController::class,
 			function () {
 				return new BlockTemplatesController();
+			}
+		);
+		$this->container->register(
+			ProductSearchResultsTemplate::class,
+			function () {
+				return new ProductSearchResultsTemplate();
 			}
 		);
 		$this->container->register(
