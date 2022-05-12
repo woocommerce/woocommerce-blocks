@@ -63,7 +63,7 @@ jobs:
                   GUTENBERG_EDITOR_CONTEXT: 'gutenberg'
               run: |
                   chmod -R 767 ./ #needed for permissions issues
-                  node ./bin/wp-env-with-gutenberg.js
+                  node ./bin/wp-env-override.js --plugins https://downloads.wordpress.org/plugin/gutenberg.latest-stable.zip
                   npm run wp-env start
                   npm run wp-env clean all
                   npm run test:e2e

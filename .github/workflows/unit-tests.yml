@@ -101,8 +101,7 @@ jobs:
 
             - name: Run PHPUnit tests (WooCommerce Development Version)
               run: |
-                  JSON='{"plugins": [".","https://downloads.wordpress.org/plugin/woocommerce.zip"]}'
-                  echo $JSON > .wp-env.override.json
+                  node ./bin/wp-env-override.js --plugins https://downloads.wordpress.org/plugin/woocommerce.zip
                   npm run wp-env start
                   npm run test:php
 

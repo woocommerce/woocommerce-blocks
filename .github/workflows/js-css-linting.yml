@@ -50,11 +50,10 @@ jobs:
                   path: node_modules
                   key: ${{ runner.os }}-build-${{ env.cache-name }}-${{ hashFiles('**/package-lock.json') }}
 
-            - name: Setup node version and npm cache
+            - name: Setup node version
               uses: actions/setup-node@v3
               with:
                   node-version-file: '.nvmrc'
-                  cache: 'npm'
 
             - name: Save code linting report JSON
               run: npm run lint:js:report
@@ -87,11 +86,10 @@ jobs:
                   path: node_modules
                   key: ${{ runner.os }}-build-${{ env.cache-name }}-${{ hashFiles('**/package-lock.json') }}
 
-            - name: Setup node version and npm cache
+            - name: Setup node version
               uses: actions/setup-node@v3
               with:
                   node-version-file: '.nvmrc'
-                  cache: 'npm'
 
             - name: Lint CSS
               run: npm run lint:css
