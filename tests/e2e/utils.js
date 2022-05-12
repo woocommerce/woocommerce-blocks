@@ -439,11 +439,11 @@ export const openBlockEditorSettings = async () => {
 	const buttonSelector =
 		'.edit-site-header__actions button[aria-label="Settings"]';
 
-	const isButtonPressed = await page.$eval( buttonSelector, ( el ) =>
-		el.getAttribute( 'aria-pressed' )
+	const isSideBarAlreadyOpened = await page.$(
+		'.interface-interface-skeleton__sidebar'
 	);
 
-	if ( isButtonPressed === 'false' ) {
+	if ( isSideBarAlreadyOpened === null ) {
 		await page.click( buttonSelector );
 	}
 };
