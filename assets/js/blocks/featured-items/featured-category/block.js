@@ -9,28 +9,18 @@ import {
 	AlignmentToolbar,
 	BlockControls,
 	InnerBlocks,
-	InspectorControls,
 	MediaReplaceFlow,
 	RichText,
 	__experimentalGetSpacingClassesAndStyles as getSpacingClassesAndStyles,
-	__experimentalPanelColorGradientSettings as PanelColorGradientSettings,
 	__experimentalUseGradient as useGradient,
 } from '@wordpress/block-editor';
 import {
 	Button,
-	FocalPointPicker,
-	PanelBody,
 	Placeholder,
-	RangeControl,
 	Spinner,
-	ToggleControl,
 	ToolbarButton,
 	ToolbarGroup,
 	withSpokenMessages,
-	__experimentalToggleGroupControl as ToggleGroupControl,
-	__experimentalToggleGroupControlOption as ToggleGroupControlOption,
-	TextareaControl,
-	ExternalLink,
 } from '@wordpress/components';
 import classnames from 'classnames';
 import { Component } from '@wordpress/element';
@@ -53,6 +43,7 @@ import {
 } from './utils';
 import { ConstrainedResizable } from '../constrained-resizable';
 import { ImageEditor } from '../image-editor';
+import { InspectorControls } from '../inspector-controls';
 import { withCategory } from '../../../hocs';
 import { calculateBackgroundImagePosition } from '../utils';
 
@@ -175,165 +166,30 @@ const FeaturedCategory = ( {
 		);
 	};
 
-	const getInspectorControls = () => {
-		const { focalPoint = { x: 0.5, y: 0.5 } } = attributes;
-		// FocalPointPicker was introduced in Gutenberg 5.0 (WordPress 5.2),
-		// so we need to check if it exists before using it.
-		const focalPointPickerExists = typeof FocalPointPicker === 'function';
+	const renderInspectorControls = () => {
+		const {
+			alt,
+			dimRatio,
+			focalPoint,
+			imageFit,
+			overlayColor,
+			overlayGradient,
+			showDesc,
+		} = attributes;
 
 		return (
-			<InspectorControls key="inspector">
-				<PanelBody
-					title={ __( 'Content', 'woo-gutenberg-products-block' ) }
-				>
-					<ToggleControl
-						label={ __(
-							'Show description',
-							'woo-gutenberg-products-block'
-						) }
-						checked={ attributes.showDesc }
-						onChange={ () =>
-							setAttributes( { showDesc: ! attributes.showDesc } )
-						}
-					/>
-				</PanelBody>
-				{ !! backgroundImageSrc && (
-					<>
-						{ focalPointPickerExists && (
-							<PanelBody
-								title={ __(
-									'Media settings',
-									'woo-gutenberg-products-block'
-								) }
-							>
-								<ToggleGroupControl
-									help={
-										<>
-											<p>
-												{ __(
-													'Choose “Cover” if you want the image to scale automatically to always fit its container.',
-													'woo-gutenberg-products-block'
-												) }
-											</p>
-											<p>
-												{ __(
-													'Note: by choosing “Cover” you will lose the ability to freely move the focal point precisely.',
-													'woo-gutenberg-products-block'
-												) }
-											</p>
-										</>
-									}
-									label={ __(
-										'Image fit',
-										'woo-gutenberg-products-block'
-									) }
-									value={ attributes.imageFit }
-									onChange={ ( value ) =>
-										setAttributes( {
-											imageFit: value,
-										} )
-									}
-								>
-									<ToggleGroupControlOption
-										label={ __(
-											'None',
-											'woo-gutenberg-products-block'
-										) }
-										value="none"
-									/>
-									<ToggleGroupControlOption
-										/* translators: "Cover" is a verb that indicates an image covering the entire container. */
-										label={ __(
-											'Cover',
-											'woo-gutenberg-products-block'
-										) }
-										value="cover"
-									/>
-								</ToggleGroupControl>
-								<FocalPointPicker
-									label={ __(
-										'Focal Point Picker',
-										'woo-gutenberg-products-block'
-									) }
-									url={ backgroundImageSrc }
-									value={ focalPoint }
-									onChange={ ( value ) =>
-										setAttributes( {
-											focalPoint: value,
-										} )
-									}
-								/>
-								<TextareaControl
-									label={ __(
-										'Alt text (alternative text)',
-										'woo-gutenberg-products-block'
-									) }
-									value={ attributes.alt }
-									onChange={ ( alt ) => {
-										setAttributes( { alt } );
-									} }
-									help={
-										<>
-											<ExternalLink href="https://www.w3.org/WAI/tutorials/images/decision-tree">
-												{ __(
-													'Describe the purpose of the image',
-													'woo-gutenberg-products-block'
-												) }
-											</ExternalLink>
-											{ __(
-												'Leaving it empty will use the category name.',
-												'woo-gutenberg-products-block'
-											) }
-										</>
-									}
-								/>
-							</PanelBody>
-						) }
-						<PanelColorGradientSettings
-							__experimentalHasMultipleOrigins
-							__experimentalIsRenderedInSidebar
-							title={ __(
-								'Overlay',
-								'woo-gutenberg-products-block'
-							) }
-							initialOpen={ true }
-							settings={ [
-								{
-									colorValue: attributes.overlayColor,
-									gradientValue: attributes.overlayGradient,
-									onColorChange: ( overlayColor ) =>
-										setAttributes( { overlayColor } ),
-									onGradientChange: ( overlayGradient ) => {
-										setGradient( overlayGradient );
-										setAttributes( {
-											overlayGradient,
-										} );
-									},
-									label: __(
-										'Color',
-										'woo-gutenberg-products-block'
-									),
-								},
-							] }
-						>
-							<RangeControl
-								label={ __(
-									'Opacity',
-									'woo-gutenberg-products-block'
-								) }
-								value={ attributes.dimRatio }
-								onChange={ ( dimRatio ) =>
-									setAttributes( { dimRatio } )
-								}
-								min={ 0 }
-								max={ 100 }
-								step={ 10 }
-								required
-							/>
-						</PanelColorGradientSettings>
-					</>
-				) }
-			</InspectorControls>
+			<InspectorControls
+				alt={ alt }
+				backgroundImageSrc={ backgroundImageSrc }
+				dimRatio={ dimRatio }
+				focalPoint={ focalPoint }
+				imageFit={ imageFit }
+				overlayColor={ overlayColor }
+				overlayGradient={ overlayGradient }
+				setAttributes={ setAttributes }
+				setGradient={ setGradient }
+				showDesc={ showDesc }
+			/>
 		);
 	};
 
@@ -575,7 +431,7 @@ const FeaturedCategory = ( {
 	return (
 		<>
 			{ getBlockControls() }
-			{ getInspectorControls() }
+			{ renderInspectorControls() }
 			{ category ? renderCategory() : renderNoCategory() }
 		</>
 	);
