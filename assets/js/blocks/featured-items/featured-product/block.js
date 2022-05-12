@@ -8,9 +8,7 @@ import { __ } from '@wordpress/i18n';
 import {
 	AlignmentToolbar,
 	BlockControls,
-	InnerBlocks,
 	MediaReplaceFlow,
-	RichText,
 	__experimentalGetSpacingClassesAndStyles as getSpacingClassesAndStyles,
 	__experimentalUseGradient as useGradient,
 } from '@wordpress/block-editor';
@@ -46,6 +44,7 @@ import {
 	getImageSrcFromProduct,
 	getImageIdFromProduct,
 } from '../../../utils/products';
+import { CallToAction } from '../call-to-action';
 
 /**
  * Component to handle edit mode of "Featured Product".
@@ -371,52 +370,13 @@ const FeaturedProduct = ( {
 	};
 
 	const renderButton = () => {
-		const buttonClasses = classnames(
-			'wp-block-button__link',
-			'is-style-fill'
-		);
-		const buttonStyle = {
-			backgroundColor: 'vivid-green-cyan',
-			borderRadius: '5px',
-		};
-		const wrapperStyle = {
-			width: '100%',
-		};
-		return attributes.productId === 'preview' ? (
-			<div className="wp-block-button aligncenter" style={ wrapperStyle }>
-				<RichText.Content
-					tagName="a"
-					className={ buttonClasses }
-					href={ product.permalink }
-					title={ attributes.linkText }
-					style={ buttonStyle }
-					value={ attributes.linkText }
-					target={ product.permalink }
-				/>
-			</div>
-		) : (
-			<InnerBlocks
-				template={ [
-					[
-						'core/buttons',
-						{
-							layout: { type: 'flex', justifyContent: 'center' },
-						},
-						[
-							[
-								'core/button',
-								{
-									text: __(
-										'Shop now',
-										'woo-gutenberg-products-block'
-									),
-									url: product.permalink,
-								},
-							],
-						],
-					],
-				] }
-				templateLock="all"
+		const { productId, linkText } = attributes;
+
+		return (
+			<CallToAction
+				itemId={ productId }
+				linkText={ linkText }
+				permalink={ product.permalink }
 			/>
 		);
 	};

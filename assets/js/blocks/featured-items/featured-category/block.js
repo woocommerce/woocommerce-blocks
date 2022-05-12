@@ -8,9 +8,7 @@ import { __ } from '@wordpress/i18n';
 import {
 	AlignmentToolbar,
 	BlockControls,
-	InnerBlocks,
 	MediaReplaceFlow,
-	RichText,
 	__experimentalGetSpacingClassesAndStyles as getSpacingClassesAndStyles,
 	__experimentalUseGradient as useGradient,
 } from '@wordpress/block-editor';
@@ -46,6 +44,7 @@ import { ImageEditor } from '../image-editor';
 import { InspectorControls } from '../inspector-controls';
 import { withCategory } from '../../../hocs';
 import { calculateBackgroundImagePosition } from '../utils';
+import { CallToAction } from '../call-to-action';
 
 /**
  * Component to handle edit mode of "Featured Category".
@@ -240,52 +239,13 @@ const FeaturedCategory = ( {
 	};
 
 	const renderButton = () => {
-		const buttonClasses = classnames(
-			'wp-block-button__link',
-			'is-style-fill'
-		);
-		const buttonStyle = {
-			backgroundColor: 'vivid-green-cyan',
-			borderRadius: '5px',
-		};
-		const wrapperStyle = {
-			width: '100%',
-		};
-		return attributes.categoryId === 'preview' ? (
-			<div className="wp-block-button aligncenter" style={ wrapperStyle }>
-				<RichText.Content
-					tagName="a"
-					className={ buttonClasses }
-					href={ category.permalink }
-					title={ attributes.linkText }
-					style={ buttonStyle }
-					value={ attributes.linkText }
-					target={ category.permalink }
-				/>
-			</div>
-		) : (
-			<InnerBlocks
-				template={ [
-					[
-						'core/buttons',
-						{
-							layout: { type: 'flex', justifyContent: 'center' },
-						},
-						[
-							[
-								'core/button',
-								{
-									text: __(
-										'Shop now',
-										'woo-gutenberg-products-block'
-									),
-									url: category.permalink,
-								},
-							],
-						],
-					],
-				] }
-				templateLock="all"
+		const { categoryId, linkText } = attributes;
+
+		return (
+			<CallToAction
+				itemId={ categoryId }
+				linkText={ linkText }
+				permalink={ category.permalink }
 			/>
 		);
 	};
@@ -306,7 +266,8 @@ const FeaturedCategory = ( {
 		const classes = classnames(
 			'wc-block-featured-category',
 			{
-				'is-selected': isSelected && attributes.productId !== 'preview',
+				'is-selected':
+					isSelected && attributes.categoryId !== 'preview',
 				'is-loading': ! category && isLoading,
 				'is-not-found': ! category && ! isLoading,
 				'has-background-dim': dimRatio !== 0,
