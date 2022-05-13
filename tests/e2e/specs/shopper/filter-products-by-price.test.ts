@@ -33,6 +33,8 @@ const block = {
 	foundProduct: '32GB USB Stick',
 };
 
+const { selectors } = block;
+
 const waitForAllProductsBlockLoaded = () =>
 	page.waitForSelector( selectors.frontend.productsList + '.is-loading', {
 		hidden: true,
@@ -42,8 +44,6 @@ const goToShopPage = () =>
 	page.goto( BASE_URL + '/shop', {
 		waitUntil: 'networkidle0',
 	} );
-
-const { selectors } = block;
 
 const setMaxPrice = async () => {
 	await page.waitForSelector( selectors.frontend.priceMaxAmount );
@@ -87,7 +87,7 @@ describe( `${ block.name } Block`, () => {
 			const isRefreshed = jest.fn( () => void 0 );
 			page.on( 'load', isRefreshed );
 			await setMaxPrice();
-			await page.waitForTimeout( 1000 );
+			await page.waitForNetworkIdle();
 			await waitForAllProductsBlockLoaded();
 			const products = await page.$$( selectors.frontend.productsList );
 
