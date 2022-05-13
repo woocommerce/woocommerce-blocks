@@ -14,7 +14,12 @@ import { SHOP_PAGE } from '@woocommerce/e2e-utils';
 /**
  * Internal dependencies
  */
-import { goToTemplateEditor, useTheme, saveTemplate } from '../../utils';
+import {
+	goToTemplateEditor,
+	useTheme,
+	saveTemplate,
+	clickLink,
+} from '../../utils';
 import { shopper } from '../../../utils';
 import { Frame, Page } from 'puppeteer';
 
@@ -44,18 +49,6 @@ const block = {
 };
 
 const { selectors } = block;
-
-/**
- * Click a link and wait for the page to load.
- *
- * @param {string} selector The CSS selector of the link to click.
- */
-const clickLink = async ( selector: string ) => {
-	await Promise.all( [
-		page.click( selector ),
-		page.waitForNavigation( { waitUntil: 'networkidle0' } ),
-	] );
-};
 
 const insertBlocks = async () => {
 	await insertBlock( block.name );
