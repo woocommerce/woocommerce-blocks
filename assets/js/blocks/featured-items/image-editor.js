@@ -3,6 +3,7 @@
 /**
  * External dependencies
  */
+import { useEffect, useState } from 'react';
 import {
 	__experimentalImageEditingProvider as ImageEditingProvider,
 	__experimentalImageEditor as GutenbergImageEditor,
@@ -11,7 +12,8 @@ import {
 /**
  * Internal dependencies
  */
-import { DEFAULT_EDITOR_SIZE } from './constants';
+import { BLOCK_NAMES, DEFAULT_EDITOR_SIZE } from './constants';
+import { useBackgroundImage } from './use-background-image';
 
 export const ImageEditor = ( {
 	backgroundImageId,
@@ -49,5 +51,45 @@ export const ImageEditor = ( {
 				/>
 			</ImageEditingProvider>
 		</>
+	);
+};
+
+export const withImageEditor = ( Component ) => ( props ) => {
+	const [ isEditingImage, setIsEditingImage ] = useState( false );
+
+	const { attributes, isSelected, name, setAttributes } = props;
+	const { mediaId, mediaSrc } = attributes;
+	const item =
+		name === BLOCK_NAMES.featuredProduct ? props.product : props.category;
+
+	const { backgroundImageId, backgroundImageSrc } = useBackgroundImage( {
+		item,
+		mediaId,
+		mediaSrc,
+		blockName: name,
+	} );
+
+	useEffect( () => {
+		setIsEditingImage( false );
+	}, [ isSelected ] );
+
+	if ( isEditingImage ) {
+		return (
+			<ImageEditor
+				backgroundImageId={ backgroundImageId }
+				backgroundImageSize={ { width: 500, height: 500 } }
+				backgroundImageSrc={ backgroundImageSrc }
+				isEditingImage={ isEditingImage }
+				setAttributes={ setAttributes }
+				setIsEditingImage={ setIsEditingImage }
+			/>
+		);
+	}
+
+	return (
+		<Component
+			{ ...props }
+			useEditingImage={ [ isEditingImage, setIsEditingImage ] }
+		/>
 	);
 };

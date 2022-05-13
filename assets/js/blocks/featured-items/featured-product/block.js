@@ -31,15 +31,25 @@ import { crop, Icon, starEmpty } from '@wordpress/icons';
 /**
  * Internal dependencies
  */
-import metadata from './block.json';
 import { ConstrainedResizable } from '../constrained-resizable';
-import { ImageEditor } from '../image-editor';
+import { withImageEditor } from '../image-editor';
 import { InspectorControls } from '../inspector-controls';
 import { useSetup } from '../use-setup';
 import { calculateBackgroundImagePosition, dimRatioToClass } from '../utils';
 import { CallToAction } from '../call-to-action';
 import { withEditMode } from '../with-edit-mode';
 import { withApiError } from '../with-api-error';
+import { useBackgroundImage } from '../use-background-image';
+
+/**
+ * @template A
+ * @typedef {import("react").Dispatch< A >} Dispatch
+ */
+
+/**
+ * @template S
+ * @typedef {import("react").SetStateAction< S >} SetStateAction
+ */
 
 const EDIT_MODE_CONFIG = {
 	description: __(
@@ -61,34 +71,36 @@ const EDIT_MODE_CONFIG = {
  * @param {Object}            props.attributes       Incoming block attributes.
  * @param {boolean}           props.isLoading        Whether product is loading or not.
  * @param {boolean}           props.isSelected       Whether block is selected or not.
+ * @param {string}            props.name             The block name.
  * @param {Object}            props.product          Product object.
  * @param {function(any):any} props.setAttributes    Setter for attributes.
+ * @param {[boolean, Dispatch<SetStateAction<boolean>>]} props.useEditingImage Getter and setter for editing image state.
  */
 const FeaturedProduct = ( {
 	attributes,
 	isLoading,
 	isSelected,
+	name,
 	product,
 	setAttributes,
+	useEditingImage,
 } ) => {
 	const { mediaId, mediaSrc } = attributes;
+	const [ isEditingImage, setIsEditingImage ] = useEditingImage;
+	const { backgroundImageId, backgroundImageSrc } = useBackgroundImage( {
+		mediaId,
+		mediaSrc,
+		blockName: name,
+		item: product,
+	} );
 
 	const {
-		backgroundImageId,
-		backgroundImageSize,
-		backgroundImageSrc,
-		isEditingImage,
+		// backgroundImageSize,
 		onResize,
 		setBackgroundImageSize,
 		setGradient,
-		setIsEditingImage,
 	} = useSetup( {
-		isSelected,
-		mediaId,
-		mediaSrc,
-		metadata,
 		setAttributes,
-		item: product,
 	} );
 
 	const getBlockControls = () => {
@@ -334,19 +346,6 @@ const FeaturedProduct = ( {
 		</Placeholder>
 	);
 
-	if ( isEditingImage ) {
-		return (
-			<ImageEditor
-				backgroundImageId={ backgroundImageId }
-				backgroundImageSize={ backgroundImageSize }
-				backgroundImageSrc={ backgroundImageSrc }
-				isEditingImage={ isEditingImage }
-				setAttributes={ setAttributes }
-				setIsEditingImage={ setIsEditingImage }
-			/>
-		);
-	}
-
 	return (
 		<>
 			{ getBlockControls() }
@@ -449,4 +448,5 @@ export default compose( [
 	}, 'withUpdateButtonAttributes' ),
 	withEditMode( EDIT_MODE_CONFIG ),
 	withApiError,
+	withImageEditor,
 ] )( FeaturedProduct );

@@ -29,10 +29,9 @@ import TextToolbarButton from '@woocommerce/editor-components/text-toolbar-butto
 /**
  * Internal dependencies
  */
-import metadata from './block.json';
 import { dimRatioToClass } from './utils';
 import { ConstrainedResizable } from '../constrained-resizable';
-import { ImageEditor } from '../image-editor';
+import { withImageEditor } from '../image-editor';
 import { InspectorControls } from '../inspector-controls';
 import { withCategory } from '../../../hocs';
 import { calculateBackgroundImagePosition } from '../utils';
@@ -40,6 +39,17 @@ import { CallToAction } from '../call-to-action';
 import { useSetup } from '../use-setup';
 import { withEditMode } from '../with-edit-mode';
 import { withApiError } from '../with-api-error';
+import { useBackgroundImage } from '../use-background-image';
+
+/**
+ * @template A
+ * @typedef {import("react").Dispatch< A >} Dispatch
+ */
+
+/**
+ * @template S
+ * @typedef {import("react").SetStateAction< S >} SetStateAction
+ */
 
 const EDIT_MODE_CONFIG = {
 	description: __(
@@ -60,35 +70,37 @@ const EDIT_MODE_CONFIG = {
  * @param {Object}            props                  Incoming props for the component.
  * @param {Object}            props.attributes       Incoming block attributes.
  * @param {boolean}           props.isSelected       Whether block is selected or not.
+ * @param {string}            props.name             The block name.
  * @param {function(any):any} props.setAttributes    Function for setting new attributes.
  * @param {boolean}           props.isLoading        Whether loading or not.
  * @param {Object}            props.category         The product category object.
+ * @param {[boolean, Dispatch<SetStateAction<boolean>>]} props.useEditingImage Getter and setter for editing image state.
  */
 const FeaturedCategory = ( {
 	attributes,
 	isSelected,
+	name,
 	setAttributes,
 	isLoading,
 	category,
+	useEditingImage,
 } ) => {
 	const { mediaId, mediaSrc } = attributes;
+	const [ isEditingImage, setIsEditingImage ] = useEditingImage;
+	const { backgroundImageId, backgroundImageSrc } = useBackgroundImage( {
+		mediaId,
+		mediaSrc,
+		blockName: name,
+		item: category,
+	} );
 
 	const {
-		backgroundImageId,
-		backgroundImageSize,
-		backgroundImageSrc,
-		isEditingImage,
+		// backgroundImageSize,
 		onResize,
 		setBackgroundImageSize,
 		setGradient,
-		setIsEditingImage,
 	} = useSetup( {
-		isSelected,
-		mediaId,
-		mediaSrc,
-		metadata,
 		setAttributes,
-		item: category,
 	} );
 
 	const getBlockControls = () => {
@@ -308,19 +320,6 @@ const FeaturedCategory = ( {
 		</Placeholder>
 	);
 
-	if ( isEditingImage ) {
-		return (
-			<ImageEditor
-				backgroundImageId={ backgroundImageId }
-				backgroundImageSize={ backgroundImageSize }
-				backgroundImageSrc={ backgroundImageSrc }
-				isEditingImage={ isEditingImage }
-				setAttributes={ setAttributes }
-				setIsEditingImage={ setIsEditingImage }
-			/>
-		);
-	}
-
 	return (
 		<>
 			{ getBlockControls() }
@@ -421,4 +420,5 @@ export default compose( [
 	}, 'withUpdateButtonAttributes' ),
 	withEditMode( EDIT_MODE_CONFIG ),
 	withApiError,
+	withImageEditor,
 ] )( FeaturedCategory );
