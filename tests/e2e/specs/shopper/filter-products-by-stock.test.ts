@@ -34,6 +34,8 @@ const block = {
 	foundProduct: 'Woo Single #3',
 };
 
+const { selectors } = block;
+
 const waitForAllProductsBlockLoaded = () =>
 	page.waitForSelector( selectors.frontend.productsList + '.is-loading', {
 		hidden: true,
@@ -43,8 +45,6 @@ const goToShopPage = () =>
 	page.goto( BASE_URL + '/shop', {
 		waitUntil: 'networkidle0',
 	} );
-
-const { selectors } = block;
 
 describe( `${ block.name } Block`, () => {
 	describe( 'with All Products Block', () => {
