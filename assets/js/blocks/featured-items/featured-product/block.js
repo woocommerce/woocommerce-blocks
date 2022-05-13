@@ -8,7 +8,6 @@ import {
 	AlignmentToolbar,
 	BlockControls,
 	MediaReplaceFlow,
-	__experimentalGetSpacingClassesAndStyles as getSpacingClassesAndStyles,
 } from '@wordpress/block-editor';
 import { withSelect } from '@wordpress/data';
 import {
@@ -16,10 +15,8 @@ import {
 	ToolbarGroup,
 	withSpokenMessages,
 } from '@wordpress/components';
-import classnames from 'classnames';
 import { Component } from '@wordpress/element';
 import { compose, createHigherOrderComponent } from '@wordpress/compose';
-import { isEmpty } from 'lodash';
 import PropTypes from 'prop-types';
 import TextToolbarButton from '@woocommerce/editor-components/text-toolbar-button';
 import { withProduct } from '@woocommerce/block-hocs';
@@ -28,16 +25,13 @@ import { crop, starEmpty } from '@wordpress/icons';
 /**
  * Internal dependencies
  */
-import { ConstrainedResizable } from '../constrained-resizable';
 import { withImageEditor } from '../image-editor';
 import { withInspectorControls } from '../inspector-controls';
-import { useSetup } from '../use-setup';
-import { calculateBackgroundImagePosition, dimRatioToClass } from '../utils';
-import { CallToAction } from '../call-to-action';
 import { withEditMode } from '../with-edit-mode';
 import { withApiError } from '../with-api-error';
 import { useBackgroundImage } from '../use-background-image';
 import { withFeaturedItem } from '../with-featured-item';
+import { withEditingImage } from '../with-editing-image';
 
 /**
  * @template A
@@ -79,8 +73,6 @@ const EDIT_MODE_CONFIG = {
  *
  * @param {Object}            props                  Incoming props for the component.
  * @param {Object}            props.attributes       Incoming block attributes.
- * @param {boolean}           props.isLoading        Whether product is loading or not.
- * @param {boolean}           props.isSelected       Whether block is selected or not.
  * @param {string}            props.name             The block name.
  * @param {Object}            props.product          Product object.
  * @param {function(any):any} props.setAttributes    Setter for attributes.
@@ -88,8 +80,6 @@ const EDIT_MODE_CONFIG = {
  */
 const FeaturedProduct = ( {
 	attributes,
-	isLoading,
-	isSelected,
 	name,
 	product,
 	setAttributes,
@@ -102,14 +92,6 @@ const FeaturedProduct = ( {
 		mediaSrc,
 		blockName: name,
 		item: product,
-	} );
-
-	const {
-		// backgroundImageSize,
-		onResize,
-		setBackgroundImageSize,
-	} = useSetup( {
-		setAttributes,
 	} );
 
 	const getBlockControls = () => {
@@ -174,137 +156,7 @@ const FeaturedProduct = ( {
 		);
 	};
 
-	const renderProduct = () => {
-		const {
-			contentAlign,
-			dimRatio,
-			focalPoint,
-			imageFit,
-			minHeight,
-			overlayColor,
-			overlayGradient,
-			showDesc,
-			showPrice,
-			style,
-		} = attributes;
-
-		const classes = classnames(
-			'wc-block-featured-product',
-			dimRatioToClass( dimRatio ),
-			{
-				'is-selected': isSelected && attributes.productId !== 'preview',
-				'is-loading': ! product && isLoading,
-				'is-not-found': ! product && ! isLoading,
-				'has-background-dim': dimRatio !== 0,
-			},
-			contentAlign !== 'center' && `has-${ contentAlign }-content`
-		);
-
-		const containerStyle = {
-			borderRadius: style?.border?.radius,
-		};
-
-		const wrapperStyle = {
-			...getSpacingClassesAndStyles( attributes ).style,
-			minHeight,
-		};
-
-		const backgroundImageStyle = {
-			...calculateBackgroundImagePosition( focalPoint ),
-			objectFit: imageFit,
-		};
-
-		const overlayStyle = {
-			background: overlayGradient,
-			backgroundColor: overlayColor,
-		};
-
-		return (
-			<>
-				<ConstrainedResizable
-					enable={ { bottom: true } }
-					onResize={ onResize }
-					showHandle={ isSelected }
-					style={ { minHeight } }
-				/>
-				<div className={ classes } style={ containerStyle }>
-					<div
-						className="wc-block-featured-product__wrapper"
-						style={ wrapperStyle }
-					>
-						<div
-							className="background-dim__overlay"
-							style={ overlayStyle }
-						/>
-						<img
-							alt={ product.short_description }
-							className="wc-block-featured-product__background-image"
-							src={ backgroundImageSrc }
-							style={ backgroundImageStyle }
-							onLoad={ ( e ) => {
-								setBackgroundImageSize( {
-									height: e.target?.naturalHeight,
-									width: e.target?.naturalWidth,
-								} );
-							} }
-						/>
-						<h2
-							className="wc-block-featured-product__title"
-							dangerouslySetInnerHTML={ {
-								__html: product.name,
-							} }
-						/>
-						{ ! isEmpty( product.variation ) && (
-							<h3
-								className="wc-block-featured-product__variation"
-								dangerouslySetInnerHTML={ {
-									__html: product.variation,
-								} }
-							/>
-						) }
-						{ showDesc && (
-							<div
-								className="wc-block-featured-product__description"
-								dangerouslySetInnerHTML={ {
-									__html: product.short_description,
-								} }
-							/>
-						) }
-						{ showPrice && (
-							<div
-								className="wc-block-featured-product__price"
-								dangerouslySetInnerHTML={ {
-									__html: product.price_html,
-								} }
-							/>
-						) }
-						<div className="wc-block-featured-product__link">
-							{ renderButton() }
-						</div>
-					</div>
-				</div>
-			</>
-		);
-	};
-
-	const renderButton = () => {
-		const { productId, linkText } = attributes;
-
-		return (
-			<CallToAction
-				itemId={ productId }
-				linkText={ linkText }
-				permalink={ product.permalink }
-			/>
-		);
-	};
-
-	return (
-		<>
-			{ getBlockControls() }
-			{ renderProduct() }
-		</>
-	);
+	return <>{ getBlockControls() }</>;
 };
 
 FeaturedProduct.propTypes = {
@@ -398,8 +250,9 @@ export default compose( [
 		}
 		return WrappedComponent;
 	}, 'withUpdateButtonAttributes' ),
-	withFeaturedItem( CONTENT_CONFIG ),
+	withEditingImage,
 	withEditMode( EDIT_MODE_CONFIG ),
+	withFeaturedItem( CONTENT_CONFIG ),
 	withApiError,
 	withImageEditor,
 	withInspectorControls,

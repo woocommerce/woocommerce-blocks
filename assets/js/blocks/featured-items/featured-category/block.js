@@ -8,14 +8,12 @@ import {
 	AlignmentToolbar,
 	BlockControls,
 	MediaReplaceFlow,
-	__experimentalGetSpacingClassesAndStyles as getSpacingClassesAndStyles,
 } from '@wordpress/block-editor';
 import {
 	ToolbarButton,
 	ToolbarGroup,
 	withSpokenMessages,
 } from '@wordpress/components';
-import classnames from 'classnames';
 import { Component } from '@wordpress/element';
 import { withSelect } from '@wordpress/data';
 import { compose, createHigherOrderComponent } from '@wordpress/compose';
@@ -27,18 +25,14 @@ import TextToolbarButton from '@woocommerce/editor-components/text-toolbar-butto
 /**
  * Internal dependencies
  */
-import { dimRatioToClass } from './utils';
-import { ConstrainedResizable } from '../constrained-resizable';
 import { withImageEditor } from '../image-editor';
 import { withInspectorControls } from '../inspector-controls';
 import { withCategory } from '../../../hocs';
-import { calculateBackgroundImagePosition } from '../utils';
-import { CallToAction } from '../call-to-action';
-import { useSetup } from '../use-setup';
 import { withEditMode } from '../with-edit-mode';
 import { withApiError } from '../with-api-error';
 import { useBackgroundImage } from '../use-background-image';
 import { withFeaturedItem } from '../with-featured-item';
+import { withEditingImage } from '../with-editing-image';
 
 /**
  * @template A
@@ -80,19 +74,15 @@ const EDIT_MODE_CONFIG = {
  *
  * @param {Object}            props                  Incoming props for the component.
  * @param {Object}            props.attributes       Incoming block attributes.
- * @param {boolean}           props.isSelected       Whether block is selected or not.
  * @param {string}            props.name             The block name.
  * @param {function(any):any} props.setAttributes    Function for setting new attributes.
- * @param {boolean}           props.isLoading        Whether loading or not.
  * @param {Object}            props.category         The product category object.
  * @param {[boolean, Dispatch<SetStateAction<boolean>>]} props.useEditingImage Getter and setter for editing image state.
  */
 const FeaturedCategory = ( {
 	attributes,
-	isSelected,
 	name,
 	setAttributes,
-	isLoading,
 	category,
 	useEditingImage,
 } ) => {
@@ -103,14 +93,6 @@ const FeaturedCategory = ( {
 		mediaSrc,
 		blockName: name,
 		item: category,
-	} );
-
-	const {
-		// backgroundImageSize,
-		onResize,
-		setBackgroundImageSize,
-	} = useSetup( {
-		setAttributes,
 	} );
 
 	const getBlockControls = () => {
@@ -175,123 +157,7 @@ const FeaturedCategory = ( {
 		);
 	};
 
-	const renderButton = () => {
-		const { categoryId, linkText } = attributes;
-
-		return (
-			<CallToAction
-				itemId={ categoryId }
-				linkText={ linkText }
-				permalink={ category.permalink }
-			/>
-		);
-	};
-
-	const renderCategory = () => {
-		const {
-			contentAlign,
-			dimRatio,
-			focalPoint,
-			imageFit,
-			minHeight,
-			overlayColor,
-			overlayGradient,
-			showDesc,
-			style,
-		} = attributes;
-
-		const classes = classnames(
-			'wc-block-featured-category',
-			{
-				'is-selected':
-					isSelected && attributes.categoryId !== 'preview',
-				'is-loading': ! category && isLoading,
-				'is-not-found': ! category && ! isLoading,
-				'has-background-dim': dimRatio !== 0,
-			},
-			dimRatioToClass( dimRatio ),
-			contentAlign !== 'center' && `has-${ contentAlign }-content`
-		);
-
-		const containerStyle = {
-			borderRadius: style?.border?.radius,
-		};
-
-		const wrapperStyle = {
-			...getSpacingClassesAndStyles( attributes ).style,
-			minHeight,
-		};
-
-		const backgroundImageStyle = {
-			...calculateBackgroundImagePosition( focalPoint ),
-			objectFit: imageFit,
-		};
-
-		const overlayStyle = {
-			background: overlayGradient,
-			backgroundColor: overlayColor,
-		};
-
-		return (
-			<>
-				<ConstrainedResizable
-					enable={ { bottom: true } }
-					onResize={ onResize }
-					showHandle={ isSelected }
-					style={ { minHeight } }
-				/>
-				<div className={ classes } style={ containerStyle }>
-					<div
-						className="wc-block-featured-category__wrapper"
-						style={ wrapperStyle }
-					>
-						<div
-							className="background-dim__overlay"
-							style={ overlayStyle }
-						/>
-						{ backgroundImageSrc && (
-							<img
-								alt={ category.description }
-								className="wc-block-featured-category__background-image"
-								src={ backgroundImageSrc }
-								style={ backgroundImageStyle }
-								onLoad={ ( e ) => {
-									setBackgroundImageSize( {
-										height: e.target?.naturalHeight,
-										width: e.target?.naturalWidth,
-									} );
-								} }
-							/>
-						) }
-						<h2
-							className="wc-block-featured-category__title"
-							dangerouslySetInnerHTML={ {
-								__html: category.name,
-							} }
-						/>
-						{ showDesc && (
-							<div
-								className="wc-block-featured-category__description"
-								dangerouslySetInnerHTML={ {
-									__html: category.description,
-								} }
-							/>
-						) }
-						<div className="wc-block-featured-category__link">
-							{ renderButton() }
-						</div>
-					</div>
-				</div>
-			</>
-		);
-	};
-
-	return (
-		<>
-			{ getBlockControls() }
-			{ renderCategory() }
-		</>
-	);
+	return <>{ getBlockControls() }</>;
 };
 
 FeaturedCategory.propTypes = {
@@ -383,6 +249,7 @@ export default compose( [
 		}
 		return WrappedComponent;
 	}, 'withUpdateButtonAttributes' ),
+	withEditingImage,
 	withFeaturedItem( CONTENT_CONFIG ),
 	withEditMode( EDIT_MODE_CONFIG ),
 	withApiError,
