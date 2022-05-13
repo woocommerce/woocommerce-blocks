@@ -63,6 +63,8 @@ export const useStoreCartCoupons = ( context = '' ): StoreCartCoupon => {
 								),
 								{
 									id: 'coupon-form',
+									type: 'snackbar',
+									context,
 								}
 							);
 						}
