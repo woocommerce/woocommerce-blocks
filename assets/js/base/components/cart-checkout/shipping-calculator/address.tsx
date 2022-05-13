@@ -5,14 +5,14 @@ import { __ } from '@wordpress/i18n';
 import Button from '@woocommerce/base-components/button';
 import { useState } from '@wordpress/element';
 import isShallowEqual from '@wordpress/is-shallow-equal';
-import { useValidationContext } from '@woocommerce/base-context';
 import type { EnteredAddress, AddressFields } from '@woocommerce/settings';
-
+import { useDispatch, useSelect } from '@wordpress/data';
 /**
  * Internal dependencies
  */
 import './style.scss';
 import { AddressForm } from '../address-form';
+import { VALIDATION_STORE_KEY } from '../../../../../../packages/checkout/validation';
 
 interface ShippingCalculatorAddressProps {
 	address: EnteredAddress;
@@ -25,10 +25,13 @@ const ShippingCalculatorAddress = ( {
 	addressFields,
 }: ShippingCalculatorAddressProps ): JSX.Element => {
 	const [ address, setAddress ] = useState( initialAddress );
-	const {
-		hasValidationErrors,
-		showAllValidationErrors,
-	} = useValidationContext();
+	const { showAllValidationErrors } = useDispatch( VALIDATION_STORE_KEY );
+	const { hasValidationErrors } = useSelect( ( select ) => {
+		const store = select( VALIDATION_STORE_KEY );
+		return {
+			hasValidationErrors: store.hasValidationErrors(),
+		};
+	} );
 
 	const validateSubmit = () => {
 		showAllValidationErrors();

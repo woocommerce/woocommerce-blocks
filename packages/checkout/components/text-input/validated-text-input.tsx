@@ -5,7 +5,7 @@ import { __ } from '@wordpress/i18n';
 import { useCallback, useRef, useEffect, useState } from 'react';
 import classnames from 'classnames';
 import { withInstanceId } from '@wordpress/compose';
-import { isString } from '@woocommerce/types';
+import { isString, RequiredKeys } from '@woocommerce/types';
 import { dispatch, useSelect } from '@wordpress/data';
 
 /**
@@ -20,20 +20,9 @@ import { VALIDATION_STORE_KEY } from '../../validation';
 import TextInput from './text-input';
 import './style.scss';
 
-interface ValidatedTextInputPropsWithId {
+type ValidatedTextInputAllProps = {
 	instanceId?: string;
-	id: string;
-}
-
-interface ValidatedTextInputPropsWithInstanceId {
-	instanceId: string;
 	id?: string;
-}
-
-type ValidatedTextInputProps = (
-	| ValidatedTextInputPropsWithId
-	| ValidatedTextInputPropsWithInstanceId
- ) & {
 	className?: string;
 	ariaDescribedBy?: string;
 	errorId?: string;
@@ -43,7 +32,10 @@ type ValidatedTextInputProps = (
 	onChange: ( newValue: string ) => void;
 	value: string;
 };
-
+type ValidatedTextInputProps = RequiredKeys<
+	ValidatedTextInputAllProps,
+	'instanceId' | 'id'
+>;
 const ValidatedTextInput = ( {
 	className,
 	instanceId,
@@ -56,22 +48,28 @@ const ValidatedTextInput = ( {
 	errorMessage: passedErrorMessage = '',
 	value = '',
 	...rest
-}: ValidatedTextInputProps ) => {
+}: ValidatedTextInputProps ): JSX.Element => {
 	const [ isPristine, setIsPristine ] = useState( true );
 	const inputRef = useRef< HTMLInputElement >( null );
 
-	const { setValidationErrors: setDataValidationErrors } = dispatch(
-		VALIDATION_STORE_KEY
-	);
+	const {
+		setValidationErrors,
+		clearValidationError,
+		hideValidationError,
+	} = dispatch( VALIDATION_STORE_KEY );
 	const textInputId =
 		typeof id !== 'undefined' ? id : 'textinput-' + instanceId;
 	const errorIdString = errorId !== undefined ? errorId : textInputId;
 
-	const dataValidationError = useSelect( ( select ) => {
-		return select( VALIDATION_STORE_KEY ).getValidationError(
-			errorIdString
-		);
-	} );
+	const { getValidationError, getValidationErrorId } = useSelect(
+		( select ) => {
+			const store = select( VALIDATION_STORE_KEY );
+			return {
+				getValidationError: store.getValidationError(),
+				getValidationErrorId: store.getValidationErrorId(),
+			};
+		}
+	);
 
 	const validateInput = useCallback(
 		( errorsHidden = true ) => {
@@ -83,7 +81,7 @@ const ValidatedTextInput = ( {
 			inputObject.value = inputObject.value.trim();
 			const inputIsValid = inputObject.checkValidity();
 			if ( inputIsValid ) {
-				//clearValidationError( errorIdString );
+				clearValidationError( errorIdString );
 			} else {
 				const validationErrors = {
 					[ errorIdString ]: {
@@ -96,11 +94,10 @@ const ValidatedTextInput = ( {
 						hidden: errorsHidden,
 					},
 				};
-				setDataValidationErrors( validationErrors );
-				//setValidationErrors( validationErrors );
+				setValidationErrors( validationErrors );
 			}
 		},
-		[ errorIdString, setDataValidationErrors ]
+		[ errorIdString, setValidationErrors ]
 	);
 
 	/**
@@ -131,27 +128,23 @@ const ValidatedTextInput = ( {
 	}, [ value, validateInput ] );
 
 	// Remove validation errors when unmounted.
-	// useEffect( () => {
-	// 	return () => {
-	// 		clearValidationError( errorIdString );
-	// 	};
-	// }, [ clearValidationError, errorIdString ] );
+	useEffect( () => {
+		return () => {
+			clearValidationError( errorIdString );
+		};
+	}, [ clearValidationError, errorIdString ] );
 
 	// @todo - When useValidationContext is converted to TypeScript, remove this cast and use the correct type.
-	const errorMessage = ( dataValidationError || {} ) as {
-		message?: string;
-		hidden?: boolean;
-	};
-
+	const errorMessage = getValidationError( errorIdString ) || {};
 	if ( isString( passedErrorMessage ) && passedErrorMessage !== '' ) {
 		errorMessage.message = passedErrorMessage;
 	}
 
 	const hasError = errorMessage.message && ! errorMessage.hidden;
-	const describedBy = 'test';
-	// showError && hasError && getValidationErrorId( errorIdString )
-	// 	? getValidationErrorId( errorIdString )
-	// 	: ariaDescribedBy;
+	const describedBy =
+		showError && hasError && getValidationErrorId( errorIdString )
+			? getValidationErrorId( errorIdString )
+			: ariaDescribedBy;
 
 	return (
 		<TextInput
@@ -173,7 +166,7 @@ const ValidatedTextInput = ( {
 			}
 			ref={ inputRef }
 			onChange={ ( val ) => {
-				//hideValidationError( errorIdString );
+				hideValidationError( errorIdString );
 				onChange( val );
 			} }
 			ariaDescribedBy={ describedBy }

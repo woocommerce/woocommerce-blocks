@@ -10,7 +10,7 @@ import {
 	BillingStateInput,
 	ShippingStateInput,
 } from '@woocommerce/base-components/state-input';
-import { useValidationContext } from '@woocommerce/base-context';
+import { useDispatch, useSelect } from '@wordpress/data';
 import { useEffect, useMemo } from '@wordpress/element';
 import { __ } from '@wordpress/i18n';
 import { withInstanceId } from '@wordpress/compose';
@@ -27,6 +27,7 @@ import {
  * Internal dependencies
  */
 import prepareAddressFields from './prepare-address-fields';
+import { VALIDATION_STORE_KEY } from '../../../../../../packages/checkout/validation';
 
 // If it's the shipping address form and the user starts entering address
 // values without having set the country first, show an error.
@@ -87,11 +88,15 @@ const AddressForm = ( {
 	type = 'shipping',
 	values,
 }: AddressFormProps ): JSX.Element => {
-	const {
-		getValidationError,
-		setValidationErrors,
-		clearValidationError,
-	} = useValidationContext();
+	const { setValidationErrors, clearValidationError } = useDispatch(
+		VALIDATION_STORE_KEY
+	);
+	const { getValidationError } = useSelect( ( select ) => {
+		const store = select( VALIDATION_STORE_KEY );
+		return {
+			getValidationError: store.getValidationError(),
+		};
+	} );
 
 	const currentFields = useShallowEqual( fields );
 

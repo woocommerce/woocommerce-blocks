@@ -6,23 +6,30 @@ import type {
 	ValidationData,
 	ValidationContextError,
 } from '@woocommerce/type-defs/contexts';
+import { useDispatch, useSelect } from '@wordpress/data';
 
 /**
  * Internal dependencies
  */
-import { useValidationContext } from '../providers/validation/';
-
+import { VALIDATION_STORE_KEY } from '../../../../../packages/checkout/validation';
 /**
  * Custom hook for setting for adding errors to the validation system.
  */
 export const useValidation = (): ValidationData => {
 	const {
-		hasValidationErrors,
-		getValidationError,
-		clearValidationError,
-		hideValidationError,
 		setValidationErrors,
-	} = useValidationContext();
+		hideValidationError,
+		clearValidationError,
+	} = useDispatch( VALIDATION_STORE_KEY );
+	const { hasValidationErrors, getValidationError } = useSelect(
+		( select ) => {
+			const store = select( VALIDATION_STORE_KEY );
+			return {
+				hasValidationErrors: store.hasValidationErrors(),
+				getValidationError: store.getValidationError(),
+			};
+		}
+	);
 	const prefix = 'extensions-errors';
 
 	return {

@@ -15,16 +15,18 @@ export const ValidationInputError = ( {
 	propertyName = '',
 	elementId = '',
 } ) => {
-	//const { getValidationError, getValidationErrorId } = useValidationContext();
-	/* Note that I've short-circuited the function below to avoid needing the useValidationContext */
-	const getValidationErrorId = ( _elementId ) =>
-		`error- ${ _elementId }-${ propertyName }`;
-	const validationError = useSelect( ( select ) =>
-		select( VALIDATION_STORE_KEY ).getValidationError( propertyName )
+	const { getValidationError, getValidationErrorId } = useSelect(
+		( select ) => {
+			const store = select( VALIDATION_STORE_KEY );
+			return {
+				getValidationError: store.getValidationError(),
+				getValidationErrorId: store.getValidationErrorId(),
+			};
+		}
 	);
 
 	if ( ! errorMessage || typeof errorMessage !== 'string' ) {
-		const error = validationError || {};
+		const error = getValidationError( propertyName ) || {};
 		if ( error.message && ! error.hidden ) {
 			errorMessage = error.message;
 		} else {
