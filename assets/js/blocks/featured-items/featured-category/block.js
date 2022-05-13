@@ -11,8 +11,6 @@ import {
 	__experimentalGetSpacingClassesAndStyles as getSpacingClassesAndStyles,
 } from '@wordpress/block-editor';
 import {
-	Placeholder,
-	Spinner,
 	ToolbarButton,
 	ToolbarGroup,
 	withSpokenMessages,
@@ -23,7 +21,7 @@ import { withSelect } from '@wordpress/data';
 import { compose, createHigherOrderComponent } from '@wordpress/compose';
 import PropTypes from 'prop-types';
 import { folderStarred } from '@woocommerce/icons';
-import { crop, Icon } from '@wordpress/icons';
+import { crop } from '@wordpress/icons';
 import TextToolbarButton from '@woocommerce/editor-components/text-toolbar-button';
 
 /**
@@ -40,6 +38,7 @@ import { useSetup } from '../use-setup';
 import { withEditMode } from '../with-edit-mode';
 import { withApiError } from '../with-api-error';
 import { useBackgroundImage } from '../use-background-image';
+import { withFeaturedItem } from '../with-featured-item';
 
 /**
  * @template A
@@ -51,7 +50,21 @@ import { useBackgroundImage } from '../use-background-image';
  * @typedef {import("react").SetStateAction< S >} SetStateAction
  */
 
+const GENERIC_CONFIG = {
+	icon: folderStarred,
+	label: __( 'Featured Category', 'woo-gutenberg-products-block' ),
+};
+
+const CONTENT_CONFIG = {
+	...GENERIC_CONFIG,
+	emptyMessage: __(
+		'No product category is selected.',
+		'woo-gutenberg-products-block'
+	),
+};
+
 const EDIT_MODE_CONFIG = {
+	...GENERIC_CONFIG,
 	description: __(
 		'Visually highlight a product category and encourage prompt action.',
 		'woo-gutenberg-products-block'
@@ -60,8 +73,6 @@ const EDIT_MODE_CONFIG = {
 		'Showing Featured Product block preview.',
 		'woo-gutenberg-products-block'
 	),
-	icon: folderStarred,
-	label: __( 'Featured Category', 'woo-gutenberg-products-block' ),
 };
 
 /**
@@ -275,27 +286,10 @@ const FeaturedCategory = ( {
 		);
 	};
 
-	const renderNoCategory = () => (
-		<Placeholder
-			className="wc-block-featured-category"
-			icon={ <Icon icon={ folderStarred } /> }
-			label={ __( 'Featured Category', 'woo-gutenberg-products-block' ) }
-		>
-			{ isLoading ? (
-				<Spinner />
-			) : (
-				__(
-					'No product category is selected.',
-					'woo-gutenberg-products-block'
-				)
-			) }
-		</Placeholder>
-	);
-
 	return (
 		<>
 			{ getBlockControls() }
-			{ category ? renderCategory() : renderNoCategory() }
+			{ renderCategory() }
 		</>
 	);
 };
@@ -389,6 +383,7 @@ export default compose( [
 		}
 		return WrappedComponent;
 	}, 'withUpdateButtonAttributes' ),
+	withFeaturedItem( CONTENT_CONFIG ),
 	withEditMode( EDIT_MODE_CONFIG ),
 	withApiError,
 	withImageEditor,

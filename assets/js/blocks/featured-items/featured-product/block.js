@@ -12,8 +12,6 @@ import {
 } from '@wordpress/block-editor';
 import { withSelect } from '@wordpress/data';
 import {
-	Placeholder,
-	Spinner,
 	ToolbarButton,
 	ToolbarGroup,
 	withSpokenMessages,
@@ -25,7 +23,7 @@ import { isEmpty } from 'lodash';
 import PropTypes from 'prop-types';
 import TextToolbarButton from '@woocommerce/editor-components/text-toolbar-button';
 import { withProduct } from '@woocommerce/block-hocs';
-import { crop, Icon, starEmpty } from '@wordpress/icons';
+import { crop, starEmpty } from '@wordpress/icons';
 
 /**
  * Internal dependencies
@@ -39,6 +37,7 @@ import { CallToAction } from '../call-to-action';
 import { withEditMode } from '../with-edit-mode';
 import { withApiError } from '../with-api-error';
 import { useBackgroundImage } from '../use-background-image';
+import { withFeaturedItem } from '../with-featured-item';
 
 /**
  * @template A
@@ -50,7 +49,21 @@ import { useBackgroundImage } from '../use-background-image';
  * @typedef {import("react").SetStateAction< S >} SetStateAction
  */
 
+const GENERIC_CONFIG = {
+	icon: starEmpty,
+	label: __( 'Featured Product', 'woo-gutenberg-products-block' ),
+};
+
+const CONTENT_CONFIG = {
+	...GENERIC_CONFIG,
+	emptyMessage: __(
+		'No product is selected.',
+		'woo-gutenberg-products-block'
+	),
+};
+
 const EDIT_MODE_CONFIG = {
+	...GENERIC_CONFIG,
 	description: __(
 		'Visually highlight a product or variation and encourage prompt action',
 		'woo-gutenberg-products-block'
@@ -59,8 +72,6 @@ const EDIT_MODE_CONFIG = {
 		'Showing Featured Product block preview.',
 		'woo-gutenberg-products-block'
 	),
-	icon: starEmpty,
-	label: __( 'Featured Product', 'woo-gutenberg-products-block' ),
 };
 
 /**
@@ -288,24 +299,10 @@ const FeaturedProduct = ( {
 		);
 	};
 
-	const renderNoProduct = () => (
-		<Placeholder
-			className="wc-block-featured-product"
-			icon={ <Icon icon={ starEmpty } /> }
-			label={ __( 'Featured Product', 'woo-gutenberg-products-block' ) }
-		>
-			{ isLoading ? (
-				<Spinner />
-			) : (
-				__( 'No product is selected.', 'woo-gutenberg-products-block' )
-			) }
-		</Placeholder>
-	);
-
 	return (
 		<>
 			{ getBlockControls() }
-			{ product ? renderProduct() : renderNoProduct() }
+			{ renderProduct() }
 		</>
 	);
 };
@@ -401,6 +398,7 @@ export default compose( [
 		}
 		return WrappedComponent;
 	}, 'withUpdateButtonAttributes' ),
+	withFeaturedItem( CONTENT_CONFIG ),
 	withEditMode( EDIT_MODE_CONFIG ),
 	withApiError,
 	withImageEditor,
