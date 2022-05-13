@@ -14,7 +14,6 @@ import { withSelect } from '@wordpress/data';
 import {
 	Placeholder,
 	Spinner,
-	ToggleControl,
 	ToolbarButton,
 	ToolbarGroup,
 	withSpokenMessages,
@@ -33,7 +32,7 @@ import { crop, Icon, starEmpty } from '@wordpress/icons';
  */
 import { ConstrainedResizable } from '../constrained-resizable';
 import { withImageEditor } from '../image-editor';
-import { InspectorControls } from '../inspector-controls';
+import { withInspectorControls } from '../inspector-controls';
 import { useSetup } from '../use-setup';
 import { calculateBackgroundImagePosition, dimRatioToClass } from '../utils';
 import { CallToAction } from '../call-to-action';
@@ -98,7 +97,6 @@ const FeaturedProduct = ( {
 		// backgroundImageSize,
 		onResize,
 		setBackgroundImageSize,
-		setGradient,
 	} = useSetup( {
 		setAttributes,
 	} );
@@ -162,48 +160,6 @@ const FeaturedProduct = ( {
 					] }
 				/>
 			</BlockControls>
-		);
-	};
-
-	const renderInspectorControls = () => {
-		const {
-			alt,
-			dimRatio,
-			focalPoint,
-			imageFit,
-			overlayColor,
-			overlayGradient,
-			showDesc,
-			showPrice,
-		} = attributes;
-
-		return (
-			<InspectorControls
-				alt={ alt }
-				backgroundImageSrc={ backgroundImageSrc }
-				contentPanel={
-					<ToggleControl
-						label={ __(
-							'Show price',
-							'woo-gutenberg-products-block'
-						) }
-						checked={ showPrice }
-						onChange={ () =>
-							setAttributes( {
-								showPrice: ! showPrice,
-							} )
-						}
-					/>
-				}
-				dimRatio={ dimRatio }
-				focalPoint={ focalPoint }
-				imageFit={ imageFit }
-				overlayColor={ overlayColor }
-				overlayGradient={ overlayGradient }
-				setAttributes={ setAttributes }
-				setGradient={ setGradient }
-				showDesc={ showDesc }
-			/>
 		);
 	};
 
@@ -349,7 +305,6 @@ const FeaturedProduct = ( {
 	return (
 		<>
 			{ getBlockControls() }
-			{ renderInspectorControls() }
 			{ product ? renderProduct() : renderNoProduct() }
 		</>
 	);
@@ -449,4 +404,5 @@ export default compose( [
 	withEditMode( EDIT_MODE_CONFIG ),
 	withApiError,
 	withImageEditor,
+	withInspectorControls,
 ] )( FeaturedProduct );

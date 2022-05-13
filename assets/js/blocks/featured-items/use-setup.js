@@ -4,15 +4,9 @@
  * External dependencies
  */
 import { useState, useCallback } from 'react';
-import { __experimentalUseGradient as useGradient } from '@wordpress/block-editor';
 
 export function useSetup( { setAttributes } ) {
-	const [ isEditingImage, setIsEditingImage ] = useState( false );
 	const [ backgroundImageSize, setBackgroundImageSize ] = useState( {} );
-	const { setGradient } = useGradient( {
-		gradientAttribute: 'overlayGradient',
-		customGradientAttribute: 'overlayGradient',
-	} );
 
 	const onResize = useCallback(
 		( _event, _direction, elt ) => {
@@ -23,10 +17,7 @@ export function useSetup( { setAttributes } ) {
 
 	return {
 		backgroundImageSize,
-		isEditingImage,
 		onResize,
 		setBackgroundImageSize,
-		setGradient,
-		setIsEditingImage,
 	};
 }

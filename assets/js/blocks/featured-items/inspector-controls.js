@@ -7,6 +7,7 @@ import { __ } from '@wordpress/i18n';
 import {
 	InspectorControls as GutenbergInspectorControls,
 	__experimentalPanelColorGradientSettings as PanelColorGradientSettings,
+	__experimentalUseGradient as useGradient,
 } from '@wordpress/block-editor';
 import {
 	FocalPointPicker,
@@ -18,6 +19,12 @@ import {
 	TextareaControl,
 	ExternalLink,
 } from '@wordpress/components';
+
+/**
+ * Internal dependencies
+ */
+import { useBackgroundImage } from './use-background-image';
+import { BLOCK_NAMES } from './constants';
 
 export const InspectorControls = ( {
 	alt,
@@ -184,5 +191,66 @@ export const InspectorControls = ( {
 				</>
 			) }
 		</GutenbergInspectorControls>
+	);
+};
+
+export const withInspectorControls = ( Component ) => ( props ) => {
+	const { attributes, name, setAttributes } = props;
+	const {
+		alt,
+		dimRatio,
+		focalPoint,
+		imageFit,
+		mediaId,
+		mediaSrc,
+		overlayColor,
+		overlayGradient,
+		showDesc,
+		showPrice,
+	} = attributes;
+
+	const item =
+		name === BLOCK_NAMES.featuredProduct ? props.product : props.category;
+
+	const { setGradient } = useGradient( {
+		gradientAttribute: 'overlayGradient',
+		customGradientAttribute: 'overlayGradient',
+	} );
+	const { backgroundImageSrc } = useBackgroundImage( {
+		item,
+		mediaId,
+		mediaSrc,
+		blockName: name,
+	} );
+
+	const contentPanel = name === BLOCK_NAMES.featuredProduct && (
+		<ToggleControl
+			label={ __( 'Show price', 'woo-gutenberg-products-block' ) }
+			checked={ showPrice }
+			onChange={ () =>
+				setAttributes( {
+					showPrice: ! showPrice,
+				} )
+			}
+		/>
+	);
+
+	return (
+		<>
+			<InspectorControls
+				alt={ alt }
+				backgroundImageSrc={ backgroundImageSrc }
+				contentPanel={ contentPanel }
+				dimRatio={ dimRatio }
+				focalPoint={ focalPoint }
+				imageFit={ imageFit }
+				overlayColor={ overlayColor }
+				overlayGradient={ overlayGradient }
+				setAttributes={ setAttributes }
+				setGradient={ setGradient }
+				showDesc={ showDesc }
+			/>
+			<Component { ...props } />
+		</>
 	);
 };

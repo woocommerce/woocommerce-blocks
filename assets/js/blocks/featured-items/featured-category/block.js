@@ -32,7 +32,7 @@ import TextToolbarButton from '@woocommerce/editor-components/text-toolbar-butto
 import { dimRatioToClass } from './utils';
 import { ConstrainedResizable } from '../constrained-resizable';
 import { withImageEditor } from '../image-editor';
-import { InspectorControls } from '../inspector-controls';
+import { withInspectorControls } from '../inspector-controls';
 import { withCategory } from '../../../hocs';
 import { calculateBackgroundImagePosition } from '../utils';
 import { CallToAction } from '../call-to-action';
@@ -98,7 +98,6 @@ const FeaturedCategory = ( {
 		// backgroundImageSize,
 		onResize,
 		setBackgroundImageSize,
-		setGradient,
 	} = useSetup( {
 		setAttributes,
 	} );
@@ -162,33 +161,6 @@ const FeaturedCategory = ( {
 					] }
 				/>
 			</BlockControls>
-		);
-	};
-
-	const renderInspectorControls = () => {
-		const {
-			alt,
-			dimRatio,
-			focalPoint,
-			imageFit,
-			overlayColor,
-			overlayGradient,
-			showDesc,
-		} = attributes;
-
-		return (
-			<InspectorControls
-				alt={ alt }
-				backgroundImageSrc={ backgroundImageSrc }
-				dimRatio={ dimRatio }
-				focalPoint={ focalPoint }
-				imageFit={ imageFit }
-				overlayColor={ overlayColor }
-				overlayGradient={ overlayGradient }
-				setAttributes={ setAttributes }
-				setGradient={ setGradient }
-				showDesc={ showDesc }
-			/>
 		);
 	};
 
@@ -323,7 +295,6 @@ const FeaturedCategory = ( {
 	return (
 		<>
 			{ getBlockControls() }
-			{ renderInspectorControls() }
 			{ category ? renderCategory() : renderNoCategory() }
 		</>
 	);
@@ -421,4 +392,5 @@ export default compose( [
 	withEditMode( EDIT_MODE_CONFIG ),
 	withApiError,
 	withImageEditor,
+	withInspectorControls,
 ] )( FeaturedCategory );
