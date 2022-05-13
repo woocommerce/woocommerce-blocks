@@ -96,16 +96,16 @@ class FeaturedProduct extends AbstractDynamicBlock {
 
 		$image_url = esc_url( $this->get_image_url( $attributes, $product ) );
 
-		$styles          = $this->get_styles( $attributes, $image_url );
-		$classes         = $this->get_classes( $attributes );
-		$wrapper_classes = $this->get_wrapper_classes( $attributes );
+		$classes = $this->get_classes( $attributes );
 
 		$output  = sprintf( '<div class="%1$s wp-block-woocommerce-featured-product">', esc_attr( trim( $classes ) ) );
-		$output .= sprintf( '<div class="%s" style="%s">', esc_attr( $wrapper_classes ), esc_attr( $styles ) );
+		$output .= $this->render_wrapper( $attributes );
 		$output .= $this->render_overlay( $attributes );
 
 		if ( ! $attributes['isRepeated'] && ! $attributes['hasParallax'] ) {
 			$output .= $this->render_image( $attributes, $product, $image_url );
+		} else {
+			$output .= $this->render_bg_image( $attributes, $image_url );
 		}
 
 		$output .= $title;
@@ -176,6 +176,43 @@ class FeaturedProduct extends AbstractDynamicBlock {
 	}
 
 	/**
+	 * Renders the featured image as a div background.
+	 *
+	 * @param array  $attributes Block attributes. Default empty array.
+	 * @param string $image_url Product image url.
+	 *
+	 * @return string
+	 */
+	private function render_bg_image( $attributes, $image_url ) {
+		$styles = $this->get_bg_styles( $attributes, $image_url );
+
+		$classes = [ 'wc-block-featured-product__background-image' ];
+
+		if ( $attributes['hasParallax'] ) {
+			$classes[] = ' has-parallax';
+		}
+
+		return sprintf( '<div class="%1$s" style="%2$s" /></div>', implode( ' ', $classes ), $styles );
+	}
+
+	/**
+	 * Renders the image wrapper.
+	 *
+	 * @param array $attributes Block attributes. Default empty array.
+	 *
+	 * @return string
+	 */
+	private function render_wrapper( $attributes ) {
+		$min_height = $attributes['minHeight'] ?? wc_get_theme_support( 'featured_block::default_height', 500 );
+
+		if ( isset( $attributes['minHeight'] ) ) {
+			$style = sprintf( 'min-height:%dpx;', intval( $min_height ) );
+		}
+
+		return sprintf( '<div class="wc-block-featured-product__wrapper" style="%s">', esc_attr( $style ) );
+	}
+
+	/**
 	 * Renders the block overlay
 	 *
 	 * @param array $attributes Block attributes. Default empty array.
@@ -204,7 +241,7 @@ class FeaturedProduct extends AbstractDynamicBlock {
 	 *
 	 * @return string
 	 */
-	public function get_styles( $attributes, $image_url ) {
+	public function get_bg_styles( $attributes, $image_url ) {
 		$style = '';
 
 		if ( $attributes['isRepeated'] || $attributes['hasParallax'] ) {
@@ -224,32 +261,10 @@ class FeaturedProduct extends AbstractDynamicBlock {
 			);
 		}
 
-		$min_height = $attributes['minHeight'] ?? wc_get_theme_support( 'featured_block::default_height', 500 );
-
-		if ( isset( $attributes['minHeight'] ) ) {
-			$style .= sprintf( 'min-height:%dpx;', intval( $min_height ) );
-		}
-
 		$global_style_style = StyleAttributesUtils::get_styles_by_attributes( $attributes, $this->global_style_wrapper );
 		$style             .= $global_style_style;
 
 		return $style;
-	}
-
-	/**
-	 * Get class names for the block wrapper.
-	 *
-	 * @param array $attributes Block attributes. Default empty array.
-	 * @return string
-	 */
-	private function get_wrapper_classes( $attributes ) {
-		$classes[] = 'wc-block-featured-product__wrapper';
-
-		if ( $attributes['hasParallax'] ) {
-			$classes[] = ' has-parallax';
-		}
-
-		return implode( ' ', $classes );
 	}
 
 	/**
