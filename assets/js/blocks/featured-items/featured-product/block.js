@@ -20,16 +20,6 @@ import { withEditMode } from '../with-edit-mode';
 import { withEditingImage } from '../with-editing-image';
 import { withFeaturedItem } from '../with-featured-item';
 
-/**
- * @template A
- * @typedef {import("react").Dispatch< A >} Dispatch
- */
-
-/**
- * @template S
- * @typedef {import("react").SetStateAction< S >} SetStateAction
- */
-
 const GENERIC_CONFIG = {
 	icon: starEmpty,
 	label: __( 'Featured Product', 'woo-gutenberg-products-block' ),
