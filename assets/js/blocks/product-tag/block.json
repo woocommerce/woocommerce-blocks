@@ -30,6 +30,13 @@
         },
         "contentVisibility": {
             "type": "object",
+            "default": {
+                "image": true,
+                "title": true,
+                "price": true,
+                "rating": true,
+                "button": true
+            },
             "properties": {
                 "image": {
                     "type": "boolean",
