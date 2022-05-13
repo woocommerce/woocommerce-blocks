@@ -526,6 +526,11 @@ const FeaturedProduct = ( {
 		const isImgElement = ! isRepeated && ! hasParallax;
 
 		const wrapperStyle = {
+			...getSpacingClassesAndStyles( attributes ).style,
+			minHeight,
+		};
+
+		const backgroundDivStyle = {
 			...( ! isImgElement
 				? {
 						...backgroundImageStyles( backgroundImageSrc ),
@@ -534,8 +539,6 @@ const FeaturedProduct = ( {
 						),
 				  }
 				: undefined ),
-			...getSpacingClassesAndStyles( attributes ).style,
-			minHeight,
 			...( ! isRepeated && {
 				backgroundRepeat: 'no-repeat',
 				backgroundSize: imageFit === 'cover' ? imageFit : 'auto',
@@ -558,8 +561,7 @@ const FeaturedProduct = ( {
 				<div className={ classes } style={ containerStyle }>
 					<div
 						className={ classnames(
-							'wc-block-featured-product__wrapper',
-							{ 'has-parallax': hasParallax }
+							'wc-block-featured-product__wrapper'
 						) }
 						style={ wrapperStyle }
 					>
@@ -579,6 +581,17 @@ const FeaturedProduct = ( {
 										width: e.target?.naturalWidth,
 									} );
 								} }
+							/>
+						) }
+						{ ! isImgElement && (
+							<div
+								className={ classnames(
+									'wc-block-featured-product__background-image',
+									{
+										'has-parallax': hasParallax,
+									}
+								) }
+								style={ backgroundDivStyle }
 							/>
 						) }
 						<h2
