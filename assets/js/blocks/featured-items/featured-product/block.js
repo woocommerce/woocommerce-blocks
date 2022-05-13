@@ -1,37 +1,24 @@
-/* eslint-disable @wordpress/no-unsafe-wp-apis */
-
 /**
  * External dependencies
  */
-import { __ } from '@wordpress/i18n';
-import {
-	AlignmentToolbar,
-	BlockControls,
-	MediaReplaceFlow,
-} from '@wordpress/block-editor';
-import { withSelect } from '@wordpress/data';
-import {
-	ToolbarButton,
-	ToolbarGroup,
-	withSpokenMessages,
-} from '@wordpress/components';
-import { Component } from '@wordpress/element';
-import { compose, createHigherOrderComponent } from '@wordpress/compose';
-import PropTypes from 'prop-types';
-import TextToolbarButton from '@woocommerce/editor-components/text-toolbar-button';
 import { withProduct } from '@woocommerce/block-hocs';
-import { crop, starEmpty } from '@wordpress/icons';
+import { withSpokenMessages } from '@wordpress/components';
+import { compose, createHigherOrderComponent } from '@wordpress/compose';
+import { withSelect } from '@wordpress/data';
+import { Component } from '@wordpress/element';
+import { __ } from '@wordpress/i18n';
+import { starEmpty } from '@wordpress/icons';
 
 /**
  * Internal dependencies
  */
+import { withBlockControls } from '../block-controls';
 import { withImageEditor } from '../image-editor';
 import { withInspectorControls } from '../inspector-controls';
-import { withEditMode } from '../with-edit-mode';
 import { withApiError } from '../with-api-error';
-import { useBackgroundImage } from '../use-background-image';
-import { withFeaturedItem } from '../with-featured-item';
+import { withEditMode } from '../with-edit-mode';
 import { withEditingImage } from '../with-editing-image';
+import { withFeaturedItem } from '../with-featured-item';
 
 /**
  * @template A
@@ -46,6 +33,11 @@ import { withEditingImage } from '../with-editing-image';
 const GENERIC_CONFIG = {
 	icon: starEmpty,
 	label: __( 'Featured Product', 'woo-gutenberg-products-block' ),
+};
+
+const BLOCK_CONTROL_CONFIG = {
+	cropLabel: __( 'Edit product image', 'woo-gutenberg-products-block' ),
+	editLabel: __( 'Edit selected product', 'woo-gutenberg-products-block' ),
 };
 
 const CONTENT_CONFIG = {
@@ -66,130 +58,6 @@ const EDIT_MODE_CONFIG = {
 		'Showing Featured Product block preview.',
 		'woo-gutenberg-products-block'
 	),
-};
-
-/**
- * Component to handle edit mode of "Featured Product".
- *
- * @param {Object}            props                  Incoming props for the component.
- * @param {Object}            props.attributes       Incoming block attributes.
- * @param {string}            props.name             The block name.
- * @param {Object}            props.product          Product object.
- * @param {function(any):any} props.setAttributes    Setter for attributes.
- * @param {[boolean, Dispatch<SetStateAction<boolean>>]} props.useEditingImage Getter and setter for editing image state.
- */
-const FeaturedProduct = ( {
-	attributes,
-	name,
-	product,
-	setAttributes,
-	useEditingImage,
-} ) => {
-	const { mediaId, mediaSrc } = attributes;
-	const [ isEditingImage, setIsEditingImage ] = useEditingImage;
-	const { backgroundImageId, backgroundImageSrc } = useBackgroundImage( {
-		mediaId,
-		mediaSrc,
-		blockName: name,
-		item: product,
-	} );
-
-	const getBlockControls = () => {
-		const { contentAlign, editMode } = attributes;
-
-		return (
-			<BlockControls>
-				<AlignmentToolbar
-					value={ contentAlign }
-					onChange={ ( nextAlign ) => {
-						setAttributes( { contentAlign: nextAlign } );
-					} }
-				/>
-				<ToolbarGroup>
-					{ backgroundImageSrc && ! isEditingImage && (
-						<ToolbarButton
-							onClick={ () => setIsEditingImage( true ) }
-							icon={ crop }
-							label={ __(
-								'Edit product image',
-								'woo-gutenberg-products-block'
-							) }
-						/>
-					) }
-					<MediaReplaceFlow
-						mediaId={ backgroundImageId }
-						mediaURL={ mediaSrc }
-						accept="image/*"
-						onSelect={ ( media ) => {
-							setAttributes( {
-								mediaId: media.id,
-								mediaSrc: media.url,
-							} );
-						} }
-						allowedTypes={ [ 'image' ] }
-					/>
-					{ backgroundImageId && mediaSrc ? (
-						<TextToolbarButton
-							onClick={ () =>
-								setAttributes( { mediaId: 0, mediaSrc: '' } )
-							}
-						>
-							{ __( 'Reset', 'woo-gutenberg-products-block' ) }
-						</TextToolbarButton>
-					) : null }
-				</ToolbarGroup>
-				<ToolbarGroup
-					controls={ [
-						{
-							icon: 'edit',
-							title: __(
-								'Edit selected product',
-								'woo-gutenberg-products-block'
-							),
-							onClick: () =>
-								setAttributes( { editMode: ! editMode } ),
-							isActive: editMode,
-						},
-					] }
-				/>
-			</BlockControls>
-		);
-	};
-
-	return <>{ getBlockControls() }</>;
-};
-
-FeaturedProduct.propTypes = {
-	/**
-	 * The attributes for this block.
-	 */
-	attributes: PropTypes.object.isRequired,
-	/**
-	 * Whether this block is currently active.
-	 */
-	isSelected: PropTypes.bool.isRequired,
-	/**
-	 * The register block name.
-	 */
-	name: PropTypes.string.isRequired,
-	/**
-	 * A callback to update attributes.
-	 */
-	setAttributes: PropTypes.func.isRequired,
-	// from withProduct
-	error: PropTypes.object,
-	getProduct: PropTypes.func,
-	isLoading: PropTypes.bool,
-	product: PropTypes.shape( {
-		name: PropTypes.node,
-		variation: PropTypes.node,
-		description: PropTypes.node,
-		price_html: PropTypes.node,
-		permalink: PropTypes.string,
-	} ),
-	// from withSpokenMessages
-	debouncedSpeak: PropTypes.func.isRequired,
-	triggerUrlUpdate: PropTypes.func,
 };
 
 export default compose( [
@@ -256,4 +124,5 @@ export default compose( [
 	withApiError,
 	withImageEditor,
 	withInspectorControls,
-] )( FeaturedProduct );
+	withBlockControls( BLOCK_CONTROL_CONFIG ),
+] )( () => <></> );
