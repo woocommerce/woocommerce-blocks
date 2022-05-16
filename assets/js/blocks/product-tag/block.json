@@ -4,8 +4,7 @@
     "icon": "tag",
     "category": "woocommerce",
     "keywords": [
-        "WooCommerce",
-        "woo-gutenberg-products-block"
+        "WooCommerce"
     ],
     "description": "Display a grid of products with selected tags.",
     "supports": {
