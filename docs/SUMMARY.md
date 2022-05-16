@@ -12,3 +12,20 @@
     -   [Block Script Assets](contributors/block-assets.md)
     -   [JS build system](contributors/js-build-system.md)
     -   [CSS build system](contributors/css-build-system.md)
+
+## Internal developers
+
+-   [Blocks](blocks/README.md)
+-   [Block Client APIs](block-client-apis/README.md)
+-   [Store API (REST API)](../src/StoreApi/README.md)
+-   [Templates](templates/README.md)
+
+## Third-party developers
+
+-   [Extensibility](extensibility/README.md)
+
+## Designers
+
+-   [Theming](theming/README.md)
+
+## Tutorials
