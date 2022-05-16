@@ -14,8 +14,6 @@ import {
 	withSpokenMessages,
 	ToggleControl,
 } from '@wordpress/components';
-import { Component } from '@wordpress/element';
-import PropTypes from 'prop-types';
 import { getSetting } from '@woocommerce/settings';
 import GridContentControl from '@woocommerce/editor-components/grid-content-control';
 import ProductsControl from '@woocommerce/editor-components/products-control';
@@ -23,12 +21,9 @@ import ProductOrderbyControl from '@woocommerce/editor-components/product-orderb
 import { gridBlockPreview } from '@woocommerce/resource-previews';
 import { Icon, stack } from '@wordpress/icons';
 
-/**
- * Component to handle edit mode of "Hand-picked Products".
- */
-class ProductsBlock extends Component {
-	getInspectorControls() {
-		const { attributes, setAttributes } = this.props;
+const ProductsBlock = ( props: Props ): JSX.Element => {
+	const getInspectorControls = () => {
+		const { attributes, setAttributes } = props;
 		const {
 			columns,
 			contentVisibility,
@@ -111,10 +106,10 @@ class ProductsBlock extends Component {
 				</PanelBody>
 			</InspectorControls>
 		);
-	}
+	};
 
-	renderEditMode() {
-		const { attributes, debouncedSpeak, setAttributes } = this.props;
+	const renderEditMode = () => {
+		const { attributes, debouncedSpeak, setAttributes } = props;
 		const onDone = () => {
 			setAttributes( { editMode: false } );
 			debouncedSpeak(
@@ -152,10 +147,10 @@ class ProductsBlock extends Component {
 				</div>
 			</Placeholder>
 		);
-	}
+	};
 
-	render() {
-		const { attributes, name, setAttributes } = this.props;
+	const render = () => {
+		const { attributes, name, setAttributes } = props;
 		const { editMode } = attributes;
 
 		if ( attributes.isPreview ) {
@@ -180,9 +175,9 @@ class ProductsBlock extends Component {
 						] }
 					/>
 				</BlockControls>
-				{ this.getInspectorControls() }
+				{ getInspectorControls() }
 				{ editMode ? (
-					this.renderEditMode()
+					renderEditMode()
 				) : (
 					<Disabled>
 						<ServerSideRender
@@ -193,24 +188,45 @@ class ProductsBlock extends Component {
 				) }
 			</>
 		);
-	}
-}
+	};
 
-ProductsBlock.propTypes = {
+	return render();
+};
+
+interface Attributes {
+	align?: string;
+	columns: number;
+	editMode: boolean;
+	contentVisibility: {
+		image: boolean;
+		title: boolean;
+		price: boolean;
+		rating: boolean;
+		button: boolean;
+	};
+	orderby: string;
+	products: Array< number >;
+	alignButtons: boolean;
+	isPreview: boolean;
+}
+/**
+ * Component to handle edit mode of "Hand-picked Products".
+ */
+interface Props {
 	/**
 	 * The attributes for this block
 	 */
-	attributes: PropTypes.object.isRequired,
+	attributes: Attributes;
 	/**
 	 * The register block name.
 	 */
-	name: PropTypes.string.isRequired,
+	name: string;
 	/**
 	 * A callback to update attributes
 	 */
-	setAttributes: PropTypes.func.isRequired,
+	setAttributes: ( attributes: Record< string, unknown > ) => void;
 	// from withSpokenMessages
-	debouncedSpeak: PropTypes.func.isRequired,
-};
+	debouncedSpeak: ( message: string ) => void;
+}
 
 export default withSpokenMessages( ProductsBlock );
