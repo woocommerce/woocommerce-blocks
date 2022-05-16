@@ -185,7 +185,6 @@ Remove all notices from the current context. If a `status` is provided, only the
 | -------- | ------ | ----------------------------------------------------------------------------------------------------- |
 | `status` | string | Status that notices must match to be removed. If not provided, all notices of any status are removed. |
 
-
 ## StoreSnackbarNoticesProvider
 
 The `StoreSnackbarNoticesProvider` allows managing snackbar notices in the frontend. Snackbar notices are displayed in the bottom left corner and disappear after a certain time.
@@ -220,7 +219,6 @@ Whether notices are suppressed. If true, it will hide the notices from the front
 | -------- | ------- | --------------------------- |
 | `val`    | boolean | Id of the notice to remove. |
 
-
 ## Example usage
 
 The following example shows a `CheckoutProcessor` component that displays an error notice when the payment process fails and it removes it every time the payment is started. When the payment is completed correctly, it shows a snackbar notice.
@@ -253,10 +251,12 @@ const CheckoutProcessor = () => {
 ```
 
 <!-- FEEDBACK -->
+
 ---
 
 [We're hiring!](https://woocommerce.com/careers/) Come work with us!
 
 🐞 Found a mistake, or have a suggestion? [Leave feedback about this document here.](https://github.com/woocommerce/woocommerce-gutenberg-products-block/issues/new?assignees=&labels=type%3A+documentation&template=--doc-feedback.md&title=Feedback%20on%20./docs/block-client-apis/notices.md)
+
 <!-- /FEEDBACK -->
 

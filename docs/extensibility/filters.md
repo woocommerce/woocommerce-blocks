@@ -760,7 +760,7 @@ apply_filters( 'woocommerce_store_api_product_quantity_limit', integer $quantity
 
 | Argument | Type | Description |
 | -------- | ---- | ----------- |
-| $quantity_limit | integer | Quantity limit which defaults to 99 unless sold individually. |
+| $quantity_limit | integer | Quantity limit which defaults to 9999 unless sold individually. |
 | $product | \WC_Product | Product instance. |
 
 ### Returns
@@ -845,10 +845,12 @@ apply_filters( 'woocommerce_variation_option_name', string $value, null $unused,
 
 ---
 <!-- FEEDBACK -->
+
 ---
 
 [We're hiring!](https://woocommerce.com/careers/) Come work with us!
 
 🐞 Found a mistake, or have a suggestion? [Leave feedback about this document here.](https://github.com/woocommerce/woocommerce-gutenberg-products-block/issues/new?assignees=&labels=type%3A+documentation&template=--doc-feedback.md&title=Feedback%20on%20./docs/extensibility/filters.md)
+
 <!-- /FEEDBACK -->
 

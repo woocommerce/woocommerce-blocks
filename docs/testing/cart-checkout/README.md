@@ -19,15 +19,16 @@ separate them.
 ### Known limitations
 
 <!-- Debating on where to put this section -->
+
 This is a list of all known limitation for Cart and Checkout blocks, it means
 we're aware of them, and will probably not tackle them in this first release:
 
-- Cart and Checkout blocks do not support third-party plugins that integrate with
-  regular Cart and Checkout shortcode, if you somehow see a third party plugin working
-  well, this is pure coincidence, the only exception is Stripe payment gateway.
+-   Cart and Checkout blocks do not support third-party plugins that integrate with
+    regular Cart and Checkout shortcode, if you somehow see a third party plugin working
+    well, this is pure coincidence, the only exception is Stripe payment gateway.
 
-- The only payment gateway supported are Check and Stripe.
-- Storefront and TwentyTwenty are expected to work fine, no guarantee is presented on other themes, but do report them if you feel like that's something we can fix on our end.
+-   The only payment gateway supported are Check and Stripe.
+-   Storefront and TwentyTwenty are expected to work fine, no guarantee is presented on other themes, but do report them if you feel like that's something we can fix on our end.
 
 <!-- Currently this is unneeded so I'm omitting this section -->.
 <!--
@@ -71,21 +72,22 @@ the Cart and Checkout shortcodes.
 
 ## Testing Checklist
 
-- [General Flow](general-flow.md)
-- [Editor](editor.md)
-- [Shipping](shipping.md)
-- [Payments](payment.md)
-- [Items](items.md)
-- [Taxes](taxes.md)
-- [Coupons](coupons.md)
-- [Cross Browser and platform](cross-browser.md)
-
+-   [General Flow](general-flow.md)
+-   [Editor](editor.md)
+-   [Shipping](shipping.md)
+-   [Payments](payment.md)
+-   [Items](items.md)
+-   [Taxes](taxes.md)
+-   [Coupons](coupons.md)
+-   [Cross Browser and platform](cross-browser.md)
 
 <!-- FEEDBACK -->
+
 ---
 
 [We're hiring!](https://woocommerce.com/careers/) Come work with us!
 
-🐞 Found a mistake, or have a suggestion? [Leave feedback about this document here.](https://github.com/woocommerce/woocommerce-gutenberg-products-block/issues/new?assignees=&labels=type%3A+documentation&template=--doc-feedback.md&title=Feedback%20on%20./docs/testing/cart-checkout/readme.md)
+🐞 Found a mistake, or have a suggestion? [Leave feedback about this document here.](https://github.com/woocommerce/woocommerce-gutenberg-products-block/issues/new?assignees=&labels=type%3A+documentation&template=--doc-feedback.md&title=Feedback%20on%20./docs/testing/cart-checkout/README.md)
+
 <!-- /FEEDBACK -->
 

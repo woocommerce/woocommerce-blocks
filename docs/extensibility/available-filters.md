@@ -4,13 +4,13 @@ This document lists the filters that are currently available to extensions and o
 
 Information on registering filters can be found on the [Checkout - Filter Registry](../../packages/checkout/filter-registry/README.md) page.
 
-***
+---
 
-- [Cart Line Items](#cart-line-items)
-- [Order Summary Items](#order-summary-items)
-- [Totals footer item](#totals-footer-item-in-cart-and-checkout)
-- [Coupons](#coupons)
-- [Snackbar notices](#snackbar-notices)
+-   [Cart Line Items](#cart-line-items)
+-   [Order Summary Items](#order-summary-items)
+-   [Totals footer item](#totals-footer-item-in-cart-and-checkout)
+-   [Coupons](#coupons)
+-   [Snackbar notices](#snackbar-notices)
 
 ### Cart Line Items
 
@@ -25,7 +25,7 @@ The following filters are available for line items:
 | ---------------------- | -------------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------- |
 | `itemName`             | Used to change the name of the item before it is rendered onto the page                                                                | `string`                                                                              |
 | `cartItemPrice`        | This is the price of the item, multiplied by the number of items in the cart.                                                          | `string` and **must** contain the substring `<price/>` where the price should appear. |
-| `cartItemClass`        | This is the className of the item cell.                                                          | `string` |
+| `cartItemClass`        | This is the className of the item cell.                                                                                                | `string`                                                                              |
 | `subtotalPriceFormat`  | This is the price of a single item. Irrespective of the number in the cart, this value will always be the current price of _one_ item. | `string` and **must** contain the substring `<price/>` where the price should appear. |
 | `saleBadgePriceFormat` | This is amount of money saved when buying this item. It is the difference between the item's regular price and its sale price.         | `string` and **must** contain the substring `<price/>` where the price should appear. |
 
@@ -44,7 +44,7 @@ The sale badges are not shown here, so those filters are not applied in the Orde
 | --------------------- | -------------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------- |
 | `itemName`            | Used to change the name of the item before it is rendered onto the page                                                                | `string`                                                                              |
 | `cartItemPrice`       | This is the price of the item, multiplied by the number of items in the cart.                                                          | `string` and **must** contain the substring `<price/>` where the price should appear. |
-| `cartItemClass`        | This is the className of the item cell.                                                          | `string` |
+| `cartItemClass`       | This is the className of the item cell.                                                                                                | `string`                                                                              |
 | `subtotalPriceFormat` | This is the price of a single item. Irrespective of the number in the cart, this value will always be the current price of _one_ item. | `string` and **must** contain the substring `<price/>` where the price should appear. |
 
 Each of these filters has the following additional arguments passed to it: `{ context: 'summary', cartItem: CartItem }` ([CartItem](https://github.com/woocommerce/woocommerce-gutenberg-products-block/blob/c00da597efe4c16fcf5481c213d8052ec5df3766/assets/js/type-defs/cart.ts#L113))
@@ -254,10 +254,12 @@ working correctly.
 The error will also be shown in your console.
 
 <!-- FEEDBACK -->
+
 ---
 
 [We're hiring!](https://woocommerce.com/careers/) Come work with us!
 
 🐞 Found a mistake, or have a suggestion? [Leave feedback about this document here.](https://github.com/woocommerce/woocommerce-gutenberg-products-block/issues/new?assignees=&labels=type%3A+documentation&template=--doc-feedback.md&title=Feedback%20on%20./docs/extensibility/available-filters.md)
+
 <!-- /FEEDBACK -->
 

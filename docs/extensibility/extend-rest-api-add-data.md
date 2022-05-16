@@ -324,10 +324,12 @@ You may wish to use our pre-existing Formatters to ensure your data is passed th
 correct format. More information on the Formatters can be found in the [StoreApi Formatters documentation](./extend-rest-api-formatters.md).
 
 <!-- FEEDBACK -->
+
 ---
 
 [We're hiring!](https://woocommerce.com/careers/) Come work with us!
 
 🐞 Found a mistake, or have a suggestion? [Leave feedback about this document here.](https://github.com/woocommerce/woocommerce-gutenberg-products-block/issues/new?assignees=&labels=type%3A+documentation&template=--doc-feedback.md&title=Feedback%20on%20./docs/extensibility/extend-rest-api-add-data.md)
+
 <!-- /FEEDBACK -->
 

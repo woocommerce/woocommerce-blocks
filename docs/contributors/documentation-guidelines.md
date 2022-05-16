@@ -1,21 +1,22 @@
 # Documentation Guidelines
 
-- [Use active instead of passive voice](#use-active-instead-of-passive-voice)
-- [Use the personal pronoun “you”](#use-the-personal-pronoun-you)
-- [Don’t use gendered pronouns](#dont-use-gendered-pronouns)
-- [Filename must resemble the title](#filename-must-resemble-the-title)
-- [Use correct heading hierarchy](#use-correct-heading-hierarchy)
-- [Use semantically correct markup](#use-semantically-correct-markup)
-- [Use correct spelling](#use-correct-spelling)
-- [Use images not wider than 50% width](#use-images-not-wider-than-50-width)
-- [Use descriptive links](#use-descriptive-links)
-- [Explain arguments](#explain-arguments)
-- [Explicitly define language for code examples](#explicitly-define-language-for-code-examples)
-- [Use table of contents for top-level readme](#use-table-of-contents-for-top-level-readme)
-- [Use internal links](#use-internal-links)
-- [Sort releases descending](#sort-releases-descending)
-- [Structure “How to” instructions](#structure-how-to-instructions)
-- [Link references](#link-references)
+- [Documentation Guidelines](#documentation-guidelines)
+	- [Use active instead of passive voice](#use-active-instead-of-passive-voice)
+	- [Use the personal pronoun “you”](#use-the-personal-pronoun-you)
+	- [Don’t use gendered pronouns](#dont-use-gendered-pronouns)
+	- [Filename must resemble the title](#filename-must-resemble-the-title)
+	- [Use correct heading hierarchy](#use-correct-heading-hierarchy)
+	- [Use semantically correct markup](#use-semantically-correct-markup)
+	- [Use correct spelling](#use-correct-spelling)
+	- [Use images not wider than 50% width](#use-images-not-wider-than-50-width)
+	- [Use descriptive links](#use-descriptive-links)
+	- [Explain arguments](#explain-arguments)
+	- [Explicitly define language for code examples](#explicitly-define-language-for-code-examples)
+	- [Use table of contents for top-level readme](#use-table-of-contents-for-top-level-readme)
+	- [Use internal links](#use-internal-links)
+	- [Sort releases descending](#sort-releases-descending)
+	- [Structure “How to” instructions](#structure-how-to-instructions)
+	- [Link references](#link-references)
 
 ## Use active instead of passive voice
 
@@ -150,10 +151,12 @@ When explaining functionality, the following structure should be used:
 When referencing other documentations, the corresponding document should be linked.
 
 <!-- FEEDBACK -->
+
 ---
 
 [We're hiring!](https://woocommerce.com/careers/) Come work with us!
 
 🐞 Found a mistake, or have a suggestion? [Leave feedback about this document here.](https://github.com/woocommerce/woocommerce-gutenberg-products-block/issues/new?assignees=&labels=type%3A+documentation&template=--doc-feedback.md&title=Feedback%20on%20./docs/contributors/documentation-guidelines.md)
+
 <!-- /FEEDBACK -->
 
