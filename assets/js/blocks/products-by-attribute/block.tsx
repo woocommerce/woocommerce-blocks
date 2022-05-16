@@ -12,9 +12,7 @@ import {
 	ToolbarGroup,
 	withSpokenMessages,
 } from '@wordpress/components';
-import { Component } from '@wordpress/element';
 import { Icon, category } from '@wordpress/icons';
-import PropTypes from 'prop-types';
 import GridContentControl from '@woocommerce/editor-components/grid-content-control';
 import GridLayoutControl from '@woocommerce/editor-components/grid-layout-control';
 import ProductAttributeTermControl from '@woocommerce/editor-components/product-attribute-term-control';
@@ -26,9 +24,9 @@ import { getSetting } from '@woocommerce/settings';
 /**
  * Component to handle edit mode of "Products by Attribute".
  */
-class ProductsByAttributeBlock extends Component {
-	getInspectorControls() {
-		const { setAttributes } = this.props;
+const ProductsByAttributeBlock = ( props: Props ): JSX.Element => {
+	const getInspectorControls = () => {
+		const { setAttributes } = props;
 		const {
 			attributes,
 			attrOperator,
@@ -38,7 +36,7 @@ class ProductsByAttributeBlock extends Component {
 			rows,
 			alignButtons,
 			stockStatus,
-		} = this.props.attributes;
+		} = props.attributes;
 
 		return (
 			<InspectorControls key="inspector">
@@ -116,11 +114,11 @@ class ProductsByAttributeBlock extends Component {
 				</PanelBody>
 			</InspectorControls>
 		);
-	}
+	};
 
-	renderEditMode() {
-		const { debouncedSpeak, setAttributes } = this.props;
-		const blockAttributes = this.props.attributes;
+	const renderEditMode = () => {
+		const { debouncedSpeak, setAttributes } = props;
+		const blockAttributes = props.attributes;
 		const onDone = () => {
 			setAttributes( { editMode: false } );
 			debouncedSpeak(
@@ -167,10 +165,10 @@ class ProductsByAttributeBlock extends Component {
 				</div>
 			</Placeholder>
 		);
-	}
+	};
 
-	render() {
-		const { attributes, name, setAttributes } = this.props;
+	const render = () => {
+		const { attributes, name, setAttributes } = props;
 		const { editMode } = attributes;
 
 		if ( attributes.isPreview ) {
@@ -195,9 +193,9 @@ class ProductsByAttributeBlock extends Component {
 						] }
 					/>
 				</BlockControls>
-				{ this.getInspectorControls() }
+				{ getInspectorControls() }
 				{ editMode ? (
-					this.renderEditMode()
+					renderEditMode()
 				) : (
 					<Disabled>
 						<ServerSideRender
@@ -208,24 +206,46 @@ class ProductsByAttributeBlock extends Component {
 				) }
 			</>
 		);
-	}
+	};
+
+	return render();
+};
+
+interface Attributes {
+	align?: string;
+	attributes: Array< string >;
+	attrOperator: string;
+	columns: number;
+	editMode: boolean;
+	contentVisibility: {
+		image: boolean;
+		title: boolean;
+		price: boolean;
+		rating: boolean;
+		button: boolean;
+	};
+	orderby: string;
+	rows: number;
+	alignButtons: boolean;
+	isPreview: boolean;
+	stockStatus: Array< string >;
 }
 
-ProductsByAttributeBlock.propTypes = {
+interface Props {
 	/**
 	 * The attributes for this block
 	 */
-	attributes: PropTypes.object.isRequired,
+	attributes: Attributes;
 	/**
 	 * The register block name.
 	 */
-	name: PropTypes.string.isRequired,
+	name: string;
 	/**
 	 * A callback to update attributes
 	 */
-	setAttributes: PropTypes.func.isRequired,
+	setAttributes: ( attributes: Record< string, unknown > ) => void;
 	// from withSpokenMessages
-	debouncedSpeak: PropTypes.func.isRequired,
-};
+	debouncedSpeak: ( message: string ) => void;
+}
 
 export default withSpokenMessages( ProductsByAttributeBlock );
