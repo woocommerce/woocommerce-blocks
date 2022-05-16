@@ -21,7 +21,7 @@
 -   [Block Client APIs](block-client-apis/README.md)
     -   [Checkout API interface](block-client-apis/checkout/checkout-api.md)
     -   [Checkout Flow and Events](extensibility/checkout-flow-and-events.md)
-    -   [Notices](blocks/notices.md)
+    -   [Notices](block-client-apis/notices.md)
 -   [Store API (REST API)](../src/StoreApi/README.md)
 -   [Templates](templates/README.md)
 
