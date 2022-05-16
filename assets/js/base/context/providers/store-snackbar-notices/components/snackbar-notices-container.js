@@ -62,7 +62,11 @@ export const SnackbarNoticesContainer = ( {
 		<SnackbarList
 			notices={ visibleNotices }
 			className={ wrapperClass }
-			onRemove={ removeNotice }
+			onRemove={ () => {
+				visibleNotices.forEach( ( notice ) =>
+					removeNotice( notice.id, context )
+				);
+			} }
 		/>
 	);
 };
