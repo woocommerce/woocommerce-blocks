@@ -1,4 +1,4 @@
-# CSS build system
+# CSS Build System
 
 CSS files are built with Webpack, which gathers all SCSS files in the app and processes them with SASS and some PostCSS plugins like Autoprefixer. The resulting stylesheets are merged into three files for the whole plugin:
 
