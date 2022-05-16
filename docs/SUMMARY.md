@@ -16,12 +16,12 @@
 ## Internal developers
 
 -   [Blocks](blocks/README.md)
-    -   [Stock Reservation during Checkout](stock-reservation.md)
-    -   [Features Flags and Experimental interfaces](./feature-flags-and-experimental-interfaces.md)
+    -   [Stock Reservation during Checkout](blocks/stock-reservation.md)
+    -   [Features Flags and Experimental interfaces](blocks/feature-flags-and-experimental-interfaces.md)
 -   [Block Client APIs](block-client-apis/README.md)
-    -   [Checkout API interface](./checkout/checkout-api.md
-    -   [Checkout Flow and Events](../extensibility/checkout-flow-and-events.md)
-    -   [Notices](./notices.md)
+    -   [Checkout API interface](block-client-apis/checkout/checkout-api.md
+    -   [Checkout Flow and Events](extensibility/checkout-flow-and-events.md)
+    -   [Notices](blocks/notices.md)
 -   [Store API (REST API)](../src/StoreApi/README.md)
 -   [Templates](templates/README.md)
 
