@@ -1,6 +1,6 @@
 # Table of contents
 
--   [WooCommerce Blocks Handbook](README.md)
+-   [WooCommerce Blocks](README.md)
 
 ## Contributors
 
