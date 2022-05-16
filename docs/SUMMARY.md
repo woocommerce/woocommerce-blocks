@@ -37,7 +37,7 @@
         -   [Adding an endpoint to ExtendSchema](extensibility/extend-rest-api-new-endpoint.md)
         -   [Available Formatters](extensibility/extend-rest-api-formatters.md)
     -   Checkout Payment Methods
-        -   [Checkout Flow and Events]({% page-ref page="extensibility/checkout-flow-and-events.md" %})
+        -   {% page-ref page="extensibility/checkout-flow-and-events.md" %}
         -   [Payment Method Integration](extensibility/payment-method-integration.md)
         -   [Filtering Payment Methods](extensibility/filtering-payment-methods.md)
     -   Checkout Block
