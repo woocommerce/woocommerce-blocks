@@ -377,9 +377,7 @@ const getFrontConfig = ( options = {} ) => {
 		optimization: {
 			concatenateModules:
 				isProduction && ! process.env.WP_BUNDLE_ANALYZER,
-			splitChunks: {
-				automaticNameDelimiter: '--',
-			},
+			splitChunks: false,
 			minimizer: [
 				new TerserPlugin( {
 					cache: true,
