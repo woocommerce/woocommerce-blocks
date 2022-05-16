@@ -122,9 +122,7 @@ woocommerce_blocks_env = ${ NODE_ENV }
 			// Only concatenate modules in production, when not analyzing bundles.
 			concatenateModules:
 				isProduction && ! process.env.WP_BUNDLE_ANALYZER,
-			splitChunks: {
-				automaticNameDelimiter: '--',
-			},
+			splitChunks: false,
 			minimizer: [
 				new TerserPlugin( {
 					cache: true,
@@ -222,7 +220,7 @@ const getMainConfig = ( options = {} ) => {
 			concatenateModules:
 				isProduction && ! process.env.WP_BUNDLE_ANALYZER,
 			splitChunks: {
-				minSize: 0,
+				minSize: 10000, // makes the smallest chunk file 10kbs, this doesn't affect lazy loaded chunks.
 				automaticNameDelimiter: '--',
 				cacheGroups: {
 					commons: {
