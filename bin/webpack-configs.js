@@ -375,7 +375,41 @@ const getFrontConfig = ( options = {} ) => {
 		optimization: {
 			concatenateModules:
 				isProduction && ! process.env.WP_BUNDLE_ANALYZER,
-			splitChunks: false,
+			splitChunks: {
+				cacheGroups: {
+					default: false,
+					vendors: {
+						test: /[\\/]node_modules[\\/]/,
+						name( module ) {
+							const moduleFileName = module
+								.identifier()
+								.split( '/' )
+								.reduceRight( ( item ) => item );
+							return `vendor/${ moduleFileName }`;
+						},
+						automaticNameDelimiter: '--',
+						minSize: 20000,
+						priority: -20,
+					},
+					'cart-checkout-wp-commons': {
+						test: ( module ) => {
+							if (
+								module?.resource?.match(
+									/wordpress-components/
+								)
+							) {
+								return true;
+							}
+						},
+						name: 'cart-checkout/commons.js',
+						automaticNameDelimiter: '--',
+						reuseExistingChunk: true,
+						enforce: true,
+						minSize: 20000,
+						priority: -10,
+					},
+				},
+			},
 			minimizer: [
 				new TerserPlugin( {
 					cache: true,
