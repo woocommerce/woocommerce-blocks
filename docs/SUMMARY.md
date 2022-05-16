@@ -1,16 +1,12 @@
 ‌# Summary​
 
-## Use headings to create page groups like this one​
+## Contributors
 
--   [First page's title](page1/README.md)
-
-    -   [Some child page](page1/page1-1.md)
-    -   [Some other child page](part1/page1-2.md)
-
--   [Second page's title](page2/README.md)
-    -   [Some child page](page2/page2-1.md)
-    -   [Some other child page](part2/page2-2.md)
-
-## A second-page group​
-
--   [Yet another page](another-page.md)
+-   [Contributing](contributors/getting-started.md)
+    -   [Getting Started](contributors/getting-started.md)
+    -   [Coding Guidelines](contributors/coding-guidelines.md)
+    -   [JavaScript Testing](contributors/javascript-testing.md)
+    -   [Developing Components (& Storybook)](contributors/components.md)
+    -   [Block Script Assets](contributors/block-assets.md)
+    -   [JS build system](contributors/js-build-system.md)
+    -   [CSS build system](contributors/css-build-system.md)
