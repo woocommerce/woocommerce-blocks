@@ -2,7 +2,7 @@
 
 ## Contributors
 
--   [Contributing](contributors/getting-started.md)
+-   [Contributing](contributors/README.md)
     -   [Getting Started](contributors/getting-started.md)
     -   [Coding Guidelines](contributors/coding-guidelines.md)
     -   [JavaScript Testing](contributors/javascript-testing.md)
