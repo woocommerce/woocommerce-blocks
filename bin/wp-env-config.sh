@@ -28,9 +28,12 @@ wp language plugin install woo-gutenberg-products-block nl_NL
 # To get the latest translations, we need to run an additional update command.
 #wp language plugin update woo-gutenberg-products-block nl_NL
 ## downloaded unpurged translation file
-curl https://translate.wordpress.org/projects/wp-plugins/woo-gutenberg-products-block/stable/nl/default/export-translations/ --output ./wp-content/languages/plugins/woo-gutenberg-products-block-nl_NL.po
-## update po file with new locations
-php -d memory_limit=2024M "$(which wp)" i18n make-pot ./wp-content/plugins/$BASENAME/ ./wp-content/languages/plugins/woo-gutenberg-products-block-nl_NL.po --domain=woo-gutenberg-products-block --exclude=node_modules,vendor
-## regenerate json files
-php -d memory_limit=2024M "$(which wp)" i18n make-json ./wp-content/languages/plugins/woo-gutenberg-products-block-nl_NL.po
+if curl --silent -o "./wp-content/languages/plugins/woo-gutenberg-products-block-nl_NL.po" -L "https://translate.wordpress.org/projects/wp-plugins/woo-gutenberg-products-block/stable/nl/default/export-translations/"; then
+    if php -d memory_limit=2024M "$(which wp)" i18n make-pot ./wp-content/plugins/$BASENAME/ ./wp-content/languages/plugins/woo-gutenberg-products-block-nl_NL.po --domain=woo-gutenberg-products-block --exclude=node_modules,vendor; then
+        php -d memory_limit=2024M "$(which wp)" i18n make-json ./wp-content/languages/plugins/woo-gutenberg-products-block-nl_NL.po
+    fi
+else
+    echo "Something went wrong"
+fi
+echo "Done!"
 exit $EXIT_CODE
