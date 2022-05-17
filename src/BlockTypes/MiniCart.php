@@ -483,13 +483,13 @@ class MiniCart extends AbstractBlock {
 		$translations = array();
 
 		$blocks = [
-			'mini-cart-contents-block/filled-cart',
 			'mini-cart-contents-block/empty-cart',
-			'mini-cart-contents-block/title',
+			'mini-cart-contents-block/filled-cart',
+			'mini-cart-contents-block/footer',
 			'mini-cart-contents-block/items',
 			'mini-cart-contents-block/products-table',
-			'mini-cart-contents-block/footer',
 			'mini-cart-contents-block/shopping-button',
+			'mini-cart-contents-block/title',
 		];
 		$chunks = preg_filter( '/$/', '-frontend', $blocks );
 
