@@ -26,6 +26,11 @@ wp language plugin install woocommerce nl_NL
 wp language plugin install woo-gutenberg-products-block nl_NL
 # Because we don't install the WooCommerce Blocks plugin, WP CLI uses the core version to install the language pack.
 # To get the latest translations, we need to run an additional update command.
-wp language plugin update woo-gutenberg-products-block nl_NL
-
+#wp language plugin update woo-gutenberg-products-block nl_NL
+## downloaded unpurged translation file
+curl https://translate.wordpress.org/projects/wp-plugins/woo-gutenberg-products-block/stable/nl/default/export-translations/ --output ./wp-content/languages/plugins/woo-gutenberg-products-block-nl_NL.po
+## update po file with new locations
+php -d memory_limit=2024M "$(which wp)" i18n make-pot ./wp-content/plugins/$BASENAME/ ./wp-content/languages/plugins/woo-gutenberg-products-block-nl_NL.po --domain=woo-gutenberg-products-block --exclude=node_modules,vendor
+## regenerate json files
+php -d memory_limit=2024M "$(which wp)" i18n make-json ./wp-content/languages/plugins/woo-gutenberg-products-block-nl_NL.po
 exit $EXIT_CODE
