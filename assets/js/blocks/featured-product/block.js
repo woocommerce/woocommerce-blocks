@@ -278,6 +278,8 @@ const FeaturedProduct = ( {
 		// so we need to check if it exists before using it.
 		const focalPointPickerExists = typeof FocalPointPicker === 'function';
 
+		const isImgElement = ! isRepeated && ! hasParallax;
+
 		return (
 			<>
 				<InspectorControls key="inspector">
@@ -404,7 +406,7 @@ const FeaturedProduct = ( {
 											} )
 										}
 									/>
-									{ ! isRepeated && (
+									{ isImgElement && (
 										<TextareaControl
 											label={ __(
 												'Alt text (alternative text)',
@@ -807,6 +809,7 @@ export default compose( [
 			state = {
 				doUrlUpdate: false,
 			};
+
 			componentDidUpdate() {
 				const {
 					attributes,
@@ -828,9 +831,11 @@ export default compose( [
 					this.setState( { doUrlUpdate: false } );
 				}
 			}
+
 			triggerUrlUpdate = () => {
 				this.setState( { doUrlUpdate: true } );
 			};
+
 			render() {
 				return (
 					<ProductComponent
@@ -840,6 +845,7 @@ export default compose( [
 				);
 			}
 		}
+
 		return WrappedComponent;
 	}, 'withUpdateButtonAttributes' ),
 ] )( FeaturedProduct );
