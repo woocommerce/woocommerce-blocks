@@ -19,20 +19,19 @@ wp core version --extra
 wp plugin list
 wp theme activate storefront
 wp wc customer update 1 --user=1 --billing='{"first_name":"John","last_name":"Doe","company":"Automattic","country":"US","address_1":"addr 1","address_2":"addr 2","city":"San Francisco","state":"CA","postcode":"94107","phone":"123456789"}' --shipping='{"first_name":"John","last_name":"Doe","company":"Automattic","country":"US","address_1":"addr 1","address_2":"addr 2","city":"San Francisco","state":"CA","postcode":"94107","phone":"123456789"}'
-
 ## Prepare translation for the test suite
 wp language core install nl_NL
 wp language plugin install woocommerce nl_NL
-wp language plugin install woo-gutenberg-products-block nl_NL
-# Because we don't install the WooCommerce Blocks plugin, WP CLI uses the core version to install the language pack.
-# To get the latest translations, we need to run an additional update command.
-#wp language plugin update woo-gutenberg-products-block nl_NL
-## downloaded unpurged translation file
+## We download a full version of .po (that has translation for js files as well).
 curl https://translate.wordpress.org/projects/wp-plugins/woo-gutenberg-products-block/stable/nl/default/export-translations/ --output ./wp-content/languages/plugins/woo-gutenberg-products-block-nl_NL.po
-sleep 30
-## update po file with new locations
-php -d memory_limit=2024M "$(which wp)" i18n make-pot ./wp-content/plugins/$BASENAME/ ./wp-content/languages/plugins/woo-gutenberg-products-block-nl_NL.po --domain=woo-gutenberg-products-block --exclude=node_modules,vendor
-sleep 30
-## regenerate json files
+sleep 5
+## We generate a new po file, based on the one we just downloaded, but with updated file paths.
+## This should account for when a file changes location between versions.
+php -d memory_limit=2024M "$(which wp)" i18n make-pot ./wp-content/plugins/$1/ ./wp-content/languages/plugins/woo-gutenberg-products-block-nl_NL-updated.po --merge=./wp-content/languages/plugins/woo-gutenberg-products-block-nl_NL.po --domain=woo-gutenberg-products-block --exclude=node_modules,vendor --skip-audit
+## We remove the po we downloaded.
+rm ./wp-content/languages/plugins/woo-gutenberg-products-block-nl_NL.po
+## And rename the one we just created to that one.
+mv ./wp-content/languages/plugins/woo-gutenberg-products-block-nl_NL-updated.po ./wp-content/languages/plugins/woo-gutenberg-products-block-nl_NL.po
+## We regenerate json translation from the new po file we created.
 php -d memory_limit=2024M "$(which wp)" i18n make-json ./wp-content/languages/plugins/woo-gutenberg-products-block-nl_NL.po
 exit $EXIT_CODE
