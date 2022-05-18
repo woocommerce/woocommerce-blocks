@@ -1,6 +1,15 @@
-# Stock Reservation during Checkout
+# Stock Reservation during Checkout <!-- omit in toc -->
 
 To prevent multiple customers trying to purchase the same stock when limits are in place, both WooCommerce ([4.3+](https://github.com/woocommerce/woocommerce/pull/26395#pullrequestreview-430633490)) and the Blocks plugin have a stock reservation system which is used during checkout.
+
+## Table of contents <!-- omit in toc -->
+
+- [The Reserved Stock Database Table](#the-reserved-stock-database-table)
+  - [Usage Example](#usage-example)
+  - [What about concurrency?](#what-about-concurrency)
+- [The Reserve Stock Process](#the-reserve-stock-process)
+  - [How the queries work](#how-the-queries-work)
+- [How this all fits into Checkout Block vs Traditional Checkout](#how-this-all-fits-into-checkout-block-vs-traditional-checkout)
 
 ## The Reserved Stock Database Table
 
@@ -24,7 +33,7 @@ This example shows how stock would be reserved programmatically for an order usi
 
 ```php
 $reserve_stock = new ReserveStock();
- 
+
 try {
     // Try to reserve stock for 10 mins, if available.
     $reserve_stock->reserve_stock_for_order( $order_object, 10 );
@@ -43,7 +52,7 @@ Some things worth noting:
 
 ### What about concurrency?
 
-To mitigate concurrency issues (where multiple users could attempt to reserve the same stock at the same time, which is a risk on busier stores) the query used to check and reserve stock is performed in a single, atomic operation. 
+To mitigate concurrency issues (where multiple users could attempt to reserve the same stock at the same time, which is a risk on busier stores) the query used to check and reserve stock is performed in a single, atomic operation.
 
 This operation locks the tables so that separate processes do not fight over the same stock. If there were two simultaneous requests for the same stock at the same time, one would succeed, and one would fail.
 
@@ -62,7 +71,7 @@ On the technical side:
 Here is an example query getting stock for Product ID 99 and excluding order ID 100.
 
 ```sql
-SELECT COALESCE( SUM( stock_table.`stock_quantity` ), 0 ) 
+SELECT COALESCE( SUM( stock_table.`stock_quantity` ), 0 )
 FROM wp_wc_reserved_stock stock_table
 LEFT JOIN wp_posts posts ON stock_table.`order_id` = posts.ID
 WHERE posts.post_status IN ( 'wc-checkout-draft', 'wc-pending' )
@@ -80,9 +89,9 @@ WHERE ( $query_for_stock FOR UPDATE ) - ( $query_for_reserved_stock FOR UPDATE )
 ON DUPLICATE KEY UPDATE `expires` = VALUES( `expires` )
 ```
 
-In the above code snippet: 
+In the above code snippet:
 
-- `$query_for_stock` is a subquery getting stock level from the post meta table, and `$query_for_reserved_stock` is the query shown prior. 
+- `$query_for_stock` is a subquery getting stock level from the post meta table, and `$query_for_reserved_stock` is the query shown prior.
 - The `FOR UPDATE` part locks the selected rows which prevents other requests from changing those values until we’ve inserted the new rows.
 - The `ON DUPLICATE KEY` part updates an existing row if one already exists for that order/item.
 
@@ -95,6 +104,7 @@ The point of which stock is reserved differs between the new Block based checkou
 You can see that in both Checkouts, if stock cannot be reserved for all items in the order, either the order is rejected, or the user cannot proceed with checkout.
 
 <!-- FEEDBACK -->
+
 ---
 
 [We're hiring!](https://woocommerce.com/careers/) Come work with us!
