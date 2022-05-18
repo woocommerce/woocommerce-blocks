@@ -15,15 +15,16 @@
 
 ## Internal developers
 
--   [Blocks](blocks/README.md)
-    -   [Stock Reservation during Checkout](blocks/stock-reservation.md)
-    -   [Features Flags and Experimental interfaces](blocks/feature-flags-and-experimental-interfaces.md)
--   [Block Client APIs](block-client-apis/README.md)
-    -   [Checkout API interface](block-client-apis/checkout/checkout-api.md)
-    -   [Checkout Flow and Events](extensibility/checkout-flow-and-events.md)
-    -   [Notices](block-client-apis/notices.md)
+-   [Blocks](internal-developers/blocks/README.md)
+    -   [Stock Reservation during Checkout](internal-developers/blocks/stock-reservation.md)
+    -   [Features Flags and Experimental interfaces](internal-developers/blocks/feature-flags-and-experimental-interfaces.md)
+-   [Block Client APIs](internal-developers/block-client-apis/README.md)
+    -   [Checkout API interface](internal-developers/block-client-apis/checkout/checkout-api.md)
+    -   [Checkout Flow and Events](internal-developers/extensibility/checkout-flow-and-events.md)
+    -   [Notices](internal-developers/block-client-apis/notices.md)
 -   [Store API (REST API)](../src/StoreApi/README.md)
--   [Templates](templates/README.md)
+-   [Templates](internal-developers/templates/README.md)
+-   [Testing](internal-developers/testing/README.md)
 
 ## Third-party developers
 
