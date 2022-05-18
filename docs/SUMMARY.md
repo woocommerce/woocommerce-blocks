@@ -30,6 +30,14 @@
     -   [When to employ end to end testing](internal-developers/testing/when-to-employ-e2e-testing.md)
     -   [Smoke Testing](internal-developers/testing/smoke-testing.md)
     -   [Cart and Checkout Testing](internal-developers/testing/cart-checkout/README.md)
+        -   [General Flow](internal-developers/testing/cart-checkout/general-flow.md)
+        -   [Editor](internal-developers/testing/cart-checkout/editor.md)
+        -   [Shipping](internal-developers/testing/cart-checkout/shipping.md)
+        -   [Payments](internal-developers/testing/cart-checkout/payment.md)
+        -   [Items](internal-developers/testing/cart-checkout/items.md)
+        -   [Taxes](internal-developers/testing/cart-checkout/taxes.md)
+        -   [Coupons](internal-developers/testing/cart-checkout/coupons.md)
+        -   [Cross Browser and platform](internal-developers/testing/cart-checkout/cross-browser.md)
     -   [Releases](internal-developers/testing/releases/README.md)
 
 ## Third-party developers
