@@ -37,7 +37,7 @@
         -   [Items](internal-developers/testing/cart-checkout/items.md)
         -   [Taxes](internal-developers/testing/cart-checkout/taxes.md)
         -   [Coupons](internal-developers/testing/cart-checkout/coupons.md)
-        -   [Cross Browser and platform](internal-developers/testing/cart-checkout/cross-browser.md)
+        -   [Compatibility](internal-developers/testing/cart-checkout/compatibility.md)
     -   [Releases](internal-developers/testing/releases/README.md)
 
 ## Third-party developers
