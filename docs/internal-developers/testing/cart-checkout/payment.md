@@ -3,8 +3,8 @@
 ## Table of Contents <!-- omit in toc -->
 
 - [Setup](#setup)
-  - [Special Cases:](#special-cases)
-  - [Unsupported:](#unsupported)
+  - [Special Cases](#special-cases)
+  - [Unsupported](#unsupported)
 - [What to test](#what-to-test)
 
 ## Setup
@@ -17,7 +17,7 @@ The Checkout Block supports three methods of payments:
 
 To test Stripe and Express payment methods, you will need API keys, you can get them by creating a testing account in stripe.
 
-### Special Cases:
+### Special Cases
 
 To test Express payment methods there are some special requirements like
 
@@ -28,7 +28,7 @@ To test Express payment methods there are some special requirements like
 -   To test Microsoft Pay you will need to have Edge installed.
 -   You will also need to be on a supported country, to better verify your compatibility visit [this page](https://stripe.com/docs/stripe-js/elements/payment-request-button#react-overview). You should see if you're on a supported platform or not.
 
-### Unsupported:
+### Unsupported
 
 ![](https://i.imgur.com/EpkFrat.png).
 
