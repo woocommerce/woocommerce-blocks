@@ -1,6 +1,6 @@
 # Checkout Flow and Events
 
-See [Checkout Flow and Events](../../../third-party-developers/extensibility/checkout-flow-and-events.md)
+See [Checkout Flow and Events](../../internal-developers/block-client-apis/checkout/checkout-flow-and-events.md)
 
 <!-- FEEDBACK -->
 
