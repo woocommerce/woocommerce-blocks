@@ -1,57 +1,65 @@
-# `IntegrationRegistry` and `IntegrationInterface`
+# `IntegrationRegistry` and `IntegrationInterface` <!-- omit in toc -->
+
+## Table of Contents <!-- omit in toc -->
+
+- [The problem](#the-problem)
+- [The solution](#the-solution)
+- [`IntegrationInterface` methods](#integrationinterface-methods)
+  - [`get_name()`](#get_name)
+  - [`initialize()`](#initialize)
+  - [`get_script_handles()`](#get_script_handles)
+  - [`get_editor_script_handles()`](#get_editor_script_handles)
+  - [`get_script_data()`](#get_script_data)
+- [Usage example](#usage-example)
+  - [Getting data added in `get_script_data`](#getting-data-added-in-get_script_data)
 
 ## The problem
-You are an extension developer, and to allow users to interact with your extension on the client-side, you have written
-some CSS and JavaScript that you would like to be included on the page. Your JavaScript also relies on some server-side
-data, and you'd like this to be available to your scripts.
+
+You are an extension developer, and to allow users to interact with your extension on the client-side, you have written some CSS and JavaScript that you would like to be included on the page. Your JavaScript also relies on some server-side data, and you'd like this to be available to your scripts.
 
 ## The solution
-You may use the `IntegrationRegistry` to register an `IntegrationInterface` this will be a class that will handle the
-enqueuing of scripts, styles, and data. You may have a different `IntegrationInterface` for each block (Mini Cart, Cart
-and Checkout), or you may use the same one, it is entirely dependent on your use case.
 
-You should use the hooks: `woocommerce_blocks_mini-cart_block_registration`. `woocommerce_blocks_cart_block_registration` and
-`woocommerce_blocks_checkout_block_registration`. These hooks both pass an instance of [`IntegrationRegistry`](https://github.com/woocommerce/woocommerce-gutenberg-products-block/blob/trunk/src/Integrations/IntegrationRegistry.php) to the callback.
+You may use the `IntegrationRegistry` to register an `IntegrationInterface` this will be a class that will handle the enqueuing of scripts, styles, and data. You may have a different `IntegrationInterface` for each block (Mini Cart, Cart and Checkout), or you may use the same one, it is entirely dependent on your use case.
+
+You should use the hooks: `woocommerce_blocks_mini-cart_block_registration`. `woocommerce_blocks_cart_block_registration` and `woocommerce_blocks_checkout_block_registration`. These hooks both pass an instance of [`IntegrationRegistry`](https://github.com/woocommerce/woocommerce-gutenberg-products-block/blob/trunk/src/Integrations/IntegrationRegistry.php) to the callback.
 
 You may then use the `register` method on this object to register your `IntegrationInterface`.
 
 ## `IntegrationInterface` methods
-To begin, we'll need to create our integration class, our `IntegrationInterface`. This will be a class that implements
-WooCommerce Blocks' interface named [`IntegrationInterface`](https://github.com/woocommerce/woocommerce-gutenberg-products-block/blob/trunk/src/Integrations/IntegrationInterface.php).
+
+To begin, we'll need to create our integration class, our `IntegrationInterface`. This will be a class that implements WooCommerce Blocks' interface named [`IntegrationInterface`](https://github.com/woocommerce/woocommerce-gutenberg-products-block/blob/trunk/src/Integrations/IntegrationInterface.php).
 
 In this section, we will step through the interface's members and discuss what they are used for.
 
 ### `get_name()`
-This is the `IntegrationInterface`'s way of namespacing your integration. The name chosen here should be unique to your 
-extension. This method should return a string.
+
+This is the `IntegrationInterface`'s way of namespacing your integration. The name chosen here should be unique to your extension. This method should return a string.
 
 ### `initialize()`
-This is where any setup, or initialization for your integration should be placed. For example, you could register the
-scripts and styles your extension needs here. This method should not return anything.
+
+This is where any setup, or initialization for your integration should be placed. For example, you could register the scripts and styles your extension needs here. This method should not return anything.
 
 ### `get_script_handles()`
-This is where the handles of any scripts you want to be enqueued on the client-side in the frontend context should be
-placed. This method should return an array of strings.
+
+This is where the handles of any scripts you want to be enqueued on the client-side in the frontend context should be placed. This method should return an array of strings.
 
 ### `get_editor_script_handles()`
-This is where the handles of any scripts you want to be enqueued on the client-side in the editor context should be
-placed. This method should return an array of strings.
+
+This is where the handles of any scripts you want to be enqueued on the client-side in the editor context should be placed. This method should return an array of strings.
 
 ### `get_script_data()`
-This is where you can set values you want to be available to your scripts on the frontend. This method should return an
-associative array, the keys of which will be used to get the data using the JavaScript function `getSetting`.
+
+This is where you can set values you want to be available to your scripts on the frontend. This method should return an associative array, the keys of which will be used to get the data using the JavaScript function `getSetting`.
 
 The keys and values of this array should all be serializable.
 
 ## Usage example
-Let's suppose we're the author of an extension: `WooCommerce Example Plugin`. We want to enqueue scripts, styles,
-and data on the frontend when either the Mini Cart, Cart or Checkout blocks are being used.
+
+Let's suppose we're the author of an extension: `WooCommerce Example Plugin`. We want to enqueue scripts, styles, and data on the frontend when either the Mini Cart, Cart or Checkout blocks are being used.
 
 We also want some data from a server-side function to be available to our front-end scripts.
 
-You will notice that in the example below, we reference the `/build/index.asset.php` file. This is created by the [`DependencyExtractionWebpackPlugin`](https://www.npmjs.com/package/@wordpress/dependency-extraction-webpack-plugin)
-which creates a PHP file mapping the dependencies of your client-side scripts, so that they can be added in the
-`dependencies` array of `wp_register_script`. 
+You will notice that in the example below, we reference the `/build/index.asset.php` file. This is created by the [`DependencyExtractionWebpackPlugin`](https://www.npmjs.com/package/@wordpress/dependency-extraction-webpack-plugin) which creates a PHP file mapping the dependencies of your client-side scripts, so that they can be added in the `dependencies` array of `wp_register_script`.
 
 Let's create our `IntegrationInterface`.
 
@@ -79,10 +87,10 @@ class WooCommerce_Example_Plugin_Integration implements IntegrationInterface {
 		$script_path = '/build/index.js';
 		$style_path = '/build/style-index.css';
 
-        /**
-         * The assets linked below should be a path to a file, for the sake of brevity
-         * we will assume \WooCommerce_Example_Plugin_Assets::$plugin_file is a valid file path
-        */
+    /**
+     * The assets linked below should be a path to a file, for the sake of brevity
+     * we will assume \WooCommerce_Example_Plugin_Assets::$plugin_file is a valid file path
+    */
 		$script_url = plugins_url( $script_path, \WooCommerce_Example_Plugin_Assets::$plugin_file );
 		$style_url = plugins_url( $style_path, \WooCommerce_Example_Plugin_Assets::$plugin_file );
 
@@ -155,7 +163,7 @@ class WooCommerce_Example_Plugin_Integration implements IntegrationInterface {
 		if ( defined( 'SCRIPT_DEBUG' ) && SCRIPT_DEBUG && file_exists( $file ) ) {
 			return filemtime( $file );
 		}
-		
+
 		// As above, let's assume that WooCommerce_Example_Plugin_Assets::VERSION resolves to some versioning number our
 		// extension uses.
 		return \WooCommerce_Example_Plugin_Assets::VERSION;
@@ -163,8 +171,7 @@ class WooCommerce_Example_Plugin_Integration implements IntegrationInterface {
 }
 ```
 
-As mentioned, we will need register our `IntegrationInterface` with WooCommerce Blocks, as we want our scripts
-to be included when either the Mini Cart, Cart or Checkout is used, we need to register callbacks for two actions.
+As mentioned, we will need register our `IntegrationInterface` with WooCommerce Blocks, as we want our scripts to be included when either the Mini Cart, Cart or Checkout is used, we need to register callbacks for two actions.
 
 ```php
 add_action(
@@ -190,21 +197,19 @@ add_action(
 Now, when we load a page containing either block, we should see the scripts we registered in `initialize` being loaded!
 
 ### Getting data added in `get_script_data`
-We associated some data with the extension in the `get_script_data` method of our interface, we need to know how to get
-this!
 
-In the `@woocommerce/settings` package there is a method you can import called `getSetting`. This method accepts a
-string. The name of the setting containing the data added in `get_script_data` is the name of your integration
-(i.e. the value returned by `get_name`) suffixed with `_data`. In our example it would be: `woocommerce-example-plugin_data`.
+We associated some data with the extension in the `get_script_data` method of our interface, we need to know how to get this!
 
-The value returned here is a plain old JavaScript object, keyed by the keys of the array returned by `get_script_data`,
-the values will serialized. 
+In the `@woocommerce/settings` package there is a method you can import called `getSetting`. This method accepts a string. The name of the setting containing the data added in `get_script_data` is the name of your integration (i.e. the value returned by `get_name`) suffixed with `_data`. In our example it would be: `woocommerce-example-plugin_data`.
+
+The value returned here is a plain old JavaScript object, keyed by the keys of the array returned by `get_script_data`, the values will serialized.
 
 <!-- FEEDBACK -->
+
 ---
 
 [We're hiring!](https://woocommerce.com/careers/) Come work with us!
 
 🐞 Found a mistake, or have a suggestion? [Leave feedback about this document here.](https://github.com/woocommerce/woocommerce-gutenberg-products-block/issues/new?assignees=&labels=type%3A+documentation&template=--doc-feedback.md&title=Feedback%20on%20./docs/extensibility/integration-interface.md)
-<!-- /FEEDBACK -->
 
+<!-- /FEEDBACK -->

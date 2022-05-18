@@ -1,4 +1,4 @@
-# Checkout Flow and Events
+# Checkout Flow and Events <!-- omit in toc -->
 
 This document gives an overview of the flow for the checkout in the WooCommerce checkout block, and some general architectural overviews.
 
@@ -12,6 +12,24 @@ The architecture of the Checkout Block is derived from the following principles:
 Here's a high level overview of the flow:
 
 ![checkout flow diagram](https://user-images.githubusercontent.com/1628454/113739726-f8c9df00-96f7-11eb-80f1-78e25ccc88cb.png)
+
+## Table of Contents <!-- omit in toc -->
+
+- [General Concepts](#general-concepts)
+  - [Tracking flow through status](#tracking-flow-through-status)
+  - [`CheckoutProvider` Exposed Statuses](#checkoutprovider-exposed-statuses)
+    - [Special States:](#special-states)
+  - [`ShippingProvider` Exposed Statuses](#shippingprovider-exposed-statuses)
+  - [`PaymentMethodDataProvider` Exposed Statuses](#paymentmethoddataprovider-exposed-statuses)
+  - [Emitting Events](#emitting-events)
+  - [`onCheckoutValidationBeforeProcessing`](#oncheckoutvalidationbeforeprocessing)
+  - [`onPaymentProcessing`](#onpaymentprocessing)
+  - [`onCheckoutAfterProcessingWithSuccess`](#oncheckoutafterprocessingwithsuccess)
+  - [`onCheckoutAfterProcessingWithError`](#oncheckoutafterprocessingwitherror)
+  - [`onShippingRateSuccess`](#onshippingratesuccess)
+  - [`onShippingRateFail`](#onshippingratefail)
+  - [`onShippingRateSelectSuccess`](#onshippingrateselectsuccess)
+  - [`onShippingRateSelectFail`](#onshippingrateselectfail)
 
 ## General Concepts
 

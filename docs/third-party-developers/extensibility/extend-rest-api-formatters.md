@@ -1,15 +1,23 @@
-# Formatters
+# Formatters <!-- omit in toc -->
 
 `Formatters` are utility classes that allow you to format values to so that they are compatible with the StoreAPI, values such as money, currency, or HTML.
 
--   [MoneyFormatter](#MoneyFormatter)
--   [CurrencyFormatter](#CurrencyFormatter)
--   [HtmlFormatter](#HtmlFormatter)
+## Table of Contents <!-- omit in toc -->
+
+- [How to use them](#how-to-use-them)
+- [MoneyFormatter](#moneyformatter)
+  - [Arguments](#arguments)
+  - [Example use and returned value](#example-use-and-returned-value)
+- [CurrencyFormatter](#currencyformatter)
+  - [Arguments](#arguments-1)
+  - [Example use and returned value](#example-use-and-returned-value-1)
+- [HtmlFormatter](#htmlformatter)
+  - [Arguments](#arguments-2)
+  - [Example use and returned value](#example-use-and-returned-value-2)
 
 ## How to use them
 
-To get a formatter, you can use the `get_formatter` method of the `ExtendSchema` class. This method accepts a string,
-which is the name of the formatter you want to use, e.g. (money, html, currency).
+To get a formatter, you can use the `get_formatter` method of the `ExtendSchema` class. This method accepts a string, which is the name of the formatter you want to use, e.g. (money, html, currency).
 
 ```php
 get_formatter('money'); // For the MoneyFormatter
@@ -29,9 +37,7 @@ Only `MoneyFormatter`'s behaviour can be controlled by the `$options` parameter.
 
 ## MoneyFormatter
 
-The [`MoneyFormatter`](https://github.com/woocommerce/woocommerce-gutenberg-products-block/blob/trunk/src/StoreApi/Formatters/MoneyFormatter.php)
-class can be used to format a monetary value using the store settings. The store settings may be overriden by passing
-options to this formatter's `format` method.
+The [`MoneyFormatter`](https://github.com/woocommerce/woocommerce-gutenberg-products-block/blob/trunk/src/StoreApi/Formatters/MoneyFormatter.php) class can be used to format a monetary value using the store settings. The store settings may be overriden by passing options to this formatter's `format` method.
 
 ### Arguments
 
@@ -55,8 +61,7 @@ returns `1044`
 
 ## CurrencyFormatter
 
-This formatter takes an array of prices, and returns the same array but with currency data added. The currency data
-added is:
+This formatter takes an array of prices, and returns the same array but with currency data added. The currency data added is:
 
 | Key                           | Type     | Description                                                                                       |
 | ----------------------------- | -------- | ------------------------------------------------------------------------------------------------- |
@@ -122,14 +127,14 @@ get_formatter( 'html' )->format(
 );
 ```
 
-returns
-`alert('bad script!') This &#8220;coffee&#8221; is <strong>very strong</strong>.`
+returns `alert('bad script!') This &#8220;coffee&#8221; is <strong>very strong</strong>.`
 
 <!-- FEEDBACK -->
+
 ---
 
 [We're hiring!](https://woocommerce.com/careers/) Come work with us!
 
 🐞 Found a mistake, or have a suggestion? [Leave feedback about this document here.](https://github.com/woocommerce/woocommerce-gutenberg-products-block/issues/new?assignees=&labels=type%3A+documentation&template=--doc-feedback.md&title=Feedback%20on%20./docs/extensibility/extend-rest-api-formatters.md)
-<!-- /FEEDBACK -->
 
+<!-- /FEEDBACK -->

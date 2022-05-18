@@ -1,15 +1,25 @@
-# Exposing your data in the Store API.
+# Exposing your data in the Store API. <!-- omit in toc -->
+
+## Table of Contents <!-- omit in toc -->
+
+- [The problem](#the-problem)
+- [Solution](#solution)
+- [Basic usage](#basic-usage)
+- [Things To Consider](#things-to-consider)
+  - [ExtendSchema is a shared instance](#extendschema-is-a-shared-instance)
+  - [Errors and fatals are silence for non-admins](#errors-and-fatals-are-silence-for-non-admins)
+  - [Callbacks should always return an array](#callbacks-should-always-return-an-array)
+- [API Definition](#api-definition)
+- [Putting it all together](#putting-it-all-together)
+- [Formatting your data](#formatting-your-data)
 
 ## The problem
 
-You want to extend the Mini Cart, Cart and Checkout blocks, but you want to use some custom data not available on Store API or the context.
-You don't want to create your own endpoints or Ajax actions. You want to piggyback on the existing StoreAPI calls.
+You want to extend the Mini Cart, Cart and Checkout blocks, but you want to use some custom data not available on Store API or the context. You don't want to create your own endpoints or Ajax actions. You want to piggyback on the existing StoreAPI calls.
 
 ## Solution
 
-ExtendSchema offers the possibility to add contextual custom data to Store API endpoints, like `wc/store/cart` and `wc/store/cart/items` endpoints.
-That data is namespaced to your plugin and protected from other plugins causing it to malfunction.
-The data is available on all frontend filters and slotFills for you to consume.
+ExtendSchema offers the possibility to add contextual custom data to Store API endpoints, like `wc/store/cart` and `wc/store/cart/items` endpoints. That data is namespaced to your plugin and protected from other plugins causing it to malfunction. The data is available on all frontend filters and slotFills for you to consume.
 
 ## Basic usage
 
@@ -323,7 +333,9 @@ class WC_Subscriptions_Extend_Store_Endpoint {
 You may wish to use our pre-existing Formatters to ensure your data is passed through the Store API in the
 correct format. More information on the Formatters can be found in the [StoreApi Formatters documentation](./extend-rest-api-formatters.md).
 
-## <!-- FEEDBACK -->
+<!-- FEEDBACK -->
+
+---
 
 [We're hiring!](https://woocommerce.com/careers/) Come work with us!
 

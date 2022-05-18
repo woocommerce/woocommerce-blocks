@@ -1,11 +1,19 @@
-# Available Slots
+# Available Slots <!-- omit in toc -->
 
 This document presents the list of available Slots that you can use for adding your custom content (Fill).
 
 If you want to add a new SlotFill component, check the [Checkout - Slot Fill document](../../packages/checkout/slot/README.md). To read more about Slot and Fill, check the [Slot and Fill document](./slot-fills.md).
 
-**Note About Naming:** Slots that are prefixed with `Experimental` are experimental and subject to change or remove. Once they graduate from the experimental stage, the naming would change and the `Experimental` prefix would be dropped.
-Check the [Feature Gating document](../blocks/feature-flags-and-experimental-interfaces.md) from more information.
+**Note About Naming:** Slots that are prefixed with `Experimental` are experimental and subject to change or remove. Once they graduate from the experimental stage, the naming would change and the `Experimental` prefix would be dropped. Check the [Feature Gating document](../blocks/feature-flags-and-experimental-interfaces.md) from more information.
+
+## Table of Contents <!-- omit in toc -->
+
+- [ExperimentalOrderMeta](#experimentalordermeta)
+  - [Passed parameters](#passed-parameters)
+- [ExperimentalOrderShippingPackages](#experimentalordershippingpackages)
+  - [Passed parameters](#passed-parameters-1)
+- [ExperimentalDiscountsMeta](#experimentaldiscountsmeta)
+  - [Passed paramters](#passed-paramters)
 
 ## ExperimentalOrderMeta
 
