@@ -46,7 +46,7 @@ Those classes are:
 
 As an example, if we wanted to do the Checkout font size 10% larger when the container has a width of 521px or wider, we could do so with this code:
 
-```
+```css
 .wc-block-checkout.is-medium,
 .wc-block-checkout.is-large {
 	font-size: 1.1em;

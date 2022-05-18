@@ -1,4 +1,10 @@
-# Cart and Checkout Blocks theming
+# Cart and Checkout Blocks Theming <!-- omit in toc -->
+
+## Table of Contents <!-- omit in toc -->
+
+- [Buttons](#buttons)
+- [Mobile submit container](#mobile-submit-container)
+- [Item quantity badge](#item-quantity-badge)
 
 ## Buttons
 
