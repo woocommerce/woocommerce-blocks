@@ -1,3 +1,21 @@
+# Features Flags and Experimental Interfaces <!-- omit in toc -->
+
+## Table of contents <!-- omit in toc -->
+
+- [Blocks behind flags](#blocks-behind-flags)
+  - [Feature plugin flag](#feature-plugin-flag)
+  - [Experimental flag](#experimental-flag)
+- [Features behind flags](#features-behind-flags)
+  - [Feature plugin flag](#feature-plugin-flag-1)
+  - [Experimental plugin flag](#experimental-plugin-flag)
+- [Processes and commands that use a flag](#processes-and-commands-that-use-a-flag)
+- [Usages of `__experimental` prefix](#usages-of-__experimental-prefix)
+  - [PHP filters and actions](#php-filters-and-actions)
+  - [JS methods](#js-methods)
+  - [Slots](#slots)
+  - [Misc](#misc)
+- [Usages of `experimental` prefix](#usages-of-experimental-prefix)
+
 We have feature gating system setup in our plugin that defines what is accessible to the public and what is not, it has three phases:
 
 -   **Core flag `WOOCOMMERCE_BLOCKS_PHASE=1`:** anything that is not hidden behind a flag, falls under this category, and it contains all of the code that runs on WooCommerce Core plugin.
@@ -131,10 +149,11 @@ Current list of events:
 -   `experimental__woocommerce_blocks-checkout-set-phone-number` - Fired when a phone number is added during checkout.
 
 <!-- FEEDBACK -->
+
 ---
 
 [We're hiring!](https://woocommerce.com/careers/) Come work with us!
 
 🐞 Found a mistake, or have a suggestion? [Leave feedback about this document here.](https://github.com/woocommerce/woocommerce-gutenberg-products-block/issues/new?assignees=&labels=type%3A+documentation&template=--doc-feedback.md&title=Feedback%20on%20./docs/blocks/feature-flags-and-experimental-interfaces.md)
-<!-- /FEEDBACK -->
 
+<!-- /FEEDBACK -->
