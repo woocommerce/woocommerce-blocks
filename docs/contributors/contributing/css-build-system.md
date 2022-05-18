@@ -1,4 +1,4 @@
-# CSS Build System
+# CSS Build System <!-- omit in toc -->
 
 CSS files are built with Webpack, which gathers all SCSS files in the app and processes them with SASS and some PostCSS plugins like Autoprefixer. The resulting stylesheets are merged into three files for the whole plugin:
 
@@ -7,6 +7,12 @@ CSS files are built with Webpack, which gathers all SCSS files in the app and pr
 -   `vendors-style.css`: loaded in the editor and the frontend of some blocks, it includes external stylesheets which are required by some blocks but are not part of our codebase.
 
 > Details on which stylesheets are included in each output file can be found in [`webpack-configs.js`](https://github.com/woocommerce/woocommerce-gutenberg-products-block/blob/8befaccf35cac958c2d222e89facb84f9b675525/bin/webpack-configs.js#L655-L680).
+
+## Table of contents <!-- omit in toc -->
+
+- [Legacy builds](#legacy-builds)
+- [Right-to-left](#right-to-left)
+- [Relevant files](#relevant-files)
 
 ## Legacy builds
 
