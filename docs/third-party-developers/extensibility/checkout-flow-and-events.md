@@ -1,24 +1,6 @@
-# Checkout Block Flow <!-- omit in toc -->
+# Checkout Flow and Events
 
 This document gives an overview of the flow for the checkout in the WooCommerce checkout block, and some general architectural overviews.
-
-## Table of Contents <!-- omit in toc -->
-
-- [General Concepts](#general-concepts)
-  - [Tracking flow through status](#tracking-flow-through-status)
-    - [`CheckoutProvider` Exposed Statuses](#checkoutprovider-exposed-statuses)
-      - [Special States:](#special-states)
-    - [`ShippingProvider` Exposed Statuses](#shippingprovider-exposed-statuses)
-    - [`PaymentMethodDataProvider` Exposed Statuses](#paymentmethoddataprovider-exposed-statuses)
-  - [Emitting Events](#emitting-events)
-    - [`onCheckoutValidationBeforeProcessing`](#oncheckoutvalidationbeforeprocessing)
-    - [`onPaymentProcessing`](#onpaymentprocessing)
-    - [`onCheckoutAfterProcessingWithSuccess`](#oncheckoutafterprocessingwithsuccess)
-    - [`onCheckoutAfterProcessingWithError`](#oncheckoutafterprocessingwitherror)
-    - [`onShippingRateSuccess`](#onshippingratesuccess)
-    - [`onShippingRateFail`](#onshippingratefail)
-    - [`onShippingRateSelectSuccess`](#onshippingrateselectsuccess)
-    - [`onShippingRateSelectFail`](#onshippingrateselectfail)
 
 The architecture of the Checkout Block is derived from the following principles:
 
@@ -47,7 +29,7 @@ To surface the flow state, the block uses statuses that are tracked in the vario
 
 The following statuses exist in the Checkout.
 
-#### `CheckoutProvider` Exposed Statuses
+### `CheckoutProvider` Exposed Statuses
 
 You can find all the checkout provider statuses defined [in this typedef](https://github.com/woocommerce/woocommerce-gutenberg-products-block/blob/34e17c3622637dbe8b02fac47b5c9b9ebf9e3596/assets/js/type-defs/checkout.js#L21-L38).
 
@@ -74,7 +56,7 @@ The following boolean flags available related to status are:
 
 **isComplete**: When the checkout status is `COMPLETE` this flag is true. Checkout will have this status after all observers on the events emitted during the `AFTER_PROCESSING` status are completed successfully. When checkout is at this status, the shopper's browser will be redirected to the value of `redirectUrl` at that point (usually the `order-received` route).
 
-##### Special States:
+#### Special States:
 
 The following are booleans exposed via the checkout provider that are independent from each other and checkout statuses but can be used in combination to react to various state in the checkout.
 
@@ -82,7 +64,7 @@ The following are booleans exposed via the checkout provider that are independen
 
 **hasError:** This is true when anything in the checkout has created an error condition state. This might be validation errors, request errors, coupon application errors, payment processing errors etc.
 
-#### `ShippingProvider` Exposed Statuses
+### `ShippingProvider` Exposed Statuses
 
 The shipping context provider exposes everything related to shipping in the checkout. Included in this are a set of error statuses that inform what error state the shipping context is in and the error state is affected by requests to the server on address changes, rate retrieval and selection.
 
@@ -94,7 +76,7 @@ The status is exposed on the `currentErrorStatus` object provided by the `useShi
 -   `hasInvalidAddress`: When the address provided for shipping is invalid, this will be true.
 -   `hasError`: This is `true` when the error status for shipping is either `UNKNOWN` or `hasInvalidAddress`.
 
-#### `PaymentMethodDataProvider` Exposed Statuses
+### `PaymentMethodDataProvider` Exposed Statuses
 
 This context provider exposes everything related to payment method data and registered payment methods. The statuses exposed via this provider help inform the current state of _client side_ processing for payment methods and are updated via the payment method data event emitters. _Client side_ means the state of processing any payments by registered and active payment methods when the checkout form is submitted via those payment methods registered client side components. It's still possible that payment methods might have additional server side processing when the order is being processed but that is not reflected by these statuses (more in the [payment method integration doc](./payment-method-integration.md)).
 
@@ -200,7 +182,7 @@ const MyPaymentMethodComponent = ( { emitResponse } ) => {
 
 The following event emitters are available to extensions to register observers to:
 
-#### `onCheckoutValidationBeforeProcessing`
+### `onCheckoutValidationBeforeProcessing`
 
 Observers registered to this event emitter will receive nothing as an argument. Also, all observers will be executed before the checkout handles the responses from the emitters. Observers registered to this emitter can return `true` if they have nothing to communicate back to checkout, `false` if they want checkout to go back to `IDLE` status state, or an object with any of the following properties:
 
@@ -244,7 +226,7 @@ const PaymentMethodComponent = ( { eventRegistration } ) => {
 };
 ```
 
-#### `onPaymentProcessing`
+### `onPaymentProcessing`
 
 This event emitter is fired when the payment method context status is `PROCESSING` and that status is set when the checkout status is `PROCESSING`, checkout `hasError` is false, checkout is not calculating, and the current payment status is not `FINISHED`.
 
@@ -334,7 +316,7 @@ const PaymentMethodComponent = ( { eventRegistration } ) => {
 };
 ```
 
-#### `onCheckoutAfterProcessingWithSuccess`
+### `onCheckoutAfterProcessingWithSuccess`
 
 This event emitter is fired when the checkout context status is `AFTER_PROCESSING` and the checkout `hasError` state is false. The `AFTER_PROCESSING` status is set by the `CheckoutProcessor` component after receiving a response from the server for the checkout processing request.
 
@@ -407,7 +389,7 @@ const PaymentMethodComponent = ( { eventRegistration } ) => {
 };
 ```
 
-#### `onCheckoutAfterProcessingWithError`
+### `onCheckoutAfterProcessingWithError`
 
 This event emitter is fired when the checkout context status is `AFTER_PROCESSING` and the checkout `hasError` state is `true`. The `AFTER_PROCESSING` status is set by the `CheckoutProcessor` component after receiving a response from the server for the checkout processing request.
 
@@ -449,35 +431,36 @@ const PaymentMethodComponent = ( { eventRegistration } ) => {
 };
 ```
 
-#### `onShippingRateSuccess`
+### `onShippingRateSuccess`
 
 This event emitter is fired when shipping rates are not loading and the shipping data context error state is `NONE` and there are shipping rates available.
 
 This event emitter doesn't care about any registered observer response and will simply execute all registered observers passing them the current shipping rates retrieved from the server.
 
-#### `onShippingRateFail`
+### `onShippingRateFail`
 
 This event emitter is fired when shipping rates are not loading and the shipping data context error state is `UNKNOWN` or `INVALID_ADDRESS`.
 
 This event emitter doesn't care about any registered observer response and will simply execute all registered observers passing them the current error status in the context.
 
-#### `onShippingRateSelectSuccess`
+### `onShippingRateSelectSuccess`
 
 This event emitter is fired when a shipping rate selection is not being persisted to the server and there are selected rates available and the current error status in the context is `NONE`.
 
 This event emitter doesn't care about any registered observer response and will simply execute all registered observers passing them the current selected rates.
 
-#### `onShippingRateSelectFail`
+### `onShippingRateSelectFail`
 
 This event emitter is fired when a shipping rate selection is not being persisted to the server and the shipping data context error state is `UNKNOWN` or `INVALID_ADDRESS`.
 
 This event emitter doesn't care about any registered observer response and will simply execute all registered observers passing them the current error status in the context.
 
 <!-- FEEDBACK -->
+
 ---
 
 [We're hiring!](https://woocommerce.com/careers/) Come work with us!
 
 🐞 Found a mistake, or have a suggestion? [Leave feedback about this document here.](https://github.com/woocommerce/woocommerce-gutenberg-products-block/issues/new?assignees=&labels=type%3A+documentation&template=--doc-feedback.md&title=Feedback%20on%20./docs/extensibility/checkout-flow-and-events.md)
-<!-- /FEEDBACK -->
 
+<!-- /FEEDBACK -->
