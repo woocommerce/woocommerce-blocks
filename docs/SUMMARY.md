@@ -24,6 +24,8 @@
     -   [Notices](internal-developers/block-client-apis/notices.md)
 -   [Store API (REST API)](../src/StoreApi/README.md)
 -   [Templates](internal-developers/templates/README.md)
+    -   [BlockTemplateController](internal-developers/templates/block-template-controller.md)
+    -   [Classic Template](internal-developers/templates/classic-template.md)
 -   [Testing](internal-developers/testing/README.md)
     -   [When to employ end to end testing](internal-developers/testing/when-to-employ-e2e-testing.md)
     -   [Smoke Testing](internal-developers/testing/smoke-testing.md)
