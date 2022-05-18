@@ -232,6 +232,8 @@ export const withInspectorControls = ( Component ) => ( props ) => {
 		alt,
 		dimRatio,
 		focalPoint,
+		hasParallax,
+		isRepeated,
 		imageFit,
 		mediaId,
 		mediaSrc,
@@ -275,6 +277,8 @@ export const withInspectorControls = ( Component ) => ( props ) => {
 				contentPanel={ contentPanel }
 				dimRatio={ dimRatio }
 				focalPoint={ focalPoint }
+				hasParallax={ hasParallax }
+				isRepeated={ isRepeated }
 				imageFit={ imageFit }
 				overlayColor={ overlayColor }
 				overlayGradient={ overlayGradient }
