@@ -1,16 +1,6 @@
 # Available Slots
 
-This document presents the list of available Slots that you can use for adding your custom content (Fill):
-
-- [Available Slots](#available-slots)
-  - [ExperimentalOrderMeta](#experimentalordermeta)
-    - [Passed parameters](#passed-parameters)
-  - [ExperimentalOrderShippingPackages](#experimentalordershippingpackages)
-    - [Passed parameters](#passed-parameters-1)
-  - [ExperimentalDiscountsMeta](#experimentaldiscountsmeta)
-    - [Passed paramters](#passed-paramters)
-
----
+This document presents the list of available Slots that you can use for adding your custom content (Fill).
 
 If you want to add a new SlotFill component, check the [Checkout - Slot Fill document](../../packages/checkout/slot/README.md). To read more about Slot and Fill, check the [Slot and Fill document](./slot-fills.md).
 
@@ -76,10 +66,11 @@ Checkout:
 -   `context`, equal to the name of the Block in which the fill is rendered: `woocommerce/cart` or `woocommerce/checkout`
 
 <!-- FEEDBACK -->
+
 ---
 
 [We're hiring!](https://woocommerce.com/careers/) Come work with us!
 
 🐞 Found a mistake, or have a suggestion? [Leave feedback about this document here.](https://github.com/woocommerce/woocommerce-gutenberg-products-block/issues/new?assignees=&labels=type%3A+documentation&template=--doc-feedback.md&title=Feedback%20on%20./docs/extensibility/available-slot-fills.md)
-<!-- /FEEDBACK -->
 
+<!-- /FEEDBACK -->
