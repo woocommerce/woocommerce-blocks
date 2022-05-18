@@ -65,12 +65,12 @@
 ## Designers
 
 -   [Theming](designers/theming/README.md)
--   [All Products & filters](designers/theming/all-products-and-filters.md)
--   [Cart and Checkout](designers/theming/cart-and-checkout.md)
--   [Class names update in 4.6.0](designers/theming/class-names-update-460.md)
--   [Class names update in 3.4.0](designers/theming/class-names-update-340.md)
--   [Class names update in 3.3.0](designers/theming/class-names-update-330.md)
--   [Class names update in 2.8.0](designers/theming/class-names-update-280.md)
--   [Product grid blocks style update in 2.7.0](designers/theming/product-grid-270.md)
+    -   [All Products & filters](designers/theming/all-products-and-filters.md)
+    -   [Cart and Checkout](designers/theming/cart-and-checkout.md)
+    -   [Class names update in 4.6.0](designers/theming/class-names-update-460.md)
+    -   [Class names update in 3.4.0](designers/theming/class-names-update-340.md)
+    -   [Class names update in 3.3.0](designers/theming/class-names-update-330.md)
+    -   [Class names update in 2.8.0](designers/theming/class-names-update-280.md)
+    -   [Product grid blocks style update in 2.7.0](designers/theming/product-grid-270.md)
 
 ## Tutorials
