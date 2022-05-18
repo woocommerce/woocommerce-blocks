@@ -1,6 +1,6 @@
 # Class names update in 4.6.0
 
-In WC Blocks 4.6.0, some class names were updated in order to follow the same guidelines from other classes.
+In [WooCommerce Blocks 4.6.0](https://developer.woocommerce.com/2021/03/02/woocommerce-blocks-4-6-0-release-notes/) we replaced the classes as listed below.
 
 ## Replaced classes
 

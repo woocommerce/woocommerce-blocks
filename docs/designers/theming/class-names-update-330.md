@@ -1,6 +1,6 @@
 # Class names update in 3.3.0
 
-WC Blocks 3.3.0, introduced express payment methods in the Cart block. In order to make it easy to write styles for express payment methods for the Cart and Checkout blocks separately, we updated several class names:
+In [WooCommerce Blocks 3.3.0](https://developer.woocommerce.com/2020/09/02/woocommerce-blocks-3-3-0-release-notes/), we introduced express payment methods in the Cart block. In order to make it easy to write styles for express payment methods for the Cart and Checkout blocks separately, we updated several class names:
 
 ## Replaced classes
 

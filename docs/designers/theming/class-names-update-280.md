@@ -1,6 +1,11 @@
-# Class names update in 2.8.0
+# Class names update in 2.8.0 <!-- omit in toc -->
 
-In WC Blocks 2.8.0, some class names were updated in order to simplify them, fix inconsistencies, and make it easier to differentiate frontend components from editor components.
+In [WooCommerce Blocks 2.8.0](https://developer.woocommerce.com/2020/06/24/woocommerce-blocks-2-8-release-notes/), we replaced and deprecated some some class names to simplify them, fix inconsistencies, and make it easier to differentiate frontend components from editor components.
+
+## Table of Contents <!-- omit in toc -->
+
+- [Replaced classes](#replaced-classes)
+- [Deprecated classes](#deprecated-classes)
 
 ## Replaced classes
 
@@ -46,12 +51,12 @@ Some classes that were introduced in 2.6.0 and 2.7.0 and didn't ship in WooComme
 | `wc-block-form-input-validation-error` | `wc-block-components-validation-error`                |
 | `wc-block-checkout__save-card-info`    | `wc-block-components-payment-methods__save-card-info` |
 
-**Note:** if not listed, all items in the table above include derived classes.
+**Note:** If not listed, all items in the table above include derived classes.
 
--   For example: given that `wc-block-address-form` changed to `wc-block-components-address-form`
-    -   `wc-block-address-form__company` also changed to `wc-block-components-address-form__company`
-    -   `wc-block-address-form__address_1` also changed to `wc-block-components-address-form__address_1`
-    -   ...
+For example, given that `wc-block-address-form` changed to `wc-block-components-address-form`:
+
+-   `wc-block-address-form__company` also changed to `wc-block-components-address-form__company`
+-   `wc-block-address-form__address_1` also changed to `wc-block-components-address-form__address_1`
 
 In most cases, it should be safe to do a search & replace in the stylesheet replacing the removed class names with the new ones.
 
@@ -78,10 +83,10 @@ Some classes that were introduced in previous versions or that have shipped in W
 
 **Note:** if not listed, all items in the table above include derived classes.
 
--   For example: given that `wc-block-error` changed to `wc-block-components-error`
-    -   `wc-block-error__company` also changed to `wc-block-components-error__content`
-    -   `wc-block-error__address_1` also changed to `wc-block-components-error__image`
-    -   ...
+For example, given that `wc-block-error` changed to `wc-block-components-error`
+
+-   `wc-block-error__company` also changed to `wc-block-components-error__content`
+-   `wc-block-error__address_1` also changed to `wc-block-components-error__image`
 
 <!-- FEEDBACK -->
 

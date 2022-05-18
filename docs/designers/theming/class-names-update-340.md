@@ -1,5 +1,7 @@
 # Class names update in 3.4.0
 
+In [WooCommerce Blocks 3.4.0](https://developer.woocommerce.com/2020/09/15/woocommerce-blocks-3-4-0-release-notes/), we replaced the class as listed below.
+
 ## Replaced classes
 
 | Removed                             | New class name            |
