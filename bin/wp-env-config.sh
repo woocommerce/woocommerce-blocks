@@ -25,13 +25,9 @@ wp language plugin install woocommerce nl_NL
 ## We download a full version of .po (that has translation for js files as well).
 curl https://translate.wordpress.org/projects/wp-plugins/woo-gutenberg-products-block/stable/nl/default/export-translations/ --output ./wp-content/languages/plugins/woo-gutenberg-products-block-nl_NL.po
 sleep 5
-## We generate a new po file, based on the one we just downloaded, but with updated file paths.
+## We update our po file with updated file paths.
 ## This should account for when a file changes location between versions.
-php -d memory_limit=2024M "$(which wp)" i18n make-pot ./wp-content/plugins/$1/ ./wp-content/languages/plugins/woo-gutenberg-products-block-nl_NL-updated.po --merge=./wp-content/languages/plugins/woo-gutenberg-products-block-nl_NL.po --domain=woo-gutenberg-products-block --exclude=node_modules,vendor --skip-audit
-## We remove the po we downloaded.
-rm ./wp-content/languages/plugins/woo-gutenberg-products-block-nl_NL.po
-## And rename the one we just created to that one.
-mv ./wp-content/languages/plugins/woo-gutenberg-products-block-nl_NL-updated.po ./wp-content/languages/plugins/woo-gutenberg-products-block-nl_NL.po
+php -d memory_limit=2024M "$(which wp)" i18n make-pot ./wp-content/plugins/$1/ ./wp-content/languages/plugins/woo-gutenberg-products-block-nl_NL.po --merge --domain=woo-gutenberg-products-block --exclude=node_modules,vendor --skip-audit
 ## We regenerate json translation from the new po file we created.
 php -d memory_limit=2024M "$(which wp)" i18n make-json ./wp-content/languages/plugins/woo-gutenberg-products-block-nl_NL.po
 exit $EXIT_CODE
