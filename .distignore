@@ -1,10 +1,13 @@
 /.github
 /.git
 /.wordpress-org
-/node_modules
 /.sources
+/assets
 /bin
 /docs
+/node_modules
+/packages
+/patches
 /storybook
 /tests
 
@@ -25,7 +28,7 @@ blocks.ini
 composer.json
 composer.lock
 docker-compose.yml
-globals.d.ts
+global.d.ts
 package.json
 package-lock.json
 phpcs.xml
