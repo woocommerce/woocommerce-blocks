@@ -1,6 +1,9 @@
-[![Create Todo list](https://raw.githubusercontent.com/senadir/todo-my-markdown/master/public/github-button.svg?sanitize=true)](https://git-todo.netlify.app/create)
+# Coupons <!-- omit in toc -->
 
-# Coupons
+## Table of Contents <!-- omit in toc -->
+
+- [Setup](#setup)
+- [What to test](#what-to-test)
 
 ## Setup
 
@@ -15,11 +18,11 @@ You will need to setup some types of coupon in order to test this.
 
 ## What to test
 
-With coupons disabled: <!-- heading -->
+With coupons disabled:
 
 -   [ ] You should not see the add coupon section in your cart and checkout and in the editor.
 
-With coupons enabled: <!-- heading -->
+With coupons enabled:
 
 -   [ ] You can apply coupons in both Cart and Checkout blocks.
 -   [ ] A valid coupon `coupon` should reduce your totals.
@@ -33,6 +36,8 @@ With coupons enabled: <!-- heading -->
 -   [ ] Adding a coupon then adding `alone` coupon should replace the first one.
 -   [ ] Adding `alone` then trying to another coupon should result in an error.
 -   [ ] Adding `freeship` should show the free shipping method you previously created.
+
+[![Create Todo list](https://raw.githubusercontent.com/senadir/todo-my-markdown/master/public/github-button.svg?sanitize=true)](https://git-todo.netlify.app/create)
 
 <!-- FEEDBACK -->
 
