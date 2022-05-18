@@ -1,25 +1,67 @@
 export function calculateBackgroundImagePosition( coords ) {
 	if ( ! coords ) return {};
 
-	const x = Math.round( coords.x * 100 );
-	const y = Math.round( coords.y * 100 );
-
 	return {
-		objectPosition: `${ x }% ${ y }%`,
+		objectPosition: calculatePercentPositionFromCoordinates( coords ),
 	};
 }
 
+export function calculatePercentPositionFromCoordinates( coords ) {
+	if ( ! coords ) return '';
+
+	const x = Math.round( coords.x * 100 );
+	const y = Math.round( coords.y * 100 );
+
+	return `${ x }% ${ y }%`;
+}
+
 /**
- * Generate a style object given either a product category image from the API or URL to an image.
+ * Generate the style object of the background image of the block.
  *
- * @param {string} url An image URL.
+ * It outputs styles for either an `img` element or a `div` with a background,
+ * depending on what is needed.
+ *
+ * @param {Object} opts Options for the element.
+ * @param {Object} opts.focalPoint X and Y coordinates of the image.
+ * @param {'cover' | 'none'} opts.imageFit How to fit the image in the wrapper.
+ * @param {boolean} opts.isImgElement Whether the rendered background is an `img` element.
+ * @param {boolean} opts.isRepeated Whether the background is repeated (no effect if `isImgElement` is `true`).
+ * @param {string} opts.url The url of the image.
+ *
  * @return {Object} A style object with a backgroundImage set (if a valid image is provided).
  */
-export function getBackgroundImageStyles( url ) {
-	if ( url ) {
-		return { backgroundImage: `url(${ url })` };
+export function getBackgroundImageStyles( {
+	focalPoint,
+	imageFit,
+	isImgElement,
+	isRepeated,
+	url,
+} ) {
+	let styles = {};
+
+	if ( isImgElement ) {
+		styles = {
+			...styles,
+			...calculateBackgroundImagePosition( focalPoint ),
+			objectFit: imageFit,
+		};
+	} else {
+		styles = {
+			...styles,
+			...( url && {
+				backgroundImage: `url(${ url })`,
+			} ),
+			backgroundPosition: calculatePercentPositionFromCoordinates(
+				focalPoint
+			),
+			...( ! isRepeated && {
+				backgroundRepeat: 'no-repeat',
+				backgroundSize: imageFit === 'cover' ? imageFit : 'auto',
+			} ),
+		};
 	}
-	return {};
+
+	return styles;
 }
 
 /**

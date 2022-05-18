@@ -16,8 +16,8 @@ import { CallToAction } from './call-to-action';
 import { ConstrainedResizable } from './constrained-resizable';
 import { useBackgroundImage } from './use-background-image';
 import {
-	calculateBackgroundImagePosition,
 	dimRatioToClass,
+	getBackgroundImageStyles,
 	getClassPrefixFromName,
 } from './utils';
 
@@ -82,6 +82,8 @@ export const withFeaturedItem = ( { emptyMessage, icon, label } ) => (
 			contentAlign,
 			dimRatio,
 			focalPoint,
+			hasParallax,
+			isRepeated,
 			imageFit,
 			minHeight,
 			overlayColor,
@@ -101,6 +103,7 @@ export const withFeaturedItem = ( { emptyMessage, icon, label } ) => (
 				'is-loading': ! item && isLoading,
 				'is-not-found': ! item && ! isLoading,
 				'has-background-dim': dimRatio !== 0,
+				'is-repeated': isRepeated,
 			},
 			dimRatioToClass( dimRatio ),
 			contentAlign !== 'center' && `has-${ contentAlign }-content`
@@ -115,10 +118,15 @@ export const withFeaturedItem = ( { emptyMessage, icon, label } ) => (
 			minHeight,
 		};
 
-		const backgroundImageStyle = {
-			...calculateBackgroundImagePosition( focalPoint ),
-			objectFit: imageFit,
-		};
+		const isImgElement = ! isRepeated && ! hasParallax;
+
+		const backgroundImageStyle = getBackgroundImageStyles( {
+			focalPoint,
+			imageFit,
+			isImgElement,
+			isRepeated,
+			url: backgroundImageSrc,
+		} );
 
 		const overlayStyle = {
 			background: overlayGradient,
@@ -142,20 +150,31 @@ export const withFeaturedItem = ( { emptyMessage, icon, label } ) => (
 							className="background-dim__overlay"
 							style={ overlayStyle }
 						/>
-						{ backgroundImageSrc && (
-							<img
-								alt={ item.name }
-								className={ `${ className }__background-image` }
-								src={ backgroundImageSrc }
-								style={ backgroundImageStyle }
-								onLoad={ ( e ) => {
-									setBackgroundImageSize( {
-										height: e.target?.naturalHeight,
-										width: e.target?.naturalWidth,
-									} );
-								} }
-							/>
-						) }
+						{ backgroundImageSrc &&
+							( isImgElement ? (
+								<img
+									alt={ item.name }
+									className={ `${ className }__background-image` }
+									src={ backgroundImageSrc }
+									style={ backgroundImageStyle }
+									onLoad={ ( e ) => {
+										setBackgroundImageSize( {
+											height: e.target?.naturalHeight,
+											width: e.target?.naturalWidth,
+										} );
+									} }
+								/>
+							) : (
+								<div
+									className={ classnames(
+										`${ className }__background-image`,
+										{
+											'has-parallax': hasParallax,
+										}
+									) }
+									style={ backgroundImageStyle }
+								/>
+							) ) }
 						<h2
 							className={ `${ className }__title` }
 							dangerouslySetInnerHTML={ {
