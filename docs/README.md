@@ -10,7 +10,7 @@ The WooCommerce Blocks Handbook provides documentation for designers and develop
 | Internal Developers    | [Store API (REST API)](../src/StoreApi/README.md)                    | These documents explain the Store API used to get product data on the frontend.                          |
 | Internal Developers    | [Templates](internal-developers/templates/README.md)                 | These documents explain the technical aspects of the WooCommerce block templates and template parts.     |
 | Internal Developers    | [Testing](internal-developers/testing/README.md)                     | These documents explain the testing process.                                                             |
-| Third-Party Developers | [Extensibility](extensibility/README.md)                             | These documents explain the extensibility of WooCommerce Blocks.                                         |
+| Third-Party Developers | [Extensibility](third-party-developers/extensibility/README.md)      | These documents explain the extensibility of WooCommerce Blocks.                                         |
 | Designers              | [Theming](theming/README.md)                                         | These documents explain the theming for blocks, styles, CSS classnames and other theming best practices. |
 
 ## <!-- FEEDBACK -->
