@@ -69,16 +69,16 @@ WooCommerce Blocks avoids using legacy unprefixed classes as much as possible. H
 
 ## Blocks
 
--   [All Products & filters](./all-products-and-filters.md)
--   [Cart and Checkout](./cart-and-checkout.md)
+-   [All Products & filters](all-products-and-filters.md)
+-   [Cart and Checkout](cart-and-checkout.md)
 
 ## Other docs
 
--   [Product grid blocks style update in 2.7.0](./product-grid-270.md)
--   [Class names update in 2.8.0](./class-names-update-280.md)
--   [Class names update in 3.3.0](./class-names-update-330.md)
--   [Class names update in 3.4.0](./class-names-update-340.md)
--   [Class names update in 4.6.0](./class-names-update-460.md)
+-   [Product grid blocks style update in 2.7.0](product-grid-270.md)
+-   [Class names update in 2.8.0](class-names-update-280.md)
+-   [Class names update in 3.3.0](class-names-update-330.md)
+-   [Class names update in 3.4.0](class-names-update-340.md)
+-   [Class names update in 4.6.0](class-names-update-460.md)
 
 <!-- FEEDBACK -->
 
