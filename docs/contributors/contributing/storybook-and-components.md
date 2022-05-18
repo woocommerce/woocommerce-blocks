@@ -1,12 +1,14 @@
-# Storybook & Components
+# Storybook & Components <!-- omit in toc -->
 
-This repo includes [Storybook](https://storybook.js.org) tooling so we can test and develop components in isolation.
+This repo includes [Storybook](https://storybook.js.org) tooling so we can test and develop components in isolation. The storybook is automatically built and published to [GitHub pages](https://woocommerce.github.io/woocommerce-gutenberg-products-block/) on every push to the main branch. See [travis.yml](https://github.com/woocommerce/woocommerce-gutenberg-products-block/blob/trunk/.travis.yml) for details.
 
-The storybook is automatically built and published to [GitHub pages](https://woocommerce.github.io/woocommerce-gutenberg-products-block/) on every push to the main branch. See [travis.yml](https://github.com/woocommerce/woocommerce-gutenberg-products-block/blob/trunk/.travis.yml) for details.
+## Table of contents <!-- omit in toc -->
 
-https://woocommerce.github.io/woocommerce-gutenberg-products-block/
-
+- [Where are our components?](#where-are-our-components)
+- [How to run Storybook locally and test components](#how-to-run-storybook-locally-and-test-components)
+- [How to add a story for a component](#how-to-add-a-story-for-a-component)
 ## Where are our components?
+
 We have components in a few folders, for different contexts.
 
 - [`assets/js/base/components`](https://github.com/woocommerce/woocommerce-gutenberg-products-block/tree/trunk/assets/js/base/components)
@@ -42,6 +44,7 @@ For more info about individual components, refer to [Storybook](https://woocomme
 If you're stuck, copy source of an existing story to get started.
 
 <!-- FEEDBACK -->
+
 ---
 
 [We're hiring!](https://woocommerce.com/careers/) Come work with us!
