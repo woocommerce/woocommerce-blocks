@@ -90,6 +90,7 @@ wc.wcSettings.getSetting( 'key' );
 ```
 
 <!-- FEEDBACK -->
+
 ---
 
 [We're hiring!](https://woocommerce.com/careers/) Come work with us!

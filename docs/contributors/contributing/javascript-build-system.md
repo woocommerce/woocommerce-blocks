@@ -1,4 +1,4 @@
-# JavaScript Build System
+# JavaScript Build System <!-- omit in toc -->
 
 WooCommerce Blocks uses Webpack to build the files that will be consumed by browsers. There are several different Webpack configs in order to build files for different contexts of the plugin. They can all be found in [`webpack.config.js`](https://github.com/woocommerce/woocommerce-gutenberg-products-block/blob/6da64165025e7a2afc1782e4b278d72536e7b754/webpack.config.js#L162-L169), but this is a quick summary:
 
@@ -9,6 +9,16 @@ WooCommerce Blocks uses Webpack to build the files that will be consumed by brow
 -   `StylingConfig`: config that builds CSS files. You can read more about it in the page [CSS build system](css-build-system.md).
 
 Details on each config can be found in [`webpack-configs.js`](https://github.com/woocommerce/woocommerce-gutenberg-products-block/blob/trunk/bin/webpack-configs.js). Entry points are declared in [`webpack-entries.js`](https://github.com/woocommerce/woocommerce-gutenberg-products-block/blob/trunk/bin/webpack-entries.js).
+
+## Table of contents <!-- omit in toc -->
+
+- [Environment variables](#environment-variables)
+- [Babel](#babel)
+- [External scripts](#external-scripts)
+- [Aliases](#aliases)
+- [Styling](#styling)
+- [Legacy builds](#legacy-builds)
+- [Relevant files](#relevant-files)
 
 ## Environment variables
 
@@ -57,6 +67,7 @@ Webpack config is split between several files:
 - [`bin/webpack-helpers.js`](https://github.com/woocommerce/woocommerce-gutenberg-products-block/blob/trunk/bin/webpack-helpers.js): Includes utils to load external code at run time, e.g. some dependencies from Woo and WordPress core.
 
 <!-- FEEDBACK -->
+
 ---
 
 [We're hiring!](https://woocommerce.com/careers/) Come work with us!
