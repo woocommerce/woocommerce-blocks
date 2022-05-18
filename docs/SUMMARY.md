@@ -8,9 +8,9 @@
     -   [Getting Started](contributors/contributing/getting-started.md)
     -   [Coding Guidelines](contributors/contributing/coding-guidelines.md)
     -   [JavaScript Testing](contributors/contributing/javascript-testing.md)
-    -   [Developing Components (& Storybook)](contributors/contributing/components.md)
+    -   [Developing Components (& Storybook)](contributors/contributing/storybook-and-components.md)
     -   [Block Script Assets](contributors/contributing/block-assets.md)
-    -   [JS build system](contributors/contributing/js-build-system.md)
+    -   [JS build system](contributors/contributing/javascript-build-system.md)
     -   [CSS build system](contributors/contributing/css-build-system.md)
 
 ## Internal developers
