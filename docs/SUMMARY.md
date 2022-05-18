@@ -25,6 +25,10 @@
 -   [Store API (REST API)](../src/StoreApi/README.md)
 -   [Templates](internal-developers/templates/README.md)
 -   [Testing](internal-developers/testing/README.md)
+    -   [When to employ end to end testing](internal-developers/testing/when-to-employ-e2e-testing.md)
+    -   [Smoke Testing](internal-developers/testing/smoke-testing.md)
+    -   [Cart and Checkout Testing](internal-developers/testing/cart-checkout/README.md)
+    -   [Releases](internal-developers/testing/releases/README.md)
 
 ## Third-party developers
 
