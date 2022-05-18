@@ -1,4 +1,4 @@
-# ClassicTemplate class <!-- omit in toc -->
+# ClassicTemplate.php <!-- omit in toc -->
 
 The `ClassicTemplate` is a class used to set up the Classic Template block on the server-side, and render the correct template.
 

@@ -1,4 +1,9 @@
-# Classic Template Block
+# Classic Template Block <!-- omit in toc -->
+
+## Table of Contents <!-- omit in toc -->
+
+- [Usage](#usage)
+  - [Props](#props)
 
 The Classic Template block is a placeholder block for specific WooCommerce block templates which are rendered on the server-side when a block theme is active.
 
@@ -12,9 +17,9 @@ This block does not have any customizable options available, so any style or cus
 
 ### Props
 
-* `attributes`
-  * `template`: `single-product` | `archive-product` | `taxonomy-product_cat` | `taxonomy-product_tag`
-  * `align`: `wide` | `full`
+-   `attributes`
+    -   `template`: `single-product` | `archive-product` | `taxonomy-product_cat` | `taxonomy-product_tag`
+    -   `align`: `wide` | `full`
 
 ```html
 <!-- wp:woocommerce/legacy-template {"template":"single-product"} /-->
