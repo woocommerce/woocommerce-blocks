@@ -51,6 +51,6 @@ describe( 'ComboBox', () => {
 		await userEvent.type( input, 'A ' );
 		expect( onChange ).not.toHaveBeenCalled();
 		await userEvent.type( input, 'value A' );
-		expect( onChange ).toHaveBeenCalledWith( 'A value A' );
+		expect( onChange ).toHaveBeenCalledWith( 'A' );
 	} );
 } );
