@@ -1,26 +1,14 @@
-# Checkout Block API overview <!-- omit in toc -->
+# Checkout Block API overview
 
 This document gives an overview of some of the major architectural components/APIs for the checkout block. If you haven't already, you may also want to read about the [Checkout Flow and Events](../../extensibility/checkout-flow-and-events.md).
 
-## Table of Contents <!-- omit in toc -->
-
--   [Checkout Block API overview](#checkout-block-api-overview)
-    -   [Contexts](#contexts)
-        -   [Notices Context](#notices-context)
-        -   [Billing Data Context](#billing-data-context)
-        -   [Shipping Method Data context](#shipping-method-data-context)
-        -   [Payment Method Data Context](#payment-method-data-context)
-        -   [Checkout Context](#checkout-context)
-    -   [Hooks](#hooks)
-        -   [`usePaymentMethodInterface`](#usepaymentmethodinterface)
-
-### Contexts
+## Contexts
 
 Much of the data and api interface for components in the Checkout Block are constructed and exposed via [usage of `React.Context`](https://reactjs.org/docs/context.html). In some cases the context maintains the "tree" state within the context itself (via `useReducer`) and in others it interacts with a global `wp.data` store (for data that communicates with the server).
 
 You can find type definitions (`typedef`) for contexts in [this file](https://github.com/woocommerce/woocommerce-gutenberg-products-block/blob/trunk/assets/js/type-defs/contexts.js).
 
-#### Notices Context
+### Notices Context
 
 This system essentially does three things:
 
@@ -34,7 +22,7 @@ This system is exposed on components by wrapping them in a `<StoreNoticesProvide
 -   The express payments areas (using the `wc/express-payment-area` context value)
 -   The payment methods area (using the `wc/payment-area` context value).
 
-#### Customer Data Context
+### Customer Data Context
 
 The customer data context exposes the api interfaces for the following things via the `useCustomerDataContext` hook:
 
@@ -43,19 +31,19 @@ The customer data context exposes the api interfaces for the following things vi
 -   `shippingAddress`: The current set shipping address.
 -   `setShippingAddress`: A function for setting the shipping address. This will trigger shipping rates updates.
 
-#### Shipping Method Data context
+### Shipping Method Data context
 
 The shipping method data context exposes the api interfaces for the following things (typedef `ShippingMethodDataContext`) via the `useShippingMethodData` hook:
 
-- `shippingErrorStatus`: The current error status for the context.
-- `dispatchErrorStatus`: A function for dispatching a shipping error status. Used in combination with...
-- `shippingErrorTypes`: An object with the various error statuses that can be dispatched (`NONE`, `INVALID_ADDRESS`, `UNKNOWN`)
-- `onShippingRateSuccess`: This is a function for registering a callback to be invoked when shipping rates are retrieved successfully. Callbacks will receive the new rates as an argument.
-- `onShippingRateFail`: This is a function for registering a callback to be invoked when shipping rates fail to be retrieved. Callbacks will receive the error status as an argument.
-- `onShippingRateSelectSuccess`: This is a function for registering a callback to be invoked when shipping rate selection is successful.
-- `onShippingRateSelectFail`: This is a function for registering a callback to be invoked when shipping rates selection is unsuccessful.
+-   `shippingErrorStatus`: The current error status for the context.
+-   `dispatchErrorStatus`: A function for dispatching a shipping error status. Used in combination with...
+-   `shippingErrorTypes`: An object with the various error statuses that can be dispatched (`NONE`, `INVALID_ADDRESS`, `UNKNOWN`)
+-   `onShippingRateSuccess`: This is a function for registering a callback to be invoked when shipping rates are retrieved successfully. Callbacks will receive the new rates as an argument.
+-   `onShippingRateFail`: This is a function for registering a callback to be invoked when shipping rates fail to be retrieved. Callbacks will receive the error status as an argument.
+-   `onShippingRateSelectSuccess`: This is a function for registering a callback to be invoked when shipping rate selection is successful.
+-   `onShippingRateSelectFail`: This is a function for registering a callback to be invoked when shipping rates selection is unsuccessful.
 
-#### Payment Method Data Context
+### Payment Method Data Context
 
 The payment method data context exposes the api interfaces for the following things (typedef `PaymentMethodDataContext`) via the `usePaymentMethodData` hook.
 
@@ -74,7 +62,7 @@ The payment method data context exposes the api interfaces for the following thi
 -   `expressPaymentMethodsInitialized`: This is `true` when all registered express payment methods have been initialized.
 -   `setExpressPaymentError`: This is exposed to express payment methods to enable them to set a specific error notice. This is needed because express payment methods might need to show/trigger an error outside any of the checkout block events.
 
-#### Checkout Context
+### Checkout Context
 
 This context is the main one. Internally via the `<CheckoutProvider>` it handles wrapping children in `<ShippingMethodDataProvider>`, `<CustomerDataProvider>` and `<PaymentMethodDataProvider>`. So the checkout components just need to be wrapped by `<CheckoutProvider>`.
 
@@ -115,11 +103,12 @@ _Why don't payment methods just implement this hook_?
 
 The contract is established through props fed to the payment method components via props. This allows us to avoid having to expose the hook publicly and experiment with how the props are retrieved and exposed in the future.
 
-<!-- FEEDBACK -->
+ <!-- FEEDBACK -->
+
 ---
 
 [We're hiring!](https://woocommerce.com/careers/) Come work with us!
 
 🐞 Found a mistake, or have a suggestion? [Leave feedback about this document here.](https://github.com/woocommerce/woocommerce-gutenberg-products-block/issues/new?assignees=&labels=type%3A+documentation&template=--doc-feedback.md&title=Feedback%20on%20./docs/block-client-apis/checkout/checkout-api.md)
-<!-- /FEEDBACK -->
 
+<!-- /FEEDBACK -->
