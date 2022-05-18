@@ -1,6 +1,12 @@
-[![Create Todo list](https://raw.githubusercontent.com/senadir/todo-my-markdown/master/public/github-button.svg?sanitize=true)](https://git-todo.netlify.app/create)
+# Shipping <!-- omit in toc -->
 
-# Shipping
+## Table of Contents <!-- omit in toc -->
+
+- [Setup](#setup)
+- [What to test](#what-to-test)
+  - [With shipping zones available:](#with-shipping-zones-available)
+  - [If you don't have any shipping zones set up and/or shipping is disabled:](#if-you-dont-have-any-shipping-zones-set-up-andor-shipping-is-disabled)
+  - [If you don't have any shipping zones set up but **shipping is enabled**:](#if-you-dont-have-any-shipping-zones-set-up-but-shipping-is-enabled)
 
 ## Setup
 
@@ -9,7 +15,7 @@
 
 ## What to test
 
-With shipping zones available: <!-- heading -->
+### With shipping zones available:
 
 -   [ ] You should be able to see preview rates (that are not your actual rates) in the editor.
 -   [ ] You should be able to see your actual rates on the frontend.
@@ -25,15 +31,17 @@ With shipping zones available: <!-- heading -->
 -   [ ] The rate you select in Cart should still be selected in Checkout.
 -   [ ] Updating your shipping address in Checkout should give you live updates about rates in your cart.
 
-If you don't have any shipping zones set up and/or shipping is disabled: <!-- heading -->
+### If you don't have any shipping zones set up and/or shipping is disabled:
 
 -   [ ] You should only see the billing form in both editor and frontend for the Checkout Block.
 -   [ ] The shipping options step should not be visible.
 -   [ ] The shipping cost should not be visible in the sidebar.
 
-If you don't have any shipping zones set up but **shipping is enabled**: <!-- heading -->
+### If you don't have any shipping zones set up but **shipping is enabled**:
 
 -   [ ] In the editor, Checkout Block will show you a placeholder promoting you to set up shipping zones.
+
+[![Create Todo list](https://raw.githubusercontent.com/senadir/todo-my-markdown/master/public/github-button.svg?sanitize=true)](https://git-todo.netlify.app/create)
 
 <!-- FEEDBACK -->
 

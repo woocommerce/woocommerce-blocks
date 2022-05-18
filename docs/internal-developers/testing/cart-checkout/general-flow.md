@@ -1,12 +1,13 @@
-[![Create Todo list](https://raw.githubusercontent.com/senadir/todo-my-markdown/master/public/github-button.svg?sanitize=true)](https://git-todo.netlify.app/create)
+# General Flows <!-- omit in toc -->
 
-# General Flows
+## Table of Contents <!-- omit in toc -->
+
+- [Setup](#setup)
+- [What to test](#what-to-test)
 
 ## Setup
 
-This is a general flow of the main functionality of the blocks without going too much
-into details, you're expected to set your store as is, with your current flow, products,
-taxes (if you have any), shipping and so on.
+This is a general flow of the main functionality of the blocks without going too much into details, you're expected to set your store as is, with your current flow, products, taxes (if you have any), shipping and so on.
 
 ## What to test
 
@@ -19,6 +20,8 @@ taxes (if you have any), shipping and so on.
 -   [ ] You should be able to fix your info, if you have them saved, they will show up.
 -   [ ] Depending on what payment method you enabled (Credit Card, Check, Express payment), you can place the order.
 -   [ ] You should see an order received page.
+
+[![Create Todo list](https://raw.githubusercontent.com/senadir/todo-my-markdown/master/public/github-button.svg?sanitize=true)](https://git-todo.netlify.app/create)
 
 <!-- FEEDBACK -->
 

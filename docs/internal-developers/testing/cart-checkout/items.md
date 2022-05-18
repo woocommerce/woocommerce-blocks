@@ -1,6 +1,9 @@
-[![Create Todo list](https://raw.githubusercontent.com/senadir/todo-my-markdown/master/public/github-button.svg?sanitize=true)](https://git-todo.netlify.app/create)
+# Cart Items <!-- omit in toc -->
 
-# Cart Items
+## Table of Contents <!-- omit in toc -->
+
+- [Setup](#setup)
+- [What to test](#what-to-test)
 
 ## Setup
 
@@ -22,6 +25,8 @@
     -   [ ] In one browser, increase the quantity of that item to the maximum you can.
     -   [ ] In the other browser, try increasing the quantity. An error should appear.
 -   [ ] You should be able to remove an item.
+
+[![Create Todo list](https://raw.githubusercontent.com/senadir/todo-my-markdown/master/public/github-button.svg?sanitize=true)](https://git-todo.netlify.app/create)
 
 <!-- FEEDBACK -->
 
