@@ -109,24 +109,27 @@ Imagine we are styling the radio control input but our styles are conflicting wi
 
 Theme A:
 
-```
-input[type="radio"] { // specificity 0, 1, 1
+```css
+input[type='radio'] {
+	// specificity 0, 1, 1
 	background: red;
 }
 ```
 
 Theme B:
 
-```
-input[type="radio"]:checked { // specificity 0, 2, 1
+```css
+input[type='radio']:checked {
+	// specificity 0, 2, 1
 	background: blue;
 }
 ```
 
 And these are the styles of the block:
 
-```
-.wc-block-components-radio-control__input { // specificity 0, 1, 0
+```css
+.wc-block-components-radio-control__input {
+	// specificity 0, 1, 0
 	background: #fff;
 }
 ```
@@ -138,9 +141,10 @@ As you can see, the styles coming from the themes have higher specificity, so ou
 3. Try wrapping the entire component/block CSS with the root class name of that component:
    For example:
 
-```
+```css
 .wc-block-components-radio-control {
-	.wc-block-components-radio-control__input { // specificity 0, 2, 0, we win theme A!
+	.wc-block-components-radio-control__input {
+		// specificity 0, 2, 0, we win theme A!
 		background: #fff;
 	}
 }
@@ -148,10 +152,12 @@ As you can see, the styles coming from the themes have higher specificity, so ou
 
 4. Try adding an extra css class (or tag selector) to increase specificity. When doing so, add a comment explaining it.
 
-```
+```css
 .wc-block-components-radio-control {
 	// Extra class for specificity.
-	.wc-block-components-radio-control__option .wc-block-components-radio-control__input { // specificity 0, 3, 0, we win theme B!
+	.wc-block-components-radio-control__option
+		.wc-block-components-radio-control__input {
+		// specificity 0, 3, 0, we win theme B!
 		background: #fff;
 	}
 }
@@ -162,10 +168,11 @@ As you can see, the styles coming from the themes have higher specificity, so ou
 Notice in the worst case scenario we would have increased selector specificity by 2 classes (0, 2, 0). That shouldn't make it too difficult for other themes to write styles on top of ours.
 
 <!-- FEEDBACK -->
+
 ---
 
 [We're hiring!](https://woocommerce.com/careers/) Come work with us!
 
 🐞 Found a mistake, or have a suggestion? [Leave feedback about this document here.](https://github.com/woocommerce/woocommerce-gutenberg-products-block/issues/new?assignees=&labels=type%3A+documentation&template=--doc-feedback.md&title=Feedback%20on%20./docs/contributors/coding-guidelines.md)
-<!-- /FEEDBACK -->
 
+<!-- /FEEDBACK -->
