@@ -273,6 +273,11 @@ const getMainConfig = ( options = {} ) => {
 							'./assets/js/blocks/featured-items/featured-product/block.json',
 						to: './featured-product/block.json',
 					},
+					{
+						from:
+							'./assets/js/blocks/handpicked-products/block.json',
+						to: './handpicked-products/block.json',
+					},
 				],
 			} ),
 		],
