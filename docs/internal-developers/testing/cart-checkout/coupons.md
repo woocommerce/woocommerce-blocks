@@ -4,8 +4,8 @@
 
 - [Setup](#setup)
 - [What to test](#what-to-test)
-  - [With coupons disabled:](#with-coupons-disabled)
-  - [With coupons enabled:](#with-coupons-enabled)
+  - [With coupons disabled](#with-coupons-disabled)
+  - [With coupons enabled](#with-coupons-enabled)
 
 ## Setup
 
@@ -20,11 +20,11 @@ You will need to setup some types of coupon in order to test this.
 
 ## What to test
 
-### With coupons disabled:
+### With coupons disabled
 
 -   [ ] You should not see the add coupon section in your cart and checkout and in the editor.
 
-### With coupons enabled:
+### With coupons enabled
 
 -   [ ] You can apply coupons in both Cart and Checkout blocks.
 -   [ ] A valid coupon `coupon` should reduce your totals.
