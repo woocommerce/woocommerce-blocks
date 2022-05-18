@@ -1,20 +1,26 @@
-# Coding Guidelines
+# Coding Guidelines <!-- omit in toc -->
 
-This living document serves to prescribe coding guidelines specific to the WooCommerce Blocks project. Base coding guidelines follow the [WordPress Coding Standards](https://make.wordpress.org/core/handbook/best-practices/coding-standards/) and [Gutenberg coding standards](https://developer.wordpress.org/block-editor/contributors/develop/coding-guidelines/).
+This living document serves to prescribe coding guidelines specific to the WooCommerce Blocks project. Base coding guidelines follow the [WordPress Coding Standards](https://make.wordpress.org/core/handbook/best-practices/coding-standards/) and [Gutenberg coding standards](https://developer.wordpress.org/block-editor/contributors/develop/coding-guidelines/). The following sections outline additional patterns and conventions used in the Blocks project.
 
-The following sections outline additional patterns and conventions used in the Blocks project.
+## Table of contents <!-- omit in toc -->
 
-## CSS
+- [CSS Class Names](#css-class-names)
+  - [Prefixing](#prefixing)
+  - [Naming](#naming)
+- [RTL Styles](#rtl-styles)
+- [SCSS File Naming Conventions for Blocks](#scss-file-naming-conventions-for-blocks)
+- [Accessible font sizes](#accessible-font-sizes)
+- [CSS specificity wars with 3rd party themes](#css-specificity-wars-with-3rd-party-themes)
 
-### CSS Class Names
+## CSS Class Names
 
 To avoid class name collisions, class names must adhere to the following guidelines, based on the [BEM methodology](https://en.bem.info/methodology/) and [Gutenberg coding standards](https://developer.wordpress.org/block-editor/contributors/develop/coding-guidelines/).
 
-#### Prefixing
+### Prefixing
 
 As a WordPress plugin, Blocks has to play nicely with other plugins and themes, and WordPress itself. To minimize potential conflicts, all classes should be prefixed with `.wc-block-`.
 
-#### Naming
+### Naming
 
 All class names assigned to an element must be prefixed. We use different prefixes to differentiate frontend and editor elements as well as identifying if they are components or not:
 
@@ -59,7 +65,7 @@ Naming is not strictly tied to the DOM so it **doesn’t matter how many nested 
 -   ├── `wc-block-components-dropdown-selector__input--hidden` (Modifier)
 -   └── `wc-block-components-dropdown-selector__placeholder` (Child Element/BEM Element)
 
-### RTL Styles
+## RTL Styles
 
 Blocks uses the `webpack-rtl-plugin` package to generate styles for Right-to-Left languages. These are generated automatically.
 
@@ -87,19 +93,19 @@ Or exclude blocks of CSS:
 }
 ```
 
-### SCSS File Naming Conventions for Blocks
+## SCSS File Naming Conventions for Blocks
 
 The build process will split SCSS from within the blocks library directory into two separate CSS files when Webpack runs.
 
 Styles placed in a `style.scss` file will be built into `build/style.css`, to load on the front end theme as well as in the editor. If you need additional styles specific to the block's display in the editor, add them to an `editor.scss`.
 
-### Accessible font sizes
+## Accessible font sizes
 
 Font sizes must be defined using the `font-size()` mixin, it takes a named size (`smaller`, `small`, `regular`, `large`. `larger`) and returns a font-size declaration in `em` units. This provides a consistent set of font sizes to be used across blocks, and by using `em` it increases the likelihood that blocks are accessible and fit better within different themes.
 
 In parallel to that, consider whether other size/distance units in your CSS need to be em instead of px. In general, em should be preferred if it doesn't break the layout with big font sizes. There is another mixin named `em()` that helps converting px units to em (given a px size and optionally a base size).
 
-### CSS specificity wars with 3rd party themes
+## CSS specificity wars with 3rd party themes
 
 We want our blocks to look good with as many themes as possible out of the box. Sometimes our styles will conflict with theme styles that have higher specificity. In these cases it may be tempting to increase the specificity of selectors, but increasing them too much makes it harder for other themes to style our blocks.
 
