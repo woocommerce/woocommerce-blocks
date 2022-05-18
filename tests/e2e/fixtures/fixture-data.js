@@ -435,8 +435,8 @@ const Translations = () => [
 		filePath: 'build/mini-cart-contents-block/title-frontend.js',
 		content: [
 			{
-				string: 'Your cart (1 item)',
-				translation: 'Translated Your cart (1 item)',
+				string: 'Your cart (%d item)',
+				translation: 'Translated Your cart (%d item)',
 			},
 		],
 	},
