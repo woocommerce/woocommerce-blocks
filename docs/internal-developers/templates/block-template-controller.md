@@ -1,4 +1,4 @@
-# BlockTemplateController <!-- omit in toc -->
+# Block Template Controller <!-- omit in toc -->
 
 The BlockTemplateController class contains all the business logic which loads the templates into the Site Editor or on the front-end through various hooks available in WordPress & WooCommerce core. Without documenting every method individually, I will look to provide some insight into key functionality.
 
