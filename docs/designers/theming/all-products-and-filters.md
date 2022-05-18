@@ -8,7 +8,7 @@ The Filter Products by Price block includes a price slider which uses an accent 
 
 By default, it uses the WooCommerce purple shade, but it can be easily modified by themes with the following code:
 
-```CSS
+```css
 .wc-block-components-price-slider__range-input-progress,
 .rtl .wc-block-components-price-slider__range-input-progress {
 	--range-color: #ee6948;
@@ -19,9 +19,9 @@ By default, it uses the WooCommerce purple shade, but it can be easily modified 
 
 Notice the code snippet above uses a CSS custom property, so the default color might still be available in some browsers that don't support it like Internet Explorer 11. If your theme supports IE11, you can add the following lines to target it:
 
-```CSS
+```css
 /* Target only IE11 */
-@media all and (-ms-high-contrast: none), (-ms-high-contrast: active) {
+@media all and ( -ms-high-contrast: none ), ( -ms-high-contrast: active ) {
 	.wc-block-components-price-slider__range-input-progress {
 		background: #ee6948;
 	}

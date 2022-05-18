@@ -6,7 +6,7 @@ In WC Blocks 2.7.0, some of the styles of the product grid blocks were updated t
 
 Images in product grid blocks changed so they expand to occupy all the available horizontal space if they are small. This can be undone with this CSS snippet:
 
-```CSS
+```css
 .wc-block-grid__products .wc-block-grid__product-image img {
 	width: auto;
 }
@@ -16,7 +16,7 @@ Images in product grid blocks changed so they expand to occupy all the available
 
 _All Products_ block was updated so prices follow the same layout as the other product grid blocks (one line instead of two lines). It's possible to recover the old style with:
 
-```CSS
+```css
 .wc-block-grid__product-price .wc-block-grid__product-price__regular {
 	font-size: 0.8em;
 	line-height: 1;

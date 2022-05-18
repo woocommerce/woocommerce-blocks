@@ -25,7 +25,7 @@ executed, and the latest server-side cart data gets returned and the block is up
 
 In your extension's server-side integration code:
 
-```PHP
+```php
 add_action('woocommerce_blocks_loaded', function() {
  woocommerce_store_api_register_update_callback(
    [
@@ -72,7 +72,7 @@ value to distinguish which code path you should execute.
 
 Example:
 
-```PHP
+```php
 <?php
 function add_discount() {
     /* Do some processing here */
@@ -173,7 +173,7 @@ We have written a function called `redeem_points` which applies a discount to th
 not return anything. Note, the actual implementation of this function is not the focus of this document, so has been
 omitted. All that is important to note is that it modifies the WooCommerce cart.
 
-```PHP
+```php
 <?php
 function redeem_points( $points ) {
     /* Do some processing here that applies a discount to the WC cart based on the value of $points */
@@ -195,11 +195,10 @@ Now that this is registered, when the button is pressed, the `cart/extensions` e
 `super-coupons` our `redeem_points` function will be executed. After this has finished processing, the client-side cart
 will be updated by WooCommerce Blocks.
 
-<!-- FEEDBACK -->
----
+## <!-- FEEDBACK -->
 
 [We're hiring!](https://woocommerce.com/careers/) Come work with us!
 
 🐞 Found a mistake, or have a suggestion? [Leave feedback about this document here.](https://github.com/woocommerce/woocommerce-gutenberg-products-block/issues/new?assignees=&labels=type%3A+documentation&template=--doc-feedback.md&title=Feedback%20on%20./docs/extensibility/extend-rest-api-update-cart.md)
-<!-- /FEEDBACK -->
 
+<!-- /FEEDBACK -->

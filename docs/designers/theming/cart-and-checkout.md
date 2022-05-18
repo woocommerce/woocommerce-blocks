@@ -8,7 +8,7 @@ WC Blocks introduces the button component, it differs from a generic `button` in
 
 Themes can still style them to match theme colors or styles as follows:
 
-```CSS
+```css
 .wc-block-components-button {
 	background-color: #d5502f;
 	color: #fff;
@@ -29,7 +29,7 @@ In small viewports, the Cart block displays the _Proceed to Checkout_ button ins
 
 By default, the container has a white background so it plays well with the button component default colors. Themes that want to apply the same background color as the rest of the page can do it with the following code snippet:
 
-```CSS
+```css
 .wc-block-cart__submit-container {
 	background-color: #f9f4ee;
 }
@@ -37,17 +37,17 @@ By default, the container has a white background so it plays well with the butto
 
 Take into consideration the container has a top box shadow that might not play well with some dark background colors. If needed, it can be modified directly setting the `color` property (internally, shadow color uses `currentColor`, so it honors the `color` property):
 
-```CSS
+```css
 .wc-block-cart__submit-container::before {
-	color: rgba(214, 209, 203, 0.5);
+	color: rgba( 214, 209, 203, 0.5 );
 }
 ```
 
 Alternatively, themes can override the `box-shadow` property completely:
 
-```CSS
+```css
 .wc-block-cart__submit-container::before {
-	box-shadow: 0 -10px 20px 10px rgba(214, 209, 203, 0.5);
+	box-shadow: 0 -10px 20px 10px rgba( 214, 209, 203, 0.5 );
 }
 ```
 
@@ -61,7 +61,7 @@ The item quantity badge is the number that appears next to the image in the _Ord
 
 By default, it uses a combination of black and white borders and shadows so it has enough contrast with themes with light and dark backgrounds. Themes can modify the colors with their own palette with a single CSS selector and four properties. For example:
 
-```CSS
+```css
 .wc-block-components-order-summary-item__quantity {
 	background-color: #f9f4ee;
 	border-color: #4b3918;

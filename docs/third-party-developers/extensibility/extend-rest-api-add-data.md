@@ -19,7 +19,7 @@ This example below uses the Cart endpoint, [see passed parameters.](./available-
 
 **Note: Make sure to read the "Things to consider" section below.**
 
-```PHP
+```php
 use Automattic\WooCommerce\StoreApi\Schemas\V1\CartSchema;
 
 add_action('woocommerce_blocks_loaded', function() {
@@ -54,7 +54,7 @@ function my_schema_callback() {
 
 Data callback and Schema callback can also receive parameters:
 
-```PHP
+```php
 
 function my_cart_item_callback( $cart_item ) {
 $product = $cart_item['data'];
@@ -323,11 +323,10 @@ class WC_Subscriptions_Extend_Store_Endpoint {
 You may wish to use our pre-existing Formatters to ensure your data is passed through the Store API in the
 correct format. More information on the Formatters can be found in the [StoreApi Formatters documentation](./extend-rest-api-formatters.md).
 
-<!-- FEEDBACK -->
----
+## <!-- FEEDBACK -->
 
 [We're hiring!](https://woocommerce.com/careers/) Come work with us!
 
 🐞 Found a mistake, or have a suggestion? [Leave feedback about this document here.](https://github.com/woocommerce/woocommerce-gutenberg-products-block/issues/new?assignees=&labels=type%3A+documentation&template=--doc-feedback.md&title=Feedback%20on%20./docs/extensibility/extend-rest-api-add-data.md)
-<!-- /FEEDBACK -->
 
+<!-- /FEEDBACK -->
