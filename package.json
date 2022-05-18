@@ -79,7 +79,8 @@
 		"test:watch": "npm run test -- --watch",
 		"ts:check": "tsc --build",
 		"wp-env": "wp-env",
-		"wp-env:config": "./bin/wp-env-pre-config.sh"
+		"wp-env:config": "./bin/wp-env-pre-config.sh",
+		"generate-test-translations": "./bin/generate-test-translations.js"
 	},
 	"devDependencies": {
 		"@actions/core": "1.6.0",
