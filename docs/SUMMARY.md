@@ -5,13 +5,13 @@
 ## Contributors
 
 -   [Contributing](contributors/contributing/README.md)
-    -   [Getting Started](contributors/contributors/getting-started.md)
-    -   [Coding Guidelines](contributors/contributors/coding-guidelines.md)
-    -   [JavaScript Testing](contributors/contributors/javascript-testing.md)
-    -   [Developing Components (& Storybook)](contributors/contributors/components.md)
-    -   [Block Script Assets](contributors/contributors/block-assets.md)
-    -   [JS build system](contributors/contributors/js-build-system.md)
-    -   [CSS build system](contributors/contributors/css-build-system.md)
+    -   [Getting Started](contributors/contributing/getting-started.md)
+    -   [Coding Guidelines](contributors/contributing/coding-guidelines.md)
+    -   [JavaScript Testing](contributors/contributing/javascript-testing.md)
+    -   [Developing Components (& Storybook)](contributors/contributing/components.md)
+    -   [Block Script Assets](contributors/contributing/block-assets.md)
+    -   [JS build system](contributors/contributing/js-build-system.md)
+    -   [CSS build system](contributors/contributing/css-build-system.md)
 
 ## Internal developers
 
