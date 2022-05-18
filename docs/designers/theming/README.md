@@ -8,8 +8,8 @@ This page includes all documentation regarding WooCommerce Blocks and themes.
 
 WooCommerce Blocks follows BEM for class names, as [stated in our coding guidelines](../contributors/coding-guidelines.md). All classes start with one of these two prefixes:
 
-* `.wc-block-`: class names specific to a single block.
-* `.wc-block-components-`: class names specific to a component. The component might be reused by different blocks.
+-   `.wc-block-`: class names specific to a single block.
+-   `.wc-block-components-`: class names specific to a component. The component might be reused by different blocks.
 
 The combination of block class names and component class names allows themes to style each component either globally or only in specific blocks. As an example, you could style all prices to be italics with:
 
@@ -61,7 +61,7 @@ In these cases, Blocks include some CSS resets to undo most default styles intro
 
 ### Hidden elements
 
-WC Blocks use the [`hidden` HTML attribute](https://developer.mozilla.org/en-US/docs/Web/HTML/Global\_attributes/hidden) to hide some elements from the UI so they are not displayed in screens neither read by assistive technologies. If your theme has some generic styles that tweak the CSS display property of blocks elements (ie: `div { display: block; }`), make sure you correctly handle the hidden attribute: `div[hidden] { display: none; }`.
+WC Blocks use the [`hidden` HTML attribute](https://developer.mozilla.org/en-US/docs/Web/HTML/Global_attributes/hidden) to hide some elements from the UI so they are not displayed in screens neither read by assistive technologies. If your theme has some generic styles that tweak the CSS display property of blocks elements (ie: `div { display: block; }`), make sure you correctly handle the hidden attribute: `div[hidden] { display: none; }`.
 
 ### Legacy classes from WooCommerce (.price, .star-rating, .button...)
 
@@ -69,19 +69,23 @@ WooCommerce Blocks avoids using legacy unprefixed classes as much as possible. H
 
 ## Blocks
 
-* [All Products & filters](all-products-and-filters.md)
-* [Cart and Checkout](cart-and-checkout.md)
+-   [All Products & filters](./all-products-and-filters.md)
+-   [Cart and Checkout](./cart-and-checkout.md)
 
 ## Other docs
 
-* [Product grid blocks style update in 2.7.0](product-grid-270.md)
-* [Class names update in 2.8.0](class-names-update-280.md)
-* [Class names update in 3.3.0](class-names-update-330.md)
-* [Class names update in 3.4.0](class-names-update-340.md)
-* [Class names update in 4.6.0](class-names-update-460.md)
+-   [Product grid blocks style update in 2.7.0](./product-grid-270.md)
+-   [Class names update in 2.8.0](./class-names-update-280.md)
+-   [Class names update in 3.3.0](./class-names-update-330.md)
+-   [Class names update in 3.4.0](./class-names-update-340.md)
+-   [Class names update in 4.6.0](./class-names-update-460.md)
 
-***
+<!-- FEEDBACK -->
+
+---
 
 [We're hiring!](https://woocommerce.com/careers/) Come work with us!
 
-🐞 Found a mistake, or have a suggestion? [Leave feedback about this document here.](https://github.com/woocommerce/woocommerce-gutenberg-products-block/issues/new?assignees=\&labels=type%3A+documentation\&template=--doc-feedback.md\&title=Feedback%20on%20./docs/theming/README.md)
+🐞 Found a mistake, or have a suggestion? [Leave feedback about this document here.](https://github.com/woocommerce/woocommerce-gutenberg-products-block/issues/new?assignees=&labels=type%3A+documentation&template=--doc-feedback.md&title=Feedback%20on%20./docs/theming/product-grid-270.md)
+
+<!-- /FEEDBACK -->

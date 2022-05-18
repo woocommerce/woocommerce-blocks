@@ -50,6 +50,6 @@
 
 ## Designers
 
--   [Theming](theming/README.md)
+-   [Theming](designers/theming/README.md)
 
 ## Tutorials
