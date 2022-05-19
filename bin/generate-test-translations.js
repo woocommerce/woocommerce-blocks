@@ -24,17 +24,20 @@ builtJsFiles.forEach( ( filePath ) => {
 	if ( stringsInFile.length === 0 ) {
 		return;
 	}
+	const relativeFilePath = filePath.substring( filePath.indexOf( 'build/' ) );
 	const data = {
 		locale_data: {
 			messages: {
 				'': { lang },
 			},
 		},
+		comment: {
+			reference: relativeFilePath,
+		},
 	};
 	stringsInFile.forEach( ( string ) => {
 		data.locale_data.messages[ string ] = [ getTestTranslation( string ) ];
 	} );
-	const relativeFilePath = filePath.substring( filePath.indexOf( 'build/' ) );
 	const md5Path = crypto
 		.createHash( 'md5' )
 		.update( relativeFilePath )

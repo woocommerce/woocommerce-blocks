@@ -2,6 +2,8 @@
  * Internal dependencies
  */
 import { merchant, shopper } from '../../../../utils';
+import { Translations } from '../../../fixtures/fixture-data';
+import { getTestTranslation } from '../../../../utils/get-test-translation';
 
 if ( process.env.WOOCOMMERCE_BLOCKS_PHASE < 2 ) {
 	// Skips all the tests if it's a WooCommerce Core process environment.
@@ -11,7 +13,7 @@ if ( process.env.WOOCOMMERCE_BLOCKS_PHASE < 2 ) {
 
 describe( 'Shopper → Cart & Checkout → Translations', () => {
 	beforeAll( async () => {
-		await merchant.changeLanguage( 'nl_NL' );
+		await merchant.changeLanguage( Translations().locale );
 	} );
 
 	afterAll( async () => {
@@ -29,67 +31,97 @@ describe( 'Shopper → Cart & Checkout → Translations', () => {
 		const productHeader = await page.waitForSelector(
 			'.wc-block-cart-items .wc-block-cart-items__header span'
 		);
-		await expect( productHeader ).toMatch( 'Product' );
+		await expect( productHeader ).toMatch(
+			getTestTranslation( 'Product' )
+		);
 
 		const removeLink = await page.waitForSelector(
 			'.wc-block-cart-item__remove-link'
 		);
-		await expect( removeLink ).toMatch( 'Artikel verwijderen' );
+		await expect( removeLink ).toMatch(
+			getTestTranslation( 'Remove item' )
+		);
 
 		const submitButton = await page.waitForSelector(
 			'.wc-block-cart__submit-button'
 		);
-		await expect( submitButton ).toMatch( 'Doorgaan naar afrekenen' );
+		await expect( submitButton ).toMatch(
+			getTestTranslation( 'Proceed to Checkout' )
+		);
 
 		const orderSummary = await page.$(
 			'.wp-block-woocommerce-cart-order-summary-block'
 		);
 
-		await expect( orderSummary ).toMatch( 'Subtotaal' );
-		await expect( orderSummary ).toMatch( 'Waardebon code' );
-		await expect( orderSummary ).toMatch( 'Totaal' );
+		await expect( orderSummary ).toMatch(
+			getTestTranslation( 'Subtotal' )
+		);
+		await expect( orderSummary ).toMatch(
+			getTestTranslation( 'Coupon code' )
+		);
+		await expect( orderSummary ).toMatch( getTestTranslation( 'Total' ) );
 	} );
 
-	it( 'USer can view translated Checkout block', async () => {
+	it( 'User can view translated Checkout block', async () => {
 		await shopper.block.goToCheckout();
 
 		const contactHeading = await page.$(
 			'#contact-fields .wc-block-components-checkout-step__title'
 		);
-		await expect( contactHeading ).toMatch( 'Contactgegevens' );
+		await expect( contactHeading ).toMatch(
+			getTestTranslation( 'Contact information' )
+		);
 
 		const shippingHeading = await page.$(
 			'#shipping-fields .wc-block-components-checkout-step__title'
 		);
-		await expect( shippingHeading ).toMatch( 'Verzendadres' );
+		await expect( shippingHeading ).toMatch(
+			getTestTranslation( 'Shipping address' )
+		);
 
 		const shippingOptionsHeading = await page.$(
 			'#shipping-option .wc-block-components-checkout-step__title'
 		);
-		await expect( shippingOptionsHeading ).toMatch( 'Verzendopties' );
+		await expect( shippingOptionsHeading ).toMatch(
+			getTestTranslation( 'Shipping options' )
+		);
 
 		const paymentMethodHeading = await page.$(
 			'#payment-method .wc-block-components-checkout-step__title'
 		);
-		await expect( paymentMethodHeading ).toMatch( 'Betaalopties' );
+		await expect( paymentMethodHeading ).toMatch(
+			getTestTranslation( 'Payment options' )
+		);
 
 		const returnToCart = await page.$(
 			'.wc-block-components-checkout-return-to-cart-button'
 		);
-		await expect( returnToCart ).toMatch( 'Ga terug naar winkelwagen' );
+		await expect( returnToCart ).toMatch(
+			getTestTranslation( 'Return to Cart' )
+		);
 
 		const submitButton = await page.$(
 			'.wc-block-components-checkout-place-order-button'
 		);
-		await expect( submitButton ).toMatch( 'Plaats bestelling' );
+		await expect( submitButton ).toMatch(
+			getTestTranslation( 'Place Order' )
+		);
 
 		const orderSummary = await page.$(
 			'.wp-block-woocommerce-checkout-order-summary-block'
 		);
-		await expect( orderSummary ).toMatch( 'Besteloverzicht' );
-		await expect( orderSummary ).toMatch( 'Subtotaal' );
-		await expect( orderSummary ).toMatch( 'Waardebon code' );
-		await expect( orderSummary ).toMatch( 'Verzendmethoden' );
-		await expect( orderSummary ).toMatch( 'Totaal' );
+		await expect( orderSummary ).toMatch(
+			getTestTranslation( 'Order summary' )
+		);
+		await expect( orderSummary ).toMatch(
+			getTestTranslation( 'Subtotal' )
+		);
+		await expect( orderSummary ).toMatch(
+			getTestTranslation( 'Coupon code' )
+		);
+		await expect( orderSummary ).toMatch(
+			getTestTranslation( 'Shipping' )
+		);
+		await expect( orderSummary ).toMatch( getTestTranslation( 'Total' ) );
 	} );
 } );
