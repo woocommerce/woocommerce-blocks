@@ -4,6 +4,8 @@ The WooCommerce Blocks Handbook provides documentation for designers and develop
 
 ## Contributors
 
+You want to contribute to the WooCommerce Blocks plugin? The following documents explain you how to getting started.
+
 -   [Contributing](contributors/contributing/README.md)
     -   [Getting Started](contributors/contributing/getting-started.md)
     -   [Coding Guidelines](contributors/contributing/coding-guidelines.md)
@@ -14,6 +16,8 @@ The WooCommerce Blocks Handbook provides documentation for designers and develop
     -   [Storybook & Components](contributors/contributing/storybook-and-components.md)
 
 ## Internal developers
+
+You are an internal developer? The following docuemnts explain the different blocks, the Block Client APIs, the Store API, the templates and the testing process.
 
 -   [Blocks](internal-developers/blocks/README.md)
     -   [Stock Reservation during Checkout](internal-developers/blocks/stock-reservation.md)
@@ -42,6 +46,8 @@ The WooCommerce Blocks Handbook provides documentation for designers and develop
 
 ## Third-party developers
 
+You are a third-party developer? The following documents explain how to extend the WooCOmmerce Blocks plugin with your custom extention.
+
 -   [Extensibility](third-party-developers/extensibility/README.md)
     -   Hooks
         -   [Actions](third-party-developers/extensibility/actions.md)
@@ -64,6 +70,8 @@ The WooCommerce Blocks Handbook provides documentation for designers and develop
         -   [Filter Registry](../packages/checkout/filter-registry/README.md)
 
 ## Designers
+
+You are a designer? The following documents explain how to apply design-changes to the WooCommerce Blocks plugin.
 
 -   [Theming](designers/theming/README.md)
     -   [All Products & filters](designers/theming/all-products-and-filters.md)
