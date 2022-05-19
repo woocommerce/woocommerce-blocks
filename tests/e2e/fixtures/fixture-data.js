@@ -421,26 +421,11 @@ const Taxes = () => [
 	},
 ];
 
-const Translations = () => [
-	{
-		filePath: 'build/mini-cart-contents-block/shopping-button-frontend.js',
-		content: [
-			{
-				string: 'Start shopping',
-				translation: 'Translated Start shopping',
-			},
-		],
-	},
-	{
-		filePath: 'build/mini-cart-contents-block/title-frontend.js',
-		content: [
-			{
-				string: 'Your cart (%d item)',
-				translation: 'Translated Your cart (%d item)',
-			},
-		],
-	},
-];
+const Translations = () => ( {
+	lang: 'nl',
+	locale: 'nl_NL',
+	strings: [ 'Start shopping', 'Your cart (%d item)' ],
+} );
 
 module.exports = {
 	Attributes,

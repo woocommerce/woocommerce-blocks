@@ -4,6 +4,7 @@ const { ensureDirSync, writeJsonSync } = require( 'fs-extra' );
 const crypto = require( 'crypto' );
 const path = require( 'path' );
 const glob = require( 'glob' );
+const { Translations } = require( '../tests/e2e/fixtures/fixture-data' );
 
 ensureDirSync( path.join( __dirname, '../languages' ) );
 
@@ -12,7 +13,7 @@ const builtJsFiles = glob.sync(
 	{}
 );
 
-const strings = [ 'Start shopping', 'Your cart (%d item)' ];
+const { lang, locale, strings } = Translations();
 
 builtJsFiles.forEach( ( filePath ) => {
 	const fileContent = readFileSync( filePath );
@@ -25,14 +26,12 @@ builtJsFiles.forEach( ( filePath ) => {
 	const data = {
 		locale_data: {
 			messages: {
-				'': {
-					lang: 'nl',
-				},
+				'': { lang },
 			},
 		},
 	};
 	stringsInFile.forEach( ( string ) => {
-		data.locale_data.messages[ string ] = `Translated ${ string }`;
+		data.locale_data.messages[ string ] = [ `Translated ${ string }` ];
 	} );
 	const relativeFilePath = filePath.substring( filePath.indexOf( 'build/' ) );
 	const md5Path = crypto
@@ -43,7 +42,7 @@ builtJsFiles.forEach( ( filePath ) => {
 	writeJsonSync(
 		`${ path.dirname(
 			__filename
-		) }/../languages/woo-gutenberg-products-block-nl_NL-${ md5Path }.json`,
+		) }/../languages/woo-gutenberg-products-block-${ locale }-${ md5Path }.json`,
 		data
 	);
 } );
