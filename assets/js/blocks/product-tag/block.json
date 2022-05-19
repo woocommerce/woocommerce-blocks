@@ -1,7 +1,6 @@
 {
     "name": "woocommerce/product-tag",
     "title": "Products by Tag",
-    "icon": "tag",
     "category": "woocommerce",
     "keywords": [
         "WooCommerce"

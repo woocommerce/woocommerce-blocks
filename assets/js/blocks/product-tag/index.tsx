@@ -3,6 +3,7 @@
  */
 import { registerBlockType } from '@wordpress/blocks';
 import { getSetting } from '@woocommerce/settings';
+import { Icon, tag } from '@wordpress/icons';
 
 /**
  * Internal dependencies
@@ -15,6 +16,14 @@ import { Edit } from './edit';
  * Register and run the "Products by Tag" block.
  */
 registerBlockType( metadata, {
+	icon: {
+		src: (
+			<Icon
+				icon={ tag }
+				className="wc-block-editor-components-block-icon"
+			/>
+		),
+	},
 	attributes: {
 		...metadata.attributes,
 		columns: {
