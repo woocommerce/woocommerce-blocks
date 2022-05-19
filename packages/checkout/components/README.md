@@ -1,10 +1,6 @@
-# Checkout - Components <!-- omit in toc -->
+# Components <!-- omit in toc -->
 
 A library of components to be used for creating common UI elements shared between features of the WooCommerce Cart and Checkout Blocks.
-
-## Table of Contents <!-- omit in toc -->
-
--   [Usage](#usage)
 
 ## Usage
 

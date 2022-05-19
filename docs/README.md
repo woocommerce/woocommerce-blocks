@@ -1,13 +1,13 @@
 # WooCommerce Blocks Handbook <!-- omit in toc -->
 
-The WooCommerce Blocks Handbook provides documentation for designers and developers on how to extend or contribute to blocks, and how internal developers should handle new releases.
-
 ## Table of Contents <!-- omit in toc -->
 
 -   [Contributors](#contributors)
 -   [Internal developers](#internal-developers)
 -   [Third-party developers](#third-party-developers)
 -   [Designers](#designers)
+
+The WooCommerce Blocks Handbook provides documentation for designers and developers on how to extend or contribute to blocks, and how internal developers should handle new releases.
 
 ## Contributors
 
@@ -29,15 +29,26 @@ The WooCommerce Blocks Handbook provides documentation for designers and develop
 -   [Blocks](internal-developers/blocks/README.md)
     -   [Stock Reservation during Checkout](internal-developers/blocks/stock-reservation.md)
     -   [Features Flags and Experimental interfaces](internal-developers/blocks/feature-flags-and-experimental-interfaces.md)
+-   [Block Data](../assets/js/data/README.md)
+    -   [Collections Store](../assets/js/data/collections/README.md)
+    -   [Query State Store](../assets/js/data/query-state/README.md)
+    -   [Schema Store](../assets/js/data/schema/README.md)
 -   [Block Client APIs](internal-developers/block-client-apis/README.md)
     -   [Checkout API interface](internal-developers/block-client-apis/checkout/checkout-api.md)
     -   [Checkout Flow and Events](internal-developers/block-client-apis/checkout/checkout-flow-and-events.md)
     -   [Notices](internal-developers/block-client-apis/notices.md)
+-   [Editor Components](../assets/js/editor-components/README.md)
+    -   [SearchListControl](../assets/js/editor-components/search-list-control/README.md)
+    -   [Tag](../assets/js/editor-components/tag/README.md)
+    -   [TextToolbarButton](../assets/js/editor-components/text-toolbar-button/README.md)
+-   [Icons](../assets/js/icons/README.md)
+-   [Legacy Build](../assets/js/legacy/README.md)
 -   [Store API (REST API)](../src/StoreApi/README.md)
 -   [Storybook](../storybook/README.md)
 -   [Templates](internal-developers/templates/README.md)
     -   [BlockTemplateController.php](internal-developers/templates/block-template-controller.md)
     -   [ClassicTemplate.php](internal-developers/templates/classic-template.md)
+    -   [Classic Template Block](../assets/js/blocks/classic-template/README.md)
 -   [Testing](internal-developers/testing/README.md)
     -   [When to employ end to end testing](internal-developers/testing/when-to-employ-e2e-testing.md)
     -   [Smoke Testing](internal-developers/testing/smoke-testing.md)
@@ -76,7 +87,11 @@ The WooCommerce Blocks Handbook provides documentation for designers and develop
         -   [Slots and Fills](third-party-developers/extensibility/checkout-block/slot-fills.md)
         -   [Available Slot Fills](third-party-developers/extensibility/checkout-block/available-slot-fills.md)
         -   [DOM Events](third-party-developers/extensibility/checkout-block/dom-events.md)
+        -   [Blocks Registry](../packages/checkout/blocks-registry/README.md)
+        -   [Components](../packages/checkout/components/README.md)
         -   [Filter Registry](../packages/checkout/filter-registry/README.md)
+        -   [Slot and Fill](../packages/checkout/slot/README.md)
+        -   [Utilities](../packages/checkout/utils/README.md)
 
 ## Designers
 

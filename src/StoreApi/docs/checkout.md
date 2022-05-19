@@ -1,5 +1,10 @@
 # Checkout API <!-- omit in toc -->
 
+## Table of Contents <!-- omit in toc -->
+
+-   [Get Checkout Data](#get-checkout-data)
+-   [Process Order and Payment](#process-order-and-payment)
+
 The checkout API facilitates the creation of orders (from the current cart) and handling payments for payment methods.
 
 All checkout endpoints require [Nonce Tokens](nonce-tokens.md).

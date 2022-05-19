@@ -1,16 +1,16 @@
 # BlockTemplateController.php <!-- omit in toc -->
 
-The `BlockTemplateController` class contains all the business logic which loads the templates into the Site Editor or on the front-end through various hooks available in WordPress & WooCommerce core. Without documenting every method individually, I will look to provide some insight into key functionality.
-
 ## Table of Contents <!-- omit in toc -->
 
-- [Overview](#overview)
-- [add_block_templates( $query_result, $query, \$template_type )](#add_block_templates-query_result-query-template_type-)
-  - [Return value](#return-value)
-- [get_block_file_template( $template, $id, \$template_type )](#get_block_file_template-template-id-template_type-)
-  - [Return value](#return-value-1)
-- [render_block_template()](#render_block_template)
-  - [Return value](#return-value-2)
+-   [Overview](#overview)
+-   [add_block_templates( $query_result, $query, \$template_type )](#add_block_templates-query_result-query-template_type-)
+    -   [Return value](#return-value)
+-   [get_block_file_template( $template, $id, \$template_type )](#get_block_file_template-template-id-template_type-)
+    -   [Return value](#return-value-1)
+-   [render_block_template()](#render_block_template)
+    -   [Return value](#return-value-2)
+
+The `BlockTemplateController` class contains all the business logic which loads the templates into the Site Editor or on the front-end through various hooks available in WordPress & WooCommerce core. Without documenting every method individually, I will look to provide some insight into key functionality.
 
 ## Overview
 

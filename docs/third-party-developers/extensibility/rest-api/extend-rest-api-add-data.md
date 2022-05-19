@@ -2,16 +2,16 @@
 
 ## Table of Contents <!-- omit in toc -->
 
-- [The problem](#the-problem)
-- [Solution](#solution)
-- [Basic usage](#basic-usage)
-- [Things To Consider](#things-to-consider)
-  - [ExtendSchema is a shared instance](#extendschema-is-a-shared-instance)
-  - [Errors and fatals are silence for non-admins](#errors-and-fatals-are-silence-for-non-admins)
-  - [Callbacks should always return an array](#callbacks-should-always-return-an-array)
-- [API Definition](#api-definition)
-- [Putting it all together](#putting-it-all-together)
-- [Formatting your data](#formatting-your-data)
+-   [The problem](#the-problem)
+-   [Solution](#solution)
+-   [Basic usage](#basic-usage)
+-   [Things To Consider](#things-to-consider)
+    -   [ExtendSchema is a shared instance](#extendschema-is-a-shared-instance)
+    -   [Errors and fatals are silence for non-admins](#errors-and-fatals-are-silence-for-non-admins)
+    -   [Callbacks should always return an array](#callbacks-should-always-return-an-array)
+-   [API Definition](#api-definition)
+-   [Putting it all together](#putting-it-all-together)
+-   [Formatting your data](#formatting-your-data)
 
 ## The problem
 

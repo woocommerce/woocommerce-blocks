@@ -1,17 +1,17 @@
 # Checkout API interface <!-- omit in toc -->
 
-This document gives an overview of some of the major architectural components/APIs for the checkout block. If you haven't already, you may also want to read about the [Checkout Flow and Events](../../extensibility/checkout-flow-and-events.md).
-
 ## Table of contents <!-- omit in toc -->
 
-- [Contexts](#contexts)
-  - [Notices Context](#notices-context)
-  - [Customer Data Context](#customer-data-context)
-  - [Shipping Method Data context](#shipping-method-data-context)
-  - [Payment Method Data Context](#payment-method-data-context)
-  - [Checkout Context](#checkout-context)
-- [Hooks](#hooks)
-  - [`usePaymentMethodInterface`](#usepaymentmethodinterface)
+-   [Contexts](#contexts)
+    -   [Notices Context](#notices-context)
+    -   [Customer Data Context](#customer-data-context)
+    -   [Shipping Method Data context](#shipping-method-data-context)
+    -   [Payment Method Data Context](#payment-method-data-context)
+    -   [Checkout Context](#checkout-context)
+-   [Hooks](#hooks)
+    -   [`usePaymentMethodInterface`](#usepaymentmethodinterface)
+
+This document gives an overview of some of the major architectural components/APIs for the checkout block. If you haven't already, you may also want to read about the [Checkout Flow and Events](../../extensibility/checkout-flow-and-events.md).
 
 ## Contexts
 

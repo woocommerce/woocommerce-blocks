@@ -2,18 +2,18 @@
 
 ## Table of Contents <!-- omit in toc -->
 
-- [The problem](#the-problem)
-- [The solution](#the-solution)
-- [Basic usage](#basic-usage)
-- [Things to consider](#things-to-consider)
-  - [Extensions cannot update the client-side cart state themselves](#extensions-cannot-update-the-client-side-cart-state-themselves)
-  - [Only one callback for a given namespace may be registered](#only-one-callback-for-a-given-namespace-may-be-registered)
-- [API Definition](#api-definition)
-  - [PHP](#php)
-  - [JavaScript](#javascript)
-- [Putting it all together](#putting-it-all-together)
-  - [The "Redeem" button](#the-redeem-button)
-  - [Registering a callback to run when the `cart/extensions` endpoint is hit](#registering-a-callback-to-run-when-the-cartextensions-endpoint-is-hit)
+-   [The problem](#the-problem)
+-   [The solution](#the-solution)
+-   [Basic usage](#basic-usage)
+-   [Things to consider](#things-to-consider)
+    -   [Extensions cannot update the client-side cart state themselves](#extensions-cannot-update-the-client-side-cart-state-themselves)
+    -   [Only one callback for a given namespace may be registered](#only-one-callback-for-a-given-namespace-may-be-registered)
+-   [API Definition](#api-definition)
+    -   [PHP](#php)
+    -   [JavaScript](#javascript)
+-   [Putting it all together](#putting-it-all-together)
+    -   [The "Redeem" button](#the-redeem-button)
+    -   [Registering a callback to run when the `cart/extensions` endpoint is hit](#registering-a-callback-to-run-when-the-cartextensions-endpoint-is-hit)
 
 ## The problem
 

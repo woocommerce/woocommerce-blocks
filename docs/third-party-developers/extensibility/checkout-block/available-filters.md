@@ -1,20 +1,20 @@
 # Available filters <!-- omit in toc -->
 
-This document lists the filters that are currently available to extensions and offers usage information for each one of them. Information on registering filters can be found on the [Checkout - Filter Registry](../../packages/checkout/filter-registry/README.md) page.
-
 ## Table of Contents <!-- omit in toc -->
 
-- [Cart Line Items](#cart-line-items)
-- [Order Summary Items](#order-summary-items)
-- [Totals footer item (in Mini Cart, Cart and Checkout)](#totals-footer-item-in-mini-cart-cart-and-checkout)
-- [Coupons](#coupons)
-- [Snackbar notices](#snackbar-notices)
-- [Examples](#examples)
-  - [Changing the wording of the Totals label in the Mini Cart, Cart and Checkout](#changing-the-wording-of-the-totals-label-in-the-mini-cart-cart-and-checkout)
-- [Changing the format of the item's single price](#changing-the-format-of-the-items-single-price)
-- [Change the name of a coupon](#change-the-name-of-a-coupon)
-  - [Hide a snackbar notice containing a certain string](#hide-a-snackbar-notice-containing-a-certain-string)
-- [Troubleshooting](#troubleshooting)
+-   [Cart Line Items](#cart-line-items)
+-   [Order Summary Items](#order-summary-items)
+-   [Totals footer item (in Mini Cart, Cart and Checkout)](#totals-footer-item-in-mini-cart-cart-and-checkout)
+-   [Coupons](#coupons)
+-   [Snackbar notices](#snackbar-notices)
+-   [Examples](#examples)
+    -   [Changing the wording of the Totals label in the Mini Cart, Cart and Checkout](#changing-the-wording-of-the-totals-label-in-the-mini-cart-cart-and-checkout)
+-   [Changing the format of the item's single price](#changing-the-format-of-the-items-single-price)
+-   [Change the name of a coupon](#change-the-name-of-a-coupon)
+    -   [Hide a snackbar notice containing a certain string](#hide-a-snackbar-notice-containing-a-certain-string)
+-   [Troubleshooting](#troubleshooting)
+
+This document lists the filters that are currently available to extensions and offers usage information for each one of them. Information on registering filters can be found on the [Checkout - Filter Registry](../../packages/checkout/filter-registry/README.md) page.
 
 ## Cart Line Items
 

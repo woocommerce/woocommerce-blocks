@@ -1,6 +1,4 @@
-# Checkout - Utilities <!-- omit in toc -->
-
-Miscellaneous utility functions for dealing with checkout functionality.
+# Utilities <!-- omit in toc -->
 
 ## Table of Contents <!-- omit in toc -->
 
@@ -13,6 +11,8 @@ Miscellaneous utility functions for dealing with checkout functionality.
     -   [Options](#options-1)
         -   [`value (string, required)`](#value-string-required)
         -   [`requiredValue (string, required)`](#requiredvalue-string-required)
+
+Miscellaneous utility functions for dealing with checkout functionality.
 
 ## `extensionCartUpdate`
 

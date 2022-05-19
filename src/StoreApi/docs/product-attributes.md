@@ -1,5 +1,7 @@
 # Product Attributes API <!-- omit in toc -->
 
+## Table of Contents <!-- omit in toc -->
+
 -   [List Product Attributes](#list-product-attributes)
 -   [Single Product Attribute](#single-product-attribute)
 

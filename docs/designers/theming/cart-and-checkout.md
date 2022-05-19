@@ -2,9 +2,9 @@
 
 ## Table of Contents <!-- omit in toc -->
 
-- [Buttons](#buttons)
-- [Mobile submit container](#mobile-submit-container)
-- [Item quantity badge](#item-quantity-badge)
+-   [Buttons](#buttons)
+-   [Mobile submit container](#mobile-submit-container)
+-   [Item quantity badge](#item-quantity-badge)
 
 ## Buttons
 

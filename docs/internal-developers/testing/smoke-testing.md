@@ -1,19 +1,19 @@
 # Smoke Testing <!-- omit in toc -->
 
+## Table of Contents <!-- omit in toc -->
+
+-   [Setup](#setup)
+    -   [1. Create a page with all regular and SSR blocks (such as the product grids) setup and configured.](#1-create-a-page-with-all-regular-and-ssr-blocks-such-as-the-product-grids-setup-and-configured)
+    -   [2. Create a page with the All Products Block, and some Filter Blocks, setup to test that functionality in isolation. Using the columns block here too is a good idea to keep things organized.](#2-create-a-page-with-the-all-products-block-and-some-filter-blocks-setup-to-test-that-functionality-in-isolation-using-the-columns-block-here-too-is-a-good-idea-to-keep-things-organized)
+    -   [3. Add the Cart and Checkout block to the relevant WooCommerce pages.](#3-add-the-cart-and-checkout-block-to-the-relevant-woocommerce-pages)
+-   [Editor Tests](#editor-tests)
+-   [Frontend Tests](#frontend-tests)
+
 We generally consider smoke testing using this definition [from Wikipedia](<https://href.li/?https://en.wikipedia.org/wiki/Smoke_testing_(software)>):
 
 > **Smoke Testing** is a subset of test cases that cover the most important functionality of a component or system, used to aid assessment of whether the main functions of the software appear to work correctly. It is a set of tests run on each new build of a product to verify that the build is testable before the build is released into the hands of the test team
 
 When testing builds the following things should be tested to ensure critical parts of the Blocks plugin are still functional.
-
-## Table of Contents <!-- omit in toc -->
-
-- [Setup](#setup)
-  - [1. Create a page with all regular and SSR blocks (such as the product grids) setup and configured.](#1-create-a-page-with-all-regular-and-ssr-blocks-such-as-the-product-grids-setup-and-configured)
-  - [2. Create a page with the All Products Block, and some Filter Blocks, setup to test that functionality in isolation. Using the columns block here too is a good idea to keep things organized.](#2-create-a-page-with-the-all-products-block-and-some-filter-blocks-setup-to-test-that-functionality-in-isolation-using-the-columns-block-here-too-is-a-good-idea-to-keep-things-organized)
-  - [3. Add the Cart and Checkout block to the relevant WooCommerce pages.](#3-add-the-cart-and-checkout-block-to-the-relevant-woocommerce-pages)
-- [Editor Tests](#editor-tests)
-- [Frontend Tests](#frontend-tests)
 
 ## Setup
 

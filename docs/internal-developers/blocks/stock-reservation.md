@@ -1,15 +1,15 @@
 # Stock Reservation during Checkout <!-- omit in toc -->
 
-To prevent multiple customers trying to purchase the same stock when limits are in place, both WooCommerce ([4.3+](https://github.com/woocommerce/woocommerce/pull/26395#pullrequestreview-430633490)) and the Blocks plugin have a stock reservation system which is used during checkout.
-
 ## Table of contents <!-- omit in toc -->
 
-- [The Reserved Stock Database Table](#the-reserved-stock-database-table)
-  - [Usage Example](#usage-example)
-  - [What about concurrency?](#what-about-concurrency)
-- [The Reserve Stock Process](#the-reserve-stock-process)
-  - [How the queries work](#how-the-queries-work)
-- [How this all fits into Checkout Block vs Traditional Checkout](#how-this-all-fits-into-checkout-block-vs-traditional-checkout)
+-   [The Reserved Stock Database Table](#the-reserved-stock-database-table)
+    -   [Usage Example](#usage-example)
+    -   [What about concurrency?](#what-about-concurrency)
+-   [The Reserve Stock Process](#the-reserve-stock-process)
+    -   [How the queries work](#how-the-queries-work)
+-   [How this all fits into Checkout Block vs Traditional Checkout](#how-this-all-fits-into-checkout-block-vs-traditional-checkout)
+
+To prevent multiple customers trying to purchase the same stock when limits are in place, both WooCommerce ([4.3+](https://github.com/woocommerce/woocommerce/pull/26395#pullrequestreview-430633490)) and the Blocks plugin have a stock reservation system which is used during checkout.
 
 ## The Reserved Stock Database Table
 

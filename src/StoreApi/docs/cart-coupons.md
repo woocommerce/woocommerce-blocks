@@ -1,5 +1,7 @@
 # Cart Coupons API <!-- omit in toc -->
 
+## Table of Contents <!-- omit in toc -->
+
 -   [List Cart Coupons](#list-cart-coupons)
 -   [Single Cart Coupon](#single-cart-coupon)
 -   [Add Cart Coupon](#add-cart-coupon)

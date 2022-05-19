@@ -1,23 +1,23 @@
 # Filter Registry <!-- omit in toc -->
 
-The filter registry allows callbacks to be registered to manipulate certain values. This is similar to the traditional filter system in WordPress (where you register a callback with a specific filter and return a modified value).
-
 ## Table of Contents <!-- omit in toc -->
 
-- [\_\_experimentalRegisterCheckoutFilters](#__experimentalregistercheckoutfilters)
-  - [Usage](#usage)
-  - [Options](#options)
-    - [`namespace (string)`](#namespace-string)
-    - [`filters (object)`](#filters-object)
-- [\_\_experimentalApplyCheckoutFilter](#__experimentalapplycheckoutfilter)
-  - [Usage](#usage-1)
-  - [Options](#options-1)
-    - [`filterName (string, required)`](#filtername-string-required)
-    - [`defaultValue (mixed, required)`](#defaultvalue-mixed-required)
-    - [`extensions`](#extensions)
-    - [`arg (object)`](#arg-object)
-    - [`validation (function)`](#validation-function)
-- [Available Filters](#available-filters)
+-   [\_\_experimentalRegisterCheckoutFilters](#__experimentalregistercheckoutfilters)
+    -   [Usage](#usage)
+    -   [Options](#options)
+        -   [`namespace (string)`](#namespace-string)
+        -   [`filters (object)`](#filters-object)
+-   [\_\_experimentalApplyCheckoutFilter](#__experimentalapplycheckoutfilter)
+    -   [Usage](#usage-1)
+    -   [Options](#options-1)
+        -   [`filterName (string, required)`](#filtername-string-required)
+        -   [`defaultValue (mixed, required)`](#defaultvalue-mixed-required)
+        -   [`extensions`](#extensions)
+        -   [`arg (object)`](#arg-object)
+        -   [`validation (function)`](#validation-function)
+-   [Available Filters](#available-filters)
+
+The filter registry allows callbacks to be registered to manipulate certain values. This is similar to the traditional filter system in WordPress (where you register a callback with a specific filter and return a modified value).
 
 ## \_\_experimentalRegisterCheckoutFilters
 

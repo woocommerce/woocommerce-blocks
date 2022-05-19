@@ -2,11 +2,11 @@
 
 ## Table of Contents <!-- omit in toc -->
 
-- [Filtering payment methods using requirements](#filtering-payment-methods-using-requirements)
-  - [The problem](#the-problem-1)
-  - [The solution](#the-solution-1)
-  - [Basic usage](#basic-usage)
-  - [Putting it all together](#putting-it-all-together)
+-   [Filtering payment methods using requirements](#filtering-payment-methods-using-requirements)
+    -   [The problem](#the-problem-1)
+    -   [The solution](#the-solution-1)
+    -   [Basic usage](#basic-usage)
+    -   [Putting it all together](#putting-it-all-together)
 
 ## The problem
 

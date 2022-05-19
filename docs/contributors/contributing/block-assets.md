@@ -1,19 +1,19 @@
 # Block Script Assets <!-- omit in toc -->
 
+## Table of contents <!-- omit in toc -->
+
+-   [When are assets needed?](#when-are-assets-needed)
+-   [Choosing Handles for Assets (and scripts in general)](#choosing-handles-for-assets-and-scripts-in-general)
+-   [Using the `AbstractBlock` class](#using-the-abstractblock-class)
+    -   [AbstractBlock::render](#abstractblockrender)
+    -   [AbstractBlock::enqueue_editor_assets](#abstractblockenqueue_editor_assets)
+    -   [AbstractBlock::enqueue_assets](#abstractblockenqueue_assets)
+    -   [AbstractBlock::enqueue_data](#abstractblockenqueue_data)
+-   [woocommerce_shared_settings deprecated filter](#woocommerce_shared_settings-deprecated-filter)
+
 [Block Types](https://github.com/woocommerce/woocommerce-gutenberg-products-block/tree/trunk/src/BlockTypes) are often responsible for enqueuing script assets that make blocks functional on both the front-end and within the editor. Additionally, some block scripts require extra data from the server and thus have extra dependencies that need to be loaded.
 
 For performance reasons the blocks plugin ensures assets and asset data is made available only as needed.
-
-## Table of contents <!-- omit in toc -->
-
-- [When are assets needed?](#when-are-assets-needed)
-- [Choosing Handles for Assets (and scripts in general)](#choosing-handles-for-assets-and-scripts-in-general)
-- [Using the `AbstractBlock` class](#using-the-abstractblock-class)
-  - [AbstractBlock::render](#abstractblockrender)
-  - [AbstractBlock::enqueue_editor_assets](#abstractblockenqueue_editor_assets)
-  - [AbstractBlock::enqueue_assets](#abstractblockenqueue_assets)
-  - [AbstractBlock::enqueue_data](#abstractblockenqueue_data)
-- [woocommerce_shared_settings deprecated filter](#woocommerce_shared_settings-deprecated-filter)
 
 ## When are assets needed?
 

@@ -2,10 +2,10 @@
 
 ## Table of Contents <!-- omit in toc -->
 
-- [Setup](#setup)
-- [What to test](#what-to-test)
-  - [With coupons disabled](#with-coupons-disabled)
-  - [With coupons enabled](#with-coupons-enabled)
+-   [Setup](#setup)
+-   [What to test](#what-to-test)
+    -   [With coupons disabled](#with-coupons-disabled)
+    -   [With coupons enabled](#with-coupons-enabled)
 
 ## Setup
 

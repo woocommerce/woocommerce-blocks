@@ -1,12 +1,12 @@
 # Storybook & Components <!-- omit in toc -->
 
-This repo includes [Storybook](https://storybook.js.org) tooling so we can test and develop components in isolation. The storybook is automatically built and published to [GitHub pages](https://woocommerce.github.io/woocommerce-gutenberg-products-block/) on every push to the main branch. See [travis.yml](https://github.com/woocommerce/woocommerce-gutenberg-products-block/blob/trunk/.travis.yml) for details.
-
 ## Table of contents <!-- omit in toc -->
 
-- [Where are our components?](#where-are-our-components)
-- [How to run Storybook locally and test components](#how-to-run-storybook-locally-and-test-components)
-- [How to add a story for a component](#how-to-add-a-story-for-a-component)
+-   [Where are our components?](#where-are-our-components)
+-   [How to run Storybook locally and test components](#how-to-run-storybook-locally-and-test-components)
+-   [How to add a story for a component](#how-to-add-a-story-for-a-component)
+
+This repo includes [Storybook](https://storybook.js.org) tooling so we can test and develop components in isolation. The storybook is automatically built and published to [GitHub pages](https://woocommerce.github.io/woocommerce-gutenberg-products-block/) on every push to the main branch. See [travis.yml](https://github.com/woocommerce/woocommerce-gutenberg-products-block/blob/trunk/.travis.yml) for details.
 
 ## Where are our components?
 

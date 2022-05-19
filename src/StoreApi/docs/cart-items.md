@@ -1,5 +1,7 @@
 # Cart Items API <!-- omit in toc -->
 
+## Table of Contents <!-- omit in toc -->
+
 -   [List Cart Items](#list-cart-items)
 -   [Single Cart Item](#single-cart-item)
 -   [Add Cart Item](#add-cart-item)

@@ -1,16 +1,16 @@
 # Coding Guidelines <!-- omit in toc -->
 
-This living document serves to prescribe coding guidelines specific to the WooCommerce Blocks project. Base coding guidelines follow the [WordPress Coding Standards](https://make.wordpress.org/core/handbook/best-practices/coding-standards/) and [Gutenberg coding standards](https://developer.wordpress.org/block-editor/contributors/develop/coding-guidelines/). The following sections outline additional patterns and conventions used in the Blocks project.
-
 ## Table of contents <!-- omit in toc -->
 
-- [CSS Class Names](#css-class-names)
-  - [Prefixing](#prefixing)
-  - [Naming](#naming)
-- [RTL Styles](#rtl-styles)
-- [SCSS File Naming Conventions for Blocks](#scss-file-naming-conventions-for-blocks)
-- [Accessible font sizes](#accessible-font-sizes)
-- [CSS specificity wars with 3rd party themes](#css-specificity-wars-with-3rd-party-themes)
+-   [CSS Class Names](#css-class-names)
+    -   [Prefixing](#prefixing)
+    -   [Naming](#naming)
+-   [RTL Styles](#rtl-styles)
+-   [SCSS File Naming Conventions for Blocks](#scss-file-naming-conventions-for-blocks)
+-   [Accessible font sizes](#accessible-font-sizes)
+-   [CSS specificity wars with 3rd party themes](#css-specificity-wars-with-3rd-party-themes)
+
+This living document serves to prescribe coding guidelines specific to the WooCommerce Blocks project. Base coding guidelines follow the [WordPress Coding Standards](https://make.wordpress.org/core/handbook/best-practices/coding-standards/) and [Gutenberg coding standards](https://developer.wordpress.org/block-editor/contributors/develop/coding-guidelines/). The following sections outline additional patterns and conventions used in the Blocks project.
 
 ## CSS Class Names
 

@@ -1,11 +1,11 @@
 # Compatibility <!-- omit in toc -->
 
-The main goal of this is to test in a variety of themes, browsers, platforms, and setups, this is a list of things you can test with, with sane expectations.
-
 ## Table of Contents <!-- omit in toc -->
 
-- [Setup](#setup)
-- [What to test](#what-to-test)
+-   [Setup](#setup)
+-   [What to test](#what-to-test)
+
+The main goal of this is to test in a variety of themes, browsers, platforms, and setups, this is a list of things you can test with, with sane expectations.
 
 ## Setup
 

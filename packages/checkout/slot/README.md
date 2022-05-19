@@ -1,8 +1,4 @@
-# Checkout - Slot and Fill <!-- omit in toc -->
-
-Slot and Fill are a pair of components which enable developers to render elsewhere in a React element tree, a pattern often referred to as "portal" rendering. It is a pattern for component extensibility, where a single Slot may be occupied by an indeterminate number of Fills elsewhere in the application.
-
-This module is an abstraction on top of the Slot and Fill implementation in WordPress and is meant to be used internally, therefore the documentation only touches the abstraction part. You can read more about Slot and Fill in [@wordpress/components documentation](https://github.com/WordPress/gutenberg/tree/c53d26ea79bdcb1a3007a994078e1fc9e0195466/packages/components/src/slot-fill).
+# Slot and Fill <!-- omit in toc -->
 
 ## Table of Contents <!-- omit in toc -->
 
@@ -20,6 +16,10 @@ This module is an abstraction on top of the Slot and Fill implementation in Word
         -   [`Fill` Component](#fill-component)
 -   [Extending Checkout via Slot Fills](#extending-checkout-via-slot-fills)
 -   [Available Slot Fills](#available-slot-fills)
+
+Slot and Fill are a pair of components which enable developers to render elsewhere in a React element tree, a pattern often referred to as "portal" rendering. It is a pattern for component extensibility, where a single Slot may be occupied by an indeterminate number of Fills elsewhere in the application.
+
+This module is an abstraction on top of the Slot and Fill implementation in WordPress and is meant to be used internally, therefore the documentation only touches the abstraction part. You can read more about Slot and Fill in [@wordpress/components documentation](https://github.com/WordPress/gutenberg/tree/c53d26ea79bdcb1a3007a994078e1fc9e0195466/packages/components/src/slot-fill).
 
 ## `createSlotFill( slotName )`
 

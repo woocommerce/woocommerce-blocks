@@ -2,8 +2,8 @@
 
 ## Table of Contents <!-- omit in toc -->
 
-- [Setup](#setup)
-- [What to test](#what-to-test)
+-   [Setup](#setup)
+-   [What to test](#what-to-test)
 
 ## Setup
 

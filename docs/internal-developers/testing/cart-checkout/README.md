@@ -1,14 +1,14 @@
 # Cart and Checkout testing plan <!-- omit in toc -->
 
-- [Introduction](#introduction)
-  - [Known limitations](#known-limitations)
-- [How to report issues](#how-to-report-issues)
-- [What are we testing?](#what-are-we-testing)
-  - [Cart Block](#cart-block)
-  - [Checkout Block](#checkout-block)
-- [Testing Checklist](#testing-checklist)
-
 ## Table of Contents <!-- omit in toc -->
+
+-   [Introduction](#introduction)
+    -   [Known limitations](#known-limitations)
+-   [How to report issues](#how-to-report-issues)
+-   [What are we testing?](#what-are-we-testing)
+    -   [Cart Block](#cart-block)
+    -   [Checkout Block](#checkout-block)
+-   [Testing Checklist](#testing-checklist)
 
 ## Introduction
 

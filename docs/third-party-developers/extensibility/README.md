@@ -1,13 +1,13 @@
 # Extensibility in WooCommerce Blocks <!-- omit in toc -->
 
-These documents are all dealing with extensibility in the various WooCommerce Blocks.
-
 ## Table of Contents <!-- omit in toc -->
 
-- [Hooks (actions and filters)](#hooks-actions-and-filters)
-- [REST API](#rest-api)
-- [Checkout Payment Methods](#checkout-payment-methods)
-- [Checkout Block](#checkout-block)
+-   [Hooks (actions and filters)](#hooks-actions-and-filters)
+-   [REST API](#rest-api)
+-   [Checkout Payment Methods](#checkout-payment-methods)
+-   [Checkout Block](#checkout-block)
+
+These documents are all dealing with extensibility in the various WooCommerce Blocks.
 
 ## Hooks (actions and filters)
 

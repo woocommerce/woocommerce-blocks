@@ -1,5 +1,12 @@
 # JavaScript Testing <!-- omit in toc -->
 
+## Table of contents <!-- omit in toc -->
+
+-   [How to run JavaScript unit tests](#how-to-run-javascript-unit-tests)
+-   [How to run end-to-end tests](#how-to-run-end-to-end-tests)
+    -   [Modify the local environment used by end-to-end tests](#modify-the-local-environment-used-by-end-to-end-tests)
+    -   [How to update end-to-end tests suites](#how-to-update-end-to-end-tests-suites)
+
 Tests for JavaScript in the Blocks plugin are powered by [Jest](https://jestjs.io/). The Blocks plugin follows the same patterns as Gutenberg, therefore for instructions on writing tests you can [refer to this page in the Gutenberg Handbook](https://developer.wordpress.org/block-editor/contributors/develop/testing-overview/).
 
 We have two kinds of JavaScript tests:
@@ -10,13 +17,6 @@ We have two kinds of JavaScript tests:
 These tests are all run automatically on open PRs by Travis CI.
 
 All the following tests require that the dependencies are installed (`npm install` `composer install`). Ensure you've followed the [Getting Started Guide](getting-started.md) to set up node and other dependencies before running any tests.
-
-## Table of contents <!-- omit in toc -->
-
-- [How to run JavaScript unit tests](#how-to-run-javascript-unit-tests)
-- [How to run end-to-end tests](#how-to-run-end-to-end-tests)
-  - [Modify the local environment used by end-to-end tests](#modify-the-local-environment-used-by-end-to-end-tests)
-  - [How to update end-to-end tests suites](#how-to-update-end-to-end-tests-suites)
 
 ## How to run JavaScript unit tests
 
@@ -141,5 +141,5 @@ In `./tests/e2e/specs`, verify for conditions like `if ( process.env.WP_VERSION 
 [We're hiring!](https://woocommerce.com/careers/) Come work with us!
 
 🐞 Found a mistake, or have a suggestion? [Leave feedback about this document here.](https://github.com/woocommerce/woocommerce-gutenberg-products-block/issues/new?assignees=&labels=type%3A+documentation&template=--doc-feedback.md&title=Feedback%20on%20./docs/contributors/javascript-testing.md)
-<!-- /FEEDBACK -->
 
+<!-- /FEEDBACK -->

@@ -1,11 +1,11 @@
 # Class names update in 2.8.0 <!-- omit in toc -->
 
-In [WooCommerce Blocks 2.8.0](https://developer.woocommerce.com/2020/06/24/woocommerce-blocks-2-8-release-notes/), we replaced and deprecated some some class names to simplify them, fix inconsistencies, and make it easier to differentiate frontend components from editor components.
-
 ## Table of Contents <!-- omit in toc -->
 
-- [Replaced classes](#replaced-classes)
-- [Deprecated classes](#deprecated-classes)
+-   [Replaced classes](#replaced-classes)
+-   [Deprecated classes](#deprecated-classes)
+
+In [WooCommerce Blocks 2.8.0](https://developer.woocommerce.com/2020/06/24/woocommerce-blocks-2-8-release-notes/), we replaced and deprecated some some class names to simplify them, fix inconsistencies, and make it easier to differentiate frontend components from editor components.
 
 ## Replaced classes
 
