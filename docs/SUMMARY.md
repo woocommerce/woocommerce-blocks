@@ -74,4 +74,4 @@
     -   [Class names update in 2.8.0](designers/theming/class-names-update-280.md)
     -   [Product grid blocks style update in 2.7.0](designers/theming/product-grid-270.md)
 
-## Tutorials
+<!-- ## Tutorials -->

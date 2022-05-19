@@ -8,7 +8,6 @@ The WooCommerce Blocks Handbook provides documentation for designers and develop
 - [Internal developers](#internal-developers)
 - [Third-party developers](#third-party-developers)
 - [Designers](#designers)
-- [Tutorials](#tutorials)
 
 ## Contributors
 
@@ -90,7 +89,7 @@ The WooCommerce Blocks Handbook provides documentation for designers and develop
     -   [Class names update in 2.8.0](designers/theming/class-names-update-280.md)
     -   [Product grid blocks style update in 2.7.0](designers/theming/product-grid-270.md)
 
-## Tutorials
+<!-- ## Tutorials -->
 
 <!--
 | Target group           | Document                                                             | Description                                                                                              |
