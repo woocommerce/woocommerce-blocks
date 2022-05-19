@@ -61,6 +61,7 @@
         -   [Slots and Fills](third-party-developers/extensibility/slot-fills.md)
         -   [Available Slot Fills](third-party-developers/extensibility/available-slot-fills.md)
         -   [DOM Events](third-party-developers/extensibility/dom-events.md)
+        -   [Filter Registry](../packages/checkout/filter-registry/README.md)
 
 ## Designers
 
