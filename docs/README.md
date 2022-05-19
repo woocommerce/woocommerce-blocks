@@ -57,23 +57,24 @@ The WooCommerce Blocks Handbook provides documentation for designers and develop
 
 -   [Extensibility](third-party-developers/extensibility/README.md)
     -   Hooks
-        -   [Actions](third-party-developers/extensibility/actions.md)
-        -   [Filters](third-party-developers/extensibility/filters.md)
+        -   [Actions](third-party-developers/extensibility/hooks/actions.md)
+        -   [Filters](third-party-developers/extensibility/hooks/filters.md)
     -   REST API
-        -   [Exposing your data in the Store API](third-party-developers/extensibility/extend-rest-api-add-data.md)
-        -   [Available endpoints to extend with ExtendSchema](third-party-developers/extensibility/available-endpoints-to-extend.md)
-        -   [Adding an endpoint to ExtendSchema](third-party-developers/extensibility/extend-rest-api-new-endpoint.md)
-        -   [Available Formatters](third-party-developers/extensibility/extend-rest-api-formatters.md)
+        -   [Exposing your data in the Store API](third-party-developers/extensibility/rest-api/extend-rest-api-add-data.md)
+        -   [Available endpoints to extend with ExtendSchema](third-party-developers/extensibility/rest-api/available-endpoints-to-extend.md)
+        -   [Adding an endpoint to ExtendSchema](third-party-developers/extensibility/rest-api/extend-rest-api-new-endpoint.md)
+        -   [Available Formatters](third-party-developers/extensibility/rest-api/extend-rest-api-formatters.md)
+        -   [Updating the cart with the Store API](third-party-developers/extensibility/rest-api/extend-rest-api-update-cart.md)
     -   Checkout Payment Methods
-        -   [Checkout Flow and Events](third-party-developers/extensibility/checkout-flow-and-events.md)
-        -   [Payment Method Integration](third-party-developers/extensibility/payment-method-integration.md)
-        -   [Filtering Payment Methods](third-party-developers/extensibility/filtering-payment-methods.md)
+        -   [Checkout Flow and Events](third-party-developers/extensibility/checkout-payment-methods/checkout-flow-and-events.md)
+        -   [Payment Method Integration](third-party-developers/extensibility/checkout-payment-methods/payment-method-integration.md)
+        -   [Filtering Payment Methods](third-party-developers/extensibility/checkout-payment-methods/filtering-payment-methods.md)
     -   Checkout Block
-        -   [IntegrationInterface](third-party-developers/extensibility/integration-interface.md)
-        -   [Available Filters](third-party-developers/extensibility/available-filters.md)
-        -   [Slots and Fills](third-party-developers/extensibility/slot-fills.md)
-        -   [Available Slot Fills](third-party-developers/extensibility/available-slot-fills.md)
-        -   [DOM Events](third-party-developers/extensibility/dom-events.md)
+        -   [IntegrationInterface](third-party-developers/extensibility/checkout-block/integration-interface.md)
+        -   [Available Filters](third-party-developers/extensibility/checkout-block/available-filters.md)
+        -   [Slots and Fills](third-party-developers/extensibility/checkout-block/slot-fills.md)
+        -   [Available Slot Fills](third-party-developers/extensibility/checkout-block/available-slot-fills.md)
+        -   [DOM Events](third-party-developers/extensibility/checkout-block/dom-events.md)
         -   [Filter Registry](../packages/checkout/filter-registry/README.md)
 
 ## Designers
