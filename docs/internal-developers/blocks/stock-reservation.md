@@ -15,7 +15,6 @@ To prevent multiple customers trying to purchase the same stock when limits are 
 
 The table which tracks reserved stock is named `wc_reserved_stock`, and the schema contains the following columns:
 
-
 | Key              | Type         | Description                         |
 | ---------------- | ------------ | ----------------------------------- |
 | `order_id`       | `bigint(20)` | ID of the order.                    |
@@ -23,7 +22,6 @@ The table which tracks reserved stock is named `wc_reserved_stock`, and the sche
 | `stock_quantity` | `double`     | The amount of stock reserved.       |
 | `timestamp`      | `datetime`   | The timestamp the hold was created. |
 | `expires`        | `datetime`   | The timestamp the hold expires.     |
-
 
 The primary key is a combination of order and product ID to prevent multiple holds being created for the same order if checkout is performed multiple times.
 
@@ -46,9 +44,9 @@ This either holds stock, or rejects the order if the stock cannot be reserved fo
 
 Some things worth noting:
 
-- Before stock can be reserved, an order must exist.
-- Stock is reserved for a defined period of time before it expires; these expired rows are cleaned up periodically and do not affect queries for stock levels.
-- If an order is changed, stock should be reserved again. The `ReserveStock` class will renew any existing holds and remove any invalid ones for the current order.
+-   Before stock can be reserved, an order must exist.
+-   Stock is reserved for a defined period of time before it expires; these expired rows are cleaned up periodically and do not affect queries for stock levels.
+-   If an order is changed, stock should be reserved again. The `ReserveStock` class will renew any existing holds and remove any invalid ones for the current order.
 
 ### What about concurrency?
 
@@ -64,9 +62,9 @@ This operation locks the tables so that separate processes do not fight over the
 
 On the technical side:
 
-- The `ReserveStock` class joins the `wc_reserved_stock` table to `wp_posts` using the post/order ID
-- Only non-expired rows are used
-- Only draft/pending order rows are used
+-   The `ReserveStock` class joins the `wc_reserved_stock` table to `wp_posts` using the post/order ID
+-   Only non-expired rows are used
+-   Only draft/pending order rows are used
 
 Here is an example query getting stock for Product ID 99 and excluding order ID 100.
 
@@ -91,9 +89,9 @@ ON DUPLICATE KEY UPDATE `expires` = VALUES( `expires` )
 
 In the above code snippet:
 
-- `$query_for_stock` is a subquery getting stock level from the post meta table, and `$query_for_reserved_stock` is the query shown prior.
-- The `FOR UPDATE` part locks the selected rows which prevents other requests from changing those values until we’ve inserted the new rows.
-- The `ON DUPLICATE KEY` part updates an existing row if one already exists for that order/item.
+-   `$query_for_stock` is a subquery getting stock level from the post meta table, and `$query_for_reserved_stock` is the query shown prior.
+-   The `FOR UPDATE` part locks the selected rows which prevents other requests from changing those values until we’ve inserted the new rows.
+-   The `ON DUPLICATE KEY` part updates an existing row if one already exists for that order/item.
 
 ## How this all fits into Checkout Block vs Traditional Checkout
 
@@ -110,5 +108,5 @@ You can see that in both Checkouts, if stock cannot be reserved for all items in
 [We're hiring!](https://woocommerce.com/careers/) Come work with us!
 
 🐞 Found a mistake, or have a suggestion? [Leave feedback about this document here.](https://github.com/woocommerce/woocommerce-gutenberg-products-block/issues/new?assignees=&labels=type%3A+documentation&template=--doc-feedback.md&title=Feedback%20on%20./docs/blocks/stock-reservation.md)
-<!-- /FEEDBACK -->
 
+<!-- /FEEDBACK -->
