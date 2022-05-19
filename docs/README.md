@@ -1,10 +1,18 @@
-# WooCommerce Blocks Handbook
+# WooCommerce Blocks Handbook <!-- omit in toc -->
 
 The WooCommerce Blocks Handbook provides documentation for designers and developers on how to extend or contribute to blocks, and how internal developers should handle new releases.
 
+## Table of Contents <!-- omit in toc -->
+
+- [Contributors](#contributors)
+- [Internal developers](#internal-developers)
+- [Third-party developers](#third-party-developers)
+- [Designers](#designers)
+- [Tutorials](#tutorials)
+
 ## Contributors
 
-You want to contribute to the WooCommerce Blocks plugin? The following documents explain you how to getting started.
+> You want to contribute to the WooCommerce Blocks plugin? The following documents explain you how to getting started.
 
 -   [Contributing](contributors/contributing/README.md)
     -   [Getting Started](contributors/contributing/getting-started.md)
@@ -17,7 +25,7 @@ You want to contribute to the WooCommerce Blocks plugin? The following documents
 
 ## Internal developers
 
-You are an internal developer? The following docuemnts explain the different blocks, the Block Client APIs, the Store API, the templates and the testing process.
+> You are an internal developer? The following docuemnts explain the different blocks, the Block Client APIs, the Store API, the templates and the testing process.
 
 -   [Blocks](internal-developers/blocks/README.md)
     -   [Stock Reservation during Checkout](internal-developers/blocks/stock-reservation.md)
@@ -46,7 +54,7 @@ You are an internal developer? The following docuemnts explain the different blo
 
 ## Third-party developers
 
-You are a third-party developer? The following documents explain how to extend the WooCOmmerce Blocks plugin with your custom extention.
+> You are a third-party developer? The following documents explain how to extend the WooCommerce Blocks plugin with your custom extention.
 
 -   [Extensibility](third-party-developers/extensibility/README.md)
     -   Hooks
@@ -71,7 +79,7 @@ You are a third-party developer? The following documents explain how to extend t
 
 ## Designers
 
-You are a designer? The following documents explain how to apply design-changes to the WooCommerce Blocks plugin.
+> You are a designer? The following documents explain how to apply design-changes to the WooCommerce Blocks plugin.
 
 -   [Theming](designers/theming/README.md)
     -   [All Products & filters](designers/theming/all-products-and-filters.md)
