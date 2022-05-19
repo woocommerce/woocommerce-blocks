@@ -103,7 +103,7 @@ _Why don't payment methods just implement this hook_?
 
 The contract is established through props fed to the payment method components via props. This allows us to avoid having to expose the hook publicly and experiment with how the props are retrieved and exposed in the future.
 
- <!-- FEEDBACK -->
+<!-- FEEDBACK -->
 
 ---
 

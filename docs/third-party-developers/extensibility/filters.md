@@ -187,7 +187,7 @@ apply_filters( 'woocommerce_add_cart_item_data', array $cart_item_data, integer 
 ### Returns
 
 
-`array` 
+`array`
 
 ### Source
 
@@ -221,7 +221,7 @@ apply_filters( 'woocommerce_add_to_cart_sold_individually_quantity', integer $so
 ### Returns
 
 
-`integer` 
+`integer`
 
 ### Source
 
@@ -259,7 +259,7 @@ apply_filters( 'woocommerce_add_to_cart_validation', boolean $passed_validation,
 ### Returns
 
 
-`boolean` 
+`boolean`
 
 ### Source
 
@@ -293,7 +293,7 @@ apply_filters( 'woocommerce_adjust_non_base_location_prices', boolean $adjust_no
 ### Returns
 
 
-`boolean` 
+`boolean`
 
 ### Source
 
@@ -341,7 +341,7 @@ apply_filters( 'woocommerce_apply_individual_use_coupon', array $coupons, \WC_Co
 ### Returns
 
 
-`array` 
+`array`
 
 ### Source
 
@@ -374,7 +374,7 @@ apply_filters( 'woocommerce_apply_with_individual_use_coupon', boolean $apply_wi
 ### Returns
 
 
-`boolean` 
+`boolean`
 
 ### Source
 
@@ -459,7 +459,7 @@ apply_filters( 'woocommerce_blocks_register_script_dependencies', array $depende
 ### Returns
 
 
-`array` 
+`array`
 
 ### Source
 
@@ -549,7 +549,7 @@ apply_filters( 'woocommerce_get_item_data', array $item_data, array $cart_item )
 ### Returns
 
 
-`array` 
+`array`
 
 ### Source
 
@@ -580,7 +580,7 @@ apply_filters( 'woocommerce_new_customer_data', array $customer_data )
 ### Returns
 
 
-`array` 
+`array`
 
 ### Source
 
@@ -616,7 +616,7 @@ apply_filters( 'woocommerce_registration_errors', \WP_Error $errors, string $use
 ### Returns
 
 
-`\WP_Error` 
+`\WP_Error`
 
 ### Source
 
@@ -650,7 +650,7 @@ apply_filters( 'woocommerce_shared_settings', array $data )
 ### Returns
 
 
-`array` 
+`array`
 
 ### Source
 
@@ -734,7 +734,7 @@ apply_filters( 'woocommerce_store_api_disable_nonce_check', boolean $disable_non
 ### Returns
 
 
-`boolean` 
+`boolean`
 
 ### Source
 
@@ -766,7 +766,7 @@ apply_filters( 'woocommerce_store_api_product_quantity_limit', integer $quantity
 ### Returns
 
 
-`integer` 
+`integer`
 
 ### Source
 
@@ -799,7 +799,7 @@ apply_filters( 'woocommerce_store_api_product_quantity_{$value_type}', mixed $va
 ### Returns
 
 
-`mixed` 
+`mixed`
 
 ### Source
 
@@ -836,7 +836,7 @@ apply_filters( 'woocommerce_variation_option_name', string $value, null $unused,
 ### Returns
 
 
-`string` 
+`string`
 
 ### Source
 
@@ -845,6 +845,7 @@ apply_filters( 'woocommerce_variation_option_name', string $value, null $unused,
 
 ---
 <!-- FEEDBACK -->
+
 ---
 
 [We're hiring!](https://woocommerce.com/careers/) Come work with us!
