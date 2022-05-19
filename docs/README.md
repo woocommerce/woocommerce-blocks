@@ -13,7 +13,9 @@ The WooCommerce Blocks Handbook provides documentation for designers and develop
 | Third-Party Developers | [Extensibility](third-party-developers/extensibility/README.md)      | These documents explain the extensibility of WooCommerce Blocks.                                         |
 | Designers              | [Theming](designers/theming/README.md)                               | These documents explain the theming for blocks, styles, CSS classnames and other theming best practices. |
 
-## <!-- FEEDBACK -->
+<!-- FEEDBACK -->
+
+---
 
 [We're hiring!](https://woocommerce.com/careers/) Come work with us!
 

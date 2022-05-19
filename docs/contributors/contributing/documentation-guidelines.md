@@ -149,7 +149,9 @@ When explaining functionality, the following structure should be used:
 
 When referencing other documentations, the corresponding document should be linked.
 
-## <!-- FEEDBACK -->
+<!-- FEEDBACK -->
+
+---
 
 [We're hiring!](https://woocommerce.com/careers/) Come work with us!
 

@@ -4,16 +4,16 @@ To see how to add your data to Store API using ExtendSchema, [check this documen
 
 ## Table of Contents <!-- omit in toc -->
 
-- [`wc/store/cart`](#wcstorecart)
-  - [Passed Parameters:](#passed-parameters)
-  - [Key:](#key)
-- [`wc/store/cart/items`](#wcstorecartitems)
-  - [Passed Parameters:](#passed-parameters-1)
-  - [Key:](#key-1)
-- [`wc/store/products`](#wcstoreproducts)
-  - [Passed Parameters:](#passed-parameters-2)
-  - [Key:](#key-2)
-- [](#)
+-   [`wc/store/cart`](#wcstorecart)
+    -   [Passed Parameters:](#passed-parameters)
+    -   [Key:](#key)
+-   [`wc/store/cart/items`](#wcstorecartitems)
+    -   [Passed Parameters:](#passed-parameters-1)
+    -   [Key:](#key-1)
+-   [`wc/store/products`](#wcstoreproducts)
+    -   [Passed Parameters:](#passed-parameters-2)
+    -   [Key:](#key-2)
+-   [](#)
 
 ## `wc/store/cart`
 
@@ -54,7 +54,9 @@ The main products endpoint is extensible via ExtendSchema. The data is available
 
 -   `ProductSchema::IDENTIFIER`
 
-## <!-- FEEDBACK -->
+<!-- FEEDBACK -->
+
+---
 
 [We're hiring!](https://woocommerce.com/careers/) Come work with us!
 

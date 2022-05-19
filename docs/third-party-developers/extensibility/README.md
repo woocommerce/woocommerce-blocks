@@ -8,7 +8,6 @@ These documents are all dealing with extensibility in the various WooCommerce Bl
 - [REST API](#rest-api)
 - [Checkout Payment Methods](#checkout-payment-methods)
 - [Checkout Block](#checkout-block)
-- [](#)
 
 ## Hooks (actions and filters)
 
@@ -47,7 +46,9 @@ In addition to the reference material below, [please see the `block-checkout` pa
 | [DOM Events](./dom-events.md)                                           | A list of DOM Events used by some blocks to communicate between them and with other parts of WooCommerce.         |
 | [Filter Registry](../../../packages/checkout/filter-registry/README.md) | The filter registry allows callbacks to be registered to manipulate certain values.                               |
 
-## <!-- FEEDBACK -->
+<!-- FEEDBACK -->
+
+---
 
 [We're hiring!](https://woocommerce.com/careers/) Come work with us!
 

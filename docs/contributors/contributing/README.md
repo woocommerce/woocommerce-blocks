@@ -12,7 +12,9 @@ This folder contains documentation for developers and contributors looking to ge
 | [JavaScript Testing](javascript-testing.md)           | This doc explains how to run automated JavaScript tests.                                 |
 | [Storybook & Components](storybook-and-components.md) | This doc outlines where our reusable components live, and how to test them in Storybook. |
 
-## <!-- FEEDBACK -->
+<!-- FEEDBACK -->
+
+---
 
 [We're hiring!](https://woocommerce.com/careers/) Come work with us!
 

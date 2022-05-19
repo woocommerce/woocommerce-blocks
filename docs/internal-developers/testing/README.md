@@ -9,7 +9,9 @@ This folder contains documentation around manual testing of WooCommerce Blocks.
 | [Cart and Checkout Testing](cart-checkout/README.md)               | Various testing flows for Cart and Checkout Blocks                                       |
 | [Releases](releases/README.md)                                     | We document all testing flows for releases in this folder                                |
 
-## <!-- FEEDBACK -->
+<!-- FEEDBACK -->
+
+---
 
 [We're hiring!](https://woocommerce.com/careers/) Come work with us!
 

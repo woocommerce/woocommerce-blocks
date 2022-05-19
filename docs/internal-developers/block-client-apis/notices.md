@@ -250,7 +250,9 @@ const CheckoutProcessor = () => {
 </StoreSnackbarNoticesProvider>
 ```
 
-## <!-- FEEDBACK -->
+<!-- FEEDBACK -->
+
+---
 
 [We're hiring!](https://woocommerce.com/careers/) Come work with us!
 
