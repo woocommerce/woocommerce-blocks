@@ -20,6 +20,44 @@ import ProductOrderbyControl from '@woocommerce/editor-components/product-orderb
 import ProductStockControl from '@woocommerce/editor-components/product-stock-control';
 import { gridBlockPreview } from '@woocommerce/resource-previews';
 import { getSetting } from '@woocommerce/settings';
+import { BlockAlignment } from '@wordpress/blocks';
+
+interface Attributes {
+	align?: BlockAlignment;
+	attributes: Array< string >;
+	attrOperator: string;
+	columns: number;
+	editMode: boolean;
+	contentVisibility: {
+		image: boolean;
+		title: boolean;
+		price: boolean;
+		rating: boolean;
+		button: boolean;
+	};
+	orderby: string;
+	rows: number;
+	alignButtons: boolean;
+	isPreview: boolean;
+	stockStatus: Array< string >;
+}
+
+interface Props {
+	/**
+	 * The attributes for this block
+	 */
+	attributes: Attributes;
+	/**
+	 * The register block name.
+	 */
+	name: string;
+	/**
+	 * A callback to update attributes
+	 */
+	setAttributes: ( attributes: Partial< Attributes > ) => void;
+	// from withSpokenMessages
+	debouncedSpeak: ( message: string ) => void;
+}
 
 /**
  * Component to handle edit mode of "Products by Attribute".
@@ -167,85 +205,44 @@ const ProductsByAttributeBlock = ( props: Props ): JSX.Element => {
 		);
 	};
 
-	const render = () => {
-		const { attributes, name, setAttributes } = props;
-		const { editMode } = attributes;
+	const { attributes, name, setAttributes } = props;
+	const { editMode } = attributes;
 
-		if ( attributes.isPreview ) {
-			return gridBlockPreview;
-		}
+	if ( attributes.isPreview ) {
+		return gridBlockPreview;
+	}
 
-		return (
-			<>
-				<BlockControls>
-					<ToolbarGroup
-						controls={ [
-							{
-								icon: 'edit',
-								title: __(
-									'Edit selected attribute',
-									'woo-gutenberg-products-block'
-								),
-								onClick: () =>
-									setAttributes( { editMode: ! editMode } ),
-								isActive: editMode,
-							},
-						] }
+	return (
+		<>
+			<BlockControls>
+				<ToolbarGroup
+					controls={ [
+						{
+							icon: 'edit',
+							title: __(
+								'Edit selected attribute',
+								'woo-gutenberg-products-block'
+							),
+							onClick: () =>
+								setAttributes( { editMode: ! editMode } ),
+							isActive: editMode,
+						},
+					] }
+				/>
+			</BlockControls>
+			{ getInspectorControls() }
+			{ editMode ? (
+				renderEditMode()
+			) : (
+				<Disabled>
+					<ServerSideRender
+						block={ name }
+						attributes={ attributes }
 					/>
-				</BlockControls>
-				{ getInspectorControls() }
-				{ editMode ? (
-					renderEditMode()
-				) : (
-					<Disabled>
-						<ServerSideRender
-							block={ name }
-							attributes={ attributes }
-						/>
-					</Disabled>
-				) }
-			</>
-		);
-	};
-
-	return render();
+				</Disabled>
+			) }
+		</>
+	);
 };
-
-interface Attributes {
-	align?: string;
-	attributes: Array< string >;
-	attrOperator: string;
-	columns: number;
-	editMode: boolean;
-	contentVisibility: {
-		image: boolean;
-		title: boolean;
-		price: boolean;
-		rating: boolean;
-		button: boolean;
-	};
-	orderby: string;
-	rows: number;
-	alignButtons: boolean;
-	isPreview: boolean;
-	stockStatus: Array< string >;
-}
-
-interface Props {
-	/**
-	 * The attributes for this block
-	 */
-	attributes: Attributes;
-	/**
-	 * The register block name.
-	 */
-	name: string;
-	/**
-	 * A callback to update attributes
-	 */
-	setAttributes: ( attributes: Record< string, unknown > ) => void;
-	// from withSpokenMessages
-	debouncedSpeak: ( message: string ) => void;
-}
 
 export default withSpokenMessages( ProductsByAttributeBlock );
