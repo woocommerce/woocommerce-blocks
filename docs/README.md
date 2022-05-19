@@ -4,10 +4,10 @@ The WooCommerce Blocks Handbook provides documentation for designers and develop
 
 ## Table of Contents <!-- omit in toc -->
 
-- [Contributors](#contributors)
-- [Internal developers](#internal-developers)
-- [Third-party developers](#third-party-developers)
-- [Designers](#designers)
+-   [Contributors](#contributors)
+-   [Internal developers](#internal-developers)
+-   [Third-party developers](#third-party-developers)
+-   [Designers](#designers)
 
 ## Contributors
 
@@ -34,6 +34,7 @@ The WooCommerce Blocks Handbook provides documentation for designers and develop
     -   [Checkout Flow and Events](internal-developers/block-client-apis/checkout/checkout-flow-and-events.md)
     -   [Notices](internal-developers/block-client-apis/notices.md)
 -   [Store API (REST API)](../src/StoreApi/README.md)
+-   [Storybook](../storybook/README.md)
 -   [Templates](internal-developers/templates/README.md)
     -   [BlockTemplateController.php](internal-developers/templates/block-template-controller.md)
     -   [ClassicTemplate.php](internal-developers/templates/classic-template.md)
