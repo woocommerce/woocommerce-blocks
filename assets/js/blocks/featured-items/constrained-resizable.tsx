@@ -2,7 +2,7 @@
  * External dependencies
  */
 import classnames from 'classnames';
-import { useState } from 'react';
+import { ComponentType, useState } from 'react';
 import { ResizableBox } from '@wordpress/components';
 
 /**
@@ -14,7 +14,7 @@ export const ConstrainedResizable = ( {
 	className = '',
 	onResize,
 	...props
-} ) => {
+}: ResizableBox.Props ): ComponentType< ResizableBox.Props > => {
 	const [ isResizing, setIsResizing ] = useState( false );
 
 	const classNames = classnames( className, {
