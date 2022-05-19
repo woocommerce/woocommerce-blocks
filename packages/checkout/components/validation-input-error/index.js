@@ -44,7 +44,7 @@ export const ValidationInputError = ( {
 ValidationInputError.propTypes = {
 	errorMessage: PropTypes.string,
 	propertyName: PropTypes.string,
-	elementId: PropTypes.string,
+	elemenItd: PropTypes.string,
 };
 
 export default ValidationInputError;

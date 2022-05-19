@@ -3,16 +3,15 @@
  */
 import { useArgs } from '@storybook/client-api';
 import { Story, Meta } from '@storybook/react';
-import {
-	useValidationContext,
-	ValidationContextProvider,
-} from '@woocommerce/base-context';
+import { ValidationContextProvider } from '@woocommerce/base-context';
 import { INTERACTION_TIMEOUT } from '@woocommerce/storybook-controls';
+import { useDispatch } from '@wordpress/data';
 
 /**
  * Internal dependencies
  */
 import { TotalsCoupon, TotalsCouponProps } from '..';
+import { VALIDATION_STORE_KEY } from '../../../../../../../../packages/checkout/validation';
 
 export default {
 	title: 'WooCommerce Blocks/@base-components/cart-checkout/totals/Coupon',
@@ -52,8 +51,7 @@ LoadingState.args = {
 };
 
 export const ErrorState: Story< TotalsCouponProps > = ( args ) => {
-	const { setValidationErrors } = useValidationContext();
-
+	const { setValidationErrors } = useDispatch( VALIDATION_STORE_KEY );
 	setValidationErrors( { coupon: INVALID_COUPON_ERROR } );
 
 	return <TotalsCoupon { ...args } />;

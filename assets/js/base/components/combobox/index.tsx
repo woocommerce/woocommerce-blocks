@@ -6,14 +6,16 @@ import { __ } from '@wordpress/i18n';
 import { useEffect, useRef } from '@wordpress/element';
 import { withInstanceId } from '@wordpress/compose';
 import { ComboboxControl } from 'wordpress-components';
-import { useValidationContext } from '@woocommerce/base-context';
 import { ValidationInputError } from '@woocommerce/blocks-checkout';
 import { isObject } from '@woocommerce/types';
+import { useDispatch, useSelect } from '@wordpress/data';
 
 /**
  * Internal dependencies
  */
 import './style.scss';
+
+import { VALIDATION_STORE_KEY } from '../../../../../packages/checkout/validation';
 
 export interface ComboboxControlOption {
 	label: string;
@@ -53,11 +55,13 @@ const Combobox = ( {
 	instanceId = '0',
 	autoComplete = 'off',
 }: ComboboxProps ): JSX.Element => {
-	const {
-		getValidationError,
-		setValidationErrors,
-		clearValidationError,
-	} = useValidationContext();
+	const { setValidationErrors, clearValidationError } = useDispatch(
+		VALIDATION_STORE_KEY
+	);
+	const { getValidationError } = useSelect( ( select ) => {
+		const store = select( VALIDATION_STORE_KEY );
+		return { getValidationError: store.getValidationError() };
+	} );
 
 	const controlRef = useRef< HTMLDivElement >( null );
 	const controlId = id || 'control-' + instanceId;

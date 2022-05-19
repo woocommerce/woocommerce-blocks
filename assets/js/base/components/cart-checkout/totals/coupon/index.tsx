@@ -12,12 +12,12 @@ import {
 import Label from '@woocommerce/base-components/label';
 import LoadingMask from '@woocommerce/base-components/loading-mask';
 import { withInstanceId } from '@wordpress/compose';
-import { useValidationContext } from '@woocommerce/base-context';
-
+import { useSelect } from '@wordpress/data';
 /**
  * Internal dependencies
  */
 import './style.scss';
+import { VALIDATION_STORE_KEY } from '../../../../../../../packages/checkout/validation';
 
 export interface TotalsCouponProps {
 	/**
@@ -46,7 +46,16 @@ export const TotalsCoupon = ( {
 }: TotalsCouponProps ): JSX.Element => {
 	const [ couponValue, setCouponValue ] = useState( '' );
 	const currentIsLoading = useRef( false );
-	const { getValidationError, getValidationErrorId } = useValidationContext();
+
+	const { getValidationError, getValidationErrorId } = useSelect(
+		( select ) => {
+			const store = select( VALIDATION_STORE_KEY );
+			return {
+				getValidationError: store.getValidationError(),
+				getValidationErrorId: store.getValidationErrorId(),
+			};
+		}
+	);
 	const validationError = getValidationError( 'coupon' );
 
 	useEffect( () => {

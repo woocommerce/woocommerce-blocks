@@ -14,7 +14,7 @@ import {
 	emptyHiddenAddressFields,
 	formatStoreApiErrorMessage,
 } from '@woocommerce/base-utils';
-import { useDispatch } from '@wordpress/data';
+import { useDispatch, useSelect } from '@wordpress/data';
 
 /**
  * Internal dependencies
@@ -24,9 +24,9 @@ import { useCheckoutContext } from './checkout-state';
 import { useShippingDataContext } from './shipping';
 import { useCustomerDataContext } from './customer';
 import { usePaymentMethodDataContext } from './payment-methods';
-import { useValidationContext } from '../validation';
 import { useStoreCart } from '../../hooks/cart/use-store-cart';
 import { useStoreNoticesContext } from '../store-notices';
+import { VALIDATION_STORE_KEY } from '../../../../../../packages/checkout/validation';
 /**
  * CheckoutProcessor component.
  *
@@ -45,7 +45,12 @@ const CheckoutProcessor = () => {
 		shouldCreateAccount,
 		extensionData,
 	} = useCheckoutContext();
-	const { hasValidationErrors } = useValidationContext();
+	const { hasValidationErrors } = useSelect( ( select ) => {
+		const store = select( VALIDATION_STORE_KEY );
+		return {
+			hasValidationErrors: store.hasValidationErrors(),
+		};
+	} );
 	const { shippingErrorStatus } = useShippingDataContext();
 	const { billingData, shippingAddress } = useCustomerDataContext();
 	const { cartNeedsPayment, cartNeedsShipping, receiveCart } = useStoreCart();

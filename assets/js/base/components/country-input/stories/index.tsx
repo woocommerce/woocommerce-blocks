@@ -2,10 +2,8 @@
  * External dependencies
  */
 import { Story, Meta } from '@storybook/react';
-import {
-	useValidationContext,
-	ValidationContextProvider,
-} from '@woocommerce/base-context';
+import { ValidationContextProvider } from '@woocommerce/base-context';
+import { useDispatch } from '@wordpress/data';
 import { useState, useEffect } from '@wordpress/element';
 
 /**
@@ -13,6 +11,7 @@ import { useState, useEffect } from '@wordpress/element';
  */
 import { CountryInput, CountryInputWithCountriesProps } from '..';
 import { countries } from './countries-filler';
+import { VALIDATION_STORE_KEY } from '../../../../../../packages/checkout/validation';
 
 type CountryCode = keyof typeof countries;
 
@@ -44,10 +43,10 @@ const Template: Story< CountryInputWithCountriesProps > = ( args ) => {
 	const [ selectedCountry, selectCountry ] = useState< CountryCode | '' >(
 		''
 	);
-	const {
-		clearValidationError,
-		showValidationError,
-	} = useValidationContext();
+
+	const { showValidationError, clearValidationError } = useDispatch(
+		VALIDATION_STORE_KEY
+	);
 
 	useEffect( () => {
 		showValidationError( 'country' );

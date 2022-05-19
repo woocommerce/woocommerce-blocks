@@ -28,7 +28,7 @@ import {
 	emitEventWithAbort,
 	reducer as emitReducer,
 } from './event-emit';
-import { useValidationContext } from '../../validation';
+import { VALIDATION_STORE_KEY } from '../../../../../../../packages/checkout/validation';
 import { useEmitResponse } from '../../../hooks/use-emit-response';
 import { removeNoticesByStatus } from '../../../../../utils/notices';
 
@@ -100,7 +100,8 @@ export const AddToCartFormStateContextProvider = ( {
 	const [ observers, observerDispatch ] = useReducer( emitReducer, {} );
 	const currentObservers = useShallowEqual( observers );
 	const { createErrorNotice } = useDispatch( 'core/notices' );
-	const { setValidationErrors } = useValidationContext();
+	const { setValidationErrors } = useDispatch( VALIDATION_STORE_KEY );
+
 	const {
 		isSuccessResponse,
 		isErrorResponse,

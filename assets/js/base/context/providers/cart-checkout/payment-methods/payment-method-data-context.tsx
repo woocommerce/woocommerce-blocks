@@ -39,7 +39,7 @@ import {
 	emitEventWithAbort,
 	reducer as emitReducer,
 } from './event-emit';
-import { useValidationContext } from '../../validation';
+import { VALIDATION_STORE_KEY } from '../../../../../../../packages/checkout/validation';
 import { useEmitResponse } from '../../../hooks/use-emit-response';
 import { getCustomerPaymentMethods } from './utils';
 
@@ -69,7 +69,7 @@ export const PaymentMethodDataProvider = ( {
 		hasError: checkoutHasError,
 	} = useCheckoutContext();
 	const { isEditor, getPreviewData } = useEditorContext();
-	const { setValidationErrors } = useValidationContext();
+	const { setValidationErrors } = useDispatch( VALIDATION_STORE_KEY );
 	const { createErrorNotice: addErrorNotice, removeNotice } = useDispatch(
 		'core/notices'
 	);
