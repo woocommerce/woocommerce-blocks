@@ -20,7 +20,7 @@
     -   [Features Flags and Experimental interfaces](internal-developers/blocks/feature-flags-and-experimental-interfaces.md)
 -   [Block Client APIs](internal-developers/block-client-apis/README.md)
     -   [Checkout API interface](internal-developers/block-client-apis/checkout/checkout-api.md)
-    -   [Checkout Flow and Events](third-party-developers/extensibility/checkout-flow-and-events.md)
+    -   [Checkout Flow and Events](internal-developers/block-client-apis/checkout/checkout-flow-and-events.md)
     -   [Notices](internal-developers/block-client-apis/notices.md)
 -   [Store API (REST API)](../src/StoreApi/README.md)
 -   [Templates](internal-developers/templates/README.md)
