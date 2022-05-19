@@ -236,12 +236,22 @@ class Cart extends AbstractBlock {
 	protected function register_block_type_assets() {
 		parent::register_block_type_assets();
 		$blocks = [
-			'cart-blocks/express-payment--checkout-blocks/express-payment--checkout-blocks/payment',
-			'cart-blocks/line-items',
-			'cart-blocks/order-summary',
-			'cart-blocks/order-summary--checkout-blocks/billing-address--checkout-blocks/shipping-address',
-			'cart-blocks/checkout-button',
-			'cart-blocks/express-payment',
+			'cart-blocks/cart-accepted-payment-methods',
+			'cart-blocks/cart-express-payment',
+			'cart-blocks/cart-items',
+			'cart-blocks/cart-line-items',
+			'cart-blocks/cart-order-summary',
+			'cart-blocks/cart-totals',
+			'cart-blocks/empty-cart',
+			'cart-blocks/filled-cart',
+			'cart-blocks/order-summary-coupon-form',
+			'cart-blocks/order-summary-discount',
+			'cart-blocks/order-summary-fee',
+			'cart-blocks/order-summary-heading',
+			'cart-blocks/order-summary-shipping',
+			'cart-blocks/order-summary-subtotal',
+			'cart-blocks/order-summary-taxes',
+			'cart-blocks/proceed-to-checkout',
 		];
 		$chunks = preg_filter( '/$/', '-frontend', $blocks );
 		$this->register_chunk_translations( $chunks );

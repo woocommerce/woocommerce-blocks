@@ -13,7 +13,7 @@ const block = {
 	class: '.wc-block-featured-category',
 };
 
-describe( `${ block.name } Block`, () => {
+describe.skip( `${ block.name } Block`, () => {
 	beforeAll( async () => {
 		await switchUserToAdmin();
 		await visitBlockPage( `${ block.name } Block` );

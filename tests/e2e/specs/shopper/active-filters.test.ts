@@ -14,13 +14,8 @@ import { SHOP_PAGE } from '@woocommerce/e2e-utils';
 /**
  * Internal dependencies
  */
-import {
-	goToTemplateEditor,
-	useTheme,
-	saveTemplate,
-	clickLink,
-} from '../../utils';
-import { shopper } from '../../../utils';
+import { goToTemplateEditor, useTheme, saveTemplate } from '../../utils';
+import { clickLink, shopper } from '../../../utils';
 import { Frame, Page } from 'puppeteer';
 
 const block = {
@@ -37,6 +32,8 @@ const block = {
 		frontend: {
 			activeFilterType: '.wc-block-active-filters__list-item-type',
 			activeFilterName: '.wc-block-active-filters__list-item-name',
+			inStockInput: "label[for='instock']",
+			'128gbInput': "label[for='128gb']",
 			removeFilterButton: '.wc-block-active-filters__list-item-remove',
 			removeAllFiltersButton: '.wc-block-active-filters__clear-all',
 			stockFilterBlock: '.wc-block-stock-filter-list',
@@ -51,10 +48,10 @@ const block = {
 const { selectors } = block;
 
 const insertBlocks = async () => {
-	await insertBlock( block.name );
 	await insertBlock( 'Filter Products by Price' );
 	await insertBlock( 'Filter Products by Stock' );
 	await insertBlock( 'Filter Products by Attribute' );
+	await insertBlock( block.name );
 };
 
 const configurateFilterProductsByAttributeBlock = async (
@@ -114,18 +111,21 @@ describe( 'Shopper → Active Filters Block', () => {
 				}
 			);
 
+			await page.waitForSelector(
+				selectors.frontend.productsList + '.is-loading',
+				{ hidden: true }
+			);
+
 			await expect( page ).toClick( 'label', {
 				text: 'In stock',
 			} );
 
-			await page.waitForSelector( block.class );
+			await page.screenshot( {
+				path: 'aaa.png',
+				fullPage: true,
+			} );
 
-			await expect( page ).toMatchElement(
-				selectors.frontend.activeFilterType,
-				{
-					text: 'Stock Status',
-				}
-			);
+			await expect( page ).toMatch( 'Stock Status' );
 
 			await expect( page ).toMatchElement(
 				selectors.frontend.activeFilterName,
@@ -145,7 +145,7 @@ describe( 'Shopper → Active Filters Block', () => {
 			await expect( page ).toMatch( block.foundProduct );
 		} );
 
-		fit( 'When clicking the X on a filter it removes a filter', async () => {
+		it( 'When clicking the X on a filter it removes a filter', async () => {
 			const isRefreshed = jest.fn( () => void 0 );
 			await page.waitForSelector( block.class );
 			await page.waitForSelector(

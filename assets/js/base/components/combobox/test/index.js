@@ -7,12 +7,12 @@ import Combobox from '@woocommerce/base-components/combobox';
 
 describe( 'ComboBox', () => {
 	const options = [
-		{ value: 'A', label: 'A value A' },
-		{ value: 'B', label: 'B value B' },
-		{ value: 'C', label: 'C value C' },
-		{ value: 'D', label: 'D value D' },
-		{ value: 'E', label: 'E value E' },
-		{ value: 'F', label: 'F value F' },
+		{ value: 'AA', label: 'A value A' },
+		{ value: 'BB', label: 'B value B' },
+		{ value: 'CC', label: 'C value C' },
+		{ value: 'DD', label: 'D value D' },
+		{ value: 'EE', label: 'E value E' },
+		{ value: 'FF', label: 'F value F' },
 	];
 
 	beforeEach( () => {
@@ -32,7 +32,7 @@ describe( 'ComboBox', () => {
 		);
 		const input = await screen.findByLabelText( label );
 		await userEvent.type( input, 'A ' );
-		expect( onChange ).toHaveBeenCalledWith( 'A' );
+		expect( onChange ).toHaveBeenCalledWith( 'AA' );
 	} );
 
 	it( 'calls onChange only when the value is equal to one of the options when requireExactMatch is true', async () => {
@@ -48,9 +48,9 @@ describe( 'ComboBox', () => {
 			/>
 		);
 		const input = await screen.findByLabelText( label );
-		await userEvent.type( input, 'A ' );
+		await userEvent.type( input, 'B ' );
 		expect( onChange ).not.toHaveBeenCalled();
-		await userEvent.type( input, 'value A' );
-		expect( onChange ).toHaveBeenCalledWith( 'A' );
+		await userEvent.type( input, 'value B' );
+		expect( onChange ).toHaveBeenCalledWith( 'BB' );
 	} );
 } );
