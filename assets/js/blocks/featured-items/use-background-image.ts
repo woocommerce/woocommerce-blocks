@@ -1,6 +1,8 @@
 /**
  * External dependencies
  */
+import { WP_REST_API_Category } from 'wp-types';
+import { ProductResponseItem } from '@woocommerce/types';
 import {
 	getImageSrcFromProduct,
 	getImageIdFromProduct,
@@ -16,7 +18,24 @@ import {
 	getCategoryImageId,
 } from './featured-category/utils';
 
-export function useBackgroundImage( { blockName, item, mediaId, mediaSrc } ) {
+interface BackgroundProps {
+	blockName: string;
+	item: ProductResponseItem | WP_REST_API_Category;
+	mediaId: number;
+	mediaSrc: string;
+}
+
+interface BackgroundImage {
+	backgroundImageId: number;
+	backgroundImageSrc: string;
+}
+
+export function useBackgroundImage( {
+	blockName,
+	item,
+	mediaId,
+	mediaSrc,
+}: BackgroundProps ): BackgroundImage {
 	const [ backgroundImageId, setBackgroundImageId ] = useState( 0 );
 	const [ backgroundImageSrc, setBackgroundImageSrc ] = useState( '' );
 
