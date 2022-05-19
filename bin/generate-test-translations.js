@@ -5,7 +5,7 @@ const crypto = require( 'crypto' );
 const path = require( 'path' );
 const glob = require( 'glob' );
 const { Translations } = require( '../tests/e2e/fixtures/fixture-data' );
-const { getTestTranslation } = require( '../tests/e2e/utils' );
+const { getTestTranslation } = require( '../tests/utils/get-test-translation' );
 
 ensureDirSync( path.join( __dirname, '../languages' ) );
 

@@ -15,8 +15,9 @@ import {
 import { shopper } from '../../../utils';
 import { merchant } from '../../../utils/merchant';
 import { getTextContent } from '../../page-utils';
-import { useTheme, getTestTranslation } from '../../utils';
+import { useTheme } from '../../utils';
 import { Translations } from '../../fixtures/fixture-data';
+import { getTestTranslation } from '../../../utils/get-test-translation';
 
 const block = {
 	name: 'Mini Cart',
