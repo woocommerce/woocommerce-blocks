@@ -1,13 +1,27 @@
 #!/usr/bin/env node
+const { readFileSync } = require( 'fs' );
 const { ensureDirSync, writeJsonSync } = require( 'fs-extra' );
 const crypto = require( 'crypto' );
 const path = require( 'path' );
-const fixtures = require( '../tests/e2e/fixtures/fixture-data' );
+const glob = require( 'glob' );
 
 ensureDirSync( path.join( __dirname, '../languages' ) );
 
-fixtures.Translations().forEach( ( file ) => {
-	const { filePath, content } = file;
+const builtJsFiles = glob.sync(
+	`${ path.dirname( __filename ) }/../build/**/*.js`,
+	{}
+);
+
+const strings = [ 'Start shopping', 'Your cart (%d item)' ];
+
+builtJsFiles.forEach( ( filePath ) => {
+	const fileContent = readFileSync( filePath );
+	const stringsInFile = strings.filter(
+		( string ) => fileContent.indexOf( string ) !== -1
+	);
+	if ( stringsInFile.length === 0 ) {
+		return;
+	}
 	const data = {
 		locale_data: {
 			messages: {
@@ -17,12 +31,13 @@ fixtures.Translations().forEach( ( file ) => {
 			},
 		},
 	};
-	content.forEach( ( item ) => {
-		data.locale_data.messages[ item.string ] = [ item.translation ];
+	stringsInFile.forEach( ( string ) => {
+		data.locale_data.messages[ string ] = `Translated ${ string }`;
 	} );
+	const relativeFilePath = filePath.substring( filePath.indexOf( 'build/' ) );
 	const md5Path = crypto
 		.createHash( 'md5' )
-		.update( filePath )
+		.update( relativeFilePath )
 		.digest( 'hex' );
 
 	writeJsonSync(
