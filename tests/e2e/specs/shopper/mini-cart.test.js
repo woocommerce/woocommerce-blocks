@@ -15,7 +15,8 @@ import {
 import { shopper } from '../../../utils';
 import { merchant } from '../../../utils/merchant';
 import { getTextContent } from '../../page-utils';
-import { useTheme } from '../../utils';
+import { useTheme, getTestTranslation } from '../../utils';
+import { Translations } from '../../fixtures/fixture-data';
 
 const block = {
 	name: 'Mini Cart',
@@ -564,7 +565,7 @@ describe( 'Shopper → Mini Cart', () => {
 
 	describe( 'Translations', () => {
 		beforeAll( async () => {
-			await merchant.changeLanguage( 'nl_NL' );
+			await merchant.changeLanguage( Translations().locale );
 			await shopper.block.emptyCart();
 		} );
 
@@ -583,7 +584,7 @@ describe( 'Shopper → Mini Cart', () => {
 				await expect( page ).toMatchElement(
 					'.wc-block-mini-cart__drawer',
 					{
-						text: 'Translated Start shopping',
+						text: getTestTranslation( 'Start shopping' ),
 					}
 				);
 			} );
@@ -596,7 +597,7 @@ describe( 'Shopper → Mini Cart', () => {
 				await expect( page ).toMatchElement(
 					'.wc-block-mini-cart__title',
 					{
-						text: 'Translated Your cart (1 item)',
+						text: getTestTranslation( 'Your cart (1 item)' ),
 					}
 				);
 			} );
@@ -615,7 +616,7 @@ describe( 'Shopper → Mini Cart', () => {
 				await expect( page ).toMatchElement(
 					'.wc-block-mini-cart__drawer',
 					{
-						text: 'Translated Start shopping',
+						text: getTestTranslation( 'Start shopping' ),
 					}
 				);
 			} );
@@ -628,7 +629,7 @@ describe( 'Shopper → Mini Cart', () => {
 				await expect( page ).toMatchElement(
 					'.wc-block-mini-cart__title',
 					{
-						text: 'Translated Your cart (1 item)',
+						text: getTestTranslation( 'Your cart (1 item)' ),
 					}
 				);
 			} );

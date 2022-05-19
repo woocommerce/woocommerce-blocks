@@ -459,3 +459,12 @@ export const clickLink = async ( selector ) => {
 		page.waitForNavigation( { waitUntil: 'networkidle0' } ),
 	] );
 };
+
+/**
+ * Return a test translated string.
+ *
+ * @param {string} string The string to be checked.
+ *
+ * @return {string} Test translated string.
+ */
+export const getTestTranslation = ( string ) => `Translated ${ string }`;

@@ -5,6 +5,7 @@ const crypto = require( 'crypto' );
 const path = require( 'path' );
 const glob = require( 'glob' );
 const { Translations } = require( '../tests/e2e/fixtures/fixture-data' );
+const { getTestTranslation } = require( '../tests/e2e/utils' );
 
 ensureDirSync( path.join( __dirname, '../languages' ) );
 
@@ -31,7 +32,7 @@ builtJsFiles.forEach( ( filePath ) => {
 		},
 	};
 	stringsInFile.forEach( ( string ) => {
-		data.locale_data.messages[ string ] = [ `Translated ${ string }` ];
+		data.locale_data.messages[ string ] = [ getTestTranslation( string ) ];
 	} );
 	const relativeFilePath = filePath.substring( filePath.indexOf( 'build/' ) );
 	const md5Path = crypto
