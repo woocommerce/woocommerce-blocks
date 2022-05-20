@@ -9,18 +9,16 @@ import ProductsControl from '@woocommerce/editor-components/products-control';
 /**
  * Internal dependencies
  */
-import { Attributes } from './types';
+import { Props } from './types';
 
-export interface Props {
-	attributes: Attributes;
-	setAttributes: ( attributes: Partial< Attributes > ) => void;
+export interface EditModeProps extends Props {
 	isEditing: boolean;
 	setIsEditing: ( isEditing: boolean ) => void;
-	// from withSpokenMessages
-	debouncedSpeak: ( message: string ) => void;
 }
 
-export const HandpickedProductsEditMode = ( props: Props ): JSX.Element => {
+export const HandpickedProductsEditMode = (
+	props: EditModeProps
+): JSX.Element => {
 	const {
 		attributes,
 		setAttributes,

@@ -14,7 +14,14 @@ export interface Attributes {
 		rating: boolean;
 		button: boolean;
 	};
-	orderby: string;
+	orderby:
+		| 'date'
+		| 'popularity'
+		| 'price_asc'
+		| 'price_desc'
+		| 'rating'
+		| 'title'
+		| 'menu_order';
 	products: Array< number >;
 	alignButtons: boolean;
 	isPreview: boolean;
