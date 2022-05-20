@@ -144,9 +144,7 @@ const Combobox = ( {
 							}
 							if (
 								foundOption.label.toLocaleUpperCase() ===
-									normalizedFilterValue ||
-								foundOption.value.toLocaleUpperCase() ===
-									normalizedFilterValue
+								normalizedFilterValue
 							) {
 								onChange( foundOption.value );
 							}
