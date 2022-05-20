@@ -17,7 +17,11 @@ import { HandpickedProductsBlock } from './block';
 export const Edit = ( props: Props ): JSX.Element => {
 	const blockProps = useBlockProps();
 
-	const [ isEditing, setIsEditing ] = useState( false );
+	const {
+		attributes: { products },
+	} = props;
+
+	const [ isEditing, setIsEditing ] = useState( ! products.length );
 
 	return (
 		<div { ...blockProps }>
