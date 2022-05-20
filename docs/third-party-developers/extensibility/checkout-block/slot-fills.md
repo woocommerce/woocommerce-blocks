@@ -31,7 +31,7 @@ The `ExperimentalOrderMeta` will automatically pass props to its top level child
 -   `extensions` which contains data registered with `ExtendSchema::class` in `wc/store/cart` endpoint
 -   `context`, equal to the name of the Block in which the fill is rendered: `woocommerce/cart` or `woocommerce/checkout`
 
-```jsx
+```javascriptx
 const { registerPlugin } = wp.plugins;
 const { ExperimentalOrderMeta } = wc.blocksCheckout;
 

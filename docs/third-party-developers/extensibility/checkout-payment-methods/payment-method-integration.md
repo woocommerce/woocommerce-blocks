@@ -36,25 +36,25 @@ To register an express payment method, you use the `registerExpressPaymentMethod
 
 _Aliased import_
 
-```js
+```javascript
 import { registerExpressPaymentMethod } from '@woocommerce/blocks-registry';
 ```
 
 _wc global_
 
-```js
+```javascript
 const { registerExpressPaymentMethod } = wc.wcBlocksRegistry;
 ```
 
 The registry function expects a JavaScript object with options specific to the payment method:
 
-```js
+```javascript
 registerExpressPaymentMethod( options );
 ```
 
 The options you feed the configuration instance should be an object in this shape (see `ExpressPaymentMethodConfiguration` typedef):
 
-```js
+```javascript
 const options = {
 	name: 'my_payment_method',
 	content: <div>A React node</div>,
@@ -121,19 +121,19 @@ To register a payment method, you use the `registerPaymentMethod` function from 
 
 _Aliased import_
 
-```js
+```javascript
 import { registerPaymentMethod } from '@woocommerce/blocks-registry';
 ```
 
 _wc global_
 
-```js
+```javascript
 const { registerPaymentMethod } = wc.wcBlocksRegistry;
 ```
 
 The registry function expects a JavaScript object with options specific to the payment method (see `PaymentMethodRegistrationOptions` typedef):
 
-```js
+```javascript
 registerPaymentMethod( options );
 ```
 

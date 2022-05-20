@@ -17,7 +17,7 @@ This package is available as an external when the [WooCommerce Blocks Feature Pl
 
 Package components can be accessed via the `wc` global:
 
-```js
+```javascript
 const { ... } = wc.blocksCheckout;
 ```
 
@@ -31,7 +31,7 @@ npm install @woocommerce/dependency-extraction-webpack-plugin --save-dev
 
 Now, you can include this plugin in your Webpack configuration:
 
-```js
+```javascript
 // webpack.config.js
 const WooCommerceDependencyExtractionWebpackPlugin = require( '@woocommerce/dependency-extraction-webpack-plugin' );
 

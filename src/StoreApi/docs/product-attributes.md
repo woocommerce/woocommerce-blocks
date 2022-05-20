@@ -19,7 +19,7 @@ curl "https://example-store.com/wp-json/wc/store/v1/products/attributes"
 
 Example response:
 
-```json
+```javascripton
 [
 	{
 		"id": 1,
@@ -58,7 +58,7 @@ curl "https://example-store.com/wp-json/wc/store/v1/products/attributes/1"
 
 **Example response:**
 
-```json
+```javascripton
 {
 	"id": 1,
 	"name": "Color",

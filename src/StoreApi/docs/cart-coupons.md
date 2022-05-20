@@ -22,7 +22,7 @@ curl "https://example-store.com/wp-json/wc/store/v1/cart/coupons"
 
 **Example response:**
 
-```json
+```javascripton
 [
 	{
 		"code": "20off",
@@ -72,7 +72,7 @@ curl "https://example-store.com/wp-json/wc/store/v1/cart/coupons/20off"
 
 **Example response:**
 
-```json
+```javascripton
 {
 	"code": "halfprice",
 	"type": "percent",
@@ -108,7 +108,7 @@ curl --request POST https://example-store.com/wp-json/wc/store/v1/cart/coupons?c
 
 **Example response:**
 
-```json
+```javascripton
 {
 	"code": "20off",
 	"type": "percent",
@@ -158,7 +158,7 @@ curl --request DELETE https://example-store.com/wp-json/wc/store/v1/cart/coupons
 
 **Example response:**
 
-```json
+```javascripton
 []
 ```
 

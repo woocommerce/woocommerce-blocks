@@ -11,7 +11,7 @@
 
 To utilize this store you will import the `SCHEMA_STORE_KEY` in any module referencing it. Assuming `@woocommerce/block-data` is registered as an external pointing to `wc.wcBlocksData` you can import the key via:
 
-```js
+```javascript
 import { SCHEMA_STORE_KEY } from '@woocommerce/block-data';
 ```
 
@@ -38,7 +38,7 @@ This is used for retrieving a route for the given namespace, resource name and (
 
 Example: If you are looking for a route for a single product on the `wc/blocks` namespace, then you'd have `[20]` as the ids.
 
-```js
+```javascript
 // '/wc/blocks/products/20'
 wp.data.select( SCHEMA_STORE_KEY ).getRoute( '/wc/blocks', 'products', [ 20 ] );
 ```

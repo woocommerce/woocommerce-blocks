@@ -178,7 +178,7 @@ All notices must have one of the following statuses: `default`, `error`, `succes
 
 Object of the form:
 
-```js
+```javascript
 {
 	id: 'checkout',
 	type: string,
@@ -257,7 +257,7 @@ Whether notices are suppressed. If true, it will hide the notices from the front
 
 The following example shows a `CheckoutProcessor` component that displays an error notice when the payment process fails and it removes it every time the payment is started. When the payment is completed correctly, it shows a snackbar notice.
 
-```jsx
+```javascriptx
 const CheckoutProcessor = () => {
 	const { addErrorNotice, removeNotice } = useStoreNotices();
 	const { addSnackbarNotice } = useStoreSnackbarNotices();
@@ -275,7 +275,7 @@ const CheckoutProcessor = () => {
 };
 ```
 
-```jsx
+```javascriptx
 <StoreNoticesSnackbarProvider context="wc/checkout">
 	<StoreNoticesProvider context="wc/checkout">
 		// ...

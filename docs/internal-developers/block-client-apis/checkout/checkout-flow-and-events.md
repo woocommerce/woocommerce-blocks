@@ -53,7 +53,7 @@ You can find all the checkout provider statuses defined [in this typedef](https:
 
 They are exposed to children components via the `useCheckoutContext` via various boolean flags. For instance you can access the `isComplete` flag by doing something like this in your component:
 
-```jsx
+```javascriptx
 import { useCheckoutContext } from '@woocommerce/base-contexts';
 
 const MyComponent = ( props ) => {
@@ -130,19 +130,19 @@ One of the most reliable ways to implement this type of extensibility is via the
 
 One _**very important rule**_ when it comes to observers registered to any event emitter in this system is that they _cannot_ update context state. Updating state local to a specific component is okay but not any context or global state. The reason for this is that the observer callbacks are run sequentially at a specific point and thus subsequent observers registered to the same event will not react to any change in global/context state in earlier executed observers.
 
-```jsx
+```javascriptx
 const unsubscribe = emitter( myCallback );
 ```
 
 You could substitute in whatever emitter you are registering for the `emitter` function. So for example if you are registering for the `onCheckoutValidationBeforeProcessing` event emitter, you'd have something like:
 
-```jsx
+```javascriptx
 const unsubscribe = onCheckoutValidationBeforeProcessing( myCallback );
 ```
 
 You can also indicate what priority you want your observer to execute at. Lower priority is run before higher priority, so you can affect when your observer will run in the stack of observers registered to an emitter. You indicate priority via an number on the second argument:
 
-```jsx
+```javascriptx
 const unsubscribe = onCheckoutValidationBeforeProcessing( myCallback, 10 );
 ```
 
@@ -150,7 +150,7 @@ In the examples, `myCallback`, is your subscriber function. The subscriber funct
 
 Finally, the return value of the call to the emitter function is an unsubscribe function that can be used to unregister your observer. This is especially useful in a React component context where you need to make sure you unsubscribe the observer on component unmount. An example is usage in a `useEffect` hook:
 
-```jsx
+```javascriptx
 const MyComponent = ( { onCheckoutValidationBeforeProcessing } ) => {
 	useEffect( () => {
 		const unsubscribe = onCheckoutValidationBeforeProcessing( () => true );
@@ -164,7 +164,7 @@ const MyComponent = ( { onCheckoutValidationBeforeProcessing } ) => {
 
 This internal hook contains a collection of API interfaces for event emitter related usage. It can be used by simply adding this to a component:
 
-```jsx
+```javascriptx
 import { useEmitResponse } from '@woocommerce/base-context/hooks';
 
 const Component = () => {
@@ -191,7 +191,7 @@ The properties of the object returned by this hook are:
 
 Note: `noticeContexts` and `responseTypes` are exposed to payment methods via the `emitResponse` prop given to their component:
 
-```jsx
+```javascriptx
 const MyPaymentMethodComponent = ( { emitResponse } ) => {
 	const { noticeContexts, responseTypes } = emitResponse;
 	// other logic for payment method...
@@ -216,7 +216,7 @@ This event emitter subscriber can be obtained via the checkout context using the
 
 _For internal development:_
 
-```jsx
+```javascriptx
 import { useCheckoutContext } from '@woocommerce/base-contexts';
 import { useEffect } from '@wordpress/element';
 
@@ -232,7 +232,7 @@ const Component = () => {
 
 _For registered payment method components:_
 
-```jsx
+```javascriptx
 import { useEffect } from '@wordpress/element';
 
 const PaymentMethodComponent = ( { eventRegistration } ) => {
@@ -256,7 +256,7 @@ When a payment method returns a non-truthy value, if it returns a valid response
 
 A response is considered a success response when it at a minimum is an object with this shape:
 
-```js
+```javascript
 const successResponse = { type: 'success' };
 ```
 
@@ -272,7 +272,7 @@ If `billingData` or `shippingData` properties aren't in the response object, the
 
 A response is considered a fail response when it at a minimum is an object with this shape:
 
-```js
+```javascript
 const failResponse = { type: 'failure' };
 ```
 
@@ -287,7 +287,7 @@ When a fail response is returned by an observer, the payment method context stat
 
 A response is considered an error response when it at a minimum is an object with this shape:
 
-```js
+```javascript
 const errorResponse = { type: 'error' };
 ```
 
@@ -306,7 +306,7 @@ This event emitter subscriber can be obtained via the checkout context using the
 
 _For internal development:_
 
-```jsx
+```javascriptx
 import { usePaymentMethodDataContext } from '@woocommerce/base-contexts';
 import { useEffect } from '@wordpress/element';
 
@@ -322,7 +322,7 @@ const Component = () => {
 
 _For registered payment method components:_
 
-```jsx
+```javascriptx
 import { useEffect } from '@wordpress/element';
 
 const PaymentMethodComponent = ( { eventRegistration } ) => {
@@ -340,7 +340,7 @@ This event emitter is fired when the checkout context status is `AFTER_PROCESSIN
 
 Observers registered to this event emitter will receive the following object as an argument:
 
-```js
+```javascript
 const onCheckoutProcessingData = {
 	redirectUrl,
 	orderId,
@@ -379,7 +379,7 @@ This event emitter subscriber can be obtained via the checkout context using the
 
 _For internal development:_
 
-```jsx
+```javascriptx
 import { useCheckoutContext } from '@woocommerce/base-contexts';
 import { useEffect } from '@wordpress/element';
 
@@ -395,7 +395,7 @@ const Component = () => {
 
 _For registered payment method components:_
 
-```jsx
+```javascriptx
 import { useEffect } from '@wordpress/element';
 
 const PaymentMethodComponent = ( { eventRegistration } ) => {
@@ -421,7 +421,7 @@ This event emitter subscriber can be obtained via the checkout context using the
 
 _For internal development:_
 
-```jsx
+```javascriptx
 import { useCheckoutContext } from '@woocommerce/base-contexts';
 import { useEffect } from '@wordpress/element';
 
@@ -437,7 +437,7 @@ const Component = () => {
 
 _For registered payment method components:_
 
-```jsx
+```javascriptx
 import { useEffect } from '@wordpress/element';
 
 const PaymentMethodComponent = ( { eventRegistration } ) => {

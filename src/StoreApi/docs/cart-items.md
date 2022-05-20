@@ -23,7 +23,7 @@ curl "https://example-store.com/wp-json/wc/store/v1/cart/items"
 
 **Example response:**
 
-```json
+```javascripton
 [
 	{
 		"key": "9bf31c7ff062936a96d3c8bd1f8f2ff3",
@@ -202,7 +202,7 @@ curl "https://example-store.com/wp-json/wc/store/v1/cart/items/e369853df766fa44e
 
 **Example response:**
 
-```json
+```javascripton
 {
 	"key": "e369853df766fa44e1ed0ff613f563bd",
 	"id": 34,
@@ -354,7 +354,7 @@ curl --request DELETE https://example-store.com/wp-json/wc/store/v1/cart/items
 
 **Example response:**
 
-```json
+```javascripton
 []
 ```
 

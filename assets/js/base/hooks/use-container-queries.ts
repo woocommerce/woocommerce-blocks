@@ -16,7 +16,7 @@ import { useResizeObserver } from '@wordpress/compose';
  *
  * @example
  *
- * ```js
+ * ```javascript
  * const App = () => {
  * 	const [ resizeListener, containerClassName ] = useContainerQueries();
  *

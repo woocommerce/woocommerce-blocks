@@ -42,7 +42,7 @@ type CheckoutFilterFunction = < T >(
 
 ### Usage
 
-```js
+```javascript
 // Aliased import
 import { __experimentalRegisterCheckoutFilters } from '@woocommerce/blocks-checkout';
 
@@ -80,7 +80,7 @@ This function applies a filter, and all registered callbacks, to a given value.
 
 ### Usage
 
-```js
+```javascript
 // Aliased import
 import { __experimentalApplyCheckoutFilter } from '@woocommerce/blocks-checkout';
 

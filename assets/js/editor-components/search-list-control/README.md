@@ -13,7 +13,7 @@ Component to display a searchable, selectable list of items.
 
 ## Usage
 
-```jsx
+```javascriptx
 <SearchListControl
 	list={ list }
 	isLoading={ loading }

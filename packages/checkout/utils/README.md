@@ -49,7 +49,7 @@ Ensures that a given value contains a string, or throws an error.
 
 ### Usage
 
-```js
+```javascript
 // Aliased import
 import { mustContain } from '@woocommerce/blocks-checkout';
 

@@ -20,13 +20,13 @@ WooCommerce Blocks provides a function called `registerPaymentMethodExtensionCal
 
 _Aliased import_
 
-```js
+```javascript
 import { registerPaymentMethodExtensionCallbacks } from '@woocommerce/blocks-registry';
 ```
 
 _wc global_
 
-```js
+```javascript
 const { registerPaymentMethodExtensionCallbacks } = wc.wcBlocksRegistry;
 ```
 
@@ -45,7 +45,7 @@ When trying to register callbacks under an extension namespace already used with
 
 ## Usage example
 
-```js
+```javascript
 registerPaymentMethodExtensionCallbacks( 'my-hypothetical-extension', {
 	cod: ( arg ) => {
 		return arg.shippingAddress.city === 'Berlin';

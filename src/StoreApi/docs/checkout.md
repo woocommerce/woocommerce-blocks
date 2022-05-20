@@ -30,7 +30,7 @@ curl --header "Nonce: 12345" --request GET https://example-store.com/wp-json/wc/
 
 **Example response:**
 
-```json
+```javascripton
 {
 	"order_id": 146,
 	"status": "checkout-draft",
@@ -95,7 +95,7 @@ curl --header "Nonce: 12345" --request POST https://example-store.com/wp-json/wc
 
 **Example response:**
 
-```json
+```javascripton
 {
 	"order_id": 146,
 	"status": "on-hold",
