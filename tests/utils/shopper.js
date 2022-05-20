@@ -266,9 +266,10 @@ export const shopper = {
 				expect( page ).toMatch(
 					customerBillingDetails.addresssecondline
 				),
+				// These are commented out because we type the full state/country name, not the code.
 				// expect( page ).toMatch( customerBillingDetails.country ),
+				//expect( page ).toMatch( customerBillingDetails.state),
 				expect( page ).toMatch( customerBillingDetails.city),
-				expect( page ).toMatch( customerBillingDetails.state),
 				expect( page ).toMatch( customerBillingDetails.postcode),
 				expect( page ).toMatch( customerBillingDetails.phone),
 			] );
@@ -293,9 +294,10 @@ export const shopper = {
 				expect( page ).toMatch(
 					customerShippingDetails.addresssecondline
 				),
+				// These are commented out because we type the full state/country name, not the code.
 				// expect( page ).toMatch( customerShippingDetails.country ),
+				//expect( page ).toMatch( customerShippingDetails.state),
 				expect( page ).toMatch( customerShippingDetails.city),
-				expect( page ).toMatch( customerShippingDetails.state),
 				expect( page ).toMatch(
 					customerShippingDetails.postcode
 				),
