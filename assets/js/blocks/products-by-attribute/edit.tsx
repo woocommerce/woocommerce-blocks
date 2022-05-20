@@ -3,6 +3,7 @@
  */
 import { BlockControls, useBlockProps } from '@wordpress/block-editor';
 import { Disabled, ToolbarGroup } from '@wordpress/components';
+import { useState } from '@wordpress/element';
 import { __ } from '@wordpress/i18n';
 
 /**
@@ -17,8 +18,7 @@ import { ProductsByAttributeBlock } from './block';
 export const Edit = ( props: Props ): JSX.Element => {
 	const blockProps = useBlockProps();
 
-	const { attributes, setAttributes } = props;
-	const { editMode } = attributes;
+	const [ isEditing, setIsEditing ] = useState( false );
 
 	return (
 		<div { ...blockProps }>
@@ -31,16 +31,19 @@ export const Edit = ( props: Props ): JSX.Element => {
 								'Edit selected attribute',
 								'woo-gutenberg-products-block'
 							),
-							onClick: () =>
-								setAttributes( { editMode: ! editMode } ),
-							isActive: editMode,
+							onClick: () => setIsEditing( ! isEditing ),
+							isActive: isEditing,
 						},
 					] }
 				/>
 			</BlockControls>
 			<ProductsByAttributeInspectorControls { ...props } />
-			{ editMode ? (
-				<ProductsByAttributeEditMode { ...props } />
+			{ isEditing ? (
+				<ProductsByAttributeEditMode
+					isEditing={ isEditing }
+					setIsEditing={ setIsEditing }
+					{ ...props }
+				/>
 			) : (
 				<Disabled>
 					<ProductsByAttributeBlock { ...props } />

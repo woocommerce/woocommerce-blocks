@@ -8,7 +8,6 @@ export interface Attributes {
 	attributes: Array< string >;
 	attrOperator: string;
 	columns: number;
-	editMode: boolean;
 	contentVisibility: {
 		image: boolean;
 		title: boolean;

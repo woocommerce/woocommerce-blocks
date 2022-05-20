@@ -9,13 +9,28 @@ import ProductAttributeTermControl from '@woocommerce/editor-components/product-
 /**
  * Internal dependencies
  */
-import { Props } from './types';
+import { Attributes } from './types';
+
+export interface Props {
+	attributes: Attributes;
+	setAttributes: ( attributes: Partial< Attributes > ) => void;
+	isEditing: boolean;
+	setIsEditing: ( isEditing: boolean ) => void;
+	// from withSpokenMessages
+	debouncedSpeak: ( message: string ) => void;
+}
 
 export const ProductsByAttributeEditMode = ( props: Props ): JSX.Element => {
-	const { debouncedSpeak, setAttributes } = props;
-	const blockAttributes = props.attributes;
+	const {
+		attributes: blockAttributes,
+		setAttributes,
+		setIsEditing,
+		isEditing,
+		debouncedSpeak,
+	} = props;
+
 	const onDone = () => {
-		setAttributes( { editMode: false } );
+		setIsEditing( ! isEditing );
 		debouncedSpeak(
 			__(
 				'Showing Products by Attribute block preview.',
