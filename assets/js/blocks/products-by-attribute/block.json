@@ -20,6 +20,7 @@
         },
         "attrOperator": {
             "type": "string",
+            "enum": [ "all", "any" ],
             "default": "any"
         },
         "columns": {
@@ -60,6 +61,15 @@
         },
         "orderby": {
             "type": "string",
+            "enum": [
+                "date",
+                "popularity",
+                "price_asc",
+                "price_desc",
+                "rating",
+                "title",
+                "menu_order"
+            ],
             "default": "date"
         },
         "rows": {
