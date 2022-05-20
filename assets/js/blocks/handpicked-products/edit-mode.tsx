@@ -9,12 +9,27 @@ import ProductsControl from '@woocommerce/editor-components/products-control';
 /**
  * Internal dependencies
  */
-import { Props } from './types';
+import { Attributes } from './types';
+
+export interface Props {
+	attributes: Attributes;
+	setAttributes: ( attributes: Partial< Attributes > ) => void;
+	isEditing: boolean;
+	setIsEditing: ( isEditing: boolean ) => void;
+	// from withSpokenMessages
+	debouncedSpeak: ( message: string ) => void;
+}
 
 export const HandpickedProductsEditMode = ( props: Props ): JSX.Element => {
-	const { attributes, debouncedSpeak, setAttributes } = props;
+	const {
+		attributes,
+		setAttributes,
+		debouncedSpeak,
+		isEditing,
+		setIsEditing,
+	} = props;
 	const onDone = () => {
-		setAttributes( { editMode: false } );
+		setIsEditing( ! isEditing );
 		debouncedSpeak(
 			__(
 				'Showing Hand-picked Products block preview.',
