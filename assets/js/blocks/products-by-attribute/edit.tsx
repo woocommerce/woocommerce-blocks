@@ -18,7 +18,11 @@ import { ProductsByAttributeBlock } from './block';
 export const Edit = ( props: Props ): JSX.Element => {
 	const blockProps = useBlockProps();
 
-	const [ isEditing, setIsEditing ] = useState( false );
+	const {
+		attributes: { attributes },
+	} = props;
+
+	const [ isEditing, setIsEditing ] = useState( ! attributes.length );
 
 	return (
 		<div { ...blockProps }>
