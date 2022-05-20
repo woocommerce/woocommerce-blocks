@@ -2,7 +2,11 @@
  * External dependencies
  */
 import { BlockControls, useBlockProps } from '@wordpress/block-editor';
-import { ToolbarGroup, Disabled } from '@wordpress/components';
+import {
+	ToolbarGroup,
+	Disabled,
+	withSpokenMessages,
+} from '@wordpress/components';
 import { useState } from '@wordpress/element';
 import { __ } from '@wordpress/i18n';
 /**
@@ -14,7 +18,7 @@ import { HandpickedProductsInspectorControls } from './inspector-controls';
 import { HandpickedProductsEditMode } from './edit-mode';
 import { HandpickedProductsBlock } from './block';
 
-export const Edit = ( props: Props ): JSX.Element => {
+export const EditBlock = ( props: Props ): JSX.Element => {
 	const blockProps = useBlockProps();
 
 	const {
@@ -55,3 +59,5 @@ export const Edit = ( props: Props ): JSX.Element => {
 		</div>
 	);
 };
+
+export const Edit = withSpokenMessages( EditBlock );

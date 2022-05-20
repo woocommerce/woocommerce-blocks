@@ -2,7 +2,6 @@
  * External dependencies
  */
 import ServerSideRender from '@wordpress/server-side-render';
-import { withSpokenMessages } from '@wordpress/components';
 import { gridBlockPreview } from '@woocommerce/resource-previews';
 
 /**
@@ -10,7 +9,7 @@ import { gridBlockPreview } from '@woocommerce/resource-previews';
  */
 import { Props } from './types';
 
-const ProductsBlock = ( props: Props ): JSX.Element => {
+export const HandpickedProductsBlock = ( props: Props ): JSX.Element => {
 	const { attributes, name } = props;
 
 	if ( attributes.isPreview ) {
@@ -19,5 +18,3 @@ const ProductsBlock = ( props: Props ): JSX.Element => {
 
 	return <ServerSideRender block={ name } attributes={ attributes } />;
 };
-
-export const HandpickedProductsBlock = withSpokenMessages( ProductsBlock );
