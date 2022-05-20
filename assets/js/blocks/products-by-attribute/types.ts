@@ -6,7 +6,7 @@ import { BlockAlignment } from '@wordpress/blocks';
 export interface Attributes {
 	align?: BlockAlignment;
 	attributes: Array< string >;
-	attrOperator: string;
+	attrOperator: 'all' | 'any';
 	columns: number;
 	contentVisibility: {
 		image: boolean;
@@ -15,7 +15,14 @@ export interface Attributes {
 		rating: boolean;
 		button: boolean;
 	};
-	orderby: string;
+	orderby:
+		| 'date'
+		| 'popularity'
+		| 'price_asc'
+		| 'price_desc'
+		| 'rating'
+		| 'title'
+		| 'menu_order';
 	rows: number;
 	alignButtons: boolean;
 	isPreview: boolean;
