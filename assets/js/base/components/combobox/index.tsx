@@ -142,7 +142,12 @@ const Combobox = ( {
 								onChange( foundOption.value );
 								return;
 							}
-							if ( foundOption.label === filterValue ) {
+							if (
+								foundOption.label.toLocaleUpperCase() ===
+									normalizedFilterValue ||
+								foundOption.value.toLocaleUpperCase() ===
+									normalizedFilterValue
+							) {
 								onChange( foundOption.value );
 							}
 						}
