@@ -39,7 +39,7 @@ Let's see the code in detail.
 
 This is the minimal scaffold you need for your new Story:
 
-```tsx
+```typescriptx
 import { Story, Meta } from '@storybook/react';
 import MyComponent, { MyComponentProps } from '..';
 
@@ -68,7 +68,7 @@ Sometimes you will need to manually change those assumptions, and we'll see how 
 
 The default export defines the metadata for your component. The most important things you should be aware of:
 
-```ts
+```typescript
 {
   /**
    * This is how your component is going to be named in the Storybook UI.
@@ -107,7 +107,7 @@ But a TL;DR of most common usecases:
 
 -   The shape of the prop looks like so:
 
-```ts
+```typescript
 {
   [$myPropName]: {
     control: { type: $controlType },
@@ -119,7 +119,7 @@ But a TL;DR of most common usecases:
 
 -   You can disable a control like so:
 
-```ts
+```typescript
 {
   [$myPropName]: { control: false }
 }
@@ -129,7 +129,7 @@ But a TL;DR of most common usecases:
 
 The recommended way to create a story is by creating a template function and duplicating it for each story, to avoid extra scaffolding. The simplest form of the template is as follows:
 
-```tsx
+```typescriptx
 const Template: Story< MyComponentProps > = ( args ) => (
 	<MyComponent { ...args } />
 );
@@ -143,13 +143,13 @@ In this template function, however, you might put any extra logic that your comp
 
 If you have followed this scaffold, defining a new story is as simple as this:
 
-```ts
+```typescript
 export const Default = Template.bind( {} );
 ```
 
 Usually, you want a story with the name `Default`, and other stories with interesting variations of your component ([see below](#what-should-constitute-a-story)). In order to create those variations, you should work with some of the properties of this function prototype. Here are the most common:
 
-```ts
+```typescript
 {
   /**
    * Define the properties to pass for this specific story. Often,
@@ -209,7 +209,7 @@ An example there is the `currency` control. Since many of our components expect 
 
 Let's take a look:
 
-```ts
+```typescript
 export const currencies: Record< string, Currency > = {
 	EUR: {
 		// ...
@@ -231,7 +231,7 @@ export const currencyControl = {
 
 Then we can just pass the `currencyControl` to our component `argTypes`.
 
-```ts
+```typescript
 export default {
 	// ...
 	argTypes: {
@@ -252,7 +252,7 @@ See: https://github.com/strothj/react-docgen-typescript-loader/issues/75
 
 Your component is not managing its own state and expects it to be passed as a prop, but you want to create a self-contained story. You can then edit your main `Template` function to manage the state, for example through hooks.
 
-```tsx
+```typescriptx
 const Template: Story< MyControlledComponentProps > = ( args ) => {
 	const [ myState, setMyState ] = useState( 0 );
 
@@ -277,7 +277,7 @@ Often, it is enough to disable the control for `state` as it's not required.
 
 If you want to keep them in sync, you'll have to use `useArgs` from the Storybook client API.
 
-```tsx
+```typescriptx
 import { useArgs } from '@storybook/client-api';
 
 const Template: Story< MyControlledComponentProps > = ( args ) => {
@@ -302,7 +302,7 @@ First of all, note that all the props starting with `on` as described above trig
 
 You can also manually mark props as actions in the `argTypes`, like so:
 
-```ts
+```typescript
 export default {
 	// ...
 	argTypes: {
@@ -318,7 +318,7 @@ Full action docs: https://storybook.js.org/docs/react/essentials/actions
 
 **However**, you might want to simulate some sort of behavior from your component, for example show how a `Retry` button triggers a loading state. In this case you can use `useArgs`:
 
-```tsx
+```typescriptx
 const Template: Story< MyComponentProps > = ( args ) => {
 	const [ { isLoading }, setArgs ] = useArgs();
 
