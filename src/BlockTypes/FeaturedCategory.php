@@ -79,7 +79,6 @@ class FeaturedCategory extends AbstractDynamicBlock {
 	 * @return string Rendered block type output.
 	 */
 	protected function render( $attributes, $content ) {
-
 		$id       = absint( isset( $attributes['categoryId'] ) ? $attributes['categoryId'] : 0 );
 		$category = get_term( $id, 'product_cat' );
 
@@ -101,13 +100,21 @@ class FeaturedCategory extends AbstractDynamicBlock {
 			wc_format_content( wp_kses_post( $category->description ) )
 		);
 
+		$image_url = esc_url( $this->get_image_url( $attributes, $category ) );
+
 		$styles  = $this->get_styles( $attributes );
 		$classes = $this->get_classes( $attributes );
 
 		$output  = sprintf( '<div class="%1$s wp-block-woocommerce-featured-category" style="%2$s">', esc_attr( trim( $classes ) ), esc_attr( $styles ) );
 		$output .= '<div class="wc-block-featured-category__wrapper">';
 		$output .= $this->render_overlay( $attributes );
-		$output .= $this->render_image( $attributes, $category );
+
+		if ( ! $attributes['isRepeated'] && ! $attributes['hasParallax'] ) {
+			$output .= $this->render_image( $attributes, $category, $image_url );
+		} else {
+			$output .= $this->render_bg_image( $attributes, $image_url );
+		}
+
 		$output .= $title;
 		if ( $attributes['showDesc'] ) {
 			$output .= $desc_str;
@@ -119,29 +126,93 @@ class FeaturedCategory extends AbstractDynamicBlock {
 	}
 
 	/**
-	 * Renders the featured image
+	 * Renders the featured image as a div background.
 	 *
-	 * @param array       $attributes Block attributes. Default empty array.
-	 * @param \WC_Product $category   Product object.
+	 * @param array  $attributes Block attributes. Default empty array.
+	 * @param string $image_url Product image url.
 	 *
 	 * @return string
 	 */
-	private function render_image( $attributes, $category ) {
-		$style      = '';
+	private function render_bg_image( $attributes, $image_url ) {
+		$styles = $this->get_bg_styles( $attributes, $image_url );
+
+		$classes = [ 'wc-block-featured-category__background-image' ];
+
+		if ( $attributes['hasParallax'] ) {
+			$classes[] = ' has-parallax';
+		}
+
+		return sprintf( '<div class="%1$s" style="%2$s" /></div>', implode( ' ', $classes ), $styles );
+	}
+
+	/**
+	 * Get the styles for the wrapper element (background image, color).
+	 *
+	 * @param array  $attributes Block attributes. Default empty array.
+	 * @param string $image_url Product image url.
+	 *
+	 * @return string
+	 */
+	public function get_bg_styles( $attributes, $image_url ) {
+		$style = '';
+
+		if ( $attributes['isRepeated'] || $attributes['hasParallax'] ) {
+			$style .= "background-image: url($image_url);";
+		}
+
+		if ( ! $attributes['isRepeated'] ) {
+			$style .= 'background-repeat: no-repeat;';
+			$style .= 'background-size: ' . ( 'cover' === $attributes['imageFit'] ? $attributes['imageFit'] : 'auto' ) . ';';
+		}
+
+		if ( $this->hasFocalPoint( $attributes ) ) {
+			$style .= sprintf(
+				'background-position: %s%% %s%%;',
+				$attributes['focalPoint']['x'] * 100,
+				$attributes['focalPoint']['y'] * 100
+			);
+		}
+
+		$global_style_style = StyleAttributesUtils::get_styles_by_attributes( $attributes, $this->global_style_wrapper );
+		$style             .= $global_style_style;
+
+		return $style;
+	}
+
+	/**
+	 * Returns the url of a category image
+	 *
+	 * @param array    $attributes Block attributes. Default empty array.
+	 * @param \WP_Term $category Category object.
+	 *
+	 * @return string
+	 */
+	private function get_image_url( $attributes, $category ) {
 		$image_size = 'large';
 		if ( 'none' !== $attributes['align'] || $attributes['height'] > 800 ) {
 			$image_size = 'full';
 		}
 
-		$style .= sprintf( 'object-fit: %s;', $attributes['imageFit'] );
-
 		if ( $attributes['mediaId'] ) {
-			$image = wp_get_attachment_image_url( $attributes['mediaId'], $image_size );
-		} else {
-			$image = $this->get_image( $category, $image_size );
+			return wp_get_attachment_image_url( $attributes['mediaId'], $image_size );
 		}
 
-		if ( is_array( $attributes['focalPoint'] ) && 2 === count( $attributes['focalPoint'] ) ) {
+		return $this->get_image( $category, $image_size );
+	}
+
+	/**
+	 * Renders the featured image
+	 *
+	 * @param array       $attributes Block attributes. Default empty array.
+	 * @param \WC_Product $category   Product object.
+	 * @param string      $image_url Product image url.
+	 *
+	 * @return string
+	 */
+	private function render_image( $attributes, $category, string $image_url ) {
+		$style = sprintf( 'object-fit: %s;', $attributes['imageFit'] );
+
+		if ( $this->hasFocalPoint( $attributes ) ) {
 			$style .= sprintf(
 				'object-position: %s%% %s%%;',
 				$attributes['focalPoint']['x'] * 100,
@@ -149,16 +220,27 @@ class FeaturedCategory extends AbstractDynamicBlock {
 			);
 		}
 
-		if ( ! empty( $image ) ) {
+		if ( ! empty( $image_url ) ) {
 			return sprintf(
 				'<img alt="%1$s" class="wc-block-featured-category__background-image" src="%2$s" style="%3$s" />',
 				wp_kses_post( $attributes['alt'] ?: $category->name ),
-				esc_url( $image ),
+				$image_url,
 				$style
 			);
 		}
 
 		return '';
+	}
+
+	/**
+	 * Returns whether the focal point is defined for the block.
+	 *
+	 * @param array $attributes Block attributes. Default empty array.
+	 *
+	 * @return bool
+	 */
+	private function hasFocalPoint( $attributes ): bool {
+		return is_array( $attributes['focalPoint'] ) && 2 === count( $attributes['focalPoint'] );
 	}
 
 	/**
