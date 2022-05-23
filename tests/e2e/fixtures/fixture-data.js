@@ -424,24 +424,6 @@ const Taxes = () => [
 const Translations = () => ( {
 	lang: 'nl',
 	locale: 'nl_NL',
-	strings: [
-		'Contact information',
-		'Coupon code',
-		'Order summary',
-		'Payment options',
-		'Place Order',
-		'Proceed to Checkout',
-		'Product',
-		'Remove item',
-		'Return to Cart',
-		'Shipping address',
-		'Shipping options',
-		'Shipping',
-		'Start shopping',
-		'Subtotal',
-		'Total',
-		'Your cart (%d item)',
-	],
 } );
 
 module.exports = {

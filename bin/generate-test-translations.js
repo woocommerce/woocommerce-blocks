@@ -13,8 +13,37 @@ const builtJsFiles = glob.sync(
 	`${ path.dirname( __filename ) }/../build/**/*.js`,
 	{}
 );
+const testFiles = glob.sync(
+	`${ path.dirname( __filename ) }/../tests/e2e/specs/**/*.{js,ts}`,
+	{}
+);
 
-const { lang, locale, strings } = Translations();
+// Scan the test files to collect translations used in the tests. We'll use this
+// to generate the test translations json files.
+let strings = [];
+const regex = /getTestTranslation\(((?:.*?|\n)*?)'([^']*)'((?:.*?|\n)*?)\)/gm;
+testFiles.forEach( ( filePath ) => {
+	const fileContent = readFileSync( filePath );
+	let matches;
+
+	while ( ( matches = regex.exec( fileContent ) ) !== null ) {
+		// This is necessary to avoid infinite loops with zero-width matches
+		if ( matches.index === regex.lastIndex ) {
+			regex.lastIndex++;
+		}
+
+		matches.forEach( ( match, groupIndex ) => {
+			if ( groupIndex === 2 ) {
+				strings.push( match );
+			}
+		} );
+	}
+} );
+
+strings = [ ...new Set( strings ) ];
+strings = strings.map( ( string ) => string.replace( /\d/, '%d' ) );
+
+const { lang, locale } = Translations();
 
 builtJsFiles.forEach( ( filePath ) => {
 	const fileContent = readFileSync( filePath );
