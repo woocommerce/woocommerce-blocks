@@ -5,6 +5,9 @@ import { getAllBlocks, switchUserToAdmin } from '@wordpress/e2e-test-utils';
 
 import { visitBlockPage } from '@woocommerce/blocks-test-utils';
 
+/**
+ * Internal dependencies
+ */
 import { insertBlockDontWaitForInsertClose } from '../../utils.js';
 
 const block = {
@@ -21,7 +24,7 @@ describe( `${ block.name } Block`, () => {
 
 	it( 'can be inserted more than once', async () => {
 		await insertBlockDontWaitForInsertClose( block.name );
-		expect( await getAllBlocks() ).toHaveLength( 2 );
+		expect( await getAllBlocks() ).toHaveLength( 3 );
 	} );
 
 	it( 'renders without crashing', async () => {

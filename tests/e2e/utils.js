@@ -1,22 +1,26 @@
 /**
  * External dependencies
  */
+import { Coupon, HTTPClientFactory } from '@woocommerce/api';
 import config from 'config';
 import {
 	activateTheme,
 	disableSiteEditorWelcomeGuide,
 	openGlobalBlockInserter,
-	pressKeyWithModifier,
 	switchUserToAdmin,
 	visitAdminPage,
+	pressKeyWithModifier,
+	searchForBlock as searchForFSEBlock,
 } from '@wordpress/e2e-test-utils';
 import { addQueryArgs } from '@wordpress/url';
 import { WP_ADMIN_DASHBOARD } from '@woocommerce/e2e-utils';
+import fs from 'fs';
 
 /**
  * Internal dependencies
  */
 import { elementExists, getElementData, getTextContent } from './page-utils';
+import { PERFORMANCE_REPORT_FILENAME } from '../utils/constants';
 
 /**
  * @typedef {import('@types/puppeteer').ElementHandle} ElementHandle
@@ -28,6 +32,11 @@ import { elementExists, getElementData, getTextContent } from './page-utils';
  */
 
 export const BASE_URL = config.get( 'url' );
+export const adminUsername = config.get( 'users.admin.username' );
+export const adminPassword = config.get( 'users.admin.password' );
+export const client = HTTPClientFactory.build( BASE_URL )
+	.withBasicAuth( adminUsername, adminPassword )
+	.create();
 export const GUTENBERG_EDITOR_CONTEXT =
 	process.env.GUTENBERG_EDITOR_CONTEXT || 'core';
 export const DEFAULT_TIMEOUT = 30000;
@@ -146,12 +155,12 @@ export const isBlockInsertedInWidgetsArea = async ( blockName ) => {
  * 1. `themes.php?page=gutenberg-edit-site` this is a legacy editor access used for WP <=5.8.
  * 2. `site-editor.php` is the new way of accessing the editor in WP >=5.9+.
  *
- * @param {'core' | 'gutenberg'} [editorContext='core'] Whether to go to the Gutenberg URL or the Core one.
- * @param {Object} params Query parameters to add to the URL.
- * @param {string} [params.postId] ID of the template if we want to access template editor.
+ * @param {'core' | 'gutenberg'}               [editorContext='core']          Whether to go to the Gutenberg URL or the Core one.
+ * @param {Object}                             params                          Query parameters to add to the URL.
+ * @param {string}                             [params.postId]                 ID of the template if we want to access template editor.
  * @param {'wp_template' | 'wp_template_part'} [params.postType='wp_template'] Type of template.
  */
-async function goToSiteEditor( editorContext = 'core', params ) {
+export async function goToSiteEditor( editorContext = 'core', params ) {
 	// There is a bug in Gutenberg/WPCore now that makes it impossible to rely on site-editor.php on setups
 	// with locally installed Gutenberg. Details in https://github.com/WordPress/gutenberg/issues/39639.
 	// TODO: Update to always use site-editor.php once WordPress 6.0 is released and fix is verified.
@@ -172,9 +181,9 @@ async function goToSiteEditor( editorContext = 'core', params ) {
 /**
  * Visits the Site Editor template edit view.
  *
- * @param {Object} params
- * @param {string} params.postId ID of the template if we want to access template editor.
- * @param {'core' | 'gutenberg'} [params.editorContext='core'] Whether to go to the Gutenberg URL or the Core one.
+ * @param {Object}                             params
+ * @param {string}                             params.postId                   ID of the template if we want to access template editor.
+ * @param {'core' | 'gutenberg'}               [params.editorContext='core']   Whether to go to the Gutenberg URL or the Core one.
  * @param {'wp_template' | 'wp_template_part'} [params.postType='wp_template'] Type of template.
  */
 export async function goToTemplateEditor( {
@@ -194,10 +203,10 @@ export async function goToTemplateEditor( {
 /**
  * Visits the Site Editor templates list view.
  *
- * @param {Object} params
- * @param {'core' | 'gutenberg'} [params.editorContext='core'] Whether to go to the Gutenberg URL or the Core one.
+ * @param {Object}                             params
+ * @param {'core' | 'gutenberg'}               [params.editorContext='core']   Whether to go to the Gutenberg URL or the Core one.
  * @param {'wp_template' | 'wp_template_part'} [params.postType='wp_template'] Type of template.
- * @param {'list' | 'actions'} [params.waitFor='false'] Wait for list or for actions to be present - tempalte actions can take a moment to load, we can wait for them to be present if needed.
+ * @param {'list' | 'actions'}                 [params.waitFor='false']        Wait for list or for actions to be present - tempalte actions can take a moment to load, we can wait for them to be present if needed.
  */
 export async function goToTemplatesList( {
 	postType = 'wp_template',
@@ -336,3 +345,117 @@ export function useTheme( themeSlug ) {
 		await activateTheme( previousTheme );
 	} );
 }
+
+/**
+ * Takes an average value of all items in an array.
+ *
+ * @param {Array} array An array of numbers to take an average from.
+ * @return {number} The average value of all members of the array.
+ */
+const average = ( array ) => array.reduce( ( a, b ) => a + b ) / array.length;
+
+/**
+ * Writes a line to the e2e performance result for the current test containing longest, shortest, and average run times.
+ *
+ * @param {string} description Message to describe what you're logging the performance of.
+ * @param {Array}  times       array of times to record.
+ */
+export const logPerformanceResult = ( description, times ) => {
+	const roundedTimes = times.map(
+		( time ) => Math.round( time + Number.EPSILON * 100 ) / 100
+	);
+	fs.appendFileSync(
+		PERFORMANCE_REPORT_FILENAME,
+		JSON.stringify( {
+			description,
+			longest: Math.max( ...roundedTimes ),
+			shortest: Math.min( ...roundedTimes ),
+			average: average( roundedTimes ),
+		} ) + '\n'
+	);
+};
+
+/* Add a block to Full Site Editing.
+ *
+ * *Note:* insertBlock function gets focused on the canvas, this could prevent some dialogs from being displayed. e.g. compatibility notice.
+ *
+ * @param {string} blockName Block name.
+ */
+export const addBlockToFSEArea = async ( blockName ) => {
+	await searchForFSEBlock( blockName );
+	const insertButton = await page.waitForXPath(
+		`//button//span[contains(text(), '${ blockName }')]`
+	);
+	await insertButton.click();
+};
+
+/**
+ * Creates a basic coupon with the provided coupon amount. Returns the coupon code.
+ *
+ * @param {Object} [coupon]              Coupon object. Default to fixed cart type and amount = 5.
+ * @param {string} [coupon.amount]       Amount to be applied. Defaults to 5.
+ * @param {string} [coupon.discountType] Type of a coupon. Defaults to Fixed cart discount.
+ * @param {number} [coupon.usageLimit]   How many times the coupon can be used in total. Defaults to -1.
+ */
+export const createCoupon = async ( coupon ) => {
+	const {
+		amount = '5',
+		discountType = 'Fixed cart discount',
+		usageLimit = -1,
+	} = coupon || { amount: '5', discountType: 'Fixed cart discount' };
+
+	let couponType;
+	switch ( discountType ) {
+		case 'Fixed cart discount':
+			couponType = 'fixed_cart';
+			break;
+		case 'Fixed product discount':
+			couponType = 'fixed_product';
+			break;
+		case 'Percentage discount':
+			couponType = 'percent';
+			break;
+		default:
+			couponType = discountType;
+	}
+
+	// Fill in coupon code
+	const couponCode = 'code-' + couponType + new Date().getTime().toString();
+	const repository = Coupon.restRepository( client );
+	const createdCoupon = await repository.create( {
+		code: couponCode,
+		discountType: couponType,
+		amount,
+		usageLimit,
+	} );
+
+	return createdCoupon;
+};
+
+/**
+ * Open the block editor settings menu.
+ */
+export const openBlockEditorSettings = async () => {
+	const buttonSelector =
+		'.edit-site-header__actions button[aria-label="Settings"]';
+
+	const isSideBarAlreadyOpened = await page.$(
+		'.interface-interface-skeleton__sidebar'
+	);
+
+	if ( isSideBarAlreadyOpened === null ) {
+		await page.click( buttonSelector );
+	}
+};
+
+/**
+ * Click a link and wait for the page to load.
+ *
+ * @param {string} selector The CSS selector of the link to click.
+ */
+export const clickLink = async ( selector ) => {
+	await Promise.all( [
+		page.click( selector ),
+		page.waitForNavigation( { waitUntil: 'networkidle0' } ),
+	] );
+};

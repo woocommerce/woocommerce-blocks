@@ -12,39 +12,108 @@ import PriceSlider from '@woocommerce/base-components/price-slider';
 import { useDebouncedCallback } from 'use-debounce';
 import PropTypes from 'prop-types';
 import { getCurrencyFromPriceResponse } from '@woocommerce/price-format';
+import { getSettingWithCoercion } from '@woocommerce/settings';
+import { addQueryArgs, removeQueryArgs } from '@wordpress/url';
+import { isBoolean } from '@woocommerce/types';
 
 /**
  * Internal dependencies
  */
 import usePriceConstraints from './use-price-constraints.js';
+import { getUrlParameter } from '../../utils/filters';
 import './style.scss';
+
+/**
+ * Formats filter values into a string for the URL parameters needed for filtering PHP templates.
+ *
+ * @param {string} url    Current page URL.
+ * @param {Object} params Parameters and their constraints.
+ *
+ * @return {string} New URL with query parameters in it.
+ */
+function formatParams( url, params ) {
+	const paramObject = {};
+
+	for ( const [ key, value ] of Object.entries( params ) ) {
+		if ( value ) {
+			paramObject[ key ] = value.toString();
+		} else {
+			delete paramObject[ key ];
+		}
+	}
+
+	// Clean the URL before we add our new query parameters to it.
+	const cleanUrl = removeQueryArgs( url, ...Object.keys( params ) );
+
+	return addQueryArgs( cleanUrl, paramObject );
+}
+
+/**
+ * Formats price values taking into account precision
+ *
+ * @param {string} value
+ * @param {number} minorUnit
+ *
+ * @return {number} Formatted price.
+ */
+
+function formatPrice( value, minorUnit ) {
+	return Number( value ) * 10 ** minorUnit;
+}
 
 /**
  * Component displaying a price filter.
  *
- * @param {Object} props Component props.
- * @param {Object} props.attributes Incoming block attributes.
- * @param {boolean} props.isEditor Whether in editor context or not.
+ * @param {Object}  props            Component props.
+ * @param {Object}  props.attributes Incoming block attributes.
+ * @param {boolean} props.isEditor   Whether in editor context or not.
  */
 const PriceFilterBlock = ( { attributes, isEditor = false } ) => {
-	const [ minPriceQuery, setMinPriceQuery ] = useQueryStateByKey(
-		'min_price',
-		null
+	const hasFilterableProducts = getSettingWithCoercion(
+		'has_filterable_products',
+		false,
+		isBoolean
 	);
-	const [ maxPriceQuery, setMaxPriceQuery ] = useQueryStateByKey(
-		'max_price',
-		null
+
+	const filteringForPhpTemplate = getSettingWithCoercion(
+		'is_rendering_php_template',
+		false,
+		isBoolean
 	);
+
+	/**
+	 * Important: Only used on the PHP rendered Block pages to track
+	 * the price filter defaults coming from the URL
+	 */
+	const [ hasSetPhpFilterDefaults, setHasSetPhpFilterDefaults ] = useState(
+		false
+	);
+
+	const minPriceParam = getUrlParameter( 'min_price' );
+	const maxPriceParam = getUrlParameter( 'max_price' );
 	const [ queryState ] = useQueryStateByContext();
 	const { results, isLoading } = useCollectionData( {
 		queryPrices: true,
 		queryState,
 	} );
 
-	const [ minPrice, setMinPrice ] = useState();
-	const [ maxPrice, setMaxPrice ] = useState();
-
 	const currency = getCurrencyFromPriceResponse( results.price_range );
+
+	const [ minPriceQuery, setMinPriceQuery ] = useQueryStateByKey(
+		'min_price',
+		formatPrice( minPriceParam, currency.minorUnit ) || null
+	);
+	const [ maxPriceQuery, setMaxPriceQuery ] = useQueryStateByKey(
+		'max_price',
+		formatPrice( maxPriceParam, currency.minorUnit ) || null
+	);
+
+	const [ minPrice, setMinPrice ] = useState(
+		formatPrice( minPriceParam, currency.minorUnit ) || null
+	);
+	const [ maxPrice, setMaxPrice ] = useState(
+		formatPrice( maxPriceParam, currency.minorUnit ) || null
+	);
 
 	const { minConstraint, maxConstraint } = usePriceConstraints( {
 		minPrice: results.price_range
@@ -56,17 +125,69 @@ const PriceFilterBlock = ( { attributes, isEditor = false } ) => {
 		minorUnit: currency.minorUnit,
 	} );
 
+	/**
+	 * Important: For PHP rendered block templates only.
+	 *
+	 * When we render the PHP block template (e.g. Classic Block) we need
+	 * to set the default min_price and max_price values from the URL
+	 * for the filter to work alongside the Active Filters block.
+	 */
+	useEffect( () => {
+		if ( ! hasSetPhpFilterDefaults && filteringForPhpTemplate ) {
+			setMinPriceQuery(
+				formatPrice( minPriceParam, currency.minorUnit )
+			);
+			setMaxPriceQuery(
+				formatPrice( maxPriceParam, currency.minorUnit )
+			);
+
+			setHasSetPhpFilterDefaults( true );
+		}
+	}, [
+		currency.minorUnit,
+		filteringForPhpTemplate,
+		hasSetPhpFilterDefaults,
+		maxPriceParam,
+		minPriceParam,
+		setMaxPriceQuery,
+		setMinPriceQuery,
+	] );
+
 	// Updates the query based on slider values.
 	const onSubmit = useCallback(
 		( newMinPrice, newMaxPrice ) => {
-			setMinPriceQuery(
-				newMinPrice === minConstraint ? undefined : newMinPrice
-			);
-			setMaxPriceQuery(
-				newMaxPrice === maxConstraint ? undefined : newMaxPrice
-			);
+			const finalMaxPrice =
+				newMaxPrice >= Number( maxConstraint )
+					? undefined
+					: newMaxPrice;
+			const finalMinPrice =
+				newMinPrice <= Number( minConstraint )
+					? undefined
+					: newMinPrice;
+
+			// For block templates that render the PHP Classic Template block we need to add the filters as params and reload the page.
+			if ( filteringForPhpTemplate && window ) {
+				const newUrl = formatParams( window.location.href, {
+					min_price: finalMinPrice / 10 ** currency.minorUnit,
+					max_price: finalMaxPrice / 10 ** currency.minorUnit,
+				} );
+				// If the params have changed, lets reload the page.
+				if ( window.location.href !== newUrl ) {
+					window.location.href = newUrl;
+				}
+			} else {
+				setMinPriceQuery( finalMinPrice );
+				setMaxPriceQuery( finalMaxPrice );
+			}
 		},
-		[ minConstraint, maxConstraint, setMinPriceQuery, setMaxPriceQuery ]
+		[
+			minConstraint,
+			maxConstraint,
+			setMinPriceQuery,
+			setMaxPriceQuery,
+			filteringForPhpTemplate,
+			currency.minorUnit,
+		]
 	);
 
 	// Updates the query after a short delay.
@@ -81,13 +202,30 @@ const PriceFilterBlock = ( { attributes, isEditor = false } ) => {
 			if ( prices[ 1 ] !== maxPrice ) {
 				setMaxPrice( prices[ 1 ] );
 			}
+
+			if (
+				filteringForPhpTemplate &&
+				hasSetPhpFilterDefaults &&
+				! attributes.showFilterButton
+			) {
+				debouncedUpdateQuery( prices[ 0 ], prices[ 1 ] );
+			}
 		},
-		[ minPrice, maxPrice, setMinPrice, setMaxPrice ]
+		[
+			minPrice,
+			maxPrice,
+			setMinPrice,
+			setMaxPrice,
+			filteringForPhpTemplate,
+			hasSetPhpFilterDefaults,
+			debouncedUpdateQuery,
+			attributes.showFilterButton,
+		]
 	);
 
 	// Track price STATE changes - if state changes, update the query.
 	useEffect( () => {
-		if ( ! attributes.showFilterButton ) {
+		if ( ! attributes.showFilterButton && ! filteringForPhpTemplate ) {
 			debouncedUpdateQuery( minPrice, maxPrice );
 		}
 	}, [
@@ -95,6 +233,7 @@ const PriceFilterBlock = ( { attributes, isEditor = false } ) => {
 		maxPrice,
 		attributes.showFilterButton,
 		debouncedUpdateQuery,
+		filteringForPhpTemplate,
 	] );
 
 	// Track price query/price constraint changes so the slider reflects current filters.
@@ -137,6 +276,10 @@ const PriceFilterBlock = ( { attributes, isEditor = false } ) => {
 		previousMinPriceQuery,
 		previousMaxPriceQuery,
 	] );
+
+	if ( ! hasFilterableProducts ) {
+		return null;
+	}
 
 	if (
 		! isLoading &&

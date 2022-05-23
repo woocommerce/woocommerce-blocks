@@ -9,31 +9,47 @@ import {
 	useQueryStateByContext,
 	useCollectionData,
 } from '@woocommerce/base-context/hooks';
-import { getSetting } from '@woocommerce/settings';
+import { getSetting, getSettingWithCoercion } from '@woocommerce/settings';
 import { useCallback, useEffect, useState, useMemo } from '@wordpress/element';
 import CheckboxList from '@woocommerce/base-components/checkbox-list';
 import FilterSubmitButton from '@woocommerce/base-components/filter-submit-button';
 import Label from '@woocommerce/base-components/filter-element-label';
 import isShallowEqual from '@wordpress/is-shallow-equal';
 import { decodeEntities } from '@wordpress/html-entities';
+import { isBoolean } from '@woocommerce/types';
+import { addQueryArgs, removeQueryArgs } from '@wordpress/url';
+import { PREFIX_QUERY_ARG_FILTER_TYPE } from '@woocommerce/utils';
 
 /**
  * Internal dependencies
  */
 import { previewOptions } from './preview';
 import './style.scss';
+import { getActiveFilters } from './utils';
+
+export const QUERY_PARAM_KEY = PREFIX_QUERY_ARG_FILTER_TYPE + 'stock_status';
 
 /**
  * Component displaying an stock status filter.
  *
- * @param {Object} props Incoming props for the component.
- * @param {Object} props.attributes Incoming block attributes.
+ * @param {Object}  props            Incoming props for the component.
+ * @param {Object}  props.attributes Incoming block attributes.
  * @param {boolean} props.isEditor
  */
 const StockStatusFilterBlock = ( {
 	attributes: blockAttributes,
 	isEditor = false,
 } ) => {
+	const filteringForPhpTemplate = getSettingWithCoercion(
+		'is_rendering_php_template',
+		false,
+		isBoolean
+	);
+
+	const [ hasSetPhpFilterDefaults, setHasSetPhpFilterDefaults ] = useState(
+		false
+	);
+
 	const [ hideOutOfStockItems ] = useState(
 		getSetting( 'hideOutOfStockItems', false )
 	);
@@ -46,7 +62,9 @@ const StockStatusFilterBlock = ( {
 			: { outofstock, ...otherStockStatusOptions }
 	);
 
-	const [ checked, setChecked ] = useState( [] );
+	const [ checked, setChecked ] = useState(
+		getActiveFilters( STOCK_STATUS_OPTIONS, QUERY_PARAM_KEY )
+	);
 	const [ displayedOptions, setDisplayedOptions ] = useState(
 		blockAttributes.isPreview ? previewOptions : []
 	);
@@ -148,6 +166,33 @@ const StockStatusFilterBlock = ( {
 		initialOptions,
 	] );
 
+	/**
+	 * Used to redirect the page when filters are changed so templates using the Classic Template block can filter.
+	 *
+	 * @param {Array} checkedOptions Array of checked stock options.
+	 */
+	const redirectPageForPhpTemplate = ( checkedOptions ) => {
+		if ( checkedOptions.length === 0 ) {
+			const url = removeQueryArgs(
+				window.location.href,
+				QUERY_PARAM_KEY
+			);
+
+			if ( url !== window.location.href ) {
+				window.location.href = url;
+			}
+			return;
+		}
+
+		const newUrl = addQueryArgs( window.location.href, {
+			[ QUERY_PARAM_KEY ]: checkedOptions.join( ',' ),
+		} );
+
+		if ( newUrl !== window.location.href ) {
+			window.location.href = newUrl;
+		}
+	};
+
 	const onSubmit = useCallback(
 		( isChecked ) => {
 			if ( isEditor ) {
@@ -156,8 +201,17 @@ const StockStatusFilterBlock = ( {
 			if ( isChecked ) {
 				setProductStockStatusQuery( checked );
 			}
+			// For PHP templates when the filter button is enabled.
+			if ( filteringForPhpTemplate ) {
+				redirectPageForPhpTemplate( checked );
+			}
 		},
-		[ isEditor, setProductStockStatusQuery, checked ]
+		[
+			isEditor,
+			setProductStockStatusQuery,
+			checked,
+			filteringForPhpTemplate,
+		]
 	);
 
 	// Track checked STATE changes - if state changes, update the query.
@@ -182,6 +236,33 @@ const StockStatusFilterBlock = ( {
 			setChecked( currentCheckedQuery );
 		}
 	}, [ checked, currentCheckedQuery, previousCheckedQuery ] );
+
+	/**
+	 * Important: For PHP rendered block templates only.
+	 */
+	useEffect( () => {
+		if ( filteringForPhpTemplate ) {
+			setChecked( checked );
+		}
+	}, [ filteringForPhpTemplate, checked ] );
+
+	/**
+	 * Important: For PHP rendered block templates only.
+	 */
+	useEffect( () => {
+		if ( ! hasSetPhpFilterDefaults && filteringForPhpTemplate ) {
+			setProductStockStatusQuery(
+				getActiveFilters( STOCK_STATUS_OPTIONS, QUERY_PARAM_KEY )
+			);
+			setHasSetPhpFilterDefaults( true );
+		}
+	}, [
+		STOCK_STATUS_OPTIONS,
+		filteringForPhpTemplate,
+		setProductStockStatusQuery,
+		hasSetPhpFilterDefaults,
+		setHasSetPhpFilterDefaults,
+	] );
 
 	/**
 	 * When a checkbox in the list changes, update state.
@@ -254,6 +335,16 @@ const StockStatusFilterBlock = ( {
 	const TagName = `h${ blockAttributes.headingLevel }`;
 	const isLoading = ! blockAttributes.isPreview && ! STOCK_STATUS_OPTIONS;
 	const isDisabled = ! blockAttributes.isPreview && filteredCountsLoading;
+
+	const hasFilterableProducts = getSettingWithCoercion(
+		'has_filterable_products',
+		false,
+		isBoolean
+	);
+
+	if ( ! hasFilterableProducts ) {
+		return null;
+	}
 
 	return (
 		<>

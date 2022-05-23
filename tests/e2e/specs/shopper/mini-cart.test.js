@@ -13,11 +13,26 @@ import {
  * Internal dependencies
  */
 import { shopper } from '../../../utils';
+import { merchant } from '../../../utils/merchant';
 import { getTextContent } from '../../page-utils';
+import { useTheme } from '../../utils';
 
 const block = {
 	name: 'Mini Cart',
+	selectors: {
+		frontend: {
+			productWithAddToCartButton:
+				'.wc-block-grid__product:nth-child(2) .add_to_cart_button',
+			productTitle:
+				'.wc-block-grid__product:nth-child(2) .wc-block-components-product-name',
+			productPrice:
+				'.wc-block-grid__product:nth-child(2) .wc-block-grid__product-price',
+			addToCartButton: 'button.add_to_cart_button',
+		},
+	},
 };
+
+const { selectors } = block;
 
 const options = getDefaultOptions();
 
@@ -52,9 +67,10 @@ const WooCommerce = new WooCommerceRestApi( {
 	},
 } );
 
-if ( process.env.WOOCOMMERCE_BLOCKS_PHASE < 3 ) {
-	// eslint-disable-next-line jest/no-focused-tests
-	test.only( `skipping ${ block.name } tests`, () => {} );
+if ( process.env.WOOCOMMERCE_BLOCKS_PHASE < 2 ) {
+	// Skips all the tests if it's a WooCommerce Core process environment.
+	// eslint-disable-next-line jest/no-focused-tests, jest/expect-expect
+	test.only( `Skipping ${ block.name } tests`, () => {} );
 }
 
 describe( 'Shopper → Mini Cart', () => {
@@ -193,9 +209,7 @@ describe( 'Shopper → Mini Cart', () => {
 		} );
 
 		it( 'The Mini Cart title shows correct amount', async () => {
-			await page.click(
-				'.wc-block-grid__product:first-child .add_to_cart_button'
-			);
+			await page.click( selectors.frontend.productWithAddToCartButton );
 
 			await expect( page ).toMatchElement( '.wc-block-mini-cart__title', {
 				text: 'Your cart (1 item)',
@@ -223,9 +237,7 @@ describe( 'Shopper → Mini Cart', () => {
 				);
 			}
 
-			// Get a random product to better replicate human behavior.
-			const product =
-				products[ Math.floor( Math.random() * products.length ) ];
+			const product = products[ 1 ];
 			const [ productTitle ] = await getTextContent(
 				'.wc-block-components-product-name',
 				product
@@ -243,7 +255,7 @@ describe( 'Shopper → Mini Cart', () => {
 		} );
 
 		it( 'Filled Mini Cart footer contains subtotal, view cart button, and go to checkout buttons', async () => {
-			await page.click( '.add_to_cart_button' );
+			await page.click( selectors.frontend.addToCartButton );
 
 			await expect( page ).toMatchElement( '.wc-block-mini-cart__title', {
 				text: 'Your cart',
@@ -282,9 +294,7 @@ describe( 'Shopper → Mini Cart', () => {
 		} );
 
 		it( 'The quantity of a product can be updated using plus and minus button', async () => {
-			await page.click(
-				'.wc-block-grid__product:first-child .add_to_cart_button'
-			);
+			await page.click( selectors.frontend.productWithAddToCartButton );
 
 			await expect( page ).toMatchElement( '.wc-block-mini-cart__title', {
 				text: 'Your cart (1 item)',
@@ -328,9 +338,7 @@ describe( 'Shopper → Mini Cart', () => {
 		} );
 
 		it( 'Minus button is disabled if product quantity is 1', async () => {
-			await page.click(
-				'.wc-block-grid__product:first-child .add_to_cart_button'
-			);
+			await page.click( selectors.frontend.productWithAddToCartButton );
 
 			await expect( page ).toMatchElement( '.wc-block-mini-cart__title', {
 				text: 'Your cart (1 item)',
@@ -422,12 +430,10 @@ describe( 'Shopper → Mini Cart', () => {
 
 		it( 'Mini Cart show tax label and price including tax', async () => {
 			const [ priceInLoop ] = await getTextContent(
-				'.wc-block-grid__product:first-child .wc-block-grid__product-price'
+				selectors.frontend.productPrice
 			);
 
-			await page.click(
-				'.wc-block-grid__product:first-child .add_to_cart_button'
-			);
+			await page.click( selectors.frontend.productWithAddToCartButton );
 
 			await expect( page ).toMatchElement( '.wc-block-mini-cart__title', {
 				text: 'Your cart (1 item)',
@@ -468,7 +474,7 @@ describe( 'Shopper → Mini Cart', () => {
 		} );
 
 		it( 'Can remove product from Mini Cart', async () => {
-			await page.click( '.add_to_cart_button' );
+			await page.click( selectors.frontend.addToCartButton );
 
 			await expect( page ).toMatchElement( '.wc-block-mini-cart__title', {
 				text: 'Your cart (1 item)',
@@ -494,12 +500,10 @@ describe( 'Shopper → Mini Cart', () => {
 
 		it( 'Can go to cart page from the Mini Cart Footer', async () => {
 			const [ productTitle ] = await getTextContent(
-				'.wc-block-grid__product:first-child .wc-block-components-product-name'
+				selectors.frontend.productTitle
 			);
 
-			await page.click(
-				'.wc-block-grid__product:first-child .add_to_cart_button'
-			);
+			await page.click( selectors.frontend.productWithAddToCartButton );
 
 			await expect( page ).toMatchElement(
 				'.wc-block-mini-cart__products-table',
@@ -530,13 +534,11 @@ describe( 'Shopper → Mini Cart', () => {
 
 		it( 'Can go to checkout page from the Mini Cart Footer', async () => {
 			const productTitle = await page.$eval(
-				'.wc-block-grid__product:first-child .wc-block-components-product-name',
+				selectors.frontend.productTitle,
 				( el ) => el.textContent
 			);
 
-			await page.click(
-				'.wc-block-grid__product:first-child .add_to_cart_button'
-			);
+			await page.click( selectors.frontend.productWithAddToCartButton );
 
 			await expect( page ).toMatchElement(
 				'.wc-block-mini-cart__products-table',
@@ -557,6 +559,79 @@ describe( 'Shopper → Mini Cart', () => {
 			await expect( page ).toMatchElement( 'h1', { text: 'Checkout' } );
 
 			await expect( page ).toMatch( productTitle );
+		} );
+	} );
+
+	describe( 'Translations', () => {
+		beforeAll( async () => {
+			await merchant.changeLanguage( 'nl_NL' );
+			await shopper.block.emptyCart();
+		} );
+
+		afterAll( async () => {
+			await merchant.changeLanguage( '' );
+		} );
+
+		describe( 'Classic Themes', () => {
+			afterAll( async () => {
+				await shopper.block.emptyCart();
+			} );
+
+			it( 'User can see translation in empty Mini Cart', async () => {
+				await clickMiniCartButton();
+
+				await expect( page ).toMatchElement(
+					'.wc-block-mini-cart__drawer',
+					{
+						text: 'Begin met winkelen',
+					}
+				);
+			} );
+
+			it( 'User can see translation in filled Mini Cart', async () => {
+				await page.click(
+					selectors.frontend.productWithAddToCartButton
+				);
+
+				await expect( page ).toMatchElement(
+					'.wc-block-mini-cart__title',
+					{
+						text: 'Je winkelwagen (1 stuk)',
+					}
+				);
+			} );
+		} );
+
+		describe( 'Block Themes', () => {
+			useTheme( 'twentytwentytwo' );
+
+			afterAll( async () => {
+				await shopper.block.emptyCart();
+			} );
+
+			it( 'User can see translation in empty Mini Cart', async () => {
+				await clickMiniCartButton();
+
+				await expect( page ).toMatchElement(
+					'.wc-block-mini-cart__drawer',
+					{
+						text: 'Begin met winkelen',
+					}
+				);
+			} );
+
+			it( 'User can see translation in filled Mini Cart', async () => {
+				await page.click(
+					selectors.frontend.productWithAddToCartButton
+				);
+
+				await expect( page ).toMatchElement(
+					'.wc-block-mini-cart__title',
+					{
+						text: 'Je winkelwagen (1 stuk)',
+					}
+				);
+			} );
 		} );
 	} );
 } );

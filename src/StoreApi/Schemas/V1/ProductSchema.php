@@ -435,6 +435,7 @@ class ProductSchema extends AbstractSchema {
 					],
 				],
 			],
+			self::EXTENDING_KEY   => $this->get_extended_schema( self::IDENTIFIER ),
 		];
 	}
 
@@ -479,6 +480,8 @@ class ProductSchema extends AbstractSchema {
 				],
 				( new QuantityLimits() )->get_add_to_cart_limits( $product )
 			),
+			self::EXTENDING_KEY   => $this->get_extended_data( self::IDENTIFIER, $product ),
+
 		];
 	}
 
@@ -656,14 +659,15 @@ class ProductSchema extends AbstractSchema {
 		$return             = [];
 
 		foreach ( $attributes as $attribute_slug => $attribute ) {
-			// Only visible and variation attributes will be exposed by this API.
-			if ( ! $attribute->get_visible() || ! $attribute->get_variation() ) {
+			// Only visible or variation attributes will be exposed by this API.
+			if ( ! $attribute->get_visible() && ! $attribute->get_variation() ) {
 				continue;
 			}
 
 			$terms = $attribute->is_taxonomy() ? array_map( [ $this, 'prepare_product_attribute_taxonomy_value' ], $attribute->get_terms() ) : array_map( [ $this, 'prepare_product_attribute_value' ], $attribute->get_options() );
 			// Custom attribute names are sanitized to be the array keys.
 			// So when we do the array_key_exists check below we also need to sanitize the attribute names.
+
 			$sanitized_attribute_name = sanitize_key( $attribute->get_name() );
 
 			if ( array_key_exists( $sanitized_attribute_name, $default_attributes ) ) {

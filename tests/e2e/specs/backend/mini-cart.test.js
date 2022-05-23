@@ -1,4 +1,13 @@
 /**
+ * External dependencies
+ */
+import {
+	insertBlock,
+	canvas,
+	searchForBlock as searchForFSEBlock,
+} from '@wordpress/e2e-test-utils';
+
+/**
  * Internal dependencies
  */
 import {
@@ -7,21 +16,33 @@ import {
 	openWidgetEditor,
 	searchForBlock,
 	isBlockInsertedInWidgetsArea,
+	goToSiteEditor,
+	useTheme,
+	waitForCanvas,
+	addBlockToFSEArea,
 } from '../../utils.js';
 
 const block = {
 	name: 'Mini Cart',
 	slug: 'woocommerce/mini-cart',
 	class: '.wc-block-mini-cart',
+	selectors: {
+		insertButton: "//button//span[text()='Mini Cart']",
+		insertButtonDisabled:
+			"//button[@aria-disabled]//span[text()='Mini Cart']",
+		compatibilityNoticeTitle:
+			"//h1[contains(text(), 'Compatibility notice')]",
+	},
 };
 
 if ( process.env.WOOCOMMERCE_BLOCKS_PHASE < 3 ) {
-	// eslint-disable-next-line jest/no-focused-tests
+	// eslint-disable-next-line jest/no-focused-tests, jest/expect-expect
 	test.only( `skipping ${ block.name } tests`, () => {} );
 }
 
 const removeDismissedCompatibilityNoticesFromLocalStorage = async () => {
 	await page.evaluate( () => {
+		// eslint-disable-next-line no-undef
 		localStorage.removeItem( 'wc-blocks_dismissed_compatibility_notices' );
 	} );
 };
@@ -30,10 +51,7 @@ const addBlockToWidgetsArea = async () => {
 	await closeModalIfExists();
 	await openWidgetsEditorBlockInserter();
 	await searchForBlock( block.name );
-	const miniCartButton = await page.$x(
-		`//button//span[text()='${ block.name }']`
-	);
-
+	const miniCartButton = await page.$x( block.selectors.insertButton );
 	await miniCartButton[ 0 ].click();
 };
 
@@ -57,13 +75,14 @@ describe( `${ block.name } Block`, () => {
 		it( 'the compatibility notice appears', async () => {
 			await addBlockToWidgetsArea();
 			const compatibilityNoticeTitle = await page.$x(
-				`//h1[contains(text(), 'Compatibility notice')]`
+				block.selectors.compatibilityNoticeTitle
 			);
 			expect( compatibilityNoticeTitle.length ).toBe( 1 );
 		} );
 
 		it( "after the compatibility notice is dismissed, it doesn't appear again", async () => {
 			await page.evaluate( () => {
+				// eslint-disable-next-line no-undef
 				localStorage.setItem(
 					'wc-blocks_dismissed_compatibility_notices',
 					'["mini-cart"]'
@@ -71,7 +90,7 @@ describe( `${ block.name } Block`, () => {
 			} );
 			await addBlockToWidgetsArea();
 			const compatibilityNoticeTitle = await page.$x(
-				`//h1[contains(text(), 'Compatibility notice')]`
+				block.selectors.compatibilityNoticeTitle
 			);
 			expect( compatibilityNoticeTitle.length ).toBe( 0 );
 		} );
@@ -79,13 +98,60 @@ describe( `${ block.name } Block`, () => {
 		it( 'can only be inserted once', async () => {
 			await addBlockToWidgetsArea();
 			const miniCartButton = await page.$x(
-				`//button[@aria-disabled]//span[text()='${ block.name }']`
+				block.selectors.insertButtonDisabled
 			);
 
 			expect( miniCartButton ).toHaveLength( 1 );
 		} );
 	} );
 
-	// @todo Add tests for the Mini Cart block in FSE editor
-	// describe( 'in FSE editor', () => {} );
+	describe( 'in FSE editor', () => {
+		useTheme( 'emptytheme' );
+
+		beforeEach( async () => {
+			// TODO: Update to always use site-editor.php once WordPress 6.0 is released and fix is verified.
+			await goToSiteEditor(
+				process.env.GUTENBERG_EDITOR_CONTEXT || 'core'
+			);
+			await removeDismissedCompatibilityNoticesFromLocalStorage();
+			await waitForCanvas();
+		} );
+
+		it( 'can be inserted in FSE area', async () => {
+			await insertBlock( block.name );
+			await expect( canvas() ).toMatchElement( block.class );
+		} );
+
+		it( 'the compatibility notice appears', async () => {
+			await addBlockToFSEArea( block.name );
+			const compatibilityNoticeTitle = await page.$x(
+				block.selectors.compatibilityNoticeTitle
+			);
+			expect( compatibilityNoticeTitle.length ).toBe( 1 );
+		} );
+
+		it( "after the compatibility notice is dismissed, it doesn't appear again", async () => {
+			await page.evaluate( () => {
+				// eslint-disable-next-line no-undef
+				localStorage.setItem(
+					'wc-blocks_dismissed_compatibility_notices',
+					'["mini-cart"]'
+				);
+			} );
+			await addBlockToFSEArea( block.name );
+			const compatibilityNoticeTitle = await page.$x(
+				block.selectors.compatibilityNoticeTitle
+			);
+			expect( compatibilityNoticeTitle.length ).toBe( 0 );
+		} );
+
+		it( 'can only be inserted once', async () => {
+			await insertBlock( block.name );
+			await searchForFSEBlock( block.name );
+			const miniCartButton = await page.$x(
+				block.selectors.insertButtonDisabled
+			);
+			expect( miniCartButton ).toHaveLength( 1 );
+		} );
+	} );
 } );

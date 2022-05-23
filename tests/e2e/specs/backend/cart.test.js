@@ -14,6 +14,9 @@ import {
 } from '@woocommerce/blocks-test-utils';
 import { merchant } from '@woocommerce/e2e-utils';
 
+/**
+ * Internal dependencies
+ */
 import {
 	searchForBlock,
 	insertBlockDontWaitForInsertClose,
@@ -41,7 +44,7 @@ const emptyCartBlock = {
 };
 
 if ( process.env.WOOCOMMERCE_BLOCKS_PHASE < 2 ) {
-	// eslint-disable-next-line jest/no-focused-tests
+	// eslint-disable-next-line jest/no-focused-tests, jest/expect-expect
 	test.only( `skipping ${ block.name } tests`, () => {} );
 }
 
@@ -51,6 +54,7 @@ describe( `${ block.name } Block`, () => {
 			beforeAll( async () => {
 				// make sure CartCheckoutCompatibilityNotice will appear
 				await page.evaluate( () => {
+					// eslint-disable-next-line no-undef
 					localStorage.removeItem(
 						'wc-blocks_dismissed_compatibility_notices'
 					);
@@ -69,6 +73,7 @@ describe( `${ block.name } Block`, () => {
 		describe( 'after compatibility notice is dismissed', () => {
 			beforeAll( async () => {
 				await page.evaluate( () => {
+					// eslint-disable-next-line no-undef
 					localStorage.setItem(
 						'wc-blocks_dismissed_compatibility_notices',
 						'["cart"]'
@@ -80,6 +85,7 @@ describe( `${ block.name } Block`, () => {
 
 			afterAll( async () => {
 				await page.evaluate( () => {
+					// eslint-disable-next-line no-undef
 					localStorage.removeItem(
 						'wc-blocks_dismissed_compatibility_notices'
 					);
@@ -139,12 +145,12 @@ describe( `${ block.name } Block`, () => {
 				beforeEach( async () => {
 					await openDocumentSettingsSidebar();
 					await selectBlockByName(
-						'woocommerce/cart-order-summary-block'
+						'woocommerce/cart-order-summary-shipping-block'
 					);
 				} );
 
 				it( 'can toggle Shipping calculator', async () => {
-					const selector = `${ block.class } .wc-block-components-totals-shipping__change-address-button`;
+					const selector = ` .wc-block-components-totals-shipping__change-address-button`;
 					const toggleLabel = await findLabelWithText(
 						'Shipping calculator'
 					);

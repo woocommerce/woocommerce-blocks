@@ -1,33 +1,45 @@
 /**
  * External dependencies
  */
-import { __ } from '@wordpress/i18n';
+import { __, sprintf } from '@wordpress/i18n';
 import { useQueryStateByKey } from '@woocommerce/base-context/hooks';
-import { getSetting } from '@woocommerce/settings';
-import { useMemo } from '@wordpress/element';
+import { getSetting, getSettingWithCoercion } from '@woocommerce/settings';
+import { useMemo, useEffect } from '@wordpress/element';
 import classnames from 'classnames';
 import PropTypes from 'prop-types';
 import Label from '@woocommerce/base-components/label';
+import { isBoolean } from '@woocommerce/types';
+import { getUrlParameter } from '@woocommerce/utils';
 
 /**
  * Internal dependencies
  */
 import './style.scss';
 import { getAttributeFromTaxonomy } from '../../utils/attributes';
-import { formatPriceRange, renderRemovableListItem } from './utils';
+import {
+	formatPriceRange,
+	renderRemovableListItem,
+	removeArgsFromFilterUrl,
+	cleanFilterUrl,
+} from './utils';
 import ActiveAttributeFilters from './active-attribute-filters';
 
 /**
  * Component displaying active filters.
  *
- * @param {Object} props Incoming props for the component.
- * @param {Object} props.attributes Incoming attributes for the block.
- * @param {boolean} props.isEditor Whether or not in the editor context.
+ * @param {Object}  props            Incoming props for the component.
+ * @param {Object}  props.attributes Incoming attributes for the block.
+ * @param {boolean} props.isEditor   Whether or not in the editor context.
  */
 const ActiveFiltersBlock = ( {
 	attributes: blockAttributes,
 	isEditor = false,
 } ) => {
+	const filteringForPhpTemplate = getSettingWithCoercion(
+		'is_rendering_php_template',
+		false,
+		isBoolean
+	);
 	const [ productAttributes, setProductAttributes ] = useQueryStateByKey(
 		'attributes',
 		[]
@@ -47,6 +59,11 @@ const ActiveFiltersBlock = ( {
 					type: __( 'Stock Status', 'woo-gutenberg-products-block' ),
 					name: STOCK_STATUS_OPTIONS[ slug ],
 					removeCallback: () => {
+						if ( filteringForPhpTemplate ) {
+							return removeArgsFromFilterUrl( {
+								filter_stock_status: slug,
+							} );
+						}
 						const newStatuses = productStockStatus.filter(
 							( status ) => {
 								return status !== slug;
@@ -63,6 +80,7 @@ const ActiveFiltersBlock = ( {
 		productStockStatus,
 		setProductStockStatus,
 		blockAttributes.displayStyle,
+		filteringForPhpTemplate,
 	] );
 
 	const activePriceFilters = useMemo( () => {
@@ -73,6 +91,9 @@ const ActiveFiltersBlock = ( {
 			type: __( 'Price', 'woo-gutenberg-products-block' ),
 			name: formatPriceRange( minPrice, maxPrice ),
 			removeCallback: () => {
+				if ( filteringForPhpTemplate ) {
+					return removeArgsFromFilterUrl( 'max_price', 'min_price' );
+				}
 				setMinPrice( undefined );
 				setMaxPrice( undefined );
 			},
@@ -84,6 +105,7 @@ const ActiveFiltersBlock = ( {
 		blockAttributes.displayStyle,
 		setMinPrice,
 		setMaxPrice,
+		filteringForPhpTemplate,
 	] );
 
 	const activeAttributeFilters = useMemo( () => {
@@ -103,10 +125,74 @@ const ActiveFiltersBlock = ( {
 		} );
 	}, [ productAttributes, blockAttributes.displayStyle ] );
 
+	const [ productRatings, setProductRatings ] = useQueryStateByKey(
+		'ratings'
+	);
+
+	/**
+	 * Parse the filter URL to set the active rating fitlers.
+	 * This code should be moved to Rating Filter block once it's implemented.
+	 */
+	useEffect( () => {
+		if ( ! filteringForPhpTemplate ) {
+			return;
+		}
+
+		if ( productRatings.length && productRatings.length > 0 ) {
+			return;
+		}
+
+		const currentRatings = getUrlParameter( 'rating_filter' )?.toString();
+
+		if ( ! currentRatings ) {
+			return;
+		}
+
+		setProductRatings( currentRatings.split( ',' ) );
+	}, [ filteringForPhpTemplate, productRatings, setProductRatings ] );
+
+	const activeRatingFilters = useMemo( () => {
+		if ( productRatings.length > 0 ) {
+			return productRatings.map( ( slug ) => {
+				return renderRemovableListItem( {
+					type: __( 'Rating', 'woo-gutenberg-products-block' ),
+					name: sprintf(
+						/* translators: %s is referring to the average rating value */
+						__(
+							'Rated %s out of 5',
+							'woo-gutenberg-products-block'
+						),
+						slug
+					),
+					removeCallback: () => {
+						if ( filteringForPhpTemplate ) {
+							return removeArgsFromFilterUrl( {
+								rating_filter: slug,
+							} );
+						}
+						const newRatings = productRatings.filter(
+							( rating ) => {
+								return rating !== slug;
+							}
+						);
+						setProductRatings( newRatings );
+					},
+					displayStyle: blockAttributes.displayStyle,
+				} );
+			} );
+		}
+	}, [
+		productRatings,
+		setProductRatings,
+		blockAttributes.displayStyle,
+		filteringForPhpTemplate,
+	] );
+
 	const hasFilters = () => {
 		return (
 			productAttributes.length > 0 ||
 			productStockStatus.length > 0 ||
+			productRatings.length > 0 ||
 			Number.isFinite( minPrice ) ||
 			Number.isFinite( maxPrice )
 		);
@@ -117,6 +203,16 @@ const ActiveFiltersBlock = ( {
 	}
 
 	const TagName = `h${ blockAttributes.headingLevel }`;
+	const hasFilterableProducts = getSettingWithCoercion(
+		'has_filterable_products',
+		false,
+		isBoolean
+	);
+
+	if ( ! hasFilterableProducts ) {
+		return null;
+	}
+
 	const listClasses = classnames( 'wc-block-active-filters__list', {
 		'wc-block-active-filters__list--chips':
 			blockAttributes.displayStyle === 'chips',
@@ -161,12 +257,16 @@ const ActiveFiltersBlock = ( {
 							{ activePriceFilters }
 							{ activeStockStatusFilters }
 							{ activeAttributeFilters }
+							{ activeRatingFilters }
 						</>
 					) }
 				</ul>
 				<button
 					className="wc-block-active-filters__clear-all"
 					onClick={ () => {
+						if ( filteringForPhpTemplate ) {
+							return cleanFilterUrl();
+						}
 						setMinPrice( undefined );
 						setMaxPrice( undefined );
 						setProductAttributes( [] );
