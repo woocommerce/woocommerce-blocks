@@ -283,7 +283,7 @@ const getMainConfig = ( options = {} ) => {
 					{
 						from:
 							'./assets/js/blocks/products-by-attribute/block.json',
-						to: './products-by-attribute/block.json',
+						to: './products-by-attribute.block.json',
 					},
 				],
 			} ),
