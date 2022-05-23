@@ -1,3 +1,6 @@
+/**
+ * External dependencies
+ */
 import {
 	createNewPost,
 	deleteAllTemplates,
@@ -6,6 +9,10 @@ import {
 	publishPost,
 } from '@wordpress/e2e-test-utils';
 import { selectBlockByName } from '@woocommerce/blocks-test-utils';
+
+/**
+ * Internal dependencies
+ */
 import {
 	BASE_URL,
 	goToTemplateEditor,
@@ -90,7 +97,6 @@ describe( `${ block.name } Block`, () => {
 			await setMaxPrice();
 			await page.waitForNetworkIdle();
 			await waitForAllProductsBlockLoaded();
-			const products = await page.$$( selectors.frontend.productsList );
 
 			await page.waitForTimeout( 1000 );
 
@@ -147,10 +153,6 @@ describe( `${ block.name } Block`, () => {
 				} ),
 			] );
 
-			const products = await page.$$(
-				selectors.frontend.classicProductsList
-			);
-
 			const pageURL = page.url();
 			const parsedURL = new URL( pageURL );
 
@@ -189,9 +191,6 @@ describe( `${ block.name } Block`, () => {
 
 			await clickLink( selectors.frontend.submitButton );
 
-			const products = await page.$$(
-				selectors.frontend.classicProductsList
-			);
 			const pageURL = page.url();
 			const parsedURL = new URL( pageURL );
 

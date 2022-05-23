@@ -1,3 +1,4 @@
+/* eslint-disable import/no-extraneous-dependencies */
 /**
  * External dependencies
  */
@@ -10,13 +11,14 @@ import {
 	publishPost,
 } from '@wordpress/e2e-test-utils';
 import { SHOP_PAGE } from '@woocommerce/e2e-utils';
+import { Frame, Page } from 'puppeteer';
+/* eslint-enable */
 
 /**
  * Internal dependencies
  */
 import { goToTemplateEditor, useTheme, saveTemplate } from '../../utils';
 import { clickLink, shopper } from '../../../utils';
-import { Frame, Page } from 'puppeteer';
 
 const block = {
 	name: 'Active Product Filters',

@@ -5,6 +5,9 @@ import { getAllBlocks, switchUserToAdmin } from '@wordpress/e2e-test-utils';
 
 import { visitBlockPage } from '@woocommerce/blocks-test-utils';
 
+/**
+ * Internal dependencies
+ */
 import { insertBlockDontWaitForInsertClose } from '../../utils.js';
 
 const block = {
@@ -13,7 +16,7 @@ const block = {
 	class: '.wc-block-featured-category',
 };
 
-describe.skip( `${ block.name } Block`, () => {
+describe( `${ block.name } Block`, () => {
 	beforeAll( async () => {
 		await switchUserToAdmin();
 		await visitBlockPage( `${ block.name } Block` );

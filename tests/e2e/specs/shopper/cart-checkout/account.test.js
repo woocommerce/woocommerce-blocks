@@ -26,7 +26,7 @@ const block = {
 
 if ( process.env.WOOCOMMERCE_BLOCKS_PHASE < 2 ) {
 	// Skips all the tests if it's a WooCommerce Core process environment.
-	// eslint-disable-next-line jest/no-focused-tests
+	// eslint-disable-next-line jest/no-focused-tests, jest/expect-expect
 	test.only( 'Skipping Cart & Checkout tests', () => {} );
 }
 
@@ -50,6 +50,7 @@ describe( 'Shopper → Checkout → Account', () => {
 			'woocommerce/checkout-contact-information-block'
 		);
 		//Enable shoppers to sign up at checkout option.
+		// eslint-disable-next-line jest/no-standalone-expect
 		await expect( page ).toClick( 'label', {
 			text:
 				'Allow shoppers to sign up for a user account during checkout',
@@ -83,7 +84,7 @@ describe( 'Shopper → Checkout → Account', () => {
 			text: 'Create an account?',
 		} );
 		//Create random email to place an order.
-		let testEmail = `test${ Math.random() * 10 }@example.com`;
+		const testEmail = `test${ Math.random() * 10 }@example.com`;
 		await shopper.block.fillInCheckoutWithTestData();
 		await expect( page ).toFill( `#email`, testEmail );
 		await shopper.block.placeOrder();
