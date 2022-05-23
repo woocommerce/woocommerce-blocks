@@ -15,6 +15,13 @@ class Checkout extends AbstractBlock {
 	protected $block_name = 'checkout';
 
 	/**
+	 * Chunks build folder.
+	 *
+	 * @var string
+	 */
+	protected $chunks_folder = 'checkout-blocks';
+
+	/**
 	 * Get the editor script handle for this block type.
 	 *
 	 * @param string $key Data to get, or default to everything.
@@ -392,7 +399,6 @@ class Checkout extends AbstractBlock {
 		}
 		return $list_item;
 	}
-
 	/**
 	 * Register script and style assets for the block type before it is registered.
 	 *
@@ -400,28 +406,7 @@ class Checkout extends AbstractBlock {
 	 */
 	protected function register_block_type_assets() {
 		parent::register_block_type_assets();
-		$blocks = [
-			'checkout-blocks/actions',
-			'checkout-blocks/billing-address',
-			'checkout-blocks/contact-information',
-			'checkout-blocks/express-payment',
-			'checkout-blocks/fields',
-			'checkout-blocks/order-note',
-			'checkout-blocks/order-summary',
-			'checkout-blocks/order-summary-cart-items',
-			'checkout-blocks/order-summary-coupon-form',
-			'checkout-blocks/order-summary-discount',
-			'checkout-blocks/order-summary-fee',
-			'checkout-blocks/order-summary-shipping',
-			'checkout-blocks/order-summary-subtotal',
-			'checkout-blocks/order-summary-taxes',
-			'checkout-blocks/payment',
-			'checkout-blocks/shipping-address',
-			'checkout-blocks/shipping-methods',
-			'checkout-blocks/terms',
-			'checkout-blocks/totals',
-		];
-		$chunks = preg_filter( '/$/', '-frontend', $blocks );
+		$chunks = $this->get_chunks_paths();
 		$this->register_chunk_translations( $chunks );
 	}
 }

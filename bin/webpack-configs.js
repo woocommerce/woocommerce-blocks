@@ -280,6 +280,11 @@ const getMainConfig = ( options = {} ) => {
 						from: './assets/js/blocks/product-tag/block.json',
 						to: './product-tag.block.json',
 					},
+					{
+						from:
+							'./assets/js/blocks/products-by-attribute/block.json',
+						to: './products-by-attribute/block.json',
+					},
 				],
 			} ),
 		],
@@ -386,7 +391,7 @@ const getFrontConfig = ( options = {} ) => {
 						minSize: 20000,
 						priority: -20,
 					},
-					'cart-checkout-wp-commons': {
+					'wp-components': {
 						test: ( module ) => {
 							if (
 								module?.resource?.match(
@@ -396,7 +401,7 @@ const getFrontConfig = ( options = {} ) => {
 								return true;
 							}
 						},
-						name: 'cart-checkout/commons.js',
+						name: 'wp/wp-components.js',
 						automaticNameDelimiter: '--',
 						reuseExistingChunk: true,
 						enforce: true,

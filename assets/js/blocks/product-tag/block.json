@@ -1,12 +1,11 @@
 {
-    "name": "woocommerce/handpicked-products",
-    "title": "Hand-picked Products",
+    "name": "woocommerce/product-tag",
+    "title": "Products by Tag",
     "category": "woocommerce",
     "keywords": [
-        "Handpicked Products",
         "WooCommerce"
     ],
-    "description": "Display a selection of hand-picked products in a grid.",
+    "description": "Display a grid of products with selected tags.",
     "supports": {
         "align": [
             "wide",
@@ -15,12 +14,17 @@
         "html": false
     },
     "attributes": {
-        "align": {
-            "type": "string"
-        },
         "columns": {
             "type": "number",
             "default": 3
+        },
+        "rows": {
+            "type": "number",
+            "default": 3
+        },
+        "alignButtons": {
+            "type": "boolean",
+            "default": false
         },
         "contentVisibility": {
             "type": "object",
@@ -34,50 +38,49 @@
             "properties": {
                 "image": {
                     "type": "boolean",
-                    "image": true
+                    "default": true
                 },
                 "title": {
                     "type": "boolean",
-                    "title": true
+                    "default": true
                 },
                 "price": {
                     "type": "boolean",
-                    "price": true
+                    "default": true
                 },
                 "rating": {
                     "type": "boolean",
-                    "rating": true
+                    "default": true
                 },
                 "button": {
                     "type": "boolean",
-                    "button": true
+                    "default": true
                 }
             }
         },
-        "orderby": {
-            "type": "string",
-            "enum": [
-                "date",
-                "popularity",
-                "price_asc",
-                "price_desc",
-                "rating",
-                "title",
-                "menu_order"
-            ],
-            "default": "date"
-        },
-        "products": {
+        "tags": {
             "type": "array",
             "default": []
         },
-        "alignButtons": {
-            "type": "boolean",
-            "default": false
+        "tagOperator": {
+            "type": "string",
+            "default": "any"
+        },
+        "orderby": {
+            "type": "string",
+            "default": "date"
         },
         "isPreview": {
             "type": "boolean",
             "default": false
+        },
+        "stockStatus": {
+            "type": "array"
+        }
+    },
+    "example": {
+        "attributes": {
+            "isPreview": true
         }
     },
     "textdomain": "woo-gutenberg-products-block",
