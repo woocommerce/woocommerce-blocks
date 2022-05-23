@@ -260,10 +260,10 @@ class FeaturedCategory extends AbstractDynamicBlock {
 	 * @return string
 	 */
 	private function render_overlay( $attributes ) {
-		if ( isset( $attributes['overlayColor'] ) ) {
-			$overlay_styles = sprintf( 'background-color: %s', $attributes['overlayColor'] );
-		} elseif ( isset( $attributes['overlayGradient'] ) ) {
+		if ( isset( $attributes['overlayGradient'] ) ) {
 			$overlay_styles = sprintf( 'background-image: %s', $attributes['overlayGradient'] );
+		} elseif ( isset( $attributes['overlayColor'] ) ) {
+			$overlay_styles = sprintf( 'background-color: %s', $attributes['overlayColor'] );
 		} else {
 			$overlay_styles = 'background-color: #000000';
 		}
