@@ -391,7 +391,7 @@ const getFrontConfig = ( options = {} ) => {
 						minSize: 20000,
 						priority: -20,
 					},
-					'cart-checkout-wp-commons': {
+					'wp-components': {
 						test: ( module ) => {
 							if (
 								module?.resource?.match(
@@ -401,7 +401,7 @@ const getFrontConfig = ( options = {} ) => {
 								return true;
 							}
 						},
-						name: 'cart-checkout/commons.js',
+						name: 'wp/wp-components.js',
 						automaticNameDelimiter: '--',
 						reuseExistingChunk: true,
 						enforce: true,
