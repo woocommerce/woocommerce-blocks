@@ -588,6 +588,15 @@ describe( 'Shopper → Mini Cart', () => {
 						text: getTestTranslation( 'Start shopping' ),
 					}
 				);
+
+				await expect( page ).toMatchElement(
+					'.wc-block-mini-cart__drawer',
+					{
+						text: getTestTranslation(
+							'Your cart is currently empty!'
+						),
+					}
+				);
 			} );
 
 			it( 'User can see translation in filled Mini Cart', async () => {
@@ -596,9 +605,16 @@ describe( 'Shopper → Mini Cart', () => {
 				);
 
 				await expect( page ).toMatchElement(
+					'.wc-block-cart-item__remove-link',
+					{
+						text: getTestTranslation( 'Remove item' ),
+					}
+				);
+
+				await expect( page ).toMatchElement(
 					'.wc-block-mini-cart__footer-cart',
 					{
-						text: getTestTranslation( 'Your cart (1 item)' ),
+						text: getTestTranslation( 'View my cart' ),
 					}
 				);
 			} );
@@ -620,6 +636,15 @@ describe( 'Shopper → Mini Cart', () => {
 						text: getTestTranslation( 'Start shopping' ),
 					}
 				);
+
+				await expect( page ).toMatchElement(
+					'.wc-block-mini-cart__drawer',
+					{
+						text: getTestTranslation(
+							'Your cart is currently empty!'
+						),
+					}
+				);
 			} );
 
 			it( 'User can see translation in filled Mini Cart', async () => {
@@ -628,9 +653,16 @@ describe( 'Shopper → Mini Cart', () => {
 				);
 
 				await expect( page ).toMatchElement(
+					'.wc-block-cart-item__remove-link',
+					{
+						text: getTestTranslation( 'Remove item' ),
+					}
+				);
+
+				await expect( page ).toMatchElement(
 					'.wc-block-mini-cart__footer-cart',
 					{
-						text: getTestTranslation( 'Your cart (1 item)' ),
+						text: getTestTranslation( 'View my cart' ),
 					}
 				);
 			} );
