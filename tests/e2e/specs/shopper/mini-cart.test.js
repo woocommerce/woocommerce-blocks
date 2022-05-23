@@ -588,15 +588,6 @@ describe( 'Shopper → Mini Cart', () => {
 						text: getTestTranslation( 'Start shopping' ),
 					}
 				);
-
-				await expect( page ).toMatchElement(
-					'.wc-block-mini-cart__drawer',
-					{
-						text: getTestTranslation(
-							'Your cart is currently empty!'
-						),
-					}
-				);
 			} );
 
 			it( 'User can see translation in filled Mini Cart', async () => {
@@ -634,15 +625,6 @@ describe( 'Shopper → Mini Cart', () => {
 					'.wc-block-mini-cart__drawer',
 					{
 						text: getTestTranslation( 'Start shopping' ),
-					}
-				);
-
-				await expect( page ).toMatchElement(
-					'.wc-block-mini-cart__drawer',
-					{
-						text: getTestTranslation(
-							'Your cart is currently empty!'
-						),
 					}
 				);
 			} );
