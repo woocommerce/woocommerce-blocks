@@ -3,29 +3,30 @@
  */
 import { BlockControls, useBlockProps } from '@wordpress/block-editor';
 import {
-	ToolbarGroup,
 	Disabled,
+	ToolbarGroup,
 	withSpokenMessages,
 } from '@wordpress/components';
 import { useState } from '@wordpress/element';
 import { __ } from '@wordpress/i18n';
+
 /**
  * Internal dependencies
  */
 import './editor.scss';
 import { Props } from './types';
-import { HandpickedProductsInspectorControls } from './inspector-controls';
-import { HandpickedProductsEditMode } from './edit-mode';
-import { HandpickedProductsBlock } from './block';
+import { ProductsByAttributeInspectorControls } from './inspector-controls';
+import { ProductsByAttributeEditMode } from './edit-mode';
+import { ProductsByAttributeBlock } from './block';
 
 export const EditBlock = ( props: Props ): JSX.Element => {
 	const blockProps = useBlockProps();
 
 	const {
-		attributes: { products },
+		attributes: { attributes },
 	} = props;
 
-	const [ isEditing, setIsEditing ] = useState( ! products.length );
+	const [ isEditing, setIsEditing ] = useState( ! attributes.length );
 
 	return (
 		<div { ...blockProps }>
@@ -35,7 +36,7 @@ export const EditBlock = ( props: Props ): JSX.Element => {
 						{
 							icon: 'edit',
 							title: __(
-								'Edit selected products',
+								'Edit selected attribute',
 								'woo-gutenberg-products-block'
 							),
 							onClick: () => setIsEditing( ! isEditing ),
@@ -44,16 +45,16 @@ export const EditBlock = ( props: Props ): JSX.Element => {
 					] }
 				/>
 			</BlockControls>
-			<HandpickedProductsInspectorControls { ...props } />
+			<ProductsByAttributeInspectorControls { ...props } />
 			{ isEditing ? (
-				<HandpickedProductsEditMode
+				<ProductsByAttributeEditMode
 					isEditing={ isEditing }
 					setIsEditing={ setIsEditing }
 					{ ...props }
 				/>
 			) : (
 				<Disabled>
-					<HandpickedProductsBlock { ...props } />
+					<ProductsByAttributeBlock { ...props } />
 				</Disabled>
 			) }
 		</div>
