@@ -27,7 +27,7 @@ const style = {
  *
  * @example
  *
- * ```javascript
+ * ```js
  * const App = () => {
  * 	const [ referenceElement, positionRelativeToViewport ] = useContainerQueries();
  *

@@ -85,7 +85,7 @@ This filter was used as a workaround. Currently the best way to achieve data reg
 
 On the client side the value will be available via:
 
-```javascript
+```js
 wc.wcSettings.getSetting( 'key' );
 ```
 

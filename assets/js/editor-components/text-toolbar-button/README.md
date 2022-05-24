@@ -11,7 +11,7 @@ Notes:
 
 Example: two text buttons to select edit modes for cart block.
 
-```javascriptx
+```jsx
 <BlockControls>
 	<Toolbar>
 		<TextToolbarButton

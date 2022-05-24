@@ -6,7 +6,7 @@ A library of components to be used for creating common UI elements shared betwee
 
 When WooCommerce Blocks is installed and activated, these components can be accessed by importing from the `blocks-checkout` package.
 
-```typescript
+```ts
 // Aliased import
 import { Button } from '@woocommerce/blocks-checkout';
 

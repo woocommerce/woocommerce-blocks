@@ -112,7 +112,7 @@ When using code examples, the fence format and the language definition must be u
 -   **JS code example:**
 <pre>
 
-```javascript
+```js
 import { registerExpressPaymentMethod } from '@woocommerce/blocks-registry';
 ```
 

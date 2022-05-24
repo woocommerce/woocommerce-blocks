@@ -91,7 +91,7 @@ export const getCollectionError = (
  *
  * Example:
  *
- * ```javascript
+ * ```js
  * const totalProducts = wp.data.select( COLLECTION_STORE_KEY )
  *   .getCollectionHeader( '/wc/blocks', 'products', 'x-wp-total' )
  * ```

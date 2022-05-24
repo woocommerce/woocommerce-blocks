@@ -46,11 +46,11 @@ export async function getElementData( selector, dataKey, root = page ) {
  * it will get the `textContent`.
  *
  * @example
- * ```javascript
+ * ```js
  * const text = await getTextContent( '.my-element' );
  * ```
  * @example
- * ```javascript
+ * ```js
  * const [ singleText ] = await getTextContent( '.my-single-element' );
  * ```
  *

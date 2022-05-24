@@ -20,7 +20,7 @@ When executed, this will call the cart/extensions REST API endpoint. The new car
 
 ### Usage
 
-```typescript
+```ts
 // Aliased import
 import { extensionCartUpdate } from '@woocommerce/blocks-checkout';
 
@@ -49,7 +49,7 @@ Ensures that a given value contains a string, or throws an error.
 
 ### Usage
 
-```javascript
+```js
 // Aliased import
 import { mustContain } from '@woocommerce/blocks-checkout';
 

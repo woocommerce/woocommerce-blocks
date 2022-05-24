@@ -24,7 +24,7 @@ All endpoints under `/cart` (listed in this doc) return responses in the same fo
 
 ### Cart Response
 
-```javascripton
+```json
 {
 	"coupons": [
 		{
@@ -271,7 +271,7 @@ All endpoints under `/cart` (listed in this doc) return responses in the same fo
 
 If a cart action cannot be performed, an error response will be returned. This will include a reason code and an error message:
 
-```javascripton
+```json
 {
 	"code": "woocommerce_rest_cart_invalid_product",
 	"message": "This product cannot be added to the cart.",
@@ -283,7 +283,7 @@ If a cart action cannot be performed, an error response will be returned. This w
 
 Some error responses indicate conflicts (error 409), for example, when an item cannot be found or a coupon is no longer applied. When this type of response is returned, the current state of the cart from the server is also returned as part of the error data:
 
-```javascripton
+```json
 {
   "code": "woocommerce_rest_cart_invalid_key",
   "message": "Cart item no longer exists or is invalid.",

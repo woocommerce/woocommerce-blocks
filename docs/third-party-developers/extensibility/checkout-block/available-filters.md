@@ -79,7 +79,7 @@ This filter must _not_ be used to alter the value/totals of a coupon. This will 
 
 The additional argument supplied to this filter is: `{ context: 'summary' }`. A `CartCoupon` has the following shape:
 
-```typescript
+```ts
 CartCoupon {
   code: string
   label: string
@@ -115,7 +115,7 @@ The filter passes an object whose keys are the `content` of each notice.
 If there are two notices slated to be displayed ('Coupon code "10off" has been applied to your basket.', and 'Coupon
 code "50off" has been removed from your basket.'), the value passed to the filter would look like so:
 
-```javascript
+```js
 {
   'Coupon code "10off" has been applied to your basket.': true,
   'Coupon code "50off" has been removed from your basket.': true
@@ -134,7 +134,7 @@ To make it easier to understand what the customer is paying and why, let's chang
 
 1. We need to create a `CheckoutFilterFunction`.
 
-```typescript
+```ts
 const replaceTotalWithDeposit = () => 'Deposit due today';
 ```
 
@@ -142,7 +142,7 @@ const replaceTotalWithDeposit = () => 'Deposit due today';
    We can access the `__experimentalRegisterCheckoutFilters` function on the `window.wc.blocksCheckout` object.
    As long as your extension's script is enqueued _after_ WooCommerce Blocks' scripts (i.e. by registering `wc-blocks-checkout` as a dependency), then this will be available.
 
-```typescript
+```ts
 const { __experimentalRegisterCheckoutFilters } = window.wc.blocksCheckout;
 __experimentalRegisterCheckoutFilters( 'my-hypothetical-deposit-plugin', {
 	totalLabel: replaceTotalWithDeposit,
@@ -164,7 +164,7 @@ that's the price per item.
 We can see from the table above, that our function needs to return a string that contains a substring of `<price/>`.
 This is a placeholder for the numeric value. The Mini Cart and Cart blocks will interpolate the value into the string we return.
 
-```typescript
+```ts
 const appendTextToPriceInCart = ( value, extensions, args ) => {
 	if ( args?.context !== 'cart' ) {
 		// Return early since this filter is not being applied in the Cart context.
@@ -177,7 +177,7 @@ const appendTextToPriceInCart = ( value, extensions, args ) => {
 
 2. Now we must register it. Refer to the first example for information about `__experimentalRegisterCheckoutFilters`.
 
-```typescript
+```ts
 const { __experimentalRegisterCheckoutFilters } = window.wc.blocksCheckout;
 __experimentalRegisterCheckoutFilters( 'my-hypothetical-price-plugin', {
 	subtotalPriceFormat: appendTextToPriceInCart,
@@ -198,7 +198,7 @@ Due to the internal workings of our extension, our automatically generated coupo
 
 Our filtering function may look like this:
 
-```typescript
+```ts
 const filterCoupons = ( coupons ) => {
 	return coupons.map( ( coupon ) => {
 		// Regex to match autocoupon then unlimited undersores and numbers
@@ -215,7 +215,7 @@ const filterCoupons = ( coupons ) => {
 
 We'd register our filter like this:
 
-```typescript
+```ts
 import { __experimentalRegisterCheckoutFilters } from '@woocommerce/blocks-checkout';
 
 __experimentalRegisterCheckoutFilters( 'automatic-coupon-extension', {
@@ -233,7 +233,7 @@ Let's say we want to hide all notices that contain the string `auto-generated-co
 
 We would do this by setting the value of the `snackbarNoticeVisibility` to false for the notices we want to hide.
 
-```typescript
+```ts
 import { __experimentalRegisterCheckoutFilters } from '@woocommerce/blocks-checkout';
 
 __experimentalRegisterCheckoutFilters( 'automatic-coupon-extension', {

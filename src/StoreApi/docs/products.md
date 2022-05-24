@@ -75,7 +75,7 @@ curl "https://example-store.com/wp-json/wc/store/v1/products"
 
 **Example response:**
 
-```javascripton
+```json
 [
 	{
 		"id": 34,
@@ -143,7 +143,7 @@ curl "https://example-store.com/wp-json/wc/store/v1/products/34"
 
 **Example response:**
 
-```javascripton
+```json
 {
 	"id": 34,
 	"name": "WordPress Pennant",

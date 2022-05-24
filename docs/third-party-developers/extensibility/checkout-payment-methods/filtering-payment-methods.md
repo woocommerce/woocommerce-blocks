@@ -20,13 +20,13 @@ WooCommerce Blocks provides a function called `registerPaymentMethodExtensionCal
 
 _Aliased import_
 
-```javascript
+```js
 import { registerPaymentMethodExtensionCallbacks } from '@woocommerce/blocks-registry';
 ```
 
 _wc global_
 
-```javascript
+```js
 const { registerPaymentMethodExtensionCallbacks } = wc.wcBlocksRegistry;
 ```
 
@@ -45,7 +45,7 @@ When trying to register callbacks under an extension namespace already used with
 
 ## Usage example
 
-```javascript
+```js
 registerPaymentMethodExtensionCallbacks( 'my-hypothetical-extension', {
 	cod: ( arg ) => {
 		return arg.shippingAddress.city === 'Berlin';
@@ -68,7 +68,7 @@ payment_method_name: ( arg ) => {...}
 
 The registered callbacks are used to determine whether the corresponding payment method should be available as an option for the shopper. The function will be passed an object containing data about the current order.
 
-```typescript
+```ts
 type CanMakePaymentExtensionCallback = (
 	cartData: CanMakePaymentArgument
 ) => boolean;
@@ -76,7 +76,7 @@ type CanMakePaymentExtensionCallback = (
 
 Each callback will have access to the information bellow
 
-```typescript
+```ts
 interface CanMakePaymentArgument {
 	cart: Cart;
 	cartTotals: CartTotals;

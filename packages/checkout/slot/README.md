@@ -27,7 +27,7 @@ Calling `createSlotFill` with a `slotName` returns two components: `Slot` and `F
 
 ### Usage
 
-```javascriptx
+```jsx
 // Aliased import
 import { createSlotFill } from '@woocommerce/blocks-checkout';
 
@@ -51,7 +51,7 @@ The name of slot to be created.
 
 If a `Fill` causes an error, and the current user is an admin user, this function will be called. You can customize the error shown to admins by passing `onError` to `createSlotFill`.
 
-```javascriptx
+```jsx
 // Aliased import
 import { createSlotFill } from '@woocommerce/blocks-checkout';
 
@@ -80,7 +80,7 @@ const { Fill, Slot } = createSlotFill( slotName, onError );
 
 #### Usage
 
-```javascriptx
+```jsx
 // Aliased import
 import { createSlotFill } from '@woocommerce/blocks-checkout';
 
@@ -117,7 +117,7 @@ A class name applied to the rendered element.
 
 Props passed to each fill implementation.
 
-```javascriptx
+```jsx
 // Aliased import
 import { createSlotFill } from '@woocommerce/blocks-checkout';
 
@@ -153,7 +153,7 @@ Each `Fill` receives any `fillProps` from the `Slot`, and also renders an [error
 
 Slot/Fills are exported and available for use by extensions. One such Slot Fill is `ExperimentalOrderMeta` [exported from here](../components/order-meta/index.js). This provides the Slot, and within it, you can define your fill:
 
-```javascriptx
+```jsx
 import { registerPlugin } from '@wordpress/plugins';
 
 // Aliased import

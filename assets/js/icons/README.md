@@ -11,7 +11,7 @@ WooCommerce Blocks Icons Library.
 
 Note we use the `Icon` component from `@wordpress/icons`. We use some SVG icons from `@woocommerce/icons` for WC Blocks specific icons, but we also use existing icons from `@wordpress/icons`.
 
-```javascript
+```js
 import { woo } from '@woocommerce/icons';
 import { Icon, postComments } from '@wordpress/icons';
 

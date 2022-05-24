@@ -53,7 +53,7 @@ repetition.
 
 When registering your block, you should also define the `parent` property to include a list of areas where your block will be available. For example:
 
-```javascripton
+```json
 {
 	"name": "woocommerce/checkout-actions-block",
 	"title": "Actions",
@@ -68,7 +68,7 @@ When registering your block, you should also define the `parent` property to inc
 
 If you want your block to appear within the layout of the Checkout without merchant intervention, you can implement locking as follows:
 
-```javascripton
+```json
 {
 	"name": "woocommerce/checkout-actions-block",
 	"title": "Actions",
@@ -137,7 +137,7 @@ This function registers a block and it's corresponding component with WooCommerc
 
 ### Usage
 
-```javascript
+```js
 // Aliased import
 import { registerCheckoutBlock } from '@woocommerce/blocks-checkout';
 
@@ -175,7 +175,7 @@ Returns an array of registered block objects available within a specific parent 
 
 ### Usage
 
-```javascript
+```js
 // Aliased import
 import { getRegisteredBlocks } from '@woocommerce/blocks-checkout';
 
@@ -193,7 +193,7 @@ Check if a block/area supports inner block registration.
 
 ### Usage
 
-```javascript
+```js
 // Aliased import
 import { hasInnerBlocks } from '@woocommerce/blocks-checkout';
 

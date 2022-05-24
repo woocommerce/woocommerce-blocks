@@ -23,7 +23,7 @@ The filter registry allows callbacks to be registered to manipulate certain valu
 
 Registers a callback function with an available filter. This function has the following signature:
 
-```typescript
+```ts
 (
   namespace: string,
   filters: Record< string, CheckoutFilterFunction >
@@ -32,7 +32,7 @@ Registers a callback function with an available filter. This function has the fo
 
 `CheckoutFilterFunction` has this signature:
 
-```typescript
+```ts
 type CheckoutFilterFunction = < T >(
 	value: T,
 	extensions: Record< string, unknown >,
@@ -42,7 +42,7 @@ type CheckoutFilterFunction = < T >(
 
 ### Usage
 
-```javascript
+```js
 // Aliased import
 import { __experimentalRegisterCheckoutFilters } from '@woocommerce/blocks-checkout';
 
@@ -80,7 +80,7 @@ This function applies a filter, and all registered callbacks, to a given value.
 
 ### Usage
 
-```javascript
+```js
 // Aliased import
 import { __experimentalApplyCheckoutFilter } from '@woocommerce/blocks-checkout';
 

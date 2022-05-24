@@ -46,7 +46,7 @@ When importing, if outside the module referenced by that path, import from the a
 
 Example:
 
-```javascript
+```js
 // will pull from '/assets/js/base/components/label/index.js in the main build
 // will pull from '/assets/js/legacy/base/components/label/index.js in the legacy
 // build.

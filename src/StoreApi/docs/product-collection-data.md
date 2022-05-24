@@ -23,7 +23,7 @@ curl "https://example-store.com/wp-json/wc/store/v1/products/collection-data?cal
 
 **Example response:**
 
-```javascripton
+```json
 {
 	"price_range": [
 		"currency_minor_unit": 2,
