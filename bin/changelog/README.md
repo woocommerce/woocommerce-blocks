@@ -14,11 +14,11 @@ By default, changelog entries will use the title of pull requests. However, you 
 
 You can implement the script in your `package.json` in the simplest form by adding the following to the `"scripts"` property (assuming it is installed in `./bin`):
 
-```javascripton
+```json
 {
-  "scripts": {
-    "changelog": "node ./bin/changelog",
-  }
+	"scripts": {
+		"changelog": "node ./bin/changelog"
+	}
 }
 ```
 
