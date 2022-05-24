@@ -25,7 +25,7 @@ function findParent( sourceNode, predicate ) {
  * `process.env.WOOCOMMERCE_BLOCKS_PHASE`.
  *
  * @example
- * ```javascript
+ * ```js
  * // good
  * if ( process.env.WOOCOMMERCE_BLOCKS_PHASE > 1 ) {
  *
@@ -71,7 +71,7 @@ function testIsAccessedViaProcessEnv( node, context ) {
  * is strict equal only
  *
  * @example
- * ```javascript
+ * ```js
  * // good
  * if ( process.env.WOOCOMMERCE_BLOCKS_PHASE === 'experimental' ) {
  * if ( process.env.WOOCOMMERCE_BLOCKS_PHASE === 'stable' ) {
@@ -114,7 +114,7 @@ function testBinaryExpressionOperatorIsEqual( node, context ) {
  * violation if not.
  *
  * @example
- * ```javascript
+ * ```js
  * // good
  * if ( process.env.WOOCOMMERCE_BLOCKS_PHASE === 'experimental' ) {
  * if ( process.env.WOOCOMMERCE_BLOCKS_PHASE === 'stable' ) {
@@ -175,7 +175,7 @@ function testIsUsedInStrictBinaryExpression( node, context ) {
  * if statement, triggering a violation if not.
  *
  * @example
- * ```javascript
+ * ```js
  * // good
  * if ( process.env.WOOCOMMERCE_BLOCKS_PHASE === 'experimental' ) {
  *

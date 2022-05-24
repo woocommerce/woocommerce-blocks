@@ -52,14 +52,14 @@ The two environment variables you can use are:
 
 **package.json**:
 
-```javascripton
+```json
 {
-  "changelog": {
-    "labelPrefix": "type:",
-    "skipLabel": "skip-changelog",
-    "defaultPrefix": "dev",
-    "repo": "woocommerce/woocommerce-gutenberg-products-block"
-  },
+	"changelog": {
+		"labelPrefix": "type:",
+		"skipLabel": "skip-changelog",
+		"defaultPrefix": "dev",
+		"repo": "woocommerce/woocommerce-gutenberg-products-block"
+	}
 }
 ```
 
