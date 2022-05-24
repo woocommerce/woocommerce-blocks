@@ -336,5 +336,4 @@ abstract class FeaturedItem extends AbstractDynamicBlock {
 		$this->asset_data_registry->add( 'min_height', wc_get_theme_support( 'featured_block::min_height', 500 ), true );
 		$this->asset_data_registry->add( 'default_height', wc_get_theme_support( 'featured_block::default_height', 500 ), true );
 	}
-
 }
