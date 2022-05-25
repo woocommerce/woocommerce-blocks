@@ -1,6 +1,6 @@
 # Translations in FSE templates
 
-To make the WooCommerce Blocks plugin inclusive, all user-facing strings should be translatable. Manaing [Translations in PHP files](docs/translations/translations-in-PHP-files.md) and [Translations in JS/TS files](docs/translations/translations-in-JS-TS-files.md) is rather simple, given that both languages are programming languages. FSE-templates, however, are plain HTML files? So, how can we handle translations in FSE templates?
+To make the WooCommerce Blocks plugin inclusive, all user-facing strings should be translatable. Manaing [Translations in PHP files](docs/translations/translations-in-PHP-files.md) and [Translations in JS/TS files](docs/translations/translations-in-JS-TS-files.md) is rather simple, given that both languages are programming languages. As FSE-templates are using plain HTML, translating them works slightly different.
 
 Let's take a look at `templates/parts/mini-cart.html`:
 
