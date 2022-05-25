@@ -8,6 +8,7 @@ jobs:
             - uses: actions/checkout@v2
               with:
                   ref: ${{ github.event.pull_request.head.ref }}
+
             - name: Cache node modules
               uses: actions/cache@v2
               env:
@@ -19,30 +20,23 @@ jobs:
                   restore-keys: |
                       ${{ runner.OS }}-build-${{ secrets.CACHE_VERSION }}-${{ env.cache-name }}-
                       ${{ runner.OS }}-build-${{ secrets.CACHE_VERSION }}-
-            - name: Use Node.js 16.13.2
-              uses: actions/setup-node@v1
+
+            - name: Use Node.js
+              uses: actions/setup-node@v3
               with:
-                  node-version: 16.13.2
+                  node-version-file: '.nvmrc'
+                  cache: 'npm'
+
             - name: npm install
               run: |
                   npm ci
-                  npm run ts:monitor
-            - name: Clone trunk branch
-              uses: actions/checkout@v2
-              with:
-                  ref: trunk
-                  path: trunk
-
-            - name: Get branch name
-              id: branch-name
-              uses: tj-actions/branch-names@v5.2
+                  npm run ts:log-errors
 
             - name: Monitor TypeScript errors
               uses: ./.github/monitor-typescript-errors
               with:
                   repo-token: '${{ secrets.GITHUB_TOKEN }}'
                   compare: checkstyle.xml
-                  trunk_branch_folder: trunk
               env:
                   AIRTABLE_API_KEY: ${{ secrets.AIRTABLE_API_KEY }}
                   CURRENT_BRANCH: ${{ steps.branch-name.outputs.current_branch }}

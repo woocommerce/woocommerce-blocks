@@ -7,9 +7,7 @@ inputs:
     compare:
         description: 'Path checkstyle.xml file'
         required: true
-    trunk_branch_folder:
-        description: 'Path trunk folder'
-        required: true
+
 runs:
     using: 'node16'
     main: 'index.js'

@@ -1,9 +1,10 @@
+const fs = require( 'fs' );
 const { getOctokit, context } = require( '@actions/github' );
 const { setFailed, getInput } = require( '@actions/core' );
-const { openFile } = require( './utils/file' );
 const { parseXml, getFilesWithNewErrors } = require( './utils/xml' );
 const { generateMarkdownMessage } = require( './utils/markdown' );
 const { addRecord } = require( './utils/airtable' );
+const { getFileContent } = require( './utils/github' );
 
 const runner = async () => {
 	const token = getInput( 'repo-token', { required: true } );
@@ -14,21 +15,29 @@ const runner = async () => {
 	const fileName = getInput( 'compare', {
 		required: true,
 	} );
-	const newCheckStyleFile = openFile( fileName );
+	const newCheckStyleFile = fs.readFileSync( fileName );
 	const newCheckStyleFileParsed = parseXml( newCheckStyleFile );
-	const currentCheckStyleFilePath =
-		getInput( 'trunk_branch_folder', { required: true } ) + '/' + fileName;
+	const currentCheckStyleFile = await getFileContent( {
+		octokit,
+		owner,
+		repo,
+		path: fileName,
+		onFail: setFailed,
+	} );
 
-	if ( ! currentCheckStyleFilePath ) {
+	if ( ! currentCheckStyleFile.content ) {
 		return;
 	}
 
-	const currentCheckStyleFile = openFile( currentCheckStyleFilePath );
-	const currentCheckStyleFileParsed = parseXml( currentCheckStyleFile );
+	const currentCheckStyleFileContent = currentCheckStyleFile.content;
+
+	const currentCheckStyleFileContentParsed = parseXml(
+		currentCheckStyleFileContent
+	);
 	const { header } = generateMarkdownMessage( newCheckStyleFileParsed );
 	const filesWithNewErrors = getFilesWithNewErrors(
 		newCheckStyleFileParsed,
-		currentCheckStyleFileParsed
+		currentCheckStyleFileContentParsed
 	);
 
 	const message =
@@ -37,10 +46,10 @@ const runner = async () => {
 		( filesWithNewErrors.length > 0
 			? `⚠️ ⚠️ This PR introduces new TS errors on ${ filesWithNewErrors.length } files: \n` +
 			  '<details> \n' +
-			  filesWithNewErrors.join( '\n' ) +
+			  filesWithNewErrors.join( '\n\n' ) +
 			  '\n' +
 			  '</details>'
-			: '' );
+			: '🎉 🎉 This PR does not introduce new TS errors.' );
 
 	await octokit.rest.issues.createComment( {
 		owner,
@@ -51,7 +60,7 @@ const runner = async () => {
 
 	if ( process.env[ 'CURRENT_BRANCH' ] === 'trunk' ) {
 		try {
-			await addRecord( currentCheckStyleFileParsed.totalErrors );
+			await addRecord( currentCheckStyleFileContentParsed.totalErrors );
 		} catch ( error ) {
 			setFailed( error );
 		}
