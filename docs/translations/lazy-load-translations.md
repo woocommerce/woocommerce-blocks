@@ -1,6 +1,6 @@
 # Lazy-load translations
 
-Some of our translations, are lazy-loaded. To lazy-load them, the translation chunks needs to be registered. This takes place in `/src/BlockTypes/AbstractBlock.php`:
+Some of our translations are lazy-loaded. To lazy-load them, the translation chunks needs to be registered. This takes place in `/src/BlockTypes/AbstractBlock.php`:
 
 ```php
 /**

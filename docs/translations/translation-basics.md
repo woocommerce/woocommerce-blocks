@@ -38,7 +38,7 @@ See also https://developer.wordpress.org/plugins/internationalization/how-to-int
 
 ## Loading Text Domain
 
-Prior to [WordPress 4.6 “Pepper Adams”](https://wordpress.org/support/wordpress-version/version-4-6/), loading the text domain was required. As translations now take place on https://translate.wordpress.org/, loading the text domain using `load_plugin_textdomain()` is no longer required. In case the plugin does not load the text domain, the header of the main plugin file must include the definition `Requires at least:`. This definition must be set to 4.6 or higher. 
+Prior to [WordPress 4.6 “Pepper Adams”](https://wordpress.org/support/wordpress-version/version-4-6/), loading the text domain was required. As translations now take place on https://translate.wordpress.org/, loading the text domain using `load_plugin_textdomain()` is no longer required. In case the plugin does not load the text domain, the header of the main plugin file must include the definition `Requires at least:`. This definition must be set to 4.6 or higher.
 
 See also https://developer.wordpress.org/plugins/internationalization/how-to-internationalize-your-plugin/#loading-text-domain.
 
