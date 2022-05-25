@@ -18,7 +18,28 @@ class HandpickedProducts extends AbstractProductGrid {
 	 * @param array $query_args Query args.
 	 */
 	protected function set_block_query_args( &$query_args ) {
+		global $post;
+
 		$ids = array_map( 'absint', $this->attributes['products'] );
+
+		// This is a temporary hack to make sure that we exclude the current product ID
+		// from the list of products selected in HandPickedProducts block (and avoid an infinite loop).
+		// As expected, this doesn't work on StoreAPI calls, as $post does not exist.
+		if ( $post ) {
+			$current_product_id = $post->ID;
+			$parent_product_id  = $post->post_parent;
+
+			// We need the parent product ID, as the same code runs for revisions.
+			$ids = array_filter(
+				$ids,
+				static function ( $filtered_product_id ) use ( $current_product_id, $parent_product_id ) {
+					if ( ( $current_product_id === $filtered_product_id ) || ( $parent_product_id === $filtered_product_id ) ) {
+						return false;
+					}
+					return true;
+				}
+			);
+		}
 
 		$query_args['post__in']       = $ids;
 		$query_args['posts_per_page'] = count( $ids );
