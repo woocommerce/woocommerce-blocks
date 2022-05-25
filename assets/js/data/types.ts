@@ -29,14 +29,6 @@ export function assertBatchResponseIsValid(
 	throw new Error( 'Response not valid' );
 }
 
-export const test = (): number => {
-	return 'a';
-};
-
-export const test1 = (): number => {
-	return 'a';
-};
-
 export function assertResponseIsValid(
 	response: unknown
 ): asserts response is ApiResponse {
