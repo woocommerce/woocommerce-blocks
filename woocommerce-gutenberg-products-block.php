@@ -261,3 +261,54 @@ function woocommerce_blocks_get_php_translation_from_core( $translation, $text, 
 }
 
 add_filter( 'gettext', 'woocommerce_blocks_get_php_translation_from_core', 10, 3 );
+
+/**
+ * Compare the version of WooCommerce Blocks plugin with the version bundled in
+ * WooCommerce core. If the version bundled in WooCommerce core is greater than
+ * the version of the plugin, then we consider the plugin is outdated.
+ *
+ * @see https://github.com/woocommerce/woocommerce-blocks/issues/5587
+ *
+ * @return bool
+ */
+function woocommerce_blocks_plugin_is_outdated() {
+	$is_active      = false;
+	$active_plugins = get_option( 'active_plugins', array() );
+
+	// We check for the main plugin file only instead of the full path, because
+	// the plugin folder may not be 'woocommerce-blocks'.
+	foreach ( $active_plugins as $plugin ) {
+		if ( strpos( $plugin, 'woocommerce-gutenberg-products-block.php' ) ) {
+			$is_active = true;
+			break;
+		}
+	}
+
+	if ( ! $is_active ) {
+		return false;
+	}
+
+	$woocommerce_blocks_path = \Automattic\WooCommerce\Blocks\Package::get_path();
+
+	if ( strpos( $woocommerce_blocks_path, 'packages/woocommerce-blocks' ) ) {
+		return true;
+	}
+
+	return false;
+}
+
+if ( woocommerce_blocks_plugin_is_outdated() ) {
+	/**
+	 * Add notice to the admin dashboard if the plugin is outdated.
+	 */
+	function woocommerce_blocks_plugin_outdated_notice() {
+		if ( should_display_compatibility_notices() ) {
+			?>
+			<div class="notice notice-warning">
+				<p><?php esc_html_e( 'You have WooCommerce Blocks installed, but the version that is running is the one bundled in WooCommerce core because it is more up-to-date. Please, update the WooCommerce Blocks plugin.', 'woo-gutenberg-products-block' ); ?></p>
+			</div>
+			<?php
+		}
+	}
+	add_action( 'admin_notices', 'woocommerce_blocks_plugin_outdated_notice' );
+}
