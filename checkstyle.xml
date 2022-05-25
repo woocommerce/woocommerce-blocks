@@ -219,6 +219,10 @@
 <error line="47" column="3" severity="error" message="Type &apos;string | undefined&apos; is not assignable to type &apos;string&apos; with &apos;exactOptionalPropertyTypes: true&apos;. Consider adding &apos;undefined&apos; to the type of the target.
   Type &apos;undefined&apos; is not assignable to type &apos;string&apos;." source="TS2412" />
 </file>
+<file name="assets/js/data/types.ts">
+<error line="33" column="2" severity="error" message="Type &apos;string&apos; is not assignable to type &apos;number&apos;." source="TS2322" />
+<error line="37" column="2" severity="error" message="Type &apos;string&apos; is not assignable to type &apos;number&apos;." source="TS2322" />
+</file>
 <file name="assets/js/filters/exclude-draft-status-from-analytics.js">
 <error line="10" column="33" severity="error" message="Parameter &apos;optionsGroup&apos; implicitly has an &apos;any&apos; type." source="TS7006" />
 <error line="15" column="9" severity="error" message="Parameter &apos;option&apos; implicitly has an &apos;any&apos; type." source="TS7006" />
@@ -1655,10 +1659,11 @@
       Type &apos;undefined&apos; is not assignable to type &apos;boolean&apos;." source="TS2375" />
 </file>
 <file name="assets/js/base/components/cart-checkout/totals/coupon/index.tsx">
-<error line="93" column="8" severity="error" message="Type &apos;{ errorId: string; className: string; label: string; value: string; ariaDescribedBy: any; onChange: (newCouponValue: any) =&gt; void; focusOnMount: boolean; showError: boolean; }&apos; is not assignable to type &apos;IntrinsicAttributes &amp; Omit&lt;{ instanceId: string | number; }, &quot;instanceId&quot;&gt; &amp; { children?: ReactNode; }&apos;.
-  Property &apos;errorId&apos; does not exist on type &apos;IntrinsicAttributes &amp; Omit&lt;{ instanceId: string | number; }, &quot;instanceId&quot;&gt; &amp; { children?: ReactNode; }&apos;." source="TS2322" />
-<error line="103" column="21" severity="error" message="Parameter &apos;newCouponValue&apos; implicitly has an &apos;any&apos; type." source="TS7006" />
-<error line="113" column="8" severity="error" message="Type &apos;(e: React.MouseEvent&lt;HTMLElement, &apos;click&apos;&gt;) =&gt; void&apos; is not assignable to type &apos;(e: MouseEvent&lt;HTMLButtonElement, MouseEvent&gt;) =&gt; void&apos;.
+<error line="23" column="2" severity="error" message="Type &apos;string&apos; is not assignable to type &apos;number&apos;." source="TS2322" />
+<error line="97" column="8" severity="error" message="Type &apos;{ id: string; errorId: string; className: string; label: string; value: string; ariaDescribedBy: any; onChange: (newCouponValue: any) =&gt; void; focusOnMount: boolean; showError: boolean; }&apos; is not assignable to type &apos;IntrinsicAttributes &amp; Omit&lt;{ instanceId: string | number; }, &quot;instanceId&quot;&gt; &amp; { children?: ReactNode; }&apos;.
+  Property &apos;id&apos; does not exist on type &apos;IntrinsicAttributes &amp; Omit&lt;{ instanceId: string | number; }, &quot;instanceId&quot;&gt; &amp; { children?: ReactNode; }&apos;." source="TS2322" />
+<error line="108" column="21" severity="error" message="Parameter &apos;newCouponValue&apos; implicitly has an &apos;any&apos; type." source="TS7006" />
+<error line="118" column="8" severity="error" message="Type &apos;(e: React.MouseEvent&lt;HTMLElement, &apos;click&apos;&gt;) =&gt; void&apos; is not assignable to type &apos;(e: MouseEvent&lt;HTMLButtonElement, MouseEvent&gt;) =&gt; void&apos;.
   Types of parameters &apos;e&apos; and &apos;e&apos; are incompatible.
     Type &apos;MouseEvent&lt;HTMLButtonElement, MouseEvent&gt;&apos; is not assignable to type &apos;MouseEvent&lt;HTMLElement, &quot;click&quot;&gt;&apos;.
       Type &apos;MouseEvent&apos; is not assignable to type &apos;&quot;click&quot;&apos;." source="TS2322" />
