@@ -21,8 +21,8 @@ import {
 interface BackgroundProps {
 	blockName: string;
 	item: ProductResponseItem | WP_REST_API_Category;
-	mediaId: number;
-	mediaSrc: string;
+	mediaId: number | undefined;
+	mediaSrc: string | undefined;
 }
 
 interface BackgroundImage {

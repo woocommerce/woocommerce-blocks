@@ -35,7 +35,7 @@ interface WithFeaturedItemConfig extends GenericBlockUIConfig {
 	emptyMessage: string;
 }
 
-interface FeaturedItemRequiredAttributes {
+export interface FeaturedItemRequiredAttributes {
 	contentAlign: BlockAlignment;
 	dimRatio: number;
 	focalPoint: { x: number; y: number };
