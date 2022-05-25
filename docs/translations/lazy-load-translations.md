@@ -116,7 +116,7 @@ registerCheckoutBlock( {
 [...]
 ```
 
-Please note that the snippet above serves for demo purposes and only lists a few of teh definitions.
+Please note that the snippet above serves for demo purposes and only lists a few of the definitions.
 
 ## Related PRs
 
