@@ -17,19 +17,17 @@ const runner = async () => {
 	} );
 	const newCheckStyleFile = fs.readFileSync( fileName );
 	const newCheckStyleFileParsed = parseXml( newCheckStyleFile );
-	const currentCheckStyleFile = await getFileContent( {
+	const currentCheckStyleFileContent = await getFileContent( {
 		octokit,
 		owner,
 		repo,
-		path: fileName,
+		fileName,
 		onFail: setFailed,
 	} );
 
-	if ( ! currentCheckStyleFile.content ) {
+	if ( ! currentCheckStyleFileContent ) {
 		return;
 	}
-
-	const currentCheckStyleFileContent = currentCheckStyleFile.content;
 
 	const currentCheckStyleFileContentParsed = parseXml(
 		currentCheckStyleFileContent
