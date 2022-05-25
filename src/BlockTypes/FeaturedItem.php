@@ -30,14 +30,13 @@ abstract class FeaturedItem extends AbstractDynamicBlock {
 	 * @var array
 	 */
 	protected $global_style_wrapper = array(
-		'text_color',
-		'font_size',
+		'background_color',
 		'border_color',
 		'border_radius',
 		'border_width',
-		'background_color',
-		'text_color',
+		'font_size',
 		'padding',
+		'text_color',
 	);
 
 	/**
@@ -54,13 +53,13 @@ abstract class FeaturedItem extends AbstractDynamicBlock {
 	 * @param \WP_Term|\WC_Product $item Item object.
 	 * @return string
 	 */
-	abstract protected function get_item_title( $item);
+	abstract protected function get_item_title( $item );
 
 	/**
 	 * Returns the featured item image URL.
 	 *
 	 * @param \WP_Term|\WC_Product $item Item object.
-	 * @param string               $size    Image size, defaults to 'full'.
+	 * @param string               $size Image size, defaults to 'full'.
 	 * @return string
 	 */
 	abstract protected function get_item_image( $item, $size = 'full' );
@@ -68,7 +67,7 @@ abstract class FeaturedItem extends AbstractDynamicBlock {
 	/**
 	 * Renders the featured item attributes.
 	 *
-	 * @param \WP_Term|\WC_Product $item Item object.
+	 * @param \WP_Term|\WC_Product $item       Item object.
 	 * @param array                $attributes Block attributes. Default empty array.
 	 * @return string
 	 */
@@ -77,13 +76,13 @@ abstract class FeaturedItem extends AbstractDynamicBlock {
 	/**
 	 * Get the supports array for this block type.
 	 *
-	 * @see $this->register_block_type()
 	 * @return string[][];
+	 * @see $this->register_block_type()
 	 */
 	protected function get_block_type_supports() {
 		return array(
 			'color' => array(
-				'__experimentalDuotone' => ".wc-block-{$this->block_name}__background-image",
+				'__experimentalDuotone' => '.wc-block-' . $this->block_name . '__background-image',
 			),
 		);
 	}
@@ -132,7 +131,7 @@ abstract class FeaturedItem extends AbstractDynamicBlock {
 	 * Returns the url the item's image
 	 *
 	 * @param array                $attributes Block attributes. Default empty array.
-	 * @param \WP_Term|\WC_Product $item Item object.
+	 * @param \WP_Term|\WC_Product $item       Item object.
 	 *
 	 * @return string
 	 */
@@ -153,7 +152,7 @@ abstract class FeaturedItem extends AbstractDynamicBlock {
 	 * Renders the featured image as a div background.
 	 *
 	 * @param array  $attributes Block attributes. Default empty array.
-	 * @param string $image_url Item image url.
+	 * @param string $image_url  Item image url.
 	 *
 	 * @return string
 	 */
@@ -173,7 +172,7 @@ abstract class FeaturedItem extends AbstractDynamicBlock {
 	 * Get the styles for the wrapper element (background image, color).
 	 *
 	 * @param array  $attributes Block attributes. Default empty array.
-	 * @param string $image_url Item image url.
+	 * @param string $image_url  Item image url.
 	 *
 	 * @return string
 	 */
@@ -186,7 +185,9 @@ abstract class FeaturedItem extends AbstractDynamicBlock {
 
 		if ( ! $attributes['isRepeated'] ) {
 			$style .= 'background-repeat: no-repeat;';
-			$style .= 'background-size: ' . ( 'cover' === $attributes['imageFit'] ? $attributes['imageFit'] : 'auto' ) . ';';
+
+			$bg_size = 'cover' === $attributes['imageFit'] ? $attributes['imageFit'] : 'auto';
+			$style  .= 'background-size: ' . $bg_size . ';';
 		}
 
 		if ( $this->hasFocalPoint( $attributes ) ) {
@@ -207,8 +208,8 @@ abstract class FeaturedItem extends AbstractDynamicBlock {
 	 * Renders the featured image
 	 *
 	 * @param array                $attributes Block attributes. Default empty array.
-	 * @param \WC_Product|\WP_Term $item   Item object.
-	 * @param string               $image_url Item image url.
+	 * @param \WC_Product|\WP_Term $item       Item object.
+	 * @param string               $image_url  Item image url.
 	 *
 	 * @return string
 	 */
