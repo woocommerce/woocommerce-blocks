@@ -6,7 +6,7 @@ import { RichText, InnerBlocks } from '@wordpress/block-editor';
 import { __ } from '@wordpress/i18n';
 
 interface CallToActionProps {
-	itemId: number;
+	itemId: number | 'preview';
 	linkText: string;
 	permalink: string;
 }
