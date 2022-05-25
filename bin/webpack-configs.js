@@ -278,6 +278,15 @@ const getMainConfig = ( options = {} ) => {
 							'./assets/js/blocks/handpicked-products/block.json',
 						to: './handpicked-products/block.json',
 					},
+					{
+						from: './assets/js/blocks/product-tag/block.json',
+						to: './product-tag/block.json',
+					},
+					{
+						from:
+							'./assets/js/blocks/products-by-attribute/block.json',
+						to: './products-by-attribute/block.json',
+					},
 				],
 			} ),
 		],

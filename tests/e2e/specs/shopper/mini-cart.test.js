@@ -69,7 +69,7 @@ const WooCommerce = new WooCommerceRestApi( {
 
 if ( process.env.WOOCOMMERCE_BLOCKS_PHASE < 2 ) {
 	// Skips all the tests if it's a WooCommerce Core process environment.
-	// eslint-disable-next-line jest/no-focused-tests
+	// eslint-disable-next-line jest/no-focused-tests, jest/expect-expect
 	test.only( `Skipping ${ block.name } tests`, () => {} );
 }
 
@@ -594,9 +594,9 @@ describe( 'Shopper → Mini Cart', () => {
 				);
 
 				await expect( page ).toMatchElement(
-					'.wc-block-mini-cart__title',
+					'.wc-block-mini-cart__footer-cart',
 					{
-						text: 'Je winkelwagen (1 stuk)',
+						text: 'Bekijk mijn winkelwagen',
 					}
 				);
 			} );
@@ -626,9 +626,9 @@ describe( 'Shopper → Mini Cart', () => {
 				);
 
 				await expect( page ).toMatchElement(
-					'.wc-block-mini-cart__title',
+					'.wc-block-mini-cart__footer-cart',
 					{
-						text: 'Je winkelwagen (1 stuk)',
+						text: 'Bekijk mijn winkelwagen',
 					}
 				);
 			} );
