@@ -175,8 +175,9 @@ abstract class AbstractBlock {
 	 * Generate an array of chunks paths for loading translation.
 	 */
 	protected function get_chunks_paths() {
-		foreach ( glob( \Automattic\WooCommerce\Blocks\Package::get_path() . "build/{$this->chunks_folder}/*-frontend.js" ) as $block_name ) {
-			$blocks[] = "{$this->chunks_folder}/" . basename( $block_name );
+		$build_path = \Automattic\WooCommerce\Blocks\Package::get_path() . 'build/';
+		foreach ( new \RecursiveIteratorIterator( new \RecursiveDirectoryIterator( $build_path . $this->chunks_folder ) ) as $block_name ) {
+			$blocks[] = str_replace( $build_path, '', $block_name );
 		}
 
 		$chunks = preg_filter( '/.js/', '', $blocks );
