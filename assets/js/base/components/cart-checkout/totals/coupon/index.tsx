@@ -19,6 +19,10 @@ import { Panel } from '@woocommerce/blocks-checkout';
  */
 import './style.scss';
 
+export const test1 = (): number => {
+	return 'a';
+};
+
 export interface TotalsCouponProps {
 	/**
 	 * Instance id of the input
@@ -90,6 +94,7 @@ export const TotalsCoupon = ( {
 				<div className="wc-block-components-totals-coupon__content">
 					<form className="wc-block-components-totals-coupon__form">
 						<ValidatedTextInput
+							id={ textInputId }
 							errorId="coupon"
 							className="wc-block-components-totals-coupon__input"
 							label={ __(
