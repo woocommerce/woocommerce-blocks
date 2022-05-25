@@ -8,7 +8,7 @@ import {
 	BlockControls as BlockControlsWrapper,
 	MediaReplaceFlow,
 } from '@wordpress/block-editor';
-import { BlockAlignment } from '@wordpress/blocks';
+import type { BlockAlignment } from '@wordpress/blocks';
 import { ToolbarButton, ToolbarGroup } from '@wordpress/components';
 import { crop } from '@wordpress/icons';
 import { WP_REST_API_Category } from 'wp-types';

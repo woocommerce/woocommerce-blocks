@@ -2,9 +2,16 @@
  * External dependencies
  */
 import { previewProducts } from '@woocommerce/resource-previews';
-import { Block } from '@wordpress/blocks';
+import type { Block } from '@wordpress/blocks';
 
-export const example: Block[ 'example' ] = {
+type ExampleBlock = Block[ 'example' ] & {
+	attributes: {
+		productId: 'preview' | number;
+		previewProduct: typeof previewProducts[ number ];
+	};
+};
+
+export const example: ExampleBlock = {
 	attributes: {
 		productId: 'preview',
 		previewProduct: previewProducts[ 0 ],

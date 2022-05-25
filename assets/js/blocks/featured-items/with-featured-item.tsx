@@ -3,9 +3,9 @@
 /**
  * External dependencies
  */
+import type { BlockAlignment } from '@wordpress/blocks';
 import { ProductResponseItem } from '@woocommerce/types';
 import { __experimentalGetSpacingClassesAndStyles as getSpacingClassesAndStyles } from '@wordpress/block-editor';
-import { BlockAlignment } from '@wordpress/blocks';
 import { Icon, Placeholder, Spinner } from '@wordpress/components';
 import classnames from 'classnames';
 import { isEmpty } from 'lodash';
@@ -69,7 +69,11 @@ interface FeaturedItemRequiredProps< T > {
 		| FeaturedCategoryRequiredAttributes
 		| FeaturedProductRequiredAttributes
 	 ) &
-		EditorBlock< T >[ 'attributes' ];
+		EditorBlock< T >[ 'attributes' ] & {
+			// This is hardcoded because border is not yet included in Gutenberg's
+			// official types.
+			style: { border?: { radius?: number } };
+		};
 	isLoading: boolean;
 	setAttributes: ( attrs: Partial< FeaturedItemRequiredAttributes > ) => void;
 	useEditingImage: [ boolean, Dispatch< SetStateAction< boolean > > ];

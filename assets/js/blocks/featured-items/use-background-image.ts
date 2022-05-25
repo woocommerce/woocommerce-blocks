@@ -45,8 +45,8 @@ export function useBackgroundImage( {
 		} else {
 			setBackgroundImageId(
 				blockName === BLOCK_NAMES.featuredProduct
-					? getImageIdFromProduct( item )
-					: getCategoryImageId( item )
+					? getImageIdFromProduct( item as ProductResponseItem )
+					: getCategoryImageId( item as WP_REST_API_Category )
 			);
 		}
 	}, [ blockName, item, mediaId ] );
@@ -57,8 +57,8 @@ export function useBackgroundImage( {
 		} else {
 			setBackgroundImageSrc(
 				blockName === BLOCK_NAMES.featuredProduct
-					? getImageSrcFromProduct( item )
-					: getCategoryImageSrc( item )
+					? getImageSrcFromProduct( item as ProductResponseItem )
+					: getCategoryImageSrc( item as WP_REST_API_Category )
 			);
 		}
 	}, [ blockName, item, mediaSrc ] );

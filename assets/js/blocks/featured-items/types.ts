@@ -1,7 +1,7 @@
 /**
  * External dependencies
  */
-import { Block, BlockEditProps } from '@wordpress/blocks';
+import type { Block, BlockEditProps } from '@wordpress/blocks';
 
 export type EditorBlock< T > = Block< T > & BlockEditProps< T >;
 
