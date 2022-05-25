@@ -173,10 +173,17 @@ abstract class AbstractBlock {
 
 	/**
 	 * Generate an array of chunks paths for loading translation.
+	 *
+	 * @param string $chunks_folder The folder to iterate over.
+	 * @return string[] $chunks list of chunks to load.
 	 */
-	protected function get_chunks_paths() {
+	protected function get_chunks_paths( $chunks_folder ) {
 		$build_path = \Automattic\WooCommerce\Blocks\Package::get_path() . 'build/';
-		foreach ( new \RecursiveIteratorIterator( new \RecursiveDirectoryIterator( $build_path . $this->chunks_folder ) ) as $block_name ) {
+		$blocks     = [];
+		if ( ! is_dir( $build_path ) ) {
+			return [];
+		}
+		foreach ( new \RecursiveIteratorIterator( new \RecursiveDirectoryIterator( $build_path . $chunks_folder ) ) as $block_name ) {
 			$blocks[] = str_replace( $build_path, '', $block_name );
 		}
 
