@@ -106,20 +106,19 @@ The WooCommerce Blocks Handbook provides documentation for designers and develop
     -   [Class names update in 2.8.0](designers/theming/class-names-update-280.md)
     -   [Product grid blocks style update in 2.7.0](designers/theming/product-grid-270.md)
 
-<!-- ## Tutorials -->
+## Developer Resources
 
-<!--
-| Target group           | Document                                                             | Description                                                                                              |
-| ---------------------- | -------------------------------------------------------------------- | -------------------------------------------------------------------------------------------------------- |
-| Contributors           | [Contributing](contributors/contributing/README.md)                  | These documents explain how you can contribute to the WooCommerce Blocks development.                    |
-| Internal Developers    | [Blocks](internal-developers/blocks/README.md)                       | These documents explain the functionality specific to certain Blocks.                                    |
-| Internal Developers    | [Block Client APIs](internal-developers/block-client-apis/README.md) | These documents explain the API interfaces.                                                              |
-| Internal Developers    | [Store API (REST API)](../src/StoreApi/README.md)                    | These documents explain the Store API used to get product data on the frontend.                          |
-| Internal Developers    | [Templates](internal-developers/templates/README.md)                 | These documents explain the technical aspects of the WooCommerce block templates and template parts.     |
-| Internal Developers    | [Testing](internal-developers/testing/README.md)                     | These documents explain the testing process.                                                             |
-| Third-Party Developers | [Extensibility](third-party-developers/extensibility/README.md)      | These documents explain the extensibility of WooCommerce Blocks.                                         |
-| Designers              | [Theming](designers/theming/README.md)                               | These documents explain the theming for blocks, styles, CSS classnames and other theming best practices. |
- -->
+The following posts from <https://developer.woocommerce.com/category/developer-resources/>, provide deeper insights into the WooCommerce Blocks development.
+
+-   [Store API is now considered stable](https://developer.woocommerce.com/2022/03/25/store-api-is-now-considered-stable/)
+-   [Available Extensibility Interfaces for The Cart and Checkout Blocks](https://developer.woocommerce.com/2021/11/09/available-extensibility-interfaces-for-the-cart-and-checkout-blocks/)
+
+## Tutorials
+
+The following tutorials from <https://developer.woocommerce.com/category/tutorials/>, help you extending the WooCommerce Blocks plugin.
+
+-   [Hiding Shipping and Payment Options in the Cart and Checkout Blocks](https://developer.woocommerce.com/2022/05/20/hiding-shipping-and-payment-options-in-the-cart-and-checkout-blocks/)
+-   [Integrating your Payment Method with Cart and Checkout Blocks](https://developer.woocommerce.com/2021/03/15/integrating-your-payment-method-with-cart-and-checkout-blocks/)
 
 <!-- FEEDBACK -->
 
