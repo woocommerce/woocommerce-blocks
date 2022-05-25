@@ -45,8 +45,8 @@ export const withUpdateButtonAttributes = < T extends EditorBlock< T > >(
 
 	const { editMode } = attributes;
 	const permalink =
-		( item as WP_REST_API_Category ).link ||
-		( item as ProductResponseItem ).permalink;
+		( item as WP_REST_API_Category )?.link ||
+		( item as ProductResponseItem )?.permalink;
 
 	const Block = useSelect( ( select ) => {
 		return select( 'core/block-editor' ).getBlock( clientId );
