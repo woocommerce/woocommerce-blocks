@@ -15,8 +15,6 @@
 		".htaccess": "./bin/.htaccess"
 	},
 	"config": {
-		"JETPACK_AUTOLOAD_DEV": true,
-		"SCRIPT_DEBUG": false,
-		"CONCATENATE_SCRIPTS": false
+		"JETPACK_AUTOLOAD_DEV": true
 	}
 }
