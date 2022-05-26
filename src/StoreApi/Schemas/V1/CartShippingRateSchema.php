@@ -240,7 +240,7 @@ class CartShippingRateSchema extends AbstractSchema {
 	protected function prepare_package_destination_response( $package ) {
 		return (object) $this->prepare_html_response(
 			[
-				'address_1' => $package['destination']['address_1'],
+				'address_1' => $package['destination']['address'],
 				'address_2' => $package['destination']['address_2'],
 				'city'      => $package['destination']['city'],
 				'state'     => $package['destination']['state'],
