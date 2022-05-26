@@ -2,7 +2,6 @@
 /.git
 /.wordpress-org
 /.sources
-/assets
 /bin
 /docs
 /node_modules
