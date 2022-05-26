@@ -97,6 +97,12 @@ const translation = sprintf(
 
 See also https://developer.wordpress.org/reference/functions/_nx/.
 
+### `sprintf()`
+
+Template literals cannot be used in JS/TS translations. To use variables in JS/TS translations, the function `sprintf()` needs to be used. Various examples on how to use this function, can be seen in the previous examples.
+
+See also https://developer.wordpress.org/block-editor/reference-guides/packages/packages-i18n/#sprintf.
+
 <!-- FEEDBACK -->
 
 ---
