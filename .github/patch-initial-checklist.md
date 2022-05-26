@@ -5,9 +5,10 @@ The release pull request has been created! This checklist is a guide to follow f
 ## Initial Preparation
 
 * [ ] Close the milestone of the release you are going to ship. That will prevent newly approved PRs to be automatically assigned to that milestone.
-* [ ] Add the changelog to `readme.txt`
-  * [ ] Add the version and date to the changelog section within `readme.txt`, e.g. `= {{version}} - YYYY-MM-DD =`
-  * [ ] Copy the changelog from the pull request description above into this new section
+* [ ] Check that the release automation correctly added the changelog to `readme.txt`
+* [ ] Ensure you pull your changes from the remote, since GitHub Actions will have added new commits to the branch.
+  * [ ] Check the version and date in the changelog section within `readme.txt`, e.g. `= {{version}} - YYYY-MM-DD =`
+  * [ ] Check the changelog matches the one in the pull request description above.
 * [ ] Update compatibility sections (if applicable). __Note:__ Do not change the stable tag or plugin version; this is automated.
 * [ ] Push above changes to the release branch.
 
@@ -49,7 +50,7 @@ Each porter is responsible for testing the PRs that fall under the focus of thei
 
 * [ ] An email confirmation is required before the new version will be released, so check your email in order to confirm the release.
 * [ ] Edit the [GitHub release](https://github.com/woocommerce/woocommerce-gutenberg-products-block/releases) and copy changelog into the release notes.
-* [ ] The `#team-rubik` slack instance will be notified about the progress with the WordPress.org deploy. Watch for that. If anything goes wrong, an error will be reported and you can followup via the GitHub actions tab and the log for that workflow.
+* [ ] The `#woo-blocks-repo` slack instance will be notified about the progress with the WordPress.org deploy. Watch for that. If anything goes wrong, an error will be reported and you can followup via the GitHub actions tab and the log for that workflow.
 * [ ] After the wp.org workflow completes, confirm the following
   * [ ] Changelog, Version, and Last Updated on [WP.org plugin page](https://wordpress.org/plugins/woo-gutenberg-products-block/) is correct.
   * [ ] Confirm svn tag is correct, e.g. [{{version}}](https://plugins.svn.wordpress.org/woo-gutenberg-products-block/tags/{{version}}/)
@@ -63,7 +64,7 @@ Each porter is responsible for testing the PRs that fall under the focus of thei
   * If the base branch was `trunk`, and this release was deployed to WordPress.org, then merge the branch into `trunk`.
   * If the base branch is the release branch this patch release is for, then merge branch into release branch and then merge the release branch back to `trunk` if the patch release is the latest released version. Otherwise just merge back into the release branch.
 * [ ] If you merged the branch to `trunk`, then update version on the `trunk` branch to be for the next version of the plugin and include the `dev` suffix (e.g. something like [`2.6-dev`](https://github.com/woocommerce/woocommerce-gutenberg-products-block/commit/e27f053e7be0bf7c1d376f5bdb9d9999190ce158)) for the next version.
-* [ ] Update the schedules p2 with the shipped date for the release (Pca54o-1N-p2).
+* [ ] Update the schedules p2 with the shipped date for the release (PdToLP-K-p2).
 * [ ] Edit the GitHub milestone of the release you just shipped and add the current date as the due date (this is used to track ship date as well).
 
 ## Pull request in WooCommerce Core for Package update

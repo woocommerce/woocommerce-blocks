@@ -431,3 +431,31 @@ export const createCoupon = async ( coupon ) => {
 
 	return createdCoupon;
 };
+
+/**
+ * Open the block editor settings menu.
+ */
+export const openBlockEditorSettings = async () => {
+	const buttonSelector =
+		'.edit-site-header__actions button[aria-label="Settings"]';
+
+	const isSideBarAlreadyOpened = await page.$(
+		'.interface-interface-skeleton__sidebar'
+	);
+
+	if ( isSideBarAlreadyOpened === null ) {
+		await page.click( buttonSelector );
+	}
+};
+
+/**
+ * Click a link and wait for the page to load.
+ *
+ * @param {string} selector The CSS selector of the link to click.
+ */
+export const clickLink = async ( selector ) => {
+	await Promise.all( [
+		page.click( selector ),
+		page.waitForNavigation( { waitUntil: 'networkidle0' } ),
+	] );
+};

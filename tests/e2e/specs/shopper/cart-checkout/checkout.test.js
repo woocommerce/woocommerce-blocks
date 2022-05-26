@@ -31,7 +31,8 @@ import {
 import { createCoupon } from '../../../utils';
 
 if ( process.env.WOOCOMMERCE_BLOCKS_PHASE < 2 ) {
-	// eslint-disable-next-line jest/no-focused-tests
+	// Skips all the tests if it's a WooCommerce Core process environment.
+	// eslint-disable-next-line jest/no-focused-tests, jest/expect-expect
 	test.only( 'Skipping Cart & Checkout tests', () => {} );
 }
 
@@ -52,6 +53,26 @@ describe( 'Shopper → Checkout', () => {
 				text: 'Your cart is empty!',
 			}
 		);
+	} );
+	describe( 'Payment Methods', () => {
+		it( 'User can change payment methods', async () => {
+			await shopper.block.emptyCart();
+			await shopper.goToShop();
+			await shopper.addToCartFromShopPage( SIMPLE_PHYSICAL_PRODUCT_NAME );
+			await shopper.block.goToCheckout();
+			await expect( page ).toClick(
+				'.wc-block-components-payment-method-label',
+				{
+					text: 'Direct bank transfer',
+				}
+			);
+			await expect( page ).toClick(
+				'.wc-block-components-payment-method-label',
+				{
+					text: 'Cash on delivery',
+				}
+			);
+		} );
 	} );
 
 	describe( 'Shipping and Billing Addresses', () => {
@@ -91,6 +112,7 @@ describe( 'Shopper → Checkout', () => {
 			await reactivateCompatibilityNotice();
 		} );
 
+		// eslint-disable-next-line jest/expect-expect
 		it( 'User can have different shipping and billing addresses', async () => {
 			await shopper.goToShop();
 			await shopper.addToCartFromShopPage( SIMPLE_PHYSICAL_PRODUCT_NAME );
