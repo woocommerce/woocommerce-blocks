@@ -76,7 +76,13 @@ const usePaymentMethodRegistration = (
 			cart,
 			cartTotals,
 			cartNeedsShipping,
-			billingData: billingAddress,
+			get billingData() {
+				/* eslint no-console: ["error", { allow: ["warn"] }] */
+				console.warn(
+					'billingData had been deprecated. Please use billingAddress instead.'
+				);
+				return this.billingAddress;
+			},
 			billingAddress,
 			shippingAddress,
 			selectedShippingMethods,
