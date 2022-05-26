@@ -1,16 +1,12 @@
 # Translations in JS/TS files
 
-In comparison to PHP files, translations in JS/TS files require a few additional steps. First, the Node package [`@wordpress/i18n`](https://developer.wordpress.org/block-editor/reference-guides/packages/packages-i18n/) needs to be installed:
-
-```sh
-npm install @wordpress/i18n --save
-```
-
-Next, each JS/TS file, that hold strings which should be translated, needs to import the corresponding functions from `@wordpress/i18n`:
+In comparison to PHP files, translations in JS/TS files require a few additional steps. To use translation functions in JS/TS, the dependency `@wordpress/i18n` needs to be included at the top of the corresponding file:
 
 ```ts
 import { sprintf, _n } from '@wordpress/i18n';
 ```
+
+Once that dependency had been included, the translation function can than be used.
 
 ## Usage of localization functions
 
