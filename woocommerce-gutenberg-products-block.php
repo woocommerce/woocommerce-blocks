@@ -265,7 +265,7 @@ add_filter( 'gettext', 'woocommerce_blocks_get_php_translation_from_core', 10, 3
 /**
  * Check the current WC Blocks path. If the WC Blocks plugin is active but the
  * current path is from the WC Core, we can consider the plugin is outdated
- * because JetPack autoloader always loads the newer package.
+ * because Jetpack Autoloader always loads the newer package.
  *
  * @see https://github.com/woocommerce/woocommerce-blocks/issues/5587
  *
@@ -305,7 +305,7 @@ if ( woocommerce_blocks_plugin_is_outdated() ) {
 		if ( should_display_compatibility_notices() ) {
 			?>
 			<div class="notice notice-warning">
-				<p><?php esc_html_e( 'You have WooCommerce Blocks installed, but the WocCommerce bundled version is running because it is more up-to-date. This may cause unexpected compatibility issues. Please update the WooCommerce Blocks plugin.', 'woo-gutenberg-products-block' ); ?></p>
+				<p><?php esc_html_e( 'You have WooCommerce Blocks installed, but the WooCommerce bundled version is running because it is more up-to-date. This may cause unexpected compatibility issues. Please update the WooCommerce Blocks plugin.', 'woo-gutenberg-products-block' ); ?></p>
 			</div>
 			<?php
 		}
