@@ -96,8 +96,10 @@ abstract class AbstractCartRoute extends AbstractRoute {
 		}
 
 		if ( is_wp_error( $response ) ) {
-			$response = $this->error_to_response( $response );
-		} elseif ( $this->is_update_request( $request ) ) {
+			return $this->error_to_response( $response );
+		}
+
+		if ( $this->is_update_request( $request ) ) {
 			$this->cart_updated( $request );
 		}
 
