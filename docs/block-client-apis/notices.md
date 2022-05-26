@@ -160,7 +160,7 @@ The `useStoreNotices()` hook allows reading and manipulating snackbar notices in
 
 The snackbar is a small toast-like notification that appears at the bottom of a user's screen.
 
-<img width="300" src="https://user-images.githubusercontent.com/5656702/124294673-dd803b80-db4f-11eb-81ec-02fb962d04ed.png" />
+![Applied coupon code](https://user-images.githubusercontent.com/5656702/124294673-dd803b80-db4f-11eb-81ec-02fb962d04ed.png)
 
 ### API
 
@@ -259,4 +259,3 @@ const CheckoutProcessor = () => {
 🐞 Found a mistake, or have a suggestion? [Leave feedback about this document here.](https://github.com/woocommerce/woocommerce-gutenberg-products-block/issues/new?assignees=&labels=type%3A+documentation&template=--doc-feedback.md&title=Feedback%20on%20./docs/block-client-apis/notices.md)
 
 <!-- /FEEDBACK -->
-

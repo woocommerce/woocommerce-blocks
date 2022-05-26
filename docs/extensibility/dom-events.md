@@ -20,7 +20,7 @@ This event is the equivalent to the jQuery event `added_to_cart` triggered by Wo
 
 _Example usage in WC Blocks:_ Cart and Mini Cart blocks (via the `useStoreCart()` hook) listen to this event to know if they need to update their contents.
 
-#### `detail` parameters:
+#### `detail` parameters
 
 | Parameter          | Type    | Default value | Description                                                                                                                                                                                                                                                                                                                                                                                   |
 | ------------------ | ------- | ------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
@@ -41,4 +41,3 @@ _Example usage in WC Blocks:_ Cart and Mini Cart blocks (via the `useStoreCart()
 🐞 Found a mistake, or have a suggestion? [Leave feedback about this document here.](https://github.com/woocommerce/woocommerce-gutenberg-products-block/issues/new?assignees=&labels=type%3A+documentation&template=--doc-feedback.md&title=Feedback%20on%20./docs/extensibility/dom-events.md)
 
 <!-- /FEEDBACK -->
-

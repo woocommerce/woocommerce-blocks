@@ -2,15 +2,14 @@
 
 The following principles should be considered when extending, creating, or updating endpoints in the Store API.
 
-- [Routes must include a well-defined JSON schema](#routes-must-include-a-well-defined-json-schema)
-- [Routes should be designed around resources with a single type of schema](#routes-should-be-designed-around-resources-with-a-single-type-of-schema)
-  - [Error Handling](#error-handling)
-  - [Cart Operations](#cart-operations)
-- [Exposed data must belong to the current user or be non-sensitive](#exposed-data-must-belong-to-the-current-user-or-be-non-sensitive)
-- [Collections of resources should be paginated](#collections-of-resources-should-be-paginated)
-- [API Responses should use standard HTTP status codes](#api-responses-should-use-standard-http-status-codes)
-- [Breaking changes should be avoided where possible](#breaking-changes-should-be-avoided-where-possible)
-- [](#)
+-   [Routes must include a well-defined JSON schema](#routes-must-include-a-well-defined-json-schema)
+-   [Routes should be designed around resources with a single type of schema](#routes-should-be-designed-around-resources-with-a-single-type-of-schema)
+    -   [Error Handling](#error-handling)
+    -   [Cart Operations](#cart-operations)
+-   [Exposed data must belong to the current user or be non-sensitive](#exposed-data-must-belong-to-the-current-user-or-be-non-sensitive)
+-   [Collections of resources should be paginated](#collections-of-resources-should-be-paginated)
+-   [API Responses should use standard HTTP status codes](#api-responses-should-use-standard-http-status-codes)
+-   [Breaking changes should be avoided where possible](#breaking-changes-should-be-avoided-where-possible)
 
 ## Routes must include a [well-defined JSON schema](https://developer.wordpress.org/rest-api/extending-the-rest-api/schema/)
 
@@ -139,4 +138,3 @@ The version will not increase for bug fixes unless the scope of the bug causes a
 🐞 Found a mistake, or have a suggestion? [Leave feedback about this document here.](https://github.com/woocommerce/woocommerce-gutenberg-products-block/issues/new?assignees=&labels=type%3A+documentation&template=--doc-feedback.md&title=Feedback%20on%20./src/StoreApi/docs/guiding-principles.md)
 
 <!-- /FEEDBACK -->
-

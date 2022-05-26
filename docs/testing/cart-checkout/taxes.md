@@ -1,5 +1,3 @@
-[![Create Todo list](https://raw.githubusercontent.com/senadir/todo-my-markdown/master/public/github-button.svg?sanitize=true)](https://git-todo.netlify.app/create)
-
 # Taxes
 
 ## Setup
@@ -16,6 +14,9 @@ With taxes enabled: <!-- heading -->
 
 -   [ ] You should see "Taxes" line in the cart or checkout.
 -   [ ] If the user address or store settings country doesn't have taxes in it, the value will be 0.
+
+[![Create Todo list](https://raw.githubusercontent.com/senadir/todo-my-markdown/master/public/github-button.svg?sanitize=true)](https://git-todo.netlify.app/create)
+
 <!-- FEEDBACK -->
 
 ---
@@ -25,4 +26,3 @@ With taxes enabled: <!-- heading -->
 🐞 Found a mistake, or have a suggestion? [Leave feedback about this document here.](https://github.com/woocommerce/woocommerce-gutenberg-products-block/issues/new?assignees=&labels=type%3A+documentation&template=--doc-feedback.md&title=Feedback%20on%20./docs/testing/cart-checkout/taxes.md)
 
 <!-- /FEEDBACK -->
-

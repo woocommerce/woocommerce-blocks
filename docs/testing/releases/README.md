@@ -1,3 +1,5 @@
+# Releases
+
 Every release includes specific testing instructions for new features and bug fixes (if applicable). This is a list of the available release testing instruction docs:
 
 -   [2.6.0](./260.md)
@@ -81,4 +83,3 @@ Every release includes specific testing instructions for new features and bug fi
 🐞 Found a mistake, or have a suggestion? [Leave feedback about this document here.](https://github.com/woocommerce/woocommerce-gutenberg-products-block/issues/new?assignees=&labels=type%3A+documentation&template=--doc-feedback.md&title=Feedback%20on%20./docs/testing/releases/README.md)
 
 <!-- /FEEDBACK -->
-

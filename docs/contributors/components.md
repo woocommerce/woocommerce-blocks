@@ -4,7 +4,7 @@ This repo includes [Storybook](https://storybook.js.org) tooling so we can test 
 
 The storybook is automatically built and published to [GitHub pages](https://woocommerce.github.io/woocommerce-gutenberg-products-block/) on every push to the main branch. See [travis.yml](https://github.com/woocommerce/woocommerce-gutenberg-products-block/blob/trunk/.travis.yml) for details.
 
-https://woocommerce.github.io/woocommerce-gutenberg-products-block/
+<https://woocommerce.github.io/woocommerce-gutenberg-products-block/>
 
 ## Where are our components?
 
@@ -32,7 +32,7 @@ For more info about individual components, refer to [Storybook](https://woocomme
 ## How to run Storybook locally and test components
 
 -   `npm run storybook`
--   Point your browser at port 6006, e.g. http://localhost:6006
+-   Point your browser at port 6006, e.g. <http://localhost:6006>
 -   Play with components 🎛!
 
 ## How to add a story for a component
@@ -51,4 +51,3 @@ If you're stuck, copy source of an existing story to get started.
 🐞 Found a mistake, or have a suggestion? [Leave feedback about this document here.](https://github.com/woocommerce/woocommerce-gutenberg-products-block/issues/new?assignees=&labels=type%3A+documentation&template=--doc-feedback.md&title=Feedback%20on%20./docs/contributors/components.md)
 
 <!-- /FEEDBACK -->
-

@@ -1,5 +1,3 @@
-[![Create Todo list](https://raw.githubusercontent.com/senadir/todo-my-markdown/master/public/github-button.svg?sanitize=true)](https://git-todo.netlify.app/create)
-
 # Coupons
 
 ## Setup
@@ -33,6 +31,9 @@ With coupons enabled: <!-- heading -->
 -   [ ] Adding a coupon then adding `alone` coupon should replace the first one.
 -   [ ] Adding `alone` then trying to another coupon should result in an error.
 -   [ ] Adding `freeship` should show the free shipping method you previously created.
+
+[![Create Todo list](https://raw.githubusercontent.com/senadir/todo-my-markdown/master/public/github-button.svg?sanitize=true)](https://git-todo.netlify.app/create)
+
 <!-- FEEDBACK -->
 
 ---
@@ -42,4 +43,3 @@ With coupons enabled: <!-- heading -->
 🐞 Found a mistake, or have a suggestion? [Leave feedback about this document here.](https://github.com/woocommerce/woocommerce-gutenberg-products-block/issues/new?assignees=&labels=type%3A+documentation&template=--doc-feedback.md&title=Feedback%20on%20./docs/testing/cart-checkout/coupons.md)
 
 <!-- /FEEDBACK -->
-

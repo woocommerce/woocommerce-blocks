@@ -1,6 +1,6 @@
 # Smoke Testing
 
-We generally consider smoke testing using this definition [from Wikipedia](https://href.li/?https://en.wikipedia.org/wiki/Smoke_testing_(software)):
+We generally consider smoke testing using this definition [from Wikipedia](<https://href.li/?https://en.wikipedia.org/wiki/Smoke_testing_(software)>):
 
 > **Smoke Testing** is a subset of test cases that cover the most important functionality of a component or system, used to aid assessment of whether the main functions of the software appear to work correctly. It is a set of tests run on each new build of a product to verify that the build is testable before the build is released into the hands of the test team
 
@@ -10,10 +10,9 @@ When testing builds the following things should be tested to ensure critical par
 
 To make future testing more efficient, we recommend setting up some Blocks in advance so you can repeat tests on them whenever smoke testing.
 
-### 1. Create a page with all regular and SSR blocks (such as the product grids) setup and configured.
+### 1. Create a page with all regular and SSR blocks (such as the product grids) setup and configured
 
-<details>
-<summary>You can copy and paste the following code into a new page to add all the blocks (click):</summary>
+You can copy and paste the following code into a new page to add all the blocks (click):
 
 ```html
 <!-- wp:woocommerce/featured-product {"editMode":false,"productId":15} -->
@@ -147,14 +146,11 @@ To make future testing more efficient, we recommend setting up some Blocks in ad
 <!-- /wp:woocommerce/product-search -->
 ```
 
-</details>
-
 In the `wp:woocommerce/product-search` substitute the URL used for the `action` attribute to your site URL or the block will not embedd correctly.
 
-### 2. Create a page with the All Products Block, and some Filter Blocks, setup to test that functionality in isolation. Using the columns block here too is a good idea to keep things organized.
+### 2. Create a page with the All Products Block, and some Filter Blocks, setup to test that functionality in isolation. Using the columns block here too is a good idea to keep things organized
 
-<details>
-<summary>You can copy and paste the following code into a new page to add all the blocks (click):</summary>
+You can copy and paste the following code into a new page to add all the blocks (click):
 
 ```html
 <!-- wp:columns -->
@@ -239,9 +235,7 @@ In the `wp:woocommerce/product-search` substitute the URL used for the `action` 
 <!-- /wp:columns -->
 ```
 
-</details>
-
-### 3. Add the Cart and Checkout block to the relevant WooCommerce pages.
+### 3. Add the Cart and Checkout block to the relevant WooCommerce pages
 
 ## Editor Tests
 
@@ -280,4 +274,3 @@ In the `wp:woocommerce/product-search` substitute the URL used for the `action` 
 🐞 Found a mistake, or have a suggestion? [Leave feedback about this document here.](https://github.com/woocommerce/woocommerce-gutenberg-products-block/issues/new?assignees=&labels=type%3A+documentation&template=--doc-feedback.md&title=Feedback%20on%20./docs/testing/smoke-testing.md)
 
 <!-- /FEEDBACK -->
-

@@ -6,15 +6,15 @@ The BlockTemplateController class contains all the business logic which loads th
 
 ## Table of Contents
 
-- [BlockTemplateController](#blocktemplatecontroller)
-  - [Table of Contents](#table-of-contents)
-  - [Overview](#overview)
-  - [add_block_templates( $query_result, $query, \$template_type )](#add_block_templates-query_result-query-template_type-)
-    - [Return value](#return-value)
-  - [get_block_file_template( $template, $id, \$template_type )](#get_block_file_template-template-id-template_type-)
-    - [Return value](#return-value-1)
-  - [render_block_template()](#render_block_template)
-    - [Return value](#return-value-2)
+-   [BlockTemplateController](#blocktemplatecontroller)
+    -   [Table of Contents](#table-of-contents)
+    -   [Overview](#overview)
+    -   [add_block_templates( $query_result, $query, \$template_type )](#add_block_templates-query_result-query-template_type-)
+        -   [Return value](#return-value)
+    -   [get_block_file_template( $template, $id, \$template_type )](#get_block_file_template-template-id-template_type-)
+        -   [Return value](#return-value-1)
+    -   [render_block_template()](#render_block_template)
+        -   [Return value](#return-value-2)
 
 ## Overview
 
@@ -98,4 +98,3 @@ Void. This method does not return a value but rather sets up hooks to render blo
 🐞 Found a mistake, or have a suggestion? [Leave feedback about this document here.](https://github.com/woocommerce/woocommerce-gutenberg-products-block/issues/new?assignees=&labels=type%3A+documentation&template=--doc-feedback.md&title=Feedback%20on%20./docs/templates/block-template-controller.md)
 
 <!-- /FEEDBACK -->
-

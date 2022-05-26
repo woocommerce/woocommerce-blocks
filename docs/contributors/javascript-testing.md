@@ -19,8 +19,8 @@ Unit tests are implemented near the code they test, in `*.test.js` files.
 
 Use the following command to run the unit tests:
 
-```
-$ npm run test
+```sh
+npm run test
 ```
 
 The test scripts use [wp-scripts](https://github.com/WordPress/gutenberg/tree/master/packages/scripts) to run jest for component and unit testing.
@@ -138,4 +138,3 @@ In `./tests/e2e/specs`, verify for conditions like `if ( process.env.WP_VERSION 
 🐞 Found a mistake, or have a suggestion? [Leave feedback about this document here.](https://github.com/woocommerce/woocommerce-gutenberg-products-block/issues/new?assignees=&labels=type%3A+documentation&template=--doc-feedback.md&title=Feedback%20on%20./docs/contributors/javascript-testing.md)
 
 <!-- /FEEDBACK -->
-

@@ -1,12 +1,12 @@
 # Cart and Checkout testing plan <!-- omit in toc -->
 
-- [Introduction](#introduction)
-  - [Known limitations](#known-limitations)
-- [How to report issues](#how-to-report-issues)
-- [What are we testing?](#what-are-we-testing)
-  - [Cart Block](#cart-block)
-  - [Checkout Block](#checkout-block)
-- [Testing Checklist](#testing-checklist)
+-   [Introduction](#introduction)
+    -   [Known limitations](#known-limitations)
+-   [How to report issues](#how-to-report-issues)
+-   [What are we testing?](#what-are-we-testing)
+    -   [Cart Block](#cart-block)
+    -   [Checkout Block](#checkout-block)
+-   [Testing Checklist](#testing-checklist)
 
 ## Introduction
 
@@ -64,11 +64,11 @@ the Cart and Checkout shortcodes.
 
 ### Cart Block
 
-![](https://i.imgur.com/mcbXgqV.png)
+![image](https://i.imgur.com/mcbXgqV.png)
 
 ### Checkout Block
 
-![](https://i.imgur.com/9KhYK2L.png)
+![image](https://i.imgur.com/9KhYK2L.png)
 
 ## Testing Checklist
 
@@ -90,4 +90,3 @@ the Cart and Checkout shortcodes.
 🐞 Found a mistake, or have a suggestion? [Leave feedback about this document here.](https://github.com/woocommerce/woocommerce-gutenberg-products-block/issues/new?assignees=&labels=type%3A+documentation&template=--doc-feedback.md&title=Feedback%20on%20./docs/testing/cart-checkout/README.md)
 
 <!-- /FEEDBACK -->
-

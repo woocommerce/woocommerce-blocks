@@ -4,15 +4,15 @@ This page includes documentation related to WooCommerce Block Templates.
 
 ## Table of Contents
 
-- [WooCommerce Block Templates](#woocommerce-block-templates)
-  - [Table of Contents](#table-of-contents)
-  - [Overview](#overview)
-    - [Requirements](#requirements)
-  - [Technical Overview](#technical-overview)
-    - [The Problem](#the-problem)
-    - [The Solution](#the-solution)
-    - [Some things to be aware of](#some-things-to-be-aware-of)
-  - [Related files](#related-files)
+-   [WooCommerce Block Templates](#woocommerce-block-templates)
+    -   [Table of Contents](#table-of-contents)
+    -   [Overview](#overview)
+        -   [Requirements](#requirements)
+    -   [Technical Overview](#technical-overview)
+        -   [The Problem](#the-problem)
+        -   [The Solution](#the-solution)
+        -   [Some things to be aware of](#some-things-to-be-aware-of)
+    -   [Related files](#related-files)
 
 ## Overview
 
@@ -66,4 +66,3 @@ The BlockTemplateController class is primarily responsible for hooking into both
 🐞 Found a mistake, or have a suggestion? [Leave feedback about this document here.](https://github.com/woocommerce/woocommerce-gutenberg-products-block/issues/new?assignees=&labels=type%3A+documentation&template=--doc-feedback.md&title=Feedback%20on%20./docs/templates/README.md)
 
 <!-- /FEEDBACK -->
-
