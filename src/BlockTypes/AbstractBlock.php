@@ -172,7 +172,28 @@ abstract class AbstractBlock {
 	}
 
 	/**
+	 * Generate an array of chunks paths for loading translation.
+	 *
+	 * @param string $chunks_folder The folder to iterate over.
+	 * @return string[] $chunks list of chunks to load.
+	 */
+	protected function get_chunks_paths( $chunks_folder ) {
+		$build_path = \Automattic\WooCommerce\Blocks\Package::get_path() . 'build/';
+		$blocks     = [];
+		if ( ! is_dir( $build_path . $chunks_folder ) ) {
+			return [];
+		}
+		foreach ( new \RecursiveIteratorIterator( new \RecursiveDirectoryIterator( $build_path . $chunks_folder ) ) as $block_name ) {
+			$blocks[] = str_replace( $build_path, '', $block_name );
+		}
+
+		$chunks = preg_filter( '/.js/', '', $blocks );
+		return $chunks;
+	}
+	/**
 	 * Registers the block type with WordPress.
+	 *
+	 * @return string[] Chunks paths.
 	 */
 	protected function register_block_type() {
 		$block_settings = [
