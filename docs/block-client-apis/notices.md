@@ -4,8 +4,6 @@
 
 The `useStoreNotices()` hook allows reading and manipulating notices in the frontend.
 
-Please refer to the `useStoreSnackbarNotices()` section for information on handling snackbar notices.
-
 ### API
 
 > _Note: if the context is not specified in `noticeProps` or `ctxt` params (depending on the method), the current context is used._
@@ -146,9 +144,9 @@ Object of the form:
 
 ```JS
 {
-	id: 'checkout',
-	type: string,
-	isDismissible: false,
+  id: 'checkout',
+  type: string,
+  isDismissible: false,
 }
 ```
 
@@ -225,29 +223,23 @@ The following example shows a `CheckoutProcessor` component that displays an err
 
 ```JSX
 const CheckoutProcessor = () => {
-	const { addErrorNotice, removeNotice } = useStoreNotices();
-	const { addSnackbarNotice } = useStoreSnackbarNotices();
-	// ...
-	const paymentFail = () => {
-		addErrorNotice( 'Something went wrong.', { id: 'checkout' } );
-	};
-	const paymentStart = () => {
-		removeNotice( 'checkout' );
-	};
-	const paymentSuccess = () => {
-		addSnackbarNotice( 'Payment successfully completed.' );
-	};
-	// ...
+  const { addErrorNotice, removeNotice } = useStoreNotices();
+  // ...
+  const paymentFail = () => {
+    addErrorNotice( 'Something went wrong.', { id: 'checkout' } );
+  };
+  const paymentStart = () => {
+    removeNotice( 'checkout' );
+  };
+  // ...
 };
 ```
 
 ```JSX
-<StoreNoticesSnackbarProvider context="wc/checkout">
-  <StoreNoticesProvider context="wc/checkout">
-      // ...
-      <CheckoutProcessor />
-  </StoreNoticesProvider>
-</StoreSnackbarNoticesProvider>
+<StoreNoticesProvider context="wc/checkout">
+    // ...
+    <CheckoutProcessor />
+</StoreNoticesProvider>
 ```
 
 <!-- FEEDBACK -->
