@@ -13,10 +13,12 @@ The WooCommerce Blocks Handbook provides documentation for designers and develop
 | [Templates](templates/README.md)                  | These documents explain technical aspects of the WooCommerce block template (parts) functionality.                                                                                                                                                                            |
 | [Translations](translations/README.md)            | These documents explain how translations are handeled.                                                                                                                                                                                                                        |
 
-## <!-- FEEDBACK -->
+<!-- FEEDBACK -->
+
+---
 
 [We're hiring!](https://woocommerce.com/careers/) Come work with us!
 
-🐞 Found a mistake, or have a suggestion? [Leave feedback about this document here.](https://github.com/woocommerce/woocommerce-gutenberg-products-block/issues/new?assignees=&labels=type%3A+documentation&template=--doc-feedback.md&title=Feedback%20on%20./docs/readme.md)
+🐞 Found a mistake, or have a suggestion? [Leave feedback about this document here.](https://github.com/woocommerce/woocommerce-blocks/issues/new?assignees=&labels=type%3A+documentation&template=--doc-feedback.md&title=Feedback%20on%20./docs/readme.md)
 
 <!-- /FEEDBACK -->
