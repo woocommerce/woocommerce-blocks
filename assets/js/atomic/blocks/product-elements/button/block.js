@@ -16,7 +16,6 @@ import {
 	useProductDataContext,
 } from '@woocommerce/shared-context';
 import { withProductDataContext } from '@woocommerce/shared-hocs';
-import { useEffect, useState } from '@wordpress/element';
 
 /**
  * Internal dependencies
@@ -109,18 +108,6 @@ const AddToCartButton = ( {
 		id,
 		`woocommerce/single-product/${ id || 0 }`
 	);
-	const [ clickedAddToCart, setClickedAddToCart ] = useState( false );
-
-	useEffect( () => {
-		if ( clickedAddToCart && ! addingToCart ) {
-			// redirect to cart if the setting to redirect to the cart page
-			// on cart add item is enabled
-			const { cartRedirectAfterAdd } = getSetting( 'productsSettings' );
-			if ( cartRedirectAfterAdd ) {
-				window.location.href = CART_URL;
-			}
-		}
-	}, [ addingToCart, clickedAddToCart ] );
 
 	const addedToCart = Number.isFinite( cartQuantity ) && cartQuantity > 0;
 	const allowAddToCart = ! hasOptions && isPurchasable && isInStock;
@@ -155,12 +142,17 @@ const AddToCartButton = ( {
 			} );
 		};
 	} else {
-		buttonProps.onClick = () => {
-			addToCart();
+		buttonProps.onClick = async () => {
+			await addToCart();
 			dispatchStoreEvent( 'cart-add-item', {
 				product,
 			} );
-			setClickedAddToCart( true );
+			// redirect to cart if the setting to redirect to the cart page
+			// on cart add item is enabled
+			const { cartRedirectAfterAdd } = getSetting( 'productsSettings' );
+			if ( cartRedirectAfterAdd ) {
+				window.location.href = CART_URL;
+			}
 		};
 	}
 
