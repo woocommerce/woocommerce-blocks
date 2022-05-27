@@ -99,7 +99,7 @@ export const withEditMode = ( {
 							selected={
 								attributes.productId
 									? [ attributes.productId ]
-									: [ 0 ]
+									: []
 							}
 							// `ProductControl` is not yet a TypeScript file and the types
 							// are incorrectly generated for the wrapped HOC, so `showVariation`
