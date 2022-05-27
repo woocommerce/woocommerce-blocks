@@ -117,34 +117,14 @@ export const CheckoutStateProvider = ( {
 		};
 	}, [ onCheckoutValidationBeforeProcessing ] );
 
-	// emit events.
+	// Emit CHECKOUT_VALIDATE event and set the error state based on the response of
+	// the registered callbacks
 	useEffect( () => {
-		const status = checkoutState.status;
-		if ( status === STATUS.BEFORE_PROCESSING ) {
-			removeNoticesByStatus( 'error' );
-			emitEvent(
-				currentObservers.current,
-				EMIT_TYPES.CHECKOUT_VALIDATION_BEFORE_PROCESSING,
-				{}
-			).then( ( response ) => {
-				if ( response !== true ) {
-					if ( Array.isArray( response ) ) {
-						response.forEach(
-							( { errorMessage, validationErrors } ) => {
-								createErrorNotice( errorMessage, {
-									context: 'wc/checkout',
-								} );
-								setValidationErrors( validationErrors );
-							}
-						);
-					}
-					checkoutActions.setIdle();
-					checkoutActions.setHasError();
-				} else {
-					checkoutActions.setProcessing();
-				}
-			} );
-		}
+		checkoutActions.emitValidateEvent(
+			currentObservers.current,
+			createErrorNotice,
+			setValidationErrors
+		);
 	}, [
 		checkoutState.status,
 		setValidationErrors,
@@ -155,6 +135,8 @@ export const CheckoutStateProvider = ( {
 	const previousStatus = usePrevious( checkoutState.status );
 	const previousHasError = usePrevious( checkoutState.hasError );
 
+	// Emit CHECKOUT_AFTER_PROCESSING_WITH_SUCCESS and CHECKOUT_AFTER_PROCESSING_WITH_ERROR events
+	// and set checkout errors according to the callback responses
 	useEffect( () => {
 		if (
 			checkoutState.status === previousStatus &&
@@ -163,146 +145,18 @@ export const CheckoutStateProvider = ( {
 			return;
 		}
 
-		const handleErrorResponse = ( observerResponses: unknown[] ) => {
-			let errorResponse = null;
-			observerResponses.forEach( ( response ) => {
-				if (
-					isErrorResponse( response ) ||
-					isFailResponse( response )
-				) {
-					if ( response.message && isString( response.message ) ) {
-						const errorOptions =
-							response.messageContext &&
-							isString( response.messageContent )
-								? // The `as string` is OK here because of the type guard above.
-								  { context: response.messageContext as string }
-								: undefined;
-						errorResponse = response;
-						createErrorNotice( response.message, errorOptions );
-					}
-				}
-			} );
-			return errorResponse;
-		};
-
 		if ( checkoutState.status === STATUS.AFTER_PROCESSING ) {
-			const data = {
-				redirectUrl: checkoutState.redirectUrl,
-				orderId: checkoutState.orderId,
-				customerId: checkoutState.customerId,
-				orderNotes: checkoutState.orderNotes,
-				processingResponse: checkoutState.processingResponse,
-			};
-			if ( checkoutState.hasError ) {
-				// allow payment methods or other things to customize the error
-				// with a fallback if nothing customizes it.
-				emitEventWithAbort(
-					currentObservers.current,
-					EMIT_TYPES.CHECKOUT_AFTER_PROCESSING_WITH_ERROR,
-					data
-				).then( ( observerResponses ) => {
-					const errorResponse = handleErrorResponse(
-						observerResponses
-					);
-					if ( errorResponse !== null ) {
-						// irrecoverable error so set complete
-						if ( ! shouldRetry( errorResponse ) ) {
-							checkoutActions.setComplete( errorResponse );
-						} else {
-							checkoutActions.setIdle();
-						}
-					} else {
-						const hasErrorNotices =
-							checkoutNotices.some(
-								( notice: { status: string } ) =>
-									notice.status === 'error'
-							) ||
-							expressPaymentNotices.some(
-								( notice: { status: string } ) =>
-									notice.status === 'error'
-							) ||
-							paymentNotices.some(
-								( notice: { status: string } ) =>
-									notice.status === 'error'
-							);
-						if ( ! hasErrorNotices ) {
-							// no error handling in place by anything so let's fall
-							// back to default
-							const message =
-								data.processingResponse?.message ||
-								__(
-									'Something went wrong. Please contact us to get assistance.',
-									'woo-gutenberg-products-block'
-								);
-							createErrorNotice( message, {
-								id: 'checkout',
-								context: 'wc/checkout',
-							} );
-						}
-
-						checkoutActions.setIdle();
-					}
-				} );
-			} else {
-				emitEventWithAbort(
-					currentObservers.current,
-					EMIT_TYPES.CHECKOUT_AFTER_PROCESSING_WITH_SUCCESS,
-					data
-				).then( ( observerResponses: unknown[] ) => {
-					let successResponse = null as null | Record<
-						string,
-						unknown
-					>;
-					let errorResponse = null as null | Record<
-						string,
-						unknown
-					>;
-
-					observerResponses.forEach( ( response ) => {
-						if ( isSuccessResponse( response ) ) {
-							// the last observer response always "wins" for success.
-							successResponse = response;
-						}
-
-						if (
-							isErrorResponse( response ) ||
-							isFailResponse( response )
-						) {
-							errorResponse = response;
-						}
-					} );
-
-					if ( successResponse && ! errorResponse ) {
-						checkoutActions.setComplete( successResponse );
-					} else if ( isObject( errorResponse ) ) {
-						if (
-							errorResponse.message &&
-							isString( errorResponse.message )
-						) {
-							const errorOptions =
-								errorResponse.messageContext &&
-								isString( errorResponse.messageContext )
-									? { context: errorResponse.messageContext }
-									: undefined;
-							createErrorNotice(
-								errorResponse.message,
-								errorOptions
-							);
-						}
-						if ( ! shouldRetry( errorResponse ) ) {
-							checkoutActions.setComplete( errorResponse );
-						} else {
-							// this will set an error which will end up
-							// triggering the onCheckoutAfterProcessingWithError emitter.
-							// and then setting checkout to IDLE state.
-							checkoutActions.setHasError( true );
-						}
-					} else {
-						// nothing hooked in had any response type so let's just consider successful.
-						checkoutActions.setComplete();
-					}
-				} );
-			}
+			checkoutActions.emitAfterProcessingEvents( {
+				observers: currentObservers.current,
+				createErrorNotice,
+				isSuccessResponse,
+				isErrorResponse,
+				isFailResponse,
+				shouldRetry,
+				checkoutNotices,
+				paymentNotices,
+				expressPaymentNotices,
+			} );
 		}
 	}, [
 		checkoutState.status,
