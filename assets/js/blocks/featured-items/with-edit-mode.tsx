@@ -75,6 +75,7 @@ export const withEditMode = ( {
 					{ name === BLOCK_NAMES.featuredCategory && (
 						// Ignoring this TS error for now as it seems that `ProductCategoryControl`
 						// types might be too strict.
+						// @todo Convert `ProductCategoryControl` to TypeScript
 						// eslint-disable-next-line @typescript-eslint/ban-ts-comment
 						// @ts-ignore
 						<ProductCategoryControl
