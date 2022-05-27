@@ -32,7 +32,8 @@
 			"updateTypes": [ "major", "minor", "patch", "pin", "digest" ],
 			"depTypeList": [ "devDependencies" ],
 			"automerge": true,
-			"rangeStrategy": "bump"
+			"rangeStrategy": "bump",
+			"prPriority": 1
 		}
 	],
 	"rebaseWhen": "conflicted"
