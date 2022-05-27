@@ -24,6 +24,25 @@ class BlocksWpQuery extends WP_Query {
 	public function __construct( $query = '' ) {
 		if ( ! empty( $query ) ) {
 			$this->init();
+
+			// Remove current product from query. That might happen if the store
+			// is using Gutenberg in product descriptions.
+			// See https://github.com/woocommerce/woocommerce-blocks/issues/6416.
+			global $post;
+			if ( $post && is_array( $query['post__in'] ) ) {
+				$global_post_id    = $post->ID;
+				$filtered_post__in = array_filter(
+					$query['post__in'],
+					static function ( $post_id ) use ( $global_post_id ) {
+						if ( $global_post_id === $post_id ) {
+							return false;
+						}
+						return true;
+					}
+				);
+				$query['post__in'] = $filtered_post__in;
+			}
+
 			$this->query      = wp_parse_args( $query );
 			$this->query_vars = $this->query;
 			$this->parse_query_vars();
