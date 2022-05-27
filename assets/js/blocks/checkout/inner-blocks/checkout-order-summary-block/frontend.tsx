@@ -4,6 +4,7 @@
 import { TotalsFooterItem } from '@woocommerce/base-components/cart-checkout';
 import { getCurrencyFromPriceResponse } from '@woocommerce/price-format';
 import { useStoreCart } from '@woocommerce/base-context/hooks';
+import { useCheckoutContext } from '@woocommerce/base-context';
 
 /**
  * Internal dependencies
@@ -19,6 +20,14 @@ const FrontendBlock = ( {
 } ): JSX.Element | null => {
 	const { cartTotals } = useStoreCart();
 	const totalsCurrency = getCurrencyFromPriceResponse( cartTotals );
+	const { onCheckoutValidationBeforeProcessing } = useCheckoutContext();
+	const cb = () => {
+		return {
+			type: 'error',
+			errorMessage: 'You aint nothing here',
+			validationErrors: 'nothing',
+		};
+	};
 
 	return (
 		<div className={ className }>
@@ -28,6 +37,15 @@ const FrontendBlock = ( {
 					currency={ totalsCurrency }
 					values={ cartTotals }
 				/>
+			</div>
+			<div>
+				<button
+					onClick={ () => {
+						onCheckoutValidationBeforeProcessing( cb );
+					} }
+				>
+					Register an observer
+				</button>
 			</div>
 			<OrderMetaSlotFill />
 		</div>
