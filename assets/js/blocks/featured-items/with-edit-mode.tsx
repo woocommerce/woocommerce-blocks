@@ -104,6 +104,7 @@ export const withEditMode = ( {
 							// `ProductControl` is not yet a TypeScript file and the types
 							// are incorrectly generated for the wrapped HOC, so `showVariation`
 							// doesn't appear in the allowed props
+							// @todo Convert `ProductCategoryControl` to TypeScript
 							// eslint-disable-next-line @typescript-eslint/ban-ts-comment
 							// @ts-ignore
 							showVariations
