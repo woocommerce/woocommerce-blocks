@@ -239,76 +239,38 @@ JS;
 add_filter( 'pre_load_script_translations', 'woocommerce_blocks_get_i18n_data_json', 10, 4 );
 
 /**
- * Filter translations so we can retrieve translations from Core when the original and the translated
- * texts are the same (which happens when translations are missing).
- *
- * @param string $translation Translated text based on WC Blocks translations.
- * @param string $text        Text to translate.
- * @param string $domain      The text domain.
- * @return string WC Blocks translation. In case it's the same as $text, Core translation.
- */
-function woocommerce_blocks_get_php_translation_from_core( $translation, $text, $domain ) {
-	if ( 'woo-gutenberg-products-block' !== $domain ) {
-		return $translation;
-	}
-
-	// When translation is the same, that could mean the string is not translated.
-	// In that case, load it from core.
-	if ( $translation === $text ) {
-		return translate( $text, 'woocommerce' ); // phpcs:ignore WordPress.WP.I18n.LowLevelTranslationFunction, WordPress.WP.I18n.NonSingularStringLiteralText, WordPress.WP.I18n.TextDomainMismatch
-	}
-	return $translation;
-}
-
-add_filter( 'gettext', 'woocommerce_blocks_get_php_translation_from_core', 10, 3 );
-
-/**
- * Check the current WC Blocks path. If the WC Blocks plugin is active but the
- * current path is from the WC Core, we can consider the plugin is outdated
- * because Jetpack Autoloader always loads the newer package.
+ * Add notice to the admin dashboard if the plugin is outdated.
  *
  * @see https://github.com/woocommerce/woocommerce-blocks/issues/5587
- *
- * @return bool
  */
-function woocommerce_blocks_plugin_is_outdated() {
-	$is_active      = false;
-	$active_plugins = get_option( 'active_plugins', array() );
-
-	// We check for the main plugin file only instead of the full path, because
-	// the plugin folder may not be 'woocommerce-blocks'.
-	foreach ( $active_plugins as $plugin ) {
-		if ( strpos( $plugin, 'woocommerce-gutenberg-products-block.php' ) ) {
-			$is_active = true;
-			break;
-		}
-	}
+function woocommerce_blocks_plugin_outdated_notice() {
+	$is_active =
+		is_plugin_active( 'woo-gutenberg-products-block/woocommerce-gutenberg-products-block.php' ) ||
+		is_plugin_active( 'woocommerce-gutenberg-products-block/woocommerce-gutenberg-products-block.php' ) ||
+		is_plugin_active( 'woocommerce-blocks/woocommerce-gutenberg-products-block.php' );
 
 	if ( ! $is_active ) {
-		return false;
+		return;
 	}
 
 	$woocommerce_blocks_path = \Automattic\WooCommerce\Blocks\Package::get_path();
 
-	if ( strpos( $woocommerce_blocks_path, 'packages/woocommerce-blocks' ) ) {
-		return true;
-	}
-
-	return false;
-}
-
-if ( woocommerce_blocks_plugin_is_outdated() ) {
 	/**
-	 * Add notice to the admin dashboard if the plugin is outdated.
+	 * Check the current WC Blocks path. If the WC Blocks plugin is active but
+	 * the current path is from the WC Core, we can consider the plugin is
+	 * outdated because Jetpack Autoloader always loads the newer package.
 	 */
-	function woocommerce_blocks_plugin_outdated_notice() {
-		if ( should_display_compatibility_notices() ) {
-			?>
-			<div class="notice notice-warning">
-				<p><?php esc_html_e( 'You have WooCommerce Blocks installed, but the WooCommerce bundled version is running because it is more up-to-date. This may cause unexpected compatibility issues. Please update the WooCommerce Blocks plugin.', 'woo-gutenberg-products-block' ); ?></p>
-			</div>
-			<?php
-		}
+	if ( ! strpos( $woocommerce_blocks_path, 'packages/woocommerce-blocks' ) ) {
+		return;
 	}
-	add_action( 'admin_notices', 'woocommerce_blocks_plugin_outdated_notice' );
+
+	if ( should_display_compatibility_notices() ) {
+		?>
+		<div class="notice notice-warning">
+			<p><?php esc_html_e( 'You have WooCommerce Blocks installed, but the WooCommerce bundled version is running because it is more up-to-date. This may cause unexpected compatibility issues. Please update the WooCommerce Blocks plugin.', 'woo-gutenberg-products-block' ); ?></p>
+		</div>
+		<?php
+	}
 }
+
+add_action( 'admin_notices', 'woocommerce_blocks_plugin_outdated_notice' );
