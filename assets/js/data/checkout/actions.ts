@@ -91,22 +91,22 @@ export const setExtensionData = (
 	extensionData,
 } );
 
-type Action = ReturnType<
-	| typeof setPristine
-	| typeof setIdle
-	| typeof setComplete
-	| typeof setProcessing
-	| typeof setProcessingResponse
-	| typeof setBeforeProcessing
-	| typeof setAfterProcessing
-	| typeof setRedirectUrl
-	| typeof setHasError
-	| typeof incrementCalculating
-	| typeof decrementCalculating
-	| typeof setCustomerId
-	| typeof setOrderId
-	| typeof setUseShippingAsBilling
-	| typeof setShouldCreateAccount
-	| typeof setOrderNotes
-	| typeof setExtensionData
->;
+export type CheckoutActions = {
+	setPristine: typeof setPristine;
+	setIdle: typeof setIdle;
+	setComplete: typeof setComplete;
+	setProcessing: typeof setProcessing;
+	setProcessingResponse: typeof setProcessingResponse;
+	setBeforeProcessing: typeof setBeforeProcessing;
+	setAfterProcessing: typeof setAfterProcessing;
+	setRedirectUrl: typeof setRedirectUrl;
+	setHasError: typeof setHasError;
+	incrementCalculating: typeof incrementCalculating;
+	decrementCalculating: typeof decrementCalculating;
+	setCustomerId: typeof setCustomerId;
+	setOrderId: typeof setOrderId;
+	setUseShippingAsBilling: typeof setUseShippingAsBilling;
+	setShouldCreateAccount: typeof setShouldCreateAccount;
+	setOrderNotes: typeof setOrderNotes;
+	setExtensionData: typeof setExtensionData;
+};

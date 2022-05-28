@@ -140,13 +140,11 @@ export const CheckoutStateProvider = ( {
 			checkoutActions.emitAfterProcessingEvents( {
 				observers: currentObservers.current,
 				createErrorNotice,
-				isSuccessResponse,
-				isErrorResponse,
-				isFailResponse,
-				shouldRetry,
-				checkoutNotices,
-				paymentNotices,
-				expressPaymentNotices,
+				notices: {
+					checkoutNotices,
+					paymentNotices,
+					expressPaymentNotices,
+				},
 			} );
 		}
 	}, [

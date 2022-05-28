@@ -1,8 +1,7 @@
 /**
  * External dependencies
  */
-import { isObject, isString, CheckoutResponse } from '@woocommerce/types';
-import { __ } from '@wordpress/i18n';
+import { CheckoutResponse } from '@woocommerce/types';
 
 /**
  * Internal dependencies
@@ -15,10 +14,20 @@ import {
 	emitEvent,
 	emitEventWithAbort,
 } from '../../base/context/providers/cart-checkout/checkout-state/event-emit';
-import { handleErrorResponse } from './utils';
+import { EventObserversType } from '../../base/context/event-emit/types';
+import {
+	processCheckoutAfterProcessingWithErrorObservers,
+	processCheckoutAfterProcessingWithSuccessObservers,
+} from './utils';
+import type { CheckoutActions } from './actions';
 
+/**
+ * Based on the result of the payment, update the redirect url,
+ * set the payment processing response in the checkout data store
+ * and change the status to AFTER_PROCESSING
+ */
 export const processCheckoutResponse = ( response: CheckoutResponse ) => {
-	return async ( { dispatch } ) => {
+	return async ( { dispatch }: { dispatch: CheckoutActions } ) => {
 		const paymentResult = getPaymentResultFromCheckoutResponse( response );
 		dispatch.setRedirectUrl( paymentResult?.redirectUrl || '' );
 		dispatch.setProcessingResponse( paymentResult );
@@ -26,6 +35,10 @@ export const processCheckoutResponse = ( response: CheckoutResponse ) => {
 	};
 };
 
+/**
+ * Emit the CHECKOUT_VALIDATION_BEFORE_PROCESSING event and process all
+ * registered observers
+ */
 export const emitValidateEvent = (
 	observers,
 	createErrorNotice,
@@ -35,11 +48,6 @@ export const emitValidateEvent = (
 		const { status } = select.getCheckoutState();
 		if ( status === STATUS.BEFORE_PROCESSING ) {
 			removeNoticesByStatus( 'error' );
-			// checkoutActions.setValidation();
-			// Emit the `CHECKOUT_VALIDATION_BEFORE_PROCESSING` event and execute all callbacks
-			// associated with that event in priority order. If the callbacks return errors, display them
-			// and set the correct status on the checkout data store
-
 			emitEvent(
 				observers,
 				EMIT_TYPES.CHECKOUT_VALIDATION_BEFORE_PROCESSING,
@@ -66,20 +74,19 @@ export const emitValidateEvent = (
 	};
 };
 
-// Emit CHECKOUT_AFTER_PROCESSING_WITH_SUCCESS and CHECKOUT_AFTER_PROCESSING_WITH_ERROR events
-// and set checkout errors according to the callback responses
+/**
+ * Emit the CHECKOUT_AFTER_PROCESSING_WITH_ERROR if the checkout contains an error,
+ * or the CHECKOUT_AFTER_PROCESSING_WITH_SUCCESS if not. Set checkout errors according
+ * to the observer responses
+ */
 export const emitAfterProcessingEvents = ( {
 	observers,
 	createErrorNotice,
-	isSuccessResponse,
-	isErrorResponse,
-	isFailResponse,
-	shouldRetry,
-	checkoutNotices,
-	paymentNotices,
-	expressPaymentNotices,
+	notices,
+}: {
+	observers: EventObserversType;
 } ) => {
-	return ( { select, dispatch } ) => {
+	return ( { select, dispatch }: { dispatch: CheckoutActions } ) => {
 		const state = select.getCheckoutState();
 		const data = {
 			redirectUrl: state.redirectUrl,
@@ -96,51 +103,13 @@ export const emitAfterProcessingEvents = ( {
 				EMIT_TYPES.CHECKOUT_AFTER_PROCESSING_WITH_ERROR,
 				data
 			).then( ( observerResponses ) => {
-				const errorResponse = handleErrorResponse( {
+				processCheckoutAfterProcessingWithErrorObservers( {
 					observerResponses,
 					createErrorNotice,
-					isErrorResponse,
-					isFailResponse,
+					notices,
+					dispatch,
+					data,
 				} );
-
-				if ( errorResponse !== null ) {
-					// irrecoverable error so set complete
-					if ( ! shouldRetry( errorResponse ) ) {
-						dispatch.setComplete( errorResponse );
-					} else {
-						dispatch.setIdle();
-					}
-				} else {
-					const hasErrorNotices =
-						checkoutNotices.some(
-							( notice: { status: string } ) =>
-								notice.status === 'error'
-						) ||
-						expressPaymentNotices.some(
-							( notice: { status: string } ) =>
-								notice.status === 'error'
-						) ||
-						paymentNotices.some(
-							( notice: { status: string } ) =>
-								notice.status === 'error'
-						);
-					if ( ! hasErrorNotices ) {
-						// no error handling in place by anything so let's fall
-						// back to default
-						const message =
-							data.processingResponse?.message ||
-							__(
-								'Something went wrong. Please contact us to get assistance.',
-								'woo-gutenberg-products-block'
-							);
-						createErrorNotice( message, {
-							id: 'checkout',
-							context: 'wc/checkout',
-						} );
-					}
-
-					dispatch.setIdle();
-				}
 			} );
 		} else {
 			emitEventWithAbort(
@@ -148,54 +117,11 @@ export const emitAfterProcessingEvents = ( {
 				EMIT_TYPES.CHECKOUT_AFTER_PROCESSING_WITH_SUCCESS,
 				data
 			).then( ( observerResponses: unknown[] ) => {
-				let successResponse = null as null | Record< string, unknown >;
-				let errorResponse = null as null | Record< string, unknown >;
-
-				observerResponses.forEach( ( response ) => {
-					if ( isSuccessResponse( response ) ) {
-						// the last observer response always "wins" for success.
-						successResponse = response;
-					}
-
-					if (
-						isErrorResponse( response ) ||
-						isFailResponse( response )
-					) {
-						errorResponse = response;
-					}
+				processCheckoutAfterProcessingWithSuccessObservers( {
+					observerResponses,
+					createErrorNotice,
+					dispatch,
 				} );
-
-				if ( successResponse && ! errorResponse ) {
-					dispatch.setComplete( successResponse );
-				} else if ( isObject( errorResponse ) ) {
-					if (
-						errorResponse.message &&
-						isString( errorResponse.message )
-					) {
-						const errorOptions =
-							errorResponse.messageContext &&
-							isString( errorResponse.messageContext )
-								? {
-										context: errorResponse.messageContext,
-								  }
-								: undefined;
-						createErrorNotice(
-							errorResponse.message,
-							errorOptions
-						);
-					}
-					if ( ! shouldRetry( errorResponse ) ) {
-						dispatch.setComplete( errorResponse );
-					} else {
-						// this will set an error which will end up
-						// triggering the onCheckoutAfterProcessingWithError emitter.
-						// and then setting checkout to IDLE state.
-						dispatch.setHasError( true );
-					}
-				} else {
-					// nothing hooked in had any response type so let's just consider successful.
-					dispatch.setComplete();
-				}
 			} );
 		}
 	};
