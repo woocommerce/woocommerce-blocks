@@ -1,12 +1,11 @@
 /**
  * External dependencies
  */
-import { CheckoutResponse, PaymentResult } from '@woocommerce/types';
+import { PaymentResult } from '@woocommerce/types';
 
 /**
  * Internal dependencies
  */
-import { getPaymentResultFromCheckoutResponse } from '../../base/context/providers/cart-checkout/checkout-state/utils';
 import { ACTION_TYPES as types } from './action-types';
 
 // `Thunks are functions that can be dispatched, similar to actions creators

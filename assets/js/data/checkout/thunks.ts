@@ -2,17 +2,20 @@
  * External dependencies
  */
 import { isObject, isString, CheckoutResponse } from '@woocommerce/types';
+import { __ } from '@wordpress/i18n';
 
 /**
  * Internal dependencies
  */
 import { removeNoticesByStatus } from '../../utils/notices';
+import { getPaymentResultFromCheckoutResponse } from '../../base/context/providers/cart-checkout/checkout-state/utils';
 import { STATUS } from './constants';
 import {
 	EMIT_TYPES,
 	emitEvent,
 	emitEventWithAbort,
 } from '../../base/context/providers/cart-checkout/checkout-state/event-emit';
+import { handleErrorResponse } from './utils';
 
 export const processCheckoutResponse = ( response: CheckoutResponse ) => {
 	return async ( { dispatch } ) => {
@@ -42,15 +45,10 @@ export const emitValidateEvent = (
 				EMIT_TYPES.CHECKOUT_VALIDATION_BEFORE_PROCESSING,
 				{}
 			).then( ( response ) => {
-				console.log( 'response from event emitter', response );
 				if ( response !== true ) {
 					if ( Array.isArray( response ) ) {
 						response.forEach(
 							( { errorMessage, validationErrors } ) => {
-								console.log(
-									'creating error notice with error message',
-									errorMessage
-								);
 								createErrorNotice( errorMessage, {
 									context: 'wc/checkout',
 								} );
@@ -58,42 +56,14 @@ export const emitValidateEvent = (
 							}
 						);
 					}
-					console.log(
-						'set validation errors, reseting the checkout'
-					);
 					dispatch.setIdle();
 					dispatch.setHasError();
 				} else {
-					console.log( 'All good!' );
 					dispatch.setProcessing();
 				}
 			} );
 		}
 	};
-};
-
-const handleErrorResponse = (
-	observerResponses: unknown[],
-	createErrorNotice
-) => {
-	let errorResponse = null;
-	observerResponses.forEach( ( response ) => {
-		if ( isErrorResponse( response ) || isFailResponse( response ) ) {
-			if ( response.message && isString( response.message ) ) {
-				const errorOptions =
-					response.messageContext &&
-					isString( response.messageContent )
-						? // The `as string` is OK here because of the type guard above.
-						  {
-								context: response.messageContext as string,
-						  }
-						: undefined;
-				errorResponse = response;
-				createErrorNotice( response.message, errorOptions );
-			}
-		}
-	} );
-	return errorResponse;
 };
 
 // Emit CHECKOUT_AFTER_PROCESSING_WITH_SUCCESS and CHECKOUT_AFTER_PROCESSING_WITH_ERROR events
@@ -126,14 +96,13 @@ export const emitAfterProcessingEvents = ( {
 				EMIT_TYPES.CHECKOUT_AFTER_PROCESSING_WITH_ERROR,
 				data
 			).then( ( observerResponses ) => {
-				console.log(
-					'Processed all observers for CHECKOUT_AFTER_PROCESSING_WITH_ERROR',
-					observerResponses
-				);
-				const errorResponse = handleErrorResponse(
+				const errorResponse = handleErrorResponse( {
 					observerResponses,
-					createErrorNotice
-				);
+					createErrorNotice,
+					isErrorResponse,
+					isFailResponse,
+				} );
+
 				if ( errorResponse !== null ) {
 					// irrecoverable error so set complete
 					if ( ! shouldRetry( errorResponse ) ) {
@@ -179,10 +148,6 @@ export const emitAfterProcessingEvents = ( {
 				EMIT_TYPES.CHECKOUT_AFTER_PROCESSING_WITH_SUCCESS,
 				data
 			).then( ( observerResponses: unknown[] ) => {
-				console.log(
-					'Processed all observers for CHECKOUT_AFTER_PROCESSING_WITH_SUCCESS',
-					observerResponses
-				);
 				let successResponse = null as null | Record< string, unknown >;
 				let errorResponse = null as null | Record< string, unknown >;
 
@@ -201,10 +166,7 @@ export const emitAfterProcessingEvents = ( {
 				} );
 
 				if ( successResponse && ! errorResponse ) {
-					console.log(
-						'complete because we have a successful response'
-					);
-					// dispatch.setComplete( successResponse );
+					dispatch.setComplete( successResponse );
 				} else if ( isObject( errorResponse ) ) {
 					if (
 						errorResponse.message &&
@@ -223,8 +185,7 @@ export const emitAfterProcessingEvents = ( {
 						);
 					}
 					if ( ! shouldRetry( errorResponse ) ) {
-						console.log( "Complete because we shouldn't retry" );
-						// dispatch.setComplete( errorResponse );
+						dispatch.setComplete( errorResponse );
 					} else {
 						// this will set an error which will end up
 						// triggering the onCheckoutAfterProcessingWithError emitter.
@@ -233,8 +194,7 @@ export const emitAfterProcessingEvents = ( {
 					}
 				} else {
 					// nothing hooked in had any response type so let's just consider successful.
-					console.log( 'Complete because no observers' );
-					// dispatch.setComplete();
+					dispatch.setComplete();
 				}
 			} );
 		}

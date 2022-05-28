@@ -11,10 +11,8 @@ import {
 	useEffect,
 	useCallback,
 } from '@wordpress/element';
-import { __ } from '@wordpress/i18n';
 import { usePrevious } from '@woocommerce/base-hooks';
 import deprecated from '@wordpress/deprecated';
-import { isObject, isString } from '@woocommerce/types';
 import { useDispatch, useSelect } from '@wordpress/data';
 import { CHECKOUT_STORE_KEY } from '@woocommerce/block-data';
 
@@ -23,18 +21,11 @@ import { CHECKOUT_STORE_KEY } from '@woocommerce/block-data';
  */
 import { STATUS, DEFAULT_CHECKOUT_STATE_DATA } from './constants';
 import type { CheckoutStateContextType } from './types';
-import {
-	EMIT_TYPES,
-	useEventEmitters,
-	emitEvent,
-	emitEventWithAbort,
-	reducer as emitReducer,
-} from './event-emit';
+import { useEventEmitters, reducer as emitReducer } from './event-emit';
 import { useValidationContext } from '../../validation';
 import { useStoreEvents } from '../../../hooks/use-store-events';
 import { useCheckoutNotices } from '../../../hooks/use-checkout-notices';
 import { useEmitResponse } from '../../../hooks/use-emit-response';
-import { removeNoticesByStatus } from '../../../../../utils/notices';
 import { CheckoutState } from '../../../../../data/checkout/default-state';
 
 const CheckoutContext = createContext( DEFAULT_CHECKOUT_STATE_DATA );
