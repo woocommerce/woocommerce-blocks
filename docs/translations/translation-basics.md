@@ -23,7 +23,7 @@ All translations are handled using [GlotPress](https://wordpress.org/plugins/glo
 
 ## Text domain
 
-Prior to [WordPress 4.6 “Pepper Adams”](https://wordpress.org/support/wordpress-version/version-4-6/), a text domain had to be defined to make the strings translatable. While it’s no longer required having a text domain, it does not harm if it’s still included. If the text domain is available, it has to match the slug of the plugin and is defined in the header of the main plugin file `woocommerce-gutenberg-products-block.php`:
+Prior to [WordPress 4.6 “Pepper Adams”](https://wordpress.org/support/wordpress-version/version-4-6/), a text domain had to be defined to make the strings translatable. While it’s no longer a requirement to have a text domain, it does no harm to still include it. If the text domain is available, it has to match the slug of the plugin and is defined in the header of the main plugin file `woocommerce-gutenberg-products-block.php`:
 
 ```php
 <?php
