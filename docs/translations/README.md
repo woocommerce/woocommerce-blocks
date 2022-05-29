@@ -1,15 +1,14 @@
 # Translations
 
-This folder contains documentation around translation handling of WooCommerce Blocks.
+This folder contains documentation around translation handling of WooCommerce Blocks:
 
-| Document                                                          | Description                                                    |
-| ----------------------------------------------------------------- | -------------------------------------------------------------- |
-| [Translation basics](translation-basics.md)                       | This doc explains the translation basics.                      |
-| [Translations in PHP files](translations-in-PHP-files.md)         | This doc explains how to handle translations in PHP files.     |
-| [Translations in JS/TS files](translations-in-JS-TS-files.md)     | This doc explains how to handle translations in JS/TS files.   |
-| [Translations in FSE templates](translations-in-FSE-templates.md) | This doc explains how to handle translations in FSE templates. |
-| [Translation lazy-loading](translations-lazy-loading.md)          | This doc explains how to translation lazy-loading works.       |
-| [Translation management](translation-management.md)               | This doc explains how to manage translations.                  |
+-   [Translation basics](translation-basics.md)
+-   [Translations in PHP files](translations-in-PHP-files.md)
+-   [Translations in JS/TS files](translations-in-JS-TS-files.md)
+-   [Translations in FSE templates](translations-in-FSE-templates.md)
+-   [Translation lazy-loading](translations-lazy-loading.md)
+-   [Translation loading](translation-loading.md)
+-   [Translation management](translation-management.md)
 
 <!-- FEEDBACK -->
 
