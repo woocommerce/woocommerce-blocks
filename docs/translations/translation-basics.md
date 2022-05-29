@@ -4,18 +4,18 @@
 
 Since [WordPress 2.1 "Ella"](https://wordpress.org/support/wordpress-version/version-2-1/), WordPress offers [internationalization (i18n)](https://developer.wordpress.org/plugins/internationalization/) for PHP files, and since [WordPress 5.0 "Bebo"](https://wordpress.org/support/wordpress-version/version-5-0/), it also offers i18n for JS files. Handling translations is pretty straight forward. Both PHP and JS handle translations similar. WordPress offers the functions:
 
--   `__()` → Available in PHP & JS/TS.
--   `_e()` → Available in PHP only.
--   `_ex()` → Available in PHP only.
--   `_n()` → Available in PHP & JS/TS.
--   `_x()` → Available in PHP & JS/TS.
--   `_nx()` → Available in PHP & JS/TS.
--   `esc_html__()` → Available in PHP only.
--   `esc_html_e()` → Available in PHP only.
--   `esc_html_x()` → Available in PHP only.
--   `esc_attr__()` → Available in PHP only.
--   `esc_attr_e()` → Available in PHP only.
--   `esc_attr_x()` → Available in PHP only.
+-   [`__()`](https://developer.wordpress.org/reference/functions/__/) → Available in PHP & JS/TS.
+-   [`_e()`](https://developer.wordpress.org/reference/functions/_e/) → Available in PHP only.
+-   [`_ex()`](https://developer.wordpress.org/reference/functions/_ex/) → Available in PHP only.
+-   [`_n()`](https://developer.wordpress.org/reference/functions/_n/) → Available in PHP & JS/TS.
+-   [`_x()`](https://developer.wordpress.org/reference/functions/_x/) → Available in PHP & JS/TS.
+-   [`_nx()`](https://developer.wordpress.org/reference/functions/_nx/) → Available in PHP & JS/TS.
+-   [`esc_html__()`](https://developer.wordpress.org/reference/functions/esc_html__/) → Available in PHP only.
+-   [`esc_html_e()`](https://developer.wordpress.org/reference/functions/esc_html_e/) → Available in PHP only.
+-   [`esc_html_x()`](https://developer.wordpress.org/reference/functions/esc_html_x/) → Available in PHP only.
+-   [`esc_attr__()`](https://developer.wordpress.org/reference/functions/esc_attr__/) → Available in PHP only.
+-   [`esc_attr_e()`](https://developer.wordpress.org/reference/functions/esc_attr_e/) → Available in PHP only.
+-   [`esc_attr_x()`](https://developer.wordpress.org/reference/functions/esc_attr_x/) → Available in PHP only.
 
 ## GlotPress
 
