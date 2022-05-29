@@ -100,7 +100,7 @@ See also https://developer.wordpress.org/plugins/internationalization/localizati
 
 ### JSON files
 
-As mentioned before, the MO file only handle translations within PHP files. Translations within JavaScript and TypeScript files are handeled by JSON files. These JSON files contain both the original and the translated strings and are also based on the PO file. Similar to the MO file, the JSON files can be manually created, which is not needed in this case.
+As mentioned before, the MO file only handle translations within PHP files. Translations within JavaScript and TypeScript files are handled by JSON files. These JSON files contain both the original and the translated strings and are also based on the PO file. Similar to the MO file, the JSON files can be manually created, which is not needed in this case.
 
 The JSON files are human-readable and named `woo-gutenberg-products-block-{LANGUAGE-CODE}-{md5(FILE-PATH)}.json`, e.g. `woo-gutenberg-products-block-de_DE-0a066f0c536e17452f6345c5d072335b.json`. They can be found in the `/wp-content/languages/plugin` folder. The JSON files look like this:
 
