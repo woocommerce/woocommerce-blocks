@@ -4,7 +4,7 @@
 
 ### POT (Portable Object Template) file
 
-POT stands for `Portable Object Template` and contains all original strings, in English. It can be created manually using [WP-CLI](https://wp-cli.org/) or [Poedit](https://poedit.net/). As the WooCOmmerce Blocks plugin is hosted on WordPress.org, we don't need to manually create the POT file. GlotPress automatically generates that file in the background, once we release a new version of the plugin.
+POT stands for `Portable Object Template` and contains all original strings, in English. It can be created manually using [WP-CLI](https://wp-cli.org/) or [Poedit](https://poedit.net/). As the WooCommerce Blocks plugin is hosted on WordPress.org, we don't need to manually create the POT file. GlotPress automatically generates that file in the background, once we release a new version of the plugin.
 
 The POT file is human-readable and named `woo-gutenberg-products-block.pot`. It will not be downloaded to the site that is using the WooCommerce Blocks plugin. If we would generate the POT file manually, it would look like this:
 
