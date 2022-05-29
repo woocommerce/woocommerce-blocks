@@ -18,7 +18,7 @@ A Project Translation Editor can:
 -   change existing translations
 -   add new translations.
 
-PTE permissions need to be requested via https://make.wordpress.org/polyglots/. I've you're a developer of teh WooCOmmerce Blocks plugin, you can request PTE permissions using the following template:
+PTE permissions need to be requested via https://make.wordpress.org/polyglots/. If you're a developer of the WooCommerce Blocks plugin, you can request PTE permissions using the following template:
 
 ```
 PTE Request for WooCommerce Blocks
