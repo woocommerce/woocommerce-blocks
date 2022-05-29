@@ -127,7 +127,7 @@ The JSON files are human-readable and named `woo-gutenberg-products-block-{LANGU
 
 ## Loading translations
 
-Loading translations for PHP files works different from load translations for JS/TS files.
+Loading translations for PHP files works differently to loading translations for JS/TS files.
 
 ### Loading translations for PHP files
 
