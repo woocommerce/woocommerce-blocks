@@ -94,7 +94,7 @@ See also https://developer.wordpress.org/plugins/internationalization/localizati
 
 MO stands for `Machine Object`, contains both the original and the translated strings and is based on the PO file. As the POT and the PO files, the MO file can be created manually, but this is not necessary for the WooCommerce Blocks plugin.
 
-The MO file is only machine-readable and named `woo-gutenberg-products-block-{LANGUAGE-CODE}.mo`, e.g. `woo-gutenberg-products-block-de_DE.mo` It can be found in the `/wp-content/languages/plugin` folder. As the MO file is machine-readable only, it cannot be viewed and the MO file only handeles translations within PHP files.
+The MO file is only machine-readable and named `woo-gutenberg-products-block-{LANGUAGE-CODE}.mo`, e.g. `woo-gutenberg-products-block-de_DE.mo` It can be found in the `/wp-content/languages/plugin` folder. As the MO file is machine-readable only, it cannot be viewed and the MO file only handles translations within PHP files.
 
 See also https://developer.wordpress.org/plugins/internationalization/localization/#mo-machine-object-files.
 
