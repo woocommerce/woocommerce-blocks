@@ -1,6 +1,6 @@
 # Translations in FSE templates
 
-To make the WooCommerce Blocks plugin inclusive, all user-facing strings should be translatable. Managing [Translations in PHP files](docs/translations/translations-in-PHP-files.md) and [Translations in JS/TS files](docs/translations/translations-in-JS-TS-files.md) is rather simple, given that both languages are programming languages. As FSE-templates are using plain HTML, translating them works slightly different.
+To make the WooCommerce Blocks plugin inclusive, all user-facing strings should be translatable. Managing [Translations in PHP files](docs/translations/translations-in-PHP-files.md) and [Translations in JS/TS files](docs/translations/translations-in-JS-TS-files.md) is simple as PHP and JS/TS are languages are programming languages which contain translation function. In comparison, FSE-templates are using plain HTML. As HTML is a markup language and not a programming language, translation functions such as `__()` and `_n()` are not available in HTML. Therefore, translations within FSE-templates require a different approach.
 
 Let's take a look at `templates/parts/mini-cart.html`:
 
@@ -57,9 +57,7 @@ Having this text hardcoded in a FSE-template causes two problems:
 1. This string can only be edited, when a user is using an FSE-theme, such as [Twenty Twenty-Two](https://wordpress.org/themes/twentytwentytwo/). If the user is using a non-FSE-theme, such as [Twenty Twenty-One](https://wordpress.org/themes/twentytwentyone/) or older, this FSE-template cannot be edited.
 2. Even is a user is using an FSE-theme, every user that is using a site language other than the default one, has to manually change the string `Your cart is currently empty!`.
 
-So, how can we use translations in FSE templates?
-
-First, we need to find the following code:
+To handle translations within FSE-templates, we need to find the following code:
 
 ```html
 <!-- wp:paragraph {"align":"center"} -->
