@@ -2,7 +2,7 @@
 
 ## Localization functions
 
-Since [WordPress 2.1 "Ella"](https://wordpress.org/support/wordpress-version/version-2-1/), WordPress offers i18n for PHP files, and since [WordPress 5.0 "Bebo"](https://wordpress.org/support/wordpress-version/version-5-0/), it also offers i18n for JS files. Handling translations is pretty straight forward. Both PHP and JS handle translations similar. WordPress offers the functions:
+Since [WordPress 2.1 "Ella"](https://wordpress.org/support/wordpress-version/version-2-1/), WordPress offers [internationalization (i18n)](https://developer.wordpress.org/plugins/internationalization/) for PHP files, and since [WordPress 5.0 "Bebo"](https://wordpress.org/support/wordpress-version/version-5-0/), it also offers i18n for JS files. Handling translations is pretty straight forward. Both PHP and JS handle translations similar. WordPress offers the functions:
 
 -   `__()` → Available in PHP & JS/TS.
 -   `_e()` → Available in PHP only.
