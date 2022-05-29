@@ -194,7 +194,7 @@ public function register_script( $handle, $relative_src, $dependencies = [], $ha
 
 ## Loading fallback translations
 
-By default, the WooCommerce Blocks plugin tries to load the translation from https://translate.wordpress.org/projects/wp-plugins/woo-gutenberg-products-block/. In case a translation cannot be loaded, the plugin then tries to load the correspnding translation from https://translate.wordpress.org/projects/wp-plugins/woocommerce/.
+By default, the WooCommerce Blocks plugin tries to load the translation from https://translate.wordpress.org/projects/wp-plugins/woo-gutenberg-products-block/. If a translation cannot be loaded, the plugin tries to load the corresponding translation from https://translate.wordpress.org/projects/wp-plugins/woocommerce/.
 
 The code that loads the fallback translation, is located in `woocommerce-gutenberg-products-block.php`.
 
