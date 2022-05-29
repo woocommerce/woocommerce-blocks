@@ -19,7 +19,7 @@ Since [WordPress 2.1 "Ella"](https://wordpress.org/support/wordpress-version/ver
 
 ## GlotPress
 
-All translations are handeled using [GlotPress](https://wordpress.org/plugins/glotpress/). As the WooCommerce Blocks plugin is hosted on https://wordpress.org/, all plugin-related translations can be found and managed on https://translate.wordpress.org/projects/wp-plugins/woo-gutenberg-products-block/.
+All translations are handled using [GlotPress](https://wordpress.org/plugins/glotpress/). As the WooCommerce Blocks plugin is hosted on https://wordpress.org/, all plugin-related translations can be found and managed on https://translate.wordpress.org/projects/wp-plugins/woo-gutenberg-products-block/.
 
 ## Text domain
 
