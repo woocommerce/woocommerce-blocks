@@ -135,7 +135,7 @@ As mentioned in [Translation Basics](translation-basics.md), loading the transla
 
 ### Loading translations for TJS/TS files
 
-To load JS/TS translations, the function `wp_set_script_translations()` needs to be called. Currently, this function is part of the following code block in `/src/Assets/Api.php`:
+To load JS/TS translations, you need to execute the `wp_set_script_translations()` function. Currently, this function is part of the following code block in `/src/Assets/Api.php`:
 
 ```php
 /**
