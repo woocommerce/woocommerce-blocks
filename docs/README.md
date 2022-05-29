@@ -11,7 +11,7 @@ The WooCommerce Blocks Handbook provides documentation for designers and develop
 | [Store API (REST API)](../src/StoreApi/README.md) | These documents explain the Store API used to get product data on the frontend.                                                                                                                                                                                               |
 | [Theming](theming/README.md)                      | These documents explain theming for blocks, styles, CSS classnames and other theming best practices.                                                                                                                                                                          |
 | [Templates](templates/README.md)                  | These documents explain technical aspects of the WooCommerce block template (parts) functionality.                                                                                                                                                                            |
-| [Translations](translations/README.md)            | These documents explain how translations are handeled.                                                                                                                                                                                                                        |
+| [Translations](translations/README.md)            | These documents explain how translations are handled.                                                                                                                                                                                                                        |
 
 <!-- FEEDBACK -->
 
