@@ -14,12 +14,12 @@ import {
 	emitEvent,
 	emitEventWithAbort,
 } from '../../base/context/providers/cart-checkout/checkout-state/event-emit';
-import { EventObserversType } from '../../base/context/event-emit/types';
 import {
 	processCheckoutAfterProcessingWithErrorObservers,
 	processCheckoutAfterProcessingWithSuccessObservers,
 } from './utils';
 import type { CheckoutActions } from './actions';
+import { emitValidateEventType, emitAfterProcessingEventsType } from './types';
 
 /**
  * Based on the result of the payment, update the redirect url,
@@ -39,11 +39,11 @@ export const processCheckoutResponse = ( response: CheckoutResponse ) => {
  * Emit the CHECKOUT_VALIDATION_BEFORE_PROCESSING event and process all
  * registered observers
  */
-export const emitValidateEvent = (
+export const emitValidateEvent: emitValidateEventType = ( {
 	observers,
 	createErrorNotice,
-	setValidationErrors
-) => {
+	setValidationErrors, // TODO: Fix this type after we move to validation store
+} ) => {
 	return ( { select, dispatch } ) => {
 		const { status } = select.getCheckoutState();
 		if ( status === STATUS.BEFORE_PROCESSING ) {
@@ -79,14 +79,12 @@ export const emitValidateEvent = (
  * or the CHECKOUT_AFTER_PROCESSING_WITH_SUCCESS if not. Set checkout errors according
  * to the observer responses
  */
-export const emitAfterProcessingEvents = ( {
+export const emitAfterProcessingEvents: emitAfterProcessingEventsType = ( {
 	observers,
 	createErrorNotice,
 	notices,
-}: {
-	observers: EventObserversType;
 } ) => {
-	return ( { select, dispatch }: { dispatch: CheckoutActions } ) => {
+	return ( { select, dispatch } ) => {
 		const state = select.getCheckoutState();
 		const data = {
 			redirectUrl: state.redirectUrl,
