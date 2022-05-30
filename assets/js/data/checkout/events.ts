@@ -12,16 +12,8 @@ import {
 	emitEvent,
 	emitEventWithAbort,
 	ActionType,
-} from '../../../event-emit';
-
-const EMIT_TYPES = {
-	CHECKOUT_VALIDATION_BEFORE_PROCESSING:
-		'checkout_validation_before_processing',
-	CHECKOUT_AFTER_PROCESSING_WITH_SUCCESS:
-		'checkout_after_processing_with_success',
-	CHECKOUT_AFTER_PROCESSING_WITH_ERROR:
-		'checkout_after_processing_with_error',
-};
+} from '../../base/context/event-emit';
+import { EVENTS } from './constants';
 
 type EventEmittersType = Record< string, ReturnType< typeof emitterCallback > >;
 
@@ -42,15 +34,15 @@ const useEventEmitters = (
 	const eventEmitters = useMemo(
 		() => ( {
 			onCheckoutAfterProcessingWithSuccess: emitterCallback(
-				EMIT_TYPES.CHECKOUT_AFTER_PROCESSING_WITH_SUCCESS,
+				EVENTS.AFTER_PROCESSING_WITH_SUCCESS,
 				observerDispatch
 			),
 			onCheckoutAfterProcessingWithError: emitterCallback(
-				EMIT_TYPES.CHECKOUT_AFTER_PROCESSING_WITH_ERROR,
+				EVENTS.AFTER_PROCESSING_WITH_ERROR,
 				observerDispatch
 			),
 			onCheckoutValidationBeforeProcessing: emitterCallback(
-				EMIT_TYPES.CHECKOUT_VALIDATION_BEFORE_PROCESSING,
+				EVENTS.VALIDATION_BEFORE_PROCESSING,
 				observerDispatch
 			),
 		} ),
@@ -59,4 +51,4 @@ const useEventEmitters = (
 	return eventEmitters;
 };
 
-export { EMIT_TYPES, useEventEmitters, reducer, emitEvent, emitEventWithAbort };
+export { useEventEmitters, reducer, emitEvent, emitEventWithAbort };

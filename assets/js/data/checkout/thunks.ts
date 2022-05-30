@@ -8,12 +8,8 @@ import { CheckoutResponse } from '@woocommerce/types';
  */
 import { removeNoticesByStatus } from '../../utils/notices';
 import { getPaymentResultFromCheckoutResponse } from '../../base/context/providers/cart-checkout/checkout-state/utils';
-import { STATUS } from './constants';
-import {
-	EMIT_TYPES,
-	emitEvent,
-	emitEventWithAbort,
-} from '../../base/context/providers/cart-checkout/checkout-state/event-emit';
+import { STATUS, EVENTS } from './constants';
+import { emitEvent, emitEventWithAbort } from './events';
 import {
 	runCheckoutAfterProcessingWithErrorObservers,
 	runCheckoutAfterProcessingWithSuccessObservers,
@@ -36,7 +32,7 @@ export const processCheckoutResponse = ( response: CheckoutResponse ) => {
 };
 
 /**
- * Emit the CHECKOUT_VALIDATION_BEFORE_PROCESSING event and process all
+ * Emit the VALIDATION_BEFORE_PROCESSING event and process all
  * registered observers
  */
 export const emitValidateEvent: emitValidateEventType = ( {
@@ -50,7 +46,7 @@ export const emitValidateEvent: emitValidateEventType = ( {
 			removeNoticesByStatus( 'error' );
 			emitEvent(
 				observers,
-				EMIT_TYPES.CHECKOUT_VALIDATION_BEFORE_PROCESSING,
+				EVENTS.VALIDATION_BEFORE_PROCESSING,
 				{}
 			).then( ( response ) => {
 				if ( response !== true ) {
@@ -75,8 +71,8 @@ export const emitValidateEvent: emitValidateEventType = ( {
 };
 
 /**
- * Emit the CHECKOUT_AFTER_PROCESSING_WITH_ERROR if the checkout contains an error,
- * or the CHECKOUT_AFTER_PROCESSING_WITH_SUCCESS if not. Set checkout errors according
+ * Emit the AFTER_PROCESSING_WITH_ERROR if the checkout contains an error,
+ * or the AFTER_PROCESSING_WITH_SUCCESS if not. Set checkout errors according
  * to the observer responses
  */
 export const emitAfterProcessingEvents: emitAfterProcessingEventsType = ( {
@@ -98,7 +94,7 @@ export const emitAfterProcessingEvents: emitAfterProcessingEventsType = ( {
 			// with a fallback if nothing customizes it.
 			emitEventWithAbort(
 				observers,
-				EMIT_TYPES.CHECKOUT_AFTER_PROCESSING_WITH_ERROR,
+				EVENTS.AFTER_PROCESSING_WITH_ERROR,
 				data
 			).then( ( observerResponses ) => {
 				runCheckoutAfterProcessingWithErrorObservers( {
@@ -112,7 +108,7 @@ export const emitAfterProcessingEvents: emitAfterProcessingEventsType = ( {
 		} else {
 			emitEventWithAbort(
 				observers,
-				EMIT_TYPES.CHECKOUT_AFTER_PROCESSING_WITH_SUCCESS,
+				EVENTS.AFTER_PROCESSING_WITH_SUCCESS,
 				data
 			).then( ( observerResponses: unknown[] ) => {
 				runCheckoutAfterProcessingWithSuccessObservers( {

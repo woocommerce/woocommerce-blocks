@@ -21,7 +21,10 @@ import { CHECKOUT_STORE_KEY } from '@woocommerce/block-data';
  */
 import { STATUS, DEFAULT_CHECKOUT_STATE_DATA } from './constants';
 import type { CheckoutStateContextType } from './types';
-import { useEventEmitters, reducer as emitReducer } from './event-emit';
+import {
+	useEventEmitters,
+	reducer as emitReducer,
+} from '../../../../../data/checkout/events';
 import { useValidationContext } from '../../validation';
 import { useStoreEvents } from '../../../hooks/use-store-events';
 import { useCheckoutNotices } from '../../../hooks/use-checkout-notices';
