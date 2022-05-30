@@ -34,7 +34,6 @@ export interface ComboboxProps {
 	options: ComboboxControlOption[];
 	required?: boolean;
 	value: string;
-	requireExactMatch?: boolean;
 }
 
 /**
@@ -55,7 +54,6 @@ const Combobox = ( {
 	errorId: incomingErrorId,
 	instanceId = '0',
 	autoComplete = 'off',
-	requireExactMatch = false,
 }: ComboboxProps ): JSX.Element => {
 	const {
 		getValidationError,
@@ -97,8 +95,6 @@ const Combobox = ( {
 		setValidationErrors,
 	] );
 
-	// @todo Remove patch for ComboboxControl once https://github.com/WordPress/gutenberg/pull/33928 is released
-	// Also see https://github.com/WordPress/gutenberg/pull/34090
 	return (
 		<div
 			id={ controlId }
@@ -138,13 +134,7 @@ const Combobox = ( {
 									normalizedFilterValue
 						);
 						if ( foundOption ) {
-							if ( ! requireExactMatch ) {
-								onChange( foundOption.value );
-								return;
-							}
-							if ( foundOption.label === filterValue ) {
-								onChange( foundOption.value );
-							}
+							onChange( foundOption.value );
 						}
 					}
 				} }
