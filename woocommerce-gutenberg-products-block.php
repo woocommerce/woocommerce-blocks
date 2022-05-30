@@ -203,12 +203,14 @@ function load_woocommerce_core_json_translation( $file, $handle, $domain ) {
 		$handle_filename = substr( $handle_filename, 0, -7 ) . '.js';
 	}
 
+	$core_path_md5 = md5( 'packages/woocommerce-blocks/build/' . $handle_filename );
+
 	/**
-	 * Return file path of the corresponding translation file in the WC Core
-	 * here is enough because `load_script_translations()` will check for its
-	 * existence before loading it.
+	 * Return file path of the corresponding translation file in the WC Core is
+	 * enough because `load_script_translations()` will check for its existence
+	 * before loading it.
 	 */
-	return $lang_dir . '/woocommerce-' . $locale . '-' . md5( 'packages/woocommerce-blocks/build/' . $handle_filename ) . '.json';
+	return $lang_dir . '/woocommerce-' . $locale . '-' . $core_path_md5 . '.json';
 }
 
 add_filter( 'load_script_translation_file', 'load_woocommerce_core_json_translation', 10, 3 );
