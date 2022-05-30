@@ -187,12 +187,28 @@ function load_woocommerce_core_json_translation( $file, $handle, $domain ) {
 		return $file;
 	}
 
+	global $wp_scripts;
+
+	if ( ! isset( $wp_scripts->registered[ $handle ], $wp_scripts->registered[ $handle ]->src ) ) {
+		return $file;
+	}
+
+	$handle_src      = explode( '/build/', $wp_scripts->registered[ $handle ]->src );
+	$handle_filename = $handle_src[1];
+	$locale          = determine_locale();
+	$lang_dir        = WP_LANG_DIR . '/plugins';
+
+	// Translations are always based on the unminified filename.
+	if ( substr( $handle_filename, -7 ) === '.min.js' ) {
+		$handle_filename = substr( $handle_filename, 0, -7 ) . '.js';
+	}
+
 	/**
 	 * Return file path of the corresponding translation file in the WC Core
 	 * here is enough because `load_script_translations()` will check for its
 	 * existence before loading it.
 	 */
-	return str_replace( "/plugins/{$domain}-", '/plugins/woocommerce-', $file );
+	return $lang_dir . '/woocommerce-' . $locale . '-' . md5( 'packages/woocommerce-blocks/build/' . $handle_filename ) . '.json';
 }
 
 add_filter( 'load_script_translation_file', 'load_woocommerce_core_json_translation', 10, 3 );
