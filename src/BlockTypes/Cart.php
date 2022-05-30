@@ -99,6 +99,7 @@ class Cart extends AbstractBlock {
 			<div data-block-name="woocommerce/filled-cart-block" class="wp-block-woocommerce-filled-cart-block">
 				<div data-block-name="woocommerce/cart-items-block" class="wp-block-woocommerce-cart-items-block">
 					<div data-block-name="woocommerce/cart-line-items-block" class="wp-block-woocommerce-cart-line-items-block"></div>
+					<div data-block-name="woocommerce/cart-cross-sells-block" class="wp-block-woocommerce-cart-cross-sells-block"></div>
 				</div>
 				<div data-block-name="woocommerce/cart-totals-block" class="wp-block-woocommerce-cart-totals-block">
 					<div data-block-name="woocommerce/cart-order-summary-block" class="wp-block-woocommerce-cart-order-summary-block"></div>
@@ -238,6 +239,7 @@ class Cart extends AbstractBlock {
 		$blocks = [
 			'cart-blocks/express-payment--checkout-blocks/express-payment--checkout-blocks/payment',
 			'cart-blocks/line-items',
+			'cart-blocks/cross-sells',
 			'cart-blocks/order-summary',
 			'cart-blocks/order-summary--checkout-blocks/billing-address--checkout-blocks/shipping-address',
 			'cart-blocks/checkout-button',
