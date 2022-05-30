@@ -1,7 +1,7 @@
 /**
  * External dependencies
  */
-import type { createErrorNotice as createErrorNoticeOriginal } from '@wordpress/notices/store/actions';
+import type { createErrorNotice as originalCreateErrorNotice } from '@wordpress/notices/store/actions';
 import type { Notice } from '@wordpress/notices/';
 import { FunctionKeys } from 'utility-types';
 
@@ -11,6 +11,20 @@ import { FunctionKeys } from 'utility-types';
 import { EventObserversType } from '../../base/context/event-emit/types';
 import type { CheckoutActions } from './actions';
 import * as selectors from './selectors';
+import { CheckoutState } from './default-state';
+
+export type CheckoutAfterProcessingWithErrorEventData = {
+	redirectUrl: CheckoutState[ 'redirectUrl' ];
+	orderId: CheckoutState[ 'orderId' ];
+	customerId: CheckoutState[ 'customerId' ];
+	orderNotes: CheckoutState[ 'orderNotes' ];
+	processingResponse: CheckoutState[ 'processingResponse' ];
+};
+export type CheckoutAndPaymentNotices = {
+	checkoutNotices: Notice[];
+	paymentNotices: Notice[];
+	expressPaymentNotices: Notice[];
+};
 
 /**
  * Type for emitAfterProcessingEventsType() thunk
@@ -21,12 +35,8 @@ export type emitAfterProcessingEventsType = ( {
 	notices,
 }: {
 	observers: EventObserversType;
-	createErrorNotice: typeof createErrorNoticeOriginal;
-	notices: {
-		checkoutNotices: Notice;
-		paymentNotices: Notice;
-		expressPaymentNotices: Notice;
-	};
+	createErrorNotice: typeof originalCreateErrorNotice;
+	notices: CheckoutAndPaymentNotices;
 } ) => ( {
 	select,
 	dispatch,
@@ -44,7 +54,7 @@ export type emitValidateEventType = ( {
 	setValidationErrors,
 }: {
 	observers: EventObserversType;
-	createErrorNotice: typeof createErrorNoticeOriginal;
+	createErrorNotice: typeof originalCreateErrorNotice;
 } ) => ( {
 	select,
 	dispatch,

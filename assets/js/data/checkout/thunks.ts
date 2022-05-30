@@ -15,8 +15,8 @@ import {
 	emitEventWithAbort,
 } from '../../base/context/providers/cart-checkout/checkout-state/event-emit';
 import {
-	processCheckoutAfterProcessingWithErrorObservers,
-	processCheckoutAfterProcessingWithSuccessObservers,
+	runCheckoutAfterProcessingWithErrorObservers,
+	runCheckoutAfterProcessingWithSuccessObservers,
 } from './utils';
 import type { CheckoutActions } from './actions';
 import { emitValidateEventType, emitAfterProcessingEventsType } from './types';
@@ -101,7 +101,7 @@ export const emitAfterProcessingEvents: emitAfterProcessingEventsType = ( {
 				EMIT_TYPES.CHECKOUT_AFTER_PROCESSING_WITH_ERROR,
 				data
 			).then( ( observerResponses ) => {
-				processCheckoutAfterProcessingWithErrorObservers( {
+				runCheckoutAfterProcessingWithErrorObservers( {
 					observerResponses,
 					createErrorNotice,
 					notices,
@@ -115,7 +115,7 @@ export const emitAfterProcessingEvents: emitAfterProcessingEventsType = ( {
 				EMIT_TYPES.CHECKOUT_AFTER_PROCESSING_WITH_SUCCESS,
 				data
 			).then( ( observerResponses: unknown[] ) => {
-				processCheckoutAfterProcessingWithSuccessObservers( {
+				runCheckoutAfterProcessingWithSuccessObservers( {
 					observerResponses,
 					createErrorNotice,
 					dispatch,

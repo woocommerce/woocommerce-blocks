@@ -3,11 +3,17 @@
  */
 import { isString, isObject } from '@woocommerce/types';
 import { __ } from '@wordpress/i18n';
+import type { createErrorNotice as originalCreateErrorNotice } from '@wordpress/notices/store/actions';
 
 /**
  * Internal dependencies
  */
 import { useEmitResponse } from '../../base/context/hooks/use-emit-response';
+import {
+	CheckoutAndPaymentNotices,
+	CheckoutAfterProcessingWithErrorEventData,
+} from './types';
+import { CheckoutActions } from './actions';
 
 const {
 	isErrorResponse,
@@ -20,9 +26,16 @@ const {
 // properties of an object. Refactor this to not be a hook, we could simply import
 // those functions where needed
 
+/**
+ * Based on the given observers, create Error Notices where necessary
+ * and return the error response of the last registered observer
+ */
 export const handleErrorResponse = ( {
 	observerResponses,
 	createErrorNotice,
+}: {
+	observerResponses: unknown[];
+	createErrorNotice: typeof originalCreateErrorNotice;
 } ) => {
 	let errorResponse = null;
 	observerResponses.forEach( ( response ) => {
@@ -44,12 +57,23 @@ export const handleErrorResponse = ( {
 	return errorResponse;
 };
 
-export const processCheckoutAfterProcessingWithErrorObservers = ( {
+/**
+ * This functions runs after the CHECKOUT_AFTER_PROCESSING_WITH_ERROR event has been triggered and
+ * all observers have been processed. It sets any Error Notices and the status of the Checkout
+ * based on the observer responses
+ */
+export const runCheckoutAfterProcessingWithErrorObservers = ( {
 	observerResponses,
 	createErrorNotice,
 	notices,
 	dispatch,
 	data,
+}: {
+	observerResponses: unknown[];
+	createErrorNotice: typeof originalCreateErrorNotice;
+	notices: CheckoutAndPaymentNotices;
+	dispatch: CheckoutActions;
+	data: CheckoutAfterProcessingWithErrorEventData;
 } ) => {
 	console.log( 'processing observers for CheckoutAfterProcessingWithError' );
 	const errorResponse = handleErrorResponse( {
@@ -94,10 +118,19 @@ export const processCheckoutAfterProcessingWithErrorObservers = ( {
 	}
 };
 
-export const processCheckoutAfterProcessingWithSuccessObservers = ( {
+/**
+ * This functions runs after the CHECKOUT_AFTER_PROCESSING_WITH_SUCCESS event has been triggered and
+ * all observers have been processed. It sets any Error Notices and the status of the Checkout
+ * based on the observer responses
+ */
+export const runCheckoutAfterProcessingWithSuccessObservers = ( {
 	observerResponses,
 	createErrorNotice,
 	dispatch,
+}: {
+	observerResponses: unknown[];
+	createErrorNotice: typeof originalCreateErrorNotice;
+	dispatch: CheckoutActions;
 } ) => {
 	console.log(
 		'processing observers for CheckoutAfterProcessingWithSuccess'
