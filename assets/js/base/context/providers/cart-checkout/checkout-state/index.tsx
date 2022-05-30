@@ -114,11 +114,11 @@ export const CheckoutStateProvider = ( {
 	// Emit CHECKOUT_VALIDATE event and set the error state based on the response of
 	// the registered callbacks
 	useEffect( () => {
-		checkoutActions.emitValidateEvent(
-			currentObservers.current,
+		checkoutActions.emitValidateEvent( {
+			observers: currentObservers.current,
 			createErrorNotice,
-			setValidationErrors
-		);
+			setValidationErrors,
+		} );
 	}, [
 		checkoutState.status,
 		setValidationErrors,
