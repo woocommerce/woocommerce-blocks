@@ -15,11 +15,11 @@ const withTransformSingleSelectToMultipleSelect = createHigherOrderComponent(
 		class WrappedComponent extends Component {
 			render() {
 				const { selected } = this.props;
-				const isNil =
-					selected === null ||
-					selected === undefined ||
-					selected?.length === 0;
-				return (
+				const isNil = selected === null || selected === undefined;
+
+				return Array.isArray( selected ) ? (
+					<OriginalComponent { ...this.props } />
+				) : (
 					<OriginalComponent
 						{ ...this.props }
 						selected={ isNil ? [] : [ selected ] }
