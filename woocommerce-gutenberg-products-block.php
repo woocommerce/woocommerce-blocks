@@ -192,7 +192,7 @@ function load_woocommerce_core_json_translation( $file, $handle, $domain ) {
 	 * here is enough because `load_script_translations()` will check for its
 	 * existence before loading it.
 	 */
-	return str_replace( $file, "/plugins/{$domain}-", '/plugins/woocommerce-' );
+	return str_replace( "/plugins/{$domain}-", '/plugins/woocommerce-', $file );
 }
 
 add_filter( 'load_script_translation_file', 'load_woocommerce_core_json_translation', 10, 3 );
