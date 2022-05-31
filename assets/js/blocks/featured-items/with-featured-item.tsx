@@ -70,8 +70,8 @@ interface FeaturedItemRequiredProps< T > {
 		| FeaturedProductRequiredAttributes
 	 ) &
 		EditorBlock< T >[ 'attributes' ] & {
-			// This is hardcoded because  and color ar not yet included
-			//  in Gutenberg's official types.
+			// This is hardcoded because border and color are not yet included
+			// in Gutenberg's official types.
 			style: {
 				border?: { radius?: number };
 				color?: { text?: string };
