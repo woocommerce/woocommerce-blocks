@@ -37,7 +37,7 @@ The following data is available:
 -   `processingResponse`:The result of the payment processing
 -   `useShippingAsBilling`: Should the billing form be hidden and inherit the shipping address?
 -   `shouldCreateAccount`: Should a user account be created with this order?
--   `extensionData`: Custom checkout data passed to the store API on processing.
+-   `extensionData`: This is used by plugins that extend Cart & Checkout to pass custom data to the Store API on checkout processing
 -   `orderNotes`: Order notes introduced by the user in the checkout form.
 
 ##### Selectors
