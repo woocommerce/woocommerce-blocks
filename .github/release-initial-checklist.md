@@ -114,9 +114,9 @@ This only needs to be done if this release is the last release of the feature pl
   * After the checklist is complete and the testing is done, it will be up to the WooCommerce core team to approve and merge the pull request.
 * [ ] Make sure you join the `#woo-core-releases` Slack channel to represent Woo Blocks for the release of WooCommerce core this version is included in.
 * [ ] Search the release thread of the WooCommerce core version in WooCommerce P2 (example: p6q8Tx-2gl-p2).
-  * [ ] Subscribe to it so you are aware of any news/changes.
+  * [ ] Subscribe to it, so you are aware of any news/changes.
   * [ ] Make sure you are listed as the _Blocks Package_ lead or add yourself if you aren't.
-  * [ ] If there are any changes that you think might need to be highlighted, add them under the _Feature Rollup_ comment. Keep in mind a change to highlight might be included in a previous version from the one you just released, given that not all of them are included in WC core. Ping the porters if you are unsure.
+  * [ ] Add changes you want to highlight under the _Feature Rollup_ comment. Please also look at changes from earlier versions that we didn't include in WC core yet. Ping the porters if you are unsure.
 
 ## Publish posts
 
