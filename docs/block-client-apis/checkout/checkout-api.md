@@ -33,7 +33,7 @@ The following data is available:
 -   `redirectUrl`: The current set url that the checkout will redirect to when it is complete.
 -   `orderId`: The order id for the order attached to the current checkout.
 -   `customerId`: The ID of the customer if the customer has an account, or `0` for guests.
--   `calculatingCount`: If any of the totals, taxes, shipping, etc need to be calculated, the count will be increased here
+-   `calculatingCount`: If any of the totals, taxes, shipping, etc need to be calculated, the count will be increased here.
 -   `processingResponse`:The result of the payment processing
 -   `useShippingAsBilling`: Should the billing form be hidden and inherit the shipping address?
 -   `shouldCreateAccount`: Should a user account be created with this order?
