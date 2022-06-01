@@ -20,7 +20,7 @@ This document gives an overview of some of the major architectural components/AP
 
 ### Data Stores
 
-We are transitioning much of what is now available in Contexts, to @wordpress/data stores.
+We are transitioning much of what is now available in Contexts, to `@wordpress/data` stores.
 
 #### Checkout Data Store
 
@@ -33,7 +33,7 @@ The following data is available:
 -   `redirectUrl`: The current set url that the checkout will redirect to when it is complete.
 -   `orderId`: The order id for the order attached to the current checkout.
 -   `customerId`: The ID of the customer if the customer has an account, or `0` for guests.
--   `calculatingCount`: If any of the totals, taxes, shipping, etc need to be calculated, the count will be increased here
+-   `calculatingCount`: If any of the totals, taxes, shipping, etc need to be calculated, the count will be increased here.
 -   `processingResponse`:The result of the payment processing
 -   `useShippingAsBilling`: Should the billing form be hidden and inherit the shipping address?
 -   `shouldCreateAccount`: Should a user account be created with this order?
@@ -44,7 +44,7 @@ The following data is available:
 
 Data can be accessed through the following selectors:
 
--   `getCheckoutState()`: Returns all the data above
+-   `getCheckoutState()`: Returns all the data above.
 -   `isComplete()`: True when checkout has finished processing and the subscribed checkout processing callbacks have all been invoked along with a successful processing of the checkout by the server.
 -   `isIdle()`: When the checkout status is `IDLE` this flag is true. Checkout will be this status after any change to checkout state after the block is loaded. It will also be this status when retrying a purchase is possible after processing happens with an error.
 -   `isBeforeProcessing()`: When the checkout status is `BEFORE_PROCESSING` this flag is true. Checkout will be this status when the user submits checkout for processing.
@@ -53,9 +53,9 @@ Data can be accessed through the following selectors:
 -   `isComplete()`: When the checkout status is `COMPLETE` this flag is true. Checkout will have this status after all observers on the events emitted during the `AFTER_PROCESSING` status are completed successfully. When checkout is at this status, the shopper's browser will be redirected to the value of `redirectUrl` at that point (usually the `order-received` route).
 -   `isCalculating()`: This is true when the total is being re-calculated for the order. There are numerous things that might trigger a recalculation of the total: coupons being added or removed, shipping rates updated, shipping rate selected etc. This flag consolidates all activity that might be occurring (including requests to the server that potentially affect calculation of totals). So instead of having to check each of those individual states you can reliably just check if this boolean is true (calculating) or false (not calculating).
 -   `hasOrder()`: This is true when orderId is truthy.
--   `hasError()`: This is true when the checkout has an error
--   `getOrderNotes()`: Returns the order notes
--   `getCustomerId()`: Returns the customer ID
+-   `hasError()`: This is true when the checkout has an error.
+-   `getOrderNotes()`: Returns the order notes.
+-   `getCustomerId()`: Returns the customer ID.
 
 ##### Actions
 
