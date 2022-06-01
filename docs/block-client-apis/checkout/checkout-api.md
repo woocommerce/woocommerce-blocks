@@ -53,9 +53,9 @@ Data can be accessed through the following selectors:
 -   `isComplete()`: When the checkout status is `COMPLETE` this flag is true. Checkout will have this status after all observers on the events emitted during the `AFTER_PROCESSING` status are completed successfully. When checkout is at this status, the shopper's browser will be redirected to the value of `redirectUrl` at that point (usually the `order-received` route).
 -   `isCalculating()`: This is true when the total is being re-calculated for the order. There are numerous things that might trigger a recalculation of the total: coupons being added or removed, shipping rates updated, shipping rate selected etc. This flag consolidates all activity that might be occurring (including requests to the server that potentially affect calculation of totals). So instead of having to check each of those individual states you can reliably just check if this boolean is true (calculating) or false (not calculating).
 -   `hasOrder()`: This is true when orderId is truthy.
--   `hasError()`: This is true when the checkout has an error
--   `getOrderNotes()`: Returns the order notes
--   `getCustomerId()`: Returns the customer ID
+-   `hasError()`: This is true when the checkout has an error.
+-   `getOrderNotes()`: Returns the order notes.
+-   `getCustomerId()`: Returns the customer ID.
 
 ##### Actions
 
