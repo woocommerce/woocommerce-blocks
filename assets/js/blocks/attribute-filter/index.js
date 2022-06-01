@@ -12,10 +12,9 @@ import classNames from 'classnames';
  * Internal dependencies
  */
 import edit from './edit.js';
+import metadata from './block.json';
 
-registerBlockType( 'woocommerce/attribute-filter', {
-	apiVersion: 2,
-	title: __( 'Filter Products by Attribute', 'woo-gutenberg-products-block' ),
+registerBlockType( metadata, {
 	icon: {
 		src: (
 			<Icon
@@ -24,18 +23,8 @@ registerBlockType( 'woocommerce/attribute-filter', {
 			/>
 		),
 	},
-	category: 'woocommerce',
-	keywords: [ __( 'WooCommerce', 'woo-gutenberg-products-block' ) ],
-	description: __(
-		'Allow customers to filter the grid by product attribute, such as color. Works in combination with the All Products block.',
-		'woo-gutenberg-products-block'
-	),
 	supports: {
-		html: false,
-		color: {
-			text: true,
-			background: false,
-		},
+		...metadata.supports,
 		...( isFeaturePluginBuild() && {
 			__experimentalBorder: {
 				radius: true,
@@ -44,49 +33,15 @@ registerBlockType( 'woocommerce/attribute-filter', {
 			},
 		} ),
 	},
-	example: {
-		attributes: {
-			isPreview: true,
-		},
-	},
 	attributes: {
-		attributeId: {
-			type: 'number',
-			default: 0,
-		},
-		showCounts: {
-			type: 'boolean',
-			default: true,
-		},
-		queryType: {
-			type: 'string',
-			default: 'or',
-		},
+		...metadata.attributes,
+		// make-pot doesn't pick the default value of attribute for i18n.
 		heading: {
 			type: 'string',
 			default: __(
 				'Filter by attribute',
 				'woo-gutenberg-products-block'
 			),
-		},
-		headingLevel: {
-			type: 'number',
-			default: 3,
-		},
-		displayStyle: {
-			type: 'string',
-			default: 'list',
-		},
-		showFilterButton: {
-			type: 'boolean',
-			default: false,
-		},
-		/**
-		 * Are we previewing?
-		 */
-		isPreview: {
-			type: 'boolean',
-			default: false,
 		},
 	},
 	transforms: {
