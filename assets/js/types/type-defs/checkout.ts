@@ -1,10 +1,10 @@
 /**
- * External dependencies
+ * Internal dependencies
  */
-import { Address } from '@woocommerce/types';
+import { EnteredAddress } from '../../settings/shared/default-address-fields';
 
 export interface CheckoutResponseSuccess {
-	billing_address: Address;
+	billing_address: EnteredAddress;
 	customer_id: number;
 	customer_note: string;
 	extensions: Record< string, unknown >;
@@ -16,7 +16,7 @@ export interface CheckoutResponseSuccess {
 		payment_status: 'success' | 'failure' | 'pending' | 'error';
 		redirect_url: string;
 	};
-	shipping_address: Address;
+	shipping_address: EnteredAddress;
 	status: string;
 }
 
