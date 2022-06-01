@@ -20,7 +20,7 @@ This document gives an overview of some of the major architectural components/AP
 
 ### Data Stores
 
-We are transitioning much of what is now available in Contexts, to @wordpress/data stores.
+We are transitioning much of what is now available in Contexts, to `@wordpress/data` stores.
 
 #### Checkout Data Store
 
