@@ -476,7 +476,7 @@ This event emitter is fired when a shipping rate selection is not being persiste
 
 This event emitter doesn't care about any registered observer response and will simply execute all registered observers passing them the current error status in the context.
 
-## <!-- FEEDBACK -->
+ <!-- FEEDBACK -->
 
 [We're hiring!](https://woocommerce.com/careers/) Come work with us!
 
