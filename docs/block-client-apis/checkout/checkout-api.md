@@ -44,7 +44,7 @@ The following data is available:
 
 Data can be accessed through the following selectors:
 
--   `getCheckoutState()`: Returns all the data above
+-   `getCheckoutState()`: Returns all the data above.
 -   `isComplete()`: True when checkout has finished processing and the subscribed checkout processing callbacks have all been invoked along with a successful processing of the checkout by the server.
 -   `isIdle()`: When the checkout status is `IDLE` this flag is true. Checkout will be this status after any change to checkout state after the block is loaded. It will also be this status when retrying a purchase is possible after processing happens with an error.
 -   `isBeforeProcessing()`: When the checkout status is `BEFORE_PROCESSING` this flag is true. Checkout will be this status when the user submits checkout for processing.
