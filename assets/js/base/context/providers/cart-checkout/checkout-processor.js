@@ -9,14 +9,12 @@ import {
 	useCallback,
 	useState,
 	useMemo,
-	useReducer,
 } from '@wordpress/element';
 import {
 	emptyHiddenAddressFields,
 	formatStoreApiErrorMessage,
 } from '@woocommerce/base-utils';
 import { useDispatch, useSelect } from '@wordpress/data';
-import { usePrevious } from '@woocommerce/base-hooks';
 import { CHECKOUT_STORE_KEY } from '@woocommerce/block-data';
 
 /**
@@ -30,10 +28,6 @@ import { usePaymentMethodDataContext } from './payment-methods';
 import { useValidationContext } from '../validation';
 import { useStoreCart } from '../../hooks/cart/use-store-cart';
 import { useStoreNoticesContext } from '../store-notices';
-import { reducer as emitReducer } from '../../../../data/checkout/events';
-import { STATUS } from '../../../../data/checkout/constants';
-import { useCheckoutNotices } from '../../hooks/use-checkout-notices';
-
 /**
  * CheckoutProcessor component.
  *
@@ -61,29 +55,11 @@ const CheckoutProcessor = () => {
 		};
 	} );
 
-	const [ observers ] = useReducer( emitReducer, {} );
-	const currentObservers = useRef( observers );
-
-	const checkoutActions = useDispatch( CHECKOUT_STORE_KEY );
-	const checkoutState = useSelect( ( select ) =>
-		select( CHECKOUT_STORE_KEY ).getCheckoutState()
-	);
-
-	if ( redirectUrl && redirectUrl !== checkoutState.redirectUrl ) {
-		checkoutActions.setRedirectUrl( redirectUrl );
-	}
-
-	const {
-		checkoutNotices,
-		paymentNotices,
-		expressPaymentNotices,
-	} = useCheckoutNotices();
-
 	const { setCustomerId, setHasError, processCheckoutResponse } = useDispatch(
 		CHECKOUT_STORE_KEY
 	);
 
-	const { hasValidationErrors, setValidationErrors } = useValidationContext();
+	const { hasValidationErrors } = useValidationContext();
 	const { shippingErrorStatus } = useShippingDataContext();
 	const { billingData, shippingAddress } = useCustomerDataContext();
 	const { cartNeedsPayment, cartNeedsShipping, receiveCart } = useStoreCart();
@@ -104,10 +80,7 @@ const CheckoutProcessor = () => {
 	const [ isProcessingOrder, setIsProcessingOrder ] = useState( false );
 
 	const paymentMethodId = useMemo( () => {
-		const merged = {
-			...expressPaymentMethods,
-			...paymentMethods,
-		};
+		const merged = { ...expressPaymentMethods, ...paymentMethods };
 		return merged?.[ activePaymentMethod ]?.paymentMethodId;
 	}, [ activePaymentMethod, expressPaymentMethods, paymentMethods ] );
 
@@ -145,7 +118,6 @@ const CheckoutProcessor = () => {
 		setHasError,
 	] );
 
-	// Keep shipping, billing and redirectUrl current
 	useEffect( () => {
 		currentBillingData.current = billingData;
 		currentShippingAddress.current = shippingAddress;
@@ -180,7 +152,6 @@ const CheckoutProcessor = () => {
 		shippingErrorStatus.hasError,
 	] );
 
-	// Validate the checkout fields via the onCheckoutValidationBeforeProcessing callback
 	useEffect( () => {
 		let unsubscribeProcessing;
 		if ( ! isExpressPaymentMethodActive ) {
@@ -200,11 +171,10 @@ const CheckoutProcessor = () => {
 		isExpressPaymentMethodActive,
 	] );
 
-	// Redirect when checkout is complete and there is a redirect url.
+	// redirect when checkout is complete and there is a redirect url.
 	useEffect( () => {
 		if ( currentRedirectUrl.current ) {
-			console.log( "Complete! but Don't redirect" );
-			// window.location.href = currentRedirectUrl.current;
+			window.location.href = currentRedirectUrl.current;
 		}
 	}, [ checkoutIsComplete ] );
 
@@ -279,10 +249,7 @@ const CheckoutProcessor = () => {
 						}
 						createErrorNotice(
 							formatStoreApiErrorMessage( response ),
-							{
-								id: 'checkout',
-								context: 'wc/checkout',
-							}
+							{ id: 'checkout', context: 'wc/checkout' }
 						);
 						response?.additional_errors?.forEach?.(
 							( additionalError ) => {
@@ -308,10 +275,7 @@ const CheckoutProcessor = () => {
 									'woo-gutenberg-products-block'
 								)
 						),
-						{
-							id: 'checkout',
-							context: 'wc/checkout',
-						}
+						{ id: 'checkout', context: 'wc/checkout' }
 					);
 				}
 				setHasError( true );
@@ -342,67 +306,6 @@ const CheckoutProcessor = () => {
 			processOrder();
 		}
 	}, [ processOrder, paidAndWithoutErrors, isProcessingOrder ] );
-
-	// Set observers on ref so it's always current.
-	useEffect( () => {
-		currentObservers.current = observers;
-	}, [ observers ] );
-
-	// Emit CHECKOUT_VALIDATE event and set the error state based on the response of
-	// the registered callbacks
-	useEffect( () => {
-		checkoutActions.emitValidateEvent( {
-			observers: currentObservers.current,
-			createErrorNotice,
-			setValidationErrors,
-		} );
-	}, [
-		checkoutState.status,
-		setValidationErrors,
-		createErrorNotice,
-		checkoutActions,
-	] );
-
-	const previousStatus = usePrevious( checkoutState.status );
-	const previousHasError = usePrevious( checkoutState.hasError );
-
-	// Emit CHECKOUT_AFTER_PROCESSING_WITH_SUCCESS and CHECKOUT_AFTER_PROCESSING_WITH_ERROR events
-	// and set checkout errors according to the callback responses
-	useEffect( () => {
-		if (
-			checkoutState.status === previousStatus &&
-			checkoutState.hasError === previousHasError
-		) {
-			return;
-		}
-
-		if ( checkoutState.status === STATUS.AFTER_PROCESSING ) {
-			checkoutActions.emitAfterProcessingEvents( {
-				observers: currentObservers.current,
-				createErrorNotice,
-				notices: {
-					checkoutNotices,
-					paymentNotices,
-					expressPaymentNotices,
-				},
-			} );
-		}
-	}, [
-		checkoutState.status,
-		checkoutState.hasError,
-		checkoutState.redirectUrl,
-		checkoutState.orderId,
-		checkoutState.customerId,
-		checkoutState.orderNotes,
-		checkoutState.processingResponse,
-		previousStatus,
-		previousHasError,
-		createErrorNotice,
-		checkoutNotices,
-		expressPaymentNotices,
-		paymentNotices,
-		checkoutActions,
-	] );
 
 	return null;
 };
