@@ -19,33 +19,36 @@ import { CHECKOUT_STORE_KEY } from '@woocommerce/block-data';
 /**
  * Internal dependencies
  */
-import { STATUS, DEFAULT_CHECKOUT_STATE_DATA } from './constants';
-import type { CheckoutStateContextType } from './types';
-import {
-	useEventEmitters,
-	reducer as emitReducer,
-} from '../../../../../data/checkout/events';
+import type { CheckoutEventsContextType } from './types';
+import { useEventEmitters, reducer as emitReducer } from './event-emit';
+import { STATUS } from '../../../../../data/checkout/constants';
 import { useValidationContext } from '../../validation';
 import { useStoreEvents } from '../../../hooks/use-store-events';
 import { useCheckoutNotices } from '../../../hooks/use-checkout-notices';
 import { useEmitResponse } from '../../../hooks/use-emit-response';
 import { CheckoutState } from '../../../../../data/checkout/default-state';
 
-const CheckoutContext = createContext( DEFAULT_CHECKOUT_STATE_DATA );
+const CheckoutEventsContext = createContext( {
+	onSubmit: () => void null,
+	onCheckoutAfterProcessingWithSuccess: () => () => void null,
+	onCheckoutAfterProcessingWithError: () => () => void null,
+	onCheckoutBeforeProcessing: () => () => void null, // deprecated for onCheckoutValidationBeforeProcessing
+	onCheckoutValidationBeforeProcessing: () => () => void null,
+} );
 
-export const useCheckoutContext = (): CheckoutStateContextType => {
-	return useContext( CheckoutContext );
+export const useCheckoutEventsContext = () => {
+	return useContext( CheckoutEventsContext );
 };
 
 /**
- * Checkout state provider
- * This provides an API interface exposing checkout state for use with cart or checkout blocks.
+ * Checkout Events provider
+ * Emit Checkout events and provide access to Checkout event handlers
  *
  * @param {Object} props             Incoming props for the provider.
  * @param {Object} props.children    The children being wrapped.
  * @param {string} props.redirectUrl Initialize what the checkout will redirect to after successful submit.
  */
-export const CheckoutStateProvider = ( {
+export const CheckoutEventsProvider = ( {
 	children,
 	redirectUrl,
 }: {
@@ -176,7 +179,7 @@ export const CheckoutStateProvider = ( {
 		checkoutActions.setBeforeProcessing();
 	}, [ dispatchCheckoutEvent, checkoutActions ] );
 
-	const checkoutData: CheckoutStateContextType = {
+	const checkoutEventHandlers: CheckoutEventsContextType = {
 		onSubmit,
 		onCheckoutBeforeProcessing,
 		onCheckoutValidationBeforeProcessing,
@@ -184,8 +187,8 @@ export const CheckoutStateProvider = ( {
 		onCheckoutAfterProcessingWithError,
 	};
 	return (
-		<CheckoutContext.Provider value={ checkoutData }>
+		<CheckoutEventsContext.Provider value={ checkoutEventHandlers }>
 			{ children }
-		</CheckoutContext.Provider>
+		</CheckoutEventsContext.Provider>
 	);
 };

@@ -8,7 +8,7 @@
 		"../settings/shared/index.js",
 		"../settings/blocks/index.js",
 		"../utils/notices.ts",
-		"../base/context/providers/cart-checkout/checkout-state/**.ts",
+		"../base/context/providers/cart-checkout/checkout-events/**.ts",
 		"../base/context/event-emit/types"
 	],
 	"exclude": [ "**/test/**" ]

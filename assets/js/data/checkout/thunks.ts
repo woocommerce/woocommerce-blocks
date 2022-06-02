@@ -7,13 +7,16 @@ import { CheckoutResponse } from '@woocommerce/types';
  * Internal dependencies
  */
 import { removeNoticesByStatus } from '../../utils/notices';
-import { getPaymentResultFromCheckoutResponse } from '../../base/context/providers/cart-checkout/checkout-state/utils';
-import { STATUS, EVENTS } from './constants';
-import { emitEvent, emitEventWithAbort } from './events';
 import {
+	getPaymentResultFromCheckoutResponse,
 	runCheckoutAfterProcessingWithErrorObservers,
 	runCheckoutAfterProcessingWithSuccessObservers,
 } from './utils';
+import { STATUS, EVENTS } from './constants';
+import {
+	emitEvent,
+	emitEventWithAbort,
+} from '../../base/context/providers/cart-checkout/checkout-events/event-emit';
 import type { CheckoutActions } from './actions';
 import { emitValidateEventType, emitAfterProcessingEventsType } from './types';
 

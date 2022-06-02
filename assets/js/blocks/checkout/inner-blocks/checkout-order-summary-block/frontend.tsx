@@ -4,7 +4,7 @@
 import { TotalsFooterItem } from '@woocommerce/base-components/cart-checkout';
 import { getCurrencyFromPriceResponse } from '@woocommerce/price-format';
 import { useStoreCart } from '@woocommerce/base-context/hooks';
-import { useCheckoutContext } from '@woocommerce/base-context';
+import { useCheckoutEventsContext } from '@woocommerce/base-context';
 import { dispatch } from '@wordpress/data';
 import { CHECKOUT_STORE_KEY } from '@woocommerce/block-data';
 
@@ -26,7 +26,7 @@ const FrontendBlock = ( {
 		onCheckoutValidationBeforeProcessing,
 		onCheckoutAfterProcessingWithSuccess,
 		onCheckoutAfterProcessingWithError,
-	} = useCheckoutContext();
+	} = useCheckoutEventsContext();
 
 	return (
 		<div className={ className }>
