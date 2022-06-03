@@ -21,7 +21,7 @@ export const usePriceConstraint = (
 	direction: string
 ) => {
 	const step = 10 * 10 ** minorUnit;
-	let currentConstraint;
+	let currentConstraint = null;
 	const parsedPrice = parseFloat( price );
 
 	if ( ! isNaN( parsedPrice ) ) {
@@ -30,8 +30,6 @@ export const usePriceConstraint = (
 		} else if ( direction === ROUND_DOWN ) {
 			currentConstraint = Math.floor( parsedPrice / step ) * step;
 		}
-	} else {
-		currentConstraint = null;
 	}
 
 	const previousConstraint = usePrevious(

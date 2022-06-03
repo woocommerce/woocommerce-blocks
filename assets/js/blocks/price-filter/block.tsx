@@ -22,6 +22,7 @@ import { isBoolean } from '@woocommerce/types';
 import usePriceConstraints from './use-price-constraints';
 import { getUrlParameter } from '../../utils/filters';
 import './style.scss';
+import { Attributes } from './types';
 
 /**
  * Formats filter values into a string for the URL parameters needed for filtering PHP templates.
@@ -31,8 +32,8 @@ import './style.scss';
  *
  * @return {string} New URL with query parameters in it.
  */
-function formatParams( url, params ) {
-	const paramObject = {};
+function formatParams( url: string, params: Record< string, string > ) {
+	const paramObject: Record< string, string > = {};
 
 	for ( const [ key, value ] of Object.entries( params ) ) {
 		if ( value ) {
@@ -51,13 +52,13 @@ function formatParams( url, params ) {
 /**
  * Formats price values taking into account precision
  *
- * @param {string} value
- * @param {number} minorUnit
+ * @param {string|void} value
+ * @param {number}      minorUnit
  *
  * @return {number} Formatted price.
  */
 
-function formatPrice( value, minorUnit ) {
+function formatPrice( value: unknown, minorUnit: number ) {
 	return Number( value ) * 10 ** minorUnit;
 }
 
@@ -68,7 +69,13 @@ function formatPrice( value, minorUnit ) {
  * @param {Object}  props.attributes Incoming block attributes.
  * @param {boolean} props.isEditor   Whether in editor context or not.
  */
-const PriceFilterBlock = ( { attributes, isEditor = false } ) => {
+const PriceFilterBlock = ( {
+	attributes,
+	isEditor = false,
+}: {
+	attributes: Attributes;
+	isEditor: boolean;
+} ) => {
 	const hasFilterableProducts = getSettingWithCoercion(
 		'has_filterable_products',
 		false,
@@ -290,7 +297,7 @@ const PriceFilterBlock = ( { attributes, isEditor = false } ) => {
 		return null;
 	}
 
-	const TagName = `h${ attributes.headingLevel }`;
+	const TagName = `h${ attributes.headingLevel }` as keyof JSX.IntrinsicElements;
 
 	return (
 		<>
