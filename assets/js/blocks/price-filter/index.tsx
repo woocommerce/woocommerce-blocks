@@ -11,7 +11,7 @@ import { useBlockProps } from '@wordpress/block-editor';
 /**
  * Internal dependencies
  */
-import edit from './edit.js';
+import edit from './edit';
 import metadata from './block.json';
 
 registerBlockType( metadata, {
