@@ -19,7 +19,7 @@ import { isBoolean } from '@woocommerce/types';
 /**
  * Internal dependencies
  */
-import usePriceConstraints from './use-price-constraints.js';
+import usePriceConstraints from './use-price-constraints';
 import { getUrlParameter } from '../../utils/filters';
 import './style.scss';
 
