@@ -8,7 +8,7 @@ import { renderFrontend } from '@woocommerce/base-utils';
  */
 import Block from './block.js';
 
-const getProps = ( el ) => {
+const getProps = ( el: HTMLElement ) => {
 	return {
 		attributes: {
 			showInputFields: el.dataset.showinputfields === 'true',
