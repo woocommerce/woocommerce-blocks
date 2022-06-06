@@ -1,7 +1,7 @@
 /**
  * External dependencies
  */
-import { ValidatedTextInput } from '@woocommerce/blocks-checkout';
+import { ValidatedTextInput } from '@woocommerce/base-components/text-input';
 import {
 	BillingCountryInput,
 	ShippingCountryInput,
@@ -22,13 +22,15 @@ import {
 	EnteredAddress,
 } from '@woocommerce/settings';
 import { useSelect, useDispatch } from '@wordpress/data';
-import { VALIDATION_STORE_KEY } from '@woocommerce/block-data';
+import {
+	VALIDATION_STORE_KEY,
+	FieldValidationStatus,
+} from '@woocommerce/block-data';
 
 /**
  * Internal dependencies
  */
 import prepareAddressFields from './prepare-address-fields';
-import type { FieldValidationStatus } from '../../../../../../packages/checkout/validation/reducers';
 
 // If it's the shipping address form and the user starts entering address
 // values without having set the country first, show an error.
