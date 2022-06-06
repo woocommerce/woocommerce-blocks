@@ -10,8 +10,9 @@ import { useBlockProps } from '@wordpress/block-editor';
 /**
  * Internal dependencies
  */
-import edit from './edit.js';
+import edit from './edit';
 import metadata from './block.json';
+import type { Attributes } from './types';
 
 registerBlockType( metadata, {
 	icon: {
@@ -34,7 +35,7 @@ registerBlockType( metadata, {
 	},
 	edit,
 	// Save the props to post content.
-	save( { attributes } ) {
+	save( { attributes }: { attributes: Attributes } ) {
 		const {
 			className,
 			showCounts,
@@ -42,7 +43,7 @@ registerBlockType( metadata, {
 			headingLevel,
 			showFilterButton,
 		} = attributes;
-		const data = {
+		const data: Record< string, unknown > = {
 			'data-show-counts': showCounts,
 			'data-heading': heading,
 			'data-heading-level': headingLevel,
