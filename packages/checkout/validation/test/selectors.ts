@@ -8,10 +8,8 @@ import {
 } from '../selectors';
 import type { FieldValidationStatus } from '../reducers';
 
-//Test suite for validation selectors
 describe( 'Validation selectors', () => {
-	//Checks if it get existing validation error
-	it( 'Can get the validation error', () => {
+	it( 'Gets the validation error', () => {
 		const state: Record< string, FieldValidationStatus > = {
 			validationError: {
 				message: 'This is a test message',
@@ -26,8 +24,8 @@ describe( 'Validation selectors', () => {
 			hidden: false,
 		} );
 	} );
-	//Checks if it get existing validation error id
-	it( 'Can get the validation id', () => {
+
+	it( 'Gets the generated validation error ID', () => {
 		const state: Record< string, FieldValidationStatus > = {
 			validationError: {
 				message: 'This is a test message',
@@ -39,8 +37,8 @@ describe( 'Validation selectors', () => {
 		);
 		expect( validationErrorID ).toEqual( `validate-error-validationError` );
 	} );
-	//Checks if state has validation error
-	it( 'Can check if state has any validation errors', () => {
+
+	it( 'Checks if state has any validation errors', () => {
 		const state: Record< string, FieldValidationStatus > = {
 			validationError: {
 				message: 'This is a test message',
