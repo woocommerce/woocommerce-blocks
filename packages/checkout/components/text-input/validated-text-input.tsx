@@ -78,7 +78,7 @@ const ValidatedTextInput = ( {
 			inputObject.value = inputObject.value.trim();
 			const inputIsValid = inputObject.checkValidity();
 			if ( inputIsValid ) {
-				//clearValidationError( errorIdString );
+				clearValidationError( errorIdString );
 			} else {
 				const validationErrors = {
 					[ errorIdString ]: {
@@ -92,7 +92,6 @@ const ValidatedTextInput = ( {
 					},
 				};
 				setValidationErrors( validationErrors );
-				//setValidationErrors( validationErrors );
 			}
 		},
 		[ errorIdString, setValidationErrors ]
