@@ -10,10 +10,7 @@ import reducer, { State } from './reducers';
 import { STORE_KEY } from './constants';
 import * as actions from './actions';
 import * as selectors from './selectors';
-import {
-	DispatchFromMap,
-	SelectFromMap,
-} from '../../../assets/js/data/mapped-types';
+import { DispatchFromMap, SelectFromMap } from '../mapped-types';
 
 // eslint-disable-next-line @typescript-eslint/ban-ts-comment
 // @ts-ignore
