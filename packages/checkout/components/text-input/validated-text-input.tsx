@@ -56,8 +56,14 @@ const ValidatedTextInput = ( {
 		typeof id !== 'undefined' ? id : 'textinput-' + instanceId;
 	const errorIdString = errorId !== undefined ? errorId : textInputId;
 
-	const getValidationError = useSelect( ( select ) =>
-		select( VALIDATION_STORE_KEY ).getValidationError()
+	const { getValidationError, getValidationErrorId } = useSelect(
+		( select ) => {
+			const store = select( VALIDATION_STORE_KEY );
+			return {
+				getValidationError: store.getValidationError(),
+				getValidationErrorId: store.getValidationErrorId(),
+			};
+		}
 	);
 
 	const validateInput = useCallback(
@@ -131,10 +137,10 @@ const ValidatedTextInput = ( {
 	}
 
 	const hasError = errorMessage.message && ! errorMessage.hidden;
-	const describedBy = 'test';
-	// showError && hasError && getValidationErrorId( errorIdString )
-	// 	? getValidationErrorId( errorIdString )
-	// 	: ariaDescribedBy;
+	const describedBy =
+		showError && hasError && getValidationErrorId( errorIdString )
+			? getValidationErrorId( errorIdString )
+			: ariaDescribedBy;
 
 	return (
 		<TextInput
