@@ -12,7 +12,7 @@ import { dispatch, useSelect } from '@wordpress/data';
  * Internal dependencies
  */
 import { ValidationInputError } from '../validation-input-error';
-import { VALIDATION_STORE_KEY } from '../../validation';
+import { VALIDATION_STORE_KEY } from '../../../data/validation';
 
 /**
  * Internal dependencies
