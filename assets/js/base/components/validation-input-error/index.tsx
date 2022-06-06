@@ -3,12 +3,12 @@
  */
 import PropTypes from 'prop-types';
 import { useSelect } from '@wordpress/data';
+import { VALIDATION_STORE_KEY } from '@woocommerce/block-data';
 
 /**
  * Internal dependencies
  */
 import './style.scss';
-import { VALIDATION_STORE_KEY } from '../../../data/validation';
 
 export const ValidationInputError = ( {
 	errorMessage = '',

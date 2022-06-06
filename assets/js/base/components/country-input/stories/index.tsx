@@ -4,13 +4,13 @@
 import { Story, Meta } from '@storybook/react';
 import { useDispatch } from '@wordpress/data';
 import { useState, useEffect } from '@wordpress/element';
+import { VALIDATION_STORE_KEY } from '@woocommerce/block-data';
 
 /**
  * Internal dependencies
  */
 import { CountryInput, CountryInputWithCountriesProps } from '..';
 import { countries } from './countries-filler';
-import { VALIDATION_STORE_KEY } from '../../../../../../packages/checkout/validation';
 
 type CountryCode = keyof typeof countries;
 
