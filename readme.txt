@@ -86,6 +86,25 @@ Release and roadmap notes available on the [WooCommerce Developers Blog](https:/
 
 == Changelog ==
 
+= 7.8.0 - 2022-06-06 =
+
+#### Enhancements
+
+- Filter Products by Price: Decrease price slider step sequence from 10 to 1. ([6486](https://github.com/woocommerce/woocommerce-blocks/pull/6486))
+- Add the `Fixed image` and `Repeated image` media controls to the Featured Category block. ([6440](https://github.com/woocommerce/woocommerce-blocks/pull/6440))
+
+#### Bug Fixes
+
+- Featured Item Blocks: Fix an issue where the default color could be overridden by a theme, and where custom colors where not applied correctly. ([6492](https://github.com/woocommerce/woocommerce-blocks/pull/6492))
+- Fix: Only enqueue the relevant translations script. ([6478](https://github.com/woocommerce/woocommerce-blocks/pull/6478))
+- Fix: All Products block: New product is missing in the Cart block if `Redirect to the cart page after successful addition` is enabled. ([6466](https://github.com/woocommerce/woocommerce-blocks/pull/6466))
+- Respect low stock visibility setting in Cart/Checkout. ([6444](https://github.com/woocommerce/woocommerce-blocks/pull/6444))
+
+#### Various
+
+- Add support for `Font size` and `Font family` for the `Mini Cart` block. ([6396](https://github.com/woocommerce/woocommerce-blocks/pull/6396))
+
+
 = 7.7.0 - 2022-05-24 =
 
 #### Enhancements
