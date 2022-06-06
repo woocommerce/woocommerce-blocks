@@ -22,12 +22,12 @@ import {
 	EnteredAddress,
 } from '@woocommerce/settings';
 import { useSelect, useDispatch } from '@wordpress/data';
+import { VALIDATION_STORE_KEY } from '@woocommerce/block-data';
 
 /**
  * Internal dependencies
  */
 import prepareAddressFields from './prepare-address-fields';
-import { VALIDATION_STORE_KEY } from '../../../../../../packages/checkout/validation';
 import type { FieldValidationStatus } from '../../../../../../packages/checkout/validation/reducers';
 
 // If it's the shipping address form and the user starts entering address
