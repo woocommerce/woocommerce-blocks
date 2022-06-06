@@ -18,6 +18,7 @@ import { CURRENT_USER_IS_ADMIN, getSetting } from '@woocommerce/settings';
 import { SlotFillProvider } from '@woocommerce/blocks-checkout';
 import withScrollToTop from '@woocommerce/base-hocs/with-scroll-to-top';
 import { useDispatch, useSelect } from '@wordpress/data';
+import { VALIDATION_STORE_KEY } from '@woocommerce/block-data';
 
 /**
  * Internal dependencies
@@ -30,7 +31,6 @@ import type { Attributes } from './types';
 import { CheckoutBlockContext } from './context';
 import { hasNoticesOfType } from '../../utils/notices';
 import { StoreNoticesProvider } from '../../base/context/providers';
-import { VALIDATION_STORE_KEY } from '../../../../packages/checkout/validation';
 
 const LoginPrompt = () => {
 	return (
