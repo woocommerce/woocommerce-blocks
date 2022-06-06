@@ -1,14 +1,15 @@
 /**
  * Internal dependencies
  */
-import reducer from '../reducers';
+import reducer, { FieldValidationStatus } from '../reducers';
 import { ACTION_TYPES as types } from '.././action-types';
+import { ValidationAction } from '../actions';
 
 //Test suite for error validations
 describe( 'Validation reducer', () => {
 	//Checks if it can add a new validation error to the state
 	it( 'Sets a single validation error', () => {
-		const singleValidationAction = {
+		const singleValidationAction: ValidationAction = {
 			type: types.SET_VALIDATION_ERRORS,
 			errors: {
 				singleValidationError: {
@@ -27,13 +28,13 @@ describe( 'Validation reducer', () => {
 	} );
 	//Checks if it does not add new error if its already exist in the state
 	it( 'Does not add new errors if same error already exists in state', () => {
-		const state = {
+		const state: Record< string, FieldValidationStatus > = {
 			existingError: {
 				message: 'This is an existing error message',
 				hidden: false,
 			},
 		};
-		const existingErrorValidation = {
+		const existingErrorValidation: ValidationAction = {
 			type: types.SET_VALIDATION_ERRORS,
 			errors: {
 				existingError: {
@@ -52,10 +53,12 @@ describe( 'Validation reducer', () => {
 	} );
 	//Checks if it does not add new error if error message is a string
 	it( 'Does not add new errors if error message is not string and keep existing errors', () => {
-		const integerErrorAction = {
+		const integerErrorAction: ValidationAction = {
 			type: types.SET_VALIDATION_ERRORS,
 			errors: {
 				integerError: {
+					// eslint-disable-next-line @typescript-eslint/ban-ts-comment
+					// @ts-ignore ignoring because we're testing runtime errors with integers.
 					message: 1234,
 					hidden: false,
 				},
@@ -66,13 +69,13 @@ describe( 'Validation reducer', () => {
 	} );
 	//Checks if it updates the existing error in the state
 	it( 'Updates existing error if message or hidden changes', () => {
-		const state = {
+		const state: Record< string, FieldValidationStatus > = {
 			existingValidationError: {
 				message: 'This is an existing error message',
 				hidden: false,
 			},
 		};
-		const updateExistingErrorAction = {
+		const updateExistingErrorAction: ValidationAction = {
 			type: types.SET_VALIDATION_ERRORS,
 			errors: {
 				existingValidationError: {
@@ -91,13 +94,13 @@ describe( 'Validation reducer', () => {
 	} );
 	//Checks if it appends a new error to the state
 	it( 'Appends new errors to list of existing errors', () => {
-		const state = {
+		const state: Record< string, FieldValidationStatus > = {
 			existingError: {
 				message: 'This is an existing error message',
 				hidden: false,
 			},
 		};
-		const addNewError = {
+		const addNewError: ValidationAction = {
 			type: types.SET_VALIDATION_ERRORS,
 			errors: {
 				newError: {
@@ -120,13 +123,13 @@ describe( 'Validation reducer', () => {
 	} );
 	//Checks if it clears all the errors
 	it( 'Clear all validation errors', () => {
-		const state = {
+		const state: Record< string, FieldValidationStatus > = {
 			existingError: {
 				message: 'This is an existing error message',
 				hidden: false,
 			},
 		};
-		const clearAllErrors = {
+		const clearAllErrors: ValidationAction = {
 			type: types.CLEAR_ALL_VALIDATION_ERRORS,
 		};
 		const nextState = reducer( state, clearAllErrors );
@@ -134,7 +137,7 @@ describe( 'Validation reducer', () => {
 	} );
 	//Checks if it clears a single error
 	it( 'Clear single validation error', () => {
-		const state = {
+		const state: Record< string, FieldValidationStatus > = {
 			existingError: {
 				message: 'This is an existing error message',
 				hidden: false,
@@ -144,7 +147,7 @@ describe( 'Validation reducer', () => {
 				hidden: false,
 			},
 		};
-		const clearError = {
+		const clearError: ValidationAction = {
 			type: types.CLEAR_VALIDATION_ERROR,
 			error: 'existingError',
 		};
@@ -154,7 +157,7 @@ describe( 'Validation reducer', () => {
 	} );
 	//Checks if it hides an error
 	it( 'Hide single validation error', () => {
-		const state = {
+		const state: Record< string, FieldValidationStatus > = {
 			existingError: {
 				message: 'This is an existing error message',
 				hidden: false,
@@ -164,7 +167,7 @@ describe( 'Validation reducer', () => {
 				hidden: false,
 			},
 		};
-		const testAction = {
+		const testAction: ValidationAction = {
 			type: types.HIDE_VALIDATION_ERROR,
 			error: 'existingError',
 		};
@@ -182,7 +185,7 @@ describe( 'Validation reducer', () => {
 	} );
 	//Checks if it display a single error
 	it( 'Show single validation error', () => {
-		const state = {
+		const state: Record< string, FieldValidationStatus > = {
 			existingError: {
 				message: 'This is an existing error message',
 				hidden: true,
@@ -192,7 +195,7 @@ describe( 'Validation reducer', () => {
 				hidden: true,
 			},
 		};
-		const testAction = {
+		const testAction: ValidationAction = {
 			type: types.SHOW_VALIDATION_ERROR,
 			error: 'existingError',
 		};
@@ -210,7 +213,7 @@ describe( 'Validation reducer', () => {
 	} );
 	//Checks if it display all errors
 	it( 'Show all validation errors', () => {
-		const state = {
+		const state: Record< string, FieldValidationStatus > = {
 			firstExistingError: {
 				message: 'This is first existing error message',
 				hidden: true,
@@ -220,7 +223,7 @@ describe( 'Validation reducer', () => {
 				hidden: true,
 			},
 		};
-		const showAllErrors = {
+		const showAllErrors: ValidationAction = {
 			type: types.SHOW_ALL_VALIDATION_ERRORS,
 		};
 		const nextState = reducer( state, showAllErrors );
