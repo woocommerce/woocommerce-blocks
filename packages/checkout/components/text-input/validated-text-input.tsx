@@ -49,7 +49,9 @@ const ValidatedTextInput = ( {
 	const [ isPristine, setIsPristine ] = useState( true );
 	const inputRef = useRef< HTMLInputElement >( null );
 
-	const { setValidationErrors } = dispatch( VALIDATION_STORE_KEY );
+	const { setValidationErrors, hideValidationError } = dispatch(
+		VALIDATION_STORE_KEY
+	);
 	const textInputId =
 		typeof id !== 'undefined' ? id : 'textinput-' + instanceId;
 	const errorIdString = errorId !== undefined ? errorId : textInputId;
@@ -154,7 +156,7 @@ const ValidatedTextInput = ( {
 			}
 			ref={ inputRef }
 			onChange={ ( val ) => {
-				//hideValidationError( errorIdString );
+				hideValidationError( errorIdString );
 				onChange( val );
 			} }
 			ariaDescribedBy={ describedBy }
