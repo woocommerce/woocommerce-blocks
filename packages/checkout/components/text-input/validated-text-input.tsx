@@ -57,7 +57,7 @@ const ValidatedTextInput = ( {
 	const errorIdString = errorId !== undefined ? errorId : textInputId;
 
 	const dataValidationError = useSelect( ( select ) => {
-		return select( VALIDATION_STORE_KEY ).getValidationError(
+		return select( VALIDATION_STORE_KEY ).getValidationError()(
 			errorIdString
 		);
 	} );
