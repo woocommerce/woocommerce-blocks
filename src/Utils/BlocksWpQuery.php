@@ -29,7 +29,7 @@ class BlocksWpQuery extends WP_Query {
 			// is using Gutenberg in product descriptions.
 			// See https://github.com/woocommerce/woocommerce-blocks/issues/6416.
 			global $post;
-			if ( $post && is_array( $query['post__in'] ) ) {
+			if ( $post && array_key_exists( 'post__in', $query ) && is_array( $query['post__in'] ) ) {
 				$global_post_id    = $post->ID;
 				$filtered_post__in = array_filter(
 					$query['post__in'],
