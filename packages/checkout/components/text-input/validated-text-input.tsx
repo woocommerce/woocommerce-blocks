@@ -49,18 +49,14 @@ const ValidatedTextInput = ( {
 	const [ isPristine, setIsPristine ] = useState( true );
 	const inputRef = useRef< HTMLInputElement >( null );
 
-	const { setValidationErrors: setDataValidationErrors } = dispatch(
-		VALIDATION_STORE_KEY
-	);
+	const { setValidationErrors } = dispatch( VALIDATION_STORE_KEY );
 	const textInputId =
 		typeof id !== 'undefined' ? id : 'textinput-' + instanceId;
 	const errorIdString = errorId !== undefined ? errorId : textInputId;
 
-	const dataValidationError = useSelect( ( select ) => {
-		return select( VALIDATION_STORE_KEY ).getValidationError()(
-			errorIdString
-		);
-	} );
+	const getValidationError = useSelect( ( select ) =>
+		select( VALIDATION_STORE_KEY ).getValidationError()
+	);
 
 	const validateInput = useCallback(
 		( errorsHidden = true ) => {
@@ -85,11 +81,11 @@ const ValidatedTextInput = ( {
 						hidden: errorsHidden,
 					},
 				};
-				setDataValidationErrors( validationErrors );
+				setValidationErrors( validationErrors );
 				//setValidationErrors( validationErrors );
 			}
 		},
-		[ errorIdString, setDataValidationErrors ]
+		[ errorIdString, setValidationErrors ]
 	);
 
 	/**
@@ -126,11 +122,7 @@ const ValidatedTextInput = ( {
 	// 	};
 	// }, [ clearValidationError, errorIdString ] );
 
-	// @todo - When useValidationContext is converted to TypeScript, remove this cast and use the correct type.
-	const errorMessage = ( dataValidationError || {} ) as {
-		message?: string;
-		hidden?: boolean;
-	};
+	const errorMessage = getValidationError( errorIdString );
 
 	if ( isString( passedErrorMessage ) && passedErrorMessage !== '' ) {
 		errorMessage.message = passedErrorMessage;
