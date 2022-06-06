@@ -49,9 +49,11 @@ const ValidatedTextInput = ( {
 	const [ isPristine, setIsPristine ] = useState( true );
 	const inputRef = useRef< HTMLInputElement >( null );
 
-	const { setValidationErrors, hideValidationError } = dispatch(
-		VALIDATION_STORE_KEY
-	);
+	const {
+		setValidationErrors,
+		hideValidationError,
+		clearValidationError,
+	} = dispatch( VALIDATION_STORE_KEY );
 	const textInputId =
 		typeof id !== 'undefined' ? id : 'textinput-' + instanceId;
 	const errorIdString = errorId !== undefined ? errorId : textInputId;
@@ -124,11 +126,11 @@ const ValidatedTextInput = ( {
 	}, [ value, validateInput ] );
 
 	// Remove validation errors when unmounted.
-	// useEffect( () => {
-	// 	return () => {
-	// 		clearValidationError( errorIdString );
-	// 	};
-	// }, [ clearValidationError, errorIdString ] );
+	useEffect( () => {
+		return () => {
+			clearValidationError( errorIdString );
+		};
+	}, [ clearValidationError, errorIdString ] );
 
 	const errorMessage = getValidationError( errorIdString );
 
