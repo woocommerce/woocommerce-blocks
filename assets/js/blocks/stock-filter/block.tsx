@@ -26,6 +26,7 @@ import { PREFIX_QUERY_ARG_FILTER_TYPE } from '@woocommerce/utils';
 import { previewOptions } from './preview';
 import './style.scss';
 import { getActiveFilters } from './utils';
+import { Attributes } from './types';
 
 export const QUERY_PARAM_KEY = PREFIX_QUERY_ARG_FILTER_TYPE + 'stock_status';
 
@@ -39,6 +40,9 @@ export const QUERY_PARAM_KEY = PREFIX_QUERY_ARG_FILTER_TYPE + 'stock_status';
 const StockStatusFilterBlock = ( {
 	attributes: blockAttributes,
 	isEditor = false,
+}: {
+	attributes: Attributes;
+	isEditor?: boolean;
 } ) => {
 	const filteringForPhpTemplate = getSettingWithCoercion(
 		'is_rendering_php_template',
@@ -50,14 +54,11 @@ const StockStatusFilterBlock = ( {
 		false
 	);
 
-	const [ hideOutOfStockItems ] = useState(
-		getSetting( 'hideOutOfStockItems', false )
-	);
-	const [ { outofstock, ...otherStockStatusOptions } ] = useState(
-		getSetting( 'stockStatusOptions', {} )
-	);
+	const [ { outofstock, ...otherStockStatusOptions } ] = useState<
+		Record< string, string >
+	>( getSetting( 'stockStatusOptions', {} ) );
 	const [ STOCK_STATUS_OPTIONS ] = useState(
-		hideOutOfStockItems
+		getSetting( 'hideOutOfStockItems', false )
 			? otherStockStatusOptions
 			: { outofstock, ...otherStockStatusOptions }
 	);
@@ -115,12 +116,13 @@ const StockStatusFilterBlock = ( {
 		 *
 		 * @param {string} queryStatus The status slug to check.
 		 */
-		const isStockStatusInQueryState = ( queryStatus ) => {
+		const isStockStatusInQueryState = ( queryStatus: string ) => {
 			if ( ! queryState?.stock_status ) {
 				return false;
 			}
-			return queryState.stock_status.some( ( { status = [] } ) =>
-				status.includes( queryStatus )
+			return queryState.stock_status.some(
+				( { status = [] }: { status: string[] } ) =>
+					status.includes( queryStatus )
 			);
 		};
 
@@ -171,7 +173,7 @@ const StockStatusFilterBlock = ( {
 	 *
 	 * @param {Array} checkedOptions Array of checked stock options.
 	 */
-	const redirectPageForPhpTemplate = ( checkedOptions ) => {
+	const redirectPageForPhpTemplate = ( checkedOptions: string[] ) => {
 		if ( checkedOptions.length === 0 ) {
 			const url = removeQueryArgs(
 				window.location.href,
@@ -269,15 +271,22 @@ const StockStatusFilterBlock = ( {
 	 */
 	const onChange = useCallback(
 		( checkedValue ) => {
-			const getFilterNameFromValue = ( filterValue ) => {
-				const { name } = displayedOptions.find(
+			const getFilterNameFromValue = ( filterValue: string ) => {
+				const filterOption = displayedOptions.find(
 					( option ) => option.value === filterValue
 				);
 
-				return name;
+				if ( ! filterOption ) {
+					return null;
+				}
+
+				return filterOption.name;
 			};
 
-			const announceFilterChange = ( { filterAdded, filterRemoved } ) => {
+			const announceFilterChange = ( {
+				filterAdded,
+				filterRemoved,
+			}: Record< string, string > ) => {
 				const filterAddedName = filterAdded
 					? getFilterNameFromValue( filterAdded )
 					: null;
@@ -332,7 +341,7 @@ const StockStatusFilterBlock = ( {
 		return null;
 	}
 
-	const TagName = `h${ blockAttributes.headingLevel }`;
+	const TagName = `h${ blockAttributes.headingLevel }` as keyof JSX.IntrinsicElements;
 	const isLoading = ! blockAttributes.isPreview && ! STOCK_STATUS_OPTIONS;
 	const isDisabled = ! blockAttributes.isPreview && filteredCountsLoading;
 

@@ -6,7 +6,7 @@ import { getUrlParameter } from '@woocommerce/utils';
 
 export const getActiveFilters = (
 	filters: Record< string, string >,
-	queryParamKey: 'filter_stock_status'
+	queryParamKey = 'filter_stock_status'
 ) => {
 	const params = getUrlParameter( queryParamKey );
 
