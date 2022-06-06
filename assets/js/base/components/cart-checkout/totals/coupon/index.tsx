@@ -4,15 +4,13 @@
 import { __ } from '@wordpress/i18n';
 import { useState, useEffect, useRef } from '@wordpress/element';
 import Button from '@woocommerce/base-components/button';
-import {
-	ValidatedTextInput,
-	Panel,
-	ValidationInputError,
-} from '@woocommerce/blocks-checkout';
+import { Panel } from '@woocommerce/blocks-checkout';
 import Label from '@woocommerce/base-components/label';
 import LoadingMask from '@woocommerce/base-components/loading-mask';
 import { withInstanceId } from '@wordpress/compose';
 import { useValidationContext } from '@woocommerce/base-context';
+import { ValidatedTextInput } from '@woocommerce/base-components/text-input';
+import ValidationInputError from '@woocommerce/base-components/validation-input-error';
 
 /**
  * Internal dependencies
