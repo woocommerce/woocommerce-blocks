@@ -6,9 +6,9 @@ import { renderFrontend } from '@woocommerce/base-utils';
 /**
  * Internal dependencies
  */
-import Block from './block.js';
+import Block from './block';
 
-const getProps = ( el ) => {
+const getProps = ( el: HTMLElement ) => {
 	return {
 		attributes: {
 			showCounts: el.dataset.showCounts === 'true',
