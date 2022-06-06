@@ -7,11 +7,10 @@ import { FieldValidationStatus } from './reducers';
 
 export const setValidationErrors = (
 	errors: Record< string, FieldValidationStatus >
-) =>
-	( {
-		type: types.SET_VALIDATION_ERRORS,
-		errors,
-	} as const );
+) => ( {
+	type: types.SET_VALIDATION_ERRORS,
+	errors,
+} );
 
 export const clearAllValidationErrors = () => ( {
 	type: types.CLEAR_ALL_VALIDATION_ERRORS,
