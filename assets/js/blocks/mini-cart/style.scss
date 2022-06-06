@@ -8,6 +8,8 @@
 	border: none;
 	color: inherit;
 	display: flex;
+	font-size: inherit;
+	font-family: inherit;
 	font-weight: 400;
 	padding: em($gap-small) em($gap-smaller);
 
@@ -84,7 +86,7 @@
 	justify-content: space-between;
 }
 
-.wp-block-woocommerce-empty-mini-cart-contents-block {
+.wp-block-woocommerce-empty-mini-cart-contents-block .wc-block-mini-cart__empty-cart-wrapper {
 	overflow-y: auto;
 	padding: $gap-largest $gap $gap;
 }
