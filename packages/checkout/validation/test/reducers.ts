@@ -192,6 +192,10 @@ describe( 'Validation reducer', () => {
 				message: 'This is error should not be removed',
 				hidden: true,
 			},
+			visibleError: {
+				message: 'This is error should remain visible',
+				hidden: false,
+			},
 		};
 		const testAction: ValidationAction = {
 			type: types.SHOW_VALIDATION_ERROR,
@@ -206,6 +210,10 @@ describe( 'Validation reducer', () => {
 			testError: {
 				message: 'This is error should not be removed',
 				hidden: true,
+			},
+			visibleError: {
+				message: 'This is error should remain visible',
+				hidden: false,
 			},
 		} );
 	} );
