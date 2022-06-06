@@ -6,7 +6,7 @@ use WP_Query;
 /**
  * BlocksWpQuery query.
  *
- * Wrapper for WP Query with additonal helper methods.
+ * Wrapper for WP Query with additional helper methods.
  * Allows query args to be set and parsed without doing running it, so that a cache can be used.
  *
  * @deprecated 2.5.0
