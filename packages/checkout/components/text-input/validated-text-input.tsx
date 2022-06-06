@@ -94,7 +94,7 @@ const ValidatedTextInput = ( {
 				setValidationErrors( validationErrors );
 			}
 		},
-		[ errorIdString, setValidationErrors ]
+		[ clearValidationError, errorIdString, setValidationErrors ]
 	);
 
 	/**
@@ -137,7 +137,7 @@ const ValidatedTextInput = ( {
 		errorMessage.message = passedErrorMessage;
 	}
 
-	const hasError = errorMessage.message && ! errorMessage.hidden;
+	const hasError = errorMessage?.message && ! errorMessage?.hidden;
 	const describedBy =
 		showError && hasError && getValidationErrorId( errorIdString )
 			? getValidationErrorId( errorIdString )
