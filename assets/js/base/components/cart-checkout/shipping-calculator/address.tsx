@@ -31,13 +31,13 @@ const ShippingCalculatorAddress = ( {
 	const { hasValidationErrors } = useSelect( ( select ) => {
 		const store = select( VALIDATION_STORE_KEY );
 		return {
-			hasValidationErrors: store.hasValidationErrors(),
+			hasValidationErrors: store.hasValidationErrors,
 		};
 	} );
 
 	const validateSubmit = () => {
 		showAllValidationErrors();
-		return ! hasValidationErrors;
+		return ! hasValidationErrors();
 	};
 
 	return (
