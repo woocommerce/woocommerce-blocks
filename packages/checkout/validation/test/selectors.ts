@@ -47,5 +47,10 @@ describe( 'Validation selectors', () => {
 		};
 		const validationErrors = hasValidationErrors( state );
 		expect( validationErrors ).toEqual( true );
+		const stateWithNoErrors: Record< string, FieldValidationStatus > = {};
+		const stateWithNoErrorsCheckResult = hasValidationErrors(
+			stateWithNoErrors
+		);
+		expect( stateWithNoErrorsCheckResult ).toEqual( false );
 	} );
 } );
