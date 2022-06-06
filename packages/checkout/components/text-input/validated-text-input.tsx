@@ -20,20 +20,9 @@ import { VALIDATION_STORE_KEY } from '../../validation';
 import TextInput from './text-input';
 import './style.scss';
 
-interface ValidatedTextInputPropsWithId {
-	instanceId?: string;
-	id: string;
-}
-
-interface ValidatedTextInputPropsWithInstanceId {
-	instanceId: string;
+interface ValidatedTextInputProps {
 	id?: string;
-}
-
-type ValidatedTextInputProps = (
-	| ValidatedTextInputPropsWithId
-	| ValidatedTextInputPropsWithInstanceId
- ) & {
+	instanceId: string;
 	className?: string;
 	ariaDescribedBy?: string;
 	errorId?: string;
@@ -42,7 +31,7 @@ type ValidatedTextInputProps = (
 	errorMessage?: string;
 	onChange: ( newValue: string ) => void;
 	value: string;
-};
+}
 
 const ValidatedTextInput = ( {
 	className,
@@ -56,7 +45,7 @@ const ValidatedTextInput = ( {
 	errorMessage: passedErrorMessage = '',
 	value = '',
 	...rest
-}: ValidatedTextInputProps ) => {
+}: ValidatedTextInputProps ): JSX.Element => {
 	const [ isPristine, setIsPristine ] = useState( true );
 	const inputRef = useRef< HTMLInputElement >( null );
 
