@@ -1,7 +1,7 @@
 /**
  * External dependencies
  */
-import { registerStore, select } from '@wordpress/data';
+import { registerStore } from '@wordpress/data';
 
 /**
  * Internal dependencies
@@ -10,6 +10,10 @@ import reducer, { State } from './reducers';
 import { STORE_KEY } from './constants';
 import * as actions from './actions';
 import * as selectors from './selectors';
+import {
+	DispatchFromMap,
+	SelectFromMap,
+} from '../../../assets/js/data/mapped-types';
 
 // eslint-disable-next-line @typescript-eslint/ban-ts-comment
 // @ts-ignore
@@ -23,10 +27,13 @@ registerStore< State >( STORE_KEY, {
 
 export const VALIDATION_STORE_KEY = STORE_KEY;
 
-export const exposedSelectors = {
-	getValidationError( propertyName: string ) {
-		return select( VALIDATION_STORE_KEY ).getValidationError(
-			propertyName
-		);
-	},
-};
+declare module '@wordpress/data' {
+	function dispatch(
+		key: typeof VALIDATION_STORE_KEY
+	): DispatchFromMap< typeof actions >;
+	function select(
+		key: typeof VALIDATION_STORE_KEY
+	): SelectFromMap< typeof selectors > & {
+		hasFinishedResolution: ( selector: string ) => boolean;
+	};
+}
