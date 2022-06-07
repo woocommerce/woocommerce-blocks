@@ -2,20 +2,14 @@
  * External dependencies
  */
 import { __ } from '@wordpress/i18n';
-import {
-	ValidatedTextInput,
-	CheckboxControl,
-} from '@woocommerce/blocks-checkout';
+import { CheckboxControl } from '@woocommerce/blocks-checkout';
 import {
 	useCheckoutContext,
 	useCheckoutAddress,
 	useStoreEvents,
 } from '@woocommerce/base-context';
 import { getSetting } from '@woocommerce/settings';
-
-/**
- * Internal dependencies
- */
+import { ValidatedTextInput } from '@woocommerce/base-components/text-input';
 
 const Block = ( {
 	allowCreateAccount,

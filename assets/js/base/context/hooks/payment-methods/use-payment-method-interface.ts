@@ -10,7 +10,7 @@ import { getSetting } from '@woocommerce/settings';
 import deprecated from '@wordpress/deprecated';
 import LoadingMask from '@woocommerce/base-components/loading-mask';
 import type { PaymentMethodInterface } from '@woocommerce/types';
-import { ValidationInputError } from '@woocommerce/blocks-checkout';
+import { ValidationInputError } from '@woocommerce/base-components/validation-input-error';
 
 /**
  * Internal dependencies
