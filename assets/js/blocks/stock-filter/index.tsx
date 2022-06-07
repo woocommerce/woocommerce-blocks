@@ -1,7 +1,6 @@
 /**
  * External dependencies
  */
-import { __ } from '@wordpress/i18n';
 import { registerBlockType } from '@wordpress/blocks';
 import { Icon, box } from '@wordpress/icons';
 import classNames from 'classnames';
@@ -12,6 +11,7 @@ import { useBlockProps } from '@wordpress/block-editor';
  */
 import edit from './edit';
 import metadata from './block.json';
+import { blockAttributes } from './attributes';
 import type { Attributes } from './types';
 
 registerBlockType( metadata, {
@@ -25,13 +25,7 @@ registerBlockType( metadata, {
 	},
 	attributes: {
 		...metadata.attributes,
-		heading: {
-			type: 'string',
-			default: __(
-				'Filter by stock status',
-				'woo-gutenberg-products-block'
-			),
-		},
+		...blockAttributes,
 	},
 	edit,
 	// Save the props to post content.
