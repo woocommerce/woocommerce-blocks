@@ -14,11 +14,12 @@ import {
 	emptyHiddenAddressFields,
 	formatStoreApiErrorMessage,
 } from '@woocommerce/base-utils';
-import { useDispatch } from '@wordpress/data';
+import { useDispatch, useSelect } from '@wordpress/data';
 import {
 	getPaymentMethods,
 	getExpressPaymentMethods,
 } from '@woocommerce/blocks-registry';
+import { PAYMENT_METHOD_DATA_STORE_KEY } from '@woocommerce/block-data';
 /**
  * Internal dependencies
  */
@@ -53,7 +54,6 @@ const CheckoutProcessor = () => {
 	const { billingData, shippingAddress } = useCustomerDataContext();
 	const { cartNeedsPayment, cartNeedsShipping, receiveCart } = useStoreCart();
 	const {
-		activePaymentMethod,
 		isExpressPaymentMethodActive,
 		currentStatus: currentPaymentStatus,
 		paymentMethodData,
@@ -61,6 +61,10 @@ const CheckoutProcessor = () => {
 	} = usePaymentMethodDataContext();
 	const { setIsSuppressed } = useStoreNoticesContext();
 	const { createErrorNotice, removeNotice } = useDispatch( 'core/notices' );
+
+	const activePaymentMethod = useSelect( ( select ) => {
+		return select( PAYMENT_METHOD_DATA_STORE_KEY ).getActivePaymentMethod();
+	}, [] );
 
 	const paymentMethods = getPaymentMethods();
 	const expressPaymentMethods = getExpressPaymentMethods();
