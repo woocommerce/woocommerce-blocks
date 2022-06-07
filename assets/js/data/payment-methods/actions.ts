@@ -49,6 +49,13 @@ export const setActivePaymentMethod = (
 	paymentMethodData,
 } );
 
+export const setPaymentMethodData = (
+	paymentMethodData: Record< string, unknown > = {}
+) => ( {
+	type: ACTION_TYPES.SET_PAYMENT_METHOD_DATA,
+	paymentMethodData,
+} );
+
 export const setAvailablePaymentMethods = ( methods: string[] ) => {
 	return async ( { dispatch } ) => {
 		// If the currently selected method is not in this new list, then we need to select a new one, or select a default.

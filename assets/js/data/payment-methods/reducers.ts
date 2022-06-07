@@ -24,6 +24,12 @@ const reducer: Reducer< PaymentMethodDataState > = (
 				shouldSavePaymentMethod: action.shouldSavePaymentMethod,
 			};
 			break;
+		case ACTION_TYPES.SET_PAYMENT_METHOD_DATA:
+			state = {
+				...state,
+				paymentMethodData: action.paymentMethodData,
+			};
+			break;
 		case ACTION_TYPES.SET_PAYMENT_STATUS:
 			state = {
 				...state,
