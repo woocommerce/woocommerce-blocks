@@ -38,6 +38,14 @@ export const useCollectionData = ( {
 	queryPrices,
 	queryStock,
 	queryState,
+}: {
+	queryAttribute?: {
+		taxonomy: string;
+		queryType: string;
+	};
+	queryPrices?: boolean;
+	queryStock?: boolean;
+	queryState: Record< string, unknown >;
 } ) => {
 	let context = useQueryStateContext();
 	context = `${ context }-collection-data`;
