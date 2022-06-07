@@ -16,7 +16,7 @@ import FilterSubmitButton from '@woocommerce/base-components/filter-submit-butto
 import Label from '@woocommerce/base-components/filter-element-label';
 import isShallowEqual from '@wordpress/is-shallow-equal';
 import { decodeEntities } from '@wordpress/html-entities';
-import { isBoolean } from '@woocommerce/types';
+import { isBoolean, objectHasProp } from '@woocommerce/types';
 import { addQueryArgs, removeQueryArgs } from '@wordpress/url';
 import { PREFIX_QUERY_ARG_FILTER_TYPE } from '@woocommerce/utils';
 
@@ -96,7 +96,10 @@ const StockStatusFilterBlock = ( {
 	 */
 	const getFilteredStock = useCallback(
 		( slug ) => {
-			if ( ! filteredCounts.stock_status_counts ) {
+			if (
+				! objectHasProp( filteredCounts, 'stock_status_counts' ) ||
+				! Array.isArray( filteredCounts.stock_status_counts )
+			) {
 				return null;
 			}
 			return filteredCounts.stock_status_counts.find(
