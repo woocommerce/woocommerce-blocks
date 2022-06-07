@@ -37,7 +37,7 @@ const block = {
 			submitButton: '.wc-block-components-filter-submit-button',
 		},
 	},
-	urlSearchParamWhenFilterIsApplied: '?max_price=2',
+	urlSearchParamWhenFilterIsApplied: '?max_price=1.99',
 	foundProduct: '32GB USB Stick',
 };
 
@@ -59,7 +59,7 @@ const setMaxPrice = async () => {
 	await page.click( selectors.frontend.priceMaxAmount, {
 		clickCount: 3,
 	} );
-	await page.keyboard.type( '2' );
+	await page.keyboard.type( '1.99' );
 	await page.$eval( selectors.frontend.priceMaxAmount, ( el ) =>
 		( el as HTMLElement ).blur()
 	);
@@ -98,9 +98,12 @@ describe( `${ block.name } Block`, () => {
 			await page.waitForNetworkIdle();
 			await waitForAllProductsBlockLoaded();
 
-			await page.waitForTimeout( 1000 );
+			await page.waitForSelector( selectors.frontend.productsList );
+			const products = await page.$$( selectors.frontend.productsList );
 
 			expect( isRefreshed ).not.toBeCalled();
+			expect( products ).toHaveLength( 1 );
+
 			await expect( page ).toMatch( block.foundProduct );
 		} );
 	} );
@@ -153,10 +156,19 @@ describe( `${ block.name } Block`, () => {
 				} ),
 			] );
 
+			await page.waitForSelector(
+				selectors.frontend.classicProductsList
+			);
+			const products = await page.$$(
+				selectors.frontend.classicProductsList
+			);
+
 			const pageURL = page.url();
 			const parsedURL = new URL( pageURL );
 
 			expect( isRefreshed ).toBeCalledTimes( 1 );
+			expect( products ).toHaveLength( 1 );
+
 			expect( parsedURL.search ).toEqual(
 				block.urlSearchParamWhenFilterIsApplied
 			);
@@ -191,10 +203,19 @@ describe( `${ block.name } Block`, () => {
 
 			await clickLink( selectors.frontend.submitButton );
 
+			await page.waitForSelector(
+				selectors.frontend.classicProductsList
+			);
+
+			const products = await page.$$(
+				selectors.frontend.classicProductsList
+			);
+
 			const pageURL = page.url();
 			const parsedURL = new URL( pageURL );
 
 			expect( isRefreshed ).toBeCalledTimes( 1 );
+			expect( products ).toHaveLength( 1 );
 			await expect( page ).toMatch( block.foundProduct );
 			expect( parsedURL.search ).toEqual(
 				block.urlSearchParamWhenFilterIsApplied

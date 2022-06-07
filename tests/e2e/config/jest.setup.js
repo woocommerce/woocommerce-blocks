@@ -9,14 +9,12 @@ import {
 	switchUserToAdmin,
 	switchUserToTest,
 	visitAdminPage,
-	clearLocalStorage,
 } from '@wordpress/e2e-test-utils';
+import { setDefaultOptions } from 'expect-puppeteer';
 /**
  * Internal dependencies
  */
 import { DEFAULT_TIMEOUT } from '../utils';
-const setDefaultOptions = require( 'expect-puppeteer' ).setDefaultOptions;
-
 // Set the default test timeout.
 jest.setTimeout( 120000 );
 setDefaultOptions( { timeout: DEFAULT_TIMEOUT } );

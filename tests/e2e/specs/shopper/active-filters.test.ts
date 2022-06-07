@@ -34,8 +34,6 @@ const block = {
 		frontend: {
 			activeFilterType: '.wc-block-active-filters__list-item-type',
 			activeFilterName: '.wc-block-active-filters__list-item-name',
-			inStockInput: "label[for='instock']",
-			'128gbInput': "label[for='128gb']",
 			removeFilterButton: '.wc-block-active-filters__list-item-remove',
 			removeAllFiltersButton: '.wc-block-active-filters__clear-all',
 			stockFilterBlock: '.wc-block-stock-filter-list',
