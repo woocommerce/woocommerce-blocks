@@ -3,7 +3,7 @@
  */
 import { ACTION_TYPES as types } from './action-types';
 import { ReturnOrGeneratorYieldUnion } from '../mapped-types';
-import { FieldValidationStatus } from './reducers';
+import { FieldValidationStatus } from '../types';
 
 export const setValidationErrors = (
 	errors: Record< string, FieldValidationStatus >
