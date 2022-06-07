@@ -26,7 +26,7 @@ import { PREFIX_QUERY_ARG_FILTER_TYPE } from '@woocommerce/utils';
 import { previewOptions } from './preview';
 import './style.scss';
 import { getActiveFilters } from './utils';
-import { Attributes } from './types';
+import { Attributes, DisplayOption } from './types';
 
 export const QUERY_PARAM_KEY = PREFIX_QUERY_ARG_FILTER_TYPE + 'stock_status';
 
@@ -155,7 +155,7 @@ const StockStatusFilterBlock = ( {
 					),
 				};
 			} )
-			.filter( Boolean );
+			.filter( ( option ): option is DisplayOption => !! option );
 
 		setDisplayedOptions( newOptions );
 	}, [
