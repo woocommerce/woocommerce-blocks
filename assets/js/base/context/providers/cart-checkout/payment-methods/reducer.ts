@@ -3,6 +3,9 @@
  */
 import { PaymentMethods } from '@woocommerce/type-defs/payments';
 
+import { dispatch } from '@wordpress/data';
+import { PAYMENT_METHOD_DATA_STORE_KEY } from '@woocommerce/block-data';
+
 /**
  * Internal dependencies
  */
@@ -62,6 +65,11 @@ const reducer = (
 				  }
 				: state;
 		case STATUS.SUCCESS:
+			// This is a hacky way to get payment method data into the data store
+			// we should remove this when we move it to the wc/store/payment-methods store
+			dispatch( PAYMENT_METHOD_DATA_STORE_KEY ).setPaymentMethodData(
+				paymentMethodData || state.paymentMethodData
+			);
 			return state.currentStatus !== STATUS.SUCCESS
 				? {
 						...state,
