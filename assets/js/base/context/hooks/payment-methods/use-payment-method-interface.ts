@@ -12,7 +12,7 @@ import LoadingMask from '@woocommerce/base-components/loading-mask';
 import type { PaymentMethodInterface } from '@woocommerce/types';
 import { useSelect } from '@wordpress/data';
 import { CHECKOUT_STORE_KEY } from '@woocommerce/block-data';
-import { ValidationInputError } from '@woocommerce/blocks-checkout';
+import { ValidationInputError } from '@woocommerce/base-components/validation-input-error';
 
 /**
  * Internal dependencies

@@ -2,7 +2,7 @@
  * External dependencies
  */
 import { __ } from '@wordpress/i18n';
-import { ValidatedTextInput } from '@woocommerce/blocks-checkout';
+import { ValidatedTextInput } from '@woocommerce/base-components/text-input';
 
 /**
  * Renders a phone number input.
