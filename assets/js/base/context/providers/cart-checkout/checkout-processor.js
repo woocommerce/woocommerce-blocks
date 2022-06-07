@@ -73,15 +73,22 @@ const CheckoutProcessor = () => {
 	const {
 		isExpressPaymentMethodActive,
 		currentStatus: currentPaymentStatus,
-		paymentMethodData,
 		shouldSavePayment,
 	} = usePaymentMethodDataContext();
 	const { setIsSuppressed } = useStoreNoticesContext();
 	const { createErrorNotice, removeNotice } = useDispatch( 'core/notices' );
 
-	const activePaymentMethod = useSelect( ( select ) => {
-		return select( PAYMENT_METHOD_DATA_STORE_KEY ).getActivePaymentMethod();
-	}, [] );
+	const { activePaymentMethod, paymentMethodData } = useSelect(
+		( select ) => {
+			const store = select( PAYMENT_METHOD_DATA_STORE_KEY );
+
+			return {
+				activePaymentMethod: store.getActivePaymentMethod(),
+				paymentMethodData: store.getPaymentMethodData(),
+			};
+		},
+		[]
+	);
 
 	const paymentMethods = getPaymentMethods();
 	const expressPaymentMethods = getExpressPaymentMethods();
