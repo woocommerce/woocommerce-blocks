@@ -14,7 +14,9 @@ export const getActiveFilters = (
 		return [];
 	}
 
-	const parsedParams = isString( params ) ? params.split( ',' ) : params;
+	const parsedParams = isString( params )
+		? params.split( ',' )
+		: ( params as string[] );
 
 	return Object.keys( filters ).filter( ( filter ) =>
 		parsedParams.includes( filter )
