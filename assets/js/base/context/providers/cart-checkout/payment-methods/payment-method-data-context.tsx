@@ -12,7 +12,10 @@ import {
 } from '@wordpress/element';
 import { objectHasProp } from '@woocommerce/types';
 import { useDispatch, useSelect } from '@wordpress/data';
-import { CHECKOUT_STORE_KEY } from '@woocommerce/block-data';
+import {
+	CHECKOUT_STORE_KEY,
+	VALIDATION_STORE_KEY,
+} from '@woocommerce/block-data';
 
 /**
  * Internal dependencies
@@ -39,7 +42,6 @@ import {
 	emitEventWithAbort,
 	reducer as emitReducer,
 } from './event-emit';
-import { useValidationContext } from '../../validation';
 import { useEmitResponse } from '../../../hooks/use-emit-response';
 import { getCustomerPaymentMethods } from './utils';
 
@@ -77,7 +79,7 @@ export const PaymentMethodDataProvider = ( {
 		};
 	} );
 	const { isEditor, getPreviewData } = useEditorContext();
-	const { setValidationErrors } = useValidationContext();
+	const { setValidationErrors } = useDispatch( VALIDATION_STORE_KEY );
 	const { createErrorNotice: addErrorNotice, removeNotice } = useDispatch(
 		'core/notices'
 	);
