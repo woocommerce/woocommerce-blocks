@@ -17,7 +17,12 @@ import { Frame, Page } from 'puppeteer';
 /**
  * Internal dependencies
  */
-import { goToTemplateEditor, useTheme, saveTemplate } from '../../utils';
+import {
+	goToTemplateEditor,
+	useTheme,
+	saveTemplate,
+	waitForAllProductsBlockLoaded,
+} from '../../utils';
 import {
 	clickLink,
 	shopper,
@@ -119,10 +124,7 @@ describe( 'Shopper → Active Filters Block', () => {
 				}
 			);
 
-			await page.waitForSelector(
-				selectors.frontend.productsList + '.is-loading',
-				{ hidden: true }
-			);
+			await waitForAllProductsBlockLoaded();
 
 			await expect( page ).toClick( 'label', {
 				text: FILTER_STOCK_STATUS_PROPERTY,
@@ -137,10 +139,7 @@ describe( 'Shopper → Active Filters Block', () => {
 				}
 			);
 
-			await page.waitForSelector(
-				selectors.frontend.productsList + '.is-loading',
-				{ hidden: true }
-			);
+			await waitForAllProductsBlockLoaded();
 
 			const products = await page.$$( selectors.frontend.productsList );
 			expect( products ).toHaveLength( 1 );
@@ -168,10 +167,7 @@ describe( 'Shopper → Active Filters Block', () => {
 
 			expect( page ).not.toMatch( 'Active Filters' );
 
-			await page.waitForSelector(
-				selectors.frontend.productsList + '.is-loading',
-				{ hidden: true }
-			);
+			await waitForAllProductsBlockLoaded();
 
 			const products = await page.$$( selectors.frontend.productsList );
 			expect( products ).toHaveLength( 5 );
@@ -204,10 +200,7 @@ describe( 'Shopper → Active Filters Block', () => {
 
 			await page.click( selectors.frontend.removeAllFiltersButton );
 
-			await page.waitForSelector(
-				selectors.frontend.productsList + '.is-loading',
-				{ hidden: true }
-			);
+			await waitForAllProductsBlockLoaded();
 
 			const products = await page.$$( selectors.frontend.productsList );
 

@@ -447,3 +447,9 @@ export const openBlockEditorSettings = async () => {
 		await page.click( buttonSelector );
 	}
 };
+
+export const waitForAllProductsBlockLoaded = async () => {
+	await page.waitForSelector( '.wc-block-grid__products > li.is-loading', {
+		hidden: true,
+	} );
+};
