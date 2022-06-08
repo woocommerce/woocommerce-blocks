@@ -516,4 +516,14 @@ class BlockTemplateUtils {
 			)
 		);
 	}
+
+	/**
+	 * Return whether the blockified templates should be used or not,
+	 * depending on the "wc_blocks_use_blockified_templates" option
+	 *
+	 * @return boolean
+	 */
+	public static function should_use_blockified_templates() {
+		return wc_string_to_bool( get_option( 'wc_blocks_use_blockified_templates', 'no' ) );
+	}
 }

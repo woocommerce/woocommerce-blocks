@@ -320,6 +320,11 @@ class BlockTemplatesController {
 		if ( 'wp_template_part' === $template_type ) {
 			return $this->template_parts_directory;
 		}
+
+		if ( BlockTemplateUtils::should_use_blockified_templates() ) {
+			return $this->templates_directory . '/blockified';
+		}
+
 		return $this->templates_directory;
 	}
 
