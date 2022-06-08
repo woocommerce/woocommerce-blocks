@@ -452,4 +452,6 @@ export const waitForAllProductsBlockLoaded = async () => {
 	await page.waitForSelector( '.wc-block-grid__products > li.is-loading', {
 		hidden: true,
 	} );
+
+	await page.waitForNetworkIdle();
 };
