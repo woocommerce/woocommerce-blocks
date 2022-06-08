@@ -1,7 +1,12 @@
 /**
  * External dependencies
  */
-import { createBlock, registerBlockType } from '@wordpress/blocks';
+import {
+	createBlock,
+	getBlockType,
+	registerBlockType,
+	unregisterBlockType,
+} from '@wordpress/blocks';
 import {
 	isExperimentalBuild,
 	WC_BLOCKS_IMAGE_URL,
@@ -10,14 +15,14 @@ import { useBlockProps } from '@wordpress/block-editor';
 import { Button, Placeholder } from '@wordpress/components';
 import { __, sprintf } from '@wordpress/i18n';
 import { box, Icon } from '@wordpress/icons';
-import { useDispatch } from '@wordpress/data';
+import { select, useDispatch, subscribe } from '@wordpress/data';
 
 /**
  * Internal dependencies
  */
 import './editor.scss';
 import './style.scss';
-import { TEMPLATES } from './constants';
+import { BLOCK_SLUG, TEMPLATES } from './constants';
 
 interface Props {
 	attributes: {
@@ -99,51 +104,98 @@ const Edit = ( { clientId, attributes }: Props ) => {
 	);
 };
 
-/**
- * The 'WooCommerce Legacy Template' block was renamed to 'WooCommerce Classic Template', however, the internal block
- * name 'woocommerce/legacy-template' needs to remain the same. Otherwise, it would result in a corrupt block when
- * loaded for users who have customized templates using the legacy-template (since the internal block name is
- * stored in the database).
- *
- * See https://github.com/woocommerce/woocommerce-gutenberg-products-block/issues/5861 for more context
- */
-registerBlockType( 'woocommerce/legacy-template', {
-	title: __( 'WooCommerce Classic Template', 'woo-gutenberg-products-block' ),
-	icon: (
-		<Icon icon={ box } className="wc-block-editor-components-block-icon" />
-	),
-	category: 'woocommerce',
-	apiVersion: 2,
-	keywords: [ __( 'WooCommerce', 'woo-gutenberg-products-block' ) ],
-	description: __(
-		'Renders classic WooCommerce PHP templates.',
-		'woo-gutenberg-products-block'
-	),
-	supports: {
-		align: [ 'wide', 'full' ],
-		html: false,
-		multiple: false,
-		reusable: false,
-		inserter: false,
-	},
-	example: {
-		attributes: {
-			isPreview: true,
-		},
-	},
-	attributes: {
+let currentValue: string | undefined;
+const templates = Object.keys( TEMPLATES );
+
+subscribe( () => {
+	const previousValue = currentValue;
+
+	const store = select( 'core/edit-site' );
+	currentValue = store?.getEditedPostId() as string | undefined;
+
+	if ( previousValue === currentValue ) {
+		return;
+	}
+
+	const parsedTemplate = currentValue?.replace(
+		'woocommerce/woocommerce//',
+		''
+	);
+
+	if (
+		parsedTemplate &&
+		! templates.includes( parsedTemplate ) &&
+		getBlockType( BLOCK_SLUG ) !== undefined
+	) {
+		unregisterBlockType( BLOCK_SLUG );
+		return;
+	}
+
+	if (
+		getBlockType( BLOCK_SLUG ) === undefined &&
+		parsedTemplate &&
+		templates.includes( parsedTemplate )
+	) {
 		/**
-		 * Template attribute is used to determine which core PHP template gets rendered.
+		 * The 'WooCommerce Legacy Template' block was renamed to 'WooCommerce Classic Template', however, the internal block
+		 * name 'woocommerce/legacy-template' needs to remain the same. Otherwise, it would result in a corrupt block when
+		 * loaded for users who have customized templates using the legacy-template (since the internal block name is
+		 * stored in the database).
+		 *
+		 * See https://github.com/woocommerce/woocommerce-gutenberg-products-block/issues/5861 for more context
 		 */
-		template: {
-			type: 'string',
-			default: 'any',
-		},
-		align: {
-			type: 'string',
-			default: 'wide',
-		},
-	},
-	edit: Edit,
-	save: () => null,
+		registerBlockType( BLOCK_SLUG, {
+			title: TEMPLATES[ parsedTemplate ].title,
+			icon: (
+				<Icon
+					icon={ box }
+					className="wc-block-editor-components-block-icon"
+				/>
+			),
+			category: 'woocommerce',
+			apiVersion: 2,
+			keywords: [ __( 'WooCommerce', 'woo-gutenberg-products-block' ) ],
+			description: __(
+				'Renders classic WooCommerce PHP templates.',
+				'woo-gutenberg-products-block'
+			),
+			supports: {
+				align: [ 'wide', 'full' ],
+				html: false,
+				multiple: false,
+				reusable: false,
+				inserter: true,
+			},
+			example: {
+				attributes: {
+					isPreview: true,
+				},
+			},
+			attributes: {
+				/**
+				 * Template attribute is used to determine which core PHP template gets rendered.
+				 */
+				template: {
+					type: 'string',
+					default: 'any',
+				},
+				align: {
+					type: 'string',
+					default: 'wide',
+				},
+			},
+			edit: ( { attributes, clientId } ) => {
+				return (
+					<Edit
+						attributes={ {
+							...attributes,
+							template: parsedTemplate,
+						} }
+						clientId={ clientId }
+					/>
+				);
+			},
+			save: () => null,
+		} );
+	}
 } );
