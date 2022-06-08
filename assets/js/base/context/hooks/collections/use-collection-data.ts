@@ -141,6 +141,10 @@ export const useCollectionData = ( {
 		resourceName: 'products/collection-data',
 		query: {
 			...queryState,
+			page: undefined,
+			per_page: undefined,
+			orderby: undefined,
+			order: undefined,
 			...collectionDataQueryVars,
 		},
 		shouldSelect: debouncedShouldSelect,
