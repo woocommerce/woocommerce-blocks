@@ -23,7 +23,8 @@ class E2EEnvironment extends PuppeteerEnvironment {
 	}
 }
 
-// This code is useful for debug purposes.
+// This code is helpful for tracing every test that is executed.
+// You should use this code if your test fails, but Jest doesn't give you a significant error, and you need to debug.
 // async handleTestEvent( event ) {
 // 	const ignoredEvents = [
 // 		'setup',
