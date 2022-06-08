@@ -35,11 +35,15 @@ class Installer {
 	public function maybe_create_tables() {
 		global $wpdb;
 
-		$schema_version    = 260;
+		$schema_version    = 261;
 		$db_schema_version = (int) get_option( 'wc_blocks_db_schema_version', 0 );
 
 		if ( $db_schema_version >= $schema_version && 0 !== $db_schema_version ) {
 			return;
+		}
+
+		if ( $db_schema_version <= 260 ) {
+			update_option( 'wc_blocks_use_blockified_templates', wc_bool_to_string( false ) );
 		}
 
 		$show_errors = $wpdb->hide_errors();
