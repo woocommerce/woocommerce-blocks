@@ -44,7 +44,7 @@ export interface useCollectionOptions {
 	namespace: string;
 	resourceName: string;
 	resourceValues?: number[];
-	query: Query;
+	query?: Query;
 	shouldSelect?: boolean;
 }
 
