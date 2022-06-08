@@ -52,6 +52,22 @@ class BlockTemplatesController {
 		add_filter( 'pre_get_block_file_template', array( $this, 'get_block_file_template' ), 10, 3 );
 		add_filter( 'get_block_templates', array( $this, 'add_block_templates' ), 10, 3 );
 		add_filter( 'current_theme_supports-block-templates', array( $this, 'remove_block_template_support_for_shop_page' ) );
+		add_action( 'after_switch_theme', array( $this, 'check_should_use_blockified_templates' ), 10, 2 );
+	}
+
+	/**
+	 * Checks whether the new theme is a block one and the old is not, the "wc_blocks_use_blockified_templates" flag is
+	 * set to true to start using the new blockified templates.
+	 *
+	 * @param string    $old_name Old theme name.
+	 * @param \WP_Theme $old_theme Instance of the old theme.
+	 * @return void
+	 */
+	public function check_should_use_blockified_templates( $old_name, $old_theme ) {
+		$old_theme_is_fse_theme = $old_theme->is_block_theme();
+		if ( ! $old_theme_is_fse_theme && wc_current_theme_is_fse_theme() ) {
+			update_option( 'wc_blocks_use_blockified_templates', wc_bool_to_string( true ) );
+		}
 	}
 
 	/**
