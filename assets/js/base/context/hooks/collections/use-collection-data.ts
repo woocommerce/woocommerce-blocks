@@ -13,10 +13,14 @@ import { useQueryStateByContext, useQueryStateByKey } from '../use-query-state';
 import { useCollection } from './use-collection';
 import { useQueryStateContext } from '../../providers/query-state-context';
 
-const buildCollectionDataQuery = ( collectionDataQueryState ) => {
+const buildCollectionDataQuery = (
+	collectionDataQueryState: Record< string, unknown >
+) => {
 	const query = collectionDataQueryState;
 
-	if ( collectionDataQueryState.calculate_attribute_counts ) {
+	if (
+		Array.isArray( collectionDataQueryState.calculate_attribute_counts )
+	) {
 		query.calculate_attribute_counts = sortBy(
 			collectionDataQueryState.calculate_attribute_counts.map(
 				( { taxonomy, queryType } ) => {
@@ -137,10 +141,6 @@ export const useCollectionData = ( {
 		resourceName: 'products/collection-data',
 		query: {
 			...queryState,
-			page: undefined,
-			per_page: undefined,
-			orderby: undefined,
-			order: undefined,
 			...collectionDataQueryVars,
 		},
 		shouldSelect: debouncedShouldSelect,
