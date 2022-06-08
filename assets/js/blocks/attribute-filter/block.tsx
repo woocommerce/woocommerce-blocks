@@ -42,6 +42,7 @@ import {
 	isQueryArgsEqual,
 	parseTaxonomyToGenerateURL,
 } from './utils';
+import type { BlockAttributes } from './types';
 
 /**
  * Formats filter values into a string for the URL parameters needed for filtering PHP templates.
@@ -62,6 +63,9 @@ import {
 const AttributeFilterBlock = ( {
 	attributes: blockAttributes,
 	isEditor = false,
+}: {
+	attributes: BlockAttributes;
+	isEditor?: boolean;
 } ) => {
 	const hasFilterableProducts = getSettingWithCoercion(
 		'has_filterable_products',

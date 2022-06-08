@@ -11,7 +11,9 @@ import classNames from 'classnames';
 /**
  * Internal dependencies
  */
-import edit from './edit.js';
+import edit from './edit';
+import type { BlockAttributes } from './types';
+import { blockAttributes } from './attributes';
 
 registerBlockType( 'woocommerce/attribute-filter', {
 	apiVersion: 2,
@@ -50,44 +52,7 @@ registerBlockType( 'woocommerce/attribute-filter', {
 		},
 	},
 	attributes: {
-		attributeId: {
-			type: 'number',
-			default: 0,
-		},
-		showCounts: {
-			type: 'boolean',
-			default: true,
-		},
-		queryType: {
-			type: 'string',
-			default: 'or',
-		},
-		heading: {
-			type: 'string',
-			default: __(
-				'Filter by attribute',
-				'woo-gutenberg-products-block'
-			),
-		},
-		headingLevel: {
-			type: 'number',
-			default: 3,
-		},
-		displayStyle: {
-			type: 'string',
-			default: 'list',
-		},
-		showFilterButton: {
-			type: 'boolean',
-			default: false,
-		},
-		/**
-		 * Are we previewing?
-		 */
-		isPreview: {
-			type: 'boolean',
-			default: false,
-		},
+		...blockAttributes,
 	},
 	transforms: {
 		from: [
@@ -118,7 +83,7 @@ registerBlockType( 'woocommerce/attribute-filter', {
 	},
 	edit,
 	// Save the props to post content.
-	save( { attributes } ) {
+	save( { attributes }: { attributes: BlockAttributes } ) {
 		const {
 			className,
 			showCounts,
@@ -129,7 +94,7 @@ registerBlockType( 'woocommerce/attribute-filter', {
 			displayStyle,
 			showFilterButton,
 		} = attributes;
-		const data = {
+		const data: Record< string, unknown > = {
 			'data-attribute-id': attributeId,
 			'data-show-counts': showCounts,
 			'data-query-type': queryType,
