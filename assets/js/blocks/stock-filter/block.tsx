@@ -54,9 +54,11 @@ const StockStatusFilterBlock = ( {
 		false
 	);
 
-	const [ { outofstock, ...otherStockStatusOptions } ] = useState<
-		Record< string, string >
-	>( getSetting( 'stockStatusOptions', {} ) );
+	const [ { outofstock, ...otherStockStatusOptions } ] = getSetting(
+		'stockStatusOptions',
+		{}
+	);
+
 	const [ STOCK_STATUS_OPTIONS ] = useState(
 		getSetting( 'hideOutOfStockItems', false )
 			? otherStockStatusOptions
