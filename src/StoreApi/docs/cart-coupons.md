@@ -2,11 +2,11 @@
 
 ## Table of Contents <!-- omit in toc -->
 
--   [List Cart Coupons](#list-cart-coupons)
--   [Single Cart Coupon](#single-cart-coupon)
--   [Add Cart Coupon](#add-cart-coupon)
--   [Delete Single Cart Coupon](#delete-single-cart-coupon)
--   [Delete All Cart Coupons](#delete-all-cart-coupons)
+- [List Cart Coupons](#list-cart-coupons)
+- [Single Cart Coupon](#single-cart-coupon)
+- [Add Cart Coupon](#add-cart-coupon)
+- [Delete Single Cart Coupon](#delete-single-cart-coupon)
+- [Delete All Cart Coupons](#delete-all-cart-coupons)
 
 ## List Cart Coupons
 

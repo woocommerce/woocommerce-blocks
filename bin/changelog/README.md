@@ -2,7 +2,7 @@
 
 This folder contains the logic for a changelog script that can be used for generating changelog entries from either pull requests added to a Github milestone, or pull requests that are part of a Zenhub release.
 
-## Usage:
+## Usage
 
 By default, changelog entries will use the title of pull requests. However, you can also customize the changelog entry by adding to the description of the pull custom text in the following format.
 
@@ -48,9 +48,9 @@ The two environment variables you can use are:
 | GH_API_TOKEN         | Github API token for authorizing on the github API.           |
 | ZH_API_TOKEN         | Zenhub api token used for authorizing against the zenhub API. |
 
-### Examples:
+### Examples
 
-**package.json**:
+#### package.json
 
 ```json
 {
@@ -63,13 +63,13 @@ The two environment variables you can use are:
 }
 ```
 
-**Environment Variable**
+#### Environment Variable
 
 ```bash
 GH_API_TOKEN="1343ASDFQWER13241REASD" node ./bin/changelog
 ```
 
-**Command Line**
+#### Command Line
 
 ```bash
 node ./bin/changelog --labelPrefix="type:" --skipLabel="skip-changelog" --defaultPrefix="dev" --repo="woocommerce/woocommerce-gutenberg-products-block" --ghApiToken="1343ASDFQWER13241REASD"

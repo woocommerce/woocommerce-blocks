@@ -29,7 +29,7 @@ This event is the equivalent to the jQuery event `added_to_cart` triggered by Wo
 
 _Example usage in WC Blocks:_ Cart and Mini Cart blocks (via the `useStoreCart()` hook) listen to this event to know if they need to update their contents.
 
-#### `detail` parameters:
+#### `detail` parameters
 
 | Parameter          | Type    | Default value | Description                                                                                                                                                                                                                                                                                                                                                                                   |
 | ------------------ | ------- | ------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |

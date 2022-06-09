@@ -2,13 +2,13 @@
 
 ## Table of Contents <!-- omit in toc -->
 
--   [Introduction](#introduction)
-    -   [Known limitations](#known-limitations)
--   [How to report issues](#how-to-report-issues)
--   [What are we testing?](#what-are-we-testing)
-    -   [Cart Block](#cart-block)
-    -   [Checkout Block](#checkout-block)
--   [Testing Checklist](#testing-checklist)
+- [Introduction](#introduction)
+  - [Known limitations](#known-limitations)
+- [How to report issues](#how-to-report-issues)
+- [What are we testing?](#what-are-we-testing)
+  - [Cart Block](#cart-block)
+  - [Checkout Block](#checkout-block)
+- [Testing Checklist](#testing-checklist)
 
 ## Introduction
 
@@ -66,11 +66,11 @@ the Cart and Checkout shortcodes.
 
 ### Cart Block
 
-![](https://i.imgur.com/mcbXgqV.png)
+![image](https://i.imgur.com/mcbXgqV.png)
 
 ### Checkout Block
 
-![](https://i.imgur.com/9KhYK2L.png)
+![image](https://i.imgur.com/9KhYK2L.png)
 
 ## Testing Checklist
 

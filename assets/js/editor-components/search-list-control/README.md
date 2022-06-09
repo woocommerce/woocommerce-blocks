@@ -41,12 +41,12 @@ Component to display a searchable, selectable list of items.
 | `debouncedSpeak` | Function | `null`  |
 | `instanceId`     | Number   | `null`  |
 
-### `list` item structure:
+### `list` item structure
 
 -   `id`: Number
 -   `name`: String
 
-### `messages` object structure:
+### `messages` object structure
 
 -   `clear`: String - A more detailed label for the "Clear all" button, read to screen reader users.
 -   `list`: String - Label for the list of selectable items, only read to screen reader users.

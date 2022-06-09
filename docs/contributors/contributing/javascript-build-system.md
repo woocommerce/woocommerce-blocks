@@ -2,13 +2,13 @@
 
 ## Table of contents <!-- omit in toc -->
 
--   [Environment variables](#environment-variables)
--   [Babel](#babel)
--   [External scripts](#external-scripts)
--   [Aliases](#aliases)
--   [Styling](#styling)
--   [Legacy builds](#legacy-builds)
--   [Relevant files](#relevant-files)
+- [Environment variables](#environment-variables)
+- [Babel](#babel)
+- [External scripts](#external-scripts)
+- [Aliases](#aliases)
+- [Styling](#styling)
+- [Legacy builds](#legacy-builds)
+- [Relevant files](#relevant-files)
 
 WooCommerce Blocks uses Webpack to build the files that will be consumed by browsers. There are several different Webpack configs in order to build files for different contexts of the plugin. They can all be found in [`webpack.config.js`](https://github.com/woocommerce/woocommerce-gutenberg-products-block/blob/6da64165025e7a2afc1782e4b278d72536e7b754/webpack.config.js#L162-L169), but this is a quick summary:
 

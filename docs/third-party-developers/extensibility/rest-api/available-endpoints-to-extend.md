@@ -18,12 +18,12 @@ To see how to add your data to Store API using ExtendSchema, [check this documen
 
 The main cart endpoint is extensible via ExtendSchema. The data is available via the `extensions` key in the response.
 
-### Passed Parameters:
+### Passed Parameters
 
 -   `data_callback`: none.
 -   `schema_callback`: none.
 
-### Key:
+### Key
 
 -   `CartSchema::IDENTIFIER`
 
@@ -31,12 +31,12 @@ The main cart endpoint is extensible via ExtendSchema. The data is available via
 
 The items endpoint, which is also available on `wc/store/cart` inside the `items` key. The data would be available inside each item of the `items` array.
 
-### Passed Parameters:
+### Passed Parameters
 
 -   `data_callback`: `$cart_item`.
 -   `schema_callback` none.
 
-### Key:
+### Key
 
 -   `CartItemSchema::IDENTIFIER`
 
@@ -44,12 +44,12 @@ The items endpoint, which is also available on `wc/store/cart` inside the `items
 
 The main products endpoint is extensible via ExtendSchema. The data is available via the `extensions` key for each `product` in the response array.
 
-### Passed Parameters:
+### Passed Parameters
 
 -   `data_callback`: `$product`.
 -   `schema_callback` none.
 
-### Key:
+### Key
 
 -   `ProductSchema::IDENTIFIER`
 

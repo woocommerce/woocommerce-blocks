@@ -2,16 +2,16 @@
 
 ## Table of Contents <!-- omit in toc -->
 
--   [The problem](#the-problem)
--   [Solution](#solution)
--   [Basic usage](#basic-usage)
--   [Things To Consider](#things-to-consider)
-    -   [ExtendSchema is a shared instance](#extendschema-is-a-shared-instance)
-    -   [Errors and fatals are silence for non-admins](#errors-and-fatals-are-silence-for-non-admins)
-    -   [Callbacks should always return an array](#callbacks-should-always-return-an-array)
--   [API Definition](#api-definition)
--   [Putting it all together](#putting-it-all-together)
--   [Formatting your data](#formatting-your-data)
+- [The problem](#the-problem)
+- [Solution](#solution)
+- [Basic usage](#basic-usage)
+- [Things To Consider](#things-to-consider)
+	- [ExtendSchema is a shared instance](#extendschema-is-a-shared-instance)
+	- [Errors and fatals are silence for non-admins](#errors-and-fatals-are-silence-for-non-admins)
+	- [Callbacks should always return an array](#callbacks-should-always-return-an-array)
+- [API Definition](#api-definition)
+- [Putting it all together](#putting-it-all-together)
+- [Formatting your data](#formatting-your-data)
 
 ## The problem
 
@@ -82,8 +82,7 @@ $product = $cart_item['data'];
 
 ### ExtendSchema is a shared instance
 
-The ExtendSchema is stored as a shared instance between the API and consumers (third-party developers). So you shouldn't initiate the class yourself with `new ExtendSchema` because it would not work.
-Instead, you should always use the shared instance from the StoreApi dependency injection container like this.
+The ExtendSchema is stored as a shared instance between the API and consumers (third-party developers). So you shouldn't initiate the class yourself with `new ExtendSchema` because it would not work. Instead, you should always use the shared instance from the StoreApi dependency injection container like this.
 
 ```php
 $extend = StoreApi::container()->get( ExtendSchema::class );
@@ -110,8 +109,7 @@ Or use the global helper functions:
 
 ### Errors and fatals are silence for non-admins
 
-If your callback functions `data_callback` and `schema_callback` throw an exception or an error, or you passed the incorrect type of parameter to `register_endpoint_data`; that error would be caught and logged into WooCommerce error logs.
-If the current user is a shop manager or an admin, and has WP_DEBUG enabled, the error would be surfaced to the frontend.
+If your callback functions `data_callback` and `schema_callback` throw an exception or an error, or you passed the incorrect type of parameter to `register_endpoint_data`; that error would be caught and logged into WooCommerce error logs. If the current user is a shop manager or an admin, and has WP_DEBUG enabled, the error would be surfaced to the frontend.
 
 ### Callbacks should always return an array
 
@@ -131,9 +129,7 @@ To reduce the chances of breaking your client code or passing the wrong type, an
 
 ## Putting it all together
 
-This is a complete example that shows how you can register contextual WooCommerce Subscriptions data in each cart item (simplified).
-
-This example uses [Formatters](./extend-rest-api-formatters.md), utility classes that allow you to format values so that they are compatible with the StoreAPI.
+This is a complete example that shows how you can register contextual WooCommerce Subscriptions data in each cart item (simplified). This example uses [Formatters](./extend-rest-api-formatters.md), utility classes that allow you to format values so that they are compatible with the StoreAPI.
 
 ```php
 <?php
@@ -330,8 +326,7 @@ class WC_Subscriptions_Extend_Store_Endpoint {
 
 ## Formatting your data
 
-You may wish to use our pre-existing Formatters to ensure your data is passed through the Store API in the
-correct format. More information on the Formatters can be found in the [StoreApi Formatters documentation](./extend-rest-api-formatters.md).
+You may wish to use our pre-existing Formatters to ensure your data is passed through the Store API in the correct format. More information on the Formatters can be found in the [StoreApi Formatters documentation](./extend-rest-api-formatters.md).
 
 <!-- FEEDBACK -->
 

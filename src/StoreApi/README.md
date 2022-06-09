@@ -2,13 +2,13 @@
 
 ## Table of contents <!-- omit in toc -->
 
--   [Requirements and limitations](#requirements-and-limitations)
--   [Store API Namespace](#store-api-namespace)
--   [Resources and endpoints](#resources-and-endpoints)
--   [Pagination](#pagination)
--   [Status codes](#status-codes)
--   [Contributing](#contributing)
--   [Extensibility](#extensibility)
+- [Requirements and limitations](#requirements-and-limitations)
+- [Store API Namespace](#store-api-namespace)
+- [Resources and endpoints](#resources-and-endpoints)
+- [Pagination](#pagination)
+- [Status codes](#status-codes)
+- [Contributing](#contributing)
+- [Extensibility](#extensibility)
 
 **The Store API provides public Rest API endpoints for the development of customer-facing cart, checkout, and product functionality. It follows many of the patterns used in the [WordPress REST API](https://developer.wordpress.org/rest-api/key-concepts/).**
 

@@ -2,43 +2,41 @@
 
 ## Table of contents <!-- omit in toc -->
 
--   [useStoreNotices()](#usestorenotices)
-    -   [API](#api)
-        -   [`addDefaultNotice( text = '', noticeProps = {} )`](#adddefaultnotice-text---noticeprops---)
-        -   [`addErrorNotice( text = '', noticeProps = {} )`](#adderrornotice-text---noticeprops---)
-        -   [`addWarningNotice( text = '', noticeProps = {} )`](#addwarningnotice-text---noticeprops---)
-        -   [`addInfoNotice( text = '', noticeProps = {} )`](#addinfonotice-text---noticeprops---)
-        -   [`addSuccessNotice( text = '', noticeProps = {} )`](#addsuccessnotice-text---noticeprops---)
-        -   [`hasNoticesOfType( type )`](#hasnoticesoftype-type-)
-        -   [`notices`](#notices)
-        -   [`removeNotice( id, ctx )`](#removenotice-id-ctx-)
-        -   [`removeNotices( status = null )`](#removenotices-status--null-)
-        -   [`setIsSuppressed( val )`](#setissuppressed-val-)
--   [StoreNoticesProvider](#storenoticesprovider)
-    -   [Actions](#actions)
-        -   [`createNotice( status = 'default', content = '', options = {} )`](#createnotice-status--default-content---options---)
-        -   [`createSnackbarNotice( content = '', options = {} )`](#createsnackbarnotice-content---options---)
-        -   [`removeNotice( id, ctx )`](#removenotice-id-ctx--1)
-        -   [`setIsSuppressed( val )`](#setissuppressed-val--1)
-    -   [Statuses](#statuses)
-    -   [Notice options](#notice-options)
--   [useStoreSnackbarNotices()](#usestoresnackbarnotices)
-    -   [API](#api-1)
-        -   [`addSnackbarNotice( text = '', noticeProps = {} )`](#addsnackbarnotice-text---noticeprops---)
-        -   [`notices`](#notices-1)
-        -   [`removeNotices( status = null )`](#removenotices-status--null--1)
--   [StoreSnackbarNoticesProvider](#storesnackbarnoticesprovider)
-    -   [Actions](#actions-1)
-        -   [`createSnackbarNotice( content = '', options = {} )`](#createsnackbarnotice-content---options----1)
-        -   [`removeSnackbarNotice( id, ctx )`](#removesnackbarnotice-id-ctx-)
-        -   [`setIsSuppressed( val )`](#setissuppressed-val--2)
--   [Example usage](#example-usage)
+- [useStoreNotices()](#usestorenotices)
+  - [API](#api)
+    - [`addDefaultNotice( text = '', noticeProps = {} )`](#adddefaultnotice-text---noticeprops---)
+    - [`addErrorNotice( text = '', noticeProps = {} )`](#adderrornotice-text---noticeprops---)
+    - [`addWarningNotice( text = '', noticeProps = {} )`](#addwarningnotice-text---noticeprops---)
+    - [`addInfoNotice( text = '', noticeProps = {} )`](#addinfonotice-text---noticeprops---)
+    - [`addSuccessNotice( text = '', noticeProps = {} )`](#addsuccessnotice-text---noticeprops---)
+    - [`hasNoticesOfType( type )`](#hasnoticesoftype-type-)
+    - [`notices`](#notices)
+    - [`removeNotice( id, ctx )`](#removenotice-id-ctx-)
+    - [`removeNotices( status = null )`](#removenotices-status--null-)
+    - [`setIsSuppressed( val )`](#setissuppressed-val-)
+- [StoreNoticesProvider](#storenoticesprovider)
+  - [Actions](#actions)
+    - [`createNotice( status = 'default', content = '', options = {} )`](#createnotice-status--default-content---options---)
+    - [`createSnackbarNotice( content = '', options = {} )`](#createsnackbarnotice-content---options---)
+    - [`removeNotice( id, ctx )`](#removenotice-id-ctx--1)
+    - [`setIsSuppressed( val )`](#setissuppressed-val--1)
+  - [Statuses](#statuses)
+  - [Notice options](#notice-options)
+- [useStoreSnackbarNotices()](#usestoresnackbarnotices)
+  - [API](#api-1)
+    - [`addSnackbarNotice( text = '', noticeProps = {} )`](#addsnackbarnotice-text---noticeprops---)
+    - [`notices`](#notices-1)
+    - [`removeNotices( status = null )`](#removenotices-status--null--1)
+- [StoreSnackbarNoticesProvider](#storesnackbarnoticesprovider)
+  - [Actions](#actions-1)
+    - [`createSnackbarNotice( content = '', options = {} )`](#createsnackbarnotice-content---options----1)
+    - [`removeSnackbarNotice( id, ctx )`](#removesnackbarnotice-id-ctx-)
+    - [`setIsSuppressed( val )`](#setissuppressed-val--2)
+- [Example usage](#example-usage)
 
 ## useStoreNotices()
 
 The `useStoreNotices()` hook allows reading and manipulating notices in the frontend.
-
-Please refer to the `useStoreSnackbarNotices()` section for information on handling snackbar notices.
 
 ### API
 
@@ -180,9 +178,9 @@ Object of the form:
 
 ```js
 {
-	id: 'checkout',
-	type: string,
-	isDismissible: false,
+  id: 'checkout',
+  type: string,
+  isDismissible: false,
 }
 ```
 
@@ -194,7 +192,7 @@ The `useStoreNotices()` hook allows reading and manipulating snackbar notices in
 
 The snackbar is a small toast-like notification that appears at the bottom of a user's screen.
 
-<img width="300" src="https://user-images.githubusercontent.com/5656702/124294673-dd803b80-db4f-11eb-81ec-02fb962d04ed.png" />
+![Applied coupon code](https://user-images.githubusercontent.com/5656702/124294673-dd803b80-db4f-11eb-81ec-02fb962d04ed.png)
 
 ### API
 
@@ -259,19 +257,15 @@ The following example shows a `CheckoutProcessor` component that displays an err
 
 ```jsx
 const CheckoutProcessor = () => {
-	const { addErrorNotice, removeNotice } = useStoreNotices();
-	const { addSnackbarNotice } = useStoreSnackbarNotices();
-	// ...
-	const paymentFail = () => {
-		addErrorNotice( 'Something went wrong.', { id: 'checkout' } );
-	};
-	const paymentStart = () => {
-		removeNotice( 'checkout' );
-	};
-	const paymentSuccess = () => {
-		addSnackbarNotice( 'Payment successfully completed.' );
-	};
-	// ...
+  const { addErrorNotice, removeNotice } = useStoreNotices();
+  // ...
+  const paymentFail = () => {
+    addErrorNotice( 'Something went wrong.', { id: 'checkout' } );
+  };
+  const paymentStart = () => {
+    removeNotice( 'checkout' );
+  };
+  // ...
 };
 ```
 

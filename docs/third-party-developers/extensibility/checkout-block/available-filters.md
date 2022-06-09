@@ -2,17 +2,17 @@
 
 ## Table of Contents <!-- omit in toc -->
 
--   [Cart Line Items](#cart-line-items)
--   [Order Summary Items](#order-summary-items)
--   [Totals footer item (in Mini Cart, Cart and Checkout)](#totals-footer-item-in-mini-cart-cart-and-checkout)
--   [Coupons](#coupons)
--   [Snackbar notices](#snackbar-notices)
--   [Examples](#examples)
-    -   [Changing the wording of the Totals label in the Mini Cart, Cart and Checkout](#changing-the-wording-of-the-totals-label-in-the-mini-cart-cart-and-checkout)
--   [Changing the format of the item's single price](#changing-the-format-of-the-items-single-price)
--   [Change the name of a coupon](#change-the-name-of-a-coupon)
-    -   [Hide a snackbar notice containing a certain string](#hide-a-snackbar-notice-containing-a-certain-string)
--   [Troubleshooting](#troubleshooting)
+- [Cart Line Items](#cart-line-items)
+- [Order Summary Items](#order-summary-items)
+- [Totals footer item (in Mini Cart, Cart and Checkout)](#totals-footer-item-in-mini-cart-cart-and-checkout)
+- [Coupons](#coupons)
+- [Snackbar notices](#snackbar-notices)
+- [Examples](#examples)
+	- [Changing the wording of the Totals label in the Mini Cart, Cart and Checkout](#changing-the-wording-of-the-totals-label-in-the-mini-cart-cart-and-checkout)
+- [Changing the format of the item's single price](#changing-the-format-of-the-items-single-price)
+- [Change the name of a coupon](#change-the-name-of-a-coupon)
+	- [Hide a snackbar notice containing a certain string](#hide-a-snackbar-notice-containing-a-certain-string)
+- [Troubleshooting](#troubleshooting)
 
 This document lists the filters that are currently available to extensions and offers usage information for each one of them. Information on registering filters can be found on the [Checkout - Filter Registry](../../packages/checkout/filter-registry/README.md) page.
 
@@ -21,7 +21,7 @@ This document lists the filters that are currently available to extensions and o
 Line items refers to each item listed in the cart or checkout. For instance
 the "Sunglasses" and "Beanie with logo" in this image are the line items.
 
-<img src="https://user-images.githubusercontent.com/5656702/117027554-b7c3eb00-acf4-11eb-8af1-b8bedbe20e05.png" width=600 />
+![Cart Line Items](https://user-images.githubusercontent.com/5656702/117027554-b7c3eb00-acf4-11eb-8af1-b8bedbe20e05.png)
 
 The following filters are available for line items:
 
@@ -42,7 +42,7 @@ There are some filters available to modify the way certain elements are displaye
 
 The sale badges are not shown here, so those filters are not applied in the Order Summary.
 
-<img src="https://user-images.githubusercontent.com/5656702/117026942-1b014d80-acf4-11eb-8515-b9b777d96a74.png" width=400 />
+![Order Summary Items](https://user-images.githubusercontent.com/5656702/117026942-1b014d80-acf4-11eb-8515-b9b777d96a74.png)
 
 | Filter name           | Description                                                                                                                            | Return type                                                                           |
 | --------------------- | -------------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------- |
@@ -102,7 +102,7 @@ CartCoupon {
 
 There is a snackbar at the bottom of the page used to display notices to the customer, it looks like this:
 
-<img src="https://user-images.githubusercontent.com/5656702/120882329-d573c100-c5ce-11eb-901b-d7f206f74a66.png" width=300 />
+![Snackbar notices](https://user-images.githubusercontent.com/5656702/120882329-d573c100-c5ce-11eb-901b-d7f206f74a66.png)
 
 It may be desirable to hide this if there's a notice you don't want the shopper to see.
 
@@ -149,9 +149,12 @@ __experimentalRegisterCheckoutFilters( 'my-hypothetical-deposit-plugin', {
 } );
 ```
 
-| Before                                                                                                                       | After                                                                                                                        |
-| ---------------------------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------- |
-| <img src="https://user-images.githubusercontent.com/5656702/117032889-cc56b200-acf9-11eb-9bf7-ae5f6a0b1538.png" width=300 /> | <img src="https://user-images.githubusercontent.com/5656702/117033039-ec867100-acf9-11eb-95d5-50c06bf2923c.png" width=300 /> |
+| Before | After |
+| ------ | ----- |
+
+
+| ![Snackbar notices before](https://user-images.githubusercontent.com/5656702/117032889-cc56b200-acf9-11eb-9bf7-ae5f6a0b1538.png)
+| ![Snackbar notices after](https://user-images.githubusercontent.com/5656702/117033039-ec867100-acf9-11eb-95d5-50c06bf2923c.png) |
 
 ## Changing the format of the item's single price
 
@@ -184,9 +187,11 @@ __experimentalRegisterCheckoutFilters( 'my-hypothetical-price-plugin', {
 } );
 ```
 
-| Before                                                                                                                       | After                                                                                                                        |
-| ---------------------------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------- |
-| <img src="https://user-images.githubusercontent.com/5656702/117035086-d5488300-acfb-11eb-9954-feb326916168.png" width=400 /> | <img src="https://user-images.githubusercontent.com/5656702/117035616-70415d00-acfc-11eb-98d3-6c8096817e5b.png" width=400 /> |
+| Before | After |
+| ------ | ----- |
+
+
+| ![Changing the format of the item's single price before](https://user-images.githubusercontent.com/5656702/117035086-d5488300-acfb-11eb-9954-feb326916168.png) | ![Changing the format of the item's single price after](https://user-images.githubusercontent.com/5656702/117035616-70415d00-acfc-11eb-98d3-6c8096817e5b.png) |
 
 ## Change the name of a coupon
 
@@ -223,9 +228,9 @@ __experimentalRegisterCheckoutFilters( 'automatic-coupon-extension', {
 } );
 ```
 
-| Before                                                                                                             | After                                                                                                          |
-| ------------------------------------------------------------------------------------------------------------------ | -------------------------------------------------------------------------------------------------------------- |
-| <img src="https://user-images.githubusercontent.com/5656702/123768988-bc55eb80-d8c0-11eb-9262-5d629837706d.png" /> | ![image](https://user-images.githubusercontent.com/5656702/124126048-2c57a380-da72-11eb-9b45-b2cae0cffc37.png) |
+| Before                                                                                                         | After                                                                                                          |
+| -------------------------------------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------------------------- |
+| ![image](https://user-images.githubusercontent.com/5656702/123768988-bc55eb80-d8c0-11eb-9262-5d629837706d.png) | ![image](https://user-images.githubusercontent.com/5656702/124126048-2c57a380-da72-11eb-9b45-b2cae0cffc37.png) |
 
 ### Hide a snackbar notice containing a certain string
 
@@ -253,7 +258,7 @@ __experimentalRegisterCheckoutFilters( 'automatic-coupon-extension', {
 If you are logged in to the store as an administrator, you should be shown an error like this if your filter is not
 working correctly.
 
-<img src="https://user-images.githubusercontent.com/5656702/117035848-b4ccf880-acfc-11eb-870a-31ae86dd6496.png" width=600 />
+![Troubleshooting](https://user-images.githubusercontent.com/5656702/117035848-b4ccf880-acfc-11eb-870a-31ae86dd6496.png)
 
 The error will also be shown in your console.
 

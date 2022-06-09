@@ -2,19 +2,19 @@
 
 ## Table of contents <!-- omit in toc -->
 
--   [Cloning the Git Repository](#cloning-the-git-repository)
--   [Configuring your WordPress site](#configuring-your-wordpress-site)
--   [Installing dependencies](#installing-dependencies)
--   [Building the plugin files](#building-the-plugin-files)
-    -   [Legacy builds](#legacy-builds)
--   [Create a plugin package in ZIP format](#create-a-plugin-package-in-zip-format)
--   [Linting](#linting)
--   [Running the Blocks plugin](#running-the-blocks-plugin)
--   [Developer Tools (Visual Studio Code)](#developer-tools-visual-studio-code)
-    -   [EditorConfig](#editorconfig)
-    -   [ESLint](#eslint)
-    -   [Prettier](#prettier)
--   [Testing](#testing)
+- [Cloning the Git Repository](#cloning-the-git-repository)
+- [Configuring your WordPress site](#configuring-your-wordpress-site)
+- [Installing dependencies](#installing-dependencies)
+- [Building the plugin files](#building-the-plugin-files)
+  - [Legacy builds](#legacy-builds)
+- [Create a plugin package in ZIP format](#create-a-plugin-package-in-zip-format)
+- [Linting](#linting)
+- [Running the Blocks plugin](#running-the-blocks-plugin)
+- [Developer Tools (Visual Studio Code)](#developer-tools-visual-studio-code)
+  - [EditorConfig](#editorconfig)
+  - [ESLint](#eslint)
+  - [Prettier](#prettier)
+- [Testing](#testing)
 
 Before you can begin contributing to the Blocks plugin there are several steps and tools required to setup your local development environment.
 
@@ -24,8 +24,8 @@ Before you can start modifying files you'll want to clone this repository locall
 
 To do so from the command line, ensure you have [`git`](https://git-scm.com) installed on your machine, and run the clone command:
 
-```
-$ git clone https://github.com/woocommerce/woocommerce-gutenberg-products-block.git
+```sh
+git clone https://github.com/woocommerce/woocommerce-gutenberg-products-block.git
 ```
 
 ## Configuring your WordPress site
@@ -132,7 +132,7 @@ With the extension installed, ESLint will use the `.eslintrc.js` file in the roo
 
 To use Prettier, you should install the [Prettier - Code formatter](https://marketplace.visualstudio.com/items?itemName=esbenp.prettier-vscode) extension in Visual Studio Code. You can then configure it to be the default formatter and to automatically fix issues on save, by adding the following to your settings.
 
-```
+```js
 "[javascript]": {
   "editor.defaultFormatter": "esbenp.prettier-vscode",
   "editor.formatOnSave": true
@@ -146,7 +146,6 @@ This will use the `.prettierrc.js` file in the root folder of the Blocks plugin 
 You’ll find a handful of scripts in `package.json` that performs the automated tests and linting. You can run the following commands to execute automated tests in your terminal:
 
 -   JS tests: `npm run test`
-
 -   Run `npm run wp-env` command to setup the development environment in Docker.
 
 To find out more about how to run automated JavaScript tests, check out the documentation on [JavaScript Testing](https://github.com/woocommerce/woocommerce-gutenberg-products-block/blob/trunk/docs/contributors/javascript-testing.md).

@@ -2,10 +2,12 @@
 
 ## Table of Contents <!-- omit in toc -->
 
--   [Contributors](#contributors)
--   [Internal developers](#internal-developers)
--   [Third-party developers](#third-party-developers)
--   [Designers](#designers)
+- [Contributors](#contributors)
+- [Internal developers](#internal-developers)
+- [Third-party developers](#third-party-developers)
+- [Designers](#designers)
+- [Developer Resources](#developer-resources)
+- [Tutorials](#tutorials)
 
 The WooCommerce Blocks Handbook provides documentation for designers and developers on how to extend or contribute to blocks, and how internal developers should handle new releases.
 
@@ -24,7 +26,7 @@ The WooCommerce Blocks Handbook provides documentation for designers and develop
 
 ## Internal developers
 
-> Are you an internal developer? The following docuemnts offer information about the different blocks, the Block Client APIs, the Store API, the templates and the testing process.
+> Are you an internal developer? The following documents offer information about the different blocks, the Block Client APIs, the Store API, the templates and the testing process.
 
 -   [Blocks](internal-developers/blocks/README.md)
     -   [Stock Reservation during Checkout](internal-developers/blocks/stock-reservation.md)
@@ -65,7 +67,7 @@ The WooCommerce Blocks Handbook provides documentation for designers and develop
 
 ## Third-party developers
 
-> Are you a third-party developer? The following documents explain how to extend the WooCommerce Blocks plugin with your custom extention.
+> Are you a third-party developer? The following documents explain how to extend the WooCommerce Blocks plugin with your custom extension.
 
 -   [Extensibility](third-party-developers/extensibility/README.md)
     -   Hooks

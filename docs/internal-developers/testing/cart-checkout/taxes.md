@@ -2,10 +2,10 @@
 
 ## Table of Contents <!-- omit in toc -->
 
--   [Setup](#setup)
--   [What to test](#what-to-test)
-    -   [With taxes disabled](#with-taxes-disabled)
-    -   [With taxes enabled](#with-taxes-enabled)
+- [Setup](#setup)
+- [What to test](#what-to-test)
+  - [With taxes disabled](#with-taxes-disabled)
+  - [With taxes enabled](#with-taxes-enabled)
 
 ## Setup
 

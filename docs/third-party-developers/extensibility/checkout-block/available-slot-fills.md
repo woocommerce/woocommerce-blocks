@@ -2,12 +2,12 @@
 
 ## Table of Contents <!-- omit in toc -->
 
--   [ExperimentalOrderMeta](#experimentalordermeta)
-    -   [Passed parameters](#passed-parameters)
--   [ExperimentalOrderShippingPackages](#experimentalordershippingpackages)
-    -   [Passed parameters](#passed-parameters-1)
--   [ExperimentalDiscountsMeta](#experimentaldiscountsmeta)
-    -   [Passed paramters](#passed-paramters)
+- [ExperimentalOrderMeta](#experimentalordermeta)
+  - [Passed parameters](#passed-parameters)
+- [ExperimentalOrderShippingPackages](#experimentalordershippingpackages)
+  - [Passed parameters](#passed-parameters-1)
+- [ExperimentalDiscountsMeta](#experimentaldiscountsmeta)
+  - [Passed paramters](#passed-paramters)
 
 This document presents the list of available Slots that you can use for adding your custom content (Fill).
 
@@ -21,11 +21,11 @@ This Slot renders below the Checkout summary section and above the "Proceed to C
 
 Cart:
 
-<img width="865" alt="Example of ExperimentalOrderMeta in the Cart block" src="https://user-images.githubusercontent.com/1628454/154517779-117bb4e4-568e-413c-904c-855fc3450dfa.png">
+![Example of ExperimentalOrderMeta in the Cart block](https://user-images.githubusercontent.com/1628454/154517779-117bb4e4-568e-413c-904c-855fc3450dfa.png)
 
 Checkout:
 
-<img width="860" alt="Example of ExperimentalOrderMeta in the Checkout block" src="https://user-images.githubusercontent.com/1628454/154697224-de245182-6783-4914-81ba-1dbcf77292eb.png">
+![Example of ExperimentalOrderMeta in the Checkout block](https://user-images.githubusercontent.com/1628454/154697224-de245182-6783-4914-81ba-1dbcf77292eb.png)
 
 ### Passed parameters
 
@@ -39,11 +39,11 @@ This slot renders inside the shipping step of Checkout and inside the shipping o
 
 Cart:
 
-<img width="1151" alt="Example of ExperimentalOrderShippingPackages in the Cart block" src="https://user-images.githubusercontent.com/6165348/118399054-2b4dec80-b653-11eb-94a0-989e2e6e362a.png">
+![Example of ExperimentalOrderShippingPackages in the Cart block](https://user-images.githubusercontent.com/6165348/118399054-2b4dec80-b653-11eb-94a0-989e2e6e362a.png)
 
 Checkout:
 
-<img width="1233" alt="Example of ExperimentalOrderShippingPackages in the Checkout block" src="https://user-images.githubusercontent.com/6165348/118399133-90094700-b653-11eb-8ff0-c917947c199f.png">
+![Example of ExperimentalOrderShippingPackages in the Checkout block](https://user-images.githubusercontent.com/6165348/118399133-90094700-b653-11eb-8ff0-c917947c199f.png)
 
 ### Passed parameters
 
@@ -62,10 +62,12 @@ Checkout:
 This slot renders below the `CouponCode` input.
 
 Cart:
-<img alt="Cart showing ExperimentalDiscountsMeta location" src="https://user-images.githubusercontent.com/5656702/122774218-ea27a880-d2a0-11eb-9450-11f119567f26.png" />
+
+![Cart showing ExperimentalDiscountsMeta location](https://user-images.githubusercontent.com/5656702/122774218-ea27a880-d2a0-11eb-9450-11f119567f26.png)
 
 Checkout:
-<img alt="Checkout showing ExperimentalDiscountsMeta location" src="https://user-images.githubusercontent.com/5656702/122779606-efd3bd00-d2a5-11eb-8c84-6525eca5d704.png" />
+
+![Checkout showing ExperimentalDiscountsMeta location](https://user-images.githubusercontent.com/5656702/122779606-efd3bd00-d2a5-11eb-8c84-6525eca5d704.png)
 
 ### Passed paramters
 

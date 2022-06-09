@@ -2,9 +2,9 @@
 
 ## Table of Contents <!-- omit in toc -->
 
--   [How does the legacy system work?](#how-does-the-legacy-system-work)
-    -   [Aliases](#aliases)
-    -   [Webpack Plugin](#webpack-plugin)
+- [How does the legacy system work?](#how-does-the-legacy-system-work)
+  - [Aliases](#aliases)
+  - [Webpack Plugin](#webpack-plugin)
 
 This folder is used to hold any components/code that will get exported to the legacy build.
 

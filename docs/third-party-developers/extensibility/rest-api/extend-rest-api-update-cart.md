@@ -65,18 +65,11 @@ extensionCartUpdate( {
 
 ### Extensions cannot update the client-side cart state themselves
 
-You may be wondering why it's not possible to just make a custom AJAX endpoint for your extension that will update the
-cart. As mentioned, extensions are not permitted to update the client-side cart's state, because doing this incorrectly
-would cause the entire block to break, preventing the user from continuing their checkout. Instead you _must_ do this
-through the `extensionCartUpdate` function.
+You may be wondering why it's not possible to just make a custom AJAX endpoint for your extension that will update the cart. As mentioned, extensions are not permitted to update the client-side cart's state, because doing this incorrectly would cause the entire block to break, preventing the user from continuing their checkout. Instead you _must_ do this through the `extensionCartUpdate` function.
 
 ### Only one callback for a given namespace may be registered
 
-With this in mind, if your extension has several client-side interactions that result in different code paths being
-executed on the server-side, you may wish to pass additional data through in `extensionsCartUpdate`. For example
-if you have two actions the user can take, one to _add_ a discount, and the other to _remove_ it, you may wish to pass
-a key called `action` along with the other data to `extensionsCartUpdate`. Then in your callback, you can check this
-value to distinguish which code path you should execute.
+With this in mind, if your extension has several client-side interactions that result in different code paths being executed on the server-side, you may wish to pass additional data through in `extensionsCartUpdate`. For example if you have two actions the user can take, one to _add_ a discount, and the other to _remove_ it, you may wish to pass a key called `action` along with the other data to `extensionsCartUpdate`. Then in your callback, you can check this value to distinguish which code path you should execute.
 
 Example:
 
@@ -113,8 +106,7 @@ If you try to register again, under the same namespace, the previously registere
 
 ### PHP
 
-`ExtendSchema::register_update_callback`: Used to register a callback to be executed when the `cart/extensions`
-endpoint gets hit with a given namespace. It takes an array of arguments
+`ExtendSchema::register_update_callback`: Used to register a callback to be executed when the `cart/extensions` endpoint gets hit with a given namespace. It takes an array of arguments
 
 | Attribute | Type | Required | Description || ----------- | ---------- | -------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | `namespace` | `string` | Yes | The namespace of your extension. This is used to determine which extension's callbacks should be executed. |
@@ -139,7 +131,7 @@ More information on how to use Slots is available in our [Slots and Fills docume
 
 Once implemented, the sidebar has a control added to it like this:
 
-<img src="https://user-images.githubusercontent.com/5656702/125109827-bf7c8300-e0db-11eb-9e51-59921b38a0c2.png" width=400 />
+![image](https://user-images.githubusercontent.com/5656702/125109827-bf7c8300-e0db-11eb-9e51-59921b38a0c2.png)
 
 ### The "Redeem" button
 

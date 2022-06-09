@@ -48,7 +48,7 @@ See the `innerBlockAreas` typedef for the most up to date list of available area
 
 ## Registering a Block
 
-To register a checkout block, first, register your Block Type with WordPress using https://developer.wordpress.org/block-editor/reference-guides/block-api/block-registration/. We recommend using the `blocks.json` method to avoid
+To register a checkout block, first, register your Block Type with WordPress using <https://developer.wordpress.org/block-editor/reference-guides/block-api/block-registration/>. We recommend using the `blocks.json` method to avoid
 repetition.
 
 When registering your block, you should also define the `parent` property to include a list of areas where your block will be available. For example:

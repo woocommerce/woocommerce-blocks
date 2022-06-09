@@ -2,21 +2,24 @@
 
 ## Table of Contents <!-- omit in toc -->
 
--   [General Concepts](#general-concepts)
-    -   [Tracking flow through status](#tracking-flow-through-status)
-    -   [`CheckoutProvider` Exposed Statuses](#checkoutprovider-exposed-statuses)
-        -   [Special States:](#special-states)
-    -   [`ShippingProvider` Exposed Statuses](#shippingprovider-exposed-statuses)
-    -   [`PaymentMethodDataProvider` Exposed Statuses](#paymentmethoddataprovider-exposed-statuses)
-    -   [Emitting Events](#emitting-events)
-    -   [`onCheckoutValidationBeforeProcessing`](#oncheckoutvalidationbeforeprocessing)
-    -   [`onPaymentProcessing`](#onpaymentprocessing)
-    -   [`onCheckoutAfterProcessingWithSuccess`](#oncheckoutafterprocessingwithsuccess)
-    -   [`onCheckoutAfterProcessingWithError`](#oncheckoutafterprocessingwitherror)
-    -   [`onShippingRateSuccess`](#onshippingratesuccess)
-    -   [`onShippingRateFail`](#onshippingratefail)
-    -   [`onShippingRateSelectSuccess`](#onshippingrateselectsuccess)
-    -   [`onShippingRateSelectFail`](#onshippingrateselectfail)
+- [General Concepts](#general-concepts)
+	- [Tracking flow through status](#tracking-flow-through-status)
+	- [`CheckoutProvider` Exposed Statuses](#checkoutprovider-exposed-statuses)
+		- [Special States:](#special-states)
+	- [`ShippingProvider` Exposed Statuses](#shippingprovider-exposed-statuses)
+	- [`PaymentMethodDataProvider` Exposed Statuses](#paymentmethoddataprovider-exposed-statuses)
+	- [Emitting Events](#emitting-events)
+	- [`onCheckoutValidationBeforeProcessing`](#oncheckoutvalidationbeforeprocessing)
+	- [`onPaymentProcessing`](#onpaymentprocessing)
+		- [Success](#success)
+		- [Fail](#fail)
+		- [Error](#error)
+	- [`onCheckoutAfterProcessingWithSuccess`](#oncheckoutafterprocessingwithsuccess)
+	- [`onCheckoutAfterProcessingWithError`](#oncheckoutafterprocessingwitherror)
+	- [`onShippingRateSuccess`](#onshippingratesuccess)
+	- [`onShippingRateFail`](#onshippingratefail)
+	- [`onShippingRateSelectSuccess`](#onshippingrateselectsuccess)
+	- [`onShippingRateSelectFail`](#onshippingrateselectfail)
 
 This document gives an overview of the flow for the checkout in the WooCommerce checkout block, and some general architectural overviews.
 
@@ -252,7 +255,7 @@ This event emitter will execute through each registered observer (passing in not
 
 When a payment method returns a non-truthy value, if it returns a valid response type the event emitter will update various internal statuses according to the response. Here's the possible response types that will get handled by the emitter:
 
-**success**
+#### Success
 
 A response is considered a success response when it at a minimum is an object with this shape:
 
@@ -268,7 +271,7 @@ When a success response is returned, the payment method context status will be c
 
 If `billingData` or `shippingData` properties aren't in the response object, then the state for the data is left alone.
 
-**fail**
+#### Fail
 
 A response is considered a fail response when it at a minimum is an object with this shape:
 
@@ -283,7 +286,7 @@ When a fail response is returned by an observer, the payment method context stat
 -   `paymentMethodData`: (same as for success responses).
 -   `billingData`: (same as for success responses).
 
-**error**
+#### Error
 
 A response is considered an error response when it at a minimum is an object with this shape:
 

@@ -2,13 +2,13 @@
 
 ## Table of contents <!-- omit in toc -->
 
--   [Overview](#overview)
-    -   [Requirements](#requirements)
--   [Technical Overview](#technical-overview)
-    -   [The Problem](#the-problem)
-    -   [The Solution](#the-solution)
-    -   [Some things to be aware of](#some-things-to-be-aware-of)
--   [Related files](#related-files)
+- [Overview](#overview)
+  - [Requirements](#requirements)
+- [Technical Overview](#technical-overview)
+  - [The Problem](#the-problem)
+  - [The Solution](#the-solution)
+  - [Some things to be aware of](#some-things-to-be-aware-of)
+- [Related files](#related-files)
 
 This page includes documentation related to WooCommerce Block Templates.
 

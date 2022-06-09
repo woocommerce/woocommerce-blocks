@@ -2,8 +2,8 @@
 
 ## Table of Contents <!-- omit in toc -->
 
--   [List Product Attributes](#list-product-attributes)
--   [Single Product Attribute](#single-product-attribute)
+- [List Product Attributes](#list-product-attributes)
+- [Single Product Attribute](#single-product-attribute)
 
 ## List Product Attributes
 

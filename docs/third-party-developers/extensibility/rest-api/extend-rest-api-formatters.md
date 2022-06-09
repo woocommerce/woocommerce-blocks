@@ -2,16 +2,16 @@
 
 ## Table of Contents <!-- omit in toc -->
 
--   [How to use them](#how-to-use-them)
--   [MoneyFormatter](#moneyformatter)
-    -   [Arguments](#arguments)
-    -   [Example use and returned value](#example-use-and-returned-value)
--   [CurrencyFormatter](#currencyformatter)
-    -   [Arguments](#arguments-1)
-    -   [Example use and returned value](#example-use-and-returned-value-1)
--   [HtmlFormatter](#htmlformatter)
-    -   [Arguments](#arguments-2)
-    -   [Example use and returned value](#example-use-and-returned-value-2)
+- [How to use them](#how-to-use-them)
+- [MoneyFormatter](#moneyformatter)
+  - [Arguments](#arguments)
+  - [Example use and returned value](#example-use-and-returned-value)
+- [CurrencyFormatter](#currencyformatter)
+  - [Arguments](#arguments-1)
+  - [Example use and returned value](#example-use-and-returned-value-1)
+- [HtmlFormatter](#htmlformatter)
+  - [Arguments](#arguments-2)
+  - [Example use and returned value](#example-use-and-returned-value-2)
 
 `Formatters` are utility classes that allow you to format values to so that they are compatible with the StoreAPI, values such as money, currency, or HTML.
 
@@ -91,18 +91,18 @@ get_formatter( 'currency' )->format( [
 
 returns
 
-```
-  'price' => '1800'
-  'regular_price' => '1800'
-  'sale_price' => '1800'
-  'price_range' => null
-  'currency_code' => 'GBP'
-  'currency_symbol' => '£'
-  'currency_minor_unit' => 2
-  'currency_decimal_separator' => '.'
-  'currency_thousand_separator' => ','
-  'currency_prefix' => '£'
-  'currency_suffix' => ''
+```text
+'price' => '1800'
+'regular_price' => '1800'
+'sale_price' => '1800'
+'price_range' => null
+'currency_code' => 'GBP'
+'currency_symbol' => '£'
+'currency_minor_unit' => 2
+'currency_decimal_separator' => '.'
+'currency_thousand_separator' => ','
+'currency_prefix' => '£'
+'currency_suffix' => ''
 ```
 
 ## HtmlFormatter
@@ -127,7 +127,11 @@ get_formatter( 'html' )->format(
 );
 ```
 
-returns `alert('bad script!') This &#8220;coffee&#8221; is <strong>very strong</strong>.`
+returns
+
+```text
+alert('bad script!') This &#8220;coffee&#8221; is <strong>very strong</strong>.
+```
 
 <!-- FEEDBACK -->
 

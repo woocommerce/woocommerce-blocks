@@ -1,6 +1,10 @@
 # Checkout Flow and Events
 
-See [Checkout Flow and Events](../../internal-developers/block-client-apis/checkout/checkout-flow-and-events.md)
+## Replaced classes
+
+| Removed                             | New class                 |
+| ----------------------------------- | ------------------------- |
+| `wc-block-components-checkout-form` | `wc-block-checkout__form` |
 
 <!-- FEEDBACK -->
 

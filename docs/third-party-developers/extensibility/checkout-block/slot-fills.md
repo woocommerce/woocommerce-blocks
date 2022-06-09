@@ -2,11 +2,11 @@
 
 ## Table of Contents <!-- omit in toc -->
 
--   [The problem](#the-problem)
--   [Solution](#solution)
--   [Basic Usage](#basic-usage)
--   [registerPlugin](#registerplugin)
--   [Requirements](#requirements)
+- [The problem](#the-problem)
+- [Solution](#solution)
+- [Basic Usage](#basic-usage)
+- [registerPlugin](#registerplugin)
+- [Requirements](#requirements)
 
 ## The problem
 

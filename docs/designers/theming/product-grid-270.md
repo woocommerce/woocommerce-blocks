@@ -2,8 +2,8 @@
 
 ## Table of Contents <!-- omit in toc -->
 
--   [Product images](#product-images)
--   [All Products prices](#all-products-prices)
+- [Product images](#product-images)
+- [All Products prices](#all-products-prices)
 
 In WC Blocks 2.7.0, some of the styles of the product grid blocks were updated to make the experience more consistent. Below, there are CSS code snippets that can undo those changes.
 

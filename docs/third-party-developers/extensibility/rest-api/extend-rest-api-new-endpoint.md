@@ -2,7 +2,7 @@
 
 This document is intended for contrubtors to WooCommerce Blocks plugin, if you feel like a new endpoint should be added, feel free to open an issue or a PR detailing why.
 
-## Extending `GET` endpoints in Store API.
+## Extending `GET` endpoints in Store API
 
 ExtendSchema needs to expose each endpoint individually. If you want to expose a new endpoint, you have to follow these steps:
 
@@ -23,7 +23,7 @@ This is to prevent accidentally exposing new endpoints.
 You can pass extra parameters to `get_extended_schema` and those would be passed to third party code.
 
 ```php
-self::EXTENDING_KEY    => $this->get_extended_schema( self::IDENTIFIER ),
+self::EXTENDING_KEY => $this->get_extended_schema( self::IDENTIFIER ),
 ```
 
 `EXTENDING_KEY` value is `extensions`, we use a constant to make sure we don't have a typo.
@@ -33,7 +33,7 @@ self::EXTENDING_KEY    => $this->get_extended_schema( self::IDENTIFIER ),
 Make sure to only expose what's needed.
 
 ```php
-self::EXTENDING_KEY    => $this->get_extended_data( self::IDENTIFIER, $cart_item ),
+self::EXTENDING_KEY => $this->get_extended_data( self::IDENTIFIER, $cart_item ),
 ```
 
 That's it, your endpoint would now contain `extensions` in your endpoint, and you can consume it in the frontend.
