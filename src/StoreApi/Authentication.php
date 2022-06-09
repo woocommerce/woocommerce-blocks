@@ -31,7 +31,7 @@ class Authentication {
 		 *
 		 * This can be used also to disable the rate limit check when testing API endpoints via a REST API client.
 		 *
-		 * @param boolean $disable_rate_limit_check If true, checks will be enabled.
+		 * @param boolean $enable_rate_limit_check If true, checks will be enabled.
 		 * @return boolean
 		 */
 		if ( apply_filters( 'woocommerce_store_api_enable_rate_limit_check', false ) ) {
@@ -112,6 +112,22 @@ class Authentication {
 	 */
 	protected static function get_ip_address() {
 
+		/**
+		 * Filters the Store API rate limit check proxy support, which is disabled by default.
+		 *
+		 * If the store is behind a proxy, load balancer, CDN etc, the user can enable this for proper obtaining
+		 * of client's ip address through standard transport headers.
+		 *
+		 * @param boolean $enable_rate_limit_proxy_support If true, proxy support will be enabled.
+		 *
+		 * @return boolean
+		 */
+		if ( ! apply_filters( 'woocommerce_store_api_rate_limit_enable_proxy_support', false ) ) {
+			if ( array_key_exists( 'REMOTE_ADDR', $_SERVER ) ) {
+				return self::validate_ip( sanitize_text_field( wp_unslash( $_SERVER['REMOTE_ADDR'] ) ) );
+			}
+		}
+
 		if ( array_key_exists( 'HTTP_X_REAL_IP', $_SERVER ) ) {
 			return self::validate_ip( sanitize_text_field( wp_unslash( $_SERVER['HTTP_X_REAL_IP'] ) ) );
 		}
@@ -147,10 +163,6 @@ class Authentication {
 			if ( ! empty( $matches ) ) {
 				return self::validate_ip( trim( $matches[0] ) );
 			}
-		}
-
-		if ( array_key_exists( 'REMOTE_ADDR', $_SERVER ) ) {
-			return self::validate_ip( sanitize_text_field( wp_unslash( $_SERVER['REMOTE_ADDR'] ) ) );
 		}
 
 		return false;
