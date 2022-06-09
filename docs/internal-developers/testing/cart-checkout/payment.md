@@ -30,7 +30,7 @@ To test Express payment methods there are some special requirements like
 
 ### Unsupported
 
-![](https://i.imgur.com/EpkFrat.png).
+![image](https://i.imgur.com/EpkFrat.png).
 
 ## What to test
 

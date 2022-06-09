@@ -3,10 +3,10 @@
 ## Table of Contents <!-- omit in toc -->
 
 - [Actions](#actions)
-  - [`receiveCollection( namespace, resourceName, queryString, ids = [], items = [], replace = false )`](#receivecollection-namespace-resourcename-querystring-ids---items---replace--false-)
+    - [`receiveCollection( namespace, resourceName, queryString, ids = [], items = [], replace = false )`](#receivecollection-namespace-resourcename-querystring-ids---items---replace--false-)
 - [Selectors](#selectors)
-  - [`getCollection( namespace, resourceName, query = null, ids=[] )`](#getcollection-namespace-resourcename-query--null-ids-)
-  - [`getCollectionHeader( namespace, resourceName, header, query = null, ids = [])`](#getcollectionheader-namespace-resourcename-header-query--null-ids--)
+    - [`getCollection( namespace, resourceName, query = null, ids=[] )`](#getcollection-namespace-resourcename-query--null-ids-)
+    - [`getCollectionHeader( namespace, resourceName, header, query = null, ids = [])`](#getcollectionheader-namespace-resourcename-header-query--null-ids--)
 
 To utilize this store you will import the COLLECTIONS_STORE_KEY in any module referencing it. Assuming `@woocommerce/block-data` is registered as an external pointing to `wc.wcBlocksData` you can import the key via:
 

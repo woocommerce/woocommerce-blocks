@@ -3,14 +3,14 @@
 ## Table of Contents <!-- omit in toc -->
 
 - [`extensionCartUpdate`](#extensioncartupdate)
-  - [Usage](#usage)
-  - [Options](#options)
-    - [`args (object, required)`](#args-object-required)
+    - [Usage](#usage)
+    - [Options](#options)
+        - [`args (object, required)`](#args-object-required)
 - [`mustContain`](#mustcontain)
-  - [Usage](#usage-1)
-  - [Options](#options-1)
-    - [`value (string, required)`](#value-string-required)
-    - [`requiredValue (string, required)`](#requiredvalue-string-required)
+    - [Usage](#usage-1)
+    - [Options](#options-1)
+        - [`value (string, required)`](#value-string-required)
+        - [`requiredValue (string, required)`](#requiredvalue-string-required)
 
 Miscellaneous utility functions for dealing with checkout functionality.
 

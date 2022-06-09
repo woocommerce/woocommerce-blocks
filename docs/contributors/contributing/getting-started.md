@@ -6,14 +6,14 @@
 - [Configuring your WordPress site](#configuring-your-wordpress-site)
 - [Installing dependencies](#installing-dependencies)
 - [Building the plugin files](#building-the-plugin-files)
-  - [Legacy builds](#legacy-builds)
+    - [Legacy builds](#legacy-builds)
 - [Create a plugin package in ZIP format](#create-a-plugin-package-in-zip-format)
 - [Linting](#linting)
 - [Running the Blocks plugin](#running-the-blocks-plugin)
 - [Developer Tools (Visual Studio Code)](#developer-tools-visual-studio-code)
-  - [EditorConfig](#editorconfig)
-  - [ESLint](#eslint)
-  - [Prettier](#prettier)
+    - [EditorConfig](#editorconfig)
+    - [ESLint](#eslint)
+    - [Prettier](#prettier)
 - [Testing](#testing)
 
 Before you can begin contributing to the Blocks plugin there are several steps and tools required to setup your local development environment.

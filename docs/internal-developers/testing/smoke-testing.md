@@ -19,7 +19,7 @@ When testing builds the following things should be tested to ensure critical par
 
 To make future testing more efficient, we recommend setting up some Blocks in advance so you can repeat tests on them whenever smoke testing.
 
-### 1. Create a page with all regular and SSR blocks (such as the product grids) setup and configured.
+### 1. Create a page with all regular and SSR blocks (such as the product grids) setup and configured
 
 <details>
 <summary>You can copy and paste the following code into a new page to add all the blocks (click):</summary>
@@ -160,7 +160,7 @@ To make future testing more efficient, we recommend setting up some Blocks in ad
 
 In the `wp:woocommerce/product-search` substitute the URL used for the `action` attribute to your site URL or the block will not embedd correctly.
 
-### 2. Create a page with the All Products Block, and some Filter Blocks, setup to test that functionality in isolation. Using the columns block here too is a good idea to keep things organized.
+### 2. Create a page with the All Products Block, and some Filter Blocks, setup to test that functionality in isolation. Using the columns block here too is a good idea to keep things organized
 
 <details>
 <summary>You can copy and paste the following code into a new page to add all the blocks (click):</summary>
@@ -250,7 +250,7 @@ In the `wp:woocommerce/product-search` substitute the URL used for the `action` 
 
 </details>
 
-### 3. Add the Cart and Checkout block to the relevant WooCommerce pages.
+### 3. Add the Cart and Checkout block to the relevant WooCommerce pages
 
 ## Editor Tests
 

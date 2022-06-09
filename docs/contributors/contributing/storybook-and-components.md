@@ -34,7 +34,7 @@ For more info about individual components, refer to [Storybook](https://woocomme
 ## How to run Storybook locally and test components
 
 -   `npm run storybook`
--   Point your browser at port 6006, e.g. http://localhost:6006
+-   Point your browser at port 6006, e.g. <http://localhost:6006>
 -   Play with components 🎛!
 
 ## How to add a story for a component

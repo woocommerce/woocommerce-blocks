@@ -3,19 +3,19 @@
 ## Table of Contents <!-- omit in toc -->
 
 - [The problem](#the-problem)
-  - [The solution](#the-solution)
-  - [Importing](#importing)
-    - [Aliased import](#aliased-import)
-    - [`wc global`](#wc-global)
-  - [Signature](#signature)
-    - [Extension namespace collision](#extension-namespace-collision)
-  - [Usage example](#usage-example)
-  - [Callbacks registered for payment methods](#callbacks-registered-for-payment-methods)
+    - [The solution](#the-solution)
+    - [Importing](#importing)
+        - [Aliased import](#aliased-import)
+        - [`wc global`](#wc-global)
+    - [Signature](#signature)
+        - [Extension namespace collision](#extension-namespace-collision)
+    - [Usage example](#usage-example)
+    - [Callbacks registered for payment methods](#callbacks-registered-for-payment-methods)
 - [Filtering payment methods using requirements](#filtering-payment-methods-using-requirements)
-  - [The problem](#the-problem-1)
-  - [The solution](#the-solution-1)
-  - [Basic usage](#basic-usage)
-  - [Putting it all together](#putting-it-all-together)
+    - [The problem](#the-problem-1)
+    - [The solution](#the-solution-1)
+    - [Basic usage](#basic-usage)
+    - [Putting it all together](#putting-it-all-together)
 
 ## The problem
 

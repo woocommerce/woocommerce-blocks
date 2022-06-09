@@ -3,8 +3,8 @@
 ## Table of contents <!-- omit in toc -->
 
 - [Actions](#actions)
-  - [`setQueryValue( context, queryKey, value )`](#setqueryvalue-context-querykey-value-)
-  - [`setValueForQueryContext( context, value )`](#setvalueforquerycontext-context-value-)
+    - [`setQueryValue( context, queryKey, value )`](#setqueryvalue-context-querykey-value-)
+    - [`setValueForQueryContext( context, value )`](#setvalueforquerycontext-context-value-)
 
 To utilize this store you will import the `QUERY_STATE_STORE_KEY` in any module referencing it. Assuming `@woocommerce/block-data` is registered as an external pointing to `wc.wcBlocksData` you can import the key via:
 

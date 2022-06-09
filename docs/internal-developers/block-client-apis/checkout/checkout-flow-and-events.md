@@ -3,23 +3,23 @@
 ## Table of Contents <!-- omit in toc -->
 
 - [General Concepts](#general-concepts)
-	- [Tracking flow through status](#tracking-flow-through-status)
-	- [`CheckoutProvider` Exposed Statuses](#checkoutprovider-exposed-statuses)
-		- [Special States:](#special-states)
-	- [`ShippingProvider` Exposed Statuses](#shippingprovider-exposed-statuses)
-	- [`PaymentMethodDataProvider` Exposed Statuses](#paymentmethoddataprovider-exposed-statuses)
-	- [Emitting Events](#emitting-events)
-	- [`onCheckoutValidationBeforeProcessing`](#oncheckoutvalidationbeforeprocessing)
-	- [`onPaymentProcessing`](#onpaymentprocessing)
-		- [Success](#success)
-		- [Fail](#fail)
-		- [Error](#error)
-	- [`onCheckoutAfterProcessingWithSuccess`](#oncheckoutafterprocessingwithsuccess)
-	- [`onCheckoutAfterProcessingWithError`](#oncheckoutafterprocessingwitherror)
-	- [`onShippingRateSuccess`](#onshippingratesuccess)
-	- [`onShippingRateFail`](#onshippingratefail)
-	- [`onShippingRateSelectSuccess`](#onshippingrateselectsuccess)
-	- [`onShippingRateSelectFail`](#onshippingrateselectfail)
+    - [Tracking flow through status](#tracking-flow-through-status)
+    - [`CheckoutProvider` Exposed Statuses](#checkoutprovider-exposed-statuses)
+        - [Special States:](#special-states)
+    - [`ShippingProvider` Exposed Statuses](#shippingprovider-exposed-statuses)
+    - [`PaymentMethodDataProvider` Exposed Statuses](#paymentmethoddataprovider-exposed-statuses)
+    - [Emitting Events](#emitting-events)
+    - [`onCheckoutValidationBeforeProcessing`](#oncheckoutvalidationbeforeprocessing)
+    - [`onPaymentProcessing`](#onpaymentprocessing)
+        - [Success](#success)
+        - [Fail](#fail)
+        - [Error](#error)
+    - [`onCheckoutAfterProcessingWithSuccess`](#oncheckoutafterprocessingwithsuccess)
+    - [`onCheckoutAfterProcessingWithError`](#oncheckoutafterprocessingwitherror)
+    - [`onShippingRateSuccess`](#onshippingratesuccess)
+    - [`onShippingRateFail`](#onshippingratefail)
+    - [`onShippingRateSelectSuccess`](#onshippingrateselectsuccess)
+    - [`onShippingRateSelectFail`](#onshippingrateselectfail)
 
 This document gives an overview of the flow for the checkout in the WooCommerce checkout block, and some general architectural overviews.
 
@@ -77,7 +77,7 @@ The following boolean flags available related to status are:
 
 **isComplete**: When the checkout status is `COMPLETE` this flag is true. Checkout will have this status after all observers on the events emitted during the `AFTER_PROCESSING` status are completed successfully. When checkout is at this status, the shopper's browser will be redirected to the value of `redirectUrl` at that point (usually the `order-received` route).
 
-#### Special States:
+#### Special States
 
 The following are booleans exposed via the checkout provider that are independent from each other and checkout statuses but can be used in combination to react to various state in the checkout.
 

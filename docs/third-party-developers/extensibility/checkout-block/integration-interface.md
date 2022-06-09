@@ -5,13 +5,13 @@
 - [The problem](#the-problem)
 - [The solution](#the-solution)
 - [`IntegrationInterface` methods](#integrationinterface-methods)
-	- [`get_name()`](#get_name)
-	- [`initialize()`](#initialize)
-	- [`get_script_handles()`](#get_script_handles)
-	- [`get_editor_script_handles()`](#get_editor_script_handles)
-	- [`get_script_data()`](#get_script_data)
+    - [`get_name()`](#get_name)
+    - [`initialize()`](#initialize)
+    - [`get_script_handles()`](#get_script_handles)
+    - [`get_editor_script_handles()`](#get_editor_script_handles)
+    - [`get_script_data()`](#get_script_data)
 - [Usage example](#usage-example)
-	- [Getting data added in `get_script_data`](#getting-data-added-in-get_script_data)
+    - [Getting data added in `get_script_data`](#getting-data-added-in-get_script_data)
 
 ## The problem
 

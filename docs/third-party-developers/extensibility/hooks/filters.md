@@ -625,7 +625,7 @@ apply_filters( 'woocommerce_show_page_title' )
 
 ### See
 
--   https://github.com/woocommerce/woocommerce-gutenberg-products-block/issues/5328#issuecomment-989013447
+-   <https://github.com/woocommerce/woocommerce-gutenberg-products-block/issues/5328#issuecomment-989013447>
 
 ### Source
 

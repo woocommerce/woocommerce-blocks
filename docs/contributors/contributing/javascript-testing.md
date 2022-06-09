@@ -4,8 +4,8 @@
 
 - [How to run JavaScript unit tests](#how-to-run-javascript-unit-tests)
 - [How to run end-to-end tests](#how-to-run-end-to-end-tests)
-  - [Modify the local environment used by end-to-end tests](#modify-the-local-environment-used-by-end-to-end-tests)
-  - [How to update end-to-end tests suites](#how-to-update-end-to-end-tests-suites)
+    - [Modify the local environment used by end-to-end tests](#modify-the-local-environment-used-by-end-to-end-tests)
+    - [How to update end-to-end tests suites](#how-to-update-end-to-end-tests-suites)
 
 Tests for JavaScript in the Blocks plugin are powered by [Jest](https://jestjs.io/). The Blocks plugin follows the same patterns as Gutenberg, therefore for instructions on writing tests you can [refer to this page in the Gutenberg Handbook](https://developer.wordpress.org/block-editor/contributors/develop/testing-overview/).
 

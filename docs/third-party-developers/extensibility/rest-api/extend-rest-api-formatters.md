@@ -4,14 +4,14 @@
 
 - [How to use them](#how-to-use-them)
 - [MoneyFormatter](#moneyformatter)
-  - [Arguments](#arguments)
-  - [Example use and returned value](#example-use-and-returned-value)
+    - [Arguments](#arguments)
+    - [Example use and returned value](#example-use-and-returned-value)
 - [CurrencyFormatter](#currencyformatter)
-  - [Arguments](#arguments-1)
-  - [Example use and returned value](#example-use-and-returned-value-1)
+    - [Arguments](#arguments-1)
+    - [Example use and returned value](#example-use-and-returned-value-1)
 - [HtmlFormatter](#htmlformatter)
-  - [Arguments](#arguments-2)
-  - [Example use and returned value](#example-use-and-returned-value-2)
+    - [Arguments](#arguments-2)
+    - [Example use and returned value](#example-use-and-returned-value-2)
 
 `Formatters` are utility classes that allow you to format values to so that they are compatible with the StoreAPI, values such as money, currency, or HTML.
 
