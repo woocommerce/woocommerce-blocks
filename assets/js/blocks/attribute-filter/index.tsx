@@ -14,10 +14,14 @@ import classNames from 'classnames';
 import edit from './edit';
 import type { BlockAttributes } from './types';
 import { blockAttributes } from './attributes';
+import metadata from './block.json';
 
-registerBlockType( 'woocommerce/attribute-filter', {
-	apiVersion: 2,
+registerBlockType( metadata, {
 	title: __( 'Filter Products by Attribute', 'woo-gutenberg-products-block' ),
+	description: __(
+		'Allow customers to filter the grid by product attribute, such as color. Works in combination with the All Products block.',
+		'woo-gutenberg-products-block'
+	),
 	icon: {
 		src: (
 			<Icon
@@ -26,18 +30,8 @@ registerBlockType( 'woocommerce/attribute-filter', {
 			/>
 		),
 	},
-	category: 'woocommerce',
-	keywords: [ __( 'WooCommerce', 'woo-gutenberg-products-block' ) ],
-	description: __(
-		'Allow customers to filter the grid by product attribute, such as color. Works in combination with the All Products block.',
-		'woo-gutenberg-products-block'
-	),
 	supports: {
-		html: false,
-		color: {
-			text: true,
-			background: false,
-		},
+		...metadata.supports,
 		...( isFeaturePluginBuild() && {
 			__experimentalBorder: {
 				radius: true,
@@ -46,12 +40,8 @@ registerBlockType( 'woocommerce/attribute-filter', {
 			},
 		} ),
 	},
-	example: {
-		attributes: {
-			isPreview: true,
-		},
-	},
 	attributes: {
+		...metadata.attributes,
 		...blockAttributes,
 	},
 	transforms: {
