@@ -15,6 +15,11 @@ import edit from './edit.js';
 import metadata from './block.json';
 
 registerBlockType( metadata, {
+	title: __( 'Active Product Filters', 'woo-gutenberg-products-block' ),
+	description: __(
+		'Show the currently active product filters. Works in combination with the All Products and filters blocks.',
+		'woo-gutenberg-products-block'
+	),
 	icon: {
 		src: (
 			<Icon
@@ -22,6 +27,13 @@ registerBlockType( metadata, {
 				className="wc-block-editor-components-block-icon"
 			/>
 		),
+	},
+	attributes: {
+		...metadata.attributes,
+		heading: {
+			type: 'string',
+			default: __( 'Active filters', 'woo-gutenberg-products-block' ),
+		},
 	},
 	transforms: {
 		from: [

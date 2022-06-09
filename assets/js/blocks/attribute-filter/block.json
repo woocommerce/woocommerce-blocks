@@ -30,10 +30,6 @@
 			"type": "string",
 			"default": "or"
 		},
-		"heading": {
-			"type": "string",
-			"default": "Filter by attribute"
-		},
 		"headingLevel": {
 			"type": "number",
 			"default": 3

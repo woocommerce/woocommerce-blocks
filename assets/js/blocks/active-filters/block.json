@@ -18,10 +18,6 @@
 			"type": "string",
 			"default": "list"
 		},
-		"heading": {
-			"type": "string",
-			"default": "Active filters"
-		},
 		"headingLevel": {
 			"type": "number",
 			"default": 3
