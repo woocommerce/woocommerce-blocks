@@ -42,9 +42,11 @@ class Installer {
 			return;
 		}
 
+		$use_blockified_templates = wc_current_theme_is_fse_theme();
 		if ( $db_schema_version <= 260 ) {
-			update_option( 'wc_blocks_use_blockified_templates', wc_bool_to_string( false ) );
+			$use_blockified_templates = false;
 		}
+		update_option( 'wc_blocks_use_blockified_templates', wc_bool_to_string( $use_blockified_templates ) );
 
 		$show_errors = $wpdb->hide_errors();
 		$table_name  = $wpdb->prefix . 'wc_reserved_stock';
