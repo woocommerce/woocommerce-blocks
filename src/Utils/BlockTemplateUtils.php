@@ -518,8 +518,9 @@ class BlockTemplateUtils {
 	}
 
 	/**
-	 * Return whether the blockified templates should be used or not,
-	 * depending on the "wc_blocks_use_blockified_templates" option
+	 * Returns whether the blockified templates should be used or not, depending on the
+	 * "wc_blocks_use_blockified_templates" option.
+	 * Returns "true" ONLY if the option is present on the db and its value is "yes".
 	 *
 	 * @return boolean
 	 */
