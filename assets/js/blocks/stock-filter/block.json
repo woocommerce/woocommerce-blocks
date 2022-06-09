@@ -19,10 +19,6 @@
 			"type": "string",
 			"default": ""
 		},
-		"heading": {
-			"type": "string",
-			"default": "Filter by stock status"
-		},
 		"headingLevel": {
 			"type": "number",
 			"default": 3

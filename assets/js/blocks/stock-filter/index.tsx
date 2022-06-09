@@ -1,6 +1,7 @@
 /**
  * External dependencies
  */
+import { __ } from '@wordpress/i18n';
 import { registerBlockType } from '@wordpress/blocks';
 import { Icon, box } from '@wordpress/icons';
 import classNames from 'classnames';
@@ -15,6 +16,11 @@ import { blockAttributes } from './attributes';
 import type { Attributes } from './types';
 
 registerBlockType( metadata, {
+	title: __( 'Filter Products by Stock', 'woo-gutenberg-products-block' ),
+	description: __(
+		'Allow customers to filter the grid by products stock status. Works in combination with the All Products block.',
+		'woo-gutenberg-products-block'
+	),
 	icon: {
 		src: (
 			<Icon
