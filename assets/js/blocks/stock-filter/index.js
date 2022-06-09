@@ -14,6 +14,11 @@ import edit from './edit.js';
 import metadata from './block.json';
 
 registerBlockType( metadata, {
+	title: __( 'Filter Products by Stock', 'woo-gutenberg-products-block' ),
+	description: __(
+		'Allow customers to filter the grid by products stock status. Works in combination with the All Products block.',
+		'woo-gutenberg-products-block'
+	),
 	icon: {
 		src: (
 			<Icon

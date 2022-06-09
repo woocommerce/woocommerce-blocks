@@ -27,10 +27,6 @@
 			"type": "boolean",
 			"default": false
 		},
-		"heading": {
-			"type": "string",
-			"default": "Filter by price"
-		},
 		"headingLevel": {
 			"type": "number",
 			"default": 3
