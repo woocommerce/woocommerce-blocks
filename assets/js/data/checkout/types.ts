@@ -55,13 +55,7 @@ export type emitValidateEventType = ( {
 }: {
 	observers: EventObserversType;
 	createErrorNotice: typeof originalCreateErrorNotice;
-} ) => ( {
-	select,
-	dispatch,
-}: {
-	select: SelectFromMap< typeof selectors >;
-	dispatch: CheckoutActions;
-} ) => void;
+} ) => ( { dispatch }: { dispatch: CheckoutActions } ) => void;
 
 /**
  * Maps a "raw" selector object to the selectors available when registered on the @wordpress/data store.

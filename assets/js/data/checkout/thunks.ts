@@ -12,7 +12,7 @@ import {
 	runCheckoutAfterProcessingWithErrorObservers,
 	runCheckoutAfterProcessingWithSuccessObservers,
 } from './utils';
-import { STATUS, EVENTS } from './constants';
+import { EVENTS } from './constants';
 import {
 	emitEvent,
 	emitEventWithAbort,
@@ -43,15 +43,10 @@ export const emitValidateEvent: emitValidateEventType = ( {
 	createErrorNotice,
 	setValidationErrors, // TODO: Fix this type after we move to validation store
 } ) => {
-	return ( { select, dispatch } ) => {
-		const { status } = select.getCheckoutState();
-		if ( status === STATUS.BEFORE_PROCESSING ) {
-			removeNoticesByStatus( 'error' );
-			emitEvent(
-				observers,
-				EVENTS.VALIDATION_BEFORE_PROCESSING,
-				{}
-			).then( ( response ) => {
+	return ( { dispatch } ) => {
+		removeNoticesByStatus( 'error' );
+		emitEvent( observers, EVENTS.VALIDATION_BEFORE_PROCESSING, {} ).then(
+			( response ) => {
 				if ( response !== true ) {
 					if ( Array.isArray( response ) ) {
 						response.forEach(
@@ -68,8 +63,8 @@ export const emitValidateEvent: emitValidateEventType = ( {
 				} else {
 					dispatch.setProcessing();
 				}
-			} );
-		}
+			}
+		);
 	};
 };
 
