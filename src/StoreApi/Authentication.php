@@ -97,14 +97,80 @@ class Authentication {
 	/**
 	 * Get current user IP Address.
 	 *
+	 * HTTP_X_REAL_IP and HTTP_CLIENT_IP are custom implementations designed to facilitate obtaining a user's ip through proxies, load balancers etc.
+	 *
+	 * HTTP_X_FORWARDED_FOR (XFF) request header is a de-facto standard header for identifying the originating IP address of a client connecting to a web server through a proxy server.
 	 * Note for HTTP_X_FORWARDED_FOR, Proxy servers can send through this header like this: X-Forwarded-For: client1, proxy1, proxy2.
 	 * Make sure we always only send through the first IP in the list which should always be the client IP.
+	 * Documentation at https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/X-Forwarded-For
 	 *
-	 * @return string
+	 * Forwarded request header contains information that may be added by reverse proxy servers (load balancers, CDNs, and so on).
+	 * Documentation at https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Forwarded
+	 * Full RFC at https://datatracker.ietf.org/doc/html/rfc7239
+	 *
+	 * @return string|false
 	 */
 	protected static function get_ip_address() {
-		$ip_address = trim( current( explode( ',', sanitize_text_field( wp_unslash( $_SERVER['HTTP_X_REAL_IP'] ?? $_SERVER['HTTP_X_FORWARDED_FOR'] ?? $_SERVER['REMOTE_ADDR'] ?? '' ) ) ) ) );
 
-		return (string) rest_is_ip_address( $ip_address );
+		if ( array_key_exists( 'HTTP_X_REAL_IP', $_SERVER ) ) {
+			return self::validate_ip( sanitize_text_field( wp_unslash( $_SERVER['HTTP_X_REAL_IP'] ) ) );
+		}
+
+		if ( array_key_exists( 'HTTP_CLIENT_IP', $_SERVER ) ) {
+			return self::validate_ip( sanitize_text_field( wp_unslash( $_SERVER['HTTP_CLIENT_IP'] ) ) );
+		}
+
+		if ( array_key_exists( 'HTTP_X_FORWARDED_FOR', $_SERVER ) ) {
+			$ips = explode( ',', sanitize_text_field( wp_unslash( $_SERVER['HTTP_X_FORWARDED_FOR'] ) ) );
+			if ( is_array( $ips ) && ! empty( $ips ) ) {
+				return self::validate_ip( trim( $ips[0] ) );
+			}
+		}
+
+		if ( array_key_exists( 'HTTP_X_FORWARDED', $_SERVER ) ) {
+			preg_match( // using regex instead of explode() for a smaller code footprint.
+				'/(?<=for\=)[^;,]*/i', // We catch everything on the first "for" entry, and validate later.
+				sanitize_text_field( wp_unslash( $_SERVER['HTTP_X_FORWARDED_FOR'] ) ),
+				$matches
+			);
+
+			if ( strpos( $matches[0] ?? '', '"[' ) !== false ) { // Detect for ipv6, eg "[ipv6]:port".
+				preg_match(
+					'/(?<=\[).*(?=\])/i', // We catch only the ipv6 and overwrite $matches.
+					$matches[0],
+					$matches
+				);
+			}
+
+			if ( ! empty( $matches ) ) {
+				return self::validate_ip( trim( $matches[0] ) );
+			}
+		}
+
+		if ( array_key_exists( 'REMOTE_ADDR', $_SERVER ) ) {
+			return self::validate_ip( sanitize_text_field( wp_unslash( $_SERVER['REMOTE_ADDR'] ) ) );
+		}
+
+		return false;
+	}
+
+	/**
+	 * Uses filter_var() to validate and return ipv4 and ipv6 addresses
+	 *
+	 * @param string $ip ipv4 or ipv6 ip string.
+	 *
+	 * @return string|bool
+	 */
+	protected static function validate_ip( $ip ) {
+		if ( filter_var(
+			$ip,
+			FILTER_VALIDATE_IP,
+			FILTER_FLAG_NO_PRIV_RANGE | FILTER_FLAG_NO_RES_RANGE
+		) !== false
+		) {
+			return $ip;
+		}
+
+		return false;
 	}
 }
