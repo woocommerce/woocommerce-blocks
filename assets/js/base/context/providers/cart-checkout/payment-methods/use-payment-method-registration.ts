@@ -17,6 +17,7 @@ import type {
 } from '@woocommerce/type-defs/payments';
 import { useDebouncedCallback } from 'use-debounce';
 import { useDispatch } from '@wordpress/data';
+import deprecated from '@wordpress/deprecated';
 
 /**
  * Internal dependencies
@@ -77,9 +78,15 @@ const usePaymentMethodRegistration = (
 			cartTotals,
 			cartNeedsShipping,
 			get billingData() {
-				/* eslint no-console: ["error", { allow: ["warn"] }] */
-				console.warn(
-					'billingData had been deprecated. Please use billingAddress instead.'
+				// prettier-ignore
+				deprecated(
+					'billingData',
+					{
+						alternative: 'billingAddress',
+						plugin: 'woocommerce-gutenberg-products-block',
+						link:
+							'https://github.com/woocommerce/woocommerce-blocks/pull/6369',
+					}
 				);
 				return this.billingAddress;
 			},
