@@ -59,7 +59,7 @@ class Authentication {
 				);
 			}
 
-			// 25 requests per 10 seconds.
+			// 5 requests per 60 seconds.
 			$rate_limit = RateLimits::update_rate_limit( $action_id, $rate_limit_seconds, $rate_limit_limit );
 			$server->send_header( 'RateLimit-Remaining', $rate_limit->remaining );
 			$server->send_header( 'RateLimit-Reset', $rate_limit->reset );
