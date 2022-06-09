@@ -59,6 +59,14 @@ const StockStatusFilterBlock = ( {
 		{}
 	);
 
+	/**
+	 * Even the STOCK_STATUS_OPTIONS never changes, we still use useState here
+	 * because if not, we need to use useMemo to prevent re-renders. useMemo
+	 * is 'over-optimisations' given the size of STOCK_STATUS_OPTIONS which is
+	 * usually 3 or less.
+	 *
+	 * @see https://github.com/woocommerce/woocommerce-blocks/pull/4682
+	 */
 	const [ STOCK_STATUS_OPTIONS ] = useState(
 		getSetting( 'hideOutOfStockItems', false )
 			? otherStockStatusOptions
