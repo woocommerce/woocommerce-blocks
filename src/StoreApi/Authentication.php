@@ -27,11 +27,11 @@ class Authentication {
 		}
 
 		/**
-		 * Filters the Store API rate limit check.
+		 * Filters the Store API rate limit check, which is disabled by default.
 		 *
-		 * This can be used to disable the rate limit check when testing API endpoints via a REST API client.
+		 * This can be used also to disable the rate limit check when testing API endpoints via a REST API client.
 		 *
-		 * @param boolean $disable_rate_limit_check If true, checks will be disabled.
+		 * @param boolean $disable_rate_limit_check If true, checks will be enabled.
 		 * @return boolean
 		 */
 		if ( apply_filters( 'woocommerce_store_api_enable_rate_limit_check', false ) ) {
