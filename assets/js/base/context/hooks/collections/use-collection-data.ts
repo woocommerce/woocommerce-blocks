@@ -37,12 +37,7 @@ const buildCollectionDataQuery = (
 	return query;
 };
 
-export const useCollectionData = ( {
-	queryAttribute,
-	queryPrices,
-	queryStock,
-	queryState,
-}: {
+interface UseCollectionDataProps {
 	queryAttribute?: {
 		taxonomy: string;
 		queryType: string;
@@ -50,7 +45,14 @@ export const useCollectionData = ( {
 	queryPrices?: boolean;
 	queryStock?: boolean;
 	queryState: Record< string, unknown >;
-} ) => {
+}
+
+export const useCollectionData = ( {
+	queryAttribute,
+	queryPrices,
+	queryStock,
+	queryState,
+}: UseCollectionDataProps ) => {
 	let context = useQueryStateContext();
 	context = `${ context }-collection-data`;
 
