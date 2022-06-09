@@ -34,7 +34,7 @@ class Authentication {
 		 * @param boolean $disable_rate_limit_check If true, checks will be disabled.
 		 * @return boolean
 		 */
-		if ( ! apply_filters( 'woocommerce_store_api_disable_rate_limit_check', false ) ) {
+		if ( apply_filters( 'woocommerce_store_api_enable_rate_limit_check', false ) ) {
 			$action_id          = 'store_api_request_' . ( is_user_logged_in() ? get_current_user_id() : md5( $this->get_ip_address() ) );
 			$rate_limit_limit   = 5;
 			$rate_limit_seconds = 60;
