@@ -64,8 +64,14 @@ class BlockTemplatesController {
 	 * @return void
 	 */
 	public function check_should_use_blockified_templates( $old_name, $old_theme ) {
+		if ( ! wc_current_theme_is_fse_theme() ) {
+			update_option( 'wc_blocks_use_blockified_templates', wc_bool_to_string( false ) );
+			return;
+		}
+
 		if ( ! $old_theme->is_block_theme() && wc_current_theme_is_fse_theme() ) {
 			update_option( 'wc_blocks_use_blockified_templates', wc_bool_to_string( true ) );
+			return;
 		}
 	}
 
