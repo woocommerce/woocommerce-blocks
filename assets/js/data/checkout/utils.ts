@@ -77,7 +77,6 @@ export const runCheckoutAfterProcessingWithErrorObservers = ( {
 	dispatch: CheckoutActions;
 	data: CheckoutAfterProcessingWithErrorEventData;
 } ) => {
-	console.log( 'processing observers for CheckoutAfterProcessingWithError' );
 	const errorResponse = handleErrorResponse( {
 		observerResponses,
 		createErrorNotice,
@@ -134,9 +133,6 @@ export const runCheckoutAfterProcessingWithSuccessObservers = ( {
 	createErrorNotice: typeof originalCreateErrorNotice;
 	dispatch: CheckoutActions;
 } ) => {
-	console.log(
-		'processing observers for CheckoutAfterProcessingWithSuccess'
-	);
 	let successResponse = null as null | Record< string, unknown >;
 	let errorResponse = null as null | Record< string, unknown >;
 
@@ -170,12 +166,10 @@ export const runCheckoutAfterProcessingWithSuccessObservers = ( {
 			// this will set an error which will end up
 			// triggering the onCheckoutAfterProcessingWithError emitter.
 			// and then setting checkout to IDLE state.
-			console.log( 'setHasError()' );
 			dispatch.setHasError( true );
 		}
 	} else {
 		// nothing hooked in had any response type so let's just consider successful.
-		console.log( 'set Complete()' );
 		dispatch.setComplete();
 	}
 };
