@@ -36,16 +36,10 @@ The translations of the inner blocks of the Cart block are loaded in this functi
  */
 protected function register_block_type_assets() {
   parent::register_block_type_assets();
-  $blocks = [
-    'cart-blocks/express-payment--checkout-blocks/express-payment--checkout-blocks/payment',
-    'cart-blocks/line-items',
-    'cart-blocks/order-summary',
-    'cart-blocks/order-summary--checkout-blocks/billing-address--checkout-blocks/shipping-address',
-    'cart-blocks/checkout-button',
-    'cart-blocks/express-payment',
-  ];
-  $chunks = preg_filter( '/$/', '-frontend', $blocks );
-  $this->register_chunk_translations( $chunks );
+  $chunks        = $this->get_chunks_paths( $this->chunks_folder );
+  $vendor_chunks = $this->get_chunks_paths( 'vendors--cart-blocks' );
+
+  $this->register_chunk_translations( array_merge( $chunks, $vendor_chunks ) );
 }
 ```
 
@@ -61,21 +55,10 @@ The translations of the inner blocks of the Cart block are loaded in this functi
  */
 protected function register_block_type_assets() {
   parent::register_block_type_assets();
-  $blocks = [
-    'checkout-blocks/express-payment',
-    'checkout-blocks/contact-information',
-    'checkout-blocks/shipping-address',
-    'checkout-blocks/billing-address--checkout-blocks/shipping-address',
-    'checkout-blocks/billing-address',
-    'checkout-blocks/shipping-methods',
-    'checkout-blocks/payment',
-    'checkout-blocks/order-note',
-    'checkout-blocks/actions',
-    'checkout-blocks/terms',
-    'checkout-blocks/order-summary',
-  ];
-  $chunks = preg_filter( '/$/', '-frontend', $blocks );
-  $this->register_chunk_translations( $chunks );
+  $chunks        = $this->get_chunks_paths( $this->chunks_folder );
+  $vendor_chunks = $this->get_chunks_paths( 'vendors--cart-blocks' );
+  $shared_chunks = [ 'cart-blocks/order-summary-shipping--checkout-blocks/order-summary-shipping-frontend' ];
+  $this->register_chunk_translations( array_merge( $chunks, $vendor_chunks, $shared_chunks ) );
 }
 ```
 
