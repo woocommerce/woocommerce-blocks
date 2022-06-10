@@ -12,8 +12,8 @@ import {
 	runCheckoutAfterProcessingWithErrorObservers,
 	runCheckoutAfterProcessingWithSuccessObservers,
 } from './utils';
-import { EVENTS } from './constants';
 import {
+	EVENTS,
 	emitEvent,
 	emitEventWithAbort,
 } from '../../base/context/providers/cart-checkout/checkout-events/event-emit';
