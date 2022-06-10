@@ -175,7 +175,7 @@ export const PaymentMethodDataProvider = ( {
 				STATUS.FAILED,
 				STATUS.SUCCESS,
 			].includes( paymentData.currentStatus ),
-			hasError: paymentData.currentStatus === STATUS.ERROR,
+			hasError: dataStoreCurrentStatus.hasError,
 			hasFailed: paymentData.currentStatus === STATUS.FAILED,
 			isSuccessful: dataStoreCurrentStatus.isSuccessful,
 			isDoingExpressPayment:

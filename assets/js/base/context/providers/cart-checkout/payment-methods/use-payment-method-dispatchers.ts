@@ -57,7 +57,7 @@ export const usePaymentMethodDataDispatchers = (
 				setDataStorePaymentStatus( { isProcessing: true } ),
 			completed: () => dispatch( actions.statusOnly( STATUS.COMPLETE ) ),
 			error: ( errorMessage ) =>
-				dispatch( actions.error( errorMessage ) ),
+				setDataStorePaymentStatus( { hasError: true }, errorMessage ),
 			failed: (
 				errorMessage,
 				paymentMethodData,
