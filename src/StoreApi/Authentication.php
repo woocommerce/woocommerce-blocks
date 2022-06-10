@@ -35,7 +35,22 @@ class Authentication {
 		 * @return boolean
 		 */
 		if ( apply_filters( 'woocommerce_store_api_enable_rate_limit_check', false ) ) {
-			$action_id          = 'store_api_request_' . ( is_user_logged_in() ? get_current_user_id() : md5( $this->get_ip_address() ) );
+			$action_id = 'store_api_request_';
+
+			if ( is_user_logged_in() ) {
+				$action_id .= get_current_user_id();
+			} else {
+				if ( ! self::get_ip_address() ) {
+					return new \WP_Error(
+						'ip_address_cannot_be_determined',
+						'Bad request. Client IP address cannot be determined.',
+						array( 'status' => 400 )
+					);
+				}
+
+				$action_id .= md5( self::get_ip_address() );
+			}
+
 			$rate_limit_limit   = 5;
 			$rate_limit_seconds = 60;
 			$retry              = RateLimits::is_exceeded_retry_after( $action_id );
@@ -47,8 +62,8 @@ class Authentication {
 				$server->send_header( 'RateLimit-Remaining', 0 );
 				$server->send_header( 'RateLimit-Reset', time() + $retry );
 
-				if ( $this->get_ip_address() ) {
-					do_action( 'rate_limit_exceeded', $this->get_ip_address() );
+				if ( self::get_ip_address() ) {
+					do_action( 'rate_limit_exceeded', self::get_ip_address() );
 				}
 
 				return new \WP_Error(
@@ -57,9 +72,7 @@ class Authentication {
 						'Too many requests. Please wait %d seconds before trying again.',
 						$retry
 					),
-					[
-						'status' => 429,
-					]
+					array( 'status' => 400 )
 				);
 			}
 
