@@ -1,6 +1,6 @@
-# Lazy-load translations
+# Translations for lazy-loaded components
 
-Some of our translations are lazy-loaded. To lazy-load them, the translation chunks needs to be registered. This takes place in `/src/BlockTypes/AbstractBlock.php`:
+The Mini Cart block as well as inner blocks of the Cart and the Checkout blocks are lazy-loaded. To lazy-load them, the translation chunks needs to be registered. This takes place in `/src/BlockTypes/AbstractBlock.php`:
 
 ```php
 /**
@@ -59,6 +59,35 @@ protected function register_block_type_assets() {
   $vendor_chunks = $this->get_chunks_paths( 'vendors--cart-blocks' );
   $shared_chunks = [ 'cart-blocks/order-summary-shipping--checkout-blocks/order-summary-shipping-frontend' ];
   $this->register_chunk_translations( array_merge( $chunks, $vendor_chunks, $shared_chunks ) );
+}
+```
+
+## Lazy-loaded translations of the Mini-Cart block
+
+The translations of the inner blocks of the Mini-Cart block are loaded in this function in `src/BlockTypes/MiniCart.php`:
+
+```php
+/**
+ * Prepare translations for inner blocks and dependencies.
+ */
+protected function get_inner_blocks_translations() {
+	$wp_scripts   = wp_scripts();
+	$translations = array();
+
+	$chunks        = $this->get_chunks_paths( $this->chunks_folder );
+	$vendor_chunks = $this->get_chunks_paths( 'vendors--mini-cart-contents-block' );
+	$shared_chunks = [ 'cart-blocks/cart-line-items--mini-cart-contents-block/products-table-frontend' ];
+
+	foreach ( array_merge( $chunks, $vendor_chunks, $shared_chunks ) as $chunk ) {
+		$handle = 'wc-blocks-' . $chunk . '-chunk';
+		$this->asset_api->register_script( $handle, $this->asset_api->get_block_asset_build_path( $chunk ), [], true );
+		$translations[] = $wp_scripts->print_translations( $handle, false );
+		wp_deregister_script( $handle );
+	}
+
+	$translations = array_filter( $translations );
+
+	return implode( '', $translations );
 }
 ```
 
