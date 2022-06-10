@@ -79,6 +79,13 @@ export const PaymentMethodDataProvider = ( {
 			isCalculating: store.isCalculating(),
 		};
 	} );
+	const { currentStatus: dataStoreCurrentStatus } = useSelect( ( select ) => {
+		const store = select( PAYMENT_METHOD_DATA_STORE_KEY );
+
+		return {
+			currentStatus: store.getCurrentStatus(),
+		};
+	} );
 	const { isEditor, getPreviewData } = useEditorContext();
 	const { setValidationErrors } = useValidationContext();
 	const { createErrorNotice: addErrorNotice, removeNotice } = useDispatch(
@@ -171,12 +178,17 @@ export const PaymentMethodDataProvider = ( {
 			].includes( paymentData.currentStatus ),
 			hasError: paymentData.currentStatus === STATUS.ERROR,
 			hasFailed: paymentData.currentStatus === STATUS.FAILED,
-			isSuccessful: paymentData.currentStatus === STATUS.SUCCESS,
+			isSuccessful: dataStoreCurrentStatus.isSuccessful,
+			// isSuccessful: paymentData.currentStatus === STATUS.SUCCESS,
 			isDoingExpressPayment:
 				paymentData.currentStatus !== STATUS.PRISTINE &&
 				isExpressPaymentMethodActive,
 		} ),
-		[ paymentData.currentStatus, isExpressPaymentMethodActive ]
+		[
+			paymentData.currentStatus,
+			isExpressPaymentMethodActive,
+			dataStoreCurrentStatus.isSuccessful,
+		]
 	);
 
 	// /**
