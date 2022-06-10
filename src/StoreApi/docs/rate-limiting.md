@@ -60,7 +60,12 @@ Current limit information can be observed via custom response headers:
 
 ### Response headers example
 
-WIP
+```
+RateLimit-Limit: 5
+RateLimit-Remaining: 0
+RateLimit-Reset: 1654880642
+RateLimit-Retry-After: 28
+```
 
 ## Tracking limit abuses
 
