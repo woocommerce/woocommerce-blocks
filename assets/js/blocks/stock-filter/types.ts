@@ -1,10 +1,10 @@
 export interface Attributes {
-	className: string;
+	className?: string;
 	heading: string;
 	headingLevel: number;
 	showCounts: boolean;
 	showFilterButton: boolean;
-	isPreview: boolean;
+	isPreview?: boolean;
 }
 
 export interface DisplayOption {

@@ -19,8 +19,6 @@ const getProps = ( el: HTMLElement ) => {
 				? parseInt( el.dataset.headingLevel, 10 )
 				: metadata.attributes.headingLevel.default,
 			showFilterButton: el.dataset.showFilterButton === 'true',
-			className: metadata.attributes.className.default,
-			isPreview: false,
 		},
 		isEditor: false,
 	};
