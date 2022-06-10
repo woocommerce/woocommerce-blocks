@@ -248,7 +248,7 @@ export const PaymentMethodDataProvider = ( {
 			! currentStatus.isFinished
 		) {
 			setPaymentStatus().processing();
-			setDataStorePaymentStatus( STATUS.PROCESSING );
+			setDataStorePaymentStatus( { isProcessing: true } );
 		}
 	}, [
 		checkoutIsProcessing,
@@ -256,23 +256,34 @@ export const PaymentMethodDataProvider = ( {
 		checkoutIsCalculating,
 		currentStatus.isFinished,
 		setPaymentStatus,
+		setDataStorePaymentStatus,
 	] );
 
 	// When checkout is returned to idle, set payment status to pristine but only if payment status is already not finished.
 	useEffect( () => {
 		if ( checkoutIsIdle && ! currentStatus.isSuccessful ) {
 			setPaymentStatus().pristine();
-			setDataStorePaymentStatus( STATUS.PRISTINE );
+			setDataStorePaymentStatus( { isPristine: true } );
 		}
-	}, [ checkoutIsIdle, currentStatus.isSuccessful, setPaymentStatus ] );
+	}, [
+		checkoutIsIdle,
+		currentStatus.isSuccessful,
+		setPaymentStatus,
+		setDataStorePaymentStatus,
+	] );
 
 	// if checkout has an error sync payment status back to pristine.
 	useEffect( () => {
 		if ( checkoutHasError && currentStatus.isSuccessful ) {
 			setPaymentStatus().pristine();
-			setDataStorePaymentStatus( STATUS.PRISTINE );
+			setDataStorePaymentStatus( { isPristine: true } );
 		}
-	}, [ checkoutHasError, currentStatus.isSuccessful, setPaymentStatus ] );
+	}, [
+		checkoutHasError,
+		currentStatus.isSuccessful,
+		setPaymentStatus,
+		setDataStorePaymentStatus,
+	] );
 
 	useEffect( () => {
 		// Note: the nature of this event emitter is that it will bail on any
@@ -308,7 +319,9 @@ export const PaymentMethodDataProvider = ( {
 						successResponse?.meta?.billingData,
 						successResponse?.meta?.shippingData
 					);
-					setDataStorePaymentStatus( STATUS.SUCCESS );
+					setDataStorePaymentStatus( {
+						isSuccessful: true,
+					} );
 				} else if ( errorResponse && isFailResponse( errorResponse ) ) {
 					if (
 						errorResponse.message &&
@@ -345,7 +358,10 @@ export const PaymentMethodDataProvider = ( {
 				} else {
 					// otherwise there are no payment methods doing anything so
 					// just consider success
-					setPaymentStatus().success();
+					// setPaymentStatus().success();
+					setDataStorePaymentStatus( {
+						isSuccessful: true,
+					} );
 				}
 			} );
 		}
@@ -359,6 +375,7 @@ export const PaymentMethodDataProvider = ( {
 		isFailResponse,
 		isErrorResponse,
 		addErrorNotice,
+		setDataStorePaymentStatus,
 		setPaymentMethodData,
 	] );
 
