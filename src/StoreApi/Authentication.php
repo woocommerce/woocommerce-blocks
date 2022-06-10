@@ -58,7 +58,7 @@ class Authentication {
 			$server->send_header( 'RateLimit-Limit', $rate_limit_limit );
 
 			if ( false !== $retry ) {
-				$server->send_header( 'Retry-After', $retry );
+				$server->send_header( 'RateLimit-Retry-After', $retry );
 				$server->send_header( 'RateLimit-Remaining', 0 );
 				$server->send_header( 'RateLimit-Reset', time() + $retry );
 
@@ -114,10 +114,10 @@ class Authentication {
 	/**
 	 * Get current user IP Address.
 	 *
-	 * HTTP_X_REAL_IP and HTTP_CLIENT_IP are custom implementations designed to facilitate obtaining a user's ip through proxies, load balancers etc.
+	 * X_REAL_IP and CLIENT_IP are custom implementations designed to facilitate obtaining a user's ip through proxies, load balancers etc.
 	 *
-	 * HTTP_X_FORWARDED_FOR (XFF) request header is a de-facto standard header for identifying the originating IP address of a client connecting to a web server through a proxy server.
-	 * Note for HTTP_X_FORWARDED_FOR, Proxy servers can send through this header like this: X-Forwarded-For: client1, proxy1, proxy2.
+	 * _FORWARDED_FOR (XFF) request header is a de-facto standard header for identifying the originating IP address of a client connecting to a web server through a proxy server.
+	 * Note for X_FORWARDED_FOR, Proxy servers can send through this header like this: X-Forwarded-For: client1, proxy1, proxy2.
 	 * Make sure we always only send through the first IP in the list which should always be the client IP.
 	 * Documentation at https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/X-Forwarded-For
 	 *
