@@ -106,7 +106,7 @@ protected function initialize() {
 }
 ```
 
-The PR for the implementation above can be found on https://github.com/woocommerce/woocommerce-blocks/pull/6248/files.
+The PR for the implementation above can be found on <https://github.com/woocommerce/woocommerce-blocks/pull/6248/files>.
 
 <!-- FEEDBACK -->
 

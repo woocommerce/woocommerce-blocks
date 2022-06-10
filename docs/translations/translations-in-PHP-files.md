@@ -16,7 +16,7 @@ $translation = __( string $text, string $domain = 'default' );
 $translation = __( 'Place Order', 'woo-gutenberg-products-block' );
 ```
 
-See also https://developer.wordpress.org/reference/functions/__/.
+See also <https://developer.wordpress.org/reference/functions/__/>.
 
 ### `_e()`
 
@@ -30,7 +30,7 @@ _e( string $text, string $domain = 'default' );
 _e( 'Place Order', 'woo-gutenberg-products-block' );
 ```
 
-See also https://developer.wordpress.org/reference/functions/_e/.
+See also <https://developer.wordpress.org/reference/functions/_e/>.
 
 ### `_ex()`
 
@@ -44,7 +44,7 @@ _ex( string $text, string $domain = 'default' );
 _ex( 'Place Order', 'Place order button text', 'woo-gutenberg-products-block' );
 ```
 
-See also https://developer.wordpress.org/reference/functions/_ex/.
+See also <https://developer.wordpress.org/reference/functions/_ex/>.
 
 ### `_n()`
 
@@ -67,7 +67,7 @@ $translation = sprintf(
 );
 ```
 
-See also https://developer.wordpress.org/reference/functions/_n/.
+See also <https://developer.wordpress.org/reference/functions/_n/>.
 
 ### `_x()`
 
@@ -81,7 +81,7 @@ $translation = _x( string $text, string $context, string $domain = 'default' );
 $translation = _x( 'Draft', 'Order status', 'woo-gutenberg-products-block' );
 ```
 
-See also https://developer.wordpress.org/reference/functions/_x/.
+See also <https://developer.wordpress.org/reference/functions/_x/>.
 
 ### `_nx()`
 
@@ -105,7 +105,7 @@ $translation = sprintf(
 );
 ```
 
-See also https://developer.wordpress.org/reference/functions/_nx/.
+See also <https://developer.wordpress.org/reference/functions/_nx/>.
 
 ### `esc_html__()`
 
@@ -119,7 +119,7 @@ $translation = esc_html__( string $text, string $domain = 'default' );
 $translation = esc_html__( 'Select a category', 'woo-gutenberg-products-block' );
 ```
 
-See also https://developer.wordpress.org/reference/functions/esc_html__/.
+See also <https://developer.wordpress.org/reference/functions/esc_html__/>.
 
 ### `esc_html_e()`
 
@@ -133,7 +133,7 @@ esc_html_e( string $text, string $domain = 'default' );
 esc_html_e( 'Select a category', 'woo-gutenberg-products-block' );
 ```
 
-See also https://developer.wordpress.org/reference/functions/esc_html_e/.
+See also <https://developer.wordpress.org/reference/functions/esc_html_e/>.
 
 ### `esc_html_x()`
 
@@ -147,7 +147,7 @@ $translation = esc_html_x( string $text, string $context, string $domain = 'defa
 $translation = esc_html_x( 'Select a category', 'Product category', 'woo-gutenberg-products-block' );
 ```
 
-See also https://developer.wordpress.org/reference/functions/esc_html_x/.
+See also <https://developer.wordpress.org/reference/functions/esc_html_x/>.
 
 ### `esc_attr__()`
 
@@ -161,7 +161,7 @@ $translation = esc_attr__( string $text, string $domain = 'default' );
 $translation = esc_attr__( 'Search', 'woo-gutenberg-products-block' );
 ```
 
-See also https://developer.wordpress.org/reference/functions/esc_attr__/.
+See also <https://developer.wordpress.org/reference/functions/esc_attr__/>.
 
 ### `esc_attr_e()`
 
@@ -175,7 +175,7 @@ esc_attr_e( string $text, string $domain = 'default' );
 esc_attr_e( 'Search', 'woo-gutenberg-products-block' );
 ```
 
-See also https://developer.wordpress.org/reference/functions/esc_attr_e/.
+See also <https://developer.wordpress.org/reference/functions/esc_attr_e/>.
 
 ### `esc_attr_x()`
 
@@ -189,7 +189,7 @@ $translation = esc_attr_x( string $text, string $domain = 'default' );
 $translation = esc_attr_x( 'Search', 'Search button text' 'woo-gutenberg-products-block' );
 ```
 
-See also https://developer.wordpress.org/reference/functions/esc_attr_x/.
+See also <https://developer.wordpress.org/reference/functions/esc_attr_x/>.
 
 <!-- FEEDBACK -->
 

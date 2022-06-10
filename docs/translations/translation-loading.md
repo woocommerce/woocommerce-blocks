@@ -51,11 +51,11 @@ msgstr ""
 [...]
 ```
 
-See also https://developer.wordpress.org/plugins/internationalization/localization/#pot-portable-object-template-files.
+See also <https://developer.wordpress.org/plugins/internationalization/localization/#pot-portable-object-template-files>.
 
 ### PO (Portable Object) file
 
-PO stands for `Portable Object`, contains both the original and the translated strings and is based on the POT file. Similar to the POT file, it can also be created manually using [WP-CLI](https://wp-cli.org/) or [Poedit](https://poedit.net/). As mentioned before, this step is not necessary for the WooCommerce Blocks plugin, as it's hosted on WordPress.org. The PO file will be generated within 30 minutes after a new translation had been added via https://translate.wordpress.org/projects/wp-plugins/woo-gutenberg-products-block/.
+PO stands for `Portable Object`, contains both the original and the translated strings and is based on the POT file. Similar to the POT file, it can also be created manually using [WP-CLI](https://wp-cli.org/) or [Poedit](https://poedit.net/). As mentioned before, this step is not necessary for the WooCommerce Blocks plugin, as it's hosted on WordPress.org. The PO file will be generated within 30 minutes after a new translation had been added via <https://translate.wordpress.org/projects/wp-plugins/woo-gutenberg-products-block/>.
 
 The PO file is human-readable and named `woo-gutenberg-products-block-{LANGUAGE-CODE}.po`, e.g. `woo-gutenberg-products-block-de_DE.po`. It can be found in the `/wp-content/languages/plugin` folder. The PO file looks like this:
 
@@ -88,7 +88,7 @@ msgstr "Hervorgehobenes Produkt"
 [...]
 ```
 
-See also https://developer.wordpress.org/plugins/internationalization/localization/#po-portable-object-files.
+See also <https://developer.wordpress.org/plugins/internationalization/localization/#po-portable-object-files>.
 
 ### MO (Machine Object) file
 
@@ -96,7 +96,7 @@ MO stands for `Machine Object`, contains both the original and the translated st
 
 The MO file is only machine-readable and named `woo-gutenberg-products-block-{LANGUAGE-CODE}.mo`, e.g. `woo-gutenberg-products-block-de_DE.mo` It can be found in the `/wp-content/languages/plugin` folder. As the MO file is machine-readable only, it cannot be viewed and the MO file only handles translations within PHP files.
 
-See also https://developer.wordpress.org/plugins/internationalization/localization/#mo-machine-object-files.
+See also <https://developer.wordpress.org/plugins/internationalization/localization/#mo-machine-object-files>.
 
 ### JSON files
 
@@ -194,7 +194,7 @@ public function register_script( $handle, $relative_src, $dependencies = [], $ha
 
 ## Loading fallback translations
 
-By default, the WooCommerce Blocks plugin tries to load the translation from https://translate.wordpress.org/projects/wp-plugins/woo-gutenberg-products-block/. If a translation cannot be loaded, the plugin tries to load the corresponding translation from https://translate.wordpress.org/projects/wp-plugins/woocommerce/.
+By default, the WooCommerce Blocks plugin tries to load the translation from <https://translate.wordpress.org/projects/wp-plugins/woo-gutenberg-products-block/>. If a translation cannot be loaded, the plugin tries to load the corresponding translation from <https://translate.wordpress.org/projects/wp-plugins/woocommerce/>.
 
 The code that loads the fallback translation, is located in `woocommerce-gutenberg-products-block.php`.
 

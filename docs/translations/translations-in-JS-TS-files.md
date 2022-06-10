@@ -24,7 +24,7 @@ import { __ } from '@wordpress/i18n';
 const translation = __( 'Place Order', 'woo-gutenberg-products-block' );
 ```
 
-See also https://developer.wordpress.org/reference/functions/__/.
+See also <https://developer.wordpress.org/reference/functions/__/>.
 
 ### `_n()`
 
@@ -49,7 +49,7 @@ const translation = sprintf(
 );
 ```
 
-See also https://developer.wordpress.org/reference/functions/_n/.
+See also <https://developer.wordpress.org/reference/functions/_n/>.
 
 ### `_x()`
 
@@ -65,7 +65,7 @@ import { _x } from '@wordpress/i18n';
 const translation = _x( 'Draft', 'Order status', 'woo-gutenberg-products-block' );
 ```
 
-See also https://developer.wordpress.org/reference/functions/_x/.
+See also <https://developer.wordpress.org/reference/functions/_x/>.
 
 ### `_nx()`
 
@@ -91,13 +91,13 @@ const translation = sprintf(
 );
 ```
 
-See also https://developer.wordpress.org/reference/functions/_nx/.
+See also <https://developer.wordpress.org/reference/functions/_nx/>.
 
 ### Template literals and variables
 
 Template literals cannot be used in JS/TS translations. To use variables in JS/TS translations, the function `sprintf()` needs to be used, as variables cannot be used directly. Various examples on how to use this function, can be seen in the previous examples.
 
-See also https://developer.wordpress.org/block-editor/reference-guides/packages/packages-i18n/#sprintf.
+See also <https://developer.wordpress.org/block-editor/reference-guides/packages/packages-i18n/#sprintf>.
 
 <!-- FEEDBACK -->
 

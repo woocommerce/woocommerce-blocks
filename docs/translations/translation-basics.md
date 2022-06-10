@@ -19,7 +19,7 @@ Since [WordPress 2.1 "Ella"](https://wordpress.org/support/wordpress-version/ver
 
 ## GlotPress
 
-All translations are handled using [GlotPress](https://wordpress.org/plugins/glotpress/). As the WooCommerce Blocks plugin is hosted on https://wordpress.org/, all plugin-related translations can be found and managed on https://translate.wordpress.org/projects/wp-plugins/woo-gutenberg-products-block/.
+All translations are handled using [GlotPress](https://wordpress.org/plugins/glotpress/). As the WooCommerce Blocks plugin is hosted on <https://wordpress.org/>, all plugin-related translations can be found and managed on <https://translate.wordpress.org/projects/wp-plugins/woo-gutenberg-products-block/>.
 
 ## Text domain
 
@@ -34,19 +34,19 @@ Prior to [WordPress 4.6 “Pepper Adams”](https://wordpress.org/support/wordpr
  */
 ```
 
-See also https://developer.wordpress.org/plugins/internationalization/how-to-internationalize-your-plugin/#text-domains.
+See also <https://developer.wordpress.org/plugins/internationalization/how-to-internationalize-your-plugin/#text-domains>.
 
 ## Loading Text Domain
 
-Prior to [WordPress 4.6 “Pepper Adams”](https://wordpress.org/support/wordpress-version/version-4-6/), loading the text domain was required. As translations now take place on https://translate.wordpress.org/, loading the text domain using `load_plugin_textdomain()` is no longer required. In case the plugin does not load the text domain, the header of the main plugin file must include the definition `Requires at least:`. This definition must be set to 4.6 or higher.
+Prior to [WordPress 4.6 “Pepper Adams”](https://wordpress.org/support/wordpress-version/version-4-6/), loading the text domain was required. As translations now take place on <https://translate.wordpress.org/>, loading the text domain using `load_plugin_textdomain()` is no longer required. In case the plugin does not load the text domain, the header of the main plugin file must include the definition `Requires at least:`. This definition must be set to 4.6 or higher.
 
-See also https://developer.wordpress.org/plugins/internationalization/how-to-internationalize-your-plugin/#loading-text-domain.
+See also <https://developer.wordpress.org/plugins/internationalization/how-to-internationalize-your-plugin/#loading-text-domain>.
 
 ## Domain Path
 
 Only plugins that are not hosted in the official WordPress Plugin Directory need to define a `Domain Path`. As the WooCommerce Blocks plugin is hosted in the official WordPress Plugin Directory, it does not need a `Domain Path`.
 
-See also https://developer.wordpress.org/plugins/internationalization/how-to-internationalize-your-plugin/#domain-path.
+See also <https://developer.wordpress.org/plugins/internationalization/how-to-internationalize-your-plugin/#domain-path>.
 
 <!-- FEEDBACK -->
 
