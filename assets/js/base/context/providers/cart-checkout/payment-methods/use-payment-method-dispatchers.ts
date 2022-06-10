@@ -66,11 +66,10 @@ export const usePaymentMethodDataDispatchers = (
 				if ( billingData ) {
 					setBillingData( billingData );
 				}
-				dispatch(
-					actions.failed( {
-						errorMessage: errorMessage || '',
-						paymentMethodData: paymentMethodData || {},
-					} )
+				setDataStorePaymentStatus(
+					{ hasFailed: true },
+					( errorMessage = errorMessage || '' ),
+					paymentMethodData
 				);
 			},
 			success: (

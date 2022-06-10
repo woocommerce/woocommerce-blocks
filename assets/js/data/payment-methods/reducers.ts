@@ -38,6 +38,8 @@ const reducer: Reducer< PaymentMethodDataState > = (
 					...action.status,
 				},
 				errorMessage: action.errorMessage,
+				paymentMethodData:
+					action.paymentMethodData || state.paymentMethodData,
 			};
 			break;
 		case ACTION_TYPES.ADD_REGISTERED_PAYMENT_METHOD:

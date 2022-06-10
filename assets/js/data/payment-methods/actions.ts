@@ -18,11 +18,13 @@ interface PaymentStatus {
 
 export const setPaymentStatus = (
 	status: PaymentStatus,
-	errorMessage = ''
+	errorMessage = '',
+	paymentMethodData?: Record< string, unknown >
 ) => ( {
 	type: ACTION_TYPES.SET_PAYMENT_STATUS,
 	status,
 	errorMessage,
+	paymentMethodData,
 } );
 
 export const setPaymentMethodsInitialized = ( initialized: boolean ) => {
