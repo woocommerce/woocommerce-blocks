@@ -8,6 +8,7 @@ import { renderFrontend } from '@woocommerce/base-utils';
  */
 import Block from './block';
 import { blockAttributes } from './attributes';
+import metadata from './block.json';
 
 const getProps = ( el: HTMLElement ) => {
 	return {
@@ -16,13 +17,14 @@ const getProps = ( el: HTMLElement ) => {
 			attributeId: parseInt( el.dataset.attributeId || '0', 10 ),
 			showCounts: el.dataset.showCounts === 'true',
 			queryType:
-				el.dataset.queryType || blockAttributes.queryType.default,
+				el.dataset.queryType || metadata.attributes.queryType.default,
 			heading: el.dataset.heading || blockAttributes.heading.default,
 			headingLevel: el.dataset.headingLevel
 				? parseInt( el.dataset.headingLevel, 10 )
-				: blockAttributes.headingLevel.default,
+				: metadata.attributes.headingLevel.default,
 			displayStyle:
-				el.dataset.displayStyle || blockAttributes.displayStyle.default,
+				el.dataset.displayStyle ||
+				metadata.attributes.displayStyle.default,
 			showFilterButton: el.dataset.showFilterButton === 'true',
 			isPreview: false,
 			className: el.dataset.className || '',
