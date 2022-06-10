@@ -83,11 +83,11 @@ export const usePaymentMethodDataDispatchers = (
 						shippingData.address as Record< string, unknown >
 					);
 				}
-				dispatch(
-					actions.success( {
-						paymentMethodData,
-					} )
-				);
+				// dispatch(
+				// 	actions.success( {
+				// 		paymentMethodData,
+				// 	} )
+				// );
 			},
 		} ),
 		[ dispatch, setBillingData, setShippingAddress ]
