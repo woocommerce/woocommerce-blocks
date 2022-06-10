@@ -47,6 +47,10 @@ class Authentication {
 				$server->send_header( 'RateLimit-Remaining', 0 );
 				$server->send_header( 'RateLimit-Reset', time() + $retry );
 
+				if ( $this->get_ip_address() ) {
+					do_action( 'rate_limit_exceeded', $this->get_ip_address() );
+				}
+
 				return new \WP_Error(
 					'rate_limit_exceeded',
 					sprintf(
