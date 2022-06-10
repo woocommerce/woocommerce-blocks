@@ -10,7 +10,13 @@ import {
 	useCollectionData,
 } from '@woocommerce/base-context/hooks';
 import { getSetting, getSettingWithCoercion } from '@woocommerce/settings';
-import { useCallback, useEffect, useState, useMemo } from '@wordpress/element';
+import {
+	useCallback,
+	useEffect,
+	useState,
+	useMemo,
+	useRef,
+} from '@wordpress/element';
 import CheckboxList from '@woocommerce/base-components/checkbox-list';
 import FilterSubmitButton from '@woocommerce/base-components/filter-submit-button';
 import Label from '@woocommerce/base-components/filter-element-label';
@@ -54,34 +60,26 @@ const StockStatusFilterBlock = ( {
 		false
 	);
 
-	const [ { outofstock, ...otherStockStatusOptions } ] = getSetting(
+	const { outofstock, ...otherStockStatusOptions } = getSetting(
 		'stockStatusOptions',
 		{}
 	);
 
-	/**
-	 * Even the STOCK_STATUS_OPTIONS never changes, we still use useState here
-	 * because if not, we need to use useMemo to prevent re-renders. useMemo
-	 * is 'over-optimisations' given the size of STOCK_STATUS_OPTIONS which is
-	 * usually 3 or less.
-	 *
-	 * @see https://github.com/woocommerce/woocommerce-blocks/pull/4682
-	 */
-	const [ STOCK_STATUS_OPTIONS ] = useState(
+	const STOCK_STATUS_OPTIONS = useRef(
 		getSetting( 'hideOutOfStockItems', false )
 			? otherStockStatusOptions
 			: { outofstock, ...otherStockStatusOptions }
 	);
 
 	const [ checked, setChecked ] = useState(
-		getActiveFilters( STOCK_STATUS_OPTIONS, QUERY_PARAM_KEY )
+		getActiveFilters( STOCK_STATUS_OPTIONS.current, QUERY_PARAM_KEY )
 	);
 	const [ displayedOptions, setDisplayedOptions ] = useState(
 		blockAttributes.isPreview ? previewOptions : []
 	);
 	// Filter added to handle if there are slugs without a corresponding name defined.
 	const [ initialOptions ] = useState(
-		Object.entries( STOCK_STATUS_OPTIONS )
+		Object.entries( STOCK_STATUS_OPTIONS.current )
 			.map( ( [ slug, name ] ) => ( { slug, name } ) )
 			.filter( ( status ) => !! status.name )
 			.sort( ( a, b ) => a.slug.localeCompare( b.slug ) )
@@ -267,12 +265,14 @@ const StockStatusFilterBlock = ( {
 	useEffect( () => {
 		if ( ! hasSetPhpFilterDefaults && filteringForPhpTemplate ) {
 			setProductStockStatusQuery(
-				getActiveFilters( STOCK_STATUS_OPTIONS, QUERY_PARAM_KEY )
+				getActiveFilters(
+					STOCK_STATUS_OPTIONS.current,
+					QUERY_PARAM_KEY
+				)
 			);
 			setHasSetPhpFilterDefaults( true );
 		}
 	}, [
-		STOCK_STATUS_OPTIONS,
 		filteringForPhpTemplate,
 		setProductStockStatusQuery,
 		hasSetPhpFilterDefaults,
@@ -355,7 +355,8 @@ const StockStatusFilterBlock = ( {
 	}
 
 	const TagName = `h${ blockAttributes.headingLevel }` as keyof JSX.IntrinsicElements;
-	const isLoading = ! blockAttributes.isPreview && ! STOCK_STATUS_OPTIONS;
+	const isLoading =
+		! blockAttributes.isPreview && ! STOCK_STATUS_OPTIONS.current;
 	const isDisabled = ! blockAttributes.isPreview && filteredCountsLoading;
 
 	const hasFilterableProducts = getSettingWithCoercion(
