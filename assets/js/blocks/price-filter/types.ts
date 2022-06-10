@@ -3,5 +3,5 @@ export interface Attributes {
 	showInputFields: boolean;
 	heading: string;
 	headingLevel: number;
-	className: string;
+	className?: string;
 }

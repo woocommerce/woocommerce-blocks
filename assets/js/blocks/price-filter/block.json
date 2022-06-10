@@ -19,6 +19,10 @@
 		}
 	},
 	"attributes": {
+		"className": {
+			"type": "string",
+			"default": ""
+		},
 		"showInputFields": {
 			"type": "boolean",
 			"default": true
@@ -30,10 +34,6 @@
 		"headingLevel": {
 			"type": "number",
 			"default": 3
-		},
-		"className": {
-			"type": "string",
-			"default": ""
 		}
 	},
 	"textdomain": "woo-gutenberg-products-block",

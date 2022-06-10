@@ -13,6 +13,7 @@ import { useBlockProps } from '@wordpress/block-editor';
  */
 import edit from './edit';
 import metadata from './block.json';
+import { blockAttributes } from './attributes';
 
 registerBlockType( metadata, {
 	title: __( 'Filter Products by Price', 'woo-gutenberg-products-block' ),
@@ -40,10 +41,7 @@ registerBlockType( metadata, {
 	},
 	attributes: {
 		...metadata.attributes,
-		heading: {
-			type: 'string',
-			default: __( 'Filter by price', 'woo-gutenberg-products-block' ),
-		},
+		...blockAttributes,
 	},
 	transforms: {
 		from: [
