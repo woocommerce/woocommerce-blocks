@@ -167,9 +167,9 @@ export const PaymentMethodDataProvider = ( {
 
 	const currentStatus = useMemo(
 		() => ( {
-			isPristine: paymentData.currentStatus === STATUS.PRISTINE,
-			isStarted: paymentData.currentStatus === STATUS.STARTED,
-			isProcessing: paymentData.currentStatus === STATUS.PROCESSING,
+			isPristine: dataStoreCurrentStatus.isPristine,
+			isStarted: dataStoreCurrentStatus.isStarted,
+			isProcessing: dataStoreCurrentStatus.isProcessing,
 			isFinished: [
 				STATUS.ERROR,
 				STATUS.FAILED,
@@ -178,7 +178,6 @@ export const PaymentMethodDataProvider = ( {
 			hasError: paymentData.currentStatus === STATUS.ERROR,
 			hasFailed: paymentData.currentStatus === STATUS.FAILED,
 			isSuccessful: dataStoreCurrentStatus.isSuccessful,
-			// isSuccessful: paymentData.currentStatus === STATUS.SUCCESS,
 			isDoingExpressPayment:
 				paymentData.currentStatus !== STATUS.PRISTINE &&
 				isExpressPaymentMethodActive,
@@ -186,7 +185,7 @@ export const PaymentMethodDataProvider = ( {
 		[
 			paymentData.currentStatus,
 			isExpressPaymentMethodActive,
-			dataStoreCurrentStatus.isSuccessful,
+			dataStoreCurrentStatus,
 		]
 	);
 
@@ -259,7 +258,6 @@ export const PaymentMethodDataProvider = ( {
 			! currentStatus.isFinished
 		) {
 			setPaymentStatus().processing();
-			setDataStorePaymentStatus( { isProcessing: true } );
 		}
 	}, [
 		checkoutIsProcessing,
@@ -274,7 +272,6 @@ export const PaymentMethodDataProvider = ( {
 	useEffect( () => {
 		if ( checkoutIsIdle && ! currentStatus.isSuccessful ) {
 			setPaymentStatus().pristine();
-			setDataStorePaymentStatus( { isPristine: true } );
 		}
 	}, [
 		checkoutIsIdle,
@@ -287,7 +284,6 @@ export const PaymentMethodDataProvider = ( {
 	useEffect( () => {
 		if ( checkoutHasError && currentStatus.isSuccessful ) {
 			setPaymentStatus().pristine();
-			setDataStorePaymentStatus( { isPristine: true } );
 		}
 	}, [
 		checkoutHasError,
