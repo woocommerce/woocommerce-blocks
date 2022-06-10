@@ -33,7 +33,10 @@ const reducer: Reducer< PaymentMethodDataState > = (
 		case ACTION_TYPES.SET_PAYMENT_STATUS:
 			state = {
 				...state,
-				currentStatus: action.status,
+				currentStatus: {
+					...state.currentStatus,
+					...action.status,
+				},
 				errorMessage: action.errorMessage,
 			};
 			break;
