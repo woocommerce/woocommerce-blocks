@@ -170,11 +170,7 @@ export const PaymentMethodDataProvider = ( {
 			isPristine: dataStoreCurrentStatus.isPristine,
 			isStarted: dataStoreCurrentStatus.isStarted,
 			isProcessing: dataStoreCurrentStatus.isProcessing,
-			isFinished: [
-				STATUS.ERROR,
-				STATUS.FAILED,
-				STATUS.SUCCESS,
-			].includes( paymentData.currentStatus ),
+			isFinished: dataStoreCurrentStatus.isFinished,
 			hasError: dataStoreCurrentStatus.hasError,
 			hasFailed: dataStoreCurrentStatus.hasFailed,
 			isSuccessful: dataStoreCurrentStatus.isSuccessful,

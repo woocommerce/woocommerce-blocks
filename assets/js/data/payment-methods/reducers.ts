@@ -36,6 +36,10 @@ const reducer: Reducer< PaymentMethodDataState > = (
 				currentStatus: {
 					...state.currentStatus,
 					...action.status,
+					isFinished:
+						action.status.hasError ||
+						action.status.hasFailed ||
+						action.status.isSuccessful,
 				},
 				errorMessage: action.errorMessage,
 				paymentMethodData:
