@@ -34,3 +34,15 @@ export interface AttributeObject {
 	taxonomy: string;
 	label: string;
 }
+
+export interface QueryStateAttribute {
+	attribute: string;
+	operator: 'in' | 'and';
+	slug: string[];
+}
+
+export interface DisplayOption {
+	value: string;
+	name: string;
+	label: JSX.Element;
+}

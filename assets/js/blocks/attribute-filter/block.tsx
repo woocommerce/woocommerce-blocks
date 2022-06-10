@@ -21,7 +21,7 @@ import { Notice } from '@wordpress/components';
 import classNames from 'classnames';
 import { getSettingWithCoercion } from '@woocommerce/settings';
 import { getQueryArgs, removeQueryArgs } from '@wordpress/url';
-import { isBoolean, isString } from '@woocommerce/types';
+import { isBoolean, isString, objectHasProp } from '@woocommerce/types';
 import {
 	PREFIX_QUERY_ARG_FILTER_TYPE,
 	PREFIX_QUERY_ARG_QUERY_TYPE,
@@ -42,7 +42,12 @@ import {
 	isQueryArgsEqual,
 	parseTaxonomyToGenerateURL,
 } from './utils';
-import type { BlockAttributes } from './types';
+import {
+	AttributeObject,
+	BlockAttributes,
+	DisplayOption,
+	QueryStateAttribute,
+} from './types';
 
 /**
  * Formats filter values into a string for the URL parameters needed for filtering PHP templates.
@@ -92,13 +97,17 @@ const AttributeFilterBlock = ( {
 	const attributeObject =
 		blockAttributes.isPreview && ! blockAttributes.attributeId
 			? previewAttributeObject
-			: getAttributeFromID( blockAttributes.attributeId );
+			: ( getAttributeFromID(
+					blockAttributes.attributeId
+			  ) as AttributeObject );
 
 	const [ checked, setChecked ] = useState(
 		getActiveFilters( filteringForPhpTemplate, attributeObject )
 	);
 
-	const [ displayedOptions, setDisplayedOptions ] = useState(
+	const [ displayedOptions, setDisplayedOptions ] = useState<
+		DisplayOption[]
+	>(
 		blockAttributes.isPreview && ! blockAttributes.attributeId
 			? previewOptions
 			: []
@@ -144,7 +153,10 @@ const AttributeFilterBlock = ( {
 	 */
 	const getFilteredTerm = useCallback(
 		( id ) => {
-			if ( ! filteredCounts.attribute_counts ) {
+			if (
+				! objectHasProp( filteredCounts, 'attribute_counts' ) ||
+				! Array.isArray( filteredCounts.attribute_counts )
+			) {
 				return null;
 			}
 			return filteredCounts.attribute_counts.find(
@@ -163,18 +175,22 @@ const AttributeFilterBlock = ( {
 		 *
 		 * @param {string} termSlug The term of the slug to check.
 		 */
-		const isTermInQueryState = ( termSlug ) => {
+		const isTermInQueryState = ( termSlug: string ) => {
 			if ( ! queryState?.attributes ) {
 				return false;
 			}
 			return queryState.attributes.some(
-				( { attribute, slug = [] } ) =>
+				( { attribute, slug = [] }: QueryStateAttribute ) =>
 					attribute === attributeObject.taxonomy &&
 					slug.includes( termSlug )
 			);
 		};
 
 		if ( attributeTermsLoading || filteredCountsLoading ) {
+			return;
+		}
+
+		if ( ! Array.isArray( attributeTerms ) ) {
 			return;
 		}
 
@@ -204,7 +220,7 @@ const AttributeFilterBlock = ( {
 					),
 				};
 			} )
-			.filter( Boolean );
+			.filter( ( option ): option is DisplayOption => !! option );
 
 		setDisplayedOptions( newOptions );
 	}, [
@@ -223,6 +239,9 @@ const AttributeFilterBlock = ( {
 	 */
 	const getSelectedTerms = useCallback(
 		( newChecked ) => {
+			if ( ! Array.isArray( attributeTerms ) ) {
+				return [];
+			}
 			return attributeTerms.reduce( ( acc, term ) => {
 				if ( newChecked.includes( term.slug ) ) {
 					acc.push( term );
@@ -278,7 +297,7 @@ const AttributeFilterBlock = ( {
 		[ pageUrl, attributeObject?.taxonomy ]
 	);
 
-	const onSubmit = ( checkedFilters ) => {
+	const onSubmit = ( checkedFilters: string[] ) => {
 		const query = updateAttributeFilter(
 			productAttributesQuery,
 			setProductAttributesQuery,
@@ -294,7 +313,7 @@ const AttributeFilterBlock = ( {
 	};
 
 	const updateCheckedFilters = useCallback(
-		( checkedFilters ) => {
+		( checkedFilters: string[] ) => {
 			if ( isEditor ) {
 				return;
 			}
@@ -323,7 +342,7 @@ const AttributeFilterBlock = ( {
 	);
 
 	const checkedQuery = useMemo( () => {
-		return productAttributesQuery
+		return ( productAttributesQuery as QueryStateAttribute[] )
 			.filter(
 				( { attribute } ) => attribute === attributeObject?.taxonomy
 			)
@@ -335,6 +354,7 @@ const AttributeFilterBlock = ( {
 	// Track ATTRIBUTES QUERY changes so the block reflects current filters.
 	useEffect( () => {
 		if (
+			previousCheckedQuery &&
 			! isShallowEqual( previousCheckedQuery, currentCheckedQuery ) && // checked query changed
 			! isShallowEqual( checked, currentCheckedQuery ) // checked query doesn't match the UI
 		) {
@@ -356,15 +376,23 @@ const AttributeFilterBlock = ( {
 	 */
 	const onChange = useCallback(
 		( checkedValue ) => {
-			const getFilterNameFromValue = ( filterValue ) => {
-				const { name } = displayedOptions.find(
+			const getFilterNameFromValue = ( filterValue: string ) => {
+				const result = displayedOptions.find(
 					( option ) => option.value === filterValue
 				);
 
-				return name;
+				if ( result ) {
+					return result.name;
+				}
 			};
 
-			const announceFilterChange = ( { filterAdded, filterRemoved } ) => {
+			const announceFilterChange = ( {
+				filterAdded,
+				filterRemoved,
+			}: {
+				filterAdded?: string | null;
+				filterRemoved?: string | null;
+			} ) => {
 				const filterAddedName = filterAdded
 					? getFilterNameFromValue( filterAdded )
 					: null;
@@ -537,7 +565,7 @@ const AttributeFilterBlock = ( {
 		return null;
 	}
 
-	const TagName = `h${ blockAttributes.headingLevel }`;
+	const TagName = `h${ blockAttributes.headingLevel }` as keyof JSX.IntrinsicElements;
 	const isLoading = ! blockAttributes.isPreview && attributeTermsLoading;
 	const isDisabled = ! blockAttributes.isPreview && filteredCountsLoading;
 
