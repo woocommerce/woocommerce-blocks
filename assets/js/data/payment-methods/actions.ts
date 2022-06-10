@@ -2,11 +2,24 @@
  * Internal dependencies
  */
 import { ACTION_TYPES } from './action-types';
-import { STATUS } from '../../base/context/providers/cart-checkout/payment-methods/constants';
 import { checkPaymentMethodsCanPay } from './check-payment-methods';
 import { setDefaultPaymentMethod } from './set-default-payment-method';
 
-export const setPaymentStatus = ( status: STATUS, errorMessage = '' ) => ( {
+interface PaymentStatus {
+	isPristine?: boolean;
+	isStarted?: boolean;
+	isProcessing?: boolean;
+	isFinished?: boolean;
+	hasError?: boolean;
+	hasFailed?: boolean;
+	isSuccessful?: boolean;
+	isDoingExpressPayment?: boolean;
+}
+
+export const setPaymentStatus = (
+	status: PaymentStatus,
+	errorMessage = ''
+) => ( {
 	type: ACTION_TYPES.SET_PAYMENT_STATUS,
 	status,
 	errorMessage,
