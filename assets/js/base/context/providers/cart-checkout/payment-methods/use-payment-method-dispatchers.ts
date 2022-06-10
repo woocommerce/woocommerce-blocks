@@ -2,6 +2,8 @@
  * External dependencies
  */
 import { useCallback, useMemo } from '@wordpress/element';
+import { useDispatch } from '@wordpress/data';
+import { PAYMENT_METHOD_DATA_STORE_KEY } from '@woocommerce/block-data';
 
 /**
  * Internal dependencies
@@ -21,6 +23,10 @@ export const usePaymentMethodDataDispatchers = (
 	setPaymentStatus: () => PaymentStatusDispatchers;
 } => {
 	const { setBillingData, setShippingAddress } = useCustomerData();
+	const {
+		setPaymentMethodData,
+		setPaymentStatus: setDataStorePaymentStatus,
+	} = useDispatch( PAYMENT_METHOD_DATA_STORE_KEY );
 
 	const dispatchActions = useMemo(
 		(): PaymentMethodDispatchers => ( {
@@ -83,14 +89,19 @@ export const usePaymentMethodDataDispatchers = (
 						shippingData.address as Record< string, unknown >
 					);
 				}
-				// dispatch(
-				// 	actions.success( {
-				// 		paymentMethodData,
-				// 	} )
-				// );
+				setPaymentMethodData( paymentMethodData );
+				setDataStorePaymentStatus( {
+					isSuccessful: true,
+				} );
 			},
 		} ),
-		[ dispatch, setBillingData, setShippingAddress ]
+		[
+			dispatch,
+			setBillingData,
+			setShippingAddress,
+			setPaymentMethodData,
+			setDataStorePaymentStatus,
+		]
 	);
 
 	return {
