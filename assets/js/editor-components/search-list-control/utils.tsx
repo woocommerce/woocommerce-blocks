@@ -2,6 +2,7 @@
  * External dependencies
  */
 import { groupBy, keyBy } from 'lodash';
+import { Fragment } from 'react';
 import { __, _n, sprintf } from '@wordpress/i18n';
 
 /**
@@ -118,8 +119,12 @@ export const getHighlightedName = (
 	);
 	const nameParts = name.split( re );
 
-	return nameParts.map( ( part ) => {
-		return re.test( part ) ? <strong>{ part }</strong> : part;
+	return nameParts.map( ( part, i ) => {
+		return re.test( part ) ? (
+			<strong key={ i }>{ part }</strong>
+		) : (
+			<Fragment key={ i }>{ part }</Fragment>
+		);
 	} );
 };
 
