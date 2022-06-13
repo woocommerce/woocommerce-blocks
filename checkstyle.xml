@@ -593,9 +593,9 @@
 <error line="477" column="23" severity="error" message="Argument of type &apos;unknown&apos; is not assignable to parameter of type &apos;ResponseError | null | undefined&apos;." source="TS2345" />
 <error line="481" column="8" severity="error" message="Object is of type &apos;unknown&apos;." source="TS2571" />
 <error line="482" column="23" severity="error" message="Object is of type &apos;unknown&apos;." source="TS2571" />
-<error line="527" column="23" severity="error" message="Argument of type &apos;unknown&apos; is not assignable to parameter of type &apos;ResponseError | null | undefined&apos;." source="TS2345" />
-<error line="531" column="8" severity="error" message="Object is of type &apos;unknown&apos;." source="TS2571" />
-<error line="532" column="23" severity="error" message="Object is of type &apos;unknown&apos;." source="TS2571" />
+<error line="528" column="23" severity="error" message="Argument of type &apos;unknown&apos; is not assignable to parameter of type &apos;ResponseError | null | undefined&apos;." source="TS2345" />
+<error line="532" column="8" severity="error" message="Object is of type &apos;unknown&apos;." source="TS2571" />
+<error line="533" column="23" severity="error" message="Object is of type &apos;unknown&apos;." source="TS2571" />
 </file>
 <file name="assets/js/data/cart/resolvers.ts">
 <error line="5" column="10" severity="error" message="Module &apos;&quot;@wordpress/data&quot;&apos; has no exported member &apos;controls&apos;." source="TS2305" />
@@ -614,7 +614,7 @@
 <error line="80" column="16" severity="error" message="Property &apos;couponCode&apos; does not exist on type &apos;Partial&lt;unknown&gt;&apos;." source="TS2339" />
 <error line="80" column="37" severity="error" message="Property &apos;couponCode&apos; does not exist on type &apos;Partial&lt;unknown&gt;&apos;." source="TS2339" />
 <error line="85" column="30" severity="error" message="Property &apos;couponCode&apos; does not exist on type &apos;Partial&lt;unknown&gt;&apos;." source="TS2339" />
-<error line="97" column="17" severity="error" message="Property &apos;billingData&apos; does not exist on type &apos;Partial&lt;unknown&gt;&apos;." source="TS2339" />
+<error line="97" column="17" severity="error" message="Property &apos;billingAddress&apos; does not exist on type &apos;Partial&lt;unknown&gt;&apos;." source="TS2339" />
 <error line="109" column="17" severity="error" message="Property &apos;shippingAddress&apos; does not exist on type &apos;Partial&lt;unknown&gt;&apos;." source="TS2339" />
 <error line="116" column="16" severity="error" message="Property &apos;couponCode&apos; does not exist on type &apos;Partial&lt;unknown&gt;&apos;." source="TS2339" />
 <error line="116" column="37" severity="error" message="Property &apos;couponCode&apos; does not exist on type &apos;Partial&lt;unknown&gt;&apos;." source="TS2339" />
@@ -662,19 +662,15 @@
 </file>
 <file name="assets/js/base/context/hooks/cart/use-store-cart.ts">
 <error line="73" column="2" severity="error" message="Type &apos;&quot;&quot;&apos; is not assignable to type &apos;CurrencyCode&apos;." source="TS2322" />
-<error line="144" column="3" severity="error" message="Argument of type &apos;(select: any, { dispatch }: { dispatch: any; }) =&gt; { cartCoupons: any; cartItems: any; cartFees: any; cartItemsCount: any; cartItemsWeight: any; cartNeedsPayment: any; cartNeedsShipping: any; cartItemErrors: []; ... 10 more ...; receiveCart: any; } | { ...; }&apos; is not assignable to parameter of type &apos;(s: { (key: string): SelectorMap; (key: &quot;core/rich-text&quot;): typeof import(&quot;/home/runner/work/woocommerce-blocks/woocommerce-blocks/node_modules/@types/wordpress__rich-text/store/selectors&quot;); (key: &quot;core/notices&quot;): typeof import(&quot;/home/runner/work/woocommerce-blocks/woocommerce-blocks/node_modules/@types/wordpress__no...&apos;." source="TS2345" />
+<error line="144" column="3" severity="error" message="Argument of type &apos;(select: any, { dispatch }: { dispatch: any; }) =&gt; StoreCart | { cartCoupons: any; cartItems: any; cartFees: any; cartItemsCount: any; cartItemsWeight: any; cartNeedsPayment: any; cartNeedsShipping: any; ... 12 more ...; receiveCart: any; } | { ...; }&apos; is not assignable to parameter of type &apos;(s: { (key: string): SelectorMap; (key: &quot;core/rich-text&quot;): typeof import(&quot;/home/runner/work/woocommerce-blocks/woocommerce-blocks/node_modules/@types/wordpress__rich-text/store/selectors&quot;); (key: &quot;core/notices&quot;): typeof import(&quot;/home/runner/work/woocommerce-blocks/woocommerce-blocks/node_modules/@types/wordpress__no...&apos;." source="TS2345" />
 <error line="144" column="5" severity="error" message="Parameter &apos;select&apos; implicitly has an &apos;any&apos; type." source="TS7006" />
 <error line="144" column="15" severity="error" message="Binding element &apos;dispatch&apos; implicitly has an &apos;any&apos; type." source="TS7031" />
-<error line="223" column="47" severity="error" message="Argument of type &apos;Record&lt;string, unknown&gt;&apos; is not assignable to parameter of type &apos;CartResponseShippingAddress | CartResponseBillingAddress&apos;.
+<error line="224" column="44" severity="error" message="Argument of type &apos;Record&lt;string, unknown&gt;&apos; is not assignable to parameter of type &apos;CartResponseShippingAddress | CartResponseBillingAddress&apos;.
   Type &apos;Record&lt;string, unknown&gt;&apos; is missing the following properties from type &apos;CartResponseBillingAddress&apos;: email, company, phone, address_1, and 7 more." source="TS2345" />
-<error line="224" column="48" severity="error" message="Argument of type &apos;Record&lt;string, unknown&gt;&apos; is not assignable to parameter of type &apos;CartResponseShippingAddress | CartResponseBillingAddress&apos;." source="TS2345" />
-<error line="240" column="3" severity="error" message="Type &apos;StoreCart&apos; is not assignable to type &apos;undefined&apos;." source="TS2322" />
-<error line="243" column="2" severity="error" message="Type &apos;undefined&apos; is not assignable to type &apos;StoreCart&apos;." source="TS2322" />
-</file>
-<file name="assets/js/base/context/hooks/use-store-snackbar-notices.js">
-<error line="5" column="48" severity="error" message="Cannot find module &apos;@woocommerce/base-context/providers&apos; or its corresponding type declarations." source="TS2307" />
-<error line="26" column="39" severity="error" message="Parameter &apos;notice&apos; implicitly has an &apos;any&apos; type." source="TS7006" />
-<error line="39" column="25" severity="error" message="Parameter &apos;text&apos; implicitly has an &apos;any&apos; type." source="TS7006" />
+<error line="225" column="47" severity="error" message="Argument of type &apos;Record&lt;string, unknown&gt;&apos; is not assignable to parameter of type &apos;CartResponseShippingAddress | CartResponseBillingAddress&apos;." source="TS2345" />
+<error line="226" column="48" severity="error" message="Argument of type &apos;Record&lt;string, unknown&gt;&apos; is not assignable to parameter of type &apos;CartResponseShippingAddress | CartResponseBillingAddress&apos;." source="TS2345" />
+<error line="242" column="3" severity="error" message="Type &apos;StoreCart&apos; is not assignable to type &apos;undefined&apos;." source="TS2322" />
+<error line="245" column="2" severity="error" message="Type &apos;undefined&apos; is not assignable to type &apos;StoreCart&apos;." source="TS2322" />
 </file>
 <file name="assets/js/base/context/providers/validation/context.js">
 <error line="14" column="57" severity="error" message="Namespace &apos;&quot;/home/runner/work/woocommerce-blocks/woocommerce-blocks/assets/js/types/type-defs/contexts&quot;&apos; has no exported member &apos;ValidationContext&apos;." source="TS2694" />
@@ -701,9 +697,9 @@
     Type &apos;void&apos; is not assignable to type &apos;undefined&apos;." source="TS2322" />
 </file>
 <file name="assets/js/base/context/hooks/cart/use-store-cart-coupons.ts">
-<error line="37" column="3" severity="error" message="Argument of type &apos;(select: any, { dispatch }: { dispatch: any; }) =&gt; { applyCoupon: (couponCode: string) =&gt; void; removeCoupon: (couponCode: string) =&gt; void; isApplyingCoupon: any; isRemovingCoupon: any; }&apos; is not assignable to parameter of type &apos;(s: { (key: string): SelectorMap; (key: &quot;core/rich-text&quot;): typeof import(&quot;/home/runner/work/woocommerce-blocks/woocommerce-blocks/node_modules/@types/wordpress__rich-text/store/selectors&quot;); (key: &quot;core/notices&quot;): typeof import(&quot;/home/runner/work/woocommerce-blocks/woocommerce-blocks/node_modules/@types/wordpress__no...&apos;." source="TS2345" />
-<error line="37" column="5" severity="error" message="Parameter &apos;select&apos; implicitly has an &apos;any&apos; type." source="TS7006" />
-<error line="37" column="15" severity="error" message="Binding element &apos;dispatch&apos; implicitly has an &apos;any&apos; type." source="TS7031" />
+<error line="36" column="3" severity="error" message="Argument of type &apos;(select: any, { dispatch }: { dispatch: any; }) =&gt; { applyCoupon: (couponCode: string) =&gt; void; removeCoupon: (couponCode: string) =&gt; void; isApplyingCoupon: any; isRemovingCoupon: any; }&apos; is not assignable to parameter of type &apos;(s: { (key: string): SelectorMap; (key: &quot;core/rich-text&quot;): typeof import(&quot;/home/runner/work/woocommerce-blocks/woocommerce-blocks/node_modules/@types/wordpress__rich-text/store/selectors&quot;); (key: &quot;core/notices&quot;): typeof import(&quot;/home/runner/work/woocommerce-blocks/woocommerce-blocks/node_modules/@types/wordpress__no...&apos;." source="TS2345" />
+<error line="36" column="5" severity="error" message="Parameter &apos;select&apos; implicitly has an &apos;any&apos; type." source="TS7006" />
+<error line="36" column="15" severity="error" message="Binding element &apos;dispatch&apos; implicitly has an &apos;any&apos; type." source="TS7031" />
 </file>
 <file name="assets/js/base/hooks/use-container-queries.ts">
 <error line="36" column="7" severity="error" message="Object is possibly &apos;null&apos;." source="TS2531" />
@@ -715,7 +711,7 @@
 <error line="77" column="24" severity="error" message="Argument of type &apos;null&apos; is not assignable to parameter of type &apos;Element&apos;." source="TS2345" />
 </file>
 <file name="assets/js/base/context/providers/cart-checkout/payment-methods/use-payment-method-registration.ts">
-<error line="120" column="9" severity="error" message="Argument of type &apos;{ cart: StoreCart; cartTotals: CartResponseTotals; cartNeedsShipping: boolean; billingData: BillingAddress; shippingAddress: EnteredAddress; selectedShippingMethods: Record&lt;...&gt;; paymentRequirements: string[]; }&apos; is not assignable to parameter of type &apos;CanMakePaymentArgument&apos;.
+<error line="135" column="9" severity="error" message="Argument of type &apos;{ cart: StoreCart; cartTotals: CartResponseTotals; cartNeedsShipping: boolean; billingData: BillingAddress; billingAddress: BillingAddress; shippingAddress: EnteredAddress; selectedShippingMethods: Record&lt;...&gt;; paymentRequirements: string[]; }&apos; is not assignable to parameter of type &apos;CanMakePaymentArgument&apos;.
   Types of property &apos;cart&apos; are incompatible.
     Type &apos;StoreCart&apos; is missing the following properties from type &apos;Cart&apos;: coupons, items, itemsCount, itemsWeight, and 6 more." source="TS2345" />
 </file>
@@ -788,7 +784,6 @@
 <error line="70" column="6" severity="error" message="Property &apos;onSelectFail&apos; does not exist on type &apos;Object&apos;." source="TS2339" />
 </file>
 <file name="assets/js/base/context/providers/store-notices/context.js">
-<error line="8" column="56" severity="error" message="Namespace &apos;&quot;/home/runner/work/woocommerce-blocks/woocommerce-blocks/assets/js/types/type-defs/contexts&quot;&apos; has no exported member &apos;NoticeContext&apos;." source="TS2694" />
 <error line="13" column="21" severity="error" message="Parameter &apos;val&apos; implicitly has an &apos;any&apos; type." source="TS7006" />
 <error line="48" column="33" severity="error" message="Type &apos;{ setIsSuppressed: React.Dispatch&lt;React.SetStateAction&lt;boolean&gt;&gt;; isSuppressed: boolean; }&apos; is not assignable to type &apos;{ setIsSuppressed: (val: any) =&gt; undefined; isSuppressed: boolean; }&apos;.
   The types returned by &apos;setIsSuppressed(...)&apos; are incompatible between these types.
@@ -835,15 +830,9 @@
 <file name="assets/js/base/context/hooks/collections/use-collection.ts">
 <error line="103" column="35" severity="error" message="Cannot find name &apos;T&apos;." source="TS2304" />
 </file>
-<file name="assets/js/base/context/hooks/collections/use-collection-data.js">
-<error line="16" column="36" severity="error" message="Parameter &apos;collectionDataQueryState&apos; implicitly has an &apos;any&apos; type." source="TS7006" />
-<error line="22" column="9" severity="error" message="Binding element &apos;taxonomy&apos; implicitly has an &apos;any&apos; type." source="TS7031" />
-<error line="22" column="19" severity="error" message="Binding element &apos;queryType&apos; implicitly has an &apos;any&apos; type." source="TS7031" />
-<error line="37" column="2" severity="error" message="Binding element &apos;queryAttribute&apos; implicitly has an &apos;any&apos; type." source="TS7031" />
-<error line="38" column="2" severity="error" message="Binding element &apos;queryPrices&apos; implicitly has an &apos;any&apos; type." source="TS7031" />
-<error line="39" column="2" severity="error" message="Binding element &apos;queryStock&apos; implicitly has an &apos;any&apos; type." source="TS7031" />
-<error line="40" column="2" severity="error" message="Binding element &apos;queryState&apos; implicitly has an &apos;any&apos; type." source="TS7031" />
-<error line="69" column="7" severity="error" message="Parameter &apos;attribute&apos; implicitly has an &apos;any&apos; type." source="TS7006" />
+<file name="assets/js/base/context/hooks/collections/use-collection-data.ts">
+<error line="83" column="7" severity="error" message="Parameter &apos;attribute&apos; implicitly has an &apos;any&apos; type." source="TS7006" />
+<error line="85" column="52" severity="error" message="Property &apos;taxonomy&apos; does not exist on type &apos;{}&apos;." source="TS2339" />
 </file>
 <file name="assets/js/base/context/hooks/use-store-add-to-cart.ts">
 <error line="93" column="3" severity="error" message="Type &apos;(quantity?: number) =&gt; Promise&lt;void&gt;&apos; is not assignable to type &apos;(quantity?: number | undefined) =&gt; Promise&lt;boolean&gt;&apos;.
@@ -1054,33 +1043,213 @@
 <error line="89" column="43" severity="error" message="Parameter &apos;response&apos; implicitly has an &apos;any&apos; type." source="TS7006" />
 <error line="126" column="35" severity="error" message="Parameter &apos;response&apos; implicitly has an &apos;any&apos; type." source="TS7006" />
 </file>
-<file name="assets/js/base/context/providers/store-snackbar-notices/context.js">
-<error line="12" column="38" severity="error" message="Cannot find module &apos;@woocommerce/base-context/providers/store-snackbar-notices/components/snackbar-notices-container&apos; or its corresponding type declarations." source="TS2307" />
-<error line="21" column="56" severity="error" message="Namespace &apos;&quot;/home/runner/work/woocommerce-blocks/woocommerce-blocks/assets/js/types/type-defs/contexts&quot;&apos; has no exported member &apos;NoticeContext&apos;." source="TS2694" />
-<error line="27" column="26" severity="error" message="Parameter &apos;content&apos; implicitly has an &apos;any&apos; type." source="TS7006" />
-<error line="27" column="35" severity="error" message="Parameter &apos;options&apos; implicitly has an &apos;any&apos; type." source="TS7006" />
-<error line="28" column="26" severity="error" message="Parameter &apos;id&apos; implicitly has an &apos;any&apos; type." source="TS7006" />
-<error line="28" column="30" severity="error" message="Parameter &apos;ctxt&apos; implicitly has an &apos;any&apos; type." source="TS7006" />
-<error line="29" column="21" severity="error" message="Parameter &apos;val&apos; implicitly has an &apos;any&apos; type." source="TS7006" />
-<error line="67" column="18" severity="error" message="Argument of type &apos;&quot;default&quot;&apos; is not assignable to parameter of type &apos;Status | undefined&apos;." source="TS2345" />
-<error line="114" column="41" severity="error" message="Type &apos;{ notices: Notice[]; createSnackbarNotice: (content?: any, options?: any) =&gt; void; removeSnackbarNotice: (id: any, ctxt?: any) =&gt; void; context: string; setIsSuppressed: React.Dispatch&lt;React.SetStateAction&lt;boolean&gt;&gt;; }&apos; is not assignable to type &apos;{ notices: never[]; createSnackbarNotice: (content: any, options: any) =&gt; undefined; removeSnackbarNotice: (id: any, ctxt: any) =&gt; undefined; setIsSuppressed: (val: any) =&gt; undefined; context: string; }&apos;.
-  Types of property &apos;notices&apos; are incompatible.
-    Type &apos;Notice[]&apos; is not assignable to type &apos;never[]&apos;.
-      Type &apos;Notice&apos; is not assignable to type &apos;never&apos;." source="TS2322" />
+<file name="packages/checkout/components/totals/item/index.tsx">
+<error line="8" column="15" severity="error" message="Module &apos;&quot;@woocommerce/price-format&quot;&apos; has no exported member &apos;Currency&apos;." source="TS2305" />
+</file>
+<file name="packages/checkout/components/totals/subtotal/index.tsx">
+<error line="5" column="15" severity="error" message="Module &apos;&quot;@woocommerce/price-format&quot;&apos; has no exported member &apos;Currency&apos;." source="TS2305" />
+<error line="35" column="4" severity="error" message="Type &apos;{ className: string | undefined; currency: Currency; label: string; value: number; }&apos; is not assignable to type &apos;TotalsItemProps&apos; with &apos;exactOptionalPropertyTypes: true&apos;. Consider adding &apos;undefined&apos; to the types of the target&apos;s properties.
+  Types of property &apos;className&apos; are incompatible.
+    Type &apos;string | undefined&apos; is not assignable to type &apos;string&apos;.
+      Type &apos;undefined&apos; is not assignable to type &apos;string&apos;." source="TS2375" />
+</file>
+<file name="packages/checkout/components/totals/taxes/index.tsx">
+<error line="7" column="15" severity="error" message="Module &apos;&quot;@woocommerce/price-format&quot;&apos; has no exported member &apos;Currency&apos;." source="TS2305" />
+</file>
+<file name="packages/checkout/components/totals/fees/index.tsx">
+<error line="7" column="15" severity="error" message="Module &apos;&quot;@woocommerce/price-format&quot;&apos; has no exported member &apos;Currency&apos;." source="TS2305" />
+</file>
+<file name="packages/checkout/components/totals/index.js">
+<error line="1" column="39" severity="error" message="File &apos;/home/runner/work/woocommerce-blocks/woocommerce-blocks/packages/checkout/components/totals/item/index.tsx&apos; is not listed within the file list of project &apos;/home/runner/work/woocommerce-blocks/woocommerce-blocks/tsconfig.json&apos;. Projects must list all files or use an &apos;include&apos; pattern.
+  The file is in the program because:
+    Imported via &apos;./item&apos; from file &apos;/home/runner/work/woocommerce-blocks/woocommerce-blocks/packages/checkout/components/totals/index.js&apos;
+    Imported via &apos;../item&apos; from file &apos;/home/runner/work/woocommerce-blocks/woocommerce-blocks/packages/checkout/components/totals/subtotal/index.tsx&apos;
+    Imported via &apos;../item&apos; from file &apos;/home/runner/work/woocommerce-blocks/woocommerce-blocks/packages/checkout/components/totals/taxes/index.tsx&apos;
+    Imported via &apos;../item&apos; from file &apos;/home/runner/work/woocommerce-blocks/woocommerce-blocks/packages/checkout/components/totals/fees/index.tsx&apos;" source="TS6307" />
+<error line="2" column="37" severity="error" message="File &apos;/home/runner/work/woocommerce-blocks/woocommerce-blocks/packages/checkout/components/totals/subtotal/index.tsx&apos; is not listed within the file list of project &apos;/home/runner/work/woocommerce-blocks/woocommerce-blocks/tsconfig.json&apos;. Projects must list all files or use an &apos;include&apos; pattern." source="TS6307" />
+<error line="3" column="40" severity="error" message="File &apos;/home/runner/work/woocommerce-blocks/woocommerce-blocks/packages/checkout/components/totals/taxes/index.tsx&apos; is not listed within the file list of project &apos;/home/runner/work/woocommerce-blocks/woocommerce-blocks/tsconfig.json&apos;. Projects must list all files or use an &apos;include&apos; pattern." source="TS6307" />
+<error line="4" column="39" severity="error" message="File &apos;/home/runner/work/woocommerce-blocks/woocommerce-blocks/packages/checkout/components/totals/fees/index.tsx&apos; is not listed within the file list of project &apos;/home/runner/work/woocommerce-blocks/woocommerce-blocks/tsconfig.json&apos;. Projects must list all files or use an &apos;include&apos; pattern." source="TS6307" />
+</file>
+<file name="packages/checkout/components/error-boundary/index.js">
+<error line="9" column="35" severity="error" message="Parameter &apos;error&apos; implicitly has an &apos;any&apos; type." source="TS7006" />
+</file>
+<file name="packages/checkout/slot/index.js">
+<error line="11" column="8" severity="error" message="Could not find a declaration file for module &apos;wordpress-components&apos;. &apos;/home/runner/work/woocommerce-blocks/woocommerce-blocks/node_modules/wordpress-components/build/index.js&apos; implicitly has an &apos;any&apos; type.
+  If the &apos;@wordpress/components&apos; package actually exposes this module, consider sending a pull request to amend &apos;https://github.com/DefinitelyTyped/DefinitelyTyped/tree/master/types/wordpress__components&apos;" source="TS7016" />
+<error line="16" column="32" severity="error" message="File &apos;/home/runner/work/woocommerce-blocks/woocommerce-blocks/packages/checkout/components/error-boundary/index.js&apos; is not listed within the file list of project &apos;/home/runner/work/woocommerce-blocks/woocommerce-blocks/tsconfig.json&apos;. Projects must list all files or use an &apos;include&apos; pattern." source="TS6307" />
+<error line="42" column="12" severity="error" message="Generic type &apos;Array&lt;T&gt;&apos; requires 1 type argument(s)." source="TS2314" />
+<error line="83" column="13" severity="error" message="Generic type &apos;Array&lt;T&gt;&apos; requires 1 type argument(s)." source="TS2314" />
+<error line="87" column="8" severity="error" message="Parameter &apos;fillProps&apos; implicitly has an &apos;any&apos; type." source="TS7006" />
+</file>
+<file name="packages/checkout/components/order-meta/index.js">
+<error line="9" column="41" severity="error" message="Variable &apos;useSlot&apos; implicitly has type &apos;any&apos; in some locations where its type cannot be determined." source="TS7034" />
+<error line="9" column="56" severity="error" message="File &apos;/home/runner/work/woocommerce-blocks/woocommerce-blocks/packages/checkout/slot/index.js&apos; is not listed within the file list of project &apos;/home/runner/work/woocommerce-blocks/woocommerce-blocks/tsconfig.json&apos;. Projects must list all files or use an &apos;include&apos; pattern.
+  The file is in the program because:
+    Imported via &apos;../../slot&apos; from file &apos;/home/runner/work/woocommerce-blocks/woocommerce-blocks/packages/checkout/components/order-meta/index.js&apos;
+    Imported via &apos;../../slot&apos; from file &apos;/home/runner/work/woocommerce-blocks/woocommerce-blocks/packages/checkout/components/discounts-meta/index.js&apos;
+    Imported via &apos;../../slot&apos; from file &apos;/home/runner/work/woocommerce-blocks/woocommerce-blocks/packages/checkout/components/order-shipping-packages/index.js&apos;
+    Imported via &apos;./slot&apos; from file &apos;/home/runner/work/woocommerce-blocks/woocommerce-blocks/packages/checkout/index.js&apos;" source="TS6307" />
+<error line="14" column="9" severity="error" message="Property &apos;Fill&apos; does not exist on type &apos;Object&apos;." source="TS2339" />
+<error line="14" column="38" severity="error" message="Property &apos;Slot&apos; does not exist on type &apos;Object&apos;." source="TS2339" />
+<error line="18" column="18" severity="error" message="Binding element &apos;className&apos; implicitly has an &apos;any&apos; type." source="TS7031" />
+<error line="18" column="29" severity="error" message="Binding element &apos;extensions&apos; implicitly has an &apos;any&apos; type." source="TS7031" />
+<error line="18" column="41" severity="error" message="Binding element &apos;cart&apos; implicitly has an &apos;any&apos; type." source="TS7031" />
+<error line="18" column="47" severity="error" message="Binding element &apos;context&apos; implicitly has an &apos;any&apos; type." source="TS7031" />
+<error line="19" column="20" severity="error" message="Variable &apos;useSlot&apos; implicitly has an &apos;any&apos; type." source="TS7005" />
+</file>
+<file name="packages/checkout/components/discounts-meta/index.js">
+<error line="9" column="41" severity="error" message="Variable &apos;useSlot&apos; implicitly has type &apos;any&apos; in some locations where its type cannot be determined." source="TS7034" />
+<error line="15" column="2" severity="error" message="Property &apos;Fill&apos; does not exist on type &apos;Object&apos;." source="TS2339" />
+<error line="16" column="2" severity="error" message="Property &apos;Slot&apos; does not exist on type &apos;Object&apos;." source="TS2339" />
+<error line="19" column="18" severity="error" message="Binding element &apos;className&apos; implicitly has an &apos;any&apos; type." source="TS7031" />
+<error line="19" column="29" severity="error" message="Binding element &apos;extensions&apos; implicitly has an &apos;any&apos; type." source="TS7031" />
+<error line="19" column="41" severity="error" message="Binding element &apos;cart&apos; implicitly has an &apos;any&apos; type." source="TS7031" />
+<error line="19" column="47" severity="error" message="Binding element &apos;context&apos; implicitly has an &apos;any&apos; type." source="TS7031" />
+<error line="20" column="20" severity="error" message="Variable &apos;useSlot&apos; implicitly has an &apos;any&apos; type." source="TS7005" />
+</file>
+<file name="packages/checkout/components/order-shipping-packages/index.js">
+<error line="9" column="26" severity="error" message="Variable &apos;useSlot&apos; implicitly has type &apos;any&apos; in some locations where its type cannot be determined." source="TS7034" />
+<error line="13" column="2" severity="error" message="Property &apos;Fill&apos; does not exist on type &apos;Object&apos;." source="TS2339" />
+<error line="14" column="2" severity="error" message="Property &apos;Slot&apos; does not exist on type &apos;Object&apos;." source="TS2339" />
+<error line="18" column="2" severity="error" message="Binding element &apos;className&apos; implicitly has an &apos;any&apos; type." source="TS7031" />
+<error line="19" column="2" severity="error" message="Binding element &apos;collapsible&apos; implicitly has an &apos;any&apos; type." source="TS7031" />
+<error line="20" column="2" severity="error" message="Binding element &apos;noResultsMessage&apos; implicitly has an &apos;any&apos; type." source="TS7031" />
+<error line="21" column="2" severity="error" message="Binding element &apos;renderOption&apos; implicitly has an &apos;any&apos; type." source="TS7031" />
+<error line="22" column="2" severity="error" message="Binding element &apos;extensions&apos; implicitly has an &apos;any&apos; type." source="TS7031" />
+<error line="23" column="2" severity="error" message="Binding element &apos;cart&apos; implicitly has an &apos;any&apos; type." source="TS7031" />
+<error line="24" column="2" severity="error" message="Binding element &apos;components&apos; implicitly has an &apos;any&apos; type." source="TS7031" />
+<error line="25" column="2" severity="error" message="Binding element &apos;context&apos; implicitly has an &apos;any&apos; type." source="TS7031" />
+<error line="27" column="20" severity="error" message="Variable &apos;useSlot&apos; implicitly has an &apos;any&apos; type." source="TS7005" />
+</file>
+<file name="assets/js/base/components/button/index.tsx">
+<error line="4" column="36" severity="error" message="Could not find a declaration file for module &apos;wordpress-components&apos;. &apos;/home/runner/work/woocommerce-blocks/woocommerce-blocks/node_modules/wordpress-components/build/index.js&apos; implicitly has an &apos;any&apos; type.
+  If the &apos;@wordpress/components&apos; package actually exposes this module, consider sending a pull request to amend &apos;https://github.com/DefinitelyTyped/DefinitelyTyped/tree/master/types/wordpress__components&apos;" source="TS7016" />
+</file>
+<file name="packages/checkout/components/index.js">
+<error line="1" column="15" severity="error" message="File &apos;/home/runner/work/woocommerce-blocks/woocommerce-blocks/packages/checkout/components/totals/index.js&apos; is not listed within the file list of project &apos;/home/runner/work/woocommerce-blocks/woocommerce-blocks/tsconfig.json&apos;. Projects must list all files or use an &apos;include&apos; pattern." source="TS6307" />
+<error line="2" column="42" severity="error" message="File &apos;/home/runner/work/woocommerce-blocks/woocommerce-blocks/packages/checkout/components/totals-wrapper/index.tsx&apos; is not listed within the file list of project &apos;/home/runner/work/woocommerce-blocks/woocommerce-blocks/tsconfig.json&apos;. Projects must list all files or use an &apos;include&apos; pattern.
+  The file is in the program because:
+    Imported via &apos;./totals-wrapper&apos; from file &apos;/home/runner/work/woocommerce-blocks/woocommerce-blocks/packages/checkout/components/index.js&apos;
+    Imported via &apos;../totals-wrapper&apos; from file &apos;/home/runner/work/woocommerce-blocks/woocommerce-blocks/packages/checkout/components/order-meta/index.js&apos;
+    Imported via &apos;../totals-wrapper&apos; from file &apos;/home/runner/work/woocommerce-blocks/woocommerce-blocks/packages/checkout/components/discounts-meta/index.js&apos;" source="TS6307" />
+<error line="3" column="50" severity="error" message="File &apos;/home/runner/work/woocommerce-blocks/woocommerce-blocks/packages/checkout/components/order-meta/index.js&apos; is not listed within the file list of project &apos;/home/runner/work/woocommerce-blocks/woocommerce-blocks/tsconfig.json&apos;. Projects must list all files or use an &apos;include&apos; pattern." source="TS6307" />
+<error line="4" column="54" severity="error" message="File &apos;/home/runner/work/woocommerce-blocks/woocommerce-blocks/packages/checkout/components/discounts-meta/index.js&apos; is not listed within the file list of project &apos;/home/runner/work/woocommerce-blocks/woocommerce-blocks/tsconfig.json&apos;. Projects must list all files or use an &apos;include&apos; pattern." source="TS6307" />
+<error line="5" column="62" severity="error" message="File &apos;/home/runner/work/woocommerce-blocks/woocommerce-blocks/packages/checkout/components/order-shipping-packages/index.js&apos; is not listed within the file list of project &apos;/home/runner/work/woocommerce-blocks/woocommerce-blocks/tsconfig.json&apos;. Projects must list all files or use an &apos;include&apos; pattern." source="TS6307" />
+<error line="6" column="34" severity="error" message="File &apos;/home/runner/work/woocommerce-blocks/woocommerce-blocks/packages/checkout/components/panel/index.tsx&apos; is not listed within the file list of project &apos;/home/runner/work/woocommerce-blocks/woocommerce-blocks/tsconfig.json&apos;. Projects must list all files or use an &apos;include&apos; pattern." source="TS6307" />
+<error line="7" column="35" severity="error" message="File &apos;/home/runner/work/woocommerce-blocks/woocommerce-blocks/packages/checkout/components/button/index.ts&apos; is not listed within the file list of project &apos;/home/runner/work/woocommerce-blocks/woocommerce-blocks/tsconfig.json&apos;. Projects must list all files or use an &apos;include&apos; pattern." source="TS6307" />
+<error line="8" column="34" severity="error" message="File &apos;/home/runner/work/woocommerce-blocks/woocommerce-blocks/packages/checkout/components/label/index.ts&apos; is not listed within the file list of project &apos;/home/runner/work/woocommerce-blocks/woocommerce-blocks/tsconfig.json&apos;. Projects must list all files or use an &apos;include&apos; pattern." source="TS6307" />
+<error line="9" column="44" severity="error" message="File &apos;/home/runner/work/woocommerce-blocks/woocommerce-blocks/packages/checkout/components/checkbox-control/index.tsx&apos; is not listed within the file list of project &apos;/home/runner/work/woocommerce-blocks/woocommerce-blocks/tsconfig.json&apos;. Projects must list all files or use an &apos;include&apos; pattern." source="TS6307" />
+</file>
+<file name="packages/checkout/utils/index.js">
+<error line="1" column="15" severity="error" message="File &apos;/home/runner/work/woocommerce-blocks/woocommerce-blocks/packages/checkout/utils/validation/index.ts&apos; is not listed within the file list of project &apos;/home/runner/work/woocommerce-blocks/woocommerce-blocks/tsconfig.json&apos;. Projects must list all files or use an &apos;include&apos; pattern." source="TS6307" />
+<error line="2" column="37" severity="error" message="File &apos;/home/runner/work/woocommerce-blocks/woocommerce-blocks/packages/checkout/utils/extension-cart-update.ts&apos; is not listed within the file list of project &apos;/home/runner/work/woocommerce-blocks/woocommerce-blocks/tsconfig.json&apos;. Projects must list all files or use an &apos;include&apos; pattern." source="TS6307" />
+</file>
+<file name="packages/checkout/blocks-registry/get-registered-blocks.ts">
+<error line="4" column="50" severity="error" message="File &apos;/home/runner/work/woocommerce-blocks/woocommerce-blocks/packages/checkout/blocks-registry/types.ts&apos; is not listed within the file list of project &apos;/home/runner/work/woocommerce-blocks/woocommerce-blocks/tsconfig.json&apos;. Projects must list all files or use an &apos;include&apos; pattern.
+  The file is in the program because:
+    Imported via &apos;./types&apos; from file &apos;/home/runner/work/woocommerce-blocks/woocommerce-blocks/packages/checkout/blocks-registry/get-registered-blocks.ts&apos;
+    Imported via &apos;./types&apos; from file &apos;/home/runner/work/woocommerce-blocks/woocommerce-blocks/packages/checkout/blocks-registry/registered-blocks.ts&apos;
+    Imported via &apos;./types&apos; from file &apos;/home/runner/work/woocommerce-blocks/woocommerce-blocks/packages/checkout/blocks-registry/register-checkout-block.ts&apos;
+    Imported via &apos;./types&apos; from file &apos;/home/runner/work/woocommerce-blocks/woocommerce-blocks/packages/checkout/blocks-registry/index.ts&apos;" source="TS6307" />
+<error line="5" column="34" severity="error" message="File &apos;/home/runner/work/woocommerce-blocks/woocommerce-blocks/packages/checkout/blocks-registry/registered-blocks.ts&apos; is not listed within the file list of project &apos;/home/runner/work/woocommerce-blocks/woocommerce-blocks/tsconfig.json&apos;. Projects must list all files or use an &apos;include&apos; pattern.
+  The file is in the program because:
+    Imported via &apos;./registered-blocks&apos; from file &apos;/home/runner/work/woocommerce-blocks/woocommerce-blocks/packages/checkout/blocks-registry/get-registered-blocks.ts&apos;
+    Imported via &apos;./registered-blocks&apos; from file &apos;/home/runner/work/woocommerce-blocks/woocommerce-blocks/packages/checkout/blocks-registry/register-checkout-block.ts&apos;" source="TS6307" />
+</file>
+<file name="packages/checkout/blocks-registry/register-checkout-block.ts">
+<error line="15" column="8" severity="error" message="File &apos;/home/runner/work/woocommerce-blocks/woocommerce-blocks/packages/checkout/blocks-registry/utils.ts&apos; is not listed within the file list of project &apos;/home/runner/work/woocommerce-blocks/woocommerce-blocks/tsconfig.json&apos;. Projects must list all files or use an &apos;include&apos; pattern." source="TS6307" />
+<error line="34" column="3" severity="error" message="Type &apos;LazyExoticComponent&lt;ComponentType&lt;unknown&gt;&gt; | (() =&gt; Element | null) | null&apos; is not assignable to type &apos;Function&apos;.
+  Type &apos;null&apos; is not assignable to type &apos;Function&apos;." source="TS2322" />
+<error line="44" column="43" severity="error" message="Property &apos;lock&apos; does not exist on type &apos;{}&apos;." source="TS2339" />
+</file>
+<file name="packages/checkout/blocks-registry/index.ts">
+<error line="1" column="15" severity="error" message="File &apos;/home/runner/work/woocommerce-blocks/woocommerce-blocks/packages/checkout/blocks-registry/get-registered-blocks.ts&apos; is not listed within the file list of project &apos;/home/runner/work/woocommerce-blocks/woocommerce-blocks/tsconfig.json&apos;. Projects must list all files or use an &apos;include&apos; pattern.
+  The file is in the program because:
+    Imported via &apos;./get-registered-blocks&apos; from file &apos;/home/runner/work/woocommerce-blocks/woocommerce-blocks/packages/checkout/blocks-registry/index.ts&apos;
+    Imported via &apos;./get-registered-blocks&apos; from file &apos;/home/runner/work/woocommerce-blocks/woocommerce-blocks/packages/checkout/blocks-registry/utils.ts&apos;" source="TS6307" />
+<error line="2" column="15" severity="error" message="File &apos;/home/runner/work/woocommerce-blocks/woocommerce-blocks/packages/checkout/blocks-registry/register-checkout-block.ts&apos; is not listed within the file list of project &apos;/home/runner/work/woocommerce-blocks/woocommerce-blocks/tsconfig.json&apos;. Projects must list all files or use an &apos;include&apos; pattern." source="TS6307" />
+</file>
+<file name="packages/checkout/index.js">
+<error line="1" column="15" severity="error" message="File &apos;/home/runner/work/woocommerce-blocks/woocommerce-blocks/packages/checkout/components/index.js&apos; is not listed within the file list of project &apos;/home/runner/work/woocommerce-blocks/woocommerce-blocks/tsconfig.json&apos;. Projects must list all files or use an &apos;include&apos; pattern." source="TS6307" />
+<error line="2" column="15" severity="error" message="File &apos;/home/runner/work/woocommerce-blocks/woocommerce-blocks/packages/checkout/utils/index.js&apos; is not listed within the file list of project &apos;/home/runner/work/woocommerce-blocks/woocommerce-blocks/tsconfig.json&apos;. Projects must list all files or use an &apos;include&apos; pattern." source="TS6307" />
+<error line="4" column="15" severity="error" message="File &apos;/home/runner/work/woocommerce-blocks/woocommerce-blocks/packages/checkout/filter-registry/index.ts&apos; is not listed within the file list of project &apos;/home/runner/work/woocommerce-blocks/woocommerce-blocks/tsconfig.json&apos;. Projects must list all files or use an &apos;include&apos; pattern." source="TS6307" />
+<error line="5" column="15" severity="error" message="File &apos;/home/runner/work/woocommerce-blocks/woocommerce-blocks/packages/checkout/blocks-registry/index.ts&apos; is not listed within the file list of project &apos;/home/runner/work/woocommerce-blocks/woocommerce-blocks/tsconfig.json&apos;. Projects must list all files or use an &apos;include&apos; pattern." source="TS6307" />
+<error line="6" column="34" severity="error" message="Could not find a declaration file for module &apos;wordpress-components&apos;. &apos;/home/runner/work/woocommerce-blocks/woocommerce-blocks/node_modules/wordpress-components/build/index.js&apos; implicitly has an &apos;any&apos; type.
+  If the &apos;@wordpress/components&apos; package actually exposes this module, consider sending a pull request to amend &apos;https://github.com/DefinitelyTyped/DefinitelyTyped/tree/master/types/wordpress__components&apos;" source="TS7016" />
+</file>
+<file name="assets/js/base/context/providers/store-snackbar-notices/components/snackbar-notices-container.js">
+<error line="5" column="30" severity="error" message="Could not find a declaration file for module &apos;wordpress-components&apos;. &apos;/home/runner/work/woocommerce-blocks/woocommerce-blocks/node_modules/wordpress-components/build/index.js&apos; implicitly has an &apos;any&apos; type.
+  If the &apos;@wordpress/components&apos; package actually exposes this module, consider sending a pull request to amend &apos;https://github.com/DefinitelyTyped/DefinitelyTyped/tree/master/types/wordpress__components&apos;" source="TS7016" />
+<error line="7" column="51" severity="error" message="File &apos;/home/runner/work/woocommerce-blocks/woocommerce-blocks/packages/checkout/index.js&apos; is not listed within the file list of project &apos;/home/runner/work/woocommerce-blocks/woocommerce-blocks/tsconfig.json&apos;. Projects must list all files or use an &apos;include&apos; pattern.
+  The file is in the program because:
+    Imported via &apos;@woocommerce/blocks-checkout&apos; from file &apos;/home/runner/work/woocommerce-blocks/woocommerce-blocks/assets/js/base/context/providers/store-snackbar-notices/components/snackbar-notices-container.js&apos;
+    Imported via &apos;@woocommerce/blocks-checkout&apos; from file &apos;/home/runner/work/woocommerce-blocks/woocommerce-blocks/assets/js/atomic/utils/render-parent-block.tsx&apos;
+    Imported via &apos;@woocommerce/blocks-checkout&apos; from file &apos;/home/runner/work/woocommerce-blocks/woocommerce-blocks/assets/js/base/components/cart-checkout/order-summary/index.tsx&apos;
+    Imported via &apos;@woocommerce/blocks-checkout&apos; from file &apos;/home/runner/work/woocommerce-blocks/woocommerce-blocks/assets/js/base/components/cart-checkout/order-summary/order-summary-item.tsx&apos;
+    Imported via &apos;@woocommerce/blocks-checkout&apos; from file &apos;/home/runner/work/woocommerce-blocks/woocommerce-blocks/assets/js/base/components/cart-checkout/shipping-rates-control/index.tsx&apos;
+    Imported via &apos;@woocommerce/blocks-checkout&apos; from file &apos;/home/runner/work/woocommerce-blocks/woocommerce-blocks/assets/js/base/components/cart-checkout/shipping-rates-control-package/index.tsx&apos;
+    Imported via &apos;@woocommerce/blocks-checkout&apos; from file &apos;/home/runner/work/woocommerce-blocks/woocommerce-blocks/assets/js/base/components/cart-checkout/totals/coupon/index.tsx&apos;
+    Imported via &apos;@woocommerce/blocks-checkout&apos; from file &apos;/home/runner/work/woocommerce-blocks/woocommerce-blocks/assets/js/base/components/cart-checkout/totals/discount/index.tsx&apos;
+    Imported via &apos;@woocommerce/blocks-checkout&apos; from file &apos;/home/runner/work/woocommerce-blocks/woocommerce-blocks/assets/js/base/components/cart-checkout/totals/footer-item/index.tsx&apos;
+    Imported via &apos;@woocommerce/blocks-checkout&apos; from file &apos;/home/runner/work/woocommerce-blocks/woocommerce-blocks/assets/js/base/components/cart-checkout/totals/shipping/index.tsx&apos;
+    Imported via &apos;@woocommerce/blocks-checkout&apos; from file &apos;/home/runner/work/woocommerce-blocks/woocommerce-blocks/assets/js/blocks/cart-checkout-shared/payment-methods/payment-method-card.js&apos;
+    Imported via &apos;@woocommerce/blocks-checkout&apos; from file &apos;/home/runner/work/woocommerce-blocks/woocommerce-blocks/assets/js/blocks/cart/block.js&apos;
+    Imported via &apos;@woocommerce/blocks-checkout&apos; from file &apos;/home/runner/work/woocommerce-blocks/woocommerce-blocks/assets/js/blocks/cart/inner-blocks/filled-cart-block/edit.tsx&apos;
+    Imported via &apos;@woocommerce/blocks-checkout&apos; from file &apos;/home/runner/work/woocommerce-blocks/woocommerce-blocks/assets/js/blocks/cart/inner-blocks/cart-items-block/edit.tsx&apos;
+    Imported via &apos;@woocommerce/blocks-checkout&apos; from file &apos;/home/runner/work/woocommerce-blocks/woocommerce-blocks/assets/js/blocks/cart/cart-line-items-table/cart-line-item-row.tsx&apos;
+    Imported via &apos;@woocommerce/blocks-checkout&apos; from file &apos;/home/runner/work/woocommerce-blocks/woocommerce-blocks/assets/js/blocks/cart/inner-blocks/cart-totals-block/edit.tsx&apos;
+    Imported via &apos;@woocommerce/blocks-checkout&apos; from file &apos;/home/runner/work/woocommerce-blocks/woocommerce-blocks/assets/js/blocks/cart/inner-blocks/empty-cart-block/edit.tsx&apos;
+    Imported via &apos;@woocommerce/blocks-checkout&apos; from file &apos;/home/runner/work/woocommerce-blocks/woocommerce-blocks/assets/js/blocks/cart/inner-blocks/cart-order-summary-block/edit.tsx&apos;
+    Imported via &apos;@woocommerce/blocks-checkout&apos; from file &apos;/home/runner/work/woocommerce-blocks/woocommerce-blocks/assets/js/blocks/cart/inner-blocks/cart-order-summary-block/slotfills.tsx&apos;
+    Imported via &apos;@woocommerce/blocks-checkout&apos; from file &apos;/home/runner/work/woocommerce-blocks/woocommerce-blocks/assets/js/blocks/cart/inner-blocks/cart-order-summary-subtotal/block.tsx&apos;
+    Imported via &apos;@woocommerce/blocks-checkout&apos; from file &apos;/home/runner/work/woocommerce-blocks/woocommerce-blocks/assets/js/blocks/cart/inner-blocks/cart-order-summary-fee/block.tsx&apos;
+    Imported via &apos;@woocommerce/blocks-checkout&apos; from file &apos;/home/runner/work/woocommerce-blocks/woocommerce-blocks/assets/js/blocks/cart/inner-blocks/cart-order-summary-discount/block.tsx&apos;
+    Imported via &apos;@woocommerce/blocks-checkout&apos; from file &apos;/home/runner/work/woocommerce-blocks/woocommerce-blocks/assets/js/blocks/cart/inner-blocks/cart-order-summary-shipping/block.tsx&apos;
+    Imported via &apos;@woocommerce/blocks-checkout&apos; from file &apos;/home/runner/work/woocommerce-blocks/woocommerce-blocks/assets/js/blocks/cart/inner-blocks/cart-order-summary-coupon-form/block.tsx&apos;
+    Imported via &apos;@woocommerce/blocks-checkout&apos; from file &apos;/home/runner/work/woocommerce-blocks/woocommerce-blocks/assets/js/blocks/cart/inner-blocks/cart-order-summary-taxes/block.tsx&apos;
+    Imported via &apos;@woocommerce/blocks-checkout&apos; from file &apos;/home/runner/work/woocommerce-blocks/woocommerce-blocks/assets/js/blocks/cart/inner-blocks/register-components.ts&apos;
+    Imported via &apos;@woocommerce/blocks-checkout&apos; from file &apos;/home/runner/work/woocommerce-blocks/woocommerce-blocks/assets/js/blocks/cart/test/slots.js&apos;
+    Imported via &apos;@woocommerce/blocks-checkout&apos; from file &apos;/home/runner/work/woocommerce-blocks/woocommerce-blocks/assets/js/blocks/checkout/block.tsx&apos;
+    Imported via &apos;@woocommerce/blocks-checkout&apos; from file &apos;/home/runner/work/woocommerce-blocks/woocommerce-blocks/assets/js/blocks/checkout/inner-blocks/checkout-fields-block/edit.tsx&apos;
+    Imported via &apos;@woocommerce/blocks-checkout&apos; from file &apos;/home/runner/work/woocommerce-blocks/woocommerce-blocks/assets/js/blocks/checkout/inner-blocks/checkout-totals-block/edit.tsx&apos;
+    Imported via &apos;@woocommerce/blocks-checkout&apos; from file &apos;/home/runner/work/woocommerce-blocks/woocommerce-blocks/assets/js/blocks/checkout/inner-blocks/checkout-shipping-address-block/edit.tsx&apos;
+    Imported via &apos;@woocommerce/blocks-checkout&apos; from file &apos;/home/runner/work/woocommerce-blocks/woocommerce-blocks/assets/js/blocks/checkout/inner-blocks/checkout-shipping-address-block/block.tsx&apos;
+    Imported via &apos;@woocommerce/blocks-checkout&apos; from file &apos;/home/runner/work/woocommerce-blocks/woocommerce-blocks/assets/js/blocks/checkout/inner-blocks/checkout-terms-block/edit.tsx&apos;
+    Imported via &apos;@woocommerce/blocks-checkout&apos; from file &apos;/home/runner/work/woocommerce-blocks/woocommerce-blocks/assets/js/blocks/checkout/inner-blocks/checkout-contact-information-block/edit.tsx&apos;
+    Imported via &apos;@woocommerce/blocks-checkout&apos; from file &apos;/home/runner/work/woocommerce-blocks/woocommerce-blocks/assets/js/blocks/checkout/inner-blocks/checkout-contact-information-block/block.tsx&apos;
+    Imported via &apos;@woocommerce/blocks-checkout&apos; from file &apos;/home/runner/work/woocommerce-blocks/woocommerce-blocks/assets/js/blocks/checkout/inner-blocks/checkout-billing-address-block/edit.tsx&apos;
+    Imported via &apos;@woocommerce/blocks-checkout&apos; from file &apos;/home/runner/work/woocommerce-blocks/woocommerce-blocks/assets/js/blocks/checkout/order-notes/index.tsx&apos;
+    Imported via &apos;@woocommerce/blocks-checkout&apos; from file &apos;/home/runner/work/woocommerce-blocks/woocommerce-blocks/assets/js/blocks/checkout/inner-blocks/checkout-order-summary-block/edit.tsx&apos;
+    Imported via &apos;@woocommerce/blocks-checkout&apos; from file &apos;/home/runner/work/woocommerce-blocks/woocommerce-blocks/assets/js/blocks/checkout/inner-blocks/checkout-order-summary-block/slotfills.tsx&apos;
+    Imported via &apos;@woocommerce/blocks-checkout&apos; from file &apos;/home/runner/work/woocommerce-blocks/woocommerce-blocks/assets/js/blocks/checkout/inner-blocks/checkout-payment-block/edit.tsx&apos;
+    Imported via &apos;@woocommerce/blocks-checkout&apos; from file &apos;/home/runner/work/woocommerce-blocks/woocommerce-blocks/assets/js/blocks/checkout/inner-blocks/checkout-shipping-methods-block/edit.tsx&apos;
+    Imported via &apos;@woocommerce/blocks-checkout&apos; from file &apos;/home/runner/work/woocommerce-blocks/woocommerce-blocks/assets/js/blocks/checkout/inner-blocks/checkout-order-summary-subtotal/block.tsx&apos;
+    Imported via &apos;@woocommerce/blocks-checkout&apos; from file &apos;/home/runner/work/woocommerce-blocks/woocommerce-blocks/assets/js/blocks/checkout/inner-blocks/checkout-order-summary-fee/block.tsx&apos;
+    Imported via &apos;@woocommerce/blocks-checkout&apos; from file &apos;/home/runner/work/woocommerce-blocks/woocommerce-blocks/assets/js/blocks/checkout/inner-blocks/checkout-order-summary-discount/block.tsx&apos;
+    Imported via &apos;@woocommerce/blocks-checkout&apos; from file &apos;/home/runner/work/woocommerce-blocks/woocommerce-blocks/assets/js/blocks/checkout/inner-blocks/checkout-order-summary-shipping/block.tsx&apos;
+    Imported via &apos;@woocommerce/blocks-checkout&apos; from file &apos;/home/runner/work/woocommerce-blocks/woocommerce-blocks/assets/js/blocks/checkout/inner-blocks/checkout-order-summary-coupon-form/block.tsx&apos;
+    Imported via &apos;@woocommerce/blocks-checkout&apos; from file &apos;/home/runner/work/woocommerce-blocks/woocommerce-blocks/assets/js/blocks/checkout/inner-blocks/checkout-order-summary-taxes/block.tsx&apos;
+    Imported via &apos;@woocommerce/blocks-checkout&apos; from file &apos;/home/runner/work/woocommerce-blocks/woocommerce-blocks/assets/js/blocks/checkout/inner-blocks/checkout-order-summary-cart-items/block.tsx&apos;
+    Imported via &apos;@woocommerce/blocks-checkout&apos; from file &apos;/home/runner/work/woocommerce-blocks/woocommerce-blocks/assets/js/blocks/checkout/inner-blocks/register-components.ts&apos;
+    Imported via &apos;@woocommerce/blocks-checkout&apos; from file &apos;/home/runner/work/woocommerce-blocks/woocommerce-blocks/assets/js/blocks/checkout/inner-blocks/checkout-terms-block/frontend.tsx&apos;
+    Imported via &apos;@woocommerce/blocks-checkout&apos; from file &apos;/home/runner/work/woocommerce-blocks/woocommerce-blocks/assets/js/blocks/mini-cart/mini-cart-contents/inner-blocks/register-components.ts&apos;
+    Imported via &apos;@woocommerce/blocks-checkout&apos; from file &apos;/home/runner/work/woocommerce-blocks/woocommerce-blocks/assets/js/blocks/mini-cart/mini-cart-contents/inner-blocks/mini-cart-footer-block/block.tsx&apos;
+    Imported via &apos;@woocommerce/blocks-checkout&apos; from file &apos;/home/runner/work/woocommerce-blocks/woocommerce-blocks/assets/js/blocks/mini-cart/mini-cart-contents/inner-blocks/filled-mini-cart-contents-block/edit.tsx&apos;
+    Imported via &apos;@woocommerce/blocks-checkout&apos; from file &apos;/home/runner/work/woocommerce-blocks/woocommerce-blocks/assets/js/blocks/mini-cart/test/block.js&apos;" source="TS6307" />
+<error line="18" column="2" severity="error" message="Binding element &apos;className&apos; implicitly has an &apos;any&apos; type." source="TS7031" />
+<error line="36" column="24" severity="error" message="Property &apos;type&apos; does not exist on type &apos;Notice&apos;." source="TS2339" />
+<error line="42" column="6" severity="error" message="Element implicitly has an &apos;any&apos; type because expression of type &apos;string&apos; can&apos;t be used to index type &apos;{}&apos;.
+  No index signature with a parameter of type &apos;string&apos; was found on type &apos;{}&apos;." source="TS7053" />
+<error line="53" column="17" severity="error" message="Element implicitly has an &apos;any&apos; type because expression of type &apos;string&apos; can&apos;t be used to index type &apos;{}&apos;.
+  No index signature with a parameter of type &apos;string&apos; was found on type &apos;{}&apos;." source="TS7053" />
 </file>
 <file name="assets/js/base/context/providers/container-width-context.js">
 <error line="10" column="56" severity="error" message="Namespace &apos;&quot;/home/runner/work/woocommerce-blocks/woocommerce-blocks/assets/js/types/type-defs/contexts&quot;&apos; has no exported member &apos;ContainerWidthContext&apos;." source="TS2694" />
 </file>
 <file name="assets/js/base/context/providers/index.js">
 <error line="4" column="1" severity="error" message="Module &apos;./cart-checkout&apos; has already exported a member named &apos;React&apos;. Consider explicitly re-exporting to resolve the ambiguity." source="TS2308" />
-<error line="5" column="1" severity="error" message="Module &apos;./cart-checkout&apos; has already exported a member named &apos;React&apos;. Consider explicitly re-exporting to resolve the ambiguity." source="TS2308" />
-<error line="5" column="1" severity="error" message="Module &apos;./store-notices&apos; has already exported a member named &apos;NoticeContext&apos;. Consider explicitly re-exporting to resolve the ambiguity." source="TS2308" />
 <error line="6" column="1" severity="error" message="Module &apos;./cart-checkout&apos; has already exported a member named &apos;React&apos;. Consider explicitly re-exporting to resolve the ambiguity." source="TS2308" />
 <error line="7" column="1" severity="error" message="Module &apos;./cart-checkout&apos; has already exported a member named &apos;React&apos;. Consider explicitly re-exporting to resolve the ambiguity." source="TS2308" />
-</file>
-<file name="assets/js/base/components/button/index.tsx">
-<error line="4" column="36" severity="error" message="Could not find a declaration file for module &apos;wordpress-components&apos;. &apos;/home/runner/work/woocommerce-blocks/woocommerce-blocks/node_modules/wordpress-components/build/index.js&apos; implicitly has an &apos;any&apos; type.
-  If the &apos;@wordpress/components&apos; package actually exposes this module, consider sending a pull request to amend &apos;https://github.com/DefinitelyTyped/DefinitelyTyped/tree/master/types/wordpress__components&apos;" source="TS7016" />
 </file>
 <file name="assets/js/atomic/blocks/product-elements/add-to-cart/shared/add-to-cart-button.js">
 <error line="119" column="4" severity="error" message="Type &apos;{ children: string; className: string; href: string; onClick: () =&gt; any; rel: string; }&apos; is not assignable to type &apos;IntrinsicAttributes &amp; ButtonProps&apos;.
@@ -1206,7 +1375,9 @@
     Type &apos;typeof WrappedComponent&apos; is not assignable to type &apos;ComponentClass&lt;InnerProps, any&gt;&apos;.
       Types of property &apos;propTypes&apos; are incompatible.
         Type &apos;{ selected: PropTypes.Requireable&lt;string | number&gt;; }&apos; is not assignable to type &apos;WeakValidationMap&lt;InnerProps&gt;&apos;." source="TS2345" />
-<error line="20" column="7" severity="error" message="Type &apos;{ selected: any[]; children?: ReactNode; }&apos; is not assignable to type &apos;InnerProps&apos;.
+<error line="21" column="7" severity="error" message="Type &apos;{ children?: ReactNode; }&apos; is not assignable to type &apos;InnerProps&apos;.
+  &apos;{ children?: ReactNode; }&apos; is assignable to the constraint of type &apos;InnerProps&apos;, but &apos;InnerProps&apos; could be instantiated with a different subtype of constraint &apos;{}&apos;." source="TS2322" />
+<error line="23" column="7" severity="error" message="Type &apos;{ selected: any[]; children?: ReactNode; }&apos; is not assignable to type &apos;InnerProps&apos;.
   &apos;{ selected: any[]; children?: ReactNode; }&apos; is assignable to the constraint of type &apos;InnerProps&apos;, but &apos;InnerProps&apos; could be instantiated with a different subtype of constraint &apos;{}&apos;." source="TS2322" />
 </file>
 <file name="assets/js/editor-components/product-control/index.js">
@@ -1376,193 +1547,6 @@
 </file>
 <file name="node_modules/html-react-parser/index.d.ts">
 <error line="3" column="10" severity="error" message="Module &apos;&quot;htmlparser2&quot;&apos; has no exported member &apos;DomElement&apos;." source="TS2305" />
-</file>
-<file name="packages/checkout/components/totals/item/index.tsx">
-<error line="8" column="15" severity="error" message="Module &apos;&quot;@woocommerce/price-format&quot;&apos; has no exported member &apos;Currency&apos;." source="TS2305" />
-</file>
-<file name="packages/checkout/components/totals/subtotal/index.tsx">
-<error line="5" column="15" severity="error" message="Module &apos;&quot;@woocommerce/price-format&quot;&apos; has no exported member &apos;Currency&apos;." source="TS2305" />
-<error line="35" column="4" severity="error" message="Type &apos;{ className: string | undefined; currency: Currency; label: string; value: number; }&apos; is not assignable to type &apos;TotalsItemProps&apos; with &apos;exactOptionalPropertyTypes: true&apos;. Consider adding &apos;undefined&apos; to the types of the target&apos;s properties.
-  Types of property &apos;className&apos; are incompatible.
-    Type &apos;string | undefined&apos; is not assignable to type &apos;string&apos;.
-      Type &apos;undefined&apos; is not assignable to type &apos;string&apos;." source="TS2375" />
-</file>
-<file name="packages/checkout/components/totals/taxes/index.tsx">
-<error line="7" column="15" severity="error" message="Module &apos;&quot;@woocommerce/price-format&quot;&apos; has no exported member &apos;Currency&apos;." source="TS2305" />
-</file>
-<file name="packages/checkout/components/totals/fees/index.tsx">
-<error line="7" column="15" severity="error" message="Module &apos;&quot;@woocommerce/price-format&quot;&apos; has no exported member &apos;Currency&apos;." source="TS2305" />
-</file>
-<file name="packages/checkout/components/totals/index.js">
-<error line="1" column="39" severity="error" message="File &apos;/home/runner/work/woocommerce-blocks/woocommerce-blocks/packages/checkout/components/totals/item/index.tsx&apos; is not listed within the file list of project &apos;/home/runner/work/woocommerce-blocks/woocommerce-blocks/tsconfig.json&apos;. Projects must list all files or use an &apos;include&apos; pattern.
-  The file is in the program because:
-    Imported via &apos;./item&apos; from file &apos;/home/runner/work/woocommerce-blocks/woocommerce-blocks/packages/checkout/components/totals/index.js&apos;
-    Imported via &apos;../item&apos; from file &apos;/home/runner/work/woocommerce-blocks/woocommerce-blocks/packages/checkout/components/totals/subtotal/index.tsx&apos;
-    Imported via &apos;../item&apos; from file &apos;/home/runner/work/woocommerce-blocks/woocommerce-blocks/packages/checkout/components/totals/taxes/index.tsx&apos;
-    Imported via &apos;../item&apos; from file &apos;/home/runner/work/woocommerce-blocks/woocommerce-blocks/packages/checkout/components/totals/fees/index.tsx&apos;" source="TS6307" />
-<error line="2" column="37" severity="error" message="File &apos;/home/runner/work/woocommerce-blocks/woocommerce-blocks/packages/checkout/components/totals/subtotal/index.tsx&apos; is not listed within the file list of project &apos;/home/runner/work/woocommerce-blocks/woocommerce-blocks/tsconfig.json&apos;. Projects must list all files or use an &apos;include&apos; pattern." source="TS6307" />
-<error line="3" column="40" severity="error" message="File &apos;/home/runner/work/woocommerce-blocks/woocommerce-blocks/packages/checkout/components/totals/taxes/index.tsx&apos; is not listed within the file list of project &apos;/home/runner/work/woocommerce-blocks/woocommerce-blocks/tsconfig.json&apos;. Projects must list all files or use an &apos;include&apos; pattern." source="TS6307" />
-<error line="4" column="39" severity="error" message="File &apos;/home/runner/work/woocommerce-blocks/woocommerce-blocks/packages/checkout/components/totals/fees/index.tsx&apos; is not listed within the file list of project &apos;/home/runner/work/woocommerce-blocks/woocommerce-blocks/tsconfig.json&apos;. Projects must list all files or use an &apos;include&apos; pattern." source="TS6307" />
-</file>
-<file name="packages/checkout/components/error-boundary/index.js">
-<error line="9" column="35" severity="error" message="Parameter &apos;error&apos; implicitly has an &apos;any&apos; type." source="TS7006" />
-</file>
-<file name="packages/checkout/slot/index.js">
-<error line="11" column="8" severity="error" message="Could not find a declaration file for module &apos;wordpress-components&apos;. &apos;/home/runner/work/woocommerce-blocks/woocommerce-blocks/node_modules/wordpress-components/build/index.js&apos; implicitly has an &apos;any&apos; type.
-  If the &apos;@wordpress/components&apos; package actually exposes this module, consider sending a pull request to amend &apos;https://github.com/DefinitelyTyped/DefinitelyTyped/tree/master/types/wordpress__components&apos;" source="TS7016" />
-<error line="16" column="32" severity="error" message="File &apos;/home/runner/work/woocommerce-blocks/woocommerce-blocks/packages/checkout/components/error-boundary/index.js&apos; is not listed within the file list of project &apos;/home/runner/work/woocommerce-blocks/woocommerce-blocks/tsconfig.json&apos;. Projects must list all files or use an &apos;include&apos; pattern." source="TS6307" />
-<error line="42" column="12" severity="error" message="Generic type &apos;Array&lt;T&gt;&apos; requires 1 type argument(s)." source="TS2314" />
-<error line="83" column="13" severity="error" message="Generic type &apos;Array&lt;T&gt;&apos; requires 1 type argument(s)." source="TS2314" />
-<error line="87" column="8" severity="error" message="Parameter &apos;fillProps&apos; implicitly has an &apos;any&apos; type." source="TS7006" />
-</file>
-<file name="packages/checkout/components/order-meta/index.js">
-<error line="9" column="41" severity="error" message="Variable &apos;useSlot&apos; implicitly has type &apos;any&apos; in some locations where its type cannot be determined." source="TS7034" />
-<error line="9" column="56" severity="error" message="File &apos;/home/runner/work/woocommerce-blocks/woocommerce-blocks/packages/checkout/slot/index.js&apos; is not listed within the file list of project &apos;/home/runner/work/woocommerce-blocks/woocommerce-blocks/tsconfig.json&apos;. Projects must list all files or use an &apos;include&apos; pattern.
-  The file is in the program because:
-    Imported via &apos;../../slot&apos; from file &apos;/home/runner/work/woocommerce-blocks/woocommerce-blocks/packages/checkout/components/order-meta/index.js&apos;
-    Imported via &apos;../../slot&apos; from file &apos;/home/runner/work/woocommerce-blocks/woocommerce-blocks/packages/checkout/components/discounts-meta/index.js&apos;
-    Imported via &apos;../../slot&apos; from file &apos;/home/runner/work/woocommerce-blocks/woocommerce-blocks/packages/checkout/components/order-shipping-packages/index.js&apos;
-    Imported via &apos;./slot&apos; from file &apos;/home/runner/work/woocommerce-blocks/woocommerce-blocks/packages/checkout/index.js&apos;" source="TS6307" />
-<error line="14" column="9" severity="error" message="Property &apos;Fill&apos; does not exist on type &apos;Object&apos;." source="TS2339" />
-<error line="14" column="38" severity="error" message="Property &apos;Slot&apos; does not exist on type &apos;Object&apos;." source="TS2339" />
-<error line="18" column="18" severity="error" message="Binding element &apos;className&apos; implicitly has an &apos;any&apos; type." source="TS7031" />
-<error line="18" column="29" severity="error" message="Binding element &apos;extensions&apos; implicitly has an &apos;any&apos; type." source="TS7031" />
-<error line="18" column="41" severity="error" message="Binding element &apos;cart&apos; implicitly has an &apos;any&apos; type." source="TS7031" />
-<error line="18" column="47" severity="error" message="Binding element &apos;context&apos; implicitly has an &apos;any&apos; type." source="TS7031" />
-<error line="19" column="20" severity="error" message="Variable &apos;useSlot&apos; implicitly has an &apos;any&apos; type." source="TS7005" />
-</file>
-<file name="packages/checkout/components/discounts-meta/index.js">
-<error line="9" column="41" severity="error" message="Variable &apos;useSlot&apos; implicitly has type &apos;any&apos; in some locations where its type cannot be determined." source="TS7034" />
-<error line="15" column="2" severity="error" message="Property &apos;Fill&apos; does not exist on type &apos;Object&apos;." source="TS2339" />
-<error line="16" column="2" severity="error" message="Property &apos;Slot&apos; does not exist on type &apos;Object&apos;." source="TS2339" />
-<error line="19" column="18" severity="error" message="Binding element &apos;className&apos; implicitly has an &apos;any&apos; type." source="TS7031" />
-<error line="19" column="29" severity="error" message="Binding element &apos;extensions&apos; implicitly has an &apos;any&apos; type." source="TS7031" />
-<error line="19" column="41" severity="error" message="Binding element &apos;cart&apos; implicitly has an &apos;any&apos; type." source="TS7031" />
-<error line="19" column="47" severity="error" message="Binding element &apos;context&apos; implicitly has an &apos;any&apos; type." source="TS7031" />
-<error line="20" column="20" severity="error" message="Variable &apos;useSlot&apos; implicitly has an &apos;any&apos; type." source="TS7005" />
-</file>
-<file name="packages/checkout/components/order-shipping-packages/index.js">
-<error line="9" column="26" severity="error" message="Variable &apos;useSlot&apos; implicitly has type &apos;any&apos; in some locations where its type cannot be determined." source="TS7034" />
-<error line="13" column="2" severity="error" message="Property &apos;Fill&apos; does not exist on type &apos;Object&apos;." source="TS2339" />
-<error line="14" column="2" severity="error" message="Property &apos;Slot&apos; does not exist on type &apos;Object&apos;." source="TS2339" />
-<error line="18" column="2" severity="error" message="Binding element &apos;className&apos; implicitly has an &apos;any&apos; type." source="TS7031" />
-<error line="19" column="2" severity="error" message="Binding element &apos;collapsible&apos; implicitly has an &apos;any&apos; type." source="TS7031" />
-<error line="20" column="2" severity="error" message="Binding element &apos;noResultsMessage&apos; implicitly has an &apos;any&apos; type." source="TS7031" />
-<error line="21" column="2" severity="error" message="Binding element &apos;renderOption&apos; implicitly has an &apos;any&apos; type." source="TS7031" />
-<error line="22" column="2" severity="error" message="Binding element &apos;extensions&apos; implicitly has an &apos;any&apos; type." source="TS7031" />
-<error line="23" column="2" severity="error" message="Binding element &apos;cart&apos; implicitly has an &apos;any&apos; type." source="TS7031" />
-<error line="24" column="2" severity="error" message="Binding element &apos;components&apos; implicitly has an &apos;any&apos; type." source="TS7031" />
-<error line="25" column="2" severity="error" message="Binding element &apos;context&apos; implicitly has an &apos;any&apos; type." source="TS7031" />
-<error line="27" column="20" severity="error" message="Variable &apos;useSlot&apos; implicitly has an &apos;any&apos; type." source="TS7005" />
-</file>
-<file name="packages/checkout/components/index.js">
-<error line="1" column="15" severity="error" message="File &apos;/home/runner/work/woocommerce-blocks/woocommerce-blocks/packages/checkout/components/totals/index.js&apos; is not listed within the file list of project &apos;/home/runner/work/woocommerce-blocks/woocommerce-blocks/tsconfig.json&apos;. Projects must list all files or use an &apos;include&apos; pattern." source="TS6307" />
-<error line="2" column="42" severity="error" message="File &apos;/home/runner/work/woocommerce-blocks/woocommerce-blocks/packages/checkout/components/totals-wrapper/index.tsx&apos; is not listed within the file list of project &apos;/home/runner/work/woocommerce-blocks/woocommerce-blocks/tsconfig.json&apos;. Projects must list all files or use an &apos;include&apos; pattern.
-  The file is in the program because:
-    Imported via &apos;./totals-wrapper&apos; from file &apos;/home/runner/work/woocommerce-blocks/woocommerce-blocks/packages/checkout/components/index.js&apos;
-    Imported via &apos;../totals-wrapper&apos; from file &apos;/home/runner/work/woocommerce-blocks/woocommerce-blocks/packages/checkout/components/order-meta/index.js&apos;
-    Imported via &apos;../totals-wrapper&apos; from file &apos;/home/runner/work/woocommerce-blocks/woocommerce-blocks/packages/checkout/components/discounts-meta/index.js&apos;" source="TS6307" />
-<error line="3" column="50" severity="error" message="File &apos;/home/runner/work/woocommerce-blocks/woocommerce-blocks/packages/checkout/components/order-meta/index.js&apos; is not listed within the file list of project &apos;/home/runner/work/woocommerce-blocks/woocommerce-blocks/tsconfig.json&apos;. Projects must list all files or use an &apos;include&apos; pattern." source="TS6307" />
-<error line="4" column="54" severity="error" message="File &apos;/home/runner/work/woocommerce-blocks/woocommerce-blocks/packages/checkout/components/discounts-meta/index.js&apos; is not listed within the file list of project &apos;/home/runner/work/woocommerce-blocks/woocommerce-blocks/tsconfig.json&apos;. Projects must list all files or use an &apos;include&apos; pattern." source="TS6307" />
-<error line="5" column="62" severity="error" message="File &apos;/home/runner/work/woocommerce-blocks/woocommerce-blocks/packages/checkout/components/order-shipping-packages/index.js&apos; is not listed within the file list of project &apos;/home/runner/work/woocommerce-blocks/woocommerce-blocks/tsconfig.json&apos;. Projects must list all files or use an &apos;include&apos; pattern." source="TS6307" />
-<error line="6" column="34" severity="error" message="File &apos;/home/runner/work/woocommerce-blocks/woocommerce-blocks/packages/checkout/components/panel/index.tsx&apos; is not listed within the file list of project &apos;/home/runner/work/woocommerce-blocks/woocommerce-blocks/tsconfig.json&apos;. Projects must list all files or use an &apos;include&apos; pattern." source="TS6307" />
-<error line="7" column="35" severity="error" message="File &apos;/home/runner/work/woocommerce-blocks/woocommerce-blocks/packages/checkout/components/button/index.ts&apos; is not listed within the file list of project &apos;/home/runner/work/woocommerce-blocks/woocommerce-blocks/tsconfig.json&apos;. Projects must list all files or use an &apos;include&apos; pattern." source="TS6307" />
-<error line="8" column="34" severity="error" message="File &apos;/home/runner/work/woocommerce-blocks/woocommerce-blocks/packages/checkout/components/label/index.ts&apos; is not listed within the file list of project &apos;/home/runner/work/woocommerce-blocks/woocommerce-blocks/tsconfig.json&apos;. Projects must list all files or use an &apos;include&apos; pattern." source="TS6307" />
-<error line="9" column="44" severity="error" message="File &apos;/home/runner/work/woocommerce-blocks/woocommerce-blocks/packages/checkout/components/checkbox-control/index.tsx&apos; is not listed within the file list of project &apos;/home/runner/work/woocommerce-blocks/woocommerce-blocks/tsconfig.json&apos;. Projects must list all files or use an &apos;include&apos; pattern." source="TS6307" />
-</file>
-<file name="packages/checkout/utils/index.js">
-<error line="1" column="15" severity="error" message="File &apos;/home/runner/work/woocommerce-blocks/woocommerce-blocks/packages/checkout/utils/validation/index.ts&apos; is not listed within the file list of project &apos;/home/runner/work/woocommerce-blocks/woocommerce-blocks/tsconfig.json&apos;. Projects must list all files or use an &apos;include&apos; pattern." source="TS6307" />
-<error line="2" column="37" severity="error" message="File &apos;/home/runner/work/woocommerce-blocks/woocommerce-blocks/packages/checkout/utils/extension-cart-update.ts&apos; is not listed within the file list of project &apos;/home/runner/work/woocommerce-blocks/woocommerce-blocks/tsconfig.json&apos;. Projects must list all files or use an &apos;include&apos; pattern." source="TS6307" />
-</file>
-<file name="packages/checkout/blocks-registry/get-registered-blocks.ts">
-<error line="4" column="50" severity="error" message="File &apos;/home/runner/work/woocommerce-blocks/woocommerce-blocks/packages/checkout/blocks-registry/types.ts&apos; is not listed within the file list of project &apos;/home/runner/work/woocommerce-blocks/woocommerce-blocks/tsconfig.json&apos;. Projects must list all files or use an &apos;include&apos; pattern.
-  The file is in the program because:
-    Imported via &apos;./types&apos; from file &apos;/home/runner/work/woocommerce-blocks/woocommerce-blocks/packages/checkout/blocks-registry/get-registered-blocks.ts&apos;
-    Imported via &apos;./types&apos; from file &apos;/home/runner/work/woocommerce-blocks/woocommerce-blocks/packages/checkout/blocks-registry/registered-blocks.ts&apos;
-    Imported via &apos;./types&apos; from file &apos;/home/runner/work/woocommerce-blocks/woocommerce-blocks/packages/checkout/blocks-registry/register-checkout-block.ts&apos;
-    Imported via &apos;./types&apos; from file &apos;/home/runner/work/woocommerce-blocks/woocommerce-blocks/packages/checkout/blocks-registry/index.ts&apos;" source="TS6307" />
-<error line="5" column="34" severity="error" message="File &apos;/home/runner/work/woocommerce-blocks/woocommerce-blocks/packages/checkout/blocks-registry/registered-blocks.ts&apos; is not listed within the file list of project &apos;/home/runner/work/woocommerce-blocks/woocommerce-blocks/tsconfig.json&apos;. Projects must list all files or use an &apos;include&apos; pattern.
-  The file is in the program because:
-    Imported via &apos;./registered-blocks&apos; from file &apos;/home/runner/work/woocommerce-blocks/woocommerce-blocks/packages/checkout/blocks-registry/get-registered-blocks.ts&apos;
-    Imported via &apos;./registered-blocks&apos; from file &apos;/home/runner/work/woocommerce-blocks/woocommerce-blocks/packages/checkout/blocks-registry/register-checkout-block.ts&apos;" source="TS6307" />
-</file>
-<file name="packages/checkout/blocks-registry/register-checkout-block.ts">
-<error line="15" column="8" severity="error" message="File &apos;/home/runner/work/woocommerce-blocks/woocommerce-blocks/packages/checkout/blocks-registry/utils.ts&apos; is not listed within the file list of project &apos;/home/runner/work/woocommerce-blocks/woocommerce-blocks/tsconfig.json&apos;. Projects must list all files or use an &apos;include&apos; pattern." source="TS6307" />
-<error line="34" column="3" severity="error" message="Type &apos;LazyExoticComponent&lt;ComponentType&lt;unknown&gt;&gt; | (() =&gt; Element | null) | null&apos; is not assignable to type &apos;Function&apos;.
-  Type &apos;null&apos; is not assignable to type &apos;Function&apos;." source="TS2322" />
-<error line="44" column="43" severity="error" message="Property &apos;lock&apos; does not exist on type &apos;{}&apos;." source="TS2339" />
-</file>
-<file name="packages/checkout/blocks-registry/index.ts">
-<error line="1" column="15" severity="error" message="File &apos;/home/runner/work/woocommerce-blocks/woocommerce-blocks/packages/checkout/blocks-registry/get-registered-blocks.ts&apos; is not listed within the file list of project &apos;/home/runner/work/woocommerce-blocks/woocommerce-blocks/tsconfig.json&apos;. Projects must list all files or use an &apos;include&apos; pattern.
-  The file is in the program because:
-    Imported via &apos;./get-registered-blocks&apos; from file &apos;/home/runner/work/woocommerce-blocks/woocommerce-blocks/packages/checkout/blocks-registry/index.ts&apos;
-    Imported via &apos;./get-registered-blocks&apos; from file &apos;/home/runner/work/woocommerce-blocks/woocommerce-blocks/packages/checkout/blocks-registry/utils.ts&apos;" source="TS6307" />
-<error line="2" column="15" severity="error" message="File &apos;/home/runner/work/woocommerce-blocks/woocommerce-blocks/packages/checkout/blocks-registry/register-checkout-block.ts&apos; is not listed within the file list of project &apos;/home/runner/work/woocommerce-blocks/woocommerce-blocks/tsconfig.json&apos;. Projects must list all files or use an &apos;include&apos; pattern." source="TS6307" />
-</file>
-<file name="packages/checkout/index.js">
-<error line="1" column="15" severity="error" message="File &apos;/home/runner/work/woocommerce-blocks/woocommerce-blocks/packages/checkout/components/index.js&apos; is not listed within the file list of project &apos;/home/runner/work/woocommerce-blocks/woocommerce-blocks/tsconfig.json&apos;. Projects must list all files or use an &apos;include&apos; pattern." source="TS6307" />
-<error line="2" column="15" severity="error" message="File &apos;/home/runner/work/woocommerce-blocks/woocommerce-blocks/packages/checkout/utils/index.js&apos; is not listed within the file list of project &apos;/home/runner/work/woocommerce-blocks/woocommerce-blocks/tsconfig.json&apos;. Projects must list all files or use an &apos;include&apos; pattern." source="TS6307" />
-<error line="4" column="15" severity="error" message="File &apos;/home/runner/work/woocommerce-blocks/woocommerce-blocks/packages/checkout/filter-registry/index.ts&apos; is not listed within the file list of project &apos;/home/runner/work/woocommerce-blocks/woocommerce-blocks/tsconfig.json&apos;. Projects must list all files or use an &apos;include&apos; pattern." source="TS6307" />
-<error line="5" column="15" severity="error" message="File &apos;/home/runner/work/woocommerce-blocks/woocommerce-blocks/packages/checkout/blocks-registry/index.ts&apos; is not listed within the file list of project &apos;/home/runner/work/woocommerce-blocks/woocommerce-blocks/tsconfig.json&apos;. Projects must list all files or use an &apos;include&apos; pattern." source="TS6307" />
-<error line="6" column="34" severity="error" message="Could not find a declaration file for module &apos;wordpress-components&apos;. &apos;/home/runner/work/woocommerce-blocks/woocommerce-blocks/node_modules/wordpress-components/build/index.js&apos; implicitly has an &apos;any&apos; type.
-  If the &apos;@wordpress/components&apos; package actually exposes this module, consider sending a pull request to amend &apos;https://github.com/DefinitelyTyped/DefinitelyTyped/tree/master/types/wordpress__components&apos;" source="TS7016" />
-</file>
-<file name="assets/js/atomic/utils/render-parent-block.tsx">
-<error line="16" column="8" severity="error" message="File &apos;/home/runner/work/woocommerce-blocks/woocommerce-blocks/packages/checkout/index.js&apos; is not listed within the file list of project &apos;/home/runner/work/woocommerce-blocks/woocommerce-blocks/tsconfig.json&apos;. Projects must list all files or use an &apos;include&apos; pattern.
-  The file is in the program because:
-    Imported via &apos;@woocommerce/blocks-checkout&apos; from file &apos;/home/runner/work/woocommerce-blocks/woocommerce-blocks/assets/js/atomic/utils/render-parent-block.tsx&apos;
-    Imported via &apos;@woocommerce/blocks-checkout&apos; from file &apos;/home/runner/work/woocommerce-blocks/woocommerce-blocks/assets/js/base/components/cart-checkout/order-summary/index.tsx&apos;
-    Imported via &apos;@woocommerce/blocks-checkout&apos; from file &apos;/home/runner/work/woocommerce-blocks/woocommerce-blocks/assets/js/base/components/cart-checkout/order-summary/order-summary-item.tsx&apos;
-    Imported via &apos;@woocommerce/blocks-checkout&apos; from file &apos;/home/runner/work/woocommerce-blocks/woocommerce-blocks/assets/js/base/components/cart-checkout/shipping-rates-control/index.tsx&apos;
-    Imported via &apos;@woocommerce/blocks-checkout&apos; from file &apos;/home/runner/work/woocommerce-blocks/woocommerce-blocks/assets/js/base/components/cart-checkout/shipping-rates-control-package/index.tsx&apos;
-    Imported via &apos;@woocommerce/blocks-checkout&apos; from file &apos;/home/runner/work/woocommerce-blocks/woocommerce-blocks/assets/js/base/components/cart-checkout/totals/coupon/index.tsx&apos;
-    Imported via &apos;@woocommerce/blocks-checkout&apos; from file &apos;/home/runner/work/woocommerce-blocks/woocommerce-blocks/assets/js/base/components/cart-checkout/totals/discount/index.tsx&apos;
-    Imported via &apos;@woocommerce/blocks-checkout&apos; from file &apos;/home/runner/work/woocommerce-blocks/woocommerce-blocks/assets/js/base/components/cart-checkout/totals/footer-item/index.tsx&apos;
-    Imported via &apos;@woocommerce/blocks-checkout&apos; from file &apos;/home/runner/work/woocommerce-blocks/woocommerce-blocks/assets/js/base/components/cart-checkout/totals/shipping/index.tsx&apos;
-    Imported via &apos;@woocommerce/blocks-checkout&apos; from file &apos;/home/runner/work/woocommerce-blocks/woocommerce-blocks/assets/js/blocks/cart-checkout-shared/payment-methods/payment-method-card.js&apos;
-    Imported via &apos;@woocommerce/blocks-checkout&apos; from file &apos;/home/runner/work/woocommerce-blocks/woocommerce-blocks/assets/js/base/context/providers/store-snackbar-notices/components/snackbar-notices-container.js&apos;
-    Imported via &apos;@woocommerce/blocks-checkout&apos; from file &apos;/home/runner/work/woocommerce-blocks/woocommerce-blocks/assets/js/blocks/cart/block.js&apos;
-    Imported via &apos;@woocommerce/blocks-checkout&apos; from file &apos;/home/runner/work/woocommerce-blocks/woocommerce-blocks/assets/js/blocks/cart/inner-blocks/filled-cart-block/edit.tsx&apos;
-    Imported via &apos;@woocommerce/blocks-checkout&apos; from file &apos;/home/runner/work/woocommerce-blocks/woocommerce-blocks/assets/js/blocks/cart/inner-blocks/cart-items-block/edit.tsx&apos;
-    Imported via &apos;@woocommerce/blocks-checkout&apos; from file &apos;/home/runner/work/woocommerce-blocks/woocommerce-blocks/assets/js/blocks/cart/cart-line-items-table/cart-line-item-row.tsx&apos;
-    Imported via &apos;@woocommerce/blocks-checkout&apos; from file &apos;/home/runner/work/woocommerce-blocks/woocommerce-blocks/assets/js/blocks/cart/inner-blocks/cart-totals-block/edit.tsx&apos;
-    Imported via &apos;@woocommerce/blocks-checkout&apos; from file &apos;/home/runner/work/woocommerce-blocks/woocommerce-blocks/assets/js/blocks/cart/inner-blocks/empty-cart-block/edit.tsx&apos;
-    Imported via &apos;@woocommerce/blocks-checkout&apos; from file &apos;/home/runner/work/woocommerce-blocks/woocommerce-blocks/assets/js/blocks/cart/inner-blocks/cart-order-summary-block/edit.tsx&apos;
-    Imported via &apos;@woocommerce/blocks-checkout&apos; from file &apos;/home/runner/work/woocommerce-blocks/woocommerce-blocks/assets/js/blocks/cart/inner-blocks/cart-order-summary-block/slotfills.tsx&apos;
-    Imported via &apos;@woocommerce/blocks-checkout&apos; from file &apos;/home/runner/work/woocommerce-blocks/woocommerce-blocks/assets/js/blocks/cart/inner-blocks/cart-order-summary-subtotal/block.tsx&apos;
-    Imported via &apos;@woocommerce/blocks-checkout&apos; from file &apos;/home/runner/work/woocommerce-blocks/woocommerce-blocks/assets/js/blocks/cart/inner-blocks/cart-order-summary-fee/block.tsx&apos;
-    Imported via &apos;@woocommerce/blocks-checkout&apos; from file &apos;/home/runner/work/woocommerce-blocks/woocommerce-blocks/assets/js/blocks/cart/inner-blocks/cart-order-summary-discount/block.tsx&apos;
-    Imported via &apos;@woocommerce/blocks-checkout&apos; from file &apos;/home/runner/work/woocommerce-blocks/woocommerce-blocks/assets/js/blocks/cart/inner-blocks/cart-order-summary-shipping/block.tsx&apos;
-    Imported via &apos;@woocommerce/blocks-checkout&apos; from file &apos;/home/runner/work/woocommerce-blocks/woocommerce-blocks/assets/js/blocks/cart/inner-blocks/cart-order-summary-coupon-form/block.tsx&apos;
-    Imported via &apos;@woocommerce/blocks-checkout&apos; from file &apos;/home/runner/work/woocommerce-blocks/woocommerce-blocks/assets/js/blocks/cart/inner-blocks/cart-order-summary-taxes/block.tsx&apos;
-    Imported via &apos;@woocommerce/blocks-checkout&apos; from file &apos;/home/runner/work/woocommerce-blocks/woocommerce-blocks/assets/js/blocks/cart/inner-blocks/register-components.ts&apos;
-    Imported via &apos;@woocommerce/blocks-checkout&apos; from file &apos;/home/runner/work/woocommerce-blocks/woocommerce-blocks/assets/js/blocks/checkout/block.tsx&apos;
-    Imported via &apos;@woocommerce/blocks-checkout&apos; from file &apos;/home/runner/work/woocommerce-blocks/woocommerce-blocks/assets/js/blocks/checkout/inner-blocks/checkout-fields-block/edit.tsx&apos;
-    Imported via &apos;@woocommerce/blocks-checkout&apos; from file &apos;/home/runner/work/woocommerce-blocks/woocommerce-blocks/assets/js/blocks/checkout/inner-blocks/checkout-totals-block/edit.tsx&apos;
-    Imported via &apos;@woocommerce/blocks-checkout&apos; from file &apos;/home/runner/work/woocommerce-blocks/woocommerce-blocks/assets/js/blocks/checkout/inner-blocks/checkout-shipping-address-block/edit.tsx&apos;
-    Imported via &apos;@woocommerce/blocks-checkout&apos; from file &apos;/home/runner/work/woocommerce-blocks/woocommerce-blocks/assets/js/blocks/checkout/inner-blocks/checkout-shipping-address-block/block.tsx&apos;
-    Imported via &apos;@woocommerce/blocks-checkout&apos; from file &apos;/home/runner/work/woocommerce-blocks/woocommerce-blocks/assets/js/blocks/checkout/inner-blocks/checkout-terms-block/edit.tsx&apos;
-    Imported via &apos;@woocommerce/blocks-checkout&apos; from file &apos;/home/runner/work/woocommerce-blocks/woocommerce-blocks/assets/js/blocks/checkout/inner-blocks/checkout-contact-information-block/edit.tsx&apos;
-    Imported via &apos;@woocommerce/blocks-checkout&apos; from file &apos;/home/runner/work/woocommerce-blocks/woocommerce-blocks/assets/js/blocks/checkout/inner-blocks/checkout-contact-information-block/block.tsx&apos;
-    Imported via &apos;@woocommerce/blocks-checkout&apos; from file &apos;/home/runner/work/woocommerce-blocks/woocommerce-blocks/assets/js/blocks/checkout/inner-blocks/checkout-billing-address-block/edit.tsx&apos;
-    Imported via &apos;@woocommerce/blocks-checkout&apos; from file &apos;/home/runner/work/woocommerce-blocks/woocommerce-blocks/assets/js/blocks/checkout/order-notes/index.tsx&apos;
-    Imported via &apos;@woocommerce/blocks-checkout&apos; from file &apos;/home/runner/work/woocommerce-blocks/woocommerce-blocks/assets/js/blocks/checkout/inner-blocks/checkout-order-summary-block/edit.tsx&apos;
-    Imported via &apos;@woocommerce/blocks-checkout&apos; from file &apos;/home/runner/work/woocommerce-blocks/woocommerce-blocks/assets/js/blocks/checkout/inner-blocks/checkout-order-summary-block/slotfills.tsx&apos;
-    Imported via &apos;@woocommerce/blocks-checkout&apos; from file &apos;/home/runner/work/woocommerce-blocks/woocommerce-blocks/assets/js/blocks/checkout/inner-blocks/checkout-payment-block/edit.tsx&apos;
-    Imported via &apos;@woocommerce/blocks-checkout&apos; from file &apos;/home/runner/work/woocommerce-blocks/woocommerce-blocks/assets/js/blocks/checkout/inner-blocks/checkout-shipping-methods-block/edit.tsx&apos;
-    Imported via &apos;@woocommerce/blocks-checkout&apos; from file &apos;/home/runner/work/woocommerce-blocks/woocommerce-blocks/assets/js/blocks/checkout/inner-blocks/checkout-order-summary-subtotal/block.tsx&apos;
-    Imported via &apos;@woocommerce/blocks-checkout&apos; from file &apos;/home/runner/work/woocommerce-blocks/woocommerce-blocks/assets/js/blocks/checkout/inner-blocks/checkout-order-summary-fee/block.tsx&apos;
-    Imported via &apos;@woocommerce/blocks-checkout&apos; from file &apos;/home/runner/work/woocommerce-blocks/woocommerce-blocks/assets/js/blocks/checkout/inner-blocks/checkout-order-summary-discount/block.tsx&apos;
-    Imported via &apos;@woocommerce/blocks-checkout&apos; from file &apos;/home/runner/work/woocommerce-blocks/woocommerce-blocks/assets/js/blocks/checkout/inner-blocks/checkout-order-summary-shipping/block.tsx&apos;
-    Imported via &apos;@woocommerce/blocks-checkout&apos; from file &apos;/home/runner/work/woocommerce-blocks/woocommerce-blocks/assets/js/blocks/checkout/inner-blocks/checkout-order-summary-coupon-form/block.tsx&apos;
-    Imported via &apos;@woocommerce/blocks-checkout&apos; from file &apos;/home/runner/work/woocommerce-blocks/woocommerce-blocks/assets/js/blocks/checkout/inner-blocks/checkout-order-summary-taxes/block.tsx&apos;
-    Imported via &apos;@woocommerce/blocks-checkout&apos; from file &apos;/home/runner/work/woocommerce-blocks/woocommerce-blocks/assets/js/blocks/checkout/inner-blocks/checkout-order-summary-cart-items/block.tsx&apos;
-    Imported via &apos;@woocommerce/blocks-checkout&apos; from file &apos;/home/runner/work/woocommerce-blocks/woocommerce-blocks/assets/js/blocks/checkout/inner-blocks/register-components.ts&apos;
-    Imported via &apos;@woocommerce/blocks-checkout&apos; from file &apos;/home/runner/work/woocommerce-blocks/woocommerce-blocks/assets/js/blocks/checkout/inner-blocks/checkout-terms-block/frontend.tsx&apos;
-    Imported via &apos;@woocommerce/blocks-checkout&apos; from file &apos;/home/runner/work/woocommerce-blocks/woocommerce-blocks/assets/js/blocks/mini-cart/mini-cart-contents/inner-blocks/register-components.ts&apos;
-    Imported via &apos;@woocommerce/blocks-checkout&apos; from file &apos;/home/runner/work/woocommerce-blocks/woocommerce-blocks/assets/js/blocks/mini-cart/mini-cart-contents/inner-blocks/mini-cart-footer-block/block.tsx&apos;
-    Imported via &apos;@woocommerce/blocks-checkout&apos; from file &apos;/home/runner/work/woocommerce-blocks/woocommerce-blocks/assets/js/blocks/mini-cart/mini-cart-contents/inner-blocks/filled-mini-cart-contents-block/edit.tsx&apos;
-    Imported via &apos;@woocommerce/blocks-checkout&apos; from file &apos;/home/runner/work/woocommerce-blocks/woocommerce-blocks/assets/js/blocks/mini-cart/test/block.js&apos;" source="TS6307" />
 </file>
 <file name="assets/js/atomic/utils/render-standalone-blocks.js">
 <error line="17" column="22" severity="error" message="Parameter &apos;el&apos; implicitly has an &apos;any&apos; type." source="TS7006" />
@@ -1987,20 +1971,20 @@
 <file name="assets/js/base/context/hooks/cart/test/use-store-cart.js">
 <error line="26" column="6" severity="error" message="Variable &apos;registry&apos; implicitly has type &apos;any&apos; in some locations where its type cannot be determined." source="TS7034" />
 <error line="26" column="16" severity="error" message="Variable &apos;renderer&apos; implicitly has type &apos;any&apos; in some locations where its type cannot be determined." source="TS7034" />
-<error line="98" column="8" severity="error" message="Variable &apos;mockCartErrors&apos; implicitly has type &apos;any[]&apos; in some locations where its type cannot be determined." source="TS7034" />
-<error line="109" column="15" severity="error" message="Variable &apos;mockCartErrors&apos; implicitly has an &apos;any[]&apos; type." source="TS7005" />
-<error line="121" column="33" severity="error" message="Parameter &apos;Component&apos; implicitly has an &apos;any&apos; type." source="TS7006" />
-<error line="122" column="29" severity="error" message="Variable &apos;registry&apos; implicitly has an &apos;any&apos; type." source="TS7005" />
-<error line="127" column="29" severity="error" message="Parameter &apos;options&apos; implicitly has an &apos;any&apos; type." source="TS7006" />
-<error line="129" column="15" severity="error" message="Type &apos;{ cartCoupons: CartResponseCoupons; cartItems: CartItem[]; cartFees: CartResponseFeeItem[]; cartItemsCount: number; cartItemsWeight: number; ... 12 more ...; paymentRequirements: string[]; }&apos; is not assignable to type &apos;number&apos;." source="TS2322" />
-<error line="136" column="47" severity="error" message="Variable &apos;mockCartErrors&apos; implicitly has an &apos;any[]&apos; type." source="TS7005" />
-<error line="144" column="3" severity="error" message="Variable &apos;registry&apos; implicitly has an &apos;any&apos; type." source="TS7005" />
-<error line="157" column="20" severity="error" message="Property &apos;mockReset&apos; does not exist on type &apos;() =&gt; any&apos;." source="TS2339" />
-<error line="162" column="21" severity="error" message="Property &apos;mockReturnValue&apos; does not exist on type &apos;() =&gt; any&apos;." source="TS2339" />
-<error line="179" column="37" severity="error" message="Variable &apos;renderer&apos; implicitly has an &apos;any&apos; type." source="TS7005" />
-<error line="202" column="37" severity="error" message="Variable &apos;renderer&apos; implicitly has an &apos;any&apos; type." source="TS7005" />
-<error line="213" column="21" severity="error" message="Property &apos;mockReturnValue&apos; does not exist on type &apos;() =&gt; any&apos;." source="TS2339" />
-<error line="234" column="37" severity="error" message="Variable &apos;renderer&apos; implicitly has an &apos;any&apos; type." source="TS7005" />
+<error line="111" column="8" severity="error" message="Variable &apos;mockCartErrors&apos; implicitly has type &apos;any[]&apos; in some locations where its type cannot be determined." source="TS7034" />
+<error line="122" column="15" severity="error" message="Variable &apos;mockCartErrors&apos; implicitly has an &apos;any[]&apos; type." source="TS7005" />
+<error line="135" column="33" severity="error" message="Parameter &apos;Component&apos; implicitly has an &apos;any&apos; type." source="TS7006" />
+<error line="136" column="29" severity="error" message="Variable &apos;registry&apos; implicitly has an &apos;any&apos; type." source="TS7005" />
+<error line="141" column="29" severity="error" message="Parameter &apos;options&apos; implicitly has an &apos;any&apos; type." source="TS7006" />
+<error line="143" column="15" severity="error" message="Type &apos;{ cartCoupons: CartResponseCoupons; cartItems: CartItem[]; cartFees: CartResponseFeeItem[]; cartItemsCount: number; cartItemsWeight: number; ... 12 more ...; paymentRequirements: string[]; }&apos; is not assignable to type &apos;number&apos;." source="TS2322" />
+<error line="150" column="47" severity="error" message="Variable &apos;mockCartErrors&apos; implicitly has an &apos;any[]&apos; type." source="TS7005" />
+<error line="158" column="3" severity="error" message="Variable &apos;registry&apos; implicitly has an &apos;any&apos; type." source="TS7005" />
+<error line="171" column="20" severity="error" message="Property &apos;mockReset&apos; does not exist on type &apos;() =&gt; any&apos;." source="TS2339" />
+<error line="176" column="21" severity="error" message="Property &apos;mockReturnValue&apos; does not exist on type &apos;() =&gt; any&apos;." source="TS2339" />
+<error line="193" column="37" severity="error" message="Variable &apos;renderer&apos; implicitly has an &apos;any&apos; type." source="TS7005" />
+<error line="216" column="37" severity="error" message="Variable &apos;renderer&apos; implicitly has an &apos;any&apos; type." source="TS7005" />
+<error line="227" column="21" severity="error" message="Property &apos;mockReturnValue&apos; does not exist on type &apos;() =&gt; any&apos;." source="TS2339" />
+<error line="248" column="37" severity="error" message="Variable &apos;renderer&apos; implicitly has an &apos;any&apos; type." source="TS7005" />
 </file>
 <file name="assets/js/base/context/hooks/collections/test/use-collection.js">
 <error line="20" column="15" severity="error" message="Parameter &apos;props&apos; implicitly has an &apos;any&apos; type." source="TS7006" />
@@ -2106,14 +2090,6 @@
 <error line="104" column="57" severity="error" message="Variable &apos;renderer&apos; implicitly has an &apos;any&apos; type." source="TS7005" />
 <error line="107" column="4" severity="error" message="Variable &apos;renderer&apos; implicitly has an &apos;any&apos; type." source="TS7005" />
 </file>
-<file name="assets/js/base/context/hooks/test/use-store-snackbar-notices.js">
-<error line="5" column="46" severity="error" message="Cannot find module &apos;@woocommerce/base-context/providers&apos; or its corresponding type declarations." source="TS2307" />
-<error line="35" column="28" severity="error" message="Property &apos;notices&apos; does not exist on type &apos;{}&apos;." source="TS2339" />
-<error line="39" column="21" severity="error" message="Property &apos;addSnackbarNotice&apos; does not exist on type &apos;{}&apos;." source="TS2339" />
-<error line="42" column="28" severity="error" message="Property &apos;notices&apos; does not exist on type &apos;{}&apos;." source="TS2339" />
-<error line="46" column="21" severity="error" message="Property &apos;removeNotices&apos; does not exist on type &apos;{}&apos;." source="TS2339" />
-<error line="49" column="28" severity="error" message="Property &apos;notices&apos; does not exist on type &apos;{}&apos;." source="TS2339" />
-</file>
 <file name="assets/js/blocks/cart-checkout-shared/payment-methods/no-payment-methods/index.js">
 <error line="5" column="45" severity="error" message="Could not find a declaration file for module &apos;wordpress-components&apos;. &apos;/home/runner/work/woocommerce-blocks/woocommerce-blocks/node_modules/wordpress-components/build/index.js&apos; implicitly has an &apos;any&apos; type.
   If the &apos;@wordpress/components&apos; package actually exposes this module, consider sending a pull request to amend &apos;https://github.com/DefinitelyTyped/DefinitelyTyped/tree/master/types/wordpress__components&apos;" source="TS7016" />
@@ -2155,18 +2131,6 @@
 <error line="220" column="38" severity="error" message="Argument of type &apos;Cart&apos; is not assignable to parameter of type &apos;CartResponse&apos;." source="TS2345" />
 <error line="240" column="33" severity="error" message="Type &apos;{ onChange: () =&gt; undefined; }&apos; is not assignable to type &apos;IntrinsicAttributes&apos;.
   Property &apos;onChange&apos; does not exist on type &apos;IntrinsicAttributes&apos;." source="TS2322" />
-</file>
-<file name="assets/js/base/context/providers/store-snackbar-notices/components/snackbar-notices-container.js">
-<error line="4" column="30" severity="error" message="Could not find a declaration file for module &apos;wordpress-components&apos;. &apos;/home/runner/work/woocommerce-blocks/woocommerce-blocks/node_modules/wordpress-components/build/index.js&apos; implicitly has an &apos;any&apos; type.
-  If the &apos;@wordpress/components&apos; package actually exposes this module, consider sending a pull request to amend &apos;https://github.com/DefinitelyTyped/DefinitelyTyped/tree/master/types/wordpress__components&apos;" source="TS7016" />
-<error line="11" column="2" severity="error" message="Binding element &apos;className&apos; implicitly has an &apos;any&apos; type." source="TS7031" />
-<error line="12" column="2" severity="error" message="Binding element &apos;notices&apos; implicitly has an &apos;any&apos; type." source="TS7031" />
-<error line="13" column="2" severity="error" message="Binding element &apos;removeNotice&apos; implicitly has an &apos;any&apos; type." source="TS7031" />
-<error line="14" column="2" severity="error" message="Binding element &apos;isEditor&apos; implicitly has an &apos;any&apos; type." source="TS7031" />
-<error line="21" column="5" severity="error" message="Parameter &apos;notice&apos; implicitly has an &apos;any&apos; type." source="TS7006" />
-<error line="26" column="32" severity="error" message="Parameter &apos;acc&apos; implicitly has an &apos;any&apos; type." source="TS7006" />
-<error line="26" column="39" severity="error" message="Binding element &apos;content&apos; implicitly has an &apos;any&apos; type." source="TS7031" />
-<error line="38" column="5" severity="error" message="Parameter &apos;notice&apos; implicitly has an &apos;any&apos; type." source="TS7006" />
 </file>
 <file name="assets/js/blocks/reviews/utils.js">
 <error line="8" column="30" severity="error" message="Parameter &apos;sortValue&apos; implicitly has an &apos;any&apos; type." source="TS7006" />
@@ -2355,14 +2319,20 @@
 <error line="11" column="20" severity="error" message="Parameter &apos;el&apos; implicitly has an &apos;any&apos; type." source="TS7006" />
 </file>
 <file name="assets/js/blocks/active-filters/index.js">
-<error line="16" column="20" severity="error" message="No overload matches this call.
-  Overload 1 of 2, &apos;(metadata: BlockConfiguration&lt;{ displayStyle: unknown; heading: unknown; headingLevel: unknown; }&gt;, settings?: Partial&lt;BlockConfiguration&lt;{ displayStyle: unknown; heading: unknown; headingLevel: unknown; }&gt;&gt; | undefined): Block&lt;...&gt; | undefined&apos;, gave the following error.
-    Argument of type &apos;string&apos; is not assignable to parameter of type &apos;BlockConfiguration&lt;{ displayStyle: unknown; heading: unknown; headingLevel: unknown; }&gt;&apos;.
-      Type &apos;string&apos; is not assignable to type &apos;Pick&lt;Block&lt;{ displayStyle: unknown; heading: unknown; headingLevel: unknown; }&gt;, &quot;title&quot; | &quot;category&quot; | &quot;attributes&quot;&gt;&apos;." source="TS2769" />
-<error line="64" column="18" severity="error" message="Property &apos;idBase&apos; does not exist on type &apos;{ displayStyle: unknown; heading: unknown; headingLevel: unknown; }&apos;." source="TS2339" />
-<error line="64" column="26" severity="error" message="Property &apos;instance&apos; does not exist on type &apos;{ displayStyle: unknown; heading: unknown; headingLevel: unknown; }&apos;." source="TS2339" />
-<error line="67" column="20" severity="error" message="Property &apos;instance&apos; does not exist on type &apos;{ displayStyle: unknown; heading: unknown; headingLevel: unknown; }&apos;." source="TS2339" />
-<error line="84" column="11" severity="error" message="Property &apos;className&apos; does not exist on type &apos;Readonly&lt;{ displayStyle: unknown; heading: unknown; headingLevel: unknown; }&gt;&apos;." source="TS2339" />
+<error line="17" column="20" severity="error" message="No overload matches this call.
+  Overload 1 of 2, &apos;(metadata: BlockConfiguration&lt;{ displayStyle: unknown; headingLevel: unknown; }&gt;, settings?: Partial&lt;BlockConfiguration&lt;{ displayStyle: unknown; headingLevel: unknown; }&gt;&gt; | undefined): Block&lt;...&gt; | undefined&apos;, gave the following error.
+    Argument of type &apos;{ name: string; version: string; title: string; description: string; category: string; keywords: string[]; supports: { html: boolean; multiple: boolean; color: { text: boolean; background: boolean; }; }; attributes: { ...; }; textdomain: string; apiVersion: number; $schema: string; }&apos; is not assignable to parameter of type &apos;BlockConfiguration&lt;{ displayStyle: unknown; headingLevel: unknown; }&gt;&apos;.
+      Type &apos;{ name: string; version: string; title: string; description: string; category: string; keywords: string[]; supports: { html: boolean; multiple: boolean; color: { text: boolean; background: boolean; }; }; attributes: { ...; }; textdomain: string; apiVersion: number; $schema: string; }&apos; is not assignable to type &apos;Partial&lt;Omit&lt;Block&lt;{ displayStyle: unknown; headingLevel: unknown; }&gt;, &quot;icon&quot;&gt;&gt;&apos;.
+        The types of &apos;attributes[&quot;displayStyle&quot;]&apos; are incompatible between these types.
+          Type &apos;{ type: string; default: string; }&apos; is not assignable to type &apos;BlockAttribute&lt;unknown&gt;&apos;.
+            Type &apos;{ type: string; default: string; }&apos; is missing the following properties from type &apos;Query&lt;unknown&gt;&apos;: source, selector, query
+  Overload 2 of 2, &apos;(name: string, settings: BlockConfiguration&lt;{ heading: unknown; displayStyle: unknown; headingLevel: unknown; }&gt;): Block&lt;{ heading: unknown; displayStyle: unknown; headingLevel: unknown; }&gt; | undefined&apos;, gave the following error.
+    Argument of type &apos;{ name: string; version: string; title: string; description: string; category: string; keywords: string[]; supports: { html: boolean; multiple: boolean; color: { text: boolean; background: boolean; }; }; attributes: { ...; }; textdomain: string; apiVersion: number; $schema: string; }&apos; is not assignable to parameter of type &apos;string&apos;." source="TS2769" />
+<error line="44" column="18" severity="error" message="Property &apos;idBase&apos; does not exist on type &apos;{ displayStyle: unknown; headingLevel: unknown; }&apos;." source="TS2339" />
+<error line="44" column="26" severity="error" message="Property &apos;instance&apos; does not exist on type &apos;{ displayStyle: unknown; headingLevel: unknown; }&apos;." source="TS2339" />
+<error line="47" column="20" severity="error" message="Property &apos;instance&apos; does not exist on type &apos;{ displayStyle: unknown; headingLevel: unknown; }&apos;." source="TS2339" />
+<error line="64" column="11" severity="error" message="Property &apos;className&apos; does not exist on type &apos;Readonly&lt;{ displayStyle: unknown; headingLevel: unknown; }&gt;&apos;." source="TS2339" />
+<error line="64" column="36" severity="error" message="Property &apos;heading&apos; does not exist on type &apos;Readonly&lt;{ displayStyle: unknown; headingLevel: unknown; }&gt;&apos;." source="TS2339" />
 </file>
 <file name="assets/js/blocks/attribute-filter/block.js">
 <error line="50" column="12" severity="error" message="Generic type &apos;Array&lt;T&gt;&apos; requires 1 type argument(s)." source="TS2314" />
@@ -2381,8 +2351,6 @@
 <error line="118" column="33" severity="error" message="Property &apos;attributeId&apos; does not exist on type &apos;Object&apos;." source="TS2339" />
 <error line="122" column="19" severity="error" message="Property &apos;displayStyle&apos; does not exist on type &apos;Object&apos;." source="TS2339" />
 <error line="123" column="19" severity="error" message="Property &apos;queryType&apos; does not exist on type &apos;Object&apos;." source="TS2339" />
-<error line="127" column="25" severity="error" message="Argument of type &apos;{ queryAttribute: { taxonomy: any; queryType: any; }; queryState: any; }&apos; is not assignable to parameter of type &apos;{ queryAttribute: any; queryPrices: any; queryStock: any; queryState: any; }&apos;.
-  Type &apos;{ queryAttribute: { taxonomy: any; queryType: any; }; queryState: any; }&apos; is missing the following properties from type &apos;{ queryAttribute: any; queryPrices: any; queryStock: any; queryState: any; }&apos;: queryPrices, queryStock" source="TS2345" />
 <error line="129" column="31" severity="error" message="Property &apos;taxonomy&apos; does not exist on type &apos;Object&apos;." source="TS2339" />
 <error line="130" column="31" severity="error" message="Property &apos;queryType&apos; does not exist on type &apos;Object&apos;." source="TS2339" />
 <error line="143" column="11" severity="error" message="Object is of type &apos;unknown&apos;." source="TS2571" />
@@ -2467,24 +2435,30 @@
 <error line="11" column="20" severity="error" message="Parameter &apos;el&apos; implicitly has an &apos;any&apos; type." source="TS7006" />
 </file>
 <file name="assets/js/blocks/attribute-filter/index.js">
-<error line="16" column="20" severity="error" message="No overload matches this call.
-  Overload 1 of 2, &apos;(metadata: BlockConfiguration&lt;{ attributeId: unknown; showCounts: unknown; queryType: unknown; heading: unknown; headingLevel: unknown; displayStyle: unknown; showFilterButton: unknown; isPreview: unknown; }&gt;, settings?: Partial&lt;BlockConfiguration&lt;{ attributeId: unknown; ... 6 more ...; isPreview: unknown; }&gt;&gt; | undefined): Block&lt;...&gt; | undefined&apos;, gave the following error.
-    Argument of type &apos;string&apos; is not assignable to parameter of type &apos;BlockConfiguration&lt;{ attributeId: unknown; showCounts: unknown; queryType: unknown; heading: unknown; headingLevel: unknown; displayStyle: unknown; showFilterButton: unknown; isPreview: unknown; }&gt;&apos;.
-      Type &apos;string&apos; is not assignable to type &apos;Pick&lt;Block&lt;{ attributeId: unknown; showCounts: unknown; queryType: unknown; heading: unknown; headingLevel: unknown; displayStyle: unknown; showFilterButton: unknown; isPreview: unknown; }&gt;, &quot;title&quot; | &quot;category&quot; | &quot;attributes&quot;&gt;&apos;." source="TS2769" />
-<error line="98" column="18" severity="error" message="Property &apos;idBase&apos; does not exist on type &apos;{ attributeId: unknown; showCounts: unknown; queryType: unknown; heading: unknown; headingLevel: unknown; displayStyle: unknown; showFilterButton: unknown; isPreview: unknown; }&apos;." source="TS2339" />
-<error line="98" column="26" severity="error" message="Property &apos;instance&apos; does not exist on type &apos;{ attributeId: unknown; showCounts: unknown; queryType: unknown; heading: unknown; headingLevel: unknown; displayStyle: unknown; showFilterButton: unknown; isPreview: unknown; }&apos;." source="TS2339" />
-<error line="100" column="20" severity="error" message="Property &apos;instance&apos; does not exist on type &apos;{ attributeId: unknown; showCounts: unknown; queryType: unknown; heading: unknown; headingLevel: unknown; displayStyle: unknown; showFilterButton: unknown; isPreview: unknown; }&apos;." source="TS2339" />
-<error line="123" column="4" severity="error" message="Property &apos;className&apos; does not exist on type &apos;Readonly&lt;{ attributeId: unknown; showCounts: unknown; queryType: unknown; heading: unknown; headingLevel: unknown; displayStyle: unknown; showFilterButton: unknown; isPreview: unknown; }&gt;&apos;." source="TS2339" />
-<error line="140" column="4" severity="error" message="Element implicitly has an &apos;any&apos; type because expression of type &apos;&quot;data-display-style&quot;&apos; can&apos;t be used to index type &apos;{ &apos;data-attribute-id&apos;: unknown; &apos;data-show-counts&apos;: unknown; &apos;data-query-type&apos;: unknown; &apos;data-heading&apos;: unknown; &apos;data-heading-level&apos;: unknown; }&apos;.
-  Property &apos;data-display-style&apos; does not exist on type &apos;{ &apos;data-attribute-id&apos;: unknown; &apos;data-show-counts&apos;: unknown; &apos;data-query-type&apos;: unknown; &apos;data-heading&apos;: unknown; &apos;data-heading-level&apos;: unknown; }&apos;." source="TS7053" />
-<error line="143" column="4" severity="error" message="Element implicitly has an &apos;any&apos; type because expression of type &apos;&quot;data-show-filter-button&quot;&apos; can&apos;t be used to index type &apos;{ &apos;data-attribute-id&apos;: unknown; &apos;data-show-counts&apos;: unknown; &apos;data-query-type&apos;: unknown; &apos;data-heading&apos;: unknown; &apos;data-heading-level&apos;: unknown; }&apos;.
-  Property &apos;data-show-filter-button&apos; does not exist on type &apos;{ &apos;data-attribute-id&apos;: unknown; &apos;data-show-counts&apos;: unknown; &apos;data-query-type&apos;: unknown; &apos;data-heading&apos;: unknown; &apos;data-heading-level&apos;: unknown; }&apos;." source="TS7053" />
+<error line="17" column="20" severity="error" message="No overload matches this call.
+  Overload 1 of 2, &apos;(metadata: BlockConfiguration&lt;{ attributeId: unknown; showCounts: unknown; queryType: unknown; headingLevel: unknown; displayStyle: unknown; showFilterButton: unknown; isPreview: unknown; }&gt;, settings?: Partial&lt;BlockConfiguration&lt;{ attributeId: unknown; showCounts: unknown; ... 4 more ...; isPreview: unknown; }&gt;&gt; | undefined): Block&lt;...&gt; | undefined&apos;, gave the following error.
+    Argument of type &apos;{ name: string; version: string; title: string; description: string; category: string; keywords: string[]; supports: { html: boolean; color: { text: boolean; background: boolean; }; }; example: { attributes: { ...; }; }; attributes: { ...; }; textdomain: string; apiVersion: number; $schema: string; }&apos; is not assignable to parameter of type &apos;BlockConfiguration&lt;{ attributeId: unknown; showCounts: unknown; queryType: unknown; headingLevel: unknown; displayStyle: unknown; showFilterButton: unknown; isPreview: unknown; }&gt;&apos;.
+      Type &apos;{ name: string; version: string; title: string; description: string; category: string; keywords: string[]; supports: { html: boolean; color: { text: boolean; background: boolean; }; }; example: { attributes: { ...; }; }; attributes: { ...; }; textdomain: string; apiVersion: number; $schema: string; }&apos; is not assignable to type &apos;Partial&lt;Omit&lt;Block&lt;{ attributeId: unknown; showCounts: unknown; queryType: unknown; headingLevel: unknown; displayStyle: unknown; showFilterButton: unknown; isPreview: unknown; }&gt;, &quot;icon&quot;&gt;&gt;&apos;.
+        The types of &apos;attributes[&quot;attributeId&quot;]&apos; are incompatible between these types.
+          Type &apos;{ type: string; default: number; }&apos; is not assignable to type &apos;BlockAttribute&lt;unknown&gt;&apos;.
+            Type &apos;{ type: string; default: number; }&apos; is missing the following properties from type &apos;Query&lt;unknown&gt;&apos;: source, selector, query
+  Overload 2 of 2, &apos;(name: string, settings: BlockConfiguration&lt;{ heading: unknown; attributeId: unknown; showCounts: unknown; queryType: unknown; headingLevel: unknown; displayStyle: unknown; showFilterButton: unknown; isPreview: unknown; }&gt;): Block&lt;...&gt; | undefined&apos;, gave the following error.
+    Argument of type &apos;{ name: string; version: string; title: string; description: string; category: string; keywords: string[]; supports: { html: boolean; color: { text: boolean; background: boolean; }; }; example: { attributes: { ...; }; }; attributes: { ...; }; textdomain: string; apiVersion: number; $schema: string; }&apos; is not assignable to parameter of type &apos;string&apos;." source="TS2769" />
+<error line="57" column="18" severity="error" message="Property &apos;idBase&apos; does not exist on type &apos;{ attributeId: unknown; showCounts: unknown; queryType: unknown; headingLevel: unknown; displayStyle: unknown; showFilterButton: unknown; isPreview: unknown; }&apos;." source="TS2339" />
+<error line="57" column="26" severity="error" message="Property &apos;instance&apos; does not exist on type &apos;{ attributeId: unknown; showCounts: unknown; queryType: unknown; headingLevel: unknown; displayStyle: unknown; showFilterButton: unknown; isPreview: unknown; }&apos;." source="TS2339" />
+<error line="59" column="20" severity="error" message="Property &apos;instance&apos; does not exist on type &apos;{ attributeId: unknown; showCounts: unknown; queryType: unknown; headingLevel: unknown; displayStyle: unknown; showFilterButton: unknown; isPreview: unknown; }&apos;." source="TS2339" />
+<error line="82" column="4" severity="error" message="Property &apos;className&apos; does not exist on type &apos;Readonly&lt;{ attributeId: unknown; showCounts: unknown; queryType: unknown; headingLevel: unknown; displayStyle: unknown; showFilterButton: unknown; isPreview: unknown; }&gt;&apos;." source="TS2339" />
+<error line="86" column="4" severity="error" message="Property &apos;heading&apos; does not exist on type &apos;Readonly&lt;{ attributeId: unknown; showCounts: unknown; queryType: unknown; headingLevel: unknown; displayStyle: unknown; showFilterButton: unknown; isPreview: unknown; }&gt;&apos;." source="TS2339" />
+<error line="99" column="4" severity="error" message="Element implicitly has an &apos;any&apos; type because expression of type &apos;&quot;data-display-style&quot;&apos; can&apos;t be used to index type &apos;{ &apos;data-attribute-id&apos;: unknown; &apos;data-show-counts&apos;: unknown; &apos;data-query-type&apos;: unknown; &apos;data-heading&apos;: any; &apos;data-heading-level&apos;: unknown; }&apos;.
+  Property &apos;data-display-style&apos; does not exist on type &apos;{ &apos;data-attribute-id&apos;: unknown; &apos;data-show-counts&apos;: unknown; &apos;data-query-type&apos;: unknown; &apos;data-heading&apos;: any; &apos;data-heading-level&apos;: unknown; }&apos;." source="TS7053" />
+<error line="102" column="4" severity="error" message="Element implicitly has an &apos;any&apos; type because expression of type &apos;&quot;data-show-filter-button&quot;&apos; can&apos;t be used to index type &apos;{ &apos;data-attribute-id&apos;: unknown; &apos;data-show-counts&apos;: unknown; &apos;data-query-type&apos;: unknown; &apos;data-heading&apos;: any; &apos;data-heading-level&apos;: unknown; }&apos;.
+  Property &apos;data-show-filter-button&apos; does not exist on type &apos;{ &apos;data-attribute-id&apos;: unknown; &apos;data-show-counts&apos;: unknown; &apos;data-query-type&apos;: unknown; &apos;data-heading&apos;: any; &apos;data-heading-level&apos;: unknown; }&apos;." source="TS7053" />
 </file>
 <file name="assets/js/blocks/cart/block.js">
 <error line="20" column="8" severity="error" message="Cannot find module &apos;@woocommerce/base-context/providers&apos; or its corresponding type declarations." source="TS2307" />
 <error line="29" column="55" severity="error" message="Expected 0 arguments, but got 1." source="TS2554" />
 <error line="31" column="18" severity="error" message="Binding element &apos;children&apos; implicitly has an &apos;any&apos; type." source="TS7031" />
-<error line="31" column="28" severity="error" message="Binding element &apos;attributes&apos; implicitly has an &apos;any&apos; type." source="TS7031" />
+<error line="33" column="10" severity="error" message="Property &apos;hasDarkControls&apos; does not exist on type &apos;{}&apos;." source="TS2339" />
 <error line="50" column="27" severity="error" message="Binding element &apos;scrollToTop&apos; implicitly has an &apos;any&apos; type." source="TS7031" />
 <error line="75" column="19" severity="error" message="Binding element &apos;attributes&apos; implicitly has an &apos;any&apos; type." source="TS7031" />
 <error line="75" column="31" severity="error" message="Binding element &apos;children&apos; implicitly has an &apos;any&apos; type." source="TS7031" />
@@ -2494,7 +2468,7 @@
     Type &apos;unknown&apos; is not assignable to type &apos;boolean&apos;.
   Overload 2 of 2, &apos;(props: BlockErrorBoundaryProps, context: any): BlockErrorBoundary&apos;, gave the following error.
     Type &apos;unknown&apos; is not assignable to type &apos;boolean&apos;." source="TS2769" />
-<error line="102" column="33" severity="error" message="Argument of type &apos;({ attributes, children, scrollToTop }: { attributes: any; children: any; scrollToTop: any; }) =&gt; Element&apos; is not assignable to parameter of type &apos;FunctionComponent&lt;Record&lt;string, unknown&gt;&gt;&apos;.
+<error line="101" column="33" severity="error" message="Argument of type &apos;({ attributes, children, scrollToTop }: { attributes: any; children: any; scrollToTop: any; }) =&gt; Element&apos; is not assignable to parameter of type &apos;FunctionComponent&lt;Record&lt;string, unknown&gt;&gt;&apos;.
   Types of parameters &apos;__0&apos; and &apos;props&apos; are incompatible.
     Type &apos;PropsWithChildren&lt;Record&lt;string, unknown&gt;&gt;&apos; is missing the following properties from type &apos;{ attributes: any; children: any; scrollToTop: any; }&apos;: attributes, scrollToTop" source="TS2345" />
 </file>
@@ -2649,12 +2623,12 @@
       Types of parameters &apos;props&apos; and &apos;props&apos; are incompatible.
         Type &apos;{ children?: ReactNode; } | RefAttributes&lt;Component&lt;unknown, any, any&gt;&gt;&apos; is not assignable to type &apos;{ className: string; }&apos;.
           Property &apos;className&apos; is missing in type &apos;{ children?: ReactNode; }&apos; but required in type &apos;{ className: string; }&apos;." source="TS2322" />
-<error line="99" column="2" severity="error" message="Type &apos;LazyExoticComponent&lt;({ children, className, }: { children: Element | Element[]; className?: string; }) =&gt; Element | null&gt;&apos; is not assignable to type &apos;LazyExoticComponent&lt;ComponentType&lt;unknown&gt;&gt; | (() =&gt; Element | null) | null&apos;.
-  Type &apos;LazyExoticComponent&lt;({ children, className, }: { children: Element | Element[]; className?: string; }) =&gt; Element | null&gt;&apos; is not assignable to type &apos;LazyExoticComponent&lt;ComponentType&lt;unknown&gt;&gt;&apos;.
-    Type &apos;LazyExoticComponent&lt;({ children, className, }: { children: Element | Element[]; className?: string; }) =&gt; Element | null&gt;&apos; is not assignable to type &apos;ExoticComponent&lt;{ children?: ReactNode; } | RefAttributes&lt;Component&lt;unknown, any, any&gt;&gt;&gt;&apos;.
+<error line="99" column="2" severity="error" message="Type &apos;LazyExoticComponent&lt;({ children, className, }: { children?: Element | Element[]; className?: string; }) =&gt; Element | null&gt;&apos; is not assignable to type &apos;LazyExoticComponent&lt;ComponentType&lt;unknown&gt;&gt; | (() =&gt; Element | null) | null&apos;.
+  Type &apos;LazyExoticComponent&lt;({ children, className, }: { children?: Element | Element[]; className?: string; }) =&gt; Element | null&gt;&apos; is not assignable to type &apos;LazyExoticComponent&lt;ComponentType&lt;unknown&gt;&gt;&apos;.
+    Type &apos;LazyExoticComponent&lt;({ children, className, }: { children?: Element | Element[]; className?: string; }) =&gt; Element | null&gt;&apos; is not assignable to type &apos;ExoticComponent&lt;{ children?: ReactNode; } | RefAttributes&lt;Component&lt;unknown, any, any&gt;&gt;&gt;&apos;.
       Types of parameters &apos;props&apos; and &apos;props&apos; are incompatible.
-        Type &apos;{ children?: ReactNode; } | RefAttributes&lt;Component&lt;unknown, any, any&gt;&gt;&apos; is not assignable to type &apos;{ children: Element | Element[]; className?: string; }&apos;.
-          Type &apos;{ children?: ReactNode; }&apos; is not assignable to type &apos;{ children: Element | Element[]; className?: string; }&apos;.
+        Type &apos;{ children?: ReactNode; } | RefAttributes&lt;Component&lt;unknown, any, any&gt;&gt;&apos; is not assignable to type &apos;{ children?: Element | Element[]; className?: string; }&apos;.
+          Type &apos;{ children?: ReactNode; }&apos; is not assignable to type &apos;{ children?: Element | Element[]; className?: string; }&apos; with &apos;exactOptionalPropertyTypes: true&apos;. Consider adding &apos;undefined&apos; to the types of the target&apos;s properties.
             Types of property &apos;children&apos; are incompatible.
               Type &apos;ReactNode&apos; is not assignable to type &apos;Element | Element[]&apos;." source="TS2322" />
 <error line="119" column="2" severity="error" message="Type &apos;LazyExoticComponent&lt;({ className }: { className?: string; }) =&gt; Element&gt;&apos; is not assignable to type &apos;LazyExoticComponent&lt;ComponentType&lt;unknown&gt;&gt; | (() =&gt; Element | null) | null&apos;.
@@ -2723,6 +2697,22 @@
 <error line="225" column="25" severity="error" message="Property &apos;value&apos; does not exist on type &apos;HTMLElement&apos;." source="TS2339" />
 <error line="231" column="25" severity="error" message="Property &apos;value&apos; does not exist on type &apos;HTMLElement&apos;." source="TS2339" />
 </file>
+<file name="assets/js/blocks/cart/test/slots.js">
+<error line="11" column="32" severity="error" message="Could not find a declaration file for module &apos;@wordpress/plugins&apos;. &apos;/home/runner/work/woocommerce-blocks/woocommerce-blocks/node_modules/@wordpress/plugins/build/index.js&apos; implicitly has an &apos;any&apos; type.
+  Try `npm i --save-dev @types/wordpress__plugins` if it exists or add a new declaration (.d.ts) file containing `declare module &apos;@wordpress/plugins&apos;;`" source="TS7016" />
+<error line="20" column="30" severity="error" message="Binding element &apos;cart&apos; implicitly has an &apos;any&apos; type." source="TS7031" />
+<error line="39" column="7" severity="error" message="Property &apos;cart&apos; is missing in type &apos;{}&apos; but required in type &apos;{ cart: any; }&apos;." source="TS2741" />
+<error line="54" column="25" severity="error" message="Property &apos;invalidateResolutionForStore&apos; does not exist on type &apos;DispatchFromMap&lt;typeof import(&quot;/home/runner/work/woocommerce-blocks/woocommerce-blocks/assets/js/data/cart/actions&quot;)&gt;&apos;." source="TS2339" />
+<error line="55" column="38" severity="error" message="Argument of type &apos;Cart&apos; is not assignable to parameter of type &apos;CartResponse&apos;." source="TS2345" />
+<error line="64" column="27" severity="error" message="No overload matches this call.
+  Overload 1 of 2, &apos;(fn: MockResponseInitFunction): FetchMock&apos;, gave the following error.
+    Argument of type &apos;(req: Request) =&gt; Promise&lt;string&gt; | undefined&apos; is not assignable to parameter of type &apos;MockResponseInitFunction&apos;.
+      Type &apos;Promise&lt;string&gt; | undefined&apos; is not assignable to type &apos;Promise&lt;string | MockResponseInit&gt;&apos;.
+        Type &apos;undefined&apos; is not assignable to type &apos;Promise&lt;string | MockResponseInit&gt;&apos;.
+  Overload 2 of 2, &apos;(response: string, responseInit?: MockParams | undefined): FetchMock&apos;, gave the following error.
+    Argument of type &apos;(req: Request) =&gt; Promise&lt;string&gt; | undefined&apos; is not assignable to parameter of type &apos;string&apos;." source="TS2769" />
+<error line="82" column="5" severity="error" message="Property &apos;toBeInTheDocument&apos; does not exist on type &apos;JestMatchers&lt;HTMLElement&gt;&apos;." source="TS2339" />
+</file>
 <file name="assets/js/blocks/cart-checkout-shared/payment-methods/test/payment-methods.js">
 <error line="24" column="57" severity="error" message="Binding element &apos;onChange&apos; implicitly has an &apos;any&apos; type." source="TS7031" />
 <error line="35" column="12" severity="error" message="Binding element &apos;onChange&apos; implicitly has an &apos;any&apos; type." source="TS7031" />
@@ -2739,15 +2729,15 @@
 <error line="15" column="68" severity="error" message="Expected 0 arguments, but got 1." source="TS2554" />
 </file>
 <file name="assets/js/blocks/checkout/block.tsx">
-<error line="17" column="8" severity="error" message="Cannot find module &apos;@woocommerce/base-context/providers&apos; or its corresponding type declarations." source="TS2307" />
-<error line="90" column="4" severity="error" message="Type &apos;{ allowCreateAccount: boolean; showCompanyField: boolean; requireCompanyField: boolean; showApartmentField: boolean; showPhoneField: boolean; requirePhoneField: boolean; }&apos; is missing the following properties from type &apos;CheckoutBlockContextProps&apos;: showOrderNotes, showPolicyLinks, showReturnToCart, cartPageId, showRateAfterTaxName" source="TS2739" />
-<error line="171" column="4" severity="error" message="No overload matches this call.
+<error line="15" column="39" severity="error" message="Cannot find module &apos;@woocommerce/base-context/providers&apos; or its corresponding type declarations." source="TS2307" />
+<error line="88" column="4" severity="error" message="Type &apos;{ allowCreateAccount: boolean; showCompanyField: boolean; requireCompanyField: boolean; showApartmentField: boolean; showPhoneField: boolean; requirePhoneField: boolean; }&apos; is missing the following properties from type &apos;CheckoutBlockContextProps&apos;: showOrderNotes, showPolicyLinks, showReturnToCart, cartPageId, showRateAfterTaxName" source="TS2739" />
+<error line="169" column="4" severity="error" message="No overload matches this call.
   Overload 1 of 2, &apos;(props: BlockErrorBoundaryProps | Readonly&lt;BlockErrorBoundaryProps&gt;): BlockErrorBoundary&apos;, gave the following error.
     Type &apos;unknown&apos; is not assignable to type &apos;boolean&apos;.
   Overload 2 of 2, &apos;(props: BlockErrorBoundaryProps, context: any): BlockErrorBoundary&apos;, gave the following error.
     Type &apos;unknown&apos; is not assignable to type &apos;boolean&apos;." source="TS2769" />
-<error line="174" column="6" severity="error" message="This JSX tag&apos;s &apos;children&apos; prop expects a single child of type &apos;Element&apos;, but multiple children were provided." source="TS2746" />
-<error line="205" column="33" severity="error" message="Argument of type &apos;({ attributes, children, scrollToTop, }: { attributes: Attributes; children: React.ReactChildren; scrollToTop: (props: Record&lt;string, unknown&gt;) =&gt; void; }) =&gt; JSX.Element&apos; is not assignable to parameter of type &apos;FunctionComponent&lt;Record&lt;string, unknown&gt;&gt;&apos;.
+<error line="172" column="5" severity="error" message="This JSX tag&apos;s &apos;children&apos; prop expects a single child of type &apos;Element&apos;, but multiple children were provided." source="TS2746" />
+<error line="197" column="33" severity="error" message="Argument of type &apos;({ attributes, children, scrollToTop, }: { attributes: Attributes; children: React.ReactChildren; scrollToTop: (props: Record&lt;string, unknown&gt;) =&gt; void; }) =&gt; JSX.Element&apos; is not assignable to parameter of type &apos;FunctionComponent&lt;Record&lt;string, unknown&gt;&gt;&apos;.
   Types of parameters &apos;__0&apos; and &apos;props&apos; are incompatible.
     Type &apos;PropsWithChildren&lt;Record&lt;string, unknown&gt;&gt;&apos; is missing the following properties from type &apos;{ attributes: Attributes; children: ReactChildren; scrollToTop: (props: Record&lt;string, unknown&gt;) =&gt; void; }&apos;: attributes, scrollToTop" source="TS2345" />
 </file>
@@ -2958,99 +2948,21 @@
 <error line="48" column="22" severity="error" message="Property &apos;toBeInTheDocument&apos; does not exist on type &apos;JestMatchers&lt;HTMLElement&gt;&apos;." source="TS2339" />
 <error line="65" column="26" severity="error" message="Property &apos;toBeInTheDocument&apos; does not exist on type &apos;Matchers&lt;void, HTMLElement | null&gt;&apos;." source="TS2339" />
 </file>
-<file name="assets/js/blocks/featured-items/featured-category/utils.js">
-<error line="13" column="38" severity="error" message="Property &apos;image&apos; does not exist on type &apos;Object&apos;." source="TS2339" />
-<error line="14" column="19" severity="error" message="Property &apos;image&apos; does not exist on type &apos;Object&apos;." source="TS2339" />
-<error line="26" column="38" severity="error" message="Property &apos;image&apos; does not exist on type &apos;Object&apos;." source="TS2339" />
-<error line="27" column="19" severity="error" message="Property &apos;image&apos; does not exist on type &apos;Object&apos;." source="TS2339" />
+<file name="assets/js/blocks/featured-items/block-controls.tsx">
+<error line="9" column="2" severity="error" message="Module &apos;&quot;@wordpress/block-editor&quot;&apos; has no exported member &apos;MediaReplaceFlow&apos;." source="TS2305" />
 </file>
-<file name="assets/js/blocks/featured-items/use-background-image.js">
-<error line="19" column="39" severity="error" message="Binding element &apos;blockName&apos; implicitly has an &apos;any&apos; type." source="TS7031" />
-<error line="19" column="50" severity="error" message="Binding element &apos;item&apos; implicitly has an &apos;any&apos; type." source="TS7031" />
-<error line="19" column="56" severity="error" message="Binding element &apos;mediaId&apos; implicitly has an &apos;any&apos; type." source="TS7031" />
-<error line="19" column="65" severity="error" message="Binding element &apos;mediaSrc&apos; implicitly has an &apos;any&apos; type." source="TS7031" />
+<file name="assets/js/blocks/featured-items/image-editor.tsx">
+<error line="10" column="2" severity="error" message="Module &apos;&quot;@wordpress/block-editor&quot;&apos; has no exported member &apos;__experimentalImageEditingProvider&apos;." source="TS2305" />
+<error line="11" column="2" severity="error" message="Module &apos;&quot;@wordpress/block-editor&quot;&apos; has no exported member &apos;__experimentalImageEditor&apos;." source="TS2305" />
 </file>
-<file name="assets/js/blocks/featured-items/block-controls.js">
-<error line="8" column="2" severity="error" message="Module &apos;&quot;@wordpress/block-editor&quot;&apos; has no exported member &apos;MediaReplaceFlow&apos;." source="TS2305" />
-<error line="20" column="2" severity="error" message="Binding element &apos;backgroundImageId&apos; implicitly has an &apos;any&apos; type." source="TS7031" />
-<error line="21" column="2" severity="error" message="Binding element &apos;backgroundImageSrc&apos; implicitly has an &apos;any&apos; type." source="TS7031" />
-<error line="22" column="2" severity="error" message="Binding element &apos;contentAlign&apos; implicitly has an &apos;any&apos; type." source="TS7031" />
-<error line="23" column="2" severity="error" message="Binding element &apos;cropLabel&apos; implicitly has an &apos;any&apos; type." source="TS7031" />
-<error line="24" column="2" severity="error" message="Binding element &apos;editLabel&apos; implicitly has an &apos;any&apos; type." source="TS7031" />
-<error line="25" column="2" severity="error" message="Binding element &apos;editMode&apos; implicitly has an &apos;any&apos; type." source="TS7031" />
-<error line="26" column="2" severity="error" message="Binding element &apos;isEditingImage&apos; implicitly has an &apos;any&apos; type." source="TS7031" />
-<error line="27" column="2" severity="error" message="Binding element &apos;mediaSrc&apos; implicitly has an &apos;any&apos; type." source="TS7031" />
-<error line="28" column="2" severity="error" message="Binding element &apos;setAttributes&apos; implicitly has an &apos;any&apos; type." source="TS7031" />
-<error line="29" column="2" severity="error" message="Binding element &apos;setIsEditingImage&apos; implicitly has an &apos;any&apos; type." source="TS7031" />
-<error line="51" column="19" severity="error" message="Parameter &apos;media&apos; implicitly has an &apos;any&apos; type." source="TS7006" />
-<error line="84" column="38" severity="error" message="Binding element &apos;cropLabel&apos; implicitly has an &apos;any&apos; type." source="TS7031" />
-<error line="84" column="49" severity="error" message="Binding element &apos;editLabel&apos; implicitly has an &apos;any&apos; type." source="TS7031" />
-<error line="85" column="2" severity="error" message="Parameter &apos;Component&apos; implicitly has an &apos;any&apos; type." source="TS7006" />
-<error line="86" column="8" severity="error" message="Parameter &apos;props&apos; implicitly has an &apos;any&apos; type." source="TS7006" />
+<file name="assets/js/blocks/featured-items/with-featured-item.tsx">
+<error line="8" column="10" severity="error" message="Module &apos;&quot;@wordpress/block-editor&quot;&apos; has no exported member &apos;__experimentalGetSpacingClassesAndStyles&apos;." source="TS2305" />
 </file>
-<file name="assets/js/blocks/featured-items/call-to-action.js">
-<error line="8" column="33" severity="error" message="Binding element &apos;itemId&apos; implicitly has an &apos;any&apos; type." source="TS7031" />
-<error line="8" column="41" severity="error" message="Binding element &apos;linkText&apos; implicitly has an &apos;any&apos; type." source="TS7031" />
-<error line="8" column="51" severity="error" message="Binding element &apos;permalink&apos; implicitly has an &apos;any&apos; type." source="TS7031" />
-</file>
-<file name="assets/js/blocks/featured-items/constrained-resizable.js">
-<error line="15" column="2" severity="error" message="Binding element &apos;onResize&apos; implicitly has an &apos;any&apos; type." source="TS7031" />
-</file>
-<file name="assets/js/blocks/featured-items/image-editor.js">
-<error line="7" column="2" severity="error" message="Module &apos;&quot;@wordpress/block-editor&quot;&apos; has no exported member &apos;__experimentalImageEditingProvider&apos;." source="TS2305" />
-<error line="8" column="2" severity="error" message="Module &apos;&quot;@wordpress/block-editor&quot;&apos; has no exported member &apos;__experimentalImageEditor&apos;." source="TS2305" />
-<error line="18" column="2" severity="error" message="Binding element &apos;backgroundImageId&apos; implicitly has an &apos;any&apos; type." source="TS7031" />
-<error line="19" column="2" severity="error" message="Binding element &apos;backgroundImageSize&apos; implicitly has an &apos;any&apos; type." source="TS7031" />
-<error line="20" column="2" severity="error" message="Binding element &apos;backgroundImageSrc&apos; implicitly has an &apos;any&apos; type." source="TS7031" />
-<error line="21" column="2" severity="error" message="Binding element &apos;isEditingImage&apos; implicitly has an &apos;any&apos; type." source="TS7031" />
-<error line="22" column="2" severity="error" message="Binding element &apos;setAttributes&apos; implicitly has an &apos;any&apos; type." source="TS7031" />
-<error line="23" column="2" severity="error" message="Binding element &apos;setIsEditingImage&apos; implicitly has an &apos;any&apos; type." source="TS7031" />
-<error line="36" column="23" severity="error" message="Binding element &apos;id&apos; implicitly has an &apos;any&apos; type." source="TS7031" />
-<error line="36" column="27" severity="error" message="Binding element &apos;url&apos; implicitly has an &apos;any&apos; type." source="TS7031" />
-<error line="56" column="34" severity="error" message="Parameter &apos;Component&apos; implicitly has an &apos;any&apos; type." source="TS7006" />
-<error line="56" column="51" severity="error" message="Parameter &apos;props&apos; implicitly has an &apos;any&apos; type." source="TS7006" />
-</file>
-<file name="assets/js/blocks/featured-items/inspector-controls.js">
-<error line="9" column="2" severity="error" message="Module &apos;&quot;@wordpress/block-editor&quot;&apos; has no exported member &apos;__experimentalPanelColorGradientSettings&apos;." source="TS2305" />
-<error line="10" column="2" severity="error" message="Module &apos;&quot;@wordpress/block-editor&quot;&apos; has no exported member &apos;__experimentalUseGradient&apos;." source="TS2305" />
-<error line="17" column="2" severity="error" message="Module &apos;&quot;@wordpress/components&quot;&apos; has no exported member &apos;__experimentalToggleGroupControl&apos;." source="TS2305" />
-<error line="18" column="2" severity="error" message="Module &apos;&quot;@wordpress/components&quot;&apos; has no exported member &apos;__experimentalToggleGroupControlOption&apos;." source="TS2305" />
-<error line="30" column="2" severity="error" message="Binding element &apos;alt&apos; implicitly has an &apos;any&apos; type." source="TS7031" />
-<error line="31" column="2" severity="error" message="Binding element &apos;backgroundImageSrc&apos; implicitly has an &apos;any&apos; type." source="TS7031" />
-<error line="32" column="2" severity="error" message="Binding element &apos;contentPanel&apos; implicitly has an &apos;any&apos; type." source="TS7031" />
-<error line="33" column="2" severity="error" message="Binding element &apos;dimRatio&apos; implicitly has an &apos;any&apos; type." source="TS7031" />
-<error line="35" column="2" severity="error" message="Binding element &apos;hasParallax&apos; implicitly has an &apos;any&apos; type." source="TS7031" />
-<error line="36" column="2" severity="error" message="Binding element &apos;isRepeated&apos; implicitly has an &apos;any&apos; type." source="TS7031" />
-<error line="37" column="2" severity="error" message="Binding element &apos;imageFit&apos; implicitly has an &apos;any&apos; type." source="TS7031" />
-<error line="38" column="2" severity="error" message="Binding element &apos;overlayColor&apos; implicitly has an &apos;any&apos; type." source="TS7031" />
-<error line="39" column="2" severity="error" message="Binding element &apos;overlayGradient&apos; implicitly has an &apos;any&apos; type." source="TS7031" />
-<error line="40" column="2" severity="error" message="Binding element &apos;setAttributes&apos; implicitly has an &apos;any&apos; type." source="TS7031" />
-<error line="41" column="2" severity="error" message="Binding element &apos;setGradient&apos; implicitly has an &apos;any&apos; type." source="TS7031" />
-<error line="42" column="2" severity="error" message="Binding element &apos;showDesc&apos; implicitly has an &apos;any&apos; type." source="TS7031" />
-<error line="121" column="23" severity="error" message="Parameter &apos;value&apos; implicitly has an &apos;any&apos; type." source="TS7006" />
-<error line="193" column="26" severity="error" message="Parameter &apos;value&apos; implicitly has an &apos;any&apos; type." source="TS7006" />
-<error line="195" column="29" severity="error" message="Parameter &apos;value&apos; implicitly has an &apos;any&apos; type." source="TS7006" />
-<error line="229" column="40" severity="error" message="Parameter &apos;Component&apos; implicitly has an &apos;any&apos; type." source="TS7006" />
-<error line="229" column="57" severity="error" message="Parameter &apos;props&apos; implicitly has an &apos;any&apos; type." source="TS7006" />
-</file>
-<file name="assets/js/blocks/featured-items/register.tsx">
-<error line="41" column="36" severity="error" message="Property &apos;color&apos; does not exist on type &apos;BlockSupports&apos;." source="TS2339" />
-<error line="42" column="30" severity="error" message="Property &apos;color&apos; does not exist on type &apos;BlockSupports&apos;." source="TS2339" />
-<error line="45" column="26" severity="error" message="Property &apos;color&apos; does not exist on type &apos;BlockSupports&apos;." source="TS2339" />
-<error line="49" column="33" severity="error" message="Property &apos;spacing&apos; does not exist on type &apos;BlockSupports&apos;." source="TS2339" />
-<error line="53" column="27" severity="error" message="Property &apos;spacing&apos; does not exist on type &apos;BlockSupports&apos;." source="TS2339" />
-<error line="57" column="26" severity="error" message="Property &apos;spacing&apos; does not exist on type &apos;BlockSupports&apos;." source="TS2339" />
-<error line="62" column="47" severity="error" message="Property &apos;__experimentalBorder&apos; does not exist on type &apos;BlockSupports&apos;." source="TS2339" />
-</file>
-<file name="assets/js/blocks/featured-items/utils.js">
-<error line="1" column="51" severity="error" message="Parameter &apos;coords&apos; implicitly has an &apos;any&apos; type." source="TS7006" />
-<error line="9" column="58" severity="error" message="Parameter &apos;coords&apos; implicitly has an &apos;any&apos; type." source="TS7006" />
-<error line="84" column="2" severity="error" message="Type &apos;string | null&apos; is not assignable to type &apos;string&apos;.
-  Type &apos;null&apos; is not assignable to type &apos;string&apos;." source="TS2322" />
-</file>
-<file name="assets/js/blocks/featured-items/with-api-error.js">
-<error line="12" column="31" severity="error" message="Parameter &apos;Component&apos; implicitly has an &apos;any&apos; type." source="TS7006" />
-<error line="12" column="48" severity="error" message="Parameter &apos;props&apos; implicitly has an &apos;any&apos; type." source="TS7006" />
+<file name="assets/js/blocks/featured-items/inspector-controls.tsx">
+<error line="11" column="2" severity="error" message="Module &apos;&quot;@wordpress/block-editor&quot;&apos; has no exported member &apos;__experimentalPanelColorGradientSettings&apos;." source="TS2305" />
+<error line="12" column="2" severity="error" message="Module &apos;&quot;@wordpress/block-editor&quot;&apos; has no exported member &apos;__experimentalUseGradient&apos;." source="TS2305" />
+<error line="19" column="2" severity="error" message="Module &apos;&quot;@wordpress/components&quot;&apos; has no exported member &apos;__experimentalToggleGroupControl&apos;." source="TS2305" />
+<error line="20" column="2" severity="error" message="Module &apos;&quot;@wordpress/components&quot;&apos; has no exported member &apos;__experimentalToggleGroupControlOption&apos;." source="TS2305" />
 </file>
 <file name="assets/js/editor-components/product-category-control/index.js">
 <error line="21" column="2" severity="error" message="Binding element &apos;categories&apos; implicitly has an &apos;any&apos; type." source="TS7031" />
@@ -3069,63 +2981,14 @@
 <error line="143" column="14" severity="error" message="Parameter &apos;id&apos; implicitly has an &apos;any&apos; type." source="TS7006" />
 <error line="144" column="26" severity="error" message="Parameter &apos;category&apos; implicitly has an &apos;any&apos; type." source="TS7006" />
 </file>
-<file name="assets/js/blocks/featured-items/with-edit-mode.js">
-<error line="15" column="33" severity="error" message="Binding element &apos;description&apos; implicitly has an &apos;any&apos; type." source="TS7031" />
-<error line="15" column="46" severity="error" message="Binding element &apos;editLabel&apos; implicitly has an &apos;any&apos; type." source="TS7031" />
-<error line="15" column="57" severity="error" message="Binding element &apos;icon&apos; implicitly has an &apos;any&apos; type." source="TS7031" />
-<error line="15" column="63" severity="error" message="Binding element &apos;label&apos; implicitly has an &apos;any&apos; type." source="TS7031" />
-<error line="16" column="2" severity="error" message="Parameter &apos;Component&apos; implicitly has an &apos;any&apos; type." source="TS7006" />
-<error line="17" column="8" severity="error" message="Parameter &apos;props&apos; implicitly has an &apos;any&apos; type." source="TS7006" />
-<error line="43" column="8" severity="error" message="Type &apos;{ selected: any[]; onChange: (value?: any[]) =&gt; void; isSingle: true; }&apos; is missing the following properties from type &apos;{ categories: any; error: any; isLoading: any; onChange: any; onOperatorChange: any; operator: any; selected: any; isCompact: any; isSingle: any; showReviewCount: any; }&apos;: categories, error, isLoading, onOperatorChange, and 3 more." source="TS2740" />
-<error line="45" column="21" severity="error" message="Parameter &apos;value&apos; implicitly has an &apos;any[]&apos; type." source="TS7006" />
-<error line="60" column="8" severity="error" message="Type &apos;{ selected: any; showVariations: true; onChange: (value?: any[]) =&gt; void; }&apos; is not assignable to type &apos;IntrinsicAttributes &amp; { selected: number[]; } &amp; { children?: ReactNode; }&apos;.
-  Property &apos;showVariations&apos; does not exist on type &apos;IntrinsicAttributes &amp; { selected: number[]; } &amp; { children?: ReactNode; }&apos;." source="TS2322" />
-<error line="61" column="21" severity="error" message="Parameter &apos;value&apos; implicitly has an &apos;any[]&apos; type." source="TS7006" />
-</file>
-<file name="assets/js/blocks/featured-items/with-editing-image.js">
-<error line="6" column="35" severity="error" message="Parameter &apos;Component&apos; implicitly has an &apos;any&apos; type." source="TS7006" />
-<error line="6" column="52" severity="error" message="Parameter &apos;props&apos; implicitly has an &apos;any&apos; type." source="TS7006" />
-</file>
-<file name="assets/js/blocks/featured-items/with-featured-item.js">
-<error line="6" column="10" severity="error" message="Module &apos;&quot;@wordpress/block-editor&quot;&apos; has no exported member &apos;__experimentalGetSpacingClassesAndStyles&apos;." source="TS2305" />
-<error line="24" column="37" severity="error" message="Binding element &apos;emptyMessage&apos; implicitly has an &apos;any&apos; type." source="TS7031" />
-<error line="24" column="51" severity="error" message="Binding element &apos;icon&apos; implicitly has an &apos;any&apos; type." source="TS7031" />
-<error line="24" column="57" severity="error" message="Binding element &apos;label&apos; implicitly has an &apos;any&apos; type." source="TS7031" />
-<error line="25" column="2" severity="error" message="Parameter &apos;Component&apos; implicitly has an &apos;any&apos; type." source="TS7006" />
-<error line="26" column="8" severity="error" message="Parameter &apos;props&apos; implicitly has an &apos;any&apos; type." source="TS7006" />
-<error line="162" column="30" severity="error" message="Property &apos;naturalHeight&apos; does not exist on type &apos;EventTarget&apos;." source="TS2339" />
-<error line="163" column="29" severity="error" message="Property &apos;naturalWidth&apos; does not exist on type &apos;EventTarget&apos;." source="TS2339" />
-</file>
-<file name="assets/js/blocks/featured-items/featured-category/block.js">
-<error line="56" column="14" severity="error" message="Argument of type &apos;(select: any, { clientId }: { clientId: any; }, { dispatch }: { dispatch: any; }) =&gt; { updateBlockAttributes: (attributes: any) =&gt; void; currentButtonAttributes: any; }&apos; is not assignable to parameter of type &apos;(sel: { (key: string): SelectorMap; (key: &quot;core/rich-text&quot;): typeof import(&quot;/home/runner/work/woocommerce-blocks/woocommerce-blocks/node_modules/@types/wordpress__rich-text/store/selectors&quot;); (key: &quot;core/notices&quot;): typeof import(&quot;/home/runner/work/woocommerce-blocks/woocommerce-blocks/node_modules/@types/wordpress__...&apos;.
-  Types of parameters &apos;__1&apos; and &apos;ownProps&apos; are incompatible.
-    Property &apos;clientId&apos; is missing in type &apos;{}&apos; but required in type &apos;{ clientId: any; }&apos;." source="TS2345" />
-<error line="56" column="16" severity="error" message="Parameter &apos;select&apos; implicitly has an &apos;any&apos; type." source="TS7006" />
-<error line="56" column="26" severity="error" message="Binding element &apos;clientId&apos; implicitly has an &apos;any&apos; type." source="TS7031" />
-<error line="56" column="40" severity="error" message="Binding element &apos;dispatch&apos; implicitly has an &apos;any&apos; type." source="TS7031" />
-<error line="61" column="35" severity="error" message="Parameter &apos;attributes&apos; implicitly has an &apos;any&apos; type." source="TS7006" />
-<error line="102" column="7" severity="error" message="Type &apos;{ children?: ReactNode; triggerUrlUpdate: () =&gt; void; }&apos; is not assignable to type &apos;InnerProps&apos;.
-  &apos;{ children?: ReactNode; triggerUrlUpdate: () =&gt; void; }&apos; is assignable to the constraint of type &apos;InnerProps&apos;, but &apos;InnerProps&apos; could be instantiated with a different subtype of constraint &apos;{}&apos;." source="TS2322" />
-</file>
 <file name="assets/js/blocks/featured-items/featured-category/index.tsx">
-<error line="17" column="27" severity="error" message="Argument of type &apos;{ name: string; version: string; title: string; category: string; keywords: string[]; description: string; supports: { align: string[]; html: boolean; color: { background: boolean; text: boolean; __experimentalDuotone: string; }; spacing: { ...; }; __experimentalBorder: { ...; }; }; attributes: { ...; }; textdomain:...&apos; is not assignable to parameter of type &apos;BlockConfiguration&lt;{}&gt;&apos;.
+<error line="17" column="27" severity="error" message="Argument of type &apos;{ name: string; version: string; title: string; category: string; keywords: string[]; description: string; supports: { align: string[]; html: boolean; color: { background: boolean; text: boolean; __experimentalDuotone: string; }; spacing: { ...; }; __experimentalBorder: { ...; }; }; attributes: { ...; }; textdomain:...&apos; is not assignable to parameter of type &apos;Partial&lt;Omit&lt;Block&lt;{}&gt;, &quot;icon&quot;&gt;&gt; &amp; Pick&lt;Block&lt;{}&gt;, &quot;title&quot; | &quot;category&quot; | &quot;attributes&quot;&gt; &amp; { icon?: BlockIcon | undefined; } &amp; ExtendedBlockSupports&apos;.
   Type &apos;{ name: string; version: string; title: string; category: string; keywords: string[]; description: string; supports: { align: string[]; html: boolean; color: { background: boolean; text: boolean; __experimentalDuotone: string; }; spacing: { ...; }; __experimentalBorder: { ...; }; }; attributes: { ...; }; textdomain:...&apos; is not assignable to type &apos;Partial&lt;Omit&lt;Block&lt;{}&gt;, &quot;icon&quot;&gt;&gt;&apos;.
     The types of &apos;supports.align&apos; are incompatible between these types.
       Type &apos;string[]&apos; is not assignable to type &apos;boolean | readonly BlockAlignment[] | undefined&apos;." source="TS2345" />
 </file>
-<file name="assets/js/blocks/featured-items/featured-product/block.js">
-<error line="56" column="14" severity="error" message="Argument of type &apos;(select: any, { clientId }: { clientId: any; }, { dispatch }: { dispatch: any; }) =&gt; { updateBlockAttributes: (attributes: any) =&gt; void; currentButtonAttributes: any; }&apos; is not assignable to parameter of type &apos;(sel: { (key: string): SelectorMap; (key: &quot;core/rich-text&quot;): typeof import(&quot;/home/runner/work/woocommerce-blocks/woocommerce-blocks/node_modules/@types/wordpress__rich-text/store/selectors&quot;); (key: &quot;core/notices&quot;): typeof import(&quot;/home/runner/work/woocommerce-blocks/woocommerce-blocks/node_modules/@types/wordpress__...&apos;.
-  Types of parameters &apos;__1&apos; and &apos;ownProps&apos; are incompatible.
-    Property &apos;clientId&apos; is missing in type &apos;{}&apos; but required in type &apos;{ clientId: any; }&apos;." source="TS2345" />
-<error line="56" column="16" severity="error" message="Parameter &apos;select&apos; implicitly has an &apos;any&apos; type." source="TS7006" />
-<error line="56" column="26" severity="error" message="Binding element &apos;clientId&apos; implicitly has an &apos;any&apos; type." source="TS7031" />
-<error line="56" column="40" severity="error" message="Binding element &apos;dispatch&apos; implicitly has an &apos;any&apos; type." source="TS7031" />
-<error line="61" column="35" severity="error" message="Parameter &apos;attributes&apos; implicitly has an &apos;any&apos; type." source="TS7006" />
-<error line="102" column="7" severity="error" message="Type &apos;{ children?: ReactNode; triggerUrlUpdate: () =&gt; void; }&apos; is not assignable to type &apos;InnerProps&apos;.
-  &apos;{ children?: ReactNode; triggerUrlUpdate: () =&gt; void; }&apos; is assignable to the constraint of type &apos;InnerProps&apos;, but &apos;InnerProps&apos; could be instantiated with a different subtype of constraint &apos;{}&apos;." source="TS2322" />
-</file>
 <file name="assets/js/blocks/featured-items/featured-product/index.tsx">
-<error line="16" column="27" severity="error" message="Argument of type &apos;{ name: string; version: string; title: string; description: string; category: string; keywords: string[]; supports: { align: string[]; html: boolean; color: { background: boolean; text: boolean; __experimentalDuotone: string; }; spacing: { ...; }; __experimentalBorder: { ...; }; multiple: boolean; }; attributes: { ...&apos; is not assignable to parameter of type &apos;BlockConfiguration&lt;{}&gt;&apos;.
+<error line="16" column="27" severity="error" message="Argument of type &apos;{ name: string; version: string; title: string; description: string; category: string; keywords: string[]; supports: { align: string[]; html: boolean; color: { background: boolean; text: boolean; __experimentalDuotone: string; }; spacing: { ...; }; __experimentalBorder: { ...; }; multiple: boolean; }; attributes: { ...&apos; is not assignable to parameter of type &apos;Partial&lt;Omit&lt;Block&lt;{}&gt;, &quot;icon&quot;&gt;&gt; &amp; Pick&lt;Block&lt;{}&gt;, &quot;title&quot; | &quot;category&quot; | &quot;attributes&quot;&gt; &amp; { icon?: BlockIcon | undefined; } &amp; ExtendedBlockSupports&apos;.
   Type &apos;{ name: string; version: string; title: string; description: string; category: string; keywords: string[]; supports: { align: string[]; html: boolean; color: { background: boolean; text: boolean; __experimentalDuotone: string; }; spacing: { ...; }; __experimentalBorder: { ...; }; multiple: boolean; }; attributes: { ...&apos; is not assignable to type &apos;Partial&lt;Omit&lt;Block&lt;{}&gt;, &quot;icon&quot;&gt;&gt;&apos;.
     The types of &apos;supports.align&apos; are incompatible between these types.
       Type &apos;string[]&apos; is not assignable to type &apos;boolean | readonly BlockAlignment[] | undefined&apos;." source="TS2345" />
@@ -3227,7 +3090,7 @@
           Property &apos;className&apos; is missing in type &apos;{ children?: ReactNode; }&apos; but required in type &apos;MiniCartShoppingButtonBlockProps&apos;." source="TS2322" />
 </file>
 <file name="assets/js/blocks/mini-cart/block.tsx">
-<error line="91" column="6" severity="error" message="Type &apos;({ children, }: MiniCartContentsBlockProps) =&gt; JSX.Element&apos; is not assignable to type &apos;FunctionComponent&lt;{}&gt;&apos;.
+<error line="102" column="6" severity="error" message="Type &apos;({ children, }: MiniCartContentsBlockProps) =&gt; JSX.Element&apos; is not assignable to type &apos;FunctionComponent&lt;{}&gt;&apos;.
   Types of parameters &apos;__0&apos; and &apos;props&apos; are incompatible.
     Type &apos;{ children?: ReactNode; }&apos; is not assignable to type &apos;MiniCartContentsBlockProps&apos;.
       Types of property &apos;children&apos; are incompatible.
@@ -3244,9 +3107,9 @@
 <error line="7" column="46" severity="error" message="Cannot find module &apos;@woocommerce/base-utils/legacy-events&apos; or its corresponding type declarations." source="TS2307" />
 </file>
 <file name="assets/js/blocks/mini-cart/index.tsx">
-<error line="35" column="3" severity="error" message="Type &apos;{ html: false; multiple: false; color: true; }&apos; is not assignable to type &apos;BlockSupports&apos;.
+<error line="36" column="3" severity="error" message="Type &apos;{ html: false; multiple: false; color: true; typography: { __experimentalFontFamily?: true; fontSize: true; }; }&apos; is not assignable to type &apos;BlockSupports&apos;.
   Object literal may only specify known properties, and &apos;color&apos; does not exist in type &apos;BlockSupports&apos;." source="TS2322" />
-<error line="54" column="2" severity="error" message="Type &apos;({ attributes, setAttributes }: Props) =&gt; ReactElement&apos; is not assignable to type &apos;ComponentType&lt;BlockEditProps&lt;{}&gt;&gt; | undefined&apos;.
+<error line="61" column="2" severity="error" message="Type &apos;({ attributes, setAttributes }: Props) =&gt; ReactElement&apos; is not assignable to type &apos;ComponentType&lt;BlockEditProps&lt;{}&gt;&gt; | undefined&apos;.
   Type &apos;({ attributes, setAttributes }: Props) =&gt; ReactElement&apos; is not assignable to type &apos;FunctionComponent&lt;BlockEditProps&lt;{}&gt;&gt;&apos;.
     Types of parameters &apos;__0&apos; and &apos;props&apos; are incompatible.
       Type &apos;PropsWithChildren&lt;BlockEditProps&lt;{}&gt;&gt;&apos; is not assignable to type &apos;Props&apos;.
@@ -3362,8 +3225,6 @@
   No index signature with a parameter of type &apos;string&apos; was found on type &apos;{}&apos;." source="TS7053" />
 <error line="41" column="11" severity="error" message="Element implicitly has an &apos;any&apos; type because expression of type &apos;string&apos; can&apos;t be used to index type &apos;{}&apos;.
   No index signature with a parameter of type &apos;string&apos; was found on type &apos;{}&apos;." source="TS7053" />
-<error line="95" column="52" severity="error" message="Argument of type &apos;{ queryPrices: boolean; queryState: any; }&apos; is not assignable to parameter of type &apos;{ queryAttribute: any; queryPrices: any; queryStock: any; queryState: any; }&apos;.
-  Type &apos;{ queryPrices: boolean; queryState: any; }&apos; is missing the following properties from type &apos;{ queryAttribute: any; queryPrices: any; queryStock: any; queryState: any; }&apos;: queryAttribute, queryStock" source="TS2345" />
 <error line="100" column="49" severity="error" message="Object is of type &apos;unknown&apos;." source="TS2571" />
 <error line="104" column="16" severity="error" message="Argument of type &apos;void | QueryArgParsed | null&apos; is not assignable to parameter of type &apos;string&apos;.
   Type &apos;null&apos; is not assignable to type &apos;string&apos;." source="TS2345" />
@@ -3409,17 +3270,20 @@
 <error line="11" column="20" severity="error" message="Parameter &apos;el&apos; implicitly has an &apos;any&apos; type." source="TS7006" />
 </file>
 <file name="assets/js/blocks/price-filter/index.js">
-<error line="16" column="1" severity="error" message="No overload matches this call.
-  Overload 1 of 2, &apos;(metadata: BlockConfiguration&lt;{ showInputFields: unknown; showFilterButton: unknown; heading: unknown; headingLevel: unknown; }&gt;, settings?: Partial&lt;BlockConfiguration&lt;{ showInputFields: unknown; showFilterButton: unknown; heading: unknown; headingLevel: unknown; }&gt;&gt; | undefined): Block&lt;...&gt; | undefined&apos;, gave the following error.
-    Argument of type &apos;string&apos; is not assignable to parameter of type &apos;BlockConfiguration&lt;{ showInputFields: unknown; showFilterButton: unknown; heading: unknown; headingLevel: unknown; }&gt;&apos;.
-      Type &apos;string&apos; is not assignable to type &apos;Pick&lt;Block&lt;{ showInputFields: unknown; showFilterButton: unknown; heading: unknown; headingLevel: unknown; }&gt;, &quot;title&quot; | &quot;category&quot; | &quot;attributes&quot;&gt;&apos;.
-  Overload 2 of 2, &apos;(name: string, settings: BlockConfiguration&lt;{ showInputFields: unknown; showFilterButton: unknown; heading: unknown; headingLevel: unknown; }&gt;): Block&lt;{ showInputFields: unknown; showFilterButton: unknown; heading: unknown; headingLevel: unknown; }&gt; | undefined&apos;, gave the following error.
-    Type &apos;{ __experimentalBorder?: { radius: true; color: true; width: false; }; html: false; multiple: false; color: { text: true; background: false; }; }&apos; is not assignable to type &apos;BlockSupports&apos;.
-      Object literal may only specify known properties, and &apos;color&apos; does not exist in type &apos;BlockSupports&apos;." source="TS2769" />
-<error line="73" column="18" severity="error" message="Property &apos;idBase&apos; does not exist on type &apos;{ showInputFields: unknown; showFilterButton: unknown; heading: unknown; headingLevel: unknown; }&apos;." source="TS2339" />
-<error line="73" column="26" severity="error" message="Property &apos;instance&apos; does not exist on type &apos;{ showInputFields: unknown; showFilterButton: unknown; heading: unknown; headingLevel: unknown; }&apos;." source="TS2339" />
-<error line="75" column="20" severity="error" message="Property &apos;instance&apos; does not exist on type &apos;{ showInputFields: unknown; showFilterButton: unknown; heading: unknown; headingLevel: unknown; }&apos;." source="TS2339" />
-<error line="93" column="4" severity="error" message="Property &apos;className&apos; does not exist on type &apos;Readonly&lt;{ showInputFields: unknown; showFilterButton: unknown; heading: unknown; headingLevel: unknown; }&gt;&apos;." source="TS2339" />
+<error line="17" column="20" severity="error" message="No overload matches this call.
+  Overload 1 of 2, &apos;(metadata: BlockConfiguration&lt;{ showInputFields: unknown; showFilterButton: unknown; headingLevel: unknown; }&gt;, settings?: Partial&lt;BlockConfiguration&lt;{ showInputFields: unknown; showFilterButton: unknown; headingLevel: unknown; }&gt;&gt; | undefined): Block&lt;...&gt; | undefined&apos;, gave the following error.
+    Argument of type &apos;{ name: string; version: string; title: string; description: string; category: string; keywords: string[]; supports: { html: boolean; multiple: boolean; color: { text: boolean; background: boolean; }; }; ... 4 more ...; $schema: string; }&apos; is not assignable to parameter of type &apos;BlockConfiguration&lt;{ showInputFields: unknown; showFilterButton: unknown; headingLevel: unknown; }&gt;&apos;.
+      Type &apos;{ name: string; version: string; title: string; description: string; category: string; keywords: string[]; supports: { html: boolean; multiple: boolean; color: { text: boolean; background: boolean; }; }; ... 4 more ...; $schema: string; }&apos; is not assignable to type &apos;Partial&lt;Omit&lt;Block&lt;{ showInputFields: unknown; showFilterButton: unknown; headingLevel: unknown; }&gt;, &quot;icon&quot;&gt;&gt;&apos;.
+        The types of &apos;attributes[&quot;showInputFields&quot;]&apos; are incompatible between these types.
+          Type &apos;{ type: string; default: boolean; }&apos; is not assignable to type &apos;BlockAttribute&lt;unknown&gt;&apos;.
+            Type &apos;{ type: string; default: boolean; }&apos; is missing the following properties from type &apos;Query&lt;unknown&gt;&apos;: source, selector, query
+  Overload 2 of 2, &apos;(name: string, settings: BlockConfiguration&lt;{ heading: unknown; showInputFields: unknown; showFilterButton: unknown; headingLevel: unknown; }&gt;): Block&lt;{ heading: unknown; showInputFields: unknown; showFilterButton: unknown; headingLevel: unknown; }&gt; | undefined&apos;, gave the following error.
+    Argument of type &apos;{ name: string; version: string; title: string; description: string; category: string; keywords: string[]; supports: { html: boolean; multiple: boolean; color: { text: boolean; background: boolean; }; }; ... 4 more ...; $schema: string; }&apos; is not assignable to parameter of type &apos;string&apos;." source="TS2769" />
+<error line="54" column="18" severity="error" message="Property &apos;idBase&apos; does not exist on type &apos;{ showInputFields: unknown; showFilterButton: unknown; headingLevel: unknown; }&apos;." source="TS2339" />
+<error line="54" column="26" severity="error" message="Property &apos;instance&apos; does not exist on type &apos;{ showInputFields: unknown; showFilterButton: unknown; headingLevel: unknown; }&apos;." source="TS2339" />
+<error line="56" column="20" severity="error" message="Property &apos;instance&apos; does not exist on type &apos;{ showInputFields: unknown; showFilterButton: unknown; headingLevel: unknown; }&apos;." source="TS2339" />
+<error line="74" column="4" severity="error" message="Property &apos;className&apos; does not exist on type &apos;Readonly&lt;{ showInputFields: unknown; showFilterButton: unknown; headingLevel: unknown; }&gt;&apos;." source="TS2339" />
+<error line="77" column="4" severity="error" message="Property &apos;heading&apos; does not exist on type &apos;Readonly&lt;{ showInputFields: unknown; showFilterButton: unknown; headingLevel: unknown; }&gt;&apos;." source="TS2339" />
 </file>
 <file name="assets/js/blocks/price-filter/test/use-price-constraints.js">
 <error line="16" column="28" severity="error" message="Binding element &apos;price&apos; implicitly has an &apos;any&apos; type." source="TS7031" />
@@ -3852,80 +3716,15 @@
 <file name="assets/js/blocks/single-product/save.js">
 <error line="7" column="18" severity="error" message="Binding element &apos;attributes&apos; implicitly has an &apos;any&apos; type." source="TS7031" />
 </file>
-<file name="assets/js/blocks/stock-filter/utils.ts">
-<error line="20" column="16" severity="error" message="This expression is not callable.
-  Not all constituents of type &apos;((searchElement: string, fromIndex?: number | undefined) =&gt; boolean) | QueryArgParsed&apos; are callable.
-    Type &apos;string&apos; has no call signatures." source="TS2349" />
-</file>
-<file name="assets/js/blocks/stock-filter/block.js">
-<error line="56" column="12" severity="error" message="Property &apos;outofstock&apos; does not exist on type &apos;() =&gt; never&apos;." source="TS2339" />
-<error line="60" column="3" severity="error" message="This condition will always return true since this function is always defined. Did you mean to call it instead?" source="TS2774" />
-<error line="66" column="21" severity="error" message="Argument of type &apos;{}&apos; is not assignable to parameter of type &apos;Record&lt;string, string&gt;&apos;.
-  Index signature for type &apos;string&apos; is missing in type &apos;{}&apos;." source="TS2345" />
-<error line="69" column="19" severity="error" message="Property &apos;isPreview&apos; does not exist on type &apos;Object&apos;." source="TS2339" />
-<error line="88" column="25" severity="error" message="Argument of type &apos;{ queryStock: boolean; queryState: any; }&apos; is not assignable to parameter of type &apos;{ queryAttribute: any; queryPrices: any; queryStock: any; queryState: any; }&apos;.
-  Type &apos;{ queryStock: boolean; queryState: any; }&apos; is missing the following properties from type &apos;{ queryAttribute: any; queryPrices: any; queryStock: any; queryState: any; }&apos;: queryAttribute, queryPrices" source="TS2345" />
-<error line="98" column="11" severity="error" message="Object is of type &apos;unknown&apos;." source="TS2571" />
-<error line="101" column="11" severity="error" message="Object is of type &apos;unknown&apos;." source="TS2571" />
-<error line="102" column="9" severity="error" message="Binding element &apos;status&apos; implicitly has an &apos;any&apos; type." source="TS7031" />
-<error line="102" column="17" severity="error" message="Binding element &apos;count&apos; implicitly has an &apos;any&apos; type." source="TS7031" />
-<error line="122" column="45" severity="error" message="Binding element &apos;status&apos; implicitly has an &apos;any[]&apos; type." source="TS7031" />
-<error line="127" column="49" severity="error" message="Property &apos;isPreview&apos; does not exist on type &apos;Object&apos;." source="TS2339" />
-<error line="151" column="8" severity="error" message="Type &apos;number | null&apos; is not assignable to type &apos;number&apos;.
-  Type &apos;null&apos; is not assignable to type &apos;number&apos;." source="TS2322" />
-<error line="151" column="32" severity="error" message="Property &apos;showCounts&apos; does not exist on type &apos;Object&apos;." source="TS2339" />
-<error line="158" column="24" severity="error" message="Argument of type &apos;({ value: string; name: any; label: Element; } | null)[]&apos; is not assignable to parameter of type &apos;SetStateAction&lt;{ value: string; name: string; label: Element; }[]&gt;&apos;.
-  Type &apos;({ value: string; name: any; label: Element; } | null)[]&apos; is not assignable to type &apos;{ value: string; name: string; label: Element; }[]&apos;.
-    Type &apos;{ value: string; name: any; label: Element; } | null&apos; is not assignable to type &apos;{ value: string; name: string; label: JSX.Element; }&apos;.
-      Type &apos;null&apos; is not assignable to type &apos;{ value: string; name: string; label: JSX.Element; }&apos;." source="TS2345" />
-<error line="160" column="19" severity="error" message="Property &apos;showCounts&apos; does not exist on type &apos;Object&apos;." source="TS2339" />
-<error line="161" column="19" severity="error" message="Property &apos;isPreview&apos; does not exist on type &apos;Object&apos;." source="TS2339" />
-<error line="172" column="13" severity="error" message="Generic type &apos;Array&lt;T&gt;&apos; requires 1 type argument(s)." source="TS2314" />
-<error line="219" column="26" severity="error" message="Property &apos;showFilterButton&apos; does not exist on type &apos;Object&apos;." source="TS2339" />
-<error line="222" column="23" severity="error" message="Property &apos;showFilterButton&apos; does not exist on type &apos;Object&apos;." source="TS2339" />
-<error line="255" column="23" severity="error" message="Argument of type &apos;{}&apos; is not assignable to parameter of type &apos;Record&lt;string, string&gt;&apos;." source="TS2345" />
-<error line="272" column="37" severity="error" message="Parameter &apos;filterValue&apos; implicitly has an &apos;any&apos; type." source="TS7006" />
-<error line="273" column="13" severity="error" message="Property &apos;name&apos; does not exist on type &apos;{ value: string; name: string; label: Element; } | undefined&apos;." source="TS2339" />
-<error line="280" column="37" severity="error" message="Binding element &apos;filterAdded&apos; implicitly has an &apos;any&apos; type." source="TS7031" />
-<error line="280" column="50" severity="error" message="Binding element &apos;filterRemoved&apos; implicitly has an &apos;any&apos; type." source="TS7031" />
-<error line="321" column="27" severity="error" message="Argument of type &apos;{ filterAdded: any; }&apos; is not assignable to parameter of type &apos;{ filterAdded: any; filterRemoved: any; }&apos;.
-  Property &apos;filterRemoved&apos; is missing in type &apos;{ filterAdded: any; }&apos; but required in type &apos;{ filterAdded: any; filterRemoved: any; }&apos;." source="TS2345" />
-<error line="323" column="27" severity="error" message="Argument of type &apos;{ filterRemoved: any; }&apos; is not assignable to parameter of type &apos;{ filterAdded: any; filterRemoved: any; }&apos;.
-  Property &apos;filterAdded&apos; is missing in type &apos;{ filterRemoved: any; }&apos; but required in type &apos;{ filterAdded: any; filterRemoved: any; }&apos;." source="TS2345" />
-<error line="335" column="39" severity="error" message="Property &apos;headingLevel&apos; does not exist on type &apos;Object&apos;." source="TS2339" />
-<error line="336" column="38" severity="error" message="Property &apos;isPreview&apos; does not exist on type &apos;Object&apos;." source="TS2339" />
-<error line="337" column="39" severity="error" message="Property &apos;isPreview&apos; does not exist on type &apos;Object&apos;." source="TS2339" />
-<error line="351" column="36" severity="error" message="Property &apos;heading&apos; does not exist on type &apos;Object&apos;." source="TS2339" />
-<error line="352" column="6" severity="error" message="Type &apos;{ children: any; className: string; }&apos; is not assignable to type &apos;IntrinsicAttributes&apos;.
-  Property &apos;children&apos; does not exist on type &apos;IntrinsicAttributes&apos;." source="TS2322" />
-<error line="353" column="24" severity="error" message="Property &apos;heading&apos; does not exist on type &apos;Object&apos;." source="TS2339" />
-<error line="365" column="23" severity="error" message="Property &apos;showFilterButton&apos; does not exist on type &apos;Object&apos;." source="TS2339" />
-</file>
-<file name="assets/js/blocks/stock-filter/edit.js">
-<error line="22" column="18" severity="error" message="Binding element &apos;attributes&apos; implicitly has an &apos;any&apos; type." source="TS7031" />
-<error line="22" column="30" severity="error" message="Binding element &apos;setAttributes&apos; implicitly has an &apos;any&apos; type." source="TS7031" />
-<error line="71" column="20" severity="error" message="Parameter &apos;newLevel&apos; implicitly has an &apos;any&apos; type." source="TS7006" />
-<error line="124" column="20" severity="error" message="Parameter &apos;value&apos; implicitly has an &apos;any&apos; type." source="TS7006" />
-</file>
-<file name="assets/js/blocks/stock-filter/frontend.js">
-<error line="11" column="20" severity="error" message="Parameter &apos;el&apos; implicitly has an &apos;any&apos; type." source="TS7006" />
-</file>
-<file name="assets/js/blocks/stock-filter/index.js">
-<error line="14" column="1" severity="error" message="No overload matches this call.
-  Overload 1 of 2, &apos;(metadata: BlockConfiguration&lt;{ heading: unknown; headingLevel: unknown; showCounts: unknown; showFilterButton: unknown; isPreview: unknown; }&gt;, settings?: Partial&lt;BlockConfiguration&lt;{ heading: unknown; headingLevel: unknown; showCounts: unknown; showFilterButton: unknown; isPreview: unknown; }&gt;&gt; | undefined): Block&lt;...&gt; | undefined&apos;, gave the following error.
-    Argument of type &apos;string&apos; is not assignable to parameter of type &apos;BlockConfiguration&lt;{ heading: unknown; headingLevel: unknown; showCounts: unknown; showFilterButton: unknown; isPreview: unknown; }&gt;&apos;.
-      Type &apos;string&apos; is not assignable to type &apos;Pick&lt;Block&lt;{ heading: unknown; headingLevel: unknown; showCounts: unknown; showFilterButton: unknown; isPreview: unknown; }&gt;, &quot;title&quot; | &quot;category&quot; | &quot;attributes&quot;&gt;&apos;.
-  Overload 2 of 2, &apos;(name: string, settings: BlockConfiguration&lt;{ heading: unknown; headingLevel: unknown; showCounts: unknown; showFilterButton: unknown; isPreview: unknown; }&gt;): Block&lt;{ heading: unknown; headingLevel: unknown; showCounts: unknown; showFilterButton: unknown; isPreview: unknown; }&gt; | undefined&apos;, gave the following error.
-    Type &apos;ComponentType&lt;Omit&lt;{ attributes: any; setAttributes: any; }, &quot;speak&quot; | &quot;debouncedSpeak&quot;&gt;&gt;&apos; is not assignable to type &apos;ComponentType&lt;BlockEditProps&lt;{ heading: unknown; headingLevel: unknown; showCounts: unknown; showFilterButton: unknown; isPreview: unknown; }&gt;&gt; | undefined&apos;.
-      Type &apos;ComponentClass&lt;Omit&lt;{ attributes: any; setAttributes: any; }, &quot;speak&quot; | &quot;debouncedSpeak&quot;&gt;, any&gt;&apos; is not assignable to type &apos;ComponentType&lt;BlockEditProps&lt;{ heading: unknown; headingLevel: unknown; showCounts: unknown; showFilterButton: unknown; isPreview: unknown; }&gt;&gt; | undefined&apos;.
-        Type &apos;ComponentClass&lt;Omit&lt;{ attributes: any; setAttributes: any; }, &quot;speak&quot; | &quot;debouncedSpeak&quot;&gt;, any&gt;&apos; is not assignable to type &apos;ComponentClass&lt;BlockEditProps&lt;{ heading: unknown; headingLevel: unknown; showCounts: unknown; showFilterButton: unknown; isPreview: unknown; }&gt;, any&gt;&apos;.
-          Construct signature return types &apos;Component&lt;Omit&lt;{ attributes: any; setAttributes: any; }, &quot;speak&quot; | &quot;debouncedSpeak&quot;&gt;, any, any&gt;&apos; and &apos;Component&lt;BlockEditProps&lt;{ heading: unknown; headingLevel: unknown; showCounts: unknown; showFilterButton: unknown; isPreview: unknown; }&gt;, any, any&gt;&apos; are incompatible.
-            The types of &apos;props&apos; are incompatible between these types.
-              Type &apos;Readonly&lt;Omit&lt;{ attributes: any; setAttributes: any; }, &quot;speak&quot; | &quot;debouncedSpeak&quot;&gt;&gt; &amp; Readonly&lt;{ children?: ReactNode; }&gt;&apos; is not assignable to type &apos;Readonly&lt;BlockEditProps&lt;{ heading: unknown; headingLevel: unknown; showCounts: unknown; showFilterButton: unknown; isPreview: unknown; }&gt;&gt; &amp; Readonly&lt;{ children?: ReactNode; }&gt;&apos;.
-                Type &apos;Readonly&lt;Omit&lt;{ attributes: any; setAttributes: any; }, &quot;speak&quot; | &quot;debouncedSpeak&quot;&gt;&gt; &amp; Readonly&lt;{ children?: ReactNode; }&gt;&apos; is missing the following properties from type &apos;Readonly&lt;BlockEditProps&lt;{ heading: unknown; headingLevel: unknown; showCounts: unknown; showFilterButton: unknown; isPreview: unknown; }&gt;&gt;&apos;: className, clientId, isSelected" source="TS2769" />
-<error line="71" column="4" severity="error" message="Property &apos;className&apos; does not exist on type &apos;Readonly&lt;{ heading: unknown; headingLevel: unknown; showCounts: unknown; showFilterButton: unknown; isPreview: unknown; }&gt;&apos;." source="TS2339" />
-<error line="83" column="4" severity="error" message="Element implicitly has an &apos;any&apos; type because expression of type &apos;&quot;data-show-filter-button&quot;&apos; can&apos;t be used to index type &apos;{ &apos;data-show-counts&apos;: unknown; &apos;data-heading&apos;: unknown; &apos;data-heading-level&apos;: unknown; }&apos;.
-  Property &apos;data-show-filter-button&apos; does not exist on type &apos;{ &apos;data-show-counts&apos;: unknown; &apos;data-heading&apos;: unknown; &apos;data-heading-level&apos;: unknown; }&apos;." source="TS7053" />
+<file name="assets/js/blocks/stock-filter/index.tsx">
+<error line="18" column="20" severity="error" message="No overload matches this call.
+  Overload 1 of 2, &apos;(metadata: BlockConfiguration&lt;Attributes&gt;, settings?: Partial&lt;BlockConfiguration&lt;Attributes&gt;&gt; | undefined): Block&lt;...&gt; | undefined&apos;, gave the following error.
+    Argument of type &apos;{ name: string; version: string; title: string; description: string; category: string; keywords: string[]; supports: { html: boolean; multiple: boolean; }; example: { attributes: { isPreview: boolean; }; }; attributes: { ...; }; textdomain: string; apiVersion: number; $schema: string; }&apos; is not assignable to parameter of type &apos;BlockConfiguration&lt;Attributes&gt;&apos;.
+      Type &apos;{ name: string; version: string; title: string; description: string; category: string; keywords: string[]; supports: { html: boolean; multiple: boolean; }; example: { attributes: { isPreview: boolean; }; }; attributes: { ...; }; textdomain: string; apiVersion: number; $schema: string; }&apos; is not assignable to type &apos;Partial&lt;Omit&lt;Block&lt;Attributes&gt;, &quot;icon&quot;&gt;&gt;&apos;.
+        Types of property &apos;attributes&apos; are incompatible.
+          Property &apos;heading&apos; is missing in type &apos;{ className: { type: string; default: string; }; headingLevel: { type: string; default: number; }; showCounts: { type: string; default: boolean; }; showFilterButton: { type: string; default: boolean; }; isPreview: { ...; }; }&apos; but required in type &apos;{ readonly className?: BlockAttribute&lt;string | undefined&gt;; readonly heading: BlockAttribute&lt;string&gt;; readonly headingLevel: BlockAttribute&lt;number&gt;; readonly showCounts: BlockAttribute&lt;...&gt;; readonly showFilterButton: BlockAttribute&lt;...&gt;; readonly isPreview?: BlockAttribute&lt;...&gt;; }&apos;.
+  Overload 2 of 2, &apos;(name: string, settings: BlockConfiguration&lt;Attributes&gt;): Block&lt;Attributes&gt; | undefined&apos;, gave the following error.
+    Argument of type &apos;{ name: string; version: string; title: string; description: string; category: string; keywords: string[]; supports: { html: boolean; multiple: boolean; }; example: { attributes: { isPreview: boolean; }; }; attributes: { ...; }; textdomain: string; apiVersion: number; $schema: string; }&apos; is not assignable to parameter of type &apos;string&apos;." source="TS2769" />
 </file>
 <file name="assets/js/blocks/stock-filter/test/block.js">
 <error line="46" column="28" severity="error" message="Parameter &apos;props&apos; implicitly has an &apos;any&apos; type." source="TS7006" />
