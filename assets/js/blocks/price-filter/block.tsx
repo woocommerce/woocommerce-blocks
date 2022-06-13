@@ -32,7 +32,10 @@ import { Attributes } from './types';
  *
  * @return {string} New URL with query parameters in it.
  */
-function formatParams( url: string, params: Record< string, string > ) {
+function formatParams(
+	url: string,
+	params: Record< string, string | number >
+) {
 	const paramObject: Record< string, string > = {};
 
 	for ( const [ key, value ] of Object.entries( params ) ) {
