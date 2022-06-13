@@ -64,6 +64,9 @@ const SELECTORS = {
 		saveButton: '.edit-site-save-button__button',
 		savePrompt: '.entities-saved-states__text-prompt',
 	},
+	allProductsBlock: {
+		productsList: '.wc-block-grid__products > li.is-loading',
+	},
 };
 
 /**
@@ -448,8 +451,11 @@ export const openBlockEditorSettings = async () => {
 	}
 };
 
+/**
+ *  Wait for all Products Block is loaded completely: when the skeleton disappears, and the products are visible.
+ */
 export const waitForAllProductsBlockLoaded = async () => {
-	await page.waitForSelector( '.wc-block-grid__products > li.is-loading', {
+	await page.waitForSelector( SELECTORS.allProductsBlock.productsList, {
 		hidden: true,
 	} );
 
