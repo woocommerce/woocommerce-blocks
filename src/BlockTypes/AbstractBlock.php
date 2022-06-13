@@ -173,10 +173,18 @@ abstract class AbstractBlock {
 
 	/**
 	 * Generate an array of chunks paths for loading translation.
+	 *
+	 * @param string $chunks_folder The folder to iterate over.
+	 * @return string[] $chunks list of chunks to load.
 	 */
-	protected function get_chunks_paths() {
-		foreach ( glob( \Automattic\WooCommerce\Blocks\Package::get_path() . "build/{$this->chunks_folder}/*-frontend.js" ) as $block_name ) {
-			$blocks[] = "{$this->chunks_folder}/" . basename( $block_name );
+	protected function get_chunks_paths( $chunks_folder ) {
+		$build_path = \Automattic\WooCommerce\Blocks\Package::get_path() . 'build/';
+		$blocks     = [];
+		if ( ! is_dir( $build_path . $chunks_folder ) ) {
+			return [];
+		}
+		foreach ( new \RecursiveIteratorIterator( new \RecursiveDirectoryIterator( $build_path . $chunks_folder ) ) as $block_name ) {
+			$blocks[] = str_replace( $build_path, '', $block_name );
 		}
 
 		$chunks = preg_filter( '/.js/', '', $blocks );
@@ -202,7 +210,7 @@ abstract class AbstractBlock {
 		$metadata_path = $this->asset_api->get_block_metadata_path( $this->block_name );
 		// Prefer to register with metadata if the path is set in the block's class.
 		if ( ! empty( $metadata_path ) ) {
-			register_block_type(
+			register_block_type_from_metadata(
 				$metadata_path,
 				$block_settings
 			);
