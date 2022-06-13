@@ -102,7 +102,7 @@ class ProductSearch extends AbstractBlock {
 			esc_attr( $attributes['placeholder'] )
 		);
 		$button_markup = sprintf(
-			'<button type="submit" class="wc-block-product-search__button" aria-label="%s">
+			'<button type="submit" class="wc-block-product-search__button wp-element-button" aria-label="%s">
 				<svg aria-hidden="true" role="img" focusable="false" class="dashicon dashicons-arrow-right-alt2" xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 20 20">
 					<path d="M6 15l5-5-5-5 1-2 7 7-7 7z" />
 				</svg>

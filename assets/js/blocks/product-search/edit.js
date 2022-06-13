@@ -1,10 +1,16 @@
+/* eslint-disable @wordpress/no-unsafe-wp-apis */
+
 /**
  * External dependencies
  */
 import { __ } from '@wordpress/i18n';
 import classnames from 'classnames';
 import PropTypes from 'prop-types';
-import { InspectorControls, PlainText } from '@wordpress/block-editor';
+import {
+	InspectorControls,
+	PlainText,
+	__experimentalElementButtonClassName,
+} from '@wordpress/block-editor';
 import { PanelBody, ToggleControl, TextControl } from '@wordpress/components';
 import { withInstanceId } from '@wordpress/compose';
 import { useEffect } from '@wordpress/element';
@@ -114,7 +120,10 @@ const Edit = ( {
 					/>
 					<button
 						type="submit"
-						className="wc-block-product-search__button"
+						className={ classnames(
+							'wc-block-product-search__button',
+							__experimentalElementButtonClassName
+						) }
 						label={ __( 'Search', 'woo-gutenberg-products-block' ) }
 						onClick={ ( e ) => e.preventDefault() }
 						tabIndex="-1"

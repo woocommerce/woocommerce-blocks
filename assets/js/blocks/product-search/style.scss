@@ -1,4 +1,4 @@
-.wc-block-product-search {
+:where(.wc-block-product-search) {
 	.wc-block-product-search__fields {
 		display: flex;
 	}
@@ -6,11 +6,21 @@
 		padding: 6px 8px;
 		line-height: 1.8;
 		flex-grow: 1;
+		border-style: solid;
+		border-width: 1px;
 	}
+
+	.wc-block-product-search__field,
+	.wc-block-product-search__field > * {
+		display: flex;
+		flex-grow: 1;
+	}
+
 	.wc-block-product-search__button {
 		display: flex;
 		align-items: center;
-		margin: 0 0 0 6px;
+		border: 1px solid #ccc;
+		margin: 0 0 0 0.625em;
 		cursor: pointer;
 		padding: 0 0.5em;
 		position: relative;
