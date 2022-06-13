@@ -14,7 +14,12 @@ import PropTypes from 'prop-types';
 import { getCurrencyFromPriceResponse } from '@woocommerce/price-format';
 import { getSettingWithCoercion } from '@woocommerce/settings';
 import { addQueryArgs, removeQueryArgs } from '@wordpress/url';
-import { isBoolean } from '@woocommerce/types';
+import {
+	CurrencyResponse,
+	isBoolean,
+	isString,
+	objectHasProp,
+} from '@woocommerce/types';
 
 /**
  * Internal dependencies
@@ -107,7 +112,11 @@ const PriceFilterBlock = ( {
 		queryState,
 	} );
 
-	const currency = getCurrencyFromPriceResponse( results.price_range );
+	const currency = getCurrencyFromPriceResponse(
+		objectHasProp( results, 'price_range' )
+			? ( results.price_range as CurrencyResponse )
+			: undefined
+	);
 
 	const [ minPriceQuery, setMinPriceQuery ] = useQueryStateByKey(
 		'min_price',
@@ -126,12 +135,18 @@ const PriceFilterBlock = ( {
 	);
 
 	const { minConstraint, maxConstraint } = usePriceConstraints( {
-		minPrice: results.price_range
-			? results.price_range.min_price
-			: undefined,
-		maxPrice: results.price_range
-			? results.price_range.max_price
-			: undefined,
+		minPrice:
+			objectHasProp( results, 'price_range' ) &&
+			objectHasProp( results.price_range, 'min_price' ) &&
+			isString( results.price_range.min_price )
+				? results.price_range.min_price
+				: undefined,
+		maxPrice:
+			objectHasProp( results, 'price_range' ) &&
+			objectHasProp( results.price_range, 'max_price' ) &&
+			isString( results.price_range.max_price )
+				? results.price_range.max_price
+				: undefined,
 		minorUnit: currency.minorUnit,
 	} );
 
