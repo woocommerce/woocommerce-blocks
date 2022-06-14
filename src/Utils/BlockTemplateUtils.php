@@ -1,6 +1,7 @@
 <?php
 namespace Automattic\WooCommerce\Blocks\Utils;
 
+use Automattic\WooCommerce\Blocks\Templates\ProductSearchResultsTemplate;
 use Automattic\WooCommerce\Blocks\Domain\Services\FeatureGating;
 
 /**
@@ -292,23 +293,23 @@ class BlockTemplateUtils {
 	 */
 	public static function get_plugin_block_template_types() {
 		$plugin_template_types = array(
-			'single-product'         => array(
+			'single-product'                   => array(
 				'title'       => _x( 'Single Product', 'Template name', 'woo-gutenberg-products-block' ),
 				'description' => __( 'Template used to display the single product.', 'woo-gutenberg-products-block' ),
 			),
-			'archive-product'        => array(
+			'archive-product'                  => array(
 				'title'       => _x( 'Product Catalog', 'Template name', 'woo-gutenberg-products-block' ),
 				'description' => __( 'Template used to display products.', 'woo-gutenberg-products-block' ),
 			),
-			'taxonomy-product_cat'   => array(
+			'taxonomy-product_cat'             => array(
 				'title'       => _x( 'Products by Category', 'Template name', 'woo-gutenberg-products-block' ),
 				'description' => __( 'Template used to display products by category.', 'woo-gutenberg-products-block' ),
 			),
-			'taxonomy-product_tag'   => array(
+			'taxonomy-product_tag'             => array(
 				'title'       => _x( 'Products by Tag', 'Template name', 'woo-gutenberg-products-block' ),
 				'description' => __( 'Template used to display products by tag.', 'woo-gutenberg-products-block' ),
 			),
-			'product-search-results' => array(
+			ProductSearchResultsTemplate::SLUG => array(
 				'title'       => _x( 'Product Search Results', 'Template name', 'woo-gutenberg-products-block' ),
 				'description' => __( 'Template used to display search results for products.', 'woo-gutenberg-products-block' ),
 			),
