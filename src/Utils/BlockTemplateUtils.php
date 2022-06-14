@@ -27,6 +27,7 @@ class BlockTemplateUtils {
 		'DEPRECATED_TEMPLATE_PARTS' => 'block-template-parts',
 		'TEMPLATES'                 => 'templates',
 		'TEMPLATE_PARTS'            => 'parts',
+		'BLOCKIFIED_TEMPLATES'      => 'blockified-templates',
 	);
 
 	/**

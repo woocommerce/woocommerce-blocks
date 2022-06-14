@@ -37,8 +37,14 @@ class BlockTemplatesController {
 	public function __construct() {
 		// This feature is gated for WooCommerce versions 6.0.0 and above.
 		if ( defined( 'WC_VERSION' ) && version_compare( WC_VERSION, '6.0.0', '>=' ) ) {
-			$root_path                      = plugin_dir_path( __DIR__ ) . self::TEMPLATES_ROOT_DIR . DIRECTORY_SEPARATOR;
-			$this->templates_directory      = $root_path . BlockTemplateUtils::DIRECTORY_NAMES['TEMPLATES'];
+			$root_path = plugin_dir_path( __DIR__ ) . self::TEMPLATES_ROOT_DIR . DIRECTORY_SEPARATOR;
+
+			if ( BlockTemplateUtils::should_use_blockified_templates() ) {
+				$this->templates_directory = $root_path . BlockTemplateUtils::DIRECTORY_NAMES['BLOCKIFIED_TEMPLATES'];
+			} else {
+				$this->templates_directory = $root_path . BlockTemplateUtils::DIRECTORY_NAMES['TEMPLATES'];
+			}
+
 			$this->template_parts_directory = $root_path . BlockTemplateUtils::DIRECTORY_NAMES['TEMPLATE_PARTS'];
 			$this->init();
 		}
@@ -324,10 +330,6 @@ class BlockTemplatesController {
 	protected function get_templates_directory( $template_type = 'wp_template' ) {
 		if ( 'wp_template_part' === $template_type ) {
 			return $this->template_parts_directory;
-		}
-
-		if ( BlockTemplateUtils::should_use_blockified_templates() ) {
-			return $this->templates_directory . '/blockified';
 		}
 
 		return $this->templates_directory;
