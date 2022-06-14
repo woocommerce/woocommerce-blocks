@@ -3,6 +3,7 @@
  */
 import { isString, isObject } from '@woocommerce/types';
 import { __ } from '@wordpress/i18n';
+import { dispatch as wpDataDispatch } from '@wordpress/data';
 import type { createErrorNotice as originalCreateErrorNotice } from '@wordpress/notices/store/actions';
 import { decodeEntities } from '@wordpress/html-entities';
 import type { PaymentResult, CheckoutResponse } from '@woocommerce/types';
@@ -34,12 +35,11 @@ const {
  */
 export const handleErrorResponse = ( {
 	observerResponses,
-	createErrorNotice,
 }: {
 	observerResponses: unknown[];
-	createErrorNotice: typeof originalCreateErrorNotice;
 } ) => {
 	let errorResponse = null;
+	const { createErrorNotice } = wpDataDispatch( 'core/notices' );
 	observerResponses.forEach( ( response ) => {
 		if ( isErrorResponse( response ) || isFailResponse( response ) ) {
 			if ( response.message && isString( response.message ) ) {
@@ -66,20 +66,17 @@ export const handleErrorResponse = ( {
  */
 export const runCheckoutAfterProcessingWithErrorObservers = ( {
 	observerResponses,
-	createErrorNotice,
 	notices,
 	dispatch,
 	data,
 }: {
 	observerResponses: unknown[];
-	createErrorNotice: typeof originalCreateErrorNotice;
 	notices: CheckoutAndPaymentNotices;
 	dispatch: CheckoutAction;
 	data: CheckoutAfterProcessingWithErrorEventData;
 } ) => {
 	const errorResponse = handleErrorResponse( {
 		observerResponses,
-		createErrorNotice,
 	} );
 
 	if ( errorResponse !== null ) {

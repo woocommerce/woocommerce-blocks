@@ -97,7 +97,6 @@ export const emitAfterProcessingEvents: emitAfterProcessingEventsType = ( {
 			).then( ( observerResponses ) => {
 				runCheckoutAfterProcessingWithErrorObservers( {
 					observerResponses,
-					createErrorNotice,
 					notices,
 					dispatch,
 					data,
