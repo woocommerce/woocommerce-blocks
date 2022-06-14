@@ -25,8 +25,8 @@ class BlocksWpQuery extends WP_Query {
 		if ( ! empty( $query ) ) {
 			$this->init();
 
-			// Remove current product from query. That might happen if the store
-			// is using Gutenberg in product descriptions.
+			// Remove current product from query to avoid infinite loops and out of memory issues.
+			// That might happen if the store is using Gutenberg for product descriptions.
 			// See https://github.com/woocommerce/woocommerce-blocks/issues/6416.
 			global $post;
 			if ( $post && array_key_exists( 'post__in', $query ) && is_array( $query['post__in'] ) ) {
