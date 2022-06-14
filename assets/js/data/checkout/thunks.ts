@@ -17,7 +17,7 @@ import {
 	emitEvent,
 	emitEventWithAbort,
 } from '../../base/context/providers/cart-checkout/checkout-events/event-emit';
-import type { CheckoutActions } from './actions';
+import type { CheckoutAction } from './actions';
 import { emitValidateEventType, emitAfterProcessingEventsType } from './types';
 
 /**
@@ -26,7 +26,7 @@ import { emitValidateEventType, emitAfterProcessingEventsType } from './types';
  * and change the status to AFTER_PROCESSING
  */
 export const processCheckoutResponse = ( response: CheckoutResponse ) => {
-	return async ( { dispatch }: { dispatch: CheckoutActions } ) => {
+	return async ( { dispatch }: { dispatch: CheckoutAction } ) => {
 		const paymentResult = getPaymentResultFromCheckoutResponse( response );
 		dispatch.setRedirectUrl( paymentResult?.redirectUrl || '' );
 		dispatch.setProcessingResponse( paymentResult );

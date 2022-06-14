@@ -7,6 +7,7 @@ import { PaymentResult } from '@woocommerce/types';
  * Internal dependencies
  */
 import { ACTION_TYPES as types } from './action-types';
+import { ReturnOrGeneratorYieldUnion } from '../mapped-types';
 
 // `Thunks are functions that can be dispatched, similar to actions creators
 export * from './thunks';
@@ -91,22 +92,22 @@ export const setExtensionData = (
 	extensionData,
 } );
 
-export type CheckoutActions = {
-	setPristine: typeof setPristine;
-	setIdle: typeof setIdle;
-	setComplete: typeof setComplete;
-	setProcessing: typeof setProcessing;
-	setProcessingResponse: typeof setProcessingResponse;
-	setBeforeProcessing: typeof setBeforeProcessing;
-	setAfterProcessing: typeof setAfterProcessing;
-	setRedirectUrl: typeof setRedirectUrl;
-	setHasError: typeof setHasError;
-	incrementCalculating: typeof incrementCalculating;
-	decrementCalculating: typeof decrementCalculating;
-	setCustomerId: typeof setCustomerId;
-	setOrderId: typeof setOrderId;
-	setUseShippingAsBilling: typeof setUseShippingAsBilling;
-	setShouldCreateAccount: typeof setShouldCreateAccount;
-	setOrderNotes: typeof setOrderNotes;
-	setExtensionData: typeof setExtensionData;
-};
+export type CheckoutAction = ReturnOrGeneratorYieldUnion<
+	| typeof setPristine
+	| typeof setIdle
+	| typeof setComplete
+	| typeof setProcessing
+	| typeof setProcessingResponse
+	| typeof setBeforeProcessing
+	| typeof setAfterProcessing
+	| typeof setRedirectUrl
+	| typeof setHasError
+	| typeof incrementCalculating
+	| typeof decrementCalculating
+	| typeof setCustomerId
+	| typeof setOrderId
+	| typeof setUseShippingAsBilling
+	| typeof setShouldCreateAccount
+	| typeof setOrderNotes
+	| typeof setExtensionData
+>;

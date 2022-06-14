@@ -15,7 +15,7 @@ import {
 	CheckoutAndPaymentNotices,
 	CheckoutAfterProcessingWithErrorEventData,
 } from './types';
-import { CheckoutActions } from './actions';
+import { CheckoutAction } from './actions';
 
 const {
 	isErrorResponse,
@@ -74,7 +74,7 @@ export const runCheckoutAfterProcessingWithErrorObservers = ( {
 	observerResponses: unknown[];
 	createErrorNotice: typeof originalCreateErrorNotice;
 	notices: CheckoutAndPaymentNotices;
-	dispatch: CheckoutActions;
+	dispatch: CheckoutAction;
 	data: CheckoutAfterProcessingWithErrorEventData;
 } ) => {
 	const errorResponse = handleErrorResponse( {
@@ -131,7 +131,7 @@ export const runCheckoutAfterProcessingWithSuccessObservers = ( {
 }: {
 	observerResponses: unknown[];
 	createErrorNotice: typeof originalCreateErrorNotice;
-	dispatch: CheckoutActions;
+	dispatch: CheckoutAction;
 } ) => {
 	let successResponse = null as null | Record< string, unknown >;
 	let errorResponse = null as null | Record< string, unknown >;

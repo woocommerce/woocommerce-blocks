@@ -9,7 +9,7 @@ import { FunctionKeys } from 'utility-types';
  * Internal dependencies
  */
 import { EventObserversType } from '../../base/context/event-emit/types';
-import type { CheckoutActions } from './actions';
+import type { CheckoutAction } from './actions';
 import * as selectors from './selectors';
 import { CheckoutState } from './default-state';
 
@@ -42,7 +42,7 @@ export type emitAfterProcessingEventsType = ( {
 	dispatch,
 }: {
 	select: SelectFromMap< typeof selectors >;
-	dispatch: CheckoutActions;
+	dispatch: CheckoutAction;
 } ) => void;
 
 /**
@@ -55,7 +55,7 @@ export type emitValidateEventType = ( {
 }: {
 	observers: EventObserversType;
 	createErrorNotice: typeof originalCreateErrorNotice;
-} ) => ( { dispatch }: { dispatch: CheckoutActions } ) => void;
+} ) => ( { dispatch }: { dispatch: CheckoutAction } ) => void;
 
 /**
  * Maps a "raw" selector object to the selectors available when registered on the @wordpress/data store.
