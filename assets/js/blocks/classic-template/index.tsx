@@ -1,26 +1,35 @@
 /**
  * External dependencies
  */
-import { registerBlockType } from '@wordpress/blocks';
-import { WC_BLOCKS_IMAGE_URL } from '@woocommerce/block-settings';
+import { createBlock, registerBlockType } from '@wordpress/blocks';
+import {
+	isExperimentalBuild,
+	WC_BLOCKS_IMAGE_URL,
+} from '@woocommerce/block-settings';
 import { useBlockProps } from '@wordpress/block-editor';
-import { Placeholder } from '@wordpress/components';
+import { Button, Placeholder } from '@wordpress/components';
 import { __, sprintf } from '@wordpress/i18n';
 import { box, Icon } from '@wordpress/icons';
+import { useDispatch } from '@wordpress/data';
 
 /**
  * Internal dependencies
  */
 import './editor.scss';
+import './style.scss';
 import { TEMPLATES } from './constants';
 
 interface Props {
 	attributes: {
 		template: string;
+		align: string;
 	};
+	clientId: string;
 }
 
-const Edit = ( { attributes }: Props ) => {
+const Edit = ( { clientId, attributes }: Props ) => {
+	const { replaceBlock } = useDispatch( 'core/block-editor' );
+
 	const blockProps = useBlockProps();
 	const templateTitle =
 		TEMPLATES[ attributes.template ]?.title ?? attributes.template;
@@ -58,6 +67,27 @@ const Edit = ( { attributes }: Props ) => {
 					</p>
 				</div>
 				<div className="wp-block-woocommerce-classic-template__placeholder-wireframe">
+					{ isExperimentalBuild() && (
+						<div className="wp-block-woocommerce-classic-template__placeholder-migration-button-container">
+							<Button
+								isPrimary
+								onClick={ () => {
+									replaceBlock(
+										clientId,
+										// TODO: Replace with the blockified version of the Product Grid Block when it will be available.
+										createBlock( 'core/paragraph', {
+											content:
+												'Instead of this block, the new Product Grid Block will be rendered',
+										} )
+									);
+								} }
+								text={ __(
+									'Use the blockified Product Grid Block',
+									'woo-gutenberg-products-block'
+								) }
+							/>
+						</div>
+					) }
 					<img
 						className="wp-block-woocommerce-classic-template__placeholder-image"
 						src={ `${ WC_BLOCKS_IMAGE_URL }template-placeholders/${ templatePlaceholder }.svg` }
@@ -108,6 +138,10 @@ registerBlockType( 'woocommerce/legacy-template', {
 		template: {
 			type: 'string',
 			default: 'any',
+		},
+		align: {
+			type: 'string',
+			default: 'wide',
 		},
 	},
 	edit: Edit,

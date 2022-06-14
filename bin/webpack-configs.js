@@ -260,8 +260,16 @@ const getMainConfig = ( options = {} ) => {
 			new CopyWebpackPlugin( {
 				patterns: [
 					{
-						from: './assets/js/blocks/checkout/block.json',
-						to: './checkout/block.json',
+						from: './assets/js/blocks/**/block.json',
+						to( { absoluteFilename } ) {
+							const blockName = absoluteFilename
+								.split( '/' )
+								.at( -2 );
+							return `./${ blockName }/block.json`;
+						},
+						globOptions: {
+							ignore: [ '**/inner-blocks/**' ],
+						},
 					},
 				],
 			} ),
