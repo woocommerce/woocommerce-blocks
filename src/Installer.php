@@ -1,5 +1,7 @@
 <?php
 namespace Automattic\WooCommerce\Blocks;
+use Automattic\WooCommerce\Blocks\Domain\Package;
+
 
 /**
  * Installer class.
@@ -8,12 +10,23 @@ namespace Automattic\WooCommerce\Blocks;
  * @internal
  */
 class Installer {
+
+	/**
+	 * Reference to the Package instance
+	 *
+	 * @var Package
+	 */
+	private $package;
 	/**
 	 * Constructor
 	 */
-	public function __construct() {
+	public function __construct(Package $package) {
 		$this->init();
+		$this->package = $package;
+
 	}
+
+
 
 	/**
 	 * Installation tasks ran on admin_init callback.
@@ -27,6 +40,8 @@ class Installer {
 	 */
 	protected function init() {
 		add_action( 'admin_init', array( $this, 'install' ) );
+		add_action( 'upgrader_process_complete', array( $this, 'update_plugin' ),10, 2);
+
 	}
 
 	/**
@@ -35,7 +50,7 @@ class Installer {
 	public function maybe_create_tables() {
 		global $wpdb;
 
-		$schema_version    = 261;
+		$schema_version    = 260;
 		$db_schema_version = (int) get_option( 'wc_blocks_db_schema_version', 0 );
 
 		if ( $db_schema_version >= $schema_version && 0 !== $db_schema_version ) {
@@ -119,5 +134,25 @@ class Installer {
 				echo '</p></div>';
 			}
 		);
+	}
+
+
+	function update_plugin($upgrader, $array) {
+
+		do_action('qm/debug', $upgrader->new_plugin_data);
+
+
+		if ($upgrader->new_plugin_data["TextDomain"] !== "woo-gutenberg-products-block") {
+			return;
+		}
+
+		$version = $this->package->get_version();
+
+		do_action('qm/debug',$version);
+
+
+		set_transient( "plugin_version", $version, 60*60 );
+
+
 	}
 }
