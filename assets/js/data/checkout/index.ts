@@ -1,7 +1,7 @@
 /**
  * External dependencies
  */
-import { registerStore } from '@wordpress/data';
+import { createReduxStore, register } from '@wordpress/data';
 
 /**
  * Internal dependencies
@@ -12,12 +12,15 @@ import * as actions from './actions';
 import reducer from './reducers';
 import { DispatchFromMap, SelectFromMap } from '../mapped-types';
 
-registerStore( STORE_KEY, {
+const store = createReduxStore( STORE_KEY, {
 	reducer,
 	selectors,
 	actions,
+	// eslint-disable-next-line @typescript-eslint/ban-ts-comment
+	// @ts-ignore We pass this in case there is an older version of Gutenberg running.
 	__experimentalUseThunks: true,
 } );
+register( store );
 
 export const CHECKOUT_STORE_KEY = STORE_KEY;
 declare module '@wordpress/data' {
