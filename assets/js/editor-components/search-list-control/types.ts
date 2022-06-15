@@ -6,11 +6,11 @@ import type { ReactNode } from 'react';
 export type SearchListItemType = {
 	id: string | number;
 	name: string;
-	value?: string;
-	parent?: number;
-	count?: number;
-	children?: SearchListItemsType;
-	breadcrumbs?: string[];
+	value: string;
+	parent: number;
+	count: number;
+	children: SearchListItemsType;
+	breadcrumbs: string[];
 };
 
 export type SearchListItemsType = SearchListItemType[] | [  ];
