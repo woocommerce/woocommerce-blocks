@@ -42,12 +42,7 @@ import {
 	isQueryArgsEqual,
 	parseTaxonomyToGenerateURL,
 } from './utils';
-import {
-	AttributeObject,
-	BlockAttributes,
-	DisplayOption,
-	QueryStateAttribute,
-} from './types';
+import { BlockAttributes, DisplayOption, QueryStateAttribute } from './types';
 
 /**
  * Formats filter values into a string for the URL parameters needed for filtering PHP templates.
@@ -97,9 +92,7 @@ const AttributeFilterBlock = ( {
 	const attributeObject =
 		blockAttributes.isPreview && ! blockAttributes.attributeId
 			? previewAttributeObject
-			: ( getAttributeFromID(
-					blockAttributes.attributeId
-			  ) as AttributeObject );
+			: getAttributeFromID( blockAttributes.attributeId );
 
 	const [ checked, setChecked ] = useState(
 		getActiveFilters( filteringForPhpTemplate, attributeObject )

@@ -16,6 +16,7 @@ import HeadingToolbar from '@woocommerce/editor-components/heading-toolbar';
 import BlockTitle from '@woocommerce/editor-components/block-title';
 import classnames from 'classnames';
 import { SearchListItemsType } from '@woocommerce/editor-components/search-list-control/types';
+import { AttributeSetting } from '@woocommerce/types';
 import {
 	Placeholder,
 	Disabled,
@@ -35,7 +36,7 @@ import {
  */
 import Block from './block';
 import './editor.scss';
-import type { EditProps, AttributeSetting } from './types';
+import type { EditProps } from './types';
 
 const ATTRIBUTES = getSetting< AttributeSetting[] >( 'attributes', [] );
 
