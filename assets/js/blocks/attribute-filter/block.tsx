@@ -137,7 +137,7 @@ const AttributeFilterBlock = ( {
 		isLoading: filteredCountsLoading,
 	} = useCollectionData( {
 		queryAttribute: {
-			taxonomy: attributeObject?.taxonomy,
+			taxonomy: attributeObject?.taxonomy || '',
 			queryType: blockAttributes.queryType,
 		},
 		queryState: {
@@ -179,7 +179,7 @@ const AttributeFilterBlock = ( {
 			}
 			return queryState.attributes.some(
 				( { attribute, slug = [] }: AttributeQuery ) =>
-					attribute === attributeObject.taxonomy &&
+					attribute === attributeObject?.taxonomy &&
 					slug.includes( termSlug )
 			);
 		};
@@ -259,12 +259,15 @@ const AttributeFilterBlock = ( {
 	const redirectPageForPhpTemplate = useCallback(
 		( query, allFiltersRemoved = false ) => {
 			if ( allFiltersRemoved ) {
+				if ( ! attributeObject?.taxonomy ) {
+					return;
+				}
 				const currentQueryArgKeys = Object.keys(
 					getQueryArgs( window.location.href )
 				);
 
 				const parsedTaxonomy = parseTaxonomyToGenerateURL(
-					attributeObject?.taxonomy
+					attributeObject.taxonomy
 				);
 
 				const url = currentQueryArgKeys.reduce(
@@ -340,7 +343,7 @@ const AttributeFilterBlock = ( {
 	);
 
 	const checkedQuery = useMemo( () => {
-		return ( productAttributesQuery as AttributeQuery[] )
+		return productAttributesQuery
 			.filter(
 				( { attribute } ) => attribute === attributeObject?.taxonomy
 			)
