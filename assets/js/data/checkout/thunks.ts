@@ -34,7 +34,7 @@ const { createErrorNotice } = wpDataDispatch( 'core/notices' );
  * and change the status to AFTER_PROCESSING
  */
 export const processCheckoutResponse = ( response: CheckoutResponse ) => {
-	return async ( {
+	return ( {
 		dispatch,
 	}: {
 		dispatch: DispatchFromMap< typeof actions >;
