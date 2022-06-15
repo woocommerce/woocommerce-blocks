@@ -9,8 +9,9 @@ import type { FunctionKeys } from 'utility-types';
  */
 import type { EventObserversType } from '../../base/context/event-emit/types';
 import type { CheckoutState } from './default-state';
+import type { DispatchFromMap } from '../mapped-types';
 import * as selectors from './selectors';
-import { CheckoutState } from './default-state';
+import * as actions from './actions';
 
 export type CheckoutAfterProcessingWithErrorEventData = {
 	redirectUrl: CheckoutState[ 'redirectUrl' ];
@@ -39,7 +40,7 @@ export type emitAfterProcessingEventsType = ( {
 	dispatch,
 }: {
 	select: SelectFromMap< typeof selectors >;
-	dispatch: CheckoutAction;
+	dispatch: DispatchFromMap< typeof actions >;
 } ) => void;
 
 /**
@@ -51,7 +52,11 @@ export type emitValidateEventType = ( {
 }: {
 	observers: EventObserversType;
 	setValidationErrors: ( errors: Array< unknown > ) => void;
-} ) => ( { dispatch }: { dispatch: CheckoutAction } ) => void;
+} ) => ( {
+	dispatch,
+}: {
+	dispatch: DispatchFromMap< typeof actions >;
+} ) => void;
 
 /**
  * Maps a "raw" selector object to the selectors available when registered on the @wordpress/data store.

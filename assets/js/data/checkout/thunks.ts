@@ -22,6 +22,9 @@ import type {
 	emitValidateEventType,
 	emitAfterProcessingEventsType,
 } from './types';
+import type { DispatchFromMap, SelectFromMap } from '../mapped-types';
+import * as actions from './actions';
+import * as selectors from './selectors';
 
 const { createErrorNotice } = wpDataDispatch( 'core/notices' );
 
@@ -31,7 +34,11 @@ const { createErrorNotice } = wpDataDispatch( 'core/notices' );
  * and change the status to AFTER_PROCESSING
  */
 export const processCheckoutResponse = ( response: CheckoutResponse ) => {
-	return async ( { dispatch }: { dispatch: CheckoutAction } ) => {
+	return async ( {
+		dispatch,
+	}: {
+		dispatch: DispatchFromMap< typeof actions >;
+	} ) => {
 		const paymentResult = getPaymentResultFromCheckoutResponse( response );
 		dispatch.setRedirectUrl( paymentResult?.redirectUrl || '' );
 		dispatch.setProcessingResponse( paymentResult );
@@ -47,7 +54,11 @@ export const emitValidateEvent: emitValidateEventType = ( {
 	observers,
 	setValidationErrors, // TODO: Fix this type after we move to validation store
 } ) => {
-	return ( { dispatch } ) => {
+	return ( {
+		dispatch,
+	}: {
+		dispatch: DispatchFromMap< typeof actions >;
+	} ) => {
 		removeNoticesByStatus( 'error' );
 		emitEvent( observers, EVENTS.VALIDATION_BEFORE_PROCESSING, {} ).then(
 			( response ) => {
@@ -81,7 +92,13 @@ export const emitAfterProcessingEvents: emitAfterProcessingEventsType = ( {
 	observers,
 	notices,
 } ) => {
-	return ( { select, dispatch } ) => {
+	return ( {
+		select,
+		dispatch,
+	}: {
+		select: SelectFromMap< typeof selectors >;
+		dispatch: DispatchFromMap< typeof actions >;
+	} ) => {
 		const state = select.getCheckoutState();
 		const data = {
 			redirectUrl: state.redirectUrl,
