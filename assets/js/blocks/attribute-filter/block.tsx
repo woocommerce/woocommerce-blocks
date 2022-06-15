@@ -21,7 +21,12 @@ import { Notice } from '@wordpress/components';
 import classNames from 'classnames';
 import { getSettingWithCoercion } from '@woocommerce/settings';
 import { getQueryArgs, removeQueryArgs } from '@wordpress/url';
-import { isBoolean, isString, objectHasProp } from '@woocommerce/types';
+import {
+	AttributeQuery,
+	isBoolean,
+	isString,
+	objectHasProp,
+} from '@woocommerce/types';
 import {
 	PREFIX_QUERY_ARG_FILTER_TYPE,
 	PREFIX_QUERY_ARG_QUERY_TYPE,
@@ -42,7 +47,7 @@ import {
 	isQueryArgsEqual,
 	parseTaxonomyToGenerateURL,
 } from './utils';
-import { BlockAttributes, DisplayOption, QueryStateAttribute } from './types';
+import { BlockAttributes, DisplayOption } from './types';
 
 /**
  * Formats filter values into a string for the URL parameters needed for filtering PHP templates.
@@ -173,7 +178,7 @@ const AttributeFilterBlock = ( {
 				return false;
 			}
 			return queryState.attributes.some(
-				( { attribute, slug = [] }: QueryStateAttribute ) =>
+				( { attribute, slug = [] }: AttributeQuery ) =>
 					attribute === attributeObject.taxonomy &&
 					slug.includes( termSlug )
 			);
@@ -335,7 +340,7 @@ const AttributeFilterBlock = ( {
 	);
 
 	const checkedQuery = useMemo( () => {
-		return ( productAttributesQuery as QueryStateAttribute[] )
+		return ( productAttributesQuery as AttributeQuery[] )
 			.filter(
 				( { attribute } ) => attribute === attributeObject?.taxonomy
 			)
