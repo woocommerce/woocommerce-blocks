@@ -90,9 +90,8 @@ const AttributeFilterBlock = ( {
 		isString
 	);
 
-	const [ hasSetPhpFilterDefaults, setHasSetPhpFilterDefaults ] = useState(
-		false
-	);
+	const [ hasSetPhpFilterDefaults, setHasSetPhpFilterDefaults ] =
+		useState( false );
 
 	const attributeObject =
 		blockAttributes.isPreview && ! blockAttributes.attributeId
@@ -114,37 +113,31 @@ const AttributeFilterBlock = ( {
 	const borderProps = useBorderProps( blockAttributes );
 
 	const [ queryState ] = useQueryStateByContext();
-	const [
-		productAttributesQuery,
-		setProductAttributesQuery,
-	] = useQueryStateByKey( 'attributes', [] );
+	const [ productAttributesQuery, setProductAttributesQuery ] =
+		useQueryStateByKey( 'attributes', [] );
 
-	const {
-		results: attributeTerms,
-		isLoading: attributeTermsLoading,
-	} = useCollection( {
-		namespace: '/wc/store/v1',
-		resourceName: 'products/attributes/terms',
-		resourceValues: [ attributeObject?.id || 0 ],
-		shouldSelect: blockAttributes.attributeId > 0,
-	} );
+	const { results: attributeTerms, isLoading: attributeTermsLoading } =
+		useCollection( {
+			namespace: '/wc/store/v1',
+			resourceName: 'products/attributes/terms',
+			resourceValues: [ attributeObject?.id || 0 ],
+			shouldSelect: blockAttributes.attributeId > 0,
+		} );
 
 	const filterAvailableTerms =
 		blockAttributes.displayStyle !== 'dropdown' &&
 		blockAttributes.queryType === 'and';
-	const {
-		results: filteredCounts,
-		isLoading: filteredCountsLoading,
-	} = useCollectionData( {
-		queryAttribute: {
-			taxonomy: attributeObject?.taxonomy || '',
-			queryType: blockAttributes.queryType,
-		},
-		queryState: {
-			...queryState,
-			attributes: filterAvailableTerms ? queryState.attributes : null,
-		},
-	} );
+	const { results: filteredCounts, isLoading: filteredCountsLoading } =
+		useCollectionData( {
+			queryAttribute: {
+				taxonomy: attributeObject?.taxonomy || '',
+				queryType: blockAttributes.queryType,
+			},
+			queryState: {
+				...queryState,
+				attributes: filterAvailableTerms ? queryState.attributes : null,
+			},
+		} );
 
 	/**
 	 * Get count data about a given term by ID.
@@ -566,7 +559,8 @@ const AttributeFilterBlock = ( {
 		return null;
 	}
 
-	const TagName = `h${ blockAttributes.headingLevel }` as keyof JSX.IntrinsicElements;
+	const TagName =
+		`h${ blockAttributes.headingLevel }` as keyof JSX.IntrinsicElements;
 	const isLoading = ! blockAttributes.isPreview && attributeTermsLoading;
 	const isDisabled = ! blockAttributes.isPreview && filteredCountsLoading;
 
