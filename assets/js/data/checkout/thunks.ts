@@ -2,6 +2,7 @@
  * External dependencies
  */
 import { CheckoutResponse } from '@woocommerce/types';
+import { dispatch as wpDataDispatch } from '@wordpress/data';
 
 /**
  * Internal dependencies
@@ -19,6 +20,8 @@ import {
 } from '../../base/context/providers/cart-checkout/checkout-events/event-emit';
 import type { CheckoutAction } from './actions';
 import { emitValidateEventType, emitAfterProcessingEventsType } from './types';
+
+const { createErrorNotice } = wpDataDispatch( 'core/notices' );
 
 /**
  * Based on the result of the payment, update the redirect url,
@@ -40,7 +43,6 @@ export const processCheckoutResponse = ( response: CheckoutResponse ) => {
  */
 export const emitValidateEvent: emitValidateEventType = ( {
 	observers,
-	createErrorNotice,
 	setValidationErrors, // TODO: Fix this type after we move to validation store
 } ) => {
 	return ( { dispatch } ) => {
@@ -75,7 +77,6 @@ export const emitValidateEvent: emitValidateEventType = ( {
  */
 export const emitAfterProcessingEvents: emitAfterProcessingEventsType = ( {
 	observers,
-	createErrorNotice,
 	notices,
 } ) => {
 	return ( { select, dispatch } ) => {
@@ -110,7 +111,6 @@ export const emitAfterProcessingEvents: emitAfterProcessingEventsType = ( {
 			).then( ( observerResponses: unknown[] ) => {
 				runCheckoutAfterProcessingWithSuccessObservers( {
 					observerResponses,
-					createErrorNotice,
 					dispatch,
 				} );
 			} );

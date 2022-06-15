@@ -4,7 +4,6 @@
 import { isString, isObject } from '@woocommerce/types';
 import { __ } from '@wordpress/i18n';
 import { dispatch as wpDataDispatch } from '@wordpress/data';
-import type { createErrorNotice as originalCreateErrorNotice } from '@wordpress/notices/store/actions';
 import { decodeEntities } from '@wordpress/html-entities';
 import type { PaymentResult, CheckoutResponse } from '@woocommerce/types';
 
@@ -29,6 +28,8 @@ const {
 // properties of an object. Refactor this to not be a hook, we could simply import
 // those functions where needed
 
+const { createErrorNotice } = wpDataDispatch( 'core/notices' );
+
 /**
  * Based on the given observers, create Error Notices where necessary
  * and return the error response of the last registered observer
@@ -39,7 +40,6 @@ export const handleErrorResponse = ( {
 	observerResponses: unknown[];
 } ) => {
 	let errorResponse = null;
-	const { createErrorNotice } = wpDataDispatch( 'core/notices' );
 	observerResponses.forEach( ( response ) => {
 		if ( isErrorResponse( response ) || isFailResponse( response ) ) {
 			if ( response.message && isString( response.message ) ) {
@@ -123,11 +123,9 @@ export const runCheckoutAfterProcessingWithErrorObservers = ( {
  */
 export const runCheckoutAfterProcessingWithSuccessObservers = ( {
 	observerResponses,
-	createErrorNotice,
 	dispatch,
 }: {
 	observerResponses: unknown[];
-	createErrorNotice: typeof originalCreateErrorNotice;
 	dispatch: CheckoutAction;
 } ) => {
 	let successResponse = null as null | Record< string, unknown >;

@@ -120,7 +120,6 @@ export const CheckoutEventsProvider = ( {
 		if ( checkoutState.status === STATUS.BEFORE_PROCESSING ) {
 			checkoutActions.emitValidateEvent( {
 				observers: currentObservers.current,
-				createErrorNotice,
 				setValidationErrors,
 			} );
 		}
@@ -147,7 +146,6 @@ export const CheckoutEventsProvider = ( {
 		if ( checkoutState.status === STATUS.AFTER_PROCESSING ) {
 			checkoutActions.emitAfterProcessingEvents( {
 				observers: currentObservers.current,
-				createErrorNotice,
 				notices: {
 					checkoutNotices,
 					paymentNotices,

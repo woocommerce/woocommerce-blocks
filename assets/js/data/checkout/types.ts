@@ -1,7 +1,6 @@
 /**
  * External dependencies
  */
-import type { createErrorNotice as originalCreateErrorNotice } from '@wordpress/notices/store/actions';
 import type { Notice } from '@wordpress/notices/';
 import { FunctionKeys } from 'utility-types';
 
@@ -31,11 +30,9 @@ export type CheckoutAndPaymentNotices = {
  */
 export type emitAfterProcessingEventsType = ( {
 	observers,
-	createErrorNotice,
 	notices,
 }: {
 	observers: EventObserversType;
-	createErrorNotice: typeof originalCreateErrorNotice;
 	notices: CheckoutAndPaymentNotices;
 } ) => ( {
 	select,
@@ -50,11 +47,10 @@ export type emitAfterProcessingEventsType = ( {
  */
 export type emitValidateEventType = ( {
 	observers,
-	createErrorNotice,
 	setValidationErrors,
 }: {
 	observers: EventObserversType;
-	createErrorNotice: typeof originalCreateErrorNotice;
+	setValidationErrors: ( errors: Array< unknown > ) => void;
 } ) => ( { dispatch }: { dispatch: CheckoutAction } ) => void;
 
 /**
