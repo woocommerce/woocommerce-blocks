@@ -45,12 +45,12 @@ export const useShippingDataContext = () => {
 /**
  * The shipping data provider exposes the interface for shipping in the checkout/cart.
  *
- * @param {Object} props Incoming props for provider
+ * @param {Object}             props          Incoming props for provider
  * @param {React.ReactElement} props.children
  */
 export const ShippingDataProvider = ( { children } ) => {
 	const { dispatchActions } = useCheckoutContext();
-	const { shippingRates, shippingRatesLoading, cartErrors } = useStoreCart();
+	const { shippingRates, isLoadingRates, cartErrors } = useStoreCart();
 	const { isSelectingRate } = useSelectShippingRate();
 	const { selectedRates } = useShippingData();
 	const [ shippingErrorStatus, dispatchErrorStatus ] = useReducer(
@@ -61,13 +61,13 @@ export const ShippingDataProvider = ( { children } ) => {
 	const currentObservers = useRef( observers );
 	const eventObservers = useMemo(
 		() => ( {
-			onShippingRateSuccess: emitterObservers( observerDispatch )
-				.onSuccess,
+			onShippingRateSuccess:
+				emitterObservers( observerDispatch ).onSuccess,
 			onShippingRateFail: emitterObservers( observerDispatch ).onFail,
-			onShippingRateSelectSuccess: emitterObservers( observerDispatch )
-				.onSelectSuccess,
-			onShippingRateSelectFail: emitterObservers( observerDispatch )
-				.onSelectFail,
+			onShippingRateSelectSuccess:
+				emitterObservers( observerDispatch ).onSelectSuccess,
+			onShippingRateSelectFail:
+				emitterObservers( observerDispatch ).onSelectFail,
 		} ),
 		[ observerDispatch ]
 	);
@@ -79,12 +79,12 @@ export const ShippingDataProvider = ( { children } ) => {
 
 	// increment/decrement checkout calculating counts when shipping is loading.
 	useEffect( () => {
-		if ( shippingRatesLoading ) {
+		if ( isLoadingRates ) {
 			dispatchActions.incrementCalculating();
 		} else {
 			dispatchActions.decrementCalculating();
 		}
-	}, [ shippingRatesLoading, dispatchActions ] );
+	}, [ isLoadingRates, dispatchActions ] );
 
 	// increment/decrement checkout calculating counts when shipping rates are being selected.
 	useEffect( () => {
@@ -122,7 +122,7 @@ export const ShippingDataProvider = ( { children } ) => {
 	// emit events.
 	useEffect( () => {
 		if (
-			! shippingRatesLoading &&
+			! isLoadingRates &&
 			( shippingRates.length === 0 || currentErrorStatus.hasError )
 		) {
 			emitEvent(
@@ -136,14 +136,14 @@ export const ShippingDataProvider = ( { children } ) => {
 		}
 	}, [
 		shippingRates,
-		shippingRatesLoading,
+		isLoadingRates,
 		currentErrorStatus.hasError,
 		currentErrorStatus.hasInvalidAddress,
 	] );
 
 	useEffect( () => {
 		if (
-			! shippingRatesLoading &&
+			! isLoadingRates &&
 			shippingRates.length > 0 &&
 			! currentErrorStatus.hasError
 		) {
@@ -153,7 +153,7 @@ export const ShippingDataProvider = ( { children } ) => {
 				shippingRates
 			);
 		}
-	}, [ shippingRates, shippingRatesLoading, currentErrorStatus.hasError ] );
+	}, [ shippingRates, isLoadingRates, currentErrorStatus.hasError ] );
 
 	// emit shipping rate selection events.
 	useEffect( () => {

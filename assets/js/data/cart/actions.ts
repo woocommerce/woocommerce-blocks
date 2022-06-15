@@ -1,7 +1,6 @@
 /**
  * External dependencies
  */
-import { select } from '@wordpress/data-controls';
 import type {
 	Cart,
 	CartResponse,
@@ -12,6 +11,7 @@ import type {
 import { camelCase, mapKeys } from 'lodash';
 import type { AddToCartEventDetail } from '@woocommerce/type-defs/events';
 import { BillingAddress, ShippingAddress } from '@woocommerce/settings';
+import { controls } from '@wordpress/data';
 
 /**
  * Internal dependencies
@@ -28,14 +28,14 @@ import { ReturnOrGeneratorYieldUnion } from '../mapped-types';
  *
  * This is a generic response action.
  *
- * @param  {CartResponse}      response
+ * @param {CartResponse} response
  */
 export const receiveCart = (
 	response: CartResponse
 ): { type: string; response: Cart } => {
-	const cart = ( mapKeys( response, ( _, key ) =>
+	const cart = mapKeys( response, ( _, key ) =>
 		camelCase( key )
-	) as unknown ) as Cart;
+	) as unknown as Cart;
 	return {
 		type: types.RECEIVE_CART,
 		response: cart,
@@ -50,14 +50,14 @@ export const receiveCart = (
  *
  * This is a generic response action.
  *
- * @param  {CartResponse}      response
+ * @param {CartResponse} response
  */
 export const receiveCartContents = (
 	response: CartResponse
 ): { type: string; response: Partial< Cart > } => {
-	const cart = ( mapKeys( response, ( _, key ) =>
+	const cart = mapKeys( response, ( _, key ) =>
 		camelCase( key )
-	) as unknown ) as Cart;
+	) as unknown as Cart;
 	const { shippingAddress, billingAddress, ...cartWithoutAddress } = cart;
 	return {
 		type: types.RECEIVE_CART,
@@ -68,10 +68,10 @@ export const receiveCartContents = (
 /**
  * Returns an action object used for receiving customer facing errors from the API.
  *
- * @param   {ResponseError|null} [error=null]     An error object containing the error
- *                                         message and response code.
- * @param   {boolean}       [replace=true] Should existing errors be replaced,
- *                                         or should the error be appended.
+ * @param {ResponseError|null} [error=null]   An error object containing the error
+ *                                            message and response code.
+ * @param {boolean}            [replace=true] Should existing errors be replaced,
+ *                                            or should the error be appended.
  */
 export const receiveError = (
 	error: ResponseError | null = null,
@@ -85,7 +85,7 @@ export const receiveError = (
 /**
  * Returns an action object used to track when a coupon is applying.
  *
- * @param  {string} [couponCode] Coupon being added.
+ * @param {string} [couponCode] Coupon being added.
  */
 export const receiveApplyingCoupon = ( couponCode: string ) =>
 	( {
@@ -96,7 +96,7 @@ export const receiveApplyingCoupon = ( couponCode: string ) =>
 /**
  * Returns an action object used to track when a coupon is removing.
  *
- * @param   {string} [couponCode] Coupon being removed..
+ * @param {string} [couponCode] Coupon being removed..
  */
 export const receiveRemovingCoupon = ( couponCode: string ) =>
 	( {
@@ -107,7 +107,7 @@ export const receiveRemovingCoupon = ( couponCode: string ) =>
 /**
  * Returns an action object for updating a single cart item in the store.
  *
- * @param  {CartResponseItem} [response=null] A cart item API response.
+ * @param {CartResponseItem} [response=null] A cart item API response.
  */
 export const receiveCartItem = ( response: CartResponseItem | null = null ) =>
 	( {
@@ -119,9 +119,9 @@ export const receiveCartItem = ( response: CartResponseItem | null = null ) =>
  * Returns an action object to indicate if the specified cart item quantity is
  * being updated.
  *
- * @param   {string}  cartItemKey              Cart item being updated.
- * @param   {boolean} [isPendingQuantity=true] Flag for update state; true if API
- *                                             request is pending.
+ * @param {string}  cartItemKey              Cart item being updated.
+ * @param {boolean} [isPendingQuantity=true] Flag for update state; true if API
+ *                                           request is pending.
  */
 export const itemIsPendingQuantity = (
 	cartItemKey: string,
@@ -136,9 +136,9 @@ export const itemIsPendingQuantity = (
 /**
  * Returns an action object to remove a cart item from the store.
  *
- * @param   {string}  cartItemKey            Cart item to remove.
- * @param   {boolean} [isPendingDelete=true] Flag for update state; true if API
- *                                           request is pending.
+ * @param {string}  cartItemKey            Cart item to remove.
+ * @param {boolean} [isPendingDelete=true] Flag for update state; true if API
+ *                                         request is pending.
  */
 export const itemIsPendingDelete = (
 	cartItemKey: string,
@@ -152,9 +152,9 @@ export const itemIsPendingDelete = (
 /**
  * Returns an action object to mark the cart data in the store as stale.
  *
- * @param   {boolean} [isCartDataStale=true] Flag to mark cart data as stale; true if
- * 											 lastCartUpdate timestamp is newer than the
- * 											 one in wcSettings.
+ * @param {boolean} [isCartDataStale=true] Flag to mark cart data as stale; true if
+ *                                         lastCartUpdate timestamp is newer than the
+ *                                         one in wcSettings.
  */
 export const setIsCartDataStale = ( isCartDataStale = true ) =>
 	( {
@@ -176,7 +176,7 @@ export const updatingCustomerData = ( isResolving: boolean ) =>
  * Returns an action object used to track whether the shipping rate is being
  * selected or not.
  *
- * @param  {boolean} isResolving True if shipping rate is being selected.
+ * @param {boolean} isResolving True if shipping rate is being selected.
  */
 export const shippingRatesBeingSelected = ( isResolving: boolean ) =>
 	( {
@@ -245,7 +245,7 @@ export function* applyExtensionCartUpdate(
  * Applies a coupon code and either invalidates caches, or receives an error if
  * the coupon cannot be applied.
  *
- * @param  {string} couponCode The coupon code to apply to the cart.
+ * @param {string} couponCode The coupon code to apply to the cart.
  * @throws            Will throw an error if there is an API problem.
  */
 export function* applyCoupon(
@@ -286,7 +286,7 @@ export function* applyCoupon(
  * Removes a coupon code and either invalidates caches, or receives an error if
  * the coupon cannot be removed.
  *
- * @param  {string} couponCode The coupon code to remove from the cart.
+ * @param {string} couponCode The coupon code to remove from the cart.
  * @throws            Will throw an error if there is an API problem.
  */
 export function* removeCoupon(
@@ -329,8 +329,8 @@ export function* removeCoupon(
  * - If successful, yields action to add item from store.
  * - If error, yields action to store error.
  *
- * @param  {number} productId    Product ID to add to cart.
- * @param  {number} [quantity=1] Number of product ID being added to cart.
+ * @param {number} productId    Product ID to add to cart.
+ * @param {number} [quantity=1] Number of product ID being added to cart.
  * @throws           Will throw an error if there is an API problem.
  */
 export function* addItemToCart(
@@ -416,7 +416,11 @@ export function* changeCartItemQuantity(
 	quantity: number
 	// eslint-disable-next-line @typescript-eslint/no-explicit-any -- unclear how to represent multiple different yields as type
 ): Generator< unknown, void, any > {
-	const cartItem = yield select( CART_STORE_KEY, 'getCartItem', cartItemKey );
+	const cartItem = yield controls.resolveSelect(
+		CART_STORE_KEY,
+		'getCartItem',
+		cartItemKey
+	);
 	if ( cartItem?.quantity === quantity ) {
 		return;
 	}
@@ -450,7 +454,7 @@ export function* changeCartItemQuantity(
  *
  * @param {string}          rateId      The id of the rate being selected.
  * @param {number | string} [packageId] The key of the packages that we will
- *   select within.
+ *                                      select within.
  */
 export function* selectShippingRate(
 	rateId: string,
@@ -486,10 +490,11 @@ export function* selectShippingRate(
 }
 
 /**
- * Sets billing data locally, as opposed to updateCustomerData which sends it to the server.
+ * Sets billing address locally, as opposed to updateCustomerData which sends it to the server.
  */
-export const setBillingData = ( billingData: Partial< BillingAddress > ) =>
-	( { type: types.SET_BILLING_DATA, billingData } as const );
+export const setBillingAddress = (
+	billingAddress: Partial< BillingAddress >
+) => ( { type: types.SET_BILLING_ADDRESS, billingAddress } as const );
 
 /**
  * Sets shipping address locally, as opposed to updateCustomerData which sends it to the server.
@@ -503,7 +508,7 @@ export const setShippingAddress = (
  * updated cart.
  *
  * @param {BillingAddressShippingAddress} customerData Address data to be updated; can contain both
- *   billing_address and shipping_address.
+ *                                                     billing_address and shipping_address.
  */
 export function* updateCustomerData(
 	customerData: Partial< BillingAddressShippingAddress >
@@ -539,7 +544,7 @@ export function* updateCustomerData(
 export type CartAction = ReturnOrGeneratorYieldUnion<
 	| typeof receiveCart
 	| typeof receiveCartContents
-	| typeof setBillingData
+	| typeof setBillingAddress
 	| typeof setShippingAddress
 	| typeof receiveError
 	| typeof receiveApplyingCoupon

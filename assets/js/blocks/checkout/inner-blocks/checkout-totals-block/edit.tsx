@@ -14,8 +14,7 @@ import './style.scss';
 import {
 	useForcedLayout,
 	getAllowedBlocks,
-} from '../../../cart-checkout/shared';
-import { useCheckoutBlockContext } from '../../context';
+} from '../../../cart-checkout-shared';
 
 export const Edit = ( {
 	clientId,
@@ -32,17 +31,10 @@ export const Edit = ( {
 			attributes?.className
 		),
 	} );
-	const { showRateAfterTaxName } = useCheckoutBlockContext();
 	const allowedBlocks = getAllowedBlocks( innerBlockAreas.CHECKOUT_TOTALS );
 
 	const defaultTemplate = [
-		[
-			'woocommerce/checkout-order-summary-block',
-			{
-				showRateAfterTaxName,
-			},
-			[],
-		],
+		[ 'woocommerce/checkout-order-summary-block', {}, [] ],
 	] as TemplateArray;
 
 	useForcedLayout( {

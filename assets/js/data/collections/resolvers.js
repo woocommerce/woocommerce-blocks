@@ -1,7 +1,7 @@
 /**
  * External dependencies
  */
-import { select, dispatch } from '@wordpress/data-controls';
+import { controls } from '@wordpress/data';
 import { addQueryArgs } from '@wordpress/url';
 
 /**
@@ -18,13 +18,16 @@ import { apiFetchWithHeaders } from '../shared-controls';
  * @param {number} timestamp Last update timestamp.
  */
 function* invalidateModifiedCollection( timestamp ) {
-	const lastModified = yield select( STORE_KEY, 'getCollectionLastModified' );
+	const lastModified = yield controls.resolveSelect(
+		STORE_KEY,
+		'getCollectionLastModified'
+	);
 
 	if ( ! lastModified ) {
-		yield dispatch( STORE_KEY, 'receiveLastModified', timestamp );
+		yield controls.dispatch( STORE_KEY, 'receiveLastModified', timestamp );
 	} else if ( timestamp > lastModified ) {
-		yield dispatch( STORE_KEY, 'invalidateResolutionForStore' );
-		yield dispatch( STORE_KEY, 'receiveLastModified', timestamp );
+		yield controls.dispatch( STORE_KEY, 'invalidateResolutionForStore' );
+		yield controls.dispatch( STORE_KEY, 'receiveLastModified', timestamp );
 	}
 }
 
@@ -37,7 +40,7 @@ function* invalidateModifiedCollection( timestamp ) {
  * @param {Array}  ids
  */
 export function* getCollection( namespace, resourceName, query, ids ) {
-	const route = yield select(
+	const route = yield controls.resolveSelect(
 		SCHEMA_STORE_KEY,
 		'getRoute',
 		namespace,
@@ -51,10 +54,8 @@ export function* getCollection( namespace, resourceName, query, ids ) {
 	}
 
 	try {
-		const {
-			response = DEFAULT_EMPTY_ARRAY,
-			headers,
-		} = yield apiFetchWithHeaders( { path: route + queryString } );
+		const { response = DEFAULT_EMPTY_ARRAY, headers } =
+			yield apiFetchWithHeaders( { path: route + queryString } );
 
 		if ( headers && headers.get && headers.has( 'last-modified' ) ) {
 			// Do any invalidation before the collection is received to prevent
@@ -104,6 +105,6 @@ export function* getCollectionHeader(
 	const args = [ namespace, resourceName, query, ids ].filter(
 		( arg ) => typeof arg !== 'undefined'
 	);
-	//we call this simply to do any resolution of the collection if necessary.
-	yield select( STORE_KEY, 'getCollection', ...args );
+	// we call this simply to do any resolution of the collection if necessary.
+	yield controls.resolveSelect( STORE_KEY, 'getCollection', ...args );
 }

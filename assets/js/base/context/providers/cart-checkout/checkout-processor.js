@@ -14,6 +14,7 @@ import {
 	emptyHiddenAddressFields,
 	formatStoreApiErrorMessage,
 } from '@woocommerce/base-utils';
+import { useDispatch } from '@wordpress/data';
 
 /**
  * Internal dependencies
@@ -25,8 +26,7 @@ import { useCustomerDataContext } from './customer';
 import { usePaymentMethodDataContext } from './payment-methods';
 import { useValidationContext } from '../validation';
 import { useStoreCart } from '../../hooks/cart/use-store-cart';
-import { useStoreNotices } from '../../hooks/use-store-notices';
-
+import { useStoreNoticesContext } from '../store-notices';
 /**
  * CheckoutProcessor component.
  *
@@ -47,8 +47,8 @@ const CheckoutProcessor = () => {
 	} = useCheckoutContext();
 	const { hasValidationErrors } = useValidationContext();
 	const { shippingErrorStatus } = useShippingDataContext();
-	const { billingData, shippingAddress } = useCustomerDataContext();
-	const { cartNeedsPayment, receiveCart } = useStoreCart();
+	const { billingAddress, shippingAddress } = useCustomerDataContext();
+	const { cartNeedsPayment, cartNeedsShipping, receiveCart } = useStoreCart();
 	const {
 		activePaymentMethod,
 		isExpressPaymentMethodActive,
@@ -58,8 +58,9 @@ const CheckoutProcessor = () => {
 		paymentMethods,
 		shouldSavePayment,
 	} = usePaymentMethodDataContext();
-	const { addErrorNotice, removeNotice, setIsSuppressed } = useStoreNotices();
-	const currentBillingData = useRef( billingData );
+	const { setIsSuppressed } = useStoreNoticesContext();
+	const { createErrorNotice, removeNotice } = useDispatch( 'core/notices' );
+	const currentBillingAddress = useRef( billingAddress );
 	const currentShippingAddress = useRef( shippingAddress );
 	const currentRedirectUrl = useRef( redirectUrl );
 	const [ isProcessingOrder, setIsProcessingOrder ] = useState( false );
@@ -104,10 +105,10 @@ const CheckoutProcessor = () => {
 	] );
 
 	useEffect( () => {
-		currentBillingData.current = billingData;
+		currentBillingAddress.current = billingAddress;
 		currentShippingAddress.current = shippingAddress;
 		currentRedirectUrl.current = redirectUrl;
-	}, [ billingData, shippingAddress, redirectUrl ] );
+	}, [ billingAddress, shippingAddress, redirectUrl ] );
 
 	const checkValidation = useCallback( () => {
 		if ( hasValidationErrors ) {
@@ -183,16 +184,19 @@ const CheckoutProcessor = () => {
 
 		const data = {
 			billing_address: emptyHiddenAddressFields(
-				currentBillingData.current
-			),
-			shipping_address: emptyHiddenAddressFields(
-				currentShippingAddress.current
+				currentBillingAddress.current
 			),
 			customer_note: orderNotes,
 			create_account: shouldCreateAccount,
 			...paymentData,
 			extensions: { ...extensionData },
 		};
+
+		if ( cartNeedsShipping ) {
+			data.shipping_address = emptyHiddenAddressFields(
+				currentShippingAddress.current
+			);
+		}
 
 		triggerFetch( {
 			path: '/wc/store/v1/checkout',
@@ -229,21 +233,22 @@ const CheckoutProcessor = () => {
 						if ( response.data?.cart ) {
 							receiveCart( response.data.cart );
 						}
-						addErrorNotice(
+						createErrorNotice(
 							formatStoreApiErrorMessage( response ),
-							{ id: 'checkout' }
+							{ id: 'checkout', context: 'wc/checkout' }
 						);
 						response?.additional_errors?.forEach?.(
 							( additionalError ) => {
-								addErrorNotice( additionalError.message, {
+								createErrorNotice( additionalError.message, {
 									id: additionalError.error_code,
+									context: 'wc/checkout',
 								} );
 							}
 						);
 						dispatchActions.setAfterProcessing( response );
 					} );
 				} catch {
-					addErrorNotice(
+					createErrorNotice(
 						sprintf(
 							// Translators: %s Error text.
 							__(
@@ -256,7 +261,7 @@ const CheckoutProcessor = () => {
 									'woo-gutenberg-products-block'
 								)
 						),
-						{ id: 'checkout' }
+						{ id: 'checkout', context: 'wc/checkout' }
 					);
 				}
 				dispatchActions.setHasError( true );
@@ -265,16 +270,17 @@ const CheckoutProcessor = () => {
 	}, [
 		isProcessingOrder,
 		removeNotice,
-		orderNotes,
-		shouldCreateAccount,
 		cartNeedsPayment,
 		paymentMethodId,
 		paymentMethodData,
 		shouldSavePayment,
 		activePaymentMethod,
+		orderNotes,
+		shouldCreateAccount,
 		extensionData,
+		cartNeedsShipping,
 		dispatchActions,
-		addErrorNotice,
+		createErrorNotice,
 		receiveCart,
 	] );
 

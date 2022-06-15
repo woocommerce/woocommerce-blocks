@@ -52,7 +52,7 @@ const Block = (): JSX.Element | null => {
 	const {
 		shippingRates,
 		needsShipping,
-		shippingRatesLoading,
+		isLoadingRates,
 		hasCalculatedShipping,
 	} = useShippingData();
 
@@ -60,9 +60,8 @@ const Block = (): JSX.Element | null => {
 		return null;
 	}
 
-	const shippingRatesPackageCount = getShippingRatesPackageCount(
-		shippingRates
-	);
+	const shippingRatesPackageCount =
+		getShippingRatesPackageCount( shippingRates );
 
 	if (
 		! isEditor &&
@@ -101,7 +100,7 @@ const Block = (): JSX.Element | null => {
 					}
 					renderOption={ renderShippingRatesControlOption }
 					shippingRates={ shippingRates }
-					shippingRatesLoading={ shippingRatesLoading }
+					isLoadingRates={ isLoadingRates }
 					context="woocommerce/checkout"
 				/>
 			) }

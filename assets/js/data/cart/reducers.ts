@@ -15,8 +15,8 @@ import type { CartAction } from './actions';
 /**
  * Sub-reducer for cart items array.
  *
- * @param   {Array<CartItem>}  state   cartData.items state slice.
- * @param   {CartAction}  action  Action object.
+ * @param {Array<CartItem>} state  cartData.items state slice.
+ * @param {CartAction}      action Action object.
  */
 const cartItemsReducer = (
 	state: Array< CartItem > = [],
@@ -38,8 +38,8 @@ const cartItemsReducer = (
 /**
  * Reducer for receiving items related to the cart.
  *
- * @param   {CartState}  state   The current state in the store.
- * @param   {CartAction}  action  Action object.
+ * @param {CartState}  state  The current state in the store.
+ * @param {CartAction} action Action object.
  *
  * @return  {CartState}          New or existing state.
  */
@@ -87,14 +87,14 @@ const reducer: Reducer< CartState > = (
 				};
 			}
 			break;
-		case types.SET_BILLING_DATA:
+		case types.SET_BILLING_ADDRESS:
 			state = {
 				...state,
 				cartData: {
 					...state.cartData,
 					billingAddress: {
 						...state.cartData.billingAddress,
-						...action.billingData,
+						...action.billingAddress,
 					},
 				},
 			};

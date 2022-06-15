@@ -26,8 +26,8 @@ import {
 /**
  * Product Add to Form Block Component.
  *
- * @param {Object} props                     Incoming props.
- * @param {string} [props.className]         CSS Class name for the component.
+ * @param {Object}  props                    Incoming props.
+ * @param {string}  [props.className]        CSS Class name for the component.
  * @param {boolean} [props.showFormElements] Should form elements be shown?
  * @return {*} The component.
  */
@@ -37,9 +37,8 @@ const Block = ( { className, showFormElements } ) => {
 		className,
 		'wc-block-components-product-add-to-cart',
 		{
-			'wc-block-components-product-add-to-cart--placeholder': isEmpty(
-				product
-			),
+			'wc-block-components-product-add-to-cart--placeholder':
+				isEmpty( product ),
 		}
 	);
 

@@ -62,9 +62,6 @@ final class BlockTypesController {
 			$block_type_instance = new $block_type_class( $this->asset_api, $this->asset_data_registry, new IntegrationRegistry() );
 		}
 
-		foreach ( self::get_atomic_blocks() as $block_type ) {
-			$block_type_instance = new AtomicBlock( $this->asset_api, $this->asset_data_registry, new IntegrationRegistry(), $block_type );
-		}
 	}
 
 	/**
@@ -141,7 +138,17 @@ final class BlockTypesController {
 	 * @return array $widget_types An array inluding the WooCommerce widgets to hide.
 	 */
 	public function hide_legacy_widgets_with_block_equivalent( $widget_types ) {
-		array_push( $widget_types, 'woocommerce_product_search', 'woocommerce_product_categories', 'woocommerce_recent_reviews' );
+		array_push(
+			$widget_types,
+			'woocommerce_product_search',
+			'woocommerce_product_categories',
+			'woocommerce_recent_reviews',
+			'woocommerce_product_tag_cloud',
+			'woocommerce_price_filter',
+			'woocommerce_layered_nav',
+			'woocommerce_layered_nav_filters'
+		);
+
 		return $widget_types;
 	}
 
@@ -151,9 +158,8 @@ final class BlockTypesController {
 	 * @return array
 	 */
 	protected function get_block_types() {
-		global $wp_version, $pagenow;
+		global $pagenow;
 
-		// @todo Add a comment why some atomic blocks are included in this array.
 		$block_types = [
 			'AllReviews',
 			'FeaturedCategory',
@@ -175,17 +181,21 @@ final class BlockTypesController {
 			'AttributeFilter',
 			'StockFilter',
 			'ActiveFilters',
-			'LegacyTemplate',
-			'ProductTitle',
-			'ProductPrice',
-			'ProductSummary',
-			'ProductStockIndicator',
+			'ClassicTemplate',
+			'ProductAddToCart',
 			'ProductButton',
+			'ProductCategoryList',
+			'ProductImage',
+			'ProductPrice',
 			'ProductRating',
 			'ProductSaleBadge',
-			'ProductImage',
+			'ProductSKU',
+			'ProductStockIndicator',
+			'ProductSummary',
 			'ProductTagList',
-			'ProductCategoryList',
+			'ProductTitle',
+			'MiniCart',
+			'MiniCartContents',
 		];
 
 		if ( Package::feature()->is_feature_plugin_build() ) {
@@ -195,18 +205,6 @@ final class BlockTypesController {
 
 		if ( Package::feature()->is_experimental_build() ) {
 			$block_types[] = 'SingleProduct';
-
-			/**
-			 * Mini Cart blocks should be available in Site Editor, Widgets and frontend (is_admin function checks this) only.
-			 */
-			if (
-				'widgets.php' === $pagenow ||
-				'site-editor.php' === $pagenow || ! is_admin() ||
-				! empty( $_GET['page'] ) && 'gutenberg-edit-site' === $_GET['page'] // phpcs:ignore WordPress.Security.NonceVerification
-			) {
-				$block_types[] = 'MiniCart';
-				$block_types[] = 'MiniCartContents';
-			}
 		}
 
 		/**
@@ -217,10 +215,6 @@ final class BlockTypesController {
 				$block_types,
 				[
 					'AllProducts',
-					'PriceFilter',
-					'AttributeFilter',
-					'StockFilter',
-					'ActiveFilters',
 					'Cart',
 					'Checkout',
 				]
@@ -230,15 +224,4 @@ final class BlockTypesController {
 		return $block_types;
 	}
 
-	/**
-	 * Get atomic blocks types.
-	 *
-	 * @return array
-	 */
-	protected function get_atomic_blocks() {
-		return [
-			'product-sku',
-			'product-add-to-cart',
-		];
-	}
 }

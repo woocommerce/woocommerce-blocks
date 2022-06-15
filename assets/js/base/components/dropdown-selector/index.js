@@ -20,17 +20,18 @@ import './style.scss';
 /**
  * Component used to show an input box with a dropdown with suggestions.
  *
- * @param {Object} props Incoming props for the component.
- * @param {string} props.attributeLabel Label for the attributes.
- * @param {string} props.className CSS class used.
- * @param {import('react').CSSProperties} props.style CSS style object used.
- * @param {Array} props.checked Which items are checked.
- * @param {string} props.inputLabel Label used for the input.
- * @param {boolean} props.isDisabled Whether the input is disabled or not.
- * @param {boolean} props.isLoading Whether the input is loading.
- * @param {boolean} props.multiple Whether multi-select is allowed.
- * @param {function():any} props.onChange Function to be called when onChange event fires.
- * @param {Array} props.options The option values to show in the select.
+ * @param {Object}                        props                         Incoming props for the component.
+ * @param {string}                        props.attributeLabel          Label for the attributes.
+ * @param {string}                        props.className               CSS class used.
+ * @param {import('react').CSSProperties} props.style                   CSS style object used.
+ * @param {Array}                         props.checked                 Which items are checked.
+ * @param {string}                        props.inputLabel              Label used for the input.
+ * @param {boolean}                       props.isDisabled              Whether the input is disabled or not.
+ * @param {boolean}                       props.isLoading               Whether the input is loading.
+ * @param {boolean}                       props.multiple                Whether multi-select is allowed.
+ * @param {function():any}                props.onChange                Function to be called when onChange event fires.
+ * @param {Array}                         props.options                 The option values to show in the select.
+ * @param {boolean}                       [props.isCaseSensitive=false] Whether the dropdown search should be case-sensitive.
  */
 const DropdownSelector = ( {
 	attributeLabel = '',
@@ -43,6 +44,7 @@ const DropdownSelector = ( {
 	multiple = false,
 	onChange = () => {},
 	options = [],
+	isCaseSensitive = false,
 } ) => {
 	const inputRef = useRef( null );
 
@@ -125,10 +127,16 @@ const DropdownSelector = ( {
 							const option = options.find(
 								( o ) => o.value === value
 							);
+
+							if ( ! option ) {
+								return null;
+							}
+
 							const onRemoveItem = ( val ) => {
 								onChange( val );
 								inputRef.current.focus();
 							};
+
 							return multiple ? (
 								<DropdownSelectorSelectedChip
 									key={ value }
@@ -182,11 +190,18 @@ const DropdownSelector = ( {
 							getItemProps={ getItemProps }
 							getMenuProps={ getMenuProps }
 							highlightedIndex={ highlightedIndex }
-							options={ options.filter(
-								( option ) =>
-									! inputValue ||
-									option.value.startsWith( inputValue )
-							) }
+							options={ options.filter( ( option ) => {
+								let optionName = option.name;
+								let nameQuery = inputValue?.trim();
+								if ( ! isCaseSensitive ) {
+									optionName = optionName.toLowerCase();
+									nameQuery = nameQuery?.toLowerCase();
+								}
+								return (
+									! nameQuery ||
+									optionName.includes( nameQuery )
+								);
+							} ) }
 						/>
 					) }
 				</div>
@@ -210,6 +225,7 @@ DropdownSelector.propTypes = {
 			value: PropTypes.string.isRequired,
 		} )
 	),
+	isCaseSensitive: PropTypes.bool,
 };
 
 export default DropdownSelector;

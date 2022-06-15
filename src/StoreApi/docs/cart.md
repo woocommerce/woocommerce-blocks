@@ -1,20 +1,22 @@
 # Cart API <!-- omit in toc -->
 
+## Table of Contents <!-- omit in toc -->
+
+- [Responses](#responses)
+    - [Cart Response](#cart-response)
+    - [Error Response](#error-response)
+- [Get Cart](#get-cart)
+- [Add Item](#add-item)
+- [Remove Item](#remove-item)
+- [Update Item](#update-item)
+- [Apply Coupon](#apply-coupon)
+- [Remove Coupon](#remove-coupon)
+- [Update Customer](#update-customer)
+- [Select Shipping Rate](#select-shipping-rate)
+
 The cart API returns the current state of the cart for the current session or logged in user.
 
 All POST endpoints require [Nonce Tokens](nonce-tokens.md) and return the updated state of the full cart once complete.
-
--   [Responses](#responses)
-    -   [Cart Response](#cart-response)
-    -   [Error Response](#error-response)
--   [Get Cart](#get-cart)
--   [Add Item](#add-item)
--   [Remove Item](#remove-item)
--   [Update Item](#update-item)
--   [Apply Coupon](#apply-coupon)
--   [Remove Coupon](#remove-coupon)
--   [Update Customer](#update-customer)
--   [Select Shipping Rate](#select-shipping-rate)
 
 ## Responses
 

@@ -1,11 +1,16 @@
 # Checkout API <!-- omit in toc -->
 
+## Table of Contents <!-- omit in toc -->
+
+- [Get Checkout Data](#get-checkout-data)
+- [Process Order and Payment](#process-order-and-payment)
+
 The checkout API facilitates the creation of orders (from the current cart) and handling payments for payment methods.
 
 All checkout endpoints require [Nonce Tokens](nonce-tokens.md).
 
--   [Get Checkout Data](#get-checkout-data)
--   [Process Order and Payment](#process-order-and-payment)
+- [Get Checkout Data](#get-checkout-data)
+- [Process Order and Payment](#process-order-and-payment)
 
 ## Get Checkout Data
 
@@ -76,13 +81,13 @@ This endpoint will return an error unless a valid [Nonce Token](nonce-tokens.md)
 POST /wc/store/v1/checkout
 ```
 
-| Attribute          | Type    | Required | Description                                                         |
-| :----------------- | :------ | :------: | :------------------------------------------------------------------ |
-| `billing_address`  | array   |   Yes    | Array of updated billing address data for the customer.             |
-| `shipping_address` | integer |   Yes    | Array of updated shipping address data for the customer.            |
-| `customer_note`    | string  |    No    | Note added to the order by the customer during checkout.            |
-| `payment_method`   | string  |   Yes    | The ID of the payment method being used to process the payment.     |
-| `payment_data`     | array   |    No    | Data to pass through to the payment method when processing payment. |
+| Attribute          | Type   | Required | Description                                                         |
+| :----------------- | :----- | :------: | :------------------------------------------------------------------ |
+| `billing_address`  | array  |   Yes    | Array of updated billing address data for the customer.             |
+| `shipping_address` | array  |   Yes    | Array of updated shipping address data for the customer.            |
+| `customer_note`    | string |    No    | Note added to the order by the customer during checkout.            |
+| `payment_method`   | string |   Yes    | The ID of the payment method being used to process the payment.     |
+| `payment_data`     | array  |    No    | Data to pass through to the payment method when processing payment. |
 
 ```sh
 curl --header "Nonce: 12345" --request POST https://example-store.com/wp-json/wc/store/v1/checkout?payment_method=paypal&payment_data[0][key]=test-key&payment_data[0][value]=test-value

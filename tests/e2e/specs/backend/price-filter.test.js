@@ -5,7 +5,6 @@ import {
 	openDocumentSettingsSidebar,
 	switchUserToAdmin,
 	getAllBlocks,
-	getEditedPostContent,
 } from '@wordpress/e2e-test-utils';
 import {
 	visitBlockPage,
@@ -54,9 +53,7 @@ describe( `${ block.name } Block`, () => {
 				await page.click(
 					'.components-toolbar button[aria-label="Heading 6"]'
 				);
-				await expect(
-					page
-				).toMatchElement(
+				await expect( page ).toMatchElement(
 					`.wp-block[data-type="${ block.slug }"] h6 textarea`,
 					{ text: 'New Title' }
 				);
@@ -68,9 +65,7 @@ describe( `${ block.name } Block`, () => {
 				await page.click(
 					'.components-toolbar button[aria-label="Heading 3"]'
 				);
-				await expect(
-					page
-				).not.toMatchElement(
+				await expect( page ).not.toMatchElement(
 					`.wp-block[data-type="${ block.slug }"] h6 textarea`,
 					{ text: 'New Title' }
 				);

@@ -13,7 +13,7 @@ import './style.scss';
 /**
  * Component to render a Feedback prompt in the sidebar.
  *
- * @param {Object} props Incoming props for the component.
+ * @param {Object} props      Incoming props for the component.
  * @param {string} props.text
  * @param {string} props.url
  */
@@ -64,9 +64,9 @@ export const CartCheckoutFeedbackPrompt = () => (
 export const LegacyFeedbackPrompt = () => (
 	<FeedbackPrompt
 		text={ __(
-			'We are working on a better editing experience that will replace legacy blocks. Keep an eye out for updates!',
+			'We are working on a better editing experience that will replace classic blocks. Keep an eye out for updates!',
 			'woo-gutenberg-products-block'
 		) }
-		url="https://github.com/woocommerce/woocommerce-gutenberg-products-block/issues/new?template=--legacy-block-feedback.md"
+		url="https://github.com/woocommerce/woocommerce-gutenberg-products-block/issues/new?template=--classic-block-feedback.md"
 	/>
 );

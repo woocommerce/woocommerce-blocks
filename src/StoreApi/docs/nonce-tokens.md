@@ -1,11 +1,13 @@
 # Nonce Tokens <!-- omit in toc -->
 
-Nonces are generated numbers used to verify origin and intent of requests for security purposes. You can read more about [nonces in the WordPress codex](https://developer.wordpress.org/plugins/security/nonces/).
+## Table of Contents <!-- omit in toc -->
 
--   [Store API Endpoints that Require Nonces](#store-api-endpoints-that-require-nonces)
--   [Sending Nonce Tokens with requests](#sending-nonce-tokens-with-requests)
--   [Generating security nonces from WordPress](#generating-security-nonces-from-wordpress)
--   [Disabling Nonces for Development](#disabling-nonces-for-development)
+- [Store API Endpoints that Require Nonces](#store-api-endpoints-that-require-nonces)
+- [Sending Nonce Tokens with requests](#sending-nonce-tokens-with-requests)
+- [Generating security nonces from WordPress](#generating-security-nonces-from-wordpress)
+- [Disabling Nonces for Development](#disabling-nonces-for-development)
+
+Nonces are generated numbers used to verify origin and intent of requests for security purposes. You can read more about [nonces in the WordPress codex](https://developer.wordpress.org/plugins/security/nonces/).
 
 ## Store API Endpoints that Require Nonces
 

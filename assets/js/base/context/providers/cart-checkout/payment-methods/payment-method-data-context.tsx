@@ -11,6 +11,7 @@ import {
 	useMemo,
 } from '@wordpress/element';
 import { objectHasProp } from '@woocommerce/types';
+import { useDispatch } from '@wordpress/data';
 
 /**
  * Internal dependencies
@@ -39,7 +40,6 @@ import {
 	reducer as emitReducer,
 } from './event-emit';
 import { useValidationContext } from '../../validation';
-import { useStoreNotices } from '../../../hooks/use-store-notices';
 import { useEmitResponse } from '../../../hooks/use-emit-response';
 import { getCustomerPaymentMethods } from './utils';
 
@@ -70,7 +70,8 @@ export const PaymentMethodDataProvider = ( {
 	} = useCheckoutContext();
 	const { isEditor, getPreviewData } = useEditorContext();
 	const { setValidationErrors } = useValidationContext();
-	const { addErrorNotice, removeNotice } = useStoreNotices();
+	const { createErrorNotice: addErrorNotice, removeNotice } =
+		useDispatch( 'core/notices' );
 	const {
 		isSuccessResponse,
 		isErrorResponse,
@@ -91,10 +92,8 @@ export const PaymentMethodDataProvider = ( {
 		DEFAULT_PAYMENT_DATA_CONTEXT_STATE
 	);
 
-	const {
-		dispatchActions,
-		setPaymentStatus,
-	} = usePaymentMethodDataDispatchers( dispatch );
+	const { dispatchActions, setPaymentStatus } =
+		usePaymentMethodDataDispatchers( dispatch );
 
 	const paymentMethodsInitialized = usePaymentMethods(
 		dispatchActions.setRegisteredPaymentMethods
@@ -281,7 +280,7 @@ export const PaymentMethodDataProvider = ( {
 				if ( successResponse && ! errorResponse ) {
 					setPaymentStatus().success(
 						successResponse?.meta?.paymentMethodData,
-						successResponse?.meta?.billingData,
+						successResponse?.meta?.billingAddress,
 						successResponse?.meta?.shippingData
 					);
 				} else if ( errorResponse && isFailResponse( errorResponse ) ) {
@@ -300,7 +299,7 @@ export const PaymentMethodDataProvider = ( {
 					setPaymentStatus().failed(
 						errorResponse?.message,
 						errorResponse?.meta?.paymentMethodData,
-						errorResponse?.meta?.billingData
+						errorResponse?.meta?.billingAddress
 					);
 				} else if ( errorResponse ) {
 					if (

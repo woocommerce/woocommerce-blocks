@@ -44,18 +44,16 @@ export async function getTaxesFromCurrentPage(): Promise<
 		value: string;
 	} >
 > {
-	return await page.$$eval(
-		'.wc-block-components-totals-taxes .wc-block-components-totals-item',
-		( nodes ) =>
-			nodes.map( ( node ) => {
-				const label = node.querySelector(
-					'.wc-block-components-totals-item__label'
-				)?.innerHTML;
-				const value = node.querySelector(
-					'.wc-block-components-totals-item__value'
-				)?.innerHTML;
-				return { label, value };
-			} )
+	return await page.$$eval( '.wc-block-components-totals-taxes', ( nodes ) =>
+		nodes.map( ( node ) => {
+			const label = node.querySelector(
+				'.wc-block-components-totals-item__label'
+			)?.innerHTML;
+			const value = node.querySelector(
+				'.wc-block-components-totals-item__value'
+			)?.innerHTML;
+			return { label, value };
+		} )
 	);
 }
 
@@ -74,8 +72,8 @@ export async function getTaxesFromOrderSummaryPage(
 			)
 		)
 			.filter( ( node ) => {
-				const taxLabel = node.getElementsByTagName( 'th' )[ 0 ]
-					.innerHTML;
+				const taxLabel =
+					node.getElementsByTagName( 'th' )[ 0 ].innerHTML;
 				return taxRatesEval.some(
 					// We need to remove the ":" on the end of the string before we compare
 					( taxRate ) => taxRate.name === taxLabel.slice( 0, -1 )

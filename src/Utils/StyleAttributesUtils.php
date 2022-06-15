@@ -38,6 +38,26 @@ class StyleAttributesUtils {
 	}
 
 	/**
+	 * Get class and style for font-family from attributes.
+	 *
+	 * @param array $attributes Block attributes.
+	 *
+	 * @return (array | null)
+	 */
+	public static function get_font_family_class_and_style( $attributes ) {
+
+		$font_family = $attributes['fontFamily'] ?? '';
+
+		if ( $font_family ) {
+			return array(
+				'class' => sprintf( 'has-%s-font-family', $font_family ),
+				'style' => null,
+			);
+		}
+		return null;
+	}
+
+	/**
 	 * Get class and style for text-color from attributes.
 	 *
 	 * @param array $attributes Block attributes.
@@ -287,6 +307,26 @@ class StyleAttributesUtils {
 	}
 
 	/**
+	 * Get class and style for padding from attributes.
+	 *
+	 * @param array $attributes Block attributes.
+	 *
+	 * @return (array | null)
+	 */
+	public static function get_padding_class_and_style( $attributes ) {
+		$padding = isset( $attributes['style']['spacing']['padding'] ) ? $attributes['style']['spacing']['padding'] : null;
+
+		if ( ! $padding ) {
+			return null;
+		}
+
+		return array(
+			'class' => null,
+			'style' => sprintf( 'padding: %s;', implode( ' ', $padding ) ),
+		);
+	}
+
+	/**
 	 * Get classes and styles from attributes.
 	 *
 	 * @param array $attributes Block attributes.
@@ -299,11 +339,13 @@ class StyleAttributesUtils {
 			'line_height'      => self::get_line_height_class_and_style( $attributes ),
 			'text_color'       => self::get_text_color_class_and_style( $attributes ),
 			'font_size'        => self::get_font_size_class_and_style( $attributes ),
+			'font_family'      => self::get_font_family_class_and_style( $attributes ),
 			'link_color'       => self::get_link_color_class_and_style( $attributes ),
 			'background_color' => self::get_background_color_class_and_style( $attributes ),
 			'border_color'     => self::get_border_color_class_and_style( $attributes ),
 			'border_radius'    => self::get_border_radius_class_and_style( $attributes ),
 			'border_width'     => self::get_border_width_class_and_style( $attributes ),
+			'padding'          => self::get_padding_class_and_style( $attributes ),
 		);
 
 		if ( ! empty( $properties ) ) {

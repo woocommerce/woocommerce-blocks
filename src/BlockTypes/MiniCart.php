@@ -24,6 +24,13 @@ class MiniCart extends AbstractBlock {
 	protected $block_name = 'mini-cart';
 
 	/**
+	 * Chunks build folder.
+	 *
+	 * @var string
+	 */
+	protected $chunks_folder = 'mini-cart-contents-block';
+
+	/**
 	 * Array of scripts that will be lazy loaded when interacting with the block.
 	 *
 	 * @var string[]
@@ -53,7 +60,17 @@ class MiniCart extends AbstractBlock {
 	 */
 	public function __construct( AssetApi $asset_api, AssetDataRegistry $asset_data_registry, IntegrationRegistry $integration_registry ) {
 		parent::__construct( $asset_api, $asset_data_registry, $integration_registry, $this->block_name );
+	}
 
+	/**
+	 * Initialize this block type.
+	 *
+	 * - Hook into WP lifecycle.
+	 * - Register the block with WordPress.
+	 */
+	protected function initialize() {
+		parent::initialize();
+		add_action( 'wp_loaded', array( $this, 'register_empty_cart_message_block_pattern' ) );
 	}
 
 	/**
@@ -161,8 +178,9 @@ class MiniCart extends AbstractBlock {
 		}
 
 		$this->scripts_to_lazy_load['wc-block-mini-cart-component-frontend'] = array(
-			'src'     => $script_data['src'],
-			'version' => $script_data['version'],
+			'src'          => $script_data['src'],
+			'version'      => $script_data['version'],
+			'translations' => $this->get_inner_blocks_translations(),
 		);
 
 		$this->asset_data_registry->add(
@@ -317,7 +335,7 @@ class MiniCart extends AbstractBlock {
 			$cart_contents_total += $cart->get_subtotal_tax();
 		}
 
-		$classes_styles  = StyleAttributesUtils::get_classes_and_styles_by_attributes( $attributes, array( 'text_color', 'background_color' ) );
+		$classes_styles  = StyleAttributesUtils::get_classes_and_styles_by_attributes( $attributes, array( 'text_color', 'background_color', 'font_size', 'font_family' ) );
 		$wrapper_classes = sprintf( 'wc-block-mini-cart wp-block-woocommerce-mini-cart %s', $classes_styles['classes'] );
 		$wrapper_styles  = $classes_styles['styles'];
 
@@ -415,7 +433,7 @@ class MiniCart extends AbstractBlock {
 				);
 			}
 			return array(
-				'label_including_tax'               => '',
+				'tax_label'                         => '',
 				'display_cart_prices_including_tax' => true,
 			);
 		}
@@ -441,5 +459,42 @@ class MiniCart extends AbstractBlock {
 	 */
 	protected function get_cart_payload() {
 		return WC()->api->get_endpoint_data( '/wc/store/cart' );
+	}
+
+	/**
+	 * Prepare translations for inner blocks and dependencies.
+	 */
+	protected function get_inner_blocks_translations() {
+		$wp_scripts   = wp_scripts();
+		$translations = array();
+
+		$chunks        = $this->get_chunks_paths( $this->chunks_folder );
+		$vendor_chunks = $this->get_chunks_paths( 'vendors--mini-cart-contents-block' );
+		$shared_chunks = [ 'cart-blocks/cart-line-items--mini-cart-contents-block/products-table-frontend' ];
+
+		foreach ( array_merge( $chunks, $vendor_chunks, $shared_chunks ) as $chunk ) {
+			$handle = 'wc-blocks-' . $chunk . '-chunk';
+			$this->asset_api->register_script( $handle, $this->asset_api->get_block_asset_build_path( $chunk ), [], true );
+			$translations[] = $wp_scripts->print_translations( $handle, false );
+			wp_deregister_script( $handle );
+		}
+
+		$translations = array_filter( $translations );
+
+		return implode( '', $translations );
+	}
+
+	/**
+	 * Register block pattern for Empty Cart Message to make it translatable.
+	 */
+	public function register_empty_cart_message_block_pattern() {
+		register_block_pattern(
+			'woocommerce/mini-cart-empty-cart-message',
+			array(
+				'title'    => __( 'Mini Cart Empty Cart Message', 'woo-gutenberg-products-block' ),
+				'inserter' => false,
+				'content'  => '<!-- wp:paragraph {"align":"center"} --><p class="has-text-align-center"><strong>' . __( 'Your cart is currently empty!', 'woo-gutenberg-products-block' ) . '</strong></p><!-- /wp:paragraph -->',
+			)
+		);
 	}
 }

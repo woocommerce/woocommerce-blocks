@@ -131,14 +131,13 @@ export const TotalsShipping = ( {
 	isCheckout = false,
 	className,
 }: TotalShippingProps ): ReactElement => {
-	const [ isShippingCalculatorOpen, setIsShippingCalculatorOpen ] = useState(
-		false
-	);
+	const [ isShippingCalculatorOpen, setIsShippingCalculatorOpen ] =
+		useState( false );
 	const {
 		shippingAddress,
 		cartHasCalculatedShipping,
 		shippingRates,
-		shippingRatesLoading,
+		isLoadingRates,
 	} = useStoreCart();
 
 	const totalShippingValue = getSetting(
@@ -209,7 +208,7 @@ export const TotalsShipping = ( {
 				<ShippingRateSelector
 					hasRates={ hasRates }
 					shippingRates={ shippingRates }
-					shippingRatesLoading={ shippingRatesLoading }
+					isLoadingRates={ isLoadingRates }
 				/>
 			) }
 		</div>

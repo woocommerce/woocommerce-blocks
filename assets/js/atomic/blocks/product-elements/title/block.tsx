@@ -33,7 +33,8 @@ interface TagNameProps extends HTMLAttributes< HTMLOrSVGElement > {
 const TagName = ( {
 	children,
 	headingLevel,
-	elementType: ElementType = `h${ headingLevel }` as keyof JSX.IntrinsicElements,
+	elementType:
+		ElementType = `h${ headingLevel }` as keyof JSX.IntrinsicElements,
 	...props
 }: TagNameProps ): JSX.Element => {
 	return <ElementType { ...props }>{ children }</ElementType>;
@@ -44,13 +45,11 @@ const TagName = ( {
  *
  * @param {Object}  props                   Incoming props.
  * @param {string}  [props.className]       CSS Class name for the component.
- * @param {number}  [props.headingLevel]    Heading level (h1, h2 etc)
+ * @param {number}  [props.headingLevel]    Heading level (h1, h2, etc.)
  * @param {boolean} [props.showProductLink] Whether or not to display a link to the product page.
+ * @param {string}  [props.linkTarget]      Specifies where to open the linked URL.
  * @param {string}  [props.align]           Title alignment.
- * @param {string}  [props.textColor]       Title color name.
- * @param {string}  [props.fontSize]        Title font size name.
- * @param {string}  [props.style]           Title inline style.
- * will be used if this is not provided.
+ *                                          will be used if this is not provided.
  * @return {*} The component.
  */
 export const Block = ( props: Props ): JSX.Element => {
@@ -58,6 +57,7 @@ export const Block = ( props: Props ): JSX.Element => {
 		className,
 		headingLevel = 2,
 		showProductLink = true,
+		linkTarget,
 		align,
 	} = props;
 
@@ -78,7 +78,8 @@ export const Block = ( props: Props ): JSX.Element => {
 					colorProps.className,
 					'wc-block-components-product-title',
 					{
-						[ `${ parentClassName }__product-title` ]: parentClassName,
+						[ `${ parentClassName }__product-title` ]:
+							parentClassName,
 						[ `wc-block-components-product-title--align-${ align }` ]:
 							align && isFeaturePluginBuild(),
 					}
@@ -123,7 +124,7 @@ export const Block = ( props: Props ): JSX.Element => {
 				disabled={ ! showProductLink }
 				name={ product.name }
 				permalink={ product.permalink }
-				rel={ showProductLink ? 'nofollow' : '' }
+				target={ linkTarget }
 				onClick={ () => {
 					dispatchStoreEvent( 'product-view-link', {
 						product,
