@@ -1,7 +1,7 @@
 /**
  * External dependencies
  */
-import { CheckoutResponse } from '@woocommerce/types';
+import type { CheckoutResponse } from '@woocommerce/types';
 import { dispatch as wpDataDispatch } from '@wordpress/data';
 
 /**
@@ -18,8 +18,10 @@ import {
 	emitEvent,
 	emitEventWithAbort,
 } from '../../base/context/providers/cart-checkout/checkout-events/event-emit';
-import type { CheckoutAction } from './actions';
-import { emitValidateEventType, emitAfterProcessingEventsType } from './types';
+import type {
+	emitValidateEventType,
+	emitAfterProcessingEventsType,
+} from './types';
 
 const { createErrorNotice } = wpDataDispatch( 'core/notices' );
 

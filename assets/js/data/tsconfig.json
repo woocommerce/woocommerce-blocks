@@ -9,7 +9,7 @@
 		"../settings/blocks/index.js",
 		"../utils/notices.ts",
 		"../base/context/providers/cart-checkout/checkout-events/**.ts",
-		"../base/context/event-emit/types"
+		"../base/context/event-emit"
 	],
 	"exclude": [ "**/test/**" ]
 }

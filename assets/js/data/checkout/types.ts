@@ -2,13 +2,13 @@
  * External dependencies
  */
 import type { Notice } from '@wordpress/notices/';
-import { FunctionKeys } from 'utility-types';
+import type { FunctionKeys } from 'utility-types';
 
 /**
  * Internal dependencies
  */
-import { EventObserversType } from '../../base/context/event-emit/types';
-import type { CheckoutAction } from './actions';
+import type { EventObserversType } from '../../base/context/event-emit/types';
+import type { CheckoutState } from './default-state';
 import * as selectors from './selectors';
 import { CheckoutState } from './default-state';
 
