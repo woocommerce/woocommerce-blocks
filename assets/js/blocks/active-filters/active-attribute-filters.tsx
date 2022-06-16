@@ -22,7 +22,7 @@ import { renderRemovableListItem, removeArgsFromFilterUrl } from './utils';
 import { removeAttributeFilterBySlug } from '../../utils/attributes-query';
 
 interface ActiveAttributeFiltersProps {
-	displayStyle: 'list' | 'chips';
+	displayStyle: string;
 	operator: 'and' | 'in';
 	slugs: string[];
 	attributeObject: AttributeObject;

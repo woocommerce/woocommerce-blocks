@@ -43,7 +43,7 @@ interface RemovableListItemProps {
 	name: string;
 	prefix?: string | JSX.Element;
 	showLabel?: boolean;
-	displayStyle: 'list' | 'chips';
+	displayStyle: string;
 	removeCallback?: () => void;
 }
 

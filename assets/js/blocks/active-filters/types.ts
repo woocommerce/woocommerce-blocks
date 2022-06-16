@@ -1,6 +1,6 @@
 export interface Attributes {
 	heading: string;
 	headingLevel: number;
-	displayStyle: 'list' | 'chips';
+	displayStyle: string;
 	className?: string;
 }

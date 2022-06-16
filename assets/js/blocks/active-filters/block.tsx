@@ -23,6 +23,7 @@ import {
 	cleanFilterUrl,
 } from './utils';
 import ActiveAttributeFilters from './active-attribute-filters';
+import { Attributes } from './types';
 
 /**
  * Component displaying active filters.
@@ -34,6 +35,9 @@ import ActiveAttributeFilters from './active-attribute-filters';
 const ActiveFiltersBlock = ( {
 	attributes: blockAttributes,
 	isEditor = false,
+}: {
+	attributes: Attributes;
+	isEditor?: boolean;
 } ) => {
 	const filteringForPhpTemplate = getSettingWithCoercion(
 		'is_rendering_php_template',
@@ -201,7 +205,8 @@ const ActiveFiltersBlock = ( {
 		return null;
 	}
 
-	const TagName = `h${ blockAttributes.headingLevel }`;
+	const TagName =
+		`h${ blockAttributes.headingLevel }` as keyof JSX.IntrinsicElements;
 	const hasFilterableProducts = getSettingWithCoercion(
 		'has_filterable_products',
 		false,
