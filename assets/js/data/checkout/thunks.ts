@@ -92,7 +92,13 @@ export const emitAfterProcessingEvents: emitAfterProcessingEventsType = ( {
 	observers,
 	notices,
 } ) => {
-	return ( { select }: { select: SelectFromMap< typeof selectors > } ) => {
+	return ( {
+		select,
+		dispatch,
+	}: {
+		select: SelectFromMap< typeof selectors >;
+		dispatch: DispatchFromMap< typeof actions >;
+	} ) => {
 		const state = select.getCheckoutState();
 		const data = {
 			redirectUrl: state.redirectUrl,
@@ -112,6 +118,7 @@ export const emitAfterProcessingEvents: emitAfterProcessingEventsType = ( {
 				runCheckoutAfterProcessingWithErrorObservers( {
 					observerResponses,
 					notices,
+					dispatch,
 					data,
 				} );
 			} );
@@ -123,6 +130,7 @@ export const emitAfterProcessingEvents: emitAfterProcessingEventsType = ( {
 			).then( ( observerResponses: unknown[] ) => {
 				runCheckoutAfterProcessingWithSuccessObservers( {
 					observerResponses,
+					dispatch,
 				} );
 			} );
 		}

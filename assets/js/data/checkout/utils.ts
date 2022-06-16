@@ -3,8 +3,7 @@
  */
 import { isString, isObject } from '@woocommerce/types';
 import { __ } from '@wordpress/i18n';
-import { dispatch } from '@wordpress/data';
-import { CHECKOUT_STORE_KEY } from '@woocommerce/block-data';
+import { dispatch as wpDataDispatch } from '@wordpress/data';
 import { decodeEntities } from '@wordpress/html-entities';
 import type { PaymentResult, CheckoutResponse } from '@woocommerce/types';
 
@@ -16,6 +15,8 @@ import {
 	CheckoutAndPaymentNotices,
 	CheckoutAfterProcessingWithErrorEventData,
 } from './types';
+import { DispatchFromMap } from '../mapped-types';
+import * as actions from './actions';
 
 const {
 	isErrorResponse,
@@ -28,7 +29,7 @@ const {
 // properties of an object. Refactor this to not be a hook, we could simply import
 // those functions where needed
 
-const { createErrorNotice } = dispatch( 'core/notices' );
+const { createErrorNotice } = wpDataDispatch( 'core/notices' );
 
 /**
  * Based on the given observers, create Error Notices where necessary
@@ -67,23 +68,24 @@ export const handleErrorResponse = ( {
 export const runCheckoutAfterProcessingWithErrorObservers = ( {
 	observerResponses,
 	notices,
+	dispatch,
 	data,
 }: {
 	observerResponses: unknown[];
 	notices: CheckoutAndPaymentNotices;
+	dispatch: DispatchFromMap< typeof actions >;
 	data: CheckoutAfterProcessingWithErrorEventData;
 } ) => {
 	const errorResponse = handleErrorResponse( {
 		observerResponses,
 	} );
-	const { setIdle, setComplete } = dispatch( CHECKOUT_STORE_KEY );
 
 	if ( errorResponse !== null ) {
 		// irrecoverable error so set complete
 		if ( ! shouldRetry( errorResponse ) ) {
-			setComplete( errorResponse );
+			dispatch.setComplete( errorResponse );
 		} else {
-			setIdle();
+			dispatch.setIdle();
 		}
 	} else {
 		const hasErrorNotices =
@@ -111,7 +113,7 @@ export const runCheckoutAfterProcessingWithErrorObservers = ( {
 			} );
 		}
 
-		setIdle();
+		dispatch.setIdle();
 	}
 };
 
@@ -122,12 +124,13 @@ export const runCheckoutAfterProcessingWithErrorObservers = ( {
  */
 export const runCheckoutAfterProcessingWithSuccessObservers = ( {
 	observerResponses,
+	dispatch,
 }: {
 	observerResponses: unknown[];
+	dispatch: DispatchFromMap< typeof actions >;
 } ) => {
 	let successResponse = null as null | Record< string, unknown >;
 	let errorResponse = null as null | Record< string, unknown >;
-	const { setHasError, setComplete } = dispatch( CHECKOUT_STORE_KEY );
 
 	observerResponses.forEach( ( response ) => {
 		if ( isSuccessResponse( response ) ) {
@@ -141,7 +144,7 @@ export const runCheckoutAfterProcessingWithSuccessObservers = ( {
 	} );
 
 	if ( successResponse && ! errorResponse ) {
-		setComplete( successResponse );
+		dispatch.setComplete( successResponse );
 	} else if ( isObject( errorResponse ) ) {
 		if ( errorResponse.message && isString( errorResponse.message ) ) {
 			const errorOptions =
@@ -154,16 +157,16 @@ export const runCheckoutAfterProcessingWithSuccessObservers = ( {
 			createErrorNotice( errorResponse.message, errorOptions );
 		}
 		if ( ! shouldRetry( errorResponse ) ) {
-			setComplete( errorResponse );
+			dispatch.setComplete( errorResponse );
 		} else {
 			// this will set an error which will end up
 			// triggering the onCheckoutAfterProcessingWithError emitter.
 			// and then setting checkout to IDLE state.
-			setHasError( true );
+			dispatch.setHasError( true );
 		}
 	} else {
 		// nothing hooked in had any response type so let's just consider successful.
-		setComplete();
+		dispatch.setComplete();
 	}
 };
 
