@@ -42,9 +42,6 @@ class Package {
 		self::container()->get( Bootstrap::class );
 		$old_version = get_transient( "plugin_version" );
 
-		do_action('qm/debug',$version);
-
-
 		$use_blockified_templates = wc_current_theme_is_fse_theme();
 		if ( version_compare($old_version, "5.9.0", "<=") ) {
 			$use_blockified_templates = false;

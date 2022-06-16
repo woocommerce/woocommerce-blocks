@@ -275,3 +275,20 @@ function woocommerce_blocks_plugin_outdated_notice() {
 }
 
 add_action( 'admin_notices', 'woocommerce_blocks_plugin_outdated_notice' );
+
+
+function test_activated() {
+
+	$old_version = get_transient( "plugin_version" );
+
+	$use_blockified_templates = wc_current_theme_is_fse_theme();
+	if ( version_compare($old_version, "5.9.0", "<=") ) {
+		$use_blockified_templates = false;
+	}
+
+	update_option( 'wc_blocks_use_blockified_templates', wc_bool_to_string( $use_blockified_templates ) );
+	update_option( 'wc_blocks_bbbbb', wc_bool_to_string( $use_blockified_templates ) );
+
+}
+
+register_activation_hook (__FILE__, 'test_activated');
