@@ -55,7 +55,7 @@ const CheckoutProcessor = () => {
 		};
 	} );
 
-	const { setCustomerId, setHasError, processCheckoutResponse } = useDispatch(
+	const { setHasError, processCheckoutResponse } = useDispatch(
 		CHECKOUT_STORE_KEY
 	);
 
@@ -226,10 +226,7 @@ const CheckoutProcessor = () => {
 			parse: false,
 		} )
 			.then( ( response ) => {
-				processCheckoutResponseHeaders(
-					response.headers,
-					setCustomerId
-				);
+				processCheckoutResponseHeaders( response.headers );
 				if ( ! response.ok ) {
 					throw new Error( response );
 				}
@@ -242,10 +239,7 @@ const CheckoutProcessor = () => {
 			.catch( ( errorResponse ) => {
 				try {
 					if ( errorResponse?.headers ) {
-						processCheckoutResponseHeaders(
-							errorResponse.headers,
-							setCustomerId
-						);
+						processCheckoutResponseHeaders( errorResponse.headers );
 					}
 					// This attempts to parse a JSON error response where the status code was 4xx/5xx.
 					errorResponse.json().then( ( response ) => {
@@ -309,7 +303,6 @@ const CheckoutProcessor = () => {
 		receiveCart,
 		setHasError,
 		processCheckoutResponse,
-		setCustomerId,
 	] );
 
 	// Process order if conditions are good.
