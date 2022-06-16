@@ -1,7 +1,8 @@
 <?php
+
 namespace Automattic\WooCommerce\StoreApi;
 
-use ReallySimpleJWT\Token;
+use Automattic\WooCommerce\StoreApi\Utilities\JsonWebToken;
 
 defined( 'ABSPATH' ) || exit;
 
@@ -31,6 +32,13 @@ final class SessionHandler extends \WC_Session {
 	protected $session_table;
 
 	/**
+	 * Expiration timestamp.
+	 *
+	 * @var int
+	 */
+	protected $_session_expiration; // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
+
+	/**
 	 * Constructor for the session class.
 	 */
 	public function __construct() {
@@ -44,18 +52,17 @@ final class SessionHandler extends \WC_Session {
 	 */
 	public function init() {
 		$this->init_session_from_token();
-		add_action( 'shutdown', array( $this, 'save_data' ), 20 );
 	}
 
 	/**
 	 * Process the token header to load the correct session.
 	 */
 	protected function init_session_from_token() {
-		if ( $this->token && Token::validate( $this->token, '@' . wp_salt() ) ) {
-			$payload                   = Token::getPayload( $this->token, '@' . wp_salt() );
+		if ( $this->token && JsonWebToken::validate( $this->token, '@' . wp_salt() ) ) {
+			$payload                   = JsonWebToken::get_parts( $this->token )['payload'];
 			$this->has_token           = true;
-			$this->_customer_id        = $payload['user_id'];
-			$this->_session_expiration = $payload['exp'];
+			$this->_customer_id        = $payload->user_id;
+			$this->_session_expiration = $payload->exp;
 			$this->_data               = (array) $this->get_session( $this->_customer_id, array() );
 		} else {
 			$this->_customer_id        = $this->generate_customer_id();
@@ -73,10 +80,9 @@ final class SessionHandler extends \WC_Session {
 	public function generate_customer_id() {
 		require_once ABSPATH . 'wp-includes/class-phpass.php';
 
-		$hasher      = new \PasswordHash( 8, false );
-		$customer_id = md5( $hasher->get_random_bytes( 32 ) );
+		$hash = new \PasswordHash( 8, false );
 
-		return $customer_id;
+		return md5( $hash->get_random_bytes( 32 ) );
 	}
 
 	/**
@@ -93,16 +99,17 @@ final class SessionHandler extends \WC_Session {
 	 *
 	 * @param string $customer_id Customer ID.
 	 * @param mixed  $default Default session value.
+	 *
 	 * @return string|array
 	 */
-	public function get_session( $customer_id, $default = false ) {
+	public function get_session( string $customer_id, $default = false ) {
 		global $wpdb;
 
 		if ( ! $this->has_session() ) {
 			return $default;
 		}
 
-		$value = $wpdb->get_var( $wpdb->prepare( "SELECT session_value FROM {$this->session_table} WHERE session_key = %s", $customer_id ) ); // @codingStandardsIgnoreLine.
+		$value = $wpdb->get_var( $wpdb->prepare( "SELECT session_value FROM $this->session_table WHERE session_key = %s", $customer_id ) ); // @codingStandardsIgnoreLine.
 
 		if ( is_null( $value ) ) {
 			$value = $default;

@@ -12,10 +12,10 @@
 	"prefer-stable": true,
 	"minimum-stability": "dev",
 	"require": {
+		"ext-json": "*",
 		"composer/installers": "^1.7.0",
-		"automattic/jetpack-autoloader": "^2.9.1",
-		"rbdwllr/reallysimplejwt": "^4.0"
-	},
+		"automattic/jetpack-autoloader": "^2.9.1"
+    },
 	"require-dev": {
 		"wp-phpunit/wp-phpunit": "^5.4",
 		"woocommerce/woocommerce-sniffs": "0.1.0",
