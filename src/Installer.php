@@ -1,7 +1,5 @@
 <?php
 namespace Automattic\WooCommerce\Blocks;
-use Automattic\WooCommerce\Blocks\Domain\Package;
-
 
 /**
  * Installer class.
@@ -20,13 +18,9 @@ class Installer {
 	/**
 	 * Constructor
 	 */
-	public function __construct(Package $package) {
+	public function __construct() {
 		$this->init();
-		$this->package = $package;
-
 	}
-
-
 
 	/**
 	 * Installation tasks ran on admin_init callback.
@@ -40,8 +34,6 @@ class Installer {
 	 */
 	protected function init() {
 		add_action( 'admin_init', array( $this, 'install' ) );
-		add_action( 'upgrader_process_complete', array( $this, 'update_plugin' ),10, 2);
-
 	}
 
 	/**
@@ -56,12 +48,6 @@ class Installer {
 		if ( $db_schema_version >= $schema_version && 0 !== $db_schema_version ) {
 			return;
 		}
-
-		$use_blockified_templates = wc_current_theme_is_fse_theme();
-		if ( $db_schema_version && $db_schema_version <= 260 ) {
-			$use_blockified_templates = false;
-		}
-		update_option( 'wc_blocks_use_blockified_templates', wc_bool_to_string( $use_blockified_templates ) );
 
 		$show_errors = $wpdb->hide_errors();
 		$table_name  = $wpdb->prefix . 'wc_reserved_stock';
@@ -134,25 +120,5 @@ class Installer {
 				echo '</p></div>';
 			}
 		);
-	}
-
-
-	function update_plugin($upgrader, $array) {
-
-		do_action('qm/debug', $upgrader->new_plugin_data);
-
-
-		if ($upgrader->new_plugin_data["TextDomain"] !== "woo-gutenberg-products-block") {
-			return;
-		}
-
-		$version = $this->package->get_version();
-
-		do_action('qm/debug',$version);
-
-
-		set_transient( "plugin_version", $version, 60*60 );
-
-
 	}
 }

@@ -40,18 +40,6 @@ class Package {
 	 */
 	public static function init() {
 		self::container()->get( Bootstrap::class );
-		$old_version = get_transient( "plugin_version" );
-
-		$use_blockified_templates = wc_current_theme_is_fse_theme();
-		if ( version_compare($old_version, "5.9.0", "<=") ) {
-			$use_blockified_templates = false;
-		}
-
-
-		update_option( 'wc_blocks_use_blockified_templates', wc_bool_to_string( $use_blockified_templates ) );
-
-
-
 	}
 
 	/**

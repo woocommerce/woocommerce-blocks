@@ -3,6 +3,7 @@ namespace Automattic\WooCommerce\Blocks\Domain;
 
 use Automattic\WooCommerce\Blocks\Assets\Api as AssetApi;
 use Automattic\WooCommerce\Blocks\Assets\AssetDataRegistry;
+use Automattic\WooCommerce\Blocks\Migration;
 use Automattic\WooCommerce\Blocks\AssetsController;
 use Automattic\WooCommerce\Blocks\BlockTemplatesController;
 use Automattic\WooCommerce\Blocks\BlockTypesController;
@@ -72,6 +73,13 @@ class Bootstrap {
 	protected function init() {
 		$this->register_dependencies();
 		$this->register_payment_methods();
+
+		if ( is_admin() ) {
+			if ( $this->package->get_version() !== $this->package->get_version_stored_on_db() ) {
+				Migration::run_migrations();
+				$this->package->set_version_stored_on_db();
+			}
+		}
 
 		add_action(
 			'admin_init',
@@ -207,8 +215,8 @@ class Bootstrap {
 		);
 		$this->container->register(
 			Installer::class,
-			function ( Container $container ) {
-				return new Installer($container->get( Package::class ));
+			function () {
+				return new Installer();
 			}
 		);
 		$this->container->register(
