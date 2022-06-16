@@ -6,3 +6,4 @@ export * from './null';
 export * from './number';
 export * from './object';
 export * from './string';
+export * from './attributes';

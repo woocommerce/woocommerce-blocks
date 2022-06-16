@@ -41,7 +41,7 @@ export const formatPriceRange = ( minPrice: number, maxPrice: number ) => {
 interface RemovableListItemProps {
 	type: string;
 	name: string;
-	prefix?: string;
+	prefix?: string | JSX.Element;
 	showLabel?: boolean;
 	displayStyle: 'list' | 'chips';
 	removeCallback?: () => void;
