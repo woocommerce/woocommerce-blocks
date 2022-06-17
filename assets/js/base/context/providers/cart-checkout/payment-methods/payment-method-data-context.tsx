@@ -10,7 +10,6 @@ import {
 	useEffect,
 	useMemo,
 } from '@wordpress/element';
-import { objectHasProp } from '@woocommerce/types';
 import { useDispatch, useSelect } from '@wordpress/data';
 import {
 	CHECKOUT_STORE_KEY,
@@ -25,15 +24,11 @@ import type {
 	PaymentMethodDataContextType,
 } from './types';
 import {
-	STATUS,
 	DEFAULT_PAYMENT_DATA_CONTEXT_STATE,
 	DEFAULT_PAYMENT_METHOD_DATA,
 } from './constants';
 import reducer from './reducer';
-import {
-	usePaymentMethods,
-	useExpressPaymentMethods,
-} from './use-payment-method-registration';
+import { usePaymentMethods } from './use-payment-method-registration';
 import { usePaymentMethodDataDispatchers } from './use-payment-method-dispatchers';
 import { useEditorContext } from '../../editor-context';
 import {
@@ -79,29 +74,18 @@ export const PaymentMethodDataProvider = ( {
 			isCalculating: store.isCalculating(),
 		};
 	} );
-	const {
-		currentStatus,
-		activePaymentMethod,
-		registeredExpressPaymentMethods,
-		registeredPaymentMethods,
-		paymentMethodData,
-		errorMessage,
-		shouldSavePaymentMethod,
-		isExpressPaymentMethodActive,
-	} = useSelect( ( select ) => {
-		const store = select( PAYMENT_METHOD_DATA_STORE_KEY );
+	const { currentStatus, registeredPaymentMethods } = useSelect(
+		( select ) => {
+			const store = select( PAYMENT_METHOD_DATA_STORE_KEY );
 
-		return {
-			currentStatus: store.getCurrentStatus(),
-			activePaymentMethod: store.getActivePaymentMethod(),
-			registeredExpressPaymentMethods: store.getRegisteredExpressPaymentMethods(),
-			registeredPaymentMethods: store.getRegisteredPaymentMethods(),
-			paymentMethodData: store.getPaymentMethodData(),
-			errorMessage: store.getErrorMessage(),
-			shouldSavePaymentMethod: store.getShouldSavePaymentMethod(),
-			isExpressPaymentMethodActive: store.isExpressPaymentMethodActive(),
-		};
-	} );
+			return {
+				currentStatus: store.getCurrentStatus(),
+				registeredExpressPaymentMethods: store.getRegisteredExpressPaymentMethods(),
+				registeredPaymentMethods: store.getRegisteredPaymentMethods(),
+				errorMessage: store.getErrorMessage(),
+			};
+		}
+	);
 	const { isEditor, getPreviewData } = useEditorContext();
 	const { setValidationErrors } = useValidationContext();
 	const { createErrorNotice: addErrorNotice, removeNotice } = useDispatch(
@@ -141,9 +125,9 @@ export const PaymentMethodDataProvider = ( {
 		dispatchActions.setRegisteredPaymentMethods
 	);
 
-	const expressPaymentMethodsInitialized = useExpressPaymentMethods(
-		dispatchActions.setRegisteredExpressPaymentMethods
-	);
+	// const expressPaymentMethodsInitialized = useExpressPaymentMethods(
+	// 	dispatchActions.setRegisteredExpressPaymentMethods
+	// ); //TODO initialize setRegisteredExpressPaymentMethods
 
 	const customerPaymentMethods = useMemo( (): CustomerPaymentMethods => {
 		if ( isEditor ) {
@@ -357,30 +341,24 @@ export const PaymentMethodDataProvider = ( {
 		setDataStorePaymentStatus,
 	] );
 
-	const activeSavedToken =
-		typeof paymentMethodData === 'object' &&
-		objectHasProp( paymentMethodData, 'token' )
-			? paymentMethodData.token + ''
-			: '';
-
 	const paymentContextData: PaymentMethodDataContextType = {
 		setPaymentStatus,
-		currentStatus,
-		paymentStatuses: STATUS,
-		paymentMethodData,
-		errorMessage,
-		activePaymentMethod,
-		activeSavedToken,
-		setActivePaymentMethod: dispatchActions.setActivePaymentMethod,
+		// currentStatus,
+		// paymentStatuses: STATUS,
+		// paymentMethodData,
+		// errorMessage,
+		// activePaymentMethod,
+		// activeSavedToken,
+		// setActivePaymentMethod: dispatchActions.setActivePaymentMethod,
 		onPaymentProcessing,
 		customerPaymentMethods,
-		paymentMethods: registeredPaymentMethods,
-		expressPaymentMethods: registeredExpressPaymentMethods,
-		paymentMethodsInitialized,
-		expressPaymentMethodsInitialized,
+		// paymentMethods: registeredPaymentMethods,
+		// expressPaymentMethods: registeredExpressPaymentMethods,
+		// paymentMethodsInitialized,
+		// expressPaymentMethodsInitialized,
 		setExpressPaymentError,
-		isExpressPaymentMethodActive,
-		shouldSavePayment: shouldSavePaymentMethod,
+		// isExpressPaymentMethodActive,
+		// shouldSavePayment: shouldSavePaymentMethod,
 		setShouldSavePayment: setShouldSavePaymentMethod,
 	};
 

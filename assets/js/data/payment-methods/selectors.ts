@@ -1,4 +1,9 @@
 /**
+ * External dependencies
+ */
+import { objectHasProp } from '@woocommerce/types';
+
+/**
  * Internal dependencies
  */
 import { PaymentMethodDataState } from '../default-states';
@@ -13,7 +18,10 @@ export const isExpressPaymentMethodActive = (
 };
 
 export const getActiveSavedToken = ( state: PaymentMethodDataState ) => {
-	return state.activeSavedToken;
+	return typeof state.paymentMethodData === 'object' &&
+		objectHasProp( state.paymentMethodData, 'token' )
+		? state.paymentMethodData.token + ''
+		: '';
 };
 
 export const getActivePaymentMethod = ( state: PaymentMethodDataState ) => {
