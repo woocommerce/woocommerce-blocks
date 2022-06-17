@@ -79,11 +79,15 @@ export const PaymentMethodDataProvider = ( {
 			isCalculating: store.isCalculating(),
 		};
 	} );
-	const { currentStatus: dataStoreCurrentStatus } = useSelect( ( select ) => {
+	const {
+		currentStatus: dataStoreCurrentStatus,
+		registeredPaymentMethods,
+	} = useSelect( ( select ) => {
 		const store = select( PAYMENT_METHOD_DATA_STORE_KEY );
 
 		return {
 			currentStatus: store.getCurrentStatus(),
+			registeredPaymentMethods: store.getRegisteredPaymentMethods(),
 		};
 	} );
 	const { isEditor, getPreviewData } = useEditorContext();
@@ -135,13 +139,13 @@ export const PaymentMethodDataProvider = ( {
 			) as CustomerPaymentMethods;
 		}
 		return paymentMethodsInitialized
-			? getCustomerPaymentMethods( paymentData.paymentMethods )
+			? getCustomerPaymentMethods( registeredPaymentMethods )
 			: {};
 	}, [
 		isEditor,
 		getPreviewData,
 		paymentMethodsInitialized,
-		paymentData.paymentMethods,
+		registeredPaymentMethods,
 	] );
 
 	const setExpressPaymentError = useCallback(
@@ -392,7 +396,7 @@ export const PaymentMethodDataProvider = ( {
 		setActivePaymentMethod: dispatchActions.setActivePaymentMethod,
 		onPaymentProcessing,
 		customerPaymentMethods,
-		paymentMethods: paymentData.paymentMethods,
+		paymentMethods: registeredPaymentMethods,
 		expressPaymentMethods: paymentData.expressPaymentMethods,
 		paymentMethodsInitialized,
 		expressPaymentMethodsInitialized,

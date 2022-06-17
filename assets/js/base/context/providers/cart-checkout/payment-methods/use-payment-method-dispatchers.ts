@@ -26,14 +26,13 @@ export const usePaymentMethodDataDispatchers = (
 	const {
 		setPaymentMethodData,
 		setPaymentStatus: setDataStorePaymentStatus,
+		setRegisteredPaymentMethods: setDataStoreRegisteredPaymentMethods,
 	} = useDispatch( PAYMENT_METHOD_DATA_STORE_KEY );
 
 	const dispatchActions = useMemo(
 		(): PaymentMethodDispatchers => ( {
 			setRegisteredPaymentMethods: ( paymentMethods ) =>
-				void dispatch(
-					actions.setRegisteredPaymentMethods( paymentMethods )
-				),
+				setDataStoreRegisteredPaymentMethods( paymentMethods ),
 			setRegisteredExpressPaymentMethods: ( paymentMethods ) =>
 				void dispatch(
 					actions.setRegisteredExpressPaymentMethods( paymentMethods )
@@ -46,7 +45,9 @@ export const usePaymentMethodDataDispatchers = (
 					)
 				),
 		} ),
-		[ dispatch ]
+		[
+			setDataStoreRegisteredPaymentMethods,
+		]
 	);
 
 	const setPaymentStatus = useCallback(

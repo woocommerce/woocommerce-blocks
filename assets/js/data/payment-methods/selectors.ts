@@ -55,3 +55,9 @@ export const expressPaymentMethodsInitialized = (
 export const getCurrentStatus = ( state: PaymentMethodDataState ) => {
 	return state.currentStatus;
 };
+
+export const getRegisteredPaymentMethods = (
+	state: PaymentMethodDataState
+) => {
+	return state.registeredPaymentMethods;
+};
