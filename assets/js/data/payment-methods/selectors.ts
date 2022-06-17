@@ -67,3 +67,7 @@ export const getRegisteredPaymentMethods = (
 ) => {
 	return state.registeredPaymentMethods;
 };
+
+export const getErrorMessage = ( state: PaymentMethodDataState ) => {
+	return state.errorMessage;
+};
