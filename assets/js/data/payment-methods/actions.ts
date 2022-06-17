@@ -114,7 +114,7 @@ export const setRegisteredPaymentMethods = (
 };
 
 export const removeRegisteredPaymentMethod = ( name: string ) => ( {
-	type: ACTION_TYPES.ADD_REGISTERED_PAYMENT_METHOD,
+	type: ACTION_TYPES.REMOVE_REGISTERED_PAYMENT_METHOD,
 	name,
 } );
 
@@ -137,6 +137,6 @@ export const setRegisteredExpressPaymentMethod = (
 };
 
 export const removeRegisteredExpressPaymentMethod = ( name: string ) => ( {
-	type: ACTION_TYPES.ADD_REGISTERED_EXPRESS_PAYMENT_METHOD,
+	type: ACTION_TYPES.REMOVE_REGISTERED_EXPRESS_PAYMENT_METHOD,
 	name,
 } );
