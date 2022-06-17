@@ -24,7 +24,6 @@ import { useDispatch, useSelect } from '@wordpress/data';
  */
 import PaymentMethodErrorBoundary from './payment-method-error-boundary';
 import { STORE_KEY as PAYMENT_METHOD_DATA_STORE_KEY } from '../../../data/payment-methods/constants';
-import { STATUS } from '../../../base/context/providers/cart-checkout/payment-methods/constants';
 
 const ExpressPaymentMethods = () => {
 	const { isEditor } = useEditorContext();
@@ -58,7 +57,7 @@ const ExpressPaymentMethods = () => {
 		( paymentMethodId ) => () => {
 			previousActivePaymentMethod.current = activePaymentMethod;
 			previousPaymentMethodData.current = paymentMethodData;
-			setPaymentStatus( STATUS.STARTED );
+			setPaymentStatus( { isStarted: true } );
 			setActivePaymentMethod( paymentMethodId );
 		},
 		[
@@ -75,7 +74,7 @@ const ExpressPaymentMethods = () => {
 	 * This restores the active method and returns the state to pristine.
 	 */
 	const onExpressPaymentClose = useCallback( () => {
-		setPaymentStatus( STATUS.PRISTINE );
+		setPaymentStatus( { isPristine: true } );
 		setActivePaymentMethod(
 			previousActivePaymentMethod.current,
 			previousPaymentMethodData.current
@@ -89,7 +88,7 @@ const ExpressPaymentMethods = () => {
 	 */
 	const onExpressPaymentError = useCallback(
 		( errorMessage ) => {
-			setPaymentStatus( STATUS.ERROR, errorMessage );
+			setPaymentStatus( { hasError: true }, errorMessage );
 			// TODO: Make this use the data store directly to add an error.
 			setExpressPaymentError( errorMessage );
 			setActivePaymentMethod(
