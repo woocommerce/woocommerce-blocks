@@ -84,6 +84,7 @@ export const PaymentMethodDataProvider = ( {
 		activePaymentMethod,
 		registeredExpressPaymentMethods,
 		registeredPaymentMethods,
+		paymentMethodData,
 	} = useSelect( ( select ) => {
 		const store = select( PAYMENT_METHOD_DATA_STORE_KEY );
 
@@ -92,6 +93,7 @@ export const PaymentMethodDataProvider = ( {
 			activePaymentMethod: store.getActivePaymentMethod(),
 			registeredExpressPaymentMethods: store.getRegisteredExpressPaymentMethods(),
 			registeredPaymentMethods: store.getRegisteredPaymentMethods(),
+			paymentMethodData: store.getPaymentMethodData(),
 		};
 	} );
 	const { isEditor, getPreviewData } = useEditorContext();
@@ -389,7 +391,7 @@ export const PaymentMethodDataProvider = ( {
 		setPaymentStatus,
 		currentStatus,
 		paymentStatuses: STATUS,
-		paymentMethodData: paymentData.paymentMethodData,
+		paymentMethodData,
 		errorMessage: paymentData.errorMessage,
 		activePaymentMethod,
 		activeSavedToken,
