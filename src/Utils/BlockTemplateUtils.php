@@ -2,6 +2,7 @@
 namespace Automattic\WooCommerce\Blocks\Utils;
 
 use Automattic\WooCommerce\Blocks\Domain\Services\FeatureGating;
+use Automattic\WooCommerce\Blocks\Options;
 
 /**
  * Utility methods used for serving block templates from WooCommerce Blocks.
@@ -518,13 +519,12 @@ class BlockTemplateUtils {
 	}
 
 	/**
-	 * Returns whether the blockified templates should be used or not, depending on the
-	 * "wc_blocks_use_blockified_templates" option.
+	 * Returns whether the blockified templates should be used or not.
 	 * Returns "true" ONLY if the option is present on the db and its value is "yes".
 	 *
 	 * @return boolean
 	 */
-	public static function should_use_blockified_templates() {
-		return wc_string_to_bool( get_option( 'wc_blocks_use_blockified_templates', 'no' ) );
+	public static function should_use_blockified_product_grid_templates() {
+		return wc_string_to_bool( get_option( Options::WC_BLOCK_USE_BLOCKIFIED_PRODUCT_GRID_BLOCK_AS_TEMPLATE, 'no' ) );
 	}
 }

@@ -52,25 +52,25 @@ class BlockTemplatesController {
 		add_filter( 'pre_get_block_file_template', array( $this, 'get_block_file_template' ), 10, 3 );
 		add_filter( 'get_block_templates', array( $this, 'add_block_templates' ), 10, 3 );
 		add_filter( 'current_theme_supports-block-templates', array( $this, 'remove_block_template_support_for_shop_page' ) );
-		add_action( 'after_switch_theme', array( $this, 'check_should_use_blockified_templates' ), 10, 2 );
+		add_action( 'after_switch_theme', array( $this, 'check_should_use_blockified_product_grid_templates' ), 10, 2 );
 	}
 
 	/**
-	 * Checks whether the new theme is a block one and the old is not, the "wc_blocks_use_blockified_templates" flag is
-	 * set to true to start using the new blockified templates.
+	 * Checks the old and current themes and determines if the "wc_blocks_use_blockified_product_grid_block_as_template"
+	 * option need to be updated accordingly.
 	 *
 	 * @param string    $old_name Old theme name.
 	 * @param \WP_Theme $old_theme Instance of the old theme.
 	 * @return void
 	 */
-	public function check_should_use_blockified_templates( $old_name, $old_theme ) {
+	public function check_should_use_blockified_product_grid_templates( $old_name, $old_theme ) {
 		if ( ! wc_current_theme_is_fse_theme() ) {
-			update_option( 'wc_blocks_use_blockified_templates', wc_bool_to_string( false ) );
+			update_option( Options::WC_BLOCK_USE_BLOCKIFIED_PRODUCT_GRID_BLOCK_AS_TEMPLATE, wc_bool_to_string( false ) );
 			return;
 		}
 
 		if ( ! $old_theme->is_block_theme() && wc_current_theme_is_fse_theme() ) {
-			update_option( 'wc_blocks_use_blockified_templates', wc_bool_to_string( true ) );
+			update_option( Options::WC_BLOCK_USE_BLOCKIFIED_PRODUCT_GRID_BLOCK_AS_TEMPLATE, wc_bool_to_string( true ) );
 			return;
 		}
 	}
@@ -260,7 +260,7 @@ class BlockTemplatesController {
 		$templates      = array();
 
 		foreach ( $template_files as $template_file ) {
-			if ( ! BlockTemplateUtils::should_use_blockified_templates() && strpos( $template_file, 'blockified' ) !== false ) {
+			if ( ! BlockTemplateUtils::should_use_blockified_product_grid_templates() && strpos( $template_file, 'blockified' ) !== false ) {
 				continue;
 			}
 
@@ -330,7 +330,7 @@ class BlockTemplatesController {
 			return $this->template_parts_directory;
 		}
 
-		if ( BlockTemplateUtils::should_use_blockified_templates() ) {
+		if ( BlockTemplateUtils::should_use_blockified_product_grid_templates() ) {
 			return $this->templates_directory . '/blockified';
 		}
 

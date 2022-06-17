@@ -46,15 +46,11 @@ class Migration {
 		}
 	}
 
-
 	/**
 	 * Set a flag to indicate if the blockified Product Grid Block should be rendered by default.
 	 */
 	public static function wc_blocks_update_710_blockified_product_grid_block() {
 		$use_blockified_templates = wc_current_theme_is_fse_theme() ? false : true;
 		update_option( Options::WC_BLOCK_USE_BLOCKIFIED_PRODUCT_GRID_BLOCK_AS_TEMPLATE, wc_bool_to_string( $use_blockified_templates ) );
-
 	}
-
-
 }
