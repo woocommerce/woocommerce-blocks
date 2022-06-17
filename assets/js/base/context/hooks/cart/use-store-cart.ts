@@ -159,6 +159,7 @@ export const useStoreCart = (
 					cartTotals: previewCart.totals,
 					cartIsLoading: false,
 					cartErrors: EMPTY_CART_ERRORS,
+					billingData: defaultBillingAddress,
 					billingAddress: defaultBillingAddress,
 					shippingAddress: defaultShippingAddress,
 					extensions: EMPTY_EXTENSIONS,
@@ -178,9 +179,8 @@ export const useStoreCart = (
 			const cartData = store.getCartData();
 			const cartErrors = store.getCartErrors();
 			const cartTotals = store.getCartTotals();
-			const cartIsLoading = ! store.hasFinishedResolution(
-				'getCartData'
-			);
+			const cartIsLoading =
+				! store.hasFinishedResolution( 'getCartData' );
 
 			const isLoadingRates = store.isCustomerDataUpdating();
 			const { receiveCart } = dispatch( storeKey );
@@ -220,6 +220,7 @@ export const useStoreCart = (
 				cartTotals,
 				cartIsLoading,
 				cartErrors,
+				billingData: emptyHiddenAddressFields( billingAddress ),
 				billingAddress: emptyHiddenAddressFields( billingAddress ),
 				shippingAddress: emptyHiddenAddressFields( shippingAddress ),
 				extensions: cartData.extensions,

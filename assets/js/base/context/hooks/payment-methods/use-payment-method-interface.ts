@@ -64,11 +64,8 @@ export const usePaymentMethodInterface = (): PaymentMethodInterface => {
 		selectShippingRate,
 		needsShipping,
 	} = useShippingData();
-	const {
-		billingData,
-		shippingAddress,
-		setShippingAddress,
-	} = useCustomerDataContext();
+	const { billingAddress, shippingAddress, setShippingAddress } =
+		useCustomerDataContext();
 	const { cartItems, cartFees, cartTotals, extensions } = useStoreCart();
 	const { appliedCoupons } = useStoreCartCoupons();
 	const { noticeContexts, responseTypes } = useEmitResponse();
@@ -98,8 +95,7 @@ export const usePaymentMethodInterface = (): PaymentMethodInterface => {
 				{
 					alternative: '',
 					plugin: 'woocommerce-gutenberg-products-block',
-					link:
-						'https://github.com/woocommerce/woocommerce-gutenberg-products-block/pull/4228',
+					link: 'https://github.com/woocommerce/woocommerce-gutenberg-products-block/pull/4228',
 				}
 			);
 			setExpressPaymentError( errorMessage );
@@ -111,7 +107,8 @@ export const usePaymentMethodInterface = (): PaymentMethodInterface => {
 		activePaymentMethod,
 		billing: {
 			appliedCoupons,
-			billingData,
+			billingAddress,
+			billingData: billingAddress,
 			cartTotal: currentCartTotal.current,
 			cartTotalItems: currentCartTotals.current,
 			currency: getCurrencyFromPriceResponse( cartTotals ),
