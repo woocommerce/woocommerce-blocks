@@ -520,11 +520,17 @@ class BlockTemplateUtils {
 
 	/**
 	 * Returns whether the blockified templates should be used or not.
-	 * Returns "true" ONLY if the option is present on the db and its value is "yes".
+	 * If the option is not stored on the db, we need to check if the current theme is a block one or not.
 	 *
 	 * @return boolean
 	 */
 	public static function should_use_blockified_product_grid_templates() {
-		return wc_string_to_bool( get_option( Options::WC_BLOCK_USE_BLOCKIFIED_PRODUCT_GRID_BLOCK_AS_TEMPLATE, 'no' ) );
+		$use_blockified_templates = get_option( Options::WC_BLOCK_USE_BLOCKIFIED_PRODUCT_GRID_BLOCK_AS_TEMPLATE );
+
+		if ( false === $use_blockified_templates ) {
+			return wc_current_theme_is_fse_theme();
+		}
+
+		return wc_string_to_bool( $use_blockified_templates );
 	}
 }
