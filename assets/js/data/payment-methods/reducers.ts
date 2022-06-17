@@ -82,6 +82,15 @@ const reducer: Reducer< PaymentMethodDataState > = (
 				],
 			};
 			break;
+		case ACTION_TYPES.SET_REGISTERED_EXPRESS_PAYMENT_METHOD:
+			state = {
+				...state,
+				registeredExpressPaymentMethods: {
+					...state.registeredExpressPaymentMethods,
+					...( action.paymentMethods as PaymentMethods ),
+				},
+			};
+			break;
 		case ACTION_TYPES.SET_PAYMENT_METHODS_INITIALIZED:
 			state = {
 				...state,

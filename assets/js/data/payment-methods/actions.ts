@@ -3,6 +3,7 @@
  */
 import type {
 	PaymentMethods,
+	ExpressPaymentMethods,
 } from '@woocommerce/type-defs/payments';
 
 /**
@@ -125,6 +126,15 @@ export function addRegisteredExpressPaymentMethod() {
 		}
 	};
 }
+
+export const setRegisteredExpressPaymentMethod = (
+	paymentMethods: ExpressPaymentMethods
+) => {
+	return {
+		type: ACTION_TYPES.SET_REGISTERED_EXPRESS_PAYMENT_METHOD,
+		paymentMethods,
+	};
+};
 
 export const removeRegisteredExpressPaymentMethod = ( name: string ) => ( {
 	type: ACTION_TYPES.ADD_REGISTERED_EXPRESS_PAYMENT_METHOD,
