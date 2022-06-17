@@ -1,4 +1,11 @@
 /**
+ * External dependencies
+ */
+import type {
+	PaymentMethods,
+} from '@woocommerce/type-defs/payments';
+
+/**
  * Internal dependencies
  */
 import { ACTION_TYPES } from './action-types';
@@ -95,6 +102,15 @@ export function addRegisteredPaymentMethod() {
 		}
 	};
 }
+
+export const setRegisteredPaymentMethods = (
+	paymentMethods: PaymentMethods
+) => {
+	return {
+		type: ACTION_TYPES.SET_REGISTERED_PAYMENT_METHODS,
+		paymentMethods,
+	};
+};
 
 export const removeRegisteredPaymentMethod = ( name: string ) => ( {
 	type: ACTION_TYPES.ADD_REGISTERED_PAYMENT_METHOD,

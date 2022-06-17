@@ -3,6 +3,7 @@
  */
 import type { Reducer } from 'redux';
 import { objectHasProp } from '@woocommerce/types';
+import { PaymentMethods } from '@woocommerce/type-defs/payments';
 
 /**
  * Internal dependencies
@@ -53,6 +54,15 @@ const reducer: Reducer< PaymentMethodDataState > = (
 					...state.registeredPaymentMethods,
 					action.name,
 				],
+			};
+			break;
+		case ACTION_TYPES.SET_REGISTERED_PAYMENT_METHODS:
+			state = {
+				...state,
+				registeredPaymentMethods: {
+					...state.registeredPaymentMethods,
+					...( action.paymentMethods as PaymentMethods ),
+				},
 			};
 			break;
 		case ACTION_TYPES.REMOVE_REGISTERED_PAYMENT_METHOD:
