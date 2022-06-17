@@ -80,13 +80,14 @@ export const PaymentMethodDataProvider = ( {
 		};
 	} );
 	const {
-		currentStatus: dataStoreCurrentStatus,
+		currentStatus,
 		activePaymentMethod,
 		registeredExpressPaymentMethods,
 		registeredPaymentMethods,
 		paymentMethodData,
 		errorMessage,
 		shouldSavePaymentMethod,
+		isExpressPaymentMethodActive,
 	} = useSelect( ( select ) => {
 		const store = select( PAYMENT_METHOD_DATA_STORE_KEY );
 
@@ -98,6 +99,7 @@ export const PaymentMethodDataProvider = ( {
 			paymentMethodData: store.getPaymentMethodData(),
 			errorMessage: store.getErrorMessage(),
 			shouldSavePaymentMethod: store.getShouldSavePaymentMethod(),
+			isExpressPaymentMethodActive: store.isExpressPaymentMethodActive(),
 		};
 	} );
 	const { isEditor, getPreviewData } = useEditorContext();
@@ -174,26 +176,6 @@ export const PaymentMethodDataProvider = ( {
 			}
 		},
 		[ addErrorNotice, noticeContexts.EXPRESS_PAYMENTS, removeNotice ]
-	);
-
-	const isExpressPaymentMethodActive = Object.keys(
-		registeredExpressPaymentMethods
-	).includes( activePaymentMethod );
-
-	const currentStatus = useMemo(
-		() => ( {
-			isPristine: dataStoreCurrentStatus.isPristine,
-			isStarted: dataStoreCurrentStatus.isStarted,
-			isProcessing: dataStoreCurrentStatus.isProcessing,
-			isFinished: dataStoreCurrentStatus.isFinished,
-			hasError: dataStoreCurrentStatus.hasError,
-			hasFailed: dataStoreCurrentStatus.hasFailed,
-			isSuccessful: dataStoreCurrentStatus.isSuccessful,
-			isDoingExpressPayment:
-				! dataStoreCurrentStatus.isPristine &&
-				isExpressPaymentMethodActive,
-		} ),
-		[ isExpressPaymentMethodActive, dataStoreCurrentStatus ]
 	);
 
 	// /**
