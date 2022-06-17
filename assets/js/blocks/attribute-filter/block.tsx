@@ -23,6 +23,7 @@ import { getSettingWithCoercion } from '@woocommerce/settings';
 import { getQueryArgs, removeQueryArgs } from '@wordpress/url';
 import {
 	AttributeQuery,
+	isAttributeQueryCollection,
 	isBoolean,
 	isString,
 	objectHasProp,
@@ -336,6 +337,10 @@ const AttributeFilterBlock = ( {
 	);
 
 	const checkedQuery = useMemo( () => {
+		if ( ! isAttributeQueryCollection( productAttributesQuery ) ) {
+			return [];
+		}
+
 		return productAttributesQuery
 			.filter(
 				( { attribute } ) => attribute === attributeObject?.taxonomy
