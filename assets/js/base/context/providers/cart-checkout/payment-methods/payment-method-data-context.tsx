@@ -119,10 +119,9 @@ export const PaymentMethodDataProvider = ( {
 		DEFAULT_PAYMENT_DATA_CONTEXT_STATE
 	);
 
-	const {
-		setPaymentStatus: setDataStorePaymentStatus,
-		setActivePaymentMethod,
-	} = useDispatch( PAYMENT_METHOD_DATA_STORE_KEY );
+	const { setPaymentStatus: setDataStorePaymentStatus } = useDispatch(
+		PAYMENT_METHOD_DATA_STORE_KEY
+	);
 
 	const {
 		dispatchActions,
@@ -394,7 +393,7 @@ export const PaymentMethodDataProvider = ( {
 		errorMessage: paymentData.errorMessage,
 		activePaymentMethod,
 		activeSavedToken,
-		setActivePaymentMethod,
+		setActivePaymentMethod: dispatchActions.setActivePaymentMethod,
 		onPaymentProcessing,
 		customerPaymentMethods,
 		paymentMethods: registeredPaymentMethods,
