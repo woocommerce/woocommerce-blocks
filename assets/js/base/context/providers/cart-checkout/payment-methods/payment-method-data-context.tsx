@@ -272,7 +272,6 @@ export const PaymentMethodDataProvider = ( {
 		checkoutIsCalculating,
 		currentStatus.isFinished,
 		setPaymentStatus,
-		setDataStorePaymentStatus,
 	] );
 
 	// When checkout is returned to idle, set payment status to pristine but only if payment status is already not finished.
@@ -280,24 +279,14 @@ export const PaymentMethodDataProvider = ( {
 		if ( checkoutIsIdle && ! currentStatus.isSuccessful ) {
 			setPaymentStatus().pristine();
 		}
-	}, [
-		checkoutIsIdle,
-		currentStatus.isSuccessful,
-		setPaymentStatus,
-		setDataStorePaymentStatus,
-	] );
+	}, [ checkoutIsIdle, currentStatus.isSuccessful, setPaymentStatus ] );
 
 	// if checkout has an error sync payment status back to pristine.
 	useEffect( () => {
 		if ( checkoutHasError && currentStatus.isSuccessful ) {
 			setPaymentStatus().pristine();
 		}
-	}, [
-		checkoutHasError,
-		currentStatus.isSuccessful,
-		setPaymentStatus,
-		setDataStorePaymentStatus,
-	] );
+	}, [ checkoutHasError, currentStatus.isSuccessful, setPaymentStatus ] );
 
 	useEffect( () => {
 		// Note: the nature of this event emitter is that it will bail on any
