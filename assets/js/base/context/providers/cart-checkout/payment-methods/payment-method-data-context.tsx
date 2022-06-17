@@ -86,6 +86,7 @@ export const PaymentMethodDataProvider = ( {
 		registeredPaymentMethods,
 		paymentMethodData,
 		errorMessage,
+		shouldSavePaymentMethod,
 	} = useSelect( ( select ) => {
 		const store = select( PAYMENT_METHOD_DATA_STORE_KEY );
 
@@ -96,6 +97,7 @@ export const PaymentMethodDataProvider = ( {
 			registeredPaymentMethods: store.getRegisteredPaymentMethods(),
 			paymentMethodData: store.getPaymentMethodData(),
 			errorMessage: store.getErrorMessage(),
+			shouldSavePaymentMethod: store.getShouldSavePaymentMethod(),
 		};
 	} );
 	const { isEditor, getPreviewData } = useEditorContext();
@@ -118,14 +120,15 @@ export const PaymentMethodDataProvider = ( {
 		currentObservers.current = observers;
 	}, [ observers ] );
 
-	const [ paymentData, dispatch ] = useReducer(
+	const [ dispatch ] = useReducer(
 		reducer,
 		DEFAULT_PAYMENT_DATA_CONTEXT_STATE
 	);
 
-	const { setPaymentStatus: setDataStorePaymentStatus } = useDispatch(
-		PAYMENT_METHOD_DATA_STORE_KEY
-	);
+	const {
+		setPaymentStatus: setDataStorePaymentStatus,
+		setShouldSavePaymentMethod,
+	} = useDispatch( PAYMENT_METHOD_DATA_STORE_KEY );
 
 	const {
 		dispatchActions,
@@ -384,9 +387,9 @@ export const PaymentMethodDataProvider = ( {
 	] );
 
 	const activeSavedToken =
-		typeof paymentData.paymentMethodData === 'object' &&
-		objectHasProp( paymentData.paymentMethodData, 'token' )
-			? paymentData.paymentMethodData.token + ''
+		typeof paymentMethodData === 'object' &&
+		objectHasProp( paymentMethodData, 'token' )
+			? paymentMethodData.token + ''
 			: '';
 
 	const paymentContextData: PaymentMethodDataContextType = {
@@ -401,13 +404,13 @@ export const PaymentMethodDataProvider = ( {
 		onPaymentProcessing,
 		customerPaymentMethods,
 		paymentMethods: registeredPaymentMethods,
-		expressPaymentMethods: paymentData.expressPaymentMethods,
+		expressPaymentMethods: registeredExpressPaymentMethods,
 		paymentMethodsInitialized,
 		expressPaymentMethodsInitialized,
 		setExpressPaymentError,
 		isExpressPaymentMethodActive,
-		shouldSavePayment: paymentData.shouldSavePaymentMethod,
-		setShouldSavePayment: dispatchActions.setShouldSavePayment,
+		shouldSavePayment: shouldSavePaymentMethod,
+		setShouldSavePayment: setShouldSavePaymentMethod,
 	};
 
 	return (

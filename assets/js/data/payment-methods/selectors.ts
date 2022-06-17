@@ -71,3 +71,7 @@ export const getRegisteredPaymentMethods = (
 export const getErrorMessage = ( state: PaymentMethodDataState ) => {
 	return state.errorMessage;
 };
+
+export const getShouldSavePaymentMethod = ( state: PaymentMethodDataState ) => {
+	return state.shouldSavePaymentMethod;
+};
