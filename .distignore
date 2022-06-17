@@ -5,7 +5,6 @@
 /bin
 /docs
 /node_modules
-/packages
 /patches
 /storybook
 /tests
