@@ -7,7 +7,7 @@ import { getExpressPaymentMethods } from '../../blocks-registry';
 export const isExpressPaymentMethodActive = (
 	state: PaymentMethodDataState
 ) => {
-	Object.keys( getExpressPaymentMethods() ).includes(
+	return Object.keys( getExpressPaymentMethods() ).includes(
 		state.activePaymentMethod
 	);
 };
