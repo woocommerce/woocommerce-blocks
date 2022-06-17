@@ -56,6 +56,12 @@ export const getCurrentStatus = ( state: PaymentMethodDataState ) => {
 	return state.currentStatus;
 };
 
+export const getRegisteredExpressPaymentMethods = (
+	state: PaymentMethodDataState
+) => {
+	return state.registeredExpressPaymentMethods;
+};
+
 export const getRegisteredPaymentMethods = (
 	state: PaymentMethodDataState
 ) => {

@@ -81,12 +81,16 @@ export const PaymentMethodDataProvider = ( {
 	} );
 	const {
 		currentStatus: dataStoreCurrentStatus,
+		activePaymentMethod,
+		registeredExpressPaymentMethods,
 		registeredPaymentMethods,
 	} = useSelect( ( select ) => {
 		const store = select( PAYMENT_METHOD_DATA_STORE_KEY );
 
 		return {
 			currentStatus: store.getCurrentStatus(),
+			activePaymentMethod: store.getActivePaymentMethod(),
+			registeredExpressPaymentMethods: store.getRegisteredExpressPaymentMethods(),
 			registeredPaymentMethods: store.getRegisteredPaymentMethods(),
 		};
 	} );
@@ -166,8 +170,8 @@ export const PaymentMethodDataProvider = ( {
 	);
 
 	const isExpressPaymentMethodActive = Object.keys(
-		paymentData.expressPaymentMethods
-	).includes( paymentData.activePaymentMethod );
+		registeredExpressPaymentMethods
+	).includes( activePaymentMethod );
 
 	const currentStatus = useMemo(
 		() => ( {
@@ -179,14 +183,10 @@ export const PaymentMethodDataProvider = ( {
 			hasFailed: dataStoreCurrentStatus.hasFailed,
 			isSuccessful: dataStoreCurrentStatus.isSuccessful,
 			isDoingExpressPayment:
-				paymentData.currentStatus !== STATUS.PRISTINE &&
+				! dataStoreCurrentStatus.isPristine &&
 				isExpressPaymentMethodActive,
 		} ),
-		[
-			paymentData.currentStatus,
-			isExpressPaymentMethodActive,
-			dataStoreCurrentStatus,
-		]
+		[ isExpressPaymentMethodActive, dataStoreCurrentStatus ]
 	);
 
 	// /**
@@ -391,7 +391,7 @@ export const PaymentMethodDataProvider = ( {
 		paymentStatuses: STATUS,
 		paymentMethodData: paymentData.paymentMethodData,
 		errorMessage: paymentData.errorMessage,
-		activePaymentMethod: paymentData.activePaymentMethod,
+		activePaymentMethod,
 		activeSavedToken,
 		setActivePaymentMethod: dispatchActions.setActivePaymentMethod,
 		onPaymentProcessing,
