@@ -70,11 +70,13 @@ export const runCheckoutAfterProcessingWithErrorObservers = ( {
 	notices,
 	dispatch,
 	data,
+	dispatch,
 }: {
 	observerResponses: unknown[];
 	notices: CheckoutAndPaymentNotices;
 	dispatch: DispatchFromMap< typeof actions >;
 	data: CheckoutAfterProcessingWithErrorEventData;
+	dispatch: DispatchFromMap< typeof actions >;
 } ) => {
 	const errorResponse = handleErrorResponse( {
 		observerResponses,
