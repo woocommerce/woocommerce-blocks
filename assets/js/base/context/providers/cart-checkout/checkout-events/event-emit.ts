@@ -16,7 +16,7 @@ import {
 
 // These events are emitted when the Checkout status is BEFORE_PROCESSING and AFTER_PROCESSING
 // to enable third parties to hook into the checkout process
-export const EVENTS = {
+const EVENTS = {
 	CHECKOUT_VALIDATION_BEFORE_PROCESSING:
 		'checkout_validation_before_processing',
 	CHECKOUT_AFTER_PROCESSING_WITH_SUCCESS:
@@ -61,4 +61,4 @@ const useEventEmitters = (
 	return eventEmitters;
 };
 
-export { useEventEmitters, reducer, emitEvent, emitEventWithAbort };
+export { EVENTS, useEventEmitters, reducer, emitEvent, emitEventWithAbort };
