@@ -178,7 +178,7 @@ export const getPaymentResultFromCheckoutResponse = (
 ): PaymentResult => {
 	const paymentResult = {
 		message: '',
-		paymentStatus: '',
+		paymentStatus: 'not set',
 		redirectUrl: '',
 		paymentDetails: {},
 	} as PaymentResult;

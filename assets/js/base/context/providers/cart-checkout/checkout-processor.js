@@ -156,7 +156,7 @@ const CheckoutProcessor = () => {
 		shippingErrorStatus.hasError,
 	] );
 
-	// Validate the checkout using the VALIDATION_BEFORE_PROCESSING event
+	// Validate the checkout using the CHECKOUT_VALIDATION_BEFORE_PROCESSING event
 	useEffect( () => {
 		let unsubscribeProcessing;
 		if ( ! isExpressPaymentMethodActive ) {

@@ -47,7 +47,7 @@ export const processCheckoutResponse = ( response: CheckoutResponse ) => {
 };
 
 /**
- * Emit the VALIDATION_BEFORE_PROCESSING event and process all
+ * Emit the CHECKOUT_VALIDATION_BEFORE_PROCESSING event and process all
  * registered observers
  */
 export const emitValidateEvent: emitValidateEventType = ( {
@@ -60,32 +60,34 @@ export const emitValidateEvent: emitValidateEventType = ( {
 		dispatch: DispatchFromMap< typeof actions >;
 	} ) => {
 		removeNoticesByStatus( 'error' );
-		emitEvent( observers, EVENTS.VALIDATION_BEFORE_PROCESSING, {} ).then(
-			( response ) => {
-				if ( response !== true ) {
-					if ( Array.isArray( response ) ) {
-						response.forEach(
-							( { errorMessage, validationErrors } ) => {
-								createErrorNotice( errorMessage, {
-									context: 'wc/checkout',
-								} );
-								setValidationErrors( validationErrors );
-							}
-						);
-					}
-					dispatch.setIdle();
-					dispatch.setHasError();
-				} else {
-					dispatch.setProcessing();
+		emitEvent(
+			observers,
+			EVENTS.CHECKOUT_VALIDATION_BEFORE_PROCESSING,
+			{}
+		).then( ( response ) => {
+			if ( response !== true ) {
+				if ( Array.isArray( response ) ) {
+					response.forEach(
+						( { errorMessage, validationErrors } ) => {
+							createErrorNotice( errorMessage, {
+								context: 'wc/checkout',
+							} );
+							setValidationErrors( validationErrors );
+						}
+					);
 				}
+				dispatch.setIdle();
+				dispatch.setHasError();
+			} else {
+				dispatch.setProcessing();
 			}
-		);
+		} );
 	};
 };
 
 /**
- * Emit the AFTER_PROCESSING_WITH_ERROR if the checkout contains an error,
- * or the AFTER_PROCESSING_WITH_SUCCESS if not. Set checkout errors according
+ * Emit the CHECKOUT_AFTER_PROCESSING_WITH_ERROR if the checkout contains an error,
+ * or the CHECKOUT_AFTER_PROCESSING_WITH_SUCCESS if not. Set checkout errors according
  * to the observer responses
  */
 export const emitAfterProcessingEvents: emitAfterProcessingEventsType = ( {
@@ -112,7 +114,7 @@ export const emitAfterProcessingEvents: emitAfterProcessingEventsType = ( {
 			// with a fallback if nothing customizes it.
 			emitEventWithAbort(
 				observers,
-				EVENTS.AFTER_PROCESSING_WITH_ERROR,
+				EVENTS.CHECKOUT_AFTER_PROCESSING_WITH_ERROR,
 				data
 			).then( ( observerResponses ) => {
 				runCheckoutAfterProcessingWithErrorObservers( {
@@ -125,7 +127,7 @@ export const emitAfterProcessingEvents: emitAfterProcessingEventsType = ( {
 		} else {
 			emitEventWithAbort(
 				observers,
-				EVENTS.AFTER_PROCESSING_WITH_SUCCESS,
+				EVENTS.CHECKOUT_AFTER_PROCESSING_WITH_SUCCESS,
 				data
 			).then( ( observerResponses: unknown[] ) => {
 				runCheckoutAfterProcessingWithSuccessObservers( {
