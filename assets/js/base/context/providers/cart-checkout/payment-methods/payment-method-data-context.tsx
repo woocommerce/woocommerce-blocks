@@ -88,9 +88,7 @@ export const PaymentMethodDataProvider = ( {
 	);
 	const { isEditor, getPreviewData } = useEditorContext();
 	const { setValidationErrors } = useValidationContext();
-	const { createErrorNotice: addErrorNotice, removeNotice } = useDispatch(
-		'core/notices'
-	);
+	const { createErrorNotice, removeNotice } = useDispatch( 'core/notices' );
 	const {
 		isSuccessResponse,
 		isErrorResponse,
@@ -148,7 +146,7 @@ export const PaymentMethodDataProvider = ( {
 	const setExpressPaymentError = useCallback(
 		( message ) => {
 			if ( message ) {
-				addErrorNotice( message, {
+				createErrorNotice( message, {
 					id: 'wc-express-payment-error',
 					context: noticeContexts.EXPRESS_PAYMENTS,
 				} );
@@ -159,7 +157,7 @@ export const PaymentMethodDataProvider = ( {
 				);
 			}
 		},
-		[ addErrorNotice, noticeContexts.EXPRESS_PAYMENTS, removeNotice ]
+		[ createErrorNotice, noticeContexts.EXPRESS_PAYMENTS, removeNotice ]
 	);
 
 	// /**
@@ -290,7 +288,7 @@ export const PaymentMethodDataProvider = ( {
 						errorResponse.message &&
 						errorResponse.message.length
 					) {
-						addErrorNotice( errorResponse.message, {
+						createErrorNotice( errorResponse.message, {
 							id: 'wc-payment-error',
 							isDismissible: false,
 							context:
@@ -308,7 +306,7 @@ export const PaymentMethodDataProvider = ( {
 						errorResponse.message &&
 						errorResponse.message.length
 					) {
-						addErrorNotice( errorResponse.message, {
+						createErrorNotice( errorResponse.message, {
 							id: 'wc-payment-error',
 							isDismissible: false,
 							context:
@@ -337,7 +335,7 @@ export const PaymentMethodDataProvider = ( {
 		isSuccessResponse,
 		isFailResponse,
 		isErrorResponse,
-		addErrorNotice,
+		createErrorNotice,
 		setDataStorePaymentStatus,
 	] );
 
