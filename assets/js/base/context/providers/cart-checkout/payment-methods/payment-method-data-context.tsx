@@ -109,10 +109,9 @@ export const PaymentMethodDataProvider = ( {
 		DEFAULT_PAYMENT_DATA_CONTEXT_STATE
 	);
 
-	const {
-		setPaymentStatus: setDataStorePaymentStatus,
-		setShouldSavePaymentMethod,
-	} = useDispatch( PAYMENT_METHOD_DATA_STORE_KEY );
+	const { setPaymentStatus: setDataStorePaymentStatus } = useDispatch(
+		PAYMENT_METHOD_DATA_STORE_KEY
+	);
 
 	const {
 		dispatchActions,
@@ -340,7 +339,7 @@ export const PaymentMethodDataProvider = ( {
 	] );
 
 	const paymentContextData: PaymentMethodDataContextType = {
-		setPaymentStatus,
+		// setPaymentStatus,
 		// currentStatus,
 		// paymentStatuses: STATUS,
 		// paymentMethodData,
@@ -357,7 +356,7 @@ export const PaymentMethodDataProvider = ( {
 		setExpressPaymentError,
 		// isExpressPaymentMethodActive,
 		// shouldSavePayment: shouldSavePaymentMethod,
-		setShouldSavePayment: setShouldSavePaymentMethod,
+		// setShouldSavePayment: setShouldSavePaymentMethod,
 	};
 
 	return (
