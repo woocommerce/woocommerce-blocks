@@ -1,7 +1,8 @@
 /**
  * External dependencies
  */
-import { addQueryArgs } from '@wordpress/url';
+import { addQueryArgs, getQueryArg } from '@wordpress/url';
+import { has, inRange } from 'lodash';
 
 /**
  * Internal dependencies
@@ -23,6 +24,14 @@ const getFromState = ( {
 	query = query !== null ? addQueryArgs( '', query ) : '';
 	if ( hasInState( state, [ namespace, resourceName, ids, query, type ] ) ) {
 		return state[ namespace ][ resourceName ][ ids ][ query ][ type ];
+	}
+
+	if ( resourceName === 'products' ) {
+		return getCachedProductsCollection(
+			state,
+			[ namespace, resourceName, ids, query ],
+			DEFAULT_EMPTY_ARRAY
+		);
 	}
 	return fallback;
 };
@@ -64,7 +73,13 @@ export const getCollection = (
 	query = null,
 	ids = DEFAULT_EMPTY_ARRAY
 ) => {
-	return getFromState( { state, namespace, resourceName, query, ids } );
+	return getFromState( {
+		state,
+		namespace,
+		resourceName,
+		query,
+		ids,
+	} );
 };
 
 export const getCollectionError = (
@@ -141,4 +156,91 @@ export const getCollectionHeader = (
  */
 export const getCollectionLastModified = ( state ) => {
 	return state.lastModified || 0;
+};
+
+const getCachedProductsCollection = ( state, path, fallback = [] ) => {
+	const [ namespace, resourceName, ids, queryString ] = path;
+
+	if (
+		namespace !== '/wc/store/v1' ||
+		resourceName !== 'products' ||
+		! has( state, [ namespace, resourceName ] ) ||
+		ids !== '[]'
+	) {
+		return fallback;
+	}
+
+	const minPriceQuery = getQueryArg( `/${ queryString }`, 'min_price' );
+	const maxPriceQuery = getQueryArg( `/${ queryString }`, 'max_price' );
+
+	if ( ! minPriceQuery && ! maxPriceQuery ) {
+		return fallback;
+	}
+
+	const cachedResults = state[ namespace ][ resourceName ][ ids ];
+
+	const potential = Object.keys( cachedResults ).filter( ( key ) => {
+		if ( minPriceQuery && maxPriceQuery ) {
+			return (
+				key.includes( 'min_price' ) &&
+				key.includes( 'max_price' ) &&
+				key
+					.replace( /&max_price=[^&]*/, '' )
+					.replace( /&min_price=[^&]*/, '' ) ===
+					queryString
+						.replace( /&max_price=[^&]*/, '' )
+						.replace( /&min_price=[^&]*/, '' )
+			);
+		} else if ( maxPriceQuery ) {
+			return (
+				key.includes( 'max_price' ) &&
+				key.replace( /&max_price=[^&]*/, '' ) ===
+					queryString.replace( /&max_price=[^&]*/, '' )
+			);
+		} else if ( minPriceQuery ) {
+			return (
+				key.includes( 'min_price' ) &&
+				key.replace( /&min_price=[^&]*/, '' ) ===
+					queryString.replace( /&min_price=[^&]*/, '' )
+			);
+		}
+		return false;
+	} );
+
+	if ( potential.length === 0 ) {
+		return fallback;
+	}
+
+	const result = potential.find( ( key ) => {
+		const cachedResult = cachedResults[ key ];
+		if ( minPriceQuery && maxPriceQuery ) {
+			return (
+				inRange(
+					parseInt( minPriceQuery, 10 ),
+					...cachedResult.priceRange.min
+				) &&
+				inRange(
+					parseInt( maxPriceQuery, 10 ),
+					...cachedResult.priceRange.max
+				)
+			);
+		} else if ( maxPriceQuery ) {
+			return inRange(
+				parseInt( maxPriceQuery, 10 ),
+				...cachedResult.priceRange.max
+			);
+		} else if ( minPriceQuery ) {
+			return inRange(
+				parseInt( minPriceQuery, 10 ),
+				...cachedResult.priceRange.min
+			);
+		}
+		return false;
+	} );
+
+	if ( result ) {
+		return cachedResults[ result ];
+	}
+
+	return fallback;
 };
