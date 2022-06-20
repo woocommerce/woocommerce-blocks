@@ -4,12 +4,12 @@
 import { getPaymentMethods } from '@woocommerce/blocks-registry';
 import { select } from '@wordpress/data';
 import { PaymentMethods } from '@woocommerce/type-defs/payments';
+import { PAYMENT_METHOD_DATA_STORE_KEY } from '@woocommerce/block-data';
 
 /**
  * Internal dependencies
  */
 import type { CustomerPaymentMethod } from './types';
-import { STORE_KEY as PAYMENT_METHOD_DATA_STORE_KEY } from '../../../../../data/payment-methods/constants';
 
 /**
  * Gets the payment methods saved for the current user after filtering out disabled ones.
