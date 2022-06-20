@@ -86,6 +86,12 @@ Release and roadmap notes available on the [WooCommerce Developers Blog](https:/
 
 == Changelog ==
 
+= 7.8.3 - 2022-06-20 =
+
+#### Bug Fixes
+
+- Fix images hidden by default in Product grid blocks after WC 6.6 update. ([6599](https://github.com/woocommerce/woocommerce-blocks/pull/6599))
+
 = 7.8.2 - 2022-06-20 =
 
 #### Bug Fixes
@@ -116,7 +122,6 @@ Release and roadmap notes available on the [WooCommerce Developers Blog](https:/
 #### Various
 
 - Add support for `Font size` and `Font family` for the `Mini Cart` block. ([6396](https://github.com/woocommerce/woocommerce-blocks/pull/6396))
-
 
 = 7.7.0 - 2022-05-24 =
 
