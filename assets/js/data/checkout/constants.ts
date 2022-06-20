@@ -3,6 +3,8 @@
  */
 import { getSetting, EnteredAddress } from '@woocommerce/settings';
 
+import { CheckoutResponseSuccess } from '@woocommerce/types';
+
 export const STORE_KEY = 'wc/store/checkout';
 
 export enum STATUS {
@@ -20,9 +22,8 @@ export enum STATUS {
 	AFTER_PROCESSING = 'after_processing',
 }
 
-const preloadedCheckoutData = getSetting( 'checkoutData', {} ) as Record<
-	string,
-	unknown
+const preloadedCheckoutData = getSetting( 'checkoutData', {} ) as Partial<
+	CheckoutResponseSuccess
 >;
 
 export const checkoutData = {
