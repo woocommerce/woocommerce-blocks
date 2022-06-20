@@ -86,6 +86,26 @@ Release and roadmap notes available on the [WooCommerce Developers Blog](https:/
 
 == Changelog ==
 
+
+= 7.9.0 - 2022-06-20 =
+
+#### Enhancements
+
+- Disable page scroll when Mini Cart drawer is open. ([6532](https://github.com/woocommerce/woocommerce-blocks/pull/6532))
+- Register filter blocks using block metadata. ([6505](https://github.com/woocommerce/woocommerce-blocks/pull/6505))
+
+#### Bug Fixes
+
+- Fix images hidden by default in Product grid blocks after WC 6.6 update. ([6599](https://github.com/woocommerce/woocommerce-blocks/pull/6599))
+- Fix: Scrolling issue of the Filled Mini Cart Contents block. ([6565](https://github.com/woocommerce/woocommerce-blocks/pull/6565))
+- Fix an endless loop when using product grid blocks inside product descriptions. ([6471](https://github.com/woocommerce/woocommerce-blocks/pull/6471))
+
+#### Various
+
+- Prevent warnings appearing when using some plugins for managing shipping packages. ([6470](https://github.com/woocommerce/woocommerce-blocks/pull/6470))
+- Add template descriptions. ([6345](https://github.com/woocommerce/woocommerce-blocks/pull/6345))
+
+
 = 7.8.1 - 2022-06-13 =
 
 #### Bug Fixes
