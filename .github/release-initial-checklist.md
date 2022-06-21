@@ -23,9 +23,9 @@ The release pull request has been created! This checklist is a guide to follow f
 * [ ] Run `npm run package-plugin:deploy`. This will create a zip of the current branch build locally.
   *  Note: The zip file is functionally equivalent to what gets released except the version bump.
 * [ ] Create the testing notes for the release. 
-  * [ ] For each pull request linked in the changelog grab the `User Facing Testing` notes from the PR's description. 
-  * [ ] Add the notes to `docs/testing/releases`
-  * [ ] Update the `docs/testing/releases/README.md` file index.
+  * [ ] For each pull request that belongs to the current release, grab the `User Facing Testing` notes from the PR's description. Be sure that the `Do not include in the Testing Notes is not flagged` checkbox is unchecked.
+  * [ ] Add the notes to `docs/internal-developers/testing/releases`
+  * [ ] Update the `docs/internal-developers/testing/releases/README.md` file index.
 * [ ] Copy a link to the release zip you created earlier into the testing notes. To generate the link you can upload the zip as an attachment in a GitHub comment and then just copy the path (without publishing the comment).
 * [ ] Commit and push the testing docs to the release branch.
 * [ ] Smoke test built release zip using the testing instructions you created:
@@ -109,10 +109,14 @@ This only needs to be done if this release is the last release of the feature pl
       Woo Blocks 7.3.0 & 7.4.0
       ```
   * Run through the testing checklist to ensure everything works in that branch for that package bump. **Note:** Testing should include ensuring any features/new blocks that are supposed to be behind feature gating for the core merge of this package update are working as expected.
-  * Testing should include completing the [Smoke testing checklist](https://github.com/woocommerce/woocommerce-gutenberg-products-block/blob/trunk/docs/testing/smoke-testing.md). It's up to you to verify that those tests have been done.
+  * Testing should include completing the [Smoke testing checklist](https://github.com/woocommerce/woocommerce-gutenberg-products-block/blob/trunk/docs/internal-developers/testing/smoke-testing.md). It's up to you to verify that those tests have been done.
   * Verify and make any additional edits to the pull request description for things like: Changelog to be included with WooCommerce core, additional communication that might be needed elsewhere, additional marketing communication notes that may be needed etc.
   * After the checklist is complete and the testing is done, it will be up to the WooCommerce core team to approve and merge the pull request.
 * [ ] Make sure you join the `#woo-core-releases` Slack channel to represent Woo Blocks for the release of WooCommerce core this version is included in.
+* [ ] Search the release thread of the WooCommerce core version in WooCommerce P2 (example: p6q8Tx-2gl-p2).
+  * [ ] Subscribe to it, so you are aware of any news/changes.
+  * [ ] Make sure you are listed as the _Blocks Package_ lead or add yourself if you aren't.
+  * [ ] Add changes you want to highlight under the _Feature Rollup_ comment. Please also look at changes from earlier versions that we didn't include in WC core yet. Ping the porters if you are unsure.
 
 ## Publish posts
 
