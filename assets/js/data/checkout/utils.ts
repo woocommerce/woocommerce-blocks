@@ -3,9 +3,9 @@
  */
 import { isString, isObject } from '@woocommerce/types';
 import { __ } from '@wordpress/i18n';
-import { dispatch as wpDataDispatch } from '@wordpress/data';
 import { decodeEntities } from '@wordpress/html-entities';
 import type { PaymentResult, CheckoutResponse } from '@woocommerce/types';
+import type { createErrorNotice as originalCreateErrorNotice } from '@wordpress/notices/store/actions';
 
 /**
  * Internal dependencies
@@ -29,16 +29,16 @@ const {
 // properties of an object. Refactor this to not be a hook, we could simply import
 // those functions where needed
 
-const { createErrorNotice } = wpDataDispatch( 'core/notices' );
-
 /**
  * Based on the given observers, create Error Notices where necessary
  * and return the error response of the last registered observer
  */
 export const handleErrorResponse = ( {
 	observerResponses,
+	createErrorNotice,
 }: {
 	observerResponses: unknown[];
+	createErrorNotice: typeof originalCreateErrorNotice;
 } ) => {
 	let errorResponse = null;
 	observerResponses.forEach( ( response ) => {
@@ -69,15 +69,18 @@ export const runCheckoutAfterProcessingWithErrorObservers = ( {
 	observerResponses,
 	notices,
 	dispatch,
+	createErrorNotice,
 	data,
 }: {
 	observerResponses: unknown[];
 	notices: CheckoutAndPaymentNotices;
 	dispatch: DispatchFromMap< typeof actions >;
 	data: CheckoutAfterProcessingWithErrorEventData;
+	createErrorNotice: typeof originalCreateErrorNotice;
 } ) => {
 	const errorResponse = handleErrorResponse( {
 		observerResponses,
+		createErrorNotice,
 	} );
 
 	if ( errorResponse !== null ) {
@@ -125,9 +128,11 @@ export const runCheckoutAfterProcessingWithErrorObservers = ( {
 export const runCheckoutAfterProcessingWithSuccessObservers = ( {
 	observerResponses,
 	dispatch,
+	createErrorNotice,
 }: {
 	observerResponses: unknown[];
 	dispatch: DispatchFromMap< typeof actions >;
+	createErrorNotice: typeof originalCreateErrorNotice;
 } ) => {
 	let successResponse = null as null | Record< string, unknown >;
 	let errorResponse = null as null | Record< string, unknown >;

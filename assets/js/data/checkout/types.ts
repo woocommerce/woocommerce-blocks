@@ -2,6 +2,7 @@
  * External dependencies
  */
 import type { Notice } from '@wordpress/notices/';
+import { DataRegistry } from '@wordpress/data';
 
 /**
  * Internal dependencies
@@ -37,9 +38,11 @@ export type emitAfterProcessingEventsType = ( {
 } ) => ( {
 	select,
 	dispatch,
+	registry,
 }: {
 	select: SelectFromMap< typeof selectors >;
 	dispatch: DispatchFromMap< typeof actions >;
+	registry: DataRegistry;
 } ) => void;
 
 /**
@@ -53,6 +56,8 @@ export type emitValidateEventType = ( {
 	setValidationErrors: ( errors: Array< unknown > ) => void;
 } ) => ( {
 	dispatch,
+	registry,
 }: {
 	dispatch: DispatchFromMap< typeof actions >;
+	registry: DataRegistry;
 } ) => void;

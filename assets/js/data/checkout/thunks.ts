@@ -2,7 +2,7 @@
  * External dependencies
  */
 import type { CheckoutResponse } from '@woocommerce/types';
-import { dispatch as wpDataDispatch } from '@wordpress/data';
+import { store as noticesStore } from '@wordpress/notices';
 
 /**
  * Internal dependencies
@@ -22,11 +22,8 @@ import type {
 	emitValidateEventType,
 	emitAfterProcessingEventsType,
 } from './types';
-import type { DispatchFromMap, SelectFromMap } from '../mapped-types';
+import type { DispatchFromMap } from '../mapped-types';
 import * as actions from './actions';
-import * as selectors from './selectors';
-
-const { createErrorNotice } = wpDataDispatch( 'core/notices' );
 
 /**
  * Based on the result of the payment, update the redirect url,
@@ -54,11 +51,8 @@ export const emitValidateEvent: emitValidateEventType = ( {
 	observers,
 	setValidationErrors, // TODO: Fix this type after we move to validation store
 } ) => {
-	return ( {
-		dispatch,
-	}: {
-		dispatch: DispatchFromMap< typeof actions >;
-	} ) => {
+	return ( { dispatch, registry } ) => {
+		const { createErrorNotice } = registry.dispatch( noticesStore );
 		removeNoticesByStatus( 'error' );
 		emitEvent(
 			observers,
@@ -94,13 +88,8 @@ export const emitAfterProcessingEvents: emitAfterProcessingEventsType = ( {
 	observers,
 	notices,
 } ) => {
-	return ( {
-		select,
-		dispatch,
-	}: {
-		select: SelectFromMap< typeof selectors >;
-		dispatch: DispatchFromMap< typeof actions >;
-	} ) => {
+	return ( { select, dispatch, registry } ) => {
+		const { createErrorNotice } = registry.dispatch( noticesStore );
 		const state = select.getCheckoutState();
 		const data = {
 			redirectUrl: state.redirectUrl,
@@ -121,6 +110,7 @@ export const emitAfterProcessingEvents: emitAfterProcessingEventsType = ( {
 					observerResponses,
 					notices,
 					dispatch,
+					createErrorNotice,
 					data,
 				} );
 			} );
@@ -133,6 +123,7 @@ export const emitAfterProcessingEvents: emitAfterProcessingEventsType = ( {
 				runCheckoutAfterProcessingWithSuccessObservers( {
 					observerResponses,
 					dispatch,
+					createErrorNotice,
 				} );
 			} );
 		}

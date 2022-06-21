@@ -12,7 +12,7 @@ import * as actions from './actions';
 import reducer from './reducers';
 import { DispatchFromMap, SelectFromMap } from '../mapped-types';
 
-const store = createReduxStore( STORE_KEY, {
+export const config = {
 	reducer,
 	selectors,
 	actions,
@@ -20,7 +20,9 @@ const store = createReduxStore( STORE_KEY, {
 	// eslint-disable-next-line @typescript-eslint/ban-ts-comment
 	// @ts-ignore We pass this in case there is an older version of Gutenberg running.
 	__experimentalUseThunks: true,
-} );
+};
+
+const store = createReduxStore( STORE_KEY, config );
 register( store );
 
 export const CHECKOUT_STORE_KEY = STORE_KEY;
