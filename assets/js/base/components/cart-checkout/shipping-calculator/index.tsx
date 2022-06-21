@@ -26,6 +26,7 @@ const ShippingCalculator = ( {
 		setShippingAddress,
 		setBillingAddress,
 	} = useCustomerData();
+
 	return (
 		<div className="wc-block-components-shipping-calculator">
 			<ShippingCalculatorAddress
