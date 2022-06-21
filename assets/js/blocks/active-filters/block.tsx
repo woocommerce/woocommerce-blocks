@@ -64,10 +64,9 @@ const ActiveFiltersBlock = ( {
 	const STOCK_STATUS_OPTIONS = getSetting( 'stockStatusOptions', [] );
 	const activeStockStatusFilters = useMemo( () => {
 		if (
-			( productStockStatus.length =
-				0 ||
-				! isStockStatusQueryCollection( productStockStatus ) ||
-				! isStockStatusOptions( STOCK_STATUS_OPTIONS ) )
+			productStockStatus.length === 0 ||
+			! isStockStatusQueryCollection( productStockStatus ) ||
+			! isStockStatusOptions( STOCK_STATUS_OPTIONS )
 		) {
 			return null;
 		}
