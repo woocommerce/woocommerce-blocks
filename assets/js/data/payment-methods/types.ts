@@ -45,7 +45,6 @@ export interface PaymentStatusDispatchers {
 	pristine: () => void;
 	started: () => void;
 	processing: () => void;
-	completed: () => void;
 	error: ( error: string ) => void;
 	failed: (
 		error?: string,
@@ -59,15 +58,15 @@ export interface PaymentStatusDispatchers {
 	) => void;
 }
 
-export interface PaymentMethodDataContextState {
-	currentStatus: PaymentMethodCurrentStatusType;
-	shouldSavePaymentMethod: boolean;
-	activePaymentMethod: string;
-	paymentMethodData: ObjectType | EmptyObjectType;
-	errorMessage: string;
-	paymentMethods: PaymentMethods;
-	expressPaymentMethods: ExpressPaymentMethods;
-}
+// export interface PaymentMethodDataContextState {
+// 	currentStatus: PaymentMethodCurrentStatusType;
+// 	shouldSavePaymentMethod: boolean;
+// 	activePaymentMethod: string;
+// 	paymentMethodData: ObjectType | EmptyObjectType;
+// 	errorMessage: string;
+// 	paymentMethods: PaymentMethods;
+// 	expressPaymentMethods: ExpressPaymentMethods;
+// }
 
 export type PaymentMethodCurrentStatusType = {
 	// If true then the payment method state in checkout is pristine.
@@ -89,44 +88,42 @@ export type PaymentMethodCurrentStatusType = {
 };
 
 export type PaymentMethodDataContextType = {
-	// Sets the payment status for the payment method.
-	setPaymentStatus: () => PaymentStatusDispatchers;
-	// The current payment status.
-	currentStatus: PaymentMethodCurrentStatusType;
-	// An object of payment status constants.
-	paymentStatuses: ObjectType;
-	// Arbitrary data to be passed along for processing by the payment method on the server.
-	paymentMethodData: ObjectType | EmptyObjectType;
-	// An error message provided by the payment method if there is an error.
-	errorMessage: string;
-	// The active payment method slug.
-	activePaymentMethod: string;
-	// Current active token.
-	activeSavedToken: string;
-	// A function for setting the active payment method.
-	setActivePaymentMethod: PaymentMethodDispatchers[ 'setActivePaymentMethod' ];
+	// // Sets the payment status for the payment method.
+	// setPaymentStatus: () => PaymentStatusDispatchers;
+	// // The current payment status.
+	// currentStatus: PaymentMethodCurrentStatusType;
+	// // An object of payment status constants.
+	// paymentStatuses: ObjectType;
+	// // Arbitrary data to be passed along for processing by the payment method on the server.
+	// paymentMethodData: ObjectType | EmptyObjectType;
+	// // An error message provided by the payment method if there is an error.
+	// errorMessage: string;
+	// // The active payment method slug.
+	// activePaymentMethod: string;
+	// // Current active token.
+	// activeSavedToken: string;
+	// // A function for setting the active payment method.
+	// setActivePaymentMethod: PaymentMethodDispatchers[ 'setActivePaymentMethod' ];
 	// Returns the customer payment for the customer if it exists.
-	customerPaymentMethods:
-		| Record< string, CustomerPaymentMethod >
-		| EmptyObjectType;
-	// Registered payment methods.
-	paymentMethods: PaymentMethods;
-	// Registered express payment methods.
-	expressPaymentMethods: ExpressPaymentMethods;
-	// True when all registered payment methods have been initialized.
-	paymentMethodsInitialized: boolean;
-	// True when all registered express payment methods have been initialized.
-	expressPaymentMethodsInitialized: boolean;
+	customerPaymentMethods: CustomerPaymentMethods;
+	// // Registered payment methods.
+	// paymentMethods: PaymentMethods;
+	// // Registered express payment methods.
+	// expressPaymentMethods: ExpressPaymentMethods;
+	// // True when all registered payment methods have been initialized.
+	// paymentMethodsInitialized: boolean;
+	// // True when all registered express payment methods have been initialized.
+	// expressPaymentMethodsInitialized: boolean;
 	// Event registration callback for registering observers for the payment processing event.
 	onPaymentProcessing: ReturnType< typeof emitterCallback >;
 	// A function used by express payment methods to indicate an error for checkout to handle. It receives an error message string. Does not change payment status.
 	setExpressPaymentError: ( error: string ) => void;
-	// True if an express payment method is active.
-	isExpressPaymentMethodActive: boolean;
-	// A function used to set the shouldSavePayment value.
-	setShouldSavePayment: PaymentMethodDispatchers[ 'setShouldSavePayment' ];
-	// True means that the configured payment method option is saved for the customer.
-	shouldSavePayment: boolean;
+	// // True if an express payment method is active.
+	// isExpressPaymentMethodActive: boolean;
+	// // A function used to set the shouldSavePayment value.
+	// setShouldSavePayment: PaymentMethodDispatchers[ 'setShouldSavePayment' ];
+	// // True means that the configured payment method option is saved for the customer.
+	// shouldSavePayment: boolean;
 };
 
 export type PaymentMethodsDispatcherType = (

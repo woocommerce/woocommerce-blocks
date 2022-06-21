@@ -22,12 +22,8 @@ import {
 import type {
 	CustomerPaymentMethods,
 	PaymentMethodDataContextType,
-} from './types';
-import {
-	DEFAULT_PAYMENT_DATA_CONTEXT_STATE,
-	DEFAULT_PAYMENT_METHOD_DATA,
-} from './constants';
-import reducer from './reducer';
+} from '../../../../../data/payment-methods/types';
+import { DEFAULT_PAYMENT_METHOD_DATA } from './constants';
 import { usePaymentMethods } from './use-payment-method-registration';
 import { usePaymentMethodDataDispatchers } from './use-payment-method-dispatchers';
 import { useEditorContext } from '../../editor-context';
@@ -103,11 +99,6 @@ export const PaymentMethodDataProvider = ( {
 		currentObservers.current = observers;
 	}, [ observers ] );
 
-	const [ dispatch ] = useReducer(
-		reducer,
-		DEFAULT_PAYMENT_DATA_CONTEXT_STATE
-	);
-
 	const { setPaymentStatus: setDataStorePaymentStatus } = useDispatch(
 		PAYMENT_METHOD_DATA_STORE_KEY
 	);
@@ -115,7 +106,7 @@ export const PaymentMethodDataProvider = ( {
 	const {
 		dispatchActions,
 		setPaymentStatus,
-	} = usePaymentMethodDataDispatchers( dispatch );
+	} = usePaymentMethodDataDispatchers();
 
 	const paymentMethodsInitialized = usePaymentMethods(
 		dispatchActions.setRegisteredPaymentMethods
