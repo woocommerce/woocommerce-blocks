@@ -160,8 +160,9 @@ class BlockTemplatesController {
 			if ( 'custom' !== $template_file->source ) {
 				$template = BlockTemplateUtils::build_template_result_from_file( $template_file, $template_type );
 			} else {
-				$template_file->title = BlockTemplateUtils::convert_slug_to_title( $template_file->slug );
-				$query_result[]       = $template_file;
+				$template_file->title       = BlockTemplateUtils::get_block_template_title( $template_file->slug );
+				$template_file->description = BlockTemplateUtils::get_block_template_description( $template_file->slug );
+				$query_result[]             = $template_file;
 				continue;
 			}
 
@@ -183,6 +184,28 @@ class BlockTemplatesController {
 		// We need to remove theme (i.e. filesystem) templates that have the same slug as a customised one.
 		// This only affects saved templates that were saved BEFORE a theme template with the same slug was added.
 		$query_result = BlockTemplateUtils::remove_theme_templates_with_custom_alternative( $query_result );
+
+		/**
+		 * WC templates from theme aren't included in `$this->get_block_templates()` but are handled by Gutenberg.
+		 * We need to do additional search through all templates file to update title and description for WC
+		 * templates that aren't listed in theme.json.
+		 */
+		$query_result = array_map(
+			function( $template ) {
+				if ( 'theme' === $template->origin ) {
+					return $template;
+				}
+				if ( $template->title === $template->slug ) {
+					$template->title = BlockTemplateUtils::get_block_template_title( $template->slug );
+				}
+				if ( ! $template->description ) {
+					$template->description = BlockTemplateUtils::get_block_template_description( $template->slug );
+				}
+				return $template;
+			},
+			$query_result
+		);
+
 		return $query_result;
 	}
 
@@ -386,5 +409,4 @@ class BlockTemplatesController {
 
 		return $is_support;
 	}
-
 }
