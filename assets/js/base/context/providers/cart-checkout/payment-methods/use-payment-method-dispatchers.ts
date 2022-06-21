@@ -8,17 +8,13 @@ import { PAYMENT_METHOD_DATA_STORE_KEY } from '@woocommerce/block-data';
 /**
  * Internal dependencies
  */
-import { actions, ActionType } from './actions';
-import { STATUS } from './constants';
 import type {
 	PaymentStatusDispatchers,
 	PaymentMethodDispatchers,
-} from './types';
+} from '../../../../../data/payment-methods/types';
 import { useCustomerData } from '../../../hooks/use-customer-data';
 
-export const usePaymentMethodDataDispatchers = (
-	dispatch: React.Dispatch< ActionType >
-): {
+export const usePaymentMethodDataDispatchers = (): {
 	dispatchActions: PaymentMethodDispatchers;
 	setPaymentStatus: () => PaymentStatusDispatchers;
 } => {
@@ -53,7 +49,6 @@ export const usePaymentMethodDataDispatchers = (
 			started: () => setDataStorePaymentStatus( { isStarted: true } ),
 			processing: () =>
 				setDataStorePaymentStatus( { isProcessing: true } ),
-			completed: () => dispatch( actions.statusOnly( STATUS.COMPLETE ) ),
 			error: ( errorMessage ) =>
 				setDataStorePaymentStatus( { hasError: true }, errorMessage ),
 			failed: (
@@ -93,7 +88,6 @@ export const usePaymentMethodDataDispatchers = (
 			},
 		} ),
 		[
-			dispatch,
 			setBillingData,
 			setShippingAddress,
 			setPaymentMethodData,
