@@ -39,7 +39,6 @@ import {
 } from './event-emit';
 import { useValidationContext } from '../../validation';
 import { useEmitResponse } from '../../../hooks/use-emit-response';
-import { getCustomerPaymentMethods } from './utils';
 
 const PaymentMethodDataContext = createContext( DEFAULT_PAYMENT_METHOD_DATA );
 
@@ -74,15 +73,15 @@ export const PaymentMethodDataProvider = ( {
 			isCalculating: store.isCalculating(),
 		};
 	} );
-	const { currentStatus, registeredPaymentMethods } = useSelect(
+	const { currentStatus, enabledCustomerPaymentMethods } = useSelect(
 		( select ) => {
 			const store = select( PAYMENT_METHOD_DATA_STORE_KEY );
 
 			return {
 				currentStatus: store.getCurrentStatus(),
 				registeredExpressPaymentMethods: store.getRegisteredExpressPaymentMethods(),
-				registeredPaymentMethods: store.getRegisteredPaymentMethods(),
 				errorMessage: store.getErrorMessage(),
+				enabledCustomerPaymentMethods: store.getEnabledCustomerPaymentMethods(),
 			};
 		}
 	);
@@ -132,14 +131,12 @@ export const PaymentMethodDataProvider = ( {
 				'previewSavedPaymentMethods'
 			) as CustomerPaymentMethods;
 		}
-		return paymentMethodsInitialized
-			? getCustomerPaymentMethods( registeredPaymentMethods )
-			: {};
+		return paymentMethodsInitialized ? enabledCustomerPaymentMethods : {};
 	}, [
 		isEditor,
 		getPreviewData,
 		paymentMethodsInitialized,
-		registeredPaymentMethods,
+		enabledCustomerPaymentMethods,
 	] );
 
 	const setExpressPaymentError = useCallback(
