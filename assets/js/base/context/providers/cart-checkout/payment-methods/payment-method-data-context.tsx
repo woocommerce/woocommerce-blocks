@@ -25,7 +25,6 @@ import type {
 } from '../../../../../data/payment-methods/types';
 import { DEFAULT_PAYMENT_METHOD_DATA } from './constants';
 import { usePaymentMethods } from './use-payment-method-registration';
-import { usePaymentMethodDataDispatchers } from './use-payment-method-dispatchers';
 import { useEditorContext } from '../../editor-context';
 import {
 	EMIT_TYPES,
@@ -35,6 +34,7 @@ import {
 } from './event-emit';
 import { useValidationContext } from '../../validation';
 import { useEmitResponse } from '../../../hooks/use-emit-response';
+import { useCustomerData } from '../../../hooks/use-customer-data';
 
 const PaymentMethodDataContext = createContext( DEFAULT_PAYMENT_METHOD_DATA );
 
@@ -99,17 +99,15 @@ export const PaymentMethodDataProvider = ( {
 		currentObservers.current = observers;
 	}, [ observers ] );
 
-	const { setPaymentStatus: setDataStorePaymentStatus } = useDispatch(
-		PAYMENT_METHOD_DATA_STORE_KEY
-	);
-
 	const {
-		dispatchActions,
 		setPaymentStatus,
-	} = usePaymentMethodDataDispatchers();
+		setRegisteredPaymentMethods,
+		setPaymentMethodData,
+	} = useDispatch( PAYMENT_METHOD_DATA_STORE_KEY );
+	const { setBillingData, setShippingAddress } = useCustomerData();
 
 	const paymentMethodsInitialized = usePaymentMethods(
-		dispatchActions.setRegisteredPaymentMethods
+		setRegisteredPaymentMethods
 	);
 
 	// const expressPaymentMethodsInitialized = useExpressPaymentMethods(
@@ -215,7 +213,7 @@ export const PaymentMethodDataProvider = ( {
 			! checkoutIsCalculating &&
 			! currentStatus.isFinished
 		) {
-			setPaymentStatus().processing();
+			setPaymentStatus( { isProcessing: true } );
 		}
 	}, [
 		checkoutIsProcessing,
@@ -228,14 +226,14 @@ export const PaymentMethodDataProvider = ( {
 	// When checkout is returned to idle, set payment status to pristine but only if payment status is already not finished.
 	useEffect( () => {
 		if ( checkoutIsIdle && ! currentStatus.isSuccessful ) {
-			setPaymentStatus().pristine();
+			setPaymentStatus( { isPristine: true } );
 		}
 	}, [ checkoutIsIdle, currentStatus.isSuccessful, setPaymentStatus ] );
 
 	// if checkout has an error sync payment status back to pristine.
 	useEffect( () => {
 		if ( checkoutHasError && currentStatus.isSuccessful ) {
-			setPaymentStatus().pristine();
+			setPaymentStatus( { isPristine: true } );
 		}
 	}, [ checkoutHasError, currentStatus.isSuccessful, setPaymentStatus ] );
 
@@ -265,11 +263,24 @@ export const PaymentMethodDataProvider = ( {
 					}
 				} );
 				if ( successResponse && ! errorResponse ) {
-					setPaymentStatus().success(
-						successResponse?.meta?.paymentMethodData,
-						successResponse?.meta?.billingData,
-						successResponse?.meta?.shippingData
-					);
+					const { paymentMethodData, billingData, shippingData } =
+						successResponse?.meta || {};
+
+					if ( billingData ) {
+						setBillingData( billingData );
+					}
+					if (
+						typeof shippingData !== undefined &&
+						shippingData?.address
+					) {
+						setShippingAddress(
+							shippingData.address as Record< string, unknown >
+						);
+					}
+					setPaymentMethodData( paymentMethodData );
+					setPaymentStatus( {
+						isSuccessful: true,
+					} );
 				} else if ( errorResponse && isFailResponse( errorResponse ) ) {
 					if (
 						errorResponse.message &&
@@ -283,10 +294,17 @@ export const PaymentMethodDataProvider = ( {
 								noticeContexts.PAYMENTS,
 						} );
 					}
-					setPaymentStatus().failed(
-						errorResponse?.message,
-						errorResponse?.meta?.paymentMethodData,
-						errorResponse?.meta?.billingData
+
+					const { paymentMethodData, billingData } =
+						errorResponse?.meta || {};
+
+					if ( billingData ) {
+						setBillingData( billingData );
+					}
+					setPaymentStatus(
+						{ hasFailed: true },
+						errorResponse?.message || '',
+						paymentMethodData
 					);
 				} else if ( errorResponse ) {
 					if (
@@ -301,13 +319,16 @@ export const PaymentMethodDataProvider = ( {
 								noticeContexts.PAYMENTS,
 						} );
 					}
-					setPaymentStatus().error( errorResponse.message );
+
+					setPaymentStatus(
+						{ hasError: true },
+						errorResponse.message
+					);
 					setValidationErrors( errorResponse?.validationErrors );
 				} else {
 					// otherwise there are no payment methods doing anything so
 					// just consider success
-					// setPaymentStatus().success();
-					setDataStorePaymentStatus( {
+					setPaymentStatus( {
 						isSuccessful: true,
 					} );
 				}
@@ -323,28 +344,15 @@ export const PaymentMethodDataProvider = ( {
 		isFailResponse,
 		isErrorResponse,
 		createErrorNotice,
-		setDataStorePaymentStatus,
+		setBillingData,
+		setPaymentMethodData,
+		setShippingAddress,
 	] );
 
 	const paymentContextData: PaymentMethodDataContextType = {
-		// setPaymentStatus,
-		// currentStatus,
-		// paymentStatuses: STATUS,
-		// paymentMethodData,
-		// errorMessage,
-		// activePaymentMethod,
-		// activeSavedToken,
-		// setActivePaymentMethod: dispatchActions.setActivePaymentMethod,
 		onPaymentProcessing,
 		customerPaymentMethods,
-		// paymentMethods: registeredPaymentMethods,
-		// expressPaymentMethods: registeredExpressPaymentMethods,
-		// paymentMethodsInitialized,
-		// expressPaymentMethodsInitialized,
 		setExpressPaymentError,
-		// isExpressPaymentMethodActive,
-		// shouldSavePayment: shouldSavePaymentMethod,
-		// setShouldSavePayment: setShouldSavePaymentMethod,
 	};
 
 	return (
