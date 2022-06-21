@@ -22,7 +22,7 @@ const ShippingCalculator = ( {
 	addressFields = [ 'country', 'state', 'city', 'postcode' ],
 }: ShippingCalculatorProps ): JSX.Element => {
 	const { shippingAddress, setShippingAddress, setBillingAddress } =
-	 useCustomerData();
+		useCustomerData();
 	return (
 		<div className="wc-block-components-shipping-calculator">
 			<ShippingCalculatorAddress
