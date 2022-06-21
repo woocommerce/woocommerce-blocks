@@ -13,7 +13,7 @@ import {
 	isBoolean,
 	isRatingQueryCollection,
 	isStockStatusQueryCollection,
-	stockStatusOptions,
+	isStockStatusOptions,
 } from '@woocommerce/types';
 import { getUrlParameter } from '@woocommerce/utils';
 
@@ -61,14 +61,13 @@ const ActiveFiltersBlock = ( {
 	const [ minPrice, setMinPrice ] = useQueryStateByKey( 'min_price' );
 	const [ maxPrice, setMaxPrice ] = useQueryStateByKey( 'max_price' );
 
-	const STOCK_STATUS_OPTIONS = getSetting< stockStatusOptions >(
-		'stockStatusOptions',
-		[]
-	);
+	const STOCK_STATUS_OPTIONS = getSetting( 'stockStatusOptions', [] );
 	const activeStockStatusFilters = useMemo( () => {
 		if (
 			( productStockStatus.length =
-				0 || ! isStockStatusQueryCollection( productStockStatus ) )
+				0 ||
+				! isStockStatusQueryCollection( productStockStatus ) ||
+				! isStockStatusOptions( STOCK_STATUS_OPTIONS ) )
 		) {
 			return null;
 		}

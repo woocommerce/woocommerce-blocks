@@ -1,5 +1,5 @@
 export type StockStatus = 'instock' | 'outofstock' | 'onbackorder';
 
-export type stockStatusOptions = {
+export type StockStatusOptions = {
 	[ key in StockStatus ]: string;
 };
