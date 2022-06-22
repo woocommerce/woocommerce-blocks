@@ -68,6 +68,7 @@ class BlockTemplateUtilsTest extends \WP_UnitTestCase {
 	 */
 	public function update_plugin(): void {
 		update_option( Options::WC_BLOCK_VERSION, 1 );
-		Migration::run_migrations();
+		$migration = new Migration();
+		$migration->run_migrations();
 	}
 }

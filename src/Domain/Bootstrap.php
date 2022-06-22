@@ -47,6 +47,14 @@ class Bootstrap {
 	 */
 	private $package;
 
+
+	/**
+	 * Holds the Migration instance
+	 *
+	 * @var Migration
+	 */
+	private $migration;
+
 	/**
 	 * Constructor
 	 *
@@ -55,6 +63,8 @@ class Bootstrap {
 	public function __construct( Container $container ) {
 		$this->container = $container;
 		$this->package   = $container->get( Package::class );
+		$this->migration = $container->get( Migration::class );
+
 		if ( $this->has_core_dependencies() ) {
 			$this->init();
 			/**
@@ -76,7 +86,7 @@ class Bootstrap {
 
 		if ( is_admin() ) {
 			if ( $this->package->get_version() !== $this->package->get_version_stored_on_db() ) {
-				Migration::run_migrations();
+				$this->migration->run_migrations();
 				$this->package->set_version_stored_on_db();
 			}
 		}
