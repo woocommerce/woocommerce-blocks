@@ -21,41 +21,7 @@ export enum ACTION {
 }
 
 export const DEFAULT_PAYMENT_METHOD_DATA: PaymentMethodDataContextType = {
-	// setPaymentStatus: () => ( {
-	// 	pristine: () => void null,
-	// 	started: () => void null,
-	// 	processing: () => void null,
-	// 	completed: () => void null,
-	// 	error: ( errorMessage: string ) => void errorMessage,
-	// 	failed: ( errorMessage, paymentMethodData ) =>
-	// 		void [ errorMessage, paymentMethodData ],
-	// 	success: ( paymentMethodData, billingData ) =>
-	// 		void [ paymentMethodData, billingData ],
-	// } ),
-	// currentStatus: {
-	// 	isPristine: true,
-	// 	isStarted: false,
-	// 	isProcessing: false,
-	// 	isFinished: false,
-	// 	hasError: false,
-	// 	hasFailed: false,
-	// 	isSuccessful: false,
-	// 	isDoingExpressPayment: false,
-	// },
-	// paymentStatuses: STATUS,
-	// paymentMethodData: {},
-	// errorMessage: '',
-	// activePaymentMethod: '',
-	// activeSavedToken: '',
-	// setActivePaymentMethod: () => void null,
 	customerPaymentMethods: {},
-	// paymentMethods: {},
-	// expressPaymentMethods: {},
-	// paymentMethodsInitialized: false,
-	// expressPaymentMethodsInitialized: false,
 	onPaymentProcessing: () => () => () => void null,
 	setExpressPaymentError: () => void null,
-	// isExpressPaymentMethodActive: false,
-	// setShouldSavePayment: () => void null,
-	// shouldSavePayment: false,
 };
