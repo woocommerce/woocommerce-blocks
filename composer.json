@@ -24,13 +24,13 @@
 	},
 	"autoload": {
 		"psr-4": {
-			"Automattic\\WooCommerce\\StoreApi\\": "src/StoreApi/",
-			"Automattic\\WooCommerce\\Blocks\\Utils\\": "src/Utils/",
-			"Automattic\\WooCommerce\\Blocks\\": "src/"
+			"Automattic\\WooCommerce\\Blocks\\": "src/",
+			"Automattic\\WooCommerce\\StoreApi\\": "src/StoreApi/"
 		},
 		"files": [
 			"src/StoreApi/deprecated.php",
-			"src/StoreApi/functions.php"
+			"src/StoreApi/functions.php",
+			"src/Utils/BlockTemplateUtils.php"
 		]
 	},
 	"autoload-dev": {
