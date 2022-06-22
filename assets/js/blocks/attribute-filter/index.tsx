@@ -66,6 +66,7 @@ registerBlockType( metadata, {
 						headingLevel: 3,
 						displayStyle: instance?.raw?.display_type || 'list',
 						showFilterButton: false,
+						selectType: instance?.raw?.select_type || 'multiple',
 						isPreview: false,
 					} ),
 			},
@@ -83,6 +84,7 @@ registerBlockType( metadata, {
 			headingLevel,
 			displayStyle,
 			showFilterButton,
+			selectType,
 		} = attributes;
 		const data: Record< string, unknown > = {
 			'data-attribute-id': attributeId,
@@ -90,6 +92,7 @@ registerBlockType( metadata, {
 			'data-query-type': queryType,
 			'data-heading': heading,
 			'data-heading-level': headingLevel,
+			'data-select-type': selectType,
 		};
 		if ( displayStyle !== 'list' ) {
 			data[ 'data-display-style' ] = displayStyle;

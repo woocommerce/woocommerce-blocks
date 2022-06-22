@@ -51,6 +51,7 @@ const Edit = ( { attributes, setAttributes, debouncedSpeak }: EditProps ) => {
 		queryType,
 		showCounts,
 		showFilterButton,
+		selectType,
 	} = attributes;
 
 	const [ isEditing, setIsEditing ] = useState(
@@ -212,6 +213,33 @@ const Edit = ( { attributes, setAttributes, debouncedSpeak }: EditProps ) => {
 						'woo-gutenberg-products-block'
 					) }
 				>
+					<ToggleGroupControl
+						label={ __(
+							'Allow selecting multiple options?',
+							'woo-gutenberg-products-block'
+						) }
+						value={ selectType || 'multiple' }
+						onChange={ ( value: string ) =>
+							setAttributes( {
+								selectType: value,
+							} )
+						}
+					>
+						<ToggleGroupControlOption
+							value="multiple"
+							label={ __(
+								'Multiple',
+								'woo-gutenberg-products-block'
+							) }
+						/>
+						<ToggleGroupControlOption
+							value="single"
+							label={ __(
+								'Single',
+								'woo-gutenberg-products-block'
+							) }
+						/>
+					</ToggleGroupControl>
 					<ToggleGroupControl
 						label={ __(
 							'Query Type',
