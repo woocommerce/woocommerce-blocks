@@ -3,7 +3,7 @@
  */
 import { __ } from '@wordpress/i18n';
 import PropTypes from 'prop-types';
-import { Icon, comment, external } from '@woocommerce/icons';
+import { Icon, commentContent, external } from '@wordpress/icons';
 
 /**
  * Internal dependencies
@@ -13,7 +13,7 @@ import './style.scss';
 /**
  * Component to render a Feedback prompt in the sidebar.
  *
- * @param {Object} props Incoming props for the component.
+ * @param {Object} props      Incoming props for the component.
  * @param {string} props.text
  * @param {string} props.url
  */
@@ -23,7 +23,7 @@ const FeedbackPrompt = ( {
 } ) => {
 	return (
 		<div className="wc-block-feedback-prompt">
-			<Icon srcElement={ comment } />
+			<Icon icon={ commentContent } />
 			<h2 className="wc-block-feedback-prompt__title">
 				{ __( 'Feedback?', 'woo-gutenberg-products-block' ) }
 			</h2>
@@ -38,7 +38,7 @@ const FeedbackPrompt = ( {
 					'Give us your feedback.',
 					'woo-gutenberg-products-block'
 				) }
-				<Icon srcElement={ external } size={ 16 } />
+				<Icon icon={ external } size={ 16 } />
 			</a>
 		</div>
 	);
@@ -58,5 +58,15 @@ export const CartCheckoutFeedbackPrompt = () => (
 			'woo-gutenberg-products-block'
 		) }
 		url="https://github.com/woocommerce/woocommerce-gutenberg-products-block/issues/new?template=--cart-checkout-feedback.md"
+	/>
+);
+
+export const LegacyFeedbackPrompt = () => (
+	<FeedbackPrompt
+		text={ __(
+			'We are working on a better editing experience that will replace classic blocks. Keep an eye out for updates!',
+			'woo-gutenberg-products-block'
+		) }
+		url="https://github.com/woocommerce/woocommerce-gutenberg-products-block/issues/new?template=--classic-block-feedback.md"
 	/>
 );

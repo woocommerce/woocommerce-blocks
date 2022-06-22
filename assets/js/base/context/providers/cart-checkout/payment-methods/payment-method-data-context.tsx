@@ -10,6 +10,8 @@ import {
 	useEffect,
 	useMemo,
 } from '@wordpress/element';
+import { objectHasProp } from '@woocommerce/types';
+import { useDispatch } from '@wordpress/data';
 
 /**
  * Internal dependencies
@@ -29,7 +31,6 @@ import {
 	useExpressPaymentMethods,
 } from './use-payment-method-registration';
 import { usePaymentMethodDataDispatchers } from './use-payment-method-dispatchers';
-import { useActivePaymentMethod } from './use-active-payment-method';
 import { useCheckoutContext } from '../checkout-state';
 import { useEditorContext } from '../../editor-context';
 import {
@@ -39,7 +40,6 @@ import {
 	reducer as emitReducer,
 } from './event-emit';
 import { useValidationContext } from '../../validation';
-import { useStoreNotices } from '../../../hooks/use-store-notices';
 import { useEmitResponse } from '../../../hooks/use-emit-response';
 import { getCustomerPaymentMethods } from './utils';
 
@@ -70,7 +70,8 @@ export const PaymentMethodDataProvider = ( {
 	} = useCheckoutContext();
 	const { isEditor, getPreviewData } = useEditorContext();
 	const { setValidationErrors } = useValidationContext();
-	const { addErrorNotice, removeNotice } = useStoreNotices();
+	const { createErrorNotice: addErrorNotice, removeNotice } =
+		useDispatch( 'core/notices' );
 	const {
 		isSuccessResponse,
 		isErrorResponse,
@@ -90,10 +91,9 @@ export const PaymentMethodDataProvider = ( {
 		reducer,
 		DEFAULT_PAYMENT_DATA_CONTEXT_STATE
 	);
-	const {
-		dispatchActions,
-		setPaymentStatus,
-	} = usePaymentMethodDataDispatchers( dispatch );
+
+	const { dispatchActions, setPaymentStatus } =
+		usePaymentMethodDataDispatchers( dispatch );
 
 	const paymentMethodsInitialized = usePaymentMethods(
 		dispatchActions.setRegisteredPaymentMethods
@@ -102,13 +102,6 @@ export const PaymentMethodDataProvider = ( {
 	const expressPaymentMethodsInitialized = useExpressPaymentMethods(
 		dispatchActions.setRegisteredExpressPaymentMethods
 	);
-
-	const {
-		activePaymentMethod,
-		activeSavedToken,
-		setActivePaymentMethod,
-		setActiveSavedToken,
-	} = useActivePaymentMethod();
 
 	const customerPaymentMethods = useMemo( (): CustomerPaymentMethods => {
 		if ( isEditor ) {
@@ -145,7 +138,7 @@ export const PaymentMethodDataProvider = ( {
 
 	const isExpressPaymentMethodActive = Object.keys(
 		paymentData.expressPaymentMethods
-	).includes( activePaymentMethod );
+	).includes( paymentData.activePaymentMethod );
 
 	const currentStatus = useMemo(
 		() => ( {
@@ -167,38 +160,64 @@ export const PaymentMethodDataProvider = ( {
 		[ paymentData.currentStatus, isExpressPaymentMethodActive ]
 	);
 
-	// Update the active (selected) payment method when it is empty, or invalid.
+	/**
+	 * Active Gateway Selection
+	 *
+	 * Updates the active (selected) payment method when it is empty, or invalid. This uses the first saved payment
+	 * method found (if applicable), or the first standard gateway.
+	 */
 	useEffect( () => {
 		const paymentMethodKeys = Object.keys( paymentData.paymentMethods );
-		const allPaymentMethodKeys = [
-			...paymentMethodKeys,
-			...Object.keys( paymentData.expressPaymentMethods ),
-		];
+
 		if ( ! paymentMethodsInitialized || ! paymentMethodKeys.length ) {
 			return;
 		}
 
-		setActivePaymentMethod( ( currentActivePaymentMethod ) => {
-			// If there's no active payment method, or the active payment method has
-			// been removed (e.g. COD vs shipping methods), set one as active.
-			// Note: It's possible that the active payment method might be an
-			// express payment method. So registered express payment methods are
-			// included in the check here.
-			if (
-				! currentActivePaymentMethod ||
-				! allPaymentMethodKeys.includes( currentActivePaymentMethod )
-			) {
-				setPaymentStatus().pristine();
-				return Object.keys( paymentData.paymentMethods )[ 0 ];
-			}
-			return currentActivePaymentMethod;
-		} );
+		const allPaymentMethodKeys = [
+			...paymentMethodKeys,
+			...Object.keys( paymentData.expressPaymentMethods ),
+		];
+
+		// Return if current method is valid.
+		if (
+			paymentData.activePaymentMethod &&
+			allPaymentMethodKeys.includes( paymentData.activePaymentMethod )
+		) {
+			return;
+		}
+
+		setPaymentStatus().pristine();
+
+		const customerPaymentMethod =
+			Object.keys( customerPaymentMethods ).flatMap(
+				( type ) => customerPaymentMethods[ type ]
+			)[ 0 ] || undefined;
+
+		if ( customerPaymentMethod ) {
+			const token = customerPaymentMethod.tokenId.toString();
+			const paymentMethodSlug = customerPaymentMethod.method.gateway;
+			const savedTokenKey = `wc-${ paymentMethodSlug }-payment-token`;
+
+			dispatchActions.setActivePaymentMethod( paymentMethodSlug, {
+				token,
+				payment_method: paymentMethodSlug,
+				[ savedTokenKey ]: token,
+				isSavedToken: true,
+			} );
+			return;
+		}
+
+		dispatchActions.setActivePaymentMethod(
+			Object.keys( paymentData.paymentMethods )[ 0 ]
+		);
 	}, [
 		paymentMethodsInitialized,
 		paymentData.paymentMethods,
 		paymentData.expressPaymentMethods,
-		setActivePaymentMethod,
+		dispatchActions,
 		setPaymentStatus,
+		paymentData.activePaymentMethod,
+		customerPaymentMethods,
 	] );
 
 	// flip payment to processing if checkout processing is complete, there are no errors, and payment status is started.
@@ -226,21 +245,12 @@ export const PaymentMethodDataProvider = ( {
 		}
 	}, [ checkoutIsIdle, currentStatus.isSuccessful, setPaymentStatus ] );
 
-	// if checkout has an error and payment is not being made with a saved token and payment status is success, then let's sync payment status back to pristine.
+	// if checkout has an error sync payment status back to pristine.
 	useEffect( () => {
-		if (
-			checkoutHasError &&
-			currentStatus.isSuccessful &&
-			! paymentData.hasSavedToken
-		) {
+		if ( checkoutHasError && currentStatus.isSuccessful ) {
 			setPaymentStatus().pristine();
 		}
-	}, [
-		checkoutHasError,
-		currentStatus.isSuccessful,
-		paymentData.hasSavedToken,
-		setPaymentStatus,
-	] );
+	}, [ checkoutHasError, currentStatus.isSuccessful, setPaymentStatus ] );
 
 	useEffect( () => {
 		// Note: the nature of this event emitter is that it will bail on any
@@ -270,7 +280,7 @@ export const PaymentMethodDataProvider = ( {
 				if ( successResponse && ! errorResponse ) {
 					setPaymentStatus().success(
 						successResponse?.meta?.paymentMethodData,
-						successResponse?.meta?.billingData,
+						successResponse?.meta?.billingAddress,
 						successResponse?.meta?.shippingData
 					);
 				} else if ( errorResponse && isFailResponse( errorResponse ) ) {
@@ -289,7 +299,7 @@ export const PaymentMethodDataProvider = ( {
 					setPaymentStatus().failed(
 						errorResponse?.message,
 						errorResponse?.meta?.paymentMethodData,
-						errorResponse?.meta?.billingData
+						errorResponse?.meta?.billingAddress
 					);
 				} else if ( errorResponse ) {
 					if (
@@ -325,16 +335,21 @@ export const PaymentMethodDataProvider = ( {
 		addErrorNotice,
 	] );
 
+	const activeSavedToken =
+		typeof paymentData.paymentMethodData === 'object' &&
+		objectHasProp( paymentData.paymentMethodData, 'token' )
+			? paymentData.paymentMethodData.token + ''
+			: '';
+
 	const paymentContextData: PaymentMethodDataContextType = {
 		setPaymentStatus,
 		currentStatus,
 		paymentStatuses: STATUS,
 		paymentMethodData: paymentData.paymentMethodData,
 		errorMessage: paymentData.errorMessage,
-		activePaymentMethod,
-		setActivePaymentMethod,
+		activePaymentMethod: paymentData.activePaymentMethod,
 		activeSavedToken,
-		setActiveSavedToken,
+		setActivePaymentMethod: dispatchActions.setActivePaymentMethod,
 		onPaymentProcessing,
 		customerPaymentMethods,
 		paymentMethods: paymentData.paymentMethods,

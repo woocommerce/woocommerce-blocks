@@ -5,6 +5,43 @@
  */
 
 /**
+ * Product attributes fixture data, using the create attribute and batch create terms.
+ *
+ * @see {@link https://woocommerce.github.io/woocommerce-rest-api-docs/#create-a-product-attribute|Create a product attribute}
+ * @see {@link https://woocommerce.github.io/woocommerce-rest-api-docs/#batch-update-attribute-terms|Batch update attribute terms}
+ */
+const Attributes = () => [
+	{
+		attribute: { name: 'Capacity' },
+		terms: [
+			{
+				name: '32gb',
+			},
+			{
+				name: '64gb',
+			},
+			{
+				name: '128gb',
+			},
+		],
+	},
+	{
+		attribute: { name: 'Shade' },
+		terms: [
+			{
+				name: 'Red',
+			},
+			{
+				name: 'Blue',
+			},
+			{
+				name: 'Black',
+			},
+		],
+	},
+];
+
+/**
  * Coupons fixture data, using the create batch endpoint
  *
  * @see {@link https://woocommerce.github.io/woocommerce-rest-api-docs/#batch-update-coupons|Batch update coupons}
@@ -90,6 +127,17 @@ const Categories = () => [
 ];
 
 /**
+ * Product tags fixture data, using the create batch endpoint
+ *
+ * @see {@link https://woocommerce.github.io/woocommerce-rest-api-docs/#batch-update-product-tags|Batch update product tags}
+ */
+const Tags = () => [
+	{
+		name: 'Newest',
+	},
+];
+
+/**
  * Product fixture data, using the create batch endpoint
  *
  * @see {@link https://woocommerce.github.io/woocommerce-rest-api-docs/#batch-update-products|Batch update products}
@@ -104,17 +152,56 @@ const Products = () => [
 		downloads: [
 			{
 				name: 'Woo Single',
-				file:
-					'http://demo.woothemes.com/woocommerce/wp-content/uploads/sites/56/2013/06/cd_4_angle.jpg',
+				file: 'http://demo.woothemes.com/woocommerce/wp-content/uploads/sites/56/2013/06/cd_4_angle.jpg',
 			},
 		],
 		images: [
 			{
-				src:
-					'http://demo.woothemes.com/woocommerce/wp-content/uploads/sites/56/2013/06/cd_4_angle.jpg',
+				src: 'http://demo.woothemes.com/woocommerce/wp-content/uploads/sites/56/2013/06/cd_4_angle.jpg',
 			},
 		],
 		categories: [ 'Music' ],
+	},
+	{
+		name: '128GB USB Stick',
+		type: 'simple',
+		regular_price: '2.99',
+		virtual: false,
+		downloadable: false,
+		images: [
+			{
+				src: 'http://demo.woothemes.com/woocommerce/wp-content/uploads/sites/56/2013/06/cd_4_angle.jpg',
+			},
+		],
+		attributes: [
+			{
+				name: 'Capacity',
+				position: 0,
+				visible: true,
+				options: [ '128gb' ],
+			},
+		],
+		tags: [ 'Newest' ],
+	},
+	{
+		name: '32GB USB Stick',
+		type: 'simple',
+		regular_price: '1.99',
+		virtual: false,
+		downloadable: false,
+		images: [
+			{
+				src: 'http://demo.woothemes.com/woocommerce/wp-content/uploads/sites/56/2013/06/cd_4_angle.jpg',
+			},
+		],
+		attributes: [
+			{
+				name: 'Capacity',
+				position: 0,
+				visible: true,
+				options: [ '32gb' ],
+			},
+		],
 	},
 	{
 		name: 'Woo Single #2',
@@ -125,17 +212,37 @@ const Products = () => [
 		downloads: [
 			{
 				name: 'Woo Single 2',
-				file:
-					'http://demo.woothemes.com/woocommerce/wp-content/uploads/sites/56/2013/06/cd_4_angle.jpg',
+				file: 'http://demo.woothemes.com/woocommerce/wp-content/uploads/sites/56/2013/06/cd_4_angle.jpg',
 			},
 		],
 		images: [
 			{
-				src:
-					'http://demo.woothemes.com/woocommerce/wp-content/uploads/sites/56/2013/06/cd_4_angle.jpg',
+				src: 'http://demo.woothemes.com/woocommerce/wp-content/uploads/sites/56/2013/06/cd_4_angle.jpg',
 			},
 		],
 		categories: [ 'Music' ],
+		tags: [ 'Newest' ],
+	},
+	{
+		name: 'Woo Single #3 - Limited Edition',
+		type: 'simple',
+		regular_price: '100.00',
+		virtual: true,
+		downloadable: true,
+		downloads: [
+			{
+				name: 'Woo Single 2',
+				file: 'http://demo.woothemes.com/woocommerce/wp-content/uploads/sites/56/2013/06/cd_4_angle.jpg',
+			},
+		],
+		images: [
+			{
+				src: 'http://demo.woothemes.com/woocommerce/wp-content/uploads/sites/56/2013/06/cd_4_angle.jpg',
+			},
+		],
+		categories: [ 'Music' ],
+		stock_status: 'outofstock',
+		tags: [ 'Newest' ],
 	},
 ];
 
@@ -223,8 +330,8 @@ const PageSettings = ( pages = [] ) => {
  * location, and shipping method endpoint.
  *
  * @see {@link https://woocommerce.github.io/woocommerce-rest-api-docs/#create-a-shipping-zone|Create a shipping zone}
- *  * @see {@link https://woocommerce.github.io/woocommerce-rest-api-docs/#update-a-locations-of-a-shipping-zone|Update a locations of a shipping zone}
- *  * @see {@link https://woocommerce.github.io/woocommerce-rest-api-docs/#include-a-shipping-method-to-a-shipping-zone|Include a shipping method to a shipping zone}
+ * @see {@link https://woocommerce.github.io/woocommerce-rest-api-docs/#update-a-locations-of-a-shipping-zone|Update a locations of a shipping zone}
+ * @see {@link https://woocommerce.github.io/woocommerce-rest-api-docs/#include-a-shipping-method-to-a-shipping-zone|Include a shipping method to a shipping zone}
  */
 const Shipping = () => [
 	{
@@ -248,6 +355,30 @@ const Shipping = () => [
 					title: 'Free Shipping',
 					cost: '00.00',
 					requires: 'coupon',
+				},
+			},
+		],
+	},
+	{
+		name: 'US',
+		locations: [
+			{
+				code: 'US',
+			},
+		],
+		methods: [
+			{
+				method_id: 'flat_rate',
+				settings: {
+					title: 'Normal Shipping',
+					cost: '20.00',
+				},
+			},
+			{
+				method_id: 'free_shipping',
+				settings: {
+					title: 'Free Shipping',
+					cost: '00.00',
 				},
 			},
 		],
@@ -283,6 +414,7 @@ const Taxes = () => [
 ];
 
 module.exports = {
+	Attributes,
 	Coupons,
 	ReviewsInProduct,
 	Categories,
@@ -290,5 +422,6 @@ module.exports = {
 	Settings,
 	PageSettings,
 	Shipping,
+	Tags,
 	Taxes,
 };

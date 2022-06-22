@@ -1,18 +1,18 @@
-# Checkout - Utilities <!-- omit in toc -->
-
-Miscellaneous utility functions for dealing with checkout functionality.
+# Utilities <!-- omit in toc -->
 
 ## Table of Contents <!-- omit in toc -->
 
 - [`extensionCartUpdate`](#extensioncartupdate)
-  - [Usage](#usage)
-  - [Options](#options)
-    - [`args (object, required)`](#args-object-required)
+    - [Usage](#usage)
+    - [Options](#options)
+        - [`args (object, required)`](#args-object-required)
 - [`mustContain`](#mustcontain)
-  - [Usage](#usage-1)
-  - [Options](#options-1)
-    - [`value (string, required)`](#value-string-required)
-    - [`requiredValue (string, required)`](#requiredvalue-string-required)
+    - [Usage](#usage-1)
+    - [Options](#options-1)
+        - [`value (string, required)`](#value-string-required)
+        - [`requiredValue (string, required)`](#requiredvalue-string-required)
+
+Miscellaneous utility functions for dealing with checkout functionality.
 
 ## `extensionCartUpdate`
 
@@ -20,7 +20,7 @@ When executed, this will call the cart/extensions REST API endpoint. The new car
 
 ### Usage
 
-```typescript
+```ts
 // Aliased import
 import { extensionCartUpdate } from '@woocommerce/blocks-checkout';
 
@@ -72,8 +72,12 @@ Value being checked. Must be a string.
 
 What value must contain. If this is not found within `value`, and error will be thrown.
 
-<br/><br/><p align="center">
-<a href="https://woocommerce.com/">
-<img src="https://woocommerce.com/wp-content/themes/woo/images/logo-woocommerce@2x.png" alt="WooCommerce" height="28px" style="filter: grayscale(100%);
-	opacity: 0.2;" />
-</a><br/><a href="https://woocommerce.com/careers/">We're hiring</a>! Come work with us!</p>
+<!-- FEEDBACK -->
+
+---
+
+[We're hiring!](https://woocommerce.com/careers/) Come work with us!
+
+🐞 Found a mistake, or have a suggestion? [Leave feedback about this document here.](https://github.com/woocommerce/woocommerce-gutenberg-products-block/issues/new?assignees=&labels=type%3A+documentation&template=--doc-feedback.md&title=Feedback%20on%20./packages/checkout/utils/README.md)
+
+<!-- /FEEDBACK -->

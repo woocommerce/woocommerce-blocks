@@ -21,36 +21,22 @@ class AllProducts extends AbstractBlock {
 	 */
 	protected function enqueue_data( array $attributes = [] ) {
 		parent::enqueue_data( $attributes );
+		// Set this so filter blocks being used as widgets know when to render.
+		$this->asset_data_registry->add( 'has_filterable_products', true, true );
+
 		$this->asset_data_registry->add( 'min_columns', wc_get_theme_support( 'product_blocks::min_columns', 1 ), true );
 		$this->asset_data_registry->add( 'max_columns', wc_get_theme_support( 'product_blocks::max_columns', 6 ), true );
 		$this->asset_data_registry->add( 'default_columns', wc_get_theme_support( 'product_blocks::default_columns', 3 ), true );
 		$this->asset_data_registry->add( 'min_rows', wc_get_theme_support( 'product_blocks::min_rows', 1 ), true );
 		$this->asset_data_registry->add( 'max_rows', wc_get_theme_support( 'product_blocks::max_rows', 6 ), true );
 		$this->asset_data_registry->add( 'default_rows', wc_get_theme_support( 'product_blocks::default_rows', 3 ), true );
+		$this->hydrate_from_api();
 	}
 
 	/**
-	 * Register script and style assets for the block type before it is registered.
-	 *
-	 * This registers the scripts; it does not enqueue them.
+	 * Hydrate the All Product block with data from the API.
 	 */
-	protected function register_block_type_assets() {
-		parent::register_block_type_assets();
-		$this->register_chunk_translations(
-			[
-				'atomic-block-components/price',
-				'atomic-block-components/image',
-				'atomic-block-components/title',
-				'atomic-block-components/rating',
-				'atomic-block-components/button',
-				'atomic-block-components/summary',
-				'atomic-block-components/sale-badge',
-				'atomic-block-components/sku',
-				'atomic-block-components/category-list',
-				'atomic-block-components/tag-list',
-				'atomic-block-components/stock-indicator',
-				'atomic-block-components/add-to-cart',
-			]
-		);
+	protected function hydrate_from_api() {
+		$this->asset_data_registry->hydrate_api_request( '/wc/store/v1/cart' );
 	}
 }

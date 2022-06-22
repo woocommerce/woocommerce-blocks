@@ -1,12 +1,10 @@
 <?php
-namespace Automattic\WooCommerce\Blocks\StoreApi\Formatters;
+namespace Automattic\WooCommerce\StoreApi\Formatters;
 
 /**
  * Currency Formatter.
  *
  * Formats an array of monetary values by inserting currency data.
- *
- * @internal This API is used internally by Blocks--it is still in flux and may be subject to revisions.
  */
 class CurrencyFormatter implements FormatterInterface {
 	/**

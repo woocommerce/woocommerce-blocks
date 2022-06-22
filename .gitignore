@@ -8,6 +8,7 @@ project.properties
 .idea
 .vscode
 !.vscode/extensions.json
+!.vscode/storybook.code-snippets
 *.sublime-project
 *.sublime-workspace
 .sublimelinterrc
@@ -50,6 +51,7 @@ tests/cli/vendor
 # Built files
 /build/
 bin/languages
+bin/eslint-plugin-woocommerce/node_modules/
 woocommerce-gutenberg-products-block.zip
 storybook-static/
 blocks.ini

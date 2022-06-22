@@ -3,7 +3,7 @@
  */
 import { __ } from '@wordpress/i18n';
 import { createBlock, registerBlockType } from '@wordpress/blocks';
-import { Icon, search } from '@woocommerce/icons';
+import { Icon, search } from '@wordpress/icons';
 /**
  * Internal dependencies
  */
@@ -49,8 +49,12 @@ const attributes = {
 registerBlockType( 'woocommerce/product-search', {
 	title: __( 'Product Search', 'woo-gutenberg-products-block' ),
 	icon: {
-		src: <Icon srcElement={ search } />,
-		foreground: '#7f54b3',
+		src: (
+			<Icon
+				icon={ search }
+				className="wc-block-editor-components-block-icon"
+			/>
+		),
 	},
 	category: 'woocommerce',
 	keywords: [ __( 'WooCommerce', 'woo-gutenberg-products-block' ) ],

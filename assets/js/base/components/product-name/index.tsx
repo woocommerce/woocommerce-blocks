@@ -10,11 +10,26 @@ import { AnchorHTMLAttributes, HTMLAttributes } from 'react';
  */
 import './style.scss';
 
-interface ProductNameProps extends AnchorHTMLAttributes< HTMLAnchorElement > {
+export interface ProductNameProps
+	extends AnchorHTMLAttributes< HTMLAnchorElement > {
+	/**
+	 * If `true` renders a `span` element instead of a link
+	 */
 	disabled?: boolean;
+	/**
+	 * The product name
+	 *
+	 * Note: can be an HTML string
+	 */
 	name: string;
-	permalink?: string;
+	/**
+	 * Click handler
+	 */
 	onClick?: () => void;
+	/**
+	 * Link for the product
+	 */
+	permalink?: string;
 }
 
 /**
@@ -22,11 +37,12 @@ interface ProductNameProps extends AnchorHTMLAttributes< HTMLAnchorElement > {
  *
  * The store API runs titles through `wp_kses_post()` which removes dangerous HTML tags, so using it inside `dangerouslySetInnerHTML` is considered safe.
  */
-export default ( {
+export const ProductName = ( {
 	className = '',
 	disabled = false,
 	name,
 	permalink = '',
+	target,
 	rel,
 	style,
 	onClick,
@@ -50,7 +66,7 @@ export default ( {
 		<a
 			className={ classes }
 			href={ permalink }
-			rel={ rel }
+			target={ target }
 			{ ...props }
 			dangerouslySetInnerHTML={ {
 				__html: decodeEntities( name ),
@@ -59,3 +75,5 @@ export default ( {
 		/>
 	);
 };
+
+export default ProductName;

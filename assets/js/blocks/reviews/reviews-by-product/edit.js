@@ -9,10 +9,10 @@ import {
 	Placeholder,
 	withSpokenMessages,
 } from '@wordpress/components';
-import { SearchListItem } from '@woocommerce/components';
+import { SearchListItem } from '@woocommerce/editor-components/search-list-control';
 import PropTypes from 'prop-types';
 import ProductControl from '@woocommerce/editor-components/product-control';
-import { Icon, comment } from '@woocommerce/icons';
+import { Icon, commentContent } from '@wordpress/icons';
 
 /**
  * Internal dependencies
@@ -28,10 +28,10 @@ import {
 /**
  * Component to handle edit mode of "Reviews by Product".
  *
- * @param {Object} props Incoming props for the component.
- * @param {Object} props.attributes Incoming block attributes.
+ * @param {Object}            props                Incoming props for the component.
+ * @param {Object}            props.attributes     Incoming block attributes.
  * @param {function(any):any} props.debouncedSpeak
- * @param {function(any):any} props.setAttributes Setter for block attributes.
+ * @param {function(any):any} props.setAttributes  Setter for block attributes.
  */
 const ReviewsByProductEditor = ( {
 	attributes,
@@ -123,7 +123,7 @@ const ReviewsByProductEditor = ( {
 			<Placeholder
 				icon={
 					<Icon
-						icon={ comment }
+						icon={ commentContent }
 						className="block-editor-block-icon"
 					/>
 				}
@@ -175,7 +175,7 @@ const ReviewsByProductEditor = ( {
 				attributes={ attributes }
 				icon={
 					<Icon
-						icon={ comment }
+						icon={ commentContent }
 						className="block-editor-block-icon"
 					/>
 				}

@@ -2,7 +2,7 @@
  * External dependencies
  */
 import { __, _n, sprintf } from '@wordpress/i18n';
-import { SearchListControl } from '@woocommerce/components';
+import { SearchListControl } from '@woocommerce/editor-components/search-list-control';
 import PropTypes from 'prop-types';
 import { withSearchedProducts } from '@woocommerce/block-hocs';
 import ErrorMessage from '@woocommerce/editor-components/error-placeholder/error-message';
@@ -11,8 +11,8 @@ import ErrorMessage from '@woocommerce/editor-components/error-placeholder/error
  * The products control exposes a custom selector for searching and selecting
  * products.
  *
- * @param {Object} props Component props.
- * @param {string} props.error
+ * @param {Object}   props           Component props.
+ * @param {string}   props.error
  * @param {Function} props.onChange  Callback fired when the selected item changes
  * @param {Function} props.onSearch  Callback fired when a search is triggered
  * @param {Array}    props.selected  An array of selected products.

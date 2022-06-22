@@ -1,26 +1,26 @@
-# Checkout - Blocks Registry <!-- omit in toc -->
-
-This directory contains the Checkout Blocks Registry. This provides functions to **register new Inner Blocks** that can be inserted automatically, or optionally, within the cart and checkout blocks in certain areas.
-
-Registered Inner Blocks can either be forced within the layout of the Cart/Checkout Block, or they can just be made available to merchants so they can be inserted manually. Inner Blocks registered in this way can also define a component to render on the frontend in place of the Block.
+# Blocks Registry <!-- omit in toc -->
 
 ## Table of Contents <!-- omit in toc -->
 
-- [How Inner Blocks Work](#how-inner-blocks-work)
-- [Inner Block Areas](#inner-block-areas)
-- [Registering a Block](#registering-a-block)
-	- [Registering a Forced Block](#registering-a-forced-block)
-	- [Passing attributes to your frontend block](#passing-attributes-to-your-frontend-block)
-	- [Registering a Block Component](#registering-a-block-component)
-- [`registerCheckoutBlock( options )`](#registercheckoutblock-options-)
-	- [Usage](#usage)
-	- [Options](#options)
-		- [`metadata` (object, required)](#metadata-object-required)
-		- [`component` (function, required)](#component-function-required)
-- [`getRegisteredBlocks( blockName )`](#getregisteredblocks-blockname-)
-	- [Usage](#usage-1)
-- [`hasInnerBlocks( blockName )`](#hasinnerblocks-blockname-)
-	- [Usage](#usage-2)
+-   [How Inner Blocks Work](#how-inner-blocks-work)
+-   [Inner Block Areas](#inner-block-areas)
+-   [Registering a Block](#registering-a-block)
+    -   [Registering a Forced Block](#registering-a-forced-block)
+    -   [Passing attributes to your frontend block](#passing-attributes-to-your-frontend-block)
+    -   [Registering a Block Component](#registering-a-block-component)
+-   [`registerCheckoutBlock( options )`](#registercheckoutblock-options-)
+    -   [Usage](#usage)
+    -   [Options](#options)
+        -   [`metadata` (object, required)](#metadata-object-required)
+        -   [`component` (function, required)](#component-function-required)
+-   [`getRegisteredBlocks( blockName )`](#getregisteredblocks-blockname-)
+    -   [Usage](#usage-1)
+-   [`hasInnerBlocks( blockName )`](#hasinnerblocks-blockname-)
+    -   [Usage](#usage-2)
+
+This directory contains the Checkout Blocks Registry. This provides functions to **register new Inner Blocks** that can be inserted automatically, or optionally, within the Mini Cart, Cart and Checkout blocks in certain areas.
+
+Registered Inner Blocks can either be forced within the layout of the Cart/Checkout Block, or they can just be made available to merchants so they can be inserted manually. Inner Blocks registered in this way can also define a component to render on the frontend in place of the Block.
 
 ## How Inner Blocks Work
 
@@ -48,7 +48,7 @@ See the `innerBlockAreas` typedef for the most up to date list of available area
 
 ## Registering a Block
 
-To register a checkout block, first, register your Block Type with WordPress using https://developer.wordpress.org/block-editor/reference-guides/block-api/block-registration/. We recommend using the `blocks.json` method to avoid
+To register a checkout block, first, register your Block Type with WordPress using <https://developer.wordpress.org/block-editor/reference-guides/block-api/block-registration/>. We recommend using the `blocks.json` method to avoid
 repetition.
 
 When registering your block, you should also define the `parent` property to include a list of areas where your block will be available. For example:
@@ -91,10 +91,11 @@ If you want your block to appear within the layout of the Checkout without merch
 In the above example, the inner block would be inserted automatically, and would not be movable or removable by the merchant.
 
 ### Passing attributes to your frontend block
+
 For your block to dynamically render on the frontend and have access to its own attributes, both the block name and the list of block attributes need to be passed via HTML `data-` attributes.
 
-- To render the block on the frontend, you need a `data-block-name` attribute on the HTML with your block name `namespace/block-name`.
-- To access your attributes on frontend, you need to save them as `data-*` attributes on the HTML.
+-   To render the block on the frontend, you need a `data-block-name` attribute on the HTML with your block name `namespace/block-name`.
+-   To access your attributes on frontend, you need to save them as `data-*` attributes on the HTML.
 
 Blocks whose namespace is `woocommerce` or `woocommerce-checkout` will have this applied to them automatically, but you can also add this behaviour to your own namespace or individual blocks.
 
@@ -125,6 +126,7 @@ add_filter(
 	1
 );
 ```
+
 ### Registering a Block Component
 
 After registering your block, you need to define which component will replace your block on the frontend of the store. To do this, use the `registerCheckoutBlock` function from the checkout blocks registry.
@@ -201,8 +203,12 @@ import { hasInnerBlocks } from '@woocommerce/blocks-checkout';
 const isValid = hasInnerBlocks( 'woocommerce/checkout-totals-block' ); // true
 ```
 
-<br/><br/><p align="center">
-<a href="https://woocommerce.com/">
-<img src="https://woocommerce.com/wp-content/themes/woo/images/logo-woocommerce@2x.png" alt="WooCommerce" height="28px" style="filter: grayscale(100%);
-	opacity: 0.2;" />
-</a><br/><a href="https://woocommerce.com/careers/">We're hiring</a>! Come work with us!</p>
+<!-- FEEDBACK -->
+
+---
+
+[We're hiring!](https://woocommerce.com/careers/) Come work with us!
+
+🐞 Found a mistake, or have a suggestion? [Leave feedback about this document here.](https://github.com/woocommerce/woocommerce-gutenberg-products-block/issues/new?assignees=&labels=type%3A+documentation&template=--doc-feedback.md&title=Feedback%20on%20./packages/checkout/blocks-registry/README.md)
+
+<!-- /FEEDBACK -->

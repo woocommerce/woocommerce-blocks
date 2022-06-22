@@ -5,7 +5,10 @@ import { __, _n, sprintf } from '@wordpress/i18n';
 import { Component } from '@wordpress/element';
 import { debounce } from 'lodash';
 import PropTypes from 'prop-types';
-import { SearchListControl, SearchListItem } from '@woocommerce/components';
+import {
+	SearchListControl,
+	SearchListItem,
+} from '@woocommerce/editor-components/search-list-control';
 import { SelectControl } from '@wordpress/components';
 import { getSetting } from '@woocommerce/settings';
 import classNames from 'classnames';
@@ -90,13 +93,8 @@ class ProductTagControl extends Component {
 
 	render() {
 		const { list, loading } = this.state;
-		const {
-			isCompact,
-			onChange,
-			onOperatorChange,
-			operator,
-			selected,
-		} = this.props;
+		const { isCompact, onChange, onOperatorChange, operator, selected } =
+			this.props;
 
 		const messages = {
 			clear: __(

@@ -11,7 +11,7 @@ import {
 } from '@woocommerce/shared-context';
 import { createBlocksFromTemplate } from '@woocommerce/atomic-utils';
 import { PanelBody, Button } from '@wordpress/components';
-import { Icon, restore } from '@woocommerce/icons';
+import { Icon, backup } from '@wordpress/icons';
 
 /**
  * Internal dependencies
@@ -25,10 +25,10 @@ import {
 /**
  * Component to handle edit mode of the "Single Product Block".
  *
- * @param {Object} props Incoming props for the component.
+ * @param {Object}  props           Incoming props for the component.
  * @param {boolean} props.isLoading
- * @param {Object} props.product
- * @param {string} props.clientId
+ * @param {Object}  props.product
+ * @param {string}  props.clientId
  */
 const LayoutEditor = ( { isLoading, product, clientId } ) => {
 	const baseClassName = 'wc-block-single-product wc-block-layout';
@@ -65,7 +65,7 @@ const LayoutEditor = ( { isLoading, product, clientId } ) => {
 							isTertiary
 							className="wc-block-single-product__reset-layout"
 						>
-							<Icon srcElement={ restore } />{ ' ' }
+							<Icon icon={ backup } />{ ' ' }
 							{ __(
 								'Reset layout',
 								'woo-gutenberg-products-block'

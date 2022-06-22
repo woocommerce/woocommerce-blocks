@@ -3,6 +3,7 @@
  */
 import type { LazyExoticComponent } from 'react';
 import type { BlockConfiguration } from '@wordpress/blocks';
+import type { RegisteredBlockComponent } from '@woocommerce/types';
 
 export enum innerBlockAreas {
 	CHECKOUT = 'woocommerce/checkout',
@@ -18,6 +19,12 @@ export enum innerBlockAreas {
 	FILLED_CART = 'woocommerce/filled-cart-block',
 	CART_ITEMS = 'woocommerce/cart-items-block',
 	CART_TOTALS = 'woocommerce/cart-totals-block',
+	MINI_CART = 'woocommerce/mini-cart-contents',
+	EMPTY_MINI_CART = 'woocommerce/empty-mini-cart-contents-block',
+	FILLED_MINI_CART = 'woocommerce/filled-mini-cart-contents-block',
+	MINI_CART_ITEMS = 'woocommerce/mini-cart-items-block',
+	CART_ORDER_SUMMARY = 'woocommerce/cart-order-summary-block',
+	CHECKOUT_ORDER_SUMMARY = 'woocommerce/checkout-order-summary-block',
 }
 
 interface CheckoutBlockOptionsMetadata extends Partial< BlockConfiguration > {
@@ -28,10 +35,7 @@ interface CheckoutBlockOptionsMetadata extends Partial< BlockConfiguration > {
 export type RegisteredBlock = {
 	blockName: string;
 	metadata: CheckoutBlockOptionsMetadata;
-	component:
-		| LazyExoticComponent< React.ComponentType< unknown > >
-		| ( () => JSX.Element | null )
-		| null;
+	component: RegisteredBlockComponent;
 	force: boolean;
 };
 

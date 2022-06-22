@@ -1,8 +1,8 @@
 /**
  * External dependencies
  */
-const WooCommerceRestApi = require( '@woocommerce/woocommerce-rest-api' )
-	.default;
+const WooCommerceRestApi =
+	require( '@woocommerce/woocommerce-rest-api' ).default;
 const glob = require( 'glob-promise' );
 const { dirname } = require( 'path' );
 const { readJson } = require( 'fs-extra' );
@@ -61,7 +61,7 @@ const setupPageSettings = () => {
  * Create taxes.
  *
  * @param {Object[]} fixture An array of objects describing our data, defaults
- * to our fixture.
+ *                           to our fixture.
  * @return {Promise} a promise that resolves to an array of newly created taxes,
  * or rejects if the request failed.
  */
@@ -88,7 +88,7 @@ const deleteTaxes = ( ids ) =>
  * Create Coupons.
  *
  * @param {Object[]} fixture An array of objects describing our data, defaults
- * to our fixture.
+ *                           to our fixture.
  * @return {Promise} a promise that resolves to an array of newly created coupons,
  * or rejects if the request failed.
  */
@@ -116,7 +116,7 @@ const deleteCoupons = ( ids ) =>
  * Create Product Categories.
  *
  * @param {Object[]} fixture An array of objects describing our data, defaults
- * to our fixture.
+ *                           to our fixture.
  * @return {Promise} a promise that resolves to an array of newly created categories,
  * or rejects if the request failed.
  */
@@ -142,6 +142,35 @@ const deleteCategories = ( categories ) => {
 };
 
 /**
+ * Create Product Tags.
+ *
+ * @param {Object[]} fixture An array of objects describing our data, defaults
+ *                           to our fixture.
+ * @return {Promise} a promise that resolves to an array of newly created tags,
+ * or rejects if the request failed.
+ */
+const createTags = ( fixture = fixtures.Tags() ) =>
+	WooCommerce.post( 'products/tags/batch', {
+		create: fixture,
+	} ).then( ( response ) => response.data.create );
+
+/**
+ * Delete Product Tags.
+ *
+ * @param {Object[]} tags an array of tags to delete.
+ *
+ * @return {Promise} return a promise that resolves to the deleted data or
+ * reject if the request failed.
+ */
+const deleteTags = ( tags ) => {
+	const ids = tags.map( ( tag ) => tag.id );
+
+	return WooCommerce.post( 'products/tags/batch', {
+		delete: ids,
+	} );
+};
+
+/**
  * Create Products.
  *
  * currently this only creates a single product for the sake of reviews.
@@ -149,18 +178,43 @@ const deleteCategories = ( categories ) => {
  * @todo  add more products to e2e fixtures data.
  *
  * @param {Array}    categories Array of category objects so we can replace names with ids in the request.
- * @param {Object[]} fixture An array of objects describing our data, defaults
- * to our fixture.
+ * @param {Array}    tags       Array of category objects so we can replace names with ids in the request.
+ * @param {Array}    attributes Array of attribute objects so we can replace names with ids in the request.
+ * @param {Object[]} fixture    An array of objects describing our data, defaults
+ *                              to our fixture.
  * @return {Promise} a promise that resolves to an array of newly created products,
  * or rejects if the request failed.
  */
-const createProducts = ( categories, fixture = fixtures.Products() ) => {
+const createProducts = (
+	categories,
+	tags,
+	attributes,
+	fixture = fixtures.Products()
+) => {
 	const hydratedFixture = fixture.map( ( product ) => {
 		if ( categories && product.categories ) {
 			product.categories = product.categories.map( ( categoryName ) =>
 				categories.find(
 					( category ) => category.name === categoryName
 				)
+			);
+		}
+		if ( tags && product.tags ) {
+			product.tags = product.tags.map( ( tagName ) =>
+				tags.find( ( tag ) => tag.name === tagName )
+			);
+		}
+		if ( attributes && product.attributes ) {
+			product.attributes = product.attributes.map(
+				( productAttribute ) => {
+					return {
+						...attributes.find(
+							( attribute ) =>
+								attribute.name === productAttribute.name
+						),
+						...productAttribute,
+					};
+				}
 			);
 		}
 		return product;
@@ -202,6 +256,36 @@ const createReviews = ( id, fixture = fixtures.ReviewsInProduct( id ) ) =>
 	} );
 
 /**
+ * Enable Cash on delivery payments.
+ *
+ * This is not called directly but is called within enablePaymentGateways.
+ *
+ * @return {Promise} a promise that resolves to an server response data, or
+ * rejects if the request failed.
+ */
+const enableCashOnDelivery = () =>
+	WooCommerce.post( 'payment_gateways/cod', {
+		description: 'Cash on delivery',
+		enabled: true,
+		settings: { instructions: 'Cash on delivery' },
+	} );
+
+/**
+ * Enable Direct bank transfer payments.
+ *
+ * This is not called directly but is called within enablePaymentGateways.
+ *
+ * @return {Promise} a promise that resolves to an server response data, or
+ * rejects if the request failed.
+ */
+const enableDirectBankTransfer = () =>
+	WooCommerce.post( 'payment_gateways/bacs', {
+		description: 'Direct bank transfer',
+		enabled: true,
+		settings: { instructions: 'Direct bank transfer' },
+	} );
+
+/**
  * Enable Cheque payments.
  *
  * This is not called directly but is called within enablePaymentGateways.
@@ -211,7 +295,9 @@ const createReviews = ( id, fixture = fixtures.ReviewsInProduct( id ) ) =>
  */
 const enableCheque = () =>
 	WooCommerce.post( 'payment_gateways/cheque', {
+		description: 'Check payments',
 		enabled: true,
+		settings: { instructions: 'Check payments' },
 	} );
 
 /**
@@ -222,7 +308,12 @@ const enableCheque = () =>
  * @return {Promise} a promise that resolves to an array of server response
  * data, or rejects if the request failed.
  */
-const enablePaymentGateways = () => Promise.all( [ enableCheque() ] );
+const enablePaymentGateways = () =>
+	Promise.all( [
+		enableCashOnDelivery(),
+		enableDirectBankTransfer(),
+		enableCheque(),
+	] );
 
 /**
  * Create shipping zones.
@@ -334,7 +425,70 @@ const deleteBlockPages = ( ids ) => {
 	);
 };
 
+/**
+ * Create Products attributes and terms.
+ *
+ * @param {Object[]} fixture An array of objects describing our data, defaults
+ *                           to our fixture.
+ * @return {Promise} a promise that resolves to an array of newly created product attributes IDs, or rejects if the request failed.
+ */
+const createProductAttributes = ( fixture = fixtures.Attributes() ) => {
+	return Promise.all(
+		fixture.map( ( { attribute, terms } ) => {
+			return WooCommerce.post( 'products/attributes', attribute )
+				.then( ( response ) => {
+					return response.data.id;
+				} )
+				.then( ( attributeId ) => {
+					const termsPromise = WooCommerce.put(
+						`products/attributes/${ attributeId }/terms/batch`,
+						{ create: terms }
+					);
+
+					return [ attributeId, termsPromise ];
+				} )
+				.then( ( [ attributeId, termsPromise ] ) =>
+					Promise.all( [ attributeId, termsPromise ] ).then( () => ( {
+						name: attribute.name,
+						id: attributeId,
+					} ) )
+				)
+				.catch( () => {
+					// At this point, the attributes probably already exist. Get them and return them instead.
+					return WooCommerce.get( 'products/attributes' )
+						.then( ( response ) => response.data )
+						.then( ( data ) => {
+							return data.find(
+								( item ) => item.name === attribute.name
+							);
+						} );
+				} );
+		} )
+	);
+};
+
+/**
+ * Delete Products attributes.
+ *
+ * Deleting all passed product attributes, will also delete terms within it.
+ *
+ * @param {number[]} ids an array of product attributes IDs to delete.
+ *
+ * @return {Promise} return a promise that resolves to an array of deleted data or
+ * reject if the request failed.
+ */
+const deleteProductAttributes = ( ids ) => {
+	return WooCommerce.post( 'products/attributes/batch', { delete: ids } );
+};
+
+const disableAttributeLookup = () =>
+	WooCommerce.put( 'settings/products/woocommerce_attribute_lookup_enabled', {
+		value: 'no',
+	} );
+
 module.exports = {
+	createProductAttributes,
+	deleteProductAttributes,
 	setupSettings,
 	setupPageSettings,
 	createTaxes,
@@ -343,6 +497,8 @@ module.exports = {
 	deleteCoupons,
 	createCategories,
 	deleteCategories,
+	createTags,
+	deleteTags,
 	createProducts,
 	deleteProducts,
 	createReviews,
@@ -351,4 +507,5 @@ module.exports = {
 	deleteShippingZones,
 	createBlockPages,
 	deleteBlockPages,
+	disableAttributeLookup,
 };

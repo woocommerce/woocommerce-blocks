@@ -5,7 +5,7 @@ IS_PRE_RELEASE=false
 
 # When it is set to true, the commands are just printed but not executed.
 DRY_RUN_MODE=false
-# When it is set to false, the commands that affect the local env are executed (e.g. git commit), while the commands that affect the remote env are not executed but just printed (e.g. git push)
+# When it is set to true, the commands that affect the local env are executed (e.g. git commit), while the commands that affect the remote env are not executed but just printed (e.g. git push)
 SIMULATE_RELEASE_MODE=false
 
 # Functions

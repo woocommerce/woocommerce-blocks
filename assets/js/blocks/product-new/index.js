@@ -4,7 +4,7 @@
 import { __ } from '@wordpress/i18n';
 import { createBlock, registerBlockType } from '@wordpress/blocks';
 import { without } from 'lodash';
-import { Icon, exclamation } from '@woocommerce/icons';
+import { Icon, sparkles } from '@wordpress/icons';
 
 /**
  * Internal dependencies
@@ -17,8 +17,12 @@ import sharedAttributes, {
 registerBlockType( 'woocommerce/product-new', {
 	title: __( 'Newest Products', 'woo-gutenberg-products-block' ),
 	icon: {
-		src: <Icon srcElement={ exclamation } />,
-		foreground: '#7f54b3',
+		src: (
+			<Icon
+				icon={ sparkles }
+				className="wc-block-editor-components-block-icon wc-block-editor-components-block-icon--sparkles"
+			/>
+		),
 	},
 	category: 'woocommerce',
 	keywords: [ __( 'WooCommerce', 'woo-gutenberg-products-block' ) ],

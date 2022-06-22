@@ -11,8 +11,8 @@ GET /products/attributes/:id/terms&orderby=slug
 | `order`   | string  |    no    | Order ascending or descending. Allowed values: `asc`, `desc`                  |
 | `orderby` | string  |    no    | Sort collection by object attribute. Allowed values: `name`, `slug`, `count`. |
 
-```http
-curl "https://example-store.com/wp-json/wc/store/products/attributes/1/terms"
+```sh
+curl "https://example-store.com/wp-json/wc/store/v1/products/attributes/1/terms"
 ```
 
 **Example response:**
@@ -33,3 +33,13 @@ curl "https://example-store.com/wp-json/wc/store/products/attributes/1/terms"
 	}
 ]
 ```
+
+<!-- FEEDBACK -->
+
+---
+
+[We're hiring!](https://woocommerce.com/careers/) Come work with us!
+
+🐞 Found a mistake, or have a suggestion? [Leave feedback about this document here.](https://github.com/woocommerce/woocommerce-gutenberg-products-block/issues/new?assignees=&labels=type%3A+documentation&template=--doc-feedback.md&title=Feedback%20on%20./src/StoreApi/docs/product-attribute-terms.md)
+
+<!-- /FEEDBACK -->

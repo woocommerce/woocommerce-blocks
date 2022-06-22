@@ -13,9 +13,20 @@ import type { ReactElement } from 'react';
  */
 import TotalsItem from '../item';
 
-interface TotalsFeesProps {
+export interface TotalsFeesProps {
+	/**
+	 * Currency
+	 */
 	currency: Currency;
+	/**
+	 * Cart fees
+	 */
 	cartFees: CartFeeItem[];
+	/**
+	 * Component wrapper classname
+	 *
+	 * @default 'wc-block-components-totals-fees'
+	 */
 	className?: string;
 }
 

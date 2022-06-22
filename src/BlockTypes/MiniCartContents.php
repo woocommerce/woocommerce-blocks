@@ -4,7 +4,8 @@ namespace Automattic\WooCommerce\Blocks\BlockTypes;
 use Automattic\WooCommerce\Blocks\Package;
 use Automattic\WooCommerce\Blocks\Assets;
 use Automattic\WooCommerce\Blocks\Assets\AssetDataRegistry;
-use Automattic\WooCommerce\Blocks\StoreApi\Utilities\CartController;
+use Automattic\WooCommerce\StoreApi\Utilities\CartController;
+use Automattic\WooCommerce\Blocks\Utils\StyleAttributesUtils;
 
 /**
  * Mini Cart class.
@@ -63,6 +64,80 @@ class MiniCartContents extends AbstractBlock {
 			return '';
 		}
 
-		return '<div class="wc-block-mini-cart-contents"></div>';
+		return $content;
+	}
+
+	/**
+	 * Enqueue frontend assets for this block, just in time for rendering.
+	 *
+	 * @param array $attributes  Any attributes that currently are available from the block.
+	 */
+	protected function enqueue_assets( array $attributes ) {
+		parent::enqueue_assets( $attributes );
+		$text_color = StyleAttributesUtils::get_text_color_class_and_style( $attributes );
+		$bg_color   = StyleAttributesUtils::get_background_color_class_and_style( $attributes );
+
+		$styles = array(
+			array(
+				'selector'   => '.wc-block-mini-cart__drawer .components-modal__header',
+				'properties' => array(
+					array(
+						'property' => 'color',
+						'value'    => $text_color ? $text_color['value'] : false,
+					),
+				),
+			),
+			array(
+				'selector'   => array(
+					'.wc-block-mini-cart__footer .wc-block-mini-cart__footer-actions .wc-block-mini-cart__footer-checkout',
+					'.wc-block-mini-cart__footer .wc-block-mini-cart__footer-actions .wc-block-mini-cart__footer-checkout:hover',
+					'.wc-block-mini-cart__footer .wc-block-mini-cart__footer-actions .wc-block-mini-cart__footer-checkout:focus',
+					'.wc-block-mini-cart__footer .wc-block-mini-cart__footer-actions .wc-block-mini-cart__footer-cart:hover',
+					'.wc-block-mini-cart__footer .wc-block-mini-cart__footer-actions .wc-block-mini-cart__footer-cart:focus',
+					'.wc-block-mini-cart__shopping-button a:hover',
+					'.wc-block-mini-cart__shopping-button a:focus',
+				),
+				'properties' => array(
+					array(
+						'property' => 'color',
+						'value'    => $bg_color ? $bg_color['value'] : false,
+					),
+					array(
+						'property' => 'border-color',
+						'value'    => $text_color ? $text_color['value'] : false,
+					),
+					array(
+						'property' => 'background-color',
+						'value'    => $text_color ? $text_color['value'] : false,
+					),
+				),
+			),
+		);
+
+		$parsed_style = '';
+
+		foreach ( $styles as $style ) {
+			$selector = is_array( $style['selector'] ) ? implode( ',', $style['selector'] ) : $style['selector'];
+
+			$properties = array_filter(
+				$style['properties'],
+				function( $property ) {
+					return $property['value'];
+				}
+			);
+
+			if ( ! empty( $properties ) ) {
+				$parsed_style .= $selector . '{';
+				foreach ( $properties as $property ) {
+					$parsed_style .= sprintf( '%1$s:%2$s;', $property['property'], $property['value'] );
+				}
+				$parsed_style .= '}';
+			}
+		}
+
+		wp_add_inline_style(
+			'wc-blocks-style',
+			$parsed_style
+		);
 	}
 }

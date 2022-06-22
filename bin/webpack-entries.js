@@ -20,7 +20,9 @@ const blocks = {
 	'product-on-sale': {},
 	'product-top-rated': {},
 	'products-by-attribute': {},
-	'featured-product': {},
+	'featured-product': {
+		customDir: 'featured-items/featured-product',
+	},
 	'all-reviews': {
 		customDir: 'reviews/all-reviews',
 	},
@@ -32,7 +34,9 @@ const blocks = {
 	},
 	'product-search': {},
 	'product-tag': {},
-	'featured-category': {},
+	'featured-category': {
+		customDir: 'featured-items/featured-category',
+	},
 	'all-products': {
 		customDir: 'products/all-products',
 	},
@@ -40,24 +44,19 @@ const blocks = {
 	'attribute-filter': {},
 	'stock-filter': {},
 	'active-filters': {},
-	cart: {
-		customDir: 'cart-checkout/cart',
-	},
-	checkout: {
-		customDir: 'cart-checkout/checkout',
-	},
-	'mini-cart': {
-		customDir: 'cart-checkout/mini-cart',
-		isExperimental: true,
-	},
+	cart: {},
+	checkout: {},
+	'mini-cart': {},
 	'mini-cart-contents': {
-		customDir: 'cart-checkout/mini-cart-contents',
-		isExperimental: true,
+		customDir: 'mini-cart/mini-cart-contents',
 	},
 	'single-product': {
 		isExperimental: true,
 	},
-	'legacy-template': {},
+	// We need to keep the legacy-template id, so we need to add a custom config to point to the renamed classic-template folder
+	'legacy-template': {
+		customDir: 'classic-template',
+	},
 };
 
 // Returns the entries for each block given a relative path (ie: `index.js`,
@@ -93,8 +92,6 @@ const entries = {
 		// @wordpress/components styles
 		'custom-select-control-style':
 			'./node_modules/wordpress-components/src/custom-select-control/style.scss',
-		'spinner-style':
-			'./node_modules/wordpress-components/src/spinner/style.scss',
 		'snackbar-notice-style':
 			'./node_modules/wordpress-components/src/snackbar/style.scss',
 		'combobox-control-style':
@@ -133,11 +130,9 @@ const entries = {
 		reviews: './assets/js/blocks/reviews/frontend.js',
 		...getBlockEntries( 'frontend.{t,j}s{,x}' ),
 		'mini-cart-component':
-			'./assets/js/blocks/cart-checkout/mini-cart/component-frontend.tsx',
+			'./assets/js/blocks/mini-cart/component-frontend.tsx',
 	},
 	payments: {
-		'wc-payment-method-stripe':
-			'./assets/js/payment-method-extensions/payment-methods/stripe/index.js',
 		'wc-payment-method-cheque':
 			'./assets/js/payment-method-extensions/payment-methods/cheque/index.js',
 		'wc-payment-method-paypal':

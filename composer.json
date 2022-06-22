@@ -19,13 +19,18 @@
 		"wp-phpunit/wp-phpunit": "^5.4",
 		"woocommerce/woocommerce-sniffs": "0.1.0",
 		"yoast/phpunit-polyfills": "^1.0",
-		"johnbillion/wp-hooks-generator": "0.6.1",
+		"johnbillion/wp-hooks-generator": "^0.7.0",
 		"mockery/mockery": "^1.4"
 	},
 	"autoload": {
 		"psr-4": {
+			"Automattic\\WooCommerce\\StoreApi\\": "src/StoreApi/",
 			"Automattic\\WooCommerce\\Blocks\\": "src/"
-		}
+		},
+		"files": [
+			"src/StoreApi/deprecated.php",
+			"src/StoreApi/functions.php"
+		]
 	},
 	"autoload-dev": {
 		"psr-4": {
@@ -43,6 +48,11 @@
 	"config": {
 		"platform": {
 			"php": "7.4.24"
+		},
+		"allow-plugins": {
+			"automattic/jetpack-autoloader": true,
+			"composer/installers": true,
+			"dealerdirect/phpcodesniffer-composer-installer": true
 		}
 	},
 	"extra": {

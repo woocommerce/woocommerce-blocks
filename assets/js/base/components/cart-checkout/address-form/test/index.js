@@ -81,28 +81,25 @@ const inputAddress = async ( {
 
 describe( 'AddressForm Component', () => {
 	const WrappedAddressForm = ( { type } ) => {
-		const {
-			defaultAddressFields,
-			setShippingFields,
-			shippingFields,
-		} = useCheckoutAddress();
+		const { defaultAddressFields, setShippingAddress, shippingAddress } =
+			useCheckoutAddress();
 
 		return (
 			<AddressForm
 				type={ type }
-				onChange={ setShippingFields }
-				values={ shippingFields }
+				onChange={ setShippingAddress }
+				values={ shippingAddress }
 				fields={ Object.keys( defaultAddressFields ) }
 			/>
 		);
 	};
 	const ShippingFields = () => {
-		const { shippingFields } = useCheckoutAddress();
+		const { shippingAddress } = useCheckoutAddress();
 
 		return (
 			<ul>
-				{ Object.keys( shippingFields ).map( ( key ) => (
-					<li key={ key }>{ key + ': ' + shippingFields[ key ] }</li>
+				{ Object.keys( shippingAddress ).map( ( key ) => (
+					<li key={ key }>{ key + ': ' + shippingAddress[ key ] }</li>
 				) ) }
 			</ul>
 		);

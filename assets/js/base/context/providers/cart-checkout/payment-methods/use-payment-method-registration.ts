@@ -16,27 +16,28 @@ import type {
 	ExpressPaymentMethodConfigInstance,
 } from '@woocommerce/type-defs/payments';
 import { useDebouncedCallback } from 'use-debounce';
+import { useDispatch } from '@wordpress/data';
+import deprecated from '@wordpress/deprecated';
 
 /**
  * Internal dependencies
  */
 import { useEditorContext } from '../../editor-context';
-import { useShippingDataContext } from '../shipping';
 import { useCustomerDataContext } from '../customer';
 import { useStoreCart } from '../../../hooks/cart/use-store-cart';
-import { useStoreNotices } from '../../../hooks/use-store-notices';
 import { useEmitResponse } from '../../../hooks/use-emit-response';
 import type { PaymentMethodsDispatcherType } from './types';
+import { useShippingData } from '../../../hooks/shipping/use-shipping-data';
 
 /**
  * This hook handles initializing registered payment methods and exposing all
  * registered payment methods that can be used in the current environment (via
  * the payment method's `canMakePayment` property).
  *
- * @param  {function(Object):undefined} dispatcher               A dispatcher for setting registered payment methods to an external state.
- * @param  {Object}                     registeredPaymentMethods Registered payment methods to process.
- * @param  {Array}                      paymentMethodsSortOrder  Array of payment method names to sort by. This should match keys of registeredPaymentMethods.
- * @param  {string}                     noticeContext            Id of the context to append notices to.
+ * @param {function(Object):undefined} dispatcher               A dispatcher for setting registered payment methods to an external state.
+ * @param {Object}                     registeredPaymentMethods Registered payment methods to process.
+ * @param {Array}                      paymentMethodsSortOrder  Array of payment method names to sort by. This should match keys of registeredPaymentMethods.
+ * @param {string}                     noticeContext            Id of the context to append notices to.
  *
  * @return {boolean} Whether the payment methods have been initialized or not. True when all payment methods have been initialized.
  */
@@ -48,29 +49,48 @@ const usePaymentMethodRegistration = (
 ) => {
 	const [ isInitialized, setIsInitialized ] = useState( false );
 	const { isEditor } = useEditorContext();
-	const { selectedRates } = useShippingDataContext();
-	const { billingData, shippingAddress } = useCustomerDataContext();
+	const { selectedRates } = useShippingData();
+	const { billingAddress, shippingAddress } = useCustomerDataContext();
 	const selectedShippingMethods = useShallowEqual( selectedRates );
 	const paymentMethodsOrder = useShallowEqual( paymentMethodsSortOrder );
 	const cart = useStoreCart();
-	const { cartTotals, cartNeedsShipping, paymentRequirements } = cart;
+	const {
+		cartTotals,
+		cartIsLoading,
+		cartNeedsShipping,
+		paymentRequirements,
+	} = cart;
 	const canPayArgument = useRef( {
 		cart,
 		cartTotals,
 		cartNeedsShipping,
-		billingData,
+		billingData: billingAddress,
+		billingAddress,
 		shippingAddress,
 		selectedShippingMethods,
 		paymentRequirements,
 	} );
-	const { addErrorNotice } = useStoreNotices();
+	const { createErrorNotice } = useDispatch( 'core/notices' );
 
 	useEffect( () => {
 		canPayArgument.current = {
 			cart,
 			cartTotals,
 			cartNeedsShipping,
-			billingData,
+			get billingData() {
+				// prettier-ignore
+				deprecated(
+					'billingData',
+					{
+						alternative: 'billingAddress',
+						plugin: 'woocommerce-gutenberg-products-block',
+						link:
+							'https://github.com/woocommerce/woocommerce-blocks/pull/6369',
+					}
+				);
+				return this.billingAddress;
+			},
+			billingAddress,
 			shippingAddress,
 			selectedShippingMethods,
 			paymentRequirements,
@@ -79,7 +99,7 @@ const usePaymentMethodRegistration = (
 		cart,
 		cartTotals,
 		cartNeedsShipping,
-		billingData,
+		billingAddress,
 		shippingAddress,
 		selectedShippingMethods,
 		paymentRequirements,
@@ -130,14 +150,14 @@ const usePaymentMethodRegistration = (
 			} catch ( e ) {
 				if ( CURRENT_USER_IS_ADMIN || isEditor ) {
 					const errorText = sprintf(
-						/* translators: %s the id of the payment method being registered (bank transfer, Stripe...) */
+						/* translators: %s the id of the payment method being registered (bank transfer, cheque...) */
 						__(
 							`There was an error registering the payment method with id '%s': `,
 							'woo-gutenberg-products-block'
 						),
 						paymentMethod.paymentMethodId
 					);
-					addErrorNotice( `${ errorText } ${ e }`, {
+					createErrorNotice( `${ errorText } ${ e }`, {
 						context: noticeContext,
 						id: `wc-${ paymentMethod.paymentMethodId }-registration-error`,
 					} );
@@ -148,12 +168,11 @@ const usePaymentMethodRegistration = (
 		// Re-dispatch available payment methods to store.
 		dispatcher( availablePaymentMethods );
 
-		// Note: some payment methods use the `canMakePayment` callback to initialize / setup.
-		// Example: Stripe CC, Stripe Payment Request.
+		// Note: Some 4rd party payment methods use the `canMakePayment` callback to initialize / setup.
 		// That's why we track "is initialized" state here.
 		setIsInitialized( true );
 	}, [
-		addErrorNotice,
+		createErrorNotice,
 		dispatcher,
 		isEditor,
 		noticeContext,
@@ -163,19 +182,25 @@ const usePaymentMethodRegistration = (
 
 	const debouncedRefreshCanMakePayments = useDebouncedCallback(
 		refreshCanMakePayments,
-		500
+		500,
+		{
+			leading: true,
+		}
 	);
 
 	// Determine which payment methods are available initially and whenever
 	// shipping methods, cart or the billing data change.
 	// Some payment methods (e.g. COD) can be disabled for specific shipping methods.
 	useEffect( () => {
-		debouncedRefreshCanMakePayments();
+		if ( ! cartIsLoading ) {
+			debouncedRefreshCanMakePayments();
+		}
 	}, [
 		debouncedRefreshCanMakePayments,
 		cart,
 		selectedShippingMethods,
-		billingData,
+		billingAddress,
+		cartIsLoading,
 	] );
 
 	return isInitialized;
@@ -184,20 +209,21 @@ const usePaymentMethodRegistration = (
 /**
  * Custom hook for setting up payment methods (standard, non-express).
  *
- * @param  {function(Object):undefined} dispatcher
+ * @param {function(Object):undefined} dispatcher
  *
  * @return {boolean} True when standard payment methods have been initialized.
  */
 export const usePaymentMethods = (
 	dispatcher: PaymentMethodsDispatcherType
 ): boolean => {
-	const standardMethods: PaymentMethods = getPaymentMethods() as PaymentMethods;
+	const standardMethods: PaymentMethods =
+		getPaymentMethods() as PaymentMethods;
 	const { noticeContexts } = useEmitResponse();
 	// Ensure all methods are present in order.
 	// Some payment methods may not be present in paymentGatewaySortOrder if they
 	// depend on state, e.g. COD can depend on shipping method.
 	const displayOrder = new Set( [
-		...( getSetting( 'paymentGatewaySortOrder', [] ) as [  ] ),
+		...( getSetting( 'paymentGatewaySortOrder', [] ) as [] ),
 		...Object.keys( standardMethods ),
 	] );
 	return usePaymentMethodRegistration(
@@ -211,14 +237,15 @@ export const usePaymentMethods = (
 /**
  * Custom hook for setting up express payment methods.
  *
- * @param  {function(Object):undefined} dispatcher
+ * @param {function(Object):undefined} dispatcher
  *
  * @return {boolean} True when express payment methods have been initialized.
  */
 export const useExpressPaymentMethods = (
 	dispatcher: PaymentMethodsDispatcherType
 ): boolean => {
-	const expressMethods: ExpressPaymentMethods = getExpressPaymentMethods() as ExpressPaymentMethods;
+	const expressMethods: ExpressPaymentMethods =
+		getExpressPaymentMethods() as ExpressPaymentMethods;
 	const { noticeContexts } = useEmitResponse();
 	return usePaymentMethodRegistration(
 		dispatcher,

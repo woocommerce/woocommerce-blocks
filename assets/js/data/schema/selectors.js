@@ -20,10 +20,10 @@ import { STORE_KEY } from './constants';
  *                              the route request. It is not for any query
  *                              parameters.
  *
- * Ids example:
- * If you are looking for the route for a single product on the `wc/blocks`
- * namespace, then you'd have `[ 20 ]` as the ids.  This would produce something
- * like `/wc/blocks/products/20`
+ *                              Ids example:
+ *                              If you are looking for the route for a single product on the `wc/blocks`
+ *                              namespace, then you'd have `[ 20 ]` as the ids.  This would produce something
+ *                              like `/wc/blocks/products/20`
  *
  *
  * @throws {Error}  If there is no route for the given arguments, then this will
@@ -32,47 +32,49 @@ import { STORE_KEY } from './constants';
  * @return {string} The route if it is available.
  */
 export const getRoute = createRegistrySelector(
-	( select ) => ( state, namespace, resourceName, ids = [] ) => {
-		const hasResolved = select(
-			STORE_KEY
-		).hasFinishedResolution( 'getRoutes', [ namespace ] );
-		state = state.routes;
-		let error = '';
-		if ( ! state[ namespace ] ) {
-			error = sprintf(
-				'There is no route for the given namespace (%s) in the store',
-				namespace
+	( select ) =>
+		( state, namespace, resourceName, ids = [] ) => {
+			const hasResolved = select( STORE_KEY ).hasFinishedResolution(
+				'getRoutes',
+				[ namespace ]
 			);
-		} else if ( ! state[ namespace ][ resourceName ] ) {
-			error = sprintf(
-				'There is no route for the given resource name (%s) in the store',
-				resourceName
-			);
-		}
-		if ( error !== '' ) {
-			if ( hasResolved ) {
-				throw new Error( error );
-			}
-			return '';
-		}
-		const route = getRouteFromResourceEntries(
-			state[ namespace ][ resourceName ],
-			ids
-		);
-		if ( route === '' ) {
-			if ( hasResolved ) {
-				throw new Error(
-					sprintf(
-						'While there is a route for the given namespace (%1$s) and resource name (%2$s), there is no route utilizing the number of ids you included in the select arguments. The available routes are: (%3$s)',
-						namespace,
-						resourceName,
-						JSON.stringify( state[ namespace ][ resourceName ] )
-					)
+			state = state.routes;
+			let error = '';
+			if ( ! state[ namespace ] ) {
+				error = sprintf(
+					'There is no route for the given namespace (%s) in the store',
+					namespace
+				);
+			} else if ( ! state[ namespace ][ resourceName ] ) {
+				error = sprintf(
+					'There is no route for the given resource name (%s) in the store',
+					resourceName
 				);
 			}
+			if ( error !== '' ) {
+				if ( hasResolved ) {
+					throw new Error( error );
+				}
+				return '';
+			}
+			const route = getRouteFromResourceEntries(
+				state[ namespace ][ resourceName ],
+				ids
+			);
+			if ( route === '' ) {
+				if ( hasResolved ) {
+					throw new Error(
+						sprintf(
+							'While there is a route for the given namespace (%1$s) and resource name (%2$s), there is no route utilizing the number of ids you included in the select arguments. The available routes are: (%3$s)',
+							namespace,
+							resourceName,
+							JSON.stringify( state[ namespace ][ resourceName ] )
+						)
+					);
+				}
+			}
+			return route;
 		}
-		return route;
-	}
 );
 
 /**
@@ -85,9 +87,10 @@ export const getRoute = createRegistrySelector(
  */
 export const getRoutes = createRegistrySelector(
 	( select ) => ( state, namespace ) => {
-		const hasResolved = select(
-			STORE_KEY
-		).hasFinishedResolution( 'getRoutes', [ namespace ] );
+		const hasResolved = select( STORE_KEY ).hasFinishedResolution(
+			'getRoutes',
+			[ namespace ]
+		);
 		const routes = state.routes[ namespace ];
 		if ( ! routes ) {
 			if ( hasResolved ) {
@@ -116,7 +119,7 @@ export const getRoutes = createRegistrySelector(
  *
  * @param {Object} stateSlice This will be a slice of the route state from a
  *                            given namespace and resource name.
- * @param {Array} [ids=[]]  Any id references that are to be replaced in
+ * @param {Array}  [ids=[]]   Any id references that are to be replaced in
  *                            route placeholders.
  *
  * @return {string}  The route or an empty string if nothing found.

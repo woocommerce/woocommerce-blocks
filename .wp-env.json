@@ -3,10 +3,13 @@
 	"plugins": [
 		"https://downloads.wordpress.org/plugin/woocommerce.latest-stable.zip",
 		"https://github.com/WP-API/Basic-Auth/archive/master.zip",
+		"./tests/mocks/woo-test-helper",
 		"."
 	],
 	"themes": [
-		"https://downloads.wordpress.org/theme/storefront.latest-stable.zip"
+		"https://downloads.wordpress.org/theme/storefront.latest-stable.zip",
+		"./tests/mocks/emptytheme",
+		"./tests/mocks/theme-with-woo-templates"
 	],
 	"mappings": {
 		".htaccess": "./bin/.htaccess"

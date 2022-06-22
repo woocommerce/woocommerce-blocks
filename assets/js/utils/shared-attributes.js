@@ -58,6 +58,7 @@ export default {
 	contentVisibility: {
 		type: 'object',
 		default: {
+			image: true,
 			title: true,
 			price: true,
 			rating: true,
@@ -71,5 +72,13 @@ export default {
 	isPreview: {
 		type: 'boolean',
 		default: false,
+	},
+
+	/**
+	 * Whether to display in stock, out of stock or backorder products.
+	 */
+	stockStatus: {
+		type: 'array',
+		default: Object.keys( getSetting( 'stockStatusOptions', [] ) ),
 	},
 };

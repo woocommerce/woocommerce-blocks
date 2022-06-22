@@ -2,8 +2,8 @@
  * External dependencies
  */
 import {
-	ensureSidebarOpened,
 	findSidebarPanelToggleButtonWithTitle,
+	ensureSidebarOpened,
 } from '@wordpress/e2e-test-utils';
 
 /**

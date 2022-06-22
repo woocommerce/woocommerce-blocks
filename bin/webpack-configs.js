@@ -11,12 +11,15 @@ const WebpackRTLPlugin = require( 'webpack-rtl-plugin' );
 const TerserPlugin = require( 'terser-webpack-plugin' );
 const CreateFileWebpack = require( 'create-file-webpack' );
 const CircularDependencyPlugin = require( 'circular-dependency-plugin' );
+const { BundleAnalyzerPlugin } = require( 'webpack-bundle-analyzer' );
+const CopyWebpackPlugin = require( 'copy-webpack-plugin' );
 
 /**
  * Internal dependencies
  */
 const { getEntryConfig } = require( './webpack-entries' );
 const {
+	ASSET_CHECK,
 	NODE_ENV,
 	CHECK_CIRCULAR_DEPS,
 	requestToExternal,
@@ -38,8 +41,13 @@ const sharedPlugins = [
 				failOnError: 'warn',
 		  } )
 		: false,
+	// The WP_BUNDLE_ANALYZER global variable enables a utility that represents bundle
+	// content as a convenient interactive zoomable treemap.
+	process.env.WP_BUNDLE_ANALYZER && new BundleAnalyzerPlugin(),
 	new DependencyExtractionWebpackPlugin( {
 		injectPolyfill: true,
+		combineAssets: ASSET_CHECK,
+		outputFormat: ASSET_CHECK ? 'json' : 'php',
 		requestToExternal,
 		requestToHandle,
 	} ),
@@ -111,6 +119,9 @@ woocommerce_blocks_env = ${ NODE_ENV }
 			} ),
 		],
 		optimization: {
+			// Only concatenate modules in production, when not analyzing bundles.
+			concatenateModules:
+				isProduction && ! process.env.WP_BUNDLE_ANALYZER,
 			splitChunks: {
 				automaticNameDelimiter: '--',
 			},
@@ -118,7 +129,6 @@ woocommerce_blocks_env = ${ NODE_ENV }
 				new TerserPlugin( {
 					cache: true,
 					parallel: true,
-					sourceMap: ! isProduction,
 					terserOptions: {
 						output: {
 							comments: /translators:/i,
@@ -209,6 +219,8 @@ const getMainConfig = ( options = {} ) => {
 			],
 		},
 		optimization: {
+			concatenateModules:
+				isProduction && ! process.env.WP_BUNDLE_ANALYZER,
 			splitChunks: {
 				minSize: 0,
 				automaticNameDelimiter: '--',
@@ -225,7 +237,6 @@ const getMainConfig = ( options = {} ) => {
 				new TerserPlugin( {
 					cache: true,
 					parallel: true,
-					sourceMap: ! isProduction,
 					terserOptions: {
 						output: {
 							comments: /translators:/i,
@@ -246,6 +257,22 @@ const getMainConfig = ( options = {} ) => {
 			new ProgressBarPlugin(
 				getProgressBarPluginConfig( 'Main', options.fileSuffix )
 			),
+			new CopyWebpackPlugin( {
+				patterns: [
+					{
+						from: './assets/js/blocks/**/block.json',
+						to( { absoluteFilename } ) {
+							const blockName = absoluteFilename
+								.split( '/' )
+								.at( -2 );
+							return `./${ blockName }/block.json`;
+						},
+						globOptions: {
+							ignore: [ '**/inner-blocks/**' ],
+						},
+					},
+				],
+			} ),
 		],
 		resolve: {
 			...resolve,
@@ -332,6 +359,8 @@ const getFrontConfig = ( options = {} ) => {
 			],
 		},
 		optimization: {
+			concatenateModules:
+				isProduction && ! process.env.WP_BUNDLE_ANALYZER,
 			splitChunks: {
 				automaticNameDelimiter: '--',
 			},
@@ -339,7 +368,6 @@ const getFrontConfig = ( options = {} ) => {
 				new TerserPlugin( {
 					cache: true,
 					parallel: true,
-					sourceMap: ! isProduction,
 					terserOptions: {
 						output: {
 							comments: /translators:/i,
@@ -434,6 +462,8 @@ const getPaymentsConfig = ( options = {} ) => {
 			],
 		},
 		optimization: {
+			concatenateModules:
+				isProduction && ! process.env.WP_BUNDLE_ANALYZER,
 			splitChunks: {
 				automaticNameDelimiter: '--',
 			},
@@ -441,7 +471,6 @@ const getPaymentsConfig = ( options = {} ) => {
 				new TerserPlugin( {
 					cache: true,
 					parallel: true,
-					sourceMap: ! isProduction,
 					terserOptions: {
 						output: {
 							comments: /translators:/i,
@@ -530,6 +559,8 @@ const getExtensionsConfig = ( options = {} ) => {
 			],
 		},
 		optimization: {
+			concatenateModules:
+				isProduction && ! process.env.WP_BUNDLE_ANALYZER,
 			splitChunks: {
 				automaticNameDelimiter: '--',
 			},
@@ -537,7 +568,6 @@ const getExtensionsConfig = ( options = {} ) => {
 				new TerserPlugin( {
 					cache: true,
 					parallel: true,
-					sourceMap: ! isProduction,
 					terserOptions: {
 						output: {
 							comments: /translators:/i,
@@ -681,10 +711,8 @@ const getStylingConfig = ( options = {} ) => {
 									includePaths: [ 'assets/css/abstracts' ],
 								},
 								additionalData: ( content, loaderContext ) => {
-									const {
-										resourcePath,
-										rootContext,
-									} = loaderContext;
+									const { resourcePath, rootContext } =
+										loaderContext;
 									const relativePath = path.relative(
 										rootContext,
 										resourcePath
@@ -700,6 +728,9 @@ const getStylingConfig = ( options = {} ) => {
 
 									return (
 										'@use "sass:math";' +
+										'@use "sass:string";' +
+										'@use "sass:color";' +
+										'@use "sass:map";' +
 										'@import "_colors"; ' +
 										'@import "_variables"; ' +
 										'@import "_breakpoints"; ' +

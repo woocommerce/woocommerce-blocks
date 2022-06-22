@@ -1,4 +1,9 @@
 /**
+ * External dependencies
+ */
+import { CurrencyCode } from '@woocommerce/type-defs/currency';
+
+/**
  * Internal dependencies
  */
 import {
@@ -10,7 +15,7 @@ import {
 import { ProductResponseItemData } from './product-response';
 
 export interface CurrencyInfo {
-	currency_code: string;
+	currency_code: CurrencyCode;
 	currency_symbol: string;
 	currency_minor_unit: number;
 	currency_decimal_separator: string;
@@ -117,7 +122,12 @@ export interface CartItem {
 	id: number;
 	quantity: number;
 	catalog_visibility: CatalogVisibility;
-	quantity_limit: number;
+	quantity_limits: {
+		minimum: number;
+		maximum: number;
+		multiple_of: number;
+		editable: boolean;
+	};
 	name: string;
 	summary: string;
 	short_description: string;

@@ -22,7 +22,8 @@
 
 	img {
 		height: auto;
-		width: 100%;
+		width: auto;
+		max-width: 100%;
 
 		&[hidden] {
 			display: none;
@@ -37,7 +38,7 @@
 .editor-styles-wrapper .wc-block-grid__product-title,
 .wc-block-grid__product-title {
 	font-family: inherit;
-	line-height: 1.2em;
+	line-height: 1.2;
 	font-weight: 700;
 	padding: 0;
 	color: inherit;
@@ -103,6 +104,7 @@
 
 .wc-block-grid__product-rating {
 	display: block;
+	color: #000;
 
 	.wc-block-grid__product-rating__stars,
 	.star-rating {
@@ -138,11 +140,11 @@
 		}
 		span::before {
 			content: "\53\53\53\53\53";
+			color: inherit;
 			top: 0;
 			left: 0;
 			right: 0;
 			position: absolute;
-			color: #000;
 			white-space: nowrap;
 		}
 	}
@@ -165,7 +167,8 @@
 
 // Element spacing.
 .wc-block-grid__product {
-	.wc-block-grid__product-image,
+	// Not operator necessary for avoid this problem: https://github.com/woocommerce/woocommerce-gutenberg-products-block/pull/5925/files#r814043454
+	.wc-block-grid__product-image:not(.wc-block-components-product-image),
 	.wc-block-grid__product-title {
 		margin: 0 0 $gap-small;
 	}
@@ -316,6 +319,22 @@
 		.wc-block-grid__products .wc-block-grid__product-onsale {
 			@include font-size(small);
 			padding: em($gap-smaller);
+		}
+	}
+}
+
+.theme-twentytwentytwo {
+	.wc-block-grid__product-add-to-cart {
+		.added_to_cart {
+			margin-top: $gap-small;
+			display: block;
+		}
+	}
+
+	.wc-block-components-product-price,
+	.wc-block-grid__product-price {
+		ins {
+			text-decoration: none;
 		}
 	}
 }

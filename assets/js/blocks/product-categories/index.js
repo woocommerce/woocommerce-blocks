@@ -3,7 +3,7 @@
  */
 import { __ } from '@wordpress/i18n';
 import { createBlock, registerBlockType } from '@wordpress/blocks';
-import { Icon, list } from '@woocommerce/icons';
+import { Icon, listView } from '@wordpress/icons';
 
 import { isFeaturePluginBuild } from '@woocommerce/block-settings';
 /**
@@ -17,8 +17,12 @@ registerBlockType( 'woocommerce/product-categories', {
 	apiVersion: 2,
 	title: __( 'Product Categories List', 'woo-gutenberg-products-block' ),
 	icon: {
-		src: <Icon srcElement={ list } />,
-		foreground: '#7f54b3',
+		src: (
+			<Icon
+				icon={ listView }
+				className="wc-block-editor-components-block-icon"
+			/>
+		),
 	},
 	category: 'woocommerce',
 	keywords: [ __( 'WooCommerce', 'woo-gutenberg-products-block' ) ],
@@ -152,12 +156,8 @@ registerBlockType( 'woocommerce/product-categories', {
 				return attributes;
 			},
 			save( props ) {
-				const {
-					hasCount,
-					hasEmpty,
-					isDropdown,
-					isHierarchical,
-				} = props.attributes;
+				const { hasCount, hasEmpty, isDropdown, isHierarchical } =
+					props.attributes;
 				const data = {};
 				if ( hasCount ) {
 					data[ 'data-has-count' ] = true;

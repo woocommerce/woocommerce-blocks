@@ -2,13 +2,17 @@
 	"extends": "../../../../tsconfig.base.json",
 	"compilerOptions": {},
 	"include": [
-	  ".",
-	  "../../types",
-	  "../../../../packages/prices",
-	  "../../../../packages/checkout",
-	  "../context",
-	  "../../type-defs",
-	  "../hocs"
+		".",
+		"../../types",
+		"../../../../storybook",
+		"../../../../packages/prices",
+		"../../../../packages/checkout",
+		"../context",
+		"../../type-defs",
+		"../hocs",
+		"../../atomic/utils",
+		"../../atomic/blocks/component-init.js",
+		"../../shared/context"
 	],
 	"exclude": [ "**/test/**" ]
 }

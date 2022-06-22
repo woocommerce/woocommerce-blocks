@@ -20,6 +20,7 @@ import Block from './block';
 import withProductSelector from '../shared/with-product-selector';
 import { BLOCK_TITLE, BLOCK_ICON } from './constants';
 import { Attributes } from './types';
+import './editor.scss';
 
 interface Props {
 	attributes: Attributes;
@@ -28,7 +29,7 @@ interface Props {
 
 const TitleEdit = ( { attributes, setAttributes }: Props ): JSX.Element => {
 	const blockProps = useBlockProps();
-	const { headingLevel, showProductLink, align } = attributes;
+	const { headingLevel, showProductLink, align, linkTarget } = attributes;
 	return (
 		<div { ...blockProps }>
 			<BlockControls>
@@ -52,15 +53,14 @@ const TitleEdit = ( { attributes, setAttributes }: Props ): JSX.Element => {
 			</BlockControls>
 			<InspectorControls>
 				<PanelBody
-					title={ __( 'Content', 'woo-gutenberg-products-block' ) }
+					title={ __(
+						'Link settings',
+						'woo-gutenberg-products-block'
+					) }
 				>
 					<ToggleControl
 						label={ __(
-							'Link to Product Page',
-							'woo-gutenberg-products-block'
-						) }
-						help={ __(
-							'Links the image to the single product listing.',
+							'Make title a link',
 							'woo-gutenberg-products-block'
 						) }
 						checked={ showProductLink }
@@ -70,6 +70,22 @@ const TitleEdit = ( { attributes, setAttributes }: Props ): JSX.Element => {
 							} )
 						}
 					/>
+					{ showProductLink && (
+						<>
+							<ToggleControl
+								label={ __(
+									'Open in new tab',
+									'woo-gutenberg-products-block'
+								) }
+								onChange={ ( value ) =>
+									setAttributes( {
+										linkTarget: value ? '_blank' : '_self',
+									} )
+								}
+								checked={ linkTarget === '_blank' }
+							/>
+						</>
+					) }
 				</PanelBody>
 			</InspectorControls>
 			<Disabled>

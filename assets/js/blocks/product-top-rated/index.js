@@ -3,7 +3,8 @@
  */
 import { __ } from '@wordpress/i18n';
 import { createBlock, registerBlockType } from '@wordpress/blocks';
-import { Icon, thumbUp } from '@woocommerce/icons';
+import { thumbUp } from '@woocommerce/icons';
+import { Icon } from '@wordpress/icons';
 import { without } from 'lodash';
 
 /**
@@ -19,8 +20,12 @@ const blockTypeName = 'woocommerce/product-top-rated';
 registerBlockType( blockTypeName, {
 	title: __( 'Top Rated Products', 'woo-gutenberg-products-block' ),
 	icon: {
-		src: <Icon srcElement={ thumbUp } />,
-		foreground: '#7f54b3',
+		src: (
+			<Icon
+				icon={ thumbUp }
+				className="wc-block-editor-components-block-icon"
+			/>
+		),
 	},
 	category: 'woocommerce',
 	keywords: [ __( 'WooCommerce', 'woo-gutenberg-products-block' ) ],

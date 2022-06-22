@@ -30,7 +30,7 @@ export interface CanMakePaymentArgument {
 	cart: Cart;
 	cartTotals: CartTotals;
 	cartNeedsShipping: boolean;
-	billingData: CartResponseBillingAddress;
+	billingAddress: CartResponseBillingAddress;
 	shippingAddress: CartResponseShippingAddress;
 	selectedShippingMethods: Record< string, unknown >;
 	paymentRequirements: Array< string >;
@@ -69,7 +69,7 @@ export interface PaymentMethodConfiguration {
 	paymentMethodId?: string;
 	// Object that describes various features provided by the payment method.
 	supports: SupportsConfiguration;
-	// Array of card types (brands) supported by the payment method. (See stripe/credit-card for example.)
+	// Array of card types (brands) supported by the payment method.
 	icons?: null | PaymentMethodIcons;
 	// A react node that will be used as a label for the payment method in the checkout.
 	label: ReactNode;

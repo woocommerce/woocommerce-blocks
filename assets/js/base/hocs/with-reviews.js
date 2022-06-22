@@ -92,13 +92,8 @@ const withReviews = ( OriginalComponent ) => {
 		}
 
 		getArgs( reviewsToSkip ) {
-			const {
-				categoryIds,
-				order,
-				orderby,
-				productId,
-				reviewsToDisplay,
-			} = this.props;
+			const { categoryIds, order, orderby, productId, reviewsToDisplay } =
+				this.props;
 			const args = {
 				order,
 				orderby,
@@ -106,10 +101,14 @@ const withReviews = ( OriginalComponent ) => {
 				offset: reviewsToSkip,
 			};
 
-			if ( categoryIds && categoryIds.length ) {
-				args.category_id = Array.isArray( categoryIds )
-					? categoryIds.join( ',' )
-					: categoryIds;
+			if ( categoryIds ) {
+				const categories = Array.isArray( categoryIds )
+					? categoryIds
+					: JSON.parse( categoryIds );
+
+				args.category_id = Array.isArray( categories )
+					? categories.join( ',' )
+					: categories;
 			}
 
 			if ( productId ) {
@@ -210,9 +209,8 @@ const withReviews = ( OriginalComponent ) => {
 		}
 	}
 
-	const {
-		displayName = OriginalComponent.name || 'Component',
-	} = OriginalComponent;
+	const { displayName = OriginalComponent.name || 'Component' } =
+		OriginalComponent;
 	WrappedComponent.displayName = `WithReviews( ${ displayName } )`;
 
 	return WrappedComponent;

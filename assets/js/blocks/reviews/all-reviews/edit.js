@@ -5,7 +5,7 @@ import { __ } from '@wordpress/i18n';
 import { InspectorControls } from '@wordpress/block-editor';
 import { PanelBody, ToggleControl } from '@wordpress/components';
 import PropTypes from 'prop-types';
-import { Icon, discussion } from '@woocommerce/icons';
+import { Icon, postComments } from '@wordpress/icons';
 
 /**
  * Internal dependencies
@@ -20,8 +20,8 @@ import {
 /**
  * Component to handle edit mode of "All Reviews".
  *
- * @param {Object} props Incoming props for the component.
- * @param {Object} props.attributes Incoming block attributes.
+ * @param {Object}            props               Incoming props for the component.
+ * @param {Object}            props.attributes    Incoming block attributes.
  * @param {function(any):any} props.setAttributes Setter for block attributes.
  */
 const AllReviewsEditor = ( { attributes, setAttributes } ) => {
@@ -67,7 +67,7 @@ const AllReviewsEditor = ( { attributes, setAttributes } ) => {
 				attributes={ attributes }
 				icon={
 					<Icon
-						icon={ discussion }
+						icon={ postComments }
 						className="block-editor-block-icon"
 					/>
 				}

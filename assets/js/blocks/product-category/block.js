@@ -18,13 +18,14 @@ import GridContentControl from '@woocommerce/editor-components/grid-content-cont
 import GridLayoutControl from '@woocommerce/editor-components/grid-layout-control';
 import ProductCategoryControl from '@woocommerce/editor-components/product-category-control';
 import ProductOrderbyControl from '@woocommerce/editor-components/product-orderby-control';
+import ProductStockControl from '@woocommerce/editor-components/product-stock-control';
 import { gridBlockPreview } from '@woocommerce/resource-previews';
-import { Icon, folder } from '@woocommerce/icons';
+import { Icon, file } from '@wordpress/icons';
 import { getSetting } from '@woocommerce/settings';
 
 const EmptyPlaceholder = () => (
 	<Placeholder
-		icon={ <Icon srcElement={ folder } /> }
+		icon={ <Icon icon={ file } /> }
 		label={ __( 'Products by Category', 'woo-gutenberg-products-block' ) }
 		className="wc-block-products-grid wc-block-products-category"
 	>
@@ -119,6 +120,7 @@ class ProductByCategoryBlock extends Component {
 			orderby,
 			rows,
 			alignButtons,
+			stockStatus,
 		} = attributes;
 
 		return (
@@ -186,6 +188,18 @@ class ProductByCategoryBlock extends Component {
 						value={ orderby }
 					/>
 				</PanelBody>
+				<PanelBody
+					title={ __(
+						'Filter by stock status',
+						'woo-gutenberg-products-block'
+					) }
+					initialOpen={ false }
+				>
+					<ProductStockControl
+						setAttributes={ setAttributes }
+						value={ stockStatus }
+					/>
+				</PanelBody>
 			</InspectorControls>
 		);
 	}
@@ -215,7 +229,7 @@ class ProductByCategoryBlock extends Component {
 
 		return (
 			<Placeholder
-				icon={ <Icon srcElement={ folder } /> }
+				icon={ <Icon icon={ file } /> }
 				label={ __(
 					'Products by Category',
 					'woo-gutenberg-products-block'

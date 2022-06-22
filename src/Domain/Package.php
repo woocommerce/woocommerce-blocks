@@ -28,6 +28,13 @@ class Package {
 	private $path;
 
 	/**
+	 * Holds locally the plugin_dir_url to avoid recomputing it.
+	 *
+	 * @var string
+	 */
+	private $plugin_dir_url;
+
+	/**
 	 * Holds the feature gating class instance.
 	 *
 	 * @var FeatureGating
@@ -77,8 +84,12 @@ class Package {
 	 * @return string
 	 */
 	public function get_url( $relative_url = '' ) {
-		// Append index.php so WP does not return the parent directory.
-		return plugin_dir_url( $this->path . '/index.php' ) . $relative_url;
+		if ( ! $this->plugin_dir_url ) {
+			// Append index.php so WP does not return the parent directory.
+			$this->plugin_dir_url = plugin_dir_url( $this->path . '/index.php' );
+		}
+
+		return $this->plugin_dir_url . $relative_url;
 	}
 
 	/**

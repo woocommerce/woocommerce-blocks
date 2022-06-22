@@ -1,6 +1,3 @@
-// Import the woocommerce components stylesheet
-@import "~@woocommerce/components/build-style/style.css";
-
 // Hack to hide preview overflow.
 .editor-block-preview__content {
 	overflow: hidden;
@@ -18,7 +15,7 @@
 	.wc-block-grid {
 		.wc-block-grid__products {
 			list-style: none;
-			margin: 0 (-$gap*0.5) $gap;
+			margin: 0 (-$gap * 0.5) $gap;
 			padding: 0;
 
 			.wc-block-grid__product {
@@ -43,8 +40,24 @@
 		margin: -$gap 0 $gap;
 	}
 
-	& + .wc-block-base-control-notice:last-child {
+	+ .wc-block-base-control-notice:last-child {
 		margin: -$gap 0 $gap-small;
+	}
+}
+
+svg.wc-block-editor-components-block-icon {
+	color: $studio-woocommerce-purple-50;
+}
+
+svg.wc-block-editor-components-block-icon--sparkles path {
+	fill: currentColor;
+}
+
+.block-editor-list-view-leaf.is-selected {
+	.block-editor-list-view-block-contents {
+		svg.wc-block-editor-components-block-icon {
+			color: currentColor;
+		}
 	}
 }
 

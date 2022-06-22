@@ -33,15 +33,15 @@ interface PackagesProps {
 /**
  * Renders multiple packages within the slotfill.
  *
- * @param {Object} props Incoming props.
- * @param {Array} props.packages Array of packages.
- * @param {boolean} props.collapsible If the package should be rendered as a
- * @param {ReactElement} props.noResultsMessage Rendered when there are no rates in a package.
- * collapsible panel.
- * @param {boolean} props.collapse If the panel should be collapsed by default,
- * only works if collapsible is true.
- * @param {boolean} props.showItems If we should items below the package name.
- * @param {PackageRateRenderOption} [props.renderOption] Function to render a shipping rate.
+ * @param {Object}                  props                  Incoming props.
+ * @param {Array}                   props.packages         Array of packages.
+ * @param {boolean}                 props.collapsible      If the package should be rendered as a
+ * @param {ReactElement}            props.noResultsMessage Rendered when there are no rates in a package.
+ *                                                         collapsible panel.
+ * @param {boolean}                 props.collapse         If the panel should be collapsed by default,
+ *                                                         only works if collapsible is true.
+ * @param {boolean}                 props.showItems        If we should items below the package name.
+ * @param {PackageRateRenderOption} [props.renderOption]   Function to render a shipping rate.
  * @return {JSX.Element|null} Rendered components.
  */
 const Packages = ( {
@@ -78,31 +78,34 @@ interface ShippingRatesControlProps {
 	collapsible?: boolean;
 	shippingRates: CartResponseShippingRate[];
 	className?: string;
-	shippingRatesLoading: boolean;
+	isLoadingRates: boolean;
 	noResultsMessage: ReactElement;
 	renderOption: PackageRateRenderOption;
+	context: 'woocommerce/cart' | 'woocommerce/checkout';
 }
 /**
  * Renders the shipping rates control element.
  *
- * @param {Object} props Incoming props.
- * @param {Array} props.shippingRates Array of packages containing shipping rates.
- * @param {boolean} props.shippingRatesLoading True when rates are being loaded.
- * @param {string} props.className Class name for package rates.
- * @param {boolean} [props.collapsible] If true, when multiple packages are rendered they can be toggled open and closed.
+ * @param {Object}       props                  Incoming props.
+ * @param {Array}        props.shippingRates    Array of packages containing shipping rates.
+ * @param {boolean}      props.isLoadingRates   True when rates are being loaded.
+ * @param {string}       props.className        Class name for package rates.
+ * @param {boolean}      [props.collapsible]    If true, when multiple packages are rendered they can be toggled open and closed.
  * @param {ReactElement} props.noResultsMessage Rendered when there are no packages.
- * @param {Function} [props.renderOption] Function to render a shipping rate.
+ * @param {Function}     [props.renderOption]   Function to render a shipping rate.
+ * @param {string}       [props.context]        String equal to the block name where the Slot is rendered
  */
 const ShippingRatesControl = ( {
 	shippingRates,
-	shippingRatesLoading,
+	isLoadingRates,
 	className,
 	collapsible = false,
 	noResultsMessage,
 	renderOption,
+	context,
 }: ShippingRatesControlProps ): JSX.Element => {
 	useEffect( () => {
-		if ( shippingRatesLoading ) {
+		if ( isLoadingRates ) {
 			return;
 		}
 		const packageCount = getShippingRatesPackageCount( shippingRates );
@@ -145,7 +148,7 @@ const ShippingRatesControl = ( {
 					)
 			);
 		}
-	}, [ shippingRatesLoading, shippingRates ] );
+	}, [ isLoadingRates, shippingRates ] );
 
 	// Prepare props to pass to the ExperimentalOrderShippingPackages slot fill.
 	// We need to pluck out receiveCart.
@@ -161,12 +164,13 @@ const ShippingRatesControl = ( {
 		components: {
 			ShippingRatesControlPackage,
 		},
+		context,
 	};
 	const { isEditor } = useEditorContext();
 
 	return (
 		<LoadingMask
-			isLoading={ shippingRatesLoading }
+			isLoading={ isLoadingRates }
 			screenReaderLabel={ __(
 				'Loading shipping rates…',
 				'woo-gutenberg-products-block'

@@ -1,15 +1,19 @@
 .wc-block-components-product-title {
 	margin-top: 0;
 	margin-bottom: $gap-small;
-}
-.wc-block-grid .wc-block-components-product-title {
 	line-height: 1.5;
 	font-weight: 700;
 	padding: 0;
-	color: inherit;
-	font-size: inherit;
 	display: block;
+	font-size: inherit;
+
+	a {
+		color: inherit;
+		font-size: inherit;
+	}
+
 }
+
 .is-loading {
 	.wc-block-components-product-title::before {
 		@include placeholder();

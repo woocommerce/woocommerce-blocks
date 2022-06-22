@@ -39,6 +39,19 @@ describe( 'useStoreCart', () => {
 		cartIsLoading: false,
 		cartItemErrors: [],
 		cartErrors: [],
+		billingData: {
+			first_name: '',
+			last_name: '',
+			company: '',
+			address_1: '',
+			address_2: '',
+			city: '',
+			state: '',
+			postcode: '',
+			country: '',
+			email: '',
+			phone: '',
+		},
 		billingAddress: {
 			first_name: '',
 			last_name: '',
@@ -66,7 +79,7 @@ describe( 'useStoreCart', () => {
 		},
 		shippingRates: previewCart.shipping_rates,
 		extensions: {},
-		shippingRatesLoading: false,
+		isLoadingRates: false,
 		cartHasCalculatedShipping: true,
 	};
 
@@ -108,11 +121,12 @@ describe( 'useStoreCart', () => {
 		cartIsLoading: mockCartIsLoading,
 		cartErrors: mockCartErrors,
 		cartFees: [],
+		billingData: {},
 		billingAddress: {},
 		shippingAddress: mockShippingAddress,
 		shippingRates: [],
 		extensions: {},
-		shippingRatesLoading: false,
+		isLoadingRates: false,
 		cartHasCalculatedShipping: true,
 		receiveCart: undefined,
 		paymentRequirements: [],
@@ -165,7 +179,9 @@ describe( 'useStoreCart', () => {
 		} );
 
 		it( 'return default data when shouldSelect is false', () => {
-			const TestComponent = getTestComponent( { shouldSelect: false } );
+			const TestComponent = getTestComponent( {
+				shouldSelect: false,
+			} );
 
 			act( () => {
 				renderer = TestRenderer.create(
@@ -173,19 +189,18 @@ describe( 'useStoreCart', () => {
 				);
 			} );
 
-			const { results, receiveCart } = renderer.root.findByType(
-				'div'
-			).props;
-			const {
-				receiveCart: defaultReceiveCart,
-				...remaining
-			} = defaultCartData;
+			const { results, receiveCart } =
+				renderer.root.findByType( 'div' ).props; //eslint-disable-line testing-library/await-async-query
+			const { receiveCart: defaultReceiveCart, ...remaining } =
+				defaultCartData;
 			expect( results ).toEqual( remaining );
 			expect( receiveCart ).toEqual( defaultReceiveCart );
 		} );
 
 		it( 'return store data when shouldSelect is true', () => {
-			const TestComponent = getTestComponent( { shouldSelect: true } );
+			const TestComponent = getTestComponent( {
+				shouldSelect: true,
+			} );
 
 			act( () => {
 				renderer = TestRenderer.create(
@@ -193,9 +208,8 @@ describe( 'useStoreCart', () => {
 				);
 			} );
 
-			const { results, receiveCart } = renderer.root.findByType(
-				'div'
-			).props;
+			const { results, receiveCart } =
+				renderer.root.findByType( 'div' ).props; //eslint-disable-line testing-library/await-async-query
 
 			expect( results ).toEqual( mockStoreCartData );
 			expect( receiveCart ).toBeUndefined();
@@ -224,9 +238,8 @@ describe( 'useStoreCart', () => {
 				);
 			} );
 
-			const { results, receiveCart } = renderer.root.findByType(
-				'div'
-			).props;
+			const { results, receiveCart } =
+				renderer.root.findByType( 'div' ).props; //eslint-disable-line testing-library/await-async-query
 
 			expect( results ).toEqual( previewCartData );
 			expect( receiveCart ).toEqual( receiveCartMock );

@@ -1,7 +1,6 @@
 /**
  * External dependencies
  */
-import { select } from '@wordpress/data-controls';
 import type {
 	Cart,
 	CartResponse,
@@ -9,9 +8,10 @@ import type {
 	ExtensionCartUpdateArgs,
 	BillingAddressShippingAddress,
 } from '@woocommerce/types';
-import { ReturnOrGeneratorYieldUnion } from '@automattic/data-stores';
 import { camelCase, mapKeys } from 'lodash';
 import type { AddToCartEventDetail } from '@woocommerce/type-defs/events';
+import { BillingAddress, ShippingAddress } from '@woocommerce/settings';
+import { controls } from '@wordpress/data';
 
 /**
  * Internal dependencies
@@ -20,6 +20,7 @@ import { ACTION_TYPES as types } from './action-types';
 import { STORE_KEY as CART_STORE_KEY } from './constants';
 import { apiFetchWithHeaders } from '../shared-controls';
 import type { ResponseError } from '../types';
+import { ReturnOrGeneratorYieldUnion } from '../mapped-types';
 
 /**
  * Returns an action object used in updating the store with the provided items
@@ -27,14 +28,14 @@ import type { ResponseError } from '../types';
  *
  * This is a generic response action.
  *
- * @param  {CartResponse}      response
+ * @param {CartResponse} response
  */
 export const receiveCart = (
 	response: CartResponse
 ): { type: string; response: Cart } => {
-	const cart = ( mapKeys( response, ( _, key ) =>
+	const cart = mapKeys( response, ( _, key ) =>
 		camelCase( key )
-	) as unknown ) as Cart;
+	) as unknown as Cart;
 	return {
 		type: types.RECEIVE_CART,
 		response: cart,
@@ -42,12 +43,35 @@ export const receiveCart = (
 };
 
 /**
+ * Returns an action object used in updating the store with the provided cart.
+ *
+ * This omits the customer addresses so that only updates to cart items and totals are received. This is useful when
+ * currently editing address information to prevent it being overwritten from the server.
+ *
+ * This is a generic response action.
+ *
+ * @param {CartResponse} response
+ */
+export const receiveCartContents = (
+	response: CartResponse
+): { type: string; response: Partial< Cart > } => {
+	const cart = mapKeys( response, ( _, key ) =>
+		camelCase( key )
+	) as unknown as Cart;
+	const { shippingAddress, billingAddress, ...cartWithoutAddress } = cart;
+	return {
+		type: types.RECEIVE_CART,
+		response: cartWithoutAddress,
+	};
+};
+
+/**
  * Returns an action object used for receiving customer facing errors from the API.
  *
- * @param   {ResponseError|null} [error=null]     An error object containing the error
- *                                         message and response code.
- * @param   {boolean}       [replace=true] Should existing errors be replaced,
- *                                         or should the error be appended.
+ * @param {ResponseError|null} [error=null]   An error object containing the error
+ *                                            message and response code.
+ * @param {boolean}            [replace=true] Should existing errors be replaced,
+ *                                            or should the error be appended.
  */
 export const receiveError = (
 	error: ResponseError | null = null,
@@ -61,7 +85,7 @@ export const receiveError = (
 /**
  * Returns an action object used to track when a coupon is applying.
  *
- * @param  {string} [couponCode] Coupon being added.
+ * @param {string} [couponCode] Coupon being added.
  */
 export const receiveApplyingCoupon = ( couponCode: string ) =>
 	( {
@@ -72,7 +96,7 @@ export const receiveApplyingCoupon = ( couponCode: string ) =>
 /**
  * Returns an action object used to track when a coupon is removing.
  *
- * @param   {string} [couponCode] Coupon being removed..
+ * @param {string} [couponCode] Coupon being removed..
  */
 export const receiveRemovingCoupon = ( couponCode: string ) =>
 	( {
@@ -83,7 +107,7 @@ export const receiveRemovingCoupon = ( couponCode: string ) =>
 /**
  * Returns an action object for updating a single cart item in the store.
  *
- * @param  {CartResponseItem} [response=null] A cart item API response.
+ * @param {CartResponseItem} [response=null] A cart item API response.
  */
 export const receiveCartItem = ( response: CartResponseItem | null = null ) =>
 	( {
@@ -95,9 +119,9 @@ export const receiveCartItem = ( response: CartResponseItem | null = null ) =>
  * Returns an action object to indicate if the specified cart item quantity is
  * being updated.
  *
- * @param   {string}  cartItemKey              Cart item being updated.
- * @param   {boolean} [isPendingQuantity=true] Flag for update state; true if API
- *                                             request is pending.
+ * @param {string}  cartItemKey              Cart item being updated.
+ * @param {boolean} [isPendingQuantity=true] Flag for update state; true if API
+ *                                           request is pending.
  */
 export const itemIsPendingQuantity = (
 	cartItemKey: string,
@@ -112,9 +136,9 @@ export const itemIsPendingQuantity = (
 /**
  * Returns an action object to remove a cart item from the store.
  *
- * @param   {string}  cartItemKey            Cart item to remove.
- * @param   {boolean} [isPendingDelete=true] Flag for update state; true if API
- *                                           request is pending.
+ * @param {string}  cartItemKey            Cart item to remove.
+ * @param {boolean} [isPendingDelete=true] Flag for update state; true if API
+ *                                         request is pending.
  */
 export const itemIsPendingDelete = (
 	cartItemKey: string,
@@ -128,9 +152,9 @@ export const itemIsPendingDelete = (
 /**
  * Returns an action object to mark the cart data in the store as stale.
  *
- * @param   {boolean} [isCartDataStale=true] Flag to mark cart data as stale; true if
- * 											 lastCartUpdate timestamp is newer than the
- * 											 one in wcSettings.
+ * @param {boolean} [isCartDataStale=true] Flag to mark cart data as stale; true if
+ *                                         lastCartUpdate timestamp is newer than the
+ *                                         one in wcSettings.
  */
 export const setIsCartDataStale = ( isCartDataStale = true ) =>
 	( {
@@ -152,7 +176,7 @@ export const updatingCustomerData = ( isResolving: boolean ) =>
  * Returns an action object used to track whether the shipping rate is being
  * selected or not.
  *
- * @param  {boolean} isResolving True if shipping rate is being selected.
+ * @param {boolean} isResolving True if shipping rate is being selected.
  */
 export const shippingRatesBeingSelected = ( isResolving: boolean ) =>
 	( {
@@ -197,7 +221,7 @@ export function* applyExtensionCartUpdate(
 ): Generator< unknown, CartResponse, { response: CartResponse } > {
 	try {
 		const { response } = yield apiFetchWithHeaders( {
-			path: '/wc/store/cart/extensions',
+			path: '/wc/store/v1/cart/extensions',
 			method: 'POST',
 			data: { namespace: args.namespace, data: args.data },
 			cache: 'no-store',
@@ -221,7 +245,7 @@ export function* applyExtensionCartUpdate(
  * Applies a coupon code and either invalidates caches, or receives an error if
  * the coupon cannot be applied.
  *
- * @param  {string} couponCode The coupon code to apply to the cart.
+ * @param {string} couponCode The coupon code to apply to the cart.
  * @throws            Will throw an error if there is an API problem.
  */
 export function* applyCoupon(
@@ -231,7 +255,7 @@ export function* applyCoupon(
 
 	try {
 		const { response } = yield apiFetchWithHeaders( {
-			path: '/wc/store/cart/apply-coupon',
+			path: '/wc/store/v1/cart/apply-coupon',
 			method: 'POST',
 			data: {
 				code: couponCode,
@@ -262,7 +286,7 @@ export function* applyCoupon(
  * Removes a coupon code and either invalidates caches, or receives an error if
  * the coupon cannot be removed.
  *
- * @param  {string} couponCode The coupon code to remove from the cart.
+ * @param {string} couponCode The coupon code to remove from the cart.
  * @throws            Will throw an error if there is an API problem.
  */
 export function* removeCoupon(
@@ -272,7 +296,7 @@ export function* removeCoupon(
 
 	try {
 		const { response } = yield apiFetchWithHeaders( {
-			path: '/wc/store/cart/remove-coupon',
+			path: '/wc/store/v1/cart/remove-coupon',
 			method: 'POST',
 			data: {
 				code: couponCode,
@@ -305,8 +329,8 @@ export function* removeCoupon(
  * - If successful, yields action to add item from store.
  * - If error, yields action to store error.
  *
- * @param  {number} productId    Product ID to add to cart.
- * @param  {number} [quantity=1] Number of product ID being added to cart.
+ * @param {number} productId    Product ID to add to cart.
+ * @param {number} [quantity=1] Number of product ID being added to cart.
  * @throws           Will throw an error if there is an API problem.
  */
 export function* addItemToCart(
@@ -316,7 +340,7 @@ export function* addItemToCart(
 	try {
 		yield triggerAddingToCartEvent();
 		const { response } = yield apiFetchWithHeaders( {
-			path: `/wc/store/cart/add-item`,
+			path: `/wc/store/v1/cart/add-item`,
 			method: 'POST',
 			data: {
 				id: productId,
@@ -357,7 +381,7 @@ export function* removeItemFromCart(
 
 	try {
 		const { response } = yield apiFetchWithHeaders( {
-			path: `/wc/store/cart/remove-item`,
+			path: `/wc/store/v1/cart/remove-item`,
 			data: {
 				key: cartItemKey,
 			},
@@ -392,15 +416,18 @@ export function* changeCartItemQuantity(
 	quantity: number
 	// eslint-disable-next-line @typescript-eslint/no-explicit-any -- unclear how to represent multiple different yields as type
 ): Generator< unknown, void, any > {
-	const cartItem = yield select( CART_STORE_KEY, 'getCartItem', cartItemKey );
-	yield itemIsPendingQuantity( cartItemKey );
-
+	const cartItem = yield controls.resolveSelect(
+		CART_STORE_KEY,
+		'getCartItem',
+		cartItemKey
+	);
 	if ( cartItem?.quantity === quantity ) {
 		return;
 	}
+	yield itemIsPendingQuantity( cartItemKey );
 	try {
 		const { response } = yield apiFetchWithHeaders( {
-			path: '/wc/store/cart/update-item',
+			path: '/wc/store/v1/cart/update-item',
 			method: 'POST',
 			data: {
 				key: cartItemKey,
@@ -427,7 +454,7 @@ export function* changeCartItemQuantity(
  *
  * @param {string}          rateId      The id of the rate being selected.
  * @param {number | string} [packageId] The key of the packages that we will
- *   select within.
+ *                                      select within.
  */
 export function* selectShippingRate(
 	rateId: string,
@@ -436,7 +463,7 @@ export function* selectShippingRate(
 	try {
 		yield shippingRatesBeingSelected( true );
 		const { response } = yield apiFetchWithHeaders( {
-			path: `/wc/store/cart/select-shipping-rate`,
+			path: `/wc/store/v1/cart/select-shipping-rate`,
 			method: 'POST',
 			data: {
 				package_id: packageId,
@@ -463,11 +490,25 @@ export function* selectShippingRate(
 }
 
 /**
+ * Sets billing address locally, as opposed to updateCustomerData which sends it to the server.
+ */
+export const setBillingAddress = (
+	billingAddress: Partial< BillingAddress >
+) => ( { type: types.SET_BILLING_ADDRESS, billingAddress } as const );
+
+/**
+ * Sets shipping address locally, as opposed to updateCustomerData which sends it to the server.
+ */
+export const setShippingAddress = (
+	shippingAddress: Partial< ShippingAddress >
+) => ( { type: types.SET_SHIPPING_ADDRESS, shippingAddress } as const );
+
+/**
  * Updates the shipping and/or billing address for the customer and returns an
  * updated cart.
  *
  * @param {BillingAddressShippingAddress} customerData Address data to be updated; can contain both
- *   billing_address and shipping_address.
+ *                                                     billing_address and shipping_address.
  */
 export function* updateCustomerData(
 	customerData: Partial< BillingAddressShippingAddress >
@@ -476,13 +517,13 @@ export function* updateCustomerData(
 
 	try {
 		const { response } = yield apiFetchWithHeaders( {
-			path: '/wc/store/cart/update-customer',
+			path: '/wc/store/v1/cart/update-customer',
 			method: 'POST',
 			data: customerData,
 			cache: 'no-store',
 		} );
 
-		yield receiveCart( response );
+		yield receiveCartContents( response );
 	} catch ( error ) {
 		yield receiveError( error );
 		yield updatingCustomerData( false );
@@ -502,6 +543,9 @@ export function* updateCustomerData(
 
 export type CartAction = ReturnOrGeneratorYieldUnion<
 	| typeof receiveCart
+	| typeof receiveCartContents
+	| typeof setBillingAddress
+	| typeof setShippingAddress
 	| typeof receiveError
 	| typeof receiveApplyingCoupon
 	| typeof receiveRemovingCoupon
