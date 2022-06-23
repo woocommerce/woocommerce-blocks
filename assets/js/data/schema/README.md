@@ -1,11 +1,21 @@
 # Schema Store
 
+## Table of contents <!-- omit in toc -->
+
+-   [Table of contents](#table-of-contents)
+-   [Actions](#actions)
+    -   [`receiveRoutes( routes, namespace = '/wc/blocks' )`](#receiveroutes-routes-namespace--wcblocks-)
+-   [Selectors](#selectors)
+    -   [`getRoute( namespace, resourceName, ids = [] )`](#getroute-namespace-resourcename-ids---)
+    -   [`getRoutes( namespace )`](#getroutes-namespace-)
+
 To utilize this store you will import the `SCHEMA_STORE_KEY` in any module referencing it. Assuming `@woocommerce/block-data` is registered as an external pointing to `wc.wcBlocksData` you can import the key via:
 
 ```js
 import { SCHEMA_STORE_KEY } from '@woocommerce/block-data';
 ```
-##  Actions
+
+## Actions
 
 The following actions are used for dispatching data to this store state.
 
@@ -26,18 +36,29 @@ This returns an action object used to update the store with the provided list of
 
 This is used for retrieving a route for the given namespace, resource name and (if necessary) ids.
 
-Example:  If you are looking for a route for a single product on the `wc/blocks` namespace, then you'd have `[20]` as the ids.
+Example: If you are looking for a route for a single product on the `wc/blocks` namespace, then you'd have `[20]` as the ids.
 
 ```js
 // '/wc/blocks/products/20'
-wp.data.select( SCHEMA_STORE_KEY ).getRoute( '/wc/blocks', 'products', [20] );
+wp.data.select( SCHEMA_STORE_KEY ).getRoute( '/wc/blocks', 'products', [ 20 ] );
 ```
-| Argument    | Type   | Description                                                    |
-| ----------- | ------ | -------------------------------------------------------------- |
-| `namespace` | string | Namespace for the route (eg. `/wc/blocks`)                     |
+
+| Argument       | Type   | Description                                                       |
+| -------------- | ------ | ----------------------------------------------------------------- |
+| `namespace`    | string | Namespace for the route (eg. `/wc/blocks`)                        |
 | `resourceName` | string | The resource name for the route (eg. `products/attributes/terms`) |
-| `ids`       | array  | Only needed if the route has placeholders for ids.             |
+| `ids`          | array  | Only needed if the route has placeholders for ids.                |
 
 ### `getRoutes( namespace )`
 
 This will return all the registered routes for the given namespace as a flat array.
+
+<!-- FEEDBACK -->
+
+---
+
+[We're hiring!](https://woocommerce.com/careers/) Come work with us!
+
+🐞 Found a mistake, or have a suggestion? [Leave feedback about this document here.](https://github.com/woocommerce/woocommerce-gutenberg-products-block/issues/new?assignees=&labels=type%3A+documentation&template=--doc-feedback.md&title=Feedback%20on%20./docs/blocks/feature-flags-and-experimental-interfaces.md)
+
+<!-- /FEEDBACK -->

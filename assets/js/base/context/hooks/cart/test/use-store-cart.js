@@ -39,6 +39,19 @@ describe( 'useStoreCart', () => {
 		cartIsLoading: false,
 		cartItemErrors: [],
 		cartErrors: [],
+		billingData: {
+			first_name: '',
+			last_name: '',
+			company: '',
+			address_1: '',
+			address_2: '',
+			city: '',
+			state: '',
+			postcode: '',
+			country: '',
+			email: '',
+			phone: '',
+		},
 		billingAddress: {
 			first_name: '',
 			last_name: '',
@@ -108,6 +121,7 @@ describe( 'useStoreCart', () => {
 		cartIsLoading: mockCartIsLoading,
 		cartErrors: mockCartErrors,
 		cartFees: [],
+		billingData: {},
 		billingAddress: {},
 		shippingAddress: mockShippingAddress,
 		shippingRates: [],
@@ -175,14 +189,10 @@ describe( 'useStoreCart', () => {
 				);
 			} );
 
-			//eslint-disable-next-line testing-library/await-async-query
-			const { results, receiveCart } = renderer.root.findByType(
-				'div'
-			).props;
-			const {
-				receiveCart: defaultReceiveCart,
-				...remaining
-			} = defaultCartData;
+			const { results, receiveCart } =
+				renderer.root.findByType( 'div' ).props; //eslint-disable-line testing-library/await-async-query
+			const { receiveCart: defaultReceiveCart, ...remaining } =
+				defaultCartData;
 			expect( results ).toEqual( remaining );
 			expect( receiveCart ).toEqual( defaultReceiveCart );
 		} );
@@ -198,10 +208,8 @@ describe( 'useStoreCart', () => {
 				);
 			} );
 
-			//eslint-disable-next-line testing-library/await-async-query
-			const { results, receiveCart } = renderer.root.findByType(
-				'div'
-			).props;
+			const { results, receiveCart } =
+				renderer.root.findByType( 'div' ).props; //eslint-disable-line testing-library/await-async-query
 
 			expect( results ).toEqual( mockStoreCartData );
 			expect( receiveCart ).toBeUndefined();
@@ -230,10 +238,8 @@ describe( 'useStoreCart', () => {
 				);
 			} );
 
-			//eslint-disable-next-line testing-library/await-async-query
-			const { results, receiveCart } = renderer.root.findByType(
-				'div'
-			).props;
+			const { results, receiveCart } =
+				renderer.root.findByType( 'div' ).props; //eslint-disable-line testing-library/await-async-query
 
 			expect( results ).toEqual( previewCartData );
 			expect( receiveCart ).toEqual( receiveCartMock );
