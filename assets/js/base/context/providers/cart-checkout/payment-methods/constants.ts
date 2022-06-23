@@ -24,17 +24,18 @@ export enum ACTION {
 }
 
 // Note - if fields are added/shape is changed, you may want to update PRISTINE reducer clause to preserve your new field.
-export const DEFAULT_PAYMENT_DATA_CONTEXT_STATE: PaymentMethodDataContextState = {
-	currentStatus: STATUS.PRISTINE,
-	shouldSavePaymentMethod: false,
-	activePaymentMethod: '',
-	paymentMethodData: {
-		payment_method: '',
-	},
-	errorMessage: '',
-	paymentMethods: {},
-	expressPaymentMethods: {},
-};
+export const DEFAULT_PAYMENT_DATA_CONTEXT_STATE: PaymentMethodDataContextState =
+	{
+		currentStatus: STATUS.PRISTINE,
+		shouldSavePaymentMethod: false,
+		activePaymentMethod: '',
+		paymentMethodData: {
+			payment_method: '',
+		},
+		errorMessage: '',
+		paymentMethods: {},
+		expressPaymentMethods: {},
+	};
 
 export const DEFAULT_PAYMENT_METHOD_DATA: PaymentMethodDataContextType = {
 	setPaymentStatus: () => ( {
@@ -45,8 +46,8 @@ export const DEFAULT_PAYMENT_METHOD_DATA: PaymentMethodDataContextType = {
 		error: ( errorMessage: string ) => void errorMessage,
 		failed: ( errorMessage, paymentMethodData ) =>
 			void [ errorMessage, paymentMethodData ],
-		success: ( paymentMethodData, billingData ) =>
-			void [ paymentMethodData, billingData ],
+		success: ( paymentMethodData, billingAddress ) =>
+			void [ paymentMethodData, billingAddress ],
 	} ),
 	currentStatus: {
 		isPristine: true,

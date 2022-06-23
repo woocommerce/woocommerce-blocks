@@ -28,10 +28,8 @@ import { STORE_KEY as PAYMENT_METHOD_DATA_STORE_KEY } from '../../../data/paymen
  * @return {*} The rendered component.
  */
 const PaymentMethodOptions = () => {
-	const {
-		isExpressPaymentMethodActive,
-		customerPaymentMethods,
-	} = usePaymentMethodDataContext();
+	const { isExpressPaymentMethodActive, customerPaymentMethods } =
+		usePaymentMethodDataContext();
 
 	const { activeSavedToken, activePaymentMethod } = useSelect( ( select ) => {
 		const store = select( PAYMENT_METHOD_DATA_STORE_KEY );

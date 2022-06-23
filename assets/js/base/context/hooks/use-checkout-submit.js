@@ -8,7 +8,7 @@ import { __ } from '@wordpress/i18n';
 /**
  * Internal dependencies
  */
-import { useCheckoutContext } from '../providers';
+import { useCheckoutEventsContext } from '../providers';
 import { usePaymentMethodDataContext } from '../providers/cart-checkout/payment-methods';
 import { usePaymentMethods } from './payment-methods/use-payment-methods';
 
@@ -36,13 +36,11 @@ export const useCheckoutSubmit = () => {
 		};
 	} );
 
-	const { onSubmit } = useCheckoutContext();
+	const { onSubmit } = useCheckoutEventsContext();
 
 	const { paymentMethods = {} } = usePaymentMethods();
-	const {
-		activePaymentMethod,
-		currentStatus: paymentStatus,
-	} = usePaymentMethodDataContext();
+	const { activePaymentMethod, currentStatus: paymentStatus } =
+		usePaymentMethodDataContext();
 	const paymentMethod = paymentMethods[ activePaymentMethod ] || {};
 	const waitingForProcessing =
 		isProcessing || isAfterProcessing || isBeforeProcessing;

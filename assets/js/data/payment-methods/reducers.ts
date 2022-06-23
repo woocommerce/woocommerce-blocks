@@ -99,9 +99,10 @@ const reducer: Reducer< PaymentMethodDataState > = (
 		case ACTION_TYPES.REMOVE_REGISTERED_EXPRESS_PAYMENT_METHOD:
 			state = {
 				...state,
-				registeredExpressPaymentMethods: state.registeredExpressPaymentMethods.filter(
-					( name ) => name !== action.name
-				),
+				registeredExpressPaymentMethods:
+					state.registeredExpressPaymentMethods.filter(
+						( name ) => name !== action.name
+					),
 			};
 			break;
 		case ACTION_TYPES.SET_ACTIVE_PAYMENT_METHOD:

@@ -42,8 +42,7 @@ export const registerPaymentMethod = (
 		deprecated( 'Passing a callback to registerPaymentMethod()', {
 			alternative: 'a config options object',
 			plugin: 'woocommerce-gutenberg-products-block',
-			link:
-				'https://github.com/woocommerce/woocommerce-gutenberg-products-block/pull/3404',
+			link: 'https://github.com/woocommerce/woocommerce-gutenberg-products-block/pull/3404',
 		} );
 	} else {
 		paymentMethodConfig = new PaymentMethodConfig( options );
@@ -73,8 +72,7 @@ export const registerExpressPaymentMethod = (
 		deprecated( 'Passing a callback to registerExpressPaymentMethod()', {
 			alternative: 'a config options object',
 			plugin: 'woocommerce-gutenberg-products-block',
-			link:
-				'https://github.com/woocommerce/woocommerce-gutenberg-products-block/pull/3404',
+			link: 'https://github.com/woocommerce/woocommerce-gutenberg-products-block/pull/3404',
 		} );
 	} else {
 		paymentMethodConfig = new ExpressPaymentMethodConfig( options );

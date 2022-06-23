@@ -28,10 +28,11 @@ interface ExpressPaymentMethodState {
 const usePaymentMethodState = (
 	express = false
 ): PaymentMethodState | ExpressPaymentMethodState => {
-	const {
-		paymentMethodsInitialized,
-		expressPaymentMethodsInitialized,
-	} = usePaymentMethodDataContext();
+	const { paymentMethodsInitialized, expressPaymentMethodsInitialized } =
+		usePaymentMethodDataContext();
+
+	const paymentMethods = getPaymentMethods();
+	const expressPaymentMethods = getExpressPaymentMethods();
 
 	const paymentMethods = getPaymentMethods();
 	const expressPaymentMethods = getExpressPaymentMethods();

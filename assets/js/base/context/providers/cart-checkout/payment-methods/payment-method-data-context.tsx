@@ -88,9 +88,8 @@ export const PaymentMethodDataProvider = ( {
 	} );
 	const { isEditor, getPreviewData } = useEditorContext();
 	const { setValidationErrors } = useValidationContext();
-	const { createErrorNotice: addErrorNotice, removeNotice } = useDispatch(
-		'core/notices'
-	);
+	const { createErrorNotice: addErrorNotice, removeNotice } =
+		useDispatch( 'core/notices' );
 	const {
 		isSuccessResponse,
 		isErrorResponse,
@@ -115,10 +114,8 @@ export const PaymentMethodDataProvider = ( {
 		PAYMENT_METHOD_DATA_STORE_KEY
 	);
 
-	const {
-		dispatchActions,
-		setPaymentStatus,
-	} = usePaymentMethodDataDispatchers( dispatch );
+	const { dispatchActions, setPaymentStatus } =
+		usePaymentMethodDataDispatchers( dispatch );
 
 	const paymentMethodsInitialized = usePaymentMethods(
 		dispatchActions.setRegisteredPaymentMethods
@@ -254,6 +251,7 @@ export const PaymentMethodDataProvider = ( {
 			! currentStatus.isFinished
 		) {
 			setPaymentStatus().processing();
+			setDataStorePaymentStatus( STATUS.PROCESSING );
 		}
 	}, [
 		checkoutIsProcessing,
@@ -268,6 +266,7 @@ export const PaymentMethodDataProvider = ( {
 	useEffect( () => {
 		if ( checkoutIsIdle && ! currentStatus.isSuccessful ) {
 			setPaymentStatus().pristine();
+			setDataStorePaymentStatus( STATUS.PRISTINE );
 		}
 	}, [
 		checkoutIsIdle,
@@ -280,6 +279,7 @@ export const PaymentMethodDataProvider = ( {
 	useEffect( () => {
 		if ( checkoutHasError && currentStatus.isSuccessful ) {
 			setPaymentStatus().pristine();
+			setDataStorePaymentStatus( STATUS.PRISTINE );
 		}
 	}, [
 		checkoutHasError,
@@ -316,9 +316,10 @@ export const PaymentMethodDataProvider = ( {
 				if ( successResponse && ! errorResponse ) {
 					setPaymentStatus().success(
 						successResponse?.meta?.paymentMethodData,
-						successResponse?.meta?.billingData,
+						successResponse?.meta?.billingAddress,
 						successResponse?.meta?.shippingData
 					);
+					setDataStorePaymentStatus( STATUS.SUCCESS );
 				} else if ( errorResponse && isFailResponse( errorResponse ) ) {
 					if (
 						errorResponse.message &&
@@ -335,7 +336,7 @@ export const PaymentMethodDataProvider = ( {
 					setPaymentStatus().failed(
 						errorResponse?.message,
 						errorResponse?.meta?.paymentMethodData,
-						errorResponse?.meta?.billingData
+						errorResponse?.meta?.billingAddress
 					);
 				} else if ( errorResponse ) {
 					if (
