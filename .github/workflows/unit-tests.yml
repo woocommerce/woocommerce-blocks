@@ -97,7 +97,7 @@ jobs:
                   npm run wp-env start
 
             - name: Run PHPUnit tests
-              run: cat blocks.ini && npm run test:php
+              run: npm run test:php
 
             - name: Run PHPUnit tests (WooCommerce Development Version)
               run: |
