@@ -32,8 +32,7 @@ const generate = ( hooks ) => {
 	const jsonDocs = [
 		{ html: '<!-- DO NOT UPDATE THIS DOC DIRECTLY -->' },
 		{
-			html:
-				'<!-- Use `npm run build:docs` to automatically build hook documentation -->',
+			html: '<!-- Use `npm run build:docs` to automatically build hook documentation -->',
 		},
 		{ h1: 'Actions' },
 		{ h2: 'Table of Contents' },
@@ -59,7 +58,11 @@ const generate = ( hooks ) => {
 			].filter( Boolean );
 		} ),
 	];
-	createDocs( 'docs/extensibility/actions.md', jsonDocs );
+
+	createDocs(
+		'docs/third-party-developers/extensibility/hooks/actions.md',
+		jsonDocs
+	);
 	console.log( chalk.green( 'Done!' ) );
 };
 

@@ -36,12 +36,14 @@ export const setDefaultPaymentMethod = async ( methods: string[] ) => {
 	dispatch( PAYMENT_METHOD_DATA_STORE_KEY ).setPaymentStatus( {
 		isPristine: true,
 	} );
-	const objectOfPaymentMethods = allPaymentMethodKeys.reduce<
-		PaymentMethods
-	>( ( accumulator, current ) => {
-		accumulator[ current ] = null;
-		return accumulator;
-	}, {} );
+	const objectOfPaymentMethods =
+		allPaymentMethodKeys.reduce< PaymentMethods >(
+			( accumulator, current ) => {
+				accumulator[ current ] = null;
+				return accumulator;
+			},
+			{}
+		);
 
 	const customerPaymentMethods = getCustomerPaymentMethods(
 		objectOfPaymentMethods

@@ -43,16 +43,16 @@ const CheckoutExpressPayment = () => {
 		};
 	} );
 	const { currentStatus: paymentStatus } = usePaymentMethodDataContext();
-	const {
-		availableExpressPaymentMethods,
-		expressPaymentMethodsInitialized,
-	} = useSelect( ( select ) => {
-		const store = select( PAYMENT_METHOD_DATA_STORE_KEY );
-		return {
-			availableExpressPaymentMethods: store.getAvailableExpressPaymentMethods(),
-			expressPaymentMethodsInitialized: store.expressPaymentMethodsInitialized(),
-		};
-	} );
+	const { availableExpressPaymentMethods, expressPaymentMethodsInitialized } =
+		useSelect( ( select ) => {
+			const store = select( PAYMENT_METHOD_DATA_STORE_KEY );
+			return {
+				availableExpressPaymentMethods:
+					store.getAvailableExpressPaymentMethods(),
+				expressPaymentMethodsInitialized:
+					store.expressPaymentMethodsInitialized(),
+			};
+		} );
 	const { isEditor } = useEditorContext();
 	const { noticeContexts } = useEmitResponse();
 

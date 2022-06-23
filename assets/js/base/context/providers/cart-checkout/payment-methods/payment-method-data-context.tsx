@@ -93,7 +93,8 @@ export const PaymentMethodDataProvider = ( {
 		return {
 			currentStatus: store.getCurrentStatus(),
 			activePaymentMethod: store.getActivePaymentMethod(),
-			registeredExpressPaymentMethods: store.getRegisteredExpressPaymentMethods(),
+			registeredExpressPaymentMethods:
+				store.getRegisteredExpressPaymentMethods(),
 			registeredPaymentMethods: store.getRegisteredPaymentMethods(),
 			paymentMethodData: store.getPaymentMethodData(),
 			errorMessage: store.getErrorMessage(),
@@ -102,9 +103,8 @@ export const PaymentMethodDataProvider = ( {
 	} );
 	const { isEditor, getPreviewData } = useEditorContext();
 	const { setValidationErrors } = useValidationContext();
-	const { createErrorNotice: addErrorNotice, removeNotice } = useDispatch(
-		'core/notices'
-	);
+	const { createErrorNotice: addErrorNotice, removeNotice } =
+		useDispatch( 'core/notices' );
 	const {
 		isSuccessResponse,
 		isErrorResponse,
@@ -130,10 +130,8 @@ export const PaymentMethodDataProvider = ( {
 		setShouldSavePaymentMethod,
 	} = useDispatch( PAYMENT_METHOD_DATA_STORE_KEY );
 
-	const {
-		dispatchActions,
-		setPaymentStatus,
-	} = usePaymentMethodDataDispatchers( dispatch );
+	const { dispatchActions, setPaymentStatus } =
+		usePaymentMethodDataDispatchers( dispatch );
 
 	const paymentMethodsInitialized = usePaymentMethods(
 		dispatchActions.setRegisteredPaymentMethods
@@ -265,6 +263,7 @@ export const PaymentMethodDataProvider = ( {
 			! currentStatus.isFinished
 		) {
 			setPaymentStatus().processing();
+			setDataStorePaymentStatus( STATUS.PROCESSING );
 		}
 	}, [
 		checkoutIsProcessing,
@@ -272,21 +271,34 @@ export const PaymentMethodDataProvider = ( {
 		checkoutIsCalculating,
 		currentStatus.isFinished,
 		setPaymentStatus,
+		setDataStorePaymentStatus,
 	] );
 
 	// When checkout is returned to idle, set payment status to pristine but only if payment status is already not finished.
 	useEffect( () => {
 		if ( checkoutIsIdle && ! currentStatus.isSuccessful ) {
 			setPaymentStatus().pristine();
+			setDataStorePaymentStatus( STATUS.PRISTINE );
 		}
-	}, [ checkoutIsIdle, currentStatus.isSuccessful, setPaymentStatus ] );
+	}, [
+		checkoutIsIdle,
+		currentStatus.isSuccessful,
+		setPaymentStatus,
+		setDataStorePaymentStatus,
+	] );
 
 	// if checkout has an error sync payment status back to pristine.
 	useEffect( () => {
 		if ( checkoutHasError && currentStatus.isSuccessful ) {
 			setPaymentStatus().pristine();
+			setDataStorePaymentStatus( STATUS.PRISTINE );
 		}
-	}, [ checkoutHasError, currentStatus.isSuccessful, setPaymentStatus ] );
+	}, [
+		checkoutHasError,
+		currentStatus.isSuccessful,
+		setPaymentStatus,
+		setDataStorePaymentStatus,
+	] );
 
 	useEffect( () => {
 		// Note: the nature of this event emitter is that it will bail on any
@@ -316,9 +328,10 @@ export const PaymentMethodDataProvider = ( {
 				if ( successResponse && ! errorResponse ) {
 					setPaymentStatus().success(
 						successResponse?.meta?.paymentMethodData,
-						successResponse?.meta?.billingData,
+						successResponse?.meta?.billingAddress,
 						successResponse?.meta?.shippingData
 					);
+					setDataStorePaymentStatus( STATUS.SUCCESS );
 				} else if ( errorResponse && isFailResponse( errorResponse ) ) {
 					if (
 						errorResponse.message &&
@@ -335,7 +348,7 @@ export const PaymentMethodDataProvider = ( {
 					setPaymentStatus().failed(
 						errorResponse?.message,
 						errorResponse?.meta?.paymentMethodData,
-						errorResponse?.meta?.billingData
+						errorResponse?.meta?.billingAddress
 					);
 				} else if ( errorResponse ) {
 					if (

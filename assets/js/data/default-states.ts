@@ -3,10 +3,6 @@
  */
 import type { Cart, CartMeta, EmptyObjectType } from '@woocommerce/types';
 import { getSetting } from '@woocommerce/settings';
-import {
-	PaymentMethods,
-	ExpressPaymentMethods,
-} from '@woocommerce/type-defs/payments';
 
 /**
  * Internal dependencies
@@ -34,8 +30,8 @@ export interface CartState {
 	errors: Array< ResponseError >;
 }
 
-export const EMPTY_PENDING_QUANTITY: [  ] = [];
-export const EMPTY_PENDING_DELETE: [  ] = [];
+export const EMPTY_PENDING_QUANTITY: [] = [];
+export const EMPTY_PENDING_DELETE: [] = [];
 
 export const defaultCartState: CartState = {
 	cartItemsPendingQuantity: EMPTY_PENDING_QUANTITY,
@@ -124,8 +120,8 @@ export interface PaymentMethodDataState {
 	errorMessage: string;
 	activePaymentMethod: string;
 	activeSavedToken: string;
-	registeredPaymentMethods: PaymentMethods;
-	registeredExpressPaymentMethods: ExpressPaymentMethods;
+	registeredPaymentMethods: string[];
+	registeredExpressPaymentMethods: string[];
 	availablePaymentMethods: string[];
 	availableExpressPaymentMethods: string[];
 	paymentMethodData: Record< string, unknown >;
@@ -152,8 +148,8 @@ export const defaultPaymentMethodDataState: PaymentMethodDataState = {
 	customerPaymentMethods: getSetting<
 		Record< string, CustomerPaymentMethod[] > | EmptyObjectType
 	>( 'customerPaymentMethods', {} ),
-	registeredPaymentMethods: {},
-	registeredExpressPaymentMethods: {},
+	registeredPaymentMethods: [],
+	registeredExpressPaymentMethods: [],
 	availablePaymentMethods: [],
 	availableExpressPaymentMethods: [],
 	paymentMethodData: {},

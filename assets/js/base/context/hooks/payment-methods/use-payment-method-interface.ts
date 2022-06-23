@@ -20,7 +20,7 @@ import { ValidationInputError } from '../../providers/validation';
 import { useStoreCart } from '../cart/use-store-cart';
 import { useStoreCartCoupons } from '../cart/use-store-cart-coupons';
 import { useEmitResponse } from '../use-emit-response';
-import { useCheckoutContext } from '../../providers/cart-checkout/checkout-state';
+import { useCheckoutEventsContext } from '../../providers/cart-checkout/checkout-events';
 import { usePaymentMethodDataContext } from '../../providers/cart-checkout/payment-methods';
 import { useShippingDataContext } from '../../providers/cart-checkout/shipping';
 import { useCustomerDataContext } from '../../providers/cart-checkout/customer';
@@ -37,23 +37,18 @@ export const usePaymentMethodInterface = (): PaymentMethodInterface => {
 		onCheckoutAfterProcessingWithSuccess,
 		onCheckoutAfterProcessingWithError,
 		onSubmit,
-	} = useCheckoutContext();
-	const {
-		isCalculating,
-		isComplete,
-		isIdle,
-		isProcessing,
-		customerId,
-	} = useSelect( ( select ) => {
-		const store = select( CHECKOUT_STORE_KEY );
-		return {
-			isComplete: store.isComplete(),
-			isIdle: store.isIdle(),
-			isProcessing: store.isProcessing(),
-			customerId: store.getCustomerId(),
-			isCalculating: store.isCalculating(),
-		};
-	} );
+	} = useCheckoutEventsContext();
+	const { isCalculating, isComplete, isIdle, isProcessing, customerId } =
+		useSelect( ( select ) => {
+			const store = select( CHECKOUT_STORE_KEY );
+			return {
+				isComplete: store.isComplete(),
+				isIdle: store.isIdle(),
+				isProcessing: store.isProcessing(),
+				customerId: store.getCustomerId(),
+				isCalculating: store.isCalculating(),
+			};
+		} );
 
 	const {
 		currentStatus,
@@ -78,11 +73,8 @@ export const usePaymentMethodInterface = (): PaymentMethodInterface => {
 		selectShippingRate,
 		needsShipping,
 	} = useShippingData();
-	const {
-		billingData,
-		shippingAddress,
-		setShippingAddress,
-	} = useCustomerDataContext();
+	const { billingAddress, shippingAddress, setShippingAddress } =
+		useCustomerDataContext();
 	const { cartItems, cartFees, cartTotals, extensions } = useStoreCart();
 	const { appliedCoupons } = useStoreCartCoupons();
 	const { noticeContexts, responseTypes } = useEmitResponse();
@@ -112,8 +104,7 @@ export const usePaymentMethodInterface = (): PaymentMethodInterface => {
 				{
 					alternative: '',
 					plugin: 'woocommerce-gutenberg-products-block',
-					link:
-						'https://github.com/woocommerce/woocommerce-gutenberg-products-block/pull/4228',
+					link: 'https://github.com/woocommerce/woocommerce-gutenberg-products-block/pull/4228',
 				}
 			);
 			setExpressPaymentError( errorMessage );
@@ -125,7 +116,8 @@ export const usePaymentMethodInterface = (): PaymentMethodInterface => {
 		activePaymentMethod,
 		billing: {
 			appliedCoupons,
-			billingData,
+			billingAddress,
+			billingData: billingAddress,
 			cartTotal: currentCartTotal.current,
 			cartTotalItems: currentCartTotals.current,
 			currency: getCurrencyFromPriceResponse( cartTotals ),
