@@ -34,9 +34,6 @@ const usePaymentMethodState = (
 	const paymentMethods = getPaymentMethods();
 	const expressPaymentMethods = getExpressPaymentMethods();
 
-	const paymentMethods = getPaymentMethods();
-	const expressPaymentMethods = getExpressPaymentMethods();
-
 	const currentPaymentMethods = useShallowEqual( paymentMethods );
 	const currentExpressPaymentMethods = useShallowEqual(
 		expressPaymentMethods
