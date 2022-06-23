@@ -240,41 +240,46 @@ const Edit = ( { attributes, setAttributes, debouncedSpeak }: EditProps ) => {
 							) }
 						/>
 					</ToggleGroupControl>
-					<ToggleGroupControl
-						label={ __(
-							'Query Type',
-							'woo-gutenberg-products-block'
-						) }
-						help={
-							queryType === 'and'
-								? __(
-										'Products that have all of the selected attributes will be shown.',
-										'woo-gutenberg-products-block'
-								  )
-								: __(
-										'Products that have any of the selected attributes will be shown.',
-										'woo-gutenberg-products-block'
-								  )
-						}
-						value={ queryType }
-						onChange={ ( value: string ) =>
-							setAttributes( {
-								queryType: value,
-							} )
-						}
-					>
-						<ToggleGroupControlOption
-							value="and"
+					{ selectType === 'multiple' && (
+						<ToggleGroupControl
 							label={ __(
-								'And',
+								'Query Type',
 								'woo-gutenberg-products-block'
 							) }
-						/>
-						<ToggleGroupControlOption
-							value="or"
-							label={ __( 'Or', 'woo-gutenberg-products-block' ) }
-						/>
-					</ToggleGroupControl>
+							help={
+								queryType === 'and'
+									? __(
+											'Products that have all of the selected attributes will be shown.',
+											'woo-gutenberg-products-block'
+									  )
+									: __(
+											'Products that have any of the selected attributes will be shown.',
+											'woo-gutenberg-products-block'
+									  )
+							}
+							value={ queryType }
+							onChange={ ( value: string ) =>
+								setAttributes( {
+									queryType: value,
+								} )
+							}
+						>
+							<ToggleGroupControlOption
+								value="and"
+								label={ __(
+									'And',
+									'woo-gutenberg-products-block'
+								) }
+							/>
+							<ToggleGroupControlOption
+								value="or"
+								label={ __(
+									'Or',
+									'woo-gutenberg-products-block'
+								) }
+							/>
+						</ToggleGroupControl>
+					) }
 					<ToggleGroupControl
 						label={ __(
 							'Display Style',
