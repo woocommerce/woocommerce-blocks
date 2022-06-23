@@ -92,13 +92,15 @@ registerBlockType( metadata, {
 			'data-query-type': queryType,
 			'data-heading': heading,
 			'data-heading-level': headingLevel,
-			'data-select-type': selectType,
 		};
 		if ( displayStyle !== 'list' ) {
 			data[ 'data-display-style' ] = displayStyle;
 		}
 		if ( showFilterButton ) {
 			data[ 'data-show-filter-button' ] = showFilterButton;
+		}
+		if ( selectType === 'single' ) {
+			data[ 'data-select-type' ] = selectType;
 		}
 		return (
 			<div
