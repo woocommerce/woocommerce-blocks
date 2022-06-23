@@ -44,8 +44,7 @@ export const DEFAULT_TIMEOUT = 30000;
 const SELECTORS = {
 	canvas: 'iframe[name="editor-canvas"]',
 	inserter: {
-		search:
-			'.components-search-control__input,.block-editor-inserter__search input,.block-editor-inserter__search-input,input.block-editor-inserter__search',
+		search: '.components-search-control__input,.block-editor-inserter__search input,.block-editor-inserter__search-input,input.block-editor-inserter__search',
 	},
 	templatesListTable: {
 		actionsContainer: '.edit-site-list-table__actions',
@@ -63,6 +62,9 @@ const SELECTORS = {
 		confirmSave: '.editor-entities-saved-states__save-button',
 		saveButton: '.edit-site-save-button__button',
 		savePrompt: '.entities-saved-states__text-prompt',
+	},
+	allProductsBlock: {
+		productsList: '.wc-block-grid__products > li.is-loading',
 	},
 };
 
@@ -430,4 +432,31 @@ export const createCoupon = async ( coupon ) => {
 	} );
 
 	return createdCoupon;
+};
+
+/**
+ * Open the block editor settings menu.
+ */
+export const openBlockEditorSettings = async () => {
+	const buttonSelector =
+		'.edit-site-header__actions button[aria-label="Settings"]';
+
+	const isSideBarAlreadyOpened = await page.$(
+		'.interface-interface-skeleton__sidebar'
+	);
+
+	if ( isSideBarAlreadyOpened === null ) {
+		await page.click( buttonSelector );
+	}
+};
+
+/**
+ *  Wait for all Products Block is loaded completely: when the skeleton disappears, and the products are visible.
+ */
+export const waitForAllProductsBlockLoaded = async () => {
+	await page.waitForSelector( SELECTORS.allProductsBlock.productsList, {
+		hidden: true,
+	} );
+
+	await page.waitForNetworkIdle();
 };

@@ -5,14 +5,16 @@ import { __ } from '@wordpress/i18n';
 import { useEmitResponse } from '@woocommerce/base-context/hooks';
 import {
 	StoreNoticesContainer,
-	useCheckoutContext,
 	usePaymentMethodDataContext,
 	useEditorContext,
 } from '@woocommerce/base-context';
 import Title from '@woocommerce/base-components/title';
 import LoadingMask from '@woocommerce/base-components/loading-mask';
 import { CURRENT_USER_IS_ADMIN } from '@woocommerce/settings';
-import { PAYMENT_METHOD_DATA_STORE_KEY } from '@woocommerce/block-data';
+import {
+	PAYMENT_METHOD_DATA_STORE_KEY,
+	CHECKOUT_STORE_KEY,
+} from '@woocommerce/block-data';
 import { useSelect } from '@wordpress/data';
 
 /**
@@ -29,18 +31,28 @@ const CheckoutExpressPayment = () => {
 		isBeforeProcessing,
 		isComplete,
 		hasError,
-	} = useCheckoutContext();
-	const { currentStatus: paymentStatus } = usePaymentMethodDataContext();
-	const {
-		availableExpressPaymentMethods,
-		expressPaymentMethodsInitialized,
 	} = useSelect( ( select ) => {
-		const store = select( PAYMENT_METHOD_DATA_STORE_KEY );
+		const store = select( CHECKOUT_STORE_KEY );
 		return {
-			availableExpressPaymentMethods: store.getAvailableExpressPaymentMethods(),
-			expressPaymentMethodsInitialized: store.expressPaymentMethodsInitialized(),
+			isCalculating: store.isCalculating(),
+			isProcessing: store.isProcessing(),
+			isAfterProcessing: store.isAfterProcessing(),
+			isBeforeProcessing: store.isBeforeProcessing(),
+			isComplete: store.isComplete(),
+			hasError: store.hasError(),
 		};
 	} );
+	const { currentStatus: paymentStatus } = usePaymentMethodDataContext();
+	const { availableExpressPaymentMethods, expressPaymentMethodsInitialized } =
+		useSelect( ( select ) => {
+			const store = select( PAYMENT_METHOD_DATA_STORE_KEY );
+			return {
+				availableExpressPaymentMethods:
+					store.getAvailableExpressPaymentMethods(),
+				expressPaymentMethodsInitialized:
+					store.expressPaymentMethodsInitialized(),
+			};
+		} );
 	const { isEditor } = useEditorContext();
 	const { noticeContexts } = useEmitResponse();
 

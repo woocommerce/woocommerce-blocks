@@ -1,3 +1,9 @@
+:where(.wp-block-woocommerce-legacy-template) {
+	margin-left: auto;
+	margin-right: auto;
+	max-width: 1000px;
+}
+
 .wp-block-woocommerce-classic-template__placeholder-copy {
 	max-width: 900px;
 	margin-bottom: 30px;
@@ -27,4 +33,16 @@
 	@media only screen and (min-width: 768px) {
 		display: block;
 	}
+}
+
+
+.wp-block-woocommerce-classic-template__placeholder-wireframe {
+	display: flex;
+	flex-direction: column;
+}
+
+.wp-block-woocommerce-classic-template__placeholder-migration-button-container {
+	justify-content: center;
+	align-items: center;
+	margin: 0 auto;
 }

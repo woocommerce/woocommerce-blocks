@@ -17,7 +17,8 @@ const productWooSingle1 = Products().find(
 );
 
 if ( process.env.WOOCOMMERCE_BLOCKS_PHASE < 2 ) {
-	// eslint-disable-next-line jest/no-focused-tests
+	// Skips all the tests if it's a WooCommerce Core process environment.
+	// eslint-disable-next-line jest/no-focused-tests, jest/expect-expect
 	test.only( `Skipping Cart & Checkout tests`, () => {} );
 }
 

@@ -11,8 +11,11 @@ import {
 	useMemo,
 } from '@wordpress/element';
 import { objectHasProp } from '@woocommerce/types';
-import { PAYMENT_METHOD_DATA_STORE_KEY } from '@woocommerce/block-data';
-import { useDispatch } from '@wordpress/data';
+import {
+	PAYMENT_METHOD_DATA_STORE_KEY,
+	CHECKOUT_STORE_KEY,
+} from '@woocommerce/block-data';
+import { useDispatch, useSelect } from '@wordpress/data';
 
 /**
  * Internal dependencies
@@ -32,7 +35,6 @@ import {
 	useExpressPaymentMethods,
 } from './use-payment-method-registration';
 import { usePaymentMethodDataDispatchers } from './use-payment-method-dispatchers';
-import { useCheckoutContext } from '../checkout-state';
 import { useEditorContext } from '../../editor-context';
 import {
 	EMIT_TYPES,
@@ -68,12 +70,19 @@ export const PaymentMethodDataProvider = ( {
 		isIdle: checkoutIsIdle,
 		isCalculating: checkoutIsCalculating,
 		hasError: checkoutHasError,
-	} = useCheckoutContext();
+	} = useSelect( ( select ) => {
+		const store = select( CHECKOUT_STORE_KEY );
+		return {
+			isProcessing: store.isProcessing(),
+			isIdle: store.isIdle(),
+			hasError: store.hasError(),
+			isCalculating: store.isCalculating(),
+		};
+	} );
 	const { isEditor, getPreviewData } = useEditorContext();
 	const { setValidationErrors } = useValidationContext();
-	const { createErrorNotice: addErrorNotice, removeNotice } = useDispatch(
-		'core/notices'
-	);
+	const { createErrorNotice: addErrorNotice, removeNotice } =
+		useDispatch( 'core/notices' );
 	const {
 		isSuccessResponse,
 		isErrorResponse,
@@ -98,10 +107,8 @@ export const PaymentMethodDataProvider = ( {
 		PAYMENT_METHOD_DATA_STORE_KEY
 	);
 
-	const {
-		dispatchActions,
-		setPaymentStatus,
-	} = usePaymentMethodDataDispatchers( dispatch );
+	const { dispatchActions, setPaymentStatus } =
+		usePaymentMethodDataDispatchers( dispatch );
 
 	const paymentMethodsInitialized = usePaymentMethods(
 		dispatchActions.setRegisteredPaymentMethods
@@ -291,7 +298,7 @@ export const PaymentMethodDataProvider = ( {
 				if ( successResponse && ! errorResponse ) {
 					setPaymentStatus().success(
 						successResponse?.meta?.paymentMethodData,
-						successResponse?.meta?.billingData,
+						successResponse?.meta?.billingAddress,
 						successResponse?.meta?.shippingData
 					);
 					setDataStorePaymentStatus( STATUS.SUCCESS );
@@ -311,7 +318,7 @@ export const PaymentMethodDataProvider = ( {
 					setPaymentStatus().failed(
 						errorResponse?.message,
 						errorResponse?.meta?.paymentMethodData,
-						errorResponse?.meta?.billingData
+						errorResponse?.meta?.billingAddress
 					);
 				} else if ( errorResponse ) {
 					if (

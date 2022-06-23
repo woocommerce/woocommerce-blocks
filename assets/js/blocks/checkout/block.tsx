@@ -6,20 +6,19 @@ import classnames from 'classnames';
 import { createInterpolateElement, useEffect } from '@wordpress/element';
 import { useStoreCart } from '@woocommerce/base-context/hooks';
 import {
-	useCheckoutContext,
 	useValidationContext,
 	ValidationContextProvider,
 	CheckoutProvider,
+	SnackbarNoticesContainer,
 } from '@woocommerce/base-context';
-import {
-	StoreSnackbarNoticesProvider,
-	StoreNoticesContainer,
-} from '@woocommerce/base-context/providers';
+import { StoreNoticesContainer } from '@woocommerce/base-context/providers';
 import BlockErrorBoundary from '@woocommerce/base-components/block-error-boundary';
 import { SidebarLayout } from '@woocommerce/base-components/sidebar-layout';
 import { CURRENT_USER_IS_ADMIN, getSetting } from '@woocommerce/settings';
 import { SlotFillProvider } from '@woocommerce/blocks-checkout';
 import withScrollToTop from '@woocommerce/base-hocs/with-scroll-to-top';
+import { useSelect } from '@wordpress/data';
+import { CHECKOUT_STORE_KEY } from '@woocommerce/block-data';
 
 /**
  * Internal dependencies
@@ -57,7 +56,13 @@ const Checkout = ( {
 	attributes: Attributes;
 	children: React.ReactChildren;
 } ): JSX.Element => {
-	const { hasOrder, customerId } = useCheckoutContext();
+	const { hasOrder, customerId } = useSelect( ( select ) => {
+		const store = select( CHECKOUT_STORE_KEY );
+		return {
+			hasOrder: store.hasOrder(),
+			customerId: store.getCustomerId(),
+		};
+	} );
 	const { cartItems, cartIsLoading } = useStoreCart();
 
 	const {
@@ -106,14 +111,17 @@ const ScrollOnError = ( {
 }: {
 	scrollToTop: ( props: Record< string, unknown > ) => void;
 } ): null => {
-	const {
-		hasError: checkoutHasError,
-		isIdle: checkoutIsIdle,
-	} = useCheckoutContext();
-	const {
-		hasValidationErrors,
-		showAllValidationErrors,
-	} = useValidationContext();
+	const { hasError: checkoutHasError, isIdle: checkoutIsIdle } = useSelect(
+		( select ) => {
+			const store = select( CHECKOUT_STORE_KEY );
+			return {
+				isIdle: store.isIdle(),
+				hasError: store.hasError(),
+			};
+		}
+	);
+	const { hasValidationErrors, showAllValidationErrors } =
+		useValidationContext();
 
 	const hasErrorsToDisplay =
 		checkoutIsIdle &&
@@ -170,34 +178,28 @@ const Block = ( {
 			) }
 			showErrorMessage={ CURRENT_USER_IS_ADMIN }
 		>
-			<StoreSnackbarNoticesProvider context="wc/checkout">
-				<StoreNoticesProvider>
-					<StoreNoticesContainer context="wc/checkout" />
-					<ValidationContextProvider>
-						{ /* SlotFillProvider need to be defined before CheckoutProvider so fills have the SlotFill context ready when they mount. */ }
-						<SlotFillProvider>
-							<CheckoutProvider>
-								<SidebarLayout
-									className={ classnames(
-										'wc-block-checkout',
-										{
-											'has-dark-controls':
-												attributes.hasDarkControls,
-										}
-									) }
-								>
-									<Checkout attributes={ attributes }>
-										{ children }
-									</Checkout>
-									<ScrollOnError
-										scrollToTop={ scrollToTop }
-									/>
-								</SidebarLayout>
-							</CheckoutProvider>
-						</SlotFillProvider>
-					</ValidationContextProvider>
-				</StoreNoticesProvider>
-			</StoreSnackbarNoticesProvider>
+			<SnackbarNoticesContainer context="wc/checkout" />
+			<StoreNoticesProvider>
+				<StoreNoticesContainer context="wc/checkout" />
+				<ValidationContextProvider>
+					{ /* SlotFillProvider need to be defined before CheckoutProvider so fills have the SlotFill context ready when they mount. */ }
+					<SlotFillProvider>
+						<CheckoutProvider>
+							<SidebarLayout
+								className={ classnames( 'wc-block-checkout', {
+									'has-dark-controls':
+										attributes.hasDarkControls,
+								} ) }
+							>
+								<Checkout attributes={ attributes }>
+									{ children }
+								</Checkout>
+								<ScrollOnError scrollToTop={ scrollToTop } />
+							</SidebarLayout>
+						</CheckoutProvider>
+					</SlotFillProvider>
+				</ValidationContextProvider>
+			</StoreNoticesProvider>
 		</BlockErrorBoundary>
 	);
 };

@@ -110,8 +110,7 @@ const ExpressPaymentMethods = () => {
 				{
 					alternative: 'onError',
 					plugin: 'woocommerce-gutenberg-products-block',
-					link:
-						'https://github.com/woocommerce/woocommerce-gutenberg-products-block/pull/4228',
+					link: 'https://github.com/woocommerce/woocommerce-gutenberg-products-block/pull/4228',
 				}
 			);
 			if ( errorMessage ) {
@@ -144,7 +143,8 @@ const ExpressPaymentMethods = () => {
 							onClick: onExpressPaymentClick( id ),
 							onClose: onExpressPaymentClose,
 							onError: onExpressPaymentError,
-							setExpressPaymentError: deprecatedSetExpressPaymentError,
+							setExpressPaymentError:
+								deprecatedSetExpressPaymentError,
 						} ) }
 					</li>
 				) : null;

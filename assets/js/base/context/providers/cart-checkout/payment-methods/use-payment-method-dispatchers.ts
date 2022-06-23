@@ -20,7 +20,7 @@ export const usePaymentMethodDataDispatchers = (
 	dispatchActions: PaymentMethodDispatchers;
 	setPaymentStatus: () => PaymentStatusDispatchers;
 } => {
-	const { setBillingData, setShippingAddress } = useCustomerData();
+	const { setBillingAddress, setShippingAddress } = useCustomerData();
 
 	const dispatchActions = useMemo(
 		(): PaymentMethodDispatchers => ( {
@@ -55,10 +55,10 @@ export const usePaymentMethodDataDispatchers = (
 			failed: (
 				errorMessage,
 				paymentMethodData,
-				billingData = undefined
+				billingAddress = undefined
 			) => {
-				if ( billingData ) {
-					setBillingData( billingData );
+				if ( billingAddress ) {
+					setBillingAddress( billingAddress );
 				}
 				dispatch(
 					actions.failed( {
@@ -69,11 +69,11 @@ export const usePaymentMethodDataDispatchers = (
 			},
 			success: (
 				paymentMethodData,
-				billingData = undefined,
+				billingAddress = undefined,
 				shippingData = undefined
 			) => {
-				if ( billingData ) {
-					setBillingData( billingData );
+				if ( billingAddress ) {
+					setBillingAddress( billingAddress );
 				}
 				if (
 					typeof shippingData !== undefined &&
@@ -90,7 +90,7 @@ export const usePaymentMethodDataDispatchers = (
 				);
 			},
 		} ),
-		[ dispatch, setBillingData, setShippingAddress ]
+		[ dispatch, setBillingAddress, setShippingAddress ]
 	);
 
 	return {

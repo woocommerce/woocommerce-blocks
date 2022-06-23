@@ -138,7 +138,17 @@ final class BlockTypesController {
 	 * @return array $widget_types An array inluding the WooCommerce widgets to hide.
 	 */
 	public function hide_legacy_widgets_with_block_equivalent( $widget_types ) {
-		array_push( $widget_types, 'woocommerce_product_search', 'woocommerce_product_categories', 'woocommerce_recent_reviews' );
+		array_push(
+			$widget_types,
+			'woocommerce_product_search',
+			'woocommerce_product_categories',
+			'woocommerce_recent_reviews',
+			'woocommerce_product_tag_cloud',
+			'woocommerce_price_filter',
+			'woocommerce_layered_nav',
+			'woocommerce_layered_nav_filters'
+		);
+
 		return $widget_types;
 	}
 
@@ -148,7 +158,7 @@ final class BlockTypesController {
 	 * @return array
 	 */
 	protected function get_block_types() {
-		global $wp_version, $pagenow;
+		global $pagenow;
 
 		$block_types = [
 			'AllReviews',
@@ -184,19 +194,9 @@ final class BlockTypesController {
 			'ProductSummary',
 			'ProductTagList',
 			'ProductTitle',
+			'MiniCart',
+			'MiniCartContents',
 		];
-
-		/**
-		 * Mini Cart blocks should be available in Site Editor, Widgets and frontend (is_admin function checks this) only.
-		 */
-		if (
-			! is_admin() ||
-			in_array( $pagenow, [ 'widgets.php', 'customize.php', 'site-editor.php' ], true ) ||
-			! empty( $_GET['page'] ) && 'gutenberg-edit-site' === $_GET['page'] // phpcs:ignore WordPress.Security.NonceVerification
-		) {
-			$block_types[] = 'MiniCart';
-			$block_types[] = 'MiniCartContents';
-		}
 
 		if ( Package::feature()->is_feature_plugin_build() ) {
 			$block_types[] = 'Checkout';
@@ -215,10 +215,6 @@ final class BlockTypesController {
 				$block_types,
 				[
 					'AllProducts',
-					'PriceFilter',
-					'AttributeFilter',
-					'StockFilter',
-					'ActiveFilters',
 					'Cart',
 					'Checkout',
 				]

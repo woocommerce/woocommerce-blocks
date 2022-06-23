@@ -2,19 +2,19 @@
  * External dependencies
  */
 import { __ } from '@wordpress/i18n';
-import {
-	useCheckoutContext,
-	useEditorContext,
-} from '@woocommerce/base-context';
+import { useEditorContext } from '@woocommerce/base-context';
 import { CheckboxControl } from '@woocommerce/blocks-checkout';
 import PropTypes from 'prop-types';
 import { useSelect, useDispatch } from '@wordpress/data';
+import {
+	CHECKOUT_STORE_KEY,
+	PAYMENT_METHOD_DATA_STORE_KEY,
+} from '@woocommerce/block-data';
 
 /**
  * Internal dependencies
  */
 import PaymentMethodErrorBoundary from './payment-method-error-boundary';
-import { STORE_KEY as PAYMENT_METHOD_DATA_STORE_KEY } from '../../../data/payment-methods/constants';
 
 /**
  * Component used to render the contents of a payment method card.
@@ -37,8 +37,10 @@ const PaymentMethodCard = ( { children, showSaveOption } ) => {
 	const { setShouldSavePaymentMethod } = useDispatch(
 		PAYMENT_METHOD_DATA_STORE_KEY
 	);
-	const { customerId } = useCheckoutContext();
 
+	const customerId = useSelect( ( select ) =>
+		select( CHECKOUT_STORE_KEY ).getCustomerId()
+	);
 	return (
 		<PaymentMethodErrorBoundary isEditor={ isEditor }>
 			{ children }

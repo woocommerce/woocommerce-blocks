@@ -8,11 +8,12 @@
 		"../../settings/blocks/index.ts",
 		"../../base/hooks/index.js",
 		"../../base/utils/",
-	  	"../../utils",
+		"../../utils",
 		"../../data/",
 		"../../types/",
 		"../components",
-		"../../blocks/cart-checkout-shared/payment-methods"
+		"../../blocks/cart-checkout-shared/payment-methods",
+		"../../settings/shared/default-address-fields.ts"
 	],
 	"exclude": [ "**/test/**" ]
 }

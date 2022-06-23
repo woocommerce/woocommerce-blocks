@@ -1,8 +1,8 @@
 /**
  * External dependencies
  */
-const WooCommerceRestApi = require( '@woocommerce/woocommerce-rest-api' )
-	.default;
+const WooCommerceRestApi =
+	require( '@woocommerce/woocommerce-rest-api' ).default;
 const glob = require( 'glob-promise' );
 const { dirname } = require( 'path' );
 const { readJson } = require( 'fs-extra' );
@@ -455,9 +455,13 @@ const createProductAttributes = ( fixture = fixtures.Attributes() ) => {
 				)
 				.catch( () => {
 					// At this point, the attributes probably already exist. Get them and return them instead.
-					return WooCommerce.get( 'products/attributes' ).then(
-						( response ) => response.data
-					);
+					return WooCommerce.get( 'products/attributes' )
+						.then( ( response ) => response.data )
+						.then( ( data ) => {
+							return data.find(
+								( item ) => item.name === attribute.name
+							);
+						} );
 				} );
 		} )
 	);
@@ -476,6 +480,11 @@ const createProductAttributes = ( fixture = fixtures.Attributes() ) => {
 const deleteProductAttributes = ( ids ) => {
 	return WooCommerce.post( 'products/attributes/batch', { delete: ids } );
 };
+
+const disableAttributeLookup = () =>
+	WooCommerce.put( 'settings/products/woocommerce_attribute_lookup_enabled', {
+		value: 'no',
+	} );
 
 module.exports = {
 	createProductAttributes,
@@ -498,4 +507,5 @@ module.exports = {
 	deleteShippingZones,
 	createBlockPages,
 	deleteBlockPages,
+	disableAttributeLookup,
 };

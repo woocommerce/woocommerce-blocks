@@ -9,19 +9,20 @@ import {
 	BillingAddress,
 } from '@woocommerce/settings';
 import { useCallback } from '@wordpress/element';
+import { useDispatch, useSelect } from '@wordpress/data';
+import { CHECKOUT_STORE_KEY } from '@woocommerce/block-data';
 
 /**
  * Internal dependencies
  */
-import { useCheckoutContext } from '../providers/cart-checkout';
 import { useCustomerData } from './use-customer-data';
 import { useShippingData } from './shipping/use-shipping-data';
 
 interface CheckoutAddress {
 	shippingAddress: ShippingAddress;
-	billingData: BillingAddress;
+	billingAddress: BillingAddress;
 	setShippingAddress: ( data: Partial< EnteredAddress > ) => void;
-	setBillingData: ( data: Partial< EnteredAddress > ) => void;
+	setBillingAddress: ( data: Partial< EnteredAddress > ) => void;
 	setEmail: ( value: string ) => void;
 	setBillingPhone: ( value: string ) => void;
 	setShippingPhone: ( value: string ) => void;
@@ -37,31 +38,31 @@ interface CheckoutAddress {
  */
 export const useCheckoutAddress = (): CheckoutAddress => {
 	const { needsShipping } = useShippingData();
+	const { useShippingAsBilling } = useSelect( ( select ) =>
+		select( CHECKOUT_STORE_KEY ).getCheckoutState()
+	);
+	const { setUseShippingAsBilling } = useDispatch( CHECKOUT_STORE_KEY );
 	const {
-		useShippingAsBilling,
-		setUseShippingAsBilling,
-	} = useCheckoutContext();
-	const {
-		billingData,
-		setBillingData,
+		billingAddress,
+		setBillingAddress,
 		shippingAddress,
 		setShippingAddress,
 	} = useCustomerData();
 
 	const setEmail = useCallback(
 		( value ) =>
-			void setBillingData( {
+			void setBillingAddress( {
 				email: value,
 			} ),
-		[ setBillingData ]
+		[ setBillingAddress ]
 	);
 
 	const setBillingPhone = useCallback(
 		( value ) =>
-			void setBillingData( {
+			void setBillingAddress( {
 				phone: value,
 			} ),
-		[ setBillingData ]
+		[ setBillingAddress ]
 	);
 
 	const setShippingPhone = useCallback(
@@ -74,9 +75,9 @@ export const useCheckoutAddress = (): CheckoutAddress => {
 
 	return {
 		shippingAddress,
-		billingData,
+		billingAddress,
 		setShippingAddress,
-		setBillingData,
+		setBillingAddress,
 		setEmail,
 		setBillingPhone,
 		setShippingPhone,

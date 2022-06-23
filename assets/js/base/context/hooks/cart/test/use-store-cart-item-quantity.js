@@ -3,13 +3,14 @@
  */
 import TestRenderer, { act } from 'react-test-renderer';
 import { createRegistry, RegistryProvider } from '@wordpress/data';
-import { CART_STORE_KEY as storeKey } from '@woocommerce/block-data';
+import { CART_STORE_KEY, CHECKOUT_STORE_KEY } from '@woocommerce/block-data';
 
 /**
  * Internal dependencies
  */
 import * as mockUseStoreCart from '../use-store-cart';
 import { useStoreCartItemQuantity } from '../use-store-cart-item-quantity';
+import { config as checkoutStoreConfig } from '../../../../../data/checkout';
 
 jest.mock( '../use-store-cart', () => ( {
 	useStoreCart: jest.fn(),
@@ -17,7 +18,8 @@ jest.mock( '../use-store-cart', () => ( {
 
 jest.mock( '@woocommerce/block-data', () => ( {
 	__esModule: true,
-	CART_STORE_KEY: 'test/store',
+	CART_STORE_KEY: 'test/cart/store',
+	CHECKOUT_STORE_KEY: 'test/checkout/store',
 } ) );
 
 // Make debounce instantaneous.
@@ -42,13 +44,15 @@ describe( 'useStoreCartItemQuantity', () => {
 	let mockRemoveItemFromCart;
 	let mockChangeCartItemQuantity;
 	const setupMocks = ( { isPendingDelete, isPendingQuantity } ) => {
+		// Register mock cart store
 		mockRemoveItemFromCart = jest
 			.fn()
 			.mockReturnValue( { type: 'removeItemFromCartAction' } );
 		mockChangeCartItemQuantity = jest
 			.fn()
 			.mockReturnValue( { type: 'changeCartItemQuantityAction' } );
-		registry.registerStore( storeKey, {
+
+		registry.registerStore( CART_STORE_KEY, {
 			reducer: () => ( {} ),
 			actions: {
 				removeItemFromCart: mockRemoveItemFromCart,
@@ -63,6 +67,9 @@ describe( 'useStoreCartItemQuantity', () => {
 					.mockReturnValue( isPendingQuantity ),
 			},
 		} );
+
+		// Register actual checkout store
+		registry.registerStore( CHECKOUT_STORE_KEY, checkoutStoreConfig );
 	};
 
 	beforeEach( () => {
@@ -95,10 +102,8 @@ describe( 'useStoreCartItemQuantity', () => {
 				);
 			} );
 
-			//eslint-disable-next-line testing-library/await-async-query
-			const { setItemQuantity, quantity } = renderer.root.findByType(
-				'div'
-			).props;
+			const { setItemQuantity, quantity } =
+				renderer.root.findByType( 'div' ).props; //eslint-disable-line testing-library/await-async-query
 
 			expect( quantity ).toBe( 1 );
 
@@ -106,10 +111,8 @@ describe( 'useStoreCartItemQuantity', () => {
 				setItemQuantity( 2 );
 			} );
 
-			//eslint-disable-next-line testing-library/await-async-query
-			const { quantity: newQuantity } = renderer.root.findByType(
-				'div'
-			).props;
+			const { quantity: newQuantity } =
+				renderer.root.findByType( 'div' ).props; //eslint-disable-line testing-library/await-async-query
 
 			expect( newQuantity ).toBe( 2 );
 		} );
@@ -126,8 +129,7 @@ describe( 'useStoreCartItemQuantity', () => {
 				);
 			} );
 
-			//eslint-disable-next-line testing-library/await-async-query
-			const { removeItem } = renderer.root.findByType( 'div' ).props;
+			const { removeItem } = renderer.root.findByType( 'div' ).props; //eslint-disable-line testing-library/await-async-query
 
 			act( () => {
 				removeItem();
@@ -148,8 +150,7 @@ describe( 'useStoreCartItemQuantity', () => {
 				);
 			} );
 
-			//eslint-disable-next-line testing-library/await-async-query
-			const { setItemQuantity } = renderer.root.findByType( 'div' ).props;
+			const { setItemQuantity } = renderer.root.findByType( 'div' ).props; //eslint-disable-line testing-library/await-async-query
 
 			act( () => {
 				setItemQuantity( 2 );
@@ -182,10 +183,8 @@ describe( 'useStoreCartItemQuantity', () => {
 			);
 		} );
 
-		//eslint-disable-next-line testing-library/await-async-query
-		const { cartItemQuantityErrors } = renderer.root.findByType(
-			'div'
-		).props;
+		const { cartItemQuantityErrors } =
+			renderer.root.findByType( 'div' ).props; //eslint-disable-line testing-library/await-async-query
 
 		expect( cartItemQuantityErrors ).toEqual( mockCartErrors );
 	} );
@@ -210,8 +209,7 @@ describe( 'useStoreCartItemQuantity', () => {
 			);
 		} );
 
-		//eslint-disable-next-line testing-library/await-async-query
-		const { isPendingDelete } = renderer.root.findByType( 'div' ).props;
+		const { isPendingDelete } = renderer.root.findByType( 'div' ).props; //eslint-disable-line testing-library/await-async-query
 
 		expect( isPendingDelete ).toBe( true );
 	} );

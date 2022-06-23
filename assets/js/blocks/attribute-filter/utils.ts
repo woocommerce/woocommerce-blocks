@@ -3,17 +3,21 @@
  */
 import { addQueryArgs, removeQueryArgs } from '@wordpress/url';
 import { QueryArgs } from '@wordpress/url/build-types/get-query-args';
-
-/**
- * Internal dependencies
- */
-import { getUrlParameter } from '../../utils/filters';
+import {
+	getUrlParameter,
+	PREFIX_QUERY_ARG_FILTER_TYPE,
+	PREFIX_QUERY_ARG_QUERY_TYPE,
+} from '@woocommerce/utils';
+import { AttributeObject } from '@woocommerce/types';
 
 interface Param {
 	attribute: string;
 	operator: string;
 	slug: Array< string >;
 }
+
+export const parseTaxonomyToGenerateURL = ( taxonomy: string ) =>
+	taxonomy.replace( 'pa_', '' );
 
 export const formatParams = ( url: string, params: Array< Param > = [] ) => {
 	const paramObject: Record< string, string > = {};
@@ -22,13 +26,13 @@ export const formatParams = ( url: string, params: Array< Param > = [] ) => {
 		const { attribute, slug, operator } = param;
 
 		// Custom filters are prefix with `pa_` so we need to remove this.
-		const name = attribute.replace( 'pa_', '' );
+		const name = parseTaxonomyToGenerateURL( attribute );
 		const values = slug.join( ',' );
-		const queryType = `query_type_${ name }`;
+		const queryType = `${ PREFIX_QUERY_ARG_QUERY_TYPE }${ name }`;
 		const type = operator === 'in' ? 'or' : 'and';
 
 		// The URL parameter requires the prefix filter_ with the attribute name.
-		paramObject[ `filter_${ name }` ] = values;
+		paramObject[ `${ PREFIX_QUERY_ARG_FILTER_TYPE }${ name }` ] = values;
 		paramObject[ queryType ] = type;
 	} );
 
@@ -48,7 +52,7 @@ export const areAllFiltersRemoved = ( {
 
 export const getActiveFilters = (
 	isFilteringForPhpTemplateEnabled: boolean,
-	attributeObject: Record< string, string > | undefined
+	attributeObject: AttributeObject | undefined
 ) => {
 	if ( isFilteringForPhpTemplateEnabled && attributeObject ) {
 		const defaultAttributeParam = getUrlParameter(
