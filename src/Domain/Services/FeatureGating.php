@@ -47,17 +47,21 @@ class FeatureGating {
 	 * Set correct flag.
 	 */
 	public function load_flag() {
+		var_dump("1-".$this->flag);
 		if ( 0 === $this->flag ) {
 			$default_flag = defined( 'WC_BLOCKS_IS_FEATURE_PLUGIN' ) ? self::FEATURE_PLUGIN_FLAG : self::CORE_FLAG;
-
+			var_dump("2-".$default_flag);
 			if ( file_exists( __DIR__ . '/../../../blocks.ini' ) ) {
 				$allowed_flags = [ self::EXPERIMENTAL_FLAG, self::FEATURE_PLUGIN_FLAG, self::CORE_FLAG ];
 				$woo_options   = parse_ini_file( __DIR__ . '/../../../blocks.ini' );
+				var_dump($woo_options);
 				$this->flag    = is_array( $woo_options ) && in_array( intval( $woo_options['woocommerce_blocks_phase'] ), $allowed_flags, true ) ? $woo_options['woocommerce_blocks_phase'] : $default_flag;
+				var_dump($this->flag);
 			} else {
 				$this->flag = $default_flag;
 			}
 		}
+		var_dump("3-".$this->flag);
 	}
 
 		/**
