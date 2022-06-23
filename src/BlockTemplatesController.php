@@ -66,6 +66,7 @@ class BlockTemplatesController {
 		add_filter( 'current_theme_supports-block-templates', array( $this, 'remove_block_template_support_for_shop_page' ) );
 
 		if ( $this->package->is_experimental_build() ) {
+			var_dump( 'experimental' );
 			add_action( 'after_switch_theme', array( $this, 'check_should_use_blockified_product_grid_templates' ), 10, 2 );
 		}
 	}
