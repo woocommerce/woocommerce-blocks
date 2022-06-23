@@ -12,8 +12,8 @@ import Title from '@woocommerce/base-components/title';
 import LoadingMask from '@woocommerce/base-components/loading-mask';
 import { CURRENT_USER_IS_ADMIN } from '@woocommerce/settings';
 import {
-	PAYMENT_METHOD_DATA_STORE_KEY,
 	CHECKOUT_STORE_KEY,
+	PAYMENT_METHOD_DATA_STORE_KEY,
 } from '@woocommerce/block-data';
 import { useSelect } from '@wordpress/data';
 

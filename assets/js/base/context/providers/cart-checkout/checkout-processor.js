@@ -16,13 +16,13 @@ import {
 } from '@woocommerce/base-utils';
 import { useDispatch, useSelect } from '@wordpress/data';
 import {
+	CHECKOUT_STORE_KEY,
+	PAYMENT_METHOD_DATA_STORE_KEY,
+} from '@woocommerce/block-data';
+import {
 	getPaymentMethods,
 	getExpressPaymentMethods,
 } from '@woocommerce/blocks-registry';
-import {
-	PAYMENT_METHOD_DATA_STORE_KEY,
-	CHECKOUT_STORE_KEY,
-} from '@woocommerce/block-data';
 
 /**
  * Internal dependencies

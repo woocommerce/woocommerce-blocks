@@ -38,6 +38,7 @@ export const usePaymentMethodInterface = (): PaymentMethodInterface => {
 		onCheckoutAfterProcessingWithError,
 		onSubmit,
 	} = useCheckoutEventsContext();
+
 	const { isCalculating, isComplete, isIdle, isProcessing, customerId } =
 		useSelect( ( select ) => {
 			const store = select( CHECKOUT_STORE_KEY );

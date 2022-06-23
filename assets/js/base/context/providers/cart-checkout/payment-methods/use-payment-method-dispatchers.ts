@@ -2,6 +2,8 @@
  * External dependencies
  */
 import { useCallback, useMemo } from '@wordpress/element';
+import { useDispatch } from '@wordpress/data';
+import { PAYMENT_METHOD_DATA_STORE_KEY } from '@woocommerce/block-data';
 
 /**
  * Internal dependencies
@@ -20,6 +22,10 @@ export const usePaymentMethodDataDispatchers = (
 	dispatchActions: PaymentMethodDispatchers;
 	setPaymentStatus: () => PaymentStatusDispatchers;
 } => {
+	const {
+		setPaymentMethodData,
+		setPaymentStatus: setDataStorePaymentStatus,
+	} = useDispatch( PAYMENT_METHOD_DATA_STORE_KEY );
 	const { setBillingAddress, setShippingAddress } = useCustomerData();
 
 	const dispatchActions = useMemo(
@@ -45,13 +51,13 @@ export const usePaymentMethodDataDispatchers = (
 
 	const setPaymentStatus = useCallback(
 		(): PaymentStatusDispatchers => ( {
-			pristine: () => dispatch( actions.statusOnly( STATUS.PRISTINE ) ),
-			started: () => dispatch( actions.statusOnly( STATUS.STARTED ) ),
+			pristine: () => setDataStorePaymentStatus( { isPristine: true } ),
+			started: () => setDataStorePaymentStatus( { isStarted: true } ),
 			processing: () =>
-				dispatch( actions.statusOnly( STATUS.PROCESSING ) ),
+				setDataStorePaymentStatus( { isProcessing: true } ),
 			completed: () => dispatch( actions.statusOnly( STATUS.COMPLETE ) ),
 			error: ( errorMessage ) =>
-				dispatch( actions.error( errorMessage ) ),
+				setDataStorePaymentStatus( { hasError: true }, errorMessage ),
 			failed: (
 				errorMessage,
 				paymentMethodData,
@@ -60,11 +66,10 @@ export const usePaymentMethodDataDispatchers = (
 				if ( billingAddress ) {
 					setBillingAddress( billingAddress );
 				}
-				dispatch(
-					actions.failed( {
-						errorMessage: errorMessage || '',
-						paymentMethodData: paymentMethodData || {},
-					} )
+				setDataStorePaymentStatus(
+					{ hasFailed: true },
+					( errorMessage = errorMessage || '' ),
+					paymentMethodData
 				);
 			},
 			success: (
@@ -83,14 +88,19 @@ export const usePaymentMethodDataDispatchers = (
 						shippingData.address as Record< string, unknown >
 					);
 				}
-				dispatch(
-					actions.success( {
-						paymentMethodData,
-					} )
-				);
+				setPaymentMethodData( paymentMethodData );
+				setDataStorePaymentStatus( {
+					isSuccessful: true,
+				} );
 			},
 		} ),
-		[ dispatch, setBillingAddress, setShippingAddress ]
+		[
+			dispatch,
+			setBillingAddress,
+			setShippingAddress,
+			setPaymentMethodData,
+			setDataStorePaymentStatus,
+		]
 	);
 
 	return {

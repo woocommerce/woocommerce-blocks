@@ -11,11 +11,11 @@ import {
 	useMemo,
 } from '@wordpress/element';
 import { objectHasProp } from '@woocommerce/types';
-import {
-	PAYMENT_METHOD_DATA_STORE_KEY,
-	CHECKOUT_STORE_KEY,
-} from '@woocommerce/block-data';
 import { useDispatch, useSelect } from '@wordpress/data';
+import {
+	CHECKOUT_STORE_KEY,
+	PAYMENT_METHOD_DATA_STORE_KEY,
+} from '@woocommerce/block-data';
 
 /**
  * Internal dependencies
@@ -77,6 +77,13 @@ export const PaymentMethodDataProvider = ( {
 			isIdle: store.isIdle(),
 			hasError: store.hasError(),
 			isCalculating: store.isCalculating(),
+		};
+	} );
+	const { currentStatus: dataStoreCurrentStatus } = useSelect( ( select ) => {
+		const store = select( PAYMENT_METHOD_DATA_STORE_KEY );
+
+		return {
+			currentStatus: store.getCurrentStatus(),
 		};
 	} );
 	const { isEditor, getPreviewData } = useEditorContext();
@@ -157,22 +164,22 @@ export const PaymentMethodDataProvider = ( {
 
 	const currentStatus = useMemo(
 		() => ( {
-			isPristine: paymentData.currentStatus === STATUS.PRISTINE,
-			isStarted: paymentData.currentStatus === STATUS.STARTED,
-			isProcessing: paymentData.currentStatus === STATUS.PROCESSING,
-			isFinished: [
-				STATUS.ERROR,
-				STATUS.FAILED,
-				STATUS.SUCCESS,
-			].includes( paymentData.currentStatus ),
-			hasError: paymentData.currentStatus === STATUS.ERROR,
-			hasFailed: paymentData.currentStatus === STATUS.FAILED,
-			isSuccessful: paymentData.currentStatus === STATUS.SUCCESS,
+			isPristine: dataStoreCurrentStatus.isPristine,
+			isStarted: dataStoreCurrentStatus.isStarted,
+			isProcessing: dataStoreCurrentStatus.isProcessing,
+			isFinished: dataStoreCurrentStatus.isFinished,
+			hasError: dataStoreCurrentStatus.hasError,
+			hasFailed: dataStoreCurrentStatus.hasFailed,
+			isSuccessful: dataStoreCurrentStatus.isSuccessful,
 			isDoingExpressPayment:
 				paymentData.currentStatus !== STATUS.PRISTINE &&
 				isExpressPaymentMethodActive,
 		} ),
-		[ paymentData.currentStatus, isExpressPaymentMethodActive ]
+		[
+			paymentData.currentStatus,
+			isExpressPaymentMethodActive,
+			dataStoreCurrentStatus,
+		]
 	);
 
 	// /**
@@ -252,6 +259,7 @@ export const PaymentMethodDataProvider = ( {
 		checkoutIsCalculating,
 		currentStatus.isFinished,
 		setPaymentStatus,
+		setDataStorePaymentStatus,
 	] );
 
 	// When checkout is returned to idle, set payment status to pristine but only if payment status is already not finished.
@@ -260,7 +268,12 @@ export const PaymentMethodDataProvider = ( {
 			setPaymentStatus().pristine();
 			setDataStorePaymentStatus( STATUS.PRISTINE );
 		}
-	}, [ checkoutIsIdle, currentStatus.isSuccessful, setPaymentStatus ] );
+	}, [
+		checkoutIsIdle,
+		currentStatus.isSuccessful,
+		setPaymentStatus,
+		setDataStorePaymentStatus,
+	] );
 
 	// if checkout has an error sync payment status back to pristine.
 	useEffect( () => {
@@ -268,7 +281,12 @@ export const PaymentMethodDataProvider = ( {
 			setPaymentStatus().pristine();
 			setDataStorePaymentStatus( STATUS.PRISTINE );
 		}
-	}, [ checkoutHasError, currentStatus.isSuccessful, setPaymentStatus ] );
+	}, [
+		checkoutHasError,
+		currentStatus.isSuccessful,
+		setPaymentStatus,
+		setDataStorePaymentStatus,
+	] );
 
 	useEffect( () => {
 		// Note: the nature of this event emitter is that it will bail on any
@@ -338,7 +356,10 @@ export const PaymentMethodDataProvider = ( {
 				} else {
 					// otherwise there are no payment methods doing anything so
 					// just consider success
-					setPaymentStatus().success();
+					// setPaymentStatus().success();
+					setDataStorePaymentStatus( {
+						isSuccessful: true,
+					} );
 				}
 			} );
 		}
@@ -352,6 +373,7 @@ export const PaymentMethodDataProvider = ( {
 		isFailResponse,
 		isErrorResponse,
 		addErrorNotice,
+		setDataStorePaymentStatus,
 	] );
 
 	const activeSavedToken =
