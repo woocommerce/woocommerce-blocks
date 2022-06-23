@@ -163,7 +163,7 @@ run_command "git checkout -- composer.json" true
 output 2 "Committing version change..."
 echo
 
-run_command "git commit -am 'Bumping version strings to new bbb.' --no-verify" true
+run_command "git commit -am 'Bumping version strings to new version.' --no-verify" true
 run_command "git push origin $CURRENTBRANCH" false
 
 # Tag existing version for reference
