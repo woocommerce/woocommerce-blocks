@@ -179,6 +179,8 @@ const hasTemplateSupportForClassicTemplateBlock = (
 	parsedTemplate: string | undefined
 ) => parsedTemplate && templates.includes( parsedTemplate );
 
+// @todo Refactor when there will be possible to show a block according on a template/post with a Gutenberg API. https://github.com/WordPress/gutenberg/pull/41718
+
 if ( isExperimentalBuild() ) {
 	subscribe( () => {
 		const previousValue = currentValue;
