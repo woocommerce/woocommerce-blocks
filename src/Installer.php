@@ -10,12 +10,6 @@ namespace Automattic\WooCommerce\Blocks;
 class Installer {
 
 	/**
-	 * Reference to the Package instance
-	 *
-	 * @var Package
-	 */
-	private $package;
-	/**
 	 * Constructor
 	 */
 	public function __construct() {

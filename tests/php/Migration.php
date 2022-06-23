@@ -5,8 +5,6 @@ namespace Automattic\WooCommerce\Blocks\Tests\Utils;
 use Automattic\WooCommerce\Blocks\Migration;
 use Automattic\WooCommerce\Blocks\Options;
 
-
-
 class MigrationTest extends \WP_UnitTestCase {
 	public function setUp() {
 		parent::setUp();

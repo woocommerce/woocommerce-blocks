@@ -3,7 +3,6 @@ namespace Automattic\WooCommerce\Blocks;
 
 use Automattic\WooCommerce\Blocks\Options;
 
-
 /**
  * Takes care of the migrations.
  *

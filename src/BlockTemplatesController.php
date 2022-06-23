@@ -52,7 +52,10 @@ class BlockTemplatesController {
 		add_filter( 'pre_get_block_file_template', array( $this, 'get_block_file_template' ), 10, 3 );
 		add_filter( 'get_block_templates', array( $this, 'add_block_templates' ), 10, 3 );
 		add_filter( 'current_theme_supports-block-templates', array( $this, 'remove_block_template_support_for_shop_page' ) );
-		add_action( 'after_switch_theme', array( $this, 'check_should_use_blockified_product_grid_templates' ), 10, 2 );
+
+		if ( Package::feature()->is_experimental_build() ) {
+			add_action( 'after_switch_theme', array( $this, 'check_should_use_blockified_product_grid_templates' ), 10, 2 );
+		}
 	}
 
 	/**
@@ -283,7 +286,10 @@ class BlockTemplatesController {
 		$templates      = array();
 
 		foreach ( $template_files as $template_file ) {
-			if ( ! BlockTemplateUtils::should_use_blockified_product_grid_templates() && strpos( $template_file, 'blockified' ) !== false ) {
+			// Skip the template if it's blockified, and we should only use classic ones.
+			if ( Package::feature()->is_experimental_build() &&
+				! BlockTemplateUtils::should_use_blockified_product_grid_templates() &&
+				strpos( $template_file, 'blockified' ) !== false ) {
 				continue;
 			}
 
@@ -353,7 +359,7 @@ class BlockTemplatesController {
 			return $this->template_parts_directory;
 		}
 
-		if ( BlockTemplateUtils::should_use_blockified_product_grid_templates() ) {
+		if ( Package::feature()->is_experimental_build() && BlockTemplateUtils::should_use_blockified_product_grid_templates() ) {
 			return $this->templates_directory . '/blockified';
 		}
 
