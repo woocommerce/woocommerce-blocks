@@ -71,7 +71,7 @@ const siteCurrencySettings: Currency = {
  */
 export const getCurrencyFromPriceResponse = (
 	// Currency data object, for example an API response containing currency formatting data.
-	currencyData:
+	currencyData?:
 		| CurrencyResponse
 		| Record< string, never >
 		| CartShippingPackageShippingRate
@@ -178,13 +178,8 @@ export const formatPrice = (
 
 	const currency: Currency = getCurrency( currencyData );
 
-	const {
-		minorUnit,
-		prefix,
-		suffix,
-		decimalSeparator,
-		thousandSeparator,
-	} = currency;
+	const { minorUnit, prefix, suffix, decimalSeparator, thousandSeparator } =
+		currency;
 
 	const formattedPrice: number = priceInt / 10 ** minorUnit;
 
