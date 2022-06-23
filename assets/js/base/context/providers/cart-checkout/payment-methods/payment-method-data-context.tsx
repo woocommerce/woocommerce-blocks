@@ -11,8 +11,11 @@ import {
 	useMemo,
 } from '@wordpress/element';
 import { objectHasProp } from '@woocommerce/types';
+import {
+	PAYMENT_METHOD_DATA_STORE_KEY,
+	CHECKOUT_STORE_KEY,
+} from '@woocommerce/block-data';
 import { useDispatch, useSelect } from '@wordpress/data';
-import { CHECKOUT_STORE_KEY } from '@woocommerce/block-data';
 
 /**
  * Internal dependencies
@@ -100,6 +103,10 @@ export const PaymentMethodDataProvider = ( {
 		DEFAULT_PAYMENT_DATA_CONTEXT_STATE
 	);
 
+	const { setPaymentStatus: setDataStorePaymentStatus } = useDispatch(
+		PAYMENT_METHOD_DATA_STORE_KEY
+	);
+
 	const { dispatchActions, setPaymentStatus } =
 		usePaymentMethodDataDispatchers( dispatch );
 
@@ -168,65 +175,65 @@ export const PaymentMethodDataProvider = ( {
 		[ paymentData.currentStatus, isExpressPaymentMethodActive ]
 	);
 
-	/**
-	 * Active Gateway Selection
-	 *
-	 * Updates the active (selected) payment method when it is empty, or invalid. This uses the first saved payment
-	 * method found (if applicable), or the first standard gateway.
-	 */
-	useEffect( () => {
-		const paymentMethodKeys = Object.keys( paymentData.paymentMethods );
-
-		if ( ! paymentMethodsInitialized || ! paymentMethodKeys.length ) {
-			return;
-		}
-
-		const allPaymentMethodKeys = [
-			...paymentMethodKeys,
-			...Object.keys( paymentData.expressPaymentMethods ),
-		];
-
-		// Return if current method is valid.
-		if (
-			paymentData.activePaymentMethod &&
-			allPaymentMethodKeys.includes( paymentData.activePaymentMethod )
-		) {
-			return;
-		}
-
-		setPaymentStatus().pristine();
-
-		const customerPaymentMethod =
-			Object.keys( customerPaymentMethods ).flatMap(
-				( type ) => customerPaymentMethods[ type ]
-			)[ 0 ] || undefined;
-
-		if ( customerPaymentMethod ) {
-			const token = customerPaymentMethod.tokenId.toString();
-			const paymentMethodSlug = customerPaymentMethod.method.gateway;
-			const savedTokenKey = `wc-${ paymentMethodSlug }-payment-token`;
-
-			dispatchActions.setActivePaymentMethod( paymentMethodSlug, {
-				token,
-				payment_method: paymentMethodSlug,
-				[ savedTokenKey ]: token,
-				isSavedToken: true,
-			} );
-			return;
-		}
-
-		dispatchActions.setActivePaymentMethod(
-			Object.keys( paymentData.paymentMethods )[ 0 ]
-		);
-	}, [
-		paymentMethodsInitialized,
-		paymentData.paymentMethods,
-		paymentData.expressPaymentMethods,
-		dispatchActions,
-		setPaymentStatus,
-		paymentData.activePaymentMethod,
-		customerPaymentMethods,
-	] );
+	// /**
+	//  * Active Gateway Selection
+	//  *
+	//  * Updates the active (selected) payment method when it is empty, or invalid. This uses the first saved payment
+	//  * method found (if applicable), or the first standard gateway.
+	//  */
+	// useEffect( () => {
+	// 	const paymentMethodKeys = Object.keys( paymentData.paymentMethods );
+	//
+	// 	if ( ! paymentMethodsInitialized || ! paymentMethodKeys.length ) {
+	// 		return;
+	// 	}
+	//
+	// 	const allPaymentMethodKeys = [
+	// 		...paymentMethodKeys,
+	// 		...Object.keys( paymentData.expressPaymentMethods ),
+	// 	];
+	//
+	// 	// Return if current method is valid.
+	// 	if (
+	// 		paymentData.activePaymentMethod &&
+	// 		allPaymentMethodKeys.includes( paymentData.activePaymentMethod )
+	// 	) {
+	// 		return;
+	// 	}
+	//
+	// 	setPaymentStatus().pristine();
+	//
+	// 	const customerPaymentMethod =
+	// 		Object.keys( customerPaymentMethods ).flatMap(
+	// 			( type ) => customerPaymentMethods[ type ]
+	// 		)[ 0 ] || undefined;
+	//
+	// 	if ( customerPaymentMethod ) {
+	// 		const token = customerPaymentMethod.tokenId.toString();
+	// 		const paymentMethodSlug = customerPaymentMethod.method.gateway;
+	// 		const savedTokenKey = `wc-${ paymentMethodSlug }-payment-token`;
+	//
+	// 		dispatchActions.setActivePaymentMethod( paymentMethodSlug, {
+	// 			token,
+	// 			payment_method: paymentMethodSlug,
+	// 			[ savedTokenKey ]: token,
+	// 			isSavedToken: true,
+	// 		} );
+	// 		return;
+	// 	}
+	//
+	// 	dispatchActions.setActivePaymentMethod(
+	// 		Object.keys( paymentData.paymentMethods )[ 0 ]
+	// 	);
+	// }, [
+	// 	paymentMethodsInitialized,
+	// 	paymentData.paymentMethods,
+	// 	paymentData.expressPaymentMethods,
+	// 	dispatchActions,
+	// 	setPaymentStatus,
+	// 	paymentData.activePaymentMethod,
+	// 	customerPaymentMethods,
+	// ] );
 
 	// flip payment to processing if checkout processing is complete, there are no errors, and payment status is started.
 	useEffect( () => {
@@ -237,6 +244,7 @@ export const PaymentMethodDataProvider = ( {
 			! currentStatus.isFinished
 		) {
 			setPaymentStatus().processing();
+			setDataStorePaymentStatus( STATUS.PROCESSING );
 		}
 	}, [
 		checkoutIsProcessing,
@@ -250,6 +258,7 @@ export const PaymentMethodDataProvider = ( {
 	useEffect( () => {
 		if ( checkoutIsIdle && ! currentStatus.isSuccessful ) {
 			setPaymentStatus().pristine();
+			setDataStorePaymentStatus( STATUS.PRISTINE );
 		}
 	}, [ checkoutIsIdle, currentStatus.isSuccessful, setPaymentStatus ] );
 
@@ -257,6 +266,7 @@ export const PaymentMethodDataProvider = ( {
 	useEffect( () => {
 		if ( checkoutHasError && currentStatus.isSuccessful ) {
 			setPaymentStatus().pristine();
+			setDataStorePaymentStatus( STATUS.PRISTINE );
 		}
 	}, [ checkoutHasError, currentStatus.isSuccessful, setPaymentStatus ] );
 
@@ -291,6 +301,7 @@ export const PaymentMethodDataProvider = ( {
 						successResponse?.meta?.billingAddress,
 						successResponse?.meta?.shippingData
 					);
+					setDataStorePaymentStatus( STATUS.SUCCESS );
 				} else if ( errorResponse && isFailResponse( errorResponse ) ) {
 					if (
 						errorResponse.message &&

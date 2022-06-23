@@ -7,11 +7,12 @@ import { usePaymentMethodDataContext } from '@woocommerce/base-context';
 import RadioControl from '@woocommerce/base-components/radio-control';
 import {
 	usePaymentMethodInterface,
-	usePaymentMethods,
 	useStoreEvents,
 	useEmitResponse,
 } from '@woocommerce/base-context/hooks';
-import { useDispatch } from '@wordpress/data';
+import { PAYMENT_METHOD_DATA_STORE_KEY } from '@woocommerce/block-data';
+import { useDispatch, useSelect } from '@wordpress/data';
+import { getPaymentMethods } from '@woocommerce/blocks-registry';
 
 /**
  * @typedef {import('@woocommerce/type-defs/contexts').CustomerPaymentMethod} CustomerPaymentMethod
@@ -63,13 +64,19 @@ const getDefaultLabel = ( { method } ) => {
 };
 
 const SavedPaymentMethodOptions = () => {
-	const {
-		customerPaymentMethods,
-		activePaymentMethod,
-		setActivePaymentMethod,
-		activeSavedToken,
-	} = usePaymentMethodDataContext();
-	const { paymentMethods } = usePaymentMethods();
+	const { customerPaymentMethods } = usePaymentMethodDataContext();
+
+	const { activeSavedToken, activePaymentMethod } = useSelect( ( select ) => {
+		const store = select( PAYMENT_METHOD_DATA_STORE_KEY );
+		return {
+			activeSavedToken: store.getActiveSavedToken(),
+			activePaymentMethod: store.getActivePaymentMethod(),
+		};
+	} );
+	const { setActivePaymentMethod } = useDispatch(
+		PAYMENT_METHOD_DATA_STORE_KEY
+	);
+	const paymentMethods = getPaymentMethods();
 	const paymentMethodInterface = usePaymentMethodInterface();
 	const { noticeContexts } = useEmitResponse();
 	const { removeNotice } = useDispatch( 'core/notices' );
@@ -119,7 +126,6 @@ const SavedPaymentMethodOptions = () => {
 		noticeContexts.PAYMENTS,
 		dispatchCheckoutEvent,
 	] );
-
 	const savedPaymentMethodHandler =
 		!! activeSavedToken &&
 		paymentMethods[ activePaymentMethod ] &&

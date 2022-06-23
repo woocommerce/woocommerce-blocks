@@ -2,7 +2,6 @@
  * External dependencies
  */
 import {
-	usePaymentMethods,
 	usePaymentMethodInterface,
 	useEmitResponse,
 	useStoreEvents,
@@ -14,12 +13,14 @@ import {
 } from '@woocommerce/base-context';
 import classNames from 'classnames';
 import RadioControlAccordion from '@woocommerce/base-components/radio-control-accordion';
-import { useDispatch } from '@wordpress/data';
+import { useDispatch, useSelect } from '@wordpress/data';
+import { getPaymentMethods } from '@woocommerce/blocks-registry';
 
 /**
  * Internal dependencies
  */
 import PaymentMethodCard from './payment-method-card';
+import { STORE_KEY as PAYMENT_METHOD_DATA_STORE_KEY } from '../../../data/payment-methods/constants';
 
 /**
  * Component used to render all non-saved payment method options.
@@ -27,21 +28,34 @@ import PaymentMethodCard from './payment-method-card';
  * @return {*} The rendered component.
  */
 const PaymentMethodOptions = () => {
-	const {
-		setActivePaymentMethod,
-		activeSavedToken,
-		isExpressPaymentMethodActive,
-		customerPaymentMethods,
-	} = usePaymentMethodDataContext();
-	const { paymentMethods } = usePaymentMethods();
-	const { activePaymentMethod, ...paymentMethodInterface } =
-		usePaymentMethodInterface();
+	const { isExpressPaymentMethodActive, customerPaymentMethods } =
+		usePaymentMethodDataContext();
+
+	const { activeSavedToken, activePaymentMethod } = useSelect( ( select ) => {
+		const store = select( PAYMENT_METHOD_DATA_STORE_KEY );
+		return {
+			activeSavedToken: store.getActiveSavedToken(),
+			activePaymentMethod: store.getActivePaymentMethod(),
+		};
+	} );
+	const { setActivePaymentMethod } = useDispatch(
+		PAYMENT_METHOD_DATA_STORE_KEY
+	);
+	const paymentMethods = getPaymentMethods();
+	const { availablePaymentMethods } = useSelect( ( select ) => {
+		const store = select( PAYMENT_METHOD_DATA_STORE_KEY );
+		return {
+			availablePaymentMethods: store.getAvailablePaymentMethods(),
+		};
+	} );
+	const { ...paymentMethodInterface } = usePaymentMethodInterface();
+
 	const { noticeContexts } = useEmitResponse();
 	const { removeNotice } = useDispatch( 'core/notices' );
 	const { dispatchCheckoutEvent } = useStoreEvents();
 	const { isEditor } = useEditorContext();
 
-	const options = Object.keys( paymentMethods ).map( ( name ) => {
+	const options = availablePaymentMethods.map( ( name ) => {
 		const { edit, content, label, supports } = paymentMethods[ name ];
 		const component = isEditor ? edit : content;
 		return {
@@ -87,7 +101,6 @@ const PaymentMethodOptions = () => {
 	const singleOptionClass = classNames( {
 		'disable-radio-control': isSinglePaymentMethod,
 	} );
-
 	return isExpressPaymentMethodActive ? null : (
 		<RadioControlAccordion
 			id={ 'wc-payment-method-options' }

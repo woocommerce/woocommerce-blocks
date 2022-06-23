@@ -2,7 +2,6 @@
  * External dependencies
  */
 import {
-	PaymentMethodConfiguration,
 	PaymentMethods,
 	ExpressPaymentMethods,
 } from '@woocommerce/type-defs/payments';
@@ -16,15 +15,20 @@ import type {
 import type { emitterCallback } from '../../../event-emit';
 import { STATUS } from './constants';
 
+export interface CustomerPaymentMethodConfiguration {
+	gateway: string;
+	brand: string;
+	last4: string;
+}
 export interface CustomerPaymentMethod {
-	method: PaymentMethodConfiguration;
+	method: CustomerPaymentMethodConfiguration;
 	expires: string;
 	is_default: boolean;
 	tokenId: number;
 	actions: ObjectType;
 }
 export type CustomerPaymentMethods =
-	| Record< string, CustomerPaymentMethod >
+	| Record< string, CustomerPaymentMethod[] >
 	| EmptyObjectType;
 
 export interface PaymentMethodDispatchers {
@@ -32,7 +36,6 @@ export interface PaymentMethodDispatchers {
 	setRegisteredExpressPaymentMethods: (
 		paymentMethods: ExpressPaymentMethods
 	) => void;
-	setShouldSavePayment: ( shouldSave: boolean ) => void;
 	setActivePaymentMethod: (
 		paymentMethod: string,
 		paymentMethodData?: ObjectType | EmptyObjectType

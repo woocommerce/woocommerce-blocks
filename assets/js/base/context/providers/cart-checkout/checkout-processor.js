@@ -15,7 +15,14 @@ import {
 	formatStoreApiErrorMessage,
 } from '@woocommerce/base-utils';
 import { useDispatch, useSelect } from '@wordpress/data';
-import { CHECKOUT_STORE_KEY } from '@woocommerce/block-data';
+import {
+	getPaymentMethods,
+	getExpressPaymentMethods,
+} from '@woocommerce/blocks-registry';
+import {
+	PAYMENT_METHOD_DATA_STORE_KEY,
+	CHECKOUT_STORE_KEY,
+} from '@woocommerce/block-data';
 
 /**
  * Internal dependencies
@@ -63,16 +70,27 @@ const CheckoutProcessor = () => {
 	const { billingAddress, shippingAddress } = useCustomerDataContext();
 	const { cartNeedsPayment, cartNeedsShipping, receiveCart } = useStoreCart();
 	const {
-		activePaymentMethod,
 		isExpressPaymentMethodActive,
 		currentStatus: currentPaymentStatus,
-		paymentMethodData,
-		expressPaymentMethods,
-		paymentMethods,
 		shouldSavePayment,
 	} = usePaymentMethodDataContext();
 	const { setIsSuppressed } = useStoreNoticesContext();
 	const { createErrorNotice, removeNotice } = useDispatch( 'core/notices' );
+
+	const { activePaymentMethod, paymentMethodData } = useSelect(
+		( select ) => {
+			const store = select( PAYMENT_METHOD_DATA_STORE_KEY );
+
+			return {
+				activePaymentMethod: store.getActivePaymentMethod(),
+				paymentMethodData: store.getPaymentMethodData(),
+			};
+		},
+		[]
+	);
+
+	const paymentMethods = getPaymentMethods();
+	const expressPaymentMethods = getExpressPaymentMethods();
 	const currentBillingAddress = useRef( billingAddress );
 	const currentShippingAddress = useRef( shippingAddress );
 	const currentRedirectUrl = useRef( redirectUrl );
