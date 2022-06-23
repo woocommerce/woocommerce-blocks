@@ -2,6 +2,7 @@
  * External dependencies
  */
 import {
+	Block,
 	createBlock,
 	getBlockType,
 	registerBlockType,
@@ -107,95 +108,123 @@ const Edit = ( { clientId, attributes }: Props ) => {
 let currentValue: string | undefined;
 const templates = Object.keys( TEMPLATES );
 
-subscribe( () => {
-	const previousValue = currentValue;
-
-	const store = select( 'core/edit-site' );
-	currentValue = store?.getEditedPostId() as string | undefined;
-
-	if ( previousValue === currentValue ) {
-		return;
-	}
-
-	const parsedTemplate = currentValue?.replace(
-		'woocommerce/woocommerce//',
-		''
-	);
-
-	if (
-		parsedTemplate &&
-		! templates.includes( parsedTemplate ) &&
-		getBlockType( BLOCK_SLUG ) !== undefined
-	) {
-		unregisterBlockType( BLOCK_SLUG );
-		return;
-	}
-
-	if (
-		getBlockType( BLOCK_SLUG ) === undefined &&
-		parsedTemplate &&
-		templates.includes( parsedTemplate )
-	) {
-		/**
-		 * The 'WooCommerce Legacy Template' block was renamed to 'WooCommerce Classic Template', however, the internal block
-		 * name 'woocommerce/legacy-template' needs to remain the same. Otherwise, it would result in a corrupt block when
-		 * loaded for users who have customized templates using the legacy-template (since the internal block name is
-		 * stored in the database).
-		 *
-		 * See https://github.com/woocommerce/woocommerce-gutenberg-products-block/issues/5861 for more context
-		 */
-		registerBlockType( BLOCK_SLUG, {
-			title: TEMPLATES[ parsedTemplate ].title,
-			icon: (
-				<Icon
-					icon={ box }
-					className="wc-block-editor-components-block-icon"
-				/>
-			),
-			category: 'woocommerce',
-			apiVersion: 2,
-			keywords: [ __( 'WooCommerce', 'woo-gutenberg-products-block' ) ],
-			description: __(
-				'Renders classic WooCommerce PHP templates.',
-				'woo-gutenberg-products-block'
-			),
-			supports: {
-				align: [ 'wide', 'full' ],
-				html: false,
-				multiple: false,
-				reusable: false,
-				inserter: true,
-			},
-			example: {
-				attributes: {
-					isPreview: true,
-				},
-			},
+const registerClassicTemplateBlock = ( template?: string ) => {
+	registerBlockType( BLOCK_SLUG, {
+		title: template
+			? TEMPLATES[ template ].title
+			: __(
+					'WooCommerce Classic Template',
+					'woo-gutenberg-products-block'
+			  ),
+		icon: (
+			<Icon
+				icon={ box }
+				className="wc-block-editor-components-block-icon"
+			/>
+		),
+		category: 'woocommerce',
+		apiVersion: 2,
+		keywords: [ __( 'WooCommerce', 'woo-gutenberg-products-block' ) ],
+		description: __(
+			'Renders classic WooCommerce PHP templates.',
+			'woo-gutenberg-products-block'
+		),
+		supports: {
+			align: [ 'wide', 'full' ],
+			html: false,
+			multiple: false,
+			reusable: false,
+			inserter: true,
+		},
+		example: {
 			attributes: {
-				/**
-				 * Template attribute is used to determine which core PHP template gets rendered.
-				 */
-				template: {
-					type: 'string',
-					default: 'any',
-				},
-				align: {
-					type: 'string',
-					default: 'wide',
-				},
+				isPreview: true,
 			},
-			edit: ( { attributes, clientId } ) => {
-				return (
-					<Edit
-						attributes={ {
-							...attributes,
-							template: parsedTemplate,
-						} }
-						clientId={ clientId }
-					/>
-				);
+		},
+		attributes: {
+			/**
+			 * Template attribute is used to determine which core PHP template gets rendered.
+			 */
+			template: {
+				type: 'string',
+				default: 'any',
 			},
-			save: () => null,
-		} );
-	}
-} );
+			align: {
+				type: 'string',
+				default: 'wide',
+			},
+		},
+		edit: ( { attributes, clientId } ) => {
+			return (
+				<Edit
+					attributes={ {
+						...attributes,
+						template: template ?? ( attributes.template as string ),
+					} }
+					clientId={ clientId }
+				/>
+			);
+		},
+		save: () => null,
+	} );
+};
+
+const isClassicTemplateBlockRegisteredWithAnotherTitle = (
+	// eslint-disable-next-line @typescript-eslint/no-explicit-any
+	block: Block< any > | undefined,
+	parsedTemplate: string | undefined
+) => parsedTemplate && block?.title !== TEMPLATES[ parsedTemplate ].title;
+
+const hasTemplateSupportForClassicTemplateBlock = (
+	parsedTemplate: string | undefined
+) => parsedTemplate && templates.includes( parsedTemplate );
+
+if ( isExperimentalBuild() ) {
+	subscribe( () => {
+		const previousValue = currentValue;
+
+		const store = select( 'core/edit-site' );
+		currentValue = store?.getEditedPostId() as string | undefined;
+
+		if ( previousValue === currentValue ) {
+			return;
+		}
+
+		const parsedTemplate = currentValue?.replace(
+			'woocommerce/woocommerce//',
+			''
+		);
+
+		const block = getBlockType( BLOCK_SLUG );
+
+		if (
+			block !== undefined &&
+			( ! hasTemplateSupportForClassicTemplateBlock( parsedTemplate ) ||
+				isClassicTemplateBlockRegisteredWithAnotherTitle(
+					block,
+					parsedTemplate
+				) )
+		) {
+			unregisterBlockType( BLOCK_SLUG );
+			currentValue = undefined;
+			return;
+		}
+
+		if (
+			getBlockType( BLOCK_SLUG ) === undefined &&
+			hasTemplateSupportForClassicTemplateBlock( parsedTemplate )
+		) {
+			/**
+			 * The 'WooCommerce Legacy Template' block was renamed to 'WooCommerce Classic Template', however, the internal block
+			 * name 'woocommerce/legacy-template' needs to remain the same. Otherwise, it would result in a corrupt block when
+			 * loaded for users who have customized templates using the legacy-template (since the internal block name is
+			 * stored in the database).
+			 *
+			 * See https://github.com/woocommerce/woocommerce-gutenberg-products-block/issues/5861 for more context
+			 */
+			registerClassicTemplateBlock( parsedTemplate );
+		}
+	} );
+} else {
+	registerClassicTemplateBlock();
+}

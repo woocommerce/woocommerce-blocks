@@ -34,4 +34,11 @@ export const TEMPLATES: Record< string, Record< string, string > > = {
 		),
 		placeholder: 'archive-product',
 	},
+	'product-search-results': {
+		title: __(
+			'WooCommerce Product Search Results Block',
+			'woo-gutenberg-products-block'
+		),
+		placeholder: 'archive-product',
+	},
 };
