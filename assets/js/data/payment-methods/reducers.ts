@@ -3,6 +3,7 @@
  */
 import type { Reducer } from 'redux';
 import { objectHasProp } from '@woocommerce/types';
+import { PaymentMethods } from '@woocommerce/type-defs/payments';
 
 /**
  * Internal dependencies
@@ -49,27 +50,53 @@ const reducer: Reducer< PaymentMethodDataState > = (
 		case ACTION_TYPES.ADD_REGISTERED_PAYMENT_METHOD:
 			state = {
 				...state,
-				registeredPaymentMethods: [
+				registeredPaymentMethods: {
 					...state.registeredPaymentMethods,
-					action.name,
-				],
+					[ action.registeredPaymentMethod.name ]:
+						action.registeredPaymentMethod,
+				},
+			};
+			break;
+		case ACTION_TYPES.SET_REGISTERED_PAYMENT_METHODS:
+			state = {
+				...state,
+				registeredPaymentMethods: {
+					...state.registeredPaymentMethods,
+					...( action.paymentMethods as PaymentMethods ),
+				},
 			};
 			break;
 		case ACTION_TYPES.REMOVE_REGISTERED_PAYMENT_METHOD:
+			const previousRegisteredPaymentMethods = {
+				...state.registeredPaymentMethods,
+			};
+			delete previousRegisteredPaymentMethods[
+				action.registeredPaymentMethod.name
+			];
 			state = {
 				...state,
-				registeredPaymentMethods: state.registeredPaymentMethods.filter(
-					( name ) => name !== action.name
-				),
+				registeredPaymentMethods: {
+					...previousRegisteredPaymentMethods,
+				},
 			};
 			break;
 		case ACTION_TYPES.ADD_REGISTERED_EXPRESS_PAYMENT_METHOD:
 			state = {
 				...state,
-				registeredExpressPaymentMethods: [
+				registeredExpressPaymentMethods: {
 					...state.registeredExpressPaymentMethods,
-					action.name,
-				],
+					[ action.registeredExpressPaymentMethods.name ]:
+						action.registeredExpressPaymentMethods,
+				},
+			};
+			break;
+		case ACTION_TYPES.SET_REGISTERED_EXPRESS_PAYMENT_METHOD:
+			state = {
+				...state,
+				registeredExpressPaymentMethods: {
+					...state.registeredExpressPaymentMethods,
+					...( action.paymentMethods as PaymentMethods ),
+				},
 			};
 			break;
 		case ACTION_TYPES.SET_PAYMENT_METHODS_INITIALIZED:
@@ -97,12 +124,17 @@ const reducer: Reducer< PaymentMethodDataState > = (
 			};
 			break;
 		case ACTION_TYPES.REMOVE_REGISTERED_EXPRESS_PAYMENT_METHOD:
+			const previousExpressRegisteredPaymentMethods = {
+				...state.registeredPaymentMethods,
+			};
+			delete previousExpressRegisteredPaymentMethods[
+				action.registeredExpressPaymentMethods.name
+			];
 			state = {
 				...state,
-				registeredExpressPaymentMethods:
-					state.registeredExpressPaymentMethods.filter(
-						( name ) => name !== action.name
-					),
+				registeredExpressPaymentMethods: {
+					...previousExpressRegisteredPaymentMethods,
+				},
 			};
 			break;
 		case ACTION_TYPES.SET_ACTIVE_PAYMENT_METHOD:

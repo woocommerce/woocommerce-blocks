@@ -4,6 +4,8 @@
 
 **Note on migration:** We are in the process of moving much of the data from contexts into data stores, so this portion of the docs may change often as we do this. We will endavour to keep it up to date while the work is carried out
 
+**Note on migration:** We are in the process of moving much of the data from contexts into data stores, so this portion of the docs may change often as we do this. We will endavour to keep it up to date while the work is carried out
+
 ## Table of Contents <!-- omit in toc -->
 
 -   [Checkout Block API overview](#checkout-block-api-overview)

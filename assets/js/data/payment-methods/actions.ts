@@ -1,4 +1,12 @@
 /**
+ * External dependencies
+ */
+import type {
+	PaymentMethods,
+	ExpressPaymentMethods,
+} from '@woocommerce/type-defs/payments';
+
+/**
  * Internal dependencies
  */
 import { ACTION_TYPES } from './action-types';
@@ -96,8 +104,17 @@ export function addRegisteredPaymentMethod() {
 	};
 }
 
+export const setRegisteredPaymentMethods = (
+	paymentMethods: PaymentMethods
+) => {
+	return {
+		type: ACTION_TYPES.SET_REGISTERED_PAYMENT_METHODS,
+		paymentMethods,
+	};
+};
+
 export const removeRegisteredPaymentMethod = ( name: string ) => ( {
-	type: ACTION_TYPES.ADD_REGISTERED_PAYMENT_METHOD,
+	type: ACTION_TYPES.REMOVE_REGISTERED_PAYMENT_METHOD,
 	name,
 } );
 
@@ -110,7 +127,16 @@ export function addRegisteredExpressPaymentMethod() {
 	};
 }
 
+export const setRegisteredExpressPaymentMethod = (
+	paymentMethods: ExpressPaymentMethods
+) => {
+	return {
+		type: ACTION_TYPES.SET_REGISTERED_EXPRESS_PAYMENT_METHOD,
+		paymentMethods,
+	};
+};
+
 export const removeRegisteredExpressPaymentMethod = ( name: string ) => ( {
-	type: ACTION_TYPES.ADD_REGISTERED_EXPRESS_PAYMENT_METHOD,
+	type: ACTION_TYPES.REMOVE_REGISTERED_EXPRESS_PAYMENT_METHOD,
 	name,
 } );

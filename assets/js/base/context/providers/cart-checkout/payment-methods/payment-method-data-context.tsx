@@ -79,11 +79,26 @@ export const PaymentMethodDataProvider = ( {
 			isCalculating: store.isCalculating(),
 		};
 	} );
-	const { currentStatus: dataStoreCurrentStatus } = useSelect( ( select ) => {
+	const {
+		currentStatus: dataStoreCurrentStatus,
+		activePaymentMethod,
+		registeredExpressPaymentMethods,
+		registeredPaymentMethods,
+		paymentMethodData,
+		errorMessage,
+		shouldSavePaymentMethod,
+	} = useSelect( ( select ) => {
 		const store = select( PAYMENT_METHOD_DATA_STORE_KEY );
 
 		return {
 			currentStatus: store.getCurrentStatus(),
+			activePaymentMethod: store.getActivePaymentMethod(),
+			registeredExpressPaymentMethods:
+				store.getRegisteredExpressPaymentMethods(),
+			registeredPaymentMethods: store.getRegisteredPaymentMethods(),
+			paymentMethodData: store.getPaymentMethodData(),
+			errorMessage: store.getErrorMessage(),
+			shouldSavePaymentMethod: store.getShouldSavePaymentMethod(),
 		};
 	} );
 	const { isEditor, getPreviewData } = useEditorContext();
@@ -105,14 +120,15 @@ export const PaymentMethodDataProvider = ( {
 		currentObservers.current = observers;
 	}, [ observers ] );
 
-	const [ paymentData, dispatch ] = useReducer(
+	const [ dispatch ] = useReducer(
 		reducer,
 		DEFAULT_PAYMENT_DATA_CONTEXT_STATE
 	);
 
-	const { setPaymentStatus: setDataStorePaymentStatus } = useDispatch(
-		PAYMENT_METHOD_DATA_STORE_KEY
-	);
+	const {
+		setPaymentStatus: setDataStorePaymentStatus,
+		setShouldSavePaymentMethod,
+	} = useDispatch( PAYMENT_METHOD_DATA_STORE_KEY );
 
 	const { dispatchActions, setPaymentStatus } =
 		usePaymentMethodDataDispatchers( dispatch );
@@ -132,13 +148,13 @@ export const PaymentMethodDataProvider = ( {
 			) as CustomerPaymentMethods;
 		}
 		return paymentMethodsInitialized
-			? getCustomerPaymentMethods( paymentData.paymentMethods )
+			? getCustomerPaymentMethods( registeredPaymentMethods )
 			: {};
 	}, [
 		isEditor,
 		getPreviewData,
 		paymentMethodsInitialized,
-		paymentData.paymentMethods,
+		registeredPaymentMethods,
 	] );
 
 	const setExpressPaymentError = useCallback(
@@ -159,8 +175,8 @@ export const PaymentMethodDataProvider = ( {
 	);
 
 	const isExpressPaymentMethodActive = Object.keys(
-		paymentData.expressPaymentMethods
-	).includes( paymentData.activePaymentMethod );
+		registeredExpressPaymentMethods
+	).includes( activePaymentMethod );
 
 	const currentStatus = useMemo(
 		() => ( {
@@ -172,14 +188,10 @@ export const PaymentMethodDataProvider = ( {
 			hasFailed: dataStoreCurrentStatus.hasFailed,
 			isSuccessful: dataStoreCurrentStatus.isSuccessful,
 			isDoingExpressPayment:
-				paymentData.currentStatus !== STATUS.PRISTINE &&
+				! dataStoreCurrentStatus.isPristine &&
 				isExpressPaymentMethodActive,
 		} ),
-		[
-			paymentData.currentStatus,
-			isExpressPaymentMethodActive,
-			dataStoreCurrentStatus,
-		]
+		[ isExpressPaymentMethodActive, dataStoreCurrentStatus ]
 	);
 
 	// /**
@@ -377,30 +389,30 @@ export const PaymentMethodDataProvider = ( {
 	] );
 
 	const activeSavedToken =
-		typeof paymentData.paymentMethodData === 'object' &&
-		objectHasProp( paymentData.paymentMethodData, 'token' )
-			? paymentData.paymentMethodData.token + ''
+		typeof paymentMethodData === 'object' &&
+		objectHasProp( paymentMethodData, 'token' )
+			? paymentMethodData.token + ''
 			: '';
 
 	const paymentContextData: PaymentMethodDataContextType = {
 		setPaymentStatus,
 		currentStatus,
 		paymentStatuses: STATUS,
-		paymentMethodData: paymentData.paymentMethodData,
-		errorMessage: paymentData.errorMessage,
-		activePaymentMethod: paymentData.activePaymentMethod,
+		paymentMethodData,
+		errorMessage,
+		activePaymentMethod,
 		activeSavedToken,
 		setActivePaymentMethod: dispatchActions.setActivePaymentMethod,
 		onPaymentProcessing,
 		customerPaymentMethods,
-		paymentMethods: paymentData.paymentMethods,
-		expressPaymentMethods: paymentData.expressPaymentMethods,
+		paymentMethods: registeredPaymentMethods,
+		expressPaymentMethods: registeredExpressPaymentMethods,
 		paymentMethodsInitialized,
 		expressPaymentMethodsInitialized,
 		setExpressPaymentError,
 		isExpressPaymentMethodActive,
-		shouldSavePayment: paymentData.shouldSavePaymentMethod,
-		setShouldSavePayment: dispatchActions.setShouldSavePayment,
+		shouldSavePayment: shouldSavePaymentMethod,
+		setShouldSavePayment: setShouldSavePaymentMethod,
 	};
 
 	return (

@@ -22,31 +22,29 @@ export const usePaymentMethodDataDispatchers = (
 	dispatchActions: PaymentMethodDispatchers;
 	setPaymentStatus: () => PaymentStatusDispatchers;
 } => {
+	const { setBillingAddress, setShippingAddress } = useCustomerData();
 	const {
 		setPaymentMethodData,
 		setPaymentStatus: setDataStorePaymentStatus,
+		setRegisteredPaymentMethods,
+		setRegisteredExpressPaymentMethod,
+		setActivePaymentMethod,
 	} = useDispatch( PAYMENT_METHOD_DATA_STORE_KEY );
-	const { setBillingAddress, setShippingAddress } = useCustomerData();
 
 	const dispatchActions = useMemo(
 		(): PaymentMethodDispatchers => ( {
 			setRegisteredPaymentMethods: ( paymentMethods ) =>
-				void dispatch(
-					actions.setRegisteredPaymentMethods( paymentMethods )
-				),
+				setRegisteredPaymentMethods( paymentMethods ),
 			setRegisteredExpressPaymentMethods: ( paymentMethods ) =>
-				void dispatch(
-					actions.setRegisteredExpressPaymentMethods( paymentMethods )
-				),
+				setRegisteredExpressPaymentMethod( paymentMethods ),
 			setActivePaymentMethod: ( paymentMethod, paymentMethodData = {} ) =>
-				void dispatch(
-					actions.setActivePaymentMethod(
-						paymentMethod,
-						paymentMethodData
-					)
-				),
+				setActivePaymentMethod( paymentMethod, paymentMethodData ),
 		} ),
-		[ dispatch ]
+		[
+			setRegisteredPaymentMethods,
+			setRegisteredExpressPaymentMethod,
+			setActivePaymentMethod,
+		]
 	);
 
 	const setPaymentStatus = useCallback(

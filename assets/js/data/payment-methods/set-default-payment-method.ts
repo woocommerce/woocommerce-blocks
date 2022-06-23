@@ -8,7 +8,6 @@ import { PaymentMethods } from '@woocommerce/type-defs/payments';
  * Internal dependencies
  */
 import { STORE_KEY as PAYMENT_METHOD_DATA_STORE_KEY } from './constants';
-import { STATUS } from '../../base/context/providers/cart-checkout/payment-methods/constants';
 import { getCustomerPaymentMethods } from '../../base/context/providers/cart-checkout/payment-methods/utils';
 
 export const setDefaultPaymentMethod = async ( methods: string[] ) => {
@@ -34,9 +33,9 @@ export const setDefaultPaymentMethod = async ( methods: string[] ) => {
 		return;
 	}
 
-	dispatch( PAYMENT_METHOD_DATA_STORE_KEY ).setPaymentStatus(
-		STATUS.PRISTINE
-	);
+	dispatch( PAYMENT_METHOD_DATA_STORE_KEY ).setPaymentStatus( {
+		isPristine: true,
+	} );
 	const objectOfPaymentMethods =
 		allPaymentMethodKeys.reduce< PaymentMethods >(
 			( accumulator, current ) => {
