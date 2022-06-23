@@ -55,9 +55,8 @@ const CheckoutProcessor = () => {
 		};
 	} );
 
-	const { setHasError, processCheckoutResponse } = useDispatch(
-		CHECKOUT_STORE_KEY
-	);
+	const { setHasError, processCheckoutResponse } =
+		useDispatch( CHECKOUT_STORE_KEY );
 
 	const { hasValidationErrors } = useValidationContext();
 	const { shippingErrorStatus } = useShippingDataContext();
