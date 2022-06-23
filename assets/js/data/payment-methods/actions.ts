@@ -24,6 +24,9 @@ interface PaymentStatus {
 	isDoingExpressPayment?: boolean;
 }
 
+// `Thunks are functions that can be dispatched, similar to actions creators
+export { emitProcessingEvent } from './thunks';
+
 export const setPaymentStatus = (
 	status: PaymentStatus,
 	errorMessage = '',

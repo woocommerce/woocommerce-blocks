@@ -9,10 +9,17 @@ import type {
 	EmptyObjectType,
 	ObjectType,
 } from '@woocommerce/type-defs/objects';
+import { DataRegistry } from '@wordpress/data';
+
 /**
  * Internal dependencies
  */
-import type { emitterCallback } from '../../base/context/event-emit';
+import type {
+	emitterCallback,
+	EventObserversType,
+} from '../../base/context/event-emit';
+import type { DispatchFromMap } from '../mapped-types';
+import * as actions from './actions';
 
 export interface CustomerPaymentMethodConfiguration {
 	gateway: string;
@@ -89,3 +96,17 @@ export type PaymentMethodDataContextType = {
 export type PaymentMethodsDispatcherType = (
 	paymentMethods: PaymentMethods
 ) => undefined;
+
+/**
+ * Type for emitProcessingEventType() thunk
+ */
+export type emitProcessingEventType = (
+	observers: EventObserversType,
+	setValidationErrors: ( errors: Array< unknown > ) => void
+) => ( {
+	dispatch,
+	registry,
+}: {
+	dispatch: DispatchFromMap< typeof actions >;
+	registry: DataRegistry;
+} ) => void;

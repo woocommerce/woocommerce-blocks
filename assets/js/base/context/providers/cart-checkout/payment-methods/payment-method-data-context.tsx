@@ -26,12 +26,7 @@ import type {
 import { DEFAULT_PAYMENT_METHOD_DATA } from './constants';
 import { usePaymentMethods } from './use-payment-method-registration';
 import { useEditorContext } from '../../editor-context';
-import {
-	EMIT_TYPES,
-	useEventEmitters,
-	emitEventWithAbort,
-	reducer as emitReducer,
-} from './event-emit';
+import { useEventEmitters, reducer as emitReducer } from './event-emit';
 import { useValidationContext } from '../../validation';
 import { useEmitResponse } from '../../../hooks/use-emit-response';
 import { useCustomerData } from '../../../hooks/use-customer-data';
@@ -103,6 +98,7 @@ export const PaymentMethodDataProvider = ( {
 		setPaymentStatus,
 		setRegisteredPaymentMethods,
 		setPaymentMethodData,
+		emitProcessingEvent,
 	} = useDispatch( PAYMENT_METHOD_DATA_STORE_KEY );
 	const { setBillingData, setShippingAddress } = useCustomerData();
 
@@ -243,96 +239,10 @@ export const PaymentMethodDataProvider = ( {
 		// allows for other observers that return true for continuing through
 		// to the next observer (or bailing if there's a problem).
 		if ( currentStatus.isProcessing ) {
-			removeNotice( 'wc-payment-error', noticeContexts.PAYMENTS );
-			emitEventWithAbort(
+			emitProcessingEvent(
 				currentObservers.current,
-				EMIT_TYPES.PAYMENT_PROCESSING,
-				{}
-			).then( ( observerResponses ) => {
-				let successResponse, errorResponse;
-				observerResponses.forEach( ( response ) => {
-					if ( isSuccessResponse( response ) ) {
-						// the last observer response always "wins" for success.
-						successResponse = response;
-					}
-					if (
-						isErrorResponse( response ) ||
-						isFailResponse( response )
-					) {
-						errorResponse = response;
-					}
-				} );
-				if ( successResponse && ! errorResponse ) {
-					const { paymentMethodData, billingData, shippingData } =
-						successResponse?.meta || {};
-
-					if ( billingData ) {
-						setBillingData( billingData );
-					}
-					if (
-						typeof shippingData !== undefined &&
-						shippingData?.address
-					) {
-						setShippingAddress(
-							shippingData.address as Record< string, unknown >
-						);
-					}
-					setPaymentMethodData( paymentMethodData );
-					setPaymentStatus( {
-						isSuccessful: true,
-					} );
-				} else if ( errorResponse && isFailResponse( errorResponse ) ) {
-					if (
-						errorResponse.message &&
-						errorResponse.message.length
-					) {
-						createErrorNotice( errorResponse.message, {
-							id: 'wc-payment-error',
-							isDismissible: false,
-							context:
-								errorResponse?.messageContext ||
-								noticeContexts.PAYMENTS,
-						} );
-					}
-
-					const { paymentMethodData, billingData } =
-						errorResponse?.meta || {};
-
-					if ( billingData ) {
-						setBillingData( billingData );
-					}
-					setPaymentStatus(
-						{ hasFailed: true },
-						errorResponse?.message || '',
-						paymentMethodData
-					);
-				} else if ( errorResponse ) {
-					if (
-						errorResponse.message &&
-						errorResponse.message.length
-					) {
-						createErrorNotice( errorResponse.message, {
-							id: 'wc-payment-error',
-							isDismissible: false,
-							context:
-								errorResponse?.messageContext ||
-								noticeContexts.PAYMENTS,
-						} );
-					}
-
-					setPaymentStatus(
-						{ hasError: true },
-						errorResponse.message
-					);
-					setValidationErrors( errorResponse?.validationErrors );
-				} else {
-					// otherwise there are no payment methods doing anything so
-					// just consider success
-					setPaymentStatus( {
-						isSuccessful: true,
-					} );
-				}
-			} );
+				setValidationErrors
+			);
 		}
 	}, [
 		currentStatus.isProcessing,
@@ -347,6 +257,7 @@ export const PaymentMethodDataProvider = ( {
 		setBillingData,
 		setPaymentMethodData,
 		setShippingAddress,
+		emitProcessingEvent,
 	] );
 
 	const paymentContextData: PaymentMethodDataContextType = {
