@@ -89,7 +89,7 @@ jobs:
                   name: build-assets
 
             - name: blocks.ini setup
-              run: echo 'woocommerce_blocks_phase = 3' > blocks.ini
+              run: echo -e 'woocommerce_blocks_phase = 3\nwoocommerce_blocks_env = tests' > blocks.ini
 
             - name: Setup Environment
               run: |
