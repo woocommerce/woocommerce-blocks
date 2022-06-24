@@ -20,7 +20,7 @@ import SavedPaymentMethodOptions from './saved-payment-method-options';
  */
 const PaymentMethods = () => {
 	const { isInitialized, paymentMethods } = usePaymentMethods();
-	const { customerPaymentMethods } = usePaymentMethodDataContext();
+	const { customerPaymentMethods } = usePaymentMethodDataContext(); //TODO: Move this state from the context file
 
 	if ( isInitialized && Object.keys( paymentMethods ).length === 0 ) {
 		return <NoPaymentMethods />;

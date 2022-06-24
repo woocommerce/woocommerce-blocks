@@ -3,6 +3,10 @@
  */
 import type { Cart, CartMeta, EmptyObjectType } from '@woocommerce/types';
 import { getSetting } from '@woocommerce/settings';
+import {
+	PaymentMethods,
+	ExpressPaymentMethods,
+} from '@woocommerce/type-defs/payments';
 
 /**
  * Internal dependencies
@@ -120,8 +124,8 @@ export interface PaymentMethodDataState {
 	errorMessage: string;
 	activePaymentMethod: string;
 	activeSavedToken: string;
-	registeredPaymentMethods: string[];
-	registeredExpressPaymentMethods: string[];
+	registeredPaymentMethods: PaymentMethods;
+	registeredExpressPaymentMethods: ExpressPaymentMethods;
 	availablePaymentMethods: string[];
 	availableExpressPaymentMethods: string[];
 	paymentMethodData: Record< string, unknown >;
@@ -148,8 +152,8 @@ export const defaultPaymentMethodDataState: PaymentMethodDataState = {
 	customerPaymentMethods: getSetting<
 		Record< string, CustomerPaymentMethod[] > | EmptyObjectType
 	>( 'customerPaymentMethods', {} ),
-	registeredPaymentMethods: [],
-	registeredExpressPaymentMethods: [],
+	registeredPaymentMethods: {},
+	registeredExpressPaymentMethods: {},
 	availablePaymentMethods: [],
 	availableExpressPaymentMethods: [],
 	paymentMethodData: {},

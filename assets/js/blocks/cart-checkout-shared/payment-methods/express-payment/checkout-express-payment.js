@@ -5,7 +5,6 @@ import { __ } from '@wordpress/i18n';
 import { useEmitResponse } from '@woocommerce/base-context/hooks';
 import {
 	StoreNoticesContainer,
-	usePaymentMethodDataContext,
 	useEditorContext,
 } from '@woocommerce/base-context';
 import Title from '@woocommerce/base-components/title';
@@ -42,17 +41,20 @@ const CheckoutExpressPayment = () => {
 			hasError: store.hasError(),
 		};
 	} );
-	const { currentStatus: paymentStatus } = usePaymentMethodDataContext();
-	const { availableExpressPaymentMethods, expressPaymentMethodsInitialized } =
-		useSelect( ( select ) => {
-			const store = select( PAYMENT_METHOD_DATA_STORE_KEY );
-			return {
-				availableExpressPaymentMethods:
-					store.getAvailableExpressPaymentMethods(),
-				expressPaymentMethodsInitialized:
-					store.expressPaymentMethodsInitialized(),
-			};
-		} );
+	const {
+		availableExpressPaymentMethods,
+		expressPaymentMethodsInitialized,
+		paymentStatus,
+	} = useSelect( ( select ) => {
+		const store = select( PAYMENT_METHOD_DATA_STORE_KEY );
+		return {
+			availableExpressPaymentMethods:
+				store.getAvailableExpressPaymentMethods(),
+			expressPaymentMethodsInitialized:
+				store.expressPaymentMethodsInitialized(),
+			paymentStatus: store.getCurrentStatus(),
+		};
+	} );
 	const { isEditor } = useEditorContext();
 	const { noticeContexts } = useEmitResponse();
 

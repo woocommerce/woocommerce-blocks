@@ -31,7 +31,6 @@ import { preparePaymentData, processCheckoutResponseHeaders } from './utils';
 import { useCheckoutEventsContext } from './checkout-events';
 import { useShippingDataContext } from './shipping';
 import { useCustomerDataContext } from './customer';
-import { usePaymentMethodDataContext } from './payment-methods';
 import { useValidationContext } from '../validation';
 import { useStoreCart } from '../../hooks/cart/use-store-cart';
 import { useStoreNoticesContext } from '../store-notices';
@@ -69,25 +68,26 @@ const CheckoutProcessor = () => {
 	const { shippingErrorStatus } = useShippingDataContext();
 	const { billingAddress, shippingAddress } = useCustomerDataContext();
 	const { cartNeedsPayment, cartNeedsShipping, receiveCart } = useStoreCart();
-	const {
-		isExpressPaymentMethodActive,
-		currentStatus: currentPaymentStatus,
-		shouldSavePayment,
-	} = usePaymentMethodDataContext();
 	const { setIsSuppressed } = useStoreNoticesContext();
 	const { createErrorNotice, removeNotice } = useDispatch( 'core/notices' );
 
-	const { activePaymentMethod, paymentMethodData } = useSelect(
-		( select ) => {
-			const store = select( PAYMENT_METHOD_DATA_STORE_KEY );
+	const {
+		activePaymentMethod,
+		paymentMethodData,
+		isExpressPaymentMethodActive,
+		currentPaymentStatus,
+		shouldSavePayment,
+	} = useSelect( ( select ) => {
+		const store = select( PAYMENT_METHOD_DATA_STORE_KEY );
 
-			return {
-				activePaymentMethod: store.getActivePaymentMethod(),
-				paymentMethodData: store.getPaymentMethodData(),
-			};
-		},
-		[]
-	);
+		return {
+			activePaymentMethod: store.getActivePaymentMethod(),
+			paymentMethodData: store.getPaymentMethodData(),
+			isExpressPaymentMethodActive: store.isExpressPaymentMethodActive(),
+			currentPaymentStatus: store.getCurrentStatus(),
+			shouldSavePayment: store.shouldSavePaymentMethod(),
+		};
+	}, [] );
 
 	const paymentMethods = getPaymentMethods();
 	const expressPaymentMethods = getExpressPaymentMethods();

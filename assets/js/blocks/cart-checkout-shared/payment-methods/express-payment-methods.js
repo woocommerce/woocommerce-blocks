@@ -27,7 +27,7 @@ import { STORE_KEY as PAYMENT_METHOD_DATA_STORE_KEY } from '../../../data/paymen
 
 const ExpressPaymentMethods = () => {
 	const { isEditor } = useEditorContext();
-	const { setExpressPaymentError } = usePaymentMethodDataContext();
+	const { setExpressPaymentError } = usePaymentMethodDataContext(); //TODO: Move this function from the context file
 
 	const { activePaymentMethod, paymentMethodData } = useSelect(
 		( select ) => {

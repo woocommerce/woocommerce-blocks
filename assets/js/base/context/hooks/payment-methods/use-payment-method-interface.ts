@@ -11,7 +11,10 @@ import deprecated from '@wordpress/deprecated';
 import LoadingMask from '@woocommerce/base-components/loading-mask';
 import type { PaymentMethodInterface } from '@woocommerce/types';
 import { useSelect } from '@wordpress/data';
-import { CHECKOUT_STORE_KEY } from '@woocommerce/block-data';
+import {
+	CHECKOUT_STORE_KEY,
+	PAYMENT_METHOD_DATA_STORE_KEY,
+} from '@woocommerce/block-data';
 
 /**
  * Internal dependencies
@@ -38,6 +41,7 @@ export const usePaymentMethodInterface = (): PaymentMethodInterface => {
 		onCheckoutAfterProcessingWithError,
 		onSubmit,
 	} = useCheckoutEventsContext();
+
 	const { isCalculating, isComplete, isIdle, isProcessing, customerId } =
 		useSelect( ( select ) => {
 			const store = select( CHECKOUT_STORE_KEY );
@@ -49,14 +53,20 @@ export const usePaymentMethodInterface = (): PaymentMethodInterface => {
 				isCalculating: store.isCalculating(),
 			};
 		} );
+	const { currentStatus, activePaymentMethod, shouldSavePayment } = useSelect(
+		( select ) => {
+			const store = select( PAYMENT_METHOD_DATA_STORE_KEY );
 
-	const {
-		currentStatus,
-		activePaymentMethod,
-		onPaymentProcessing,
-		setExpressPaymentError,
-		shouldSavePayment,
-	} = usePaymentMethodDataContext();
+			return {
+				currentStatus: store.getCurrentStatus(),
+				activePaymentMethod: store.getActivePaymentMethod(),
+				shouldSavePayment: store.getShouldSavePaymentMethod(),
+			};
+		}
+	);
+
+	const { onPaymentProcessing, setExpressPaymentError } =
+		usePaymentMethodDataContext(); //TODO: Move these functions from the context file
 	const {
 		shippingErrorStatus,
 		shippingErrorTypes,

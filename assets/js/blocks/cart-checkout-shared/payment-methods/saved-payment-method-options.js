@@ -64,7 +64,7 @@ const getDefaultLabel = ( { method } ) => {
 };
 
 const SavedPaymentMethodOptions = () => {
-	const { customerPaymentMethods } = usePaymentMethodDataContext();
+	const { customerPaymentMethods } = usePaymentMethodDataContext(); //TODO: Move this state from the context file
 
 	const { activeSavedToken, activePaymentMethod } = useSelect( ( select ) => {
 		const store = select( PAYMENT_METHOD_DATA_STORE_KEY );
