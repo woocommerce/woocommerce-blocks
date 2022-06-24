@@ -91,6 +91,9 @@ jobs:
             - name: blocks.ini setup
               run: echo 'woocommerce_blocks_phase = 3' > blocks.ini
 
+            - name: test
+              run: composer install
+
             - name: Setup Environment
               run: |
                   chmod -R 767 ./ #TODO: Might get implemented in wp-env
