@@ -8,6 +8,7 @@ import { objectHasProp } from '@woocommerce/types';
  */
 import { PaymentMethodDataState } from '../default-states';
 import { getExpressPaymentMethods } from '../../blocks-registry';
+import { filterEnabledCustomerPaymentMethods } from './utils';
 
 export const isExpressPaymentMethodActive = (
 	state: PaymentMethodDataState
@@ -44,6 +45,15 @@ export const getPaymentMethodData = ( state: PaymentMethodDataState ) => {
 
 export const getCustomerPaymentMethods = ( state: PaymentMethodDataState ) => {
 	return state.customerPaymentMethods;
+};
+
+export const getEnabledCustomerPaymentMethods = (
+	state: PaymentMethodDataState
+) => {
+	return filterEnabledCustomerPaymentMethods(
+		state.registeredPaymentMethods,
+		state.customerPaymentMethods
+	);
 };
 
 export const shouldSavePaymentMethod = ( state: PaymentMethodDataState ) => {

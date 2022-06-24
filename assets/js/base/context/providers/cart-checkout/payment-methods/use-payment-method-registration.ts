@@ -26,7 +26,7 @@ import { useEditorContext } from '../../editor-context';
 import { useCustomerDataContext } from '../customer';
 import { useStoreCart } from '../../../hooks/cart/use-store-cart';
 import { useEmitResponse } from '../../../hooks/use-emit-response';
-import type { PaymentMethodsDispatcherType } from './types';
+import type { PaymentMethodsDispatcherType } from '../../../../../data/payment-methods/types';
 import { useShippingData } from '../../../hooks/shipping/use-shipping-data';
 
 /**

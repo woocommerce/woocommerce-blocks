@@ -2,13 +2,11 @@
  * External dependencies
  */
 import { select, dispatch } from '@wordpress/data';
-import { PaymentMethods } from '@woocommerce/type-defs/payments';
 
 /**
  * Internal dependencies
  */
 import { STORE_KEY as PAYMENT_METHOD_DATA_STORE_KEY } from './constants';
-import { getCustomerPaymentMethods } from '../../base/context/providers/cart-checkout/payment-methods/utils';
 
 export const setDefaultPaymentMethod = async ( methods: string[] ) => {
 	const paymentMethodKeys = methods;
@@ -36,18 +34,11 @@ export const setDefaultPaymentMethod = async ( methods: string[] ) => {
 	dispatch( PAYMENT_METHOD_DATA_STORE_KEY ).setPaymentStatus( {
 		isPristine: true,
 	} );
-	const objectOfPaymentMethods =
-		allPaymentMethodKeys.reduce< PaymentMethods >(
-			( accumulator, current ) => {
-				accumulator[ current ] = null;
-				return accumulator;
-			},
-			{}
-		);
 
-	const customerPaymentMethods = getCustomerPaymentMethods(
-		objectOfPaymentMethods
-	);
+	const customerPaymentMethods = select(
+		PAYMENT_METHOD_DATA_STORE_KEY
+	).getEnabledCustomerPaymentMethods();
+
 	const customerPaymentMethod =
 		Object.keys( customerPaymentMethods ).flatMap(
 			( type ) => customerPaymentMethods[ type ]

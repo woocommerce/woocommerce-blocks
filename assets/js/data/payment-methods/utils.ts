@@ -2,21 +2,20 @@
  * External dependencies
  */
 import { getPaymentMethods } from '@woocommerce/blocks-registry';
-import { select } from '@wordpress/data';
 import { PaymentMethods } from '@woocommerce/type-defs/payments';
-import { PAYMENT_METHOD_DATA_STORE_KEY } from '@woocommerce/block-data';
 
 /**
  * Internal dependencies
  */
-import type { CustomerPaymentMethod } from './types';
+import type { CustomerPaymentMethods } from './types';
 
 /**
  * Gets the payment methods saved for the current user after filtering out disabled ones.
  */
-export const getCustomerPaymentMethods = (
-	availablePaymentMethods: PaymentMethods = {}
-): Record< string, CustomerPaymentMethod[] > => {
+export const filterEnabledCustomerPaymentMethods = (
+	availablePaymentMethods: PaymentMethods = {},
+	customerPaymentMethods: CustomerPaymentMethods
+): CustomerPaymentMethods => {
 	if ( Object.keys( availablePaymentMethods ).length === 0 ) {
 		return {};
 	}
@@ -27,15 +26,9 @@ export const getCustomerPaymentMethods = (
 			registeredPaymentMethods[ name ],
 		] )
 	);
-	const customerPaymentMethods = select(
-		PAYMENT_METHOD_DATA_STORE_KEY
-	).getCustomerPaymentMethods();
 
 	const paymentMethodKeys = Object.keys( customerPaymentMethods );
-	const enabledCustomerPaymentMethods = {} as Record<
-		string,
-		CustomerPaymentMethod[]
-	>;
+	const enabledCustomerPaymentMethods = {} as CustomerPaymentMethods;
 	paymentMethodKeys.forEach( ( type ) => {
 		const methods = customerPaymentMethods[ type ].filter(
 			( {

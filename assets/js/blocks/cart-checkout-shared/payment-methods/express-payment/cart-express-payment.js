@@ -6,13 +6,13 @@ import {
 	useEmitResponse,
 	useExpressPaymentMethods,
 } from '@woocommerce/base-context/hooks';
+import { StoreNoticesContainer } from '@woocommerce/base-context';
 import LoadingMask from '@woocommerce/base-components/loading-mask';
 import { useSelect } from '@wordpress/data';
 import {
 	CHECKOUT_STORE_KEY,
 	PAYMENT_METHOD_DATA_STORE_KEY,
 } from '@woocommerce/block-data';
-import { StoreNoticesContainer } from '@woocommerce/base-context';
 
 /**
  * Internal dependencies

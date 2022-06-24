@@ -9,10 +9,17 @@ import type {
 	EmptyObjectType,
 	ObjectType,
 } from '@woocommerce/type-defs/objects';
+import { DataRegistry } from '@wordpress/data';
+
 /**
  * Internal dependencies
  */
-import type { emitterCallback } from '../../base/context/event-emit';
+import type {
+	emitterCallback,
+	EventObserversType,
+} from '../../base/context/event-emit';
+import type { DispatchFromMap } from '../mapped-types';
+import * as actions from './actions';
 
 export interface CustomerPaymentMethodConfiguration {
 	gateway: string;
@@ -45,28 +52,17 @@ export interface PaymentStatusDispatchers {
 	pristine: () => void;
 	started: () => void;
 	processing: () => void;
-	completed: () => void;
 	error: ( error: string ) => void;
 	failed: (
 		error?: string,
 		paymentMethodData?: ObjectType | EmptyObjectType,
-		billingData?: ObjectType | EmptyObjectType
+		billingAddress?: ObjectType | EmptyObjectType
 	) => void;
 	success: (
 		paymentMethodData?: ObjectType | EmptyObjectType,
-		billingData?: ObjectType | EmptyObjectType,
+		billingAddress?: ObjectType | EmptyObjectType,
 		shippingData?: ObjectType | EmptyObjectType
 	) => void;
-}
-
-export interface PaymentMethodDataContextState {
-	currentStatus: PaymentMethodCurrentStatusType;
-	shouldSavePaymentMethod: boolean;
-	activePaymentMethod: string;
-	paymentMethodData: ObjectType | EmptyObjectType;
-	errorMessage: string;
-	paymentMethods: PaymentMethods;
-	expressPaymentMethods: ExpressPaymentMethods;
 }
 
 export type PaymentMethodCurrentStatusType = {
@@ -89,46 +85,28 @@ export type PaymentMethodCurrentStatusType = {
 };
 
 export type PaymentMethodDataContextType = {
-	// Sets the payment status for the payment method.
-	setPaymentStatus: () => PaymentStatusDispatchers;
-	// The current payment status.
-	currentStatus: PaymentMethodCurrentStatusType;
-	// An object of payment status constants.
-	paymentStatuses: ObjectType;
-	// Arbitrary data to be passed along for processing by the payment method on the server.
-	paymentMethodData: ObjectType | EmptyObjectType;
-	// An error message provided by the payment method if there is an error.
-	errorMessage: string;
-	// The active payment method slug.
-	activePaymentMethod: string;
-	// Current active token.
-	activeSavedToken: string;
-	// A function for setting the active payment method.
-	setActivePaymentMethod: PaymentMethodDispatchers[ 'setActivePaymentMethod' ];
 	// Returns the customer payment for the customer if it exists.
-	customerPaymentMethods:
-		| Record< string, CustomerPaymentMethod >
-		| EmptyObjectType;
-	// Registered payment methods.
-	paymentMethods: PaymentMethods;
-	// Registered express payment methods.
-	expressPaymentMethods: ExpressPaymentMethods;
-	// True when all registered payment methods have been initialized.
-	paymentMethodsInitialized: boolean;
-	// True when all registered express payment methods have been initialized.
-	expressPaymentMethodsInitialized: boolean;
+	customerPaymentMethods: CustomerPaymentMethods;
 	// Event registration callback for registering observers for the payment processing event.
 	onPaymentProcessing: ReturnType< typeof emitterCallback >;
 	// A function used by express payment methods to indicate an error for checkout to handle. It receives an error message string. Does not change payment status.
 	setExpressPaymentError: ( error: string ) => void;
-	// True if an express payment method is active.
-	isExpressPaymentMethodActive: boolean;
-	// A function used to set the shouldSavePayment value.
-	setShouldSavePayment: PaymentMethodDispatchers[ 'setShouldSavePayment' ];
-	// True means that the configured payment method option is saved for the customer.
-	shouldSavePayment: boolean;
 };
 
 export type PaymentMethodsDispatcherType = (
 	paymentMethods: PaymentMethods
 ) => undefined;
+
+/**
+ * Type for emitProcessingEventType() thunk
+ */
+export type emitProcessingEventType = (
+	observers: EventObserversType,
+	setValidationErrors: ( errors: Array< unknown > ) => void
+) => ( {
+	dispatch,
+	registry,
+}: {
+	dispatch: DispatchFromMap< typeof actions >;
+	registry: DataRegistry;
+} ) => void;
