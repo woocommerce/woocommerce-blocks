@@ -25,17 +25,16 @@ interface ExpressPaymentMethodState {
 const usePaymentMethodState = (
 	express = false
 ): PaymentMethodState | ExpressPaymentMethodState => {
-	const {
-		paymentMethodsInitialized,
-		expressPaymentMethodsInitialized,
-	} = useSelect( ( select ) => {
-		const store = select( PAYMENT_METHOD_DATA_STORE_KEY );
+	const { paymentMethodsInitialized, expressPaymentMethodsInitialized } =
+		useSelect( ( select ) => {
+			const store = select( PAYMENT_METHOD_DATA_STORE_KEY );
 
-		return {
-			paymentMethodsInitialized: store.paymentMethodsInitialized(),
-			expressPaymentMethodsInitialized: store.expressPaymentMethodsInitialized(),
-		};
-	} );
+			return {
+				paymentMethodsInitialized: store.paymentMethodsInitialized(),
+				expressPaymentMethodsInitialized:
+					store.expressPaymentMethodsInitialized(),
+			};
+		} );
 
 	const paymentMethods = getPaymentMethods();
 	const expressPaymentMethods = getExpressPaymentMethods();

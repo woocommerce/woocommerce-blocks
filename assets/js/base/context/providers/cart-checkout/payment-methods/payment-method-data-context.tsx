@@ -70,9 +70,11 @@ export const PaymentMethodDataProvider = ( {
 
 			return {
 				currentStatus: store.getCurrentStatus(),
-				registeredExpressPaymentMethods: store.getRegisteredExpressPaymentMethods(),
+				registeredExpressPaymentMethods:
+					store.getRegisteredExpressPaymentMethods(),
 				errorMessage: store.getErrorMessage(),
-				enabledCustomerPaymentMethods: store.getEnabledCustomerPaymentMethods(),
+				enabledCustomerPaymentMethods:
+					store.getEnabledCustomerPaymentMethods(),
 			};
 		}
 	);
@@ -100,7 +102,7 @@ export const PaymentMethodDataProvider = ( {
 		setPaymentMethodData,
 		emitProcessingEvent,
 	} = useDispatch( PAYMENT_METHOD_DATA_STORE_KEY );
-	const { setBillingData, setShippingAddress } = useCustomerData();
+	const { setBillingAddress, setShippingAddress } = useCustomerData();
 
 	const paymentMethodsInitialized = usePaymentMethods(
 		setRegisteredPaymentMethods
@@ -254,7 +256,7 @@ export const PaymentMethodDataProvider = ( {
 		isFailResponse,
 		isErrorResponse,
 		createErrorNotice,
-		setBillingData,
+		setBillingAddress,
 		setPaymentMethodData,
 		setShippingAddress,
 		emitProcessingEvent,

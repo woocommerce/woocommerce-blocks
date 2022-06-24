@@ -15,7 +15,7 @@ import { visitAdminPage } from '@wordpress/e2e-test-utils';
 /**
  * Internal dependencies
  */
-import { shopper, merchant } from '../../../../utils';
+import { shopper, merchant, clickLink } from '../../../../utils';
 import { SIMPLE_PHYSICAL_PRODUCT_NAME } from '.../../../../utils/constants';
 
 const block = {
@@ -42,8 +42,7 @@ describe( 'Shopper → Checkout → Account', () => {
 		);
 		//Enable guest checkout option.
 		await setCheckbox( '#woocommerce_enable_guest_checkout' );
-		await page.click( 'button[name="save"]' );
-		await page.waitForNavigation( { waitUntil: 'networkidle0' } );
+		await clickLink( 'button[name="save"]' );
 		await visitBlockPage( `${ block.name } Block` );
 		await openDocumentSettingsSidebar();
 		await selectBlockByName( block.slug );
@@ -53,8 +52,7 @@ describe( 'Shopper → Checkout → Account', () => {
 		//Enable shoppers to sign up at checkout option.
 		// eslint-disable-next-line jest/no-standalone-expect
 		await expect( page ).toClick( 'label', {
-			text:
-				'Allow shoppers to sign up for a user account during checkout',
+			text: 'Allow shoppers to sign up for a user account during checkout',
 		} );
 		await saveOrPublish();
 		await merchant.logout();

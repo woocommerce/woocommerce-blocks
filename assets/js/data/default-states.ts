@@ -24,7 +24,7 @@ import {
 	EMPTY_EXTENSIONS,
 } from './constants';
 import type { ResponseError } from './types';
-import { CustomerPaymentMethod } from '../base/context/providers/cart-checkout/payment-methods/types';
+import { CustomerPaymentMethod } from '../data/payment-methods/types';
 
 export interface CartState {
 	cartItemsPendingQuantity: Array< string >;
@@ -34,8 +34,8 @@ export interface CartState {
 	errors: Array< ResponseError >;
 }
 
-export const EMPTY_PENDING_QUANTITY: [  ] = [];
-export const EMPTY_PENDING_DELETE: [  ] = [];
+export const EMPTY_PENDING_QUANTITY: [] = [];
+export const EMPTY_PENDING_DELETE: [] = [];
 
 export const defaultCartState: CartState = {
 	cartItemsPendingQuantity: EMPTY_PENDING_QUANTITY,

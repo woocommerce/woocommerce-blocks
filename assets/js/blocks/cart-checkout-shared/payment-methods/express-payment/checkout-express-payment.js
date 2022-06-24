@@ -48,8 +48,10 @@ const CheckoutExpressPayment = () => {
 	} = useSelect( ( select ) => {
 		const store = select( PAYMENT_METHOD_DATA_STORE_KEY );
 		return {
-			availableExpressPaymentMethods: store.getAvailableExpressPaymentMethods(),
-			expressPaymentMethodsInitialized: store.expressPaymentMethodsInitialized(),
+			availableExpressPaymentMethods:
+				store.getAvailableExpressPaymentMethods(),
+			expressPaymentMethodsInitialized:
+				store.expressPaymentMethodsInitialized(),
 			paymentStatus: store.getCurrentStatus(),
 		};
 	} );
