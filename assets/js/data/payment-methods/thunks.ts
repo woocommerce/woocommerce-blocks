@@ -7,12 +7,8 @@ import { EMIT_TYPES } from '../../base/context/providers/cart-checkout/payment-m
 import type { emitProcessingEventType } from './types';
 import { CART_STORE_KEY } from '../cart';
 
-const {
-	isErrorResponse,
-	isFailResponse,
-	isSuccessResponse,
-	noticeContexts,
-} = useEmitResponse(); // eslint-disable-line react-hooks/rules-of-hooks
+const { isErrorResponse, isFailResponse, isSuccessResponse, noticeContexts } =
+	useEmitResponse(); // eslint-disable-line react-hooks/rules-of-hooks
 
 // TODO: `useEmitResponse` is not a react hook, it just exposes some functions as
 // properties of an object. Refactor this to not be a hook, we could simply import
@@ -27,9 +23,8 @@ export const emitProcessingEvent: emitProcessingEventType = (
 ) => {
 	// TODO: Fix this type after we move to validation store
 	return ( { dispatch, registry } ) => {
-		const { createErrorNotice, removeNotice } = registry.dispatch(
-			'core/notices'
-		);
+		const { createErrorNotice, removeNotice } =
+			registry.dispatch( 'core/notices' );
 		removeNotice( 'wc-payment-error', noticeContexts.PAYMENTS );
 		emitEventWithAbort(
 			// TODO Move all this block into a function in thunks & Create buttons to trigger this event (see Alex's PR)
@@ -51,16 +46,15 @@ export const emitProcessingEvent: emitProcessingEventType = (
 				}
 			} );
 
-			const { setBillingData, setShippingAddress } = registry.dispatch(
-				CART_STORE_KEY
-			);
+			const { setBillingAddress, setShippingAddress } =
+				registry.dispatch( CART_STORE_KEY );
 
 			if ( successResponse && ! errorResponse ) {
 				const { paymentMethodData, billingData, shippingData } =
 					successResponse?.meta || {};
 
 				if ( billingData ) {
-					setBillingData( billingData );
+					setBillingAddress( billingData );
 				}
 				if (
 					typeof shippingData !== undefined &&
@@ -89,7 +83,7 @@ export const emitProcessingEvent: emitProcessingEventType = (
 					errorResponse?.meta || {};
 
 				if ( billingData ) {
-					setBillingData( billingData );
+					setBillingAddress( billingData );
 				}
 				dispatch.setPaymentStatus(
 					{ hasFailed: true },
