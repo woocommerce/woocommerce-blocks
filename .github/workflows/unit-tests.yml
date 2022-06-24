@@ -91,10 +91,8 @@ jobs:
             - name: blocks.ini setup
               run: echo 'woocommerce_blocks_phase = 3' > blocks.ini
 
-            - name: Get Composer Cache Directory
-              id: composer-cache
-              run: |
-                  echo "::set-output name=dir::$(composer config cache-files-dir)"
+            - name: Install PHP deps
+              run: composer install
 
             - name: Setup Environment
               run: |
