@@ -36,7 +36,7 @@ const canMakePaymentArgument = {
 		currency_suffix: '',
 	},
 	cartNeedsShipping: true,
-	billingData: {
+	billingAddress: {
 		first_name: 'name',
 		last_name: 'Name',
 		company: '',
@@ -80,8 +80,8 @@ describe( 'payment-method-config-helper', () => {
 			{
 				// cod: one extension returns true, the other returns false.
 				cod: trueCallback,
-				// cheque: returns true only if arg.billingData.postcode is 12345.
-				cheque: ( arg ) => arg.billingData.postcode === '12345',
+				// cheque: returns true only if arg.billingAddress.postcode is 12345.
+				cheque: ( arg ) => arg.billingAddress.postcode === '12345',
 				// bacs: both extensions return false.
 				bacs: bacsCallback,
 				// woopay: both extensions return true.
@@ -153,11 +153,12 @@ describe( 'payment-method-config-helper', () => {
 	describe( 'canMakePaymentWithExtensions', () => {
 		it( "Returns false without executing the registered callbacks, if the payment method's canMakePayment callback returns false.", () => {
 			const canMakePayment = () => false;
-			const canMakePaymentWithExtensionsResult = helpers.canMakePaymentWithExtensions(
-				canMakePayment,
-				canMakePaymentExtensionsCallbacks,
-				'cod'
-			)( canMakePaymentArgument );
+			const canMakePaymentWithExtensionsResult =
+				helpers.canMakePaymentWithExtensions(
+					canMakePayment,
+					canMakePaymentExtensionsCallbacks,
+					'cod'
+				)( canMakePaymentArgument );
 			expect( canMakePaymentWithExtensionsResult ).toBe( false );
 			expect( trueCallback ).not.toHaveBeenCalled();
 		} );

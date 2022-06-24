@@ -20,9 +20,9 @@ import { useShippingData } from './shipping/use-shipping-data';
 
 interface CheckoutAddress {
 	shippingAddress: ShippingAddress;
-	billingData: BillingAddress;
+	billingAddress: BillingAddress;
 	setShippingAddress: ( data: Partial< EnteredAddress > ) => void;
-	setBillingData: ( data: Partial< EnteredAddress > ) => void;
+	setBillingAddress: ( data: Partial< EnteredAddress > ) => void;
 	setEmail: ( value: string ) => void;
 	setBillingPhone: ( value: string ) => void;
 	setShippingPhone: ( value: string ) => void;
@@ -43,26 +43,26 @@ export const useCheckoutAddress = (): CheckoutAddress => {
 	);
 	const { setUseShippingAsBilling } = useDispatch( CHECKOUT_STORE_KEY );
 	const {
-		billingData,
-		setBillingData,
+		billingAddress,
+		setBillingAddress,
 		shippingAddress,
 		setShippingAddress,
 	} = useCustomerData();
 
 	const setEmail = useCallback(
 		( value ) =>
-			void setBillingData( {
+			void setBillingAddress( {
 				email: value,
 			} ),
-		[ setBillingData ]
+		[ setBillingAddress ]
 	);
 
 	const setBillingPhone = useCallback(
 		( value ) =>
-			void setBillingData( {
+			void setBillingAddress( {
 				phone: value,
 			} ),
-		[ setBillingData ]
+		[ setBillingAddress ]
 	);
 
 	const setShippingPhone = useCallback(
@@ -75,9 +75,9 @@ export const useCheckoutAddress = (): CheckoutAddress => {
 
 	return {
 		shippingAddress,
-		billingData,
+		billingAddress,
 		setShippingAddress,
-		setBillingData,
+		setBillingAddress,
 		setEmail,
 		setBillingPhone,
 		setShippingPhone,

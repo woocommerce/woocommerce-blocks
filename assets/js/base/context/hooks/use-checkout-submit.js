@@ -11,7 +11,7 @@ import { __ } from '@wordpress/i18n';
 /**
  * Internal dependencies
  */
-import { useCheckoutContext } from '../providers';
+import { useCheckoutEventsContext } from '../providers';
 import { usePaymentMethods } from './payment-methods/use-payment-methods';
 
 /**
@@ -48,7 +48,7 @@ export const useCheckoutSubmit = () => {
 		}
 	);
 
-	const { onSubmit } = useCheckoutContext();
+	const { onSubmit } = useCheckoutEventsContext();
 
 	const { paymentMethods = {} } = usePaymentMethods();
 	const paymentMethod = paymentMethods[ activePaymentMethod ] || {};

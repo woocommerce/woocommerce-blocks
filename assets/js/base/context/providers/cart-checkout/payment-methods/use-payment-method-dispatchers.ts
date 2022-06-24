@@ -22,7 +22,7 @@ export const usePaymentMethodDataDispatchers = (
 	dispatchActions: PaymentMethodDispatchers;
 	setPaymentStatus: () => PaymentStatusDispatchers;
 } => {
-	const { setBillingData, setShippingAddress } = useCustomerData();
+	const { setBillingAddress, setShippingAddress } = useCustomerData();
 	const {
 		setPaymentMethodData,
 		setPaymentStatus: setDataStorePaymentStatus,
@@ -59,10 +59,10 @@ export const usePaymentMethodDataDispatchers = (
 			failed: (
 				errorMessage,
 				paymentMethodData,
-				billingData = undefined
+				billingAddress = undefined
 			) => {
-				if ( billingData ) {
-					setBillingData( billingData );
+				if ( billingAddress ) {
+					setBillingAddress( billingAddress );
 				}
 				setDataStorePaymentStatus(
 					{ hasFailed: true },
@@ -72,11 +72,11 @@ export const usePaymentMethodDataDispatchers = (
 			},
 			success: (
 				paymentMethodData,
-				billingData = undefined,
+				billingAddress = undefined,
 				shippingData = undefined
 			) => {
-				if ( billingData ) {
-					setBillingData( billingData );
+				if ( billingAddress ) {
+					setBillingAddress( billingAddress );
 				}
 				if (
 					typeof shippingData !== undefined &&
@@ -94,7 +94,7 @@ export const usePaymentMethodDataDispatchers = (
 		} ),
 		[
 			dispatch,
-			setBillingData,
+			setBillingAddress,
 			setShippingAddress,
 			setPaymentMethodData,
 			setDataStorePaymentStatus,
