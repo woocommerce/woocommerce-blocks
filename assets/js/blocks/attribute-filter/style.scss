@@ -32,12 +32,20 @@
 		}
 	}
 
-	.wc-block-attribute-filter-dropdown {
+	.components-form-token-field {
 		flex-grow: 1;
 		max-width: unset;
 		width: 0;
 		border-radius: inherit;
 		border-color: inherit;
+
+		label {
+			display: none;
+		}
+
+		.components-form-token-field__input-container {
+			margin-bottom: 0;
+		}
 	}
 
 	.is-single .wc-block-attribute-filter-list-count,

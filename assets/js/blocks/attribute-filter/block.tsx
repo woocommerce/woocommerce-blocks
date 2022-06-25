@@ -12,13 +12,11 @@ import {
 } from '@woocommerce/base-context/hooks';
 import { useCallback, useEffect, useState, useMemo } from '@wordpress/element';
 import CheckboxList from '@woocommerce/base-components/checkbox-list';
-import DropdownSelector from '@woocommerce/base-components/dropdown-selector';
 import Label from '@woocommerce/base-components/filter-element-label';
 import FilterSubmitButton from '@woocommerce/base-components/filter-submit-button';
 import isShallowEqual from '@wordpress/is-shallow-equal';
 import { decodeEntities } from '@wordpress/html-entities';
-import { Notice } from 'wordpress-components';
-import classNames from 'classnames';
+import { Notice, FormTokenField } from 'wordpress-components';
 import { getSettingWithCoercion } from '@woocommerce/settings';
 import { getQueryArgs, removeQueryArgs } from '@wordpress/url';
 import {
@@ -32,6 +30,7 @@ import {
 	PREFIX_QUERY_ARG_FILTER_TYPE,
 	PREFIX_QUERY_ARG_QUERY_TYPE,
 } from '@woocommerce/utils';
+import { difference } from 'lodash';
 
 /**
  * Internal dependencies
@@ -582,19 +581,39 @@ const AttributeFilterBlock = ( {
 				className={ `wc-block-attribute-filter style-${ blockAttributes.displayStyle }` }
 			>
 				{ blockAttributes.displayStyle === 'dropdown' ? (
-					<DropdownSelector
-						attributeLabel={ attributeObject.label }
-						checked={ checked }
-						className={ classNames(
-							'wc-block-attribute-filter-dropdown',
-							borderProps.className
+					<FormTokenField
+						suggestions={ displayedOptions.map(
+							( option ) => option.value
 						) }
-						style={ { ...borderProps.style, borderStyle: 'none' } }
-						inputLabel={ blockAttributes.heading }
-						isLoading={ isLoading }
-						multiple={ multiple }
-						onChange={ onChange }
-						options={ displayedOptions }
+						__experimentalExpandOnFocus={ true }
+						__experimentalShowHowTo={ false }
+						maxLength={ multiple ? undefined : 1 }
+						disabled={ isDisabled }
+						placeholder={ sprintf(
+							/* translators: %s attribute name. */
+							__( 'Any %s', 'woo-gutenberg-products-block' ),
+							attributeObject.label
+						) }
+						label=""
+						onChange={ ( tokens: string[] ) => {
+							const added = difference( tokens, checked );
+							const removed = difference( checked, tokens );
+
+							if ( added.length === 1 ) {
+								onChange( added[ 0 ] );
+							}
+							if ( removed.length === 1 ) {
+								onChange( removed[ 0 ] );
+							}
+						} }
+						value={ checked }
+						displayTransform={ ( value: string ) => {
+							const result = displayedOptions.find(
+								( option ) => option.value === value
+							);
+							return result ? result.label : value;
+						} }
+						className={ borderProps.className }
 					/>
 				) : (
 					<CheckboxList
