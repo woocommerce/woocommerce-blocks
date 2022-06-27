@@ -7,14 +7,16 @@ import { objectHasProp } from '@woocommerce/types';
  * Internal dependencies
  */
 import { PaymentMethodDataState } from './default-state';
-import { getExpressPaymentMethods } from '../../blocks-registry';
 import { filterEnabledCustomerPaymentMethods } from './utils';
 
 export const isExpressPaymentMethodActive = (
 	state: PaymentMethodDataState
 ) => {
-	return Object.keys( getExpressPaymentMethods() ).includes(
-		state.activePaymentMethod
+	return (
+		Array.isArray( state.availableExpressPaymentMethods ) &&
+		state.availableExpressPaymentMethods.includes(
+			state.activePaymentMethod
+		)
 	);
 };
 
