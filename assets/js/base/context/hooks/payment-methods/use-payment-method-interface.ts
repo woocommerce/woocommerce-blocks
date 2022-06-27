@@ -10,7 +10,7 @@ import { getSetting } from '@woocommerce/settings';
 import deprecated from '@wordpress/deprecated';
 import LoadingMask from '@woocommerce/base-components/loading-mask';
 import type { PaymentMethodInterface } from '@woocommerce/types';
-import { useSelect } from '@wordpress/data';
+import { useSelect, useDispatch } from '@wordpress/data';
 import {
 	CHECKOUT_STORE_KEY,
 	PAYMENT_METHOD_DATA_STORE_KEY,
@@ -65,8 +65,11 @@ export const usePaymentMethodInterface = (): PaymentMethodInterface => {
 		}
 	);
 
-	const { onPaymentProcessing, setExpressPaymentError } =
-		usePaymentMethodDataContext(); //TODO: Move these functions from the context file
+	const { setExpressPaymentError } = useDispatch(
+		PAYMENT_METHOD_DATA_STORE_KEY
+	);
+
+	const { onPaymentProcessing } = usePaymentMethodDataContext();
 	const {
 		shippingErrorStatus,
 		shippingErrorTypes,

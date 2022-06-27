@@ -5,7 +5,6 @@ import {
 	createContext,
 	useContext,
 	useReducer,
-	useCallback,
 	useRef,
 	useEffect,
 	useMemo,
@@ -125,23 +124,6 @@ export const PaymentMethodDataProvider = ( {
 		paymentMethodsInitialized,
 		enabledCustomerPaymentMethods,
 	] );
-
-	const setExpressPaymentError = useCallback(
-		( message ) => {
-			if ( message ) {
-				createErrorNotice( message, {
-					id: 'wc-express-payment-error',
-					context: noticeContexts.EXPRESS_PAYMENTS,
-				} );
-			} else {
-				removeNotice(
-					'wc-express-payment-error',
-					noticeContexts.EXPRESS_PAYMENTS
-				);
-			}
-		},
-		[ createErrorNotice, noticeContexts.EXPRESS_PAYMENTS, removeNotice ]
-	);
 
 	// /**
 	//  * Active Gateway Selection
@@ -266,7 +248,6 @@ export const PaymentMethodDataProvider = ( {
 	const paymentContextData: PaymentMethodDataContextType = {
 		onPaymentProcessing,
 		customerPaymentMethods,
-		setExpressPaymentError,
 	};
 
 	return (

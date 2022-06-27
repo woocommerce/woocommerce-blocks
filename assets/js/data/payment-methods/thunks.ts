@@ -1,4 +1,9 @@
 /**
+ * External dependencies
+ */
+import { store as noticesStore } from '@wordpress/notices';
+
+/**
  * Internal dependencies
  */
 import { useEmitResponse } from '../../base/context/hooks/use-emit-response';
@@ -13,6 +18,23 @@ const { isErrorResponse, isFailResponse, isSuccessResponse, noticeContexts } =
 // TODO: `useEmitResponse` is not a react hook, it just exposes some functions as
 // properties of an object. Refactor this to not be a hook, we could simply import
 // those functions where needed
+
+export const setExpressPaymentError = ( message: string ) => {
+	return ( { registry } ) => {
+		const { createErrorNotice, removeNotice } = registry( noticesStore );
+		if ( message ) {
+			createErrorNotice( message, {
+				id: 'wc-express-payment-error',
+				context: noticeContexts.EXPRESS_PAYMENTS,
+			} );
+		} else {
+			removeNotice(
+				'wc-express-payment-error',
+				noticeContexts.EXPRESS_PAYMENTS
+			);
+		}
+	};
+};
 
 /**
  * Emit the payment_processing event

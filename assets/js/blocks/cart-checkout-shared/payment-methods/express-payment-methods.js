@@ -12,10 +12,7 @@ import {
 	useCallback,
 	useRef,
 } from '@wordpress/element';
-import {
-	useEditorContext,
-	usePaymentMethodDataContext,
-} from '@woocommerce/base-context';
+import { useEditorContext } from '@woocommerce/base-context';
 import deprecated from '@wordpress/deprecated';
 import { useDispatch, useSelect } from '@wordpress/data';
 
@@ -27,7 +24,6 @@ import { STORE_KEY as PAYMENT_METHOD_DATA_STORE_KEY } from '../../../data/paymen
 
 const ExpressPaymentMethods = () => {
 	const { isEditor } = useEditorContext();
-	const { setExpressPaymentError } = usePaymentMethodDataContext(); //TODO: Move this function from the context file
 
 	const { activePaymentMethod, paymentMethodData } = useSelect(
 		( select ) => {
@@ -38,9 +34,8 @@ const ExpressPaymentMethods = () => {
 			};
 		}
 	);
-	const { setActivePaymentMethod, setPaymentStatus } = useDispatch(
-		PAYMENT_METHOD_DATA_STORE_KEY
-	);
+	const { setActivePaymentMethod, setPaymentStatus, setExpressPaymentError } =
+		useDispatch( PAYMENT_METHOD_DATA_STORE_KEY );
 	const paymentMethods = useExpressPaymentMethods();
 
 	const paymentMethodInterface = usePaymentMethodInterface();
@@ -89,7 +84,6 @@ const ExpressPaymentMethods = () => {
 	const onExpressPaymentError = useCallback(
 		( errorMessage ) => {
 			setPaymentStatus( { hasError: true }, errorMessage );
-			// TODO: Make this use the data store directly to add an error.
 			setExpressPaymentError( errorMessage );
 			setActivePaymentMethod(
 				previousActivePaymentMethod.current,

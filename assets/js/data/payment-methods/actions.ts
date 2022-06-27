@@ -15,7 +15,7 @@ import { setDefaultPaymentMethod } from './set-default-payment-method';
 import { PaymentStatus } from './types';
 
 // `Thunks are functions that can be dispatched, similar to actions creators
-export { emitProcessingEvent } from './thunks';
+export * from './thunks';
 
 export const setPaymentStatus = (
 	status: PaymentStatus,

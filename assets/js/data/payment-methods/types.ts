@@ -89,8 +89,6 @@ export type PaymentMethodDataContextType = {
 	customerPaymentMethods: CustomerPaymentMethods;
 	// Event registration callback for registering observers for the payment processing event.
 	onPaymentProcessing: ReturnType< typeof emitterCallback >;
-	// A function used by express payment methods to indicate an error for checkout to handle. It receives an error message string. Does not change payment status.
-	setExpressPaymentError: ( error: string ) => void;
 };
 
 export type PaymentMethodsDispatcherType = (

@@ -23,5 +23,4 @@ export enum ACTION {
 export const DEFAULT_PAYMENT_METHOD_DATA: PaymentMethodDataContextType = {
 	customerPaymentMethods: {},
 	onPaymentProcessing: () => () => () => void null,
-	setExpressPaymentError: () => void null,
 };
