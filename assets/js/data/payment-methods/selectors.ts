@@ -6,7 +6,7 @@ import { objectHasProp } from '@woocommerce/types';
 /**
  * Internal dependencies
  */
-import { PaymentMethodDataState } from '../default-states';
+import { PaymentMethodDataState } from './default-state';
 import { getExpressPaymentMethods } from '../../blocks-registry';
 import { filterEnabledCustomerPaymentMethods } from './utils';
 

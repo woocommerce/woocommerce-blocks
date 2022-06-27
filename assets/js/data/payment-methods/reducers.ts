@@ -11,7 +11,7 @@ import { PaymentMethods } from '@woocommerce/type-defs/payments';
 import {
 	defaultPaymentMethodDataState,
 	PaymentMethodDataState,
-} from '../default-states';
+} from './default-state';
 import { ACTION_TYPES } from './action-types';
 
 const reducer: Reducer< PaymentMethodDataState > = (
