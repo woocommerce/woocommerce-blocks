@@ -12,17 +12,7 @@ import type {
 import { ACTION_TYPES } from './action-types';
 import { checkPaymentMethodsCanPay } from './check-payment-methods';
 import { setDefaultPaymentMethod } from './set-default-payment-method';
-
-interface PaymentStatus {
-	isPristine?: boolean;
-	isStarted?: boolean;
-	isProcessing?: boolean;
-	isFinished?: boolean;
-	hasError?: boolean;
-	hasFailed?: boolean;
-	isSuccessful?: boolean;
-	isDoingExpressPayment?: boolean;
-}
+import { PaymentStatus } from './types';
 
 // `Thunks are functions that can be dispatched, similar to actions creators
 export { emitProcessingEvent } from './thunks';

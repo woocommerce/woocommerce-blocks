@@ -110,3 +110,14 @@ export type emitProcessingEventType = (
 	dispatch: DispatchFromMap< typeof actions >;
 	registry: DataRegistry;
 } ) => void;
+
+export interface PaymentStatus {
+	isPristine?: boolean;
+	isStarted?: boolean;
+	isProcessing?: boolean;
+	isFinished?: boolean;
+	hasError?: boolean;
+	hasFailed?: boolean;
+	isSuccessful?: boolean;
+	isDoingExpressPayment?: boolean;
+}
