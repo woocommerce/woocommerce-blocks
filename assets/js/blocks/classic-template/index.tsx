@@ -105,7 +105,6 @@ const Edit = ( { clientId, attributes }: Props ) => {
 	);
 };
 
-let currentValue: string | undefined;
 const templates = Object.keys( TEMPLATES );
 
 const registerClassicTemplateBlock = ( template?: string ) => {
@@ -181,22 +180,19 @@ const hasTemplateSupportForClassicTemplateBlock = (
 
 // @todo Refactor when there will be possible to show a block according on a template/post with a Gutenberg API. https://github.com/WordPress/gutenberg/pull/41718
 
+let currentTemplateId: string | undefined;
+
 if ( isExperimentalBuild() ) {
 	subscribe( () => {
-		const previousValue = currentValue;
-
+		const previousValue = currentTemplateId;
 		const store = select( 'core/edit-site' );
-		currentValue = store?.getEditedPostId() as string | undefined;
+		currentTemplateId = store?.getEditedPostId() as string | undefined;
 
-		if ( previousValue === currentValue ) {
+		if ( previousValue === currentTemplateId ) {
 			return;
 		}
 
-		const parsedTemplate = currentValue?.replace(
-			'woocommerce/woocommerce//',
-			''
-		);
-
+		const parsedTemplate = currentTemplateId?.split( '//' )[ 1 ];
 		const block = getBlockType( BLOCK_SLUG );
 
 		if (
@@ -208,7 +204,7 @@ if ( isExperimentalBuild() ) {
 				) )
 		) {
 			unregisterBlockType( BLOCK_SLUG );
-			currentValue = undefined;
+			currentTemplateId = undefined;
 			return;
 		}
 
