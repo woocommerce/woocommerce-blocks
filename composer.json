@@ -27,9 +27,6 @@
 			"Automattic\\WooCommerce\\StoreApi\\": "src/StoreApi/",
 			"Automattic\\WooCommerce\\Blocks\\": "src/"
 		},
-		"extra": {
-			"IMPORTANT": "src/Utils/BlockTemplateUtils.php is added for this reason https://github.com/woocommerce/woocommerce-blocks/issues/6618"
-		},
 		"files": [
 			"src/StoreApi/deprecated.php",
 			"src/StoreApi/functions.php"
