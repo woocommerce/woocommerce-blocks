@@ -95,7 +95,7 @@ export type PaymentMethodDataContextType = {
 
 export type PaymentMethodsDispatcherType = (
 	paymentMethods: PaymentMethods
-) => undefined;
+) => undefined | void;
 
 /**
  * Type for emitProcessingEventType() thunk

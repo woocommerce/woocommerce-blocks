@@ -100,7 +100,7 @@ export const PaymentMethodDataProvider = ( {
 		setPaymentStatus,
 		setRegisteredPaymentMethods,
 		setPaymentMethodData,
-		emitProcessingEvent,
+		emitProcessingEvent: emitPaymentProcessingEvent,
 	} = useDispatch( PAYMENT_METHOD_DATA_STORE_KEY );
 	const { setBillingAddress, setShippingAddress } = useCustomerData();
 
@@ -235,13 +235,14 @@ export const PaymentMethodDataProvider = ( {
 		}
 	}, [ checkoutHasError, currentStatus.isSuccessful, setPaymentStatus ] );
 
+	// Emit the payment processing event
 	useEffect( () => {
 		// Note: the nature of this event emitter is that it will bail on any
 		// observer that returns a response that !== true. However, this still
 		// allows for other observers that return true for continuing through
 		// to the next observer (or bailing if there's a problem).
 		if ( currentStatus.isProcessing ) {
-			emitProcessingEvent(
+			emitPaymentProcessingEvent(
 				currentObservers.current,
 				setValidationErrors
 			);
@@ -259,7 +260,7 @@ export const PaymentMethodDataProvider = ( {
 		setBillingAddress,
 		setPaymentMethodData,
 		setShippingAddress,
-		emitProcessingEvent,
+		emitPaymentProcessingEvent,
 	] );
 
 	const paymentContextData: PaymentMethodDataContextType = {
