@@ -19,9 +19,10 @@ const { isErrorResponse, isFailResponse, isSuccessResponse, noticeContexts } =
 // properties of an object. Refactor this to not be a hook, we could simply import
 // those functions where needed
 
-export const setExpressPaymentError = ( message: string ) => {
+export const setExpressPaymentError = ( message?: string ) => {
 	return ( { registry } ) => {
-		const { createErrorNotice, removeNotice } = registry( noticesStore );
+		const { createErrorNotice, removeNotice } =
+			registry.dispatch( noticesStore );
 		if ( message ) {
 			createErrorNotice( message, {
 				id: 'wc-express-payment-error',

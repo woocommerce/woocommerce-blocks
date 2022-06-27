@@ -36,7 +36,7 @@ const ExpressPaymentMethods = () => {
 	);
 	const { setActivePaymentMethod, setPaymentStatus, setExpressPaymentError } =
 		useDispatch( PAYMENT_METHOD_DATA_STORE_KEY );
-	const paymentMethods = useExpressPaymentMethods();
+	const { paymentMethods } = useExpressPaymentMethods();
 
 	const paymentMethodInterface = usePaymentMethodInterface();
 	const previousActivePaymentMethod = useRef( activePaymentMethod );
