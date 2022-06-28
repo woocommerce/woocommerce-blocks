@@ -74,9 +74,8 @@ const reducer: Reducer< PaymentMethodDataState > = (
 			const previousRegisteredPaymentMethods = {
 				...state.registeredPaymentMethods,
 			};
-			delete previousRegisteredPaymentMethods[
-				action.registeredPaymentMethod.name
-			];
+			delete previousRegisteredPaymentMethods[ action.name ];
+
 			state = {
 				...state,
 				registeredPaymentMethods: {
@@ -131,9 +130,7 @@ const reducer: Reducer< PaymentMethodDataState > = (
 			const previousExpressRegisteredPaymentMethods = {
 				...state.registeredPaymentMethods,
 			};
-			delete previousExpressRegisteredPaymentMethods[
-				action.registeredExpressPaymentMethods.name
-			];
+			delete previousExpressRegisteredPaymentMethods[ action.name ];
 			state = {
 				...state,
 				registeredExpressPaymentMethods: {
