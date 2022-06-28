@@ -14,30 +14,15 @@ export const setDefaultPaymentMethod = async ( methods: string[] ) => {
 	const expressPaymentMethodKeys = select(
 		PAYMENT_METHOD_DATA_STORE_KEY
 	).getAvailableExpressPaymentMethods();
-	const activePaymentMethod = select(
-		PAYMENT_METHOD_DATA_STORE_KEY
-	).getActivePaymentMethod();
 
 	const allPaymentMethodKeys = [
 		...paymentMethodKeys,
 		...expressPaymentMethodKeys,
 	];
 
-	// Return if current method is valid.
-	if (
-		activePaymentMethod &&
-		allPaymentMethodKeys.includes( activePaymentMethod )
-	) {
-		return;
-	}
-
-	dispatch( PAYMENT_METHOD_DATA_STORE_KEY ).setPaymentStatus( {
-		isPristine: true,
-	} );
-
 	const customerPaymentMethods = select(
 		PAYMENT_METHOD_DATA_STORE_KEY
-	).getEnabledCustomerPaymentMethods();
+	).getCustomerPaymentMethods();
 
 	const customerPaymentMethod =
 		Object.keys( customerPaymentMethods ).flatMap(
@@ -61,6 +46,22 @@ export const setDefaultPaymentMethod = async ( methods: string[] ) => {
 		);
 		return;
 	}
+
+	const activePaymentMethod = select(
+		PAYMENT_METHOD_DATA_STORE_KEY
+	).getActivePaymentMethod();
+
+	// Return if current method is valid.
+	if (
+		activePaymentMethod &&
+		allPaymentMethodKeys.includes( activePaymentMethod )
+	) {
+		return;
+	}
+
+	dispatch( PAYMENT_METHOD_DATA_STORE_KEY ).setPaymentStatus( {
+		isPristine: true,
+	} );
 
 	dispatch( PAYMENT_METHOD_DATA_STORE_KEY ).setActivePaymentMethod(
 		paymentMethodKeys[ 0 ]
