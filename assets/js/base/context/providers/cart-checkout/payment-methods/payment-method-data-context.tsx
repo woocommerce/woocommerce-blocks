@@ -125,66 +125,6 @@ export const PaymentMethodDataProvider = ( {
 		enabledCustomerPaymentMethods,
 	] );
 
-	// /**
-	//  * Active Gateway Selection
-	//  *
-	//  * Updates the active (selected) payment method when it is empty, or invalid. This uses the first saved payment
-	//  * method found (if applicable), or the first standard gateway.
-	//  */
-	// useEffect( () => {
-	// 	const paymentMethodKeys = Object.keys( paymentData.paymentMethods );
-	//
-	// 	if ( ! paymentMethodsInitialized || ! paymentMethodKeys.length ) {
-	// 		return;
-	// 	}
-	//
-	// 	const allPaymentMethodKeys = [
-	// 		...paymentMethodKeys,
-	// 		...Object.keys( paymentData.expressPaymentMethods ),
-	// 	];
-	//
-	// 	// Return if current method is valid.
-	// 	if (
-	// 		paymentData.activePaymentMethod &&
-	// 		allPaymentMethodKeys.includes( paymentData.activePaymentMethod )
-	// 	) {
-	// 		return;
-	// 	}
-	//
-	// 	setPaymentStatus().pristine();
-	//
-	// 	const customerPaymentMethod =
-	// 		Object.keys( customerPaymentMethods ).flatMap(
-	// 			( type ) => customerPaymentMethods[ type ]
-	// 		)[ 0 ] || undefined;
-	//
-	// 	if ( customerPaymentMethod ) {
-	// 		const token = customerPaymentMethod.tokenId.toString();
-	// 		const paymentMethodSlug = customerPaymentMethod.method.gateway;
-	// 		const savedTokenKey = `wc-${ paymentMethodSlug }-payment-token`;
-	//
-	// 		dispatchActions.setActivePaymentMethod( paymentMethodSlug, {
-	// 			token,
-	// 			payment_method: paymentMethodSlug,
-	// 			[ savedTokenKey ]: token,
-	// 			isSavedToken: true,
-	// 		} );
-	// 		return;
-	// 	}
-	//
-	// 	dispatchActions.setActivePaymentMethod(
-	// 		Object.keys( paymentData.paymentMethods )[ 0 ]
-	// 	);
-	// }, [
-	// 	paymentMethodsInitialized,
-	// 	paymentData.paymentMethods,
-	// 	paymentData.expressPaymentMethods,
-	// 	dispatchActions,
-	// 	setPaymentStatus,
-	// 	paymentData.activePaymentMethod,
-	// 	customerPaymentMethods,
-	// ] );
-
 	// flip payment to processing if checkout processing is complete, there are no errors, and payment status is started.
 	useEffect( () => {
 		if (
