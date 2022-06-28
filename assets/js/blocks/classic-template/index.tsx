@@ -17,6 +17,7 @@ import { Button, Placeholder } from '@wordpress/components';
 import { __, sprintf } from '@wordpress/i18n';
 import { box, Icon } from '@wordpress/icons';
 import { select, useDispatch, subscribe } from '@wordpress/data';
+import { useEffect } from '@wordpress/element';
 
 /**
  * Internal dependencies
@@ -30,10 +31,11 @@ interface Props {
 		template: string;
 		align: string;
 	};
+	setAttributes: ( attributes: Record< string, string > ) => void;
 	clientId: string;
 }
 
-const Edit = ( { clientId, attributes }: Props ) => {
+const Edit = ( { clientId, attributes, setAttributes }: Props ) => {
 	const { replaceBlock } = useDispatch( 'core/block-editor' );
 
 	const blockProps = useBlockProps();
@@ -41,6 +43,16 @@ const Edit = ( { clientId, attributes }: Props ) => {
 		TEMPLATES[ attributes.template ]?.title ?? attributes.template;
 	const templatePlaceholder =
 		TEMPLATES[ attributes.template ]?.placeholder ?? 'fallback';
+
+	useEffect(
+		() =>
+			setAttributes( {
+				template: attributes.template,
+				align: attributes.align ?? 'wide',
+			} ),
+		[ attributes.align, attributes.template, setAttributes ]
+	);
+
 	return (
 		<div { ...blockProps }>
 			<Placeholder
@@ -159,13 +171,16 @@ const registerClassicTemplateBlock = ( {
 				default: 'wide',
 			},
 		},
-		edit: ( { attributes, clientId } ) => {
+		edit: ( { attributes, clientId, setAttributes } ) => {
+			const newTemplate = template ?? ( attributes.template as string );
+
 			return (
 				<Edit
 					attributes={ {
 						...attributes,
-						template: template ?? ( attributes.template as string ),
+						template: newTemplate,
 					} }
+					setAttributes={ setAttributes }
 					clientId={ clientId }
 				/>
 			);
@@ -177,12 +192,11 @@ const registerClassicTemplateBlock = ( {
 const isClassicTemplateBlockRegisteredWithAnotherTitle = (
 	// eslint-disable-next-line @typescript-eslint/no-explicit-any
 	block: Block< any > | undefined,
-	parsedTemplate: string | undefined
-) => parsedTemplate && block?.title !== TEMPLATES[ parsedTemplate ].title;
+	parsedTemplate: string
+) => block?.title !== TEMPLATES[ parsedTemplate ].title;
 
-const hasTemplateSupportForClassicTemplateBlock = (
-	parsedTemplate: string | undefined
-) => parsedTemplate && templates.includes( parsedTemplate );
+const hasTemplateSupportForClassicTemplateBlock = ( parsedTemplate: string ) =>
+	templates.includes( parsedTemplate );
 
 // @todo Refactor when there will be possible to show a block according on a template/post with a Gutenberg API. https://github.com/WordPress/gutenberg/pull/41718
 
@@ -199,6 +213,11 @@ if ( isExperimentalBuild() ) {
 		}
 
 		const parsedTemplate = currentTemplateId?.split( '//' )[ 1 ];
+
+		if ( parsedTemplate === null || parsedTemplate === undefined ) {
+			return;
+		}
+
 		const block = getBlockType( BLOCK_SLUG );
 
 		if (
@@ -227,7 +246,7 @@ if ( isExperimentalBuild() ) {
 			 * See https://github.com/woocommerce/woocommerce-gutenberg-products-block/issues/5861 for more context
 			 */
 			registerClassicTemplateBlock( {
-				template: parsedTemplate ?? 'WooCommerce Classic Template',
+				template: parsedTemplate,
 				inserter: true,
 			} );
 		}
