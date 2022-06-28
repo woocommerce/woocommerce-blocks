@@ -44,7 +44,7 @@ class CrossSellsItemSchema extends ProductSchema {
 	/**
 	 * Converts a WooCommerce product into an object suitable for the response.
 	 *
-	 * @param object $product Cross-sell product.
+	 * @param \WC_Product $product Cross-sell product.
 	 *
 	 * @return array
 	 */
