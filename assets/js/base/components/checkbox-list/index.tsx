@@ -12,7 +12,7 @@ import './style.scss';
 
 interface CheckboxListOptions {
 	label: React.ReactNode;
-	value: string;
+	value?: string;
 }
 
 interface CheckboxListProps {
@@ -21,7 +21,7 @@ interface CheckboxListProps {
 	isDisabled?: boolean;
 	limit?: number;
 	checked?: string[];
-	onChange?: ( value: string ) => void;
+	onChange: ( value: string ) => void;
 	options?: CheckboxListOptions[];
 }
 
@@ -39,7 +39,7 @@ interface CheckboxListProps {
  */
 const CheckboxList = ( {
 	className,
-	onChange = () => void 0,
+	onChange,
 	options = [],
 	checked = [],
 	isLoading = false,
@@ -125,32 +125,35 @@ const CheckboxList = ( {
 		const shouldTruncateOptions = optionCount > limit + 5;
 		return (
 			<>
-				{ options.map( ( option, index ) => (
-					<Fragment key={ option.value }>
-						<li
-							{ ...( shouldTruncateOptions &&
-								! showExpanded &&
-								index >= limit && { hidden: true } ) }
-						>
-							<input
-								type="checkbox"
-								id={ option.value }
-								value={ option.value }
-								onChange={ ( event ) => {
-									onChange( event.target.value );
-								} }
-								checked={ checked.includes( option.value ) }
-								disabled={ isDisabled }
-							/>
-							<label htmlFor={ option.value }>
-								{ option.label }
-							</label>
-						</li>
-						{ shouldTruncateOptions &&
-							index === limit - 1 &&
-							renderedShowMore }
-					</Fragment>
-				) ) }
+				{ options.map( ( option, index ) => {
+					option.value = option.value ? option.value : '';
+					return (
+						<Fragment key={ option.value }>
+							<li
+								{ ...( shouldTruncateOptions &&
+									! showExpanded &&
+									index >= limit && { hidden: true } ) }
+							>
+								<input
+									type="checkbox"
+									id={ option.value }
+									value={ option.value }
+									onChange={ ( event ) => {
+										onChange( event.target.value );
+									} }
+									checked={ checked.includes( option.value ) }
+									disabled={ isDisabled }
+								/>
+								<label htmlFor={ option.value }>
+									{ option.label }
+								</label>
+							</li>
+							{ shouldTruncateOptions &&
+								index === limit - 1 &&
+								renderedShowMore }
+						</Fragment>
+					);
+				} ) }
 				{ shouldTruncateOptions && renderedShowLess }
 			</>
 		);
