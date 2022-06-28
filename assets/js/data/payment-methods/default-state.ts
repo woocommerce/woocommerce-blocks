@@ -29,8 +29,10 @@ export interface PaymentMethodDataState {
 	errorMessage: string;
 	activePaymentMethod: string;
 	activeSavedToken: string;
+	// Registered payment methods may be invalid forms of payment (e.g. expired cards)
 	registeredPaymentMethods: PaymentMethods;
 	registeredExpressPaymentMethods: ExpressPaymentMethods;
+	// Avilable payment methods are valid and can make payment
 	availablePaymentMethods: string[];
 	availableExpressPaymentMethods: string[];
 	paymentMethodData: Record< string, unknown >;
