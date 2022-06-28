@@ -1,8 +1,6 @@
 <?php
 namespace Automattic\WooCommerce\StoreApi\Schemas\V1;
 
-use Automattic\WooCommerce\StoreApi\Exceptions\RouteException;
-
 /**
  * CrossSellsItemSchema class.
  */
