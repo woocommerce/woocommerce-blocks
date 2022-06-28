@@ -3,12 +3,14 @@
  */
 import { useMemo, cloneElement } from '@wordpress/element';
 import { __, sprintf } from '@wordpress/i18n';
-import { usePaymentMethodDataContext } from '@woocommerce/base-context';
+import {
+	usePaymentMethodDataContext,
+	noticeContexts,
+} from '@woocommerce/base-context';
 import RadioControl from '@woocommerce/base-components/radio-control';
 import {
 	usePaymentMethodInterface,
 	useStoreEvents,
-	useEmitResponse,
 } from '@woocommerce/base-context/hooks';
 import { PAYMENT_METHOD_DATA_STORE_KEY } from '@woocommerce/block-data';
 import { useDispatch, useSelect } from '@wordpress/data';
@@ -78,7 +80,6 @@ const SavedPaymentMethodOptions = () => {
 	);
 	const paymentMethods = getPaymentMethods();
 	const paymentMethodInterface = usePaymentMethodInterface();
-	const { noticeContexts } = useEmitResponse();
 	const { removeNotice } = useDispatch( 'core/notices' );
 	const { dispatchCheckoutEvent } = useStoreEvents();
 
@@ -123,7 +124,6 @@ const SavedPaymentMethodOptions = () => {
 		customerPaymentMethods,
 		setActivePaymentMethod,
 		removeNotice,
-		noticeContexts.PAYMENTS,
 		dispatchCheckoutEvent,
 	] );
 	const savedPaymentMethodHandler =

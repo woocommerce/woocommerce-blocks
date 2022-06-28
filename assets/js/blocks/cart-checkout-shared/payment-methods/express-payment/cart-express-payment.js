@@ -2,11 +2,11 @@
  * External dependencies
  */
 import { __ } from '@wordpress/i18n';
+import { useExpressPaymentMethods } from '@woocommerce/base-context/hooks';
 import {
-	useEmitResponse,
-	useExpressPaymentMethods,
-} from '@woocommerce/base-context/hooks';
-import { StoreNoticesContainer } from '@woocommerce/base-context';
+	StoreNoticesContainer,
+	noticeContexts,
+} from '@woocommerce/base-context';
 import LoadingMask from '@woocommerce/base-components/loading-mask';
 import { useSelect } from '@wordpress/data';
 import {
@@ -22,7 +22,6 @@ import './style.scss';
 
 const CartExpressPayment = () => {
 	const { paymentMethods, isInitialized } = useExpressPaymentMethods();
-	const { noticeContexts } = useEmitResponse();
 	const {
 		isCalculating,
 		isProcessing,

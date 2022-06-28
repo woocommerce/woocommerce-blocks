@@ -3,7 +3,6 @@
  */
 import {
 	usePaymentMethodInterface,
-	useEmitResponse,
 	useStoreEvents,
 } from '@woocommerce/base-context/hooks';
 import { cloneElement, useCallback } from '@wordpress/element';
@@ -20,6 +19,7 @@ import { getPaymentMethods } from '@woocommerce/blocks-registry';
  * Internal dependencies
  */
 import PaymentMethodCard from './payment-method-card';
+import { noticeContexts } from '../../../base/context/event-emit';
 import { STORE_KEY as PAYMENT_METHOD_DATA_STORE_KEY } from '../../../data/payment-methods/constants';
 
 /**
@@ -53,8 +53,6 @@ const PaymentMethodOptions = () => {
 		};
 	} );
 	const { ...paymentMethodInterface } = usePaymentMethodInterface();
-
-	const { noticeContexts } = useEmitResponse();
 	const { removeNotice } = useDispatch( 'core/notices' );
 	const { dispatchCheckoutEvent } = useStoreEvents();
 	const { isEditor } = useEditorContext();
@@ -90,12 +88,7 @@ const PaymentMethodOptions = () => {
 				value,
 			} );
 		},
-		[
-			dispatchCheckoutEvent,
-			noticeContexts.PAYMENTS,
-			removeNotice,
-			setActivePaymentMethod,
-		]
+		[ dispatchCheckoutEvent, removeNotice, setActivePaymentMethod ]
 	);
 
 	const isSinglePaymentMethod =

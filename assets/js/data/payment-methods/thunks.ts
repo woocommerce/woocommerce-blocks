@@ -6,18 +6,17 @@ import { store as noticesStore } from '@wordpress/notices';
 /**
  * Internal dependencies
  */
-import { useEmitResponse } from '../../base/context/hooks/use-emit-response';
-import { emitEventWithAbort } from '../../base/context/event-emit';
+
+import {
+	emitEventWithAbort,
+	isErrorResponse,
+	isFailResponse,
+	isSuccessResponse,
+	noticeContexts,
+} from '../../base/context/event-emit';
 import { EMIT_TYPES } from '../../base/context/providers/cart-checkout/payment-methods/event-emit';
 import type { emitProcessingEventType } from './types';
 import { CART_STORE_KEY } from '../cart';
-
-const { isErrorResponse, isFailResponse, isSuccessResponse, noticeContexts } =
-	useEmitResponse(); // eslint-disable-line react-hooks/rules-of-hooks
-
-// TODO: `useEmitResponse` is not a react hook, it just exposes some functions as
-// properties of an object. Refactor this to not be a hook, we could simply import
-// those functions where needed
 
 export const setExpressPaymentError = ( message?: string ) => {
 	return ( { registry } ) => {

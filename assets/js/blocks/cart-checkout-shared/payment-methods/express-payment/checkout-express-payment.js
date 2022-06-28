@@ -2,10 +2,10 @@
  * External dependencies
  */
 import { __ } from '@wordpress/i18n';
-import { useEmitResponse } from '@woocommerce/base-context/hooks';
 import {
 	StoreNoticesContainer,
 	useEditorContext,
+	noticeContexts,
 } from '@woocommerce/base-context';
 import Title from '@woocommerce/base-components/title';
 import LoadingMask from '@woocommerce/base-components/loading-mask';
@@ -56,7 +56,6 @@ const CheckoutExpressPayment = () => {
 		};
 	} );
 	const { isEditor } = useEditorContext();
-	const { noticeContexts } = useEmitResponse();
 
 	if (
 		! expressPaymentMethodsInitialized ||

@@ -25,7 +25,7 @@ import deprecated from '@wordpress/deprecated';
 import { useEditorContext } from '../../editor-context';
 import { useCustomerDataContext } from '../customer';
 import { useStoreCart } from '../../../hooks/cart/use-store-cart';
-import { useEmitResponse } from '../../../hooks/use-emit-response';
+import { noticeContexts } from '../../../event-emit';
 import type { PaymentMethodsDispatcherType } from '../../../../../data/payment-methods/types';
 import { useShippingData } from '../../../hooks/shipping/use-shipping-data';
 
@@ -218,7 +218,6 @@ export const usePaymentMethods = (
 ): boolean => {
 	const standardMethods: PaymentMethods =
 		getPaymentMethods() as PaymentMethods;
-	const { noticeContexts } = useEmitResponse();
 	// Ensure all methods are present in order.
 	// Some payment methods may not be present in paymentGatewaySortOrder if they
 	// depend on state, e.g. COD can depend on shipping method.
@@ -246,7 +245,6 @@ export const useExpressPaymentMethods = (
 ): boolean => {
 	const expressMethods: ExpressPaymentMethods =
 		getExpressPaymentMethods() as ExpressPaymentMethods;
-	const { noticeContexts } = useEmitResponse();
 	return usePaymentMethodRegistration(
 		dispatcher,
 		expressMethods,
