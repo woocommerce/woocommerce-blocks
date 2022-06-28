@@ -47,17 +47,8 @@ class CrossSellsItemSchema extends ProductSchema {
 	 * @param object $product Cross-sell product.
 	 *
 	 * @return array
-	 * @throws RouteException When cross-sells product is invalid.
 	 */
 	public function get_item_response( $product ) {
-
-		if ( ! $product instanceof \WC_Product || 0 === $product->get_id() ) {
-			throw new RouteException(
-				'woocommerce_rest_product_invalid_id',
-				__( 'Invalid product ID for cross-sells block.', 'woo-gutenberg-products-block' ),
-				500
-			);
-		}
 
 		return [
 			'id'                => $product->get_id(),
