@@ -107,7 +107,13 @@ const Edit = ( { clientId, attributes }: Props ) => {
 
 const templates = Object.keys( TEMPLATES );
 
-const registerClassicTemplateBlock = ( template?: string ) => {
+const registerClassicTemplateBlock = ( {
+	template,
+	inserter,
+}: {
+	template?: string;
+	inserter: boolean;
+} ) => {
 	registerBlockType( BLOCK_SLUG, {
 		title: template
 			? TEMPLATES[ template ].title
@@ -133,7 +139,7 @@ const registerClassicTemplateBlock = ( template?: string ) => {
 			html: false,
 			multiple: false,
 			reusable: false,
-			inserter: true,
+			inserter,
 		},
 		example: {
 			attributes: {
@@ -184,11 +190,11 @@ let currentTemplateId: string | undefined;
 
 if ( isExperimentalBuild() ) {
 	subscribe( () => {
-		const previousValue = currentTemplateId;
+		const previousTemplateId = currentTemplateId;
 		const store = select( 'core/edit-site' );
 		currentTemplateId = store?.getEditedPostId() as string | undefined;
 
-		if ( previousValue === currentTemplateId ) {
+		if ( previousTemplateId === currentTemplateId ) {
 			return;
 		}
 
@@ -209,7 +215,7 @@ if ( isExperimentalBuild() ) {
 		}
 
 		if (
-			getBlockType( BLOCK_SLUG ) === undefined &&
+			block === undefined &&
 			hasTemplateSupportForClassicTemplateBlock( parsedTemplate )
 		) {
 			/**
@@ -220,9 +226,14 @@ if ( isExperimentalBuild() ) {
 			 *
 			 * See https://github.com/woocommerce/woocommerce-gutenberg-products-block/issues/5861 for more context
 			 */
-			registerClassicTemplateBlock( parsedTemplate );
+			registerClassicTemplateBlock( {
+				template: parsedTemplate ?? 'WooCommerce Classic Template',
+				inserter: true,
+			} );
 		}
 	} );
 } else {
-	registerClassicTemplateBlock();
+	registerClassicTemplateBlock( {
+		inserter: false,
+	} );
 }
