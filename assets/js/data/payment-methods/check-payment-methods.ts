@@ -8,6 +8,9 @@ import {
 import { CURRENT_USER_IS_ADMIN } from '@woocommerce/settings';
 import { dispatch, select } from '@wordpress/data';
 import { deriveSelectedShippingRates } from '@woocommerce/base-utils';
+import { __, sprintf } from '@wordpress/i18n';
+import { store as noticesStore } from '@wordpress/notices';
+
 import {
 	getExpressPaymentMethods,
 	getPaymentMethods,
@@ -18,6 +21,7 @@ import {
  */
 import { STORE_KEY as CART_STORE_KEY } from '../cart/constants';
 import { STORE_KEY as PAYMENT_METHOD_DATA_STORE_KEY } from '../payment-methods/constants';
+import { noticeContexts } from '../../base/context/hooks/use-emit-response';
 
 export const checkPaymentMethodsCanPay = async ( express = false ) => {
 	let availablePaymentMethods = {};
@@ -36,6 +40,9 @@ export const checkPaymentMethodsCanPay = async ( express = false ) => {
 		};
 	};
 
+	const noticeContext = express
+		? noticeContexts.EXPRESS_PAYMENTS
+		: noticeContexts.PAYMENTS;
 	const cart = select( CART_STORE_KEY ).getCartData();
 	const selectedShippingMethods = deriveSelectedShippingRates(
 		cart.shippingRates
@@ -50,6 +57,8 @@ export const checkPaymentMethodsCanPay = async ( express = false ) => {
 		paymentRequirements: cart.paymentRequirements,
 	};
 
+	const isEditor = !! select( 'core/editor' );
+
 	for ( const paymentMethod of Object.values( paymentMethods ) ) {
 		if ( ! paymentMethod ) {
 			continue;
@@ -57,7 +66,6 @@ export const checkPaymentMethodsCanPay = async ( express = false ) => {
 
 		// See if payment method should be available. This always evaluates to true in the editor context.
 		try {
-			const isEditor = !! select( 'core/editor' );
 			const canPay = isEditor
 				? true
 				: await Promise.resolve(
@@ -72,20 +80,20 @@ export const checkPaymentMethodsCanPay = async ( express = false ) => {
 				addAvailablePaymentMethod( paymentMethod );
 			}
 		} catch ( e ) {
-			if ( CURRENT_USER_IS_ADMIN ) {
-				// TODO: When https://github.com/woocommerce/woocommerce-gutenberg-products-block/pull/6159 is merged we can interact with the data store.
-				// const errorText = sprintf(
-				// 	/* translators: %s the id of the payment method being registered (bank transfer, cheque...) */
-				// 	__(
-				// 		`There was an error registering the payment method with id '%s': `,
-				// 		'woo-gutenberg-products-block'
-				// 	),
-				// 	paymentMethod.paymentMethodId
-				// );
-				// addErrorNotice( `${ errorText } ${ e }`, {
-				// 	context: noticeContext,
-				// 	id: `wc-${ paymentMethod.paymentMethodId }-registration-error`,
-				// } );
+			if ( CURRENT_USER_IS_ADMIN || isEditor ) {
+				const { createErrorNotice } = dispatch( noticesStore );
+				const errorText = sprintf(
+					/* translators: %s the id of the payment method being registered (bank transfer, cheque...) */
+					__(
+						`There was an error registering the payment method with id '%s': `,
+						'woo-gutenberg-products-block'
+					),
+					paymentMethod.paymentMethodId
+				);
+				createErrorNotice( `${ errorText } ${ e }`, {
+					context: noticeContext,
+					id: `wc-${ paymentMethod.paymentMethodId }-registration-error`,
+				} );
 				return false;
 			}
 		}
