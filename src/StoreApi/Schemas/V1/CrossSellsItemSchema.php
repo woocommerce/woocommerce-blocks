@@ -31,7 +31,6 @@ class CrossSellsItemSchema extends ProductSchema {
 		$properties = parent::get_properties();
 
 		return [
-			'key'               => $properties['key'],
 			'id'                => $properties['id'],
 			'name'              => $properties['name'],
 			'permalink'         => $properties['permalink'],
@@ -43,15 +42,14 @@ class CrossSellsItemSchema extends ProductSchema {
 	}
 
 	/**
-	 * Converts a WooCommerce product id into an object suitable for the response.
+	 * Converts a WooCommerce product into an object suitable for the response.
 	 *
-	 * @param integer $product_id Cross-sell product id.
+	 * @param object $product Cross-sell product.
 	 *
 	 * @return array
-	 * @throws RouteException When unable to find cross-sells product by id.
+	 * @throws RouteException When cross-sells product is invalid.
 	 */
-	public function get_item_response( $product_id ) {
-		$product = wc_get_product( $product_id );
+	public function get_item_response( $product ) {
 
 		if ( ! $product instanceof \WC_Product || 0 === $product->get_id() ) {
 			throw new RouteException(
