@@ -1,7 +1,6 @@
 module.exports = {
 	...require( '@wordpress/scripts/config/jest-e2e.config' ),
 	rootDir: '../../../',
-	maxConcurrency: 1,
 	// Automatically clear mock calls and instances between every test
 	clearMocks: true,
 
