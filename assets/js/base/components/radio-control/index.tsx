@@ -32,23 +32,20 @@ const RadioControl = ( {
 				className
 			) }
 		>
-			{ options.map( ( option ) => {
-				option.value = option.value ? option.value : '';
-				return (
-					<RadioControlOption
-						key={ `${ radioControlId }-${ option.value }` }
-						name={ `radio-control-${ radioControlId }` }
-						checked={ option.value === selected }
-						option={ option }
-						onChange={ ( value: string ) => {
-							onChange( value );
-							if ( typeof option.onChange === 'function' ) {
-								option.onChange( value );
-							}
-						} }
-					/>
-				);
-			} ) }
+			{ options.map( ( option ) => (
+				<RadioControlOption
+					key={ `${ radioControlId }-${ option.value }` }
+					name={ `radio-control-${ radioControlId }` }
+					checked={ option.value === selected }
+					option={ option }
+					onChange={ ( value: string ) => {
+						onChange( value );
+						if ( typeof option.onChange === 'function' ) {
+							option.onChange( value );
+						}
+					} }
+				/>
+			) ) }
 		</div>
 	);
 };

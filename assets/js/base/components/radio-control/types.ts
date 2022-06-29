@@ -31,7 +31,7 @@ interface RadioControlOptionContent {
 }
 
 export interface RadioControlOption extends RadioControlOptionContent {
-	value?: string;
+	value: string;
 	onChange?: ( value: string ) => void;
 }
 
