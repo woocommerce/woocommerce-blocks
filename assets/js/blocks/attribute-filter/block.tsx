@@ -511,15 +511,20 @@ const AttributeFilterBlock = ( {
 			! hasSetFilterDefaultsFromUrl &&
 			! attributeTermsLoading
 		) {
+			setHasSetFilterDefaultsFromUrl( true );
 			updateCheckedFilters( initialFilters, true );
 		}
-		setHasSetFilterDefaultsFromUrl( true );
+
+		if ( ! filteringForPhpTemplate && ! hasSetFilterDefaultsFromUrl ) {
+			setHasSetFilterDefaultsFromUrl( true );
+		}
 	}, [
 		attributeObject,
 		hasSetFilterDefaultsFromUrl,
 		attributeTermsLoading,
 		updateCheckedFilters,
 		initialFilters,
+		filteringForPhpTemplate,
 	] );
 
 	if ( ! hasFilterableProducts ) {
