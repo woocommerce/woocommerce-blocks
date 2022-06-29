@@ -157,7 +157,7 @@ const PriceFilterBlock = ( {
 	 * for the filter to work alongside the Active Filters block.
 	 */
 	useEffect( () => {
-		if ( ! hasSetPhpFilterDefaults && filteringForPhpTemplate ) {
+		if ( ! hasSetPhpFilterDefaults ) {
 			setMinPriceQuery(
 				formatPrice( minPriceParam, currency.minorUnit )
 			);
@@ -169,7 +169,6 @@ const PriceFilterBlock = ( {
 		}
 	}, [
 		currency.minorUnit,
-		filteringForPhpTemplate,
 		hasSetPhpFilterDefaults,
 		maxPriceParam,
 		minPriceParam,
@@ -190,19 +189,24 @@ const PriceFilterBlock = ( {
 					: newMinPrice;
 
 			// For block templates that render the PHP Classic Template block we need to add the filters as params and reload the page.
-			if ( filteringForPhpTemplate && window ) {
+			if ( window ) {
 				const newUrl = formatParams( window.location.href, {
 					min_price: finalMinPrice / 10 ** currency.minorUnit,
 					max_price: finalMaxPrice / 10 ** currency.minorUnit,
 				} );
+
 				// If the params have changed, lets reload the page.
 				if ( window.location.href !== newUrl ) {
-					window.location.href = newUrl;
+					if ( filteringForPhpTemplate ) {
+						window.location.href = newUrl;
+					} else {
+						window.history.pushState( {}, document.title, newUrl );
+					}
 				}
-			} else {
-				setMinPriceQuery( finalMinPrice );
-				setMaxPriceQuery( finalMaxPrice );
 			}
+
+			setMinPriceQuery( finalMinPrice );
+			setMaxPriceQuery( finalMaxPrice );
 		},
 		[
 			minConstraint,
