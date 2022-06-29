@@ -76,17 +76,17 @@ const ActiveFiltersBlock = ( {
 				type: __( 'Stock Status', 'woo-gutenberg-products-block' ),
 				name: STOCK_STATUS_OPTIONS[ slug ],
 				removeCallback: () => {
-					if ( filteringForPhpTemplate ) {
-						return removeArgsFromFilterUrl( {
-							filter_stock_status: slug,
-						} );
+					removeArgsFromFilterUrl( {
+						filter_stock_status: slug,
+					} );
+					if ( ! filteringForPhpTemplate ) {
+						const newStatuses = productStockStatus.filter(
+							( status ) => {
+								return status !== slug;
+							}
+						);
+						setProductStockStatus( newStatuses );
 					}
-					const newStatuses = productStockStatus.filter(
-						( status ) => {
-							return status !== slug;
-						}
-					);
-					setProductStockStatus( newStatuses );
 				},
 				displayStyle: blockAttributes.displayStyle,
 			} );

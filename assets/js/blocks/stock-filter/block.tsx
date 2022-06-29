@@ -56,7 +56,7 @@ const StockStatusFilterBlock = ( {
 		isBoolean
 	);
 
-	const [ hasSetPhpFilterDefaults, setHasSetPhpFilterDefaults ] =
+	const [ hasSetFilterDefaultsFromUrl, setHasSetFilterDefaultsFromUrl ] =
 		useState( false );
 
 	const { outofstock, ...otherStockStatusOptions } = getSetting(
@@ -70,9 +70,12 @@ const StockStatusFilterBlock = ( {
 			: { outofstock, ...otherStockStatusOptions }
 	);
 
-	const [ checked, setChecked ] = useState(
-		getActiveFilters( STOCK_STATUS_OPTIONS.current, QUERY_PARAM_KEY )
+	const initialFilters = useMemo(
+		() => getActiveFilters( STOCK_STATUS_OPTIONS.current, QUERY_PARAM_KEY ),
+		[]
 	);
+
+	const [ checked, setChecked ] = useState( initialFilters );
 	const [ displayedOptions, setDisplayedOptions ] = useState(
 		blockAttributes.isPreview ? previewOptions : []
 	);
@@ -86,7 +89,7 @@ const StockStatusFilterBlock = ( {
 
 	const [ queryState ] = useQueryStateByContext();
 	const [ productStockStatusQuery, setProductStockStatusQuery ] =
-		useQueryStateByKey( 'stock_status', [] );
+		useQueryStateByKey( 'stock_status', initialFilters );
 
 	const { results: filteredCounts, isLoading: filteredCountsLoading } =
 		useCollectionData( {
@@ -177,9 +180,16 @@ const StockStatusFilterBlock = ( {
 	/**
 	 * Used to redirect the page when filters are changed so templates using the Classic Template block can filter.
 	 *
-	 * @param {Array} checkedOptions Array of checked stock options.
+	 * @param {Array}   checkedOptions Array of checked stock options.
+	 * @param {boolean} isPhpTemplate  Whether filters are being used for a PHP template.
 	 */
-	const redirectPageForPhpTemplate = ( checkedOptions: string[] ) => {
+	const updateFilterUrl = (
+		checkedOptions: string[],
+		isPhpTemplate: boolean
+	) => {
+		if ( ! window || ! document ) {
+			return;
+		}
 		if ( checkedOptions.length === 0 ) {
 			const url = removeQueryArgs(
 				window.location.href,
@@ -187,8 +197,13 @@ const StockStatusFilterBlock = ( {
 			);
 
 			if ( url !== window.location.href ) {
-				window.location.href = url;
+				if ( isPhpTemplate ) {
+					window.location.href = url;
+				} else {
+					window.history.pushState( {}, document.title, url );
+				}
 			}
+
 			return;
 		}
 
@@ -196,8 +211,14 @@ const StockStatusFilterBlock = ( {
 			[ QUERY_PARAM_KEY ]: checkedOptions.join( ',' ),
 		} );
 
-		if ( newUrl !== window.location.href ) {
+		if ( newUrl === window.location.href ) {
+			return;
+		}
+
+		if ( isPhpTemplate ) {
 			window.location.href = newUrl;
+		} else {
+			window.history.pushState( {}, document.title, newUrl );
 		}
 	};
 
@@ -206,13 +227,11 @@ const StockStatusFilterBlock = ( {
 			if ( isEditor ) {
 				return;
 			}
-			if ( isChecked ) {
+			if ( isChecked && ! filteringForPhpTemplate ) {
 				setProductStockStatusQuery( checked );
 			}
-			// For PHP templates when the filter button is enabled.
-			if ( filteringForPhpTemplate ) {
-				redirectPageForPhpTemplate( checked );
-			}
+
+			updateFilterUrl( checked, filteringForPhpTemplate );
 		},
 		[
 			isEditor,
@@ -246,32 +265,18 @@ const StockStatusFilterBlock = ( {
 	}, [ checked, currentCheckedQuery, previousCheckedQuery ] );
 
 	/**
-	 * Important: For PHP rendered block templates only.
+	 * Try get the stock filter from the URL.
 	 */
 	useEffect( () => {
-		if ( filteringForPhpTemplate ) {
-			setChecked( checked );
-		}
-	}, [ filteringForPhpTemplate, checked ] );
-
-	/**
-	 * Important: For PHP rendered block templates only.
-	 */
-	useEffect( () => {
-		if ( ! hasSetPhpFilterDefaults && filteringForPhpTemplate ) {
-			setProductStockStatusQuery(
-				getActiveFilters(
-					STOCK_STATUS_OPTIONS.current,
-					QUERY_PARAM_KEY
-				)
-			);
-			setHasSetPhpFilterDefaults( true );
+		if ( ! hasSetFilterDefaultsFromUrl ) {
+			setProductStockStatusQuery( initialFilters );
+			setHasSetFilterDefaultsFromUrl( true );
 		}
 	}, [
-		filteringForPhpTemplate,
 		setProductStockStatusQuery,
-		hasSetPhpFilterDefaults,
-		setHasSetPhpFilterDefaults,
+		hasSetFilterDefaultsFromUrl,
+		setHasSetFilterDefaultsFromUrl,
+		initialFilters,
 	] );
 
 	/**
