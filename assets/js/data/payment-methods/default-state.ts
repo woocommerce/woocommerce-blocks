@@ -26,7 +26,6 @@ export interface PaymentMethodDataState {
 		isSuccessful: boolean;
 		isDoingExpressPayment: boolean;
 	};
-	errorMessage: string;
 	activePaymentMethod: string;
 	activeSavedToken: string;
 	// Registered payment methods may be invalid forms of payment (e.g. expired cards)
@@ -68,7 +67,6 @@ export const defaultPaymentMethodDataState: PaymentMethodDataState = {
 	expressPaymentMethodsInitialized: false,
 	isExpressPaymentMethodActive: false,
 	shouldSavePaymentMethod: false,
-	errorMessage: '',
 	activePaymentMethod: '',
 	activeSavedToken: '',
 };

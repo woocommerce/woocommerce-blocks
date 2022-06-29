@@ -49,7 +49,6 @@ export const emitProcessingEvent: emitProcessingEventType = (
 			registry.dispatch( 'core/notices' );
 		removeNotice( 'wc-payment-error', noticeContexts.PAYMENTS );
 		emitEventWithAbort(
-			// TODO Move all this block into a function in thunks & Create buttons to trigger this event (see Alex's PR)
 			currentObserver,
 			EMIT_TYPES.PAYMENT_PROCESSING,
 			{}

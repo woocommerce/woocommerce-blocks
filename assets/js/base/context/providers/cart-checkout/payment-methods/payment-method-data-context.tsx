@@ -27,12 +27,6 @@ import { usePaymentMethods } from './use-payment-method-registration';
 import { useEditorContext } from '../../editor-context';
 import { useEventEmitters, reducer as emitReducer } from './event-emit';
 import { useValidationContext } from '../../validation';
-import {
-	isSuccessResponse,
-	isErrorResponse,
-	isFailResponse,
-	noticeContexts,
-} from '../../../event-emit';
 import { useCustomerData } from '../../../hooks/use-customer-data';
 
 const PaymentMethodDataContext = createContext( DEFAULT_PAYMENT_METHOD_DATA );
@@ -74,9 +68,6 @@ export const PaymentMethodDataProvider = ( {
 
 			return {
 				currentStatus: store.getCurrentStatus(),
-				registeredExpressPaymentMethods:
-					store.getRegisteredExpressPaymentMethods(),
-				errorMessage: store.getErrorMessage(),
 				enabledCustomerPaymentMethods:
 					store.getEnabledCustomerPaymentMethods(),
 			};
@@ -173,10 +164,6 @@ export const PaymentMethodDataProvider = ( {
 		setValidationErrors,
 		setPaymentStatus,
 		removeNotice,
-		noticeContexts.PAYMENTS,
-		isSuccessResponse,
-		isFailResponse,
-		isErrorResponse,
 		createErrorNotice,
 		setBillingAddress,
 		setPaymentMethodData,
