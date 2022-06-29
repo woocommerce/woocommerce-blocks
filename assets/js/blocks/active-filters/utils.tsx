@@ -9,6 +9,12 @@ import { getQueryArgs, addQueryArgs, removeQueryArgs } from '@wordpress/url';
 import { getSettingWithCoercion } from '@woocommerce/settings';
 import { isBoolean } from '@woocommerce/types';
 
+const filteringForPhpTemplate = getSettingWithCoercion(
+	'is_rendering_php_template',
+	false,
+	isBoolean
+);
+
 /**
  * Format a min/max price range to display.
  *
@@ -187,12 +193,6 @@ export const removeArgsFromFilterUrl = (
 		Object.entries( currentQuery ).filter( ( [ , value ] ) => value )
 	);
 
-	const filteringForPhpTemplate = getSettingWithCoercion(
-		'is_rendering_php_template',
-		false,
-		isBoolean
-	);
-
 	const newUrl = addQueryArgs( cleanUrl, filteredQuery );
 
 	if ( filteringForPhpTemplate ) {
@@ -232,12 +232,6 @@ export const cleanFilterUrl = () => {
 	);
 
 	const newUrl = addQueryArgs( cleanUrl, remainingArgs );
-
-	const filteringForPhpTemplate = getSettingWithCoercion(
-		'is_rendering_php_template',
-		false,
-		isBoolean
-	);
 
 	if ( filteringForPhpTemplate ) {
 		window.location.href = newUrl;

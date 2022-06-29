@@ -108,8 +108,10 @@ const ActiveFiltersBlock = ( {
 			name: formatPriceRange( minPrice, maxPrice ),
 			removeCallback: () => {
 				removeArgsFromFilterUrl( 'max_price', 'min_price' );
-				setMinPrice( undefined );
-				setMaxPrice( undefined );
+				if ( ! filteringForPhpTemplate ) {
+					setMinPrice( undefined );
+					setMaxPrice( undefined );
+				}
 			},
 			displayStyle: blockAttributes.displayStyle,
 		} );
@@ -119,6 +121,7 @@ const ActiveFiltersBlock = ( {
 		blockAttributes.displayStyle,
 		setMinPrice,
 		setMaxPrice,
+		filteringForPhpTemplate,
 	] );
 
 	const activeAttributeFilters = useMemo( () => {
@@ -287,10 +290,12 @@ const ActiveFiltersBlock = ( {
 					className="wc-block-active-filters__clear-all"
 					onClick={ () => {
 						cleanFilterUrl();
-						setMinPrice( undefined );
-						setMaxPrice( undefined );
-						setProductAttributes( [] );
-						setProductStockStatus( [] );
+						if ( ! filteringForPhpTemplate ) {
+							setMinPrice( undefined );
+							setMaxPrice( undefined );
+							setProductAttributes( [] );
+							setProductStockStatus( [] );
+						}
 					} }
 				>
 					<Label
