@@ -4,6 +4,7 @@
 import type { Reducer } from 'redux';
 import { objectHasProp } from '@woocommerce/types';
 import { PaymentMethods } from '@woocommerce/type-defs/payments';
+import { getSetting } from '@woocommerce/settings';
 
 /**
  * Internal dependencies
@@ -13,6 +14,12 @@ import {
 	PaymentMethodDataState,
 } from './default-state';
 import { ACTION_TYPES } from './action-types';
+import { orderPaymentMethods } from './utils';
+
+const paymentGatewaySortOrder = getSetting< string[] >(
+	'paymentGatewaySortOrder',
+	[]
+);
 
 const reducer: Reducer< PaymentMethodDataState > = (
 	state = defaultPaymentMethodDataState,
@@ -74,9 +81,8 @@ const reducer: Reducer< PaymentMethodDataState > = (
 			const previousRegisteredPaymentMethods = {
 				...state.registeredPaymentMethods,
 			};
-			delete previousRegisteredPaymentMethods[
-				action.registeredPaymentMethod.name
-			];
+			delete previousRegisteredPaymentMethods[ action.name ];
+
 			state = {
 				...state,
 				registeredPaymentMethods: {
@@ -116,9 +122,13 @@ const reducer: Reducer< PaymentMethodDataState > = (
 			};
 			break;
 		case ACTION_TYPES.SET_AVAILABLE_PAYMENT_METHODS:
+			const orderedMethods = orderPaymentMethods(
+				paymentGatewaySortOrder,
+				action.methods
+			);
 			state = {
 				...state,
-				availablePaymentMethods: action.methods,
+				availablePaymentMethods: orderedMethods,
 			};
 			break;
 		case ACTION_TYPES.SET_AVAILABLE_EXPRESS_PAYMENT_METHODS:
@@ -131,9 +141,7 @@ const reducer: Reducer< PaymentMethodDataState > = (
 			const previousExpressRegisteredPaymentMethods = {
 				...state.registeredPaymentMethods,
 			};
-			delete previousExpressRegisteredPaymentMethods[
-				action.registeredExpressPaymentMethods.name
-			];
+			delete previousExpressRegisteredPaymentMethods[ action.name ];
 			state = {
 				...state,
 				registeredExpressPaymentMethods: {

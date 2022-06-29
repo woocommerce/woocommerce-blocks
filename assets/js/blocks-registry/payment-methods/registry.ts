@@ -42,7 +42,8 @@ export const registerPaymentMethod = (
 		deprecated( 'Passing a callback to registerPaymentMethod()', {
 			alternative: 'a config options object',
 			plugin: 'woocommerce-gutenberg-products-block',
-			link: 'https://github.com/woocommerce/woocommerce-gutenberg-products-block/pull/3404',
+			link:
+				'https://github.com/woocommerce/woocommerce-gutenberg-products-block/pull/3404',
 		} );
 	} else {
 		paymentMethodConfig = new PaymentMethodConfig( options );
@@ -72,7 +73,8 @@ export const registerExpressPaymentMethod = (
 		deprecated( 'Passing a callback to registerExpressPaymentMethod()', {
 			alternative: 'a config options object',
 			plugin: 'woocommerce-gutenberg-products-block',
-			link: 'https://github.com/woocommerce/woocommerce-gutenberg-products-block/pull/3404',
+			link:
+				'https://github.com/woocommerce/woocommerce-gutenberg-products-block/pull/3404',
 		} );
 	} else {
 		paymentMethodConfig = new ExpressPaymentMethodConfig( options );
@@ -123,12 +125,20 @@ export const __experimentalDeRegisterPaymentMethod = (
 	paymentMethodName: string
 ): void => {
 	delete paymentMethods[ paymentMethodName ];
+	const { removeRegisteredPaymentMethod } = dispatch(
+		PAYMENT_METHOD_DATA_STORE_KEY
+	);
+	removeRegisteredPaymentMethod( paymentMethodName );
 };
 
 export const __experimentalDeRegisterExpressPaymentMethod = (
 	paymentMethodName: string
 ): void => {
 	delete expressPaymentMethods[ paymentMethodName ];
+	const { removeRegisteredExpressPaymentMethod } = dispatch(
+		PAYMENT_METHOD_DATA_STORE_KEY
+	);
+	removeRegisteredExpressPaymentMethod( paymentMethodName );
 };
 
 export const getPaymentMethods = (): PaymentMethods => {

@@ -5,6 +5,7 @@ import type {
 	PaymentMethods,
 	ExpressPaymentMethods,
 } from '@woocommerce/type-defs/payments';
+import { select as wpDataSelect } from '@wordpress/data';
 
 /**
  * Internal dependencies
@@ -13,6 +14,7 @@ import { ACTION_TYPES } from './action-types';
 import { checkPaymentMethodsCanPay } from './check-payment-methods';
 import { setDefaultPaymentMethod } from './set-default-payment-method';
 import { PaymentStatus } from './types';
+import { CART_STORE_KEY } from '../cart';
 
 // `Thunks are functions that can be dispatched, similar to actions creators
 export * from './thunks';
@@ -91,7 +93,10 @@ export const setAvailableExpressPaymentMethods = ( methods: string[] ) => ( {
 export function addRegisteredPaymentMethod() {
 	return async ( { dispatch } ) => {
 		const registered = await checkPaymentMethodsCanPay();
-		if ( registered ) {
+		const cartTotalsLoaded = wpDataSelect(
+			CART_STORE_KEY
+		).hasFinishedResolution( 'getCartTotals' );
+		if ( registered && cartTotalsLoaded ) {
 			dispatch( setPaymentMethodsInitialized( true ) );
 		}
 	};
@@ -114,7 +119,10 @@ export const removeRegisteredPaymentMethod = ( name: string ) => ( {
 export function addRegisteredExpressPaymentMethod() {
 	return async ( { dispatch } ) => {
 		const registered = await checkPaymentMethodsCanPay( true );
-		if ( registered ) {
+		const cartTotalsLoaded = wpDataSelect(
+			CART_STORE_KEY
+		).hasFinishedResolution( 'getCartTotals' );
+		if ( registered && cartTotalsLoaded ) {
 			dispatch( setExpressPaymentMethodsInitialized( true ) );
 		}
 	};

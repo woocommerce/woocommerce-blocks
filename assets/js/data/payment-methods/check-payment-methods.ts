@@ -24,6 +24,13 @@ import { STORE_KEY as PAYMENT_METHOD_DATA_STORE_KEY } from '../payment-methods/c
 import { noticeContexts } from '../../base/context/event-emit';
 
 export const checkPaymentMethodsCanPay = async ( express = false ) => {
+	const cartTotalsLoaded = select( CART_STORE_KEY ).hasFinishedResolution(
+		'getCartTotals'
+	);
+	// The cart hasn't finished resolving yet
+	if ( ! cartTotalsLoaded ) {
+		return false;
+	}
 	let availablePaymentMethods = {};
 	const paymentMethods = express
 		? getExpressPaymentMethods()
@@ -116,8 +123,10 @@ export const checkPaymentMethodsCanPay = async ( express = false ) => {
 		return true;
 	}
 
-	const { setAvailablePaymentMethods, setAvailableExpressPaymentMethods } =
-		dispatch( PAYMENT_METHOD_DATA_STORE_KEY );
+	const {
+		setAvailablePaymentMethods,
+		setAvailableExpressPaymentMethods,
+	} = dispatch( PAYMENT_METHOD_DATA_STORE_KEY );
 	if ( express ) {
 		setAvailableExpressPaymentMethods( availablePaymentMethodNames );
 		return true;
