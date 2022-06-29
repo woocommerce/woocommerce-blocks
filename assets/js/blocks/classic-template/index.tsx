@@ -3,6 +3,7 @@
  */
 import {
 	Block,
+	BlockEditProps,
 	createBlock,
 	getBlockType,
 	registerBlockType,
@@ -26,16 +27,16 @@ import './editor.scss';
 import './style.scss';
 import { BLOCK_SLUG, TEMPLATES } from './constants';
 
-interface Props {
-	attributes: {
-		template: string;
-		align: string;
-	};
-	setAttributes: ( attributes: Record< string, string > ) => void;
-	clientId: string;
-}
+type Attributes = {
+	template: string;
+	align: string;
+};
 
-const Edit = ( { clientId, attributes, setAttributes }: Props ) => {
+const Edit = ( {
+	clientId,
+	attributes,
+	setAttributes,
+}: BlockEditProps< Attributes > ) => {
 	const { replaceBlock } = useDispatch( 'core/block-editor' );
 
 	const blockProps = useBlockProps();
@@ -126,6 +127,14 @@ const registerClassicTemplateBlock = ( {
 	template?: string;
 	inserter: boolean;
 } ) => {
+	/**
+	 * The 'WooCommerce Legacy Template' block was renamed to 'WooCommerce Classic Template', however, the internal block
+	 * name 'woocommerce/legacy-template' needs to remain the same. Otherwise, it would result in a corrupt block when
+	 * loaded for users who have customized templates using the legacy-template (since the internal block name is
+	 * stored in the database).
+	 *
+	 * See https://github.com/woocommerce/woocommerce-gutenberg-products-block/issues/5861 for more context
+	 */
 	registerBlockType( BLOCK_SLUG, {
 		title: template
 			? TEMPLATES[ template ].title
@@ -171,8 +180,12 @@ const registerClassicTemplateBlock = ( {
 				default: 'wide',
 			},
 		},
-		edit: ( { attributes, clientId, setAttributes } ) => {
-			const newTemplate = template ?? ( attributes.template as string );
+		edit: ( {
+			attributes,
+			clientId,
+			setAttributes,
+		}: BlockEditProps< Attributes > ) => {
+			const newTemplate = template ?? attributes.template;
 
 			return (
 				<Edit
@@ -237,14 +250,6 @@ if ( isExperimentalBuild() ) {
 			block === undefined &&
 			hasTemplateSupportForClassicTemplateBlock( parsedTemplate )
 		) {
-			/**
-			 * The 'WooCommerce Legacy Template' block was renamed to 'WooCommerce Classic Template', however, the internal block
-			 * name 'woocommerce/legacy-template' needs to remain the same. Otherwise, it would result in a corrupt block when
-			 * loaded for users who have customized templates using the legacy-template (since the internal block name is
-			 * stored in the database).
-			 *
-			 * See https://github.com/woocommerce/woocommerce-gutenberg-products-block/issues/5861 for more context
-			 */
 			registerClassicTemplateBlock( {
 				template: parsedTemplate,
 				inserter: true,
