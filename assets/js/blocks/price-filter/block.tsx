@@ -198,10 +198,10 @@ const PriceFilterBlock = ( {
 				// If the params have changed, lets reload the page.
 				if ( window.location.href !== newUrl ) {
 					if ( filteringForPhpTemplate ) {
-						window.location.href = newUrl;
-					} else {
-						window.history.pushState( {}, document.title, newUrl );
+						return ( window.location.href = newUrl );
 					}
+
+					window.history.pushState( {}, document.title, newUrl );
 				}
 			}
 
