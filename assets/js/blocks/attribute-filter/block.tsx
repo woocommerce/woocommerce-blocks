@@ -506,16 +506,17 @@ const AttributeFilterBlock = ( {
 	 * Try get the current attribute filter from the URl.
 	 */
 	useEffect( () => {
-		if (
-			initialFilters.length > 0 &&
-			! hasSetFilterDefaultsFromUrl &&
-			! attributeTermsLoading
-		) {
-			setHasSetFilterDefaultsFromUrl( true );
-			updateCheckedFilters( initialFilters, true );
+		if ( hasSetFilterDefaultsFromUrl || attributeTermsLoading ) {
+			return;
 		}
 
-		if ( ! filteringForPhpTemplate && ! hasSetFilterDefaultsFromUrl ) {
+		if ( initialFilters.length > 0 ) {
+			setHasSetFilterDefaultsFromUrl( true );
+			updateCheckedFilters( initialFilters, true );
+			return;
+		}
+
+		if ( ! filteringForPhpTemplate ) {
 			setHasSetFilterDefaultsFromUrl( true );
 		}
 	}, [
