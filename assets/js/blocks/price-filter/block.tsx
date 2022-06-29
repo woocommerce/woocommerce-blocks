@@ -96,11 +96,7 @@ const PriceFilterBlock = ( {
 		isBoolean
 	);
 
-	/**
-	 * Important: Only used on the PHP rendered Block pages to track
-	 * the price filter defaults coming from the URL
-	 */
-	const [ hasSetPhpFilterDefaults, setHasSetPhpFilterDefaults ] =
+	const [ hasSetFilterDefaultsFromUrl, setHasSetFilterDefaultsFromUrl ] =
 		useState( false );
 
 	const minPriceParam = getUrlParameter( 'min_price' );
@@ -150,14 +146,10 @@ const PriceFilterBlock = ( {
 	} );
 
 	/**
-	 * Important: For PHP rendered block templates only.
-	 *
-	 * When we render the PHP block template (e.g. Classic Block) we need
-	 * to set the default min_price and max_price values from the URL
-	 * for the filter to work alongside the Active Filters block.
+	 * Try get the min and/or max price from the URL.
 	 */
 	useEffect( () => {
-		if ( ! hasSetPhpFilterDefaults ) {
+		if ( ! hasSetFilterDefaultsFromUrl ) {
 			setMinPriceQuery(
 				formatPrice( minPriceParam, currency.minorUnit )
 			);
@@ -165,11 +157,11 @@ const PriceFilterBlock = ( {
 				formatPrice( maxPriceParam, currency.minorUnit )
 			);
 
-			setHasSetPhpFilterDefaults( true );
+			setHasSetFilterDefaultsFromUrl( true );
 		}
 	}, [
 		currency.minorUnit,
-		hasSetPhpFilterDefaults,
+		hasSetFilterDefaultsFromUrl,
 		maxPriceParam,
 		minPriceParam,
 		setMaxPriceQuery,
@@ -188,19 +180,20 @@ const PriceFilterBlock = ( {
 					? undefined
 					: newMinPrice;
 
-			// For block templates that render the PHP Classic Template block we need to add the filters as params and reload the page.
 			if ( window ) {
 				const newUrl = formatParams( window.location.href, {
 					min_price: finalMinPrice / 10 ** currency.minorUnit,
 					max_price: finalMaxPrice / 10 ** currency.minorUnit,
 				} );
 
-				// If the params have changed, lets reload the page.
+				// If the params have changed, lets update the filter URL.
 				if ( window.location.href !== newUrl ) {
+					// When filtering on the PHP template, we need to reload the page.
 					if ( filteringForPhpTemplate ) {
 						return ( window.location.href = newUrl );
 					}
 
+					// When filtering Products Grid block, we only update the URL.
 					window.history.pushState( {}, document.title, newUrl );
 				}
 			}
@@ -233,7 +226,7 @@ const PriceFilterBlock = ( {
 
 			if (
 				filteringForPhpTemplate &&
-				hasSetPhpFilterDefaults &&
+				hasSetFilterDefaultsFromUrl &&
 				! attributes.showFilterButton
 			) {
 				debouncedUpdateQuery( prices[ 0 ], prices[ 1 ] );
@@ -245,7 +238,7 @@ const PriceFilterBlock = ( {
 			setMinPrice,
 			setMaxPrice,
 			filteringForPhpTemplate,
-			hasSetPhpFilterDefaults,
+			hasSetFilterDefaultsFromUrl,
 			debouncedUpdateQuery,
 			attributes.showFilterButton,
 		]
