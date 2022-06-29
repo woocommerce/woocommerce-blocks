@@ -52,7 +52,8 @@ const Block = ( props ) => {
 				'wp-block-button',
 				'wc-block-components-product-button',
 				{
-					[ `${ parentClassName }__product-add-to-cart` ]: parentClassName,
+					[ `${ parentClassName }__product-add-to-cart` ]:
+						parentClassName,
 				}
 			) }
 		>
@@ -142,8 +143,8 @@ const AddToCartButton = ( {
 			} );
 		};
 	} else {
-		buttonProps.onClick = () => {
-			addToCart();
+		buttonProps.onClick = async () => {
+			await addToCart();
 			dispatchStoreEvent( 'cart-add-item', {
 				product,
 			} );

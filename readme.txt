@@ -1,10 +1,10 @@
 === WooCommerce Blocks ===
 Contributors: automattic, woocommerce, claudiulodro, tiagonoronha, jameskoster, ryelle, levinmedia, aljullu, mikejolley, nerrad, joshuawold, assassinateur, haszari, mppfeiffer, nielslange, opr18, ralucastn, tjcafferkey
 Tags: gutenberg, woocommerce, woo commerce, products, blocks, woocommerce blocks
-Requires at least: 5.9
-Tested up to: 5.9
+Requires at least: 6.0
+Tested up to: 6.0
 Requires PHP: 7.0
-Stable tag: 7.5.0-dev
+Stable tag: 8.0.0-dev
 License: GPLv3
 License URI: https://www.gnu.org/licenses/gpl-3.0.html
 
@@ -85,6 +85,150 @@ Release and roadmap notes available on the [WooCommerce Developers Blog](https:/
 5. WooCommerce Product Blocks in the block inserter menu
 
 == Changelog ==
+
+= 7.9.0 - 2022-06-20 =
+
+#### Enhancements
+
+- Disable page scroll when Mini Cart drawer is open. ([6532](https://github.com/woocommerce/woocommerce-blocks/pull/6532))
+- Register filter blocks using block metadata. ([6505](https://github.com/woocommerce/woocommerce-blocks/pull/6505))
+
+#### Bug Fixes
+
+- Fix images hidden by default in Product grid blocks after WC 6.6 update. ([6599](https://github.com/woocommerce/woocommerce-blocks/pull/6599))
+- Fix: Scrolling issue of the Filled Mini Cart Contents block. ([6565](https://github.com/woocommerce/woocommerce-blocks/pull/6565))
+- Fix an endless loop when using product grid blocks inside product descriptions. ([6471](https://github.com/woocommerce/woocommerce-blocks/pull/6471))
+
+#### Various
+
+- Prevent warnings appearing when using some plugins for managing shipping packages. ([6470](https://github.com/woocommerce/woocommerce-blocks/pull/6470))
+- Add template descriptions. ([6345](https://github.com/woocommerce/woocommerce-blocks/pull/6345))
+
+= 7.8.3 - 2022-06-20 =
+
+#### Bug Fixes
+- Fix images hidden by default in Product grid blocks after WC 6.6 update. ([6599](https://github.com/woocommerce/woocommerce-blocks/pull/6599))
+
+= 7.8.2 - 2022-06-20 =
+
+#### Bug Fixes
+- Replace instances of wp_is_block_theme() with wc_current_theme_is_fse_theme(). ([6590](https://github.com/woocommerce/woocommerce-blocks/pull/6590))
+
+
+= 7.8.1 - 2022-06-13 =
+
+#### Bug Fixes
+
+- Fix PHP notice in Mini Cart when prices included taxes. ([6537](https://github.com/woocommerce/woocommerce-blocks/pull/6537))
+
+= 7.8.0 - 2022-06-06 =
+
+#### Enhancements
+
+- Filter Products by Price: Decrease price slider step sequence from 10 to 1. ([6486](https://github.com/woocommerce/woocommerce-blocks/pull/6486))
+- Add the `Fixed image` and `Repeated image` media controls to the Featured Category block. ([6440](https://github.com/woocommerce/woocommerce-blocks/pull/6440))
+
+#### Bug Fixes
+
+- Featured Item Blocks: Fix an issue where the default color could be overridden by a theme, and where custom colors were not applied correctly. ([6492](https://github.com/woocommerce/woocommerce-blocks/pull/6492))
+- Fix: Only enqueue the relevant translations script. ([6478](https://github.com/woocommerce/woocommerce-blocks/pull/6478))
+- Fix: All Products block: New product is missing in the Cart block if `Redirect to the cart page after successful addition` is enabled. ([6466](https://github.com/woocommerce/woocommerce-blocks/pull/6466))
+- Respect low stock visibility setting in Cart/Checkout. ([6444](https://github.com/woocommerce/woocommerce-blocks/pull/6444))
+- Decouple Store API payment handling from Checkout block loading code. ([6519](https://github.com/woocommerce/woocommerce-blocks/pull/6519))
+
+#### Various
+
+- Add support for `Font size` and `Font family` for the `Mini Cart` block. ([6396](https://github.com/woocommerce/woocommerce-blocks/pull/6396))
+
+= 7.7.0 - 2022-05-24 =
+
+#### Enhancements
+
+- Add the `Fixed image` and `Repeated image` media controls to the Featured Product block. ([6344](https://github.com/woocommerce/woocommerce-blocks/pull/6344))
+
+#### Bug Fixes
+
+- Remove bold styles from All Products block. ([6436](https://github.com/woocommerce/woocommerce-blocks/pull/6436))
+- Fix an issue where the Cart & Checkout could have some of the locked inner blocks removed. ([6419](https://github.com/woocommerce/woocommerce-blocks/pull/6419))
+- Fix broken translation in Cart/Checkout blocks. ([6420](https://github.com/woocommerce/woocommerce-blocks/pull/6420))
+
+= 7.6.2 - 2022-06-20 =
+
+####  Bug Fixes
+
+- Fix images hidden by default in Product grid blocks after WC 6.6 update. ([6599](https://github.com/woocommerce/woocommerce-blocks/pull/6599))
+
+= 7.6.1 - 2022-06-17 =
+
+### Bug Fixes
+
+- Fix PHP notice in Mini Cart when prices included taxes. ([6537](https://github.com/woocommerce/woocommerce-blocks/pull/6537))
+- Fix error Uncaught Error: Call to undefined function Automattic\WooCommerce\Blocks\Templates\wp_is_block_theme() in WP 5.8. ([6590](https://github.com/woocommerce/woocommerce-blocks/pull/6590))
+
+= 7.6.0 - 2022-05-09 =
+
+#### Enhancements
+
+- Featured Category: Add background color option. ([6368](https://github.com/woocommerce/woocommerce-gutenberg-products-block/pull/6368))
+- Featured Product: Add background color option. ([6367](https://github.com/woocommerce/woocommerce-gutenberg-products-block/pull/6367))
+- Added media controls allowing the user to edit images within the editor on a Featured Category block. ([6360](https://github.com/woocommerce/woocommerce-gutenberg-products-block/pull/6360))
+- Added media controls allowing the user to edit images within the editor on a Featured Product block. ([6348](https://github.com/woocommerce/woocommerce-gutenberg-products-block/pull/6348))
+- Add the alt text control to the Featured Category block media settings. ([6341](https://github.com/woocommerce/woocommerce-gutenberg-products-block/pull/6341))
+- Hide the Product Tag Cloud from the Widgets screen in classic themes. ([6327](https://github.com/woocommerce/woocommerce-gutenberg-products-block/pull/6327))
+- Add the alt text control to the Featured Product block media settings. ([6308](https://github.com/woocommerce/woocommerce-gutenberg-products-block/pull/6308))
+- GridContentControl: Add product image control. ([6302](https://github.com/woocommerce/woocommerce-gutenberg-products-block/pull/6302))
+
+#### Bug Fixes
+
+- Fix: Align Empty Mini Cart Contents block center in the Site Editor. ([6379](https://github.com/woocommerce/woocommerce-gutenberg-products-block/pull/6379))
+- Remove the Template panel from the Setting Sidebar for Shop page. ([6366](https://github.com/woocommerce/woocommerce-gutenberg-products-block/pull/6366))
+- Parse categories coming from the back-end as a json array. ([6358](https://github.com/woocommerce/woocommerce-gutenberg-products-block/pull/6358))
+- Update the default width of Classic Template to Wide width. ([6356](https://github.com/woocommerce/woocommerce-gutenberg-products-block/pull/6356))
+- Fix: Mini Cart block is not available from the Edit template screen. ([6351](https://github.com/woocommerce/woocommerce-gutenberg-products-block/pull/6351))
+- Fix Filter Products by Attribute block not working on PHP templates when Filter button was enabled. ([6332](https://github.com/woocommerce/woocommerce-gutenberg-products-block/pull/6332))
+
+
+= 7.5.0 - 2022-04-25 =
+
+#### Enhancements
+
+- Add PHP templates support to the Active Product Filters block. ([6295](https://github.com/woocommerce/woocommerce-gutenberg-products-block/pull/6295))
+- Enable Draft orders in WooCommerce Core. ([6288](https://github.com/woocommerce/woocommerce-gutenberg-products-block/pull/6288))
+- Enhanced the *Featured Category block*:
+	- Implemented support for duotone.
+	- Implemented support for gradients on the overlay.
+	- Implemented support for custom inner padding.
+	- Implemented image fit options: users can now decide how should the image behave on the resizing of the component; it can either scale to always cover the entire container, or remain its original size.
+	- Fixed an inconsistency where the overlay color was controlled by the background color control. It is now moved to the correct section.
+	- Fixed the focal point picker, it now works on both axis as long as the image fit (above) is set to `none`.
+	- Fixed an issue with the visibility of the resizing handle.
+	- Fixed an issue which would keep the resizing handle always active regardless of block selection status.
+	- Changed the behavior of the resizing: The block can't be resized below a minimum height determined by its content plus the padding. ([6276](https://github.com/woocommerce/woocommerce-gutenberg-products-block/pull/6276))
+- Allow adding the Filter Products by Stock block to Product Catalog templates to filter products. ([6261](https://github.com/woocommerce/woocommerce-gutenberg-products-block/pull/6261))
+- Enhanced the *Featured Product block*:
+	- Implemented support for duotone.
+	- Implemented support for gradients on the overlay.
+	- Implemented support for custom inner padding.
+	- Implemented image fit options: users can now decide how should the image behave on the resizing of the component; it can either scale to always cover the entire container, or remain its original size.
+	- Fixed an inconsistency where the overlay color was controlled by the background color control. It is now moved to the correct section.
+	- Fixed the focal point picker, it now works on both axis as long as the image fit (above) is set to `none`.
+	- Fixed an issue with the visibility of the resizing handle.
+	- Fixed an issue which would keep the resizing handle always active regardless of block selection status.
+	- Changed the behavior of the resizing: The block can't be resized below a minimum height determined by its content plus the padding. ([6181](https://github.com/woocommerce/woocommerce-gutenberg-products-block/pull/6181))
+- Allow saved payment methods labels other than card/eCheck to display brand & last 4 digits if present. ([6177](https://github.com/woocommerce/woocommerce-gutenberg-products-block/pull/6177))
+
+#### Bug Fixes
+
+- Filter Products by Attribute: Fix the page reload which happens when clicking the filter button on Woo templates using the Classic Template block. ([6287](https://github.com/woocommerce/woocommerce-gutenberg-products-block/pull/6287))
+- Store API: Show visible attributes in simple products, and hidden attributes in variable products. ([6274](https://github.com/woocommerce/woocommerce-gutenberg-products-block/pull/6274))
+- Add RTL support for the Mini Cart icon. ([6264](https://github.com/woocommerce/woocommerce-gutenberg-products-block/pull/6264))
+- Fix page load problem due to incorrect URL to certain assets. ([6260](https://github.com/woocommerce/woocommerce-gutenberg-products-block/pull/6260))
+- Fix: Make Filters Products by Price work with Active Filters block for the PHP rendered Classic Template. ([6245](https://github.com/woocommerce/woocommerce-gutenberg-products-block/pull/6245))
+
+#### Various
+
+- Product Query: Pass any product taxonomies existing in the URL parameters. ([6152](https://github.com/woocommerce/woocommerce-gutenberg-products-block/pull/6152))
+
 
 = 7.4.2 - 2022-04-15 =
 

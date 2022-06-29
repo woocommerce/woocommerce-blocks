@@ -13,9 +13,30 @@ import { ToggleControl } from '@wordpress/components';
  * @param {Object}            props.settings
  */
 const GridContentControl = ( { onChange, settings } ) => {
-	const { button, price, rating, title } = settings;
+	const { image, button, price, rating, title } = settings;
+	// If `image` is undefined, that might be because it's a block that was
+	// created before the `image` attribute existed, so we default to true.
+	const imageIsVisible = image !== false;
 	return (
 		<>
+			<ToggleControl
+				label={ __( 'Product image', 'woo-gutenberg-products-block' ) }
+				help={
+					imageIsVisible
+						? __(
+								'Product image is visible.',
+								'woo-gutenberg-products-block'
+						  )
+						: __(
+								'Product image is hidden.',
+								'woo-gutenberg-products-block'
+						  )
+				}
+				checked={ imageIsVisible }
+				onChange={ () =>
+					onChange( { ...settings, image: ! imageIsVisible } )
+				}
+			/>
 			<ToggleControl
 				label={ __( 'Product title', 'woo-gutenberg-products-block' ) }
 				help={
@@ -92,6 +113,7 @@ GridContentControl.propTypes = {
 	 * The current title visibility.
 	 */
 	settings: PropTypes.shape( {
+		image: PropTypes.bool.isRequired,
 		button: PropTypes.bool.isRequired,
 		price: PropTypes.bool.isRequired,
 		rating: PropTypes.bool.isRequired,
