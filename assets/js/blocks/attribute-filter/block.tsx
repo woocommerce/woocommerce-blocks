@@ -506,10 +506,14 @@ const AttributeFilterBlock = ( {
 	 * Try get the current attribute filter from the URl.
 	 */
 	useEffect( () => {
-		if ( ! hasSetFilterDefaultsFromUrl && ! attributeTermsLoading ) {
-			setHasSetFilterDefaultsFromUrl( true );
+		if (
+			initialFilters.length > 0 &&
+			! hasSetFilterDefaultsFromUrl &&
+			! attributeTermsLoading
+		) {
 			updateCheckedFilters( initialFilters, true );
 		}
+		setHasSetFilterDefaultsFromUrl( true );
 	}, [
 		attributeObject,
 		hasSetFilterDefaultsFromUrl,
