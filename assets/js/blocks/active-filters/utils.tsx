@@ -6,6 +6,8 @@ import { formatPrice } from '@woocommerce/price-format';
 import { RemovableChip } from '@woocommerce/base-components/chip';
 import Label from '@woocommerce/base-components/label';
 import { getQueryArgs, addQueryArgs, removeQueryArgs } from '@wordpress/url';
+import { getSettingWithCoercion } from '@woocommerce/settings';
+import { isBoolean } from '@woocommerce/types';
 
 /**
  * Format a min/max price range to display.
@@ -158,6 +160,10 @@ export const renderRemovableListItem = ( {
 export const removeArgsFromFilterUrl = (
 	...args: ( string | Record< string, string > )[]
 ) => {
+	if ( ! window || ! document ) {
+		return;
+	}
+
 	const url = window.location.href;
 	const currentQuery = getQueryArgs( url );
 	const cleanUrl = removeQueryArgs( url, ...Object.keys( currentQuery ) );
@@ -181,13 +187,29 @@ export const removeArgsFromFilterUrl = (
 		Object.entries( currentQuery ).filter( ( [ , value ] ) => value )
 	);
 
-	window.location.href = addQueryArgs( cleanUrl, filteredQuery );
+	const filteringForPhpTemplate = getSettingWithCoercion(
+		'is_rendering_php_template',
+		false,
+		isBoolean
+	);
+
+	const newUrl = addQueryArgs( cleanUrl, filteredQuery );
+
+	if ( filteringForPhpTemplate ) {
+		window.location.href = newUrl;
+	} else {
+		window.history.pushState( {}, document.title, newUrl );
+	}
 };
 
 /**
  * Clean the filter URL.
  */
 export const cleanFilterUrl = () => {
+	if ( ! window || ! document ) {
+		return;
+	}
+
 	const url = window.location.href;
 	const args = getQueryArgs( url );
 	const cleanUrl = removeQueryArgs( url, ...Object.keys( args ) );
@@ -209,5 +231,17 @@ export const cleanFilterUrl = () => {
 			.map( ( key ) => [ key, args[ key ] ] )
 	);
 
-	window.location.href = addQueryArgs( cleanUrl, remainingArgs );
+	const newUrl = addQueryArgs( cleanUrl, remainingArgs );
+
+	const filteringForPhpTemplate = getSettingWithCoercion(
+		'is_rendering_php_template',
+		false,
+		isBoolean
+	);
+
+	if ( filteringForPhpTemplate ) {
+		window.location.href = newUrl;
+	} else {
+		window.history.pushState( {}, document.title, newUrl );
+	}
 };

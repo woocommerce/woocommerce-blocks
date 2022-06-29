@@ -107,9 +107,7 @@ const ActiveFiltersBlock = ( {
 			type: __( 'Price', 'woo-gutenberg-products-block' ),
 			name: formatPriceRange( minPrice, maxPrice ),
 			removeCallback: () => {
-				if ( filteringForPhpTemplate ) {
-					return removeArgsFromFilterUrl( 'max_price', 'min_price' );
-				}
+				removeArgsFromFilterUrl( 'max_price', 'min_price' );
 				setMinPrice( undefined );
 				setMaxPrice( undefined );
 			},
@@ -121,7 +119,6 @@ const ActiveFiltersBlock = ( {
 		blockAttributes.displayStyle,
 		setMinPrice,
 		setMaxPrice,
-		filteringForPhpTemplate,
 	] );
 
 	const activeAttributeFilters = useMemo( () => {
@@ -289,9 +286,7 @@ const ActiveFiltersBlock = ( {
 				<button
 					className="wc-block-active-filters__clear-all"
 					onClick={ () => {
-						if ( filteringForPhpTemplate ) {
-							return cleanFilterUrl();
-						}
+						cleanFilterUrl();
 						setMinPrice( undefined );
 						setMaxPrice( undefined );
 						setProductAttributes( [] );
