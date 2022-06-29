@@ -482,6 +482,7 @@ const AttributeFilterBlock = ( {
 		if ( ! attributeObject || blockAttributes.showFilterButton ) {
 			return;
 		}
+
 		if (
 			areAllFiltersRemoved( {
 				currentCheckedFilters: checked,
@@ -505,11 +506,7 @@ const AttributeFilterBlock = ( {
 	 * Try get the current attribute filter from the URl.
 	 */
 	useEffect( () => {
-		if (
-			initialFilters.length > 0 &&
-			! hasSetFilterDefaultsFromUrl &&
-			! attributeTermsLoading
-		) {
+		if ( ! hasSetFilterDefaultsFromUrl && ! attributeTermsLoading ) {
 			setHasSetFilterDefaultsFromUrl( true );
 			updateCheckedFilters( initialFilters, true );
 		}
