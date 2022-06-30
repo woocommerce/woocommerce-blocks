@@ -39,14 +39,16 @@
 		border-radius: inherit;
 		border-color: inherit;
 
-		label {
-			display: none;
+		.components-visually-hidden,
+		.components-form-token-field__label {
+			@include visually-hidden();
 		}
 
-		.components-form-token-field__input-container {
-			margin-bottom: 0;
+		.components-form-token-field__remove-token {
+			border: none;
 		}
 	}
+
 
 	.is-single .wc-block-attribute-filter-list-count,
 	.wc-block-dropdown-selector .wc-block-dropdown-selector__list .wc-block-attribute-filter-list-count {
