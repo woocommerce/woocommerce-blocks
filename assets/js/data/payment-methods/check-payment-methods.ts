@@ -5,7 +5,7 @@ import {
 	ExpressPaymentMethodConfigInstance,
 	PaymentMethodConfigInstance,
 } from '@woocommerce/type-defs/payments';
-import { CURRENT_USER_IS_ADMIN } from '@woocommerce/settings';
+import { CURRENT_USER_IS_ADMIN, getSetting } from '@woocommerce/settings';
 import { dispatch, select } from '@wordpress/data';
 import { deriveSelectedShippingRates } from '@woocommerce/base-utils';
 import { __, sprintf } from '@wordpress/i18n';
@@ -24,9 +24,8 @@ import { STORE_KEY as PAYMENT_METHOD_DATA_STORE_KEY } from '../payment-methods/c
 import { noticeContexts } from '../../base/context/event-emit';
 
 export const checkPaymentMethodsCanPay = async ( express = false ) => {
-	const cartTotalsLoaded = select( CART_STORE_KEY ).hasFinishedResolution(
-		'getCartTotals'
-	);
+	const cartTotalsLoaded =
+		select( CART_STORE_KEY ).hasFinishedResolution( 'getCartTotals' );
 	// The cart hasn't finished resolving yet
 	if ( ! cartTotalsLoaded ) {
 		return false;
@@ -64,9 +63,26 @@ export const checkPaymentMethodsCanPay = async ( express = false ) => {
 		paymentRequirements: cart.paymentRequirements,
 	};
 
+	let paymentMethodsOrder;
+	if ( express ) {
+		paymentMethodsOrder = Object.keys( paymentMethods );
+	} else {
+		paymentMethodsOrder = Array.from(
+			new Set( [
+				...( getSetting( 'paymentGatewaySortOrder', [] ) as [] ),
+				...Object.keys( paymentMethods ),
+			] )
+		);
+	}
+
 	const isEditor = !! select( 'core/editor' );
 
-	for ( const paymentMethod of Object.values( paymentMethods ) ) {
+	for ( let i = 0; i < paymentMethodsOrder.length; i++ ) {
+		const paymentMethodName = paymentMethodsOrder[ i ];
+		const paymentMethod = paymentMethods[ paymentMethodName ];
+		if ( ! paymentMethod ) {
+			continue;
+		}
 		if ( ! paymentMethod ) {
 			continue;
 		}
@@ -123,10 +139,8 @@ export const checkPaymentMethodsCanPay = async ( express = false ) => {
 		return true;
 	}
 
-	const {
-		setAvailablePaymentMethods,
-		setAvailableExpressPaymentMethods,
-	} = dispatch( PAYMENT_METHOD_DATA_STORE_KEY );
+	const { setAvailablePaymentMethods, setAvailableExpressPaymentMethods } =
+		dispatch( PAYMENT_METHOD_DATA_STORE_KEY );
 	if ( express ) {
 		setAvailableExpressPaymentMethods( availablePaymentMethodNames );
 		return true;
