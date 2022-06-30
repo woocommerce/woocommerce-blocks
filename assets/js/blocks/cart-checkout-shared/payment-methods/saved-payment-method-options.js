@@ -3,10 +3,7 @@
  */
 import { useMemo, cloneElement } from '@wordpress/element';
 import { __, sprintf } from '@wordpress/i18n';
-import {
-	usePaymentMethodDataContext,
-	noticeContexts,
-} from '@woocommerce/base-context';
+import { noticeContexts } from '@woocommerce/base-context';
 import RadioControl from '@woocommerce/base-components/radio-control';
 import {
 	usePaymentMethodInterface,
@@ -66,18 +63,15 @@ const getDefaultLabel = ( { method } ) => {
 };
 
 const SavedPaymentMethodOptions = () => {
-	const {
-		activeSavedToken,
-		activePaymentMethod,
-		customerPaymentMethods,
-	} = useSelect( ( select ) => {
-		const store = select( PAYMENT_METHOD_DATA_STORE_KEY );
-		return {
-			activeSavedToken: store.getActiveSavedToken(),
-			activePaymentMethod: store.getActivePaymentMethod(),
-			customerPaymentMethods: store.getCustomerPaymentMethods(),
-		};
-	} );
+	const { activeSavedToken, activePaymentMethod, savedPaymentMethods } =
+		useSelect( ( select ) => {
+			const store = select( PAYMENT_METHOD_DATA_STORE_KEY );
+			return {
+				activeSavedToken: store.getActiveSavedToken(),
+				activePaymentMethod: store.getActivePaymentMethod(),
+				savedPaymentMethods: store.getSavedPaymentMethods(),
+			};
+		} );
 	const { setActivePaymentMethod } = useDispatch(
 		PAYMENT_METHOD_DATA_STORE_KEY
 	);
@@ -87,10 +81,10 @@ const SavedPaymentMethodOptions = () => {
 	const { dispatchCheckoutEvent } = useStoreEvents();
 
 	const options = useMemo( () => {
-		const types = Object.keys( customerPaymentMethods );
+		const types = Object.keys( savedPaymentMethods );
 		return types
 			.flatMap( ( type ) => {
-				const typeMethods = customerPaymentMethods[ type ];
+				const typeMethods = savedPaymentMethods[ type ];
 				return typeMethods.map( ( paymentMethod ) => {
 					const isCC = type === 'cc' || type === 'echeck';
 					const paymentMethodSlug = paymentMethod.method.gateway;
@@ -124,7 +118,7 @@ const SavedPaymentMethodOptions = () => {
 			} )
 			.filter( Boolean );
 	}, [
-		customerPaymentMethods,
+		savedPaymentMethods,
 		setActivePaymentMethod,
 		removeNotice,
 		dispatchCheckoutEvent,

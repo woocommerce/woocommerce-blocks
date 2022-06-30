@@ -26,15 +26,15 @@ export interface CustomerPaymentMethodConfiguration {
 	brand: string;
 	last4: string;
 }
-export interface CustomerPaymentMethod {
+export interface SavedPaymentMethod {
 	method: CustomerPaymentMethodConfiguration;
 	expires: string;
 	is_default: boolean;
 	tokenId: number;
 	actions: ObjectType;
 }
-export type CustomerPaymentMethods =
-	| Record< string, CustomerPaymentMethod[] >
+export type SavedPaymentMethods =
+	| Record< string, SavedPaymentMethod[] >
 	| EmptyObjectType;
 
 export interface PaymentMethodDispatchers {
@@ -86,7 +86,7 @@ export type PaymentMethodCurrentStatusType = {
 
 export type PaymentMethodDataContextType = {
 	// Returns the customer payment for the customer if it exists.
-	customerPaymentMethods: CustomerPaymentMethods;
+	savedPaymentMethods: SavedPaymentMethods;
 	// Event registration callback for registering observers for the payment processing event.
 	onPaymentProcessing: ReturnType< typeof emitterCallback >;
 };

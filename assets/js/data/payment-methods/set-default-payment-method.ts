@@ -20,18 +20,18 @@ export const setDefaultPaymentMethod = async ( methods: string[] ) => {
 		...expressPaymentMethodKeys,
 	];
 
-	const customerPaymentMethods = select(
+	const savedPaymentMethods = select(
 		PAYMENT_METHOD_DATA_STORE_KEY
-	).getCustomerPaymentMethods();
+	).getSavedPaymentMethods();
 
-	const customerPaymentMethod =
-		Object.keys( customerPaymentMethods ).flatMap(
-			( type ) => customerPaymentMethods[ type ]
+	const savedPaymentMethod =
+		Object.keys( savedPaymentMethods ).flatMap(
+			( type ) => savedPaymentMethods[ type ]
 		)[ 0 ] || undefined;
 
-	if ( customerPaymentMethod ) {
-		const token = customerPaymentMethod.tokenId.toString();
-		const paymentMethodSlug = customerPaymentMethod.method.gateway;
+	if ( savedPaymentMethod ) {
+		const token = savedPaymentMethod.tokenId.toString();
+		const paymentMethodSlug = savedPaymentMethod.method.gateway;
 
 		const savedTokenKey = `wc-${ paymentMethodSlug }-payment-token`;
 

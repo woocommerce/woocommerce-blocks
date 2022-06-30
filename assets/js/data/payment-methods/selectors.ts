@@ -7,7 +7,7 @@ import { objectHasProp } from '@woocommerce/types';
  * Internal dependencies
  */
 import { PaymentMethodDataState } from './default-state';
-import { filterEnabledCustomerPaymentMethods } from './utils';
+import { filterActiveSavedPaymentMethods } from './utils';
 
 export const isExpressPaymentMethodActive = (
 	state: PaymentMethodDataState
@@ -45,16 +45,20 @@ export const getPaymentMethodData = ( state: PaymentMethodDataState ) => {
 	return state.paymentMethodData;
 };
 
-export const getCustomerPaymentMethods = ( state: PaymentMethodDataState ) => {
-	return state.customerPaymentMethods;
+export const getSavedPaymentMethods = ( state: PaymentMethodDataState ) => {
+	return state.savedPaymentMethods;
 };
 
-export const getEnabledCustomerPaymentMethods = (
+/**
+ * Filters the list of saved payment methods and returns only the ones which
+ * are active and supported by the payment gateway
+ */
+export const getActiveSavedPaymentMethods = (
 	state: PaymentMethodDataState
 ) => {
-	return filterEnabledCustomerPaymentMethods(
-		state.registeredPaymentMethods,
-		state.customerPaymentMethods
+	return filterActiveSavedPaymentMethods(
+		state.availablePaymentMethods,
+		state.savedPaymentMethods
 	);
 };
 

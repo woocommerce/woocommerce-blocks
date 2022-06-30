@@ -19,7 +19,7 @@ import {
  * Internal dependencies
  */
 import type {
-	CustomerPaymentMethods,
+	SavedPaymentMethods,
 	PaymentMethodDataContextType,
 } from '../../../../../data/payment-methods/types';
 import { DEFAULT_PAYMENT_METHOD_DATA } from './constants';
@@ -63,15 +63,14 @@ export const PaymentMethodDataProvider = ( {
 	} );
 	const {
 		currentStatus,
-		enabledCustomerPaymentMethods,
+		activeSavedPaymentMethods,
 		paymentMethodsInitialized,
 	} = useSelect( ( select ) => {
 		const store = select( PAYMENT_METHOD_DATA_STORE_KEY );
 
 		return {
 			currentStatus: store.getCurrentStatus(),
-			enabledCustomerPaymentMethods:
-				store.getEnabledCustomerPaymentMethods(),
+			activeSavedPaymentMethods: store.getActiveSavedPaymentMethods(),
 			paymentMethodsInitialized: store.paymentMethodsInitialized(),
 		};
 	} );
@@ -94,18 +93,18 @@ export const PaymentMethodDataProvider = ( {
 	} = useDispatch( PAYMENT_METHOD_DATA_STORE_KEY );
 	const { setBillingAddress, setShippingAddress } = useCustomerData();
 
-	const customerPaymentMethods = useMemo( (): CustomerPaymentMethods => {
+	const savedPaymentMethods = useMemo( (): SavedPaymentMethods => {
 		if ( isEditor ) {
 			return getPreviewData(
 				'previewSavedPaymentMethods'
-			) as CustomerPaymentMethods;
+			) as SavedPaymentMethods;
 		}
-		return paymentMethodsInitialized ? enabledCustomerPaymentMethods : {};
+		return paymentMethodsInitialized ? activeSavedPaymentMethods : {};
 	}, [
 		isEditor,
 		getPreviewData,
 		paymentMethodsInitialized,
-		enabledCustomerPaymentMethods,
+		activeSavedPaymentMethods,
 	] );
 
 	// flip payment to processing if checkout processing is complete, there are no errors, and payment status is started.
@@ -166,7 +165,7 @@ export const PaymentMethodDataProvider = ( {
 
 	const paymentContextData: PaymentMethodDataContextType = {
 		onPaymentProcessing,
-		customerPaymentMethods,
+		savedPaymentMethods,
 	};
 
 	return (

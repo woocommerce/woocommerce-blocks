@@ -7,7 +7,7 @@ import { getSetting } from '@woocommerce/settings';
 /**
  * Internal dependencies
  */
-import { CustomerPaymentMethod } from './types';
+import { SavedPaymentMethod } from './types';
 import { STATUS as PAYMENT_METHOD_STATUS } from '../../base/context/providers/cart-checkout/payment-methods/constants';
 
 export interface PaymentMethodDataState {
@@ -24,17 +24,17 @@ export interface PaymentMethodDataState {
 	};
 	activePaymentMethod: string;
 	activeSavedToken: string;
-	// Avilable payment methods are valid and can make payment
+	// Avilable payment methods are payment methods which have been validaed and can make payment
 	availablePaymentMethods: string[];
 	availableExpressPaymentMethods: string[];
+	savedPaymentMethods:
+		| Record< string, SavedPaymentMethod[] >
+		| EmptyObjectType;
 	paymentMethodData: Record< string, unknown >;
 	paymentMethodsInitialized: boolean;
 	expressPaymentMethodsInitialized: boolean;
 	shouldSavePaymentMethod: boolean;
 	isExpressPaymentMethodActive: boolean;
-	customerPaymentMethods:
-		| Record< string, CustomerPaymentMethod[] >
-		| EmptyObjectType;
 }
 export const defaultPaymentMethodDataState: PaymentMethodDataState = {
 	paymentStatuses: PAYMENT_METHOD_STATUS,
@@ -48,16 +48,16 @@ export const defaultPaymentMethodDataState: PaymentMethodDataState = {
 		isSuccessful: false,
 		isDoingExpressPayment: false,
 	},
-	customerPaymentMethods: getSetting<
-		Record< string, CustomerPaymentMethod[] > | EmptyObjectType
-	>( 'customerPaymentMethods', {} ),
+	activePaymentMethod: '',
+	activeSavedToken: '',
 	availablePaymentMethods: [],
 	availableExpressPaymentMethods: [],
+	savedPaymentMethods: getSetting<
+		Record< string, SavedPaymentMethod[] > | EmptyObjectType
+	>( 'customerPaymentMethods', {} ),
 	paymentMethodData: {},
 	paymentMethodsInitialized: false,
 	expressPaymentMethodsInitialized: false,
-	isExpressPaymentMethodActive: false,
 	shouldSavePaymentMethod: false,
-	activePaymentMethod: '',
-	activeSavedToken: '',
+	isExpressPaymentMethodActive: false,
 };

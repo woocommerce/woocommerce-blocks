@@ -28,7 +28,7 @@ import { STORE_KEY as PAYMENT_METHOD_DATA_STORE_KEY } from '../../../data/paymen
  * @return {*} The rendered component.
  */
 const PaymentMethodOptions = () => {
-	const { customerPaymentMethods } = usePaymentMethodDataContext(); //TODO: Move this state from the context file
+	const { savedPaymentMethods } = usePaymentMethodDataContext(); //TODO: Move this state from the context file
 
 	const {
 		activeSavedToken,
@@ -92,7 +92,7 @@ const PaymentMethodOptions = () => {
 	);
 
 	const isSinglePaymentMethod =
-		Object.keys( customerPaymentMethods ).length === 0 &&
+		Object.keys( savedPaymentMethods ).length === 0 &&
 		Object.keys( paymentMethods ).length === 1;
 
 	const singleOptionClass = classNames( {

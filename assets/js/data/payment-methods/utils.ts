@@ -2,35 +2,34 @@
  * External dependencies
  */
 import { getPaymentMethods } from '@woocommerce/blocks-registry';
-import { PaymentMethods } from '@woocommerce/type-defs/payments';
 
 /**
  * Internal dependencies
  */
-import type { CustomerPaymentMethods } from './types';
+import type { SavedPaymentMethods } from './types';
 
 /**
  * Gets the payment methods saved for the current user after filtering out disabled ones.
  */
-export const filterEnabledCustomerPaymentMethods = (
-	availablePaymentMethods: PaymentMethods = {},
-	customerPaymentMethods: CustomerPaymentMethods
-): CustomerPaymentMethods => {
-	if ( Object.keys( availablePaymentMethods ).length === 0 ) {
+export const filterActiveSavedPaymentMethods = (
+	availablePaymentMethods: string[] = [],
+	savedPaymentMethods: SavedPaymentMethods
+): SavedPaymentMethods => {
+	if ( availablePaymentMethods.length === 0 ) {
 		return {};
 	}
 	const registeredPaymentMethods = getPaymentMethods();
 	const availablePaymentMethodsWithConfig = Object.fromEntries(
-		Object.keys( availablePaymentMethods ).map( ( name ) => [
+		availablePaymentMethods.map( ( name ) => [
 			name,
 			registeredPaymentMethods[ name ],
 		] )
 	);
 
-	const paymentMethodKeys = Object.keys( customerPaymentMethods );
-	const enabledCustomerPaymentMethods = {} as CustomerPaymentMethods;
+	const paymentMethodKeys = Object.keys( savedPaymentMethods );
+	const activeSavedPaymentMethods = {} as SavedPaymentMethods;
 	paymentMethodKeys.forEach( ( type ) => {
-		const methods = customerPaymentMethods[ type ].filter(
+		const methods = savedPaymentMethods[ type ].filter(
 			( {
 				method: { gateway },
 			}: {
@@ -43,10 +42,10 @@ export const filterEnabledCustomerPaymentMethods = (
 					?.showSavedCards
 		);
 		if ( methods.length ) {
-			enabledCustomerPaymentMethods[ type ] = methods;
+			activeSavedPaymentMethods[ type ] = methods;
 		}
 	} );
-	return enabledCustomerPaymentMethods;
+	return activeSavedPaymentMethods;
 };
 
 /**
