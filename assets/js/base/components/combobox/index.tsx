@@ -127,7 +127,8 @@ const Combobox = ( {
 						}
 
 						// Try to match.
-						const normalizedFilterValue = filterValue.toLocaleUpperCase();
+						const normalizedFilterValue =
+							filterValue.toLocaleUpperCase();
 						const foundOption = options.find(
 							( option ) =>
 								option.label

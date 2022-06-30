@@ -84,9 +84,9 @@ interface AddressFormProps {
  */
 const AddressForm = ( {
 	id = '',
-	fields = ( Object.keys(
+	fields = Object.keys(
 		defaultAddressFields
-	) as unknown ) as ( keyof AddressFields )[],
+	) as unknown as ( keyof AddressFields )[],
 	fieldConfig = {} as Record< keyof AddressFields, Partial< AddressField > >,
 	instanceId,
 	onChange,

@@ -11,3 +11,5 @@ export * from './payment-method-interface';
 export * from './product-response';
 export * from './utils';
 export * from './taxes';
+export * from './attributes';
+export * from './stock-status';

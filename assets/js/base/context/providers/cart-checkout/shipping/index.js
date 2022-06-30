@@ -50,9 +50,8 @@ export const useShippingDataContext = () => {
  * @param {React.ReactElement} props.children
  */
 export const ShippingDataProvider = ( { children } ) => {
-	const { incrementCalculating, decrementCalculating } = useDispatch(
-		CHECKOUT_STORE_KEY
-	);
+	const { incrementCalculating, decrementCalculating } =
+		useDispatch( CHECKOUT_STORE_KEY );
 	const { shippingRates, isLoadingRates, cartErrors } = useStoreCart();
 	const { isSelectingRate } = useSelectShippingRate();
 	const { selectedRates } = useShippingData();
@@ -64,13 +63,13 @@ export const ShippingDataProvider = ( { children } ) => {
 	const currentObservers = useRef( observers );
 	const eventObservers = useMemo(
 		() => ( {
-			onShippingRateSuccess: emitterObservers( observerDispatch )
-				.onSuccess,
+			onShippingRateSuccess:
+				emitterObservers( observerDispatch ).onSuccess,
 			onShippingRateFail: emitterObservers( observerDispatch ).onFail,
-			onShippingRateSelectSuccess: emitterObservers( observerDispatch )
-				.onSelectSuccess,
-			onShippingRateSelectFail: emitterObservers( observerDispatch )
-				.onSelectFail,
+			onShippingRateSelectSuccess:
+				emitterObservers( observerDispatch ).onSelectSuccess,
+			onShippingRateSelectFail:
+				emitterObservers( observerDispatch ).onSelectFail,
 		} ),
 		[ observerDispatch ]
 	);

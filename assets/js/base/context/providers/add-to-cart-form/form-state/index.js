@@ -113,14 +113,15 @@ export const AddToCartFormStateContextProvider = ( {
 	 */
 	const eventRegistration = useMemo(
 		() => ( {
-			onAddToCartAfterProcessingWithSuccess: emitterObservers(
-				observerDispatch
-			).onAddToCartAfterProcessingWithSuccess,
-			onAddToCartAfterProcessingWithError: emitterObservers(
-				observerDispatch
-			).onAddToCartAfterProcessingWithError,
-			onAddToCartBeforeProcessing: emitterObservers( observerDispatch )
-				.onAddToCartBeforeProcessing,
+			onAddToCartAfterProcessingWithSuccess:
+				emitterObservers( observerDispatch )
+					.onAddToCartAfterProcessingWithSuccess,
+			onAddToCartAfterProcessingWithError:
+				emitterObservers( observerDispatch )
+					.onAddToCartAfterProcessingWithError,
+			onAddToCartBeforeProcessing:
+				emitterObservers( observerDispatch )
+					.onAddToCartBeforeProcessing,
 		} ),
 		[ observerDispatch ]
 	);

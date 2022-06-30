@@ -52,10 +52,11 @@ const FormSubmit = () => {
 
 	// Subscribe to emitter before processing.
 	useEffect( () => {
-		const unsubscribeProcessing = eventRegistration.onAddToCartBeforeProcessing(
-			checkValidationContext,
-			0
-		);
+		const unsubscribeProcessing =
+			eventRegistration.onAddToCartBeforeProcessing(
+				checkValidationContext,
+				0
+			);
 		return () => {
 			unsubscribeProcessing();
 		};

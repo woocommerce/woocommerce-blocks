@@ -64,10 +64,10 @@ const AttributeSelectControl = ( {
 	] );
 
 	// Remove validation errors when unmounted.
-	useEffect( () => () => void clearValidationError( errorId ), [
-		errorId,
-		clearValidationError,
-	] );
+	useEffect(
+		() => () => void clearValidationError( errorId ),
+		[ errorId, clearValidationError ]
+	);
 
 	return (
 		<div className="wc-block-components-product-add-to-cart-attribute-picker__container">
