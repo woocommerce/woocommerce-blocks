@@ -108,7 +108,6 @@ export const emitProcessingEvent: emitProcessingEventType = (
 				}
 				dispatch.setPaymentStatus(
 					{ hasFailed: true },
-					errorResponse?.message || '',
 					paymentMethodData
 				);
 			} else if ( errorResponse ) {
@@ -122,10 +121,7 @@ export const emitProcessingEvent: emitProcessingEventType = (
 					} );
 				}
 
-				dispatch.setPaymentStatus(
-					{ hasError: true },
-					errorResponse.message
-				);
+				dispatch.setPaymentStatus( { hasError: true } );
 				setValidationErrors( errorResponse?.validationErrors );
 			} else {
 				// otherwise there are no payment methods doing anything so

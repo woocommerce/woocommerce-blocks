@@ -54,7 +54,6 @@ const reducer: Reducer< PaymentMethodDataState > = (
 						! state.currentStatus.isPristine &&
 						state.isExpressPaymentMethodActive,
 				},
-				errorMessage: action.errorMessage,
 				paymentMethodData:
 					action.paymentMethodData || state.paymentMethodData,
 			};

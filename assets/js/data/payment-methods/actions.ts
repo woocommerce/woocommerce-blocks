@@ -17,12 +17,10 @@ export * from './thunks';
 
 export const setPaymentStatus = (
 	status: PaymentStatus,
-	errorMessage = '',
 	paymentMethodData?: Record< string, unknown >
 ) => ( {
 	type: ACTION_TYPES.SET_PAYMENT_STATUS,
 	status,
-	errorMessage,
 	paymentMethodData,
 } );
 
