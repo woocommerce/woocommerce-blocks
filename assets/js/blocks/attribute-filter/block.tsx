@@ -31,6 +31,7 @@ import {
 	PREFIX_QUERY_ARG_QUERY_TYPE,
 } from '@woocommerce/utils';
 import { difference } from 'lodash';
+import classNames from 'classnames';
 
 /**
  * Internal dependencies
@@ -581,40 +582,47 @@ const AttributeFilterBlock = ( {
 				className={ `wc-block-attribute-filter style-${ blockAttributes.displayStyle }` }
 			>
 				{ blockAttributes.displayStyle === 'dropdown' ? (
-					<FormTokenField
-						suggestions={ displayedOptions.map(
-							( option ) => option.value
+					<div
+						className={ classNames(
+							'wc-blocks-components-form-token-field-wrapper',
+							borderProps.className
 						) }
-						__experimentalExpandOnFocus={ true }
-						__experimentalShowHowTo={ false }
-						maxLength={ multiple ? undefined : 1 }
-						disabled={ isDisabled }
-						placeholder={ sprintf(
-							/* translators: %s attribute name. */
-							__( 'Any %s', 'woo-gutenberg-products-block' ),
-							attributeObject.label
-						) }
-						label=""
-						onChange={ ( tokens: string[] ) => {
-							const added = difference( tokens, checked );
-							const removed = difference( checked, tokens );
+						style={ { ...borderProps.style, borderStyle: 'none' } }
+					>
+						<FormTokenField
+							suggestions={ displayedOptions.map(
+								( option ) => option.value
+							) }
+							__experimentalExpandOnFocus={ true }
+							__experimentalShowHowTo={ false }
+							maxLength={ multiple ? undefined : 1 }
+							disabled={ isDisabled }
+							placeholder={ sprintf(
+								/* translators: %s attribute name. */
+								__( 'Any %s', 'woo-gutenberg-products-block' ),
+								attributeObject.label
+							) }
+							label=""
+							onChange={ ( tokens: string[] ) => {
+								const added = difference( tokens, checked );
+								const removed = difference( checked, tokens );
 
-							if ( added.length === 1 ) {
-								onChange( added[ 0 ] );
-							}
-							if ( removed.length === 1 ) {
-								onChange( removed[ 0 ] );
-							}
-						} }
-						value={ checked }
-						displayTransform={ ( value: string ) => {
-							const result = displayedOptions.find(
-								( option ) => option.value === value
-							);
-							return result ? result.label : value;
-						} }
-						className={ borderProps.className }
-					/>
+								if ( added.length === 1 ) {
+									onChange( added[ 0 ] );
+								}
+								if ( removed.length === 1 ) {
+									onChange( removed[ 0 ] );
+								}
+							} }
+							value={ checked }
+							displayTransform={ ( value: string ) => {
+								const result = displayedOptions.find(
+									( option ) => option.value === value
+								);
+								return result ? result.label : value;
+							} }
+						/>
+					</div>
 				) : (
 					<CheckboxList
 						className={ 'wc-block-attribute-filter-list' }
