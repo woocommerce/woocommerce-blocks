@@ -1,10 +1,10 @@
 /**
  * External dependencies
  */
-import { usePaymentMethods } from '@woocommerce/base-context/hooks';
 import { __ } from '@wordpress/i18n';
 import Label from '@woocommerce/base-components/label';
-import { usePaymentMethodDataContext } from '@woocommerce/base-context';
+import { select } from '@wordpress/data';
+import { PAYMENT_METHOD_DATA_STORE_KEY } from '@woocommerce/block-data';
 
 /**
  * Internal dependencies
@@ -19,10 +19,16 @@ import SavedPaymentMethodOptions from './saved-payment-method-options';
  * @return {*} The rendered component.
  */
 const PaymentMethods = () => {
-	const { isInitialized, paymentMethods } = usePaymentMethods();
-	const { savedPaymentMethods } = usePaymentMethodDataContext(); //TODO: Move this state from the context file
+	const {
+		paymentMethodsInitialized,
+		availablePaymentMethods,
+		savedPaymentMethods,
+	} = select( PAYMENT_METHOD_DATA_STORE_KEY ).getState();
 
-	if ( isInitialized && Object.keys( paymentMethods ).length === 0 ) {
+	if (
+		paymentMethodsInitialized &&
+		Object.keys( availablePaymentMethods ).length === 0
+	) {
 		return <NoPaymentMethods />;
 	}
 
