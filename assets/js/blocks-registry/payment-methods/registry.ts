@@ -42,18 +42,17 @@ export const registerPaymentMethod = (
 		deprecated( 'Passing a callback to registerPaymentMethod()', {
 			alternative: 'a config options object',
 			plugin: 'woocommerce-gutenberg-products-block',
-			link:
-				'https://github.com/woocommerce/woocommerce-gutenberg-products-block/pull/3404',
+			link: 'https://github.com/woocommerce/woocommerce-gutenberg-products-block/pull/3404',
 		} );
 	} else {
 		paymentMethodConfig = new PaymentMethodConfig( options );
 	}
 	if ( paymentMethodConfig instanceof PaymentMethodConfig ) {
-		const { addRegisteredPaymentMethod } = dispatch(
+		const { updateAvailablePaymentMethods } = dispatch(
 			PAYMENT_METHOD_DATA_STORE_KEY
 		);
 		paymentMethods[ paymentMethodConfig.name ] = paymentMethodConfig;
-		addRegisteredPaymentMethod();
+		updateAvailablePaymentMethods();
 	}
 };
 
@@ -73,18 +72,17 @@ export const registerExpressPaymentMethod = (
 		deprecated( 'Passing a callback to registerExpressPaymentMethod()', {
 			alternative: 'a config options object',
 			plugin: 'woocommerce-gutenberg-products-block',
-			link:
-				'https://github.com/woocommerce/woocommerce-gutenberg-products-block/pull/3404',
+			link: 'https://github.com/woocommerce/woocommerce-gutenberg-products-block/pull/3404',
 		} );
 	} else {
 		paymentMethodConfig = new ExpressPaymentMethodConfig( options );
 	}
 	if ( paymentMethodConfig instanceof ExpressPaymentMethodConfig ) {
-		const { addRegisteredExpressPaymentMethod } = dispatch(
+		const { updateAvailableExpressPaymentMethods } = dispatch(
 			PAYMENT_METHOD_DATA_STORE_KEY
 		);
 		expressPaymentMethods[ paymentMethodConfig.name ] = paymentMethodConfig;
-		addRegisteredExpressPaymentMethod();
+		updateAvailableExpressPaymentMethods();
 	}
 };
 
@@ -125,10 +123,10 @@ export const __experimentalDeRegisterPaymentMethod = (
 	paymentMethodName: string
 ): void => {
 	delete paymentMethods[ paymentMethodName ];
-	const { removeRegisteredPaymentMethod } = dispatch(
+	const { removeAvailablePaymentMethod } = dispatch(
 		PAYMENT_METHOD_DATA_STORE_KEY
 	);
-	removeRegisteredPaymentMethod( paymentMethodName );
+	removeAvailablePaymentMethod( paymentMethodName );
 };
 
 export const __experimentalDeRegisterExpressPaymentMethod = (

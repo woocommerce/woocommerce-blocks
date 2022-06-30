@@ -1,10 +1,6 @@
 /**
  * External dependencies
  */
-import type {
-	PaymentMethods,
-	ExpressPaymentMethods,
-} from '@woocommerce/type-defs/payments';
 import { select as wpDataSelect } from '@wordpress/data';
 
 /**
@@ -74,6 +70,10 @@ export const setPaymentMethodData = (
 	paymentMethodData,
 } );
 
+/**
+ * Set the available payment methods.
+ * An available payment method is one that has been validated and can make a payment.
+ */
 export const setAvailablePaymentMethods = ( methods: string[] ) => {
 	return async ( { dispatch } ) => {
 		// If the currently selected method is not in this new list, then we need to select a new one, or select a default.
@@ -85,59 +85,63 @@ export const setAvailablePaymentMethods = ( methods: string[] ) => {
 	};
 };
 
+/**
+ * Set the available express payment methods.
+ * An available payment method is one that has been validated and can make a payment.
+ */
 export const setAvailableExpressPaymentMethods = ( methods: string[] ) => ( {
 	type: ACTION_TYPES.SET_AVAILABLE_EXPRESS_PAYMENT_METHODS,
 	methods,
 } );
 
-export function addRegisteredPaymentMethod() {
+/**
+ * Remove a payment method name from the available payment methods.
+ * This is called when a payment method is removed from the registry.
+ */
+export const removeAvailablePaymentMethod = ( name: string ) => ( {
+	type: ACTION_TYPES.REMOVE_AVAILABLE_PAYMENT_METHOD,
+	name,
+} );
+
+/**
+ * Remove an express payment method name from the available payment methods.
+ * This is called when an express payment method is removed from the registry.
+ */
+export const removeRegisteredExpressPaymentMethod = ( name: string ) => ( {
+	type: ACTION_TYPES.REMOVE_AVAILABLE_EXPRESS_PAYMENT_METHOD,
+	name,
+} );
+
+/**
+ * Checks the payment methods held in the registry can make a payment
+ * and updates the available payment methods in the store.
+ */
+export function updateAvailablePaymentMethods() {
 	return async ( { dispatch } ) => {
 		const registered = await checkPaymentMethodsCanPay();
-		const cartTotalsLoaded = wpDataSelect(
-			CART_STORE_KEY
-		).hasFinishedResolution( 'getCartTotals' );
+		const cartTotalsLoaded =
+			wpDataSelect( CART_STORE_KEY ).hasFinishedResolution(
+				'getCartTotals'
+			);
 		if ( registered && cartTotalsLoaded ) {
 			dispatch( setPaymentMethodsInitialized( true ) );
 		}
 	};
 }
 
-export const setRegisteredPaymentMethods = (
-	paymentMethods: PaymentMethods
-) => {
-	return {
-		type: ACTION_TYPES.SET_REGISTERED_PAYMENT_METHODS,
-		paymentMethods,
-	};
-};
-
-export const removeRegisteredPaymentMethod = ( name: string ) => ( {
-	type: ACTION_TYPES.REMOVE_REGISTERED_PAYMENT_METHOD,
-	name,
-} );
-
-export function addRegisteredExpressPaymentMethod() {
+/**
+ * Checks the express payment methods held in the registry can make a payment
+ * and updates the available express payment methods in the store.
+ */
+export function updateAvailableExpressPaymentMethods() {
 	return async ( { dispatch } ) => {
 		const registered = await checkPaymentMethodsCanPay( true );
-		const cartTotalsLoaded = wpDataSelect(
-			CART_STORE_KEY
-		).hasFinishedResolution( 'getCartTotals' );
+		const cartTotalsLoaded =
+			wpDataSelect( CART_STORE_KEY ).hasFinishedResolution(
+				'getCartTotals'
+			);
 		if ( registered && cartTotalsLoaded ) {
 			dispatch( setExpressPaymentMethodsInitialized( true ) );
 		}
 	};
 }
-
-export const setRegisteredExpressPaymentMethod = (
-	paymentMethods: ExpressPaymentMethods
-) => {
-	return {
-		type: ACTION_TYPES.SET_REGISTERED_EXPRESS_PAYMENT_METHOD,
-		paymentMethods,
-	};
-};
-
-export const removeRegisteredExpressPaymentMethod = ( name: string ) => ( {
-	type: ACTION_TYPES.REMOVE_REGISTERED_EXPRESS_PAYMENT_METHOD,
-	name,
-} );

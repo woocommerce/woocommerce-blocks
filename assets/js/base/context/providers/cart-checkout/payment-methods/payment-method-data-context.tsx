@@ -23,7 +23,6 @@ import type {
 	PaymentMethodDataContextType,
 } from '../../../../../data/payment-methods/types';
 import { DEFAULT_PAYMENT_METHOD_DATA } from './constants';
-import { usePaymentMethods } from './use-payment-method-registration';
 import { useEditorContext } from '../../editor-context';
 import { useEventEmitters, reducer as emitReducer } from './event-emit';
 import { useValidationContext } from '../../validation';
@@ -62,17 +61,20 @@ export const PaymentMethodDataProvider = ( {
 			isCalculating: store.isCalculating(),
 		};
 	} );
-	const { currentStatus, enabledCustomerPaymentMethods } = useSelect(
-		( select ) => {
-			const store = select( PAYMENT_METHOD_DATA_STORE_KEY );
+	const {
+		currentStatus,
+		enabledCustomerPaymentMethods,
+		paymentMethodsInitialized,
+	} = useSelect( ( select ) => {
+		const store = select( PAYMENT_METHOD_DATA_STORE_KEY );
 
-			return {
-				currentStatus: store.getCurrentStatus(),
-				enabledCustomerPaymentMethods:
-					store.getEnabledCustomerPaymentMethods(),
-			};
-		}
-	);
+		return {
+			currentStatus: store.getCurrentStatus(),
+			enabledCustomerPaymentMethods:
+				store.getEnabledCustomerPaymentMethods(),
+			paymentMethodsInitialized: store.paymentMethodsInitialized(),
+		};
+	} );
 	const { isEditor, getPreviewData } = useEditorContext();
 	const { setValidationErrors } = useValidationContext();
 	const { createErrorNotice, removeNotice } = useDispatch( 'core/notices' );
@@ -87,19 +89,10 @@ export const PaymentMethodDataProvider = ( {
 
 	const {
 		setPaymentStatus,
-		setRegisteredPaymentMethods,
 		setPaymentMethodData,
 		emitProcessingEvent: emitPaymentProcessingEvent,
 	} = useDispatch( PAYMENT_METHOD_DATA_STORE_KEY );
 	const { setBillingAddress, setShippingAddress } = useCustomerData();
-
-	const paymentMethodsInitialized = usePaymentMethods(
-		setRegisteredPaymentMethods
-	);
-
-	// const expressPaymentMethodsInitialized = useExpressPaymentMethods(
-	// 	dispatchActions.setRegisteredExpressPaymentMethods
-	// ); //TODO initialize setRegisteredExpressPaymentMethods
 
 	const customerPaymentMethods = useMemo( (): CustomerPaymentMethods => {
 		if ( isEditor ) {

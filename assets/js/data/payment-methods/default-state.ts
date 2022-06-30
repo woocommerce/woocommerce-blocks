@@ -3,10 +3,6 @@
  */
 import type { EmptyObjectType } from '@woocommerce/types';
 import { getSetting } from '@woocommerce/settings';
-import {
-	PaymentMethods,
-	ExpressPaymentMethods,
-} from '@woocommerce/type-defs/payments';
 
 /**
  * Internal dependencies
@@ -28,9 +24,6 @@ export interface PaymentMethodDataState {
 	};
 	activePaymentMethod: string;
 	activeSavedToken: string;
-	// Registered payment methods may be invalid forms of payment (e.g. expired cards)
-	registeredPaymentMethods: PaymentMethods;
-	registeredExpressPaymentMethods: ExpressPaymentMethods;
 	// Avilable payment methods are valid and can make payment
 	availablePaymentMethods: string[];
 	availableExpressPaymentMethods: string[];
@@ -58,8 +51,6 @@ export const defaultPaymentMethodDataState: PaymentMethodDataState = {
 	customerPaymentMethods: getSetting<
 		Record< string, CustomerPaymentMethod[] > | EmptyObjectType
 	>( 'customerPaymentMethods', {} ),
-	registeredPaymentMethods: {},
-	registeredExpressPaymentMethods: {},
 	availablePaymentMethods: [],
 	availableExpressPaymentMethods: [],
 	paymentMethodData: {},

@@ -3,7 +3,6 @@
  */
 import type { Reducer } from 'redux';
 import { objectHasProp } from '@woocommerce/types';
-import { PaymentMethods } from '@woocommerce/type-defs/payments';
 import { getSetting } from '@woocommerce/settings';
 
 /**
@@ -32,12 +31,14 @@ const reducer: Reducer< PaymentMethodDataState > = (
 				shouldSavePaymentMethod: action.shouldSavePaymentMethod,
 			};
 			break;
+
 		case ACTION_TYPES.SET_PAYMENT_METHOD_DATA:
 			state = {
 				...state,
 				paymentMethodData: action.paymentMethodData,
 			};
 			break;
+
 		case ACTION_TYPES.SET_PAYMENT_STATUS:
 			state = {
 				...state,
@@ -58,69 +59,48 @@ const reducer: Reducer< PaymentMethodDataState > = (
 					action.paymentMethodData || state.paymentMethodData,
 			};
 			break;
-		case ACTION_TYPES.ADD_REGISTERED_PAYMENT_METHOD:
-			state = {
-				...state,
-				registeredPaymentMethods: {
-					...state.registeredPaymentMethods,
-					[ action.registeredPaymentMethod.name ]:
-						action.registeredPaymentMethod,
-				},
+
+		case ACTION_TYPES.REMOVE_AVAILABLE_PAYMENT_METHOD:
+			const previousAvailablePaymentMethods = {
+				...state.availablePaymentMethods,
 			};
-			break;
-		case ACTION_TYPES.SET_REGISTERED_PAYMENT_METHODS:
-			state = {
-				...state,
-				registeredPaymentMethods: {
-					...state.registeredPaymentMethods,
-					...( action.paymentMethods as PaymentMethods ),
-				},
-			};
-			break;
-		case ACTION_TYPES.REMOVE_REGISTERED_PAYMENT_METHOD:
-			const previousRegisteredPaymentMethods = {
-				...state.registeredPaymentMethods,
-			};
-			delete previousRegisteredPaymentMethods[ action.name ];
+			delete previousAvailablePaymentMethods[ action.name ];
 
 			state = {
 				...state,
-				registeredPaymentMethods: {
-					...previousRegisteredPaymentMethods,
+				availablePaymentMethods: {
+					...previousAvailablePaymentMethods,
 				},
 			};
 			break;
-		case ACTION_TYPES.ADD_REGISTERED_EXPRESS_PAYMENT_METHOD:
+
+		case ACTION_TYPES.REMOVE_AVAILABLE_EXPRESS_PAYMENT_METHOD:
+			const previousAvailableExpressPaymentMethods = {
+				...state.availablePaymentMethods,
+			};
+			delete previousAvailableExpressPaymentMethods[ action.name ];
 			state = {
 				...state,
-				registeredExpressPaymentMethods: {
-					...state.registeredExpressPaymentMethods,
-					[ action.registeredExpressPaymentMethods.name ]:
-						action.registeredExpressPaymentMethods,
+				availableExpressPaymentMethods: {
+					...previousAvailableExpressPaymentMethods,
 				},
 			};
 			break;
-		case ACTION_TYPES.SET_REGISTERED_EXPRESS_PAYMENT_METHOD:
-			state = {
-				...state,
-				registeredExpressPaymentMethods: {
-					...state.registeredExpressPaymentMethods,
-					...( action.paymentMethods as PaymentMethods ),
-				},
-			};
-			break;
+
 		case ACTION_TYPES.SET_PAYMENT_METHODS_INITIALIZED:
 			state = {
 				...state,
 				paymentMethodsInitialized: action.initialized,
 			};
 			break;
+
 		case ACTION_TYPES.SET_EXPRESS_PAYMENT_METHODS_INITIALIZED:
 			state = {
 				...state,
 				expressPaymentMethodsInitialized: action.initialized,
 			};
 			break;
+
 		case ACTION_TYPES.SET_AVAILABLE_PAYMENT_METHODS:
 			const orderedMethods = orderPaymentMethods(
 				paymentGatewaySortOrder,
@@ -131,24 +111,14 @@ const reducer: Reducer< PaymentMethodDataState > = (
 				availablePaymentMethods: orderedMethods,
 			};
 			break;
+
 		case ACTION_TYPES.SET_AVAILABLE_EXPRESS_PAYMENT_METHODS:
 			state = {
 				...state,
 				availableExpressPaymentMethods: action.methods,
 			};
 			break;
-		case ACTION_TYPES.REMOVE_REGISTERED_EXPRESS_PAYMENT_METHOD:
-			const previousExpressRegisteredPaymentMethods = {
-				...state.registeredPaymentMethods,
-			};
-			delete previousExpressRegisteredPaymentMethods[ action.name ];
-			state = {
-				...state,
-				registeredExpressPaymentMethods: {
-					...previousExpressRegisteredPaymentMethods,
-				},
-			};
-			break;
+
 		case ACTION_TYPES.SET_ACTIVE_PAYMENT_METHOD:
 			const activeSavedToken =
 				typeof state.paymentMethodData === 'object' &&
