@@ -166,7 +166,7 @@ export const renderRemovableListItem = ( {
 export const removeArgsFromFilterUrl = (
 	...args: ( string | Record< string, string > )[]
 ) => {
-	if ( ! window || ! document ) {
+	if ( ! window ) {
 		return;
 	}
 
@@ -198,7 +198,7 @@ export const removeArgsFromFilterUrl = (
 	if ( filteringForPhpTemplate ) {
 		window.location.href = newUrl;
 	} else {
-		window.history.pushState( {}, document.title, newUrl );
+		window.history.pushState( {}, '', newUrl );
 	}
 };
 
@@ -206,7 +206,7 @@ export const removeArgsFromFilterUrl = (
  * Clean the filter URL.
  */
 export const cleanFilterUrl = () => {
-	if ( ! window || ! document ) {
+	if ( ! window ) {
 		return;
 	}
 
@@ -236,6 +236,6 @@ export const cleanFilterUrl = () => {
 	if ( filteringForPhpTemplate ) {
 		window.location.href = newUrl;
 	} else {
-		window.history.pushState( {}, document.title, newUrl );
+		window.history.pushState( {}, '', newUrl );
 	}
 };

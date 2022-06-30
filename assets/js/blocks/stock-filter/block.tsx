@@ -187,7 +187,7 @@ const StockStatusFilterBlock = ( {
 		checkedOptions: string[],
 		isPhpTemplate: boolean
 	) => {
-		if ( ! window || ! document ) {
+		if ( ! window ) {
 			return;
 		}
 		if ( checkedOptions.length === 0 ) {
@@ -200,7 +200,7 @@ const StockStatusFilterBlock = ( {
 				if ( isPhpTemplate ) {
 					window.location.href = url;
 				} else {
-					window.history.pushState( {}, document.title, url );
+					window.history.pushState( {}, '', url );
 				}
 			}
 
@@ -218,7 +218,7 @@ const StockStatusFilterBlock = ( {
 		if ( isPhpTemplate ) {
 			window.location.href = newUrl;
 		} else {
-			window.history.pushState( {}, document.title, newUrl );
+			window.history.pushState( {}, '', newUrl );
 		}
 	};
 

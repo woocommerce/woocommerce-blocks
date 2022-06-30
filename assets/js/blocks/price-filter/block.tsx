@@ -189,8 +189,8 @@ const PriceFilterBlock = ( {
 						return ( window.location.href = newUrl );
 					}
 
-					// When filtering Products Grid block, we only update the URL.
-					window.history.pushState( {}, document.title, newUrl );
+					// When filtering All Products block, we only update the URL.
+					window.history.pushState( {}, '', newUrl );
 				}
 			}
 
