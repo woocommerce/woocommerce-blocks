@@ -113,14 +113,10 @@ const PriceFilterBlock = ( {
 			: undefined
 	);
 
-	const [ minPriceQuery, setMinPriceQuery ] = useQueryStateByKey(
-		'min_price',
-		formatPrice( minPriceParam, currency.minorUnit ) || null
-	);
-	const [ maxPriceQuery, setMaxPriceQuery ] = useQueryStateByKey(
-		'max_price',
-		formatPrice( maxPriceParam, currency.minorUnit ) || null
-	);
+	const [ minPriceQuery, setMinPriceQuery ] =
+		useQueryStateByKey( 'min_price' );
+	const [ maxPriceQuery, setMaxPriceQuery ] =
+		useQueryStateByKey( 'max_price' );
 
 	const [ minPrice, setMinPrice ] = useState(
 		formatPrice( minPriceParam, currency.minorUnit ) || null
