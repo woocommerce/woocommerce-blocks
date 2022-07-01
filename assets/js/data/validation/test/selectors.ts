@@ -6,7 +6,7 @@ import {
 	getValidationError,
 	hasValidationErrors,
 } from '../selectors';
-import type { FieldValidationStatus } from '../reducers';
+import { FieldValidationStatus } from '../../types';
 
 describe( 'Validation selectors', () => {
 	it( 'Gets the validation error', () => {

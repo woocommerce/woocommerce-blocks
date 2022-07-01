@@ -1,7 +1,8 @@
 /**
  * Internal dependencies
  */
-import reducer, { FieldValidationStatus } from '../reducers';
+import reducer from '../reducers';
+import { FieldValidationStatus } from '../../types';
 import { ACTION_TYPES as types } from '.././action-types';
 import { ValidationAction } from '../actions';
 
