@@ -65,12 +65,13 @@ const reducer: Reducer< Record< string, FieldValidationStatus > > = (
 			state[ action.error ].hidden = false;
 			return state;
 		case types.SHOW_ALL_VALIDATION_ERRORS:
-			Object.keys( state ).forEach( ( property ) => {
-				if ( state[ property ].hidden ) {
-					state[ property ].hidden = false;
+			const newState = { ...state };
+			Object.keys( newState ).forEach( ( property ) => {
+				if ( newState[ property ].hidden ) {
+					newState[ property ].hidden = false;
 				}
 			} );
-			return state;
+			return { ...newState };
 
 		default:
 			return state;
