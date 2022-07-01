@@ -14,6 +14,11 @@
 		gap: $gap;
 		border-radius: inherit;
 		border-color: inherit;
+		align-items: flex-start;
+
+		.wc-block-components-filter-submit-button {
+			height: 36px;
+		}
 	}
 
 	.wc-block-attribute-filter-list {
@@ -51,7 +56,7 @@
 		}
 
 		.components-form-token-field__input-container input[type="text"].components-form-token-field__input {
-			min-height: 32px;
+			min-height: 30px;
 		}
 
 		.components-form-token-field__remove-token {
