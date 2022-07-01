@@ -7,6 +7,7 @@ import classnames from 'classnames';
 import { withInstanceId } from '@wordpress/compose';
 import { isString } from '@woocommerce/types';
 import { dispatch, useSelect } from '@wordpress/data';
+import { VALIDATION_STORE_KEY } from '@woocommerce/block-data';
 
 /**
  * Internal dependencies
@@ -14,7 +15,6 @@ import { dispatch, useSelect } from '@wordpress/data';
 import TextInput from './text-input';
 import './style.scss';
 import { ValidationInputError } from '../validation-input-error';
-import { VALIDATION_STORE_KEY } from '../../../data/validation';
 
 interface ValidatedTextInputProps {
 	id?: string;
@@ -45,11 +45,8 @@ const ValidatedTextInput = ( {
 	const [ isPristine, setIsPristine ] = useState( true );
 	const inputRef = useRef< HTMLInputElement >( null );
 
-	const {
-		setValidationErrors,
-		hideValidationError,
-		clearValidationError,
-	} = dispatch( VALIDATION_STORE_KEY );
+	const { setValidationErrors, hideValidationError, clearValidationError } =
+		dispatch( VALIDATION_STORE_KEY );
 	const textInputId =
 		typeof id !== 'undefined' ? id : 'textinput-' + instanceId;
 	const errorIdString = errorId !== undefined ? errorId : textInputId;
