@@ -1,7 +1,6 @@
 /**
  * External dependencies
  */
-import PropTypes from 'prop-types';
 import { useSelect } from '@wordpress/data';
 import { VALIDATION_STORE_KEY } from '@woocommerce/block-data';
 
@@ -10,11 +9,17 @@ import { VALIDATION_STORE_KEY } from '@woocommerce/block-data';
  */
 import './style.scss';
 
+interface ValidationInputErrorProps {
+	errorMessage?: string;
+	propertyName?: string;
+	elementId?: string;
+}
+
 export const ValidationInputError = ( {
 	errorMessage = '',
 	propertyName = '',
 	elementId = '',
-} ): JSX.Element | null => {
+}: ValidationInputErrorProps ): JSX.Element | null => {
 	const { getValidationError, getValidationErrorId } = useSelect(
 		( select ) => {
 			const store = select( VALIDATION_STORE_KEY );
@@ -40,12 +45,6 @@ export const ValidationInputError = ( {
 			<p id={ getValidationErrorId( elementId ) }>{ errorMessage }</p>
 		</div>
 	);
-};
-
-ValidationInputError.propTypes = {
-	errorMessage: PropTypes.string,
-	propertyName: PropTypes.string,
-	elementId: PropTypes.string,
 };
 
 export default ValidationInputError;
