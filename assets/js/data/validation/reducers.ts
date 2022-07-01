@@ -17,6 +17,7 @@ const reducer: Reducer< Record< string, FieldValidationStatus > > = (
 	state: Record< string, FieldValidationStatus > = {},
 	action: Partial< ValidationAction >
 ) => {
+	const newState = { ...state };
 	switch ( action.type ) {
 		case types.SET_VALIDATION_ERRORS:
 			const newErrors = pickBy( action.errors, ( error, property ) => {
@@ -31,41 +32,38 @@ const reducer: Reducer< Record< string, FieldValidationStatus > > = (
 			if ( Object.values( newErrors ).length === 0 ) {
 				return state;
 			}
-			state = { ...state, ...action.errors };
-			return state;
+			return { ...state, ...action.errors };
 		case types.CLEAR_ALL_VALIDATION_ERRORS:
-			state = {};
-			return state;
+			return {};
 
 		case types.CLEAR_VALIDATION_ERROR:
 			if (
 				! isString( action.error ) ||
-				! state.hasOwnProperty( action.error )
+				! newState.hasOwnProperty( action.error )
 			) {
-				return state;
+				return newState;
 			}
-			delete state[ action.error ];
-			return state;
+			delete newState[ action.error ];
+			return newState;
 		case types.HIDE_VALIDATION_ERROR:
 			if (
 				! isString( action.error ) ||
-				! state.hasOwnProperty( action.error )
+				! newState.hasOwnProperty( action.error )
 			) {
-				return state;
+				return newState;
 			}
-			state[ action.error ].hidden = true;
-			return state;
+			newState[ action.error ].hidden = true;
+			return newState;
 		case types.SHOW_VALIDATION_ERROR:
 			if (
 				! isString( action.error ) ||
-				! state.hasOwnProperty( action.error )
+				! newState.hasOwnProperty( action.error )
 			) {
-				return state;
+				return newState;
 			}
-			state[ action.error ].hidden = false;
-			return state;
+			newState[ action.error ].hidden = false;
+			return newState;
 		case types.SHOW_ALL_VALIDATION_ERRORS:
-			const newState = { ...state };
 			Object.keys( newState ).forEach( ( property ) => {
 				if ( newState[ property ].hidden ) {
 					newState[ property ].hidden = false;
