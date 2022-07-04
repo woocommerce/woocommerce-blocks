@@ -1,0 +1,9 @@
+.wc-block-components-product-rating {
+	text-decoration: none;
+	&__stars {
+		margin-left: unset;
+		display: inline-block;
+		line-height: 1;
+		height: 1em;
+	}
+}
