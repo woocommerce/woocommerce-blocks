@@ -172,6 +172,7 @@ final class BlockTypesController {
 			'ProductOnSale',
 			'ProductsByAttribute',
 			'ProductTopRated',
+			'RatingFilter',
 			'ReviewsByProduct',
 			'ReviewsByCategory',
 			'ProductSearch',
