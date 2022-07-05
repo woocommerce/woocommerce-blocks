@@ -97,7 +97,6 @@ Release and roadmap notes available on the [WooCommerce Developers Blog](https:/
 #### Bug Fixes
 
 - Fix: Correctly calculacte taxes for local pickups. ([6631](https://github.com/woocommerce/woocommerce-blocks/pull/6631))
-- Fix: Update billing address when shipping address gets change in Cart block. ([6591](https://github.com/woocommerce/woocommerce-blocks/pull/6591))
 - Fix: Ensure WooCommerce templates show correct titles. ([6452](https://github.com/woocommerce/woocommerce-blocks/pull/6452))
 
 = 7.9.0 - 2022-06-20 =
