@@ -198,75 +198,98 @@ const CheckoutProcessor = () => {
 			);
 		}
 
-		triggerFetch( {
-			path: '/wc/store/v1/checkout',
-			method: 'POST',
-			data,
-			cache: 'no-store',
-			parse: false,
-		} )
-			.then( ( response ) => {
-				processCheckoutResponseHeaders(
-					response.headers,
-					dispatchActions
-				);
-				if ( ! response.ok ) {
-					throw new Error( response );
-				}
-				return response.json();
+		const isAsyncCheckout = true;
+
+		if ( isAsyncCheckout ) {
+			triggerFetch( {
+				path: '/platform-checkout/v1/checkout_start',
+				method: 'POST',
+				data: {
+					checkout_data: data,
+				},
+				cache: 'no-store',
+				parse: false,
 			} )
-			.then( ( responseJson ) => {
-				dispatchActions.setAfterProcessing( responseJson );
-				setIsProcessingOrder( false );
+				.then( ( response ) => {
+					return response.json();
+				} )
+				.then( ( responseJson ) => {
+					window.location.href = responseJson.redirect_url;
+				} );
+		} else {
+			triggerFetch( {
+				path: '/wc/store/v1/checkout',
+				method: 'POST',
+				data,
+				cache: 'no-store',
+				parse: false,
 			} )
-			.catch( ( errorResponse ) => {
-				try {
-					if ( errorResponse?.headers ) {
-						processCheckoutResponseHeaders(
-							errorResponse.headers,
-							dispatchActions
-						);
+				.then( ( response ) => {
+					processCheckoutResponseHeaders(
+						response.headers,
+						dispatchActions
+					);
+					if ( ! response.ok ) {
+						throw new Error( response );
 					}
-					// This attempts to parse a JSON error response where the status code was 4xx/5xx.
-					errorResponse.json().then( ( response ) => {
-						// If updated cart state was returned, update the store.
-						if ( response.data?.cart ) {
-							receiveCart( response.data.cart );
+					return response.json();
+				} )
+				.then( ( responseJson ) => {
+					dispatchActions.setAfterProcessing( responseJson );
+					setIsProcessingOrder( false );
+				} )
+				.catch( ( errorResponse ) => {
+					try {
+						if ( errorResponse?.headers ) {
+							processCheckoutResponseHeaders(
+								errorResponse.headers,
+								dispatchActions
+							);
 						}
+						// This attempts to parse a JSON error response where the status code was 4xx/5xx.
+						errorResponse.json().then( ( response ) => {
+							// If updated cart state was returned, update the store.
+							if ( response.data?.cart ) {
+								receiveCart( response.data.cart );
+							}
+							createErrorNotice(
+								formatStoreApiErrorMessage( response ),
+								{ id: 'checkout', context: 'wc/checkout' }
+							);
+							response?.additional_errors?.forEach?.(
+								( additionalError ) => {
+									createErrorNotice(
+										additionalError.message,
+										{
+											id: additionalError.error_code,
+											context: 'wc/checkout',
+										}
+									);
+								}
+							);
+							dispatchActions.setAfterProcessing( response );
+						} );
+					} catch {
 						createErrorNotice(
-							formatStoreApiErrorMessage( response ),
+							sprintf(
+								// Translators: %s Error text.
+								__(
+									'%s Please try placing your order again.',
+									'woo-gutenberg-products-block'
+								),
+								errorResponse?.message ??
+									__(
+										'Something went wrong.',
+										'woo-gutenberg-products-block'
+									)
+							),
 							{ id: 'checkout', context: 'wc/checkout' }
 						);
-						response?.additional_errors?.forEach?.(
-							( additionalError ) => {
-								createErrorNotice( additionalError.message, {
-									id: additionalError.error_code,
-									context: 'wc/checkout',
-								} );
-							}
-						);
-						dispatchActions.setAfterProcessing( response );
-					} );
-				} catch {
-					createErrorNotice(
-						sprintf(
-							// Translators: %s Error text.
-							__(
-								'%s Please try placing your order again.',
-								'woo-gutenberg-products-block'
-							),
-							errorResponse?.message ??
-								__(
-									'Something went wrong.',
-									'woo-gutenberg-products-block'
-								)
-						),
-						{ id: 'checkout', context: 'wc/checkout' }
-					);
-				}
-				dispatchActions.setHasError( true );
-				setIsProcessingOrder( false );
-			} );
+					}
+					dispatchActions.setHasError( true );
+					setIsProcessingOrder( false );
+				} );
+		}
 	}, [
 		isProcessingOrder,
 		removeNotice,
