@@ -26,8 +26,32 @@
 	ul {
 		list-style: none;
 
+		&::after {
+			display: block;
+			clear: both;
+			content: "";
+		}
+
 		li {
 			float: left;
+
+			&.sortable {
+				display: flex;
+				background: $gray-100;
+				border-radius: 12px;
+				margin: 0 $gap-small $gap-small 0;
+
+				button.is-small.has-icon:not(.has-text) {
+					padding: 0;
+					margin: 0;
+					width: 20px;
+					min-width: 20px;
+				}
+
+				.woocommerce-tag.has-remove .woocommerce-tag__text {
+					padding-left: 0;
+				}
+			}
 		}
 	}
 }
@@ -103,9 +127,9 @@
 		border-bottom: 1px solid $gray-100;
 		color: $gray-700;
 
-		&:hover,
 		&:active,
-		&:focus {
+		&:focus,
+		&:hover {
 			background: $gray-100;
 		}
 
@@ -135,7 +159,6 @@
 		&:not(.depth-0) + .depth-0 {
 			border-top: 1px solid $gray-100;
 		}
-
 		// Anything deeper than 5 levels will use this fallback depth
 		&[class*="depth-"] .woocommerce-search-list__item-label::before {
 			margin-right: $gap-smallest;
@@ -146,7 +169,6 @@
 			margin-right: 0;
 			content: "";
 		}
-
 		@for $i from 1 to 5 {
 			&.depth-#{$i} .woocommerce-search-list__item-label::before {
 				content: str-repeat("— ", $i);

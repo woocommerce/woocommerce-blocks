@@ -57,7 +57,8 @@
 				"price_desc",
 				"rating",
 				"title",
-				"menu_order"
+				"menu_order",
+				"post__in"
 			],
 			"default": "date"
 		},

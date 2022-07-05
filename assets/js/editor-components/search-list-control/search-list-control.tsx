@@ -15,7 +15,7 @@ import {
 	useCallback,
 	Fragment,
 } from '@wordpress/element';
-import { Icon, info } from '@wordpress/icons';
+import { chevronLeft, chevronRight, Icon, info } from '@wordpress/icons';
 import classnames from 'classnames';
 import { useInstanceId } from '@wordpress/compose';
 
@@ -94,6 +94,7 @@ const SelectedListItems = ( {
 	isLoading,
 	isSingle,
 	selected,
+	sortable = false,
 	messages,
 	onChange,
 	onRemove,
@@ -105,6 +106,13 @@ const SelectedListItems = ( {
 		return null;
 	}
 	const selectedCount = selected.length;
+	const sortTag = ( position, movement ) => {
+		selected.splice(
+			position + movement,
+			0,
+			selected.splice( position, 1 )[ 0 ]
+		);
+	};
 	return (
 		<div className="woocommerce-search-list__selected">
 			<div className="woocommerce-search-list__selected-header">
@@ -123,7 +131,43 @@ const SelectedListItems = ( {
 			{ selectedCount > 0 ? (
 				<ul>
 					{ selected.map( ( item, i ) => (
-						<li key={ i }>
+						<li
+							key={ i }
+							className={
+								sortable === 'post__in' ? 'sortable' : null
+							}
+						>
+							{ sortable === 'post__in' && i !== 0 && (
+								<Button
+									isSmall={ true }
+									icon={ chevronLeft }
+									iconSize={ 16 }
+									label={ __(
+										'Move up list',
+										'woo-gutenberg-products-block'
+									) }
+									onClick={ () => {
+										sortTag( i, -1 );
+										onChange( selected );
+									} }
+								/>
+							) }
+							{ sortable === 'post__in' &&
+								i < selectedCount - 1 && (
+									<Button
+										isSmall={ true }
+										icon={ chevronRight }
+										iconSize={ 16 }
+										label={ __(
+											'Move down list',
+											'woo-gutenberg-products-block'
+										) }
+										onClick={ () => {
+											sortTag( i, 1 );
+											onChange( selected );
+										} }
+									/>
+								) }
 							<Tag
 								label={ item.name }
 								id={ item.id }

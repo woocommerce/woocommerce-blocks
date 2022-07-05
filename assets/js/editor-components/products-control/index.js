@@ -16,10 +16,10 @@ import ErrorMessage from '@woocommerce/editor-components/error-placeholder/error
  * @param {Function} props.onChange  Callback fired when the selected item changes
  * @param {Function} props.onSearch  Callback fired when a search is triggered
  * @param {Array}    props.selected  An array of selected products.
+ * @param {string}   props.sortable  The current product sorting order.
  * @param {Array}    props.products  An array of products to select from.
  * @param {boolean}  props.isLoading Whether or not the products are being loaded.
  * @param {boolean}  props.isCompact Whether or not the control should have compact styles.
- *
  * @return {Function} A functional component.
  */
 const ProductsControl = ( {
@@ -27,6 +27,7 @@ const ProductsControl = ( {
 	onChange,
 	onSearch,
 	selected,
+	sortable,
 	products,
 	isLoading,
 	isCompact,
@@ -77,12 +78,19 @@ const ProductsControl = ( {
 			} ) }
 			isCompact={ isCompact }
 			isLoading={ isLoading }
-			selected={ products.filter( ( { id } ) =>
-				selected.includes( id )
-			) }
+			selected={
+				sortable === 'post__in'
+					? selected.map( ( id ) => {
+							return products.find(
+								( product ) => product.id === id
+							);
+					  } )
+					: products.filter( ( { id } ) => selected.includes( id ) )
+			}
 			onSearch={ onSearch }
 			onChange={ onChange }
 			messages={ messages }
+			sortable={ sortable }
 		/>
 	);
 };
@@ -94,6 +102,7 @@ ProductsControl.propTypes = {
 	products: PropTypes.array,
 	isCompact: PropTypes.bool,
 	isLoading: PropTypes.bool,
+	sortable: PropTypes.string,
 };
 
 ProductsControl.defaultProps = {
@@ -101,6 +110,7 @@ ProductsControl.defaultProps = {
 	products: [],
 	isCompact: false,
 	isLoading: true,
+	sortable: '',
 };
 
 export default withSearchedProducts( ProductsControl );

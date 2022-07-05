@@ -52,6 +52,7 @@ export const HandpickedProductsEditMode = (
 			<div className="wc-block-handpicked-products__selection">
 				<ProductsControl
 					selected={ attributes.products }
+					sortable={ attributes.orderby }
 					onChange={ ( value = [] ) => {
 						const ids = value.map( ( { id } ) => id );
 						setAttributes( { products: ids } );

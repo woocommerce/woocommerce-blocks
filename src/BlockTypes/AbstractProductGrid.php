@@ -148,7 +148,7 @@ abstract class AbstractProductGrid extends AbstractDynamicBlock {
 	protected function get_schema_orderby() {
 		return array(
 			'type'    => 'string',
-			'enum'    => array( 'date', 'popularity', 'price_asc', 'price_desc', 'rating', 'title', 'menu_order' ),
+			'enum'    => array( 'date', 'popularity', 'price_asc', 'price_desc', 'rating', 'title', 'menu_order', 'post__in' ),
 			'default' => 'date',
 		);
 	}
@@ -236,6 +236,7 @@ abstract class AbstractProductGrid extends AbstractDynamicBlock {
 			$query_args,
 			WC()->query->get_catalog_ordering_args( $query_args['orderby'], $query_args['order'] )
 		);
+
 	}
 
 	/**

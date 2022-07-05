@@ -75,6 +75,7 @@ export const HandpickedProductsInspectorControls = (
 				<ProductOrderbyControl
 					setAttributes={ setAttributes }
 					value={ orderby }
+					allowCustomSorting={ true }
 				/>
 			</PanelBody>
 			<PanelBody
