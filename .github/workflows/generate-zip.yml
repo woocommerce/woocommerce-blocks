@@ -35,4 +35,4 @@ jobs:
               uses: actions/upload-artifact@v2
               with:
                   name: assets-for-download
-                  path: woocommerce-blocks.zip
+                  path: woocommerce-gutenberg-products-block.zip
