@@ -78,6 +78,14 @@ abstract class AbstractCartRoute extends AbstractRoute {
 		$this->cart_controller->load_cart();
 		$this->calculate_totals();
 
+		if ( $this->requires_nonce( $request ) ) {
+			$nonce_check = $this->check_nonce( $request );
+
+			if ( is_wp_error( $nonce_check ) ) {
+				return $this->add_nonce_headers( $this->error_to_response( $nonce_check ) );
+			}
+		}
+
 		try {
 			$response = parent::get_response( $request );
 		} catch ( RouteException $error ) {
@@ -88,15 +96,6 @@ abstract class AbstractCartRoute extends AbstractRoute {
 
 		if ( is_wp_error( $response ) ) {
 			return $this->error_to_response( $response );
-		}
-
-		if ( $this->requires_nonce( $request ) ) {
-			$this->add_nonce_headers( $response );
-			$nonce_check = $this->check_nonce( $request );
-
-			if ( is_wp_error( $nonce_check ) ) {
-				return $nonce_check;
-			}
 		}
 
 		if ( $this->is_update_request( $request ) ) {
