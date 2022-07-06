@@ -30,3 +30,9 @@ jobs:
 
             - name: Generate ZIP file
               run: npm run package-plugin:deploy
+
+            - name: Use the Upload Artifact GitHub Action
+              uses: actions/upload-artifact@v2
+              with:
+                  name: assets-for-download
+                  path: downloads
