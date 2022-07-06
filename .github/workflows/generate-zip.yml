@@ -34,5 +34,5 @@ jobs:
             - name: Use the Upload Artifact GitHub Action
               uses: actions/upload-artifact@v2
               with:
-                  name: assets-for-download
+                  name: woocommerce-gutenberg-products-block.zip
                   path: woocommerce-gutenberg-products-block.zip
