@@ -37,10 +37,12 @@ class Authentication {
 		if ( apply_filters( 'woocommerce_store_api_enable_rate_limit_check', false ) ) {
 			$action_id = 'store_api_request_';
 
+			$ip_address = self::get_ip_address();
+
 			if ( is_user_logged_in() ) {
 				$action_id .= get_current_user_id();
 			} else {
-				if ( ! self::get_ip_address() ) {
+				if ( ! $ip_address ) {
 					return new \WP_Error(
 						'ip_address_cannot_be_determined',
 						'Bad request. Client IP address cannot be determined.',
@@ -48,7 +50,7 @@ class Authentication {
 					);
 				}
 
-				$action_id .= md5( self::get_ip_address() );
+				$action_id .= md5( $ip_address );
 			}
 
 			$rate_limit_limit   = 5;
@@ -62,8 +64,8 @@ class Authentication {
 				$server->send_header( 'RateLimit-Remaining', 0 );
 				$server->send_header( 'RateLimit-Reset', time() + $retry );
 
-				if ( self::get_ip_address() ) {
-					do_action( 'woocommerce_store_api_rate_limit_exceeded', self::get_ip_address() );
+				if ( $ip_address ) {
+					do_action( 'woocommerce_store_api_rate_limit_exceeded', $ip_address );
 				}
 
 				return new \WP_Error(
