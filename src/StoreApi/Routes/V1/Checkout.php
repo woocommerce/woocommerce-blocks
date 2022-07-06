@@ -92,7 +92,7 @@ class Checkout extends AbstractCartRoute {
 							],
 						],
 					],
-					$this->schema->get_endpoint_args_for_item_schema( \WP_REST_Server::CREATABLE )
+					$this->schema->get_endpoint_args_for_item_schema()
 				),
 			],
 			'schema'      => [ $this->schema, 'get_public_item_schema' ],
