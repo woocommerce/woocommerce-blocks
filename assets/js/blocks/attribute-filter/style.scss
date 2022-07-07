@@ -63,9 +63,19 @@
 			border: none;
 		}
 
+		.components-form-token-field__suggestions-list {
+			border-top: none;
+			margin-top: 2px;
+		}
+
 		.components-form-token-field__suggestion {
 			padding: 8px;
+
+			&:first-child {
+				border-top: 1px solid $gray-600;
+			}
 		}
+
 	}
 
 
