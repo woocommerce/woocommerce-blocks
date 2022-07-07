@@ -29,6 +29,7 @@ import {
 	objectHasProp,
 } from '@woocommerce/types';
 import {
+	changeUrl,
 	PREFIX_QUERY_ARG_FILTER_TYPE,
 	PREFIX_QUERY_ARG_QUERY_TYPE,
 } from '@woocommerce/utils';
@@ -281,26 +282,18 @@ const AttributeFilterBlock = ( {
 				);
 
 				const newUrl = formatParams( url, query );
-				if ( filteringForPhpTemplate ) {
-					window.location.href = newUrl;
-				} else {
-					window.history.replaceState( {}, '', newUrl );
-				}
+				changeUrl( newUrl );
 			} else {
 				const newUrl = formatParams( pageUrl, query );
 				const currentQueryArgs = getQueryArgs( window.location.href );
 				const newUrlQueryArgs = getQueryArgs( newUrl );
 
 				if ( ! isQueryArgsEqual( currentQueryArgs, newUrlQueryArgs ) ) {
-					if ( filteringForPhpTemplate ) {
-						window.location.href = newUrl;
-					} else {
-						window.history.replaceState( {}, '', newUrl );
-					}
+					changeUrl( newUrl );
 				}
 			}
 		},
-		[ pageUrl, attributeObject?.taxonomy, filteringForPhpTemplate ]
+		[ pageUrl, attributeObject?.taxonomy ]
 	);
 
 	const onSubmit = ( checkedFilters: string[] ) => {

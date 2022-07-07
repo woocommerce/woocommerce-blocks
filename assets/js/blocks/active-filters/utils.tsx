@@ -6,14 +6,7 @@ import { formatPrice } from '@woocommerce/price-format';
 import { RemovableChip } from '@woocommerce/base-components/chip';
 import Label from '@woocommerce/base-components/label';
 import { getQueryArgs, addQueryArgs, removeQueryArgs } from '@wordpress/url';
-import { getSettingWithCoercion } from '@woocommerce/settings';
-import { isBoolean } from '@woocommerce/types';
-
-const filteringForPhpTemplate = getSettingWithCoercion(
-	'is_rendering_php_template',
-	false,
-	isBoolean
-);
+import { changeUrl } from '@woocommerce/utils';
 
 /**
  * Format a min/max price range to display.
@@ -195,11 +188,7 @@ export const removeArgsFromFilterUrl = (
 
 	const newUrl = addQueryArgs( cleanUrl, filteredQuery );
 
-	if ( filteringForPhpTemplate ) {
-		window.location.href = newUrl;
-	} else {
-		window.history.replaceState( {}, '', newUrl );
-	}
+	changeUrl( newUrl );
 };
 
 /**
@@ -233,9 +222,5 @@ export const cleanFilterUrl = () => {
 
 	const newUrl = addQueryArgs( cleanUrl, remainingArgs );
 
-	if ( filteringForPhpTemplate ) {
-		window.location.href = newUrl;
-	} else {
-		window.history.replaceState( {}, '', newUrl );
-	}
+	changeUrl( newUrl );
 };

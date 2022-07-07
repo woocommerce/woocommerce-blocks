@@ -24,7 +24,7 @@ import isShallowEqual from '@wordpress/is-shallow-equal';
 import { decodeEntities } from '@wordpress/html-entities';
 import { isBoolean, objectHasProp } from '@woocommerce/types';
 import { addQueryArgs, removeQueryArgs } from '@wordpress/url';
-import { PREFIX_QUERY_ARG_FILTER_TYPE } from '@woocommerce/utils';
+import { changeUrl, PREFIX_QUERY_ARG_FILTER_TYPE } from '@woocommerce/utils';
 
 /**
  * Internal dependencies
@@ -180,13 +180,9 @@ const StockStatusFilterBlock = ( {
 	/**
 	 * Used to redirect the page when filters are changed so templates using the Classic Template block can filter.
 	 *
-	 * @param {Array}   checkedOptions Array of checked stock options.
-	 * @param {boolean} isPhpTemplate  Whether filters are being used for a PHP template.
+	 * @param {Array} checkedOptions Array of checked stock options.
 	 */
-	const updateFilterUrl = (
-		checkedOptions: string[],
-		isPhpTemplate: boolean
-	) => {
+	const updateFilterUrl = ( checkedOptions: string[] ) => {
 		if ( ! window ) {
 			return;
 		}
@@ -197,11 +193,7 @@ const StockStatusFilterBlock = ( {
 			);
 
 			if ( url !== window.location.href ) {
-				if ( isPhpTemplate ) {
-					window.location.href = url;
-				} else {
-					window.history.replaceState( {}, '', url );
-				}
+				changeUrl( url );
 			}
 
 			return;
@@ -215,11 +207,7 @@ const StockStatusFilterBlock = ( {
 			return;
 		}
 
-		if ( isPhpTemplate ) {
-			window.location.href = newUrl;
-		} else {
-			window.history.replaceState( {}, '', newUrl );
-		}
+		changeUrl( newUrl );
 	};
 
 	const onSubmit = useCallback(
@@ -231,7 +219,7 @@ const StockStatusFilterBlock = ( {
 				setProductStockStatusQuery( checked );
 			}
 
-			updateFilterUrl( checked, filteringForPhpTemplate );
+			updateFilterUrl( checked );
 		},
 		[
 			isEditor,

@@ -14,6 +14,7 @@ import PropTypes from 'prop-types';
 import { getCurrencyFromPriceResponse } from '@woocommerce/price-format';
 import { getSettingWithCoercion } from '@woocommerce/settings';
 import { addQueryArgs, removeQueryArgs } from '@wordpress/url';
+import { changeUrl, getUrlParameter } from '@woocommerce/utils';
 import {
 	CurrencyResponse,
 	isBoolean,
@@ -25,7 +26,6 @@ import {
  * Internal dependencies
  */
 import usePriceConstraints from './use-price-constraints';
-import { getUrlParameter } from '../../utils/filters';
 import './style.scss';
 import { Attributes } from './types';
 
@@ -184,13 +184,7 @@ const PriceFilterBlock = ( {
 
 				// If the params have changed, lets update the filter URL.
 				if ( window.location.href !== newUrl ) {
-					// When filtering on the PHP template, we need to reload the page.
-					if ( filteringForPhpTemplate ) {
-						return ( window.location.href = newUrl );
-					}
-
-					// When filtering All Products block, we only update the URL.
-					window.history.replaceState( {}, '', newUrl );
+					changeUrl( newUrl );
 				}
 			}
 
@@ -202,7 +196,6 @@ const PriceFilterBlock = ( {
 			maxConstraint,
 			setMinPriceQuery,
 			setMaxPriceQuery,
-			filteringForPhpTemplate,
 			currency.minorUnit,
 		]
 	);
