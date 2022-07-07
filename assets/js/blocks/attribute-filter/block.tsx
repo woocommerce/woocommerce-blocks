@@ -284,7 +284,7 @@ const AttributeFilterBlock = ( {
 				if ( filteringForPhpTemplate ) {
 					window.location.href = newUrl;
 				} else {
-					window.history.pushState( {}, '', newUrl );
+					window.history.replaceState( {}, '', newUrl );
 				}
 			} else {
 				const newUrl = formatParams( pageUrl, query );
@@ -295,7 +295,7 @@ const AttributeFilterBlock = ( {
 					if ( filteringForPhpTemplate ) {
 						window.location.href = newUrl;
 					} else {
-						window.history.pushState( {}, '', newUrl );
+						window.history.replaceState( {}, '', newUrl );
 					}
 				}
 			}

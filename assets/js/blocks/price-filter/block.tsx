@@ -190,7 +190,7 @@ const PriceFilterBlock = ( {
 					}
 
 					// When filtering All Products block, we only update the URL.
-					window.history.pushState( {}, '', newUrl );
+					window.history.replaceState( {}, '', newUrl );
 				}
 			}
 

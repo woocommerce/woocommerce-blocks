@@ -200,7 +200,7 @@ const StockStatusFilterBlock = ( {
 				if ( isPhpTemplate ) {
 					window.location.href = url;
 				} else {
-					window.history.pushState( {}, '', url );
+					window.history.replaceState( {}, '', url );
 				}
 			}
 
@@ -218,7 +218,7 @@ const StockStatusFilterBlock = ( {
 		if ( isPhpTemplate ) {
 			window.location.href = newUrl;
 		} else {
-			window.history.pushState( {}, '', newUrl );
+			window.history.replaceState( {}, '', newUrl );
 		}
 	};
 

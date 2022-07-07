@@ -198,7 +198,7 @@ export const removeArgsFromFilterUrl = (
 	if ( filteringForPhpTemplate ) {
 		window.location.href = newUrl;
 	} else {
-		window.history.pushState( {}, '', newUrl );
+		window.history.replaceState( {}, '', newUrl );
 	}
 };
 
@@ -236,6 +236,6 @@ export const cleanFilterUrl = () => {
 	if ( filteringForPhpTemplate ) {
 		window.location.href = newUrl;
 	} else {
-		window.history.pushState( {}, '', newUrl );
+		window.history.replaceState( {}, '', newUrl );
 	}
 };
