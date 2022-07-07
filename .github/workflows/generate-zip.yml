@@ -31,24 +31,27 @@ jobs:
       - name: Generate ZIP file
         run: npm run package-plugin:deploy
 
-      # - name: Unzip generated archive
-      #   uses: montudor/action-zip@v1
-      #   with:
-      #     args: unzip -qq woocommerce-gutenberg-products-block.zip -d woocommerce-gutenberg-products-block
-
-      # - name: Use the Upload Artifact GitHub Action
-      #   uses: actions/upload-artifact@v2
-      #   with:
-      #     name: woocommerce-gutenberg-products-block
-      #     path: woocommerce-gutenberg-products-block
-
-      - name: Create release
-        uses: softprops/action-gh-release@v1
+      - name: Unzip generated archive
+        uses: montudor/action-zip@v1
         with:
-          files: woocommerce-gutenberg-products-block.zip
-          tag_name: ${{ github.ref }}
-          body: ''
-        env:
-          repository: nielslange/woo-test-environment
+          args: unzip -qq woocommerce-gutenberg-products-block.zip -d woocommerce-gutenberg-products-block
 
+      - name: Upload artifact
+        uses: actions/upload-artifact@v3
+        with:
+          name: woocommerce-gutenberg-products-block
+          path: woocommerce-gutenberg-products-block
 
+      - name: Upload artifact
+        uses: actions/download-artifact@v3
+        with:
+          name: woocommerce-gutenberg-products-block
+    
+      # - name: Create release
+      #   uses: softprops/action-gh-release@v1
+      #   with:
+      #     files: woocommerce-gutenberg-products-block.zip
+      #     tag_name: ${{ github.ref }}
+      #     body: ''
+      #   env:
+      #     repository: nielslange/woo-test-environment
