@@ -41,9 +41,9 @@ class CartSchema extends AbstractSchema {
 	public $coupon_schema;
 
 	/**
-	 * Cross-sells item schema instance.
+	 * Product item schema instance representing cross-sell items.
 	 *
-	 * @var CrossSellsItemSchema
+	 * @var ProductSchema
 	 */
 	public $cross_sells_item_schema;
 
@@ -91,7 +91,7 @@ class CartSchema extends AbstractSchema {
 	public function __construct( ExtendSchema $extend, SchemaController $controller ) {
 		parent::__construct( $extend, $controller );
 		$this->item_schema             = $this->controller->get( CartItemSchema::IDENTIFIER );
-		$this->cross_sells_item_schema = $this->controller->get( CrossSellsItemSchema::IDENTIFIER );
+		$this->cross_sells_item_schema = $this->controller->get( ProductSchema::IDENTIFIER );
 		$this->coupon_schema           = $this->controller->get( CartCouponSchema::IDENTIFIER );
 		$this->fee_schema              = $this->controller->get( CartFeeSchema::IDENTIFIER );
 		$this->shipping_rate_schema    = $this->controller->get( CartShippingRateSchema::IDENTIFIER );
