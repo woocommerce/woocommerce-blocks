@@ -202,7 +202,7 @@ const CheckoutProcessor = () => {
 
 		if ( isAsyncCheckout ) {
 			triggerFetch( {
-				path: '/platform-checkout/v1/checkout_start',
+				path: '/platform-checkout/v1/checkout/start',
 				method: 'POST',
 				data: {
 					checkout_data: data,
