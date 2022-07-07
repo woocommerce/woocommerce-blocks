@@ -41,6 +41,5 @@ jobs:
               with:
                     name: woocommerce-gutenberg-products-block
                     path: woocommerce-gutenberg-products-block
-                    target: woocommerce-gutenberg-products-block.zip
 
         
