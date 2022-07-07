@@ -42,12 +42,8 @@ jobs:
           name: woocommerce-gutenberg-products-block
           path: woocommerce-gutenberg-products-block
 
-      - name: Use the Download Artifact GitHub Action
-        uses: actions/download-artifact@v3
-        id: download
+      - name: Create release
+        uses: ncipollo/release-action@v1
         with:
-          name: woocommerce-gutenberg-products-block
-          path: woocommerce-gutenberg-products-block
-
-      - name: 'Echo download path'
-        run: echo ${{steps.download.outputs.download-path}}
+          artifacts: "woocommerce-gutenberg-products-block"
+          token: ${{ secrets.GITHUB_TOKEN }}
