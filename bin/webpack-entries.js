@@ -98,6 +98,8 @@ const entries = {
 			'./node_modules/wordpress-components/src/combobox-control/style.scss',
 		'form-token-field':
 			'./node_modules/wordpress-components/src/form-token-field/style.scss',
+		tooltip: './node_modules/wordpress-components/src/tooltip/style.scss',
+		popover: './node_modules/wordpress-components/src/popover/style.scss',
 
 		'general-style': glob.sync( './assets/**/*.scss', {
 			ignore: [

@@ -23,7 +23,7 @@
 
 	.components-form-token-field__suggestions-list {
 		border-top: none;
-		margin-top: 2px;
+		margin: 2px -4px -2px;
 	}
 
 	.components-form-token-field__suggestion {
@@ -31,6 +31,11 @@
 
 		&:first-child {
 			border-top: 1px solid $gray-600;
+		}
+
+		&.is-selected {
+			background: $gray-300;
+			color: $gray-700;
 		}
 	}
 
