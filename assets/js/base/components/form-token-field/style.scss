@@ -1,0 +1,37 @@
+.wc-blocks-components-form-token-field-wrapper {
+	border-color: $gray-600;
+
+	.components-visually-hidden,
+	.components-form-token-field__label {
+		@include visually-hidden();
+	}
+
+	.components-form-token-field,
+	.components-form-token-field__input-container {
+		border-color: inherit;
+		box-sizing: border-box;
+		margin-bottom: 0;
+	}
+
+	.components-form-token-field__input-container input[type="text"].components-form-token-field__input {
+		min-height: 30px;
+	}
+
+	.components-form-token-field__remove-token {
+		border: none;
+	}
+
+	.components-form-token-field__suggestions-list {
+		border-top: none;
+		margin-top: 2px;
+	}
+
+	.components-form-token-field__suggestion {
+		padding: 8px;
+
+		&:first-child {
+			border-top: 1px solid $gray-600;
+		}
+	}
+
+}
