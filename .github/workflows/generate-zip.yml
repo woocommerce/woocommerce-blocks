@@ -49,6 +49,6 @@ jobs:
           tag_name: ${{ github.ref }}
           body: ''
         env:
-          GITHUB_REPOSITORY: nielslange/woo-test-environment
+          repository: nielslange/woo-test-environment
 
 
