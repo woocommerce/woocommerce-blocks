@@ -3,43 +3,51 @@ name: Generate ZIP file
 on: [pull_request]
 
 jobs:
-    generate-zip-file:
-        runs-on: ubuntu-latest
-        steps:
-            - name: Checkout
-              uses: actions/checkout@v3
+  generate-zip-file:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
 
-            - name: Cache node_modules
-              id: cache-node-modules
-              uses: actions/cache@v3
-              env:
-                  cache-name: cache-node-modules
-              with:
-                  path: node_modules
-                  key: ${{ runner.os }}-build-${{ env.cache-name }}-${{ hashFiles('**/package-lock.json') }}
+      - name: Cache node_modules
+        id: cache-node-modules
+        uses: actions/cache@v3
+        env:
+          cache-name: cache-node-modules
+        with:
+          path: node_modules
+          key: ${{ runner.os }}-build-${{ env.cache-name }}-${{ hashFiles('**/package-lock.json') }}
 
-            - name: Setup node version and npm cache
-              uses: actions/setup-node@v3
-              with:
-                  node-version-file: '.nvmrc'
-                  cache: 'npm'
+      - name: Setup node version and npm cache
+        uses: actions/setup-node@v3
+        with:
+          node-version-file: '.nvmrc'
+          cache: 'npm'
 
-            - name: Install Node dependencies
-              if: steps.cache-node-modules.outputs.cache-hit != 'true'
-              run: npm ci --no-optional
+      - name: Install Node dependencies
+        if: steps.cache-node-modules.outputs.cache-hit != 'true'
+        run: npm ci --no-optional
 
-            - name: Generate ZIP file
-              run: npm run package-plugin:deploy
+      - name: Generate ZIP file
+        run: npm run package-plugin:deploy
 
-            - name: Unzip generated archive
-              uses: montudor/action-zip@v1
-              with:
-                args: unzip -qq woocommerce-gutenberg-products-block.zip -d woocommerce-gutenberg-products-block
+      - name: Unzip generated archive
+        uses: montudor/action-zip@v1
+        with:
+          args: unzip -qq woocommerce-gutenberg-products-block.zip -d woocommerce-gutenberg-products-block
 
-            - name: Use the Upload Artifact GitHub Action
-              uses: actions/upload-artifact@v2
-              with:
-                    name: woocommerce-gutenberg-products-block
-                    path: woocommerce-gutenberg-products-block
+      - name: Use the Upload Artifact GitHub Action
+        uses: actions/upload-artifact@v2
+        with:
+          name: woocommerce-gutenberg-products-block
+          path: woocommerce-gutenberg-products-block
 
-        
+      - name: Use the Download Artifact GitHub Action
+        uses: actions/download-artifact@v3
+        id: download
+        with:
+          name: woocommerce-gutenberg-products-block
+          path: woocommerce-gutenberg-products-block
+
+      - name: 'Echo download path'
+        run: echo ${{steps.download.outputs.download-path}}
