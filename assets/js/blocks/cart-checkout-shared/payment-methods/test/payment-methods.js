@@ -1,19 +1,18 @@
 /**
  * External dependencies
  */
-import { render, screen, waitFor } from '@testing-library/react';
+import { act, render, screen, waitFor } from '@testing-library/react';
 import { previewCart } from '@woocommerce/resource-previews';
-import { dispatch } from '@wordpress/data';
-import { CART_STORE_KEY as storeKey } from '@woocommerce/block-data';
+import * as wpDataFunctions from '@wordpress/data';
+import {
+	CART_STORE_KEY,
+	PAYMENT_METHOD_DATA_STORE_KEY,
+} from '@woocommerce/block-data';
 import { default as fetchMock } from 'jest-fetch-mock';
 import {
 	registerPaymentMethod,
 	__experimentalDeRegisterPaymentMethod,
 } from '@woocommerce/blocks-registry';
-import {
-	PaymentMethodDataProvider,
-	usePaymentMethodDataContext,
-} from '@woocommerce/base-context';
 import userEvent from '@testing-library/user-event';
 /**
  * Internal dependencies
@@ -44,8 +43,46 @@ jest.mock(
 			)
 );
 
+const originalSelect = jest.requireActual( '@wordpress/data' ).select;
+let selectMock = jest
+	.spyOn( wpDataFunctions, 'select' )
+	.mockImplementation( ( storeName ) => {
+		const originalStore = originalSelect( storeName );
+		if ( storeName === PAYMENT_METHOD_DATA_STORE_KEY ) {
+			return {
+				...originalStore,
+				getState: () => {
+					const originalState = originalStore.getState();
+					return {
+						...originalState,
+						savedPaymentMethods: {},
+						availablePaymentMethods: {},
+						paymentMethodsInitialized: true,
+					};
+				},
+			};
+		}
+
+		if ( storeName === CART_STORE_KEY ) {
+			return {
+				...originalStore,
+				hasFinishedResolution: jest
+					.fn()
+					.mockImplementation( ( selectorName ) => {
+						if ( selectorName === 'getCartTotals' ) {
+							return true;
+						}
+						return originalStore.hasFinishedResolution(
+							selectorName
+						);
+					} ),
+			};
+		}
+		return originalStore;
+	} );
+
 const registerMockPaymentMethods = () => {
-	[ 'credit-card' ].forEach( ( name ) => {
+	[ 'cod', 'credit-card' ].forEach( ( name ) => {
 		registerPaymentMethod( {
 			name,
 			label: name,
@@ -64,7 +101,7 @@ const registerMockPaymentMethods = () => {
 };
 
 const resetMockPaymentMethods = () => {
-	[ 'credit-card' ].forEach( ( name ) => {
+	[ 'cod', 'credit-card' ].forEach( ( name ) => {
 		__experimentalDeRegisterPaymentMethod( name );
 	} );
 };
@@ -78,8 +115,12 @@ describe( 'PaymentMethods', () => {
 			return Promise.resolve( '' );
 		} );
 		// need to clear the store resolution state between tests.
-		dispatch( storeKey ).invalidateResolutionForStore();
-		dispatch( storeKey ).receiveCart( defaultCartState.cartData );
+		wpDataFunctions
+			.dispatch( CART_STORE_KEY )
+			.invalidateResolutionForStore();
+		wpDataFunctions
+			.dispatch( CART_STORE_KEY )
+			.receiveCart( defaultCartState.cartData );
 	} );
 
 	afterEach( () => {
@@ -87,11 +128,7 @@ describe( 'PaymentMethods', () => {
 	} );
 
 	test( 'should show no payment methods component when there are no payment methods', async () => {
-		render(
-			<PaymentMethodDataProvider>
-				<PaymentMethods />
-			</PaymentMethodDataProvider>
-		);
+		render( <PaymentMethods /> );
 
 		await waitFor( () => {
 			const noPaymentMethods = screen.queryAllByText(
@@ -100,13 +137,42 @@ describe( 'PaymentMethods', () => {
 			// We might get more than one match because the `speak()` function
 			// creates an extra `div` with the notice contents used for a11y.
 			expect( noPaymentMethods.length ).toBeGreaterThanOrEqual( 1 );
+
+			selectMock.mockRestore();
 		} );
 	} );
 
 	test( 'selecting new payment method', async () => {
+		selectMock = jest
+			.spyOn( wpDataFunctions, 'select' )
+			.mockImplementation( ( storeName ) => {
+				const originalStore = originalSelect( storeName );
+				if ( storeName === CART_STORE_KEY ) {
+					return {
+						...originalStore,
+						hasFinishedResolution: jest
+							.fn()
+							.mockImplementation( ( selectorName ) => {
+								if ( selectorName === 'getCartTotals' ) {
+									return true;
+								}
+								return originalStore.hasFinishedResolution(
+									selectorName
+								);
+							} ),
+					};
+				}
+				return originalStore;
+			} );
 		const ShowActivePaymentMethod = () => {
 			const { activePaymentMethod, activeSavedToken } =
-				usePaymentMethodDataContext();
+				wpDataFunctions.useSelect( ( select ) => {
+					const store = select( PAYMENT_METHOD_DATA_STORE_KEY );
+					return {
+						activePaymentMethod: store.getActivePaymentMethod(),
+						activeSavedToken: store.getActiveSavedToken(),
+					};
+				} );
 			return (
 				<>
 					<div>
@@ -116,13 +182,13 @@ describe( 'PaymentMethods', () => {
 				</>
 			);
 		};
-
 		registerMockPaymentMethods();
+
 		render(
-			<PaymentMethodDataProvider>
+			<>
 				<PaymentMethods />
 				<ShowActivePaymentMethod />
-			</PaymentMethodDataProvider>
+			</>
 		);
 
 		await waitFor( () => {
@@ -155,6 +221,6 @@ describe( 'PaymentMethods', () => {
 			expect( activePaymentMethod ).not.toBeNull();
 		} );
 
-		resetMockPaymentMethods();
+		act( () => resetMockPaymentMethods() );
 	} );
 } );
