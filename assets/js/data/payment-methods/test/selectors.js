@@ -25,6 +25,7 @@ import {
 	SavedPaymentMethodOptions,
 } from '../../../../../../blocks/cart-checkout-shared/payment-methods';
 import { defaultCartState } from '../../../../../../data/cart/default-state';
+
 const originalSelect = jest.requireActual( '@wordpress/data' ).select;
 jest.spyOn( wpDataFunctions, 'select' ).mockImplementation( ( storeName ) => {
 	const originalStore = originalSelect( storeName );
