@@ -15,11 +15,11 @@ import {
 	CHECKOUT_STORE_KEY,
 	PAYMENT_METHOD_DATA_STORE_KEY,
 } from '@woocommerce/block-data';
+import { ValidationInputError } from '@woocommerce/base-components/validation-input-error';
 
 /**
  * Internal dependencies
  */
-import { ValidationInputError } from '../../providers/validation';
 import { useStoreCart } from '../cart/use-store-cart';
 import { useStoreCartCoupons } from '../cart/use-store-cart-coupons';
 import { noticeContexts, responseTypes } from '../../event-emit';

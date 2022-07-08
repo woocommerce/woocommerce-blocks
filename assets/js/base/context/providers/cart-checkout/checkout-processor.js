@@ -18,6 +18,7 @@ import { useDispatch, useSelect } from '@wordpress/data';
 import {
 	CHECKOUT_STORE_KEY,
 	PAYMENT_METHOD_DATA_STORE_KEY,
+  VALIDATION_STORE_KEY,
 } from '@woocommerce/block-data';
 import {
 	getPaymentMethods,
@@ -31,9 +32,9 @@ import { preparePaymentData, processCheckoutResponseHeaders } from './utils';
 import { useCheckoutEventsContext } from './checkout-events';
 import { useShippingDataContext } from './shipping';
 import { useCustomerDataContext } from './customer';
-import { useValidationContext } from '../validation';
 import { useStoreCart } from '../../hooks/cart/use-store-cart';
 import { useStoreNoticesContext } from '../store-notices';
+
 /**
  * CheckoutProcessor component.
  *
@@ -64,7 +65,9 @@ const CheckoutProcessor = () => {
 	const { setHasError, processCheckoutResponse } =
 		useDispatch( CHECKOUT_STORE_KEY );
 
-	const { hasValidationErrors } = useValidationContext();
+	const hasValidationErrors = useSelect(
+		( select ) => select( VALIDATION_STORE_KEY ).hasValidationErrors
+	);
 	const { shippingErrorStatus } = useShippingDataContext();
 	const { billingAddress, shippingAddress } = useCustomerDataContext();
 	const { cartNeedsPayment, cartNeedsShipping, receiveCart } = useStoreCart();
@@ -105,7 +108,7 @@ const CheckoutProcessor = () => {
 	}, [ activePaymentMethod, expressPaymentMethods, paymentMethods ] );
 
 	const checkoutWillHaveError =
-		( hasValidationErrors && ! isExpressPaymentMethodActive ) ||
+		( hasValidationErrors() && ! isExpressPaymentMethodActive ) ||
 		currentPaymentStatus.hasError ||
 		shippingErrorStatus.hasError;
 
@@ -146,7 +149,7 @@ const CheckoutProcessor = () => {
 	}, [ billingAddress, shippingAddress, redirectUrl ] );
 
 	const checkValidation = useCallback( () => {
-		if ( hasValidationErrors ) {
+		if ( hasValidationErrors() ) {
 			return false;
 		}
 		if ( currentPaymentStatus.hasError ) {
