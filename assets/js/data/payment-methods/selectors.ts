@@ -12,11 +12,8 @@ import { filterActiveSavedPaymentMethods } from './utils';
 export const isExpressPaymentMethodActive = (
 	state: PaymentMethodDataState
 ) => {
-	return (
-		Array.isArray( state.availableExpressPaymentMethods ) &&
-		state.availableExpressPaymentMethods.includes(
-			state.activePaymentMethod
-		)
+	return Object.keys( state.availableExpressPaymentMethods ).includes(
+		state.activePaymentMethod
 	);
 };
 
@@ -56,8 +53,12 @@ export const getSavedPaymentMethods = ( state: PaymentMethodDataState ) => {
 export const getActiveSavedPaymentMethods = (
 	state: PaymentMethodDataState
 ) => {
+	const availablePaymentMethodKeys = Object.keys(
+		state.availablePaymentMethods
+	);
+
 	return filterActiveSavedPaymentMethods(
-		state.availablePaymentMethods,
+		availablePaymentMethodKeys,
 		state.savedPaymentMethods
 	);
 };

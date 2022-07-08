@@ -2,6 +2,10 @@
  * External dependencies
  */
 import { select as wpDataSelect } from '@wordpress/data';
+import {
+	PaymentMethods,
+	ExpressPaymentMethods,
+} from '@woocommerce/type-defs/payments';
 
 /**
  * Internal dependencies
@@ -72,13 +76,15 @@ export const setPaymentMethodData = (
  * Set the available payment methods.
  * An available payment method is one that has been validated and can make a payment.
  */
-export const setAvailablePaymentMethods = ( methods: string[] ) => {
+export const setAvailablePaymentMethods = (
+	paymentMethods: PaymentMethods
+) => {
 	return async ( { dispatch } ) => {
 		// If the currently selected method is not in this new list, then we need to select a new one, or select a default.
-		await setDefaultPaymentMethod( methods );
+		await setDefaultPaymentMethod( paymentMethods );
 		dispatch( {
 			type: ACTION_TYPES.SET_AVAILABLE_PAYMENT_METHODS,
-			methods,
+			paymentMethods,
 		} );
 	};
 };
@@ -87,9 +93,11 @@ export const setAvailablePaymentMethods = ( methods: string[] ) => {
  * Set the available express payment methods.
  * An available payment method is one that has been validated and can make a payment.
  */
-export const setAvailableExpressPaymentMethods = ( methods: string[] ) => ( {
+export const setAvailableExpressPaymentMethods = (
+	paymentMethods: ExpressPaymentMethods
+) => ( {
 	type: ACTION_TYPES.SET_AVAILABLE_EXPRESS_PAYMENT_METHODS,
-	methods,
+	paymentMethods,
 } );
 
 /**

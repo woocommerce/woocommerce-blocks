@@ -2,18 +2,23 @@
  * External dependencies
  */
 import { select, dispatch } from '@wordpress/data';
+import { PaymentMethods } from '@woocommerce/type-defs/payments';
 
 /**
  * Internal dependencies
  */
 import { STORE_KEY as PAYMENT_METHOD_DATA_STORE_KEY } from './constants';
 
-export const setDefaultPaymentMethod = async ( methods: string[] ) => {
-	const paymentMethodKeys = methods;
+export const setDefaultPaymentMethod = async (
+	paymentMethods: PaymentMethods
+) => {
+	const paymentMethodKeys = Object.keys( paymentMethods );
 
-	const expressPaymentMethodKeys = select(
-		PAYMENT_METHOD_DATA_STORE_KEY
-	).getAvailableExpressPaymentMethods();
+	const expressPaymentMethodKeys = Object.keys(
+		select(
+			PAYMENT_METHOD_DATA_STORE_KEY
+		).getAvailableExpressPaymentMethods()
+	);
 
 	const allPaymentMethodKeys = [
 		...paymentMethodKeys,

@@ -3,7 +3,6 @@
  */
 import type { Reducer } from 'redux';
 import { objectHasProp } from '@woocommerce/types';
-import { getSetting } from '@woocommerce/settings';
 
 /**
  * Internal dependencies
@@ -13,12 +12,6 @@ import {
 	PaymentMethodDataState,
 } from './default-state';
 import { ACTION_TYPES } from './action-types';
-import { orderPaymentMethods } from './utils';
-
-const paymentGatewaySortOrder = getSetting< string[] >(
-	'paymentGatewaySortOrder',
-	[]
-);
 
 const reducer: Reducer< PaymentMethodDataState > = (
 	state = defaultPaymentMethodDataState,
@@ -102,20 +95,16 @@ const reducer: Reducer< PaymentMethodDataState > = (
 			break;
 
 		case ACTION_TYPES.SET_AVAILABLE_PAYMENT_METHODS:
-			const orderedMethods = orderPaymentMethods(
-				paymentGatewaySortOrder,
-				action.methods
-			);
 			newState = {
 				...state,
-				availablePaymentMethods: orderedMethods,
+				availablePaymentMethods: action.paymentMethods,
 			};
 			break;
 
 		case ACTION_TYPES.SET_AVAILABLE_EXPRESS_PAYMENT_METHODS:
 			newState = {
 				...state,
-				availableExpressPaymentMethods: action.methods,
+				availableExpressPaymentMethods: action.paymentMethods,
 			};
 			break;
 

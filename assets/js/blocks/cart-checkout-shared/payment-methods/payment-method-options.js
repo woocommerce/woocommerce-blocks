@@ -57,7 +57,7 @@ const PaymentMethodOptions = () => {
 	const { dispatchCheckoutEvent } = useStoreEvents();
 	const { isEditor } = useEditorContext();
 
-	const options = availablePaymentMethods.map( ( name ) => {
+	const options = Object.keys( availablePaymentMethods ).map( ( name ) => {
 		const { edit, content, label, supports } = paymentMethods[ name ];
 		const component = isEditor ? edit : content;
 		return {

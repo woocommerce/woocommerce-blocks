@@ -60,7 +60,7 @@ const CheckoutExpressPayment = () => {
 	if (
 		! expressPaymentMethodsInitialized ||
 		( expressPaymentMethodsInitialized &&
-			availableExpressPaymentMethods.length === 0 )
+			Object.keys( availableExpressPaymentMethods ).length === 0 )
 	) {
 		// Make sure errors are shown in the editor and for admins. For example,
 		// when a payment method fails to register.

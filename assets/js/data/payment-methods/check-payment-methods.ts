@@ -125,9 +125,9 @@ export const checkPaymentMethodsCanPay = async ( express = false ) => {
 
 	const availablePaymentMethodNames = Object.keys( availablePaymentMethods );
 	if (
-		currentlyAvailablePaymentMethods.length ===
+		Object.keys( currentlyAvailablePaymentMethods ).length ===
 			availablePaymentMethodNames.length &&
-		currentlyAvailablePaymentMethods.every( ( current ) =>
+		Object.keys( currentlyAvailablePaymentMethods ).every( ( current ) =>
 			availablePaymentMethodNames.includes( current )
 		)
 	) {
@@ -142,7 +142,7 @@ export const checkPaymentMethodsCanPay = async ( express = false ) => {
 		setExpressPaymentMethodsInitialized,
 	} = dispatch( PAYMENT_METHOD_DATA_STORE_KEY );
 	if ( express ) {
-		setAvailableExpressPaymentMethods( availablePaymentMethodNames );
+		setAvailableExpressPaymentMethods( availablePaymentMethods );
 
 		// Note: Some 4rd party payment methods use the `canMakePayment` callback to initialize / setup.
 		// That's why we track "is initialized" state here.
@@ -150,7 +150,7 @@ export const checkPaymentMethodsCanPay = async ( express = false ) => {
 
 		return true;
 	}
-	setAvailablePaymentMethods( availablePaymentMethodNames );
+	setAvailablePaymentMethods( availablePaymentMethods );
 
 	// Note: Some 4rd party payment methods use the `canMakePayment` callback to initialize / setup.
 	// That's why we track "is initialized" state here.
