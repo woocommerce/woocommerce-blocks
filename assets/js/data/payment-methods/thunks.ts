@@ -71,11 +71,11 @@ export const emitProcessingEvent: emitProcessingEventType = (
 				registry.dispatch( CART_STORE_KEY );
 
 			if ( successResponse && ! errorResponse ) {
-				const { paymentMethodData, billingData, shippingData } =
+				const { paymentMethodData, billingAddress, shippingData } =
 					successResponse?.meta || {};
 
-				if ( billingData ) {
-					setBillingAddress( billingData );
+				if ( billingAddress ) {
+					setBillingAddress( billingAddress );
 				}
 				if (
 					typeof shippingData !== undefined &&
@@ -100,11 +100,11 @@ export const emitProcessingEvent: emitProcessingEventType = (
 					} );
 				}
 
-				const { paymentMethodData, billingData } =
+				const { paymentMethodData, billingAddress } =
 					errorResponse?.meta || {};
 
-				if ( billingData ) {
-					setBillingAddress( billingData );
+				if ( billingAddress ) {
+					setBillingAddress( billingAddress );
 				}
 				dispatch.setPaymentStatus(
 					{ hasFailed: true },
