@@ -9,7 +9,7 @@ import classNames from 'classnames';
  */
 import './style.scss';
 
-interface Props {
+export interface Props {
 	className?: string;
 	style?: React.CSSProperties;
 	suggestions: string[];
