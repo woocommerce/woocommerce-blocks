@@ -141,7 +141,7 @@ const resetMockPaymentMethods = () => {
 	} );
 };
 
-describe( 'Testing Payment Method Registration', () => {
+describe( 'Payment method data store selectors/thunks', () => {
 	beforeEach( () => {
 		act( () => {
 			registerMockPaymentMethods( false );
