@@ -82,9 +82,6 @@ export const checkPaymentMethodsCanPay = async ( express = false ) => {
 		if ( ! paymentMethod ) {
 			continue;
 		}
-		if ( ! paymentMethod ) {
-			continue;
-		}
 
 		// See if payment method should be available. This always evaluates to true in the editor context.
 		try {
