@@ -67,6 +67,6 @@ jobs:
           source_file: 'woocommerce-gutenberg-products-block.zip'
           destination_repo: 'woocommerce/woocommerce-blocks-releases'
           destination_folder: '/'
-          user_email: 'niels.lange@a8c.com'
+          user_email: 'info@nielslange.de'
           user_name: 'nielslange'
           commit_message: ${{ github.ref_name }}
