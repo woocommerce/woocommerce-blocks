@@ -24,23 +24,24 @@ const reducer: Reducer< PaymentMethodDataState > = (
 	state = defaultPaymentMethodDataState,
 	action
 ) => {
+	let newState = state;
 	switch ( action.type ) {
 		case ACTION_TYPES.SET_SHOULD_SAVE_PAYMENT_METHOD:
-			state = {
+			newState = {
 				...state,
 				shouldSavePaymentMethod: action.shouldSavePaymentMethod,
 			};
 			break;
 
 		case ACTION_TYPES.SET_PAYMENT_METHOD_DATA:
-			state = {
+			newState = {
 				...state,
 				paymentMethodData: action.paymentMethodData,
 			};
 			break;
 
 		case ACTION_TYPES.SET_PAYMENT_STATUS:
-			state = {
+			newState = {
 				...state,
 				currentStatus: {
 					...state.currentStatus,
@@ -65,7 +66,7 @@ const reducer: Reducer< PaymentMethodDataState > = (
 			};
 			delete previousAvailablePaymentMethods[ action.name ];
 
-			state = {
+			newState = {
 				...state,
 				availablePaymentMethods: {
 					...previousAvailablePaymentMethods,
@@ -78,7 +79,7 @@ const reducer: Reducer< PaymentMethodDataState > = (
 				...state.availablePaymentMethods,
 			};
 			delete previousAvailableExpressPaymentMethods[ action.name ];
-			state = {
+			newState = {
 				...state,
 				availableExpressPaymentMethods: {
 					...previousAvailableExpressPaymentMethods,
@@ -87,14 +88,14 @@ const reducer: Reducer< PaymentMethodDataState > = (
 			break;
 
 		case ACTION_TYPES.SET_PAYMENT_METHODS_INITIALIZED:
-			state = {
+			newState = {
 				...state,
 				paymentMethodsInitialized: action.initialized,
 			};
 			break;
 
 		case ACTION_TYPES.SET_EXPRESS_PAYMENT_METHODS_INITIALIZED:
-			state = {
+			newState = {
 				...state,
 				expressPaymentMethodsInitialized: action.initialized,
 			};
@@ -105,14 +106,14 @@ const reducer: Reducer< PaymentMethodDataState > = (
 				paymentGatewaySortOrder,
 				action.methods
 			);
-			state = {
+			newState = {
 				...state,
 				availablePaymentMethods: orderedMethods,
 			};
 			break;
 
 		case ACTION_TYPES.SET_AVAILABLE_EXPRESS_PAYMENT_METHODS:
-			state = {
+			newState = {
 				...state,
 				availableExpressPaymentMethods: action.methods,
 			};
@@ -124,7 +125,7 @@ const reducer: Reducer< PaymentMethodDataState > = (
 				objectHasProp( action.paymentMethodData, 'token' )
 					? action.paymentMethodData.token + ''
 					: '';
-			state = {
+			newState = {
 				...state,
 				activeSavedToken,
 				activePaymentMethod: action.activePaymentMethod,
@@ -133,9 +134,9 @@ const reducer: Reducer< PaymentMethodDataState > = (
 			};
 			break;
 		default:
-			return state;
+			return newState;
 	}
-	return state;
+	return newState;
 };
 export type State = ReturnType< typeof reducer >;
 
