@@ -50,11 +50,23 @@ jobs:
       # - name: Show artifact URL
       #   run: echo ${{ env.GITHUB_WORKSPACE }}/woocommerce-gutenberg-products-block.zip
 
-      - name: Create release
-        uses: softprops/action-gh-release@v1
-        with:
-          files: woocommerce-gutenberg-products-block.zip
-          tag_name: ${{ github.ref_name }}
-          body: ''
+      # - name: Create release
+      #   uses: softprops/action-gh-release@v1
+      #   with:
+      #     files: woocommerce-gutenberg-products-block.zip
+      #     tag_name: ${{ github.ref_name }}
+      #     body: ''
+      #   env:
+      #     repository: woocommerce/woocommerce-blocks-releases
+
+      - name: Push release ZIP to woocommerce/woocommerce-blocks-releases
+        uses: dmnemec/copy_file_to_another_repo_action@main
         env:
-          repository: woocommerce/woocommerce-blocks-releases
+          API_TOKEN_GITHUB: ${{ secrets.Woorelease  }}
+        with:
+          source_file: 'woocommerce-gutenberg-products-block.zip'
+          destination_repo: 'woocommerce/woocommerce-blocks-releases'
+          destination_folder: '/'
+          user_email: 'niels.lange@a8c.com'
+          user_name: 'nielslange'
+          commit_message: ${{ github.ref_name }}
