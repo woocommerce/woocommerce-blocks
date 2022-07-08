@@ -4,7 +4,7 @@
 import { render, screen, waitFor, act } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { previewCart } from '@woocommerce/resource-previews';
-import { dispatch } from '@wordpress/data';
+import * as wpDataFunctions from '@wordpress/data';
 import { CART_STORE_KEY as storeKey } from '@woocommerce/block-data';
 import {
 	registerPaymentMethod,
@@ -26,6 +26,24 @@ import {
 	SavedPaymentMethodOptions,
 } from '../../../../../../blocks/cart-checkout-shared/payment-methods';
 import { defaultCartState } from '../../../../../../data/cart/default-state';
+const originalSelect = jest.requireActual( '@wordpress/data' ).select;
+jest.spyOn( wpDataFunctions, 'select' ).mockImplementation( ( storeName ) => {
+	const originalStore = originalSelect( storeName );
+	if ( storeName === storeKey ) {
+		return {
+			...originalStore,
+			hasFinishedResolution: jest
+				.fn()
+				.mockImplementation( ( selectorName ) => {
+					if ( selectorName === 'getCartTotals' ) {
+						return true;
+					}
+					return originalStore.hasFinishedResolution( selectorName );
+				} ),
+		};
+	}
+	return originalStore;
+} );
 
 jest.mock( '@woocommerce/settings', () => {
 	const originalModule = jest.requireActual( '@woocommerce/settings' );
