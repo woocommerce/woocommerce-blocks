@@ -42,19 +42,19 @@ jobs:
           name: woocommerce-gutenberg-products-block
           path: woocommerce-gutenberg-products-block
 
-      - name: Download artifact
-        uses: actions/download-artifact@v3
-        with:
-          name: woocommerce-gutenberg-products-block
-    
-      - name: Show artifact URL
-        run: echo ${{ env.GITHUB_WORKSPACE }}/woocommerce-gutenberg-products-block.zip
-
-      # - name: Create release
-      #   uses: softprops/action-gh-release@v1
+      # - name: Download artifact
+      #   uses: actions/download-artifact@v3
       #   with:
-      #     files: woocommerce-gutenberg-products-block.zip
-      #     tag_name: ${{ github.ref }}
-      #     body: ''
-      #   env:
-      #     repository: nielslange/woo-test-environment
+      #     name: woocommerce-gutenberg-products-block
+    
+      # - name: Show artifact URL
+      #   run: echo ${{ env.GITHUB_WORKSPACE }}/woocommerce-gutenberg-products-block.zip
+
+      - name: Create release
+        uses: softprops/action-gh-release@v1
+        with:
+          files: woocommerce-gutenberg-products-block.zip
+          tag_name: ${{ github.ref }}
+          body: ''
+        env:
+          repository: nielslange/woocommerce-blocks-releases
