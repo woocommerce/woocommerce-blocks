@@ -20,6 +20,7 @@ import type {
 } from '../../base/context/event-emit';
 import type { DispatchFromMap } from '../mapped-types';
 import * as actions from './actions';
+import { FieldValidationStatus } from '../types';
 
 export interface CustomerPaymentMethodConfiguration {
 	gateway: string;
@@ -100,7 +101,9 @@ export type PaymentMethodsDispatcherType = (
  */
 export type emitProcessingEventType = (
 	observers: EventObserversType,
-	setValidationErrors: ( errors: Array< unknown > ) => void
+	setValidationErrors: (
+		errors: Record< string, FieldValidationStatus >
+	) => void
 ) => ( {
 	dispatch,
 	registry,

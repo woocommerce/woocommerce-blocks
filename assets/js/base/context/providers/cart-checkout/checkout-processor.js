@@ -18,7 +18,7 @@ import { useDispatch, useSelect } from '@wordpress/data';
 import {
 	CHECKOUT_STORE_KEY,
 	PAYMENT_METHOD_DATA_STORE_KEY,
-  VALIDATION_STORE_KEY,
+	VALIDATION_STORE_KEY,
 } from '@woocommerce/block-data';
 import {
 	getPaymentMethods,

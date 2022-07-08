@@ -27,14 +27,6 @@ import { DEFAULT_PAYMENT_METHOD_DATA } from './constants';
 import { useEditorContext } from '../../editor-context';
 import { useEventEmitters, reducer as emitReducer } from './event-emit';
 import { useCustomerData } from '../../../hooks/use-customer-data';
-import {
-	EMIT_TYPES,
-	useEventEmitters,
-	emitEventWithAbort,
-	reducer as emitReducer,
-} from './event-emit';
-import { useEmitResponse } from '../../../hooks/use-emit-response';
-import { getCustomerPaymentMethods } from './utils';
 
 const PaymentMethodDataContext = createContext( DEFAULT_PAYMENT_METHOD_DATA );
 
@@ -85,12 +77,6 @@ export const PaymentMethodDataProvider = ( {
 	const { isEditor, getPreviewData } = useEditorContext();
 	const { createErrorNotice, removeNotice } = useDispatch( 'core/notices' );
 	const { setValidationErrors } = useDispatch( VALIDATION_STORE_KEY );
-	const {
-		isSuccessResponse,
-		isErrorResponse,
-		isFailResponse,
-		noticeContexts,
-	} = useEmitResponse();
 	const [ observers, observerDispatch ] = useReducer( emitReducer, {} );
 	const { onPaymentProcessing } = useEventEmitters( observerDispatch );
 	const currentObservers = useRef( observers );
