@@ -5,7 +5,10 @@ import { render, screen, waitFor, act } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { previewCart } from '@woocommerce/resource-previews';
 import * as wpDataFunctions from '@wordpress/data';
-import { CART_STORE_KEY as storeKey } from '@woocommerce/block-data';
+import {
+	CART_STORE_KEY as storeKey,
+	PAYMENT_METHOD_DATA_STORE_KEY,
+} from '@woocommerce/block-data';
 import {
 	registerPaymentMethod,
 	registerExpressPaymentMethod,
@@ -17,10 +20,6 @@ import { default as fetchMock } from 'jest-fetch-mock';
 /**
  * Internal dependencies
  */
-import {
-	usePaymentMethodDataContext,
-	PaymentMethodDataProvider,
-} from '../payment-method-data-context';
 import {
 	CheckoutExpressPayment,
 	SavedPaymentMethodOptions,
@@ -155,8 +154,10 @@ describe( 'Testing Payment Method Data Context Provider', () => {
 			} );
 
 			// need to clear the store resolution state between tests.
-			dispatch( storeKey ).invalidateResolutionForStore();
-			dispatch( storeKey ).receiveCart( defaultCartState.cartData );
+			wpDataFunctions.dispatch( storeKey ).invalidateResolutionForStore();
+			wpDataFunctions
+				.dispatch( storeKey )
+				.receiveCart( defaultCartState.cartData );
 		} );
 	} );
 
@@ -169,7 +170,14 @@ describe( 'Testing Payment Method Data Context Provider', () => {
 
 	it( 'toggles active payment method correctly for express payment activation and close', async () => {
 		const TriggerActiveExpressPaymentMethod = () => {
-			const { activePaymentMethod } = usePaymentMethodDataContext();
+			const activePaymentMethod = wpDataFunctions.useSelect(
+				( select ) => {
+					return select(
+						PAYMENT_METHOD_DATA_STORE_KEY
+					).getActivePaymentMethod();
+				}
+			);
+
 			return (
 				<>
 					<CheckoutExpressPayment />
@@ -178,11 +186,7 @@ describe( 'Testing Payment Method Data Context Provider', () => {
 			);
 		};
 		const TestComponent = () => {
-			return (
-				<PaymentMethodDataProvider>
-					<TriggerActiveExpressPaymentMethod />
-				</PaymentMethodDataProvider>
-			);
+			return <TriggerActiveExpressPaymentMethod />;
 		};
 
 		render( <TestComponent /> );
@@ -190,7 +194,7 @@ describe( 'Testing Payment Method Data Context Provider', () => {
 		// should initialize by default the first payment method.
 		await waitFor( () => {
 			const activePaymentMethod = screen.queryByText(
-				/Active Payment Method: cheque/
+				/Active Payment Method: credit-card/
 			);
 			expect( activePaymentMethod ).not.toBeNull();
 		} );
@@ -214,7 +218,7 @@ describe( 'Testing Payment Method Data Context Provider', () => {
 
 		await waitFor( () => {
 			const activePaymentMethod = screen.queryByText(
-				/Active Payment Method: cheque/
+				/Active Payment Method: credit-card/
 			);
 			expect( activePaymentMethod ).not.toBeNull();
 		} );
@@ -234,8 +238,10 @@ describe( 'Testing Payment Method Data Context Provider with saved cards turned 
 			} );
 
 			// need to clear the store resolution state between tests.
-			dispatch( storeKey ).invalidateResolutionForStore();
-			dispatch( storeKey ).receiveCart( defaultCartState.cartData );
+			wpDataFunctions.dispatch( storeKey ).invalidateResolutionForStore();
+			wpDataFunctions
+				.dispatch( storeKey )
+				.receiveCart( defaultCartState.cartData );
 		} );
 	} );
 
@@ -249,7 +255,13 @@ describe( 'Testing Payment Method Data Context Provider with saved cards turned 
 	it( 'resets saved payment method data after starting and closing an express payment method', async () => {
 		const TriggerActiveExpressPaymentMethod = () => {
 			const { activePaymentMethod, paymentMethodData } =
-				usePaymentMethodDataContext();
+				wpDataFunctions.useSelect( ( select ) => {
+					const store = select( PAYMENT_METHOD_DATA_STORE_KEY );
+					return {
+						activePaymentMethod: store.getActivePaymentMethod(),
+						paymentMethodData: store.getPaymentMethodData(),
+					};
+				} );
 			return (
 				<>
 					<CheckoutExpressPayment />
@@ -262,11 +274,7 @@ describe( 'Testing Payment Method Data Context Provider with saved cards turned 
 			);
 		};
 		const TestComponent = () => {
-			return (
-				<PaymentMethodDataProvider>
-					<TriggerActiveExpressPaymentMethod />
-				</PaymentMethodDataProvider>
-			);
+			return <TriggerActiveExpressPaymentMethod />;
 		};
 
 		render( <TestComponent /> );
