@@ -125,11 +125,7 @@ export const removeRegisteredExpressPaymentMethod = ( name: string ) => ( {
 export function updateAvailablePaymentMethods() {
 	return async ( { dispatch } ) => {
 		const registered = await checkPaymentMethodsCanPay();
-		const cartTotalsLoaded =
-			wpDataSelect( CART_STORE_KEY ).hasFinishedResolution(
-				'getCartTotals'
-			);
-		if ( registered && cartTotalsLoaded ) {
+		if ( registered ) {
 			dispatch( setPaymentMethodsInitialized( true ) );
 		}
 	};
@@ -142,11 +138,7 @@ export function updateAvailablePaymentMethods() {
 export function updateAvailableExpressPaymentMethods() {
 	return async ( { dispatch } ) => {
 		const registered = await checkPaymentMethodsCanPay( true );
-		const cartTotalsLoaded =
-			wpDataSelect( CART_STORE_KEY ).hasFinishedResolution(
-				'getCartTotals'
-			);
-		if ( registered && cartTotalsLoaded ) {
+		if ( registered ) {
 			dispatch( setExpressPaymentMethodsInitialized( true ) );
 		}
 	};
