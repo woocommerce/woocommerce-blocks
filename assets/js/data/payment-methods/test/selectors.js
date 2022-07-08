@@ -141,7 +141,7 @@ const resetMockPaymentMethods = () => {
 	} );
 };
 
-describe( 'Testing Payment Method Data Context Provider', () => {
+describe( 'Testing Payment Method Registration', () => {
 	beforeEach( () => {
 		act( () => {
 			registerMockPaymentMethods( false );
@@ -225,7 +225,7 @@ describe( 'Testing Payment Method Data Context Provider', () => {
 	} );
 } );
 
-describe( 'Testing Payment Method Data Context Provider with saved cards turned on', () => {
+describe( 'Testing Payment Methods work correctly with saved cards turned on', () => {
 	beforeEach( () => {
 		act( () => {
 			registerMockPaymentMethods( true );
