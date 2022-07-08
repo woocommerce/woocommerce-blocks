@@ -54,7 +54,7 @@ jobs:
         uses: softprops/action-gh-release@v1
         with:
           files: woocommerce-gutenberg-products-block.zip
-          tag_name: ${{ github.ref }}
+          tag_name: ${{ github.ref_name }}
           body: ''
         env:
-          repository: nielslange/woocommerce-blocks-releases
+          repository: woocommerce/woocommerce-blocks-releases
