@@ -17,7 +17,6 @@ import { controls } from './controls';
 import type { SelectFromMap, DispatchFromMap } from '../mapped-types';
 import { pushChanges } from './push-changes';
 import { checkPaymentMethodsCanPay } from '../payment-methods/check-payment-methods';
-import { initializePaymentMethodDataStore } from '../payment-methods/actions';
 
 const registeredStore = registerStore< State >( STORE_KEY, {
 	reducer,
