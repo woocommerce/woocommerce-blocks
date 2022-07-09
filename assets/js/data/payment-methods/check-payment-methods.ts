@@ -25,12 +25,7 @@ import { noticeContexts } from '../../base/context/event-emit';
 
 export const checkPaymentMethodsCanPay = async ( express = false ) => {
 	const isEditor = !! select( 'core/editor' );
-	const cartTotalsLoaded =
-		select( CART_STORE_KEY ).hasFinishedResolution( 'getCartTotals' );
-	// The cart hasn't finished resolving yet. The "cartTotalsLoaded" is always "false" in the editor mode
-	if ( ! cartTotalsLoaded && ! isEditor ) {
-		return false;
-	}
+
 	let availablePaymentMethods = {};
 	const paymentMethods = express
 		? getExpressPaymentMethods()
