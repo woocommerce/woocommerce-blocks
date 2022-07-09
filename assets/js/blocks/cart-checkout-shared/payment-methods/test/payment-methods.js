@@ -14,12 +14,13 @@ import {
 	__experimentalDeRegisterPaymentMethod,
 } from '@woocommerce/blocks-registry';
 import userEvent from '@testing-library/user-event';
+import { dispatch } from '@wordpress/data';
+
 /**
  * Internal dependencies
  */
 import PaymentMethods from '../payment-methods';
 import { defaultCartState } from '../../../../data/cart/default-state';
-import { dispatch } from '@wordpress/data';
 
 jest.mock( '../saved-payment-method-options', () => ( { onChange } ) => {
 	return (
@@ -45,7 +46,7 @@ jest.mock(
 );
 
 const originalSelect = jest.requireActual( '@wordpress/data' ).select;
-let selectMock = jest
+const selectMock = jest
 	.spyOn( wpDataFunctions, 'select' )
 	.mockImplementation( ( storeName ) => {
 		const originalStore = originalSelect( storeName );
@@ -61,22 +62,6 @@ let selectMock = jest
 						paymentMethodsInitialized: true,
 					};
 				},
-			};
-		}
-
-		if ( storeName === CART_STORE_KEY ) {
-			return {
-				...originalStore,
-				hasFinishedResolution: jest
-					.fn()
-					.mockImplementation( ( selectorName ) => {
-						if ( selectorName === 'getCartTotals' ) {
-							return true;
-						}
-						return originalStore.hasFinishedResolution(
-							selectorName
-						);
-					} ),
 			};
 		}
 		return originalStore;
@@ -142,32 +127,12 @@ describe( 'PaymentMethods', () => {
 			// creates an extra `div` with the notice contents used for a11y.
 			expect( noPaymentMethods.length ).toBeGreaterThanOrEqual( 1 );
 
+			// Reset the mock back to how it was because we don't need it anymore after this test.
 			selectMock.mockRestore();
 		} );
 	} );
 
 	test( 'selecting new payment method', async () => {
-		selectMock = jest
-			.spyOn( wpDataFunctions, 'select' )
-			.mockImplementation( ( storeName ) => {
-				const originalStore = originalSelect( storeName );
-				if ( storeName === CART_STORE_KEY ) {
-					return {
-						...originalStore,
-						hasFinishedResolution: jest
-							.fn()
-							.mockImplementation( ( selectorName ) => {
-								if ( selectorName === 'getCartTotals' ) {
-									return true;
-								}
-								return originalStore.hasFinishedResolution(
-									selectorName
-								);
-							} ),
-					};
-				}
-				return originalStore;
-			} );
 		const ShowActivePaymentMethod = () => {
 			const { activePaymentMethod, activeSavedToken } =
 				wpDataFunctions.useSelect( ( select ) => {
