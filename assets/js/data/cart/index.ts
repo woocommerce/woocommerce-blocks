@@ -1,7 +1,11 @@
 /**
  * External dependencies
  */
-import { dispatch, registerStore, select } from '@wordpress/data';
+import {
+	dispatch as wpDataDispatch,
+	registerStore,
+	select as wpDataSelect,
+} from '@wordpress/data';
 import { controls as dataControls } from '@wordpress/data-controls';
 
 /**
@@ -36,9 +40,9 @@ registeredStore.subscribe( async () => {
 const unsubscribeInitializePaymentMethodDataStore = registeredStore.subscribe(
 	async () => {
 		const cartLoaded =
-			select( STORE_KEY ).hasFinishedResolution( 'getCartTotals' );
+			wpDataSelect( STORE_KEY ).hasFinishedResolution( 'getCartTotals' );
 		if ( cartLoaded ) {
-			dispatch(
+			wpDataDispatch(
 				'wc/store/payment-methods'
 			).initializePaymentMethodDataStore();
 			unsubscribeInitializePaymentMethodDataStore();
