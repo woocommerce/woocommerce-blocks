@@ -1,7 +1,7 @@
 /**
  * External dependencies
  */
-import { registerStore } from '@wordpress/data';
+import { dispatch, registerStore, select } from '@wordpress/data';
 import { controls as dataControls } from '@wordpress/data-controls';
 
 /**
@@ -17,6 +17,7 @@ import { controls } from './controls';
 import type { SelectFromMap, DispatchFromMap } from '../mapped-types';
 import { pushChanges } from './push-changes';
 import { checkPaymentMethodsCanPay } from '../payment-methods/check-payment-methods';
+import { initializePaymentMethodDataStore } from '../payment-methods/actions';
 
 const registeredStore = registerStore< State >( STORE_KEY, {
 	reducer,
@@ -32,6 +33,19 @@ registeredStore.subscribe( async () => {
 	await checkPaymentMethodsCanPay();
 	await checkPaymentMethodsCanPay( true );
 } );
+
+const unsubscribeInitializePaymentMethodDataStore = registeredStore.subscribe(
+	async () => {
+		const cartLoaded =
+			select( STORE_KEY ).hasFinishedResolution( 'getCartTotals' );
+		if ( cartLoaded ) {
+			dispatch(
+				'wc/store/payment-methods'
+			).initializePaymentMethodDataStore();
+			unsubscribeInitializePaymentMethodDataStore();
+		}
+	}
+);
 
 export const CART_STORE_KEY = STORE_KEY;
 
