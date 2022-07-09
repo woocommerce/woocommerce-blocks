@@ -118,28 +118,13 @@ export const removeRegisteredExpressPaymentMethod = ( name: string ) => ( {
 	name,
 } );
 
-/**
- * Checks the payment methods held in the registry can make a payment
- * and updates the available payment methods in the store.
- */
-export function updateAvailablePaymentMethods() {
+export function initializePaymentMethodDataStore() {
 	return async ( { dispatch } ) => {
-		const registered = await checkPaymentMethodsCanPay();
-		if ( registered ) {
-			dispatch( setPaymentMethodsInitialized( true ) );
-		}
-	};
-}
-
-/**
- * Checks the express payment methods held in the registry can make a payment
- * and updates the available express payment methods in the store.
- */
-export function updateAvailableExpressPaymentMethods() {
-	return async ( { dispatch } ) => {
-		const registered = await checkPaymentMethodsCanPay( true );
-		if ( registered ) {
+		const expressRegistered = await checkPaymentMethodsCanPay( true, true );
+		const registered = await checkPaymentMethodsCanPay( false, true );
+		if ( registered && expressRegistered ) {
 			dispatch( setExpressPaymentMethodsInitialized( true ) );
+			dispatch( setPaymentMethodsInitialized( true ) );
 		}
 	};
 }
