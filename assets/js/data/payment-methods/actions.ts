@@ -120,8 +120,8 @@ export const removeRegisteredExpressPaymentMethod = ( name: string ) => ( {
 
 export function initializePaymentMethodDataStore() {
 	return async ( { dispatch } ) => {
-		const expressRegistered = await checkPaymentMethodsCanPay( true, true );
-		const registered = await checkPaymentMethodsCanPay( false, true );
+		const expressRegistered = await checkPaymentMethodsCanPay( true );
+		const registered = await checkPaymentMethodsCanPay( false );
 		if ( registered && expressRegistered ) {
 			dispatch( setExpressPaymentMethodsInitialized( true ) );
 			dispatch( setPaymentMethodsInitialized( true ) );
