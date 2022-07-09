@@ -1,7 +1,6 @@
 /**
  * External dependencies
  */
-import { select as wpDataSelect } from '@wordpress/data';
 import {
 	PaymentMethods,
 	ExpressPaymentMethods,
@@ -14,7 +13,6 @@ import { ACTION_TYPES } from './action-types';
 import { checkPaymentMethodsCanPay } from './check-payment-methods';
 import { setDefaultPaymentMethod } from './set-default-payment-method';
 import { PaymentStatus } from './types';
-import { CART_STORE_KEY } from '../cart';
 
 // `Thunks are functions that can be dispatched, similar to actions creators
 export * from './thunks';
