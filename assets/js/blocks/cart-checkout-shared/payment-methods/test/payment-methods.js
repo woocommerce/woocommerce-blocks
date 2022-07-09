@@ -19,6 +19,7 @@ import userEvent from '@testing-library/user-event';
  */
 import PaymentMethods from '../payment-methods';
 import { defaultCartState } from '../../../../data/cart/default-state';
+import { dispatch } from '@wordpress/data';
 
 jest.mock( '../saved-payment-method-options', () => ( { onChange } ) => {
 	return (
@@ -98,6 +99,9 @@ const registerMockPaymentMethods = () => {
 			ariaLabel: name,
 		} );
 	} );
+	dispatch(
+		PAYMENT_METHOD_DATA_STORE_KEY
+	).initializePaymentMethodDataStore();
 };
 
 const resetMockPaymentMethods = () => {
@@ -182,7 +186,18 @@ describe( 'PaymentMethods', () => {
 				</>
 			);
 		};
-		registerMockPaymentMethods();
+
+		act( () => {
+			registerMockPaymentMethods();
+		} );
+		// Wait for the payment methods to finish loading before rendering.
+		await waitFor( () => {
+			expect(
+				wpDataFunctions
+					.select( PAYMENT_METHOD_DATA_STORE_KEY )
+					.getActivePaymentMethod()
+			).toBe( 'cod' );
+		} );
 
 		render(
 			<>
