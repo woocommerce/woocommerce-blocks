@@ -53,11 +53,9 @@ class Authentication {
 				$action_id .= md5( $ip_address );
 			}
 
-			$rate_limit_limit   = 5;
-			$rate_limit_seconds = 60;
-			$retry              = RateLimits::is_exceeded_retry_after( $action_id );
-			$server             = rest_get_server();
-			$server->send_header( 'RateLimit-Limit', $rate_limit_limit );
+			$retry  = RateLimits::is_exceeded_retry_after( $action_id );
+			$server = rest_get_server();
+			$server->send_header( 'RateLimit-Limit', RateLimits::LIMIT );
 
 			if ( false !== $retry ) {
 				$server->send_header( 'RateLimit-Retry-After', $retry );
@@ -78,8 +76,7 @@ class Authentication {
 				);
 			}
 
-			// 5 requests per 60 seconds.
-			$rate_limit = RateLimits::update_rate_limit( $action_id, $rate_limit_seconds, $rate_limit_limit );
+			$rate_limit = RateLimits::update_rate_limit( $action_id );
 			$server->send_header( 'RateLimit-Remaining', $rate_limit->remaining );
 			$server->send_header( 'RateLimit-Reset', $rate_limit->reset );
 		}

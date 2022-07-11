@@ -8,6 +8,22 @@ use WC_Cache_Helper;
  * RateLimits class.
  */
 class RateLimits extends WC_Rate_Limiter {
+
+
+	/**
+	 * Amount of max requests allowed for the defined timeframe.
+	 *
+	 * @var int
+	 */
+	const LIMIT = 25;
+
+	/**
+	 * Time in seconds before rate limits are reset.
+	 *
+	 * @var int
+	 */
+	const SECONDS = 10;
+
 	/**
 	 * Gets a cache prefix.
 	 *
@@ -91,14 +107,12 @@ class RateLimits extends WC_Rate_Limiter {
 	 * Sets the rate limit delay in seconds for action with identifier $id.
 	 *
 	 * @param string $action_id Identifier of the action.
-	 * @param int    $reset Reset delay in seconds.
-	 * @param int    $limit Number of requests allowed before current rate limit is reset.
 	 * @return object Current rate limits.
 	 */
-	public static function update_rate_limit( $action_id, $reset, $limit = 1 ) {
+	public static function update_rate_limit( $action_id ) {
 		global $wpdb;
 
-		$rate_limit_expiry = time() + $reset;
+		$rate_limit_expiry = time() + self::SECONDS;
 
 		$wpdb->query(
 			$wpdb->prepare(
@@ -112,7 +126,7 @@ class RateLimits extends WC_Rate_Limiter {
 				",
 				$action_id,
 				$rate_limit_expiry,
-				$limit - 1,
+				self::LIMIT - 1,
 				time(),
 				time()
 			)
