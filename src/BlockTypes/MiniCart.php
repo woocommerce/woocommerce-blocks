@@ -276,8 +276,12 @@ class MiniCart extends AbstractBlock {
 		if ( ! $script->src ) {
 			return;
 		}
+
+		$site_url = get_site_url();
+		$path     = wp_parse_url( $site_url )['path'] ?? '';
+
 		$this->scripts_to_lazy_load[ $script->handle ] = array(
-			'src'          => $script->src,
+			'src'          => wp_http_validate_url( $script->src ) ? $script->src : $path . $script->src,
 			'version'      => $script->ver,
 			'before'       => $wp_scripts->print_inline_script( $script->handle, 'before', false ),
 			'after'        => $wp_scripts->print_inline_script( $script->handle, 'after', false ),
