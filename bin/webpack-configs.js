@@ -80,7 +80,6 @@ const getCoreConfig = ( options = {} ) => {
 			// This fixes an issue with multiple webpack projects using chunking
 			// overwriting each other's chunk loader function.
 			// See https://webpack.js.org/configuration/output/#outputjsonpfunction
-			jsonpFunction: 'webpackWcBlocksJsonp',
 		},
 		module: {
 			rules: [
@@ -127,7 +126,6 @@ woocommerce_blocks_env = ${ NODE_ENV }
 			},
 			minimizer: [
 				new TerserPlugin( {
-					cache: true,
 					parallel: true,
 					terserOptions: {
 						output: {
@@ -189,7 +187,6 @@ const getMainConfig = ( options = {} ) => {
 			// See https://webpack.js.org/configuration/output/#outputjsonpfunction
 			// This can be removed when moving to webpack 5:
 			// https://webpack.js.org/blog/2020-10-10-webpack-5-release/#automatic-unique-naming
-			jsonpFunction: 'webpackWcBlocksJsonp',
 		},
 		module: {
 			rules: [
@@ -235,7 +232,6 @@ const getMainConfig = ( options = {} ) => {
 			},
 			minimizer: [
 				new TerserPlugin( {
-					cache: true,
 					parallel: true,
 					terserOptions: {
 						output: {
@@ -317,7 +313,6 @@ const getFrontConfig = ( options = {} ) => {
 			// See https://webpack.js.org/configuration/output/#outputjsonpfunction
 			// This can be removed when moving to webpack 5:
 			// https://webpack.js.org/blog/2020-10-10-webpack-5-release/#automatic-unique-naming
-			jsonpFunction: 'webpackWcBlocksJsonp',
 		},
 		module: {
 			rules: [
@@ -366,7 +361,6 @@ const getFrontConfig = ( options = {} ) => {
 			},
 			minimizer: [
 				new TerserPlugin( {
-					cache: true,
 					parallel: true,
 					terserOptions: {
 						output: {
@@ -420,7 +414,6 @@ const getPaymentsConfig = ( options = {} ) => {
 			// This fixes an issue with multiple webpack projects using chunking
 			// overwriting each other's chunk loader function.
 			// See https://webpack.js.org/configuration/output/#outputjsonpfunction
-			jsonpFunction: 'webpackWcBlocksPaymentMethodExtensionJsonp',
 		},
 		module: {
 			rules: [
@@ -469,7 +462,6 @@ const getPaymentsConfig = ( options = {} ) => {
 			},
 			minimizer: [
 				new TerserPlugin( {
-					cache: true,
 					parallel: true,
 					terserOptions: {
 						output: {
@@ -523,7 +515,6 @@ const getExtensionsConfig = ( options = {} ) => {
 			devtoolNamespace: 'wc',
 			path: path.resolve( __dirname, '../build/' ),
 			filename: `[name].js`,
-			jsonpFunction: 'webpackWcBlocksExtensionsMethodExtensionJsonp',
 		},
 		module: {
 			rules: [
@@ -566,7 +557,6 @@ const getExtensionsConfig = ( options = {} ) => {
 			},
 			minimizer: [
 				new TerserPlugin( {
-					cache: true,
 					parallel: true,
 					terserOptions: {
 						output: {
@@ -627,7 +617,6 @@ const getStylingConfig = ( options = {} ) => {
 			// This fixes an issue with multiple webpack projects using chunking
 			// overwriting each other's chunk loader function.
 			// See https://webpack.js.org/configuration/output/#outputjsonpfunction
-			jsonpFunction: 'webpackWcBlocksJsonp',
 		},
 		optimization: {
 			splitChunks: {
