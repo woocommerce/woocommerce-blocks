@@ -242,6 +242,11 @@
 	"optionalDependencies": {
 		"ndb": "1.1.5"
 	},
+	"husky": {
+		"hooks": {
+			"pre-commit": "lint-staged"
+		}
+	},
 	"lint-staged": {
 		"*.scss": [
 			"npm run lint:css"
