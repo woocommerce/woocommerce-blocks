@@ -7,7 +7,7 @@ import {
 	useCallback,
 	useMemo,
 } from '@wordpress/element';
-import { useSelect, useDispatch } from '@wordpress/data';
+import { useSelect, useDispatch, select } from '@wordpress/data';
 import {
 	createBlock,
 	getBlockType,
@@ -46,10 +46,10 @@ export const useForcedLayout = ( {
 		useDispatch( 'core/block-editor' );
 
 	const { innerBlocks, registeredBlockTypes } = useSelect(
-		( select ) => {
+		( mapSelect ) => {
 			return {
 				innerBlocks:
-					select( 'core/block-editor' ).getBlocks( clientId ),
+					mapSelect( 'core/block-editor' ).getBlocks( clientId ),
 				registeredBlockTypes: currentRegisteredBlocks.current.map(
 					( blockName ) => getBlockType( blockName )
 				),
@@ -82,15 +82,20 @@ export const useForcedLayout = ( {
 			return;
 		}
 
+		// This is required to get the most up-to-date blocks in the effect, the innerBlocks const above will not be
+		// updated in time to be used here.
+		const currentInnerBlocks =
+			select( 'core/block-editor' ).getBlocks( clientId );
+
 		// If there are NO inner blocks, sync with the given template.
 		if (
-			innerBlocks.length === 0 &&
+			currentInnerBlocks.length === 0 &&
 			currentDefaultTemplate.current.length > 0
 		) {
 			const nextBlocks = createBlocksFromInnerBlocksTemplate(
 				currentDefaultTemplate.current
 			);
-			if ( ! isEqual( nextBlocks, innerBlocks ) ) {
+			if ( ! isEqual( nextBlocks, currentInnerBlocks ) ) {
 				replaceInnerBlocks( clientId, nextBlocks );
 				return;
 			}
@@ -100,7 +105,7 @@ export const useForcedLayout = ( {
 		lockedBlockTypes.forEach( ( block ) => {
 			// If the locked block type is already in the layout, we can skip this one.
 			if (
-				innerBlocks.find(
+				currentInnerBlocks.find(
 					( { name }: { name: string } ) => name === block.name
 				)
 			) {
@@ -116,7 +121,7 @@ export const useForcedLayout = ( {
 			switch ( defaultTemplatePosition ) {
 				case -1:
 					// The block is not part of the default template so we append it to the current layout.
-					appendBlock( block, innerBlocks.length );
+					appendBlock( block, currentInnerBlocks.length );
 					break;
 				case 0:
 					// The block was the first block in the default layout, so prepend it to the current layout.
@@ -129,7 +134,7 @@ export const useForcedLayout = ( {
 						currentDefaultTemplate.current[
 							defaultTemplatePosition - 1
 						];
-					const position = innerBlocks.findIndex(
+					const position = currentInnerBlocks.findIndex(
 						( { name: blockName } ) =>
 							blockName === adjacentBlock[ 0 ]
 					);
