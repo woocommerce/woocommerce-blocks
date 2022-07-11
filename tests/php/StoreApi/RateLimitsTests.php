@@ -3,7 +3,7 @@
  * Rate Limits Tests
  */
 
-namespace Automattic\WooCommerce\Blocks\Tests\StoreApi\temp;
+namespace Automattic\WooCommerce\Blocks\Tests\StoreApi;
 
 use Automattic\WooCommerce\StoreApi\Utilities\RateLimits;
 use Spy_REST_Server;
