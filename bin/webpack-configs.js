@@ -313,6 +313,7 @@ const getFrontConfig = ( options = {} ) => {
 			// See https://webpack.js.org/configuration/output/#outputjsonpfunction
 			// This can be removed when moving to webpack 5:
 			// https://webpack.js.org/blog/2020-10-10-webpack-5-release/#automatic-unique-naming
+			uniqueName: 'webpackWcBlocksJsonp',
 		},
 		module: {
 			rules: [
@@ -414,6 +415,7 @@ const getPaymentsConfig = ( options = {} ) => {
 			// This fixes an issue with multiple webpack projects using chunking
 			// overwriting each other's chunk loader function.
 			// See https://webpack.js.org/configuration/output/#outputjsonpfunction
+			uniqueName: 'webpackWcBlocksPaymentMethodExtensionJsonp',
 		},
 		module: {
 			rules: [
@@ -515,6 +517,7 @@ const getExtensionsConfig = ( options = {} ) => {
 			devtoolNamespace: 'wc',
 			path: path.resolve( __dirname, '../build/' ),
 			filename: `[name].js`,
+			uniqueName: 'webpackWcBlocksExtensionsMethodExtensionJsonp',
 		},
 		module: {
 			rules: [
@@ -617,6 +620,7 @@ const getStylingConfig = ( options = {} ) => {
 			// This fixes an issue with multiple webpack projects using chunking
 			// overwriting each other's chunk loader function.
 			// See https://webpack.js.org/configuration/output/#outputjsonpfunction
+			uniqueName: 'webpackWcBlocksJsonp',
 		},
 		optimization: {
 			splitChunks: {
