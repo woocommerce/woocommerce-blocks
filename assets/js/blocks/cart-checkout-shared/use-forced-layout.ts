@@ -8,7 +8,7 @@ import {
 	useMemo,
 	useState,
 } from '@wordpress/element';
-import { useSelect, useDispatch, select } from '@wordpress/data';
+import { useSelect, useDispatch } from '@wordpress/data';
 import {
 	createBlock,
 	getBlockType,
@@ -49,10 +49,10 @@ export const useForcedLayout = ( {
 		useDispatch( 'core/block-editor' );
 
 	const { innerBlocks, registeredBlockTypes } = useSelect(
-		( mapSelect ) => {
+		( select ) => {
 			return {
 				innerBlocks:
-					mapSelect( 'core/block-editor' ).getBlocks( clientId ),
+					select( 'core/block-editor' ).getBlocks( clientId ),
 				registeredBlockTypes: currentRegisteredBlocks.current.map(
 					( blockName ) => getBlockType( blockName )
 				),
