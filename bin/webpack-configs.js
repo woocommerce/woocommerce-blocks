@@ -80,6 +80,7 @@ const getCoreConfig = ( options = {} ) => {
 			// This fixes an issue with multiple webpack projects using chunking
 			// overwriting each other's chunk loader function.
 			// See https://webpack.js.org/configuration/output/#outputjsonpfunction
+			uniqueName: 'webpackWcBlocksJsonp',
 		},
 		module: {
 			rules: [
@@ -187,6 +188,7 @@ const getMainConfig = ( options = {} ) => {
 			// See https://webpack.js.org/configuration/output/#outputjsonpfunction
 			// This can be removed when moving to webpack 5:
 			// https://webpack.js.org/blog/2020-10-10-webpack-5-release/#automatic-unique-naming
+			uniqueName: 'webpackWcBlocksJsonp',
 		},
 		module: {
 			rules: [
