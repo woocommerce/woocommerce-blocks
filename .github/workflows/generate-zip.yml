@@ -36,12 +36,13 @@ jobs:
         env:
           API_TOKEN_GITHUB: ${{ secrets.API_TOKEN_GITHUB  }}
         with:
-          source_file: 'woocommerce-gutenberg-products-block.zip'
-          destination_repo: 'woocommerce/woocommerce-blocks-releases'
-          destination_folder: '/'
-          user_email: 'info@nielslange.de'
-          user_name: 'nielslange'
-          commit_message: ${{ github.ref_name }}
+          source_file: woocommerce-gutenberg-products-block.zip
+          destination_repo: woocommerce/woocommerce-blocks-releases
+          destination_folder: /
+          destination_branch: trunk
+          user_email: info@nielslange.de
+          user_name: nielslange
+          commit_message: release-${{ github.event.pull_request.number }}
 
       # - name: Unzip generated archive
       #   uses: montudor/action-zip@v1
