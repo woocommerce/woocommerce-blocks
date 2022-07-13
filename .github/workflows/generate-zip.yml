@@ -31,13 +31,24 @@ jobs:
       - name: Generate ZIP file
         run: npm run package-plugin:deploy
 
+      - name: Create temp folder
+        run: mv woocommerce-gutenberg-products-block.zip temp/woocommerce-gutenberg-products-block-${{ github.event.pull_request.number }}.zip
+
+      - name: Rename and move ZIP file
+        run: mv woocommerce-gutenberg-products-block.zip temp/woocommerce-gutenberg-products-block-${{ github.event.pull_request.number }}.zip
+
       - name: Transfer ZIP file via FTP
         uses: SamKirkland/FTP-Deploy-Action@4.3.0
         with:
           server: ${{ secrets.FTP_HOST }}
           username: ${{ secrets.FTP_USER }}
           password: ${{ secrets.FTP_PASS }}
-          server-dir: ${{ secrets.FTP_DIR }}
+          local-dir: ./temp
+          server-dir: ${{ secrets.FTP_DIR }}/releases/
+
+      - name: Delete ZIP file
+        run: rm -rf ./temp
+
 
       # - name: Push release ZIP to woocommerce/woocommerce-blocks-releases
       #   uses: dmnemec/copy_file_to_another_repo_action@main
