@@ -357,15 +357,23 @@ const getFrontConfig = ( options = {} ) => {
 			],
 		},
 		optimization: {
-			chunkIds: 'named',
 			concatenateModules:
 				isProduction && ! process.env.WP_BUNDLE_ANALYZER,
 			splitChunks: {
-				name: 'vendors',
+				chunks: 'all',
 				cacheGroups: {
 					default: false,
 					vendors: false,
-					defaultVendors: false,
+				},
+				name: ( module, chunks, cacheGroupKey ) => {
+					const allChunksNames = chunks
+						.map( ( chunk ) => chunk.name )
+						.join( '--' );
+					const prefix =
+						cacheGroupKey === 'defaultVendors'
+							? 'vendors'
+							: cacheGroupKey;
+					return `${ prefix }--${ allChunksNames }`;
 				},
 				automaticNameDelimiter: '--',
 			},
