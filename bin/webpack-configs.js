@@ -357,9 +357,16 @@ const getFrontConfig = ( options = {} ) => {
 			],
 		},
 		optimization: {
+			chunkIds: 'named',
 			concatenateModules:
 				isProduction && ! process.env.WP_BUNDLE_ANALYZER,
 			splitChunks: {
+				name: 'vendors',
+				cacheGroups: {
+					default: false,
+					vendors: false,
+					defaultVendors: false,
+				},
 				automaticNameDelimiter: '--',
 			},
 			minimizer: [

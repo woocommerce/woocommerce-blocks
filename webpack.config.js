@@ -163,10 +163,10 @@ const legacyConfigs = [
 ];
 
 module.exports = [
-	CoreConfig,
-	MainConfig,
+	// CoreConfig,
+	// MainConfig,
 	FrontendConfig,
-	ExtensionsConfig,
-	PaymentsConfig,
-	StylingConfig,
+	// ExtensionsConfig,
+	// PaymentsConfig,
+	// StylingConfig,
 ];
