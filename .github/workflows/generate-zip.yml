@@ -51,8 +51,10 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.API_TOKEN_GITHUB }}
         with:
-          message: 'The release ZIP for this PR is accessible via https://nielslange.com/releases/woocommerce-gutenberg-products-block-${{ github.event.pull_request.number }}.zip'
-          allow-repeats: false
+          message: |
+            The release ZIP for this PR is accessible via:
+            ```https://nielslange.com/releases/woocommerce-gutenberg-products-block-${{ github.event.pull_request.number }}.zip```
+          allow-repeats: true
 
       - name: Delete ZIP file
         run: rm -rf temp
