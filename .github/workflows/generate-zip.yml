@@ -46,47 +46,14 @@ jobs:
           local-dir: ./temp/
           server-dir: ${{ secrets.FTP_DIR }}
 
+      - name: Add release ZIP URL as comment to the PR
+        uses: mshick/add-pr-comment@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.API_TOKEN_GITHUB }}
+        with:
+          message: 'The release ZIP for this PR is accessible via https://nielslange.com/releases/woocommerce-gutenberg-products-block-${{ github.event.pull_request.number }}.zip'
+          allow-repeats: false
+
       - name: Delete ZIP file
         run: rm -rf temp
-
-
-      # - name: Push release ZIP to woocommerce/woocommerce-blocks-releases
-      #   uses: dmnemec/copy_file_to_another_repo_action@main
-      #   env:
-      #     API_TOKEN_GITHUB: ${{ secrets.API_TOKEN_GITHUB  }}
-      #   with:
-      #     source_file: woocommerce-gutenberg-products-block.zip
-      #     destination_repo: woocommerce/woocommerce-blocks-releases
-      #     destination_folder: /
-      #     destination_branch: trunk
-      #     user_email: info@nielslange.de
-      #     user_name: nielslange
-      #     commit_message: release-${{ github.event.pull_request.number }}
-
-      # - name: Unzip generated archive
-      #   uses: montudor/action-zip@v1
-      #   with:
-      #     args: unzip -qq woocommerce-gutenberg-products-block.zip -d woocommerce-gutenberg-products-block
-
-      # - name: Upload artifact
-      #   uses: actions/upload-artifact@v3
-      #   with:
-      #     name: woocommerce-gutenberg-products-block
-      #     path: woocommerce-gutenberg-products-block
-
-      # - name: Download artifact
-      #   uses: actions/download-artifact@v3
-      #   with:
-      #     name: woocommerce-gutenberg-products-block
-
-      # - name: Show artifact URL
-      #   run: echo ${{ env.GITHUB_WORKSPACE }}/woocommerce-gutenberg-products-block.zip
-
-      # - name: Create release
-      #   uses: softprops/action-gh-release@v1
-      #   with:
-      #     files: woocommerce-gutenberg-products-block.zip
-      #     tag_name: ${{ github.ref_name }}
-      #     body: ''
-      #   env:
-      #     repository: woocommerce/woocommerce-blocks-releases
+        
