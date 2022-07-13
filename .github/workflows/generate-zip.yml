@@ -37,7 +37,7 @@ jobs:
           server: ${{ secrets.FTP_HOST }}
           username: ${{ secrets.FTP_USER }}
           password: ${{ secrets.FTP_PASS }}
-          local-dir: ${{ secrets.FTP_DIR }}
+          server-dir: ${{ secrets.FTP_DIR }}
 
       # - name: Push release ZIP to woocommerce/woocommerce-blocks-releases
       #   uses: dmnemec/copy_file_to_another_repo_action@main
