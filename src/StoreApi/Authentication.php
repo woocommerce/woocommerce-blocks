@@ -193,15 +193,10 @@ class Authentication {
 	 * @return string|bool
 	 */
 	protected static function validate_ip( $ip ) {
-		if ( filter_var(
+		return filter_var(
 			$ip,
 			FILTER_VALIDATE_IP,
 			FILTER_FLAG_NO_RES_RANGE
-		) !== false
-		) {
-			return $ip;
-		}
-
-		return false;
+		);
 	}
 }
