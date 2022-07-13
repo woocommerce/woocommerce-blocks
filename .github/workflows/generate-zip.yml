@@ -43,6 +43,7 @@ jobs:
           server: ${{ secrets.FTP_HOST }}
           username: ${{ secrets.FTP_USER }}
           password: ${{ secrets.FTP_PASS }}
+          port: 22
           local-dir: ./temp/
           server-dir: ${{ secrets.FTP_DIR }}
 
@@ -54,7 +55,7 @@ jobs:
           message: |
             The release ZIP for this PR is accessible via:
             ```
-            https://nielslange.com/releases/woocommerce-gutenberg-products-block-${{ github.event.pull_request.number }}.zip
+            https://wcblocks.wpcomstaging.com/wp-content/uploads/woocommerce-gutenberg-products-block-${{ github.event.pull_request.number }}.zip
             ```
           allow-repeats: true
 
