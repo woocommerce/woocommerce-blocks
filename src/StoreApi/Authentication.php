@@ -130,7 +130,7 @@ class Authentication {
 	protected static function get_ip_address() {
 
 		/**
-		 * Filters the Store API rate limit check proxy support, which is disabled by default.
+		 * Filters whether proxy support is enabled for the Store API rate limit check. This is disabled by default.
 		 *
 		 * If the store is behind a proxy, load balancer, CDN etc. the user can enable this to properly obtain
 		 * the client's IP address through standard transport headers.
