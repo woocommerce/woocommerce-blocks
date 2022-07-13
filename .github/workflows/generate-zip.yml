@@ -43,7 +43,7 @@ jobs:
           server: ${{ secrets.FTP_HOST }}
           username: ${{ secrets.FTP_USER }}
           password: ${{ secrets.FTP_PASS }}
-          local-dir: ./temp
+          local-dir: ./temp/
           server-dir: ${{ secrets.FTP_DIR }}
 
       - name: Delete ZIP file
