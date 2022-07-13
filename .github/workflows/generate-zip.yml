@@ -38,7 +38,7 @@ jobs:
         run: mv woocommerce-gutenberg-products-block.zip temp/woocommerce-gutenberg-products-block-${{ github.event.pull_request.number }}.zip
 
       - name: Transfer ZIP file via FTP
-        uses: Automattic/FTP-Deploy-Action@latest
+        uses: Automattic/FTP-Deploy-Action@3.0.1
         with:
           ftp-server: ${{ secrets.FTP_HOST }}
           ftp-username: ${{ secrets.FTP_USER }}
