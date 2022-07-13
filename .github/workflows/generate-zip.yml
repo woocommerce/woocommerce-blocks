@@ -38,14 +38,18 @@ jobs:
         run: mv woocommerce-gutenberg-products-block.zip temp/woocommerce-gutenberg-products-block-${{ github.event.pull_request.number }}.zip
 
       - name: Transfer ZIP file via FTP
-        uses: SamKirkland/FTP-Deploy-Action@4.3.0
+        uses: Automattic/FTP-Deploy-Action@latest
         with:
-          server: ${{ secrets.FTP_HOST }}
-          username: ${{ secrets.FTP_USER }}
-          password: ${{ secrets.FTP_PASS }}
-          port: 22
+          ftp-server: ${{ secrets.FTP_HOST }}
+          ftp-username: ${{ secrets.FTP_USER }}
+          ftp-password: ${{ secrets.FTP_PASS }}
+          known-hosts: "ssh.atomicsites.net ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQDwfT/YEhOKO2Z0+XrjRqUS5Q2Ali6AlhOhZtzlIfMOvm03SypeDJH70tlUHasS+nm0SnZ01fOiEeAXa91ZhMihIYUT3nTGuiA2J3uVYsySCJefvhWc0kg1FbEus3V3cVmx4e3XctdkzLbOgPNngypZocbP+8yCpbx6Kb9lihmgTjgGn2QzbK1enRSzsN/CbjVhej9jwukbrWqdCrQsKAsoZ2p6YCtcKbHS+Yy4RwcO9PxZUBkeMXUrejms027bRcdVfwf55hWSD9xYEHpEHupkSL4ofWs3UKeRGz+jCCzl7Nu0S6VSwK4Zzll0auHI0Hwh8WKTJbSn1gxCdF93/rmP"
           local-dir: ./temp/
           server-dir: ${{ secrets.FTP_DIR }}
+          # server: ${{ secrets.FTP_HOST }}
+          # username: ${{ secrets.FTP_USER }}
+          # password: ${{ secrets.FTP_PASS }}
+          # port: 22
 
       - name: Add release ZIP URL as comment to the PR
         uses: mshick/add-pr-comment@v1
