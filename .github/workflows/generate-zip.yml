@@ -44,8 +44,8 @@ jobs:
           port: 22
           username: ${{ secrets.FTP_USER }}
           password: ${{ secrets.FTP_PASS }}
-          local-dir: ./temp/
-          server-dir: ${{ secrets.FTP_DIR }}
+          sourceDir: ./temp/
+          targetDir: ${{ secrets.FTP_DIR }}
           # known-hosts: "ssh.atomicsites.net ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQDwfT/YEhOKO2Z0+XrjRqUS5Q2Ali6AlhOhZtzlIfMOvm03SypeDJH70tlUHasS+nm0SnZ01fOiEeAXa91ZhMihIYUT3nTGuiA2J3uVYsySCJefvhWc0kg1FbEus3V3cVmx4e3XctdkzLbOgPNngypZocbP+8yCpbx6Kb9lihmgTjgGn2QzbK1enRSzsN/CbjVhej9jwukbrWqdCrQsKAsoZ2p6YCtcKbHS+Yy4RwcO9PxZUBkeMXUrejms027bRcdVfwf55hWSD9xYEHpEHupkSL4ofWs3UKeRGz+jCCzl7Nu0S6VSwK4Zzll0auHI0Hwh8WKTJbSn1gxCdF93/rmP"
           # server: ${{ secrets.FTP_HOST }}
           # username: ${{ secrets.FTP_USER }}
