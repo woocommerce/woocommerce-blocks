@@ -31,18 +31,26 @@ jobs:
       - name: Generate ZIP file
         run: npm run package-plugin:deploy
 
-      - name: Push release ZIP to woocommerce/woocommerce-blocks-releases
-        uses: dmnemec/copy_file_to_another_repo_action@main
-        env:
-          API_TOKEN_GITHUB: ${{ secrets.API_TOKEN_GITHUB  }}
+      - name: Transfer ZIP file via FTP
+        uses: SamKirkland/FTP-Deploy-Action@4.3.0
         with:
-          source_file: woocommerce-gutenberg-products-block.zip
-          destination_repo: woocommerce/woocommerce-blocks-releases
-          destination_folder: /
-          destination_branch: trunk
-          user_email: info@nielslange.de
-          user_name: nielslange
-          commit_message: release-${{ github.event.pull_request.number }}
+          server: ${{ secrets.FTP_HOST }}
+          username: ${{ secrets.FTP_USER }}
+          password: ${{ secrets.FTP_PASS }}
+          local-dir: ${{ secrets.FTP_DIR }}
+
+      # - name: Push release ZIP to woocommerce/woocommerce-blocks-releases
+      #   uses: dmnemec/copy_file_to_another_repo_action@main
+      #   env:
+      #     API_TOKEN_GITHUB: ${{ secrets.API_TOKEN_GITHUB  }}
+      #   with:
+      #     source_file: woocommerce-gutenberg-products-block.zip
+      #     destination_repo: woocommerce/woocommerce-blocks-releases
+      #     destination_folder: /
+      #     destination_branch: trunk
+      #     user_email: info@nielslange.de
+      #     user_name: nielslange
+      #     commit_message: release-${{ github.event.pull_request.number }}
 
       # - name: Unzip generated archive
       #   uses: montudor/action-zip@v1
