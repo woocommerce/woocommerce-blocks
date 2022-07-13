@@ -31,22 +31,34 @@ jobs:
       - name: Generate ZIP file
         run: npm run package-plugin:deploy
 
-      - name: Unzip generated archive
-        uses: montudor/action-zip@v1
+      - name: Push release ZIP to woocommerce/woocommerce-blocks-releases
+        uses: dmnemec/copy_file_to_another_repo_action@main
+        env:
+          API_TOKEN_GITHUB: ${{ secrets.API_TOKEN_GITHUB  }}
         with:
-          args: unzip -qq woocommerce-gutenberg-products-block.zip -d woocommerce-gutenberg-products-block
+          source_file: 'woocommerce-gutenberg-products-block.zip'
+          destination_repo: 'woocommerce/woocommerce-blocks-releases'
+          destination_folder: '/'
+          user_email: 'info@nielslange.de'
+          user_name: 'nielslange'
+          commit_message: ${{ github.ref_name }}
 
-      - name: Upload artifact
-        uses: actions/upload-artifact@v3
-        with:
-          name: woocommerce-gutenberg-products-block
-          path: woocommerce-gutenberg-products-block
+      # - name: Unzip generated archive
+      #   uses: montudor/action-zip@v1
+      #   with:
+      #     args: unzip -qq woocommerce-gutenberg-products-block.zip -d woocommerce-gutenberg-products-block
+
+      # - name: Upload artifact
+      #   uses: actions/upload-artifact@v3
+      #   with:
+      #     name: woocommerce-gutenberg-products-block
+      #     path: woocommerce-gutenberg-products-block
 
       # - name: Download artifact
       #   uses: actions/download-artifact@v3
       #   with:
       #     name: woocommerce-gutenberg-products-block
-    
+
       # - name: Show artifact URL
       #   run: echo ${{ env.GITHUB_WORKSPACE }}/woocommerce-gutenberg-products-block.zip
 
@@ -58,15 +70,3 @@ jobs:
       #     body: ''
       #   env:
       #     repository: woocommerce/woocommerce-blocks-releases
-
-      - name: Push release ZIP to woocommerce/woocommerce-blocks-releases
-        uses: dmnemec/copy_file_to_another_repo_action@main
-        env:
-          API_TOKEN_GITHUB: ${{ secrets.Woorelease  }}
-        with:
-          source_file: 'woocommerce-gutenberg-products-block.zip'
-          destination_repo: 'woocommerce/woocommerce-blocks-releases'
-          destination_folder: '/'
-          user_email: 'info@nielslange.de'
-          user_name: 'nielslange'
-          commit_message: ${{ github.ref_name }}
