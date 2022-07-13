@@ -360,22 +360,22 @@ const getFrontConfig = ( options = {} ) => {
 			concatenateModules:
 				isProduction && ! process.env.WP_BUNDLE_ANALYZER,
 			splitChunks: {
+				automaticNameDelimiter: '--',
 				chunks: 'all',
 				cacheGroups: {
-					default: false,
-					vendors: false,
+					defaultVendors: {
+						name: ( module, chunks, cacheGroupKey ) => {
+							const allChunksNames = chunks
+								.map( ( chunk ) => chunk.name )
+								.join( '--' );
+							const prefix =
+								cacheGroupKey === 'defaultVendors'
+									? 'vendor'
+									: cacheGroupKey;
+							return `${ prefix }--${ allChunksNames }`;
+						},
+					},
 				},
-				name: ( module, chunks, cacheGroupKey ) => {
-					const allChunksNames = chunks
-						.map( ( chunk ) => chunk.name )
-						.join( '--' );
-					const prefix =
-						cacheGroupKey === 'defaultVendors'
-							? 'vendors'
-							: cacheGroupKey;
-					return `${ prefix }--${ allChunksNames }`;
-				},
-				automaticNameDelimiter: '--',
 			},
 			minimizer: [
 				new TerserPlugin( {
@@ -478,6 +478,21 @@ const getPaymentsConfig = ( options = {} ) => {
 				isProduction && ! process.env.WP_BUNDLE_ANALYZER,
 			splitChunks: {
 				automaticNameDelimiter: '--',
+				chunks: 'all',
+				cacheGroups: {
+					defaultVendors: {
+						name: ( module, chunks, cacheGroupKey ) => {
+							const allChunksNames = chunks
+								.map( ( chunk ) => chunk.name )
+								.join( '--' );
+							const prefix =
+								cacheGroupKey === 'defaultVendors'
+									? 'vendor'
+									: cacheGroupKey;
+							return `${ prefix }--${ allChunksNames }`;
+						},
+					},
+				},
 			},
 			minimizer: [
 				new TerserPlugin( {
@@ -574,6 +589,21 @@ const getExtensionsConfig = ( options = {} ) => {
 				isProduction && ! process.env.WP_BUNDLE_ANALYZER,
 			splitChunks: {
 				automaticNameDelimiter: '--',
+				chunks: 'all',
+				cacheGroups: {
+					defaultVendors: {
+						name: ( module, chunks, cacheGroupKey ) => {
+							const allChunksNames = chunks
+								.map( ( chunk ) => chunk.name )
+								.join( '--' );
+							const prefix =
+								cacheGroupKey === 'defaultVendors'
+									? 'vendor'
+									: cacheGroupKey;
+							return `${ prefix }--${ allChunksNames }`;
+						},
+					},
+				},
 			},
 			minimizer: [
 				new TerserPlugin( {
