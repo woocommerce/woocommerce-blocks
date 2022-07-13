@@ -359,24 +359,6 @@ const getFrontConfig = ( options = {} ) => {
 		optimization: {
 			concatenateModules:
 				isProduction && ! process.env.WP_BUNDLE_ANALYZER,
-			splitChunks: {
-				automaticNameDelimiter: '--',
-				chunks: 'all',
-				cacheGroups: {
-					defaultVendors: {
-						name: ( module, chunks, cacheGroupKey ) => {
-							const allChunksNames = chunks
-								.map( ( chunk ) => chunk.name )
-								.join( '--' );
-							const prefix =
-								cacheGroupKey === 'defaultVendors'
-									? 'vendor'
-									: cacheGroupKey;
-							return `${ prefix }--${ allChunksNames }`;
-						},
-					},
-				},
-			},
 			minimizer: [
 				new TerserPlugin( {
 					parallel: true,
@@ -476,24 +458,6 @@ const getPaymentsConfig = ( options = {} ) => {
 		optimization: {
 			concatenateModules:
 				isProduction && ! process.env.WP_BUNDLE_ANALYZER,
-			splitChunks: {
-				automaticNameDelimiter: '--',
-				chunks: 'all',
-				cacheGroups: {
-					defaultVendors: {
-						name: ( module, chunks, cacheGroupKey ) => {
-							const allChunksNames = chunks
-								.map( ( chunk ) => chunk.name )
-								.join( '--' );
-							const prefix =
-								cacheGroupKey === 'defaultVendors'
-									? 'vendor'
-									: cacheGroupKey;
-							return `${ prefix }--${ allChunksNames }`;
-						},
-					},
-				},
-			},
 			minimizer: [
 				new TerserPlugin( {
 					parallel: true,
@@ -587,24 +551,6 @@ const getExtensionsConfig = ( options = {} ) => {
 		optimization: {
 			concatenateModules:
 				isProduction && ! process.env.WP_BUNDLE_ANALYZER,
-			splitChunks: {
-				automaticNameDelimiter: '--',
-				chunks: 'all',
-				cacheGroups: {
-					defaultVendors: {
-						name: ( module, chunks, cacheGroupKey ) => {
-							const allChunksNames = chunks
-								.map( ( chunk ) => chunk.name )
-								.join( '--' );
-							const prefix =
-								cacheGroupKey === 'defaultVendors'
-									? 'vendor'
-									: cacheGroupKey;
-							return `${ prefix }--${ allChunksNames }`;
-						},
-					},
-				},
-			},
 			minimizer: [
 				new TerserPlugin( {
 					parallel: true,
