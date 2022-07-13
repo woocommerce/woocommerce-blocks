@@ -131,8 +131,8 @@ class Authentication {
 		/**
 		 * Filters the Store API rate limit check proxy support, which is disabled by default.
 		 *
-		 * If the store is behind a proxy, load balancer, CDN etc, the user can enable this for proper obtaining
-		 * of client's ip address through standard transport headers.
+		 * If the store is behind a proxy, load balancer, CDN etc. the user can enable this to properly obtain
+		 * the client's IP address through standard transport headers.
 		 *
 		 * @param boolean $enable_rate_limit_proxy_support If true, proxy support will be enabled.
 		 *
