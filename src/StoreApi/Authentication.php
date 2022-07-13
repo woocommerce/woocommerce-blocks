@@ -196,7 +196,7 @@ class Authentication {
 		return filter_var(
 			$ip,
 			FILTER_VALIDATE_IP,
-			FILTER_FLAG_NO_RES_RANGE
+			array( FILTER_FLAG_NO_RES_RANGE, FILTER_FLAG_IPV6 )
 		);
 	}
 }

@@ -5,7 +5,10 @@
 
 namespace Automattic\WooCommerce\Blocks\Tests\StoreApi;
 
+use Automattic\WooCommerce\StoreApi\Authentication;
 use Automattic\WooCommerce\StoreApi\Utilities\RateLimits;
+use ReflectionClass;
+use ReflectionException;
 use Spy_REST_Server;
 use WP_REST_Server;
 use WP_Test_REST_TestCase;
@@ -76,5 +79,57 @@ class RateLimitsTests extends WP_Test_REST_TestCase {
 		$this->assertArrayHasKey( 'RateLimit-Retry-After', $spy_rest_server->sent_headers );
 		$this->assertIsInt( $spy_rest_server->sent_headers['RateLimit-Retry-After'] );
 		$this->assertLessThanOrEqual( RateLimits::SECONDS, $spy_rest_server->sent_headers['RateLimit-Retry-After'] );
+	}
+
+	/**
+	 * Tests that get_ip_address() correctly selects the $_SERVER var, parses and return the IP whether
+	 * behind a proxy or not.
+	 *
+	 * @return void
+	 * @throws ReflectionException On failing invoked protected method through reflection class.
+	 */
+	public function test_get_ip_address_method() {
+		$_SERVER = array_merge(
+			$_SERVER,
+			array(
+				'REMOTE_ADDR'          => '76.45.67.100',
+				'HTTP_X_REAL_IP'       => '76.45.67.101',
+				'HTTP_CLIENT_IP'       => '76.45.67.102',
+				'HTTP_X_FORWARDED_FOR' => '76.45.67.103,2001:db8:85a3:8d3:1319:8a2e:370:7348,150.172.238.178',
+				'HTTP_FORWARDED'       => 'for="[2001:0db8:85a3:0000:0000:8a2e:0370:7334]:4711";proto=http;by=203.0.113.43,for=192.0.2.60;proto=https;by=203.0.113.43',
+			)
+		);
+
+		$authentication = new ReflectionClass( Authentication::class );
+		$get_ip_address = $authentication->getMethod( 'get_ip_address' );
+		$get_ip_address->setAccessible( true );
+
+		$this->assertEquals( '76.45.67.100', $get_ip_address->invokeArgs( $authentication, array() ) );
+
+		add_filter( 'woocommerce_store_api_rate_limit_enable_proxy_support', '__return_true' );
+
+		$this->assertEquals( '76.45.67.101', $get_ip_address->invokeArgs( $authentication, array() ) );
+		$_SERVER['HTTP_X_REAL_IP'] = 'invalid_ip_address';
+		$this->assertFalse( $get_ip_address->invokeArgs( $authentication, array() ) );
+
+		unset( $_SERVER['REMOTE_ADDR'] );
+		unset( $_SERVER['HTTP_X_REAL_IP'] );
+		$this->assertEquals( '76.45.67.102', $get_ip_address->invokeArgs( $authentication, array() ) );
+		$_SERVER['HTTP_CLIENT_IP'] = 'invalid_ip_address';
+		$this->assertFalse( $get_ip_address->invokeArgs( $authentication, array() ) );
+
+		unset( $_SERVER['HTTP_CLIENT_IP'] );
+		$this->assertEquals( '76.45.67.103', $get_ip_address->invokeArgs( $authentication, array() ) );
+		$_SERVER['HTTP_X_FORWARDED_FOR'] = 'invalid_ip_address,76.45.67.103';
+		$this->assertFalse( $get_ip_address->invokeArgs( $authentication, array() ) );
+
+		unset( $_SERVER['HTTP_X_FORWARDED_FOR'] );
+		$this->assertEquals( '2001:0db8:85a3:0000:0000:8a2e:0370:7334', $get_ip_address->invokeArgs( $authentication, array() ) );
+		$_SERVER['HTTP_FORWARDED'] = 'for=invalid_ip_address;proto=https;by=203.0.113.43';
+		$this->assertFalse( $get_ip_address->invokeArgs( $authentication, array() ) );
+
+		unset( $_SERVER['HTTP_FORWARDED'] );
+		$this->assertFalse( $get_ip_address->invokeArgs( $authentication, array() ) );
+
 	}
 }
