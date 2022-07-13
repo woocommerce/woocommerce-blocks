@@ -160,12 +160,12 @@ class Authentication {
 			}
 		}
 
-		if ( array_key_exists( 'HTTP_X_FORWARDED', $_SERVER ) ) {
+		if ( array_key_exists( 'HTTP_FORWARDED', $_SERVER ) ) {
 			// Using regex instead of explode() for a smaller code footprint.
 			// Expected format: Forwarded: for=192.0.2.60;proto=http;by=203.0.113.43,for="[2001:db8:cafe::17]:4711"...
 			preg_match(
 				'/(?<=for\=)[^;,]*/i', // We catch everything on the first "for" entry, and validate later.
-				sanitize_text_field( wp_unslash( $_SERVER['HTTP_X_FORWARDED_FOR'] ) ),
+				sanitize_text_field( wp_unslash( $_SERVER['HTTP_FORWARDED'] ) ),
 				$matches
 			);
 
