@@ -79,6 +79,8 @@ export const setAvailablePaymentMethods = (
 ) => {
 	return async ( { dispatch } ) => {
 		// If the currently selected method is not in this new list, then we need to select a new one, or select a default.
+
+		// TODO See if we can stop this being dispatched if the currently selected method is still available.
 		await setDefaultPaymentMethod( paymentMethods );
 		dispatch( {
 			type: ACTION_TYPES.SET_AVAILABLE_PAYMENT_METHODS,
