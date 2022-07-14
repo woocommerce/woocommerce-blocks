@@ -108,7 +108,6 @@ export const checkPaymentMethodsCanPay = async ( express = false ) => {
 					context: noticeContext,
 					id: `wc-${ paymentMethod.paymentMethodId }-registration-error`,
 				} );
-				return false;
 			}
 		}
 	}
