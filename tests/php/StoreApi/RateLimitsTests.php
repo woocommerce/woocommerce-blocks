@@ -101,6 +101,7 @@ class RateLimitsTests extends WP_Test_REST_TestCase {
 		);
 
 		$authentication = new ReflectionClass( Authentication::class );
+		// As the method we're testing is protected, we're using ReflectionClass to set it accessible from the outside.
 		$get_ip_address = $authentication->getMethod( 'get_ip_address' );
 		$get_ip_address->setAccessible( true );
 
