@@ -129,26 +129,12 @@ export const checkPaymentMethodsCanPay = async ( express = false ) => {
 		return true;
 	}
 
-	const {
-		setAvailablePaymentMethods,
-		setAvailableExpressPaymentMethods,
-		setPaymentMethodsInitialized,
-		setExpressPaymentMethodsInitialized,
-	} = dispatch( PAYMENT_METHOD_DATA_STORE_KEY );
+	const { setAvailablePaymentMethods, setAvailableExpressPaymentMethods } =
+		dispatch( PAYMENT_METHOD_DATA_STORE_KEY );
 	if ( express ) {
 		setAvailableExpressPaymentMethods( availablePaymentMethods );
-
-		// Note: Some 4rd party payment methods use the `canMakePayment` callback to initialize / setup.
-		// That's why we track "is initialized" state here.
-		setExpressPaymentMethodsInitialized( true );
-
 		return true;
 	}
 	setAvailablePaymentMethods( availablePaymentMethods );
-
-	// Note: Some 4rd party payment methods use the `canMakePayment` callback to initialize / setup.
-	// That's why we track "is initialized" state here.
-	setPaymentMethodsInitialized( true );
-
 	return true;
 };
