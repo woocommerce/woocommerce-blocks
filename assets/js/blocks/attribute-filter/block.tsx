@@ -210,6 +210,9 @@ const AttributeFilterBlock = ( {
 							count={ blockAttributes.showCounts ? count : null }
 						/>
 					),
+					textLabel: blockAttributes.showCounts
+						? `${ decodeEntities( term.name ) } (${ count })`
+						: decodeEntities( term.name ),
 				};
 			} )
 			.filter( ( option ): option is DisplayOption => !! option );
@@ -609,7 +612,7 @@ const AttributeFilterBlock = ( {
 							const result = displayedOptions.find(
 								( option ) => option.value === value
 							);
-							return result ? result.label : value;
+							return result ? result.textLabel : value;
 						} }
 					/>
 				) : (

@@ -24,4 +24,5 @@ export interface DisplayOption {
 	value: string;
 	name: string;
 	label: JSX.Element;
+	textLabel: string;
 }
