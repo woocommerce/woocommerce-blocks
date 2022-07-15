@@ -19,7 +19,7 @@ if ( process.env.GUTENBERG_EDITOR_CONTEXT ) {
 
 if ( process.env.WORDPRESS_VERSION ) {
 	const wpEnv = JSON.parse( wpEnvRaw );
-	wpEnv.core.version = process.env.WORDPRESS_VERSION;
+	wpEnv.core = process.env.WORDPRESS_VERSION;
 	// We write the new file to .wp-env.override.json (https://developer.wordpress.org/block-editor/reference-guides/packages/packages-env/#wp-env-override-json)
 	fs.writeFileSync(
 		path.join( __dirname, '..', '.wp-env.override.json' ),
