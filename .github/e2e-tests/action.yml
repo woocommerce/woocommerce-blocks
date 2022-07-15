@@ -1,0 +1,92 @@
+name: 'E2E tests'
+description: 'Run E2E tests'
+inputs:
+    WOOCOMMERCE_BLOCKS_PHASE:
+        description: ''
+        required: true
+    GUTENBERG_EDITOR_CONTEXT:
+        description: 'Path to assets file to compare the build assets with.'
+        required: true
+    WORDPRESS_VERSION:
+        description: 'Path to assets file to compare the build assets with.'
+        required: true
+runs:
+    using: 'composite'
+    steps:
+        - uses: actions/checkout@v3
+        - name: Cache node_modules
+          id: cache-node-modules
+          uses: actions/cache@v3
+          env:
+              cache-name: cache-node-modules
+          with:
+              path: node_modules
+              key: ${{ runner.os }}-build-${{ env.cache-name }}-${{ hashFiles('**/package-lock.json') }}
+
+        - name: Setup node version and npm cache
+          uses: actions/setup-node@v3
+          with:
+              node-version-file: '.nvmrc'
+              cache: 'npm'
+
+        - name: Install Node Dependencies
+          shell: bash
+          if: steps.cache-node-modules.outputs.cache-hit != 'true'
+          run: npm ci --no-optional
+
+        - name: Build Assets
+          shell: bash
+          run: FORCE_REDUCED_MOTION=true npm run build:e2e-test
+
+        - name: blocks.ini setup
+          shell: bash
+          run: |
+              echo -e 'woocommerce_blocks_phase = 3\nwoocommerce_blocks_env = tests' > blocks.ini
+        - name: Get Composer Cache Directory
+          shell: bash
+          id: composer-cache
+          run: |
+              echo "::set-output name=dir::$(composer config cache-files-dir)"
+        - uses: actions/cache@v2
+          with:
+              path: ${{ steps.composer-cache.outputs.dir }}
+              key: ${{ runner.os }}-composer-${{ hashFiles('**/composer.lock') }}
+              restore-keys: |
+                  ${{ runner.os }}-composer-
+        - name: Set up PHP
+          uses: shivammathur/setup-php@v2
+          with:
+              php-version: 7.4
+              coverage: none
+              tools: composer
+
+        - name: Composer install
+          shell: bash
+          run: |
+              composer install
+        - name: E2E Tests (WP latest with Gutenberg plugin)
+          shell: bash
+          env:
+              WOOCOMMERCE_BLOCKS_PHASE: ${{ inputs.WOOCOMMERCE_BLOCKS_PHASE }}
+              GUTENBERG_EDITOR_CONTEXT: ${{ inputs.GUTENBERG_EDITOR_CONTEXT }}
+              WORDPRESS_VERSION: ${{ inputs.WORDPRESS_VERSION }}
+          run: |
+              node ./bin/wp-env-with-gutenberg.js
+              npm run wp-env start
+              npm run wp-env:config && npx cross-env NODE_CONFIG_DIR=tests/e2e/config wp-scripts test-e2e --config tests/e2e/config/jest.config.js --listTests > ~/.jest-e2e-tests
+              npx cross-env JEST_PUPPETEER_CONFIG=tests/e2e/config/jest-puppeteer.config.js cross-env NODE_CONFIG_DIR=tests/e2e/config wp-scripts test-e2e --config tests/e2e/config/jest.config.js --runInBand --runTestsByPath $( awk 'NR % 5 == ${{ matrix.part }} - 1' < ~/.jest-e2e-tests )
+
+        - name: Upload artifacts on failure
+          if: ${{ failure() }}
+          uses: actions/upload-artifact@v3
+          with:
+              name: e2e-with-gutenberg-test-report-${{matrix.part}}
+              path: reports/e2e
+
+        - name: Archive flaky tests report
+          uses: actions/upload-artifact@e448a9b857ee2131e752b06002bf0e093c65e571 # v2.2.2
+          if: always()
+          with:
+              name: flaky-tests-report-${{ matrix.part }}
+              path: flaky-tests
+              if-no-files-found: ignore
