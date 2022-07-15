@@ -13,8 +13,14 @@
 		margin-bottom: 0;
 	}
 
-	.components-form-token-field__input-container input[type="text"].components-form-token-field__input {
-		min-height: 30px;
+	.components-form-token-field__input-container {
+		border-radius: 0;
+		box-shadow: none;
+		position: relative;
+
+		input[type="text"].components-form-token-field__input {
+			min-height: 30px;
+		}
 	}
 
 	.components-form-token-field__remove-token {
@@ -22,20 +28,30 @@
 	}
 
 	.components-form-token-field__suggestions-list {
-		border-top: none;
-		margin: 2px -4px -2px;
+		background-color: $white;
+		border: none;
+		left: -1px;
+		margin: 1px 0 0;
+		position: absolute;
+		right: -1px;
+		top: 100%;
+
+		> li {
+			border: 1px solid $gray-600;
+			border-width: 0 1px;
+		}
+
+		> li:last-child {
+			border-width: 0 1px 1px;
+		}
 	}
 
 	.components-form-token-field__suggestion {
 		padding: 8px;
 
-		&:first-child {
-			border-top: 1px solid $gray-600;
-		}
-
 		&.is-selected {
-			background: $gray-300;
-			color: $gray-700;
+			background: $gray-100;
+			color: $gray-800;
 		}
 	}
 
