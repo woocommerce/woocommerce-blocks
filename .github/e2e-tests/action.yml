@@ -64,7 +64,7 @@ runs:
           shell: bash
           run: |
               composer install
-        - name: E2E Tests (WP latest with Gutenberg plugin)
+        - name: E2E Tests
           shell: bash
           env:
               WOOCOMMERCE_BLOCKS_PHASE: ${{ inputs.WOOCOMMERCE_BLOCKS_PHASE }}
