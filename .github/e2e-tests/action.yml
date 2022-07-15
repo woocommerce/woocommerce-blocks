@@ -67,7 +67,7 @@ runs:
         - name: E2E Tests
           shell: bash
           env:
-              WOOCOMMERCE_BLOCKS_PHASE: ${{ inputs.WOOCOMMERCE_BLOCKS_PHASE }}
+              WOOCOMMERCE_BLOCKS_PHASE: 3
               GUTENBERG_EDITOR_CONTEXT: ${{ inputs.GUTENBERG_EDITOR_CONTEXT }}
               WORDPRESS_VERSION: ${{ inputs.WORDPRESS_VERSION }}
           run: |
