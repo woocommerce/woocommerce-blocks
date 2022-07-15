@@ -71,7 +71,7 @@ runs:
               GUTENBERG_EDITOR_CONTEXT: ${{ inputs.GUTENBERG_EDITOR_CONTEXT }}
               WORDPRESS_VERSION: ${{ inputs.WORDPRESS_VERSION }}
           run: |
-              node ./bin/wp-env-with-gutenberg.js
+              node ./bin/setup-wp-env.js
               npm run wp-env start
               npm run wp-env:config && npx cross-env NODE_CONFIG_DIR=tests/e2e/config wp-scripts test-e2e --config tests/e2e/config/jest.config.js --listTests > ~/.jest-e2e-tests
               npx cross-env JEST_PUPPETEER_CONFIG=tests/e2e/config/jest-puppeteer.config.js cross-env NODE_CONFIG_DIR=tests/e2e/config wp-scripts test-e2e --config tests/e2e/config/jest.config.js --runInBand --runTestsByPath $( awk 'NR % 5 == ${{ matrix.part }} - 1' < ~/.jest-e2e-tests )
@@ -80,13 +80,13 @@ runs:
           if: ${{ failure() }}
           uses: actions/upload-artifact@v3
           with:
-              name: e2e-with-gutenberg-test-report-${{matrix.part}}
+              name: e2e-test-report-${{matrix.part}}-${{ inputs.WORDPRESS_VERSION }}-${{ inputs.GUTENBERG_EDITOR_CONTEXT }}
               path: reports/e2e
 
         - name: Archive flaky tests report
           uses: actions/upload-artifact@e448a9b857ee2131e752b06002bf0e093c65e571 # v2.2.2
           if: always()
           with:
-              name: flaky-tests-report-${{ matrix.part }}
+              name: flaky-tests-report-${{ matrix.part }}-${{ inputs.WORDPRESS_VERSION }}-${{ inputs.GUTENBERG_EDITOR_CONTEXT }}
               path: flaky-tests
               if-no-files-found: ignore
