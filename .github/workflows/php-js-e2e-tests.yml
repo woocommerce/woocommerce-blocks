@@ -18,7 +18,7 @@ jobs:
 
             - uses: ./.github/e2e-tests
               with:
-                  WOOCOMMERCE_BLOCKS_PHASE: '3'
+                  WOOCOMMERCE_BLOCKS_PHASE: 3
                   GUTENBERG_EDITOR_CONTEXT: 'gutenberg'
                   WORDPRESS_VERSION: ''
 
@@ -34,25 +34,9 @@ jobs:
 
             - uses: ./.github/e2e-tests
               with:
-                  WOOCOMMERCE_BLOCKS_PHASE: '3'
+                  WOOCOMMERCE_BLOCKS_PHASE: 3
                   GUTENBERG_EDITOR_CONTEXT: ''
                   WORDPRESS_VERSION: ''
-
-    JSE2EPreviousWordPressWithGutenberg:
-        strategy:
-            fail-fast: false
-            matrix:
-                part: [1, 2, 3, 4, 5]
-        name: JavaScript E2E Tests (WP 5.9 with Gutenberg plugin)
-        runs-on: ubuntu-latest
-        steps:
-            - uses: actions/checkout@v3
-
-            - uses: ./.github/e2e-tests
-              with:
-                  WOOCOMMERCE_BLOCKS_PHASE: '3'
-                  GUTENBERG_EDITOR_CONTEXT: 'gutenberg'
-                  WORDPRESS_VERSION: '5.9'
 
     JSE2EPrevious:
         strategy:
@@ -66,25 +50,9 @@ jobs:
 
             - uses: ./.github/e2e-tests
               with:
-                  WOOCOMMERCE_BLOCKS_PHASE: '3'
+                  WOOCOMMERCE_BLOCKS_PHASE: 3
                   GUTENBERG_EDITOR_CONTEXT: ''
                   WORDPRESS_VERSION: '5.9'
-
-    JSE2EMinimiumWordPressWithGutenberg:
-        strategy:
-            fail-fast: false
-            matrix:
-                part: [1, 2, 3, 4, 5]
-        name: JavaScript E2E Tests (WP 5.8 with Gutenberg plugin)
-        runs-on: ubuntu-latest
-        steps:
-            - uses: actions/checkout@v3
-
-            - uses: ./.github/e2e-tests
-              with:
-                  WOOCOMMERCE_BLOCKS_PHASE: '3'
-                  GUTENBERG_EDITOR_CONTEXT: 'gutenberg'
-                  WORDPRESS_VERSION: '5.8'
 
     JSE2EMinimiumWordPress:
         strategy:
@@ -98,6 +66,6 @@ jobs:
 
             - uses: ./.github/e2e-tests
               with:
-                  WOOCOMMERCE_BLOCKS_PHASE: '3'
+                  WOOCOMMERCE_BLOCKS_PHASE: 3
                   GUTENBERG_EDITOR_CONTEXT: ''
                   WORDPRESS_VERSION: '5.8'
