@@ -357,6 +357,7 @@ const getFrontConfig = ( options = {} ) => {
 			],
 		},
 		optimization: {
+			usedExports: false,
 			concatenateModules:
 				isProduction && ! process.env.WP_BUNDLE_ANALYZER,
 			minimizer: [
