@@ -118,7 +118,7 @@ abstract class AbstractCartRoute extends AbstractRoute {
 		$response->header( 'Nonce', $nonce );
 		$response->header( 'Nonce-Timestamp', time() );
 		$response->header( 'User-ID', get_current_user_id() );
-		$response->header( 'Cart-Token', $this->get_cart_token( wc()->session->get_customer_id() ) );
+		$response->header( 'Cart-Token', $this->get_cart_token() );
 
 		// The following headers are deprecated and should be removed in a future version.
 		$response->header( 'X-WC-Store-API-Nonce', $nonce );
@@ -151,14 +151,13 @@ abstract class AbstractCartRoute extends AbstractRoute {
 	 * Generates a cart token for the response headers.
 	 *
 	 * Current namespace is used as the token Issuer.
-	 *
-	 * @param string $customer_id Session (customer ID) for the token.
+	 * *
 	 *
 	 * @return string
 	 */
-	protected function get_cart_token( $customer_id ) {
+	protected function get_cart_token() {
 		return JsonWebToken::create(
-			$customer_id,
+			wc()->session->get_customer_id(),
 			$this->get_cart_token_secret(),
 			$this->get_cart_token_expiration(),
 			$this->namespace
