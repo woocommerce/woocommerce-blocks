@@ -52,7 +52,7 @@ jobs:
               with:
                   WOOCOMMERCE_BLOCKS_PHASE: '3'
                   GUTENBERG_EDITOR_CONTEXT: 'gutenberg'
-                  WORDPRESS_VERSION: 5.9''
+                  WORDPRESS_VERSION: '5.9'
 
     JSE2EPrevious:
         strategy:
