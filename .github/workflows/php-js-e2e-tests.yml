@@ -91,7 +91,7 @@ jobs:
             fail-fast: false
             matrix:
                 part: [1, 2, 3, 4, 5]
-        name: JavaScript E2E Tests (WP latest)
+        name: JavaScript E2E Tests (WP 5.8)
         runs-on: ubuntu-latest
         steps:
             - uses: actions/checkout@v3
