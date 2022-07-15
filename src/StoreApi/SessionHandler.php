@@ -40,10 +40,12 @@ final class SessionHandler extends \WC_Session {
 
 	/**
 	 * Constructor for the session class.
+	 *
+	 * @param string $token Optional:A JWT token with session information.
 	 */
-	public function __construct() {
-		$headers             = getallheaders();
-		$this->token         = $headers['Cart-Token'] ?? '';
+	public function __construct( $token = '' ) {
+		$headers             = function_exists( 'getallheaders' ) ? getallheaders() : [];
+		$this->token         = $headers['Cart-Token'] ?? $token;
 		$this->session_table = $GLOBALS['wpdb']->prefix . 'woocommerce_sessions';
 	}
 
@@ -59,7 +61,8 @@ final class SessionHandler extends \WC_Session {
 	 */
 	protected function init_session_from_token() {
 		if ( $this->token && JsonWebToken::validate( $this->token, '@' . wp_salt() ) ) {
-			$payload                   = JsonWebToken::get_parts( $this->token )['payload'];
+			$payload = JsonWebToken::get_parts( $this->token )['payload'];
+
 			$this->has_token           = true;
 			$this->_customer_id        = $payload->user_id;
 			$this->_session_expiration = $payload->exp;

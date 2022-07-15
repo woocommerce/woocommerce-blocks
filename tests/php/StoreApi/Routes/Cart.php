@@ -7,6 +7,10 @@ namespace Automattic\WooCommerce\Blocks\Tests\StoreApi\Routes;
 
 use Automattic\WooCommerce\Blocks\Tests\Helpers\FixtureData;
 use Automattic\WooCommerce\Blocks\Tests\Helpers\ValidateSchema;
+use Automattic\WooCommerce\StoreApi\SessionHandler;
+use Automattic\WooCommerce\StoreApi\Utilities\JsonWebToken;
+use Spy_REST_Server;
+use WP_REST_Server;
 
 /**
  * Cart Controller Tests.
@@ -87,7 +91,7 @@ class Cart extends ControllerTestCase {
 				'needs_payment'  => true,
 				'needs_shipping' => true,
 				'items_weight'   => '30',
-				'items'          => function( $value ) {
+				'items'          => function ( $value ) {
 					return count( $value ) === 2;
 				},
 				'cross_sells'    => array(
@@ -155,7 +159,7 @@ class Cart extends ControllerTestCase {
 			200,
 			array(
 				'items_count'  => 1,
-				'items'        => function( $value ) {
+				'items'        => function ( $value ) {
 					return count( $value ) === 1;
 				},
 				'items_weight' => '10',
@@ -221,7 +225,13 @@ class Cart extends ControllerTestCase {
 		$action_callback = \Mockery::mock( 'ActionCallback' );
 		$action_callback->shouldReceive( 'do_customer_callback' )->once();
 
-		add_action( 'woocommerce_store_api_cart_update_customer_from_request', array( $action_callback, 'do_customer_callback' ) );
+		add_action(
+			'woocommerce_store_api_cart_update_customer_from_request',
+			array(
+				$action_callback,
+				'do_customer_callback',
+			)
+		);
 
 		$this->assertAPIResponse(
 			$request,
@@ -242,7 +252,13 @@ class Cart extends ControllerTestCase {
 			)
 		);
 
-		remove_action( 'woocommerce_store_api_cart_update_customer_from_request', array( $action_callback, 'do_customer_callback' ) );
+		remove_action(
+			'woocommerce_store_api_cart_update_customer_from_request',
+			array(
+				$action_callback,
+				'do_customer_callback',
+			)
+		);
 	}
 
 	/**
@@ -509,4 +525,54 @@ class Cart extends ControllerTestCase {
 		$diff = $validate->get_diff_from_object( $response->get_data() );
 		$this->assertEmpty( $diff );
 	}
+
+	/**
+	 * Tests for Cart-Token header presence and validity.
+	 */
+	public function test_cart_token_header() {
+
+		/** @var Spy_REST_Server $server */
+		$server = rest_get_server();
+
+		$server->serve_request( '/wc/store/cart' );
+
+		$this->assertArrayHasKey( 'Cart-Token', $server->sent_headers );
+
+		$this->assertTrue(
+			JsonWebToken::validate(
+				$server->sent_headers['Cart-Token'],
+				'@' . wp_salt()
+			)
+		);
+	}
+
+	/**
+	 * Tests that an unauthenticated request with a valid Cart-Token retrieves correct cart contents.
+	 */
+	public function test_cart_token_retrieves_cart_items() {
+		wc_empty_cart();
+
+		$request = new \WP_REST_Request( 'GET', '/wc/store/cart' );
+		$this->assertAPIResponse( $request, 200, array( 'items_count' => 0 ) );
+
+		wc()->cart->add_to_cart( $this->products[0]->get_id(), 2 );
+		$this->assertAPIResponse( $request, 200, array( 'items_count' => 2 ) );
+
+		/** @var Spy_REST_Server $spy_rest_server */
+		$spy_rest_server = rest_get_server();
+		$spy_rest_server->serve_request( '/wc/store/cart' );
+
+		$this->assertArrayHasKey( 'Cart-Token', $spy_rest_server->sent_headers );
+		$cart_token = $spy_rest_server->sent_headers['Cart-Token'];
+
+		wc_empty_cart();
+
+		$this->assertAPIResponse( $request, 200, array( 'items_count' => 0 ) );
+
+		wc()->session = new SessionHandler( $cart_token );
+		wc()->initialize_session();
+
+		$this->assertAPIResponse( $request, 200, array( 'items_count' => 2 ) );
+	}
+
 }
