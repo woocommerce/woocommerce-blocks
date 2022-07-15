@@ -18,6 +18,10 @@
 		}
 	},
 	"attributes": {
+		"className": {
+			"type": "string",
+			"default": ""
+		},
 		"attributeId": {
 			"type": "number",
 			"default": 0
@@ -41,6 +45,10 @@
 		"showFilterButton": {
 			"type": "boolean",
 			"default": false
+		},
+		"selectType": {
+			"type": "string",
+			"default": "multiple" 
 		},
 		"isPreview": {
 			"type": "boolean",

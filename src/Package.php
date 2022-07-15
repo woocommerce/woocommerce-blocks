@@ -106,7 +106,7 @@ class Package {
 				NewPackage::class,
 				function ( $container ) {
 					// leave for automated version bumping.
-					$version = '7.9.0-dev';
+					$version = '8.1.0-dev';
 					return new NewPackage(
 						$version,
 						dirname( __DIR__ ),
@@ -120,6 +120,14 @@ class Package {
 				function ( $container ) {
 					return new Bootstrap(
 						$container
+					);
+				}
+			);
+			// register Bootstrap.
+			$container->register(
+				Migration::class,
+				function () {
+					return new Migration(
 					);
 				}
 			);

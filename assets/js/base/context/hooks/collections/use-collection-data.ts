@@ -5,6 +5,7 @@ import { useState, useEffect, useMemo } from '@wordpress/element';
 import { useDebounce } from 'use-debounce';
 import { sortBy } from 'lodash';
 import { useShallowEqual } from '@woocommerce/base-hooks';
+import { objectHasProp } from '@woocommerce/types';
 
 /**
  * Internal dependencies
@@ -57,14 +58,10 @@ export const useCollectionData = ( {
 	context = `${ context }-collection-data`;
 
 	const [ collectionDataQueryState ] = useQueryStateByContext( context );
-	const [
-		calculateAttributesQueryState,
-		setCalculateAttributesQueryState,
-	] = useQueryStateByKey( 'calculate_attribute_counts', [], context );
-	const [
-		calculatePriceRangeQueryState,
-		setCalculatePriceRangeQueryState,
-	] = useQueryStateByKey( 'calculate_price_range', null, context );
+	const [ calculateAttributesQueryState, setCalculateAttributesQueryState ] =
+		useQueryStateByKey( 'calculate_attribute_counts', [], context );
+	const [ calculatePriceRangeQueryState, setCalculatePriceRangeQueryState ] =
+		useQueryStateByKey( 'calculate_price_range', null, context );
 	const [
 		calculateStockStatusQueryState,
 		setCalculateStockStatusQueryState,
@@ -82,6 +79,7 @@ export const useCollectionData = ( {
 			const foundAttribute = calculateAttributesQueryState.find(
 				( attribute ) => {
 					return (
+						objectHasProp( currentQueryAttribute, 'taxonomy' ) &&
 						attribute.taxonomy === currentQueryAttribute.taxonomy
 					);
 				}

@@ -1,6 +1,7 @@
 <?php
 namespace Automattic\WooCommerce\Blocks;
 
+use Automattic\WooCommerce\Blocks\Domain\Package;
 use Automattic\WooCommerce\Blocks\Utils\BlockTemplateUtils;
 
 /**
@@ -9,6 +10,13 @@ use Automattic\WooCommerce\Blocks\Utils\BlockTemplateUtils;
  * @internal
  */
 class BlockTemplatesController {
+
+	/**
+	 * Holds the Package instance
+	 *
+	 * @var Package
+	 */
+	private $package;
 
 	/**
 	 * Holds the path for the directory where the block templates will be kept.
@@ -33,8 +41,12 @@ class BlockTemplatesController {
 
 	/**
 	 * Constructor.
+	 *
+	 * @param Package $package An instance of Package.
 	 */
-	public function __construct() {
+	public function __construct( Package $package ) {
+		$this->package = $package;
+
 		// This feature is gated for WooCommerce versions 6.0.0 and above.
 		if ( defined( 'WC_VERSION' ) && version_compare( WC_VERSION, '6.0.0', '>=' ) ) {
 			$root_path                      = plugin_dir_path( __DIR__ ) . self::TEMPLATES_ROOT_DIR . DIRECTORY_SEPARATOR;
@@ -52,6 +64,30 @@ class BlockTemplatesController {
 		add_filter( 'pre_get_block_file_template', array( $this, 'get_block_file_template' ), 10, 3 );
 		add_filter( 'get_block_templates', array( $this, 'add_block_templates' ), 10, 3 );
 		add_filter( 'current_theme_supports-block-templates', array( $this, 'remove_block_template_support_for_shop_page' ) );
+
+		if ( $this->package->is_experimental_build() ) {
+			add_action( 'after_switch_theme', array( $this, 'check_should_use_blockified_product_grid_templates' ), 10, 2 );
+		}
+	}
+
+	/**
+	 * Checks the old and current themes and determines if the "wc_blocks_use_blockified_product_grid_block_as_template"
+	 * option need to be updated accordingly.
+	 *
+	 * @param string    $old_name Old theme name.
+	 * @param \WP_Theme $old_theme Instance of the old theme.
+	 * @return void
+	 */
+	public function check_should_use_blockified_product_grid_templates( $old_name, $old_theme ) {
+		if ( ! wc_current_theme_is_fse_theme() ) {
+			update_option( Options::WC_BLOCK_USE_BLOCKIFIED_PRODUCT_GRID_BLOCK_AS_TEMPLATE, wc_bool_to_string( false ) );
+			return;
+		}
+
+		if ( ! $old_theme->is_block_theme() && wc_current_theme_is_fse_theme() ) {
+			update_option( Options::WC_BLOCK_USE_BLOCKIFIED_PRODUCT_GRID_BLOCK_AS_TEMPLATE, wc_bool_to_string( true ) );
+			return;
+		}
 	}
 
 	/**
@@ -160,8 +196,9 @@ class BlockTemplatesController {
 			if ( 'custom' !== $template_file->source ) {
 				$template = BlockTemplateUtils::build_template_result_from_file( $template_file, $template_type );
 			} else {
-				$template_file->title = BlockTemplateUtils::convert_slug_to_title( $template_file->slug );
-				$query_result[]       = $template_file;
+				$template_file->title       = BlockTemplateUtils::get_block_template_title( $template_file->slug );
+				$template_file->description = BlockTemplateUtils::get_block_template_description( $template_file->slug );
+				$query_result[]             = $template_file;
 				continue;
 			}
 
@@ -183,6 +220,28 @@ class BlockTemplatesController {
 		// We need to remove theme (i.e. filesystem) templates that have the same slug as a customised one.
 		// This only affects saved templates that were saved BEFORE a theme template with the same slug was added.
 		$query_result = BlockTemplateUtils::remove_theme_templates_with_custom_alternative( $query_result );
+
+		/**
+		 * WC templates from theme aren't included in `$this->get_block_templates()` but are handled by Gutenberg.
+		 * We need to do additional search through all templates file to update title and description for WC
+		 * templates that aren't listed in theme.json.
+		 */
+		$query_result = array_map(
+			function( $template ) {
+				if ( 'theme' === $template->origin ) {
+					return $template;
+				}
+				if ( $template->title === $template->slug ) {
+					$template->title = BlockTemplateUtils::get_block_template_title( $template->slug );
+				}
+				if ( ! $template->description ) {
+					$template->description = BlockTemplateUtils::get_block_template_description( $template->slug );
+				}
+				return $template;
+			},
+			$query_result
+		);
+
 		return $query_result;
 	}
 
@@ -239,6 +298,14 @@ class BlockTemplatesController {
 		$templates      = array();
 
 		foreach ( $template_files as $template_file ) {
+			// Skip the template if it's blockified, and we should only use classic ones.
+			// Until the blockified Product Grid Block is implemented, we need to always skip the blockified templates.
+			if ( // $this->package->is_experimental_build() &&
+				// ! BlockTemplateUtils::should_use_blockified_product_grid_templates() &&
+				strpos( $template_file, 'blockified' ) !== false ) {
+				continue;
+			}
+
 			$template_slug = BlockTemplateUtils::generate_template_slug_from_path( $template_file );
 
 			// This template does not have a slug we're looking for. Skip it.
@@ -304,6 +371,12 @@ class BlockTemplatesController {
 		if ( 'wp_template_part' === $template_type ) {
 			return $this->template_parts_directory;
 		}
+
+		// When the blockified Product Grid Block will be implemented, we need to use the blockified templates.
+		// if ( $this->package->is_experimental_build() && BlockTemplateUtils::should_use_blockified_product_grid_templates() ) {
+		// return $this->templates_directory . '/blockified';
+		// }.
+
 		return $this->templates_directory;
 	}
 
@@ -386,5 +459,4 @@ class BlockTemplatesController {
 
 		return $is_support;
 	}
-
 }

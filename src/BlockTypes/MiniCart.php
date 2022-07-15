@@ -199,8 +199,7 @@ class MiniCart extends AbstractBlock {
 
 		if (
 			current_user_can( 'edit_theme_options' ) &&
-			function_exists( 'wp_is_block_theme' ) &&
-			wp_is_block_theme()
+			wc_current_theme_is_fse_theme()
 		) {
 			$theme_slug      = BlockTemplateUtils::theme_has_template_part( 'mini-cart' ) ? wp_get_theme()->get_stylesheet() : BlockTemplateUtils::PLUGIN_SLUG;
 			$site_editor_uri = admin_url( 'site-editor.php' );
@@ -277,8 +276,11 @@ class MiniCart extends AbstractBlock {
 		if ( ! $script->src ) {
 			return;
 		}
+
+		$site_url = site_url() ?? wp_guess_url();
+
 		$this->scripts_to_lazy_load[ $script->handle ] = array(
-			'src'          => $script->src,
+			'src'          => preg_match( '|^(https?:)?//|', $script->src ) ? $script->src : $site_url . $script->src,
 			'version'      => $script->ver,
 			'before'       => $wp_scripts->print_inline_script( $script->handle, 'before', false ),
 			'after'        => $wp_scripts->print_inline_script( $script->handle, 'after', false ),

@@ -19,6 +19,7 @@ import {
 	openBlockEditorSettings,
 	saveTemplate,
 	useTheme,
+	waitForAllProductsBlockLoaded,
 	waitForCanvas,
 } from '../../utils';
 
@@ -42,11 +43,6 @@ const block = {
 };
 
 const { selectors } = block;
-
-const waitForAllProductsBlockLoaded = () =>
-	page.waitForSelector( selectors.frontend.productsList + '.is-loading', {
-		hidden: true,
-	} );
 
 const goToShopPage = () =>
 	page.goto( BASE_URL + '/shop', {
@@ -130,13 +126,8 @@ describe( `${ block.name } Block`, () => {
 			} );
 
 			expect( isRefreshed ).not.toBeCalled();
-
-			await Promise.all( [
-				page.waitForNavigation( {
-					waitUntil: 'networkidle0',
-				} ),
-				page.click( selectors.frontend.filter ),
-			] );
+			await page.click( selectors.frontend.filter );
+			await page.waitForNetworkIdle();
 
 			const products = await page.$$(
 				selectors.frontend.classicProductsList
