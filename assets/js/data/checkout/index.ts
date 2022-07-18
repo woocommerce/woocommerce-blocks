@@ -32,22 +32,21 @@ export const config = {
 const store = createReduxStore( STORE_KEY, config );
 register( store );
 
-subscribe( async () => {
-	await checkPaymentMethodsCanPay();
-	await checkPaymentMethodsCanPay( true );
-} );
+const isEditor = !! wpDataSelect( 'core/editor' );
 
-const unsubscribeInitializePaymentMethodDataStore = subscribe( async () => {
-	const cartLoaded =
-		wpDataSelect( STORE_KEY ).hasFinishedResolution( 'getCartTotals' );
-	const isEditor = !! wpDataSelect( 'core/editor' );
-	if ( cartLoaded || isEditor ) {
+if ( isEditor ) {
+	subscribe( async () => {
+		await checkPaymentMethodsCanPay();
+		await checkPaymentMethodsCanPay( true );
+	} );
+
+	const unsubscribeInitializePaymentMethodDataStore = subscribe( async () => {
 		wpDataDispatch(
 			'wc/store/payment-methods'
 		).initializePaymentMethodDataStore();
 		unsubscribeInitializePaymentMethodDataStore();
-	}
-} );
+	} );
+}
 
 export const CHECKOUT_STORE_KEY = STORE_KEY;
 declare module '@wordpress/data' {
