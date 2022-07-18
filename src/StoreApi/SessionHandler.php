@@ -9,7 +9,7 @@ defined( 'ABSPATH' ) || exit;
 /**
  * SessionHandler class
  */
-final class SessionHandler extends \WC_Session {
+final class SessionHandler extends \WC_Session_Handler {
 	/**
 	 * Token from HTTP headers.
 	 *
