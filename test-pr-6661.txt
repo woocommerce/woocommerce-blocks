@@ -1,0 +1,1 @@
+This is a plan text file for testing https://github.com/woocommerce/woocommerce-blocks/pull/6661.
