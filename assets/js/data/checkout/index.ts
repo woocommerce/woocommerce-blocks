@@ -40,7 +40,8 @@ subscribe( async () => {
 const unsubscribeInitializePaymentMethodDataStore = subscribe( async () => {
 	const cartLoaded =
 		wpDataSelect( STORE_KEY ).hasFinishedResolution( 'getCartTotals' );
-	if ( cartLoaded ) {
+	const isEditor = !! wpDataSelect( 'core/editor' );
+	if ( cartLoaded || isEditor ) {
 		wpDataDispatch(
 			'wc/store/payment-methods'
 		).initializePaymentMethodDataStore();
