@@ -9,7 +9,7 @@
  * Text Domain:  woo-gutenberg-products-block
  * Requires at least: 6.0
  * Requires PHP: 7.0
- * WC requires at least: 6.4
+ * WC requires at least: 6.5
  * WC tested up to: 6.6
  *
  * @package WooCommerce\Blocks
@@ -18,7 +18,7 @@
 
 defined( 'ABSPATH' ) || exit;
 
-$minimum_wp_version = '5.9';
+$minimum_wp_version = '6.0';
 
 if ( ! defined( 'WC_BLOCKS_IS_FEATURE_PLUGIN' ) ) {
 	define( 'WC_BLOCKS_IS_FEATURE_PLUGIN', true );
