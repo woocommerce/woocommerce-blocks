@@ -67,7 +67,7 @@ export const useForcedLayout = ( {
 			insertBlock( newBlock, position, clientId, false );
 			setForcedBlocksInserted( forcedBlocksInserted + 1 );
 		},
-		[ clientId, insertBlock ]
+		[ clientId, insertBlock, forcedBlocksInserted ]
 	);
 
 	const lockedBlockTypes = useMemo(
