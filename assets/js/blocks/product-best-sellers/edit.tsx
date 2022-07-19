@@ -8,7 +8,7 @@ import { useBlockProps } from '@wordpress/block-editor';
  */
 import { ProductBestSellersBlock } from './block';
 
-export const Edit = ( props: unknown ): JSX.Element => {
+export const Edit = ( props: unknown & Props ): JSX.Element => {
 	const blockProps = useBlockProps();
 
 	return (
