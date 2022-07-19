@@ -19,6 +19,7 @@ export interface Props {
 	placeholder?: string;
 	onChange: ( value: string[] ) => void;
 	displayTransform?: ( value: string ) => string | JSX.Element;
+	messages?: Record< string, string >;
 }
 
 const FormTokenField = ( {
@@ -31,6 +32,7 @@ const FormTokenField = ( {
 	placeholder,
 	onChange,
 	displayTransform,
+	messages = {},
 }: Props ) => {
 	return (
 		<div
@@ -54,6 +56,7 @@ const FormTokenField = ( {
 				onChange={ onChange }
 				value={ value }
 				displayTransform={ displayTransform }
+				messages={ messages }
 			/>
 		</div>
 	);

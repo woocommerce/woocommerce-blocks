@@ -2,7 +2,6 @@
  * External dependencies
  */
 import { __, sprintf } from '@wordpress/i18n';
-import { speak } from '@wordpress/a11y';
 import { usePrevious, useShallowEqual } from '@woocommerce/base-hooks';
 import {
 	useCollection,
@@ -376,75 +375,11 @@ const AttributeFilterBlock = ( {
 	 */
 	const onChange = useCallback(
 		( checkedValue ) => {
-			const getFilterNameFromValue = ( filterValue: string ) => {
-				const result = displayedOptions.find(
-					( option ) => option.value === filterValue
-				);
-
-				if ( result ) {
-					return result.name;
-				}
-			};
-
-			const announceFilterChange = ( {
-				filterAdded,
-				filterRemoved,
-			}: {
-				filterAdded?: string | null;
-				filterRemoved?: string | null;
-			} ) => {
-				const filterAddedName = filterAdded
-					? getFilterNameFromValue( filterAdded )
-					: null;
-				const filterRemovedName = filterRemoved
-					? getFilterNameFromValue( filterRemoved )
-					: null;
-				if ( filterAddedName && filterRemovedName ) {
-					speak(
-						sprintf(
-							/* translators: %1$s and %2$s are attribute terms (for example: 'red', 'blue', 'large'...). */
-							__(
-								'%1$s filter replaced with %2$s.',
-								'woo-gutenberg-products-block'
-							),
-							filterAddedName,
-							filterRemovedName
-						)
-					);
-				} else if ( filterAddedName ) {
-					speak(
-						sprintf(
-							/* translators: %s attribute term (for example: 'red', 'blue', 'large'...) */
-							__(
-								'%s filter added.',
-								'woo-gutenberg-products-block'
-							),
-							filterAddedName
-						)
-					);
-				} else if ( filterRemovedName ) {
-					speak(
-						sprintf(
-							/* translators: %s attribute term (for example: 'red', 'blue', 'large'...) */
-							__(
-								'%s filter removed.',
-								'woo-gutenberg-products-block'
-							),
-							filterRemovedName
-						)
-					);
-				}
-			};
-
 			const previouslyChecked = checked.includes( checkedValue );
 			let newChecked;
 
 			if ( ! multiple ) {
 				newChecked = previouslyChecked ? [] : [ checkedValue ];
-				const filterAdded = previouslyChecked ? null : checkedValue;
-				const filterRemoved =
-					checked.length === 1 ? checked[ 0 ] : null;
-				announceFilterChange( { filterAdded, filterRemoved } );
 			} else {
 				newChecked = checked.filter(
 					( value ) => value !== checkedValue
@@ -453,15 +388,12 @@ const AttributeFilterBlock = ( {
 				if ( ! previouslyChecked ) {
 					newChecked.push( checkedValue );
 					newChecked.sort();
-					announceFilterChange( { filterAdded: checkedValue } );
-				} else {
-					announceFilterChange( { filterRemoved: checkedValue } );
 				}
 			}
 
 			updateCheckedFilters( newChecked );
 		},
-		[ checked, displayedOptions, multiple, updateCheckedFilters ]
+		[ checked, multiple, updateCheckedFilters ]
 	);
 
 	/**
@@ -613,6 +545,40 @@ const AttributeFilterBlock = ( {
 								( option ) => option.value === value
 							);
 							return result ? result.textLabel : value;
+						} }
+						messages={ {
+							added: sprintf(
+								/* translators: %s is the attribute label. */
+								__(
+									'%s filter added.',
+									'woo-gutenberg-products-block'
+								),
+								attributeObject.label
+							),
+							removed: sprintf(
+								/* translators: %s is the attribute label. */
+								__(
+									'%s filter removed.',
+									'woo-gutenberg-products-block'
+								),
+								attributeObject.label
+							),
+							remove: sprintf(
+								/* translators: %s is the attribute label. */
+								__(
+									'Remove %s filter.',
+									'woo-gutenberg-products-block'
+								),
+								attributeObject.label.toLocaleLowerCase()
+							),
+							__experimentalInvalid: sprintf(
+								/* translators: %s is the attribute label. */
+								__(
+									'Invalid %s filter.',
+									'woo-gutenberg-products-block'
+								),
+								attributeObject.label.toLocaleLowerCase()
+							),
 						} }
 					/>
 				) : (
