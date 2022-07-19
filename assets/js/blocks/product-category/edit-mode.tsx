@@ -9,13 +9,13 @@ import ProductCategoryControl from '@woocommerce/editor-components/product-categ
 /**
  * Internal dependencies
  */
-import { Props } from './types';
+import { Attributes, Props } from './types';
 
 export interface EditModeProps extends Props {
 	isEditing: boolean;
 	setIsEditing: ( isEditing: boolean ) => void;
-	changedAttributes: object;
-	setChangedAttributes: ( changedAttributes: object ) => void;
+	changedAttributes: Partial< Attributes >;
+	setChangedAttributes: ( changedAttributes: Partial< Attributes > ) => void;
 }
 
 export const ProductsByCategoryEditMode = (

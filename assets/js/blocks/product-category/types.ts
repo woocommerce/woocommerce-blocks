@@ -1,4 +1,4 @@
-interface Attributes {
+export interface Attributes {
 	columns: number;
 	rows: number;
 	alignButtons: boolean;

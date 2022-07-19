@@ -14,7 +14,7 @@ import { __ } from '@wordpress/i18n';
  * Internal dependencies
  */
 import { ProductByCategoryBlock } from './block';
-import { Props } from './types';
+import { Attributes, Props } from './types';
 import { ProductsByCategoryInspectorControls } from './inspector-controls';
 import { ProductsByCategoryEditMode } from './edit-mode';
 
@@ -27,7 +27,9 @@ const EditBlock = ( props: Props ): JSX.Element => {
 		! attributes.categories.length
 	);
 
-	const [ changedAttributes, setChangedAttributes ] = useState( {} );
+	const [ changedAttributes, setChangedAttributes ] = useState<
+		Partial< Attributes >
+	>( {} );
 
 	return (
 		<div { ...blockProps }>

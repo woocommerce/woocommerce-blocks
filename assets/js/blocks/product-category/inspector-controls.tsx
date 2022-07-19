@@ -14,11 +14,11 @@ import ProductStockControl from '@woocommerce/editor-components/product-stock-co
 /**
  * Internal dependencies
  */
-import { Props } from './types';
+import { Attributes, Props } from './types';
 
 export interface InspectorControlsProps extends Props {
 	isEditing: boolean;
-	setChangedAttributes: ( changedAttributes: object ) => void;
+	setChangedAttributes: ( changedAttributes: Partial< Attributes > ) => void;
 }
 
 export const ProductsByCategoryInspectorControls = (
