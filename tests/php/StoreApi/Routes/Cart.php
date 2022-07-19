@@ -10,7 +10,6 @@ use Automattic\WooCommerce\Blocks\Tests\Helpers\ValidateSchema;
 use Automattic\WooCommerce\StoreApi\SessionHandler;
 use Automattic\WooCommerce\StoreApi\Utilities\JsonWebToken;
 use Spy_REST_Server;
-use WP_REST_Server;
 
 /**
  * Cart Controller Tests.
@@ -547,32 +546,71 @@ class Cart extends ControllerTestCase {
 	}
 
 	/**
+	 * @group arromba
 	 * Tests that an unauthenticated request with a valid Cart-Token retrieves correct cart contents.
 	 */
 	public function test_cart_token_retrieves_cart_items() {
 		wc_empty_cart();
 
+		$batch = new \WP_REST_Request( 'POST', '/wc/store/v1/batch' );
+		$batch->set_header( 'Nonce', wp_create_nonce( 'wc_store_api' ) );
+		$batch->set_body_params(
+			array(
+				'requests' => array(
+					array(
+						'method'  => 'POST',
+						'path'    => '/wc/store/v1/cart/add-item',
+						'body'    => array(
+							'id'       => $this->products[0]->get_id(),
+							'quantity' => 1,
+						),
+						'headers' => array(
+							'Nonce' => wp_create_nonce( 'wc_store_api' ),
+						),
+					),
+					array(
+						'method'  => 'POST',
+						'path'    => '/wc/store/v1/cart/add-item',
+						'body'    => array(
+							'id'       => $this->products[1]->get_id(),
+							'quantity' => 1,
+						),
+						'headers' => array(
+							'Nonce' => wp_create_nonce( 'wc_store_api' ),
+						),
+					),
+				),
+			)
+		);
+		$response      = rest_get_server()->dispatch( $batch );
+		$response_data = $response->get_data();
+
+		// Assert that there were 2 successful results from the batch.
+		$this->assertEquals( 2, count( $response_data['responses'] ) );
+		$this->assertEquals( 201, $response_data['responses'][0]['status'] );
+		$this->assertEquals( 201, $response_data['responses'][1]['status'] );
+
+		$this->assertArrayHasKey( 'Cart-Token', $response_data['responses'][1]['headers'] );
+		$cart_token = $response_data['responses'][1]['headers']['Cart-Token'];
+
+		$this->assertAPIResponse( '/wc/store/cart', 200, array( 'items_count' => 2 ) );
+
+//		wc()->session->forget_session();
+//		$this->assertAPIResponse( '/wc/store/cart', 200, array( 'items_count' => 0 ) );
+//
+//
 		$request = new \WP_REST_Request( 'GET', '/wc/store/cart' );
-		$this->assertAPIResponse( $request, 200, array( 'items_count' => 0 ) );
-
-		wc()->cart->add_to_cart( $this->products[0]->get_id(), 2 );
+		$request->set_header( 'Cart-Token', $cart_token );
+//
+//		global $wp_actions;
+//		unset( $wp_actions['woocommerce_load_cart_from_session'] );
+//		wc()->session = wc()->customer = null;
+//		wc()->cart = new \WC_Cart();
+////		wc()->initialize_session();
+//var_dump(woocommerce_session_handler());
+var_dump(wp_create_nonce( 'wc_store_api' ),$cart_token);die;
 		$this->assertAPIResponse( $request, 200, array( 'items_count' => 2 ) );
 
-		/** @var Spy_REST_Server $spy_rest_server */
-		$spy_rest_server = rest_get_server();
-		$spy_rest_server->serve_request( '/wc/store/cart' );
-
-		$this->assertArrayHasKey( 'Cart-Token', $spy_rest_server->sent_headers );
-		$cart_token = $spy_rest_server->sent_headers['Cart-Token'];
-
-		wc_empty_cart();
-
-		$this->assertAPIResponse( $request, 200, array( 'items_count' => 0 ) );
-
-		wc()->session = new SessionHandler( $cart_token );
-		wc()->initialize_session();
-
-		$this->assertAPIResponse( $request, 200, array( 'items_count' => 2 ) );
 	}
 
 }

@@ -9,7 +9,7 @@ defined( 'ABSPATH' ) || exit;
 /**
  * SessionHandler class
  */
-final class SessionHandler extends \WC_Session_Handler {
+final class SessionHandler extends \WC_Session {
 	/**
 	 * Token from HTTP headers.
 	 *
@@ -41,11 +41,10 @@ final class SessionHandler extends \WC_Session_Handler {
 	/**
 	 * Constructor for the session class.
 	 *
-	 * @param string $token Optional:A JWT token with session information.
 	 */
-	public function __construct( $token = '' ) {
+	public function __construct() {
 		$headers             = function_exists( 'getallheaders' ) ? getallheaders() : [];
-		$this->token         = $headers['Cart-Token'] ?? $token;
+		$this->token         = $headers['Cart-Token'] ?? '';
 		$this->session_table = $GLOBALS['wpdb']->prefix . 'woocommerce_sessions';
 	}
 
@@ -105,7 +104,7 @@ final class SessionHandler extends \WC_Session_Handler {
 	 *
 	 * @return string|array
 	 */
-	public function get_session( string $customer_id, $default = false ) {
+	public function get_session( $customer_id, $default = false ) {
 		global $wpdb;
 
 		if ( ! $this->has_session() ) {
