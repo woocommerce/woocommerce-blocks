@@ -50,7 +50,6 @@ const EditBlock = ( props: Props ): JSX.Element => {
 			</BlockControls>
 			<ProductsByCategoryInspectorControls
 				isEditing={ isEditing }
-				changedAttributes={ changedAttributes }
 				setChangedAttributes={ setChangedAttributes }
 				{ ...props }
 			/>
