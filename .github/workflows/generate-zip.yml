@@ -32,10 +32,10 @@ jobs:
         run: npm run package-plugin:deploy
 
       - name: Create temp folder
-        run: mkdir temp
+        run: mkdir wc-blocks-pr-release__temp
 
       - name: Rename and move ZIP file
-        run: mv woocommerce-gutenberg-products-block.zip temp/woocommerce-gutenberg-products-block-${{ github.event.pull_request.number }}.zip
+        run: mv woocommerce-gutenberg-products-block.zip wc-blocks-pr-release__temp/woocommerce-gutenberg-products-block-${{ github.event.pull_request.number }}.zip
 
       - name: Transfer ZIP file via SFTP
         uses: AbleLincoln/push-to-sftp@v1.0
@@ -44,7 +44,7 @@ jobs:
           port: 22
           username: ${{ secrets.FTP_USER }}
           password: ${{ secrets.FTP_PASS }}
-          sourceDir: ./temp/
+          sourceDir: ./wc-blocks-pr-release__temp/
           targetDir: ${{ secrets.FTP_DIR }}
 
       - name: Add release ZIP URL as comment to the PR
@@ -60,5 +60,5 @@ jobs:
           allow-repeats: true
 
       - name: Delete ZIP file
-        run: rm -rf temp
+        run: rm -rf wc-blocks-pr-release__temp
         
