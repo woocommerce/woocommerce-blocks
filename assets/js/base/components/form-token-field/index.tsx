@@ -44,6 +44,9 @@ const FormTokenField = ( {
 				suggestions={ suggestions }
 				__experimentalExpandOnFocus={ true }
 				__experimentalShowHowTo={ false }
+				__experimentalValidateInput={ ( token: string ) =>
+					suggestions.includes( token )
+				}
 				maxLength={ multiple ? undefined : 1 }
 				disabled={ disabled }
 				placeholder={ placeholder }

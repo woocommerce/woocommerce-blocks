@@ -29,20 +29,18 @@
 
 	.components-form-token-field__suggestions-list {
 		background-color: $white;
+		border-width: 0 1px 1px;
+		border: 1px solid $gray-600;
 		border: none;
 		left: -1px;
 		margin: 1px 0 0;
 		position: absolute;
 		right: -1px;
 		top: 100%;
+		z-index: 50;
 
-		> li {
-			border: 1px solid $gray-600;
-			border-width: 0 1px;
-		}
-
-		> li:last-child {
-			border-width: 0 1px 1px;
+		&:empty {
+			display: none;
 		}
 	}
 
