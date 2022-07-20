@@ -1319,9 +1319,21 @@
 <error line="20" column="35" severity="error" message="Parameter &apos;selectedLevel&apos; implicitly has an &apos;any&apos; type." source="TS7006" />
 <error line="20" column="50" severity="error" message="Parameter &apos;onChange&apos; implicitly has an &apos;any&apos; type." source="TS7006" />
 </file>
+<file name="assets/js/editor-components/search-list-control/utils.tsx">
+<error line="20" column="3" severity="error" message="Type &apos;string&apos; is not assignable to type &apos;number&apos;." source="TS2322" />
+</file>
 <file name="assets/js/editor-components/search-list-control/search-list-control.tsx">
 <error line="213" column="41" severity="error" message="Argument of type &apos;boolean | undefined&apos; is not assignable to parameter of type &apos;boolean&apos;.
   Type &apos;undefined&apos; is not assignable to type &apos;boolean&apos;." source="TS2345" />
+<error line="268" column="5" severity="error" message="Type &apos;{ clear: string; noItems: string; noResults: string; search: string; selected: ((n: number) =&gt; string) | ((n: number) =&gt; number); updated: string; } | { clear: string; noItems: string; noResults: string; search: string; selected: (n: number) =&gt; number; updated: string; }&apos; is not assignable to type &apos;Partial&lt;SearchListMessages&gt; &amp; SearchListMessages&apos;.
+  Type &apos;{ clear: string; noItems: string; noResults: string; search: string; selected: ((n: number) =&gt; string) | ((n: number) =&gt; number); updated: string; }&apos; is not assignable to type &apos;Partial&lt;SearchListMessages&gt; &amp; SearchListMessages&apos;.
+    Type &apos;{ clear: string; noItems: string; noResults: string; search: string; selected: ((n: number) =&gt; string) | ((n: number) =&gt; number); updated: string; }&apos; is not assignable to type &apos;Partial&lt;SearchListMessages&gt;&apos;.
+      Types of property &apos;selected&apos; are incompatible.
+        Type &apos;((n: number) =&gt; string) | ((n: number) =&gt; number)&apos; is not assignable to type &apos;(n: number) =&gt; string&apos;.
+          Type &apos;(n: number) =&gt; number&apos; is not assignable to type &apos;(n: number) =&gt; string&apos;.
+            Type &apos;number&apos; is not assignable to type &apos;string&apos;." source="TS2322" />
+<error line="287" column="6" severity="error" message="Type &apos;{ clear: string; noItems: string; noResults: string; search: string; selected: ((n: number) =&gt; string) | ((n: number) =&gt; number); updated: string; } | { clear: string; noItems: string; noResults: string; search: string; selected: (n: number) =&gt; number; updated: string; }&apos; is not assignable to type &apos;Partial&lt;SearchListMessages&gt; &amp; SearchListMessages&apos;.
+  Type &apos;{ clear: string; noItems: string; noResults: string; search: string; selected: ((n: number) =&gt; string) | ((n: number) =&gt; number); updated: string; }&apos; is not assignable to type &apos;Partial&lt;SearchListMessages&gt; &amp; SearchListMessages&apos;." source="TS2322" />
 </file>
 <file name="assets/js/editor-components/utils/index.js">
 <error line="119" column="12" severity="error" message="Generic type &apos;Array&lt;T&gt;&apos; requires 1 type argument(s)." source="TS2314" />
