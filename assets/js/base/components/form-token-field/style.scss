@@ -23,6 +23,11 @@
 		}
 	}
 
+	.components-form-token-field__remove-token.components-button,
+	.components-form-token-field__token-text {
+		background: $gray-200;
+	}
+
 	.components-form-token-field__remove-token {
 		border: none;
 	}
@@ -52,4 +57,15 @@
 		}
 	}
 
+	&.single-selection {
+		.components-form-token-field__token,
+		.components-form-token-field__token-text {
+			margin-right: 0;
+			width: 100%;
+		}
+
+		.components-form-token-field__token + input[type="text"].components-form-token-field__input {
+			display: none;
+		}
+	}
 }

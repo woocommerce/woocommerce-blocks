@@ -18,7 +18,7 @@ export interface Props {
 	multiple?: boolean;
 	placeholder?: string;
 	onChange: ( value: string[] ) => void;
-	displayTransform?: ( value: string ) => string | JSX.Element;
+	displayTransform?: ( value: string ) => string;
 	messages?: Record< string, string >;
 }
 
@@ -38,7 +38,10 @@ const FormTokenField = ( {
 		<div
 			className={ classNames(
 				'wc-blocks-components-form-token-field-wrapper',
-				className
+				className,
+				{
+					'single-selection': ! multiple,
+				}
 			) }
 			style={ style }
 		>
