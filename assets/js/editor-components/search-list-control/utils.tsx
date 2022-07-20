@@ -16,7 +16,7 @@ export const defaultMessages = {
 	/* Translators: %s search term */
 	noResults: __( 'No results for %s', 'woo-gutenberg-products-block' ),
 	search: __( 'Search for items', 'woo-gutenberg-products-block' ),
-	selected: ( n: number ): string =>
+	selected: ( n: number ): number =>
 		sprintf(
 			/* translators: Number of items selected from list. */
 			_n(
