@@ -58,14 +58,19 @@
 	}
 
 	&.single-selection {
-		.components-form-token-field__token,
-		.components-form-token-field__token-text {
+		.components-form-token-field__token {
 			margin-right: 0;
+			position: relative;
+			width: 100%;
+		}
+
+		.components-form-token-field__token-text {
 			width: 100%;
 		}
 
 		.components-form-token-field__token + input[type="text"].components-form-token-field__input {
-			display: none;
+			opacity: 0;
+			position: absolute;
 		}
 	}
 }
