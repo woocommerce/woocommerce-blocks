@@ -10,7 +10,7 @@ import Block from './block';
 import metadata from './block.json';
 import { blockAttributes } from './attributes';
 
-const getProps = ( el: HTMLElement ) => {
+const getProps = ( el: HTMLElement ): void => {
 	return {
 		attributes: {
 			showInputFields: el.dataset.showinputfields === 'true',
