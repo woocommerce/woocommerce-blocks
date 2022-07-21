@@ -75,7 +75,7 @@ const configurateFilterProductsByAttributeBlock = async (
 	await pageOrCanvas.click( selectors.editor.doneButton );
 };
 
-const getActiveFilterTypeText = () =>
+const getActiveFilterTypeText = (): number =>
 	page.$eval(
 		selectors.frontend.activeFilterType,
 		( el ) => ( el as HTMLElement ).innerText
