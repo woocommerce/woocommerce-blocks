@@ -25,7 +25,7 @@ const EmptyPlaceholder = () => (
 	</Placeholder>
 );
 
-export const ProductByCategoryBlock = ( props: Props ): JSX.Element => {
+export const ProductByCategoryBlock = ( props: string ): JSX.Element => {
 	const { name, attributes } = props;
 	const hasCategories = attributes.categories.length;
 
