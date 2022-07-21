@@ -31,7 +31,8 @@ import { ReturnOrGeneratorYieldUnion } from '../mapped-types';
  * @param {CartResponse} response
  */
 export const receiveCart = (
-	response: CartResponse
+	response: CartResponse,
+	cartPropsToReceive = [] as Array< keyof CartResponse >
 ): { type: string; response: Cart } => {
 	const cart = mapKeys( response, ( _, key ) =>
 		camelCase( key )
@@ -226,7 +227,7 @@ export function* applyExtensionCartUpdate(
 			data: { namespace: args.namespace, data: args.data },
 			cache: 'no-store',
 		} );
-		yield receiveCart( response );
+		yield receiveCart( response, args.cartPropsToReceive );
 		yield updateCartFragments();
 		return response;
 	} catch ( error ) {

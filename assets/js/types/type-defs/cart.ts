@@ -209,6 +209,7 @@ export interface CartMeta {
 export interface ExtensionCartUpdateArgs {
 	data: Record< string, unknown >;
 	namespace: string;
+	cartPropsToReceive: Array< keyof CartResponse >;
 }
 
 export interface BillingAddressShippingAddress {
