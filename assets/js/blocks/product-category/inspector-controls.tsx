@@ -22,7 +22,7 @@ export interface InspectorControlsProps extends Props {
 }
 
 export const ProductsByCategoryInspectorControls = (
-	props: InspectorControlsProps
+	props: number
 ): JSX.Element => {
 	const { isEditing, attributes, setAttributes, setChangedAttributes } =
 		props;
