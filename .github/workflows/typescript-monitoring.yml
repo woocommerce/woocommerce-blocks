@@ -46,13 +46,8 @@ jobs:
               run: |
                   git diff --quiet checkstyle.xml || echo "::set-output name=is_different_checkstyle::true"
 
-            - name: debug
-              id: debug
-              run: |
-                  echo ${{steps.verify_diff.outputs.is_different_checkstyle}}
-
             - name: Commit the new checklist.xml file
-              if: ${{ steps.verify_diff.outputs.is_different_checkstyle}} == 'true'
+              if: steps.verify_diff.outputs.is_different_checkstyle == 'true'
               run: |
                   git config --global user.email "41898282+github-actions[bot]@users.noreply.github.com"
                   git config --global user.name "github-actions[bot]"

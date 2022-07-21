@@ -25,7 +25,10 @@ const runner = async () => {
 		onFail: setFailed,
 	} );
 
+	console.log( JSON.stringify( currentCheckStyleFile, null, 2 ) );
+
 	if ( ! currentCheckStyleFile.content ) {
+		console.log( 'entro qua' );
 		return;
 	}
 
