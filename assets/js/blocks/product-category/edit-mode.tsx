@@ -18,9 +18,7 @@ export interface EditModeProps extends Props {
 	setChangedAttributes: ( changedAttributes: Partial< Attributes > ) => void;
 }
 
-export const ProductsByCategoryEditMode = (
-	props: EditModeProps
-): JSX.Element => {
+export const ProductsByCategoryEditMode = ( props: number ): JSX.Element => {
 	const {
 		debouncedSpeak,
 		setIsEditing,
