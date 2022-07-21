@@ -3087,6 +3087,12 @@
 <error line="19" column="2" severity="error" message="Module &apos;&quot;@wordpress/components&quot;&apos; has no exported member &apos;__experimentalToggleGroupControl&apos;." source="TS2305" />
 <error line="21" column="2" severity="error" message="Module &apos;&quot;@wordpress/components&quot;&apos; has no exported member &apos;__experimentalToggleGroupControlOption&apos;." source="TS2305" />
 </file>
+<file name="assets/js/blocks/price-filter/frontend.ts">
+<error line="14" column="2" severity="error" message="Type &apos;{ attributes: { showInputFields: boolean; showFilterButton: boolean; heading: string; headingLevel: number; }; isEditor: boolean; }&apos; is not assignable to type &apos;void&apos;." source="TS2322" />
+<error line="30" column="2" severity="error" message="Type &apos;(el: HTMLElement) =&gt; void&apos; is not assignable to type &apos;GetPropsFn&lt;{ attributes: Attributes; isEditor: boolean; }, Record&lt;string, unknown&gt;&gt;&apos;.
+  Type &apos;void&apos; is not assignable to type &apos;BlockProps&lt;{ attributes: Attributes; isEditor: boolean; }, Record&lt;string, unknown&gt;&gt;&apos;.
+    Type &apos;void&apos; is not assignable to type &apos;{ attributes: Attributes; isEditor: boolean; }&apos;." source="TS2322" />
+</file>
 <file name="assets/js/blocks/price-filter/index.tsx">
 <error line="18" column="20" severity="error" message="No overload matches this call.
   Overload 1 of 2, &apos;(metadata: BlockConfiguration&lt;Attributes&gt;, settings?: Partial&lt;BlockConfiguration&lt;Attributes&gt;&gt; | undefined): Block&lt;...&gt; | undefined&apos;, gave the following error.
