@@ -18,7 +18,7 @@ import { Attributes, Props } from './types';
 import { ProductsByCategoryInspectorControls } from './inspector-controls';
 import { ProductsByCategoryEditMode } from './edit-mode';
 
-const EditBlock = ( props: Props ): JSX.Element => {
+const EditBlock = ( props: number ): JSX.Element => {
 	const blockProps = useBlockProps();
 
 	const { attributes } = props;
