@@ -8,7 +8,8 @@ exports.getFileContent = async ( {
 	try {
 		return await octokit.rest.repos.getContent( {
 			owner,
-			repo: 'try/typescript-monitor-second-branch',
+			repo,
+			ref: 'try/typescript-monitor-second-branch',
 			path: fileName,
 		} );
 	} catch ( err ) {
