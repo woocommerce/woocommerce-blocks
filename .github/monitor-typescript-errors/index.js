@@ -21,15 +21,18 @@ const runner = async () => {
 		octokit,
 		owner,
 		repo,
-		path: fileName,
+		fileName,
 		onFail: setFailed,
 	} );
 
-	if ( ! currentCheckStyleFile.content ) {
+	if ( ! currentCheckStyleFile.data.content ) {
+		setFailed( 'No Content Available' );
 		return;
 	}
 
-	const currentCheckStyleFileContent = currentCheckStyleFile.content;
+	const currentCheckStyleFileContent = decodeBase64(
+		currentCheckStyleFile.data.content
+	);
 
 	const currentCheckStyleFileContentParsed = parseXml(
 		currentCheckStyleFileContent
