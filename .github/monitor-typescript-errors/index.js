@@ -30,12 +30,12 @@ const runner = async () => {
 
 	console.log( JSON.stringify( currentCheckStyleFile, null, 2 ) );
 
-	if ( ! currentCheckStyleFile.content ) {
+	if ( ! currentCheckStyleFile.data.content ) {
 		return;
 	}
 
 	const currentCheckStyleFileContent = decodeBase64(
-		currentCheckStyleFile.content
+		currentCheckStyleFile.data.content
 	);
 
 	console.log( currentCheckStyleFileContent );
