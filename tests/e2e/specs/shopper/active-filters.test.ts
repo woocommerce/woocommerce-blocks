@@ -58,7 +58,7 @@ const FILTER_CAPACITY_PROPERTY = '128gb';
 
 const { selectors } = block;
 
-const insertBlocks = async () => {
+const insertBlocks = async (): number => {
 	await insertBlock( 'Filter Products by Price' );
 	await insertBlock( 'Filter Products by Stock' );
 	await insertBlock( 'Filter Products by Attribute' );
