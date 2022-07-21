@@ -39,7 +39,20 @@ export const receiveCart = (
 	response: CartResponse,
 	cartPropsToReceive = [] as Array< keyof CartResponse >
 ): { type: string; response: Cart } => {
-	const cart = mapKeys( response, ( _, key ) =>
+	// Iterate over every entry in response and remove items whose key is not in cartPropsToReceive.
+	const responseWithUnwantedKeysRemoved =
+		Array.isArray( cartPropsToReceive ) && cartPropsToReceive.length > 0
+			? ( (
+					Object.entries( response ) as Entries< CartResponse >
+			   ).reduce( ( acc, [ key, value ] ) => {
+					if ( cartPropsToReceive.includes( key ) ) {
+						acc[ key ] = value;
+					}
+					return acc;
+			  }, {} as Record< keyof CartResponse, unknown > ) as Partial< CartResponse > )
+			: response;
+
+	const cart = mapKeys( responseWithUnwantedKeysRemoved, ( _, key ) =>
 		camelCase( key )
 	) as unknown as Cart;
 	return {
