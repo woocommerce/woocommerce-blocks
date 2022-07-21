@@ -12,6 +12,7 @@ import { camelCase, mapKeys } from 'lodash';
 import type { AddToCartEventDetail } from '@woocommerce/type-defs/events';
 import { BillingAddress, ShippingAddress } from '@woocommerce/settings';
 import { controls } from '@wordpress/data';
+import { PickByValue } from 'utility-types';
 
 /**
  * Internal dependencies
@@ -21,6 +22,10 @@ import { STORE_KEY as CART_STORE_KEY } from './constants';
 import { apiFetchWithHeaders } from '../shared-controls';
 import type { ResponseError } from '../types';
 import { ReturnOrGeneratorYieldUnion } from '../mapped-types';
+
+type Entries< T > = {
+	[ K in keyof T ]: [ keyof PickByValue< T, T[ K ] >, T[ K ] ];
+}[ keyof T ][];
 
 /**
  * Returns an action object used in updating the store with the provided items
