@@ -28,7 +28,7 @@ const FormTokenField = ( {
 	suggestions,
 	value,
 	disabled,
-	multiple,
+	multiple = true,
 	placeholder,
 	onChange,
 	displayTransform,

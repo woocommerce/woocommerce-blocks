@@ -31,6 +31,7 @@ import {
 } from '@woocommerce/utils';
 import { difference } from 'lodash';
 import FormTokenField from '@woocommerce/base-components/form-token-field';
+import classNames from 'classnames';
 
 /**
  * Internal dependencies
@@ -516,12 +517,13 @@ const AttributeFilterBlock = ( {
 			>
 				{ blockAttributes.displayStyle === 'dropdown' ? (
 					<FormTokenField
-						className={ borderProps.className }
+						className={ classNames( borderProps.className, {
+							'single-selection': ! multiple,
+						} ) }
 						style={ { ...borderProps.style, borderStyle: 'none' } }
 						suggestions={ displayedOptions.map(
 							( option ) => option.value
 						) }
-						multiple={ multiple }
 						disabled={ isDisabled }
 						placeholder={ sprintf(
 							/* translators: %s attribute name. */
@@ -529,12 +531,17 @@ const AttributeFilterBlock = ( {
 							attributeObject.label
 						) }
 						onChange={ ( tokens: string[] ) => {
+							if ( ! multiple && tokens.length > 1 ) {
+								tokens = [ tokens[ tokens.length - 1 ] ];
+							}
+
 							const added = difference( tokens, checked );
-							const removed = difference( checked, tokens );
 
 							if ( added.length === 1 ) {
-								onChange( added[ 0 ] );
+								return onChange( added[ 0 ] );
 							}
+
+							const removed = difference( checked, tokens );
 							if ( removed.length === 1 ) {
 								onChange( removed[ 0 ] );
 							}
