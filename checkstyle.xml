@@ -3178,9 +3178,12 @@
 <error line="27" column="48" severity="error" message="Property &apos;setChangedAttributes&apos; does not exist on type &apos;Number&apos;." source="TS2339" />
 </file>
 <file name="assets/js/blocks/product-category/edit.tsx">
-<error line="51" column="5" severity="error" message="Type &apos;{ attributes: Attributes; name: string; setAttributes: (attributes: Partial&lt;Attributes&gt;) =&gt; void; debouncedSpeak: (message: string) =&gt; void; isEditing: boolean; setChangedAttributes: Dispatch&lt;...&gt;; }&apos; is not assignable to type &apos;number&apos;." source="TS2322" />
-<error line="57" column="6" severity="error" message="Type &apos;{ attributes: Attributes; name: string; setAttributes: (attributes: Partial&lt;Attributes&gt;) =&gt; void; debouncedSpeak: (message: string) =&gt; void; isEditing: true; setIsEditing: Dispatch&lt;...&gt;; changedAttributes: Partial&lt;...&gt;; setChangedAttributes: Dispatch&lt;...&gt;; }&apos; is not assignable to type &apos;number&apos;." source="TS2322" />
-<error line="66" column="7" severity="error" message="Type &apos;{ attributes: Attributes; name: string; setAttributes: (attributes: Partial&lt;Attributes&gt;) =&gt; void; debouncedSpeak: (message: string) =&gt; void; }&apos; is not assignable to type &apos;string&apos;." source="TS2322" />
+<error line="24" column="10" severity="error" message="Property &apos;attributes&apos; does not exist on type &apos;Number&apos;." source="TS2339" />
+<error line="54" column="10" severity="error" message="Spread types may only be created from object types." source="TS2698" />
+<error line="62" column="11" severity="error" message="Spread types may only be created from object types." source="TS2698" />
+<error line="66" column="7" severity="error" message="Type &apos;number&apos; is not assignable to type &apos;IntrinsicAttributes &amp; string&apos;.
+  Type &apos;number&apos; is not assignable to type &apos;string&apos;." source="TS2322" />
+<error line="66" column="35" severity="error" message="Spread types may only be created from object types." source="TS2698" />
 </file>
 <file name="assets/js/blocks/product-category/index.tsx">
 <error line="21" column="20" severity="error" message="No overload matches this call.
