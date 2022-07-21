@@ -24,7 +24,7 @@ const runner = async () => {
 		octokit,
 		owner,
 		repo,
-		path: fileName,
+		fileName,
 		onFail: setFailed,
 	} );
 
