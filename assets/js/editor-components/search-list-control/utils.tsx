@@ -2,7 +2,7 @@
  * External dependencies
  */
 import { groupBy, keyBy } from 'lodash';
-import { Fragment } from 'react';
+import { Fragment } from '@wordpress/element';
 import { __, _n, sprintf } from '@wordpress/i18n';
 
 /**
