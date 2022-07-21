@@ -20,3 +20,8 @@ exports.getFileContent = async ( {
 		onFail( err.message );
 	}
 };
+
+exports.decodeBase64 = ( base64 ) => {
+	const parsedBase64 = Buffer.from( base64, 'base64' );
+	return parsedBase64.toString( 'ascii' );
+};

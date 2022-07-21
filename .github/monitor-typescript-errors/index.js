@@ -4,7 +4,7 @@ const { setFailed, getInput } = require( '@actions/core' );
 const { parseXml, getFilesWithNewErrors } = require( './utils/xml' );
 const { generateMarkdownMessage } = require( './utils/markdown' );
 const { addRecord } = require( './utils/airtable' );
-const { getFileContent } = require( './utils/github' );
+const { getFileContent, decodeBase64 } = require( './utils/github' );
 
 const runner = async () => {
 	const token = getInput( 'repo-token', { required: true } );
@@ -31,11 +31,14 @@ const runner = async () => {
 	console.log( JSON.stringify( currentCheckStyleFile, null, 2 ) );
 
 	if ( ! currentCheckStyleFile.content ) {
-		console.log( 'entro qua' );
 		return;
 	}
 
-	const currentCheckStyleFileContent = currentCheckStyleFile.content;
+	const currentCheckStyleFileContent = decodeBase64(
+		currentCheckStyleFile.content
+	);
+
+	console.log( currentCheckStyleFileContent );
 
 	const currentCheckStyleFileContentParsed = parseXml(
 		currentCheckStyleFileContent
