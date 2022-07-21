@@ -77,9 +77,15 @@
 		}
 
 		.components-form-token-field__token + input[type="text"].components-form-token-field__input {
-			border: 1px solid $gray-600;
-			padding: 0 5px;
-			margin: 0 2px 4px;
+			position: absolute;
 		}
+
+		.is-active .components-form-token-field__token + input[type="text"].components-form-token-field__input {
+			border: 1px solid $gray-600;
+			margin: 0 2px 4px;
+			padding: 0 5px;
+			position: static;
+		}
+
 	}
 }
