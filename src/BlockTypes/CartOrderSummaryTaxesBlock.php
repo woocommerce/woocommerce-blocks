@@ -3,24 +3,14 @@ namespace Automattic\WooCommerce\Blocks\BlockTypes;
 
 /**
  * CartOrderSummaryTaxesBlock class.
- * 
- * @internal
  */
 class CartOrderSummaryTaxesBlock extends AbstractBlock {
-
 	/**
 	 * Block name.
 	 *
 	 * @var string
 	 */
 	protected $block_name = 'cart-order-summary-taxes-block';
-
-	/**
-	 * Chunks build folder.
-	 *
-	 * @var string
-	 */
-	protected $chunks_folder = 'checkout-order-summary-taxes';
 
 	/**
 	 * API version name.
@@ -36,7 +26,6 @@ class CartOrderSummaryTaxesBlock extends AbstractBlock {
 	 */
 	protected function register_block_type_assets() {
 		parent::register_block_type_assets();
-		$chunks        = $this->get_chunks_paths( $this->chunks_folder );
-		$this->register_chunk_translations( array_merge( $chunks ) );
+		$this->register_chunk_translations( [ $this->block_name ] );
 	}
 }
