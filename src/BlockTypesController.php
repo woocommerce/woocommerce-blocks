@@ -201,6 +201,7 @@ final class BlockTypesController {
 		if ( Package::feature()->is_feature_plugin_build() ) {
 			$block_types[] = 'Checkout';
 			$block_types[] = 'Cart';
+			$block_types[] = 'CartOrderSummaryTaxesBlock';
 		}
 
 		if ( Package::feature()->is_experimental_build() ) {
