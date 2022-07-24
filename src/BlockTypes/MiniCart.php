@@ -339,7 +339,10 @@ class MiniCart extends AbstractBlock {
 
 		$classes_styles  = StyleAttributesUtils::get_classes_and_styles_by_attributes( $attributes, array( 'text_color', 'background_color', 'font_size', 'font_family' ) );
 		$wrapper_classes = sprintf( 'wc-block-mini-cart wp-block-woocommerce-mini-cart %s', $classes_styles['classes'] );
-		$wrapper_styles  = $classes_styles['styles'];
+		if ( ! empty( $attributes['className'] ) ) {
+			$wrapper_classes .= ' ' . $attributes['className'];
+		}
+		$wrapper_styles = $classes_styles['styles'];
 
 		$aria_label = sprintf(
 		/* translators: %1$d is the number of products in the cart. %2$s is the cart total */
@@ -460,7 +463,14 @@ class MiniCart extends AbstractBlock {
 	 * @return object;
 	 */
 	protected function get_cart_payload() {
-		return WC()->api->get_endpoint_data( '/wc/store/cart' );
+		$notices = wc_get_notices(); // Backup the notices because StoreAPI will remove them.
+		$payload = WC()->api->get_endpoint_data( '/wc/store/cart' );
+
+		if ( ! empty( $notices ) ) {
+			wc_set_notices( $notices ); // Restore the notices.
+		}
+
+		return $payload;
 	}
 
 	/**
