@@ -48,6 +48,7 @@ import {
 	areAllFiltersRemoved,
 	isQueryArgsEqual,
 	parseTaxonomyToGenerateURL,
+	formatSlug,
 } from './utils';
 import { BlockAttributes, DisplayOption } from './types';
 
@@ -206,7 +207,7 @@ const AttributeFilterBlock = ( {
 				const count = filteredTerm ? filteredTerm.count : 0;
 
 				return {
-					value: term.slug,
+					value: formatSlug( term.slug ),
 					name: decodeEntities( term.name ),
 					label: (
 						<Label
@@ -543,6 +544,7 @@ const AttributeFilterBlock = ( {
 							);
 							return result ? result.textLabel : value;
 						} }
+						saveTransform={ formatSlug }
 						messages={ {
 							added: sprintf(
 								/* translators: %s is the attribute label. */
