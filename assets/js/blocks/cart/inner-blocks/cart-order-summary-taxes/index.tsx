@@ -1,7 +1,6 @@
 /**
  * External dependencies
  */
-import { __ } from '@wordpress/i18n';
 import { totals } from '@woocommerce/icons';
 import { Icon } from '@wordpress/icons';
 import { registerFeaturePluginBlockType } from '@woocommerce/block-settings';
@@ -28,16 +27,6 @@ registerFeaturePluginBlockType( 'woocommerce/cart-order-summary-taxes-block', {
 		...metadata.attributes,
 		...attributes,
 	},
-	title: __( 'Taxes', 'woo-gutenberg-products-block' ),
-	description: __(
-		'Shows the cart taxes row.',
-		'woo-gutenberg-products-block'
-	),
-	// description: _x(
-	// 	'Shows the cart taxes row.',
-	// 	'block description',
-	// 	'woo-gutenberg-products-block'
-	// ),
 	edit: Edit,
 	save: Save,
 } );
