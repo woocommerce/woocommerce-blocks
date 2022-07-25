@@ -51,7 +51,7 @@ export const withUpdateButtonAttributes =
 		const Block = useSelect( ( select ) => {
 			return select( 'core/block-editor' ).getBlock( clientId );
 		} );
-		const InnerButton = Block?.innerBlocks[ 0 ];
+		const InnerButton = Block?.innerBlocks[ 0 ]?.innerBlocks[ 0 ];
 		const buttonBlockId = InnerButton?.clientId || '';
 		const currentButtonAttributes = useMemo(
 			() => InnerButton?.attributes || {},
