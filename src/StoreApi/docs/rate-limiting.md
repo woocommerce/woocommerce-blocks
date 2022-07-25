@@ -4,9 +4,8 @@
 
 - [Limit information](#limit-information)
 - [Methods restricted by Rate Limiting](#methods-restricted-by-rate-limiting)
-- [Enabling Rate Limiting](#enabling-rate-limiting)
+- [Rate Limiting options filter](#rate-limiting-options-filter)
 - [Proxy standard support](#proxy-standard-support)
-    - [Enabling Proxy support](#enabling-proxy-support)
 - [Limit usage information observability](#limit-usage-information-observability)
     - [Response headers example](#response-headers-example)
 - [Tracking limit abuses](#tracking-limit-abuses)
@@ -19,18 +18,25 @@ It is unauthenticated, rate limits are keyed by either `USER ID` (logged in) or 
 
 ## Limit information
 
-A maximum of 5 requests can be made within a 60-second time frame.
+A default maximum of 25 requests can be made within a 10-second time frame. These can be changed through an [options filter](#rate-limiting-options-filter).
 
 ## Methods restricted by Rate Limiting
 
 `POST`, `PUT`, `PATCH`, and `DELETE`
 
-## Enabling Rate Limiting
+## Rate Limiting options filter
 
-A filter is available for enabling/disabling rate limiting:
+A filter is available for setting options for rate limiting:
 
 ```php
-add_filter( 'woocommerce_store_api_enable_rate_limit_check', '__return_true' );
+add_filter( 'woocommerce_store_api_rate_limit_options', function() {
+	return [
+		'enabled' => RateLimits::ENABLED, // enables/disables Rate Limiting. Default: false
+		'proxy_support' => RateLimits::PROXY_SUPPORT, // enables/disables Proxy support. Default: false
+		'limit' => RateLimits::LIMIT, // limit of request per timeframe. Default: 25
+		'seconds' => RateLimits::SECONDS, // timeframe in seconds. Default: 10
+	];
+} );
 ```
 
 ## Proxy standard support
@@ -42,12 +48,6 @@ If the Store is running behind a proxy, load balancer, cache service, CDNs, etc.
 - `X_FORWARDED` *[Documentation](https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Forwarded), [RFC 7239](https://datatracker.ietf.org/doc/html/rfc7239)*
 
 This is disabled by default.
-
-### Enabling Proxy support
-
-```php
-add_filter( 'woocommerce_store_api_rate_limit_enable_proxy_support', '__return_true' );
-```
 
 ## Limit usage information observability
 

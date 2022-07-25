@@ -26,21 +26,15 @@ class Authentication {
 			return $result;
 		}
 
-		/**
-		 * Filters the Store API rate limit check, which is disabled by default.
-		 *
-		 * This can be used also to disable the rate limit check when testing API endpoints via a REST API client.
-		 *
-		 * @param boolean $enable_rate_limit_check If true, checks will be enabled.
-		 * @return boolean
-		 */
-		if ( apply_filters( 'woocommerce_store_api_enable_rate_limit_check', false ) ) {
+		$rate_limiting_options = RateLimits::get_options();
+
+		if ( $rate_limiting_options->enabled ) {
 			$action_id = 'store_api_request_';
 
 			if ( is_user_logged_in() ) {
 				$action_id .= get_current_user_id();
 			} else {
-				$ip_address = self::get_ip_address();
+				$ip_address = self::get_ip_address( $rate_limiting_options->proxy_support );
 
 				if ( ! $ip_address ) {
 					return new \WP_Error(
@@ -55,14 +49,14 @@ class Authentication {
 
 			$retry  = RateLimits::is_exceeded_retry_after( $action_id );
 			$server = rest_get_server();
-			$server->send_header( 'RateLimit-Limit', RateLimits::LIMIT );
+			$server->send_header( 'RateLimit-Limit', $rate_limiting_options->limit );
 
 			if ( false !== $retry ) {
 				$server->send_header( 'RateLimit-Retry-After', $retry );
 				$server->send_header( 'RateLimit-Remaining', 0 );
 				$server->send_header( 'RateLimit-Reset', time() + $retry );
 
-				$ip_address = $ip_address ?? self::get_ip_address();
+				$ip_address = $ip_address ?? self::get_ip_address( $rate_limiting_options->proxy_support );
 				if ( $ip_address ) {
 					do_action( 'woocommerce_store_api_rate_limit_exceeded', $ip_address );
 				}
@@ -125,21 +119,12 @@ class Authentication {
 	 * Documentation at https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Forwarded
 	 * Full RFC at https://datatracker.ietf.org/doc/html/rfc7239
 	 *
+	 * @param boolean $proxy_support Enables/disables proxy support.
 	 * @return string|false
 	 */
-	protected static function get_ip_address() {
+	protected static function get_ip_address( $proxy_support = false ) {
 
-		/**
-		 * Filters whether proxy support is enabled for the Store API rate limit check. This is disabled by default.
-		 *
-		 * If the store is behind a proxy, load balancer, CDN etc. the user can enable this to properly obtain
-		 * the client's IP address through standard transport headers.
-		 *
-		 * @param boolean $enable_rate_limit_proxy_support If true, proxy support will be enabled.
-		 *
-		 * @return boolean
-		 */
-		if ( ! apply_filters( 'woocommerce_store_api_rate_limit_enable_proxy_support', false ) ) {
+		if ( ! $proxy_support ) {
 			if ( array_key_exists( 'REMOTE_ADDR', $_SERVER ) ) {
 				return self::validate_ip( sanitize_text_field( wp_unslash( $_SERVER['REMOTE_ADDR'] ) ) );
 			}

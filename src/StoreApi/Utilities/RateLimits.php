@@ -9,16 +9,29 @@ use WC_Cache_Helper;
  */
 class RateLimits extends WC_Rate_Limiter {
 
+	/**
+	 * Rate limiting enabled default value.
+	 *
+	 * @var boolean
+	 */
+	const ENABLED = false;
 
 	/**
-	 * Amount of max requests allowed for the defined timeframe.
+	 * Proxy support enabled default value.
+	 *
+	 * @var boolean
+	 */
+	const PROXY_SUPPORT = false;
+
+	/**
+	 * Default amount of max requests allowed for the defined timeframe.
 	 *
 	 * @var int
 	 */
 	const LIMIT = 25;
 
 	/**
-	 * Time in seconds before rate limits are reset.
+	 * Default time in seconds before rate limits are reset.
 	 *
 	 * @var int
 	 */
@@ -84,6 +97,7 @@ class RateLimits extends WC_Rate_Limiter {
 	 * If exceeded, seconds until reset.
 	 *
 	 * @param string $action_id Identifier of the action.
+	 *
 	 * @return bool|int
 	 */
 	public static function is_exceeded_retry_after( $action_id ) {
@@ -112,7 +126,9 @@ class RateLimits extends WC_Rate_Limiter {
 	public static function update_rate_limit( $action_id ) {
 		global $wpdb;
 
-		$rate_limit_expiry = time() + self::SECONDS;
+		$options = self::get_options();
+
+		$rate_limit_expiry = time() + $options->seconds;
 
 		$wpdb->query(
 			$wpdb->prepare(
@@ -126,7 +142,7 @@ class RateLimits extends WC_Rate_Limiter {
 				",
 				$action_id,
 				$rate_limit_expiry,
-				self::LIMIT - 1,
+				$options->limit - 1,
 				time(),
 				time()
 			)
@@ -137,5 +153,62 @@ class RateLimits extends WC_Rate_Limiter {
 		self::set_cache( $action_id, $current_limit );
 
 		return $current_limit;
+	}
+
+	/**
+	 * Return options for Rate Limits, to be returned by the "woocommerce_store_api_rate_limit_options" filter.
+	 *
+	 * @return object Default options.
+	 */
+	public static function get_options() {
+		$default_options = [
+			/**
+			 * Filters the Store API rate limit check, which is disabled by default.
+			 *
+			 * This can be used also to disable the rate limit check when testing API endpoints via a REST API client.
+			 */
+			'enabled'       => self::ENABLED,
+
+			/**
+			 * Filters whether proxy support is enabled for the Store API rate limit check. This is disabled by default.
+			 *
+			 * If the store is behind a proxy, load balancer, CDN etc. the user can enable this to properly obtain
+			 * the client's IP address through standard transport headers.
+			 */
+			'proxy_support' => self::PROXY_SUPPORT,
+
+			'limit'         => self::LIMIT,
+			'seconds'       => self::SECONDS,
+		];
+
+		return (object) array_merge( // By using array_merge we ensure we get a properly populated options object.
+			$default_options,
+			/**
+			 * Filters options for Rate Limits.
+			 *
+			 * @param array $rate_limit_options Array of option values.
+			 * @return array
+			 */
+			apply_filters(
+				'woocommerce_store_api_rate_limit_options',
+				$default_options
+			)
+		);
+	}
+
+	/**
+	 * Gets a single option through provided name.
+	 *
+	 * @param string $option Option name.
+	 *
+	 * @return mixed
+	 */
+	public static function get_option( $option ) {
+
+		if ( ! is_string( $option ) || ! defined( 'RateLimits::' . strtoupper( $option ) ) ) {
+			return null;
+		}
+
+		return self::get_options()[ $option ];
 	}
 }
