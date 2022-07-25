@@ -276,8 +276,11 @@ class MiniCart extends AbstractBlock {
 		if ( ! $script->src ) {
 			return;
 		}
+
+		$site_url = site_url() ?? wp_guess_url();
+
 		$this->scripts_to_lazy_load[ $script->handle ] = array(
-			'src'          => $script->src,
+			'src'          => preg_match( '|^(https?:)?//|', $script->src ) ? $script->src : $site_url . $script->src,
 			'version'      => $script->ver,
 			'before'       => $wp_scripts->print_inline_script( $script->handle, 'before', false ),
 			'after'        => $wp_scripts->print_inline_script( $script->handle, 'after', false ),
@@ -336,7 +339,10 @@ class MiniCart extends AbstractBlock {
 
 		$classes_styles  = StyleAttributesUtils::get_classes_and_styles_by_attributes( $attributes, array( 'text_color', 'background_color', 'font_size', 'font_family' ) );
 		$wrapper_classes = sprintf( 'wc-block-mini-cart wp-block-woocommerce-mini-cart %s', $classes_styles['classes'] );
-		$wrapper_styles  = $classes_styles['styles'];
+		if ( ! empty( $attributes['className'] ) ) {
+			$wrapper_classes .= ' ' . $attributes['className'];
+		}
+		$wrapper_styles = $classes_styles['styles'];
 
 		$aria_label = sprintf(
 		/* translators: %1$d is the number of products in the cart. %2$s is the cart total */
@@ -457,7 +463,14 @@ class MiniCart extends AbstractBlock {
 	 * @return object;
 	 */
 	protected function get_cart_payload() {
-		return WC()->api->get_endpoint_data( '/wc/store/cart' );
+		$notices = wc_get_notices(); // Backup the notices because StoreAPI will remove them.
+		$payload = WC()->api->get_endpoint_data( '/wc/store/cart' );
+
+		if ( ! empty( $notices ) ) {
+			wc_set_notices( $notices ); // Restore the notices.
+		}
+
+		return $payload;
 	}
 
 	/**

@@ -3,6 +3,7 @@ namespace Automattic\WooCommerce\Blocks\Utils;
 
 use Automattic\WooCommerce\Blocks\Templates\ProductSearchResultsTemplate;
 use Automattic\WooCommerce\Blocks\Domain\Services\FeatureGating;
+use Automattic\WooCommerce\Blocks\Options;
 use Automattic\WooCommerce\Blocks\Templates\MiniCartTemplate;
 
 /**
@@ -297,23 +298,23 @@ class BlockTemplateUtils {
 		$plugin_template_types = array(
 			'single-product'                   => array(
 				'title'       => _x( 'Single Product', 'Template name', 'woo-gutenberg-products-block' ),
-				'description' => __( 'Template used to display the single product.', 'woo-gutenberg-products-block' ),
+				'description' => __( 'Displays a single product.', 'woo-gutenberg-products-block' ),
 			),
 			'archive-product'                  => array(
 				'title'       => _x( 'Product Catalog', 'Template name', 'woo-gutenberg-products-block' ),
-				'description' => __( 'Template used to display products.', 'woo-gutenberg-products-block' ),
+				'description' => __( 'Displays your products.', 'woo-gutenberg-products-block' ),
 			),
 			'taxonomy-product_cat'             => array(
 				'title'       => _x( 'Products by Category', 'Template name', 'woo-gutenberg-products-block' ),
-				'description' => __( 'Template used to display products by category.', 'woo-gutenberg-products-block' ),
+				'description' => __( 'Displays products filtered by a category.', 'woo-gutenberg-products-block' ),
 			),
 			'taxonomy-product_tag'             => array(
 				'title'       => _x( 'Products by Tag', 'Template name', 'woo-gutenberg-products-block' ),
-				'description' => __( 'Template used to display products by tag.', 'woo-gutenberg-products-block' ),
+				'description' => __( 'Displays products filtered by a tag.', 'woo-gutenberg-products-block' ),
 			),
 			ProductSearchResultsTemplate::SLUG => array(
 				'title'       => _x( 'Product Search Results', 'Template name', 'woo-gutenberg-products-block' ),
-				'description' => __( 'Template used to display search results for products.', 'woo-gutenberg-products-block' ),
+				'description' => __( 'Displays search results for your store.', 'woo-gutenberg-products-block' ),
 			),
 			MiniCartTemplate::SLUG             => array(
 				'title'       => _x( 'Mini Cart', 'Template name', 'woo-gutenberg-products-block' ),
@@ -563,5 +564,21 @@ class BlockTemplateUtils {
 				}
 			)
 		);
+	}
+
+	/**
+	 * Returns whether the blockified templates should be used or not.
+	 * If the option is not stored on the db, we need to check if the current theme is a block one or not.
+	 *
+	 * @return boolean
+	 */
+	public static function should_use_blockified_product_grid_templates() {
+		$use_blockified_templates = get_option( Options::WC_BLOCK_USE_BLOCKIFIED_PRODUCT_GRID_BLOCK_AS_TEMPLATE );
+
+		if ( false === $use_blockified_templates ) {
+			return wc_current_theme_is_fse_theme();
+		}
+
+		return wc_string_to_bool( $use_blockified_templates );
 	}
 }
