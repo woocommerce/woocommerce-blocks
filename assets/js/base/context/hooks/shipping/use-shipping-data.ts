@@ -14,6 +14,7 @@ import { isObject } from '@woocommerce/types';
  * Internal dependencies
  */
 import { useSelectShippingRate } from './use-select-shipping-rate';
+import { previewCart } from '@woocommerce/resource-previews';
 
 interface ShippingData extends SelectShippingRateType {
 	needsShipping: Cart[ 'needsShipping' ];
@@ -30,12 +31,19 @@ export const useShippingData = (): ShippingData => {
 		hasCalculatedShipping,
 		isLoadingRates,
 	} = useSelect( ( select ) => {
+		const isEditor = !! select( 'core/editor' );
 		const store = select( storeKey );
 		return {
-			shippingRates: store.getShippingRates(),
-			needsShipping: store.getNeedsShipping(),
-			hasCalculatedShipping: store.getHasCalculatedShipping(),
-			isLoadingRates: store.isCustomerDataUpdating(),
+			shippingRates: isEditor
+				? previewCart.shipping_rates
+				: store.getShippingRates(),
+			needsShipping: isEditor
+				? previewCart.needs_shipping
+				: store.getNeedsShipping(),
+			hasCalculatedShipping: isEditor
+				? previewCart.needs_shipping
+				: store.getHasCalculatedShipping(),
+			isLoadingRates: isEditor ? false : store.isCustomerDataUpdating(),
 		};
 	} );
 	const { isSelectingRate, selectShippingRate } = useSelectShippingRate();
