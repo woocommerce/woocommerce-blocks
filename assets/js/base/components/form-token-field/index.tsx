@@ -11,28 +11,31 @@ import './style.scss';
 
 export interface Props {
 	className?: string;
+	disabled?: boolean;
+	displayTransform?: ( value: string ) => string;
+	label?: string;
+	messages?: Record< string, string >;
+	multiple?: boolean;
+	onChange: ( value: string[] ) => void;
+	placeholder?: string;
+	saveTransform?: ( value: string ) => string;
 	style?: React.CSSProperties;
 	suggestions: string[];
+	validateInput?: ( token: string ) => boolean;
 	value: string[];
-	disabled?: boolean;
-	multiple?: boolean;
-	placeholder?: string;
-	onChange: ( value: string[] ) => void;
-	displayTransform?: ( value: string ) => string;
-	messages?: Record< string, string >;
 }
 
 const FormTokenField = ( {
 	className,
 	style,
 	suggestions,
-	value,
-	disabled,
 	multiple = true,
-	placeholder,
-	onChange,
-	displayTransform,
+	saveTransform = ( incompleteToken ) =>
+		incompleteToken.trim().replace( /\s/g, '-' ),
 	messages = {},
+	validateInput = ( token: string ) => suggestions.includes( token ),
+	label = '',
+	...props
 }: Props ) => {
 	return (
 		<div
@@ -46,20 +49,15 @@ const FormTokenField = ( {
 			style={ style }
 		>
 			<WPFormTokenField
-				suggestions={ suggestions }
+				label={ label }
 				__experimentalExpandOnFocus={ true }
 				__experimentalShowHowTo={ false }
-				__experimentalValidateInput={ ( token: string ) =>
-					suggestions.includes( token )
-				}
+				__experimentalValidateInput={ validateInput }
+				saveTransform={ saveTransform }
 				maxLength={ multiple ? undefined : 1 }
-				disabled={ disabled }
-				placeholder={ placeholder }
-				label=""
-				onChange={ onChange }
-				value={ value }
-				displayTransform={ displayTransform }
+				suggestions={ suggestions }
 				messages={ messages }
+				{ ...props }
 			/>
 		</div>
 	);
