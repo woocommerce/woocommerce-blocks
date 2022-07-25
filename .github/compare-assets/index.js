@@ -94,7 +94,7 @@ const runner = async () => {
 			currentComments.data.length > 0
 		) {
 			const comment = currentComments.data.find( ( comment ) =>
-				comment.body.includes( 'Script Dependencies Report' )
+				comment.body.includes( 'Script Dependencies Report' ) && comment.user.login === 'github-actions[bot]'
 			);
 
 			if ( comment ) {
