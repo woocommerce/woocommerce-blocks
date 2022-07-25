@@ -9,12 +9,12 @@ import { useEffect, useRef } from '@wordpress/element';
 import { deriveSelectedShippingRates } from '@woocommerce/base-utils';
 import isShallowEqual from '@wordpress/is-shallow-equal';
 import { isObject } from '@woocommerce/types';
+import { previewCart } from '@woocommerce/resource-previews';
 
 /**
  * Internal dependencies
  */
 import { useSelectShippingRate } from './use-select-shipping-rate';
-import { previewCart } from '@woocommerce/resource-previews';
 
 interface ShippingData extends SelectShippingRateType {
 	needsShipping: Cart[ 'needsShipping' ];
