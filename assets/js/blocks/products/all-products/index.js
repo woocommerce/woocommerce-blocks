@@ -11,7 +11,7 @@ import '@woocommerce/atomic-blocks';
  */
 import metadata from './block.json';
 import deprecated from './deprecated';
-import Editor from './edit';
+import edit from './edit';
 import defaults from './defaults';
 import { getBlockClassName } from '../utils.js';
 
@@ -27,14 +27,7 @@ export const settings = {
 			/>
 		),
 	},
-	/**
-	 * Renders and manages the block.
-	 *
-	 * @param {Object} props Props to pass to block.
-	 */
-	edit( props ) {
-		return <Editor { ...props } />;
-	},
+	edit,
 	// Save the props to post content.
 	save( { attributes } ) {
 		const dataAttributes = {};
