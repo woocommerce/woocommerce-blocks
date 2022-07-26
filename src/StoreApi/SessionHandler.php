@@ -40,7 +40,6 @@ final class SessionHandler extends \WC_Session {
 
 	/**
 	 * Constructor for the session class.
-	 *
 	 */
 	public function __construct() {
 		$headers             = function_exists( 'getallheaders' ) ? getallheaders() : [];
@@ -60,7 +59,7 @@ final class SessionHandler extends \WC_Session {
 	 */
 	protected function init_session_from_token() {
 		if ( $this->token && JsonWebToken::validate( $this->token, '@' . wp_salt() ) ) {
-			$payload = JsonWebToken::get_parts( $this->token )['payload'];
+			$payload = JsonWebToken::get_parts( $this->token )->payload;
 
 			$this->has_token           = true;
 			$this->_customer_id        = $payload->user_id;

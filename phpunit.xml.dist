@@ -10,7 +10,7 @@
 	>
 	<testsuites>
 		<testsuite name="WooCommerce Blocks Test Suite">
-			<directory suffix=".php">./tests/php/StoreApi/Routes</directory>
+			<directory suffix=".php">./tests/php</directory>
 		</testsuite>
 	</testsuites>
 </phpunit>

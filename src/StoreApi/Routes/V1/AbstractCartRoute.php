@@ -157,10 +157,12 @@ abstract class AbstractCartRoute extends AbstractRoute {
 	 */
 	protected function get_cart_token() {
 		return JsonWebToken::create(
-			wc()->session->get_customer_id(),
-			$this->get_cart_token_secret(),
-			$this->get_cart_token_expiration(),
-			$this->namespace
+			[
+				'user_id' => wc()->session->get_customer_id(),
+				'exp'     => $this->get_cart_token_expiration(),
+				'iss'     => $this->namespace,
+			],
+			$this->get_cart_token_secret()
 		);
 	}
 

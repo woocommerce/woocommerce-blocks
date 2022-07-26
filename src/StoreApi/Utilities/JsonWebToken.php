@@ -26,16 +26,14 @@ final class JsonWebToken {
 	/**
 	 * Generates a token from provided data and secret.
 	 *
-	 * @param string $user_id The customer id.
+	 * @param array  $payload Payload data.
 	 * @param string $secret The secret used to generate the signature.
-	 * @param int    $expiration Timestamp in seconds after which the token is no longer valid.
-	 * @param string $issuer Issuer of the token.
 	 *
 	 * @return string
 	 */
-	public static function create( string $user_id, string $secret, int $expiration, string $issuer ) {
+	public static function create( array $payload, string $secret ) {
 		$header    = self::to_base_64_url( self::generate_header() );
-		$payload   = self::to_base_64_url( self::generate_payload( $user_id, $expiration, $issuer ) );
+		$payload   = self::to_base_64_url( self::generate_payload( $payload ) );
 		$signature = self::to_base_64_url( self::generate_signature( $header . '.' . $payload, $secret ) );
 
 		return $header . '.' . $payload . '.' . $signature;
@@ -66,11 +64,11 @@ final class JsonWebToken {
 		 * Check if header declares a supported JWT by this class.
 		 */
 		if (
-			! is_object( $parts['header'] ) ||
-			! property_exists( $parts['header'], 'typ' ) ||
-			! property_exists( $parts['header'], 'alg' ) ||
-			self::$type !== $parts['header']->typ ||
-			self::$algorithm !== $parts['header']->alg
+			! is_object( $parts->header ) ||
+			! property_exists( $parts->header, 'typ' ) ||
+			! property_exists( $parts->header, 'alg' ) ||
+			self::$type !== $parts->header->typ ||
+			self::$algorithm !== $parts->header->alg
 		) {
 			return false;
 		}
@@ -78,7 +76,7 @@ final class JsonWebToken {
 		/**
 		 * Check if token is expired.
 		 */
-		if ( time() > $parts['payload']->exp ) {
+		if ( time() > $parts->payload->exp ) {
 			return false;
 		}
 
@@ -86,8 +84,8 @@ final class JsonWebToken {
 		 * Check if the token is based on our secret.
 		 */
 		return self::to_base_64_url(
-			self::generate_signature( $parts['header_encoded'] . '.' . $parts['payload_encoded'], $secret )
-		) === $parts['secret_encoded'];
+			self::generate_signature( $parts->header_encoded . '.' . $parts->payload_encoded, $secret )
+		) === $parts->secret_encoded;
 	}
 
 	/**
@@ -95,12 +93,12 @@ final class JsonWebToken {
 	 *
 	 * @param string $token Full token string.
 	 *
-	 * @return array
+	 * @return object
 	 */
 	public static function get_parts( string $token ) {
 		$parts = explode( '.', $token );
 
-		return array(
+		return (object) array(
 			'header'          => json_decode( self::from_base_64_url( $parts[0] ) ),
 			'header_encoded'  => $parts[0],
 			'payload'         => json_decode( self::from_base_64_url( $parts[1] ) ),
@@ -145,21 +143,12 @@ final class JsonWebToken {
 	/**
 	 * Generates the payload in json formatted string.
 	 *
-	 * @param string $user_id The customer id.
-	 * @param int    $expiration Timestamp in seconds after which the token is no longer valid.
-	 * @param string $issuer Issuer of the token.
+	 * @param array $payload Payload data.
 	 *
 	 * @return string|bool
 	 */
-	private static function generate_payload( string $user_id, int $expiration, string $issuer ) {
-		return wp_json_encode(
-			array(
-				'user_id' => $user_id,
-				'exp'     => $expiration,
-				'iss'     => $issuer,
-				'iat'     => time(),
-			)
-		);
+	private static function generate_payload( array $payload ) {
+		return wp_json_encode( array_merge( $payload, [ 'iat' => time() ] ) );
 	}
 
 	/**
