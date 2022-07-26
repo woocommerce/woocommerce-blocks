@@ -1,7 +1,6 @@
 /**
  * External dependencies
  */
-import { InnerBlocks } from '@wordpress/block-editor';
 import { registerBlockType } from '@wordpress/blocks';
 import { Icon, grid } from '@wordpress/icons';
 import '@woocommerce/atomic-blocks';
@@ -12,8 +11,8 @@ import '@woocommerce/atomic-blocks';
 import metadata from './block.json';
 import deprecated from './deprecated';
 import edit from './edit';
+import save from './save';
 import defaults from './defaults';
-import { getBlockClassName } from '../utils.js';
 
 const { name } = metadata;
 export { metadata, name };
@@ -29,28 +28,7 @@ export const settings = {
 	},
 	edit,
 	// Save the props to post content.
-	save( { attributes } ) {
-		const dataAttributes = {};
-		Object.keys( attributes )
-			.sort()
-			.forEach( ( key ) => {
-				dataAttributes[ key ] = attributes[ key ];
-			} );
-		const data = {
-			'data-attributes': JSON.stringify( dataAttributes ),
-		};
-		return (
-			<div
-				className={ getBlockClassName(
-					'wc-block-all-products',
-					attributes
-				) }
-				{ ...data }
-			>
-				<InnerBlocks.Content />
-			</div>
-		);
-	},
+	save,
 	deprecated,
 	defaults,
 };
