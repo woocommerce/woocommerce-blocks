@@ -1,7 +1,6 @@
 /**
  * External dependencies
  */
-import { registerBlockType } from '@wordpress/blocks';
 import { Icon, grid } from '@wordpress/icons';
 import '@woocommerce/atomic-blocks';
 
@@ -32,14 +31,3 @@ export const settings = {
 	deprecated,
 	defaults,
 };
-
-/**
- * Register and run the "All Products" block.
- */
-// registerBlockType( 'woocommerce/all-products', {
-// 	...settings,
-// 	/**
-// 	 * Deprecation rule to handle the previous default rows which was 1 instead of 3.
-// 	 */
-// 	deprecated,
-// } );
