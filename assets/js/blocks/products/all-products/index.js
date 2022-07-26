@@ -1,7 +1,6 @@
 /**
  * External dependencies
  */
-import { __ } from '@wordpress/i18n';
 import { InnerBlocks } from '@wordpress/block-editor';
 import { registerBlockType } from '@wordpress/blocks';
 import { Icon, grid } from '@wordpress/icons';
@@ -10,12 +9,16 @@ import '@woocommerce/atomic-blocks';
 /**
  * Internal dependencies
  */
+import metadata from './block.json';
+import deprecated from './deprecated';
 import Editor from './edit';
-import { attributes as sharedAttributes, defaults } from '../attributes';
+import defaults from './defaults';
 import { getBlockClassName } from '../utils.js';
 
-export const blockSettings = {
-	title: __( 'All Products', 'woo-gutenberg-products-block' ),
+const { name } = metadata;
+export { metadata, name };
+
+export const settings = {
 	icon: {
 		src: (
 			<Icon
@@ -24,24 +27,6 @@ export const blockSettings = {
 			/>
 		),
 	},
-	category: 'woocommerce',
-	keywords: [ __( 'WooCommerce', 'woo-gutenberg-products-block' ) ],
-	description: __(
-		'Display products from your store in a grid layout.',
-		'woo-gutenberg-products-block'
-	),
-	supports: {
-		align: [ 'wide', 'full' ],
-		html: false,
-		multiple: false,
-	},
-	example: {
-		attributes: {
-			isPreview: true,
-		},
-	},
-	attributes: sharedAttributes,
-	defaults,
 	/**
 	 * Renders and manages the block.
 	 *
@@ -73,37 +58,17 @@ export const blockSettings = {
 			</div>
 		);
 	},
+	deprecated,
+	defaults,
 };
 
 /**
  * Register and run the "All Products" block.
  */
 registerBlockType( 'woocommerce/all-products', {
-	...blockSettings,
+	...settings,
 	/**
 	 * Deprecation rule to handle the previous default rows which was 1 instead of 3.
 	 */
-	deprecated: [
-		{
-			attributes: Object.assign( {}, blockSettings.attributes, {
-				rows: { type: 'number', default: 1 },
-			} ),
-			save( { attributes } ) {
-				const data = {
-					'data-attributes': JSON.stringify( attributes ),
-				};
-				return (
-					<div
-						className={ getBlockClassName(
-							'wc-block-all-products',
-							attributes
-						) }
-						{ ...data }
-					>
-						<InnerBlocks.Content />
-					</div>
-				);
-			},
-		},
-	],
+	deprecated,
 } );
