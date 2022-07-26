@@ -36,10 +36,10 @@ export const settings = {
 /**
  * Register and run the "All Products" block.
  */
-registerBlockType( 'woocommerce/all-products', {
-	...settings,
-	/**
-	 * Deprecation rule to handle the previous default rows which was 1 instead of 3.
-	 */
-	deprecated,
-} );
+// registerBlockType( 'woocommerce/all-products', {
+// 	...settings,
+// 	/**
+// 	 * Deprecation rule to handle the previous default rows which was 1 instead of 3.
+// 	 */
+// 	deprecated,
+// } );
