@@ -1,6 +1,7 @@
 /**
  * External dependencies
  */
+import { registerBlockType } from '@wordpress/blocks';
 import { Icon, grid } from '@wordpress/icons';
 import '@woocommerce/atomic-blocks';
 
@@ -16,7 +17,7 @@ import defaults from './defaults';
 const { name } = metadata;
 export { metadata, name };
 
-export const settings = {
+const settings = {
 	icon: {
 		src: (
 			<Icon
@@ -31,3 +32,5 @@ export const settings = {
 	deprecated,
 	defaults,
 };
+
+registerBlockType( name, settings );
