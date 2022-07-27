@@ -25,4 +25,5 @@ export interface DisplayOption {
 	name: string;
 	label: JSX.Element;
 	textLabel: string;
+	formattedValue: string;
 }

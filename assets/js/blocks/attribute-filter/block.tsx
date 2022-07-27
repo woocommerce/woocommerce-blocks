@@ -207,6 +207,7 @@ const AttributeFilterBlock = ( {
 				const count = filteredTerm ? filteredTerm.count : 0;
 
 				return {
+					formattedValue: formatSlug( term.slug ),
 					value: term.slug,
 					name: decodeEntities( term.name ),
 					label: (
@@ -512,9 +513,11 @@ const AttributeFilterBlock = ( {
 							'single-selection': ! multiple,
 						} ) }
 						style={ { ...borderProps.style, borderStyle: 'none' } }
-						suggestions={ displayedOptions.map(
-							( option ) => option.value
-						) }
+						suggestions={ displayedOptions
+							.filter(
+								( option ) => ! checked.includes( option.value )
+							)
+							.map( ( option ) => option.formattedValue ) }
 						disabled={ isDisabled }
 						placeholder={ sprintf(
 							/* translators: %s attribute name. */
@@ -529,7 +532,7 @@ const AttributeFilterBlock = ( {
 							tokens = tokens.map( ( token ) => {
 								const displayOption = displayedOptions.find(
 									( option ) =>
-										formatSlug( option.value ) === token
+										option.formattedValue === token
 								);
 
 								return displayOption
@@ -550,8 +553,11 @@ const AttributeFilterBlock = ( {
 						} }
 						value={ checked }
 						displayTransform={ ( value: string ) => {
-							const result = displayedOptions.find(
-								( option ) => option.value === value
+							const result = displayedOptions.find( ( option ) =>
+								[
+									option.value,
+									option.formattedValue,
+								].includes( value )
 							);
 							return result ? result.textLabel : value;
 						} }
