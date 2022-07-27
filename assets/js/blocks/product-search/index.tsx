@@ -8,6 +8,7 @@ import { __ } from '@wordpress/i18n';
 import { Icon, search } from '@wordpress/icons';
 import { getSettingWithCoercion } from '@woocommerce/settings';
 import { isBoolean } from '@woocommerce/types';
+import { Button } from '@wordpress/components';
 import {
 	// @ts-ignore waiting for @types/wordpress__blocks update
 	registerBlockVariation,
@@ -73,7 +74,7 @@ const PRODUCT_SEARCH_ATTRIBUTES = {
 };
 
 /**
- * editor.scss and style.scss are required
+ * editor.scss and styggle.scss are required
  * to gracefully handle old block deprecation
  */
 const DeprecatedBlockEdit = ( { clientId }: { clientId: string } ) => {
@@ -85,17 +86,15 @@ const DeprecatedBlockEdit = ( { clientId }: { clientId: string } ) => {
 			createBlock( 'core/search', PRODUCT_SEARCH_ATTRIBUTES )
 		);
 	};
+	const actions = [
+		<Button key="update" onClick={ updateBlock } variant="primary">
+			Update to Search Block variant
+		</Button>,
+	];
 
 	return (
-		<Warning>
+		<Warning actions={ actions }>
 			Old Product Search block is deprecated.
-			<br />
-			<small>
-				<button onClick={ updateBlock }>
-					Update to Search Block variant
-				</button>
-				.
-			</small>
 		</Warning>
 	);
 };
