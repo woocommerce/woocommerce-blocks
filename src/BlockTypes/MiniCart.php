@@ -384,7 +384,7 @@ class MiniCart extends AbstractBlock {
 		' . $this->get_include_tax_label_markup() . '
 		<span class="wc-block-mini-cart__quantity-badge">
 			' . $icon . '
-			<span class="wc-block-mini-cart__badge">' . $cart_contents_count . '</span>
+			<span class="wc-block-mini-cart__badge" style="' . esc_attr( StyleAttributesUtils::get_font_weight_class_and_style( $attributes )['style'] ) . '">' . $cart_contents_count . '</span>
 		</span>';
 
 		if ( is_cart() || is_checkout() ) {

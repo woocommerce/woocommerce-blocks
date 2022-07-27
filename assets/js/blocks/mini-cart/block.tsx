@@ -235,7 +235,10 @@ const MiniCartBlock = ( attributes: Props ): JSX.Element => {
 						{ taxLabel }
 					</small>
 				) }
-				<QuantityBadge count={ cartItemsCount } />
+				<QuantityBadge
+					count={ cartItemsCount }
+					style={ typographyProps.style }
+				/>
 			</button>
 			<Drawer
 				className={ classnames(

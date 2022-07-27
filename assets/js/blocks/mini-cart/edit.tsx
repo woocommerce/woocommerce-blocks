@@ -134,7 +134,10 @@ const Edit = ( { attributes, setAttributes }: Props ): ReactElement => {
 							{ formatPrice( productTotal ) }
 						</span>
 					) }
-					<QuantityBadge count={ productCount } />
+					<QuantityBadge
+						count={ productCount }
+						style={ typographyProps.style }
+					/>
 				</button>
 			</Noninteractive>
 		</div>
