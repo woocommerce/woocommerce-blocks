@@ -1,1 +1,0 @@
-This is a plain text file for testing https://github.com/woocommerce/woocommerce-blocks/pull/6769.
