@@ -207,7 +207,7 @@ const AttributeFilterBlock = ( {
 				const count = filteredTerm ? filteredTerm.count : 0;
 
 				return {
-					value: formatSlug( term.slug ),
+					value: term.slug,
 					name: decodeEntities( term.name ),
 					label: (
 						<Label
@@ -525,6 +525,17 @@ const AttributeFilterBlock = ( {
 							if ( ! multiple && tokens.length > 1 ) {
 								tokens = [ tokens[ tokens.length - 1 ] ];
 							}
+
+							tokens = tokens.map( ( token ) => {
+								const displayOption = displayedOptions.find(
+									( option ) =>
+										formatSlug( option.value ) === token
+								);
+
+								return displayOption
+									? displayOption.value
+									: token;
+							} );
 
 							const added = difference( tokens, checked );
 
