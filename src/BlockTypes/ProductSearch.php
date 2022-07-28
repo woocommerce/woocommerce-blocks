@@ -141,6 +141,7 @@ class ProductSearch extends AbstractBlock {
 			if ( defined( 'GUTENBERG_VERSION' ) ) {
 				$gutenberg_version = GUTENBERG_VERSION;
 			}
+
 			if ( ! $gutenberg_version ) {
 				$gutenberg_data    = get_file_data(
 					WP_PLUGIN_DIR . '/gutenberg/gutenberg.php',
@@ -154,10 +155,5 @@ class ProductSearch extends AbstractBlock {
 			'isBlockVariationAvailable',
 			version_compare( get_bloginfo( 'version' ), '6.1', '>=' ) || version_compare( $gutenberg_version, '13.4', '>=' )
 		);
-
-		/**
-		 * Fires after cart block data is registered.
-		 */
-		do_action( 'woocommerce_blocks_cart_enqueue_data' );
 	}
 }
