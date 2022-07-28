@@ -12,9 +12,7 @@ import { Edit, Save } from './edit';
 import attributes from './attributes';
 import metadata from './block.json';
 
-registerFeaturePluginBlockType( 'woocommerce/cart-order-summary-taxes-block', {
-	// When a block is registered server side, we should add the block metadata in the settings.
-	...metadata,
+registerFeaturePluginBlockType( metadata, {
 	icon: {
 		src: (
 			<Icon
@@ -23,10 +21,7 @@ registerFeaturePluginBlockType( 'woocommerce/cart-order-summary-taxes-block', {
 			/>
 		),
 	},
-	attributes: {
-		...metadata.attributes,
-		...attributes,
-	},
+	attributes,
 	edit: Edit,
 	save: Save,
 } );
