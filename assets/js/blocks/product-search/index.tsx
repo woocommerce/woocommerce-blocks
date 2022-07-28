@@ -6,6 +6,9 @@ import { store as blockEditorStore, Warning } from '@wordpress/block-editor';
 import { useDispatch } from '@wordpress/data';
 import { __ } from '@wordpress/i18n';
 import { Icon, search } from '@wordpress/icons';
+import { getSettingWithCoercion } from '@woocommerce/settings';
+import { isBoolean } from '@woocommerce/types';
+import { Button } from '@wordpress/components';
 import {
 	// @ts-ignore waiting for @types/wordpress__blocks update
 	registerBlockVariation,
@@ -13,10 +16,58 @@ import {
 	createBlock,
 } from '@wordpress/blocks';
 
+/**
+ * Internal dependencies
+ */
+import './style.scss';
+import './editor.scss';
+import Block from './block.js';
+import Edit from './edit.js';
+
+const isBlockVariationAvailable = getSettingWithCoercion(
+	'isBlockVariationAvailable',
+	false,
+	isBoolean
+);
+
+const attributes = {
+	/**
+	 * Whether to show the field label.
+	 */
+	hasLabel: {
+		type: 'boolean',
+		default: true,
+	},
+
+	/**
+	 * Search field label.
+	 */
+	label: {
+		type: 'string',
+		default: __( 'Search', 'woo-gutenberg-products-block' ),
+	},
+
+	/**
+	 * Search field placeholder.
+	 */
+	placeholder: {
+		type: 'string',
+		default: __( 'Search products…', 'woo-gutenberg-products-block' ),
+	},
+
+	/**
+	 * Store the instance ID.
+	 */
+	formId: {
+		type: 'string',
+		default: '',
+	},
+};
+
 const PRODUCT_SEARCH_ATTRIBUTES = {
-	label: __( 'Search', 'woo-gutenberg-products-block' ),
-	buttonText: __( 'Search', 'woo-gutenberg-products-block' ),
-	placeholder: __( 'Search products…', 'woo-gutenberg-products-block' ),
+	label: attributes.label.default,
+	buttonText: attributes.label.default,
+	placeholder: attributes.placeholder.default,
 	query: {
 		post_type: 'product',
 	},
@@ -35,57 +86,20 @@ const DeprecatedBlockEdit = ( { clientId }: { clientId: string } ) => {
 			createBlock( 'core/search', PRODUCT_SEARCH_ATTRIBUTES )
 		);
 	};
-
-	// useEffect( () => {
-	// 	replaceBlocks(
-	// 		clientId,
-	// 		createBlock( 'core/search', PRODUCT_SEARCH_ATTRIBUTES )
-	// 	);
-	// }, [ clientId, replaceBlocks ] );
-
-	// return null;
+	const actions = [
+		<Button key="update" onClick={ updateBlock } variant="primary">
+			Update to Search Block variant
+		</Button>,
+	];
 
 	return (
-		<Warning>
+		<Warning actions={ actions }>
 			Old Product Search block is deprecated.
-			<br />
-			<small>
-				<button onClick={ updateBlock }>
-					Update to Search Block variant
-				</button>
-				.
-			</small>
 		</Warning>
 	);
 };
 
 registerBlockType( 'woocommerce/product-search', {
-	name: 'woocommerce/product-search',
-	title: __( 'Product Search', 'woo-gutenberg-products-block' ),
-	category: 'woocommerce',
-	attributes: {},
-	supports: {
-		inserter: false,
-	},
-	edit: DeprecatedBlockEdit,
-	transforms: {
-		to: [
-			{
-				type: 'block',
-				blocks: [ 'core/search' ],
-				transform: () => {
-					return createBlock(
-						'core/search',
-						PRODUCT_SEARCH_ATTRIBUTES
-					);
-				},
-			},
-		],
-	},
-} );
-
-registerBlockVariation( 'core/search', {
-	name: 'woocommerce/product-search',
 	title: __( 'Product Search', 'woo-gutenberg-products-block' ),
 	icon: {
 		src: (
@@ -95,18 +109,102 @@ registerBlockVariation( 'core/search', {
 			/>
 		),
 	},
-	// @ts-ignore waiting for @types/wordpress__blocks update
-	isActive: ( blockAttributes, variationAttributes ) => {
-		return (
-			blockAttributes.query?.post_type ===
-			variationAttributes.query.postType
-		);
-	},
 	category: 'woocommerce',
 	keywords: [ __( 'WooCommerce', 'woo-gutenberg-products-block' ) ],
 	description: __(
 		'A search box to allow customers to search for products by keyword.',
 		'woo-gutenberg-products-block'
 	),
-	attributes: PRODUCT_SEARCH_ATTRIBUTES,
+	supports: {
+		align: [ 'wide', 'full' ],
+		inserter: ! isBlockVariationAvailable,
+	},
+	example: {
+		attributes: {
+			hasLabel: true,
+		},
+	},
+	attributes,
+	transforms: isBlockVariationAvailable
+		? {
+				to: [
+					{
+						type: 'block',
+						blocks: [ 'core/search' ],
+						transform: () => {
+							return createBlock(
+								'core/search',
+								PRODUCT_SEARCH_ATTRIBUTES
+							);
+						},
+					},
+				],
+		  }
+		: {
+				from: [
+					{
+						type: 'block',
+						blocks: [ 'core/legacy-widget' ],
+						// We can't transform if raw instance isn't shown in the REST API.
+						isMatch: ( { idBase, instance } ) =>
+							idBase === 'woocommerce_product_search' &&
+							!! instance?.raw,
+						transform: ( { instance } ) =>
+							createBlock( 'woocommerce/product-search', {
+								label:
+									instance.raw.title === ''
+										? __(
+												'Search',
+												'woo-gutenberg-products-block'
+										  )
+										: instance.raw.title,
+							} ),
+					},
+				],
+		  },
+	deprecated: [
+		{
+			attributes,
+			save( props ) {
+				return (
+					<div>
+						<Block { ...props } />
+					</div>
+				);
+			},
+		},
+	],
+	edit: isBlockVariationAvailable ? DeprecatedBlockEdit : Edit,
+	save() {
+		return null;
+	},
 } );
+
+if ( isBlockVariationAvailable ) {
+	registerBlockVariation( 'core/search', {
+		name: 'woocommerce/product-search',
+		title: __( 'Product Search', 'woo-gutenberg-products-block' ),
+		icon: {
+			src: (
+				<Icon
+					icon={ search }
+					className="wc-block-editor-components-block-icon"
+				/>
+			),
+		},
+		// @ts-ignore waiting for @types/wordpress__blocks update
+		isActive: ( blockAttributes, variationAttributes ) => {
+			return (
+				blockAttributes.query?.post_type ===
+				variationAttributes.query.postType
+			);
+		},
+		category: 'woocommerce',
+		keywords: [ __( 'WooCommerce', 'woo-gutenberg-products-block' ) ],
+		description: __(
+			'A search box to allow customers to search for products by keyword.',
+			'woo-gutenberg-products-block'
+		),
+		attributes: PRODUCT_SEARCH_ATTRIBUTES,
+	} );
+}
