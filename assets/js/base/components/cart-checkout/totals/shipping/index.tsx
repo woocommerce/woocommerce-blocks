@@ -13,7 +13,6 @@ import {
 	ShippingAddress as ShippingAddressType,
 } from '@woocommerce/settings';
 import { ShippingVia } from '@woocommerce/base-components/cart-checkout/totals/shipping/shipping-via';
-
 /**
  * Internal dependencies
  */
@@ -22,6 +21,7 @@ import hasShippingRate from './has-shipping-rate';
 import ShippingCalculator from '../../shipping-calculator';
 import ShippingLocation from '../../shipping-location';
 import './style.scss';
+import { ValidationInputError } from '../../../validation-input-error';
 
 interface CalculatorButtonProps {
 	label?: string;
@@ -194,6 +194,10 @@ export const TotalsShipping = ( {
 								shippingAddress={ shippingAddress }
 								showCalculator={ showCalculator }
 								{ ...calculatorButtonProps }
+							/>
+							<ValidationInputError
+								propertyName="wc/cart/address-update"
+								elementId={ `wc-block-components-totals-shipping-error` }
 							/>
 						</>
 					) : null
