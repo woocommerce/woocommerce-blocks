@@ -28,6 +28,14 @@ const blockConfig: BlockConfiguration = {
 	attributes,
 	edit,
 	save: Save,
+	usesContext: [
+		'queryId',
+		'query',
+		'postId',
+		'queryContext',
+		'displayLayout',
+		'templateSlug',
+	],
 	supports: {
 		...sharedConfig.supports,
 		...( isFeaturePluginBuild() && {

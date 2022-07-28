@@ -27,7 +27,11 @@ interface Props {
 	setAttributes: ( attributes: Record< string, unknown > ) => void;
 }
 
-const TitleEdit = ( { attributes, setAttributes }: Props ): JSX.Element => {
+const TitleEdit = ( {
+	attributes,
+	setAttributes,
+	context,
+}: Props ): JSX.Element => {
 	const blockProps = useBlockProps();
 	const { headingLevel, showProductLink, align, linkTarget } = attributes;
 	return (

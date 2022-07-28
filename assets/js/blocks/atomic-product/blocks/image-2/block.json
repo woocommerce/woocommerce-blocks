@@ -1,0 +1,19 @@
+{
+	"name": "woocommerce/product-image-2",
+	"version": "1.0.0",
+	"title": "Product Image",
+	"description": "Allow customers to filter the products by choosing a lower or upper price limit. Works in combination with the All Products block.",
+	"category": "woocommerce",
+	"keywords": [ "WooCommerce" ],
+	"textdomain": "woo-gutenberg-products-block",
+	"usesContext": [
+		"queryId",
+		"query",
+		"postId",
+		"queryContext",
+		"displayLayout",
+		"templateSlug"
+	],
+	"apiVersion": 2,
+	"$schema": "https://schemas.wp.org/trunk/block.json"
+}

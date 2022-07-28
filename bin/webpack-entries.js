@@ -57,6 +57,10 @@ const blocks = {
 	'legacy-template': {
 		customDir: 'classic-template',
 	},
+	'product-query': {},
+	'product-image-2': {
+		customDir: 'atomic-product/blocks/image-2',
+	},
 };
 
 // Returns the entries for each block given a relative path (ie: `index.js`,
