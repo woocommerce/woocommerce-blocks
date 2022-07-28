@@ -15,7 +15,7 @@ import CART_ORDER_SUMMARY_FEE from './cart-order-summary-fee/block.json';
 import CART_ORDER_SUMMARY_DISCOUNT from './cart-order-summary-discount/block.json';
 import CART_ORDER_SUMMARY_SHIPPING from './cart-order-summary-shipping/block.json';
 import CART_ORDER_SUMMARY_COUPON_FORM from './cart-order-summary-coupon-form/block.json';
-import CART_ORDER_SUMMARY_TAXES from './cart-order-summary-taxes-block/block.json';
+import CART_ORDER_SUMMARY_TAXES from './cart-order-summary-taxes/block.json';
 import CART_ORDER_SUMMARY_HEADING from './cart-order-summary-heading/block.json';
 
 export default {

@@ -185,7 +185,7 @@ registerCheckoutBlock( {
 		() =>
 			import(
 				/* webpackChunkName: "cart-blocks/order-summary-taxes" */
-				'./cart-order-summary-taxes-block/frontend'
+				'./cart-order-summary-taxes/frontend'
 			)
 	),
 } );
