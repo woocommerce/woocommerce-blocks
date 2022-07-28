@@ -28,7 +28,7 @@ import AcceptedPaymentMethodsIcons from '../inner-blocks/cart-accepted-payment-m
 import OrderSummaryHeadingBlock from '../inner-blocks/cart-order-summary-heading/frontend';
 import OrderSummarySubtotalBlock from '../inner-blocks/cart-order-summary-subtotal/frontend';
 import OrderSummaryShippingBlock from '../inner-blocks/cart-order-summary-shipping/frontend';
-import OrderSummaryTaxesBlock from '../inner-blocks/cart-order-summary-taxes/frontend';
+import OrderSummaryTaxesBlock from '../inner-blocks/cart-order-summary-taxes-block/frontend';
 
 const CartBlock = ( {
 	attributes = {
