@@ -99,6 +99,10 @@ const updateCustomerData = debounce( (): void => {
 	}
 
 	if ( Object.keys( customerDataToUpdate ).length ) {
+		const { clearValidationError, setValidationErrors } = dispatch(
+			'wc/store/validation'
+		);
+		clearValidationError( 'wc/cart/address-update' );
 		dispatch( STORE_KEY )
 			.updateCustomerData( customerDataToUpdate )
 			.then( () => {
@@ -116,6 +120,12 @@ const updateCustomerData = debounce( (): void => {
 						context: 'wc/checkout',
 					}
 				);
+				setValidationErrors( {
+					'wc/cart/address-update': {
+						message: formatStoreApiErrorMessage( response ),
+						hidden: false,
+					},
+				} );
 			} );
 	}
 }, 1000 );

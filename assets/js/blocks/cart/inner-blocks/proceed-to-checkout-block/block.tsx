@@ -55,12 +55,21 @@ const Block = ( {
 			global.removeEventListener( 'pageshow', hideSpinner );
 		};
 	}, [] );
-
+	const { getValidationError } = useSelect( ( select ) => {
+		return {
+			getValidationError: select(
+				'wc/store/validation'
+			).getValidationError(),
+		};
+	} );
+	const hasValidationError = !! getValidationError(
+		'wc/cart/address-update'
+	);
 	const submitContainerContents = (
 		<Button
 			className="wc-block-cart__submit-button"
 			href={ link || CHECKOUT_URL }
-			disabled={ isCalculating }
+			disabled={ isCalculating || hasValidationError }
 			onClick={ () => setShowSpinner( true ) }
 			showSpinner={ showSpinner }
 		>
