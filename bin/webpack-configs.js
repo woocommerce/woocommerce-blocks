@@ -267,9 +267,6 @@ const getMainConfig = ( options = {} ) => {
 								.at( -2 );
 							return `./${ blockName }/block.json`;
 						},
-						globOptions: {
-							ignore: [ '**/inner-blocks/**' ],
-						},
 					},
 				],
 			} ),
