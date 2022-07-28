@@ -139,16 +139,20 @@ class AssetDataRegistry {
 	 * @return array
 	 */
 	protected function get_store_pages() {
+		$store_pages = [
+			'myaccount' => wc_get_page_id( 'myaccount' ),
+			'shop'      => wc_get_page_id( 'shop' ),
+			'cart'      => wc_get_page_id( 'cart' ),
+			'checkout'  => wc_get_page_id( 'checkout' ),
+			'privacy'   => wc_privacy_policy_page_id(),
+			'terms'     => wc_terms_and_conditions_page_id(),
+		];
+
+		_prime_post_caches( array_values( $store_pages ) );
+
 		return array_map(
 			[ $this, 'format_page_resource' ],
-			[
-				'myaccount' => wc_get_page_id( 'myaccount' ),
-				'shop'      => wc_get_page_id( 'shop' ),
-				'cart'      => wc_get_page_id( 'cart' ),
-				'checkout'  => wc_get_page_id( 'checkout' ),
-				'privacy'   => wc_privacy_policy_page_id(),
-				'terms'     => wc_terms_and_conditions_page_id(),
-			]
+			$store_pages
 		);
 	}
 
