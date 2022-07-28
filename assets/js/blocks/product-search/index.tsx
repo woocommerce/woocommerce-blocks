@@ -74,7 +74,7 @@ const PRODUCT_SEARCH_ATTRIBUTES = {
 };
 
 /**
- * editor.scss and styggle.scss are required
+ * editor.scss and style.scss are required
  * to gracefully handle old block deprecation
  */
 const DeprecatedBlockEdit = ( { clientId }: { clientId: string } ) => {
@@ -117,7 +117,7 @@ registerBlockType( 'woocommerce/product-search', {
 	),
 	supports: {
 		align: [ 'wide', 'full' ],
-		inserter: isBlockVariationAvailable ? false : true,
+		inserter: ! isBlockVariationAvailable,
 	},
 	example: {
 		attributes: {
