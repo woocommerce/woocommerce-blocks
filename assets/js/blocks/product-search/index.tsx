@@ -98,7 +98,7 @@ const DeprecatedBlockEdit = ( { clientId }: { clientId: string } ) => {
 					currentBlockAttributes?.label ||
 					PRODUCT_SEARCH_ATTRIBUTES.buttonText,
 				placeholder:
-					currentBlockAttributes?.label ||
+					currentBlockAttributes?.placeholder ||
 					PRODUCT_SEARCH_ATTRIBUTES.placeholder,
 				query: PRODUCT_SEARCH_ATTRIBUTES.query,
 			} )
