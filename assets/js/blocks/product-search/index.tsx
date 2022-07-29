@@ -98,7 +98,7 @@ const DeprecatedBlockEdit = ( { clientId }: { clientId: string } ) => {
 					currentBlockAttributes?.label ||
 					PRODUCT_SEARCH_ATTRIBUTES.buttonText,
 				placeholder:
-					currentBlockAttributes?.placeholder ||
+					currentBlockAttributes?.label ||
 					PRODUCT_SEARCH_ATTRIBUTES.placeholder,
 				query: PRODUCT_SEARCH_ATTRIBUTES.query,
 			} )
@@ -150,43 +150,23 @@ registerBlockType( 'woocommerce/product-search', {
 		},
 	},
 	attributes,
-	transforms: isBlockVariationAvailable
-		? {
-				to: [
-					{
-						type: 'block',
-						blocks: [ 'core/search' ],
-						transform: () => {
-							return createBlock(
-								'core/search',
-								PRODUCT_SEARCH_ATTRIBUTES
-							);
-						},
-					},
-				],
-		  }
-		: {
-				from: [
-					{
-						type: 'block',
-						blocks: [ 'core/legacy-widget' ],
-						// We can't transform if raw instance isn't shown in the REST API.
-						isMatch: ( { idBase, instance } ) =>
-							idBase === 'woocommerce_product_search' &&
-							!! instance?.raw,
-						transform: ( { instance } ) =>
-							createBlock( 'woocommerce/product-search', {
-								label:
-									instance.raw.title === ''
-										? __(
-												'Search',
-												'woo-gutenberg-products-block'
-										  )
-										: instance.raw.title,
-							} ),
-					},
-				],
-		  },
+	transforms: {
+		from: [
+			{
+				type: 'block',
+				blocks: [ 'core/legacy-widget' ],
+				// We can't transform if raw instance isn't shown in the REST API.
+				isMatch: ( { idBase, instance } ) =>
+					idBase === 'woocommerce_product_search' && !! instance?.raw,
+				transform: ( { instance } ) =>
+					createBlock( 'woocommerce/product-search', {
+						label:
+							instance.raw.title ||
+							PRODUCT_SEARCH_ATTRIBUTES.label,
+					} ),
+			},
+		],
+	},
 	deprecated: [
 		{
 			attributes,
@@ -231,5 +211,6 @@ if ( isBlockVariationAvailable ) {
 			'woo-gutenberg-products-block'
 		),
 		attributes: PRODUCT_SEARCH_ATTRIBUTES,
+		scope: [ 'block', 'inserter', 'transform' ],
 	} );
 }
