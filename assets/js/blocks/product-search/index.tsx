@@ -3,7 +3,7 @@
  * External dependencies
  */
 import { store as blockEditorStore, Warning } from '@wordpress/block-editor';
-import { useDispatch } from '@wordpress/data';
+import { useDispatch, useSelect } from '@wordpress/data';
 import { __ } from '@wordpress/i18n';
 import { Icon, search } from '@wordpress/icons';
 import { getSettingWithCoercion } from '@woocommerce/settings';
@@ -80,12 +80,31 @@ const PRODUCT_SEARCH_ATTRIBUTES = {
 const DeprecatedBlockEdit = ( { clientId }: { clientId: string } ) => {
 	// @ts-ignore @wordpress/block-editor/store types not provided
 	const { replaceBlocks } = useDispatch( blockEditorStore );
+
+	const currentBlockAttributes = useSelect(
+		( select ) =>
+			select( 'core/block-editor' ).getBlockAttributes( clientId ),
+		[ clientId ]
+	);
+
 	const updateBlock = () => {
 		replaceBlocks(
 			clientId,
-			createBlock( 'core/search', PRODUCT_SEARCH_ATTRIBUTES )
+			createBlock( 'core/search', {
+				label:
+					currentBlockAttributes?.label ||
+					PRODUCT_SEARCH_ATTRIBUTES.label,
+				buttonText:
+					currentBlockAttributes?.label ||
+					PRODUCT_SEARCH_ATTRIBUTES.buttonText,
+				placeholder:
+					currentBlockAttributes?.placeholder ||
+					PRODUCT_SEARCH_ATTRIBUTES.placeholder,
+				query: PRODUCT_SEARCH_ATTRIBUTES.query,
+			} )
 		);
 	};
+
 	const actions = [
 		<Button key="update" onClick={ updateBlock } variant="primary">
 			{ __(
