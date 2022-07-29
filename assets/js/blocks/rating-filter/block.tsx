@@ -1,45 +1,33 @@
 /**
  * External dependencies
  */
-// import { __, sprintf } from '@wordpress/i18n';
-// import { speak } from '@wordpress/a11y';
-// import { usePrevious, useShallowEqual } from '@woocommerce/base-hooks';
-// import {
-// 	useQueryStateByKey,
-// 	useQueryStateByContext,
-// 	useCollectionData,
-// } from '@woocommerce/base-context/hooks';
-// import { getSetting, getSettingWithCoercion } from '@woocommerce/settings';
-// import {
-// 	useCallback,
-// 	useEffect,
-// 	useState,
-// 	useMemo,
-// 	useRef,
-// } from '@wordpress/element';
-// import CheckboxList from '@woocommerce/base-components/checkbox-list';
-// import FilterSubmitButton from '@woocommerce/base-components/filter-submit-button';
-// import Label from '@woocommerce/base-components/filter-element-label';
-// import isShallowEqual from '@wordpress/is-shallow-equal';
-// import { decodeEntities } from '@wordpress/html-entities';
-// import { isBoolean, objectHasProp } from '@woocommerce/types';
-// import { addQueryArgs, removeQueryArgs } from '@wordpress/url';
-import { PREFIX_QUERY_ARG_FILTER_TYPE } from '@woocommerce/utils';
 import Rating from '@woocommerce/base-components/product-rating';
+import { speak } from '@wordpress/a11y';
+import { usePrevious, useShallowEqual } from '@woocommerce/base-hooks';
+import LoadingMask from '@woocommerce/base-components/loading-mask';
 import {
 	useQueryStateByKey,
 	useQueryStateByContext,
 	useCollectionData,
 } from '@woocommerce/base-context/hooks';
+import isRatingQueryCollection from '@woocommerce/types';
+import { getSetting, getSettingWithCoercion } from '@woocommerce/settings';
+import { isBoolean } from '@woocommerce/types';
+import { sortBy } from 'lodash';
+import isShallowEqual from '@wordpress/is-shallow-equal';
+import { useState, useCallback, useMemo, useEffect } from '@wordpress/element';
+import { addQueryArgs, removeQueryArgs } from '@wordpress/url';
+import { changeUrl, PREFIX_QUERY_ARG_FILTER_TYPE } from '@woocommerce/utils';
 
 /**
  * Internal dependencies
  */
-import { previewOptions } from './preview';
-// import './style.scss';
+// import { previewOptions } from './preview';
+import './style.scss';
 import { Attributes } from './types';
+import { getActiveFilters } from './utils';
 
-export const QUERY_PARAM_KEY = PREFIX_QUERY_ARG_FILTER_TYPE + 'stock_status';
+export const QUERY_PARAM_KEY = PREFIX_QUERY_ARG_FILTER_TYPE + 'rating';
 
 /**
  * Component displaying an stock status filter.
@@ -55,14 +43,19 @@ const RatingFilterBlock = ( {
 	attributes: Attributes;
 	isEditor?: boolean;
 } ) => {
+	const filteringForPhpTemplate = getSettingWithCoercion(
+		'is_rendering_php_template',
+		false,
+		isBoolean
+	);
+
+	const [ hasSetFilterDefaultsFromUrl, setHasSetFilterDefaultsFromUrl ] =
+		useState( false );
+
 	const TagName =
 		`h${ blockAttributes.headingLevel }` as keyof JSX.IntrinsicElements;
 
 	const [ queryState ] = useQueryStateByContext();
-	const [ ratingProductQuery, setProductRatingQuery ] = useQueryStateByKey(
-		'rating_counts',
-		[]
-	);
 
 	const { results: filteredCounts, isLoading: filteredCountsLoading } =
 		useCollectionData( {
@@ -70,52 +63,168 @@ const RatingFilterBlock = ( {
 			queryState,
 		} );
 
-	console.log( filteredCounts );
+	const RATING_OPTIONS = getSetting( 'ratingOptions', [] );
 
-	return (
-		<>
-			{ ! isEditor && blockAttributes.heading && (
-				<TagName className="wc-block-rating-filter__title">
-					{ blockAttributes.heading }
-				</TagName>
-			) }
-			<Rating
-				averageRating={ 5 }
-				ratingCount={ 14 }
-				className="wp-custom-class"
-				productCount={ 11 }
-				showProductLink={ false }
-			/>
-			<Rating
-				averageRating={ 4 }
-				ratingCount={ 14 }
-				className="wp-custom-class"
-				productCount={ 2 }
-				showProductLink={ false }
-			/>
-			<Rating
-				averageRating={ 3 }
-				ratingCount={ 14 }
-				className="wp-custom-class"
-				productCount={ 34 }
-				showProductLink={ false }
-			/>
-			<Rating
-				averageRating={ 2 }
-				ratingCount={ 14 }
-				className="wp-custom-class"
-				productCount={ 76 }
-				showProductLink={ false }
-			/>
-			<Rating
-				averageRating={ 1 }
-				ratingCount={ 14 }
-				className="wp-custom-class"
-				productCount={ 4 }
-				showProductLink={ false }
-			/>
-		</>
+	const initialFilters = useMemo(
+		() => getActiveFilters( RATING_OPTIONS.current, QUERY_PARAM_KEY ),
+		[]
 	);
+
+	const [ clicked, setClicked ] = useState( initialFilters );
+
+	const [ displayedOptions, setDisplayedOptions ] = useState(
+		blockAttributes.isPreview ? previewOptions : []
+	);
+
+	const [ productRatings, setProductRatings ] =
+		useQueryStateByKey( 'rating' );
+
+	const [ productRatingsQuery, setProductRatingsQuery ] = useQueryStateByKey(
+		'rating',
+		initialFilters
+	);
+
+	const productRatingsArray = Array.from( productRatings );
+
+	/**
+	 * Used to redirect the page when filters are changed so templates using the Classic Template block can filter.
+	 *
+	 * @param {Array} productRatingsArray Array of checked stock options.
+	 */
+	const updateFilterUrl = ( productRatingsArray: string[] ) => {
+		if ( ! window ) {
+			return;
+		}
+
+		if ( productRatingsArray.length === 0 ) {
+			const url = removeQueryArgs(
+				window.location.href,
+				QUERY_PARAM_KEY
+			);
+
+			if ( url !== window.location.href ) {
+				changeUrl( url );
+			}
+
+			return;
+		}
+
+		const newUrl = addQueryArgs( window.location.href, {
+			[ QUERY_PARAM_KEY ]: productRatingsArray.join( ',' ),
+		} );
+
+		if ( newUrl === window.location.href ) {
+			return;
+		}
+
+		changeUrl( newUrl );
+	};
+
+	const onSubmit = useCallback(
+		( isClicked ) => {
+			if ( isEditor ) {
+				return;
+			}
+			if ( isClicked && ! filteringForPhpTemplate ) {
+				setProductRatingsQuery( clicked );
+			}
+
+			updateFilterUrl( clicked );
+		},
+		[ isEditor, setProductRatingsQuery, clicked, filteringForPhpTemplate ]
+	);
+
+	// Track clicked STATE changes - if state changes, update the query.
+	useEffect( () => {
+		if ( ! blockAttributes.showFilterButton ) {
+			onSubmit( clicked );
+		}
+	}, [ blockAttributes.showFilterButton, clicked, onSubmit ] );
+
+	const clickedQuery = useMemo( () => {
+		return productRatingsQuery;
+	}, [ productRatingsQuery ] );
+
+	const currentClickedQuery = useShallowEqual( clickedQuery );
+	const previousClickedQuery = usePrevious( currentClickedQuery );
+	// Track Stock query changes so the block reflects current filters.
+	useEffect( () => {
+		if (
+			! isShallowEqual( previousClickedQuery, currentClickedQuery ) && // Clicked query changed.
+			! isShallowEqual( clicked, currentClickedQuery ) // Clicked query doesn't match the UI.
+		) {
+			setClicked( currentClickedQuery );
+		}
+	}, [ clicked, currentClickedQuery, previousClickedQuery ] );
+
+	/**
+	 * Try get the stock filter from the URL.
+	 */
+	useEffect( () => {
+		if ( ! hasSetFilterDefaultsFromUrl ) {
+			setProductRatings( initialFilters );
+			setHasSetFilterDefaultsFromUrl( true );
+		}
+	}, [
+		setProductRatings,
+		hasSetFilterDefaultsFromUrl,
+		setHasSetFilterDefaultsFromUrl,
+		initialFilters,
+	] );
+
+	const onClick = ( clickedValue ) => () => {
+		if ( ! productRatingsArray.length ) {
+			setProductRatings( [ clickedValue ] );
+		} else {
+			const previouslyClicked =
+				productRatingsArray.includes( clickedValue );
+			const newClicked = productRatingsArray.filter(
+				( value ) => value !== clickedValue
+			);
+			if ( ! previouslyClicked ) {
+				newClicked.push( clickedValue );
+				newClicked.sort();
+			}
+			setProductRatings( newClicked );
+		}
+	};
+
+	if ( filteredCounts.rating_counts != undefined ) {
+		const orderedRatings = [ ...filteredCounts.rating_counts ].reverse();
+		return (
+			<>
+				{ ! isEditor && blockAttributes.heading && (
+					<TagName className="wc-block-rating-filter__title">
+						{ blockAttributes.heading }
+					</TagName>
+				) }
+				{ orderedRatings.map( ( item ) => (
+					<Rating
+						className={
+							productRatingsArray.includes(
+								item.rating.toString()
+							)
+								? 'is-active'
+								: null
+						}
+						key={ item.rating }
+						rating={ item.rating }
+						ratedProductsCount={ item.count }
+						onClick={ onClick( item.rating.toString() ) }
+						options={ displayedOptions }
+					/>
+				) ) }
+				{ blockAttributes.showFilterButton && (
+					<FilterSubmitButton
+						className="wc-block-stock-filter__button"
+						disabled={ isLoading || isDisabled }
+						onClick={ () => onSubmit( checked ) }
+					/>
+				) }
+			</>
+		);
+	}
+	return <LoadingMask showSpinner={ true } />;
 };
 
 export default RatingFilterBlock;
