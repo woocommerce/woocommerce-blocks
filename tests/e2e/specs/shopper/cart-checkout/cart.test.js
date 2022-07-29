@@ -5,7 +5,7 @@ import { shopper, SIMPLE_VIRTUAL_PRODUCT_NAME } from '../../../../utils';
 
 if ( process.env.WOOCOMMERCE_BLOCKS_PHASE < 2 ) {
 	// Skips all the tests if it's a WooCommerce Core process environment.
-	// eslint-disable-next-line jest/no-focused-tests
+	// eslint-disable-next-line jest/no-focused-tests, jest/expect-expect
 	test.only( `Skipping Cart & Checkout tests`, () => {} );
 }
 
@@ -21,10 +21,15 @@ describe( 'Shopper → Cart', () => {
 	it( 'User can view empty cart message', async () => {
 		await shopper.block.goToCart();
 
+		await page.waitForSelector( '.wc-block-cart__empty-cart__title' );
+
 		// Verify cart is empty'
-		await expect( page ).toMatchElement( 'h2', {
-			text: 'Your cart is currently empty!',
-		} );
+		await expect( page ).toMatchElement(
+			'.wc-block-cart__empty-cart__title',
+			{
+				text: 'Your cart is currently empty!',
+			}
+		);
 	} );
 
 	it( 'User can remove a product from cart', async () => {

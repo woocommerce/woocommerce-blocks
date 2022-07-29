@@ -3,6 +3,7 @@ namespace Automattic\WooCommerce\Blocks\Domain;
 
 use Automattic\WooCommerce\Blocks\Assets\Api as AssetApi;
 use Automattic\WooCommerce\Blocks\Assets\AssetDataRegistry;
+use Automattic\WooCommerce\Blocks\Migration;
 use Automattic\WooCommerce\Blocks\AssetsController;
 use Automattic\WooCommerce\Blocks\BlockTemplatesController;
 use Automattic\WooCommerce\Blocks\BlockTypesController;
@@ -21,6 +22,7 @@ use Automattic\WooCommerce\Blocks\Payments\Integrations\Cheque;
 use Automattic\WooCommerce\Blocks\Payments\Integrations\PayPal;
 use Automattic\WooCommerce\Blocks\Payments\PaymentMethodRegistry;
 use Automattic\WooCommerce\Blocks\Registry\Container;
+use Automattic\WooCommerce\Blocks\Templates\ProductAttributeTemplate;
 use Automattic\WooCommerce\StoreApi\StoreApi;
 use Automattic\WooCommerce\StoreApi\RoutesController;
 use Automattic\WooCommerce\StoreApi\SchemaController;
@@ -46,6 +48,14 @@ class Bootstrap {
 	 */
 	private $package;
 
+
+	/**
+	 * Holds the Migration instance
+	 *
+	 * @var Migration
+	 */
+	private $migration;
+
 	/**
 	 * Constructor
 	 *
@@ -54,6 +64,8 @@ class Bootstrap {
 	public function __construct( Container $container ) {
 		$this->container = $container;
 		$this->package   = $container->get( Package::class );
+		$this->migration = $container->get( Migration::class );
+
 		if ( $this->has_core_dependencies() ) {
 			$this->init();
 			/**
@@ -72,6 +84,13 @@ class Bootstrap {
 	protected function init() {
 		$this->register_dependencies();
 		$this->register_payment_methods();
+
+		if ( $this->package->is_experimental_build() && is_admin() ) {
+			if ( $this->package->get_version() !== $this->package->get_version_stored_on_db() ) {
+				$this->migration->run_migrations();
+				$this->package->set_version_stored_on_db();
+			}
+		}
 
 		add_action(
 			'admin_init',
@@ -98,6 +117,7 @@ class Bootstrap {
 		$this->container->get( BlockTypesController::class );
 		$this->container->get( BlockTemplatesController::class );
 		$this->container->get( ProductSearchResultsTemplate::class );
+		$this->container->get( ProductAttributeTemplate::class );
 		$this->container->get( ClassicTemplatesCompatibility::class );
 		if ( $this->package->feature()->is_feature_plugin_build() ) {
 			$this->container->get( PaymentsApi::class );
@@ -221,14 +241,20 @@ class Bootstrap {
 		);
 		$this->container->register(
 			BlockTemplatesController::class,
-			function () {
-				return new BlockTemplatesController();
+			function ( Container $container ) {
+				return new BlockTemplatesController( $container->get( Package::class ) );
 			}
 		);
 		$this->container->register(
 			ProductSearchResultsTemplate::class,
 			function () {
 				return new ProductSearchResultsTemplate();
+			}
+		);
+		$this->container->register(
+			ProductAttributeTemplate::class,
+			function () {
+				return new ProductAttributeTemplate();
 			}
 		);
 		$this->container->register(

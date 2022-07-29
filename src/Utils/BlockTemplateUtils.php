@@ -1,7 +1,10 @@
 <?php
 namespace Automattic\WooCommerce\Blocks\Utils;
 
+use Automattic\WooCommerce\Blocks\Templates\ProductSearchResultsTemplate;
 use Automattic\WooCommerce\Blocks\Domain\Services\FeatureGating;
+use Automattic\WooCommerce\Blocks\Options;
+use Automattic\WooCommerce\Blocks\Templates\MiniCartTemplate;
 
 /**
  * Utility methods used for serving block templates from WooCommerce Blocks.
@@ -197,7 +200,8 @@ class BlockTemplateUtils {
 		$template->source         = $template_file->source ? $template_file->source : 'plugin';
 		$template->slug           = $template_file->slug;
 		$template->type           = $template_type;
-		$template->title          = ! empty( $template_file->title ) ? $template_file->title : self::convert_slug_to_title( $template_file->slug );
+		$template->title          = ! empty( $template_file->title ) ? $template_file->title : self::get_block_template_title( $template_file->slug );
+		$template->description    = ! empty( $template_file->description ) ? $template_file->description : self::get_block_template_description( $template_file->slug );
 		$template->status         = 'publish';
 		$template->has_theme_file = true;
 		$template->origin         = $template_file->source;
@@ -228,8 +232,8 @@ class BlockTemplateUtils {
 			'theme'       => $template_is_from_theme ? $theme_name : self::PLUGIN_SLUG,
 			// Plugin was agreed as a valid source value despite existing inline docs at the time of creating: https://github.com/WordPress/gutenberg/issues/36597#issuecomment-976232909.
 			'source'      => $template_is_from_theme ? 'theme' : 'plugin',
-			'title'       => self::convert_slug_to_title( $template_slug ),
-			'description' => '',
+			'title'       => self::get_block_template_title( $template_slug ),
+			'description' => self::get_block_template_description( $template_slug ),
 			'post_types'  => array(), // Don't appear in any Edit Post template selector dropdown.
 		);
 
@@ -255,25 +259,70 @@ class BlockTemplateUtils {
 	}
 
 	/**
-	 * Converts template slugs into readable titles.
+	 * Returns template titles.
 	 *
 	 * @param string $template_slug The templates slug (e.g. single-product).
-	 * @return string Human friendly title converted from the slug.
+	 * @return string Human friendly title.
 	 */
-	public static function convert_slug_to_title( $template_slug ) {
-		switch ( $template_slug ) {
-			case 'single-product':
-				return __( 'Single Product', 'woo-gutenberg-products-block' );
-			case 'archive-product':
-				return __( 'Product Catalog', 'woo-gutenberg-products-block' );
-			case 'taxonomy-product_cat':
-				return __( 'Products by Category', 'woo-gutenberg-products-block' );
-			case 'taxonomy-product_tag':
-				return __( 'Products by Tag', 'woo-gutenberg-products-block' );
-			default:
-				// Replace all hyphens and underscores with spaces.
-				return ucwords( preg_replace( '/[\-_]/', ' ', $template_slug ) );
+	public static function get_block_template_title( $template_slug ) {
+		$plugin_template_types = self::get_plugin_block_template_types();
+		if ( isset( $plugin_template_types[ $template_slug ] ) ) {
+			return $plugin_template_types[ $template_slug ]['title'];
+		} else {
+			// Human friendly title converted from the slug.
+			return ucwords( preg_replace( '/[\-_]/', ' ', $template_slug ) );
 		}
+	}
+
+	/**
+	 * Returns template descriptions.
+	 *
+	 * @param string $template_slug The templates slug (e.g. single-product).
+	 * @return string Template description.
+	 */
+	public static function get_block_template_description( $template_slug ) {
+		$plugin_template_types = self::get_plugin_block_template_types();
+		if ( isset( $plugin_template_types[ $template_slug ] ) ) {
+			return $plugin_template_types[ $template_slug ]['description'];
+		}
+		return '';
+	}
+
+	/**
+	 * Returns a filtered list of plugin template types, containing their
+	 * localized titles and descriptions.
+	 *
+	 * @return array The plugin template types.
+	 */
+	public static function get_plugin_block_template_types() {
+		$plugin_template_types = array(
+			'single-product'                   => array(
+				'title'       => _x( 'Single Product', 'Template name', 'woo-gutenberg-products-block' ),
+				'description' => __( 'Displays a single product.', 'woo-gutenberg-products-block' ),
+			),
+			'archive-product'                  => array(
+				'title'       => _x( 'Product Catalog', 'Template name', 'woo-gutenberg-products-block' ),
+				'description' => __( 'Displays your products.', 'woo-gutenberg-products-block' ),
+			),
+			'taxonomy-product_cat'             => array(
+				'title'       => _x( 'Products by Category', 'Template name', 'woo-gutenberg-products-block' ),
+				'description' => __( 'Displays products filtered by a category.', 'woo-gutenberg-products-block' ),
+			),
+			'taxonomy-product_tag'             => array(
+				'title'       => _x( 'Products by Tag', 'Template name', 'woo-gutenberg-products-block' ),
+				'description' => __( 'Displays products filtered by a tag.', 'woo-gutenberg-products-block' ),
+			),
+			ProductSearchResultsTemplate::SLUG => array(
+				'title'       => _x( 'Product Search Results', 'Template name', 'woo-gutenberg-products-block' ),
+				'description' => __( 'Displays search results for your store.', 'woo-gutenberg-products-block' ),
+			),
+			MiniCartTemplate::SLUG             => array(
+				'title'       => _x( 'Mini Cart', 'Template name', 'woo-gutenberg-products-block' ),
+				'description' => __( 'Template used to display the Mini Cart drawer.', 'woo-gutenberg-products-block' ),
+			),
+		);
+
+		return $plugin_template_types;
 	}
 
 	/**
@@ -366,7 +415,7 @@ class BlockTemplateUtils {
 	 */
 	public static function supports_block_templates() {
 		if (
-			( ! function_exists( 'wp_is_block_theme' ) || ! wp_is_block_theme() ) &&
+			! wc_current_theme_is_fse_theme() &&
 			( ! function_exists( 'gutenberg_supports_block_templates' ) || ! gutenberg_supports_block_templates() )
 		) {
 			return false;
@@ -515,5 +564,21 @@ class BlockTemplateUtils {
 				}
 			)
 		);
+	}
+
+	/**
+	 * Returns whether the blockified templates should be used or not.
+	 * If the option is not stored on the db, we need to check if the current theme is a block one or not.
+	 *
+	 * @return boolean
+	 */
+	public static function should_use_blockified_product_grid_templates() {
+		$use_blockified_templates = get_option( Options::WC_BLOCK_USE_BLOCKIFIED_PRODUCT_GRID_BLOCK_AS_TEMPLATE );
+
+		if ( false === $use_blockified_templates ) {
+			return wc_current_theme_is_fse_theme();
+		}
+
+		return wc_string_to_bool( $use_blockified_templates );
 	}
 }

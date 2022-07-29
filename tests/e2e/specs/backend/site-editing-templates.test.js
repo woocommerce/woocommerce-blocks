@@ -1,5 +1,8 @@
+/* eslint-disable jest/no-conditional-expect */
+/**
+ * External dependencies
+ */
 import { URL } from 'url';
-
 import {
 	canvas,
 	deleteAllTemplates,
@@ -10,6 +13,10 @@ import {
 	getNormalPagePermalink,
 	visitPostOfType,
 } from '@woocommerce/blocks-test-utils';
+
+/**
+ * Internal dependencies
+ */
 import {
 	BASE_URL,
 	DEFAULT_TIMEOUT,
@@ -82,6 +89,14 @@ const BLOCK_DATA = {
 			placeholder: 'archive-product',
 			template: 'taxonomy-product_tag',
 			title: 'WooCommerce Product Tag Block',
+		},
+		name: 'woocommerce/legacy-template',
+	},
+	'product-search-results': {
+		attributes: {
+			title: 'WooCommerce Product Search Results Block',
+			template: 'product-search-results',
+			placeholder: 'archive-product',
 		},
 		name: 'woocommerce/legacy-template',
 	},
@@ -508,7 +523,7 @@ describe( 'Store Editing Templates', () => {
 			);
 
 			expect( classicBlock.attributes.template ).toBe(
-				BLOCK_DATA[ 'archive-product' ].attributes.template
+				BLOCK_DATA[ 'product-search-results' ].attributes.template
 			);
 			expect( await getCurrentSiteEditorContent() ).toMatchSnapshot();
 		} );

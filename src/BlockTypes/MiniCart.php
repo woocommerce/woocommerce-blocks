@@ -24,6 +24,13 @@ class MiniCart extends AbstractBlock {
 	protected $block_name = 'mini-cart';
 
 	/**
+	 * Chunks build folder.
+	 *
+	 * @var string
+	 */
+	protected $chunks_folder = 'mini-cart-contents-block';
+
+	/**
 	 * Array of scripts that will be lazy loaded when interacting with the block.
 	 *
 	 * @var string[]
@@ -143,22 +150,6 @@ class MiniCart extends AbstractBlock {
 			);
 		}
 
-		/**
-		 * Temporary remove the this filter so $wp_scripts->print_translations
-		 * calls won't accident print the translations scripts for the block
-		 * when inserted as a widget.
-		 *
-		 * $wp_scripts->print_translations() calls load_script_textdomain()
-		 * which calls load_script_translations() containing the below filter.
-		 *
-		 * In Customzier, woocommerce_blocks_get_i18n_data_json doesn't exist
-		 * at the time of this filter call. So we need checking for its
-		 * existence to prevent fatal error.
-		 */
-		if ( function_exists( 'woocommerce_blocks_get_i18n_data_json' ) ) {
-			remove_filter( 'pre_load_script_translations', 'woocommerce_blocks_get_i18n_data_json', 10, 4 );
-		}
-
 		$script_data = $this->asset_api->get_script_data( 'build/mini-cart-component-frontend.js' );
 
 		$num_dependencies = count( $script_data['dependencies'] );
@@ -192,11 +183,6 @@ class MiniCart extends AbstractBlock {
 			'translations' => $this->get_inner_blocks_translations(),
 		);
 
-		// Re-add the filter.
-		if ( function_exists( 'woocommerce_blocks_get_i18n_data_json' ) ) {
-			add_filter( 'pre_load_script_translations', 'woocommerce_blocks_get_i18n_data_json', 10, 4 );
-		}
-
 		$this->asset_data_registry->add(
 			'mini_cart_block_frontend_dependencies',
 			$this->scripts_to_lazy_load,
@@ -213,8 +199,7 @@ class MiniCart extends AbstractBlock {
 
 		if (
 			current_user_can( 'edit_theme_options' ) &&
-			function_exists( 'wp_is_block_theme' ) &&
-			wp_is_block_theme()
+			wc_current_theme_is_fse_theme()
 		) {
 			$theme_slug      = BlockTemplateUtils::theme_has_template_part( 'mini-cart' ) ? wp_get_theme()->get_stylesheet() : BlockTemplateUtils::PLUGIN_SLUG;
 			$site_editor_uri = admin_url( 'site-editor.php' );
@@ -291,8 +276,11 @@ class MiniCart extends AbstractBlock {
 		if ( ! $script->src ) {
 			return;
 		}
+
+		$site_url = site_url() ?? wp_guess_url();
+
 		$this->scripts_to_lazy_load[ $script->handle ] = array(
-			'src'          => $script->src,
+			'src'          => preg_match( '|^(https?:)?//|', $script->src ) ? $script->src : $site_url . $script->src,
 			'version'      => $script->ver,
 			'before'       => $wp_scripts->print_inline_script( $script->handle, 'before', false ),
 			'after'        => $wp_scripts->print_inline_script( $script->handle, 'after', false ),
@@ -349,9 +337,12 @@ class MiniCart extends AbstractBlock {
 			$cart_contents_total += $cart->get_subtotal_tax();
 		}
 
-		$classes_styles  = StyleAttributesUtils::get_classes_and_styles_by_attributes( $attributes, array( 'text_color', 'background_color' ) );
+		$classes_styles  = StyleAttributesUtils::get_classes_and_styles_by_attributes( $attributes, array( 'text_color', 'background_color', 'font_size', 'font_family' ) );
 		$wrapper_classes = sprintf( 'wc-block-mini-cart wp-block-woocommerce-mini-cart %s', $classes_styles['classes'] );
-		$wrapper_styles  = $classes_styles['styles'];
+		if ( ! empty( $attributes['className'] ) ) {
+			$wrapper_classes .= ' ' . $attributes['className'];
+		}
+		$wrapper_styles = $classes_styles['styles'];
 
 		$aria_label = sprintf(
 		/* translators: %1$d is the number of products in the cart. %2$s is the cart total */
@@ -447,7 +438,7 @@ class MiniCart extends AbstractBlock {
 				);
 			}
 			return array(
-				'label_including_tax'               => '',
+				'tax_label'                         => '',
 				'display_cart_prices_including_tax' => true,
 			);
 		}
@@ -472,7 +463,14 @@ class MiniCart extends AbstractBlock {
 	 * @return object;
 	 */
 	protected function get_cart_payload() {
-		return WC()->api->get_endpoint_data( '/wc/store/cart' );
+		$notices = wc_get_notices(); // Backup the notices because StoreAPI will remove them.
+		$payload = WC()->api->get_endpoint_data( '/wc/store/cart' );
+
+		if ( ! empty( $notices ) ) {
+			wc_set_notices( $notices ); // Restore the notices.
+		}
+
+		return $payload;
 	}
 
 	/**
@@ -482,18 +480,11 @@ class MiniCart extends AbstractBlock {
 		$wp_scripts   = wp_scripts();
 		$translations = array();
 
-		$blocks = [
-			'mini-cart-contents-block/filled-cart',
-			'mini-cart-contents-block/empty-cart',
-			'mini-cart-contents-block/title',
-			'mini-cart-contents-block/items',
-			'mini-cart-contents-block/products-table',
-			'mini-cart-contents-block/footer',
-			'mini-cart-contents-block/shopping-button',
-		];
-		$chunks = preg_filter( '/$/', '-frontend', $blocks );
+		$chunks        = $this->get_chunks_paths( $this->chunks_folder );
+		$vendor_chunks = $this->get_chunks_paths( 'vendors--mini-cart-contents-block' );
+		$shared_chunks = [ 'cart-blocks/cart-line-items--mini-cart-contents-block/products-table-frontend' ];
 
-		foreach ( $chunks as $chunk ) {
+		foreach ( array_merge( $chunks, $vendor_chunks, $shared_chunks ) as $chunk ) {
 			$handle = 'wc-blocks-' . $chunk . '-chunk';
 			$this->asset_api->register_script( $handle, $this->asset_api->get_block_asset_build_path( $chunk ), [], true );
 			$translations[] = $wp_scripts->print_translations( $handle, false );

@@ -70,9 +70,8 @@ export const PaymentMethodDataProvider = ( {
 	} = useCheckoutContext();
 	const { isEditor, getPreviewData } = useEditorContext();
 	const { setValidationErrors } = useValidationContext();
-	const { createErrorNotice: addErrorNotice, removeNotice } = useDispatch(
-		'core/notices'
-	);
+	const { createErrorNotice: addErrorNotice, removeNotice } =
+		useDispatch( 'core/notices' );
 	const {
 		isSuccessResponse,
 		isErrorResponse,
@@ -93,10 +92,8 @@ export const PaymentMethodDataProvider = ( {
 		DEFAULT_PAYMENT_DATA_CONTEXT_STATE
 	);
 
-	const {
-		dispatchActions,
-		setPaymentStatus,
-	} = usePaymentMethodDataDispatchers( dispatch );
+	const { dispatchActions, setPaymentStatus } =
+		usePaymentMethodDataDispatchers( dispatch );
 
 	const paymentMethodsInitialized = usePaymentMethods(
 		dispatchActions.setRegisteredPaymentMethods
@@ -283,7 +280,7 @@ export const PaymentMethodDataProvider = ( {
 				if ( successResponse && ! errorResponse ) {
 					setPaymentStatus().success(
 						successResponse?.meta?.paymentMethodData,
-						successResponse?.meta?.billingData,
+						successResponse?.meta?.billingAddress,
 						successResponse?.meta?.shippingData
 					);
 				} else if ( errorResponse && isFailResponse( errorResponse ) ) {
@@ -302,7 +299,7 @@ export const PaymentMethodDataProvider = ( {
 					setPaymentStatus().failed(
 						errorResponse?.message,
 						errorResponse?.meta?.paymentMethodData,
-						errorResponse?.meta?.billingData
+						errorResponse?.meta?.billingAddress
 					);
 				} else if ( errorResponse ) {
 					if (

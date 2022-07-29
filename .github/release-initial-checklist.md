@@ -6,9 +6,10 @@ The release pull request has been created! This checklist is a guide to follow f
 
 * [ ] Close the milestone of the release you are going to ship. That will prevent newly approved PRs to be automatically assigned to that milestone.
 * [ ] Create a milestone for the next version.
-* [ ] Add the changelog to `readme.txt`
-  * [ ] Add the version and date to the changelog section within `readme.txt`, e.g. `= {{version}} - YYYY-MM-DD =`
-  * [ ] Copy the changelog from the pull request description above into this new section
+* [ ] Manually add the changelog entries of all affected PRs to `readme.txt`. (Technically, this should be an automated process, but it seems to broke recently. Please change this entry back, once the automated process works again.)
+* [ ] Ensure you pull your changes from the remote, since GitHub Actions will have added new commits to the branch.
+  * [ ] Check the version and date in the changelog section within `readme.txt`, e.g. `= {{version}} - YYYY-MM-DD =`
+  * [ ] Check the changelog matches the one in the pull request description above.
 * [ ] Update compatibility sections (if applicable). __Note:__ Do not change the stable tag or plugin version; this is automated.
   * [ ] Update _Requires at least_, _Tested up to_, and _Requires PHP_ sections at the top of `readme.txt`. Note, this should also be the latest WordPress version available at time of release.
   * [ ] Update _Requires at least_, _Requires PHP_, _WC requires at least_, and _WC tested up to_ at the top of `woocommerce-gutenberg-products-block.php`. Note, this should include requiring the latest WP version at the time of release. For _WC requires at least_, use L1 (we publicly communicate L0 but technically support L1 to provide some space for folks to update). So this means if the current version of WooCommerce core is 5.8.0, then you'll want to put 5.7.0 here.
@@ -22,9 +23,9 @@ The release pull request has been created! This checklist is a guide to follow f
 * [ ] Run `npm run package-plugin:deploy`. This will create a zip of the current branch build locally.
   *  Note: The zip file is functionally equivalent to what gets released except the version bump.
 * [ ] Create the testing notes for the release. 
-  * [ ] For each pull request linked in the changelog grab the `User Facing Testing` notes from the PR's description. 
-  * [ ] Add the notes to `docs/testing/releases`
-  * [ ] Update the `docs/testing/releases/README.md` file index.
+  * [ ] For each pull request that belongs to the current release, grab the `User Facing Testing` notes from the PR's description. Be sure that the `Do not include in the Testing Notes is not flagged` checkbox is unchecked.
+  * [ ] Add the notes to `docs/internal-developers/testing/releases`
+  * [ ] Update the `docs/internal-developers/testing/releases/README.md` file index.
 * [ ] Copy a link to the release zip you created earlier into the testing notes. To generate the link you can upload the zip as an attachment in a GitHub comment and then just copy the path (without publishing the comment).
 * [ ] Commit and push the testing docs to the release branch.
 * [ ] Smoke test built release zip using the testing instructions you created:
@@ -68,7 +69,7 @@ Each porter is responsible for testing the PRs that fall under the focus of thei
 
 * [ ] An email confirmation is required before the new version will be released, so check your email in order to confirm the release.
 * [ ] Edit the [GitHub release](https://github.com/woocommerce/woocommerce-gutenberg-products-block/releases) and copy changelog into the release notes. Ensure there is a release with the correct version, the one you entered above.
-* [ ] The `#team-rubik` slack instance will be notified about the progress with the WordPress.org deploy. Watch for that. If anything goes wrong, an error will be reported and you can followup via the GitHub actions tab and the log for that workflow.
+* [ ] The `#woo-blocks-repo` slack instance will be notified about the progress with the WordPress.org deploy. Watch for that. If anything goes wrong, an error will be reported and you can followup via the GitHub actions tab and the log for that workflow.
 * [ ] After the wp.org workflow completes, confirm the following
   * [ ] Changelog, Version, and Last Updated on [WP.org plugin page](https://wordpress.org/plugins/woo-gutenberg-products-block/) is correct.
   * [ ] Confirm svn tag is correct, e.g. [{{version}}](https://plugins.svn.wordpress.org/woo-gutenberg-products-block/tags/{{version}}/)
@@ -108,10 +109,14 @@ This only needs to be done if this release is the last release of the feature pl
       Woo Blocks 7.3.0 & 7.4.0
       ```
   * Run through the testing checklist to ensure everything works in that branch for that package bump. **Note:** Testing should include ensuring any features/new blocks that are supposed to be behind feature gating for the core merge of this package update are working as expected.
-  * Testing should include completing the [Smoke testing checklist](https://github.com/woocommerce/woocommerce-gutenberg-products-block/blob/trunk/docs/testing/smoke-testing.md). It's up to you to verify that those tests have been done.
+  * Testing should include completing the [Smoke testing checklist](https://github.com/woocommerce/woocommerce-gutenberg-products-block/blob/trunk/docs/internal-developers/testing/smoke-testing.md). It's up to you to verify that those tests have been done.
   * Verify and make any additional edits to the pull request description for things like: Changelog to be included with WooCommerce core, additional communication that might be needed elsewhere, additional marketing communication notes that may be needed etc.
   * After the checklist is complete and the testing is done, it will be up to the WooCommerce core team to approve and merge the pull request.
 * [ ] Make sure you join the `#woo-core-releases` Slack channel to represent Woo Blocks for the release of WooCommerce core this version is included in.
+* [ ] Search the release thread of the WooCommerce core version in WooCommerce P2 (example: p6q8Tx-2gl-p2).
+  * [ ] Subscribe to it, so you are aware of any news/changes.
+  * [ ] Make sure you are listed as the _Blocks Package_ lead or add yourself if you aren't.
+  * [ ] Add changes you want to highlight under the _Feature Rollup_ comment. Please also look at changes from earlier versions that we didn't include in WC core yet. Ping the porters if you are unsure.
 
 ## Publish posts
 

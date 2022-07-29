@@ -4,7 +4,6 @@
 import { Coupon, HTTPClientFactory } from '@woocommerce/api';
 import config from 'config';
 import {
-	activateTheme,
 	disableSiteEditorWelcomeGuide,
 	openGlobalBlockInserter,
 	switchUserToAdmin,
@@ -19,8 +18,9 @@ import fs from 'fs';
 /**
  * Internal dependencies
  */
-import { elementExists, getElementData, getTextContent } from './page-utils';
+import { elementExists, getTextContent } from './page-utils';
 import { PERFORMANCE_REPORT_FILENAME } from '../utils/constants';
+import { cli } from '../utils';
 
 /**
  * @typedef {import('@types/puppeteer').ElementHandle} ElementHandle
@@ -44,8 +44,7 @@ export const DEFAULT_TIMEOUT = 30000;
 const SELECTORS = {
 	canvas: 'iframe[name="editor-canvas"]',
 	inserter: {
-		search:
-			'.components-search-control__input,.block-editor-inserter__search input,.block-editor-inserter__search-input,input.block-editor-inserter__search',
+		search: '.components-search-control__input,.block-editor-inserter__search input,.block-editor-inserter__search-input,input.block-editor-inserter__search',
 	},
 	templatesListTable: {
 		actionsContainer: '.edit-site-list-table__actions',
@@ -63,6 +62,9 @@ const SELECTORS = {
 		confirmSave: '.editor-entities-saved-states__save-button',
 		saveButton: '.edit-site-save-button__button',
 		savePrompt: '.entities-saved-states__text-prompt',
+	},
+	allProductsBlock: {
+		productsList: '.wc-block-grid__products > li > div:not(.is-loading)',
 	},
 };
 
@@ -132,6 +134,9 @@ export const closeModalIfExists = async () => {
 };
 
 export const openWidgetsEditorBlockInserter = async () => {
+	await page.waitForSelector(
+		'.edit-widgets-header [aria-label="Add block"],.edit-widgets-header [aria-label="Toggle block inserter"]'
+	);
 	await page.click(
 		'.edit-widgets-header [aria-label="Add block"],.edit-widgets-header [aria-label="Toggle block inserter"]'
 	);
@@ -245,10 +250,6 @@ export async function saveTemplate() {
 	await page.waitForSelector( savePrompt );
 	await page.click( confirmSave );
 	await page.waitForSelector( `${ saveButton }[aria-disabled="true"]` );
-	await page.waitForResponse( ( res ) => {
-		// Will match both templates and template_parts endpoints.
-		return res.url().includes( '/wp/v2/template' );
-	} );
 }
 
 /**
@@ -327,22 +328,18 @@ export async function filterCurrentBlocks( predicate ) {
  * @param {string} themeSlug The theme the test suite should use
  */
 export function useTheme( themeSlug ) {
-	let previousTheme;
-
 	beforeAll( async () => {
-		await switchUserToAdmin();
-		await visitAdminPage( 'themes.php' );
-
-		previousTheme = await getElementData(
-			SELECTORS.themesPage.currentTheme,
-			'slug'
+		await cli(
+			`npm run wp-env run tests-cli wp theme activate ${ themeSlug }`
 		);
-
-		await activateTheme( themeSlug );
+		await switchUserToAdmin();
 	} );
 
 	afterAll( async () => {
-		await activateTheme( previousTheme );
+		await cli(
+			`npm run wp-env run tests-cli wp theme activate storefront`
+		);
+		await switchUserToAdmin();
 	} );
 }
 
@@ -430,4 +427,34 @@ export const createCoupon = async ( coupon ) => {
 	} );
 
 	return createdCoupon;
+};
+
+/**
+ * Open the block editor settings menu.
+ *
+ * @param {Object}  [root0]
+ * @param {boolean} [root0.isFSEEditor] Amount to be applied. Defaults to 5.
+ */
+
+export const openBlockEditorSettings = async ( { isFSEEditor = false } ) => {
+	const buttonSelector = isFSEEditor
+		? '.edit-site-header__actions button[aria-label="Settings"]'
+		: '.edit-post-header__settings button[aria-label="Settings"]';
+
+	const isPressed = `${ buttonSelector }.is-pressed`;
+
+	const isSideBarAlreadyOpened = await page.$( isPressed );
+
+	if ( isSideBarAlreadyOpened === null ) {
+		// @ts-ignore
+		await page.$eval( buttonSelector, ( el ) => el.click() );
+	}
+};
+
+/**
+ *  Wait for all Products Block is loaded completely: when the skeleton disappears, and the products are visible
+ */
+export const waitForAllProductsBlockLoaded = async () => {
+	await page.waitForSelector( SELECTORS.allProductsBlock.productsList );
+	await page.waitForTimeout( 5000 );
 };

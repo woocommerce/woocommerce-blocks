@@ -33,23 +33,23 @@ export interface PriceSliderProps {
 	/**
 	 * Maximum constraint.
 	 */
-	maxConstraint: number;
+	maxConstraint: number | null | undefined;
 	/**
 	 * Maximum price for slider.
 	 */
-	maxPrice: number;
+	maxPrice: number | null;
 	/**
 	 * Minimum constraint.
 	 */
-	minConstraint: number;
+	minConstraint: number | null | undefined;
 	/**
 	 * Minimum price for slider.
 	 */
-	minPrice: number;
+	minPrice: number | null;
 	/**
 	 * Function to call on the change event.
 	 */
-	onChange?: ( value: [ number, number ] ) => void;
+	onChange: ( value: [ number, number ] ) => void;
 	/**
 	 * Function to call when submit event fires.
 	 */
@@ -65,7 +65,7 @@ export interface PriceSliderProps {
 	/**
 	 * What step values the slider uses.
 	 */
-	step: number;
+	step?: number;
 }
 
 const PriceSlider = ( {
@@ -73,7 +73,7 @@ const PriceSlider = ( {
 	maxPrice,
 	minConstraint,
 	maxConstraint,
-	onChange = () => void 0,
+	onChange,
 	step,
 	currency,
 	showInputFields = true,
@@ -84,8 +84,8 @@ const PriceSlider = ( {
 	const minRange = useRef< HTMLInputElement >( null );
 	const maxRange = useRef< HTMLInputElement >( null );
 
-	// We want step to default to 10 major units, e.g. $10.
-	const stepValue = step ? step : 10 * 10 ** currency.minorUnit;
+	// We want step to default to 1 major unit, e.g. $1.
+	const stepValue = step ? step : 10 ** currency.minorUnit;
 
 	const [ minPriceInput, setMinPriceInput ] = useState( minPrice );
 	const [ maxPriceInput, setMaxPriceInput ] = useState( maxPrice );

@@ -23,6 +23,7 @@ describe( `${ block.name } Block`, () => {
 		await switchUserToAdmin();
 		await visitBlockPage( `${ block.name } Block` );
 
+		// eslint-disable-next-line jest/no-standalone-expect
 		await expect( page ).toClick(
 			'span.woocommerce-search-list__item-name',
 			{ text: 'Capacity' }
@@ -30,6 +31,7 @@ describe( `${ block.name } Block`, () => {
 		//needed for attributes list to load correctly
 		await page.waitForTimeout( 1000 );
 
+		// eslint-disable-next-line jest/no-standalone-expect
 		await expect( page ).toClick( 'button', { text: 'Done' } );
 		await page.waitForNetworkIdle();
 	} );
@@ -60,9 +62,7 @@ describe( `${ block.name } Block`, () => {
 			await page.click(
 				'.components-toolbar button[aria-label="Heading 6"]'
 			);
-			await expect(
-				page
-			).toMatchElement(
+			await expect( page ).toMatchElement(
 				`.wp-block[data-type="${ block.slug }"] h6 textarea`,
 				{ text: 'New Title' }
 			);

@@ -3,14 +3,14 @@
  * Plugin Name: WooCommerce Blocks
  * Plugin URI: https://github.com/woocommerce/woocommerce-gutenberg-products-block
  * Description: WooCommerce blocks for the Gutenberg editor.
- * Version: 7.6.0-dev
+ * Version: 8.2.0-dev
  * Author: Automattic
  * Author URI: https://woocommerce.com
  * Text Domain:  woo-gutenberg-products-block
- * Requires at least: 5.9
+ * Requires at least: 6.0
  * Requires PHP: 7.0
- * WC requires at least: 6.3
- * WC tested up to: 6.4
+ * WC requires at least: 6.6
+ * WC tested up to: 6.7
  *
  * @package WooCommerce\Blocks
  * @internal This file is only used when running as a feature plugin.
@@ -18,7 +18,7 @@
 
 defined( 'ABSPATH' ) || exit;
 
-$minimum_wp_version = '5.9';
+$minimum_wp_version = '6.0';
 
 if ( ! defined( 'WC_BLOCKS_IS_FEATURE_PLUGIN' ) ) {
 	define( 'WC_BLOCKS_IS_FEATURE_PLUGIN', true );
@@ -153,23 +153,44 @@ if ( is_readable( $autoloader ) ) {
 add_action( 'plugins_loaded', array( '\Automattic\WooCommerce\Blocks\Package', 'init' ) );
 
 /**
- * Pre-filters script translations for the given file, script handle and text domain.
+ * WordPress will look for translation in the following order:
+ * - wp-content/plugins/woocommerce-blocks/languages/woo-gutenberg-products-block-{locale}-{handle}.json
+ * - wp-content/plugins/woocommerce-blocks/languages/woo-gutenberg-products-block-{locale}-{md5-handle}.json
+ * - wp-content/languages/plugins/woo-gutenberg-products-block-{locale}-{md5-handle}.json
  *
- * @param string|false|null $translations JSON-encoded translation data. Default null.
- * @param string|false      $file         Path to the translation file to load. False if there isn't one.
- * @param string            $handle       Name of the script to register a translation domain to.
- * @param string            $domain       The text domain.
- * @return string JSON translations.
+ * We check if the last one exists, and if it doesn't we try to load the
+ * corresponding JSON file from the WC Core.
+ *
+ * @param string|false $file   Path to the translation file to load. False if there isn't one.
+ * @param string       $handle Name of the script to register a translation domain to.
+ * @param string       $domain The text domain.
+ *
+ * @return string|false        Path to the translation file to load. False if there isn't one.
  */
-function woocommerce_blocks_get_i18n_data_json( $translations, $file, $handle, $domain ) {
+function load_woocommerce_core_json_translation( $file, $handle, $domain ) {
 	if ( 'woo-gutenberg-products-block' !== $domain ) {
-		return $translations;
+		return $file;
+	}
+
+	$lang_dir = WP_LANG_DIR . '/plugins';
+
+	/**
+	 * We only care about the translation file of the feature plugin in the
+	 * wp-content/languages folder.
+	 */
+	if ( false === strpos( $file, $lang_dir ) ) {
+		return $file;
+	}
+
+	// If the translation file for feature plugin exist, use it.
+	if ( is_readable( $file ) ) {
+		return $file;
 	}
 
 	global $wp_scripts;
 
 	if ( ! isset( $wp_scripts->registered[ $handle ], $wp_scripts->registered[ $handle ]->src ) ) {
-		return $translations;
+		return $file;
 	}
 
 	$handle_src      = explode( '/build/', $wp_scripts->registered[ $handle ]->src );
@@ -182,61 +203,17 @@ function woocommerce_blocks_get_i18n_data_json( $translations, $file, $handle, $
 		$handle_filename = substr( $handle_filename, 0, -7 ) . '.js';
 	}
 
-	// WordPress 5.0 uses md5 hashes of file paths to associate translation
-	// JSON files with the file they should be included for. This is an md5
-	// of 'packages/woocommerce-blocks/build/FILENAME.js'.
-	$core_path_md5     = md5( 'packages/woocommerce-blocks/build/' . $handle_filename );
-	$core_json_file    = $lang_dir . '/woocommerce-' . $locale . '-' . $core_path_md5 . '.json';
-	$json_translations = is_file( $core_json_file ) && is_readable( $core_json_file ) ? file_get_contents( $core_json_file ) : false; // phpcs:ignore
+	$core_path_md5 = md5( 'packages/woocommerce-blocks/build/' . $handle_filename );
 
-	if ( ! $json_translations ) {
-		return $translations;
-	}
-
-	// Rather than short circuit pre_load_script_translations, we will output
-	// core translations using an inline script. This will allow us to continue
-	// to load feature-plugin translations which may exist as well.
-	$output = <<<JS
-	( function( domain, translations ) {
-		var localeData = translations.locale_data[ domain ] || translations.locale_data.messages;
-		localeData[""].domain = domain;
-		wp.i18n.setLocaleData( localeData, domain );
-	} )( "{$domain}", {$json_translations} );
-JS;
-
-	if ( empty( $wp_scripts->done ) ) {
-		// If we hadn't printed any script into the page, let's enqueue the translations.
-		// phpcs:ignore WordPress.WP.EnqueuedResourceParameters.NoExplicitVersion
-		wp_register_script( $handle_filename, '', array( 'wp-i18n' ), false, true );
-		wp_enqueue_script( $handle_filename );
-		wp_add_inline_script(
-			$handle_filename,
-			$output
-		);
-	} else {
-		// If we have already printed scripts into the page, there is a chance that
-		// scripts have finished being printed. That means that if we enqueued them here,
-		// they would never be printed. Instead of enqueuing, then, let's print directly
-		// the script tag.
-		printf( "<script type='text/javascript'>\n%s\n</script>\n", $output ); // phpcs:ignore
-	}
-
-	// Finally, short circuit the pre_load_script_translations hook by returning
-	// the translation JSON from the feature plugin, if it exists so this hook
-	// does not run again for the current handle.
-	$path_md5     = md5( 'build/' . $handle_filename );
-	$json_file    = $lang_dir . '/' . $domain . '-' . $locale . '-' . $path_md5 . '.json';
-	$translations = is_file( $json_file ) && is_readable( $json_file ) ? file_get_contents( $json_file ) : false; // phpcs:ignore
-
-	if ( $translations ) {
-		return $translations;
-	}
-
-	// Return valid empty Jed locale.
-	return '{ "locale_data": { "messages": { "": {} } } }';
+	/**
+	 * Return file path of the corresponding translation file in the WC Core is
+	 * enough because `load_script_translations()` will check for its existence
+	 * before loading it.
+	 */
+	return $lang_dir . '/woocommerce-' . $locale . '-' . $core_path_md5 . '.json';
 }
 
-add_filter( 'pre_load_script_translations', 'woocommerce_blocks_get_i18n_data_json', 10, 4 );
+add_filter( 'load_script_translation_file', 'load_woocommerce_core_json_translation', 10, 3 );
 
 /**
  * Filter translations so we can retrieve translations from Core when the original and the translated
@@ -261,3 +238,40 @@ function woocommerce_blocks_get_php_translation_from_core( $translation, $text, 
 }
 
 add_filter( 'gettext', 'woocommerce_blocks_get_php_translation_from_core', 10, 3 );
+
+/**
+ * Add notice to the admin dashboard if the plugin is outdated.
+ *
+ * @see https://github.com/woocommerce/woocommerce-blocks/issues/5587
+ */
+function woocommerce_blocks_plugin_outdated_notice() {
+	$is_active =
+		is_plugin_active( 'woo-gutenberg-products-block/woocommerce-gutenberg-products-block.php' ) ||
+		is_plugin_active( 'woocommerce-gutenberg-products-block/woocommerce-gutenberg-products-block.php' ) ||
+		is_plugin_active( 'woocommerce-blocks/woocommerce-gutenberg-products-block.php' );
+
+	if ( ! $is_active ) {
+		return;
+	}
+
+	$woocommerce_blocks_path = \Automattic\WooCommerce\Blocks\Package::get_path();
+
+	/**
+	 * Check the current WC Blocks path. If the WC Blocks plugin is active but
+	 * the current path is from the WC Core, we can consider the plugin is
+	 * outdated because Jetpack Autoloader always loads the newer package.
+	 */
+	if ( ! strpos( $woocommerce_blocks_path, 'packages/woocommerce-blocks' ) ) {
+		return;
+	}
+
+	if ( should_display_compatibility_notices() ) {
+		?>
+		<div class="notice notice-warning">
+			<p><?php esc_html_e( 'You have WooCommerce Blocks installed, but the WooCommerce bundled version is running because it is more up-to-date. This may cause unexpected compatibility issues. Please update the WooCommerce Blocks plugin.', 'woo-gutenberg-products-block' ); ?></p>
+		</div>
+		<?php
+	}
+}
+
+add_action( 'admin_notices', 'woocommerce_blocks_plugin_outdated_notice' );

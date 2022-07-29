@@ -8,3 +8,6 @@ export * from './objects';
 export * from './payment-method-interface';
 export * from './blocks';
 export * from './utils';
+export * from './taxes';
+export * from './attributes';
+export * from './stock-status';
