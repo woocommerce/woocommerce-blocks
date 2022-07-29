@@ -259,6 +259,20 @@ class Cart extends AbstractBlock {
 			$block_types[] = 'Cart';
 			$block_types[] = 'CartOrderSummaryTaxesBlock';
 			$block_types[] = 'CartOrderSummarySubtotalBlock';
+			$block_types[] = 'FilledCartBlock';
+			$block_types[] = 'EmptyCartBlock';
+			$block_types[] = 'CartTotalsBlock';
+			$block_types[] = 'CartItemsBlock';
+			$block_types[] = 'CartLineItemsBlock';
+			$block_types[] = 'CartOrderSummaryBlock';
+			$block_types[] = 'CartExpressPaymentBlock';
+			$block_types[] = 'ProceedToCheckoutBlock';
+			$block_types[] = 'CartAcceptedPaymentMethodsBlock';
+			$block_types[] = 'CartOrderSummaryCouponFormBlock';
+			$block_types[] = 'CartOrderSummaryDiscountBlock';
+			$block_types[] = 'CartOrderSummaryFeeBlock';
+			$block_types[] = 'CartOrderSummaryHeadingBlock';
+			$block_types[] = 'CartOrderSummaryShippingBlock';
 		}
 
 		return $block_types;
