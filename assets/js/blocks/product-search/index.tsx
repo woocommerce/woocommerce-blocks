@@ -202,7 +202,7 @@ if ( isBlockVariationAvailable ) {
 		isActive: ( blockAttributes, variationAttributes ) => {
 			return (
 				blockAttributes.query?.post_type ===
-				variationAttributes.query.postType
+				variationAttributes.query.post_type
 			);
 		},
 		category: 'woocommerce',
