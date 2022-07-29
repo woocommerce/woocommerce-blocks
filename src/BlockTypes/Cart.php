@@ -246,4 +246,21 @@ class Cart extends AbstractBlock {
 
 		$this->register_chunk_translations( array_merge( $chunks, $vendor_chunks ) );
 	}
+
+	/**
+	 * Get list of Cart block & its inner-block types.
+	 *
+	 * @return array;
+	 */
+	public static function get_cart_block_types() {
+		$block_types = [];
+
+		if ( Package::feature()->is_feature_plugin_build() ) {
+			$block_types[] = 'Cart';
+			$block_types[] = 'CartOrderSummaryTaxesBlock';
+			$block_types[] = 'CartOrderSummarySubtotalBlock';
+		}
+
+		return $block_types;
+	}
 }
