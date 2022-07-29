@@ -45,9 +45,6 @@ const blocks = {
 	'stock-filter': {},
 	'active-filters': {},
 	cart: {},
-	'cart-order-summary-taxes-block': {
-		customDir: 'cart/inner-blocks/cart-order-summary-taxes',
-	},
 	checkout: {},
 	'mini-cart': {},
 	'mini-cart-contents': {
