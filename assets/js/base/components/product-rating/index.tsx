@@ -15,12 +15,13 @@ import './style.scss';
 /** @typedef {import('react')} React */
 
 const Rating = ( {
-	averageRating,
+	rating,
 	className,
 	parentClassName,
 	productCount,
 	ratingCount,
-	showProductLink = true,
+	ratedProductsCount,
+	showProductLink = false,
 	...props
 }: RatingProps ): JSX.Element => {
 	const ratingClassName = classNames(
@@ -29,32 +30,50 @@ const Rating = ( {
 	);
 
 	const starStyle = {
-		width: ( averageRating / 5 ) * 100 + '%',
+		width: ( rating / 5 ) * 100 + '%',
 	};
 
 	const ratingText = sprintf(
 		/* translators: %f is referring to the average rating value */
 		__( 'Rated %f out of 5', 'woo-gutenberg-products-block' ),
-		averageRating
+		rating
 	);
 
 	const { dispatchStoreEvent } = useStoreEvents();
 
 	const { product } = useProductDataContext();
 
-	const ratingHTML = {
-		__html: sprintf(
-			/* translators: %1$s is referring to the average rating value, %2$s is referring to the number of ratings */
-			_n(
-				'Rated %1$s out of 5 based on %2$s customer rating',
-				'Rated %1$s out of 5 based on %2$s customer ratings',
-				ratingCount,
-				'woo-gutenberg-products-block'
+	let ratingHTML = '';
+
+	if ( ratedProductsCount ) {
+		ratingHTML = {
+			__html: sprintf(
+				/* translators: %1$s is referring to the average rating value, %2$s is referring to the number of ratings */
+				_n(
+					'Rated %1$s out of 5 based on %2$s customer rating',
+					'Rated %1$s out of 5 based on %2$s customer ratings',
+					ratingCount,
+					'woo-gutenberg-products-block'
+				),
+				sprintf( '<strong class="rating">%f</strong>', rating ),
+				sprintf( '<span class="rating">%d</span>', ratingCount )
 			),
-			sprintf( '<strong class="rating">%f</strong>', averageRating ),
-			sprintf( '<span class="rating">%d</span>', ratingCount )
-		),
-	};
+		};
+	} else {
+		ratingHTML = {
+			__html: sprintf(
+				/* translators: %1$s is referring to the rating value */
+				_n(
+					'Rated %1$s out of 5',
+					'Rated %1$s out of 5',
+					ratingCount,
+					'woo-gutenberg-products-block'
+				),
+				sprintf( '<strong class="rating">%f</strong>', rating ),
+				ratedProductsCount
+			),
+		};
+	}
 
 	if ( ! product.id ) {
 		return (
@@ -72,13 +91,12 @@ const Rating = ( {
 						dangerouslySetInnerHTML={ ratingHTML }
 					/>
 				</div>
-				{ productCount ? `(${ productCount })` : null }
+				{ ratedProductsCount ? `(${ ratedProductsCount })` : null }
 			</div>
 		);
 	}
 
 	const ParentComponent = showProductLink ? 'a' : Fragment;
-
 	const anchorLabel = sprintf(
 		/* translators: %s is referring to the product name */
 		__( 'Link to %s', 'woo-gutenberg-products-block' ),
@@ -118,11 +136,12 @@ const Rating = ( {
 };
 
 interface RatingProps {
-	averageRating: 0 | 1 | 2 | 3 | 4 | 5;
+	rating: 0 | 1 | 2 | 3 | 4 | 5;
 	className?: string;
 	parentClassName?: string;
 	productCount?: number;
 	ratingCount: number;
+	ratedProductsCount: number;
 	showProductLink: boolean;
 }
 

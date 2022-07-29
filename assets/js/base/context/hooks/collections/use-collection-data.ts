@@ -69,7 +69,7 @@ export const useCollectionData = ( {
 		setCalculateStockStatusQueryState,
 	] = useQueryStateByKey( 'calculate_stock_status_counts', null, context );
 	const [ calculateRatingQueryState, setCalculateRatingQueryState ] =
-		useQueryStateByKey( 'average_rating', null, context );
+		useQueryStateByKey( 'calculate_rating_counts', null, context );
 
 	const currentQueryAttribute = useShallowEqual( queryAttribute || {} );
 	const currentQueryPrices = useShallowEqual( queryPrices );
