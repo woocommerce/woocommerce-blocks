@@ -88,13 +88,19 @@ const DeprecatedBlockEdit = ( { clientId }: { clientId: string } ) => {
 	};
 	const actions = [
 		<Button key="update" onClick={ updateBlock } variant="primary">
-			Update to Search Block variant
+			{ __(
+				'Update to Search Block variant',
+				'woo-gutenberg-products-block'
+			) }
 		</Button>,
 	];
 
 	return (
 		<Warning actions={ actions }>
-			Old Product Search block is deprecated.
+			{ __(
+				'Old Product Search block is deprecated.',
+				'woo-gutenberg-products-block'
+			) }
 		</Warning>
 	);
 };
