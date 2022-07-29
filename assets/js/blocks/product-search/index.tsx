@@ -211,6 +211,5 @@ if ( isBlockVariationAvailable ) {
 			'woo-gutenberg-products-block'
 		),
 		attributes: PRODUCT_SEARCH_ATTRIBUTES,
-		scope: [ 'block', 'inserter', 'transform' ],
 	} );
 }
