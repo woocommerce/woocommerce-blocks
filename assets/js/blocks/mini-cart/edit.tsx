@@ -21,7 +21,7 @@ import QuantityBadge from './quantity-badge';
 
 interface Attributes {
 	addToCartBehaviour: string;
-	hasVisiblePrice: boolean;
+	hasHiddenPrice: boolean;
 }
 
 interface Props {
@@ -30,7 +30,7 @@ interface Props {
 }
 
 const Edit = ( { attributes, setAttributes }: Props ): ReactElement => {
-	const { addToCartBehaviour, hasVisiblePrice } = attributes;
+	const { addToCartBehaviour, hasHiddenPrice } = attributes;
 	const blockProps = useBlockProps( {
 		className: `wc-block-mini-cart`,
 	} );
@@ -84,17 +84,17 @@ const Edit = ( { attributes, setAttributes }: Props ): ReactElement => {
 					/>
 					<ToggleControl
 						label={ __(
-							'Cart Price Visibility',
+							'Hide Cart Price',
 							'woo-gutenberg-products-block'
 						) }
 						help={ __(
 							'Toggles the visibility of the Mini Cart price.',
 							'woo-gutenberg-products-block'
 						) }
-						checked={ hasVisiblePrice }
+						checked={ hasHiddenPrice }
 						onChange={ () =>
 							setAttributes( {
-								hasVisiblePrice: ! hasVisiblePrice,
+								hasHiddenPrice: ! hasHiddenPrice,
 							} )
 						}
 					/>
@@ -123,7 +123,7 @@ const Edit = ( { attributes, setAttributes }: Props ): ReactElement => {
 			</InspectorControls>
 			<Noninteractive>
 				<button className="wc-block-mini-cart__button">
-					{ hasVisiblePrice && (
+					{ ! hasHiddenPrice && (
 						<span className="wc-block-mini-cart__amount">
 							{ formatPrice( productTotal ) }
 						</span>
