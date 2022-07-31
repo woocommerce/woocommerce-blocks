@@ -3,9 +3,10 @@
  */
 import { __ } from '@wordpress/i18n';
 import { decodeEntities } from '@wordpress/html-entities';
+import { createElement, RawHTML } from '@wordpress/element';
 
 /**
- * Given a JS error or a fetch response error, parse and format it so it can be displayed to the user.
+ * Given a JS error or a fetch response error, parse and format it, so it can be displayed to the user.
  *
  * @param {Object}   error           Error object.
  * @param {Function} [error.json]    If a json method is specified, it will try parsing the error first.
@@ -36,10 +37,10 @@ export const formatError = async ( error ) => {
 };
 
 /**
- * Given an API response object, formats the error message into something more human readable.
+ * Given an API response object, formats the error message into something more human-readable.
  *
  * @param {Object} response Response object.
- * @return {string}   Error message.
+ * @return {Object|string}   Error message.
  */
 export const formatStoreApiErrorMessage = ( response ) => {
 	if ( response.data && response.code === 'rest_invalid_param' ) {
@@ -49,10 +50,12 @@ export const formatStoreApiErrorMessage = ( response ) => {
 		}
 	}
 
-	return response?.message
-		? decodeEntities( response.message )
-		: __(
-				'Something went wrong. Please contact us to get assistance.',
-				'woo-gutenberg-products-block'
-		  );
+	if ( ! response?.message ) {
+		return __(
+			'Something went wrong. Please contact us to get assistance.',
+			'woo-gutenberg-products-block'
+		);
+	}
+
+	return createElement( RawHTML, null, decodeEntities( response.message ) );
 };
