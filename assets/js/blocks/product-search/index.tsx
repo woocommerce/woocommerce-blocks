@@ -73,10 +73,6 @@ const PRODUCT_SEARCH_ATTRIBUTES = {
 	},
 };
 
-/**
- * editor.scss and style.scss are required
- * to gracefully handle old block deprecation
- */
 const DeprecatedBlockEdit = ( { clientId }: { clientId: string } ) => {
 	// @ts-ignore @wordpress/block-editor/store types not provided
 	const { replaceBlocks } = useDispatch( blockEditorStore );
@@ -94,9 +90,7 @@ const DeprecatedBlockEdit = ( { clientId }: { clientId: string } ) => {
 				label:
 					currentBlockAttributes?.label ||
 					PRODUCT_SEARCH_ATTRIBUTES.label,
-				buttonText:
-					currentBlockAttributes?.label ||
-					PRODUCT_SEARCH_ATTRIBUTES.buttonText,
+				buttonText: PRODUCT_SEARCH_ATTRIBUTES.buttonText,
 				placeholder:
 					currentBlockAttributes?.placeholder ||
 					PRODUCT_SEARCH_ATTRIBUTES.placeholder,
@@ -108,7 +102,7 @@ const DeprecatedBlockEdit = ( { clientId }: { clientId: string } ) => {
 	const actions = [
 		<Button key="update" onClick={ updateBlock } variant="primary">
 			{ __(
-				'Update to new Search Block',
+				'Update to new Search block',
 				'woo-gutenberg-products-block'
 			) }
 		</Button>,
