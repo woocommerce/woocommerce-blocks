@@ -424,7 +424,6 @@ class Checkout extends AbstractBlock {
 
 		if ( Package::feature()->is_feature_plugin_build() ) {
 			$block_types[] = 'Checkout';
-			$block_types[] = 'Checkout';
 			$block_types[] = 'CheckoutActionsBlock';
 			$block_types[] = 'CheckoutBillingAddressBlock';
 			$block_types[] = 'CheckoutContactInformationBlock';
