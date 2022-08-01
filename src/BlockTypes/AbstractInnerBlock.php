@@ -8,7 +8,8 @@ abstract class AbstractInnerBlock extends AbstractBlock {
 	/**
 	 * Registers the block type with WordPress using the metadata file.
 	 *
-	 * @return string[] Chunks paths.
+	 * The registration using metadata is now recommended. And it's required for "Inner Blocks" to
+	 * fix the issue of missing translations in the inspector (in the Editor mode)
 	 */
 	protected function register_block_type() {
 		$block_settings = [
