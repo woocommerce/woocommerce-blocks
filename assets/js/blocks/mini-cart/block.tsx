@@ -214,7 +214,7 @@ const MiniCartBlock = ( {
 				} }
 				aria-label={ ariaLabel }
 			>
-				{ hasHiddenPrice && (
+				{ ! hasHiddenPrice && (
 					<span className="wc-block-mini-cart__amount">
 						{ formatPrice(
 							subTotal,
@@ -222,7 +222,7 @@ const MiniCartBlock = ( {
 						) }
 					</span>
 				) }
-				{ taxLabel !== '' && subTotal !== 0 && hasHiddenPrice && (
+				{ taxLabel !== '' && subTotal !== 0 && ! hasHiddenPrice && (
 					<small className="wc-block-mini-cart__tax-label">
 						{ taxLabel }
 					</small>
