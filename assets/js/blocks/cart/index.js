@@ -6,8 +6,7 @@ import classnames from 'classnames';
 import { InnerBlocks } from '@wordpress/block-editor';
 import { cart } from '@woocommerce/icons';
 import { Icon } from '@wordpress/icons';
-import { registerBlockType } from '@wordpress/blocks';
-import { createBlock } from '@wordpress/blocks';
+import { registerBlockType, createBlock } from '@wordpress/blocks';
 /**
  * Internal dependencies
  */

@@ -4,8 +4,7 @@
 import classnames from 'classnames';
 import { fields } from '@woocommerce/icons';
 import { Icon } from '@wordpress/icons';
-import { registerBlockType } from '@wordpress/blocks';
-import { createBlock } from '@wordpress/blocks';
+import { registerBlockType, createBlock } from '@wordpress/blocks';
 import type { BlockInstance } from '@wordpress/blocks';
 
 /**
