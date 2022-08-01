@@ -4,33 +4,11 @@ namespace Automattic\WooCommerce\Blocks\BlockTypes;
 /**
  * CartOrderSummarySubtotalBlock class.
  */
-class CartOrderSummarySubtotalBlock extends AbstractBlock {
+class CartOrderSummarySubtotalBlock extends AbstractInnerBlock {
 	/**
 	 * Block name.
 	 *
 	 * @var string
 	 */
 	protected $block_name = 'cart-order-summary-subtotal-block';
-
-	/**
-	 * Parent Block name.
-	 *
-	 * @var string
-	 */
-	protected $parent_block_name = 'cart';
-
-	/**
-	 * Get the editor script handle for this block type.
-	 *
-	 * @param string $key Data to get, or default to everything.
-	 * @return array|string;
-	 */
-	protected function get_block_type_editor_script( $key = null ) {
-		$script = [
-			'handle'       => 'wc-' . $this->parent_block_name . '-block',
-			'path'         => $this->asset_api->get_block_asset_build_path( $this->parent_block_name ),
-			'dependencies' => [ 'wc-blocks' ],
-		];
-		return $key ? $script[ $key ] : $script;
-	}
 }
