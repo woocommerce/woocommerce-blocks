@@ -5,6 +5,14 @@ namespace Automattic\WooCommerce\Blocks\BlockTypes;
  * AbstractInnerBlock class.
  */
 abstract class AbstractInnerBlock extends AbstractBlock {
+
+	/**
+	 * Is this inner block lazy loaded? this helps us know if we should load its frontend script ot not.
+	 *
+	 * @var boolean
+	 */
+	protected $is_lazy_loaded = true;
+
 	/**
 	 * Registers the block type with WordPress using the metadata file.
 	 *
@@ -29,4 +37,21 @@ abstract class AbstractInnerBlock extends AbstractBlock {
 			$block_settings
 		);
 	}
+
+	/**
+	 * For lazy loaded inner blocks, we don't want to enqueue the script but rather leave it for webpack to do that.
+	 *
+	 * @see $this->register_block_type()
+	 * @param string $key Data to get, or default to everything.
+	 * @return array|string|null
+	 */
+	protected function get_block_type_script( $key = null ) {
+
+		if ( $this->is_lazy_loaded ) {
+			return null;
+		}
+
+		return parent::get_block_type_script( $key );
+	}
+
 }
