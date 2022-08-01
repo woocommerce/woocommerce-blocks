@@ -34,11 +34,11 @@ See also <https://developer.wordpress.org/reference/functions/_e/>.
 
 ### `_ex()`
 
-The function `_ex()` displaya the translated string with gettext context. This function is only available for PHP.
+The function `_ex()` displays the translated string with gettext context. This function is only available for PHP.
 
 ```php
 // Schema
-_ex( string $text, string $domain = 'default' );
+_ex( string $text, string $context, string $domain = 'default' );
 
 // Example
 _ex( 'Place Order', 'Place order button text', 'woo-gutenberg-products-block' );
@@ -197,6 +197,7 @@ See also <https://developer.wordpress.org/reference/functions/esc_attr_x/>.
 
 [We're hiring!](https://woocommerce.com/careers/) Come work with us!
 
-🐞 Found a mistake, or have a suggestion? [Leave feedback about this document here.](https://github.com/woocommerce/woocommerce-blocks/issues/new?assignees=&labels=type%3A+documentation&template=--doc-feedback.md&title=Feedback%20on%20./docs/testing/README.md)
+🐞 Found a mistake, or have a suggestion? [Leave feedback about this document here.](https://github.com/woocommerce/woocommerce-blocks/issues/new?assignees=&labels=type%3A+documentation&template=--doc-feedback.md&title=Feedback%20on%20./docs/internal-developers/translations/translations-in-PHP-files.md)
 
 <!-- /FEEDBACK -->
+

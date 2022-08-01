@@ -300,6 +300,7 @@ class BlockTemplatesController {
 		foreach ( $template_files as $template_file ) {
 			// Skip the template if it's blockified, and we should only use classic ones.
 			// Until the blockified Product Grid Block is implemented, we need to always skip the blockified templates.
+			// phpcs:ignore Squiz.PHP.CommentedOutCode
 			if ( // $this->package->is_experimental_build() &&
 				// ! BlockTemplateUtils::should_use_blockified_product_grid_templates() &&
 				strpos( $template_file, 'blockified' ) !== false ) {
@@ -423,6 +424,11 @@ class BlockTemplatesController {
 			( is_product_taxonomy() && is_tax( 'product_tag' ) ) &&
 			! BlockTemplateUtils::theme_has_template( 'taxonomy-product_tag' ) &&
 			$this->block_template_is_available( 'taxonomy-product_tag' )
+		) {
+			add_filter( 'woocommerce_has_block_template', '__return_true', 10, 0 );
+		} elseif ( taxonomy_is_product_attribute( get_query_var( 'taxonomy' ) ) &&
+			! BlockTemplateUtils::theme_has_template( 'archive-product' ) &&
+			$this->block_template_is_available( 'archive-product' )
 		) {
 			add_filter( 'woocommerce_has_block_template', '__return_true', 10, 0 );
 		} elseif (
