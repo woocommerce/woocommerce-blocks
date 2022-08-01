@@ -23,19 +23,20 @@ export const registerExperimentalBlockType = (
 	}
 };
 
-/**
- * Registers a new feature plugin block provided a unique name and an object
- * defining its behavior. Once registered, the block is made available as an
- * option to any editor interface where blocks are implemented.
- */
-export const registerFeaturePluginBlockType = (
-	blockNameOrMetadata: string | BlockConfiguration,
-	settings: Record< string, unknown >
-): Block | undefined => {
-	if ( WC_BLOCKS_PHASE > 1 ) {
-		return registerBlockType( blockNameOrMetadata, settings );
-	}
-};
+// This code is being kept in case we add a feature-plugin-only block in future. It will be easy to reinstate.
+// /**
+//  * Registers a new feature plugin block provided a unique name and an object
+//  * defining its behavior. Once registered, the block is made available as an
+//  * option to any editor interface where blocks are implemented.
+//  */
+// export const registerFeaturePluginBlockType = (
+// 	blockNameOrMetadata: string | BlockConfiguration,
+// 	settings: Record< string, unknown >
+// ): Block | undefined => {
+// 	if ( WC_BLOCKS_PHASE > 1 ) {
+// 		return registerBlockType( blockNameOrMetadata, settings );
+// 	}
+// };
 
 /**
  * Checks if we're executing the code in an experimental build mode.
