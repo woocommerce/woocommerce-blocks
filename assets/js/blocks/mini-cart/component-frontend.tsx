@@ -42,6 +42,7 @@ const renderMiniCartFrontend = () => {
 				colorClassNames,
 				style: el.dataset.style ? JSON.parse( el.dataset.style ) : {},
 				addToCartBehaviour: el.dataset.addToCartBehaviour || 'none',
+				hasHiddenPrice: el.dataset.hasHiddenPrice === 'false',
 				contents:
 					el.querySelector( '.wc-block-mini-cart__template-part' )
 						?.innerHTML ?? '',
