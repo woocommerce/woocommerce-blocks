@@ -6,7 +6,7 @@ import classnames from 'classnames';
 import { InnerBlocks } from '@wordpress/block-editor';
 import { cart } from '@woocommerce/icons';
 import { Icon } from '@wordpress/icons';
-import { registerFeaturePluginBlockType } from '@woocommerce/block-settings';
+import { registerBlockType } from '@wordpress/blocks';
 import { createBlock } from '@wordpress/blocks';
 /**
  * Internal dependencies
@@ -111,4 +111,4 @@ const settings = {
 	],
 };
 
-registerFeaturePluginBlockType( blockName, settings );
+registerBlockType( blockName, settings );
