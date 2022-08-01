@@ -96,7 +96,9 @@ class Bootstrap {
 		add_action(
 			'admin_init',
 			function() {
-				InboxNotifications::create_surface_cart_checkout_blocks_notification();
+				// Delete this notification because the blocks are included in WC Core now. This will handle any sites
+				// with lingering notices.
+				InboxNotifications::delete_surface_cart_checkout_blocks_notification();
 			},
 			10,
 			0
