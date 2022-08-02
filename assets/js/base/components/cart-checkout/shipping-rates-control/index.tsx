@@ -63,8 +63,8 @@ const Packages = ( {
 					key={ packageId }
 					packageId={ packageId }
 					packageData={ packageData }
-					collapsible={ collapsible }
-					collapse={ collapse }
+					collapsible={ !! collapsible }
+					collapse={ !! collapse }
 					showItems={
 						showItems || packageData?.shipping_rates?.length >= 1
 					}
