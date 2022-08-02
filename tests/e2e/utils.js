@@ -39,7 +39,7 @@ export const client = HTTPClientFactory.build( BASE_URL )
 	.create();
 export const GUTENBERG_EDITOR_CONTEXT =
 	process.env.GUTENBERG_EDITOR_CONTEXT || 'core';
-export const DEFAULT_TIMEOUT = 30000;
+export const DEFAULT_TIMEOUT = 60000;
 
 const SELECTORS = {
 	canvas: 'iframe[name="editor-canvas"]',
