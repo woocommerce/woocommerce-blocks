@@ -78,12 +78,12 @@ abstract class AbstractBlock {
 	 * @param string         $content    Block content. Default empty string.
 	 * @return string Rendered block type output.
 	 */
-	public function render_callback( $attributes = [], $content = '' ) {
+	public function render_callback( $attributes = [], $content = '', $block ) {
 		$render_callback_attributes = $this->parse_render_callback_attributes( $attributes );
 		if ( ! is_admin() && ! WC()->is_rest_api_request() ) {
 			$this->enqueue_assets( $render_callback_attributes );
 		}
-		return $this->render( $render_callback_attributes, $content );
+		return $this->render( $render_callback_attributes, $content, $block );
 	}
 
 	/**
@@ -222,8 +222,9 @@ abstract class AbstractBlock {
 		 * These are left unset until now and only added here because if they were set when registering with metadata,
 		 * the attributes and supports from $block_settings would override the values from metadata.
 		 */
-		$block_settings['attributes'] = $this->get_block_type_attributes();
-		$block_settings['supports']   = $this->get_block_type_supports();
+		$block_settings['attributes']   = $this->get_block_type_attributes();
+		$block_settings['supports']     = $this->get_block_type_supports();
+		$block_settings['uses_context'] = $this->get_block_type_uses_context();
 
 		register_block_type(
 			$this->get_block_type(),
@@ -238,6 +239,10 @@ abstract class AbstractBlock {
 	 */
 	protected function get_block_type() {
 		return $this->namespace . '/' . $this->block_name;
+	}
+
+	protected function get_block_type_uses_context() {
+		return [];
 	}
 
 	/**
@@ -338,9 +343,10 @@ abstract class AbstractBlock {
 	 *
 	 * @param array  $attributes Block attributes.
 	 * @param string $content    Block content.
+	 * @param object $block    Block.
 	 * @return string Rendered block type output.
 	 */
-	protected function render( $attributes, $content ) {
+	protected function render( $attributes, $content, $block ) {
 		return $content;
 	}
 

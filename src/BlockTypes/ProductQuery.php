@@ -20,107 +20,46 @@ class ProductQuery extends AbstractBlock {
 	 *                           not in the post content on editor load.
 	 */
 
-	// protected function initialize() {
-	// parent::initialize();
+	protected function initialize() {
+		parent::initialize();
+		add_filter(
+			'pre_render_block',
+			array( $this, 'update_query' ),
+			10,
+			2
+		);
 
-	// do_action( 'qm/debug', 'initialize' );
+	}
 
-	// add_filter( 'query_vars', array( $this, 'themeslug_query_vars' ) );
+	public function on_sale_query( $query, $block, $page ) {
+		$wp_query = array(
+			'post_type'      => 'product',
+			'posts_per_page' => $query['posts_per_page'],
+			'meta_query'     => array(
+				'relation' => 'OR',
+				array( // Simple products type
+					'key'     => '_sale_price',
+					'value'   => 0,
+					'compare' => '>',
+					'type'    => 'numeric',
+				),
+				array( // Variable products type
+					'key'     => '_min_variation_sale_price',
+					'value'   => 0,
+					'compare' => '>',
+					'type'    => 'numeric',
+				),
+			),
+		);
 
-	// add_filter(
-	// 'pre_render_block',
-	// array( $this, 'wporg_block_wrapper' ),
-	// 10,
-	// 2
-	// );
+		return $wp_query;
+	}
 
-		// $wp_query = new \WP_Query(
-		// array(
-		// 'post_type'      => 'product',
-		// 'posts_per_page' => 8,
-		// 'meta_query'     => array(
-		// 'relation' => 'OR',
-		// array( // Simple products type
-		// 'key'     => '_sale_price',
-		// 'value'   => 0,
-		// 'compare' => '>',
-		// 'type'    => 'numeric',
-		// ),
-		// array( // Variable products type
-		// 'key'     => '_min_variation_sale_price',
-		// 'value'   => 0,
-		// 'compare' => '>',
-		// 'type'    => 'numeric',
-		// ),
-		// ),
-		// )
-		// );
 
-		// add_filter(
-		// 'gigitux',
-		// function ( $array ) {
-		// do_action( 'qm/debug', "sto nell'init" );
-		// do_action( 'qm/debug', $array );
-		// return array(
-		// 'post_type'      => 'product',
-		// 'posts_per_page' => 8,
-		// 'meta_query'     => array(
-		// 'relation' => 'OR',
-		// array( // Simple products type
-		// 'key'     => '_sale_price',
-		// 'value'   => 0,
-		// 'compare' => '>',
-		// 'type'    => 'numeric',
-		// ),
-		// array( // Variable products type
-		// 'key'     => '_min_variation_sale_price',
-		// 'value'   => 0,
-		// 'compare' => '>',
-		// 'type'    => 'numeric',
-		// ),
-		// ),
-		// );
-		// }
-		// );
-	// }
-
-	// public function wporg_block_wrapper( $block_content, $block ) {
-
-	// if ( $block['blockName'] === 'core/query' && $block['attrs']['onSale'] === true ) {
-
-	// global $wp_query;
-
-	// $wp_query = new \WP_Query(
-	// array(
-	// 'post_type'      => 'product',
-	// 'posts_per_page' => 2,
-	// 'meta_query'     => array(
-	// 'relation' => 'OR',
-	// array( // Simple products type
-	// 'key'     => '_sale_price',
-	// 'value'   => 0,
-	// 'compare' => '>',
-	// 'type'    => 'numeric',
-	// ),
-	// array( // Variable products type
-	// 'key'     => '_min_variation_sale_price',
-	// 'value'   => 0,
-	// 'compare' => '>',
-	// 'type'    => 'numeric',
-	// ),
-	// ),
-	// )
-	// );
-
-	// do_action( 'qm/debug', 1 );
-
-	// }
-	// return $block_content;
-	// }
-
-	// function themeslug_query_vars( $qvars ) {
-	// $qvars[] = 'filter-stock';
-	// return $qvars;
-	// }
+	public function update_query( $block_content, $block ) {
+		if ( $block['blockName'] === 'core/query' && $block['attrs']['productQuery']['onSale'] === true ) {
+			add_filter( 'gigitux', array( $this, 'on_sale_query' ), 10, 3 );
+		}
+	}
 
 }

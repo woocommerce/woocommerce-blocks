@@ -94,7 +94,7 @@ abstract class FeaturedItem extends AbstractDynamicBlock {
 	 * @param string $content    Block content.
 	 * @return string Rendered block type output.
 	 */
-	protected function render( $attributes, $content ) {
+	protected function render( $attributes, $content, $block ) {
 		$item = $this->get_item( $attributes );
 		if ( ! $item ) {
 			return '';

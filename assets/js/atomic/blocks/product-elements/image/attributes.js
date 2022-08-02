@@ -19,6 +19,10 @@ export const blockAttributes = {
 		type: 'number',
 		default: 0,
 	},
+	postId: {
+		type: 'number',
+		default: 0,
+	},
 };
 
 export default blockAttributes;

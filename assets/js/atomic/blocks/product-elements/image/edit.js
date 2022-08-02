@@ -21,12 +21,19 @@ import {
 import Block from './block';
 import withProductSelector from '../shared/with-product-selector';
 import { BLOCK_TITLE, BLOCK_ICON } from './constants';
+import { useEffect } from 'react';
 
-const Edit = ( { attributes, setAttributes } ) => {
+const Edit = ( { attributes, setAttributes, context } ) => {
 	const { showProductLink, imageSizing, showSaleBadge, saleBadgeAlign } =
 		attributes;
 
 	const blockProps = useBlockProps();
+
+	const newProps = { ...attributes, ...context };
+
+	useEffect( () => {
+		setAttributes( { postId: context.postId } );
+	}, [ context, context.postId, setAttributes ] );
 
 	return (
 		<div { ...blockProps }>
@@ -146,17 +153,10 @@ const Edit = ( { attributes, setAttributes } ) => {
 				</PanelBody>
 			</InspectorControls>
 			<Disabled>
-				<Block { ...attributes } />
+				<Block { ...newProps } />
 			</Disabled>
 		</div>
 	);
 };
 
-export default withProductSelector( {
-	icon: BLOCK_ICON,
-	label: BLOCK_TITLE,
-	description: __(
-		'Choose a product to display its image.',
-		'woo-gutenberg-products-block'
-	),
-} )( Edit );
+export default Edit;

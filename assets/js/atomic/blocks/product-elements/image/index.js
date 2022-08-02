@@ -26,6 +26,7 @@ const blockConfig = {
 	edit,
 	supports,
 	save: Save,
+	usesContext: [ 'query', 'queryId', 'postId' ],
 };
 
 registerBlockType( 'woocommerce/product-image', {

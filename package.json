@@ -211,7 +211,6 @@
 		"npm": "^8.0.0"
 	},
 	"dependencies": {
-		"@woocommerce/data": "^4.1.0",
 		"@wordpress/autop": "3.12.0",
 		"@wordpress/compose": "5.5.0",
 		"@wordpress/deprecated": "3.12.0",

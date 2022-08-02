@@ -26,43 +26,17 @@ const QUERY_DEFAULT_ATTRIBUTES = {
 		search: '',
 		exclude: [],
 		sticky: '',
-		inherit: true,
+		inherit: false,
 		hidePostTypeSettings: true,
 	},
 };
 
-registerBlockVariation( 'core/query', {
-	name: 'product-query',
-	title: __( 'Product Query', 'woo-gutenberg-products-block' ),
-	isActive: () => true,
-	icon: {
-		src: (
-			<Icon
-				icon={ sparkles }
-				className="wc-block-editor-components-block-icon wc-block-editor-components-block-icon--sparkles"
-			/>
-		),
-	},
-	attributes: { ...QUERY_DEFAULT_ATTRIBUTES, namespace: 'product-query' },
-	innerBlocks: [
-		[
-			'core/post-template',
-			{},
-			[
-				[ 'woocommerce/product-image-2' ],
-				[ 'woocommerce/product-title' ],
-			],
-		],
-		[ 'core/query-pagination' ],
-		[ 'core/query-no-results' ],
-	],
-	scope: [ 'block', 'inserter' ],
-} );
-
 export const withInspectorControl = createHigherOrderComponent(
 	( BlockEdit ) => {
 		return ( props ) => {
-			return props.attributes.namespace !== 'product-query' ? (
+			return props.name !== 'core/query' ||
+				props.attributes?.productQuery?.namespace !==
+					'product-query' ? (
 				<BlockEdit { ...props } />
 			) : (
 				<>
@@ -70,10 +44,15 @@ export const withInspectorControl = createHigherOrderComponent(
 					<InspectorControls>
 						<ToggleControl
 							label={ __( 'ON Sale' ) }
-							checked={ props.attributes.onSale || false }
+							checked={
+								props.attributes.productQuery?.onSale || false
+							}
 							onChange={ ( nextValue ) => {
 								props.setAttributes( {
-									onSale: nextValue,
+									productQuery: {
+										...props.attributes.productQuery,
+										onSale: nextValue,
+									},
 								} );
 							} }
 						/>
@@ -90,11 +69,8 @@ export function addAttribute( settings, name ) {
 		// Gracefully handle if settings.attributes is undefined.
 		settings.attributes = {
 			...settings.attributes,
-			namespace: {
-				type: 'string',
-			},
-			onSale: {
-				type: 'boolean',
+			productQuery: {
+				type: 'object',
 			},
 		};
 	}
@@ -109,31 +85,67 @@ addFilter(
 
 addFilter( 'editor.BlockEdit', 'core/query', withInspectorControl );
 
-// registerBlockVariation( 'core/query', {
-// 	name: 'Products on Sale',
-// 	title: __( 'Product on Sale', 'woo-gutenberg-products-block' ),
-// 	isActive: ( blockAttributes ) => blockAttributes.onSale,
-// 	icon: {
-// 		src: (
-// 			<Icon
-// 				icon={ sparkles }
-// 				className="wc-block-editor-components-block-icon wc-block-editor-components-block-icon--sparkles"
-// 			/>
-// 		),
-// 	},
-// 	attributes: {
-// 		...QUERY_DEFAULT_ATTRIBUTES,
-// 		namespace: 'product-on-sale',
-// 		onSale: true,
-// 	},
-// 	innerBlocks: [
-// 		[
-// 			'core/post-template',
-// 			{},
-// 			[ [ 'woocommerce/product-image-2' ], [ 'core/post-title' ] ],
-// 		],
-// 		[ 'core/query-pagination' ],
-// 		[ 'core/query-no-results' ],
-// 	],
-// 	scope: [ 'block', 'inserter' ],
-// } );
+registerBlockVariation( 'core/query', {
+	name: 'product-query',
+	title: __( 'Product Query', 'woo-gutenberg-products-block' ),
+	isActive: ( attributes ) => {
+		return attributes?.productQuery?.namespace === 'product-query';
+	},
+	icon: {
+		src: (
+			<Icon
+				icon={ sparkles }
+				className="wc-block-editor-components-block-icon wc-block-editor-components-block-icon--sparkles"
+			/>
+		),
+	},
+	attributes: {
+		...QUERY_DEFAULT_ATTRIBUTES,
+		productQuery: {
+			namespace: 'product-query',
+		},
+	},
+	innerBlocks: [
+		[
+			'core/post-template',
+			{},
+			[ [ 'core/post-title' ], [ 'woocommerce/product-image' ] ],
+		],
+		[ 'core/query-pagination' ],
+		[ 'core/query-no-results' ],
+	],
+	scope: [ 'block', 'inserter' ],
+} );
+
+registerBlockVariation( 'core/query', {
+	name: 'On Sale Products',
+	title: __( 'On Sale Products', 'woo-gutenberg-products-block' ),
+	isActive: ( blockAttributes ) =>
+		blockAttributes.productQuery.namespace === 'product-query-on-sale' ||
+		blockAttributes.productQuery.onSale === true,
+	icon: {
+		src: (
+			<Icon
+				icon={ sparkles }
+				className="wc-block-editor-components-block-icon wc-block-editor-components-block-icon--sparkles"
+			/>
+		),
+	},
+	attributes: {
+		...QUERY_DEFAULT_ATTRIBUTES,
+		productQuery: {
+			namespace: 'product-query-on-sale',
+			onSale: true,
+		},
+	},
+	innerBlocks: [
+		[
+			'core/post-template',
+			{},
+			[ [ 'core/post-title' ], [ 'woocommerce/product-image' ] ],
+		],
+		[ 'core/query-pagination' ],
+		[ 'core/query-no-results' ],
+	],
+	scope: [ 'block', 'inserter' ],
+} );

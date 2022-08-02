@@ -46,6 +46,7 @@ export const Block = ( props ) => {
 
 	const { parentClassName } = useInnerBlockLayoutContext();
 	const { product } = useProductDataContext();
+
 	const [ imageLoaded, setImageLoaded ] = useState( false );
 	const { dispatchStoreEvent } = useStoreEvents();
 

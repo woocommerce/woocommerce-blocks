@@ -57,7 +57,7 @@ class MiniCartContents extends AbstractBlock {
 	 *
 	 * @return string Rendered block type output.
 	 */
-	protected function render( $attributes, $content ) {
+	protected function render( $attributes, $content, $block ) {
 		if ( is_admin() || WC()->is_rest_api_request() ) {
 			// In the editor we will display the placeholder, so no need to
 			// print the markup.

@@ -30,7 +30,7 @@ class ProductSearch extends AbstractBlock {
 	 * @param string $content    Block content.
 	 * @return string Rendered block type output.
 	 */
-	protected function render( $attributes, $content ) {
+	protected function render( $attributes, $content, $block ) {
 		static $instance_id = 0;
 
 		$attributes = wp_parse_args(

@@ -56,4 +56,17 @@ class ProductImage extends AbstractBlock {
 		parent::register_block_type_assets();
 		$this->register_chunk_translations( [ $this->block_name ] );
 	}
+
+	protected function get_block_type_uses_context() {
+		return array( 'query', 'queryId', 'postId' );
+	}
+
+	protected function render( $attributes, $content, $block ) {
+		$post_id = $block->context['postId'];
+
+		$product    = wc_get_product( $post_id );
+		$is_on_sale = $product->is_on_sale();
+
+		return '' . wc_bool_to_string( $is_on_sale ) . '' . wp_get_attachment_image( get_post_thumbnail_id( $post_id ) );
+	}
 }

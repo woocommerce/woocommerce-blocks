@@ -14,7 +14,7 @@ import { useState, useEffect } from '@wordpress/element';
  * @param {Object} props Component props.
  */
 const OriginalComponentWithContext = ( props ) => {
-	const { productId, OriginalComponent } = props;
+	const { productId, OriginalComponent, postId } = props;
 	const [ product, setProduct ] = useState( null );
 	const [ isLoading, setIsLoading ] = useState( true );
 
@@ -26,10 +26,11 @@ const OriginalComponentWithContext = ( props ) => {
 	}, [ props.product ] );
 
 	useEffect( () => {
-		if ( productId > 0 ) {
+		const id = productId > 0 ? productId : postId;
+		if ( id > 0 ) {
 			setIsLoading( true );
 			apiFetch( {
-				path: `/wc/store/v1/products/${ productId }`,
+				path: `/wc/store/v1/products/${ id }`,
 			} )
 				.then( ( receivedProduct ) => {
 					setProduct( receivedProduct );
@@ -41,7 +42,7 @@ const OriginalComponentWithContext = ( props ) => {
 					setIsLoading( false );
 				} );
 		}
-	}, [ productId ] );
+	}, [ productId, postId ] );
 
 	if ( ! isLoading && ! product ) {
 		return null;

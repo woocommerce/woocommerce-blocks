@@ -10,11 +10,12 @@ type Props = {
 	};
 };
 
-export const Save = ( { attributes }: Props ): JSX.Element => {
+export const Save = ( { attributes }: any ): JSX.Element => {
 	return (
 		<div
 			{ ...useBlockProps.save( {
 				className: classnames( 'is-loading', attributes.className ),
+				postId: attributes.postId,
 			} ) }
 		/>
 	);

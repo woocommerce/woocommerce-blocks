@@ -309,7 +309,7 @@ class MiniCart extends AbstractBlock {
 	 *
 	 * @return string Rendered block type output.
 	 */
-	protected function render( $attributes, $content ) {
+	protected function render( $attributes, $content, $block ) {
 		return $content . $this->get_markup( $attributes );
 	}
 
