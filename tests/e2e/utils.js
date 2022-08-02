@@ -64,7 +64,7 @@ const SELECTORS = {
 		savePrompt: '.entities-saved-states__text-prompt',
 	},
 	allProductsBlock: {
-		productsList: '.wc-block-grid__products > li > div:not(.is-loading)',
+		productsList: '.wc-block-grid__products:not(.is-loading-products)',
 	},
 };
 
@@ -456,5 +456,4 @@ export const openBlockEditorSettings = async ( { isFSEEditor = false } ) => {
  */
 export const waitForAllProductsBlockLoaded = async () => {
 	await page.waitForSelector( SELECTORS.allProductsBlock.productsList );
-	await page.waitForTimeout( 5000 );
 };
