@@ -14,7 +14,7 @@ import { ToggleControl } from '@wordpress/components';
  * Internal dependencies
  */
 
-const QUERY_DEFAULT_ATTRIBUTES = {
+export const QUERY_DEFAULT_ATTRIBUTES = {
 	query: {
 		perPage: 6,
 		pages: 0,
@@ -103,39 +103,6 @@ registerBlockVariation( 'core/query', {
 		...QUERY_DEFAULT_ATTRIBUTES,
 		productQuery: {
 			namespace: 'product-query',
-		},
-	},
-	innerBlocks: [
-		[
-			'core/post-template',
-			{},
-			[ [ 'core/post-title' ], [ 'woocommerce/product-image' ] ],
-		],
-		[ 'core/query-pagination' ],
-		[ 'core/query-no-results' ],
-	],
-	scope: [ 'block', 'inserter' ],
-} );
-
-registerBlockVariation( 'core/query', {
-	name: 'On Sale Products',
-	title: __( 'On Sale Products', 'woo-gutenberg-products-block' ),
-	isActive: ( blockAttributes ) =>
-		blockAttributes.productQuery.namespace === 'product-query-on-sale' ||
-		blockAttributes.productQuery.onSale === true,
-	icon: {
-		src: (
-			<Icon
-				icon={ sparkles }
-				className="wc-block-editor-components-block-icon wc-block-editor-components-block-icon--sparkles"
-			/>
-		),
-	},
-	attributes: {
-		...QUERY_DEFAULT_ATTRIBUTES,
-		productQuery: {
-			namespace: 'product-query-on-sale',
-			onSale: true,
 		},
 	},
 	innerBlocks: [
