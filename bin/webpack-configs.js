@@ -260,7 +260,7 @@ const getMainConfig = ( options = {} ) => {
 			new CopyWebpackPlugin( {
 				patterns: [
 					{
-						from: './assets/js/blocks/**/block.json',
+						from: './assets/js/**/block.json',
 						to( { absoluteFilename } ) {
 							const blockName = absoluteFilename
 								.split( '/' )

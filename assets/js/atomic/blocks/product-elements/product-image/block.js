@@ -16,7 +16,7 @@ import { useStoreEvents } from '@woocommerce/base-context/hooks';
 /**
  * Internal dependencies
  */
-import ProductSaleBadge from './../sale-badge/block';
+import ProductSaleBadge from '../sale-badge/block';
 import './style.scss';
 import {
 	useBorderProps,
