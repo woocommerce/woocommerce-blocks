@@ -4,7 +4,7 @@ Tags: gutenberg, woocommerce, woo commerce, products, blocks, woocommerce blocks
 Requires at least: 6.0
 Tested up to: 6.0
 Requires PHP: 7.0
-Stable tag: 8.1.0-dev
+Stable tag: 8.3.0-dev
 License: GPLv3
 License URI: https://www.gnu.org/licenses/gpl-3.0.html
 
@@ -85,6 +85,43 @@ Release and roadmap notes available on the [WooCommerce Developers Blog](https:/
 5. WooCommerce Product Blocks in the block inserter menu
 
 == Changelog ==
+
+= 8.2.0 - 2022-08-02 =
+
+#### Enhancements
+
+- Add update_customer_from_request action to Checkout flow. ([6792](https://github.com/woocommerce/woocommerce-blocks/pull/6792))
+- Update: New block icon for the Mini Cart block. ([6784](https://github.com/woocommerce/woocommerce-blocks/pull/6784))
+- Introduce `productNameFormat` filter for cart items in Cart and Checkout blocks. ([4993](https://github.com/woocommerce/woocommerce-blocks/pull/4993))
+
+#### Bug Fixes
+
+- Fix proceed to checkout button not working for custom links. ([6804](https://github.com/woocommerce/woocommerce-blocks/pull/6804))
+- Mini Cart block: Remove the compatibility notice. ([6803](https://github.com/woocommerce/woocommerce-blocks/pull/6803))
+- Fix: Render the product attribute archive page using the `archive-product` template. ([6776](https://github.com/woocommerce/woocommerce-blocks/pull/6776))
+- Ensure using the "Use shipping as billing" checkbox in the Checkout Block correctly syncs the addresses when making the order. ([6773](https://github.com/woocommerce/woocommerce-blocks/pull/6773))
+- Ensure shipping package names are shown correctly in the Checkout Block when a cart contains multiple packages. ([6753](https://github.com/woocommerce/woocommerce-blocks/pull/6753))
+- Select the correct inner button for the "Featured Item" button to update its URL. ([6741](https://github.com/woocommerce/woocommerce-blocks/pull/6741))
+- Fix the spacing between separate shipping packages in the Checkout Block. ([6740](https://github.com/woocommerce/woocommerce-blocks/pull/6740))
+- Fix missing translations in the inspector (editor mode). ([6737](https://github.com/woocommerce/woocommerce-blocks/pull/6737))
+- Fix: Navigate through Mini Cart contents with keyboard. ([6731](https://github.com/woocommerce/woocommerce-blocks/pull/6731))
+- Fix: Ensure add to cart notices are displayed on pages containing the Mini Cart block. ([6728](https://github.com/woocommerce/woocommerce-blocks/pull/6728))
+- Fix Cart an d Checkout blocks compatiblity issue with wordpress.com in which blocks wouldn't load in the editor. ([6718](https://github.com/woocommerce/woocommerce-blocks/pull/6718))
+- Fixes an issue where search lists would not preserve the case of the original item. ([6551](https://github.com/woocommerce/woocommerce-blocks/pull/6551))
+
+= 8.1.0 - 2022-07-18 =
+
+#### Enhancements
+
+- Update WooCommerce block template descriptions. ([6667](https://github.com/woocommerce/woocommerce-blocks/pull/6667))
+- Add filter URL support to filter blocks when filtering for All Products block. ([6642](https://github.com/woocommerce/woocommerce-blocks/pull/6642))
+- Add: Allow choosing between single and multiple sections. ([6620](https://github.com/woocommerce/woocommerce-blocks/pull/6620))
+- Cart endpoint for Store API (/wc/store/cart) now features cross-sell items based on cart contents. ([6635](https://github.com/woocommerce/woocommerce-blocks/pull/6635))
+
+#### Bug Fixes
+
+- Prevent Featured Product block from breaking when product is out of stock + hidden from catalog. ([6640](https://github.com/woocommerce/woocommerce-blocks/pull/6640))
+- Contrast improvement for checkout error messages when displayed over a theme's dark mode. ([6292](https://github.com/woocommerce/woocommerce-blocks/pull/6292))
 
 = 8.0.0 - 2022-07-04 =
 
