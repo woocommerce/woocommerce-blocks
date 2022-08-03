@@ -57,7 +57,7 @@ class ProductQuery extends AbstractBlock {
 
 
 	public function update_query( $block_content, $block ) {
-		if ( $block['blockName'] === 'core/query' && $block['attrs']['productQuery']['onSale'] === true ) {
+		if ( $block['blockName'] === 'core/query' && isset( $block['attrs']['productQuery']['onSale'] ) && $block['attrs']['productQuery']['onSale'] === true ) {
 			add_filter( 'gigitux', array( $this, 'on_sale_query' ), 10, 3 );
 		}
 	}
