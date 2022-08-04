@@ -29,6 +29,8 @@ import { CHECKOUT_PAGE_ID } from '@woocommerce/block-settings';
 import { createInterpolateElement } from '@wordpress/element';
 import { getAdminLink } from '@woocommerce/settings';
 import { CartCheckoutCompatibilityNotice } from '@woocommerce/editor-components/compatibility-notices';
+import { CartCheckoutSidebarCompatibilityNotice } from '@woocommerce/editor-components/sidebar-compatibility-notice';
+import {} from '@woocommerce/editor-components/compatibility-notices';
 import type { TemplateArray } from '@wordpress/blocks';
 
 /**
@@ -109,6 +111,7 @@ const BlockSettings = ( {
 				/>
 			</PanelBody>
 			<CartCheckoutFeedbackPrompt />
+			<CartCheckoutSidebarCompatibilityNotice />
 		</InspectorControls>
 	);
 };
