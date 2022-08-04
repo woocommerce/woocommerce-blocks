@@ -2,10 +2,15 @@
  * External dependencies
  */
 import classnames from 'classnames';
-import { useBlockProps, InnerBlocks } from '@wordpress/block-editor';
+import {
+	useBlockProps,
+	InnerBlocks,
+	InspectorControls,
+} from '@wordpress/block-editor';
 import { Sidebar } from '@woocommerce/base-components/sidebar-layout';
 import { innerBlockAreas } from '@woocommerce/blocks-checkout';
 import type { TemplateArray } from '@wordpress/blocks';
+import CartCheckoutSidebarCompatibilityNotice from '@woocommerce/editor-components/sidebar-compatibility-notice';
 
 /**
  * Internal dependencies
@@ -45,6 +50,9 @@ export const Edit = ( {
 
 	return (
 		<Sidebar { ...blockProps }>
+			<InspectorControls>
+				<CartCheckoutSidebarCompatibilityNotice />
+			</InspectorControls>
 			<InnerBlocks
 				allowedBlocks={ allowedBlocks }
 				templateLock={ false }
