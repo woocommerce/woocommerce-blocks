@@ -1,8 +1,9 @@
 /**
  * External dependencies
  */
-import { useBlockProps } from '@wordpress/block-editor';
+import { InspectorControls, useBlockProps } from '@wordpress/block-editor';
 import Noninteractive from '@woocommerce/base-components/noninteractive';
+import { CartSidebarCompatibilityNotice } from '@woocommerce/editor-components/sidebar-compatibility-notice';
 
 /**
  * Internal dependencies
@@ -19,6 +20,9 @@ export const Edit = ( {
 
 	return (
 		<div { ...blockProps }>
+			<InspectorControls>
+				<CartSidebarCompatibilityNotice />
+			</InspectorControls>
 			<Noninteractive>
 				<Block className={ className } />
 			</Noninteractive>
