@@ -2,11 +2,16 @@
  * External dependencies
  */
 import { __, sprintf } from '@wordpress/i18n';
-import { useBlockProps, InnerBlocks } from '@wordpress/block-editor';
+import {
+	useBlockProps,
+	InnerBlocks,
+	InspectorControls,
+} from '@wordpress/block-editor';
 import { innerBlockAreas } from '@woocommerce/blocks-checkout';
 import type { TemplateArray } from '@wordpress/blocks';
 import { useEditorContext } from '@woocommerce/base-context';
 import { SHOP_URL } from '@woocommerce/block-settings';
+import { CartSidebarCompatibilityNotice } from '@woocommerce/editor-components/sidebar-compatibility-notice';
 
 /**
  * Internal dependencies
@@ -97,6 +102,10 @@ export const Edit = ( { clientId }: { clientId: string } ): JSX.Element => {
 			{ ...blockProps }
 			hidden={ currentView !== 'woocommerce/empty-cart-block' }
 		>
+			<InspectorControls>
+				<CartSidebarCompatibilityNotice />
+			</InspectorControls>
+
 			<InnerBlocks
 				template={ defaultTemplate }
 				templateLock={ false }
