@@ -16,9 +16,7 @@ export const CartCheckoutSidebarCompatibilityNotice = ( {
 }: {
 	block: 'cart' | 'checkout';
 } ) => {
-	const [ isVisible, dismissNotice ] = useCompatibilityNotice(
-		`${ block }/inspector`
-	);
+	const [ isVisible, dismissNotice ] = useCompatibilityNotice( block );
 
 	const noticeText = createInterpolateElement(
 		__(
