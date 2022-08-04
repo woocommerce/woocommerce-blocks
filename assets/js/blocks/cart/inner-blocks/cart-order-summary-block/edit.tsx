@@ -1,13 +1,18 @@
 /**
  * External dependencies
  */
-import { useBlockProps, InnerBlocks } from '@wordpress/block-editor';
+import {
+	useBlockProps,
+	InnerBlocks,
+	InspectorControls,
+} from '@wordpress/block-editor';
 import type { TemplateArray } from '@wordpress/blocks';
 import { innerBlockAreas } from '@woocommerce/blocks-checkout';
 import { __ } from '@wordpress/i18n';
 import { TotalsFooterItem } from '@woocommerce/base-components/cart-checkout';
 import { getCurrencyFromPriceResponse } from '@woocommerce/price-format';
 import { useStoreCart } from '@woocommerce/base-context/hooks';
+import { CartSidebarCompatibilityNotice } from '@woocommerce/editor-components/sidebar-compatibility-notice';
 
 /**
  * Internal dependencies
@@ -49,6 +54,9 @@ export const Edit = ( { clientId }: { clientId: string } ): JSX.Element => {
 
 	return (
 		<div { ...blockProps }>
+			<InspectorControls>
+				<CartSidebarCompatibilityNotice />
+			</InspectorControls>
 			<InnerBlocks
 				allowedBlocks={ allowedBlocks }
 				template={ defaultTemplate }
