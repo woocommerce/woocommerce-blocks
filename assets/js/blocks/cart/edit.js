@@ -38,6 +38,7 @@ import {
 	useForcedLayout,
 } from '../cart-checkout-shared';
 import { CartBlockContext } from './context';
+import { CartSidebarCompatibilityNotice } from '@woocommerce/editor-components/sidebar-compatibility-notice';
 
 // This is adds a class to body to signal if the selected block is locked
 addClassToBody();
@@ -111,6 +112,7 @@ const BlockSettings = ( { attributes, setAttributes } ) => {
 				/>
 			</PanelBody>
 			<CartCheckoutFeedbackPrompt />
+			<CartSidebarCompatibilityNotice />
 		</InspectorControls>
 	);
 };
@@ -178,7 +180,6 @@ export const Edit = ( { className, attributes, setAttributes, clientId } ) => {
 					</CartBlockContext.Provider>
 				</EditorProvider>
 			</BlockErrorBoundary>
-			<CartCheckoutCompatibilityNotice blockName="cart" />
 		</div>
 	);
 };

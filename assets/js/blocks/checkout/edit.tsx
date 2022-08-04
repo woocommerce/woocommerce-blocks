@@ -279,7 +279,6 @@ export const Edit = ( {
 					</SidebarLayout>
 				</CheckoutProvider>
 			</EditorProvider>
-			<CartCheckoutCompatibilityNotice blockName="checkout" />
 		</div>
 	);
 };
