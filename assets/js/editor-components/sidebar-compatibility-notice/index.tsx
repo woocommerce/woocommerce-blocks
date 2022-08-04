@@ -34,12 +34,14 @@ export const CartCheckoutSidebarCompatibilityNotice = ( {
 		}
 	);
 	return isVisible ? (
-		<Notice
-			onRemove={ dismissNotice }
-			className={ 'wc-blocks-sidebar-compatibility-notice' }
-		>
-			{ noticeText }
-		</Notice>
+		<div className="wc-blocks-sidebar-compatibility-notice">
+			<Notice
+				onRemove={ dismissNotice }
+				className={ 'wc-blocks-sidebar-compatibility-notice__notice' }
+			>
+				{ noticeText }
+			</Notice>
+		</div>
 	) : null;
 };
 
