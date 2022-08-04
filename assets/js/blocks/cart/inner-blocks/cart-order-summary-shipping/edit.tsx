@@ -11,6 +11,7 @@ import Noninteractive from '@woocommerce/base-components/noninteractive';
  * Internal dependencies
  */
 import Block from './block';
+import { CartSidebarCompatibilityNotice } from '@woocommerce/editor-components/sidebar-compatibility-notice';
 
 export const Edit = ( {
 	attributes,
@@ -59,6 +60,7 @@ export const Edit = ( {
 						/>
 					</PanelBody>
 				) }
+				<CartSidebarCompatibilityNotice />
 			</InspectorControls>
 			<Noninteractive>
 				<Block
