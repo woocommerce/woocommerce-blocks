@@ -4,13 +4,22 @@
 import { Notice, ExternalLink } from '@wordpress/components';
 import { createInterpolateElement } from '@wordpress/element';
 import { __ } from '@wordpress/i18n';
+import { useCompatibilityNotice } from '@woocommerce/editor-components/compatibility-notices/use-compatibility-notice';
 
 /**
  * Internal dependencies
  */
 import './style.scss';
 
-export const CartCheckoutSidebarCompatibilityNotice = () => {
+export const CartCheckoutSidebarCompatibilityNotice = ( {
+	block,
+}: {
+	block: 'cart' | 'checkout';
+} ) => {
+	const [ isVisible, dismissNotice ] = useCompatibilityNotice(
+		`${ block }/inspector`
+	);
+
 	const noticeText = createInterpolateElement(
 		__(
 			'The Cart & Checkout Blocks are a beta feature to optimize for faster checkout. To make sure this feature is right for your store, <a>review the list of compatible extensions</a>.',
@@ -24,11 +33,14 @@ export const CartCheckoutSidebarCompatibilityNotice = () => {
 			),
 		}
 	);
-	return (
-		<Notice className={ 'wc-blocks-sidebar-compatibility-notice' }>
+	return isVisible ? (
+		<Notice
+			onRemove={ dismissNotice }
+			className={ 'wc-blocks-sidebar-compatibility-notice' }
+		>
 			{ noticeText }
 		</Notice>
-	);
+	) : null;
 };
 
 export default CartCheckoutSidebarCompatibilityNotice;
