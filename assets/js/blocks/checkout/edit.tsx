@@ -148,10 +148,6 @@ export const Edit = ( {
 		setAttributes( newAttributes );
 	};
 
-	const sidebarCompatabilityControls = (): JSX.Element => (
-		<CartCheckoutSidebarCompatibilityNotice />
-	);
-
 	const accountControls = (): JSX.Element => (
 		<InspectorControls>
 			<PanelBody
@@ -173,7 +169,7 @@ export const Edit = ( {
 					}
 				/>
 			</PanelBody>
-			{ sidebarCompatabilityControls() }
+			<CartCheckoutSidebarCompatibilityNotice />
 		</InspectorControls>
 	);
 
@@ -233,6 +229,7 @@ export const Edit = ( {
 					/>
 				) }
 			</PanelBody>
+			<CartCheckoutSidebarCompatibilityNotice />
 		</InspectorControls>
 	);
 	const blockProps = useBlockPropsWithLocking();
