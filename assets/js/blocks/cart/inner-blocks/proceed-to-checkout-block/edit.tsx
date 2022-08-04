@@ -8,10 +8,13 @@ import { InspectorControls, useBlockProps } from '@wordpress/block-editor';
 import PageSelector from '@woocommerce/editor-components/page-selector';
 import { CART_PAGE_ID } from '@woocommerce/block-settings';
 import Noninteractive from '@woocommerce/base-components/noninteractive';
+import { CartSidebarCompatibilityNotice } from '@woocommerce/editor-components/sidebar-compatibility-notice';
+
 /**
  * Internal dependencies
  */
 import Block from './block';
+
 export const Edit = ( {
 	attributes,
 	setAttributes,
@@ -59,6 +62,7 @@ export const Edit = ( {
 						} }
 					/>
 				) }
+				<CartSidebarCompatibilityNotice />
 			</InspectorControls>
 			<Noninteractive>
 				<Block
