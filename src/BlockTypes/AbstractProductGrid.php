@@ -81,6 +81,11 @@ abstract class AbstractProductGrid extends AbstractDynamicBlock {
 			return '';
 		}
 
+		// Override product description to prevent infinite loop.
+		foreach ( $products as $product ) {
+			$product->set_description( '' );
+		}
+
 		/**
 		 * Product List Render event.
 		 *
