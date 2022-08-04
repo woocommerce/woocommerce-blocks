@@ -4,6 +4,10 @@ on:
     pull_request:
     push:
         branches: [trunk]
+permissions:
+  actions: write
+  checks: write
+  pull-requests: read
 
 jobs:
     # cache node and modules
