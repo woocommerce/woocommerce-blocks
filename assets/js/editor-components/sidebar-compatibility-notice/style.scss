@@ -1,0 +1,9 @@
+.wc-blocks-sidebar-compatibility-notice.components-notice.is-dismissible {
+	margin: 0;
+	padding: $gap;
+	padding-right: $gap-small;
+
+	.components-notice__content {
+		margin-right: 0;
+	}
+}
