@@ -43,4 +43,9 @@ export const CartCheckoutSidebarCompatibilityNotice = ( {
 	) : null;
 };
 
-export default CartCheckoutSidebarCompatibilityNotice;
+export const CheckoutSidebarCompatibilityNotice = () => (
+	<CartCheckoutSidebarCompatibilityNotice block={ 'checkout' } />
+);
+export const CartSidebarCompatibilityNotice = () => (
+	<CartCheckoutSidebarCompatibilityNotice block={ 'cart' } />
+);
