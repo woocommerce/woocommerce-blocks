@@ -11,7 +11,7 @@ import { innerBlockAreas } from '@woocommerce/blocks-checkout';
 import { TotalsFooterItem } from '@woocommerce/base-components/cart-checkout';
 import { getCurrencyFromPriceResponse } from '@woocommerce/price-format';
 import { useStoreCart } from '@woocommerce/base-context/hooks';
-import CartCheckoutSidebarCompatibilityNotice from '@woocommerce/editor-components/sidebar-compatibility-notice';
+import { CheckoutSidebarCompatibilityNotice } from '@woocommerce/editor-components/sidebar-compatibility-notice';
 
 /**
  * Internal dependencies
@@ -48,7 +48,7 @@ export const Edit = ( { clientId }: { clientId: string } ): JSX.Element => {
 	return (
 		<div { ...blockProps }>
 			<InspectorControls>
-				<CartCheckoutSidebarCompatibilityNotice />
+				<CheckoutSidebarCompatibilityNotice />
 			</InspectorControls>
 			<InnerBlocks
 				allowedBlocks={ allowedBlocks }

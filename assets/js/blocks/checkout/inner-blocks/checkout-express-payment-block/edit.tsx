@@ -8,7 +8,7 @@ import { useExpressPaymentMethods } from '@woocommerce/base-context/hooks';
 import { Icon, payment } from '@wordpress/icons';
 import { ADMIN_URL } from '@woocommerce/settings';
 import classnames from 'classnames';
-import CartCheckoutSidebarCompatibilityNotice from '@woocommerce/editor-components/sidebar-compatibility-notice';
+import { CheckoutSidebarCompatibilityNotice } from '@woocommerce/editor-components/sidebar-compatibility-notice';
 
 /**
  * Internal dependencies
@@ -79,7 +79,7 @@ export const Edit = ( {
 	return (
 		<div { ...blockProps }>
 			<InspectorControls>
-				<CartCheckoutSidebarCompatibilityNotice />
+				<CheckoutSidebarCompatibilityNotice />
 			</InspectorControls>
 			{ hasExpressPaymentMethods ? (
 				<Block />

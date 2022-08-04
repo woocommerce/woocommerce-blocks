@@ -10,7 +10,7 @@ import {
 import { Sidebar } from '@woocommerce/base-components/sidebar-layout';
 import { innerBlockAreas } from '@woocommerce/blocks-checkout';
 import type { TemplateArray } from '@wordpress/blocks';
-import CartCheckoutSidebarCompatibilityNotice from '@woocommerce/editor-components/sidebar-compatibility-notice';
+import { CheckoutSidebarCompatibilityNotice } from '@woocommerce/editor-components/sidebar-compatibility-notice';
 
 /**
  * Internal dependencies
@@ -51,7 +51,7 @@ export const Edit = ( {
 	return (
 		<Sidebar { ...blockProps }>
 			<InspectorControls>
-				<CartCheckoutSidebarCompatibilityNotice />
+				<CheckoutSidebarCompatibilityNotice />
 			</InspectorControls>
 			<InnerBlocks
 				allowedBlocks={ allowedBlocks }

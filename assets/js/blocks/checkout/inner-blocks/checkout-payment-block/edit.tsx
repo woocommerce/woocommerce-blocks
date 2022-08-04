@@ -9,7 +9,7 @@ import { ADMIN_URL, getSetting } from '@woocommerce/settings';
 import ExternalLinkCard from '@woocommerce/editor-components/external-link-card';
 import { innerBlockAreas } from '@woocommerce/blocks-checkout';
 import Noninteractive from '@woocommerce/base-components/noninteractive';
-import CartCheckoutSidebarCompatibilityNotice from '@woocommerce/editor-components/sidebar-compatibility-notice';
+import { CheckoutSidebarCompatibilityNotice } from '@woocommerce/editor-components/sidebar-compatibility-notice';
 
 /**
  * Internal dependencies
@@ -86,7 +86,7 @@ export const Edit = ( {
 						</ExternalLink>
 					</PanelBody>
 				) }
-				<CartCheckoutSidebarCompatibilityNotice />
+				<CheckoutSidebarCompatibilityNotice />
 			</InspectorControls>
 			<Noninteractive>
 				<Block />

@@ -5,7 +5,7 @@ import { __ } from '@wordpress/i18n';
 import { useBlockProps, InspectorControls } from '@wordpress/block-editor';
 import { PanelBody, ToggleControl } from '@wordpress/components';
 import { getSetting } from '@woocommerce/settings';
-import CartCheckoutSidebarCompatibilityNotice from '@woocommerce/editor-components/sidebar-compatibility-notice';
+import { CheckoutSidebarCompatibilityNotice } from '@woocommerce/editor-components/sidebar-compatibility-notice';
 
 /**
  * Internal dependencies
@@ -64,7 +64,7 @@ export const Edit = ( {
 							/>
 						</PanelBody>
 					) }
-				<CartCheckoutSidebarCompatibilityNotice />
+				<CheckoutSidebarCompatibilityNotice />
 			</InspectorControls>
 			<Block
 				className={ className }

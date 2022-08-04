@@ -3,7 +3,7 @@
  */
 import { InspectorControls, useBlockProps } from '@wordpress/block-editor';
 import Noninteractive from '@woocommerce/base-components/noninteractive';
-import CartCheckoutSidebarCompatibilityNotice from '@woocommerce/editor-components/sidebar-compatibility-notice';
+import { CheckoutSidebarCompatibilityNotice } from '@woocommerce/editor-components/sidebar-compatibility-notice';
 
 /**
  * Internal dependencies
@@ -16,7 +16,7 @@ export const Edit = (): JSX.Element => {
 	return (
 		<div { ...blockProps }>
 			<InspectorControls>
-				<CartCheckoutSidebarCompatibilityNotice />
+				<CheckoutSidebarCompatibilityNotice />
 			</InspectorControls>
 			<Noninteractive>
 				<Block />

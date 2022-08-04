@@ -12,7 +12,7 @@ import { PanelBody, ToggleControl, Notice } from '@wordpress/components';
 import { PRIVACY_URL, TERMS_URL } from '@woocommerce/block-settings';
 import { ADMIN_URL } from '@woocommerce/settings';
 import { Icon, external } from '@wordpress/icons';
-import CartCheckoutSidebarCompatibilityNotice from '@woocommerce/editor-components/sidebar-compatibility-notice';
+import { CheckoutSidebarCompatibilityNotice } from '@woocommerce/editor-components/sidebar-compatibility-notice';
 
 /**
  * Internal dependencies
@@ -56,7 +56,7 @@ export const Edit = ( {
 						}
 					/>
 				</PanelBody>
-				<CartCheckoutSidebarCompatibilityNotice />
+				<CheckoutSidebarCompatibilityNotice />
 			</InspectorControls>
 			<div className="wc-block-checkout__terms">
 				{ checkbox ? (
