@@ -36,6 +36,7 @@ export const Edit = ( {
 	return (
 		<div { ...blockProps }>
 			<InspectorControls>
+				<CartSidebarCompatibilityNotice />
 				{ taxesEnabled &&
 					displayItemizedTaxes &&
 					! displayCartPricesIncludingTax && (
@@ -64,7 +65,6 @@ export const Edit = ( {
 							/>
 						</PanelBody>
 					) }
-				<CartSidebarCompatibilityNotice />
 			</InspectorControls>
 			<Block
 				className={ className }

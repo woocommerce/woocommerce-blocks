@@ -34,6 +34,7 @@ export const Edit = ( {
 	return (
 		<div { ...blockProps }>
 			<InspectorControls>
+				<CartSidebarCompatibilityNotice />
 				{ !! shippingEnabled && (
 					<PanelBody
 						title={ __(
@@ -60,7 +61,6 @@ export const Edit = ( {
 						/>
 					</PanelBody>
 				) }
-				<CartSidebarCompatibilityNotice />
 			</InspectorControls>
 			<Noninteractive>
 				<Block

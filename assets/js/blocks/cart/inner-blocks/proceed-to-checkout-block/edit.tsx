@@ -42,6 +42,7 @@ export const Edit = ( {
 	return (
 		<div { ...blockProps }>
 			<InspectorControls>
+				<CartSidebarCompatibilityNotice />
 				{ ! (
 					currentPostId === CART_PAGE_ID && savedCheckoutPageId === 0
 				) && (
@@ -62,7 +63,6 @@ export const Edit = ( {
 						} }
 					/>
 				) }
-				<CartSidebarCompatibilityNotice />
 			</InspectorControls>
 			<Noninteractive>
 				<Block
