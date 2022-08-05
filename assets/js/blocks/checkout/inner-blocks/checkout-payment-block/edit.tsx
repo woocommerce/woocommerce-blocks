@@ -86,7 +86,6 @@ export const Edit = ( {
 						</ExternalLink>
 					</PanelBody>
 				) }
-				<CheckoutSidebarCompatibilityNotice />
 			</InspectorControls>
 			<Noninteractive>
 				<Block />
