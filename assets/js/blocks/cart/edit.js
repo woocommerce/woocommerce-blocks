@@ -103,6 +103,7 @@ export const Edit = ( { className, attributes, setAttributes, clientId } ) => {
 		registeredBlocks: ALLOWED_BLOCKS,
 		defaultTemplate,
 	} );
+
 	return (
 		<div { ...blockProps }>
 			<BlockErrorBoundary
