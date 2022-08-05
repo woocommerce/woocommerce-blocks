@@ -13,6 +13,7 @@ use Automattic\WooCommerce\Blocks\Domain\Services\FeatureGating;
 use Automattic\WooCommerce\Blocks\Domain\Services\GoogleAnalytics;
 use Automattic\WooCommerce\Blocks\InboxNotifications;
 use Automattic\WooCommerce\Blocks\Installer;
+use Automattic\WooCommerce\Blocks\Patterns\FilterPatterns;
 use Automattic\WooCommerce\Blocks\Templates\ProductSearchResultsTemplate;
 use Automattic\WooCommerce\Blocks\Templates\ClassicTemplatesCompatibility;
 use Automattic\WooCommerce\Blocks\Payments\Api as PaymentsApi;
@@ -119,6 +120,7 @@ class Bootstrap {
 		$this->container->get( ProductSearchResultsTemplate::class );
 		$this->container->get( ProductAttributeTemplate::class );
 		$this->container->get( ClassicTemplatesCompatibility::class );
+		$this->container->get( FilterPatterns::class );
 		if ( $this->package->feature()->is_feature_plugin_build() ) {
 			$this->container->get( PaymentsApi::class );
 		}
@@ -330,6 +332,12 @@ class Bootstrap {
 			function( Container $container ) {
 				$this->deprecated_dependency( 'Automattic\WooCommerce\Blocks\StoreApi\RoutesController', '7.2.0', 'Automattic\WooCommerce\StoreApi\RoutesController', '7.4.0' );
 				return $container->get( StoreApi::class )::container()->get( RoutesController::class );
+			}
+		);
+		$this->container->register(
+			FilterPatterns::class,
+			function () {
+				return new FilterPatterns();
 			}
 		);
 	}
