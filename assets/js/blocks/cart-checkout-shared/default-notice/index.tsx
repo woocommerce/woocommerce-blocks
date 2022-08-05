@@ -10,7 +10,12 @@ import { Notice, Button } from '@wordpress/components';
 import { useSelect, useDispatch } from '@wordpress/data';
 import { CHECKOUT_PAGE_ID, CART_PAGE_ID } from '@woocommerce/block-settings';
 import { useCallback, useState } from '@wordpress/element';
-
+import { createHigherOrderComponent } from '@wordpress/compose';
+import {
+	store as blockEditorStore,
+	InspectorControls,
+} from '@wordpress/block-editor';
+import { addFilter, hasFilter } from '@wordpress/hooks';
 /**
  * Internal dependencies
  */
@@ -83,7 +88,6 @@ export function DefaultNotice( { page }: { page: string } ) {
 		originalPage?.slug,
 		updateAndPersistSettingsForGroup,
 	] );
-
 	if ( currentPostId === ORIGINAL_PAGE_ID || settingStatus === 'dismissed' ) {
 		return null;
 	}
@@ -121,5 +125,45 @@ export function DefaultNotice( { page }: { page: string } ) {
 				</>
 			) }
 		</Notice>
+	);
+}
+
+const withDefaultNotice = createHigherOrderComponent(
+	( BlockEdit ) => ( props ) => {
+		const { clientId } = props;
+		const { isCart, isCheckout } = useSelect( ( select ) => {
+			const { getBlockParentsByBlockName, getBlockName } =
+				select( blockEditorStore );
+			const parent = getBlockParentsByBlockName( clientId, [
+				'woocommerce/cart',
+				'woocommerce/checkout',
+			] ).map( getBlockName );
+			return {
+				isCart: parent.includes( 'woocommerce/cart' ),
+				isCheckout: parent.includes( 'woocommerce/checkout' ),
+			};
+		}, [] );
+		return (
+			<>
+				{ ( isCart || isCheckout ) && (
+					<InspectorControls>
+						<DefaultNotice
+							page={ isCheckout ? 'checkout' : 'cart' }
+						/>
+					</InspectorControls>
+				) }
+
+				<BlockEdit { ...props } />
+			</>
+		);
+	},
+	'withDefaultNotice'
+);
+
+if ( ! hasFilter( 'editor.BlockEdit', 'woocommerce/add/default-notice' ) ) {
+	addFilter(
+		'editor.BlockEdit',
+		'woocommerce/add/default-notice',
+		withDefaultNotice
 	);
 }
