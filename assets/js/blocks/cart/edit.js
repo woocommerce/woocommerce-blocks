@@ -11,17 +11,10 @@ import {
 	InspectorControls,
 	BlockControls,
 } from '@wordpress/block-editor';
-import { PanelBody, ToggleControl, Notice } from '@wordpress/components';
+import { PanelBody, ToggleControl } from '@wordpress/components';
 import { CartCheckoutCompatibilityNotice } from '@woocommerce/editor-components/compatibility-notices';
-import { CART_PAGE_ID } from '@woocommerce/block-settings';
 import BlockErrorBoundary from '@woocommerce/base-components/block-error-boundary';
-import {
-	EditorProvider,
-	useEditorContext,
-	CartProvider,
-} from '@woocommerce/base-context';
-import { createInterpolateElement } from '@wordpress/element';
-import { getAdminLink } from '@woocommerce/settings';
+import { EditorProvider, CartProvider } from '@woocommerce/base-context';
 import { previewCart } from '@woocommerce/resource-previews';
 import { filledCart, removeCart } from '@woocommerce/icons';
 import { Icon } from '@wordpress/icons';
@@ -36,6 +29,7 @@ import {
 	useViewSwitcher,
 	useBlockPropsWithLocking,
 	useForcedLayout,
+	DefaultNotice,
 } from '../cart-checkout-shared';
 import { CartBlockContext } from './context';
 
@@ -63,35 +57,9 @@ const views = [
 
 const BlockSettings = ( { attributes, setAttributes } ) => {
 	const { hasDarkControls } = attributes;
-	const { currentPostId } = useEditorContext();
 	return (
 		<InspectorControls>
-			{ currentPostId !== CART_PAGE_ID && (
-				<Notice
-					className="wc-block-cart__page-notice"
-					isDismissible={ false }
-					status="warning"
-				>
-					{ createInterpolateElement(
-						__(
-							'If you would like to use this block as your default cart you must update your <a>page settings in WooCommerce</a>.',
-							'woo-gutenberg-products-block'
-						),
-						{
-							a: (
-								// eslint-disable-next-line jsx-a11y/anchor-has-content
-								<a
-									href={ getAdminLink(
-										'admin.php?page=wc-settings&tab=advanced'
-									) }
-									target="_blank"
-									rel="noopener noreferrer"
-								/>
-							),
-						}
-					) }
-				</Notice>
-			) }
+			<DefaultNotice page="cart" />
 			<PanelBody title={ __( 'Style', 'woo-gutenberg-products-block' ) }>
 				<ToggleControl
 					label={ __(
