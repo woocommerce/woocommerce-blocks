@@ -166,6 +166,7 @@ export const Edit = ( {
 					}
 				/>
 			</PanelBody>
+			<CartCheckoutFeedbackPrompt />
 		</InspectorControls>
 	);
 
@@ -225,6 +226,7 @@ export const Edit = ( {
 					/>
 				) }
 			</PanelBody>
+			<CartCheckoutFeedbackPrompt />
 		</InspectorControls>
 	);
 	const blockProps = useBlockPropsWithLocking();

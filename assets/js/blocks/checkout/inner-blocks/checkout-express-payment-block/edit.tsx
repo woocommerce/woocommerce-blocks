@@ -2,12 +2,13 @@
  * External dependencies
  */
 import { __ } from '@wordpress/i18n';
-import { useBlockProps } from '@wordpress/block-editor';
+import { InspectorControls, useBlockProps } from '@wordpress/block-editor';
 import { Placeholder, Button } from 'wordpress-components';
 import { useExpressPaymentMethods } from '@woocommerce/base-context/hooks';
 import { Icon, payment } from '@wordpress/icons';
 import { ADMIN_URL } from '@woocommerce/settings';
 import classnames from 'classnames';
+import { CartCheckoutFeedbackPrompt } from '@woocommerce/editor-components/feedback-prompt';
 
 /**
  * Internal dependencies
@@ -77,6 +78,9 @@ export const Edit = ( {
 
 	return (
 		<div { ...blockProps }>
+			<InspectorControls>
+				<CartCheckoutFeedbackPrompt />
+			</InspectorControls>
 			{ hasExpressPaymentMethods ? (
 				<Block />
 			) : (

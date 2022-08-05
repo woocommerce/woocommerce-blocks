@@ -2,9 +2,10 @@
  * External dependencies
  */
 import classnames from 'classnames';
-import { useBlockProps } from '@wordpress/block-editor';
+import { InspectorControls, useBlockProps } from '@wordpress/block-editor';
 import { useCheckoutAddress } from '@woocommerce/base-context/hooks';
 import { innerBlockAreas } from '@woocommerce/blocks-checkout';
+import { CartCheckoutFeedbackPrompt } from '@woocommerce/editor-components/feedback-prompt';
 
 /**
  * Internal dependencies
@@ -44,7 +45,11 @@ export const Edit = ( {
 	const { showBillingFields } = useCheckoutAddress();
 
 	if ( ! showBillingFields ) {
-		return null;
+		return (
+			<InspectorControls>
+				<CartCheckoutFeedbackPrompt />
+			</InspectorControls>
+		);
 	}
 
 	return (

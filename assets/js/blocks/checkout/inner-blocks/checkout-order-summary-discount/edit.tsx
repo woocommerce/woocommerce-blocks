@@ -1,7 +1,8 @@
 /**
  * External dependencies
  */
-import { useBlockProps } from '@wordpress/block-editor';
+import { InspectorControls, useBlockProps } from '@wordpress/block-editor';
+import { CartCheckoutFeedbackPrompt } from '@woocommerce/editor-components/feedback-prompt';
 
 /**
  * Internal dependencies
@@ -20,6 +21,9 @@ export const Edit = ( {
 	const blockProps = useBlockProps();
 	return (
 		<div { ...blockProps }>
+			<InspectorControls>
+				<CartCheckoutFeedbackPrompt />
+			</InspectorControls>
 			<Block className={ className } />
 		</div>
 	);
