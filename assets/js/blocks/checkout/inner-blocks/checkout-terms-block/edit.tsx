@@ -37,6 +37,7 @@ export const Edit = ( {
 	return (
 		<div { ...blockProps }>
 			<InspectorControls>
+				<CheckoutSidebarCompatibilityNotice />
 				<PanelBody
 					title={ __(
 						'Display options',
@@ -56,7 +57,6 @@ export const Edit = ( {
 						}
 					/>
 				</PanelBody>
-				<CheckoutSidebarCompatibilityNotice />
 			</InspectorControls>
 			<div className="wc-block-checkout__terms">
 				{ checkbox ? (
