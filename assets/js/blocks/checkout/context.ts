@@ -21,7 +21,9 @@ export type CheckoutBlockContextProps = {
 };
 
 export type CheckoutBlockControlsContextProps = {
-	addressFieldControls: () => JSX.Element | null;
+	addressFieldControls: ( props: {
+		includeCompatibilityNotice: boolean;
+	} ) => JSX.Element | null;
 	accountControls: () => JSX.Element | null;
 };
 

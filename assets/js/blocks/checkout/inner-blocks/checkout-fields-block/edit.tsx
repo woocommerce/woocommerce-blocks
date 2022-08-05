@@ -2,10 +2,15 @@
  * External dependencies
  */
 import classnames from 'classnames';
-import { useBlockProps, InnerBlocks } from '@wordpress/block-editor';
+import {
+	useBlockProps,
+	InnerBlocks,
+	InspectorControls,
+} from '@wordpress/block-editor';
 import { Main } from '@woocommerce/base-components/sidebar-layout';
 import { innerBlockAreas } from '@woocommerce/blocks-checkout';
 import type { TemplateArray } from '@wordpress/blocks';
+import { CheckoutSidebarCompatibilityNotice } from '@woocommerce/editor-components/sidebar-compatibility-notice';
 
 /**
  * Internal dependencies
@@ -57,7 +62,7 @@ export const Edit = ( {
 
 	return (
 		<Main { ...blockProps }>
-			<Controls />
+			<Controls includeCompatibilityNotice={ true } />
 			<form className="wc-block-components-form wc-block-checkout__form">
 				<InnerBlocks
 					allowedBlocks={ allowedBlocks }

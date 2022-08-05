@@ -64,6 +64,7 @@ const BlockSettings = ( {
 
 	return (
 		<InspectorControls>
+			<CheckoutSidebarCompatibilityNotice />
 			{ currentPostId !== CHECKOUT_PAGE_ID && (
 				<Notice
 					className="wc-block-checkout__page-notice"
@@ -109,7 +110,6 @@ const BlockSettings = ( {
 				/>
 			</PanelBody>
 			<CartCheckoutFeedbackPrompt />
-			<CheckoutSidebarCompatibilityNotice />
 		</InspectorControls>
 	);
 };
@@ -167,12 +167,18 @@ export const Edit = ( {
 					}
 				/>
 			</PanelBody>
-			<CheckoutSidebarCompatibilityNotice />
 		</InspectorControls>
 	);
 
-	const addressFieldControls = (): JSX.Element => (
+	const addressFieldControls = ( {
+		includeCompatibilityNotice = false,
+	}: {
+		includeCompatibilityNotice: boolean;
+	} ): JSX.Element => (
 		<InspectorControls>
+			{ includeCompatibilityNotice && (
+				<CheckoutSidebarCompatibilityNotice />
+			) }
 			<PanelBody
 				title={ __( 'Address Fields', 'woo-gutenberg-products-block' ) }
 			>
@@ -227,7 +233,6 @@ export const Edit = ( {
 					/>
 				) }
 			</PanelBody>
-			<CheckoutSidebarCompatibilityNotice />
 		</InspectorControls>
 	);
 	const blockProps = useBlockPropsWithLocking();
