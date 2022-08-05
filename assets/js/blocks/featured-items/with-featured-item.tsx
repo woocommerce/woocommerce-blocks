@@ -17,13 +17,14 @@ import {
 	useState,
 } from 'react';
 import { WP_REST_API_Category } from 'wp-types';
+import type { EditorBlock } from '@woocommerce/types';
 
 /**
  * Internal dependencies
  */
 import { CallToAction } from './call-to-action';
 import { ConstrainedResizable } from './constrained-resizable';
-import { EditorBlock, GenericBlockUIConfig } from './types';
+import { GenericBlockUIConfig } from './types';
 import { useBackgroundImage } from './use-background-image';
 import {
 	dimRatioToClass,

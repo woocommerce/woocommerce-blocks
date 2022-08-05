@@ -21,7 +21,11 @@ import {
 	TextareaControl,
 	ExternalLink,
 } from '@wordpress/components';
-import { LooselyMustHave, ProductResponseItem } from '@woocommerce/types';
+import {
+	EditorBlock,
+	LooselyMustHave,
+	ProductResponseItem,
+} from '@woocommerce/types';
 
 /**
  * Internal dependencies
@@ -29,7 +33,7 @@ import { LooselyMustHave, ProductResponseItem } from '@woocommerce/types';
 import { useBackgroundImage } from './use-background-image';
 import { BLOCK_NAMES } from './constants';
 import { FeaturedItemRequiredAttributes } from './with-featured-item';
-import { EditorBlock, ImageFit } from './types';
+import { ImageFit } from './types';
 
 type InspectorControlRequiredKeys =
 	| 'dimRatio'

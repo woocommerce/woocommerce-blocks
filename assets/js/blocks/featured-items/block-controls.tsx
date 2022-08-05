@@ -14,12 +14,13 @@ import { crop } from '@wordpress/icons';
 import { WP_REST_API_Category } from 'wp-types';
 import { ProductResponseItem } from '@woocommerce/types';
 import TextToolbarButton from '@woocommerce/editor-components/text-toolbar-button';
+import type { EditorBlock } from '@woocommerce/types';
 
 /**
  * Internal dependencies
  */
 import { useBackgroundImage } from './use-background-image';
-import { EditorBlock, GenericBlockUIConfig } from './types';
+import { GenericBlockUIConfig } from './types';
 
 type Media = { id: number; url: string };
 

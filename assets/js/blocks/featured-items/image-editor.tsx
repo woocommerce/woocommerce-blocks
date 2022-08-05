@@ -10,12 +10,12 @@ import {
 	__experimentalImageEditingProvider as ImageEditingProvider,
 	__experimentalImageEditor as GutenbergImageEditor,
 } from '@wordpress/block-editor';
+import type { EditorBlock } from '@woocommerce/types';
 
 /**
  * Internal dependencies
  */
 import { BLOCK_NAMES, DEFAULT_EDITOR_SIZE } from './constants';
-import { EditorBlock } from './types';
 import { useBackgroundImage } from './use-background-image';
 
 type MediaAttributes = { mediaId: number; mediaSrc: string };

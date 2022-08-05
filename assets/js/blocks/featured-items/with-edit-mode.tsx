@@ -9,12 +9,13 @@ import { __ } from '@wordpress/i18n';
 import ProductCategoryControl from '@woocommerce/editor-components/product-category-control';
 import ProductControl from '@woocommerce/editor-components/product-control';
 import { ComponentType } from 'react';
+import type { EditorBlock } from '@woocommerce/types';
 
 /**
  * Internal dependencies
  */
 import { BLOCK_NAMES } from './constants';
-import { EditorBlock, GenericBlockUIConfig } from './types';
+import { GenericBlockUIConfig } from './types';
 import { getClassPrefixFromName } from './utils';
 
 interface EditModeConfiguration extends GenericBlockUIConfig {

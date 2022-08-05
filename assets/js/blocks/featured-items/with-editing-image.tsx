@@ -2,11 +2,7 @@
  * External dependencies
  */
 import { ComponentType, useEffect, useState } from 'react';
-
-/**
- * Internal dependencies
- */
-import { EditorBlock } from './types';
+import type { EditorBlock } from '@woocommerce/types';
 
 interface EditingImageRequiredProps {
 	isSelected: boolean;

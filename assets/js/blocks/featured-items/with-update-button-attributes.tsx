@@ -5,11 +5,7 @@ import { ComponentType, useEffect, useMemo, useState } from 'react';
 import { WP_REST_API_Category } from 'wp-types';
 import { ProductResponseItem } from '@woocommerce/types';
 import { useDispatch, useSelect } from '@wordpress/data';
-
-/**
- * Internal dependencies
- */
-import { EditorBlock } from './types';
+import type { EditorBlock } from '@woocommerce/types';
 
 interface WithUpdateButtonRequiredAttributes {
 	editMode: boolean;
