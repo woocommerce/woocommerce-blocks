@@ -9,6 +9,8 @@ import PageSelector from '@woocommerce/editor-components/page-selector';
 import { PanelBody, ToggleControl } from '@wordpress/components';
 import { CHECKOUT_PAGE_ID } from '@woocommerce/block-settings';
 import Noninteractive from '@woocommerce/base-components/noninteractive';
+import { CheckoutSidebarCompatibilityNotice } from '@woocommerce/editor-components/sidebar-compatibility-notice';
+
 /**
  * Internal dependencies
  */
@@ -41,6 +43,7 @@ export const Edit = ( {
 	return (
 		<div { ...blockProps }>
 			<InspectorControls>
+				<CheckoutSidebarCompatibilityNotice />
 				<PanelBody
 					title={ __(
 						'Account options',
