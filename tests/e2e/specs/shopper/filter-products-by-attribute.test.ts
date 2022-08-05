@@ -87,6 +87,8 @@ describe( `${ block.name } Block`, () => {
 		it( 'should show only products that match the filter', async () => {
 			const isRefreshed = jest.fn( () => void 0 );
 			page.on( 'load', isRefreshed );
+
+			await page.waitForSelector( selectors.frontend.filter );
 			await page.click( selectors.frontend.filter );
 			await waitForAllProductsBlockLoaded();
 			const products = await page.$$( selectors.frontend.productsList );
@@ -144,6 +146,8 @@ describe( `${ block.name } Block`, () => {
 			} );
 
 			expect( isRefreshed ).not.toBeCalled();
+
+			await page.waitForSelector( selectors.frontend.filter );
 
 			await Promise.all( [
 				page.waitForNavigation(),
