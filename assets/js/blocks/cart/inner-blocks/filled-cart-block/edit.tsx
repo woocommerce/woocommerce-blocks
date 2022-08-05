@@ -2,11 +2,16 @@
  * External dependencies
  */
 import classnames from 'classnames';
-import { useBlockProps, InnerBlocks } from '@wordpress/block-editor';
+import {
+	useBlockProps,
+	InnerBlocks,
+	InspectorControls,
+} from '@wordpress/block-editor';
 import { innerBlockAreas } from '@woocommerce/blocks-checkout';
 import { SidebarLayout } from '@woocommerce/base-components/sidebar-layout';
 import type { TemplateArray } from '@wordpress/blocks';
 import { useEditorContext } from '@woocommerce/base-context';
+import { CartCheckoutFeedbackPrompt } from '@woocommerce/editor-components/feedback-prompt';
 
 /**
  * Internal dependencies
@@ -38,6 +43,9 @@ export const Edit = ( { clientId }: { clientId: string } ): JSX.Element => {
 			{ ...blockProps }
 			hidden={ currentView !== 'woocommerce/filled-cart-block' }
 		>
+			<InspectorControls>
+				<CartCheckoutFeedbackPrompt />
+			</InspectorControls>
 			<SidebarLayout
 				className={ classnames( 'wc-block-cart', {
 					'has-dark-controls': hasDarkControls,

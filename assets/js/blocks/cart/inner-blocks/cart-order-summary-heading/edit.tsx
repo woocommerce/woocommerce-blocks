@@ -1,9 +1,14 @@
 /**
  * External dependencies
  */
-import { PlainText, useBlockProps } from '@wordpress/block-editor';
+import {
+	InspectorControls,
+	PlainText,
+	useBlockProps,
+} from '@wordpress/block-editor';
 import Title from '@woocommerce/base-components/title';
 import classnames from 'classnames';
+import { CartCheckoutFeedbackPrompt } from '@woocommerce/editor-components/feedback-prompt';
 
 /**
  * Internal dependencies
@@ -24,6 +29,9 @@ export const Edit = ( {
 	const blockProps = useBlockProps();
 	return (
 		<div { ...blockProps }>
+			<InspectorControls>
+				<CartCheckoutFeedbackPrompt />
+			</InspectorControls>
 			<Title
 				headingLevel="2"
 				className={ classnames(

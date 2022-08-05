@@ -6,6 +6,7 @@ import { useBlockProps, InspectorControls } from '@wordpress/block-editor';
 import { PanelBody, ToggleControl } from '@wordpress/components';
 import { getSetting } from '@woocommerce/settings';
 import Noninteractive from '@woocommerce/base-components/noninteractive';
+import { CartCheckoutFeedbackPrompt } from '@woocommerce/editor-components/feedback-prompt';
 
 /**
  * Internal dependencies
@@ -59,6 +60,7 @@ export const Edit = ( {
 						/>
 					</PanelBody>
 				) }
+				<CartCheckoutFeedbackPrompt />
 			</InspectorControls>
 			<Noninteractive>
 				<Block

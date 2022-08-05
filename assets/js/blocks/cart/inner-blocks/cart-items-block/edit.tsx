@@ -1,10 +1,15 @@
 /**
  * External dependencies
  */
-import { useBlockProps, InnerBlocks } from '@wordpress/block-editor';
+import {
+	useBlockProps,
+	InnerBlocks,
+	InspectorControls,
+} from '@wordpress/block-editor';
 import { Main } from '@woocommerce/base-components/sidebar-layout';
 import { innerBlockAreas } from '@woocommerce/blocks-checkout';
 import type { TemplateArray } from '@wordpress/blocks';
+import { CartCheckoutFeedbackPrompt } from '@woocommerce/editor-components/feedback-prompt';
 /**
  * Internal dependencies
  */
@@ -27,6 +32,9 @@ export const Edit = ( { clientId }: { clientId: string } ): JSX.Element => {
 	} );
 	return (
 		<Main { ...blockProps }>
+			<InspectorControls>
+				<CartCheckoutFeedbackPrompt />
+			</InspectorControls>
 			<InnerBlocks
 				allowedBlocks={ allowedBlocks }
 				template={ defaultTemplate }

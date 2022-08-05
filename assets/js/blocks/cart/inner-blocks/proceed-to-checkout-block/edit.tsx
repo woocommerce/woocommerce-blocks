@@ -8,6 +8,7 @@ import { InspectorControls, useBlockProps } from '@wordpress/block-editor';
 import PageSelector from '@woocommerce/editor-components/page-selector';
 import { CART_PAGE_ID } from '@woocommerce/block-settings';
 import Noninteractive from '@woocommerce/base-components/noninteractive';
+import { CartCheckoutFeedbackPrompt } from '@woocommerce/editor-components/feedback-prompt';
 /**
  * Internal dependencies
  */
@@ -59,6 +60,7 @@ export const Edit = ( {
 						} }
 					/>
 				) }
+				<CartCheckoutFeedbackPrompt />
 			</InspectorControls>
 			<Noninteractive>
 				<Block
