@@ -12,7 +12,6 @@ import {
 	BlockControls,
 } from '@wordpress/block-editor';
 import { PanelBody, ToggleControl, Notice } from '@wordpress/components';
-import { CartCheckoutCompatibilityNotice } from '@woocommerce/editor-components/compatibility-notices';
 import { CART_PAGE_ID } from '@woocommerce/block-settings';
 import BlockErrorBoundary from '@woocommerce/base-components/block-error-boundary';
 import {
@@ -25,6 +24,7 @@ import { getAdminLink } from '@woocommerce/settings';
 import { previewCart } from '@woocommerce/resource-previews';
 import { filledCart, removeCart } from '@woocommerce/icons';
 import { Icon } from '@wordpress/icons';
+import { CartSidebarCompatibilityNotice } from '@woocommerce/editor-components/sidebar-compatibility-notice';
 
 /**
  * Internal dependencies
@@ -38,7 +38,6 @@ import {
 	useForcedLayout,
 } from '../cart-checkout-shared';
 import { CartBlockContext } from './context';
-import { CartSidebarCompatibilityNotice } from '@woocommerce/editor-components/sidebar-compatibility-notice';
 
 // This is adds a class to body to signal if the selected block is locked
 addClassToBody();
@@ -67,6 +66,7 @@ const BlockSettings = ( { attributes, setAttributes } ) => {
 	const { currentPostId } = useEditorContext();
 	return (
 		<InspectorControls>
+			<CartSidebarCompatibilityNotice />
 			{ currentPostId !== CART_PAGE_ID && (
 				<Notice
 					className="wc-block-cart__page-notice"
@@ -112,7 +112,6 @@ const BlockSettings = ( { attributes, setAttributes } ) => {
 				/>
 			</PanelBody>
 			<CartCheckoutFeedbackPrompt />
-			<CartSidebarCompatibilityNotice />
 		</InspectorControls>
 	);
 };
