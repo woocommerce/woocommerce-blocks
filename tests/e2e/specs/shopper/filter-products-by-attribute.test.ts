@@ -121,12 +121,15 @@ describe( `${ block.name } Block`, () => {
 			);
 			await canvasEl.click( selectors.editor.doneButton );
 			await saveTemplate();
-			await goToShopPage();
 		} );
 
 		afterAll( async () => {
 			await deleteAllTemplates( 'wp_template' );
 			await deleteAllTemplates( 'wp_template_part' );
+		} );
+
+		beforeEach( async () => {
+			await goToShopPage();
 		} );
 
 		it( 'should render', async () => {
