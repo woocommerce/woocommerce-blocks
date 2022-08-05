@@ -9,7 +9,7 @@ import { useCompatibilityNotice } from '@woocommerce/editor-components/compatibi
 /**
  * Internal dependencies
  */
-import './style.scss';
+import './editor.scss';
 
 export const CartCheckoutSidebarCompatibilityNotice = ( {
 	block,
