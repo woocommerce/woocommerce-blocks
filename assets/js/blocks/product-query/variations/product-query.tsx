@@ -2,8 +2,9 @@
  * External dependencies
  */
 import { registerBlockVariation } from '@wordpress/blocks';
+import { Icon } from '@wordpress/components';
 import { __ } from '@wordpress/i18n';
-import { Icon, percent } from '@wordpress/icons';
+import { sparkles } from '@wordpress/icons';
 
 /**
  * Internal dependencies
@@ -11,26 +12,23 @@ import { Icon, percent } from '@wordpress/icons';
 import { QUERY_DEFAULT_ATTRIBUTES } from '../constants';
 
 registerBlockVariation( 'core/query', {
-	name: 'woocommerce/query-on-sale',
-	title: __( 'Products on Sale', 'woo-gutenberg-products-block' ),
-	isActive: ( blockAttributes ) =>
-		blockAttributes.__woocommerceVariationProps.name === 'query-on-sale' ||
-		blockAttributes.__woocommerceVariationProps.query.onSale === true,
+	name: 'woocommerce/product-query',
+	title: __( 'Product Query', 'woo-gutenberg-products-block' ),
+	isActive: ( attributes ) => {
+		return attributes?.__woocommerceVariationProps.name === 'product-query';
+	},
 	icon: {
 		src: (
 			<Icon
-				icon={ percent }
-				className="wc-block-editor-components-block-icon wc-block-editor-components-block-icon--percent"
+				icon={ sparkles }
+				className="wc-block-editor-components-block-icon wc-block-editor-components-block-icon--sparkles"
 			/>
 		),
 	},
 	attributes: {
 		...QUERY_DEFAULT_ATTRIBUTES,
 		__woocommerceVariationProps: {
-			name: 'query-on-sale',
-			query: {
-				onSale: true,
-			},
+			name: 'product-query',
 		},
 	},
 	innerBlocks: [
