@@ -9,11 +9,13 @@ import {
 	useBlockProps,
 } from '@wordpress/block-editor';
 import { PanelBody, ToggleControl } from '@wordpress/components';
+import { CheckoutSidebarCompatibilityNotice } from '@woocommerce/editor-components/sidebar-compatibility-notice';
 
 /**
  * Internal dependencies
  */
 import FormStepHeading from './form-step-heading';
+
 export interface FormStepBlockProps {
 	attributes: { title: string; description: string; showStepNumber: boolean };
 	setAttributes: ( attributes: Record< string, unknown > ) => void;
@@ -41,6 +43,7 @@ export const FormStepBlock = ( {
 	return (
 		<div { ...blockProps }>
 			<InspectorControls>
+				<CheckoutSidebarCompatibilityNotice />
 				<PanelBody
 					title={ __(
 						'Form Step Options',
