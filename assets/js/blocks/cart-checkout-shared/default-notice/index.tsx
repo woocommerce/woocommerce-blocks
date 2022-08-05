@@ -47,46 +47,62 @@ export function DefaultNotice( { page }: { page: string } ) {
 		useDispatch( settingsStoreName );
 	const { saveEntityRecord } = useDispatch( coreStoreName );
 	const { editPost, savePost } = useDispatch( editorStoreName );
-	const { originalPage } = useSelect( ( select ) => {
-		const { getEntityRecord } = select( coreStoreName );
-
+	const { slug, isLoadingPage, postPublished } = useSelect( ( select ) => {
+		const { getEntityRecord, isResolving } = select( coreStoreName );
+		const { isCurrentPostPublished } = select( editorStoreName );
 		return {
-			originalPage: getEntityRecord(
+			slug:
+				getEntityRecord( 'postType', 'page', ORIGINAL_PAGE_ID )?.slug ||
+				page,
+			isLoadingPage: isResolving( 'getEntityRecord', [
 				'postType',
 				'page',
-				ORIGINAL_PAGE_ID
-			),
+				ORIGINAL_PAGE_ID,
+			] ),
+			postPublished: isCurrentPostPublished(),
 		};
 	}, [] );
 	const [ settingStatus, setStatus ] = useState( 'pristine' );
 	const updatePage = useCallback( () => {
 		setStatus( 'updating' );
-		// Make this page ID the default cart/checkout.
-		updateAndPersistSettingsForGroup( 'advanced', {
-			advanced: {
-				[ settingName ]: currentPostId.toString(),
-			},
-		} )
-			// Append `-2` to the original link so we can use it here.
+		Promise.resolve()
+			.then( () => {
+				if ( ! postPublished ) {
+					editPost( { status: 'publish' } );
+					return savePost();
+				}
+			} )
 			.then( () =>
-				saveEntityRecord( 'postType', 'page', {
-					id: CHECKOUT_PAGE_ID,
-					slug: `${ originalPage.slug }-2`,
+				// Make this page ID the default cart/checkout.
+				updateAndPersistSettingsForGroup( 'advanced', {
+					advanced: {
+						[ settingName ]: currentPostId.toString(),
+					},
 				} )
 			)
+			// Append `-2` to the original link so we can use it here.
+			.then( () => {
+				if ( CHECKOUT_PAGE_ID !== 0 ) {
+					return saveEntityRecord( 'postType', 'page', {
+						id: CHECKOUT_PAGE_ID,
+						slug: `${ slug }-2`,
+					} );
+				}
+			} )
 			// Use the original link for this page.
-			.then( () => editPost( { slug: originalPage.slug } ) )
+			.then( () => editPost( { slug } ) )
 			// Save page.
 			.then( () => savePost() )
 			.then( () => setStatus( 'updated' ) );
 	}, [
-		savePost,
+		postPublished,
 		editPost,
+		savePost,
+		updateAndPersistSettingsForGroup,
 		settingName,
 		currentPostId,
 		saveEntityRecord,
-		originalPage?.slug,
-		updateAndPersistSettingsForGroup,
+		slug,
 	] );
 	if ( currentPostId === ORIGINAL_PAGE_ID || settingStatus === 'dismissed' ) {
 		return null;
@@ -114,7 +130,7 @@ export function DefaultNotice( { page }: { page: string } ) {
 						onClick={ updatePage }
 						variant="secondary"
 						isBusy={ settingStatus === 'updating' }
-						disabled={ ! originalPage }
+						disabled={ isLoadingPage }
 						isSmall={ true }
 					>
 						{ __(
