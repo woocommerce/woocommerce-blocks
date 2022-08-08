@@ -4,12 +4,12 @@
 import { Notice, ExternalLink } from '@wordpress/components';
 import { createInterpolateElement } from '@wordpress/element';
 import { __ } from '@wordpress/i18n';
-import { useCompatibilityNotice } from '@woocommerce/editor-components/compatibility-notices/use-compatibility-notice';
 
 /**
  * Internal dependencies
  */
 import './editor.scss';
+import { useCompatibilityNotice } from './use-compatibility-notice';
 
 export const CartCheckoutSidebarCompatibilityNotice = ( {
 	block,
