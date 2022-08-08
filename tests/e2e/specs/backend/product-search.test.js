@@ -15,7 +15,7 @@ import {
 /**
  * Internal dependencies
  */
-import { GUTENBERG_EDITOR_CONTEXT } from '../../utils';
+import { GUTENBERG_EDITOR_CONTEXT, describeOrSkip } from '../../utils';
 
 const block = {
 	name: 'Product Search',
@@ -23,11 +23,9 @@ const block = {
 	class: '.wc-block-product-search',
 };
 
-if ( GUTENBERG_EDITOR_CONTEXT === 'gutenberg' ) {
-	// eslint-disable-next-line jest/no-focused-tests, jest/expect-expect
-	test.only( `Skipping ${ block.name } tests`, () => {} );
-} else {
-	describe( `${ block.name } Block`, () => {
+describeOrSkip( GUTENBERG_EDITOR_CONTEXT !== 'gutenberg' )(
+	`${ block.name } Block`,
+	() => {
 		beforeAll( async () => {
 			await switchUserToAdmin();
 			await visitBlockPage( `${ block.name } Block` );
@@ -69,5 +67,5 @@ if ( GUTENBERG_EDITOR_CONTEXT === 'gutenberg' ) {
 
 			expect( await getEditedPostContent() ).toMatchSnapshot();
 		} );
-	} );
-}
+	}
+);
