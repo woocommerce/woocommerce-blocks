@@ -19,7 +19,6 @@ import {
 	ToggleControl,
 	CheckboxControl,
 } from '@wordpress/components';
-import { CartCheckoutFeedbackPrompt } from '@woocommerce/editor-components/feedback-prompt';
 import type { TemplateArray } from '@wordpress/blocks';
 /**
  * Internal dependencies
@@ -29,7 +28,6 @@ import './styles/editor.scss';
 import {
 	addClassToBody,
 	useBlockPropsWithLocking,
-	DefaultNotice,
 } from '../cart-checkout-shared';
 import { CheckoutBlockContext, CheckoutBlockControlsContext } from './context';
 import type { Attributes } from './types';
@@ -42,41 +40,6 @@ const ALLOWED_BLOCKS: string[] = [
 	'woocommerce/checkout-fields-block',
 	'woocommerce/checkout-totals-block',
 ];
-
-const BlockSettings = ( {
-	attributes,
-	setAttributes,
-}: {
-	attributes: Attributes;
-	setAttributes: ( attributes: Record< string, unknown > ) => undefined;
-} ): JSX.Element => {
-	const { hasDarkControls } = attributes;
-
-	return (
-		<InspectorControls>
-			<DefaultNotice page="checkout" />
-			<PanelBody title={ __( 'Style', 'woo-gutenberg-products-block' ) }>
-				<ToggleControl
-					label={ __(
-						'Dark mode inputs',
-						'woo-gutenberg-products-block'
-					) }
-					help={ __(
-						'Inputs styled specifically for use on dark background colors.',
-						'woo-gutenberg-products-block'
-					) }
-					checked={ hasDarkControls }
-					onChange={ () =>
-						setAttributes( {
-							hasDarkControls: ! hasDarkControls,
-						} )
-					}
-				/>
-			</PanelBody>
-			<CartCheckoutFeedbackPrompt />
-		</InspectorControls>
-	);
-};
 
 export const Edit = ( {
 	attributes,
@@ -198,10 +161,6 @@ export const Edit = ( {
 			<EditorProvider
 				previewData={ { previewCart, previewSavedPaymentMethods } }
 			>
-				<BlockSettings
-					attributes={ attributes }
-					setAttributes={ setAttributes }
-				/>
 				<CheckoutProvider>
 					<SidebarLayout
 						className={ classnames( 'wc-block-checkout', {
