@@ -12,7 +12,6 @@ import {
 	BlockControls,
 } from '@wordpress/block-editor';
 import { PanelBody, ToggleControl } from '@wordpress/components';
-import { CartCheckoutCompatibilityNotice } from '@woocommerce/editor-components/compatibility-notices';
 import BlockErrorBoundary from '@woocommerce/base-components/block-error-boundary';
 import { EditorProvider, CartProvider } from '@woocommerce/base-context';
 import { previewCart } from '@woocommerce/resource-previews';
@@ -147,7 +146,6 @@ export const Edit = ( { className, attributes, setAttributes, clientId } ) => {
 					</CartBlockContext.Provider>
 				</EditorProvider>
 			</BlockErrorBoundary>
-			<CartCheckoutCompatibilityNotice blockName="cart" />
 		</div>
 	);
 };
