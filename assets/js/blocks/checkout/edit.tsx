@@ -20,7 +20,6 @@ import {
 	CheckboxControl,
 } from '@wordpress/components';
 import { CartCheckoutFeedbackPrompt } from '@woocommerce/editor-components/feedback-prompt';
-import { CartCheckoutCompatibilityNotice } from '@woocommerce/editor-components/compatibility-notices';
 import type { TemplateArray } from '@wordpress/blocks';
 /**
  * Internal dependencies
@@ -240,7 +239,6 @@ export const Edit = ( {
 					</SidebarLayout>
 				</CheckoutProvider>
 			</EditorProvider>
-			<CartCheckoutCompatibilityNotice blockName="checkout" />
 		</div>
 	);
 };
