@@ -8,16 +8,10 @@ import { CartCheckoutFeedbackPrompt } from '@woocommerce/editor-components/feedb
 import { addFilter, hasFilter } from '@wordpress/hooks';
 import { createHigherOrderComponent } from '@wordpress/compose';
 
-/**
- * Internal dependencies
- */
-import { DefaultNotice } from '../default-notice';
-
 const BlockSettings = ( { attributes, setAttributes } ) => {
 	const { hasDarkControls } = attributes;
 	return (
 		<InspectorControls>
-			<DefaultNotice page="cart" />
 			<PanelBody title={ __( 'Style', 'woo-gutenberg-products-block' ) }>
 				<ToggleControl
 					label={ __(
