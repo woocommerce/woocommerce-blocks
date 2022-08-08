@@ -2,9 +2,9 @@
  * External dependencies
  */
 import { __ } from '@wordpress/i18n';
-import { store as editorStoreName } from '@wordpress/editor';
-import { store as coreStoreName } from '@wordpress/core-data';
-import { SETTINGS_STORE_NAME as settingsStoreName } from '@woocommerce/data';
+import { store as editorStore } from '@wordpress/editor';
+import { store as coreStore } from '@wordpress/core-data';
+import { SETTINGS_STORE_NAME as settingsStore } from '@woocommerce/data';
 import { Notice, Button } from '@wordpress/components';
 import { useSelect, useDispatch } from '@wordpress/data';
 import { CHECKOUT_PAGE_ID, CART_PAGE_ID } from '@woocommerce/block-settings';
@@ -15,10 +15,23 @@ import {
 	InspectorControls,
 } from '@wordpress/block-editor';
 import { addFilter, hasFilter } from '@wordpress/hooks';
+import type { StoreDescriptor } from '@wordpress/data';
 /**
  * Internal dependencies
  */
 import './editor.scss';
+
+declare module '@wordpress/editor' {
+	let store: StoreDescriptor;
+}
+
+declare module '@wordpress/core-data' {
+	let store: StoreDescriptor;
+}
+
+declare module '@wordpress/block-editor' {
+	let store: StoreDescriptor;
+}
 
 export function DefaultNotice( { page }: { page: string } ) {
 	// To avoid having the same logic twice, we're going to handle both pages here.
@@ -41,15 +54,14 @@ export function DefaultNotice( { page }: { page: string } ) {
 			  );
 
 	// Everything below works the same for Cart/Checkout
-	const { updateAndPersistSettingsForGroup } =
-		useDispatch( settingsStoreName );
-	const { saveEntityRecord } = useDispatch( coreStoreName );
-	const { editPost, savePost } = useDispatch( editorStoreName );
+	const { updateAndPersistSettingsForGroup } = useDispatch( settingsStore );
+	const { saveEntityRecord } = useDispatch( coreStore );
+	const { editPost, savePost } = useDispatch( editorStore );
 	const { slug, isLoadingPage, postPublished, currentPostId } = useSelect(
 		( select ) => {
-			const { getEntityRecord, isResolving } = select( coreStoreName );
+			const { getEntityRecord, isResolving } = select( coreStore );
 			const { isCurrentPostPublished, getCurrentPostId } =
-				select( editorStoreName );
+				select( editorStore );
 			return {
 				slug:
 					getEntityRecord( 'postType', 'page', ORIGINAL_PAGE_ID )
