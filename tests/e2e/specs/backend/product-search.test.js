@@ -10,8 +10,12 @@ import { clearAndFillInput } from '@woocommerce/e2e-utils';
 import {
 	findLabelWithText,
 	visitBlockPage,
-	GUTENBERG_EDITOR_CONTEXT,
 } from '@woocommerce/blocks-test-utils';
+
+/**
+ * Internal dependencies
+ */
+import { GUTENBERG_EDITOR_CONTEXT } from '../../utils';
 
 const block = {
 	name: 'Product Search',
