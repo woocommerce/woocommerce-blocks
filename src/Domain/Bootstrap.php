@@ -337,7 +337,7 @@ class Bootstrap {
 		$this->container->register(
 			FilterPatterns::class,
 			function () {
-				return new FilterPatterns();
+				return new FilterPatterns( $this->package );
 			}
 		);
 	}
