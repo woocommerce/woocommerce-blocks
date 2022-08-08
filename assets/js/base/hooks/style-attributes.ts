@@ -7,13 +7,9 @@ import {
 	__experimentalGetSpacingClassesAndStyles,
 	__experimentalUseBorderProps,
 } from '@wordpress/block-editor';
-
-/**
- * Internal dependencies
- */
-import { isFeaturePluginBuild } from '../../settings/blocks/feature-flags';
-import { isString, isObject } from '../../types/type-guards';
-import { hasSpacingStyleSupport } from '../../utils/global-style';
+import { isFeaturePluginBuild } from '@woocommerce/block-settings';
+import { isString, isObject } from '@woocommerce/types';
+import { hasSpacingStyleSupport } from '@woocommerce/utils';
 
 type WithClass = {
 	className: string;
