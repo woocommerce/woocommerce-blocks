@@ -71,6 +71,6 @@ if (
 		'editor.BlockEdit',
 		'woocommerce/add/cart-checkout-block-settings',
 		withBlockSettings,
-		20
+		10
 	);
 }
