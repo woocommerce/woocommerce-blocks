@@ -9,16 +9,12 @@ import { Notice, Button } from '@wordpress/components';
 import { useSelect, useDispatch } from '@wordpress/data';
 import { CHECKOUT_PAGE_ID, CART_PAGE_ID } from '@woocommerce/block-settings';
 import { useCallback, useState } from '@wordpress/element';
-import { createHigherOrderComponent } from '@wordpress/compose';
-import { InspectorControls } from '@wordpress/block-editor';
-import { addFilter, hasFilter } from '@wordpress/hooks';
 import type { StoreDescriptor } from '@wordpress/data';
 
 /**
  * Internal dependencies
  */
 import './editor.scss';
-import { isCartOrCheckoutOrInnerBlock } from '../../../editor-components/utils';
 
 declare module '@wordpress/editor' {
 	let store: StoreDescriptor;
@@ -151,35 +147,5 @@ export function DefaultNotice( { page }: { page: string } ) {
 				</>
 			) }
 		</Notice>
-	);
-}
-
-const withDefaultNotice = createHigherOrderComponent(
-	( BlockEdit ) => ( props ) => {
-		const { clientId } = props;
-		const { isCart, isCheckout } = isCartOrCheckoutOrInnerBlock( clientId );
-		return (
-			<>
-				{ ( isCart || isCheckout ) && (
-					<InspectorControls>
-						<DefaultNotice
-							page={ isCheckout ? 'checkout' : 'cart' }
-						/>
-					</InspectorControls>
-				) }
-
-				<BlockEdit { ...props } />
-			</>
-		);
-	},
-	'withDefaultNotice'
-);
-
-if ( ! hasFilter( 'editor.BlockEdit', 'woocommerce/add/default-notice' ) ) {
-	addFilter(
-		'editor.BlockEdit',
-		'woocommerce/add/default-notice',
-		withDefaultNotice,
-		20
 	);
 }
