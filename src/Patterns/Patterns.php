@@ -1,19 +1,12 @@
 <?php
-/**
- * Title: Pattern example
- * Slug: woocommerce-blocks/pattern-example
- * Categories: WooCommerce
- * Block Types: core/paragraph
- */
-
 namespace Automattic\WooCommerce\Blocks\Patterns;
 
 use Automattic\WooCommerce\Blocks\Domain\Package;
 
 /**
- * FilterPatterns class
+ * Patterns class
  */
-class FilterPatterns {
+class Patterns {
 	/**
 	 * Path to the patterns directory.
 	 *

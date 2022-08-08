@@ -13,7 +13,7 @@ use Automattic\WooCommerce\Blocks\Domain\Services\FeatureGating;
 use Automattic\WooCommerce\Blocks\Domain\Services\GoogleAnalytics;
 use Automattic\WooCommerce\Blocks\InboxNotifications;
 use Automattic\WooCommerce\Blocks\Installer;
-use Automattic\WooCommerce\Blocks\Patterns\FilterPatterns;
+use Automattic\WooCommerce\Blocks\Patterns\Patterns;
 use Automattic\WooCommerce\Blocks\Templates\ProductSearchResultsTemplate;
 use Automattic\WooCommerce\Blocks\Templates\ClassicTemplatesCompatibility;
 use Automattic\WooCommerce\Blocks\Payments\Api as PaymentsApi;
@@ -120,7 +120,7 @@ class Bootstrap {
 		$this->container->get( ProductSearchResultsTemplate::class );
 		$this->container->get( ProductAttributeTemplate::class );
 		$this->container->get( ClassicTemplatesCompatibility::class );
-		$this->container->get( FilterPatterns::class );
+		$this->container->get( Patterns::class );
 		if ( $this->package->feature()->is_feature_plugin_build() ) {
 			$this->container->get( PaymentsApi::class );
 		}
@@ -335,9 +335,9 @@ class Bootstrap {
 			}
 		);
 		$this->container->register(
-			FilterPatterns::class,
+			Patterns::class,
 			function () {
-				return new FilterPatterns( $this->package );
+				return new Patterns( $this->package );
 			}
 		);
 	}
