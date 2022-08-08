@@ -56,6 +56,6 @@ if (
 		'editor.BlockEdit',
 		'woocommerce/add/sidebar-compatibility-notice',
 		withSidebarCompatibilityNotice,
-		1000
+		11
 	);
 }
