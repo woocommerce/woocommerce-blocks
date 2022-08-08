@@ -11,7 +11,8 @@ import { CartCheckoutSidebarCompatibilityNotice } from '@woocommerce/editor-comp
  * Internal dependencies
  */
 import './editor.scss';
-import { isCartOrCheckoutOrInnerBlock } from '../../../editor-components/utils';
+import { useIsCartOrCheckoutOrInnerBlock } from '../../../editor-components/utils';
+import { DefaultNotice } from '../default-notice';
 
 declare module '@wordpress/editor' {
 	let store: StoreDescriptor;
@@ -28,13 +29,17 @@ declare module '@wordpress/block-editor' {
 const withSidebarCompatibilityNotice = createHigherOrderComponent(
 	( BlockEdit ) => ( props ) => {
 		const { clientId } = props;
-		const { isCart, isCheckout } = isCartOrCheckoutOrInnerBlock( clientId );
+		const { isCart, isCheckout } =
+			useIsCartOrCheckoutOrInnerBlock( clientId );
 		return (
 			<>
 				{ ( isCart || isCheckout ) && (
 					<InspectorControls>
 						<CartCheckoutSidebarCompatibilityNotice
 							block={ isCheckout ? 'checkout' : 'cart' }
+						/>
+						<DefaultNotice
+							page={ isCheckout ? 'checkout' : 'cart' }
 						/>
 					</InspectorControls>
 				) }
