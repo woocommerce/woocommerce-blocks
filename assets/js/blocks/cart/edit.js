@@ -4,14 +4,11 @@
  */
 import classnames from 'classnames';
 import { __ } from '@wordpress/i18n';
-import { CartCheckoutFeedbackPrompt } from '@woocommerce/editor-components/feedback-prompt';
 import {
 	useBlockProps,
 	InnerBlocks,
-	InspectorControls,
 	BlockControls,
 } from '@wordpress/block-editor';
-import { PanelBody, ToggleControl } from '@wordpress/components';
 import BlockErrorBoundary from '@woocommerce/base-components/block-error-boundary';
 import { EditorProvider, CartProvider } from '@woocommerce/base-context';
 import { previewCart } from '@woocommerce/resource-previews';
@@ -28,7 +25,6 @@ import {
 	useViewSwitcher,
 	useBlockPropsWithLocking,
 	useForcedLayout,
-	DefaultNotice,
 } from '../cart-checkout-shared';
 import { CartBlockContext } from './context';
 
@@ -54,35 +50,7 @@ const views = [
 	},
 ];
 
-const BlockSettings = ( { attributes, setAttributes } ) => {
-	const { hasDarkControls } = attributes;
-	return (
-		<InspectorControls>
-			<DefaultNotice page="cart" />
-			<PanelBody title={ __( 'Style', 'woo-gutenberg-products-block' ) }>
-				<ToggleControl
-					label={ __(
-						'Dark mode inputs',
-						'woo-gutenberg-products-block'
-					) }
-					help={ __(
-						'Inputs styled specifically for use on dark background colors.',
-						'woo-gutenberg-products-block'
-					) }
-					checked={ hasDarkControls }
-					onChange={ () =>
-						setAttributes( {
-							hasDarkControls: ! hasDarkControls,
-						} )
-					}
-				/>
-			</PanelBody>
-			<CartCheckoutFeedbackPrompt />
-		</InspectorControls>
-	);
-};
-
-export const Edit = ( { className, attributes, setAttributes, clientId } ) => {
+export const Edit = ( { className, attributes, clientId } ) => {
 	const { hasDarkControls } = attributes;
 	const { currentView, component: ViewSwitcherComponent } = useViewSwitcher(
 		clientId,
@@ -124,10 +92,6 @@ export const Edit = ( { className, attributes, setAttributes, clientId } ) => {
 					currentView={ currentView }
 					previewData={ { previewCart } }
 				>
-					<BlockSettings
-						attributes={ attributes }
-						setAttributes={ setAttributes }
-					/>
 					<BlockControls __experimentalShareWithChildBlocks>
 						{ ViewSwitcherComponent }
 					</BlockControls>
