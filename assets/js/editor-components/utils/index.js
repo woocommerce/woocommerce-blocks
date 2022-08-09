@@ -7,8 +7,6 @@ import apiFetch from '@wordpress/api-fetch';
 import { flatten, uniqBy } from 'lodash';
 import { getSetting } from '@woocommerce/settings';
 import { blocksConfig } from '@woocommerce/block-settings';
-import { useSelect } from '@wordpress/data';
-import { store as blockEditorStore } from '@wordpress/block-editor';
 
 /**
  * Get product query requests for the Store API.
@@ -218,30 +216,4 @@ export const formatTitle = ( page, pages ) => {
 	const isUnique =
 		pages.filter( ( p ) => p.title.raw === page.title.raw ).length === 1;
 	return page.title.raw + ( ! isUnique ? ` - ${ page.slug }` : '' );
-};
-
-/**
- * Gets whether the block (passed by clientId) is the Cart, Checkout, or any of their inner blocks.
- *
- * @param {string} clientId The clientId of the block.
- * @return { { isCheckout: boolean, isCart: boolean } } An object with isCheckout and isCart booleans.
- */
-export const useIsCartOrCheckoutOrInnerBlock = ( clientId ) => {
-	const { isCart, isCheckout } = useSelect( ( select ) => {
-		const { getBlockParentsByBlockName, getBlockName } =
-			select( blockEditorStore );
-		const parent = getBlockParentsByBlockName( clientId, [
-			'woocommerce/cart',
-			'woocommerce/checkout',
-		] ).map( getBlockName );
-		return {
-			isCart:
-				parent.includes( 'woocommerce/cart' ) ||
-				getBlockName( clientId ) === 'woocommerce/cart',
-			isCheckout:
-				parent.includes( 'woocommerce/checkout' ) ||
-				getBlockName( clientId ) === 'woocommerce/checkout',
-		};
-	} );
-	return { isCart, isCheckout };
 };
