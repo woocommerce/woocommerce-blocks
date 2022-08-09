@@ -57,6 +57,7 @@ export default function ( {
 								showInputFields: value === 'editable',
 							} )
 						}
+						className="wc-block-price-filter__price-range-toggle"
 					>
 						<ToggleGroupControlOption
 							value="editable"
