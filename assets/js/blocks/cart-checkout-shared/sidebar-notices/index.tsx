@@ -2,16 +2,19 @@
  * External dependencies
  */
 import { createHigherOrderComponent } from '@wordpress/compose';
-import { InspectorControls } from '@wordpress/block-editor';
+import {
+	InspectorControls,
+	store as blockEditorStore,
+} from '@wordpress/block-editor';
 import { addFilter, hasFilter } from '@wordpress/hooks';
 import type { StoreDescriptor } from '@wordpress/data';
 import { CartCheckoutSidebarCompatibilityNotice } from '@woocommerce/editor-components/sidebar-compatibility-notice';
+import { useSelect } from '@wordpress/data';
 
 /**
  * Internal dependencies
  */
 import './editor.scss';
-import { useIsCartOrCheckoutOrInnerBlock } from '../../../editor-components/utils';
 import { DefaultNotice } from '../default-notice';
 
 declare module '@wordpress/editor' {
@@ -29,8 +32,22 @@ declare module '@wordpress/block-editor' {
 const withSidebarNotices = createHigherOrderComponent(
 	( BlockEdit ) => ( props ) => {
 		const { clientId } = props;
-		const { isCart, isCheckout } =
-			useIsCartOrCheckoutOrInnerBlock( clientId );
+		const { isCart, isCheckout } = useSelect( ( select ) => {
+			const { getBlockParentsByBlockName, getBlockName } =
+				select( blockEditorStore );
+			const parent = getBlockParentsByBlockName( clientId, [
+				'woocommerce/cart',
+				'woocommerce/checkout',
+			] ).map( getBlockName );
+			return {
+				isCart:
+					parent.includes( 'woocommerce/cart' ) ||
+					getBlockName( clientId ) === 'woocommerce/cart',
+				isCheckout:
+					parent.includes( 'woocommerce/checkout' ) ||
+					getBlockName( clientId ) === 'woocommerce/checkout',
+			};
+		} );
 		return (
 			<>
 				{ ( isCart || isCheckout ) && (
