@@ -208,6 +208,28 @@
 	}
 }
 
+.wc-block-components-price-slider__actions {
+	align-items: center;
+	display: flex;
+	justify-content: flex-end;
+	margin-left: auto;
+}
+
+.wc-block-components-price-slider__button {
+	border: none;
+}
+
+.wc-block-components-price-slider__button-reset {
+	background: transparent;
+	border: none;
+	cursor: pointer;
+	margin-right: $gap;
+
+	&:hover {
+		text-decoration: underline;
+	}
+}
+
 .rtl {
 	.wc-block-components-price-slider__range-input-progress {
 		--track-background: linear-gradient(to left, transparent var(--low), var(--range-color) 0, var(--range-color) var(--high), transparent 0) no-repeat 0 100% / 100% 100%;

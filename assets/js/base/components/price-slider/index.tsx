@@ -429,15 +429,26 @@ const PriceSlider = ( {
 						</div>
 					) }
 				{ showFilterButton && (
-					<FilterSubmitButton
-						className="wc-block-price-filter__button wc-block-components-price-slider__button"
-						disabled={ isLoading || ! hasValidConstraints }
-						onClick={ onSubmit }
-						screenReaderLabel={ __(
-							'Apply price filter',
-							'woo-gutenberg-products-block'
-						) }
-					/>
+					<div className="wc-block-price-filter__actions wc-block-components-price-slider__actions">
+						<button
+							className="wc-block-price-filter__button-reset wc-block-components-price-slider__button-reset"
+							onClick={ () => {
+								setMinPriceInput( minConstraint );
+								setMaxPriceInput( maxConstraint );
+							} }
+						>
+							{ __( 'Reset', 'woo-gutenberg-products-block' ) }
+						</button>
+						<FilterSubmitButton
+							className="wc-block-price-filter__button wc-block-components-price-slider__button"
+							disabled={ isLoading || ! hasValidConstraints }
+							onClick={ onSubmit }
+							screenReaderLabel={ __(
+								'Apply price filter',
+								'woo-gutenberg-products-block'
+							) }
+						/>
+					</div>
 				) }
 			</div>
 		</div>
