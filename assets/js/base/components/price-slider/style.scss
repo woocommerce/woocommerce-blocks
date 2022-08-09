@@ -109,9 +109,11 @@
 	.wc-block-components-price-slider__amount {
 		margin: 0;
 		border-radius: 4px;
+		border-width: 1px;
 		width: auto;
 		max-width: 100px;
 		min-width: 0;
+		padding: $gap-smaller;
 
 		&.wc-block-components-price-slider__amount--min {
 			margin-right: 10px;
