@@ -32,8 +32,13 @@ export default function ( {
 	attributes,
 	setAttributes,
 }: BlockEditProps< Attributes > ) {
-	const { heading, headingLevel, showInputFields, showFilterButton } =
-		attributes;
+	const {
+		heading,
+		headingLevel,
+		showInputFields,
+		inlineInput,
+		showFilterButton,
+	} = attributes;
 
 	const blockProps = useBlockProps();
 
@@ -74,6 +79,20 @@ export default function ( {
 							) }
 						/>
 					</ToggleGroupControl>
+					{ showInputFields && (
+						<ToggleControl
+							label={ __(
+								'Inline input fields',
+								'woo-gutenberg-products-block'
+							) }
+							checked={ inlineInput }
+							onChange={ () =>
+								setAttributes( {
+									inlineInput: ! inlineInput,
+								} )
+							}
+						/>
+					) }
 					<ToggleControl
 						label={ __(
 							'Filter button',
