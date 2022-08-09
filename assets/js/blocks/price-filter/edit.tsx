@@ -91,6 +91,10 @@ export default function ( {
 									inlineInput: ! inlineInput,
 								} )
 							}
+							help={ __(
+								'Show input fields inline with the slider.',
+								'woo-gutenberg-products-block'
+							) }
 						/>
 					) }
 					<ToggleControl
