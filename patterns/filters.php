@@ -3,7 +3,7 @@
  * Title: WooCommerce Filters
  * Slug: woocommerce-blocks/all-filters
  * Categories: WooCommerce
- * Block Types: woocommerce/stock-filter, woocommerce/price-filter
+ * Block Types: woocommerce/active-filters, woocommerce/price-filter, wp:woocommerce/attribute-filter, woocommerce/stock-filter
  */
 ?>
 
