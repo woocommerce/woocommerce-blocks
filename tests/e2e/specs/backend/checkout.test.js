@@ -39,21 +39,8 @@ if ( process.env.WOOCOMMERCE_BLOCKS_PHASE < 2 ) {
 describe( `${ block.name } Block`, () => {
 	describe( 'in page editor', () => {
 		beforeAll( async () => {
-			await page.evaluate( () => {
-				window.localStorage.setItem(
-					'wc-blocks_dismissed_compatibility_notices',
-					'["checkout"]'
-				);
-			} );
 			await switchUserToAdmin();
 			await visitBlockPage( `${ block.name } Block` );
-		} );
-		afterAll( async () => {
-			await page.evaluate( () => {
-				window.localStorage.removeItem(
-					'wc-blocks_dismissed_compatibility_notices'
-				);
-			} );
 		} );
 
 		it( 'can only be inserted once', async () => {
