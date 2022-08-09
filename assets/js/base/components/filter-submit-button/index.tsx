@@ -30,6 +30,7 @@ const FilterSubmitButton = ( {
 		<button
 			type="submit"
 			className={ classNames(
+				'wp-block-button__link',
 				'wc-block-filter-submit-button',
 				'wc-block-components-filter-submit-button',
 				className
