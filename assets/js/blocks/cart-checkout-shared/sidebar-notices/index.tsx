@@ -26,7 +26,7 @@ declare module '@wordpress/block-editor' {
 	let store: StoreDescriptor;
 }
 
-const withSidebarCompatibilityNotice = createHigherOrderComponent(
+const withSidebarNotices = createHigherOrderComponent(
 	( BlockEdit ) => ( props ) => {
 		const { clientId } = props;
 		const { isCart, isCheckout } =
@@ -48,7 +48,7 @@ const withSidebarCompatibilityNotice = createHigherOrderComponent(
 			</>
 		);
 	},
-	'withSidebarCompatibilityNotice'
+	'withSidebarNotices'
 );
 
 if (
@@ -60,7 +60,7 @@ if (
 	addFilter(
 		'editor.BlockEdit',
 		'woocommerce/add/sidebar-compatibility-notice',
-		withSidebarCompatibilityNotice,
+		withSidebarNotices,
 		11
 	);
 }
