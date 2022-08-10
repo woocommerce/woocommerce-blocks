@@ -46,10 +46,3 @@ export const CartCheckoutSidebarCompatibilityNotice = ( {
 		</div>
 	);
 };
-
-export const CheckoutSidebarCompatibilityNotice = () => (
-	<CartCheckoutSidebarCompatibilityNotice block={ 'checkout' } />
-);
-export const CartSidebarCompatibilityNotice = () => (
-	<CartCheckoutSidebarCompatibilityNotice block={ 'cart' } />
-);
