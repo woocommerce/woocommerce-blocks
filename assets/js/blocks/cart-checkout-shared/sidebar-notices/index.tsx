@@ -56,7 +56,7 @@ const withSidebarNotices = createHigherOrderComponent(
 							block={ isCheckout ? 'checkout' : 'cart' }
 						/>
 						<DefaultNotice
-							page={ isCheckout ? 'checkout' : 'cart' }
+							block={ isCheckout ? 'checkout' : 'cart' }
 						/>
 					</InspectorControls>
 				) }
