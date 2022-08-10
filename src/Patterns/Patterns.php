@@ -5,6 +5,8 @@ use Automattic\WooCommerce\Blocks\Domain\Package;
 
 /**
  * Patterns class
+ *
+ * @internal
  */
 class Patterns {
 	/**
