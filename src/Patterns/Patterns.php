@@ -4,7 +4,27 @@ namespace Automattic\WooCommerce\Blocks\Patterns;
 use Automattic\WooCommerce\Blocks\Domain\Package;
 
 /**
- * Patterns class
+ * Registers patterns under the `./patterns/` directory.
+ * Each pattern is defined as a PHP file and defines its metadata using plugin-style headers.
+ * The minimum required definition is:
+ *
+ *     /**
+ *      * Title: My Pattern
+ *      * Slug: my-theme/my-pattern
+ *      *
+ *
+ * The output of the PHP source corresponds to the content of the pattern, e.g.:
+ *
+ *     <main><p><?php echo "Hello"; ?></p></main>
+ *
+ * Other settable fields include:
+ *
+ *   - Description
+ *   - Viewport Width
+ *   - Categories       (comma-separated values)
+ *   - Keywords         (comma-separated values)
+ *   - Block Types      (comma-separated values)
+ *   - Inserter         (yes/no)
  *
  * @internal
  */
@@ -31,29 +51,7 @@ class Patterns {
 	}
 
 	/**
-	 * Register patterns under the `./patterns/` directory.
-	 * Each pattern is defined as a PHP file and defines its metadata using plugin-style headers.
-	 * The minimum required definition is:
-	 *
-	 *     /**
-	 *      * Title: My Pattern
-	 *      * Slug: my-theme/my-pattern
-	 *      *
-	 *
-	 * The output of the PHP source corresponds to the content of the pattern, e.g.:
-	 *
-	 *     <main><p><?php echo "Hello"; ?></p></main>
-	 *
-	 * Other settable fields include:
-	 *
-	 *   - Description
-	 *   - Viewport Width
-	 *   - Categories       (comma-separated values)
-	 *   - Keywords         (comma-separated values)
-	 *   - Block Types      (comma-separated values)
-	 *   - Inserter         (yes/no)
-	 *
-	 * @since 6.0.0
+	 * Registers the block patterns and categories under `./patterns/`.
 	 */
 	public function register_block_patterns() {
 		if ( ! class_exists( 'WP_Block_Patterns_Registry' ) ) {
