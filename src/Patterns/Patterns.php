@@ -9,6 +9,9 @@ use Automattic\WooCommerce\Blocks\Domain\Package;
  * @internal
  */
 class Patterns {
+	const SLUG_REGEX            = '/^[A-z0-9\/_-]+$/';
+	const COMMA_SEPARATED_REGEX = '/[\s,]+/';
+
 	/**
 	 * Path to the patterns directory.
 	 *
@@ -89,7 +92,7 @@ class Patterns {
 						continue;
 					}
 
-					if ( ! preg_match( '/^[A-z0-9\/_-]+$/', $pattern_data['slug'] ) ) {
+					if ( ! preg_match( self::SLUG_REGEX, $pattern_data['slug'] ) ) {
 						_doing_it_wrong(
 							'register_block_patterns',
 							esc_html(
@@ -129,7 +132,7 @@ class Patterns {
 						if ( ! empty( $pattern_data[ $property ] ) ) {
 							$pattern_data[ $property ] = array_filter(
 								preg_split(
-									'/[\s,]+/',
+									self::COMMA_SEPARATED_REGEX,
 									(string) $pattern_data[ $property ]
 								)
 							);
