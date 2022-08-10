@@ -2,13 +2,6 @@
 namespace Automattic\WooCommerce\Blocks;
 
 use Automattic\WooCommerce\Blocks\Domain\Package;
-use function Automattic\WooCommerce\Blocks\Patterns\_doing_it_wrong;
-use function Automattic\WooCommerce\Blocks\Patterns\_wp_to_kebab_case;
-use function Automattic\WooCommerce\Blocks\Patterns\add_action;
-use function Automattic\WooCommerce\Blocks\Patterns\get_file_data;
-use function Automattic\WooCommerce\Blocks\Patterns\register_block_pattern;
-use function Automattic\WooCommerce\Blocks\Patterns\register_block_pattern_category;
-use function Automattic\WooCommerce\Blocks\Patterns\translate_with_gettext_context;
 
 /**
  * Registers patterns under the `./patterns/` directory.
