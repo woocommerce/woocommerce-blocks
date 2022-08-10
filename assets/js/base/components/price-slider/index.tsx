@@ -340,7 +340,7 @@ const PriceSlider = ( {
 						min={ minConstraint }
 						max={ maxConstraint }
 						ref={ minRange }
-						disabled={ isLoading }
+						disabled={ isLoading && ! hasValidConstraints }
 						tabIndex={ showInputFields ? -1 : 0 }
 					/>
 					<input
@@ -375,7 +375,7 @@ const PriceSlider = ( {
 			{ showInputFields && (
 				<div className="wc-block-price-filter__controls wc-block-components-price-slider__controls">
 					<LoadingPlaceHolder
-						isLoading={ isLoading }
+						isLoading={ isLoading && ! hasValidConstraints }
 						width="120px"
 						height="34px"
 					/>
@@ -404,11 +404,6 @@ const PriceSlider = ( {
 						value={ minPriceInput }
 					/>
 					{ inlineInput && slider }
-					<LoadingPlaceHolder
-						isLoading={ isLoading }
-						width="120px"
-						height="34px"
-					/>
 					<FormattedMonetaryAmount
 						currency={ currency }
 						displayType="input"
@@ -430,6 +425,11 @@ const PriceSlider = ( {
 						onBlur={ priceInputOnBlur }
 						disabled={ isLoading || ! hasValidConstraints }
 						value={ maxPriceInput }
+					/>
+					<LoadingPlaceHolder
+						isLoading={ isLoading && ! hasValidConstraints }
+						width="120px"
+						height="34px"
 					/>
 				</div>
 			) }
@@ -453,7 +453,9 @@ const PriceSlider = ( {
 						</div>
 					) }
 				<LoadingPlaceHolder
-					isLoading={ isLoading && ! showInputFields }
+					isLoading={
+						isLoading && ! showInputFields && ! hasValidConstraints
+					}
 					width="200px"
 					height="25px"
 				/>
