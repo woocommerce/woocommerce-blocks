@@ -15,6 +15,7 @@ interface FilterSubmitButtonProps {
 	disabled?: boolean;
 	label?: string;
 	onClick: () => void;
+	onReset?: () => void;
 	screenReaderLabel?: string;
 }
 
@@ -24,22 +25,36 @@ const FilterSubmitButton = ( {
 	/* translators: Submit button text for filters. */
 	label = __( 'Go', 'woo-gutenberg-products-block' ),
 	onClick,
+	onReset,
 	screenReaderLabel = __( 'Apply filter', 'woo-gutenberg-products-block' ),
 }: FilterSubmitButtonProps ): JSX.Element => {
 	return (
-		<button
-			type="submit"
-			className={ classNames(
-				'wp-block-button__link',
-				'wc-block-filter-submit-button',
-				'wc-block-components-filter-submit-button',
-				className
+		<div className="wc-block-components-filter-buttons">
+			{ onReset !== undefined && (
+				<button
+					className="wc-block-components-filter-reset-button"
+					onClick={ onReset }
+				>
+					{ __( 'Reset', 'woo-gutenberg-products-block' ) }
+				</button>
 			) }
-			disabled={ disabled }
-			onClick={ onClick }
-		>
-			<Label label={ label } screenReaderLabel={ screenReaderLabel } />
-		</button>
+			<button
+				type="submit"
+				className={ classNames(
+					'wp-block-button__link',
+					'wc-block-filter-submit-button',
+					'wc-block-components-filter-submit-button',
+					className
+				) }
+				disabled={ disabled }
+				onClick={ onClick }
+			>
+				<Label
+					label={ label }
+					screenReaderLabel={ screenReaderLabel }
+				/>
+			</button>
+		</div>
 	);
 };
 

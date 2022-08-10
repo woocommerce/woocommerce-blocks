@@ -54,8 +54,8 @@
 
 	&.is-loading.is-disabled {
 		.wc-block-components-price-slider__range-input-wrapper,
-		.wc-block-components-price-slider__button-reset,
-		.wc-block-components-price-slider__button {
+		.wc-block-components-filter-reset-button,
+		.wc-block-components-filter-submit-button {
 			@include placeholder();
 			box-shadow: none;
 		}
@@ -196,25 +196,6 @@
 		&::-ms-thumb {
 			background-position-x: right;
 		}
-	}
-}
-
-.wc-block-components-price-slider__actions {
-	align-items: center;
-	display: flex;
-	justify-content: flex-end;
-	margin-left: auto;
-}
-
-.wc-block-components-price-slider__button-reset {
-	background: transparent;
-	border: none;
-	cursor: pointer;
-	font-size: inherit;
-	margin-right: $gap;
-
-	&:hover {
-		text-decoration: underline;
 	}
 }
 
