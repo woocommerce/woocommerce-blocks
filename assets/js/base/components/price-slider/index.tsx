@@ -21,6 +21,7 @@ import './style.scss';
 import { constrainRangeSliderValues } from './constrain-range-slider-values';
 import FilterSubmitButton from '../filter-submit-button';
 import { isValidMaxValue, isValidMinValue } from './utils';
+import LoadingPlaceHolder from '../loading-placeholder';
 
 export interface PriceSliderProps {
 	/**
@@ -373,6 +374,11 @@ const PriceSlider = ( {
 			{ ( ! inlineInput || ! showInputFields ) && slider }
 			{ showInputFields && (
 				<div className="wc-block-price-filter__controls wc-block-components-price-slider__controls">
+					<LoadingPlaceHolder
+						isLoading={ isLoading }
+						width="120px"
+						height="34px"
+					/>
 					<FormattedMonetaryAmount
 						currency={ currency }
 						displayType="input"
@@ -398,6 +404,11 @@ const PriceSlider = ( {
 						value={ minPriceInput }
 					/>
 					{ inlineInput && slider }
+					<LoadingPlaceHolder
+						isLoading={ isLoading }
+						width="120px"
+						height="34px"
+					/>
 					<FormattedMonetaryAmount
 						currency={ currency }
 						displayType="input"
@@ -441,6 +452,11 @@ const PriceSlider = ( {
 							/>
 						</div>
 					) }
+				<LoadingPlaceHolder
+					isLoading={ isLoading && ! showInputFields }
+					width="200px"
+					height="25px"
+				/>
 				{ showFilterButton && (
 					<div className="wc-block-price-filter__actions wc-block-components-price-slider__actions">
 						<button
