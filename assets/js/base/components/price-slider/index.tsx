@@ -64,6 +64,10 @@ export interface PriceSliderProps {
 	 */
 	showInputFields?: boolean;
 	/**
+	 * Whether to show input fields inline with the slider or not.
+	 */
+	inlineInput?: boolean;
+	/**
 	 * What step values the slider uses.
 	 */
 	step?: number;
@@ -79,6 +83,7 @@ const PriceSlider = ( {
 	currency,
 	showInputFields = true,
 	showFilterButton = false,
+	inlineInput = false,
 	isLoading = false,
 	onSubmit = () => void 0,
 }: PriceSliderProps ): JSX.Element => {
@@ -304,115 +309,120 @@ const PriceSlider = ( {
 		maxPriceInput / 10 ** currency.minorUnit
 	);
 
+	const slider = (
+		<div
+			className="wc-block-price-filter__range-input-wrapper wc-block-components-price-slider__range-input-wrapper"
+			onMouseMove={ findClosestRange }
+			onFocus={ findClosestRange }
+		>
+			{ hasValidConstraints && (
+				<div aria-hidden={ showInputFields }>
+					<div
+						className="wc-block-price-filter__range-input-progress wc-block-components-price-slider__range-input-progress"
+						style={ progressStyles as React.CSSProperties }
+					/>
+					<input
+						type="range"
+						className="wc-block-price-filter__range-input wc-block-price-filter__range-input--min wc-block-components-price-slider__range-input wc-block-components-price-slider__range-input--min"
+						aria-label={ __(
+							'Filter products by minimum price',
+							'woo-gutenberg-products-block'
+						) }
+						aria-valuetext={ ariaReadableMinPrice }
+						value={
+							Number.isFinite( minPrice )
+								? minPrice
+								: minConstraint
+						}
+						onChange={ rangeInputOnChange }
+						step={ minRangeStep }
+						min={ minConstraint }
+						max={ maxConstraint }
+						ref={ minRange }
+						disabled={ isLoading }
+						tabIndex={ showInputFields ? -1 : 0 }
+					/>
+					<input
+						type="range"
+						className="wc-block-price-filter__range-input wc-block-price-filter__range-input--max wc-block-components-price-slider__range-input wc-block-components-price-slider__range-input--max"
+						aria-label={ __(
+							'Filter products by maximum price',
+							'woo-gutenberg-products-block'
+						) }
+						aria-valuetext={ ariaReadableMaxPrice }
+						value={
+							Number.isFinite( maxPrice )
+								? maxPrice
+								: maxConstraint
+						}
+						onChange={ rangeInputOnChange }
+						step={ maxRangeStep }
+						min={ minConstraint }
+						max={ maxConstraint }
+						ref={ maxRange }
+						disabled={ isLoading }
+						tabIndex={ showInputFields ? -1 : 0 }
+					/>
+				</div>
+			) }
+		</div>
+	);
+
 	return (
 		<div className={ classes }>
-			<div
-				className="wc-block-price-filter__range-input-wrapper wc-block-components-price-slider__range-input-wrapper"
-				onMouseMove={ findClosestRange }
-				onFocus={ findClosestRange }
-			>
-				{ hasValidConstraints && (
-					<div aria-hidden={ showInputFields }>
-						<div
-							className="wc-block-price-filter__range-input-progress wc-block-components-price-slider__range-input-progress"
-							style={ progressStyles as React.CSSProperties }
-						/>
-						<input
-							type="range"
-							className="wc-block-price-filter__range-input wc-block-price-filter__range-input--min wc-block-components-price-slider__range-input wc-block-components-price-slider__range-input--min"
-							aria-label={ __(
-								'Filter products by minimum price',
-								'woo-gutenberg-products-block'
-							) }
-							aria-valuetext={ ariaReadableMinPrice }
-							value={
-								Number.isFinite( minPrice )
-									? minPrice
-									: minConstraint
+			{ ( ! inlineInput || ! showInputFields ) && slider }
+			{ showInputFields && (
+				<div className="wc-block-price-filter__controls wc-block-components-price-slider__controls">
+					<FormattedMonetaryAmount
+						currency={ currency }
+						displayType="input"
+						className="wc-block-price-filter__amount wc-block-price-filter__amount--min wc-block-form-text-input wc-block-components-price-slider__amount wc-block-components-price-slider__amount--min"
+						aria-label={ __(
+							'Filter products by minimum price',
+							'woo-gutenberg-products-block'
+						) }
+						allowNegative={ false }
+						isAllowed={ isValidMinValue( {
+							minConstraint,
+							minorUnit: currency.minorUnit,
+							currentMaxValue: maxPriceInput,
+						} ) }
+						onValueChange={ ( value ) => {
+							if ( value === minPriceInput ) {
+								return;
 							}
-							onChange={ rangeInputOnChange }
-							step={ minRangeStep }
-							min={ minConstraint }
-							max={ maxConstraint }
-							ref={ minRange }
-							disabled={ isLoading }
-							tabIndex={ showInputFields ? -1 : 0 }
-						/>
-						<input
-							type="range"
-							className="wc-block-price-filter__range-input wc-block-price-filter__range-input--max wc-block-components-price-slider__range-input wc-block-components-price-slider__range-input--max"
-							aria-label={ __(
-								'Filter products by maximum price',
-								'woo-gutenberg-products-block'
-							) }
-							aria-valuetext={ ariaReadableMaxPrice }
-							value={
-								Number.isFinite( maxPrice )
-									? maxPrice
-									: maxConstraint
+							setMinPriceInput( value );
+						} }
+						onBlur={ priceInputOnBlur }
+						disabled={ isLoading || ! hasValidConstraints }
+						value={ minPriceInput }
+					/>
+					{ inlineInput && slider }
+					<FormattedMonetaryAmount
+						currency={ currency }
+						displayType="input"
+						className="wc-block-price-filter__amount wc-block-price-filter__amount--max wc-block-form-text-input wc-block-components-price-slider__amount wc-block-components-price-slider__amount--max"
+						aria-label={ __(
+							'Filter products by maximum price',
+							'woo-gutenberg-products-block'
+						) }
+						isAllowed={ isValidMaxValue( {
+							maxConstraint,
+							minorUnit: currency.minorUnit,
+						} ) }
+						onValueChange={ ( value ) => {
+							if ( value === maxPriceInput ) {
+								return;
 							}
-							onChange={ rangeInputOnChange }
-							step={ maxRangeStep }
-							min={ minConstraint }
-							max={ maxConstraint }
-							ref={ maxRange }
-							disabled={ isLoading }
-							tabIndex={ showInputFields ? -1 : 0 }
-						/>
-					</div>
-				) }
-			</div>
+							setMaxPriceInput( value );
+						} }
+						onBlur={ priceInputOnBlur }
+						disabled={ isLoading || ! hasValidConstraints }
+						value={ maxPriceInput }
+					/>
+				</div>
+			) }
 			<div className="wc-block-price-filter__controls wc-block-components-price-slider__controls">
-				{ showInputFields && (
-					<>
-						<FormattedMonetaryAmount
-							currency={ currency }
-							displayType="input"
-							className="wc-block-price-filter__amount wc-block-price-filter__amount--min wc-block-form-text-input wc-block-components-price-slider__amount wc-block-components-price-slider__amount--min"
-							aria-label={ __(
-								'Filter products by minimum price',
-								'woo-gutenberg-products-block'
-							) }
-							allowNegative={ false }
-							isAllowed={ isValidMinValue( {
-								minConstraint,
-								minorUnit: currency.minorUnit,
-								currentMaxValue: maxPriceInput,
-							} ) }
-							onValueChange={ ( value ) => {
-								if ( value === minPriceInput ) {
-									return;
-								}
-								setMinPriceInput( value );
-							} }
-							onBlur={ priceInputOnBlur }
-							disabled={ isLoading || ! hasValidConstraints }
-							value={ minPriceInput }
-						/>
-						<FormattedMonetaryAmount
-							currency={ currency }
-							displayType="input"
-							className="wc-block-price-filter__amount wc-block-price-filter__amount--max wc-block-form-text-input wc-block-components-price-slider__amount wc-block-components-price-slider__amount--max"
-							aria-label={ __(
-								'Filter products by maximum price',
-								'woo-gutenberg-products-block'
-							) }
-							isAllowed={ isValidMaxValue( {
-								maxConstraint,
-								minorUnit: currency.minorUnit,
-							} ) }
-							onValueChange={ ( value ) => {
-								if ( value === maxPriceInput ) {
-									return;
-								}
-								setMaxPriceInput( value );
-							} }
-							onBlur={ priceInputOnBlur }
-							disabled={ isLoading || ! hasValidConstraints }
-							value={ maxPriceInput }
-						/>
-					</>
-				) }
 				{ ! showInputFields &&
 					! isLoading &&
 					Number.isFinite( minPrice ) &&

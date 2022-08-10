@@ -52,17 +52,6 @@
 .wc-block-components-price-slider {
 	margin-bottom: $gap-large;
 
-	&.wc-block-components-price-slider--has-filter-button {
-		.wc-block-components-price-slider__controls {
-			justify-content: flex-end;
-
-			.wc-block-components-price-slider__amount.wc-block-components-price-slider__amount--max {
-				margin-left: 0;
-				margin-right: 10px;
-			}
-		}
-	}
-
 	&.is-loading.is-disabled {
 		.wc-block-components-price-slider__range-input-wrapper,
 		.wc-block-components-price-slider__amount,
@@ -83,12 +72,13 @@
 
 .wc-block-components-price-slider__range-input-wrapper {
 	@include reset;
-	height: 9px;
-	clear: both;
-	position: relative;
-	box-shadow: 0 0 0 1px inset rgba(0, 0, 0, 0.1);
 	background: #e1e1e1;
+	box-shadow: 0 0 0 1px inset rgba(0, 0, 0, 0.1);
+	clear: both;
+	flex-grow: 1;
+	height: 9px;
 	margin: 15px 0;
+	position: relative;
 }
 
 .wc-block-components-price-slider__range-input-progress {
@@ -105,6 +95,8 @@
 
 .wc-block-components-price-slider__controls {
 	display: flex;
+	gap: $gap-smaller;
+	margin-top: $gap-large;
 
 	.wc-block-components-price-slider__amount {
 		margin: 0;
@@ -115,9 +107,6 @@
 		min-width: 0;
 		padding: $gap-smaller;
 
-		&.wc-block-components-price-slider__amount--min {
-			margin-right: 10px;
-		}
 		&.wc-block-components-price-slider__amount--max {
 			margin-left: auto;
 		}
