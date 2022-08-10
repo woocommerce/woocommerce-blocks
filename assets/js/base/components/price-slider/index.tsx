@@ -12,6 +12,7 @@ import {
 import classnames from 'classnames';
 import FormattedMonetaryAmount from '@woocommerce/base-components/formatted-monetary-amount';
 import { Currency, isObject } from '@woocommerce/types';
+import { useDebouncedCallback } from 'use-debounce';
 
 /**
  * Internal dependencies
@@ -274,6 +275,8 @@ const PriceSlider = ( {
 		[ onChange, stepValue, minPriceInput, maxPriceInput ]
 	);
 
+	const debouncedUpdateQuery = useDebouncedCallback( onSubmit, 600 );
+
 	const classes = classnames(
 		'wc-block-price-filter',
 		'wc-block-components-price-slider',
@@ -433,8 +436,8 @@ const PriceSlider = ( {
 						<button
 							className="wc-block-price-filter__button-reset wc-block-components-price-slider__button-reset"
 							onClick={ () => {
-								setMinPriceInput( minConstraint );
-								setMaxPriceInput( maxConstraint );
+								onChange( [ minConstraint, maxConstraint ] );
+								debouncedUpdateQuery();
 							} }
 						>
 							{ __( 'Reset', 'woo-gutenberg-products-block' ) }
