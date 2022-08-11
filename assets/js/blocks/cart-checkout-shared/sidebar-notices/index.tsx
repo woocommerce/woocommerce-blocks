@@ -10,6 +10,7 @@ import { addFilter, hasFilter } from '@wordpress/hooks';
 import type { StoreDescriptor } from '@wordpress/data';
 import { CartCheckoutSidebarCompatibilityNotice } from '@woocommerce/editor-components/sidebar-compatibility-notice';
 import { useSelect } from '@wordpress/data';
+import { CartCheckoutFeedbackPrompt } from '@woocommerce/editor-components/feedback-prompt';
 
 /**
  * Internal dependencies
@@ -58,6 +59,7 @@ const withSidebarNotices = createHigherOrderComponent(
 						<DefaultNotice
 							block={ isCheckout ? 'checkout' : 'cart' }
 						/>
+						<CartCheckoutFeedbackPrompt />
 					</InspectorControls>
 				) }
 
