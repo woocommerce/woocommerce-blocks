@@ -5,3 +5,4 @@ export * from './use-view-switcher';
 export * from './default-notice';
 export * from './sidebar-notices';
 export * from './block-settings';
+export * from './address-fields';
