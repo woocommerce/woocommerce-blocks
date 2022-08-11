@@ -75,7 +75,7 @@ This only needs done if the patch release needs to be included in WooCommerce Co
     - The content for the pull release can follow [this example](https://github.com/woocommerce/woocommerce/pull/32627).
         -   [ ] Increase the version of `woocommerce/woocommerce-blocks` in the `plugins/woocommerce/composer.json` file
         -   [ ] Run `composer update woocommerce/woocommerce-blocks` and make sure `composer-lock.json` was updated
-        -   [ ] Add a new file similar to this one [plugins/woocommerce/changelog/update-woocommerce-blocks-7.4.1](https://github.com/woocommerce/woocommerce/blob/5040a10d01896bcf40fd0ac538f2b7bc584ffe0a/plugins/woocommerce/changelog/update-woocommerce-blocks-7.4.1) with a similar content as below. For Significance we’ll always use minor, or patch when including a patch release
+        -   [ ] Add a new file similar to this one [plugins/woocommerce/changelog/update-woocommerce-blocks-7.4.1](https://github.com/woocommerce/woocommerce/blob/5040a10d01896bcf40fd0ac538f2b7bc584ffe0a/plugins/woocommerce/changelog/update-woocommerce-blocks-7.4.1) with a similar content as below. For the Significance entry we’ll always use `minor`, or `patch` when including a patch release
                 
                 ```
                 Significance: minor
