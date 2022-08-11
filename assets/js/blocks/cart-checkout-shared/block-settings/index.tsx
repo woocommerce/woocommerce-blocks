@@ -5,10 +5,14 @@ import { InspectorControls } from '@wordpress/block-editor';
 import { PanelBody, ToggleControl } from '@wordpress/components';
 import { __ } from '@wordpress/i18n';
 import { CartCheckoutFeedbackPrompt } from '@woocommerce/editor-components/feedback-prompt';
-import { addFilter, hasFilter } from '@wordpress/hooks';
-import { createHigherOrderComponent } from '@wordpress/compose';
 
-const BlockSettings = ( { attributes, setAttributes } ) => {
+export const BlockSettings = ( {
+	attributes,
+	setAttributes,
+}: {
+	attributes: BlockAttributes;
+	setAttributes: ( attrs: BlockAttributes ) => void;
+} ) => {
 	const { hasDarkControls } = attributes;
 	return (
 		<InspectorControls>
@@ -34,37 +38,3 @@ const BlockSettings = ( { attributes, setAttributes } ) => {
 		</InspectorControls>
 	);
 };
-
-const withBlockSettings = createHigherOrderComponent(
-	( BlockEdit ) => ( props ) => {
-		const isCartOrCheckout =
-			props.name === 'woocommerce/checkout' ||
-			props.name === '@woocommerce/cart';
-		return (
-			<>
-				{ isCartOrCheckout && (
-					<InspectorControls>
-						<BlockSettings { ...props } />
-					</InspectorControls>
-				) }
-
-				<BlockEdit { ...props } />
-			</>
-		);
-	},
-	'withBlockSettings'
-);
-
-if (
-	! hasFilter(
-		'editor.BlockEdit',
-		'woocommerce/add/cart-checkout-block-settings'
-	)
-) {
-	addFilter(
-		'editor.BlockEdit',
-		'woocommerce/add/cart-checkout-block-settings',
-		withBlockSettings,
-		10
-	);
-}
