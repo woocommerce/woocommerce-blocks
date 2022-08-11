@@ -8,6 +8,7 @@ import {
 	useBlockProps,
 	InnerBlocks,
 	BlockControls,
+	InspectorControls,
 } from '@wordpress/block-editor';
 import BlockErrorBoundary from '@woocommerce/base-components/block-error-boundary';
 import { EditorProvider, CartProvider } from '@woocommerce/base-context';
@@ -25,6 +26,7 @@ import {
 	useViewSwitcher,
 	useBlockPropsWithLocking,
 	useForcedLayout,
+	BlockSettings,
 } from '../cart-checkout-shared';
 import { CartBlockContext } from './context';
 
@@ -50,7 +52,7 @@ const views = [
 	},
 ];
 
-export const Edit = ( { className, attributes, clientId } ) => {
+export const Edit = ( { className, attributes, setAttributes, clientId } ) => {
 	const { hasDarkControls } = attributes;
 	const { currentView, component: ViewSwitcherComponent } = useViewSwitcher(
 		clientId,
@@ -73,6 +75,12 @@ export const Edit = ( { className, attributes, clientId } ) => {
 
 	return (
 		<div { ...blockProps }>
+			<InspectorControls>
+				<BlockSettings
+					attributes={ attributes }
+					setAttributes={ setAttributes }
+				/>
+			</InspectorControls>
 			<BlockErrorBoundary
 				header={ __(
 					'Cart Block Error',
