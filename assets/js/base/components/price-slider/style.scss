@@ -56,7 +56,6 @@
 		.wc-block-components-price-slider__range-input-wrapper,
 		.wc-block-components-filter-reset-button,
 		.wc-block-components-filter-submit-button {
-			@include placeholder();
 			box-shadow: none;
 		}
 
@@ -261,7 +260,6 @@
 	.wc-block-components-price-slider {
 		&.is-loading.is-disabled {
 			.wc-block-components-price-slider__range-input-wrapper {
-				@include placeholder();
 				box-shadow: none;
 			}
 		}

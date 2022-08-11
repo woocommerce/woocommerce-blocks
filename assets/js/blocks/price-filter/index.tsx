@@ -14,6 +14,7 @@ import { useBlockProps } from '@wordpress/block-editor';
 import edit from './edit';
 import metadata from './block.json';
 import { blockAttributes } from './attributes';
+import PriceFilterLoadingPlaceholder from './PriceFilterLoadingPlaceholder';
 
 registerBlockType( metadata, {
 	title: __( 'Filter Products by Price', 'woo-gutenberg-products-block' ),
@@ -72,6 +73,7 @@ registerBlockType( metadata, {
 			className,
 			showInputFields,
 			showFilterButton,
+			inlineInput,
 			heading,
 			headingLevel,
 		} = attributes;
@@ -80,6 +82,7 @@ registerBlockType( metadata, {
 			'data-showfilterbutton': showFilterButton,
 			'data-heading': heading,
 			'data-heading-level': headingLevel,
+			'data-inline-input': inlineInput,
 		};
 		return (
 			<div
@@ -88,10 +91,7 @@ registerBlockType( metadata, {
 				} ) }
 				{ ...data }
 			>
-				<span
-					aria-hidden
-					className="wc-block-product-categories__placeholder"
-				/>
+				<PriceFilterLoadingPlaceholder { ...attributes } />
 			</div>
 		);
 	},
