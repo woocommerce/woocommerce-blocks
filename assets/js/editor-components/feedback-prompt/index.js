@@ -22,9 +22,11 @@ const FeedbackPrompt = ( {
 	text,
 	url = 'https://ideas.woocommerce.com/forums/133476-woocommerce?category_id=384565',
 } ) => {
+	// By returning false we ensure that this component is not entered into the InspectorControls
+	// (which is a slot fill), children array on first render, on the second render when the state
+	// gets updated this component does get put into the InspectorControls children array but as the
+	// last item, ensuring it shows last in the sidebar.
 	const [ isVisible, setIsVisible ] = useState( false );
-
-	// This is a hack to render the feedback prompt last in the sidebar.
 	useEffect( () => {
 		setIsVisible( true );
 	}, [] );

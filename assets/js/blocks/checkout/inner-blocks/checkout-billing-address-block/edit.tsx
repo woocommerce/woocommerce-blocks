@@ -14,10 +14,7 @@ import {
 	AdditionalFields,
 	AdditionalFieldsContent,
 } from '../../form-step';
-import {
-	useCheckoutBlockContext,
-	useCheckoutBlockControlsContext,
-} from '../../context';
+import { useCheckoutBlockContext } from '../../context';
 import Block from './block';
 
 export const Edit = ( {
@@ -39,8 +36,6 @@ export const Edit = ( {
 		showPhoneField,
 		requirePhoneField,
 	} = useCheckoutBlockContext();
-	const { addressFieldControls: Controls } =
-		useCheckoutBlockControlsContext();
 	const { showBillingFields } = useCheckoutAddress();
 
 	if ( ! showBillingFields ) {
@@ -56,7 +51,6 @@ export const Edit = ( {
 				attributes?.className
 			) }
 		>
-			<Controls />
 			<Block
 				showCompanyField={ showCompanyField }
 				showApartmentField={ showApartmentField }
