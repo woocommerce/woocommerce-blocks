@@ -28,7 +28,6 @@ import {
 import usePriceConstraints from './use-price-constraints';
 import './style.scss';
 import { Attributes } from './types';
-import PriceFilterLoadingPlaceholder from './PriceFilterLoadingPlaceholder';
 
 /**
  * Formats filter values into a string for the URL parameters needed for filtering PHP templates.
@@ -299,20 +298,6 @@ const PriceFilterBlock = ( {
 			minConstraint === maxConstraint )
 	) {
 		return null;
-	}
-
-	if (
-		isLoading &&
-		! ( isFinite( minConstraint ) && isFinite( maxConstraint ) )
-	) {
-		return (
-			<PriceFilterLoadingPlaceholder
-				showInputFields={ attributes.showInputFields }
-				inlineInput={ attributes.inlineInput }
-				showFilterButton={ attributes.showFilterButton }
-				isEditor={ isEditor }
-			/>
-		);
 	}
 
 	const TagName =
