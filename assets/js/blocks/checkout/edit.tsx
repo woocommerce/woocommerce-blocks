@@ -27,6 +27,7 @@ import './inner-blocks';
 import './styles/editor.scss';
 import {
 	addClassToBody,
+	BlockSettings,
 	useBlockPropsWithLocking,
 } from '../cart-checkout-shared';
 import { CheckoutBlockContext, CheckoutBlockControlsContext } from './context';
@@ -158,6 +159,12 @@ export const Edit = ( {
 	const blockProps = useBlockPropsWithLocking();
 	return (
 		<div { ...blockProps }>
+			<InspectorControls>
+				<BlockSettings
+					attributes={ attributes }
+					setAttributes={ setAttributes }
+				/>
+			</InspectorControls>
 			<EditorProvider
 				previewData={ { previewCart, previewSavedPaymentMethods } }
 			>
