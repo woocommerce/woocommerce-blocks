@@ -4,6 +4,7 @@
 import { __, _n, sprintf } from '@wordpress/i18n';
 import { Fragment, useMemo, useState } from '@wordpress/element';
 import classNames from 'classnames';
+import FilterElementCheckbox from '@woocommerce/base-components/filter-element-checkbox';
 
 /**
  * Internal dependencies
@@ -132,15 +133,11 @@ const CheckboxList = ( {
 								! showExpanded &&
 								index >= limit && { hidden: true } ) }
 						>
-							<input
-								type="checkbox"
-								id={ option.value }
-								value={ option.value }
-								onChange={ ( event ) => {
-									onChange( event.target.value );
-								} }
-								checked={ checked.includes( option.value ) }
-								disabled={ isDisabled }
+							<FilterElementCheckbox
+								option={ option }
+								onChange={ onChange }
+								isChecked={ checked.includes( option.value ) }
+								isDisabled={ isDisabled }
 							/>
 							<label htmlFor={ option.value }>
 								{ option.label }

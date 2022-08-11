@@ -1,0 +1,38 @@
+.wc-filter-element-checkbox {
+	display: inline-block;
+	position: relative;
+	cursor: pointer;
+	--checkbox-background-color: #{$studio-woocommerce-purple-30};
+	height: 16px;
+	width: 16px;
+	border: 2px solid currentColor;
+	margin-right: 16px;
+	vertical-align: middle;
+
+	input {
+		position: absolute;
+		cursor: pointer;
+		height: 100%;
+		width: 100%;
+		margin: 0;
+		opacity: 0;
+		z-index: 2;
+
+		&:disabled {
+			opacity: 0;
+		}
+	}
+
+	input:checked ~ .wc-filter-element-checkbox__checkbox {
+		background-color: var(--checkbox-background-color);
+	}
+
+	.wc-filter-element-checkbox__checkbox {
+		position: absolute;
+		top: 2px;
+		left: 2px;
+		height: 12px;
+		width: 12px;
+		z-index: 1;
+	}
+}
