@@ -23,7 +23,7 @@ const FilterSubmitButton = ( {
 	className,
 	disabled,
 	/* translators: Submit button text for filters. */
-	label = __( 'Go', 'woo-gutenberg-products-block' ),
+	label = __( 'Apply', 'woo-gutenberg-products-block' ),
 	onClick,
 	onReset,
 	screenReaderLabel = __( 'Apply filter', 'woo-gutenberg-products-block' ),
