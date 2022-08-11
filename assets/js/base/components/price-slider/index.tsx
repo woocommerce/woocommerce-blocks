@@ -428,8 +428,6 @@ const PriceSlider = ( {
 					Number.isFinite( minPrice ) &&
 					Number.isFinite( maxPrice ) && (
 						<div className="wc-block-price-filter__range-text wc-block-components-price-slider__range-text">
-							{ __( 'Price', 'woo-gutenberg-products-block' ) }
-							: &nbsp;
 							<FormattedMonetaryAmount
 								currency={ currency }
 								value={ minPrice }
