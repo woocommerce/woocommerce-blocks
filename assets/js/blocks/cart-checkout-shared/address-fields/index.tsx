@@ -63,77 +63,78 @@ const withAddressFields = createHigherOrderComponent(
 			setAttributes( newAttributes );
 		};
 
-		const AddressFields = (): JSX.Element => (
-			<InspectorControls>
-				<PanelBody
-					title={ __(
-						'Address Fields',
-						'woo-gutenberg-products-block'
-					) }
-				>
-					<p className="wc-block-checkout__controls-text">
-						{ __(
-							'Show or hide fields in the checkout address forms.',
-							'woo-gutenberg-products-block'
-						) }
-					</p>
-					<ToggleControl
-						label={ __(
-							'Company',
-							'woo-gutenberg-products-block'
-						) }
-						checked={ showCompanyField }
-						onChange={ () => toggleAttribute( 'showCompanyField' ) }
-					/>
-					{ showCompanyField && (
-						<CheckboxControl
-							label={ __(
-								'Require company name?',
-								'woo-gutenberg-products-block'
-							) }
-							checked={ requireCompanyField }
-							onChange={ () =>
-								toggleAttribute( 'requireCompanyField' )
-							}
-							className="components-base-control--nested"
-						/>
-					) }
-					<ToggleControl
-						label={ __(
-							'Apartment, suite, etc.',
-							'woo-gutenberg-products-block'
-						) }
-						checked={ showApartmentField }
-						onChange={ () =>
-							toggleAttribute( 'showApartmentField' )
-						}
-					/>
-					<ToggleControl
-						label={ __( 'Phone', 'woo-gutenberg-products-block' ) }
-						checked={ showPhoneField }
-						onChange={ () => toggleAttribute( 'showPhoneField' ) }
-					/>
-					{ showPhoneField && (
-						<CheckboxControl
-							label={ __(
-								'Require phone number?',
-								'woo-gutenberg-products-block'
-							) }
-							checked={ requirePhoneField }
-							onChange={ () =>
-								toggleAttribute( 'requirePhoneField' )
-							}
-							className="components-base-control--nested"
-						/>
-					) }
-				</PanelBody>
-			</InspectorControls>
-		);
-
 		return (
 			<>
 				<InspectorControls>
-					<AddressFields />
+					<PanelBody
+						title={ __(
+							'Address Fields',
+							'woo-gutenberg-products-block'
+						) }
+					>
+						<p className="wc-block-checkout__controls-text">
+							{ __(
+								'Show or hide fields in the checkout address forms.',
+								'woo-gutenberg-products-block'
+							) }
+						</p>
+						<ToggleControl
+							label={ __(
+								'Company',
+								'woo-gutenberg-products-block'
+							) }
+							checked={ showCompanyField }
+							onChange={ () =>
+								toggleAttribute( 'showCompanyField' )
+							}
+						/>
+						{ showCompanyField && (
+							<CheckboxControl
+								label={ __(
+									'Require company name?',
+									'woo-gutenberg-products-block'
+								) }
+								checked={ requireCompanyField }
+								onChange={ () =>
+									toggleAttribute( 'requireCompanyField' )
+								}
+								className="components-base-control--nested"
+							/>
+						) }
+						<ToggleControl
+							label={ __(
+								'Apartment, suite, etc.',
+								'woo-gutenberg-products-block'
+							) }
+							checked={ showApartmentField }
+							onChange={ () =>
+								toggleAttribute( 'showApartmentField' )
+							}
+						/>
+						<ToggleControl
+							label={ __(
+								'Phone',
+								'woo-gutenberg-products-block'
+							) }
+							checked={ showPhoneField }
+							onChange={ () =>
+								toggleAttribute( 'showPhoneField' )
+							}
+						/>
+						{ showPhoneField && (
+							<CheckboxControl
+								label={ __(
+									'Require phone number?',
+									'woo-gutenberg-products-block'
+								) }
+								checked={ requirePhoneField }
+								onChange={ () =>
+									toggleAttribute( 'requirePhoneField' )
+								}
+								className="components-base-control--nested"
+							/>
+						) }
+					</PanelBody>
 				</InspectorControls>
 
 				<BlockEdit { ...props } />
