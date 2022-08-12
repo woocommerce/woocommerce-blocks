@@ -10,7 +10,7 @@ import Label from '@woocommerce/base-components/label';
  */
 import './style.scss';
 
-interface FilterSubmitButtonProps {
+interface FilterResetButtonProps {
 	className?: string;
 	disabled?: boolean;
 	label?: string;
@@ -18,29 +18,26 @@ interface FilterSubmitButtonProps {
 	screenReaderLabel?: string;
 }
 
-const FilterSubmitButton = ( {
+const FilterResetButton = ( {
 	className,
 	disabled,
-	/* translators: Submit button text for filters. */
-	label = __( 'Apply', 'woo-gutenberg-products-block' ),
+	/* translators: Reset button text for filters. */
+	label = __( 'Reset', 'woo-gutenberg-products-block' ),
 	onClick,
-	screenReaderLabel = __( 'Apply filter', 'woo-gutenberg-products-block' ),
-}: FilterSubmitButtonProps ): JSX.Element => {
+	screenReaderLabel = __( 'Reset filter', 'woo-gutenberg-products-block' ),
+}: FilterResetButtonProps ): JSX.Element => {
 	return (
 		<button
-			type="submit"
 			className={ classNames(
-				'wp-block-button__link',
-				'wc-block-filter-submit-button',
-				'wc-block-components-filter-submit-button',
+				'wc-block-components-filter-reset-button',
 				className
 			) }
-			disabled={ disabled }
 			onClick={ onClick }
+			disabled={ disabled }
 		>
 			<Label label={ label } screenReaderLabel={ screenReaderLabel } />
 		</button>
 	);
 };
 
-export default FilterSubmitButton;
+export default FilterResetButton;

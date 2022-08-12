@@ -1,25 +1,6 @@
-.wc-block-components-filter-buttons {
-	align-items: center;
-	display: flex;
-	justify-content: flex-end;
-	margin-left: auto;
-}
-
 .wc-block-components-filter-submit-button {
 	border: none;
 	display: block;
 	margin-left: auto;
 	white-space: nowrap;
-}
-
-.wc-block-components-filter-reset-button {
-	background: transparent;
-	border: none;
-	cursor: pointer;
-	font-size: inherit;
-	margin-right: $gap;
-
-	&:hover {
-		text-decoration: underline;
-	}
 }

@@ -21,6 +21,7 @@ import './style.scss';
 import { constrainRangeSliderValues } from './constrain-range-slider-values';
 import FilterSubmitButton from '../filter-submit-button';
 import { isValidMaxValue, isValidMinValue } from './utils';
+import FilterResetButton from '../filter-reset-button';
 
 export interface PriceSliderProps {
 	/**
@@ -439,15 +440,22 @@ const PriceSlider = ( {
 							/>
 						</div>
 					) }
+				<FilterResetButton
+					onClick={ () => {
+						onChange( [ minConstraint, maxConstraint ] );
+						debouncedUpdateQuery();
+					} }
+					screenReaderLabel={ __(
+						'Reset price filter',
+						'woo-gutenberg-products-block'
+					) }
+					disabled={ isLoading || ! hasValidConstraints }
+				/>
 				{ showFilterButton && (
 					<FilterSubmitButton
-						className="wc-block-price-filter__button wc-block-components-price-slider__button"
+						className="wc-block-components-price-slider__button"
 						disabled={ isLoading || ! hasValidConstraints }
 						onClick={ onSubmit }
-						onReset={ () => {
-							onChange( [ minConstraint, maxConstraint ] );
-							debouncedUpdateQuery();
-						} }
 						screenReaderLabel={ __(
 							'Apply price filter',
 							'woo-gutenberg-products-block'
