@@ -1,14 +1,19 @@
 /**
  * External dependencies
  */
-import { __ } from '@wordpress/i18n';
+import { __, sprintf } from '@wordpress/i18n';
 import { store as editorStore } from '@wordpress/editor';
 import triggerFetch from '@wordpress/api-fetch';
 import { store as coreStore } from '@wordpress/core-data';
 import { Notice, Button } from '@wordpress/components';
 import { useSelect, useDispatch } from '@wordpress/data';
 import { CHECKOUT_PAGE_ID, CART_PAGE_ID } from '@woocommerce/block-settings';
-import { useCallback, useState } from '@wordpress/element';
+import {
+	useCallback,
+	useState,
+	createInterpolateElement,
+} from '@wordpress/element';
+import { getAdminLink } from '@woocommerce/settings';
 /**
  * Internal dependencies
  */
@@ -20,8 +25,8 @@ export function DefaultNotice( { block }: { block: string } ) {
 		block === 'checkout' ? CHECKOUT_PAGE_ID : CART_PAGE_ID;
 	const settingName =
 		block === 'checkout'
-			? 'woocommerce_checkout_page_id'
-			: 'woocommerce_cart_page_id';
+			? 'woocommece_checkout_page_id'
+			: 'woocommece_cart_page_id';
 
 	const noticeContent =
 		block === 'checkout'
@@ -61,6 +66,17 @@ export function DefaultNotice( { block }: { block: string } ) {
 	const updatePage = useCallback( () => {
 		setStatus( 'updating' );
 		Promise.resolve()
+			.then( () =>
+				triggerFetch( {
+					path: `/wc/v3/settings/advanced/${ settingName }`,
+					method: 'GET',
+				} )
+			)
+			.catch( ( error ) => {
+				if ( error.code === 'rest_setting_setting_invalid' ) {
+					setStatus( 'error' );
+				}
+			} )
 			.then( () => {
 				if ( ! postPublished ) {
 					editPost( { status: 'publish' } );
@@ -136,6 +152,39 @@ export function DefaultNotice( { block }: { block: string } ) {
 						) }
 					</Button>
 				</>
+			) }
+		</Notice>
+	);
+}
+
+export function LegacyNotice( { block }: { block: string } ) {
+	return (
+		<Notice
+			className="wc-blocks-legacy-page-notice"
+			isDismissible={ false }
+			status="warning"
+		>
+			{ createInterpolateElement(
+				sprintf(
+					/* translators: %s is the block name. It will be cart or checkout. */
+					__(
+						'If you would like to use this block as your default %s you must update your <a>page settings in WooCommerce</a>.',
+						'woo-gutenberg-products-block'
+					),
+					block
+				),
+				{
+					a: (
+						// eslint-disable-next-line jsx-a11y/anchor-has-content
+						<a
+							href={ getAdminLink(
+								'admin.php?page=wc-settings&tab=advanced'
+							) }
+							target="_blank"
+							rel="noopener noreferrer"
+						/>
+					),
+				}
 			) }
 		</Notice>
 	);

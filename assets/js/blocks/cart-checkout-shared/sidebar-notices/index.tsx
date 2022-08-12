@@ -9,10 +9,13 @@ import {
 import { addFilter, hasFilter } from '@wordpress/hooks';
 import type { StoreDescriptor } from '@wordpress/data';
 import { CartCheckoutSidebarCompatibilityNotice } from '@woocommerce/editor-components/sidebar-compatibility-notice';
-import { DefaultNotice } from '@woocommerce/editor-components/default-notice';
+import {
+	DefaultNotice,
+	LegacyNotice,
+} from '@woocommerce/editor-components/default-notice';
 import { useSelect } from '@wordpress/data';
 import { CartCheckoutFeedbackPrompt } from '@woocommerce/editor-components/feedback-prompt';
-
+import { isWcVersion } from '@woocommerce/settings';
 declare module '@wordpress/editor' {
 	let store: StoreDescriptor;
 }
@@ -61,9 +64,16 @@ const withSidebarNotices = createHigherOrderComponent(
 			<>
 				{ ( isCart || isCheckout ) && (
 					<InspectorControls>
-						<DefaultNotice
-							block={ isCheckout ? 'checkout' : 'cart' }
-						/>
+						{ isWcVersion( '6.9.0', '>=' ) ? (
+							<DefaultNotice
+								block={ isCheckout ? 'checkout' : 'cart' }
+							/>
+						) : (
+							<LegacyNotice
+								block={ isCheckout ? 'checkout' : 'cart' }
+							/>
+						) }
+
 						<CartCheckoutSidebarCompatibilityNotice
 							block={ isCheckout ? 'checkout' : 'cart' }
 						/>
