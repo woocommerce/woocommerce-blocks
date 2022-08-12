@@ -441,17 +441,24 @@ const PriceSlider = ( {
 					) }
 			</div>
 			<div className="wc-block-components-price-slider__actions">
-				<FilterResetButton
-					onClick={ () => {
-						onChange( [ minConstraint, maxConstraint ] );
-						debouncedUpdateQuery();
-					} }
-					screenReaderLabel={ __(
-						'Reset price filter',
-						'woo-gutenberg-products-block'
-					) }
-					disabled={ isLoading || ! hasValidConstraints }
-				/>
+				{ ( showFilterButton ||
+					minPrice !== minConstraint ||
+					maxPrice !== maxConstraint ) && (
+					<FilterResetButton
+						onClick={ () => {
+							onChange( [ minConstraint, maxConstraint ] );
+							debouncedUpdateQuery();
+						} }
+						screenReaderLabel={ __(
+							'Reset price filter',
+							'woo-gutenberg-products-block'
+						) }
+						disabled={
+							minPrice === minConstraint &&
+							maxPrice === maxConstraint
+						}
+					/>
+				) }
 				{ showFilterButton && (
 					<FilterSubmitButton
 						className="wc-block-components-price-slider__button"
