@@ -18,7 +18,7 @@ import { blockAttributes } from './attributes';
 registerBlockType( metadata, {
 	title: __( 'Filter Products by Price', 'woo-gutenberg-products-block' ),
 	description: __(
-		'Allow customers to filter the products by choosing a lower or upper price limit. Works in combination with the All Products block.',
+		'Allow customers to filter products by price range.',
 		'woo-gutenberg-products-block'
 	),
 	icon: {

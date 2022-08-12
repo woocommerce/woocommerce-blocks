@@ -53,7 +53,7 @@ export default function ( {
 				>
 					<ToggleGroupControl
 						label={ __(
-							'Price Range',
+							'Price Range Selector',
 							'woo-gutenberg-products-block'
 						) }
 						value={ showInputFields ? 'editable' : 'text' }
@@ -99,7 +99,7 @@ export default function ( {
 					) }
 					<ToggleControl
 						label={ __(
-							'Filter button',
+							"show 'Apply filters' button",
 							'woo-gutenberg-products-block'
 						) }
 						help={
