@@ -32,23 +32,36 @@ declare module '@wordpress/block-editor' {
 
 const withSidebarNotices = createHigherOrderComponent(
 	( BlockEdit ) => ( props ) => {
+		const addressFieldOrAccountBlocks = [
+			'woocommerce/checkout-shipping-address-block',
+			'woocommerce/checkout-billing-address-block',
+			'woocommerce/checkout-contact-information-block',
+			'woocommerce/checkout-fields-block',
+		];
 		const { clientId } = props;
-		const { isCart, isCheckout } = useSelect( ( select ) => {
-			const { getBlockParentsByBlockName, getBlockName } =
-				select( blockEditorStore );
-			const parent = getBlockParentsByBlockName( clientId, [
-				'woocommerce/cart',
-				'woocommerce/checkout',
-			] ).map( getBlockName );
-			return {
-				isCart:
-					parent.includes( 'woocommerce/cart' ) ||
-					getBlockName( clientId ) === 'woocommerce/cart',
-				isCheckout:
-					parent.includes( 'woocommerce/checkout' ) ||
-					getBlockName( clientId ) === 'woocommerce/checkout',
-			};
-		} );
+		const { isCart, isCheckout, isAddressFieldBlock } = useSelect(
+			( select ) => {
+				const { getBlockParentsByBlockName, getBlockName } =
+					select( blockEditorStore );
+				const parent = getBlockParentsByBlockName( clientId, [
+					'woocommerce/cart',
+					'woocommerce/checkout',
+				] ).map( getBlockName );
+				const currentBlockName = getBlockName( clientId );
+				return {
+					isCart:
+						parent.includes( 'woocommerce/cart' ) ||
+						currentBlockName === 'woocommerce/cart',
+					isCheckout:
+						parent.includes( 'woocommerce/checkout' ) ||
+						currentBlockName === 'woocommerce/checkout',
+					isAddressFieldBlock:
+						addressFieldOrAccountBlocks.includes(
+							currentBlockName
+						),
+				};
+			}
+		);
 		return (
 			<>
 				{ ( isCart || isCheckout ) && (
@@ -59,7 +72,9 @@ const withSidebarNotices = createHigherOrderComponent(
 						<DefaultNotice
 							block={ isCheckout ? 'checkout' : 'cart' }
 						/>
-						<CartCheckoutFeedbackPrompt />
+						{ isAddressFieldBlock ? null : (
+							<CartCheckoutFeedbackPrompt />
+						) }
 					</InspectorControls>
 				) }
 
