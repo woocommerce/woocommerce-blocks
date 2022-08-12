@@ -144,10 +144,7 @@ export default function ( {
 		<Placeholder
 			className="wc-block-price-slider"
 			icon={ <Icon icon={ currencyDollar } /> }
-			label={ __(
-				'Filter Products by Price',
-				'woo-gutenberg-products-block'
-			) }
+			label={ __( 'Filter by Price', 'woo-gutenberg-products-block' ) }
 			instructions={ __(
 				'Display a slider to filter products in your store by price.',
 				'woo-gutenberg-products-block'

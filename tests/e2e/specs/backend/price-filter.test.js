@@ -17,7 +17,7 @@ import {
 import { insertBlockDontWaitForInsertClose } from '../../utils.js';
 
 const block = {
-	name: 'Filter Products by Price',
+	name: 'Filter by Price',
 	slug: 'woocommerce/price-filter',
 	class: '.wp-block-woocommerce-price-filter',
 };

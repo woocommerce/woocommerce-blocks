@@ -24,7 +24,7 @@ import {
 import { clickLink } from '../../../utils';
 
 const block = {
-	name: 'Filter Products by Price',
+	name: 'Filter by Price',
 	slug: 'woocommerce/price-filter',
 	class: '.wc-block-price-filter',
 	selectors: {

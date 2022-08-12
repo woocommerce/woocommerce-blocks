@@ -16,7 +16,7 @@ import metadata from './block.json';
 import { blockAttributes } from './attributes';
 
 registerBlockType( metadata, {
-	title: __( 'Filter Products by Price', 'woo-gutenberg-products-block' ),
+	title: __( 'Filter by Price', 'woo-gutenberg-products-block' ),
 	description: __(
 		'Allow customers to filter products by price range.',
 		'woo-gutenberg-products-block'

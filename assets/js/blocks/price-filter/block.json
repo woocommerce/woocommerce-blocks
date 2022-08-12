@@ -1,7 +1,7 @@
 {
 	"name": "woocommerce/price-filter",
 	"version": "1.0.0",
-	"title": "Filter Products by Price",
+	"title": "Filter by Price",
 	"description": "Allow customers to filter products by price range.",
 	"category": "woocommerce",
 	"keywords": [ "WooCommerce" ],
