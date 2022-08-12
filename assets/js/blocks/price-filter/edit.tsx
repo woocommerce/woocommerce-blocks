@@ -99,7 +99,7 @@ export default function ( {
 					) }
 					<ToggleControl
 						label={ __(
-							"show 'Apply filters' button",
+							"Show 'Apply filters' button",
 							'woo-gutenberg-products-block'
 						) }
 						help={

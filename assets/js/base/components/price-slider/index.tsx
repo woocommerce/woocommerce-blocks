@@ -423,23 +423,24 @@ const PriceSlider = ( {
 					/>
 				</div>
 			) }
-			<div className="wc-block-price-filter__controls wc-block-components-price-slider__controls">
+			<div className="wc-block-price-filter__range-text wc-block-components-price-slider__range-text">
 				{ ! showInputFields &&
 					! isLoading &&
 					Number.isFinite( minPrice ) &&
 					Number.isFinite( maxPrice ) && (
-						<div className="wc-block-price-filter__range-text wc-block-components-price-slider__range-text">
+						<>
 							<FormattedMonetaryAmount
 								currency={ currency }
 								value={ minPrice }
 							/>
-							&nbsp;&ndash;&nbsp;
 							<FormattedMonetaryAmount
 								currency={ currency }
 								value={ maxPrice }
 							/>
-						</div>
+						</>
 					) }
+			</div>
+			<div className="wc-block-components-price-slider__actions">
 				<FilterResetButton
 					onClick={ () => {
 						onChange( [ minConstraint, maxConstraint ] );

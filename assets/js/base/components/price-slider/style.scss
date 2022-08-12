@@ -114,6 +114,21 @@
 		padding: $gap-smaller;
 	}
 }
+
+.wc-block-components-price-slider__range-text {
+	align-items: center;
+	display: flex;
+	justify-content: space-between;
+	margin: $gap 0;
+}
+
+.wc-block-components-price-slider__actions {
+	align-items: center;
+	display: flex;
+	gap: $gap-smaller;
+	justify-content: flex-end;
+}
+
 .wc-block-components-price-slider__range-input {
 	@include reset;
 	width: 100%;

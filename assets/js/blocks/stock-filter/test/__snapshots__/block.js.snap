@@ -94,25 +94,21 @@ exports[`Testing stock filter renders the stock filter block with the filter but
         </label>
       </li>
     </ul>
-    <div
-      class="wc-block-components-filter-buttons"
+    <button
+      class="wp-block-button__link wc-block-filter-submit-button wc-block-components-filter-submit-button wc-block-stock-filter__button"
+      type="submit"
     >
-      <button
-        class="wp-block-button__link wc-block-filter-submit-button wc-block-components-filter-submit-button wc-block-stock-filter__button"
-        type="submit"
+      <span
+        aria-hidden="true"
       >
-        <span
-          aria-hidden="true"
-        >
-          Apply
-        </span>
-        <span
-          class="screen-reader-text"
-        >
-          Apply filter
-        </span>
-      </button>
-    </div>
+        Apply
+      </span>
+      <span
+        class="screen-reader-text"
+      >
+        Apply filter
+      </span>
+    </button>
   </div>
 </div>
 `;
