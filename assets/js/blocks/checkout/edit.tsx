@@ -14,7 +14,11 @@ import {
 	previewCart,
 	previewSavedPaymentMethods,
 } from '@woocommerce/resource-previews';
-import { PanelBody, ToggleControl } from '@wordpress/components';
+import {
+	PanelBody,
+	ToggleControl,
+	CheckboxControl,
+} from '@wordpress/components';
 import type { TemplateArray } from '@wordpress/blocks';
 /**
  * Internal dependencies
@@ -64,6 +68,12 @@ export const Edit = ( {
 		[ 'woocommerce/checkout-totals-block', {}, [] ],
 	] as TemplateArray;
 
+	const toggleAttribute = ( key: keyof Attributes ): void => {
+		const newAttributes = {} as Partial< Attributes >;
+		newAttributes[ key ] = ! ( attributes[ key ] as boolean );
+		setAttributes( newAttributes );
+	};
+
 	const accountControls = (): JSX.Element => (
 		<InspectorControls>
 			<PanelBody
@@ -88,6 +98,64 @@ export const Edit = ( {
 		</InspectorControls>
 	);
 
+	const addressFieldControls = (): JSX.Element => (
+		<InspectorControls>
+			<PanelBody
+				title={ __( 'Address Fields', 'woo-gutenberg-products-block' ) }
+			>
+				<p className="wc-block-checkout__controls-text">
+					{ __(
+						'Show or hide fields in the checkout address forms.',
+						'woo-gutenberg-products-block'
+					) }
+				</p>
+				<ToggleControl
+					label={ __( 'Company', 'woo-gutenberg-products-block' ) }
+					checked={ showCompanyField }
+					onChange={ () => toggleAttribute( 'showCompanyField' ) }
+				/>
+				{ showCompanyField && (
+					<CheckboxControl
+						label={ __(
+							'Require company name?',
+							'woo-gutenberg-products-block'
+						) }
+						checked={ requireCompanyField }
+						onChange={ () =>
+							toggleAttribute( 'requireCompanyField' )
+						}
+						className="components-base-control--nested"
+					/>
+				) }
+				<ToggleControl
+					label={ __(
+						'Apartment, suite, etc.',
+						'woo-gutenberg-products-block'
+					) }
+					checked={ showApartmentField }
+					onChange={ () => toggleAttribute( 'showApartmentField' ) }
+				/>
+				<ToggleControl
+					label={ __( 'Phone', 'woo-gutenberg-products-block' ) }
+					checked={ showPhoneField }
+					onChange={ () => toggleAttribute( 'showPhoneField' ) }
+				/>
+				{ showPhoneField && (
+					<CheckboxControl
+						label={ __(
+							'Require phone number?',
+							'woo-gutenberg-products-block'
+						) }
+						checked={ requirePhoneField }
+						onChange={ () =>
+							toggleAttribute( 'requirePhoneField' )
+						}
+						className="components-base-control--nested"
+					/>
+				) }
+			</PanelBody>
+		</InspectorControls>
+	);
 	const blockProps = useBlockPropsWithLocking();
 	return (
 		<div { ...blockProps }>
@@ -108,6 +176,7 @@ export const Edit = ( {
 					>
 						<CheckoutBlockControlsContext.Provider
 							value={ {
+								addressFieldControls,
 								accountControls,
 							} }
 						>

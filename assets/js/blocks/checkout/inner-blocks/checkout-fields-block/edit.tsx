@@ -10,6 +10,7 @@ import type { TemplateArray } from '@wordpress/blocks';
 /**
  * Internal dependencies
  */
+import { useCheckoutBlockControlsContext } from '../../context';
 import {
 	useForcedLayout,
 	getAllowedBlocks,
@@ -33,6 +34,9 @@ export const Edit = ( {
 	} );
 	const allowedBlocks = getAllowedBlocks( innerBlockAreas.CHECKOUT_FIELDS );
 
+	const { addressFieldControls: Controls } =
+		useCheckoutBlockControlsContext();
+
 	const defaultTemplate = [
 		[ 'woocommerce/checkout-express-payment-block', {}, [] ],
 		[ 'woocommerce/checkout-contact-information-block', {}, [] ],
@@ -53,6 +57,7 @@ export const Edit = ( {
 
 	return (
 		<Main { ...blockProps }>
+			<Controls />
 			<form className="wc-block-components-form wc-block-checkout__form">
 				<InnerBlocks
 					allowedBlocks={ allowedBlocks }
