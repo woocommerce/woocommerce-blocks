@@ -229,7 +229,7 @@ class Cart extends AbstractBlock {
 				array_map(
 					'html_entity_decode',
 					array_map(
-						function ($element) {
+						function ( $element ) {
 							if ( is_array( $element ) ) {
 								return $this->deep_sort_with_accents( $element );
 							}
