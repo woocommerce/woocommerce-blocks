@@ -423,23 +423,22 @@ const PriceSlider = ( {
 					/>
 				</div>
 			) }
-			<div className="wc-block-price-filter__range-text wc-block-components-price-slider__range-text">
-				{ ! showInputFields &&
-					! isLoading &&
-					Number.isFinite( minPrice ) &&
-					Number.isFinite( maxPrice ) && (
-						<>
-							<FormattedMonetaryAmount
-								currency={ currency }
-								value={ minPrice }
-							/>
-							<FormattedMonetaryAmount
-								currency={ currency }
-								value={ maxPrice }
-							/>
-						</>
-					) }
-			</div>
+
+			{ ! showInputFields &&
+				! isLoading &&
+				Number.isFinite( minPrice ) &&
+				Number.isFinite( maxPrice ) && (
+					<div className="wc-block-price-filter__range-text wc-block-components-price-slider__range-text">
+						<FormattedMonetaryAmount
+							currency={ currency }
+							value={ minPrice }
+						/>
+						<FormattedMonetaryAmount
+							currency={ currency }
+							value={ maxPrice }
+						/>
+					</div>
+				) }
 			<div className="wc-block-components-price-slider__actions">
 				{ ( showFilterButton ||
 					minPrice !== minConstraint ||
@@ -461,7 +460,7 @@ const PriceSlider = ( {
 				) }
 				{ showFilterButton && (
 					<FilterSubmitButton
-						className="wc-block-components-price-slider__button"
+						className="wc-block-price-filter__button wc-block-components-price-slider__button"
 						disabled={ isLoading || ! hasValidConstraints }
 						onClick={ onSubmit }
 						screenReaderLabel={ __(

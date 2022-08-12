@@ -29,7 +29,8 @@ const block = {
 	class: '.wc-block-price-filter',
 	selectors: {
 		editor: {
-			filterButtonToggle: "//label[text()='Filter button']",
+			filterButtonToggle:
+				'//label[text()="Show \'Apply filters\' button"]',
 		},
 		frontend: {
 			priceMaxAmount: '.wc-block-price-filter__amount--max',

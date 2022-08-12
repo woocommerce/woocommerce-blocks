@@ -91,15 +91,15 @@ describe( `${ block.name } Block`, () => {
 				);
 			} );
 
-			it( 'allows you to toggle go button', async () => {
+			it( 'allows you to toggle filter button', async () => {
 				await expect( page ).toClick( 'label', {
-					text: 'Filter button',
+					text: "Show 'Apply filters' button",
 				} );
 				await expect( page ).toMatchElement(
 					'button.wc-block-filter-submit-button.wc-block-price-filter__button'
 				);
 				await expect( page ).toClick( 'label', {
-					text: 'Filter button',
+					text: "Show 'Apply filters' button",
 				} );
 			} );
 		} );
