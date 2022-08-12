@@ -3,47 +3,28 @@
  */
 import { __ } from '@wordpress/i18n';
 import { store as editorStore } from '@wordpress/editor';
+import triggerFetch from '@wordpress/api-fetch';
 import { store as coreStore } from '@wordpress/core-data';
-import { SETTINGS_STORE_NAME as settingsStore } from '@woocommerce/data';
 import { Notice, Button } from '@wordpress/components';
 import { useSelect, useDispatch } from '@wordpress/data';
 import { CHECKOUT_PAGE_ID, CART_PAGE_ID } from '@woocommerce/block-settings';
 import { useCallback, useState } from '@wordpress/element';
-import { createHigherOrderComponent } from '@wordpress/compose';
-import {
-	store as blockEditorStore,
-	InspectorControls,
-} from '@wordpress/block-editor';
-import { addFilter, hasFilter } from '@wordpress/hooks';
-import type { StoreDescriptor } from '@wordpress/data';
 /**
  * Internal dependencies
  */
 import './editor.scss';
 
-declare module '@wordpress/editor' {
-	let store: StoreDescriptor;
-}
-
-declare module '@wordpress/core-data' {
-	let store: StoreDescriptor;
-}
-
-declare module '@wordpress/block-editor' {
-	let store: StoreDescriptor;
-}
-
-export function DefaultNotice( { page }: { page: string } ) {
+export function DefaultNotice( { block }: { block: string } ) {
 	// To avoid having the same logic twice, we're going to handle both pages here.
 	const ORIGINAL_PAGE_ID =
-		page === 'checkout' ? CHECKOUT_PAGE_ID : CART_PAGE_ID;
+		block === 'checkout' ? CHECKOUT_PAGE_ID : CART_PAGE_ID;
 	const settingName =
-		page === 'checkout'
+		block === 'checkout'
 			? 'woocommerce_checkout_page_id'
 			: 'woocommerce_cart_page_id';
 
 	const noticeContent =
-		page === 'checkout'
+		block === 'checkout'
 			? __(
 					'If you would like to use this block as your default checkout, update your page settings',
 					'woo-gutenberg-products-block'
@@ -54,7 +35,6 @@ export function DefaultNotice( { page }: { page: string } ) {
 			  );
 
 	// Everything below works the same for Cart/Checkout
-	const { updateAndPersistSettingsForGroup } = useDispatch( settingsStore );
 	const { saveEntityRecord } = useDispatch( coreStore );
 	const { editPost, savePost } = useDispatch( editorStore );
 	const { slug, isLoadingPage, postPublished, currentPostId } = useSelect(
@@ -65,7 +45,7 @@ export function DefaultNotice( { page }: { page: string } ) {
 			return {
 				slug:
 					getEntityRecord( 'postType', 'page', ORIGINAL_PAGE_ID )
-						?.slug || page,
+						?.slug || block,
 				isLoadingPage: isResolving( 'getEntityRecord', [
 					'postType',
 					'page',
@@ -89,9 +69,11 @@ export function DefaultNotice( { page }: { page: string } ) {
 			} )
 			.then( () =>
 				// Make this page ID the default cart/checkout.
-				updateAndPersistSettingsForGroup( 'advanced', {
-					advanced: {
-						[ settingName ]: currentPostId.toString(),
+				triggerFetch( {
+					path: `/wc/v3/settings/advanced/${ settingName }`,
+					method: 'POST',
+					data: {
+						value: currentPostId.toString(),
 					},
 				} )
 			)
@@ -113,7 +95,6 @@ export function DefaultNotice( { page }: { page: string } ) {
 		postPublished,
 		editPost,
 		savePost,
-		updateAndPersistSettingsForGroup,
 		settingName,
 		currentPostId,
 		ORIGINAL_PAGE_ID,
@@ -157,45 +138,5 @@ export function DefaultNotice( { page }: { page: string } ) {
 				</>
 			) }
 		</Notice>
-	);
-}
-
-const withDefaultNotice = createHigherOrderComponent(
-	( BlockEdit ) => ( props ) => {
-		const { clientId } = props;
-		const { isCart, isCheckout } = useSelect( ( select ) => {
-			const { getBlockParentsByBlockName, getBlockName } =
-				select( blockEditorStore );
-			const parent = getBlockParentsByBlockName( clientId, [
-				'woocommerce/cart',
-				'woocommerce/checkout',
-			] ).map( getBlockName );
-			return {
-				isCart: parent.includes( 'woocommerce/cart' ),
-				isCheckout: parent.includes( 'woocommerce/checkout' ),
-			};
-		}, [] );
-		return (
-			<>
-				{ ( isCart || isCheckout ) && (
-					<InspectorControls>
-						<DefaultNotice
-							page={ isCheckout ? 'checkout' : 'cart' }
-						/>
-					</InspectorControls>
-				) }
-
-				<BlockEdit { ...props } />
-			</>
-		);
-	},
-	'withDefaultNotice'
-);
-
-if ( ! hasFilter( 'editor.BlockEdit', 'woocommerce/add/default-notice' ) ) {
-	addFilter(
-		'editor.BlockEdit',
-		'woocommerce/add/default-notice',
-		withDefaultNotice
 	);
 }
