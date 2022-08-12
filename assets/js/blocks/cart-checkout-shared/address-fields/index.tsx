@@ -36,8 +36,8 @@ const withAddressFields = createHigherOrderComponent(
 			return select( 'core/block-editor' ).getBlockName( clientId );
 		} );
 		const blocksWithAddressFields = [
-			'woocommerce/checkout-shipping-address',
-			'woocommerce/checkout-billing-address',
+			'woocommerce/checkout-shipping-address-block',
+			'woocommerce/checkout-billing-address-block',
 			'woocommerce/checkout-fields-block',
 		];
 
