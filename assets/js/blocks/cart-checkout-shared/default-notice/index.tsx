@@ -97,9 +97,9 @@ export function DefaultNotice( { page }: { page: string } ) {
 			)
 			// Append `-2` to the original link so we can use it here.
 			.then( () => {
-				if ( CHECKOUT_PAGE_ID !== 0 ) {
+				if ( ORIGINAL_PAGE_ID !== 0 ) {
 					return saveEntityRecord( 'postType', 'page', {
-						id: CHECKOUT_PAGE_ID,
+						id: ORIGINAL_PAGE_ID,
 						slug: `${ slug }-2`,
 					} );
 				}
@@ -116,6 +116,7 @@ export function DefaultNotice( { page }: { page: string } ) {
 		updateAndPersistSettingsForGroup,
 		settingName,
 		currentPostId,
+		ORIGINAL_PAGE_ID,
 		saveEntityRecord,
 		slug,
 	] );
