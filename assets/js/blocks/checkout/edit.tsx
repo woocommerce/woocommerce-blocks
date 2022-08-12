@@ -20,6 +20,8 @@ import {
 	CheckboxControl,
 } from '@wordpress/components';
 import type { TemplateArray } from '@wordpress/blocks';
+import { CartCheckoutFeedbackPrompt } from '@woocommerce/editor-components/feedback-prompt';
+
 /**
  * Internal dependencies
  */
@@ -95,6 +97,7 @@ export const Edit = ( {
 					}
 				/>
 			</PanelBody>
+			<CartCheckoutFeedbackPrompt />
 		</InspectorControls>
 	);
 
@@ -154,6 +157,7 @@ export const Edit = ( {
 					/>
 				) }
 			</PanelBody>
+			<CartCheckoutFeedbackPrompt />
 		</InspectorControls>
 	);
 	const blockProps = useBlockPropsWithLocking();
