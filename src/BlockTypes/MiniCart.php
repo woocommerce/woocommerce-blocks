@@ -324,9 +324,9 @@ class MiniCart extends AbstractBlock {
 	/**
 	 * Append frontend scripts when rendering the Mini Cart block.
 	 *
-	 * @param array  $attributes Block attributes.
-	 * @param string $content    Block content.
-	 *
+	 * @param array    $attributes Block attributes.
+	 * @param string   $content    Block content.
+	 * @param WP_Block $block Block instance.
 	 * @return string Rendered block type output.
 	 */
 	protected function render( $attributes, $content, $block ) {

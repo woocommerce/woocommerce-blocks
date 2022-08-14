@@ -240,10 +240,6 @@ abstract class AbstractBlock {
 		return $this->namespace . '/' . $this->block_name;
 	}
 
-	protected function get_block_type_uses_context() {
-		return [];
-	}
-
 	/**
 	 * Get the render callback for this block type.
 	 *
@@ -340,9 +336,9 @@ abstract class AbstractBlock {
 	/**
 	 * Render the block. Extended by children.
 	 *
-	 * @param array  $attributes Block attributes.
-	 * @param string $content    Block content.
-	 * @param object $block    Block.
+	 * @param array    $attributes Block attributes.
+	 * @param string   $content    Block content.
+	 * @param WP_Block $block Block instance.
 	 * @return string Rendered block type output.
 	 */
 	protected function render( $attributes, $content, $block ) {
@@ -375,6 +371,7 @@ abstract class AbstractBlock {
 	 */
 	protected function enqueue_data( array $attributes = [] ) {
 		$registered_script_data = $this->integration_registry->get_all_registered_script_data();
+		do_action( 'qm/debug', $registered_script_data );
 
 		foreach ( $registered_script_data as $asset_data_key => $asset_data_value ) {
 			if ( ! $this->asset_data_registry->exists( $asset_data_key ) ) {

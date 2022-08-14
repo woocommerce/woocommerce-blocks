@@ -21,7 +21,7 @@ function registerProductQueryVariationAttributes(
 		// @ts-ignore -- We need this because `attributes` is marked as `readonly`
 		props.attributes = {
 			...props.attributes,
-			productQuery: {
+			__woocommerceVariationProps: {
 				type: 'object',
 			},
 		};

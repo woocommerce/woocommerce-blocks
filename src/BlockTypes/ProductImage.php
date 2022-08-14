@@ -57,16 +57,26 @@ class ProductImage extends AbstractBlock {
 		$this->register_chunk_translations( [ $this->block_name ] );
 	}
 
-	protected function get_block_type_uses_context() {
-		return array( 'query', 'queryId', 'postId' );
-	}
 
+	/**
+	 * Include and render the block
+	 *
+	 * @param array    $attributes Block attributes. Default empty array.
+	 * @param string   $content    Block content. Default empty string.
+	 * @param WP_Block $block Block instance.
+	 * @return string Rendered block type output.
+	 */
 	protected function render( $attributes, $content, $block ) {
+		if ( ! empty( $content ) ) {
+			return $content;
+		}
+
 		$post_id = $block->context['postId'];
+		$product = wc_get_product( $post_id );
+		if ( $product ) {
+			$is_on_sale = $product->is_on_sale();
 
-		$product    = wc_get_product( $post_id );
-		$is_on_sale = $product->is_on_sale();
-
-		return '' . wc_bool_to_string( $is_on_sale ) . '' . wp_get_attachment_image( get_post_thumbnail_id( $post_id ) );
+			return '' . wc_bool_to_string( $is_on_sale ) . '' . wp_get_attachment_image( get_post_thumbnail_id( $post_id ) );
+		}
 	}
 }
