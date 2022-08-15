@@ -46,10 +46,7 @@ export default function ( {
 		return (
 			<InspectorControls key="inspector">
 				<PanelBody
-					title={ __(
-						'Block Settings',
-						'woo-gutenberg-products-block'
-					) }
+					title={ __( 'Settings', 'woo-gutenberg-products-block' ) }
 				>
 					<ToggleGroupControl
 						label={ __(
