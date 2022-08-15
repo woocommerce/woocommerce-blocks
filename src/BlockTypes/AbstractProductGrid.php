@@ -69,7 +69,7 @@ abstract class AbstractProductGrid extends AbstractDynamicBlock {
 	 *
 	 * @param array    $attributes Block attributes. Default empty array.
 	 * @param string   $content    Block content. Default empty string.
-	 * @param WP_Block $block Block instance.
+	 * @param WP_Block $block      Block instance.
 	 * @return string Rendered block type output.
 	 */
 	protected function render( $attributes = array(), $content = '', $block ) {

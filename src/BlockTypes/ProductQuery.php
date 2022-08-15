@@ -14,8 +14,6 @@ class ProductQuery extends AbstractBlock {
 	const PRODUCT_QUERY    = 'product-query';
 	const PRODUCTS_ON_SALE = 'query-on-sale';
 
-
-
 	/**
 	 * Initialize this block type.
 	 *
@@ -36,11 +34,10 @@ class ProductQuery extends AbstractBlock {
 	/**
 	 * Update the query for the product query block.
 	 *
-	 * @param WP_Block $block Block instance.
-	 * @param array    $current_block Block.
+	 * @param WP_Block $block         Block instance.
+	 * @param WP_Block $current_block Block.
 	 */
 	public function update_query( $block, $current_block ) {
-
 		if ( 'core/query' !== $current_block['blockName'] ) {
 			return;
 		}
@@ -58,10 +55,10 @@ class ProductQuery extends AbstractBlock {
 	/**
 	 * Return a custom query based on the attributes.
 	 *
-	 * @param array    $query Query.
-	 * @param WP_Block $block Block instance.
-	 * @param int      $page Page.
-	 * @param array    $current_block Block.
+	 * @param WP_Query $query         The WordPress Query.
+	 * @param WP_Block $block         Block instance.
+	 * @param int      $page          Page.
+	 * @param WP_Block $current_block Block.
 	 * @return array
 	 */
 	public function get_query_by_attributes( $query, $block, $page, $current_block ) {
@@ -82,8 +79,6 @@ class ProductQuery extends AbstractBlock {
 		return array_merge( $query, $common_query_values, $on_sale_query );
 	}
 
-
-
 	/**
 	 * Return a query for on sale products.
 	 *
@@ -96,6 +91,8 @@ class ProductQuery extends AbstractBlock {
 		}
 
 		return array(
+			// Ignoring the warning of not using meta queries.
+			// phpcs:ignore WordPress.DB.SlowDBQuery.slow_db_query_meta_query
 			'meta_query' => array(
 				'relation' => 'OR',
 				array(

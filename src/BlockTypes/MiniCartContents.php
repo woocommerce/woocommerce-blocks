@@ -54,7 +54,7 @@ class MiniCartContents extends AbstractBlock {
 	 *
 	 * @param array    $attributes Block attributes.
 	 * @param string   $content    Block content.
-	 * @param WP_Block $block Block instance.
+	 * @param WP_Block $block      Block instance.
 	 * @return string Rendered block type output.
 	 */
 	protected function render( $attributes, $content, $block ) {

@@ -42,7 +42,7 @@ class ClassicTemplate extends AbstractDynamicBlock {
 	 *
 	 * @param array    $attributes Block attributes.
 	 * @param string   $content    Block content.
-	 * @param WP_Block $block Block instance.
+	 * @param WP_Block $block      Block instance.
 	 * @return string | void Rendered block type output.
 	 */
 	protected function render( $attributes, $content, $block ) {

@@ -76,6 +76,7 @@ abstract class AbstractBlock {
 	 *
 	 * @param array|WP_Block $attributes Block attributes, or an instance of a WP_Block. Defaults to an empty array.
 	 * @param string         $content    Block content. Default empty string.
+	 * @param WP_Block       $block      The current block instance.
 	 * @return string Rendered block type output.
 	 */
 	public function render_callback( $attributes = [], $content = '', $block ) {
@@ -338,7 +339,7 @@ abstract class AbstractBlock {
 	 *
 	 * @param array    $attributes Block attributes.
 	 * @param string   $content    Block content.
-	 * @param WP_Block $block Block instance.
+	 * @param WP_Block $block      Block instance.
 	 * @return string Rendered block type output.
 	 */
 	protected function render( $attributes, $content, $block ) {
@@ -371,7 +372,6 @@ abstract class AbstractBlock {
 	 */
 	protected function enqueue_data( array $attributes = [] ) {
 		$registered_script_data = $this->integration_registry->get_all_registered_script_data();
-		do_action( 'qm/debug', $registered_script_data );
 
 		foreach ( $registered_script_data as $asset_data_key => $asset_data_value ) {
 			if ( ! $this->asset_data_registry->exists( $asset_data_key ) ) {

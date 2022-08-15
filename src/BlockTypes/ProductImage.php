@@ -63,7 +63,7 @@ class ProductImage extends AbstractBlock {
 	 *
 	 * @param array    $attributes Block attributes. Default empty array.
 	 * @param string   $content    Block content. Default empty string.
-	 * @param WP_Block $block Block instance.
+	 * @param WP_Block $block      Block instance.
 	 * @return string Rendered block type output.
 	 */
 	protected function render( $attributes, $content, $block ) {
