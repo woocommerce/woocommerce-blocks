@@ -5,9 +5,8 @@ import { useState, useEffect } from '@wordpress/element';
 import RadioControl, {
 	RadioControlOptionLayout,
 } from '@woocommerce/base-components/radio-control';
-import type { PackageRateOption } from '@woocommerce/type-defs/shipping';
 import type { CartShippingPackageShippingRate } from '@woocommerce/type-defs/cart';
-
+import type { PackageRateRenderOption } from '@woocommerce/base-components/cart-checkout/shipping-rates-control-package';
 /**
  * Internal dependencies
  */
@@ -16,9 +15,7 @@ import { renderPackageRateOption } from './render-package-rate-option';
 interface PackageRates {
 	onSelectRate: ( selectedRateId: string ) => void;
 	rates: CartShippingPackageShippingRate[];
-	renderOption?: (
-		option: CartShippingPackageShippingRate
-	) => PackageRateOption;
+	renderOption?: PackageRateRenderOption;
 	className?: string;
 	noResultsMessage: JSX.Element;
 	selectedRate: CartShippingPackageShippingRate | undefined;
