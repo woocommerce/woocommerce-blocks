@@ -13,11 +13,11 @@ import { QUERY_DEFAULT_ATTRIBUTES } from '../constants';
 
 if ( isExperimentalBuild() ) {
 	registerBlockVariation( 'core/query', {
-		name: 'woocommerce/query-on-sale',
+		name: 'woocommerce/query-products-on-sale',
 		title: __( 'Products on Sale', 'woo-gutenberg-products-block' ),
 		isActive: ( blockAttributes ) =>
 			blockAttributes?.__woocommerceVariationProps?.name ===
-				'query-on-sale' ||
+				'query-products-on-sale' ||
 			blockAttributes?.__woocommerceVariationProps?.query?.onSale ===
 				true,
 		icon: {
@@ -31,7 +31,7 @@ if ( isExperimentalBuild() ) {
 		attributes: {
 			...QUERY_DEFAULT_ATTRIBUTES,
 			__woocommerceVariationProps: {
-				name: 'query-on-sale',
+				name: 'query-products-on-sale',
 				attributes: {
 					query: {
 						onSale: true,
