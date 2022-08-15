@@ -5,7 +5,6 @@ import { __ } from '@wordpress/i18n';
 import { createBlock, registerBlockType } from '@wordpress/blocks';
 import classNames from 'classnames';
 import { Icon, currencyDollar } from '@wordpress/icons';
-import { isFeaturePluginBuild } from '@woocommerce/block-settings';
 import { useBlockProps } from '@wordpress/block-editor';
 
 /**
@@ -28,16 +27,6 @@ registerBlockType( metadata, {
 				className="wc-block-editor-components-block-icon"
 			/>
 		),
-	},
-	supports: {
-		...metadata.supports,
-		...( isFeaturePluginBuild() && {
-			__experimentalBorder: {
-				radius: true,
-				color: true,
-				width: false,
-			},
-		} ),
 	},
 	attributes: {
 		...metadata.attributes,
