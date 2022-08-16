@@ -64,14 +64,12 @@ registerBlockType( metadata, {
 			showFilterButton,
 			heading,
 			headingLevel,
-			inlineInput,
 		} = attributes;
 		const data = {
 			'data-showinputfields': showInputFields,
 			'data-showfilterbutton': showFilterButton,
 			'data-heading': heading,
 			'data-heading-level': headingLevel,
-			'data-inlineinput': inlineInput,
 		};
 		return (
 			<div
