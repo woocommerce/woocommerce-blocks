@@ -2,19 +2,14 @@
  * External dependencies
  */
 import { __ } from '@wordpress/i18n';
-import {
-	InspectorControls,
-	useBlockProps,
-	Warning,
-} from '@wordpress/block-editor';
+import { InspectorControls, useBlockProps } from '@wordpress/block-editor';
 import HeadingToolbar from '@woocommerce/editor-components/heading-toolbar';
 import BlockTitle from '@woocommerce/editor-components/block-title';
-import { BlockEditProps, createBlock } from '@wordpress/blocks';
+import UpdateFilterHeadingsPrompt from '@woocommerce/base-components/filter-update-heading';
+import { BlockEditProps } from '@wordpress/blocks';
 import { getSettingWithCoercion } from '@woocommerce/settings';
 import { isBoolean } from '@woocommerce/types';
-import { useDispatch, useSelect } from '@wordpress/data';
 import {
-	Button,
 	Disabled,
 	PanelBody,
 	withSpokenMessages,
@@ -29,6 +24,7 @@ import {
  */
 import Block from './block';
 import type { Attributes } from './types';
+import useUpdateFilterHeadings from '../../shared/hooks/use-update-filter-headings';
 
 const Edit = ( {
 	attributes,
@@ -40,12 +36,6 @@ const Edit = ( {
 	const blockProps = useBlockProps( {
 		className,
 	} );
-
-	const isHeadingRemoved = getSettingWithCoercion(
-		'isHeadingRemoved',
-		false,
-		isBoolean
-	);
 
 	const getInspectorControls = () => {
 		return (
@@ -103,54 +93,30 @@ const Edit = ( {
 		);
 	};
 
-	const { insertBlock } = useDispatch( 'core/block-editor' );
-	const currentBlockIndex = useSelect( ( select ) =>
-		select( 'core/block-editor' ).getBlockIndex( clientId )
+	/*
+		Since WooCommerce Blocks 8.2.0, we have decoupled the block title from the filter block itself.
+		So we need to prompt users who are already using the block with title to click update,
+		where we will create a title block for them.
+	*/
+	const shouldRemoveBlockTitle = getSettingWithCoercion(
+		'shouldRemoveBlockTitle',
+		false,
+		isBoolean
 	);
-
-	const updateBlock = () => {
-		const headingBlock = createBlock( 'core/heading', {
-			content: heading,
-			level: headingLevel,
-		} );
-		insertBlock( headingBlock, currentBlockIndex );
-		setAttributes( {
-			heading: '',
-		} );
-	};
-
-	const actions = [
-		<Button key="update" onClick={ updateBlock } variant="primary">
-			{ __( 'Update block', 'woo-gutenberg-products-block' ) }
-		</Button>,
-	];
+	const updateBlockHeading = useUpdateFilterHeadings( {
+		heading,
+		headingLevel,
+		clientId,
+		setAttributes,
+	} );
 
 	return (
 		<div { ...blockProps }>
 			{ getInspectorControls() }
-
-			{ isHeadingRemoved ? (
-				heading && (
-					<>
-						<Warning actions={ actions }>
-							{ __(
-								'This block has been updated!',
-								'woo-gutenberg-products-block'
-							) }
-						</Warning>
-						<Disabled>
-							<BlockTitle
-								className="wc-block-active-filters__title"
-								headingLevel={ headingLevel }
-								heading={ heading }
-								onChange={ ( value: Attributes[ 'heading' ] ) =>
-									setAttributes( { heading: value } )
-								}
-							/>
-						</Disabled>
-					</>
-				)
-			) : (
+			{ shouldRemoveBlockTitle && heading && (
+				<UpdateFilterHeadingsPrompt onClick={ updateBlockHeading } />
+			) }
+			{ heading && (
 				<BlockTitle
 					className="wc-block-active-filters__title"
 					headingLevel={ headingLevel }
@@ -158,6 +124,7 @@ const Edit = ( {
 					onChange={ ( value: Attributes[ 'heading' ] ) =>
 						setAttributes( { heading: value } )
 					}
+					disabled={ shouldRemoveBlockTitle }
 				/>
 			) }
 			<Disabled>

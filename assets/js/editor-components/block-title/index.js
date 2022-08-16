@@ -5,6 +5,7 @@ import PropTypes from 'prop-types';
 import { PlainText } from '@wordpress/block-editor';
 import { withInstanceId } from '@wordpress/compose';
 import { __ } from '@wordpress/i18n';
+import { Disabled } from '@wordpress/components';
 
 /**
  * Internal dependencies
@@ -17,9 +18,10 @@ const BlockTitle = ( {
 	onChange,
 	heading,
 	instanceId,
+	disabled,
 } ) => {
 	const TagName = `h${ headingLevel }`;
-	return (
+	const Component = () => (
 		<TagName className={ className }>
 			<label
 				className="screen-reader-text"
@@ -35,6 +37,16 @@ const BlockTitle = ( {
 			/>
 		</TagName>
 	);
+
+	if ( disabled ) {
+		return (
+			<Disabled>
+				<Component />
+			</Disabled>
+		);
+	}
+
+	return <Component />;
 };
 
 BlockTitle.propTypes = {
@@ -54,6 +66,10 @@ BlockTitle.propTypes = {
 	 * Level of the heading tag (1, 2, 3... will render <h1>, <h2>, <h3>... elements).
 	 */
 	headingLevel: PropTypes.number,
+	/**
+	 * If the title is a disabled element
+	 */
+	disabled: PropTypes.bool,
 };
 
 export default withInstanceId( BlockTitle );

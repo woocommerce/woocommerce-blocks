@@ -23,7 +23,7 @@ class ActiveFilters extends AbstractBlock {
 	 */
 	protected function enqueue_data( array $attributes = [] ) {
 		$this->asset_data_registry->add(
-			'isHeadingRemoved',
+			'shouldRemoveBlockTitle',
 			version_compare( Package::get_version(), '8.2.0', '>' ),
 			true
 		);
