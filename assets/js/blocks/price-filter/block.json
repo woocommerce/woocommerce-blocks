@@ -29,7 +29,7 @@
 		},
 		"inlineInput": {
 			"type": "boolean",
-			"default": false 
+			"default": true
 		},
 		"showFilterButton": {
 			"type": "boolean",

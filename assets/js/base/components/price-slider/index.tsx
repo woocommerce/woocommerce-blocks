@@ -84,7 +84,7 @@ const PriceSlider = ( {
 	currency,
 	showInputFields = true,
 	showFilterButton = false,
-	inlineInput = false,
+	inlineInput = true,
 	isLoading = false,
 	onSubmit = () => void 0,
 }: PriceSliderProps ): JSX.Element => {
