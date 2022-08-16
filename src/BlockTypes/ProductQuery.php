@@ -37,14 +37,13 @@ class ProductQuery extends AbstractBlock {
 	 * @param array       $parsed_block The block being rendered.
 	 */
 	public function update_query( $pre_render, $parsed_block ) {
-
 		if ( 'core/query' !== $parsed_block['blockName'] ) {
 			return;
 		}
 
 		add_filter(
 			'gutenberg_build_query_vars_from_query_block',
-			function( $query, $block, $page ) use ( $parsed_block ) {
+			function( $query ) use ( $parsed_block ) {
 				return $this->get_query_by_attributes( $query, $parsed_block );
 			},
 			10,
