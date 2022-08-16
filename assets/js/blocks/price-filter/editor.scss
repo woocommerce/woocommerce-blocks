@@ -23,6 +23,11 @@
 	}
 }
 
+.components-base-control__label {
+	text-transform: uppercase;
+	@include font-size(small);
+}
+
 .wc-block-price-slider {
 	.components-placeholder__instructions {
 		border-bottom: 1px solid #e0e2e6;
