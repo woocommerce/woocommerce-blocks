@@ -93,6 +93,11 @@
 		&:hover {
 			color: #7956ad;
 		}
+
+		&:disabled {
+			color: $gray-200;
+			cursor: not-allowed;
+		}
 	}
 
 	.wc-block-active-filters__list--chips {
