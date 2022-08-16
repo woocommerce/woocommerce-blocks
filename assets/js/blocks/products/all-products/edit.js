@@ -8,7 +8,7 @@ import {
 	InnerBlocks,
 	InspectorControls,
 } from '@wordpress/block-editor';
-import { withDispatch, withSelect } from '@wordpress/data';
+import { useSelect, withDispatch, withSelect } from '@wordpress/data';
 import {
 	PanelBody,
 	withSpokenMessages,
@@ -47,6 +47,7 @@ import {
 import { getSharedContentControls, getSharedListControls } from '../edit';
 import Block from './block';
 import './editor.scss';
+import { PRODUCTS_STORE_NAME } from '@woocommerce/data';
 
 /**
  * Component to handle edit mode of "All Products".
