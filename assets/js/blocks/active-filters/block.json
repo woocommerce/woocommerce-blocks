@@ -18,6 +18,10 @@
 			"type": "string",
 			"default": "list"
 		},
+		"heading": {
+			"type": "string",
+			"default": ""
+		},
 		"headingLevel": {
 			"type": "number",
 			"default": 3

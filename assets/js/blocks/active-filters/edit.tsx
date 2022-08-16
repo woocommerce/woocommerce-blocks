@@ -2,11 +2,19 @@
  * External dependencies
  */
 import { __ } from '@wordpress/i18n';
-import { InspectorControls, useBlockProps } from '@wordpress/block-editor';
+import {
+	InspectorControls,
+	useBlockProps,
+	Warning,
+} from '@wordpress/block-editor';
 import HeadingToolbar from '@woocommerce/editor-components/heading-toolbar';
 import BlockTitle from '@woocommerce/editor-components/block-title';
-import type { BlockEditProps } from '@wordpress/blocks';
+import { BlockEditProps, createBlock } from '@wordpress/blocks';
+import { getSettingWithCoercion } from '@woocommerce/settings';
+import { isBoolean } from '@woocommerce/types';
+import { useDispatch, useSelect } from '@wordpress/data';
 import {
+	Button,
 	Disabled,
 	PanelBody,
 	withSpokenMessages,
@@ -25,12 +33,19 @@ import type { Attributes } from './types';
 const Edit = ( {
 	attributes,
 	setAttributes,
+	clientId,
 }: BlockEditProps< Attributes > ) => {
 	const { className, displayStyle, heading, headingLevel } = attributes;
 
 	const blockProps = useBlockProps( {
 		className,
 	} );
+
+	const isHeadingRemoved = getSettingWithCoercion(
+		'isHeadingRemoved',
+		false,
+		isBoolean
+	);
 
 	const getInspectorControls = () => {
 		return (
@@ -88,17 +103,63 @@ const Edit = ( {
 		);
 	};
 
+	const { insertBlock } = useDispatch( 'core/block-editor' );
+	const currentBlockIndex = useSelect( ( select ) =>
+		select( 'core/block-editor' ).getBlockIndex( clientId )
+	);
+
+	const updateBlock = () => {
+		const headingBlock = createBlock( 'core/heading', {
+			content: heading,
+			level: headingLevel,
+		} );
+		insertBlock( headingBlock, currentBlockIndex );
+		setAttributes( {
+			heading: '',
+		} );
+	};
+
+	const actions = [
+		<Button key="update" onClick={ updateBlock } variant="primary">
+			{ __( 'Update block', 'woo-gutenberg-products-block' ) }
+		</Button>,
+	];
+
 	return (
 		<div { ...blockProps }>
 			{ getInspectorControls() }
-			<BlockTitle
-				className="wc-block-active-filters__title"
-				headingLevel={ headingLevel }
-				heading={ heading }
-				onChange={ ( value: Attributes[ 'heading' ] ) =>
-					setAttributes( { heading: value } )
-				}
-			/>
+
+			{ isHeadingRemoved ? (
+				heading && (
+					<>
+						<Warning actions={ actions }>
+							{ __(
+								'This block has been updated!',
+								'woo-gutenberg-products-block'
+							) }
+						</Warning>
+						<Disabled>
+							<BlockTitle
+								className="wc-block-active-filters__title"
+								headingLevel={ headingLevel }
+								heading={ heading }
+								onChange={ ( value: Attributes[ 'heading' ] ) =>
+									setAttributes( { heading: value } )
+								}
+							/>
+						</Disabled>
+					</>
+				)
+			) : (
+				<BlockTitle
+					className="wc-block-active-filters__title"
+					headingLevel={ headingLevel }
+					heading={ heading }
+					onChange={ ( value: Attributes[ 'heading' ] ) =>
+						setAttributes( { heading: value } )
+					}
+				/>
+			) }
 			<Disabled>
 				<Block attributes={ attributes } isEditor={ true } />
 			</Disabled>
