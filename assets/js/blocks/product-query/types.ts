@@ -66,7 +66,8 @@ export interface QueryBlockQuery {
 export enum QueryVariation {
 	/** The main, fully customizable, Product Query block */
 	PRODUCT_QUERY = 'product-query',
-	PRODUCTS_ON_SALE = 'query-on-sale',
+	/** Only shows products on sale */
+	PRODUCTS_ON_SALE = 'query-products-on-sale',
 }
 
 export type WooCommerceBlockVariation< T > = EditorBlock< {
