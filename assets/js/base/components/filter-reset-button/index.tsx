@@ -12,7 +12,6 @@ import './style.scss';
 
 interface FilterResetButtonProps {
 	className?: string;
-	disabled?: boolean;
 	label?: string;
 	onClick: () => void;
 	screenReaderLabel?: string;
@@ -20,7 +19,6 @@ interface FilterResetButtonProps {
 
 const FilterResetButton = ( {
 	className,
-	disabled,
 	/* translators: Reset button text for filters. */
 	label = __( 'Reset', 'woo-gutenberg-products-block' ),
 	onClick,
@@ -33,7 +31,6 @@ const FilterResetButton = ( {
 				className
 			) }
 			onClick={ onClick }
-			disabled={ disabled }
 		>
 			<Label label={ label } screenReaderLabel={ screenReaderLabel } />
 		</button>

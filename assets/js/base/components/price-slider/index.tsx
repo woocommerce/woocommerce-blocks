@@ -440,8 +440,7 @@ const PriceSlider = ( {
 					</div>
 				) }
 			<div className="wc-block-components-price-slider__actions">
-				{ ( showFilterButton ||
-					minPrice !== minConstraint ||
+				{ ( minPrice !== minConstraint ||
 					maxPrice !== maxConstraint ) && (
 					<FilterResetButton
 						onClick={ () => {
@@ -452,10 +451,6 @@ const PriceSlider = ( {
 							'Reset price filter',
 							'woo-gutenberg-products-block'
 						) }
-						disabled={
-							minPrice === minConstraint &&
-							maxPrice === maxConstraint
-						}
 					/>
 				) }
 				{ showFilterButton && (
