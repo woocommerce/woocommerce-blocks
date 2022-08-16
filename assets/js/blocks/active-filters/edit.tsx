@@ -21,6 +21,7 @@ import {
  */
 import Block from './block';
 import type { Attributes } from './types';
+import './editor.scss';
 
 const Edit = ( {
 	attributes,
