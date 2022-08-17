@@ -31,7 +31,8 @@ const block = {
 		editor: {
 			firstAttributeInTheList:
 				'.woocommerce-search-list__list > li > label > input.woocommerce-search-list__item-input',
-			filterButtonToggle: "//label[text()='Filter button']",
+			filterButtonToggle:
+				'//label[text()="Show \'Apply filters\' button"]',
 			doneButton: '.wc-block-attribute-filter__selection > button',
 		},
 		frontend: {
