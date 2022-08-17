@@ -86,6 +86,12 @@ Release and roadmap notes available on the [WooCommerce Developers Blog](https:/
 
 == Changelog ==
 
+= 8.3.1 - 2022-08-17 =
+
+#### Bug Fixes
+
+- Prevent unnecessarily showing the item names in a shipping package if it's the only package. ([6899](https://github.com/woocommerce/woocommerce-blocks/pull/6899))
+
 = 8.3.0 - 2022-08-15 =
 
 #### Enhancements
