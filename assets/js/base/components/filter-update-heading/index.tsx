@@ -7,15 +7,18 @@ import { Button } from '@wordpress/components';
 
 const UpdateFilterHeadingsPrompt = ( { onClick } ) => {
 	const actions = [
-		<Button key="update" onClick={ onClick } variant="primary">
-			{ __( 'Update block', 'woo-gutenberg-products-block' ) }
+		<Button key="upgrade" onClick={ onClick } variant="primary">
+			{ __( 'Upgrade block', 'woo-gutenberg-products-block' ) }
 		</Button>,
 	];
 
 	return (
-		<Warning actions={ actions }>
+		<Warning
+			actions={ actions }
+			className="wc-block-components-filter-update-heading"
+		>
 			{ __(
-				'This block has been updated!',
+				'This block is outdated. Please upgrade to the latest version!',
 				'woo-gutenberg-products-block'
 			) }
 		</Warning>
