@@ -29,7 +29,7 @@ const block = {
 	class: '.wc-block-stock-filter',
 	selectors: {
 		editor: {
-			filterButtonToggle: "//label[text()='Filter button']",
+			filterButtonToggle: "//label[text()='Apply filters']",
 		},
 		frontend: {
 			productsList: '.wc-block-grid__products > li',
