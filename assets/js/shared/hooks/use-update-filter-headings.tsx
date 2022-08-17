@@ -26,7 +26,7 @@ const useUpdateFilterHeadings = ( {
 			content: heading,
 			level: headingLevel,
 		} );
-		insertBlock( headingBlock, currentBlockIndex );
+		insertBlock( headingBlock, currentBlockIndex, undefined, false );
 		setAttributes( {
 			heading: '',
 		} );
