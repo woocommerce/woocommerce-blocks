@@ -15,8 +15,8 @@
 	&:focus,
 	&:active {
 		background: transparent;
-		color: $gray-900;
-		border: 1px solid $gray-900;
+		color: inherit;
+		border: 1px solid;
 	}
 
 	&.wc-block-components-chip--radius-small {
@@ -47,11 +47,11 @@
 		height: 16px;
 		width: 16px;
 		margin: 0;
-		color: $gray-900;
 	}
 
 	.wc-block-components-chip__remove-icon {
 		vertical-align: middle;
+		fill: $gray-900;
 	}
 }
 
@@ -71,8 +71,11 @@ button.wc-block-components-chip:hover > .wc-block-components-chip__remove,
 button.wc-block-components-chip:focus > .wc-block-components-chip__remove,
 .wc-block-components-chip__remove:hover,
 .wc-block-components-chip__remove:focus {
-	fill: #fff;
-	background: #7956ad;
+	background: $gray-600;
+
+	.wc-block-components-chip__remove-icon {
+		fill: #fff;
+	}
 }
 
 button.wc-block-components-chip:disabled > .wc-block-components-chip__remove,
