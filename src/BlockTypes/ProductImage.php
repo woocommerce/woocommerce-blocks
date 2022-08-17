@@ -48,13 +48,77 @@ class ProductImage extends AbstractBlock {
 	}
 
 	/**
-	 * Register script and style assets for the block type before it is registered.
-	 *
-	 * This registers the scripts; it does not enqueue them.
+	 * It is necessary to register and enqueues assets during the render phase because we want to load assets only if the block has the content.
 	 */
 	protected function register_block_type_assets() {
-		parent::register_block_type_assets();
-		$this->register_chunk_translations( [ $this->block_name ] );
+		return null;
+	}
+
+	/**
+	 * Get the block's attributes.
+	 *
+	 * @param array $attributes Block attributes. Default empty array.
+	 * @return array  Block attributes merged with defaults.
+	 */
+	private function parse_attributes( $attributes ) {
+		// These should match what's set in JS `registerBlockType`.
+		$defaults = array(
+			'showProductLink'         => true,
+			'showSaleBadge'           => true,
+			'saleBadgeAlign'          => 'right',
+			'imageSizing'             => 'full-size',
+			'productId'               => 'number',
+			'isDescendentOfQueryLoop' => 'false',
+		);
+
+		return wp_parse_args( $attributes, $defaults );
+	}
+
+
+	private function render_on_sale_badge( $product, $attributes ) {
+		if ( ! $product->is_on_sale() || false === $attributes['showSaleBadge'] ) {
+			return '';
+		}
+
+		do_action( 'qm/debug', $attributes );
+
+		$on_sale_badge_align = array(
+			'left'   => 'wc-block-components-product-sale-badge--align-left',
+			'center' => 'wc-block-components-product-sale-badge--align-center',
+			'right'  => 'wc-block-components-product-sale-badge--align-right',
+		);
+
+		$on_sale_badge = sprintf(
+			'
+		<div class="wc-block-components-product-sale-badge %s wc-block-grid__product-onsale">
+			<span aria-hidden="true">%s</span>
+			<span class="screen-reader-text">Product on sale</span>
+		</div>
+	',
+			$on_sale_badge_align[ $attributes['saleBadgeAlign'] ],
+			esc_html__( 'Sale', 'woo-gutenberg-products-block' )
+		);
+		return $on_sale_badge;
+	}
+
+	private function render_anchor( $product, $attributes ) {
+		$product_permalink = $product->get_permalink();
+
+		if ( false === $attributes['showProductLink'] ) {
+			return sprintf( '<a href="%s" style="pointer-events: none">', $product_permalink );
+		}
+
+		return sprintf( '<a href="%s">', $product_permalink );
+	}
+
+	private function render_image( $product ) {
+
+		return sprintf(
+			'<img data-testid="product-image" alt="%s" src="%s">',
+			$product->get_title(),
+			wp_get_attachment_image_src( get_post_thumbnail_id( $product->get_id() ), 'single-post-thumbnail' )[0]
+		);
+
 	}
 
 
@@ -68,15 +132,29 @@ class ProductImage extends AbstractBlock {
 	 */
 	protected function render( $attributes, $content, $block ) {
 		if ( ! empty( $content ) ) {
+			parent::register_block_type_assets();
+			$this->register_chunk_translations( [ $this->block_name ] );
 			return $content;
 		}
+		$parsed_attributes = $this->parse_attributes( $attributes );
+		$post_id           = $block->context['postId'];
+		$product           = wc_get_product( $post_id );
 
-		$post_id = $block->context['postId'];
-		$product = wc_get_product( $post_id );
 		if ( $product ) {
-			$is_on_sale = $product->is_on_sale();
 
-			return '' . wc_bool_to_string( $is_on_sale ) . '' . wp_get_attachment_image( get_post_thumbnail_id( $post_id ) );
+			return sprintf(
+				'
+			<div class="wc-block-components-product-image wc-block-grid__product-image">
+				 	%s
+				 	%s
+					%s
+				</a>
+			</div>',
+				$this->render_anchor( $product, $parsed_attributes ),
+				$this->render_on_sale_badge( $product, $parsed_attributes ),
+				$this->render_image( $product )
+			);
+
 		}
 	}
 }

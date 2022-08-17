@@ -2,7 +2,7 @@
  * External dependencies
  */
 import PropTypes from 'prop-types';
-import { useState, Fragment } from '@wordpress/element';
+import { memo, Fragment } from '@wordpress/element';
 import { __, sprintf } from '@wordpress/i18n';
 import classnames from 'classnames';
 import { PLACEHOLDER_IMG_SRC } from '@woocommerce/settings';
@@ -27,12 +27,13 @@ import './style.scss';
 /**
  * Product Image Block Component.
  *
- * @param {Object}  props                   Incoming props.
- * @param {string}  [props.className]       CSS Class name for the component.
- * @param {string}  [props.imageSizing]     Size of image to use.
- * @param {boolean} [props.showProductLink] Whether or not to display a link to the product page.
- * @param {boolean} [props.showSaleBadge]   Whether or not to display the on sale badge.
- * @param {string}  [props.saleBadgeAlign]  How should the sale badge be aligned if displayed.
+ * @param {Object}  props                           Incoming props.
+ * @param {string}  [props.className]               CSS Class name for the component.
+ * @param {string}  [props.imageSizing]             Size of image to use.
+ * @param {boolean} [props.showProductLink]         Whether or not to display a link to the product page.
+ * @param {boolean} [props.showSaleBadge]           Whether or not to display the on sale badge.
+ * @param {string}  [props.saleBadgeAlign]          How should the sale badge be aligned if displayed.
+ * @param {boolean} [props.isDescendentOfQueryLoop] Whether or not be a children of Query Loop Block.
  * @return {*} The component.
  */
 export const Block = ( props ) => {
@@ -45,9 +46,8 @@ export const Block = ( props ) => {
 	} = props;
 
 	const { parentClassName } = useInnerBlockLayoutContext();
-	const { product } = useProductDataContext();
+	const { product, isLoading } = useProductDataContext();
 
-	const [ imageLoaded, setImageLoaded ] = useState( false );
 	const { dispatchStoreEvent } = useStoreEvents();
 
 	const typographyProps = useTypographyProps( props );
@@ -120,8 +120,7 @@ export const Block = ( props ) => {
 				<Image
 					fallbackAlt={ product.name }
 					image={ image }
-					onLoad={ () => setImageLoaded( true ) }
-					loaded={ imageLoaded }
+					loaded={ ! isLoading }
 					showFullSize={ imageSizing !== 'cropped' }
 				/>
 			</ParentComponent>
@@ -135,11 +134,10 @@ const ImagePlaceholder = () => {
 	);
 };
 
-const Image = ( { image, onLoad, loaded, showFullSize, fallbackAlt } ) => {
+const Image = ( { image, loaded, showFullSize, fallbackAlt } ) => {
 	const { thumbnail, src, srcset, sizes, alt } = image || {};
 	const imageProps = {
 		alt: alt || fallbackAlt,
-		onLoad,
 		hidden: ! loaded,
 		src: thumbnail,
 		...( showFullSize && { src, srcSet: srcset, sizes } ),

@@ -3,7 +3,11 @@
  */
 import { __ } from '@wordpress/i18n';
 import { InspectorControls, useBlockProps } from '@wordpress/block-editor';
-import { createInterpolateElement } from '@wordpress/element';
+import {
+	createInterpolateElement,
+	useEffect,
+	useMemo,
+} from '@wordpress/element';
 import { getAdminLink } from '@woocommerce/settings';
 import {
 	Disabled,
@@ -19,8 +23,6 @@ import {
  * Internal dependencies
  */
 import Block from './block';
-import withProductSelector from '../shared/with-product-selector';
-import { useEffect } from 'react';
 
 const Edit = ( { attributes, setAttributes, context } ) => {
 	const { showProductLink, imageSizing, showSaleBadge, saleBadgeAlign } =
@@ -28,11 +30,19 @@ const Edit = ( { attributes, setAttributes, context } ) => {
 
 	const blockProps = useBlockProps();
 
-	const newProps = { ...attributes, ...context };
+	console.log( 'attributes', attributes );
 
-	useEffect( () => {
-		setAttributes( { postId: context.postId } );
-	}, [ context, context.postId, setAttributes ] );
+	const isDescendentOfQueryLoop = Number.isFinite( context.queryId );
+
+	useEffect(
+		() => setAttributes( { isDescendentOfQueryLoop } ),
+		[ setAttributes, isDescendentOfQueryLoop ]
+	);
+
+	const newProps = useMemo(
+		() => ( { ...attributes, ...context } ),
+		[ attributes, context ]
+	);
 
 	return (
 		<div { ...blockProps }>
