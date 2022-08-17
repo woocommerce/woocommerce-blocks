@@ -333,7 +333,7 @@ const Edit = ( { attributes, setAttributes, debouncedSpeak }: EditProps ) => {
 				</PanelBody>
 				<PanelBody
 					title={ __(
-						'Filter Products by Attribute',
+						'Filter by Attribute',
 						'woo-gutenberg-products-block'
 					) }
 					initialOpen={ false }
@@ -349,7 +349,7 @@ const Edit = ( { attributes, setAttributes, debouncedSpeak }: EditProps ) => {
 			className="wc-block-attribute-filter"
 			icon={ <Icon icon={ category } /> }
 			label={ __(
-				'Filter Products by Attribute',
+				'Filter by Attribute',
 				'woo-gutenberg-products-block'
 			) }
 			instructions={ __(
@@ -388,7 +388,7 @@ const Edit = ( { attributes, setAttributes, debouncedSpeak }: EditProps ) => {
 		setIsEditing( false );
 		debouncedSpeak(
 			__(
-				'Showing Filter Products by Attribute block preview.',
+				'Showing Filter by Attribute block preview.',
 				'woo-gutenberg-products-block'
 			)
 		);
@@ -400,7 +400,7 @@ const Edit = ( { attributes, setAttributes, debouncedSpeak }: EditProps ) => {
 				className="wc-block-attribute-filter"
 				icon={ <Icon icon={ category } /> }
 				label={ __(
-					'Filter Products by Attribute',
+					'Filter by Attribute',
 					'woo-gutenberg-products-block'
 				) }
 				instructions={ __(
