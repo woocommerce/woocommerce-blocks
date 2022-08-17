@@ -9,11 +9,22 @@ exports[`Testing stock filter renders the stock filter block 1`] = `
       class="wc-block-checkbox-list wc-block-components-checkbox-list wc-block-stock-filter-list"
     >
       <li>
-        <input
-          id="instock"
-          type="checkbox"
-          value="instock"
-        />
+        <div
+          class="wc-filter-element-checkbox"
+          role="checkbox"
+          tabindex="0"
+        >
+          <input
+            id="instock"
+            tabindex="-1"
+            type="checkbox"
+            value="instock"
+          />
+          <span
+            aria-hidden="true"
+            class="wc-filter-element-checkbox__checkbox"
+          />
+        </div>
         <label
           for="instock"
         >
@@ -21,11 +32,22 @@ exports[`Testing stock filter renders the stock filter block 1`] = `
         </label>
       </li>
       <li>
-        <input
-          id="onbackorder"
-          type="checkbox"
-          value="onbackorder"
-        />
+        <div
+          class="wc-filter-element-checkbox"
+          role="checkbox"
+          tabindex="0"
+        >
+          <input
+            id="onbackorder"
+            tabindex="-1"
+            type="checkbox"
+            value="onbackorder"
+          />
+          <span
+            aria-hidden="true"
+            class="wc-filter-element-checkbox__checkbox"
+          />
+        </div>
         <label
           for="onbackorder"
         >
@@ -33,11 +55,22 @@ exports[`Testing stock filter renders the stock filter block 1`] = `
         </label>
       </li>
       <li>
-        <input
-          id="outofstock"
-          type="checkbox"
-          value="outofstock"
-        />
+        <div
+          class="wc-filter-element-checkbox"
+          role="checkbox"
+          tabindex="0"
+        >
+          <input
+            id="outofstock"
+            tabindex="-1"
+            type="checkbox"
+            value="outofstock"
+          />
+          <span
+            aria-hidden="true"
+            class="wc-filter-element-checkbox__checkbox"
+          />
+        </div>
         <label
           for="outofstock"
         >
@@ -45,6 +78,9 @@ exports[`Testing stock filter renders the stock filter block 1`] = `
         </label>
       </li>
     </ul>
+    <div
+      class="wc-block-stock-filter__actions"
+    />
   </div>
 </div>
 `;
@@ -58,11 +94,22 @@ exports[`Testing stock filter renders the stock filter block with the filter but
       class="wc-block-checkbox-list wc-block-components-checkbox-list wc-block-stock-filter-list"
     >
       <li>
-        <input
-          id="instock"
-          type="checkbox"
-          value="instock"
-        />
+        <div
+          class="wc-filter-element-checkbox"
+          role="checkbox"
+          tabindex="0"
+        >
+          <input
+            id="instock"
+            tabindex="-1"
+            type="checkbox"
+            value="instock"
+          />
+          <span
+            aria-hidden="true"
+            class="wc-filter-element-checkbox__checkbox"
+          />
+        </div>
         <label
           for="instock"
         >
@@ -70,11 +117,22 @@ exports[`Testing stock filter renders the stock filter block with the filter but
         </label>
       </li>
       <li>
-        <input
-          id="onbackorder"
-          type="checkbox"
-          value="onbackorder"
-        />
+        <div
+          class="wc-filter-element-checkbox"
+          role="checkbox"
+          tabindex="0"
+        >
+          <input
+            id="onbackorder"
+            tabindex="-1"
+            type="checkbox"
+            value="onbackorder"
+          />
+          <span
+            aria-hidden="true"
+            class="wc-filter-element-checkbox__checkbox"
+          />
+        </div>
         <label
           for="onbackorder"
         >
@@ -82,11 +140,22 @@ exports[`Testing stock filter renders the stock filter block with the filter but
         </label>
       </li>
       <li>
-        <input
-          id="outofstock"
-          type="checkbox"
-          value="outofstock"
-        />
+        <div
+          class="wc-filter-element-checkbox"
+          role="checkbox"
+          tabindex="0"
+        >
+          <input
+            id="outofstock"
+            tabindex="-1"
+            type="checkbox"
+            value="outofstock"
+          />
+          <span
+            aria-hidden="true"
+            class="wc-filter-element-checkbox__checkbox"
+          />
+        </div>
         <label
           for="outofstock"
         >
@@ -94,21 +163,25 @@ exports[`Testing stock filter renders the stock filter block with the filter but
         </label>
       </li>
     </ul>
-    <button
-      class="wp-block-button__link wc-block-filter-submit-button wc-block-components-filter-submit-button wc-block-stock-filter__button"
-      type="submit"
+    <div
+      class="wc-block-stock-filter__actions"
     >
-      <span
-        aria-hidden="true"
+      <button
+        class="wp-block-button__link wc-block-filter-submit-button wc-block-components-filter-submit-button wc-block-stock-filter__button"
+        type="submit"
       >
-        Apply
-      </span>
-      <span
-        class="screen-reader-text"
-      >
-        Apply filter
-      </span>
-    </button>
+        <span
+          aria-hidden="true"
+        >
+          Apply
+        </span>
+        <span
+          class="screen-reader-text"
+        >
+          Apply filter
+        </span>
+      </button>
+    </div>
   </div>
 </div>
 `;
@@ -122,11 +195,22 @@ exports[`Testing stock filter renders the stock filter block with the product co
       class="wc-block-checkbox-list wc-block-components-checkbox-list wc-block-stock-filter-list"
     >
       <li>
-        <input
-          id="instock"
-          type="checkbox"
-          value="instock"
-        />
+        <div
+          class="wc-filter-element-checkbox"
+          role="checkbox"
+          tabindex="0"
+        >
+          <input
+            id="instock"
+            tabindex="-1"
+            type="checkbox"
+            value="instock"
+          />
+          <span
+            aria-hidden="true"
+            class="wc-filter-element-checkbox__checkbox"
+          />
+        </div>
         <label
           for="instock"
         >
@@ -148,11 +232,22 @@ exports[`Testing stock filter renders the stock filter block with the product co
         </label>
       </li>
       <li>
-        <input
-          id="onbackorder"
-          type="checkbox"
-          value="onbackorder"
-        />
+        <div
+          class="wc-filter-element-checkbox"
+          role="checkbox"
+          tabindex="0"
+        >
+          <input
+            id="onbackorder"
+            tabindex="-1"
+            type="checkbox"
+            value="onbackorder"
+          />
+          <span
+            aria-hidden="true"
+            class="wc-filter-element-checkbox__checkbox"
+          />
+        </div>
         <label
           for="onbackorder"
         >
@@ -174,11 +269,22 @@ exports[`Testing stock filter renders the stock filter block with the product co
         </label>
       </li>
       <li>
-        <input
-          id="outofstock"
-          type="checkbox"
-          value="outofstock"
-        />
+        <div
+          class="wc-filter-element-checkbox"
+          role="checkbox"
+          tabindex="0"
+        >
+          <input
+            id="outofstock"
+            tabindex="-1"
+            type="checkbox"
+            value="outofstock"
+          />
+          <span
+            aria-hidden="true"
+            class="wc-filter-element-checkbox__checkbox"
+          />
+        </div>
         <label
           for="outofstock"
         >
@@ -200,6 +306,9 @@ exports[`Testing stock filter renders the stock filter block with the product co
         </label>
       </li>
     </ul>
+    <div
+      class="wc-block-stock-filter__actions"
+    />
   </div>
 </div>
 `;
