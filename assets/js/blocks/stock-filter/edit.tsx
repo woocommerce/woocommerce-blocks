@@ -67,7 +67,7 @@ const Edit = ( {
 				>
 					<ToggleControl
 						label={ __(
-							"'Apply filters' button",
+							"Show 'Apply filters' button",
 							'woo-gutenberg-products-block'
 						) }
 						help={
