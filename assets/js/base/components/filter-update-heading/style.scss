@@ -1,4 +1,9 @@
 .wc-block-components-filter-update-heading {
+	background: transparent;
+	border-radius: 0;
+	border-width: 0 0 1px;
+	margin: 1px calc(-1px - $gap);
+
 	.block-editor-warning__actions {
 		margin-top: 0;
 	}

@@ -1,0 +1,19 @@
+.wp-block-woocommerce-active-filters {
+	&.has-upgrade-prompt {
+		border: 1px solid $gray-900;
+		padding: 0 $gap;
+		position: relative;
+
+		&::before {
+			background: rgba($white, 0.6);
+			bottom: 0;
+			content: "";
+			display: block;
+			left: 0;
+			position: absolute;
+			right: 0;
+			top: 0;
+			z-index: 1;
+		}
+	}
+}

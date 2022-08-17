@@ -9,6 +9,7 @@ import UpdateFilterHeadingsPrompt from '@woocommerce/base-components/filter-upda
 import { BlockEditProps } from '@wordpress/blocks';
 import { getSettingWithCoercion } from '@woocommerce/settings';
 import { isBoolean } from '@woocommerce/types';
+import classNames from 'classnames';
 import {
 	Disabled,
 	PanelBody,
@@ -33,8 +34,21 @@ const Edit = ( {
 }: BlockEditProps< Attributes > ) => {
 	const { className, displayStyle, heading, headingLevel } = attributes;
 
+	/**
+	 * Since WooCommerce Blocks 8.2.0, we have decoupled the block title from the filter block itself.
+	 * So we need to prompt users who are already using the block with title to click update,
+	 * where we will create a title block for them.
+	 */
+	const shouldRemoveBlockTitle = getSettingWithCoercion(
+		'shouldRemoveBlockTitle',
+		false,
+		isBoolean
+	);
+
 	const blockProps = useBlockProps( {
-		className,
+		className: classNames( className, {
+			'has-upgrade-prompt': shouldRemoveBlockTitle && heading,
+		} ),
 	} );
 
 	const getInspectorControls = () => {
@@ -93,16 +107,6 @@ const Edit = ( {
 		);
 	};
 
-	/*
-		Since WooCommerce Blocks 8.2.0, we have decoupled the block title from the filter block itself.
-		So we need to prompt users who are already using the block with title to click update,
-		where we will create a title block for them.
-	*/
-	const shouldRemoveBlockTitle = getSettingWithCoercion(
-		'shouldRemoveBlockTitle',
-		false,
-		isBoolean
-	);
 	const updateBlockHeading = useUpdateFilterHeadings( {
 		heading,
 		headingLevel,
