@@ -74,13 +74,17 @@ class ProductImage extends AbstractBlock {
 		return wp_parse_args( $attributes, $defaults );
 	}
 
-
+	/**
+	 * Render on Sale Badge.
+	 *
+	 * @param \WC_Product $product Product object.
+	 * @param array       $attributes Attributes.
+	 * @return string
+	 */
 	private function render_on_sale_badge( $product, $attributes ) {
 		if ( ! $product->is_on_sale() || false === $attributes['showSaleBadge'] ) {
 			return '';
 		}
-
-		do_action( 'qm/debug', $attributes );
 
 		$on_sale_badge_align = array(
 			'left'   => 'wc-block-components-product-sale-badge--align-left',
@@ -101,6 +105,13 @@ class ProductImage extends AbstractBlock {
 		return $on_sale_badge;
 	}
 
+	/**
+	 * Render anchor.
+	 *
+	 * @param \WC_Product $product Product object.
+	 * @param array       $attributes Attributes.
+	 * @return string
+	 */
 	private function render_anchor( $product, $attributes ) {
 		$product_permalink = $product->get_permalink();
 
@@ -111,13 +122,23 @@ class ProductImage extends AbstractBlock {
 		return sprintf( '<a href="%s">', $product_permalink );
 	}
 
-	private function render_image( $product ) {
 
-		return sprintf(
-			'<img data-testid="product-image" alt="%s" src="%s">',
-			$product->get_title(),
-			wp_get_attachment_image_src( get_post_thumbnail_id( $product->get_id() ), 'single-post-thumbnail' )[0]
-		);
+	/**
+	 * Render Image.
+	 *
+	 * @param \WC_Product $product Product object.
+	 * @return string
+	 */
+	private function render_image( $product ) {
+		$image_info = wp_get_attachment_image_src( get_post_thumbnail_id( $product->get_id() ), 'single-post-thumbnail' );
+
+		if ( isset( $image_info[0] ) ) {
+			return sprintf(
+				'<img data-testid="product-image" alt="%s" src="%s">',
+				$product->get_title(),
+				$image_info[0]
+			);
+		}
 
 	}
 
@@ -141,7 +162,6 @@ class ProductImage extends AbstractBlock {
 		$product           = wc_get_product( $post_id );
 
 		if ( $product ) {
-
 			return sprintf(
 				'
 			<div class="wc-block-components-product-image wc-block-grid__product-image">

@@ -2,7 +2,7 @@
 namespace Automattic\WooCommerce\Blocks\BlockTypes;
 
 /**
- * AttributeFilter class.
+ * ProductQuery class.
  */
 class ProductQuery extends AbstractBlock {
 	/**
@@ -10,15 +10,14 @@ class ProductQuery extends AbstractBlock {
 	 *
 	 * @var string
 	 */
-	protected $block_name  = 'product-query';
-	const PRODUCT_QUERY    = 'product-query';
-	const PRODUCTS_ON_SALE = 'query-on-sale';
+	protected $block_name = 'product-query';
 
 	/**
 	 * Initialize this block type.
 	 *
 	 * - Hook into WP lifecycle.
 	 * - Register the block with WordPress.
+	 * - Hook into pre_render_block to update the query.
 	 */
 	protected function initialize() {
 		parent::initialize();
@@ -34,18 +33,18 @@ class ProductQuery extends AbstractBlock {
 	/**
 	 * Update the query for the product query block.
 	 *
-	 * @param WP_Block $block         Block instance.
-	 * @param WP_Block $current_block Block.
+	 * @param string|null $pre_render   The pre-rendered content. Default null.
+	 * @param array       $parsed_block The block being rendered.
 	 */
-	public function update_query( $block, $current_block ) {
-		if ( 'core/query' !== $current_block['blockName'] ) {
+	public function update_query( $pre_render, $parsed_block ) {
+		if ( 'core/query' !== $parsed_block['blockName'] ) {
 			return;
 		}
 
 		add_filter(
 			'gutenberg_build_query_vars_from_query_block',
-			function( $query, $block, $page ) use ( $current_block ) {
-				return $this->get_query_by_attributes( $query, $block, $page, $current_block );
+			function( $query ) use ( $parsed_block ) {
+				return $this->get_query_by_attributes( $query, $parsed_block );
 			},
 			10,
 			3
@@ -56,17 +55,15 @@ class ProductQuery extends AbstractBlock {
 	 * Return a custom query based on the attributes.
 	 *
 	 * @param WP_Query $query         The WordPress Query.
-	 * @param WP_Block $block         Block instance.
-	 * @param int      $page          Page.
-	 * @param WP_Block $current_block Block.
+	 * @param WP_Block $parsed_block  The block being rendered.
 	 * @return array
 	 */
-	public function get_query_by_attributes( $query, $block, $page, $current_block ) {
-		if ( ! isset( $current_block['attrs']['__woocommerceVariationProps'] ) ) {
+	public function get_query_by_attributes( $query, $parsed_block ) {
+		if ( ! isset( $parsed_block['attrs']['__woocommerceVariationProps'] ) ) {
 			return $query;
 		}
 
-		$variation_props     = $current_block['attrs']['__woocommerceVariationProps'];
+		$variation_props     = $parsed_block['attrs']['__woocommerceVariationProps'];
 		$common_query_values = array(
 			'post_type'      => 'product',
 			'post_status'    => 'publish',
@@ -82,7 +79,7 @@ class ProductQuery extends AbstractBlock {
 	/**
 	 * Return a query for on sale products.
 	 *
-	 * @param array $variation_props Query.
+	 * @param array $variation_props Dedicated attributes for the variation.
 	 * @return array
 	 */
 	private function get_on_sale_products_query( $variation_props ) {

@@ -6,7 +6,7 @@ import { InspectorControls } from '@wordpress/block-editor';
 import { ToggleControl } from '@wordpress/components';
 import { addFilter } from '@wordpress/hooks';
 import { EditorBlock } from '@woocommerce/types';
-import { ElementType } from 'react'; // TODO: Import from @wordpress/element
+import { ElementType } from 'react';
 
 /**
  * Internal dependencies
