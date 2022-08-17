@@ -22,7 +22,17 @@ const FilterElementCheckbox = ( {
 	option,
 }: FilterElementCheckboxProps ): JSX.Element => {
 	return (
-		<div className="wc-filter-element-checkbox">
+		<div
+			className="wc-filter-element-checkbox"
+			tabIndex={ 0 }
+			role="checkbox"
+			onKeyPress={ ( event ) => {
+				event.preventDefault();
+				if ( event.code === 'Space' ) {
+					onChange( option.value );
+				}
+			} }
+		>
 			<input
 				type="checkbox"
 				id={ option.value }
@@ -32,8 +42,12 @@ const FilterElementCheckbox = ( {
 				} }
 				disabled={ isDisabled }
 				checked={ isChecked }
+				tabIndex={ -1 }
 			/>
-			<span className="wc-filter-element-checkbox__checkbox" />
+			<span
+				aria-hidden="true"
+				className="wc-filter-element-checkbox__checkbox"
+			/>
 		</div>
 	);
 };
