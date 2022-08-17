@@ -24,7 +24,7 @@ import {
 } from '../../utils';
 
 const block = {
-	name: 'Filter Products by Attribute',
+	name: 'Filter by Attribute',
 	slug: 'woocommerce/attribute-filter',
 	class: '.wc-block-attribute-filter',
 	selectors: {

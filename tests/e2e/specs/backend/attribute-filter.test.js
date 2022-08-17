@@ -13,7 +13,7 @@ import {
 } from '@woocommerce/blocks-test-utils';
 
 const block = {
-	name: 'Filter Products by Attribute',
+	name: 'Filter by Attribute',
 	slug: 'woocommerce/attribute-filter',
 	class: '.wc-block-attribute-filter',
 };
@@ -101,7 +101,7 @@ describe( `${ block.name } Block`, () => {
 
 		it( 'can switch attribute', async () => {
 			await expect( page ).toClick( 'button', {
-				text: 'Filter Products by Attribute',
+				text: 'Filter by Attribute',
 			} );
 
 			await expect( page ).toClick(
