@@ -13,12 +13,12 @@ exports[`Testing stock filter renders the stock filter block 1`] = `
           class="wc-block-components-checkbox wc-block-checkbox-list__checkbox"
         >
           <label
-            for="checkbox-control-0"
+            for="instock"
           >
             <input
               aria-invalid="false"
               class="wc-block-components-checkbox__input"
-              id="checkbox-control-0"
+              id="instock"
               type="checkbox"
             />
             <svg
@@ -44,12 +44,12 @@ exports[`Testing stock filter renders the stock filter block 1`] = `
           class="wc-block-components-checkbox wc-block-checkbox-list__checkbox"
         >
           <label
-            for="checkbox-control-1"
+            for="onbackorder"
           >
             <input
               aria-invalid="false"
               class="wc-block-components-checkbox__input"
-              id="checkbox-control-1"
+              id="onbackorder"
               type="checkbox"
             />
             <svg
@@ -75,12 +75,12 @@ exports[`Testing stock filter renders the stock filter block 1`] = `
           class="wc-block-components-checkbox wc-block-checkbox-list__checkbox"
         >
           <label
-            for="checkbox-control-2"
+            for="outofstock"
           >
             <input
               aria-invalid="false"
               class="wc-block-components-checkbox__input"
-              id="checkbox-control-2"
+              id="outofstock"
               type="checkbox"
             />
             <svg
@@ -122,12 +122,12 @@ exports[`Testing stock filter renders the stock filter block with the filter but
           class="wc-block-components-checkbox wc-block-checkbox-list__checkbox"
         >
           <label
-            for="checkbox-control-3"
+            for="instock"
           >
             <input
               aria-invalid="false"
               class="wc-block-components-checkbox__input"
-              id="checkbox-control-3"
+              id="instock"
               type="checkbox"
             />
             <svg
@@ -153,12 +153,12 @@ exports[`Testing stock filter renders the stock filter block with the filter but
           class="wc-block-components-checkbox wc-block-checkbox-list__checkbox"
         >
           <label
-            for="checkbox-control-4"
+            for="onbackorder"
           >
             <input
               aria-invalid="false"
               class="wc-block-components-checkbox__input"
-              id="checkbox-control-4"
+              id="onbackorder"
               type="checkbox"
             />
             <svg
@@ -184,12 +184,12 @@ exports[`Testing stock filter renders the stock filter block with the filter but
           class="wc-block-components-checkbox wc-block-checkbox-list__checkbox"
         >
           <label
-            for="checkbox-control-5"
+            for="outofstock"
           >
             <input
               aria-invalid="false"
               class="wc-block-components-checkbox__input"
-              id="checkbox-control-5"
+              id="outofstock"
               type="checkbox"
             />
             <svg
@@ -247,12 +247,12 @@ exports[`Testing stock filter renders the stock filter block with the product co
           class="wc-block-components-checkbox wc-block-checkbox-list__checkbox"
         >
           <label
-            for="checkbox-control-6"
+            for="instock"
           >
             <input
               aria-invalid="false"
               class="wc-block-components-checkbox__input"
-              id="checkbox-control-6"
+              id="instock"
               type="checkbox"
             />
             <svg
@@ -292,12 +292,12 @@ exports[`Testing stock filter renders the stock filter block with the product co
           class="wc-block-components-checkbox wc-block-checkbox-list__checkbox"
         >
           <label
-            for="checkbox-control-7"
+            for="onbackorder"
           >
             <input
               aria-invalid="false"
               class="wc-block-components-checkbox__input"
-              id="checkbox-control-7"
+              id="onbackorder"
               type="checkbox"
             />
             <svg
@@ -337,12 +337,12 @@ exports[`Testing stock filter renders the stock filter block with the product co
           class="wc-block-components-checkbox wc-block-checkbox-list__checkbox"
         >
           <label
-            for="checkbox-control-8"
+            for="outofstock"
           >
             <input
               aria-invalid="false"
               class="wc-block-components-checkbox__input"
-              id="checkbox-control-8"
+              id="outofstock"
               type="checkbox"
             />
             <svg
