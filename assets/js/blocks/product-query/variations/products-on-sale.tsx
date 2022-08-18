@@ -43,7 +43,7 @@ if ( isExperimentalBuild() ) {
 			[
 				'core/post-template',
 				{},
-				[ [ 'core/post-title' ], [ 'core/post-featured-image' ] ],
+				[ [ 'core/post-title' ], [ 'woocommerce/product-image' ] ],
 			],
 			[ 'core/query-pagination' ],
 			[ 'core/query-no-results' ],

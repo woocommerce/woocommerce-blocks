@@ -1,12 +1,16 @@
 /**
  * External dependencies
  */
-import apiFetch from '@wordpress/api-fetch';
 import {
 	ProductDataContextProvider,
 	useProductDataContext,
 } from '@woocommerce/shared-context';
-import { useState, useEffect } from '@wordpress/element';
+import { useSelect } from '@wordpress/data';
+
+/**
+ * Internal dependencies
+ */
+import { STORE_NAME } from './store';
 
 /**
  * Loads the product from the API and adds to the context provider.
@@ -14,41 +18,43 @@ import { useState, useEffect } from '@wordpress/element';
  * @param {Object} props Component props.
  */
 const OriginalComponentWithContext = ( props ) => {
-	const { productId, OriginalComponent } = props;
-	const [ product, setProduct ] = useState( null );
-	const [ isLoading, setIsLoading ] = useState( true );
+	const { productId, OriginalComponent, postId, product } = props;
 
-	useEffect( () => {
-		if ( !! props.product ) {
-			setProduct( props.product );
-			setIsLoading( false );
+	const id = props.isDescendentOfQueryLoop ? postId : productId;
+
+	const productFromAPI = useSelect( ( select ) => {
+		if ( id > 0 ) {
+			const prod = select( STORE_NAME ).getProduct( id );
+			const hasFinished = select( STORE_NAME ).hasFinishedResolution(
+				'getProduct',
+				[ id ]
+			);
+
+			return {
+				product: prod || null,
+				isLoading: ! hasFinished,
+			};
 		}
-	}, [ props.product ] );
 
-	useEffect( () => {
-		if ( productId > 0 ) {
-			setIsLoading( true );
-			apiFetch( {
-				path: `/wc/store/v1/products/${ productId }`,
-			} )
-				.then( ( receivedProduct ) => {
-					setProduct( receivedProduct );
-				} )
-				.catch( async () => {
-					setProduct( null );
-				} )
-				.finally( () => {
-					setIsLoading( false );
-				} );
-		}
-	}, [ productId ] );
+		return {
+			product: null,
+			isLoading: false,
+		};
+	} );
 
-	if ( ! isLoading && ! product ) {
-		return null;
+	if ( product ) {
+		return (
+			<ProductDataContextProvider product={ product } isLoading={ false }>
+				<OriginalComponent { ...props } />
+			</ProductDataContextProvider>
+		);
 	}
 
 	return (
-		<ProductDataContextProvider product={ product } isLoading={ isLoading }>
+		<ProductDataContextProvider
+			product={ productFromAPI.product }
+			isLoading={ productFromAPI.isLoading }
+		>
 			<OriginalComponent { ...props } />
 		</ProductDataContextProvider>
 	);
