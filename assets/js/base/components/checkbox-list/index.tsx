@@ -134,6 +134,7 @@ const CheckboxList = ( {
 								index >= limit && { hidden: true } ) }
 						>
 							<CheckboxControl
+								id={ option.value }
 								className="wc-block-checkbox-list__checkbox"
 								label={ option.label }
 								checked={ checked.includes( option.value ) }
