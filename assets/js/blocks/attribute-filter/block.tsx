@@ -16,6 +16,7 @@ import {
 import { useCallback, useEffect, useState, useMemo } from '@wordpress/element';
 import CheckboxList from '@woocommerce/base-components/checkbox-list';
 import Label from '@woocommerce/base-components/filter-element-label';
+import FilterResetButton from '@woocommerce/base-components/filter-reset-button';
 import FilterSubmitButton from '@woocommerce/base-components/filter-submit-button';
 import isShallowEqual from '@wordpress/is-shallow-equal';
 import { decodeEntities } from '@wordpress/html-entities';
@@ -610,13 +611,24 @@ const AttributeFilterBlock = ( {
 						isDisabled={ isDisabled }
 					/>
 				) }
-				{ blockAttributes.showFilterButton && (
-					<FilterSubmitButton
-						className="wc-block-attribute-filter__button"
-						disabled={ isLoading || isDisabled }
-						onClick={ () => onSubmit( checked ) }
-					/>
-				) }
+				<div className="wc-block-attribute-filter__actions">
+					{ checked.length > 0 && (
+						<FilterResetButton
+							onClick={ () => setChecked( [] ) }
+							screenReaderLabel={ __(
+								'Reset stock filter',
+								'woo-gutenberg-products-block'
+							) }
+						/>
+					) }
+					{ blockAttributes.showFilterButton && (
+						<FilterSubmitButton
+							className="wc-block-stock-filter__button"
+							disabled={ isLoading || isDisabled }
+							onClick={ () => onSubmit( checked ) }
+						/>
+					) }
+				</div>
 			</div>
 		</>
 	);

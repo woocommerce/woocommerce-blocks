@@ -67,3 +67,14 @@
 		}
 	}
 }
+
+.wc-block-attribute-filter__actions {
+	align-items: center;
+	display: flex;
+	gap: $gap;
+	justify-content: flex-end;
+
+	.wc-block-components-filter-submit-button {
+		margin-left: 0;
+	}
+}
