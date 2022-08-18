@@ -212,15 +212,15 @@ const StockStatusFilterBlock = ( {
 	};
 
 	const onSubmit = useCallback(
-		( isChecked ) => {
+		( checkedOptions ) => {
 			if ( isEditor ) {
 				return;
 			}
-			if ( isChecked && ! filteringForPhpTemplate ) {
-				setProductStockStatusQuery( checked );
+			if ( checkedOptions && ! filteringForPhpTemplate ) {
+				setProductStockStatusQuery( checkedOptions );
 			}
 
-			updateFilterUrl( checked );
+			updateFilterUrl( checkedOptions );
 		},
 		[
 			isEditor,
@@ -378,7 +378,9 @@ const StockStatusFilterBlock = ( {
 				<div className="wc-block-stock-filter__actions">
 					{ checked.length > 0 && (
 						<FilterResetButton
-							onClick={ () => setChecked( [] ) }
+							onClick={ () => {
+								onSubmit( [] );
+							} }
 							screenReaderLabel={ __(
 								'Reset stock filter',
 								'woo-gutenberg-products-block'
