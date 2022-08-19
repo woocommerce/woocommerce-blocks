@@ -40,7 +40,20 @@ if ( isExperimentalBuild() ) {
 			[
 				'core/post-template',
 				{},
-				[ [ 'core/post-title' ], [ 'woocommerce/product-image' ] ],
+				[
+					[ 'core/post-title' ],
+					[ 'woocommerce/product-image' ],
+					[
+						'core/group',
+						{
+							layout: {
+								type: 'flex',
+								justifyContent: 'center',
+							},
+						},
+						[ [ 'woocommerce/product-button' ] ],
+					],
+				],
 			],
 			[ 'core/query-pagination' ],
 			[ 'core/query-no-results' ],

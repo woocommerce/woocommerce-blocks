@@ -15,7 +15,6 @@ import { attributes } from './attributes';
 import sharedConfig from '../shared/config';
 
 const blockConfig = {
-	$schema: 'https://schemas.wp.org/trunk/block.json',
 	apiVersion: 2,
 	name: 'woocommerce/product-image',
 	title: __( 'Product Image', 'woo-gutenberg-products-block' ),
