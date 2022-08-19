@@ -617,14 +617,14 @@ const AttributeFilterBlock = ( {
 					<FilterResetButton
 						onClick={ () => setChecked( [] ) }
 						screenReaderLabel={ __(
-							'Reset stock filter',
+							'Reset attribute filter',
 							'woo-gutenberg-products-block'
 						) }
 					/>
 				) }
 				{ blockAttributes.showFilterButton && (
 					<FilterSubmitButton
-						className="wc-block-stock-filter__button"
+						className="wc-block-attribute-filter__button"
 						disabled={ isLoading || isDisabled }
 						onClick={ () => onSubmit( checked ) }
 					/>
