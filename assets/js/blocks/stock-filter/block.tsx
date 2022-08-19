@@ -379,6 +379,7 @@ const StockStatusFilterBlock = ( {
 					{ checked.length > 0 && (
 						<FilterResetButton
 							onClick={ () => {
+								setChecked( [] );
 								onSubmit( [] );
 							} }
 							screenReaderLabel={ __(
