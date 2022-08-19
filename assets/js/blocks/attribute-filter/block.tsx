@@ -525,7 +525,7 @@ const AttributeFilterBlock = ( {
 						disabled={ isDisabled }
 						placeholder={ sprintf(
 							/* translators: %s attribute name. */
-							__( 'Any %s', 'woo-gutenberg-products-block' ),
+							__( 'Select %s', 'woo-gutenberg-products-block' ),
 							attributeObject.label
 						) }
 						onChange={ ( tokens: string[] ) => {
@@ -611,24 +611,24 @@ const AttributeFilterBlock = ( {
 						isDisabled={ isDisabled }
 					/>
 				) }
-				<div className="wc-block-attribute-filter__actions">
-					{ checked.length > 0 && (
-						<FilterResetButton
-							onClick={ () => setChecked( [] ) }
-							screenReaderLabel={ __(
-								'Reset stock filter',
-								'woo-gutenberg-products-block'
-							) }
-						/>
-					) }
-					{ blockAttributes.showFilterButton && (
-						<FilterSubmitButton
-							className="wc-block-stock-filter__button"
-							disabled={ isLoading || isDisabled }
-							onClick={ () => onSubmit( checked ) }
-						/>
-					) }
-				</div>
+			</div>
+			<div className="wc-block-attribute-filter__actions">
+				{ checked.length > 0 && (
+					<FilterResetButton
+						onClick={ () => setChecked( [] ) }
+						screenReaderLabel={ __(
+							'Reset stock filter',
+							'woo-gutenberg-products-block'
+						) }
+					/>
+				) }
+				{ blockAttributes.showFilterButton && (
+					<FilterSubmitButton
+						className="wc-block-stock-filter__button"
+						disabled={ isLoading || isDisabled }
+						onClick={ () => onSubmit( checked ) }
+					/>
+				) }
 			</div>
 		</>
 	);
