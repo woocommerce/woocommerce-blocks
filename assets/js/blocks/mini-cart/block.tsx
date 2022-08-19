@@ -4,6 +4,7 @@
 import { renderParentBlock } from '@woocommerce/atomic-utils';
 import Drawer from '@woocommerce/base-components/drawer';
 import { useStoreCart } from '@woocommerce/base-context/hooks';
+import { useTypographyProps } from '@woocommerce/base-hooks';
 import { translateJQueryEventToNative } from '@woocommerce/base-utils';
 import { getRegisteredBlockComponents } from '@woocommerce/blocks-registry';
 import {
@@ -27,6 +28,7 @@ import {
 } from '@wordpress/element';
 import { sprintf, _n } from '@wordpress/i18n';
 import classnames from 'classnames';
+
 /**
  * Internal dependencies
  */
@@ -44,14 +46,16 @@ interface Props {
 	hasHiddenPrice: boolean;
 }
 
-const MiniCartBlock = ( {
-	isInitiallyOpen = false,
-	colorClassNames,
-	style,
-	contents = '',
-	addToCartBehaviour = 'none',
-	hasHiddenPrice = false,
-}: Props ): JSX.Element => {
+const MiniCartBlock = ( attributes: Props ): JSX.Element => {
+	const {
+		isInitiallyOpen = false,
+		colorClassNames,
+		style,
+		contents = '',
+		addToCartBehaviour = 'none',
+		hasHiddenPrice = false,
+	} = attributes;
+
 	const {
 		cartItemsCount: cartItemsCountFromApi,
 		cartIsLoading,
@@ -201,6 +205,8 @@ const MiniCartBlock = ( {
 		color: style?.color?.text,
 	};
 
+	const typographyProps = useTypographyProps( attributes );
+
 	return (
 		<>
 			<button
@@ -215,7 +221,10 @@ const MiniCartBlock = ( {
 				aria-label={ ariaLabel }
 			>
 				{ ! hasHiddenPrice && (
-					<span className="wc-block-mini-cart__amount">
+					<span
+						className="wc-block-mini-cart__amount"
+						style={ typographyProps.style }
+					>
 						{ formatPrice(
 							subTotal,
 							getCurrencyFromPriceResponse( cartTotals )
