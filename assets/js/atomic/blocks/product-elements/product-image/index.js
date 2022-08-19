@@ -8,16 +8,15 @@ import { __ } from '@wordpress/i18n';
 /**
  * Internal dependencies
  */
-import { Save } from './save';
 import edit from './edit';
 
 import { supports } from './supports';
 import { attributes } from './attributes';
+import sharedConfig from '../shared/config';
 
 const blockConfig = {
 	name: 'woocommerce/product-image',
 	title: __( 'Product Image', 'woo-gutenberg-products-block' ),
-	category: 'woocommerce-product-elements',
 	icon: {
 		src: (
 			<Icon
@@ -38,20 +37,9 @@ const blockConfig = {
 	apiVersion: 2,
 	$schema: 'https://schemas.wp.org/trunk/block.json',
 	edit,
-	save: Save,
-	parent: [
-		'@woocommerce/all-products',
-		'@woocommerce/single-product',
-		'core/query',
-	],
-	deprecated: [
-		{
-			attributes: {},
-			save() {
-				return null;
-			},
-		},
-	],
 };
 
-registerBlockType( 'woocommerce/product-image', blockConfig );
+registerBlockType( 'woocommerce/product-image', {
+	...sharedConfig,
+	...blockConfig,
+} );

@@ -29,9 +29,11 @@ const sharedConfig: Omit< BlockConfiguration, 'attributes' | 'title' > = {
 	supports: {
 		html: false,
 	},
-	parent: isExperimentalBuild()
-		? undefined
-		: [ '@woocommerce/all-products', '@woocommerce/single-product' ],
+	parent: [
+		'@woocommerce/all-products',
+		'@woocommerce/single-product',
+		'core/query',
+	],
 	save,
 	deprecated: [
 		{
