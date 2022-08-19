@@ -15,6 +15,8 @@ import { attributes } from './attributes';
 import sharedConfig from '../shared/config';
 
 const blockConfig = {
+	$schema: 'https://schemas.wp.org/trunk/block.json',
+	apiVersion: 2,
 	name: 'woocommerce/product-image',
 	title: __( 'Product Image', 'woo-gutenberg-products-block' ),
 	icon: {
@@ -30,12 +32,15 @@ const blockConfig = {
 		'Display the main product image.',
 		'woo-gutenberg-products-block'
 	),
-	supports,
-	attributes,
 	usesContext: [ 'query', 'queryId', 'postId' ],
+	parent: [
+		'@woocommerce/all-products',
+		'@woocommerce/single-product',
+		'core/post-template',
+	],
 	textdomain: 'woo-gutenberg-products-block',
-	apiVersion: 2,
-	$schema: 'https://schemas.wp.org/trunk/block.json',
+	attributes,
+	supports,
 	edit,
 };
 
