@@ -25,8 +25,8 @@ export function DefaultNotice( { block }: { block: string } ) {
 		block === 'checkout' ? CHECKOUT_PAGE_ID : CART_PAGE_ID;
 	const settingName =
 		block === 'checkout'
-			? 'woocommece_checkout_page_id'
-			: 'woocommece_cart_page_id';
+			? 'woocommerce_checkout_page_id'
+			: 'woocommerce_cart_page_id';
 
 	const noticeContent =
 		block === 'checkout'
