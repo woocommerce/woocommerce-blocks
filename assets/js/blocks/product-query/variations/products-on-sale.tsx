@@ -54,7 +54,7 @@ if ( isExperimentalBuild() ) {
 								justification: 'center',
 							},
 						},
-						[ 'woocommerce/product-button' ],
+						[ [ 'woocommerce/product-button' ] ],
 					],
 				],
 				[ 'core/query-pagination' ],

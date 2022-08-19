@@ -1,7 +1,6 @@
 /**
  * External dependencies
  */
-import { __ } from '@wordpress/i18n';
 import { Disabled } from '@wordpress/components';
 import { useBlockProps } from '@wordpress/block-editor';
 import { useEffect } from 'react';
