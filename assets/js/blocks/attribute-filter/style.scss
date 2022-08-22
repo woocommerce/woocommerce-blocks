@@ -67,3 +67,10 @@
 		}
 	}
 }
+
+.editor-styles-wrapper  .wc-block-attribute-filter__button.wc-block-attribute-filter__button,
+.wc-block-attribute-filter__button.wc-block-attribute-filter__button {
+	padding: $gap-smaller $gap;
+	font-size: 0.875em;
+	border-radius: 2px;
+}
