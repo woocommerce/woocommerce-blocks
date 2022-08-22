@@ -615,7 +615,10 @@ const AttributeFilterBlock = ( {
 			<div className="wc-block-attribute-filter__actions">
 				{ checked.length > 0 && (
 					<FilterResetButton
-						onClick={ () => setChecked( [] ) }
+						onClick={ () => {
+							setChecked( [] );
+							onSubmit( [] );
+						} }
 						screenReaderLabel={ __(
 							'Reset attribute filter',
 							'woo-gutenberg-products-block'
