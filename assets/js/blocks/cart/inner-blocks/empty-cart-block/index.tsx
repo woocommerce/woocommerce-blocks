@@ -3,15 +3,14 @@
  */
 import { removeCart } from '@woocommerce/icons';
 import { Icon } from '@wordpress/icons';
-import { registerFeaturePluginBlockType } from '@woocommerce/block-settings';
+import { registerBlockType } from '@wordpress/blocks';
 
 /**
  * Internal dependencies
  */
 import { Edit, Save } from './edit';
-import metadata from './block.json';
 
-registerFeaturePluginBlockType( metadata, {
+registerBlockType( 'woocommerce/empty-cart-block', {
 	icon: {
 		src: (
 			<Icon

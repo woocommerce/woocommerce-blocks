@@ -9,12 +9,7 @@ import { ProductDataContextProvider } from '@woocommerce/shared-context';
  */
 import { Block } from '../block';
 
-jest.mock( '@woocommerce/block-settings', () => ( {
-	__esModule: true,
-	PLACEHOLDER_IMG_SRC: 'placeholder.jpg',
-} ) );
-
-jest.mock( '../../../../../hooks/style-attributes', () => ( {
+jest.mock( '@woocommerce/base-hooks', () => ( {
 	__esModule: true,
 	useBorderProps: jest.fn( () => ( {
 		className: '',
