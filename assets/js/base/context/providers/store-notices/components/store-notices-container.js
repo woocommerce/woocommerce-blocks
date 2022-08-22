@@ -5,12 +5,12 @@ import PropTypes from 'prop-types';
 import classnames from 'classnames';
 import { Notice } from 'wordpress-components';
 import { useDispatch, useSelect } from '@wordpress/data';
+import { PAYMENT_METHOD_DATA_STORE_KEY } from '@woocommerce/block-data';
 
 /**
  * Internal dependencies
  */
 import './style.scss';
-import { useStoreNoticesContext } from '../context';
 
 const getWooClassName = ( { status = 'default' } ) => {
 	switch ( status ) {
@@ -30,7 +30,9 @@ export const StoreNoticesContainer = ( {
 	context = 'default',
 	additionalNotices = [],
 } ) => {
-	const { isSuppressed } = useStoreNoticesContext();
+	const isExpressPaymentMethodActive = useSelect( ( select ) =>
+		select( PAYMENT_METHOD_DATA_STORE_KEY ).isExpressPaymentMethodActive()
+	);
 
 	const { notices } = useSelect( ( select ) => {
 		const store = select( 'core/notices' );
@@ -49,7 +51,8 @@ export const StoreNoticesContainer = ( {
 
 	const wrapperClass = classnames( className, 'wc-block-components-notices' );
 
-	return isSuppressed ? null : (
+	// We suppress the notices when the express payment method is active
+	return isExpressPaymentMethodActive ? null : (
 		<div className={ wrapperClass }>
 			{ regularNotices.map( ( props ) => (
 				<Notice
