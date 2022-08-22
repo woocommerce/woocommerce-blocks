@@ -433,7 +433,7 @@ const AttributeFilterBlock = ( {
 	] );
 
 	/**
-	 * Try get the current attribute filter from the URl.
+	 * Try to get the current attribute filter from the URl.
 	 */
 	useEffect( () => {
 		if ( hasSetFilterDefaultsFromUrl || attributeTermsLoading ) {
@@ -627,7 +627,12 @@ const AttributeFilterBlock = ( {
 			<div className="wc-block-attribute-filter__actions">
 				{ checked.length > 0 && (
 					<FilterResetButton
-						onClick={ () => setChecked( [] ) }
+						onClick={ () => {
+							setChecked( [] );
+							if ( hasSetFilterDefaultsFromUrl ) {
+								onSubmit( [] );
+							}
+						} }
 						screenReaderLabel={ __(
 							'Reset attribute filter',
 							'woo-gutenberg-products-block'
@@ -637,7 +642,9 @@ const AttributeFilterBlock = ( {
 				{ blockAttributes.showFilterButton && (
 					<FilterSubmitButton
 						className="wc-block-attribute-filter__button"
-						disabled={ isLoading || isDisabled }
+						disabled={
+							isLoading || isDisabled || checked.length === 0
+						}
 						onClick={ () => onSubmit( checked ) }
 					/>
 				) }

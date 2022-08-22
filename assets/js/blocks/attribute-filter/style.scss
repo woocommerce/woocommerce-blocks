@@ -2,6 +2,15 @@
 	// We need to override it because by default the global styles applied the border-style: solid;
 	// Our goal is not to have a border on main wrapper DOM element
 	border-style: none !important;
+
+	h1,
+	h2,
+	h3,
+	h4,
+	h5,
+	h6 {
+		text-transform: inherit;
+	}
 }
 
 .wc-block-attribute-filter {
@@ -114,5 +123,45 @@
 
 	.wc-block-components-filter-submit-button {
 		margin-left: 0;
+
+		&:disabled {
+			opacity: 0.6;
+			cursor: auto;
+		}
+	}
+
+	.wc-block-filter-submit-button.wc-block-components-filter-submit-button.wc-block-attribute-filter__button {
+		margin-top: 0;
+	}
+}
+
+.editor-styles-wrapper .wc-block-components-checkbox {
+	margin-top: em($gap);
+}
+
+.wc-block-components-checkbox {
+	margin-top: em($gap);
+}
+.components-form-token-field__input-container {
+	.components-form-token-field__token-text {
+		background-color: $white;
+		border: 1px solid;
+		border-right: 0;
+		border-radius: 25px 0 0 25px;
+		padding: em($gap-smallest);
+		padding-left: em($gap-small);
+	}
+
+	.components-button.components-form-token-field__remove-token {
+		background-color: $white;
+		border: 1px solid;
+		border-left: 0;
+		border-radius: 0 25px 25px 0;
+		padding: 0 em($gap-smaller) 0 0;
+
+		&.has-icon svg {
+			background-color: $gray-200;
+			border-radius: 25px;
+		}
 	}
 }
