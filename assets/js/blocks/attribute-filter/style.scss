@@ -10,6 +10,7 @@
 	border-color: inherit;
 
 	&.style-dropdown {
+		position: relative;
 		display: flex;
 		gap: $gap;
 		border-radius: inherit;
@@ -19,6 +20,19 @@
 		.wc-block-components-filter-submit-button {
 			height: 36px;
 			line-height: 1;
+		}
+
+		> .wc-blocks-components-form-token-field-wrapper {
+			position: relative;
+			z-index: 2;
+		}
+
+		> svg {
+			position: absolute;
+			right: 20px;
+			top: 50%;
+			transform: translateY(-50%);
+			z-index: 1;
 		}
 	}
 
