@@ -2,6 +2,15 @@
 	// We need to override it because by default the global styles applied the border-style: solid;
 	// Our goal is not to have a border on main wrapper DOM element
 	border-style: none !important;
+
+	h1,
+	h2,
+	h3,
+	h4,
+	h5,
+	h6 {
+		text-transform: inherit;
+	}
 }
 
 .wc-block-attribute-filter {
