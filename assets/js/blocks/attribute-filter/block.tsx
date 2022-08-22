@@ -497,7 +497,9 @@ const AttributeFilterBlock = ( {
 	const TagName =
 		`h${ blockAttributes.headingLevel }` as keyof JSX.IntrinsicElements;
 	const isLoading = ! blockAttributes.isPreview && attributeTermsLoading;
-	const isDisabled = ! blockAttributes.isPreview && filteredCountsLoading;
+	const isDisabled =
+		( ! blockAttributes.isPreview && filteredCountsLoading ) ||
+		checked.length === 0;
 
 	return (
 		<>
