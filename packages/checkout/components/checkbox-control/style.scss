@@ -101,10 +101,6 @@
 	}
 }
 
-.editor-styles-wrapper .wc-block-components-checkbox {
-	margin-top: 1.5em;
-}
-
 // Hack to hide the check mark in IE11
 // See comment: https://github.com/woocommerce/woocommerce-gutenberg-products-block/pull/2320/#issuecomment-621936576
 @include ie11() {
