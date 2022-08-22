@@ -617,7 +617,9 @@ const AttributeFilterBlock = ( {
 					<FilterResetButton
 						onClick={ () => {
 							setChecked( [] );
-							onSubmit( [] );
+							if ( hasSetFilterDefaultsFromUrl ) {
+								onSubmit( [] );
+							}
 						} }
 						screenReaderLabel={ __(
 							'Reset attribute filter',
