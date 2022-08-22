@@ -54,6 +54,7 @@ import {
 	isQueryArgsEqual,
 	parseTaxonomyToGenerateURL,
 	formatSlug,
+	generateUniqueId,
 } from './utils';
 import { BlockAttributes, DisplayOption } from './types';
 
@@ -112,6 +113,13 @@ const AttributeFilterBlock = ( {
 	);
 
 	const [ checked, setChecked ] = useState( initialFilters );
+
+	/*
+		FormTokenField forces the dropdown to reopen on reset, so we create a unique ID to use as the components key.
+		This will force the component to remount on reset when we change this value.
+		More info: https://github.com/woocommerce/woocommerce-blocks/pull/6920#issuecomment-1222402482
+	 */
+	const [ remountKey, setRemountKey ] = useState( generateUniqueId() );
 
 	const [ displayedOptions, setDisplayedOptions ] = useState<
 		DisplayOption[]
@@ -515,6 +523,7 @@ const AttributeFilterBlock = ( {
 				{ blockAttributes.displayStyle === 'dropdown' ? (
 					<>
 						<FormTokenField
+							key={ remountKey }
 							className={ classNames( borderProps.className, {
 								'single-selection': ! multiple,
 							} ) }
@@ -629,6 +638,7 @@ const AttributeFilterBlock = ( {
 					<FilterResetButton
 						onClick={ () => {
 							setChecked( [] );
+							setRemountKey( generateUniqueId() );
 							if ( hasSetFilterDefaultsFromUrl ) {
 								onSubmit( [] );
 							}
