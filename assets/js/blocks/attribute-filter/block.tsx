@@ -432,7 +432,7 @@ const AttributeFilterBlock = ( {
 	] );
 
 	/**
-	 * Try get the current attribute filter from the URl.
+	 * Try to get the current attribute filter from the URl.
 	 */
 	useEffect( () => {
 		if ( hasSetFilterDefaultsFromUrl || attributeTermsLoading ) {
@@ -497,9 +497,7 @@ const AttributeFilterBlock = ( {
 	const TagName =
 		`h${ blockAttributes.headingLevel }` as keyof JSX.IntrinsicElements;
 	const isLoading = ! blockAttributes.isPreview && attributeTermsLoading;
-	const isDisabled =
-		( ! blockAttributes.isPreview && filteredCountsLoading ) ||
-		checked.length === 0;
+	const isDisabled = ! blockAttributes.isPreview && filteredCountsLoading;
 
 	return (
 		<>
@@ -630,7 +628,9 @@ const AttributeFilterBlock = ( {
 				{ blockAttributes.showFilterButton && (
 					<FilterSubmitButton
 						className="wc-block-attribute-filter__button"
-						disabled={ isLoading || isDisabled }
+						disabled={
+							isLoading || isDisabled || checked.length === 0
+						}
 						onClick={ () => onSubmit( checked ) }
 					/>
 				) }
