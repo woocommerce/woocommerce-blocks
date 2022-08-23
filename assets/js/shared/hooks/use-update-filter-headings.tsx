@@ -17,8 +17,14 @@ const useUpdateFilterHeadings = ( {
 	setAttributes,
 }: Attributes & Pick< BlockEditProps< Attributes >, 'setAttributes' > ) => {
 	const { insertBlock } = useDispatch( 'core/block-editor' );
-	const currentBlockIndex = useSelect( ( select ) =>
-		select( 'core/block-editor' ).getBlockIndex( clientId )
+	const { currentBlockIndex, currentParentBlockId } = useSelect(
+		( select ) => {
+			const store = select( 'core/block-editor' );
+			return {
+				currentBlockIndex: store.getBlockIndex( clientId ),
+				currentParentBlockId: store.getBlockRootClientId( clientId ),
+			};
+		}
 	);
 
 	const updateBlock = () => {
@@ -26,7 +32,12 @@ const useUpdateFilterHeadings = ( {
 			content: heading,
 			level: headingLevel,
 		} );
-		insertBlock( headingBlock, currentBlockIndex, undefined, false );
+		insertBlock(
+			headingBlock,
+			currentBlockIndex,
+			currentParentBlockId,
+			false
+		);
 		setAttributes( {
 			heading: '',
 		} );
