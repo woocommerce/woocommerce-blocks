@@ -8,7 +8,6 @@ import { renderFrontend } from '@woocommerce/base-utils';
  */
 import Block from './block';
 import metadata from './block.json';
-import { blockAttributes } from './attributes';
 
 const getProps = ( el: HTMLElement ) => {
 	return {
@@ -16,7 +15,7 @@ const getProps = ( el: HTMLElement ) => {
 			displayStyle:
 				el.dataset.displayStyle ||
 				metadata.attributes.displayStyle.default,
-			heading: el.dataset.heading || blockAttributes.heading.default,
+			heading: el.dataset.heading,
 			headingLevel: el.dataset.headingLevel
 				? parseInt( el.dataset.headingLevel, 10 )
 				: metadata.attributes.headingLevel.default,
