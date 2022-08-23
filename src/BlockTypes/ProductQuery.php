@@ -44,6 +44,12 @@ class ProductQuery extends AbstractBlock {
 		add_filter(
 			'gutenberg_build_query_vars_from_query_block',
 			function( $query ) use ( $parsed_block ) {
+				// We need to make sure the filter doesn't run multiple times. However,
+				// this is the only place we can register the filter, and we cannot unregister
+				// it because we need to use an anonymous callback as we need to pass the
+				// `$parsed_block` to this closure.
+				// A brief discussion of the reasoning was had in the following PR:
+				// https://github.com/woocommerce/woocommerce-blocks/pull/6952 .
 				static $has_ran = false;
 
 				if ( $has_ran ) {
