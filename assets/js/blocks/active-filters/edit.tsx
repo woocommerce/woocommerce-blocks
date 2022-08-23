@@ -2,14 +2,10 @@
  * External dependencies
  */
 import { __ } from '@wordpress/i18n';
-import { InspectorControls, useBlockProps } from '@wordpress/block-editor';
+import { InspectorControls } from '@wordpress/block-editor';
 import HeadingToolbar from '@woocommerce/editor-components/heading-toolbar';
 import BlockTitle from '@woocommerce/editor-components/block-title';
-import UpdateFilterHeadingsPrompt from '@woocommerce/base-components/filter-update-heading';
-import { BlockEditProps } from '@wordpress/blocks';
-import { getSettingWithCoercion } from '@woocommerce/settings';
-import { isBoolean } from '@woocommerce/types';
-import classNames from 'classnames';
+import type { BlockEditProps } from '@wordpress/blocks';
 import {
 	Disabled,
 	PanelBody,
@@ -25,31 +21,13 @@ import {
  */
 import Block from './block';
 import type { Attributes } from './types';
-import useUpdateFilterHeadings from '../../shared/hooks/use-update-filter-headings';
+import withTitleMigration from '../../hocs/with-title-migration';
 
 const Edit = ( {
 	attributes,
 	setAttributes,
-	clientId,
 }: BlockEditProps< Attributes > ) => {
-	const { className, displayStyle, heading, headingLevel } = attributes;
-
-	/**
-	 * Since WooCommerce Blocks 8.2.0, we have decoupled the block title from the filter block itself.
-	 * So we need to prompt users who are already using the block with title to click update,
-	 * where we will create a title block for them.
-	 */
-	const shouldRemoveBlockTitle = getSettingWithCoercion(
-		'shouldRemoveBlockTitle',
-		false,
-		isBoolean
-	);
-
-	const blockProps = useBlockProps( {
-		className: classNames( className, {
-			'has-upgrade-prompt': shouldRemoveBlockTitle && heading,
-		} ),
-	} );
+	const { displayStyle, heading, headingLevel } = attributes;
 
 	const getInspectorControls = () => {
 		return (
@@ -107,19 +85,9 @@ const Edit = ( {
 		);
 	};
 
-	const updateBlockHeading = useUpdateFilterHeadings( {
-		heading,
-		headingLevel,
-		clientId,
-		setAttributes,
-	} );
-
 	return (
-		<div { ...blockProps }>
+		<>
 			{ getInspectorControls() }
-			{ shouldRemoveBlockTitle && heading && (
-				<UpdateFilterHeadingsPrompt onClick={ updateBlockHeading } />
-			) }
 			{ heading && (
 				<BlockTitle
 					className="wc-block-active-filters__title"
@@ -128,14 +96,13 @@ const Edit = ( {
 					onChange={ ( value: Attributes[ 'heading' ] ) =>
 						setAttributes( { heading: value } )
 					}
-					disabled={ shouldRemoveBlockTitle }
 				/>
 			) }
 			<Disabled>
 				<Block attributes={ attributes } isEditor={ true } />
 			</Disabled>
-		</div>
+		</>
 	);
 };
 
-export default withSpokenMessages( Edit );
+export default withSpokenMessages( withTitleMigration( Edit ) );

@@ -18,7 +18,7 @@ const BlockTitle = ( {
 	onChange,
 	heading,
 	instanceId,
-	disabled,
+	disabled = false,
 } ) => {
 	const TagName = `h${ headingLevel }`;
 	const Component = () => (
