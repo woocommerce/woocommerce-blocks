@@ -17,6 +17,7 @@
 	margin-bottom: $gap-large;
 	border-radius: inherit;
 	border-color: inherit;
+	z-index: 30;
 
 	&.style-dropdown {
 		position: relative;
