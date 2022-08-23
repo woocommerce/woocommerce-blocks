@@ -63,9 +63,9 @@ const Packages = ( {
 					key={ packageId }
 					packageId={ packageId }
 					packageData={ packageData }
-					collapsible={ collapsible }
-					collapse={ collapse }
-					showItems={ showItems }
+					collapsible={ !! collapsible }
+					collapse={ !! collapse }
+					showItems={ showItems || packages.length > 1 }
 					noResultsMessage={ noResultsMessage }
 					renderOption={ renderOption }
 				/>
@@ -165,6 +165,7 @@ const ShippingRatesControl = ( {
 			ShippingRatesControlPackage,
 		},
 		context,
+		shippingRates,
 	};
 	const { isEditor } = useEditorContext();
 
@@ -190,6 +191,7 @@ const ShippingRatesControl = ( {
 					/>
 					<ExperimentalOrderShippingPackages>
 						<Packages
+							showItems={ shippingRates.length > 1 }
 							packages={ shippingRates }
 							noResultsMessage={ noResultsMessage }
 							renderOption={ renderOption }

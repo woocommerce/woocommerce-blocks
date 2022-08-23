@@ -22,7 +22,7 @@ const FilterSubmitButton = ( {
 	className,
 	disabled,
 	/* translators: Submit button text for filters. */
-	label = __( 'Go', 'woo-gutenberg-products-block' ),
+	label = __( 'Apply', 'woo-gutenberg-products-block' ),
 	onClick,
 	screenReaderLabel = __( 'Apply filter', 'woo-gutenberg-products-block' ),
 }: FilterSubmitButtonProps ): JSX.Element => {
@@ -30,6 +30,7 @@ const FilterSubmitButton = ( {
 		<button
 			type="submit"
 			className={ classNames(
+				'wp-block-button__link',
 				'wc-block-filter-submit-button',
 				'wc-block-components-filter-submit-button',
 				className

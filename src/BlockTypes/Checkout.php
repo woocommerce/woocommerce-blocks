@@ -1,6 +1,8 @@
 <?php
 namespace Automattic\WooCommerce\Blocks\BlockTypes;
 
+use Automattic\WooCommerce\Blocks\Package;
+
 /**
  * Checkout class.
  *
@@ -410,5 +412,35 @@ class Checkout extends AbstractBlock {
 		$vendor_chunks = $this->get_chunks_paths( 'vendors--cart-blocks' );
 		$shared_chunks = [ 'cart-blocks/order-summary-shipping--checkout-blocks/order-summary-shipping-frontend' ];
 		$this->register_chunk_translations( array_merge( $chunks, $vendor_chunks, $shared_chunks ) );
+	}
+
+	/**
+	 * Get list of Checkout block & its inner-block types.
+	 *
+	 * @return array;
+	 */
+	public static function get_checkout_block_types() {
+		return [
+			'Checkout',
+			'CheckoutActionsBlock',
+			'CheckoutBillingAddressBlock',
+			'CheckoutContactInformationBlock',
+			'CheckoutExpressPaymentBlock',
+			'CheckoutFieldsBlock',
+			'CheckoutOrderNoteBlock',
+			'CheckoutOrderSummaryBlock',
+			'CheckoutOrderSummaryCartItemsBlock',
+			'CheckoutOrderSummaryCouponFormBlock',
+			'CheckoutOrderSummaryDiscountBlock',
+			'CheckoutOrderSummaryFeeBlock',
+			'CheckoutOrderSummaryShippingBlock',
+			'CheckoutOrderSummarySubtotalBlock',
+			'CheckoutOrderSummaryTaxesBlock',
+			'CheckoutPaymentBlock',
+			'CheckoutShippingAddressBlock',
+			'CheckoutShippingMethodsBlock',
+			'CheckoutTermsBlock',
+			'CheckoutTotalsBlock',
+		];
 	}
 }
