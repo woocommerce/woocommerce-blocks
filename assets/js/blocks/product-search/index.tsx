@@ -108,7 +108,7 @@ const DeprecatedBlockEdit = ( { clientId }: { clientId: string } ) => {
 	return (
 		<Warning actions={ actions } className="wc-block-components-actions">
 			{ __(
-				'This version of the Product Search block is outdated.',
+				'This version of the Product Search block is outdated. Upgrade to continue using.',
 				'woo-gutenberg-products-block'
 			) }
 		</Warning>
