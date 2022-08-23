@@ -38,8 +38,7 @@
 
 .editor-styles-wrapper .wc-block-stock-filter .wp-block-button__link,
 .wc-block-stock-filter .wc-block-stock-filter__button {
-	margin-top: $gap-smaller;
-	padding: $gap-smaller $gap;
-	font-size: 0.875em;
-	border-radius: 2px;
+	margin-top: em($gap-smaller);
+	padding: em($gap-smaller) em($gap);
+	@include font-size(small);
 }
