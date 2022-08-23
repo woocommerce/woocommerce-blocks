@@ -5,12 +5,12 @@ import UpdateFilterHeadingsPrompt from '@woocommerce/base-components/filter-upda
 import { getSettingWithCoercion } from '@woocommerce/settings';
 import type { BlockEditProps } from '@wordpress/blocks';
 import { isBoolean } from '@woocommerce/types';
+import { useBlockProps } from '@wordpress/block-editor';
 
 /**
  * Internal dependencies
  */
 import useUpdateFilterHeadings from '../shared/hooks/use-update-filter-headings';
-import { useBlockProps } from '@wordpress/block-editor';
 
 interface Attributes {
 	heading: string;
