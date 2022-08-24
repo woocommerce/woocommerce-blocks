@@ -5,7 +5,6 @@ import UpdateFilterHeadingsPrompt from '@woocommerce/base-components/filter-upda
 import { getSettingWithCoercion } from '@woocommerce/settings';
 import type { BlockEditProps } from '@wordpress/blocks';
 import { isBoolean } from '@woocommerce/types';
-import { useBlockProps } from '@wordpress/block-editor';
 
 /**
  * Internal dependencies
@@ -23,11 +22,7 @@ const withTitleMigration = (
 ) => {
 	return ( props: BlockEditProps< Attributes > ): JSX.Element => {
 		const { attributes, setAttributes, clientId } = props;
-		const { className, heading, headingLevel } = attributes;
-
-		const blockProps = useBlockProps( {
-			className,
-		} );
+		const { heading, headingLevel } = attributes;
 
 		/**
 		 * Since WooCommerce Blocks 8.2.0, we have decoupled the block title from the filter block itself.
@@ -48,14 +43,14 @@ const withTitleMigration = (
 		} );
 
 		return (
-			<div { ...blockProps }>
+			<>
 				{ shouldRemoveBlockTitle && heading && (
 					<UpdateFilterHeadingsPrompt
 						onClick={ updateBlockHeading }
 					/>
 				) }
 				<OriginalComponent { ...props } />
-			</div>
+			</>
 		);
 	};
 };

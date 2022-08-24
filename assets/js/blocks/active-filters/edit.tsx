@@ -2,7 +2,7 @@
  * External dependencies
  */
 import { __ } from '@wordpress/i18n';
-import { InspectorControls } from '@wordpress/block-editor';
+import { InspectorControls, useBlockProps } from '@wordpress/block-editor';
 import HeadingToolbar from '@woocommerce/editor-components/heading-toolbar';
 import BlockTitle from '@woocommerce/editor-components/block-title';
 import type { BlockEditProps } from '@wordpress/blocks';
@@ -27,7 +27,11 @@ const Edit = ( {
 	attributes,
 	setAttributes,
 }: BlockEditProps< Attributes > ) => {
-	const { displayStyle, heading, headingLevel } = attributes;
+	const { className, displayStyle, heading, headingLevel } = attributes;
+
+	const blockProps = useBlockProps( {
+		className,
+	} );
 
 	const getInspectorControls = () => {
 		return (
@@ -86,7 +90,7 @@ const Edit = ( {
 	};
 
 	return (
-		<>
+		<div { ...blockProps }>
 			{ getInspectorControls() }
 			{ heading && (
 				<BlockTitle
@@ -101,7 +105,7 @@ const Edit = ( {
 			<Disabled>
 				<Block attributes={ attributes } isEditor={ true } />
 			</Disabled>
-		</>
+		</div>
 	);
 };
 
