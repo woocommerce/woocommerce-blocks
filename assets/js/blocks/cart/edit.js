@@ -160,9 +160,7 @@ export const Edit = ( { className, attributes, setAttributes, clientId } ) => {
 						attributes={ attributes }
 						setAttributes={ setAttributes }
 					/>
-					<BlockControls __experimentalShareWithChildBlocks>
-						{ ViewSwitcherComponent }
-					</BlockControls>
+					<BlockControls>{ ViewSwitcherComponent }</BlockControls>
 					<CartBlockContext.Provider
 						value={ {
 							hasDarkControls,
