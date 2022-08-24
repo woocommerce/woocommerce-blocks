@@ -2,7 +2,7 @@
 
 ## Price slider accent color
 
-The Filter Products by Price block includes a price slider which uses an accent color to show the selected range.
+The Filter by Price block includes a price slider which uses an accent color to show the selected range.
 
 ![Price filter screenshot](https://user-images.githubusercontent.com/3616980/96570001-2053f900-12ca-11eb-8a75-8a54f243bda3.png)
 
@@ -34,6 +34,7 @@ Notice the code snippet above uses a CSS custom property, so the default color m
 
 [We're hiring!](https://woocommerce.com/careers/) Come work with us!
 
-🐞 Found a mistake, or have a suggestion? [Leave feedback about this document here.](https://github.com/woocommerce/woocommerce-gutenberg-products-block/issues/new?assignees=&labels=type%3A+documentation&template=--doc-feedback.md&title=Feedback%20on%20./docs/theming/product-grid-270.md)
+🐞 Found a mistake, or have a suggestion? [Leave feedback about this document here.](https://github.com/woocommerce/woocommerce-blocks/issues/new?assignees=&labels=type%3A+documentation&template=--doc-feedback.md&title=Feedback%20on%20./docs/designers/theming/all-products-and-filters.md)
 
 <!-- /FEEDBACK -->
+

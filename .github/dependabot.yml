@@ -7,6 +7,10 @@ updates:
       schedule:
           interval: 'monthly'
       open-pull-requests-limit: 10
+      labels:
+        - "skip-changelog"
+        - "type: dependencies"
+        - "github_actions"
 
       # Maintain dependencies for npm
     - package-ecosystem: 'npm'
@@ -14,6 +18,10 @@ updates:
       schedule:
           interval: 'weekly'
       open-pull-requests-limit: 10
+      labels:
+        - "skip-changelog"
+        - "type: dependencies"
+        - "javascript"
 
       # Maintain dependencies for Composer
     - package-ecosystem: 'composer'
@@ -21,3 +29,7 @@ updates:
       schedule:
           interval: 'weekly'
       open-pull-requests-limit: 10
+      labels:
+        - "skip-changelog"
+        - "type: dependencies"
+        - "php"
