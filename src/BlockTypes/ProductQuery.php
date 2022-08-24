@@ -21,21 +21,35 @@ class ProductQuery extends AbstractBlock {
 	 */
 	protected function initialize() {
 		parent::initialize();
+
 		add_filter(
-			'pre_render_block',
-			array( $this, 'update_query' ),
+			'rest_product_query',
+			function( $args, $request ) {
+
+				$custom_query_args = $request->get_param( '__woocommerceVariationQuery' );
+				$on_sale_query     = ! isset( $custom_query_args['onSale'] ) || 'true' !== $custom_query_args['onSale'] ? array() : $this->get_on_sale_products_query();
+
+				return array_merge( $args, $on_sale_query );
+			},
 			10,
 			2
 		);
 
+			add_filter(
+				'pre_render_block',
+				array( $this, 'update_query' ),
+				10,
+				2
+			);
+
 	}
 
-	/**
-	 * Update the query for the product query block.
-	 *
-	 * @param string|null $pre_render   The pre-rendered content. Default null.
-	 * @param array       $parsed_block The block being rendered.
-	 */
+		/**
+		 * Update the query for the product query block.
+		 *
+		 * @param string|null $pre_render   The pre-rendered content. Default null.
+		 * @param array       $parsed_block The block being rendered.
+		 */
 	public function update_query( $pre_render, $parsed_block ) {
 		if ( 'core/query' !== $parsed_block['blockName'] ) {
 			return;
@@ -51,19 +65,19 @@ class ProductQuery extends AbstractBlock {
 		);
 	}
 
-	/**
-	 * Return a custom query based on the attributes.
-	 *
-	 * @param WP_Query $query         The WordPress Query.
-	 * @param WP_Block $parsed_block  The block being rendered.
-	 * @return array
-	 */
+		/**
+		 * Return a custom query based on the attributes.
+		 *
+		 * @param WP_Query $query         The WordPress Query.
+		 * @param WP_Block $parsed_block  The block being rendered.
+		 * @return array
+		 */
 	public function get_query_by_attributes( $query, $parsed_block ) {
-		if ( ! isset( $parsed_block['attrs']['__woocommerceVariationProps'] ) ) {
+		if ( ! isset( $parsed_block['attrs']['query']['customQueryArgs']['__woocommerceVariationQuery']['onSale'] ) ) {
 			return $query;
 		}
 
-		$variation_props     = $parsed_block['attrs']['__woocommerceVariationProps'];
+		$variation_query     = $parsed_block['attrs']['query']['customQueryArgs']['__woocommerceVariationQuery'];
 		$common_query_values = array(
 			'post_type'      => 'product',
 			'post_status'    => 'publish',
@@ -71,40 +85,36 @@ class ProductQuery extends AbstractBlock {
 			'orderby'        => $query['orderby'],
 			'order'          => $query['order'],
 		);
-		$on_sale_query       = $this->get_on_sale_products_query( $variation_props );
+		$on_sale_query       = ! isset( $variation_query['onSale'] ) || true !== $variation_query['onSale'] ? array() : $this->get_on_sale_products_query();
 
 		return array_merge( $query, $common_query_values, $on_sale_query );
 	}
 
+
 	/**
 	 * Return a query for on sale products.
 	 *
-	 * @param array $variation_props Dedicated attributes for the variation.
 	 * @return array
 	 */
-	private function get_on_sale_products_query( $variation_props ) {
-		if ( ! isset( $variation_props['attributes']['query']['onSale'] ) || true !== $variation_props['attributes']['query']['onSale'] ) {
-			return array();
-		}
-
+	private function get_on_sale_products_query() {
 		return array(
 			// Ignoring the warning of not using meta queries.
-			// phpcs:ignore WordPress.DB.SlowDBQuery.slow_db_query_meta_query
-			'meta_query' => array(
-				'relation' => 'OR',
-				array(
-					'key'     => '_sale_price',
-					'value'   => 0,
-					'compare' => '>',
-					'type'    => 'numeric',
-				),
-				array(
-					'key'     => '_min_variation_sale_price',
-					'value'   => 0,
-					'compare' => '>',
-					'type'    => 'numeric',
-				),
+		// phpcs:ignore WordPress.DB.SlowDBQuery.slow_db_query_meta_query
+		'meta_query' => array(
+			'relation' => 'OR',
+			array(
+				'key'     => '_sale_price',
+				'value'   => 0,
+				'compare' => '>',
+				'type'    => 'numeric',
 			),
+			array(
+				'key'     => '_min_variation_sale_price',
+				'value'   => 0,
+				'compare' => '>',
+				'type'    => 'numeric',
+			),
+		),
 		);
 	}
 }

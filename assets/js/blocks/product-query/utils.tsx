@@ -3,6 +3,7 @@
  */
 import {
 	ProductQueryArguments,
+	ProductQueryAttributes,
 	ProductQueryBlock,
 	QueryVariation,
 } from './types';
@@ -33,9 +34,9 @@ export function isWooQueryBlockVariation( block: ProductQueryBlock ) {
  * options relating to our custom query, while keeping the code
  * clean.
  */
-export function setCustomQueryAttribute(
+export function setCustomAttribute(
 	block: ProductQueryBlock,
-	attributes: Partial< ProductQueryArguments >
+	attributes: Partial< ProductQueryAttributes >
 ) {
 	const { __woocommerceVariationProps } = block.attributes;
 
@@ -44,9 +45,25 @@ export function setCustomQueryAttribute(
 			...__woocommerceVariationProps,
 			attributes: {
 				...__woocommerceVariationProps.attributes,
-				query: {
-					...__woocommerceVariationProps.attributes?.query,
-					...attributes,
+				...attributes,
+			},
+		},
+	} );
+}
+
+export function setCustomQueryArguments(
+	block: ProductQueryBlock,
+	queryArguments: Partial< ProductQueryArguments >
+) {
+	block.setAttributes( {
+		query: {
+			...block.attributes.query,
+			customQueryArgs: {
+				...block.attributes.query.customQueryArgs,
+				__woocommerceVariationQuery: {
+					...block.attributes.query.customQueryArgs
+						?.__woocommerceVariationQuery,
+					...queryArguments,
 				},
 			},
 		},

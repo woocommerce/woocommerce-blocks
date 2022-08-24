@@ -30,6 +30,12 @@ if ( isExperimentalBuild() ) {
 		},
 		attributes: {
 			...QUERY_DEFAULT_ATTRIBUTES,
+			query: {
+				...QUERY_DEFAULT_ATTRIBUTES.query,
+				__woocommerceVariationQuery: {
+					onSale: true,
+				},
+			},
 			__woocommerceVariationProps: {
 				name: 'query-products-on-sale',
 				attributes: {

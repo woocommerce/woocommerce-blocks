@@ -31,8 +31,10 @@ export interface ProductQueryArguments {
 	onSale?: boolean;
 }
 
-export type ProductQueryBlock =
-	WooCommerceBlockVariation< ProductQueryAttributes >;
+export type ProductQueryBlock = WooCommerceBlockVariation<
+	ProductQueryAttributes,
+	ProductQueryArguments
+>;
 
 export interface ProductQueryAttributes {
 	/**
@@ -41,13 +43,9 @@ export interface ProductQueryAttributes {
 	 * @example  `[ 'stockStatus' ]`  will not render the dropdown for stock status.
 	 */
 	disabledInspectorControls?: string[];
-	/**
-	 * Query attributes that define which products will be fetched.
-	 */
-	query?: ProductQueryArguments;
 }
 
-export interface QueryBlockQuery {
+export interface QueryBlockQuery< T > {
 	author?: string;
 	exclude?: string[];
 	inherit: boolean;
@@ -61,6 +59,7 @@ export interface QueryBlockQuery {
 	search?: string;
 	sticky?: string;
 	taxQuery?: string;
+	customQueryArgs?: T;
 }
 
 export enum QueryVariation {
@@ -70,10 +69,14 @@ export enum QueryVariation {
 	PRODUCTS_ON_SALE = 'query-products-on-sale',
 }
 
-export type WooCommerceBlockVariation< T > = EditorBlock< {
+export type WooCommerceBlockVariation< T, T1 > = EditorBlock< {
 	// Disabling naming convention because we are namespacing our
 	// custom attributes inside a core block. Prefixing with underscores
 	// will help signify our intentions.
+	query: QueryBlockQuery< {
+		// eslint-disable-next-line @typescript-eslint/naming-convention
+		__woocommerceVariationQuery: T1;
+	} >;
 	// eslint-disable-next-line @typescript-eslint/naming-convention
 	__woocommerceVariationProps: Partial< BlockInstance< T > >;
 } >;

@@ -12,24 +12,26 @@ import { ElementType } from 'react';
  * Internal dependencies
  */
 import { ProductQueryBlock } from './types';
-import { isWooQueryBlockVariation, setCustomQueryAttribute } from './utils';
+import { isWooQueryBlockVariation, setCustomQueryArguments } from './utils';
 
 export const INSPECTOR_CONTROLS = {
-	onSale: ( props: ProductQueryBlock ) => (
-		<ToggleControl
-			label={ __(
-				'Show only products on sale',
-				'woo-gutenberg-products-block'
-			) }
-			checked={
-				props.attributes.__woocommerceVariationProps?.attributes?.query
-					?.onSale || false
-			}
-			onChange={ ( onSale ) => {
-				setCustomQueryAttribute( props, { onSale } );
-			} }
-		/>
-	),
+	onSale: ( props: ProductQueryBlock ) => {
+		return (
+			<ToggleControl
+				label={ __(
+					'Show only products on sale',
+					'woo-gutenberg-products-block'
+				) }
+				checked={
+					props.attributes.query?.customQueryArgs
+						?.__woocommerceVariationQuery?.onSale || false
+				}
+				onChange={ ( onSale ) => {
+					setCustomQueryArguments( props, { onSale } );
+				} }
+			/>
+		);
+	},
 };
 
 export const withProductQueryControls =
