@@ -44,7 +44,7 @@ describe( `${ block.name } Block`, () => {
 			await selectBlockByName( block.slug );
 		} );
 
-		it( "allows changing the block's title", async () => {
+		it.skip( "allows changing the block's title", async () => {
 			const textareaSelector = `.wp-block[data-type="${ block.slug }"] textarea.wc-block-editor-components-title`;
 			await expect( page ).toFill( textareaSelector, 'New Title' );
 			await page.click(
