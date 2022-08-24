@@ -1,4 +1,6 @@
 .wp-block-woocommerce-price-filter {
+	border-color: $gray-700;
+	border-radius: 4px;
 	border-style: none !important;
 }
 
@@ -17,9 +19,16 @@
 	border-radius: inherit;
 	border-color: inherit;
 
+	// Force inherting style is required for global style.
 	input {
 		border-radius: inherit !important;
 		border-color: inherit !important;
 		border-style: solid;
 	}
+}
+
+.editor-styles-wrapper .wc-block-price-filter__button.wc-block-components-price-slider__button,
+.wc-block-price-filter__button.wc-block-components-price-slider__button {
+	padding: em($gap-smaller) em($gap);
+	@include font-size(small);
 }
