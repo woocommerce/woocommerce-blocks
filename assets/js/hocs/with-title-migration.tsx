@@ -43,14 +43,20 @@ const withTitleMigration = (
 		} );
 
 		return (
-			<>
+			<div
+				className={
+					shouldRemoveBlockTitle && heading
+						? 'wc-blocks-components-title-migration'
+						: ''
+				}
+			>
 				{ shouldRemoveBlockTitle && heading && (
 					<UpdateFilterHeadingsPrompt
 						onClick={ updateBlockHeading }
 					/>
 				) }
 				<OriginalComponent { ...props } />
-			</>
+			</div>
 		);
 	};
 };

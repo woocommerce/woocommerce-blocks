@@ -4,7 +4,32 @@
 	border-width: 0 0 1px;
 	margin: 1px 0;
 
+	.block-editor-warning__contents {
+		gap: $gap;
+	}
+
 	.block-editor-warning__actions {
 		margin-top: 0;
+	}
+}
+
+.wc-blocks-components-title-migration {
+	border: 1px solid $gray-900;
+	position: relative;
+
+	&::before {
+		background: rgba($white, 0.6);
+		bottom: 0;
+		content: "";
+		display: block;
+		left: 0;
+		position: absolute;
+		right: 0;
+		top: 0;
+		z-index: 1;
+	}
+
+	> .wp-block {
+		padding: 0 $gap;
 	}
 }
