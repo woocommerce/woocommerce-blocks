@@ -22,7 +22,7 @@ registerBlockComponent( {
 	blockName: 'woocommerce/product-image',
 	component: lazy( () =>
 		import(
-			/* webpackChunkName: "product-image" */ './product-elements/product-image/frontend'
+			/* webpackChunkName: "product-image" */ './product-elements/image/frontend'
 		)
 	),
 } );

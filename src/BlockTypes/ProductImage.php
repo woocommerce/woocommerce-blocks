@@ -150,13 +150,13 @@ class ProductImage extends AbstractBlock {
 		);
 	}
 
-		/**
-		 * Extra data passed through from server to client for block.
-		 *
-		 * @param array $attributes  Any attributes that currently are available from the block.
-		 *                           Note, this will be empty in the editor context when the block is
-		 *                           not in the post content on editor load.
-		 */
+	/**
+	 * Extra data passed through from server to client for block.
+	 *
+	 * @param array $attributes  Any attributes that currently are available from the block.
+	 *                           Note, this will be empty in the editor context when the block is
+	 *                           not in the post content on editor load.
+	 */
 	protected function enqueue_data( array $attributes = [] ) {
 		$this->asset_data_registry->add( 'is_block_theme_enabled', wp_is_block_theme(), false );
 	}
