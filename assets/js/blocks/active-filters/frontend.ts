@@ -15,7 +15,7 @@ const getProps = ( el: HTMLElement ) => {
 			displayStyle:
 				el.dataset.displayStyle ||
 				metadata.attributes.displayStyle.default,
-			heading: el.dataset.heading,
+			heading: el.dataset.heading || metadata.attributes.heading.default,
 			headingLevel: el.dataset.headingLevel
 				? parseInt( el.dataset.headingLevel, 10 )
 				: metadata.attributes.headingLevel.default,

@@ -13,7 +13,6 @@ import { useBlockProps } from '@wordpress/block-editor';
  */
 import edit from './edit';
 import metadata from './block.json';
-import { blockAttributes } from './attributes';
 import { Attributes } from './types';
 
 registerBlockType( metadata, {
@@ -29,10 +28,6 @@ registerBlockType( metadata, {
 				className="wc-block-editor-components-block-icon"
 			/>
 		),
-	},
-	attributes: {
-		...metadata.attributes,
-		...blockAttributes,
 	},
 	transforms: {
 		from: [
@@ -60,19 +55,13 @@ registerBlockType( metadata, {
 	edit,
 	// Save the props to post content.
 	save( { attributes }: { attributes: Attributes } ) {
-		const { className, displayStyle, heading, headingLevel } = attributes;
-		const data = {
-			'data-display-style': displayStyle,
-			'data-heading': heading,
-			'data-heading-level': headingLevel,
-		};
+		const { className } = attributes;
 
 		return (
 			<div
 				{ ...useBlockProps.save( {
 					className: classNames( 'is-loading', className ),
 				} ) }
-				{ ...data }
 			>
 				<span
 					aria-hidden
@@ -81,4 +70,42 @@ registerBlockType( metadata, {
 			</div>
 		);
 	},
+	deprecated: [
+		{
+			attributes: {
+				...metadata.attributes,
+				heading: {
+					type: 'string',
+					default: __(
+						'Active filters',
+						'woo-gutenberg-products-block'
+					),
+				},
+			},
+
+			save( { attributes }: { attributes: Attributes } ) {
+				const { className, displayStyle, heading, headingLevel } =
+					attributes;
+				const data = {
+					'data-display-style': displayStyle,
+					'data-heading': heading,
+					'data-heading-level': headingLevel,
+				};
+
+				return (
+					<div
+						{ ...useBlockProps.save( {
+							className: classNames( 'is-loading', className ),
+						} ) }
+						{ ...data }
+					>
+						<span
+							aria-hidden
+							className="wc-block-active-product-filters__placeholder"
+						/>
+					</div>
+				);
+			},
+		},
+	],
 } );
