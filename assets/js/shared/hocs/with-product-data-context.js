@@ -5,12 +5,7 @@ import {
 	ProductDataContextProvider,
 	useProductDataContext,
 } from '@woocommerce/shared-context';
-import { useSelect } from '@wordpress/data';
-
-/**
- * Internal dependencies
- */
-import { STORE_NAME } from './store';
+import { useStoreProducts } from '@woocommerce/base-context';
 
 /**
  * Loads the product from the API and adds to the context provider.
@@ -22,25 +17,14 @@ const OriginalComponentWithContext = ( props ) => {
 
 	const id = props.isDescendentOfQueryLoop ? postId : productId;
 
-	const productFromAPI = useSelect( ( select ) => {
-		if ( id > 0 ) {
-			const prod = select( STORE_NAME ).getProduct( id );
-			const hasFinished = select( STORE_NAME ).hasFinishedResolution(
-				'getProduct',
-				[ id ]
-			);
-
-			return {
-				product: prod || null,
-				isLoading: ! hasFinished,
-			};
-		}
-
-		return {
-			product: null,
-			isLoading: false,
-		};
+	const { products, productsLoading } = useStoreProducts( {
+		include: id,
 	} );
+
+	const productFromAPI = {
+		product: id > 0 && products.length > 0 ? products[ 0 ] : null,
+		isLoading: productsLoading,
+	};
 
 	if ( product ) {
 		return (
