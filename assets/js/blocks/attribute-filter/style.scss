@@ -68,7 +68,6 @@
 		width: 0;
 	}
 
-
 	.is-single .wc-block-attribute-filter-list-count,
 	.wc-blocks-components-form-token-field-wrapper .wc-block-attribute-filter-list-count {
 		opacity: 0.6;
@@ -143,7 +142,8 @@
 .wc-block-components-checkbox {
 	margin-top: em($gap);
 }
-.components-form-token-field__input-container {
+
+.wc-blocks-components-form-token-field-wrapper:not(.single-selection) .components-form-token-field__input-container {
 	.components-form-token-field__token-text {
 		background-color: $white;
 		border: 1px solid;
@@ -167,7 +167,7 @@
 	}
 }
 
-.editor-styles-wrapper  .wc-block-attribute-filter__button.wc-block-attribute-filter__button,
+.editor-styles-wrapper .wc-block-attribute-filter__button.wc-block-attribute-filter__button,
 .wc-block-attribute-filter__button.wc-block-attribute-filter__button {
 	padding: em($gap-smaller) em($gap);
 	@include font-size(small);

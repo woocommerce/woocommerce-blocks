@@ -620,7 +620,9 @@ const AttributeFilterBlock = ( {
 								),
 							} }
 						/>
-						<Icon icon={ chevronDown } size={ 30 } />
+						{ multiple && (
+							<Icon icon={ chevronDown } size={ 30 } />
+						) }
 					</>
 				) : (
 					<CheckboxList
