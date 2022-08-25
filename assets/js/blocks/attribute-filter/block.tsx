@@ -38,7 +38,7 @@ import {
 } from '@woocommerce/utils';
 import { difference } from 'lodash';
 import FormTokenField from '@woocommerce/base-components/form-token-field';
-import classNames from 'classnames';
+import classnames from 'classnames';
 
 /**
  * Internal dependencies
@@ -510,21 +510,27 @@ const AttributeFilterBlock = ( {
 
 	return (
 		<>
-			{ ! isEditor &&
-				blockAttributes.heading &&
-				displayedOptions.length > 0 && (
-					<TagName className="wc-block-attribute-filter__title">
-						{ blockAttributes.heading }
-					</TagName>
-				) }
+			{ ! isEditor && blockAttributes.heading && (
+				<TagName
+					className={ classnames(
+						'wc-block-attribute-filter__title',
+						{ 'is-loading': isLoading || isDisabled }
+					) }
+				>
+					{ blockAttributes.heading }
+				</TagName>
+			) }
 			<div
-				className={ `wc-block-attribute-filter style-${ blockAttributes.displayStyle }` }
+				className={ classnames(
+					`wc-block-attribute-filter style-${ blockAttributes.displayStyle }`,
+					{ 'is-loading': isLoading || isDisabled }
+				) }
 			>
 				{ blockAttributes.displayStyle === 'dropdown' ? (
 					<>
 						<FormTokenField
 							key={ remountKey }
-							className={ classNames( borderProps.className, {
+							className={ classnames( borderProps.className, {
 								'single-selection': ! multiple,
 							} ) }
 							style={ {
