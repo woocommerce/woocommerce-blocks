@@ -1,6 +1,7 @@
 /**
  * External dependencies
  */
+import { __ } from '@wordpress/i18n';
 import { registerBlockType } from '@wordpress/blocks';
 import { toggle } from '@woocommerce/icons';
 import { Icon } from '@wordpress/icons';
@@ -21,6 +22,16 @@ registerBlockType( metadata, {
 			/>
 		),
 	},
+	attributes: {
+		...metadata.attributes,
+		heading: {
+			type: 'string',
+			default: __(
+				'Active Filter Wrappers',
+				'woo-gutenberg-products-block'
+			),
+		},
+	},
 	edit,
 	save() {
 		const innerBlocksProps = useInnerBlocksProps.save(
@@ -28,4 +39,23 @@ registerBlockType( metadata, {
 		);
 		return <div { ...innerBlocksProps } />;
 	},
+	variations: [
+		{
+			name: 'price-filter',
+			title: __(
+				'Filter by Price Wrapper',
+				'woo-gutenberg-products-block'
+			),
+			scope: [ 'inserter' ],
+			isActive: ( attributes ) =>
+				attributes.filterType === 'price-filter',
+			attributes: {
+				filterType: 'price-filter',
+				heading: __(
+					'Filter by Price',
+					'woo-gutenberg-products-block'
+				),
+			},
+		},
+	],
 } );
