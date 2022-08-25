@@ -23,6 +23,10 @@
 			"type": "number",
 			"default": 3
 		},
+		"showCounts": {
+			"type": "boolean",
+			"default": true
+		},
 		"showFilterButton": {
 			"type": "boolean",
 			"default": false
