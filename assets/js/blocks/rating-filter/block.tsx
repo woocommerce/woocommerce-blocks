@@ -2,7 +2,6 @@
  * External dependencies
  */
 import Rating from '@woocommerce/base-components/product-rating';
-import { speak } from '@wordpress/a11y';
 import { usePrevious, useShallowEqual } from '@woocommerce/base-hooks';
 import LoadingMask from '@woocommerce/base-components/loading-mask';
 import {
@@ -10,10 +9,8 @@ import {
 	useQueryStateByContext,
 	useCollectionData,
 } from '@woocommerce/base-context/hooks';
-import isRatingQueryCollection from '@woocommerce/types';
-import { getSetting, getSettingWithCoercion } from '@woocommerce/settings';
+import { getSettingWithCoercion } from '@woocommerce/settings';
 import { isBoolean } from '@woocommerce/types';
-import { sortBy } from 'lodash';
 import isShallowEqual from '@wordpress/is-shallow-equal';
 import { useState, useCallback, useMemo, useEffect } from '@wordpress/element';
 import { addQueryArgs, removeQueryArgs } from '@wordpress/url';
@@ -22,7 +19,6 @@ import { changeUrl, PREFIX_QUERY_ARG_FILTER_TYPE } from '@woocommerce/utils';
 /**
  * Internal dependencies
  */
-// import { previewOptions } from './preview';
 import './style.scss';
 import { Attributes } from './types';
 import { getActiveFilters } from './utils';
@@ -49,6 +45,8 @@ const RatingFilterBlock = ( {
 		isBoolean
 	);
 
+	console.log(PREFIX_QUERY_ARG_FILTER_TYPE + 'rating');
+
 	const [ hasSetFilterDefaultsFromUrl, setHasSetFilterDefaultsFromUrl ] =
 		useState( false );
 
@@ -63,10 +61,8 @@ const RatingFilterBlock = ( {
 			queryState,
 		} );
 
-	const RATING_OPTIONS = getSetting( 'ratingOptions', [] );
-
 	const initialFilters = useMemo(
-		() => getActiveFilters( RATING_OPTIONS.current, QUERY_PARAM_KEY ),
+		() => getActiveFilters( 'filter_rating', QUERY_PARAM_KEY ),
 		[]
 	);
 

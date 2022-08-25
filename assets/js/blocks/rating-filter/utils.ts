@@ -4,10 +4,7 @@
 import { isString } from '@woocommerce/types';
 import { getUrlParameter } from '@woocommerce/utils';
 
-export const getActiveFilters = (
-	filters: Record< string, string >,
-	queryParamKey = 'rating_filter'
-) => {
+export const getActiveFilters = ( queryParamKey = 'filter_rating' ) => {
 	const params = getUrlParameter( queryParamKey );
 
 	if ( ! params ) {
@@ -18,7 +15,5 @@ export const getActiveFilters = (
 		? params.split( ',' )
 		: ( params as string[] );
 
-	return Object.keys( filters ).filter( ( filter ) =>
-		parsedParams.includes( filter )
-	);
+	return parsedParams;
 };
