@@ -21,6 +21,7 @@ import {
 	isString,
 	objectHasProp,
 } from '@woocommerce/types';
+import classnames from 'classnames';
 
 /**
  * Internal dependencies
@@ -306,7 +307,11 @@ const PriceFilterBlock = ( {
 	return (
 		<>
 			{ ! isEditor && attributes.heading && (
-				<TagName className="wc-block-price-filter__title">
+				<TagName
+					className={ classnames( 'wc-block-price-filter__title', {
+						'is-loading': isLoading,
+					} ) }
+				>
 					{ attributes.heading }
 				</TagName>
 			) }

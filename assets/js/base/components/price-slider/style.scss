@@ -83,6 +83,11 @@
 	height: 4px;
 	margin: 15px 0;
 	position: relative;
+
+	&.is-loading {
+		height: em(9px);
+		border-radius: 0;
+	}
 }
 
 .wc-block-components-price-slider__range-input-progress {
@@ -115,6 +120,12 @@
 
 		.wc-block-components-price-slider--is-input-inline & {
 			max-width: 60px;
+		}
+
+		&.is-loading {
+			@include placeholder();
+			border-radius: 0 !important;
+			width: max-content;
 		}
 	}
 }

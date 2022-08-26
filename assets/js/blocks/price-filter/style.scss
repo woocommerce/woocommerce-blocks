@@ -34,10 +34,25 @@
 		border-color: inherit !important;
 		border-style: solid;
 	}
+
+	.input-loading {
+		background-color: $gray-200;
+		width: em(90px);
+		height: em(32px);
+	}
 }
+
 
 .editor-styles-wrapper .wc-block-price-filter__button.wc-block-components-price-slider__button,
 .wc-block-price-filter__button.wc-block-components-price-slider__button {
 	padding: em($gap-smaller) em($gap);
 	@include font-size(small);
+}
+
+.wc-block-price-filter__title {
+	&.is-loading {
+		@include placeholder();
+		background-color: $gray-400 !important;
+		width: max-content;
+	}
 }
