@@ -26,6 +26,7 @@ import { decodeEntities } from '@wordpress/html-entities';
 import { isBoolean, objectHasProp } from '@woocommerce/types';
 import { addQueryArgs, removeQueryArgs } from '@wordpress/url';
 import { changeUrl, PREFIX_QUERY_ARG_FILTER_TYPE } from '@woocommerce/utils';
+import classnames from 'classnames';
 
 /**
  * Internal dependencies
@@ -339,10 +340,6 @@ const StockStatusFilterBlock = ( {
 		[ checked, displayedOptions ]
 	);
 
-	if ( displayedOptions.length === 0 ) {
-		return null;
-	}
-
 	const TagName =
 		`h${ blockAttributes.headingLevel }` as keyof JSX.IntrinsicElements;
 	const isLoading =
@@ -362,11 +359,19 @@ const StockStatusFilterBlock = ( {
 	return (
 		<>
 			{ ! isEditor && blockAttributes.heading && (
-				<TagName className="wc-block-stock-filter__title">
+				<TagName
+					className={ classnames( 'wc-block-stock-filter__title', {
+						'show-loading-state': isLoading || isDisabled,
+					} ) }
+				>
 					{ blockAttributes.heading }
 				</TagName>
 			) }
-			<div className="wc-block-stock-filter">
+			<div
+				className={ classnames( 'wc-block-stock-filter', {
+					'show-loading-state': isLoading || isDisabled,
+				} ) }
+			>
 				<CheckboxList
 					className={ 'wc-block-stock-filter-list' }
 					options={ displayedOptions }
