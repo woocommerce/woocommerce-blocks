@@ -14,7 +14,7 @@
 }
 
 .wc-block-attribute-filter__title {
-	&.is-loading {
+	&.show-loading-state {
 		@include placeholder();
 		background-color: $gray-400 !important;
 		border-radius: em(26px);
@@ -25,7 +25,7 @@
 
 
 .wc-block-attribute-filter {
-	&.is-loading {
+	&.show-loading-state {
 		@include placeholder();
 		box-shadow: none;
 		border-radius: em(4px) !important;

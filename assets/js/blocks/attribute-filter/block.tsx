@@ -237,6 +237,7 @@ const AttributeFilterBlock = ( {
 			.filter( ( option ): option is DisplayOption => !! option );
 
 		setDisplayedOptions( newOptions );
+		setRemountKey( generateUniqueId() );
 	}, [
 		attributeObject?.taxonomy,
 		attributeTerms,
@@ -500,13 +501,15 @@ const AttributeFilterBlock = ( {
 				</Notice>
 			);
 		}
-		return null;
 	}
 
 	const TagName =
 		`h${ blockAttributes.headingLevel }` as keyof JSX.IntrinsicElements;
-	const isLoading = ! blockAttributes.isPreview && attributeTermsLoading;
-	const isDisabled = ! blockAttributes.isPreview && filteredCountsLoading;
+	const termsLoading = ! blockAttributes.isPreview && attributeTermsLoading;
+	const countsLoading = ! blockAttributes.isPreview && filteredCountsLoading;
+
+	const isLoading =
+		termsLoading || countsLoading || displayedOptions.length === 0;
 
 	return (
 		<>
@@ -514,7 +517,9 @@ const AttributeFilterBlock = ( {
 				<TagName
 					className={ classnames(
 						'wc-block-attribute-filter__title',
-						{ 'is-loading': isLoading || isDisabled }
+						{
+							'show-loading-state': isLoading,
+						}
 					) }
 				>
 					{ blockAttributes.heading }
@@ -523,7 +528,9 @@ const AttributeFilterBlock = ( {
 			<div
 				className={ classnames(
 					`wc-block-attribute-filter style-${ blockAttributes.displayStyle }`,
-					{ 'is-loading': isLoading || isDisabled }
+					{
+						'show-loading-state': isLoading,
+					}
 				) }
 			>
 				{ blockAttributes.displayStyle === 'dropdown' ? (
@@ -543,7 +550,7 @@ const AttributeFilterBlock = ( {
 										! checked.includes( option.value )
 								)
 								.map( ( option ) => option.formattedValue ) }
-							disabled={ isDisabled }
+							disabled={ isLoading }
 							placeholder={ sprintf(
 								/* translators: %s attribute name. */
 								__(
@@ -637,12 +644,12 @@ const AttributeFilterBlock = ( {
 						checked={ checked }
 						onChange={ onChange }
 						isLoading={ isLoading }
-						isDisabled={ isDisabled }
+						isDisabled={ isLoading }
 					/>
 				) }
 			</div>
 			<div className="wc-block-attribute-filter__actions">
-				{ checked.length > 0 && (
+				{ checked.length > 0 && ! isLoading && (
 					<FilterResetButton
 						onClick={ () => {
 							setChecked( [] );
@@ -657,11 +664,13 @@ const AttributeFilterBlock = ( {
 						) }
 					/>
 				) }
-				{ blockAttributes.showFilterButton && (
+				{ blockAttributes.showFilterButton && ! isLoading && (
 					<FilterSubmitButton
 						className="wc-block-attribute-filter__button"
 						disabled={
-							isLoading || isDisabled || checked.length === 0
+							termsLoading ||
+							countsLoading ||
+							checked.length === 0
 						}
 						onClick={ () => onSubmit( checked ) }
 					/>
