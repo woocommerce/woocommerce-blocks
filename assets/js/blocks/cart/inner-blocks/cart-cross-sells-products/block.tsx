@@ -10,7 +10,7 @@ import CartCrossSellsProductList from '../../cart-cross-sells-product-list';
 import metadata from './block.json';
 
 interface BlockProps {
-	className?: string;
+	className?: string | undefined;
 	columns: number;
 }
 
