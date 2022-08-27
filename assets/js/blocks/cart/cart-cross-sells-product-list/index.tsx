@@ -15,7 +15,7 @@ const placeholderRows = [ ...Array( 3 ) ].map( ( _x, i ) => (
 interface CrossSellsProductListProps {
 	crossSellsProducts: ProductResponseItem[];
 	isLoading: boolean;
-	className?: string;
+	className?: string | undefined;
 	columns: number;
 }
 
