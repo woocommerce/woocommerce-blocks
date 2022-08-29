@@ -343,7 +343,8 @@ const StockStatusFilterBlock = ( {
 	const TagName =
 		`h${ blockAttributes.headingLevel }` as keyof JSX.IntrinsicElements;
 	const isLoading =
-		! blockAttributes.isPreview && ! STOCK_STATUS_OPTIONS.current;
+		( ! blockAttributes.isPreview && ! STOCK_STATUS_OPTIONS.current ) ||
+		displayedOptions.length === 0;
 	const isDisabled = ! blockAttributes.isPreview && filteredCountsLoading;
 
 	const hasFilterableProducts = getSettingWithCoercion(
@@ -361,7 +362,7 @@ const StockStatusFilterBlock = ( {
 			{ ! isEditor && blockAttributes.heading && (
 				<TagName
 					className={ classnames( 'wc-block-stock-filter__title', {
-						'show-loading-state': isLoading || isDisabled,
+						'show-loading-state': isLoading,
 					} ) }
 				>
 					{ blockAttributes.heading }
@@ -369,7 +370,7 @@ const StockStatusFilterBlock = ( {
 			) }
 			<div
 				className={ classnames( 'wc-block-stock-filter', {
-					'show-loading-state': isLoading || isDisabled,
+					'show-loading-state': isLoading,
 				} ) }
 			>
 				<CheckboxList
@@ -380,27 +381,29 @@ const StockStatusFilterBlock = ( {
 					isLoading={ isLoading }
 					isDisabled={ isDisabled }
 				/>
-				<div className="wc-block-stock-filter__actions">
-					{ checked.length > 0 && (
-						<FilterResetButton
-							onClick={ () => {
-								setChecked( [] );
-								onSubmit( [] );
-							} }
-							screenReaderLabel={ __(
-								'Reset stock filter',
-								'woo-gutenberg-products-block'
-							) }
-						/>
-					) }
-					{ blockAttributes.showFilterButton && (
-						<FilterSubmitButton
-							className="wc-block-stock-filter__button"
-							disabled={ isLoading || isDisabled }
-							onClick={ () => onSubmit( checked ) }
-						/>
-					) }
-				</div>
+				{ ! isLoading && (
+					<div className="wc-block-stock-filter__actions">
+						{ checked.length > 0 && (
+							<FilterResetButton
+								onClick={ () => {
+									setChecked( [] );
+									onSubmit( [] );
+								} }
+								screenReaderLabel={ __(
+									'Reset stock filter',
+									'woo-gutenberg-products-block'
+								) }
+							/>
+						) }
+						{ blockAttributes.showFilterButton && (
+							<FilterSubmitButton
+								className="wc-block-stock-filter__button"
+								disabled={ isLoading || isDisabled }
+								onClick={ () => onSubmit( checked ) }
+							/>
+						) }
+					</div>
+				) }
 			</div>
 		</>
 	);
