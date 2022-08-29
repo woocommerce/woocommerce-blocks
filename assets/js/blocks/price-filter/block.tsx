@@ -170,7 +170,6 @@ const PriceFilterBlock = ( {
 	// Updates the query based on slider values.
 	const onSubmit = useCallback(
 		( newMinPrice, newMaxPrice ) => {
-			setIsUpdating( true );
 			const finalMaxPrice =
 				newMaxPrice >= Number( maxConstraint )
 					? undefined
@@ -210,6 +209,7 @@ const PriceFilterBlock = ( {
 	// Callback when slider or input fields are changed.
 	const onChange = useCallback(
 		( prices ) => {
+			setIsUpdating( true );
 			if ( prices[ 0 ] !== minPrice ) {
 				setMinPrice( prices[ 0 ] );
 			}

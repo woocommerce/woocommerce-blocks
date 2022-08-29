@@ -483,7 +483,7 @@ const PriceSlider = ( {
 							) }
 						/>
 					) }
-					{ showFilterButton && ! isLoading && (
+					{ showFilterButton && (
 						<FilterSubmitButton
 							className="wc-block-price-filter__button wc-block-components-price-slider__button"
 							disabled={ isLoading || ! hasValidConstraints }
