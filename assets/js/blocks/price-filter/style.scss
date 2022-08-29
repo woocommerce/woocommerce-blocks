@@ -36,9 +36,10 @@
 	}
 
 	.input-loading {
-		background-color: $gray-200;
-		width: em(90px);
+		@include placeholder();
+		border-radius: 0;
 		height: em(32px);
+		width: em(90px);
 	}
 }
 

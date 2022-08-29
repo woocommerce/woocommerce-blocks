@@ -85,6 +85,7 @@
 	position: relative;
 
 	&.is-loading {
+		@include placeholder();
 		height: em(9px);
 		border-radius: 0;
 	}
