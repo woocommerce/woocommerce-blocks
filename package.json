@@ -98,7 +98,7 @@
 		"@storybook/addon-storysource": "6.5.9",
 		"@storybook/addons": "6.5.9",
 		"@storybook/client-api": "6.5.9",
-		"@storybook/react": "6.5.9",
+		"@storybook/react": "6.5.10",
 		"@testing-library/jest-dom": "5.16.4",
 		"@testing-library/react": "12.1.5",
 		"@testing-library/react-hooks": "7.0.2",
@@ -262,6 +262,9 @@
 		"*.php": [
 			"php -d display_errors=1 -l",
 			"composer run-script phpcs"
+		],
+		"*.md": [
+			"npm run lint:md:docs"
 		]
 	},
 	"changelog": {
