@@ -33,6 +33,7 @@ export interface PriceSliderProps {
 	 * Whether values are loading or not.
 	 */
 	isLoading?: boolean;
+	isUpdating?: boolean;
 	/**
 	 * Maximum constraint.
 	 */
@@ -87,6 +88,7 @@ const PriceSlider = ( {
 	showFilterButton = false,
 	inlineInput = true,
 	isLoading = false,
+	isUpdating = false,
 	onSubmit = () => void 0,
 }: PriceSliderProps ): JSX.Element => {
 	const minRange = useRef< HTMLInputElement >( null );
@@ -328,7 +330,7 @@ const PriceSlider = ( {
 			className={ classnames(
 				'wc-block-price-filter__range-input-wrapper',
 				'wc-block-components-price-slider__range-input-wrapper',
-				{ 'is-loading': isLoading }
+				{ 'is-loading': isLoading && isUpdating }
 			) }
 			onMouseMove={ findClosestRange }
 			onFocus={ findClosestRange }
@@ -391,7 +393,7 @@ const PriceSlider = ( {
 			{ ( ! inlineInputAvailable || ! showInputFields ) && slider }
 			{ showInputFields && (
 				<div className="wc-block-price-filter__controls wc-block-components-price-slider__controls">
-					{ ! isLoading ? (
+					{ ! isUpdating ? (
 						<FormattedMonetaryAmount
 							currency={ currency }
 							displayType="input"
@@ -421,7 +423,7 @@ const PriceSlider = ( {
 						<div className="input-loading"></div>
 					) }
 					{ inlineInputAvailable && slider }
-					{ ! isLoading ? (
+					{ ! isUpdating ? (
 						<FormattedMonetaryAmount
 							currency={ currency }
 							displayType="input"
@@ -452,7 +454,7 @@ const PriceSlider = ( {
 			) }
 
 			{ ! showInputFields &&
-				! isLoading &&
+				! isUpdating &&
 				Number.isFinite( minPrice ) &&
 				Number.isFinite( maxPrice ) && (
 					<div className="wc-block-price-filter__range-text wc-block-components-price-slider__range-text">
@@ -466,32 +468,34 @@ const PriceSlider = ( {
 						/>
 					</div>
 				) }
-			<div className="wc-block-components-price-slider__actions">
-				{ ( minPrice !== minConstraint ||
-					maxPrice !== maxConstraint ) && (
-					<FilterResetButton
-						onClick={ () => {
-							onChange( [ minConstraint, maxConstraint ] );
-							debouncedUpdateQuery();
-						} }
-						screenReaderLabel={ __(
-							'Reset price filter',
-							'woo-gutenberg-products-block'
-						) }
-					/>
-				) }
-				{ showFilterButton && ! isLoading && (
-					<FilterSubmitButton
-						className="wc-block-price-filter__button wc-block-components-price-slider__button"
-						disabled={ isLoading || ! hasValidConstraints }
-						onClick={ onSubmit }
-						screenReaderLabel={ __(
-							'Apply price filter',
-							'woo-gutenberg-products-block'
-						) }
-					/>
-				) }
-			</div>
+			{ ! isUpdating && (
+				<div className="wc-block-components-price-slider__actions">
+					{ ( minPrice !== minConstraint ||
+						maxPrice !== maxConstraint ) && (
+						<FilterResetButton
+							onClick={ () => {
+								onChange( [ minConstraint, maxConstraint ] );
+								debouncedUpdateQuery();
+							} }
+							screenReaderLabel={ __(
+								'Reset price filter',
+								'woo-gutenberg-products-block'
+							) }
+						/>
+					) }
+					{ showFilterButton && ! isLoading && (
+						<FilterSubmitButton
+							className="wc-block-price-filter__button wc-block-components-price-slider__button"
+							disabled={ isLoading || ! hasValidConstraints }
+							onClick={ onSubmit }
+							screenReaderLabel={ __(
+								'Apply price filter',
+								'woo-gutenberg-products-block'
+							) }
+						/>
+					) }
+				</div>
+			) }
 		</div>
 	);
 };

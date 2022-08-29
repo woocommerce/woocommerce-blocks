@@ -165,9 +165,12 @@ const PriceFilterBlock = ( {
 		setMinPriceQuery,
 	] );
 
+	const [ isUpdating, setIsUpdating ] = useState( isLoading );
+
 	// Updates the query based on slider values.
 	const onSubmit = useCallback(
 		( newMinPrice, newMaxPrice ) => {
+			setIsUpdating( true );
 			const finalMaxPrice =
 				newMaxPrice >= Number( maxConstraint )
 					? undefined
@@ -304,12 +307,16 @@ const PriceFilterBlock = ( {
 	const TagName =
 		`h${ attributes.headingLevel }` as keyof JSX.IntrinsicElements;
 
+	if ( ! isLoading && isUpdating ) {
+		setIsUpdating( false );
+	}
+
 	return (
 		<>
 			{ ! isEditor && attributes.heading && (
 				<TagName
 					className={ classnames( 'wc-block-price-filter__title', {
-						'is-loading': isLoading,
+						'is-loading': isLoading && isUpdating,
 					} ) }
 				>
 					{ attributes.heading }
@@ -328,6 +335,7 @@ const PriceFilterBlock = ( {
 					onChange={ onChange }
 					onSubmit={ () => onSubmit( minPrice, maxPrice ) }
 					isLoading={ isLoading }
+					isUpdating={ isUpdating }
 				/>
 			</div>
 		</>
