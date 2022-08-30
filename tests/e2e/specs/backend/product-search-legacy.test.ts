@@ -9,18 +9,12 @@ import { visitBlockPage } from '@woocommerce/blocks-test-utils';
  */
 import { GUTENBERG_EDITOR_CONTEXT, describeOrSkip } from '../../utils';
 
-const block = {
-	name: 'Product Search Legacy',
-	slug: 'woocommerce/product-search',
-	class: '.wc-block-product-search',
-};
-
 describeOrSkip( GUTENBERG_EDITOR_CONTEXT === 'gutenberg' )(
-	`${ block.name } Block`,
+	'Product Search Legacy Block',
 	() => {
 		beforeAll( async () => {
 			await switchUserToAdmin();
-			await visitBlockPage( `${ block.name } Block` );
+			await visitBlockPage( 'Product Search Legacy Block' );
 		} );
 
 		it( 'render the upgrade prompt', async () => {
@@ -31,9 +25,7 @@ describeOrSkip( GUTENBERG_EDITOR_CONTEXT === 'gutenberg' )(
 		} );
 
 		it( 'clicking the upgrade button convert the legacy block to core/search variation', async () => {
-			await expect( page ).toClick( 'button', {
-				text: 'Upgrade Block',
-			} );
+			await page.click( '.block-editor-warning__action button' );
 
 			await expect( page ).toMatchElement( '.wp-block-search' );
 
@@ -43,10 +35,6 @@ describeOrSkip( GUTENBERG_EDITOR_CONTEXT === 'gutenberg' )(
 
 			await expect( page ).toMatchElement(
 				'.wp-block-search__input[value="Search products…"]'
-			);
-
-			await expect( page ).toMatchElement(
-				'input[name="post_type"][value="product"]'
 			);
 		} );
 	}
