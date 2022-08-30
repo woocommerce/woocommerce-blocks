@@ -1,0 +1,9 @@
+.wc-block-filter-title-placeholder {
+	@include placeholder();
+	background-color: $gray-400 !important;
+	border-radius: em(26px);
+	box-shadow: none;
+	height: 1em;
+	margin-bottom: $gap;
+	width: 25%;
+}

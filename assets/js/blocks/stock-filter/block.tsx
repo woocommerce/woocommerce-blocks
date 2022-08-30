@@ -20,6 +20,7 @@ import {
 import CheckboxList from '@woocommerce/base-components/checkbox-list';
 import FilterSubmitButton from '@woocommerce/base-components/filter-submit-button';
 import FilterResetButton from '@woocommerce/base-components/filter-reset-button';
+import FilterPlaceholder from '@woocommerce/base-components/filter-placeholder';
 import Label from '@woocommerce/base-components/filter-element-label';
 import isShallowEqual from '@wordpress/is-shallow-equal';
 import { decodeEntities } from '@wordpress/html-entities';
@@ -361,17 +362,21 @@ const StockStatusFilterBlock = ( {
 		return null;
 	}
 
+	const filterHeading = isLoading ? (
+		<FilterPlaceholder />
+	) : (
+		<TagName
+			className={ classnames( 'wc-block-stock-filter__title', {
+				'show-loading-state': isLoading,
+			} ) }
+		>
+			{ blockAttributes.heading }
+		</TagName>
+	);
+
 	return (
 		<>
-			{ ! isEditor && blockAttributes.heading && (
-				<TagName
-					className={ classnames( 'wc-block-stock-filter__title', {
-						'show-loading-state': isLoading,
-					} ) }
-				>
-					{ blockAttributes.heading }
-				</TagName>
-			) }
+			{ ! isEditor && blockAttributes.heading && filterHeading }
 			<div
 				className={ classnames( 'wc-block-stock-filter', {
 					'show-loading-state': isLoading,
