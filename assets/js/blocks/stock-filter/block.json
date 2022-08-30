@@ -44,5 +44,6 @@
 	},
 	"textdomain": "woo-gutenberg-products-block",
 	"apiVersion": 2,
+	"style": "wc-blocks-style-stock-filter",
 	"$schema": "https://schemas.wp.org/trunk/block.json"
 }

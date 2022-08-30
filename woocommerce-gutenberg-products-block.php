@@ -275,3 +275,17 @@ function woocommerce_blocks_plugin_outdated_notice() {
 }
 
 add_action( 'admin_notices', 'woocommerce_blocks_plugin_outdated_notice' );
+
+add_action( 'init', function() {
+	wp_register_style( 'wc-blocks-style-stock-filter', plugins_url( 'assets/css/blocks/stock-filter.css', __FILE__ ) );
+	wp_style_add_data( 'wc-blocks-style-stock-filter', 'path', __DIR__ . '/assets/css/blocks/stock-filter.css' );
+	if ( is_admin() ) {
+		wp_enqueue_style( 'wc-blocks-style-stock-filter' );
+	}
+});
+add_filter( 'render_block', function( $html, $block ) {
+	if ( 'woocommerce/stock-filter' === $block['blockName'] ) {
+		wp_enqueue_style( 'wc-blocks-style-stock-filter' );
+	}
+	return $html;
+}, 10, 2 );
