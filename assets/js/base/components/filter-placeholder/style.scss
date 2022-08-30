@@ -5,5 +5,7 @@
 	box-shadow: none;
 	height: 1em;
 	margin-bottom: $gap;
+	min-width: 80px;
+	max-width: 140px !important;
 	width: 25%;
 }
