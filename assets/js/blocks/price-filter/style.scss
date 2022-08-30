@@ -52,6 +52,7 @@
 	&.is-loading {
 		@include placeholder();
 		background-color: $gray-400 !important;
+		max-height: 1em;
 		width: max-content;
 	}
 }
