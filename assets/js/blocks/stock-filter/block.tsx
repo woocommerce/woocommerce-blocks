@@ -340,6 +340,10 @@ const StockStatusFilterBlock = ( {
 		[ checked, displayedOptions ]
 	);
 
+	if ( ! filteredCountsLoading && displayedOptions.length === 0 ) {
+		return null;
+	}
+
 	const TagName =
 		`h${ blockAttributes.headingLevel }` as keyof JSX.IntrinsicElements;
 	const isLoading =
