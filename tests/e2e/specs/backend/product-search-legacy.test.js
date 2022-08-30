@@ -36,11 +36,17 @@ describeOrSkip( GUTENBERG_EDITOR_CONTEXT === 'gutenberg' )(
 			} );
 
 			await expect( page ).toMatchElement( '.wp-block-search' );
+
 			await expect( page ).toMatchElement( '.wp-block-search__label', {
 				text: 'Search',
 			} );
+
 			await expect( page ).toMatchElement(
 				'.wp-block-search__input[value="Search products…"]'
+			);
+
+			await expect( page ).toMatchElement(
+				'input[name="post_type"][value="product"]'
 			);
 		} );
 	}
