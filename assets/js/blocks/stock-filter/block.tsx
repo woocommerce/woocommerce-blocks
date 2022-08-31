@@ -20,7 +20,7 @@ import {
 import CheckboxList from '@woocommerce/base-components/checkbox-list';
 import FilterSubmitButton from '@woocommerce/base-components/filter-submit-button';
 import FilterResetButton from '@woocommerce/base-components/filter-reset-button';
-import FilterPlaceholder from '@woocommerce/base-components/filter-placeholder';
+import FilterTitlePlaceholder from '@woocommerce/base-components/filter-placeholder';
 import Label from '@woocommerce/base-components/filter-element-label';
 import isShallowEqual from '@wordpress/is-shallow-equal';
 import { decodeEntities } from '@wordpress/html-entities';
@@ -369,7 +369,7 @@ const StockStatusFilterBlock = ( {
 	);
 
 	const filterHeading = isLoading ? (
-		<FilterPlaceholder>{ heading }</FilterPlaceholder>
+		<FilterTitlePlaceholder>{ heading }</FilterTitlePlaceholder>
 	) : (
 		heading
 	);
