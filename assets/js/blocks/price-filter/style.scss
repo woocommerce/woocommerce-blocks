@@ -27,7 +27,7 @@
 	border-radius: inherit;
 	border-color: inherit;
 
-	// Force inherting style is required for global style.
+	// Force inheriting style is required for global style.
 	input {
 		border-radius: inherit !important;
 		border-color: inherit !important;
@@ -46,13 +46,4 @@
 .wc-block-price-filter__button.wc-block-components-price-slider__button {
 	padding: em($gap-smaller) em($gap);
 	@include font-size(small);
-}
-
-.wc-block-price-filter__title {
-	&.is-loading {
-		@include placeholder();
-		background-color: $gray-400 !important;
-		max-height: 1em;
-		width: max-content;
-	}
 }
