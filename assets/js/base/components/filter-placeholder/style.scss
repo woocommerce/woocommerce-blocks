@@ -7,7 +7,8 @@
 	min-width: 80px;
 	max-width: max-content !important;
 
-	.wc-block-stock-filter__title {
+	.wc-block-stock-filter__title,
+	.wc-block-attribute-filter__title {
 		margin: 0;
 		height: 1em;
 	}

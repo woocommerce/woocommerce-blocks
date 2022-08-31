@@ -38,6 +38,7 @@ import {
 } from '@woocommerce/utils';
 import { difference } from 'lodash';
 import FormTokenField from '@woocommerce/base-components/form-token-field';
+import FilterTitlePlaceholder from '@woocommerce/base-components/filter-placeholder';
 import classnames from 'classnames';
 
 /**
@@ -511,20 +512,21 @@ const AttributeFilterBlock = ( {
 	const isLoading =
 		termsLoading || countsLoading || displayedOptions.length === 0;
 
+	const heading = (
+		<TagName className="wc-block-attribute-filter__title">
+			{ blockAttributes.heading }
+		</TagName>
+	);
+
+	const filterHeading = isLoading ? (
+		<FilterTitlePlaceholder>{ heading }</FilterTitlePlaceholder>
+	) : (
+		heading
+	);
+
 	return (
 		<>
-			{ ! isEditor && blockAttributes.heading && (
-				<TagName
-					className={ classnames(
-						'wc-block-attribute-filter__title',
-						{
-							'show-loading-state': isLoading,
-						}
-					) }
-				>
-					{ blockAttributes.heading }
-				</TagName>
-			) }
+			{ ! isEditor && blockAttributes.heading && filterHeading }
 			<div
 				className={ classnames(
 					`wc-block-attribute-filter style-${ blockAttributes.displayStyle }`,
