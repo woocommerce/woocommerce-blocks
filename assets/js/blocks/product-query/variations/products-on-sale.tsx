@@ -9,7 +9,7 @@ import { Icon, percent } from '@wordpress/icons';
 /**
  * Internal dependencies
  */
-import { QUERY_DEFAULT_ATTRIBUTES } from '../constants';
+import { INNER_BLOCKS_TEMPLATE, QUERY_DEFAULT_ATTRIBUTES } from '../constants';
 
 if ( isExperimentalBuild() ) {
 	registerBlockVariation( 'core/query', {
@@ -39,28 +39,7 @@ if ( isExperimentalBuild() ) {
 				},
 			},
 		},
-		innerBlocks: [
-			[
-				'core/post-template',
-				{},
-				[
-					[ 'core/post-title' ],
-					[ 'woocommerce/product-image' ],
-					[
-						'core/group',
-						{
-							layout: {
-								type: 'flex',
-								justification: 'center',
-							},
-						},
-						[ [ 'woocommerce/product-button' ] ],
-					],
-				],
-				[ 'core/query-pagination' ],
-				[ 'core/query-no-results' ],
-			],
-		],
+		innerBlocks: INNER_BLOCKS_TEMPLATE,
 		scope: [ 'block', 'inserter' ],
 	} );
 }
