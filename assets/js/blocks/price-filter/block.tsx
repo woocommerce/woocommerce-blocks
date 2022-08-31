@@ -9,6 +9,7 @@ import {
 } from '@woocommerce/base-context/hooks';
 import { useCallback, useState, useEffect } from '@wordpress/element';
 import PriceSlider from '@woocommerce/base-components/price-slider';
+import FilterTitlePlaceholder from '@woocommerce/base-components/filter-placeholder';
 import { useDebouncedCallback } from 'use-debounce';
 import PropTypes from 'prop-types';
 import { getCurrencyFromPriceResponse } from '@woocommerce/price-format';
@@ -21,7 +22,6 @@ import {
 	isString,
 	objectHasProp,
 } from '@woocommerce/types';
-import classnames from 'classnames';
 
 /**
  * Internal dependencies
@@ -311,17 +311,22 @@ const PriceFilterBlock = ( {
 		setIsUpdating( false );
 	}
 
+	const heading = (
+		<TagName className="wc-block-price-filter__title">
+			{ attributes.heading }
+		</TagName>
+	);
+
+	const filterHeading =
+		isLoading && isUpdating ? (
+			<FilterTitlePlaceholder>{ heading }</FilterTitlePlaceholder>
+		) : (
+			heading
+		);
+
 	return (
 		<>
-			{ ! isEditor && attributes.heading && (
-				<TagName
-					className={ classnames( 'wc-block-price-filter__title', {
-						'is-loading': isLoading && isUpdating,
-					} ) }
-				>
-					{ attributes.heading }
-				</TagName>
-			) }
+			{ ! isEditor && attributes.heading && filterHeading }
 			<div className="wc-block-price-slider">
 				<PriceSlider
 					minConstraint={ minConstraint }
