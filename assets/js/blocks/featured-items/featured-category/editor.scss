@@ -4,3 +4,7 @@
 	@extend %with-media-controls;
 	@extend %with-resizable-box;
 }
+
+.editor-styles-wrapper .wp-block-woocommerce-featured-category {
+	@extend %wp-block-featured-item;
+}
