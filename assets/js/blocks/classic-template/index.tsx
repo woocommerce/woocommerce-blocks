@@ -27,6 +27,20 @@ import './editor.scss';
 import './style.scss';
 import { BLOCK_SLUG, TEMPLATES } from './constants';
 
+const templates = Object.keys( TEMPLATES );
+
+const getTemplateDetailsBySlug = ( parsedTemplate: string ) => {
+	let templateSlug = null;
+	for ( let i = 0; templates.length > i; i++ ) {
+		if ( parsedTemplate.includes( templates[ i ] ) ) {
+			templateSlug = templates[ i ];
+			break;
+		}
+	}
+
+	return templateSlug ? TEMPLATES[ templateSlug ] : null;
+};
+
 type Attributes = {
 	template: string;
 	align: string;
@@ -40,10 +54,9 @@ const Edit = ( {
 	const { replaceBlock } = useDispatch( 'core/block-editor' );
 
 	const blockProps = useBlockProps();
-	const templateTitle =
-		TEMPLATES[ attributes.template ]?.title ?? attributes.template;
-	const templatePlaceholder =
-		TEMPLATES[ attributes.template ]?.placeholder ?? 'fallback';
+	const templateDetails = getTemplateDetailsBySlug( attributes.template );
+	const templateTitle = templateDetails?.title ?? attributes.template;
+	const templatePlaceholder = templateDetails?.placeholder ?? 'fallback';
 
 	useEffect(
 		() =>
@@ -118,8 +131,6 @@ const Edit = ( {
 	);
 };
 
-const templates = Object.keys( TEMPLATES );
-
 const registerClassicTemplateBlock = ( {
 	template,
 	inserter,
@@ -136,12 +147,13 @@ const registerClassicTemplateBlock = ( {
 	 * See https://github.com/woocommerce/woocommerce-gutenberg-products-block/issues/5861 for more context
 	 */
 	registerBlockType( BLOCK_SLUG, {
-		title: template
-			? TEMPLATES[ template ].title
-			: __(
-					'WooCommerce Classic Template',
-					'woo-gutenberg-products-block'
-			  ),
+		title:
+			template && TEMPLATES[ template ]
+				? TEMPLATES[ template ].title
+				: __(
+						'WooCommerce Classic Template',
+						'woo-gutenberg-products-block'
+				  ),
 		icon: (
 			<Icon
 				icon={ box }
@@ -208,8 +220,19 @@ const isClassicTemplateBlockRegisteredWithAnotherTitle = (
 	parsedTemplate: string
 ) => block?.title !== TEMPLATES[ parsedTemplate ].title;
 
-const hasTemplateSupportForClassicTemplateBlock = ( parsedTemplate: string ) =>
-	templates.includes( parsedTemplate );
+const hasTemplateSupportForClassicTemplateBlock = (
+	parsedTemplate: string
+) => {
+	let hasSupport = false;
+	for ( let i = 0; templates.length > i; i++ ) {
+		if ( parsedTemplate.includes( templates[ i ] ) ) {
+			hasSupport = true;
+			break;
+		}
+	}
+
+	return hasSupport;
+};
 
 // @todo Refactor when there will be possible to show a block according on a template/post with a Gutenberg API. https://github.com/WordPress/gutenberg/pull/41718
 
