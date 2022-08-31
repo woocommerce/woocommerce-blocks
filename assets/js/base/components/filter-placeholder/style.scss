@@ -3,9 +3,12 @@
 	background-color: $gray-400 !important;
 	border-radius: em(26px);
 	box-shadow: none;
-	height: 1em;
 	margin-bottom: $gap;
 	min-width: 80px;
-	max-width: 140px !important;
-	width: 25%;
+	max-width: max-content !important;
+
+	.wc-block-stock-filter__title {
+		margin: 0;
+		height: 1em;
+	}
 }

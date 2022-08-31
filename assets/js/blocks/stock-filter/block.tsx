@@ -362,16 +362,16 @@ const StockStatusFilterBlock = ( {
 		return null;
 	}
 
-	const filterHeading = isLoading ? (
-		<FilterPlaceholder />
-	) : (
-		<TagName
-			className={ classnames( 'wc-block-stock-filter__title', {
-				'show-loading-state': isLoading,
-			} ) }
-		>
+	const heading = (
+		<TagName className="wc-block-stock-filter__title">
 			{ blockAttributes.heading }
 		</TagName>
+	);
+
+	const filterHeading = isLoading ? (
+		<FilterPlaceholder>{ heading }</FilterPlaceholder>
+	) : (
+		heading
 	);
 
 	return (

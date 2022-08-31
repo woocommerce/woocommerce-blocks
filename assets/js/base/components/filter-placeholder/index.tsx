@@ -1,5 +1,13 @@
-const FilterTitlePlaceholder = (): JSX.Element => {
-	return <div className="wc-block-filter-title-placeholder"></div>;
+interface FilterPlaceholderProps {
+	children?: React.ReactChildren;
+}
+
+const FilterPlaceholder = ( {
+	children,
+}: FilterPlaceholderProps ): JSX.Element => {
+	return (
+		<div className="wc-block-filter-title-placeholder">{ children }</div>
+	);
 };
 
-export default FilterTitlePlaceholder;
+export default FilterPlaceholder;
