@@ -86,6 +86,12 @@ Release and roadmap notes available on the [WooCommerce Developers Blog](https:/
 
 == Changelog ==
 
+= 8.3.2 - 2022-08-31 =
+
+#### Bug Fixes
+
+- Fix Best Selling Products block ordering ([7025](https://github.com/woocommerce/woocommerce-blocks/pull/7025))
+
 = 8.3.1 - 2022-08-17 =
 
 #### Bug Fixes
