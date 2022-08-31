@@ -33,6 +33,9 @@ export interface PriceSliderProps {
 	 * Whether values are loading or not.
 	 */
 	isLoading?: boolean;
+	/**
+	 * Whether values are updating or not. The update starts when the price slider is changed.
+	 */
 	isUpdating?: boolean;
 	/**
 	 * Maximum constraint.
