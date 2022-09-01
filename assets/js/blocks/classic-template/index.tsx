@@ -2,7 +2,6 @@
  * External dependencies
  */
 import {
-	Block,
 	BlockEditProps,
 	createBlock,
 	getBlockType,
@@ -26,20 +25,11 @@ import { useEffect } from '@wordpress/element';
 import './editor.scss';
 import './style.scss';
 import { BLOCK_SLUG, TEMPLATES } from './constants';
-
-const templates = Object.keys( TEMPLATES );
-
-const getTemplateDetailsBySlug = ( parsedTemplate: string ) => {
-	let templateSlug = null;
-	for ( let i = 0; templates.length > i; i++ ) {
-		if ( parsedTemplate.includes( templates[ i ] ) ) {
-			templateSlug = templates[ i ];
-			break;
-		}
-	}
-
-	return templateSlug ? TEMPLATES[ templateSlug ] : null;
-};
+import {
+	isClassicTemplateBlockRegisteredWithAnotherTitle,
+	hasTemplateSupportForClassicTemplateBlock,
+	getTemplateDetailsBySlug,
+} from './utils';
 
 type Attributes = {
 	template: string;
@@ -212,26 +202,6 @@ const registerClassicTemplateBlock = ( {
 		},
 		save: () => null,
 	} );
-};
-
-const isClassicTemplateBlockRegisteredWithAnotherTitle = (
-	// eslint-disable-next-line @typescript-eslint/no-explicit-any
-	block: Block< any > | undefined,
-	parsedTemplate: string
-) => block?.title !== TEMPLATES[ parsedTemplate ].title;
-
-const hasTemplateSupportForClassicTemplateBlock = (
-	parsedTemplate: string
-) => {
-	let hasSupport = false;
-	for ( let i = 0; templates.length > i; i++ ) {
-		if ( parsedTemplate.includes( templates[ i ] ) ) {
-			hasSupport = true;
-			break;
-		}
-	}
-
-	return hasSupport;
 };
 
 // @todo Refactor when there will be possible to show a block according on a template/post with a Gutenberg API. https://github.com/WordPress/gutenberg/pull/41718
