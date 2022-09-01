@@ -13,17 +13,6 @@
 	}
 }
 
-.wc-block-attribute-filter__title {
-	&.show-loading-state {
-		@include placeholder();
-		background-color: $gray-400 !important;
-		border-radius: em(26px);
-		box-shadow: none;
-		width: max-content;
-	}
-}
-
-
 .wc-block-attribute-filter {
 	&.show-loading-state {
 		@include placeholder();
