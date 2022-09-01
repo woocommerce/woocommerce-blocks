@@ -26,10 +26,7 @@ registerBlockType( metadata, {
 		...metadata.attributes,
 		heading: {
 			type: 'string',
-			default: __(
-				'Active Filters Wrapper',
-				'woo-gutenberg-products-block'
-			),
+			default: __( 'Active Filters', 'woo-gutenberg-products-block' ),
 		},
 	},
 	edit,

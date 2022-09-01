@@ -91,14 +91,16 @@ const Edit = ( {
 	return (
 		<div { ...blockProps }>
 			{ getInspectorControls() }
-			<BlockTitle
-				className="wc-block-active-filters__title"
-				headingLevel={ headingLevel }
-				heading={ heading }
-				onChange={ ( value: Attributes[ 'heading' ] ) =>
-					setAttributes( { heading: value } )
-				}
-			/>
+			{ heading && (
+				<BlockTitle
+					className="wc-block-active-filters__title"
+					headingLevel={ headingLevel }
+					heading={ heading }
+					onChange={ ( value: Attributes[ 'heading' ] ) =>
+						setAttributes( { heading: value } )
+					}
+				/>
+			) }
 			<Disabled>
 				<Block attributes={ attributes } isEditor={ true } />
 			</Disabled>

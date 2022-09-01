@@ -1,7 +1,7 @@
 {
 	"name": "woocommerce/filter-wrapper",
 	"version": "1.0.0",
-	"title": "Active Filter Wrapper",
+	"title": "Active Product Filters Wrapper",
 	"category": "woocommerce",
 	"keywords": [ "WooCommerce" ],
 	"attributes": {
