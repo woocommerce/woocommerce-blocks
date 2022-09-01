@@ -179,14 +179,16 @@ export default function ( {
 			) : (
 				<>
 					{ getInspectorControls() }
-					<BlockTitle
-						className="wc-block-price-filter__title"
-						headingLevel={ headingLevel }
-						heading={ heading }
-						onChange={ ( value: string ) =>
-							setAttributes( { heading: value } )
-						}
-					/>
+					{ heading && (
+						<BlockTitle
+							className="wc-block-price-filter__title"
+							headingLevel={ headingLevel }
+							heading={ heading }
+							onChange={ ( value: string ) =>
+								setAttributes( { heading: value } )
+							}
+						/>
+					) }
 					<Disabled>
 						<Block attributes={ attributes } isEditor={ true } />
 					</Disabled>
