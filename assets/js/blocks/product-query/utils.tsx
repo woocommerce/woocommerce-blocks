@@ -1,4 +1,11 @@
 /**
+ * External dependencies
+ */
+
+import apiFetch from '@wordpress/api-fetch';
+import { doAction } from '@wordpress/hooks';
+
+/**
  * Internal dependencies
  */
 import {
@@ -51,4 +58,39 @@ export function setCustomQueryAttribute(
 			},
 		},
 	} );
+}
+
+const getQueryArgumentsByCustomQuery = ( customQuery: string ) => {
+	switch ( customQuery ) {
+		case 'onSale':
+			return 'on_sale=true';
+
+		default:
+			return '';
+	}
+};
+
+export async function fetchAndRenderProducts( props: ProductQueryBlock ) {
+	const customQueries = Object.entries(
+		props.attributes.__woocommerceVariationProps.attributes?.query || {}
+	);
+
+	const queryArguments = customQueries.reduce( ( acc, [ key, value ] ) => {
+		if ( value ) {
+			return acc.concat( getQueryArgumentsByCustomQuery( key ) );
+		}
+		return acc;
+	}, '' );
+
+	const products = await apiFetch( {
+		path: `/wc/store/v1/products?${ queryArguments }`,
+	} );
+
+	doAction(
+		'hook_name',
+		products?.map( ( product ) => ( {
+			...product,
+			type: 'product',
+		} ) )
+	);
 }

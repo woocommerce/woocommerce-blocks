@@ -4,9 +4,10 @@
 import { __ } from '@wordpress/i18n';
 import { InspectorControls } from '@wordpress/block-editor';
 import { ToggleControl } from '@wordpress/components';
-import { addFilter } from '@wordpress/hooks';
+import { addFilter, doAction } from '@wordpress/hooks';
 import { EditorBlock } from '@woocommerce/types';
 import { ElementType } from 'react';
+import apiFetch from '@wordpress/api-fetch';
 
 /**
  * Internal dependencies
@@ -27,6 +28,17 @@ export const INSPECTOR_CONTROLS = {
 			}
 			onChange={ ( onSale ) => {
 				setCustomQueryAttribute( props, { onSale } );
+				apiFetch( {
+					path: '/wc/store/v1/products?on_sale=true',
+				} ).then( ( data ) => {
+					doAction(
+						'hook_name',
+						data?.map( ( product ) => ( {
+							...product,
+							type: 'product',
+						} ) )
+					);
+				} );
 			} }
 		/>
 	),
