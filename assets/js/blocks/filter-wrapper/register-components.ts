@@ -8,3 +8,8 @@ registerBlockComponent( {
 	blockName: 'woocommerce/active-filters',
 	component: lazy( () => import( '../active-filters/block' ) ),
 } );
+
+registerBlockComponent( {
+	blockName: 'woocommerce/price-filter',
+	component: lazy( () => import( '../price-filter/block' ) ),
+} );
