@@ -58,13 +58,9 @@ export function setCustomQueryArguments(
 	block.setAttributes( {
 		query: {
 			...block.attributes.query,
-			customQueryArgs: {
-				...block.attributes.query.customQueryArgs,
-				__woocommerceVariationQuery: {
-					...block.attributes.query.customQueryArgs
-						?.__woocommerceVariationQuery,
-					...queryArguments,
-				},
+			__woocommerceVariationQuery: {
+				...block.attributes.query?.__woocommerceVariationQuery,
+				...queryArguments,
 			},
 		},
 	} );

@@ -23,8 +23,8 @@ export const INSPECTOR_CONTROLS = {
 					'woo-gutenberg-products-block'
 				) }
 				checked={
-					props.attributes.query?.customQueryArgs
-						?.__woocommerceVariationQuery?.onSale || false
+					props.attributes.query?.__woocommerceVariationQuery
+						?.onSale || false
 				}
 				onChange={ ( onSale ) => {
 					setCustomQueryArguments( props, { onSale } );

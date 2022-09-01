@@ -31,10 +31,8 @@ export interface ProductQueryArguments {
 	onSale?: boolean;
 }
 
-export type ProductQueryBlock = WooCommerceBlockVariation<
-	ProductQueryAttributes,
-	ProductQueryArguments
->;
+export type ProductQueryBlock =
+	WooCommerceBlockVariation< ProductQueryAttributes >;
 
 export interface ProductQueryAttributes {
 	/**
@@ -45,7 +43,7 @@ export interface ProductQueryAttributes {
 	disabledInspectorControls?: string[];
 }
 
-export interface QueryBlockQuery< T > {
+export interface QueryBlockQuery {
 	author?: string;
 	exclude?: string[];
 	inherit: boolean;
@@ -59,7 +57,8 @@ export interface QueryBlockQuery< T > {
 	search?: string;
 	sticky?: string;
 	taxQuery?: string;
-	customQueryArgs?: T;
+	// eslint-disable-next-line @typescript-eslint/naming-convention
+	__woocommerceVariationQuery: ProductQueryArguments;
 }
 
 export enum QueryVariation {
@@ -69,14 +68,12 @@ export enum QueryVariation {
 	PRODUCTS_ON_SALE = 'query-products-on-sale',
 }
 
-export type WooCommerceBlockVariation< T, T1 > = EditorBlock< {
-	// Disabling naming convention because we are namespacing our
-	// custom attributes inside a core block. Prefixing with underscores
-	// will help signify our intentions.
-	query: QueryBlockQuery< {
+export type WooCommerceBlockVariation< T extends Record< string, unknown > > =
+	EditorBlock< {
+		// Disabling naming convention because we are namespacing our
+		// custom attributes inside a core block. Prefixing with underscores
+		// will help signify our intentions.
+		query: QueryBlockQuery;
 		// eslint-disable-next-line @typescript-eslint/naming-convention
-		__woocommerceVariationQuery: T1;
+		__woocommerceVariationProps: Partial< BlockInstance< T > >;
 	} >;
-	// eslint-disable-next-line @typescript-eslint/naming-convention
-	__woocommerceVariationProps: Partial< BlockInstance< T > >;
-} >;
