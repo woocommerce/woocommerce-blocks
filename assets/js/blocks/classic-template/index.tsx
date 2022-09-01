@@ -44,7 +44,10 @@ const Edit = ( {
 	const { replaceBlock } = useDispatch( 'core/block-editor' );
 
 	const blockProps = useBlockProps();
-	const templateDetails = getTemplateDetailsBySlug( attributes.template );
+	const templateDetails = getTemplateDetailsBySlug(
+		attributes.template,
+		TEMPLATES
+	);
 	const templateTitle = templateDetails?.title ?? attributes.template;
 	const templatePlaceholder = templateDetails?.placeholder ?? 'fallback';
 
@@ -228,7 +231,10 @@ if ( isExperimentalBuild() ) {
 
 		if (
 			block !== undefined &&
-			( ! hasTemplateSupportForClassicTemplateBlock( parsedTemplate ) ||
+			( ! hasTemplateSupportForClassicTemplateBlock(
+				parsedTemplate,
+				TEMPLATES
+			) ||
 				isClassicTemplateBlockRegisteredWithAnotherTitle(
 					block,
 					parsedTemplate
@@ -241,7 +247,10 @@ if ( isExperimentalBuild() ) {
 
 		if (
 			block === undefined &&
-			hasTemplateSupportForClassicTemplateBlock( parsedTemplate )
+			hasTemplateSupportForClassicTemplateBlock(
+				parsedTemplate,
+				TEMPLATES
+			)
 		) {
 			registerClassicTemplateBlock( {
 				template: parsedTemplate,

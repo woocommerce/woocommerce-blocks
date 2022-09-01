@@ -7,16 +7,19 @@ import { Block } from '@wordpress/blocks';
  * Internal dependencies
  */
 import { TEMPLATES } from './constants';
-
-const templateKeys = Object.keys( TEMPLATES );
+import { TemplateDetails } from './types';
 
 // Finds the most appropriate template details object for specific template keys such as single-product-hoodie.
-export function getTemplateDetailsBySlug( parsedTemplate: string ) {
+export function getTemplateDetailsBySlug(
+	parsedTemplate: string,
+	templates: TemplateDetails
+) {
+	const templateKeys = Object.keys( templates );
 	let templateDetails = null;
 
 	for ( let i = 0; templateKeys.length > i; i++ ) {
 		const keyToMatch = parsedTemplate.substr( 0, templateKeys[ i ].length );
-		const maybeTemplate = TEMPLATES[ keyToMatch ];
+		const maybeTemplate = templates[ keyToMatch ];
 		if ( maybeTemplate ) {
 			templateDetails = maybeTemplate;
 			break;
@@ -31,20 +34,16 @@ export function isClassicTemplateBlockRegisteredWithAnotherTitle(
 	block: Block< any > | undefined,
 	parsedTemplate: string
 ) {
-	const templateDetails = getTemplateDetailsBySlug( parsedTemplate );
+	const templateDetails = getTemplateDetailsBySlug(
+		parsedTemplate,
+		TEMPLATES
+	);
 	return block?.title !== templateDetails?.title;
 }
 
 export function hasTemplateSupportForClassicTemplateBlock(
-	parsedTemplate: string
-) {
-	let hasSupport = false;
-	for ( let i = 0; templateKeys.length > i; i++ ) {
-		if ( parsedTemplate.includes( templateKeys[ i ] ) ) {
-			hasSupport = true;
-			break;
-		}
-	}
-
-	return hasSupport;
+	parsedTemplate: string,
+	templates: TemplateDetails
+): boolean {
+	return getTemplateDetailsBySlug( parsedTemplate, templates ) ? true : false;
 }
