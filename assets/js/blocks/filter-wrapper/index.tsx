@@ -4,7 +4,7 @@
 import { __ } from '@wordpress/i18n';
 import { registerBlockType } from '@wordpress/blocks';
 import { toggle } from '@woocommerce/icons';
-import { Icon } from '@wordpress/icons';
+import { Icon, currencyDollar, box } from '@wordpress/icons';
 import { useBlockProps, useInnerBlocksProps } from '@wordpress/block-editor';
 
 /**
@@ -54,6 +54,14 @@ registerBlockType( metadata, {
 					'woo-gutenberg-products-block'
 				),
 			},
+			icon: {
+				src: (
+					<Icon
+						icon={ currencyDollar }
+						className="wc-block-editor-components-block-icon"
+					/>
+				),
+			},
 		},
 		{
 			name: 'stock-filter',
@@ -70,6 +78,14 @@ registerBlockType( metadata, {
 				heading: __(
 					'Filter by stock status',
 					'woo-gutenberg-products-block'
+				),
+			},
+			icon: {
+				src: (
+					<Icon
+						icon={ box }
+						className="wc-block-editor-components-block-icon"
+					/>
 				),
 			},
 		},

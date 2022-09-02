@@ -1,7 +1,7 @@
 {
 	"name": "woocommerce/active-filters",
 	"version": "1.0.0",
-	"title": "Active Product Filters Inner",
+	"title": "Active Product Filters Controls",
 	"description": "Show the currently active product filters. Works in combination with other filters blocks.",
 	"category": "woocommerce",
 	"keywords": [ "WooCommerce" ],

@@ -1,7 +1,7 @@
 {
 	"name": "woocommerce/price-filter",
 	"version": "1.0.0",
-	"title": "Filter by Price Inner",
+	"title": "Filter by Price Controls",
 	"description": "Allow customers to filter products by price range.",
 	"category": "woocommerce",
 	"keywords": [ "WooCommerce" ],
@@ -11,7 +11,8 @@
 		"color": {
 			"text": true,
 			"background": false
-		}
+		},
+		"inserter": false
 	},
 	"example": {
 		"attributes": {
