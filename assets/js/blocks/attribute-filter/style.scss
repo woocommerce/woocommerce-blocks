@@ -68,7 +68,7 @@
 
 	.wc-blocks-components-form-token-field-wrapper .components-form-token-field__input-container {
 		border: 0;
-		width: 85%;
+		width: calc(100% - 50px);
 		padding: $gap-smaller;
 
 		.components-form-token-field__input::placeholder {
