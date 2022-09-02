@@ -18,3 +18,8 @@ registerBlockComponent( {
 	blockName: 'woocommerce/stock-filter',
 	component: lazy( () => import( '../stock-filter/block' ) ),
 } );
+
+registerBlockComponent( {
+	blockName: 'woocommerce/attribute-filter',
+	component: lazy( () => import( '../attribute-filter/block' ) ),
+} );

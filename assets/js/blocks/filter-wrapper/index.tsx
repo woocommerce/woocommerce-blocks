@@ -4,8 +4,8 @@
 import { __ } from '@wordpress/i18n';
 import { registerBlockType } from '@wordpress/blocks';
 import { toggle } from '@woocommerce/icons';
-import { Icon, currencyDollar, box } from '@wordpress/icons';
 import { useBlockProps, useInnerBlocksProps } from '@wordpress/block-editor';
+import { Icon, category, currencyDollar, box } from '@wordpress/icons';
 
 /**
  * Internal dependencies
@@ -84,6 +84,32 @@ registerBlockType( metadata, {
 				src: (
 					<Icon
 						icon={ box }
+						className="wc-block-editor-components-block-icon"
+					/>
+				),
+			},
+		},
+		{
+			name: 'attribute-filter',
+			title: __( 'Filter by Attribute', 'woo-gutenberg-products-block' ),
+			description: __(
+				'Allow customers to filter the grid by product attribute, such as color.',
+				'woo-gutenberg-products-block'
+			),
+			scope: [ 'inserter' ],
+			isActive: ( attributes ) =>
+				attributes.filterType === 'attribute-filter',
+			attributes: {
+				filterType: 'attribute-filter',
+				heading: __(
+					'Filter by attribute',
+					'woo-gutenberg-products-block'
+				),
+			},
+			icon: {
+				src: (
+					<Icon
+						icon={ category }
 						className="wc-block-editor-components-block-icon"
 					/>
 				),

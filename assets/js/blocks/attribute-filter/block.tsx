@@ -81,6 +81,11 @@ const AttributeFilterBlock = ( {
 	attributes: BlockAttributes;
 	isEditor?: boolean;
 } ) => {
+	blockAttributes = {
+		...blockAttributes,
+		isPreview: blockAttributes?.isPreview || false,
+	};
+
 	const hasFilterableProducts = getSettingWithCoercion(
 		'has_filterable_products',
 		false,
@@ -470,8 +475,10 @@ const AttributeFilterBlock = ( {
 		return null;
 	}
 
+	console.log( attributeObject );
 	// Short-circuit if no attribute is selected.
 	if ( ! attributeObject ) {
+		console.log( 'This block of code is executed even the attributeObject is valid' );
 		if ( isEditor ) {
 			return (
 				<Notice status="warning" isDismissible={ false }>
@@ -507,6 +514,8 @@ const AttributeFilterBlock = ( {
 		`h${ blockAttributes.headingLevel }` as keyof JSX.IntrinsicElements;
 	const isLoading = ! blockAttributes.isPreview && attributeTermsLoading;
 	const isDisabled = ! blockAttributes.isPreview && filteredCountsLoading;
+
+	console.log( 'This console.log is executed but the block does not render returned content below.' );
 
 	return (
 		<>
