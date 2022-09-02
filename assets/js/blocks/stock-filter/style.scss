@@ -12,6 +12,7 @@
 .wc-block-stock-filter {
 	&.show-loading-state {
 		@include placeholder();
+		margin-top: $gap;
 		box-shadow: none;
 		border-radius: 0;
 	}

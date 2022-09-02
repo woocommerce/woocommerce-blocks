@@ -21,7 +21,7 @@
 	.show-loading-state {
 		@include placeholder();
 		box-shadow: none;
-		border-radius: em(4px) !important;
+		border-radius: 0;
 		margin-bottom: $gap;
 		margin-top: $gap;
 		height: 1em;
