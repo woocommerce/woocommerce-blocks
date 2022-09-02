@@ -73,3 +73,5 @@ foreach ( $class_aliases as $class => $alias ) {
 		class_alias( $class, $alias );
 	}
 }
+
+unset( $class_aliases );
