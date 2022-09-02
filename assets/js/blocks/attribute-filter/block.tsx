@@ -14,7 +14,6 @@ import {
 	useCollectionData,
 } from '@woocommerce/base-context/hooks';
 import { useCallback, useEffect, useState, useMemo } from '@wordpress/element';
-import CheckboxList from '@woocommerce/base-components/checkbox-list';
 import Label from '@woocommerce/base-components/filter-element-label';
 import FilterResetButton from '@woocommerce/base-components/filter-reset-button';
 import FilterSubmitButton from '@woocommerce/base-components/filter-submit-button';
@@ -58,6 +57,7 @@ import {
 	generateUniqueId,
 } from './utils';
 import { BlockAttributes, DisplayOption } from './types';
+import CheckboxFilter from './checkbox-filter';
 
 /**
  * Formats filter values into a string for the URL parameters needed for filtering PHP templates.
@@ -528,12 +528,7 @@ const AttributeFilterBlock = ( {
 		<>
 			{ ! isEditor && blockAttributes.heading && filterHeading }
 			<div
-				className={ classnames(
-					`wc-block-attribute-filter style-${ blockAttributes.displayStyle }`,
-					{
-						'show-loading-state': isLoading,
-					}
-				) }
+				className={ `wc-block-attribute-filter style-${ blockAttributes.displayStyle }` }
 			>
 				{ blockAttributes.displayStyle === 'dropdown' ? (
 					<>
@@ -541,6 +536,7 @@ const AttributeFilterBlock = ( {
 							key={ remountKey }
 							className={ classnames( borderProps.className, {
 								'single-selection': ! multiple,
+								'show-loading-state': isLoading,
 							} ) }
 							style={ {
 								...borderProps.style,
@@ -640,8 +636,7 @@ const AttributeFilterBlock = ( {
 						) }
 					</>
 				) : (
-					<CheckboxList
-						className={ 'wc-block-attribute-filter-list' }
+					<CheckboxFilter
 						options={ displayedOptions }
 						checked={ checked }
 						onChange={ onChange }
@@ -650,6 +645,7 @@ const AttributeFilterBlock = ( {
 					/>
 				) }
 			</div>
+
 			<div className="wc-block-attribute-filter__actions">
 				{ checked.length > 0 && ! isLoading && (
 					<FilterResetButton
