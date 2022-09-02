@@ -7,13 +7,29 @@
  */
 ?>
 
-<!-- wp:woocommerce/active-filters -->
-<div class="wp-block-woocommerce-active-filters is-loading" data-display-style="list" data-heading="Active filters" data-heading-level="3"><span aria-hidden="true" class="wc-block-active-product-filters__placeholder"></span></div>
-<!-- /wp:woocommerce/active-filters -->
+<!-- wp:woocommerce/filter-wrapper -->
+<div class="wp-block-woocommerce-filter-wrapper">
+<!-- wp:heading {"level":3} -->
+<h3>Active Filters</h3>
+<!-- /wp:heading -->
 
-<!-- wp:woocommerce/price-filter -->
-<div class="wp-block-woocommerce-price-filter is-loading" data-showinputfields="true" data-showfilterbutton="false" data-heading="Filter by price" data-heading-level="3"><span aria-hidden="true" class="wc-block-product-categories__placeholder"></span></div>
+<!-- wp:woocommerce/active-filters {"heading":""} -->
+<div class="wp-block-woocommerce-active-filters is-loading" data-display-style="list" data-heading="" data-heading-level="3"><span aria-hidden="true" class="wc-block-active-product-filters__placeholder"></span></div>
+<!-- /wp:woocommerce/active-filters -->
+</div>
+<!-- /wp:woocommerce/filter-wrapper -->
+
+<!-- wp:woocommerce/filter-wrapper {"filterType":"price-filter","heading":"Filter by Price"} -->
+<div class="wp-block-woocommerce-filter-wrapper">
+<!-- wp:heading {"level":3} -->
+<h3>Filter by Price</h3>
+<!-- /wp:heading -->
+
+<!-- wp:woocommerce/price-filter {"heading":""} -->
+<div class="wp-block-woocommerce-price-filter is-loading" data-showinputfields="true" data-showfilterbutton="false" data-heading="" data-heading-level="3"><span aria-hidden="true" class="wc-block-product-categories__placeholder"></span></div>
 <!-- /wp:woocommerce/price-filter -->
+</div>
+<!-- /wp:woocommerce/filter-wrapper -->
 
 <!-- wp:woocommerce/attribute-filter -->
 <div class="wp-block-woocommerce-attribute-filter is-loading" data-attribute-id="0" data-show-counts="true" data-query-type="or" data-heading="Filter by attribute" data-heading-level="3"><span aria-hidden="true" class="wc-block-product-attribute-filter__placeholder"></span></div>
