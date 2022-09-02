@@ -72,6 +72,10 @@
 			border: 1px solid $gray-700 !important;
 			border-radius: 4px;
 		}
+
+		&.show-loading-state {
+			border-radius: em(4px);
+		}
 	}
 
 	.is-single .wc-block-attribute-filter-list-count,
