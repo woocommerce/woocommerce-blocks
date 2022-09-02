@@ -52,7 +52,7 @@ export const formatStoreApiErrorMessage = ( response ) => {
 	return response?.message
 		? decodeEntities( response.message )
 		: __(
-				'Something went wrong. Please contact us to get assistance.',
+				'Something went wrong. Please contact us for assistance. Please contact us to get assistance.',
 				'woo-gutenberg-products-block'
 		  );
 };
