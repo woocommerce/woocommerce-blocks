@@ -26,7 +26,7 @@ registerBlockType( metadata, {
 		...metadata.attributes,
 		heading: {
 			type: 'string',
-			default: __( 'Active Filters', 'woo-gutenberg-products-block' ),
+			default: __( 'Active filters', 'woo-gutenberg-products-block' ),
 		},
 	},
 	edit,
@@ -50,7 +50,7 @@ registerBlockType( metadata, {
 			attributes: {
 				filterType: 'price-filter',
 				heading: __(
-					'Filter by Price',
+					'Filter by price',
 					'woo-gutenberg-products-block'
 				),
 			},
@@ -68,7 +68,7 @@ registerBlockType( metadata, {
 			attributes: {
 				filterType: 'stock-filter',
 				heading: __(
-					'Filter by Stock status',
+					'Filter by stock status',
 					'woo-gutenberg-products-block'
 				),
 			},
