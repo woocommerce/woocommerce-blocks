@@ -55,5 +55,23 @@ registerBlockType( metadata, {
 				),
 			},
 		},
+		{
+			name: 'stock-filter',
+			title: __( 'Filter by Stock', 'woo-gutenberg-products-block' ),
+			description: __(
+				'Allow customers to filter the grid by products stock status.',
+				'woo-gutenberg-products-block'
+			),
+			scope: [ 'inserter' ],
+			isActive: ( attributes ) =>
+				attributes.filterType === 'stock-filter',
+			attributes: {
+				filterType: 'stock-filter',
+				heading: __(
+					'Filter by Stock status',
+					'woo-gutenberg-products-block'
+				),
+			},
+		},
 	],
 } );
