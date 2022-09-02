@@ -39,8 +39,9 @@ registerBlockType( metadata, {
 	variations: [
 		{
 			name: 'price-filter',
-			title: __(
-				'Filter by Price Wrapper',
+			title: __( 'Filter by Price', 'woo-gutenberg-products-block' ),
+			description: __(
+				'Allow customers to filter products by price range.',
 				'woo-gutenberg-products-block'
 			),
 			scope: [ 'inserter' ],
