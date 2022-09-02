@@ -11,7 +11,8 @@
 		"color": {
 			"text": true,
 			"background": false
-		}
+		},
+		"lock": false
 	},
 	"example": {
 		"attributes": {
@@ -38,6 +39,13 @@
 		"headingLevel": {
 			"type": "number",
 			"default": 3
+		},
+		"lock": {
+			"type": "object",
+			"default": {
+				"remove": true,
+				"move": false 
+			}
 		}
 	},
 	"textdomain": "woo-gutenberg-products-block",
