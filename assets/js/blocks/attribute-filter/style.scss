@@ -31,8 +31,6 @@
 		position: relative;
 		display: flex;
 		gap: $gap;
-		border: 1px solid $gray-700;
-		border-radius: 4px;
 		align-items: flex-start;
 
 		.wc-block-components-filter-submit-button {
@@ -68,12 +66,11 @@
 		flex-grow: 1;
 		max-width: unset;
 		width: 0;
+		height: max-content;
 
-		&.show-loading-state {
-			@include placeholder();
-			box-shadow: none;
-			border-radius: em(4px) !important;
-			height: max-content;
+		&:not(.show-loading-state) {
+			border: 1px solid $gray-700 !important;
+			border-radius: 4px;
 		}
 	}
 

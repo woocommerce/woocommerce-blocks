@@ -528,7 +528,10 @@ const AttributeFilterBlock = ( {
 		<>
 			{ ! isEditor && blockAttributes.heading && filterHeading }
 			<div
-				className={ `wc-block-attribute-filter style-${ blockAttributes.displayStyle }` }
+				className={ classnames(
+					'wc-block-attribute-filter',
+					`style-${ blockAttributes.displayStyle }`
+				) }
 			>
 				{ blockAttributes.displayStyle === 'dropdown' ? (
 					<>
