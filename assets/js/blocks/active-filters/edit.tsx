@@ -3,7 +3,6 @@
  */
 import { __ } from '@wordpress/i18n';
 import { InspectorControls, useBlockProps } from '@wordpress/block-editor';
-import HeadingToolbar from '@woocommerce/editor-components/heading-toolbar';
 import BlockTitle from '@woocommerce/editor-components/block-title';
 import type { BlockEditProps } from '@wordpress/blocks';
 import {
@@ -70,21 +69,6 @@ const Edit = ( {
 							) }
 						/>
 					</ToggleGroupControl>
-					<p>
-						{ __(
-							'Heading Level',
-							'woo-gutenberg-products-block'
-						) }
-					</p>
-					<HeadingToolbar
-						isCollapsed={ false }
-						minLevel={ 2 }
-						maxLevel={ 7 }
-						selectedLevel={ headingLevel }
-						onChange={ ( newLevel: Attributes[ 'headingLevel' ] ) =>
-							setAttributes( { headingLevel: newLevel } )
-						}
-					/>
 				</PanelBody>
 			</InspectorControls>
 		);
