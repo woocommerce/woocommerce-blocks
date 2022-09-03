@@ -36,21 +36,11 @@ registerBlockType( metadata, {
 	edit,
 	// Save the props to post content.
 	save( { attributes }: { attributes: Attributes } ) {
-		const {
-			className,
-			showCounts,
-			heading,
-			headingLevel,
-			showFilterButton,
-		} = attributes;
+		const { className, heading, headingLevel } = attributes;
 		const data: Record< string, unknown > = {
-			'data-show-counts': showCounts,
 			'data-heading': heading,
 			'data-heading-level': headingLevel,
 		};
-		if ( showFilterButton ) {
-			data[ 'data-show-filter-button' ] = showFilterButton;
-		}
 		return (
 			<div
 				{ ...useBlockProps.save( {
