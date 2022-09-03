@@ -3,7 +3,6 @@
  */
 import Rating from '@woocommerce/base-components/product-rating';
 import { usePrevious, useShallowEqual } from '@woocommerce/base-hooks';
-import LoadingMask from '@woocommerce/base-components/loading-mask';
 import {
 	useQueryStateByKey,
 	useQueryStateByContext,
@@ -14,7 +13,7 @@ import { isBoolean } from '@woocommerce/types';
 import isShallowEqual from '@wordpress/is-shallow-equal';
 import { useState, useCallback, useMemo, useEffect } from '@wordpress/element';
 import { addQueryArgs, removeQueryArgs } from '@wordpress/url';
-import { changeUrl, PREFIX_QUERY_ARG_FILTER_TYPE } from '@woocommerce/utils';
+import { changeUrl } from '@woocommerce/utils';
 
 /**
  * Internal dependencies
@@ -23,7 +22,7 @@ import './style.scss';
 import { Attributes } from './types';
 import { getActiveFilters } from './utils';
 
-export const QUERY_PARAM_KEY = PREFIX_QUERY_ARG_FILTER_TYPE + 'rating';
+export const QUERY_PARAM_KEY = 'rating_filter';
 
 /**
  * Component displaying an stock status filter.
@@ -44,9 +43,6 @@ const RatingFilterBlock = ( {
 		false,
 		isBoolean
 	);
-
-	console.log(PREFIX_QUERY_ARG_FILTER_TYPE + 'rating');
-
 	const [ hasSetFilterDefaultsFromUrl, setHasSetFilterDefaultsFromUrl ] =
 		useState( false );
 
@@ -62,15 +58,11 @@ const RatingFilterBlock = ( {
 		} );
 
 	const initialFilters = useMemo(
-		() => getActiveFilters( 'filter_rating', QUERY_PARAM_KEY ),
+		() => getActiveFilters( 'rating_filter' ),
 		[]
 	);
 
 	const [ clicked, setClicked ] = useState( initialFilters );
-
-	const [ displayedOptions, setDisplayedOptions ] = useState(
-		blockAttributes.isPreview ? previewOptions : []
-	);
 
 	const [ productRatings, setProductRatings ] =
 		useQueryStateByKey( 'rating' );
@@ -80,19 +72,19 @@ const RatingFilterBlock = ( {
 		initialFilters
 	);
 
-	const productRatingsArray = Array.from( productRatings );
+	const productRatingsArray: string[] = Array.from( productRatings );
 
 	/**
 	 * Used to redirect the page when filters are changed so templates using the Classic Template block can filter.
 	 *
-	 * @param {Array} productRatingsArray Array of checked stock options.
+	 * @param {Array} clickedRatings Array of clicked ratings.
 	 */
-	const updateFilterUrl = ( productRatingsArray: string[] ) => {
+	const updateFilterUrl = ( clickedRatings: string[] ) => {
 		if ( ! window ) {
 			return;
 		}
 
-		if ( productRatingsArray.length === 0 ) {
+		if ( clickedRatings.length === 0 ) {
 			const url = removeQueryArgs(
 				window.location.href,
 				QUERY_PARAM_KEY
@@ -106,7 +98,7 @@ const RatingFilterBlock = ( {
 		}
 
 		const newUrl = addQueryArgs( window.location.href, {
-			[ QUERY_PARAM_KEY ]: productRatingsArray.join( ',' ),
+			[ QUERY_PARAM_KEY ]: clickedRatings.join( ',' ),
 		} );
 
 		if ( newUrl === window.location.href ) {
@@ -132,10 +124,8 @@ const RatingFilterBlock = ( {
 
 	// Track clicked STATE changes - if state changes, update the query.
 	useEffect( () => {
-		if ( ! blockAttributes.showFilterButton ) {
-			onSubmit( clicked );
-		}
-	}, [ blockAttributes.showFilterButton, clicked, onSubmit ] );
+		onSubmit( clicked );
+	}, [ clicked, onSubmit ] );
 
 	const clickedQuery = useMemo( () => {
 		return productRatingsQuery;
@@ -154,7 +144,7 @@ const RatingFilterBlock = ( {
 	}, [ clicked, currentClickedQuery, previousClickedQuery ] );
 
 	/**
-	 * Try get the stock filter from the URL.
+	 * Try get the rating filter from the URL.
 	 */
 	useEffect( () => {
 		if ( ! hasSetFilterDefaultsFromUrl ) {
@@ -168,7 +158,7 @@ const RatingFilterBlock = ( {
 		initialFilters,
 	] );
 
-	const onClick = ( clickedValue ) => () => {
+	const onClick = ( clickedValue: string ) => () => {
 		if ( ! productRatingsArray.length ) {
 			setProductRatings( [ clickedValue ] );
 		} else {
@@ -185,7 +175,10 @@ const RatingFilterBlock = ( {
 		}
 	};
 
-	if ( filteredCounts.rating_counts != undefined ) {
+	if (
+		! filteredCountsLoading &&
+		filteredCounts.rating_counts !== undefined
+	) {
 		const orderedRatings = [ ...filteredCounts.rating_counts ].reverse();
 		return (
 			<>
@@ -201,26 +194,18 @@ const RatingFilterBlock = ( {
 								item.rating.toString()
 							)
 								? 'is-active'
-								: null
+								: ''
 						}
 						key={ item.rating }
 						rating={ item.rating }
 						ratedProductsCount={ item.count }
 						onClick={ onClick( item.rating.toString() ) }
-						options={ displayedOptions }
 					/>
 				) ) }
-				{ blockAttributes.showFilterButton && (
-					<FilterSubmitButton
-						className="wc-block-stock-filter__button"
-						disabled={ isLoading || isDisabled }
-						onClick={ () => onSubmit( checked ) }
-					/>
-				) }
 			</>
 		);
 	}
-	return <LoadingMask showSpinner={ true } />;
+	return null;
 };
 
 export default RatingFilterBlock;

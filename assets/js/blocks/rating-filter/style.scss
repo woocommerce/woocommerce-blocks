@@ -2,7 +2,13 @@
 	margin-bottom: $gap-large;
 
 	.wc-block-components-product-rating.is-active {
-		opacity: 0.35;
+		font-weight: 700;
+		.wc-block-components-product-rating__stars {
+			cursor: pointer;
+			span {
+				color: var(--wp--preset--color--primary);
+			}
+		}
 	}
 }
 
