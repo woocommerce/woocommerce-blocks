@@ -135,7 +135,7 @@
 		"@wordpress/browserslist-config": "5.0.0",
 		"@wordpress/components": "19.1.5",
 		"@wordpress/data-controls": "2.2.7",
-		"@wordpress/dependency-extraction-webpack-plugin": "3.2.1",
+		"@wordpress/dependency-extraction-webpack-plugin": "4.0.0",
 		"@wordpress/dom": "3.16.0",
 		"@wordpress/e2e-test-utils": "7.8.0",
 		"@wordpress/e2e-tests": "4.6.0",
