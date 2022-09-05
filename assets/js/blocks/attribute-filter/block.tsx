@@ -510,7 +510,11 @@ const AttributeFilterBlock = ( {
 	const countsLoading = ! blockAttributes.isPreview && filteredCountsLoading;
 
 	const isLoading =
-		termsLoading || countsLoading || displayedOptions.length === 0;
+		( termsLoading || countsLoading ) && displayedOptions.length === 0;
+
+	if ( ! isLoading && displayedOptions.length === 0 ) {
+		return null;
+	}
 
 	const heading = (
 		<TagName className="wc-block-attribute-filter__title">
