@@ -10,7 +10,7 @@ import {
 } from '@woocommerce/base-context/hooks';
 import { getRegisteredBlockComponents } from '@woocommerce/blocks-registry';
 import { renderParentBlock } from '@woocommerce/atomic-utils';
-
+import '@wordpress/block-editor';
 /**
  * Internal dependencies
  */
