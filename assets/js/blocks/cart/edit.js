@@ -101,12 +101,7 @@ export const Edit = ( { className, attributes, setAttributes, clientId } ) => {
 					currentView={ currentView }
 					previewData={ { previewCart } }
 				>
-					<BlockSettings
-						attributes={ attributes }
-						setAttributes={ setAttributes }
-					/>
 					<BlockControls>{ ViewSwitcherComponent }</BlockControls>
-
 					<CartBlockContext.Provider
 						value={ {
 							hasDarkControls,
