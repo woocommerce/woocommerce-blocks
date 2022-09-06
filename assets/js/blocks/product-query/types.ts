@@ -71,6 +71,7 @@ export enum QueryVariation {
 }
 
 export type WooCommerceBlockVariation< T > = EditorBlock< {
+	query: QueryBlockQuery;
 	// Disabling naming convention because we are namespacing our
 	// custom attributes inside a core block. Prefixing with underscores
 	// will help signify our intentions.

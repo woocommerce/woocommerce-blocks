@@ -1,4 +1,9 @@
 /**
+ * External dependencies
+ */
+import { addFilter } from '@wordpress/hooks';
+
+/**
  * Internal dependencies
  */
 import {
@@ -51,4 +56,47 @@ export function setCustomQueryAttribute(
 			},
 		},
 	} );
+}
+
+const getQueryArgumentsByCustomQuery = ( key: string, value: string ) => {
+	switch ( key ) {
+		case 'onSale':
+			return {
+				on_sale: value,
+			};
+		case 'offset':
+			return {
+				offset: value,
+			};
+		case 'perPage':
+			return {
+				per_page: value,
+			};
+
+		default:
+			return {};
+	}
+};
+
+export function fetchAndRenderProducts( props: ProductQueryBlock ) {
+	const customQueries = Object.entries(
+		props?.attributes?.__woocommerceVariationProps?.attributes?.query || {}
+	);
+
+	const stockQueries = Object.entries( props?.attributes?.query );
+	const queryArguments = [ ...customQueries, ...stockQueries ].reduce(
+		( acc, [ key, value ] ) => {
+			return {
+				...acc,
+				...getQueryArgumentsByCustomQuery( key, value ),
+			};
+		},
+		{}
+	);
+
+	addFilter( 'query.entityRecordsArgs', 'core/query', ( { query } ) => ( {
+		usedPostType: 'products',
+		postType: 'root',
+		query: { ...query, ...queryArguments },
+	} ) );
 }

@@ -6,13 +6,17 @@ import { InspectorControls } from '@wordpress/block-editor';
 import { ToggleControl } from '@wordpress/components';
 import { addFilter } from '@wordpress/hooks';
 import { EditorBlock } from '@woocommerce/types';
-import { ElementType } from 'react';
+import { ElementType, useEffect } from 'react';
 
 /**
  * Internal dependencies
  */
 import { ProductQueryBlock } from './types';
-import { isWooQueryBlockVariation, setCustomQueryAttribute } from './utils';
+import {
+	fetchAndRenderProducts,
+	isWooQueryBlockVariation,
+	setCustomQueryAttribute,
+} from './utils';
 
 export const INSPECTOR_CONTROLS = {
 	onSale: ( props: ProductQueryBlock ) => (
@@ -35,7 +39,15 @@ export const INSPECTOR_CONTROLS = {
 export const withProductQueryControls =
 	< T extends EditorBlock< T > >( BlockEdit: ElementType ) =>
 	( props: ProductQueryBlock ) => {
-		return isWooQueryBlockVariation( props ) ? (
+		if ( ! isWooQueryBlockVariation( props ) ) {
+			return <BlockEdit { ...props } />;
+		}
+
+		useEffect( () => {
+			fetchAndRenderProducts( props );
+		}, [ props ] );
+
+		return (
 			<>
 				<BlockEdit { ...props } />
 				<InspectorControls>
@@ -49,8 +61,6 @@ export const withProductQueryControls =
 					) }
 				</InspectorControls>
 			</>
-		) : (
-			<BlockEdit { ...props } />
 		);
 	};
 

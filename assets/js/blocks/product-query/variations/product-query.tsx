@@ -4,6 +4,7 @@
 import { isExperimentalBuild } from '@woocommerce/block-settings';
 import { registerBlockVariation } from '@wordpress/blocks';
 import { Icon } from '@wordpress/components';
+import { dispatch } from '@wordpress/data';
 import { __ } from '@wordpress/i18n';
 import { sparkles } from '@wordpress/icons';
 
@@ -13,6 +14,14 @@ import { sparkles } from '@wordpress/icons';
 import { INNER_BLOCKS_TEMPLATE, QUERY_DEFAULT_ATTRIBUTES } from '../constants';
 
 if ( isExperimentalBuild() ) {
+	dispatch( 'core' ).addEntities( [
+		{
+			name: 'products',
+			kind: 'root',
+			baseURL: '/wc/store/v1/products',
+		},
+	] );
+
 	registerBlockVariation( 'core/query', {
 		name: 'woocommerce/product-query',
 		title: __( 'Product Query', 'woo-gutenberg-products-block' ),
