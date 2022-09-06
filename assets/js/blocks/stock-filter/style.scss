@@ -10,6 +10,12 @@
 }
 
 .wc-block-stock-filter {
+	&.show-loading-state {
+		@include placeholder();
+		box-shadow: none;
+		border-radius: 0;
+	}
+
 	margin-bottom: $gap-large;
 
 	.wc-block-stock-filter-list {
