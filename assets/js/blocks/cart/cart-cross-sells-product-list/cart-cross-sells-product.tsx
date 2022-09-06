@@ -25,7 +25,6 @@ interface CrossSellsProductProps {
 
 const CartCrossSellsProduct = ( {
 	crossSellsProduct,
-	isLoading,
 }: CrossSellsProductProps ): JSX.Element => {
 	return (
 		<div className="cross-sells-product">
@@ -33,10 +32,7 @@ const CartCrossSellsProduct = ( {
 				parentName={ 'woocommerce/cart-cross-sells-block' }
 				parentClassName={ 'wp-block-cart-cross-sells-product' }
 			>
-				<ProductDataContextProvider
-					product={ crossSellsProduct }
-					isLoading={ isLoading }
-				>
+				<ProductDataContextProvider product={ crossSellsProduct }>
 					<div>
 						<ProductImage />
 						<ProductName />
