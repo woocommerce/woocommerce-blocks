@@ -2,7 +2,6 @@
  * External dependencies
  */
 import { isExperimentalBuild } from '@woocommerce/block-settings';
-import { __ } from '@wordpress/i18n';
 import { registerBlockType } from '@wordpress/blocks';
 import { Icon, starEmpty } from '@wordpress/icons';
 import classNames from 'classnames';
@@ -18,11 +17,6 @@ import type { Attributes } from './types';
 
 if ( isExperimentalBuild() ) {
 	registerBlockType( metadata, {
-		title: __( 'Filter by Rating', 'woo-gutenberg-products-block' ),
-		description: __(
-			'Enable customers to filter the product grid by rating.',
-			'woo-gutenberg-products-block'
-		),
 		icon: {
 			src: (
 				<Icon
