@@ -1,6 +1,7 @@
 /**
  * External dependencies
  */
+import { useEffect } from '@wordpress/element';
 import {
 	useCollection,
 	useQueryStateByKey,
@@ -26,22 +27,25 @@ interface ActiveAttributeFiltersProps {
 	operator: 'and' | 'in';
 	slugs: string[];
 	attributeObject: AttributeObject;
+	isLoadingCallback: ( val: boolean ) => void;
 }
 
 /**
  * Component that renders active attribute (terms) filters.
  *
- * @param {Object} props                 Incoming props for the component.
- * @param {Object} props.attributeObject The attribute object.
- * @param {Array}  props.slugs           The slugs for attributes.
- * @param {string} props.operator        The operator for the filter.
- * @param {string} props.displayStyle    The style used for displaying the filters.
+ * @param {Object} props                   Incoming props for the component.
+ * @param {Object} props.attributeObject   The attribute object.
+ * @param {Array}  props.slugs             The slugs for attributes.
+ * @param {string} props.operator          The operator for the filter.
+ * @param {string} props.displayStyle      The style used for displaying the filters.
+ * @param {string} props.isLoadingCallback The callback to trigger the loading complete state.
  */
 const ActiveAttributeFilters = ( {
 	attributeObject,
 	slugs = [],
 	operator = 'in',
 	displayStyle,
+	isLoadingCallback,
 }: ActiveAttributeFiltersProps ) => {
 	const { results, isLoading } = useCollection( {
 		namespace: '/wc/store/v1',
@@ -54,16 +58,35 @@ const ActiveAttributeFilters = ( {
 		[]
 	);
 
+	useEffect( () => {
+		isLoadingCallback( isLoading );
+	}, [ isLoading, isLoadingCallback ] );
+
 	if (
-		isLoading ||
-		! Array.isArray( results ) ||
-		! isAttributeTermCollection( results ) ||
-		! isAttributeQueryCollection( productAttributes )
+		! isLoading &&
+		( ! Array.isArray( results ) ||
+			! isAttributeTermCollection( results ) ||
+			! isAttributeQueryCollection( productAttributes ) )
 	) {
 		return null;
 	}
 
 	const attributeLabel = attributeObject.label;
+
+	if ( isLoading ) {
+		return [ ...Array( displayStyle === 'list' ? 2 : 3 ) ].map(
+			( x, i ) => (
+				<li
+					className={
+						displayStyle === 'list'
+							? 'show-loading-state-list'
+							: 'show-loading-state-chips'
+					}
+					key={ i }
+				/>
+			)
+		);
+	}
 
 	const filteringForPhpTemplate = getSettingWithCoercion(
 		'is_rendering_php_template',
@@ -100,6 +123,7 @@ const ActiveAttributeFilters = ( {
 						type: attributeLabel,
 						name: decodeEntities( termObject.name || slug ),
 						prefix,
+						isLoading,
 						removeCallback: () => {
 							const currentAttribute = productAttributes.find(
 								( { attribute } ) =>

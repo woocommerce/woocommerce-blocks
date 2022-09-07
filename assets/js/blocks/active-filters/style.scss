@@ -56,6 +56,41 @@
 		> li:first-child {
 			margin: 0;
 		}
+		li.show-loading-state-list {
+			@include placeholder();
+			box-shadow: none;
+			border-radius: 0;
+			margin-bottom: $gap;
+			margin-top: $gap;
+			height: 1em;
+			width: 100%;
+		}
+
+		li.show-loading-state-chips {
+			@include placeholder();
+			display: inline-block !important;
+			box-shadow: none;
+			border-radius: 13px;
+			margin-bottom: $gap;
+			margin-top: $gap;
+			height: 1em;
+			width: 100%;
+			min-width: 70px;
+			margin-right: 15px !important;
+
+			&:last-of-type {
+				margin-right: 0 !important;
+			}
+
+			&:nth-child(1),
+			&:nth-child(2) {
+				width: calc(20% - 15px);
+			}
+
+			&:nth-child(3) {
+				width: calc(60% - 15px);
+			}
+		}
 	}
 
 	.wc-block-active-filters__list-item-type {

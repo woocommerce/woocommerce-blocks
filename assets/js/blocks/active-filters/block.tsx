@@ -4,7 +4,7 @@
 import { __, sprintf } from '@wordpress/i18n';
 import { useQueryStateByKey } from '@woocommerce/base-context/hooks';
 import { getSetting, getSettingWithCoercion } from '@woocommerce/settings';
-import { useMemo, useEffect } from '@wordpress/element';
+import { useMemo, useEffect, useState } from '@wordpress/element';
 import classnames from 'classnames';
 import PropTypes from 'prop-types';
 import Label from '@woocommerce/base-components/label';
@@ -16,6 +16,7 @@ import {
 	isStockStatusOptions,
 } from '@woocommerce/types';
 import { getUrlParameter } from '@woocommerce/utils';
+import FilterTitlePlaceholder from '@woocommerce/base-components/filter-placeholder';
 
 /**
  * Internal dependencies
@@ -27,6 +28,7 @@ import {
 	renderRemovableListItem,
 	removeArgsFromFilterUrl,
 	cleanFilterUrl,
+	maybeUrlContainsFilters,
 } from './utils';
 import ActiveAttributeFilters from './active-attribute-filters';
 import { Attributes } from './types';
@@ -50,6 +52,7 @@ const ActiveFiltersBlock = ( {
 		false,
 		isBoolean
 	);
+	const [ isLoading, setIsLoading ] = useState( true );
 	const [ productAttributes, setProductAttributes ] = useQueryStateByKey(
 		'attributes',
 		[]
@@ -145,6 +148,7 @@ const ActiveFiltersBlock = ( {
 					slugs={ attribute.slug }
 					key={ attribute.attribute }
 					operator={ attribute.operator }
+					isLoadingCallback={ setIsLoading }
 				/>
 			);
 		} );
@@ -226,8 +230,24 @@ const ActiveFiltersBlock = ( {
 		return null;
 	}
 
+	const shouldShowLoadingPlaceholders =
+		maybeUrlContainsFilters() && ! isEditor && isLoading;
+
 	const TagName =
 		`h${ blockAttributes.headingLevel }` as keyof JSX.IntrinsicElements;
+
+	const heading = (
+		<TagName className="wc-block-active-filters__title">
+			{ blockAttributes.heading }
+		</TagName>
+	);
+
+	const filterHeading = shouldShowLoadingPlaceholders ? (
+		<FilterTitlePlaceholder>{ heading }</FilterTitlePlaceholder>
+	) : (
+		heading
+	);
+
 	const hasFilterableProducts = getSettingWithCoercion(
 		'has_filterable_products',
 		false,
@@ -245,11 +265,7 @@ const ActiveFiltersBlock = ( {
 
 	return (
 		<>
-			{ ! isEditor && blockAttributes.heading && (
-				<TagName className="wc-block-active-filters__title">
-					{ blockAttributes.heading }
-				</TagName>
-			) }
+			{ ! isEditor && blockAttributes.heading && filterHeading }
 			<div className="wc-block-active-filters">
 				<ul className={ listClasses }>
 					{ isEditor ? (
