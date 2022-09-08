@@ -50,6 +50,7 @@ const ActiveFiltersBlock = ( {
 	isEditor?: boolean;
 } ) => {
 	const isMounted = useIsMounted();
+	const componentHasMounted = isMounted();
 	const filteringForPhpTemplate = getSettingWithCoercion(
 		'is_rendering_php_template',
 		false,
@@ -145,7 +146,7 @@ const ActiveFiltersBlock = ( {
 	const activeAttributeFilters = useMemo( () => {
 		if (
 			! isAttributeQueryCollection( productAttributes ) ||
-			( isMounted() && productAttributes.length === 0 )
+			( componentHasMounted && productAttributes.length === 0 )
 		) {
 			setIsLoading( false );
 			return null;
@@ -172,7 +173,12 @@ const ActiveFiltersBlock = ( {
 				/>
 			);
 		} );
-	}, [ setIsLoading, productAttributes, blockAttributes.displayStyle ] );
+	}, [
+		componentHasMounted,
+		setIsLoading,
+		productAttributes,
+		blockAttributes.displayStyle,
+	] );
 
 	const [ productRatings, setProductRatings ] =
 		useQueryStateByKey( 'ratings' );
@@ -248,7 +254,12 @@ const ActiveFiltersBlock = ( {
 		);
 	};
 
-	if ( ! hasFilters() && ! isEditor ) {
+	if (
+		componentHasMounted &&
+		! shouldShowLoadingPlaceholders &&
+		! hasFilters() &&
+		! isEditor
+	) {
 		return null;
 	}
 
