@@ -17,6 +17,7 @@ import {
 } from '@woocommerce/types';
 import { getUrlParameter } from '@woocommerce/utils';
 import FilterTitlePlaceholder from '@woocommerce/base-components/filter-placeholder';
+import { useIsMounted } from '@woocommerce/base-hooks';
 
 /**
  * Internal dependencies
@@ -48,6 +49,7 @@ const ActiveFiltersBlock = ( {
 	attributes: Attributes;
 	isEditor?: boolean;
 } ) => {
+	const isMounted = useIsMounted();
 	const filteringForPhpTemplate = getSettingWithCoercion(
 		'is_rendering_php_template',
 		false,
@@ -143,7 +145,7 @@ const ActiveFiltersBlock = ( {
 	const activeAttributeFilters = useMemo( () => {
 		if (
 			! isAttributeQueryCollection( productAttributes ) ||
-			productAttributes.length === 0
+			( isMounted() && productAttributes.length === 0 )
 		) {
 			setIsLoading( false );
 			return null;
