@@ -21,5 +21,5 @@ registerBlockComponent( {
 
 registerBlockComponent( {
 	blockName: 'woocommerce/attribute-filter',
-	component: lazy( () => import( '../attribute-filter/block' ) ),
+	component: lazy( () => import( '../attribute-filter/block-wrapper' ) ),
 } );
