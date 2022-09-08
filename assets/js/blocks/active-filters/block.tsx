@@ -31,6 +31,7 @@ import {
 	maybeUrlContainsFilters,
 } from './utils';
 import ActiveAttributeFilters from './active-attribute-filters';
+import FilterPlaceholders from './filter-placeholders';
 import { Attributes } from './types';
 
 /**
@@ -140,7 +141,11 @@ const ActiveFiltersBlock = ( {
 	] );
 
 	const activeAttributeFilters = useMemo( () => {
-		if ( ! isAttributeQueryCollection( productAttributes ) ) {
+		if (
+			! isAttributeQueryCollection( productAttributes ) ||
+			productAttributes.length === 0
+		) {
+			setIsLoading( false );
 			return null;
 		}
 
@@ -150,6 +155,7 @@ const ActiveFiltersBlock = ( {
 			);
 
 			if ( ! attributeObject ) {
+				setIsLoading( false );
 				return null;
 			}
 
@@ -164,7 +170,7 @@ const ActiveFiltersBlock = ( {
 				/>
 			);
 		} );
-	}, [ productAttributes, blockAttributes.displayStyle ] );
+	}, [ setIsLoading, productAttributes, blockAttributes.displayStyle ] );
 
 	const [ productRatings, setProductRatings ] =
 		useQueryStateByKey( 'ratings' );
@@ -307,6 +313,10 @@ const ActiveFiltersBlock = ( {
 						</>
 					) : (
 						<>
+							<FilterPlaceholders
+								isLoading={ shouldShowLoadingPlaceholders }
+								displayStyle={ blockAttributes.displayStyle }
+							/>
 							{ activePriceFilters }
 							{ activeStockStatusFilters }
 							{ activeAttributeFilters }

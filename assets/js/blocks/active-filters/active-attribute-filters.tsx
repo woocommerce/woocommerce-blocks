@@ -63,32 +63,14 @@ const ActiveAttributeFilters = ( {
 	}, [ isLoading, isLoadingCallback ] );
 
 	if (
-		! isLoading &&
-		( ! Array.isArray( results ) ||
-			! isAttributeTermCollection( results ) ||
-			! isAttributeQueryCollection( productAttributes ) )
+		! Array.isArray( results ) ||
+		! isAttributeTermCollection( results ) ||
+		! isAttributeQueryCollection( productAttributes )
 	) {
 		return null;
 	}
 
 	const attributeLabel = attributeObject.label;
-
-	if ( isLoading ) {
-		return [ ...Array( displayStyle === 'list' ? 2 : 3 ) ].map(
-			( x, i ) => (
-				<li
-					className={
-						displayStyle === 'list'
-							? 'show-loading-state-list'
-							: 'show-loading-state-chips'
-					}
-					key={ i }
-				>
-					<span className="show-loading-state__inner" />
-				</li>
-			)
-		);
-	}
 
 	const filteringForPhpTemplate = getSettingWithCoercion(
 		'is_rendering_php_template',
