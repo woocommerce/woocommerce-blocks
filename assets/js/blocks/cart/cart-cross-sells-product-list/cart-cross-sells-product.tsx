@@ -32,10 +32,21 @@ const CartCrossSellsProduct = ( {
 				parentName={ 'woocommerce/cart-cross-sells-block' }
 				parentClassName={ 'wp-block-cart-cross-sells-product' }
 			>
-				<ProductDataContextProvider product={ crossSellsProduct }>
+				<ProductDataContextProvider
+					// Setting isLoading to false, given this parameter is required.
+					isLoading={ false }
+					product={ crossSellsProduct }
+				>
 					<div>
-						<ProductImage />
-						<ProductName />
+						<ProductImage
+							className={ '' }
+							showSaleBadge={ false }
+						/>
+						<ProductName
+							align={ '' }
+							headingLevel={ 2 }
+							showProductLink={ true }
+						/>
 						<ProductRating />
 						<ProductSaleBadge />
 						<ProductPrice />
