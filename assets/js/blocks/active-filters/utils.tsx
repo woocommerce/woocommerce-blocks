@@ -269,10 +269,25 @@ export const maybeUrlContainsFilters = (): boolean => {
 	return maybeHasFilter;
 };
 
-export const urlContainsFilter = ( key: string ): boolean => {
+interface StoreAttributes {
+	attribute_id: string;
+	attribute_label: string;
+	attribute_name: string;
+	attribute_orderby: string;
+	attribute_public: number;
+	attribute_type: string;
+}
+
+export const urlContainsAttributeFilter = (
+	attributes: StoreAttributes[]
+): boolean => {
 	if ( ! window ) {
 		return false;
 	}
+
+	const storeAttributeKeys = attributes.map(
+		( attr ) => `filter_${ attr.attribute_name }`
+	);
 
 	const url = window.location.href;
 	const args = getQueryArgs( url );
@@ -281,8 +296,7 @@ export const urlContainsFilter = ( key: string ): boolean => {
 
 	for ( let i = 0; urlFilterKeys.length > i; i++ ) {
 		const urlKey = urlFilterKeys[ i ];
-		const trimmedKey = urlKey.substring( 0, key.length );
-		if ( trimmedKey === key && urlKey !== 'filter_stock_status' ) {
+		if ( storeAttributeKeys.includes( urlKey ) ) {
 			filterIsInUrl = true;
 			break;
 		}

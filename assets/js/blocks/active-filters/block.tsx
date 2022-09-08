@@ -30,7 +30,7 @@ import {
 	removeArgsFromFilterUrl,
 	cleanFilterUrl,
 	maybeUrlContainsFilters,
-	urlContainsFilter,
+	urlContainsAttributeFilter,
 } from './utils';
 import ActiveAttributeFilters from './active-attribute-filters';
 import FilterPlaceholders from './filter-placeholders';
@@ -76,6 +76,7 @@ const ActiveFiltersBlock = ( {
 	const [ maxPrice, setMaxPrice ] = useQueryStateByKey( 'max_price' );
 
 	const STOCK_STATUS_OPTIONS = getSetting( 'stockStatusOptions', [] );
+	const STORE_ATTRIBUTES = getSetting( 'attributes', [] );
 	const activeStockStatusFilters = useMemo( () => {
 		if (
 			shouldShowLoadingPlaceholders ||
@@ -146,19 +147,11 @@ const ActiveFiltersBlock = ( {
 
 	const activeAttributeFilters = useMemo( () => {
 		if (
-			! isAttributeQueryCollection( productAttributes ) &&
-			componentHasMounted
-		) {
-			setIsLoading( false );
-			return null;
-		}
-
-		// We have no way of knowing if productAttributes is returning its default value.
-		// so we have to check the URL for possible attribute filters ('filter_') as well.
-		if (
-			componentHasMounted &&
-			! productAttributes.length &&
-			! urlContainsFilter( 'filter_' )
+			( ! isAttributeQueryCollection( productAttributes ) &&
+				componentHasMounted ) ||
+			( componentHasMounted &&
+				! productAttributes.length &&
+				! urlContainsAttributeFilter( STORE_ATTRIBUTES ) )
 		) {
 			setIsLoading( false );
 			return null;
