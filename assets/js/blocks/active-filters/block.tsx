@@ -30,6 +30,7 @@ import {
 	removeArgsFromFilterUrl,
 	cleanFilterUrl,
 	maybeUrlContainsFilters,
+	urlContainsFilter,
 } from './utils';
 import ActiveAttributeFilters from './active-attribute-filters';
 import FilterPlaceholders from './filter-placeholders';
@@ -145,8 +146,19 @@ const ActiveFiltersBlock = ( {
 
 	const activeAttributeFilters = useMemo( () => {
 		if (
-			! isAttributeQueryCollection( productAttributes ) ||
-			( componentHasMounted && productAttributes.length === 0 )
+			! isAttributeQueryCollection( productAttributes ) &&
+			componentHasMounted
+		) {
+			setIsLoading( false );
+			return null;
+		}
+
+		// We have no way of knowing if productAttributes is returning its default value.
+		// so we have to check the URL for possible attribute filters ('filter_') as well.
+		if (
+			componentHasMounted &&
+			! productAttributes.length &&
+			! urlContainsFilter( 'filter_' )
 		) {
 			setIsLoading( false );
 			return null;

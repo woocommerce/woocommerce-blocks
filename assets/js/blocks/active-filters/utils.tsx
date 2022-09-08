@@ -268,3 +268,25 @@ export const maybeUrlContainsFilters = (): boolean => {
 
 	return maybeHasFilter;
 };
+
+export const urlContainsFilter = ( key: string ): boolean => {
+	if ( ! window ) {
+		return false;
+	}
+
+	const url = window.location.href;
+	const args = getQueryArgs( url );
+	const urlFilterKeys = Object.keys( args );
+	let filterIsInUrl = false;
+
+	for ( let i = 0; urlFilterKeys.length > i; i++ ) {
+		const urlKey = urlFilterKeys[ i ];
+		const trimmedKey = urlKey.substring( 0, key.length );
+		if ( trimmedKey === key && urlKey !== 'filter_stock_status' ) {
+			filterIsInUrl = true;
+			break;
+		}
+	}
+
+	return filterIsInUrl;
+};
