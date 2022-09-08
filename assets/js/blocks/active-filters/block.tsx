@@ -53,6 +53,12 @@ const ActiveFiltersBlock = ( {
 		isBoolean
 	);
 	const [ isLoading, setIsLoading ] = useState( true );
+	/*
+		activeAttributeFilters is the only async query in this block. Because of this the rest of the filters will render null
+		when in a loading state and activeAttributeFilters renders the placeholders.
+	 */
+	const shouldShowLoadingPlaceholders =
+		maybeUrlContainsFilters() && ! isEditor && isLoading;
 	const [ productAttributes, setProductAttributes ] = useQueryStateByKey(
 		'attributes',
 		[]
@@ -67,6 +73,7 @@ const ActiveFiltersBlock = ( {
 	const STOCK_STATUS_OPTIONS = getSetting( 'stockStatusOptions', [] );
 	const activeStockStatusFilters = useMemo( () => {
 		if (
+			shouldShowLoadingPlaceholders ||
 			productStockStatus.length === 0 ||
 			! isStockStatusQueryCollection( productStockStatus ) ||
 			! isStockStatusOptions( STOCK_STATUS_OPTIONS )
@@ -95,6 +102,7 @@ const ActiveFiltersBlock = ( {
 			} );
 		} );
 	}, [
+		shouldShowLoadingPlaceholders,
 		STOCK_STATUS_OPTIONS,
 		productStockStatus,
 		setProductStockStatus,
@@ -103,7 +111,10 @@ const ActiveFiltersBlock = ( {
 	] );
 
 	const activePriceFilters = useMemo( () => {
-		if ( ! Number.isFinite( minPrice ) && ! Number.isFinite( maxPrice ) ) {
+		if (
+			shouldShowLoadingPlaceholders ||
+			( ! Number.isFinite( minPrice ) && ! Number.isFinite( maxPrice ) )
+		) {
 			return null;
 		}
 		return renderRemovableListItem( {
@@ -119,6 +130,7 @@ const ActiveFiltersBlock = ( {
 			displayStyle: blockAttributes.displayStyle,
 		} );
 	}, [
+		shouldShowLoadingPlaceholders,
 		minPrice,
 		maxPrice,
 		blockAttributes.displayStyle,
@@ -181,6 +193,7 @@ const ActiveFiltersBlock = ( {
 
 	const activeRatingFilters = useMemo( () => {
 		if (
+			shouldShowLoadingPlaceholders ||
 			productRatings.length === 0 ||
 			! isRatingQueryCollection( productRatings )
 		) {
@@ -210,6 +223,7 @@ const ActiveFiltersBlock = ( {
 			} );
 		} );
 	}, [
+		shouldShowLoadingPlaceholders,
 		productRatings,
 		setProductRatings,
 		blockAttributes.displayStyle,
@@ -229,9 +243,6 @@ const ActiveFiltersBlock = ( {
 	if ( ! hasFilters() && ! isEditor ) {
 		return null;
 	}
-
-	const shouldShowLoadingPlaceholders =
-		maybeUrlContainsFilters() && ! isEditor && isLoading;
 
 	const TagName =
 		`h${ blockAttributes.headingLevel }` as keyof JSX.IntrinsicElements;
