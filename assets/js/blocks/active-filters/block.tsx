@@ -261,6 +261,7 @@ const ActiveFiltersBlock = ( {
 	const listClasses = classnames( 'wc-block-active-filters__list', {
 		'wc-block-active-filters__list--chips':
 			blockAttributes.displayStyle === 'chips',
+		'wc-block-active-filters--loading': shouldShowLoadingPlaceholders,
 	} );
 
 	return (
@@ -302,29 +303,33 @@ const ActiveFiltersBlock = ( {
 						</>
 					) }
 				</ul>
-				<button
-					className="wc-block-active-filters__clear-all"
-					onClick={ () => {
-						cleanFilterUrl();
-						if ( ! filteringForPhpTemplate ) {
-							setMinPrice( undefined );
-							setMaxPrice( undefined );
-							setProductAttributes( [] );
-							setProductStockStatus( [] );
-						}
-					} }
-				>
-					<Label
-						label={ __(
-							'Clear All',
-							'woo-gutenberg-products-block'
-						) }
-						screenReaderLabel={ __(
-							'Clear All Filters',
-							'woo-gutenberg-products-block'
-						) }
-					/>
-				</button>
+				{ shouldShowLoadingPlaceholders ? (
+					<span className="wc-block-active-filters__clear-all-placeholder" />
+				) : (
+					<button
+						className="wc-block-active-filters__clear-all"
+						onClick={ () => {
+							cleanFilterUrl();
+							if ( ! filteringForPhpTemplate ) {
+								setMinPrice( undefined );
+								setMaxPrice( undefined );
+								setProductAttributes( [] );
+								setProductStockStatus( [] );
+							}
+						} }
+					>
+						<Label
+							label={ __(
+								'Clear All',
+								'woo-gutenberg-products-block'
+							) }
+							screenReaderLabel={ __(
+								'Clear All Filters',
+								'woo-gutenberg-products-block'
+							) }
+						/>
+					</button>
+				) }
 			</div>
 		</>
 	);

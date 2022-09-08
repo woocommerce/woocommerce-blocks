@@ -83,7 +83,9 @@ const ActiveAttributeFilters = ( {
 							: 'show-loading-state-chips'
 					}
 					key={ i }
-				/>
+				>
+					<span className="show-loading-state__inner" />
+				</li>
 			)
 		);
 	}
