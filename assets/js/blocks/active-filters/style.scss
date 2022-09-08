@@ -31,6 +31,7 @@
 		padding: 0;
 		text-decoration: underline;
 		cursor: pointer;
+		float: right;
 
 		&,
 		&:hover,
@@ -39,6 +40,14 @@
 			background: transparent;
 			color: inherit;
 		}
+	}
+
+	.wc-block-active-filters__clear-all-placeholder {
+		@include placeholder();
+		display: inline-block;
+		width: 80px;
+		height: 1em;
+		float: right;
 	}
 
 	.wc-block-active-filters__list {
