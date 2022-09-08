@@ -9,27 +9,29 @@ import { ProductResponseItem } from '@woocommerce/type-defs/product-response';
 import CartCrossSellsProduct from './cart-cross-sells-product';
 
 interface CrossSellsProductListProps {
-	crossSellsProducts: ProductResponseItem[];
+	products: ProductResponseItem[];
 	className?: string | undefined;
 	columns: number;
 }
 
 const CartCrossSellsProductList = ( {
-	crossSellsProducts,
+	products,
 	columns,
 }: CrossSellsProductListProps ): JSX.Element => {
-	const products = crossSellsProducts.map( ( crossSellsProduct, i ) => {
+	const crossSellsProducts = products.map( ( product, i ) => {
 		if ( i >= columns ) return null;
 
 		return (
 			<CartCrossSellsProduct
-				crossSellsProduct={ crossSellsProduct }
-				key={ crossSellsProduct.id }
+				// Setting isLoading to false, given this parameter is required.
+				isLoading={ false }
+				product={ product }
+				key={ product.id }
 			/>
 		);
 	} );
 
-	return <div>{ products }</div>;
+	return <div>{ crossSellsProducts }</div>;
 };
 
 export default CartCrossSellsProductList;

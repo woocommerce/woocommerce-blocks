@@ -19,12 +19,12 @@ import { Block as ProductButton } from '../../../atomic/blocks/product-elements/
 import AddToCartButton from '../../../atomic/blocks/product-elements/add-to-cart/block';
 
 interface CrossSellsProductProps {
-	crossSellsProduct: ProductResponseItem;
+	product: ProductResponseItem;
 	isLoading: boolean;
 }
 
 const CartCrossSellsProduct = ( {
-	crossSellsProduct,
+	product,
 }: CrossSellsProductProps ): JSX.Element => {
 	return (
 		<div className="cross-sells-product">
@@ -35,7 +35,7 @@ const CartCrossSellsProduct = ( {
 				<ProductDataContextProvider
 					// Setting isLoading to false, given this parameter is required.
 					isLoading={ false }
-					product={ crossSellsProduct }
+					product={ product }
 				>
 					<div>
 						<ProductImage
@@ -51,7 +51,7 @@ const CartCrossSellsProduct = ( {
 						<ProductSaleBadge />
 						<ProductPrice />
 					</div>
-					{ crossSellsProduct.is_in_stock ? (
+					{ product.is_in_stock ? (
 						<AddToCartButton />
 					) : (
 						<ProductButton />
