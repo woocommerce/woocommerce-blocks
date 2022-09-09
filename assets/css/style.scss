@@ -337,6 +337,11 @@
 			text-decoration: none;
 		}
 	}
+
+	.wp-block-image.aligncenter {
+		margin-left: auto;
+		margin-right: auto;
+	}
 }
 
 // Default screen-reader styles. Included as a fallback for themes that don't have support.
