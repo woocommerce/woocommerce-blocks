@@ -28,6 +28,7 @@
 		box-shadow: none;
 		border-radius: 0;
 		height: 1em;
+		margin-top: $gap;
 	}
 
 	&.style-dropdown {
@@ -185,4 +186,7 @@
 .wc-block-attribute-filter__button.wc-block-attribute-filter__button {
 	padding: em($gap-smaller) em($gap);
 	@include font-size(small);
+	height: max-content;
+	line-height: normal;
+	width: max-content;
 }
