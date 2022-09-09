@@ -543,7 +543,7 @@ const AttributeFilterBlock = ( {
 							key={ remountKey }
 							className={ classnames( borderProps.className, {
 								'single-selection': ! multiple,
-								'show-loading-state': isLoading,
+								'is-loading': isLoading,
 							} ) }
 							style={ {
 								...borderProps.style,

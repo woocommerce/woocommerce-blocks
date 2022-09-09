@@ -4,7 +4,7 @@
 	margin-left: auto;
 	white-space: nowrap;
 
-	&.show-loading-state {
+	&.is-loading {
 		@include placeholder();
 		margin-top: $gap;
 		width: max-content;

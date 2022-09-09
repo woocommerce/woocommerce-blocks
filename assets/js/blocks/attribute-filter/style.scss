@@ -23,7 +23,7 @@
 	border-radius: inherit;
 	border-color: inherit;
 
-	.show-loading-state {
+	.is-loading {
 		@include placeholder();
 		box-shadow: none;
 		border-radius: 0;
@@ -72,12 +72,12 @@
 		width: 0;
 		height: max-content;
 
-		&:not(.show-loading-state) {
+		&:not(.is-loading) {
 			border: 1px solid $gray-700 !important;
 			border-radius: 4px;
 		}
 
-		&.show-loading-state {
+		&.is-loading {
 			border-radius: em(4px);
 		}
 	}

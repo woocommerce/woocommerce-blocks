@@ -35,7 +35,7 @@ const FilterSubmitButton = ( {
 				'wp-block-button__link',
 				'wc-block-filter-submit-button',
 				'wc-block-components-filter-submit-button',
-				{ 'show-loading-state': isLoading },
+				{ 'is-loading': isLoading },
 				className
 			) }
 			disabled={ disabled }

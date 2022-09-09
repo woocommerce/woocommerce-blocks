@@ -379,7 +379,7 @@ const StockStatusFilterBlock = ( {
 			{ ! isEditor && blockAttributes.heading && filterHeading }
 			<div
 				className={ classnames( 'wc-block-stock-filter', {
-					'show-loading-state': isLoading,
+					'is-loading': isLoading,
 				} ) }
 			>
 				<CheckboxList
