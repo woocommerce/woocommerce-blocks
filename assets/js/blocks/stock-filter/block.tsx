@@ -390,30 +390,33 @@ const StockStatusFilterBlock = ( {
 					isLoading={ isLoading }
 					isDisabled={ isDisabled }
 				/>
-				{ ! isLoading && (
-					<div className="wc-block-stock-filter__actions">
-						{ checked.length > 0 && (
-							<FilterResetButton
-								onClick={ () => {
-									setChecked( [] );
-									onSubmit( [] );
-								} }
-								screenReaderLabel={ __(
-									'Reset stock filter',
-									'woo-gutenberg-products-block'
-								) }
-							/>
-						) }
-						{ blockAttributes.showFilterButton && (
-							<FilterSubmitButton
-								className="wc-block-stock-filter__button"
-								disabled={ isLoading || isDisabled }
-								onClick={ () => onSubmit( checked ) }
-							/>
-						) }
-					</div>
-				) }
 			</div>
+			{
+				<div className="wc-block-stock-filter__actions">
+					{ checked.length > 0 && ! isLoading && (
+						<FilterResetButton
+							onClick={ () => {
+								setChecked( [] );
+								onSubmit( [] );
+							} }
+							screenReaderLabel={ __(
+								'Reset stock filter',
+								'woo-gutenberg-products-block'
+							) }
+						/>
+					) }
+					{ blockAttributes.showFilterButton && (
+						<FilterSubmitButton
+							className={ classnames(
+								'wc-block-stock-filter__button',
+								{ 'show-loading-state': isLoading }
+							) }
+							disabled={ isLoading || isDisabled }
+							onClick={ () => onSubmit( checked ) }
+						/>
+					) }
+				</div>
+			}
 		</>
 	);
 };

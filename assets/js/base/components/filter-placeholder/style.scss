@@ -4,6 +4,8 @@
 	border-radius: em(26px);
 	box-shadow: none;
 	min-width: 80px;
+	margin-top: $gap-small;
+	margin-bottom: $gap-small;
 	max-width: max-content !important;
 
 	&::after {
