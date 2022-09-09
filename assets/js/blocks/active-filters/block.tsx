@@ -149,8 +149,7 @@ const ActiveFiltersBlock = ( {
 		if (
 			( ! isAttributeQueryCollection( productAttributes ) &&
 				componentHasMounted ) ||
-			( componentHasMounted &&
-				! productAttributes.length &&
+			( ! productAttributes.length &&
 				! urlContainsAttributeFilter( STORE_ATTRIBUTES ) )
 		) {
 			setIsLoading( false );
@@ -259,12 +258,7 @@ const ActiveFiltersBlock = ( {
 		);
 	};
 
-	if (
-		componentHasMounted &&
-		! shouldShowLoadingPlaceholders &&
-		! hasFilters() &&
-		! isEditor
-	) {
+	if ( ! shouldShowLoadingPlaceholders && ! hasFilters() && ! isEditor ) {
 		return null;
 	}
 
