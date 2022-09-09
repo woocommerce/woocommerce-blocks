@@ -669,9 +669,12 @@ const AttributeFilterBlock = ( {
 						) }
 					/>
 				) }
-				{ blockAttributes.showFilterButton && ! isLoading && (
+				{ blockAttributes.showFilterButton && (
 					<FilterSubmitButton
-						className="wc-block-attribute-filter__button"
+						className={ classnames(
+							'wc-block-attribute-filter__button',
+							{ 'show-loading-state': isLoading }
+						) }
 						disabled={
 							termsLoading ||
 							countsLoading ||

@@ -27,8 +27,6 @@
 		@include placeholder();
 		box-shadow: none;
 		border-radius: 0;
-		margin-bottom: $gap;
-		margin-top: $gap;
 		height: 1em;
 	}
 
@@ -144,6 +142,14 @@
 		&:disabled {
 			opacity: 0.6;
 			cursor: auto;
+		}
+
+		&.show-loading-state {
+			@include placeholder();
+			margin-top: $gap;
+			width: max-content;
+			box-shadow: none;
+			border-radius: 0;
 		}
 	}
 
