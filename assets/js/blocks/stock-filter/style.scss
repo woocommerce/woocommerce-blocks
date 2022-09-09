@@ -63,14 +63,6 @@
 		margin-top: em($gap-smaller);
 		padding: em($gap-smaller) em($gap);
 		@include font-size(small);
-
-		&.show-loading-state {
-			@include placeholder();
-			margin-top: $gap;
-			width: max-content;
-			box-shadow: none;
-			border-radius: 0;
-		}
 	}
 }
 

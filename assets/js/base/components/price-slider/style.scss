@@ -152,16 +152,6 @@
 		margin-top: 0;
 		margin-left: 0;
 	}
-
-	.wc-block-price-filter__button {
-		&.show-loading-state {
-			@include placeholder();
-			margin-top: $gap;
-			width: max-content;
-			box-shadow: none;
-			border-radius: 0;
-		}
-	}
 }
 
 .wc-block-components-price-slider__range-input {

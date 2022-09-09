@@ -3,4 +3,12 @@
 	display: block;
 	margin-left: auto;
 	white-space: nowrap;
+
+	&.show-loading-state {
+		@include placeholder();
+		margin-top: $gap;
+		width: max-content;
+		box-shadow: none;
+		border-radius: 0;
+	}
 }

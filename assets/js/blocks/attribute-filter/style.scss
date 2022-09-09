@@ -143,14 +143,6 @@
 			opacity: 0.6;
 			cursor: auto;
 		}
-
-		&.show-loading-state {
-			@include placeholder();
-			margin-top: $gap;
-			width: max-content;
-			box-shadow: none;
-			border-radius: 0;
-		}
 	}
 
 	.wc-block-filter-submit-button.wc-block-components-filter-submit-button.wc-block-attribute-filter__button {

@@ -492,11 +492,8 @@ const PriceSlider = ( {
 						) }
 					{ showFilterButton && (
 						<FilterSubmitButton
-							className={ classnames(
-								'wc-block-price-filter__button',
-								'wc-block-components-price-slider__button',
-								{ 'show-loading-state': isUpdating }
-							) }
+							className="wc-block-price-filter__button wc-block-components-price-slider__button"
+							isLoading={ isUpdating }
 							disabled={ isLoading || ! hasValidConstraints }
 							onClick={ onSubmit }
 							screenReaderLabel={ __(

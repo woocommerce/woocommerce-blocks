@@ -407,10 +407,8 @@ const StockStatusFilterBlock = ( {
 					) }
 					{ blockAttributes.showFilterButton && (
 						<FilterSubmitButton
-							className={ classnames(
-								'wc-block-stock-filter__button',
-								{ 'show-loading-state': isLoading }
-							) }
+							className="wc-block-stock-filter__button"
+							isLoading={ isLoading }
 							disabled={ isLoading || isDisabled }
 							onClick={ () => onSubmit( checked ) }
 						/>
