@@ -3,7 +3,6 @@
  */
 import { __ } from '@wordpress/i18n';
 import { decodeEntities } from '@wordpress/html-entities';
-import { createElement, RawHTML } from '@wordpress/element';
 
 /**
  * Given a JS error or a fetch response error, parse and format it, so it can be displayed to the user.
@@ -40,7 +39,7 @@ export const formatError = async ( error ) => {
  * Given an API response object, formats the error message into something more human-readable.
  *
  * @param {Object} response Response object.
- * @return {Object|string}   Error message.
+ * @return {string}   Error message.
  */
 export const formatStoreApiErrorMessage = ( response ) => {
 	if ( response.data && response.code === 'rest_invalid_param' ) {
@@ -57,5 +56,5 @@ export const formatStoreApiErrorMessage = ( response ) => {
 		);
 	}
 
-	return createElement( RawHTML, null, decodeEntities( response.message ) );
+	return decodeEntities( response.message );
 };
