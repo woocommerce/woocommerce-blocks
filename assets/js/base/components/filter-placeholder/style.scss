@@ -3,8 +3,9 @@
 	background-color: $gray-400 !important;
 	border-radius: em(26px);
 	box-shadow: none;
-	margin-bottom: $gap;
 	min-width: 80px;
+	margin-top: $gap-small;
+	margin-bottom: $gap-small;
 	max-width: max-content !important;
 
 	&::after {
@@ -12,7 +13,9 @@
 	}
 
 	.wc-block-stock-filter__title,
-	.wc-block-price-filter__title {
+	.wc-block-price-filter__title,
+	.wc-block-active-filters__title,
+	.wc-block-attribute-filter__title {
 		margin: 0;
 		height: 1em;
 	}
