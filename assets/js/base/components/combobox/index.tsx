@@ -95,7 +95,7 @@ const Combobox = ( {
 			id={ controlId }
 			className={ classnames( 'wc-block-components-combobox', className, {
 				'is-active': value,
-				'has-error': error.message && ! error.hidden,
+				'has-error': error?.message && ! error?.hidden,
 			} ) }
 			ref={ controlRef }
 		>
@@ -138,7 +138,7 @@ const Combobox = ( {
 				value={ value || '' }
 				allowReset={ false }
 				autoComplete={ autoComplete }
-				aria-invalid={ error.message && ! error.hidden }
+				aria-invalid={ error?.message && ! error?.hidden }
 			/>
 			<ValidationInputError propertyName={ errorId } />
 		</div>
