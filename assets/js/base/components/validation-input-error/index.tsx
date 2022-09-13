@@ -20,16 +20,13 @@ export const ValidationInputError = ( {
 	propertyName = '',
 	elementId = '',
 }: ValidationInputErrorProps ): JSX.Element | null => {
-	const { getValidationError, getValidationErrorId } = useSelect(
-		( select ) => {
-			const store = select( VALIDATION_STORE_KEY );
-			return {
-				getValidationError: store.getValidationError(),
-				getValidationErrorId: store.getValidationErrorId(),
-			};
-		}
-	);
-	const validationError = getValidationError( propertyName );
+	const { validationError, validationErrorId } = useSelect( ( select ) => {
+		const store = select( VALIDATION_STORE_KEY );
+		return {
+			validationError: store.getValidationError( propertyName ),
+			validationErrorId: store.getValidationErrorId( elementId ),
+		};
+	} );
 
 	if ( ! errorMessage || typeof errorMessage !== 'string' ) {
 		const error = validationError || {};
@@ -42,7 +39,7 @@ export const ValidationInputError = ( {
 
 	return (
 		<div className="wc-block-components-validation-error" role="alert">
-			<p id={ getValidationErrorId( elementId ) }>{ errorMessage }</p>
+			<p id={ validationErrorId }>{ errorMessage }</p>
 		</div>
 	);
 };
