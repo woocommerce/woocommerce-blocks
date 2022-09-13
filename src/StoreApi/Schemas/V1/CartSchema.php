@@ -387,12 +387,13 @@ class CartSchema extends AbstractSchema {
 	 * @return array
 	 */
 	protected function get_tax_lines( $cart ) {
-		$cart_tax_totals = $cart->get_tax_totals();
-		$tax_lines       = [];
+		$tax_lines = [];
 
 		if ( 'itemized' !== get_option( 'woocommerce_tax_total_display' ) ) {
 			return $tax_lines;
 		}
+
+		$cart_tax_totals = $cart->get_tax_totals();
 
 		foreach ( $cart_tax_totals as $cart_tax_total ) {
 			$tax_lines[] = array(
