@@ -29,9 +29,8 @@ export const ValidationInputError = ( {
 	} );
 
 	if ( ! errorMessage || typeof errorMessage !== 'string' ) {
-		const error = validationError || {};
-		if ( error.message && ! error.hidden ) {
-			errorMessage = error.message;
+		if ( validationError?.message && ! validationError?.hidden ) {
+			errorMessage = validationError.message;
 		} else {
 			return null;
 		}
