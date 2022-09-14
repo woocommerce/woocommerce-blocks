@@ -3,7 +3,7 @@
 	"compilerOptions": {},
 	"include": [
 		".",
-		"./use-checkout-submit.js",
+		"../../../../../packages/checkout/index.js",
 	],
 	"exclude": [ "**/test/**" ]
 }

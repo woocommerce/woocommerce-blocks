@@ -114,6 +114,7 @@ export interface ExpressPaymentMethodConfigInstance {
 	content: ReactNode;
 	edit: ReactNode;
 	paymentMethodId?: string;
+	placeOrderButtonLabel: string;
 	supports: Supports;
 	canMakePaymentFromConfig: CanMakePaymentCallback;
 	canMakePayment: CanMakePaymentCallback;
