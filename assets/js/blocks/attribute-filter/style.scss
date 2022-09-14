@@ -45,7 +45,8 @@
 		> svg {
 			position: absolute;
 			right: 8px;
-			bottom: 8px;
+			top: 50%;
+			transform: translateY(-50%);
 			pointer-events: none;
 		}
 	}
@@ -157,7 +158,7 @@
 }
 
 .wc-blocks-components-form-token-field-wrapper:not(.single-selection) .components-form-token-field__input-container {
-	padding: $gap-smallest $gap-smaller;
+	padding: $gap-smallest 30px $gap-smallest  $gap-smaller;
 
 	.components-form-token-field__token-text {
 		background-color: $white;
@@ -169,7 +170,6 @@
 	}
 
 	> .components-form-token-field__input {
-		padding-right: 30px;
 		margin: em($gap-smallest) 0;
 	}
 
