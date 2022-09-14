@@ -15,7 +15,7 @@ interface BlockProps {
 }
 
 const Block = ( { className, columns }: BlockProps ): JSX.Element => {
-	const { crossSellsProducts, cartIsLoading } = useStoreCart();
+	const { crossSellsProducts } = useStoreCart();
 
 	if ( typeof columns === 'undefined' ) {
 		columns = metadata.attributes.columns.default;
@@ -25,8 +25,7 @@ const Block = ( { className, columns }: BlockProps ): JSX.Element => {
 		<CartCrossSellsProductList
 			className={ className }
 			columns={ columns }
-			crossSellsProducts={ crossSellsProducts }
-			isLoading={ cartIsLoading }
+			products={ crossSellsProducts }
 		/>
 	);
 };
