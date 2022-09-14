@@ -82,11 +82,6 @@
 		}
 	}
 
-	.is-single .wc-block-attribute-filter-list-count,
-	.wc-blocks-components-form-token-field-wrapper .wc-block-attribute-filter-list-count {
-		opacity: 0.6;
-	}
-
 	.wc-blocks-components-form-token-field-wrapper .components-form-token-field__input-container {
 		border: 0;
 		padding: $gap-smaller;
@@ -110,8 +105,12 @@
 			}
 		}
 	}
-	.is-single .wc-blocks-components-form-token-field-wrapper .components-form-token-field__input-container {
+	.wc-blocks-components-form-token-field-wrapper:not(.single-selection) .components-form-token-field__input-container {
 		width: calc(100% - 50px);
+
+		.components-form-token-field__suggestions-list {
+			width: calc(100% + 50px);
+		}
 	}
 }
 
