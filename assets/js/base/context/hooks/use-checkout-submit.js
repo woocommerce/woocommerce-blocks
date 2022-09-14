@@ -37,8 +37,20 @@ export const useCheckoutSubmit = () => {
 		defaultValue: __( 'Place Order', 'woo-gutenberg-products-block' ),
 	} );
 
+	const getSubmitButtonText = () => {
+		if ( label !== __( 'Place Order', 'woo-gutenberg-products-block' ) ) {
+			return label;
+		}
+
+		if ( undefined !== paymentMethod.placeOrderButtonLabel ) {
+			return paymentMethod.placeOrderButtonLabel;
+		}
+
+		return label;
+	};
+
 	return {
-		submitButtonText: paymentMethod?.placeOrderButtonLabel || label,
+		submitButtonText: getSubmitButtonText(),
 		onSubmit,
 		isCalculating,
 		isDisabled: isProcessing || paymentStatus.isDoingExpressPayment,
