@@ -2,6 +2,7 @@
  * External dependencies
  */
 import { __ } from '@wordpress/i18n';
+import { __experimentalApplyCheckoutFilter } from '@woocommerce/blocks-checkout';
 
 /**
  * Internal dependencies
@@ -31,11 +32,13 @@ export const useCheckoutSubmit = () => {
 	const waitingForProcessing =
 		isProcessing || isAfterProcessing || isBeforeProcessing;
 	const waitingForRedirect = isComplete && ! hasError;
+	const label = __experimentalApplyCheckoutFilter( {
+		filterName: 'placeOrderLabel',
+		defaultValue: __( 'Place Order', 'woo-gutenberg-products-block' ),
+	} );
 
 	return {
-		submitButtonText:
-			paymentMethod?.placeOrderButtonLabel ||
-			__( 'Place Order', 'woo-gutenberg-products-block' ),
+		submitButtonText: paymentMethod?.placeOrderButtonLabel || label,
 		onSubmit,
 		isCalculating,
 		isDisabled: isProcessing || paymentStatus.isDoingExpressPayment,

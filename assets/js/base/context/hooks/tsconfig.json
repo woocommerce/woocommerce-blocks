@@ -1,0 +1,9 @@
+{
+	"extends": "../../../../../tsconfig.base.json",
+	"compilerOptions": {},
+	"include": [
+		".",
+		"./use-checkout-submit.js",
+	],
+	"exclude": [ "**/test/**" ]
+}
