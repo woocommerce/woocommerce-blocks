@@ -12,4 +12,6 @@ class PriceFilter extends AbstractBlock {
 	 * @var string
 	 */
 	protected $block_name = 'price-filter';
+	const MIN_PRICE_QUERY_VAR = 'min_price';
+	const MAX_PRICE_QUERY_VAR = 'max_price';
 }
