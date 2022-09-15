@@ -9,6 +9,7 @@ import {
 	ExternalLink,
 	SelectControl,
 	ToggleControl,
+	RangeControl,
 } from '@wordpress/components';
 import { getSetting } from '@woocommerce/settings';
 import { __ } from '@wordpress/i18n';
@@ -22,6 +23,7 @@ import QuantityBadge from './quantity-badge';
 interface Attributes {
 	addToCartBehaviour: string;
 	hasHiddenPrice: boolean;
+	iconSize: number;
 }
 
 interface Props {
@@ -30,7 +32,7 @@ interface Props {
 }
 
 const Edit = ( { attributes, setAttributes }: Props ): ReactElement => {
-	const { addToCartBehaviour, hasHiddenPrice } = attributes;
+	const { addToCartBehaviour, hasHiddenPrice, iconSize } = attributes;
 	const blockProps = useBlockProps( {
 		className: `wc-block-mini-cart`,
 	} );
@@ -98,6 +100,20 @@ const Edit = ( { attributes, setAttributes }: Props ): ReactElement => {
 							} )
 						}
 					/>
+					<RangeControl
+						label={ __(
+							'Icon Size',
+							'woo-gutenberg-products-block'
+						) }
+						value={ iconSize || 25 }
+						min={ 20 }
+						max={ 35 }
+						step={ 5 }
+						allowReset={ true }
+						onChange={ ( newIconSize ) =>
+							setAttributes( { iconSize: newIconSize } )
+						}
+					/>
 				</PanelBody>
 				{ templatePartEditUri && (
 					<PanelBody
@@ -128,7 +144,10 @@ const Edit = ( { attributes, setAttributes }: Props ): ReactElement => {
 							{ formatPrice( productTotal ) }
 						</span>
 					) }
-					<QuantityBadge count={ productCount } />
+					<QuantityBadge
+						count={ productCount }
+						iconSize={ iconSize || 25 }
+					/>
 				</button>
 			</Noninteractive>
 		</div>

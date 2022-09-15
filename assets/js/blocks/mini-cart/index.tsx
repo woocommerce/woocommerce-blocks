@@ -60,6 +60,10 @@ const settings: BlockConfiguration = {
 			type: 'boolean',
 			default: false,
 		},
+		iconSize: {
+			type: 'number',
+			default: 25,
+		},
 	},
 
 	edit,

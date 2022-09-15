@@ -12,19 +12,21 @@ import './style.scss';
 interface Props {
 	count: number;
 	colorClassNames?: string;
+	iconSize: number;
 	style?: Record< string, string | undefined >;
 }
 
 const QuantityBadge = ( {
 	count,
 	colorClassNames,
+	iconSize,
 	style,
 }: Props ): JSX.Element => {
 	return (
 		<span className="wc-block-mini-cart__quantity-badge">
 			<Icon
 				className="wc-block-mini-cart__icon"
-				size={ 20 }
+				size={ iconSize }
 				icon={ miniCart }
 			/>
 			<span

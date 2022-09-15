@@ -43,6 +43,7 @@ interface Props {
 	contents: string;
 	addToCartBehaviour: string;
 	hasHiddenPrice: boolean;
+	iconSize: number;
 }
 
 const MiniCartBlock = ( attributes: Props ): JSX.Element => {
@@ -53,6 +54,7 @@ const MiniCartBlock = ( attributes: Props ): JSX.Element => {
 		contents = '',
 		addToCartBehaviour = 'none',
 		hasHiddenPrice = false,
+		iconSize = 25,
 	} = attributes;
 
 	const {
@@ -230,7 +232,7 @@ const MiniCartBlock = ( attributes: Props ): JSX.Element => {
 						{ taxLabel }
 					</small>
 				) }
-				<QuantityBadge count={ cartItemsCount } />
+				<QuantityBadge count={ cartItemsCount } iconSize={ iconSize } />
 			</button>
 			<Drawer
 				className={ classnames(
