@@ -10,7 +10,6 @@ import { getSetting } from '@woocommerce/settings';
 import deprecated from '@wordpress/deprecated';
 import LoadingMask from '@woocommerce/base-components/loading-mask';
 import type { PaymentMethodInterface } from '@woocommerce/types';
-import { useSelect } from '@wordpress/data';
 import { useSelect, useDispatch } from '@wordpress/data';
 import {
 	CHECKOUT_STORE_KEY,
