@@ -495,7 +495,7 @@ const AttributeFilterBlock = ( {
 				<Notice status="warning" isDismissible={ false }>
 					<p>
 						{ __(
-							'The selected attribute does not have any term assigned to products.',
+							'There are no products with the selected attributes.',
 							'woo-gutenberg-products-block'
 						) }
 					</p>
@@ -543,7 +543,7 @@ const AttributeFilterBlock = ( {
 							key={ remountKey }
 							className={ classnames( borderProps.className, {
 								'single-selection': ! multiple,
-								'show-loading-state': isLoading,
+								'is-loading': isLoading,
 							} ) }
 							style={ {
 								...borderProps.style,
@@ -669,9 +669,10 @@ const AttributeFilterBlock = ( {
 						) }
 					/>
 				) }
-				{ blockAttributes.showFilterButton && ! isLoading && (
+				{ blockAttributes.showFilterButton && (
 					<FilterSubmitButton
 						className="wc-block-attribute-filter__button"
+						isLoading={ isLoading }
 						disabled={
 							termsLoading ||
 							countsLoading ||
