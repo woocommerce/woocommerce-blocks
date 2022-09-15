@@ -3,6 +3,7 @@
  */
 import { __ } from '@wordpress/i18n';
 import { __experimentalApplyCheckoutFilter } from '@woocommerce/blocks-checkout';
+import { useMemo } from 'react';
 
 /**
  * Internal dependencies
@@ -32,14 +33,25 @@ export const useCheckoutSubmit = () => {
 	const waitingForProcessing =
 		isProcessing || isAfterProcessing || isBeforeProcessing;
 	const waitingForRedirect = isComplete && ! hasError;
-	const label = __experimentalApplyCheckoutFilter( {
-		filterName: 'placeOrderLabel',
-		defaultValue: paymentMethod?.placeOrderButtonLabel,
-	} );
+
+	const defaultLabel = useMemo( () => {
+		return __experimentalApplyCheckoutFilter( {
+			filterName: 'placeOrderLabel',
+			defaultValue:
+				paymentMethod?.placeOrderButtonLabel ||
+				__( 'Place Order', 'woo-gutenberg-products-block' ),
+		} );
+	}, [ paymentMethod?.placeOrderButtonLabel ] );
+
+	// const defaultLabel = useMemo( () => {
+	// 	return (
+	// 		paymentMethod?.placeOrderButtonLabel ||
+	// 		__( 'Place Order', 'woo-gutenberg-products-block' )
+	// 	);
+	// }, [ paymentMethod?.placeOrderButtonLabel ] );
 
 	return {
-		submitButtonText:
-			label || __( 'Place Order', 'woo-gutenberg-products-block' ),
+		submitButtonText: defaultLabel,
 		onSubmit,
 		isCalculating,
 		isDisabled: isProcessing || paymentStatus.isDoingExpressPayment,
