@@ -32,25 +32,16 @@ export const useCheckoutSubmit = () => {
 	const waitingForProcessing =
 		isProcessing || isAfterProcessing || isBeforeProcessing;
 	const waitingForRedirect = isComplete && ! hasError;
+	const defaultLabel =
+		paymentMethod.placeOrderButtonLabel ||
+		__( 'Place Order', 'woo-gutenberg-products-block' );
+
 	const label = __experimentalApplyCheckoutFilter( {
 		filterName: 'placeOrderLabel',
-		defaultValue: __( 'Place Order', 'woo-gutenberg-products-block' ),
+		defaultValue: defaultLabel,
 	} );
-
-	const getSubmitButtonText = () => {
-		if ( label !== __( 'Place Order', 'woo-gutenberg-products-block' ) ) {
-			return label;
-		}
-
-		if ( undefined !== paymentMethod.placeOrderButtonLabel ) {
-			return paymentMethod.placeOrderButtonLabel;
-		}
-
-		return label;
-	};
-
 	return {
-		submitButtonText: getSubmitButtonText(),
+		submitButtonText: label,
 		onSubmit,
 		isCalculating,
 		isDisabled: isProcessing || paymentStatus.isDoingExpressPayment,
