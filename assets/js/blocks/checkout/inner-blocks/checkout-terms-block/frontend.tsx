@@ -7,7 +7,6 @@ import { useState, useEffect } from '@wordpress/element';
 import { CheckboxControl } from '@woocommerce/blocks-checkout';
 import { useCheckoutSubmit } from '@woocommerce/base-context/hooks';
 import { withInstanceId } from '@wordpress/compose';
-import type { ValidationData } from '@woocommerce/type-defs/contexts';
 import { useDispatch, useSelect } from '@wordpress/data';
 import { VALIDATION_STORE_KEY } from '@woocommerce/block-data';
 
@@ -26,7 +25,6 @@ const FrontendBlock = ( {
 	text: string;
 	checkbox: boolean;
 	instanceId: string;
-	validation: ValidationData;
 	className?: string;
 } ): JSX.Element => {
 	const [ checked, setChecked ] = useState( false );
