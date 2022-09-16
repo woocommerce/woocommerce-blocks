@@ -2,7 +2,7 @@
 	"name": "@woocommerce/block-library",
 	"title": "WooCommerce Blocks",
 	"author": "Automattic",
-	"version": "8.4.0-dev",
+	"version": "8.6.0-dev",
 	"description": "WooCommerce blocks for the Gutenberg editor.",
 	"homepage": "https://github.com/woocommerce/woocommerce-gutenberg-products-block/",
 	"keywords": [
@@ -82,7 +82,7 @@
 		"wp-env:config": "./bin/wp-env-pre-config.sh"
 	},
 	"devDependencies": {
-		"@actions/core": "1.9.0",
+		"@actions/core": "1.9.1",
 		"@actions/github": "5.0.3",
 		"@automattic/color-studio": "2.5.0",
 		"@babel/cli": "7.18.9",
@@ -98,7 +98,7 @@
 		"@storybook/addon-storysource": "6.5.9",
 		"@storybook/addons": "6.5.9",
 		"@storybook/client-api": "6.5.9",
-		"@storybook/react": "6.5.9",
+		"@storybook/react": "6.5.10",
 		"@testing-library/jest-dom": "5.16.4",
 		"@testing-library/react": "12.1.5",
 		"@testing-library/react-hooks": "7.0.2",
@@ -121,7 +121,7 @@
 		"@types/wordpress__data-controls": "2.2.0",
 		"@types/wordpress__editor": "^11.0.0",
 		"@typescript-eslint/eslint-plugin": "5.30.5",
-		"@typescript-eslint/parser": "5.31.0",
+		"@typescript-eslint/parser": "5.35.1",
 		"@woocommerce/api": "0.2.0",
 		"@woocommerce/data": "^4.1.0",
 		"@woocommerce/e2e-utils": "0.2.0",
@@ -132,11 +132,11 @@
 		"@wordpress/base-styles": "4.0.4",
 		"@wordpress/block-editor": "8.2.0",
 		"@wordpress/blocks": "11.1.5",
-		"@wordpress/browserslist-config": "4.1.2",
+		"@wordpress/browserslist-config": "5.0.0",
 		"@wordpress/components": "19.1.5",
 		"@wordpress/data-controls": "2.2.7",
 		"@wordpress/dependency-extraction-webpack-plugin": "3.2.1",
-		"@wordpress/dom": "3.2.7",
+		"@wordpress/dom": "3.16.0",
 		"@wordpress/e2e-test-utils": "7.8.0",
 		"@wordpress/e2e-tests": "4.6.0",
 		"@wordpress/element": "4.0.4",
@@ -156,9 +156,9 @@
 		"babel-plugin-transform-react-remove-prop-types": "0.4.24",
 		"chalk": "4.1.2",
 		"circular-dependency-plugin": "5.2.2",
-		"commander": "9.3.0",
+		"commander": "9.4.0",
 		"copy-webpack-plugin": "6.4.1",
-		"core-js": "3.23.3",
+		"core-js": "3.25.0",
 		"create-file-webpack": "1.0.2",
 		"cross-env": "7.0.3",
 		"cssnano": "5.1.12",
@@ -215,9 +215,9 @@
 		"npm": "^8.0.0"
 	},
 	"dependencies": {
-		"@wordpress/autop": "3.12.0",
+		"@wordpress/autop": "3.16.0",
 		"@wordpress/compose": "5.5.0",
-		"@wordpress/deprecated": "3.12.0",
+		"@wordpress/deprecated": "3.16.0",
 		"@wordpress/icons": "6.1.1",
 		"@wordpress/notices": "3.12.0",
 		"@wordpress/plugins": "4.10.0",
@@ -262,6 +262,9 @@
 		"*.php": [
 			"php -d display_errors=1 -l",
 			"composer run-script phpcs"
+		],
+		"*.md": [
+			"npm run lint:md:docs"
 		]
 	},
 	"changelog": {

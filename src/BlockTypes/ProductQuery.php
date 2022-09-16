@@ -13,6 +13,13 @@ class ProductQuery extends AbstractBlock {
 	protected $block_name = 'product-query';
 
 	/**
+	 * The Block with its attributes before it gets rendered
+	 *
+	 * @var array
+	 */
+	protected $parsed_block;
+
+	/**
 	 * Initialize this block type.
 	 *
 	 * - Hook into WP lifecycle.
@@ -30,6 +37,7 @@ class ProductQuery extends AbstractBlock {
 
 	}
 
+
 	/**
 	 * Update the query for the product query block.
 	 *
@@ -41,24 +49,26 @@ class ProductQuery extends AbstractBlock {
 			return;
 		}
 
-		add_filter(
-			'gutenberg_build_query_vars_from_query_block',
-			function( $query ) use ( $parsed_block ) {
-				return $this->get_query_by_attributes( $query, $parsed_block );
-			},
-			10,
-			3
-		);
+		$this->parsed_block = $parsed_block;
+
+		if ( isset( $parsed_block['attrs']['__woocommerceVariationProps'] ) ) {
+			add_filter(
+				'query_loop_block_query_vars',
+				array( $this, 'get_query_by_attributes' ),
+				10,
+				1
+			);
+		}
 	}
 
 	/**
 	 * Return a custom query based on the attributes.
 	 *
-	 * @param WP_Query $query         The WordPress Query.
-	 * @param WP_Block $parsed_block  The block being rendered.
+	 * @param WP_Query $query The WordPress Query.
 	 * @return array
 	 */
-	public function get_query_by_attributes( $query, $parsed_block ) {
+	public function get_query_by_attributes( $query ) {
+		$parsed_block = $this->parsed_block;
 		if ( ! isset( $parsed_block['attrs']['__woocommerceVariationProps'] ) ) {
 			return $query;
 		}

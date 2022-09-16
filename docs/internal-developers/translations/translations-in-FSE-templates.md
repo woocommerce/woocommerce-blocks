@@ -1,6 +1,6 @@
 # Translations in FSE templates
 
-To make the WooCommerce Blocks plugin inclusive, all user-facing strings should be translatable. Managing [Translations in PHP files](docs/translations/translations-in-PHP-files.md) and [Translations in JS/TS files](docs/translations/translations-in-JS-TS-files.md) is simple as PHP and JS/TS are languages are programming languages which contain translation function. In comparison, FSE-templates are using plain HTML. As HTML is a markup language and not a programming language, translation functions such as `__()` and `_n()` are not available in HTML. Therefore, translations within FSE-templates require a different approach.
+To make the WooCommerce Blocks plugin inclusive, all user-facing strings should be translatable. Managing [Translations in PHP files](../../internal-developers/translations/translations-in-PHP-files.md) and [Translations in JS/TS files](../../internal-developers/translations/translations-in-JS-TS-files.md) is simple as PHP and JS/TS are languages are programming languages which contain translation function. In comparison, FSE-templates are using plain HTML. As HTML is a markup language and not a programming language, translation functions such as `__()` and `_n()` are not available in HTML. Therefore, translations within FSE-templates require a different approach.
 
 Let's take a look at `templates/parts/mini-cart.html`:
 
@@ -83,7 +83,7 @@ public function register_empty_cart_message_block_pattern() {
     register_block_pattern(
         'woocommerce/mini-cart-empty-cart-message',
         array(
-            'title'    => __( 'Mini Cart Empty Cart Message', 'woo-gutenberg-products-block' ),
+            'title'    => __( 'Empty Mini Cart Message', 'woo-gutenberg-products-block' ),
             'inserter' => false,
             'content'  => '<!-- wp:paragraph {"align":"center"} --><p class="has-text-align-center"><strong>' . __( 'Your cart is currently empty!', 'woo-gutenberg-products-block' ) . '</strong></p><!-- /wp:paragraph -->',
         )
@@ -117,4 +117,3 @@ The PR for the implementation above can be found on <https://github.com/woocomme
 🐞 Found a mistake, or have a suggestion? [Leave feedback about this document here.](https://github.com/woocommerce/woocommerce-blocks/issues/new?assignees=&labels=type%3A+documentation&template=--doc-feedback.md&title=Feedback%20on%20./docs/internal-developers/translations/translations-in-FSE-templates.md)
 
 <!-- /FEEDBACK -->
-
