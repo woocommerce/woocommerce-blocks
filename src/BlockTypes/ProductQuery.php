@@ -82,7 +82,6 @@ class ProductQuery extends AbstractBlock {
 			'post_status'    => 'publish',
 			'posts_per_page' => $query['posts_per_page'],
 			'orderby'        => $query['orderby'],
-			'orderby'        => $query['orderby'],
 			'order'          => $query['order'],
 			// Ignoring the warning of not using meta queries.
 			// phpcs:ignore WordPress.DB.SlowDBQuery.slow_db_query_meta_query
@@ -163,8 +162,9 @@ class ProductQuery extends AbstractBlock {
 	 * @return array
 	 */
 	private function get_queries_by_attributes( $variation_props ) {
+		$on_sale_enabled = isset( $variation_props['attributes']['query']['onSale'] ) && true === $variation_props['attributes']['query']['onSale'];
 		return array(
-			'on_sale' => ( ! isset( $variation_props['attributes']['query']['onSale'] ) || true !== $variation_props['attributes']['query']['onSale'] ) ? array() : $this->get_on_sale_products_query(),
+			'on_sale' => ( $on_sale_enabled ? $this->get_on_sale_products_query() : array() ),
 		);
 	}
 
@@ -195,7 +195,7 @@ class ProductQuery extends AbstractBlock {
 			// Ignoring the warning of not using meta queries.
 			// phpcs:ignore WordPress.DB.SlowDBQuery.slow_db_query_meta_query
 			'meta_query' => array(
-				'relation' => 'OR',
+				'relation' => 'AND',
 				$max_price_query,
 				$min_price_query,
 			),
