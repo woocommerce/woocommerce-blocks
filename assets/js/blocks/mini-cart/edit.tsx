@@ -107,7 +107,7 @@ const Edit = ( { attributes, setAttributes }: Props ): ReactElement => {
 						) }
 						value={ iconSize || 25 }
 						min={ 20 }
-						max={ 35 }
+						max={ 40 }
 						step={ 5 }
 						allowReset={ true }
 						onChange={ ( newIconSize ) =>
