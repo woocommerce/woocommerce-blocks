@@ -115,23 +115,7 @@ class ProductQuery extends AbstractBlock {
 	 */
 	private function get_on_sale_products_query() {
 		return array(
-			// Ignoring the warning of not using meta queries.
-			// phpcs:ignore WordPress.DB.SlowDBQuery.slow_db_query_meta_query
-			'meta_query' => array(
-				'relation' => 'OR',
-				array(
-					'key'     => '_sale_price',
-					'value'   => 0,
-					'compare' => '>',
-					'type'    => 'numeric',
-				),
-				array(
-					'key'     => '_min_variation_sale_price',
-					'value'   => 0,
-					'compare' => '>',
-					'type'    => 'numeric',
-				),
-			),
+			'post_in' => wc_get_product_ids_on_sale(),
 		);
 	}
 
