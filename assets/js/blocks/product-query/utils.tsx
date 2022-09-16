@@ -30,10 +30,8 @@ export function ArrayXOR< T extends Array< unknown > >( a: T, b: T ) {
 export function isWooQueryBlockVariation( block: ProductQueryBlock ) {
 	return (
 		block.name === 'core/query' &&
-		block.attributes.__woocommerceVariationProps &&
 		Object.values( QueryVariation ).includes(
-			block.attributes.__woocommerceVariationProps
-				.name as unknown as QueryVariation
+			block.attributes.namespace as QueryVariation
 		)
 	);
 }
