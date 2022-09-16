@@ -14,7 +14,6 @@ const Rating = ( {
 	key,
 	rating,
 	ratedProductsCount,
-	onClick,
 }: RatingProps ): JSX.Element => {
 	const ratingClassName = classNames(
 		'wc-block-components-product-rating',
@@ -45,13 +44,7 @@ const Rating = ( {
 	};
 
 	return (
-		<div
-			className={ ratingClassName }
-			onClick={ onClick }
-			role="button"
-			tabIndex={ key }
-			onKeyDown={ onClick }
-		>
+		<div className={ ratingClassName } role="button" tabIndex={ key }>
 			<div
 				className={ 'wc-block-components-product-rating__stars' }
 				role="img"
@@ -71,7 +64,6 @@ interface RatingProps {
 	key: 0 | 1 | 2 | 3 | 4 | 5;
 	rating: 0 | 1 | 2 | 3 | 4 | 5;
 	ratedProductsCount: number;
-	onClick: () => void;
 }
 
 export default Rating;

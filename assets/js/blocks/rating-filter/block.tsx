@@ -12,6 +12,7 @@ import { getSettingWithCoercion } from '@woocommerce/settings';
 import { isBoolean } from '@woocommerce/types';
 import isShallowEqual from '@wordpress/is-shallow-equal';
 import { useState, useCallback, useMemo, useEffect } from '@wordpress/element';
+import CheckboxList from '@woocommerce/base-components/checkbox-list';
 import { addQueryArgs, removeQueryArgs } from '@wordpress/url';
 import { changeUrl } from '@woocommerce/utils';
 
@@ -46,9 +47,6 @@ const RatingFilterBlock = ( {
 	const [ hasSetFilterDefaultsFromUrl, setHasSetFilterDefaultsFromUrl ] =
 		useState( false );
 
-	const TagName =
-		`h${ blockAttributes.headingLevel }` as keyof JSX.IntrinsicElements;
-
 	const [ queryState ] = useQueryStateByContext();
 
 	const { results: filteredCounts, isLoading: filteredCountsLoading } =
@@ -56,6 +54,11 @@ const RatingFilterBlock = ( {
 			queryRating: true,
 			queryState,
 		} );
+
+	const TagName =
+		`h${ blockAttributes.headingLevel }` as keyof JSX.IntrinsicElements;
+	const isLoading = ! blockAttributes.isPreview && filteredCountsLoading;
+	const isDisabled = ! blockAttributes.isPreview && ! filteredCountsLoading;
 
 	const initialFilters = useMemo(
 		() => getActiveFilters( 'rating_filter' ),
@@ -133,7 +136,7 @@ const RatingFilterBlock = ( {
 
 	const currentClickedQuery = useShallowEqual( clickedQuery );
 	const previousClickedQuery = usePrevious( currentClickedQuery );
-	// Track Stock query changes so the block reflects current filters.
+	// Track Rating query changes so the block reflects current filters.
 	useEffect( () => {
 		if (
 			! isShallowEqual( previousClickedQuery, currentClickedQuery ) && // Clicked query changed.
@@ -158,28 +161,59 @@ const RatingFilterBlock = ( {
 		initialFilters,
 	] );
 
-	const onClick = ( clickedValue: string ) => () => {
-		if ( ! productRatingsArray.length ) {
-			setProductRatings( [ clickedValue ] );
-		} else {
-			const previouslyClicked =
-				productRatingsArray.includes( clickedValue );
-			const newClicked = productRatingsArray.filter(
-				( value ) => value !== clickedValue
-			);
-			if ( ! previouslyClicked ) {
-				newClicked.push( clickedValue );
-				newClicked.sort();
+	/**
+	 * When a checkbox in the list changes, update state.
+	 */
+	const onClick = useCallback(
+		( clickedValue: string ) => {
+			if ( ! productRatingsArray.length ) {
+				setProductRatings( [ clickedValue ] );
+			} else {
+				const previouslyClicked =
+					productRatingsArray.includes( clickedValue );
+				const newClicked = productRatingsArray.filter(
+					( value ) => value !== clickedValue
+				);
+				if ( ! previouslyClicked ) {
+					newClicked.push( clickedValue );
+					newClicked.sort();
+				}
+				setProductRatings( newClicked );
 			}
-			setProductRatings( newClicked );
-		}
-	};
+		},
+		[ productRatingsArray, setProductRatings ]
+	);
 
 	if (
 		! filteredCountsLoading &&
 		filteredCounts.rating_counts !== undefined
 	) {
 		const orderedRatings = [ ...filteredCounts.rating_counts ].reverse();
+
+		const displayedOptions = orderedRatings.map( ( item ) => {
+			if ( Object.keys( item ).length > 0 ) {
+				return {
+					value: item?.rating?.toString(),
+					name: 'Rating',
+					label: (
+						<Rating
+							className={
+								productRatingsArray.includes(
+									item?.rating?.toString()
+								)
+									? 'is-active'
+									: ''
+							}
+							key={ item?.rating }
+							rating={ item?.rating }
+							ratedProductsCount={ item?.count }
+						/>
+					),
+				};
+			}
+			return null;
+		} );
+
 		return (
 			<>
 				{ ! isEditor && blockAttributes.heading && (
@@ -187,21 +221,18 @@ const RatingFilterBlock = ( {
 						{ blockAttributes.heading }
 					</TagName>
 				) }
-				{ orderedRatings.map( ( item ) => (
-					<Rating
-						className={
-							productRatingsArray.includes(
-								item.rating.toString()
-							)
-								? 'is-active'
-								: ''
-						}
-						key={ item.rating }
-						rating={ item.rating }
-						ratedProductsCount={ item.count }
-						onClick={ onClick( item.rating.toString() ) }
+				<div className="wc-block-rating-filter">
+					<CheckboxList
+						className={ 'wc-block-rating-filter-list' }
+						options={ displayedOptions }
+						checked={ productRatingsArray }
+						onChange={ ( checked ) => {
+							onClick( checked.toString() );
+						} }
+						isLoading={ isLoading }
+						isDisabled={ isDisabled }
 					/>
-				) ) }
+				</div>
 			</>
 		);
 	}
