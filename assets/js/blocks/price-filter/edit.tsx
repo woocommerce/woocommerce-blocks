@@ -166,7 +166,7 @@ export default function ( {
 				<>
 					{ getInspectorControls() }
 					<UpgradeToolbarButton
-						heading={ heading }
+						attributes={ attributes }
 						clientId={ clientId }
 						setAttributes={ setAttributes }
 						filterType="price-filter"

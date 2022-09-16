@@ -36,10 +36,16 @@ import {
 import Block from './block';
 import './editor.scss';
 import type { EditProps } from './types';
+import { UpgradeToolbarButton } from '../filter-wrapper/upgrade';
 
 const ATTRIBUTES = getSetting< AttributeSetting[] >( 'attributes', [] );
 
-const Edit = ( { attributes, setAttributes, debouncedSpeak }: EditProps ) => {
+const Edit = ( {
+	attributes,
+	setAttributes,
+	debouncedSpeak,
+	clientId,
+}: EditProps ) => {
 	const {
 		attributeId,
 		className,
@@ -396,6 +402,12 @@ const Edit = ( { attributes, setAttributes, debouncedSpeak }: EditProps ) => {
 		<div { ...blockProps }>
 			{ getBlockControls() }
 			{ getInspectorControls() }
+			<UpgradeToolbarButton
+				clientId={ clientId }
+				attributes={ attributes }
+				setAttributes={ setAttributes }
+				filterType="attribute-filter"
+			/>
 			{ isEditing ? (
 				renderEditMode()
 			) : (
@@ -405,14 +417,16 @@ const Edit = ( { attributes, setAttributes, debouncedSpeak }: EditProps ) => {
 						'wc-block-attribute-filter'
 					) }
 				>
-					{ heading && <BlockTitle
-						className="wc-block-attribute-filter__title"
-						headingLevel={ headingLevel }
-						heading={ heading }
-						onChange={ ( value: string ) =>
-							setAttributes( { heading: value } )
-						}
-					/> }
+					{ heading && (
+						<BlockTitle
+							className="wc-block-attribute-filter__title"
+							headingLevel={ headingLevel }
+							heading={ heading }
+							onChange={ ( value: string ) =>
+								setAttributes( { heading: value } )
+							}
+						/>
+					) }
 					<Disabled>
 						<Block attributes={ attributes } isEditor />
 					</Disabled>

@@ -80,7 +80,7 @@ const Edit = ( {
 		<div { ...blockProps }>
 			{ getInspectorControls() }
 			<UpgradeToolbarButton
-				heading={ heading }
+				attributes={ attributes }
 				clientId={ clientId }
 				setAttributes={ setAttributes }
 				filterType="active-filters"
