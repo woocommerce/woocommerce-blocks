@@ -175,17 +175,6 @@ const Edit = ( { attributes, setAttributes, debouncedSpeak }: EditProps ) => {
 							'Include product count',
 							'woo-gutenberg-products-block'
 						) }
-						help={
-							showCounts
-								? __(
-										'Show the product count with results.',
-										'woo-gutenberg-products-block'
-								  )
-								: __(
-										'Product count is hidden.',
-										'woo-gutenberg-products-block'
-								  )
-						}
 						checked={ showCounts }
 						onChange={ () =>
 							setAttributes( {
@@ -298,11 +287,11 @@ const Edit = ( { attributes, setAttributes, debouncedSpeak }: EditProps ) => {
 						help={
 							showFilterButton
 								? __(
-										'Products will only update when the button is pressed.',
+										'Products will only update when the button is clicked.',
 										'woo-gutenberg-products-block'
 								  )
 								: __(
-										'Products will update as options are selected.',
+										'Products will update as soon as attributes are selected.',
 										'woo-gutenberg-products-block'
 								  )
 						}
@@ -336,7 +325,7 @@ const Edit = ( { attributes, setAttributes, debouncedSpeak }: EditProps ) => {
 				'woo-gutenberg-products-block'
 			) }
 			instructions={ __(
-				'Display a list of filters based on a chosen attribute.',
+				'Display a list of filters based on the selected attributes.',
 				'woo-gutenberg-products-block'
 			) }
 		>
@@ -371,7 +360,7 @@ const Edit = ( { attributes, setAttributes, debouncedSpeak }: EditProps ) => {
 		setIsEditing( false );
 		debouncedSpeak(
 			__(
-				'Showing Filter by Attribute block preview.',
+				'Now displaying a preview of the Filter Products by Attribute block.',
 				'woo-gutenberg-products-block'
 			)
 		);
@@ -387,7 +376,7 @@ const Edit = ( { attributes, setAttributes, debouncedSpeak }: EditProps ) => {
 					'woo-gutenberg-products-block'
 				) }
 				instructions={ __(
-					'Display a list of filters based on a chosen attribute.',
+					'Display a list of filters based on the selected attributes.',
 					'woo-gutenberg-products-block'
 				) }
 			>

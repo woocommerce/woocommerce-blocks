@@ -3,7 +3,7 @@
  * Plugin Name: WooCommerce Blocks
  * Plugin URI: https://github.com/woocommerce/woocommerce-gutenberg-products-block
  * Description: WooCommerce blocks for the Gutenberg editor.
- * Version: 8.5.0-dev
+ * Version: 8.6.0-dev
  * Author: Automattic
  * Author URI: https://woocommerce.com
  * Text Domain:  woo-gutenberg-products-block
@@ -88,7 +88,7 @@ function woocommerce_blocks_is_development_version() {
 if ( woocommerce_blocks_is_development_version() && ! defined( 'JETPACK_AUTOLOAD_DEV' ) ) {
 	add_action(
 		'admin_notices',
-		function() {
+		function () {
 			echo '<div class="error"><p>';
 			printf(
 				/* translators: %1$s is referring to a php constant name, %2$s is referring to the wp-config.php file. */
@@ -130,20 +130,20 @@ if ( is_readable( $autoloader ) ) {
 	 */
 	add_action(
 		'admin_notices',
-		function() {
+		function () {
 			?>
-			<div class="notice notice-error">
-				<p>
-					<?php
-					printf(
-						/* translators: 1: composer command. 2: plugin directory */
-						esc_html__( 'Your installation of the WooCommerce Blocks feature plugin is incomplete. Please run %1$s within the %2$s directory.', 'woo-gutenberg-products-block' ),
-						'<code>composer install</code>',
-						'<code>' . esc_html( str_replace( ABSPATH, '', __DIR__ ) ) . '</code>'
-					);
-					?>
-				</p>
-			</div>
+		<div class="notice notice-error">
+			<p>
+				<?php
+				printf(
+					/* translators: 1: composer command. 2: plugin directory */
+					esc_html__( 'Your installation of the WooCommerce Blocks feature plugin is incomplete. Please run %1$s within the %2$s directory.', 'woo-gutenberg-products-block' ),
+					'<code>composer install</code>',
+					'<code>' . esc_html( str_replace( ABSPATH, '', __DIR__ ) ) . '</code>'
+				);
+				?>
+			</p>
+		</div>
 			<?php
 		}
 	);

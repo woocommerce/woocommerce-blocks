@@ -108,9 +108,10 @@ If you try to register again, under the same namespace, the previously registere
 
 `ExtendSchema::register_update_callback`: Used to register a callback to be executed when the `cart/extensions` endpoint gets hit with a given namespace. It takes an array of arguments
 
-| Attribute | Type | Required | Description || ----------- | ---------- | -------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `namespace` | `string` | Yes | The namespace of your extension. This is used to determine which extension's callbacks should be executed. |
-| `callback` | `Callable` | Yes | The function/method (or Callable) that will be executed when the `cart/extensions` endpoint is hit with a `namespace` that matches the one supplied. The callable should take a single argument. The data passed into the callback via this argument will be an array containing whatever data you choose to pass to it. The callable does not need to return anything, if it does, then its return value will not be used. |
+| Attribute   | Type       | Required | Description                                                                                                                                                                                                                                                                                                                                                                                                                 |
+| ----------- | ---------- | -------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `namespace` | `string`   | Yes      | The namespace of your extension. This is used to determine which extension's callbacks should be executed.                                                                                                                                                                                                                                                                                                                  |
+| `callback`  | `Callable` | Yes      | The function/method (or Callable) that will be executed when the `cart/extensions` endpoint is hit with a `namespace` that matches the one supplied. The callable should take a single argument. The data passed into the callback via this argument will be an array containing whatever data you choose to pass to it. The callable does not need to return anything, if it does, then its return value will not be used. |
 
 ### JavaScript
 
@@ -125,9 +126,9 @@ If you try to register again, under the same namespace, the previously registere
 
 You are the author of an extension that lets the shopper redeem points that they earn on your website for a discount on their order. There is a text field where the shopper can enter how many points they want to redeem, and a submit button that will apply the redemption.
 
-Your extension adds these UI elements to the sidebar in the Cart and Checkout blocks using the [`DiscountsMeta`](./available-slot-fills.md) Slot.
+Your extension adds these UI elements to the sidebar in the Cart and Checkout blocks using the [`DiscountsMeta`](../checkout-block/available-slot-fills.md) Slot.
 
-More information on how to use Slots is available in our [Slots and Fills documentation](./slot-fills.md).
+More information on how to use Slots is available in our [Slots and Fills documentation](../checkout-block/slot-fills.md).
 
 Once implemented, the sidebar has a control added to it like this:
 

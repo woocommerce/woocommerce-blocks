@@ -325,12 +325,12 @@ class MiniCart extends AbstractBlock {
 	/**
 	 * Append frontend scripts when rendering the Mini Cart block.
 	 *
-	 * @param array  $attributes Block attributes.
-	 * @param string $content    Block content.
-	 *
+	 * @param array    $attributes Block attributes.
+	 * @param string   $content    Block content.
+	 * @param WP_Block $block      Block instance.
 	 * @return string Rendered block type output.
 	 */
-	protected function render( $attributes, $content ) {
+	protected function render( $attributes, $content, $block ) {
 		return $content . $this->get_markup( $attributes );
 	}
 
@@ -523,7 +523,7 @@ class MiniCart extends AbstractBlock {
 		register_block_pattern(
 			'woocommerce/mini-cart-empty-cart-message',
 			array(
-				'title'    => __( 'Mini Cart Empty Cart Message', 'woo-gutenberg-products-block' ),
+				'title'    => __( 'Empty Mini Cart Message', 'woo-gutenberg-products-block' ),
 				'inserter' => false,
 				'content'  => '<!-- wp:paragraph {"align":"center"} --><p class="has-text-align-center"><strong>' . __( 'Your cart is currently empty!', 'woo-gutenberg-products-block' ) . '</strong></p><!-- /wp:paragraph -->',
 			)

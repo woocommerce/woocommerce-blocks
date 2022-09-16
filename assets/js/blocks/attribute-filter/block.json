@@ -49,7 +49,7 @@
 		},
 		"selectType": {
 			"type": "string",
-			"default": "multiple" 
+			"default": "multiple"
 		},
 		"isPreview": {
 			"type": "boolean",

@@ -11,12 +11,14 @@ interface UpgradeToolbarButtonProps {
 	heading: string;
 	clientId: string;
 	setAttributes: ( attributes: Record< string, unknown > ) => void;
+	filterType: undefined | string;
 }
 
 export const UpgradeToolbarButton = ( {
 	heading,
 	clientId,
 	setAttributes,
+	filterType,
 }: UpgradeToolbarButtonProps ) => {
 	const { replaceBlock } = useDispatch( 'core/block-editor' );
 
@@ -25,7 +27,7 @@ export const UpgradeToolbarButton = ( {
 			clientId,
 			createBlock( 'woocommerce/filter-wrapper', {
 				heading,
-				filterType: 'active-filters',
+				filterType,
 			} )
 		);
 		setAttributes( {
@@ -33,7 +35,7 @@ export const UpgradeToolbarButton = ( {
 		} );
 	};
 
-	if ( ! heading ) {
+	if ( ! heading || ! filterType ) {
 		return null;
 	}
 

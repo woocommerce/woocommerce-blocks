@@ -26,10 +26,12 @@ import {
 import Block from './block';
 import './editor.scss';
 import type { Attributes } from './types';
+import { UpgradeToolbarButton } from '../filter-wrapper/upgrade';
 
 export default function ( {
 	attributes,
 	setAttributes,
+	clientId,
 }: BlockEditProps< Attributes > ) {
 	const {
 		heading,
@@ -101,7 +103,7 @@ export default function ( {
 						help={
 							showFilterButton
 								? __(
-										'Products will only update when the button is pressed.',
+										'Products will only update when the button is clicked.',
 										'woo-gutenberg-products-block'
 								  )
 								: __(
@@ -133,7 +135,7 @@ export default function ( {
 		>
 			<p>
 				{ __(
-					"Products with prices are needed for filtering by price. You haven't created any products yet.",
+					'To filter your products by price you first need to assign prices to your products.',
 					'woo-gutenberg-products-block'
 				) }
 			</p>
@@ -163,6 +165,12 @@ export default function ( {
 			) : (
 				<>
 					{ getInspectorControls() }
+					<UpgradeToolbarButton
+						heading={ heading }
+						clientId={ clientId }
+						setAttributes={ setAttributes }
+						filterType="price-filter"
+					/>
 					{ heading && (
 						<BlockTitle
 							className="wc-block-price-filter__title"

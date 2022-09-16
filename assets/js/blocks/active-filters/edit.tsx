@@ -83,6 +83,7 @@ const Edit = ( {
 				heading={ heading }
 				clientId={ clientId }
 				setAttributes={ setAttributes }
+				filterType="active-filters"
 			/>
 			{ heading && (
 				<BlockTitle
