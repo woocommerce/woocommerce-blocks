@@ -147,4 +147,32 @@ describe( 'Testing Mini Cart', () => {
 			expect( queryByText( container, '$0.00' ) ).not.toBeInTheDocument()
 		);
 	} );
+
+	it( 'renders cart icon at the default size', async () => {
+		mockEmptyCart();
+		const { container } = render( <MiniCartBlock /> );
+		await waitFor( () => expect( fetchMock ).toHaveBeenCalled() );
+
+		await waitFor( () =>
+			expect(
+				container
+					.querySelector( '.wc-block-mini-cart__icon' )
+					?.getAttribute( 'width' )
+			).toBe( '25' )
+		);
+	} );
+
+	it( 'renders cart icon at adjusted size', async () => {
+		mockEmptyCart();
+		const { container } = render( <MiniCartBlock iconSize={ 35 } /> );
+		await waitFor( () => expect( fetchMock ).toHaveBeenCalled() );
+
+		await waitFor( () =>
+			expect(
+				container
+					.querySelector( '.wc-block-mini-cart__icon' )
+					?.getAttribute( 'width' )
+			).toBe( '35' )
+		);
+	} );
 } );
