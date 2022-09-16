@@ -11,6 +11,11 @@
 	h6 {
 		text-transform: inherit;
 	}
+
+	> .wc-block-price-filter__title {
+		margin-top: $gap-small;
+		margin-bottom: $gap-small;
+	}
 }
 
 .wc-block-price-slider {
@@ -23,16 +28,22 @@
 	border-color: inherit;
 }
 
-
 .wc-block-price-filter__controls {
 	border-radius: inherit;
 	border-color: inherit;
 
-	// Force inherting style is required for global style.
+	// Force inheriting style is required for global style.
 	input {
 		border-radius: inherit !important;
 		border-color: inherit !important;
 		border-style: solid;
+	}
+
+	.input-loading {
+		@include placeholder();
+		border-radius: 0;
+		height: em(32px);
+		width: em(90px);
 	}
 }
 

@@ -1,4 +1,5 @@
 <?php
+
 namespace Automattic\WooCommerce\Blocks;
 
 use Automattic\WooCommerce\Blocks\Domain\Package as NewPackage;
@@ -20,6 +21,7 @@ use Automattic\WooCommerce\Blocks\Domain\Services\FeatureGating;
  * @since 2.5.0
  */
 class Package {
+
 
 	/**
 	 * For back compat this is provided. Ideally, you should register your
@@ -104,16 +106,16 @@ class Package {
 	public static function container( $reset = false ) {
 		static $container;
 		if (
-				! $container instanceof Container
-				|| $reset
-			) {
+			! $container instanceof Container
+			|| $reset
+		) {
 			$container = new Container();
 			// register Package.
 			$container->register(
 				NewPackage::class,
 				function ( $container ) {
 					// leave for automated version bumping.
-					$version = '8.5.0-dev';
+					$version = '8.6.0-dev';
 					return new NewPackage(
 						$version,
 						dirname( __DIR__ ),
@@ -134,8 +136,7 @@ class Package {
 			$container->register(
 				Migration::class,
 				function () {
-					return new Migration(
-					);
+					return new Migration();
 				}
 			);
 		}
