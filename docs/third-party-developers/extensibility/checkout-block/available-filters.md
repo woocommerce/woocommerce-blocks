@@ -245,7 +245,7 @@ const label = () => `Pay now`;
 ```ts
 const { __experimentalRegisterCheckoutFilters } = window.wc.blocksCheckout;
 __experimentalRegisterCheckoutFilters( 'custom-place-order-button-label', {
-	placeOrderLabel: label,
+	placeOrderButtonLabel: label,
 } );
 ```
 

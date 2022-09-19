@@ -36,7 +36,7 @@ export const useCheckoutSubmit = () => {
 		paymentMethod.placeOrderButtonLabel ||
 		__( 'Place Order', 'woo-gutenberg-products-block' );
 	const label = __experimentalApplyCheckoutFilter( {
-		filterName: 'placeOrderLabel',
+		filterName: 'placeOrderButtonLabel',
 		defaultValue: defaultLabel,
 	} );
 
