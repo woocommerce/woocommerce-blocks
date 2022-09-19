@@ -13,6 +13,8 @@ import {
 import Label from '@woocommerce/base-components/label';
 import { useSelectShippingRate } from '@woocommerce/base-context/hooks';
 import type { CartShippingPackageShippingRate } from '@woocommerce/type-defs/cart';
+import { sanitize } from 'dompurify';
+
 /**
  * Internal dependencies
  */
@@ -72,13 +74,20 @@ export const ShippingRatesControlPackage = ( {
 		filterName: 'itemName',
 		defaultValue: packageData.name,
 	} );
+	const ALLOWED_TAGS = [ 'a', 'b', 'em', 'i', 'strong', 'p', 'br' ];
+	const ALLOWED_ATTR = [ 'target', 'href', 'rel', 'name', 'download' ];
+	const sanitizeHTML = ( html: string ) => {
+		return {
+			__html: sanitize( html, { ALLOWED_TAGS, ALLOWED_ATTR } ),
+		};
+	};
 
 	const header = (
 		<>
 			{ ( showItems || collapsible ) && (
 				<div
 					className="wc-block-components-shipping-rates-control__package-title"
-					dangerouslySetInnerHTML={ { __html: data } }
+					dangerouslySetInnerHTML={ sanitizeHTML( data ) }
 				/>
 			) }
 			{ showItems && (
