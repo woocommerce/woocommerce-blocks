@@ -232,7 +232,7 @@ __experimentalRegisterCheckoutFilters( 'automatic-coupon-extension', {
 
 ### Change the label of the Place Order button
 
-Let's assume a merchant want to change the label of the Place Order button to something more appropriate for their store. To make it easier to understand that the customer is paying, let's change the label of the Place Order button from _Place Order_ to _Pay now_.
+Let's assume a merchant wants to change the label of the Place Order button to something more appropriate for their store. To make it easier to understand that the customer is paying, let's change the label of the Place Order button from _Place Order_ to _Pay now_.
 
 1. We need to get the total price `placeOrderButtonLabel`.
 
