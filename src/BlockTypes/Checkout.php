@@ -74,11 +74,12 @@ class Checkout extends AbstractBlock {
 	/**
 	 * Append frontend scripts when rendering the block.
 	 *
-	 * @param array  $attributes Block attributes.
-	 * @param string $content    Block content.
+	 * @param array    $attributes Block attributes.
+	 * @param string   $content    Block content.
+	 * @param WP_Block $block Block instance.
 	 * @return string Rendered block type output.
 	 */
-	protected function render( $attributes, $content ) {
+	protected function render( $attributes, $content, $block ) {
 		if ( $this->is_checkout_endpoint() ) {
 			// Note: Currently the block only takes care of the main checkout form -- if an endpoint is set, refer to the
 			// legacy shortcode instead and do not render block.
@@ -181,20 +182,23 @@ class Checkout extends AbstractBlock {
 			},
 			true
 		);
-		$this->asset_data_registry->add(
-			'shippingCountries',
-			function() {
-				return $this->deep_sort_with_accents( WC()->countries->get_shipping_countries() );
-			},
-			true
-		);
-		$this->asset_data_registry->add(
-			'shippingStates',
-			function() {
-				return $this->deep_sort_with_accents( WC()->countries->get_shipping_country_states() );
-			},
-			true
-		);
+		if ( wc_shipping_enabled() ) {
+			$this->asset_data_registry->add(
+				'shippingCountries',
+				function() {
+					return $this->deep_sort_with_accents( WC()->countries->get_shipping_countries() );
+				},
+				true
+			);
+			$this->asset_data_registry->add(
+				'shippingStates',
+				function() {
+					return $this->deep_sort_with_accents( WC()->countries->get_shipping_country_states() );
+				},
+				true
+			);
+		}
+
 		$this->asset_data_registry->add(
 			'countryLocale',
 			function() {
