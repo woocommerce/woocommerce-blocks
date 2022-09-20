@@ -15,7 +15,6 @@ directive( 'clientNavigation', ( props ) => {
 		wp: { clientNavigation },
 		href,
 	} = props;
-
 	const url = href.startsWith( '/' ) ? href : window.location.pathname + href;
 
 	useEffect( () => {
@@ -23,22 +22,15 @@ directive( 'clientNavigation', ( props ) => {
 		if ( clientNavigation?.prefetch ) {
 			prefetch( url );
 		}
-	} );
+	}, [ url ] );
 
 	// Don't do anything if it's falsy.
 	if ( clientNavigation !== false ) {
 		props.onclick = async ( event ) => {
+			// Stop server-side navigation.
 			event.preventDefault();
-
-			// Fetch the page (or return it from cache).
-			await navigate( url );
-
-			// Update the scroll, depending on the option. True by default.
-			if ( clientNavigation?.scroll === 'smooth' ) {
-				window.scrollTo( { top: 0, left: 0, behavior: 'smooth' } );
-			} else if ( clientNavigation?.scroll !== false ) {
-				window.scrollTo( 0, 0 );
-			}
+			// Start client-side navigation.
+			await navigate( url, { scroll: clientNavigation?.scroll } );
 		};
 	}
 } );

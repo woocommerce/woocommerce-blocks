@@ -52,11 +52,11 @@ class ProductQuery extends AbstractBlock {
 			// Enqueue the full vdom scripts.
 			$this->enqueue_scripts();
 
-			// Add "query-id-${query_id}" class.
-			// TODO: Replace with WP_HTML_Walker when available.
+			// Add the "woo-product-query" and "query-id-${query_id}" class names.
+			// TODO: Replace regular expression with WP_HTML_Walker when available.
 			$block_content = preg_replace(
 				'/([ "])wp-block-query([ "])/', 
-				'$1wp-block-query query-id-' . $block['attrs']['queryId'] . '$2', 
+				'$1wp-block-query woo-product-query query-id-' . $block['attrs']['queryId'] . '$2', 
 				$block_content
 			);
 		} 
