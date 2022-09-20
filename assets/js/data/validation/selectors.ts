@@ -6,8 +6,9 @@ import type { State } from './reducers';
 /**
  * Gets a validation error by ID.
  *
- * @param  state   The current state.
- * @param  errorId { string } The error ID.
+ * @param { State }  state   The current state.
+ * @param { string } errorId The error ID.
+ * @return { string } 		The validation error.
  */
 export const getValidationError = ( state: State, errorId: string ) =>
 	state[ errorId ];
@@ -15,8 +16,9 @@ export const getValidationError = ( state: State, errorId: string ) =>
 /**
  * Gets a validation error ID for use in HTML which can be used as a CSS selector, or to reference an error message.
  *
- * @param  state   The current state.
- * @param  errorId { string } The error ID.
+ * @param { State }  state   The current state.
+ * @param { string } errorId The error ID.
+ * @return { string } 		The validation error ID.
  */
 export const getValidationErrorId = ( state: State, errorId: string ) => {
 	if ( ! state.hasOwnProperty( errorId ) || state[ errorId ].hidden ) {
@@ -28,7 +30,8 @@ export const getValidationErrorId = ( state: State, errorId: string ) => {
 /**
  * Whether the store has validation errors.
  *
- * @param  state The current state.
+ * @param { State } state The current state.
+ * @return { boolean } 	Whether the store has validation errors or not.
  */
 export const hasValidationErrors = ( state: State ) => {
 	return Object.keys( state ).length > 0;
