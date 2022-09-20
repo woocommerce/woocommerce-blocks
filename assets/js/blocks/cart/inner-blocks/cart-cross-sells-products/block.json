@@ -15,6 +15,13 @@
 		"columns": {
 			"type": "number",
 			"default": 3
+		},
+		"lock": {
+			"type": "object",
+			"default": {
+				"remove": true,
+				"move": true
+			}
 		}
 	},
 	"parent": [ "woocommerce/cart-cross-sells-block" ],
