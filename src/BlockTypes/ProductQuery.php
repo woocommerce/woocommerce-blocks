@@ -48,8 +48,19 @@ class ProductQuery extends AbstractBlock {
 		if (
 			isset($block['attrs']['__woocommerceVariationProps']['name']) && 
 			$block['attrs']['__woocommerceVariationProps']['name'] === 'product-query') {
+
+			// Enqueue the full vdom scripts.
 			$this->enqueue_scripts();
+
+			// Add "query-id-${query_id}" class.
+			// TODO: Replace with WP_HTML_Walker when available.
+			$block_content = preg_replace(
+				'/([ "])wp-block-query([ "])/', 
+				'$1wp-block-query query-id-' . $block['attrs']['queryId'] . '$2', 
+				$block_content
+			);
 		} 
+
 		return $block_content;
 	}
 
