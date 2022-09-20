@@ -348,6 +348,7 @@ const ActiveFiltersBlock = ( {
 								setMaxPrice( undefined );
 								setProductAttributes( [] );
 								setProductStockStatus( [] );
+								setProductRatings( [] );
 							}
 						} }
 					>
