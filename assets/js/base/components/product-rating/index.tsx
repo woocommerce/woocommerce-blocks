@@ -2,7 +2,7 @@
  * External dependencies
  */
 import classNames from 'classnames';
-import { __, _n, sprintf } from '@wordpress/i18n';
+import { __, sprintf } from '@wordpress/i18n';
 
 /**
  * Internal dependencies
@@ -32,19 +32,14 @@ const Rating = ( {
 
 	const ratingHTML = {
 		__html: sprintf(
-			/* translators: %1$s is referring to the rating value */
-			_n(
-				'Rated %1$s out of 5',
-				'Rated %1$s out of 5',
-				ratedProductsCount,
-				'woo-gutenberg-products-block'
-			),
+			/* translators: %f is referring to the rating value */
+			__( 'Rated %f out of 5', 'woo-gutenberg-products-block' ),
 			sprintf( '<strong class="rating">%f</strong>', rating )
 		),
 	};
 
 	return (
-		<div className={ ratingClassName } role="button" tabIndex={ key }>
+		<div className={ ratingClassName } key={ key }>
 			<div
 				className={ 'wc-block-components-product-rating__stars' }
 				role="img"
