@@ -1,0 +1,21 @@
+p.animation {
+	width: 20px;
+	height: 20px;
+	background: #f00;
+	position: relative;
+	animation: animate 3s infinite;
+	animation-direction: alternate;
+}
+
+@keyframes animate {
+	0% {
+		background: #f00;
+		left: 0;
+		top: 0;
+	}
+	100% {
+		background: #ff0;
+		left: 300px;
+		top: 0;
+	}
+}

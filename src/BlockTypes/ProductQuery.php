@@ -35,6 +35,22 @@ class ProductQuery extends AbstractBlock {
 			2
 		);
 
+		add_filter(
+			'render_block_core/query',
+			array( $this, 'enqueue_script' ),
+			10,
+			3
+		);
+
+	}
+
+	public function enqueue_script( $block_content, $block, $instance ) {
+		if (
+			isset($block['attrs']['__woocommerceVariationProps']['name']) && 
+			$block['attrs']['__woocommerceVariationProps']['name'] === 'product-query') {
+			$this->enqueue_scripts();
+		} 
+		return $block_content;
 	}
 
 
