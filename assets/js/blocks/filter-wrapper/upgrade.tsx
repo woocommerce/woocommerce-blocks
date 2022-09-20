@@ -5,8 +5,8 @@ import { __ } from '@wordpress/i18n';
 import { createBlock } from '@wordpress/blocks';
 import type { BlockInstance } from '@wordpress/blocks';
 import { useDispatch } from '@wordpress/data';
-import { ToolbarGroup, ToolbarButton } from '@wordpress/components';
-import { BlockControls } from '@wordpress/block-editor';
+import { Button } from '@wordpress/components';
+import { Warning } from '@wordpress/block-editor';
 
 interface UpgradeToolbarButtonProps {
 	clientId: string;
@@ -61,22 +61,22 @@ export const UpgradeToolbarButton = ( {
 		return null;
 	}
 
+	const actions = [
+		<Button
+			key="convert"
+			onClick={ upgradeFilterBlockHandler }
+			variant="primary"
+		>
+			{ __( 'Upgrade block', 'woo-gutenberg-products-block' ) }
+		</Button>,
+	];
+
 	return (
-		<BlockControls>
-			<ToolbarGroup>
-				<ToolbarButton
-					text={ __(
-						'Upgrade block',
-						'woo-gutenberg-products-block'
-					) }
-					showTooltip={ true }
-					label={ __(
-						'We have improved this block to make the styling easier. Upgrade to the new block to get started.',
-						'woo-gutenberg-products-block'
-					) }
-					onClick={ upgradeFilterBlockHandler }
-				/>
-			</ToolbarGroup>
-		</BlockControls>
+		<Warning actions={ actions }>
+			{ __(
+				'Filter block: We have improved this block to make styling easier. Upgrade this block using the button below',
+				'woo-gutenberg-products-block'
+			) }
+		</Warning>
 	);
 };
