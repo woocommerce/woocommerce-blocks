@@ -7,8 +7,7 @@ import { useEffect } from 'preact/hooks';
 /**
  * Internal dependencies
  */
-import { prefetch, navigate } from './router';
-import { directive } from './directives';
+import { prefetch, navigate, directive } from './full-vdom';
 
 // The `wp-client-navigation` directive.
 directive( 'clientNavigation', ( props ) => {
@@ -45,7 +44,7 @@ directive( 'clientNavigation', ( props ) => {
 } );
 
 // Manually add the `wp-client-navigation` directive to the virtual nodes.
-// TODO: Move this to the HTML.
+// TODO: Move this to the HTML once WP_HTML_Walker is available.
 const clientNavigationClassNames = [
 	'wp-block-query-pagination-next',
 	'wp-block-query-pagination-previous',
