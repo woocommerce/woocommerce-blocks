@@ -8,6 +8,7 @@ import {
 	useBlockProps,
 } from '@wordpress/block-editor';
 import { __ } from '@wordpress/i18n';
+import { useEffect } from 'react';
 
 /**
  * Internal dependencies
@@ -16,8 +17,15 @@ import Block from './block';
 import withProductSelector from '../shared/with-product-selector';
 import { BLOCK_TITLE, BLOCK_ICON } from './constants';
 
-const PriceEdit = ( { attributes, setAttributes } ) => {
+const PriceEdit = ( { attributes, setAttributes, context } ) => {
 	const blockProps = useBlockProps();
+	const isDescendentOfQueryLoop = Number.isFinite( context.queryId );
+
+	useEffect(
+		() => setAttributes( { isDescendentOfQueryLoop } ),
+		[ setAttributes, isDescendentOfQueryLoop ]
+	);
+
 	return (
 		<>
 			<BlockControls>
@@ -31,7 +39,7 @@ const PriceEdit = ( { attributes, setAttributes } ) => {
 				) }
 			</BlockControls>
 			<div { ...blockProps }>
-				<Block { ...attributes } />
+				<Block { ...{ ...attributes, ...context } } />
 			</div>
 		</>
 	);
