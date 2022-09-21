@@ -13,3 +13,10 @@ export interface Props {
 	fontSize: string;
 	customFontSize: string;
 }
+
+// TODO: Move this Context interface to assets/js/types/type-defs/contexts.ts
+export interface Context {
+	query: object;
+	queryId: number;
+	productId: number;
+}

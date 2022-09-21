@@ -54,6 +54,13 @@ const blockConfig: BlockConfiguration = {
 			__experimentalSelector: '.wc-block-components-product-title',
 		} ),
 	},
+	parent: [ 'core/group' ],
+	ancestor: [
+		'@woocommerce/all-products',
+		'@woocommerce/single-product',
+		'core/post-template',
+	],
+	usesContext: [ 'query', 'queryId', 'postId' ],
 };
 
 registerBlockType( 'woocommerce/product-title', blockConfig );

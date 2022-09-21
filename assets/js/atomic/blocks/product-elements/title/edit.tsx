@@ -12,6 +12,7 @@ import {
 } from '@wordpress/block-editor';
 import { isFeaturePluginBuild } from '@woocommerce/block-settings';
 import HeadingToolbar from '@woocommerce/editor-components/heading-toolbar';
+import { useEffect } from 'react';
 
 /**
  * Internal dependencies
@@ -19,17 +20,29 @@ import HeadingToolbar from '@woocommerce/editor-components/heading-toolbar';
 import Block from './block';
 import withProductSelector from '../shared/with-product-selector';
 import { BLOCK_TITLE, BLOCK_ICON } from './constants';
-import { Attributes } from './types';
+import { Attributes, Context } from './types';
 import './editor.scss';
 
 interface Props {
 	attributes: Attributes;
 	setAttributes: ( attributes: Record< string, unknown > ) => void;
+	context: Context;
 }
 
-const TitleEdit = ( { attributes, setAttributes }: Props ): JSX.Element => {
+const TitleEdit = ( {
+	attributes,
+	setAttributes,
+	context,
+}: Props ): JSX.Element => {
 	const blockProps = useBlockProps();
+	const isDescendentOfQueryLoop = Number.isFinite( context.queryId );
 	const { headingLevel, showProductLink, align, linkTarget } = attributes;
+
+	useEffect(
+		() => setAttributes( { isDescendentOfQueryLoop } ),
+		[ setAttributes, isDescendentOfQueryLoop ]
+	);
+
 	return (
 		<div { ...blockProps }>
 			<BlockControls>
@@ -89,7 +102,7 @@ const TitleEdit = ( { attributes, setAttributes }: Props ): JSX.Element => {
 				</PanelBody>
 			</InspectorControls>
 			<Disabled>
-				<Block { ...attributes } />
+				<Block { ...{ ...attributes, ...context } } />
 			</Disabled>
 		</div>
 	);
