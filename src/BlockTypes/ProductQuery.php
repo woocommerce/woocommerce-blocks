@@ -83,6 +83,7 @@ class ProductQuery extends AbstractBlock {
 			'posts_per_page' => $query['posts_per_page'],
 			'orderby'        => $query['orderby'],
 			'order'          => $query['order'],
+			'offset'         => $query['offset'],
 			// Ignoring the warning of not using meta queries.
 			// phpcs:ignore WordPress.DB.SlowDBQuery.slow_db_query_meta_query
 			'meta_query'     => array(),
@@ -97,10 +98,13 @@ class ProductQuery extends AbstractBlock {
 				$queries_filters
 			),
 			function( $acc, $query ) {
-						// Ignoring the warning of not using meta queries.
-						// phpcs:ignore WordPress.DB.SlowDBQuery.slow_db_query_meta_query
-						$acc['meta_query'] = isset( $query['meta_query'] ) ? array_merge( $acc['meta_query'], array( $query['meta_query'] ) ) : $acc['meta_query'];
-						return $acc;
+				if ( isset( $query['post__in'] ) ) {
+					$acc['post__in'] = isset( $acc['post__in'] ) ? array_merge( $acc['post__in'], $query['post__in'] ) : $query['post__in'];
+				}
+				// Ignoring the warning of not using meta queries.
+				// phpcs:ignore WordPress.DB.SlowDBQuery.slow_db_query_meta_query
+				$acc['meta_query'] = isset( $query['meta_query'] ) ? array_merge( $acc['meta_query'], array( $query['meta_query'] ) ) : $acc['meta_query'];
+				return $acc;
 			},
 			$common_query_values
 		);
@@ -115,7 +119,7 @@ class ProductQuery extends AbstractBlock {
 	 */
 	private function get_on_sale_products_query() {
 		return array(
-			'post_in' => wc_get_product_ids_on_sale(),
+			'post__in' => wc_get_product_ids_on_sale(),
 		);
 	}
 
