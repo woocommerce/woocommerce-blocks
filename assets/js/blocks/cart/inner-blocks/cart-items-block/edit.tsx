@@ -41,3 +41,11 @@ export const Edit = ( { clientId }: Props ): JSX.Element => {
 		</Main>
 	);
 };
+
+export const Save = (): JSX.Element => {
+	return (
+		<div { ...useBlockProps.save() }>
+			<InnerBlocks.Content />
+		</div>
+	);
+};
