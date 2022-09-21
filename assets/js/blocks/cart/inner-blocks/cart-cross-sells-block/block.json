@@ -11,6 +11,14 @@
 		"reusable": false,
 		"inserter": true
 	},
+	"attributes": {
+		"lock": {
+			"type": "object",
+			"default": {
+				"move": true
+			}
+		}
+	},
 	"parent": [ "woocommerce/cart-items-block" ],
 	"textdomain": "woo-gutenberg-products-block",
 	"apiVersion": 2
