@@ -277,7 +277,7 @@ class ProductQuery extends AbstractBlock {
 			array()
 		);
 
-		if ( empty( $filters ) ) {
+		if ( empty( $queries ) ) {
 			return array();
 		}
 
