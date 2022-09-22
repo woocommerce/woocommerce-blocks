@@ -59,6 +59,28 @@ registerCheckoutBlock( {
 } );
 
 registerCheckoutBlock( {
+	metadata: metadata.CART_CROSS_SELLS,
+	component: lazy(
+		() =>
+			import(
+				/* webpackChunkName: "cart-blocks/cart-cross-sells" */
+				'./cart-cross-sells-block/frontend'
+			)
+	),
+} );
+
+registerCheckoutBlock( {
+	metadata: metadata.CART_CROSS_SELLS_PRODUCTS,
+	component: lazy(
+		() =>
+			import(
+				/* webpackChunkName: "cart-blocks/cart-cross-sells-products" */
+				'./cart-cross-sells-products/frontend'
+			)
+	),
+} );
+
+registerCheckoutBlock( {
 	metadata: metadata.CART_TOTALS,
 	component: lazy(
 		() =>
