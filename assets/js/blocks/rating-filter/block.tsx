@@ -9,7 +9,7 @@ import {
 	useCollectionData,
 } from '@woocommerce/base-context/hooks';
 import { getSettingWithCoercion } from '@woocommerce/settings';
-import { isBoolean } from '@woocommerce/types';
+import { isBoolean, isObject, objectHasProp } from '@woocommerce/types';
 import isShallowEqual from '@wordpress/is-shallow-equal';
 import { useState, useCallback, useMemo, useEffect } from '@wordpress/element';
 import CheckboxList from '@woocommerce/base-components/checkbox-list';
@@ -186,15 +186,17 @@ const RatingFilterBlock = ( {
 
 	if (
 		! filteredCountsLoading &&
-		filteredCounts.rating_counts !== undefined
+		objectHasProp( filteredCounts, 'rating_counts' ) &&
+		Array.isArray( filteredCounts.rating_counts )
 	) {
 		const orderedRatings = [ ...filteredCounts.rating_counts ].reverse();
 
-		const displayedOptions = orderedRatings.map( ( item ) => {
-			if ( Object.keys( item ).length > 0 ) {
+		const displayedOptions = orderedRatings
+			.filter(
+				( item ) => isObject( item ) && Object.keys( item ).length > 0
+			)
+			.map( ( item ) => {
 				return {
-					value: item?.rating?.toString(),
-					name: 'Rating',
 					label: (
 						<Rating
 							className={
@@ -209,10 +211,9 @@ const RatingFilterBlock = ( {
 							ratedProductsCount={ item?.count }
 						/>
 					),
+					value: item?.rating?.toString(),
 				};
-			}
-			return null;
-		} );
+			} );
 
 		return (
 			<>
