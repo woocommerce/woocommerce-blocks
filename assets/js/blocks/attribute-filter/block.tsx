@@ -275,48 +275,54 @@ const AttributeFilterBlock = ( {
 	 * @param {boolean} allFiltersRemoved If there are active filters or not.
 	 */
 	const updateFilterUrl = useCallback(
-		( query, allFiltersRemoved = false ) => {
-			if ( allFiltersRemoved ) {
-				if ( ! attributeObject?.taxonomy ) {
-					return;
-				}
-				const currentQueryArgKeys = Object.keys(
-					getQueryArgs( window.location.href )
-				);
+		async ( query, allFiltersRemoved = false ) => {
+			return await new Promise( () => {
+				if ( allFiltersRemoved ) {
+					if ( ! attributeObject?.taxonomy ) {
+						return;
+					}
+					const currentQueryArgKeys = Object.keys(
+						getQueryArgs( window.location.href )
+					);
 
-				const parsedTaxonomy = parseTaxonomyToGenerateURL(
-					attributeObject.taxonomy
-				);
+					const parsedTaxonomy = parseTaxonomyToGenerateURL(
+						attributeObject.taxonomy
+					);
 
-				const url = currentQueryArgKeys.reduce(
-					( currentUrl, queryArg ) =>
-						queryArg.includes(
-							PREFIX_QUERY_ARG_QUERY_TYPE + parsedTaxonomy
-						) ||
-						queryArg.includes(
-							PREFIX_QUERY_ARG_FILTER_TYPE + parsedTaxonomy
-						)
-							? removeQueryArgs( currentUrl, queryArg )
-							: currentUrl,
-					window.location.href
-				);
+					const url = currentQueryArgKeys.reduce(
+						( currentUrl, queryArg ) =>
+							queryArg.includes(
+								PREFIX_QUERY_ARG_QUERY_TYPE + parsedTaxonomy
+							) ||
+							queryArg.includes(
+								PREFIX_QUERY_ARG_FILTER_TYPE + parsedTaxonomy
+							)
+								? removeQueryArgs( currentUrl, queryArg )
+								: currentUrl,
+						window.location.href
+					);
 
-				const newUrl = formatParams( url, query );
-				changeUrl( newUrl );
-			} else {
-				const newUrl = formatParams( pageUrl, query );
-				const currentQueryArgs = getQueryArgs( window.location.href );
-				const newUrlQueryArgs = getQueryArgs( newUrl );
-
-				if ( ! isQueryArgsEqual( currentQueryArgs, newUrlQueryArgs ) ) {
+					const newUrl = formatParams( url, query );
 					changeUrl( newUrl );
+				} else {
+					const newUrl = formatParams( pageUrl, query );
+					const currentQueryArgs = getQueryArgs(
+						window.location.href
+					);
+					const newUrlQueryArgs = getQueryArgs( newUrl );
+
+					if (
+						! isQueryArgsEqual( currentQueryArgs, newUrlQueryArgs )
+					) {
+						changeUrl( newUrl );
+					}
 				}
-			}
+			} );
 		},
 		[ pageUrl, attributeObject?.taxonomy ]
 	);
 
-	const onSubmit = ( checkedFilters: string[] ) => {
+	const onSubmit = async ( checkedFilters: string[] ) => {
 		const query = updateAttributeFilter(
 			productAttributesQuery,
 			setProductAttributesQuery,
@@ -325,7 +331,7 @@ const AttributeFilterBlock = ( {
 			blockAttributes.queryType === 'or' ? 'in' : 'and'
 		);
 
-		updateFilterUrl( query, checkedFilters.length === 0 );
+		await updateFilterUrl( query, checkedFilters.length === 0 );
 	};
 
 	const updateCheckedFilters = useCallback(

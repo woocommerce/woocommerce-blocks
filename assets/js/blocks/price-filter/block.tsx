@@ -169,30 +169,32 @@ const PriceFilterBlock = ( {
 
 	// Updates the query based on slider values.
 	const onSubmit = useCallback(
-		( newMinPrice, newMaxPrice ) => {
-			const finalMaxPrice =
-				newMaxPrice >= Number( maxConstraint )
-					? undefined
-					: newMaxPrice;
-			const finalMinPrice =
-				newMinPrice <= Number( minConstraint )
-					? undefined
-					: newMinPrice;
+		async ( newMinPrice, newMaxPrice ) => {
+			return await new Promise( () => {
+				const finalMaxPrice =
+					newMaxPrice >= Number( maxConstraint )
+						? undefined
+						: newMaxPrice;
+				const finalMinPrice =
+					newMinPrice <= Number( minConstraint )
+						? undefined
+						: newMinPrice;
 
-			if ( window ) {
-				const newUrl = formatParams( window.location.href, {
-					min_price: finalMinPrice / 10 ** currency.minorUnit,
-					max_price: finalMaxPrice / 10 ** currency.minorUnit,
-				} );
+				if ( window ) {
+					const newUrl = formatParams( window.location.href, {
+						min_price: finalMinPrice / 10 ** currency.minorUnit,
+						max_price: finalMaxPrice / 10 ** currency.minorUnit,
+					} );
 
-				// If the params have changed, lets update the filter URL.
-				if ( window.location.href !== newUrl ) {
-					changeUrl( newUrl );
+					// If the params have changed, lets update the filter URL.
+					if ( window.location.href !== newUrl ) {
+						changeUrl( newUrl );
+					}
 				}
-			}
 
-			setMinPriceQuery( finalMinPrice );
-			setMaxPriceQuery( finalMaxPrice );
+				setMinPriceQuery( finalMinPrice );
+				setMaxPriceQuery( finalMaxPrice );
+			} );
 		},
 		[
 			minConstraint,

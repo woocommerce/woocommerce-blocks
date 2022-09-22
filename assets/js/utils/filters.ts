@@ -5,6 +5,8 @@ import { getQueryArg } from '@wordpress/url';
 import { getSettingWithCoercion } from '@woocommerce/settings';
 import { isBoolean } from '@woocommerce/types';
 
+import { navigate } from '../blocks/product-query/full-vdom';
+
 const filteringForPhpTemplate = getSettingWithCoercion(
 	'is_rendering_php_template',
 	false,
@@ -32,10 +34,11 @@ export function getUrlParameter( name: string ) {
  *
  * @param {string} newUrl New URL to be set.
  */
-export function changeUrl( newUrl: string ) {
-	if ( filteringForPhpTemplate ) {
+export async function changeUrl( newUrl: string ) {
+	if ( false ) {
 		window.location.href = newUrl;
 	} else {
 		window.history.replaceState( {}, '', newUrl );
+		await navigate( newUrl );
 	}
 }
