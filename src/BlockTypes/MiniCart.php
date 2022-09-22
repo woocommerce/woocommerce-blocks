@@ -116,9 +116,9 @@ class MiniCart extends AbstractBlock {
 	 *                           not in the post content on editor load.
 	 */
 	protected function enqueue_data( array $attributes = [] ) {
-		if ( is_cart() || is_checkout() ) {
-			return;
-		}
+		// if ( is_cart() || is_checkout() ) {
+		// 	return;
+		// }
 
 		parent::enqueue_data( $attributes );
 
