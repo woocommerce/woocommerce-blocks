@@ -96,9 +96,9 @@ class MiniCart extends AbstractBlock {
 	 * @return array|string
 	 */
 	protected function get_block_type_script( $key = null ) {
-		if ( is_cart() || is_checkout() ) {
-			return;
-		}
+		// if ( is_cart() || is_checkout() ) {
+		// 	return;
+		// }
 
 		$script = [
 			'handle'       => 'wc-' . $this->block_name . '-block-frontend',
