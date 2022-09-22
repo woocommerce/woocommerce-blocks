@@ -91,7 +91,7 @@ class ProductQuery extends AbstractBlock {
 			'orderby'        => $query['orderby'],
 			'order'          => $query['order'],
 		);
-		$on_sale_query       = $this->get_on_sale_products_query( $query );
+		$on_sale_query       = $this->get_on_sale_products_query( $parsed_block['attrs']['query'] );
 
 		return array_merge( $query, $common_query_values, $on_sale_query );
 	}
@@ -99,11 +99,11 @@ class ProductQuery extends AbstractBlock {
 	/**
 	 * Return a query for on sale products.
 	 *
-	 * @param array $query Block query parameters.
+	 * @param array $query_params Block query parameters.
 	 * @return array
 	 */
-	private function get_on_sale_products_query( $query ) {
-		if ( ! isset( $query['__woocommerceOnSale'] ) || true !== $query['__woocommerceOnSale'] ) {
+	private function get_on_sale_products_query( $query_params ) {
+		if ( ! isset( $query_params['__woocommerceOnSale'] ) || true !== $query_params['__woocommerceOnSale'] ) {
 			return array();
 		}
 
