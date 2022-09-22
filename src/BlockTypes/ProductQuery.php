@@ -28,9 +28,6 @@ class ProductQuery extends AbstractBlock {
 	 */
 	protected function initialize() {
 		add_filter( 'query_vars', array( $this, 'set_query_vars' ) );
-		// Set this so that our product filters can detect if it's a PHP template.
-		$this->asset_data_registry->add( 'has_filterable_products', true, true );
-		$this->asset_data_registry->add( 'is_rendering_php_template', true, true );
 		parent::initialize();
 		add_filter(
 			'pre_render_block',
@@ -55,6 +52,9 @@ class ProductQuery extends AbstractBlock {
 		$this->parsed_block = $parsed_block;
 
 		if ( isset( $parsed_block['attrs']['__woocommerceVariationProps'] ) ) {
+			// Set this so that our product filters can detect if it's a PHP template.
+			$this->asset_data_registry->add( 'has_filterable_products', true, true );
+			$this->asset_data_registry->add( 'is_rendering_php_template', true, true );
 			add_filter(
 				'query_loop_block_query_vars',
 				array( $this, 'build_query' ),
