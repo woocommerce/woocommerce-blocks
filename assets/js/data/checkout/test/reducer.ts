@@ -49,22 +49,23 @@ describe.only( 'Checkout Store Reducer', () => {
 	} );
 
 	it( 'should handle SET_PROCESSING_RESPONSE', () => {
+		const mockResponse = {
+			message: 'success',
+			redirectUrl: 'https://example.com',
+			paymentStatus: 'not set' as const,
+			paymentDetails: {},
+		};
+
 		const expectedState = {
 			...defaultState,
 			status: STATUS.IDLE,
-			processingResponse: {
-				result: 'success',
-				redirect: 'https://example.com',
-			},
+			processingResponse: mockResponse,
 		};
 
 		expect(
 			reducer(
 				defaultState,
-				actions.setProcessingResponse( {
-					result: 'success',
-					redirect: 'https://example.com',
-				} )
+				actions.setProcessingResponse( mockResponse )
 			)
 		).toEqual( expectedState );
 	} );
@@ -254,16 +255,19 @@ describe.only( 'Checkout Store Reducer', () => {
 	} );
 
 	it( 'should handle SET_EXTENSION_DATA', () => {
+		const mockExtensionData = {
+			testExtension: { key: 'test', value: 'test2' },
+		};
 		const expectedState = {
 			...defaultState,
 			status: STATUS.IDLE,
-			extensionData: { test: 'test' },
+			extensionData: mockExtensionData,
 		};
 
 		expect(
 			reducer(
 				defaultState,
-				actions.setExtensionData( { test: 'test' } )
+				actions.setExtensionData( mockExtensionData )
 			)
 		).toEqual( expectedState );
 	} );
