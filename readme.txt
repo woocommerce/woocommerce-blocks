@@ -90,7 +90,7 @@ Release and roadmap notes available on the [WooCommerce Developers Blog](https:/
 
 #### Bug Fixes
 
-- Fix a bug in which resource hinting was breaking cart in subfolder installs. ([7211](https://github.com/woocommerce/woocommerce-blocks/pull/7211))
+- Ensure that scripts are loaded using absolute URLs to prevent loading issues with subfolder installs. ([7211](https://github.com/woocommerce/woocommerce-blocks/pull/7211))
 
 = 8.5.0 - 2022-09-12 =
 
