@@ -10,11 +10,13 @@ import {
 } from '@woocommerce/base-context/hooks';
 import { getSettingWithCoercion } from '@woocommerce/settings';
 import { isBoolean, isObject, objectHasProp } from '@woocommerce/types';
+import FilterTitlePlaceholder from '@woocommerce/base-components/filter-placeholder';
 import isShallowEqual from '@wordpress/is-shallow-equal';
 import { useState, useCallback, useMemo, useEffect } from '@wordpress/element';
 import CheckboxList from '@woocommerce/base-components/checkbox-list';
 import { addQueryArgs, removeQueryArgs } from '@wordpress/url';
 import { changeUrl } from '@woocommerce/utils';
+import classnames from 'classnames';
 
 /**
  * Internal dependencies
@@ -184,14 +186,28 @@ const RatingFilterBlock = ( {
 		[ productRatingsArray, setProductRatings ]
 	);
 
+	const heading = (
+		<TagName className="wc-block-stock-filter__title">
+			{ blockAttributes.heading }
+		</TagName>
+	);
+
+	const filterHeading = isLoading ? (
+		<FilterTitlePlaceholder>{ heading }</FilterTitlePlaceholder>
+	) : (
+		heading
+	);
+
+	let orderedRatings = [];
+	let displayedOptions = [];
+
 	if (
 		! filteredCountsLoading &&
 		objectHasProp( filteredCounts, 'rating_counts' ) &&
 		Array.isArray( filteredCounts.rating_counts )
 	) {
-		const orderedRatings = [ ...filteredCounts.rating_counts ].reverse();
-
-		const displayedOptions = orderedRatings
+		orderedRatings = [ ...filteredCounts.rating_counts ].reverse();
+		displayedOptions = orderedRatings
 			.filter(
 				( item ) => isObject( item ) && Object.keys( item ).length > 0
 			)
@@ -214,30 +230,29 @@ const RatingFilterBlock = ( {
 					value: item?.rating?.toString(),
 				};
 			} );
-
-		return (
-			<>
-				{ ! isEditor && blockAttributes.heading && (
-					<TagName className="wc-block-rating-filter__title">
-						{ blockAttributes.heading }
-					</TagName>
-				) }
-				<div className="wc-block-rating-filter">
-					<CheckboxList
-						className={ 'wc-block-rating-filter-list' }
-						options={ displayedOptions }
-						checked={ productRatingsArray }
-						onChange={ ( checked ) => {
-							onClick( checked.toString() );
-						} }
-						isLoading={ isLoading }
-						isDisabled={ isDisabled }
-					/>
-				</div>
-			</>
-		);
 	}
-	return null;
+
+	return (
+		<>
+			{ ! isEditor && blockAttributes.heading && filterHeading }
+			<div
+				className={ classnames( 'wc-block-rating-filter', {
+					'is-loading': isLoading,
+				} ) }
+			>
+				<CheckboxList
+					className={ 'wc-block-rating-filter-list' }
+					options={ displayedOptions }
+					checked={ productRatingsArray }
+					onChange={ ( checked ) => {
+						onClick( checked.toString() );
+					} }
+					isLoading={ isLoading }
+					isDisabled={ isDisabled }
+				/>
+			</div>
+		</>
+	);
 };
 
 export default RatingFilterBlock;
