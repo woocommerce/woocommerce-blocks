@@ -187,7 +187,7 @@ const RatingFilterBlock = ( {
 	);
 
 	const heading = (
-		<TagName className="wc-block-stock-filter__title">
+		<TagName className="wc-block-rating-filter__title">
 			{ blockAttributes.heading }
 		</TagName>
 	);
