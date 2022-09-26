@@ -255,7 +255,7 @@ abstract class AbstractCartRoute extends AbstractRoute {
 		if ( $request->get_header( 'Nonce' ) ) {
 			$nonce = $request->get_header( 'Nonce' );
 		} elseif ( $request->get_header( 'X-WC-Store-API-Nonce' ) ) {
-			$nonce = $request->get_header( 'Nonce' );
+			$nonce = $request->get_header( 'X-WC-Store-API-Nonce' );
 
 			// @todo Remove handling and sending of deprecated X-WC-Store-API-Nonce Header (Blocks 7.5.0)
 			wc_deprecated_argument( 'X-WC-Store-API-Nonce', '7.2.0', 'Use the "Nonce" Header instead. This header will be removed after Blocks release 7.5' );
