@@ -187,9 +187,9 @@ const ActiveFiltersBlock = ( {
 			);
 		} );
 	}, [
-		componentHasMounted,
-		setIsLoading,
 		productAttributes,
+		componentHasMounted,
+		STORE_ATTRIBUTES,
 		blockAttributes.displayStyle,
 	] );
 
@@ -268,7 +268,7 @@ const ActiveFiltersBlock = ( {
 	};
 
 	if ( ! shouldShowLoadingPlaceholders && ! hasFilters() && ! isEditor ) {
-    setWrapperVisibility( false );
+		setWrapperVisibility( false );
 		return null;
 	}
 

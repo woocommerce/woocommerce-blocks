@@ -23,7 +23,7 @@ export const useSetWraperVisibility = () => {
 			return;
 		}
 		if ( wrapper.current ) {
-			wrapper.current.style.display = isVisible ? 'block' : 'none';
+			wrapper.current.hidden = isVisible ? false : true;
 		}
 	};
 };

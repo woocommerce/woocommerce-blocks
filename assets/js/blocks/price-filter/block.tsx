@@ -319,7 +319,7 @@ const PriceFilterBlock = ( {
 		`h${ attributes.headingLevel }` as keyof JSX.IntrinsicElements;
 
 	setWrapperVisibility( true );
-  
+
 	if ( ! isLoading && isUpdating ) {
 		setIsUpdating( false );
 	}

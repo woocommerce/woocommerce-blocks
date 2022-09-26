@@ -16,7 +16,7 @@ type Props = {
 const Block = ( { children }: Props ): JSX.Element => {
 	const wrapper = useRef( null );
 	return (
-		<div className="wc-blocks-filter-inner-wrappers" ref={ wrapper }>
+		<div className="wc-blocks-filter-wrapper" ref={ wrapper }>
 			<FilterBlockContext.Provider value={ { wrapper } }>
 				{ children }
 			</FilterBlockContext.Provider>
