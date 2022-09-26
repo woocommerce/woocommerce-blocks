@@ -2,6 +2,7 @@
 
 namespace Automattic\WooCommerce\StoreApi;
 
+use Automattic\Jetpack\Constants;
 use Automattic\WooCommerce\StoreApi\Utilities\JsonWebToken;
 
 defined( 'ABSPATH' ) || exit;
@@ -18,18 +19,11 @@ final class SessionHandler extends \WC_Session {
 	protected $token;
 
 	/**
-	 * True when a token has been used.
-	 *
-	 * @var boolean
-	 */
-	protected $has_token = false;
-
-	/**
 	 * Table name for session data.
 	 *
 	 * @var string Custom session table name
 	 */
-	protected $session_table;
+	protected $_table; // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
 
 	/**
 	 * Expiration timestamp.
@@ -42,9 +36,8 @@ final class SessionHandler extends \WC_Session {
 	 * Constructor for the session class.
 	 */
 	public function __construct() {
-		$headers             = function_exists( 'getallheaders' ) ? getallheaders() : [];
-		$this->token         = $headers['Cart-Token'] ?? '';
-		$this->session_table = $GLOBALS['wpdb']->prefix . 'woocommerce_sessions';
+		$this->token  = wc_clean( wp_unslash( $_SERVER['HTTP_CART_TOKEN'] ?? '' ) );
+		$this->_table = $GLOBALS['wpdb']->prefix . 'woocommerce_sessions';
 	}
 
 	/**
@@ -52,47 +45,18 @@ final class SessionHandler extends \WC_Session {
 	 */
 	public function init() {
 		$this->init_session_from_token();
+		add_action( 'shutdown', array( $this, 'save_data' ), 20 );
 	}
 
 	/**
 	 * Process the token header to load the correct session.
 	 */
 	protected function init_session_from_token() {
-		if ( $this->token && JsonWebToken::validate( $this->token, '@' . wp_salt() ) ) {
-			$payload = JsonWebToken::get_parts( $this->token )->payload;
+		$payload = JsonWebToken::get_parts( $this->token )->payload;
 
-			$this->has_token           = true;
-			$this->_customer_id        = $payload->user_id;
-			$this->_session_expiration = $payload->exp;
-			$this->_data               = (array) $this->get_session( $this->_customer_id, array() );
-		} else {
-			$this->_customer_id        = $this->generate_customer_id();
-			$this->_session_expiration = time() + intval( apply_filters( 'wc_session_expiration', 60 * 60 * 48 ) ); // 48 Hours.
-		}
-	}
-
-	/**
-	 * Generate a unique customer ID.
-	 *
-	 * Uses Portable PHP password hashing framework to generate a unique cryptographically strong ID.
-	 *
-	 * @return string
-	 */
-	public function generate_customer_id() {
-		require_once ABSPATH . 'wp-includes/class-phpass.php';
-
-		$hash = new \PasswordHash( 8, false );
-
-		return md5( $hash->get_random_bytes( 32 ) );
-	}
-
-	/**
-	 * Return true if the current user has an active session, i.e. a cookie to retrieve values.
-	 *
-	 * @return bool
-	 */
-	public function has_session() {
-		return $this->has_token;
+		$this->_customer_id        = $payload->user_id;
+		$this->_session_expiration = $payload->exp;
+		$this->_data               = (array) $this->get_session( $this->_customer_id, array() );
 	}
 
 	/**
@@ -101,21 +65,43 @@ final class SessionHandler extends \WC_Session {
 	 * @param string $customer_id Customer ID.
 	 * @param mixed  $default Default session value.
 	 *
-	 * @return string|array
+	 * @return string|array|bool
 	 */
 	public function get_session( $customer_id, $default = false ) {
 		global $wpdb;
 
-		if ( ! $this->has_session() ) {
-			return $default;
+		if ( Constants::is_defined( 'WP_SETUP_CONFIG' ) ) {
+			return false;
 		}
 
-		$value = $wpdb->get_var( $wpdb->prepare( "SELECT session_value FROM $this->session_table WHERE session_key = %s", $customer_id ) ); // @codingStandardsIgnoreLine.
+		$value = $wpdb->get_var( $wpdb->prepare( "SELECT session_value FROM $this->_table WHERE session_key = %s", $customer_id ) ); // @codingStandardsIgnoreLine.
 
 		if ( is_null( $value ) ) {
 			$value = $default;
 		}
 
 		return maybe_unserialize( $value );
+	}
+
+	/**
+	 * Save data and delete user session.
+	 */
+	public function save_data() {
+		// Dirty if something changed - prevents saving nothing new.
+		if ( $this->_dirty ) {
+			global $wpdb;
+
+			$wpdb->query(
+				$wpdb->prepare(
+					"INSERT INTO {$wpdb->prefix}woocommerce_sessions (`session_key`, `session_value`, `session_expiry`) VALUES (%s, %s, %d)
+ 					ON DUPLICATE KEY UPDATE `session_value` = VALUES(`session_value`), `session_expiry` = VALUES(`session_expiry`)",
+					$this->_customer_id,
+					maybe_serialize( $this->_data ),
+					$this->_session_expiration
+				)
+			);
+
+			$this->_dirty = false;
+		}
 	}
 }

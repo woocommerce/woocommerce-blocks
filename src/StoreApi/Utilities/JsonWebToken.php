@@ -76,7 +76,7 @@ final class JsonWebToken {
 		/**
 		 * Check if token is expired.
 		 */
-		if ( ! property_exists( $parts->payload, 'exp' ) || time() > $parts->payload->exp ) {
+		if ( ! property_exists( $parts->payload, 'exp' ) || time() > (int) $parts->payload->exp ) {
 			return false;
 		}
 
