@@ -6,10 +6,7 @@ import { _n, sprintf } from '@wordpress/i18n';
 import { decodeEntities } from '@wordpress/html-entities';
 import type { ReactElement } from 'react';
 import type { PackageRateOption } from '@woocommerce/type-defs/shipping';
-import {
-	Panel,
-	__experimentalApplyCheckoutFilter,
-} from '@woocommerce/blocks-checkout';
+import { Panel } from '@woocommerce/blocks-checkout';
 import Label from '@woocommerce/base-components/label';
 import { useSelectShippingRate } from '@woocommerce/base-context/hooks';
 import type { CartShippingPackageShippingRate } from '@woocommerce/type-defs/cart';
@@ -70,17 +67,13 @@ export const ShippingRatesControlPackage = ( {
 	showItems = false,
 }: PackageProps ): ReactElement => {
 	const { selectShippingRate } = useSelectShippingRate();
-	const data = __experimentalApplyCheckoutFilter( {
-		filterName: 'itemName',
-		defaultValue: packageData.name,
-	} );
 
 	const header = (
 		<>
 			{ ( showItems || collapsible ) && (
 				<div
 					className="wc-block-components-shipping-rates-control__package-title"
-					dangerouslySetInnerHTML={ sanitizeHTML( data ) }
+					dangerouslySetInnerHTML={ sanitizeHTML( packageData.name ) }
 				/>
 			) }
 			{ showItems && (
