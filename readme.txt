@@ -86,6 +86,29 @@ Release and roadmap notes available on the [WooCommerce Developers Blog](https:/
 
 == Changelog ==
 
+= 8.6.0 - 2022-09-26 =
+
+#### Enhancements
+
+- Create Cross-Sells product list for showing the Cross-Sells products on the Cart block. ([6645](https://github.com/woocommerce/woocommerce-blocks/pull/6645))
+
+#### Bug Fixes
+
+- Fix a bug with the product details block. ([7191](https://github.com/woocommerce/woocommerce-blocks/pull/7191))
+- Fix: Ensure that the Express Payment block is not cut off when selecting the Checkout block in the editor. ([7152](https://github.com/woocommerce/woocommerce-blocks/pull/7152))
+- Make chevron clickable in Filter by Product block input. ([7139](https://github.com/woocommerce/woocommerce-blocks/pull/7139))
+- Fix: Inner blocks control position for Cart Block. ([6973](https://github.com/woocommerce/woocommerce-blocks/pull/6973))
+- Enabled HTML rendering within notices for checkout. ([6800](https://github.com/woocommerce/woocommerce-blocks/pull/6800))
+
+#### Technical debt
+
+- Remove unused CSS selectors from Filter blocks. ([7150](https://github.com/woocommerce/woocommerce-blocks/pull/7150))
+
+#### Compatibility
+
+- WooPay: fixed a compatibility issue with some error messages shown by WooPay. ([7145](https://github.com/woocommerce/woocommerce-blocks/pull/7145))
+- WooPay: Fixed an issue with WooPay which would display tax totals on multiple lines even when configured otherwise. ([7084](https://github.com/woocommerce/woocommerce-blocks/pull/7084))
+
 = 8.5.1 - 2022-09-23 =
 
 #### Bug Fixes
