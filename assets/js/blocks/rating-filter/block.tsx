@@ -22,7 +22,7 @@ import classnames from 'classnames';
  * Internal dependencies
  */
 import './style.scss';
-import { Attributes } from './types';
+import { Attributes, DisplayOption } from './types';
 import { getActiveFilters } from './utils';
 
 export const QUERY_PARAM_KEY = 'rating_filter';
@@ -199,7 +199,7 @@ const RatingFilterBlock = ( {
 	);
 
 	let orderedRatings = [];
-	let displayedOptions = [];
+	let displayedOptions: DisplayOption[] = [];
 
 	if (
 		! filteredCountsLoading &&
