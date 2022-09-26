@@ -99,6 +99,7 @@ Release and roadmap notes available on the [WooCommerce Developers Blog](https:/
 - Make chevron clickable in Filter by Product block input. ([7139](https://github.com/woocommerce/woocommerce-blocks/pull/7139))
 - Fix: Inner blocks control position for Cart Block. ([6973](https://github.com/woocommerce/woocommerce-blocks/pull/6973))
 - Enabled HTML rendering within notices for checkout. ([6800](https://github.com/woocommerce/woocommerce-blocks/pull/6800))
+- Fix: Render HTML elements on Cart and Checkout blocks when using the woocommerce_shipping_package_name filter. ([7147](https://github.com/woocommerce/woocommerce-blocks/pull/7147))
 
 #### Technical debt
 
