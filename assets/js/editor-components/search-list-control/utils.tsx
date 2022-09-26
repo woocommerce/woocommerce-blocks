@@ -2,8 +2,8 @@
  * External dependencies
  */
 import { groupBy, keyBy } from 'lodash';
-import { __, _n, sprintf } from '@wordpress/i18n';
 import { Fragment } from '@wordpress/element';
+import { __, _n, sprintf } from '@wordpress/i18n';
 
 /**
  * Internal dependencies
@@ -41,7 +41,7 @@ export const defaultMessages = {
 export const buildTermsTree = (
 	filteredList: SearchListItemsType,
 	list = filteredList
-): SearchListItemType[] | [  ] => {
+): SearchListItemType[] | [] => {
 	const termsByParent = groupBy( filteredList, 'parent' );
 	const listById = keyBy( list, 'id' );
 	const builtParents = [ '0' ];
@@ -90,7 +90,7 @@ export const getFilteredList = (
 	list: SearchListItemsType,
 	search: string,
 	isHierarchical: boolean
-): SearchListItemType[] | [  ] => {
+): SearchListItemType[] | [] => {
 	if ( ! search ) {
 		return isHierarchical ? buildTermsTree( list ) : list;
 	}
@@ -114,19 +114,16 @@ export const getHighlightedName = (
 	}
 	const re = new RegExp(
 		// Escaping.
-		search.replace( /[-\/\\^$*+?.()|[\]{}]/g, '\\$&' ),
+		`(${ search.replace( /[-\/\\^$*+?.()|[\]{}]/g, '\\$&' ) })`,
 		'ig'
 	);
 	const nameParts = name.split( re );
+
 	return nameParts.map( ( part, i ) => {
-		if ( i === 0 ) {
-			return part;
-		}
-		return (
-			<Fragment key={ i }>
-				<strong>{ search }</strong>
-				{ part }
-			</Fragment>
+		return re.test( part ) ? (
+			<strong key={ i }>{ part }</strong>
+		) : (
+			<Fragment key={ i }>{ part }</Fragment>
 		);
 	} );
 };

@@ -59,7 +59,7 @@ describe( 'Edit', () => {
 		expect(
 			queryByText(
 				container,
-				"You don't seem to have a Terms and Conditions and/or a Privacy Policy pages setup."
+				"You don't have any Terms and Conditions and/or Privacy Policy pages set up."
 			)
 		).toBeInTheDocument();
 	} );
@@ -91,8 +91,7 @@ describe( 'Edit', () => {
 		const { container } = render(
 			<Edit
 				attributes={ {
-					text:
-						'I agree to the <a href="/terms">terms</a> and <a href="/privacy">privacy</a>',
+					text: 'I agree to the <a href="/terms">terms</a> and <a href="/privacy">privacy</a>',
 					checkbox: true,
 				} }
 				setAttributes={ () => void 0 }

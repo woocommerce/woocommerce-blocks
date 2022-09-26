@@ -47,7 +47,7 @@ const CheckoutProcessor = () => {
 	} = useCheckoutContext();
 	const { hasValidationErrors } = useValidationContext();
 	const { shippingErrorStatus } = useShippingDataContext();
-	const { billingData, shippingAddress } = useCustomerDataContext();
+	const { billingAddress, shippingAddress } = useCustomerDataContext();
 	const { cartNeedsPayment, cartNeedsShipping, receiveCart } = useStoreCart();
 	const {
 		activePaymentMethod,
@@ -60,7 +60,7 @@ const CheckoutProcessor = () => {
 	} = usePaymentMethodDataContext();
 	const { setIsSuppressed } = useStoreNoticesContext();
 	const { createErrorNotice, removeNotice } = useDispatch( 'core/notices' );
-	const currentBillingData = useRef( billingData );
+	const currentBillingAddress = useRef( billingAddress );
 	const currentShippingAddress = useRef( shippingAddress );
 	const currentRedirectUrl = useRef( redirectUrl );
 	const [ isProcessingOrder, setIsProcessingOrder ] = useState( false );
@@ -105,10 +105,10 @@ const CheckoutProcessor = () => {
 	] );
 
 	useEffect( () => {
-		currentBillingData.current = billingData;
+		currentBillingAddress.current = billingAddress;
 		currentShippingAddress.current = shippingAddress;
 		currentRedirectUrl.current = redirectUrl;
-	}, [ billingData, shippingAddress, redirectUrl ] );
+	}, [ billingAddress, shippingAddress, redirectUrl ] );
 
 	const checkValidation = useCallback( () => {
 		if ( hasValidationErrors ) {
@@ -184,7 +184,7 @@ const CheckoutProcessor = () => {
 
 		const data = {
 			billing_address: emptyHiddenAddressFields(
-				currentBillingData.current
+				currentBillingAddress.current
 			),
 			customer_note: orderNotes,
 			create_account: shouldCreateAccount,
@@ -235,13 +235,18 @@ const CheckoutProcessor = () => {
 						}
 						createErrorNotice(
 							formatStoreApiErrorMessage( response ),
-							{ id: 'checkout', context: 'wc/checkout' }
+							{
+								id: 'checkout',
+								context: 'wc/checkout',
+								__unstableHTML: true,
+							}
 						);
 						response?.additional_errors?.forEach?.(
 							( additionalError ) => {
 								createErrorNotice( additionalError.message, {
 									id: additionalError.error_code,
 									context: 'wc/checkout',
+									__unstableHTML: true,
 								} );
 							}
 						);
@@ -257,11 +262,15 @@ const CheckoutProcessor = () => {
 							),
 							errorResponse?.message ??
 								__(
-									'Something went wrong.',
+									'Something went wrong. Please contact us for assistance.',
 									'woo-gutenberg-products-block'
 								)
 						),
-						{ id: 'checkout', context: 'wc/checkout' }
+						{
+							id: 'checkout',
+							context: 'wc/checkout',
+							__unstableHTML: true,
+						}
 					);
 				}
 				dispatchActions.setHasError( true );

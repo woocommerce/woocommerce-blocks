@@ -27,7 +27,7 @@ const EmptyPlaceholder = () => (
 		className="wc-block-product-categories"
 	>
 		{ __(
-			"This block shows product categories for your store. To use it, you'll first need to create a product and assign it to a category.",
+			'This block displays the product categories for your store. To use it you first need to create a product and assign it to a category.',
 			'woo-gutenberg-products-block'
 		) }
 	</Placeholder>
@@ -43,13 +43,8 @@ const EmptyPlaceholder = () => (
  */
 const ProductCategoriesBlock = ( { attributes, setAttributes, name } ) => {
 	const getInspectorControls = () => {
-		const {
-			hasCount,
-			hasImage,
-			hasEmpty,
-			isDropdown,
-			isHierarchical,
-		} = attributes;
+		const { hasCount, hasImage, hasEmpty, isDropdown, isHierarchical } =
+			attributes;
 
 		return (
 			<InspectorControls key="inspector">
@@ -97,17 +92,6 @@ const ProductCategoriesBlock = ( { attributes, setAttributes, name } ) => {
 							'Show product count',
 							'woo-gutenberg-products-block'
 						) }
-						help={
-							hasCount
-								? __(
-										'Product count is visible.',
-										'woo-gutenberg-products-block'
-								  )
-								: __(
-										'Product count is hidden.',
-										'woo-gutenberg-products-block'
-								  )
-						}
 						checked={ hasCount }
 						onChange={ () =>
 							setAttributes( { hasCount: ! hasCount } )
@@ -141,17 +125,6 @@ const ProductCategoriesBlock = ( { attributes, setAttributes, name } ) => {
 							'Show hierarchy',
 							'woo-gutenberg-products-block'
 						) }
-						help={
-							isHierarchical
-								? __(
-										'Hierarchy is visible.',
-										'woo-gutenberg-products-block'
-								  )
-								: __(
-										'Hierarchy is hidden.',
-										'woo-gutenberg-products-block'
-								  )
-						}
 						checked={ isHierarchical }
 						onChange={ () =>
 							setAttributes( {
@@ -164,17 +137,6 @@ const ProductCategoriesBlock = ( { attributes, setAttributes, name } ) => {
 							'Show empty categories',
 							'woo-gutenberg-products-block'
 						) }
-						help={
-							hasEmpty
-								? __(
-										'Empty categories are visible.',
-										'woo-gutenberg-products-block'
-								  )
-								: __(
-										'Empty categories are hidden.',
-										'woo-gutenberg-products-block'
-								  )
-						}
 						checked={ hasEmpty }
 						onChange={ () =>
 							setAttributes( { hasEmpty: ! hasEmpty } )

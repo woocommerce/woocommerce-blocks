@@ -1,4 +1,5 @@
 <?php
+
 namespace Automattic\WooCommerce\Blocks;
 
 use Automattic\WooCommerce\Blocks\Domain\Package as NewPackage;
@@ -20,6 +21,7 @@ use Automattic\WooCommerce\Blocks\Domain\Services\FeatureGating;
  * @since 2.5.0
  */
 class Package {
+
 
 	/**
 	 * For back compat this is provided. Ideally, you should register your
@@ -79,13 +81,14 @@ class Package {
 	}
 
 	/**
-	 * Checks if we're executing the code in an feature plugin or experimental build mode.
+	 * Checks if we're executing the code in a feature plugin or experimental build mode.
 	 *
 	 * @return boolean
 	 */
 	public static function is_feature_plugin_build() {
 		return self::get_package()->is_feature_plugin_build();
 	}
+
 
 	/**
 	 * Loads the dependency injection container for woocommerce blocks.
@@ -97,16 +100,16 @@ class Package {
 	public static function container( $reset = false ) {
 		static $container;
 		if (
-				! $container instanceof Container
-				|| $reset
-			) {
+			! $container instanceof Container
+			|| $reset
+		) {
 			$container = new Container();
 			// register Package.
 			$container->register(
 				NewPackage::class,
 				function ( $container ) {
 					// leave for automated version bumping.
-					$version = '7.8.0-dev';
+					$version = '8.6.0-dev';
 					return new NewPackage(
 						$version,
 						dirname( __DIR__ ),
@@ -121,6 +124,13 @@ class Package {
 					return new Bootstrap(
 						$container
 					);
+				}
+			);
+			// register Bootstrap.
+			$container->register(
+				Migration::class,
+				function () {
+					return new Migration();
 				}
 			);
 		}

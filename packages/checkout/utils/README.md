@@ -1,6 +1,4 @@
-# Checkout - Utilities <!-- omit in toc -->
-
-Miscellaneous utility functions for dealing with checkout functionality.
+# Utilities <!-- omit in toc -->
 
 ## Table of Contents <!-- omit in toc -->
 
@@ -14,13 +12,15 @@ Miscellaneous utility functions for dealing with checkout functionality.
         -   [`value (string, required)`](#value-string-required)
         -   [`requiredValue (string, required)`](#requiredvalue-string-required)
 
+Miscellaneous utility functions for dealing with checkout functionality.
+
 ## `extensionCartUpdate`
 
 When executed, this will call the cart/extensions REST API endpoint. The new cart is then received into the client-side store.
 
 ### Usage
 
-```typescript
+```ts
 // Aliased import
 import { extensionCartUpdate } from '@woocommerce/blocks-checkout';
 
@@ -41,7 +41,7 @@ The following options are available:
 
 #### `args (object, required)`
 
-Args to pass to the Rest API endpoint. This can contain data and a namespace to trigger extension specific functionality on the server-side. [You can read more about this, and the server-side implementation, in this doc.](https://github.com/woocommerce/woocommerce-gutenberg-products-block/blob/trunk/docs/extensibility/extend-rest-api-update-cart.md)
+Args to pass to the Rest API endpoint. This can contain data and a namespace to trigger extension specific functionality on the server-side. [You can read more about this, and the server-side implementation, in this doc.](../../../docs/third-party-developers/extensibility/rest-api/extend-rest-api-update-cart.md)
 
 ## `mustContain`
 
@@ -73,10 +73,12 @@ Value being checked. Must be a string.
 What value must contain. If this is not found within `value`, and error will be thrown.
 
 <!-- FEEDBACK -->
+
 ---
 
 [We're hiring!](https://woocommerce.com/careers/) Come work with us!
 
-🐞 Found a mistake, or have a suggestion? [Leave feedback about this document here.](https://github.com/woocommerce/woocommerce-gutenberg-products-block/issues/new?assignees=&labels=type%3A+documentation&template=--doc-feedback.md&title=Feedback%20on%20./packages/checkout/utils/README.md)
+🐞 Found a mistake, or have a suggestion? [Leave feedback about this document here.](https://github.com/woocommerce/woocommerce-blocks/issues/new?assignees=&labels=type%3A+documentation&template=--doc-feedback.md&title=Feedback%20on%20./packages/checkout/utils/README.md)
+
 <!-- /FEEDBACK -->
 

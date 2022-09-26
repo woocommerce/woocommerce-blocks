@@ -6,6 +6,8 @@ use Automattic\WooCommerce\Blocks\Package;
 use Automattic\WooCommerce\Blocks\Assets\AssetDataRegistry;
 use Automattic\WooCommerce\Blocks\Assets\Api as AssetApi;
 use Automattic\WooCommerce\Blocks\Integrations\IntegrationRegistry;
+use Automattic\WooCommerce\Blocks\BlockTypes\Cart;
+use Automattic\WooCommerce\Blocks\BlockTypes\Checkout;
 
 /**
  * BlockTypesController class.
@@ -196,12 +198,10 @@ final class BlockTypesController {
 			'ProductTitle',
 			'MiniCart',
 			'MiniCartContents',
+			'ProductQuery',
 		];
 
-		if ( Package::feature()->is_feature_plugin_build() ) {
-			$block_types[] = 'Checkout';
-			$block_types[] = 'Cart';
-		}
+		$block_types = array_merge( $block_types, Cart::get_cart_block_types(), Checkout::get_checkout_block_types() );
 
 		if ( Package::feature()->is_experimental_build() ) {
 			$block_types[] = 'SingleProduct';
@@ -217,6 +217,32 @@ final class BlockTypesController {
 					'AllProducts',
 					'Cart',
 					'Checkout',
+				]
+			);
+		}
+
+		/**
+		 * This disables specific blocks in Widget Areas by not registering them.
+		 */
+		if ( in_array( $pagenow, [ 'widgets.php', 'themes.php', 'customize.php' ], true ) && ( empty( $_GET['page'] ) || 'gutenberg-edit-site' !== $_GET['page'] ) ) { // phpcs:ignore WordPress.Security.NonceVerification
+			$block_types = array_diff(
+				$block_types,
+				[
+					'AllProducts',
+					'Cart',
+					'Checkout',
+				]
+			);
+		}
+
+		/**
+		 * This disables specific blocks in Post and Page editor by not registering them.
+		 */
+		if ( in_array( $pagenow, [ 'post.php', 'post-new.php' ], true ) ) {
+			$block_types = array_diff(
+				$block_types,
+				[
+					'ClassicTemplate',
 				]
 			);
 		}

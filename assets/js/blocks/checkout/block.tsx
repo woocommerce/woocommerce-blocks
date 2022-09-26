@@ -104,14 +104,10 @@ const ScrollOnError = ( {
 }: {
 	scrollToTop: ( props: Record< string, unknown > ) => void;
 } ): null => {
-	const {
-		hasError: checkoutHasError,
-		isIdle: checkoutIsIdle,
-	} = useCheckoutContext();
-	const {
-		hasValidationErrors,
-		showAllValidationErrors,
-	} = useValidationContext();
+	const { hasError: checkoutHasError, isIdle: checkoutIsIdle } =
+		useCheckoutContext();
+	const { hasValidationErrors, showAllValidationErrors } =
+		useValidationContext();
 
 	const hasErrorsToDisplay =
 		checkoutIsIdle &&
@@ -149,7 +145,7 @@ const Block = ( {
 	return (
 		<BlockErrorBoundary
 			header={ __(
-				'Something went wrong…',
+				'Something went wrong. Please contact us for assistance.',
 				'woo-gutenberg-products-block'
 			) }
 			text={ createInterpolateElement(

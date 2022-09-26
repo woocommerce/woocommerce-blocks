@@ -2,6 +2,7 @@
  * External dependencies
  */
 const path = require( 'path' );
+const fs = require( 'fs' );
 const { kebabCase } = require( 'lodash' );
 const RemoveFilesPlugin = require( './remove-files-webpack-plugin' );
 const MiniCssExtractPlugin = require( 'mini-css-extract-plugin' );
@@ -260,32 +261,25 @@ const getMainConfig = ( options = {} ) => {
 			new CopyWebpackPlugin( {
 				patterns: [
 					{
-						from: './assets/js/blocks/checkout/block.json',
-						to: './checkout/block.json',
-					},
-					{
-						from:
-							'./assets/js/blocks/featured-items/featured-category/block.json',
-						to: './featured-category/block.json',
-					},
-					{
-						from:
-							'./assets/js/blocks/featured-items/featured-product/block.json',
-						to: './featured-product/block.json',
-					},
-					{
-						from:
-							'./assets/js/blocks/handpicked-products/block.json',
-						to: './handpicked-products/block.json',
-					},
-					{
-						from: './assets/js/blocks/product-tag/block.json',
-						to: './product-tag/block.json',
-					},
-					{
-						from:
-							'./assets/js/blocks/products-by-attribute/block.json',
-						to: './products-by-attribute/block.json',
+						from: './assets/js/**/block.json',
+						to( { absoluteFilename } ) {
+							/**
+							 * Getting the block name from the JSON metadata is less error prone
+							 * than extracting it from the file path.
+							 */
+							const JSONFile = fs.readFileSync(
+								path.resolve( __dirname, absoluteFilename )
+							);
+							const metadata = JSON.parse( JSONFile.toString() );
+							const blockName = metadata.name
+								.split( '/' )
+								.at( 1 );
+
+							if ( metadata.parent )
+								return `./inner-blocks/${ blockName }/block.json`;
+
+							return `./${ blockName }/block.json`;
+						},
 					},
 				],
 			} ),
@@ -727,10 +721,8 @@ const getStylingConfig = ( options = {} ) => {
 									includePaths: [ 'assets/css/abstracts' ],
 								},
 								additionalData: ( content, loaderContext ) => {
-									const {
-										resourcePath,
-										rootContext,
-									} = loaderContext;
+									const { resourcePath, rootContext } =
+										loaderContext;
 									const relativePath = path.relative(
 										rootContext,
 										resourcePath

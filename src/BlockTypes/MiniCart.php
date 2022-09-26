@@ -199,8 +199,7 @@ class MiniCart extends AbstractBlock {
 
 		if (
 			current_user_can( 'edit_theme_options' ) &&
-			function_exists( 'wp_is_block_theme' ) &&
-			wp_is_block_theme()
+			wc_current_theme_is_fse_theme()
 		) {
 			$theme_slug      = BlockTemplateUtils::theme_has_template_part( 'mini-cart' ) ? wp_get_theme()->get_stylesheet() : BlockTemplateUtils::PLUGIN_SLUG;
 			$site_editor_uri = admin_url( 'site-editor.php' );
@@ -277,13 +276,37 @@ class MiniCart extends AbstractBlock {
 		if ( ! $script->src ) {
 			return;
 		}
+
+		$site_url = site_url() ?? wp_guess_url();
+
 		$this->scripts_to_lazy_load[ $script->handle ] = array(
-			'src'          => $script->src,
+			'src'          => preg_match( '|^(https?:)?//|', $script->src ) ? $script->src : $site_url . $script->src,
 			'version'      => $script->ver,
 			'before'       => $wp_scripts->print_inline_script( $script->handle, 'before', false ),
 			'after'        => $wp_scripts->print_inline_script( $script->handle, 'after', false ),
 			'translations' => $wp_scripts->print_translations( $script->handle, false ),
 		);
+	}
+
+	/**
+	 * Returns the markup for the cart price.
+	 *
+	 * @param array $attributes Block attributes.
+	 *
+	 * @return string
+	 */
+	protected function get_cart_price_markup( $attributes ) {
+		if ( isset( $attributes['hasHiddenPrice'] ) && false !== $attributes['hasHiddenPrice'] ) {
+			return;
+		}
+
+		$cart_controller     = $this->get_cart_controller();
+		$cart                = $cart_controller->get_cart_instance();
+		$cart_contents_total = $cart->get_subtotal();
+		$typography_styles   = isset( StyleAttributesUtils::get_font_weight_class_and_style( $attributes )['style'] ) ? StyleAttributesUtils::get_font_weight_class_and_style( $attributes )['style'] : null;
+
+		return '<span class="wc-block-mini-cart__amount" style="' . esc_attr( $typography_styles ) . '">' . esc_html( wp_strip_all_tags( wc_price( $cart_contents_total ) ) ) . '</span>
+		' . $this->get_include_tax_label_markup();
 	}
 
 	/**
@@ -302,12 +325,12 @@ class MiniCart extends AbstractBlock {
 	/**
 	 * Append frontend scripts when rendering the Mini Cart block.
 	 *
-	 * @param array  $attributes Block attributes.
-	 * @param string $content    Block content.
-	 *
+	 * @param array    $attributes Block attributes.
+	 * @param string   $content    Block content.
+	 * @param WP_Block $block      Block instance.
 	 * @return string Rendered block type output.
 	 */
-	protected function render( $attributes, $content ) {
+	protected function render( $attributes, $content, $block ) {
 		return $content . $this->get_markup( $attributes );
 	}
 
@@ -337,7 +360,10 @@ class MiniCart extends AbstractBlock {
 
 		$classes_styles  = StyleAttributesUtils::get_classes_and_styles_by_attributes( $attributes, array( 'text_color', 'background_color', 'font_size', 'font_family' ) );
 		$wrapper_classes = sprintf( 'wc-block-mini-cart wp-block-woocommerce-mini-cart %s', $classes_styles['classes'] );
-		$wrapper_styles  = $classes_styles['styles'];
+		if ( ! empty( $attributes['className'] ) ) {
+			$wrapper_classes .= ' ' . $attributes['className'];
+		}
+		$wrapper_styles = $classes_styles['styles'];
 
 		$aria_label = sprintf(
 		/* translators: %1$d is the number of products in the cart. %2$s is the cart total */
@@ -355,8 +381,7 @@ class MiniCart extends AbstractBlock {
 			<path fill-rule="evenodd" clip-rule="evenodd" d="M17.3231 18.2769C17.3741 18.2769 17.4154 18.2356 17.4154 18.1846C17.4154 18.1336 17.3741 18.0923 17.3231 18.0923C17.2721 18.0923 17.2308 18.1336 17.2308 18.1846C17.2308 18.2356 17.2721 18.2769 17.3231 18.2769ZM15.5077 18.1846C15.5077 17.182 16.3205 16.3692 17.3231 16.3692C18.3257 16.3692 19.1385 17.182 19.1385 18.1846C19.1385 19.1872 18.3257 20 17.3231 20C16.3205 20 15.5077 19.1872 15.5077 18.1846Z" fill="currentColor"/>
 			<path fill-rule="evenodd" clip-rule="evenodd" d="M20.0631 9.53835L19.4662 12.6685L19.4648 12.6757L19.4648 12.6757C19.3424 13.2919 19.0072 13.8454 18.5178 14.2394C18.031 14.6312 17.4226 14.8404 16.798 14.8308H8.44017C7.81556 14.8404 7.20714 14.6312 6.72038 14.2394C6.2312 13.8456 5.89605 13.2924 5.77352 12.6765L5.77335 12.6757L4.33477 5.48814C4.3286 5.46282 4.32345 5.43711 4.31934 5.41104L3.61815 1.90768H0.953842C0.42705 1.90768 0 1.48063 0 0.953842C0 0.42705 0.42705 0 0.953842 0H4.4C4.85462 0 5.24607 0.320858 5.33529 0.766644L6.04403 4.30769H12.785C13.0114 4.99157 13.3319 5.63258 13.7312 6.21538H6.42585L7.64421 12.3026L7.64449 12.304C7.67966 12.4811 7.77599 12.6402 7.91662 12.7534C8.05725 12.8666 8.23322 12.9267 8.41372 12.9233L8.432 12.9231H16.8062L16.8244 12.9233C17.0049 12.9267 17.1809 12.8666 17.3215 12.7534C17.4614 12.6408 17.5575 12.4828 17.5931 12.3068L17.5937 12.304L18.1649 9.30867C18.762 9.45873 19.387 9.53842 20.0307 9.53842C20.0415 9.53842 20.0523 9.5384 20.0631 9.53835Z" fill="currentColor"/>
 		</svg>';
-		$button_html = '<span class="wc-block-mini-cart__amount">' . esc_html( wp_strip_all_tags( wc_price( $cart_contents_total ) ) ) . '</span>
-		' . $this->get_include_tax_label_markup() . '
+		$button_html = $this->get_cart_price_markup( $attributes ) . '
 		<span class="wc-block-mini-cart__quantity-badge">
 			' . $icon . '
 			<span class="wc-block-mini-cart__badge">' . $cart_contents_count . '</span>
@@ -433,7 +458,7 @@ class MiniCart extends AbstractBlock {
 				);
 			}
 			return array(
-				'label_including_tax'               => '',
+				'tax_label'                         => '',
 				'display_cart_prices_including_tax' => true,
 			);
 		}
@@ -458,7 +483,14 @@ class MiniCart extends AbstractBlock {
 	 * @return object;
 	 */
 	protected function get_cart_payload() {
-		return WC()->api->get_endpoint_data( '/wc/store/cart' );
+		$notices = wc_get_notices(); // Backup the notices because StoreAPI will remove them.
+		$payload = WC()->api->get_endpoint_data( '/wc/store/cart' );
+
+		if ( ! empty( $notices ) ) {
+			wc_set_notices( $notices ); // Restore the notices.
+		}
+
+		return $payload;
 	}
 
 	/**
@@ -491,7 +523,7 @@ class MiniCart extends AbstractBlock {
 		register_block_pattern(
 			'woocommerce/mini-cart-empty-cart-message',
 			array(
-				'title'    => __( 'Mini Cart Empty Cart Message', 'woo-gutenberg-products-block' ),
+				'title'    => __( 'Empty Mini Cart Message', 'woo-gutenberg-products-block' ),
 				'inserter' => false,
 				'content'  => '<!-- wp:paragraph {"align":"center"} --><p class="has-text-align-center"><strong>' . __( 'Your cart is currently empty!', 'woo-gutenberg-products-block' ) . '</strong></p><!-- /wp:paragraph -->',
 			)

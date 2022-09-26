@@ -4,7 +4,6 @@
 import { Coupon, HTTPClientFactory } from '@woocommerce/api';
 import config from 'config';
 import {
-	activateTheme,
 	disableSiteEditorWelcomeGuide,
 	openGlobalBlockInserter,
 	switchUserToAdmin,
@@ -19,8 +18,9 @@ import fs from 'fs';
 /**
  * Internal dependencies
  */
-import { elementExists, getElementData, getTextContent } from './page-utils';
+import { elementExists, getTextContent } from './page-utils';
 import { PERFORMANCE_REPORT_FILENAME } from '../utils/constants';
+import { cli } from '../utils';
 
 /**
  * @typedef {import('@types/puppeteer').ElementHandle} ElementHandle
@@ -44,8 +44,7 @@ export const DEFAULT_TIMEOUT = 30000;
 const SELECTORS = {
 	canvas: 'iframe[name="editor-canvas"]',
 	inserter: {
-		search:
-			'.components-search-control__input,.block-editor-inserter__search input,.block-editor-inserter__search-input,input.block-editor-inserter__search',
+		search: '.components-search-control__input,.block-editor-inserter__search input,.block-editor-inserter__search-input,input.block-editor-inserter__search',
 	},
 	templatesListTable: {
 		actionsContainer: '.edit-site-list-table__actions',
@@ -63,6 +62,9 @@ const SELECTORS = {
 		confirmSave: '.editor-entities-saved-states__save-button',
 		saveButton: '.edit-site-save-button__button',
 		savePrompt: '.entities-saved-states__text-prompt',
+	},
+	allProductsBlock: {
+		productsList: '.wc-block-grid__products:not(.is-loading-products)',
 	},
 };
 
@@ -132,6 +134,9 @@ export const closeModalIfExists = async () => {
 };
 
 export const openWidgetsEditorBlockInserter = async () => {
+	await page.waitForSelector(
+		'.edit-widgets-header [aria-label="Add block"],.edit-widgets-header [aria-label="Toggle block inserter"]'
+	);
 	await page.click(
 		'.edit-widgets-header [aria-label="Add block"],.edit-widgets-header [aria-label="Toggle block inserter"]'
 	);
@@ -152,46 +157,29 @@ export const isBlockInsertedInWidgetsArea = async ( blockName ) => {
 /**
  * Visits site editor dependening on used WordPress version and how Gutenberg is installed.
  *
- * 1. `themes.php?page=gutenberg-edit-site` this is a legacy editor access used for WP <=5.8.
- * 2. `site-editor.php` is the new way of accessing the editor in WP >=5.9+.
- *
- * @param {'core' | 'gutenberg'}               [editorContext='core']          Whether to go to the Gutenberg URL or the Core one.
  * @param {Object}                             params                          Query parameters to add to the URL.
  * @param {string}                             [params.postId]                 ID of the template if we want to access template editor.
  * @param {'wp_template' | 'wp_template_part'} [params.postType='wp_template'] Type of template.
  */
-export async function goToSiteEditor( editorContext = 'core', params ) {
-	// There is a bug in Gutenberg/WPCore now that makes it impossible to rely on site-editor.php on setups
-	// with locally installed Gutenberg. Details in https://github.com/WordPress/gutenberg/issues/39639.
-	// TODO: Update to always use site-editor.php once WordPress 6.0 is released and fix is verified.
-	// 		 Remove usage of goToSiteEditor and GUTENBERG_EDITOR_CONTEXT from from here and from workflows.
-	let editorPath;
-	const queryParams = { ...params };
-
-	if ( editorContext === 'gutenberg' ) {
-		editorPath = 'themes.php';
-		queryParams.page = 'gutenberg-edit-site';
-	} else {
-		editorPath = 'site-editor.php';
-	}
-
-	return await visitAdminPage( editorPath, addQueryArgs( '', queryParams ) );
+export async function goToSiteEditor( params = {} ) {
+	return await visitAdminPage(
+		'site-editor.php',
+		addQueryArgs( '', params )
+	);
 }
 
 /**
  * Visits the Site Editor template edit view.
  *
  * @param {Object}                             params
- * @param {string}                             params.postId                   ID of the template if we want to access template editor.
- * @param {'core' | 'gutenberg'}               [params.editorContext='core']   Whether to go to the Gutenberg URL or the Core one.
+ * @param {string}                             [params.postId]                 ID of the template if we want to access template editor.
  * @param {'wp_template' | 'wp_template_part'} [params.postType='wp_template'] Type of template.
  */
 export async function goToTemplateEditor( {
 	postId,
 	postType = 'wp_template',
-	editorContext = GUTENBERG_EDITOR_CONTEXT,
 } = {} ) {
-	await goToSiteEditor( editorContext, {
+	await goToSiteEditor( {
 		postType,
 		postId,
 	} );
@@ -204,16 +192,14 @@ export async function goToTemplateEditor( {
  * Visits the Site Editor templates list view.
  *
  * @param {Object}                             params
- * @param {'core' | 'gutenberg'}               [params.editorContext='core']   Whether to go to the Gutenberg URL or the Core one.
  * @param {'wp_template' | 'wp_template_part'} [params.postType='wp_template'] Type of template.
  * @param {'list' | 'actions'}                 [params.waitFor='false']        Wait for list or for actions to be present - tempalte actions can take a moment to load, we can wait for them to be present if needed.
  */
 export async function goToTemplatesList( {
 	postType = 'wp_template',
-	editorContext = GUTENBERG_EDITOR_CONTEXT,
 	waitFor = 'list',
 } = {} ) {
-	await goToSiteEditor( editorContext, { postType } );
+	await goToSiteEditor( { postType } );
 
 	if ( waitFor === 'actions' ) {
 		await page.waitForSelector(
@@ -245,10 +231,6 @@ export async function saveTemplate() {
 	await page.waitForSelector( savePrompt );
 	await page.click( confirmSave );
 	await page.waitForSelector( `${ saveButton }[aria-disabled="true"]` );
-	await page.waitForResponse( ( res ) => {
-		// Will match both templates and template_parts endpoints.
-		return res.url().includes( '/wp/v2/template' );
-	} );
 }
 
 /**
@@ -327,22 +309,18 @@ export async function filterCurrentBlocks( predicate ) {
  * @param {string} themeSlug The theme the test suite should use
  */
 export function useTheme( themeSlug ) {
-	let previousTheme;
-
 	beforeAll( async () => {
-		await switchUserToAdmin();
-		await visitAdminPage( 'themes.php' );
-
-		previousTheme = await getElementData(
-			SELECTORS.themesPage.currentTheme,
-			'slug'
+		await cli(
+			`npm run wp-env run tests-cli wp theme activate ${ themeSlug }`
 		);
-
-		await activateTheme( themeSlug );
+		await switchUserToAdmin();
 	} );
 
 	afterAll( async () => {
-		await activateTheme( previousTheme );
+		await cli(
+			`npm run wp-env run tests-cli wp theme activate storefront`
+		);
+		await switchUserToAdmin();
 	} );
 }
 
@@ -434,28 +412,44 @@ export const createCoupon = async ( coupon ) => {
 
 /**
  * Open the block editor settings menu.
+ *
+ * @param {Object}  [root0]
+ * @param {boolean} [root0.isFSEEditor] Amount to be applied. Defaults to 5.
  */
-export const openBlockEditorSettings = async () => {
-	const buttonSelector =
-		'.edit-site-header__actions button[aria-label="Settings"]';
 
-	const isSideBarAlreadyOpened = await page.$(
-		'.interface-interface-skeleton__sidebar'
-	);
+export const openBlockEditorSettings = async ( { isFSEEditor = false } ) => {
+	const buttonSelector = isFSEEditor
+		? '.edit-site-header__actions button[aria-label="Settings"]'
+		: '.edit-post-header__settings button[aria-label="Settings"]';
+
+	const isPressed = `${ buttonSelector }.is-pressed`;
+
+	const isSideBarAlreadyOpened = await page.$( isPressed );
 
 	if ( isSideBarAlreadyOpened === null ) {
-		await page.click( buttonSelector );
+		// @ts-ignore
+		await page.$eval( buttonSelector, ( el ) => el.click() );
 	}
 };
 
 /**
- * Click a link and wait for the page to load.
- *
- * @param {string} selector The CSS selector of the link to click.
+ *  Wait for all Products Block is loaded completely: when the skeleton disappears, and the products are visible
  */
-export const clickLink = async ( selector ) => {
-	await Promise.all( [
-		page.click( selector ),
-		page.waitForNavigation( { waitUntil: 'networkidle0' } ),
-	] );
+export const waitForAllProductsBlockLoaded = async () => {
+	await page.waitForSelector( SELECTORS.allProductsBlock.productsList );
 };
+
+/**
+ * Execute or skip the test suite base on the provided condition.
+ *
+ * @param {boolean} condition Condition to execute test suite.
+ */
+export const describeOrSkip = ( condition ) =>
+	condition ? describe : describe.skip;
+
+/**
+ * Execute or skip the test base on the provided condition.
+ *
+ * @param {boolean} condition Condition to execute test.
+ */
+export const itOrSkip = ( condition ) => ( condition ? it : it.skip );

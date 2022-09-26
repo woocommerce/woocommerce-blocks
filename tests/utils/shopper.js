@@ -34,10 +34,6 @@ export const shopper = {
 			await page.goto( url, {
 				waitUntil: 'networkidle0',
 			} );
-
-			await expect( page ).toMatchElement( 'h1', {
-				text: blockName,
-			} );
 		},
 
 		goToCart: async () => {
@@ -69,9 +65,7 @@ export const shopper = {
 			await expect( page ).toMatchElement( 'span', {
 				text: productTitle,
 			} );
-			await expect(
-				page
-			).toMatchElement(
+			await expect( page ).toMatchElement(
 				'div.wc-block-components-order-summary-item__quantity',
 				{ text: quantity }
 			);
@@ -214,6 +208,7 @@ export const shopper = {
 
 		// prettier-ignore
 		fillBillingDetails: async ( customerBillingDetails ) => {
+			await page.waitForSelector("#billing-fields");
 			const companyInputField = await page.$( '#billing-company' );
 
 			if ( companyInputField ) {
@@ -314,6 +309,15 @@ export const shopper = {
 				} ),
 				page.waitForNavigation( { waitUntil: 'networkidle0' } ),
 			] );
+		},
+
+		addCrossSellsProductToCart: async () => {
+			await page.waitForSelector(
+				'.wc-block-components-product-add-to-cart-button'
+			);
+			expect( page ).toClick(
+				'.wc-block-components-product-add-to-cart-button'
+			);
 		},
 
 		selectAndVerifyShippingOption: async (
@@ -475,5 +479,24 @@ export const shopper = {
 			page.waitForNavigation( { waitUntil: 'networkidle0' } ),
 			page.click( 'button[name="login"]' ),
 		] );
+	},
+
+	addToCartFromShopPage: async ( productIdOrTitle ) => {
+		if ( Number.isInteger( productIdOrTitle ) ) {
+			const addToCart = `a[data-product_id="${ productIdOrTitle }"]`;
+			await page.click( addToCart );
+			await expect( page ).toMatchElement( addToCart + '.added' );
+		} else {
+			const addToCartXPath =
+				`//li[contains(@class, "type-product") and a/h2[contains(text(), "${ productIdOrTitle }")]]` +
+				'//a[contains(@class, "add_to_cart_button") and contains(@class, "ajax_add_to_cart")';
+
+			const [ addToCartButton ] = await page.$x( addToCartXPath + ']' );
+			await addToCartButton.click();
+
+			await page.waitForXPath(
+				addToCartXPath + ' and contains(@class, "added")]'
+			);
+		}
 	},
 };

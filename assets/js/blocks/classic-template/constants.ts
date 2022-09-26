@@ -2,8 +2,14 @@
  * External dependencies
  */
 import { __ } from '@wordpress/i18n';
+export const BLOCK_SLUG = 'woocommerce/legacy-template';
 
-export const TEMPLATES: Record< string, Record< string, string > > = {
+/**
+ * Internal dependencies
+ */
+import { TemplateDetails } from './types';
+
+export const TEMPLATES: TemplateDetails = {
 	'single-product': {
 		title: __(
 			'WooCommerce Single Product Block',
@@ -28,6 +34,13 @@ export const TEMPLATES: Record< string, Record< string, string > > = {
 	'taxonomy-product_tag': {
 		title: __(
 			'WooCommerce Product Tag Block',
+			'woo-gutenberg-products-block'
+		),
+		placeholder: 'archive-product',
+	},
+	'product-search-results': {
+		title: __(
+			'WooCommerce Product Search Results Block',
 			'woo-gutenberg-products-block'
 		),
 		placeholder: 'archive-product',

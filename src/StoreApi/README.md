@@ -1,5 +1,15 @@
 # WooCommerce Store API <!-- omit in toc -->
 
+## Table of contents <!-- omit in toc -->
+
+- [Requirements and limitations](#requirements-and-limitations)
+- [Store API Namespace](#store-api-namespace)
+- [Resources and endpoints](#resources-and-endpoints)
+- [Pagination](#pagination)
+- [Status codes](#status-codes)
+- [Contributing](#contributing)
+- [Extensibility](#extensibility)
+
 **The Store API provides public Rest API endpoints for the development of customer-facing cart, checkout, and product functionality. It follows many of the patterns used in the [WordPress REST API](https://developer.wordpress.org/rest-api/key-concepts/).**
 
 Example of a valid API request using cURL:
@@ -14,18 +24,6 @@ Possible uses of the Store API include:
 2. Adding products to the cart and returning an updated cart object for display
 3. Obtaining shipping rates for a cart
 4. Converting a customer’s cart to an Order, collecting addresses, and then facilitating payment
-
----
-
-## Table of contents <!-- omit in toc -->
-
-- [Requirements and limitations](#requirements-and-limitations)
-- [Store API Namespace](#store-api-namespace)
-- [Resources and endpoints](#resources-and-endpoints)
-- [Pagination](#pagination)
-- [Status codes](#status-codes)
-- [Contributing](#contributing)
-- [Extensibility](#extensibility)
 
 ## Requirements and limitations
 
@@ -143,7 +141,7 @@ Please review the [Store API Guiding principles](./docs/guiding-principles.md). 
 
 ## Extensibility
 
-The approach to extensibility within the Store API is to expose certain routes and schema to the ExtendSchema class. [Documentation for contributors on this can be found here](https://github.com/woocommerce/woocommerce-gutenberg-products-block/blob/trunk/docs/extensibility/extend-rest-api-new-endpoint.md).
+The approach to extensibility within the Store API is to expose certain routes and schema to the ExtendSchema class. [Documentation for contributors on this can be found here](../../docs/third-party-developers/extensibility/rest-api/extend-rest-api-new-endpoint.md).
 
 If a route includes the extensibility interface, 3rd party developers can use the shared `ExtendSchema::class` instance to register additional endpoint data and additional schema.
 
@@ -158,10 +156,12 @@ If any of the following statements are true, choose to _extend_ the Store API ra
 If the data is sensitive (for example, a core setting that should be private), or not related to the current user (for example, looking up an order by order ID), [choose to use the authenticated WC REST API](https://woocommerce.github.io/woocommerce-rest-api-docs/#introduction).
 
 <!-- FEEDBACK -->
+
 ---
 
 [We're hiring!](https://woocommerce.com/careers/) Come work with us!
 
-🐞 Found a mistake, or have a suggestion? [Leave feedback about this document here.](https://github.com/woocommerce/woocommerce-gutenberg-products-block/issues/new?assignees=&labels=type%3A+documentation&template=--doc-feedback.md&title=Feedback%20on%20./src/StoreApi/README.md)
+🐞 Found a mistake, or have a suggestion? [Leave feedback about this document here.](https://github.com/woocommerce/woocommerce-blocks/issues/new?assignees=&labels=type%3A+documentation&template=--doc-feedback.md&title=Feedback%20on%20./src/StoreApi/README.md)
+
 <!-- /FEEDBACK -->
 

@@ -33,9 +33,8 @@ export const getPaymentResultFromCheckoutResponse = (
 		) {
 			response.payment_result.payment_details.forEach(
 				( { key, value }: { key: string; value: string } ) => {
-					paymentResult.paymentDetails[ key ] = decodeEntities(
-						value
-					);
+					paymentResult.paymentDetails[ key ] =
+						decodeEntities( value );
 				}
 			);
 		}
@@ -54,7 +53,7 @@ export const getPaymentResultFromCheckoutResponse = (
 		response.data.status > 299
 	) {
 		paymentResult.message = __(
-			'Something went wrong. Please contact us to get assistance.',
+			'Something went wrong. Please contact us for assistance.',
 			'woo-gutenberg-products-block'
 		);
 	}

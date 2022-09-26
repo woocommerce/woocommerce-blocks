@@ -55,11 +55,8 @@ const Combobox = ( {
 	instanceId = '0',
 	autoComplete = 'off',
 }: ComboboxProps ): JSX.Element => {
-	const {
-		getValidationError,
-		setValidationErrors,
-		clearValidationError,
-	} = useValidationContext();
+	const { getValidationError, setValidationErrors, clearValidationError } =
+		useValidationContext();
 
 	const controlRef = useRef< HTMLDivElement >( null );
 	const controlId = id || 'control-' + instanceId;
@@ -95,6 +92,8 @@ const Combobox = ( {
 		setValidationErrors,
 	] );
 
+	// @todo Remove patch for ComboboxControl once https://github.com/WordPress/gutenberg/pull/33928 is released
+	// Also see https://github.com/WordPress/gutenberg/pull/34090
 	return (
 		<div
 			id={ controlId }
@@ -124,7 +123,8 @@ const Combobox = ( {
 						}
 
 						// Try to match.
-						const normalizedFilterValue = filterValue.toLocaleUpperCase();
+						const normalizedFilterValue =
+							filterValue.toLocaleUpperCase();
 						const foundOption = options.find(
 							( option ) =>
 								option.label

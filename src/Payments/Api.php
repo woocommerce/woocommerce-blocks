@@ -7,9 +7,6 @@ use Automattic\WooCommerce\Blocks\Payments\Integrations\BankTransfer;
 use Automattic\WooCommerce\Blocks\Payments\Integrations\CashOnDelivery;
 use Automattic\WooCommerce\Blocks\Payments\Integrations\Cheque;
 use Automattic\WooCommerce\Blocks\Payments\Integrations\PayPal;
-use Automattic\WooCommerce\StoreApi\Payments\PaymentContext;
-use Automattic\WooCommerce\StoreApi\Payments\PaymentResult;
-use Automattic\WooCommerce\StoreApi\Utilities\NoticeHandler;
 
 /**
  *  The Api class provides an interface to payment method registration.
@@ -52,7 +49,6 @@ class Api {
 		add_action( 'woocommerce_blocks_checkout_enqueue_data', array( $this, 'add_payment_method_script_data' ) );
 		add_action( 'woocommerce_blocks_cart_enqueue_data', array( $this, 'add_payment_method_script_data' ) );
 		add_action( 'woocommerce_blocks_payment_method_type_registration', array( $this, 'register_payment_method_integrations' ) );
-		add_action( 'woocommerce_rest_checkout_process_payment_with_context', array( $this, 'process_legacy_payment' ), 999, 2 );
 		add_action( 'wp_print_scripts', array( $this, 'verify_payment_methods_dependencies' ), 1 );
 	}
 
@@ -121,57 +117,6 @@ class Api {
 	}
 
 	/**
-	 * Attempt to process a payment for the checkout API if no payment methods support the
-	 * woocommerce_rest_checkout_process_payment_with_context action.
-	 *
-	 * @param PaymentContext $context Holds context for the payment.
-	 * @param PaymentResult  $result  Result of the payment.
-	 */
-	public function process_legacy_payment( PaymentContext $context, PaymentResult &$result ) {
-		if ( $result->status ) {
-			return;
-		}
-
-		// phpcs:ignore WordPress.Security.NonceVerification
-		$post_data = $_POST;
-
-		// Set constants.
-		wc_maybe_define_constant( 'WOOCOMMERCE_CHECKOUT', true );
-
-		// Add the payment data from the API to the POST global.
-		$_POST = $context->payment_data;
-
-		// Call the process payment method of the chosen gateway.
-		$payment_method_object = $context->get_payment_method_instance();
-
-		if ( ! $payment_method_object instanceof \WC_Payment_Gateway ) {
-			return;
-		}
-
-		$payment_method_object->validate_fields();
-
-		// If errors were thrown, we need to abort.
-		NoticeHandler::convert_notices_to_exceptions( 'woocommerce_rest_payment_error' );
-
-		// Process Payment.
-		$gateway_result = $payment_method_object->process_payment( $context->order->get_id() );
-
-		// Restore $_POST data.
-		$_POST = $post_data;
-
-		// If `process_payment` added notices, clear them. Notices are not displayed from the API -- payment should fail,
-		// and a generic notice will be shown instead if payment failed.
-		wc_clear_notices();
-
-		// Handle result.
-		$result->set_status( isset( $gateway_result['result'] ) && 'success' === $gateway_result['result'] ? 'success' : 'failure' );
-
-		// set payment_details from result.
-		$result->set_payment_details( array_merge( $result->payment_details, $gateway_result ) );
-		$result->set_redirect_url( $gateway_result['redirect'] );
-	}
-
-	/**
 	 * Verify all dependencies of registered payment methods have been registered.
 	 * If not, remove that payment method script from the list of dependencies
 	 * of Cart and Checkout block scripts so it doesn't break the blocks and show
@@ -193,7 +138,7 @@ class Api {
 				if ( ! wp_script_is( $dep, 'registered' ) ) {
 					$error_handle  = $dep . '-dependency-error';
 					$error_message = sprintf(
-						'Payment gateway with handle \'%1$s\' has been deactivated in Cart and Checkout blocks because its dependency \'%2$s\' is not registered. Read the docs about registering assets for payment methods: https://github.com/woocommerce/woocommerce-gutenberg-products-block/blob/trunk/docs/extensibility/payment-method-integration.md#registering-assets',
+						'Payment gateway with handle \'%1$s\' has been deactivated in Cart and Checkout blocks because its dependency \'%2$s\' is not registered. Read the docs about registering assets for payment methods: https://github.com/woocommerce/woocommerce-blocks/blob/060f63c04f0f34f645200b5d4da9212125c49177/docs/third-party-developers/extensibility/checkout-payment-methods/payment-method-integration.md#registering-assets',
 						esc_html( $payment_method_script ),
 						esc_html( $dep )
 					);

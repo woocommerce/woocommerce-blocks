@@ -142,9 +142,8 @@ const ProductList = ( {
 			currentPage,
 		} )
 	);
-	const { products, totalProducts, productsLoading } = useStoreProducts(
-		queryState
-	);
+	const { products, totalProducts, productsLoading } =
+		useStoreProducts( queryState );
 	const { parentClassName, parentName } = useInnerBlockLayoutContext();
 	const totalQuery = extractPaginationAndSortAttributes( queryState );
 	const { dispatchStoreEvent } = useStoreEvents();
@@ -239,7 +238,11 @@ const ProductList = ( {
 			) }
 			{ ! hasProducts && ! hasFilters && <NoProducts /> }
 			{ hasProducts && (
-				<ul className={ `${ parentClassName }__products` }>
+				<ul
+					className={ classnames( `${ parentClassName }__products`, {
+						'is-loading-products': productsLoading,
+					} ) }
+				>
 					{ listProducts.map( ( product = {}, i: number ) => (
 						<ProductListItem
 							key={ product.id || i }

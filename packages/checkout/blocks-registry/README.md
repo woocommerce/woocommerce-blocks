@@ -1,8 +1,4 @@
-# Checkout - Blocks Registry <!-- omit in toc -->
-
-This directory contains the Checkout Blocks Registry. This provides functions to **register new Inner Blocks** that can be inserted automatically, or optionally, within the Mini Cart, Cart and Checkout blocks in certain areas.
-
-Registered Inner Blocks can either be forced within the layout of the Cart/Checkout Block, or they can just be made available to merchants so they can be inserted manually. Inner Blocks registered in this way can also define a component to render on the frontend in place of the Block.
+# Blocks Registry <!-- omit in toc -->
 
 ## Table of Contents <!-- omit in toc -->
 
@@ -21,6 +17,10 @@ Registered Inner Blocks can either be forced within the layout of the Cart/Check
     -   [Usage](#usage-1)
 -   [`hasInnerBlocks( blockName )`](#hasinnerblocks-blockname-)
     -   [Usage](#usage-2)
+
+This directory contains the Checkout Blocks Registry. This provides functions to **register new Inner Blocks** that can be inserted automatically, or optionally, within the Mini Cart, Cart and Checkout blocks in certain areas.
+
+Registered Inner Blocks can either be forced within the layout of the Cart/Checkout Block, or they can just be made available to merchants so they can be inserted manually. Inner Blocks registered in this way can also define a component to render on the frontend in place of the Block.
 
 ## How Inner Blocks Work
 
@@ -48,7 +48,7 @@ See the `innerBlockAreas` typedef for the most up to date list of available area
 
 ## Registering a Block
 
-To register a checkout block, first, register your Block Type with WordPress using https://developer.wordpress.org/block-editor/reference-guides/block-api/block-registration/. We recommend using the `blocks.json` method to avoid
+To register a checkout block, first, register your Block Type with WordPress using <https://developer.wordpress.org/block-editor/reference-guides/block-api/block-registration/>. We recommend using the `blocks.json` method to avoid
 repetition.
 
 When registering your block, you should also define the `parent` property to include a list of areas where your block will be available. For example:
@@ -204,10 +204,12 @@ const isValid = hasInnerBlocks( 'woocommerce/checkout-totals-block' ); // true
 ```
 
 <!-- FEEDBACK -->
+
 ---
 
 [We're hiring!](https://woocommerce.com/careers/) Come work with us!
 
-🐞 Found a mistake, or have a suggestion? [Leave feedback about this document here.](https://github.com/woocommerce/woocommerce-gutenberg-products-block/issues/new?assignees=&labels=type%3A+documentation&template=--doc-feedback.md&title=Feedback%20on%20./packages/checkout/blocks-registry/README.md)
+🐞 Found a mistake, or have a suggestion? [Leave feedback about this document here.](https://github.com/woocommerce/woocommerce-blocks/issues/new?assignees=&labels=type%3A+documentation&template=--doc-feedback.md&title=Feedback%20on%20./packages/checkout/blocks-registry/README.md)
+
 <!-- /FEEDBACK -->
 

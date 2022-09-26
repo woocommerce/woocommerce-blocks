@@ -9,6 +9,7 @@ import type { Cart, CartMeta } from '@woocommerce/types';
 import {
 	EMPTY_CART_COUPONS,
 	EMPTY_CART_ITEMS,
+	EMPTY_CART_CROSS_SELLS,
 	EMPTY_CART_FEES,
 	EMPTY_CART_ITEM_ERRORS,
 	EMPTY_CART_ERRORS,
@@ -27,8 +28,8 @@ export interface CartState {
 	errors: Array< ResponseError >;
 }
 
-export const EMPTY_PENDING_QUANTITY: [  ] = [];
-export const EMPTY_PENDING_DELETE: [  ] = [];
+export const EMPTY_PENDING_QUANTITY: [] = [];
+export const EMPTY_PENDING_DELETE: [] = [];
 
 export const defaultCartState: CartState = {
 	cartItemsPendingQuantity: EMPTY_PENDING_QUANTITY,
@@ -64,6 +65,7 @@ export const defaultCartState: CartState = {
 		items: EMPTY_CART_ITEMS,
 		itemsCount: 0,
 		itemsWeight: 0,
+		crossSells: EMPTY_CART_CROSS_SELLS,
 		needsShipping: true,
 		needsPayment: false,
 		hasCalculatedShipping: true,

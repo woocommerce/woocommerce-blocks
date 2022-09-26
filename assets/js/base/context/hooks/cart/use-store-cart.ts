@@ -9,6 +9,7 @@ import {
 	CART_STORE_KEY as storeKey,
 	EMPTY_CART_COUPONS,
 	EMPTY_CART_ITEMS,
+	EMPTY_CART_CROSS_SELLS,
 	EMPTY_CART_FEES,
 	EMPTY_CART_ITEM_ERRORS,
 	EMPTY_CART_ERRORS,
@@ -99,6 +100,7 @@ export const defaultCartData: StoreCart = {
 	cartFees: EMPTY_CART_FEES,
 	cartItemsCount: 0,
 	cartItemsWeight: 0,
+	crossSellsProducts: EMPTY_CART_CROSS_SELLS,
 	cartNeedsPayment: true,
 	cartNeedsShipping: true,
 	cartItemErrors: EMPTY_CART_ITEM_ERRORS,
@@ -150,6 +152,7 @@ export const useStoreCart = (
 				return {
 					cartCoupons: previewCart.coupons,
 					cartItems: previewCart.items,
+					crossSellsProducts: previewCart.cross_sells,
 					cartFees: previewCart.fees,
 					cartItemsCount: previewCart.items_count,
 					cartItemsWeight: previewCart.items_weight,
@@ -159,6 +162,7 @@ export const useStoreCart = (
 					cartTotals: previewCart.totals,
 					cartIsLoading: false,
 					cartErrors: EMPTY_CART_ERRORS,
+					billingData: defaultBillingAddress,
 					billingAddress: defaultBillingAddress,
 					shippingAddress: defaultShippingAddress,
 					extensions: EMPTY_EXTENSIONS,
@@ -178,9 +182,8 @@ export const useStoreCart = (
 			const cartData = store.getCartData();
 			const cartErrors = store.getCartErrors();
 			const cartTotals = store.getCartTotals();
-			const cartIsLoading = ! store.hasFinishedResolution(
-				'getCartData'
-			);
+			const cartIsLoading =
+				! store.hasFinishedResolution( 'getCartData' );
 
 			const isLoadingRates = store.isCustomerDataUpdating();
 			const { receiveCart } = dispatch( storeKey );
@@ -211,6 +214,7 @@ export const useStoreCart = (
 			return {
 				cartCoupons,
 				cartItems: cartData.items,
+				crossSellsProducts: cartData.crossSells,
 				cartFees,
 				cartItemsCount: cartData.itemsCount,
 				cartItemsWeight: cartData.itemsWeight,
@@ -220,6 +224,7 @@ export const useStoreCart = (
 				cartTotals,
 				cartIsLoading,
 				cartErrors,
+				billingData: emptyHiddenAddressFields( billingAddress ),
 				billingAddress: emptyHiddenAddressFields( billingAddress ),
 				shippingAddress: emptyHiddenAddressFields( shippingAddress ),
 				extensions: cartData.extensions,

@@ -1,7 +1,12 @@
 /**
  * Internal dependencies
  */
-import { shopper, SIMPLE_VIRTUAL_PRODUCT_NAME } from '../../../../utils';
+import {
+	shopper,
+	SIMPLE_VIRTUAL_PRODUCT_NAME,
+	SIMPLE_PHYSICAL_PRODUCT_NAME,
+} from '../../../../utils';
+import { BASE_URL } from '../../../../utils/constants';
 
 if ( process.env.WOOCOMMERCE_BLOCKS_PHASE < 2 ) {
 	// Skips all the tests if it's a WooCommerce Core process environment.
@@ -11,6 +16,9 @@ if ( process.env.WOOCOMMERCE_BLOCKS_PHASE < 2 ) {
 
 describe( 'Shopper → Cart', () => {
 	beforeAll( async () => {
+		await page.goto( `${ BASE_URL }/?setup_cross_sells` );
+		// eslint-disable-next-line jest/no-standalone-expect
+		await expect( page ).toMatch( 'Cross-Sells products set up.' );
 		await shopper.block.emptyCart();
 	} );
 
@@ -21,10 +29,15 @@ describe( 'Shopper → Cart', () => {
 	it( 'User can view empty cart message', async () => {
 		await shopper.block.goToCart();
 
+		await page.waitForSelector( '.wc-block-cart__empty-cart__title' );
+
 		// Verify cart is empty'
-		await expect( page ).toMatchElement( 'h2', {
-			text: 'Your cart is currently empty!',
-		} );
+		await expect( page ).toMatchElement(
+			'.wc-block-cart__empty-cart__title',
+			{
+				text: 'Your cart is currently empty!',
+			}
+		);
 	} );
 
 	it( 'User can remove a product from cart', async () => {
@@ -90,6 +103,22 @@ describe( 'Shopper → Cart', () => {
 		await expect( page ).toMatchElement( 'a.wc-block-cart__submit-button' );
 
 		await shopper.block.productIsInCart( SIMPLE_VIRTUAL_PRODUCT_NAME, 4 );
+	} );
+
+	it( 'User can see Cross-Sells products block', async () => {
+		await shopper.block.emptyCart();
+		await shopper.goToShop();
+		await shopper.addToCartFromShopPage( SIMPLE_PHYSICAL_PRODUCT_NAME );
+		await shopper.block.goToCart();
+		await expect( page ).toMatchElement(
+			'.wp-block-woocommerce-cart-cross-sells-block'
+		);
+		await shopper.block.addCrossSellsProductToCart();
+		// To avoid flakiness: Wait until the cart contains two entries.
+		await page.waitForSelector(
+			'.wp-block-woocommerce-cart-line-items-block tr:nth-child(2)'
+		);
+		await shopper.block.productIsInCart( '32GB USB Stick', 1 );
 	} );
 
 	it( 'User can proceed to checkout', async () => {

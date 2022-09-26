@@ -11,10 +11,10 @@ import './style.scss';
 
 interface FilterElementLabelProps {
 	name: string;
-	count: number;
+	count: number | null;
 }
 /**
- * The label for an filter elements.
+ * The label for a filter element.
  *
  * @param {Object} props       Incoming props for the component.
  * @param {string} props.name  The name for the label.
@@ -27,7 +27,7 @@ const FilterElementLabel = ( {
 	return (
 		<>
 			{ name }
-			{ Number.isFinite( count ) && (
+			{ count !== null && Number.isFinite( count ) && (
 				<Label
 					label={ count.toString() }
 					screenReaderLabel={ sprintf(

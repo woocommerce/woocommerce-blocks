@@ -9,18 +9,18 @@ import {
 	useInnerBlockLayoutContext,
 	useProductDataContext,
 } from '@woocommerce/shared-context';
+import {
+	useBorderProps,
+	useColorProps,
+	useSpacingProps,
+	useTypographyProps,
+} from '@woocommerce/base-hooks';
 import { withProductDataContext } from '@woocommerce/shared-hocs';
 
 /**
  * Internal dependencies
  */
 import './style.scss';
-import {
-	useBorderProps,
-	useColorProps,
-	useSpacingProps,
-	useTypographyProps,
-} from '../../../../hooks/style-attributes';
 
 /**
  * Product Sale Badge Block Component.
@@ -30,7 +30,7 @@ import {
  * @param {string} [props.align]     Alignment of the badge.
  * @return {*} The component.
  */
-const Block = ( props ) => {
+export const Block = ( props ) => {
 	const { className, align } = props;
 	const { parentClassName } = useInnerBlockLayoutContext();
 	const { product } = useProductDataContext();

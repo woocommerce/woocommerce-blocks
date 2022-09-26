@@ -9,12 +9,7 @@ import { ProductDataContextProvider } from '@woocommerce/shared-context';
  */
 import { Block } from '../block';
 
-jest.mock( '@woocommerce/block-settings', () => ( {
-	__esModule: true,
-	PLACEHOLDER_IMG_SRC: 'placeholder.jpg',
-} ) );
-
-jest.mock( '../../../../../hooks/style-attributes', () => ( {
+jest.mock( '@woocommerce/base-hooks', () => ( {
 	__esModule: true,
 	useBorderProps: jest.fn( () => ( {
 		className: '',
@@ -46,8 +41,7 @@ const productWithImages = {
 			id: 56,
 			src: 'logo-1.jpg',
 			thumbnail: 'logo-1-324x324.jpg',
-			srcset:
-				'logo-1.jpg 800w, logo-1-300x300.jpg 300w, logo-1-150x150.jpg 150w, logo-1-768x767.jpg 768w, logo-1-324x324.jpg 324w, logo-1-416x415.jpg 416w, logo-1-100x100.jpg 100w',
+			srcset: 'logo-1.jpg 800w, logo-1-300x300.jpg 300w, logo-1-150x150.jpg 150w, logo-1-768x767.jpg 768w, logo-1-324x324.jpg 324w, logo-1-416x415.jpg 416w, logo-1-100x100.jpg 100w',
 			sizes: '(max-width: 800px) 100vw, 800px',
 			name: 'logo-1.jpg',
 			alt: '',
@@ -56,8 +50,7 @@ const productWithImages = {
 			id: 55,
 			src: 'beanie-with-logo-1.jpg',
 			thumbnail: 'beanie-with-logo-1-324x324.jpg',
-			srcset:
-				'beanie-with-logo-1.jpg 800w, beanie-with-logo-1-300x300.jpg 300w, beanie-with-logo-1-150x150.jpg 150w, beanie-with-logo-1-768x768.jpg 768w, beanie-with-logo-1-324x324.jpg 324w, beanie-with-logo-1-416x416.jpg 416w, beanie-with-logo-1-100x100.jpg 100w',
+			srcset: 'beanie-with-logo-1.jpg 800w, beanie-with-logo-1-300x300.jpg 300w, beanie-with-logo-1-150x150.jpg 150w, beanie-with-logo-1-768x768.jpg 768w, beanie-with-logo-1-324x324.jpg 324w, beanie-with-logo-1-416x416.jpg 416w, beanie-with-logo-1-100x100.jpg 100w',
 			sizes: '(max-width: 800px) 100vw, 800px',
 			name: 'beanie-with-logo-1.jpg',
 			alt: '',

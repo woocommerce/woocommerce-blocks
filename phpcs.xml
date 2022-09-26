@@ -8,7 +8,7 @@
 	<exclude-pattern>languages/woo-gutenberg-products-block.php</exclude-pattern>
 
 	<!-- Configs -->
-	<config name="minimum_supported_wp_version" value="5.9" />
+	<config name="minimum_supported_wp_version" value="6.0" />
 	<config name="testVersion" value="7.0-" />
 
 	<!-- Rules -->
@@ -43,10 +43,15 @@
 	<rule ref="Squiz.Commenting.FileComment.MissingPackageTag">
 		<exclude-pattern>src/</exclude-pattern>
 		<exclude-pattern>tests/php</exclude-pattern>
+		<exclude-pattern>patterns</exclude-pattern>
 	</rule>
 	<rule ref="Squiz.Commenting.FileComment.Missing">
 		<exclude-pattern>src/</exclude-pattern>
 		<exclude-pattern>tests/php</exclude-pattern>
+	</rule>
+
+	<rule ref="Squiz.Commenting.FileComment.SpacingAfterComment">
+		<exclude-pattern>patterns</exclude-pattern>
 	</rule>
 
 	<rule ref="Generic.Commenting">

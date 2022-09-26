@@ -1,4 +1,5 @@
 module.exports = {
+	root: true,
 	extends: [
 		'plugin:@woocommerce/eslint-plugin/recommended',
 		'plugin:you-dont-need-lodash-underscore/compatible',
@@ -29,11 +30,14 @@ module.exports = {
 			'@woocommerce/settings',
 			'@woocommerce/shared-context',
 			'@woocommerce/shared-hocs',
+			'@woocommerce/data',
 			'@wordpress/a11y',
 			'@wordpress/api-fetch',
 			'@wordpress/block-editor',
 			'@wordpress/compose',
 			'@wordpress/data',
+			'@wordpress/core-data',
+			'@wordpress/editor',
 			'@wordpress/escape-html',
 			'@wordpress/hooks',
 			'@wordpress/keycodes',

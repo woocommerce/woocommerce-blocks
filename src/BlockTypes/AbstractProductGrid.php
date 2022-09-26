@@ -67,11 +67,12 @@ abstract class AbstractProductGrid extends AbstractDynamicBlock {
 	/**
 	 * Include and render the dynamic block.
 	 *
-	 * @param array  $attributes Block attributes. Default empty array.
-	 * @param string $content    Block content. Default empty string.
+	 * @param array         $attributes Block attributes. Default empty array.
+	 * @param string        $content    Block content. Default empty string.
+	 * @param WP_Block|null $block      Block instance.
 	 * @return string Rendered block type output.
 	 */
-	protected function render( $attributes = array(), $content = '' ) {
+	protected function render( $attributes = array(), $content = '', $block = null ) {
 		$this->attributes = $this->parse_attributes( $attributes );
 		$this->content    = $content;
 		$this->query_args = $this->parse_query_args();
@@ -79,6 +80,15 @@ abstract class AbstractProductGrid extends AbstractDynamicBlock {
 
 		if ( ! $products ) {
 			return '';
+		}
+
+		/**
+		 * Override product description to prevent infinite loop.
+		 *
+		 * @see https://github.com/woocommerce/woocommerce-blocks/pull/6849
+		 */
+		foreach ( $products as $product ) {
+			$product->set_description( '' );
 		}
 
 		/**
@@ -519,7 +529,7 @@ abstract class AbstractProductGrid extends AbstractDynamicBlock {
 	 * @return string
 	 */
 	protected function get_image_html( $product ) {
-		if ( empty( $this->attributes['contentVisibility']['image'] ) ) {
+		if ( array_key_exists( 'image', $this->attributes['contentVisibility'] ) && false === $this->attributes['contentVisibility']['image'] ) {
 			return '';
 		}
 

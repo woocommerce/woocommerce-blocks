@@ -5,6 +5,9 @@
 		margin: 0;
 		display: flex;
 		flex-wrap: nowrap;
+		a {
+			text-decoration: underline;
+		}
 		.components-notice__dismiss {
 			background: transparent none;
 			padding: 0;
@@ -15,6 +18,14 @@
 			svg {
 				fill: currentColor;
 				vertical-align: text-top;
+			}
+		}
+		.components-notice__content > div:not(.components-notice__actions) {
+			*:first-child {
+				margin-top: 0;
+			}
+			*:last-child {
+				margin-bottom: 0;
 			}
 		}
 	}

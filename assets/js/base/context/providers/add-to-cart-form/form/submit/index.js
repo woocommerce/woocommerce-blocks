@@ -30,10 +30,8 @@ const FormSubmit = () => {
 		isProcessing,
 		requestParams,
 	} = useAddToCartFormContext();
-	const {
-		hasValidationErrors,
-		showAllValidationErrors,
-	} = useValidationContext();
+	const { hasValidationErrors, showAllValidationErrors } =
+		useValidationContext();
 	const { createErrorNotice, removeNotice } = useDispatch( 'core/notices' );
 	const { receiveCart } = useStoreCart();
 	const [ isSubmitting, setIsSubmitting ] = useState( false );
@@ -51,10 +49,11 @@ const FormSubmit = () => {
 
 	// Subscribe to emitter before processing.
 	useEffect( () => {
-		const unsubscribeProcessing = eventRegistration.onAddToCartBeforeProcessing(
-			checkValidationContext,
-			0
-		);
+		const unsubscribeProcessing =
+			eventRegistration.onAddToCartBeforeProcessing(
+				checkValidationContext,
+				0
+			);
 		return () => {
 			unsubscribeProcessing();
 		};
@@ -102,7 +101,7 @@ const FormSubmit = () => {
 						} else {
 							createErrorNotice(
 								__(
-									'Something went wrong. Please contact us to get assistance.',
+									'Something went wrong. Please contact us for assistance.',
 									'woo-gutenberg-products-block'
 								),
 								{

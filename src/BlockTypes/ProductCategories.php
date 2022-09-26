@@ -56,11 +56,12 @@ class ProductCategories extends AbstractDynamicBlock {
 	/**
 	 * Render the Product Categories List block.
 	 *
-	 * @param array  $attributes Block attributes.
-	 * @param string $content    Block content.
+	 * @param array    $attributes Block attributes.
+	 * @param string   $content    Block content.
+	 * @param WP_Block $block Block instance.
 	 * @return string Rendered block type output.
 	 */
-	protected function render( $attributes, $content ) {
+	protected function render( $attributes, $content, $block ) {
 		$uid        = uniqid( 'product-categories-' );
 		$categories = $this->get_categories( $attributes );
 
@@ -322,9 +323,12 @@ class ProductCategories extends AbstractDynamicBlock {
 		foreach ( $categories as $category ) {
 			$output .= '
 				<li class="wc-block-product-categories-list-item">
-					<a style="' . esc_attr( $link_color_style ) . '" href="' . esc_attr( get_term_link( $category->term_id, 'product_cat' ) ) . '">' . $this->get_image_html( $category, $attributes ) . esc_html( $category->name ) . '</a>
-				' . $this->getCount( $category, $attributes ) . '
-					' . ( ! empty( $category->children ) ? $this->renderList( $category->children, $attributes, $uid, $depth + 1 ) : '' ) . '
+					<a style="' . esc_attr( $link_color_style ) . '" href="' . esc_attr( get_term_link( $category->term_id, 'product_cat' ) ) . '">'
+						. $this->get_image_html( $category, $attributes )
+						. '<span class="wc-block-product-categories-list-item__name">' . esc_html( $category->name ) . '</span>'
+					. '</a>'
+					. $this->getCount( $category, $attributes )
+					. ( ! empty( $category->children ) ? $this->renderList( $category->children, $attributes, $uid, $depth + 1 ) : '' ) . '
 				</li>
 			';
 		}
