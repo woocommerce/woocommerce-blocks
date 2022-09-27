@@ -4,13 +4,14 @@ namespace Automattic\WooCommerce\StoreApi;
 
 use Automattic\Jetpack\Constants;
 use Automattic\WooCommerce\StoreApi\Utilities\JsonWebToken;
+use WC_Session;
 
 defined( 'ABSPATH' ) || exit;
 
 /**
  * SessionHandler class
  */
-final class SessionHandler extends \WC_Session {
+final class SessionHandler extends WC_Session {
 	/**
 	 * Token from HTTP headers.
 	 *
@@ -74,7 +75,13 @@ final class SessionHandler extends \WC_Session {
 			return false;
 		}
 
-		$value = $wpdb->get_var( $wpdb->prepare( "SELECT session_value FROM $this->_table WHERE session_key = %s", $customer_id ) ); // @codingStandardsIgnoreLine.
+		$value = $wpdb->get_var(
+			$wpdb->prepare(
+				'SELECT session_value FROM %s WHERE session_key = %s',
+				$this->_table,
+				$customer_id
+			)
+		);
 
 		if ( is_null( $value ) ) {
 			$value = $default;
@@ -93,8 +100,9 @@ final class SessionHandler extends \WC_Session {
 
 			$wpdb->query(
 				$wpdb->prepare(
-					"INSERT INTO {$wpdb->prefix}woocommerce_sessions (`session_key`, `session_value`, `session_expiry`) VALUES (%s, %s, %d)
- 					ON DUPLICATE KEY UPDATE `session_value` = VALUES(`session_value`), `session_expiry` = VALUES(`session_expiry`)",
+					'INSERT INTO %s (`session_key`, `session_value`, `session_expiry`) VALUES (%s, %s, %d)
+ 					ON DUPLICATE KEY UPDATE `session_value` = VALUES(`session_value`), `session_expiry` = VALUES(`session_expiry`)',
+					$this->_table,
 					$this->_customer_id,
 					maybe_serialize( $this->_data ),
 					$this->_session_expiration
