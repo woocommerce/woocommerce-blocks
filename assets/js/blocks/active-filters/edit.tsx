@@ -21,7 +21,7 @@ import {
 import Block from './block';
 import type { Attributes } from './types';
 import './editor.scss';
-import { UpgradeToolbarButton } from '../filter-wrapper/upgrade';
+import { UpgradeNotice } from '../filter-wrapper/upgrade';
 
 const Edit = ( {
 	attributes,
@@ -79,7 +79,7 @@ const Edit = ( {
 	return (
 		<div { ...blockProps }>
 			{ getInspectorControls() }
-			<UpgradeToolbarButton
+			<UpgradeNotice
 				attributes={ attributes }
 				clientId={ clientId }
 				setAttributes={ setAttributes }

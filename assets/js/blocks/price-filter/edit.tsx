@@ -26,7 +26,7 @@ import {
 import Block from './block';
 import './editor.scss';
 import type { Attributes } from './types';
-import { UpgradeToolbarButton } from '../filter-wrapper/upgrade';
+import { UpgradeNotice } from '../filter-wrapper/upgrade';
 
 export default function ( {
 	attributes,
@@ -165,7 +165,7 @@ export default function ( {
 			) : (
 				<>
 					{ getInspectorControls() }
-					<UpgradeToolbarButton
+					<UpgradeNotice
 						attributes={ attributes }
 						clientId={ clientId }
 						setAttributes={ setAttributes }

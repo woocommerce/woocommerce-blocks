@@ -8,19 +8,19 @@ import { useDispatch, useSelect } from '@wordpress/data';
 import { Button } from '@wordpress/components';
 import { Warning } from '@wordpress/block-editor';
 
-interface UpgradeToolbarButtonProps {
+interface UpgradeNoticeProps {
 	clientId: string;
 	setAttributes: ( attributes: Record< string, unknown > ) => void;
 	attributes: Record< string, unknown >;
 	filterType: undefined | string;
 }
 
-export const UpgradeToolbarButton = ( {
+export const UpgradeNotice = ( {
 	clientId,
 	setAttributes,
 	filterType,
 	attributes,
-}: UpgradeToolbarButtonProps ) => {
+}: UpgradeNoticeProps ) => {
 	const { replaceBlock } = useDispatch( 'core/block-editor' );
 	const { heading, headingLevel } = attributes;
 	const isInsideFilterWrapper = useSelect(
