@@ -1,0 +1,1 @@
+<?php return array('dependencies' => array('wc-blocks-data-store', 'wc-blocks-shared-context', 'wp-data', 'wp-element', 'wp-is-shallow-equal', 'wp-polyfill'), 'version' => '46fb982f0729169b2287abc416e5281f');
