@@ -83,13 +83,15 @@ final class JsonWebToken {
 		/**
 		 * Check if the token is based on our secret.
 		 */
-		return self::to_base_64_url(
+		$encoded_regenerated_signature = self::to_base_64_url(
 			self::generate_signature( $parts->header_encoded . '.' . $parts->payload_encoded, $secret )
-		) === $parts->secret_encoded;
+		);
+
+		return hash_equals( $encoded_regenerated_signature, $parts->signature_encoded );
 	}
 
 	/**
-	 * Returns the decoded/encoded header, payload and secret from a token string.
+	 * Returns the decoded/encoded header, payload and signature from a token string.
 	 *
 	 * @param string $token Full token string.
 	 *
@@ -99,12 +101,12 @@ final class JsonWebToken {
 		$parts = explode( '.', $token );
 
 		return (object) array(
-			'header'          => json_decode( self::from_base_64_url( $parts[0] ) ),
-			'header_encoded'  => $parts[0],
-			'payload'         => json_decode( self::from_base_64_url( $parts[1] ) ),
-			'payload_encoded' => $parts[1],
-			'secret'          => self::from_base_64_url( $parts[2] ),
-			'secret_encoded'  => $parts[2],
+			'header'            => json_decode( self::from_base_64_url( $parts[0] ) ),
+			'header_encoded'    => $parts[0],
+			'payload'           => json_decode( self::from_base_64_url( $parts[1] ) ),
+			'payload_encoded'   => $parts[1],
+			'signature'         => self::from_base_64_url( $parts[2] ),
+			'signature_encoded' => $parts[2],
 
 		);
 	}
