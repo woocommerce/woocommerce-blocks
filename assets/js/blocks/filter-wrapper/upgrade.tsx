@@ -4,7 +4,7 @@
 import { __ } from '@wordpress/i18n';
 import { createBlock } from '@wordpress/blocks';
 import type { BlockInstance } from '@wordpress/blocks';
-import { useDispatch } from '@wordpress/data';
+import { useDispatch, useSelect } from '@wordpress/data';
 import { Button } from '@wordpress/components';
 import { Warning } from '@wordpress/block-editor';
 
@@ -23,6 +23,19 @@ export const UpgradeToolbarButton = ( {
 }: UpgradeToolbarButtonProps ) => {
 	const { replaceBlock } = useDispatch( 'core/block-editor' );
 	const { heading, headingLevel } = attributes;
+	const isInsideFilterWrapper = useSelect(
+		( select ) => {
+			const { getBlockParentsByBlockName } =
+				select( 'core/block-editor' );
+			return (
+				getBlockParentsByBlockName(
+					clientId,
+					'woocommerce/filter-wrapper'
+				).length > 0
+			);
+		},
+		[ clientId ]
+	);
 
 	const upgradeFilterBlockHandler = () => {
 		const filterWrapperInnerBlocks: BlockInstance[] = [
@@ -57,7 +70,7 @@ export const UpgradeToolbarButton = ( {
 		} );
 	};
 
-	if ( ! heading || ! filterType ) {
+	if ( isInsideFilterWrapper || ! filterType ) {
 		return null;
 	}
 
