@@ -24,21 +24,21 @@ final class SessionHandler extends WC_Session {
 	 *
 	 * @var string Custom session table name
 	 */
-	protected $_table; // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
+	protected $table;
 
 	/**
 	 * Expiration timestamp.
 	 *
 	 * @var int
 	 */
-	protected $_session_expiration; // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
+	protected $session_expiration;
 
 	/**
 	 * Constructor for the session class.
 	 */
 	public function __construct() {
-		$this->token  = wc_clean( wp_unslash( $_SERVER['HTTP_CART_TOKEN'] ?? '' ) );
-		$this->_table = $GLOBALS['wpdb']->prefix . 'woocommerce_sessions';
+		$this->token = wc_clean( wp_unslash( $_SERVER['HTTP_CART_TOKEN'] ?? '' ) );
+		$this->table = $GLOBALS['wpdb']->prefix . 'woocommerce_sessions';
 	}
 
 	/**
@@ -55,9 +55,9 @@ final class SessionHandler extends WC_Session {
 	protected function init_session_from_token() {
 		$payload = JsonWebToken::get_parts( $this->token )->payload;
 
-		$this->_customer_id        = $payload->user_id;
-		$this->_session_expiration = $payload->exp;
-		$this->_data               = (array) $this->get_session( $this->_customer_id, array() );
+		$this->_customer_id       = $payload->user_id;
+		$this->session_expiration = $payload->exp;
+		$this->_data              = (array) $this->get_session( $this->_customer_id, array() );
 	}
 
 	/**
@@ -78,7 +78,7 @@ final class SessionHandler extends WC_Session {
 		$value = $wpdb->get_var(
 			$wpdb->prepare(
 				'SELECT session_value FROM %s WHERE session_key = %s',
-				$this->_table,
+				$this->table,
 				$customer_id
 			)
 		);
@@ -102,10 +102,10 @@ final class SessionHandler extends WC_Session {
 				$wpdb->prepare(
 					'INSERT INTO %s (`session_key`, `session_value`, `session_expiry`) VALUES (%s, %s, %d)
  					ON DUPLICATE KEY UPDATE `session_value` = VALUES(`session_value`), `session_expiry` = VALUES(`session_expiry`)',
-					$this->_table,
+					$this->table,
 					$this->_customer_id,
 					maybe_serialize( $this->_data ),
-					$this->_session_expiration
+					$this->session_expiration
 				)
 			);
 
