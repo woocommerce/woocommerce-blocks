@@ -47,7 +47,7 @@ Nonce checks will be bypassed if `woocommerce_store_api_disable_nonce_check` eva
 
 NOTE: This should only be done on development sites where security is not important. Do not enable this in production.
 
-## <!-- FEEDBACK -->
+<!-- FEEDBACK -->
 
 [We're hiring!](https://woocommerce.com/careers/) Come work with us!
 

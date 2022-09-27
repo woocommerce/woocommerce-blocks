@@ -469,7 +469,7 @@ curl --header "Nonce: 12345" --request POST /cart/select-shipping-rate?package_i
 
 Returns the full [Cart Response](#cart-response) on success, or an [Error Response](#error-response) on failure.
 
-## <!-- FEEDBACK -->
+<!-- FEEDBACK -->
 
 [We're hiring!](https://woocommerce.com/careers/) Come work with us!
 

@@ -135,7 +135,7 @@ curl --header "Nonce: 12345" --request POST https://example-store.com/wp-json/wc
 }
 ```
 
-## <!-- FEEDBACK -->
+<!-- FEEDBACK -->
 
 [We're hiring!](https://woocommerce.com/careers/) Come work with us!
 
