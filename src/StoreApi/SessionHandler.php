@@ -71,6 +71,7 @@ final class SessionHandler extends WC_Session {
 	public function get_session( $customer_id, $default = false ) {
 		global $wpdb;
 
+		// This mimics behaviour from default WC_Session_Handler class. There will be no sessions retrieved while WP setup is due.
 		if ( Constants::is_defined( 'WP_SETUP_CONFIG' ) ) {
 			return false;
 		}
