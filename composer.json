@@ -16,7 +16,7 @@
 		"ext-json": "*",
 		"composer/installers": "^1.7.0",
 		"automattic/jetpack-autoloader": "^2.9.1"
-    },
+	},
 	"require-dev": {
 		"wp-phpunit/wp-phpunit": "^6.0",
 		"woocommerce/woocommerce-sniffs": "0.1.0",
