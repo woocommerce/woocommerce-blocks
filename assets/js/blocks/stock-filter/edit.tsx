@@ -19,8 +19,10 @@ import type { BlockEditProps } from '@wordpress/blocks';
 import Block from './block';
 import './editor.scss';
 import { Attributes } from './types';
+import { UpgradeNotice } from '../filter-wrapper/upgrade';
 
 const Edit = ( {
+	clientId,
 	attributes,
 	setAttributes,
 }: BlockEditProps< Attributes > ) => {
@@ -84,6 +86,12 @@ const Edit = ( {
 	return (
 		<>
 			{ getInspectorControls() }
+			<UpgradeNotice
+				clientId={ clientId }
+				attributes={ attributes }
+				setAttributes={ setAttributes }
+				filterType="stock-filter"
+			/>
 			{
 				<div { ...blockProps }>
 					{ heading && (
