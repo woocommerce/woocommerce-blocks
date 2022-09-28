@@ -37,5 +37,6 @@ export const parseAttributes = ( data: Record< string, unknown > ) => {
 			metadata.attributes.headingLevel.default,
 		showFilterButton: data?.showFilterButton === 'true',
 		showCounts: data?.showCounts === 'true',
+		isPreview: false,
 	};
 };

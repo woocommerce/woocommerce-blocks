@@ -54,10 +54,6 @@ const StockStatusFilterBlock = ( {
 	attributes: Attributes;
 	isEditor?: boolean;
 } ) => {
-	blockAttributes = {
-		...blockAttributes,
-		isPreview: blockAttributes?.isPreview || false,
-	};
 	const setWrapperVisibility = useSetWraperVisibility();
 
 	const filteringForPhpTemplate = getSettingWithCoercion(
