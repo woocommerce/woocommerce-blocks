@@ -35,9 +35,6 @@ class ProductQuery extends AbstractBlock {
 	 */
 	protected function initialize() {
 		add_filter( 'query_vars', array( $this, 'set_query_vars' ) );
-		// Set this so that our product filters can detect if it's a PHP template.
-		$this->asset_data_registry->add( 'has_filterable_products', true, true );
-		$this->asset_data_registry->add( 'is_rendering_php_template', true, true );
 		parent::initialize();
 		add_filter(
 			'pre_render_block',
@@ -47,6 +44,18 @@ class ProductQuery extends AbstractBlock {
 		);
 
 	}
+
+	/**
+	 * Check if a given block
+	 *
+	 * @param array $parsed_block The block being rendered.
+	 * @return boolean
+	 */
+	private function is_woocommerce_variation( $parsed_block ) {
+		return isset( $parsed_block['attrs']['namespace'] )
+		&& substr( $parsed_block['attrs']['namespace'], 0, 11 ) === 'woocommerce';
+	}
+
 
 	/**
 	 * Update the query for the product query block.
@@ -61,7 +70,10 @@ class ProductQuery extends AbstractBlock {
 
 		$this->parsed_block = $parsed_block;
 
-		if ( isset( $parsed_block['attrs']['__woocommerceVariationProps'] ) ) {
+		if ( $this->is_woocommerce_variation( $parsed_block ) ) {
+			// Set this so that our product filters can detect if it's a PHP template.
+			$this->asset_data_registry->add( 'has_filterable_products', true, true );
+			$this->asset_data_registry->add( 'is_rendering_php_template', true, true );
 			add_filter(
 				'query_loop_block_query_vars',
 				array( $this, 'build_query' ),
@@ -79,11 +91,10 @@ class ProductQuery extends AbstractBlock {
 	 */
 	public function build_query( $query ) {
 		$parsed_block = $this->parsed_block;
-		if ( ! isset( $parsed_block['attrs']['__woocommerceVariationProps'] ) ) {
+		if ( ! $this->is_woocommerce_variation( $parsed_block ) ) {
 			return $query;
 		}
 
-		$variation_props     = $parsed_block['attrs']['__woocommerceVariationProps'];
 		$common_query_values = array(
 			'post_type'      => 'product',
 			'post_status'    => 'publish',
@@ -98,7 +109,7 @@ class ProductQuery extends AbstractBlock {
 			'tax_query'      => array(),
 		);
 
-		$queries_attributes = $this->get_queries_by_attributes( $variation_props );
+		$queries_attributes = $this->get_queries_by_attributes( $parsed_block );
 		$queries_filters    = $this->get_queries_by_applied_filters();
 
 		return array_reduce(
@@ -108,7 +119,7 @@ class ProductQuery extends AbstractBlock {
 			),
 			function( $acc, $query ) {
 				if ( isset( $query['post__in'] ) ) {
-					$acc['post__in'] = isset( $acc['post__in'] ) ? array_merge( $acc['post__in'], $query['post__in'] ) : $query['post__in'];
+					$acc['post__in'] = isset( $acc['post__in'] ) ? array_intersect( $acc['post__in'], $query['post__in'] ) : $query['post__in'];
 				}
 				// Ignoring the warning of not using meta queries.
 				// phpcs:ignore WordPress.DB.SlowDBQuery.slow_db_query_meta_query
