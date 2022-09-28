@@ -41,9 +41,6 @@ export const GUTENBERG_EDITOR_CONTEXT =
 	process.env.GUTENBERG_EDITOR_CONTEXT || 'core';
 export const DEFAULT_TIMEOUT = 30000;
 
-export const SHOP_CHECKOUT_PAGE = BASE_URL + 'checkout-block/';
-export const SHOP_CART_PAGE = BASE_URL + 'cart-block/';
-
 const SELECTORS = {
 	canvas: 'iframe[name="editor-canvas"]',
 	inserter: {
