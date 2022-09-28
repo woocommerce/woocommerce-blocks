@@ -12,7 +12,9 @@
 		"../hocs",
 		"../../atomic/utils",
 		"../../atomic/blocks/component-init.js",
-		"../../shared/context"
+		"../../data",
+		"../../shared/context",
+		"../hooks/index.js"
 	],
 	"exclude": [ "**/test/**" ]
 }
