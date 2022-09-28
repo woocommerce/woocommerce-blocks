@@ -778,9 +778,10 @@ class CartController {
 	 * @todo this can be refactored once https://github.com/woocommerce/woocommerce/pull/26101 lands.
 	 *
 	 * @param bool $calculate_rates Should rates for the packages also be returned.
+	 * @param bool $prefer_collection If true, only local pickup rates are returned.
 	 * @return array
 	 */
-	public function get_shipping_packages( $calculate_rates = true ) {
+	public function get_shipping_packages( $calculate_rates = true, $prefer_collection = false ) {
 		$cart = $this->get_cart_instance();
 
 		// See if we need to calculate anything.
@@ -788,9 +789,11 @@ class CartController {
 			return [];
 		}
 
+		/**
+		 * Experimental functionality to return only local pickup rates when $prefer_collection is true.
+		 */
 		if ( Package::feature()->is_experimental_build() ) {
-			// This is a temporary measure until we can bring such change to WooCommerce core.
-			add_filter( 'woocommerce_get_shipping_methods', [ $this, 'enable_local_pickup_without_address' ] );
+			add_filter( 'woocommerce_get_shipping_methods', $prefer_collection ? [ $this, 'return_local_pickup_methods' ] : [ $this, 'remove_local_pickup_methods' ] );
 		}
 
 		$packages = $cart->get_shipping_packages();
@@ -812,37 +815,47 @@ class CartController {
 		$packages = $calculate_rates ? wc()->shipping()->calculate_shipping( $packages ) : $packages;
 
 		if ( Package::feature()->is_experimental_build() ) {
-			// This is a temporary measure until we can bring such change to WooCommerce core.
-			remove_filter( 'woocommerce_get_shipping_methods', [ $this, 'enable_local_pickup_without_address' ] );
+			remove_filter( 'woocommerce_get_shipping_methods', [ $this, 'return_local_pickup_methods' ] );
+			remove_filter( 'woocommerce_get_shipping_methods', [ $this, 'remove_local_pickup_methods' ] );
 		}
 
 		return $packages;
 	}
 
 	/**
-	 * We want to make local pickup always avaiable without checking for a shipping zone or address.
+	 * Only return local pickup shipping methods.
 	 *
 	 * @param array $shipping_methods Package we're checking against right now.
-	 * @return array $shipping_methods Shipping methods with local pickup.
+	 * @return array $shipping_methods Local pickup shipping methods.
 	 */
-	public function enable_local_pickup_without_address( $shipping_methods ) {
-		$shipping_zones = \WC_Shipping_Zones::get_zones( 'admin' );
-		$worldwide_zone = new \WC_Shipping_Zone( 0 );
-		$all_methods    = array_map(
-			function( $_shipping_zone ) {
-				return $_shipping_zone['shipping_methods'];
-			},
-			$shipping_zones
-		);
-		$all_methods    = array_merge_recursive( $worldwide_zone->get_shipping_methods( false, 'admin' ), ...$all_methods );
-		$local_pickups  = array_filter(
-			$all_methods,
-			function( $method ) {
-				return 'local_pickup' === $method->id;
+	public function return_local_pickup_methods( $shipping_methods ) {
+		$local_pickup_method_ids   = apply_filters( 'woocommerce_local_pickup_methods', array( 'legacy_local_pickup', 'local_pickup' ) );
+		$filtered_shipping_methods = array_filter(
+			$shipping_methods,
+			function( $method ) use ( $local_pickup_method_ids ) {
+				return in_array( $method->id, $local_pickup_method_ids, true );
 			}
 		);
-		return array_merge( $shipping_methods, $local_pickups );
+		return $filtered_shipping_methods;
 	}
+
+	/**
+	 * Only return non local pickup shipping methods.
+	 *
+	 * @param array $shipping_methods Package we're checking against right now.
+	 * @return array $shipping_methods Local pickup shipping methods.
+	 */
+	public function remove_local_pickup_methods( $shipping_methods ) {
+		$local_pickup_method_ids   = apply_filters( 'woocommerce_local_pickup_methods', array( 'legacy_local_pickup', 'local_pickup' ) );
+		$filtered_shipping_methods = array_filter(
+			$shipping_methods,
+			function( $method ) use ( $local_pickup_method_ids ) {
+				return ! in_array( $method->id, $local_pickup_method_ids, true );
+			}
+		);
+		return $filtered_shipping_methods;
+	}
+
 	/**
 	 * Creates a name for a package.
 	 *
