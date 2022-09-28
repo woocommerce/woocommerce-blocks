@@ -106,7 +106,7 @@ class CartSchema extends AbstractSchema {
 	 * @return array
 	 */
 	public function get_properties() {
-		return [
+		$props = [
 			'coupons'                 => [
 				'description' => __( 'List of applied cart coupons.', 'woo-gutenberg-products-block' ),
 				'type'        => 'array',
@@ -181,12 +181,6 @@ class CartSchema extends AbstractSchema {
 			],
 			'needs_shipping'          => [
 				'description' => __( 'True if the cart needs shipping. False for carts with only digital goods or stores with no shipping methods set-up.', 'woo-gutenberg-products-block' ),
-				'type'        => 'boolean',
-				'context'     => [ 'view', 'edit' ],
-				'readonly'    => true,
-			],
-			'prefer_collection'       => [
-				'description' => __( 'This is true when the customer would prefer to collect rather than pay for shipping. This filters shipping methods based on selection.', 'woo-gutenberg-products-block' ),
 				'type'        => 'boolean',
 				'context'     => [ 'view', 'edit' ],
 				'readonly'    => true,
@@ -325,6 +319,17 @@ class CartSchema extends AbstractSchema {
 			],
 			self::EXTENDING_KEY       => $this->get_extended_schema( self::IDENTIFIER ),
 		];
+
+		if ( \Automattic\WooCommerce\Blocks\Package::feature()->is_experimental_build() ) {
+			$props['prefer_collection'] = [
+				'description' => __( 'This is true when the customer would prefer to collect rather than pay for shipping. This filters shipping methods based on selection.', 'woo-gutenberg-products-block' ),
+				'type'        => 'boolean',
+				'context'     => [ 'view', 'edit' ],
+				'readonly'    => true,
+			];
+		}
+
+		return $props;
 	}
 
 	/**
@@ -345,13 +350,18 @@ class CartSchema extends AbstractSchema {
 		$has_calculated_shipping = $cart->show_shipping();
 
 		// Get shipping packages to return in the response from the cart.
-		$prefer_collection = wc_string_to_bool( wc()->customer->get_meta( 'prefer_collection' ) );
-		$shipping_packages = $has_calculated_shipping ? $controller->get_shipping_packages( true, $prefer_collection ) : [];
+		if ( \Automattic\WooCommerce\Blocks\Package::feature()->is_experimental_build() ) {
+			$prefer_collection = wc_string_to_bool( wc()->customer->get_meta( 'prefer_collection' ) );
+			// @todo Move prefer_collection handling as an argument on get_shipping_packages once non-experimental.
+			add_filter( 'woocommerce_get_shipping_methods', $prefer_collection ? [ $controller, 'return_local_pickup_methods' ] : [ $controller, 'remove_local_pickup_methods' ] );
+		}
+
+		$shipping_packages = $has_calculated_shipping ? $controller->get_shipping_packages( true ) : [];
 
 		// Get visible cross sells products.
 		$cross_sells = array_filter( array_map( 'wc_get_product', $cart->get_cross_sells() ), 'wc_products_array_filter_visible' );
 
-		return [
+		$response = [
 			'coupons'                 => $this->get_item_responses_from_schema( $this->coupon_schema, $cart->get_applied_coupons() ),
 			'shipping_rates'          => $this->get_item_responses_from_schema( $this->shipping_rate_schema, $shipping_packages ),
 			'shipping_address'        => $this->shipping_address_schema->get_item_response( wc()->customer ),
@@ -362,7 +372,6 @@ class CartSchema extends AbstractSchema {
 			'cross_sells'             => $this->get_item_responses_from_schema( $this->cross_sells_item_schema, $cross_sells ),
 			'needs_payment'           => $cart->needs_payment(),
 			'needs_shipping'          => $cart->needs_shipping(),
-			'prefer_collection'       => $prefer_collection,
 			'has_calculated_shipping' => $has_calculated_shipping,
 			'fees'                    => $this->get_item_responses_from_schema( $this->fee_schema, $cart->get_fees() ),
 			'totals'                  => (object) $this->prepare_currency_response(
@@ -386,6 +395,14 @@ class CartSchema extends AbstractSchema {
 			'payment_requirements'    => $this->extend->get_payment_requirements(),
 			self::EXTENDING_KEY       => $this->get_extended_data( self::IDENTIFIER ),
 		];
+
+		if ( \Automattic\WooCommerce\Blocks\Package::feature()->is_experimental_build() ) {
+			$response['prefer_collection'] = $prefer_collection;
+			remove_filter( 'woocommerce_get_shipping_methods', [ $controller, 'return_local_pickup_methods' ] );
+			remove_filter( 'woocommerce_get_shipping_methods', [ $controller, 'remove_local_pickup_methods' ] );
+		}
+
+		return $response;
 	}
 
 	/**

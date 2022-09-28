@@ -778,22 +778,14 @@ class CartController {
 	 * @todo this can be refactored once https://github.com/woocommerce/woocommerce/pull/26101 lands.
 	 *
 	 * @param bool $calculate_rates Should rates for the packages also be returned.
-	 * @param bool $prefer_collection If true, only local pickup rates are returned.
 	 * @return array
 	 */
-	public function get_shipping_packages( $calculate_rates = true, $prefer_collection = false ) {
+	public function get_shipping_packages( $calculate_rates = true ) {
 		$cart = $this->get_cart_instance();
 
 		// See if we need to calculate anything.
 		if ( ! $cart->needs_shipping() ) {
 			return [];
-		}
-
-		/**
-		 * Experimental functionality to return only local pickup rates when $prefer_collection is true.
-		 */
-		if ( Package::feature()->is_experimental_build() ) {
-			add_filter( 'woocommerce_get_shipping_methods', $prefer_collection ? [ $this, 'return_local_pickup_methods' ] : [ $this, 'remove_local_pickup_methods' ] );
 		}
 
 		$packages = $cart->get_shipping_packages();
@@ -813,11 +805,6 @@ class CartController {
 		}
 
 		$packages = $calculate_rates ? wc()->shipping()->calculate_shipping( $packages ) : $packages;
-
-		if ( Package::feature()->is_experimental_build() ) {
-			remove_filter( 'woocommerce_get_shipping_methods', [ $this, 'return_local_pickup_methods' ] );
-			remove_filter( 'woocommerce_get_shipping_methods', [ $this, 'remove_local_pickup_methods' ] );
-		}
 
 		return $packages;
 	}

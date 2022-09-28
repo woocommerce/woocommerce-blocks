@@ -33,34 +33,39 @@ class CartUpdateCustomer extends AbstractCartRoute {
 	 * @return array An array of endpoints.
 	 */
 	public function get_args() {
+		$creatable_args = [
+			'billing_address'  => [
+				'description'       => __( 'Billing address.', 'woo-gutenberg-products-block' ),
+				'type'              => 'object',
+				'context'           => [ 'view', 'edit' ],
+				'properties'        => $this->schema->billing_address_schema->get_properties(),
+				'sanitize_callback' => [ $this->schema->billing_address_schema, 'sanitize_callback' ],
+				'validate_callback' => [ $this->schema->billing_address_schema, 'validate_callback' ],
+			],
+			'shipping_address' => [
+				'description'       => __( 'Shipping address.', 'woo-gutenberg-products-block' ),
+				'type'              => 'object',
+				'context'           => [ 'view', 'edit' ],
+				'properties'        => $this->schema->shipping_address_schema->get_properties(),
+				'sanitize_callback' => [ $this->schema->shipping_address_schema, 'sanitize_callback' ],
+				'validate_callback' => [ $this->schema->shipping_address_schema, 'validate_callback' ],
+			],
+		];
+
+		if ( \Automattic\WooCommerce\Blocks\Package::feature()->is_experimental_build() ) {
+			$creatable_args['prefer_collection'] = [
+				'description' => __( 'This is true when the customer would prefer to collect rather than pay for shipping. This filters shipping methods based on selection.', 'woo-gutenberg-products-block' ),
+				'type'        => 'boolean',
+				'context'     => [ 'view', 'edit' ],
+			];
+		}
+
 		return [
 			[
 				'methods'             => \WP_REST_Server::CREATABLE,
 				'callback'            => [ $this, 'get_response' ],
 				'permission_callback' => '__return_true',
-				'args'                => [
-					'billing_address'   => [
-						'description'       => __( 'Billing address.', 'woo-gutenberg-products-block' ),
-						'type'              => 'object',
-						'context'           => [ 'view', 'edit' ],
-						'properties'        => $this->schema->billing_address_schema->get_properties(),
-						'sanitize_callback' => [ $this->schema->billing_address_schema, 'sanitize_callback' ],
-						'validate_callback' => [ $this->schema->billing_address_schema, 'validate_callback' ],
-					],
-					'shipping_address'  => [
-						'description'       => __( 'Shipping address.', 'woo-gutenberg-products-block' ),
-						'type'              => 'object',
-						'context'           => [ 'view', 'edit' ],
-						'properties'        => $this->schema->shipping_address_schema->get_properties(),
-						'sanitize_callback' => [ $this->schema->shipping_address_schema, 'sanitize_callback' ],
-						'validate_callback' => [ $this->schema->shipping_address_schema, 'validate_callback' ],
-					],
-					'prefer_collection' => [
-						'description' => __( 'This is true when the customer would prefer to collect rather than pay for shipping. This filters shipping methods based on selection.', 'woo-gutenberg-products-block' ),
-						'type'        => 'boolean',
-						'context'     => [ 'view', 'edit' ],
-					],
-				],
+				'args'                => $creatable_args,
 			],
 			'schema'      => [ $this->schema, 'get_public_item_schema' ],
 			'allow_batch' => [ 'v1' => true ],
@@ -110,7 +115,9 @@ class CartUpdateCustomer extends AbstractCartRoute {
 			)
 		);
 
-		$customer->update_meta_data( 'prefer_collection', wc_bool_to_string( ( $request['prefer_collection'] ?? false ) ) );
+		if ( \Automattic\WooCommerce\Blocks\Package::feature()->is_experimental_build() ) {
+			$customer->update_meta_data( 'prefer_collection', wc_bool_to_string( ( $request['prefer_collection'] ?? false ) ) );
+		}
 
 		wc_do_deprecated_action(
 			'woocommerce_blocks_cart_update_customer_from_request',
