@@ -6,7 +6,7 @@ import { lazy } from '@wordpress/element';
 
 registerBlockComponent( {
 	blockName: 'woocommerce/active-filters',
-	component: lazy( () => import( '../active-filters/block' ) ),
+	component: lazy( () => import( '../active-filters/block-wrapper' ) ),
 } );
 
 registerBlockComponent( {
