@@ -345,7 +345,7 @@ class CartSchema extends AbstractSchema {
 		$has_calculated_shipping = $cart->show_shipping();
 
 		// Get shipping packages to return in the response from the cart.
-		$prefer_collection = true; // (bool) wc()->customer->get_meta_data( 'prefer_collection' );
+		$prefer_collection = (bool) wc()->customer->get_meta_data( 'prefer_collection' );
 		$shipping_packages = $has_calculated_shipping ? $controller->get_shipping_packages( true, $prefer_collection ) : [];
 
 		// Get visible cross sells products.
