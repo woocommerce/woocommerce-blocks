@@ -22,7 +22,7 @@ import classnames from 'classnames';
  * Internal dependencies
  */
 import './style.scss';
-import { Attributes, DisplayOption } from './types';
+import { Attributes } from './types';
 import { getActiveFilters } from './utils';
 
 export const QUERY_PARAM_KEY = 'rating_filter';
@@ -198,39 +198,36 @@ const RatingFilterBlock = ( {
 		heading
 	);
 
-	let orderedRatings = [];
-	let displayedOptions: DisplayOption[] = [];
-
-	if (
+	const orderedRatings =
 		! filteredCountsLoading &&
 		objectHasProp( filteredCounts, 'rating_counts' ) &&
 		Array.isArray( filteredCounts.rating_counts )
-	) {
-		orderedRatings = [ ...filteredCounts.rating_counts ].reverse();
-		displayedOptions = orderedRatings
-			.filter(
-				( item ) => isObject( item ) && Object.keys( item ).length > 0
-			)
-			.map( ( item ) => {
-				return {
-					label: (
-						<Rating
-							className={
-								productRatingsArray.includes(
-									item?.rating?.toString()
-								)
-									? 'is-active'
-									: ''
-							}
-							key={ item?.rating }
-							rating={ item?.rating }
-							ratedProductsCount={ item?.count }
-						/>
-					),
-					value: item?.rating?.toString(),
-				};
-			} );
-	}
+			? [ ...filteredCounts.rating_counts ].reverse()
+			: [];
+
+	const displayedOptions = orderedRatings
+		.filter(
+			( item ) => isObject( item ) && Object.keys( item ).length > 0
+		)
+		.map( ( item ) => {
+			return {
+				label: (
+					<Rating
+						className={
+							productRatingsArray.includes(
+								item?.rating?.toString()
+							)
+								? 'is-active'
+								: ''
+						}
+						key={ item?.rating }
+						rating={ item?.rating }
+						ratedProductsCount={ item?.count }
+					/>
+				),
+				value: item?.rating?.toString(),
+			};
+		} );
 
 	return (
 		<>
