@@ -110,7 +110,7 @@ class CartUpdateCustomer extends AbstractCartRoute {
 			)
 		);
 
-		$customer->update_meta_data( 'prefer_collection', $request['prefer_collection'] ?? false );
+		$customer->update_meta_data( 'prefer_collection', wc_bool_to_string( ( $request['prefer_collection'] ?? false ) ) );
 
 		wc_do_deprecated_action(
 			'woocommerce_blocks_cart_update_customer_from_request',
