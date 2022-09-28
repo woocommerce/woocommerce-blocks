@@ -185,6 +185,12 @@ class CartSchema extends AbstractSchema {
 				'context'     => [ 'view', 'edit' ],
 				'readonly'    => true,
 			],
+			'prefer_collection'       => [
+				'description' => __( 'This is true when the customer would prefer to collect rather than pay for shipping. This filters shipping methods based on selection.', 'woo-gutenberg-products-block' ),
+				'type'        => 'boolean',
+				'context'     => [ 'view', 'edit' ],
+				'readonly'    => true,
+			],
 			'has_calculated_shipping' => [
 				'description' => __( 'True if the cart meets the criteria for showing shipping costs, and rates have been calculated and included in the totals.', 'woo-gutenberg-products-block' ),
 				'type'        => 'boolean',
@@ -339,7 +345,8 @@ class CartSchema extends AbstractSchema {
 		$has_calculated_shipping = $cart->show_shipping();
 
 		// Get shipping packages to return in the response from the cart.
-		$shipping_packages = $has_calculated_shipping ? $controller->get_shipping_packages() : [];
+		$prefer_collection = true; // (bool) wc()->customer->get_meta_data( 'prefer_collection' );
+		$shipping_packages = $has_calculated_shipping ? $controller->get_shipping_packages( true, $prefer_collection ) : [];
 
 		// Get visible cross sells products.
 		$cross_sells = array_filter( array_map( 'wc_get_product', $cart->get_cross_sells() ), 'wc_products_array_filter_visible' );
@@ -355,6 +362,7 @@ class CartSchema extends AbstractSchema {
 			'cross_sells'             => $this->get_item_responses_from_schema( $this->cross_sells_item_schema, $cross_sells ),
 			'needs_payment'           => $cart->needs_payment(),
 			'needs_shipping'          => $cart->needs_shipping(),
+			'prefer_collection'       => $prefer_collection,
 			'has_calculated_shipping' => $has_calculated_shipping,
 			'fees'                    => $this->get_item_responses_from_schema( $this->fee_schema, $cart->get_fees() ),
 			'totals'                  => (object) $this->prepare_currency_response(

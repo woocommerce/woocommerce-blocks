@@ -39,7 +39,7 @@ class CartUpdateCustomer extends AbstractCartRoute {
 				'callback'            => [ $this, 'get_response' ],
 				'permission_callback' => '__return_true',
 				'args'                => [
-					'billing_address'  => [
+					'billing_address'   => [
 						'description'       => __( 'Billing address.', 'woo-gutenberg-products-block' ),
 						'type'              => 'object',
 						'context'           => [ 'view', 'edit' ],
@@ -47,13 +47,18 @@ class CartUpdateCustomer extends AbstractCartRoute {
 						'sanitize_callback' => [ $this->schema->billing_address_schema, 'sanitize_callback' ],
 						'validate_callback' => [ $this->schema->billing_address_schema, 'validate_callback' ],
 					],
-					'shipping_address' => [
+					'shipping_address'  => [
 						'description'       => __( 'Shipping address.', 'woo-gutenberg-products-block' ),
 						'type'              => 'object',
 						'context'           => [ 'view', 'edit' ],
 						'properties'        => $this->schema->shipping_address_schema->get_properties(),
 						'sanitize_callback' => [ $this->schema->shipping_address_schema, 'sanitize_callback' ],
 						'validate_callback' => [ $this->schema->shipping_address_schema, 'validate_callback' ],
+					],
+					'prefer_collection' => [
+						'description' => __( 'This is true when the customer would prefer to collect rather than pay for shipping. This filters shipping methods based on selection.', 'woo-gutenberg-products-block' ),
+						'type'        => 'boolean',
+						'context'     => [ 'view', 'edit' ],
 					],
 				],
 			],
@@ -104,6 +109,8 @@ class CartUpdateCustomer extends AbstractCartRoute {
 				'shipping_phone'      => $shipping['phone'] ?? null,
 			)
 		);
+
+		$customer->update_meta_data( 'prefer_collection', $request['prefer_collection'] ?? false );
 
 		wc_do_deprecated_action(
 			'woocommerce_blocks_cart_update_customer_from_request',
