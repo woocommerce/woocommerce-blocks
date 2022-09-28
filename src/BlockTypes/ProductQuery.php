@@ -112,7 +112,7 @@ class ProductQuery extends AbstractBlock {
 			),
 			function( $acc, $query ) {
 				if ( isset( $query['post__in'] ) ) {
-					$acc['post__in'] = isset( $acc['post__in'] ) ? array_merge( $acc['post__in'], $query['post__in'] ) : $query['post__in'];
+					$acc['post__in'] = isset( $acc['post__in'] ) ? array_intersect( $acc['post__in'], $query['post__in'] ) : $query['post__in'];
 				}
 				// Ignoring the warning of not using meta queries.
 				// phpcs:ignore WordPress.DB.SlowDBQuery.slow_db_query_meta_query
