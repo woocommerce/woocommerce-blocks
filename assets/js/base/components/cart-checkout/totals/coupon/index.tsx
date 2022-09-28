@@ -4,15 +4,14 @@
 import { __ } from '@wordpress/i18n';
 import { useState, useEffect, useRef } from '@wordpress/element';
 import Button from '@woocommerce/base-components/button';
-import { ValidatedTextInput } from '@woocommerce/base-components/text-input';
+import { Panel } from '@woocommerce/blocks-checkout';
 import Label from '@woocommerce/base-components/label';
 import LoadingMask from '@woocommerce/base-components/loading-mask';
 import { withInstanceId } from '@wordpress/compose';
-import {
-	ValidationInputError,
-	useValidationContext,
-} from '@woocommerce/base-context';
-import { Panel } from '@woocommerce/blocks-checkout';
+import { ValidatedTextInput } from '@woocommerce/base-components/text-input';
+import ValidationInputError from '@woocommerce/base-components/validation-input-error';
+import { useSelect } from '@wordpress/data';
+import { VALIDATION_STORE_KEY } from '@woocommerce/block-data';
 
 /**
  * Internal dependencies
@@ -46,8 +45,17 @@ export const TotalsCoupon = ( {
 }: TotalsCouponProps ): JSX.Element => {
 	const [ couponValue, setCouponValue ] = useState( '' );
 	const currentIsLoading = useRef( false );
-	const { getValidationError, getValidationErrorId } = useValidationContext();
-	const validationError = getValidationError( 'coupon' );
+
+	const validationErrorKey = 'coupon';
+	const textInputId = `wc-block-components-totals-coupon__input-${ instanceId }`;
+
+	const { validationError, validationErrorId } = useSelect( ( select ) => {
+		const store = select( VALIDATION_STORE_KEY );
+		return {
+			validationError: store.getValidationError( validationErrorKey ),
+			validationErrorId: store.getValidationErrorId( textInputId ),
+		};
+	} );
 
 	useEffect( () => {
 		if ( currentIsLoading.current !== isLoading ) {
@@ -57,8 +65,6 @@ export const TotalsCoupon = ( {
 			currentIsLoading.current = isLoading;
 		}
 	}, [ isLoading, couponValue, validationError ] );
-
-	const textInputId = `wc-block-components-totals-coupon__input-${ instanceId }`;
 
 	return (
 		<Panel
@@ -98,9 +104,7 @@ export const TotalsCoupon = ( {
 								'woo-gutenberg-products-block'
 							) }
 							value={ couponValue }
-							ariaDescribedBy={ getValidationErrorId(
-								textInputId
-							) }
+							ariaDescribedBy={ validationErrorId }
 							onChange={ ( newCouponValue ) => {
 								setCouponValue( newCouponValue );
 							} }
@@ -112,7 +116,10 @@ export const TotalsCoupon = ( {
 							disabled={ isLoading || ! couponValue }
 							showSpinner={ isLoading }
 							onClick={ (
-								e: React.MouseEvent< HTMLElement, 'click' >
+								e: React.MouseEvent<
+									HTMLButtonElement,
+									MouseEvent
+								>
 							) => {
 								e.preventDefault();
 								onSubmit( couponValue );
