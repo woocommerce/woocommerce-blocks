@@ -4,8 +4,8 @@
 import Block from './block';
 import { parseAttributes } from './utils';
 
-const InnerBlockWrapper = ( props: Record< string, unknown > ) => {
+const BlockWrapper = ( props: Record< string, unknown > ) => {
 	return <Block isEditor={ false } attributes={ parseAttributes( props ) } />;
 };
 
-export default InnerBlockWrapper;
+export default BlockWrapper;
