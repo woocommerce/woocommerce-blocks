@@ -234,16 +234,17 @@ describe( 'Testing cart', () => {
 	} );
 
 	it( 'does not show the remove item button when a filter prevents this', async () => {
-		__experimentalRegisterCheckoutFilters( 'woo-blocks-test-extension', {
-			showRemoveItemLink: ( value, extensions, { cartItem } ) => {
-				return cartItem.id !== 1;
-			},
-		} );
 		const cart = {
 			...previewCart,
 			// Make it so there is only one item to simplify things.
 			items: [ previewCart.items[ 0 ] ],
 		};
+
+		__experimentalRegisterCheckoutFilters( 'woo-blocks-test-extension', {
+			showRemoveItemLink: ( value, extensions, { cartItem } ) => {
+				return cartItem.id !== cart.items[ 0 ].id;
+			},
+		} );
 		render( <CartBlock /> );
 
 		await waitFor( () => expect( fetchMock ).toHaveBeenCalled() );
