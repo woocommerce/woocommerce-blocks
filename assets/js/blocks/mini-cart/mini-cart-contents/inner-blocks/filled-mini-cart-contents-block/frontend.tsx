@@ -26,7 +26,7 @@ const FilledMiniCartContentsBlock = ( {
 	useEffect( () => {
 		cartItemErrors.forEach( ( error ) => {
 			createErrorNotice( decodeEntities( error.message ), {
-				isDismissible: true,
+				isDismissible: false,
 				id: error.code,
 				context: 'wc/cart',
 			} );

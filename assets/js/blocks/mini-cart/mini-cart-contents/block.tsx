@@ -6,7 +6,6 @@
  * Internal dependencies
  */
 import './inner-blocks/register-components';
-import './style.scss';
 
 type MiniCartContentsBlockProps = {
 	children: JSX.Element | JSX.Element[];
