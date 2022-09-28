@@ -242,12 +242,7 @@ describe( 'Testing cart', () => {
 		const cart = {
 			...previewCart,
 			// Make it so there is only one item to simplify things.
-			items: [
-				{
-					...previewCart.items[ 0 ],
-					quantity: 5,
-				},
-			],
+			items: [ previewCart.items[ 0 ] ],
 		};
 		render( <CartBlock /> );
 
