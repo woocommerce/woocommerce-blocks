@@ -2,13 +2,14 @@
  * External dependencies
  */
 import { __ } from '@wordpress/i18n';
-import {
-	useCheckoutContext,
-	useEditorContext,
-	usePaymentMethodDataContext,
-} from '@woocommerce/base-context';
+import { useEditorContext } from '@woocommerce/base-context';
 import { CheckboxControl } from '@woocommerce/blocks-checkout';
 import PropTypes from 'prop-types';
+import { useSelect, useDispatch } from '@wordpress/data';
+import {
+	CHECKOUT_STORE_KEY,
+	PAYMENT_METHOD_DATA_STORE_KEY,
+} from '@woocommerce/block-data';
 
 /**
  * Internal dependencies
@@ -27,10 +28,18 @@ import PaymentMethodErrorBoundary from './payment-method-error-boundary';
  */
 const PaymentMethodCard = ( { children, showSaveOption } ) => {
 	const { isEditor } = useEditorContext();
-	const { shouldSavePayment, setShouldSavePayment } =
-		usePaymentMethodDataContext();
-	const { customerId } = useCheckoutContext();
-
+	const { shouldSavePaymentMethod, customerId } = useSelect( ( select ) => {
+		const paymentMethodStore = select( PAYMENT_METHOD_DATA_STORE_KEY );
+		const checkoutStore = select( CHECKOUT_STORE_KEY );
+		return {
+			shouldSavePaymentMethod:
+				paymentMethodStore.shouldSavePaymentMethod(),
+			customerId: checkoutStore.getCustomerId(),
+		};
+	} );
+	const { setShouldSavePaymentMethod } = useDispatch(
+		PAYMENT_METHOD_DATA_STORE_KEY
+	);
 	return (
 		<PaymentMethodErrorBoundary isEditor={ isEditor }>
 			{ children }
@@ -41,9 +50,9 @@ const PaymentMethodCard = ( { children, showSaveOption } ) => {
 						'Save payment information to my account for future purchases.',
 						'woo-gutenberg-products-block'
 					) }
-					checked={ shouldSavePayment }
+					checked={ shouldSavePaymentMethod }
 					onChange={ () =>
-						setShouldSavePayment( ! shouldSavePayment )
+						setShouldSavePaymentMethod( ! shouldSavePaymentMethod )
 					}
 				/>
 			) }
