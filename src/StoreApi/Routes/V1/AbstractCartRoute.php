@@ -12,6 +12,9 @@ use Automattic\WooCommerce\StoreApi\Utilities\CartController;
 use Automattic\WooCommerce\StoreApi\Utilities\DraftOrderTrait;
 use Automattic\WooCommerce\StoreApi\Utilities\JsonWebToken;
 use Automattic\WooCommerce\StoreApi\Utilities\OrderController;
+use Automattic\WooCommerce\Blocks\Package;
+use WC_Shipping_Zone;
+use WC_Shipping_Zones;
 
 /**
  * Abstract Cart Route
@@ -63,10 +66,40 @@ abstract class AbstractCartRoute extends AbstractRoute {
 	public function __construct( SchemaController $schema_controller, AbstractSchema $schema ) {
 		parent::__construct( $schema_controller, $schema );
 
-		$this->cart_schema      = $this->schema_controller->get( CartSchema::IDENTIFIER );
-		$this->cart_item_schema = $this->schema_controller->get( CartItemSchema::IDENTIFIER );
-		$this->cart_controller  = new CartController();
-		$this->order_controller = new OrderController();
+		$this->schema_controller = $schema_controller;
+		$this->schema            = $schema;
+		$this->cart_schema       = $this->schema_controller->get( CartSchema::IDENTIFIER );
+		$this->cart_item_schema  = $this->schema_controller->get( CartItemSchema::IDENTIFIER );
+		$this->cart_controller   = new CartController();
+		$this->order_controller  = new OrderController();
+
+		/**
+		 * Experimental functionality which makes local pickup methods ignore zone restrictions.
+		 */
+		if ( Package::feature()->is_experimental_build() ) {
+			add_filter(
+				'woocommerce_get_shipping_methods',
+				function( $shipping_methods ) {
+					$shipping_zones = WC_Shipping_Zones::get_zones();
+					$worldwide_zone = new WC_Shipping_Zone( 0 );
+					$all_methods    = $worldwide_zone->get_shipping_methods( false );
+
+					foreach ( $shipping_zones as $shipping_zone ) {
+						$all_methods = array_merge( $all_methods, $shipping_zone['shipping_methods'] );
+					}
+
+					// Filter by known local pickup ids.
+					$local_pickup_method_ids = apply_filters( 'woocommerce_local_pickup_methods', array( 'legacy_local_pickup', 'local_pickup' ) );
+					$local_pickups           = array_filter(
+						$all_methods,
+						function( $method ) use ( $local_pickup_method_ids ) {
+							return in_array( $method->id, $local_pickup_method_ids, true );
+						}
+					);
+					return array_merge( $shipping_methods, $local_pickups );
+				}
+			);
+		}
 	}
 
 	/**
