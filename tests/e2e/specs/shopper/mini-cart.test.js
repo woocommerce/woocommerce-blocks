@@ -564,6 +564,10 @@ describe( 'Shopper → Mini Cart', () => {
 			await shopper.block.emptyCart();
 		} );
 
+		beforeEach( async () => {
+			await shopper.block.goToBlockPage( block.name );
+		} );
+
 		afterAll( async () => {
 			await merchant.changeLanguage( '' );
 		} );
