@@ -117,9 +117,7 @@ export const parseAttributes = ( data: Record< string, unknown > ) => {
 			isString( data?.attributeId ) ? data.attributeId : '0',
 			10
 		),
-		showCounts:
-			data?.showCounts === 'true' ||
-			metadata.attributes.showCounts.default,
+		showCounts: data?.showCounts === 'true',
 		queryType:
 			( isString( data?.queryType ) && data.queryType ) ||
 			metadata.attributes.queryType.default,
@@ -131,9 +129,7 @@ export const parseAttributes = ( data: Record< string, unknown > ) => {
 		displayStyle:
 			( isString( data?.displayStyle ) && data.displayStyle ) ||
 			metadata.attributes.displayStyle.default,
-		showFilterButton:
-			data?.showFilterButton === 'true' ||
-			metadata.attributes.showFilterButton.default,
+		showFilterButton: data?.showFilterButton === 'true',
 		selectType:
 			( isString( data?.selectType ) && data.selectType ) ||
 			metadata.attributes.selectType.default,

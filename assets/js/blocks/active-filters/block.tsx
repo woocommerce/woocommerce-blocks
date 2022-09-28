@@ -35,7 +35,6 @@ import {
 import ActiveAttributeFilters from './active-attribute-filters';
 import FilterPlaceholders from './filter-placeholders';
 import { Attributes } from './types';
-import metadata from './block.json';
 import { useSetWraperVisibility } from '../filter-wrapper/context';
 
 /**
@@ -52,12 +51,6 @@ const ActiveFiltersBlock = ( {
 	attributes: Attributes;
 	isEditor?: boolean;
 } ) => {
-	blockAttributes = {
-		...blockAttributes,
-		displayStyle:
-			blockAttributes?.displayStyle ||
-			metadata.attributes.displayStyle.default,
-	};
 	const setWrapperVisibility = useSetWraperVisibility();
 	const isMounted = useIsMounted();
 	const componentHasMounted = isMounted();

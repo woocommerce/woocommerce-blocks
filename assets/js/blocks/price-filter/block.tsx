@@ -29,7 +29,6 @@ import {
 import usePriceConstraints from './use-price-constraints';
 import './style.scss';
 import { Attributes } from './types';
-import metadata from './block.json';
 import { useSetWraperVisibility } from '../filter-wrapper/context';
 
 /**
@@ -87,12 +86,6 @@ const PriceFilterBlock = ( {
 	attributes: Attributes;
 	isEditor: boolean;
 } ) => {
-	attributes = {
-		...attributes,
-		showFilterButton:
-			attributes?.showFilterButton ||
-			metadata.attributes.showFilterButton.default,
-	};
 	const setWrapperVisibility = useSetWraperVisibility();
 	const hasFilterableProducts = getSettingWithCoercion(
 		'has_filterable_products',

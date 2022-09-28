@@ -294,6 +294,5 @@ export const parseAttributes = ( data: Record< string, unknown > ) => {
 		displayStyle:
 			( isString( data?.displayStyle ) && data.displayStyle ) ||
 			metadata.attributes.displayStyle.default,
-		style: ( isString( data?.style ) && data.style ) || '',
 	};
 };

@@ -11,7 +11,7 @@ registerBlockComponent( {
 
 registerBlockComponent( {
 	blockName: 'woocommerce/price-filter',
-	component: lazy( () => import( '../price-filter/block' ) ),
+	component: lazy( () => import( '../price-filter/block-wrapper' ) ),
 } );
 
 registerBlockComponent( {
