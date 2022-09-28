@@ -50,17 +50,20 @@ To surface the flow state, the block uses statuses that are tracked in the vario
 
 The following statuses exist in the Checkout.
 
-### `CheckoutProvider` Exposed Statuses
+#### Checkout Data Store Exposed Statuses
 
-You can find all the checkout provider statuses defined [in this typedef](https://github.com/woocommerce/woocommerce-gutenberg-products-block/blob/34e17c3622637dbe8b02fac47b5c9b9ebf9e3596/assets/js/type-defs/checkout.js#L21-L38).
+There are various statuses that are exposed on the Checkout data store via selectors. All the selectors are detailed below and in the [Checkout API docs](https://github.com/woocommerce/woocommerce-gutenberg-products-block/blob/trunk/docs/block-client-apis/checkout/checkout-api.md).
 
-They are exposed to children components via the `useCheckoutContext` via various boolean flags. For instance you can access the `isComplete` flag by doing something like this in your component:
+You can use them in your component like so
 
 ```jsx
-import { useCheckoutContext } from '@woocommerce/base-contexts';
+import { useSelect } from '@wordpress/data';
+import { CHECKOUT_STORE_KEY } from '@woocommerce/blocks-data';
 
 const MyComponent = ( props ) => {
-	const { isComplete } = useCheckoutContext();
+	const isComplete = useSelect( ( select ) =>
+		select( CHECKOUT_STORE_KEY ).isComplete()
+	);
 	// do something with isComplete
 };
 ```
@@ -110,7 +113,7 @@ The possible _internal_ statuses that may be set are:
 -   `FAILED`: This status is set after an observer hooked into the payment processing event returns a fail response. This in turn will end up causing the checkout `hasError` flag to be set to true.
 -   `ERROR`: This status is set after an observer hooked into the payment processing event returns an error response. This in turn will end up causing the checkout `hasError` flag to be set to true.
 
-The provider exposes the current status of the payment method data context via the `currentStatus` object. You can retrieve this via the `usePaymentMethodDataContext` hook.
+The provider exposes the current status of the payment method data context via the `currentStatus` object. You can retrieve this via the `usePaymentMethodEventsContext` hook.
 
 The `currentStatus` object has the following properties:
 
@@ -163,27 +166,23 @@ const MyComponent = ( { onCheckoutValidationBeforeProcessing } ) => {
 };
 ```
 
-**`useEmitResponse`**
+**`Event Emitter Utilities`**
 
-This internal hook contains a collection of API interfaces for event emitter related usage. It can be used by simply adding this to a component:
+There are a bunch of utility methods that can be used related to events. These are available in `assets/js/base/context/event-emit/utils.ts` and can be imported as follows:
 
 ```jsx
-import { useEmitResponse } from '@woocommerce/base-context/hooks';
-
-const Component = () => {
-	const {
-		isSuccessResponse,
-		isErrorResponse,
-		isFailResponse,
-		noticeContexts,
-		responseTypes,
-		shouldRetry,
-	} = useEmitResponse();
-	return null;
+import {
+	isSuccessResponse,
+	isErrorResponse,
+	isFailResponse,
+	noticeContexts,
+	responseTypes,
+	shouldRetry,
+} from '@woocommerce/base-context';
 };
 ```
 
-The properties of the object returned by this hook are:
+The helper functions are described below:
 
 -   `isSuccessResponse`, `isErrorResponse` and `isFailResponse`: These are helper functions that receive a value and report via boolean whether the object is a type of response expected. For event emitters that receive responses from registered observers, a `type` property on the returned object from the observer indicates what type of response it is and event emitters will react according to that type. So for instance if an observer returned `{ type: 'success' }` the emitter could feed that to `isSuccessResponse` and it would return `true`. You can see an example of this being implemented for the payment processing emitted event [here](https://github.com/woocommerce/woocommerce-gutenberg-products-block/blob/34e17c3622637dbe8b02fac47b5c9b9ebf9e3596/assets/js/base/context/cart-checkout/payment-methods/payment-method-data-context.js#L281-L307).
 -   `noticeContexts`: This is an object containing properties referencing areas where notices can be targeted in the checkout. The object has the following properties:
@@ -305,16 +304,16 @@ If the response object doesn't match any of the above conditions, then the fallb
 
 When the payment status is set to `SUCCESS` and the checkout status is `PROCESSING`, the `CheckoutProcessor` component will trigger the request to the server for processing the order.
 
-This event emitter subscriber can be obtained via the checkout context using the `usePaymentMethodDataContext` hook or to payment method extensions as a prop on their registered component:
+This event emitter subscriber can be obtained via the checkout context using the `usePaymentMethodEventsContext` hook or to payment method extensions as a prop on their registered component:
 
 _For internal development:_
 
 ```jsx
-import { usePaymentMethodDataContext } from '@woocommerce/base-contexts';
+import { usePaymentMethodEventsContext } from '@woocommerce/base-contexts';
 import { useEffect } from '@wordpress/element';
 
 const Component = () => {
-	const { onPaymentProcessing } = usePaymentMethodDataContext();
+	const { onPaymentProcessing } = usePaymentMethodEventsContext();
 	useEffect( () => {
 		const unsubscribe = onPaymentProcessing( () => true );
 		return unsubscribe;
