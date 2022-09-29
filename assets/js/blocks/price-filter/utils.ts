@@ -16,7 +16,7 @@ export const parseAttributes = ( data: Record< string, unknown > ) => {
 				parseInt( data.headingLevel, 10 ) ) ||
 			metadata.attributes.headingLevel.default,
 		showFilterButton: data?.showFilterButton === 'true',
-		showInputFields: data?.showInputFields === 'true',
+		showInputFields: data?.showInputFields !== 'false',
 		inlineInput: data?.inlineInput === 'true',
 	};
 };
