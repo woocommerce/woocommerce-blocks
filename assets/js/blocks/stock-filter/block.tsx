@@ -67,6 +67,10 @@ const StockStatusFilterBlock = ( {
 		{}
 	);
 
+	const productIds = isEditor
+		? []
+		: getSettingWithCoercion( 'product_ids', [], Array.isArray );
+
 	const STOCK_STATUS_OPTIONS = useRef(
 		getSetting( 'hideOutOfStockItems', false )
 			? otherStockStatusOptions
@@ -98,6 +102,7 @@ const StockStatusFilterBlock = ( {
 		useCollectionData( {
 			queryStock: true,
 			queryState,
+			productIds,
 		} );
 
 	/**
