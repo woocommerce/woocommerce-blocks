@@ -11,7 +11,8 @@
 			"text": true,
 			"background": false
 		},
-		"inserter": false
+		"inserter": false,
+		"lock": false
 	},
 	"example": {
 		"attributes": {

@@ -67,6 +67,9 @@ export const UpgradeNotice = ( {
 		);
 		setAttributes( {
 			heading: '',
+			lock: {
+				remove: true,
+			},
 		} );
 	};
 

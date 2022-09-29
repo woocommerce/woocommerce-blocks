@@ -25,6 +25,9 @@ const Edit = ( { attributes }: BlockEditProps< Attributes > ) => {
 						`woocommerce/${ attributes.filterType }`,
 						{
 							heading: '',
+							lock: {
+								remove: true,
+							},
 						},
 					],
 				] }

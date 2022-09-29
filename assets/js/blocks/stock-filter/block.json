@@ -14,7 +14,8 @@
 			"text": true
 		  }
 		},
-		"inserter": false
+		"inserter": false,
+		"lock": false
 	},
 	"example": {
 		"attributes": {
