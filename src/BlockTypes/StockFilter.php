@@ -10,7 +10,9 @@ class StockFilter extends AbstractBlock {
 	 *
 	 * @var string
 	 */
-	protected $block_name = 'stock-filter';
+	protected $block_name               = 'stock-filter';
+	const STOCK_STATUS_QUERY_VAR        = 'filter_stock_status';
+	const STOCK_STATUS_QUERY_VAR_VALUES = array( 'instock', 'outofstock', 'onbackorder' );
 
 	/**
 	 * Extra data passed through from server to client for block.
