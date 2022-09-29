@@ -44,7 +44,6 @@ registerBlockType( metadata, {
 				'Allow customers to filter products by price range.',
 				'woo-gutenberg-products-block'
 			),
-			scope: [ 'inserter' ],
 			isActive: ( attributes ) =>
 				attributes.filterType === 'price-filter',
 			attributes: {
@@ -70,7 +69,6 @@ registerBlockType( metadata, {
 				'Allow customers to filter the grid by products stock status.',
 				'woo-gutenberg-products-block'
 			),
-			scope: [ 'inserter' ],
 			isActive: ( attributes ) =>
 				attributes.filterType === 'stock-filter',
 			attributes: {
@@ -96,7 +94,6 @@ registerBlockType( metadata, {
 				'Allow customers to filter the grid by product attribute, such as color.',
 				'woo-gutenberg-products-block'
 			),
-			scope: [ 'inserter' ],
 			isActive: ( attributes ) =>
 				attributes.filterType === 'attribute-filter',
 			attributes: {
