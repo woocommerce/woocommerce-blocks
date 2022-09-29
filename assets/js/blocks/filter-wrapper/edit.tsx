@@ -2,7 +2,6 @@
  * External dependencies
  */
 import { useBlockProps, InnerBlocks } from '@wordpress/block-editor';
-import { useSelect } from '@wordpress/data';
 import type { BlockEditProps } from '@wordpress/blocks';
 
 /**
@@ -10,16 +9,8 @@ import type { BlockEditProps } from '@wordpress/blocks';
  */
 import { Attributes } from './types';
 
-const Edit = ( { attributes, clientId }: BlockEditProps< Attributes > ) => {
+const Edit = ( { attributes }: BlockEditProps< Attributes > ) => {
 	const blockProps = useBlockProps();
-
-	const innerBlockCount = useSelect( ( select ) => {
-		const currentBlock = select( 'core/block-editor' ).getBlock( clientId );
-		if ( ! currentBlock ) {
-			return 0;
-		}
-		return currentBlock.innerBlocks.length;
-	} );
 
 	return (
 		<div { ...blockProps }>
@@ -37,12 +28,6 @@ const Edit = ( { attributes, clientId }: BlockEditProps< Attributes > ) => {
 						},
 					],
 				] }
-				renderAppender={ () => {
-					if ( innerBlockCount < 2 ) {
-						return <InnerBlocks.ButtonBlockAppender />;
-					}
-					return null;
-				} }
 			/>
 		</div>
 	);
