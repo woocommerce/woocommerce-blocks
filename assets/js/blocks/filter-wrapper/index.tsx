@@ -32,8 +32,12 @@ registerBlockType( metadata, {
 				'Show the currently active product filters. Works in combination with other filters blocks.',
 				'woo-gutenberg-products-block'
 			),
-			isActive: ( attributes ) =>
-				attributes.filterType === 'active-filters',
+			/**
+			 * We need to handle the isActive function differently for this
+			 * variation. The `attributes` is empty for default variation. So we
+			 * set this variation as active if `filterType` is not passed.
+			 */
+			isActive: ( attributes ) => ! attributes.filterType,
 			attributes: {
 				heading: __( 'Active filters', 'woo-gutenberg-products-block' ),
 				filterType: 'active-filters',
