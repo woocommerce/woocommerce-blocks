@@ -46,7 +46,9 @@ describe( 'Shopper → Checkout', () => {
 
 	it( 'User can view empty cart message', async () => {
 		await shopper.block.goToCheckout();
-		// Verify cart is empty
+		// Wait for the selector to prevent flakiness.
+		await page.waitForSelector( 'strong.wc-block-checkout-empty__title' );
+		// Verify that the cart is empty.
 		await expect( page ).toMatchElement(
 			'strong.wc-block-checkout-empty__title',
 			{
