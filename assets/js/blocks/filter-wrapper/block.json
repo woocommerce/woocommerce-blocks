@@ -1,14 +1,15 @@
 {
 	"name": "woocommerce/filter-wrapper",
 	"version": "1.0.0",
-	"title": "Active Product Filters",
-	"description": "Show the currently active product filters. Works in combination with other filters blocks.",
+	"title": "Filter Wrapper",
 	"category": "woocommerce",
 	"keywords": [ "WooCommerce" ],
 	"attributes": {
 		"filterType": {
-			"type": "string",
-			"default": "active-filters"
+			"type": "string"
+		},
+		"heading": {
+			"type": "string"
 		}
 	},
 	"textdomain": "woo-gutenberg-products-block",

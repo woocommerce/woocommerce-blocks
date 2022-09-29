@@ -14,21 +14,6 @@ import edit from './edit';
 import metadata from './block.json';
 
 registerBlockType( metadata, {
-	icon: {
-		src: (
-			<Icon
-				icon={ toggle }
-				className="wc-block-editor-components-block-icon"
-			/>
-		),
-	},
-	attributes: {
-		...metadata.attributes,
-		heading: {
-			type: 'string',
-			default: __( 'Active filters', 'woo-gutenberg-products-block' ),
-		},
-	},
 	edit,
 	save() {
 		const innerBlocksProps = useInnerBlocksProps.save(
@@ -37,6 +22,32 @@ registerBlockType( metadata, {
 		return <div { ...innerBlocksProps } />;
 	},
 	variations: [
+		{
+			name: 'active-filters',
+			title: __(
+				'Active Product Filters',
+				'woo-gutenberg-products-block'
+			),
+			description: __(
+				'Show the currently active product filters. Works in combination with other filters blocks.',
+				'woo-gutenberg-products-block'
+			),
+			isActive: ( attributes ) =>
+				attributes.filterType === 'active-filters',
+			attributes: {
+				heading: __( 'Active filters', 'woo-gutenberg-products-block' ),
+				filterType: 'active-filters',
+			},
+			icon: {
+				src: (
+					<Icon
+						icon={ toggle }
+						className="wc-block-editor-components-block-icon"
+					/>
+				),
+			},
+			isDefault: true,
+		},
 		{
 			name: 'price-filter',
 			title: __( 'Filter by Price', 'woo-gutenberg-products-block' ),
