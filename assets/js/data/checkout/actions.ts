@@ -61,8 +61,8 @@ export const setRedirectUrl = ( redirectUrl: string ) => ( {
  *
  * @param  data The result of the payment attempt through the StoreApi /checkout endpoints
  */
-export const setProcessingResponse = ( data: PaymentResult ) => ( {
-	type: types.SET_PROCESSING_RESPONSE,
+export const setPaymentResult = ( data: PaymentResult ) => ( {
+	type: types.SET_PAYMENT_RESULT,
 	data,
 } );
 
@@ -100,11 +100,6 @@ export const decrementCalculating = () => ( {
 export const setCustomerId = ( customerId: number ) => ( {
 	type: types.SET_CUSTOMER_ID,
 	customerId,
-} );
-
-export const setOrderId = ( orderId: number ) => ( {
-	type: types.SET_ORDER_ID,
-	orderId,
 } );
 
 /**
@@ -154,7 +149,7 @@ export type CheckoutAction =
 			| typeof setIdle
 			| typeof setComplete
 			| typeof setProcessing
-			| typeof setProcessingResponse
+			| typeof setPaymentResult
 			| typeof setBeforeProcessing
 			| typeof setAfterProcessing
 			| typeof setRedirectUrl
@@ -162,7 +157,6 @@ export type CheckoutAction =
 			| typeof incrementCalculating
 			| typeof decrementCalculating
 			| typeof setCustomerId
-			| typeof setOrderId
 			| typeof setUseShippingAsBilling
 			| typeof setShouldCreateAccount
 			| typeof setOrderNotes

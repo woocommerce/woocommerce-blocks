@@ -37,7 +37,7 @@ describe.only( 'Checkout Store Reducer', () => {
 		).toEqual( expectedState );
 	} );
 
-	it( 'should handle SET_PROCESSING_RESPONSE', () => {
+	it( 'should handle SET_PAYMENT_RESULT', () => {
 		const mockResponse = {
 			message: 'success',
 			redirectUrl: 'https://example.com',
@@ -48,14 +48,11 @@ describe.only( 'Checkout Store Reducer', () => {
 		const expectedState = {
 			...defaultState,
 			status: STATUS.IDLE,
-			processingResponse: mockResponse,
+			paymentResult: mockResponse,
 		};
 
 		expect(
-			reducer(
-				defaultState,
-				actions.setProcessingResponse( mockResponse )
-			)
+			reducer( defaultState, actions.setPaymentResult( mockResponse ) )
 		).toEqual( expectedState );
 	} );
 
@@ -191,18 +188,6 @@ describe.only( 'Checkout Store Reducer', () => {
 		};
 
 		expect( reducer( defaultState, actions.setCustomerId( 1 ) ) ).toEqual(
-			expectedState
-		);
-	} );
-
-	it( 'should handle SET_ORDER_ID', () => {
-		const expectedState = {
-			...defaultState,
-			status: STATUS.IDLE,
-			orderId: 1,
-		};
-
-		expect( reducer( defaultState, actions.setOrderId( 1 ) ) ).toEqual(
 			expectedState
 		);
 	} );

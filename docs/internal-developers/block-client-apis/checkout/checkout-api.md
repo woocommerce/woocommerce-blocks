@@ -35,7 +35,7 @@ The following data is available:
 -   `orderId`: The order id for the order attached to the current checkout.
 -   `customerId`: The ID of the customer if the customer has an account, or `0` for guests.
 -   `calculatingCount`: If any of the totals, taxes, shipping, etc need to be calculated, the count will be increased here.
--   `processingResponse`: The result of the payment processing.
+-   `paymentResult`: The result of processing the payment.
 -   `useShippingAsBilling`: Should the billing form be hidden and inherit the shipping address?
 -   `shouldCreateAccount`: Should a user account be created with this order?
 -   `extensionData`: This is used by plugins that extend Cart & Checkout to pass custom data to the Store API on checkout processing
@@ -65,16 +65,15 @@ The following actions can be dispatched from the Checkout data store:
 -   `setIdle()`: Set `state.status` to `idle`
 -   `setComplete()`: Set `state.status` to `complete`
 -   `setProcessing()`: Set `state.status` to `processing`
--   `setProcessingResponse( response: PaymentResult )`: Set `state.processingResponse` to `response`
+-   `setPaymentResult( response: PaymentResult )`: Set `state.paymentResult` to `response`
 -   `setBeforeProcessing()`: Set `state.status` to `before_processing`
 -   `setAfterProcessing()`: Set `state.status` to `after_processing`
--   `processCheckoutResponse( response: CheckoutResponse )`: This is a thunk that will extract the paymentResult from the CheckoutResponse, and dispatch 3 actions: `setRedirectUrl`, `setProcessingResponse` and `setAfterProcessing`.
+-   `processCheckoutResponse( response: CheckoutResponse )`: This is a thunk that will extract the paymentResult from the CheckoutResponse, and dispatch 3 actions: `setRedirectUrl`, `setPaymentResult` and `setAfterProcessing`.
 -   `setRedirectUrl( url: string )`: Set `state.redirectUrl` to `url`
 -   `setHasError( trueOrFalse: bool )`: Set `state.hasError` to `trueOrFalse`
 -   `incrementCalculating()`: Increment `state.calculatingCount`
 -   `decrementCalculating()`: Decrement `state.calculatingCount`
 -   `setCustomerId( id: number )`: Set `state.customerId` to `id`
--   `setOrderId( id: number )`: Set `state.orderId` to `id`
 -   `setUseShippingAsBilling( useShippingAsBilling: boolean )`: Set `state.useShippingAsBilling` to `useShippingAsBilling`
 -   `setShouldCreateAccount( shouldCreateAccount: boolean )`: Set `state.shouldCreateAccount` to `shouldCreateAccount`
 -   `setOrderNotes( orderNotes: string )`: Set `state.orderNotes` to `orderNotes`
