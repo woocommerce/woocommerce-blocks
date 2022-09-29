@@ -62,7 +62,6 @@ Data can be accessed through the following selectors:
 
 The following actions can be dispatched from the Checkout data store:
 
--   `setPristine()`: Set `state.status` to `pristine`
 -   `setIdle()`: Set `state.status` to `idle`
 -   `setComplete()`: Set `state.status` to `complete`
 -   `setProcessing()`: Set `state.status` to `processing`

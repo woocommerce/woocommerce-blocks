@@ -11,17 +11,6 @@ describe.only( 'Checkout Store Reducer', () => {
 		expect( reducer( undefined, {} ) ).toEqual( defaultState );
 	} );
 
-	it( 'should handle SET_PRISTINE', () => {
-		const expectedState = {
-			...defaultState,
-			status: STATUS.PRISTINE,
-		};
-
-		expect( reducer( defaultState, actions.setPristine() ) ).toEqual(
-			expectedState
-		);
-	} );
-
 	it( 'should handle SET_IDLE', () => {
 		const expectedState = {
 			...defaultState,

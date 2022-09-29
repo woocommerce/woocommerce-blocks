@@ -12,10 +12,6 @@ import { ReturnOrGeneratorYieldUnion } from '../mapped-types';
 // `Thunks are functions that can be dispatched, similar to actions creators
 export * from './thunks';
 
-export const setPristine = () => ( {
-	type: types.SET_PRISTINE,
-} );
-
 export const setIdle = () => ( {
 	type: types.SET_IDLE,
 } );
@@ -94,7 +90,6 @@ export const setExtensionData = (
 
 export type CheckoutAction =
 	| ReturnOrGeneratorYieldUnion<
-			| typeof setPristine
 			| typeof setIdle
 			| typeof setComplete
 			| typeof setProcessing
