@@ -231,7 +231,6 @@ __experimentalRegisterCheckoutFilters( 'automatic-coupon-extension', {
 } );
 ```
 
-
 ### Hide the "Remove item" link on a cart item
 
 If you want to stop customers from being able to remove a specific item from their cart **on the front end**, you can do
