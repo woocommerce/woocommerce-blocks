@@ -31,8 +31,8 @@ The following filters are available for line items:
 | `cartItemPrice`        | This is the price of the item, multiplied by the number of items in the cart.                                                          | `string` and **must** contain the substring `<price/>` where the price should appear. |
 | `cartItemClass`        | This is the className of the item cell.                                                                                                | `string`                                                                              |
 | `subtotalPriceFormat`  | This is the price of a single item. Irrespective of the number in the cart, this value will always be the current price of _one_ item. | `string` and **must** contain the substring `<price/>` where the price should appear. |
-| `saleBadgePriceFormat` | This is amount of money saved when buying this item. It is the difference between the item's regular price and its sale price.         | `string` and **must** contain the substring `<price/>` where the price should appear. |
 | `showRemoveItemLink`   | Toggles the display of the "Remove item" link from the cart line item. Default: `true`                                                 | `boolean`                                                                             |
+| `saleBadgePriceFormat` | This is amount of money saved when buying this item. It is the difference between the item's regular price and its sale price.         | `string` and **must** contain the substring `<price/>` where the price should appear. |
 
 Each of these filters has the following arguments passed to it: `{ context: 'cart', cartItem: CartItem }` ([CartItem](https://github.com/woocommerce/woocommerce-gutenberg-products-block/blob/c00da597efe4c16fcf5481c213d8052ec5df3766/assets/js/type-defs/cart.ts#L113))
 
@@ -245,6 +245,25 @@ __experimentalRegisterCheckoutFilters( 'automatic-coupon-extension', {
 			valueCopy[ key ] = key.indexOf( 'auto-generated-coupon' ) === -1;
 		} );
 		return valueCopy;
+	},
+} );
+```
+
+### Hide the "Remove item" link on a cart item
+
+If you want to stop customers from being able to remove a specific item from their cart **on the front end**, you can do
+this by using the  `showRemoveItemLink` filter. If it returns `false` for that line item the link will not show.
+
+An important caveat to note is this does _not_ prevent the item from being removed from the cart using StoreAPI or by
+removing it in the Mini Cart, or traditional shortcode cart.
+
+```ts
+import { __experimentalRegisterCheckoutFilters } from '@woocommerce/blocks-checkout';
+
+__experimentalRegisterCheckoutFilters( 'example-extension', {
+	showRemoveItemLink: ( value, extensions, { cartItem } ) => {
+		// Prevent items with ID 1 being removed from the cart.
+		return cartItem.id !== 1;
 	},
 } );
 ```
