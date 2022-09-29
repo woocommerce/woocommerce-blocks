@@ -96,15 +96,8 @@ const Edit = ( {
 			return;
 		}
 
-		// const attributeName = productAttribute.attribute_label;
-
 		setAttributes( {
 			attributeId: selectedId as number,
-			// heading: sprintf(
-			// 	/* translators: %s attribute name. */
-			// 	__( 'Filter by %s', 'woo-gutenberg-products-block' ),
-			// 	attributeName
-			// ),
 		} );
 	};
 
