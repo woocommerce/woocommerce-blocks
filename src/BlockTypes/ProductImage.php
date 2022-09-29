@@ -126,7 +126,13 @@ class ProductImage extends AbstractBlock {
 
 		$pointer_events = false === $attributes['showProductLink'] ? 'pointer-events: none;' : '';
 
-		return sprintf( '<a href="%1$s" style="%4$s">%2$s %3$s</a>', $product_permalink, $on_sale_badge, $product_image, $pointer_events );
+		return sprintf(
+			'<a href="%1$s" style="%2$s">%3$s %4$s</a>',
+			$product_permalink,
+			$pointer_events,
+			$on_sale_badge,
+			$product_image
+		);
 	}
 
 
@@ -186,17 +192,18 @@ class ProductImage extends AbstractBlock {
 		$product = wc_get_product( $post_id );
 
 		if ( $product ) {
-			$sale_badge = $this->render_on_sale_badge( $product, $parsed_attributes );
-			$prod_image = $this->render_image( $product );
-
 			return sprintf(
-				'
-			<div class="wc-block-components-product-image wc-block-grid__product-image" style="%s %s">
-				 	%s
-			</div>',
+				'<div class="wc-block-components-product-image wc-block-grid__product-image" style="%1$s %2$s">
+					%3$s
+				</div>',
 				isset( $border_radius['style'] ) ? $border_radius['style'] : '',
 				isset( $margin['style'] ) ? $margin['style'] : '',
-				$this->render_anchor( $product, $sale_badge, $prod_image, $parsed_attributes )
+				$this->render_anchor(
+					$product,
+					$this->render_on_sale_badge( $product, $parsed_attributes ),
+					$this->render_image( $product ),
+					$parsed_attributes
+				)
 			);
 
 		}
