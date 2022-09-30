@@ -49,6 +49,8 @@ module.exports = async ( globalConfig ) => {
 		await setupSettings();
 		const pages = await createBlockPages();
 
+		console.log( JSON.stringify( pages, null, 4 ), '------------' );
+
 		/**
 		 * Promise.all will return an array of all promises resolved values.
 		 * Some functions like setupSettings and enablePaymentGateways resolve
