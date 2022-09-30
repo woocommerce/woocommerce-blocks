@@ -4,9 +4,8 @@
 import classnames from 'classnames';
 import { withFilteredAttributes } from '@woocommerce/shared-hocs';
 import { FormStep } from '@woocommerce/base-components/cart-checkout';
-import { useCheckoutContext } from '@woocommerce/base-context';
-import { useState } from '@wordpress/element';
-
+import { useDispatch, useSelect } from '@wordpress/data';
+import { CHECKOUT_STORE_KEY } from '@woocommerce/block-data';
 /**
  * Internal dependencies
  */
@@ -30,8 +29,24 @@ const FrontendBlock = ( {
 	showPrice: boolean;
 	showIcon: boolean;
 } ) => {
-	const { isProcessing: checkoutIsProcessing } = useCheckoutContext();
-	const [ collectionMethod, setCollectionMethod ] = useState( 'shipping' );
+	const { checkoutIsProcessing, prefersCollection } = useSelect(
+		( select ) => {
+			const checkoutStore = select( CHECKOUT_STORE_KEY );
+			return {
+				checkoutIsProcessing: checkoutStore.isProcessing(),
+				prefersCollection: checkoutStore.prefersCollection(),
+			};
+		}
+	);
+	const { setPrefersCollection } = useDispatch( CHECKOUT_STORE_KEY );
+
+	const onChange = ( method: string ) => {
+		if ( method === 'pickup' ) {
+			setPrefersCollection( true );
+		} else {
+			setPrefersCollection( false );
+		}
+	};
 	return (
 		<FormStep
 			id="collection-method"
@@ -45,8 +60,8 @@ const FrontendBlock = ( {
 			showStepNumber={ showStepNumber }
 		>
 			<Block
-				checked={ collectionMethod }
-				onChange={ setCollectionMethod }
+				checked={ prefersCollection ? 'pickup' : 'shipping' }
+				onChange={ onChange }
 				showPrice={ showPrice }
 				showIcon={ showIcon }
 			/>
