@@ -99,7 +99,7 @@ export const runCheckoutAfterProcessingWithErrorObservers = ( {
 			// no error handling in place by anything so let's fall
 			// back to default
 			const message =
-				data.paymentResult?.message ||
+				data.processingResponse?.message ||
 				__(
 					'Something went wrong. Please contact us to get assistance.',
 					'woo-gutenberg-products-block'
