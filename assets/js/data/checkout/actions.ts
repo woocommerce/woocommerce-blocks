@@ -49,7 +49,9 @@ export const setComplete = ( data: Record< string, unknown > = {} ) => ( {
 } );
 
 /**
- * Set the checkout status to `idle`
+ * Set the url to redirect to after checkout completes`
+ *
+ * @param  redirectUrl the url to redirect to
  */
 export const setRedirectUrl = ( redirectUrl: string ) => ( {
 	type: types.SET_REDIRECT_URL,
