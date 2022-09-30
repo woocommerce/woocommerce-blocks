@@ -1,6 +1,7 @@
 /**
  * External dependencies
  */
+import { __ } from '@wordpress/i18n';
 import Rating from '@woocommerce/base-components/product-rating';
 import { usePrevious, useShallowEqual } from '@woocommerce/base-hooks';
 import {
@@ -14,6 +15,8 @@ import FilterTitlePlaceholder from '@woocommerce/base-components/filter-placehol
 import isShallowEqual from '@wordpress/is-shallow-equal';
 import { useState, useCallback, useMemo, useEffect } from '@wordpress/element';
 import CheckboxList from '@woocommerce/base-components/checkbox-list';
+import FilterSubmitButton from '@woocommerce/base-components/filter-submit-button';
+import FilterResetButton from '@woocommerce/base-components/filter-reset-button';
 import { addQueryArgs, removeQueryArgs } from '@wordpress/url';
 import { changeUrl } from '@woocommerce/utils';
 import classnames from 'classnames';
@@ -209,25 +212,30 @@ const RatingFilterBlock = ( {
 		.filter(
 			( item ) => isObject( item ) && Object.keys( item ).length > 0
 		)
-		.map( ( item ) => {
-			return {
-				label: (
-					<Rating
-						className={
-							productRatingsArray.includes(
-								item?.rating?.toString()
-							)
-								? 'is-active'
-								: ''
-						}
-						key={ item?.rating }
-						rating={ item?.rating }
-						ratedProductsCount={ item?.count }
-					/>
-				),
-				value: item?.rating?.toString(),
-			};
-		} );
+		.map(
+			( item ) => {
+				return {
+					label: (
+						<Rating
+							className={
+								productRatingsArray.includes(
+									item?.rating?.toString()
+								)
+									? 'is-active'
+									: ''
+							}
+							key={ item?.rating }
+							rating={ item?.rating }
+							ratedProductsCount={
+								blockAttributes.showCounts ? item?.count : null
+							}
+						/>
+					),
+					value: item?.rating?.toString(),
+				};
+			},
+			[ blockAttributes.showCounts ]
+		);
 
 	return (
 		<>
@@ -248,6 +256,29 @@ const RatingFilterBlock = ( {
 					isDisabled={ isDisabled }
 				/>
 			</div>
+			{
+				<div className="wc-block-rating-filter__actions">
+					{ productRatingsArray.length > 0 && ! isLoading && (
+						<FilterResetButton
+							onClick={ () => {
+								setProductRatings( [] );
+							} }
+							screenReaderLabel={ __(
+								'Reset stock filter',
+								'woo-gutenberg-products-block'
+							) }
+						/>
+					) }
+					{ blockAttributes.showFilterButton && (
+						<FilterSubmitButton
+							className="wc-block-stock-filter__button"
+							isLoading={ isLoading }
+							disabled={ isLoading || isDisabled }
+							onClick={ () => onSubmit( productRatingsArray ) }
+						/>
+					) }
+				</div>
+			}
 		</>
 	);
 };
