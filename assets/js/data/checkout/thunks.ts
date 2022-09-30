@@ -96,7 +96,7 @@ export const emitAfterProcessingEvents: emitAfterProcessingEventsType = ( {
 			orderId: state.orderId,
 			customerId: state.customerId,
 			orderNotes: state.orderNotes,
-			paymentResult: state.paymentResult,
+			processingResponse: state.paymentResult,
 		};
 		if ( state.hasError ) {
 			// allow payment methods or other things to customize the error
