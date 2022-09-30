@@ -82,13 +82,27 @@ function getLocalPickupStartingPrice(
 const LocalPickupSelector = ( {
 	checked,
 	rate,
+	showPrice,
+	showIcon,
 }: {
 	checked: string;
 	rate: CartShippingPackageShippingRate;
+	showPrice: boolean;
+	showIcon: boolean;
 } ) => {
 	const ratePrice = getSetting( 'displayCartPricesIncludingTax', false )
 		? parseInt( rate.price, 10 ) + parseInt( rate.taxes, 10 )
 		: parseInt( rate.price, 10 );
+
+	const Price = () =>
+		ratePrice === 0 ? (
+			<span>{ __( 'free', 'woo-gutenberg-products-block' ) }</span>
+		) : (
+			<FormattedMonetaryAmount
+				currency={ getCurrencyFromPriceResponse( rate ) }
+				value={ ratePrice }
+			/>
+		);
 	return (
 		<Radio
 			value="pickup"
@@ -97,16 +111,11 @@ const LocalPickupSelector = ( {
 					checked === 'pickup',
 			} ) }
 		>
-			<Icon icon={ store } size={ 24 } />
-			{ __( 'Local Pickup', 'woo-gutenberg-products-block' ) }
-			{ ratePrice === 0 ? (
-				<span>{ __( 'free', 'woo-gutenberg-products-block' ) }</span>
-			) : (
-				<FormattedMonetaryAmount
-					currency={ getCurrencyFromPriceResponse( rate ) }
-					value={ ratePrice }
-				/>
-			) }
+			{ showIcon === true && <Icon icon={ store } size={ 24 } /> }
+			<span className="wc-block-checkout__collection-item-title">
+				{ __( 'Local Pickup', 'woo-gutenberg-products-block' ) }
+			</span>
+			{ showPrice === true && <Price /> }
 		</Radio>
 	);
 };
@@ -114,13 +123,27 @@ const LocalPickupSelector = ( {
 const ShippingSelector = ( {
 	checked,
 	rate,
+	showPrice,
+	showIcon,
 }: {
 	checked: string;
 	rate: CartShippingPackageShippingRate;
+	showPrice: boolean;
+	showIcon: boolean;
 } ) => {
 	const ratePrice = getSetting( 'displayCartPricesIncludingTax', false )
 		? parseInt( rate.price, 10 ) + parseInt( rate.taxes, 10 )
 		: parseInt( rate.price, 10 );
+
+	const Price = () =>
+		ratePrice === 0 ? (
+			<span>{ __( 'free', 'woo-gutenberg-products-block' ) }</span>
+		) : (
+			<FormattedMonetaryAmount
+				currency={ getCurrencyFromPriceResponse( rate ) }
+				value={ ratePrice }
+			/>
+		);
 	return (
 		<Radio
 			value="shipping"
@@ -129,27 +152,24 @@ const ShippingSelector = ( {
 					checked === 'shipping',
 			} ) }
 		>
-			<Icon icon={ shipping } size={ 24 } />
-			<strong>
+			{ showIcon === true && <Icon icon={ shipping } size={ 24 } /> }
+			<span className="wc-block-checkout__collection-item-title">
 				{ __( 'Delivery', 'woo-gutenberg-products-block' ) }
-			</strong>
-			{ ratePrice === 0 ? (
-				<span>{ __( 'free', 'woo-gutenberg-products-block' ) }</span>
-			) : (
-				<FormattedMonetaryAmount
-					currency={ getCurrencyFromPriceResponse( rate ) }
-					value={ ratePrice }
-				/>
-			) }
+			</span>
+			{ showPrice === true && <Price /> }
 		</Radio>
 	);
 };
 const Block = ( {
 	checked,
 	onChange,
+	showPrice,
+	showIcon,
 }: {
 	checked: string;
 	onChange: ( value: string ) => void;
+	showPrice: boolean;
+	showIcon: boolean;
 } ): JSX.Element | null => {
 	const { shippingRates, needsShipping } = useShippingData();
 
@@ -178,10 +198,14 @@ const Block = ( {
 			<ShippingSelector
 				checked={ checked }
 				rate={ shippingStartingPrice }
+				showPrice={ showPrice }
+				showIcon={ showIcon }
 			/>
 			<LocalPickupSelector
 				checked={ checked }
 				rate={ localPickupStartingPrice }
+				showPrice={ showPrice }
+				showIcon={ showIcon }
 			/>
 		</RadioGroup>
 	);
