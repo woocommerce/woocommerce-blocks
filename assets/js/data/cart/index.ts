@@ -20,7 +20,7 @@ import { controls as sharedControls } from '../shared-controls';
 import { controls } from './controls';
 import type { SelectFromMap, DispatchFromMap } from '../mapped-types';
 import { pushChanges } from './push-changes';
-import { checkPaymentMethodsCanPay } from '../payment-methods/check-payment-methods';
+import { checkPaymentMethodsCanPay } from '../payment/check-payment-methods';
 
 const registeredStore = registerStore< State >( STORE_KEY, {
 	reducer,
