@@ -49,7 +49,7 @@ const unsubscribeInitializePaymentMethodDataStore = registeredStore.subscribe(
 			wpDataSelect( STORE_KEY ).hasFinishedResolution( 'getCartTotals' );
 		if ( cartLoaded ) {
 			wpDataDispatch(
-				'wc/store/payment-methods'
+				'wc/store/payment'
 			).initializePaymentMethodDataStore();
 			unsubscribeInitializePaymentMethodDataStore();
 		}

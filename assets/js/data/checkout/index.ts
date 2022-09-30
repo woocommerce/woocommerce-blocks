@@ -42,9 +42,7 @@ if ( isEditor ) {
 	} );
 
 	const unsubscribeInitializePaymentMethodDataStore = subscribe( async () => {
-		wpDataDispatch(
-			'wc/store/payment-methods'
-		).initializePaymentMethodDataStore();
+		wpDataDispatch( 'wc/store/payment' ).initializePaymentMethodDataStore();
 		unsubscribeInitializePaymentMethodDataStore();
 	} );
 }
