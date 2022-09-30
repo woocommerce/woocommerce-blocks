@@ -80,6 +80,11 @@ export const setShouldCreateAccount = ( shouldCreateAccount: boolean ) => ( {
 	shouldCreateAccount,
 } );
 
+export const setPrefersCollection = ( prefersCollection: boolean ) => ( {
+	type: types.SET_PREFERS_COLLECTION,
+	prefersCollection,
+} );
+
 export const setOrderNotes = ( orderNotes: string ) => ( {
 	type: types.SET_ORDER_NOTES,
 	orderNotes,
@@ -109,6 +114,7 @@ export type CheckoutAction =
 			| typeof setOrderId
 			| typeof setUseShippingAsBilling
 			| typeof setShouldCreateAccount
+			| typeof setPrefersCollection
 			| typeof setOrderNotes
 			| typeof setExtensionData
 	  >
