@@ -73,6 +73,8 @@ export const useCheckoutAddress = (): CheckoutAddress => {
 		[ setShippingAddress ]
 	);
 
+	console.log( prefersCollection );
+
 	return {
 		shippingAddress,
 		billingAddress,
