@@ -3,7 +3,9 @@
  */
 import classnames from 'classnames';
 import { useState } from '@wordpress/element';
+import { __ } from '@wordpress/i18n';
 import { InspectorControls, useBlockProps } from '@wordpress/block-editor';
+import { PanelBody, ToggleControl } from '@wordpress/components';
 import { innerBlockAreas } from '@woocommerce/blocks-checkout';
 
 /**
@@ -41,8 +43,48 @@ export const Edit = ( {
 				attributes?.className
 			) }
 		>
-			<InspectorControls>settings</InspectorControls>
-			<Block checked={ currentView } onChange={ changeView } />
+			<InspectorControls>
+				<PanelBody
+					title={ __( 'Appearance', 'woo-gutenberg-products-block' ) }
+				>
+					<p className="wc-block-checkout__controls-text">
+						{ __(
+							'Choose how this block is displayed to your customers.',
+							'woo-gutenberg-products-block'
+						) }
+					</p>
+					<ToggleControl
+						label={ __(
+							'Show icon',
+							'woo-gutenberg-products-block'
+						) }
+						checked={ attributes.showIcon }
+						onChange={ () =>
+							setAttributes( {
+								showIcon: ! attributes.showIcon,
+							} )
+						}
+					/>
+					<ToggleControl
+						label={ __(
+							'Show costs',
+							'woo-gutenberg-products-block'
+						) }
+						checked={ attributes.showPrice }
+						onChange={ () =>
+							setAttributes( {
+								showPrice: ! attributes.showPrice,
+							} )
+						}
+					/>
+				</PanelBody>
+			</InspectorControls>
+			<Block
+				checked={ currentView }
+				onChange={ changeView }
+				showPrice={ attributes.showPrice }
+				showIcon={ attributes.showIcon }
+			/>
 			<AdditionalFields block={ innerBlockAreas.COLLECTION_METHOD } />
 		</FormStepBlock>
 	);

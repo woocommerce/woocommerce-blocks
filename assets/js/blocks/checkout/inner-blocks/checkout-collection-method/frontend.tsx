@@ -19,12 +19,16 @@ const FrontendBlock = ( {
 	showStepNumber,
 	children,
 	className,
+	showPrice,
+	showIcon,
 }: {
 	title: string;
 	description: string;
 	showStepNumber: boolean;
 	children: JSX.Element;
 	className?: string;
+	showPrice: boolean;
+	showIcon: boolean;
 } ) => {
 	const { isProcessing: checkoutIsProcessing } = useCheckoutContext();
 	const [ collectionMethod, setCollectionMethod ] = useState( 'shipping' );
@@ -43,6 +47,8 @@ const FrontendBlock = ( {
 			<Block
 				checked={ collectionMethod }
 				onChange={ setCollectionMethod }
+				showPrice={ showPrice }
+				showIcon={ showIcon }
 			/>
 			{ children }
 		</FormStep>
