@@ -22,61 +22,65 @@ import './style.scss';
 /**
  * Returns the cheapest rate that isn't a local pickup.
  *
- * @param {Array} shippingRates Array of shipping Rate.
+ * @param {Array|undefined} shippingRates Array of shipping Rate.
  *
- * @return {Object} cheapest rate.
+ * @return {Object|undefined} cheapest rate.
  */
 function getShippingStartingPrice(
 	shippingRates: CartShippingPackageShippingRate[]
 ): CartShippingPackageShippingRate | undefined {
-	return shippingRates.reduce(
-		(
-			lowestRate: CartShippingPackageShippingRate | undefined,
-			currentRate: CartShippingPackageShippingRate
-		) => {
-			if ( currentRate.method_id === 'local_pickup' ) {
+	if ( shippingRates ) {
+		return shippingRates.reduce(
+			(
+				lowestRate: CartShippingPackageShippingRate | undefined,
+				currentRate: CartShippingPackageShippingRate
+			) => {
+				if ( currentRate.method_id === 'local_pickup' ) {
+					return lowestRate;
+				}
+				if (
+					lowestRate === undefined ||
+					currentRate.price < lowestRate.price
+				) {
+					return currentRate;
+				}
 				return lowestRate;
-			}
-			if (
-				lowestRate === undefined ||
-				currentRate.price < lowestRate.price
-			) {
-				return currentRate;
-			}
-			return lowestRate;
-		},
-		undefined
-	);
+			},
+			undefined
+		);
+	}
 }
 
 /**
  * Returns the cheapest rate that is a local pickup.
  *
- * @param {Array} shippingRates Array of shipping Rate.
+ * @param {Array|undefined} shippingRates Array of shipping Rate.
  *
- * @return {Object} cheapest rate.
+ * @return {Object|undefined} cheapest rate.
  */
 function getLocalPickupStartingPrice(
 	shippingRates: CartShippingPackageShippingRate[]
 ): CartShippingPackageShippingRate | undefined {
-	return shippingRates.reduce(
-		(
-			lowestRate: CartShippingPackageShippingRate | undefined,
-			currentRate: CartShippingPackageShippingRate
-		) => {
-			if ( currentRate.method_id !== 'local_pickup' ) {
+	if ( shippingRates ) {
+		return shippingRates.reduce(
+			(
+				lowestRate: CartShippingPackageShippingRate | undefined,
+				currentRate: CartShippingPackageShippingRate
+			) => {
+				if ( currentRate.method_id !== 'local_pickup' ) {
+					return lowestRate;
+				}
+				if (
+					lowestRate === undefined ||
+					currentRate.price < lowestRate.price
+				) {
+					return currentRate;
+				}
 				return lowestRate;
-			}
-			if (
-				lowestRate === undefined ||
-				currentRate.price < lowestRate.price
-			) {
-				return currentRate;
-			}
-			return lowestRate;
-		},
-		undefined
-	);
+			},
+			undefined
+		);
+	}
 }
 
 const LocalPickupSelector = ( {
@@ -131,19 +135,33 @@ const ShippingSelector = ( {
 	showPrice: boolean;
 	showIcon: boolean;
 } ) => {
-	const ratePrice = getSetting( 'displayCartPricesIncludingTax', false )
-		? parseInt( rate.price, 10 ) + parseInt( rate.taxes, 10 )
-		: parseInt( rate.price, 10 );
-
-	const Price = () =>
-		ratePrice === 0 ? (
-			<span>{ __( 'free', 'woo-gutenberg-products-block' ) }</span>
-		) : (
+	const Price = () => {
+		if ( rate === undefined ) {
+			return (
+				<span>
+					{ __(
+						'calculated with an address',
+						'woo-gutenberg-products-block'
+					) }
+				</span>
+			);
+		}
+		const ratePrice = getSetting( 'displayCartPricesIncludingTax', false )
+			? parseInt( rate.price, 10 ) + parseInt( rate.taxes, 10 )
+			: parseInt( rate.price, 10 );
+		if ( ratePrice === 0 ) {
+			return (
+				<span>{ __( 'free', 'woo-gutenberg-products-block' ) }</span>
+			);
+		}
+		return (
 			<FormattedMonetaryAmount
 				currency={ getCurrencyFromPriceResponse( rate ) }
 				value={ ratePrice }
 			/>
 		);
+	};
+
 	return (
 		<Radio
 			value="shipping"
@@ -171,20 +189,21 @@ const Block = ( {
 	showPrice: boolean;
 	showIcon: boolean;
 } ): JSX.Element | null => {
-	const { shippingRates, needsShipping } = useShippingData();
+	const { shippingRates, needsShipping, hasCalculatedShipping } =
+		useShippingData();
 
-	if ( ! needsShipping ) {
+	if ( ! needsShipping || ! hasCalculatedShipping ) {
 		return null;
 	}
 
 	const localPickupStartingPrice = getLocalPickupStartingPrice(
-		shippingRates[ 0 ].shipping_rates
+		shippingRates[ 0 ]?.shipping_rates
 	);
 	const shippingStartingPrice = getShippingStartingPrice(
-		shippingRates[ 0 ].shipping_rates
+		shippingRates[ 0 ]?.shipping_rates
 	);
 
-	if ( ! localPickupStartingPrice || ! shippingStartingPrice ) {
+	if ( ! localPickupStartingPrice && ! shippingStartingPrice ) {
 		return null;
 	}
 	return (
