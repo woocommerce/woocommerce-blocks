@@ -37,7 +37,9 @@ registerBlockType( metadata, {
 			 * variation. The `attributes` is empty for default variation. So we
 			 * set this variation as active if `filterType` is not passed.
 			 */
-			isActive: ( attributes ) => ! attributes.filterType,
+			isActive: ( attributes ) =>
+				attributes.filterType === 'active-filters' ||
+				! attributes.filterType,
 			attributes: {
 				heading: __( 'Active filters', 'woo-gutenberg-products-block' ),
 				filterType: 'active-filters',
