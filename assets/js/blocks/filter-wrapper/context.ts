@@ -10,7 +10,8 @@ export type FilterContextProps = {
 	wrapper?: React.RefObject< HTMLDivElement >;
 };
 
-export const FilterBlockContext = createContext< FilterContextProps >( {} );
+export const FilterBlockContext: React.Context< FilterContextProps > =
+	createContext< FilterContextProps >( {} );
 
 export const useFilterBlockContext = (): FilterContextProps => {
 	return useContext( FilterBlockContext );
