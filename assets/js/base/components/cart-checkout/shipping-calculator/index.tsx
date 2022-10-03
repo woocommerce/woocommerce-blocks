@@ -1,7 +1,7 @@
 /**
  * External dependencies
  */
-import type { EnteredAddress } from '@woocommerce/settings';
+import type { EnteredAddress } from '@woocommerce/types';
 import { useCustomerData } from '@woocommerce/base-context/hooks';
 
 /**

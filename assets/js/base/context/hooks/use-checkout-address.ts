@@ -4,10 +4,10 @@
 import {
 	defaultAddressFields,
 	AddressFields,
-	EnteredAddress,
 	ShippingAddress,
 	BillingAddress,
 } from '@woocommerce/settings';
+import type { EnteredAddress } from '@woocommerce/types';
 import { useCallback } from '@wordpress/element';
 import { useDispatch, useSelect } from '@wordpress/data';
 import { CHECKOUT_STORE_KEY } from '@woocommerce/block-data';

@@ -19,8 +19,8 @@ import {
 	AddressFields,
 	AddressType,
 	defaultAddressFields,
-	EnteredAddress,
 } from '@woocommerce/settings';
+import { EnteredAddress } from '@woocommerce/types';
 import { useSelect, useDispatch } from '@wordpress/data';
 import {
 	VALIDATION_STORE_KEY,

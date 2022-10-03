@@ -8,7 +8,8 @@ import { useStoreCart } from '@woocommerce/base-context/hooks';
 import { TotalsItem } from '@woocommerce/blocks-checkout';
 import type { Currency } from '@woocommerce/price-format';
 import type { ReactElement } from 'react';
-import { getSetting, EnteredAddress } from '@woocommerce/settings';
+import { getSetting } from '@woocommerce/settings';
+import type { EnteredAddress } from '@woocommerce/types';
 import { ShippingVia } from '@woocommerce/base-components/cart-checkout/totals/shipping/shipping-via';
 
 /**

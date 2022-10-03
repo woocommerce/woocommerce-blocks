@@ -6,8 +6,9 @@ import { isEmail } from '@wordpress/url';
 import type {
 	CartResponseBillingAddress,
 	CartResponseShippingAddress,
+	EnteredAddress,
 } from '@woocommerce/types';
-import { defaultAddressFields, EnteredAddress } from '@woocommerce/settings';
+import { defaultAddressFields } from '@woocommerce/settings';
 
 /**
  * Compare two addresses and see if they are the same.

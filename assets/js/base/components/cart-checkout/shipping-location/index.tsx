@@ -2,7 +2,8 @@
  * External dependencies
  */
 import { __, sprintf } from '@wordpress/i18n';
-import { EnteredAddress, getSetting } from '@woocommerce/settings';
+import { getSetting } from '@woocommerce/settings';
+import type { EnteredAddress } from '@woocommerce/types';
 import { decodeEntities } from '@wordpress/html-entities';
 
 interface ShippingLocationProps {

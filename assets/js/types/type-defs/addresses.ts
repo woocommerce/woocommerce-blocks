@@ -1,13 +1,13 @@
-export interface Address {
-	address_1: string;
-	address_2?: string;
-	city?: string;
-	company?: string;
-	country: string;
-	email: string;
+export interface EnteredAddress {
 	first_name: string;
 	last_name: string;
-	phone?: string;
+	company?: string;
+	address_1: string;
+	address_2?: string;
+	city: string;
+	state: string;
+	country: string;
 	postcode: string;
-	state?: string;
+	phone?: string;
+	email?: string;
 }
