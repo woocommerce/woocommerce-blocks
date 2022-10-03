@@ -111,11 +111,14 @@ export const __internalSetPaymentMethodData = (
 export const __internalSetAvailablePaymentMethods = (
 	paymentMethods: PaymentMethods
 ) => {
-	return async ( { dispatch } ) => {
+	return async ( { dispatch, select } ) => {
 		// If the currently selected method is not in this new list, then we need to select a new one, or select a default.
 
-		// TODO See if we can stop this being dispatched if the currently selected method is still available.
-		await setDefaultPaymentMethod( paymentMethods );
+		const activePaymentMethod = select.getActivePaymentMethod();
+
+		if ( ! ( activePaymentMethod in paymentMethods ) ) {
+			await setDefaultPaymentMethod( paymentMethods );
+		}
 		dispatch( {
 			type: ACTION_TYPES.SET_AVAILABLE_PAYMENT_METHODS,
 			paymentMethods,
