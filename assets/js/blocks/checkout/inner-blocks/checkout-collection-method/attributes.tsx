@@ -12,7 +12,7 @@ export default {
 	...formStepAttributes( {
 		defaultTitle: __( 'Shipping options', 'woo-gutenberg-products-block' ),
 		defaultDescription: __(
-			'Select how you could like to recieve your order.',
+			'Select how you would like to receive your order.',
 			'woo-gutenberg-products-block'
 		),
 	} ),
