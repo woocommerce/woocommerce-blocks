@@ -1,3 +1,4 @@
+/* eslint-disable @wordpress/no-unsafe-wp-apis */
 /**
  * External dependencies
  */
@@ -5,9 +6,11 @@ import classnames from 'classnames';
 import { useState } from '@wordpress/element';
 import { __ } from '@wordpress/i18n';
 import {
+	PanelBody,
+	ToggleControl,
 	__experimentalRadio as Radio,
 	__experimentalRadioGroup as RadioGroup,
-} from 'wordpress-components';
+} from '@wordpress/components';
 import { Icon, store, shipping } from '@wordpress/icons';
 import {
 	InspectorControls,
@@ -15,7 +18,6 @@ import {
 	RichText,
 } from '@wordpress/block-editor';
 import { useShippingData } from '@woocommerce/base-context/hooks';
-import { PanelBody, ToggleControl } from '@wordpress/components';
 import { innerBlockAreas } from '@woocommerce/blocks-checkout';
 import type { CartShippingPackageShippingRate } from '@woocommerce/type-defs/cart';
 
@@ -71,6 +73,8 @@ const LocalPickupSelector = ( {
 				onChange={ ( value ) =>
 					setAttributes( { localPickupText: value } )
 				}
+				__unstableDisableFormats
+				preserveWhiteSpace
 			/>
 			{ showPrice === true && <RatePrice rate={ rate } /> }
 		</Radio>
@@ -126,6 +130,8 @@ const ShippingSelector = ( {
 				onChange={ ( value ) =>
 					setAttributes( { shippingText: value } )
 				}
+				__unstableDisableFormats
+				preserveWhiteSpace
 			/>
 			{ showPrice === true && Price }
 		</Radio>
