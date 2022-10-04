@@ -12,6 +12,7 @@ import {
 import classnames from 'classnames';
 import { Icon, store, shipping } from '@wordpress/icons';
 import { getSetting } from '@woocommerce/settings';
+import { createInterpolateElement } from '@wordpress/element';
 import type { CartShippingPackageShippingRate } from '@woocommerce/type-defs/cart';
 
 /**
@@ -83,6 +84,30 @@ function getLocalPickupStartingPrice(
 	}
 }
 
+const RatePrice = ( { rate }: { rate: CartShippingPackageShippingRate } ) => {
+	const ratePrice = getSetting( 'displayCartPricesIncludingTax', false )
+		? parseInt( rate.price, 10 ) + parseInt( rate.taxes, 10 )
+		: parseInt( rate.price, 10 );
+	return (
+		<span className="wc-block-checkout__collection-item-price">
+			{ ratePrice === 0
+				? __( 'free', 'woo-gutenberg-products-block' )
+				: createInterpolateElement(
+						__( 'from <price />', 'woo-gutenberg-products-block' ),
+						{
+							price: (
+								<FormattedMonetaryAmount
+									currency={ getCurrencyFromPriceResponse(
+										rate
+									) }
+									value={ ratePrice }
+								/>
+							),
+						}
+				  ) }
+		</span>
+	);
+};
 const LocalPickupSelector = ( {
 	checked,
 	rate,
@@ -94,19 +119,6 @@ const LocalPickupSelector = ( {
 	showPrice: boolean;
 	showIcon: boolean;
 } ) => {
-	const ratePrice = getSetting( 'displayCartPricesIncludingTax', false )
-		? parseInt( rate.price, 10 ) + parseInt( rate.taxes, 10 )
-		: parseInt( rate.price, 10 );
-
-	const Price = () =>
-		ratePrice === 0 ? (
-			<span>{ __( 'free', 'woo-gutenberg-products-block' ) }</span>
-		) : (
-			<FormattedMonetaryAmount
-				currency={ getCurrencyFromPriceResponse( rate ) }
-				value={ ratePrice }
-			/>
-		);
 	return (
 		<Radio
 			value="pickup"
@@ -115,11 +127,17 @@ const LocalPickupSelector = ( {
 					checked === 'pickup',
 			} ) }
 		>
-			{ showIcon === true && <Icon icon={ store } size={ 24 } /> }
+			{ showIcon === true && (
+				<Icon
+					icon={ store }
+					size={ 28 }
+					className="wc-block-checkout__collection-item-icon"
+				/>
+			) }
 			<span className="wc-block-checkout__collection-item-title">
 				{ __( 'Local Pickup', 'woo-gutenberg-products-block' ) }
 			</span>
-			{ showPrice === true && <Price /> }
+			{ showPrice === true && <RatePrice rate={ rate } /> }
 		</Radio>
 	);
 };
@@ -135,32 +153,17 @@ const ShippingSelector = ( {
 	showPrice: boolean;
 	showIcon: boolean;
 } ) => {
-	const Price = () => {
-		if ( rate === undefined ) {
-			return (
-				<span>
-					{ __(
-						'calculated with an address',
-						'woo-gutenberg-products-block'
-					) }
-				</span>
-			);
-		}
-		const ratePrice = getSetting( 'displayCartPricesIncludingTax', false )
-			? parseInt( rate.price, 10 ) + parseInt( rate.taxes, 10 )
-			: parseInt( rate.price, 10 );
-		if ( ratePrice === 0 ) {
-			return (
-				<span>{ __( 'free', 'woo-gutenberg-products-block' ) }</span>
-			);
-		}
-		return (
-			<FormattedMonetaryAmount
-				currency={ getCurrencyFromPriceResponse( rate ) }
-				value={ ratePrice }
-			/>
+	const Price =
+		rate === undefined ? (
+			<span className="wc-block-checkout__collection-item-price">
+				{ __(
+					'calculated with an address',
+					'woo-gutenberg-products-block'
+				) }
+			</span>
+		) : (
+			<RatePrice rate={ rate } />
 		);
-	};
 
 	return (
 		<Radio
@@ -170,11 +173,17 @@ const ShippingSelector = ( {
 					checked === 'shipping',
 			} ) }
 		>
-			{ showIcon === true && <Icon icon={ shipping } size={ 24 } /> }
+			{ showIcon === true && (
+				<Icon
+					icon={ shipping }
+					size={ 28 }
+					className="wc-block-checkout__collection-item-icon"
+				/>
+			) }
 			<span className="wc-block-checkout__collection-item-title">
 				{ __( 'Delivery', 'woo-gutenberg-products-block' ) }
 			</span>
-			{ showPrice === true && <Price /> }
+			{ showPrice === true && Price }
 		</Radio>
 	);
 };
