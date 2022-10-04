@@ -36,28 +36,18 @@ describe( `${ block.name } Block`, () => {
 			it( "allows changing the block's title", async () => {
 				const textareaSelector =
 					'.wp-block-woocommerce-filter-wrapper .wp-block-heading';
+
 				await expect( page ).toFill( textareaSelector, 'New Title' );
+
 				await page.click( block.class );
 
-				// Change title to h6.
-				await page.click(
-					'.components-toolbar button[aria-label="Heading 6"]'
-				);
-				await expect( page ).toMatchElement(
-					`.wp-block[data-type="${ block.slug }"] h6 textarea`,
-					{ text: 'New Title' }
-				);
+				await expect( page ).toMatchElement( textareaSelector, {
+					text: 'New Title',
+				} );
+
 				await expect( page ).toFill(
 					textareaSelector,
 					'Filter by price'
-				);
-				// Change title to h3.
-				await page.click(
-					'.components-toolbar button[aria-label="Heading 3"]'
-				);
-				await expect( page ).not.toMatchElement(
-					`.wp-block[data-type="${ block.slug }"] h6 textarea`,
-					{ text: 'New Title' }
 				);
 			} );
 
