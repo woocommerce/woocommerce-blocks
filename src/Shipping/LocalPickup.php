@@ -32,6 +32,7 @@ class LocalPickup extends WC_Shipping_Method {
 		$this->pickup_locations = get_option( $this->id . '_pickup_locations', [] );
 
 		add_action( 'woocommerce_update_options_shipping_' . $this->id, array( $this, 'process_admin_options' ) );
+		add_filter( 'woocommerce_attribute_label', array( $this, 'translate_meta_data' ), 10, 3 );
 	}
 
 	/**
@@ -49,9 +50,9 @@ class LocalPickup extends WC_Shipping_Method {
 						'package'   => $package,
 						'cost'      => wc_format_decimal( $location['cost'] ),
 						'meta_data' => array(
-							'name'    => wp_kses_post( $location['name'] ),
-							'address' => $location['address'],
-							'details' => $location['details'],
+							'pickup_location_name'    => wp_kses_post( $location['name'] ),
+							'pickup_location_address' => $location['address'],
+							'pickup_location_details' => $location['details'],
 						),
 					)
 				);
@@ -155,6 +156,29 @@ class LocalPickup extends WC_Shipping_Method {
 
 		update_option( $this->id . '_pickup_locations', $locations );
 		$this->pickup_locations = $locations;
+	}
+
+	/**
+	 * Translates meta data for the shipping method.
+	 *
+	 * @param string $label Meta label.
+	 * @param string $name Meta key.
+	 * @param mixed  $product Product if applicable.
+	 * @return string
+	 */
+	public function translate_meta_data( $label, $name, $product ) {
+		if ( $product ) {
+			return $label;
+		}
+		switch ( $name ) {
+			case 'pickup_location_name':
+				return __( 'Pickup Location', 'woo-gutenberg-products-block' );
+			case 'pickup_location_address':
+				return __( 'Pickup Address', 'woo-gutenberg-products-block' );
+			case 'pickup_location_details':
+				return __( 'Pickup Details', 'woo-gutenberg-products-block' );
+		}
+		return $label;
 	}
 
 	/**
