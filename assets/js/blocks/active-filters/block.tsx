@@ -187,7 +187,7 @@ const ActiveFiltersBlock = ( {
 	] );
 
 	const [ productRatings, setProductRatings ] =
-		useQueryStateByKey( 'ratings' );
+		useQueryStateByKey( 'rating' );
 
 	/**
 	 * Parse the filter URL to set the active rating fitlers.
@@ -354,6 +354,7 @@ const ActiveFiltersBlock = ( {
 								setMaxPrice( undefined );
 								setProductAttributes( [] );
 								setProductStockStatus( [] );
+								setProductRatings( [] );
 							}
 						} }
 					>
