@@ -4,17 +4,11 @@
 import {
 	openDocumentSettingsSidebar,
 	switchUserToAdmin,
-	getAllBlocks,
 } from '@wordpress/e2e-test-utils';
 import {
 	visitBlockPage,
 	selectBlockByName,
 } from '@woocommerce/blocks-test-utils';
-
-/**
- * Internal dependencies
- */
-import { insertBlockDontWaitForInsertClose } from '../../utils.js';
 
 const block = {
 	name: 'Filter by Price',
@@ -27,11 +21,6 @@ describe( `${ block.name } Block`, () => {
 		beforeAll( async () => {
 			await switchUserToAdmin();
 			await visitBlockPage( `${ block.name } Block` );
-		} );
-
-		it( 'can only be inserted once', async () => {
-			await insertBlockDontWaitForInsertClose( block.name );
-			expect( await getAllBlocks() ).toHaveLength( 1 );
 		} );
 
 		it( 'renders without crashing', async () => {
