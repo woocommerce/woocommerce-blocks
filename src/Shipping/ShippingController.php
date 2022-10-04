@@ -9,23 +9,6 @@ use Automattic\WooCommerce\Blocks\Domain\Package;
  * @internal
  */
 class ShippingController {
-
-	/**
-	 * Holds the Package instance
-	 *
-	 * @var Package
-	 */
-	private $package;
-
-	/**
-	 * Constructor.
-	 *
-	 * @param Package $package An instance of Package.
-	 */
-	public function __construct( Package $package ) {
-		$this->package = $package;
-	}
-
 	/**
 	 * Initialization method.
 	 */
