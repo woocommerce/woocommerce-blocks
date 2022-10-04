@@ -18,29 +18,31 @@ For more information on what blocks are available, and how to use them, check ou
 
 Use this plugin if you want access to the bleeding edge of available blocks for WooCommerce. However, stable blocks are bundled into WooCommerce, and can be added from the "WooCommerce" section in the block inserter.
 
-- **Featured Product**
-- **Featured Category**
-- **Hand-picked Products**
-- **Best Selling Products**
-- **Top Rated Products**
-- **Newest Products**
-- **On Sale Products**
-- **Products by Category**
-- **Products by Tag**
-- **Products by Attribute**
-- **Product Categories List**
-- **Reviews by Product**
-- **Reviews by Category**
-- **All Reviews**
-- **Product Search**
-- **All Products**
-- **Filter by Price**
-- **Filter Products by Attribute**
-- **Filter Products by Stock**
 - **Active Product Filters**
+- **All Products**
+- **All Reviews**
+- **Best Selling Products**
 - **Cart including Cross-Sells**
 - **Checkout**
+- **Featured Category**
+- **Featured Product**
+- **Filter by Attribute**
+- **Filter by Price**
+- **Filter by Rating**
+- **Filter Products by Stock**
+- **Hand-picked Products**
 - **Mini Cart**
+- **Newest Products**
+- **On Sale Products**
+- **Product Categories List**
+- **Product Search**
+- **Products by Attribute**
+- **Products by Category**
+- **Products by Tag**
+- **Reviews by Category**
+- **Reviews by Product**
+- **Single Product**
+- **Top Rated Products**
 
 == Getting Started ==
 
