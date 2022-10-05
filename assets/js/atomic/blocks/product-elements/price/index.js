@@ -9,7 +9,6 @@ import { registerBlockType } from '@wordpress/blocks';
  */
 import sharedConfig from '../shared/config';
 import edit from './edit';
-import { Save } from './save';
 import attributes from './attributes';
 import {
 	BLOCK_TITLE as title,
@@ -32,7 +31,6 @@ const blockConfig = {
 	icon: { src: icon },
 	attributes,
 	edit,
-	save: Save,
 	supports: {
 		...sharedConfig.supports,
 		...( isFeaturePluginBuild() && {
