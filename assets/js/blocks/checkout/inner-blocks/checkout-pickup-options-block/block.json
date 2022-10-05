@@ -1,5 +1,5 @@
 {
-	"name": "woocommerce/checkout-collection-method",
+	"name": "woocommerce/checkout-pickup-options-block",
 	"version": "1.0.0",
 	"title": "Shipping Method",
 	"description": "How to collect an order.",
