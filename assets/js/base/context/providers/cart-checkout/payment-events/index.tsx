@@ -11,7 +11,7 @@ import {
 import { useDispatch, useSelect } from '@wordpress/data';
 import {
 	CHECKOUT_STORE_KEY,
-	PAYMENT_METHOD_DATA_STORE_KEY,
+	PAYMENT_STORE_KEY,
 	VALIDATION_STORE_KEY,
 } from '@woocommerce/block-data';
 
@@ -63,7 +63,7 @@ export const PaymentEventsProvider = ( {
 		};
 	} );
 	const { currentStatus } = useSelect( ( select ) => {
-		const store = select( PAYMENT_METHOD_DATA_STORE_KEY );
+		const store = select( PAYMENT_STORE_KEY );
 
 		return {
 			currentStatus: store.getCurrentStatus(),
@@ -85,7 +85,7 @@ export const PaymentEventsProvider = ( {
 		__internalSetPaymentStatus,
 		__internalSetPaymentMethodData,
 		__internalEmitPaymentProcessingEvent,
-	} = useDispatch( PAYMENT_METHOD_DATA_STORE_KEY );
+	} = useDispatch( PAYMENT_STORE_KEY );
 	const { setBillingAddress, setShippingAddress } = useCustomerData();
 
 	// flip payment to processing if checkout processing is complete, there are no errors, and payment status is started.

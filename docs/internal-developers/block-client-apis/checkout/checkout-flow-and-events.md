@@ -106,11 +106,11 @@ The status of the payment lives in the payment data store. It can be retrieved w
 
 ```jsx
 import { useSelect } from '@wordpress/data';
-import { PAYMENT_METHOD_DATA_STORE_KEY } from '@woocommerce/blocks-data';
+import { PAYMENT_STORE_KEY } from '@woocommerce/blocks-data';
 
 const MyComponent = ( props ) => {
 	const currentStatus = useSelect( ( select ) =>
-		select( PAYMENT_METHOD_DATA_STORE_KEY ).getCurrentStatus()
+		select( PAYMENT_STORE_KEY ).getCurrentStatus()
 	);
 	// do something with status
 };
