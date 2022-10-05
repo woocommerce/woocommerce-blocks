@@ -301,6 +301,7 @@ const RatingFilterBlock = ( {
 					{ clicked.length > 0 && ! isLoading && (
 						<FilterResetButton
 							onClick={ () => {
+								setClicked( [] );
 								setProductRatings( [] );
 								onSubmit( [] );
 							} }
