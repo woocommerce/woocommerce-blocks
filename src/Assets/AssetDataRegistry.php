@@ -148,7 +148,9 @@ class AssetDataRegistry {
 			'terms'     => wc_terms_and_conditions_page_id(),
 		];
 
-		_prime_post_caches( array_values( $store_pages ) );
+		if ( is_callable( '_prime_post_caches' ) ) {
+			_prime_post_caches( array_values( $store_pages ) );
+		}
 
 		return array_map(
 			[ $this, 'format_page_resource' ],
