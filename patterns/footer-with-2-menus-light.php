@@ -1,6 +1,6 @@
 <?php
 /**
- * Title: WooCommerce footer with 2 menus | Light
+ * Title: WooCommerce Footer with 2 menus | Light
  * Slug: woocommerce-blocks/footer-with-2-menus-light
  * Categories: WooCommerce
  */

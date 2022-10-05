@@ -1,6 +1,6 @@
 <?php
 /**
- * Title: WooCommerce Simple footer | Dark
+ * Title: WooCommerce Simple Footer | Dark
  * Slug: woocommerce-blocks/footer-simple-dark
  * Categories: WooCommerce
  */

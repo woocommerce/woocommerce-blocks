@@ -1,6 +1,6 @@
 <?php
 /**
- * Title: WooCommerce Large footer | Light
+ * Title: WooCommerce Large Footer | Light
  * Slug: woocommerce-blocks/footer-large-light
  * Categories: WooCommerce
  */
