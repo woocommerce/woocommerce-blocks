@@ -297,7 +297,7 @@ const RatingFilterBlock = ( {
 			</div>
 			{
 				<div className="wc-block-rating-filter__actions">
-					{ productRatingsArray.length > 0 && ! isLoading && (
+					{ clicked.length > 0 && ! isLoading && (
 						<FilterResetButton
 							onClick={ () => {
 								setProductRatings( [] );
