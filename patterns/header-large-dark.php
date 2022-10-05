@@ -1,6 +1,6 @@
 <?php
 /**
- * Title: WooCommerce Large header | Dark
+ * Title: WooCommerce Large Header | Dark
  * Slug: woocommerce-blocks/header-large-dark
  * Categories: WooCommerce
  */

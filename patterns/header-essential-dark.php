@@ -1,6 +1,6 @@
 <?php
 /**
- * Title: WooCommerce Essential header | Dark
+ * Title: WooCommerce Essential Header | Dark
  * Slug: woocommerce-blocks/header-essential-dark
  * Categories: WooCommerce
  */
