@@ -20,7 +20,7 @@ import {
  * Internal dependencies
  */
 import { STORE_KEY as CART_STORE_KEY } from '../cart/constants';
-import { STORE_KEY as PAYMENT_METHOD_DATA_STORE_KEY } from '../payment-methods/constants';
+import { STORE_KEY as PAYMENT_METHOD_DATA_STORE_KEY } from './constants';
 import { noticeContexts } from '../../base/context/event-emit';
 
 export const checkPaymentMethodsCanPay = async ( express = false ) => {
@@ -130,12 +130,14 @@ export const checkPaymentMethodsCanPay = async ( express = false ) => {
 		return true;
 	}
 
-	const { setAvailablePaymentMethods, setAvailableExpressPaymentMethods } =
-		dispatch( PAYMENT_METHOD_DATA_STORE_KEY );
+	const {
+		__internalSetAvailablePaymentMethods,
+		__internalSetAvailableExpressPaymentMethods,
+	} = dispatch( PAYMENT_METHOD_DATA_STORE_KEY );
 	if ( express ) {
-		setAvailableExpressPaymentMethods( availablePaymentMethods );
+		__internalSetAvailableExpressPaymentMethods( availablePaymentMethods );
 		return true;
 	}
-	setAvailablePaymentMethods( availablePaymentMethods );
+	__internalSetAvailablePaymentMethods( availablePaymentMethods );
 	return true;
 };
