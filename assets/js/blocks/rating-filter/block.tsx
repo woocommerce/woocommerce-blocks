@@ -236,6 +236,7 @@ const RatingFilterBlock = ( {
 	}, [
 		blockAttributes.showCounts,
 		blockAttributes.isPreview,
+		filteredCounts,
 		filteredCountsLoading,
 		initialOptions,
 	] );
