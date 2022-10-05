@@ -19,12 +19,15 @@ import {
 } from '@wordpress/element';
 import CheckboxList from '@woocommerce/base-components/checkbox-list';
 import FilterSubmitButton from '@woocommerce/base-components/filter-submit-button';
+import FilterResetButton from '@woocommerce/base-components/filter-reset-button';
+import FilterTitlePlaceholder from '@woocommerce/base-components/filter-placeholder';
 import Label from '@woocommerce/base-components/filter-element-label';
 import isShallowEqual from '@wordpress/is-shallow-equal';
 import { decodeEntities } from '@wordpress/html-entities';
 import { isBoolean, objectHasProp } from '@woocommerce/types';
 import { addQueryArgs, removeQueryArgs } from '@wordpress/url';
 import { changeUrl, PREFIX_QUERY_ARG_FILTER_TYPE } from '@woocommerce/utils';
+import classnames from 'classnames';
 
 /**
  * Internal dependencies
@@ -211,15 +214,15 @@ const StockStatusFilterBlock = ( {
 	};
 
 	const onSubmit = useCallback(
-		( isChecked ) => {
+		( checkedOptions ) => {
 			if ( isEditor ) {
 				return;
 			}
-			if ( isChecked && ! filteringForPhpTemplate ) {
-				setProductStockStatusQuery( checked );
+			if ( checkedOptions && ! filteringForPhpTemplate ) {
+				setProductStockStatusQuery( checkedOptions );
 			}
 
-			updateFilterUrl( checked );
+			updateFilterUrl( checkedOptions );
 		},
 		[
 			isEditor,
@@ -338,14 +341,15 @@ const StockStatusFilterBlock = ( {
 		[ checked, displayedOptions ]
 	);
 
-	if ( displayedOptions.length === 0 ) {
+	if ( ! filteredCountsLoading && displayedOptions.length === 0 ) {
 		return null;
 	}
 
 	const TagName =
 		`h${ blockAttributes.headingLevel }` as keyof JSX.IntrinsicElements;
 	const isLoading =
-		! blockAttributes.isPreview && ! STOCK_STATUS_OPTIONS.current;
+		( ! blockAttributes.isPreview && ! STOCK_STATUS_OPTIONS.current ) ||
+		displayedOptions.length === 0;
 	const isDisabled = ! blockAttributes.isPreview && filteredCountsLoading;
 
 	const hasFilterableProducts = getSettingWithCoercion(
@@ -358,14 +362,26 @@ const StockStatusFilterBlock = ( {
 		return null;
 	}
 
+	const heading = (
+		<TagName className="wc-block-stock-filter__title">
+			{ blockAttributes.heading }
+		</TagName>
+	);
+
+	const filterHeading = isLoading ? (
+		<FilterTitlePlaceholder>{ heading }</FilterTitlePlaceholder>
+	) : (
+		heading
+	);
+
 	return (
 		<>
-			{ ! isEditor && blockAttributes.heading && (
-				<TagName className="wc-block-stock-filter__title">
-					{ blockAttributes.heading }
-				</TagName>
-			) }
-			<div className="wc-block-stock-filter">
+			{ ! isEditor && blockAttributes.heading && filterHeading }
+			<div
+				className={ classnames( 'wc-block-stock-filter', {
+					'is-loading': isLoading,
+				} ) }
+			>
 				<CheckboxList
 					className={ 'wc-block-stock-filter-list' }
 					options={ displayedOptions }
@@ -374,14 +390,31 @@ const StockStatusFilterBlock = ( {
 					isLoading={ isLoading }
 					isDisabled={ isDisabled }
 				/>
-				{ blockAttributes.showFilterButton && (
-					<FilterSubmitButton
-						className="wc-block-stock-filter__button"
-						disabled={ isLoading || isDisabled }
-						onClick={ () => onSubmit( checked ) }
-					/>
-				) }
 			</div>
+			{
+				<div className="wc-block-stock-filter__actions">
+					{ checked.length > 0 && ! isLoading && (
+						<FilterResetButton
+							onClick={ () => {
+								setChecked( [] );
+								onSubmit( [] );
+							} }
+							screenReaderLabel={ __(
+								'Reset stock filter',
+								'woo-gutenberg-products-block'
+							) }
+						/>
+					) }
+					{ blockAttributes.showFilterButton && (
+						<FilterSubmitButton
+							className="wc-block-stock-filter__button"
+							isLoading={ isLoading }
+							disabled={ isLoading || isDisabled }
+							onClick={ () => onSubmit( checked ) }
+						/>
+					) }
+				</div>
+			}
 		</>
 	);
 };

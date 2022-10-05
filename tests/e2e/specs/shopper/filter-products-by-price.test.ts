@@ -24,12 +24,13 @@ import {
 import { clickLink } from '../../../utils';
 
 const block = {
-	name: 'Filter Products by Price',
+	name: 'Filter by Price',
 	slug: 'woocommerce/price-filter',
 	class: '.wc-block-price-filter',
 	selectors: {
 		editor: {
-			filterButtonToggle: "//label[text()='Filter button']",
+			filterButtonToggle:
+				'//label[text()="Show \'Apply filters\' button"]',
 		},
 		frontend: {
 			priceMaxAmount: '.wc-block-price-filter__amount--max',
@@ -38,7 +39,7 @@ const block = {
 			submitButton: '.wc-block-components-filter-submit-button',
 		},
 	},
-	urlSearchParamWhenFilterIsApplied: '?max_price=1.99',
+	urlSearchParamWhenFilterIsApplied: '?max_price=2',
 	foundProduct: '32GB USB Stick',
 };
 
@@ -55,8 +56,7 @@ const setMaxPrice = async () => {
 	await page.keyboard.down( 'Shift' );
 	await page.keyboard.press( 'Home' );
 	await page.keyboard.up( 'Shift' );
-	await page.keyboard.press( 'Backspace' );
-	await page.keyboard.type( '1.99' );
+	await page.keyboard.type( '2' );
 	await page.keyboard.press( 'Tab' );
 };
 

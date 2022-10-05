@@ -1,4 +1,22 @@
+.wp-block-woocommerce-stock-filter {
+	h1,
+	h2,
+	h3,
+	h4,
+	h5,
+	h6 {
+		text-transform: inherit;
+	}
+}
+
 .wc-block-stock-filter {
+	&.is-loading {
+		@include placeholder();
+		margin-top: $gap;
+		box-shadow: none;
+		border-radius: 0;
+	}
+
 	margin-bottom: $gap-large;
 
 	.wc-block-stock-filter-list {
@@ -15,13 +33,30 @@
 			}
 		}
 	}
+}
 
-	.is-single,
-	.wc-block-dropdown-selector .wc-block-dropdown-selector__list {
-		opacity: 0.6;
+.wc-block-stock-filter__actions {
+	align-items: center;
+	display: flex;
+	gap: $gap;
+	justify-content: flex-end;
+	margin-top: $gap;
+
+	// The specificity here is needed to overwrite the margin-top that is inherited on WC block template pages such as Shop.
+	button[type="submit"]:not(.wp-block-search__button).wc-block-components-filter-submit-button {
+		margin-left: 0;
+		margin-top: 0;
 	}
 
 	.wc-block-stock-filter__button {
-		margin-top: $gap-smaller;
+		margin-top: em($gap-smaller);
+		padding: em($gap-smaller) em($gap);
+		@include font-size(small);
 	}
+}
+
+.editor-styles-wrapper .wc-block-stock-filter .wc-block-stock-filter__button {
+	margin-top: em($gap-smaller);
+	padding: em($gap-smaller) em($gap);
+	@include font-size(small);
 }

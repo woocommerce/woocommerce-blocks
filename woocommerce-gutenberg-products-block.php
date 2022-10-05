@@ -3,14 +3,14 @@
  * Plugin Name: WooCommerce Blocks
  * Plugin URI: https://github.com/woocommerce/woocommerce-gutenberg-products-block
  * Description: WooCommerce blocks for the Gutenberg editor.
- * Version: 8.3.0-dev
+ * Version: 8.7.0-dev
  * Author: Automattic
  * Author URI: https://woocommerce.com
  * Text Domain:  woo-gutenberg-products-block
  * Requires at least: 6.0
  * Requires PHP: 7.0
- * WC requires at least: 6.6
- * WC tested up to: 6.7
+ * WC requires at least: 6.8
+ * WC tested up to: 6.9
  *
  * @package WooCommerce\Blocks
  * @internal This file is only used when running as a feature plugin.
@@ -88,7 +88,7 @@ function woocommerce_blocks_is_development_version() {
 if ( woocommerce_blocks_is_development_version() && ! defined( 'JETPACK_AUTOLOAD_DEV' ) ) {
 	add_action(
 		'admin_notices',
-		function() {
+		function () {
 			echo '<div class="error"><p>';
 			printf(
 				/* translators: %1$s is referring to a php constant name, %2$s is referring to the wp-config.php file. */
@@ -130,20 +130,20 @@ if ( is_readable( $autoloader ) ) {
 	 */
 	add_action(
 		'admin_notices',
-		function() {
+		function () {
 			?>
-			<div class="notice notice-error">
-				<p>
-					<?php
-					printf(
-						/* translators: 1: composer command. 2: plugin directory */
-						esc_html__( 'Your installation of the WooCommerce Blocks feature plugin is incomplete. Please run %1$s within the %2$s directory.', 'woo-gutenberg-products-block' ),
-						'<code>composer install</code>',
-						'<code>' . esc_html( str_replace( ABSPATH, '', __DIR__ ) ) . '</code>'
-					);
-					?>
-				</p>
-			</div>
+		<div class="notice notice-error">
+			<p>
+				<?php
+				printf(
+					/* translators: 1: composer command. 2: plugin directory */
+					esc_html__( 'Your installation of the WooCommerce Blocks feature plugin is incomplete. Please run %1$s within the %2$s directory.', 'woo-gutenberg-products-block' ),
+					'<code>composer install</code>',
+					'<code>' . esc_html( str_replace( ABSPATH, '', __DIR__ ) ) . '</code>'
+				);
+				?>
+			</p>
+		</div>
 			<?php
 		}
 	);

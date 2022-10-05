@@ -9,11 +9,12 @@ import {
 	BillingAddress,
 } from '@woocommerce/settings';
 import { useCallback } from '@wordpress/element';
+import { useDispatch, useSelect } from '@wordpress/data';
+import { CHECKOUT_STORE_KEY } from '@woocommerce/block-data';
 
 /**
  * Internal dependencies
  */
-import { useCheckoutContext } from '../providers/cart-checkout';
 import { useCustomerData } from './use-customer-data';
 import { useShippingData } from './shipping/use-shipping-data';
 
@@ -37,8 +38,11 @@ interface CheckoutAddress {
  */
 export const useCheckoutAddress = (): CheckoutAddress => {
 	const { needsShipping } = useShippingData();
-	const { useShippingAsBilling, setUseShippingAsBilling } =
-		useCheckoutContext();
+	const { useShippingAsBilling } = useSelect( ( select ) =>
+		select( CHECKOUT_STORE_KEY ).getCheckoutState()
+	);
+	const { __internalSetUseShippingAsBilling } =
+		useDispatch( CHECKOUT_STORE_KEY );
 	const {
 		billingAddress,
 		setBillingAddress,
@@ -80,7 +84,7 @@ export const useCheckoutAddress = (): CheckoutAddress => {
 		setShippingPhone,
 		defaultAddressFields,
 		useShippingAsBilling,
-		setUseShippingAsBilling,
+		setUseShippingAsBilling: __internalSetUseShippingAsBilling,
 		showShippingFields: needsShipping,
 		showBillingFields: ! needsShipping || ! useShippingAsBilling,
 	};

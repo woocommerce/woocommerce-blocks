@@ -261,7 +261,7 @@ const getMainConfig = ( options = {} ) => {
 			new CopyWebpackPlugin( {
 				patterns: [
 					{
-						from: './assets/js/blocks/**/block.json',
+						from: './assets/js/**/block.json',
 						to( { absoluteFilename } ) {
 							/**
 							 * Getting the block name from the JSON metadata is less error prone
@@ -274,6 +274,10 @@ const getMainConfig = ( options = {} ) => {
 							const blockName = metadata.name
 								.split( '/' )
 								.at( 1 );
+
+							if ( metadata.parent )
+								return `./inner-blocks/${ blockName }/block.json`;
+
 							return `./${ blockName }/block.json`;
 						},
 					},

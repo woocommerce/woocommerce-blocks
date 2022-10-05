@@ -40,20 +40,9 @@ const Edit = ( {
 				>
 					<ToggleControl
 						label={ __(
-							'Product count',
+							'Display product count',
 							'woo-gutenberg-products-block'
 						) }
-						help={
-							showCounts
-								? __(
-										'Product count is visible.',
-										'woo-gutenberg-products-block'
-								  )
-								: __(
-										'Product count is hidden.',
-										'woo-gutenberg-products-block'
-								  )
-						}
 						checked={ showCounts }
 						onChange={ () =>
 							setAttributes( {
@@ -61,41 +50,23 @@ const Edit = ( {
 							} )
 						}
 					/>
-					<p>
-						{ __(
-							'Heading Level',
-							'woo-gutenberg-products-block'
-						) }
-					</p>
-					<HeadingToolbar
-						isCollapsed={ false }
-						minLevel={ 2 }
-						maxLevel={ 7 }
-						selectedLevel={ headingLevel }
-						onChange={ ( newLevel: number ) =>
-							setAttributes( { headingLevel: newLevel } )
-						}
-					/>
 				</PanelBody>
 				<PanelBody
-					title={ __(
-						'Block Settings',
-						'woo-gutenberg-products-block'
-					) }
+					title={ __( 'Settings', 'woo-gutenberg-products-block' ) }
 				>
 					<ToggleControl
 						label={ __(
-							'Filter button',
+							"Show 'Apply filters' button",
 							'woo-gutenberg-products-block'
 						) }
 						help={
 							showFilterButton
 								? __(
-										'Products will only update when the button is pressed.',
+										'Products will only update when the button is clicked.',
 										'woo-gutenberg-products-block'
 								  )
 								: __(
-										'Products will update as options are selected.',
+										'Products will update as soon as attributes are selected.',
 										'woo-gutenberg-products-block'
 								  )
 						}
@@ -104,6 +75,20 @@ const Edit = ( {
 							setAttributes( {
 								showFilterButton: value,
 							} )
+						}
+					/>
+				</PanelBody>
+				<PanelBody
+					title={ __( 'Typography', 'woo-gutenberg-products-block' ) }
+				>
+					<p> { __( 'Size', 'woo-gutenberg-products-block' ) } </p>
+					<HeadingToolbar
+						isCollapsed={ false }
+						minLevel={ 2 }
+						maxLevel={ 7 }
+						selectedLevel={ headingLevel }
+						onChange={ ( newLevel: number ) =>
+							setAttributes( { headingLevel: newLevel } )
 						}
 					/>
 				</PanelBody>

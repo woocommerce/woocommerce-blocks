@@ -1,4 +1,5 @@
 <?php
+
 namespace Automattic\WooCommerce\Blocks;
 
 use Automattic\WooCommerce\Blocks\Domain\Package as NewPackage;
@@ -20,6 +21,7 @@ use Automattic\WooCommerce\Blocks\Domain\Services\FeatureGating;
  * @since 2.5.0
  */
 class Package {
+
 
 	/**
 	 * For back compat this is provided. Ideally, you should register your
@@ -83,16 +85,10 @@ class Package {
 	 *
 	 * @return boolean
 	 */
-	// This function will be kept around but commented out in case we add feature-plugin-specific code in the future.
-	// phpcs:disable Squiz.PHP.CommentedOutCode
-	// phpcs:disable Squiz.Commenting.InlineComment.InvalidEndChar
-	// phpcs:disable Squiz.Commenting.InlineComment.SpacingBefore
-	//	public static function is_feature_plugin_build() {
-	//		return self::get_package()->is_feature_plugin_build();
-	//	}
-	// phpcs:enable Squiz.PHP.CommentedOutCode
-	// phpcs:enable Squiz.Commenting.InlineComment.InvalidEndChar
-	// phpcs:enable Squiz.Commenting.InlineComment.SpacingBefore
+	public static function is_feature_plugin_build() {
+		return self::get_package()->is_feature_plugin_build();
+	}
+
 
 	/**
 	 * Loads the dependency injection container for woocommerce blocks.
@@ -104,16 +100,16 @@ class Package {
 	public static function container( $reset = false ) {
 		static $container;
 		if (
-				! $container instanceof Container
-				|| $reset
-			) {
+			! $container instanceof Container
+			|| $reset
+		) {
 			$container = new Container();
 			// register Package.
 			$container->register(
 				NewPackage::class,
 				function ( $container ) {
 					// leave for automated version bumping.
-					$version = '8.3.0-dev';
+					$version = '8.7.0-dev';
 					return new NewPackage(
 						$version,
 						dirname( __DIR__ ),
@@ -134,8 +130,7 @@ class Package {
 			$container->register(
 				Migration::class,
 				function () {
-					return new Migration(
-					);
+					return new Migration();
 				}
 			);
 		}

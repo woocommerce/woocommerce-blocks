@@ -44,6 +44,7 @@ const blocks = {
 	'attribute-filter': {},
 	'stock-filter': {},
 	'active-filters': {},
+	'rating-filter': {},
 	cart: {},
 	checkout: {},
 	'mini-cart': {},
@@ -56,6 +57,9 @@ const blocks = {
 	// We need to keep the legacy-template id, so we need to add a custom config to point to the renamed classic-template folder
 	'legacy-template': {
 		customDir: 'classic-template',
+	},
+	'product-query': {
+		isExperimental: true,
 	},
 };
 

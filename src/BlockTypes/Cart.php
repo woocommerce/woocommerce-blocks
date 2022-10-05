@@ -76,11 +76,12 @@ class Cart extends AbstractBlock {
 	/**
 	 * Append frontend scripts when rendering the Cart block.
 	 *
-	 * @param array  $attributes Block attributes.
-	 * @param string $content    Block content.
+	 * @param array    $attributes Block attributes.
+	 * @param string   $content    Block content.
+	 * @param WP_Block $block      Block instance.
 	 * @return string Rendered block type output.
 	 */
-	protected function render( $attributes, $content ) {
+	protected function render( $attributes, $content, $block ) {
 		// Deregister core cart scripts and styles.
 		wp_dequeue_script( 'wc-cart' );
 		wp_dequeue_script( 'wc-password-strength-meter' );
@@ -155,21 +156,23 @@ class Cart extends AbstractBlock {
 	 */
 	protected function enqueue_data( array $attributes = [] ) {
 		parent::enqueue_data( $attributes );
+		if ( wc_shipping_enabled() ) {
+			$this->asset_data_registry->add(
+				'shippingCountries',
+				function() {
+					return $this->deep_sort_with_accents( WC()->countries->get_shipping_countries() );
+				},
+				true
+			);
+			$this->asset_data_registry->add(
+				'shippingStates',
+				function() {
+					return $this->deep_sort_with_accents( WC()->countries->get_shipping_country_states() );
+				},
+				true
+			);
+		}
 
-		$this->asset_data_registry->add(
-			'shippingCountries',
-			function() {
-				return $this->deep_sort_with_accents( WC()->countries->get_shipping_countries() );
-			},
-			true
-		);
-		$this->asset_data_registry->add(
-			'shippingStates',
-			function() {
-				return $this->deep_sort_with_accents( WC()->countries->get_shipping_country_states() );
-			},
-			true
-		);
 		$this->asset_data_registry->add(
 			'countryLocale',
 			function() {
