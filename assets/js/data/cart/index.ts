@@ -3,7 +3,9 @@
  */
 import {
 	dispatch as wpDataDispatch,
-	registerStore,
+	register,
+	subscribe,
+	createReduxStore,
 	select as wpDataSelect,
 } from '@wordpress/data';
 import { controls as dataControls } from '@wordpress/data-controls';
@@ -15,14 +17,14 @@ import { STORE_KEY } from './constants';
 import * as selectors from './selectors';
 import * as actions from './actions';
 import * as resolvers from './resolvers';
-import reducer, { State } from './reducers';
+import reducer from './reducers';
 import { controls as sharedControls } from '../shared-controls';
 import { controls } from './controls';
 import type { SelectFromMap, DispatchFromMap } from '../mapped-types';
 import { pushChanges } from './push-changes';
 import { checkPaymentMethodsCanPay } from '../payment/check-payment-methods';
 
-const registeredStore = registerStore< State >( STORE_KEY, {
+const store = createReduxStore( STORE_KEY, {
 	reducer,
 	actions,
 	// eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -30,9 +32,10 @@ const registeredStore = registerStore< State >( STORE_KEY, {
 	selectors,
 	resolvers,
 } );
+register( store );
 
-registeredStore.subscribe( pushChanges );
-registeredStore.subscribe( async () => {
+subscribe( pushChanges );
+subscribe( async () => {
 	const isInitialized =
 		wpDataSelect( STORE_KEY ).hasFinishedResolution( 'getCartData' );
 
@@ -43,18 +46,16 @@ registeredStore.subscribe( async () => {
 	await checkPaymentMethodsCanPay( true );
 } );
 
-const unsubscribeInitializePaymentMethodDataStore = registeredStore.subscribe(
-	async () => {
-		const cartLoaded =
-			wpDataSelect( STORE_KEY ).hasFinishedResolution( 'getCartTotals' );
-		if ( cartLoaded ) {
-			wpDataDispatch(
-				'wc/store/payment'
-			).__internalInitializePaymentMethodDataStore();
-			unsubscribeInitializePaymentMethodDataStore();
-		}
+const unsubscribeInitializePaymentMethodDataStore = subscribe( async () => {
+	const cartLoaded =
+		wpDataSelect( STORE_KEY ).hasFinishedResolution( 'getCartTotals' );
+	if ( cartLoaded ) {
+		wpDataDispatch(
+			'wc/store/payment'
+		).__internalInitializePaymentMethodDataStore();
+		unsubscribeInitializePaymentMethodDataStore();
 	}
-);
+} );
 
 export const CART_STORE_KEY = STORE_KEY;
 
