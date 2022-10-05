@@ -32,7 +32,7 @@ import { getActiveFilters } from './utils';
 export const QUERY_PARAM_KEY = 'rating_filter';
 
 /**
- * Component displaying an stock status filter.
+ * Component displaying a rating filter.
  *
  * @param {Object}  props            Incoming props for the component.
  * @param {Object}  props.attributes Incoming block attributes.
@@ -182,7 +182,7 @@ const RatingFilterBlock = ( {
 	] );
 
 	/**
-	 * Compare intersection of all stock statuses and filtered counts to get a list of options to display.
+	 * Compare intersection of all ratings and filtered counts to get a list of options to display.
 	 */
 	useEffect( () => {
 		/**
@@ -306,7 +306,7 @@ const RatingFilterBlock = ( {
 								onSubmit( [] );
 							} }
 							screenReaderLabel={ __(
-								'Reset stock filter',
+								'Reset rating filter',
 								'woo-gutenberg-products-block'
 							) }
 						/>
