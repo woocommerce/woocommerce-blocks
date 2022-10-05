@@ -1,4 +1,4 @@
-export const STORE_KEY = 'wc/store/payment-methods';
+export const STORE_KEY = 'wc/store/payment';
 
 export enum STATUS {
 	PRISTINE = 'pristine',
