@@ -50,7 +50,7 @@ const unsubscribeInitializePaymentMethodDataStore = registeredStore.subscribe(
 		if ( cartLoaded ) {
 			wpDataDispatch(
 				'wc/store/payment'
-			).initializePaymentMethodDataStore();
+			).__internalInitializePaymentMethodDataStore();
 			unsubscribeInitializePaymentMethodDataStore();
 		}
 	}

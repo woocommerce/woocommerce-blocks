@@ -62,7 +62,7 @@ export const CheckoutEventsProvider = ( {
 	);
 
 	if ( redirectUrl && redirectUrl !== checkoutState.redirectUrl ) {
-		checkoutActions.setRedirectUrl( redirectUrl );
+		checkoutActions.__internalSetRedirectUrl( redirectUrl );
 	}
 
 	const { setValidationErrors } = useDispatch( VALIDATION_STORE_KEY );
@@ -110,7 +110,7 @@ export const CheckoutEventsProvider = ( {
 	// the registered callbacks
 	useEffect( () => {
 		if ( checkoutState.status === STATUS.BEFORE_PROCESSING ) {
-			checkoutActions.emitValidateEvent( {
+			checkoutActions.__internalEmitValidateEvent( {
 				observers: currentObservers.current,
 				setValidationErrors,
 			} );
@@ -136,7 +136,7 @@ export const CheckoutEventsProvider = ( {
 		}
 
 		if ( checkoutState.status === STATUS.AFTER_PROCESSING ) {
-			checkoutActions.emitAfterProcessingEvents( {
+			checkoutActions.__internalEmitAfterProcessingEvents( {
 				observers: currentObservers.current,
 				notices: {
 					checkoutNotices,
@@ -152,7 +152,7 @@ export const CheckoutEventsProvider = ( {
 		checkoutState.orderId,
 		checkoutState.customerId,
 		checkoutState.orderNotes,
-		checkoutState.processingResponse,
+		checkoutState.paymentResult,
 		previousStatus,
 		previousHasError,
 		createErrorNotice,
@@ -164,7 +164,7 @@ export const CheckoutEventsProvider = ( {
 
 	const onSubmit = useCallback( () => {
 		dispatchCheckoutEvent( 'submit' );
-		checkoutActions.setBeforeProcessing();
+		checkoutActions.__internalSetBeforeProcessing();
 	}, [ dispatchCheckoutEvent, checkoutActions ] );
 
 	const checkoutEventHandlers: CheckoutEventsContextType = {
