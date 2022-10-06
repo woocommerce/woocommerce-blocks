@@ -16,6 +16,7 @@ import type {
 	CartShippingRate,
 	CartShippingPackageShippingRate,
 } from '@woocommerce/type-defs/cart';
+import { Icon, mapMarker } from '@wordpress/icons';
 
 /**
  * Internal dependencies
@@ -34,16 +35,24 @@ const renderShippingRatesControlOption = (
 		? parseInt( option.price, 10 ) + parseInt( option.taxes, 10 )
 		: parseInt( option.price, 10 );
 	return {
-		label: decodeEntities( option.name ),
 		value: option.rate_id,
-		description: decodeEntities( option.description ),
+		label: decodeEntities( option.name ),
 		secondaryLabel: (
 			<FormattedMonetaryAmount
 				currency={ getCurrencyFromPriceResponse( option ) }
 				value={ priceWithTaxes }
 			/>
 		),
-		secondaryDescription: decodeEntities( option.delivery_time ),
+		description: decodeEntities( option.description ),
+		secondaryDescription: option.meta_data.local_pickup_address && (
+			<>
+				<Icon
+					icon={ mapMarker }
+					className="wc-block-editor-components-block-icon"
+				/>
+				{ decodeEntities( option.meta_data.local_pickup_address ) }
+			</>
+		),
 	};
 };
 
@@ -51,12 +60,28 @@ const filterLocalPickupRates = ( shippingRates: CartShippingRate[] ) => {
 	return shippingRates.map( ( shippingRatesPackage ) => {
 		return {
 			...shippingRatesPackage,
-			shipping_rates: shippingRatesPackage.shipping_rates.filter(
-				( shippingRatesPackageRates ) =>
-					shippingRatesPackageRates.method_id === 'local_pickup' ||
-					shippingRatesPackageRates.method_id ===
-						'blocks_local_pickup'
-			),
+			shipping_rates: shippingRatesPackage.shipping_rates
+				.filter(
+					( shippingRatesPackageRate ) =>
+						shippingRatesPackageRate.method_id === 'local_pickup' ||
+						shippingRatesPackageRate.method_id ===
+							'blocks_local_pickup'
+				)
+				.map( ( shippingRatesPackageRate ) => {
+					return {
+						...shippingRatesPackageRate,
+						// @todo This is a placeholder until we introduce new fields in the shipping method.
+						description:
+							shippingRatesPackageRate.description ||
+							'You can pick up your order from our store.',
+						meta_data: {
+							...shippingRatesPackageRate.meta_data,
+							// @todo This is a placeholder until we introduce new fields in the shipping method.
+							local_pickup_address:
+								'123 Main Street, Anytown, USA',
+						},
+					};
+				} ),
 		};
 	} );
 };
