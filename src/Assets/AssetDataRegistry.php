@@ -149,7 +149,7 @@ class AssetDataRegistry {
 		];
 
 		if ( is_callable( '_prime_post_caches' ) ) {
-			_prime_post_caches( array_values( $store_pages ) );
+			_prime_post_caches( array_values( $store_pages ), false, false );
 		}
 
 		return array_map(
