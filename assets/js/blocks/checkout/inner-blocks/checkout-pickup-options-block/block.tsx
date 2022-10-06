@@ -3,6 +3,7 @@
  */
 import { __ } from '@wordpress/i18n';
 import { useShippingData } from '@woocommerce/base-context/hooks';
+import { useMemo } from '@wordpress/element';
 import { ShippingRatesControl } from '@woocommerce/base-components/cart-checkout';
 import { getCurrencyFromPriceResponse } from '@woocommerce/price-format';
 import FormattedMonetaryAmount from '@woocommerce/base-components/formatted-monetary-amount';
@@ -11,7 +12,15 @@ import { Notice } from 'wordpress-components';
 import classnames from 'classnames';
 import { getSetting } from '@woocommerce/settings';
 import type { PackageRateOption } from '@woocommerce/type-defs/shipping';
-import type { CartShippingPackageShippingRate } from '@woocommerce/type-defs/cart';
+import type {
+	CartShippingRate,
+	CartShippingPackageShippingRate,
+} from '@woocommerce/type-defs/cart';
+
+/**
+ * Internal dependencies
+ */
+import './style.scss';
 
 /**
  * Renders a shipping rate control option.
@@ -38,8 +47,27 @@ const renderShippingRatesControlOption = (
 	};
 };
 
+const filterLocalPickupRates = ( shippingRates: CartShippingRate[] ) => {
+	return shippingRates.map( ( shippingRatesPackage ) => {
+		return {
+			...shippingRatesPackage,
+			shipping_rates: shippingRatesPackage.shipping_rates.filter(
+				( shippingRatesPackageRates ) =>
+					shippingRatesPackageRates.method_id === 'local_pickup' ||
+					shippingRatesPackageRates.method_id ===
+						'blocks_local_pickup'
+			),
+		};
+	} );
+};
+
 const Block = ( {}: {} ): JSX.Element | null => {
 	const { shippingRates, needsShipping, isLoadingRates } = useShippingData();
+
+	const filteredShippingRates = useMemo(
+		() => filterLocalPickupRates( shippingRates ),
+		[ shippingRates ]
+	);
 
 	if ( ! needsShipping ) {
 		return null;
@@ -56,13 +84,13 @@ const Block = ( {}: {} ): JSX.Element | null => {
 					) }
 				>
 					{ __(
-						'There are no shipping options available. Please check your shipping address.',
+						'There are no pickup options available.',
 						'woo-gutenberg-products-block'
 					) }
 				</Notice>
 			}
 			renderOption={ renderShippingRatesControlOption }
-			shippingRates={ shippingRates }
+			shippingRates={ filteredShippingRates }
 			isLoadingRates={ isLoadingRates }
 			context="woocommerce/checkout"
 		/>
