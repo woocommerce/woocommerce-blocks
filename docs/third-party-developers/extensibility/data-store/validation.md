@@ -31,7 +31,7 @@ Returns true if validation errors occured, and false otherwise.
 
 #### _Returns_
 
--   `boolean`: Weather validation errors occured.
+-   `boolean`: Whether validation errors occured.
 
 <!-- FEEDBACK -->
 
