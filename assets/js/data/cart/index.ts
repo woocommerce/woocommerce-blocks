@@ -43,7 +43,7 @@ registeredStore.subscribe( async () => {
 	await checkPaymentMethodsCanPay( true );
 } );
 
-const unsubscribeInitializePaymentMethodDataStore = registeredStore.subscribe(
+const unsubscribeInitializePaymentStore = registeredStore.subscribe(
 	async () => {
 		const cartLoaded =
 			wpDataSelect( STORE_KEY ).hasFinishedResolution( 'getCartTotals' );
@@ -51,7 +51,7 @@ const unsubscribeInitializePaymentMethodDataStore = registeredStore.subscribe(
 			wpDataDispatch(
 				'wc/store/payment'
 			).__internalInitializePaymentStore();
-			unsubscribeInitializePaymentMethodDataStore();
+			unsubscribeInitializePaymentStore();
 		}
 	}
 );
