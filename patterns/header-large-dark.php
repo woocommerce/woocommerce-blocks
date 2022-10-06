@@ -16,5 +16,5 @@
 <div class="wp-block-group" style="padding-top:1rem;padding-bottom:2rem;padding-left:0px"><!-- wp:site-logo {"shouldSyncIcon":true} /--></div>
 <!-- /wp:group -->
 
-<!-- wp:navigation {"ref":515,"textColor":"background","layout":{"type":"flex","justifyContent":"center"}} /--></div>
+<!-- wp:navigation {"textColor":"background","layout":{"type":"flex","justifyContent":"center"}} /--></div>
 <!-- /wp:group -->
