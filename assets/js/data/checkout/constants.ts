@@ -1,7 +1,7 @@
 /**
  * External dependencies
  */
-import { getSetting, EnteredAddress } from '@woocommerce/settings';
+import { getSetting, CustomerAddress } from '@woocommerce/settings';
 
 import { CheckoutResponseSuccess } from '@woocommerce/types';
 
@@ -30,7 +30,7 @@ const preloadedCheckoutData = getSetting(
 export const checkoutData = {
 	order_id: 0,
 	customer_id: 0,
-	billing_address: {} as EnteredAddress,
-	shipping_address: {} as EnteredAddress,
+	billing_address: {} as CustomerAddress,
+	shipping_address: {} as CustomerAddress,
 	...( preloadedCheckoutData || {} ),
 };

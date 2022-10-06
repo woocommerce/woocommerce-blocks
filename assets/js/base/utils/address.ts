@@ -7,19 +7,19 @@ import type {
 	CartResponseBillingAddress,
 	CartResponseShippingAddress,
 } from '@woocommerce/types';
-import { defaultAddressFields, EnteredAddress } from '@woocommerce/settings';
+import { defaultAddressFields, CustomerAddress } from '@woocommerce/settings';
 
 /**
  * Compare two addresses and see if they are the same.
  */
 export const isSameAddress = (
-	address1: EnteredAddress,
-	address2: EnteredAddress
+	address1: CustomerAddress,
+	address2: CustomerAddress
 ): boolean => {
 	return Object.keys( defaultAddressFields ).every(
 		( field: string ) =>
-			address1[ field as keyof EnteredAddress ] ===
-			address2[ field as keyof EnteredAddress ]
+			address1[ field as keyof CustomerAddress ] ===
+			address2[ field as keyof CustomerAddress ]
 	);
 };
 

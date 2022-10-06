@@ -4,7 +4,7 @@
 import {
 	defaultAddressFields,
 	AddressFields,
-	EnteredAddress,
+	CustomerAddress,
 	ShippingAddress,
 	BillingAddress,
 } from '@woocommerce/settings';
@@ -21,8 +21,8 @@ import { useShippingData } from './shipping/use-shipping-data';
 interface CheckoutAddress {
 	shippingAddress: ShippingAddress;
 	billingAddress: BillingAddress;
-	setShippingAddress: ( data: Partial< EnteredAddress > ) => void;
-	setBillingAddress: ( data: Partial< EnteredAddress > ) => void;
+	setShippingAddress: ( data: Partial< CustomerAddress > ) => void;
+	setBillingAddress: ( data: Partial< CustomerAddress > ) => void;
 	setEmail: ( value: string ) => void;
 	setBillingPhone: ( value: string ) => void;
 	setShippingPhone: ( value: string ) => void;
