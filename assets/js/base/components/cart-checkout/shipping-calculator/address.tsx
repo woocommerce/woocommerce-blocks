@@ -5,8 +5,7 @@ import { __ } from '@wordpress/i18n';
 import Button from '@woocommerce/base-components/button';
 import { useState } from '@wordpress/element';
 import isShallowEqual from '@wordpress/is-shallow-equal';
-import type { AddressFields } from '@woocommerce/settings';
-import type { EnteredAddress } from '@woocommerce/types';
+import type { EnteredAddress, AddressFields } from '@woocommerce/settings';
 import { VALIDATION_STORE_KEY } from '@woocommerce/block-data';
 import { useDispatch, useSelect } from '@wordpress/data';
 

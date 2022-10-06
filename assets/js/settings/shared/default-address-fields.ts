@@ -2,7 +2,6 @@
  * External dependencies
  */
 import { __ } from '@wordpress/i18n';
-import type { EnteredAddress } from '@woocommerce/types';
 
 export interface AddressField {
 	// The label for the field.
@@ -38,6 +37,18 @@ export interface AddressFields {
 }
 
 export type AddressType = 'billing' | 'shipping';
+export interface EnteredAddress {
+	first_name: string;
+	last_name: string;
+	company: string;
+	address_1: string;
+	address_2: string;
+	country: string;
+	city: string;
+	state: string;
+	postcode: string;
+	phone: string;
+}
 
 export type KeyedAddressField = AddressField & {
 	key: keyof AddressFields;

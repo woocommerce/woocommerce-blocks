@@ -1,8 +1,7 @@
 /**
  * External dependencies
  */
-import { getSetting } from '@woocommerce/settings';
-import type { EnteredAddress } from '@woocommerce/types';
+import { getSetting, EnteredAddress } from '@woocommerce/settings';
 
 import { CheckoutResponseSuccess } from '@woocommerce/types';
 
