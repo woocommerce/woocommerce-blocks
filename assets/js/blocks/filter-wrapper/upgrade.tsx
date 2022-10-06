@@ -49,7 +49,7 @@ export const UpgradeNotice = ( {
 			filterWrapperInnerBlocks.unshift(
 				createBlock( 'core/heading', {
 					content: heading,
-					headingLevel: headingLevel ?? 2,
+					level: headingLevel ?? 2,
 				} )
 			);
 		}
