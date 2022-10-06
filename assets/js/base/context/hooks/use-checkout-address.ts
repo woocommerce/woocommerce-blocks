@@ -43,7 +43,8 @@ export const useCheckoutAddress = (): CheckoutAddress => {
 	const { useShippingAsBilling } = useSelect( ( select ) =>
 		select( CHECKOUT_STORE_KEY ).getCheckoutState()
 	);
-	const { setUseShippingAsBilling } = useDispatch( CHECKOUT_STORE_KEY );
+	const { __internalSetUseShippingAsBilling } =
+		useDispatch( CHECKOUT_STORE_KEY );
 	const {
 		billingAddress,
 		setBillingAddress,
@@ -88,7 +89,7 @@ export const useCheckoutAddress = (): CheckoutAddress => {
 		setShippingPhone,
 		defaultAddressFields,
 		useShippingAsBilling,
-		setUseShippingAsBilling,
+		setUseShippingAsBilling: __internalSetUseShippingAsBilling,
 		showShippingFields: ! forcedBillingAddress && needsShipping,
 		showBillingFields:
 			forcedBillingAddress || ! needsShipping || ! useShippingAsBilling,
