@@ -1,7 +1,7 @@
 /**
  * External dependencies
  */
-import { CustomerAddress, BillingAddress } from '@woocommerce/settings';
+import { ShippingAddress, BillingAddress } from '@woocommerce/settings';
 
 export interface CheckoutResponseSuccess {
 	billing_address: BillingAddress;
@@ -16,7 +16,7 @@ export interface CheckoutResponseSuccess {
 		payment_status: 'success' | 'failure' | 'pending' | 'error';
 		redirect_url: string;
 	};
-	shipping_address: CustomerAddress;
+	shipping_address: ShippingAddress;
 	status: string;
 }
 
