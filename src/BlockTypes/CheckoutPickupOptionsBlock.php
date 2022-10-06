@@ -2,9 +2,9 @@
 namespace Automattic\WooCommerce\Blocks\BlockTypes;
 
 /**
- * CheckoutpickupOptionsBlock class.
+ * CheckoutPickupOptionsBlock class.
  */
-class CheckoutpickupOptionsBlock extends AbstractInnerBlock {
+class CheckoutPickupOptionsBlock extends AbstractInnerBlock {
 	/**
 	 * Block name.
 	 *

@@ -444,7 +444,7 @@ class Checkout extends AbstractBlock {
 			'CheckoutShippingAddressBlock',
 			'CheckoutShippingMethodsBlock',
 			'CheckoutCollectionMethodBlock',
-			'CheckoutpickupOptionsBlock',
+			'CheckoutPickupOptionsBlock',
 			'CheckoutTermsBlock',
 			'CheckoutTotalsBlock',
 		];
