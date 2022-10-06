@@ -57,9 +57,7 @@ class Authentication {
 				$server->send_header( 'RateLimit-Reset', time() + $retry );
 
 				$ip_address = $ip_address ?? self::get_ip_address( $rate_limiting_options->proxy_support );
-				if ( $ip_address ) {
-					do_action( 'woocommerce_store_api_rate_limit_exceeded', $ip_address );
-				}
+				do_action( 'woocommerce_store_api_rate_limit_exceeded', $ip_address );
 
 				return new \WP_Error(
 					'rate_limit_exceeded',
