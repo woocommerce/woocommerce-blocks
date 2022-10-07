@@ -552,7 +552,9 @@ describe( 'Shopper → Mini Cart', () => {
 				( el ) => el.href
 			);
 
-			expect( checkoutUrl ).toMatch( SHOP_CHECKOUT_PAGE );
+			expect( checkoutUrl ).toMatch(
+				'http://localhost:8889/checkout-block/'
+			);
 
 			await page.goto( checkoutUrl, { waitUntil: 'networkidle0' } );
 
