@@ -6,6 +6,7 @@
 -   [Selectors](#selectors)
     -   [isExpressPaymentMethodActive](#isexpresspaymentmethodactive)
     -   [getActiveSavedToken](#getactivesavedtoken)
+    -   [getActivePaymentMethod](#getactivepaymentmethod)
 
 ## Overview
 
@@ -48,6 +49,21 @@ this will return an empty string.
 ```js
 const store = select( 'wc/store/payment' );
 const activeSavedToken = store.getActiveSavedToken();
+```
+
+### getActivePaymentMethod
+
+Returns the active payment method's ID.
+
+#### _Returns_
+
+`string` - The active payment method's ID.
+
+#### Example
+
+```js
+const store = select( 'wc/store/payment' );
+const activePaymentMethod = store.getActivePaymentMethod();
 ```
 
 <!-- FEEDBACK -->
