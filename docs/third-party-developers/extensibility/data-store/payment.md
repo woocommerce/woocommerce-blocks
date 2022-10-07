@@ -7,6 +7,7 @@
     -   [isExpressPaymentMethodActive](#isexpresspaymentmethodactive)
     -   [getActiveSavedToken](#getactivesavedtoken)
     -   [getActivePaymentMethod](#getactivepaymentmethod)
+    -   [getAvailablePaymentMethods](#getavailablepaymentmethods)
 
 ## Overview
 
@@ -64,6 +65,38 @@ Returns the active payment method's ID.
 ```js
 const store = select( 'wc/store/payment' );
 const activePaymentMethod = store.getActivePaymentMethod();
+```
+
+### getAvailablePaymentMethods
+
+Returns the available payment methods. This does not include express payment methods.
+
+#### _Returns_
+
+`object` - The available payment methods. This is currently just an object keyed by the payment method IDs. Each member
+contains a `name` entry with the payment method ID as its value.
+
+#### Example
+
+```js
+const store = select( 'wc/store/payment' );
+const availablePaymentMethods = store.getAvailablePaymentMethods();
+```
+
+`availablePaymentMethods` will look like this:
+
+```js
+{
+    "cheque": {
+        name: "cheque",
+    },
+    "cod": {
+        name: "cod",
+    },
+    "bacs": {
+        name: "bacs",
+    },
+}
 ```
 
 <!-- FEEDBACK -->
