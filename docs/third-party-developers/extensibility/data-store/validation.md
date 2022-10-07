@@ -9,7 +9,11 @@
     -   [hasValidationErrors](#hasvalidationerrors)
 -   [Actions](#actions)
     -   [clearValidationErrors](#clearvalidationerrors)
+    -   [clearAllValidationErrors](#clearallvalidationerrors)
     -   [setValidationErrors](#setvalidationerrors)
+    -   [hideValidationError](#hidevalidationerror)
+    -   [showValidationError](#showvalidationerror)
+    -   [showAllValidationErrors](#showallvalidationerrors)
 
 ## Overview
 
