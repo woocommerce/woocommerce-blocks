@@ -8,7 +8,7 @@
     -   [getValidationErrorId](#getvalidationerrorid)
     -   [hasValidationErrors](#hasvalidationerrors)
 -   [Actions](#actions)
-    -   [clearValidationErrors](#clearvalidationerrors)
+    -   [clearValidationError](#clearvalidationerror)
     -   [clearAllValidationErrors](#clearallvalidationerrors)
     -   [setValidationErrors](#setvalidationerrors)
     -   [hideValidationError](#hidevalidationerror)
@@ -88,9 +88,20 @@ Returns true if validation errors occurred, and false otherwise.
 
 ## Actions
 
-### clearValidationErrors
+### clearValidationError
 
-Clears the validation errors.
+Clears a validation error.
+
+#### _Parameters_
+
+- _errorId_ `string` - The error ID to clear validation errors for.
+
+#### Example
+
+```js
+const store = dispatch( 'wc/store/validation' );
+store.clearValidationError( 'billing-first-name' );
+```
 
 ### clearAllValidationErrors
 
