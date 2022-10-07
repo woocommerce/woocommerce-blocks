@@ -306,7 +306,6 @@ const Settings = () => [
  * @see {@link https://woocommerce.github.io/woocommerce-rest-api-docs/#batch-update-setting-options|Batch update setting options}
  */
 const PageSettings = ( pages = [] ) => {
-	console.log( JSON.stringify( pages, null, 4 ) );
 	const cart = pages.find( ( page ) => page.slug === 'cart-block' );
 	const checkout = pages.find( ( page ) => page.slug === 'checkout-block' );
 
