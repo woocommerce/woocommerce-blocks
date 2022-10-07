@@ -131,7 +131,7 @@ clearAllValidationErrors();
 
 ### hideValidationError
 
-Hides a validation error by setting the `hidden` property to `true`.
+Hides a validation error by setting the `hidden` property to `true`. This will _not_ clear it from the data store!
 
 #### _Parameters_
 
