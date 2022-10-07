@@ -8,6 +8,7 @@
     -   [hasValidationErrors](#hasvalidationerrors)
 -   [Actions](#actions)
     -   [clearValidationErrors](#clearvalidationerrors)
+    -   [setValidationErrors](#setvalidationerrors)
 
 ## Selectors
 
@@ -58,6 +59,34 @@ Returns true if validation errors occurred, and false otherwise.
 ### clearValidationErrors
 
 Clears the validation errors.
+
+### setValidationErrors
+
+#### _Parameters_
+
+-   _errors_ `object`: An object containing new validation errors, the keys of the object are the validation error IDs,
+and the values should be objects containing _message_ (`string`) and _hidden_ `boolean`.
+
+Sets the validation errors. The entries in _errors_ will be _added_ to the list of validation errors. Any entries that
+already exist in the list will be _updated_ with the new values.
+
+#### Example
+
+```js
+const { dispatch } = wp.data;
+const { setValidationErrors } = dispatch( 'wc/store/validation' );
+
+setValidationErrors( {
+    'billing-first-name': {
+        message: 'First name is required.',
+        hidden: false,
+    },
+    'billing-last-name': {
+        message: 'Last name is required.',
+        hidden: false,
+    },
+} );
+```
 
 <!-- FEEDBACK -->
 
