@@ -19,6 +19,10 @@ import { BLOCK_TITLE, BLOCK_ICON } from './constants';
 
 const PriceEdit = ( { attributes, setAttributes, context } ) => {
 	const blockProps = useBlockProps();
+	const blockAttrs = {
+		...attributes,
+		...context,
+	};
 	const isDescendentOfQueryLoop = Number.isFinite( context.queryId );
 
 	useEffect(
@@ -39,7 +43,7 @@ const PriceEdit = ( { attributes, setAttributes, context } ) => {
 				) }
 			</BlockControls>
 			<div { ...blockProps }>
-				<Block { ...{ ...attributes, ...context } } />
+				<Block { ...blockAttrs } />
 			</div>
 		</>
 	);
