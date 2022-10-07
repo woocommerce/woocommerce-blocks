@@ -17,7 +17,7 @@ import {
 import { useDispatch, useSelect } from '@wordpress/data';
 import {
 	CHECKOUT_STORE_KEY,
-	PAYMENT_METHOD_DATA_STORE_KEY,
+	PAYMENT_STORE_KEY,
 	VALIDATION_STORE_KEY,
 } from '@woocommerce/block-data';
 import {
@@ -61,7 +61,7 @@ const CheckoutProcessor = () => {
 		};
 	} );
 
-	const { setHasError, processCheckoutResponse } =
+	const { __internalSetHasError, __internalProcessCheckoutResponse } =
 		useDispatch( CHECKOUT_STORE_KEY );
 
 	const hasValidationErrors = useSelect(
@@ -79,7 +79,7 @@ const CheckoutProcessor = () => {
 		currentPaymentStatus,
 		shouldSavePayment,
 	} = useSelect( ( select ) => {
-		const store = select( PAYMENT_METHOD_DATA_STORE_KEY );
+		const store = select( PAYMENT_STORE_KEY );
 
 		return {
 			activePaymentMethod: store.getActivePaymentMethod(),
@@ -123,7 +123,7 @@ const CheckoutProcessor = () => {
 			( checkoutIsProcessing || checkoutIsBeforeProcessing ) &&
 			! isExpressPaymentMethodActive
 		) {
-			setHasError( checkoutWillHaveError );
+			__internalSetHasError( checkoutWillHaveError );
 		}
 	}, [
 		checkoutWillHaveError,
@@ -131,7 +131,7 @@ const CheckoutProcessor = () => {
 		checkoutIsProcessing,
 		checkoutIsBeforeProcessing,
 		isExpressPaymentMethodActive,
-		setHasError,
+		__internalSetHasError,
 	] );
 
 	// Keep the billing, shipping and redirectUrl current
@@ -246,7 +246,7 @@ const CheckoutProcessor = () => {
 				return response.json();
 			} )
 			.then( ( responseJson ) => {
-				processCheckoutResponse( responseJson );
+				__internalProcessCheckoutResponse( responseJson );
 				setIsProcessingOrder( false );
 			} )
 			.catch( ( errorResponse ) => {
@@ -277,7 +277,7 @@ const CheckoutProcessor = () => {
 								} );
 							}
 						);
-						processCheckoutResponse( response );
+						__internalProcessCheckoutResponse( response );
 					} );
 				} catch {
 					createErrorNotice(
@@ -300,7 +300,7 @@ const CheckoutProcessor = () => {
 						}
 					);
 				}
-				setHasError( true );
+				__internalSetHasError( true );
 				setIsProcessingOrder( false );
 			} );
 	}, [
@@ -317,8 +317,8 @@ const CheckoutProcessor = () => {
 		cartNeedsShipping,
 		createErrorNotice,
 		receiveCart,
-		setHasError,
-		processCheckoutResponse,
+		__internalSetHasError,
+		__internalProcessCheckoutResponse,
 	] );
 
 	// Process order if conditions are good.
