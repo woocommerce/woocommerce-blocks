@@ -118,6 +118,22 @@ const { hideValidationError } = dispatch( 'wc/store/validation' );
 hideValidationError( 'billing-first-name' );
 ```
 
+### showValidationError
+
+Shows a validation error by setting the `hidden` property to `false`.
+
+#### _Parameters_
+
+-   _errorId_ `string`: The error ID to show.
+
+#### Example
+
+```js
+const { dispatch } = wp.data;
+const { showValidationError } = dispatch( 'wc/store/validation' );
+
+showValidationError( 'billing-first-name' );
+```
 
 <!-- FEEDBACK -->
 
