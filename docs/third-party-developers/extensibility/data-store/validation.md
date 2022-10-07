@@ -6,6 +6,8 @@
     -   [getValidationError](#getvalidationerror)
     -   [getValidationErrorId](#getvalidationerrorid)
     -   [hasValidationErrors](#hasvalidationerrors)
+-   [Actions](#actions)
+    -   [clearValidationErrors](#clearvalidationerrors)
 
 ## Selectors
 
@@ -50,6 +52,12 @@ Returns true if validation errors occurred, and false otherwise.
 #### _Returns_
 
 -   `boolean`: Whether validation errors occured.
+
+## Actions
+
+### clearValidationErrors
+
+Clears the validation errors.
 
 <!-- FEEDBACK -->
 
