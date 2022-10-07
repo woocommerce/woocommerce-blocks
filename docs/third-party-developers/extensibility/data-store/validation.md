@@ -101,6 +101,23 @@ const { clearAllValidationErrors } = dispatch( 'wc/store/validation' );
 clearAllValidationErrors();
 ```
 
+### hideValidationError
+
+Hides a validation error by setting the `hidden` property to `true`.
+
+#### _Parameters_
+
+-   _errorId_ `string`: The error ID to hide.
+
+#### Example
+
+```js
+const { dispatch } = wp.data;
+const { hideValidationError } = dispatch( 'wc/store/validation' );
+
+hideValidationError( 'billing-first-name' );
+```
+
 
 <!-- FEEDBACK -->
 
