@@ -61,9 +61,17 @@ const RatingFilterBlock = ( {
 			queryState,
 		} );
 
+	const [ checklistOptions, setChecklistOptions ] = useState(
+		blockAttributes.isPreview ? previewOptions : []
+	);
+
 	const TagName =
 		`h${ blockAttributes.headingLevel }` as keyof JSX.IntrinsicElements;
-	const isLoading = ! blockAttributes.isPreview && filteredCountsLoading;
+	const isLoading =
+		! blockAttributes.isPreview &&
+		filteredCountsLoading &&
+		checklistOptions.length === 0;
+
 	const isDisabled = ! blockAttributes.isPreview && filteredCountsLoading;
 
 	const initialFilters = useMemo(
@@ -79,10 +87,6 @@ const RatingFilterBlock = ( {
 	const [ productRatingsQuery, setProductRatingsQuery ] = useQueryStateByKey(
 		'rating',
 		initialFilters
-	);
-
-	const [ checklistOptions, setChecklistOptions ] = useState(
-		blockAttributes.isPreview ? previewOptions : []
 	);
 
 	// Filter added to handle if there are slugs without a corresponding name defined.

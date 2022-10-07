@@ -9,7 +9,6 @@
 		"html": false,
 		"multiple": false,
 		"color": {
-			"link": true,
 			"__experimentalDefaultControls": {
 			  "text": true
 			}
