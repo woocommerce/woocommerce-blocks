@@ -163,6 +163,19 @@ const { showValidationError } = dispatch( 'wc/store/validation' );
 showValidationError( 'billing-first-name' );
 ```
 
+### showAllValidationErrors
+
+Shows all validation errors by setting the `hidden` property to `false`.
+
+#### Example
+
+```js
+const { dispatch } = wp.data;
+const { showAllValidationErrors } = dispatch( 'wc/store/validation' );
+
+showAllValidationErrors();
+```
+
 <!-- FEEDBACK -->
 
 ---
