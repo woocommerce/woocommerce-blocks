@@ -84,7 +84,7 @@ Returns true if validation errors occurred, and false otherwise.
 
 #### _Returns_
 
--   `boolean`: Whether validation errors occured.
+-   `boolean`: Whether validation errors occurred.
 
 ## Actions
 
