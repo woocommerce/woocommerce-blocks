@@ -2,6 +2,7 @@
 
 ## Table of Contents
 
+-   [Overview](#overview)
 -   [Selectors](#selectors)
     -   [getValidationError](#getvalidationerror)
     -   [getValidationErrorId](#getvalidationerrorid)
@@ -9,6 +10,33 @@
 -   [Actions](#actions)
     -   [clearValidationErrors](#clearvalidationerrors)
     -   [setValidationErrors](#setvalidationerrors)
+
+## Overview
+
+The validation data store provides a way to show errors for fields in the Cart or Checkout blocks.
+
+The data in the store should be a single object, the keys of which are the _error IDs_ and values are the data
+associated with that error message. The values in the object should contain _message_ and _hidden_. The _message_
+is the error message to display and _hidden_ is a boolean indicating whether the error should be shown or not.
+
+An example of how the data should be structured:
+
+```js
+{
+    "error-id-1": {
+        message: "This is an error message",
+        hidden: false,
+    },
+    "error-id-2": {
+        message: "This is another error message",
+        hidden: true,
+    },
+}
+```
+
+When the checkout process begins, it will check if this data store has any entries, and if so, it will stop the checkout
+process from proceeding. It will also show any errors that are hidden. Setting an error to hidden will not clear it from
+the data store!
 
 ## Selectors
 
