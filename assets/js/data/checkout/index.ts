@@ -17,7 +17,7 @@ import * as selectors from './selectors';
 import * as actions from './actions';
 import reducer from './reducers';
 import { DispatchFromMap, SelectFromMap } from '../mapped-types';
-import { checkPaymentMethodsCanPay } from '../payment-methods/check-payment-methods';
+import { checkPaymentMethodsCanPay } from '../payment/check-payment-methods';
 
 export const config = {
 	reducer,
@@ -41,11 +41,10 @@ if ( isEditor ) {
 		await checkPaymentMethodsCanPay( true );
 	} );
 
-	const unsubscribeInitializePaymentMethodDataStore = subscribe( async () => {
-		wpDataDispatch(
-			'wc/store/payment-methods'
-		).initializePaymentMethodDataStore();
-		unsubscribeInitializePaymentMethodDataStore();
+	const unsubscribeInitializePaymentStore = subscribe( async () => {
+		wpDataDispatch( 'wc/store/payment' ).__internalInitializePaymentStore();
+
+		unsubscribeInitializePaymentStore();
 	} );
 }
 

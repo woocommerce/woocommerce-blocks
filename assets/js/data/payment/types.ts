@@ -1,10 +1,7 @@
 /**
  * External dependencies
  */
-import {
-	PaymentMethods,
-	ExpressPaymentMethods,
-} from '@woocommerce/type-defs/payments';
+import { PaymentMethods } from '@woocommerce/type-defs/payments';
 import type {
 	EmptyObjectType,
 	ObjectType,
@@ -14,10 +11,7 @@ import { DataRegistry } from '@wordpress/data';
 /**
  * Internal dependencies
  */
-import type {
-	emitterCallback,
-	EventObserversType,
-} from '../../base/context/event-emit';
+import type { EventObserversType } from '../../base/context/event-emit';
 import type { DispatchFromMap } from '../mapped-types';
 import * as actions from './actions';
 import { FieldValidationStatus } from '../types';
@@ -37,17 +31,6 @@ export interface SavedPaymentMethod {
 export type SavedPaymentMethods =
 	| Record< string, SavedPaymentMethod[] >
 	| EmptyObjectType;
-
-export interface PaymentMethodDispatchers {
-	setRegisteredPaymentMethods: ( paymentMethods: PaymentMethods ) => void;
-	setRegisteredExpressPaymentMethods: (
-		paymentMethods: ExpressPaymentMethods
-	) => void;
-	setActivePaymentMethod: (
-		paymentMethod: string,
-		paymentMethodData?: ObjectType | EmptyObjectType
-	) => void;
-}
 
 export interface PaymentStatusDispatchers {
 	pristine: () => void;
@@ -83,11 +66,6 @@ export type PaymentMethodCurrentStatusType = {
 	isSuccessful: boolean;
 	// If true, an express payment is in progress.
 	isDoingExpressPayment: boolean;
-};
-
-export type PaymentMethodEventsContextType = {
-	// Event registration callback for registering observers for the payment processing event.
-	onPaymentProcessing: ReturnType< typeof emitterCallback >;
 };
 
 export type PaymentMethodsDispatcherType = (
