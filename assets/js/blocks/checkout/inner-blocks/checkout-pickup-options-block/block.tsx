@@ -17,11 +17,35 @@ import type {
 	CartShippingPackageShippingRate,
 } from '@woocommerce/type-defs/cart';
 import { Icon, mapMarker } from '@wordpress/icons';
+import { MetaKeyValue } from '@woocommerce/types';
 
 /**
  * Internal dependencies
  */
 import './style.scss';
+
+const getPickupLocation = (
+	option: CartShippingPackageShippingRate
+): string | undefined => {
+	if ( option?.meta_data ) {
+		const match = option.meta_data.find(
+			( meta: MetaKeyValue ) => meta.key === 'pickup_location'
+		);
+		return match ? match.value : undefined;
+	}
+	return '';
+};
+
+const getPickupAddress = (
+	option: CartShippingPackageShippingRate
+): string | undefined => {
+	if ( option?.meta_data ) {
+		const match = option.meta_data.find(
+			( meta: MetaKeyValue ) => meta.key === 'pickup_address'
+		);
+		return match ? match.value : undefined;
+	}
+};
 
 /**
  * Renders a shipping rate control option.
@@ -34,9 +58,13 @@ const renderShippingRatesControlOption = (
 	const priceWithTaxes = getSetting( 'displayCartPricesIncludingTax', false )
 		? parseInt( option.price, 10 ) + parseInt( option.taxes, 10 )
 		: parseInt( option.price, 10 );
+	const location = getPickupLocation( option );
+	const address = getPickupAddress( option );
 	return {
 		value: option.rate_id,
-		label: decodeEntities( option.name ),
+		label:
+			decodeEntities( option.name ) +
+			( location ? ' (' + location + ')' : '' ),
 		secondaryLabel: (
 			<FormattedMonetaryAmount
 				currency={ getCurrencyFromPriceResponse( option ) }
@@ -44,15 +72,15 @@ const renderShippingRatesControlOption = (
 			/>
 		),
 		description: decodeEntities( option.description ),
-		secondaryDescription: option.meta_data.local_pickup_address && (
+		secondaryDescription: address ? (
 			<>
 				<Icon
 					icon={ mapMarker }
 					className="wc-block-editor-components-block-icon"
 				/>
-				{ decodeEntities( option.meta_data.local_pickup_address ) }
+				{ decodeEntities( address ) }
 			</>
-		),
+		) : null,
 	};
 };
 
@@ -60,28 +88,11 @@ const filterLocalPickupRates = ( shippingRates: CartShippingRate[] ) => {
 	return shippingRates.map( ( shippingRatesPackage ) => {
 		return {
 			...shippingRatesPackage,
-			shipping_rates: shippingRatesPackage.shipping_rates
-				.filter(
-					( shippingRatesPackageRate ) =>
-						shippingRatesPackageRate.method_id === 'local_pickup' ||
-						shippingRatesPackageRate.method_id ===
-							'blocks_local_pickup'
-				)
-				.map( ( shippingRatesPackageRate ) => {
-					return {
-						...shippingRatesPackageRate,
-						// @todo This is a placeholder until we introduce new fields in the shipping method.
-						description:
-							shippingRatesPackageRate.description ||
-							'You can pick up your order from our store.',
-						meta_data: {
-							...shippingRatesPackageRate.meta_data,
-							// @todo This is a placeholder until we introduce new fields in the shipping method.
-							local_pickup_address:
-								'123 Main Street, Anytown, USA',
-						},
-					};
-				} ),
+			shipping_rates: shippingRatesPackage.shipping_rates.filter(
+				( shippingRatesPackageRate ) =>
+					shippingRatesPackageRate.method_id === 'local_pickup' ||
+					shippingRatesPackageRate.method_id === 'blocks_local_pickup'
+			),
 		};
 	} );
 };
