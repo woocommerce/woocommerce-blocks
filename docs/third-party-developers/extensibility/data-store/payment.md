@@ -9,6 +9,7 @@
     -   [getActivePaymentMethod](#getactivepaymentmethod)
     -   [getAvailablePaymentMethods](#getavailablepaymentmethods)
     -   [getAvailableExpressPaymentMethods](#getavailableexpresspaymentmethods)
+    -   [getPaymentMethodData](#getpaymentmethoddata)
 
 ## Overview
 
@@ -129,6 +130,24 @@ const availableExpressPaymentMethods = store.getAvailableExpressPaymentMethods()
 }
 ```
 
+### getPaymentMethodData
+
+Returns the current payment method data. This will change every time the active payment method changes and is not
+persisted for each payment method. For example, if the customer has PayPal selected, the payment method data will be
+specific to that payment method. If they switch to Stripe, the payment method data will be overwritten by Stripe, and
+the previous value (when PayPal was selected) will not be available anymore.
+
+#### _Returns_
+
+`object` - The current payment method data. This is specific to each payment method so further details cannot be
+provided here.
+
+#### Example
+
+```js
+const store = select( 'wc/store/payment' );
+const paymentMethodData = store.getPaymentMethodData();
+```
 
 <!-- FEEDBACK -->
 
