@@ -5,6 +5,7 @@
 -   [Overview](#overview)
 -   [Selectors](#selectors)
     -   [isExpressPaymentMethodActive](#isexpresspaymentmethodactive)
+    -   [getActiveSavedToken](#getactivesavedtoken)
 
 ## Overview
 
@@ -30,6 +31,23 @@ taking user input. In the case of GPay it is when the modal is open but other pa
 ```js
 const store = select( 'wc/store/payment' );
 const isExpressPaymentMethodActive = store.isExpressPaymentMethodActive();
+```
+
+### getActiveSavedToken
+
+Returns the active saved token. Payment methods that customers have saved to their account have tokens associated with
+them. If one of these is selected then this selector returns the token that is currently active. If one is not selected
+this will return an empty string.
+
+#### _Returns_
+
+`string` - The active saved token ID, or empty string if a saved token is not selected.
+
+#### _Example
+
+```js
+const store = select( 'wc/store/payment' );
+const activeSavedToken = store.getActiveSavedToken();
 ```
 
 <!-- FEEDBACK -->
