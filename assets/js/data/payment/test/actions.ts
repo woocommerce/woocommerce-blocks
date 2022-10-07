@@ -2,7 +2,7 @@
  * Internal dependencies
  */
 import * as setDefaultPaymentMethodFunctions from '../set-default-payment-method';
-import { PAYMENT_METHOD_DATA_STORE_KEY } from '..';
+import { PAYMENT_STORE_KEY } from '..';
 import { PlainPaymentMethods } from '../../../types';
 
 const originalDispatch = jest.requireActual( '@wordpress/data' ).dispatch;
@@ -23,7 +23,7 @@ describe( 'payment data store actions', () => {
 
 	describe( 'setAvailablePaymentMethods', () => {
 		it( 'Does not call setDefaultPaymentGateway if the current method is still available', () => {
-			const actions = originalDispatch( PAYMENT_METHOD_DATA_STORE_KEY );
+			const actions = originalDispatch( PAYMENT_STORE_KEY );
 			actions.__internalSetActivePaymentMethod(
 				Object.keys( paymentMethods )[ 0 ]
 			);
@@ -34,7 +34,7 @@ describe( 'payment data store actions', () => {
 		} );
 
 		it( 'Resets the default gateway if the current method is no longer available', () => {
-			const actions = originalDispatch( PAYMENT_METHOD_DATA_STORE_KEY );
+			const actions = originalDispatch( PAYMENT_STORE_KEY );
 			actions.__internalSetActivePaymentMethod(
 				Object.keys( paymentMethods )[ 0 ]
 			);
