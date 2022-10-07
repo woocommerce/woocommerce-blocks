@@ -45,7 +45,7 @@ the validation error does not exist in the store.
 
 ### hasValidationErrors
 
-Returns true if validation errors occured, and false otherwise.
+Returns true if validation errors occurred, and false otherwise.
 
 #### _Returns_
 
