@@ -26,7 +26,7 @@ taking user input. In the case of GPay it is when the modal is open but other pa
 
 `boolean` - Whether an express payment method is active.
 
-#### _Example
+#### Example
 
 ```js
 const store = select( 'wc/store/payment' );
@@ -43,7 +43,7 @@ this will return an empty string.
 
 `string` - The active saved token ID, or empty string if a saved token is not selected.
 
-#### _Example
+#### Example
 
 ```js
 const store = select( 'wc/store/payment' );
