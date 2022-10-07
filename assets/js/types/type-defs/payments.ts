@@ -12,6 +12,7 @@ import {
 	CartResponseShippingAddress,
 } from './cart-response';
 import type { EmptyObjectType } from './objects';
+import type { CheckoutResponseSuccess } from './checkout';
 
 export interface SupportsConfiguration {
 	showSavedCards?: boolean;
@@ -30,7 +31,7 @@ export interface CanMakePaymentArgument {
 	cart: Cart;
 	cartTotals: CartTotals;
 	cartNeedsShipping: boolean;
-	billingAddress: CartResponseBillingAddress;
+	billingData: CartResponseBillingAddress; // This needs to stay as billingData as third parties already use this key
 	shippingAddress: CartResponseShippingAddress;
 	selectedShippingMethods: Record< string, unknown >;
 	paymentRequirements: Array< string >;
@@ -114,7 +115,17 @@ export interface ExpressPaymentMethodConfigInstance {
 	content: ReactNode;
 	edit: ReactNode;
 	paymentMethodId?: string;
+	placeOrderButtonLabel?: string;
 	supports: Supports;
 	canMakePaymentFromConfig: CanMakePaymentCallback;
 	canMakePayment: CanMakePaymentCallback;
+}
+
+export interface PaymentResult {
+	message: string;
+	paymentStatus:
+		| CheckoutResponseSuccess[ 'payment_result' ][ 'payment_status' ]
+		| 'not set';
+	paymentDetails: Record< string, string > | Record< string, never >;
+	redirectUrl: string;
 }

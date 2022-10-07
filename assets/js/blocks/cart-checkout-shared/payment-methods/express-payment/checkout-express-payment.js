@@ -3,18 +3,15 @@
  */
 import { __ } from '@wordpress/i18n';
 import {
-	useEmitResponse,
-	useExpressPaymentMethods,
-} from '@woocommerce/base-context/hooks';
-import {
 	StoreNoticesContainer,
-	useCheckoutContext,
-	usePaymentMethodDataContext,
 	useEditorContext,
+	noticeContexts,
 } from '@woocommerce/base-context';
 import Title from '@woocommerce/base-components/title';
 import LoadingMask from '@woocommerce/base-components/loading-mask';
 import { CURRENT_USER_IS_ADMIN } from '@woocommerce/settings';
+import { CHECKOUT_STORE_KEY, PAYMENT_STORE_KEY } from '@woocommerce/block-data';
+import { useSelect } from '@wordpress/data';
 
 /**
  * Internal dependencies
@@ -30,15 +27,37 @@ const CheckoutExpressPayment = () => {
 		isBeforeProcessing,
 		isComplete,
 		hasError,
-	} = useCheckoutContext();
-	const { currentStatus: paymentStatus } = usePaymentMethodDataContext();
-	const { paymentMethods, isInitialized } = useExpressPaymentMethods();
+	} = useSelect( ( select ) => {
+		const store = select( CHECKOUT_STORE_KEY );
+		return {
+			isCalculating: store.isCalculating(),
+			isProcessing: store.isProcessing(),
+			isAfterProcessing: store.isAfterProcessing(),
+			isBeforeProcessing: store.isBeforeProcessing(),
+			isComplete: store.isComplete(),
+			hasError: store.hasError(),
+		};
+	} );
+	const {
+		availableExpressPaymentMethods,
+		expressPaymentMethodsInitialized,
+		paymentStatus,
+	} = useSelect( ( select ) => {
+		const store = select( PAYMENT_STORE_KEY );
+		return {
+			availableExpressPaymentMethods:
+				store.getAvailableExpressPaymentMethods(),
+			expressPaymentMethodsInitialized:
+				store.expressPaymentMethodsInitialized(),
+			paymentStatus: store.getCurrentStatus(),
+		};
+	} );
 	const { isEditor } = useEditorContext();
-	const { noticeContexts } = useEmitResponse();
 
 	if (
-		! isInitialized ||
-		( isInitialized && Object.keys( paymentMethods ).length === 0 )
+		! expressPaymentMethodsInitialized ||
+		( expressPaymentMethodsInitialized &&
+			Object.keys( availableExpressPaymentMethods ).length === 0 )
 	) {
 		// Make sure errors are shown in the editor and for admins. For example,
 		// when a payment method fails to register.
