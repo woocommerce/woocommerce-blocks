@@ -8,6 +8,7 @@
     -   [getActiveSavedToken](#getactivesavedtoken)
     -   [getActivePaymentMethod](#getactivepaymentmethod)
     -   [getAvailablePaymentMethods](#getavailablepaymentmethods)
+    -   [getAvailableExpressPaymentMethods](#getavailableexpresspaymentmethods)
 
 ## Overview
 
@@ -98,6 +99,36 @@ const availablePaymentMethods = store.getAvailablePaymentMethods();
     },
 }
 ```
+
+### getAvailableExpressPaymentMethods
+
+Returns the available express payment methods.
+
+#### _Returns_
+
+`object` - The available express payment methods. This is currently just an object keyed by the payment method IDs. Each
+member contains a `name` entry with the payment method ID as its value.
+
+#### Example
+
+```js
+const store = select( 'wc/store/payment' );
+const availableExpressPaymentMethods = store.getAvailableExpressPaymentMethods();
+```
+
+`availableExpressPaymentMethods` will look like this:
+
+```js
+{
+    "payment_request": {
+        name: "payment_request",
+    },
+    "other_express_method": {
+        name: "other_express_method",
+    },
+}
+```
+
 
 <!-- FEEDBACK -->
 
