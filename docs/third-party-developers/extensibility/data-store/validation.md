@@ -13,9 +13,21 @@
 
 Returns the validation error.
 
+#### _Parameters_
+
+- _errorId_ `string` - The error ID to get validation errors for.
+
+#### Example
+
+```js
+const store = select( 'wc/store/validation' );
+const billingFirstNameError = store.getValidationError( 'billing-first-name' );
+```
+
+
 #### _Returns_
 
--   `string`: The validation error.
+-   `object`: The validation error which is an object containing _message_ (`string`) and _hidden_ (`boolean`).
 
 ### getValidationErrorId
 
