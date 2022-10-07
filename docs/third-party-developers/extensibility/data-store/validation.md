@@ -31,11 +31,17 @@ const billingFirstNameError = store.getValidationError( 'billing-first-name' );
 
 ### getValidationErrorId
 
-Returns the validation error ID.
+Gets a validation error ID for use in HTML which can be used as a CSS selector, or to reference an error message.
+This will return the error ID prefixed with `validate-error-`, unless the validation error has `hidden` set to true, or
+the validation error does not exist in the store.
+
+#### _Parameters_
+
+- _errorId_ `string` - The error ID to get the validation error ID for.
 
 #### _Returns_
 
--   `string`: The validation error ID.
+-   `string`: The validation error ID for use in HTML.
 
 ### hasValidationErrors
 
