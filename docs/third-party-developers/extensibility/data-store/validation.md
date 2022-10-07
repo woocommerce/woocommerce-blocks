@@ -60,6 +60,10 @@ Returns true if validation errors occurred, and false otherwise.
 
 Clears the validation errors.
 
+### clearAllValidationErrors
+
+Clears all validation errors.
+
 ### setValidationErrors
 
 #### _Parameters_
@@ -87,6 +91,16 @@ setValidationErrors( {
     },
 } );
 ```
+
+#### Example
+
+```js
+const { dispatch } = wp.data;
+const { clearAllValidationErrors } = dispatch( 'wc/store/validation' );
+
+clearAllValidationErrors();
+```
+
 
 <!-- FEEDBACK -->
 
