@@ -10,6 +10,7 @@
     -   [getAvailablePaymentMethods](#getavailablepaymentmethods)
     -   [getAvailableExpressPaymentMethods](#getavailableexpresspaymentmethods)
     -   [getPaymentMethodData](#getpaymentmethoddata)
+    -   [getSavedPaymentMethods](#getsavedpaymentmethods)
 
 ## Overview
 
@@ -147,6 +148,45 @@ provided here.
 ```js
 const store = select( 'wc/store/payment' );
 const paymentMethodData = store.getPaymentMethodData();
+```
+
+### getSavedPaymentMethods
+
+Returns all saved payment methods for the current customer.
+
+#### _Returns_
+
+`object` - The saved payment methods for the current customer. This is an object, it will be specific to each payment
+method. As an example, Stripe's saved tokens are returned like so:
+
+```js
+savedPaymentMethods: {
+    cc: [
+        {
+            method: {
+                gateway: 'stripe',
+                last4: '4242',
+                brand: 'Visa'
+            },
+            expires: '04/24',
+            is_default: true,
+            actions: {
+                wcs_deletion_error: {
+                    url: '#choose_default',
+                    name: 'Delete'
+                }
+            },
+            tokenId: 2
+        }
+    ]
+}
+```
+
+#### Example
+
+```js
+const store = select( 'wc/store/payment' );
+const savedPaymentMethods = store.getSavedPaymentMethods();
 ```
 
 <!-- FEEDBACK -->
