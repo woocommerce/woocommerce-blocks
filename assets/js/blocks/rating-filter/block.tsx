@@ -61,7 +61,7 @@ const RatingFilterBlock = ( {
 			queryState,
 		} );
 
-	const [ checklistOptions, setChecklistOptions ] = useState(
+	const [ displayedOptions, setDisplayedOptions ] = useState(
 		blockAttributes.isPreview ? previewOptions : []
 	);
 
@@ -70,7 +70,7 @@ const RatingFilterBlock = ( {
 	const isLoading =
 		! blockAttributes.isPreview &&
 		filteredCountsLoading &&
-		checklistOptions.length === 0;
+		displayedOptions.length === 0;
 
 	const isDisabled = ! blockAttributes.isPreview && filteredCountsLoading;
 
@@ -79,7 +79,7 @@ const RatingFilterBlock = ( {
 		[]
 	);
 
-	const [ clicked, setClicked ] = useState( initialFilters );
+	const [ checked, setChecked ] = useState( initialFilters );
 
 	const [ productRatings, setProductRatings ] =
 		useQueryStateByKey( 'rating' );
@@ -89,27 +89,19 @@ const RatingFilterBlock = ( {
 		initialFilters
 	);
 
-	// Filter added to handle if there are slugs without a corresponding name defined.
-	const [ initialOptions ] = useState(
-		Object.entries( initialFilters )
-			.map( ( [ slug, name ] ) => ( { slug, name } ) )
-			.filter( ( status ) => !! status.name )
-			.sort( ( a, b ) => a.slug.localeCompare( b.slug ) )
-	);
-
 	const productRatingsArray: string[] = Array.from( productRatings );
 
 	/**
 	 * Used to redirect the page when filters are changed so templates using the Classic Template block can filter.
 	 *
-	 * @param {Array} clickedRatings Array of clicked ratings.
+	 * @param {Array} checkedRatings Array of checked ratings.
 	 */
-	const updateFilterUrl = ( clickedRatings: string[] ) => {
+	const updateFilterUrl = ( checkedRatings: string[] ) => {
 		if ( ! window ) {
 			return;
 		}
 
-		if ( clickedRatings.length === 0 ) {
+		if ( checkedRatings.length === 0 ) {
 			const url = removeQueryArgs(
 				window.location.href,
 				QUERY_PARAM_KEY
@@ -123,7 +115,7 @@ const RatingFilterBlock = ( {
 		}
 
 		const newUrl = addQueryArgs( window.location.href, {
-			[ QUERY_PARAM_KEY ]: clickedRatings.join( ',' ),
+			[ QUERY_PARAM_KEY ]: checkedRatings.join( ',' ),
 		} );
 
 		if ( newUrl === window.location.href ) {
@@ -134,41 +126,41 @@ const RatingFilterBlock = ( {
 	};
 
 	const onSubmit = useCallback(
-		( clickedOptions ) => {
+		( checkedOptions ) => {
 			if ( isEditor ) {
 				return;
 			}
-			if ( clickedOptions && ! filteringForPhpTemplate ) {
-				setProductRatingsQuery( clickedOptions );
+			if ( checkedOptions && ! filteringForPhpTemplate ) {
+				setProductRatingsQuery( checkedOptions );
 			}
 
-			updateFilterUrl( clickedOptions );
+			updateFilterUrl( checkedOptions );
 		},
 		[ isEditor, setProductRatingsQuery, filteringForPhpTemplate ]
 	);
 
-	// Track clicked STATE changes - if state changes, update the query.
+	// Track checked STATE changes - if state changes, update the query.
 	useEffect( () => {
 		if ( ! blockAttributes.showFilterButton ) {
-			onSubmit( clicked );
+			onSubmit( checked );
 		}
-	}, [ blockAttributes.showFilterButton, clicked, onSubmit ] );
+	}, [ blockAttributes.showFilterButton, checked, onSubmit ] );
 
-	const clickedQuery = useMemo( () => {
+	const checkedQuery = useMemo( () => {
 		return productRatingsQuery;
 	}, [ productRatingsQuery ] );
 
-	const currentClickedQuery = useShallowEqual( clickedQuery );
-	const previousClickedQuery = usePrevious( currentClickedQuery );
+	const currentCheckedQuery = useShallowEqual( checkedQuery );
+	const previousCheckedQuery = usePrevious( currentCheckedQuery );
 	// Track Rating query changes so the block reflects current filters.
 	useEffect( () => {
 		if (
-			! isShallowEqual( previousClickedQuery, currentClickedQuery ) && // Clicked query changed.
-			! isShallowEqual( clicked, currentClickedQuery ) // Clicked query doesn't match the UI.
+			! isShallowEqual( previousCheckedQuery, currentCheckedQuery ) && // Checked query changed.
+			! isShallowEqual( checked, currentCheckedQuery ) // Checked query doesn't match the UI.
 		) {
-			setClicked( currentClickedQuery );
+			setChecked( currentCheckedQuery );
 		}
-	}, [ clicked, currentClickedQuery, previousClickedQuery ] );
+	}, [ checked, currentCheckedQuery, previousCheckedQuery ] );
 
 	/**
 	 * Try get the rating filter from the URL.
@@ -205,7 +197,7 @@ const RatingFilterBlock = ( {
 				? [ ...filteredCounts.rating_counts ].reverse()
 				: [];
 
-		const displayedOptions = orderedRatings
+		const newOptions = orderedRatings
 			.filter(
 				( item ) => isObject( item ) && Object.keys( item ).length > 0
 			)
@@ -236,36 +228,35 @@ const RatingFilterBlock = ( {
 				[ blockAttributes.showCounts ]
 			);
 
-		setChecklistOptions( displayedOptions );
+		setDisplayedOptions( newOptions );
 	}, [
 		blockAttributes.showCounts,
 		blockAttributes.isPreview,
 		filteredCounts,
 		filteredCountsLoading,
-		initialOptions,
 	] );
 
 	/**
 	 * When a checkbox in the list changes, update state.
 	 */
 	const onClick = useCallback(
-		( clickedValue: string ) => {
-			const previouslyClicked = clicked.includes( clickedValue );
+		( checkedValue: string ) => {
+			const previouslyChecked = checked.includes( checkedValue );
 
-			const newClicked = clicked.filter(
-				( value ) => value !== clickedValue
+			const newChecked = checked.filter(
+				( value ) => value !== checkedValue
 			);
 
-			if ( ! previouslyClicked ) {
-				newClicked.push( clickedValue );
-				newClicked.sort();
+			if ( ! previouslyChecked ) {
+				newChecked.push( checkedValue );
+				newChecked.sort();
 			}
-			setClicked( newClicked );
+			setChecked( newChecked );
 		},
-		[ clicked, checklistOptions ]
+		[ checked, displayedOptions ]
 	);
 
-	if ( ! filteredCountsLoading && checklistOptions.length === 0 ) {
+	if ( ! filteredCountsLoading && displayedOptions.length === 0 ) {
 		return null;
 	}
 
@@ -291,10 +282,10 @@ const RatingFilterBlock = ( {
 			>
 				<CheckboxList
 					className={ 'wc-block-rating-filter-list' }
-					options={ checklistOptions }
-					checked={ clicked }
-					onChange={ ( checked ) => {
-						onClick( checked.toString() );
+					options={ displayedOptions }
+					checked={ checked }
+					onChange={ ( item ) => {
+						onClick( item.toString() );
 					} }
 					isLoading={ isLoading }
 					isDisabled={ isDisabled }
@@ -302,10 +293,10 @@ const RatingFilterBlock = ( {
 			</div>
 			{
 				<div className="wc-block-rating-filter__actions">
-					{ clicked.length > 0 && ! isLoading && (
+					{ checked.length > 0 && ! isLoading && (
 						<FilterResetButton
 							onClick={ () => {
-								setClicked( [] );
+								setChecked( [] );
 								setProductRatings( [] );
 								onSubmit( [] );
 							} }
@@ -320,7 +311,7 @@ const RatingFilterBlock = ( {
 							className="wc-block-rating-filter__button"
 							isLoading={ isLoading }
 							disabled={ isLoading || isDisabled }
-							onClick={ () => onSubmit( clicked ) }
+							onClick={ () => onSubmit( checked ) }
 						/>
 					) }
 				</div>
