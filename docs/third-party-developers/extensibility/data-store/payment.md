@@ -3,6 +3,8 @@
 ## Table of Contents
 
 -   [Overview](#overview)
+-   [Selectors](#selectors)
+    -   [isExpressPaymentMethodActive](#isexpresspaymentmethodactive)
 
 ## Overview
 
@@ -11,6 +13,24 @@ changes, the data store will reflect this.
 
 Currently, all the actions are internal-only while we determine which ones will be useful for extensions to interact
 with. We do not encourage extensions to dispatch actions onto this data store yet.
+
+## Selectors
+
+### isExpressPaymentMethodActive
+
+Returns whether an express payment method is active, this will be true when the express payment method is open and
+taking user input. In the case of GPay it is when the modal is open but other payment methods may have different UIs.
+
+#### _Returns_
+
+`boolean` - Whether an express payment method is active.
+
+#### _Example
+
+```js
+const store = select( 'wc/store/payment' );
+const isExpressPaymentMethodActive = store.isExpressPaymentMethodActive();
+```
 
 <!-- FEEDBACK -->
 
