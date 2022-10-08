@@ -17,7 +17,7 @@ import * as selectors from './selectors';
 import * as actions from './actions';
 import reducer from './reducers';
 import { DispatchFromMap, SelectFromMap } from '../mapped-types';
-import { checkPaymentMethodsCanPay } from '../payment-methods/check-payment-methods';
+import { checkPaymentMethodsCanPay } from '../payment/check-payment-methods';
 
 export const config = {
 	reducer,
@@ -36,16 +36,15 @@ const isEditor = !! wpDataSelect( 'core/editor' );
 
 // This is needed to ensure that the payment methods are displayed in the editor
 if ( isEditor ) {
-	subscribe( async () => {
+	const unsubscribeEditor = subscribe( async () => {
 		await checkPaymentMethodsCanPay();
 		await checkPaymentMethodsCanPay( true );
 	} );
 
-	const unsubscribeInitializePaymentMethodDataStore = subscribe( async () => {
-		wpDataDispatch(
-			'wc/store/payment-methods'
-		).initializePaymentMethodDataStore();
-		unsubscribeInitializePaymentMethodDataStore();
+	const unsubscribeInitializePaymentStore = subscribe( async () => {
+		wpDataDispatch( 'wc/store/payment' ).__internalInitializePaymentStore();
+		unsubscribeEditor();
+		unsubscribeInitializePaymentStore();
 	} );
 }
 

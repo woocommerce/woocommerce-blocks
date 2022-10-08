@@ -4,18 +4,18 @@
 import type { EmptyObjectType } from '@woocommerce/types';
 import { getSetting } from '@woocommerce/settings';
 import {
-	PaymentMethods,
-	ExpressPaymentMethods,
+	PlainPaymentMethods,
+	PlainExpressPaymentMethods,
 } from '@woocommerce/type-defs/payments';
 
 /**
  * Internal dependencies
  */
 import { SavedPaymentMethod } from './types';
-import { STATUS as PAYMENT_METHOD_STATUS } from '../../base/context/providers/cart-checkout/payment-methods/constants';
+import { STATUS as PAYMENT_STATUS } from './constants';
 
 export interface PaymentMethodDataState {
-	paymentStatuses: typeof PAYMENT_METHOD_STATUS;
+	paymentStatuses: typeof PAYMENT_STATUS;
 	currentStatus: {
 		isPristine: boolean;
 		isStarted: boolean;
@@ -29,8 +29,8 @@ export interface PaymentMethodDataState {
 	activePaymentMethod: string;
 	activeSavedToken: string;
 	// Avilable payment methods are payment methods which have been validated and can make payment
-	availablePaymentMethods: PaymentMethods;
-	availableExpressPaymentMethods: ExpressPaymentMethods;
+	availablePaymentMethods: PlainPaymentMethods;
+	availableExpressPaymentMethods: PlainExpressPaymentMethods;
 	savedPaymentMethods:
 		| Record< string, SavedPaymentMethod[] >
 		| EmptyObjectType;
@@ -41,7 +41,7 @@ export interface PaymentMethodDataState {
 	isExpressPaymentMethodActive: boolean;
 }
 export const defaultPaymentMethodDataState: PaymentMethodDataState = {
-	paymentStatuses: PAYMENT_METHOD_STATUS,
+	paymentStatuses: PAYMENT_STATUS,
 	currentStatus: {
 		isPristine: true,
 		isStarted: false,
