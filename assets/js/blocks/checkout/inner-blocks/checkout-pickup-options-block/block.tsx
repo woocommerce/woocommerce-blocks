@@ -80,7 +80,7 @@ const renderShippingRatesControlOption = (
 				/>
 				{ decodeEntities( address ) }
 			</>
-		) : null,
+		) : undefined,
 	};
 };
 
@@ -97,7 +97,7 @@ const filterLocalPickupRates = ( shippingRates: CartShippingRate[] ) => {
 	} );
 };
 
-const Block = ( {}: {} ): JSX.Element | null => {
+const Block = (): JSX.Element | null => {
 	const { shippingRates, needsShipping, isLoadingRates } = useShippingData();
 
 	const filteredShippingRates = useMemo(
