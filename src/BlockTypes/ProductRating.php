@@ -67,6 +67,23 @@ class ProductRating extends AbstractBlock {
 	}
 
 	/**
+	 * Filter the output from wc_get_rating_html.
+	 *
+	 * @param string $html   Star rating markup. Default empty string.
+	 * @param float  $rating Rating being shown.
+	 * @param int    $count  Total number of ratings.
+	 * @return string
+	 */
+	public function filter_rating_html( $html, $rating, $count ) {
+		if ( 0 < $rating ) {
+			/* translators: %s: rating */
+			$label = sprintf( __( 'Rated %s out of 5', 'woo-gutenberg-products-block' ), $rating );
+			$html  = '<div class="wc-block-components-product-rating__stars wc-block-grid__product-rating__stars" role="img" aria-label="' . esc_attr( $label ) . '">' . wc_get_star_rating_html( $rating, $count ) . '</div>';
+		}
+		return $html;
+	}
+
+	/**
 	 * Include and render the block.
 	 *
 	 * @param array    $attributes Block attributes. Default empty array.
@@ -84,12 +101,19 @@ class ProductRating extends AbstractBlock {
 		$post_id = $block->context['postId'];
 		$product = wc_get_product( $post_id );
 
+		add_filter(
+			'woocommerce_product_get_rating_html',
+			[ $this, 'filter_rating_html' ],
+			10,
+			3
+		);
+
 		if ( $product ) {
 			return sprintf(
-				'<div class="wc-block-components-product-rating__stars wc-block-grid__product-rating__stars">
+				'<div class="wc-block-components-product-rating wc-block-grid__product-rating">
 					%s
 				</div>',
-				$product->wc_get_rating_html()
+				wc_get_rating_html( $product->get_average_rating() )
 			);
 		}
 	}
