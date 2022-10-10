@@ -4,7 +4,7 @@ Tags: gutenberg, woocommerce, woo commerce, products, blocks, woocommerce blocks
 Requires at least: 6.0
 Tested up to: 6.0
 Requires PHP: 7.0
-Stable tag: 8.6.0-dev
+Stable tag: 8.7.0-dev
 License: GPLv3
 License URI: https://www.gnu.org/licenses/gpl-3.0.html
 
@@ -18,29 +18,31 @@ For more information on what blocks are available, and how to use them, check ou
 
 Use this plugin if you want access to the bleeding edge of available blocks for WooCommerce. However, stable blocks are bundled into WooCommerce, and can be added from the "WooCommerce" section in the block inserter.
 
-- **Featured Product Block**
-- **Featured Category Block**
-- **Hand-picked Products Block**
-- **Best Selling Products Block**
-- **Top Rated Products Block**
-- **Newest Products Block**
-- **On Sale Products Block**
-- **Products by Category Block**
-- **Products by Tag Block**
-- **Products by Attribute Block**
-- **Product Categories List Block**
-- **Reviews by Product**
-- **Reviews by Category**
-- **All Reviews**
-- **Product Search**
-- **All Products**
-- **Filter by Price**
-- **Filter Products by Attribute**
-- **Filter Products by Stock**
 - **Active Product Filters**
-- **Cart**
+- **All Products**
+- **All Reviews**
+- **Best Selling Products**
+- **Cart including Cross-Sells**
 - **Checkout**
+- **Featured Category**
+- **Featured Product**
+- **Filter by Attribute**
+- **Filter by Price**
+- **Filter by Rating**
+- **Filter Products by Stock**
+- **Hand-picked Products**
 - **Mini Cart**
+- **Newest Products**
+- **On Sale Products**
+- **Product Categories List**
+- **Product Search**
+- **Products by Attribute**
+- **Products by Category**
+- **Products by Tag**
+- **Reviews by Category**
+- **Reviews by Product**
+- **Single Product**
+- **Top Rated Products**
 
 == Getting Started ==
 
@@ -76,15 +78,31 @@ Yes you can! Join in on our [GitHub repository](https://github.com/woocommerce/w
 
 Release and roadmap notes available on the [WooCommerce Developers Blog](https://woocommerce.wordpress.com/2019/01/15/woocommerce-blocks-1-3-0-release-notes/)
 
-== Screenshots ==
-
-1. The Featured Product Block
-2. Selecting a product for the Featured Product Block
-3. Selecting Products for the Hand-picked Products Block
-4. Selecting categories in the Products By Category block
-5. WooCommerce Product Blocks in the block inserter menu
-
 == Changelog ==
+
+= 8.6.0 - 2022-09-26 =
+
+#### Enhancements
+
+- Create Cross-Sells product list for showing the Cross-Sells products on the Cart block. ([6645](https://github.com/woocommerce/woocommerce-blocks/pull/6645))
+
+#### Bug Fixes
+
+- Fix a bug with the product details block. ([7191](https://github.com/woocommerce/woocommerce-blocks/pull/7191))
+- Fix: Ensure that the Express Payment block is not cut off when selecting the Checkout block in the editor. ([7152](https://github.com/woocommerce/woocommerce-blocks/pull/7152))
+- Make chevron clickable in Filter by Product block input. ([7139](https://github.com/woocommerce/woocommerce-blocks/pull/7139))
+- Fix: Inner blocks control position for Cart Block. ([6973](https://github.com/woocommerce/woocommerce-blocks/pull/6973))
+- Enabled HTML rendering within notices for checkout. ([6800](https://github.com/woocommerce/woocommerce-blocks/pull/6800))
+- Fix: Render HTML elements on Cart and Checkout blocks when using the woocommerce_shipping_package_name filter. ([7147](https://github.com/woocommerce/woocommerce-blocks/pull/7147))
+
+#### Technical debt
+
+- Remove unused CSS selectors from Filter blocks. ([7150](https://github.com/woocommerce/woocommerce-blocks/pull/7150))
+
+#### Compatibility
+
+- WooPay: fixed a compatibility issue with some error messages shown by WooPay. ([7145](https://github.com/woocommerce/woocommerce-blocks/pull/7145))
+- WooPay: Fixed an issue with WooPay which would display tax totals on multiple lines even when configured otherwise. ([7084](https://github.com/woocommerce/woocommerce-blocks/pull/7084))
 
 = 8.5.1 - 2022-09-23 =
 

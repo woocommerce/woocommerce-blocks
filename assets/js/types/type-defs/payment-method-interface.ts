@@ -5,6 +5,7 @@
 import type PaymentMethodLabel from '@woocommerce/base-components/cart-checkout/payment-method-label';
 import type PaymentMethodIcons from '@woocommerce/base-components/cart-checkout/payment-method-icons';
 import type LoadingMask from '@woocommerce/base-components/loading-mask';
+import type ValidationInputError from '@woocommerce/base-components/validation-input-error';
 
 /**
  * Internal dependencies
@@ -12,11 +13,11 @@ import type LoadingMask from '@woocommerce/base-components/loading-mask';
 import type { Currency } from './currency';
 import type { CartBillingAddress, CartShippingRate } from './cart';
 import type {
+	emitterCallback,
 	responseTypes,
 	noticeContexts,
-} from '../../base/context/hooks/use-emit-response';
-import type { emitterCallback } from '../../base/context/event-emit';
-import type { PaymentMethodCurrentStatusType } from '../../base/context/providers/cart-checkout/payment-methods/types';
+} from '../../base/context/event-emit';
+import type { PaymentMethodCurrentStatusType } from '../../base/context/providers/cart-checkout/payment-events/types';
 import type {
 	CartResponseShippingAddress,
 	CartResponseCouponItem,
@@ -76,7 +77,7 @@ export interface ComponentProps {
 	// A component used for displaying payment method labels, including an icon.
 	PaymentMethodLabel: typeof PaymentMethodLabel;
 	// A container for holding validation errors
-	ValidationInputError: () => JSX.Element | null;
+	ValidationInputError: typeof ValidationInputError;
 }
 
 export interface EmitResponseProps {
