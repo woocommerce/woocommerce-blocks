@@ -44,18 +44,6 @@ describe( 'Shopper → Checkout', () => {
 		await shopper.block.emptyCart();
 	} );
 
-	it( 'User can view empty cart message', async () => {
-		await shopper.block.goToCheckout();
-		// Wait for the selector to prevent flakiness.
-		await page.waitForSelector( 'strong.wc-block-checkout-empty__title' );
-		// Verify that the cart is empty.
-		await expect( page ).toMatchElement(
-			'strong.wc-block-checkout-empty__title',
-			{
-				text: 'Your cart is currently empty!',
-			}
-		);
-	} );
 	describe( 'Payment Methods', () => {
 		it( 'User can change payment methods', async () => {
 			await shopper.block.emptyCart();
