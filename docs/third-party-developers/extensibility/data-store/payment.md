@@ -238,6 +238,30 @@ const store = select( 'wc/store/payment' );
 const shouldSavePaymentMethod = store.shouldSavePaymentMethod();
 ```
 
+### getCurrentStatus
+
+Returns the current payment status.
+
+#### _Returns_
+
+`object` - The current payment status. This will be an object with the following keys, the values are all booleans:
+
+- `isPristine` - True if the payment process has not started, does not have an error and has not finished. This is true
+initially.
+- `isStarted` - True if the payment process has started.
+- `isProcessing` - True if the payment is processing.
+- `hasError` - True if the payment process has resulted in an error.
+- `hasFailed` - True if the payment process has failed.
+- `isSuccessful` - True if the payment process is successful.
+- `isDoingExpressPayment` - True if the payment process is being done using an express payment method.
+
+#### Example
+
+```js
+const store = select( 'wc/store/payment' );
+const currentStatus = store.getCurrentStatus();
+```
+
 
 <!-- FEEDBACK -->
 
