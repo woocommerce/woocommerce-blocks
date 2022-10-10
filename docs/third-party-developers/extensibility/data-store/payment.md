@@ -189,6 +189,40 @@ const store = select( 'wc/store/payment' );
 const savedPaymentMethods = store.getSavedPaymentMethods();
 ```
 
+### getActiveSavedPaymentMethods
+
+Returns the saved payment methods for the current customer that are active, i.e. the ones that can be used to pay for
+the current order.
+
+#### _Returns_
+
+`object` - The saved payment methods for the current customer that are active, i.e. the ones that can be used to pay for
+this order. This is an object, it will be specific to each payment method. As an example, Stripe's saved tokens are
+returned like so:
+
+```js
+activeSavedPaymentMethods: {
+    cc: [
+        {
+            method: {
+                gateway: 'stripe',
+                last4: '4242',
+                brand: 'Visa'
+            },
+            expires: '04/24',
+            is_default: true,
+            actions: {
+                wcs_deletion_error: {
+                    url: '#choose_default',
+                    name: 'Delete'
+                }
+            },
+            tokenId: 2
+        }
+    ]
+}
+```
+
 <!-- FEEDBACK -->
 
 ---
