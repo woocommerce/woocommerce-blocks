@@ -58,6 +58,7 @@ import {
 } from './utils';
 import { BlockAttributes, DisplayOption } from './types';
 import CheckboxFilter from './checkbox-filter';
+import { useSetWraperVisibility } from '../filter-wrapper/context';
 
 /**
  * Formats filter values into a string for the URL parameters needed for filtering PHP templates.
@@ -473,7 +474,10 @@ const AttributeFilterBlock = ( {
 		filteringForPhpTemplate,
 	] );
 
+	const setWrapperVisibility = useSetWraperVisibility();
+
 	if ( ! hasFilterableProducts ) {
+		setWrapperVisibility( false );
 		return null;
 	}
 
@@ -491,6 +495,7 @@ const AttributeFilterBlock = ( {
 				</Notice>
 			);
 		}
+		setWrapperVisibility( false );
 		return null;
 	}
 
@@ -518,6 +523,7 @@ const AttributeFilterBlock = ( {
 		( termsLoading || countsLoading ) && displayedOptions.length === 0;
 
 	if ( ! isLoading && displayedOptions.length === 0 ) {
+		setWrapperVisibility( false );
 		return null;
 	}
 
@@ -532,6 +538,8 @@ const AttributeFilterBlock = ( {
 	) : (
 		heading
 	);
+
+	setWrapperVisibility( true );
 
 	return (
 		<>
