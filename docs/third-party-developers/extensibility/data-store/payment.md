@@ -11,6 +11,11 @@
     -   [getAvailableExpressPaymentMethods](#getavailableexpresspaymentmethods)
     -   [getPaymentMethodData](#getpaymentmethoddata)
     -   [getSavedPaymentMethods](#getsavedpaymentmethods)
+    -   [getActiveSavedPaymentMethods](#getactivesavedpaymentmethods)
+    -   [getShouldSavePaymentMethod](#getshouldsavepaymentmethod)
+    -   [getCurrentStatus](#getcurrentstatus)
+    -   [paymentMethodsInitialized](#paymentmethodsinitialized)
+    -   [expressPaymentMethodsInitialized](#expresspaymentmethodsinitialized)
 
 ## Overview
 
