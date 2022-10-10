@@ -3,6 +3,7 @@
  */
 import { __ } from '@wordpress/i18n';
 import { useBlockProps } from '@wordpress/block-editor';
+import { useEffect } from 'react';
 
 /**
  * Internal dependencies
@@ -11,14 +12,24 @@ import Block from './block';
 import withProductSelector from '../shared/with-product-selector';
 import { BLOCK_TITLE, BLOCK_ICON } from './constants';
 
-const Edit = ( { attributes } ) => {
+const Edit = ( { attributes, setAttributes, context } ) => {
 	const blockProps = useBlockProps( {
 		className: 'wp-block-woocommerce-product-rating',
 	} );
+	const blockAttrs = {
+		...attributes,
+		...context,
+	};
+	const isDescendentOfQueryLoop = Number.isFinite( context.queryId );
+
+	useEffect(
+		() => setAttributes( { isDescendentOfQueryLoop } ),
+		[ setAttributes, isDescendentOfQueryLoop ]
+	);
 
 	return (
 		<div { ...blockProps }>
-			<Block { ...attributes } />
+			<Block { ...blockAttrs } />
 		</div>
 	);
 };
