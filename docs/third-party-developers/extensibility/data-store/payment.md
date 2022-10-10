@@ -223,7 +223,7 @@ activeSavedPaymentMethods: {
 }
 ```
 
-### shouldSavePaymentMethod
+### getShouldSavePaymentMethod
 
 Returns whether the payment method should be saved to the customer's account.
 
@@ -235,7 +235,7 @@ Returns whether the payment method should be saved to the customer's account.
 
 ```js
 const store = select( 'wc/store/payment' );
-const shouldSavePaymentMethod = store.shouldSavePaymentMethod();
+const shouldSavePaymentMethod = store.getShouldSavePaymentMethod();
 ```
 
 ### getCurrentStatus
