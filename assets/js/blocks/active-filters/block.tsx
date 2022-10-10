@@ -76,6 +76,8 @@ const ActiveFiltersBlock = ( {
 	);
 	const [ minPrice, setMinPrice ] = useQueryStateByKey( 'min_price' );
 	const [ maxPrice, setMaxPrice ] = useQueryStateByKey( 'max_price' );
+	const [ productRatings, setProductRatings ] =
+		useQueryStateByKey( 'rating' );
 
 	const STOCK_STATUS_OPTIONS = getSetting( 'stockStatusOptions', [] );
 	const STORE_ATTRIBUTES = getSetting( 'attributes', [] );
@@ -187,9 +189,6 @@ const ActiveFiltersBlock = ( {
 		STORE_ATTRIBUTES,
 		blockAttributes.displayStyle,
 	] );
-
-	const [ productRatings, setProductRatings ] =
-		useQueryStateByKey( 'rating' );
 
 	/**
 	 * Parse the filter URL to set the active rating fitlers.
