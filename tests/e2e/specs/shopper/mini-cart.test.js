@@ -11,7 +11,7 @@ import { SHOP_PAGE, SHOP_CART_PAGE } from '@woocommerce/e2e-utils';
 import { shopper } from '../../../utils';
 import { merchant } from '../../../utils/merchant';
 import { getTextContent } from '../../page-utils';
-import { useTheme } from '../../utils';
+import { SHOP_CHECKOUT_BLOCK_PAGE, useTheme } from '../../utils';
 
 const block = {
 	name: 'Mini Cart',
@@ -548,9 +548,7 @@ describe( 'Shopper → Mini Cart', () => {
 				( el ) => el.href
 			);
 
-			expect( checkoutUrl ).toMatch(
-				'http://localhost:8889/checkout-block/'
-			);
+			expect( checkoutUrl ).toMatch( SHOP_CHECKOUT_BLOCK_PAGE );
 
 			await page.goto( checkoutUrl, { waitUntil: 'networkidle0' } );
 
