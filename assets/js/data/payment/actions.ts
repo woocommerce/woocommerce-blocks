@@ -2,8 +2,8 @@
  * External dependencies
  */
 import {
-	PaymentMethods,
-	ExpressPaymentMethods,
+	PlainPaymentMethods,
+	PlainExpressPaymentMethods,
 } from '@woocommerce/type-defs/payments';
 
 /**
@@ -17,7 +17,13 @@ import { PaymentStatus } from './types';
 // `Thunks are functions that can be dispatched, similar to actions creators
 export * from './thunks';
 
-export const setPaymentStatus = (
+/**
+ * Set the status of the payment
+ *
+ * @param  status            An object that holds properties representing different status values
+ * @param  paymentMethodData A config object for the payment method being used
+ */
+export const __internalSetPaymentStatus = (
 	status: PaymentStatus,
 	paymentMethodData?: Record< string, unknown >
 ) => ( {
@@ -26,7 +32,14 @@ export const setPaymentStatus = (
 	paymentMethodData,
 } );
 
-export const setPaymentMethodsInitialized = ( initialized: boolean ) => {
+/**
+ * Set whether the payment methods have been initialised or not
+ *
+ * @param  initialized True if the `checkCanPay` methods have been run on all available payment methods
+ */
+export const __internalSetPaymentMethodsInitialized = (
+	initialized: boolean
+) => {
 	return async ( { select, dispatch } ) => {
 		// If the currently selected method is not in this new list, then we need to select a new one, or select a default.
 		const methods = select.getAvailablePaymentMethods();
@@ -40,21 +53,37 @@ export const setPaymentMethodsInitialized = ( initialized: boolean ) => {
 	};
 };
 
-export const setExpressPaymentMethodsInitialized = (
+/**
+ * Set whether the express payment methods have been initialised or not
+ *
+ * @param  initialized True if the `checkCanPay` methods have been run on all express available payment methods
+ */
+export const __internalSetExpressPaymentMethodsInitialized = (
 	initialized: boolean
 ) => ( {
 	type: ACTION_TYPES.SET_EXPRESS_PAYMENT_METHODS_INITIALIZED,
 	initialized,
 } );
 
-export const setShouldSavePaymentMethod = (
+/**
+ * Set a flag for whether to save the current payment method for next time
+ *
+ * @param  shouldSavePaymentMethod Whether to save the current payment method for next time
+ */
+export const __internalSetShouldSavePaymentMethod = (
 	shouldSavePaymentMethod: boolean
 ) => ( {
 	type: ACTION_TYPES.SET_SHOULD_SAVE_PAYMENT_METHOD,
 	shouldSavePaymentMethod,
 } );
 
-export const setActivePaymentMethod = (
+/**
+ * Set the payment method the user has chosen. This should change every time the user selects a new payment method
+ *
+ * @param  activePaymentMethod The name of the payment method selected by the user
+ * @param  paymentMethodData   The extra data associated with a payment
+ */
+export const __internalSetActivePaymentMethod = (
 	activePaymentMethod: string,
 	paymentMethodData: Record< string, unknown > = {}
 ) => ( {
@@ -63,7 +92,12 @@ export const setActivePaymentMethod = (
 	paymentMethodData,
 } );
 
-export const setPaymentMethodData = (
+/**
+ * Set the extra data for the chosen payment method
+ *
+ * @param  paymentMethodData The extra data associated with a payment
+ */
+export const __internalSetPaymentMethodData = (
 	paymentMethodData: Record< string, unknown > = {}
 ) => ( {
 	type: ACTION_TYPES.SET_PAYMENT_METHOD_DATA,
@@ -74,14 +108,15 @@ export const setPaymentMethodData = (
  * Set the available payment methods.
  * An available payment method is one that has been validated and can make a payment.
  */
-export const setAvailablePaymentMethods = (
-	paymentMethods: PaymentMethods
+export const __internalSetAvailablePaymentMethods = (
+	paymentMethods: PlainPaymentMethods
 ) => {
-	return async ( { dispatch } ) => {
+	return async ( { dispatch, select } ) => {
 		// If the currently selected method is not in this new list, then we need to select a new one, or select a default.
-
-		// TODO See if we can stop this being dispatched if the currently selected method is still available.
-		await setDefaultPaymentMethod( paymentMethods );
+		const activePaymentMethod = select.getActivePaymentMethod();
+		if ( ! ( activePaymentMethod in paymentMethods ) ) {
+			await setDefaultPaymentMethod( paymentMethods );
+		}
 		dispatch( {
 			type: ACTION_TYPES.SET_AVAILABLE_PAYMENT_METHODS,
 			paymentMethods,
@@ -93,8 +128,8 @@ export const setAvailablePaymentMethods = (
  * Set the available express payment methods.
  * An available payment method is one that has been validated and can make a payment.
  */
-export const setAvailableExpressPaymentMethods = (
-	paymentMethods: ExpressPaymentMethods
+export const __internalSetAvailableExpressPaymentMethods = (
+	paymentMethods: PlainExpressPaymentMethods
 ) => ( {
 	type: ACTION_TYPES.SET_AVAILABLE_EXPRESS_PAYMENT_METHODS,
 	paymentMethods,
@@ -104,7 +139,7 @@ export const setAvailableExpressPaymentMethods = (
  * Remove a payment method name from the available payment methods.
  * This is called when a payment method is removed from the registry.
  */
-export const removeAvailablePaymentMethod = ( name: string ) => ( {
+export const __internalRemoveAvailablePaymentMethod = ( name: string ) => ( {
 	type: ACTION_TYPES.REMOVE_AVAILABLE_PAYMENT_METHOD,
 	name,
 } );
@@ -113,18 +148,23 @@ export const removeAvailablePaymentMethod = ( name: string ) => ( {
  * Remove an express payment method name from the available payment methods.
  * This is called when an express payment method is removed from the registry.
  */
-export const removeRegisteredExpressPaymentMethod = ( name: string ) => ( {
+export const __internalRemoveAvailableExpressPaymentMethod = (
+	name: string
+) => ( {
 	type: ACTION_TYPES.REMOVE_AVAILABLE_EXPRESS_PAYMENT_METHOD,
 	name,
 } );
 
-export function initializePaymentMethodDataStore() {
+/**
+ * The store is initialised once we have checked whether the payment methods registered can pay or not
+ */
+export function __internalInitializePaymentStore() {
 	return async ( { dispatch } ) => {
 		const expressRegistered = await checkPaymentMethodsCanPay( true );
 		const registered = await checkPaymentMethodsCanPay( false );
 		if ( registered && expressRegistered ) {
-			dispatch( setExpressPaymentMethodsInitialized( true ) );
-			dispatch( setPaymentMethodsInitialized( true ) );
+			dispatch( __internalSetExpressPaymentMethodsInitialized( true ) );
+			dispatch( __internalSetPaymentMethodsInitialized( true ) );
 		}
 	};
 }
