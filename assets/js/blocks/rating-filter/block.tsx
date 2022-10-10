@@ -28,6 +28,7 @@ import { previewOptions } from './preview';
 import './style.scss';
 import { Attributes } from './types';
 import { getActiveFilters } from './utils';
+import { useSetWraperVisibility } from '../filter-wrapper/context';
 
 export const QUERY_PARAM_KEY = 'rating_filter';
 
@@ -45,6 +46,8 @@ const RatingFilterBlock = ( {
 	attributes: Attributes;
 	isEditor?: boolean;
 } ) => {
+	const setWrapperVisibility = useSetWraperVisibility();
+
 	const filteringForPhpTemplate = getSettingWithCoercion(
 		'is_rendering_php_template',
 		false,
@@ -257,6 +260,18 @@ const RatingFilterBlock = ( {
 	);
 
 	if ( ! filteredCountsLoading && displayedOptions.length === 0 ) {
+		setWrapperVisibility( false );
+		return null;
+	}
+
+	const hasFilterableProducts = getSettingWithCoercion(
+		'has_filterable_products',
+		false,
+		isBoolean
+	);
+
+	if ( ! hasFilterableProducts ) {
+		setWrapperVisibility( false );
 		return null;
 	}
 
@@ -271,6 +286,8 @@ const RatingFilterBlock = ( {
 	) : (
 		heading
 	);
+
+	setWrapperVisibility( true );
 
 	return (
 		<>

@@ -4,7 +4,15 @@
 import { isString } from '@woocommerce/types';
 import { getUrlParameter } from '@woocommerce/utils';
 
-export const getActiveFilters = ( queryParamKey = 'filter_rating' ) => {
+/**
+ * Internal dependencies
+ */
+import metadata from './block.json';
+
+export const getActiveFilters = (
+	filters: Record< string, string >,
+	queryParamKey = 'filter_rating'
+) => {
 	const params = getUrlParameter( queryParamKey );
 
 	if ( ! params ) {
@@ -15,5 +23,20 @@ export const getActiveFilters = ( queryParamKey = 'filter_rating' ) => {
 		? params.split( ',' )
 		: ( params as string[] );
 
-	return parsedParams;
+	return Object.keys( filters ).filter( ( filter ) =>
+		parsedParams.includes( filter )
+	);
+};
+
+export const parseAttributes = ( data: Record< string, unknown > ) => {
+	return {
+		heading: isString( data?.heading ) ? data.heading : '',
+		headingLevel:
+			( isString( data?.headingLevel ) &&
+				parseInt( data.headingLevel, 10 ) ) ||
+			metadata.attributes.headingLevel.default,
+		showFilterButton: data?.showFilterButton === 'true',
+		showCounts: data?.showCounts !== 'false',
+		isPreview: false,
+	};
 };
