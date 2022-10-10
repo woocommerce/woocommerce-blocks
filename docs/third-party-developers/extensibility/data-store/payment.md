@@ -223,6 +223,22 @@ activeSavedPaymentMethods: {
 }
 ```
 
+### shouldSavePaymentMethod
+
+Returns whether the payment method should be saved to the customer's account.
+
+#### _Returns_
+
+`boolean` - Whether the payment method should be saved. True if it should be, false if it should not be.
+
+#### Example
+
+```js
+const store = select( 'wc/store/payment' );
+const shouldSavePaymentMethod = store.shouldSavePaymentMethod();
+```
+
+
 <!-- FEEDBACK -->
 
 ---
