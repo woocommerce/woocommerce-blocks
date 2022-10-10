@@ -154,7 +154,9 @@ const ActiveFiltersBlock = ( {
 			( ! productAttributes.length &&
 				! urlContainsAttributeFilter( STORE_ATTRIBUTES ) )
 		) {
-			setIsLoading( false );
+			if ( isLoading ) {
+				setIsLoading( false );
+			}
 			return null;
 		}
 
