@@ -4,9 +4,9 @@
 import {
 	defaultAddressFields,
 	AddressFields,
-	EnteredAddress,
 	ShippingAddress,
 	BillingAddress,
+	getSetting,
 } from '@woocommerce/settings';
 import { useCallback } from '@wordpress/element';
 import { useDispatch, useSelect } from '@wordpress/data';
@@ -21,8 +21,8 @@ import { useShippingData } from './shipping/use-shipping-data';
 interface CheckoutAddress {
 	shippingAddress: ShippingAddress;
 	billingAddress: BillingAddress;
-	setShippingAddress: ( data: Partial< EnteredAddress > ) => void;
-	setBillingAddress: ( data: Partial< EnteredAddress > ) => void;
+	setShippingAddress: ( data: Partial< ShippingAddress > ) => void;
+	setBillingAddress: ( data: Partial< BillingAddress > ) => void;
 	setEmail: ( value: string ) => void;
 	setBillingPhone: ( value: string ) => void;
 	setShippingPhone: ( value: string ) => void;
@@ -31,6 +31,7 @@ interface CheckoutAddress {
 	defaultAddressFields: AddressFields;
 	showShippingFields: boolean;
 	showBillingFields: boolean;
+	forcedBillingAddress: boolean;
 }
 
 /**
@@ -73,7 +74,10 @@ export const useCheckoutAddress = (): CheckoutAddress => {
 			} ),
 		[ setShippingAddress ]
 	);
-
+	const forcedBillingAddress: boolean = getSetting(
+		'forcedBillingAddress',
+		false
+	);
 	return {
 		shippingAddress,
 		billingAddress,
@@ -85,7 +89,9 @@ export const useCheckoutAddress = (): CheckoutAddress => {
 		defaultAddressFields,
 		useShippingAsBilling,
 		setUseShippingAsBilling: __internalSetUseShippingAsBilling,
-		showShippingFields: needsShipping,
-		showBillingFields: ! needsShipping || ! useShippingAsBilling,
+		showShippingFields: ! forcedBillingAddress && needsShipping,
+		showBillingFields:
+			forcedBillingAddress || ! needsShipping || ! useShippingAsBilling,
+		forcedBillingAddress,
 	};
 };
