@@ -76,6 +76,7 @@ const ActiveFiltersBlock = ( {
 	);
 	const [ minPrice, setMinPrice ] = useQueryStateByKey( 'min_price' );
 	const [ maxPrice, setMaxPrice ] = useQueryStateByKey( 'max_price' );
+
 	const [ productRatings, setProductRatings ] =
 		useQueryStateByKey( 'rating' );
 
@@ -168,7 +169,9 @@ const ActiveFiltersBlock = ( {
 			);
 
 			if ( ! attributeObject ) {
-				setIsLoading( false );
+				if ( isLoading ) {
+					setIsLoading( false );
+				}
 				return null;
 			}
 
@@ -187,6 +190,7 @@ const ActiveFiltersBlock = ( {
 		productAttributes,
 		componentHasMounted,
 		STORE_ATTRIBUTES,
+		isLoading,
 		blockAttributes.displayStyle,
 	] );
 
