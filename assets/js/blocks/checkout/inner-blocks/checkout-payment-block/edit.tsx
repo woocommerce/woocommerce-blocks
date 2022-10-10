@@ -72,6 +72,10 @@ export const Edit = ( {
 									href={ `${ ADMIN_URL }admin.php?page=wc-settings&tab=checkout&section=${ method.id }` }
 									title={ method.title }
 									description={ method.description }
+									notice={
+										method.title === 'PayPal' &&
+										'This payment method is not compatible yet.'
+									}
 								/>
 							);
 						} ) }

@@ -15,6 +15,7 @@ export interface ExternalLinkCardProps {
 	href: string;
 	title: string;
 	description?: string;
+	notice?: string;
 }
 
 /**
@@ -25,6 +26,7 @@ const ExternalLinkCard = ( {
 	href,
 	title,
 	description,
+	notice,
 }: ExternalLinkCardProps ): JSX.Element => {
 	return (
 		<a
@@ -44,6 +46,11 @@ const ExternalLinkCard = ( {
 							__html: sanitizeHTML( description ),
 						} }
 					></span>
+				) }
+				{ notice && (
+					<span className="wc-block-editor-components-external-link-card__notice">
+						{ notice }
+					</span>
 				) }
 			</span>
 			<VisuallyHidden as="span">

@@ -23,6 +23,14 @@
 		@include font-size(small);
 		margin-top: 0.5em;
 	}
+	.wc-block-editor-components-external-link-card__notice {
+		background-color: #f4a2a2;
+		border-left: 4px solid #cc1818;
+		display: block;
+		@include font-size(small);
+		margin-top: 0.5em;
+		padding: 8px 12px;
+	}
 	.wc-block-editor-components-external-link-card__icon {
 		flex: 0 0 24px;
 		margin: 0;
