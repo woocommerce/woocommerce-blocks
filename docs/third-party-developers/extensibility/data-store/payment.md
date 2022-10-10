@@ -262,6 +262,35 @@ const store = select( 'wc/store/payment' );
 const currentStatus = store.getCurrentStatus();
 ```
 
+### paymentMethodsInitialized
+
+Returns whether the payment methods have been initialized.
+
+#### _Returns_
+
+`boolean` - True if the payment methods have been initialized, false if they have not.
+
+#### Example
+
+```js
+const store = select( 'wc/store/payment' );
+const paymentMethodsInitialized = store.paymentMethodsInitialized();
+```
+
+### expressPaymentMethodsInitialized
+
+Returns whether the express payment methods have been initialized.
+
+#### _Returns_
+
+`boolean` - True if the express payment methods have been initialized, false if they have not.
+
+#### Example
+
+```js
+const store = select( 'wc/store/payment' );
+const expressPaymentMethodsInitialized = store.expressPaymentMethodsInitialized();
+```
 
 <!-- FEEDBACK -->
 
