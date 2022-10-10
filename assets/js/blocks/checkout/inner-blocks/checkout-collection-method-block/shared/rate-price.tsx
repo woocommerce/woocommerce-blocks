@@ -9,30 +9,49 @@ import FormattedMonetaryAmount from '@woocommerce/base-components/formatted-mone
 import type { CartShippingPackageShippingRate } from '@woocommerce/type-defs/cart';
 
 export const RatePrice = ( {
-	rate,
+	minRate,
+	maxRate,
 }: {
-	rate: CartShippingPackageShippingRate;
+	minRate: CartShippingPackageShippingRate | undefined;
+	maxRate: CartShippingPackageShippingRate | undefined;
 } ) => {
-	const ratePrice = getSetting( 'displayCartPricesIncludingTax', false )
-		? parseInt( rate.price, 10 ) + parseInt( rate.taxes, 10 )
-		: parseInt( rate.price, 10 );
+	if ( ! minRate && ! maxRate ) {
+		return null;
+	}
+	const minRatePrice = getSetting( 'displayCartPricesIncludingTax', false )
+		? parseInt( minRate.price, 10 ) + parseInt( minRate.taxes, 10 )
+		: parseInt( minRate.price, 10 );
+	const maxRatePrice = getSetting( 'displayCartPricesIncludingTax', false )
+		? parseInt( maxRate.price, 10 ) + parseInt( maxRate.taxes, 10 )
+		: parseInt( maxRate.price, 10 );
+
 	return (
 		<span className="wc-block-checkout__collection-item-price">
-			{ ratePrice === 0
-				? __( 'free', 'woo-gutenberg-products-block' )
-				: createInterpolateElement(
-						__( 'from <price />', 'woo-gutenberg-products-block' ),
-						{
-							price: (
+			{ minRatePrice === 0 && maxRatePrice === 0 ? (
+				<em>{ __( 'free', 'woo-gutenberg-products-block' ) }</em>
+			) : (
+				createInterpolateElement(
+					__( 'from <price />', 'woo-gutenberg-products-block' ),
+					{
+						price:
+							minRatePrice === 0 ? (
+								<em>
+									{ __(
+										'free',
+										'woo-gutenberg-products-block'
+									) }
+								</em>
+							) : (
 								<FormattedMonetaryAmount
 									currency={ getCurrencyFromPriceResponse(
-										rate
+										minRate
 									) }
-									value={ ratePrice }
+									value={ minRatePrice }
 								/>
 							),
-						}
-				  ) }
+					}
+				)
+			) }
 		</span>
 	);
 };

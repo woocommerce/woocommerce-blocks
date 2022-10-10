@@ -3,36 +3,65 @@
  */
 import type { CartShippingPackageShippingRate } from '@woocommerce/type-defs/cart';
 
+export interface minMaxPrices {
+	min: CartShippingPackageShippingRate | undefined;
+	max: CartShippingPackageShippingRate | undefined;
+}
+
 /**
- * Returns the cheapest rate that isn't a local pickup.
+ * Returns the cheapest and most expensive rate that isn't a local pickup.
  *
  * @param {Array|undefined} shippingRates Array of shipping Rate.
  *
- * @return {Object|undefined} cheapest rate.
+ * @return {Object|undefined} Object with the cheapest and most expensive rates.
  */
-export function getShippingStartingPrice(
+export function getShippingPrices(
 	shippingRates: CartShippingPackageShippingRate[]
-): CartShippingPackageShippingRate | undefined {
+): minMaxPrices {
 	if ( shippingRates ) {
-		return shippingRates.reduce(
-			(
-				lowestRate: CartShippingPackageShippingRate | undefined,
-				currentRate: CartShippingPackageShippingRate
-			) => {
-				if ( currentRate.method_id === 'local_pickup' ) {
+		return {
+			min: shippingRates.reduce(
+				(
+					lowestRate: CartShippingPackageShippingRate | undefined,
+					currentRate: CartShippingPackageShippingRate
+				) => {
+					if ( currentRate.method_id === 'local_pickup' ) {
+						return lowestRate;
+					}
+					if (
+						lowestRate === undefined ||
+						currentRate.price < lowestRate.price
+					) {
+						return currentRate;
+					}
 					return lowestRate;
-				}
-				if (
-					lowestRate === undefined ||
-					currentRate.price < lowestRate.price
-				) {
-					return currentRate;
-				}
-				return lowestRate;
-			},
-			undefined
-		);
+				},
+				undefined
+			),
+			max: shippingRates.reduce(
+				(
+					highestRate: CartShippingPackageShippingRate | undefined,
+					currentRate: CartShippingPackageShippingRate
+				) => {
+					if ( currentRate.method_id === 'local_pickup' ) {
+						return highestRate;
+					}
+					if (
+						highestRate === undefined ||
+						currentRate.price > highestRate.price
+					) {
+						return currentRate;
+					}
+					return highestRate;
+				},
+				undefined
+			),
+		};
 	}
+	return {
+		min: undefined,
+		max: undefined,
+	};
 }
 
 /**
@@ -42,27 +71,51 @@ export function getShippingStartingPrice(
  *
  * @return {Object|undefined} cheapest rate.
  */
-export function getLocalPickupStartingPrice(
+export function getLocalPickupPrices(
 	shippingRates: CartShippingPackageShippingRate[]
-): CartShippingPackageShippingRate | undefined {
+): minMaxPrices {
 	if ( shippingRates ) {
-		return shippingRates.reduce(
-			(
-				lowestRate: CartShippingPackageShippingRate | undefined,
-				currentRate: CartShippingPackageShippingRate
-			) => {
-				if ( currentRate.method_id !== 'local_pickup' ) {
+		return {
+			min: shippingRates.reduce(
+				(
+					lowestRate: CartShippingPackageShippingRate | undefined,
+					currentRate: CartShippingPackageShippingRate
+				) => {
+					if ( currentRate.method_id !== 'local_pickup' ) {
+						return lowestRate;
+					}
+					if (
+						lowestRate === undefined ||
+						currentRate.price < lowestRate.price
+					) {
+						return currentRate;
+					}
 					return lowestRate;
-				}
-				if (
-					lowestRate === undefined ||
-					currentRate.price < lowestRate.price
-				) {
-					return currentRate;
-				}
-				return lowestRate;
-			},
-			undefined
-		);
+				},
+				undefined
+			),
+			max: shippingRates.reduce(
+				(
+					highestRate: CartShippingPackageShippingRate | undefined,
+					currentRate: CartShippingPackageShippingRate
+				) => {
+					if ( currentRate.method_id !== 'local_pickup' ) {
+						return highestRate;
+					}
+					if (
+						highestRate === undefined ||
+						currentRate.price > highestRate.price
+					) {
+						return currentRate;
+					}
+					return highestRate;
+				},
+				undefined
+			),
+		};
 	}
+	return {
+		min: undefined,
+		max: undefined,
+	};
 }
