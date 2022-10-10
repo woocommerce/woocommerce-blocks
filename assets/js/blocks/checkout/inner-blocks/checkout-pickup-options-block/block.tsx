@@ -90,8 +90,7 @@ const filterLocalPickupRates = ( shippingRates: CartShippingRate[] ) => {
 			...shippingRatesPackage,
 			shipping_rates: shippingRatesPackage.shipping_rates.filter(
 				( shippingRatesPackageRate ) =>
-					shippingRatesPackageRate.method_id === 'local_pickup' ||
-					shippingRatesPackageRate.method_id === 'blocks_local_pickup'
+					shippingRatesPackageRate.method_id === 'local_pickup'
 			),
 		};
 	} );
