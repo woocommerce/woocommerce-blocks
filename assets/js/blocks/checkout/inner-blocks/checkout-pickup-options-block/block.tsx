@@ -26,25 +26,26 @@ import './style.scss';
 
 const getPickupLocation = (
 	option: CartShippingPackageShippingRate
-): string | undefined => {
+): string => {
 	if ( option?.meta_data ) {
 		const match = option.meta_data.find(
 			( meta: MetaKeyValue ) => meta.key === 'pickup_location'
 		);
-		return match ? match.value : undefined;
+		return match ? match.value : '';
 	}
 	return '';
 };
 
 const getPickupAddress = (
 	option: CartShippingPackageShippingRate
-): string | undefined => {
+): string => {
 	if ( option?.meta_data ) {
 		const match = option.meta_data.find(
 			( meta: MetaKeyValue ) => meta.key === 'pickup_address'
 		);
-		return match ? match.value : undefined;
+		return match ? match.value : '';
 	}
+	return '';
 };
 
 /**
