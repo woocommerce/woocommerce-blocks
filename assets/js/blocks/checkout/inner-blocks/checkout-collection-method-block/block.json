@@ -2,7 +2,7 @@
 	"name": "woocommerce/checkout-collection-method-block",
 	"version": "1.0.0",
 	"title": "Shipping Method",
-	"description": "How to collect an order.",
+	"description": "Select between delivery or collection.",
 	"category": "woocommerce",
 	"supports": {
 		"align": false,
