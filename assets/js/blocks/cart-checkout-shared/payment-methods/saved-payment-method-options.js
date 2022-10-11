@@ -9,7 +9,7 @@ import {
 	usePaymentMethodInterface,
 	useStoreEvents,
 } from '@woocommerce/base-context/hooks';
-import { PAYMENT_METHOD_DATA_STORE_KEY } from '@woocommerce/block-data';
+import { PAYMENT_STORE_KEY } from '@woocommerce/block-data';
 import { useDispatch, useSelect } from '@wordpress/data';
 import { getPaymentMethods } from '@woocommerce/blocks-registry';
 
@@ -64,12 +64,9 @@ const getDefaultLabel = ( { method } ) => {
 
 const SavedPaymentMethodOptions = () => {
 	const { activeSavedToken, activePaymentMethod, savedPaymentMethods } =
-		useSelect( ( select ) =>
-			select( PAYMENT_METHOD_DATA_STORE_KEY ).getState()
-		);
-	const { setActivePaymentMethod } = useDispatch(
-		PAYMENT_METHOD_DATA_STORE_KEY
-	);
+		useSelect( ( select ) => select( PAYMENT_STORE_KEY ).getState() );
+	const { __internalSetActivePaymentMethod } =
+		useDispatch( PAYMENT_STORE_KEY );
 	const paymentMethods = getPaymentMethods();
 	const paymentMethodInterface = usePaymentMethodInterface();
 	const { removeNotice } = useDispatch( 'core/notices' );
@@ -91,12 +88,15 @@ const SavedPaymentMethodOptions = () => {
 						value: paymentMethod.tokenId.toString(),
 						onChange: ( token ) => {
 							const savedTokenKey = `wc-${ paymentMethodSlug }-payment-token`;
-							setActivePaymentMethod( paymentMethodSlug, {
-								token,
-								payment_method: paymentMethodSlug,
-								[ savedTokenKey ]: token.toString(),
-								isSavedToken: true,
-							} );
+							__internalSetActivePaymentMethod(
+								paymentMethodSlug,
+								{
+									token,
+									payment_method: paymentMethodSlug,
+									[ savedTokenKey ]: token.toString(),
+									isSavedToken: true,
+								}
+							);
 							removeNotice(
 								'wc-payment-error',
 								noticeContexts.PAYMENTS
@@ -114,7 +114,7 @@ const SavedPaymentMethodOptions = () => {
 			.filter( Boolean );
 	}, [
 		savedPaymentMethods,
-		setActivePaymentMethod,
+		__internalSetActivePaymentMethod,
 		removeNotice,
 		dispatchCheckoutEvent,
 	] );

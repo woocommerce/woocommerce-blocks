@@ -2,22 +2,20 @@
  * External dependencies
  */
 import { select, dispatch } from '@wordpress/data';
-import { PaymentMethods } from '@woocommerce/type-defs/payments';
+import { PlainPaymentMethods } from '@woocommerce/type-defs/payments';
 
 /**
  * Internal dependencies
  */
-import { STORE_KEY as PAYMENT_METHOD_DATA_STORE_KEY } from './constants';
+import { STORE_KEY as PAYMENT_STORE_KEY } from './constants';
 
 export const setDefaultPaymentMethod = async (
-	paymentMethods: PaymentMethods
+	paymentMethods: PlainPaymentMethods
 ) => {
 	const paymentMethodKeys = Object.keys( paymentMethods );
 
 	const expressPaymentMethodKeys = Object.keys(
-		select(
-			PAYMENT_METHOD_DATA_STORE_KEY
-		).getAvailableExpressPaymentMethods()
+		select( PAYMENT_STORE_KEY ).getAvailableExpressPaymentMethods()
 	);
 
 	const allPaymentMethodKeys = [
@@ -25,9 +23,8 @@ export const setDefaultPaymentMethod = async (
 		...expressPaymentMethodKeys,
 	];
 
-	const savedPaymentMethods = select(
-		PAYMENT_METHOD_DATA_STORE_KEY
-	).getSavedPaymentMethods();
+	const savedPaymentMethods =
+		select( PAYMENT_STORE_KEY ).getSavedPaymentMethods();
 
 	const savedPaymentMethod =
 		Object.keys( savedPaymentMethods ).flatMap(
@@ -40,7 +37,7 @@ export const setDefaultPaymentMethod = async (
 
 		const savedTokenKey = `wc-${ paymentMethodSlug }-payment-token`;
 
-		dispatch( PAYMENT_METHOD_DATA_STORE_KEY ).setActivePaymentMethod(
+		dispatch( PAYMENT_STORE_KEY ).__internalSetActivePaymentMethod(
 			paymentMethodSlug,
 			{
 				token,
@@ -52,9 +49,8 @@ export const setDefaultPaymentMethod = async (
 		return;
 	}
 
-	const activePaymentMethod = select(
-		PAYMENT_METHOD_DATA_STORE_KEY
-	).getActivePaymentMethod();
+	const activePaymentMethod =
+		select( PAYMENT_STORE_KEY ).getActivePaymentMethod();
 
 	// Return if current method is valid.
 	if (
@@ -64,11 +60,11 @@ export const setDefaultPaymentMethod = async (
 		return;
 	}
 
-	dispatch( PAYMENT_METHOD_DATA_STORE_KEY ).setPaymentStatus( {
+	dispatch( PAYMENT_STORE_KEY ).__internalSetPaymentStatus( {
 		isPristine: true,
 	} );
 
-	dispatch( PAYMENT_METHOD_DATA_STORE_KEY ).setActivePaymentMethod(
+	dispatch( PAYMENT_STORE_KEY ).__internalSetActivePaymentMethod(
 		paymentMethodKeys[ 0 ]
 	);
 };
