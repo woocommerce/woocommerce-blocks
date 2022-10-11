@@ -146,7 +146,10 @@ export const useForcedLayout = ( {
 					break;
 			}
 		} );
-		// We need to skip replaceInnerBlocks here due to a cache issue in wordpress.com that causes an inifinite loop, see https://github.com/Automattic/wp-calypso/issues/66092 for an expanded doc.
+		/*
+		We need to skip replaceInnerBlocks here due to a cache issue in wordpress.com that causes an inifinite loop, see https://github.com/Automattic/wp-calypso/issues/66092 for an expanded doc.
+		 @todo Add replaceInnerBlocks and insertBlock after fixing https://github.com/Automattic/wp-calypso/issues/66092
+		*/
 		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [ clientId, innerBlocks, lockedBlockTypes, appendBlock ] );
 };
