@@ -67,7 +67,8 @@ export const useForcedLayout = ( {
 			insertBlock( newBlock, position, clientId, false );
 			setForcedBlocksInserted( forcedBlocksInserted + 1 );
 		},
-		[ clientId, insertBlock, forcedBlocksInserted ]
+		// eslint-disable-next-line react-hooks/exhaustive-deps
+		[ clientId, forcedBlocksInserted ]
 	);
 
 	const lockedBlockTypes = useMemo(
@@ -144,11 +145,6 @@ export const useForcedLayout = ( {
 					break;
 			}
 		} );
-	}, [
-		clientId,
-		innerBlocks,
-		lockedBlockTypes,
-		replaceInnerBlocks,
-		appendBlock,
-	] );
+		// eslint-disable-next-line react-hooks/exhaustive-deps
+	}, [ clientId, innerBlocks, lockedBlockTypes, appendBlock ] );
 };
