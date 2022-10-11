@@ -1,7 +1,8 @@
 /**
  * External dependencies
  */
-import { __ } from '@wordpress/i18n';
+import { __, sprintf } from '@wordpress/i18n';
+import { speak } from '@wordpress/a11y';
 import Rating from '@woocommerce/base-components/product-rating';
 import { usePrevious, useShallowEqual } from '@woocommerce/base-hooks';
 import {
@@ -250,6 +251,27 @@ const RatingFilterBlock = ( {
 			if ( ! previouslyChecked ) {
 				newChecked.push( checkedValue );
 				newChecked.sort();
+				speak(
+					sprintf(
+						/* translators: Rated %s (for example: '5'...) */
+						__(
+							'Rated %s filter added.',
+							'woo-gutenberg-products-block'
+						),
+						checkedValue
+					)
+				);
+			} else {
+				speak(
+					sprintf(
+						/* translators: Rated %s (for example: '5'...) */
+						__(
+							'Rated %s filter removed.',
+							'woo-gutenberg-products-block'
+						),
+						checkedValue
+					)
+				);
 			}
 			setChecked( newChecked );
 		},
