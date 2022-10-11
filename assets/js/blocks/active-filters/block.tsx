@@ -35,6 +35,7 @@ import {
 import ActiveAttributeFilters from './active-attribute-filters';
 import FilterPlaceholders from './filter-placeholders';
 import { Attributes } from './types';
+import { useSetWraperVisibility } from '../filter-wrapper/context';
 
 /**
  * Component displaying active filters.
@@ -50,6 +51,7 @@ const ActiveFiltersBlock = ( {
 	attributes: Attributes;
 	isEditor?: boolean;
 } ) => {
+	const setWrapperVisibility = useSetWraperVisibility();
 	const isMounted = useIsMounted();
 	const componentHasMounted = isMounted();
 	const filteringForPhpTemplate = getSettingWithCoercion(
@@ -74,6 +76,9 @@ const ActiveFiltersBlock = ( {
 	);
 	const [ minPrice, setMinPrice ] = useQueryStateByKey( 'min_price' );
 	const [ maxPrice, setMaxPrice ] = useQueryStateByKey( 'max_price' );
+
+	const [ productRatings, setProductRatings ] =
+		useQueryStateByKey( 'rating' );
 
 	const STOCK_STATUS_OPTIONS = getSetting( 'stockStatusOptions', [] );
 	const STORE_ATTRIBUTES = getSetting( 'attributes', [] );
@@ -152,7 +157,9 @@ const ActiveFiltersBlock = ( {
 			( ! productAttributes.length &&
 				! urlContainsAttributeFilter( STORE_ATTRIBUTES ) )
 		) {
-			setIsLoading( false );
+			if ( isLoading ) {
+				setIsLoading( false );
+			}
 			return null;
 		}
 
@@ -162,7 +169,9 @@ const ActiveFiltersBlock = ( {
 			);
 
 			if ( ! attributeObject ) {
-				setIsLoading( false );
+				if ( isLoading ) {
+					setIsLoading( false );
+				}
 				return null;
 			}
 
@@ -178,14 +187,12 @@ const ActiveFiltersBlock = ( {
 			);
 		} );
 	}, [
-		componentHasMounted,
-		setIsLoading,
 		productAttributes,
+		componentHasMounted,
+		STORE_ATTRIBUTES,
+		isLoading,
 		blockAttributes.displayStyle,
 	] );
-
-	const [ productRatings, setProductRatings ] =
-		useQueryStateByKey( 'rating' );
 
 	/**
 	 * Parse the filter URL to set the active rating fitlers.
@@ -259,6 +266,7 @@ const ActiveFiltersBlock = ( {
 	};
 
 	if ( ! shouldShowLoadingPlaceholders && ! hasFilters() && ! isEditor ) {
+		setWrapperVisibility( false );
 		return null;
 	}
 
@@ -284,8 +292,11 @@ const ActiveFiltersBlock = ( {
 	);
 
 	if ( ! hasFilterableProducts ) {
+		setWrapperVisibility( false );
 		return null;
 	}
+
+	setWrapperVisibility( true );
 
 	const listClasses = classnames( 'wc-block-active-filters__list', {
 		'wc-block-active-filters__list--chips':
