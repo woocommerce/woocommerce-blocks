@@ -44,7 +44,7 @@ const GLOBAL_HIDE_OUT_OF_STOCK = getSetting< boolean >(
 );
 
 export const QUERY_DEFAULT_ATTRIBUTES: QueryBlockAttributes = {
-	allowControls: DEFAULT_ALLOWED_CONTROLS,
+	allowedControls: DEFAULT_ALLOWED_CONTROLS,
 	displayLayout: {
 		type: 'flex',
 		columns: 3,

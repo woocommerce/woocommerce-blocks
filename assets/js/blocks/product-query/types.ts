@@ -55,7 +55,7 @@ export type ProductQueryBlock = EditorBlock< QueryBlockAttributes >;
 export type ProductQueryBlockQuery = QueryBlockQuery & ProductQueryArguments;
 
 export interface QueryBlockAttributes {
-	allowControls?: string[];
+	allowedControls?: string[];
 	displayLayout?: {
 		type: 'flex' | 'list';
 		columns?: number;
