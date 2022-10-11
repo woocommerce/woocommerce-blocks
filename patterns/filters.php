@@ -52,7 +52,7 @@
 <h3><?php esc_html_e( 'Filter by rating', 'woo-gutenberg-products-block' ); ?></h3>
 <!-- /wp:heading -->
 
-<!-- wp:woocommerce/rating-filter {"heading":"","lock":{"remove":true}} -->
-<div class="wp-block-woocommerce-rating-filter is-loading" data-heading="" data-heading-level="3" data-show-counts="true"><span aria-hidden="true" class="wc-block-product-rating-filter__placeholder"></span></div>
+<!-- wp:woocommerce/rating-filter {"lock":{"remove":true}} -->
+<div class="wp-block-woocommerce-rating-filter is-loading" data-show-counts="true"><span aria-hidden="true" class="wc-block-product-rating-filter__placeholder"></span></div>
 <!-- /wp:woocommerce/rating-filter --></div>
 <!-- /wp:woocommerce/filter-wrapper -->

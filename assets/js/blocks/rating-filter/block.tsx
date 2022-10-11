@@ -11,7 +11,6 @@ import {
 } from '@woocommerce/base-context/hooks';
 import { getSettingWithCoercion } from '@woocommerce/settings';
 import { isBoolean, isObject, objectHasProp } from '@woocommerce/types';
-import FilterTitlePlaceholder from '@woocommerce/base-components/filter-placeholder';
 import isShallowEqual from '@wordpress/is-shallow-equal';
 import { useState, useCallback, useMemo, useEffect } from '@wordpress/element';
 import CheckboxList from '@woocommerce/base-components/checkbox-list';
@@ -68,8 +67,6 @@ const RatingFilterBlock = ( {
 		blockAttributes.isPreview ? previewOptions : []
 	);
 
-	const TagName =
-		`h${ blockAttributes.headingLevel }` as keyof JSX.IntrinsicElements;
 	const isLoading =
 		! blockAttributes.isPreview &&
 		filteredCountsLoading &&
@@ -275,23 +272,11 @@ const RatingFilterBlock = ( {
 		return null;
 	}
 
-	const heading = (
-		<TagName className="wc-block-rating-filter__title">
-			{ blockAttributes.heading }
-		</TagName>
-	);
-
-	const filterHeading = isLoading ? (
-		<FilterTitlePlaceholder>{ heading }</FilterTitlePlaceholder>
-	) : (
-		heading
-	);
-
 	setWrapperVisibility( true );
 
 	return (
 		<>
-			{ ! isEditor && blockAttributes.heading && filterHeading }
+			{ ! isEditor }
 			<div
 				className={ classnames( 'wc-block-rating-filter', {
 					'is-loading': isLoading,

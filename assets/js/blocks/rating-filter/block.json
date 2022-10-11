@@ -26,10 +26,6 @@
 			"type": "string",
 			"default": ""
 		},
-		"headingLevel": {
-			"type": "number",
-			"default": 3
-		},
 		"showCounts": {
 			"type": "boolean",
 			"default": true

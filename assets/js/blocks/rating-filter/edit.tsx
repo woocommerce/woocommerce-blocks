@@ -10,7 +10,6 @@ import {
 	ToggleControl,
 	withSpokenMessages,
 } from '@wordpress/components';
-import BlockTitle from '@woocommerce/editor-components/block-title';
 import type { BlockEditProps } from '@wordpress/blocks';
 
 /**
@@ -23,8 +22,7 @@ const Edit = ( {
 	attributes,
 	setAttributes,
 }: BlockEditProps< Attributes > ) => {
-	const { className, heading, headingLevel, showCounts, showFilterButton } =
-		attributes;
+	const { className, showCounts, showFilterButton } = attributes;
 
 	const blockProps = useBlockProps( {
 		className: classnames( 'wc-block-rating-filter', className ),
@@ -85,16 +83,6 @@ const Edit = ( {
 			{ getInspectorControls() }
 			{
 				<div { ...blockProps }>
-					{ heading && (
-						<BlockTitle
-							className="wc-block-rating-filter__title"
-							headingLevel={ headingLevel }
-							heading={ heading }
-							onChange={ ( value: string ) =>
-								setAttributes( { heading: value } )
-							}
-						/>
-					) }
 					<Disabled>
 						<Block attributes={ attributes } isEditor={ true } />
 					</Disabled>
