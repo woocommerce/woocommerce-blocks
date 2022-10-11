@@ -1,3 +1,4 @@
+/* eslint-disable no-nested-ternary */
 /**
  * External dependencies
  */
@@ -15,7 +16,7 @@ export const RatePrice = ( {
 	minRate: CartShippingPackageShippingRate | undefined;
 	maxRate: CartShippingPackageShippingRate | undefined;
 } ) => {
-	if ( ! minRate && ! maxRate ) {
+	if ( minRate === undefined || maxRate === undefined ) {
 		return null;
 	}
 	const minRatePrice = getSetting( 'displayCartPricesIncludingTax', false )
@@ -29,26 +30,20 @@ export const RatePrice = ( {
 		<span className="wc-block-checkout__collection-item-price">
 			{ minRatePrice === 0 && maxRatePrice === 0 ? (
 				<em>{ __( 'free', 'woo-gutenberg-products-block' ) }</em>
+			) : minRatePrice === 0 ? (
+				<em>{ __( 'from free', 'woo-gutenberg-products-block' ) }</em>
 			) : (
 				createInterpolateElement(
 					__( 'from <price />', 'woo-gutenberg-products-block' ),
 					{
-						price:
-							minRatePrice === 0 ? (
-								<em>
-									{ __(
-										'free',
-										'woo-gutenberg-products-block'
-									) }
-								</em>
-							) : (
-								<FormattedMonetaryAmount
-									currency={ getCurrencyFromPriceResponse(
-										minRate
-									) }
-									value={ minRatePrice }
-								/>
-							),
+						price: (
+							<FormattedMonetaryAmount
+								currency={ getCurrencyFromPriceResponse(
+									minRate
+								) }
+								value={ minRatePrice }
+							/>
+						),
 					}
 				)
 			) }
