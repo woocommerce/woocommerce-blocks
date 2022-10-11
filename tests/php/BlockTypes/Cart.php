@@ -9,12 +9,23 @@ use Automattic\WooCommerce\Blocks\Tests\Mocks\CartMock;
  * @since $VID:$
  */
 class Cart extends \WP_UnitTestCase {
+	/**
+	 * This variable holds our cart object.
+	 *
+	 * @var CartMock
+	 */
 	private $cart_block_instance;
 
+	/**
+	 * Initiate the cart mock.
+	 */
 	public function setUp() {
-		$this->$cart_block_instance = new CartMock();
+		$this->cart_block_instance = new CartMock();
 	}
 
+	/**
+	 * We ensure deep sort works with all sort of arrays.
+	 */
 	public function test_deep_sort_with_accents() {
 		$test_array_1 = array(
 			'0',

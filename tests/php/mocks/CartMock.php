@@ -7,13 +7,19 @@ use Automattic\WooCommerce\Blocks\Assets\Api;
 use Automattic\WooCommerce\Blocks\Assets\AssetDataRegistry;
 use Automattic\WooCommerce\Blocks\Integrations\IntegrationRegistry;
 
+/**
+ * CartMock used to test cart block functions.
+ */
 class CartMock extends Cart {
 
+	/**
+	 * We initaite our mock class.
+	 */
 	public function __construct() {
 		parent::__construct(
 			Package::container()->get( API::class ),
 			Package::container()->get( AssetDataRegistry::class ),
-			Package::container()->get( IntegrationRegistry::class ),
+			new IntegrationRegistry(),
 		);
 	}
 
@@ -22,11 +28,12 @@ class CartMock extends Cart {
 	 * just override the default behaviour.
 	 */
 	protected function initialize() {
-		return;
 	}
 
 	/**
 	 * Protected test wrapper for deep_sort_with_accents.
+	 *
+	 * @param array $array The array we want to sort.
 	 */
 	public function deep_sort_test( $array ) {
 		return $this->deep_sort_with_accents( $array );
