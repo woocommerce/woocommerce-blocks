@@ -13,9 +13,9 @@ import {
 	config as checkoutStoreConfig,
 } from '../../../../data/checkout';
 import {
-	PAYMENT_METHOD_DATA_STORE_KEY,
+	PAYMENT_STORE_KEY,
 	config as paymentDataStoreConfig,
-} from '../../../../data/payment-methods';
+} from '../../../../data/payment';
 
 jest.mock( '../../providers/cart-checkout/checkout-events', () => {
 	const original = jest.requireActual(
@@ -46,7 +46,7 @@ describe( 'useCheckoutSubmit', () => {
 	beforeEach( () => {
 		registry = createRegistry( {
 			[ CHECKOUT_STORE_KEY ]: checkoutStoreConfig,
-			[ PAYMENT_METHOD_DATA_STORE_KEY ]: paymentDataStoreConfig,
+			[ PAYMENT_STORE_KEY ]: paymentDataStoreConfig,
 		} );
 		renderer = null;
 	} );
