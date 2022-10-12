@@ -13,6 +13,12 @@ export type ValidationData = {
 	) => void;
 };
 
+export type ProductQueryContext = {
+	query: object;
+	queryId: number;
+	productId: number;
+};
+
 export enum SHIPPING_ERROR_TYPES {
 	NONE = 'none',
 	INVALID_ADDRESS = 'invalid_address',
