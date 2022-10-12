@@ -31,6 +31,18 @@ export const INSPECTOR_CONTROLS = {
 			} }
 		/>
 	),
+	wooInherit: ( props: ProductQueryBlock ) => (
+		<ToggleControl
+			label={ __(
+				'Woo Inherit query from template',
+				'woo-gutenberg-products-block'
+			) }
+			checked={ props.attributes.query.__woocommerceInherit || false }
+			onChange={ ( __woocommerceInherit ) => {
+				setCustomQueryAttribute( props, { __woocommerceInherit } );
+			} }
+		/>
+	),
 };
 
 export const withProductQueryControls =

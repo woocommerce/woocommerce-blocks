@@ -32,6 +32,8 @@ export interface ProductQueryArguments {
 	// will help signify our intentions.
 	// eslint-disable-next-line @typescript-eslint/naming-convention
 	__woocommerceOnSale?: boolean;
+	// eslint-disable-next-line @typescript-eslint/naming-convention
+	__woocommerceInherit?: boolean;
 }
 
 export type ProductQueryBlock = EditorBlock< QueryBlockAttributes >;

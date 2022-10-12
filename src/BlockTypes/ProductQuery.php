@@ -113,6 +113,12 @@ class ProductQuery extends AbstractBlock {
 
 		$queries_by_attributes = $this->get_queries_by_attributes( $parsed_block );
 		$queries_by_filters    = $this->get_queries_by_applied_filters();
+		$queries_by_inherit    = $this->get_queries_by_inherit();
+
+		$base_query = array_merge(
+			$common_query_values,
+			$queries_by_inherit
+		);
 
 		return array_reduce(
 			array_merge(
@@ -122,34 +128,40 @@ class ProductQuery extends AbstractBlock {
 			function( $acc, $query ) {
 				return $this->merge_queries( $acc, $query );
 			},
-			$common_query_values
+			$base_query
 		);
+
 	}
 
 	/**
-	 * Return the product ids based on the attributes.
+	 * Return the product ids based on the attributes and global query.
+	 * This is used to allow the filter blocks to render data that matches with variations. More details here: https://github.com/woocommerce/woocommerce-blocks/issues/7245
 	 *
 	 * @param array $parsed_block The block being rendered.
 	 * @return array
 	 */
 	private function get_products_ids_by_attributes( $parsed_block ) {
 		$queries_by_attributes = $this->get_queries_by_attributes( $parsed_block );
+		$queries_by_inherit    = $this->get_queries_by_inherit();
 
 		$query = array_reduce(
 			$queries_by_attributes,
 			function( $acc, $query ) {
 				return $this->merge_queries( $acc, $query );
 			},
-			array(
-				'post_type'      => 'product',
-				'post__in'       => array(),
-				'post_status'    => 'publish',
-				'posts_per_page' => -1,
-				// Ignoring the warning of not using meta queries.
-				// phpcs:ignore WordPress.DB.SlowDBQuery.slow_db_query_meta_query
-				'meta_query'     => array(),
-				// phpcs:ignore WordPress.DB.SlowDBQuery.slow_db_query_tax_query
-				'tax_query'      => array(),
+			array_merge(
+				$queries_by_inherit,
+				array(
+					'post_type'      => 'product',
+					'post__in'       => array(),
+					'post_status'    => 'publish',
+					'posts_per_page' => -1,
+					// Ignoring the warning of not using meta queries.
+					// phpcs:ignore WordPress.DB.SlowDBQuery.slow_db_query_meta_query
+					'meta_query'     => array(),
+					// phpcs:ignore WordPress.DB.SlowDBQuery.slow_db_query_tax_query
+					'tax_query'      => array(),
+				)
 			)
 		);
 
@@ -431,6 +443,21 @@ class ProductQuery extends AbstractBlock {
 			return array_merge( $array1, $array2 );
 		}
 		return array_intersect( $array1, $array2 );
+	}
+
+	/**
+	 * Return a query that filters products by the global query.
+	 *
+	 * @return array
+	 */
+	private function get_queries_by_inherit() {
+		global $wp_query;
+
+		return array(
+			'taxonomy' => isset( $wp_query->query_vars['taxonomy'] ) ? $wp_query->query_vars['taxonomy'] : '',
+			'term'     => isset( $wp_query->query_vars['term'] ) ? $wp_query->query_vars['term'] : '',
+			's'        => isset( $wp_query->query_vars['s'] ) ? $wp_query->query_vars['s'] : '',
+		);
 	}
 
 }
