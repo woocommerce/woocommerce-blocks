@@ -166,6 +166,20 @@ $fontSizes: (
 	text-decoration: underline;
 }
 
+// Reset <button> style so we can use link style for action buttons in filter blocks
+@mixin filter-link-button() {
+	@include link-button();
+	@include font-size(small);
+	text-decoration: underline;
+	font-weight: normal;
+	color: inherit;
+
+	&:hover {
+		text-decoration: none;
+		color: inherit;
+	}
+}
+
 // Makes sure long words are broken if they overflow the container.
 @mixin wrap-break-word() {
 	// This is the current standard, works in most browsers.
