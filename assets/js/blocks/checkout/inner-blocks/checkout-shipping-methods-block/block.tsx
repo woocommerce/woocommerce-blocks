@@ -13,7 +13,10 @@ import { Notice } from 'wordpress-components';
 import classnames from 'classnames';
 import { getSetting } from '@woocommerce/settings';
 import type { PackageRateOption } from '@woocommerce/type-defs/shipping';
-import type { CartShippingPackageShippingRate } from '@woocommerce/type-defs/cart';
+import type {
+	CartShippingRate,
+	CartShippingPackageShippingRate,
+} from '@woocommerce/type-defs/cart';
 
 /**
  * Internal dependencies
@@ -54,6 +57,7 @@ const Block = (): JSX.Element | null => {
 		needsShipping,
 		isLoadingRates,
 		hasCalculatedShipping,
+		isCollectable,
 	} = useShippingData();
 
 	if ( ! needsShipping ) {
@@ -78,6 +82,20 @@ const Block = (): JSX.Element | null => {
 		);
 	}
 
+	const filterNonLocalPickupRates = (
+		shippingRatesToFilter: CartShippingRate[]
+	) => {
+		return shippingRatesToFilter.map( ( shippingRatesPackage ) => {
+			return {
+				...shippingRatesPackage,
+				shipping_rates: shippingRatesPackage.shipping_rates.filter(
+					( shippingRatesPackageRate ) =>
+						shippingRatesPackageRate.method_id !== 'local_pickup'
+				),
+			};
+		} );
+	};
+
 	return (
 		<>
 			{ isEditor && ! shippingRatesPackageCount ? (
@@ -99,7 +117,11 @@ const Block = (): JSX.Element | null => {
 						</Notice>
 					}
 					renderOption={ renderShippingRatesControlOption }
-					shippingRates={ shippingRates }
+					shippingRates={
+						isCollectable
+							? filterNonLocalPickupRates( shippingRates )
+							: shippingRates
+					}
 					isLoadingRates={ isLoadingRates }
 					context="woocommerce/checkout"
 				/>
