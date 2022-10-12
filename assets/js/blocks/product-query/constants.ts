@@ -10,7 +10,7 @@ import { QueryBlockAttributes } from './types';
 
 export const DEFAULT_CORE_ALLOWED_CONTROLS = [ 'order', 'taxQuery', 'search' ];
 
-export const ALL_PRODUCT_QUERY_CONTROLS = [ 'onSale', 'wooinherit' ];
+export const ALL_PRODUCT_QUERY_CONTROLS = [ 'onSale', 'wooInherit' ];
 
 export const DEFAULT_ALLOWED_CONTROLS = [
 	...DEFAULT_CORE_ALLOWED_CONTROLS,
