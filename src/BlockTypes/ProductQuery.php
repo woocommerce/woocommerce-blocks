@@ -42,7 +42,7 @@ class ProductQuery extends AbstractBlock {
 			10,
 			2
 		);
-
+		add_filter( 'rest_product_query', array( $this, 'update_rest_query' ), 10, 2 );
 	}
 
 	/**
@@ -55,7 +55,6 @@ class ProductQuery extends AbstractBlock {
 		return isset( $parsed_block['attrs']['namespace'] )
 		&& substr( $parsed_block['attrs']['namespace'], 0, 11 ) === 'woocommerce';
 	}
-
 
 	/**
 	 * Update the query for the product query block.
@@ -82,6 +81,18 @@ class ProductQuery extends AbstractBlock {
 				1
 			);
 		}
+	}
+
+	/**
+	 * Update the query for the product query block in Editor.
+	 *
+	 * @param array           $args    Query args.
+	 * @param WP_REST_Request $request Request.
+	 */
+	public function update_rest_query( $args, $request ) {
+		$on_sale_query = $request->get_param( '__woocommerceOnSale' ) !== 'true' ? array() : $this->get_on_sale_products_query();
+
+		return array_merge( $args, $on_sale_query );
 	}
 
 	/**
@@ -113,11 +124,11 @@ class ProductQuery extends AbstractBlock {
 
 		$queries_by_attributes = $this->get_queries_by_attributes( $parsed_block );
 		$queries_by_filters    = $this->get_queries_by_applied_filters();
-		$queries_by_inherit    = $this->get_queries_by_inherit();
+		$global_query          = $this->get_global_query( $parsed_block );
 
 		$base_query = array_merge(
 			$common_query_values,
-			$queries_by_inherit
+			$global_query
 		);
 
 		return array_reduce(
@@ -142,7 +153,7 @@ class ProductQuery extends AbstractBlock {
 	 */
 	private function get_products_ids_by_attributes( $parsed_block ) {
 		$queries_by_attributes = $this->get_queries_by_attributes( $parsed_block );
-		$queries_by_inherit    = $this->get_queries_by_inherit();
+		$global_query          = $this->get_global_query( $parsed_block );
 
 		$query = array_reduce(
 			$queries_by_attributes,
@@ -150,7 +161,7 @@ class ProductQuery extends AbstractBlock {
 				return $this->merge_queries( $acc, $query );
 			},
 			array_merge(
-				$queries_by_inherit,
+				$global_query,
 				array(
 					'post_type'      => 'product',
 					'post__in'       => array(),
@@ -448,10 +459,18 @@ class ProductQuery extends AbstractBlock {
 	/**
 	 * Return a query that filters products by the global query.
 	 *
+	 * @param array $parsed_block The Product Query that being rendered.
+	 *
 	 * @return array
 	 */
-	private function get_queries_by_inherit() {
+	private function get_global_query( $parsed_block ) {
 		global $wp_query;
+
+		$inherit_enabled = isset( $parsed_block['attrs']['query']['__woocommerceInherit'] ) && true === $parsed_block['attrs']['query']['__woocommerceInherit'];
+
+		if ( ! $inherit_enabled ) {
+			return array();
+		}
 
 		return array(
 			'taxonomy' => isset( $wp_query->query_vars['taxonomy'] ) ? $wp_query->query_vars['taxonomy'] : '',
