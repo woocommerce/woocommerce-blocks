@@ -21,13 +21,12 @@ const blockConfig: BlockConfiguration = {
 	apiVersion: 2,
 	title,
 	description,
-	parent: [ 'core/group' ],
-	ancestor: [
+	usesContext: [ 'query', 'queryId', 'postId' ],
+	parent: [
 		'@woocommerce/all-products',
 		'@woocommerce/single-product',
 		'core/post-template',
 	],
-	usesContext: [ 'query', 'queryId', 'postId' ],
 	icon: { src: icon },
 	attributes,
 	supports,
