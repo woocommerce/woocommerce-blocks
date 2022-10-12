@@ -27,10 +27,9 @@ if ( ! defined( 'WC_BLOCKS_IS_FEATURE_PLUGIN' ) ) {
 add_action(
 	'before_woocommerce_init',
 	function () {
-		var_dump(plugin_basename(__FILE__));die; // phpcs:ignore
-		if ( class_exists( '\Automattic\WooCommerce\Utilities\FeaturesUtil' ) ) { // phpcs:ignore
-			\Automattic\WooCommerce\Utilities\FeaturesUtil::declare_compatibility( 'custom_order_tables', 'woocommerce-blocks/woocommerce-gutenberg-products-block.php', true ); // phpcs:ignore
-		} // phpcs:ignore
+		if ( class_exists( '\Automattic\WooCommerce\Utilities\FeaturesUtil' ) ) {
+			\Automattic\WooCommerce\Utilities\FeaturesUtil::declare_compatibility( 'custom_order_tables', 'woocommerce-blocks/woocommerce-gutenberg-products-block.php', true );
+		}
 	}
 );
 
