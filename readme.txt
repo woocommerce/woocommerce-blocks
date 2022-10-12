@@ -80,6 +80,10 @@ Release and roadmap notes available on the [WooCommerce Developers Blog](https:/
 
 == Changelog ==
 
+= 8.7.1 - 2022-10-12 =
+
+- Fixed an issue where JavaScript errors would occur when more than one extension tried to filter specific payment methods in the Cart and Checkout blocks. ([7377](https://github.com/woocommerce/woocommerce-blocks/pull/7377))
+
 = 8.7.0 - 2022-10-10 =
 
 #### Enhancements
