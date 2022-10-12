@@ -23,14 +23,14 @@ $minimum_wp_version = '6.0';
 if ( ! defined( 'WC_BLOCKS_IS_FEATURE_PLUGIN' ) ) {
 	define( 'WC_BLOCKS_IS_FEATURE_PLUGIN', true );
 }
-
 // Declare compatibility with custom order tables for WooCommerce.
 add_action(
 	'before_woocommerce_init',
 	function () {
-		if ( class_exists( '\Automattic\WooCommerce\Utilities\FeaturesUtil' ) ) {
-			\Automattic\WooCommerce\Utilities\FeaturesUtil::declare_compatibility( 'custom_order_tables', 'woocommerce-blocks/woocommerce-gutenberg-products-block.php', true );
-		}
+		var_dump(plugin_basename(__FILE__));die; // phpcs:ignore
+		if ( class_exists( '\Automattic\WooCommerce\Utilities\FeaturesUtil' ) ) { // phpcs:ignore
+			\Automattic\WooCommerce\Utilities\FeaturesUtil::declare_compatibility( 'custom_order_tables', 'woocommerce-blocks/woocommerce-gutenberg-products-block.php', true ); // phpcs:ignore
+		} // phpcs:ignore
 	}
 );
 
