@@ -13,10 +13,7 @@ import { Notice } from 'wordpress-components';
 import classnames from 'classnames';
 import { getSetting } from '@woocommerce/settings';
 import type { PackageRateOption } from '@woocommerce/type-defs/shipping';
-import type {
-	CartShippingRate,
-	CartShippingPackageShippingRate,
-} from '@woocommerce/type-defs/cart';
+import type { CartShippingPackageShippingRate } from '@woocommerce/type-defs/cart';
 
 /**
  * Internal dependencies
@@ -60,6 +57,19 @@ const Block = (): JSX.Element | null => {
 		isCollectable,
 	} = useShippingData();
 
+	const filteredShippingRates = isCollectable
+		? shippingRates.map( ( shippingRatesPackage ) => {
+				return {
+					...shippingRatesPackage,
+					shipping_rates: shippingRatesPackage.shipping_rates.filter(
+						( shippingRatesPackageRate ) =>
+							shippingRatesPackageRate.method_id !==
+							'local_pickup'
+					),
+				};
+		  } )
+		: shippingRates;
+
 	if ( ! needsShipping ) {
 		return null;
 	}
@@ -82,20 +92,6 @@ const Block = (): JSX.Element | null => {
 		);
 	}
 
-	const filterNonLocalPickupRates = (
-		shippingRatesToFilter: CartShippingRate[]
-	) => {
-		return shippingRatesToFilter.map( ( shippingRatesPackage ) => {
-			return {
-				...shippingRatesPackage,
-				shipping_rates: shippingRatesPackage.shipping_rates.filter(
-					( shippingRatesPackageRate ) =>
-						shippingRatesPackageRate.method_id !== 'local_pickup'
-				),
-			};
-		} );
-	};
-
 	return (
 		<>
 			{ isEditor && ! shippingRatesPackageCount ? (
@@ -117,11 +113,7 @@ const Block = (): JSX.Element | null => {
 						</Notice>
 					}
 					renderOption={ renderShippingRatesControlOption }
-					shippingRates={
-						isCollectable
-							? filterNonLocalPickupRates( shippingRates )
-							: shippingRates
-					}
+					shippingRates={ filteredShippingRates }
 					isLoadingRates={ isLoadingRates }
 					context="woocommerce/checkout"
 				/>
