@@ -4,9 +4,6 @@
 import { isString } from '@woocommerce/types';
 import { getUrlParameter } from '@woocommerce/utils';
 
-/**
- * Internal dependencies
- */
 export const getActiveFilters = ( queryParamKey = 'filter_rating' ) => {
 	const params = getUrlParameter( queryParamKey );
 

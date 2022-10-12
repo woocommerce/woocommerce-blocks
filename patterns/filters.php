@@ -47,7 +47,7 @@
 <!-- /wp:woocommerce/attribute-filter --></div>
 <!-- /wp:woocommerce/filter-wrapper -->
 
-<!-- wp:woocommerce/filter-wrapper {"filterType":"rating-filter","heading":"Filter by rating"} -->
+<!-- wp:woocommerce/filter-wrapper {"filterType":"rating-filter"} -->
 <div class="wp-block-woocommerce-filter-wrapper"><!-- wp:heading {"level":3} -->
 <h3><?php esc_html_e( 'Filter by rating', 'woo-gutenberg-products-block' ); ?></h3>
 <!-- /wp:heading -->

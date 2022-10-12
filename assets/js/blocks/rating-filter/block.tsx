@@ -276,7 +276,6 @@ const RatingFilterBlock = ( {
 
 	return (
 		<>
-			{ ! isEditor }
 			<div
 				className={ classnames( 'wc-block-rating-filter', {
 					'is-loading': isLoading,

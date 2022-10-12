@@ -139,7 +139,7 @@ registerBlockType( metadata, {
 			name: 'rating-filter',
 			title: __( 'Filter by Rating', 'woo-gutenberg-products-block' ),
 			description: __(
-				'Allow customers to filter the grid by products rating.',
+				'Enable customers to filter the product grid by rating.',
 				'woo-gutenberg-products-block'
 			),
 			isActive: ( attributes ) =>
