@@ -3,6 +3,11 @@
  */
 import type { EditorBlock } from '@woocommerce/types';
 
+// The interface below disables the forbidden underscores
+// naming convention because we are namespacing our
+// custom attributes inside a core block. Prefixing with underscores
+// will help signify our intentions.
+/* eslint-disable @typescript-eslint/naming-convention */
 export interface ProductQueryArguments {
 	/**
 	 * Display only products on sale.
@@ -27,27 +32,15 @@ export interface ProductQueryArguments {
 	 * )
 	 * ```
 	 */
-	// Disabling naming convention because we are namespacing our
-	// custom attributes inside a core block. Prefixing with underscores
-	// will help signify our intentions.
-	// eslint-disable-next-line @typescript-eslint/naming-convention
 	__woocommerceOnSale?: boolean;
+	/**
+	 * Filter products by their stock status.
+	 */
+	__woocommerceStockStatus?: string[];
 }
+/* eslint-enable */
 
 export type ProductQueryBlock = EditorBlock< QueryBlockAttributes >;
-
-export interface ProductQueryAttributes {
-	/**
-	 * An array of controls to disable in the inspector.
-	 *
-	 * @example  `[ 'stockStatus' ]`  will not render the dropdown for stock status.
-	 */
-	disabledInspectorControls?: string[];
-	/**
-	 * Query attributes that define which products will be fetched.
-	 */
-	query?: ProductQueryArguments;
-}
 
 export interface QueryBlockAttributes {
 	allowControls?: string[];

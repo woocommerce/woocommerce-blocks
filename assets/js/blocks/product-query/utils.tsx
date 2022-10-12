@@ -37,6 +37,15 @@ export function isWooQueryBlockVariation( block: ProductQueryBlock ) {
 }
 
 /**
+ * Returns an object without a key.
+ */
+export function objectOmit< T, K extends keyof T >( obj: T, key: K ) {
+	const { [ key ]: omit, ...rest } = obj;
+
+	return rest;
+}
+
+/**
  * Sets the new query arguments of a Product Query block
  *
  * Because we add a new set of deeply nested attributes to the query

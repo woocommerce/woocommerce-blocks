@@ -1,21 +1,33 @@
 /**
  * External dependencies
  */
+import { getSetting } from '@woocommerce/settings';
 import type { InnerBlockTemplate } from '@wordpress/blocks';
 
 /**
  * Internal dependencies
  */
 import { QueryBlockAttributes } from './types';
+import { objectOmit } from './utils';
 
 export const DEFAULT_CORE_ALLOWED_CONTROLS = [ 'order', 'taxQuery', 'search' ];
 
-export const ALL_PRODUCT_QUERY_CONTROLS = [ 'onSale' ];
+export const ALL_PRODUCT_QUERY_CONTROLS = [ 'onSale', 'stockStatus' ];
 
 export const DEFAULT_ALLOWED_CONTROLS = [
 	...DEFAULT_CORE_ALLOWED_CONTROLS,
 	...ALL_PRODUCT_QUERY_CONTROLS,
 ];
+
+export const STOCK_STATUS_OPTIONS = getSetting< Record< string, string > >(
+	'stockStatusOptions',
+	[]
+);
+
+const GLOBAL_HIDE_OUT_OF_STOCK = getSetting< boolean >(
+	'hideOutOfStockItems',
+	false
+);
 
 export const QUERY_DEFAULT_ATTRIBUTES: QueryBlockAttributes = {
 	allowControls: DEFAULT_ALLOWED_CONTROLS,
@@ -35,6 +47,9 @@ export const QUERY_DEFAULT_ATTRIBUTES: QueryBlockAttributes = {
 		exclude: [],
 		sticky: '',
 		inherit: false,
+		__woocommerceStockStatus: GLOBAL_HIDE_OUT_OF_STOCK
+			? Object.keys( objectOmit( STOCK_STATUS_OPTIONS, 'outofstock' ) )
+			: Object.keys( STOCK_STATUS_OPTIONS ),
 	},
 };
 
