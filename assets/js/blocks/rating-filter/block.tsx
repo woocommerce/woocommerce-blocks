@@ -225,13 +225,14 @@ const RatingFilterBlock = ( {
 						value: item?.rating?.toString(),
 					};
 				},
-				[ productRatingsArray, blockAttributes.showCounts ]
+				[ blockAttributes.showCounts ]
 			);
 
 		setDisplayedOptions( newOptions );
 	}, [
 		blockAttributes.showCounts,
 		blockAttributes.isPreview,
+		productRatingsArray,
 		filteredCounts,
 		filteredCountsLoading,
 	] );
