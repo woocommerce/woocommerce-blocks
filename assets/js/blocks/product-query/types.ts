@@ -42,6 +42,8 @@ export interface ProductQueryArguments {
 
 export type ProductQueryBlock = EditorBlock< QueryBlockAttributes >;
 
+export type ProductQueryBlockQuery = QueryBlockQuery & ProductQueryArguments;
+
 export interface QueryBlockAttributes {
 	allowControls?: string[];
 	displayLayout?: {
@@ -49,7 +51,7 @@ export interface QueryBlockAttributes {
 		columns?: number;
 	};
 	namespace?: string;
-	query: QueryBlockQuery & ProductQueryArguments;
+	query: ProductQueryBlockQuery;
 }
 
 export interface QueryBlockQuery {

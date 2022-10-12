@@ -8,7 +8,17 @@ import type { InnerBlockTemplate } from '@wordpress/blocks';
  * Internal dependencies
  */
 import { QueryBlockAttributes } from './types';
-import { objectOmit } from './utils';
+
+/**
+ * Returns an object without a key.
+ */
+function objectOmit< T, K extends keyof T >( obj: T, key: K ) {
+	const { [ key ]: omit, ...rest } = obj;
+
+	return rest;
+}
+
+export const QUERY_LOOP_ID = 'core/query';
 
 export const DEFAULT_CORE_ALLOWED_CONTROLS = [ 'order', 'taxQuery', 'search' ];
 

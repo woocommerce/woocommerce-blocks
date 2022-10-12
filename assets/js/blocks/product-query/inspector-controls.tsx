@@ -4,6 +4,7 @@
 import { ElementType } from 'react';
 import { __ } from '@wordpress/i18n';
 import { InspectorControls } from '@wordpress/block-editor';
+import { useSelect } from '@wordpress/data';
 import { addFilter } from '@wordpress/hooks';
 import { EditorBlock } from '@woocommerce/types';
 import {
@@ -18,13 +19,51 @@ import {
 /**
  * Internal dependencies
  */
-import { ProductQueryBlock } from './types';
+import {
+	ProductQueryArguments,
+	ProductQueryBlock,
+	QueryBlockAttributes,
+} from './types';
 import {
 	isWooQueryBlockVariation,
 	setCustomQueryAttribute,
 	useAllowedControls,
 } from './utils';
-import { STOCK_STATUS_OPTIONS } from './constants';
+import {
+	ALL_PRODUCT_QUERY_CONTROLS,
+	QUERY_LOOP_ID,
+	STOCK_STATUS_OPTIONS,
+} from './constants';
+
+const NAMESPACED_CONTROLS = ALL_PRODUCT_QUERY_CONTROLS.map(
+	( id ) =>
+		`__woocommerce${ id[ 0 ].toUpperCase() }${ id.slice(
+			1
+		) }` as keyof ProductQueryArguments
+);
+
+function useDefaultWooQueryParamsForVariation(
+	variationName: string | undefined
+): Partial< ProductQueryArguments > {
+	const variationAttributes: QueryBlockAttributes = useSelect(
+		( select ) =>
+			select( 'core/blocks' )
+				.getBlockVariations( QUERY_LOOP_ID )
+				.find(
+					( variation: ProductQueryBlock ) =>
+						variation.name === variationName
+				)?.attributes
+	);
+
+	return variationAttributes
+		? Object.assign(
+				{},
+				...NAMESPACED_CONTROLS.map( ( key ) => ( {
+					[ key ]: variationAttributes.query[ key ],
+				} ) )
+		  )
+		: {};
+}
 
 /**
  * Gets the id of a specific stock status from its text label
@@ -109,6 +148,9 @@ export const withProductQueryControls =
 	< T extends EditorBlock< T > >( BlockEdit: ElementType ) =>
 	( props: ProductQueryBlock ) => {
 		const allowedControls = useAllowedControls( props.attributes );
+		const defaultWooQueryParams = useDefaultWooQueryParamsForVariation(
+			props.attributes.namespace
+		);
 
 		return isWooQueryBlockVariation( props ) ? (
 			<>
@@ -120,6 +162,12 @@ export const withProductQueryControls =
 							'Product filters',
 							'woo-gutenberg-products-block'
 						) }
+						resetAll={ () => {
+							setCustomQueryAttribute(
+								props,
+								defaultWooQueryParams
+							);
+						} }
 					>
 						{ Object.entries( INSPECTOR_CONTROLS ).map(
 							( [ key, Control ] ) =>
@@ -135,4 +183,4 @@ export const withProductQueryControls =
 		);
 	};
 
-addFilter( 'editor.BlockEdit', 'core/query', withProductQueryControls );
+addFilter( 'editor.BlockEdit', QUERY_LOOP_ID, withProductQueryControls );
