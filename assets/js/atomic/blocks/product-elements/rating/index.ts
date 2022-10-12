@@ -2,6 +2,7 @@
  * External dependencies
  */
 import { registerBlockType } from '@wordpress/blocks';
+import type { BlockConfiguration } from '@wordpress/blocks';
 
 /**
  * Internal dependencies
@@ -16,7 +17,7 @@ import {
 } from './constants';
 import { supports } from './support';
 
-const blockConfig = {
+const blockConfig: BlockConfiguration = {
 	apiVersion: 2,
 	title,
 	description,
