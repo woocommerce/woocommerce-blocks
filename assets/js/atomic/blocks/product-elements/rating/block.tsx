@@ -13,7 +13,6 @@ import {
 	useTypographyProps,
 } from '@woocommerce/base-hooks';
 import { withProductDataContext } from '@woocommerce/shared-hocs';
-// import { ProductResponseItem } from '@woocommerce/types';
 
 /**
  * Internal dependencies
