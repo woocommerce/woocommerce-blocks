@@ -13,6 +13,7 @@ import {
 	useTypographyProps,
 } from '@woocommerce/base-hooks';
 import { withProductDataContext } from '@woocommerce/shared-hocs';
+import { isNumber } from '@woocommerce/types';
 
 /**
  * Internal dependencies
@@ -23,14 +24,26 @@ type Props = {
 	className?: string;
 };
 
-const getAverageRating = ( product ) => {
+const getAverageRating = (
+	// TODO: This is a workaround until we can confirm the correct type from ProductResponseItem.
+	product: Record< string, unknown > & {
+		average_rating: string;
+	}
+) => {
 	const rating = parseFloat( product.average_rating );
 
 	return Number.isFinite( rating ) && rating > 0 ? rating : 0;
 };
 
-const getRatingCount = ( product ) => {
-	const count = parseInt( product.review_count, 10 );
+const getRatingCount = (
+	// TODO: This is a workaround until we can confirm the correct type from ProductResponseItem.
+	product: Record< string, unknown > & {
+		review_count: number | string;
+	}
+) => {
+	const count = isNumber( product.review_count )
+		? product.review_count
+		: parseInt( product.review_count, 10 );
 
 	return Number.isFinite( count ) && count > 0 ? count : 0;
 };
