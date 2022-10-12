@@ -225,7 +225,7 @@ const RatingFilterBlock = ( {
 						value: item?.rating?.toString(),
 					};
 				},
-				[ blockAttributes.showCounts ]
+				[ productRatingsArray, blockAttributes.showCounts ]
 			);
 
 		setDisplayedOptions( newOptions );
@@ -253,7 +253,7 @@ const RatingFilterBlock = ( {
 			}
 			setChecked( newChecked );
 		},
-		[ checked, displayedOptions ]
+		[ checked ]
 	);
 
 	if ( ! filteredCountsLoading && displayedOptions.length === 0 ) {
