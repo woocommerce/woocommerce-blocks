@@ -5,7 +5,14 @@ import { __ } from '@wordpress/i18n';
 import { registerBlockType } from '@wordpress/blocks';
 import { toggle } from '@woocommerce/icons';
 import { useBlockProps, useInnerBlocksProps } from '@wordpress/block-editor';
-import { Icon, category, currencyDollar, box } from '@wordpress/icons';
+import {
+	Icon,
+	category,
+	currencyDollar,
+	box,
+	starEmpty,
+} from '@wordpress/icons';
+import { isFeaturePluginBuild } from '@woocommerce/block-settings';
 
 /**
  * Internal dependencies
@@ -29,7 +36,7 @@ registerBlockType( metadata, {
 				'woo-gutenberg-products-block'
 			),
 			description: __(
-				'Show the currently active product filters. Works in combination with other filters blocks.',
+				'Display the currently active product filters.',
 				'woo-gutenberg-products-block'
 			),
 			/**
@@ -58,7 +65,7 @@ registerBlockType( metadata, {
 			name: 'price-filter',
 			title: __( 'Filter by Price', 'woo-gutenberg-products-block' ),
 			description: __(
-				'Allow customers to filter products by price range.',
+				'Enable customers to filter the product grid by choosing a price range.',
 				'woo-gutenberg-products-block'
 			),
 			isActive: ( attributes ) =>
@@ -83,7 +90,7 @@ registerBlockType( metadata, {
 			name: 'stock-filter',
 			title: __( 'Filter by Stock', 'woo-gutenberg-products-block' ),
 			description: __(
-				'Allow customers to filter the grid by products stock status.',
+				'Enable customers to filter the product grid by stock status.',
 				'woo-gutenberg-products-block'
 			),
 			isActive: ( attributes ) =>
@@ -108,7 +115,7 @@ registerBlockType( metadata, {
 			name: 'attribute-filter',
 			title: __( 'Filter by Attribute', 'woo-gutenberg-products-block' ),
 			description: __(
-				'Allow customers to filter the grid by product attribute, such as color.',
+				'Enable customers to filter the product grid by selecting one or more attributes, such as color.',
 				'woo-gutenberg-products-block'
 			),
 			isActive: ( attributes ) =>
@@ -128,6 +135,33 @@ registerBlockType( metadata, {
 					/>
 				),
 			},
+		},
+		{
+			...( isFeaturePluginBuild() && {
+				name: 'rating-filter',
+				title: __( 'Filter by Rating', 'woo-gutenberg-products-block' ),
+				description: __(
+					'Enable customers to filter the product grid by rating.',
+					'woo-gutenberg-products-block'
+				),
+				isActive: ( attributes ) =>
+					attributes.filterType === 'rating-filter',
+				attributes: {
+					filterType: 'rating-filter',
+					heading: __(
+						'Filter by rating',
+						'woo-gutenberg-products-block'
+					),
+				},
+				icon: {
+					src: (
+						<Icon
+							icon={ starEmpty }
+							className="wc-block-editor-components-block-icon"
+						/>
+					),
+				},
+			} ),
 		},
 	],
 } );
