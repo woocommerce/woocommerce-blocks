@@ -6,8 +6,6 @@ import {
 	BlockControls,
 	store as blockEditorStore,
 } from '@wordpress/block-editor';
-import { previewCart } from '@woocommerce/resource-previews';
-import { EditorProvider } from '@woocommerce/base-context';
 import { addFilter, hasFilter } from '@wordpress/hooks';
 import { filledCart, removeCart } from '@woocommerce/icons';
 import { Icon } from '@wordpress/icons';
@@ -36,8 +34,10 @@ const withViewSwitcher = createHigherOrderComponent(
 	( BlockEdit ) => ( props ) => {
 		const { clientId } = props;
 
-		const { currentView, component: ViewSwitcherComponent } =
-			useViewSwitcher( clientId, cartViews );
+		const { component: ViewSwitcherComponent } = useViewSwitcher(
+			clientId,
+			cartViews
+		);
 		const { isCartBlock } = useSelect( ( select ) => {
 			const { getBlockName } = select( blockEditorStore );
 			const currentBlockName = getBlockName( clientId );
@@ -48,15 +48,10 @@ const withViewSwitcher = createHigherOrderComponent(
 
 		return (
 			<>
-				<EditorProvider
-					currentView={ currentView }
-					previewData={ { previewCart } }
-				>
-					{ ! isCartBlock && (
-						<BlockControls>{ ViewSwitcherComponent }</BlockControls>
-					) }
-					<BlockEdit { ...props } />
-				</EditorProvider>
+				{ ! isCartBlock && (
+					<BlockControls>{ ViewSwitcherComponent }</BlockControls>
+				) }
+				<BlockEdit { ...props } />
 			</>
 		);
 	},
