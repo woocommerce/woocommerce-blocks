@@ -200,32 +200,27 @@ const RatingFilterBlock = ( {
 			.filter(
 				( item ) => isObject( item ) && Object.keys( item ).length > 0
 			)
-			.map(
-				( item ) => {
-					return {
-						label: (
-							<Rating
-								className={
-									Array.from( productRatings ).includes(
-										item?.rating?.toString()
-									)
-										? 'is-active'
-										: ''
-								}
-								key={ item?.rating }
-								rating={ item?.rating }
-								ratedProductsCount={
-									blockAttributes.showCounts
-										? item?.count
-										: null
-								}
-							/>
-						),
-						value: item?.rating?.toString(),
-					};
-				},
-				[ productRatings, blockAttributes.showCounts ]
-			);
+			.map( ( item ) => {
+				return {
+					label: (
+						<Rating
+							className={
+								Array.from( productRatings ).includes(
+									item?.rating?.toString()
+								)
+									? 'is-active'
+									: ''
+							}
+							key={ item?.rating }
+							rating={ item?.rating }
+							ratedProductsCount={
+								blockAttributes.showCounts ? item?.count : null
+							}
+						/>
+					),
+					value: item?.rating?.toString(),
+				};
+			} );
 
 		setDisplayedOptions( newOptions );
 	}, [
