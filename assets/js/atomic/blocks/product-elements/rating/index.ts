@@ -22,7 +22,7 @@ const blockConfig: BlockConfiguration = {
 	title,
 	description,
 	usesContext: [ 'query', 'queryId', 'postId' ],
-	parent: [
+	ancestor: [
 		'@woocommerce/all-products',
 		'@woocommerce/single-product',
 		'core/post-template',
