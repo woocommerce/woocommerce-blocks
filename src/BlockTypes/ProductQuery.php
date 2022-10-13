@@ -119,7 +119,6 @@ class ProductQuery extends AbstractBlock {
 			},
 			$common_query_values
 		);
-
 	}
 
 
@@ -145,7 +144,7 @@ class ProductQuery extends AbstractBlock {
 			// phpcs:ignore WordPress.DB.SlowDBQuery.slow_db_query_meta_query
 			'meta_query' => array(
 				'key'     => '_stock_status',
-				'value'   => array_merge( [ '' ], $stock_statii ),
+				'value'   => (array) $stock_statii,
 				'compare' => 'IN',
 			),
 		);
@@ -183,7 +182,7 @@ class ProductQuery extends AbstractBlock {
 
 		return array(
 			'on_sale'      => ( $on_sale_enabled ? $this->get_on_sale_products_query() : array() ),
-			'stock_status' => $this->get_stock_status_query( $query['__woocommerceStockStatus'] ),
+			'stock_status' => isset( $query['__woocommerceStockStatus'] ) ? $this->get_stock_status_query( $query['__woocommerceStockStatus'] ) : array(),
 		);
 	}
 
