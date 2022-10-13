@@ -26,7 +26,8 @@
 		"./assets/js/blocks/filter-wrapper/register-components.ts",
 		"./assets/js/blocks/product-query/variations/**.tsx",
 		"./assets/js/blocks/product-query/index.tsx",
-		"./assets/js/blocks/product-query/inspector-controls.tsx"
+		"./assets/js/blocks/product-query/inspector-controls.tsx",
+		"./assets/js/blocks/cart-checkout-shared/view-switcher/index.tsx"
 	],
 	"repository": {
 		"type": "git",

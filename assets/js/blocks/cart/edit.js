@@ -29,6 +29,7 @@ import {
 	BlockSettings,
 } from '../cart-checkout-shared';
 import '../cart-checkout-shared/sidebar-notices';
+import '../cart-checkout-shared/view-switcher';
 import { CartBlockContext } from './context';
 
 // This is adds a class to body to signal if the selected block is locked
