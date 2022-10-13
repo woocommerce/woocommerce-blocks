@@ -35,6 +35,16 @@ export interface ProductQueryArguments {
 	__woocommerceOnSale?: boolean;
 	/**
 	 * Filter products by their stock status.
+	 *
+	 * Will generate the following `meta_query`:
+	 *
+	 * ```
+	 * array(
+	 *   'key'     => '_stock_status',
+	 *   'value'   => (array) $stock_statii,
+	 *   'compare' => 'IN',
+	 * ),
+	 * ```
 	 */
 	__woocommerceStockStatus?: string[];
 }
