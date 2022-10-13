@@ -90,8 +90,6 @@ const RatingFilterBlock = ( {
 		initialFilters
 	);
 
-	const productRatingsArray: string[] = Array.from( productRatings );
-
 	/**
 	 * Used to redirect the page when filters are changed so templates using the Classic Template block can filter.
 	 *
@@ -208,7 +206,7 @@ const RatingFilterBlock = ( {
 						label: (
 							<Rating
 								className={
-									productRatingsArray.includes(
+									Array.from( productRatings ).includes(
 										item?.rating?.toString()
 									)
 										? 'is-active'
@@ -226,7 +224,7 @@ const RatingFilterBlock = ( {
 						value: item?.rating?.toString(),
 					};
 				},
-				[ productRatingsArray, blockAttributes.showCounts ]
+				[ productRatings, blockAttributes.showCounts ]
 			);
 
 		setDisplayedOptions( newOptions );
@@ -235,6 +233,7 @@ const RatingFilterBlock = ( {
 		blockAttributes.isPreview,
 		filteredCounts,
 		filteredCountsLoading,
+		productRatings,
 	] );
 
 	/**
