@@ -38,11 +38,11 @@ const withViewSwitcher = createHigherOrderComponent(
 
 		const { currentView, component: ViewSwitcherComponent } =
 			useViewSwitcher( clientId, cartViews );
-		const { isParentBlock } = useSelect( ( select ) => {
+		const { isCartBlock } = useSelect( ( select ) => {
 			const { getBlockName } = select( blockEditorStore );
 			const currentBlockName = getBlockName( clientId );
 			return {
-				isParentBlock: currentBlockName === 'woocommerce/cart',
+				isCartBlock: currentBlockName === 'woocommerce/cart',
 			};
 		} );
 
@@ -52,7 +52,7 @@ const withViewSwitcher = createHigherOrderComponent(
 					currentView={ currentView }
 					previewData={ { previewCart } }
 				>
-					{ ! isParentBlock && (
+					{ ! isCartBlock && (
 						<BlockControls>{ ViewSwitcherComponent }</BlockControls>
 					) }
 					<BlockEdit { ...props } />
