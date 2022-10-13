@@ -74,7 +74,7 @@ export function useAllowedControls(
 			select( WP_BLOCKS_STORE ).getActiveBlockVariation(
 				QUERY_LOOP_ID,
 				attributes
-			)?.allowControls,
+			)?.allowedControls,
 
 		[ attributes ]
 	);
