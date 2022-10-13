@@ -253,9 +253,9 @@ const RatingFilterBlock = ( {
 				newChecked.sort();
 				speak(
 					sprintf(
-						/* translators: Rated %s (for example: '5'...) */
+						/* translators: %s is referring to the average rating value */
 						__(
-							'Rated %s filter added.',
+							'Rated %s out of 5 filter added.',
 							'woo-gutenberg-products-block'
 						),
 						checkedValue
@@ -264,9 +264,9 @@ const RatingFilterBlock = ( {
 			} else {
 				speak(
 					sprintf(
-						/* translators: Rated %s (for example: '5'...) */
+						/* translators: %s is referring to the average rating value */
 						__(
-							'Rated %s filter removed.',
+							'Rated %s out of 5 filter removed.',
 							'woo-gutenberg-products-block'
 						),
 						checkedValue
