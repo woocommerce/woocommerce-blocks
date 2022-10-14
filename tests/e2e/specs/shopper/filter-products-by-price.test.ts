@@ -227,9 +227,9 @@ describe( `${ block.name } Block`, () => {
 		} );
 	} );
 
-	// *
-	// * @todo Remove this logic when WordPress 6.1 is released. This is a temporary fix because WP 6.0 doesn't ship the necessary changes to make it work properly the Product Query block.
-	// */
+	/*
+	 * @todo Remove this logic when WordPress 6.1 is released. This is a temporary fix because WP 6.0 doesn't ship the necessary changes to make it work properly the Product Query block.
+	 */
 	describeOrSkip( GUTENBERG_EDITOR_CONTEXT === 'gutenberg' )(
 		'with Product Query Block',
 		() => {
