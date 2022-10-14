@@ -223,8 +223,11 @@ describe( `${ block.name } Block`, () => {
 		} );
 	} );
 
+	/*
+	 * @todo Remove this logic when WordPress 6.1 is released. This is a temporary fix because WP 6.0 doesn't ship the necessary changes to make it work properly the Product Query block.
+	 */
 	describeOrSkip( GUTENBERG_EDITOR_CONTEXT === 'gutenberg' )(
-		'with PHP classic template ',
+		'with Product Query Block',
 		() => {
 			let editorPageUrl = '';
 			let frontedPageUrl = '';
@@ -298,9 +301,8 @@ describe( `${ block.name } Block`, () => {
 
 			it( 'should refresh the page only if the user click on button', async () => {
 				await page.goto( editorPageUrl );
-
-				await selectBlockByName( block.slug );
 				await openBlockEditorSettings( { isFSEEditor: false } );
+				await selectBlockByName( block.slug );
 				const [ filterButtonToggle ] = await page.$x(
 					block.selectors.editor.filterButtonToggle
 				);
