@@ -428,6 +428,12 @@ export const openBlockEditorSettings = async ( { isFSEEditor = false } ) => {
 		// @ts-ignore
 		await page.$eval( buttonSelector, ( el ) => el.click() );
 	}
+
+	const blockSettingSelector = isFSEEditor
+		? 'button.edit-site-sidebar__panel-tab[data-label="Block"]'
+		: 'button.edit-post-sidebar__panel-tab[data-label="Block"]';
+
+	await page.$eval( blockSettingSelector, ( el ) => el.click() );
 };
 
 /**

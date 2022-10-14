@@ -15,13 +15,15 @@ import { selectBlockByName } from '@woocommerce/blocks-test-utils';
  */
 import {
 	BASE_URL,
+	describeOrSkip,
 	goToTemplateEditor,
+	GUTENBERG_EDITOR_CONTEXT,
 	openBlockEditorSettings,
 	saveTemplate,
 	useTheme,
 	waitForAllProductsBlockLoaded,
 } from '../../utils';
-import { clickLink } from '../../../utils';
+import { clickLink, saveOrPublish } from '../../../utils';
 
 const block = {
 	name: 'Filter by Price',
@@ -35,6 +37,7 @@ const block = {
 		frontend: {
 			priceMaxAmount: '.wc-block-price-filter__amount--max',
 			productsList: '.wc-block-grid__products > li',
+			queryProductsList: '.wp-block-post-template > li',
 			classicProductsList: '.products.columns-3 > li',
 			submitButton: '.wc-block-components-filter-submit-button',
 		},
@@ -223,4 +226,123 @@ describe( `${ block.name } Block`, () => {
 			);
 		} );
 	} );
+
+	// *
+	// * @todo Remove this logic when WordPress 6.1 is released. This is a temporary fix because WP 6.0 doesn't ship the necessary changes to make it work properly the Product Query block.
+	// */
+	describeOrSkip( GUTENBERG_EDITOR_CONTEXT === 'gutenberg' )(
+		'with Product Query Block',
+		() => {
+			let editorPageUrl = '';
+			let frontedPageUrl = '';
+			beforeAll( async () => {
+				await switchUserToAdmin();
+				await createNewPost( {
+					postType: 'post',
+					title: block.name,
+				} );
+
+				await insertBlock( 'Product Query' );
+				await insertBlock( block.name );
+				await insertBlock( 'Active Product Filters' );
+				await page.waitForNetworkIdle();
+				await publishPost();
+
+				editorPageUrl = page.url();
+				frontedPageUrl = await page.evaluate( () =>
+					wp.data.select( 'core/editor' ).getPermalink()
+				);
+				await page.goto( frontedPageUrl );
+			} );
+
+			it( 'should render', async () => {
+				const products = await page.$$(
+					selectors.frontend.queryProductsList
+				);
+
+				expect( products ).toHaveLength( 5 );
+			} );
+
+			it( 'should show only products that match the filter', async () => {
+				const isRefreshed = jest.fn( () => void 0 );
+				page.on( 'load', isRefreshed );
+
+				await page.waitForSelector( block.class + '.is-loading', {
+					hidden: true,
+				} );
+
+				await expect( page ).toMatch( block.foundProduct );
+				expect( isRefreshed ).not.toBeCalled();
+
+				await Promise.all( [
+					setMaxPrice(),
+					page.waitForNavigation(),
+				] );
+
+				await page.waitForSelector(
+					selectors.frontend.queryProductsList
+				);
+				const products = await page.$$(
+					selectors.frontend.queryProductsList
+				);
+
+				const pageURL = page.url();
+				const parsedURL = new URL( pageURL );
+
+				expect( isRefreshed ).toBeCalledTimes( 1 );
+				expect( products ).toHaveLength( 1 );
+
+				expect( parsedURL.search ).toEqual(
+					block.urlSearchParamWhenFilterIsApplied
+				);
+				await expect( page ).toMatch( block.foundProduct );
+			} );
+
+			it( 'should refresh the page only if the user click on button', async () => {
+				await page.goto( editorPageUrl );
+
+				await openBlockEditorSettings( { isFSEEditor: false } );
+				await selectBlockByName( block.slug );
+				await page.waitForXPath(
+					block.selectors.editor.filterButtonToggle
+				);
+				const [ filterButtonToggle ] = await page.$x(
+					block.selectors.editor.filterButtonToggle
+				);
+				await filterButtonToggle.click();
+
+				await saveOrPublish();
+				await page.goto( frontedPageUrl );
+
+				const isRefreshed = jest.fn( () => void 0 );
+				page.on( 'load', isRefreshed );
+				await page.waitForSelector( block.class + '.is-loading', {
+					hidden: true,
+				} );
+				expect( isRefreshed ).not.toBeCalled();
+
+				await setMaxPrice();
+
+				await clickLink( selectors.frontend.submitButton );
+
+				await page.waitForSelector(
+					selectors.frontend.queryProductsList
+				);
+
+				const products = await page.$$(
+					selectors.frontend.queryProductsList
+				);
+
+				const pageURL = page.url();
+				const parsedURL = new URL( pageURL );
+
+				expect( isRefreshed ).toBeCalledTimes( 1 );
+				expect( products ).toHaveLength( 1 );
+				await expect( page ).toMatch( block.foundProduct );
+				expect( parsedURL.search ).toEqual(
+					block.urlSearchParamWhenFilterIsApplied
+				);
+			} );
+		}
+	);
 } );
