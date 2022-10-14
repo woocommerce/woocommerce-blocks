@@ -3,7 +3,7 @@
  */
 import { __ } from '@wordpress/i18n';
 import { useBlockProps } from '@wordpress/block-editor';
-import type { ProductQueryContext as Context } from '@woocommerce/type-defs/contexts';
+import { BlockEditProps } from '@wordpress/blocks';
 import { useEffect } from 'react';
 
 /**
@@ -13,14 +13,13 @@ import Block from './block';
 import withProductSelector from '../shared/with-product-selector';
 import { BLOCK_TITLE, BLOCK_ICON } from './constants';
 import { Attributes } from './types';
+import { ProductQueryContext as Context } from '../../../../blocks/product-query/types';
 
-interface Props {
-	attributes: Attributes;
-	setAttributes: ( attributes: Record< string, unknown > ) => void;
-	context: Context;
-}
-
-const Edit = ( { attributes, setAttributes, context }: Props ): JSX.Element => {
+const Edit = ( {
+	attributes,
+	setAttributes,
+	context,
+}: BlockEditProps< Attributes > & { context: Context } ): JSX.Element => {
 	const blockProps = useBlockProps( {
 		className: 'wp-block-woocommerce-product-rating',
 	} );
