@@ -4,7 +4,7 @@ Tags: gutenberg, woocommerce, woo commerce, products, blocks, woocommerce blocks
 Requires at least: 6.0
 Tested up to: 6.0
 Requires PHP: 7.0
-Stable tag: 8.7.2
+Stable tag: 8.8.0-dev
 License: GPLv3
 License URI: https://www.gnu.org/licenses/gpl-3.0.html
 
@@ -41,7 +41,6 @@ Use this plugin if you want access to the bleeding edge of available blocks for 
 - **Products by Tag**
 - **Reviews by Category**
 - **Reviews by Product**
-- **Single Product**
 - **Top Rated Products**
 
 == Getting Started ==
