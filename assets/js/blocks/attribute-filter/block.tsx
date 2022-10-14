@@ -537,7 +537,7 @@ const AttributeFilterBlock = ( {
 	setWrapperVisibility( true );
 
 	const getIsApplyButtonDisabled = () => {
-		if ( termsLoading || countsLoading || checked.length === 0 ) {
+		if ( termsLoading || countsLoading ) {
 			return true;
 		}
 
