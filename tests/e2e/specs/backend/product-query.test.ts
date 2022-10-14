@@ -10,7 +10,7 @@ import {
 	setPostContent,
 	insertBlock,
 } from '@wordpress/e2e-test-utils';
-import { visitBlockPage } from '@woocommerce/blocks-test-utils';
+import { visitBlockPage, saveOrPublish } from '@woocommerce/blocks-test-utils';
 
 /**
  * Internal dependencies
@@ -20,6 +20,7 @@ import {
 	GUTENBERG_EDITOR_CONTEXT,
 	describeOrSkip,
 } from '../../utils';
+import { shopper } from '../../../utils';
 
 const block = {
 	name: 'Product Query',
@@ -96,6 +97,47 @@ describeOrSkip( GUTENBERG_EDITOR_CONTEXT === 'gutenberg' )(
 						text: 'Show only products on sale',
 					}
 				);
+			} );
+		} );
+
+		describe( 'Can add atomic blocks', () => {
+			beforeAll( async () => {
+				await visitBlockPage( `${ block.name } Block` );
+			} );
+
+			afterAll( async () => {
+				await visitBlockPage( `${ block.name } Block` );
+				await setPostContent( '' );
+				await insertBlock( 'Product Query' );
+				await saveOrPublish();
+			} );
+
+			it( 'Can add add to cart button to query block', async () => {
+				const canvasEl = canvas();
+				await canvasEl.waitForSelector(
+					`${ block.class } .wp-block-woocommerce-product-image a img`
+				);
+				const postTitleEl = await canvasEl.$(
+					`${ block.class } .wp-block-post-title`
+				);
+				await postTitleEl.click();
+				await insertBlock( 'Add to Cart Button' );
+				await expect( canvasEl ).toMatchElement( block.class, {
+					text: 'Add to cart',
+				} );
+				await saveOrPublish();
+
+				await shopper.block.goToBlockPage( block.name );
+				await page.waitForSelector(
+					`${ block.class } > ul.wp-block-post-template`
+				);
+				await expect( page ).toMatchElement( block.class, {
+					text: 'Add to cart',
+				} );
+				await expect( page ).toClick( 'a', {
+					text: 'Add to cart',
+				} );
+				await shopper.block.goToCart();
 			} );
 		} );
 	}
