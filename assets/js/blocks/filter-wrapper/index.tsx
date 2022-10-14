@@ -20,6 +20,97 @@ import {
 import edit from './edit';
 import metadata from './block.json';
 
+const filterBlocksWidgets = [
+	{
+		widgetId: 'woocommerce_layered_nav_filters',
+		name: 'active-filters',
+		heading: __( 'Active filters', 'woo-gutenberg-products-block' ),
+	},
+	{
+		widgetId: 'woocommerce_price_filter',
+		name: 'price-filter',
+		heading: __( 'Filter by price', 'woo-gutenberg-products-block' ),
+	},
+	{
+		widgetId: 'woocommerce_layered_nav',
+		name: 'attribute-filter',
+		heading: __( 'Filter by attribute', 'woo-gutenberg-products-block' ),
+	},
+	{
+		widgetId: 'woocommerce_rating_filter',
+		name: 'rating-filter',
+		heading: __( 'Filter by rating', 'woo-gutenberg-products-block' ),
+	},
+];
+
+const getTransformAttributes = ( instance, filterType: string ) => {
+	switch ( filterType ) {
+		case 'attribute-filter':
+			return {
+				attributeId: 0,
+				showCounts: true,
+				queryType: instance?.raw?.query_type || 'or',
+				heading: '',
+				displayStyle: instance?.raw?.display_type || 'list',
+				showFilterButton: false,
+				selectType: instance?.raw?.select_type || 'multiple',
+				isPreview: false,
+			};
+		case 'active-filters':
+			return {
+				displayStyle: 'list',
+				heading: '',
+			};
+		case 'price-filter':
+			return {
+				heading: '',
+				showInputFields: false,
+				showFilterButton: true,
+				inlineInput: false,
+			};
+		default:
+			return {};
+	}
+};
+
+const isFilterWidget = ( widgetId: string ) =>
+	filterBlocksWidgets
+		.map( ( item ) => item.widgetId )
+		.filter( Boolean )
+		.includes( widgetId );
+
+const getFilterBlockObject = ( widgetId: string ) => {
+	const filterBlock = filterBlocksWidgets.find(
+		( item ) => item.widgetId === widgetId
+	);
+	return filterBlock;
+};
+
+const transformFilterBlock = (
+	filterType: string,
+	attributes: Record< string, unknown >,
+	title: string
+) => {
+	const filterWrapperInnerBlocks: BlockInstance[] = [
+		createBlock( `woocommerce/${ filterType }`, attributes ),
+	];
+
+	filterWrapperInnerBlocks.unshift(
+		createBlock( 'core/heading', {
+			content: title,
+			level: 3,
+		} )
+	);
+
+	return createBlock(
+		'woocommerce/filter-wrapper',
+		{
+			filterType,
+		},
+		filterWrapperInnerBlocks
+	);
+};
+
 registerBlockType( metadata, {
 	edit,
 	save() {
@@ -169,35 +260,17 @@ registerBlockType( metadata, {
 				blocks: [ 'core/legacy-widget' ],
 				// We can't transform if raw instance isn't shown in the REST API.
 				isMatch: ( { idBase, instance } ) =>
-					idBase === 'woocommerce_price_filter' && !! instance?.raw,
-				transform: ( { instance } ) => {
-					const filterWrapperInnerBlocks: BlockInstance[] = [
-						createBlock( `woocommerce/price-filter`, {
-							heading: '',
-							showInputFields: false,
-							showFilterButton: true,
-							inlineInput: false,
-						} ),
-					];
-
-					filterWrapperInnerBlocks.unshift(
-						createBlock( 'core/heading', {
-							content:
-								instance?.raw?.title ||
-								__(
-									'Filter by price',
-									'woo-gutenberg-products-block'
-								),
-							level: 3,
-						} )
-					);
-
-					createBlock(
-						'woocommerce/filter-wrapper',
-						{
-							filterType: 'price-filter',
-						},
-						[ ...filterWrapperInnerBlocks ]
+					isFilterWidget( idBase ) && !! instance?.raw,
+				transform: ( { idBase, instance } ) => {
+					const filterBlockObject = getFilterBlockObject( idBase );
+					if ( ! filterBlockObject ) return null;
+					return transformFilterBlock(
+						filterBlockObject.name,
+						getTransformAttributes(
+							instance,
+							filterBlockObject.name
+						),
+						instance?.raw?.title || filterBlockObject.heading
 					);
 				},
 			},
