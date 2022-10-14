@@ -42,7 +42,7 @@ class ProductQuery extends AbstractBlock {
 			10,
 			2
 		);
-
+		add_filter( 'rest_product_query', array( $this, 'update_rest_query' ), 10, 2 );
 	}
 
 	/**
@@ -55,7 +55,6 @@ class ProductQuery extends AbstractBlock {
 		return isset( $parsed_block['attrs']['namespace'] )
 		&& substr( $parsed_block['attrs']['namespace'], 0, 11 ) === 'woocommerce';
 	}
-
 
 	/**
 	 * Update the query for the product query block.
@@ -81,6 +80,18 @@ class ProductQuery extends AbstractBlock {
 				1
 			);
 		}
+	}
+
+	/**
+	 * Update the query for the product query block in Editor.
+	 *
+	 * @param array           $args    Query args.
+	 * @param WP_REST_Request $request Request.
+	 */
+	public function update_rest_query( $args, $request ) {
+		$on_sale_query = $request->get_param( '__woocommerceOnSale' ) !== 'true' ? array() : $this->get_on_sale_products_query();
+
+		return array_merge( $args, $on_sale_query );
 	}
 
 	/**
@@ -132,7 +143,6 @@ class ProductQuery extends AbstractBlock {
 		);
 
 	}
-
 
 	/**
 	 * Return a query for on sale products.
@@ -239,7 +249,7 @@ class ProductQuery extends AbstractBlock {
 		$max_price_query = empty( $max_price ) ? array() : [
 			'key'     => '_price',
 			'value'   => $max_price,
-			'compare' => '<=',
+			'compare' => '<',
 			'type'    => 'numeric',
 		];
 

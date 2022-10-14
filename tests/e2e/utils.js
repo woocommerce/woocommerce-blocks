@@ -40,6 +40,7 @@ export const client = HTTPClientFactory.build( BASE_URL )
 export const GUTENBERG_EDITOR_CONTEXT =
 	process.env.GUTENBERG_EDITOR_CONTEXT || 'core';
 export const DEFAULT_TIMEOUT = 30000;
+export const SHOP_CHECKOUT_BLOCK_PAGE = BASE_URL + 'checkout-block/';
 
 const SELECTORS = {
 	canvas: 'iframe[name="editor-canvas"]',
@@ -62,9 +63,6 @@ const SELECTORS = {
 		confirmSave: '.editor-entities-saved-states__save-button',
 		saveButton: '.edit-site-save-button__button',
 		savePrompt: '.entities-saved-states__text-prompt',
-	},
-	allProductsBlock: {
-		productsList: '.wc-block-grid__products:not(.is-loading-products)',
 	},
 };
 
@@ -430,13 +428,24 @@ export const openBlockEditorSettings = async ( { isFSEEditor = false } ) => {
 		// @ts-ignore
 		await page.$eval( buttonSelector, ( el ) => el.click() );
 	}
+
+	const blockSettingSelector = isFSEEditor
+		? 'button.edit-site-sidebar__panel-tab[data-label="Block"]'
+		: 'button.edit-post-sidebar__panel-tab[data-label="Block"]';
+
+	await page.$eval( blockSettingSelector, ( el ) => el.click() );
 };
 
 /**
  *  Wait for all Products Block is loaded completely: when the skeleton disappears, and the products are visible
  */
 export const waitForAllProductsBlockLoaded = async () => {
-	await page.waitForSelector( SELECTORS.allProductsBlock.productsList );
+	await page.waitForSelector(
+		'.wc-block-grid__products.is-loading-products'
+	);
+	await page.waitForSelector(
+		'.wc-block-grid__products:not(.is-loading-products)'
+	);
 };
 
 /**
