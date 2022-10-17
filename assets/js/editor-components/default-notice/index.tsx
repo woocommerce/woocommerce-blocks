@@ -223,8 +223,10 @@ export function IncompatibilityPaymentGatewaysNotice() {
 		>
 			<p>{ noticeContent }</p>
 			<ul>
-				{ IncompatibilityPaymentGateways.map( ( { title, id } ) => (
-					<li key={ id }>{ title }</li>
+				{ IncompatibilityPaymentGateways.map( ( title, index ) => (
+					<li key={ index }>
+						<strong>- { title }</strong>
+					</li>
 				) ) }
 			</ul>
 		</Notice>
