@@ -12,6 +12,7 @@ import { CartCheckoutSidebarCompatibilityNotice } from '@woocommerce/editor-comp
 import {
 	DefaultNotice,
 	LegacyNotice,
+	IncompatibilityPaymentGatewaysNotice,
 } from '@woocommerce/editor-components/default-notice';
 import { useSelect } from '@wordpress/data';
 import { CartCheckoutFeedbackPrompt } from '@woocommerce/editor-components/feedback-prompt';
@@ -71,6 +72,7 @@ const withSidebarNotices = createHigherOrderComponent(
 			<>
 				{ ( isCart || isCheckout ) && (
 					<InspectorControls>
+						<IncompatibilityPaymentGatewaysNotice />
 						{ isWcVersion( '6.9.0', '>=' ) ? (
 							<DefaultNotice
 								block={ isCheckout ? 'checkout' : 'cart' }

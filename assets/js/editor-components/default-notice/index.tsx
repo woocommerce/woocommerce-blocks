@@ -17,6 +17,7 @@ import { getAdminLink } from '@woocommerce/settings';
 /**
  * Internal dependencies
  */
+import { STORE_KEY as PAYMENT_STORE_KEY } from '../../data/payment/constants';
 import './editor.scss';
 
 export function DefaultNotice( { block }: { block: string } ) {
@@ -186,6 +187,46 @@ export function LegacyNotice( { block }: { block: string } ) {
 					),
 				}
 			) }
+		</Notice>
+	);
+}
+
+export function IncompatibilityPaymentGatewaysNotice() {
+	// Everything below works the same for Cart/Checkout
+	const { IncompatibilityPaymentGateways } = useSelect( ( select ) => {
+		const { getIncompatiblePaymentMethodData } =
+			select( PAYMENT_STORE_KEY );
+		return {
+			IncompatibilityPaymentGateways: getIncompatiblePaymentMethodData(),
+		};
+	}, [] );
+	const [ settingStatus, setStatus ] = useState( 'pristine' );
+
+	if (
+		IncompatibilityPaymentGateways.length === 0 ||
+		settingStatus === 'dismissed'
+	) {
+		return null;
+	}
+
+	const noticeContent = __(
+		'The following payment gateway(s) are not compatible with the Cart & Checkout Blocks:',
+		'woo-gutenberg-products-block'
+	);
+
+	return (
+		<Notice
+			className="wc-default-page-notice"
+			status={ 'error' }
+			onRemove={ () => setStatus( 'dismissed' ) }
+			spokenMessage={ noticeContent }
+		>
+			<p>{ noticeContent }</p>
+			<ul>
+				{ IncompatibilityPaymentGateways.map( ( { title, id } ) => (
+					<li key={ id }>{ title }</li>
+				) ) }
+			</ul>
 		</Notice>
 	);
 }
