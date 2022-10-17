@@ -92,7 +92,7 @@ class Legacy {
 		$local_pickups  = array_filter(
 			$all_methods,
 			function( $method ) {
-				return 'local_pickup' === $method->id;
+				return 'local_pickup' === $method->id || 'pickup_location' === $method->id;
 			}
 		);
 		return array_merge( $shipping_methods, $local_pickups );

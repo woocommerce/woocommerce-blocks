@@ -25,7 +25,10 @@ export function getShippingPrices(
 					lowestRate: CartShippingPackageShippingRate | undefined,
 					currentRate: CartShippingPackageShippingRate
 				) => {
-					if ( currentRate.method_id === 'local_pickup' ) {
+					if (
+						currentRate.method_id === 'local_pickup' ||
+						currentRate.method_id === 'pickup_location'
+					) {
 						return lowestRate;
 					}
 					if (
@@ -43,7 +46,10 @@ export function getShippingPrices(
 					highestRate: CartShippingPackageShippingRate | undefined,
 					currentRate: CartShippingPackageShippingRate
 				) => {
-					if ( currentRate.method_id === 'local_pickup' ) {
+					if (
+						currentRate.method_id === 'local_pickup' ||
+						currentRate.method_id === 'pickup_location'
+					) {
 						return highestRate;
 					}
 					if (
@@ -81,7 +87,10 @@ export function getLocalPickupPrices(
 					lowestRate: CartShippingPackageShippingRate | undefined,
 					currentRate: CartShippingPackageShippingRate
 				) => {
-					if ( currentRate.method_id !== 'local_pickup' ) {
+					if (
+						currentRate.method_id !== 'local_pickup' &&
+						currentRate.method_id !== 'pickup_location'
+					) {
 						return lowestRate;
 					}
 					if (
@@ -99,7 +108,10 @@ export function getLocalPickupPrices(
 					highestRate: CartShippingPackageShippingRate | undefined,
 					currentRate: CartShippingPackageShippingRate
 				) => {
-					if ( currentRate.method_id !== 'local_pickup' ) {
+					if (
+						currentRate.method_id !== 'local_pickup' &&
+						currentRate.method_id !== 'pickup_location'
+					) {
 						return highestRate;
 					}
 					if (

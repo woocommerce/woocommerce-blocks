@@ -64,7 +64,9 @@ const Block = (): JSX.Element | null => {
 					shipping_rates: shippingRatesPackage.shipping_rates.filter(
 						( shippingRatesPackageRate ) =>
 							shippingRatesPackageRate.method_id !==
-							'local_pickup'
+								'local_pickup' &&
+							shippingRatesPackageRate.method_id !==
+								'pickup_location'
 					),
 				};
 		  } )

@@ -6,15 +6,15 @@ use WC_Shipping_Method;
 /**
  * Local Pickup Shipping Method.
  */
-class LocalPickup extends WC_Shipping_Method {
+class PickupLocation extends WC_Shipping_Method {
 
 	/**
 	 * Constructor.
 	 */
 	public function __construct() {
-		$this->id                 = 'blocks_local_pickup';
-		$this->method_title       = __( 'Local pickup', 'woo-gutenberg-products-block' );
-		$this->method_description = __( 'Allows users to choose local pickup locations during checkout.', 'woo-gutenberg-products-block' );
+		$this->id                 = 'pickup_location';
+		$this->method_title       = __( 'Pickup Locations', 'woo-gutenberg-products-block' );
+		$this->method_description = __( 'Allow customers to choose a local pickup location during checkout.', 'woo-gutenberg-products-block' );
 		$this->init();
 	}
 
@@ -46,14 +46,13 @@ class LocalPickup extends WC_Shipping_Method {
 				$this->add_rate(
 					array(
 						'id'          => $this->id . ':' . sanitize_key( $location['name'] ),
-						'label'       => $this->title . ' (' . wp_kses_post( $location['name'] ) . ')',
+						'label'       => $this->title,
 						'package'     => $package,
 						'cost'        => $this->cost,
 						'description' => $location['details'],
 						'meta_data'   => array(
-							'pickup_location_name'    => wp_kses_post( $location['name'] ),
-							'pickup_location_address' => $location['address'],
-							'pickup_location_details' => $location['details'],
+							'pickup_location' => wp_kses_post( $location['name'] ),
+							'pickup_address'  => $location['address'],
 						),
 					)
 				);
@@ -154,12 +153,10 @@ class LocalPickup extends WC_Shipping_Method {
 			return $label;
 		}
 		switch ( $name ) {
-			case 'pickup_location_name':
+			case 'pickup_location':
 				return __( 'Pickup Location', 'woo-gutenberg-products-block' );
-			case 'pickup_location_address':
+			case 'pickup_address':
 				return __( 'Pickup Address', 'woo-gutenberg-products-block' );
-			case 'pickup_location_details':
-				return __( 'Pickup Details', 'woo-gutenberg-products-block' );
 		}
 		return $label;
 	}
