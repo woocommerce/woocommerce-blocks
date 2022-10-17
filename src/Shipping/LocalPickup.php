@@ -45,11 +45,12 @@ class LocalPickup extends WC_Shipping_Method {
 			foreach ( $this->pickup_locations as $location ) {
 				$this->add_rate(
 					array(
-						'id'        => $this->id . ':' . sanitize_key( $location['name'] ),
-						'label'     => $this->title . ' (' . wp_kses_post( $location['name'] ) . ')',
-						'package'   => $package,
-						'cost'      => $this->cost,
-						'meta_data' => array(
+						'id'          => $this->id . ':' . sanitize_key( $location['name'] ),
+						'label'       => $this->title . ' (' . wp_kses_post( $location['name'] ) . ')',
+						'package'     => $package,
+						'cost'        => $this->cost,
+						'description' => $location['details'],
+						'meta_data'   => array(
 							'pickup_location_name'    => wp_kses_post( $location['name'] ),
 							'pickup_location_address' => $location['address'],
 							'pickup_location_details' => $location['details'],
