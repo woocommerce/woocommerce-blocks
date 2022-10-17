@@ -48,7 +48,7 @@ class LocalPickup extends WC_Shipping_Method {
 						'id'        => $this->id . ':' . sanitize_key( $location['name'] ),
 						'label'     => $this->title . ' (' . wp_kses_post( $location['name'] ) . ')',
 						'package'   => $package,
-						'cost'      => wc_format_decimal( $location['cost'] ),
+						'cost'      => $this->cost,
 						'meta_data' => array(
 							'pickup_location_name'    => wp_kses_post( $location['name'] ),
 							'pickup_location_address' => $location['address'],
@@ -119,24 +119,6 @@ class LocalPickup extends WC_Shipping_Method {
 	}
 
 	/**
-	 * Row for the settings table.
-	 *
-	 * @param array $location Location data.
-	 * @return string
-	 */
-	protected function pickup_location_row( $location = [] ) {
-		ob_start();
-		?>
-		<td class="sort" width="1%"></td>
-		<td><input type="text" name="locationName[]" value="<?php echo esc_attr( $location['name'] ?? '' ); ?>" /></td>
-		<td><input type="text" name="locationAddress[]" value="<?php echo esc_attr( $location['address'] ?? '' ); ?>" /></td>
-		<td><input type="text" name="details[]" value="<?php echo esc_attr( $location['details'] ?? '' ); ?>" /></td>
-		<td><input type="text" name="cost[]" value="<?php echo esc_attr( $location['cost'] ?? '' ); ?>" placeholder="<?php echo esc_html( wc_format_decimal( 0 ) ); ?>" /></td>
-		<?php
-		return ob_get_clean(); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
-	}
-
-	/**
 	 * Process options in admin.
 	 */
 	public function process_admin_options() {
@@ -150,7 +132,7 @@ class LocalPickup extends WC_Shipping_Method {
 				'name'    => $location_name,
 				'address' => wc_clean( wp_unslash( $_POST['locationAddress'][ $index ] ?? '' ) ), // phpcs:ignore WordPress.Security.NonceVerification.Missing
 				'details' => wc_clean( wp_unslash( $_POST['details'][ $index ] ?? '' ) ), // phpcs:ignore WordPress.Security.NonceVerification.Missing
-				'cost'    => wc_format_decimal( wc_clean( wp_unslash( $_POST['cost'][ $index ] ?? '' ) ) ), // phpcs:ignore WordPress.Security.NonceVerification.Missing
+				'enabled' => wc_string_to_bool( wp_unslash( $_POST['locationEnabled'][ $index ] ?? 1 ) ) ? 1 : 0, // phpcs:ignore WordPress.Security.NonceVerification.Missing
 			];
 		}
 
@@ -198,21 +180,20 @@ class LocalPickup extends WC_Shipping_Method {
 				</label>
 			</th>
 			<td class="">
-				<table class="widefat wc_input_table sortable">
+				<table class="wc-local-pickup-locations wc_shipping widefat sortable">
 					<thead>
 						<tr>
-							<th class="wc-shipping-zone-method-sort"></th>
-							<th class="wc-shipping-zone-method-title"><?php esc_html_e( 'Location Name', 'woo-gutenberg-products-block' ); ?></th>
-							<th class="wc-shipping-zone-method-enabled"><?php esc_html_e( 'Location Address', 'woo-gutenberg-products-block' ); ?></th>
-							<th class="wc-shipping-zone-method-enabled"><?php esc_html_e( 'Collection Details', 'woo-gutenberg-products-block' ); ?></th>
-							<th class="wc-shipping-zone-method-enabled"><?php esc_html_e( 'Cost', 'woo-gutenberg-products-block' ); ?></th>
+							<th class="wc-local-pickup-location-sort"><?php echo wc_help_tip( __( 'Drag and drop to re-order your pickup locations.', 'woo-gutenberg-products-block' ) ); ?></th>
+							<th class="wc-local-pickup-location-name"><?php esc_html_e( 'Location Name', 'woo-gutenberg-products-block' ); ?></th>
+							<th class="wc-local-pickup-location-enabled"><?php esc_html_e( 'Enabled', 'woo-gutenberg-products-block' ); ?></th>
+							<th class="wc-local-pickup-location-address"><?php esc_html_e( 'Pickup Address', 'woo-gutenberg-products-block' ); ?></th>
+							<th class="wc-local-pickup-location-details"><?php esc_html_e( 'Pickup Details', 'woo-gutenberg-products-block' ); ?></th>
 						</tr>
 					</thead>
 					<tfoot>
 						<tr>
 							<th colspan="5">
 								<button type="button" class="add button"><?php esc_html_e( 'Add pickup location', 'woo-gutenberg-products-block' ); ?></button>
-								<button type="button" class="button minus remove_rows"><?php esc_html_e( 'Remove selected', 'woo-gutenberg-products-block' ); ?></button>
 							</th>
 						</tr>
 					</tfoot>
@@ -230,25 +211,149 @@ class LocalPickup extends WC_Shipping_Method {
 		</tr>
 	</tbody>
 </table>
+<style>
+	.wc-local-pickup-locations thead th {
+		vertical-align: middle;
+	}
+	.wc-local-pickup-locations tbody td {
+		border-top: 2px solid #f9f9f9;
+	}
+	.wc-local-pickup-locations tbody tr:nth-child( odd ) td {
+		background: #f9f9f9;
+	}
+	td.wc-local-pickup-location-sort {
+		cursor: move;
+		font-size: 15px;
+		text-align: center;
+	}
+	td.wc-local-pickup-location-sort::before {
+		content: '\f333';
+		font-family: 'Dashicons';
+		text-align: center;
+		line-height: 1;
+		color: #999;
+		display: block;
+		width: 17px;
+		float: left;
+		height: 100%;
+		line-height: 24px;
+	}
+	td.wc-local-pickup-location-sort:hover::before {
+		color: #333;
+	}
+	.wc-local-pickup-location-enabled {
+		text-align: center;
+	}
+	.wc-local-pickup-locations .wc-local-pickup-location-name,
+	.wc-local-pickup-locations .wc-local-pickup-location-address,
+	.wc-local-pickup-locations .wc-local-pickup-location-details {
+		width: 25%;
+	}
+	#pickup_locations .wc-local-pickup-locations .editable input {
+		border-color: transparent;
+		background: transparent;
+		width: 100%;
+		padding: 0;
+		margin: 0;
+		height: auto;
+		min-height: auto;
+		line-height: 24px;
+		text-overflow: ellipsis;
+	}
+	#pickup_locations .wc-local-pickup-locations .editable input:focus {
+		background: transparent;
+		padding: 0 8px;
+	}
+	#pickup_locations .wc-local-pickup-locations tr .row-actions {
+		position: relative;
+	}
+	#pickup_locations .wc-local-pickup-locations tr:hover .row-actions {
+		position: static;
+	}
+</style>
 <script type="text/javascript">
 	function insertRow() {
-		let tableRef = document.querySelectorAll('#pickup_locations table')[0];
-		var tbodyRef = tableRef.getElementsByTagName('tbody')[0];
+		var tbodyRef = document.querySelectorAll('#pickup_locations table tbody')[0];
 		let size = tbodyRef.getElementsByTagName('tr').length;
 		let newRow = tbodyRef.insertRow( size );
-		let blankRow = '<?php echo esc_js( $this->pickup_location_row() ); ?>';
 		var txt = document.createElement('textarea');
-		txt.innerHTML = blankRow;
+		txt.innerHTML = '<?php echo esc_js( $this->pickup_location_row() ); ?>';
 		newRow.innerHTML = txt.value;
 	}
 
-	var button = document.querySelectorAll("#pickup_locations button.add")[0];
+	var locationsTable = document.querySelectorAll("table.wc-local-pickup-locations")[0];
+	var addButton = document.querySelectorAll("#pickup_locations button.add")[0];
 
-	button.addEventListener( "click", function(e) {
+	addButton.addEventListener( "click", function(e) {
 		insertRow();
 		return false;
 	}, false );
+
+	locationsTable.addEventListener( "click", function(event) {
+		const deleteButton = event.target.closest('button.delete');
+		const enabledToggleButton = event.target.closest('button.enabled-toggle-button');
+
+		if (deleteButton !== null) {
+			deleteButton.parentElement.parentElement.parentElement.remove();
+			return false;
+		}
+
+		if (enabledToggleButton !== null) {
+			var toggleDisplay = enabledToggleButton.parentElement.querySelectorAll(".woocommerce-input-toggle")[0];
+			var toggleInput = enabledToggleButton.parentElement.querySelectorAll("input")[0];
+
+			if ( toggleDisplay.classList.contains("woocommerce-input-toggle--enabled") ) {
+				toggleInput.value = 0;
+				toggleDisplay.classList.add("woocommerce-input-toggle--disabled");
+				toggleDisplay.classList.remove("woocommerce-input-toggle--enabled");
+				toggleDisplay.textContent = "<?php echo esc_js( 'No', 'woo-gutenberg-products-block' ); ?>";
+			} else {
+				toggleInput.value = 1;
+				toggleDisplay.classList.remove("woocommerce-input-toggle--disabled");
+				toggleDisplay.classList.add("woocommerce-input-toggle--enabled");
+				toggleDisplay.textContent = "<?php echo esc_js( 'Yes', 'woo-gutenberg-products-block' ); ?>";
+			}
+			return false;
+		}
+
+		return true;
+	}, false );
 </script>
 		<?php
+	}
+
+	/**
+	 * Row for the settings table.
+	 *
+	 * @param array $location Location data.
+	 * @return string
+	 */
+	protected function pickup_location_row( $location = [] ) {
+		ob_start();
+		?>
+		<td width="1%" class="wc-local-pickup-location-sort sort"></td>
+		<td class="wc-local-pickup-location-name editable">
+			<input type="text" name="locationName[]" value="<?php echo esc_attr( $location['name'] ?? '' ); ?>" placeholder="<?php esc_attr_e( 'New location', 'woo-gutenberg-products-block' ); ?>" />
+			<div class="row-actions">
+				<button type="button" class="delete button-link button-link-delete"><?php esc_html_e( 'Delete', 'woo-gutenberg-products-block' ); ?></button>
+			</div>
+		</td>
+		<td width="1%" class="wc-local-pickup-location-enabled">
+			<button type="button" class="enabled-toggle-button button-link">
+				<?php
+				echo ! empty( $location['enabled'] )
+					? '<span class="woocommerce-input-toggle woocommerce-input-toggle--enabled">' . esc_html__( 'Yes', 'woo-gutenberg-products-block' ) . '</span><input type="hidden" name="locationEnabled[]" value="1" />'
+					: '<span class="woocommerce-input-toggle woocommerce-input-toggle--disabled">' . esc_html__( 'No', 'woo-gutenberg-products-block' ) . '</span><input type="hidden" name="locationEnabled[]" value="0" />';
+				?>
+			</button>
+		</td>
+		<td class="wc-local-pickup-location-address editable">
+			<input type="text" name="locationAddress[]" value="<?php echo esc_attr( $location['address'] ?? '' ); ?>" placeholder="&mdash;" />
+		</td>
+		<td class="wc-local-pickup-location-details editable">
+			<input type="text" name="details[]" value="<?php echo esc_attr( $location['details'] ?? '' ); ?>" placeholder="&mdash;" />
+		</td>
+		<?php
+		return ob_get_clean(); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
 	}
 }
