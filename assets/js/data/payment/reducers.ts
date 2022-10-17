@@ -73,7 +73,14 @@ const reducer: Reducer< PaymentState > = (
 			};
 			break;
 
-		case ACTION_TYPES.SET_PAYMENT_RESULT:
+		case ACTION_TYPES.SET_INCOMPATIBLE_PAYMENT_METHODS:
+			newState = {
+				...state,
+				incompatiblePaymentMethods: action.incompatiblePaymentMethods,
+			};
+			break;
+
+		case ACTION_TYPES.SET_PAYMENT_STATUS:
 			newState = {
 				...state,
 				paymentResult: action.data as PaymentResult,

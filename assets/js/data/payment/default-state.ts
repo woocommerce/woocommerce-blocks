@@ -26,6 +26,7 @@ export interface PaymentState {
 		| EmptyObjectType;
 	paymentMethodData: Record< string, unknown >;
 	paymentResult: PaymentResult | null;
+	incompatiblePaymentMethods: Array< string >;
 	paymentMethodsInitialized: boolean;
 	expressPaymentMethodsInitialized: boolean;
 	shouldSavePaymentMethod: boolean;
@@ -40,6 +41,7 @@ export const defaultPaymentState: PaymentState = {
 		Record< string, SavedPaymentMethod[] > | EmptyObjectType
 	>( 'customerPaymentMethods', {} ),
 	paymentMethodData: {},
+	incompatiblePaymentMethods: [],
 	paymentResult: null,
 	paymentMethodsInitialized: false,
 	expressPaymentMethodsInitialized: false,

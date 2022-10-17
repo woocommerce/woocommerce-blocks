@@ -66,6 +66,12 @@ export const getPaymentMethodData = ( state: PaymentState ) => {
 	return state.paymentMethodData;
 };
 
+export const getIncompatiblePaymentMethodData = (
+	state: PaymentMethodDataState
+) => {
+	return state.incompatiblePaymentMethods;
+};
+
 export const getSavedPaymentMethods = ( state: PaymentState ) => {
 	return state.savedPaymentMethods;
 };
