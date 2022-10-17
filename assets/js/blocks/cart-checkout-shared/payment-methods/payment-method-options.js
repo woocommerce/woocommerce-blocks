@@ -11,6 +11,7 @@ import classNames from 'classnames';
 import RadioControlAccordion from '@woocommerce/base-components/radio-control-accordion';
 import { useDispatch, useSelect } from '@wordpress/data';
 import { getPaymentMethods } from '@woocommerce/blocks-registry';
+import { allSettings } from '@woocommerce/settings';
 
 /**
  * Internal dependencies
@@ -41,13 +42,24 @@ const PaymentMethodOptions = () => {
 			availablePaymentMethods: store.getAvailablePaymentMethods(),
 		};
 	} );
-	const { __internalSetActivePaymentMethod } =
+	const { __internalSetActivePaymentMethod, setIncompatiblePaymentMethods } =
 		useDispatch( PAYMENT_STORE_KEY );
 	const paymentMethods = getPaymentMethods();
 	const { ...paymentMethodInterface } = usePaymentMethodInterface();
 	const { removeNotice } = useDispatch( 'core/notices' );
 	const { dispatchCheckoutEvent } = useStoreEvents();
 	const { isEditor } = useEditorContext();
+	const incompatiblePaymentMethods = allSettings.globalPaymentMethods.reduce(
+		( acc, curr ) => {
+			if ( ! paymentMethods[ curr.id ] ) {
+				acc.push( curr.title );
+			}
+
+			return acc;
+		},
+		[]
+	);
+	setIncompatiblePaymentMethods( incompatiblePaymentMethods );
 
 	const options = Object.keys( availablePaymentMethods ).map( ( name ) => {
 		const { edit, content, label, supports } = paymentMethods[ name ];
