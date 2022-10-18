@@ -43,6 +43,9 @@ class PickupLocation extends WC_Shipping_Method {
 	public function calculate_shipping( $package = array() ) {
 		if ( $this->pickup_locations ) {
 			foreach ( $this->pickup_locations as $location ) {
+				if ( ! $location['enabled'] ) {
+					continue;
+				}
 				$this->add_rate(
 					array(
 						'id'          => $this->id . ':' . sanitize_key( $location['name'] ),
@@ -133,7 +136,7 @@ class PickupLocation extends WC_Shipping_Method {
 				'name'    => $location_name,
 				'address' => wc_clean( wp_unslash( $_POST['locationAddress'][ $index ] ?? '' ) ), // phpcs:ignore WordPress.Security.NonceVerification.Missing
 				'details' => wc_clean( wp_unslash( $_POST['details'][ $index ] ?? '' ) ), // phpcs:ignore WordPress.Security.NonceVerification.Missing
-				'enabled' => wc_string_to_bool( wp_unslash( $_POST['locationEnabled'][ $index ] ?? 1 ) ) ? 1 : 0, // phpcs:ignore WordPress.Security.NonceVerification.Missing
+				'enabled' => wc_string_to_bool( wc_clean( wp_unslash( $_POST['locationEnabled'][ $index ] ?? 1 ) ) ) ? 1 : 0, // phpcs:ignore WordPress.Security.NonceVerification.Missing
 			];
 		}
 
