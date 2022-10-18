@@ -20,6 +20,7 @@ const FrontendBlock = ( {
 	showStepNumber,
 	children,
 	className,
+	useShippingAsBillingAttribute,
 }: {
 	title: string;
 	description: string;
@@ -61,6 +62,7 @@ const FrontendBlock = ( {
 				showApartmentField={ showApartmentField }
 				showCompanyField={ showCompanyField }
 				showPhoneField={ showPhoneField }
+				useShippingAsBillingAttribute={ useShippingAsBillingAttribute }
 			/>
 			{ children }
 		</FormStep>

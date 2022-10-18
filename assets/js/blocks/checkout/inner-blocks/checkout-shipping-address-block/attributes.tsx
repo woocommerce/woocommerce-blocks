@@ -20,6 +20,10 @@ export default {
 		type: 'string',
 		default: '',
 	},
+	useShippingAsBillingAttribute: {
+		type: 'boolean',
+		default: true,
+	},
 	lock: {
 		type: 'object',
 		default: {

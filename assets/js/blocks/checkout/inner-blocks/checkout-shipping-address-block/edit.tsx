@@ -28,6 +28,7 @@ export const Edit = ( {
 		description: string;
 		showStepNumber: boolean;
 		className: string;
+		useShippingAsBillingAttribute: boolean;
 	};
 	setAttributes: ( attributes: Record< string, unknown > ) => void;
 } ): JSX.Element => {
@@ -56,6 +57,10 @@ export const Edit = ( {
 				requireCompanyField={ requireCompanyField }
 				showPhoneField={ showPhoneField }
 				requirePhoneField={ requirePhoneField }
+				setAttributes={ setAttributes }
+				useShippingAsBillingAttribute={
+					attributes.useShippingAsBillingAttribute
+				}
 			/>
 			<AdditionalFields block={ innerBlockAreas.SHIPPING_ADDRESS } />
 		</FormStepBlock>

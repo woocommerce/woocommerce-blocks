@@ -29,6 +29,8 @@ const Block = ( {
 	showPhoneField = false,
 	requireCompanyField = false,
 	requirePhoneField = false,
+	setAttributes = () => null,
+	useShippingAsBillingAttribute,
 }: {
 	showCompanyField: boolean;
 	showApartmentField: boolean;
@@ -51,6 +53,16 @@ const Block = ( {
 	// This is used to track whether the "Use shipping as billing" checkbox was checked on first load and if we synced
 	// the shipping address to the billing address if it was. This is not used on further toggles of the checkbox.
 	const [ addressesSynced, setAddressesSynced ] = useState( false );
+
+	useEffect( () => {
+		console.log(
+			'running useshippingAsBilling',
+			useShippingAsBillingAttribute
+		);
+		if ( useShippingAsBillingAttribute !== undefined ) {
+			setUseShippingAsBilling( useShippingAsBillingAttribute );
+		}
+	}, [ useShippingAsBillingAttribute, setUseShippingAsBilling ] );
 
 	// Clears data if fields are hidden.
 	useEffect( () => {
@@ -130,9 +142,18 @@ const Block = ( {
 					'Use same address for billing',
 					'woo-gutenberg-products-block'
 				) }
-				checked={ useShippingAsBilling }
+				checked={
+					useShippingAsBillingAttribute !== undefined
+						? useShippingAsBillingAttribute
+						: useShippingAsBilling
+				}
 				onChange={ ( checked: boolean ) => {
 					setUseShippingAsBilling( checked );
+					if ( isEditor ) {
+						setAttributes( {
+							useShippingAsBillingAttribute: checked,
+						} );
+					}
 					if ( checked ) {
 						setBillingAddress( shippingAddress as BillingAddress );
 					}
