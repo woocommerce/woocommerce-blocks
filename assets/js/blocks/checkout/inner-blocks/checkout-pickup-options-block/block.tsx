@@ -59,9 +59,9 @@ const renderShippingRatesControlOption = (
 	const address = getPickupAddress( option );
 	return {
 		value: option.rate_id,
-		label:
-			decodeEntities( option.name ) +
-			( location ? ' (' + location + ')' : '' ),
+		label: location
+			? decodeEntities( location )
+			: decodeEntities( option.name ),
 		secondaryLabel: (
 			<FormattedMonetaryAmount
 				currency={ getCurrencyFromPriceResponse( option ) }
