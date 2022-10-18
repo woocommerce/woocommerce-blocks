@@ -15,10 +15,10 @@ import { CHECKOUT_STORE_KEY } from '@woocommerce/block-data';
  * Internal dependencies
  */
 import ShippingCalculator from '../../shipping-calculator';
+import ShippingRateSelector from './shipping-rate-selector';
 import { hasShippingRate, getTotalShippingValue } from './utils';
 import ShippingPlaceholder from './shipping-placeholder';
 import ShippingAddress from './shipping-address';
-import ShippingRateSelector from './shipping-rate-selector';
 import './style.scss';
 
 export interface TotalShippingProps {
