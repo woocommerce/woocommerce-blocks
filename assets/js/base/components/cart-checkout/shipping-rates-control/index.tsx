@@ -80,7 +80,7 @@ interface ShippingRatesControlProps {
 	className?: string;
 	isLoadingRates: boolean;
 	noResultsMessage: ReactElement;
-	renderOption: PackageRateRenderOption;
+	renderOption?: PackageRateRenderOption;
 	context: 'woocommerce/cart' | 'woocommerce/checkout';
 }
 /**
