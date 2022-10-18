@@ -806,11 +806,6 @@ class CartController {
 
 		$packages = $calculate_rates ? wc()->shipping()->calculate_shipping( $packages ) : $packages;
 
-		if ( Package::feature()->is_experimental_build() ) {
-			// This is a temporary measure until we can bring such change to WooCommerce core.
-			remove_filter( 'woocommerce_get_shipping_methods', [ $this, 'enable_local_pickup_without_address' ] );
-		}
-
 		return $packages;
 	}
 
