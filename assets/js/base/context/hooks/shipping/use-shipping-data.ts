@@ -55,7 +55,6 @@ export const useShippingData = (): ShippingData => {
 				( { shipping_rates: packageShippingRates } ) =>
 					packageShippingRates.find(
 						( { method_id: methodId } ) =>
-							methodId === 'local_pickup' ||
 							methodId === 'pickup_location'
 					)
 			),
