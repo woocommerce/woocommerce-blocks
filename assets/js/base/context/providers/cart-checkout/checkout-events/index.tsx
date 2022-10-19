@@ -10,12 +10,18 @@ import {
 	useMemo,
 	useEffect,
 	useCallback,
+	useState,
 } from '@wordpress/element';
 import { usePrevious } from '@woocommerce/base-hooks';
 import deprecated from '@wordpress/deprecated';
-import { useDispatch, useSelect } from '@wordpress/data';
+import {
+	select as wpDataSelect,
+	useDispatch,
+	useSelect,
+} from '@wordpress/data';
 import {
 	CHECKOUT_STORE_KEY,
+	PAYMENT_STORE_KEY,
 	VALIDATION_STORE_KEY,
 } from '@woocommerce/block-data';
 
@@ -28,6 +34,7 @@ import { STATUS } from '../../../../../data/checkout/constants';
 import { useStoreEvents } from '../../../hooks/use-store-events';
 import { useCheckoutNotices } from '../../../hooks/use-checkout-notices';
 import { CheckoutState } from '../../../../../data/checkout/default-state';
+import { getPaymentMethods } from '../../../../../blocks-registry/payment-methods/registry';
 
 type CheckoutEventsContextType = {
 	// Submits the checkout and begins processing.
@@ -69,6 +76,21 @@ export const CheckoutEventsProvider = ( {
 	children: React.ReactChildren;
 	redirectUrl: string;
 } ): JSX.Element => {
+	const paymentMethods = getPaymentMethods();
+
+	// Go into useState as once this is set it won't change.
+	const isEditor = useState( !! wpDataSelect( 'core/editor' ) );
+
+	const { __internalInitializePaymentStore } =
+		useDispatch( PAYMENT_STORE_KEY );
+
+	useEffect( () => {
+		if ( Object.keys( paymentMethods ).length === 0 && ! isEditor ) {
+			return;
+		}
+		__internalInitializePaymentStore();
+	}, [ isEditor, paymentMethods, __internalInitializePaymentStore ] );
+
 	const checkoutActions = useDispatch( CHECKOUT_STORE_KEY );
 	const checkoutState: CheckoutState = useSelect( ( select ) =>
 		select( CHECKOUT_STORE_KEY ).getCheckoutState()
