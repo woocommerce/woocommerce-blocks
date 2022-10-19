@@ -2,6 +2,8 @@
 namespace Automattic\WooCommerce\Blocks\Shipping;
 
 use WC_Shipping_Method;
+use WC_Order;
+use Automattic\WooCommerce\Utilities\ArrayUtil;
 
 /**
  * Local Pickup Shipping Method.
@@ -42,13 +44,13 @@ class PickupLocation extends WC_Shipping_Method {
 	 */
 	public function calculate_shipping( $package = array() ) {
 		if ( $this->pickup_locations ) {
-			foreach ( $this->pickup_locations as $location ) {
+			foreach ( $this->pickup_locations as $index => $location ) {
 				if ( ! $location['enabled'] ) {
 					continue;
 				}
 				$this->add_rate(
 					array(
-						'id'          => $this->id . ':' . sanitize_key( $location['name'] ),
+						'id'          => $this->id . ':' . $index,
 						// This is the label shown in shipping rate/method context e.g. London (Local Pickup).
 						'label'       => wp_kses_post( $location['name'] . ' (' . $this->title . ')' ),
 						'package'     => $package,
