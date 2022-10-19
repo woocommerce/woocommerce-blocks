@@ -181,11 +181,6 @@ class PickupLocation extends WC_Shipping_Method {
 				</label>
 			</th>
 			<td class="">
-				<datalist id="pickup-location-countries">
-				<?php foreach ( WC()->countries->get_countries() as $code => $label ) : ?>
-					<option value="<?php echo esc_attr( $code ); ?>"><?php echo esc_html( $label ); ?></option>
-				<?php endforeach; ?>
-				</datalist>
 				<table class="wc-local-pickup-locations wc_shipping widefat sortable">
 					<thead>
 						<tr>
@@ -254,30 +249,28 @@ class PickupLocation extends WC_Shipping_Method {
 	.wc-local-pickup-locations .wc-local-pickup-location-address,
 	.wc-local-pickup-locations .wc-local-pickup-location-details {
 		width: 25%;
-		padding-top: 12px !important;
-		padding-bottom: 12px !important;
+		padding-top: 10px !important;
+		padding-bottom: 10px !important;
+	}
+
+	#pickup_locations .wc-local-pickup-locations .editing .view {
+		display: none;
+	}
+	#pickup_locations .wc-local-pickup-locations .editing .edit {
+		display: block;
 	}
 	#pickup_locations .wc-local-pickup-locations .editable input,
+	#pickup_locations .wc-local-pickup-locations .editable textarea,
 	#pickup_locations .wc-local-pickup-locations .editable select {
-		border-color: transparent;
-		background: transparent;
-		width: 100%;
-		padding: 0;
-		margin: 0;
-		height: auto;
-		min-height: auto;
-		line-height: 1em;
-		text-overflow: ellipsis;
 		vertical-align: middle;
+		text-overflow: ellipsis;
+		width: 100%;
+		margin: 2px 0;
 	}
-	#pickup_locations .wc-local-pickup-locations .editable select.placeholder {
-		color:#646970;
+	#pickup_locations .wc-local-pickup-locations .editable textarea {
+		padding: 5px;
 	}
-	#pickup_locations .wc-local-pickup-locations .editable input:focus,
-	#pickup_locations .wc-local-pickup-locations .editable select:focus {
-		background: transparent;
-		padding: 0 8px;
-	}
+
 	#pickup_locations .wc-local-pickup-locations tr .row-actions {
 		position: relative;
 	}
@@ -304,8 +297,33 @@ class PickupLocation extends WC_Shipping_Method {
 	}, false );
 
 	locationsTable.addEventListener( "click", function(event) {
-		const deleteButton = event.target.closest('button.delete');
+		const editButton = event.target.closest('button.button-link-edit');
+		const deleteButton = event.target.closest('button.button-link-delete');
 		const enabledToggleButton = event.target.closest('button.enabled-toggle-button');
+
+		if (editButton !== null) {
+			const toggleText = editButton.dataset.toggle;
+			const innerText = editButton.innerText;
+			const tr = editButton.parentElement.parentElement.parentElement;
+
+			if ( tr.classList.contains('editing') ) {
+				tr.querySelectorAll('.edit').forEach( function( element ) {
+					const newValues = [];
+					element.querySelectorAll('.edit input[name], .edit textarea[name], .edit select[name]').forEach( function( input ) {
+						const newValue = input.value;
+						if ( newValue ) {
+							newValues.push( input.value );
+						}
+					});
+					element.parentElement.querySelector('.view').innerText = newValues.join(', ') || '—';
+				});
+			}
+
+			editButton.innerText = toggleText;
+			editButton.dataset.toggle = innerText;
+			editButton.parentElement.parentElement.parentElement.classList.toggle('editing');
+			return false;
+		}
 
 		if (deleteButton !== null) {
 			deleteButton.parentElement.parentElement.parentElement.remove();
@@ -436,9 +454,10 @@ class PickupLocation extends WC_Shipping_Method {
 		?>
 		<td width="1%" class="wc-local-pickup-location-sort sort"></td>
 		<td class="wc-local-pickup-location-name editable">
-			<input type="text" name="locationName[]" value="<?php echo esc_attr( $location['name'] ?? '' ); ?>" placeholder="<?php esc_attr_e( 'New location', 'woo-gutenberg-products-block' ); ?>" />
+			<div class="view"><?php echo esc_html( $location['name'] ?? '' ); ?></div>
+			<div class="edit" hidden><input type="text" name="locationName[]" value="<?php echo esc_attr( $location['name'] ?? '' ); ?>" placeholder="<?php esc_attr_e( 'New location', 'woo-gutenberg-products-block' ); ?>" /></div>
 			<div class="row-actions">
-				<button type="button" class="delete button-link button-link-delete"><?php esc_html_e( 'Delete', 'woo-gutenberg-products-block' ); ?></button>
+				<button type="button" class="button-link-edit button-link" data-toggle="<?php esc_attr_e( 'Done', 'woo-gutenberg-products-block' ); ?>"><?php esc_html_e( 'Edit', 'woo-gutenberg-products-block' ); ?></button> | <button type="button" class="button-link button-link-delete"><?php esc_html_e( 'Delete', 'woo-gutenberg-products-block' ); ?></button>
 			</div>
 		</td>
 		<td width="1%" class="wc-local-pickup-location-enabled">
@@ -451,20 +470,24 @@ class PickupLocation extends WC_Shipping_Method {
 			</button>
 		</td>
 		<td class="wc-local-pickup-location-address editable">
-			<input type="text" name="address_1[]" value="<?php echo esc_attr( $location['address']['address_1'] ?? '' ); ?>" placeholder="<?php esc_attr_e( 'Address', 'woo-gutenberg-products-block' ); ?>" />
-			<input type="text" name="city[]" value="<?php echo esc_attr( $location['address']['city'] ?? '' ); ?>" placeholder="<?php esc_attr_e( 'City', 'woo-gutenberg-products-block' ); ?>" />
-			<select class="state-select" hidden></select>
-			<input type="text" class="state-input" name="state[]" value="<?php echo esc_attr( $location['address']['state'] ?? '' ); ?>" placeholder="<?php esc_attr_e( 'State', 'woo-gutenberg-products-block' ); ?>" />
-			<input type="text" name="postcode[]" value="<?php echo esc_attr( $location['address']['postcode'] ?? '' ); ?>" placeholder="<?php esc_attr_e( 'Postcode / ZIP', 'woo-gutenberg-products-block' ); ?>" />
-			<select class="country-select" name="country[]">
-				<option value="" disabled selected><?php esc_html_e( 'Country', 'woo-gutenberg-products-block' ); ?></option>
-				<?php foreach ( WC()->countries->get_countries() as $code => $label ) : ?>
-					<option <?php selected( $code, $location['address']['country'] ); ?> value="<?php echo esc_attr( $code ); ?>"><?php echo esc_html( $label ); ?></option>
-				<?php endforeach; ?>
-			</select>
+			<div class="view"><?php echo esc_html( implode( ', ', array_filter( $location['address'] ) ) ); ?></div>
+			<div class="edit" hidden>
+				<input type="text" name="address_1[]" value="<?php echo esc_attr( $location['address']['address_1'] ?? '' ); ?>" placeholder="<?php esc_attr_e( 'Address', 'woo-gutenberg-products-block' ); ?>" />
+				<input type="text" name="city[]" value="<?php echo esc_attr( $location['address']['city'] ?? '' ); ?>" placeholder="<?php esc_attr_e( 'City', 'woo-gutenberg-products-block' ); ?>" />
+				<select class="state-select" hidden></select>
+				<input type="text" class="state-input" name="state[]" value="<?php echo esc_attr( $location['address']['state'] ?? '' ); ?>" placeholder="<?php esc_attr_e( 'State', 'woo-gutenberg-products-block' ); ?>" />
+				<input type="text" name="postcode[]" value="<?php echo esc_attr( $location['address']['postcode'] ?? '' ); ?>" placeholder="<?php esc_attr_e( 'Postcode / ZIP', 'woo-gutenberg-products-block' ); ?>" />
+				<select class="country-select" name="country[]">
+					<option value="" disabled selected><?php esc_html_e( 'Country', 'woo-gutenberg-products-block' ); ?></option>
+					<?php foreach ( WC()->countries->get_countries() as $code => $label ) : ?>
+						<option <?php selected( $code, $location['address']['country'] ); ?> value="<?php echo esc_attr( $code ); ?>"><?php echo esc_html( $label ); ?></option>
+					<?php endforeach; ?>
+				</select>
+			</div>
 		</td>
 		<td class="wc-local-pickup-location-details editable">
-			<input type="text" name="details[]" value="<?php echo esc_attr( $location['details'] ?? '' ); ?>" placeholder="&mdash;" />
+			<div class="view"><?php echo wp_kses_post( wpautop( $location['details'] ?: '&mdash;' ) ); ?></div>
+			<div class="edit" hidden><textarea name="details[]" rows="3"><?php echo esc_attr( $location['details'] ?? '' ); ?></textarea></div>
 		</td>
 		<?php
 		return ob_get_clean(); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
