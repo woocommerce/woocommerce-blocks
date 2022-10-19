@@ -63,15 +63,6 @@ class PickupLocation extends WC_Shipping_Method {
 					)
 				);
 			}
-		} else {
-			$this->add_rate(
-				array(
-					'id'      => $this->id,
-					'label'   => $this->title,
-					'package' => $package,
-					'cost'    => $this->cost,
-				)
-			);
 		}
 	}
 
