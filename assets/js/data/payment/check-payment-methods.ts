@@ -103,6 +103,7 @@ export const checkPaymentMethodsCanPay = async ( express = false ) => {
 			cartTotals: cart.totals,
 			cartNeedsShipping: cart.needsShipping,
 			billingData: cart.billingAddress,
+			billingAddress: cart.billingAddress,
 			shippingAddress: cart.shippingAddress,
 			selectedShippingMethods,
 			paymentRequirements: cart.paymentRequirements,
@@ -139,6 +140,7 @@ export const checkPaymentMethodsCanPay = async ( express = false ) => {
 			cartTotals: cartForCanPayArgument.totals,
 			cartNeedsShipping: cartForCanPayArgument.needsShipping,
 			billingData: cartForCanPayArgument.billingAddress,
+			billingAddress: cartForCanPayArgument.billingAddress,
 			shippingAddress: cartForCanPayArgument.shippingAddress,
 			selectedShippingMethods: deriveSelectedShippingRates(
 				cartForCanPayArgument.shippingRates
