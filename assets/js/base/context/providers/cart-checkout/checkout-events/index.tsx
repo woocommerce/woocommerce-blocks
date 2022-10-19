@@ -79,13 +79,13 @@ export const CheckoutEventsProvider = ( {
 	const paymentMethods = getPaymentMethods();
 
 	// Go into useState as once this is set it won't change.
-	const isEditor = useState( !! wpDataSelect( 'core/editor' ) );
+	const [ isEditor ] = useState( !! wpDataSelect( 'core/editor' ) );
 
 	const { __internalInitializePaymentStore } =
 		useDispatch( PAYMENT_STORE_KEY );
 
 	useEffect( () => {
-		if ( Object.keys( paymentMethods ).length === 0 && ! isEditor ) {
+		if ( ! isEditor && Object.keys( paymentMethods ).length === 0 ) {
 			return;
 		}
 		__internalInitializePaymentStore();
