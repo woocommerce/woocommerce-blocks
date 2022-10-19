@@ -1,6 +1,8 @@
 <?php
 namespace Automattic\WooCommerce\Blocks\Shipping;
 
+use Automattic\WooCommerce\StoreApi\Utilities\CartController;
+
 /**
  * ShippingController class.
  *
@@ -30,23 +32,36 @@ class ShippingController {
 	 * @return array
 	 */
 	public function handle_customer_taxable_address( $address ) {
-		$chosen_shipping_methods = wc()->session->get( 'chosen_shipping_methods' );
-
-		// We can only work with this if there is a single shipping method.
-		if ( count( $chosen_shipping_methods ) > 1 ) {
-			return $address;
-		}
-
-		$shipping_method = current( $chosen_shipping_methods );
-		$method_id       = explode( ':', $shipping_method )[0];
-		$location_id     = explode( ':', $shipping_method )[1] ?? 0;
-
-		// Only handle pickup locations method.
-		if ( 'pickup_location' !== $method_id ) {
-			return $address;
-		}
-
+		$controller       = new CartController();
+		$packages         = $controller->get_shipping_packages( false );
+		$selected_rates   = wc()->session->get( 'chosen_shipping_methods', array() );
 		$pickup_locations = get_option( 'pickup_location_pickup_locations', [] );
+
+		if ( empty( $packages ) || empty( $selected_rates ) || empty( $pickup_locations ) ) {
+			return $address;
+		}
+
+		$location_ids = [];
+
+		// Require pickup for all packages.
+		foreach ( $packages as $package_id => $package ) {
+			$selected_rate = $selected_rates[ $package_id ] ?? '';
+			$method_id     = explode( ':', $selected_rate )[0];
+
+			if ( 'pickup_location' !== $method_id ) {
+				return $address;
+			}
+
+			$location_ids[] = explode( ':', $selected_rate )[1] ?? null;
+		}
+
+		$location_ids = array_unique( $location_ids );
+
+		if ( count( $location_ids ) > 1 ) {
+			return $address;
+		}
+
+		$location_id = $location_ids[0];
 
 		if ( ! empty( $pickup_locations[ $location_id ] ) && ! empty( $pickup_locations[ $location_id ]['address']['country'] ) ) {
 			return array(
