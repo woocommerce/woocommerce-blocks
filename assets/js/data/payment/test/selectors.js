@@ -133,7 +133,7 @@ const registerMockPaymentMethods = ( savedCards = true ) => {
 	} );
 	wpDataFunctions
 		.dispatch( PAYMENT_STORE_KEY )
-		.__internalInitializePaymentStore();
+		.__internalUpdateAvailablePaymentMethods();
 };
 
 const resetMockPaymentMethods = () => {

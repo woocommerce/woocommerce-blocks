@@ -88,7 +88,7 @@ export const CheckoutEventsProvider = ( {
 		if ( ! isEditor && Object.keys( paymentMethods ).length === 0 ) {
 			return;
 		}
-		__internalInitializePaymentStore();
+		__internalUpdateAvailablePaymentMethods();
 	}, [ isEditor, paymentMethods, __internalInitializePaymentStore ] );
 
 	const checkoutActions = useDispatch( CHECKOUT_STORE_KEY );
