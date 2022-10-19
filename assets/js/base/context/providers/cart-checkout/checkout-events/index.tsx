@@ -34,7 +34,10 @@ import { STATUS } from '../../../../../data/checkout/constants';
 import { useStoreEvents } from '../../../hooks/use-store-events';
 import { useCheckoutNotices } from '../../../hooks/use-checkout-notices';
 import { CheckoutState } from '../../../../../data/checkout/default-state';
-import { getPaymentMethods } from '../../../../../blocks-registry/payment-methods/registry';
+import {
+	getExpressPaymentMethods,
+	getPaymentMethods,
+} from '../../../../../blocks-registry/payment-methods/registry';
 
 type CheckoutEventsContextType = {
 	// Submits the checkout and begins processing.
@@ -77,19 +80,32 @@ export const CheckoutEventsProvider = ( {
 	redirectUrl: string;
 } ): JSX.Element => {
 	const paymentMethods = getPaymentMethods();
+	const expressPaymentMethods = getExpressPaymentMethods();
 
 	// Go into useState as once this is set it won't change.
 	const [ isEditor ] = useState( !! wpDataSelect( 'core/editor' ) );
 
-	const { __internalInitializePaymentStore } =
+	const { __internalUpdateAvailablePaymentMethods } =
 		useDispatch( PAYMENT_STORE_KEY );
 
+	// Update the payment method store when paymentMethods or expressPaymentMethods changes.
+	// Ensure this happens in the editor even if paymentMethods is empty. This won't happen instantly when the objects
+	// are updated, but on the next re-render.
 	useEffect( () => {
-		if ( ! isEditor && Object.keys( paymentMethods ).length === 0 ) {
+		if (
+			! isEditor &&
+			Object.keys( paymentMethods ).length === 0 &&
+			Object.keys( expressPaymentMethods ).length === 0
+		) {
 			return;
 		}
 		__internalUpdateAvailablePaymentMethods();
-	}, [ isEditor, paymentMethods, __internalInitializePaymentStore ] );
+	}, [
+		isEditor,
+		paymentMethods,
+		expressPaymentMethods,
+		__internalUpdateAvailablePaymentMethods,
+	] );
 
 	const checkoutActions = useDispatch( CHECKOUT_STORE_KEY );
 	const checkoutState: CheckoutState = useSelect( ( select ) =>
