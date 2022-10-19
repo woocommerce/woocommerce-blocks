@@ -1,10 +1,7 @@
 /**
  * External dependencies
  */
-import {
-	dispatch as wpDataDispatch,
-	select as wpDataSelect,
-} from '@wordpress/data';
+import { dispatch, select } from '@wordpress/data';
 import { debounce } from 'lodash';
 
 /**
@@ -15,13 +12,13 @@ import { STORE_KEY } from './constants';
 
 export const updatePaymentMethods = debounce( async () => {
 	const isInitialized =
-		wpDataSelect( STORE_KEY ).hasFinishedResolution( 'getCartData' );
+		select( STORE_KEY ).hasFinishedResolution( 'getCartData' );
 
 	if ( ! isInitialized ) {
 		return;
 	}
 
-	await wpDataDispatch(
+	await dispatch(
 		PAYMENT_STORE_KEY
 	).__internalUpdateAvailablePaymentMethods();
 }, 1000 );
