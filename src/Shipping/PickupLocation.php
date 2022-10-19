@@ -56,7 +56,7 @@ class PickupLocation extends WC_Shipping_Method {
 						'description' => $location['details'],
 						'meta_data'   => array(
 							'pickup_location' => wp_kses_post( $location['name'] ),
-							'pickup_address'  => $location['address'],
+							'pickup_address'  => wc()->countries->get_formatted_address( $location['address'], ', ' ),
 						),
 					)
 				);
@@ -134,7 +134,13 @@ class PickupLocation extends WC_Shipping_Method {
 		foreach ( $location_names as $index => $location_name ) {
 			$locations[] = [
 				'name'    => $location_name,
-				'address' => wc_clean( wp_unslash( $_POST['locationAddress'][ $index ] ?? '' ) ), // phpcs:ignore WordPress.Security.NonceVerification.Missing
+				'address' => [
+					'address_1' => wc_clean( wp_unslash( $_POST['address_1'][ $index ] ?? '' ) ), // phpcs:ignore WordPress.Security.NonceVerification.Missing
+					'city'      => wc_clean( wp_unslash( $_POST['city'][ $index ] ?? '' ) ), // phpcs:ignore WordPress.Security.NonceVerification.Missing
+					'state'     => wc_clean( wp_unslash( $_POST['state'][ $index ] ?? '' ) ), // phpcs:ignore WordPress.Security.NonceVerification.Missing
+					'postcode'  => wc_clean( wp_unslash( $_POST['postcode'][ $index ] ?? '' ) ), // phpcs:ignore WordPress.Security.NonceVerification.Missing
+					'country'   => wc_clean( wp_unslash( $_POST['country'][ $index ] ?? '' ) ), // phpcs:ignore WordPress.Security.NonceVerification.Missing
+				],
 				'details' => wc_clean( wp_unslash( $_POST['details'][ $index ] ?? '' ) ), // phpcs:ignore WordPress.Security.NonceVerification.Missing
 				'enabled' => wc_string_to_bool( wc_clean( wp_unslash( $_POST['locationEnabled'][ $index ] ?? 1 ) ) ) ? 1 : 0, // phpcs:ignore WordPress.Security.NonceVerification.Missing
 			];
@@ -182,6 +188,11 @@ class PickupLocation extends WC_Shipping_Method {
 				</label>
 			</th>
 			<td class="">
+				<datalist id="pickup-location-countries">
+				<?php foreach ( WC()->countries->get_countries() as $code => $label ) : ?>
+					<option value="<?php echo esc_attr( $code ); ?>"><?php echo esc_html( $label ); ?></option>
+				<?php endforeach; ?>
+				</datalist>
 				<table class="wc-local-pickup-locations wc_shipping widefat sortable">
 					<thead>
 						<tr>
@@ -250,8 +261,11 @@ class PickupLocation extends WC_Shipping_Method {
 	.wc-local-pickup-locations .wc-local-pickup-location-address,
 	.wc-local-pickup-locations .wc-local-pickup-location-details {
 		width: 25%;
+		padding-top: 12px !important;
+		padding-bottom: 12px !important;
 	}
-	#pickup_locations .wc-local-pickup-locations .editable input {
+	#pickup_locations .wc-local-pickup-locations .editable input,
+	#pickup_locations .wc-local-pickup-locations .editable select {
 		border-color: transparent;
 		background: transparent;
 		width: 100%;
@@ -259,10 +273,15 @@ class PickupLocation extends WC_Shipping_Method {
 		margin: 0;
 		height: auto;
 		min-height: auto;
-		line-height: 24px;
+		line-height: 1em;
 		text-overflow: ellipsis;
+		vertical-align: middle;
 	}
-	#pickup_locations .wc-local-pickup-locations .editable input:focus {
+	#pickup_locations .wc-local-pickup-locations .editable select.placeholder {
+		color:#646970;
+	}
+	#pickup_locations .wc-local-pickup-locations .editable input:focus,
+	#pickup_locations .wc-local-pickup-locations .editable select:focus {
 		background: transparent;
 		padding: 0 8px;
 	}
@@ -320,6 +339,77 @@ class PickupLocation extends WC_Shipping_Method {
 
 		return true;
 	}, false );
+
+	locationsTable.addEventListener( "focus", function(event) {
+		const input = event.target.closest('input, select');
+		if (input !== null) {
+			input.parentElement.classList.add("is-active");
+		}
+	}, true );
+
+	locationsTable.addEventListener( "blur", function(event) {
+		const input = event.target.closest('input, select');
+		if (input !== null) {
+			const nextInput = event.relatedTarget ? event.relatedTarget.closest('input, select') : null;
+			if(nextInput === null || nextInput.parentElement !== input.parentElement) {
+				input.parentElement.classList.remove("is-active");
+			}
+		}
+	}, true );
+
+	var states = JSON.parse( decodeURIComponent( '<?php echo rawurlencode( wp_json_encode( WC()->countries->get_states() ) ); ?>' ) );
+
+	locationsTable.addEventListener( "change", function(event) {
+		const countrySelect = event.target.closest('select.country-select');
+
+		if (countrySelect === null) {
+			return;
+		}
+
+		const stateInput = countrySelect.parentElement.querySelectorAll('input.state-input')[0];
+		const stateSelect = countrySelect.parentElement.querySelectorAll('select.state-select')[0];
+		const selectedCountry = countrySelect.value;
+		const selectedState = stateInput.value;
+
+		if ( selectedCountry === "" ) {
+			countrySelect.classList.add("placeholder");
+		} else {
+			countrySelect.classList.remove("placeholder");
+		}
+
+		if (states[selectedCountry] === undefined || states[selectedCountry].length === 0) {
+			stateSelect.hidden = true;
+			stateInput.type = 'text';
+			return;
+		}
+
+		stateSelect.innerHTML = '';
+		for (const [key, value] of Object.entries(states[selectedCountry])) {
+			const option = document.createElement("option");
+			option.value = key;
+			option.text = value;
+			option.selected = selectedState === key;
+			stateSelect.add( option );
+		};
+		stateSelect.hidden = false;
+		stateInput.type = 'hidden';
+	}, true );
+
+	locationsTable.addEventListener( "change", function(event) {
+		const stateSelect = event.target.closest('select.state-select');
+
+		if (stateSelect === null) {
+			return;
+		}
+
+		const stateInput = stateSelect.parentElement.querySelectorAll('input.state-input')[0];
+		stateInput.value = stateSelect.value;
+	}, true );
+
+	var event = new Event('change');
+	locationsTable.querySelectorAll('select.country-select').forEach(function(countrySelect) {
+		countrySelect.dispatchEvent(event);
+	});
 </script>
 		<?php
 	}
@@ -332,6 +422,24 @@ class PickupLocation extends WC_Shipping_Method {
 	 */
 	protected function pickup_location_row( $location = [] ) {
 		ob_start();
+		$location            = wp_parse_args(
+			$location,
+			[
+				'name'    => '',
+				'enabled' => false,
+				'details' => '',
+			]
+		);
+		$location['address'] = wp_parse_args(
+			$location['address'] ?? [],
+			[
+				'address_1' => '',
+				'city'      => '',
+				'state'     => '',
+				'postcode'  => '',
+				'country'   => '',
+			]
+		);
 		?>
 		<td width="1%" class="wc-local-pickup-location-sort sort"></td>
 		<td class="wc-local-pickup-location-name editable">
@@ -350,7 +458,17 @@ class PickupLocation extends WC_Shipping_Method {
 			</button>
 		</td>
 		<td class="wc-local-pickup-location-address editable">
-			<input type="text" name="locationAddress[]" value="<?php echo esc_attr( $location['address'] ?? '' ); ?>" placeholder="&mdash;" />
+			<input type="text" name="address_1[]" value="<?php echo esc_attr( $location['address']['address_1'] ?? '' ); ?>" placeholder="<?php esc_attr_e( 'Address', 'woo-gutenberg-products-block' ); ?>" />
+			<input type="text" name="city[]" value="<?php echo esc_attr( $location['address']['city'] ?? '' ); ?>" placeholder="<?php esc_attr_e( 'City', 'woo-gutenberg-products-block' ); ?>" />
+			<select class="state-select" hidden></select>
+			<input type="text" class="state-input" name="state[]" value="<?php echo esc_attr( $location['address']['state'] ?? '' ); ?>" placeholder="<?php esc_attr_e( 'State', 'woo-gutenberg-products-block' ); ?>" />
+			<input type="text" name="postcode[]" value="<?php echo esc_attr( $location['address']['postcode'] ?? '' ); ?>" placeholder="<?php esc_attr_e( 'Postcode / ZIP', 'woo-gutenberg-products-block' ); ?>" />
+			<select class="country-select" name="country[]">
+				<option value="" disabled selected><?php esc_html_e( 'Country', 'woo-gutenberg-products-block' ); ?></option>
+				<?php foreach ( WC()->countries->get_countries() as $code => $label ) : ?>
+					<option <?php selected( $code, $location['address']['country'] ); ?> value="<?php echo esc_attr( $code ); ?>"><?php echo esc_html( $label ); ?></option>
+				<?php endforeach; ?>
+			</select>
 		</td>
 		<td class="wc-local-pickup-location-details editable">
 			<input type="text" name="details[]" value="<?php echo esc_attr( $location['details'] ?? '' ); ?>" placeholder="&mdash;" />
