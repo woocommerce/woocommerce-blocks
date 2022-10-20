@@ -8,6 +8,7 @@ import { ToolbarGroup, ToolbarDropdownMenu } from '@wordpress/components';
 import { eye } from '@woocommerce/icons';
 import { Icon } from '@wordpress/icons';
 import { store as blockEditorStore } from '@wordpress/block-editor';
+import { useEditorContext } from '@woocommerce/base-context';
 
 interface View {
 	view: string;
@@ -21,17 +22,22 @@ function getView( viewName: string, views: View[] ) {
 
 export const useViewSwitcher = (
 	clientId: string,
-	views: View[]
+	views: View[],
+	onViewChange: ( view: View ) => void
 ): {
 	currentView: string;
 	component: JSX.Element;
 } => {
 	const initialView = views[ 0 ];
-	const [ currentView, setCurrentView ] = useState( initialView );
+	const { currentView, setCurrentView } = useEditorContext();
 	const { selectBlock } = useDispatch( 'core/block-editor' );
 	const { getBlock, getSelectedBlockClientId, getBlockParentsByBlockName } =
 		select( blockEditorStore );
 	const selectedBlockClientId = getSelectedBlockClientId();
+
+	if ( ! currentView ) {
+		setCurrentView( initialView );
+	}
 
 	useEffect( () => {
 		const selectedBlock = getBlock( selectedBlockClientId );
@@ -68,7 +74,6 @@ export const useViewSwitcher = (
 		}
 
 		const newView = getView( parentBlock.name, views );
-
 		if ( newView ) {
 			setCurrentView( newView );
 		}
@@ -78,6 +83,7 @@ export const useViewSwitcher = (
 		getBlock,
 		currentView.view,
 		views,
+		setCurrentView,
 	] );
 
 	const ViewSwitcherComponent = (
@@ -103,7 +109,6 @@ export const useViewSwitcher = (
 			/>
 		</ToolbarGroup>
 	);
-
 	return {
 		currentView: currentView.view,
 		component: ViewSwitcherComponent,

@@ -1,8 +1,14 @@
 /**
  * External dependencies
  */
-import { createContext, useContext, useCallback } from '@wordpress/element';
+import {
+	createContext,
+	useContext,
+	useCallback,
+	useState,
+} from '@wordpress/element';
 import { useSelect } from '@wordpress/data';
+import { useEffect } from 'react';
 
 /**
  * @typedef {import('@woocommerce/type-defs/contexts').EditorDataContext} EditorDataContext
@@ -15,6 +21,7 @@ const EditorContext = createContext( {
 	currentView: '',
 	previewData: {},
 	getPreviewData: () => void null,
+	setCurrentView: () => void null,
 } );
 
 /**
@@ -36,7 +43,7 @@ export const useEditorContext = () => {
 export const EditorProvider = ( {
 	children,
 	currentPostId = 0,
-	currentView = '',
+	currentView: initialView = null,
 	previewData = {},
 } ) => {
 	/**
@@ -52,7 +59,6 @@ export const EditorProvider = ( {
 		},
 		[ currentPostId ]
 	);
-
 	const getPreviewData = useCallback(
 		( name ) => {
 			if ( name in previewData ) {
@@ -63,6 +69,8 @@ export const EditorProvider = ( {
 		[ previewData ]
 	);
 
+	const [ currentView, setCurrentView ] = useState( initialView );
+
 	/**
 	 * @type {EditorDataContext}
 	 */
@@ -72,6 +80,7 @@ export const EditorProvider = ( {
 		currentView,
 		previewData,
 		getPreviewData,
+		setCurrentView,
 	};
 
 	return (
