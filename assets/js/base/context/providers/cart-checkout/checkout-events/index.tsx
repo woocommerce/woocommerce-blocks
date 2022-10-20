@@ -10,15 +10,10 @@ import {
 	useMemo,
 	useEffect,
 	useCallback,
-	useState,
 } from '@wordpress/element';
 import { usePrevious } from '@woocommerce/base-hooks';
 import deprecated from '@wordpress/deprecated';
-import {
-	select as wpDataSelect,
-	useDispatch,
-	useSelect,
-} from '@wordpress/data';
+import { useDispatch, useSelect } from '@wordpress/data';
 import {
 	CHECKOUT_STORE_KEY,
 	PAYMENT_STORE_KEY,
@@ -38,6 +33,7 @@ import {
 	getExpressPaymentMethods,
 	getPaymentMethods,
 } from '../../../../../blocks-registry/payment-methods/registry';
+import { useEditorContext } from '../../editor-context';
 
 type CheckoutEventsContextType = {
 	// Submits the checkout and begins processing.
@@ -81,9 +77,7 @@ export const CheckoutEventsProvider = ( {
 } ): JSX.Element => {
 	const paymentMethods = getPaymentMethods();
 	const expressPaymentMethods = getExpressPaymentMethods();
-
-	// Go into useState as once this is set it won't change.
-	const [ isEditor ] = useState( !! wpDataSelect( 'core/editor' ) );
+	const { isEditor } = useEditorContext();
 
 	const { __internalUpdateAvailablePaymentMethods } =
 		useDispatch( PAYMENT_STORE_KEY );
