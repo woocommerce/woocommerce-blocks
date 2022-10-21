@@ -68,8 +68,14 @@ export const EditorProvider = ( {
 		},
 		[ previewData ]
 	);
+	const setCurrentView = ( view ) => {
+		setView( view );
+	};
 
-	const [ currentView, setCurrentView ] = useState( initialView );
+	const [ currentView, setView ] = useState( initialView );
+	useEffect( () => {
+		setView( initialView );
+	}, [ initialView ] );
 
 	/**
 	 * @type {EditorDataContext}
