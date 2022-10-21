@@ -255,6 +255,9 @@ class Checkout extends AbstractBlock {
 			$formatted_shipping_methods = array_reduce(
 				$shipping_methods,
 				function( $acc, $method ) {
+					if ( $method->id === 'pickup_location' ) {
+						return $acc;
+					}
 					if ( $method->supports( 'settings' ) ) {
 						$acc[] = [
 							'id'          => $method->id,
