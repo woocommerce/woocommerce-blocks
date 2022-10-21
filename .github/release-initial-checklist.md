@@ -112,8 +112,9 @@ This only needs to be done if this release is the last release of the feature pl
         - The changelog should be aggregated from all the releases included in the package bump and grouped per type: `Enhancements`, `Bug Fixes`, `Various` etc. This changelog will be used in the release notes for the WooCommerce release. That's why it should only list the PRs that have WooCoomerce Core in the WooCommerce Visibility section of their description. Don't include changes available in the feature plugin or development builds.
     - Run through the testing checklist to ensure everything works in that branch for that package bump. **Note:** Testing should ensure any features/new blocks that are supposed to be behind feature gating for the core merge of this package update are working as expected.
     - Testing should include completing the [Smoke testing checklist](https://github.com/woocommerce/woocommerce-gutenberg-products-block/blob/trunk/docs/internal-developers/testing/smoke-testing.md). It's up to you to verify that those tests have been done.
-    - Verify and make any additional edits to the pull request description for things like: Changelog to be included with WooCommerce core, additional communication that might be needed elsewhere, additional marketing communication notes that may be needed, etc.
-    - After the checklist is complete and the testing is done, select the porter of your team to review the PR. Once approved, make sure you merge the PR.
+    - [ ] Verify and make any additional edits to the pull request description for things like: Changelog to be included with WooCommerce core, additional communication that might be needed elsewhere, additional marketing communication notes that may be needed, etc.
+    - [ ] Assign the corresponding WC version milestone to the PR
+    - [ ] After the checklist is complete and the testing is done, select the porter of your team to review the PR. Once approved, make sure you merge the PR.
 * [ ] Make sure you join the `#woo-core-releases` Slack channel to represent Woo Blocks for the release of WooCommerce core this version is included in.
 * [ ] Search the release thread of the WooCommerce core version in WooCommerce P2 (example: p6q8Tx-2gl-p2).
   * [ ] Subscribe to it, so you are aware of any news/changes.
