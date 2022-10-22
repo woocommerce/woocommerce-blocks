@@ -3,7 +3,7 @@
  * Title: Single Product Beta | Image With Title
  * Slug: woocommerce-blocks/single-product-beta-image-with-title
  * Categories: WooCommerce
- * Block Types: woocommerce/single-product-beta, core/query/woocommerce/single-product-beta
+ * Block Types: core/query/woocommerce/single-product-beta
  */
 ?>
 
