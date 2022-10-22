@@ -11,6 +11,7 @@ import { QUERY_LOOP_ID } from './constants';
 import './inspector-controls';
 import './variations/product-query';
 import './variations/products-on-sale';
+import './variations/single-product';
 
 function registerProductQueryVariationAttributes(
 	props: Block,

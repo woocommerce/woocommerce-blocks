@@ -85,4 +85,5 @@ export enum QueryVariation {
 	PRODUCT_QUERY = 'woocommerce/product-query',
 	/** Only shows products on sale */
 	PRODUCTS_ON_SALE = 'woocommerce/query-products-on-sale',
+	SINGLE_PRODUCT = 'woocommerce/single-product-beta',
 }

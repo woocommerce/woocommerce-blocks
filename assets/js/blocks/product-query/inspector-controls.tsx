@@ -106,6 +106,32 @@ export const INSPECTOR_CONTROLS = {
 			</ToolsPanelItem>
 		);
 	},
+	productSelector: ( props: ProductQueryBlock ) => {
+		const { query } = props.attributes;
+
+		return (
+			<ToolsPanelItem
+				label={ __( 'Pick a product', 'woo-gutenberg-products-block' ) }
+				hasValue={ () => true }
+			>
+				<FormTokenField
+					label={ __(
+						'Pick a product',
+						'woo-gutenberg-products-block'
+					) }
+					onChange={ ( productIds ) => {
+						setCustomQueryAttribute( props, {
+							include: productIds,
+						} );
+					} }
+					suggestions={ [] }
+					validateInput={ ( value: string ) => value }
+					value={ query?.include || [] }
+					__experimentalExpandOnFocus={ true }
+				/>
+			</ToolsPanelItem>
+		);
+	},
 	stockStatus: ( props: ProductQueryBlock ) => {
 		const { query } = props.attributes;
 
@@ -144,6 +170,32 @@ export const INSPECTOR_CONTROLS = {
 	},
 };
 
+const Controls = ( props: ProductQueryBlock ) => {
+	const allowedControls = useAllowedControls( props.attributes );
+
+	return (
+		<InspectorControls>
+			<ToolsPanel
+				class="woocommerce-product-query-toolspanel"
+				label={ __(
+					'Product filters',
+					'woo-gutenberg-products-block'
+				) }
+				resetAll={ () => {
+					setCustomQueryAttribute( props, defaultWooQueryParams );
+				} }
+			>
+				{ Object.entries( INSPECTOR_CONTROLS ).map(
+					( [ key, Control ] ) =>
+						allowedControls?.includes( key ) ? (
+							<Control { ...props } />
+						) : null
+				) }
+			</ToolsPanel>
+		</InspectorControls>
+	);
+};
+
 export const withProductQueryControls =
 	< T extends EditorBlock< T > >( BlockEdit: ElementType ) =>
 	( props: ProductQueryBlock ) => {
@@ -151,6 +203,18 @@ export const withProductQueryControls =
 		const defaultWooQueryParams = useDefaultWooQueryParamsForVariation(
 			props.attributes.namespace
 		);
+
+		if (
+			props.attributes.query?.include?.length === 0 &&
+			props.attributes.namespace === 'woocommerce/single-product-beta'
+		) {
+			return (
+				<>
+					<div>I am a placeholder</div>
+					<Controls { ...props } />
+				</>
+			);
+		}
 
 		return isWooQueryBlockVariation( props ) ? (
 			<>
