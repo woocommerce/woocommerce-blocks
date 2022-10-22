@@ -1,12 +1,13 @@
 /**
  * External dependencies
  */
-import { ElementType } from 'react';
+import { ElementType, useEffect, useState } from 'react';
 import { __ } from '@wordpress/i18n';
 import { InspectorControls } from '@wordpress/block-editor';
 import { useSelect } from '@wordpress/data';
 import { addFilter } from '@wordpress/hooks';
-import { EditorBlock } from '@woocommerce/types';
+import { EditorBlock, ProductResponseItem } from '@woocommerce/types';
+import { getProducts } from '@woocommerce/editor-components/utils';
 import {
 	FormTokenField,
 	ToggleControl,
@@ -109,26 +110,62 @@ export const INSPECTOR_CONTROLS = {
 	productSelector: ( props: ProductQueryBlock ) => {
 		const { query } = props.attributes;
 
-		return (
+		const [ productsList, setProductsList ] = useState<
+			ProductResponseItem[]
+		>( [] );
+
+		useEffect( () => {
+			getProducts( { selected: [] } ).then( ( results ) => {
+				setProductsList( results as ProductResponseItem[] );
+			} );
+		}, [] );
+
+		return productsList.length ? (
 			<ToolsPanelItem
 				label={ __( 'Pick a product', 'woo-gutenberg-products-block' ) }
-				hasValue={ () => true }
+				hasValue={ () =>
+					props.attributes.namespace ===
+					'woocommerce/single-product-beta'
+				}
 			>
 				<FormTokenField
+					displayTransform={ ( token: string ) =>
+						Number.isNaN( Number( token ) )
+							? token
+							: productsList.find(
+									( product ) =>
+										product.id === Number( token )
+							  )?.name || ''
+					}
 					label={ __(
 						'Pick a product',
 						'woo-gutenberg-products-block'
 					) }
-					onChange={ ( productIds ) => {
+					maxLength={ 1 }
+					onChange={ ( productsNames ) => {
 						setCustomQueryAttribute( props, {
-							include: productIds,
+							include: productsNames.map(
+								( name ) =>
+									productsList.find(
+										( product ) => product.name === name
+									)?.id
+							),
 						} );
 					} }
-					suggestions={ [] }
+					suggestions={ productsList.map(
+						( product ) => product.name
+					) }
 					validateInput={ ( value: string ) => value }
 					value={ query?.include || [] }
-					__experimentalExpandOnFocus={ true }
+					__experimentalExpandOnFocus={ query?.include?.length === 0 }
 				/>
+			</ToolsPanelItem>
+		) : (
+			<ToolsPanelItem
+				hasValue={ () => true }
+				label={ __( 'Pick a product', 'woo-gutenberg-products-block' ) }
+			>
+				Loading products...
 			</ToolsPanelItem>
 		);
 	},
