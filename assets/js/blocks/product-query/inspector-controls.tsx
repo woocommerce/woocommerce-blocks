@@ -35,6 +35,8 @@ import {
 	QUERY_LOOP_ID,
 	STOCK_STATUS_OPTIONS,
 } from './constants';
+import { Block as ProductImage } from '../../atomic/blocks/product-elements/image/block';
+import { ProductName } from '../../base/components/product-name';
 
 const NAMESPACED_CONTROLS = ALL_PRODUCT_QUERY_CONTROLS.map(
 	( id ) =>
@@ -247,7 +249,19 @@ export const withProductQueryControls =
 		) {
 			return (
 				<>
-					<div>I am a placeholder</div>
+					<div>
+						<ProductImage />
+						<h3
+							className={
+								'block-editor-block-list__block wp-block has-large-font-size wp-block-post-title'
+							}
+						>
+							<ProductName
+								name="{{ Product Name }}"
+								disabled={ true }
+							/>
+						</h3>
+					</div>
 					<Controls { ...props } />
 				</>
 			);
