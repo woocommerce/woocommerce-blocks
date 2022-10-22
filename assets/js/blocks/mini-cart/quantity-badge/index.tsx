@@ -1,8 +1,10 @@
 /**
  * External dependencies
  */
-import { miniCart } from '@woocommerce/icons';
+import { miniCart, miniCartBag, miniCartBasket } from '@woocommerce/icons';
 import { Icon } from '@wordpress/icons';
+import { getSettingWithCoercion } from '@woocommerce/settings';
+import { isString } from '@woocommerce/types';
 
 /**
  * Internal dependencies
@@ -15,6 +17,19 @@ interface Props {
 	style?: Record< string, string | undefined >;
 }
 
+const getIconSetting: string = getSettingWithCoercion(
+	'miniCartIcon',
+	'default',
+	isString
+);
+
+const iconSettings: { [ key: string ]: JSX.Element } = {
+	default: miniCart,
+	miniCart,
+	miniCartBasket,
+	miniCartBag,
+};
+
 const QuantityBadge = ( {
 	count,
 	colorClassNames,
@@ -25,7 +40,7 @@ const QuantityBadge = ( {
 			<Icon
 				className="wc-block-mini-cart__icon"
 				size={ 20 }
-				icon={ miniCart }
+				icon={ iconSettings[ getIconSetting ] }
 			/>
 			<span
 				className={ `wc-block-mini-cart__badge ${ colorClassNames }` }

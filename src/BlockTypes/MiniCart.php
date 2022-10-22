@@ -122,6 +122,17 @@ class MiniCart extends AbstractBlock {
 
 		parent::enqueue_data( $attributes );
 
+		$icon_setting = wp_get_global_settings( [ 'custom', 'icon' ], [ 'block_name' => 'woocommerce/mini-cart' ] );
+
+		// Hydrate the following data if it's available.
+		if ( ! empty( $icon_setting ) ) {
+			$this->asset_data_registry->add(
+				'miniCartIcon',
+				$icon_setting,
+				true
+			);
+		}
+
 		// Hydrate the following data depending on admin or frontend context.
 		if ( ! is_admin() && ! WC()->is_rest_api_request() ) {
 			$label_info = $this->get_tax_label();
@@ -363,7 +374,7 @@ class MiniCart extends AbstractBlock {
 		}
 		$wrapper_styles = $classes_styles['styles'];
 
-		$aria_label = sprintf(
+		$a_label = sprintf(
 		/* translators: %1$d is the number of products in the cart. %2$s is the cart total */
 			_n(
 				'%1$d item in cart, total price of %2$s',

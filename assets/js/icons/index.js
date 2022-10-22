@@ -12,3 +12,5 @@ export { default as totals } from './library/totals';
 export { default as woo } from './library/woo';
 export { default as miniCart } from './library/mini-cart';
 export { default as miniCartAlt } from './library/mini-cart-alt';
+export { default as miniCartBasket } from './library/mini-cart-basket';
+export { default as miniCartBag } from './library/mini-cart-bag';
