@@ -1,4 +1,6 @@
-on: pull_request: [closed]
+on:
+  pull_request:
+    types: [ closed ]
 
 name: Merged Pull Requests
 jobs:
