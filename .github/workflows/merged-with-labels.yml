@@ -1,0 +1,12 @@
+on: pull_request: closed
+
+name: Merged Pull Requests
+jobs:
+  remove_labels:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - uses: actions-ecosystem/action-remove-labels@v1
+        with:
+          labels: 'status: ready to merge'
+          github_token: ${{ secrets.GITHUB_TOKEN }}
