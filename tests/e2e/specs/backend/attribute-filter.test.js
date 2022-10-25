@@ -28,7 +28,13 @@ describe( `${ block.name } Block`, () => {
 		// eslint-disable-next-line jest/no-standalone-expect
 		await expect( page ).toClick(
 			'span.woocommerce-search-list__item-name',
-			{ text: 'Capacity', clickCount: 2 }
+			{ text: 'Capacity' }
+		);
+
+		// eslint-disable-next-line jest/no-standalone-expect
+		await expect( page ).toClick(
+			'span.woocommerce-search-list__item-name',
+			{ text: 'Capacity' }
 		);
 
 		// eslint-disable-next-line jest/no-standalone-expect
