@@ -25,7 +25,7 @@ const runner = async () => {
 		onFail: setFailed,
 	} );
 
-	if ( ! currentCheckStyleFile.data.content ) {
+	if ( ! currentCheckStyleFile.data ) {
 		setFailed( 'No Content Available' );
 		return;
 	}

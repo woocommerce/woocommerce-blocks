@@ -10,6 +10,9 @@ exports.getFileContent = async ( {
 			owner,
 			repo,
 			path: fileName,
+			mediaType: {
+				format: 'raw',
+			},
 		} );
 	} catch ( err ) {
 		if ( err.status === '404' ) {

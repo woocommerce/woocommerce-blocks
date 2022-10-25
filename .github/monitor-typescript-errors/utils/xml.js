@@ -16,7 +16,11 @@ const getErrorInfo = ( error ) => {
 	const column = error.column;
 	const message = error.message;
 
-	return `${ line }:${ column } - ${ message }`;
+	return {
+		line,
+		column,
+		message,
+	};
 };
 
 const getDataFromParsedXml = ( parsedXml ) => {
@@ -53,14 +57,19 @@ exports.getFilesWithNewErrors = (
 	const newFilesReport = newCheckStyleFileParsed.files;
 	const currentFilesReport = currentCheckStyleFileParsed.files;
 
-	return Object.keys( newFilesReport ).reduce(
-		( acc, pathfile ) =>
-			currentFilesReport[ pathfile ] === undefined ||
-			currentFilesReport[ pathfile ] === null ||
-			newFilesReport[ pathfile ].length >
-				currentFilesReport[ pathfile ].length
-				? [ ...acc, pathfile ]
-				: acc,
-		[]
-	);
+	return Object.keys( newFilesReport )
+		.sort( ( a, b ) => a.localeCompare( b.firstname ) )
+		.reduce(
+			( acc, pathfile ) =>
+				typeof currentFilesReport[ pathfile ] === 'undefined' ||
+				currentFilesReport[ pathfile ] === null ||
+				newFilesReport[ pathfile ].length >
+					currentFilesReport[ pathfile ].length
+					? [
+							...acc,
+							`${ pathfile }: ${ newFilesReport[ pathfile ].line }`,
+					  ]
+					: acc,
+			[]
+		);
 };
