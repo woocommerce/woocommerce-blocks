@@ -19,7 +19,7 @@ import { default as PaymentMethodConfig } from './payment-method-config';
 import { default as ExpressPaymentMethodConfig } from './express-payment-method-config';
 import { canMakePaymentExtensionsCallbacks } from './extensions-config';
 
-import { STORE_KEY as PAYMENT_METHOD_DATA_STORE_KEY } from '../../data/payment-methods/constants'; // Full path here because otherwise there's a circular dependency.
+import { STORE_KEY as PAYMENT_STORE_KEY } from '../../data/payment/constants'; // Full path here because otherwise there's a circular dependency.
 
 type LegacyRegisterPaymentMethodFunction = ( config: unknown ) => unknown;
 type LegacyRegisterExpressPaymentMethodFunction = (
@@ -115,20 +115,18 @@ export const __experimentalDeRegisterPaymentMethod = (
 	paymentMethodName: string
 ): void => {
 	delete paymentMethods[ paymentMethodName ];
-	const { removeAvailablePaymentMethod } = dispatch(
-		PAYMENT_METHOD_DATA_STORE_KEY
-	);
-	removeAvailablePaymentMethod( paymentMethodName );
+	const { __internalRemoveAvailablePaymentMethod } =
+		dispatch( PAYMENT_STORE_KEY );
+	__internalRemoveAvailablePaymentMethod( paymentMethodName );
 };
 
 export const __experimentalDeRegisterExpressPaymentMethod = (
 	paymentMethodName: string
 ): void => {
 	delete expressPaymentMethods[ paymentMethodName ];
-	const { removeRegisteredExpressPaymentMethod } = dispatch(
-		PAYMENT_METHOD_DATA_STORE_KEY
-	);
-	removeRegisteredExpressPaymentMethod( paymentMethodName );
+	const { __internalRemoveAvailableExpressPaymentMethod } =
+		dispatch( PAYMENT_STORE_KEY );
+	__internalRemoveAvailableExpressPaymentMethod( paymentMethodName );
 };
 
 export const getPaymentMethods = (): PaymentMethods => {

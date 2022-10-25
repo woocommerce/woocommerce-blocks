@@ -44,6 +44,7 @@ const blocks = {
 	'attribute-filter': {},
 	'stock-filter': {},
 	'active-filters': {},
+	'rating-filter': {},
 	cart: {},
 	checkout: {},
 	'mini-cart': {},
@@ -60,6 +61,7 @@ const blocks = {
 	'product-query': {
 		isExperimental: true,
 	},
+	'filter-wrapper': {},
 };
 
 // Returns the entries for each block given a relative path (ie: `index.js`,
