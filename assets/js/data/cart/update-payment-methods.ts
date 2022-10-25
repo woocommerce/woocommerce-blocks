@@ -7,7 +7,7 @@ import { debounce } from 'lodash';
 /**
  * Internal dependencies
  */
-import { PAYMENT_STORE_KEY } from '../payment';
+import { STORE_KEY as PAYMENT_STORE_KEY } from '../payment/constants';
 import { STORE_KEY } from './constants';
 
 export const updatePaymentMethods = debounce( async () => {
