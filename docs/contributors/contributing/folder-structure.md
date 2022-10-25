@@ -2,6 +2,7 @@
 
 The following snippet explains how the WooCommerce Blocks repository is structured omitting irrelevant or obvious items with further explanations:
 
+```text
 │
 ├── LICENSE
 ├── README.md
@@ -184,6 +185,7 @@ The following snippet explains how the WooCommerce Blocks repository is structur
 ├── tests/utils
 │ Utilities for the test cases.
 │
+```
 
 ## Credits
 
@@ -195,6 +197,7 @@ This file is inspired by the great work of @JustinyAhin and @gziolo in <https://
 
 [We're hiring!](https://woocommerce.com/careers/) Come work with us!
 
-🐞 Found a mistake, or have a suggestion? [Leave feedback about this document here.](https://github.com/woocommerce/woocommerce-gutenberg-products-block/issues/new?assignees=&labels=type%3A+documentation&template=--doc-feedback.md&title=Feedback%20on%20./docs/contributors/folder-structure.md)
+🐞 Found a mistake, or have a suggestion? [Leave feedback about this document here.](https://github.com/woocommerce/woocommerce-blocks/issues/new?assignees=&labels=type%3A+documentation&template=--doc-feedback.md&title=Feedback%20on%20./docs/contributors/contributing/folder-structure.md)
 
 <!-- /FEEDBACK -->
+

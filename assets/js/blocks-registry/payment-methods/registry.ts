@@ -10,6 +10,7 @@ import type {
 	PaymentMethods,
 	ExpressPaymentMethods,
 } from '@woocommerce/type-defs/payments';
+import { dispatch } from '@wordpress/data';
 
 /**
  * Internal dependencies
@@ -18,9 +19,12 @@ import { default as PaymentMethodConfig } from './payment-method-config';
 import { default as ExpressPaymentMethodConfig } from './express-payment-method-config';
 import { canMakePaymentExtensionsCallbacks } from './extensions-config';
 
-type LegacyRegisterPaymentMethodFunction = ( config: unknown ) => unknown;
-type LegacyRegisterExpessPaymentMethodFunction = ( config: unknown ) => unknown;
+import { STORE_KEY as PAYMENT_STORE_KEY } from '../../data/payment/constants'; // Full path here because otherwise there's a circular dependency.
 
+type LegacyRegisterPaymentMethodFunction = ( config: unknown ) => unknown;
+type LegacyRegisterExpressPaymentMethodFunction = (
+	config: unknown
+) => unknown;
 const paymentMethods: PaymentMethods = {};
 const expressPaymentMethods: ExpressPaymentMethods = {};
 
@@ -54,7 +58,7 @@ export const registerPaymentMethod = (
 export const registerExpressPaymentMethod = (
 	options:
 		| ExpressPaymentMethodConfiguration
-		| LegacyRegisterExpessPaymentMethodFunction
+		| LegacyRegisterExpressPaymentMethodFunction
 ): void => {
 	let paymentMethodConfig;
 	if ( typeof options === 'function' ) {
@@ -111,12 +115,18 @@ export const __experimentalDeRegisterPaymentMethod = (
 	paymentMethodName: string
 ): void => {
 	delete paymentMethods[ paymentMethodName ];
+	const { __internalRemoveAvailablePaymentMethod } =
+		dispatch( PAYMENT_STORE_KEY );
+	__internalRemoveAvailablePaymentMethod( paymentMethodName );
 };
 
 export const __experimentalDeRegisterExpressPaymentMethod = (
 	paymentMethodName: string
 ): void => {
 	delete expressPaymentMethods[ paymentMethodName ];
+	const { __internalRemoveAvailableExpressPaymentMethod } =
+		dispatch( PAYMENT_STORE_KEY );
+	__internalRemoveAvailableExpressPaymentMethod( paymentMethodName );
 };
 
 export const getPaymentMethods = (): PaymentMethods => {

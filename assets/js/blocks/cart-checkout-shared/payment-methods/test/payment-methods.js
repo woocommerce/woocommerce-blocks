@@ -1,25 +1,23 @@
 /**
  * External dependencies
  */
-import { render, screen, waitFor } from '@testing-library/react';
+import { act, render, screen, waitFor } from '@testing-library/react';
 import { previewCart } from '@woocommerce/resource-previews';
-import { dispatch } from '@wordpress/data';
-import { CART_STORE_KEY as storeKey } from '@woocommerce/block-data';
+import * as wpDataFunctions from '@wordpress/data';
+import { CART_STORE_KEY, PAYMENT_STORE_KEY } from '@woocommerce/block-data';
 import { default as fetchMock } from 'jest-fetch-mock';
 import {
 	registerPaymentMethod,
 	__experimentalDeRegisterPaymentMethod,
 } from '@woocommerce/blocks-registry';
-import {
-	PaymentMethodDataProvider,
-	usePaymentMethodDataContext,
-} from '@woocommerce/base-context';
 import userEvent from '@testing-library/user-event';
+import { dispatch } from '@wordpress/data';
+
 /**
  * Internal dependencies
  */
 import PaymentMethods from '../payment-methods';
-import { defaultCartState } from '../../../../data/default-states';
+import { defaultCartState } from '../../../../data/cart/default-state';
 
 jest.mock( '../saved-payment-method-options', () => ( { onChange } ) => {
 	return (
@@ -44,8 +42,30 @@ jest.mock(
 			)
 );
 
+const originalSelect = jest.requireActual( '@wordpress/data' ).select;
+const selectMock = jest
+	.spyOn( wpDataFunctions, 'select' )
+	.mockImplementation( ( storeName ) => {
+		const originalStore = originalSelect( storeName );
+		if ( storeName === PAYMENT_STORE_KEY ) {
+			return {
+				...originalStore,
+				getState: () => {
+					const originalState = originalStore.getState();
+					return {
+						...originalState,
+						savedPaymentMethods: {},
+						availablePaymentMethods: {},
+						paymentMethodsInitialized: true,
+					};
+				},
+			};
+		}
+		return originalStore;
+	} );
+
 const registerMockPaymentMethods = () => {
-	[ 'credit-card' ].forEach( ( name ) => {
+	[ 'cod', 'credit-card' ].forEach( ( name ) => {
 		registerPaymentMethod( {
 			name,
 			label: name,
@@ -61,10 +81,11 @@ const registerMockPaymentMethods = () => {
 			ariaLabel: name,
 		} );
 	} );
+	dispatch( PAYMENT_STORE_KEY ).__internalUpdateAvailablePaymentMethods();
 };
 
 const resetMockPaymentMethods = () => {
-	[ 'credit-card' ].forEach( ( name ) => {
+	[ 'cod', 'credit-card' ].forEach( ( name ) => {
 		__experimentalDeRegisterPaymentMethod( name );
 	} );
 };
@@ -78,8 +99,12 @@ describe( 'PaymentMethods', () => {
 			return Promise.resolve( '' );
 		} );
 		// need to clear the store resolution state between tests.
-		dispatch( storeKey ).invalidateResolutionForStore();
-		dispatch( storeKey ).receiveCart( defaultCartState.cartData );
+		wpDataFunctions
+			.dispatch( CART_STORE_KEY )
+			.invalidateResolutionForStore();
+		wpDataFunctions
+			.dispatch( CART_STORE_KEY )
+			.receiveCart( defaultCartState.cartData );
 	} );
 
 	afterEach( () => {
@@ -87,11 +112,7 @@ describe( 'PaymentMethods', () => {
 	} );
 
 	test( 'should show no payment methods component when there are no payment methods', async () => {
-		render(
-			<PaymentMethodDataProvider>
-				<PaymentMethods />
-			</PaymentMethodDataProvider>
-		);
+		render( <PaymentMethods /> );
 
 		await waitFor( () => {
 			const noPaymentMethods = screen.queryAllByText(
@@ -100,13 +121,22 @@ describe( 'PaymentMethods', () => {
 			// We might get more than one match because the `speak()` function
 			// creates an extra `div` with the notice contents used for a11y.
 			expect( noPaymentMethods.length ).toBeGreaterThanOrEqual( 1 );
+
+			// Reset the mock back to how it was because we don't need it anymore after this test.
+			selectMock.mockRestore();
 		} );
 	} );
 
 	test( 'selecting new payment method', async () => {
 		const ShowActivePaymentMethod = () => {
 			const { activePaymentMethod, activeSavedToken } =
-				usePaymentMethodDataContext();
+				wpDataFunctions.useSelect( ( select ) => {
+					const store = select( PAYMENT_STORE_KEY );
+					return {
+						activePaymentMethod: store.getActivePaymentMethod(),
+						activeSavedToken: store.getActiveSavedToken(),
+					};
+				} );
 			return (
 				<>
 					<div>
@@ -117,12 +147,23 @@ describe( 'PaymentMethods', () => {
 			);
 		};
 
-		registerMockPaymentMethods();
+		act( () => {
+			registerMockPaymentMethods();
+		} );
+		// Wait for the payment methods to finish loading before rendering.
+		await waitFor( () => {
+			expect(
+				wpDataFunctions
+					.select( PAYMENT_STORE_KEY )
+					.getActivePaymentMethod()
+			).toBe( 'cod' );
+		} );
+
 		render(
-			<PaymentMethodDataProvider>
+			<>
 				<PaymentMethods />
 				<ShowActivePaymentMethod />
-			</PaymentMethodDataProvider>
+			</>
 		);
 
 		await waitFor( () => {
@@ -155,6 +196,6 @@ describe( 'PaymentMethods', () => {
 			expect( activePaymentMethod ).not.toBeNull();
 		} );
 
-		resetMockPaymentMethods();
+		act( () => resetMockPaymentMethods() );
 	} );
 } );

@@ -2,15 +2,14 @@
  * External dependencies
  */
 import { Icon, tag } from '@wordpress/icons';
-import { registerFeaturePluginBlockType } from '@woocommerce/block-settings';
+import { registerBlockType } from '@wordpress/blocks';
 
 /**
  * Internal dependencies
  */
 import { Edit, Save } from './edit';
-import metadata from './block.json';
 
-registerFeaturePluginBlockType( metadata, {
+registerBlockType( 'woocommerce/cart-order-summary-coupon-form-block', {
 	icon: {
 		src: (
 			<Icon

@@ -7,10 +7,10 @@ import BlockErrorBoundary from '@woocommerce/base-components/block-error-boundar
 /**
  * Internal dependencies
  */
-import { PaymentMethodDataProvider } from './payment-methods';
+import { PaymentEventsProvider } from './payment-events';
 import { ShippingDataProvider } from './shipping';
 import { CustomerDataProvider } from './customer';
-import { CheckoutStateProvider } from './checkout-state';
+import { CheckoutEventsProvider } from './checkout-events';
 import CheckoutProcessor from './checkout-processor';
 
 /**
@@ -18,24 +18,19 @@ import CheckoutProcessor from './checkout-processor';
  * This wraps the checkout and provides an api interface for the checkout to
  * children via various hooks.
  *
- * @param {Object}  props               Incoming props for the provider.
- * @param {Object}  props.children      The children being wrapped.
- * @param {boolean} [props.isCart]      Whether it's rendered in the Cart
- *                                      component.
- * @param {string}  [props.redirectUrl] Initialize what the checkout will
- *                                      redirect to after successful
- *                                      submit.
+ * @param {Object} props               Incoming props for the provider.
+ * @param {Object} props.children      The children being wrapped.
+ *                                     component.
+ * @param {string} [props.redirectUrl] Initialize what the checkout will
+ *                                     redirect to after successful
+ *                                     submit.
  */
-export const CheckoutProvider = ( {
-	children,
-	isCart = false,
-	redirectUrl,
-} ) => {
+export const CheckoutProvider = ( { children, redirectUrl } ) => {
 	return (
-		<CheckoutStateProvider redirectUrl={ redirectUrl } isCart={ isCart }>
+		<CheckoutEventsProvider redirectUrl={ redirectUrl }>
 			<CustomerDataProvider>
 				<ShippingDataProvider>
-					<PaymentMethodDataProvider>
+					<PaymentEventsProvider>
 						{ children }
 						{ /* If the current user is an admin, we let BlockErrorBoundary render
 								the error, or we simply die silently. */ }
@@ -47,9 +42,9 @@ export const CheckoutProvider = ( {
 							<PluginArea scope="woocommerce-checkout" />
 						</BlockErrorBoundary>
 						<CheckoutProcessor />
-					</PaymentMethodDataProvider>
+					</PaymentEventsProvider>
 				</ShippingDataProvider>
 			</CustomerDataProvider>
-		</CheckoutStateProvider>
+		</CheckoutEventsProvider>
 	);
 };

@@ -6,6 +6,8 @@ use Automattic\WooCommerce\Blocks\Package;
 use Automattic\WooCommerce\Blocks\Assets\AssetDataRegistry;
 use Automattic\WooCommerce\Blocks\Assets\Api as AssetApi;
 use Automattic\WooCommerce\Blocks\Integrations\IntegrationRegistry;
+use Automattic\WooCommerce\Blocks\BlockTypes\Cart;
+use Automattic\WooCommerce\Blocks\BlockTypes\Checkout;
 
 /**
  * BlockTypesController class.
@@ -146,7 +148,8 @@ final class BlockTypesController {
 			'woocommerce_product_tag_cloud',
 			'woocommerce_price_filter',
 			'woocommerce_layered_nav',
-			'woocommerce_layered_nav_filters'
+			'woocommerce_layered_nav_filters',
+			'woocommerce_rating_filter'
 		);
 
 		return $widget_types;
@@ -180,6 +183,7 @@ final class BlockTypesController {
 			'PriceFilter',
 			'AttributeFilter',
 			'StockFilter',
+			'RatingFilter',
 			'ActiveFilters',
 			'ClassicTemplate',
 			'ProductAddToCart',
@@ -196,12 +200,11 @@ final class BlockTypesController {
 			'ProductTitle',
 			'MiniCart',
 			'MiniCartContents',
+			'ProductQuery',
+			'FilterWrapper',
 		];
 
-		if ( Package::feature()->is_feature_plugin_build() ) {
-			$block_types[] = 'Checkout';
-			$block_types[] = 'Cart';
-		}
+		$block_types = array_merge( $block_types, Cart::get_cart_block_types(), Checkout::get_checkout_block_types() );
 
 		if ( Package::feature()->is_experimental_build() ) {
 			$block_types[] = 'SingleProduct';

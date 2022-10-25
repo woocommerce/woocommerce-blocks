@@ -3,9 +3,8 @@
  */
 import { __ } from '@wordpress/i18n';
 import { InspectorControls, useBlockProps } from '@wordpress/block-editor';
-import HeadingToolbar from '@woocommerce/editor-components/heading-toolbar';
+import { BlockEditProps } from '@wordpress/blocks';
 import BlockTitle from '@woocommerce/editor-components/block-title';
-import type { BlockEditProps } from '@wordpress/blocks';
 import {
 	Disabled,
 	PanelBody,
@@ -21,10 +20,13 @@ import {
  */
 import Block from './block';
 import type { Attributes } from './types';
+import './editor.scss';
+import { UpgradeNotice } from '../filter-wrapper/upgrade';
 
 const Edit = ( {
 	attributes,
 	setAttributes,
+	clientId,
 }: BlockEditProps< Attributes > ) => {
 	const { className, displayStyle, heading, headingLevel } = attributes;
 
@@ -37,7 +39,7 @@ const Edit = ( {
 			<InspectorControls key="inspector">
 				<PanelBody
 					title={ __(
-						'Block Settings',
+						'Display Settings',
 						'woo-gutenberg-products-block'
 					) }
 				>
@@ -52,6 +54,7 @@ const Edit = ( {
 								displayStyle: value,
 							} )
 						}
+						className="wc-block-active-filter__style-toggle"
 					>
 						<ToggleGroupControlOption
 							value="list"
@@ -68,21 +71,6 @@ const Edit = ( {
 							) }
 						/>
 					</ToggleGroupControl>
-					<p>
-						{ __(
-							'Heading Level',
-							'woo-gutenberg-products-block'
-						) }
-					</p>
-					<HeadingToolbar
-						isCollapsed={ false }
-						minLevel={ 2 }
-						maxLevel={ 7 }
-						selectedLevel={ headingLevel }
-						onChange={ ( newLevel: Attributes[ 'headingLevel' ] ) =>
-							setAttributes( { headingLevel: newLevel } )
-						}
-					/>
 				</PanelBody>
 			</InspectorControls>
 		);
@@ -91,14 +79,22 @@ const Edit = ( {
 	return (
 		<div { ...blockProps }>
 			{ getInspectorControls() }
-			<BlockTitle
-				className="wc-block-active-filters__title"
-				headingLevel={ headingLevel }
-				heading={ heading }
-				onChange={ ( value: Attributes[ 'heading' ] ) =>
-					setAttributes( { heading: value } )
-				}
+			<UpgradeNotice
+				attributes={ attributes }
+				clientId={ clientId }
+				setAttributes={ setAttributes }
+				filterType="active-filters"
 			/>
+			{ heading && (
+				<BlockTitle
+					className="wc-block-active-filters__title"
+					headingLevel={ headingLevel }
+					heading={ heading }
+					onChange={ ( value: Attributes[ 'heading' ] ) =>
+						setAttributes( { heading: value } )
+					}
+				/>
+			) }
 			<Disabled>
 				<Block attributes={ attributes } isEditor={ true } />
 			</Disabled>

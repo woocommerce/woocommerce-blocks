@@ -44,6 +44,7 @@ const blocks = {
 	'attribute-filter': {},
 	'stock-filter': {},
 	'active-filters': {},
+	'rating-filter': {},
 	cart: {},
 	checkout: {},
 	'mini-cart': {},
@@ -57,6 +58,10 @@ const blocks = {
 	'legacy-template': {
 		customDir: 'classic-template',
 	},
+	'product-query': {
+		isExperimental: true,
+	},
+	'filter-wrapper': {},
 };
 
 // Returns the entries for each block given a relative path (ie: `index.js`,
@@ -96,6 +101,8 @@ const entries = {
 			'./node_modules/wordpress-components/src/snackbar/style.scss',
 		'combobox-control-style':
 			'./node_modules/wordpress-components/src/combobox-control/style.scss',
+		'form-token-field-style':
+			'./node_modules/wordpress-components/src/form-token-field/style.scss',
 
 		'general-style': glob.sync( './assets/**/*.scss', {
 			ignore: [

@@ -26,11 +26,12 @@ class ProductSearch extends AbstractBlock {
 	/**
 	 * Render the block.
 	 *
-	 * @param array  $attributes Block attributes.
-	 * @param string $content    Block content.
+	 * @param array    $attributes Block attributes.
+	 * @param string   $content    Block content.
+	 * @param WP_Block $block      Block instance.
 	 * @return string Rendered block type output.
 	 */
-	protected function render( $attributes, $content ) {
+	protected function render( $attributes, $content, $block ) {
 		static $instance_id = 0;
 
 		$attributes = wp_parse_args(
@@ -122,6 +123,38 @@ class ProductSearch extends AbstractBlock {
 			$wrapper_attributes,
 			esc_url( home_url( '/' ) ),
 			$label_markup . $field_markup
+		);
+	}
+
+	/**
+	 * Extra data passed through from server to client for block.
+	 *
+	 * @param array $attributes  Any attributes that currently are available from the block.
+	 *                           Note, this will be empty in the editor context when the block is
+	 *                           not in the post content on editor load.
+	 */
+	protected function enqueue_data( array $attributes = [] ) {
+		parent::enqueue_data( $attributes );
+
+		$gutenberg_version = '';
+
+		if ( is_plugin_active( 'gutenberg/gutenberg.php' ) ) {
+			if ( defined( 'GUTENBERG_VERSION' ) ) {
+				$gutenberg_version = GUTENBERG_VERSION;
+			}
+
+			if ( ! $gutenberg_version ) {
+				$gutenberg_data    = get_file_data(
+					WP_PLUGIN_DIR . '/gutenberg/gutenberg.php',
+					array( 'Version' => 'Version' )
+				);
+				$gutenberg_version = $gutenberg_data['Version'];
+			}
+		}
+
+		$this->asset_data_registry->add(
+			'isBlockVariationAvailable',
+			version_compare( get_bloginfo( 'version' ), '6.1', '>=' ) || version_compare( $gutenberg_version, '13.4', '>=' )
 		);
 	}
 }

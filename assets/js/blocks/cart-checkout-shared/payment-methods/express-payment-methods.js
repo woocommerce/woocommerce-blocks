@@ -12,28 +12,36 @@ import {
 	useCallback,
 	useRef,
 } from '@wordpress/element';
-import {
-	useEditorContext,
-	usePaymentMethodDataContext,
-} from '@woocommerce/base-context';
+import { useEditorContext } from '@woocommerce/base-context';
 import deprecated from '@wordpress/deprecated';
+import { useDispatch, useSelect } from '@wordpress/data';
 
 /**
  * Internal dependencies
  */
 import PaymentMethodErrorBoundary from './payment-method-error-boundary';
+import { STORE_KEY as PAYMENT_STORE_KEY } from '../../../data/payment/constants';
 
 const ExpressPaymentMethods = () => {
 	const { isEditor } = useEditorContext();
+
+	const { activePaymentMethod, paymentMethodData } = useSelect(
+		( select ) => {
+			const store = select( PAYMENT_STORE_KEY );
+			return {
+				activePaymentMethod: store.getActivePaymentMethod(),
+				paymentMethodData: store.getPaymentMethodData(),
+			};
+		}
+	);
 	const {
-		setActivePaymentMethod,
-		setExpressPaymentError,
-		activePaymentMethod,
-		paymentMethodData,
-		setPaymentStatus,
-	} = usePaymentMethodDataContext();
-	const paymentMethodInterface = usePaymentMethodInterface();
+		__internalSetActivePaymentMethod,
+		__internalSetPaymentStatus,
+		__internalSetExpressPaymentError,
+	} = useDispatch( PAYMENT_STORE_KEY );
 	const { paymentMethods } = useExpressPaymentMethods();
+
+	const paymentMethodInterface = usePaymentMethodInterface();
 	const previousActivePaymentMethod = useRef( activePaymentMethod );
 	const previousPaymentMethodData = useRef( paymentMethodData );
 
@@ -47,14 +55,14 @@ const ExpressPaymentMethods = () => {
 		( paymentMethodId ) => () => {
 			previousActivePaymentMethod.current = activePaymentMethod;
 			previousPaymentMethodData.current = paymentMethodData;
-			setPaymentStatus().started();
-			setActivePaymentMethod( paymentMethodId );
+			__internalSetPaymentStatus( { isStarted: true } );
+			__internalSetActivePaymentMethod( paymentMethodId );
 		},
 		[
 			activePaymentMethod,
 			paymentMethodData,
-			setActivePaymentMethod,
-			setPaymentStatus,
+			__internalSetActivePaymentMethod,
+			__internalSetPaymentStatus,
 		]
 	);
 
@@ -64,12 +72,12 @@ const ExpressPaymentMethods = () => {
 	 * This restores the active method and returns the state to pristine.
 	 */
 	const onExpressPaymentClose = useCallback( () => {
-		setPaymentStatus().pristine();
-		setActivePaymentMethod(
+		__internalSetPaymentStatus( { isPristine: true } );
+		__internalSetActivePaymentMethod(
 			previousActivePaymentMethod.current,
 			previousPaymentMethodData.current
 		);
-	}, [ setActivePaymentMethod, setPaymentStatus ] );
+	}, [ __internalSetActivePaymentMethod, __internalSetPaymentStatus ] );
 
 	/**
 	 * onExpressPaymentError should be triggered when the express payment process errors.
@@ -78,14 +86,18 @@ const ExpressPaymentMethods = () => {
 	 */
 	const onExpressPaymentError = useCallback(
 		( errorMessage ) => {
-			setPaymentStatus().error( errorMessage );
-			setExpressPaymentError( errorMessage );
-			setActivePaymentMethod(
+			__internalSetPaymentStatus( { hasError: true }, errorMessage );
+			__internalSetExpressPaymentError( errorMessage );
+			__internalSetActivePaymentMethod(
 				previousActivePaymentMethod.current,
 				previousPaymentMethodData.current
 			);
 		},
-		[ setActivePaymentMethod, setPaymentStatus, setExpressPaymentError ]
+		[
+			__internalSetActivePaymentMethod,
+			__internalSetPaymentStatus,
+			__internalSetExpressPaymentError,
+		]
 	);
 
 	/**
@@ -104,10 +116,10 @@ const ExpressPaymentMethods = () => {
 			if ( errorMessage ) {
 				onExpressPaymentError( errorMessage );
 			} else {
-				setExpressPaymentError( '' );
+				__internalSetExpressPaymentError( '' );
 			}
 		},
-		[ setExpressPaymentError, onExpressPaymentError ]
+		[ __internalSetExpressPaymentError, onExpressPaymentError ]
 	);
 
 	/**

@@ -2,20 +2,20 @@
 
 ## Table of Contents <!-- omit in toc -->
 
-- [`createSlotFill( slotName )`](#createslotfill-slotname-)
-    - [Usage](#usage)
-    - [Options](#options)
-        - [`slotName (string, required)`](#slotname-string-required)
-        - [`onError (Function)`](#onerror-function)
-    - [`Slot` Component](#slot-component)
-        - [Usage](#usage-1)
-        - [Options](#options-1)
-            - [`as (string|element)`](#as-stringelement)
-            - [`className (string)`](#classname-string)
-            - [`fillProps (object)`](#fillprops-object)
-        - [`Fill` Component](#fill-component)
-- [Extending Checkout via Slot Fills](#extending-checkout-via-slot-fills)
-- [Available Slot Fills](#available-slot-fills)
+-   [`createSlotFill( slotName )`](#createslotfill-slotname-)
+    -   [Usage](#usage)
+    -   [Options](#options)
+        -   [`slotName (string, required)`](#slotname-string-required)
+        -   [`onError (Function)`](#onerror-function)
+    -   [`Slot` Component](#slot-component)
+        -   [Usage](#usage-1)
+        -   [Options](#options-1)
+            -   [`as (string|element)`](#as-stringelement)
+            -   [`className (string)`](#classname-string)
+            -   [`fillProps (object)`](#fillprops-object)
+        -   [`Fill` Component](#fill-component)
+-   [Extending Checkout via Slot Fills](#extending-checkout-via-slot-fills)
+-   [Available Slot Fills](#available-slot-fills)
 
 Slot and Fill are a pair of components which enable developers to render elsewhere in a React element tree, a pattern often referred to as "portal" rendering. It is a pattern for component extensibility, where a single Slot may be occupied by an indeterminate number of Fills elsewhere in the application.
 
@@ -181,7 +181,7 @@ registerPlugin( 'my-plugin', { render } );
 
 ## Available Slot Fills
 
-Slot Fills are implemented throughout the Cart and Checkout Blocks, as well as some components. For a list of available Slot Fills, [see this document](https://github.com/woocommerce/woocommerce-gutenberg-products-block/blob/trunk/docs/extensibility/available-slot-fills.md).
+Slot Fills are implemented throughout the Cart and Checkout Blocks, as well as some components. For a list of available Slot Fills, [see this document](../../../docs/third-party-developers/extensibility/checkout-block/available-slot-fills.md).
 
 <!-- FEEDBACK -->
 
@@ -189,6 +189,7 @@ Slot Fills are implemented throughout the Cart and Checkout Blocks, as well as s
 
 [We're hiring!](https://woocommerce.com/careers/) Come work with us!
 
-🐞 Found a mistake, or have a suggestion? [Leave feedback about this document here.](https://github.com/woocommerce/woocommerce-gutenberg-products-block/issues/new?assignees=&labels=type%3A+documentation&template=--doc-feedback.md&title=Feedback%20on%20./packages/checkout/slot/README.md)
+🐞 Found a mistake, or have a suggestion? [Leave feedback about this document here.](https://github.com/woocommerce/woocommerce-blocks/issues/new?assignees=&labels=type%3A+documentation&template=--doc-feedback.md&title=Feedback%20on%20./packages/checkout/slot/README.md)
 
 <!-- /FEEDBACK -->
+

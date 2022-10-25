@@ -13,7 +13,7 @@ import {
 } from '@woocommerce/blocks-test-utils';
 
 const block = {
-	name: 'Filter Products by Attribute',
+	name: 'Filter by Attribute',
 	slug: 'woocommerce/attribute-filter',
 	class: '.wc-block-attribute-filter',
 };
@@ -23,16 +23,26 @@ describe( `${ block.name } Block`, () => {
 		await switchUserToAdmin();
 		await visitBlockPage( `${ block.name } Block` );
 
+		await page.waitForSelector( 'span.woocommerce-search-list__item-name' );
+
 		// eslint-disable-next-line jest/no-standalone-expect
 		await expect( page ).toClick(
 			'span.woocommerce-search-list__item-name',
 			{ text: 'Capacity' }
 		);
-		//needed for attributes list to load correctly
-		await page.waitForTimeout( 1000 );
 
 		// eslint-disable-next-line jest/no-standalone-expect
-		await expect( page ).toClick( 'button', { text: 'Done' } );
+		await expect( page ).toClick(
+			'span.woocommerce-search-list__item-name',
+			{ text: 'Capacity' }
+		);
+
+		// eslint-disable-next-line jest/no-standalone-expect
+		await expect( page ).toClick(
+			'.wp-block-woocommerce-attribute-filter button',
+			{ text: 'Done' }
+		);
+		await page.waitForTimeout( 30000 );
 		await page.waitForNetworkIdle();
 	} );
 
@@ -57,21 +67,16 @@ describe( `${ block.name } Block`, () => {
 		} );
 
 		it( "allows changing the block's title", async () => {
-			const textareaSelector = `.wp-block[data-type="${ block.slug }"] textarea.wc-block-editor-components-title`;
+			const textareaSelector =
+				'.wp-block-woocommerce-filter-wrapper .wp-block-heading';
 			await expect( page ).toFill( textareaSelector, 'New Title' );
-			await page.click(
-				'.components-toolbar button[aria-label="Heading 6"]'
-			);
 			await expect( page ).toMatchElement(
-				`.wp-block[data-type="${ block.slug }"] h6 textarea`,
+				'.wp-block-woocommerce-filter-wrapper',
 				{ text: 'New Title' }
 			);
 			await expect( page ).toFill(
 				textareaSelector,
 				'Filter by Capacity'
-			);
-			await page.click(
-				'.components-toolbar button[aria-label="Heading 3"]'
 			);
 		} );
 
@@ -79,29 +84,37 @@ describe( `${ block.name } Block`, () => {
 			await expect( page ).toMatchElement(
 				'.wc-filter-element-label-list-count'
 			);
-			await expect( page ).toClick( 'label', { text: 'Product count' } );
+			await expect( page ).toClick( 'label', {
+				text: 'Include product count',
+			} );
 			await expect( page ).not.toMatchElement(
 				'.wc-filter-element-label-list-count'
 			);
 			// reset
-			await expect( page ).toClick( 'label', { text: 'Product count' } );
+			await expect( page ).toClick( 'label', {
+				text: 'Include product count',
+			} );
 		} );
 
 		it( 'can toggle go button', async () => {
 			await expect( page ).not.toMatchElement(
 				'.wc-block-filter-submit-button'
 			);
-			await expect( page ).toClick( 'label', { text: 'Filter button' } );
+			await expect( page ).toClick( 'label', {
+				text: "Show 'Apply filters' button",
+			} );
 			await expect( page ).toMatchElement(
 				'.wc-block-filter-submit-button'
 			);
 			// reset
-			await expect( page ).toClick( 'label', { text: 'Filter button' } );
+			await expect( page ).toClick( 'label', {
+				text: "Show 'Apply filters' button",
+			} );
 		} );
 
 		it( 'can switch attribute', async () => {
 			await expect( page ).toClick( 'button', {
-				text: 'Filter Products by Attribute',
+				text: 'Content Settings',
 			} );
 
 			await expect( page ).toClick(
@@ -151,10 +164,14 @@ describe( `${ block.name } Block`, () => {
 				'.wp-block-woocommerce-attribute-filter'
 			);
 			await expect( page ).toMatchElement(
-				'.wp-block-woocommerce-attribute-filter h3',
+				'.wp-block-woocommerce-filter-wrapper',
 				{
 					text: 'Filter by Capacity',
 				}
+			);
+
+			await page.waitForSelector(
+				'.wc-block-checkbox-list:not(.is-loading)'
 			);
 
 			expect(

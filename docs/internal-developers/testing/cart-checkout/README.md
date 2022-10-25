@@ -8,6 +8,7 @@
 - [What are we testing?](#what-are-we-testing)
     - [Cart Block](#cart-block)
     - [Checkout Block](#checkout-block)
+    - [Data Stores](#data-stores)
 - [Testing Checklist](#testing-checklist)
 
 ## Introduction
@@ -72,6 +73,10 @@ the Cart and Checkout shortcodes.
 
 ![image](https://i.imgur.com/9KhYK2L.png)
 
+### Data Stores
+
+After moving a lot of functionality from React Context to data stores, we need to rigorously test some areas of the Cart and Checkout process. [This link contains some detailed testing instructions](./data-stores.md) for this.
+
 ## Testing Checklist
 
 -   [General Flow](general-flow.md)
@@ -89,6 +94,7 @@ the Cart and Checkout shortcodes.
 
 [We're hiring!](https://woocommerce.com/careers/) Come work with us!
 
-🐞 Found a mistake, or have a suggestion? [Leave feedback about this document here.](https://github.com/woocommerce/woocommerce-gutenberg-products-block/issues/new?assignees=&labels=type%3A+documentation&template=--doc-feedback.md&title=Feedback%20on%20./docs/testing/cart-checkout/README.md)
+🐞 Found a mistake, or have a suggestion? [Leave feedback about this document here.](https://github.com/woocommerce/woocommerce-blocks/issues/new?assignees=&labels=type%3A+documentation&template=--doc-feedback.md&title=Feedback%20on%20./docs/internal-developers/testing/cart-checkout/README.md)
 
 <!-- /FEEDBACK -->
+

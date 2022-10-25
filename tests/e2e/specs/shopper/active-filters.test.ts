@@ -59,9 +59,9 @@ const FILTER_CAPACITY_PROPERTY = '128gb';
 const { selectors } = block;
 
 const insertBlocks = async () => {
-	await insertBlock( 'Filter Products by Price' );
-	await insertBlock( 'Filter Products by Stock' );
-	await insertBlock( 'Filter Products by Attribute' );
+	await insertBlock( 'Filter by Price' );
+	await insertBlock( 'Filter by Stock' );
+	await insertBlock( 'Filter by Attribute' );
 	await insertBlock( block.name );
 };
 
@@ -84,7 +84,7 @@ const getActiveFilterTypeText = () =>
 const getActiveFilterNameText = () =>
 	page.$eval(
 		selectors.frontend.activeFilterName,
-		( el ) => ( el as HTMLElement ).childNodes[ 0 ].textContent
+		( el ) => ( el as HTMLElement ).childNodes[ 1 ].textContent
 	);
 
 describe( 'Shopper → Active Filters Block', () => {
@@ -97,8 +97,8 @@ describe( 'Shopper → Active Filters Block', () => {
 			} );
 
 			await insertBlocks();
-			await configurateFilterProductsByAttributeBlock( page );
 			await insertBlock( 'All Products' );
+			await configurateFilterProductsByAttributeBlock( page );
 			await publishPost();
 
 			const link = await page.evaluate( () =>

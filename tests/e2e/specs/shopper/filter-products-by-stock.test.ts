@@ -24,12 +24,13 @@ import {
 } from '../../utils';
 
 const block = {
-	name: 'Filter Products by Stock',
+	name: 'Filter by Stock',
 	slug: 'woocommerce/stock-filter',
 	class: '.wc-block-stock-filter',
 	selectors: {
 		editor: {
-			filterButtonToggle: "//label[text()='Filter button']",
+			filterButtonToggle:
+				'//label[text()="Show \'Apply filters\' button"]',
 		},
 		frontend: {
 			productsList: '.wc-block-grid__products > li',

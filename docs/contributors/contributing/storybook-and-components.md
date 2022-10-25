@@ -6,15 +6,15 @@
 -   [How to run Storybook locally and test components](#how-to-run-storybook-locally-and-test-components)
 -   [How to add a story for a component](#how-to-add-a-story-for-a-component)
 
-This repo includes [Storybook](https://storybook.js.org) tooling so we can test and develop components in isolation. The storybook is automatically built and published to [GitHub pages](https://woocommerce.github.io/woocommerce-gutenberg-products-block/) on every push to the main branch. See [travis.yml](https://github.com/woocommerce/woocommerce-gutenberg-products-block/blob/trunk/.travis.yml) for details.
+This repo includes [Storybook](https://storybook.js.org) tooling so we can test and develop components in isolation. The storybook is automatically built and published to [GitHub pages](https://woocommerce.github.io/woocommerce-blocks/) on every push to the main branch.
 
 ## Where are our components?
 
 We have components in a few folders, for different contexts.
 
--   [`assets/js/base/components`](https://github.com/woocommerce/woocommerce-gutenberg-products-block/tree/trunk/assets/js/base/components)
--   [`assets/js/editor-components`](https://github.com/woocommerce/woocommerce-gutenberg-products-block/tree/trunk/assets/js/editor-components)
--   [`assets/js/icons`](https://github.com/woocommerce/woocommerce-gutenberg-products-block/tree/trunk/assets/js/icons)
+-   [`assets/js/base/components`](../../../assets/js/base/components)
+-   [`assets/js/editor-components`](../../../assets/js/editor-components)
+-   [`assets/js/icons`](../../../assets/js/icons)
 
 **`assets/js/base/components`** are used in front-end code, as well as editor & admin.
 These components help us build consistent interfaces across the front end (shopper) experience and elsewhere.
@@ -29,7 +29,7 @@ They allow us to build a consistent and powerful UI for merchants for authoring 
 
 **`assets/js/icons`** is a suite of icons and SVG images that we use in our interfaces.
 
-For more info about individual components, refer to [Storybook](https://woocommerce.github.io/woocommerce-gutenberg-products-block/) or individual readme files.
+For more info about individual components, refer to [Storybook](https://woocommerce.github.io/woocommerce-blocks/) or individual readme files.
 
 ## How to run Storybook locally and test components
 
@@ -50,6 +50,7 @@ If you're stuck, copy source of an existing story to get started.
 
 [We're hiring!](https://woocommerce.com/careers/) Come work with us!
 
-🐞 Found a mistake, or have a suggestion? [Leave feedback about this document here.](https://github.com/woocommerce/woocommerce-gutenberg-products-block/issues/new?assignees=&labels=type%3A+documentation&template=--doc-feedback.md&title=Feedback%20on%20./docs/contributors/storybook-and-components.md)
+🐞 Found a mistake, or have a suggestion? [Leave feedback about this document here.](https://github.com/woocommerce/woocommerce-blocks/issues/new?assignees=&labels=type%3A+documentation&template=--doc-feedback.md&title=Feedback%20on%20./docs/contributors/contributing/storybook-and-components.md)
 
 <!-- /FEEDBACK -->
+

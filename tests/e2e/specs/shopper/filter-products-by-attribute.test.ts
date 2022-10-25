@@ -24,14 +24,15 @@ import {
 } from '../../utils';
 
 const block = {
-	name: 'Filter Products by Attribute',
+	name: 'Filter by Attribute',
 	slug: 'woocommerce/attribute-filter',
 	class: '.wc-block-attribute-filter',
 	selectors: {
 		editor: {
 			firstAttributeInTheList:
 				'.woocommerce-search-list__list > li > label > input.woocommerce-search-list__item-input',
-			filterButtonToggle: "//label[text()='Filter button']",
+			filterButtonToggle:
+				'//label[text()="Show \'Apply filters\' button"]',
 			doneButton: '.wc-block-attribute-filter__selection > button',
 		},
 		frontend: {
@@ -64,10 +65,16 @@ describe( `${ block.name } Block`, () => {
 				title: block.name,
 			} );
 
-			await insertBlock( block.name );
-			await page.click( selectors.editor.firstAttributeInTheList );
-			await page.click( selectors.editor.doneButton );
 			await insertBlock( 'All Products' );
+			await insertBlock( block.name );
+			const canvasEl = canvas();
+
+			// It seems that .click doesn't work well with radio input element.
+			await canvasEl.$eval(
+				block.selectors.editor.firstAttributeInTheList,
+				( el ) => ( el as HTMLInputElement ).click()
+			);
+			await canvasEl.click( selectors.editor.doneButton );
 			await publishPost();
 
 			const link = await page.evaluate( () =>
@@ -87,6 +94,8 @@ describe( `${ block.name } Block`, () => {
 		it( 'should show only products that match the filter', async () => {
 			const isRefreshed = jest.fn( () => void 0 );
 			page.on( 'load', isRefreshed );
+
+			await page.waitForSelector( selectors.frontend.filter );
 			await page.click( selectors.frontend.filter );
 			await waitForAllProductsBlockLoaded();
 			const products = await page.$$( selectors.frontend.productsList );
@@ -119,12 +128,15 @@ describe( `${ block.name } Block`, () => {
 			);
 			await canvasEl.click( selectors.editor.doneButton );
 			await saveTemplate();
-			await goToShopPage();
 		} );
 
 		afterAll( async () => {
 			await deleteAllTemplates( 'wp_template' );
 			await deleteAllTemplates( 'wp_template_part' );
+		} );
+
+		beforeEach( async () => {
+			await goToShopPage();
 		} );
 
 		it( 'should render', async () => {
@@ -144,6 +156,8 @@ describe( `${ block.name } Block`, () => {
 			} );
 
 			expect( isRefreshed ).not.toBeCalled();
+
+			await page.waitForSelector( selectors.frontend.filter );
 
 			await Promise.all( [
 				page.waitForNavigation(),

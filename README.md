@@ -1,7 +1,7 @@
 # WooCommerce Blocks <!-- omit in toc -->
 
 [![Latest Tag](https://img.shields.io/github/tag/woocommerce/woocommerce-gutenberg-products-block.svg?style=flat&label=Latest%20Tag)](https://github.com/woocommerce/woocommerce-gutenberg-products-block/releases)
-[![View](https://img.shields.io/badge/Project%20Components-brightgreen.svg?style=flat)](https://woocommerce.github.io/woocommerce-gutenberg-products-block)
+[![View](https://img.shields.io/badge/Project%20Components-brightgreen.svg?style=flat)](https://woocommerce.github.io/woocommerce-blocks/)
 ![JavaScript and CSS Linting](https://github.com/woocommerce/woocommerce-gutenberg-products-block/workflows/JavaScript%20and%20CSS%20Linting/badge.svg?branch=trunk)
 ![PHP Coding Standards](https://github.com/woocommerce/woocommerce-gutenberg-products-block/workflows/PHP%20Coding%20Standards/badge.svg?branch=trunk)
 ![Automated tests](https://github.com/woocommerce/woocommerce-gutenberg-products-block/workflows/Automated%20tests/badge.svg?branch=trunk)
@@ -66,7 +66,7 @@ Run through the ["Writing Your First Block Type" tutorial](https://wordpress.org
 
 For deeper dive, try looking at the [core blocks code,](https://github.com/WordPress/gutenberg/tree/master/packages/block-library/src) or see what [components are available.](https://github.com/WordPress/gutenberg/tree/master/packages/components/src)
 
-To begin contributing to the WooCommerce Blocks plugin, see our [getting started guide](./docs/contributors/getting-started.md) and [developer handbook](./docs/README.md).
+To begin contributing to the WooCommerce Blocks plugin, see our [getting started guide](./docs/contributors/contributing/getting-started.md) and [developer handbook](./docs/README.md).
 
 Other useful docs to explore:
 

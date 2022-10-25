@@ -2,19 +2,19 @@
 
 ## Table of contents <!-- omit in toc -->
 
-- [Blocks behind flags](#blocks-behind-flags)
-    - [Feature plugin flag](#feature-plugin-flag)
-    - [Experimental flag](#experimental-flag)
-- [Features behind flags](#features-behind-flags)
-    - [Feature plugin flag](#feature-plugin-flag-1)
-    - [Experimental plugin flag](#experimental-plugin-flag)
-- [Processes and commands that use a flag](#processes-and-commands-that-use-a-flag)
-- [Usages of `__experimental` prefix](#usages-of-__experimental-prefix)
-    - [PHP filters and actions](#php-filters-and-actions)
-    - [JS methods](#js-methods)
-    - [Slots](#slots)
-    - [Misc](#misc)
-- [Usages of `experimental` prefix](#usages-of-experimental-prefix)
+-   [Blocks behind flags](#blocks-behind-flags)
+    -   [Feature plugin flag](#feature-plugin-flag)
+    -   [Experimental flag](#experimental-flag)
+-   [Features behind flags](#features-behind-flags)
+    -   [Feature plugin flag](#feature-plugin-flag-1)
+    -   [Experimental plugin flag](#experimental-plugin-flag)
+-   [Processes and commands that use a flag](#processes-and-commands-that-use-a-flag)
+-   [Usages of `__experimental` prefix](#usages-of-__experimental-prefix)
+    -   [PHP filters and actions](#php-filters-and-actions)
+    -   [JS methods](#js-methods)
+    -   [Slots](#slots)
+    -   [Misc](#misc)
+-   [Usages of `experimental` prefix](#usages-of-experimental-prefix)
 
 We have feature gating system setup in our plugin that defines what is accessible to the public and what is not, it has three phases:
 
@@ -33,21 +33,6 @@ The majority of our feature flagging is blocks, this is a list of them:
 
 ### Feature plugin flag
 
--   Cart block ([JS flag](https://github.com/woocommerce/woocommerce-gutenberg-products-block/blob/f76c7e46ce63d88059d8ce8b05d9409b78988e5f/assets/js/blocks/cart-checkout/cart/index.js#L51) | [PHP flag](https://github.com/woocommerce/woocommerce-gutenberg-products-block/blob/4a1ee97eb97011458174e93e44a9b7ad2f10ca36/src/BlockTypesController.php#L177)).
--   Checkout block ([JS flag](https://github.com/woocommerce/woocommerce-gutenberg-products-block/blob/89b5d3032aa9d8b7368ba4edd3da222d076fbcaa/assets/js/blocks/cart-checkout/checkout/index.js#L86) | [PHP flag](https://github.com/woocommerce/woocommerce-gutenberg-products-block/blob/4a1ee97eb97011458174e93e44a9b7ad2f10ca36/src/BlockTypesController.php#L176)).
--   Checkout Actions block ([JS flag](https://github.com/woocommerce/woocommerce-gutenberg-products-block/blob/78e2de7a3ddfd3a554273fd6c2ff68478e9692ad/assets/js/blocks/cart-checkout/checkout-i2/inner-blocks/checkout-actions-block/index.tsx#14)).
--   Checkout Billing Address block ([JS flag](https://github.com/woocommerce/woocommerce-gutenberg-products-block/blob/78e2de7a3ddfd3a554273fd6c2ff68478e9692ad/assets/js/blocks/cart-checkout/checkout-i2/inner-blocks/checkout-billing-address-block/index.tsx#14)).
--   Checkout Contact Information block ([JS flag](https://github.com/woocommerce/woocommerce-gutenberg-products-block/blob/78e2de7a3ddfd3a554273fd6c2ff68478e9692ad/assets/js/blocks/cart-checkout/checkout-i2/inner-blocks/checkout-contact-information-block/index.tsx#14)).
--   Checkout Express Payment block ([JS flag](https://github.com/woocommerce/woocommerce-gutenberg-products-block/blob/1cf7823eab9ccc974312fb806af7d8b77da8969e/assets/js/blocks/cart-checkout/checkout-i2/inner-blocks/checkout-express-payment-block/index.tsx#12)).
--   Checkout Fields block ([JS flag](https://github.com/woocommerce/woocommerce-gutenberg-products-block/blob/78e2de7a3ddfd3a554273fd6c2ff68478e9692ad/assets/js/blocks/cart-checkout/checkout-i2/inner-blocks/checkout-fields-block/index.tsx#13)).
--   Checkout Order Note block ([JS flag](https://github.com/woocommerce/woocommerce-gutenberg-products-block/blob/1cf7823eab9ccc974312fb806af7d8b77da8969e/assets/js/blocks/cart-checkout/checkout-i2/inner-blocks/checkout-order-note-block/index.tsx#13)).
--   Checkout Order Summary block ([JS flag](https://github.com/woocommerce/woocommerce-gutenberg-products-block/blob/78e2de7a3ddfd3a554273fd6c2ff68478e9692ad/assets/js/blocks/cart-checkout/checkout-i2/inner-blocks/checkout-order-summary-block/index.tsx#14)).
--   Checkout Payment block ([JS flag](https://github.com/woocommerce/woocommerce-gutenberg-products-block/blob/78e2de7a3ddfd3a554273fd6c2ff68478e9692ad/assets/js/blocks/cart-checkout/checkout-i2/inner-blocks/checkout-payment-block/index.tsx#14)).
--   Checkout Shipping Address block ([JS flag](https://github.com/woocommerce/woocommerce-gutenberg-products-block/blob/78e2de7a3ddfd3a554273fd6c2ff68478e9692ad/assets/js/blocks/cart-checkout/checkout-i2/inner-blocks/checkout-shipping-address-block/index.tsx#14)).
--   Checkout Shipping Methods block ([JS flag](https://github.com/woocommerce/woocommerce-gutenberg-products-block/blob/78e2de7a3ddfd3a554273fd6c2ff68478e9692ad/assets/js/blocks/cart-checkout/checkout-i2/inner-blocks/checkout-shipping-methods-block/index.tsx#14)).
--   Checkout Terms block ([JS flag](https://github.com/woocommerce/woocommerce-gutenberg-products-block/blob/89b5d3032aa9d8b7368ba4edd3da222d076fbcaa/assets/js/blocks/cart-checkout/checkout-i2/inner-blocks/checkout-terms-block/index.tsx#13)).
--   Checkout Totals block ([JS flag](https://github.com/woocommerce/woocommerce-gutenberg-products-block/blob/78e2de7a3ddfd3a554273fd6c2ff68478e9692ad/assets/js/blocks/cart-checkout/checkout-i2/inner-blocks/checkout-totals-block/index.tsx#L13)).
-
 ### Experimental flag
 
 -   Cart block ([JS flag](https://github.com/woocommerce/woocommerce-gutenberg-products-block/blob/8516e87bddee6c07a080c934f3d8cc0683adef06/assets/js/blocks/cart-checkout/cart-i2/index.js#L44) | [PHP flag](https://github.com/woocommerce/woocommerce-gutenberg-products-block/blob/961c0c476d4228a218859c658c42f9b6eebfdec4/src/BlockTypesController.php#L182)).
@@ -60,6 +45,8 @@ The majority of our feature flagging is blocks, this is a list of them:
 -   Filled Cart block ([JS flag](https://github.com/woocommerce/woocommerce-gutenberg-products-block/blob/8516e87bddee6c07a080c934f3d8cc0683adef06/assets/js/blocks/cart-checkout/cart-i2/inner-blocks/filled-cart-block/index.tsx#L13)).
 -   Cart Proceed to checkout block ([JS flag](https://github.com/woocommerce/woocommerce-gutenberg-products-block/blob/8516e87bddee6c07a080c934f3d8cc0683adef06/assets/js/blocks/cart-checkout/cart-i2/inner-blocks/proceed-to-checkout-block/index.tsx#L14)).
 -   Single Product block ([JS flag](https://github.com/woocommerce/woocommerce-gutenberg-products-block/blob/9b76ea7a1680e68cc20bfee01078e43ccfc996bd/assets/js/blocks/single-product/index.js#L43) | [PHP flag](https://github.com/woocommerce/woocommerce-gutenberg-products-block/blob/4a1ee97eb97011458174e93e44a9b7ad2f10ca36/src/BlockTypesController.php#L181) | [webpack flag](https://github.com/woocommerce/woocommerce-gutenberg-products-block/blob/341be1f56071fbd4b5ff975e8788d65a09512df2/bin/webpack-entries.js#L57-L59)).
+-   Product Query ([JS flag](https://github.com/woocommerce/woocommerce-blocks/blob/6547881939b1aa4825562d05fb06808515bf33c2/assets/js/blocks/product-query/variations/product-query.tsx/#L21-L22) | [webpack flag](https://github.com/woocommerce/woocommerce-blocks/blob/6547881939b1aa4825562d05fb06808515bf33c2/bin/webpack-entries.js/#L62-L63)).
+-   Products on Sale ([JS flag](https://github.com/woocommerce/woocommerce-blocks/blob/6547881939b1aa4825562d05fb06808515bf33c2/assets/js/blocks/product-query/variations/products-on-sale.tsx/#L22-L23)).
 -   ⚛️ Add to cart ([JS flag](https://github.com/woocommerce/woocommerce-gutenberg-products-block/blob/b3a9753d8b7dae18b36025d09fbff835b8365de0/assets/js/atomic/blocks/product-elements/add-to-cart/index.js#L29-L32)).
 -   ⚛️ Product category list ([JS flag](https://github.com/woocommerce/woocommerce-gutenberg-products-block/blob/b3a9753d8b7dae18b36025d09fbff835b8365de0/assets/js/atomic/blocks/product-elements/category-list/index.js#L29-L32)).
 -   ⚛️ Product SKU ([JS flag](https://github.com/woocommerce/woocommerce-gutenberg-products-block/blob/b3a9753d8b7dae18b36025d09fbff835b8365de0/assets/js/atomic/blocks/product-elements/sku/index.js#L29-L33)).
@@ -72,16 +59,10 @@ We also have individual features or code blocks behind a feature flag, this is a
 
 ### Feature plugin flag
 
--   Payment API ([PHP flag 1](https://github.com/woocommerce/woocommerce-gutenberg-products-block/blob/07387889ec3a03769eb490821ee608d4e741e942/src/Domain/Bootstrap.php#L92-L94) | [PHP flag 2](https://github.com/woocommerce/woocommerce-gutenberg-products-block/blob/07387889ec3a03769eb490821ee608d4e741e942/src/Domain/Bootstrap.php#L245-L254)).
 -   ⚛️ Product Price new controls ([JS flag 1](https://github.com/woocommerce/woocommerce-gutenberg-products-block/blob/b3a9753d8b7dae18b36025d09fbff835b8365de0/assets/js/atomic/blocks/product-elements/price/attributes.js#L13-L44) | [JS flag 2-1](https://github.com/woocommerce/woocommerce-gutenberg-products-block/blob/8d2f0ad8ade2c7217769b431f93de76d6cfacf6e/assets/js/atomic/blocks/product-elements/price/block.js#L116) | [JS flag 2-2](https://github.com/woocommerce/woocommerce-gutenberg-products-block/blob/8d2f0ad8ade2c7217769b431f93de76d6cfacf6e/assets/js/atomic/blocks/product-elements/price/block.js#L114) | [JS flag 2-3](https://github.com/woocommerce/woocommerce-gutenberg-products-block/blob/8d2f0ad8ade2c7217769b431f93de76d6cfacf6e/assets/js/atomic/blocks/product-elements/price/block.js#L91) | [JS flag 2-4](https://github.com/woocommerce/woocommerce-gutenberg-products-block/blob/8d2f0ad8ade2c7217769b431f93de76d6cfacf6e/assets/js/atomic/blocks/product-elements/price/block.js#L95) | [JS flag 2-5](https://github.com/woocommerce/woocommerce-gutenberg-products-block/blob/8d2f0ad8ade2c7217769b431f93de76d6cfacf6e/assets/js/atomic/blocks/product-elements/price/block.js#L106) | [JS flag 3-1](https://github.com/woocommerce/woocommerce-gutenberg-products-block/blob/b3a9753d8b7dae18b36025d09fbff835b8365de0/assets/js/atomic/blocks/product-elements/price/edit.js#L59-L108) | [JS flag 3-2](https://github.com/woocommerce/woocommerce-gutenberg-products-block/blob/b3a9753d8b7dae18b36025d09fbff835b8365de0/assets/js/atomic/blocks/product-elements/price/edit.js#L114-L131)).
 -   ⚛️ Product Title new controls ([JS flag 1](https://github.com/woocommerce/woocommerce-gutenberg-products-block/blob/b3a9753d8b7dae18b36025d09fbff835b8365de0/assets/js/atomic/blocks/product-elements/title/attributes.js#L21-L40) | [JS flag 2-1](https://github.com/woocommerce/woocommerce-gutenberg-products-block/blob/b3a9753d8b7dae18b36025d09fbff835b8365de0/assets/js/atomic/blocks/product-elements/title/block.js#L70-L72) | [JS flag 2-2](https://github.com/woocommerce/woocommerce-gutenberg-products-block/blob/b3a9753d8b7dae18b36025d09fbff835b8365de0/assets/js/atomic/blocks/product-elements/title/block.js#L94-L95) | [JS flag 2-3](https://github.com/woocommerce/woocommerce-gutenberg-products-block/blob/b3a9753d8b7dae18b36025d09fbff835b8365de0/assets/js/atomic/blocks/product-elements/title/block.js#L104) | [JS flag 3-1](https://github.com/woocommerce/woocommerce-gutenberg-products-block/blob/b3a9753d8b7dae18b36025d09fbff835b8365de0/assets/js/atomic/blocks/product-elements/title/edit.js#L47-L54) | [JS flag 3-2](https://github.com/woocommerce/woocommerce-gutenberg-products-block/blob/b3a9753d8b7dae18b36025d09fbff835b8365de0/assets/js/atomic/blocks/product-elements/title/edit.js#L77-L107) | [JS flag 3-3](https://github.com/woocommerce/woocommerce-gutenberg-products-block/blob/b3a9753d8b7dae18b36025d09fbff835b8365de0/assets/js/atomic/blocks/product-elements/title/edit.js#L116-L129)).
 -   Utility function to pass styles to a block ([JS flag](https://github.com/woocommerce/woocommerce-gutenberg-products-block/blob/9ebddbc5d21eb3cc67fedddbccbd86453313eb64/assets/js/atomic/utils/block-styling.js#L6-L12)).
--   Feature to create an account from the Checkout block ([PHP flag](https://github.com/woocommerce/woocommerce-gutenberg-products-block/blob/4cedb65367be0d1c4c1f9dd9c016e3b1325cf92e/src/Domain/Services/CreateAccount.php#L40)).
--   Checkout package ([PHP Flag](https://github.com/woocommerce/woocommerce-gutenberg-products-block/blob/6da64165025e7a2afc1782e4b278d72536e7b754/src/AssetsController.php#L62-L64)) which contains:
-    -   SlotFills used in Cart and Checkout.
-    -   Checkout Filters.
-    -   Inner Blocks registry for Cart & Checkout i2.
-    -   Components exposed to 3PD.
+-   Filter by Rating ([JS flag](https://github.com/woocommerce/woocommerce-blocks/blob/6547881939b1aa4825562d05fb06808515bf33c2/assets/js/blocks/rating-filter/index.tsx/#L19-L20)).
 
 ### Experimental plugin flag
 
@@ -108,8 +89,8 @@ We also have individual features or code blocks behind a feature flag, this is a
 
 ### JS methods
 
--   `__experimentalDeRegisterPaymentMethod` function used to deregister a payment method, only used in tests ([experimental function](https://github.com/woocommerce/woocommerce-gutenberg-products-block/blob/b07883b8b76feeb439d655b255507b24fc59e091/assets/js/blocks-registry/payment-methods/registry.ts#L114)).
--   `__experimentalDeRegisterExpressPaymentMethod` function used to deregister an express payment method, only used in tests ([experimental function](https://github.com/woocommerce/woocommerce-gutenberg-products-block/blob/b07883b8b76feeb439d655b255507b24fc59e091/assets/js/blocks-registry/payment-methods/registry.ts#L120)).
+-   `__experimentalDeRegisterPaymentMethod` function used to deregister a payment method, only used in tests ([experimental function](https://github.com/woocommerce/woocommerce-blocks/blob/f27456dd00fa0b21b29a935943defb18351edf48/assets/js/blocks-registry/payment-methods/registry.ts#L110-L114)).
+-   `__experimentalDeRegisterExpressPaymentMethod` function used to deregister an express payment method, only used in tests ([experimental function](https://github.com/woocommerce/woocommerce-blocks/blob/f27456dd00fa0b21b29a935943defb18351edf48/assets/js/blocks-registry/payment-methods/registry.ts#L116-L120)).
 -   `__experimentalRegisterCheckoutFilters` and `__experimentalApplyCheckoutFilter` methods included with `@woocommerce/blocks-checkout` package. They allow registering and applying a filter to certain parts of the Cart and Checkout blocks ([experimental method 1](https://github.com/woocommerce/woocommerce-gutenberg-products-block/blob/3e59ec9842464f783f6e087947e717fa0b0a7b1b/packages/checkout/registry/index.js#L2) | [experimental method 2](https://github.com/woocommerce/woocommerce-gutenberg-products-block/blob/3e59ec9842464f783f6e087947e717fa0b0a7b1b/packages/checkout/registry/index.js#L17)).
 
 ### Slots
@@ -154,6 +135,6 @@ Current list of events:
 
 [We're hiring!](https://woocommerce.com/careers/) Come work with us!
 
-🐞 Found a mistake, or have a suggestion? [Leave feedback about this document here.](https://github.com/woocommerce/woocommerce-gutenberg-products-block/issues/new?assignees=&labels=type%3A+documentation&template=--doc-feedback.md&title=Feedback%20on%20./docs/blocks/feature-flags-and-experimental-interfaces.md)
+🐞 Found a mistake, or have a suggestion? [Leave feedback about this document here.](https://github.com/woocommerce/woocommerce-blocks/issues/new?assignees=&labels=type%3A+documentation&template=--doc-feedback.md&title=Feedback%20on%20./docs/internal-developers/blocks/feature-flags-and-experimental-interfaces.md)
 
 <!-- /FEEDBACK -->

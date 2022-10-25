@@ -2,18 +2,48 @@
 	// We need to override it because by default the global styles applied the border-style: solid;
 	// Our goal is not to have a border on main wrapper DOM element
 	border-style: none !important;
+
+	h1,
+	h2,
+	h3,
+	h4,
+	h5,
+	h6 {
+		text-transform: inherit;
+	}
 }
 
 .wc-block-attribute-filter {
-	margin-bottom: $gap-large;
+	margin-bottom: $gap;
 	border-radius: inherit;
 	border-color: inherit;
 
+	.is-loading {
+		@include placeholder();
+		box-shadow: none;
+		border-radius: 0;
+		height: 1em;
+		margin-top: $gap;
+	}
+
 	&.style-dropdown {
+		position: relative;
 		display: flex;
 		gap: $gap;
-		border-radius: inherit;
-		border-color: inherit;
+		align-items: flex-start;
+
+		.wc-block-components-filter-submit-button {
+			height: 36px;
+			line-height: 1;
+		}
+
+		> svg {
+			position: absolute;
+			right: 8px;
+			top: 50%;
+			transform: translateY(-50%);
+			pointer-events: none;
+		}
 	}
 
 	.wc-block-attribute-filter-list {
@@ -32,22 +62,126 @@
 		}
 	}
 
-	.wc-block-attribute-filter-dropdown {
+	.wc-blocks-components-form-token-field-wrapper {
 		flex-grow: 1;
 		max-width: unset;
 		width: 0;
-		border-radius: inherit;
-		border-color: inherit;
+		height: max-content;
+
+		&:not(.is-loading) {
+			border: 1px solid $gray-700 !important;
+			border-radius: 4px;
+		}
+
+		&.is-loading {
+			border-radius: em(4px);
+		}
 	}
 
-	.is-single .wc-block-attribute-filter-list-count,
-	.wc-block-dropdown-selector .wc-block-dropdown-selector__list .wc-block-attribute-filter-list-count {
-		opacity: 0.6;
+	.wc-blocks-components-form-token-field-wrapper .components-form-token-field__input-container {
+		border: 0;
+		padding: $gap-smaller;
+
+		.components-form-token-field__input::placeholder {
+			color: $black;
+		}
+
+		.components-form-token-field__suggestions-list {
+			border: 1px solid $gray-700;
+			border-radius: 4px;
+			margin-top: $gap-smaller;
+			max-height: 21em;
+
+			.components-form-token-field__suggestion {
+				color: $black;
+				border: 1px solid $gray-400;
+				border-radius: 4px;
+				margin: $gap-small;
+				padding: $gap-small;
+			}
+		}
+	}
+}
+
+.wc-block-attribute-filter__multiple-toggle,
+.wc-block-attribute-filter__conditions-toggle,
+.wc-block-attribute-filter__display-toggle {
+	width: 100%;
+}
+
+.woocommerce-product-attributes {
+	.woocommerce-search-list__search {
+		.components-base-control__label {
+			@include reset-typography();
+			@include font-size(regular);
+			color: $gray-700;
+		}
+	}
+}
+
+.wc-block-attribute-filter__actions {
+	align-items: center;
+	display: flex;
+	gap: $gap;
+	justify-content: flex-end;
+
+	.wc-block-components-filter-submit-button {
+		margin-left: 0;
+
+		&:disabled {
+			opacity: 0.6;
+			cursor: auto;
+		}
 	}
 
-	.wc-block-components-dropdown-selector__input-wrapper {
-		height: 100%;
-		border-radius: inherit;
-		border-color: inherit;
+	.wc-block-filter-submit-button.wc-block-components-filter-submit-button.wc-block-attribute-filter__button {
+		margin-top: 0;
 	}
+}
+
+.editor-styles-wrapper .wc-block-components-checkbox {
+	margin-top: em($gap);
+}
+
+.wc-block-components-checkbox {
+	margin-top: em($gap);
+}
+
+.wc-blocks-components-form-token-field-wrapper:not(.single-selection) .components-form-token-field__input-container {
+	padding: $gap-smallest 30px $gap-smallest  $gap-smaller;
+
+	.components-form-token-field__token-text {
+		background-color: $white;
+		border: 1px solid;
+		border-right: 0;
+		border-radius: 25px 0 0 25px;
+		padding: em($gap-smallest) em($gap-smaller) em($gap-smallest) em($gap-small);
+		line-height: 22px;
+	}
+
+	> .components-form-token-field__input {
+		margin: em($gap-smallest) 0;
+	}
+
+	.components-button.components-form-token-field__remove-token {
+		background-color: $white;
+		border: 1px solid;
+		border-left: 0;
+		border-radius: 0 25px 25px 0;
+		padding: 1px em($gap-smallest) 0 0;
+
+		&.has-icon svg {
+			background-color: $gray-200;
+			border-radius: 25px;
+		}
+	}
+}
+
+.editor-styles-wrapper .wc-block-attribute-filter__button.wc-block-attribute-filter__button,
+.wc-block-attribute-filter__button.wc-block-attribute-filter__button {
+	padding: em($gap-smaller) em($gap);
+	@include font-size(small);
+	height: max-content;
+	line-height: normal;
+	width: max-content;
 }

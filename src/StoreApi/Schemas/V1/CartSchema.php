@@ -5,8 +5,6 @@ use Automattic\WooCommerce\StoreApi\SchemaController;
 use Automattic\WooCommerce\StoreApi\Utilities\CartController;
 use Automattic\WooCommerce\StoreApi\Schemas\ExtendSchema;
 use WC_Tax;
-use WP_Error;
-
 
 /**
  * CartSchema class.
@@ -387,8 +385,13 @@ class CartSchema extends AbstractSchema {
 	 * @return array
 	 */
 	protected function get_tax_lines( $cart ) {
+		$tax_lines = [];
+
+		if ( 'itemized' !== get_option( 'woocommerce_tax_total_display' ) ) {
+			return $tax_lines;
+		}
+
 		$cart_tax_totals = $cart->get_tax_totals();
-		$tax_lines       = [];
 
 		foreach ( $cart_tax_totals as $cart_tax_total ) {
 			$tax_lines[] = array(

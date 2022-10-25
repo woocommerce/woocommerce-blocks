@@ -52,12 +52,12 @@ class MiniCartContents extends AbstractBlock {
 	/**
 	 * Render the markup for the Mini Cart contents block.
 	 *
-	 * @param array  $attributes Block attributes.
-	 * @param string $content    Block content.
-	 *
+	 * @param array    $attributes Block attributes.
+	 * @param string   $content    Block content.
+	 * @param WP_Block $block      Block instance.
 	 * @return string Rendered block type output.
 	 */
-	protected function render( $attributes, $content ) {
+	protected function render( $attributes, $content, $block ) {
 		if ( is_admin() || WC()->is_rest_api_request() ) {
 			// In the editor we will display the placeholder, so no need to
 			// print the markup.
@@ -92,8 +92,8 @@ class MiniCartContents extends AbstractBlock {
 					'.wc-block-mini-cart__footer .wc-block-mini-cart__footer-actions .wc-block-mini-cart__footer-checkout',
 					'.wc-block-mini-cart__footer .wc-block-mini-cart__footer-actions .wc-block-mini-cart__footer-checkout:hover',
 					'.wc-block-mini-cart__footer .wc-block-mini-cart__footer-actions .wc-block-mini-cart__footer-checkout:focus',
-					'.wc-block-mini-cart__footer .wc-block-mini-cart__footer-actions .wc-block-mini-cart__footer-cart:hover',
-					'.wc-block-mini-cart__footer .wc-block-mini-cart__footer-actions .wc-block-mini-cart__footer-cart:focus',
+					'.wc-block-mini-cart__footer .wc-block-mini-cart__footer-actions .wc-block-mini-cart__footer-cart.wc-block-components-button:hover',
+					'.wc-block-mini-cart__footer .wc-block-mini-cart__footer-actions .wc-block-mini-cart__footer-cart.wc-block-components-button:focus',
 					'.wc-block-mini-cart__shopping-button a:hover',
 					'.wc-block-mini-cart__shopping-button a:focus',
 				),

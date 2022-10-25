@@ -2,15 +2,15 @@
 
 ## Table of Contents <!-- omit in toc -->
 
-- [The problem](#the-problem)
-- [Solution](#solution)
-- [Basic Usage](#basic-usage)
-- [registerPlugin](#registerplugin)
-- [Requirements](#requirements)
+-   [The problem](#the-problem)
+-   [Solution](#solution)
+-   [Basic Usage](#basic-usage)
+-   [registerPlugin](#registerplugin)
+-   [Requirements](#requirements)
 
 ## The problem
 
-You added custom data to the [Store API](./extend-rest-api-add-data.md). You changed several strings using [Checkout filters](./available-filters.md). Now you want to render your own components in specific places in the Cart and Checkout.
+You added custom data to the [Store API](../rest-api/extend-rest-api-add-data.md). You changed several strings using [Checkout filters](./available-filters.md). Now you want to render your own components in specific places in the Cart and Checkout.
 
 ## Solution
 
@@ -69,6 +69,7 @@ For this to work, your script must be enqueued after Cart and Checkout. You can 
 
 [We're hiring!](https://woocommerce.com/careers/) Come work with us!
 
-🐞 Found a mistake, or have a suggestion? [Leave feedback about this document here.](https://github.com/woocommerce/woocommerce-gutenberg-products-block/issues/new?assignees=&labels=type%3A+documentation&template=--doc-feedback.md&title=Feedback%20on%20./docs/extensibility/slot-fills.md)
+🐞 Found a mistake, or have a suggestion? [Leave feedback about this document here.](https://github.com/woocommerce/woocommerce-blocks/issues/new?assignees=&labels=type%3A+documentation&template=--doc-feedback.md&title=Feedback%20on%20./docs/third-party-developers/extensibility/checkout-block/slot-fills.md)
 
 <!-- /FEEDBACK -->
+

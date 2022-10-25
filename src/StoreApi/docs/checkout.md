@@ -83,8 +83,8 @@ POST /wc/store/v1/checkout
 
 | Attribute          | Type   | Required | Description                                                         |
 | :----------------- | :----- | :------: | :------------------------------------------------------------------ |
-| `billing_address`  | array  |   Yes    | Array of updated billing address data for the customer.             |
-| `shipping_address` | array  |   Yes    | Array of updated shipping address data for the customer.            |
+| `billing_address`  | object |   Yes    | Object of updated billing address data for the customer.            |
+| `shipping_address` | object |   Yes    | Object of updated shipping address data for the customer.           |
 | `customer_note`    | string |    No    | Note added to the order by the customer during checkout.            |
 | `payment_method`   | string |   Yes    | The ID of the payment method being used to process the payment.     |
 | `payment_data`     | array  |    No    | Data to pass through to the payment method when processing payment. |
@@ -141,6 +141,7 @@ curl --header "Nonce: 12345" --request POST https://example-store.com/wp-json/wc
 
 [We're hiring!](https://woocommerce.com/careers/) Come work with us!
 
-🐞 Found a mistake, or have a suggestion? [Leave feedback about this document here.](https://github.com/woocommerce/woocommerce-gutenberg-products-block/issues/new?assignees=&labels=type%3A+documentation&template=--doc-feedback.md&title=Feedback%20on%20./src/StoreApi/docs/checkout.md)
+🐞 Found a mistake, or have a suggestion? [Leave feedback about this document here.](https://github.com/woocommerce/woocommerce-blocks/issues/new?assignees=&labels=type%3A+documentation&template=--doc-feedback.md&title=Feedback%20on%20./src/StoreApi/docs/checkout.md)
 
 <!-- /FEEDBACK -->
+

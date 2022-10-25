@@ -8,12 +8,21 @@ import {
 	PREFIX_QUERY_ARG_FILTER_TYPE,
 	PREFIX_QUERY_ARG_QUERY_TYPE,
 } from '@woocommerce/utils';
-import { AttributeObject } from '@woocommerce/types';
+import { AttributeObject, isString } from '@woocommerce/types';
+
+/**
+ * Internal dependencies
+ */
+import metadata from './block.json';
 
 interface Param {
 	attribute: string;
 	operator: string;
 	slug: Array< string >;
+}
+
+export function generateUniqueId() {
+	return Math.floor( Math.random() * Date.now() );
 }
 
 export const parseTaxonomyToGenerateURL = ( taxonomy: string ) =>
@@ -91,4 +100,39 @@ export const isQueryArgsEqual = (
 			currentQueryArgs[ key ] === value ? isEqual : false,
 		true
 	);
+};
+
+export const formatSlug = ( slug: string ) =>
+	slug
+		.trim()
+		.replace( /\s/g, '-' )
+		.replace( /_/g, '-' )
+		.replace( /-+/g, '-' )
+		.replace( /[^a-zA-Z0-9-]/g, '' );
+
+export const parseAttributes = ( data: Record< string, unknown > ) => {
+	return {
+		className: isString( data?.className ) ? data.className : '',
+		attributeId: parseInt(
+			isString( data?.attributeId ) ? data.attributeId : '0',
+			10
+		),
+		showCounts: data?.showCounts !== 'false',
+		queryType:
+			( isString( data?.queryType ) && data.queryType ) ||
+			metadata.attributes.queryType.default,
+		heading: isString( data?.heading ) ? data.heading : '',
+		headingLevel:
+			( isString( data?.headingLevel ) &&
+				parseInt( data.headingLevel, 10 ) ) ||
+			metadata.attributes.headingLevel.default,
+		displayStyle:
+			( isString( data?.displayStyle ) && data.displayStyle ) ||
+			metadata.attributes.displayStyle.default,
+		showFilterButton: data?.showFilterButton === 'true',
+		selectType:
+			( isString( data?.selectType ) && data.selectType ) ||
+			metadata.attributes.selectType.default,
+		isPreview: false,
+	};
 };
