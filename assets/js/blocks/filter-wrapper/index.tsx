@@ -76,9 +76,7 @@ const getTransformAttributes = ( instance, filterType: string ) => {
 
 const isFilterWidget = ( widgetId: string ) =>
 	filterBlocksWidgets
-		.map( ( item ) => item.widgetId )
-		.filter( Boolean )
-		.includes( widgetId );
+		.some( ( item ) => item.widgetId === widgetId );
 
 const getFilterBlockObject = ( widgetId: string ) => {
 	const filterBlock = filterBlocksWidgets.find(
