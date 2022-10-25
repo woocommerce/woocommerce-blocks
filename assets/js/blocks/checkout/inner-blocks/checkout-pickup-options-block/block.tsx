@@ -1,125 +1,118 @@
 /**
  * External dependencies
  */
-import { __ } from '@wordpress/i18n';
-import { useShippingData } from '@woocommerce/base-context/hooks';
-import { ShippingRatesControl } from '@woocommerce/base-components/cart-checkout';
+import { useState, useEffect, useCallback } from '@wordpress/element';
+import {
+	useShippingData,
+	useSelectShippingRate,
+} from '@woocommerce/base-context/hooks';
 import { getCurrencyFromPriceResponse } from '@woocommerce/price-format';
 import FormattedMonetaryAmount from '@woocommerce/base-components/formatted-monetary-amount';
 import { decodeEntities } from '@wordpress/html-entities';
-import { Notice } from 'wordpress-components';
-import classnames from 'classnames';
 import { getSetting } from '@woocommerce/settings';
-import type { PackageRateOption } from '@woocommerce/type-defs/shipping';
-import type { CartShippingPackageShippingRate } from '@woocommerce/type-defs/cart';
 import { Icon, mapMarker } from '@wordpress/icons';
-import { MetaKeyValue } from '@woocommerce/types';
+import RadioControl from '@woocommerce/base-components/radio-control';
+import type { RadioControlOption } from '@woocommerce/base-components/radio-control/types';
 
 /**
  * Internal dependencies
  */
 import './style.scss';
 
-const getPickupLocation = (
-	option: CartShippingPackageShippingRate
-): string => {
-	if ( option?.meta_data ) {
-		const match = option.meta_data.find(
-			( meta: MetaKeyValue ) => meta.key === 'pickup_location'
-		);
-		return match ? match.value : '';
-	}
-	return '';
-};
+interface pickupLocation {
+	rate_id: string;
+	name: string;
+	address: string;
+	details: string;
+}
 
-const getPickupAddress = (
-	option: CartShippingPackageShippingRate
-): string => {
-	if ( option?.meta_data ) {
-		const match = option.meta_data.find(
-			( meta: MetaKeyValue ) => meta.key === 'pickup_address'
-		);
-		return match ? match.value : '';
-	}
-	return '';
-};
+interface pickupLocationRate extends pickupLocation {
+	price: number;
+	taxes: number;
+}
 
-/**
- * Renders a shipping rate control option.
- *
- * @param {Object} option Shipping Rate.
- */
-const renderShippingRatesControlOption = (
-	option: CartShippingPackageShippingRate
-): PackageRateOption => {
+const renderPickupLocation = (
+	option: pickupLocationRate
+): RadioControlOption => {
 	const priceWithTaxes = getSetting( 'displayCartPricesIncludingTax', false )
-		? parseInt( option.price, 10 ) + parseInt( option.taxes, 10 )
-		: parseInt( option.price, 10 );
-	const location = getPickupLocation( option );
-	const address = getPickupAddress( option );
+		? option.price + option.taxes
+		: option.price;
 	return {
 		value: option.rate_id,
-		label: location
-			? decodeEntities( location )
-			: decodeEntities( option.name ),
+		label: decodeEntities( option.name ),
 		secondaryLabel: (
 			<FormattedMonetaryAmount
 				currency={ getCurrencyFromPriceResponse( option ) }
 				value={ priceWithTaxes }
 			/>
 		),
-		description: decodeEntities( option.description ),
-		secondaryDescription: address ? (
+		description: decodeEntities( option.details ),
+		secondaryDescription: option.address ? (
 			<>
 				<Icon
 					icon={ mapMarker }
 					className="wc-block-editor-components-block-icon"
 				/>
-				{ decodeEntities( address ) }
+				{ decodeEntities( option.address ) }
 			</>
 		) : undefined,
 	};
 };
 
 const Block = (): JSX.Element | null => {
-	const { shippingRates, needsShipping, isLoadingRates } = useShippingData();
-
-	if ( ! needsShipping ) {
-		return null;
-	}
-
-	const filteredShippingRates = shippingRates.map(
-		( shippingRatesPackage ) => {
-			return {
-				...shippingRatesPackage,
-				shipping_rates: shippingRatesPackage.shipping_rates.filter(
-					( shippingRatesPackageRate ) =>
-						shippingRatesPackageRate.method_id === 'pickup_location'
-				),
-			};
-		}
+	const { shippingRates } = useShippingData();
+	const { selectShippingRate } = useSelectShippingRate();
+	const [ selectedOption, setSelectedOption ] = useState< string >( '' );
+	const onSelectRate = useCallback(
+		( rateId: string ) => {
+			shippingRates.forEach( ( { package_id: packageId } ) => {
+				selectShippingRate( rateId, packageId );
+			} );
+		},
+		[ selectShippingRate, shippingRates ]
 	);
 
+	const pickupLocations = (
+		getSetting( 'localPickupLocations', [] ) as pickupLocation[]
+	 ).map( ( pickupLocation: pickupLocation ): pickupLocationRate => {
+		// Find the cost and taxes from the shipping rates response.
+		const pickupRate = shippingRates.reduce(
+			( acc, shippingRatePackage ) => {
+				const rate =
+					shippingRatePackage.shipping_rates.find(
+						( { rate_id: rateId } ) =>
+							rateId === pickupLocation.rate_id
+					) || null;
+				if ( rate ) {
+					acc.price = acc.price + parseInt( rate.price, 10 );
+					acc.taxes = acc.taxes + parseInt( rate.taxes, 10 );
+				}
+				return acc;
+			},
+			{ price: 0, taxes: 0 }
+		);
+		return {
+			...pickupLocation,
+			...pickupRate,
+		};
+	} );
+
+	// Update the selected option if there is no rate selected on mount.
+	useEffect( () => {
+		if ( ! selectedOption && pickupLocations[ 0 ] ) {
+			setSelectedOption( pickupLocations[ 0 ].rate_id );
+			onSelectRate( pickupLocations[ 0 ].rate_id );
+		}
+	}, [ onSelectRate, pickupLocations, selectedOption ] );
+
 	return (
-		<ShippingRatesControl
-			noResultsMessage={
-				<Notice
-					isDismissible={ false }
-					className={ classnames(
-						'wc-block-components-shipping-rates-control__no-results-notice',
-						'woocommerce-error'
-					) }
-				>
-					{ __(
-						'There are no pickup options available.',
-						'woo-gutenberg-products-block'
-					) }
-				</Notice>
-			}
-			renderOption={ renderShippingRatesControlOption }
-			shippingRates={ filteredShippingRates }
-			isLoadingRates={ isLoadingRates }
-			context="woocommerce/checkout"
+		<RadioControl
+			onChange={ ( value: string ) => {
+				setSelectedOption( value );
+				onSelectRate( value );
+			} }
+			selected={ selectedOption }
+			options={ pickupLocations.map( renderPickupLocation ) }
 		/>
 	);
 };
