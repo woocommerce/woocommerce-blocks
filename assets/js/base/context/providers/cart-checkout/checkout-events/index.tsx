@@ -16,20 +16,39 @@ import deprecated from '@wordpress/deprecated';
 import { useDispatch, useSelect } from '@wordpress/data';
 import {
 	CHECKOUT_STORE_KEY,
+	PAYMENT_STORE_KEY,
 	VALIDATION_STORE_KEY,
 } from '@woocommerce/block-data';
 
 /**
  * Internal dependencies
  */
-import type { CheckoutEventsContextType } from './types';
 import { useEventEmitters, reducer as emitReducer } from './event-emit';
+import type { emitterCallback } from '../../../event-emit';
 import { STATUS } from '../../../../../data/checkout/constants';
 import { useStoreEvents } from '../../../hooks/use-store-events';
 import { useCheckoutNotices } from '../../../hooks/use-checkout-notices';
 import { CheckoutState } from '../../../../../data/checkout/default-state';
+import {
+	getExpressPaymentMethods,
+	getPaymentMethods,
+} from '../../../../../blocks-registry/payment-methods/registry';
+import { useEditorContext } from '../../editor-context';
 
-const CheckoutEventsContext = createContext( {
+type CheckoutEventsContextType = {
+	// Submits the checkout and begins processing.
+	onSubmit: () => void;
+	// Used to register a callback that will fire after checkout has been processed and there are no errors.
+	onCheckoutAfterProcessingWithSuccess: ReturnType< typeof emitterCallback >;
+	// Used to register a callback that will fire when the checkout has been processed and has an error.
+	onCheckoutAfterProcessingWithError: ReturnType< typeof emitterCallback >;
+	// Deprecated in favour of onCheckoutValidationBeforeProcessing.
+	onCheckoutBeforeProcessing: ReturnType< typeof emitterCallback >;
+	// Used to register a callback that will fire when the checkout has been submitted before being sent off to the server.
+	onCheckoutValidationBeforeProcessing: ReturnType< typeof emitterCallback >;
+};
+
+const CheckoutEventsContext = createContext< CheckoutEventsContextType >( {
 	onSubmit: () => void null,
 	onCheckoutAfterProcessingWithSuccess: () => () => void null,
 	onCheckoutAfterProcessingWithError: () => () => void null,
@@ -56,6 +75,32 @@ export const CheckoutEventsProvider = ( {
 	children: React.ReactChildren;
 	redirectUrl: string;
 } ): JSX.Element => {
+	const paymentMethods = getPaymentMethods();
+	const expressPaymentMethods = getExpressPaymentMethods();
+	const { isEditor } = useEditorContext();
+
+	const { __internalUpdateAvailablePaymentMethods } =
+		useDispatch( PAYMENT_STORE_KEY );
+
+	// Update the payment method store when paymentMethods or expressPaymentMethods changes.
+	// Ensure this happens in the editor even if paymentMethods is empty. This won't happen instantly when the objects
+	// are updated, but on the next re-render.
+	useEffect( () => {
+		if (
+			! isEditor &&
+			Object.keys( paymentMethods ).length === 0 &&
+			Object.keys( expressPaymentMethods ).length === 0
+		) {
+			return;
+		}
+		__internalUpdateAvailablePaymentMethods();
+	}, [
+		isEditor,
+		paymentMethods,
+		expressPaymentMethods,
+		__internalUpdateAvailablePaymentMethods,
+	] );
+
 	const checkoutActions = useDispatch( CHECKOUT_STORE_KEY );
 	const checkoutState: CheckoutState = useSelect( ( select ) =>
 		select( CHECKOUT_STORE_KEY ).getCheckoutState()
@@ -167,7 +212,7 @@ export const CheckoutEventsProvider = ( {
 		checkoutActions.__internalSetBeforeProcessing();
 	}, [ dispatchCheckoutEvent, checkoutActions ] );
 
-	const checkoutEventHandlers: CheckoutEventsContextType = {
+	const checkoutEventHandlers = {
 		onSubmit,
 		onCheckoutBeforeProcessing,
 		onCheckoutValidationBeforeProcessing,
