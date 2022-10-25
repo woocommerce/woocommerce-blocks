@@ -233,24 +233,6 @@ class Checkout extends AbstractBlock {
 			),
 			true
 		);
-		$this->asset_data_registry->add(
-			'localPickupLocations',
-			function() {
-				$locations           = get_option( 'pickup_location_pickup_locations', [] );
-				$formatted_locations = [];
-
-				foreach ( $locations as $index => $location ) {
-					$formatted_locations[] = [
-						'rate_id' => 'pickup_location:' . $index,
-						'name'    => wp_kses_post( $location['name'] ),
-						'details' => wp_kses_post( $location['details'] ),
-						'address' => wc()->countries->get_formatted_address( $location['address'], ', ' ),
-					];
-				}
-				return $formatted_locations;
-			},
-			true
-		);
 		$this->asset_data_registry->add( 'checkoutShowLoginReminder', filter_var( get_option( 'woocommerce_enable_checkout_login_reminder' ), FILTER_VALIDATE_BOOLEAN ), true );
 		$this->asset_data_registry->add( 'displayCartPricesIncludingTax', 'incl' === get_option( 'woocommerce_tax_display_cart' ), true );
 		$this->asset_data_registry->add( 'displayItemizedTaxes', 'itemized' === get_option( 'woocommerce_tax_total_display' ), true );
