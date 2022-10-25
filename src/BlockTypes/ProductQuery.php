@@ -326,17 +326,22 @@ class ProductQuery extends AbstractBlock {
 	}
 
 	/**
-	 * Intersect arrays when both are not empty, otherwise merge them.
+	 * Intersect arrays neither of them are empty, otherwise merge them.
 	 *
-	 * @param array $array1 Array.
-	 * @param array $array2 Array.
+	 * @param array ...$arrays Arrays.
 	 * @return array
 	 */
-	private function intersect_arrays_when_not_empty( $array1, $array2 ) {
-		if ( empty( $array1 ) || empty( $array2 ) ) {
-			return array_merge( $array1, $array2 );
-		}
-		return array_intersect( $array1, $array2 );
+	private function intersect_arrays_when_not_empty( ...$arrays ) {
+		return array_reduce(
+			$arrays,
+			function( $acc, $array ) {
+				if ( ! empty( $array ) && ! empty( $acc ) ) {
+					return array_intersect( $acc, $array );
+				}
+				return array_merge( $acc, $array );
+			},
+			array()
+		);
 	}
 
 }
