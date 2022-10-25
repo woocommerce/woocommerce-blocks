@@ -23,16 +23,20 @@ describe( `${ block.name } Block`, () => {
 		await switchUserToAdmin();
 		await visitBlockPage( `${ block.name } Block` );
 
+		await page.waitForSelector( 'span.woocommerce-search-list__item-name' );
+
 		// eslint-disable-next-line jest/no-standalone-expect
 		await expect( page ).toClick(
 			'span.woocommerce-search-list__item-name',
-			{ text: 'Capacity' }
+			{ text: 'Capacity', clickCount: 2 }
 		);
-		//needed for attributes list to load correctly
-		await page.waitForTimeout( 1000 );
 
 		// eslint-disable-next-line jest/no-standalone-expect
-		await expect( page ).toClick( 'button', { text: 'Done' } );
+		await expect( page ).toClick(
+			'.wp-block-woocommerce-attribute-filter button',
+			{ text: 'Done' }
+		);
+		await page.waitForTimeout( 30000 );
 		await page.waitForNetworkIdle();
 	} );
 
