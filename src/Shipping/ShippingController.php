@@ -185,20 +185,34 @@ class ShippingController {
 	}
 
 	/**
-	 * Disable local pickup if multiple packages are present.
+	 * For Local Pickup to work, all packages must support local pickup. This filters the option out if unavailable.
 	 *
 	 * @param array $packages Array of shipping packages.
 	 * @return array
 	 */
 	public function filter_shipping_packages( $packages ) {
-		if ( 1 === count( $packages ) ) {
+		$valid = true;
+
+		// Check that each package has a pickup_location method available.
+		foreach ( $packages as $package_id => $package ) {
+			foreach ( $package['rates'] as $rate_id => $rate ) {
+				$method_id = $rate->get_method_id();
+
+				if ( 'pickup_location' === $method_id ) {
+					continue 2;
+				}
+			}
+
+			$valid = false;
+		}
+
+		if ( $valid ) {
 			return $packages;
 		}
 
+		// Remove pickup location if invalid.
 		foreach ( $packages as $package_id => $package ) {
-			$package_rates = $package['rates'];
-
-			foreach ( $package_rates as $rate_id => $rate ) {
+			foreach ( $package['rates'] as $rate_id => $rate ) {
 				$method_id = $rate->get_method_id();
 
 				if ( 'pickup_location' === $method_id ) {
