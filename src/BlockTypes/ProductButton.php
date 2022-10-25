@@ -75,7 +75,7 @@ class ProductButton extends AbstractBlock {
 	 * @return string Rendered block type output.
 	 */
 	protected function render( $attributes, $content, $block ) {
-		if ( ! empty( $content ) ) {
+		if ( ! empty( $content ) && ! is_product() ) {
 			parent::register_block_type_assets();
 			$this->register_chunk_translations( [ $this->block_name ] );
 			return $content;
