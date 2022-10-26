@@ -8,6 +8,7 @@ import { ToolbarGroup, ToolbarDropdownMenu } from '@wordpress/components';
 import { eye } from '@woocommerce/icons';
 import { Icon } from '@wordpress/icons';
 import { store as blockEditorStore } from '@wordpress/block-editor';
+import { useEditorContext } from '../../base/context/providers';
 
 interface View {
 	view: string;
@@ -27,6 +28,16 @@ export const useViewSwitcher = (
 	component: JSX.Element;
 } => {
 	const initialView = views[ 0 ];
+	const {
+		currentView: currentViewInContext,
+		setCurrentView: setViewInContext,
+	} = useEditorContext();
+	console.log( currentViewInContext );
+	useEffect( () => {
+		if ( ! currentViewInContext ) {
+			setViewInContext( initialView.view );
+		}
+	}, [ setViewInContext, currentViewInContext, initialView ] );
 	const [ currentView, setCurrentView ] = useState( initialView );
 	const { selectBlock } = useDispatch( 'core/block-editor' );
 	const { getBlock, getSelectedBlockClientId, getBlockParentsByBlockName } =
@@ -49,7 +60,9 @@ export const useViewSwitcher = (
 		if ( viewNames.includes( selectedBlock.name ) ) {
 			const newView = getView( selectedBlock.name, views );
 			if ( newView ) {
-				return setCurrentView( newView );
+				return;
+				//setViewInContext( newView.view );
+				//return setCurrentView( newView );
 			}
 		}
 
@@ -70,6 +83,7 @@ export const useViewSwitcher = (
 		const newView = getView( parentBlock.name, views );
 
 		if ( newView ) {
+			setViewInContext( newView.view );
 			setCurrentView( newView );
 		}
 	}, [
@@ -91,6 +105,12 @@ export const useViewSwitcher = (
 					title: <span>{ view.label }</span>,
 					isActive: view.view === currentView.view,
 					onClick: () => {
+						console.log(
+							'clicked! need to set view in context to',
+							view.view,
+							setViewInContext
+						);
+						setViewInContext( view.view );
 						setCurrentView( view );
 						selectBlock(
 							getBlock( clientId ).innerBlocks.find(

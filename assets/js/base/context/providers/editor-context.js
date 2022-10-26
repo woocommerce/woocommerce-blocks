@@ -1,7 +1,12 @@
 /**
  * External dependencies
  */
-import { createContext, useContext, useCallback } from '@wordpress/element';
+import {
+	createContext,
+	useContext,
+	useCallback,
+	useState,
+} from '@wordpress/element';
 import { useSelect } from '@wordpress/data';
 
 /**
@@ -15,6 +20,7 @@ const EditorContext = createContext( {
 	currentView: '',
 	previewData: {},
 	getPreviewData: () => void null,
+	setCurrentView: () => void null,
 } );
 
 /**
@@ -32,12 +38,14 @@ export const useEditorContext = () => {
  * @param {Object} [props.previewData]   The preview data for editor.
  * @param {number} [props.currentPostId] The post being edited.
  * @param {string} [props.currentView]   Current view, if using a view switcher.
+ * @param          props.setCurrentView
  */
 export const EditorProvider = ( {
 	children,
 	currentPostId = 0,
 	currentView = '',
 	previewData = {},
+	//setCurrentView: _setCurrentView = () => void null,
 } ) => {
 	/**
 	 * @type {number} editingPostId
@@ -63,15 +71,19 @@ export const EditorProvider = ( {
 		[ previewData ]
 	);
 
+	const [ currentViewName, setCurrentView ] = useState( currentView );
+	console.log( currentViewName );
+
 	/**
 	 * @type {EditorDataContext}
 	 */
 	const editorData = {
 		isEditor: true,
 		currentPostId: editingPostId,
-		currentView,
+		currentView: currentViewName,
 		previewData,
 		getPreviewData,
+		setCurrentView,
 	};
 
 	return (

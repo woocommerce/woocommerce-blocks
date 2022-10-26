@@ -30,6 +30,7 @@ import {
 } from '../cart-checkout-shared';
 import '../cart-checkout-shared/sidebar-notices';
 import { CartBlockContext } from './context';
+import { CartViewSwitcher } from './CartViewSwitcher';
 
 // This is adds a class to body to signal if the selected block is locked
 addClassToBody();
@@ -40,25 +41,8 @@ const ALLOWED_BLOCKS = [
 	'woocommerce/empty-cart-block',
 ];
 
-const views = [
-	{
-		view: 'woocommerce/filled-cart-block',
-		label: __( 'Filled Cart', 'woo-gutenberg-products-block' ),
-		icon: <Icon icon={ filledCart } />,
-	},
-	{
-		view: 'woocommerce/empty-cart-block',
-		label: __( 'Empty Cart', 'woo-gutenberg-products-block' ),
-		icon: <Icon icon={ removeCart } />,
-	},
-];
-
 export const Edit = ( { className, attributes, setAttributes, clientId } ) => {
 	const { hasDarkControls } = attributes;
-	const { currentView, component: ViewSwitcherComponent } = useViewSwitcher(
-		clientId,
-		views
-	);
 	const defaultTemplate = [
 		[ 'woocommerce/filled-cart-block', {}, [] ],
 		[ 'woocommerce/empty-cart-block', {}, [] ],
@@ -98,10 +82,10 @@ export const Edit = ( { className, attributes, setAttributes, clientId } ) => {
 				) }
 			>
 				<EditorProvider
-					currentView={ currentView }
+					//currentView={ currentView }
 					previewData={ { previewCart } }
 				>
-					<BlockControls>{ ViewSwitcherComponent }</BlockControls>
+					<CartViewSwitcher clientId={ clientId } />
 					<CartBlockContext.Provider
 						value={ {
 							hasDarkControls,
