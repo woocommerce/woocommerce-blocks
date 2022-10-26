@@ -9,10 +9,8 @@ exports.getFileContent = async ( {
 		return await octokit.rest.repos.getContent( {
 			owner,
 			repo,
+			ref: 'try/typescript-monitor-second-branch',
 			path: fileName,
-			mediaType: {
-				format: 'raw',
-			},
 		} );
 	} catch ( err ) {
 		if ( err.status === '404' ) {
