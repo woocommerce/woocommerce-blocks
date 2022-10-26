@@ -1,7 +1,13 @@
 /**
  * External dependencies
  */
-import { useState, useEffect, useCallback } from '@wordpress/element';
+import { _n } from '@wordpress/i18n';
+import {
+	useState,
+	useEffect,
+	useCallback,
+	createInterpolateElement,
+} from '@wordpress/element';
 import {
 	useShippingData,
 	useSelectShippingRate,
@@ -25,7 +31,7 @@ const getPickupLocation = (
 ): string => {
 	if ( option?.meta_data ) {
 		const match = option.meta_data.find(
-			( meta: MetaKeyValue ) => meta.key === 'pickup_location'
+			( meta ) => meta.key === 'pickup_location'
 		);
 		return match ? match.value : '';
 	}
@@ -37,7 +43,7 @@ const getPickupAddress = (
 ): string => {
 	if ( option?.meta_data ) {
 		const match = option.meta_data.find(
-			( meta: MetaKeyValue ) => meta.key === 'pickup_address'
+			( meta ) => meta.key === 'pickup_address'
 		);
 		return match ? match.value : '';
 	}
@@ -45,7 +51,8 @@ const getPickupAddress = (
 };
 
 const renderPickupLocation = (
-	option: CartShippingPackageShippingRate
+	option: CartShippingPackageShippingRate,
+	packageCount: number
 ): RadioControlOption => {
 	const priceWithTaxes = getSetting( 'displayCartPricesIncludingTax', false )
 		? option.price + option.taxes
@@ -57,11 +64,23 @@ const renderPickupLocation = (
 		label: location
 			? decodeEntities( location )
 			: decodeEntities( option.name ),
-		secondaryLabel: (
-			<FormattedMonetaryAmount
-				currency={ getCurrencyFromPriceResponse( option ) }
-				value={ priceWithTaxes }
-			/>
+		secondaryLabel: createInterpolateElement(
+			/* translators: %1$s name of the product (ie: Sunglasses), %2$d number of units in the current cart package */
+			_n(
+				'<price/>',
+				'<price/> x <packageCount/> packages',
+				packageCount,
+				'woo-gutenberg-products-block'
+			),
+			{
+				price: (
+					<FormattedMonetaryAmount
+						currency={ getCurrencyFromPriceResponse( option ) }
+						value={ priceWithTaxes }
+					/>
+				),
+				packageCount: <>{ packageCount }</>,
+			}
 		),
 		description: decodeEntities( option.description ),
 		secondaryDescription: address ? (
@@ -90,9 +109,10 @@ const Block = (): JSX.Element | null => {
 	);
 
 	// Get pickup locations from the first shipping package.
-	const pickupLocations = ( shippingRates[ 0 ]?.shipping_rates || [] )
-		.filter( ( { method_id: methodId } ) => methodId === 'pickup_location' )
-		// Combine prices by rate ID.
+	const pickupLocations = ( shippingRates[ 0 ]?.shipping_rates || [] ).filter(
+		( { method_id: methodId } ) => methodId === 'pickup_location'
+	);
+	/* Combine prices by rate ID.
 		.map( ( pickupLocation ) => {
 			// Find the cost and taxes from the shipping rates response.
 			const pickupRate = shippingRates.reduce(
@@ -114,7 +134,7 @@ const Block = (): JSX.Element | null => {
 				...pickupLocation,
 				...pickupRate,
 			};
-		} );
+		} );*/
 
 	// Update the selected option if there is no rate selected on mount.
 	useEffect( () => {
@@ -131,7 +151,9 @@ const Block = (): JSX.Element | null => {
 				onSelectRate( value );
 			} }
 			selected={ selectedOption }
-			options={ pickupLocations.map( renderPickupLocation ) }
+			options={ pickupLocations.map( ( location ) =>
+				renderPickupLocation( location, shippingRates.length )
+			) }
 		/>
 	);
 };
