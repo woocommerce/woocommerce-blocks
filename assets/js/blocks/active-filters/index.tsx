@@ -17,11 +17,6 @@ import { blockAttributes } from './attributes';
 import { Attributes } from './types';
 
 registerBlockType( metadata, {
-	title: __( 'Active Product Filters', 'woo-gutenberg-products-block' ),
-	description: __(
-		'Display the currently active product filters.',
-		'woo-gutenberg-products-block'
-	),
 	icon: {
 		src: (
 			<Icon

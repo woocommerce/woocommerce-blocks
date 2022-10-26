@@ -1,12 +1,10 @@
 /**
  * External dependencies
  */
-import {
-	CHECKOUT_STORE_KEY,
-	PAYMENT_METHOD_DATA_STORE_KEY,
-} from '@woocommerce/block-data';
+import { CHECKOUT_STORE_KEY, PAYMENT_STORE_KEY } from '@woocommerce/block-data';
 import { useSelect } from '@wordpress/data';
 import { __ } from '@wordpress/i18n';
+import { __experimentalApplyCheckoutFilter } from '@woocommerce/blocks-checkout';
 
 /**
  * Internal dependencies
@@ -39,7 +37,7 @@ export const useCheckoutSubmit = () => {
 	} );
 	const { currentStatus: paymentStatus, activePaymentMethod } = useSelect(
 		( select ) => {
-			const store = select( PAYMENT_METHOD_DATA_STORE_KEY );
+			const store = select( PAYMENT_STORE_KEY );
 
 			return {
 				currentStatus: store.getCurrentStatus(),
@@ -55,11 +53,16 @@ export const useCheckoutSubmit = () => {
 	const waitingForProcessing =
 		isProcessing || isAfterProcessing || isBeforeProcessing;
 	const waitingForRedirect = isComplete && ! hasError;
+	const defaultLabel =
+		paymentMethod.placeOrderButtonLabel ||
+		__( 'Place Order', 'woo-gutenberg-products-block' );
+	const label = __experimentalApplyCheckoutFilter( {
+		filterName: 'placeOrderButtonLabel',
+		defaultValue: defaultLabel,
+	} );
 
 	return {
-		submitButtonText:
-			paymentMethod?.placeOrderButtonLabel ||
-			__( 'Place Order', 'woo-gutenberg-products-block' ),
+		submitButtonText: label,
 		onSubmit,
 		isCalculating,
 		isDisabled: isProcessing || paymentStatus.isDoingExpressPayment,

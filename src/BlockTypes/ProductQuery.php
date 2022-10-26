@@ -42,7 +42,7 @@ class ProductQuery extends AbstractBlock {
 			10,
 			2
 		);
-
+		add_filter( 'rest_product_query', array( $this, 'update_rest_query' ), 10, 2 );
 	}
 
 	/**
@@ -55,7 +55,6 @@ class ProductQuery extends AbstractBlock {
 		return isset( $parsed_block['attrs']['namespace'] )
 		&& substr( $parsed_block['attrs']['namespace'], 0, 11 ) === 'woocommerce';
 	}
-
 
 	/**
 	 * Update the query for the product query block.
@@ -81,6 +80,18 @@ class ProductQuery extends AbstractBlock {
 				1
 			);
 		}
+	}
+
+	/**
+	 * Update the query for the product query block in Editor.
+	 *
+	 * @param array           $args    Query args.
+	 * @param WP_REST_Request $request Request.
+	 */
+	public function update_rest_query( $args, $request ) {
+		$on_sale_query = $request->get_param( '__woocommerceOnSale' ) !== 'true' ? array() : $this->get_on_sale_products_query();
+
+		return array_merge( $args, $on_sale_query );
 	}
 
 	/**
@@ -126,14 +137,12 @@ class ProductQuery extends AbstractBlock {
 				$acc['meta_query'] = isset( $query['meta_query'] ) ? array_merge( $acc['meta_query'], array( $query['meta_query'] ) ) : $acc['meta_query'];
 				// phpcs:ignore WordPress.DB.SlowDBQuery.slow_db_query_tax_query
 				$acc['tax_query'] = isset( $query['tax_query'] ) ? array_merge( $acc['tax_query'], array( $query['tax_query'] ) ) : $acc['tax_query'];
-
 				return $acc;
 			},
 			$common_query_values
 		);
 
 	}
-
 
 	/**
 	 * Return a query for on sale products.
@@ -376,17 +385,22 @@ class ProductQuery extends AbstractBlock {
 	}
 
 	/**
-	 * Intersect arrays when both are not empty, otherwise merge them.
+	 * Intersect arrays neither of them are empty, otherwise merge them.
 	 *
-	 * @param array $array1 Array.
-	 * @param array $array2 Array.
+	 * @param array ...$arrays Arrays.
 	 * @return array
 	 */
-	private function intersect_arrays_when_not_empty( $array1, $array2 ) {
-		if ( empty( $array1 ) || empty( $array2 ) ) {
-			return array_merge( $array1, $array2 );
-		}
-		return array_intersect( $array1, $array2 );
+	private function intersect_arrays_when_not_empty( ...$arrays ) {
+		return array_reduce(
+			$arrays,
+			function( $acc, $array ) {
+				if ( ! empty( $array ) && ! empty( $acc ) ) {
+					return array_intersect( $acc, $array );
+				}
+				return array_merge( $acc, $array );
+			},
+			array()
+		);
 	}
 
 }

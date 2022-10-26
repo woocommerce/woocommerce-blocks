@@ -148,7 +148,8 @@ final class BlockTypesController {
 			'woocommerce_product_tag_cloud',
 			'woocommerce_price_filter',
 			'woocommerce_layered_nav',
-			'woocommerce_layered_nav_filters'
+			'woocommerce_layered_nav_filters',
+			'woocommerce_rating_filter'
 		);
 
 		return $widget_types;
@@ -182,6 +183,7 @@ final class BlockTypesController {
 			'PriceFilter',
 			'AttributeFilter',
 			'StockFilter',
+			'RatingFilter',
 			'ActiveFilters',
 			'ClassicTemplate',
 			'ProductAddToCart',
@@ -199,6 +201,7 @@ final class BlockTypesController {
 			'MiniCart',
 			'MiniCartContents',
 			'ProductQuery',
+			'FilterWrapper',
 		];
 
 		$block_types = array_merge( $block_types, Cart::get_cart_block_types(), Checkout::get_checkout_block_types() );
