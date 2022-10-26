@@ -6,7 +6,6 @@ import {
 	useRef,
 	useCallback,
 	useMemo,
-	useState,
 } from '@wordpress/element';
 import { useSelect, useDispatch } from '@wordpress/data';
 import {
@@ -42,8 +41,6 @@ export const useForcedLayout = ( {
 } ): void => {
 	const currentRegisteredBlocks = useRef( registeredBlocks );
 	const currentDefaultTemplate = useRef( defaultTemplate );
-	const [ forcedBlocksInserted, setForcedBlocksInserted ] =
-		useState< number >( 0 );
 
 	const { insertBlock, replaceInnerBlocks } =
 		useDispatch( 'core/block-editor' );
@@ -58,16 +55,17 @@ export const useForcedLayout = ( {
 				),
 			};
 		},
-		[ clientId, currentRegisteredBlocks.current, forcedBlocksInserted ]
+		[ clientId, currentRegisteredBlocks.current ]
 	);
 
 	const appendBlock = useCallback(
 		( block, position ) => {
 			const newBlock = createBlock( block.name );
 			insertBlock( newBlock, position, clientId, false );
-			setForcedBlocksInserted( forcedBlocksInserted + 1 );
 		},
-		[ clientId, insertBlock, forcedBlocksInserted ]
+		// We need to skip insertBlock here due to a cache issue in wordpress.com that causes an inifinite loop, see https://github.com/Automattic/wp-calypso/issues/66092 for an expanded doc.
+		// eslint-disable-next-line react-hooks/exhaustive-deps
+		[ clientId ]
 	);
 
 	const lockedBlockTypes = useMemo(
@@ -144,11 +142,10 @@ export const useForcedLayout = ( {
 					break;
 			}
 		} );
-	}, [
-		clientId,
-		innerBlocks,
-		lockedBlockTypes,
-		replaceInnerBlocks,
-		appendBlock,
-	] );
+		/*
+		We need to skip replaceInnerBlocks here due to a cache issue in wordpress.com that causes an inifinite loop, see https://github.com/Automattic/wp-calypso/issues/66092 for an expanded doc.
+		 @todo Add replaceInnerBlocks and insertBlock after fixing https://github.com/Automattic/wp-calypso/issues/66092
+		*/
+		// eslint-disable-next-line react-hooks/exhaustive-deps
+	}, [ clientId, innerBlocks, lockedBlockTypes, appendBlock ] );
 };
