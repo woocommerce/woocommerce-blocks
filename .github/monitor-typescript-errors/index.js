@@ -25,6 +25,11 @@ const runner = async () => {
 		onFail: setFailed,
 	} );
 
+	console.log(
+		'currentCheckStyleFile',
+		JSON.stringify( currentCheckStyleFile, null, 4 )
+	);
+
 	if ( ! currentCheckStyleFile.data ) {
 		setFailed( 'No Content Available' );
 		return;
