@@ -31,7 +31,7 @@ const runner = async () => {
 	}
 
 	const currentCheckStyleFileContentParsed = parseXml(
-		currentCheckStyleFileContent.data
+		currentCheckStyleFile.data
 	);
 
 	const { header } = generateMarkdownMessage( newCheckStyleFileParsed );
