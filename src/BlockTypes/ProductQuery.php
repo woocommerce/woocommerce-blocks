@@ -352,7 +352,6 @@ class ProductQuery extends AbstractBlock {
 	 * @return array
 	 */
 	private function get_filter_by_stock_status_query() {
-
 		$filter_stock_status_values = get_query_var( StockFilter::STOCK_STATUS_QUERY_VAR );
 
 		if ( empty( $filter_stock_status_values ) ) {
