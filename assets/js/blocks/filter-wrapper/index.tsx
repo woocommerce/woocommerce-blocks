@@ -75,8 +75,7 @@ const getTransformAttributes = ( instance, filterType: string ) => {
 };
 
 const isFilterWidget = ( widgetId: string ) =>
-	filterBlocksWidgets
-		.some( ( item ) => item.widgetId === widgetId );
+	filterBlocksWidgets.some( ( item ) => item.widgetId === widgetId );
 
 const getFilterBlockObject = ( widgetId: string ) => {
 	const filterBlock = filterBlocksWidgets.find(
