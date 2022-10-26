@@ -30,13 +30,10 @@ const runner = async () => {
 		return;
 	}
 
-	const currentCheckStyleFileContent = decodeBase64(
-		currentCheckStyleFile.data.content
+	const currentCheckStyleFileContentParsed = parseXml(
+		currentCheckStyleFileContent.data
 	);
 
-	const currentCheckStyleFileContentParsed = parseXml(
-		currentCheckStyleFileContent
-	);
 	const { header } = generateMarkdownMessage( newCheckStyleFileParsed );
 	const filesWithNewErrors = getFilesWithNewErrors(
 		newCheckStyleFileParsed,
