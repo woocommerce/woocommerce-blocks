@@ -7,7 +7,10 @@ import {
 } from '@woocommerce/type-defs/payments';
 import { CURRENT_USER_IS_ADMIN, getSetting } from '@woocommerce/settings';
 import { dispatch, select } from '@wordpress/data';
-import { deriveSelectedShippingRates } from '@woocommerce/base-utils';
+import {
+	deriveSelectedShippingRates,
+	emptyHiddenAddressFields,
+} from '@woocommerce/base-utils';
 import { __, sprintf } from '@wordpress/i18n';
 import { store as noticesStore } from '@wordpress/notices';
 
@@ -15,13 +18,23 @@ import {
 	getExpressPaymentMethods,
 	getPaymentMethods,
 } from '@woocommerce/blocks-registry';
+import { previewCart } from '@woocommerce/resource-previews';
 
 /**
  * Internal dependencies
  */
 import { STORE_KEY as CART_STORE_KEY } from '../cart/constants';
-import { STORE_KEY as PAYMENT_METHOD_DATA_STORE_KEY } from './constants';
+import { STORE_KEY as PAYMENT_STORE_KEY } from './constants';
 import { noticeContexts } from '../../base/context/event-emit';
+import {
+	EMPTY_CART_ERRORS,
+	EMPTY_CART_ITEM_ERRORS,
+	EMPTY_EXTENSIONS,
+} from '../../data/constants';
+import {
+	defaultBillingAddress,
+	defaultShippingAddress,
+} from '../../base/context/providers/cart-checkout/customer/constants';
 
 export const checkPaymentMethodsCanPay = async ( express = false ) => {
 	const isEditor = !! select( 'core/editor' );
@@ -46,19 +59,95 @@ export const checkPaymentMethodsCanPay = async ( express = false ) => {
 	const noticeContext = express
 		? noticeContexts.EXPRESS_PAYMENTS
 		: noticeContexts.PAYMENTS;
-	const cart = select( CART_STORE_KEY ).getCartData();
-	const selectedShippingMethods = deriveSelectedShippingRates(
-		cart.shippingRates
-	);
-	const canPayArgument = {
-		cart,
-		cartTotals: cart.totals,
-		cartNeedsShipping: cart.needsShipping,
-		billingData: cart.billingAddress,
-		shippingAddress: cart.shippingAddress,
-		selectedShippingMethods,
-		paymentRequirements: cart.paymentRequirements,
-	};
+
+	let cartForCanPayArgument: Record< string, unknown > = {};
+	let canPayArgument: Record< string, unknown > = {};
+
+	if ( ! isEditor ) {
+		const store = select( CART_STORE_KEY );
+		const cart = store.getCartData();
+		const cartErrors = store.getCartErrors();
+		const cartTotals = store.getCartTotals();
+		const cartIsLoading = ! store.hasFinishedResolution( 'getCartData' );
+		const isLoadingRates = store.isCustomerDataUpdating();
+		const selectedShippingMethods = deriveSelectedShippingRates(
+			cart.shippingRates
+		);
+
+		cartForCanPayArgument = {
+			cartCoupons: cart.coupons,
+			cartItems: cart.items,
+			crossSellsProducts: cart.crossSells,
+			cartFees: cart.fees,
+			cartItemsCount: cart.itemsCount,
+			cartItemsWeight: cart.itemsWeight,
+			cartNeedsPayment: cart.needsPayment,
+			cartNeedsShipping: cart.needsShipping,
+			cartItemErrors: cart.errors,
+			cartTotals,
+			cartIsLoading,
+			cartErrors,
+			billingData: emptyHiddenAddressFields( cart.billingAddress ),
+			billingAddress: emptyHiddenAddressFields( cart.billingAddress ),
+			shippingAddress: emptyHiddenAddressFields( cart.shippingAddress ),
+			extensions: cart.extensions,
+			shippingRates: cart.shippingRates,
+			isLoadingRates,
+			cartHasCalculatedShipping: cart.hasCalculatedShipping,
+			paymentRequirements: cart.paymentRequirements,
+			receiveCart: dispatch( CART_STORE_KEY ).receiveCart,
+		};
+
+		canPayArgument = {
+			cart: cartForCanPayArgument,
+			cartTotals: cart.totals,
+			cartNeedsShipping: cart.needsShipping,
+			billingData: cart.billingAddress,
+			billingAddress: cart.billingAddress,
+			shippingAddress: cart.shippingAddress,
+			selectedShippingMethods,
+			paymentRequirements: cart.paymentRequirements,
+		};
+	} else {
+		cartForCanPayArgument = {
+			cartCoupons: previewCart.coupons,
+			cartItems: previewCart.items,
+			crossSellsProducts: previewCart.cross_sells,
+			cartFees: previewCart.fees,
+			cartItemsCount: previewCart.items_count,
+			cartItemsWeight: previewCart.items_weight,
+			cartNeedsPayment: previewCart.needs_payment,
+			cartNeedsShipping: previewCart.needs_shipping,
+			cartItemErrors: EMPTY_CART_ITEM_ERRORS,
+			cartTotals: previewCart.totals,
+			cartIsLoading: false,
+			cartErrors: EMPTY_CART_ERRORS,
+			billingData: defaultBillingAddress,
+			billingAddress: defaultBillingAddress,
+			shippingAddress: defaultShippingAddress,
+			extensions: EMPTY_EXTENSIONS,
+			shippingRates: previewCart.shipping_rates,
+			isLoadingRates: false,
+			cartHasCalculatedShipping: previewCart.has_calculated_shipping,
+			paymentRequirements: previewCart.paymentRequirements,
+			receiveCart:
+				typeof previewCart?.receiveCart === 'function'
+					? previewCart.receiveCart
+					: () => undefined,
+		};
+		canPayArgument = {
+			cart: cartForCanPayArgument,
+			cartTotals: cartForCanPayArgument.totals,
+			cartNeedsShipping: cartForCanPayArgument.needsShipping,
+			billingData: cartForCanPayArgument.billingAddress,
+			billingAddress: cartForCanPayArgument.billingAddress,
+			shippingAddress: cartForCanPayArgument.shippingAddress,
+			selectedShippingMethods: deriveSelectedShippingRates(
+				cartForCanPayArgument.shippingRates
+			),
+			paymentRequirements: cartForCanPayArgument.paymentRequirements,
+		};
+	}
 
 	let paymentMethodsOrder;
 	if ( express ) {
@@ -113,10 +202,8 @@ export const checkPaymentMethodsCanPay = async ( express = false ) => {
 		}
 	}
 	const currentlyAvailablePaymentMethods = express
-		? select(
-				PAYMENT_METHOD_DATA_STORE_KEY
-		  ).getAvailableExpressPaymentMethods()
-		: select( PAYMENT_METHOD_DATA_STORE_KEY ).getAvailablePaymentMethods();
+		? select( PAYMENT_STORE_KEY ).getAvailableExpressPaymentMethods()
+		: select( PAYMENT_STORE_KEY ).getAvailablePaymentMethods();
 
 	const availablePaymentMethodNames = Object.keys( availablePaymentMethods );
 	if (
@@ -133,7 +220,7 @@ export const checkPaymentMethodsCanPay = async ( express = false ) => {
 	const {
 		__internalSetAvailablePaymentMethods,
 		__internalSetAvailableExpressPaymentMethods,
-	} = dispatch( PAYMENT_METHOD_DATA_STORE_KEY );
+	} = dispatch( PAYMENT_STORE_KEY );
 	if ( express ) {
 		__internalSetAvailableExpressPaymentMethods( availablePaymentMethods );
 		return true;

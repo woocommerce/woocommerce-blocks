@@ -1,13 +1,7 @@
 /**
  * External dependencies
  */
-import {
-	dispatch as wpDataDispatch,
-	register,
-	subscribe,
-	createReduxStore,
-	select as wpDataSelect,
-} from '@wordpress/data';
+import { register, subscribe, createReduxStore } from '@wordpress/data';
 import { controls as dataControls } from '@wordpress/data-controls';
 
 /**
@@ -22,7 +16,7 @@ import { controls as sharedControls } from '../shared-controls';
 import { controls } from './controls';
 import type { SelectFromMap, DispatchFromMap } from '../mapped-types';
 import { pushChanges } from './push-changes';
-import { checkPaymentMethodsCanPay } from '../payment/check-payment-methods';
+import { updatePaymentMethods } from './update-payment-methods';
 
 const store = createReduxStore( STORE_KEY, {
 	reducer,
@@ -35,27 +29,7 @@ const store = createReduxStore( STORE_KEY, {
 register( store );
 
 subscribe( pushChanges );
-subscribe( async () => {
-	const isInitialized =
-		wpDataSelect( STORE_KEY ).hasFinishedResolution( 'getCartData' );
-
-	if ( ! isInitialized ) {
-		return;
-	}
-	await checkPaymentMethodsCanPay();
-	await checkPaymentMethodsCanPay( true );
-} );
-
-const unsubscribeInitializePaymentMethodDataStore = subscribe( async () => {
-	const cartLoaded =
-		wpDataSelect( STORE_KEY ).hasFinishedResolution( 'getCartTotals' );
-	if ( cartLoaded ) {
-		wpDataDispatch(
-			'wc/store/payment'
-		).__internalInitializePaymentMethodDataStore();
-		unsubscribeInitializePaymentMethodDataStore();
-	}
-} );
+subscribe( updatePaymentMethods );
 
 export const CART_STORE_KEY = STORE_KEY;
 

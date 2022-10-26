@@ -6,10 +6,7 @@ import { useEditorContext } from '@woocommerce/base-context';
 import { CheckboxControl } from '@woocommerce/blocks-checkout';
 import PropTypes from 'prop-types';
 import { useSelect, useDispatch } from '@wordpress/data';
-import {
-	CHECKOUT_STORE_KEY,
-	PAYMENT_METHOD_DATA_STORE_KEY,
-} from '@woocommerce/block-data';
+import { CHECKOUT_STORE_KEY, PAYMENT_STORE_KEY } from '@woocommerce/block-data';
 
 /**
  * Internal dependencies
@@ -29,17 +26,16 @@ import PaymentMethodErrorBoundary from './payment-method-error-boundary';
 const PaymentMethodCard = ( { children, showSaveOption } ) => {
 	const { isEditor } = useEditorContext();
 	const { shouldSavePaymentMethod, customerId } = useSelect( ( select ) => {
-		const paymentMethodStore = select( PAYMENT_METHOD_DATA_STORE_KEY );
+		const paymentMethodStore = select( PAYMENT_STORE_KEY );
 		const checkoutStore = select( CHECKOUT_STORE_KEY );
 		return {
 			shouldSavePaymentMethod:
-				paymentMethodStore.shouldSavePaymentMethod(),
+				paymentMethodStore.getShouldSavePaymentMethod(),
 			customerId: checkoutStore.getCustomerId(),
 		};
 	} );
-	const { __internalSetShouldSavePaymentMethod } = useDispatch(
-		PAYMENT_METHOD_DATA_STORE_KEY
-	);
+	const { __internalSetShouldSavePaymentMethod } =
+		useDispatch( PAYMENT_STORE_KEY );
 	return (
 		<PaymentMethodErrorBoundary isEditor={ isEditor }>
 			{ children }
