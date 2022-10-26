@@ -65,10 +65,7 @@ exports.getFilesWithNewErrors = (
 				currentFilesReport[ pathfile ] === null ||
 				newFilesReport[ pathfile ].length >
 					currentFilesReport[ pathfile ].length
-					? [
-							...acc,
-							`${ pathfile }: ${ newFilesReport[ pathfile ].line }`,
-					  ]
+					? [ ...acc, pathfile ]
 					: acc,
 			[]
 		);
