@@ -4,7 +4,6 @@
 import { StoreNoticesContainer } from '@woocommerce/base-context';
 import { useStoreCart } from '@woocommerce/base-context/hooks';
 
-import { StoreNoticesProvider } from '@woocommerce/base-context/providers';
 import { useDispatch } from '@wordpress/data';
 import { useEffect } from '@wordpress/element';
 import { decodeEntities } from '@wordpress/html-entities';
@@ -39,10 +38,8 @@ const FilledMiniCartContentsBlock = ( {
 
 	return (
 		<div className={ className }>
-			<StoreNoticesProvider>
-				<StoreNoticesContainer context="wc/cart" />
-				{ children }
-			</StoreNoticesProvider>
+			<StoreNoticesContainer context="wc/cart" />
+			{ children }
 		</div>
 	);
 };

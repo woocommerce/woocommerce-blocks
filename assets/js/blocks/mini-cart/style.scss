@@ -42,23 +42,36 @@
 .wc-block-mini-cart__drawer {
 	font-size: 1rem;
 
+	.components-modal__content .components-modal__header .components-button {
+		top: 50%;
+		padding: unset;
+		margin: unset;
+	}
+
+	.wc-block-components-notices {
+		padding: 0 16px;
+		margin-bottom: unset;
+	}
+
 	.components-modal__content {
 		padding: 0;
 		position: relative;
 	}
 
 	.components-modal__header {
-		position: absolute;
-		top: $gap-largest;
-		right: $gap;
+		position: relative;
+		height: calc( $gap-largest + $gap );
+
 
 		button {
-			color: inherit;
-			z-index: 9999;
+			margin: 0;
+			right: 0;
+			transform: translateY(-50%);
 		}
 
 		svg {
 			fill: currentColor;
+			display: block;
 		}
 	}
 }
@@ -73,7 +86,7 @@
 
 .wp-block-woocommerce-empty-mini-cart-contents-block,
 .wp-block-woocommerce-filled-mini-cart-contents-block {
-	height: 100%;
+	height: calc(100vh - ($gap-largest + $gap));
 	display: flex;
 	flex-direction: column;
 }
