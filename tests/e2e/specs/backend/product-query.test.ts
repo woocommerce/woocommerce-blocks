@@ -112,7 +112,7 @@ describeOrSkip( GUTENBERG_EDITOR_CONTEXT === 'gutenberg' )(
 				await saveOrPublish();
 			} );
 
-			it( 'Can add add to cart button to query block', async () => {
+			it( 'Can add the Add to Cart Button block to Product Query block', async () => {
 				const canvasEl = canvas();
 				await canvasEl.waitForSelector(
 					`${ block.class } .wp-block-woocommerce-product-image a img`
@@ -129,15 +129,19 @@ describeOrSkip( GUTENBERG_EDITOR_CONTEXT === 'gutenberg' )(
 
 				await shopper.block.goToBlockPage( block.name );
 				await page.waitForSelector(
-					`${ block.class } > ul.wp-block-post-template`
+					'.wp-block-query button.add_to_cart_button'
 				);
-				await expect( page ).toMatchElement( block.class, {
-					text: 'Add to cart',
-				} );
-				await expect( page ).toClick( 'a', {
+				await expect( page ).toClick( 'button', {
 					text: 'Add to cart',
 				} );
 				await shopper.block.goToCart();
+				await page.waitForSelector( '.wc-block-cart-items__row' );
+				expect(
+					await page.$$eval(
+						'.wc-block-cart-items__row',
+						( rows ) => rows.length
+					)
+				).toEqual( 1 );
 			} );
 		} );
 	}
