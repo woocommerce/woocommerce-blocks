@@ -119,9 +119,18 @@ const setup = ( params: SetupParams ) => {
 	};
 };
 
-const setupWithSelectedFilterAttributes = () => {
+interface SetupWithSelectedFilterAttributesParams {
+	filterSize: 'large' | 'medium' | 'small';
+}
+
+const setupWithSelectedFilterAttributes = (
+	params: SetupWithSelectedFilterAttributesParams
+) => {
+	const setupParams: SetupWithSelectedFilterAttributesParams = {
+		filterSize: params?.filterSize || 'large',
+	};
 	const utils = setup( {
-		initialUrl: 'http://woo.local/?filter_size=large&query_type_size=or',
+		initialUrl: `http://woo.local/?filter_size=${ setupParams.filterSize }&query_type_size=or`,
 	} );
 
 	return {
@@ -171,7 +180,7 @@ describe( 'AttributeFilterBlock', () => {
 
 		test( 'should disable Apply button when deselecting the same previously selected attribute', () => {
 			const { applyButton, smallAttributeCheckbox } =
-				setupWithSelectedFilterAttributes();
+				setupWithSelectedFilterAttributes( { filterSize: 'small' } );
 			userEvent.click( smallAttributeCheckbox );
 			expect( applyButton ).not.toBeDisabled();
 
