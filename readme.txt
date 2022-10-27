@@ -8,6 +8,7 @@ Stable tag: 8.9.0-dev
 License: GPLv3
 License URI: https://www.gnu.org/licenses/gpl-3.0.html
 
+
 == Description ==
 
 WooCommerce Blocks are the easiest, most flexible way to display your products on posts and pages!
