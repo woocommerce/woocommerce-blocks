@@ -110,7 +110,12 @@ export const shopper = {
 		},
 
 		placeOrder: async () => {
-			await page.waitForTimeout( 500 );
+			// Wait for the place order button to be enabled before clicking.
+			// Even we want to avoid using timeout in our test, this is an
+			// effective way to avoid flakiness in this test. After updating
+			// the checkout form, the place order button may or may not take
+			// some times to be disabled and then enabled again.
+			await page.waitForTimeout( 1000 );
 			await page.waitForSelector(
 				'.wc-block-components-checkout-place-order-button:not([disabled])'
 			);
