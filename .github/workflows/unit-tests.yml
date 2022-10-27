@@ -1,9 +1,15 @@
-name: Unit tests
+name: Unit Tests
 
 on:
+  pull_request:
   push:
     branches: [ trunk ]
-  pull_request:
+
+# Cancels all previous workflow runs for the same branch that have not yet completed.
+concurrency:
+  # The concurrency group contains the workflow name and the branch name.
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
 
 jobs:
   Setup:
@@ -41,7 +47,7 @@ jobs:
           path: build/
 
   PHPUnitTests:
-    name: PHP ${{ matrix.php }} Unit Tests
+    name: PHP ${{ matrix.php }}
     needs: Setup
     runs-on: ubuntu-latest
     strategy:
@@ -100,7 +106,7 @@ jobs:
           npm run test:php
   
   JSUnitTests:
-    name: JS Unit Tests
+    name: JS
     needs: Setup
     runs-on: ubuntu-latest
     steps:
