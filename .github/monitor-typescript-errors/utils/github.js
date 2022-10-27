@@ -9,6 +9,7 @@ exports.getFileContent = async ( {
 		return await octokit.rest.repos.getContent( {
 			owner,
 			repo,
+			ref: 'try/typescript-monitor',
 			path: fileName,
 			mediaType: {
 				format: 'raw',
