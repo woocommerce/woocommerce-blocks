@@ -136,10 +136,12 @@ describe( 'Shopper → Checkout', () => {
 			await shopper.addToCartFromShopPage( SIMPLE_VIRTUAL_PRODUCT_NAME );
 			await shopper.block.goToCheckout();
 
-			// Click on "Place Order" button
+			// Wait for the "Place Order" button to avoid flakey tests.
 			await page.waitForSelector(
 				'.wc-block-components-checkout-place-order-button:not([disabled])'
 			);
+
+			// Click on "Place Order" button
 			await expect( page ).toClick(
 				'.wc-block-components-checkout-place-order-button'
 			);
