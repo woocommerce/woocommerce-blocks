@@ -158,7 +158,6 @@ window.addEventListener( 'load', () => {
 	const body = document.body || document.getElementsByTagName( 'body' )[ 0 ];
 	const backgroundColor = getComputedStyle( body ).backgroundColor;
 
-	head.appendChild( style );
 	style.appendChild(
 		document.createTextNode(
 			`:where(.wp-block-woocommerce-mini-cart-contents) {
@@ -166,4 +165,5 @@ window.addEventListener( 'load', () => {
 			}`
 		)
 	);
+	head.appendChild( style );
 } );
