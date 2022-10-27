@@ -5,7 +5,6 @@ import { useState, useEffect, useMemo } from '@wordpress/element';
 import { useDebounce } from 'use-debounce';
 import { isEmpty, sortBy } from 'lodash';
 import { useShallowEqual } from '@woocommerce/base-hooks';
-import { getSettingWithCoercion } from '@woocommerce/settings';
 import { objectHasProp } from '@woocommerce/types';
 
 /**
