@@ -110,6 +110,10 @@ export const shopper = {
 		},
 
 		placeOrder: async () => {
+			await page.waitForTimeout( 500 );
+			await page.waitForSelector(
+				'.wc-block-components-checkout-place-order-button:not([disabled])'
+			);
 			await Promise.all( [
 				page.click(
 					'.wc-block-components-checkout-place-order-button'

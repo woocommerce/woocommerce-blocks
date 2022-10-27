@@ -4,7 +4,6 @@
 import {
 	merchant,
 	openDocumentSettingsSidebar,
-	setCheckbox,
 	unsetCheckbox,
 	withRestApi,
 } from '@woocommerce/e2e-utils';
@@ -36,8 +35,14 @@ if ( process.env.WOOCOMMERCE_BLOCKS_PHASE < 2 ) {
 	test.only( 'Skipping Cart & Checkout tests', () => {} );
 }
 
-let companyCheckboxId = null;
 let coupon;
+
+const getCompanyCheckboxLabel = async () => {
+	const [ companyCheckboxLabel ] = await page.$x(
+		`//label[contains(text(), "Company") and contains(@class, "components-toggle-control__label")]`
+	);
+	return companyCheckboxLabel;
+};
 
 describe( 'Shopper → Checkout', () => {
 	beforeAll( async () => {
@@ -75,16 +80,8 @@ describe( 'Shopper → Checkout', () => {
 				'woocommerce/checkout-shipping-address-block'
 			);
 
-			// This checkbox ID is unstable, so, we're getting its value from "for" attribute of the label
-			const [ companyCheckboxLabel ] = await page.$x(
-				`//label[contains(text(), "Company") and contains(@class, "components-toggle-control__label")]`
-			);
-			companyCheckboxId = await page.evaluate(
-				( label ) => `#${ label.getAttribute( 'for' ) }`,
-				companyCheckboxLabel
-			);
-
-			await setCheckbox( companyCheckboxId );
+			const companyCheckboxLabel = await getCompanyCheckboxLabel();
+			await companyCheckboxLabel.click();
 			await saveOrPublish();
 			await shopper.block.emptyCart();
 		} );
@@ -96,7 +93,8 @@ describe( 'Shopper → Checkout', () => {
 			await selectBlockByName(
 				'woocommerce/checkout-shipping-address-block'
 			);
-			await unsetCheckbox( companyCheckboxId );
+			const companyCheckboxLabel = await getCompanyCheckboxLabel();
+			await companyCheckboxLabel.click();
 			await saveOrPublish();
 			await merchant.logout();
 			await reactivateCompatibilityNotice();
