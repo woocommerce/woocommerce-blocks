@@ -3,6 +3,8 @@
 	/* We need to override the margin top here to simulate the layout of
 	the mini cart contents on the front end. */
 	margin: 0 auto !important;
+	/* Set correct background color for Twenty Twenty Three */
+	background-color: var(--wp--preset--color--base, #fff);
 
 	.wp-block-woocommerce-empty-mini-cart-contents-block[hidden],
 	.wp-block-woocommerce-filled-mini-cart-contents-block[hidden] {
