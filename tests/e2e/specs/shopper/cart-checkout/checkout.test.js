@@ -146,6 +146,11 @@ describe( 'Shopper → Checkout', () => {
 				'.wc-block-components-checkout-place-order-button'
 			);
 
+			// Wait for the error messages to appear
+			await page.waitForSelector(
+				'.wc-block-components-validation-error'
+			);
+
 			// Verify that all required fields show the correct warning.
 			await expect( page ).toMatchElement(
 				'#email ~ .wc-block-components-validation-error p',
