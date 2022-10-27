@@ -67,37 +67,15 @@ jobs:
                 id: check_files
                 uses: andstor/file-existence-action@v2
                 with:
-                    files: "composer.json, phpunit.xml.dist"
+                    files: "composer.json, composer.lock, phpunit.xml.dist"
 
             -   name: Set up PHP environment
+                if: steps.check_files.outputs.files_exists == 'true'
                 uses: shivammathur/setup-php@v2
                 with:
                     php-version: '${{ matrix.php }}'
                     coverage: none
                     tools: composer
-
-            -   name: Cache node_modules
-                id: cache-node-modules
-                uses: actions/cache@v3
-                env:
-                    cache-name: cache-node-modules
-                with:
-                    path: node_modules
-                    key: ${{ runner.os }}-build-${{ env.cache-name }}-${{ hashFiles('**/package-lock.json') }}
-
-            -   name: Setup node version and npm cache
-                uses: actions/setup-node@v3
-                with:
-                    node-version-file: '.nvmrc'
-                    cache: 'npm'
-
-            -   name: Download Build Assets
-                uses: actions/download-artifact@v3
-                with:
-                    name: build-assets
-
-            -   name: blocks.ini setup
-                run: echo 'woocommerce_blocks_phase = 3' > blocks.ini
 
             -   name: Get Composer cache directory
                 id: composer-cache
@@ -114,17 +92,34 @@ jobs:
                         ${{ runner.os }}-composer-
 
             -   name: Install PHP deps
+                if: steps.check_files.outputs.files_exists == 'true'
                 run: composer install
+                
+            -   name: Download Build Assets
+                uses: actions/download-artifact@v3
+                with:
+                  name: build-assets
 
-            -   name: Setup Environment
-                run: |
-                    chmod -R 767 ./ #TODO: Might get implemented in wp-env
-                    npm run wp-env start
+            -   name: blocks.ini setup
+                run: echo 'woocommerce_blocks_phase = 3' > blocks.ini
+
+            -   name: Setup Permissions
+                run: chmod -R 767 ./ #TODO: Might get implemented in wp-env
+
+            -   name: Setup node version and npm cache
+                uses: actions/setup-node@v3
+                with:
+                  node-version-file: '.nvmrc'
+                  cache: 'npm'
 
             -   name: Run PHPUnit tests
-                run: npm run test:php
+                if: steps.check_files.outputs.files_exists == 'true'
+                run: |
+                    npm run wp-env start
+                    npm run test:php
 
             -   name: Run PHPUnit tests (WooCommerce Development Version)
+                if: steps.check_files.outputs.files_exists == 'true'
                 run: |
                     JSON='{"plugins": [".","https://downloads.wordpress.org/plugin/woocommerce.zip"]}'
                     echo $JSON > .wp-env.override.json
