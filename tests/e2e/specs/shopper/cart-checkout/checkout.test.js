@@ -47,7 +47,7 @@ describe( 'Shopper → Checkout', () => {
 	describe( 'Payment Methods', () => {
 		it( 'User can change payment methods', async () => {
 			await shopper.block.emptyCart();
-			await shopper.goToShop();
+			await shopper.block.goToShop();
 			await shopper.addToCartFromShopPage( SIMPLE_PHYSICAL_PRODUCT_NAME );
 			await shopper.block.goToCheckout();
 			await expect( page ).toClick(
@@ -104,7 +104,7 @@ describe( 'Shopper → Checkout', () => {
 
 		// eslint-disable-next-line jest/expect-expect
 		it( 'User can have different shipping and billing addresses', async () => {
-			await shopper.goToShop();
+			await shopper.block.goToShop();
 			await shopper.addToCartFromShopPage( SIMPLE_PHYSICAL_PRODUCT_NAME );
 			await shopper.block.goToCheckout();
 			await page.waitForSelector( '#checkbox-control-0' );
@@ -132,57 +132,53 @@ describe( 'Shopper → Checkout', () => {
 		} );
 
 		it( 'User can see errors when form is incomplete', async () => {
-			await shopper.goToShop();
+			await shopper.block.goToShop();
 			await shopper.addToCartFromShopPage( SIMPLE_VIRTUAL_PRODUCT_NAME );
 			await shopper.block.goToCheckout();
 
 			// Click on "Place Order" button
-			await expect( page ).toClick(
-				'.wc-block-components-checkout-place-order-button',
-				{
-					text: 'Place Order',
-				}
-			);
-
 			await page.waitForSelector(
-				'.wc-block-components-validation-error'
+				'.wc-block-components-checkout-place-order-button:not([disabled])'
+			);
+			await expect( page ).toClick(
+				'.wc-block-components-checkout-place-order-button'
 			);
 
 			// Verify that all required fields show the correct warning.
 			await expect( page ).toMatchElement(
 				'#email ~ .wc-block-components-validation-error p',
 				{
-					text: 'Please fill out this field.',
+					text: 'Please fill in this field.',
 				}
 			);
 			await expect( page ).toMatchElement(
 				'#billing-first_name ~ .wc-block-components-validation-error p',
 				{
-					text: 'Please fill out this field.',
+					text: 'Please fill in this field.',
 				}
 			);
 			await expect( page ).toMatchElement(
 				'#billing-last_name ~ .wc-block-components-validation-error p',
 				{
-					text: 'Please fill out this field.',
+					text: 'Please fill in this field.',
 				}
 			);
 			await expect( page ).toMatchElement(
 				'#billing-address_1 ~ .wc-block-components-validation-error p',
 				{
-					text: 'Please fill out this field.',
+					text: 'Please fill in this field.',
 				}
 			);
 			await expect( page ).toMatchElement(
 				'#billing-city ~ .wc-block-components-validation-error p',
 				{
-					text: 'Please fill out this field.',
+					text: 'Please fill in this field.',
 				}
 			);
 			await expect( page ).toMatchElement(
 				'#billing-postcode ~ .wc-block-components-validation-error p',
 				{
-					text: 'Please fill out this field.',
+					text: 'Please fill in this field.',
 				}
 			);
 		} );
@@ -193,7 +189,7 @@ describe( 'Shopper → Checkout', () => {
 			if ( await shopper.isLoggedIn() ) {
 				await shopper.logout();
 			}
-			await shopper.goToShop();
+			await shopper.block.goToShop();
 			await shopper.addToCartFromShopPage( SIMPLE_VIRTUAL_PRODUCT_NAME );
 			await shopper.block.goToCheckout();
 			await shopper.block.fillBillingDetails( BILLING_DETAILS );
@@ -203,7 +199,7 @@ describe( 'Shopper → Checkout', () => {
 
 		it( 'Logged in user can place an order', async () => {
 			await shopper.login();
-			await shopper.goToShop();
+			await shopper.block.goToShop();
 			await shopper.addToCartFromShopPage( SIMPLE_VIRTUAL_PRODUCT_NAME );
 			await shopper.block.goToCheckout();
 			await shopper.block.fillBillingDetails( BILLING_DETAILS );
@@ -220,7 +216,7 @@ describe( 'Shopper → Checkout', () => {
 		const NORMAL_SHIPPING_PRICE = '$20.00';
 
 		it( 'User can choose free shipping', async () => {
-			await shopper.goToShop();
+			await shopper.block.goToShop();
 			await shopper.addToCartFromShopPage( SIMPLE_PHYSICAL_PRODUCT_NAME );
 			await shopper.block.goToCheckout();
 			await shopper.block.selectAndVerifyShippingOption(
@@ -235,7 +231,7 @@ describe( 'Shopper → Checkout', () => {
 		} );
 
 		it( 'User can choose flat rate shipping', async () => {
-			await shopper.goToShop();
+			await shopper.block.goToShop();
 			await shopper.addToCartFromShopPage( SIMPLE_PHYSICAL_PRODUCT_NAME );
 			await shopper.block.goToCheckout();
 			await shopper.block.selectAndVerifyShippingOption(
@@ -262,7 +258,7 @@ describe( 'Shopper → Checkout', () => {
 		} );
 
 		it( 'Logged in user can apply single-use coupon and place order', async () => {
-			await shopper.goToShop();
+			await shopper.block.goToShop();
 			await shopper.addToCartFromShopPage( SIMPLE_VIRTUAL_PRODUCT_NAME );
 			await shopper.block.goToCheckout();
 			await shopper.block.applyCouponFromCheckout( coupon.code );
@@ -303,7 +299,7 @@ describe( 'Shopper → Checkout', () => {
 		} );
 
 		it( 'Logged in user cannot apply single-use coupon twice', async () => {
-			await shopper.goToShop();
+			await shopper.block.goToShop();
 			await shopper.addToCartFromShopPage( SIMPLE_VIRTUAL_PRODUCT_NAME );
 			await shopper.block.goToCheckout();
 			await shopper.block.applyCouponFromCheckout( coupon.code );
