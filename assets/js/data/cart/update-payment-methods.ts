@@ -10,15 +10,18 @@ import { debounce } from 'lodash';
 import { STORE_KEY as PAYMENT_STORE_KEY } from '../payment/constants';
 import { STORE_KEY } from './constants';
 
-export const updatePaymentMethods = debounce( async () => {
+export const updatePaymentMethods = async () => {
 	const isInitialized =
 		select( STORE_KEY ).hasFinishedResolution( 'getCartData' );
-
 	if ( ! isInitialized ) {
-		return;
+		return false;
 	}
-
 	await dispatch(
 		PAYMENT_STORE_KEY
 	).__internalUpdateAvailablePaymentMethods();
-}, 1000 );
+	return true;
+};
+export const debouncedUpdatePaymentMethods = debounce(
+	updatePaymentMethods,
+	500
+);
