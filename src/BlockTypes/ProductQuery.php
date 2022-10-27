@@ -1,6 +1,9 @@
 <?php
 namespace Automattic\WooCommerce\Blocks\BlockTypes;
 
+// phpcs:disable WordPress.DB.SlowDBQuery.slow_db_query_tax_query
+// phpcs:disable WordPress.DB.SlowDBQuery.slow_db_query_meta_query
+
 /**
  * ProductQuery class.
  */
@@ -115,10 +118,7 @@ class ProductQuery extends AbstractBlock {
 			'orderby'        => $query['orderby'],
 			'order'          => $query['order'],
 			'offset'         => $query['offset'],
-			// Ignoring the warning of not using meta queries.
-			// phpcs:ignore WordPress.DB.SlowDBQuery.slow_db_query_meta_query
 			'meta_query'     => array(),
-			// phpcs:ignore WordPress.DB.SlowDBQuery.slow_db_query_tax_query
 			'tax_query'      => array(),
 		);
 
@@ -156,10 +156,7 @@ class ProductQuery extends AbstractBlock {
 				'post__in'       => array(),
 				'post_status'    => 'publish',
 				'posts_per_page' => -1,
-				// Ignoring the warning of not using meta queries.
-				// phpcs:ignore WordPress.DB.SlowDBQuery.slow_db_query_meta_query
 				'meta_query'     => array(),
-				// phpcs:ignore WordPress.DB.SlowDBQuery.slow_db_query_tax_query
 				'tax_query'      => array(),
 			)
 		);
@@ -178,12 +175,9 @@ class ProductQuery extends AbstractBlock {
 	 * @return array
 	 */
 	private function merge_queries( $query1, $query2 ) {
-		$query1['post__in'] = isset( $query2['post__in'] ) ? $this->intersect_arrays_when_not_empty( $query1['post__in'], $query2['post__in'] ) : $query1['post__in'];
-		// Ignoring the warning of not using meta queries.
-		// phpcs:ignore WordPress.DB.SlowDBQuery.slow_db_query_meta_query
-		$query1['meta_query'] = isset( $query2['meta_query'] ) ? array_merge( $query1['meta_query'], array( $query2['meta_query'] ) ) : $query1['meta_query'];
-		// phpcs:ignore WordPress.DB.SlowDBQuery.slow_db_query_tax_query
-		$query1['tax_query'] = isset( $query2['tax_query'] ) ? array_merge( $query1['tax_query'], array( $query2['tax_query'] ) ) : $query1['tax_query'];
+		$query1['post__in']   = ( isset( $query2['post__in'] ) && ! empty( $query2['post__in'] ) ) ? $this->intersect_arrays_when_not_empty( $query1['post__in'], $query2['post__in'] ) : $query1['post__in'];
+		$query1['meta_query'] = ( isset( $query2['meta_query'] ) && ! empty( $query2['meta_query'] ) ) ? array_merge( $query1['meta_query'], array( $query2['meta_query'] ) ) : $query1['meta_query'];
+		$query1['tax_query']  = ( isset( $query2['tax_query'] ) && ! empty( $query2['tax_query'] ) ) ? array_merge( $query1['tax_query'], array( $query2['tax_query'] ) ) : $query1['tax_query'];
 
 		return $query1;
 
@@ -331,8 +325,6 @@ class ProductQuery extends AbstractBlock {
 		}
 
 		return array(
-			// Ignoring the warning of not using meta queries.
-			// phpcs:ignore WordPress.DB.SlowDBQuery.slow_db_query_meta_query
 			'meta_query' => array(
 				'relation' => 'AND',
 				$max_price_query,
@@ -382,8 +374,6 @@ class ProductQuery extends AbstractBlock {
 		}
 
 		return array(
-			// Ignoring the warning of not using meta queries.
-			// phpcs:ignore WordPress.DB.SlowDBQuery.slow_db_query_tax_query
 			'tax_query' => array(
 				'relation' => 'AND',
 				$queries,
@@ -415,8 +405,6 @@ class ProductQuery extends AbstractBlock {
 		}
 
 		return array(
-			// Ignoring the warning of not using meta queries.
-			// phpcs:ignore WordPress.DB.SlowDBQuery.slow_db_query_meta_query
 			'meta_query' => array(
 				array(
 					'key'      => '_stock_status',
