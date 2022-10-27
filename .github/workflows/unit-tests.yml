@@ -94,12 +94,13 @@ jobs:
         run: |
           npm run wp-env start
           npm run test:php
+          npm run wp-env stop
+          npm run wp-env clean
 
       - name: Run PHPUnit tests (WooCommerce Development Version)
         if: steps.check_files.outputs.files_exists == 'true'
         run: |
-          JSON='{"plugins": [".","https://downloads.wordpress.org/plugin/woocommerce.zip"]}'
-          echo $JSON > .wp-env.override.json
+          echo '{"plugins": [".","https://downloads.wordpress.org/plugin/woocommerce.zip"]}' > .wp-env.override.json
           npm run wp-env start
           npm run test:php
   
