@@ -118,14 +118,17 @@ class Authentication {
 	 * Full RFC at https://datatracker.ietf.org/doc/html/rfc7239
 	 *
 	 * @param boolean $proxy_support Enables/disables proxy support.
+	 *
 	 * @return string|false
 	 */
-	protected static function get_ip_address( $proxy_support = false ) {
+	protected static function get_ip_address( bool $proxy_support = false ) {
 
 		if ( ! $proxy_support ) {
 			if ( array_key_exists( 'REMOTE_ADDR', $_SERVER ) ) {
 				return self::validate_ip( sanitize_text_field( wp_unslash( $_SERVER['REMOTE_ADDR'] ) ) );
 			}
+
+			return false;
 		}
 
 		if ( array_key_exists( 'HTTP_X_REAL_IP', $_SERVER ) ) {
