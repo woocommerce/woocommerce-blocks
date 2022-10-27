@@ -170,17 +170,16 @@ class ProductQuery extends AbstractBlock {
 	/**
 	 * Merge in the first parameter the keys "post_in", "meta_query" and "tax_query" of the second parameter.
 	 *
-	 * @param array $query1 The first query.
-	 * @param array $query2 The second query.
+	 * @param array $a The first query.
+	 * @param array $b The second query.
 	 * @return array
 	 */
-	private function merge_queries( $query1, $query2 ) {
-		$query1['post__in']   = ( isset( $query2['post__in'] ) && ! empty( $query2['post__in'] ) ) ? $this->intersect_arrays_when_not_empty( $query1['post__in'], $query2['post__in'] ) : $query1['post__in'];
-		$query1['meta_query'] = ( isset( $query2['meta_query'] ) && ! empty( $query2['meta_query'] ) ) ? array_merge( $query1['meta_query'], array( $query2['meta_query'] ) ) : $query1['meta_query'];
-		$query1['tax_query']  = ( isset( $query2['tax_query'] ) && ! empty( $query2['tax_query'] ) ) ? array_merge( $query1['tax_query'], array( $query2['tax_query'] ) ) : $query1['tax_query'];
+	private function merge_queries( $a, $b ) {
+		$a['post__in']   = ( isset( $b['post__in'] ) && ! empty( $b['post__in'] ) ) ? $this->intersect_arrays_when_not_empty( $a['post__in'], $b['post__in'] ) : $a['post__in'];
+		$a['meta_query'] = ( isset( $b['meta_query'] ) && ! empty( $b['meta_query'] ) ) ? array_merge( $a['meta_query'], array( $b['meta_query'] ) ) : $a['meta_query'];
+		$a['tax_query']  = ( isset( $b['tax_query'] ) && ! empty( $b['tax_query'] ) ) ? array_merge( $a['tax_query'], array( $b['tax_query'] ) ) : $a['tax_query'];
 
-		return $query1;
-
+		return $a;
 	}
 
 	/**
