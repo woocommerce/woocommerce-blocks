@@ -87,15 +87,15 @@ jobs:
           cache: 'npm'
       
       - name: Install wp-env
-        run: npm install -g @wordpress/env
+        run: |
+          npm install -g @wordpress/env
+          chmod -R 767 ./ #TODO: Might get implemented in wp-env
       
       - name: Run PHPUnit tests
         if: steps.check_files.outputs.files_exists == 'true'
         run: |
           npm run wp-env start
           npm run test:php
-          npm run wp-env stop
-          npm run wp-env clean
 
       - name: Run PHPUnit tests (WooCommerce Development Version)
         if: steps.check_files.outputs.files_exists == 'true'
