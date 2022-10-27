@@ -116,16 +116,15 @@ export const shopper = {
 			// the checkout form, the place order button may or may not take
 			// some times to be disabled and then enabled again.
 			let count = 1;
-			await page.waitForTimeout( 1000 );
-			while ( count <= 5 ) {
+			while ( count <= 10 ) {
 				const isDisabled = await page.$eval(
 					'.wc-block-components-checkout-place-order-button',
 					( el ) => el.disabled
 				);
-				if ( ! isDisabled ) {
+				if ( isDisabled ) {
 					break;
 				}
-				await page.waitForTimeout( 1000 );
+				await page.waitForTimeout( 500 );
 				count++;
 			}
 			await page.waitForSelector(
