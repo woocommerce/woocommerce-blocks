@@ -23,5 +23,5 @@ export const updatePaymentMethods = async () => {
 };
 export const debouncedUpdatePaymentMethods = debounce(
 	updatePaymentMethods,
-	500
+	1000
 );
