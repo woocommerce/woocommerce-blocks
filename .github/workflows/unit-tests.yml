@@ -51,7 +51,7 @@ jobs:
             ${{ runner.os }}-composer-
   
   PHPUnitTests:
-    name: PHP ${{ matrix.php }}
+    name: PHP ${{ matrix.php }} Unit Tests
     needs: Setup
     runs-on: ubuntu-latest
     strategy:
