@@ -77,19 +77,31 @@ jobs:
         if: steps.check_files.outputs.files_exists == 'true'
         run: composer install
 
-      - name: Setup blocks.ini
-        run: echo 'woocommerce_blocks_phase = 3' > blocks.ini
-
+      - name: Cache node_modules
+        id: cache-node-modules
+        uses: actions/cache@v3
+        env:
+          cache-name: cache-node-modules
+        with:
+          path: node_modules
+          key: ${{ runner.os }}-build-${{ env.cache-name }}-${{ hashFiles('**/package-lock.json') }}
+            
       - name: Setup node version and npm cache
         uses: actions/setup-node@v3
         with:
           node-version-file: '.nvmrc'
           cache: 'npm'
-      
-      - name: Install wp-env
-        run: |
-          npm install -g @wordpress/env
-          chmod -R 767 ./ #TODO: Might get implemented in wp-env
+
+      - name: Download Build Assets
+        uses: actions/download-artifact@v3
+        with:
+          name: build-assets
+          
+      - name: Setup blocks.ini
+        run: echo 'woocommerce_blocks_phase = 3' > blocks.ini
+  
+      - name: Setup Permissions
+        run: chmod -R 767 ./ #TODO: Might get implemented in wp-env
       
       - name: Run PHPUnit tests
         if: steps.check_files.outputs.files_exists == 'true'
