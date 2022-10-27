@@ -79,9 +79,6 @@ jobs:
       - name: blocks.ini setup
         run: echo 'woocommerce_blocks_phase = 3' > blocks.ini
 
-      - name: Setup Permissions
-        run: chmod -R 767 ./ #TODO: Might get implemented in wp-env
-
       - name: Setup node version and npm cache
         uses: actions/setup-node@v3
         with:
