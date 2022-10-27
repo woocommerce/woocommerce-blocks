@@ -124,7 +124,7 @@ export const receiveCartItem = ( response: CartResponseItem | null = null ) =>
  *                                           request is pending.
  */
 export const itemIsPendingQuantity = (
-	cartItemKey: string,
+	cartItemKey: number,
 	isPendingQuantity = true
 ) =>
 	( {
