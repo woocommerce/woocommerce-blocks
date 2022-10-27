@@ -16,7 +16,10 @@ import { controls as sharedControls } from '../shared-controls';
 import { controls } from './controls';
 import type { SelectFromMap, DispatchFromMap } from '../mapped-types';
 import { pushChanges } from './push-changes';
-import { updatePaymentMethods } from './update-payment-methods';
+import {
+	updatePaymentMethods,
+	debouncedUpdatePaymentMethods,
+} from './update-payment-methods';
 
 const registeredStore = registerStore< State >( STORE_KEY, {
 	reducer,
@@ -28,7 +31,16 @@ const registeredStore = registerStore< State >( STORE_KEY, {
 } );
 
 registeredStore.subscribe( pushChanges );
-registeredStore.subscribe( updatePaymentMethods );
+
+// First we will run the updatePaymentMethods function without a debounce to ensure payment methods are ready.
+const unsubscribeUpdatePaymentMethods = registeredStore.subscribe( async () => {
+	const didActionDispatch = await updatePaymentMethods();
+	if ( didActionDispatch ) {
+		unsubscribeUpdatePaymentMethods();
+		// Resubscribe, but with the debounced version of updatePaymentMethods
+		registeredStore.subscribe( debouncedUpdatePaymentMethods );
+	}
+} );
 
 export const CART_STORE_KEY = STORE_KEY;
 
