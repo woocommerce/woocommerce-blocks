@@ -91,27 +91,40 @@ const Edit = ( { clientId }: Props ): ReactElement => {
 		const canvas =
 			canvasEl.contentDocument || canvasEl.contentWindow?.document;
 
-		if (
-			! canvas ||
-			canvas.getElementById( 'wc-block-mini-cart-editor-style' )
-		) {
+		if ( ! canvas ) {
 			return;
 		}
 
-		const body = canvas.querySelector( '.editor-styles-wrapper' );
+		const styles = Array.from( canvas.querySelectorAll( 'style' ) ).find(
+			( style ) =>
+				/\.editor-styles-wrapper(\s*)\{[^\}]*background-color[^\}]*\}/.test(
+					style.innerHTML
+				)
+		);
 
-		if ( ! body ) {
+		if ( ! styles ) {
 			return;
 		}
 
-		const backgroundColor = getComputedStyle( body ).backgroundColor;
+		const editorStylesWrapper = Array.from(
+			styles.sheet?.cssRules || []
+		).find(
+			( rule ) =>
+				rule.selectorText === '.editor-styles-wrapper' &&
+				rule.style.backgroundColor
+		);
+
+		if ( ! editorStylesWrapper ) {
+			return;
+		}
+
+		const backgroundColor = editorStylesWrapper.style.backgroundColor;
 
 		if ( ! backgroundColor ) {
 			return;
 		}
 
 		const style = document.createElement( 'style' );
-		style.id = 'wc-block-mini-cart-editor-style';
 		style.appendChild(
 			document.createTextNode(
 				`:where(.wp-block-woocommerce-mini-cart-contents) {
@@ -119,6 +132,12 @@ const Edit = ( { clientId }: Props ): ReactElement => {
 			}`
 			)
 		);
+
+		const body = canvas.querySelector( '.editor-styles-wrapper' );
+
+		if ( ! body ) {
+			return;
+		}
 
 		body.appendChild( style );
 	}, [] );
