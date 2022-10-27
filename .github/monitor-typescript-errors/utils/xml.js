@@ -58,7 +58,7 @@ exports.getFilesWithNewErrors = (
 	const currentFilesReport = currentCheckStyleFileParsed.files;
 
 	return Object.keys( newFilesReport )
-		.sort( ( a, b ) => a.localeCompare( b.firstname ) )
+		.sort( ( a, b ) => a.localeCompare( b ) )
 		.reduce(
 			( acc, pathfile ) =>
 				typeof currentFilesReport[ pathfile ] === 'undefined' ||
