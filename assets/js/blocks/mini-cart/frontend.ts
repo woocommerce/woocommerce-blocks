@@ -152,4 +152,18 @@ window.addEventListener( 'load', () => {
 			);
 		}
 	} );
+
+	const head = document.head || document.getElementsByTagName( 'head' )[ 0 ];
+	const style = document.createElement( 'style' );
+	const body = document.body || document.getElementsByTagName( 'body' )[ 0 ];
+	const backgroundColor = getComputedStyle( body ).backgroundColor;
+
+	head.appendChild( style );
+	style.appendChild(
+		document.createTextNode(
+			`:where(.wp-block-woocommerce-mini-cart-contents) {
+				background-color: ${ backgroundColor };
+			}`
+		)
+	);
 } );

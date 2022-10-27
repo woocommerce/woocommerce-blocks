@@ -2,7 +2,7 @@
 /**
  * External dependencies
  */
-import type { ReactElement } from 'react';
+import { ReactElement } from 'react';
 import {
 	useBlockProps,
 	InnerBlocks,
@@ -13,6 +13,7 @@ import { filledCart, removeCart } from '@woocommerce/icons';
 import { Icon } from '@wordpress/icons';
 import { EditorProvider } from '@woocommerce/base-context';
 import type { TemplateArray } from '@wordpress/blocks';
+import { useEffect, useState } from '@wordpress/element';
 
 /**
  * Internal dependencies
@@ -45,6 +46,7 @@ interface Props {
 }
 
 const Edit = ( { clientId }: Props ): ReactElement => {
+	const [ backgroundColor, setBackgroundColor ] = useState( '' );
 	const blockProps = useBlockProps( {
 		/**
 		 * This is a workaround for the Site Editor to calculate the
@@ -73,6 +75,21 @@ const Edit = ( { clientId }: Props ): ReactElement => {
 		defaultTemplate,
 	} );
 
+	useEffect( () => {
+		if ( backgroundColor ) return;
+		const canvasEl = document.querySelector(
+			'.edit-site-visual-editor__editor-canvas'
+		);
+		const canvas =
+			canvasEl?.contentDocument || canvasEl?.contentWindow.document;
+		if ( ! canvas ) {
+			return;
+		}
+		const body = canvas.querySelector( '.editor-styles-wrapper' );
+		const themeBackgroundColor = getComputedStyle( body ).backgroundColor;
+		setBackgroundColor( themeBackgroundColor );
+	}, [ backgroundColor ] );
+
 	return (
 		<div { ...blockProps }>
 			<EditorProvider currentView={ currentView }>
@@ -84,6 +101,11 @@ const Edit = ( { clientId }: Props ): ReactElement => {
 				/>
 			</EditorProvider>
 			<MiniCartInnerBlocksStyle style={ blockProps.style } />
+			<style>
+				{ `:where(.wp-block-woocommerce-mini-cart-contents) {
+				background-color: ${ backgroundColor };
+			}` }
+			</style>
 		</div>
 	);
 };
