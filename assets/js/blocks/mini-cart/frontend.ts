@@ -153,10 +153,16 @@ window.addEventListener( 'load', () => {
 		}
 	} );
 
-	const head = document.head || document.getElementsByTagName( 'head' )[ 0 ];
+	/**
+	 * Get the background color of the body then set it as the background color
+	 * of the Mini Cart Contents block. We use :where here to make customized
+	 * background color alway have higher priority.
+	 *
+	 * We only set the background color, instead of the whole background. As
+	 * we only provide the option to customize the background color.
+	 */
 	const style = document.createElement( 'style' );
-	const body = document.body || document.getElementsByTagName( 'body' )[ 0 ];
-	const backgroundColor = getComputedStyle( body ).backgroundColor;
+	const backgroundColor = getComputedStyle( document.body ).backgroundColor;
 
 	style.appendChild(
 		document.createTextNode(
@@ -165,5 +171,6 @@ window.addEventListener( 'load', () => {
 			}`
 		)
 	);
-	head.appendChild( style );
+
+	document.head.appendChild( style );
 } );
