@@ -10,7 +10,7 @@
 	display: flex;
 	font-size: inherit;
 	font-family: inherit;
-	font-weight: 400;
+	font-weight: inherit;
 	padding: em($gap-small) em($gap-smaller);
 
 	&:hover:not([disabled]) {
@@ -19,6 +19,8 @@
 }
 
 .wc-block-mini-cart__amount {
+	font-size: inherit;
+	font-weight: inherit;
 	display: none;
 }
 
@@ -29,7 +31,7 @@
 @media screen and (min-width: 768px) {
 	.wc-block-mini-cart__amount {
 		display: initial;
-		font-weight: 600;
+		font-weight: inherit;
 		margin-right: $gap-smaller;
 	}
 }
