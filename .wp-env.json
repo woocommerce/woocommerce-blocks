@@ -21,6 +21,5 @@
 		"WP_TESTS_EMAIL": "admin@example.org",
 		"WP_TESTS_TITLE": "Test Blog",
 		"WP_PHP_BINARY": "php"
-	},
-	"phpVersion": "7.4"
+	}
 }
