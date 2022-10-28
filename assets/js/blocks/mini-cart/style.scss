@@ -43,14 +43,17 @@
 	font-size: 1rem;
 
 	.components-modal__content .components-modal__header .components-button {
-		top: 50%;
 		padding: unset;
 		margin: unset;
 	}
 
 	.wc-block-components-notices {
-		padding: 0 16px;
+		margin: #{$gap} #{$gap-largest} -#{$gap};
 		margin-bottom: unset;
+
+		.wc-block-components-notices__notice {
+			margin-bottom: unset;
+		}
 	}
 
 	.components-modal__content {
@@ -61,6 +64,9 @@
 	.components-modal__header {
 		position: relative;
 		height: calc( $gap-largest + $gap );
+		position: absolute;
+		top: $gap-largest;
+		right: $gap-smallest;
 
 
 		button {
@@ -88,7 +94,7 @@
 
 .wp-block-woocommerce-empty-mini-cart-contents-block,
 .wp-block-woocommerce-filled-mini-cart-contents-block {
-	height: calc(100vh - ($gap-largest + $gap));
+	height: 100vh;
 	display: flex;
 	flex-direction: column;
 }
