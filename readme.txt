@@ -4,7 +4,7 @@ Tags: gutenberg, woocommerce, woo commerce, products, blocks, woocommerce blocks
 Requires at least: 6.0
 Tested up to: 6.0
 Requires PHP: 7.0
-Stable tag: 8.8.0-dev
+Stable tag: 8.9.0-dev
 License: GPLv3
 License URI: https://www.gnu.org/licenses/gpl-3.0.html
 
@@ -78,6 +78,48 @@ Yes you can! Join in on our [GitHub repository](https://github.com/woocommerce/w
 Release and roadmap notes available on the [WooCommerce Developers Blog](https://woocommerce.wordpress.com/2019/01/15/woocommerce-blocks-1-3-0-release-notes/)
 
 == Changelog ==
+
+= 8.8.0 - 2022-10-24 =
+
+#### Enhancements
+
+- Filter by Ratings: Add the Filter by Rating block to the feature plugin build. ([7384](https://github.com/woocommerce/woocommerce-blocks/pull/7384))
+- Filter by Ratings: Improve accessibility by announcing the rating filter change. ([7370](https://github.com/woocommerce/woocommerce-blocks/pull/7370))
+- Prevent resource hinting when cart/checkout blocks are not in use. ([7364](https://github.com/woocommerce/woocommerce-blocks/pull/7364))
+- Separate filter title and filter controls by converting the Rating filter block to use Inner Blocks. ([7362](https://github.com/woocommerce/woocommerce-blocks/pull/7362))
+- Products by Rating: Add support for Display Options. ([7311](https://github.com/woocommerce/woocommerce-blocks/pull/7311))
+- Store API: Introduced `woocommerce_store_api_add_to_cart_data` hook. ([7252](https://github.com/woocommerce/woocommerce-blocks/pull/7252))
+
+#### Bug Fixes
+
+- Fix performance issue with the sidebar notices. ([7435](https://github.com/woocommerce/woocommerce-blocks/pull/7435))
+- Fix mini cart items alignment issues in Editor. ([7387](https://github.com/woocommerce/woocommerce-blocks/pull/7387))
+- Fix: Product Query: Update the Editor preview when custom attributes are changed. ([7366](https://github.com/woocommerce/woocommerce-blocks/pull/7366))
+- Store API: Replaced `wc()->api->get_endpoint_data` usage in `/cart/extensions` to fix inconsistencies via filter hooks. ([7361](https://github.com/woocommerce/woocommerce-blocks/pull/7361))
+- Fixes a fatal error with Cart Block usage in specific site configurations with multiple shipping countries. ([6896](https://github.com/woocommerce/woocommerce-blocks/pull/6896))
+
+= 8.7.4 - 2022-10-21 =
+
+#### Bug fixes
+- Compatibility fix for Cart and Checkout inner blocks for WordPress 6.1. ([7447](https://github.com/woocommerce/woocommerce-blocks/pull/7447))
+
+= 8.7.3 - 2022-10-20 =
+
+#### Bug fixes
+- Fixed an issue where the argument passed to `canMakePayment` contained the incorrect keys. Also fixed the current user's customer data appearing in the editor when editing the Checkout block. ([7434](https://github.com/woocommerce/woocommerce-blocks/pull/7434))
+
+= 8.7.2 - 2022-10-13 =
+
+#### Bug Fixes
+
+- Fixed a problem where Custom Order Tables compatibility declaration could fail due to the unpredictable plugin order load. ([7395](https://github.com/woocommerce/woocommerce-blocks/pull/7395))
+- Refactor useCheckoutAddress hook to enable "Use same address for billing" option in Editor ([7393](https://github.com/woocommerce/woocommerce-blocks/pull/7393))
+
+= 8.7.1 - 2022-10-12 =
+
+#### Bug Fixes
+
+- Fixed an issue where JavaScript errors would occur when more than one extension tried to filter specific payment methods in the Cart and Checkout blocks. ([7377](https://github.com/woocommerce/woocommerce-blocks/pull/7377))
 
 = 8.7.0 - 2022-10-10 =
 
