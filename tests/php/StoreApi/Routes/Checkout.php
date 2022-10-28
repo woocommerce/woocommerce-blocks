@@ -33,7 +33,10 @@ class Checkout extends MockeryTestCase {
 
 		wp_set_current_user( 0 );
 		$customer = get_user_by( 'email', 'testaccount@test.com' );
-		wp_delete_user( $customer->id );
+
+		if ( $customer ) {
+			wp_delete_user( $customer->ID );
+		}
 
 		$formatters = new Formatters();
 		$formatters->register( 'money', MoneyFormatter::class );
