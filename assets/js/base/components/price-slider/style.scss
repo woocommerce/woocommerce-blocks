@@ -1,5 +1,6 @@
 
 @mixin thumb {
+	background: $white;
 	background-color: transparent;
 	background-position: 0 0;
 	box-sizing: content-box;
@@ -13,7 +14,6 @@
 	cursor: pointer;
 	z-index: 20;
 	pointer-events: auto;
-	background: $white;
 	transition: transform 0.2s ease-in-out;
 	-webkit-appearance: none;
 	-moz-appearance: none;
@@ -25,6 +25,7 @@
 
 @mixin thumbFocus {
 	background: $gray-900;
+	border-color: #fff;
 }
 
 
