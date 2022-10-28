@@ -31,6 +31,5 @@ export const updatePaymentMethods = async () => {
 // each payment method's canMakePayment function on every single change.
 export const debouncedUpdatePaymentMethods = debounce(
 	updatePaymentMethods,
-	1000,
-	{ leading: true, trailing: false }
+	1000
 );
