@@ -91,6 +91,9 @@ const Edit = ( { clientId }: Props ): ReactElement => {
 		if ( ! canvas ) {
 			return;
 		}
+		if ( canvas.getElementById( 'mini-cart-contents-background-color' ) ) {
+			return;
+		}
 		const styles = canvas.querySelectorAll( 'style' );
 		const [ cssRule ] = Array.from( styles )
 			.map( ( style ) => Array.from( style.sheet?.cssRules || [] ) )
@@ -109,6 +112,7 @@ const Edit = ( { clientId }: Props ): ReactElement => {
 			return;
 		}
 		const style = document.createElement( 'style' );
+		style.id = 'mini-cart-contents-background-color';
 		style.appendChild(
 			document.createTextNode(
 				`:where(.wp-block-woocommerce-mini-cart-contents) {
