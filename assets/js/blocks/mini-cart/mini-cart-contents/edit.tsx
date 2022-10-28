@@ -2,7 +2,7 @@
 /**
  * External dependencies
  */
-import { ReactElement } from 'react';
+import type { ReactElement } from 'react';
 import {
 	useBlockProps,
 	InnerBlocks,
