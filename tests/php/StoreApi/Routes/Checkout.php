@@ -22,7 +22,7 @@ use Mockery\Adapter\Phpunit\MockeryTestCase;
  */
 class Checkout extends MockeryTestCase {
 	/**
-	 * Setup test products data. Called before every test.
+	 * Setup test products' data. Called before every test.
 	 */
 	protected function setUp(): void {
 		parent::setUp();

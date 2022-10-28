@@ -25,7 +25,7 @@ abstract class ControllerTestCase extends \WP_Test_REST_TestCase {
 	/**
 	 * Setup Rest API server.
 	 */
-	public function setUp() {
+	protected function setUp(): void {
 		parent::setUp();
 
 		/** @var \WP_REST_Server $wp_rest_server */
@@ -46,7 +46,7 @@ abstract class ControllerTestCase extends \WP_Test_REST_TestCase {
 	/**
 	 * Tear down Rest API server.
 	 */
-	public function tearDown() {
+	protected function tearDown(): void {
 		parent::tearDown();
 		/** @var \WP_REST_Server $wp_rest_server */
 		global $wp_rest_server;
