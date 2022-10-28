@@ -83,47 +83,31 @@ const Edit = ( { clientId }: Props ): ReactElement => {
 		const canvasEl = document.querySelector(
 			'.edit-site-visual-editor__editor-canvas'
 		);
-
 		if ( ! ( canvasEl instanceof HTMLIFrameElement ) ) {
 			return;
 		}
-
 		const canvas =
 			canvasEl.contentDocument || canvasEl.contentWindow?.document;
-
 		if ( ! canvas ) {
 			return;
 		}
-
-		const styles = Array.from( canvas.querySelectorAll( 'style' ) ).find(
-			( style ) =>
-				/\.editor-styles-wrapper(\s*)\{[^\}]*background-color[^\}]*\}/.test(
-					style.innerHTML
-				)
-		);
-
-		if ( ! styles ) {
+		const styles = canvas.querySelectorAll( 'style' );
+		const [ cssRule ] = Array.from( styles )
+			.map( ( style ) => Array.from( style.sheet?.cssRules || [] ) )
+			.flatMap( ( style ) => style )
+			.filter( Boolean )
+			.filter(
+				( rule ) =>
+					rule.selectorText === '.editor-styles-wrapper' &&
+					rule.style.backgroundColor
+			);
+		if ( ! cssRule ) {
 			return;
 		}
-
-		const editorStylesWrapper = Array.from(
-			styles.sheet?.cssRules || []
-		).find(
-			( rule ) =>
-				rule.selectorText === '.editor-styles-wrapper' &&
-				rule.style.backgroundColor
-		);
-
-		if ( ! editorStylesWrapper ) {
-			return;
-		}
-
-		const backgroundColor = editorStylesWrapper.style.backgroundColor;
-
+		const backgroundColor = cssRule.style.backgroundColor;
 		if ( ! backgroundColor ) {
 			return;
 		}
-
 		const style = document.createElement( 'style' );
 		style.appendChild(
 			document.createTextNode(
@@ -132,13 +116,10 @@ const Edit = ( { clientId }: Props ): ReactElement => {
 			}`
 			)
 		);
-
 		const body = canvas.querySelector( '.editor-styles-wrapper' );
-
 		if ( ! body ) {
 			return;
 		}
-
 		body.appendChild( style );
 	}, [] );
 
