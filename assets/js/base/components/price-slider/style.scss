@@ -1,7 +1,6 @@
 
 @mixin thumb {
 	background: $white;
-	background-color: transparent;
 	background-position: 0 0;
 	box-sizing: content-box;
 	width: 12px;
@@ -25,7 +24,7 @@
 
 @mixin thumbFocus {
 	background: $gray-900;
-	border-color: #fff;
+	border-color: $white;
 }
 
 
