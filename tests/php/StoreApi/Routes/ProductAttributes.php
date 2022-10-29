@@ -53,7 +53,7 @@ class ProductAttributes extends ControllerTestCase {
 		$data     = $response->get_data();
 
 		$this->assertEquals( 200, $response->get_status() );
-		$this->assertEquals( 2, count( $data ) ); // TODO: investigate why $data returns 2 items on the pipeline and 4 locally
+		$this->assertEquals( count( wc_get_attribute_taxonomies() ), count( $data ) );
 		$this->assertArrayHasKey( 'id', $data[0] );
 		$this->assertArrayHasKey( 'name', $data[0] );
 		$this->assertArrayHasKey( 'taxonomy', $data[0] );
