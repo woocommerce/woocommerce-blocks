@@ -100,11 +100,7 @@ describeOrSkip( GUTENBERG_EDITOR_CONTEXT === 'gutenberg' )(
 			} );
 		} );
 
-		describe( 'Can add atomic blocks', () => {
-			beforeAll( async () => {
-				await visitBlockPage( `${ block.name } Block` );
-			} );
-
+		describe( 'Atomic blocks', () => {
 			afterAll( async () => {
 				await visitBlockPage( `${ block.name } Block` );
 				await setPostContent( '' );
@@ -112,7 +108,8 @@ describeOrSkip( GUTENBERG_EDITOR_CONTEXT === 'gutenberg' )(
 				await saveOrPublish();
 			} );
 
-			it( 'Can add the Add to Cart Button block to Product Query block', async () => {
+			it( 'Can add the Add to Cart Button block', async () => {
+				await visitBlockPage( `${ block.name } Block` );
 				const canvasEl = canvas();
 				await canvasEl.waitForSelector(
 					`${ block.class } .wp-block-woocommerce-product-image a img`
@@ -142,6 +139,25 @@ describeOrSkip( GUTENBERG_EDITOR_CONTEXT === 'gutenberg' )(
 						( rows ) => rows.length
 					)
 				).toEqual( 1 );
+			} );
+
+			it( 'Can add the Product Image block', async () => {
+				await visitBlockPage( `${ block.name } Block` );
+				const canvasEl = canvas();
+				await canvasEl.waitForSelector(
+					`${ block.class } .wp-block-woocommerce-product-image a img`
+				);
+				const postTitleEl = await canvasEl.$(
+					`${ block.class } .wp-block-post-title`
+				);
+				await postTitleEl.click();
+				await insertBlock( 'Product Image' );
+				expect(
+					await canvasEl.$$eval(
+						`${ block.class } ul.wp-block-post-template > li.block-editor-block-list__layout .wp-block-woocommerce-product-image`,
+						( images ) => images.length
+					)
+				).toEqual( 2 );
 			} );
 		} );
 	}
