@@ -48,6 +48,7 @@ final class AssetsController {
 	 */
 	public function register_assets() {
 		$this->register_style( 'wc-blocks-vendors-style', plugins_url( $this->api->get_block_asset_build_path( 'wc-blocks-vendors-style', 'css' ), __DIR__ ) );
+		$this->register_style( 'wc-blocks-admin-style', plugins_url( $this->api->get_block_asset_build_path( 'wc-blocks-admin-style', 'css' ), __DIR__ ) );
 		$this->register_style( 'wc-blocks-editor-style', plugins_url( $this->api->get_block_asset_build_path( 'wc-blocks-editor-style', 'css' ), __DIR__ ), [ 'wp-edit-blocks' ], 'all', true );
 		$this->register_style( 'wc-blocks-style', plugins_url( $this->api->get_block_asset_build_path( 'wc-blocks-style', 'css' ), __DIR__ ), [ 'wc-blocks-vendors-style' ], 'all', true );
 

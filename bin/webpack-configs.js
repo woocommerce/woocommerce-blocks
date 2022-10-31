@@ -566,6 +566,12 @@ const getExtensionsConfig = ( options = {} ) => {
 						},
 					},
 				},
+				{
+					test: /\.s[c|a]ss$/,
+					use: {
+						loader: 'ignore-loader',
+					},
+				},
 			],
 		},
 		optimization: {
@@ -656,6 +662,13 @@ const getStylingConfig = ( options = {} ) => {
 						name: 'wc-blocks-editor-style',
 						chunks: 'all',
 						priority: 10,
+					},
+					// Capture all `admin` stylesheets for use in WC Admin context.
+					wcAdminStyle: {
+						test: /admin\.s?css$/,
+						name: 'wc-blocks-admin-style',
+						chunks: 'all',
+						priority: 8,
 					},
 					vendorsStyle: {
 						test: /\/node_modules\/.*?style\.s?css$/,

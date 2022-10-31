@@ -2,8 +2,6 @@
 namespace Automattic\WooCommerce\Blocks\Shipping;
 
 use WC_Shipping_Method;
-use WC_Order;
-use Automattic\WooCommerce\Utilities\ArrayUtil;
 
 /**
  * Local Pickup Shipping Method.
@@ -170,6 +168,15 @@ class PickupLocation extends WC_Shipping_Method {
 	 * See also WC_Shipping_Method::admin_options().
 	 */
 	public function admin_options() {
+		global $hide_save_button;
+		$hide_save_button = true;
+
+		wp_enqueue_script( 'wc-shipping-method-pickup-location' );
+
+		echo '<h2>' . esc_html__( 'Local Pickup', 'woo-gutenberg-products-block' ) . '</h2>';
+		echo '<div class="wrap"><div id="wc-shipping-method-pickup-location-settings-container"></div></div>';
+
+		// return;
 		parent::admin_options();
 		?>
 <table class="form-table" id="pickup_locations">

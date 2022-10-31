@@ -1,7 +1,8 @@
 <?php
 namespace Automattic\WooCommerce\Blocks\Shipping;
 
-use Automattic\WooCommerce\StoreApi\Utilities\CartController;
+use Automattic\WooCommerce\Blocks\Assets\Api as AssetApi;
+use Automattic\WooCommerce\Blocks\Assets\AssetDataRegistry;
 
 /**
  * ShippingController class.
@@ -10,13 +11,64 @@ use Automattic\WooCommerce\StoreApi\Utilities\CartController;
  */
 class ShippingController {
 	/**
+	 * Instance of the asset API.
+	 *
+	 * @var AssetApi
+	 */
+	protected $asset_api;
+
+	/**
+	 * Instance of the asset data registry.
+	 *
+	 * @var AssetDataRegistry
+	 */
+	protected $asset_data_registry;
+
+	/**
+	 * Constructor.
+	 *
+	 * @param AssetApi $asset_api Instance of the asset API.
+	 */
+	public function __construct( AssetApi $asset_api, AssetDataRegistry $asset_data_registry ) {
+		$this->asset_api           = $asset_api;
+		$this->asset_data_registry = $asset_data_registry;
+	}
+
+	/**
 	 * Initialization method.
 	 */
 	public function init() {
+		$this->asset_data_registry->add(
+			'pickupLocations',
+			function() {
+				$locations = get_option( 'pickup_location_pickup_locations', [] );
+				$formatted = [];
+				foreach ( $locations as $location ) {
+					$formatted[] = [
+						'name'              => $location['name'],
+						'address'           => $location['address'],
+						'formatted_address' => implode( ', ', array_filter( $location['address'] ) ),
+						'details'           => $location['details'],
+						'enabled'           => wc_string_to_bool( $location['enabled'] ),
+					];
+				}
+				return $formatted;
+			},
+			true
+		);
+		add_action( 'admin_enqueue_scripts', [ $this, 'admin_scripts' ] );
 		add_action( 'woocommerce_load_shipping_methods', array( $this, 'register_shipping_methods' ) );
 		add_filter( 'woocommerce_shipping_packages', array( $this, 'filter_shipping_packages' ) );
 		add_filter( 'woocommerce_local_pickup_methods', array( $this, 'filter_local_pickup_methods' ) );
 		add_filter( 'woocommerce_customer_taxable_address', array( $this, 'pickup_location_customer_tax_location' ) );
+	}
+
+	/**
+	 * Load admin scripts.
+	 */
+	public function admin_scripts() {
+		$this->asset_api->register_script( 'wc-shipping-method-pickup-location', 'build/wc-shipping-method-pickup-location.js', [], false );
+		wp_enqueue_style( 'wc-blocks-admin-style' );
 	}
 
 	/**
