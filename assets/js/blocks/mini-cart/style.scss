@@ -19,8 +19,6 @@
 }
 
 .wc-block-mini-cart__amount {
-	font-size: inherit;
-	font-weight: inherit;
 	display: none;
 }
 
@@ -31,6 +29,7 @@
 @media screen and (min-width: 768px) {
 	.wc-block-mini-cart__amount {
 		display: initial;
+		font-size: inherit;
 		font-weight: inherit;
 		margin-right: $gap-smaller;
 	}
