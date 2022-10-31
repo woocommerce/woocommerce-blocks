@@ -7,7 +7,6 @@ import {
 	BlockControls,
 	useBlockProps,
 } from '@wordpress/block-editor';
-import { __ } from '@wordpress/i18n';
 import { useEffect } from 'react';
 
 /**
@@ -15,9 +14,31 @@ import { useEffect } from 'react';
  */
 import Block from './block';
 import withProductSelector from '../shared/with-product-selector';
-import { BLOCK_TITLE, BLOCK_ICON } from './constants';
+import {
+	BLOCK_TITLE as label,
+	BLOCK_ICON as icon,
+	BLOCK_DESCRIPTION as description,
+} from './constants';
 
-const PriceEdit = ( { attributes, setAttributes, context } ) => {
+interface Attributes {
+	textAlign: 'left' | 'center' | 'right';
+}
+
+interface Context {
+	queryId: number;
+}
+
+interface Props {
+	attributes: Attributes;
+	setAttributes: ( attributes: Record< string, unknown > ) => void;
+	context: Context;
+}
+
+const PriceEdit = ( {
+	attributes,
+	setAttributes,
+	context,
+}: Props ): JSX.Element => {
 	const blockProps = useBlockProps();
 	const blockAttrs = {
 		...attributes,
@@ -49,11 +70,4 @@ const PriceEdit = ( { attributes, setAttributes, context } ) => {
 	);
 };
 
-export default withProductSelector( {
-	icon: BLOCK_ICON,
-	label: BLOCK_TITLE,
-	description: __(
-		'Choose a product to display its price.',
-		'woo-gutenberg-products-block'
-	),
-} )( PriceEdit );
+export default withProductSelector( { icon, label, description } )( PriceEdit );

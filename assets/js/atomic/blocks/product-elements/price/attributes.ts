@@ -3,7 +3,7 @@
  */
 import { isFeaturePluginBuild } from '@woocommerce/block-settings';
 
-let blockAttributes = {
+let blockAttributes: Record< string, Record< string, unknown > > = {
 	productId: {
 		type: 'number',
 		default: 0,

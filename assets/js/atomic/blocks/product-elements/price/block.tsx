@@ -1,7 +1,6 @@
 /**
  * External dependencies
  */
-import PropTypes from 'prop-types';
 import classnames from 'classnames';
 import ProductPrice from '@woocommerce/base-components/product-price';
 import { getCurrencyFromPriceResponse } from '@woocommerce/price-format';
@@ -11,11 +10,14 @@ import {
 } from '@woocommerce/shared-context';
 import { useColorProps, useTypographyProps } from '@woocommerce/base-hooks';
 import { withProductDataContext } from '@woocommerce/shared-hocs';
+import { HTMLAttributes } from 'react';
 
 /**
  * Internal dependencies
  */
+import { Attributes } from './types';
 
+type Props = Attributes & HTMLAttributes< HTMLDivElement >;
 /**
  * Product Price Block Component.
  *
@@ -25,7 +27,7 @@ import { withProductDataContext } from '@woocommerce/shared-hocs';
  *                                   context will be used if this is not provided.
  * @return {*} The component.
  */
-export const Block = ( props ) => {
+const Block = ( props: Props ): JSX.Element | null => {
 	const { className, textAlign } = props;
 	const { parentClassName } = useInnerBlockLayoutContext();
 	const { product } = useProductDataContext();
@@ -81,12 +83,6 @@ export const Block = ( props ) => {
 			} ) }
 		/>
 	);
-};
-
-Block.propTypes = {
-	className: PropTypes.string,
-	product: PropTypes.object,
-	textAlign: PropTypes.oneOf( [ 'left', 'right', 'center' ] ),
 };
 
 export default withProductDataContext( Block );
