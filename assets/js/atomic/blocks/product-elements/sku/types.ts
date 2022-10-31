@@ -1,3 +1,3 @@
-export interface Attributes {
+export interface BlockAttributes {
 	className: string;
 }

@@ -14,9 +14,9 @@ import type { HTMLAttributes } from 'react';
  * Internal dependencies
  */
 import './style.scss';
-import type { Attributes } from './types';
+import type { BlockAttributes } from './types';
 
-type Props = Attributes & HTMLAttributes< HTMLDivElement >;
+type Props = BlockAttributes & HTMLAttributes< HTMLDivElement >;
 
 const Block = ( props: Props ): JSX.Element | null => {
 	const { className } = props;
