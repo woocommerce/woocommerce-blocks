@@ -17,13 +17,7 @@ import './style.scss';
 import type { Attributes } from './types';
 
 type Props = Attributes & HTMLAttributes< HTMLDivElement >;
-/**
- * Product SKU Block Component.
- *
- * @param {Object} props             Incoming props.
- * @param {string} [props.className] CSS Class name for the component.
- * @return {*} The component.
- */
+
 const Block = ( props: Props ): JSX.Element | null => {
 	const { className } = props;
 	const { parentClassName } = useInnerBlockLayoutContext();
