@@ -10,10 +10,10 @@ import EditProductLink from '@woocommerce/editor-components/edit-product-link';
 import Block from './block';
 import withProductSelector from '../shared/with-product-selector';
 import { BLOCK_TITLE, BLOCK_ICON } from './constants';
-import { Attributes } from './types';
+import type { BlockAttributes } from './types';
 
 interface Props {
-	attributes: Attributes;
+	attributes: BlockAttributes;
 }
 
 const Edit = ( { attributes }: Props ): JSX.Element => {
