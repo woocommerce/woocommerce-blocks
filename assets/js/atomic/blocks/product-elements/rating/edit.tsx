@@ -5,6 +5,7 @@ import { __ } from '@wordpress/i18n';
 import { useBlockProps } from '@wordpress/block-editor';
 import { BlockEditProps } from '@wordpress/blocks';
 import { useEffect } from 'react';
+import { ProductQueryContext as Context } from '@woocommerce/blocks/product-query/types';
 
 /**
  * Internal dependencies
@@ -13,7 +14,6 @@ import Block from './block';
 import withProductSelector from '../shared/with-product-selector';
 import { BLOCK_TITLE, BLOCK_ICON } from './constants';
 import { Attributes } from './types';
-import { ProductQueryContext as Context } from '../../../../blocks/product-query/types';
 
 const Edit = ( {
 	attributes,
