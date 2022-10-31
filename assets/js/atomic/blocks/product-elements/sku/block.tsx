@@ -2,19 +2,21 @@
  * External dependencies
  */
 import { __ } from '@wordpress/i18n';
-import PropTypes from 'prop-types';
 import classnames from 'classnames';
 import {
 	useInnerBlockLayoutContext,
 	useProductDataContext,
 } from '@woocommerce/shared-context';
 import { withProductDataContext } from '@woocommerce/shared-hocs';
+import { HTMLAttributes } from 'react';
 
 /**
  * Internal dependencies
  */
 import './style.scss';
+import { Attributes } from './types';
 
+type Props = Attributes & HTMLAttributes< HTMLDivElement >;
 /**
  * Product SKU Block Component.
  *
@@ -22,7 +24,8 @@ import './style.scss';
  * @param {string} [props.className] CSS Class name for the component.
  * @return {*} The component.
  */
-const Block = ( { className } ) => {
+const Block = ( props: Props ): JSX.Element | null => {
+	const { className } = props;
 	const { parentClassName } = useInnerBlockLayoutContext();
 	const { product } = useProductDataContext();
 	const sku = product.sku;
@@ -45,10 +48,6 @@ const Block = ( { className } ) => {
 			<strong>{ sku }</strong>
 		</div>
 	);
-};
-
-Block.propTypes = {
-	className: PropTypes.string,
 };
 
 export default withProductDataContext( Block );
