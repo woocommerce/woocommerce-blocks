@@ -27,7 +27,8 @@ class ShippingController {
 	/**
 	 * Constructor.
 	 *
-	 * @param AssetApi $asset_api Instance of the asset API.
+	 * @param AssetApi          $asset_api Instance of the asset API.
+	 * @param AssetDataRegistry $asset_data_registry Instance of the asset data registry.
 	 */
 	public function __construct( AssetApi $asset_api, AssetDataRegistry $asset_data_registry ) {
 		$this->asset_api           = $asset_api;
@@ -45,11 +46,10 @@ class ShippingController {
 				$formatted = [];
 				foreach ( $locations as $location ) {
 					$formatted[] = [
-						'name'              => $location['name'],
-						'address'           => $location['address'],
-						'formatted_address' => implode( ', ', array_filter( $location['address'] ) ),
-						'details'           => $location['details'],
-						'enabled'           => wc_string_to_bool( $location['enabled'] ),
+						'name'    => $location['name'],
+						'address' => $location['address'],
+						'details' => $location['details'],
+						'enabled' => wc_string_to_bool( $location['enabled'] ),
 					];
 				}
 				return $formatted;
