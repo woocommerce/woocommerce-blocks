@@ -37,6 +37,16 @@ if ( process.env.WOOCOMMERCE_BLOCKS_PHASE < 2 ) {
 
 let coupon;
 
+const getCompanyCheckboxLabel = async () => {
+	await page.waitForXPath(
+		`//label[contains(text(), "Company") and contains(@class, "components-toggle-control__label")]`
+	);
+	const [ companyCheckboxLabel ] = await page.$x(
+		`//label[contains(text(), "Company") and contains(@class, "components-toggle-control__label")]`
+	);
+	return companyCheckboxLabel;
+};
+
 describe( 'Shopper → Checkout', () => {
 	beforeAll( async () => {
 		await shopper.block.emptyCart();
@@ -73,9 +83,7 @@ describe( 'Shopper → Checkout', () => {
 				'woocommerce/checkout-shipping-address-block'
 			);
 
-			const [ companyCheckboxLabel ] = await page.$x(
-				`//label[contains(text(), "Company") and contains(@class, "components-toggle-control__label")]`
-			);
+			const companyCheckboxLabel = await getCompanyCheckboxLabel();
 			await companyCheckboxLabel.click();
 			await saveOrPublish();
 			await shopper.block.emptyCart();
@@ -88,9 +96,7 @@ describe( 'Shopper → Checkout', () => {
 			await selectBlockByName(
 				'woocommerce/checkout-shipping-address-block'
 			);
-			const [ companyCheckboxLabel ] = await page.$x(
-				`//label[contains(text(), "Company") and contains(@class, "components-toggle-control__label")]`
-			);
+			const companyCheckboxLabel = await getCompanyCheckboxLabel();
 			await companyCheckboxLabel.click();
 			await saveOrPublish();
 			await merchant.logout();
