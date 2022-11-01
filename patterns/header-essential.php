@@ -1,7 +1,7 @@
 <?php
 /**
- * Title: WooCommerce Essential Header | Light
- * Slug: woocommerce-blocks/header-essential-light
+ * Title: WooCommerce Essential Header
+ * Slug: woocommerce-blocks/header-essential
  * Categories: WooCommerce
  */
 ?>

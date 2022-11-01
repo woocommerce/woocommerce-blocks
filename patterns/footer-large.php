@@ -1,7 +1,7 @@
 <?php
 /**
- * Title: WooCommerce Large Footer | Light
- * Slug: woocommerce-blocks/footer-large-light
+ * Title: WooCommerce Large Footer
+ * Slug: woocommerce-blocks/footer-large
  * Categories: WooCommerce
  */
 ?>
@@ -19,8 +19,8 @@
 <!-- /wp:paragraph --></div>
 <!-- /wp:group -->
 
-<!-- wp:social-links {"iconColor":"white","iconColorValue":"#ffffff","size":"has-small-icon-size","className":"is-style-logos-only"} -->
-<ul class="wp-block-social-links has-small-icon-size has-icon-color is-style-logos-only"><!-- wp:social-link {"service":"facebook"} /-->
+<!-- wp:social-links {"size":"has-small-icon-size","className":"is-style-logos-only"} -->
+<ul class="wp-block-social-links has-small-icon-size is-style-logos-only"><!-- wp:social-link {"service":"facebook"} /-->
 
 <!-- wp:social-link {"service":"twitter"} /-->
 

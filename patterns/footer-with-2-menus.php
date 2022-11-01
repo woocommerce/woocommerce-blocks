@@ -1,7 +1,7 @@
 <?php
 /**
- * Title: WooCommerce Footer with 2 menus | Light
- * Slug: woocommerce-blocks/footer-with-2-menus-light
+ * Title: WooCommerce Footer with 2 menus
+ * Slug: woocommerce-blocks/footer-with-2-menus
  * Categories: WooCommerce
  */
 ?>
@@ -35,8 +35,8 @@
 <!-- /wp:paragraph --></div>
 <!-- /wp:group -->
 
-<!-- wp:social-links {"iconColor":"white","iconColorValue":"#ffffff","className":"is-style-logos-only"} -->
-<ul class="wp-block-social-links has-icon-color is-style-logos-only"><!-- wp:social-link {"service":"facebook"} /-->
+<!-- wp:social-links {"className":"is-style-logos-only"} -->
+<ul class="wp-block-social-links is-style-logos-only"><!-- wp:social-link {"service":"facebook"} /-->
 
 <!-- wp:social-link {"service":"instagram"} /-->
 

@@ -1,7 +1,7 @@
 <?php
 /**
- * Title: WooCommerce Large Header | Light
- * Slug: woocommerce-blocks/header-large-light
+ * Title: WooCommerce Large Header
+ * Slug: woocommerce-blocks/header-large
  * Categories: WooCommerce
  */
 ?>
