@@ -78,5 +78,29 @@ describeOrSkip( GUTENBERG_EDITOR_CONTEXT === 'gutenberg' )(
 				)
 			).toEqual( 2 );
 		} );
+
+		it( 'Can add the Product Price block and render it on the front end.', async () => {
+			const canvasEl = canvas();
+			await canvasEl.waitForSelector(
+				`${ block.class } .wp-block-woocommerce-product-image a img`
+			);
+			const postTitleEl = await canvasEl.$(
+				`${ block.class } .wp-block-post-title`
+			);
+			await postTitleEl.click();
+			await insertBlock( 'Product Price' );
+			await saveOrPublish();
+
+			await shopper.block.goToBlockPage( block.name );
+			await page.waitForSelector(
+				'.wp-block-query .woocommerce-Price-amount'
+			);
+			await expect( page ).toMatchElement(
+				'.wp-block-query .woocommerce-Price-amount',
+				{
+					text: '2.99',
+				}
+			);
+		} );
 	}
 );
