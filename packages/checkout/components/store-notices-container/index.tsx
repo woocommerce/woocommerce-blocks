@@ -32,6 +32,17 @@ interface StoreNoticesContainerProps {
 	additionalNotices?: NoticeType[];
 }
 
+/**
+ * Component that displays notices from the core/notices data store. See
+ * https://developer.wordpress.org/block-editor/reference-guides/data/data-core-notices/ for more information on this
+ * data store.
+ *
+ * @param  props
+ * @param  props.className         Class name to add to the container.
+ * @param  props.context           Context to show notices from.
+ * @param  props.additionalNotices Additional notices to display.
+ * @function Object() { [native code] }
+ */
 export const StoreNoticesContainer = ( {
 	className,
 	context = 'default',
