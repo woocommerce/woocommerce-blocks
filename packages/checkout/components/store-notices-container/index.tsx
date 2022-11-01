@@ -7,6 +7,7 @@ import { Notice } from 'wordpress-components';
 import { sanitizeHTML } from '@woocommerce/utils';
 import { useDispatch, useSelect } from '@wordpress/data';
 import { PAYMENT_STORE_KEY } from '@woocommerce/block-data';
+import type { Notice as NoticeType } from '@wordpress/notices';
 
 /**
  * Internal dependencies
@@ -26,11 +27,17 @@ const getWooClassName = ( { status = 'default' } ) => {
 	return '';
 };
 
+interface StoreNoticesContainerProps {
+	className?: string;
+	context?: string;
+	additionalNotices?: NoticeType[];
+}
+
 export const StoreNoticesContainer = ( {
 	className,
 	context = 'default',
 	additionalNotices = [],
-} ) => {
+}: StoreNoticesContainerProps ): JSX.Element | null => {
 	const isExpressPaymentMethodActive = useSelect( ( select ) =>
 		select( PAYMENT_STORE_KEY ).isExpressPaymentMethodActive()
 	);
