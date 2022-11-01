@@ -1,7 +1,6 @@
 /**
  * External dependencies
  */
-import PropTypes from 'prop-types';
 import classnames from 'classnames';
 import { Notice } from 'wordpress-components';
 import { sanitizeHTML } from '@woocommerce/utils';
@@ -81,19 +80,6 @@ export const StoreNoticesContainer = ( {
 			) ) }
 		</div>
 	);
-};
-
-StoreNoticesContainer.propTypes = {
-	className: PropTypes.string,
-	notices: PropTypes.arrayOf(
-		PropTypes.shape( {
-			content: PropTypes.string.isRequired,
-			id: PropTypes.string.isRequired,
-			status: PropTypes.string.isRequired,
-			isDismissible: PropTypes.bool,
-			type: PropTypes.oneOf( [ 'default', 'snackbar' ] ),
-		} )
-	),
 };
 
 export default StoreNoticesContainer;
