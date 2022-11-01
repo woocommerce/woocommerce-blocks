@@ -12,7 +12,7 @@
 
 <!-- wp:group {"style":{"spacing":{"blockGap":"8px"},"typography":{"fontSize":"13px"}},"layout":{"type":"flex","flexWrap":"nowrap","justifyContent":"right"}} -->
 <div class="wp-block-group" style="font-size:13px"><!-- wp:group {"style":{"spacing":{"blockGap":"16px"}},"layout":{"type":"flex","flexWrap":"nowrap"}} -->
-<div class="wp-block-group"><!-- wp:navigation {"textColor":"black","overlayMenu":"always","layout":{"type":"flex","justifyContent":"center"}} /-->
+<div class="wp-block-group"><!-- wp:navigation {"overlayMenu":"always","layout":{"type":"flex","justifyContent":"center"}} /-->
 
 <!-- wp:search {"label":"Search","showLabel":false,"placeholder":"Search store","width":220,"widthUnit":"px","buttonText":"Search","buttonPosition":"no-button"} /--></div>
 <!-- /wp:group -->
