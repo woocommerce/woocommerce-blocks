@@ -79,7 +79,7 @@ describeOrSkip( GUTENBERG_EDITOR_CONTEXT === 'gutenberg' )(
 			).toEqual( 2 );
 		} );
 
-		it( 'Can add the Product Price block and render it on the front end.', async () => {
+		it( 'Can add the Product Price block and render it on the front end', async () => {
 			const canvasEl = canvas();
 			await canvasEl.waitForSelector(
 				`${ block.class } .wp-block-woocommerce-product-image a img`
@@ -101,6 +101,27 @@ describeOrSkip( GUTENBERG_EDITOR_CONTEXT === 'gutenberg' )(
 					text: '2.99',
 				}
 			);
+		} );
+
+		it( 'Can add the Product Ratings block and render it on the front end', async () => {
+			const canvasEl = canvas();
+			await canvasEl.waitForSelector(
+				`${ block.class } .wp-block-woocommerce-product-image a img`
+			);
+			const postTitleEl = await canvasEl.$(
+				`${ block.class } .wp-block-post-title`
+			);
+			await postTitleEl.click();
+			await insertBlock( 'Product Rating' );
+			await saveOrPublish();
+
+			await shopper.block.goToBlockPage( block.name );
+			expect(
+				await page.$$eval(
+					'.wc-block-components-product-rating',
+					( rows ) => rows.length
+				)
+			).toEqual( 5 );
 		} );
 	}
 );
