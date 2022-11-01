@@ -5,7 +5,7 @@
  * Categories: WooCommerce
  */
 ?>
-<!-- wp:group {"align":"full","style":{"spacing":{"blockGap":"0px","padding":{"top":"1rem","right":"1rem","bottom":"1rem","left":"1rem"}},"elements":{"link":{"color":{"text":"var:preset|color|black"}}}},"backgroundColor":"background","layout":{"type":"default"}} -->
+<!-- wp:group {"align":"full","style":{"spacing":{"blockGap":"0px","padding":{"top":"1rem","right":"1rem","bottom":"1rem","left":"1rem"}}},"backgroundColor":"background","layout":{"type":"default"}} -->
 <div class="wp-block-group alignfull has-background-background-color has-background has-link-color" style="padding-top:1rem;padding-right:1rem;padding-bottom:1rem;padding-left:1rem"><!-- wp:group {"style":{"spacing":{"blockGap":"1rem"}},"layout":{"type":"flex","flexWrap":"wrap","justifyContent":"right"},"fontSize":"small"} -->
 <div class="wp-block-group has-small-font-size"><!-- wp:search {"label":"Search","showLabel":false,"placeholder":"Search","width":220,"widthUnit":"px","buttonText":"Search","buttonPosition":"no-button"} /-->
 
