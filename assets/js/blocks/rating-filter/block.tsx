@@ -1,7 +1,8 @@
 /**
  * External dependencies
  */
-import { __ } from '@wordpress/i18n';
+import { __, sprintf } from '@wordpress/i18n';
+import { speak } from '@wordpress/a11y';
 import Rating from '@woocommerce/base-components/product-rating';
 import { usePrevious, useShallowEqual } from '@woocommerce/base-hooks';
 import {
@@ -11,7 +12,6 @@ import {
 } from '@woocommerce/base-context/hooks';
 import { getSettingWithCoercion } from '@woocommerce/settings';
 import { isBoolean, isObject, objectHasProp } from '@woocommerce/types';
-import FilterTitlePlaceholder from '@woocommerce/base-components/filter-placeholder';
 import isShallowEqual from '@wordpress/is-shallow-equal';
 import { useState, useCallback, useMemo, useEffect } from '@wordpress/element';
 import CheckboxList from '@woocommerce/base-components/checkbox-list';
@@ -28,6 +28,7 @@ import { previewOptions } from './preview';
 import './style.scss';
 import { Attributes } from './types';
 import { getActiveFilters } from './utils';
+import { useSetWraperVisibility } from '../filter-wrapper/context';
 
 export const QUERY_PARAM_KEY = 'rating_filter';
 
@@ -45,6 +46,8 @@ const RatingFilterBlock = ( {
 	attributes: Attributes;
 	isEditor?: boolean;
 } ) => {
+	const setWrapperVisibility = useSetWraperVisibility();
+
 	const filteringForPhpTemplate = getSettingWithCoercion(
 		'is_rendering_php_template',
 		false,
@@ -65,8 +68,6 @@ const RatingFilterBlock = ( {
 		blockAttributes.isPreview ? previewOptions : []
 	);
 
-	const TagName =
-		`h${ blockAttributes.headingLevel }` as keyof JSX.IntrinsicElements;
 	const isLoading =
 		! blockAttributes.isPreview &&
 		filteredCountsLoading &&
@@ -88,8 +89,6 @@ const RatingFilterBlock = ( {
 		'rating',
 		initialFilters
 	);
-
-	const productRatingsArray: string[] = Array.from( productRatings );
 
 	/**
 	 * Used to redirect the page when filters are changed so templates using the Classic Template block can filter.
@@ -201,32 +200,27 @@ const RatingFilterBlock = ( {
 			.filter(
 				( item ) => isObject( item ) && Object.keys( item ).length > 0
 			)
-			.map(
-				( item ) => {
-					return {
-						label: (
-							<Rating
-								className={
-									productRatingsArray.includes(
-										item?.rating?.toString()
-									)
-										? 'is-active'
-										: ''
-								}
-								key={ item?.rating }
-								rating={ item?.rating }
-								ratedProductsCount={
-									blockAttributes.showCounts
-										? item?.count
-										: null
-								}
-							/>
-						),
-						value: item?.rating?.toString(),
-					};
-				},
-				[ blockAttributes.showCounts ]
-			);
+			.map( ( item ) => {
+				return {
+					label: (
+						<Rating
+							className={
+								Array.from( productRatings ).includes(
+									item?.rating?.toString()
+								)
+									? 'is-active'
+									: ''
+							}
+							key={ item?.rating }
+							rating={ item?.rating }
+							ratedProductsCount={
+								blockAttributes.showCounts ? item?.count : null
+							}
+						/>
+					),
+					value: item?.rating?.toString(),
+				};
+			} );
 
 		setDisplayedOptions( newOptions );
 	}, [
@@ -234,6 +228,7 @@ const RatingFilterBlock = ( {
 		blockAttributes.isPreview,
 		filteredCounts,
 		filteredCountsLoading,
+		productRatings,
 	] );
 
 	/**
@@ -250,31 +245,53 @@ const RatingFilterBlock = ( {
 			if ( ! previouslyChecked ) {
 				newChecked.push( checkedValue );
 				newChecked.sort();
+				speak(
+					sprintf(
+						/* translators: %s is referring to the average rating value */
+						__(
+							'Rated %s out of 5 filter added.',
+							'woo-gutenberg-products-block'
+						),
+						checkedValue
+					)
+				);
+			} else {
+				speak(
+					sprintf(
+						/* translators: %s is referring to the average rating value */
+						__(
+							'Rated %s out of 5 filter removed.',
+							'woo-gutenberg-products-block'
+						),
+						checkedValue
+					)
+				);
 			}
 			setChecked( newChecked );
 		},
-		[ checked, displayedOptions ]
+		[ checked ]
 	);
 
 	if ( ! filteredCountsLoading && displayedOptions.length === 0 ) {
+		setWrapperVisibility( false );
 		return null;
 	}
 
-	const heading = (
-		<TagName className="wc-block-rating-filter__title">
-			{ blockAttributes.heading }
-		</TagName>
+	const hasFilterableProducts = getSettingWithCoercion(
+		'has_filterable_products',
+		false,
+		isBoolean
 	);
 
-	const filterHeading = isLoading ? (
-		<FilterTitlePlaceholder>{ heading }</FilterTitlePlaceholder>
-	) : (
-		heading
-	);
+	if ( ! hasFilterableProducts ) {
+		setWrapperVisibility( false );
+		return null;
+	}
+
+	setWrapperVisibility( true );
 
 	return (
 		<>
-			{ ! isEditor && blockAttributes.heading && filterHeading }
 			<div
 				className={ classnames( 'wc-block-rating-filter', {
 					'is-loading': isLoading,
