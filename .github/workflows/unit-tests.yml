@@ -122,14 +122,14 @@ jobs:
               run: |
                 JSON='{"phpVersion": "${{ matrix.php }}"}'
                 echo $JSON > .wp-env.override.json
-                npm run wp-env start
+                npm run wp-env start --update
                 npm run test:php
 
             - name: Run PHPUnit tests (WooCommerce Development Version)
               run: |
                   JSON='{"plugins": [".","https://downloads.wordpress.org/plugin/woocommerce.zip"], "phpVersion": "${{ matrix.php }}"}'
                   echo $JSON > .wp-env.override.json
-                  npm run wp-env start
+                  npm run wp-env start --update
                   npm run test:php
 
     JSUnitTests:
