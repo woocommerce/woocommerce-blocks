@@ -44,7 +44,7 @@ describeOrSkip( GUTENBERG_EDITOR_CONTEXT === 'gutenberg' )(
 			await expect( page ).toRenderBlock( block );
 		} );
 
-		it( 'Editor preview shows only on sale products after enabling `Show only products on sale`', async () => {
+		it.skip( 'Editor preview shows only on sale products after enabling `Show only products on sale`', async () => {
 			await visitBlockPage( `${ block.name } Block` );
 			const canvasEl = canvas();
 			await openDocumentSettingsSidebar();
@@ -84,7 +84,7 @@ describeOrSkip( GUTENBERG_EDITOR_CONTEXT === 'gutenberg' )(
 				expect( products ).toHaveLength( 1 );
 			} );
 
-			it( 'Does not have on sale toggle', async () => {
+			it.skip( 'Does not have on sale toggle', async () => {
 				await openDocumentSettingsSidebar();
 				await openListView();
 				await page.click(
