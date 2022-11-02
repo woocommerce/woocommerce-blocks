@@ -114,7 +114,10 @@ jobs:
 
             - name: Setup Environment
               run: |
-                chmod -R 767 ./
+                whoami
+                ls -lah
+                chmod -R 777 ./
+                ls -lah
                 chown -R www-data: ./
 
             - name: Run PHPUnit tests
