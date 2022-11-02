@@ -15,6 +15,8 @@ const runner = async () => {
 	const fileName = getInput( 'compare', {
 		required: true,
 	} );
+
+	console.log( process.env[ 'CURRENT_BRANCH' ] );
 	const newCheckStyleFile = fs.readFileSync( fileName );
 	const newCheckStyleFileParsed = parseXml( newCheckStyleFile );
 	const currentCheckStyleFile = await getFileContent( {
@@ -51,12 +53,14 @@ const runner = async () => {
 			  '</details>'
 			: '🎉 🎉 This PR does not introduce new TS errors.' );
 
-	await octokit.rest.issues.createComment( {
-		owner,
-		repo,
-		issue_number: payload.pull_request.number,
-		body: message,
-	} );
+	if ( process.env[ 'CURRENT_BRANCH' ] !== 'trunk' ) {
+		await octokit.rest.issues.createComment( {
+			owner,
+			repo,
+			issue_number: payload.pull_request.number,
+			body: message,
+		} );
+	}
 
 	if ( process.env[ 'CURRENT_BRANCH' ] === 'trunk' ) {
 		try {
