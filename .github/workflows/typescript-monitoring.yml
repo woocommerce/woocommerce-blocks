@@ -1,5 +1,8 @@
 name: Monitor TypeScript errors
-on: pull_request
+on:
+    push:
+        branches: [trunk]
+    pull_request:
 
 jobs:
     check-typescript-errors-with-trunk:
@@ -31,6 +34,10 @@ jobs:
               run: |
                   npm ci
                   npm run ts:log-errors
+
+            - name: Get branch name
+              id: branch-name
+              uses: tj-actions/branch-names@v6
 
             - name: Monitor TypeScript errors
               uses: ./.github/monitor-typescript-errors
