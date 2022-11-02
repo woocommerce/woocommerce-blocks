@@ -93,7 +93,7 @@ jobs:
                   name: build-assets
 
             - name: blocks.ini setup
-              run: echo -e 'woocommerce_blocks_phase = 3\nwoocommerce_blocks_env = test' > blocks.ini
+              run: echo -e 'woocommerce_blocks_phase = 3\nwoocommerce_blocks_env = production' > blocks.ini
 
             - name: Get Composer cache directory
               id: composer-cache
@@ -157,7 +157,7 @@ jobs:
                   name: build-assets
 
             - name: blocks.ini setup
-              run: echo -e 'woocommerce_blocks_phase = 3\nwoocommerce_blocks_env = test' > blocks.ini
+              run: echo -e 'woocommerce_blocks_phase = 3\nwoocommerce_blocks_env = production' > blocks.ini
 
             - name: Run JavaScript Unit tests
               run: npm run test
