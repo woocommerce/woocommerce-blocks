@@ -7,6 +7,7 @@ on:
 
 jobs:
     JSE2EWithGutenberg:
+        if: ${{ false }}  # disable for now
         strategy:
             fail-fast: false
             matrix:
