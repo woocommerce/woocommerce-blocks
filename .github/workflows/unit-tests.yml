@@ -114,7 +114,7 @@ jobs:
 
             - name: Setup Permissions
               run: |
-                mkdir ./wp-content/uploads/wc-logs
+                mkdir -p ./wp-content/uploads/wc-logs
                 echo 'deny from all' > ./wp-content/uploads/wc-logs/.htaccess
                 chmod -R 777 ./
 
