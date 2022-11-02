@@ -183,7 +183,7 @@ describe( `${ block.name } Block`, () => {
 			} );
 
 			await selectBlockByName( block.slug );
-			await openBlockEditorSettings( { isFSEEditor: true } );
+			await openBlockEditorSettings();
 			await page.waitForXPath(
 				block.selectors.editor.filterButtonToggle
 			);

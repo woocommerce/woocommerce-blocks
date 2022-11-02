@@ -410,24 +410,17 @@ export const createCoupon = async ( coupon ) => {
 };
 
 /**
- * Open the block editor settings menu.
- *
- * @param {Object}  [root0]
- * @param {boolean} [root0.isFSEEditor] Amount to be applied. Defaults to 5.
+ * Open the block editor settings menu if it hasn't opened.
  */
+export const openBlockEditorSettings = async () => {
+	const toggleSidebarButton = await page.$(
+		'.edit-post-header__settings [aria-label="Settings"][aria-expanded="false"],' +
+			'.edit-site-header-edit-mode__actions [aria-label="Settings"][aria-expanded="false"],' +
+			'.edit-site-header__actions [aria-label="Settings"][aria-expanded="false"]'
+	);
 
-export const openBlockEditorSettings = async ( { isFSEEditor = false } ) => {
-	const buttonSelector = isFSEEditor
-		? '.edit-site-header__actions button[aria-label="Settings"]'
-		: '.edit-post-header__settings button[aria-label="Settings"]';
-
-	const isPressed = `${ buttonSelector }.is-pressed`;
-
-	const isSideBarAlreadyOpened = await page.$( isPressed );
-
-	if ( isSideBarAlreadyOpened === null ) {
-		// @ts-ignore
-		await page.$eval( buttonSelector, ( el ) => el.click() );
+	if ( toggleSidebarButton ) {
+		await toggleSidebarButton.click();
 	}
 };
 
