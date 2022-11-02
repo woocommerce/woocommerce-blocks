@@ -35,10 +35,9 @@ jobs:
                   npm ci
                   npm run ts:log-errors
 
-            - name: Extract branch name
-              shell: bash
-              run: echo ${GITHUB_REF##*/}
-              id: extract_branch
+            - name: Get branch name
+              id: branch-name
+              uses: tj-actions/branch-names@v6
 
             - name: Monitor TypeScript errors
               uses: ./.github/monitor-typescript-errors
@@ -47,7 +46,7 @@ jobs:
                   compare: checkstyle.xml
               env:
                   AIRTABLE_API_KEY: ${{ secrets.AIRTABLE_API_KEY }}
-                  CURRENT_BRANCH: ${{ steps.extract_branch.outputs.branch }}
+                  CURRENT_BRANCH: ${{ steps.branch-name.outputs.current_branch }}
 
             - name: Check if the checklist.xml file is changed
               id: verify_diff
