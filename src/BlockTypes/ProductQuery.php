@@ -141,7 +141,6 @@ class ProductQuery extends AbstractBlock {
 			},
 			$common_query_values
 		);
-
 	}
 
 	/**
@@ -156,13 +155,28 @@ class ProductQuery extends AbstractBlock {
 	}
 
 	/**
-	 * Set the query vars that are used by filter blocks.
+	 * Return a query for products depending on their stock status.
 	 *
-	 * @param array $public_query_vars Public query vars.
+	 * @param array $stock_statii An array of acceptable stock statii.
 	 * @return array
 	 */
-	public function set_query_vars( $public_query_vars ) {
+	private function get_stock_status_query( $stock_statii ) {
+		return array(
+			// phpcs:ignore WordPress.DB.SlowDBQuery.slow_db_query_meta_query
+			'meta_query' => array(
+				'key'     => '_stock_status',
+				'value'   => (array) $stock_statii,
+				'compare' => 'IN',
+			),
+		);
+	}
 
+	/**
+	 * Set the query vars that are used by filter blocks.
+	 *
+	 * @return array
+	 */
+	private function get_query_vars_from_filter_blocks() {
 		$attributes_filter_query_args = array_reduce(
 			array_values( $this->get_filter_by_attributes_query_vars() ),
 			function( $acc, $array ) {
@@ -171,8 +185,30 @@ class ProductQuery extends AbstractBlock {
 			array()
 		);
 
-		$price_filter_query_args = array( PriceFilter::MIN_PRICE_QUERY_VAR, PriceFilter::MAX_PRICE_QUERY_VAR );
-		return array_merge( $public_query_vars, $price_filter_query_args, $attributes_filter_query_args );
+		return array(
+			'price_filter_query_args'      => array( PriceFilter::MIN_PRICE_QUERY_VAR, PriceFilter::MAX_PRICE_QUERY_VAR ),
+			'stock_filter_query_args'      => array( StockFilter::STOCK_STATUS_QUERY_VAR ),
+			'attributes_filter_query_args' => $attributes_filter_query_args,
+		);
+
+	}
+
+	/**
+	 * Set the query vars that are used by filter blocks.
+	 *
+	 * @param array $public_query_vars Public query vars.
+	 * @return array
+	 */
+	public function set_query_vars( $public_query_vars ) {
+		$query_vars = $this->get_query_vars_from_filter_blocks();
+
+		return array_reduce(
+			array_values( $query_vars ),
+			function( $acc, $query_vars_filter_block ) {
+				return array_merge( $query_vars_filter_block, $acc );
+			},
+			$public_query_vars
+		);
 	}
 
 	/**
@@ -219,8 +255,9 @@ class ProductQuery extends AbstractBlock {
 	 */
 	private function get_queries_by_applied_filters() {
 		return array(
-			'price_filter'      => $this->get_filter_by_price_query(),
-			'attributes_filter' => $this->get_filter_by_attributes_query(),
+			'price_filter'        => $this->get_filter_by_price_query(),
+			'attributes_filter'   => $this->get_filter_by_attributes_query(),
+			'stock_status_filter' => $this->get_filter_by_stock_status_query(),
 		);
 	}
 
@@ -231,9 +268,12 @@ class ProductQuery extends AbstractBlock {
 	 * @return array
 	 */
 	private function get_queries_by_attributes( $parsed_block ) {
-		$on_sale_enabled = isset( $parsed_block['attrs']['query']['__woocommerceOnSale'] ) && true === $parsed_block['attrs']['query']['__woocommerceOnSale'];
+		$query           = $parsed_block['attrs']['query'];
+		$on_sale_enabled = isset( $query['__woocommerceOnSale'] ) && true === $query['__woocommerceOnSale'];
+
 		return array(
-			'on_sale' => ( $on_sale_enabled ? $this->get_on_sale_products_query() : array() ),
+			'on_sale'      => ( $on_sale_enabled ? $this->get_on_sale_products_query() : array() ),
+			'stock_status' => isset( $query['__woocommerceStockStatus'] ) ? $this->get_stock_status_query( $query['__woocommerceStockStatus'] ) : array(),
 		);
 	}
 
@@ -321,6 +361,43 @@ class ProductQuery extends AbstractBlock {
 			'tax_query' => array(
 				'relation' => 'AND',
 				$queries,
+			),
+		);
+	}
+
+	/**
+	 * Return a query that filters products by stock status.
+	 *
+	 * @return array
+	 */
+	private function get_filter_by_stock_status_query() {
+		$filter_stock_status_values = get_query_var( StockFilter::STOCK_STATUS_QUERY_VAR );
+
+		if ( empty( $filter_stock_status_values ) ) {
+			return array();
+		}
+
+		$filtered_stock_status_values = array_filter(
+			explode( ',', $filter_stock_status_values ),
+			function( $stock_status ) {
+				return in_array( $stock_status, StockFilter::get_stock_status_query_var_values(), true );
+			}
+		);
+
+		if ( empty( $filtered_stock_status_values ) ) {
+			return array();
+		}
+
+		return array(
+			// Ignoring the warning of not using meta queries.
+			// phpcs:ignore WordPress.DB.SlowDBQuery.slow_db_query_meta_query
+			'meta_query' => array(
+				array(
+					'key'      => '_stock_status',
+					'value'    => $filtered_stock_status_values,
+					'operator' => 'IN',
+
+				),
 			),
 		);
 	}
