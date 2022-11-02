@@ -554,7 +554,18 @@ describe( 'Shopper → Mini Cart', () => {
 
 			await expect( page ).toMatchElement( 'h1', { text: 'Checkout' } );
 
-			await expect( page ).toMatch( productTitle );
+			const orderSummaryToggle = await page.$(
+				'.wc-block-components-order-summary button[aria-expanded="false"]'
+			);
+
+			if ( orderSummaryToggle ) {
+				await orderSummaryToggle.click();
+			}
+
+			await expect( page ).toMatchElement(
+				'.wc-block-components-order-summary__content',
+				{ text: productTitle }
+			);
 		} );
 	} );
 
