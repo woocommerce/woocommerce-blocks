@@ -61,9 +61,13 @@ jobs:
               run: composer install
 
     PHPUnitTests:
-        name: PHP Unit Tests
+        name: PHP ${{ matrix.php }}
         needs: Setup
         runs-on: ubuntu-latest
+        strategy:
+          fail-fast: false
+          matrix:
+            php: [ '7.4', '8.0' ]
 
         steps:
             - uses: actions/checkout@v3
@@ -109,22 +113,24 @@ jobs:
               run: composer install
 
             - name: Setup Environment
-              run: |
-                  chmod -R 767 ./ #TODO: Might get implemented in wp-env
-                  npm run wp-env start
+              run: chmod -R 767 ./ #TODO: Might get implemented in wp-env
 
             - name: Run PHPUnit tests
-              run: npm run test:php
+              run: |
+                JSON='{"phpVersion": "${{ matrix.php }}"}'
+                echo $JSON > .wp-env.override.json
+                npm run wp-env start
+                npm run test:php
 
             - name: Run PHPUnit tests (WooCommerce Development Version)
               run: |
-                  JSON='{"plugins": [".","https://downloads.wordpress.org/plugin/woocommerce.zip"]}'
+                  JSON='{"plugins": [".","https://downloads.wordpress.org/plugin/woocommerce.zip"], "phpVersion": "${{ matrix.php }}"}'
                   echo $JSON > .wp-env.override.json
                   npm run wp-env start
                   npm run test:php
 
     JSUnitTests:
-        name: JS Unit Tests
+        name: JavaScript
         needs: Setup
         runs-on: ubuntu-latest
         steps:
