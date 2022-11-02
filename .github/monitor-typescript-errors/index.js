@@ -16,7 +16,6 @@ const runner = async () => {
 		required: true,
 	} );
 
-	console.log( process.env[ 'CURRENT_BRANCH' ] );
 	const newCheckStyleFile = fs.readFileSync( fileName );
 	const newCheckStyleFileParsed = parseXml( newCheckStyleFile );
 	const currentCheckStyleFile = await getFileContent( {
