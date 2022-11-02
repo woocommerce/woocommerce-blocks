@@ -10,6 +10,7 @@ import {
 	visitAdminPage,
 	pressKeyWithModifier,
 	searchForBlock as searchForFSEBlock,
+	insertBlock,
 } from '@wordpress/e2e-test-utils';
 import { addQueryArgs } from '@wordpress/url';
 import { WP_ADMIN_DASHBOARD } from '@woocommerce/e2e-utils';
@@ -456,3 +457,9 @@ export const describeOrSkip = ( condition ) =>
  * @param {boolean} condition Condition to execute test.
  */
 export const itOrSkip = ( condition ) => ( condition ? it : it.skip );
+
+export const insertAllProductBlock = async () => {
+	await insertBlock( 'Paragraph' );
+	await page.keyboard.type( '/All Products' );
+	await page.keyboard.press( 'Enter' );
+};

@@ -20,6 +20,7 @@ import {
 	useTheme,
 	saveTemplate,
 	waitForAllProductsBlockLoaded,
+	insertAllProductBlock,
 } from '../../utils';
 import {
 	clickLink,
@@ -97,7 +98,7 @@ describe( 'Shopper → Active Filters Block', () => {
 			} );
 
 			await insertBlocks();
-			await insertBlock( 'All Products' );
+			await insertAllProductBlock();
 			await configurateFilterProductsByAttributeBlock( page );
 			await publishPost();
 

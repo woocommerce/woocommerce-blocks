@@ -21,6 +21,7 @@ import {
 	saveTemplate,
 	useTheme,
 	waitForAllProductsBlockLoaded,
+	insertAllProductBlock,
 } from '../../utils';
 
 const block = {
@@ -65,7 +66,7 @@ describe( `${ block.name } Block`, () => {
 				title: block.name,
 			} );
 
-			await insertBlock( 'All Products' );
+			await insertAllProductBlock();
 			await insertBlock( block.name );
 			const canvasEl = canvas();
 

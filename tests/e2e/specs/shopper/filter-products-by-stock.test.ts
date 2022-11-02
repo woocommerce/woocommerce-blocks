@@ -21,6 +21,7 @@ import {
 	useTheme,
 	waitForAllProductsBlockLoaded,
 	waitForCanvas,
+	insertAllProductBlock,
 } from '../../utils';
 
 const block = {
@@ -61,7 +62,7 @@ describe( `${ block.name } Block`, () => {
 			} );
 
 			await insertBlock( block.name );
-			await insertBlock( 'All Products' );
+			await insertAllProductBlock();
 			await publishPost();
 
 			link = await page.evaluate( () =>

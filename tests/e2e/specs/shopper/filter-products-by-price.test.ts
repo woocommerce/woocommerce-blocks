@@ -20,6 +20,7 @@ import {
 	saveTemplate,
 	useTheme,
 	waitForAllProductsBlockLoaded,
+	insertAllProductBlock,
 } from '../../utils';
 import { clickLink } from '../../../utils';
 
@@ -70,7 +71,7 @@ describe( `${ block.name } Block`, () => {
 			} );
 
 			await insertBlock( block.name );
-			await insertBlock( 'All Products' );
+			await insertAllProductBlock();
 			await insertBlock( 'Active Product Filters' );
 			await publishPost();
 
