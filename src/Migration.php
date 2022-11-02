@@ -1,8 +1,6 @@
 <?php
 namespace Automattic\WooCommerce\Blocks;
 
-use Automattic\WooCommerce\Blocks\Options;
-
 /**
  * Takes care of the migrations.
  *
@@ -51,5 +49,16 @@ class Migration {
 	 */
 	public static function wc_blocks_update_710_blockified_product_grid_block() {
 		update_option( Options::WC_BLOCK_USE_BLOCKIFIED_PRODUCT_GRID_BLOCK_AS_TEMPLATE, wc_bool_to_string( false ) );
+	}
+
+	/**
+	 * Sets the $db_upgrades array value.
+	 *
+	 * @param array $db_upgrades Array of migrations to run.
+	 *
+	 * @return void
+	 */
+	public function set_db_upgrades( array $db_upgrades ) {
+		$this->db_upgrades = $db_upgrades;
 	}
 }

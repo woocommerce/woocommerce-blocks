@@ -4,26 +4,28 @@ namespace Automattic\WooCommerce\Blocks\Tests\Utils;
 
 use Automattic\WooCommerce\Blocks\Migration;
 use Automattic\WooCommerce\Blocks\Options;
+use Mockery;
 
 class MigrationTest extends \WP_UnitTestCase {
+	use Mockery\Adapter\Phpunit\MockeryPHPUnitIntegration;
+
 	protected function setUp(): void {
 		parent::setUp();
 		delete_option( Options::WC_BLOCK_USE_BLOCKIFIED_PRODUCT_GRID_BLOCK_AS_TEMPLATE );
 		delete_option( Options::WC_BLOCK_VERSION );
 	}
 
+	protected function tearDown(): void {
+		\Mockery::close();
+		parent::tearDown();
+	}
+
 	public function test_migrations_run() {
 		update_option( Options::WC_BLOCK_VERSION, '1.0.0' );
 
-		$mock = $this->getMockBuilder( Migration::class )
-					 ->addMethods( [ 'execute_migration_2_0_0', 'execute_second_migration_2_0_0' ] )
-					 ->getMock();
+		$mock = Mockery::mock( Migration::class )->makePartial();
 
-		$reflection = new \ReflectionClass( Migration::class );
-		$property   = $reflection->getProperty( 'db_upgrades' );
-		$property->setAccessible( true );
-		$property->setValue(
-			$mock,
+		$mock->set_db_upgrades(
 			array(
 				'2.0.0' => array(
 					'execute_migration_2_0_0',
@@ -32,27 +34,18 @@ class MigrationTest extends \WP_UnitTestCase {
 			)
 		);
 
-		$mock->expects( $this->once() )
-		->method( 'execute_migration_2_0_0' );
-		$mock->expects( $this->once() )
-		->method( 'execute_second_migration_2_0_0' );
+		$mock->expects()->execute_migration_2_0_0()->once();
+		$mock->expects()->execute_second_migration_2_0_0()->once();
 
 		$mock->run_migrations();
-
 	}
 
 	public function test_multiple_migrations_run() {
 		update_option( Options::WC_BLOCK_VERSION, '0.0.9' );
 
-		$mock = $this->getMockBuilder( Migration::class )
-					 ->addMethods( [ 'execute_migration_1_0_0', 'execute_migration_2_0_0' ] )
-					 ->getMock();
+		$mock = Mockery::mock( Migration::class )->makePartial();
 
-		$reflection = new \ReflectionClass( Migration::class );
-		$property   = $reflection->getProperty( 'db_upgrades' );
-		$property->setAccessible( true );
-		$property->setValue(
-			$mock,
+		$mock->set_db_upgrades(
 			array(
 				'1.0.0' => array(
 					'execute_migration_1_0_0',
@@ -63,28 +56,18 @@ class MigrationTest extends \WP_UnitTestCase {
 			)
 		);
 
-		$mock->expects( $this->once() )
-		->method( 'execute_migration_1_0_0' );
-
-		$mock->expects( $this->once() )
-		->method( 'execute_migration_2_0_0' );
+		$mock->expects()->execute_migration_1_0_0()->once();
+		$mock->expects()->execute_migration_2_0_0()->once();
 
 		$mock->run_migrations();
-
 	}
 
 	public function test_skip_migrations() {
 		update_option( Options::WC_BLOCK_VERSION, '2.0.0' );
 
-		$mock = $this->getMockBuilder( Migration::class )
-					 ->addMethods( [ 'execute_migration_2_0_0' ] )
-					 ->getMock();
+		$mock = Mockery::mock( Migration::class )->makePartial();
 
-		$reflection = new \ReflectionClass( Migration::class );
-		$property   = $reflection->getProperty( 'db_upgrades' );
-		$property->setAccessible( true );
-		$property->setValue(
-			$mock,
+		$mock->set_db_upgrades(
 			array(
 				'2.0.0' => array(
 					'execute_migration_2_0_0',
@@ -92,24 +75,16 @@ class MigrationTest extends \WP_UnitTestCase {
 			)
 		);
 
-		$mock->expects( $this->exactly( 0 ) )
-		->method( 'execute_migration_2_0_0' );
+		$mock->expects()->execute_migration_2_0_0()->never();
 
 		$mock->run_migrations();
-
 	}
 
 	public function test_skip_migrations_when_missing_version_option() {
 
-		$mock = $this->getMockBuilder( Migration::class )
-					 ->addMethods( [ 'execute_migration_2_0_0' ] )
-					 ->getMock();
+		$mock = Mockery::mock( Migration::class )->makePartial();
 
-		$reflection = new \ReflectionClass( Migration::class );
-		$property   = $reflection->getProperty( 'db_upgrades' );
-		$property->setAccessible( true );
-		$property->setValue(
-			$mock,
+		$mock->set_db_upgrades(
 			array(
 				'2.0.0' => array(
 					'execute_migration_2_0_0',
@@ -117,11 +92,9 @@ class MigrationTest extends \WP_UnitTestCase {
 			)
 		);
 
-		$mock->expects( $this->exactly( 0 ) )
-		->method( 'execute_migration_2_0_0' );
+		$mock->expects()->execute_migration_2_0_0()->never();
 
 		$mock->run_migrations();
-
 	}
 
 }
