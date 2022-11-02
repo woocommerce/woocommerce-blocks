@@ -49,7 +49,7 @@
 	},
 	"config": {
 		"platform": {
-			"php": "7.4.24"
+			"php": "7.4.32"
 		},
 		"allow-plugins": {
 			"automattic/jetpack-autoloader": true,
