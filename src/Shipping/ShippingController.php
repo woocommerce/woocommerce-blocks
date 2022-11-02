@@ -40,6 +40,11 @@ class ShippingController {
 	 */
 	public function init() {
 		$this->asset_data_registry->add(
+			'pickupLocationSettings',
+			get_option( 'woocommerce_pickup_location_settings', [] ),
+			true
+		);
+		$this->asset_data_registry->add(
 			'pickupLocations',
 			function() {
 				$locations = get_option( 'pickup_location_pickup_locations', [] );

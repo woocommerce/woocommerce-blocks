@@ -2,8 +2,9 @@
  * External dependencies
  */
 import { __ } from '@wordpress/i18n';
-import { createInterpolateElement, useState } from '@wordpress/element';
-import { getSetting } from '@woocommerce/settings';
+import { useState } from '@wordpress/element';
+import { getSetting, ADMIN_URL } from '@woocommerce/settings';
+import { CHECKOUT_PAGE_ID } from '@woocommerce/block-settings';
 import { cleanForSlug } from '@wordpress/editor';
 import { isObject, isBoolean } from '@woocommerce/types';
 import { arrayMove } from '@dnd-kit/sortable';
@@ -14,6 +15,7 @@ import {
 	SelectControl,
 	TextareaControl,
 	TextControl,
+	ExternalLink,
 } from '@wordpress/components';
 
 /**
@@ -35,27 +37,46 @@ const PickupLocationsSettingsDescription = () => (
 	<>
 		<h2>{ __( 'Pickup Locations', 'woo-gutenberg-products-block' ) }</h2>
 		<p>
-			{ createInterpolateElement(
-				__(
-					'Define locations for your customers to choose from when they select <methodName/> during checkout.',
-					'woo-gutenberg-products-block'
-				),
-				{
-					methodName: (
-						<em>
-							{ __(
-								'Local Pickup',
-								'woo-gutenberg-products-block'
-							) }
-						</em>
-					),
-				}
+			{ __(
+				'Define pickup locations for your customers to choose from during checkout.',
+				'woo-gutenberg-products-block'
 			) }
 		</p>
 	</>
 );
 
+type ShippingMethodSettings = {
+	enabled: boolean;
+	title: string;
+	tax_status: string;
+	cost: string;
+};
+
 const PaymentLocationsSettingsPanel = () => {
+	const [ shippingMethodSettings, setShippingMethodSettings ] =
+		useState< ShippingMethodSettings >( () => {
+			const settings = getSetting(
+				'pickupLocationSettings',
+				{}
+			) as Partial< ShippingMethodSettings >;
+
+			return {
+				enabled: false,
+				title: '',
+				tax_status: 'taxable',
+				cost: '',
+				...settings,
+			};
+		} );
+
+	const setSettingField =
+		( field: keyof ShippingMethodSettings ) => ( newValue: unknown ) => {
+			setShippingMethodSettings( ( prevValue ) => ( {
+				...prevValue,
+				[ field ]: newValue,
+			} ) );
+		};
+
 	const [ pickupLocations, setPickupLocations ] = useState<
 		SortablePickupLocation[]
 	>( (): SortablePickupLocation[] => {
@@ -152,17 +173,25 @@ const PaymentLocationsSettingsPanel = () => {
 						</h2>
 						<p>
 							{ __(
-								'Enable or disable Local Pickup on your store, and control costs.',
+								'Enable or disable Local Pickup on your store, and define costs. Local Pickup is only available from the Block Checkout.',
 								'woo-gutenberg-products-block'
 							) }
 						</p>
+						<ExternalLink
+							href={ `${ ADMIN_URL }post.php?post=${ CHECKOUT_PAGE_ID }&action=edit` }
+						>
+							{ __(
+								'View checkout page',
+								'woo-gutenberg-products-block'
+							) }
+						</ExternalLink>
 					</>
 				) }
 			>
 				<SettingsCard>
 					<CheckboxControl
-						checked={ 1 }
-						onChange={ () => {} }
+						checked={ shippingMethodSettings.enabled }
+						onChange={ setSettingField( 'enabled' ) }
 						label={ __(
 							'Enable Local Pickup',
 							'woo-gutenberg-products-block'
@@ -182,8 +211,8 @@ const PaymentLocationsSettingsPanel = () => {
 							'Local Pickup',
 							'woo-gutenberg-products-block'
 						) }
-						value={ '' }
-						onChange={ () => {} }
+						value={ shippingMethodSettings.title }
+						onChange={ setSettingField( 'title' ) }
 						disabled={ false }
 						autoComplete="off"
 					/>
@@ -197,8 +226,9 @@ const PaymentLocationsSettingsPanel = () => {
 							'Free',
 							'woo-gutenberg-products-block'
 						) }
-						value={ '' }
-						onChange={ () => {} }
+						type="number"
+						value={ shippingMethodSettings.cost }
+						onChange={ setSettingField( 'cost' ) }
 						disabled={ false }
 						autoComplete="off"
 					/>
@@ -224,8 +254,8 @@ const PaymentLocationsSettingsPanel = () => {
 								value: 'none',
 							},
 						] }
-						value={ '' }
-						onChange={ () => {} }
+						value={ shippingMethodSettings.tax_status }
+						onChange={ setSettingField( 'tax_status' ) }
 						disabled={ false }
 					/>
 				</SettingsCard>
