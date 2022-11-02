@@ -1,7 +1,8 @@
 /**
  * External dependencies
  */
-import { registerBlockType } from '@wordpress/blocks';
+import { registerExperimentalBlockType } from '@woocommerce/block-settings';
+import type { BlockConfiguration } from '@wordpress/blocks';
 
 /**
  * Internal dependencies
@@ -14,10 +15,11 @@ import {
 	BLOCK_ICON as icon,
 	BLOCK_DESCRIPTION as description,
 } from './constants';
-import { supports } from './support';
 import { Save } from './save';
+import { supports } from './supports';
 
-const blockConfig = {
+const blockConfig: BlockConfiguration = {
+	...sharedConfig,
 	apiVersion: 2,
 	title,
 	description,
@@ -28,7 +30,7 @@ const blockConfig = {
 	save: Save,
 };
 
-registerBlockType( 'woocommerce/product-rating', {
+registerExperimentalBlockType( 'woocommerce/product-tag-list', {
 	...sharedConfig,
 	...blockConfig,
 } );

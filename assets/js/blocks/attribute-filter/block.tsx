@@ -101,6 +101,10 @@ const AttributeFilterBlock = ( {
 		isString
 	);
 
+	const productIds = isEditor
+		? []
+		: getSettingWithCoercion( 'product_ids', [], Array.isArray );
+
 	const [ hasSetFilterDefaultsFromUrl, setHasSetFilterDefaultsFromUrl ] =
 		useState( false );
 
@@ -158,6 +162,7 @@ const AttributeFilterBlock = ( {
 				...queryState,
 				attributes: filterAvailableTerms ? queryState.attributes : null,
 			},
+			productIds,
 		} );
 
 	/**
@@ -536,6 +541,21 @@ const AttributeFilterBlock = ( {
 
 	setWrapperVisibility( true );
 
+	const getIsApplyButtonDisabled = () => {
+		if ( termsLoading || countsLoading ) {
+			return true;
+		}
+
+		const activeFilters = getActiveFilters( attributeObject );
+		if ( activeFilters.length === checked.length ) {
+			return checked.every( ( value ) =>
+				activeFilters.includes( value )
+			);
+		}
+
+		return false;
+	};
+
 	return (
 		<>
 			{ ! isEditor && blockAttributes.heading && filterHeading }
@@ -681,11 +701,7 @@ const AttributeFilterBlock = ( {
 					<FilterSubmitButton
 						className="wc-block-attribute-filter__button"
 						isLoading={ isLoading }
-						disabled={
-							termsLoading ||
-							countsLoading ||
-							checked.length === 0
-						}
+						disabled={ getIsApplyButtonDisabled() }
 						onClick={ () => onSubmit( checked ) }
 					/>
 				) }

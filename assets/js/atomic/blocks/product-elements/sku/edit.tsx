@@ -2,7 +2,7 @@
  * External dependencies
  */
 import { __ } from '@wordpress/i18n';
-import { useBlockProps } from '@wordpress/block-editor';
+import EditProductLink from '@woocommerce/editor-components/edit-product-link';
 
 /**
  * Internal dependencies
@@ -10,13 +10,18 @@ import { useBlockProps } from '@wordpress/block-editor';
 import Block from './block';
 import withProductSelector from '../shared/with-product-selector';
 import { BLOCK_TITLE, BLOCK_ICON } from './constants';
+import type { BlockAttributes } from './types';
 
-const Edit = ( { attributes } ) => {
-	const blockProps = useBlockProps();
+interface Props {
+	attributes: BlockAttributes;
+}
+
+const Edit = ( { attributes }: Props ): JSX.Element => {
 	return (
-		<div { ...blockProps }>
+		<>
+			<EditProductLink />
 			<Block { ...attributes } />
-		</div>
+		</>
 	);
 };
 
@@ -24,7 +29,7 @@ export default withProductSelector( {
 	icon: BLOCK_ICON,
 	label: BLOCK_TITLE,
 	description: __(
-		'Choose a product to display its sale-badge.',
+		'Choose a product to display its SKU.',
 		'woo-gutenberg-products-block'
 	),
 } )( Edit );
