@@ -415,8 +415,9 @@ export const createCoupon = async ( coupon ) => {
 export const openBlockEditorSettings = async () => {
 	const toggleSidebarButton = await page.$(
 		'.edit-post-header__settings [aria-label="Settings"][aria-expanded="false"],' +
-			'.edit-site-header-edit-mode__actions [aria-label="Settings"][aria-expanded="false"],' +
-			'.edit-site-header__actions [aria-label="Settings"][aria-expanded="false"]'
+			'.edit-site-header__actions [aria-label="Settings"][aria-expanded="false"],' +
+			'.edit-widgets-header__actions [aria-label="Settings"][aria-expanded="false"],' +
+			'.edit-site-header-edit-mode__actions [aria-label="Settings"][aria-expanded="false"]'
 	);
 
 	if ( toggleSidebarButton ) {
