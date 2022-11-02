@@ -7,11 +7,9 @@ import {
 	deleteAllTemplates,
 	insertBlock,
 	switchUserToAdmin,
+	publishPost,
 } from '@wordpress/e2e-test-utils';
-import {
-	selectBlockByName,
-	saveOrPublish,
-} from '@woocommerce/blocks-test-utils';
+import { selectBlockByName } from '@woocommerce/blocks-test-utils';
 
 /**
  * Internal dependencies
@@ -78,7 +76,7 @@ describe( `${ block.name } Block`, () => {
 				( el ) => ( el as HTMLInputElement ).click()
 			);
 			await canvasEl.click( selectors.editor.doneButton );
-			await saveOrPublish();
+			await publishPost();
 
 			const link = await page.evaluate( () =>
 				wp.data.select( 'core/editor' ).getPermalink()

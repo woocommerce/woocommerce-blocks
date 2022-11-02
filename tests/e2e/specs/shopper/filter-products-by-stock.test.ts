@@ -6,11 +6,9 @@ import {
 	deleteAllTemplates,
 	insertBlock,
 	switchUserToAdmin,
+	publishPost,
 } from '@wordpress/e2e-test-utils';
-import {
-	selectBlockByName,
-	saveOrPublish,
-} from '@woocommerce/blocks-test-utils';
+import { selectBlockByName } from '@woocommerce/blocks-test-utils';
 
 /**
  * Internal dependencies
@@ -65,7 +63,7 @@ describe( `${ block.name } Block`, () => {
 
 			await insertBlock( block.name );
 			await insertAllProductBlock();
-			await saveOrPublish();
+			await publishPost();
 
 			link = await page.evaluate( () =>
 				wp.data.select( 'core/editor' ).getPermalink()

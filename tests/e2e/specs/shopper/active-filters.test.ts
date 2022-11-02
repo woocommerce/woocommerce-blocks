@@ -7,10 +7,10 @@ import {
 	canvas,
 	createNewPost,
 	switchUserToAdmin,
+	publishPost,
 } from '@wordpress/e2e-test-utils';
 import { SHOP_PAGE } from '@woocommerce/e2e-utils';
 import { Frame, Page } from 'puppeteer';
-import { saveOrPublish } from '@woocommerce/blocks-test-utils';
 
 /**
  * Internal dependencies
@@ -100,7 +100,7 @@ describe( 'Shopper → Active Filters Block', () => {
 			await insertBlocks();
 			await insertAllProductBlock();
 			await configurateFilterProductsByAttributeBlock( page );
-			await saveOrPublish();
+			await publishPost();
 
 			const link = await page.evaluate( () =>
 				wp.data.select( 'core/editor' ).getPermalink()
