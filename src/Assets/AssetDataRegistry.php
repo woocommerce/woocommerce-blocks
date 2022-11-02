@@ -91,6 +91,7 @@ class AssetDataRegistry {
 			'placeholderImgSrc'  => wc_placeholder_img_src(),
 			'productsSettings'   => $this->get_products_settings(),
 			'siteTitle'          => get_bloginfo( 'name' ),
+			'states'             => WC()->countries->get_states(),
 			'storePages'         => $this->get_store_pages(),
 			'wcAssetUrl'         => plugins_url( 'assets/', WC_PLUGIN_FILE ),
 			'wcVersion'          => defined( 'WC_VERSION' ) ? WC_VERSION : '',

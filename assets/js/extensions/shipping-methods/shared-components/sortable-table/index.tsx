@@ -27,7 +27,18 @@ import { objectHasProp } from '@woocommerce/types';
  * Internal dependencies
  */
 import './admin.scss';
-import type { ColumnProps, SortableData } from './types';
+
+export interface SortableData extends Record< string, unknown > {
+	id: UniqueIdentifier;
+}
+
+type ColumnProps = {
+	name: string;
+	label: string;
+	width?: string;
+	align?: string;
+	renderCallback?: ( row: SortableData ) => JSX.Element;
+};
 
 const TableRow = ( {
 	children,
@@ -47,7 +58,7 @@ const TableRow = ( {
 	return (
 		<tr ref={ setNodeRef } style={ style }>
 			<>
-				<td className="pickup-location-table-sort">
+				<td className="sortable-table__handle">
 					<Icon
 						icon={ dragHandle }
 						size={ 14 }
@@ -61,7 +72,7 @@ const TableRow = ( {
 	);
 };
 
-const SortableTable = ( {
+export const SortableTable = ( {
 	columns,
 	data,
 	onSort,
