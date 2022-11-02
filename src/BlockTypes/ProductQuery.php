@@ -380,7 +380,7 @@ class ProductQuery extends AbstractBlock {
 		$filtered_stock_status_values = array_filter(
 			explode( ',', $filter_stock_status_values ),
 			function( $stock_status ) {
-				return in_array( $stock_status, StockFilter::STOCK_STATUS_QUERY_VAR_VALUES, true );
+				return in_array( $stock_status, StockFilter::get_stock_status_query_var_values(), true );
 			}
 		);
 
