@@ -272,7 +272,21 @@ const PaymentLocationsSettingsPanel = () => {
 				/>
 				{ editingLocation && (
 					<EditPickupLocation
-						location={ editingLocation }
+						locationData={
+							pickupLocations.find( ( { id } ) => {
+								return id === editingLocation;
+							} ) || pickupLocations[ 0 ]
+						}
+						onSave={ ( locationData ) => {
+							setPickupLocations( ( prevData ) => {
+								return prevData.map( ( location ) => {
+									if ( location.id === editingLocation ) {
+										return locationData;
+									}
+									return location;
+								} );
+							} );
+						} }
 						onClose={ handleModalDismiss }
 						redirectOnSave={ `${ window.location.pathname }?page=wc-settings&tab=checkout&section=stripe&panel=settings` }
 					/>
