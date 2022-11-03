@@ -16,7 +16,7 @@ import {
 	BLOCK_ICON as icon,
 	BLOCK_DESCRIPTION as description,
 } from './constants';
-import { BlockAttributes } from './types';
+import type { BlockAttributes } from './types';
 
 const Edit = ( {
 	attributes,
