@@ -1470,14 +1470,15 @@
         Object literal may only specify known properties, and &apos;__experimentalSkipSerialization&apos; does not exist in type &apos;Partial&lt;ColorProps&gt;&apos;." source="TS2322" />
 </file>
 <file name="assets/js/atomic/blocks/product-elements/price/edit.tsx">
-<error line="33" column="40" severity="error" message="Cannot find name &apos;BlockAttributes&apos;." source="TS2304" />
+<error line="64" column="25" severity="error" message="Type &apos;string | undefined&apos; is not assignable to type &apos;&quot;center&quot; | &quot;left&quot; | &quot;right&quot; | undefined&apos; with &apos;exactOptionalPropertyTypes: true&apos;. Consider adding &apos;undefined&apos; to the type of the target." source="TS2412" />
 </file>
 <file name="assets/js/atomic/blocks/product-elements/price/index.ts">
-<error line="42" column="5" severity="error" message="Type &apos;{ color?: Partial&lt;ColorProps&gt; | { text: true; background: false; link: false; __experimentalSkipSerialization: true; } | undefined; typography?: Partial&lt;TypographyProps&gt; | { ...; } | undefined; ... 11 more ...; lock?: boolean | undefined; }&apos; is not assignable to type &apos;BlockSupports&apos;.
+<error line="34" column="2" severity="error" message="Type &apos;{ color?: Partial&lt;ColorProps&gt; | { text: boolean; background: boolean; link: boolean; __experimentalSkipSerialization: boolean; } | undefined; typography?: Partial&lt;TypographyProps&gt; | { ...; } | undefined; ... 11 more ...; lock?: boolean | undefined; }&apos; is not assignable to type &apos;BlockSupports&apos;.
   Types of property &apos;color&apos; are incompatible.
-    Type &apos;Partial&lt;ColorProps&gt; | { text: true; background: false; link: false; __experimentalSkipSerialization: true; } | undefined&apos; is not assignable to type &apos;Partial&lt;ColorProps&gt; | undefined&apos;.
-      Type &apos;{ text: true; background: false; link: false; __experimentalSkipSerialization: true; }&apos; is not assignable to type &apos;Partial&lt;ColorProps&gt;&apos;.
-        Object literal may only specify known properties, and &apos;__experimentalSkipSerialization&apos; does not exist in type &apos;Partial&lt;ColorProps&gt;&apos;." source="TS2322" />
+    Type &apos;Partial&lt;ColorProps&gt; | { text: boolean; background: boolean; link: boolean; __experimentalSkipSerialization: boolean; } | undefined&apos; is not assignable to type &apos;Partial&lt;ColorProps&gt; | undefined&apos;.
+      Type &apos;{ text: boolean; background: boolean; link: boolean; __experimentalSkipSerialization: boolean; }&apos; is not assignable to type &apos;Partial&lt;ColorProps&gt;&apos;.
+        Types of property &apos;text&apos; are incompatible.
+          Type &apos;boolean&apos; is not assignable to type &apos;string&apos;." source="TS2322" />
 </file>
 <file name="assets/js/atomic/blocks/product-elements/image/edit.js">
 <error line="14" column="2" severity="error" message="Module &apos;&quot;@wordpress/components&quot;&apos; has no exported member &apos;__experimentalToggleGroupControl&apos;." source="TS2305" />
@@ -2391,7 +2392,7 @@
 </file>
 <file name="assets/js/blocks/cart/cart-cross-sells-product-list/cart-cross-sells-product.tsx">
 <error line="51" column="8" severity="error" message="Type &apos;{}&apos; is missing the following properties from type &apos;BlockAttributes&apos;: productId, align" source="TS2739" />
-<error line="52" column="8" severity="error" message="Type &apos;{}&apos; is missing the following properties from type &apos;BlockAttributes&apos;: productId, className, textAlign" source="TS2739" />
+<error line="52" column="8" severity="error" message="Type &apos;{}&apos; is missing the following properties from type &apos;BlockAttributes&apos;: productId, className, textAlign, isDescendentOfQueryLoop" source="TS2739" />
 </file>
 <file name="assets/js/blocks/cart/inner-blocks/cart-cross-sells-products/index.tsx">
 <error line="13" column="20" severity="error" message="No overload matches this call.
