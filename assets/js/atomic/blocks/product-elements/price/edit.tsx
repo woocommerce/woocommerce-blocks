@@ -30,7 +30,7 @@ interface Context {
 
 interface Props {
 	attributes: Attributes;
-	setAttributes: ( attributes: Record< string, unknown > ) => void;
+	setAttributes: ( attributes: Partial< BlockAttributes > & Record< string, unknown > ) => void;
 	context: Context;
 }
 
