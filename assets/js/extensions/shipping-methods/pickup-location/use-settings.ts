@@ -5,6 +5,7 @@ import { useState, useCallback } from '@wordpress/element';
 import { getSetting } from '@woocommerce/settings';
 import { cleanForSlug } from '@wordpress/editor';
 import type { UniqueIdentifier } from '@dnd-kit/core';
+import { ADMIN_URL } from '@woocommerce/settings';
 
 /**
  * Internal dependencies
@@ -108,7 +109,10 @@ const useSettings = (): {
 		[]
 	);
 
-	const save = useCallback( () => {}, [] );
+	const save = useCallback( () => {
+		setIsSaving( true );
+		// TODO: Save settings.
+	}, [] );
 
 	return {
 		settings,
