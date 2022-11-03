@@ -2,31 +2,16 @@
  * External dependencies
  */
 import { __ } from '@wordpress/i18n';
-import { miniCart, miniCartBag, miniCartBasket } from '@woocommerce/icons';
+import { miniCartAlt } from '@woocommerce/icons';
 import { Icon } from '@wordpress/icons';
 import { registerBlockType } from '@wordpress/blocks';
 import type { BlockConfiguration } from '@wordpress/blocks';
 import { isFeaturePluginBuild } from '@woocommerce/block-settings';
-import { getSettingWithCoercion } from '@woocommerce/settings';
-import { isString } from '@woocommerce/types';
 
 /**
  * Internal dependencies
  */
 import edit from './edit';
-
-// TODO: Determine if we need to update the inserter icon. If so, we can abstract this out elsewhere because it is repeated in the block.
-const getIconSetting: string = getSettingWithCoercion(
-	'miniCartIcon',
-	'default',
-	isString
-);
-const iconSettings: { [ key: string ]: JSX.Element } = {
-	default: miniCart,
-	miniCart,
-	miniCartBasket,
-	miniCartBag,
-};
 
 const settings: BlockConfiguration = {
 	apiVersion: 2,
@@ -34,7 +19,7 @@ const settings: BlockConfiguration = {
 	icon: {
 		src: (
 			<Icon
-				icon={ iconSettings[ getIconSetting ] }
+				icon={ miniCartAlt }
 				className="wc-block-editor-components-block-icon"
 			/>
 		),
