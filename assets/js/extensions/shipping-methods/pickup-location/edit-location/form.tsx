@@ -2,7 +2,6 @@
  * External dependencies
  */
 import { __ } from '@wordpress/i18n';
-import { useState } from '@wordpress/element';
 import {
 	SelectControl,
 	TextareaControl,
@@ -13,45 +12,8 @@ import { getSetting } from '@woocommerce/settings';
 /**
  * Internal dependencies
  */
-import type { PickupLocation } from './types';
-
-const CountryStateControl = ( {
-	states,
-	currentCountry,
-	...props
-}: {
-	states: Record< string, Record< string, string > >;
-	currentCountry: string;
-} ): JSX.Element | null => {
-	const filteredStates = states[ currentCountry ] || [];
-
-	if ( filteredStates.length === 0 ) {
-		return (
-			<TextControl
-				{ ...props }
-				disabled={ ! currentCountry || props.disabled }
-			/>
-		);
-	}
-	return (
-		<SelectControl
-			{ ...props }
-			options={ [
-				{
-					value: '',
-					disabled: true,
-					label: __( 'State', 'woo-gutenberg-products-block' ),
-				},
-				...Object.entries( filteredStates ).map(
-					( [ code, state ] ) => ( {
-						value: code,
-						label: state,
-					} )
-				),
-			] }
-		/>
-	);
-};
+import type { PickupLocation } from '../types';
+import StateControl from './state-control';
 
 const Form = ( {
 	formRef,
@@ -61,12 +23,17 @@ const Form = ( {
 }: {
 	formRef: React.RefObject< HTMLFormElement >;
 	values: PickupLocation;
-	setValues: ( values: PickupLocation ) => void;
+	setValues: React.Dispatch< React.SetStateAction< PickupLocation > >;
 	isSaving: boolean;
 } ) => {
+	const countries = getSetting< Record< string, string > >( 'countries', [] );
+	const states = getSetting< Record< string, Record< string, string > > >(
+		'states',
+		[]
+	);
 	const setLocationField =
 		( field: keyof PickupLocation ) => ( newValue: string | boolean ) => {
-			setValues( ( prevValue ) => ( {
+			setValues( ( prevValue: PickupLocation ) => ( {
 				...prevValue,
 				[ field ]: newValue,
 			} ) );
@@ -83,12 +50,6 @@ const Form = ( {
 				},
 			} ) );
 		};
-
-	const countries = getSetting< Record< string, string > >( 'countries', [] );
-	const states = getSetting< Record< string, Record< string, string > >[] >(
-		'states',
-		[]
-	);
 
 	return (
 		<form ref={ formRef }>
@@ -128,7 +89,7 @@ const Form = ( {
 				disabled={ isSaving }
 				autoComplete="off"
 			/>
-			<CountryStateControl
+			<StateControl
 				label={ __( 'State', 'woo-gutenberg-products-block' ) }
 				hideLabelFromVision={ true }
 				placeholder={ __( 'State', 'woo-gutenberg-products-block' ) }

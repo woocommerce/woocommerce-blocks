@@ -73,7 +73,6 @@ class ShippingController {
 	 */
 	public function admin_scripts() {
 		$this->asset_api->register_script( 'wc-shipping-method-pickup-location', 'build/wc-shipping-method-pickup-location.js', [], false );
-		wp_enqueue_style( 'wc-blocks-admin-style' );
 	}
 
 	/**

@@ -1,6 +1,7 @@
 /**
  * External dependencies
  */
+import styled from '@emotion/styled';
 import { Icon, dragHandle } from '@wordpress/icons';
 import { useMemo } from '@wordpress/element';
 import {
@@ -19,14 +20,10 @@ import {
 	SortableContext,
 	verticalListSortingStrategy,
 	useSortable,
+	arrayMove,
 } from '@dnd-kit/sortable';
 import { CSS } from '@dnd-kit/utilities';
 import { objectHasProp } from '@woocommerce/types';
-
-/**
- * Internal dependencies
- */
-import './admin.scss';
 
 export interface SortableData extends Record< string, unknown > {
 	id: UniqueIdentifier;
@@ -72,15 +69,71 @@ const TableRow = ( {
 	);
 };
 
+const StyledTable = styled.table`
+	background: #fff;
+	border: 1px solid #c3c4c7;
+	box-shadow: 0 1px 1px rgb( 0 0 0 / 4% );
+	border-spacing: 0;
+	width: 100%;
+	clear: both;
+	margin: 0;
+	font-size: 14px;
+
+	.align-left {
+		text-align: left;
+	}
+	.align-right {
+		text-align: right;
+	}
+	.align-center {
+		text-align: center;
+		> * {
+			margin: 0 auto;
+		}
+		.components-flex {
+			display: block;
+		}
+	}
+
+	&__handle {
+		cursor: move;
+	}
+
+	th {
+		position: relative;
+		color: #2c3338;
+		text-align: left;
+		vertical-align: middle;
+		padding: 1em;
+		vertical-align: top;
+		line-height: 1.75;
+		border-bottom: 1px solid #c3c4c7;
+		word-wrap: break-word;
+	}
+
+	tbody {
+		tr:nth-child( odd ) td {
+			background: #f9f9f9;
+		}
+		td {
+			border-top: 2px solid #f9f9f9;
+			padding: 10px 1em;
+			vertical-align: top;
+			line-height: 1.75;
+			margin-bottom: 9px;
+		}
+	}
+`;
+
 export const SortableTable = ( {
 	columns,
 	data,
-	onSort,
+	setData,
 	className,
 }: {
 	columns: ColumnProps[];
 	data: SortableData[];
-	onSort: ( oldIndex: number, newIndex: number ) => void;
+	setData: ( data: SortableData[] ) => void;
 	className?: string;
 } ): JSX.Element => {
 	const items = useMemo( () => data.map( ( { id } ) => id ), [ data ] );
@@ -95,7 +148,12 @@ export const SortableTable = ( {
 		const { active, over } = event;
 
 		if ( active !== null && over !== null && active?.id !== over?.id ) {
-			onSort( items.indexOf( active.id ), items.indexOf( over.id ) );
+			const newData = arrayMove(
+				data,
+				items.indexOf( active.id ),
+				items.indexOf( over.id )
+			);
+			setData( newData );
 		}
 	}
 
@@ -116,7 +174,7 @@ export const SortableTable = ( {
 			collisionDetection={ closestCenter }
 			modifiers={ [ restrictToVerticalAxis ] }
 		>
-			<table className={ `${ className } sortable-table` }>
+			<StyledTable className={ `${ className } sortable-table` }>
 				<thead>
 					<tr>
 						<th
@@ -178,7 +236,7 @@ export const SortableTable = ( {
 							) }
 					</SortableContext>
 				</tbody>
-			</table>
+			</StyledTable>
 		</DndContext>
 	);
 };

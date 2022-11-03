@@ -1,3 +1,8 @@
+/**
+ * Internal dependencies
+ */
+import type { SortableData } from '../shared-components';
+
 export interface PickupLocation {
 	name: string;
 	details: string;
@@ -10,3 +15,12 @@ export interface PickupLocation {
 		country: string;
 	};
 }
+
+export interface SortablePickupLocation extends PickupLocation, SortableData {}
+
+export type ShippingMethodSettings = {
+	enabled: boolean;
+	title: string;
+	tax_status: string;
+	cost: string;
+};

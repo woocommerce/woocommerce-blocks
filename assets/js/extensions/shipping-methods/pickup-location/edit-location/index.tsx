@@ -8,13 +8,13 @@ import { useRef, useState } from '@wordpress/element';
 /**
  * Internal dependencies
  */
-import { SettingsModal } from '../shared-components';
-import EditPickupLocationForm from './edit-pickup-location-form';
-import type { PickupLocation } from './types';
+import { SettingsModal } from '../../shared-components';
+import Form from './form';
+import type { PickupLocation } from '../types';
 
-const EditPickupLocation = ( {
+const EditLocation = ( {
 	locationData,
-	onClose = () => {},
+	onClose,
 	onSave,
 }: {
 	locationData: PickupLocation;
@@ -40,14 +40,14 @@ const EditPickupLocation = ( {
 			actions={
 				<>
 					<Button
-						isSecondary
+						variant="secondary"
 						onClick={ onClose }
 						disabled={ isDisabled }
 					>
 						{ __( 'Cancel', 'woo-gutenberg-products-block' ) }
 					</Button>
 					<Button
-						isPrimary
+						variant="primary"
 						isBusy={ isSaving || isDisabled }
 						disabled={ isDisabled }
 						onClick={ () => {
@@ -55,12 +55,12 @@ const EditPickupLocation = ( {
 							onClose();
 						} }
 					>
-						{ __( 'Save', 'woo-gutenberg-products-block' ) }
+						{ __( 'Done', 'woo-gutenberg-products-block' ) }
 					</Button>
 				</>
 			}
 		>
-			<EditPickupLocationForm
+			<Form
 				formRef={ formRef }
 				isSaving={ isSaving }
 				values={ values }
@@ -70,4 +70,4 @@ const EditPickupLocation = ( {
 	);
 };
 
-export default EditPickupLocation;
+export default EditLocation;
