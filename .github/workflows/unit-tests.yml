@@ -130,6 +130,7 @@ jobs:
                   JSON='{"plugins": [".","https://downloads.wordpress.org/plugin/woocommerce.zip"], "phpVersion": "${{ matrix.php }}"}'
                   echo $JSON > .wp-env.override.json
                   npm run wp-env stop
+                  rm -rf /home/runner/wp-env/*
                   npm run wp-env start --update
                   npm run test:php
 
