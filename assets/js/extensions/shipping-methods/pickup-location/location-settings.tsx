@@ -63,6 +63,9 @@ const LocationSettings = () => {
 						<button
 							type="button"
 							className="button-link button-link-delete"
+							onClick={ () => {
+								updateLocation( row.id )( null );
+							} }
 						>
 							{ __( 'Delete', 'woo-gutenberg-products-block' ) }
 						</button>

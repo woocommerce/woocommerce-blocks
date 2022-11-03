@@ -59,7 +59,7 @@ const useSettings = (): {
 	toggleLocation: ( rowId: UniqueIdentifier ) => void;
 	updateLocation: (
 		rowId: UniqueIdentifier
-	) => ( location: SortablePickupLocation ) => void;
+	) => ( location: SortablePickupLocation | null ) => void;
 	isSaving: boolean;
 	save: () => void;
 } => {
@@ -96,14 +96,14 @@ const useSettings = (): {
 		( rowId: UniqueIdentifier ) =>
 			( locationData: SortablePickupLocation ) => {
 				setPickupLocations( ( prevData ) => {
-					return prevData.map(
-						( location ): SortablePickupLocation => {
+					return prevData
+						.map( ( location ): SortablePickupLocation => {
 							if ( location.id === rowId ) {
 								return locationData;
 							}
 							return location;
-						}
-					);
+						} )
+						.filter( Boolean );
 				} );
 			},
 		[]
