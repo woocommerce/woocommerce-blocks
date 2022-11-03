@@ -1490,19 +1490,10 @@
                 Type &apos;boolean&apos; is not assignable to type &apos;string&apos;." source="TS2769" />
 </file>
 <file name="assets/js/atomic/blocks/product-elements/image/edit.tsx">
-<error line="14" column="2" severity="error" message="Module &apos;&quot;@wordpress/components&quot;&apos; has no exported member &apos;__experimentalToggleGroupControl&apos;." source="TS2305" />
-<error line="16" column="2" severity="error" message="Module &apos;&quot;@wordpress/components&quot;&apos; has no exported member &apos;__experimentalToggleGroupControlOption&apos;." source="TS2305" />
-<error line="24" column="18" severity="error" message="Binding element &apos;attributes&apos; implicitly has an &apos;any&apos; type." source="TS7031" />
-<error line="24" column="30" severity="error" message="Binding element &apos;setAttributes&apos; implicitly has an &apos;any&apos; type." source="TS7031" />
-<error line="24" column="45" severity="error" message="Binding element &apos;context&apos; implicitly has an &apos;any&apos; type." source="TS7031" />
-<error line="94" column="21" severity="error" message="Parameter &apos;value&apos; implicitly has an &apos;any&apos; type." source="TS7006" />
-<error line="146" column="21" severity="error" message="Parameter &apos;value&apos; implicitly has an &apos;any&apos; type." source="TS7006" />
-</file>
-<file name="assets/js/atomic/blocks/product-elements/image/index.ts">
-<error line="38" column="2" severity="error" message="Type &apos;({ attributes, setAttributes, context }: { attributes: any; setAttributes: any; context: any; }) =&gt; Element&apos; is not assignable to type &apos;ComponentType&lt;BlockEditProps&lt;{}&gt;&gt; | undefined&apos;.
-  Type &apos;({ attributes, setAttributes, context }: { attributes: any; setAttributes: any; context: any; }) =&gt; Element&apos; is not assignable to type &apos;FunctionComponent&lt;BlockEditProps&lt;{}&gt;&gt;&apos;.
-    Types of parameters &apos;__0&apos; and &apos;props&apos; are incompatible.
-      Property &apos;context&apos; is missing in type &apos;BlockEditProps&lt;{}&gt; &amp; { children?: ReactNode; }&apos; but required in type &apos;{ attributes: any; setAttributes: any; context: any; }&apos;." source="TS2322" />
+<error line="16" column="2" severity="error" message="Module &apos;&quot;@wordpress/components&quot;&apos; has no exported member &apos;__experimentalToggleGroupControl&apos;." source="TS2305" />
+<error line="18" column="2" severity="error" message="Module &apos;&quot;@wordpress/components&quot;&apos; has no exported member &apos;__experimentalToggleGroupControlOption&apos;." source="TS2305" />
+<error line="104" column="21" severity="error" message="Parameter &apos;value&apos; implicitly has an &apos;any&apos; type." source="TS7006" />
+<error line="156" column="21" severity="error" message="Parameter &apos;value&apos; implicitly has an &apos;any&apos; type." source="TS7006" />
 </file>
 <file name="assets/js/atomic/blocks/product-elements/rating/index.ts">
 <error line="32" column="2" severity="error" message="Type &apos;{ __experimentalSelector?: string; spacing?: { margin: boolean; __experimentalSkipSerialization: boolean; }; color?: { text: boolean; background: boolean; link: boolean; __experimentalSkipSerialization: boolean; }; typography?: { ...; }; }&apos; is not assignable to type &apos;BlockSupports&apos;.
