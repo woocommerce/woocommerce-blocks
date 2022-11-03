@@ -11,7 +11,11 @@ import {
 /**
  * Internal dependencies
  */
-import { GUTENBERG_EDITOR_CONTEXT, describeOrSkip } from '../../../utils';
+import {
+	GUTENBERG_EDITOR_CONTEXT,
+	describeOrSkip,
+	waitForCanvas,
+} from '../../../utils';
 
 const block = {
 	name: 'Product Query',
@@ -24,7 +28,9 @@ describeOrSkip( GUTENBERG_EDITOR_CONTEXT === 'gutenberg' )(
 	() => {
 		beforeEach( async () => {
 			await visitBlockPage( `${ block.name } Block` );
+			await waitForCanvas();
 		} );
+
 		afterAll( async () => {
 			await visitBlockPage( `${ block.name } Block` );
 			await setPostContent( '' );
