@@ -645,7 +645,7 @@
 <error line="7" column="29" severity="error" message="File &apos;/home/runner/work/woocommerce-blocks/woocommerce-blocks/packages/prices/index.js&apos; is not listed within the file list of project &apos;/home/runner/work/woocommerce-blocks/woocommerce-blocks/tsconfig.json&apos;. Projects must list all files or use an &apos;include&apos; pattern.
   The file is in the program because:
     Imported via &apos;@woocommerce/price-format&apos; from file &apos;/home/runner/work/woocommerce-blocks/woocommerce-blocks/assets/js/base/components/product-price/index.tsx&apos;
-    Imported via &apos;@woocommerce/price-format&apos; from file &apos;/home/runner/work/woocommerce-blocks/woocommerce-blocks/assets/js/atomic/blocks/product-elements/price/block.js&apos;
+    Imported via &apos;@woocommerce/price-format&apos; from file &apos;/home/runner/work/woocommerce-blocks/woocommerce-blocks/assets/js/atomic/blocks/product-elements/price/block.tsx&apos;
     Imported via &apos;@woocommerce/price-format&apos; from file &apos;/home/runner/work/woocommerce-blocks/woocommerce-blocks/assets/js/base/context/hooks/payment-methods/use-payment-method-interface.ts&apos;
     Imported via &apos;@woocommerce/price-format&apos; from file &apos;/home/runner/work/woocommerce-blocks/woocommerce-blocks/packages/checkout/components/totals/item/index.tsx&apos;
     Imported via &apos;@woocommerce/price-format&apos; from file &apos;/home/runner/work/woocommerce-blocks/woocommerce-blocks/packages/checkout/components/totals/subtotal/index.tsx&apos;
@@ -1227,15 +1227,15 @@
 <error line="12" column="27" severity="error" message="Parameter &apos;OriginalComponent&apos; implicitly has an &apos;any&apos; type." source="TS7006" />
 <error line="13" column="12" severity="error" message="Parameter &apos;ownProps&apos; implicitly has an &apos;any&apos; type." source="TS7006" />
 </file>
-<file name="assets/js/atomic/blocks/product-elements/price/block.js">
-<error line="52" column="18" severity="error" message="Type &apos;string | undefined&apos; is not assignable to type &apos;&quot;center&quot; | &quot;left&quot; | &quot;right&quot; | undefined&apos; with &apos;exactOptionalPropertyTypes: true&apos;. Consider adding &apos;undefined&apos; to the type of the target." source="TS2412" />
-<error line="57" column="49" severity="error" message="Argument of type &apos;{ currency_code: string; currency_symbol: string; currency_minor_unit: number; currency_decimal_separator: string; currency_thousand_separator: string; currency_prefix: string; currency_suffix: string; price: string; regular_price: string; sale_price: string; price_range: null; }&apos; is not assignable to parameter of type &apos;CurrencyResponse | Record&lt;string, never&gt; | CartShippingPackageShippingRate | undefined&apos;.
+<file name="assets/js/atomic/blocks/product-elements/price/block.tsx">
+<error line="46" column="5" severity="error" message="Type &apos;{ align: &quot;center&quot; | &quot;left&quot; | &quot;right&quot;; className: string; }&apos; is missing the following properties from type &apos;ProductPriceProps&apos;: currency, format, price" source="TS2739" />
+<error line="51" column="49" severity="error" message="Argument of type &apos;{ currency_code: string; currency_symbol: string; currency_minor_unit: number; currency_decimal_separator: string; currency_thousand_separator: string; currency_prefix: string; currency_suffix: string; price: string; regular_price: string; sale_price: string; price_range: null; }&apos; is not assignable to parameter of type &apos;CurrencyResponse | Record&lt;string, never&gt; | CartShippingPackageShippingRate | undefined&apos;.
   Type &apos;{ currency_code: string; currency_symbol: string; currency_minor_unit: number; currency_decimal_separator: string; currency_thousand_separator: string; currency_prefix: string; currency_suffix: string; price: string; regular_price: string; sale_price: string; price_range: null; }&apos; is not assignable to type &apos;Record&lt;string, never&gt;&apos;.
     Property &apos;currency_code&apos; is incompatible with index signature.
       Type &apos;string&apos; is not assignable to type &apos;never&apos;." source="TS2345" />
-<error line="66" column="4" severity="error" message="Type &apos;string | undefined&apos; is not assignable to type &apos;&quot;center&quot; | &quot;left&quot; | &quot;right&quot; | undefined&apos; with &apos;exactOptionalPropertyTypes: true&apos;. Consider adding &apos;undefined&apos; to the type of the target." source="TS2412" />
-<error line="74" column="36" severity="error" message="Property &apos;min_amount&apos; does not exist on type &apos;never&apos;." source="TS2339" />
-<error line="75" column="36" severity="error" message="Property &apos;max_amount&apos; does not exist on type &apos;never&apos;." source="TS2339" />
+<error line="59" column="4" severity="error" message="Property &apos;format&apos; is missing in type &apos;{ align: &quot;center&quot; | &quot;left&quot; | &quot;right&quot;; className: string; priceStyle: { [x: string]: unknown; }; regularPriceStyle: { [x: string]: unknown; }; priceClassName: string; currency: Currency; price: string; minPrice: any; maxPrice: any; regularPrice: string; regularPriceClassName: string; }&apos; but required in type &apos;ProductPriceProps&apos;." source="TS2741" />
+<error line="68" column="36" severity="error" message="Property &apos;min_amount&apos; does not exist on type &apos;never&apos;." source="TS2339" />
+<error line="69" column="36" severity="error" message="Property &apos;max_amount&apos; does not exist on type &apos;never&apos;." source="TS2339" />
 </file>
 <file name="assets/js/atomic/blocks/product-elements/image/block.js">
 <error line="137" column="19" severity="error" message="Binding element &apos;image&apos; implicitly has an &apos;any&apos; type." source="TS7031" />
@@ -1469,28 +1469,15 @@
       Type &apos;{ text: true; background: true; link: false; gradients: true; __experimentalSkipSerialization: true; }&apos; is not assignable to type &apos;Partial&lt;ColorProps&gt;&apos;.
         Object literal may only specify known properties, and &apos;__experimentalSkipSerialization&apos; does not exist in type &apos;Partial&lt;ColorProps&gt;&apos;." source="TS2322" />
 </file>
-<file name="assets/js/atomic/blocks/product-elements/price/edit.js">
-<error line="20" column="23" severity="error" message="Binding element &apos;attributes&apos; implicitly has an &apos;any&apos; type." source="TS7031" />
-<error line="20" column="35" severity="error" message="Binding element &apos;setAttributes&apos; implicitly has an &apos;any&apos; type." source="TS7031" />
-<error line="20" column="50" severity="error" message="Binding element &apos;context&apos; implicitly has an &apos;any&apos; type." source="TS7031" />
+<file name="assets/js/atomic/blocks/product-elements/price/edit.tsx">
+<error line="33" column="40" severity="error" message="Cannot find name &apos;BlockAttributes&apos;." source="TS2304" />
 </file>
-<file name="assets/js/atomic/blocks/product-elements/price/attributes.js">
-<error line="20" column="3" severity="error" message="Type &apos;{ textAlign: { type: string; }; productId: { type: string; default: number; }; isDescendentOfQueryLoop: { type: string; default: boolean; }; }&apos; is not assignable to type &apos;{ productId: { type: string; default: number; }; isDescendentOfQueryLoop: { type: string; default: boolean; }; }&apos;.
-  Object literal may only specify known properties, and &apos;textAlign&apos; does not exist in type &apos;{ productId: { type: string; default: number; }; isDescendentOfQueryLoop: { type: string; default: boolean; }; }&apos;." source="TS2322" />
-</file>
-<file name="assets/js/atomic/blocks/product-elements/price/index.js">
-<error line="54" column="1" severity="error" message="No overload matches this call.
-  Overload 1 of 2, &apos;(metadata: BlockConfiguration&lt;{}&gt;, settings?: Partial&lt;BlockConfiguration&lt;{}&gt;&gt; | undefined): Block&lt;{}&gt; | undefined&apos;, gave the following error.
-    Argument of type &apos;string&apos; is not assignable to parameter of type &apos;BlockConfiguration&lt;{}&gt;&apos;.
-      Type &apos;string&apos; is not assignable to type &apos;Pick&lt;Block&lt;{}&gt;, &quot;title&quot; | &quot;category&quot; | &quot;attributes&quot;&gt;&apos;.
-  Overload 2 of 2, &apos;(name: string, settings: BlockConfiguration&lt;{}&gt;): Block&lt;{}&gt; | undefined&apos;, gave the following error.
-    Argument of type &apos;{ apiVersion: number; title: string; description: string; parent: string[]; ancestor: string[]; usesContext: string[]; icon: { src: JSX.Element; }; attributes: { productId: { type: string; default: number; }; isDescendentOfQueryLoop: { ...; }; }; ... 18 more ...; merge?: ((attributes: {}, attributesToMerge: {}) =&gt; P...&apos; is not assignable to parameter of type &apos;BlockConfiguration&lt;{}&gt;&apos; with &apos;exactOptionalPropertyTypes: true&apos;. Consider adding &apos;undefined&apos; to the types of the target&apos;s properties.
-      Type &apos;{ apiVersion: number; title: string; description: string; parent: string[]; ancestor: string[]; usesContext: string[]; icon: { src: JSX.Element; }; attributes: { productId: { type: string; default: number; }; isDescendentOfQueryLoop: { ...; }; }; ... 18 more ...; merge?: ((attributes: {}, attributesToMerge: {}) =&gt; P...&apos; is not assignable to type &apos;Partial&lt;Omit&lt;Block&lt;{}&gt;, &quot;icon&quot;&gt;&gt;&apos; with &apos;exactOptionalPropertyTypes: true&apos;. Consider adding &apos;undefined&apos; to the types of the target&apos;s properties.
-        The types of &apos;supports.color&apos; are incompatible between these types.
-          Type &apos;Partial&lt;ColorProps&gt; | { text: boolean; background: boolean; link: boolean; __experimentalSkipSerialization: boolean; } | undefined&apos; is not assignable to type &apos;Partial&lt;ColorProps&gt; | undefined&apos;.
-            Type &apos;{ text: boolean; background: boolean; link: boolean; __experimentalSkipSerialization: boolean; }&apos; is not assignable to type &apos;Partial&lt;ColorProps&gt;&apos;.
-              Types of property &apos;text&apos; are incompatible.
-                Type &apos;boolean&apos; is not assignable to type &apos;string&apos;." source="TS2769" />
+<file name="assets/js/atomic/blocks/product-elements/price/index.ts">
+<error line="42" column="5" severity="error" message="Type &apos;{ color?: Partial&lt;ColorProps&gt; | { text: true; background: false; link: false; __experimentalSkipSerialization: true; } | undefined; typography?: Partial&lt;TypographyProps&gt; | { ...; } | undefined; ... 11 more ...; lock?: boolean | undefined; }&apos; is not assignable to type &apos;BlockSupports&apos;.
+  Types of property &apos;color&apos; are incompatible.
+    Type &apos;Partial&lt;ColorProps&gt; | { text: true; background: false; link: false; __experimentalSkipSerialization: true; } | undefined&apos; is not assignable to type &apos;Partial&lt;ColorProps&gt; | undefined&apos;.
+      Type &apos;{ text: true; background: false; link: false; __experimentalSkipSerialization: true; }&apos; is not assignable to type &apos;Partial&lt;ColorProps&gt;&apos;.
+        Object literal may only specify known properties, and &apos;__experimentalSkipSerialization&apos; does not exist in type &apos;Partial&lt;ColorProps&gt;&apos;." source="TS2322" />
 </file>
 <file name="assets/js/atomic/blocks/product-elements/image/edit.js">
 <error line="14" column="2" severity="error" message="Module &apos;&quot;@wordpress/components&quot;&apos; has no exported member &apos;__experimentalToggleGroupControl&apos;." source="TS2305" />
@@ -2404,6 +2391,7 @@
 </file>
 <file name="assets/js/blocks/cart/cart-cross-sells-product-list/cart-cross-sells-product.tsx">
 <error line="51" column="8" severity="error" message="Type &apos;{}&apos; is missing the following properties from type &apos;BlockAttributes&apos;: productId, align" source="TS2739" />
+<error line="52" column="8" severity="error" message="Type &apos;{}&apos; is missing the following properties from type &apos;BlockAttributes&apos;: productId, className, textAlign" source="TS2739" />
 </file>
 <file name="assets/js/blocks/cart/inner-blocks/cart-cross-sells-products/index.tsx">
 <error line="13" column="20" severity="error" message="No overload matches this call.
