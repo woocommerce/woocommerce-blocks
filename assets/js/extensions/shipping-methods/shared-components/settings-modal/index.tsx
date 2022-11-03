@@ -17,7 +17,7 @@ const StyledModal = styled( Modal )`
 
 	// to ensure that the separator extends all the way, even with different versions of Gutenberg
 	.components-modal__content {
-		padding: 0 $gap-large $gap;
+		padding: 0 24px 16px;
 
 		@media ( max-width: 599px ) {
 			display: flex;
@@ -30,26 +30,26 @@ const StyledModal = styled( Modal )`
 	}
 
 	.components-modal__header {
-		padding: 0 $gap-large;
+		padding: 0 24px;
 		@media ( max-width: 599px ) {
 			button {
 				display: none;
 			}
 		}
 	}
+`;
 
-	&__separator {
-		margin: $gap -#{$gap-large};
-	}
+const StyledSeparator = styled( HorizontalRule )`
+	margin: 16px -#{24px};
+`;
 
-	&__footer {
-		display: flex;
-		justify-content: flex-end;
+const StyledFooter = styled.div`
+	display: flex;
+	justify-content: flex-end;
 
-		> * {
-			&:not( :first-child ) {
-				margin-left: $gap-smaller;
-			}
+	> * {
+		&:not( :first-child ) {
+			margin-left: 8px;
 		}
 	}
 `;
@@ -75,8 +75,10 @@ const SettingsModal = ( {
 		{ ...props }
 	>
 		{ children }
-		<HorizontalRule className="wc-blocks-settings-modal__separator" />
-		<div className="wc-blocks-settings-modal__footer">{ actions }</div>
+		<StyledSeparator className="wc-blocks-settings-modal__separator" />
+		<StyledFooter className="wc-blocks-settings-modal__footer">
+			{ actions }
+		</StyledFooter>
 	</StyledModal>
 );
 

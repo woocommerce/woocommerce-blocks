@@ -9,22 +9,22 @@ import { Button } from '@wordpress/components';
  * Internal dependencies
  */
 import { SettingsSection } from '../shared-components';
+import useSettings from './use-settings';
 
 const SaveSectionWrapper = styled( SettingsSection )`
 	text-align: right;
 `;
 
 const SaveSettings = () => {
-	const isSaving = false;
-	const isDisabled = false;
+	const { isSaving, save } = useSettings();
 
 	return (
 		<SaveSectionWrapper>
 			<Button
 				variant="primary"
 				isBusy={ isSaving }
-				disabled={ isSaving || isDisabled }
-				onClick={ () => {} }
+				disabled={ isSaving }
+				onClick={ () => save() }
 			>
 				{ __( 'Save changes', 'woo-gutenberg-products-block' ) }
 			</Button>

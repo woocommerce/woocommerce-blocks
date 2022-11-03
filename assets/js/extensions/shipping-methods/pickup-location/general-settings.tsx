@@ -16,7 +16,7 @@ import {
  * Internal dependencies
  */
 import { SettingsCard, SettingsSection } from '../shared-components';
-import type { ShippingMethodSettings } from './types';
+import useSettings from './use-settings';
 
 const GeneralSettingsDescription = () => (
 	<>
@@ -36,35 +36,13 @@ const GeneralSettingsDescription = () => (
 );
 
 const GeneralSettings = () => {
-	const [ shippingMethodSettings, setShippingMethodSettings ] =
-		useState< ShippingMethodSettings >( () => {
-			const settings = getSetting(
-				'pickupLocationSettings',
-				{}
-			) as Partial< ShippingMethodSettings >;
-
-			return {
-				enabled: false,
-				title: '',
-				tax_status: 'taxable',
-				cost: '',
-				...settings,
-			};
-		} );
-
-	const setSettingField =
-		( field: keyof ShippingMethodSettings ) => ( newValue: unknown ) => {
-			setShippingMethodSettings( ( prevValue ) => ( {
-				...prevValue,
-				[ field ]: newValue,
-			} ) );
-		};
+	const { settings, setSettingField } = useSettings();
 
 	return (
 		<SettingsSection Description={ GeneralSettingsDescription }>
 			<SettingsCard>
 				<CheckboxControl
-					checked={ shippingMethodSettings.enabled }
+					checked={ settings.enabled }
 					onChange={ setSettingField( 'enabled' ) }
 					label={ __(
 						'Enable Local Pickup',
@@ -85,7 +63,7 @@ const GeneralSettings = () => {
 						'Local Pickup',
 						'woo-gutenberg-products-block'
 					) }
-					value={ shippingMethodSettings.title }
+					value={ settings.title }
 					onChange={ setSettingField( 'title' ) }
 					disabled={ false }
 					autoComplete="off"
@@ -98,7 +76,7 @@ const GeneralSettings = () => {
 					) }
 					placeholder={ __( 'Free', 'woo-gutenberg-products-block' ) }
 					type="number"
-					value={ shippingMethodSettings.cost }
+					value={ settings.cost }
 					onChange={ setSettingField( 'cost' ) }
 					disabled={ false }
 					autoComplete="off"
@@ -125,7 +103,7 @@ const GeneralSettings = () => {
 							value: 'none',
 						},
 					] }
-					value={ shippingMethodSettings.tax_status }
+					value={ settings.tax_status }
 					onChange={ setSettingField( 'tax_status' ) }
 					disabled={ false }
 				/>

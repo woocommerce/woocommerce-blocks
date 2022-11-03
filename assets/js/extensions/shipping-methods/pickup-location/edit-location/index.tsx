@@ -22,8 +22,6 @@ const EditLocation = ( {
 	onSave: ( location: PickupLocation ) => void;
 } ): JSX.Element | null => {
 	const formRef = useRef( null );
-	const isSaving = false;
-	const isDisabled = false;
 	const [ values, setValues ] = useState( locationData );
 
 	if ( ! locationData ) {
@@ -39,17 +37,11 @@ const EditLocation = ( {
 			) }
 			actions={
 				<>
-					<Button
-						variant="secondary"
-						onClick={ onClose }
-						disabled={ isDisabled }
-					>
+					<Button variant="secondary" onClick={ onClose }>
 						{ __( 'Cancel', 'woo-gutenberg-products-block' ) }
 					</Button>
 					<Button
 						variant="primary"
-						isBusy={ isSaving || isDisabled }
-						disabled={ isDisabled }
 						onClick={ () => {
 							onSave( values );
 							onClose();
@@ -62,7 +54,6 @@ const EditLocation = ( {
 		>
 			<Form
 				formRef={ formRef }
-				isSaving={ isSaving }
 				values={ values }
 				setValues={ setValues }
 			/>

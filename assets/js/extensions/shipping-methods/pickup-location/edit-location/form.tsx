@@ -18,13 +18,11 @@ import StateControl from './state-control';
 const Form = ( {
 	formRef,
 	values,
-	isSaving,
 	setValues,
 }: {
 	formRef: React.RefObject< HTMLFormElement >;
 	values: PickupLocation;
 	setValues: React.Dispatch< React.SetStateAction< PickupLocation > >;
-	isSaving: boolean;
 } ) => {
 	const countries = getSetting< Record< string, string > >( 'countries', [] );
 	const states = getSetting< Record< string, Record< string, string > > >(
@@ -57,7 +55,6 @@ const Form = ( {
 				label={ __( 'Location Name', 'woo-gutenberg-products-block' ) }
 				value={ values.name }
 				onChange={ setLocationField( 'name' ) }
-				disabled={ isSaving }
 				autoComplete="off"
 			/>
 			<TextControl
@@ -65,7 +62,6 @@ const Form = ( {
 				placeholder={ __( 'Address', 'woo-gutenberg-products-block' ) }
 				value={ values.address.address_1 }
 				onChange={ setLocationAddressField( 'address_1' ) }
-				disabled={ isSaving }
 				autoComplete="off"
 			/>
 			<TextControl
@@ -74,7 +70,6 @@ const Form = ( {
 				placeholder={ __( 'City', 'woo-gutenberg-products-block' ) }
 				value={ values.address.city }
 				onChange={ setLocationAddressField( 'city' ) }
-				disabled={ isSaving }
 				autoComplete="off"
 			/>
 			<TextControl
@@ -86,7 +81,6 @@ const Form = ( {
 				) }
 				value={ values.address.postcode }
 				onChange={ setLocationAddressField( 'postcode' ) }
-				disabled={ isSaving }
 				autoComplete="off"
 			/>
 			<StateControl
@@ -95,7 +89,6 @@ const Form = ( {
 				placeholder={ __( 'State', 'woo-gutenberg-products-block' ) }
 				value={ values.address.state }
 				onChange={ setLocationAddressField( 'state' ) }
-				disabled={ isSaving }
 				autoComplete="off"
 				states={ states }
 				currentCountry={ values.address.country }
@@ -109,7 +102,6 @@ const Form = ( {
 					setLocationAddressField( 'state' )( '' );
 					setLocationAddressField( 'country' )( val );
 				} }
-				disabled={ isSaving }
 				autoComplete="off"
 				options={ [
 					{
@@ -129,7 +121,6 @@ const Form = ( {
 				label={ __( 'Pickup Details', 'woo-gutenberg-products-block' ) }
 				value={ values.details }
 				onChange={ setLocationField( 'details' ) }
-				disabled={ isSaving }
 				autoComplete="off"
 			/>
 		</form>

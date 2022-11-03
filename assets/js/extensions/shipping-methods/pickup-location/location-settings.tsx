@@ -3,8 +3,6 @@
  */
 import { __ } from '@wordpress/i18n';
 import { useState } from '@wordpress/element';
-import { getSetting } from '@woocommerce/settings';
-import { cleanForSlug } from '@wordpress/editor';
 import type { UniqueIdentifier } from '@dnd-kit/core';
 import { isObject, isBoolean } from '@woocommerce/types';
 import { ToggleControl } from '@wordpress/components';
@@ -19,6 +17,7 @@ import {
 } from '../shared-components';
 import EditLocation from './edit-location';
 import type { PickupLocation, SortablePickupLocation } from './types';
+import useSettings from './use-settings';
 
 const LocationSettingsDescription = () => (
 	<>
@@ -33,22 +32,14 @@ const LocationSettingsDescription = () => (
 );
 
 const LocationSettings = () => {
+	const {
+		pickupLocations,
+		setPickupLocations,
+		toggleLocation,
+		updateLocation,
+	} = useSettings();
 	const [ editingLocation, setEditingLocation ] =
 		useState< UniqueIdentifier >( '' );
-
-	const [ pickupLocations, setPickupLocations ] = useState<
-		SortablePickupLocation[]
-	>( (): SortablePickupLocation[] => {
-		const setting = getSetting( 'pickupLocations', [] ) as PickupLocation[];
-
-		// Give each location a unique ID.
-		return setting.map( ( value, index ) => {
-			return {
-				...value,
-				id: cleanForSlug( value.name ) + '-' + index,
-			};
-		} );
-	} );
 
 	const tableColumns = [
 		{
@@ -86,21 +77,7 @@ const LocationSettings = () => {
 			renderCallback: ( row: SortableData ): JSX.Element => (
 				<ToggleControl
 					checked={ isBoolean( row.enabled ) ? row.enabled : false }
-					onChange={ () => {
-						setPickupLocations(
-							( previousLocations: SortablePickupLocation[] ) => {
-								const locationIndex =
-									previousLocations.findIndex(
-										( { id } ) => id === row.id
-									);
-								const updated = [ ...previousLocations ];
-								updated[ locationIndex ].enabled =
-									! previousLocations[ locationIndex ]
-										.enabled;
-								return updated;
-							}
-						);
-					} }
+					onChange={ () => toggleLocation( row.id ) }
 				/>
 			),
 		},
@@ -140,18 +117,7 @@ const LocationSettings = () => {
 							return id === editingLocation;
 						} ) || pickupLocations[ 0 ]
 					}
-					onSave={ ( locationData ) => {
-						setPickupLocations( ( prevData ) => {
-							return prevData.map(
-								( location ): SortablePickupLocation => {
-									if ( location.id === editingLocation ) {
-										return locationData as SortablePickupLocation;
-									}
-									return location;
-								}
-							);
-						} );
-					} }
+					onSave={ updateLocation( editingLocation ) }
 					onClose={ () => setEditingLocation( '' ) }
 				/>
 			) }
