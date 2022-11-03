@@ -132,4 +132,4 @@ This only needs to be done if this release is the last release of the feature pl
   - Ensure any major improvements or changes are documented.
 - [ ] Update minimum supported versions (WordPress, WooCommerce Core) and other requirements where necessary, including:
   - [WCCOM product page](https://woocommerce.com/products/woocommerce-gutenberg-products-block/)
-  - [WooCommerce blocks main documentation page](https://docs.woocommerce.com/document/woocommerce-blocks/)
+  - [WooCommerce Blocks main documentation page](https://docs.woocommerce.com/document/woocommerce-blocks/)
