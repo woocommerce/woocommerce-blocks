@@ -18,6 +18,7 @@ import {
 import { supports } from './support';
 
 const blockConfig: BlockConfiguration = {
+	...sharedConfig,
 	apiVersion: 2,
 	title,
 	description,
@@ -33,7 +34,4 @@ const blockConfig: BlockConfiguration = {
 	edit,
 };
 
-registerBlockType( 'woocommerce/product-rating', {
-	...sharedConfig,
-	...blockConfig,
-} );
+registerBlockType( 'woocommerce/product-rating', { ...blockConfig } );

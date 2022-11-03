@@ -1,7 +1,6 @@
 /**
  * External dependencies
  */
-import { __ } from '@wordpress/i18n';
 import { useBlockProps } from '@wordpress/block-editor';
 import type { BlockEditProps } from '@wordpress/blocks';
 import { useEffect } from 'react';
@@ -12,14 +11,18 @@ import { ProductQueryContext as Context } from '@woocommerce/blocks/product-quer
  */
 import Block from './block';
 import withProductSelector from '../shared/with-product-selector';
-import { BLOCK_TITLE, BLOCK_ICON } from './constants';
-import { Attributes } from './types';
+import {
+	BLOCK_TITLE as label,
+	BLOCK_ICON as icon,
+	BLOCK_DESCRIPTION as description,
+} from './constants';
+import { BlockAttributes } from './types';
 
 const Edit = ( {
 	attributes,
 	setAttributes,
 	context,
-}: BlockEditProps< Attributes > & { context: Context } ): JSX.Element => {
+}: BlockEditProps< BlockAttributes > & { context: Context } ): JSX.Element => {
 	const blockProps = useBlockProps( {
 		className: 'wp-block-woocommerce-product-rating',
 	} );
@@ -40,11 +43,4 @@ const Edit = ( {
 		</div>
 	);
 };
-export default withProductSelector( {
-	icon: BLOCK_ICON,
-	label: BLOCK_TITLE,
-	description: __(
-		'Choose a product to display its rating.',
-		'woo-gutenberg-products-block'
-	),
-} )( Edit );
+export default withProductSelector( { icon, label, description } )( Edit );
