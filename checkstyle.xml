@@ -1237,11 +1237,8 @@
 <error line="74" column="36" severity="error" message="Property &apos;min_amount&apos; does not exist on type &apos;never&apos;." source="TS2339" />
 <error line="75" column="36" severity="error" message="Property &apos;max_amount&apos; does not exist on type &apos;never&apos;." source="TS2339" />
 </file>
-<file name="assets/js/atomic/blocks/product-elements/image/block.js">
-<error line="137" column="19" severity="error" message="Binding element &apos;image&apos; implicitly has an &apos;any&apos; type." source="TS7031" />
-<error line="137" column="26" severity="error" message="Binding element &apos;loaded&apos; implicitly has an &apos;any&apos; type." source="TS7031" />
-<error line="137" column="34" severity="error" message="Binding element &apos;showFullSize&apos; implicitly has an &apos;any&apos; type." source="TS7031" />
-<error line="137" column="48" severity="error" message="Binding element &apos;fallbackAlt&apos; implicitly has an &apos;any&apos; type." source="TS7031" />
+<file name="assets/js/atomic/blocks/product-elements/image/block.tsx">
+<error line="156" column="6" severity="error" message="Type &apos;null&apos; is not assignable to type &apos;{ alt?: string; id: number; name: string; sizes: string; src: string; srcset: string; thumbnail: string; }&apos;." source="TS2322" />
 </file>
 <file name="assets/js/atomic/blocks/product-elements/rating/block.tsx">
 <error line="55" column="35" severity="error" message="Argument of type &apos;{ id: number; name: string; parent: number; type: string; variation: string; permalink: string; sku: string; short_description: string; description: string; on_sale: boolean; prices: { currency_code: string; ... 9 more ...; price_range: null; }; ... 14 more ...; add_to_cart: { ...; }; }&apos; is not assignable to parameter of type &apos;Omit&lt;ProductResponseItem, &quot;average_rating&quot;&gt; &amp; { average_rating: string; }&apos;.
@@ -1492,7 +1489,7 @@
               Types of property &apos;text&apos; are incompatible.
                 Type &apos;boolean&apos; is not assignable to type &apos;string&apos;." source="TS2769" />
 </file>
-<file name="assets/js/atomic/blocks/product-elements/image/edit.js">
+<file name="assets/js/atomic/blocks/product-elements/image/edit.tsx">
 <error line="14" column="2" severity="error" message="Module &apos;&quot;@wordpress/components&quot;&apos; has no exported member &apos;__experimentalToggleGroupControl&apos;." source="TS2305" />
 <error line="16" column="2" severity="error" message="Module &apos;&quot;@wordpress/components&quot;&apos; has no exported member &apos;__experimentalToggleGroupControlOption&apos;." source="TS2305" />
 <error line="24" column="18" severity="error" message="Binding element &apos;attributes&apos; implicitly has an &apos;any&apos; type." source="TS7031" />
@@ -1501,19 +1498,11 @@
 <error line="94" column="21" severity="error" message="Parameter &apos;value&apos; implicitly has an &apos;any&apos; type." source="TS7006" />
 <error line="146" column="21" severity="error" message="Parameter &apos;value&apos; implicitly has an &apos;any&apos; type." source="TS7006" />
 </file>
-<file name="assets/js/atomic/blocks/product-elements/image/index.js">
-<error line="46" column="1" severity="error" message="No overload matches this call.
-  Overload 1 of 2, &apos;(metadata: BlockConfiguration&lt;{}&gt;, settings?: Partial&lt;BlockConfiguration&lt;{}&gt;&gt; | undefined): Block&lt;{}&gt; | undefined&apos;, gave the following error.
-    Argument of type &apos;string&apos; is not assignable to parameter of type &apos;BlockConfiguration&lt;{}&gt;&apos;.
-      Type &apos;string&apos; is not assignable to type &apos;Pick&lt;Block&lt;{}&gt;, &quot;title&quot; | &quot;category&quot; | &quot;attributes&quot;&gt;&apos;.
-  Overload 2 of 2, &apos;(name: string, settings: BlockConfiguration&lt;{}&gt;): Block&lt;{}&gt; | undefined&apos;, gave the following error.
-    Argument of type &apos;{ apiVersion: number; name: string; title: string; icon: { src: JSX.Element; }; keywords: string[]; description: string; usesContext: string[]; parent: string[]; textdomain: string; attributes: { showProductLink: { ...; }; ... 4 more ...; isDescendentOfQueryLoop: { ...; }; }; ... 15 more ...; merge?: ((attributes: {...&apos; is not assignable to parameter of type &apos;BlockConfiguration&lt;{}&gt;&apos; with &apos;exactOptionalPropertyTypes: true&apos;. Consider adding &apos;undefined&apos; to the types of the target&apos;s properties.
-      Type &apos;{ apiVersion: number; name: string; title: string; icon: { src: JSX.Element; }; keywords: string[]; description: string; usesContext: string[]; parent: string[]; textdomain: string; attributes: { showProductLink: { ...; }; ... 4 more ...; isDescendentOfQueryLoop: { ...; }; }; ... 15 more ...; merge?: ((attributes: {...&apos; is not assignable to type &apos;Partial&lt;Omit&lt;Block&lt;{}&gt;, &quot;icon&quot;&gt;&gt;&apos; with &apos;exactOptionalPropertyTypes: true&apos;. Consider adding &apos;undefined&apos; to the types of the target&apos;s properties.
-        Types of property &apos;edit&apos; are incompatible.
-          Type &apos;({ attributes, setAttributes, context }: { attributes: any; setAttributes: any; context: any; }) =&gt; Element&apos; is not assignable to type &apos;ComponentType&lt;BlockEditProps&lt;{}&gt;&gt; | undefined&apos;.
-            Type &apos;({ attributes, setAttributes, context }: { attributes: any; setAttributes: any; context: any; }) =&gt; Element&apos; is not assignable to type &apos;FunctionComponent&lt;BlockEditProps&lt;{}&gt;&gt;&apos;.
-              Types of parameters &apos;__0&apos; and &apos;props&apos; are incompatible.
-                Property &apos;context&apos; is missing in type &apos;BlockEditProps&lt;{}&gt; &amp; { children?: ReactNode; }&apos; but required in type &apos;{ attributes: any; setAttributes: any; context: any; }&apos;." source="TS2769" />
+<file name="assets/js/atomic/blocks/product-elements/image/index.ts">
+<error line="38" column="2" severity="error" message="Type &apos;({ attributes, setAttributes, context }: { attributes: any; setAttributes: any; context: any; }) =&gt; Element&apos; is not assignable to type &apos;ComponentType&lt;BlockEditProps&lt;{}&gt;&gt; | undefined&apos;.
+  Type &apos;({ attributes, setAttributes, context }: { attributes: any; setAttributes: any; context: any; }) =&gt; Element&apos; is not assignable to type &apos;FunctionComponent&lt;BlockEditProps&lt;{}&gt;&gt;&apos;.
+    Types of parameters &apos;__0&apos; and &apos;props&apos; are incompatible.
+      Property &apos;context&apos; is missing in type &apos;BlockEditProps&lt;{}&gt; &amp; { children?: ReactNode; }&apos; but required in type &apos;{ attributes: any; setAttributes: any; context: any; }&apos;." source="TS2322" />
 </file>
 <file name="assets/js/atomic/blocks/product-elements/rating/index.ts">
 <error line="32" column="2" severity="error" message="Type &apos;{ __experimentalSelector?: string; spacing?: { margin: boolean; __experimentalSkipSerialization: boolean; }; color?: { text: boolean; background: boolean; link: boolean; __experimentalSkipSerialization: boolean; }; typography?: { ...; }; }&apos; is not assignable to type &apos;BlockSupports&apos;.
@@ -1590,12 +1579,16 @@
 </file>
 <file name="assets/js/atomic/blocks/product-elements/image/test/block.test.js">
 <error line="65" column="6" severity="error" message="Property &apos;isLoading&apos; is missing in type &apos;{ children: Element; product: { name: string; id: number; fallbackAlt: string; permalink: string; images: { id: number; src: string; thumbnail: string; srcset: string; sizes: string; name: string; alt: string; }[]; }; }&apos; but required in type &apos;{ product: any; children: Object; isLoading: boolean; }&apos;." source="TS2741" />
+<error line="66" column="7" severity="error" message="Type &apos;{ showProductLink: true; }&apos; is missing the following properties from type &apos;BlockAttributes&apos;: productId, showSaleBadge, saleBadgeAlign, imageSizing, isDescendentOfQueryLoop" source="TS2739" />
 <error line="82" column="12" severity="error" message="Object is possibly &apos;null&apos;." source="TS2531" />
 <error line="89" column="6" severity="error" message="Property &apos;isLoading&apos; is missing in type &apos;{ children: Element; product: { name: string; id: number; fallbackAlt: string; permalink: string; images: never[]; }; }&apos; but required in type &apos;{ product: any; children: Object; isLoading: boolean; }&apos;." source="TS2741" />
+<error line="90" column="7" severity="error" message="Type &apos;{ showProductLink: true; }&apos; is missing the following properties from type &apos;BlockAttributes&apos;: productId, showSaleBadge, saleBadgeAlign, imageSizing, isDescendentOfQueryLoop" source="TS2739" />
 <error line="100" column="12" severity="error" message="Object is possibly &apos;null&apos;." source="TS2531" />
 <error line="103" column="12" severity="error" message="Object is possibly &apos;null&apos;." source="TS2531" />
 <error line="112" column="6" severity="error" message="Property &apos;isLoading&apos; is missing in type &apos;{ children: Element; product: { name: string; id: number; fallbackAlt: string; permalink: string; images: { id: number; src: string; thumbnail: string; srcset: string; sizes: string; name: string; alt: string; }[]; }; }&apos; but required in type &apos;{ product: any; children: Object; isLoading: boolean; }&apos;." source="TS2741" />
+<error line="113" column="7" severity="error" message="Type &apos;{ showProductLink: false; }&apos; is missing the following properties from type &apos;BlockAttributes&apos;: productId, showSaleBadge, saleBadgeAlign, imageSizing, isDescendentOfQueryLoop" source="TS2739" />
 <error line="132" column="6" severity="error" message="Property &apos;isLoading&apos; is missing in type &apos;{ children: Element; product: { name: string; id: number; fallbackAlt: string; permalink: string; images: never[]; }; }&apos; but required in type &apos;{ product: any; children: Object; isLoading: boolean; }&apos;." source="TS2741" />
+<error line="133" column="7" severity="error" message="Type &apos;{ showProductLink: false; }&apos; is missing the following properties from type &apos;BlockAttributes&apos;: productId, showSaleBadge, saleBadgeAlign, imageSizing, isDescendentOfQueryLoop" source="TS2739" />
 </file>
 <file name="assets/js/atomic/blocks/product-elements/title/test/block.test.js">
 <error line="22" column="6" severity="error" message="Property &apos;isLoading&apos; is missing in type &apos;{ children: Element; product: { id: number; name: string; permalink: string; }; }&apos; but required in type &apos;{ product: any; children: Object; isLoading: boolean; }&apos;." source="TS2741" />
@@ -2403,6 +2396,7 @@
     Argument of type &apos;{ name: string; version: string; title: string; description: string; category: string; supports: { align: boolean; html: boolean; multiple: boolean; reusable: boolean; inserter: boolean; }; parent: string[]; textdomain: string; apiVersion: number; }&apos; is not assignable to parameter of type &apos;string&apos;." source="TS2769" />
 </file>
 <file name="assets/js/blocks/cart/cart-cross-sells-product-list/cart-cross-sells-product.tsx">
+<error line="41" column="8" severity="error" message="Type &apos;{ className: string; showSaleBadge: false; }&apos; is missing the following properties from type &apos;BlockAttributes&apos;: productId, showProductLink, saleBadgeAlign, imageSizing, isDescendentOfQueryLoop" source="TS2739" />
 <error line="51" column="8" severity="error" message="Type &apos;{}&apos; is missing the following properties from type &apos;BlockAttributes&apos;: productId, align" source="TS2739" />
 </file>
 <file name="assets/js/blocks/cart/inner-blocks/cart-cross-sells-products/index.tsx">
