@@ -19,6 +19,7 @@ import {
 	BLOCK_ICON as icon,
 	BLOCK_DESCRIPTION as description,
 } from './constants';
+import type { BlockAttributes } from './types';
 
 interface Attributes {
 	textAlign: 'left' | 'center' | 'right';
@@ -30,7 +31,9 @@ interface Context {
 
 interface Props {
 	attributes: Attributes;
-	setAttributes: ( attributes: Record< string, unknown > ) => void;
+	setAttributes: (
+		attributes: Partial< BlockAttributes > & Record< string, unknown >
+	) => void;
 	context: Context;
 }
 
