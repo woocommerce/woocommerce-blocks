@@ -2,13 +2,16 @@
  * External dependencies
  */
 import { canvas, setPostContent, insertBlock } from '@wordpress/e2e-test-utils';
-import { visitBlockPage, saveOrPublish } from '@woocommerce/blocks-test-utils';
+import {
+	visitBlockPage,
+	saveOrPublish,
+	shopper,
+} from '@woocommerce/blocks-test-utils';
 
 /**
  * Internal dependencies
  */
 import { GUTENBERG_EDITOR_CONTEXT, describeOrSkip } from '../../../utils';
-import { shopper } from '../../../../utils';
 
 const block = {
 	name: 'Product Query',
