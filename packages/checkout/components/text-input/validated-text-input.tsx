@@ -19,13 +19,14 @@ import { ValidationInputError } from '../validation-input-error';
 interface ValidatedTextInputProps {
 	id?: string;
 	instanceId: string;
-	className?: string;
-	ariaDescribedBy?: string;
+	className?: string | undefined;
+	ariaDescribedBy?: string | undefined;
 	errorId?: string;
 	focusOnMount?: boolean;
 	showError?: boolean;
-	errorMessage?: string;
+	errorMessage?: string | undefined;
 	onChange: ( newValue: string ) => void;
+	label?: string | undefined;
 	value: string;
 }
 
