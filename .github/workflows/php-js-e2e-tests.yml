@@ -40,7 +40,7 @@ jobs:
 
             - name: blocks.ini setup
               run: |
-                  echo -e 'woocommerce_blocks_phase = 3\nwoocommerce_blocks_env = test' > blocks.ini
+                  echo -e 'woocommerce_blocks_phase = 3\nwoocommerce_blocks_env = tests' > blocks.ini
             - name: Get Composer Cache Directory
               id: composer-cache
               run: |
@@ -54,27 +54,20 @@ jobs:
             - name: Set up PHP
               uses: shivammathur/setup-php@v2
               with:
-                  php-version: "8.0" # This is not the PHP version used to run the tests, that is set by wp-env
+                  php-version: 7.4
                   coverage: none
                   tools: composer
 
             - name: Composer install
               run: |
                   composer install
-                
-            - name: Setup Permissions
-              run: |
-                mkdir -p ./wp-content/languages
-                chmod -R 777 ./    
-                
             - name: E2E Tests (WP latest with Gutenberg plugin)
               env:
                   WOOCOMMERCE_BLOCKS_PHASE: 3
                   GUTENBERG_EDITOR_CONTEXT: 'gutenberg'
               run: |
-                  rm -rf /home/runner/wp-env/*
                   node ./bin/wp-env-with-gutenberg.js
-                  npm run wp-env start --update
+                  npm run wp-env start
                   npm run wp-env:config && npx cross-env NODE_CONFIG_DIR=tests/e2e/config wp-scripts test-e2e --config tests/e2e/config/jest.config.js --listTests > ~/.jest-e2e-tests
                   npx cross-env JEST_PUPPETEER_CONFIG=tests/e2e/config/jest-puppeteer.config.js cross-env NODE_CONFIG_DIR=tests/e2e/config wp-scripts test-e2e --config tests/e2e/config/jest.config.js --runInBand --runTestsByPath $( awk 'NR % 5 == ${{ matrix.part }} - 1' < ~/.jest-e2e-tests )
 
@@ -127,7 +120,7 @@ jobs:
 
             - name: blocks.ini setup
               run: |
-                  echo -e 'woocommerce_blocks_phase = 3\nwoocommerce_blocks_env = test' > blocks.ini
+                  echo -e 'woocommerce_blocks_phase = 3\nwoocommerce_blocks_env = tests' > blocks.ini
             - name: Get Composer Cache Directory
               id: composer-cache
               run: |
@@ -142,7 +135,7 @@ jobs:
             - name: Set up PHP
               uses: shivammathur/setup-php@v2
               with:
-                  php-version: "8.0" # This is not the PHP version used to run the tests, that is set by wp-env
+                  php-version: 7.4
                   coverage: none
                   tools: composer
 
@@ -150,20 +143,12 @@ jobs:
               run: |
                   composer install
 
-            - name: Setup Permissions
-              run: |
-                mkdir -p ./wp-content/languages
-                chmod -R 777 ./
-                whoami
-                ls -lah
-            
             - name: E2E Tests (WP latest)
               env:
                   WOOCOMMERCE_BLOCKS_PHASE: 3
               run: |
-                  rm -rf /home/runner/wp-env/*
-                  npm run wp-env start --update
-                  ./bin/wp-env-pre-config.sh && npx cross-env NODE_CONFIG_DIR=tests/e2e/config wp-scripts test-e2e --config tests/e2e/config/jest.config.js --listTests > ~/.jest-e2e-tests
+                  npm run wp-env start
+                  npm run wp-env:config && npx cross-env NODE_CONFIG_DIR=tests/e2e/config wp-scripts test-e2e --config tests/e2e/config/jest.config.js --listTests > ~/.jest-e2e-tests
                   npx cross-env JEST_PUPPETEER_CONFIG=tests/e2e/config/jest-puppeteer.config.js cross-env NODE_CONFIG_DIR=tests/e2e/config wp-scripts test-e2e --config tests/e2e/config/jest.config.js --runInBand --runTestsByPath $( awk 'NR % 5 == ${{ matrix.part }} - 1' < ~/.jest-e2e-tests )
 
             - name: Upload artifacts on failure
