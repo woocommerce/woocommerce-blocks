@@ -7,6 +7,7 @@ import {
 	saveOrPublish,
 	shopper,
 	insertInnerBlock,
+	getFixtureProductsData,
 } from '@woocommerce/blocks-test-utils';
 
 /**
@@ -80,11 +81,12 @@ describeOrSkip( GUTENBERG_EDITOR_CONTEXT === 'gutenberg' )(
 		} );
 
 		it( 'Can add the Product Price block and render it on the front end', async () => {
+			const fixturePrices = getFixtureProductsData( 'regular_price' );
 			await insertInnerBlock( 'Product Price', 'core/post-template' );
 			await expect( canvas() ).toMatchElement(
 				'.wp-block-query .wc-block-components-product-price__value',
 				{
-					text: '2.99',
+					text: fixturePrices.some( Boolean ),
 				}
 			);
 			await saveOrPublish();
@@ -96,7 +98,7 @@ describeOrSkip( GUTENBERG_EDITOR_CONTEXT === 'gutenberg' )(
 			await expect( page ).toMatchElement(
 				'.wp-block-query .woocommerce-Price-amount',
 				{
-					text: '2.99',
+					text: fixturePrices.some( Boolean ),
 				}
 			);
 		} );
