@@ -16,3 +16,4 @@ export { cli } from './run-cli-from-test';
 export * from './clickLink';
 export * from './taxes';
 export * from './constants';
+export { insertInnerBlock } from './insert-inner-block';
