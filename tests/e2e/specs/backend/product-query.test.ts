@@ -44,6 +44,11 @@ describeOrSkip( GUTENBERG_EDITOR_CONTEXT === 'gutenberg' )(
 			await expect( page ).toRenderBlock( block );
 		} );
 
+		/**
+		 * we changed the show only products on sale from a top-level toggle
+		 * setting to a product filter but tests for them haven't been updated
+		 * yet. we will fix these tests in a follow-up pr.
+		 */
 		it.skip( 'Editor preview shows only on sale products after enabling `Show only products on sale`', async () => {
 			await visitBlockPage( `${ block.name } Block` );
 			const canvasEl = canvas();
@@ -84,6 +89,11 @@ describeOrSkip( GUTENBERG_EDITOR_CONTEXT === 'gutenberg' )(
 				expect( products ).toHaveLength( 1 );
 			} );
 
+			/**
+			 * we changed the show only products on sale from a top-level toggle
+			 * setting to a product filter but tests for them haven't been updated
+			 * yet. we will fix these tests in a follow-up pr.
+			 */
 			it.skip( 'Does not have on sale toggle', async () => {
 				await openDocumentSettingsSidebar();
 				await openListView();
