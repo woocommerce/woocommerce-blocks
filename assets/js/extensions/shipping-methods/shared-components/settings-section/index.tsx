@@ -39,6 +39,7 @@ const StyledDescriptionWrapper = styled.div`
 
 const StyledSectionControls = styled.div`
 	flex: 1 1 auto;
+	margin-bottom: 12px;
 `;
 
 const SettingsSection = ( {
@@ -50,16 +51,11 @@ const SettingsSection = ( {
 	Description?: () => JSX.Element | null;
 	children: React.ReactNode;
 } ): JSX.Element => (
-	<StyledSectionWrapper
-		className="wc-blocks-settings-section-wrapper"
-		{ ...props }
-	>
-		<StyledDescriptionWrapper className="wc-blocks-settings-description-wrapper">
+	<StyledSectionWrapper { ...props }>
+		<StyledDescriptionWrapper>
 			<Description />
 		</StyledDescriptionWrapper>
-		<StyledSectionControls className="wc-blocks-settings-section-controls">
-			{ children }
-		</StyledSectionControls>
+		<StyledSectionControls>{ children }</StyledSectionControls>
 	</StyledSectionWrapper>
 );
 

@@ -5,7 +5,7 @@ import { __ } from '@wordpress/i18n';
 import { useState } from '@wordpress/element';
 import type { UniqueIdentifier } from '@dnd-kit/core';
 import { isObject, isBoolean } from '@woocommerce/types';
-import { ToggleControl } from '@wordpress/components';
+import { ToggleControl, Button } from '@wordpress/components';
 
 /**
  * Internal dependencies
@@ -104,6 +104,17 @@ const LocationSettings = () => {
 		},
 	];
 
+	const FooterContent = (): JSX.Element => (
+		<Button
+			variant="secondary"
+			onClick={ () => {
+				setEditingLocation( 'new' );
+			} }
+		>
+			{ __( 'Add Pickup Location', 'woo-gutenberg-products-block' ) }
+		</Button>
+	);
+
 	return (
 		<SettingsSection Description={ LocationSettingsDescription }>
 			<SortableTable
@@ -112,14 +123,29 @@ const LocationSettings = () => {
 				setData={ ( newData ) => {
 					setPickupLocations( newData as SortablePickupLocation[] );
 				} }
+				footerContent={ FooterContent }
 			/>
 			{ editingLocation && (
 				<EditLocation
 					locationData={
-						pickupLocations.find( ( { id } ) => {
-							return id === editingLocation;
-						} ) || pickupLocations[ 0 ]
+						editingLocation === 'new'
+							? {
+									name: '',
+									details: '',
+									enabled: true,
+									address: {
+										address_1: '',
+										city: '',
+										state: '',
+										postcode: '',
+										country: '',
+									},
+							  }
+							: pickupLocations.find( ( { id } ) => {
+									return id === editingLocation;
+							  } ) || null
 					}
+					editingLocation={ editingLocation }
 					onSave={ updateLocation( editingLocation ) }
 					onClose={ () => setEditingLocation( '' ) }
 				/>

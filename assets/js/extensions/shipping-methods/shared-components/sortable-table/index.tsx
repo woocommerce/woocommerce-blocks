@@ -55,7 +55,7 @@ const TableRow = ( {
 	return (
 		<tr ref={ setNodeRef } style={ style }>
 			<>
-				<td className="sortable-table__handle">
+				<td>
 					<Icon
 						icon={ dragHandle }
 						size={ 14 }
@@ -104,9 +104,7 @@ const StyledTable = styled.table`
 		color: #2c3338;
 		text-align: left;
 		vertical-align: middle;
-		padding: 1em;
 		vertical-align: top;
-		line-height: 1.75;
 		border-bottom: 1px solid #c3c4c7;
 		word-wrap: break-word;
 	}
@@ -117,10 +115,34 @@ const StyledTable = styled.table`
 		}
 		td {
 			border-top: 2px solid #f9f9f9;
-			padding: 10px 1em;
 			vertical-align: top;
-			line-height: 1.75;
 			margin-bottom: 9px;
+		}
+	}
+
+	tfoot {
+		td {
+			text-align: left;
+			vertical-align: middle;
+		}
+	}
+
+	thead,
+	tfoot,
+	tbody {
+		td,
+		th {
+			padding: 16px 0 16px 24px;
+			line-height: 1.5;
+
+			&:last-child {
+				padding-right: 24px;
+			}
+
+			> svg,
+			> .components-base-control {
+				margin-top: 4px;
+			}
 		}
 	}
 `;
@@ -130,11 +152,13 @@ export const SortableTable = ( {
 	data,
 	setData,
 	className,
+	footerContent: FooterContent,
 }: {
 	columns: ColumnProps[];
 	data: SortableData[];
 	setData: ( data: SortableData[] ) => void;
 	className?: string;
+	footerContent?: () => JSX.Element;
 } ): JSX.Element => {
 	const items = useMemo( () => data.map( ( { id } ) => id ), [ data ] );
 
@@ -196,6 +220,15 @@ export const SortableTable = ( {
 						) ) }
 					</tr>
 				</thead>
+				{ FooterContent && (
+					<tfoot>
+						<tr>
+							<td colSpan={ columns.length + 1 }>
+								<FooterContent />
+							</td>
+						</tr>
+					</tfoot>
+				) }
 				<tbody>
 					<SortableContext
 						items={ items }

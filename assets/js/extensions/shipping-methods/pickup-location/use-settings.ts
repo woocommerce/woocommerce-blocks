@@ -58,7 +58,7 @@ const useSettings = (): {
 	setPickupLocations: ( locations: SortablePickupLocation[] ) => void;
 	toggleLocation: ( rowId: UniqueIdentifier ) => void;
 	updateLocation: (
-		rowId: UniqueIdentifier
+		rowId: UniqueIdentifier | 'new'
 	) => ( location: SortablePickupLocation | null ) => void;
 	isSaving: boolean;
 	save: () => void;
@@ -93,9 +93,21 @@ const useSettings = (): {
 	}, [] );
 
 	const updateLocation = useCallback(
-		( rowId: UniqueIdentifier ) =>
+		( rowId: UniqueIdentifier | 'new' ) =>
 			( locationData: SortablePickupLocation ) => {
 				setPickupLocations( ( prevData ) => {
+					if ( rowId === 'new' ) {
+						return [
+							...prevData,
+							{
+								...locationData,
+								id:
+									cleanForSlug( locationData.name ) +
+									'-' +
+									prevData.length,
+							},
+						];
+					}
 					return prevData
 						.map( ( location ): SortablePickupLocation => {
 							if ( location.id === rowId ) {
