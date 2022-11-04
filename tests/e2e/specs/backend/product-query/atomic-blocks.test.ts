@@ -46,7 +46,7 @@ describeOrSkip( GUTENBERG_EDITOR_CONTEXT === 'gutenberg' )(
 				'core/post-template'
 			);
 			await expect( canvas() ).toMatchElement(
-				'.wp-block-query .wp-block-woocommerce-product-button',
+				'.wp-block-woocommerce-product-button',
 				{
 					text: 'Add to cart',
 				}
@@ -54,9 +54,7 @@ describeOrSkip( GUTENBERG_EDITOR_CONTEXT === 'gutenberg' )(
 			await saveOrPublish();
 
 			await shopper.block.goToBlockPage( block.name );
-			await page.waitForSelector(
-				'.wp-block-query button.add_to_cart_button'
-			);
+			await page.waitForSelector( '.wc-block-components-product-button' );
 			await expect( page ).toClick( 'button', {
 				text: 'Add to cart',
 			} );
@@ -84,7 +82,7 @@ describeOrSkip( GUTENBERG_EDITOR_CONTEXT === 'gutenberg' )(
 			const fixturePrices = getFixtureProductsData( 'regular_price' );
 			await insertInnerBlock( 'Product Price', 'core/post-template' );
 			await expect( canvas() ).toMatchElement(
-				'.wp-block-query .wc-block-components-product-price__value',
+				'.wc-block-components-product-price',
 				{
 					text: fixturePrices.some( Boolean ),
 				}
@@ -92,9 +90,7 @@ describeOrSkip( GUTENBERG_EDITOR_CONTEXT === 'gutenberg' )(
 			await saveOrPublish();
 
 			await shopper.block.goToBlockPage( block.name );
-			await page.waitForSelector(
-				'.wp-block-query .woocommerce-Price-amount'
-			);
+			await page.waitForSelector( '.wc-block-components-product-price' );
 			await expect( page ).toMatchElement(
 				'.wp-block-query .woocommerce-Price-amount',
 				{
@@ -106,7 +102,7 @@ describeOrSkip( GUTENBERG_EDITOR_CONTEXT === 'gutenberg' )(
 		it( 'Can add the Product Ratings block and render it on the front end', async () => {
 			await insertInnerBlock( 'Product Rating', 'core/post-template' );
 			await expect( canvas() ).toMatchElement(
-				'.wp-block-query .wc-block-components-product-rating'
+				'.wc-block-components-product-rating'
 			);
 			await saveOrPublish();
 
