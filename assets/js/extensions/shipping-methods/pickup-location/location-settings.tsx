@@ -16,8 +16,8 @@ import {
 	SortableData,
 } from '../shared-components';
 import EditLocation from './edit-location';
-import type { PickupLocation, SortablePickupLocation } from './types';
-import useSettings from './use-settings';
+import type { SortablePickupLocation } from './types';
+import { useSettingsContext } from './settings-context';
 
 const LocationSettingsDescription = () => (
 	<>
@@ -37,7 +37,7 @@ const LocationSettings = () => {
 		setPickupLocations,
 		toggleLocation,
 		updateLocation,
-	} = useSettings();
+	} = useSettingsContext();
 	const [ editingLocation, setEditingLocation ] =
 		useState< UniqueIdentifier >( '' );
 

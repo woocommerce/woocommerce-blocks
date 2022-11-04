@@ -47,7 +47,7 @@ const StyledFooter = styled.div`
 	justify-content: flex-end;
 
 	> * {
-		&:not( :first-child ) {
+		&:not( :first-of-type ) {
 			margin-left: 8px;
 		}
 	}

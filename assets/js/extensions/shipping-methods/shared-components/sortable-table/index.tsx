@@ -110,7 +110,7 @@ const StyledTable = styled.table`
 	}
 
 	tbody {
-		tr:nth-child( odd ) td {
+		tr:nth-of-type( odd ) td {
 			background: #f9f9f9;
 		}
 		td {

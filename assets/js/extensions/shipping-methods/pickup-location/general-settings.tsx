@@ -2,8 +2,7 @@
  * External dependencies
  */
 import { __ } from '@wordpress/i18n';
-import { useState } from '@wordpress/element';
-import { getSetting, ADMIN_URL } from '@woocommerce/settings';
+import { ADMIN_URL } from '@woocommerce/settings';
 import { CHECKOUT_PAGE_ID } from '@woocommerce/block-settings';
 import {
 	CheckboxControl,
@@ -16,7 +15,7 @@ import {
  * Internal dependencies
  */
 import { SettingsCard, SettingsSection } from '../shared-components';
-import useSettings from './use-settings';
+import { useSettingsContext } from './settings-context';
 
 const GeneralSettingsDescription = () => (
 	<>
@@ -36,7 +35,7 @@ const GeneralSettingsDescription = () => (
 );
 
 const GeneralSettings = () => {
-	const { settings, setSettingField } = useSettings();
+	const { settings, setSettingField } = useSettingsContext();
 
 	return (
 		<SettingsSection Description={ GeneralSettingsDescription }>

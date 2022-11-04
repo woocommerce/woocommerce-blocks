@@ -9,6 +9,7 @@ import styled from '@emotion/styled';
 import GeneralSettings from './general-settings';
 import LocationSettings from './location-settings';
 import SaveSettings from './save';
+import { SettingsProvider } from './settings-context';
 
 const SettingsWrapper = styled.div`
 	margin: 24px auto 0;
@@ -24,9 +25,11 @@ const SettingsWrapper = styled.div`
 const SettingsPage = () => {
 	return (
 		<SettingsWrapper>
-			<GeneralSettings />
-			<LocationSettings />
-			<SaveSettings />
+			<SettingsProvider>
+				<GeneralSettings />
+				<LocationSettings />
+				<SaveSettings />
+			</SettingsProvider>
 		</SettingsWrapper>
 	);
 };
