@@ -176,5 +176,5 @@ const ValidatedTextInput = ( {
 		/>
 	);
 };
-
+export const ValidatedTexInputWithoutId = ValidatedTextInput;
 export default withInstanceId( ValidatedTextInput );
