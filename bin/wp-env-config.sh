@@ -1,6 +1,5 @@
 #!/bin/bash
-whoami
-ls -lah
+
 ## Check if user already exists
 wp user get customer 2> /dev/null
 
