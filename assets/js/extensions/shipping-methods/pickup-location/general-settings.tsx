@@ -81,32 +81,34 @@ const GeneralSettings = () => {
 					disabled={ false }
 					autoComplete="off"
 				/>
-				<SelectControl
-					label={ __( 'Taxes', 'woo-gutenberg-products-block' ) }
-					help={ __(
-						'If a cost is defined, this controls if taxes are applied to that cost.',
-						'woo-gutenberg-products-block'
-					) }
-					options={ [
-						{
-							label: __(
-								'Taxable',
-								'woo-gutenberg-products-block'
-							),
-							value: 'taxable',
-						},
-						{
-							label: __(
-								'Not taxable',
-								'woo-gutenberg-products-block'
-							),
-							value: 'none',
-						},
-					] }
-					value={ settings.tax_status }
-					onChange={ setSettingField( 'tax_status' ) }
-					disabled={ false }
-				/>
+				{ settings.cost !== '' ? (
+					<SelectControl
+						label={ __( 'Taxes', 'woo-gutenberg-products-block' ) }
+						help={ __(
+							'If a cost is defined, this controls if taxes are applied to that cost.',
+							'woo-gutenberg-products-block'
+						) }
+						options={ [
+							{
+								label: __(
+									'Taxable',
+									'woo-gutenberg-products-block'
+								),
+								value: 'taxable',
+							},
+							{
+								label: __(
+									'Not taxable',
+									'woo-gutenberg-products-block'
+								),
+								value: 'none',
+							},
+						] }
+						value={ settings.tax_status }
+						onChange={ setSettingField( 'tax_status' ) }
+						disabled={ false }
+					/>
+				) : null }
 			</SettingsCard>
 		</SettingsSection>
 	);

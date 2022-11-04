@@ -5,7 +5,6 @@ import { useState, useCallback } from '@wordpress/element';
 import { getSetting } from '@woocommerce/settings';
 import { cleanForSlug } from '@wordpress/editor';
 import type { UniqueIdentifier } from '@dnd-kit/core';
-import { ADMIN_URL } from '@woocommerce/settings';
 
 /**
  * Internal dependencies
@@ -59,7 +58,7 @@ const useSettings = (): {
 	toggleLocation: ( rowId: UniqueIdentifier ) => void;
 	updateLocation: (
 		rowId: UniqueIdentifier | 'new'
-	) => ( location: SortablePickupLocation | null ) => void;
+	) => ( location: SortablePickupLocation ) => void;
 	isSaving: boolean;
 	save: () => void;
 } => {

@@ -48,7 +48,7 @@ const SettingsCard = ( {
 	children,
 	...props
 }: {
-	children: JSX.Element | JSX.Element[];
+	children: ( JSX.Element | null )[];
 } ): JSX.Element => (
 	<Card>
 		<StyledCardBody { ...props }>{ children }</StyledCardBody>
