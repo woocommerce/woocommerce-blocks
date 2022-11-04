@@ -12,7 +12,7 @@ import {
 import classnames from 'classnames';
 import { withInstanceId } from '@wordpress/compose';
 import { isObject, isString } from '@woocommerce/types';
-import { dispatch, useSelect } from '@wordpress/data';
+import { useDispatch, useSelect } from '@wordpress/data';
 import { VALIDATION_STORE_KEY } from '@woocommerce/block-data';
 
 /**
@@ -57,7 +57,7 @@ const ValidatedTextInput = ( {
 	const inputRef = useRef< HTMLInputElement >( null );
 
 	const { setValidationErrors, hideValidationError, clearValidationError } =
-		dispatch( VALIDATION_STORE_KEY );
+		useDispatch( VALIDATION_STORE_KEY );
 	const textInputId =
 		typeof id !== 'undefined' ? id : 'textinput-' + instanceId;
 	const errorIdString = errorId !== undefined ? errorId : textInputId;
