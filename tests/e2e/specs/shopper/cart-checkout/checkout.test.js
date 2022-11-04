@@ -38,10 +38,10 @@ if ( process.env.WOOCOMMERCE_BLOCKS_PHASE < 2 ) {
 let coupon;
 
 const getCompanyCheckboxLabel = async () => {
-	const companyCheckboxLabel = await page.waitForXPath(
-		`//label[contains(text(), "Company") and contains(@class, "components-toggle-control__label")]`
+	return await page.waitForXPath(
+		`//label[contains(text(), "Company") and contains(@class, "components-toggle-control__label")]`,
+		{ visible: true }
 	);
-	return companyCheckboxLabel;
 };
 
 describe( 'Shopper → Checkout', () => {
