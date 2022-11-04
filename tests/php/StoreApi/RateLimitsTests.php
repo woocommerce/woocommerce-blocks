@@ -116,26 +116,26 @@ class RateLimitsTests extends WP_Test_REST_TestCase {
 
 		$this->assertEquals( '76.45.67.101', $get_ip_address->invokeArgs( $authentication, array( true ) ) );
 		$_SERVER['HTTP_X_REAL_IP'] = 'invalid_ip_address';
-		$this->assertFalse( $get_ip_address->invokeArgs( $authentication, array( true ) ) );
+		$this->assertequals( '0.0.0.0', $get_ip_address->invokeArgs( $authentication, array( true ) ) );
 
 		unset( $_SERVER['REMOTE_ADDR'] );
 		unset( $_SERVER['HTTP_X_REAL_IP'] );
 		$this->assertEquals( '76.45.67.102', $get_ip_address->invokeArgs( $authentication, array( true ) ) );
 		$_SERVER['HTTP_CLIENT_IP'] = 'invalid_ip_address';
-		$this->assertFalse( $get_ip_address->invokeArgs( $authentication, array( true ) ) );
+		$this->assertequals( '0.0.0.0', $get_ip_address->invokeArgs( $authentication, array( true ) ) );
 
 		unset( $_SERVER['HTTP_CLIENT_IP'] );
 		$this->assertEquals( '76.45.67.103', $get_ip_address->invokeArgs( $authentication, array( true ) ) );
 		$_SERVER['HTTP_X_FORWARDED_FOR'] = 'invalid_ip_address,76.45.67.103';
-		$this->assertFalse( $get_ip_address->invokeArgs( $authentication, array( true ) ) );
+		$this->assertequals( '0.0.0.0', $get_ip_address->invokeArgs( $authentication, array( true ) ) );
 
 		unset( $_SERVER['HTTP_X_FORWARDED_FOR'] );
 		$this->assertEquals( '2001:0db8:85a3:0000:0000:8a2e:0370:7334', $get_ip_address->invokeArgs( $authentication, array( true ) ) );
 		$_SERVER['HTTP_FORWARDED'] = 'for=invalid_ip_address;proto=https;by=203.0.113.43';
-		$this->assertFalse( $get_ip_address->invokeArgs( $authentication, array( true ) ) );
+		$this->assertequals( '0.0.0.0', $get_ip_address->invokeArgs( $authentication, array( true ) ) );
 
 		unset( $_SERVER['HTTP_FORWARDED'] );
-		$this->assertFalse( $get_ip_address->invokeArgs( $authentication, array( true ) ) );
+		$this->assertequals( '0.0.0.0', $get_ip_address->invokeArgs( $authentication, array( true ) ) );
 
 	}
 }

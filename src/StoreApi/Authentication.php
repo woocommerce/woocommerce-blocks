@@ -35,15 +35,6 @@ class Authentication {
 				$action_id .= get_current_user_id();
 			} else {
 				$ip_address = self::get_ip_address( $rate_limiting_options->proxy_support );
-
-				if ( ! $ip_address ) {
-					return new \WP_Error(
-						'ip_address_cannot_be_determined',
-						'Bad request. Client IP address cannot be determined.',
-						array( 'status' => 400 )
-					);
-				}
-
 				$action_id .= md5( $ip_address );
 			}
 
@@ -119,16 +110,12 @@ class Authentication {
 	 *
 	 * @param boolean $proxy_support Enables/disables proxy support.
 	 *
-	 * @return string|false
+	 * @return string
 	 */
 	protected static function get_ip_address( bool $proxy_support = false ) {
 
 		if ( ! $proxy_support ) {
-			if ( array_key_exists( 'REMOTE_ADDR', $_SERVER ) ) {
-				return self::validate_ip( sanitize_text_field( wp_unslash( $_SERVER['REMOTE_ADDR'] ) ) );
-			}
-
-			return false;
+			return self::validate_ip( sanitize_text_field( wp_unslash( $_SERVER['REMOTE_ADDR'] ?? 'unresolved_ip' ) ) );
 		}
 
 		if ( array_key_exists( 'HTTP_X_REAL_IP', $_SERVER ) ) {
@@ -168,21 +155,24 @@ class Authentication {
 			}
 		}
 
-		return false;
+		return '0.0.0.0';
 	}
 
 	/**
 	 * Uses filter_var() to validate and return ipv4 and ipv6 addresses
+	 * Will return 0.0.0.0 if the ip is not valid. This is done to group and still rate limit invalid ips.
 	 *
 	 * @param string $ip ipv4 or ipv6 ip string.
 	 *
-	 * @return string|bool
+	 * @return string
 	 */
 	protected static function validate_ip( $ip ) {
-		return filter_var(
+		$ip = filter_var(
 			$ip,
 			FILTER_VALIDATE_IP,
 			array( FILTER_FLAG_NO_RES_RANGE, FILTER_FLAG_IPV6 )
 		);
+
+		return $ip ?: '0.0.0.0';
 	}
 }
