@@ -1,7 +1,12 @@
 /**
+ * External dependencies
+ */
+import { canvas } from '@wordpress/e2e-test-utils';
+
+/**
  * Internal dependencies
  */
-import { selectBlockByName } from './select-block-by-name';
+import { selectBlockByName } from '.';
 
 /**
  * Inserts an inner block into the currently selected block. If a parent block
@@ -20,7 +25,7 @@ export const insertInnerBlock = async (
 	if ( parentBlockName ) {
 		await selectBlockByName( parentBlockName );
 	}
-	const blockInserterButton = await page.waitForSelector(
+	const blockInserterButton = await canvas().waitForSelector(
 		'.block-editor-inserter button'
 	);
 	await blockInserterButton.click();
