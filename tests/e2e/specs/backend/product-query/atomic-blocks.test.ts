@@ -23,6 +23,14 @@ const block = {
 	name: 'Product Query',
 	slug: 'woocommerce/product-query',
 	class: '.wp-block-query',
+	selectors: {
+		productButton: '.wc-block-components-product-button',
+		productPrice: '.wc-block-components-product-image',
+		productRating: '.wc-block-components-product-rating',
+		productImage: {
+			editor: 'li.block-editor-block-list__layout .wc-block-components-product-image',
+		},
+	},
 };
 
 describeOrSkip( GUTENBERG_EDITOR_CONTEXT === 'gutenberg' )(
@@ -46,7 +54,7 @@ describeOrSkip( GUTENBERG_EDITOR_CONTEXT === 'gutenberg' )(
 				'core/post-template'
 			);
 			await expect( canvas() ).toMatchElement(
-				'.wp-block-woocommerce-product-button',
+				block.selectors.productButton,
 				{
 					text: 'Add to cart',
 				}
@@ -54,7 +62,7 @@ describeOrSkip( GUTENBERG_EDITOR_CONTEXT === 'gutenberg' )(
 			await saveOrPublish();
 
 			await shopper.block.goToBlockPage( block.name );
-			await page.waitForSelector( '.wc-block-components-product-button' );
+			await page.waitForSelector( block.selectors.productButton );
 			await expect( page ).toClick( 'button', {
 				text: 'Add to cart',
 			} );
@@ -72,7 +80,7 @@ describeOrSkip( GUTENBERG_EDITOR_CONTEXT === 'gutenberg' )(
 			await insertInnerBlock( 'Product Image', 'core/post-template' );
 			expect(
 				await canvas().$$eval(
-					`ul.wp-block-post-template > li.block-editor-block-list__layout .wp-block-woocommerce-product-image`,
+					block.selectors.productImage.editor,
 					( images ) => images.length
 				)
 			).toEqual( 2 );
@@ -82,7 +90,7 @@ describeOrSkip( GUTENBERG_EDITOR_CONTEXT === 'gutenberg' )(
 			const fixturePrices = getFixtureProductsData( 'regular_price' );
 			await insertInnerBlock( 'Product Price', 'core/post-template' );
 			await expect( canvas() ).toMatchElement(
-				'.wc-block-components-product-price',
+				block.selectors.productPrice,
 				{
 					text: fixturePrices.some( Boolean ),
 				}
@@ -90,26 +98,23 @@ describeOrSkip( GUTENBERG_EDITOR_CONTEXT === 'gutenberg' )(
 			await saveOrPublish();
 
 			await shopper.block.goToBlockPage( block.name );
-			await page.waitForSelector( '.wc-block-components-product-price' );
-			await expect( page ).toMatchElement(
-				'.wp-block-query .woocommerce-Price-amount',
-				{
-					text: fixturePrices.some( Boolean ),
-				}
-			);
+			await page.waitForSelector( block.selectors.productPrice );
+			await expect( page ).toMatchElement( block.selectors.productPrice, {
+				text: fixturePrices.some( Boolean ),
+			} );
 		} );
 
 		it( 'Can add the Product Ratings block and render it on the front end', async () => {
 			await insertInnerBlock( 'Product Rating', 'core/post-template' );
 			await expect( canvas() ).toMatchElement(
-				'.wc-block-components-product-rating'
+				block.selectors.productRating
 			);
 			await saveOrPublish();
 
 			await shopper.block.goToBlockPage( block.name );
 			expect(
 				await page.$$eval(
-					'.wc-block-components-product-rating',
+					block.selectors.productRating,
 					( rows ) => rows.length
 				)
 			).toEqual( 5 );
