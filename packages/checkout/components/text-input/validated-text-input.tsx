@@ -2,7 +2,13 @@
  * External dependencies
  */
 import { __ } from '@wordpress/i18n';
-import { useCallback, useRef, useEffect, useState } from 'react';
+import {
+	useCallback,
+	useRef,
+	useEffect,
+	useState,
+	InputHTMLAttributes,
+} from 'react';
 import classnames from 'classnames';
 import { withInstanceId } from '@wordpress/compose';
 import { isObject, isString } from '@woocommerce/types';
@@ -16,7 +22,11 @@ import TextInput from './text-input';
 import './style.scss';
 import { ValidationInputError } from '../validation-input-error';
 
-interface ValidatedTextInputProps {
+interface ValidatedTextInputProps
+	extends Omit<
+		InputHTMLAttributes< HTMLInputElement >,
+		'onChange' | 'onBlur'
+	> {
 	id?: string;
 	instanceId: string;
 	className?: string | undefined;
