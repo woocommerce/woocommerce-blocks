@@ -6,6 +6,7 @@ import {
 	visitBlockPage,
 	saveOrPublish,
 	shopper,
+	insertInnerBlock,
 } from '@woocommerce/blocks-test-utils';
 
 /**
@@ -38,19 +39,17 @@ describeOrSkip( GUTENBERG_EDITOR_CONTEXT === 'gutenberg' )(
 			await saveOrPublish();
 		} );
 
-		it( 'Can add the Add to Cart Button block and render it on the front end.', async () => {
-			const canvasEl = canvas();
-			await canvasEl.waitForSelector(
-				`${ block.class } .wp-block-woocommerce-product-image a img`
+		it( 'Can add the Add to Cart Button block and render it on the front end', async () => {
+			await insertInnerBlock(
+				'Add to Cart Button',
+				'core/post-template'
 			);
-			const postTitleEl = await canvasEl.$(
-				`${ block.class } .wp-block-post-title`
+			await expect( canvas() ).toMatchElement(
+				'.wp-block-query .wp-block-woocommerce-product-button',
+				{
+					text: 'Add to cart',
+				}
 			);
-			await postTitleEl.click();
-			await insertBlock( 'Add to Cart Button' );
-			await expect( canvasEl ).toMatchElement( block.class, {
-				text: 'Add to cart',
-			} );
 			await saveOrPublish();
 
 			await shopper.block.goToBlockPage( block.name );
@@ -71,33 +70,23 @@ describeOrSkip( GUTENBERG_EDITOR_CONTEXT === 'gutenberg' )(
 		} );
 
 		it( 'Can add the Product Image block', async () => {
-			const canvasEl = canvas();
-			await canvasEl.waitForSelector(
-				`${ block.class } .wp-block-woocommerce-product-image a img`
-			);
-			const postTitleEl = await canvasEl.$(
-				`${ block.class } .wp-block-post-title`
-			);
-			await postTitleEl.click();
-			await insertBlock( 'Product Image' );
+			await insertInnerBlock( 'Product Image', 'core/post-template' );
 			expect(
-				await canvasEl.$$eval(
-					`${ block.class } ul.wp-block-post-template > li.block-editor-block-list__layout .wp-block-woocommerce-product-image`,
+				await canvas().$$eval(
+					`ul.wp-block-post-template > li.block-editor-block-list__layout .wp-block-woocommerce-product-image`,
 					( images ) => images.length
 				)
 			).toEqual( 2 );
 		} );
 
 		it( 'Can add the Product Price block and render it on the front end', async () => {
-			const canvasEl = canvas();
-			await canvasEl.waitForSelector(
-				`${ block.class } .wp-block-woocommerce-product-image a img`
+			await insertInnerBlock( 'Product Price', 'core/post-template' );
+			await expect( canvas() ).toMatchElement(
+				'.wp-block-query .wc-block-components-product-price__value',
+				{
+					text: '2.99',
+				}
 			);
-			const postTitleEl = await canvasEl.$(
-				`${ block.class } .wp-block-post-title`
-			);
-			await postTitleEl.click();
-			await insertBlock( 'Product Price' );
 			await saveOrPublish();
 
 			await shopper.block.goToBlockPage( block.name );
@@ -113,15 +102,10 @@ describeOrSkip( GUTENBERG_EDITOR_CONTEXT === 'gutenberg' )(
 		} );
 
 		it( 'Can add the Product Ratings block and render it on the front end', async () => {
-			const canvasEl = canvas();
-			await canvasEl.waitForSelector(
-				`${ block.class } .wp-block-woocommerce-product-image a img`
+			await insertInnerBlock( 'Product Rating', 'core/post-template' );
+			await expect( canvas() ).toMatchElement(
+				'.wp-block-query .wc-block-components-product-rating'
 			);
-			const postTitleEl = await canvasEl.$(
-				`${ block.class } .wp-block-post-title`
-			);
-			await postTitleEl.click();
-			await insertBlock( 'Product Rating' );
 			await saveOrPublish();
 
 			await shopper.block.goToBlockPage( block.name );
