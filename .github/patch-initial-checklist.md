@@ -1,4 +1,4 @@
-# Patch test
+# Patch release steps
 
 The release pull request has been created! This checklist is a guide to follow for the remainder of the patch release process. You can check off each item in this list once completed.
 
