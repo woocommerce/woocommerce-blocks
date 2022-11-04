@@ -40,7 +40,7 @@ jobs:
 
             - name: blocks.ini setup
               run: |
-                  echo -e 'woocommerce_blocks_phase = 3\nwoocommerce_blocks_env = tests' > blocks.ini
+                  echo -e 'woocommerce_blocks_phase = 3\nwoocommerce_blocks_env = test' > blocks.ini
             - name: Get Composer Cache Directory
               id: composer-cache
               run: |
@@ -61,6 +61,12 @@ jobs:
             - name: Composer install
               run: |
                   composer install
+                
+            - name: Setup Permissions
+              run: |
+                mkdir -p ./wp-content/languages
+                chmod -R 777 ./    
+                
             - name: E2E Tests (WP latest with Gutenberg plugin)
               env:
                   WOOCOMMERCE_BLOCKS_PHASE: 3
@@ -121,7 +127,7 @@ jobs:
 
             - name: blocks.ini setup
               run: |
-                  echo -e 'woocommerce_blocks_phase = 3\nwoocommerce_blocks_env = tests' > blocks.ini
+                  echo -e 'woocommerce_blocks_phase = 3\nwoocommerce_blocks_env = test' > blocks.ini
             - name: Get Composer Cache Directory
               id: composer-cache
               run: |
@@ -144,6 +150,11 @@ jobs:
               run: |
                   composer install
 
+            - name: Setup Permissions
+              run: |
+                mkdir -p ./wp-content/languages
+                chmod -R 777 ./    
+            
             - name: E2E Tests (WP latest)
               env:
                   WOOCOMMERCE_BLOCKS_PHASE: 3
