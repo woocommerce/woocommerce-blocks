@@ -122,7 +122,11 @@ const ValidatedTextInput = ( {
 		};
 	}, [ clearValidationError, errorIdString ] );
 
-	if ( isString( passedErrorMessage ) && passedErrorMessage !== '' ) {
+	if (
+		isString( passedErrorMessage ) &&
+		passedErrorMessage !== '' &&
+		isObject( passedErrorMessage )
+	) {
 		validationError.message = passedErrorMessage;
 	}
 
