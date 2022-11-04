@@ -2,7 +2,6 @@
  * External dependencies
  */
 import { Card, CardBody } from '@wordpress/components';
-import classNames from 'classnames';
 import styled from '@emotion/styled';
 
 const StyledCardBody = styled( CardBody )`
@@ -47,19 +46,12 @@ const StyledCardBody = styled( CardBody )`
 
 const SettingsCard = ( {
 	children,
-	className = '',
 	...props
 }: {
 	children: JSX.Element | JSX.Element[];
-	className?: string;
 } ): JSX.Element => (
 	<Card>
-		<StyledCardBody
-			className={ classNames( 'wc-blocks-settings-card', className ) }
-			{ ...props }
-		>
-			{ children }
-		</StyledCardBody>
+		<StyledCardBody { ...props }>{ children }</StyledCardBody>
 	</Card>
 );
 

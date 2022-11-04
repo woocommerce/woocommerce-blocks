@@ -2,7 +2,6 @@
  * External dependencies
  */
 import { Modal } from '@wordpress/components';
-import classNames from 'classnames';
 import { HorizontalRule } from '@wordpress/primitives';
 import styled from '@emotion/styled';
 
@@ -57,28 +56,19 @@ const StyledFooter = styled.div`
 const SettingsModal = ( {
 	children,
 	actions,
-	className,
 	title,
 	onRequestClose,
 	...props
 }: {
 	children: React.ReactNode;
 	actions: React.ReactNode;
-	className?: string;
 	title: string;
 	onRequestClose: () => void;
 } ): JSX.Element => (
-	<StyledModal
-		className={ classNames( 'wc-blocks-settings-modal', className ) }
-		title={ title }
-		onRequestClose={ onRequestClose }
-		{ ...props }
-	>
+	<StyledModal title={ title } onRequestClose={ onRequestClose } { ...props }>
 		{ children }
-		<StyledSeparator className="wc-blocks-settings-modal__separator" />
-		<StyledFooter className="wc-blocks-settings-modal__footer">
-			{ actions }
-		</StyledFooter>
+		<StyledSeparator />
+		<StyledFooter>{ actions }</StyledFooter>
 	</StyledModal>
 );
 
