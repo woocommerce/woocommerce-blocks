@@ -29,9 +29,7 @@
 <!-- /wp:column -->
 
 <!-- wp:column {"width":"20%","style":{"spacing":{"padding":{"top":"0px"}}}} -->
-<div class="wp-block-column" style="padding-top:0px;flex-basis:20%"><!-- wp:navigation {"layout":{"type":"flex","orientation":"vertical"}} -->
-<!-- wp:page-list /-->
-<!-- /wp:navigation --></div>
+<div class="wp-block-column" style="padding-top:0px;flex-basis:20%"><!-- wp:navigation {"layout":{"type":"flex","orientation":"vertical"}} /--></div>
 <!-- /wp:column -->
 
 <!-- wp:column {"verticalAlignment":"top","width":"20%","style":{"spacing":{"blockGap":"16px"}}} -->
