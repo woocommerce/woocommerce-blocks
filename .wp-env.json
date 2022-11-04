@@ -20,6 +20,5 @@
 		"WP_PHP_BINARY": "php",
 		"WP_TESTS_DIR": "./tests/php",
 		"WP_PHPUNIT__TESTS_CONFIG": "./vendor/wp-phpunit/wp-phpunit/wp-tests-config.php"
-	},
-	"phpVersion": "7.4"
+	}
 }
