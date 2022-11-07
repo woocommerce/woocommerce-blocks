@@ -6,17 +6,29 @@ import { HorizontalRule } from '@wordpress/primitives';
 import styled from '@emotion/styled';
 
 const StyledModal = styled( Modal )`
-	// increasing the specificity of the styles, to ensure it is honored
-	&#{&} {
-		max-width: 600px;
-		@media ( min-width: 600px ) {
-			min-width: 400px;
+	max-width: 600px;
+	@media ( min-width: 600px ) {
+		min-width: 560px;
+	}
+
+	.components-modal__header {
+		padding: 12px 24px;
+		border-bottom: 1px solid #e0e0e0;
+		position: relative;
+		height: auto;
+		width: auto;
+		margin: 0 -24px 16px;
+
+		@media ( max-width: 599px ) {
+			button {
+				display: none;
+			}
 		}
 	}
 
-	// to ensure that the separator extends all the way, even with different versions of Gutenberg
 	.components-modal__content {
-		padding: 0 24px 16px;
+		margin: 0;
+		padding: 0 24px;
 
 		@media ( max-width: 599px ) {
 			display: flex;
@@ -26,30 +38,28 @@ const StyledModal = styled( Modal )`
 				margin-top: auto;
 			}
 		}
-	}
 
-	.components-modal__header {
-		padding: 0 24px;
-		@media ( max-width: 599px ) {
-			button {
-				display: none;
-			}
+		label {
+			margin-top: 8px;
 		}
 	}
-`;
-
-const StyledSeparator = styled( HorizontalRule )`
-	margin: 16px -#{24px};
 `;
 
 const StyledFooter = styled.div`
 	display: flex;
 	justify-content: flex-end;
+	border-top: 1px solid #e0e0e0;
+	margin: 24px -24px 0;
+	padding: 24px;
 
 	> * {
 		&:not( :first-of-type ) {
 			margin-left: 8px;
 		}
+	}
+
+	.is-link {
+		margin-right: auto;
 	}
 `;
 
@@ -67,7 +77,6 @@ const SettingsModal = ( {
 } ): JSX.Element => (
 	<StyledModal title={ title } onRequestClose={ onRequestClose } { ...props }>
 		{ children }
-		<StyledSeparator />
 		<StyledFooter>{ actions }</StyledFooter>
 	</StyledModal>
 );

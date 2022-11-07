@@ -18,11 +18,13 @@ const EditLocation = ( {
 	editingLocation,
 	onClose,
 	onSave,
+	onDelete,
 }: {
 	locationData: PickupLocation | null;
 	editingLocation: UniqueIdentifier | 'new';
 	onClose: () => void;
 	onSave: ( location: PickupLocation ) => void;
+	onDelete: () => void;
 } ): JSX.Element | null => {
 	const formRef = useRef( null );
 	const [ values, setValues ] = useState< PickupLocation >(
@@ -38,10 +40,7 @@ const EditLocation = ( {
 			onRequestClose={ onClose }
 			title={
 				editingLocation === 'new'
-					? __(
-							'Add Pickup Location',
-							'woo-gutenberg-products-block'
-					  )
+					? __( 'Pickup Location', 'woo-gutenberg-products-block' )
 					: __(
 							'Edit Pickup Location',
 							'woo-gutenberg-products-block'
@@ -49,6 +48,21 @@ const EditLocation = ( {
 			}
 			actions={
 				<>
+					{ editingLocation !== 'new' && (
+						<Button
+							variant="link"
+							className="button-link-delete"
+							onClick={ () => {
+								onDelete();
+								onClose();
+							} }
+						>
+							{ __(
+								'Delete location',
+								'woo-gutenberg-products-block'
+							) }
+						</Button>
+					) }
 					<Button variant="secondary" onClick={ onClose }>
 						{ __( 'Cancel', 'woo-gutenberg-products-block' ) }
 					</Button>

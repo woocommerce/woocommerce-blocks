@@ -6,6 +6,7 @@ import { useState } from '@wordpress/element';
 import type { UniqueIdentifier } from '@dnd-kit/core';
 import { isObject, isBoolean } from '@woocommerce/types';
 import { ToggleControl, Button } from '@wordpress/components';
+import styled from '@emotion/styled';
 
 /**
  * Internal dependencies
@@ -31,6 +32,13 @@ const LocationSettingsDescription = () => (
 	</>
 );
 
+const StyledAddress = styled.address`
+	color: #757575;
+	font-style: normal;
+	display: inline;
+	margin-left: 12px;
+`;
+
 const LocationSettings = () => {
 	const {
 		pickupLocations,
@@ -44,32 +52,17 @@ const LocationSettings = () => {
 	const tableColumns = [
 		{
 			name: 'name',
-			label: __( 'Location Name', 'woo-gutenberg-products-block' ),
-			width: '25%',
+			label: __( 'Pickup Location', 'woo-gutenberg-products-block' ),
+			width: '50%',
 			renderCallback: ( row: SortableData ): JSX.Element => (
 				<>
 					{ row.name }
-					<div className="row-actions">
-						<button
-							type="button"
-							className="button-link-edit button-link"
-							onClick={ () => {
-								setEditingLocation( row.id );
-							} }
-						>
-							{ __( 'Edit', 'woo-gutenberg-products-block' ) }
-						</button>{ ' ' }
-						|{ ' ' }
-						<button
-							type="button"
-							className="button-link button-link-delete"
-							onClick={ () => {
-								updateLocation( row.id )( null );
-							} }
-						>
-							{ __( 'Delete', 'woo-gutenberg-products-block' ) }
-						</button>
-					</div>
+					<StyledAddress>
+						{ isObject( row.address ) &&
+							Object.values( row.address )
+								.filter( ( value ) => value !== '' )
+								.join( ', ' ) }
+					</StyledAddress>
 				</>
 			),
 		},
@@ -85,22 +78,20 @@ const LocationSettings = () => {
 			),
 		},
 		{
-			name: 'address',
-			label: __( 'Pickup Address', 'woo-gutenberg-products-block' ),
-			width: '25%',
+			name: 'edit',
+			label: '',
+			align: 'right',
 			renderCallback: ( row: SortableData ): JSX.Element => (
-				<>
-					{ isObject( row.address ) &&
-						Object.values( row.address )
-							.filter( ( value ) => value !== '' )
-							.join( ', ' ) }
-				</>
+				<button
+					type="button"
+					className="button-link-edit button-link"
+					onClick={ () => {
+						setEditingLocation( row.id );
+					} }
+				>
+					{ __( 'Edit', 'woo-gutenberg-products-block' ) }
+				</button>
 			),
-		},
-		{
-			name: 'details',
-			label: __( 'Pickup Details', 'woo-gutenberg-products-block' ),
-			width: '25%',
 		},
 	];
 
@@ -148,6 +139,10 @@ const LocationSettings = () => {
 					editingLocation={ editingLocation }
 					onSave={ updateLocation( editingLocation ) }
 					onClose={ () => setEditingLocation( '' ) }
+					onDelete={ () => {
+						updateLocation( editingLocation )( null );
+						setEditingLocation( '' );
+					} }
 				/>
 			) }
 		</SettingsSection>

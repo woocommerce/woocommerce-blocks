@@ -2,11 +2,7 @@
  * External dependencies
  */
 import { __ } from '@wordpress/i18n';
-import {
-	SelectControl,
-	TextareaControl,
-	TextControl,
-} from '@wordpress/components';
+import { SelectControl, TextControl } from '@wordpress/components';
 import { getSetting } from '@woocommerce/settings';
 
 /**
@@ -58,7 +54,7 @@ const Form = ( {
 				autoComplete="off"
 			/>
 			<TextControl
-				label={ __( 'Pickup Address', 'woo-gutenberg-products-block' ) }
+				label={ __( 'Address', 'woo-gutenberg-products-block' ) }
 				placeholder={ __( 'Address', 'woo-gutenberg-products-block' ) }
 				value={ values.address.address_1 }
 				onChange={ setLocationAddressField( 'address_1' ) }
@@ -117,7 +113,7 @@ const Form = ( {
 					),
 				] }
 			/>
-			<TextareaControl
+			<TextControl
 				label={ __( 'Pickup Details', 'woo-gutenberg-products-block' ) }
 				value={ values.details }
 				onChange={ setLocationField( 'details' ) }
