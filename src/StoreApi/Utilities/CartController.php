@@ -194,7 +194,11 @@ class CartController {
 		$quantity_validation = ( new QuantityLimits() )->validate_cart_item_quantity( $quantity, $cart_item );
 
 		if ( is_wp_error( $quantity_validation ) ) {
-			throw new RouteException( $quantity_validation->get_error_code(), $quantity_validation->get_error_message(), 400 );
+			throw new RouteException(
+				$quantity_validation->get_error_code(),
+				$quantity_validation->get_error_message(),
+				409
+			);
 		}
 
 		$cart = $this->get_cart_instance();
