@@ -71,8 +71,9 @@ const TableRow = ( {
 
 const StyledTable = styled.table`
 	background: #fff;
-	border: 1px solid #c3c4c7;
-	box-shadow: 0 1px 1px rgb( 0 0 0 / 4% );
+	border: 0;
+	border-radius: 3px;
+	box-shadow: 0 0 0 1px rgb( 0 0 0 / 10% );
 	border-spacing: 0;
 	width: 100%;
 	clear: both;
@@ -113,16 +114,11 @@ const StyledTable = styled.table`
 		text-align: left;
 		vertical-align: middle;
 		vertical-align: top;
-		border-bottom: 1px solid #c3c4c7;
 		word-wrap: break-word;
 	}
 
 	tbody {
-		tr:nth-of-type( odd ) td {
-			background: #f9f9f9;
-		}
 		td {
-			border-top: 2px solid #f9f9f9;
 			vertical-align: top;
 			margin-bottom: 9px;
 		}
@@ -140,6 +136,8 @@ const StyledTable = styled.table`
 	tbody {
 		td,
 		th {
+			border-top: 1px solid rgb( 0 0 0 / 10% );
+			border-bottom: 1px solid rgb( 0 0 0 / 10% );
 			padding: 16px 0 16px 24px;
 			line-height: 1.5;
 
@@ -152,6 +150,14 @@ const StyledTable = styled.table`
 				margin: 3px 0;
 			}
 		}
+	}
+
+	thead th {
+		border-top: 0;
+	}
+
+	tfoot td {
+		border-bottom: 0;
 	}
 `;
 

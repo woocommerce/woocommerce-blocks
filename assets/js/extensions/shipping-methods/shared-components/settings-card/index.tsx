@@ -4,6 +4,10 @@
 import { Card, CardBody } from '@wordpress/components';
 import styled from '@emotion/styled';
 
+const StyledCard = styled( Card )`
+	border-radius: 3px;
+`;
+
 const StyledCardBody = styled( CardBody )`
 	// increasing the specificity of the styles to override the Gutenberg ones
 	&.is-size-medium.is-size-medium {
@@ -50,9 +54,9 @@ const SettingsCard = ( {
 }: {
 	children: ( JSX.Element | null )[];
 } ): JSX.Element => (
-	<Card>
+	<StyledCard>
 		<StyledCardBody { ...props }>{ children }</StyledCardBody>
-	</Card>
+	</StyledCard>
 );
 
 export default SettingsCard;
