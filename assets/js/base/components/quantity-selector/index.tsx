@@ -7,6 +7,7 @@ import classNames from 'classnames';
 import { useCallback, useLayoutEffect } from '@wordpress/element';
 import { DOWN, UP } from '@wordpress/keycodes';
 import { useDebouncedCallback } from 'use-debounce';
+import ValidationInputError from '@woocommerce/base-components/validation-input-error';
 import { withInstanceId } from '@wordpress/compose';
 import { useDispatch } from '@wordpress/data';
 import {
@@ -326,6 +327,13 @@ const QuantitySelector = ( {
 			>
 				&#65291;
 			</button>
+			{ ! strictLimits && (
+				<div>
+					<ValidationInputError propertyName={ maxErrorId } />
+					<ValidationInputError propertyName={ minErrorId } />
+					<ValidationInputError propertyName={ stepErrorId } />
+				</div>
+			) }
 		</div>
 	);
 };
