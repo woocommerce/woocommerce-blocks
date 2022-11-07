@@ -131,6 +131,8 @@ class ProductQuery extends AbstractBlock {
 			$global_query
 		);
 
+		do_action( 'qm/debug', $base_query );
+
 		return array_reduce(
 			array_merge(
 				$queries_by_attributes,
@@ -486,11 +488,23 @@ class ProductQuery extends AbstractBlock {
 			return array();
 		}
 
-		return array(
-			'taxonomy' => isset( $wp_query->query_vars['taxonomy'] ) ? $wp_query->query_vars['taxonomy'] : '',
-			'term'     => isset( $wp_query->query_vars['term'] ) ? $wp_query->query_vars['term'] : '',
-			's'        => isset( $wp_query->query_vars['s'] ) ? $wp_query->query_vars['s'] : '',
-		);
+		$query = array();
+
+		if ( isset( $wp_query->query_vars['taxonomy'] ) && isset( $wp_query->query_vars['term'] ) ) {
+			$query['tax_query'] = array(
+				array(
+					'taxonomy' => $wp_query->query_vars['taxonomy'],
+					'field'    => 'slug',
+					'terms'    => $wp_query->query_vars['term'],
+				),
+			);
+		}
+
+		if ( isset( $wp_query->query_vars['s'] ) ) {
+			$query['s'] = $wp_query->query_vars['s'];
+		}
+
+		return $query;
 	}
 
 }
