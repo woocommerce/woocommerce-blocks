@@ -35,10 +35,21 @@ export const showAllValidationErrors = () => ( {
 	type: types.SHOW_ALL_VALIDATION_ERRORS,
 } );
 
+/**
+ * Clears validation errors for the given ids.
+ *
+ * @param  errors Array of error ids to clear.
+ */
+export const clearValidationErrors = ( errors: string[] ) => ( {
+	type: types.CLEAR_VALIDATION_ERRORS,
+	errors,
+} );
+
 export type ValidationAction = ReturnOrGeneratorYieldUnion<
 	| typeof setValidationErrors
 	| typeof clearAllValidationErrors
 	| typeof clearValidationError
+	| typeof clearValidationErrors
 	| typeof hideValidationError
 	| typeof showValidationError
 	| typeof showAllValidationErrors
