@@ -9,7 +9,7 @@ import { DOWN, UP } from '@wordpress/keycodes';
 import { useDebouncedCallback } from 'use-debounce';
 import ValidationInputError from '@woocommerce/base-components/validation-input-error';
 import { withInstanceId } from '@wordpress/compose';
-import { useDispatch } from '@wordpress/data';
+import { useDispatch, useSelect } from '@wordpress/data';
 import { VALIDATION_STORE_KEY } from '@woocommerce/block-data';
 
 /**
@@ -168,6 +168,10 @@ const QuantitySelector = ( {
 
 	const errorId = `wc-block-components-quantity-selector-error-${ instanceId }`;
 
+	const hasValidationErrors = useSelect( ( select ) => {
+		return select( VALIDATION_STORE_KEY ).hasValidationErrors();
+	} );
+
 	const createErrorMessage = useCallback(
 		( newQuantity: number ): string => {
 			const errorMessages = [];
@@ -324,7 +328,7 @@ const QuantitySelector = ( {
 					&#65291;
 				</button>
 			</div>
-			{ ! strictLimits && (
+			{ hasValidationErrors && ! strictLimits && (
 				<div>
 					<ValidationInputError propertyName={ errorId } />
 				</div>
