@@ -44,7 +44,8 @@ const getAmountFromRawPrice = (
 	return priceObject.convertPrecision( currency.minorUnit ).getAmount();
 };
 
-const productPriceValidation = ( value ) => mustContain( value, '<price/>' );
+const productPriceValidation = ( value: string ) =>
+	mustContain( value, '<price/>' );
 
 interface CartLineItemRowProps {
 	lineItem: CartItem | Record< string, never >;
