@@ -1539,11 +1539,6 @@
               Types of parameters &apos;__0&apos; and &apos;props&apos; are incompatible.
                 Property &apos;context&apos; is missing in type &apos;BlockEditProps&lt;{}&gt; &amp; { children?: ReactNode; }&apos; but required in type &apos;{ attributes: any; setAttributes: any; context: any; }&apos;." source="TS2769" />
 </file>
-<file name="assets/js/atomic/blocks/product-elements/summary/index.ts">
-<error line="28" column="2" severity="error" message="Type &apos;{ color?: { text: boolean; background: boolean; link: boolean; }; typography?: { fontSize: boolean; }; __experimentalSelector?: string; }&apos; is not assignable to type &apos;BlockSupports&apos;.
-  The types of &apos;color.text&apos; are incompatible between these types.
-    Type &apos;boolean&apos; is not assignable to type &apos;string&apos;." source="TS2322" />
-</file>
 <file name="assets/js/editor-components/edit-product-link/index.js">
 <error line="18" column="40" severity="error" message="Property &apos;productId&apos; does not exist on type &apos;Object&apos;." source="TS2339" />
 </file>
