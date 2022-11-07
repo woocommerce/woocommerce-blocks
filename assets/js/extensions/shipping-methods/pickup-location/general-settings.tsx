@@ -10,6 +10,7 @@ import {
 	TextControl,
 	ExternalLink,
 } from '@wordpress/components';
+import { useState } from '@wordpress/element';
 
 /**
  * Internal dependencies
@@ -36,6 +37,7 @@ const GeneralSettingsDescription = () => (
 
 const GeneralSettings = () => {
 	const { settings, setSettingField } = useSettingsContext();
+	const [ showCosts, setShowCosts ] = useState( !! settings.cost );
 
 	return (
 		<SettingsSection Description={ GeneralSettingsDescription }>
@@ -48,14 +50,14 @@ const GeneralSettings = () => {
 						'woo-gutenberg-products-block'
 					) }
 					help={ __(
-						'When enabled, this method will appear on the block based checkout.',
+						'When enabled, local pickup will appear as an option on the block based checkout.',
 						'woo-gutenberg-products-block'
 					) }
 				/>
 				<TextControl
 					label={ __( 'Title', 'woo-gutenberg-products-block' ) }
 					help={ __(
-						'This is the shipping method title shown to customers alongside the pickup location name.',
+						'This is the shipping method title shown to customers.',
 						'woo-gutenberg-products-block'
 					) }
 					placeholder={ __(
@@ -67,46 +69,72 @@ const GeneralSettings = () => {
 					disabled={ false }
 					autoComplete="off"
 				/>
-				<TextControl
-					label={ __( 'Cost', 'woo-gutenberg-products-block' ) }
-					help={ __(
-						'Optional cost to charge for local pickup.',
+				<CheckboxControl
+					checked={ showCosts }
+					onChange={ () => {
+						setShowCosts( ! showCosts );
+						setSettingField( 'cost' )( '' );
+					} }
+					label={ __(
+						'Add a price for customers who choose local pickup',
 						'woo-gutenberg-products-block'
 					) }
-					placeholder={ __( 'Free', 'woo-gutenberg-products-block' ) }
-					type="number"
-					value={ settings.cost }
-					onChange={ setSettingField( 'cost' ) }
-					disabled={ false }
-					autoComplete="off"
+					help={ __(
+						'By default, the local pickup shipping method is free.',
+						'woo-gutenberg-products-block'
+					) }
 				/>
-				{ settings.cost !== '' ? (
-					<SelectControl
-						label={ __( 'Taxes', 'woo-gutenberg-products-block' ) }
-						help={ __(
-							'If a cost is defined, this controls if taxes are applied to that cost.',
-							'woo-gutenberg-products-block'
-						) }
-						options={ [
-							{
-								label: __(
-									'Taxable',
-									'woo-gutenberg-products-block'
-								),
-								value: 'taxable',
-							},
-							{
-								label: __(
-									'Not taxable',
-									'woo-gutenberg-products-block'
-								),
-								value: 'none',
-							},
-						] }
-						value={ settings.tax_status }
-						onChange={ setSettingField( 'tax_status' ) }
-						disabled={ false }
-					/>
+				{ showCosts ? (
+					<>
+						<TextControl
+							label={ __(
+								'Cost',
+								'woo-gutenberg-products-block'
+							) }
+							help={ __(
+								'Optional cost to charge for local pickup.',
+								'woo-gutenberg-products-block'
+							) }
+							placeholder={ __(
+								'Free',
+								'woo-gutenberg-products-block'
+							) }
+							type="number"
+							value={ settings.cost }
+							onChange={ setSettingField( 'cost' ) }
+							disabled={ false }
+							autoComplete="off"
+						/>
+						<SelectControl
+							label={ __(
+								'Taxes',
+								'woo-gutenberg-products-block'
+							) }
+							help={ __(
+								'If a cost is defined, this controls if taxes are applied to that cost.',
+								'woo-gutenberg-products-block'
+							) }
+							options={ [
+								{
+									label: __(
+										'Taxable',
+										'woo-gutenberg-products-block'
+									),
+									value: 'taxable',
+								},
+								{
+									label: __(
+										'Not taxable',
+										'woo-gutenberg-products-block'
+									),
+									value: 'none',
+								},
+							] }
+							value={ settings.tax_status }
+							onChange={ setSettingField( 'tax_status' ) }
+							disabled={ false }
+						/>
+					</>
 				) : null }
 			</SettingsCard>
 		</SettingsSection>
