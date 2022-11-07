@@ -58,7 +58,7 @@ interface CartLineItemRowProps {
  */
 const CartLineItemRow = forwardRef< HTMLTableRowElement, CartLineItemRowProps >(
 	(
-		{ lineItem, onRemove = () => void null, tabIndex = null },
+		{ lineItem, onRemove = () => void null, tabIndex },
 		ref
 	): JSX.Element => {
 		const {
