@@ -45,6 +45,17 @@ const reducer: Reducer< Record< string, FieldValidationStatus > > = (
 			}
 			delete newState[ action.error ];
 			return newState;
+		case types.CLEAR_VALIDATION_ERRORS:
+			const { errors } = action;
+			if ( ! Array.isArray( errors ) ) {
+				return newState;
+			}
+			errors.forEach( ( error ) => {
+				if ( newState.hasOwnProperty( error ) ) {
+					delete newState[ error ];
+				}
+			} );
+			return newState;
 		case types.HIDE_VALIDATION_ERROR:
 			if (
 				! isString( action.error ) ||
