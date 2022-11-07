@@ -6,9 +6,7 @@ import { isFeaturePluginBuild } from '@woocommerce/block-settings';
 export const supports = {
 	...( isFeaturePluginBuild() && {
 		color: {
-			text: '',
 			background: false,
-			link: false,
 		},
 		typography: {
 			fontSize: true,
