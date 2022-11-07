@@ -8,6 +8,12 @@ import { useCallback, useLayoutEffect } from '@wordpress/element';
 import { DOWN, UP } from '@wordpress/keycodes';
 import { useDebouncedCallback } from 'use-debounce';
 import { withInstanceId } from '@wordpress/compose';
+import { useDispatch } from '@wordpress/data';
+import {
+	FieldValidationStatus,
+	VALIDATION_STORE_KEY,
+} from '@woocommerce/block-data';
+import { isNull } from '@woocommerce/types';
 
 /**
  * Internal dependencies
@@ -220,6 +226,22 @@ const QuantitySelector = ( {
 		}
 		return errorMessages;
 	}, [ quantity, minimum, maximum, step ] );
+
+	const { setValidationErrors, clearValidationErrors } =
+		useDispatch( VALIDATION_STORE_KEY );
+
+	useLayoutEffect( () => {
+		const errors = validateQuantity();
+		clearValidationErrors( Object.keys( errors ) );
+		const currentErrors: Record< string, FieldValidationStatus > = {};
+		Object.keys( errors ).forEach( ( key ) => {
+			if ( ! isNull( errors[ key ] ) ) {
+				currentErrors[ key ] = errors[ key ] as FieldValidationStatus;
+			}
+		} );
+		setValidationErrors( currentErrors );
+	}, [ quantity, validateQuantity ] );
+
 	return (
 		<div className={ classes }>
 			<input
@@ -227,8 +249,8 @@ const QuantitySelector = ( {
 				disabled={ disabled }
 				type="number"
 				step={ step }
-					min={ strictLimits ? minimum : undefined }
-					max={ strictLimits ? maximum : undefined }
+				min={ strictLimits ? minimum : undefined }
+				max={ strictLimits ? maximum : undefined }
 				value={ quantity }
 				onKeyDown={ quantityInputOnKeyDown }
 				onChange={ ( event ) => {
