@@ -10,11 +10,7 @@ import { useDebouncedCallback } from 'use-debounce';
 import ValidationInputError from '@woocommerce/base-components/validation-input-error';
 import { withInstanceId } from '@wordpress/compose';
 import { useDispatch } from '@wordpress/data';
-import {
-	FieldValidationStatus,
-	VALIDATION_STORE_KEY,
-} from '@woocommerce/block-data';
-import { isNull } from '@woocommerce/types';
+import { VALIDATION_STORE_KEY } from '@woocommerce/block-data';
 
 /**
  * Internal dependencies
@@ -170,78 +166,71 @@ const QuantitySelector = ( {
 		[ quantity, onChange, canIncrease, canDecrease, step ]
 	);
 
-	const maxErrorId = `${ instanceId }-quantity-max`;
-	const minErrorId = `${ instanceId }-quantity-min`;
-	const wrongMultipleErrorId = `${ instanceId }-quantity-step`;
+	const errorId = `wc-block-components-quantity-selector-error-${ instanceId }`;
 
-	const validateQuantity = useCallback( () => {
-		const belowMin = quantity < minimum;
-		const aboveMax = quantity > maximum;
-		const wrongMultiple = quantity % step !== 0;
+	const createErrorMessage = ( newQuantity: number ): string => {
+		const errorMessages = [];
+		const belowMin = newQuantity < minimum;
+		const aboveMax = newQuantity > maximum;
+		const wrongMultiple = newQuantity % step !== 0;
 
-		const errorMessages: Record< string, FieldValidationStatus | null > = {
-			[ maxErrorId ]: null,
-			[ minErrorId ]: null,
-			[ wrongMultipleErrorId ]: null,
-		};
 		if ( belowMin ) {
-			errorMessages[ maxErrorId ] = {
-				message: sprintf(
+			errorMessages.push(
+				sprintf(
 					/* translators: %d is the minimum quantity allowed. */
 					__(
 						'The minimum quantity is %d.',
 						'woo-gutenberg-products-block'
 					),
 					minimum
-				),
-				hidden: false,
-			};
+				)
+			);
 		}
 
 		if ( aboveMax ) {
-			errorMessages[ minErrorId ] = {
-				message: sprintf(
+			errorMessages.push(
+				sprintf(
 					/* translators: %d is the maximum quantity allowed. */
 					__(
 						'The maximum quantity is %d.',
 						'woo-gutenberg-products-block'
 					),
 					minimum
-				),
-				hidden: false,
-			};
+				)
+			);
 		}
 
 		if ( wrongMultiple ) {
-			errorMessages[ wrongMultipleErrorId ] = {
-				message: sprintf(
+			errorMessages.push(
+				sprintf(
 					/* translators: %d is a number that the quantity must be a multiple of. */
 					__(
 						'The quantity must be a multiple of %d.',
 						'woo-gutenberg-products-block'
 					),
 					step
-				),
-				hidden: false,
-			};
+				)
+			);
 		}
-		return errorMessages;
-	}, [ quantity, minimum, maximum, step ] );
+		return errorMessages.join( ' ' );
+	};
 
-	const { setValidationErrors, clearValidationErrors } =
+	const { setValidationErrors, clearValidationError } =
 		useDispatch( VALIDATION_STORE_KEY );
 
 	useLayoutEffect( () => {
-		const errors = validateQuantity();
-		clearValidationErrors( Object.keys( errors ) );
-		const currentErrors: Record< string, FieldValidationStatus > = {};
-		Object.keys( errors ).forEach( ( key ) => {
-			if ( ! isNull( errors[ key ] ) ) {
-				currentErrors[ key ] = errors[ key ] as FieldValidationStatus;
-			}
+		const message = createErrorMessage( quantity );
+		clearValidationError( errorId );
+		setValidationErrors( {
+			[ errorId ]: { message, hidden: false },
 		} );
-		setValidationErrors( currentErrors );
-	}, [ quantity, validateQuantity ] );
+	}, [
+		clearValidationError,
+		createErrorMessage,
+		errorId,
+		quantity,
+		setValidationErrors,
+	] );
 
 	return (
 		<div>
@@ -331,11 +320,7 @@ const QuantitySelector = ( {
 			</div>
 			{ ! strictLimits && (
 				<div>
-					<ValidationInputError propertyName={ maxErrorId } />
-					<ValidationInputError propertyName={ minErrorId } />
-					<ValidationInputError
-						propertyName={ wrongMultipleErrorId }
-					/>
+					<ValidationInputError propertyName={ errorId } />
 				</div>
 			) }
 		</div>
