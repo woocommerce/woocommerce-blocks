@@ -172,17 +172,17 @@ const QuantitySelector = ( {
 
 	const maxErrorId = `${ instanceId }-quantity-max`;
 	const minErrorId = `${ instanceId }-quantity-min`;
-	const stepErrorId = `${ instanceId }-quantity-step`;
+	const wrongMultipleErrorId = `${ instanceId }-quantity-step`;
 
 	const validateQuantity = useCallback( () => {
 		const belowMin = quantity < minimum;
 		const aboveMax = quantity > maximum;
-		const outsideStep = quantity % step !== 0;
+		const wrongMultiple = quantity % step !== 0;
 
 		const errorMessages: Record< string, FieldValidationStatus | null > = {
 			[ maxErrorId ]: null,
 			[ minErrorId ]: null,
-			[ stepErrorId ]: null,
+			[ wrongMultipleErrorId ]: null,
 		};
 		if ( belowMin ) {
 			errorMessages[ maxErrorId ] = {
@@ -212,8 +212,8 @@ const QuantitySelector = ( {
 			};
 		}
 
-		if ( outsideStep ) {
-			errorMessages[ stepErrorId ] = {
+		if ( wrongMultiple ) {
+			errorMessages[ wrongMultipleErrorId ] = {
 				message: sprintf(
 					/* translators: %d is a number that the quantity must be a multiple of. */
 					__(
@@ -333,7 +333,9 @@ const QuantitySelector = ( {
 				<div>
 					<ValidationInputError propertyName={ maxErrorId } />
 					<ValidationInputError propertyName={ minErrorId } />
-					<ValidationInputError propertyName={ stepErrorId } />
+					<ValidationInputError
+						propertyName={ wrongMultipleErrorId }
+					/>
 				</div>
 			) }
 		</div>
