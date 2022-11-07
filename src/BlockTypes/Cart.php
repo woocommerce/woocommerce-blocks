@@ -278,6 +278,7 @@ class Cart extends AbstractBlock {
 			'CartOrderSummaryFeeBlock',
 			'CartOrderSummaryHeadingBlock',
 			'CartOrderSummaryShippingBlock',
+			'CartCrossSellsBlock',
 		];
 	}
 }
