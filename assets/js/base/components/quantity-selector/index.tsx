@@ -172,6 +172,10 @@ const QuantitySelector = ( {
 		return select( VALIDATION_STORE_KEY ).hasValidationErrors();
 	} );
 
+	/**
+	 * Creates a string containing errors describing the state of the quantity selector. If the state is valid, an empty
+	 * string is returned.
+	 */
 	const createErrorMessage = useCallback(
 		( newQuantity: number ): string => {
 			const errorMessages = [];
@@ -242,6 +246,8 @@ const QuantitySelector = ( {
 		setValidationErrors,
 	] );
 
+	const stepToUse = ! strictLimits && quantity % step !== 0 ? 1 : step;
+
 	return (
 		<div>
 			<div className={ classes }>
@@ -249,7 +255,7 @@ const QuantitySelector = ( {
 					className="wc-block-components-quantity-selector__input"
 					disabled={ disabled }
 					type="number"
-					step={ step }
+					step={ stepToUse }
 					min={ strictLimits ? minimum : undefined }
 					max={ strictLimits ? maximum : undefined }
 					value={ quantity }
@@ -285,7 +291,7 @@ const QuantitySelector = ( {
 					className="wc-block-components-quantity-selector__button wc-block-components-quantity-selector__button--minus"
 					disabled={ disabled || ! canDecrease }
 					onClick={ () => {
-						const newQuantity = quantity - step;
+						const newQuantity = quantity - stepToUse;
 						onChange( newQuantity );
 						speak(
 							sprintf(
@@ -310,7 +316,7 @@ const QuantitySelector = ( {
 					disabled={ disabled || ! canIncrease }
 					className="wc-block-components-quantity-selector__button wc-block-components-quantity-selector__button--plus"
 					onClick={ () => {
-						const newQuantity = quantity + step;
+						const newQuantity = quantity + stepToUse;
 						onChange( newQuantity );
 						speak(
 							sprintf(
