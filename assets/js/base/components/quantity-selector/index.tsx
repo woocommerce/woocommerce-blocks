@@ -55,6 +55,7 @@ export interface QuantitySelectorProps {
 	 * limits, but an error will be shown.
 	 */
 	strictLimits?: boolean | undefined;
+	instanceId: string | number;
 }
 
 const QuantitySelector = ( {
@@ -248,4 +249,4 @@ const QuantitySelector = ( {
 	);
 };
 
-export default QuantitySelector;
+export default withInstanceId( QuantitySelector );
