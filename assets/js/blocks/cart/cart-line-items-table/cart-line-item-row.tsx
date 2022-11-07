@@ -304,6 +304,7 @@ const CartLineItemRow: React.ForwardRefExoticComponent<
 											minimum={ quantityLimits.minimum }
 											maximum={ quantityLimits.maximum }
 											step={ quantityLimits.multiple_of }
+											strictLimits={ false }
 											onChange={ ( newQuantity ) => {
 												setItemQuantity( newQuantity );
 												dispatchStoreEvent(
