@@ -15,9 +15,7 @@ import { selectBlockByName } from '@woocommerce/blocks-test-utils';
  */
 import {
 	BASE_URL,
-	describeOrSkip,
 	goToTemplateEditor,
-	GUTENBERG_EDITOR_CONTEXT,
 	openBlockEditorSettings,
 	saveTemplate,
 	useTheme,
