@@ -3847,6 +3847,9 @@
 <error line="106" column="11" severity="error" message="Expected 4-6 arguments, but got 3." source="TS2554" />
 <error line="112" column="25" severity="error" message="Argument of type &apos;{ &apos;wc/blocks&apos;: { products: { &apos;[]&apos;: { &apos;?someQuery=2&apos;: { items: string[]; headers: { get: (key: any) =&gt; any; has: (key: any) =&gt; boolean; }; }; }; }; &apos;products/attributes&apos;: { &apos;[10]&apos;: { &apos;?someQuery=2&apos;: { items: string[]; headers: { get: (key: any) =&gt; any; has: (key: any) =&gt; boolean; }; }; }; }; &apos;products/attributes/term...&apos; is not assignable to parameter of type &apos;string&apos;." source="TS2345" />
 </file>
+<file name="assets/js/data/payment/test/check-payment-methods.tsx">
+<error line="18" column="28" severity="error" message="Parameter &apos;args&apos; implicitly has an &apos;any&apos; type." source="TS7006" />
+</file>
 <file name="assets/js/data/payment/test/reducers.js">
 <error line="4" column="24" severity="error" message="Could not find a declaration file for module &apos;deep-freeze&apos;. &apos;/home/runner/work/woocommerce-blocks/woocommerce-blocks/node_modules/deep-freeze/index.js&apos; implicitly has an &apos;any&apos; type.
   Try `npm i --save-dev @types/deep-freeze` if it exists or add a new declaration (.d.ts) file containing `declare module &apos;deep-freeze&apos;;`" source="TS7016" />
