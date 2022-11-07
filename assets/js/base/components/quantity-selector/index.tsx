@@ -7,6 +7,7 @@ import classNames from 'classnames';
 import { useCallback, useLayoutEffect } from '@wordpress/element';
 import { DOWN, UP } from '@wordpress/keycodes';
 import { useDebouncedCallback } from 'use-debounce';
+import { withInstanceId } from '@wordpress/compose';
 
 /**
  * Internal dependencies
@@ -68,6 +69,7 @@ const QuantitySelector = ( {
 	itemName = '',
 	disabled,
 	strictLimits = true,
+	instanceId,
 }: QuantitySelectorProps ): JSX.Element => {
 	const classes = classNames(
 		'wc-block-components-quantity-selector',
