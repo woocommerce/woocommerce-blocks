@@ -20,6 +20,7 @@
  - [woocommerce_blocks_enqueue_cart_block_scripts_before](#woocommerce_blocks_enqueue_cart_block_scripts_before)
  - [woocommerce_blocks_enqueue_checkout_block_scripts_after](#woocommerce_blocks_enqueue_checkout_block_scripts_after)
  - [woocommerce_blocks_enqueue_checkout_block_scripts_before](#woocommerce_blocks_enqueue_checkout_block_scripts_before)
+ - [woocommerce_blocks_loaded](#woocommerce_blocks_loaded)
  - [woocommerce_blocks_{$this->registry_identifier}_registration](#woocommerce_blocks_-this--registry_identifier-_registration)
  - [woocommerce_check_cart_items](#-woocommerce_check_cart_items)
  - [woocommerce_created_customer](#woocommerce_created_customer)
@@ -315,6 +316,21 @@ do_action( 'woocommerce_blocks_enqueue_checkout_block_scripts_before' )
 
 ---
 
+## woocommerce_blocks_loaded
+
+Fires when the woocommerce blocks are loaded and ready to use.
+
+```php
+add_action( 'woocommerce_blocks_loaded', 'my_extension_woocommerce_blocks_support' );
+```
+```php
+do_action( 'woocommerce_blocks_loaded' )
+```
+
+To ensure blocks are initialized, you must use the `woocommerce_blocks_loaded` hook instead of the `plugins_loaded` hook.
+This is because the functions hooked into plugins_loaded on the same priority load in an inconsistent and unpredictable manner. You must use the `woocommerce_blocks_loaded` hook to guarantee that all blocks are loaded.
+
+---
 ## woocommerce_blocks_{$this->registry_identifier}_registration
 
 
