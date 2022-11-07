@@ -29,5 +29,5 @@ const Edit = ( { attributes }: Props ): JSX.Element => {
 	);
 };
 
-// @todo: Refactor this to remove the HOC 'withProductSelector()' component.
+// @todo: Refactor this to remove the HOC 'withProductSelector()' component as users will not see this block in the inserter. Therefore, we can export the Edit component by default. The HOC 'withProductSelector()' component should also be removed from other `product-elements` components. See also https://github.com/woocommerce/woocommerce-blocks/pull/7566#pullrequestreview-1168635469.
 export default withProductSelector( { icon, label, description } )( Edit );
