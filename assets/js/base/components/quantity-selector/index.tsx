@@ -50,6 +50,11 @@ export interface QuantitySelectorProps {
 	 * Whether the component should be interactable or not
 	 */
 	disabled: boolean;
+	/**
+	 * Whether the component should allow the value to exceed the maximum or minimum. If false, the value can exceed the
+	 * limits, but an error will be shown.
+	 */
+	strictLimits?: boolean | undefined;
 }
 
 const QuantitySelector = ( {
@@ -61,6 +66,7 @@ const QuantitySelector = ( {
 	step = 1,
 	itemName = '',
 	disabled,
+	strictLimits = true,
 }: QuantitySelectorProps ): JSX.Element => {
 	const classes = classNames(
 		'wc-block-components-quantity-selector',
@@ -68,8 +74,9 @@ const QuantitySelector = ( {
 	);
 
 	const hasMaximum = typeof maximum !== 'undefined';
-	const canDecrease = quantity - step >= minimum;
-	const canIncrease = ! hasMaximum || quantity + step <= maximum;
+	const canDecrease = ! strictLimits || quantity - step >= minimum;
+	const canIncrease =
+		! strictLimits || ! hasMaximum || quantity + step <= maximum;
 
 	/**
 	 * The goal of this function is to normalize what was inserted,
@@ -81,7 +88,7 @@ const QuantitySelector = ( {
 			let value = initialValue;
 
 			// We check if we have a maximum value, and select the lowest between what was inserted and the maximum.
-			if ( hasMaximum ) {
+			if ( hasMaximum && strictLimits ) {
 				value = Math.min(
 					value,
 					// the maximum possible value in step increments.
@@ -89,11 +96,13 @@ const QuantitySelector = ( {
 				);
 			}
 
-			// Select the biggest between what's inserted, the the minimum value in steps.
-			value = Math.max( value, Math.ceil( minimum / step ) * step );
+			if ( strictLimits ) {
+				// Select the biggest between what's inserted, the the minimum value in steps.
+				value = Math.max( value, Math.ceil( minimum / step ) * step );
 
-			// We round off the value to our steps.
-			value = Math.floor( value / step ) * step;
+				// We round off the value to our steps.
+				value = Math.floor( value / step ) * step;
+			}
 
 			// Only commit if the value has changed
 			if ( value !== initialValue ) {
