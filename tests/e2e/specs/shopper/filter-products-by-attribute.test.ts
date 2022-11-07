@@ -16,9 +16,7 @@ import { selectBlockByName } from '@woocommerce/blocks-test-utils';
  */
 import {
 	BASE_URL,
-	describeOrSkip,
 	goToTemplateEditor,
-	GUTENBERG_EDITOR_CONTEXT,
 	openBlockEditorSettings,
 	saveTemplate,
 	useTheme,
@@ -232,120 +230,117 @@ describe( `${ block.name } Block`, () => {
 	/*
 	 * @todo Remove this logic when WordPress 6.1 is released. This is a temporary fix because WP 6.0 doesn't ship the necessary changes to make it work properly the Product Query block.
 	 */
-	describeOrSkip( GUTENBERG_EDITOR_CONTEXT === 'gutenberg' )(
-		'with Product Query Block',
-		() => {
-			let editorPageUrl = '';
-			let frontedPageUrl = '';
+	describe( 'with Product Query Block', () => {
+		let editorPageUrl = '';
+		let frontedPageUrl = '';
 
-			useTheme( 'emptytheme' );
-			beforeAll( async () => {
-				await switchUserToAdmin();
-				await createNewPost( {
-					postType: 'post',
-					title: block.name,
-				} );
-
-				await insertBlock( 'Product Query' );
-				await insertBlock( block.name );
-				await page.waitForNetworkIdle();
-
-				// It seems that .click doesn't work well with radio input element.
-				await page.$eval(
-					block.selectors.editor.firstAttributeInTheList,
-					( el ) => ( el as HTMLInputElement ).click()
-				);
-				await page.click( selectors.editor.doneButton );
-				await publishPost();
-
-				editorPageUrl = page.url();
-				frontedPageUrl = await page.evaluate( () =>
-					wp.data.select( 'core/editor' ).getPermalink()
-				);
-				await page.goto( frontedPageUrl );
+		useTheme( 'emptytheme' );
+		beforeAll( async () => {
+			await switchUserToAdmin();
+			await createNewPost( {
+				postType: 'post',
+				title: block.name,
 			} );
 
-			it( 'should render', async () => {
-				const products = await page.$$(
-					selectors.frontend.queryProductsList
-				);
+			await insertBlock( 'Product Query' );
+			await insertBlock( block.name );
+			await page.waitForNetworkIdle();
 
-				expect( products ).toHaveLength( 5 );
+			// It seems that .click doesn't work well with radio input element.
+			await page.$eval(
+				block.selectors.editor.firstAttributeInTheList,
+				( el ) => ( el as HTMLInputElement ).click()
+			);
+			await page.click( selectors.editor.doneButton );
+			await publishPost();
+
+			editorPageUrl = page.url();
+			frontedPageUrl = await page.evaluate( () =>
+				wp.data.select( 'core/editor' ).getPermalink()
+			);
+			await page.goto( frontedPageUrl );
+		} );
+
+		it( 'should render', async () => {
+			const products = await page.$$(
+				selectors.frontend.queryProductsList
+			);
+
+			expect( products ).toHaveLength( 5 );
+		} );
+
+		it( 'should show only products that match the filter', async () => {
+			const isRefreshed = jest.fn( () => void 0 );
+			page.on( 'load', isRefreshed );
+
+			await page.waitForSelector( block.class + '.is-loading', {
+				hidden: true,
 			} );
 
-			it( 'should show only products that match the filter', async () => {
-				const isRefreshed = jest.fn( () => void 0 );
-				page.on( 'load', isRefreshed );
+			expect( isRefreshed ).not.toBeCalled();
 
-				await page.waitForSelector( block.class + '.is-loading', {
-					hidden: true,
-				} );
+			await page.waitForSelector( selectors.frontend.filter );
 
-				expect( isRefreshed ).not.toBeCalled();
+			await Promise.all( [
+				page.waitForNavigation(),
+				page.click( selectors.frontend.filter ),
+			] );
 
-				await page.waitForSelector( selectors.frontend.filter );
+			const products = await page.$$(
+				selectors.frontend.queryProductsList
+			);
 
-				await Promise.all( [
-					page.waitForNavigation(),
-					page.click( selectors.frontend.filter ),
-				] );
+			const pageURL = page.url();
+			const parsedURL = new URL( pageURL );
 
-				const products = await page.$$(
-					selectors.frontend.queryProductsList
-				);
+			expect( isRefreshed ).toBeCalledTimes( 1 );
+			expect( products ).toHaveLength( 1 );
+			await expect( page ).toMatch( block.foundProduct );
+			expect( parsedURL.search ).toEqual(
+				block.urlSearchParamWhenFilterIsApplied
+			);
+		} );
 
-				const pageURL = page.url();
-				const parsedURL = new URL( pageURL );
+		it( 'should refresh the page only if the user click on button', async () => {
+			await page.goto( editorPageUrl );
+			await openBlockEditorSettings( { isFSEEditor: false } );
+			await selectBlockByName( block.slug );
+			const [ filterButtonToggle ] = await page.$x(
+				block.selectors.editor.filterButtonToggle
+			);
+			await filterButtonToggle.click();
+			await saveOrPublish();
+			await page.goto( frontedPageUrl );
 
-				expect( isRefreshed ).toBeCalledTimes( 1 );
-				expect( products ).toHaveLength( 1 );
-				await expect( page ).toMatch( block.foundProduct );
-				expect( parsedURL.search ).toEqual(
-					block.urlSearchParamWhenFilterIsApplied
-				);
+			const isRefreshed = jest.fn( () => void 0 );
+			page.on( 'load', isRefreshed );
+			await page.waitForSelector( block.class + '.is-loading', {
+				hidden: true,
 			} );
+			await page.waitForSelector( selectors.frontend.filter );
+			await page.click( selectors.frontend.filter );
 
-			it( 'should refresh the page only if the user click on button', async () => {
-				await page.goto( editorPageUrl );
-				await openBlockEditorSettings( { isFSEEditor: false } );
-				await selectBlockByName( block.slug );
-				const [ filterButtonToggle ] = await page.$x(
-					block.selectors.editor.filterButtonToggle
-				);
-				await filterButtonToggle.click();
-				await saveOrPublish();
-				await page.goto( frontedPageUrl );
+			expect( isRefreshed ).not.toBeCalled();
 
-				const isRefreshed = jest.fn( () => void 0 );
-				page.on( 'load', isRefreshed );
-				await page.waitForSelector( block.class + '.is-loading', {
-					hidden: true,
-				} );
-				await page.waitForSelector( selectors.frontend.filter );
-				await page.click( selectors.frontend.filter );
+			await Promise.all( [
+				page.waitForNavigation( {
+					waitUntil: 'networkidle0',
+				} ),
+				page.click( selectors.frontend.submitButton ),
+			] );
 
-				expect( isRefreshed ).not.toBeCalled();
+			const products = await page.$$(
+				selectors.frontend.queryProductsList
+			);
+			const pageURL = page.url();
+			const parsedURL = new URL( pageURL );
 
-				await Promise.all( [
-					page.waitForNavigation( {
-						waitUntil: 'networkidle0',
-					} ),
-					page.click( selectors.frontend.submitButton ),
-				] );
-
-				const products = await page.$$(
-					selectors.frontend.queryProductsList
-				);
-				const pageURL = page.url();
-				const parsedURL = new URL( pageURL );
-
-				expect( isRefreshed ).toBeCalledTimes( 1 );
-				expect( products ).toHaveLength( 1 );
-				await expect( page ).toMatch( block.foundProduct );
-				expect( parsedURL.search ).toEqual(
-					block.urlSearchParamWhenFilterIsApplied
-				);
-			} );
-		}
-	);
+			expect( isRefreshed ).toBeCalledTimes( 1 );
+			expect( products ).toHaveLength( 1 );
+			await expect( page ).toMatch( block.foundProduct );
+			expect( parsedURL.search ).toEqual(
+				block.urlSearchParamWhenFilterIsApplied
+			);
+		} );
+	} );
 } );
