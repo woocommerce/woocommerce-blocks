@@ -227,122 +227,109 @@ describe( `${ block.name } Block`, () => {
 		} );
 	} );
 
-	/*
-	 * @todo Remove this logic when WordPress 6.1 is released. This is a temporary fix because WP 6.0 doesn't ship the necessary changes to make it work properly the Product Query block.
-	 */
-	describeOrSkip( GUTENBERG_EDITOR_CONTEXT === 'gutenberg' )(
-		'with Product Query Block',
-		() => {
-			let editorPageUrl = '';
-			let frontedPageUrl = '';
-			beforeAll( async () => {
-				await switchUserToAdmin();
-				await createNewPost( {
-					postType: 'post',
-					title: block.name,
-				} );
-
-				await insertBlock( 'Product Query' );
-				await insertBlock( block.name );
-				await insertBlock( 'Active Product Filters' );
-				await page.waitForNetworkIdle();
-				await publishPost();
-
-				editorPageUrl = page.url();
-				frontedPageUrl = await page.evaluate( () =>
-					wp.data.select( 'core/editor' ).getPermalink()
-				);
-				await page.goto( frontedPageUrl );
+	describe( 'with Product Query Block', () => {
+		let editorPageUrl = '';
+		let frontedPageUrl = '';
+		beforeAll( async () => {
+			await switchUserToAdmin();
+			await createNewPost( {
+				postType: 'post',
+				title: block.name,
 			} );
 
-			it( 'should render', async () => {
-				const products = await page.$$(
-					selectors.frontend.queryProductsList
-				);
+			await insertBlock( 'Product Query' );
+			await insertBlock( block.name );
+			await insertBlock( 'Active Product Filters' );
+			await page.waitForNetworkIdle();
+			await publishPost();
 
-				expect( products ).toHaveLength( 5 );
+			editorPageUrl = page.url();
+			frontedPageUrl = await page.evaluate( () =>
+				wp.data.select( 'core/editor' ).getPermalink()
+			);
+			await page.goto( frontedPageUrl );
+		} );
+
+		it( 'should render', async () => {
+			const products = await page.$$(
+				selectors.frontend.queryProductsList
+			);
+
+			expect( products ).toHaveLength( 5 );
+		} );
+
+		it( 'should show only products that match the filter', async () => {
+			const isRefreshed = jest.fn( () => void 0 );
+			page.on( 'load', isRefreshed );
+
+			await page.waitForSelector( block.class + '.is-loading', {
+				hidden: true,
 			} );
 
-			it( 'should show only products that match the filter', async () => {
-				const isRefreshed = jest.fn( () => void 0 );
-				page.on( 'load', isRefreshed );
+			await expect( page ).toMatch( block.foundProduct );
+			expect( isRefreshed ).not.toBeCalled();
 
-				await page.waitForSelector( block.class + '.is-loading', {
-					hidden: true,
-				} );
+			await Promise.all( [ setMaxPrice(), page.waitForNavigation() ] );
 
-				await expect( page ).toMatch( block.foundProduct );
-				expect( isRefreshed ).not.toBeCalled();
+			await page.waitForSelector( selectors.frontend.queryProductsList );
+			const products = await page.$$(
+				selectors.frontend.queryProductsList
+			);
 
-				await Promise.all( [
-					setMaxPrice(),
-					page.waitForNavigation(),
-				] );
+			const pageURL = page.url();
+			const parsedURL = new URL( pageURL );
 
-				await page.waitForSelector(
-					selectors.frontend.queryProductsList
-				);
-				const products = await page.$$(
-					selectors.frontend.queryProductsList
-				);
+			expect( isRefreshed ).toBeCalledTimes( 1 );
+			expect( products ).toHaveLength( 1 );
 
-				const pageURL = page.url();
-				const parsedURL = new URL( pageURL );
+			expect( parsedURL.search ).toEqual(
+				block.urlSearchParamWhenFilterIsApplied
+			);
+			await expect( page ).toMatch( block.foundProduct );
+		} );
 
-				expect( isRefreshed ).toBeCalledTimes( 1 );
-				expect( products ).toHaveLength( 1 );
+		it( 'should refresh the page only if the user click on button', async () => {
+			await page.goto( editorPageUrl );
 
-				expect( parsedURL.search ).toEqual(
-					block.urlSearchParamWhenFilterIsApplied
-				);
-				await expect( page ).toMatch( block.foundProduct );
+			await openBlockEditorSettings( { isFSEEditor: false } );
+			await selectBlockByName( block.slug );
+			await page.waitForXPath(
+				block.selectors.editor.filterButtonToggle
+			);
+			const [ filterButtonToggle ] = await page.$x(
+				block.selectors.editor.filterButtonToggle
+			);
+			await filterButtonToggle.click();
+
+			await saveOrPublish();
+			await page.goto( frontedPageUrl );
+
+			const isRefreshed = jest.fn( () => void 0 );
+			page.on( 'load', isRefreshed );
+			await page.waitForSelector( block.class + '.is-loading', {
+				hidden: true,
 			} );
+			expect( isRefreshed ).not.toBeCalled();
 
-			it( 'should refresh the page only if the user click on button', async () => {
-				await page.goto( editorPageUrl );
+			await setMaxPrice();
 
-				await openBlockEditorSettings( { isFSEEditor: false } );
-				await selectBlockByName( block.slug );
-				await page.waitForXPath(
-					block.selectors.editor.filterButtonToggle
-				);
-				const [ filterButtonToggle ] = await page.$x(
-					block.selectors.editor.filterButtonToggle
-				);
-				await filterButtonToggle.click();
+			await clickLink( selectors.frontend.submitButton );
 
-				await saveOrPublish();
-				await page.goto( frontedPageUrl );
+			await page.waitForSelector( selectors.frontend.queryProductsList );
 
-				const isRefreshed = jest.fn( () => void 0 );
-				page.on( 'load', isRefreshed );
-				await page.waitForSelector( block.class + '.is-loading', {
-					hidden: true,
-				} );
-				expect( isRefreshed ).not.toBeCalled();
+			const products = await page.$$(
+				selectors.frontend.queryProductsList
+			);
 
-				await setMaxPrice();
+			const pageURL = page.url();
+			const parsedURL = new URL( pageURL );
 
-				await clickLink( selectors.frontend.submitButton );
-
-				await page.waitForSelector(
-					selectors.frontend.queryProductsList
-				);
-
-				const products = await page.$$(
-					selectors.frontend.queryProductsList
-				);
-
-				const pageURL = page.url();
-				const parsedURL = new URL( pageURL );
-
-				expect( isRefreshed ).toBeCalledTimes( 1 );
-				expect( products ).toHaveLength( 1 );
-				await expect( page ).toMatch( block.foundProduct );
-				expect( parsedURL.search ).toEqual(
-					block.urlSearchParamWhenFilterIsApplied
-				);
-			} );
-		}
-	);
+			expect( isRefreshed ).toBeCalledTimes( 1 );
+			expect( products ).toHaveLength( 1 );
+			await expect( page ).toMatch( block.foundProduct );
+			expect( parsedURL.search ).toEqual(
+				block.urlSearchParamWhenFilterIsApplied
+			);
+		} );
+	} );
 } );
