@@ -9,6 +9,7 @@
     -   [hasValidationErrors](#hasvalidationerrors)
 -   [Actions](#actions)
     -   [clearValidationError](#clearvalidationerror)
+    -   [clearValidationErrors](#clearvalidationerrors)
     -   [clearAllValidationErrors](#clearallvalidationerrors)
     -   [setValidationErrors](#setvalidationerrors)
     -   [hideValidationError](#hidevalidationerror)
@@ -101,6 +102,21 @@ Clears a validation error.
 ```js
 const store = dispatch( 'wc/store/validation' );
 store.clearValidationError( 'billing-first-name' );
+```
+
+### clearValidationErrors
+
+Clears multiple validation errors at once.
+
+#### _Parameters_
+
+- _errors_ `string[]` - The error IDs to clear validation errors for.
+
+#### Example
+
+```js
+const store = dispatch( 'wc/store/validation' );
+store.clearValidationErrors( [ 'billing-first-name', 'billing-last-name', 'terms-and-conditions' ] );
 ```
 
 ### clearAllValidationErrors
