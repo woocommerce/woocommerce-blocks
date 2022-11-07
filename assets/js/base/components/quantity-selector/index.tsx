@@ -163,6 +163,63 @@ const QuantitySelector = ( {
 		[ quantity, onChange, canIncrease, canDecrease, step ]
 	);
 
+	const maxErrorId = `${ instanceId }-quantity-max`;
+	const minErrorId = `${ instanceId }-quantity-min`;
+	const stepErrorId = `${ instanceId }-quantity-step`;
+
+	const validateQuantity = useCallback( () => {
+		const belowMin = quantity < minimum;
+		const aboveMax = quantity > maximum;
+		const outsideStep = quantity % step !== 0;
+
+		const errorMessages: Record< string, FieldValidationStatus | null > = {
+			[ maxErrorId ]: null,
+			[ minErrorId ]: null,
+			[ stepErrorId ]: null,
+		};
+		if ( belowMin ) {
+			errorMessages[ maxErrorId ] = {
+				message: sprintf(
+					/* translators: %d is the minimum quantity allowed. */
+					__(
+						'The minimum quantity is %d.',
+						'woo-gutenberg-products-block'
+					),
+					minimum
+				),
+				hidden: false,
+			};
+		}
+
+		if ( aboveMax ) {
+			errorMessages[ minErrorId ] = {
+				message: sprintf(
+					/* translators: %d is the maximum quantity allowed. */
+					__(
+						'The maximum quantity is %d.',
+						'woo-gutenberg-products-block'
+					),
+					minimum
+				),
+				hidden: false,
+			};
+		}
+
+		if ( outsideStep ) {
+			errorMessages[ stepErrorId ] = {
+				message: sprintf(
+					/* translators: %d is a number that the quantity must be a multiple of. */
+					__(
+						'The quantity must be a multiple of %d.',
+						'woo-gutenberg-products-block'
+					),
+					step
+				),
+				hidden: false,
+			};
+		}
+		return errorMessages;
+	}, [ quantity, minimum, maximum, step ] );
 	return (
 		<div className={ classes }>
 			<input
