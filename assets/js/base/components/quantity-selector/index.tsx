@@ -200,7 +200,7 @@ const QuantitySelector = ( {
 							'The maximum quantity is %d.',
 							'woo-gutenberg-products-block'
 						),
-						minimum
+						maximum
 					)
 				);
 			}
