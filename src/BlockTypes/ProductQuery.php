@@ -131,8 +131,6 @@ class ProductQuery extends AbstractBlock {
 			$global_query
 		);
 
-		do_action( 'qm/debug', $base_query );
-
 		return array_reduce(
 			array_merge(
 				$queries_by_attributes,
@@ -453,7 +451,6 @@ class ProductQuery extends AbstractBlock {
 	}
 
 	/**
-
 	 * Intersect arrays neither of them are empty, otherwise merge them.
 	 *
 	 * @param array ...$arrays Arrays.
