@@ -19,10 +19,7 @@ import {
 	ProductMetadata,
 	ProductSaleBadge,
 } from '@woocommerce/base-components/cart-checkout';
-import {
-	getCurrencyFromPriceResponse,
-	Currency,
-} from '@woocommerce/price-format';
+import { getCurrencyFromPriceResponse } from '@woocommerce/price-format';
 import {
 	__experimentalApplyCheckoutFilter,
 	mustContain,
@@ -30,7 +27,7 @@ import {
 import Dinero from 'dinero.js';
 import { forwardRef, useMemo } from '@wordpress/element';
 import type { CartItem } from '@woocommerce/type-defs/cart';
-import { objectHasProp } from '@woocommerce/types';
+import { objectHasProp, Currency } from '@woocommerce/types';
 import { getSetting } from '@woocommerce/settings';
 
 /**
