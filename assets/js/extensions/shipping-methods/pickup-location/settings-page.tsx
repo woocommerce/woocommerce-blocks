@@ -12,7 +12,7 @@ import SaveSettings from './save';
 import { SettingsProvider } from './settings-context';
 
 const SettingsWrapper = styled.div`
-	margin: 24px auto 0;
+	margin: 48px auto 0;
 	max-width: 1032px;
 	display: flex;
 	flex-flow: column;

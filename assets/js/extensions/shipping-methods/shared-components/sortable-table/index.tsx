@@ -81,9 +81,17 @@ const StyledTable = styled.table`
 
 	.align-left {
 		text-align: left;
+		.components-flex {
+			justify-content: flex-start;
+			gap: 0;
+		}
 	}
 	.align-right {
 		text-align: right;
+		.components-flex {
+			justify-content: flex-end;
+			gap: 0;
+		}
 	}
 	.align-center {
 		text-align: center;
@@ -141,7 +149,7 @@ const StyledTable = styled.table`
 
 			> svg,
 			> .components-base-control {
-				margin-top: 4px;
+				margin: 3px 0;
 			}
 		}
 	}

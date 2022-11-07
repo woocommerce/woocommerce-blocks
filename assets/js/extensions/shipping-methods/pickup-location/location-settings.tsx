@@ -5,7 +5,7 @@ import { __ } from '@wordpress/i18n';
 import { useState } from '@wordpress/element';
 import type { UniqueIdentifier } from '@dnd-kit/core';
 import { isObject, isBoolean } from '@woocommerce/types';
-import { ToggleControl, Button } from '@wordpress/components';
+import { ToggleControl, Button, ExternalLink } from '@wordpress/components';
 import styled from '@emotion/styled';
 
 /**
@@ -29,6 +29,9 @@ const LocationSettingsDescription = () => (
 				'woo-gutenberg-products-block'
 			) }
 		</p>
+		<ExternalLink href="https://woocommerce.com/document/local-pickup/">
+			{ __( 'Learn more', 'woo-gutenberg-products-block' ) }
+		</ExternalLink>
 	</>
 );
 
@@ -69,7 +72,7 @@ const LocationSettings = () => {
 		{
 			name: 'enabled',
 			label: __( 'Enabled', 'woo-gutenberg-products-block' ),
-			align: 'center',
+			align: 'right',
 			renderCallback: ( row: SortableData ): JSX.Element => (
 				<ToggleControl
 					checked={ isBoolean( row.enabled ) ? row.enabled : false }
@@ -80,7 +83,8 @@ const LocationSettings = () => {
 		{
 			name: 'edit',
 			label: '',
-			align: 'right',
+			align: 'center',
+			width: '1%',
 			renderCallback: ( row: SortableData ): JSX.Element => (
 				<button
 					type="button"

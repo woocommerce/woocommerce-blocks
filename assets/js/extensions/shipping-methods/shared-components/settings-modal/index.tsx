@@ -7,6 +7,7 @@ import styled from '@emotion/styled';
 
 const StyledModal = styled( Modal )`
 	max-width: 600px;
+	border-radius: 4px;
 	@media ( min-width: 600px ) {
 		min-width: 560px;
 	}
@@ -58,8 +59,9 @@ const StyledFooter = styled.div`
 		}
 	}
 
-	.is-link {
+	.button-link-delete {
 		margin-right: auto;
+		color: #d63638;
 	}
 `;
 
