@@ -471,7 +471,7 @@ class ProductQuery extends AbstractBlock {
 	}
 
 	/**
-	 * Return a query that filters products by the global query.
+	 * Get product-related query variables from the global query.
 	 *
 	 * @param array $parsed_block The Product Query that being rendered.
 	 *
