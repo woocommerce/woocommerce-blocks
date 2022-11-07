@@ -30,4 +30,4 @@ const blockConfig: BlockConfiguration = {
 	save: Save,
 };
 
-registerBlockType( 'woocommerce/product-summary', { ...blockConfig } );
+registerBlockType( 'woocommerce/product-summary', blockConfig );
