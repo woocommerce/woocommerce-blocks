@@ -168,52 +168,55 @@ const QuantitySelector = ( {
 
 	const errorId = `wc-block-components-quantity-selector-error-${ instanceId }`;
 
-	const createErrorMessage = ( newQuantity: number ): string => {
-		const errorMessages = [];
-		const belowMin = newQuantity < minimum;
-		const aboveMax = newQuantity > maximum;
-		const wrongMultiple = newQuantity % step !== 0;
+	const createErrorMessage = useCallback(
+		( newQuantity: number ): string => {
+			const errorMessages = [];
+			const belowMin = newQuantity < minimum;
+			const aboveMax = newQuantity > maximum;
+			const wrongMultiple = newQuantity % step !== 0;
 
-		if ( belowMin ) {
-			errorMessages.push(
-				sprintf(
-					/* translators: %d is the minimum quantity allowed. */
-					__(
-						'The minimum quantity is %d.',
-						'woo-gutenberg-products-block'
-					),
-					minimum
-				)
-			);
-		}
+			if ( belowMin ) {
+				errorMessages.push(
+					sprintf(
+						/* translators: %d is the minimum quantity allowed. */
+						__(
+							'The minimum quantity is %d.',
+							'woo-gutenberg-products-block'
+						),
+						minimum
+					)
+				);
+			}
 
-		if ( aboveMax ) {
-			errorMessages.push(
-				sprintf(
-					/* translators: %d is the maximum quantity allowed. */
-					__(
-						'The maximum quantity is %d.',
-						'woo-gutenberg-products-block'
-					),
-					minimum
-				)
-			);
-		}
+			if ( aboveMax ) {
+				errorMessages.push(
+					sprintf(
+						/* translators: %d is the maximum quantity allowed. */
+						__(
+							'The maximum quantity is %d.',
+							'woo-gutenberg-products-block'
+						),
+						minimum
+					)
+				);
+			}
 
-		if ( wrongMultiple ) {
-			errorMessages.push(
-				sprintf(
-					/* translators: %d is a number that the quantity must be a multiple of. */
-					__(
-						'The quantity must be a multiple of %d.',
-						'woo-gutenberg-products-block'
-					),
-					step
-				)
-			);
-		}
-		return errorMessages.join( ' ' );
-	};
+			if ( wrongMultiple ) {
+				errorMessages.push(
+					sprintf(
+						/* translators: %d is a number that the quantity must be a multiple of. */
+						__(
+							'The quantity must be a multiple of %d.',
+							'woo-gutenberg-products-block'
+						),
+						step
+					)
+				);
+			}
+			return errorMessages.join( ' ' );
+		},
+		[ minimum, maximum, step ]
+	);
 
 	const { setValidationErrors, clearValidationError } =
 		useDispatch( VALIDATION_STORE_KEY );
@@ -221,6 +224,9 @@ const QuantitySelector = ( {
 	useLayoutEffect( () => {
 		const message = createErrorMessage( quantity );
 		clearValidationError( errorId );
+		if ( message === '' ) {
+			return;
+		}
 		setValidationErrors( {
 			[ errorId ]: { message, hidden: false },
 		} );
