@@ -315,7 +315,7 @@ const QuantitySelector = ( {
 						onChange( newQuantity );
 						speak(
 							sprintf(
-								/* translators: %s refers to the item name in the cart. */
+								/* translators: %s refers to the quantity of the item in the cart. */
 								__(
 									'Quantity increased to %s.',
 									'woo-gutenberg-products-block'
