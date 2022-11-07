@@ -40,17 +40,20 @@ const getReportCommentId = async ( { octokit, owner, repo, payload } ) => {
 				comment.user.login === 'github-actions[bot]'
 		);
 
-		return comment.id;
+		return comment?.id;
 	}
-
-	return null;
 };
 
 exports.addComment = async ( { octokit, owner, repo, message, payload } ) => {
-	const commentId = await getReportCommentId( octokit, owner, repo, payload );
+	const commentId = await getReportCommentId( {
+		octokit,
+		owner,
+		repo,
+		payload,
+	} );
 
 	if ( commentId ) {
-		await octokit.rest.issues.updateComment( {
+		return await octokit.rest.issues.updateComment( {
 			owner,
 			repo,
 			comment_id: commentId,
