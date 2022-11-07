@@ -170,8 +170,8 @@ const QuantitySelector = ( {
 				disabled={ disabled }
 				type="number"
 				step={ step }
-				min={ minimum }
-				max={ maximum }
+					min={ strictLimits ? minimum : undefined }
+					max={ strictLimits ? maximum : undefined }
 				value={ quantity }
 				onKeyDown={ quantityInputOnKeyDown }
 				onChange={ ( event ) => {
