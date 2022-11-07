@@ -29,4 +29,5 @@ const Edit = ( { attributes }: Props ): JSX.Element => {
 	);
 };
 
+// @todo: Refactor this to remove the HOC 'withProductSelector()' component.
 export default withProductSelector( { icon, label, description } )( Edit );
