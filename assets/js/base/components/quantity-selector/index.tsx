@@ -244,89 +244,91 @@ const QuantitySelector = ( {
 	}, [ quantity, validateQuantity ] );
 
 	return (
-		<div className={ classes }>
-			<input
-				className="wc-block-components-quantity-selector__input"
-				disabled={ disabled }
-				type="number"
-				step={ step }
-				min={ strictLimits ? minimum : undefined }
-				max={ strictLimits ? maximum : undefined }
-				value={ quantity }
-				onKeyDown={ quantityInputOnKeyDown }
-				onChange={ ( event ) => {
-					// Inputs values are strings, we parse them here.
-					let value = parseInt( event.target.value, 10 );
-					// parseInt would throw NaN for anything not a number,
-					// so we revert value to the quantity value.
-					value = isNaN( value ) ? quantity : value;
+		<div>
+			<div className={ classes }>
+				<input
+					className="wc-block-components-quantity-selector__input"
+					disabled={ disabled }
+					type="number"
+					step={ step }
+					min={ strictLimits ? minimum : undefined }
+					max={ strictLimits ? maximum : undefined }
+					value={ quantity }
+					onKeyDown={ quantityInputOnKeyDown }
+					onChange={ ( event ) => {
+						// Inputs values are strings, we parse them here.
+						let value = parseInt( event.target.value, 10 );
+						// parseInt would throw NaN for anything not a number,
+						// so we revert value to the quantity value.
+						value = isNaN( value ) ? quantity : value;
 
-					if ( value !== quantity ) {
-						// we commit this value immediately.
-						onChange( value );
-						// but once the customer has stopped typing, we make sure his value is respecting the bounds (maximum value, minimum value, step value), and commit the normalized value.
-						debouncedNormalizeQuantity( value );
-					}
-				} }
-				aria-label={ sprintf(
-					/* translators: %s refers to the item name in the cart. */
-					__(
-						'Quantity of %s in your cart.',
+						if ( value !== quantity ) {
+							// we commit this value immediately.
+							onChange( value );
+							// but once the customer has stopped typing, we make sure his value is respecting the bounds (maximum value, minimum value, step value), and commit the normalized value.
+							debouncedNormalizeQuantity( value );
+						}
+					} }
+					aria-label={ sprintf(
+						/* translators: %s refers to the item name in the cart. */
+						__(
+							'Quantity of %s in your cart.',
+							'woo-gutenberg-products-block'
+						),
+						itemName
+					) }
+				/>
+				<button
+					aria-label={ __(
+						'Reduce quantity',
 						'woo-gutenberg-products-block'
-					),
-					itemName
-				) }
-			/>
-			<button
-				aria-label={ __(
-					'Reduce quantity',
-					'woo-gutenberg-products-block'
-				) }
-				className="wc-block-components-quantity-selector__button wc-block-components-quantity-selector__button--minus"
-				disabled={ disabled || ! canDecrease }
-				onClick={ () => {
-					const newQuantity = quantity - step;
-					onChange( newQuantity );
-					speak(
-						sprintf(
-							/* translators: %s refers to the item name in the cart. */
-							__(
-								'Quantity reduced to %s.',
-								'woo-gutenberg-products-block'
-							),
-							newQuantity
-						)
-					);
-					normalizeQuantity( newQuantity );
-				} }
-			>
-				&#65293;
-			</button>
-			<button
-				aria-label={ __(
-					'Increase quantity',
-					'woo-gutenberg-products-block'
-				) }
-				disabled={ disabled || ! canIncrease }
-				className="wc-block-components-quantity-selector__button wc-block-components-quantity-selector__button--plus"
-				onClick={ () => {
-					const newQuantity = quantity + step;
-					onChange( newQuantity );
-					speak(
-						sprintf(
-							/* translators: %s refers to the item name in the cart. */
-							__(
-								'Quantity increased to %s.',
-								'woo-gutenberg-products-block'
-							),
-							newQuantity
-						)
-					);
-					normalizeQuantity( newQuantity );
-				} }
-			>
-				&#65291;
-			</button>
+					) }
+					className="wc-block-components-quantity-selector__button wc-block-components-quantity-selector__button--minus"
+					disabled={ disabled || ! canDecrease }
+					onClick={ () => {
+						const newQuantity = quantity - step;
+						onChange( newQuantity );
+						speak(
+							sprintf(
+								/* translators: %s refers to the item name in the cart. */
+								__(
+									'Quantity reduced to %s.',
+									'woo-gutenberg-products-block'
+								),
+								newQuantity
+							)
+						);
+						normalizeQuantity( newQuantity );
+					} }
+				>
+					&#65293;
+				</button>
+				<button
+					aria-label={ __(
+						'Increase quantity',
+						'woo-gutenberg-products-block'
+					) }
+					disabled={ disabled || ! canIncrease }
+					className="wc-block-components-quantity-selector__button wc-block-components-quantity-selector__button--plus"
+					onClick={ () => {
+						const newQuantity = quantity + step;
+						onChange( newQuantity );
+						speak(
+							sprintf(
+								/* translators: %s refers to the item name in the cart. */
+								__(
+									'Quantity increased to %s.',
+									'woo-gutenberg-products-block'
+								),
+								newQuantity
+							)
+						);
+						normalizeQuantity( newQuantity );
+					} }
+				>
+					&#65291;
+				</button>
+			</div>
 			{ ! strictLimits && (
 				<div>
 					<ValidationInputError propertyName={ maxErrorId } />
