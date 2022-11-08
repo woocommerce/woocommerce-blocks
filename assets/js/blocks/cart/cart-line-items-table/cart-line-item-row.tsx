@@ -29,6 +29,7 @@ import { forwardRef, useMemo } from '@wordpress/element';
 import type { CartItem } from '@woocommerce/type-defs/cart';
 import { objectHasProp, Currency } from '@woocommerce/types';
 import { getSetting } from '@woocommerce/settings';
+import type { ForwardRefExoticComponent, RefAttributes } from 'react';
 
 /**
  * Convert a Dinero object with precision to store currency minor unit.
@@ -56,8 +57,8 @@ interface CartLineItemRowProps {
 /**
  * Cart line item table row component.
  */
-const CartLineItemRow: React.ForwardRefExoticComponent<
-	CartLineItemRowProps & React.RefAttributes< HTMLTableRowElement >
+const CartLineItemRow: ForwardRefExoticComponent<
+	CartLineItemRowProps & RefAttributes< HTMLTableRowElement >
 > = forwardRef< HTMLTableRowElement, CartLineItemRowProps >(
 	(
 		{ lineItem, onRemove = () => void null, tabIndex },
