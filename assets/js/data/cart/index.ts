@@ -1,7 +1,7 @@
 /**
  * External dependencies
  */
-import { register, subscribe, createReduxStore } from '@wordpress/data';
+import { registerStore } from '@wordpress/data';
 import { controls as dataControls } from '@wordpress/data-controls';
 
 /**
@@ -11,14 +11,17 @@ import { STORE_KEY } from './constants';
 import * as selectors from './selectors';
 import * as actions from './actions';
 import * as resolvers from './resolvers';
-import reducer from './reducers';
+import reducer, { State } from './reducers';
 import { controls as sharedControls } from '../shared-controls';
 import { controls } from './controls';
 import type { SelectFromMap, DispatchFromMap } from '../mapped-types';
 import { pushChanges } from './push-changes';
-import { updatePaymentMethods } from './update-payment-methods';
+import {
+	updatePaymentMethods,
+	debouncedUpdatePaymentMethods,
+} from './update-payment-methods';
 
-const store = createReduxStore( STORE_KEY, {
+const registeredStore = registerStore< State >( STORE_KEY, {
 	reducer,
 	actions,
 	// eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -26,10 +29,22 @@ const store = createReduxStore( STORE_KEY, {
 	selectors,
 	resolvers,
 } );
-register( store );
 
-subscribe( pushChanges );
-subscribe( updatePaymentMethods );
+registeredStore.subscribe( pushChanges );
+
+// First we will run the updatePaymentMethods function without any debounce to ensure payment methods are ready as soon
+// as the cart is loaded. After that, we will unsubscribe this function and instead run the
+// debouncedUpdatePaymentMethods function on subsequent cart updates.
+const unsubscribeUpdatePaymentMethods = registeredStore.subscribe( async () => {
+	const didActionDispatch = await updatePaymentMethods();
+	if ( didActionDispatch ) {
+		// The function we're currently in will unsubscribe itself. When we reach this line, this will be the last time
+		// this function is called.
+		unsubscribeUpdatePaymentMethods();
+		// Resubscribe, but with the debounced version of updatePaymentMethods.
+		registeredStore.subscribe( debouncedUpdatePaymentMethods );
+	}
+} );
 
 export const CART_STORE_KEY = STORE_KEY;
 
