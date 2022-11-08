@@ -2,7 +2,8 @@
  * External dependencies
  */
 import { __ } from '@wordpress/i18n';
-import { registerBlockType } from '@wordpress/blocks';
+import { createBlock, registerBlockType } from '@wordpress/blocks';
+import type { BlockInstance } from '@wordpress/blocks';
 import { toggle } from '@woocommerce/icons';
 import { useBlockProps, useInnerBlocksProps } from '@wordpress/block-editor';
 import {
@@ -12,13 +13,100 @@ import {
 	box,
 	starEmpty,
 } from '@wordpress/icons';
-import { isFeaturePluginBuild } from '@woocommerce/block-settings';
 
 /**
  * Internal dependencies
  */
 import edit from './edit';
 import metadata from './block.json';
+
+const filterBlocksWidgets = [
+	{
+		widgetId: 'woocommerce_layered_nav_filters',
+		name: 'active-filters',
+		heading: __( 'Active filters', 'woo-gutenberg-products-block' ),
+	},
+	{
+		widgetId: 'woocommerce_price_filter',
+		name: 'price-filter',
+		heading: __( 'Filter by price', 'woo-gutenberg-products-block' ),
+	},
+	{
+		widgetId: 'woocommerce_layered_nav',
+		name: 'attribute-filter',
+		heading: __( 'Filter by attribute', 'woo-gutenberg-products-block' ),
+	},
+	{
+		widgetId: 'woocommerce_rating_filter',
+		name: 'rating-filter',
+		heading: __( 'Filter by rating', 'woo-gutenberg-products-block' ),
+	},
+];
+
+const getTransformAttributes = ( instance, filterType: string ) => {
+	switch ( filterType ) {
+		case 'attribute-filter':
+			return {
+				attributeId: 0,
+				showCounts: true,
+				queryType: instance?.raw?.query_type || 'or',
+				heading: '',
+				displayStyle: instance?.raw?.display_type || 'list',
+				showFilterButton: false,
+				selectType: instance?.raw?.select_type || 'multiple',
+				isPreview: false,
+			};
+		case 'active-filters':
+			return {
+				displayStyle: 'list',
+				heading: '',
+			};
+		case 'price-filter':
+			return {
+				heading: '',
+				showInputFields: false,
+				showFilterButton: true,
+				inlineInput: false,
+			};
+		default:
+			return {};
+	}
+};
+
+const isFilterWidget = ( widgetId: string ) =>
+	filterBlocksWidgets.some( ( item ) => item.widgetId === widgetId );
+
+const getFilterBlockObject = ( widgetId: string ) => {
+	const filterBlock = filterBlocksWidgets.find(
+		( item ) => item.widgetId === widgetId
+	);
+	return filterBlock;
+};
+
+const transformFilterBlock = (
+	filterType: string,
+	attributes: Record< string, unknown >,
+	title: string
+) => {
+	const filterWrapperInnerBlocks: BlockInstance[] = [
+		createBlock( `woocommerce/${ filterType }`, attributes ),
+	];
+
+	filterWrapperInnerBlocks.unshift(
+		createBlock( 'core/heading', {
+			content: title,
+			level: 3,
+		} )
+	);
+
+	return createBlock(
+		'woocommerce/filter-wrapper',
+		{
+			filterType,
+		},
+		filterWrapperInnerBlocks
+	);
+};
 
 registerBlockType( metadata, {
 	edit,
@@ -137,31 +225,52 @@ registerBlockType( metadata, {
 			},
 		},
 		{
-			...( isFeaturePluginBuild() && {
-				name: 'rating-filter',
-				title: __( 'Filter by Rating', 'woo-gutenberg-products-block' ),
-				description: __(
-					'Enable customers to filter the product grid by rating.',
+			name: 'rating-filter',
+			title: __( 'Filter by Rating', 'woo-gutenberg-products-block' ),
+			description: __(
+				'Enable customers to filter the product grid by rating.',
+				'woo-gutenberg-products-block'
+			),
+			isActive: ( attributes ) =>
+				attributes.filterType === 'rating-filter',
+			attributes: {
+				filterType: 'rating-filter',
+				heading: __(
+					'Filter by rating',
 					'woo-gutenberg-products-block'
 				),
-				isActive: ( attributes ) =>
-					attributes.filterType === 'rating-filter',
-				attributes: {
-					filterType: 'rating-filter',
-					heading: __(
-						'Filter by rating',
-						'woo-gutenberg-products-block'
-					),
-				},
-				icon: {
-					src: (
-						<Icon
-							icon={ starEmpty }
-							className="wc-block-editor-components-block-icon"
-						/>
-					),
-				},
-			} ),
+			},
+			icon: {
+				src: (
+					<Icon
+						icon={ starEmpty }
+						className="wc-block-editor-components-block-icon"
+					/>
+				),
+			},
 		},
 	],
+	transforms: {
+		from: [
+			{
+				type: 'block',
+				blocks: [ 'core/legacy-widget' ],
+				// We can't transform if raw instance isn't shown in the REST API.
+				isMatch: ( { idBase, instance } ) =>
+					isFilterWidget( idBase ) && !! instance?.raw,
+				transform: ( { idBase, instance } ) => {
+					const filterBlockObject = getFilterBlockObject( idBase );
+					if ( ! filterBlockObject ) return null;
+					return transformFilterBlock(
+						filterBlockObject.name,
+						getTransformAttributes(
+							instance,
+							filterBlockObject.name
+						),
+						instance?.raw?.title || filterBlockObject.heading
+					);
+				},
+			},
+		],
+	},
 } );

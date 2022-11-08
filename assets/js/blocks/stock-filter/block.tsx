@@ -70,6 +70,10 @@ const StockStatusFilterBlock = ( {
 		{}
 	);
 
+	const productIds = isEditor
+		? []
+		: getSettingWithCoercion( 'product_ids', [], Array.isArray );
+
 	const STOCK_STATUS_OPTIONS = useRef(
 		getSetting( 'hideOutOfStockItems', false )
 			? otherStockStatusOptions
@@ -101,6 +105,7 @@ const StockStatusFilterBlock = ( {
 		useCollectionData( {
 			queryStock: true,
 			queryState,
+			productIds,
 		} );
 
 	/**
@@ -227,12 +232,7 @@ const StockStatusFilterBlock = ( {
 
 			updateFilterUrl( checkedOptions );
 		},
-		[
-			isEditor,
-			setProductStockStatusQuery,
-			checked,
-			filteringForPhpTemplate,
-		]
+		[ isEditor, setProductStockStatusQuery, filteringForPhpTemplate ]
 	);
 
 	// Track checked STATE changes - if state changes, update the query.
