@@ -98,278 +98,247 @@ const CartLineItemRow: React.ForwardRefExoticComponent<
 					price: '0',
 					regular_price: '0',
 					sale_price: '0',
-					price_range: null,
-					raw_prices: {
-						precision: 6,
-						price: '0',
-						regular_price: '0',
-						sale_price: '0',
-					},
 				},
-				totals = {
-					currency_code: 'USD',
-					currency_minor_unit: 2,
-					currency_symbol: '$',
-					currency_prefix: '$',
-					currency_suffix: '',
-					currency_decimal_separator: '.',
-					currency_thousand_separator: ',',
-					line_subtotal: '0',
-					line_subtotal_tax: '0',
-				},
-				extensions,
-			} = lineItem;
+			},
+			totals = {
+				currency_code: 'USD',
+				currency_minor_unit: 2,
+				currency_symbol: '$',
+				currency_prefix: '$',
+				currency_suffix: '',
+				currency_decimal_separator: '.',
+				currency_thousand_separator: ',',
+				line_subtotal: '0',
+				line_subtotal_tax: '0',
+			},
+			extensions,
+		} = lineItem;
 
-			const { quantity, setItemQuantity, removeItem, isPendingDelete } =
-				useStoreCartItemQuantity( lineItem );
-			const { dispatchStoreEvent } = useStoreEvents();
+		const { quantity, setItemQuantity, removeItem, isPendingDelete } =
+			useStoreCartItemQuantity( lineItem );
+		const { dispatchStoreEvent } = useStoreEvents();
 
-			// Prepare props to pass to the __experimentalApplyCheckoutFilter filter.
-			// We need to pluck out receiveCart.
-			// eslint-disable-next-line no-unused-vars
-			const { receiveCart, ...cart } = useStoreCart();
-			const arg = useMemo(
-				() => ( {
-					context: 'cart',
-					cartItem: lineItem,
-					cart,
-				} ),
-				[ lineItem, cart ]
-			);
-			const priceCurrency = getCurrencyFromPriceResponse( prices );
-			const name = __experimentalApplyCheckoutFilter( {
-				filterName: 'itemName',
-				defaultValue: initialName,
-				extensions,
-				arg,
-			} );
+		// Prepare props to pass to the __experimentalApplyCheckoutFilter filter.
+		// We need to pluck out receiveCart.
+		// eslint-disable-next-line no-unused-vars
+		const { receiveCart, ...cart } = useStoreCart();
+		const arg = useMemo(
+			() => ( {
+				context: 'cart',
+				cartItem: lineItem,
+				cart,
+			} ),
+			[ lineItem, cart ]
+		);
+		const priceCurrency = getCurrencyFromPriceResponse( prices );
+		const name = __experimentalApplyCheckoutFilter( {
+			filterName: 'itemName',
+			defaultValue: initialName,
+			extensions,
+			arg,
+		} );
 
-			const regularAmountSingle = Dinero( {
-				amount: parseInt( prices.raw_prices.regular_price, 10 ),
-				precision: prices.raw_prices.precision,
-			} );
-			const purchaseAmountSingle = Dinero( {
-				amount: parseInt( prices.raw_prices.price, 10 ),
-				precision: prices.raw_prices.precision,
-			} );
-			const saleAmountSingle =
-				regularAmountSingle.subtract( purchaseAmountSingle );
-			const saleAmount = saleAmountSingle.multiply( quantity );
-			const totalsCurrency = getCurrencyFromPriceResponse( totals );
-			let lineSubtotal = parseInt( totals.line_subtotal, 10 );
-			if ( getSetting( 'displayCartPricesIncludingTax', false ) ) {
-				lineSubtotal += parseInt( totals.line_subtotal_tax, 10 );
-			}
-			const subtotalPrice = Dinero( {
-				amount: lineSubtotal,
-				precision: totalsCurrency.minorUnit,
-			} );
+		const regularAmountSingle = Dinero( {
+			amount: parseInt( prices.raw_prices.regular_price, 10 ),
+			precision: prices.raw_prices.precision,
+		} );
+		const purchaseAmountSingle = Dinero( {
+			amount: parseInt( prices.raw_prices.price, 10 ),
+			precision: prices.raw_prices.precision,
+		} );
+		const saleAmountSingle =
+			regularAmountSingle.subtract( purchaseAmountSingle );
+		const saleAmount = saleAmountSingle.multiply( quantity );
+		const totalsCurrency = getCurrencyFromPriceResponse( totals );
+		let lineSubtotal = parseInt( totals.line_subtotal, 10 );
+		if ( getSetting( 'displayCartPricesIncludingTax', false ) ) {
+			lineSubtotal += parseInt( totals.line_subtotal_tax, 10 );
+		}
+		const subtotalPrice = Dinero( {
+			amount: lineSubtotal,
+			precision: totalsCurrency.minorUnit,
+		} );
 
-			const firstImage = images.length ? images[ 0 ] : {};
-			const isProductHiddenFromCatalog =
-				catalogVisibility === 'hidden' ||
-				catalogVisibility === 'search';
+		const firstImage = images.length ? images[ 0 ] : {};
+		const isProductHiddenFromCatalog =
+			catalogVisibility === 'hidden' || catalogVisibility === 'search';
 
-			const cartItemClassNameFilter = __experimentalApplyCheckoutFilter( {
-				filterName: 'cartItemClass',
-				defaultValue: '',
-				extensions,
-				arg,
-			} );
+		const cartItemClassNameFilter = __experimentalApplyCheckoutFilter( {
+			filterName: 'cartItemClass',
+			defaultValue: '',
+			extensions,
+			arg,
+		} );
 
-			// Allow extensions to filter how the price is displayed. Ie: prepending or appending some values.
-			const productPriceFormat = __experimentalApplyCheckoutFilter( {
-				filterName: 'cartItemPrice',
-				defaultValue: '<price/>',
-				extensions,
-				arg,
-				validation: productPriceValidation,
-			} );
+		// Allow extensions to filter how the price is displayed. Ie: prepending or appending some values.
+		const productPriceFormat = __experimentalApplyCheckoutFilter( {
+			filterName: 'cartItemPrice',
+			defaultValue: '<price/>',
+			extensions,
+			arg,
+			validation: productPriceValidation,
+		} );
 
-			const subtotalPriceFormat = __experimentalApplyCheckoutFilter( {
-				filterName: 'subtotalPriceFormat',
-				defaultValue: '<price/>',
-				extensions,
-				arg,
-				validation: productPriceValidation,
-			} );
+		const subtotalPriceFormat = __experimentalApplyCheckoutFilter( {
+			filterName: 'subtotalPriceFormat',
+			defaultValue: '<price/>',
+			extensions,
+			arg,
+			validation: productPriceValidation,
+		} );
 
-			const saleBadgePriceFormat = __experimentalApplyCheckoutFilter( {
-				filterName: 'saleBadgePriceFormat',
-				defaultValue: '<price/>',
-				extensions,
-				arg,
-				validation: productPriceValidation,
-			} );
+		const saleBadgePriceFormat = __experimentalApplyCheckoutFilter( {
+			filterName: 'saleBadgePriceFormat',
+			defaultValue: '<price/>',
+			extensions,
+			arg,
+			validation: productPriceValidation,
+		} );
 
-			const showRemoveItemLink = __experimentalApplyCheckoutFilter( {
-				filterName: 'showRemoveItemLink',
-				defaultValue: true,
-				extensions,
-				arg,
-			} );
+		const showRemoveItemLink = __experimentalApplyCheckoutFilter( {
+			filterName: 'showRemoveItemLink',
+			defaultValue: true,
+			extensions,
+			arg,
+		} );
 
-			return (
-				<tr
-					className={ classnames(
-						'wc-block-cart-items__row',
-						cartItemClassNameFilter,
-						{
-							'is-disabled': isPendingDelete,
-						}
-					) }
-					ref={ ref }
-					tabIndex={ tabIndex }
+		return (
+			<tr
+				className={ classnames(
+					'wc-block-cart-items__row',
+					cartItemClassNameFilter,
+					{
+						'is-disabled': isPendingDelete,
+					}
+				) }
+				ref={ ref }
+				tabIndex={ tabIndex }
+			>
+				{ /* If the image has no alt text, this link is unnecessary and can be hidden. */ }
+				<td
+					className="wc-block-cart-item__image"
+					aria-hidden={
+						! objectHasProp( firstImage, 'alt' ) || ! firstImage.alt
+					}
 				>
-					{ /* If the image has no alt text, this link is unnecessary and can be hidden. */ }
-					<td
-						className="wc-block-cart-item__image"
-						aria-hidden={
-							! objectHasProp( firstImage, 'alt' ) ||
-							! firstImage.alt
-						}
-					>
-						{ /* We don't need to make it focusable, because product name has the same link. */ }
-						{ isProductHiddenFromCatalog ? (
+					{ /* We don't need to make it focusable, because product name has the same link. */ }
+					{ isProductHiddenFromCatalog ? (
+						<ProductImage
+							image={ firstImage }
+							fallbackAlt={ name }
+						/>
+					) : (
+						<a href={ permalink } tabIndex={ -1 }>
 							<ProductImage
 								image={ firstImage }
 								fallbackAlt={ name }
 							/>
+						</a>
+					) }
+				</td>
+				<td className="wc-block-cart-item__product">
+					<div className="wc-block-cart-item__wrap">
+						<ProductName
+							disabled={
+								isPendingDelete || isProductHiddenFromCatalog
+							}
+							name={ name }
+							permalink={ permalink }
+						/>
+						{ showBackorderBadge ? (
+							<ProductBackorderBadge />
 						) : (
-							<a href={ permalink } tabIndex={ -1 }>
-								<ProductImage
-									image={ firstImage }
-									fallbackAlt={ name }
+							!! lowStockRemaining && (
+								<ProductLowStockBadge
+									lowStockRemaining={ lowStockRemaining }
 								/>
-							</a>
+							)
 						) }
-					</td>
-					<td className="wc-block-cart-item__product">
-						<div className="wc-block-cart-item__wrap">
-							<ProductName
-								disabled={
-									isPendingDelete ||
-									isProductHiddenFromCatalog
-								}
-								name={ name }
-								permalink={ permalink }
-							/>
-							{ showBackorderBadge ? (
-								<ProductBackorderBadge />
-							) : (
-								!! lowStockRemaining && (
-									<ProductLowStockBadge
-										lowStockRemaining={ lowStockRemaining }
-									/>
-								)
-							) }
 
-							<div className="wc-block-cart-item__prices">
-								<ProductPrice
-									currency={ priceCurrency }
-									regularPrice={ getAmountFromRawPrice(
-										regularAmountSingle,
-										priceCurrency
-									) }
-									price={ getAmountFromRawPrice(
-										purchaseAmountSingle,
-										priceCurrency
-									) }
-									format={ subtotalPriceFormat }
-								/>
-							</div>
-
-							<ProductSaleBadge
+						<div className="wc-block-cart-item__prices">
+							<ProductPrice
 								currency={ priceCurrency }
-								saleAmount={ getAmountFromRawPrice(
-									saleAmountSingle,
+								regularPrice={ getAmountFromRawPrice(
+									regularAmountSingle,
 									priceCurrency
 								) }
-								format={ saleBadgePriceFormat }
+								price={ getAmountFromRawPrice(
+									purchaseAmountSingle,
+									priceCurrency
+								) }
+								format={ subtotalPriceFormat }
 							/>
+						</div>
 
-							<ProductMetadata
-								shortDescription={ shortDescription }
-								fullDescription={ fullDescription }
-								itemData={ itemData }
-								variation={ variation }
-							/>
+						<ProductSaleBadge
+							currency={ priceCurrency }
+							saleAmount={ getAmountFromRawPrice(
+								saleAmountSingle,
+								priceCurrency
+							) }
+							format={ saleBadgePriceFormat }
+						/>
 
-							<div className="wc-block-cart-item__quantity">
-								{ ! soldIndividually &&
-									!! quantityLimits.editable && (
-										<QuantitySelector
-											disabled={ isPendingDelete }
-											quantity={ quantity }
-											minimum={ quantityLimits.minimum }
-											maximum={ quantityLimits.maximum }
-											step={ quantityLimits.multiple_of }
-											strictLimits={ false }
-											onChange={ ( newQuantity ) => {
-												setItemQuantity( newQuantity );
-												dispatchStoreEvent(
-													'cart-set-item-quantity',
-													{
-														product: lineItem,
-														quantity: newQuantity,
-													}
-												);
-											} }
-											itemName={ name }
-										/>
-									) }
-								{ showRemoveItemLink && (
-									<button
-										className="wc-block-cart-item__remove-link"
-										onClick={ () => {
-											onRemove();
-											removeItem();
+						<ProductMetadata
+							shortDescription={ shortDescription }
+							fullDescription={ fullDescription }
+							itemData={ itemData }
+							variation={ variation }
+						/>
+
+						<div className="wc-block-cart-item__quantity">
+							{ ! soldIndividually &&
+								!! quantityLimits.editable && (
+									<QuantitySelector
+										disabled={ isPendingDelete }
+										quantity={ quantity }
+										minimum={ quantityLimits.minimum }
+										maximum={ quantityLimits.maximum }
+										step={ quantityLimits.multiple_of }
+										onChange={ ( newQuantity ) => {
+											setItemQuantity( newQuantity );
 											dispatchStoreEvent(
-												'cart-remove-item',
+												'cart-set-item-quantity',
 												{
 													product: lineItem,
-													quantity,
+													quantity: newQuantity,
 												}
 											);
-											speak(
-												sprintf(
-													/* translators: %s refers to the item name in the cart. */
-													__(
-														'%s has been removed from your cart.',
-														'woo-gutenberg-products-block'
-													),
-													name
-												)
-											);
 										} }
-										disabled={ isPendingDelete }
-									>
-										{ __(
-											'Remove item',
-											'woo-gutenberg-products-block'
-										) }
-									</button>
+										itemName={ name }
+									/>
 								) }
-							</div>
-						</div>
-					</td>
-					<td className="wc-block-cart-item__total">
-						<div className="wc-block-cart-item__total-price-and-sale-badge-wrapper">
-							<ProductPrice
-								currency={ totalsCurrency }
-								format={ productPriceFormat }
-								price={ subtotalPrice.getAmount() }
-							/>
-
-							{ quantity > 1 && (
-								<ProductSaleBadge
-									currency={ priceCurrency }
-									saleAmount={ getAmountFromRawPrice(
-										saleAmount,
-										priceCurrency
+							{ showRemoveItemLink && (
+								<button
+									className="wc-block-cart-item__remove-link"
+									onClick={ () => {
+										onRemove();
+										removeItem();
+										dispatchStoreEvent(
+											'cart-remove-item',
+											{
+												product: lineItem,
+												quantity,
+											}
+										);
+										speak(
+											sprintf(
+												/* translators: %s refers to the item name in the cart. */
+												__(
+													'%s has been removed from your cart.',
+													'woo-gutenberg-products-block'
+												),
+												name
+											)
+										);
+									} }
+									disabled={ isPendingDelete }
+								>
+									{ __(
+										'Remove item',
+										'woo-gutenberg-products-block'
 									) }
-									format={ saleBadgePriceFormat }
-								/>
+								</button>
 							) }
 						</div>
 					</div>
