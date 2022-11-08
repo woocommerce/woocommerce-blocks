@@ -246,6 +246,11 @@ const QuantitySelector = ( {
 		setValidationErrors,
 	] );
 
+	/*
+	 * If the current quantity is not a multiple of `step` we should let the user step by 1 until they get to a valid
+	 * quantity. Example: User has a quantity of 3 and `step` updates from the API and becomes 2.
+	 * The user should be able to step up to 4 or down to 2.
+	 */
 	const stepToUse = ! strictLimits && quantity % step !== 0 ? 1 : step;
 
 	return (
