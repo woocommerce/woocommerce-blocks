@@ -20,12 +20,25 @@ class MigrationTest extends \WP_UnitTestCase {
 		parent::tearDown();
 	}
 
+	private function set_db_upgrades( Migration $mock, array $data ) {
+		$reflection = new \ReflectionClass( Migration::class );
+		$property   = $reflection->getProperty( 'db_upgrades' );
+		$property->setAccessible( true );
+		$property->setValue(
+			$mock,
+			$data
+		);
+
+		return $mock;
+	}
+
 	public function test_migrations_run() {
 		update_option( Options::WC_BLOCK_VERSION, '1.0.0' );
 
 		$mock = Mockery::mock( Migration::class )->makePartial();
 
-		$mock->set_db_upgrades(
+		$mock = $this->set_db_upgrades(
+			$mock,
 			array(
 				'2.0.0' => array(
 					'execute_migration_2_0_0',
@@ -45,7 +58,8 @@ class MigrationTest extends \WP_UnitTestCase {
 
 		$mock = Mockery::mock( Migration::class )->makePartial();
 
-		$mock->set_db_upgrades(
+		$mock = $this->set_db_upgrades(
+			$mock,
 			array(
 				'1.0.0' => array(
 					'execute_migration_1_0_0',
@@ -67,7 +81,8 @@ class MigrationTest extends \WP_UnitTestCase {
 
 		$mock = Mockery::mock( Migration::class )->makePartial();
 
-		$mock->set_db_upgrades(
+		$mock = $this->set_db_upgrades(
+			$mock,
 			array(
 				'2.0.0' => array(
 					'execute_migration_2_0_0',
@@ -84,7 +99,8 @@ class MigrationTest extends \WP_UnitTestCase {
 
 		$mock = Mockery::mock( Migration::class )->makePartial();
 
-		$mock->set_db_upgrades(
+		$mock = $this->set_db_upgrades(
+			$mock,
 			array(
 				'2.0.0' => array(
 					'execute_migration_2_0_0',
