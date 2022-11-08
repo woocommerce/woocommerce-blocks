@@ -25,16 +25,25 @@ export const indexLocationsById = (
 };
 
 export const defaultSettings = {
-	enabled: false,
+	enabled: 'yes',
 	title: '',
 	tax_status: 'taxable',
 	cost: '',
 };
 
-export const getInitialSettings = (): ShippingMethodSettings => ( {
-	...defaultSettings,
-	...getSetting( 'pickupLocationSettings', {} ),
-} );
+export const getInitialSettings = (): ShippingMethodSettings => {
+	const settings = getSetting(
+		'pickupLocationSettings',
+		defaultSettings
+	) as typeof defaultSettings;
+
+	return {
+		enabled: settings?.enabled === 'yes',
+		title: settings?.title || defaultSettings.title,
+		tax_status: settings?.tax_status || defaultSettings.tax_status,
+		cost: settings?.cost || defaultSettings.cost,
+	};
+};
 
 export const getInitialPickupLocations = (): SortablePickupLocation[] =>
 	indexLocationsById( getSetting( 'pickupLocations', [] ) );

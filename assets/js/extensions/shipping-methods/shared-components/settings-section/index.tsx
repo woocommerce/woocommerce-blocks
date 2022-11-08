@@ -14,6 +14,11 @@ const StyledSectionWrapper = styled.div`
 	@media ( min-width: 800px ) {
 		flex-flow: row;
 	}
+	.components-base-control {
+		label {
+			text-transform: capitalize !important;
+		}
+	}
 `;
 
 const StyledDescriptionWrapper = styled.div`

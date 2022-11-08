@@ -113,6 +113,7 @@ const LocationSettings = () => {
 	return (
 		<SettingsSection Description={ LocationSettingsDescription }>
 			<SortableTable
+				className="pickup-locations"
 				columns={ tableColumns }
 				data={ pickupLocations }
 				setData={ ( newData ) => {

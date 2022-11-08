@@ -49,12 +49,14 @@ const Form = ( {
 		<form ref={ formRef }>
 			<TextControl
 				label={ __( 'Location Name', 'woo-gutenberg-products-block' ) }
+				name={ 'location_name' }
 				value={ values.name }
 				onChange={ setLocationField( 'name' ) }
 				autoComplete="off"
 			/>
 			<TextControl
 				label={ __( 'Address', 'woo-gutenberg-products-block' ) }
+				name={ 'location_address' }
 				placeholder={ __( 'Address', 'woo-gutenberg-products-block' ) }
 				value={ values.address.address_1 }
 				onChange={ setLocationAddressField( 'address_1' ) }
@@ -62,6 +64,7 @@ const Form = ( {
 			/>
 			<TextControl
 				label={ __( 'City', 'woo-gutenberg-products-block' ) }
+				name={ 'location_city' }
 				hideLabelFromVision={ true }
 				placeholder={ __( 'City', 'woo-gutenberg-products-block' ) }
 				value={ values.address.city }
@@ -70,6 +73,7 @@ const Form = ( {
 			/>
 			<TextControl
 				label={ __( 'Postcode / ZIP', 'woo-gutenberg-products-block' ) }
+				name={ 'location_postcode' }
 				hideLabelFromVision={ true }
 				placeholder={ __(
 					'Postcode / ZIP',
@@ -81,6 +85,7 @@ const Form = ( {
 			/>
 			<StateControl
 				label={ __( 'State', 'woo-gutenberg-products-block' ) }
+				name={ 'location_state' }
 				hideLabelFromVision={ true }
 				placeholder={ __( 'State', 'woo-gutenberg-products-block' ) }
 				value={ values.address.state }
@@ -91,6 +96,7 @@ const Form = ( {
 			/>
 			<SelectControl
 				label={ __( 'Country', 'woo-gutenberg-products-block' ) }
+				name={ 'location_country' }
 				hideLabelFromVision={ true }
 				placeholder={ __( 'Country', 'woo-gutenberg-products-block' ) }
 				value={ values.address.country }
@@ -115,6 +121,7 @@ const Form = ( {
 			/>
 			<TextControl
 				label={ __( 'Pickup Details', 'woo-gutenberg-products-block' ) }
+				name={ 'pickup_details' }
 				value={ values.details }
 				onChange={ setLocationField( 'details' ) }
 				autoComplete="off"

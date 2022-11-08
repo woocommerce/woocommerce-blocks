@@ -44,6 +44,7 @@ const GeneralSettings = () => {
 			<SettingsCard>
 				<CheckboxControl
 					checked={ settings.enabled }
+					name="local_pickup_enabled"
 					onChange={ setSettingField( 'enabled' ) }
 					label={ __(
 						'Enable Local Pickup',
@@ -56,6 +57,7 @@ const GeneralSettings = () => {
 				/>
 				<TextControl
 					label={ __( 'Title', 'woo-gutenberg-products-block' ) }
+					name="local_pickup_title"
 					help={ __(
 						'This is the shipping method title shown to customers.',
 						'woo-gutenberg-products-block'
@@ -91,6 +93,7 @@ const GeneralSettings = () => {
 								'Cost',
 								'woo-gutenberg-products-block'
 							) }
+							name="local_pickup_cost"
 							help={ __(
 								'Optional cost to charge for local pickup.',
 								'woo-gutenberg-products-block'
@@ -110,6 +113,7 @@ const GeneralSettings = () => {
 								'Taxes',
 								'woo-gutenberg-products-block'
 							) }
+							name="local_pickup_tax_status"
 							help={ __(
 								'If a cost is defined, this controls if taxes are applied to that cost.',
 								'woo-gutenberg-products-block'

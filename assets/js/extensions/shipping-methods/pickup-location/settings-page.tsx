@@ -24,7 +24,7 @@ const SettingsWrapper = styled.div`
 
 const SettingsPage = () => {
 	return (
-		<SettingsWrapper>
+		<SettingsWrapper id="local-pickup-settings">
 			<SettingsProvider>
 				<GeneralSettings />
 				<LocationSettings />

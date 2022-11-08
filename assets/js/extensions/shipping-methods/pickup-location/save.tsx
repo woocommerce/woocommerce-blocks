@@ -13,6 +13,8 @@ import { useSettingsContext } from './settings-context';
 
 const SaveSectionWrapper = styled( SettingsSection )`
 	text-align: right;
+	padding-top: 0;
+	margin-top: 0;
 `;
 
 const SaveSettings = () => {

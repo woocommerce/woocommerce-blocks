@@ -40,8 +40,11 @@ const StyledModal = styled( Modal )`
 			}
 		}
 
-		label {
-			margin-top: 8px;
+		.components-base-control {
+			label {
+				margin-top: 8px;
+				text-transform: capitalize !important;
+			}
 		}
 	}
 `;
