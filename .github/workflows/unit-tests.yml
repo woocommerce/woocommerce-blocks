@@ -135,7 +135,7 @@ jobs:
                   npm run test:php
 
     JSUnitTests:
-        name: JavaScript
+        name: JS Unit Tests
         needs: Setup
         runs-on: ubuntu-latest
         steps:
