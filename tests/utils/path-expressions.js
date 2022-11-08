@@ -2,7 +2,7 @@ export const getProductNamePathExpression = ( productTitle ) =>
 	`a[contains(text(), "${ productTitle }")]`;
 
 export const getQtyItemPathExpression = ( args ) =>
-	'div[@class="wc-block-cart-item__quantity" and div[@class="wc-block-components-quantity-selector" and ' +
+	'div[@class="wc-block-cart-item__quantity" and //div[@class="wc-block-components-quantity-selector" and ' +
 	getQtyInputPathExpression( args ) +
 	']]';
 
