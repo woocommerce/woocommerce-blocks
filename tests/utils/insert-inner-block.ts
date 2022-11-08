@@ -7,6 +7,7 @@ import { canvas } from '@wordpress/e2e-test-utils';
  * Internal dependencies
  */
 import { selectBlockByName } from '.';
+import SELECTORS from './selectors';
 
 /**
  * Inserts an inner block into the currently selected block. If a parent block
@@ -26,11 +27,11 @@ export const insertInnerBlock = async (
 		await selectBlockByName( parentBlockName );
 	}
 	const blockInserterButton = await canvas().waitForSelector(
-		'.block-editor-inserter button'
+		SELECTORS.quickInserter.button
 	);
 	await blockInserterButton.click();
 	const blockInsertInput = await page.waitForSelector(
-		'.block-editor-inserter__quick-inserter.has-search.has-expand .components-search-control__input'
+		SELECTORS.quickInserter.searchInput
 	);
 	await blockInsertInput.focus();
 	await page.keyboard.type( blockTitle );
