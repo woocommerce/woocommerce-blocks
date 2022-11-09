@@ -45,6 +45,9 @@ const reducer: Reducer< Record< string, FieldValidationStatus > > = (
 			return newState;
 		case types.CLEAR_VALIDATION_ERRORS:
 			const { errors } = action;
+			if ( typeof errors === 'undefined' ) {
+				return {};
+			}
 			if ( ! Array.isArray( errors ) ) {
 				return newState;
 			}
