@@ -24,6 +24,10 @@ const block = {
 			productPrice:
 				'.wc-block-grid__product:nth-child(2) .wc-block-grid__product-price',
 			addToCartButton: 'button.add_to_cart_button',
+			checkoutOrderSummary: {
+				content: '.wc-block-components-order-summary__content',
+				toggle: '.wc-block-components-order-summary button[aria-expanded="false"]',
+			},
 		},
 	},
 };
@@ -555,7 +559,7 @@ describe( 'Shopper → Mini Cart', () => {
 			await expect( page ).toMatchElement( 'h1', { text: 'Checkout' } );
 
 			const orderSummaryToggle = await page.$(
-				'.wc-block-components-order-summary button[aria-expanded="false"]'
+				block.selectors.frontend.checkoutOrderSummary.toggle
 			);
 
 			if ( orderSummaryToggle ) {
@@ -563,7 +567,7 @@ describe( 'Shopper → Mini Cart', () => {
 			}
 
 			await expect( page ).toMatchElement(
-				'.wc-block-components-order-summary__content',
+				block.selectors.frontend.checkoutOrderSummary.content,
 				{ text: productTitle }
 			);
 		} );
