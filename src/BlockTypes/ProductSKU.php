@@ -57,7 +57,7 @@ class ProductSKU extends AbstractBlock {
 
 		if ( $product ) {
 			return sprintf(
-				'<div class="wc-block-components-product-rating wc-block-grid__product-rating">
+				'<div class="wc-block-components-product-sku wc-block-grid__product-sku">
 					SKU:
 					<strong>%s</strong>
 				</div>',
