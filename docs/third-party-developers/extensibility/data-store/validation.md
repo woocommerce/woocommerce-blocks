@@ -10,7 +10,6 @@
 -   [Actions](#actions)
     -   [clearValidationError](#clearvalidationerror)
     -   [clearValidationErrors](#clearvalidationerrors)
-    -   [clearAllValidationErrors](#clearallvalidationerrors)
     -   [setValidationErrors](#setvalidationerrors)
     -   [hideValidationError](#hidevalidationerror)
     -   [showValidationError](#showvalidationerror)
@@ -106,22 +105,28 @@ store.clearValidationError( 'billing-first-name' );
 
 ### clearValidationErrors
 
-Clears multiple validation errors at once.
+Clears multiple validation errors at once. If no error IDs are passed, all validation errors will be cleared.
 
 #### _Parameters_
 
-- _errors_ `string[]` - The error IDs to clear validation errors for.
+- _errors_ `string[] | undefined` - The error IDs to clear validation errors for. This can be undefined, and if it
+  is, all validation errors will be cleared.
 
 #### Example
+
+1. This will clear only the validation errors passed in the array.
 
 ```js
 const store = dispatch( 'wc/store/validation' );
 store.clearValidationErrors( [ 'billing-first-name', 'billing-last-name', 'terms-and-conditions' ] );
 ```
 
-### clearAllValidationErrors
+2. This will clear all validation errors.
 
-Clears all validation errors.
+```js
+const store = dispatch( 'wc/store/validation' );
+store.clearValidationErrors();
+```
 
 ### setValidationErrors
 
@@ -149,15 +154,6 @@ setValidationErrors( {
         hidden: false,
     },
 } );
-```
-
-#### Example
-
-```js
-const { dispatch } = wp.data;
-const { clearAllValidationErrors } = dispatch( 'wc/store/validation' );
-
-clearAllValidationErrors();
 ```
 
 ### hideValidationError
