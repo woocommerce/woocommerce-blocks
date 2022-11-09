@@ -129,9 +129,7 @@ export const Block = ( props ) => {
 };
 
 const ImagePlaceholder = () => {
-	return (
-		<img src={ PLACEHOLDER_IMG_SRC } alt="" width={ 500 } height={ 500 } />
-	);
+	return <img src={ PLACEHOLDER_IMG_SRC } alt="" />;
 };
 
 const Image = ( { image, loaded, showFullSize, fallbackAlt } ) => {
