@@ -4,8 +4,8 @@
 
 - [Setup](#setup)
 - [What to test](#what-to-test)
-  - [With taxes disabled](#with-taxes-disabled)
-  - [With taxes enabled](#with-taxes-enabled)
+    - [With taxes disabled](#with-taxes-disabled)
+    - [With taxes enabled](#with-taxes-enabled)
 
 ## Setup
 

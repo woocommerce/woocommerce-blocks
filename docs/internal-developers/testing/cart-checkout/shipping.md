@@ -4,9 +4,9 @@
 
 - [Setup](#setup)
 - [What to test](#what-to-test)
-  - [With shipping zones available](#with-shipping-zones-available)
-  - [If you don't have any shipping zones set up and/or shipping is disabled](#if-you-dont-have-any-shipping-zones-set-up-andor-shipping-is-disabled)
-  - [If you don't have any shipping zones set up, but shipping is enabled](#if-you-dont-have-any-shipping-zones-set-up-but-shipping-is-enabled)
+    - [With shipping zones available](#with-shipping-zones-available)
+    - [If you don't have any shipping zones set up and/or shipping is disabled](#if-you-dont-have-any-shipping-zones-set-up-andor-shipping-is-disabled)
+    - [If you don't have any shipping zones set up, but shipping is enabled](#if-you-dont-have-any-shipping-zones-set-up-but-shipping-is-enabled)
 
 ## Setup
 

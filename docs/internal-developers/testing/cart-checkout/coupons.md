@@ -4,8 +4,8 @@
 
 - [Setup](#setup)
 - [What to test](#what-to-test)
-  - [With coupons disabled](#with-coupons-disabled)
-  - [With coupons enabled](#with-coupons-enabled)
+    - [With coupons disabled](#with-coupons-disabled)
+    - [With coupons enabled](#with-coupons-enabled)
 
 ## Setup
 

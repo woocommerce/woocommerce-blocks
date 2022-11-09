@@ -3,8 +3,8 @@
 ## Table of Contents <!-- omit in toc -->
 
 - [Setup](#setup)
-  - [Special Cases](#special-cases)
-  - [Unsupported](#unsupported)
+    - [Special Cases](#special-cases)
+    - [Unsupported](#unsupported)
 - [What to test](#what-to-test)
 
 ## Setup
