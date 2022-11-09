@@ -1479,13 +1479,13 @@
   Object literal may only specify known properties, and &apos;textAlign&apos; does not exist in type &apos;{ productId: { type: string; default: number; }; isDescendentOfQueryLoop: { type: string; default: boolean; }; }&apos;." source="TS2322" />
 </file>
 <file name="assets/js/atomic/blocks/product-elements/price/index.js">
-<error line="54" column="1" severity="error" message="No overload matches this call.
+<error line="53" column="1" severity="error" message="No overload matches this call.
   Overload 1 of 2, &apos;(metadata: BlockConfiguration&lt;{}&gt;, settings?: Partial&lt;BlockConfiguration&lt;{}&gt;&gt; | undefined): Block&lt;{}&gt; | undefined&apos;, gave the following error.
     Argument of type &apos;string&apos; is not assignable to parameter of type &apos;BlockConfiguration&lt;{}&gt;&apos;.
       Type &apos;string&apos; is not assignable to type &apos;Pick&lt;Block&lt;{}&gt;, &quot;title&quot; | &quot;category&quot; | &quot;attributes&quot;&gt;&apos;.
   Overload 2 of 2, &apos;(name: string, settings: BlockConfiguration&lt;{}&gt;): Block&lt;{}&gt; | undefined&apos;, gave the following error.
-    Argument of type &apos;{ apiVersion: number; title: string; description: string; parent: string[]; ancestor: string[]; usesContext: string[]; icon: { src: JSX.Element; }; attributes: { productId: { type: string; default: number; }; isDescendentOfQueryLoop: { ...; }; }; ... 18 more ...; merge?: ((attributes: {}, attributesToMerge: {}) =&gt; P...&apos; is not assignable to parameter of type &apos;BlockConfiguration&lt;{}&gt;&apos; with &apos;exactOptionalPropertyTypes: true&apos;. Consider adding &apos;undefined&apos; to the types of the target&apos;s properties.
-      Type &apos;{ apiVersion: number; title: string; description: string; parent: string[]; ancestor: string[]; usesContext: string[]; icon: { src: JSX.Element; }; attributes: { productId: { type: string; default: number; }; isDescendentOfQueryLoop: { ...; }; }; ... 18 more ...; merge?: ((attributes: {}, attributesToMerge: {}) =&gt; P...&apos; is not assignable to type &apos;Partial&lt;Omit&lt;Block&lt;{}&gt;, &quot;icon&quot;&gt;&gt;&apos; with &apos;exactOptionalPropertyTypes: true&apos;. Consider adding &apos;undefined&apos; to the types of the target&apos;s properties.
+    Argument of type &apos;{ apiVersion: number; title: string; description: string; ancestor: string[]; usesContext: string[]; icon: { src: JSX.Element; }; attributes: { productId: { type: string; default: number; }; isDescendentOfQueryLoop: { ...; }; }; ... 19 more ...; merge?: ((attributes: {}, attributesToMerge: {}) =&gt; Partial&lt;...&gt;) | und...&apos; is not assignable to parameter of type &apos;BlockConfiguration&lt;{}&gt;&apos; with &apos;exactOptionalPropertyTypes: true&apos;. Consider adding &apos;undefined&apos; to the types of the target&apos;s properties.
+      Type &apos;{ apiVersion: number; title: string; description: string; ancestor: string[]; usesContext: string[]; icon: { src: JSX.Element; }; attributes: { productId: { type: string; default: number; }; isDescendentOfQueryLoop: { ...; }; }; ... 19 more ...; merge?: ((attributes: {}, attributesToMerge: {}) =&gt; Partial&lt;...&gt;) | und...&apos; is not assignable to type &apos;Partial&lt;Omit&lt;Block&lt;{}&gt;, &quot;icon&quot;&gt;&gt;&apos; with &apos;exactOptionalPropertyTypes: true&apos;. Consider adding &apos;undefined&apos; to the types of the target&apos;s properties.
         The types of &apos;supports.color&apos; are incompatible between these types.
           Type &apos;Partial&lt;ColorProps&gt; | { text: boolean; background: boolean; link: boolean; __experimentalSkipSerialization: boolean; } | undefined&apos; is not assignable to type &apos;Partial&lt;ColorProps&gt; | undefined&apos;.
             Type &apos;{ text: boolean; background: boolean; link: boolean; __experimentalSkipSerialization: boolean; }&apos; is not assignable to type &apos;Partial&lt;ColorProps&gt;&apos;.
@@ -1507,8 +1507,8 @@
     Argument of type &apos;string&apos; is not assignable to parameter of type &apos;BlockConfiguration&lt;{}&gt;&apos;.
       Type &apos;string&apos; is not assignable to type &apos;Pick&lt;Block&lt;{}&gt;, &quot;title&quot; | &quot;category&quot; | &quot;attributes&quot;&gt;&apos;.
   Overload 2 of 2, &apos;(name: string, settings: BlockConfiguration&lt;{}&gt;): Block&lt;{}&gt; | undefined&apos;, gave the following error.
-    Argument of type &apos;{ apiVersion: number; name: string; title: string; icon: { src: JSX.Element; }; keywords: string[]; description: string; usesContext: string[]; parent: string[]; textdomain: string; attributes: { showProductLink: { ...; }; ... 4 more ...; isDescendentOfQueryLoop: { ...; }; }; ... 15 more ...; merge?: ((attributes: {...&apos; is not assignable to parameter of type &apos;BlockConfiguration&lt;{}&gt;&apos; with &apos;exactOptionalPropertyTypes: true&apos;. Consider adding &apos;undefined&apos; to the types of the target&apos;s properties.
-      Type &apos;{ apiVersion: number; name: string; title: string; icon: { src: JSX.Element; }; keywords: string[]; description: string; usesContext: string[]; parent: string[]; textdomain: string; attributes: { showProductLink: { ...; }; ... 4 more ...; isDescendentOfQueryLoop: { ...; }; }; ... 15 more ...; merge?: ((attributes: {...&apos; is not assignable to type &apos;Partial&lt;Omit&lt;Block&lt;{}&gt;, &quot;icon&quot;&gt;&gt;&apos; with &apos;exactOptionalPropertyTypes: true&apos;. Consider adding &apos;undefined&apos; to the types of the target&apos;s properties.
+    Argument of type &apos;{ apiVersion: number; name: string; title: string; icon: { src: JSX.Element; }; keywords: string[]; description: string; usesContext: string[]; ancestor: string[]; textdomain: string; attributes: { ...; }; ... 16 more ...; merge?: ((attributes: {}, attributesToMerge: {}) =&gt; Partial&lt;...&gt;) | undefined; }&apos; is not assignable to parameter of type &apos;BlockConfiguration&lt;{}&gt;&apos; with &apos;exactOptionalPropertyTypes: true&apos;. Consider adding &apos;undefined&apos; to the types of the target&apos;s properties.
+      Type &apos;{ apiVersion: number; name: string; title: string; icon: { src: JSX.Element; }; keywords: string[]; description: string; usesContext: string[]; ancestor: string[]; textdomain: string; attributes: { ...; }; ... 16 more ...; merge?: ((attributes: {}, attributesToMerge: {}) =&gt; Partial&lt;...&gt;) | undefined; }&apos; is not assignable to type &apos;Partial&lt;Omit&lt;Block&lt;{}&gt;, &quot;icon&quot;&gt;&gt;&apos; with &apos;exactOptionalPropertyTypes: true&apos;. Consider adding &apos;undefined&apos; to the types of the target&apos;s properties.
         Types of property &apos;edit&apos; are incompatible.
           Type &apos;({ attributes, setAttributes, context }: { attributes: any; setAttributes: any; context: any; }) =&gt; Element&apos; is not assignable to type &apos;ComponentType&lt;BlockEditProps&lt;{}&gt;&gt; | undefined&apos;.
             Type &apos;({ attributes, setAttributes, context }: { attributes: any; setAttributes: any; context: any; }) =&gt; Element&apos; is not assignable to type &apos;FunctionComponent&lt;BlockEditProps&lt;{}&gt;&gt;&apos;.
@@ -1538,20 +1538,6 @@
             Type &apos;({ attributes, setAttributes, context }: { attributes: any; setAttributes: any; context: any; }) =&gt; Element&apos; is not assignable to type &apos;FunctionComponent&lt;BlockEditProps&lt;{}&gt;&gt;&apos;.
               Types of parameters &apos;__0&apos; and &apos;props&apos; are incompatible.
                 Property &apos;context&apos; is missing in type &apos;BlockEditProps&lt;{}&gt; &amp; { children?: ReactNode; }&apos; but required in type &apos;{ attributes: any; setAttributes: any; context: any; }&apos;." source="TS2769" />
-</file>
-<file name="assets/js/atomic/blocks/product-elements/summary/edit.js">
-<error line="15" column="18" severity="error" message="Binding element &apos;attributes&apos; implicitly has an &apos;any&apos; type." source="TS7031" />
-</file>
-<file name="assets/js/atomic/blocks/product-elements/summary/index.js">
-<error line="31" column="1" severity="error" message="No overload matches this call.
-  Overload 1 of 2, &apos;(metadata: BlockConfiguration&lt;{}&gt;, settings?: Partial&lt;BlockConfiguration&lt;{}&gt;&gt; | undefined): Block&lt;{}&gt; | undefined&apos;, gave the following error.
-    Argument of type &apos;string&apos; is not assignable to parameter of type &apos;BlockConfiguration&lt;{}&gt;&apos;.
-      Type &apos;string&apos; is not assignable to type &apos;Pick&lt;Block&lt;{}&gt;, &quot;title&quot; | &quot;category&quot; | &quot;attributes&quot;&gt;&apos;.
-  Overload 2 of 2, &apos;(name: string, settings: BlockConfiguration&lt;{}&gt;): Block&lt;{}&gt; | undefined&apos;, gave the following error.
-    Argument of type &apos;{ apiVersion: number; title: string; description: string; icon: { src: JSX.Element; }; attributes: { productId: { type: string; default: number; }; }; supports: { color?: { text: boolean; background: boolean; link: boolean; }; typography?: { ...; }; __experimentalSelector?: string; }; ... 19 more ...; merge?: ((attr...&apos; is not assignable to parameter of type &apos;BlockConfiguration&lt;{}&gt;&apos; with &apos;exactOptionalPropertyTypes: true&apos;. Consider adding &apos;undefined&apos; to the types of the target&apos;s properties.
-      Type &apos;{ apiVersion: number; title: string; description: string; icon: { src: JSX.Element; }; attributes: { productId: { type: string; default: number; }; }; supports: { color?: { text: boolean; background: boolean; link: boolean; }; typography?: { ...; }; __experimentalSelector?: string; }; ... 19 more ...; merge?: ((attr...&apos; is not assignable to type &apos;Partial&lt;Omit&lt;Block&lt;{}&gt;, &quot;icon&quot;&gt;&gt;&apos; with &apos;exactOptionalPropertyTypes: true&apos;. Consider adding &apos;undefined&apos; to the types of the target&apos;s properties.
-        The types of &apos;supports.color.text&apos; are incompatible between these types.
-          Type &apos;boolean&apos; is not assignable to type &apos;string&apos;." source="TS2769" />
 </file>
 <file name="assets/js/editor-components/edit-product-link/index.js">
 <error line="18" column="40" severity="error" message="Property &apos;productId&apos; does not exist on type &apos;Object&apos;." source="TS2339" />
@@ -1683,6 +1669,10 @@
   Types of property &apos;stepHeadingContent&apos; are incompatible.
     Type &apos;Element | undefined&apos; is not assignable to type &apos;Element&apos;.
       Type &apos;undefined&apos; is not assignable to type &apos;Element&apos;." source="TS2375" />
+</file>
+<file name="assets/js/base/components/cart-checkout/product-details/index.tsx">
+<error line="36" column="14" severity="error" message="Property &apos;className&apos; does not exist on type &apos;ProductResponseItemData&apos;.
+  Property &apos;className&apos; does not exist on type &apos;ProductResponseItemBaseData &amp; { key: string; name?: never; }&apos;." source="TS2339" />
 </file>
 <file name="assets/js/base/components/cart-checkout/product-summary/index.tsx">
 <error line="32" column="4" severity="error" message="Type &apos;{ className: string | undefined; source: string; maxLength: number; countType: WordCountType; }&apos; is not assignable to type &apos;SummaryProps&apos; with &apos;exactOptionalPropertyTypes: true&apos;. Consider adding &apos;undefined&apos; to the types of the target&apos;s properties.
@@ -3261,8 +3251,8 @@
 </file>
 <file name="assets/js/blocks/filter-wrapper/index.tsx">
 <error line="8" column="25" severity="error" message="Module &apos;&quot;@wordpress/block-editor&quot;&apos; has no exported member &apos;useInnerBlocksProps&apos;." source="TS2305" />
-<error line="47" column="34" severity="error" message="Parameter &apos;instance&apos; implicitly has an &apos;any&apos; type." source="TS7006" />
-<error line="112" column="20" severity="error" message="No overload matches this call.
+<error line="46" column="34" severity="error" message="Parameter &apos;instance&apos; implicitly has an &apos;any&apos; type." source="TS7006" />
+<error line="111" column="20" severity="error" message="No overload matches this call.
   Overload 1 of 2, &apos;(metadata: BlockConfiguration&lt;Attributes&gt;, settings?: Partial&lt;BlockConfiguration&lt;Attributes&gt;&gt; | undefined): Block&lt;...&gt; | undefined&apos;, gave the following error.
     Argument of type &apos;{ name: string; version: string; title: string; category: string; keywords: string[]; attributes: { filterType: { type: string; }; heading: { type: string; }; }; textdomain: string; apiVersion: number; $schema: string; }&apos; is not assignable to parameter of type &apos;BlockConfiguration&lt;Attributes&gt;&apos;.
       Type &apos;{ name: string; version: string; title: string; category: string; keywords: string[]; attributes: { filterType: { type: string; }; heading: { type: string; }; }; textdomain: string; apiVersion: number; $schema: string; }&apos; is not assignable to type &apos;Partial&lt;Omit&lt;Block&lt;Attributes&gt;, &quot;icon&quot;&gt;&gt;&apos;.
@@ -3271,15 +3261,15 @@
             Type &apos;{ type: string; }&apos; is missing the following properties from type &apos;Query&lt;string&gt;&apos;: source, selector, query
   Overload 2 of 2, &apos;(name: string, settings: BlockConfiguration&lt;Attributes&gt;): Block&lt;Attributes&gt; | undefined&apos;, gave the following error.
     Argument of type &apos;{ name: string; version: string; title: string; category: string; keywords: string[]; attributes: { filterType: { type: string; }; heading: { type: string; }; }; textdomain: string; apiVersion: number; $schema: string; }&apos; is not assignable to parameter of type &apos;string&apos;." source="TS2769" />
-<error line="136" column="16" severity="error" message="Parameter &apos;attributes&apos; implicitly has an &apos;any&apos; type." source="TS7006" />
-<error line="160" column="16" severity="error" message="Parameter &apos;attributes&apos; implicitly has an &apos;any&apos; type." source="TS7006" />
-<error line="185" column="16" severity="error" message="Parameter &apos;attributes&apos; implicitly has an &apos;any&apos; type." source="TS7006" />
-<error line="210" column="16" severity="error" message="Parameter &apos;attributes&apos; implicitly has an &apos;any&apos; type." source="TS7006" />
-<error line="236" column="17" severity="error" message="Parameter &apos;attributes&apos; implicitly has an &apos;any&apos; type." source="TS7006" />
-<error line="262" column="18" severity="error" message="Property &apos;idBase&apos; does not exist on type &apos;Attributes&apos;." source="TS2339" />
-<error line="262" column="26" severity="error" message="Property &apos;instance&apos; does not exist on type &apos;Attributes&apos;." source="TS2339" />
-<error line="264" column="20" severity="error" message="Property &apos;idBase&apos; does not exist on type &apos;Attributes&apos;." source="TS2339" />
-<error line="264" column="28" severity="error" message="Property &apos;instance&apos; does not exist on type &apos;Attributes&apos;." source="TS2339" />
+<error line="135" column="16" severity="error" message="Parameter &apos;attributes&apos; implicitly has an &apos;any&apos; type." source="TS7006" />
+<error line="159" column="16" severity="error" message="Parameter &apos;attributes&apos; implicitly has an &apos;any&apos; type." source="TS7006" />
+<error line="184" column="16" severity="error" message="Parameter &apos;attributes&apos; implicitly has an &apos;any&apos; type." source="TS7006" />
+<error line="209" column="16" severity="error" message="Parameter &apos;attributes&apos; implicitly has an &apos;any&apos; type." source="TS7006" />
+<error line="234" column="16" severity="error" message="Parameter &apos;attributes&apos; implicitly has an &apos;any&apos; type." source="TS7006" />
+<error line="259" column="18" severity="error" message="Property &apos;idBase&apos; does not exist on type &apos;Attributes&apos;." source="TS2339" />
+<error line="259" column="26" severity="error" message="Property &apos;instance&apos; does not exist on type &apos;Attributes&apos;." source="TS2339" />
+<error line="261" column="20" severity="error" message="Property &apos;idBase&apos; does not exist on type &apos;Attributes&apos;." source="TS2339" />
+<error line="261" column="28" severity="error" message="Property &apos;instance&apos; does not exist on type &apos;Attributes&apos;." source="TS2339" />
 </file>
 <file name="assets/js/blocks/handpicked-products/block.tsx">
 <error line="4" column="30" severity="error" message="Could not find a declaration file for module &apos;@wordpress/server-side-render&apos;. &apos;/home/runner/work/woocommerce-blocks/woocommerce-blocks/node_modules/@wordpress/server-side-render/build/index.js&apos; implicitly has an &apos;any&apos; type.
@@ -3835,7 +3825,7 @@
     Argument of type &apos;{ name: string; title: string; category: string; keywords: string[]; description: string; supports: { align: string[]; html: boolean; }; attributes: { attributes: { type: string; default: never[]; }; attrOperator: { ...; }; ... 6 more ...; stockStatus: { ...; }; }; textdomain: string; apiVersion: number; $schema: st...&apos; is not assignable to parameter of type &apos;string&apos;." source="TS2769" />
 </file>
 <file name="assets/js/blocks/rating-filter/index.tsx">
-<error line="18" column="21" severity="error" message="No overload matches this call.
+<error line="16" column="20" severity="error" message="No overload matches this call.
   Overload 1 of 2, &apos;(metadata: BlockConfiguration&lt;Attributes&gt;, settings?: Partial&lt;BlockConfiguration&lt;Attributes&gt;&gt; | undefined): Block&lt;...&gt; | undefined&apos;, gave the following error.
     Argument of type &apos;{ name: string; version: string; title: string; description: string; category: string; keywords: string[]; supports: { html: boolean; multiple: boolean; color: { __experimentalDefaultControls: { text: boolean; }; }; inserter: boolean; lock: boolean; }; ... 4 more ...; $schema: string; }&apos; is not assignable to parameter of type &apos;BlockConfiguration&lt;Attributes&gt;&apos;.
       Type &apos;{ name: string; version: string; title: string; description: string; category: string; keywords: string[]; supports: { html: boolean; multiple: boolean; color: { __experimentalDefaultControls: { text: boolean; }; }; inserter: boolean; lock: boolean; }; ... 4 more ...; $schema: string; }&apos; is not assignable to type &apos;Partial&lt;Omit&lt;Block&lt;Attributes&gt;, &quot;icon&quot;&gt;&gt;&apos;.
