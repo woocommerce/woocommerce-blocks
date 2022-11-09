@@ -147,7 +147,7 @@ class ProductImage extends AbstractBlock {
 		$image_info = wp_get_attachment_image_src( get_post_thumbnail_id( $product->get_id() ), 'woocommerce_thumbnail' );
 
 		if ( ! isset( $image_info[0] ) ) {
-			return sprintf( '<img src="%s" alt="" width="500 height="500" />', wc_placeholder_img_src( 'woocommerce_thumbnail' ) );
+			return sprintf( '<img src="%s" alt="" width="500" height="500" />', wc_placeholder_img_src( 'woocommerce_thumbnail' ) );
 		}
 
 		return sprintf(
