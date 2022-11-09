@@ -33,8 +33,6 @@ const reducer: Reducer< Record< string, FieldValidationStatus > > = (
 				return state;
 			}
 			return { ...state, ...action.errors };
-		case types.CLEAR_ALL_VALIDATION_ERRORS:
-			return {};
 
 		case types.CLEAR_VALIDATION_ERROR:
 			if (
