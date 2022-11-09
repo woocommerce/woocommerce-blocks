@@ -7,14 +7,14 @@ import { canvas } from '@wordpress/e2e-test-utils';
  * Internal dependencies
  */
 import SELECTORS from './selectors';
-import { selectRootContainer } from './select-root-container';
+import { selectEditorWrapper } from './select-editor-wrapper';
 
 export const insertBlockUsingQuickInserter = async (
 	blockTitle: string,
 	topLevel = false
 ) => {
 	if ( topLevel ) {
-		await selectRootContainer();
+		await selectEditorWrapper();
 	}
 
 	const blockInserterButton = await canvas().waitForSelector(

@@ -1,6 +1,5 @@
 export default {
-	rootContainer:
-		'.is-root-container.wp-block-post-content.block-editor-block-list__layout',
+	editorWrapper: '.editor-styles-wrapper',
 	quickInserter: {
 		button: '.block-editor-inserter button',
 		searchInput:
