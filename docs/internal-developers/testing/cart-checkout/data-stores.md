@@ -187,3 +187,13 @@ After these changes have been made, your file should look like this: [https://gi
 ## WordPress.com
 
 It would be useful to test these on WordPress.com as well - run `npm run package-plugin:deploy` from the repo root, then upload the resulting zip file to a WordPress.com site. Set up the store and repeat the testing instructions there.
+<!-- FEEDBACK -->
+
+---
+
+[We're hiring!](https://woocommerce.com/careers/) Come work with us!
+
+🐞 Found a mistake, or have a suggestion? [Leave feedback about this document here.](https://github.com/woocommerce/woocommerce-blocks/issues/new?assignees=&labels=type%3A+documentation&template=--doc-feedback.md&title=Feedback%20on%20./docs/internal-developers/testing/cart-checkout/data-stores.md)
+
+<!-- /FEEDBACK -->
+
