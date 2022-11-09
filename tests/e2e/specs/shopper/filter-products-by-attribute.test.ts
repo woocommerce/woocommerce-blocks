@@ -9,7 +9,10 @@ import {
 	switchUserToAdmin,
 	publishPost,
 } from '@wordpress/e2e-test-utils';
-import { selectBlockByName } from '@woocommerce/blocks-test-utils';
+import {
+	selectBlockByName,
+	insertBlockUsingQuickInserter,
+} from '@woocommerce/blocks-test-utils';
 
 /**
  * Internal dependencies
@@ -21,7 +24,6 @@ import {
 	saveTemplate,
 	useTheme,
 	waitForAllProductsBlockLoaded,
-	insertAllProductBlock,
 } from '../../utils';
 
 const block = {
@@ -66,7 +68,7 @@ describe( `${ block.name } Block`, () => {
 				title: block.name,
 			} );
 
-			await insertAllProductBlock();
+			await insertBlockUsingQuickInserter( 'All Products', true );
 			await insertBlock( block.name );
 			const canvasEl = canvas();
 

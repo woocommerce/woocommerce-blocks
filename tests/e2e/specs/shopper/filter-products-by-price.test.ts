@@ -8,7 +8,10 @@ import {
 	switchUserToAdmin,
 	publishPost,
 } from '@wordpress/e2e-test-utils';
-import { selectBlockByName } from '@woocommerce/blocks-test-utils';
+import {
+	selectBlockByName,
+	insertBlockUsingQuickInserter,
+} from '@woocommerce/blocks-test-utils';
 
 /**
  * Internal dependencies
@@ -20,7 +23,6 @@ import {
 	saveTemplate,
 	useTheme,
 	waitForAllProductsBlockLoaded,
-	insertAllProductBlock,
 } from '../../utils';
 import { clickLink } from '../../../utils';
 
@@ -71,7 +73,7 @@ describe( `${ block.name } Block`, () => {
 			} );
 
 			await insertBlock( block.name );
-			await insertAllProductBlock();
+			await insertBlockUsingQuickInserter( 'All Products', true );
 			await insertBlock( 'Active Product Filters' );
 			await publishPost();
 
