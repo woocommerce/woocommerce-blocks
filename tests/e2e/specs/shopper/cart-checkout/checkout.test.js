@@ -8,11 +8,11 @@ import {
 	unsetCheckbox,
 	withRestApi,
 } from '@woocommerce/e2e-utils';
-
 import {
 	visitBlockPage,
 	selectBlockByName,
 	saveOrPublish,
+	getToggleIdByLabel,
 } from '@woocommerce/blocks-test-utils';
 
 /**
@@ -37,23 +37,6 @@ if ( process.env.WOOCOMMERCE_BLOCKS_PHASE < 2 ) {
 }
 
 let coupon;
-
-const getCompanyCheckboxId = async ( retry = 0 ) => {
-	const companyCheckboxLabel = await page.waitForXPath(
-		`//label[contains(text(), "Company") and contains(@class, "components-toggle-control__label")]`,
-		{ visible: true }
-	);
-	const checkboxId = await page.evaluate(
-		( label ) => `#${ label.getAttribute( 'for' ) }`,
-		companyCheckboxLabel
-	);
-	const checkbox = await page.$( checkboxId );
-	if ( ! checkbox && retry < 5 ) {
-		await page.waitForTimeout( 1000 );
-		return await getCompanyCheckboxId( retry + 1 );
-	}
-	return checkboxId;
-};
 
 describe( 'Shopper → Checkout', () => {
 	beforeAll( async () => {
@@ -91,7 +74,7 @@ describe( 'Shopper → Checkout', () => {
 				'woocommerce/checkout-shipping-address-block'
 			);
 
-			await setCheckbox( await getCompanyCheckboxId() );
+			await setCheckbox( await getToggleIdByLabel( 'Company' ) );
 			await saveOrPublish();
 			await shopper.block.emptyCart();
 		} );
@@ -103,7 +86,7 @@ describe( 'Shopper → Checkout', () => {
 			await selectBlockByName(
 				'woocommerce/checkout-shipping-address-block'
 			);
-			await unsetCheckbox( await getCompanyCheckboxId() );
+			await unsetCheckbox( await getToggleIdByLabel( 'Company' ) );
 			await saveOrPublish();
 			await merchant.logout();
 			await reactivateCompatibilityNotice();
