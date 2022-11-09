@@ -15,7 +15,7 @@ class TestCurrencyFormatter extends \WP_UnitTestCase {
 	private $mock_formatter;
 
 	/**
-	 * Setup test products' data. Called before every test.
+	 * Setup test product data. Called before every test.
 	 */
 	protected function setUp(): void {
 		parent::setUp();
