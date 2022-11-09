@@ -3,12 +3,12 @@
 ## Table of Contents <!-- omit in toc -->
 
 - [Introduction](#introduction)
-    - [Known limitations](#known-limitations)
+  - [Known limitations](#known-limitations)
 - [How to report issues](#how-to-report-issues)
 - [What are we testing?](#what-are-we-testing)
-    - [Cart Block](#cart-block)
-    - [Checkout Block](#checkout-block)
-    - [Data Stores](#data-stores)
+  - [Cart Block](#cart-block)
+  - [Checkout Block](#checkout-block)
+  - [Data Stores](#data-stores)
 - [Testing Checklist](#testing-checklist)
 
 ## Introduction
@@ -87,14 +87,3 @@ After moving a lot of functionality from React Context to data stores, we need t
 -   [Taxes](taxes.md)
 -   [Coupons](coupons.md)
 -   [Cross Browser and platform](cross-browser.md)
-
-<!-- FEEDBACK -->
-
----
-
-[We're hiring!](https://woocommerce.com/careers/) Come work with us!
-
-🐞 Found a mistake, or have a suggestion? [Leave feedback about this document here.](https://github.com/woocommerce/woocommerce-blocks/issues/new?assignees=&labels=type%3A+documentation&template=--doc-feedback.md&title=Feedback%20on%20./docs/internal-developers/testing/cart-checkout/README.md)
-
-<!-- /FEEDBACK -->
-
