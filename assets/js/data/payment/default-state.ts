@@ -24,7 +24,6 @@ export interface PaymentMethodDataState {
 		hasError: boolean;
 		hasFailed: boolean;
 		isSuccessful: boolean;
-		isDoingExpressPayment: boolean;
 	};
 	activePaymentMethod: string;
 	activeSavedToken: string;
@@ -38,7 +37,6 @@ export interface PaymentMethodDataState {
 	paymentMethodsInitialized: boolean;
 	expressPaymentMethodsInitialized: boolean;
 	shouldSavePaymentMethod: boolean;
-	isExpressPaymentMethodActive: boolean;
 }
 export const defaultPaymentMethodDataState: PaymentMethodDataState = {
 	paymentStatuses: PAYMENT_STATUS,
@@ -50,7 +48,6 @@ export const defaultPaymentMethodDataState: PaymentMethodDataState = {
 		hasError: false,
 		hasFailed: false,
 		isSuccessful: false,
-		isDoingExpressPayment: false,
 	},
 	activePaymentMethod: '',
 	activeSavedToken: '',
@@ -63,5 +60,4 @@ export const defaultPaymentMethodDataState: PaymentMethodDataState = {
 	paymentMethodsInitialized: false,
 	expressPaymentMethodsInitialized: false,
 	shouldSavePaymentMethod: false,
-	isExpressPaymentMethodActive: false,
 };
