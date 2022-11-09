@@ -163,7 +163,7 @@ describe( 'Validation reducer', () => {
 				hidden: false,
 			},
 			testError: {
-				message: 'This is error should not be removed',
+				message: 'This is error should also be removed',
 				hidden: false,
 			},
 		};
