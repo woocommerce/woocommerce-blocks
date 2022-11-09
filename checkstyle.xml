@@ -1507,8 +1507,8 @@
     Argument of type &apos;string&apos; is not assignable to parameter of type &apos;BlockConfiguration&lt;{}&gt;&apos;.
       Type &apos;string&apos; is not assignable to type &apos;Pick&lt;Block&lt;{}&gt;, &quot;title&quot; | &quot;category&quot; | &quot;attributes&quot;&gt;&apos;.
   Overload 2 of 2, &apos;(name: string, settings: BlockConfiguration&lt;{}&gt;): Block&lt;{}&gt; | undefined&apos;, gave the following error.
-    Argument of type &apos;{ apiVersion: number; name: string; title: string; icon: { src: JSX.Element; }; keywords: string[]; description: string; usesContext: string[]; parent: string[]; textdomain: string; attributes: { showProductLink: { ...; }; ... 4 more ...; isDescendentOfQueryLoop: { ...; }; }; ... 15 more ...; merge?: ((attributes: {...&apos; is not assignable to parameter of type &apos;BlockConfiguration&lt;{}&gt;&apos; with &apos;exactOptionalPropertyTypes: true&apos;. Consider adding &apos;undefined&apos; to the types of the target&apos;s properties.
-      Type &apos;{ apiVersion: number; name: string; title: string; icon: { src: JSX.Element; }; keywords: string[]; description: string; usesContext: string[]; parent: string[]; textdomain: string; attributes: { showProductLink: { ...; }; ... 4 more ...; isDescendentOfQueryLoop: { ...; }; }; ... 15 more ...; merge?: ((attributes: {...&apos; is not assignable to type &apos;Partial&lt;Omit&lt;Block&lt;{}&gt;, &quot;icon&quot;&gt;&gt;&apos; with &apos;exactOptionalPropertyTypes: true&apos;. Consider adding &apos;undefined&apos; to the types of the target&apos;s properties.
+    Argument of type &apos;{ apiVersion: number; name: string; title: string; icon: { src: JSX.Element; }; keywords: string[]; description: string; usesContext: string[]; ancestor: string[]; textdomain: string; attributes: { ...; }; ... 16 more ...; merge?: ((attributes: {}, attributesToMerge: {}) =&gt; Partial&lt;...&gt;) | undefined; }&apos; is not assignable to parameter of type &apos;BlockConfiguration&lt;{}&gt;&apos; with &apos;exactOptionalPropertyTypes: true&apos;. Consider adding &apos;undefined&apos; to the types of the target&apos;s properties.
+      Type &apos;{ apiVersion: number; name: string; title: string; icon: { src: JSX.Element; }; keywords: string[]; description: string; usesContext: string[]; ancestor: string[]; textdomain: string; attributes: { ...; }; ... 16 more ...; merge?: ((attributes: {}, attributesToMerge: {}) =&gt; Partial&lt;...&gt;) | undefined; }&apos; is not assignable to type &apos;Partial&lt;Omit&lt;Block&lt;{}&gt;, &quot;icon&quot;&gt;&gt;&apos; with &apos;exactOptionalPropertyTypes: true&apos;. Consider adding &apos;undefined&apos; to the types of the target&apos;s properties.
         Types of property &apos;edit&apos; are incompatible.
           Type &apos;({ attributes, setAttributes, context }: { attributes: any; setAttributes: any; context: any; }) =&gt; Element&apos; is not assignable to type &apos;ComponentType&lt;BlockEditProps&lt;{}&gt;&gt; | undefined&apos;.
             Type &apos;({ attributes, setAttributes, context }: { attributes: any; setAttributes: any; context: any; }) =&gt; Element&apos; is not assignable to type &apos;FunctionComponent&lt;BlockEditProps&lt;{}&gt;&gt;&apos;.
@@ -1669,6 +1669,10 @@
   Types of property &apos;stepHeadingContent&apos; are incompatible.
     Type &apos;Element | undefined&apos; is not assignable to type &apos;Element&apos;.
       Type &apos;undefined&apos; is not assignable to type &apos;Element&apos;." source="TS2375" />
+</file>
+<file name="assets/js/base/components/cart-checkout/product-details/index.tsx">
+<error line="36" column="14" severity="error" message="Property &apos;className&apos; does not exist on type &apos;ProductResponseItemData&apos;.
+  Property &apos;className&apos; does not exist on type &apos;ProductResponseItemBaseData &amp; { key: string; name?: never; }&apos;." source="TS2339" />
 </file>
 <file name="assets/js/base/components/cart-checkout/product-summary/index.tsx">
 <error line="32" column="4" severity="error" message="Type &apos;{ className: string | undefined; source: string; maxLength: number; countType: WordCountType; }&apos; is not assignable to type &apos;SummaryProps&apos; with &apos;exactOptionalPropertyTypes: true&apos;. Consider adding &apos;undefined&apos; to the types of the target&apos;s properties.
@@ -2364,12 +2368,6 @@
   Overload 2 of 2, &apos;(name: string, settings: BlockConfiguration&lt;{}&gt;): Block&lt;{}&gt; | undefined&apos;, gave the following error.
     Argument of type &apos;{ icon: { src: JSX.Element; }; edit: ({ clientId }: Props) =&gt; JSX.Element; save: () =&gt; JSX.Element; }&apos; is not assignable to parameter of type &apos;BlockConfiguration&lt;{}&gt;&apos;.
       Type &apos;{ icon: { src: Element; }; edit: ({ clientId }: Props) =&gt; Element; save: () =&gt; Element; }&apos; is missing the following properties from type &apos;Pick&lt;Block&lt;{}&gt;, &quot;title&quot; | &quot;category&quot; | &quot;attributes&quot;&gt;&apos;: title, category, attributes" source="TS2769" />
-</file>
-<file name="assets/js/blocks/cart/cart-line-items-table/cart-line-item-row.tsx">
-<error line="24" column="2" severity="error" message="Module &apos;&quot;@woocommerce/price-format&quot;&apos; has no exported member &apos;Currency&apos;." source="TS2305" />
-<error line="50" column="34" severity="error" message="Parameter &apos;value&apos; implicitly has an &apos;any&apos; type." source="TS7006" />
-<error line="215" column="5" severity="error" message="Type &apos;number | null&apos; is not assignable to type &apos;number | undefined&apos;.
-  Type &apos;null&apos; is not assignable to type &apos;number | undefined&apos;." source="TS2322" />
 </file>
 <file name="assets/js/blocks/cart/inner-blocks/cart-line-items-block/index.tsx">
 <error line="12" column="1" severity="error" message="No overload matches this call.
