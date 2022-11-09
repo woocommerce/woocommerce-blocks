@@ -1,5 +1,4 @@
 export default {
-	editorWrapper: '.editor-styles-wrapper',
 	quickInserter: {
 		button: '.block-editor-inserter button',
 		searchInput:

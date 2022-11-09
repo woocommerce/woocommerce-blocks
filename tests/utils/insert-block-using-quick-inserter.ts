@@ -7,16 +7,8 @@ import { canvas } from '@wordpress/e2e-test-utils';
  * Internal dependencies
  */
 import SELECTORS from './selectors';
-import { selectEditorWrapper } from './select-editor-wrapper';
 
-export const insertBlockUsingQuickInserter = async (
-	blockTitle: string,
-	topLevel = false
-) => {
-	if ( topLevel ) {
-		await selectEditorWrapper();
-	}
-
+export const insertBlockUsingQuickInserter = async ( blockTitle: string ) => {
 	const blockInserterButton = await canvas().waitForSelector(
 		SELECTORS.quickInserter.button
 	);

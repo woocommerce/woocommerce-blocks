@@ -10,7 +10,7 @@ import {
 } from '@wordpress/e2e-test-utils';
 import {
 	selectBlockByName,
-	insertBlockUsingQuickInserter,
+	insertBlockUsingSlash,
 } from '@woocommerce/blocks-test-utils';
 
 /**
@@ -73,7 +73,7 @@ describe( `${ block.name } Block`, () => {
 			} );
 
 			await insertBlock( block.name );
-			await insertBlockUsingQuickInserter( 'All Products', true );
+			await insertBlockUsingSlash( 'All Products' );
 			await insertBlock( 'Active Product Filters' );
 			await publishPost();
 

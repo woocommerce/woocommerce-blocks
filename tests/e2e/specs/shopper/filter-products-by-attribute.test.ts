@@ -11,7 +11,7 @@ import {
 } from '@wordpress/e2e-test-utils';
 import {
 	selectBlockByName,
-	insertBlockUsingQuickInserter,
+	insertBlockUsingSlash,
 } from '@woocommerce/blocks-test-utils';
 
 /**
@@ -68,7 +68,7 @@ describe( `${ block.name } Block`, () => {
 				title: block.name,
 			} );
 
-			await insertBlockUsingQuickInserter( 'All Products', true );
+			await insertBlockUsingSlash( 'All Products' );
 			await insertBlock( block.name );
 			const canvasEl = canvas();
 
