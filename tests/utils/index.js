@@ -19,3 +19,5 @@ export * from './constants';
 export { insertInnerBlock } from './insert-inner-block';
 export { getFixtureProductsData } from './get-fixture-products-data';
 export { getToggleIdByLabel } from './get-toggle-id-by-label';
+export { selectRootContainer } from './select-root-container';
+export { insertBlockUsingQuickInserter } from './insert-block-using-quick-inserter';
