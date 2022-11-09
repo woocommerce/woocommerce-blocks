@@ -129,7 +129,8 @@ describe( 'Validation reducer', () => {
 			},
 		};
 		const clearAllErrors: ValidationAction = {
-			type: types.CLEAR_ALL_VALIDATION_ERRORS,
+			type: types.CLEAR_VALIDATION_ERRORS,
+			errors: undefined,
 		};
 		const nextState = reducer( state, clearAllErrors );
 		expect( nextState ).toEqual( {} );
