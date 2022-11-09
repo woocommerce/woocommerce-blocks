@@ -178,50 +178,43 @@ const QuantitySelector = ( {
 	 */
 	const createErrorMessage = useCallback(
 		( newQuantity: number ): string => {
-			const errorMessages = [];
 			const belowMin = newQuantity < minimum;
 			const aboveMax = newQuantity > maximum;
 			const wrongMultiple = newQuantity % step !== 0;
 
 			if ( belowMin ) {
-				errorMessages.push(
-					sprintf(
-						/* translators: %d is the minimum quantity allowed. */
-						__(
-							'The minimum quantity is %d.',
-							'woo-gutenberg-products-block'
-						),
-						minimum
-					)
+				return sprintf(
+					/* translators: %d is the minimum quantity allowed. */
+					__(
+						'The minimum quantity is %d.',
+						'woo-gutenberg-products-block'
+					),
+					minimum
 				);
 			}
 
 			if ( aboveMax ) {
-				errorMessages.push(
-					sprintf(
-						/* translators: %d is the maximum quantity allowed. */
-						__(
-							'The maximum quantity is %d.',
-							'woo-gutenberg-products-block'
-						),
-						maximum
-					)
+				return sprintf(
+					/* translators: %d is the maximum quantity allowed. */
+					__(
+						'The maximum quantity is %d.',
+						'woo-gutenberg-products-block'
+					),
+					maximum
 				);
 			}
 
 			if ( wrongMultiple ) {
-				errorMessages.push(
-					sprintf(
-						/* translators: %d is a number that the quantity must be a multiple of. */
-						__(
-							'The quantity must be a multiple of %d.',
-							'woo-gutenberg-products-block'
-						),
-						step
-					)
+				return sprintf(
+					/* translators: %d is a number that the quantity must be a multiple of. */
+					__(
+						'The quantity must be a multiple of %d.',
+						'woo-gutenberg-products-block'
+					),
+					step
 				);
 			}
-			return errorMessages.join( ' ' );
+			return '';
 		},
 		[ minimum, maximum, step ]
 	);
