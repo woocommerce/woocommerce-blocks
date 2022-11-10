@@ -9,7 +9,7 @@ import userEvent from '@testing-library/user-event';
 /**
  * Internal dependencies
  */
-import { ValidatedTexInputWithoutId as ValidatedTextInput } from '../validated-text-input';
+import { __ValidatedTexInputWithoutId as ValidatedTextInput } from '../validated-text-input';
 
 describe( 'ValidatedTextInput', () => {
 	it( 'Hides related validation error on change', async () => {
