@@ -74,8 +74,13 @@ const QuantitySelector = ( {
 	strictLimits = true,
 	instanceId,
 }: QuantitySelectorProps ): JSX.Element => {
+	const hasValidationErrors = useSelect( ( select ) => {
+		return select( VALIDATION_STORE_KEY ).hasValidationErrors();
+	} );
+
 	const classes = classNames(
 		'wc-block-components-quantity-selector',
+		hasValidationErrors ? 'has-error' : '',
 		className
 	);
 
@@ -167,10 +172,6 @@ const QuantitySelector = ( {
 	);
 
 	const errorId = `wc-block-components-quantity-selector-error-${ instanceId }`;
-
-	const hasValidationErrors = useSelect( ( select ) => {
-		return select( VALIDATION_STORE_KEY ).hasValidationErrors();
-	} );
 
 	/**
 	 * Creates a string containing errors describing the state of the quantity selector. If the state is valid, an empty

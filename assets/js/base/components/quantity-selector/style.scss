@@ -20,6 +20,11 @@
 	position: relative;
 	width: 107px;
 
+	&.has-error::after {
+		border: 1px solid $alert-red;
+		opacity: 1;
+	}
+
 	&::after {
 		border-radius: 4px;
 		border: 1px solid currentColor;
