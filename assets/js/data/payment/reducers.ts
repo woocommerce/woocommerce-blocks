@@ -12,6 +12,7 @@ import {
 	PaymentMethodDataState,
 } from './default-state';
 import { ACTION_TYPES } from './action-types';
+import { STATUS } from './constants';
 
 const reducer: Reducer< PaymentMethodDataState > = (
 	state = defaultPaymentMethodDataState,
@@ -19,6 +20,48 @@ const reducer: Reducer< PaymentMethodDataState > = (
 ) => {
 	let newState = state;
 	switch ( action.type ) {
+		case ACTION_TYPES.SET_STARTED:
+			newState = {
+				...state,
+				status: STATUS.STARTED,
+			};
+			break;
+
+		case ACTION_TYPES.SET_PROCESSING:
+			newState = {
+				...state,
+				status: STATUS.PROCESSING,
+			};
+			break;
+
+		case ACTION_TYPES.SET_FAILED:
+			newState = {
+				...state,
+				status: STATUS.FAILED,
+			};
+			break;
+
+		case ACTION_TYPES.SET_ERROR:
+			newState = {
+				...state,
+				status: STATUS.ERROR,
+			};
+			break;
+
+		case ACTION_TYPES.SET_SUCCESS:
+			newState = {
+				...state,
+				status: STATUS.SUCCESS,
+			};
+			break;
+
+		case ACTION_TYPES.SET_COMPLETE:
+			newState = {
+				...state,
+				status: STATUS.COMPLETE,
+			};
+			break;
+
 		case ACTION_TYPES.SET_SHOULD_SAVE_PAYMENT_METHOD:
 			newState = {
 				...state,

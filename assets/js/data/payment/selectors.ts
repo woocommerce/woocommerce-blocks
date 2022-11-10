@@ -8,6 +8,31 @@ import { objectHasProp } from '@woocommerce/types';
  */
 import { PaymentMethodDataState } from './default-state';
 import { filterActiveSavedPaymentMethods } from './utils';
+import { STATUS as PAYMENT_STATUS } from './constants';
+
+export const isPaymentStarted = ( state: PaymentMethodDataState ) => {
+	return state.status === PAYMENT_STATUS.STARTED;
+};
+
+export const isPaymentProcessing = ( state: PaymentMethodDataState ) => {
+	return state.status === PAYMENT_STATUS.PROCESSING;
+};
+
+export const isPaymentError = ( state: PaymentMethodDataState ) => {
+	return state.status === PAYMENT_STATUS.ERROR;
+};
+
+export const isPaymentFailed = ( state: PaymentMethodDataState ) => {
+	return state.status === PAYMENT_STATUS.FAILED;
+};
+
+export const isPaymentFinished = ( state: PaymentMethodDataState ) => {
+	return (
+		state.status === PAYMENT_STATUS.SUCCESS ||
+		state.status === PAYMENT_STATUS.ERROR ||
+		state.status === PAYMENT_STATUS.FAILED
+	);
+};
 
 export const isExpressPaymentMethodActive = (
 	state: PaymentMethodDataState

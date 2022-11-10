@@ -17,6 +17,26 @@ import { PaymentStatus } from './types';
 // `Thunks are functions that can be dispatched, similar to actions creators
 export * from './thunks';
 
+export const __internalSetPaymentStarted = () => ( {
+	type: ACTION_TYPES.SET_STARTED,
+} );
+
+export const __internalSetPaymentProcessing = () => ( {
+	type: ACTION_TYPES.SET_PROCESSING,
+} );
+
+export const __internalSetPaymentFailed = () => ( {
+	type: ACTION_TYPES.SET_FAILED,
+} );
+
+export const __internalSetPaymentError = () => ( {
+	type: ACTION_TYPES.SET_ERROR,
+} );
+
+export const __internalSetPaymentSuccess = () => ( {
+	type: ACTION_TYPES.SET_SUCCESS,
+} );
+
 /**
  * Set the status of the payment
  *

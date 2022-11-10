@@ -16,6 +16,7 @@ import { STATUS as PAYMENT_STATUS } from './constants';
 
 export interface PaymentMethodDataState {
 	paymentStatuses: typeof PAYMENT_STATUS;
+	status: string;
 	currentStatus: {
 		isPristine: boolean;
 		isStarted: boolean;
@@ -42,6 +43,7 @@ export interface PaymentMethodDataState {
 }
 export const defaultPaymentMethodDataState: PaymentMethodDataState = {
 	paymentStatuses: PAYMENT_STATUS,
+	status: PAYMENT_STATUS.PRISTINE,
 	currentStatus: {
 		isPristine: true,
 		isStarted: false,
