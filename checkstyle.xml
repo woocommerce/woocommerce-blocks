@@ -440,84 +440,15 @@
 <error line="178" column="38" severity="error" message="Property &apos;isResolving&apos; does not exist on type &apos;Partial&lt;unknown&gt;&apos;." source="TS2339" />
 <error line="187" column="30" severity="error" message="Property &apos;isCartDataStale&apos; does not exist on type &apos;Partial&lt;unknown&gt;&apos;." source="TS2339" />
 </file>
-<file name="assets/js/base/utils/errors.js">
-<error line="26" column="14" severity="error" message="Object is of type &apos;unknown&apos;." source="TS2571" />
-<error line="33" column="3" severity="error" message="Type &apos;string | undefined&apos; is not assignable to type &apos;string&apos;.
-  Type &apos;undefined&apos; is not assignable to type &apos;string&apos;." source="TS2322" />
-<error line="45" column="16" severity="error" message="Property &apos;data&apos; does not exist on type &apos;Object&apos;." source="TS2339" />
-<error line="45" column="33" severity="error" message="Property &apos;code&apos; does not exist on type &apos;Object&apos;." source="TS2339" />
-<error line="46" column="49" severity="error" message="Property &apos;data&apos; does not exist on type &apos;Object&apos;." source="TS2339" />
-<error line="52" column="19" severity="error" message="Property &apos;message&apos; does not exist on type &apos;Object&apos;." source="TS2339" />
-<error line="59" column="34" severity="error" message="Property &apos;message&apos; does not exist on type &apos;Object&apos;." source="TS2339" />
-</file>
-<file name="assets/js/base/utils/address.ts">
-<error line="92" column="46" severity="error" message="Argument of type &apos;string[]&apos; is not assignable to parameter of type &apos;(keyof AddressFields)[]&apos;.
-  Type &apos;string&apos; is not assignable to type &apos;keyof AddressFields&apos;." source="TS2345" />
-</file>
-<file name="assets/js/base/utils/shipping-rates.js">
-<error line="4" column="12" severity="error" message="Generic type &apos;Array&lt;T&gt;&apos; requires 1 type argument(s)." source="TS2314" />
-<error line="13" column="12" severity="error" message="Generic type &apos;Array&lt;T&gt;&apos; requires 1 type argument(s)." source="TS2314" />
-</file>
-<file name="assets/js/base/components/block-error-boundary/index.tsx">
-<error line="58" column="6" severity="error" message="Type &apos;{ showErrorBlock: boolean; errorMessage: string | null; header: string | undefined; imageUrl: string | undefined; text: ReactNode; errorMessagePrefix: string | undefined; button: ReactNode; }&apos; is not assignable to type &apos;BlockErrorProps&apos; with &apos;exactOptionalPropertyTypes: true&apos;. Consider adding &apos;undefined&apos; to the types of the target&apos;s properties.
-  Types of property &apos;imageUrl&apos; are incompatible.
-    Type &apos;string | undefined&apos; is not assignable to type &apos;string&apos;.
-      Type &apos;undefined&apos; is not assignable to type &apos;string&apos;." source="TS2375" />
-<error line="58" column="6" severity="error" message="&apos;BlockError&apos; cannot be used as a JSX component.
-  Its return type &apos;ReactNode&apos; is not a valid JSX element.
-    Type &apos;undefined&apos; is not assignable to type &apos;Element | null&apos;." source="TS2786" />
-</file>
-<file name="assets/js/base/utils/render-frontend.tsx">
-<error line="60" column="4" severity="error" message="No overload matches this call.
-  Overload 1 of 2, &apos;(props: BlockErrorBoundaryProps | Readonly&lt;BlockErrorBoundaryProps&gt;): BlockErrorBoundary&apos;, gave the following error.
-    Property &apos;text&apos; is missing in type &apos;{ children: Element; }&apos; but required in type &apos;Readonly&lt;BlockErrorBoundaryProps&gt;&apos;.
-  Overload 2 of 2, &apos;(props: BlockErrorBoundaryProps, context: any): BlockErrorBoundary&apos;, gave the following error.
-    Property &apos;text&apos; is missing in type &apos;{ children: Element; }&apos; but required in type &apos;Readonly&lt;BlockErrorBoundaryProps&gt;&apos;." source="TS2769" />
-<error line="168" column="27" severity="error" message="Argument of type &apos;{ Block: BlockType&lt;TProps, TAttributes&gt; | null; containers: NodeListOf&lt;Element&gt;; getProps: GetPropsFn&lt;TProps, TAttributes&gt; | undefined; getErrorBoundaryProps: ((el: HTMLElement, i: number) =&gt; Record&lt;...&gt;) | undefined; }&apos; is not assignable to parameter of type &apos;RenderBlockInContainersParams&lt;TProps, TAttributes&gt;&apos; with &apos;exactOptionalPropertyTypes: true&apos;. Consider adding &apos;undefined&apos; to the types of the target&apos;s properties.
-  Types of property &apos;getProps&apos; are incompatible.
-    Type &apos;GetPropsFn&lt;TProps, TAttributes&gt; | undefined&apos; is not assignable to type &apos;GetPropsFn&lt;TProps, TAttributes&gt;&apos;.
-      Type &apos;undefined&apos; is not assignable to type &apos;GetPropsFn&lt;TProps, TAttributes&gt;&apos;." source="TS2379" />
-<error line="199" column="27" severity="error" message="Argument of type &apos;{ Block: BlockType&lt;TProps, TAttributes&gt; | null; containers: NodeListOf&lt;Element&gt;; getProps: GetPropsFn&lt;TProps, TAttributes&gt; | undefined; getErrorBoundaryProps: ((el: HTMLElement, i: number) =&gt; Record&lt;...&gt;) | undefined; }&apos; is not assignable to parameter of type &apos;RenderBlockInContainersParams&lt;TProps, TAttributes&gt;&apos; with &apos;exactOptionalPropertyTypes: true&apos;. Consider adding &apos;undefined&apos; to the types of the target&apos;s properties.
-  Types of property &apos;getProps&apos; are incompatible.
-    Type &apos;GetPropsFn&lt;TProps, TAttributes&gt; | undefined&apos; is not assignable to type &apos;GetPropsFn&lt;TProps, TAttributes&gt;&apos;.
-      Type &apos;undefined&apos; is not assignable to type &apos;GetPropsFn&lt;TProps, TAttributes&gt;&apos;." source="TS2379" />
-<error line="244" column="30" severity="error" message="Argument of type &apos;{ Block: BlockType&lt;TProps, TAttributes&gt; | null; getProps: GetPropsFn&lt;TProps, TAttributes&gt; | undefined; getErrorBoundaryProps: ((el: HTMLElement, i: number) =&gt; Record&lt;...&gt;) | undefined; selector: string; wrappers: NodeListOf&lt;...&gt;; }&apos; is not assignable to parameter of type &apos;RenderBlockOutsideWrappersParams&lt;TProps, TAttributes&gt;&apos; with &apos;exactOptionalPropertyTypes: true&apos;. Consider adding &apos;undefined&apos; to the types of the target&apos;s properties.
-  Types of property &apos;getProps&apos; are incompatible.
-    Type &apos;GetPropsFn&lt;TProps, TAttributes&gt; | undefined&apos; is not assignable to type &apos;GetPropsFn&lt;TProps, TAttributes&gt;&apos;.
-      Type &apos;undefined&apos; is not assignable to type &apos;GetPropsFn&lt;TProps, TAttributes&gt;&apos;." source="TS2379" />
-</file>
-<file name="assets/js/base/utils/get-valid-block-attributes.js">
-<error line="5" column="12" severity="error" message="Generic type &apos;Array&lt;T&gt;&apos; requires 1 type argument(s)." source="TS2314" />
-<error line="6" column="13" severity="error" message="Generic type &apos;Array&lt;T&gt;&apos; requires 1 type argument(s)." source="TS2314" />
-<error line="9" column="8" severity="error" message="Variable &apos;attributes&apos; implicitly has type &apos;any[]&apos; in some locations where its type cannot be determined." source="TS7034" />
-<error line="12" column="30" severity="error" message="Element implicitly has an &apos;any&apos; type because index expression is not of type &apos;number&apos;." source="TS7015" />
-<error line="13" column="13" severity="error" message="Element implicitly has an &apos;any&apos; type because expression of type &apos;string&apos; can&apos;t be used to index type &apos;Object&apos;.
-  No index signature with a parameter of type &apos;string&apos; was found on type &apos;Object&apos;." source="TS7053" />
-<error line="15" column="6" severity="error" message="Variable &apos;attributes&apos; implicitly has an &apos;any[]&apos; type." source="TS7005" />
-<error line="15" column="18" severity="error" message="Element implicitly has an &apos;any&apos; type because index expression is not of type &apos;number&apos;." source="TS7015" />
-<error line="16" column="22" severity="error" message="Element implicitly has an &apos;any&apos; type because index expression is not of type &apos;number&apos;." source="TS7015" />
-<error line="17" column="22" severity="error" message="Element implicitly has an &apos;any&apos; type because index expression is not of type &apos;number&apos;." source="TS7015" />
-<error line="20" column="6" severity="error" message="Variable &apos;attributes&apos; implicitly has an &apos;any[]&apos; type." source="TS7005" />
-<error line="20" column="18" severity="error" message="Element implicitly has an &apos;any&apos; type because index expression is not of type &apos;number&apos;." source="TS7015" />
-<error line="20" column="51" severity="error" message="Element implicitly has an &apos;any&apos; type because index expression is not of type &apos;number&apos;." source="TS7015" />
-<error line="24" column="6" severity="error" message="Variable &apos;attributes&apos; implicitly has an &apos;any[]&apos; type." source="TS7005" />
-<error line="24" column="18" severity="error" message="Element implicitly has an &apos;any&apos; type because index expression is not of type &apos;number&apos;." source="TS7015" />
-<error line="24" column="53" severity="error" message="Element implicitly has an &apos;any&apos; type because index expression is not of type &apos;number&apos;." source="TS7015" />
-<error line="27" column="6" severity="error" message="Variable &apos;attributes&apos; implicitly has an &apos;any[]&apos; type." source="TS7005" />
-<error line="27" column="18" severity="error" message="Element implicitly has an &apos;any&apos; type because index expression is not of type &apos;number&apos;." source="TS7015" />
-<error line="27" column="41" severity="error" message="Element implicitly has an &apos;any&apos; type because index expression is not of type &apos;number&apos;." source="TS7015" />
-<error line="31" column="4" severity="error" message="Variable &apos;attributes&apos; implicitly has an &apos;any[]&apos; type." source="TS7005" />
-<error line="31" column="16" severity="error" message="Element implicitly has an &apos;any&apos; type because index expression is not of type &apos;number&apos;." source="TS7015" />
-<error line="31" column="24" severity="error" message="Element implicitly has an &apos;any&apos; type because expression of type &apos;string&apos; can&apos;t be used to index type &apos;Object&apos;.
-  No index signature with a parameter of type &apos;string&apos; was found on type &apos;Object&apos;." source="TS7053" />
-<error line="35" column="9" severity="error" message="Variable &apos;attributes&apos; implicitly has an &apos;any[]&apos; type." source="TS7005" />
-</file>
-<file name="assets/js/base/utils/product-data.js">
-<error line="8" column="17" severity="error" message="Property &apos;is_purchasable&apos; does not exist on type &apos;Object&apos;." source="TS2339" />
-<error line="30" column="42" severity="error" message="Property &apos;type&apos; does not exist on type &apos;Object&apos;." source="TS2339" />
-</file>
 <file name="assets/js/data/cart/controls.js">
+<error line="8" column="8" severity="error" message="Cannot find module &apos;@woocommerce/base-utils&apos; or its corresponding type declarations." source="TS2307" />
 <error line="22" column="31" severity="error" message="Parameter &apos;preserveCartData&apos; implicitly has an &apos;any&apos; type." source="TS7006" />
+</file>
+<file name="assets/js/data/cart/push-changes.ts">
+<error line="10" column="8" severity="error" message="Cannot find module &apos;@woocommerce/base-utils&apos; or its corresponding type declarations." source="TS2307" />
+</file>
+<file name="assets/js/data/checkout/default-state.ts">
+<error line="4" column="31" severity="error" message="Cannot find module &apos;@woocommerce/base-utils&apos; or its corresponding type declarations." source="TS2307" />
 </file>
 <file name="assets/js/utils/notices.ts">
 <error line="12" column="52" severity="error" message="Property &apos;type&apos; does not exist on type &apos;Notice&apos;." source="TS2339" />
@@ -551,11 +482,11 @@
   Object literal may only specify known properties, and &apos;tax_lines&apos; does not exist in type &apos;CartResponseFeeItemTotals&apos;." source="TS2322" />
 </file>
 <file name="assets/js/data/payment/check-payment-methods.ts">
+<error line="13" column="8" severity="error" message="Cannot find module &apos;@woocommerce/base-utils&apos; or its corresponding type declarations." source="TS2307" />
 <error line="15" column="10" severity="error" message="Module &apos;&quot;@wordpress/notices&quot;&apos; has no exported member &apos;store&apos;." source="TS2305" />
 <error line="132" column="37" severity="error" message="Property &apos;paymentRequirements&apos; does not exist on type &apos;CartResponse&apos;. Did you mean &apos;payment_requirements&apos;?" source="TS2551" />
 <error line="134" column="25" severity="error" message="Property &apos;receiveCart&apos; does not exist on type &apos;CartResponse&apos;." source="TS2339" />
 <error line="135" column="20" severity="error" message="Property &apos;receiveCart&apos; does not exist on type &apos;CartResponse&apos;." source="TS2339" />
-<error line="146" column="5" severity="error" message="Argument of type &apos;unknown&apos; is not assignable to parameter of type &apos;CartShippingRate[]&apos;." source="TS2345" />
 <error line="176" column="37" severity="error" message="Argument of type &apos;Record&lt;string, unknown&gt;&apos; is not assignable to parameter of type &apos;CanMakePaymentArgument&apos;.
   Type &apos;Record&lt;string, unknown&gt;&apos; is missing the following properties from type &apos;CanMakePaymentArgument&apos;: cart, cartTotals, cartNeedsShipping, billingData, and 3 more." source="TS2345" />
 <error line="188" column="13" severity="error" message="Property &apos;createErrorNotice&apos; does not exist on type &apos;typeof import(&quot;/home/runner/work/woocommerce-blocks/woocommerce-blocks/node_modules/@types/wordpress__rich-text/store/actions&quot;)&apos;." source="TS2339" />
@@ -714,12 +645,18 @@
 </file>
 <file name="assets/js/base/hooks/use-spacing-props.ts">
 <error line="5" column="10" severity="error" message="Module &apos;&quot;@wordpress/block-editor&quot;&apos; has no exported member &apos;__experimentalGetSpacingClassesAndStyles&apos;." source="TS2305" />
+<error line="9" column="28" severity="error" message="Cannot find module &apos;@woocommerce/base-utils&apos; or its corresponding type declarations." source="TS2307" />
+</file>
+<file name="assets/js/base/hooks/use-typography-props.ts">
+<error line="6" column="28" severity="error" message="Cannot find module &apos;@woocommerce/base-utils&apos; or its corresponding type declarations." source="TS2307" />
 </file>
 <file name="assets/js/base/hooks/use-color-props.ts">
 <error line="5" column="10" severity="error" message="Module &apos;&quot;@wordpress/block-editor&quot;&apos; has no exported member &apos;__experimentalUseColorProps&apos;." source="TS2305" />
+<error line="8" column="28" severity="error" message="Cannot find module &apos;@woocommerce/base-utils&apos; or its corresponding type declarations." source="TS2307" />
 </file>
 <file name="assets/js/base/hooks/use-border-props.ts">
 <error line="5" column="10" severity="error" message="Module &apos;&quot;@wordpress/block-editor&quot;&apos; has no exported member &apos;__experimentalUseBorderProps&apos;." source="TS2305" />
+<error line="8" column="28" severity="error" message="Cannot find module &apos;@woocommerce/base-utils&apos; or its corresponding type declarations." source="TS2307" />
 </file>
 <file name="assets/js/base/context/providers/editor-context.js">
 <error line="8" column="56" severity="error" message="Namespace &apos;&quot;/home/runner/work/woocommerce-blocks/woocommerce-blocks/assets/js/types/type-defs/contexts&quot;&apos; has no exported member &apos;EditorDataContext&apos;." source="TS2694" />
@@ -727,18 +664,16 @@
 <error line="59" column="12" severity="error" message="Element implicitly has an &apos;any&apos; type because expression of type &apos;any&apos; can&apos;t be used to index type &apos;Object&apos;." source="TS7053" />
 </file>
 <file name="assets/js/base/context/hooks/cart/use-store-cart-event-listeners.ts">
+<error line="7" column="46" severity="error" message="Cannot find module &apos;@woocommerce/base-utils&apos; or its corresponding type declarations." source="TS2307" />
 <error line="20" column="23" severity="error" message="Parameter &apos;e&apos; implicitly has an &apos;any&apos; type." source="TS7006" />
 <error line="23" column="24" severity="error" message="Property &apos;invalidateResolutionForStore&apos; does not exist on type &apos;DispatchFromMap&lt;typeof import(&quot;/home/runner/work/woocommerce-blocks/woocommerce-blocks/assets/js/data/cart/actions&quot;)&gt;&apos;." source="TS2339" />
 </file>
 <file name="assets/js/base/context/hooks/cart/use-store-cart.ts">
+<error line="32" column="42" severity="error" message="Cannot find module &apos;@woocommerce/base-utils&apos; or its corresponding type declarations." source="TS2307" />
 <error line="74" column="2" severity="error" message="Type &apos;&quot;&quot;&apos; is not assignable to type &apos;CurrencyCode&apos;." source="TS2322" />
 <error line="146" column="3" severity="error" message="Argument of type &apos;(select: any, { dispatch }: { dispatch: any; }) =&gt; StoreCart | { cartCoupons: any; cartItems: any; crossSellsProducts: any; cartFees: any; cartItemsCount: any; cartItemsWeight: any; cartNeedsPayment: any; ... 13 more ...; receiveCart: any; } | { ...; }&apos; is not assignable to parameter of type &apos;(s: { (storeNameOrDescriptor: string | StoreDescriptor): SelectorMap; (key: &quot;core/rich-text&quot;): typeof import(&quot;/home/runner/work/woocommerce-blocks/woocommerce-blocks/node_modules/@types/wordpress__rich-text/store/selectors&quot;); (key: &quot;core/notices&quot;): typeof import(&quot;/home/runner/work/woocommerce-blocks/woocommerce-bloc...&apos;." source="TS2345" />
 <error line="146" column="5" severity="error" message="Parameter &apos;select&apos; implicitly has an &apos;any&apos; type." source="TS7006" />
 <error line="146" column="15" severity="error" message="Binding element &apos;dispatch&apos; implicitly has an &apos;any&apos; type." source="TS7031" />
-<error line="227" column="44" severity="error" message="Argument of type &apos;Record&lt;string, unknown&gt;&apos; is not assignable to parameter of type &apos;CartResponseShippingAddress | CartResponseBillingAddress&apos;.
-  Type &apos;Record&lt;string, unknown&gt;&apos; is missing the following properties from type &apos;CartResponseBillingAddress&apos;: email, company, phone, address_1, and 7 more." source="TS2345" />
-<error line="228" column="47" severity="error" message="Argument of type &apos;Record&lt;string, unknown&gt;&apos; is not assignable to parameter of type &apos;CartResponseShippingAddress | CartResponseBillingAddress&apos;." source="TS2345" />
-<error line="229" column="48" severity="error" message="Argument of type &apos;Record&lt;string, unknown&gt;&apos; is not assignable to parameter of type &apos;CartResponseShippingAddress | CartResponseBillingAddress&apos;." source="TS2345" />
 <error line="245" column="3" severity="error" message="Type &apos;StoreCart&apos; is not assignable to type &apos;undefined&apos;." source="TS2322" />
 <error line="248" column="2" severity="error" message="Type &apos;undefined&apos; is not assignable to type &apos;StoreCart&apos;." source="TS2322" />
 </file>
@@ -757,6 +692,9 @@
 <error line="118" column="14" severity="error" message="Parameter &apos;error&apos; implicitly has an &apos;any&apos; type." source="TS7006" />
 <error line="124" column="5" severity="error" message="Cannot find name &apos;receiveApplyingCoupon&apos;." source="TS2304" />
 </file>
+<file name="assets/js/base/context/hooks/cart/use-store-cart-item-quantity.ts">
+<error line="9" column="40" severity="error" message="Cannot find module &apos;@woocommerce/base-utils&apos; or its corresponding type declarations." source="TS2307" />
+</file>
 <file name="assets/js/base/context/hooks/use-query-state.js">
 <error line="28" column="13" severity="error" message="Generic type &apos;Array&lt;T&gt;&apos; requires 1 type argument(s)." source="TS2314" />
 <error line="131" column="5" severity="error" message="Argument of type &apos;Object | undefined&apos; is not assignable to parameter of type &apos;any[] | ComparableObject&apos;.
@@ -769,7 +707,7 @@
 <error line="87" column="7" severity="error" message="Parameter &apos;attribute&apos; implicitly has an &apos;any&apos; type." source="TS7006" />
 </file>
 <file name="assets/js/base/context/hooks/shipping/use-shipping-data.ts">
-<error line="55" column="33" severity="error" message="Argument of type &apos;CartResponseShippingRate[]&apos; is not assignable to parameter of type &apos;CartShippingRate[]&apos;." source="TS2345" />
+<error line="9" column="45" severity="error" message="Cannot find module &apos;@woocommerce/base-utils&apos; or its corresponding type declarations." source="TS2307" />
 <error line="68" column="3" severity="error" message="Type &apos;CartResponseShippingRate[]&apos; is not assignable to type &apos;CartShippingRate[]&apos;.
   Type &apos;CartResponseShippingRate&apos; is not assignable to type &apos;CartShippingRate&apos;.
     Types of property &apos;package_id&apos; are incompatible.
@@ -978,6 +916,7 @@
 <error line="42" column="3" severity="error" message="Argument of type &apos;Function&apos; is not assignable to parameter of type &apos;Dispatch&lt;ActionType&gt;&apos;." source="TS2345" />
 </file>
 <file name="assets/js/base/context/providers/add-to-cart-form/form-state/index.js">
+<error line="16" column="8" severity="error" message="Cannot find module &apos;@woocommerce/base-utils&apos; or its corresponding type declarations." source="TS2307" />
 <error line="39" column="56" severity="error" message="Namespace &apos;&quot;/home/runner/work/woocommerce-blocks/woocommerce-blocks/assets/js/types/type-defs/contexts&quot;&apos; has no exported member &apos;AddToCartFormContext&apos;." source="TS2694" />
 <error line="60" column="44" severity="error" message="Parameter &apos;callback&apos; implicitly has an &apos;any&apos; type." source="TS7006" />
 <error line="61" column="42" severity="error" message="Parameter &apos;callback&apos; implicitly has an &apos;any&apos; type." source="TS7006" />
@@ -1008,8 +947,6 @@
   Property &apos;status&apos; does not exist on type &apos;Object&apos;." source="TS2339" />
 <error line="151" column="6" severity="error" message="Object is possibly &apos;undefined&apos;." source="TS2532" />
 <error line="151" column="14" severity="error" message="Property &apos;id&apos; does not exist on type &apos;Object&apos;." source="TS2339" />
-<error line="151" column="44" severity="error" message="Argument of type &apos;Object | undefined&apos; is not assignable to parameter of type &apos;Object&apos;.
-  Type &apos;undefined&apos; is not assignable to type &apos;Object&apos;." source="TS2345" />
 <error line="154" column="14" severity="error" message="Argument of type &apos;{ type: string; }&apos; is not assignable to parameter of type &apos;{ quantity: number; type: string; data: Object; }&apos;.
   Type &apos;{ type: string; }&apos; is missing the following properties from type &apos;{ quantity: number; type: string; data: Object; }&apos;: quantity, data" source="TS2345" />
 <error line="156" column="14" severity="error" message="Argument of type &apos;{ type: string; }&apos; is not assignable to parameter of type &apos;{ quantity: number; type: string; data: Object; }&apos;.
@@ -1052,12 +989,8 @@
 <error line="280" column="22" severity="error" message="Property &apos;processingResponse&apos; does not exist on type &apos;Object | { status: string; constructor: Function; toString(): string; toLocaleString(): string; valueOf(): Object; hasOwnProperty(v: PropertyKey): boolean; isPrototypeOf(v: Object): boolean; propertyIsEnumerable(v: PropertyKey): boolean; } | ... 4 more ... | { ...; }&apos;.
   Property &apos;processingResponse&apos; does not exist on type &apos;Object&apos;." source="TS2339" />
 <error line="284" column="12" severity="error" message="Property &apos;id&apos; does not exist on type &apos;Object&apos;." source="TS2339" />
-<error line="287" column="61" severity="error" message="Argument of type &apos;Object | undefined&apos; is not assignable to parameter of type &apos;Object&apos;.
-  Type &apos;undefined&apos; is not assignable to type &apos;Object&apos;." source="TS2345" />
 <error line="294" column="16" severity="error" message="Object is possibly &apos;undefined&apos;." source="TS2532" />
 <error line="294" column="24" severity="error" message="Property &apos;type&apos; does not exist on type &apos;Object&apos;." source="TS2339" />
-<error line="295" column="47" severity="error" message="Argument of type &apos;Object | undefined&apos; is not assignable to parameter of type &apos;Object&apos;.
-  Type &apos;undefined&apos; is not assignable to type &apos;Object&apos;." source="TS2345" />
 <error line="296" column="22" severity="error" message="Object is possibly &apos;undefined&apos;." source="TS2532" />
 <error line="296" column="30" severity="error" message="Property &apos;has_options&apos; does not exist on type &apos;Object&apos;." source="TS2339" />
 <error line="300" column="4" severity="error" message="Object is possibly &apos;undefined&apos;." source="TS2532" />
@@ -1090,15 +1023,26 @@
   Property &apos;hasError&apos; does not exist on type &apos;Object&apos;." source="TS2339" />
 </file>
 <file name="assets/js/base/context/providers/add-to-cart-form/form/submit/index.js">
+<error line="8" column="41" severity="error" message="Cannot find module &apos;@woocommerce/base-utils&apos; or its corresponding type declarations." source="TS2307" />
 <error line="88" column="18" severity="error" message="Property &apos;setNonce&apos; does not exist on type &apos;typeof apiFetch&apos;." source="TS2339" />
 <error line="91" column="43" severity="error" message="Parameter &apos;response&apos; implicitly has an &apos;any&apos; type." source="TS7006" />
 <error line="128" column="35" severity="error" message="Parameter &apos;response&apos; implicitly has an &apos;any&apos; type." source="TS7006" />
 </file>
+<file name="assets/js/base/components/block-error-boundary/index.tsx">
+<error line="58" column="6" severity="error" message="Type &apos;{ showErrorBlock: boolean; errorMessage: string | null; header: string | undefined; imageUrl: string | undefined; text: ReactNode; errorMessagePrefix: string | undefined; button: ReactNode; }&apos; is not assignable to type &apos;BlockErrorProps&apos; with &apos;exactOptionalPropertyTypes: true&apos;. Consider adding &apos;undefined&apos; to the types of the target&apos;s properties.
+  Types of property &apos;imageUrl&apos; are incompatible.
+    Type &apos;string | undefined&apos; is not assignable to type &apos;string&apos;.
+      Type &apos;undefined&apos; is not assignable to type &apos;string&apos;." source="TS2375" />
+<error line="58" column="6" severity="error" message="&apos;BlockError&apos; cannot be used as a JSX component.
+  Its return type &apos;ReactNode&apos; is not a valid JSX element.
+    Type &apos;undefined&apos; is not assignable to type &apos;Element | null&apos;." source="TS2786" />
+</file>
 <file name="assets/js/base/context/providers/cart-checkout/checkout-processor.js">
+<error line="16" column="8" severity="error" message="Cannot find module &apos;@woocommerce/base-utils&apos; or its corresponding type declarations." source="TS2307" />
 <error line="174" column="7" severity="error" message="Variable &apos;unsubscribeProcessing&apos; implicitly has type &apos;any&apos; in some locations where its type cannot be determined." source="TS7034" />
 <error line="183" column="5" severity="error" message="Variable &apos;unsubscribeProcessing&apos; implicitly has an &apos;any&apos; type." source="TS7005" />
-<error line="229" column="9" severity="error" message="Property &apos;shipping_address&apos; does not exist on type &apos;{ extensions: { [x: string]: Record&lt;string, unknown&gt;; }; payment_method: string | undefined; payment_data: { key: string; value: unknown; }[]; billing_address: BillingAddress; customer_note: string; create_account: boolean; } | { ...; }&apos;.
-  Property &apos;shipping_address&apos; does not exist on type &apos;{ extensions: { [x: string]: Record&lt;string, unknown&gt;; }; payment_method: string | undefined; payment_data: { key: string; value: unknown; }[]; billing_address: BillingAddress; customer_note: string; create_account: boolean; }&apos;." source="TS2339" />
+<error line="229" column="9" severity="error" message="Property &apos;shipping_address&apos; does not exist on type &apos;{ extensions: { [x: string]: Record&lt;string, unknown&gt;; }; payment_method: string | undefined; payment_data: { key: string; value: unknown; }[]; billing_address: any; customer_note: string; create_account: boolean; } | { ...; }&apos;.
+  Property &apos;shipping_address&apos; does not exist on type &apos;{ extensions: { [x: string]: Record&lt;string, unknown&gt;; }; payment_method: string | undefined; payment_data: { key: string; value: unknown; }[]; billing_address: any; customer_note: string; create_account: boolean; }&apos;." source="TS2339" />
 <error line="258" column="35" severity="error" message="Parameter &apos;response&apos; implicitly has an &apos;any&apos; type." source="TS7006" />
 <error line="268" column="9" severity="error" message="Argument of type &apos;{ id: string; context: string; __unstableHTML: boolean; }&apos; is not assignable to parameter of type &apos;Partial&lt;Options&gt;&apos;.
   Object literal may only specify known properties, and &apos;__unstableHTML&apos; does not exist in type &apos;Partial&lt;Options&gt;&apos;." source="TS2345" />
@@ -1224,6 +1168,7 @@
 <error line="54" column="11" severity="error" message="Parameter &apos;props&apos; implicitly has an &apos;any&apos; type." source="TS7006" />
 </file>
 <file name="assets/js/shared/hocs/with-filtered-attributes.js">
+<error line="4" column="41" severity="error" message="Cannot find module &apos;@woocommerce/base-utils&apos; or its corresponding type declarations." source="TS2307" />
 <error line="12" column="27" severity="error" message="Parameter &apos;OriginalComponent&apos; implicitly has an &apos;any&apos; type." source="TS7006" />
 <error line="13" column="12" severity="error" message="Parameter &apos;ownProps&apos; implicitly has an &apos;any&apos; type." source="TS7006" />
 </file>
@@ -1295,12 +1240,16 @@
 <error line="77" column="30" severity="error" message="Parameter &apos;isBackordered&apos; implicitly has an &apos;any&apos; type." source="TS7006" />
 </file>
 <file name="assets/js/atomic/blocks/product-elements/add-to-cart/shared/add-to-cart-button.js">
+<error line="8" column="41" severity="error" message="Cannot find module &apos;@woocommerce/base-context&apos; or its corresponding type declarations." source="TS2307" />
 <error line="120" column="4" severity="error" message="Type &apos;{ children: string; className: string; href: string; onClick: () =&gt; any; rel: string; }&apos; is not assignable to type &apos;IntrinsicAttributes &amp; ButtonProps&apos;.
   Property &apos;href&apos; does not exist on type &apos;IntrinsicAttributes &amp; ButtonProps&apos;." source="TS2322" />
 </file>
 <file name="assets/js/atomic/blocks/product-elements/add-to-cart/shared/quantity-input.js">
 <error line="52" column="14" severity="error" message="Expected 0 arguments, but got 1." source="TS2554" />
 <error line="67" column="15" severity="error" message="Expected 0 arguments, but got 1." source="TS2554" />
+</file>
+<file name="assets/js/atomic/blocks/product-elements/add-to-cart/product-types/simple.js">
+<error line="5" column="41" severity="error" message="Cannot find module &apos;@woocommerce/base-context&apos; or its corresponding type declarations." source="TS2307" />
 </file>
 <file name="assets/js/atomic/blocks/product-elements/add-to-cart/product-types/variable/variation-attributes/attribute-select-control.js">
 <error line="6" column="31" severity="error" message="Could not find a declaration file for module &apos;wordpress-components&apos;. &apos;/home/runner/work/woocommerce-blocks/woocommerce-blocks/node_modules/wordpress-components/build/index.js&apos; implicitly has an &apos;any&apos; type.
@@ -1347,9 +1296,15 @@
 <error line="20" column="23" severity="error" message="Property &apos;length&apos; does not exist on type &apos;{}&apos;." source="TS2339" />
 <error line="29" column="35" severity="error" message="Property &apos;setRequestParams&apos; does not exist on type &apos;Object&apos;." source="TS2339" />
 </file>
+<file name="assets/js/atomic/blocks/product-elements/add-to-cart/product-types/variable/index.js">
+<error line="5" column="41" severity="error" message="Cannot find module &apos;@woocommerce/base-context&apos; or its corresponding type declarations." source="TS2307" />
+</file>
 <file name="assets/js/atomic/blocks/product-elements/add-to-cart/product-types/grouped/group-list/index.js">
 <error line="4" column="29" severity="error" message="Could not find a declaration file for module &apos;wordpress-components&apos;. &apos;/home/runner/work/woocommerce-blocks/woocommerce-blocks/node_modules/wordpress-components/build/index.js&apos; implicitly has an &apos;any&apos; type.
   If the &apos;@wordpress/components&apos; package actually exposes this module, consider sending a pull request to amend &apos;https://github.com/DefinitelyTyped/DefinitelyTyped/tree/master/types/wordpress__components&apos;" source="TS7016" />
+</file>
+<file name="assets/js/atomic/blocks/product-elements/add-to-cart/block.js">
+<error line="9" column="8" severity="error" message="Cannot find module &apos;@woocommerce/base-context&apos; or its corresponding type declarations." source="TS2307" />
 </file>
 <file name="assets/js/atomic/blocks/product-elements/save.js">
 <error line="6" column="18" severity="error" message="Binding element &apos;attributes&apos; implicitly has an &apos;any&apos; type." source="TS7031" />
@@ -1375,6 +1330,16 @@
 <error line="119" column="12" severity="error" message="Generic type &apos;Array&lt;T&gt;&apos; requires 1 type argument(s)." source="TS2314" />
 <error line="149" column="12" severity="error" message="Generic type &apos;Array&lt;T&gt;&apos; requires 1 type argument(s)." source="TS2314" />
 <error line="209" column="12" severity="error" message="Generic type &apos;Array&lt;T&gt;&apos; requires 1 type argument(s)." source="TS2314" />
+</file>
+<file name="assets/js/base/utils/errors.js">
+<error line="26" column="14" severity="error" message="Object is of type &apos;unknown&apos;." source="TS2571" />
+<error line="33" column="3" severity="error" message="Type &apos;string | undefined&apos; is not assignable to type &apos;string&apos;.
+  Type &apos;undefined&apos; is not assignable to type &apos;string&apos;." source="TS2322" />
+<error line="45" column="16" severity="error" message="Property &apos;data&apos; does not exist on type &apos;Object&apos;." source="TS2339" />
+<error line="45" column="33" severity="error" message="Property &apos;code&apos; does not exist on type &apos;Object&apos;." source="TS2339" />
+<error line="46" column="49" severity="error" message="Property &apos;data&apos; does not exist on type &apos;Object&apos;." source="TS2339" />
+<error line="52" column="19" severity="error" message="Property &apos;message&apos; does not exist on type &apos;Object&apos;." source="TS2339" />
+<error line="59" column="34" severity="error" message="Property &apos;message&apos; does not exist on type &apos;Object&apos;." source="TS2339" />
 </file>
 <file name="assets/js/hocs/with-attributes.js">
 <error line="16" column="12" severity="error" message="Generic type &apos;Array&lt;T&gt;&apos; requires 1 type argument(s)." source="TS2314" />
@@ -1564,6 +1529,7 @@
 <error line="15" column="18" severity="error" message="Binding element &apos;attributes&apos; implicitly has an &apos;any&apos; type." source="TS7031" />
 </file>
 <file name="assets/js/atomic/blocks/product-elements/add-to-cart/edit.js">
+<error line="15" column="46" severity="error" message="Cannot find module &apos;@woocommerce/base-utils&apos; or its corresponding type declarations." source="TS2307" />
 <error line="25" column="18" severity="error" message="Binding element &apos;attributes&apos; implicitly has an &apos;any&apos; type." source="TS7031" />
 <error line="25" column="30" severity="error" message="Binding element &apos;setAttributes&apos; implicitly has an &apos;any&apos; type." source="TS7031" />
 <error line="36" column="21" severity="error" message="Type &apos;{ productId: number; }&apos; is not assignable to type &apos;IntrinsicAttributes &amp; Object&apos;.
@@ -1601,18 +1567,14 @@
 <error line="13" column="9" severity="error" message="&apos;children&apos; implicitly has type &apos;any&apos; because it does not have a type annotation and is referenced directly or indirectly in its own initializer." source="TS7022" />
 </file>
 <file name="assets/js/atomic/utils/render-parent-block.tsx">
+<error line="4" column="32" severity="error" message="Cannot find module &apos;@woocommerce/base-utils&apos; or its corresponding type declarations." source="TS2307" />
 <error line="144" column="2" severity="error" message="Type &apos;(string | Element | null)[]&apos; is not assignable to type &apos;(Element | null)[]&apos;.
   Type &apos;string | Element | null&apos; is not assignable to type &apos;Element | null&apos;.
     Type &apos;string&apos; is not assignable to type &apos;Element&apos;." source="TS2322" />
 </file>
 <file name="assets/js/atomic/utils/render-standalone-blocks.js">
+<error line="4" column="32" severity="error" message="Cannot find module &apos;@woocommerce/base-utils&apos; or its corresponding type declarations." source="TS2307" />
 <error line="17" column="22" severity="error" message="Parameter &apos;el&apos; implicitly has an &apos;any&apos; type." source="TS7006" />
-<error line="22" column="4" severity="error" message="Type &apos;RegisteredBlockComponent&apos; is not assignable to type &apos;BlockType&lt;Record&lt;string, unknown&gt;, Record&lt;string, unknown&gt;&gt; | null&apos;.
-  Type &apos;LazyExoticComponent&lt;ComponentType&lt;unknown&gt;&gt;&apos; is not assignable to type &apos;BlockType&lt;Record&lt;string, unknown&gt;, Record&lt;string, unknown&gt;&gt; | null&apos;.
-    Type &apos;LazyExoticComponent&lt;ComponentType&lt;unknown&gt;&gt;&apos; is not assignable to type &apos;BlockType&lt;Record&lt;string, unknown&gt;, Record&lt;string, unknown&gt;&gt;&apos;.
-      Types of parameters &apos;props&apos; and &apos;props&apos; are incompatible.
-        Type &apos;BlockProps&lt;Record&lt;string, unknown&gt;, Record&lt;string, unknown&gt;&gt;&apos; is not assignable to type &apos;{ children?: ReactNode; } | RefAttributes&lt;Component&lt;unknown, any, any&gt;&gt;&apos;.
-          Type &apos;BlockProps&lt;Record&lt;string, unknown&gt;, Record&lt;string, unknown&gt;&gt;&apos; has no properties in common with type &apos;RefAttributes&lt;Component&lt;unknown, any, any&gt;&gt;&apos;." source="TS2322" />
 </file>
 <file name="node_modules/@types/webpack-env/index.d.ts">
 <error line="297" column="13" severity="error" message="Cannot redeclare block-scoped variable &apos;__webpack_public_path__&apos;." source="TS2451" />
@@ -1680,6 +1642,9 @@
     Type &apos;string | undefined&apos; is not assignable to type &apos;string&apos;.
       Type &apos;undefined&apos; is not assignable to type &apos;string&apos;." source="TS2375" />
 </file>
+<file name="assets/js/base/components/cart-checkout/order-summary/index.tsx">
+<error line="5" column="42" severity="error" message="Cannot find module &apos;@woocommerce/base-context&apos; or its corresponding type declarations." source="TS2307" />
+</file>
 <file name="assets/js/base/components/cart-checkout/product-sale-badge/index.tsx">
 <error line="7" column="15" severity="error" message="Module &apos;&quot;@woocommerce/price-format&quot;&apos; has no exported member &apos;Currency&apos;." source="TS2305" />
 </file>
@@ -1687,6 +1652,10 @@
 <error line="30" column="5" severity="error" message="Type &apos;Partial&lt;keyof ShippingAddress&gt;[]&apos; is not assignable to type &apos;Partial&lt;keyof AddressFields&gt;[]&apos;.
   Type &apos;Partial&lt;keyof ShippingAddress&gt;&apos; is not assignable to type &apos;Partial&lt;keyof AddressFields&gt;&apos;.
     Type &apos;&quot;phone&quot;&apos; is not assignable to type &apos;Partial&lt;keyof AddressFields&gt;&apos;." source="TS2322" />
+</file>
+<file name="assets/js/base/components/cart-checkout/shipping-rates-control/index.tsx">
+<error line="12" column="8" severity="error" message="Cannot find module &apos;@woocommerce/base-utils&apos; or its corresponding type declarations." source="TS2307" />
+<error line="13" column="48" severity="error" message="Cannot find module &apos;@woocommerce/base-context&apos; or its corresponding type declarations." source="TS2307" />
 </file>
 <file name="assets/js/base/components/cart-checkout/totals/coupon/index.tsx">
 <error line="102" column="8" severity="error" message="Type &apos;{ id: string; errorId: string; className: string; label: string; value: string; ariaDescribedBy: string | undefined; onChange: (newCouponValue: string) =&gt; void; focusOnMount: true; showError: false; }&apos; is not assignable to type &apos;IntrinsicAttributes &amp; Omit&lt;ValidatedTextInputProps, &quot;instanceId&quot;&gt; &amp; { children?: ReactNode; }&apos; with &apos;exactOptionalPropertyTypes: true&apos;. Consider adding &apos;undefined&apos; to the types of the target&apos;s properties.
@@ -1717,10 +1686,12 @@
 <error line="9" column="15" severity="error" message="Module &apos;&quot;@woocommerce/price-format&quot;&apos; has no exported member &apos;Currency&apos;." source="TS2305" />
 </file>
 <file name="assets/js/base/components/cart-checkout/address-form/test/index.js">
+<error line="6" column="34" severity="error" message="Cannot find module &apos;@woocommerce/base-context&apos; or its corresponding type declarations." source="TS2307" />
 <error line="14" column="36" severity="error" message="Parameter &apos;ui&apos; implicitly has an &apos;any&apos; type." source="TS7006" />
 <error line="15" column="22" severity="error" message="Binding element &apos;children&apos; implicitly has an &apos;any&apos; type." source="TS7031" />
 <error line="83" column="33" severity="error" message="Binding element &apos;type&apos; implicitly has an &apos;any&apos; type." source="TS7031" />
-<error line="92" column="5" severity="error" message="Type &apos;string[]&apos; is not assignable to type &apos;(keyof AddressFields)[]&apos;." source="TS2322" />
+<error line="92" column="5" severity="error" message="Type &apos;string[]&apos; is not assignable to type &apos;(keyof AddressFields)[]&apos;.
+  Type &apos;string&apos; is not assignable to type &apos;keyof AddressFields&apos;." source="TS2322" />
 <error line="102" column="37" severity="error" message="Element implicitly has an &apos;any&apos; type because expression of type &apos;string&apos; can&apos;t be used to index type &apos;ShippingAddress&apos;.
   No index signature with a parameter of type &apos;string&apos; was found on type &apos;ShippingAddress&apos;." source="TS7053" />
 <error line="116" column="17" severity="error" message="Argument of type &apos;{ country: string; countryKey: string; city: string; state: string; postcode: string; }&apos; is not assignable to parameter of type &apos;{ country?: null | undefined; city?: null | undefined; state?: null | undefined; postcode?: null | undefined; }&apos;.
@@ -1923,6 +1894,7 @@
 <error line="7" column="40" severity="error" message="Property &apos;className&apos; does not exist on type &apos;{ children?: ReactNode; }&apos;." source="TS2339" />
 </file>
 <file name="assets/js/base/components/sidebar-layout/sidebar-layout.js">
+<error line="6" column="47" severity="error" message="Cannot find module &apos;@woocommerce/base-context&apos; or its corresponding type declarations." source="TS2307" />
 <error line="13" column="27" severity="error" message="Binding element &apos;children&apos; implicitly has an &apos;any&apos; type." source="TS7031" />
 <error line="13" column="37" severity="error" message="Binding element &apos;className&apos; implicitly has an &apos;any&apos; type." source="TS7031" />
 </file>
@@ -2218,6 +2190,65 @@
 <error line="69" column="5" severity="error" message="Variable &apos;renderer&apos; implicitly has an &apos;any&apos; type." source="TS7005" />
 <error line="71" column="20" severity="error" message="Variable &apos;renderer&apos; implicitly has an &apos;any&apos; type." source="TS7005" />
 </file>
+<file name="assets/js/base/utils/address.ts">
+<error line="92" column="46" severity="error" message="Argument of type &apos;string[]&apos; is not assignable to parameter of type &apos;(keyof AddressFields)[]&apos;." source="TS2345" />
+</file>
+<file name="assets/js/base/utils/get-valid-block-attributes.js">
+<error line="5" column="12" severity="error" message="Generic type &apos;Array&lt;T&gt;&apos; requires 1 type argument(s)." source="TS2314" />
+<error line="6" column="13" severity="error" message="Generic type &apos;Array&lt;T&gt;&apos; requires 1 type argument(s)." source="TS2314" />
+<error line="9" column="8" severity="error" message="Variable &apos;attributes&apos; implicitly has type &apos;any[]&apos; in some locations where its type cannot be determined." source="TS7034" />
+<error line="12" column="30" severity="error" message="Element implicitly has an &apos;any&apos; type because index expression is not of type &apos;number&apos;." source="TS7015" />
+<error line="13" column="13" severity="error" message="Element implicitly has an &apos;any&apos; type because expression of type &apos;string&apos; can&apos;t be used to index type &apos;Object&apos;.
+  No index signature with a parameter of type &apos;string&apos; was found on type &apos;Object&apos;." source="TS7053" />
+<error line="15" column="6" severity="error" message="Variable &apos;attributes&apos; implicitly has an &apos;any[]&apos; type." source="TS7005" />
+<error line="15" column="18" severity="error" message="Element implicitly has an &apos;any&apos; type because index expression is not of type &apos;number&apos;." source="TS7015" />
+<error line="16" column="22" severity="error" message="Element implicitly has an &apos;any&apos; type because index expression is not of type &apos;number&apos;." source="TS7015" />
+<error line="17" column="22" severity="error" message="Element implicitly has an &apos;any&apos; type because index expression is not of type &apos;number&apos;." source="TS7015" />
+<error line="20" column="6" severity="error" message="Variable &apos;attributes&apos; implicitly has an &apos;any[]&apos; type." source="TS7005" />
+<error line="20" column="18" severity="error" message="Element implicitly has an &apos;any&apos; type because index expression is not of type &apos;number&apos;." source="TS7015" />
+<error line="20" column="51" severity="error" message="Element implicitly has an &apos;any&apos; type because index expression is not of type &apos;number&apos;." source="TS7015" />
+<error line="24" column="6" severity="error" message="Variable &apos;attributes&apos; implicitly has an &apos;any[]&apos; type." source="TS7005" />
+<error line="24" column="18" severity="error" message="Element implicitly has an &apos;any&apos; type because index expression is not of type &apos;number&apos;." source="TS7015" />
+<error line="24" column="53" severity="error" message="Element implicitly has an &apos;any&apos; type because index expression is not of type &apos;number&apos;." source="TS7015" />
+<error line="27" column="6" severity="error" message="Variable &apos;attributes&apos; implicitly has an &apos;any[]&apos; type." source="TS7005" />
+<error line="27" column="18" severity="error" message="Element implicitly has an &apos;any&apos; type because index expression is not of type &apos;number&apos;." source="TS7015" />
+<error line="27" column="41" severity="error" message="Element implicitly has an &apos;any&apos; type because index expression is not of type &apos;number&apos;." source="TS7015" />
+<error line="31" column="4" severity="error" message="Variable &apos;attributes&apos; implicitly has an &apos;any[]&apos; type." source="TS7005" />
+<error line="31" column="16" severity="error" message="Element implicitly has an &apos;any&apos; type because index expression is not of type &apos;number&apos;." source="TS7015" />
+<error line="31" column="24" severity="error" message="Element implicitly has an &apos;any&apos; type because expression of type &apos;string&apos; can&apos;t be used to index type &apos;Object&apos;.
+  No index signature with a parameter of type &apos;string&apos; was found on type &apos;Object&apos;." source="TS7053" />
+<error line="35" column="9" severity="error" message="Variable &apos;attributes&apos; implicitly has an &apos;any[]&apos; type." source="TS7005" />
+</file>
+<file name="assets/js/base/utils/shipping-rates.js">
+<error line="4" column="12" severity="error" message="Generic type &apos;Array&lt;T&gt;&apos; requires 1 type argument(s)." source="TS2314" />
+<error line="13" column="12" severity="error" message="Generic type &apos;Array&lt;T&gt;&apos; requires 1 type argument(s)." source="TS2314" />
+</file>
+<file name="assets/js/base/utils/render-frontend.tsx">
+<error line="60" column="4" severity="error" message="No overload matches this call.
+  Overload 1 of 2, &apos;(props: BlockErrorBoundaryProps | Readonly&lt;BlockErrorBoundaryProps&gt;): BlockErrorBoundary&apos;, gave the following error.
+    Property &apos;text&apos; is missing in type &apos;{ children: Element; }&apos; but required in type &apos;Readonly&lt;BlockErrorBoundaryProps&gt;&apos;.
+  Overload 2 of 2, &apos;(props: BlockErrorBoundaryProps, context: any): BlockErrorBoundary&apos;, gave the following error.
+    Property &apos;text&apos; is missing in type &apos;{ children: Element; }&apos; but required in type &apos;Readonly&lt;BlockErrorBoundaryProps&gt;&apos;." source="TS2769" />
+<error line="168" column="27" severity="error" message="Argument of type &apos;{ Block: BlockType&lt;TProps, TAttributes&gt; | null; containers: NodeListOf&lt;Element&gt;; getProps: GetPropsFn&lt;TProps, TAttributes&gt; | undefined; getErrorBoundaryProps: ((el: HTMLElement, i: number) =&gt; Record&lt;...&gt;) | undefined; }&apos; is not assignable to parameter of type &apos;RenderBlockInContainersParams&lt;TProps, TAttributes&gt;&apos; with &apos;exactOptionalPropertyTypes: true&apos;. Consider adding &apos;undefined&apos; to the types of the target&apos;s properties.
+  Types of property &apos;getProps&apos; are incompatible.
+    Type &apos;GetPropsFn&lt;TProps, TAttributes&gt; | undefined&apos; is not assignable to type &apos;GetPropsFn&lt;TProps, TAttributes&gt;&apos;.
+      Type &apos;undefined&apos; is not assignable to type &apos;GetPropsFn&lt;TProps, TAttributes&gt;&apos;." source="TS2379" />
+<error line="199" column="27" severity="error" message="Argument of type &apos;{ Block: BlockType&lt;TProps, TAttributes&gt; | null; containers: NodeListOf&lt;Element&gt;; getProps: GetPropsFn&lt;TProps, TAttributes&gt; | undefined; getErrorBoundaryProps: ((el: HTMLElement, i: number) =&gt; Record&lt;...&gt;) | undefined; }&apos; is not assignable to parameter of type &apos;RenderBlockInContainersParams&lt;TProps, TAttributes&gt;&apos; with &apos;exactOptionalPropertyTypes: true&apos;. Consider adding &apos;undefined&apos; to the types of the target&apos;s properties.
+  Types of property &apos;getProps&apos; are incompatible.
+    Type &apos;GetPropsFn&lt;TProps, TAttributes&gt; | undefined&apos; is not assignable to type &apos;GetPropsFn&lt;TProps, TAttributes&gt;&apos;.
+      Type &apos;undefined&apos; is not assignable to type &apos;GetPropsFn&lt;TProps, TAttributes&gt;&apos;." source="TS2379" />
+<error line="244" column="30" severity="error" message="Argument of type &apos;{ Block: BlockType&lt;TProps, TAttributes&gt; | null; getProps: GetPropsFn&lt;TProps, TAttributes&gt; | undefined; getErrorBoundaryProps: ((el: HTMLElement, i: number) =&gt; Record&lt;...&gt;) | undefined; selector: string; wrappers: NodeListOf&lt;...&gt;; }&apos; is not assignable to parameter of type &apos;RenderBlockOutsideWrappersParams&lt;TProps, TAttributes&gt;&apos; with &apos;exactOptionalPropertyTypes: true&apos;. Consider adding &apos;undefined&apos; to the types of the target&apos;s properties.
+  Types of property &apos;getProps&apos; are incompatible.
+    Type &apos;GetPropsFn&lt;TProps, TAttributes&gt; | undefined&apos; is not assignable to type &apos;GetPropsFn&lt;TProps, TAttributes&gt;&apos;.
+      Type &apos;undefined&apos; is not assignable to type &apos;GetPropsFn&lt;TProps, TAttributes&gt;&apos;." source="TS2379" />
+</file>
+<file name="assets/js/base/utils/product-data.js">
+<error line="8" column="17" severity="error" message="Property &apos;is_purchasable&apos; does not exist on type &apos;Object&apos;." source="TS2339" />
+<error line="30" column="42" severity="error" message="Property &apos;type&apos; does not exist on type &apos;Object&apos;." source="TS2339" />
+</file>
+<file name="assets/js/base/utils/test/address.ts">
+<error line="4" column="42" severity="error" message="Cannot find module &apos;@woocommerce/base-utils&apos; or its corresponding type declarations." source="TS2307" />
+</file>
 <file name="assets/js/blocks/active-filters/block.tsx">
 <error line="174" column="35" severity="error" message="Argument of type &apos;unknown&apos; is not assignable to parameter of type &apos;StoreAttributes[]&apos;." source="TS2345" />
 <error line="182" column="35" severity="error" message="Parameter &apos;attribute&apos; implicitly has an &apos;any&apos; type." source="TS7006" />
@@ -2237,6 +2268,9 @@
 <file name="assets/js/blocks/active-filters/edit.tsx">
 <error line="13" column="2" severity="error" message="Module &apos;&quot;@wordpress/components&quot;&apos; has no exported member &apos;__experimentalToggleGroupControl&apos;." source="TS2305" />
 <error line="15" column="2" severity="error" message="Module &apos;&quot;@wordpress/components&quot;&apos; has no exported member &apos;__experimentalToggleGroupControlOption&apos;." source="TS2305" />
+</file>
+<file name="assets/js/blocks/active-filters/frontend.ts">
+<error line="4" column="32" severity="error" message="Cannot find module &apos;@woocommerce/base-utils&apos; or its corresponding type declarations." source="TS2307" />
 </file>
 <file name="assets/js/blocks/active-filters/index.tsx">
 <error line="18" column="20" severity="error" message="No overload matches this call.
@@ -2266,6 +2300,9 @@
     Type &apos;{ id: number; name: string; }&apos; is missing the following properties from type &apos;SearchListItemType&apos;: value, parent, count, children, breadcrumbs" source="TS2322" />
 <error line="154" column="5" severity="error" message="Type &apos;{ id: number; name: string; }[]&apos; is not assignable to type &apos;SearchListItemsType&apos;." source="TS2322" />
 </file>
+<file name="assets/js/blocks/attribute-filter/frontend.ts">
+<error line="4" column="32" severity="error" message="Cannot find module &apos;@woocommerce/base-utils&apos; or its corresponding type declarations." source="TS2307" />
+</file>
 <file name="assets/js/blocks/attribute-filter/index.tsx">
 <error line="18" column="20" severity="error" message="No overload matches this call.
   Overload 1 of 2, &apos;(metadata: BlockConfiguration&lt;BlockAttributes&gt;, settings?: Partial&lt;BlockConfiguration&lt;BlockAttributes&gt;&gt; | undefined): Block&lt;...&gt; | undefined&apos;, gave the following error.
@@ -2288,7 +2325,8 @@
 <error line="188" column="26" severity="error" message="Property &apos;toBeDisabled&apos; does not exist on type &apos;JestMatchers&lt;HTMLElement&gt;&apos;." source="TS2339" />
 </file>
 <file name="assets/js/blocks/cart/block.js">
-<error line="16" column="30" severity="error" message="Cannot find module &apos;@woocommerce/base-context/providers&apos; or its corresponding type declarations." source="TS2307" />
+<error line="11" column="8" severity="error" message="Cannot find module &apos;@woocommerce/base-context&apos; or its corresponding type declarations." source="TS2307" />
+<error line="14" column="46" severity="error" message="Cannot find module &apos;@woocommerce/base-utils&apos; or its corresponding type declarations." source="TS2307" />
 <error line="25" column="55" severity="error" message="Expected 0 arguments, but got 1." source="TS2554" />
 <error line="27" column="18" severity="error" message="Binding element &apos;children&apos; implicitly has an &apos;any&apos; type." source="TS7031" />
 <error line="29" column="10" severity="error" message="Property &apos;hasDarkControls&apos; does not exist on type &apos;{}&apos;." source="TS2339" />
@@ -2351,6 +2389,9 @@
 <error line="49" column="13" severity="error" message="Property &apos;getBlockParentsByBlockName&apos; does not exist on type &apos;typeof import(&quot;/home/runner/work/woocommerce-blocks/woocommerce-blocks/node_modules/@types/wordpress__rich-text/store/selectors&quot;)&apos;." source="TS2339" />
 <error line="49" column="41" severity="error" message="Property &apos;getBlockName&apos; does not exist on type &apos;typeof import(&quot;/home/runner/work/woocommerce-blocks/woocommerce-blocks/node_modules/@types/wordpress__rich-text/store/selectors&quot;)&apos;." source="TS2339" />
 </file>
+<file name="assets/js/blocks/cart/inner-blocks/filled-cart-block/edit.tsx">
+<error line="9" column="34" severity="error" message="Cannot find module &apos;@woocommerce/base-context&apos; or its corresponding type declarations." source="TS2307" />
+</file>
 <file name="assets/js/blocks/cart/inner-blocks/filled-cart-block/index.tsx">
 <error line="13" column="1" severity="error" message="No overload matches this call.
   Overload 1 of 2, &apos;(metadata: BlockConfiguration&lt;{}&gt;, settings?: Partial&lt;BlockConfiguration&lt;{}&gt;&gt; | undefined): Block&lt;{}&gt; | undefined&apos;, gave the following error.
@@ -2412,12 +2453,18 @@
 <file name="assets/js/blocks/cart-checkout-shared/payment-methods/no-payment-methods/index.js">
 <error line="5" column="45" severity="error" message="Could not find a declaration file for module &apos;wordpress-components&apos;. &apos;/home/runner/work/woocommerce-blocks/woocommerce-blocks/node_modules/wordpress-components/build/index.js&apos; implicitly has an &apos;any&apos; type.
   If the &apos;@wordpress/components&apos; package actually exposes this module, consider sending a pull request to amend &apos;https://github.com/DefinitelyTyped/DefinitelyTyped/tree/master/types/wordpress__components&apos;" source="TS7016" />
+<error line="8" column="34" severity="error" message="Cannot find module &apos;@woocommerce/base-context&apos; or its corresponding type declarations." source="TS2307" />
 </file>
 <file name="assets/js/blocks/cart-checkout-shared/payment-methods/payment-method-error-boundary.js">
+<error line="8" column="39" severity="error" message="Cannot find module &apos;@woocommerce/base-context&apos; or its corresponding type declarations." source="TS2307" />
 <error line="9" column="10" severity="error" message="Module &apos;&quot;@woocommerce/base-context/hooks&quot;&apos; has no exported member &apos;noticeContexts&apos;." source="TS2305" />
 <error line="14" column="35" severity="error" message="Parameter &apos;error&apos; implicitly has an &apos;any&apos; type." source="TS7006" />
 </file>
+<file name="assets/js/blocks/cart-checkout-shared/payment-methods/payment-method-card.js">
+<error line="5" column="34" severity="error" message="Cannot find module &apos;@woocommerce/base-context&apos; or its corresponding type declarations." source="TS2307" />
+</file>
 <file name="assets/js/blocks/cart-checkout-shared/payment-methods/payment-method-options.js">
+<error line="9" column="34" severity="error" message="Cannot find module &apos;@woocommerce/base-context&apos; or its corresponding type declarations." source="TS2307" />
 <error line="60" column="22" severity="error" message="No overload matches this call.
   The last overload gave the following error.
     Argument of type &apos;number | boolean | {} | ReactElement&lt;any, string | JSXElementConstructor&lt;any&gt;&gt; | Iterable&lt;ReactNode&gt; | ReactPortal | null | undefined&apos; is not assignable to parameter of type &apos;ReactElement&lt;any, string | JSXElementConstructor&lt;any&gt;&gt;&apos;.
@@ -2429,6 +2476,7 @@
       Type &apos;undefined&apos; is not assignable to type &apos;ReactElement&lt;any, string | JSXElementConstructor&lt;any&gt;&gt;&apos;." source="TS2769" />
 </file>
 <file name="assets/js/blocks/cart-checkout-shared/payment-methods/saved-payment-method-options.js">
+<error line="6" column="32" severity="error" message="Cannot find module &apos;@woocommerce/base-context&apos; or its corresponding type declarations." source="TS2307" />
 <error line="17" column="56" severity="error" message="Namespace &apos;&quot;/home/runner/work/woocommerce-blocks/woocommerce-blocks/assets/js/types/type-defs/contexts&quot;&apos; has no exported member &apos;CustomerPaymentMethod&apos;." source="TS2694" />
 <error line="18" column="56" severity="error" message="Namespace &apos;&quot;/home/runner/work/woocommerce-blocks/woocommerce-blocks/assets/js/types/type-defs/contexts&quot;&apos; has no exported member &apos;PaymentStatusDispatch&apos;." source="TS2694" />
 <error line="89" column="19" severity="error" message="Parameter &apos;token&apos; implicitly has an &apos;any&apos; type." source="TS7006" />
@@ -2438,6 +2486,15 @@
 </file>
 <file name="assets/js/blocks/cart-checkout-shared/payment-methods/payment-methods.js">
 <error line="50" column="7" severity="error" message="Type &apos;string[]&apos; is not assignable to type &apos;string&apos;." source="TS2322" />
+</file>
+<file name="assets/js/blocks/cart-checkout-shared/payment-methods/express-payment-methods.js">
+<error line="15" column="34" severity="error" message="Cannot find module &apos;@woocommerce/base-context&apos; or its corresponding type declarations." source="TS2307" />
+</file>
+<file name="assets/js/blocks/cart-checkout-shared/payment-methods/express-payment/cart-express-payment.js">
+<error line="9" column="8" severity="error" message="Cannot find module &apos;@woocommerce/base-context&apos; or its corresponding type declarations." source="TS2307" />
+</file>
+<file name="assets/js/blocks/cart-checkout-shared/payment-methods/express-payment/checkout-express-payment.js">
+<error line="9" column="8" severity="error" message="Cannot find module &apos;@woocommerce/base-context&apos; or its corresponding type declarations." source="TS2307" />
 </file>
 <file name="assets/js/blocks/cart/inner-blocks/cart-express-payment-block/edit.tsx">
 <error line="6" column="37" severity="error" message="Could not find a declaration file for module &apos;wordpress-components&apos;. &apos;/home/runner/work/woocommerce-blocks/woocommerce-blocks/node_modules/wordpress-components/build/index.js&apos; implicitly has an &apos;any&apos; type.
@@ -2478,6 +2535,9 @@
   Overload 2 of 2, &apos;(name: string, settings: BlockConfiguration&lt;{ checkoutPageId: number; className: string; }&gt;): Block&lt;{ checkoutPageId: number; className: string; }&gt; | undefined&apos;, gave the following error.
     Property &apos;className&apos; is missing in type &apos;{ checkoutPageId: { type: string; default: number; }; lock: { type: string; default: { move: boolean; remove: boolean; }; }; }&apos; but required in type &apos;{ readonly checkoutPageId: BlockAttribute&lt;number&gt;; readonly className: BlockAttribute&lt;string&gt;; }&apos;." source="TS2769" />
 </file>
+<file name="assets/js/blocks/cart/inner-blocks/empty-cart-block/edit.tsx">
+<error line="8" column="34" severity="error" message="Cannot find module &apos;@woocommerce/base-context&apos; or its corresponding type declarations." source="TS2307" />
+</file>
 <file name="assets/js/blocks/cart/inner-blocks/empty-cart-block/index.tsx">
 <error line="13" column="1" severity="error" message="No overload matches this call.
   Overload 1 of 2, &apos;(metadata: BlockConfiguration&lt;{}&gt;, settings?: Partial&lt;BlockConfiguration&lt;{}&gt;&gt; | undefined): Block&lt;{}&gt; | undefined&apos;, gave the following error.
@@ -2488,8 +2548,7 @@
       Type &apos;{ icon: { src: Element; }; edit: ({ clientId }: { clientId: string; }) =&gt; Element; save: () =&gt; Element; }&apos; is missing the following properties from type &apos;Pick&lt;Block&lt;{}&gt;, &quot;title&quot; | &quot;category&quot; | &quot;attributes&quot;&gt;&apos;: title, category, attributes" source="TS2769" />
 </file>
 <file name="assets/js/blocks/cart/inner-blocks/cart-accepted-payment-methods-block/block.tsx">
-<error line="14" column="40" severity="error" message="Argument of type &apos;EmptyObjectType | Record&lt;string, PaymentMethodConfigInstance&gt; | Record&lt;string, ExpressPaymentMethodConfigInstance&gt;&apos; is not assignable to parameter of type &apos;PaymentMethods&apos;.
-  Type &apos;Record&lt;string, ExpressPaymentMethodConfigInstance&gt;&apos; is not assignable to type &apos;PaymentMethods&apos;." source="TS2345" />
+<error line="6" column="44" severity="error" message="Cannot find module &apos;@woocommerce/base-utils&apos; or its corresponding type declarations." source="TS2307" />
 </file>
 <file name="assets/js/blocks/cart/inner-blocks/cart-accepted-payment-methods-block/index.tsx">
 <error line="12" column="1" severity="error" message="No overload matches this call.
@@ -2571,6 +2630,7 @@
       Type &apos;{ icon: { src: Element; }; edit: ({ attributes, setAttributes, }: { attributes: { content: string; className: string; }; setAttributes: (attributes: Record&lt;string, unknown&gt;) =&gt; void; }) =&gt; Element; save: () =&gt; Element; }&apos; is missing the following properties from type &apos;Pick&lt;Block&lt;{ content: string; className: string; }&gt;, &quot;title&quot; | &quot;category&quot; | &quot;attributes&quot;&gt;&apos;: title, category, attributes" source="TS2769" />
 </file>
 <file name="assets/js/blocks/cart/edit.js">
+<error line="14" column="46" severity="error" message="Cannot find module &apos;@woocommerce/base-context&apos; or its corresponding type declarations." source="TS2307" />
 <error line="56" column="25" severity="error" message="Binding element &apos;className&apos; implicitly has an &apos;any&apos; type." source="TS7031" />
 <error line="56" column="36" severity="error" message="Binding element &apos;attributes&apos; implicitly has an &apos;any&apos; type." source="TS7031" />
 <error line="56" column="48" severity="error" message="Binding element &apos;setAttributes&apos; implicitly has an &apos;any&apos; type." source="TS7031" />
@@ -2579,6 +2639,9 @@
   Type &apos;{}[]&apos; is not assignable to type &apos;Template&apos;.
     Target requires 1 element(s) but source may have fewer." source="TS2322" />
 <error line="113" column="9" severity="error" message="Type &apos;{}[][]&apos; is not assignable to type &apos;readonly Template[]&apos;." source="TS2322" />
+</file>
+<file name="assets/js/blocks/cart/inner-blocks/empty-cart-block/frontend.tsx">
+<error line="6" column="31" severity="error" message="Cannot find module &apos;@woocommerce/base-utils&apos; or its corresponding type declarations." source="TS2307" />
 </file>
 <file name="assets/js/blocks/cart/inner-blocks/cart-items-block/frontend.tsx">
 <error line="15" column="4" severity="error" message="Type &apos;{ children: Element; className: string; }&apos; is not assignable to type &apos;IntrinsicAttributes &amp; RefAttributes&lt;any&gt;&apos;.
@@ -2690,6 +2753,8 @@
           Property &apos;className&apos; is missing in type &apos;{ children?: ReactNode; }&apos; but required in type &apos;{ className: string; }&apos;." source="TS2322" />
 </file>
 <file name="assets/js/blocks/cart/frontend.js">
+<error line="4" column="41" severity="error" message="Cannot find module &apos;@woocommerce/base-utils&apos; or its corresponding type declarations." source="TS2307" />
+<error line="6" column="30" severity="error" message="Cannot find module &apos;@woocommerce/base-context&apos; or its corresponding type declarations." source="TS2307" />
 <error line="18" column="20" severity="error" message="Parameter &apos;el&apos; implicitly has an &apos;any&apos; type." source="TS7006" />
 <error line="27" column="21" severity="error" message="Binding element &apos;children&apos; implicitly has an &apos;any&apos; type." source="TS7031" />
 </file>
@@ -2783,7 +2848,7 @@
 <error line="15" column="68" severity="error" message="Expected 0 arguments, but got 1." source="TS2554" />
 </file>
 <file name="assets/js/blocks/checkout/block.tsx">
-<error line="12" column="39" severity="error" message="Cannot find module &apos;@woocommerce/base-context/providers&apos; or its corresponding type declarations." source="TS2307" />
+<error line="11" column="8" severity="error" message="Cannot find module &apos;@woocommerce/base-context&apos; or its corresponding type declarations." source="TS2307" />
 <error line="95" column="4" severity="error" message="Type &apos;{ allowCreateAccount: boolean; showCompanyField: boolean; requireCompanyField: boolean; showApartmentField: boolean; showPhoneField: boolean; requirePhoneField: boolean; }&apos; is missing the following properties from type &apos;CheckoutBlockContextProps&apos;: showOrderNotes, showPolicyLinks, showReturnToCart, cartPageId, showRateAfterTaxName" source="TS2739" />
 <error line="184" column="4" severity="error" message="No overload matches this call.
   Overload 1 of 2, &apos;(props: BlockErrorBoundaryProps | Readonly&lt;BlockErrorBoundaryProps&gt;): BlockErrorBoundary&apos;, gave the following error.
@@ -2820,6 +2885,9 @@
 <error line="24" column="4" severity="error" message="Type &apos;{ id: string; type: string; autoComplete: string; required: boolean; label: string; value: string; onChange: (value: string) =&gt; void; }&apos; is not assignable to type &apos;IntrinsicAttributes &amp; Omit&lt;ValidatedTextInputProps, &quot;instanceId&quot;&gt; &amp; { children?: ReactNode; }&apos;.
   Property &apos;type&apos; does not exist on type &apos;IntrinsicAttributes &amp; Omit&lt;ValidatedTextInputProps, &quot;instanceId&quot;&gt; &amp; { children?: ReactNode; }&apos;." source="TS2322" />
 </file>
+<file name="assets/js/blocks/checkout/inner-blocks/checkout-shipping-address-block/block.tsx">
+<error line="11" column="8" severity="error" message="Cannot find module &apos;@woocommerce/base-context&apos; or its corresponding type declarations." source="TS2307" />
+</file>
 <file name="assets/js/blocks/checkout/inner-blocks/checkout-shipping-address-block/index.tsx">
 <error line="13" column="1" severity="error" message="No overload matches this call.
   Overload 1 of 2, &apos;(metadata: BlockConfiguration&lt;{ title: string; description: string; showStepNumber: boolean; className: string; }&gt;, settings?: Partial&lt;BlockConfiguration&lt;{ title: string; description: string; showStepNumber: boolean; className: string; }&gt;&gt; | undefined): Block&lt;...&gt; | undefined&apos;, gave the following error.
@@ -2850,7 +2918,8 @@
       Type &apos;{ icon: { src: Element; }; edit: ({ attributes: { checkbox, text }, setAttributes, }: { attributes: { text: string; checkbox: boolean; }; setAttributes: (attributes: Record&lt;string, unknown&gt;) =&gt; void; }) =&gt; Element; save: () =&gt; Element; }&apos; is missing the following properties from type &apos;Pick&lt;Block&lt;{ text: string; checkbox: boolean; }&gt;, &quot;title&quot; | &quot;category&quot; | &quot;attributes&quot;&gt;&apos;: title, category, attributes" source="TS2769" />
 </file>
 <file name="assets/js/blocks/checkout/inner-blocks/checkout-contact-information-block/block.tsx">
-<error line="56" column="5" severity="error" message="Type &apos;{ id: string; type: string; label: string; value: string; autoComplete: string; onChange: (value: string) =&gt; void; required: boolean; }&apos; is not assignable to type &apos;IntrinsicAttributes &amp; Omit&lt;ValidatedTextInputProps, &quot;instanceId&quot;&gt; &amp; { children?: ReactNode; }&apos;.
+<error line="6" column="52" severity="error" message="Cannot find module &apos;@woocommerce/base-context&apos; or its corresponding type declarations." source="TS2307" />
+<error line="56" column="5" severity="error" message="Type &apos;{ id: string; type: string; label: string; value: any; autoComplete: string; onChange: (value: string) =&gt; void; required: boolean; }&apos; is not assignable to type &apos;IntrinsicAttributes &amp; Omit&lt;ValidatedTextInputProps, &quot;instanceId&quot;&gt; &amp; { children?: ReactNode; }&apos;.
   Property &apos;type&apos; does not exist on type &apos;IntrinsicAttributes &amp; Omit&lt;ValidatedTextInputProps, &quot;instanceId&quot;&gt; &amp; { children?: ReactNode; }&apos;." source="TS2322" />
 </file>
 <file name="assets/js/blocks/checkout/inner-blocks/checkout-contact-information-block/index.tsx">
@@ -2860,6 +2929,9 @@
       Type &apos;string&apos; is not assignable to type &apos;Pick&lt;Block&lt;{ title: string; description: string; showStepNumber: boolean; className: string; }&gt;, &quot;title&quot; | &quot;category&quot; | &quot;attributes&quot;&gt;&apos;.
   Overload 2 of 2, &apos;(name: string, settings: BlockConfiguration&lt;{ title: string; description: string; showStepNumber: boolean; className: string; }&gt;): Block&lt;{ title: string; description: string; showStepNumber: boolean; className: string; }&gt; | undefined&apos;, gave the following error.
     Type &apos;{ className: { type: string; default: string; }; lock: { type: string; default: { remove: boolean; move: boolean; }; }; }&apos; is missing the following properties from type &apos;{ readonly title: BlockAttribute&lt;string&gt;; readonly description: BlockAttribute&lt;string&gt;; readonly showStepNumber: BlockAttribute&lt;boolean&gt;; readonly className: BlockAttribute&lt;...&gt;; }&apos;: title, description, showStepNumber" source="TS2769" />
+</file>
+<file name="assets/js/blocks/checkout/inner-blocks/checkout-billing-address-block/block.tsx">
+<error line="9" column="8" severity="error" message="Cannot find module &apos;@woocommerce/base-context&apos; or its corresponding type declarations." source="TS2307" />
 </file>
 <file name="assets/js/blocks/checkout/inner-blocks/checkout-billing-address-block/index.tsx">
 <error line="13" column="1" severity="error" message="No overload matches this call.
@@ -2932,6 +3004,8 @@
   If the &apos;@wordpress/components&apos; package actually exposes this module, consider sending a pull request to amend &apos;https://github.com/DefinitelyTyped/DefinitelyTyped/tree/master/types/wordpress__components&apos;" source="TS7016" />
 </file>
 <file name="assets/js/blocks/checkout/inner-blocks/checkout-shipping-methods-block/block.tsx">
+<error line="7" column="46" severity="error" message="Cannot find module &apos;@woocommerce/base-utils&apos; or its corresponding type declarations." source="TS2307" />
+<error line="10" column="34" severity="error" message="Cannot find module &apos;@woocommerce/base-context&apos; or its corresponding type declarations." source="TS2307" />
 <error line="12" column="24" severity="error" message="Could not find a declaration file for module &apos;wordpress-components&apos;. &apos;/home/runner/work/woocommerce-blocks/woocommerce-blocks/node_modules/wordpress-components/build/index.js&apos; implicitly has an &apos;any&apos; type.
   If the &apos;@wordpress/components&apos; package actually exposes this module, consider sending a pull request to amend &apos;https://github.com/DefinitelyTyped/DefinitelyTyped/tree/master/types/wordpress__components&apos;" source="TS7016" />
 </file>
@@ -3004,6 +3078,9 @@
   Overload 2 of 2, &apos;(name: string, settings: BlockConfiguration&lt;{ className: string; }&gt;): Block&lt;{ className: string; }&gt; | undefined&apos;, gave the following error.
     Argument of type &apos;{ icon: { src: JSX.Element; }; edit: ({ attributes, }: { attributes: { className: string; }; setAttributes: (attributes: Record&lt;string, unknown&gt;) =&gt; void; }) =&gt; JSX.Element; save: () =&gt; JSX.Element; }&apos; is not assignable to parameter of type &apos;BlockConfiguration&lt;{ className: string; }&gt;&apos;.
       Type &apos;{ icon: { src: Element; }; edit: ({ attributes, }: { attributes: { className: string; }; setAttributes: (attributes: Record&lt;string, unknown&gt;) =&gt; void; }) =&gt; Element; save: () =&gt; Element; }&apos; is missing the following properties from type &apos;Pick&lt;Block&lt;{ className: string; }&gt;, &quot;title&quot; | &quot;category&quot; | &quot;attributes&quot;&gt;&apos;: title, category, attributes" source="TS2769" />
+</file>
+<file name="assets/js/blocks/checkout/edit.tsx">
+<error line="12" column="50" severity="error" message="Cannot find module &apos;@woocommerce/base-context&apos; or its corresponding type declarations." source="TS2307" />
 </file>
 <file name="assets/js/blocks/checkout/inner-blocks/checkout-fields-block/frontend.tsx">
 <error line="20" column="4" severity="error" message="Type &apos;{ children: Element; className: string; }&apos; is not assignable to type &apos;IntrinsicAttributes &amp; RefAttributes&lt;any&gt;&apos;.
@@ -3100,6 +3177,8 @@
           Type &apos;{ children?: ReactNode; }&apos; has no properties in common with type &apos;{ className?: string; }&apos;." source="TS2322" />
 </file>
 <file name="assets/js/blocks/checkout/frontend.tsx">
+<error line="5" column="41" severity="error" message="Cannot find module &apos;@woocommerce/base-utils&apos; or its corresponding type declarations." source="TS2307" />
+<error line="6" column="30" severity="error" message="Cannot find module &apos;@woocommerce/base-context&apos; or its corresponding type declarations." source="TS2307" />
 <error line="65" column="2" severity="error" message="Type &apos;({ children, }: { children: React.ReactChildren; }) =&gt; React.ReactNode&apos; is not assignable to type &apos;ElementType&lt;any&gt;&apos;.
   Type &apos;({ children, }: { children: React.ReactChildren; }) =&gt; React.ReactNode&apos; is not assignable to type &apos;FunctionComponent&lt;any&gt;&apos;.
     Type &apos;ReactNode&apos; is not assignable to type &apos;ReactElement&lt;any, any&gt; | null&apos;.
@@ -3310,7 +3389,8 @@
     Argument of type &apos;{ name: string; title: string; category: string; keywords: string[]; description: string; supports: { align: string[]; html: boolean; }; attributes: { align: { type: string; }; columns: { type: string; default: number; }; ... 4 more ...; isPreview: { ...; }; }; textdomain: string; apiVersion: number; $schema: string...&apos; is not assignable to parameter of type &apos;string&apos;." source="TS2769" />
 </file>
 <file name="assets/js/blocks/mini-cart/mini-cart-contents/inner-blocks/mini-cart-footer-block/block.tsx">
-<error line="23" column="40" severity="error" message="Argument of type &apos;EmptyObjectType | Record&lt;string, PaymentMethodConfigInstance&gt; | Record&lt;string, ExpressPaymentMethodConfigInstance&gt;&apos; is not assignable to parameter of type &apos;PaymentMethods&apos;." source="TS2345" />
+<error line="12" column="44" severity="error" message="Cannot find module &apos;@woocommerce/base-utils&apos; or its corresponding type declarations." source="TS2307" />
+<error line="16" column="39" severity="error" message="Cannot find module &apos;@woocommerce/base-context&apos; or its corresponding type declarations." source="TS2307" />
 <error line="56" column="7" severity="error" message="Type &apos;{ children: string; className: string; href: never; variant: &quot;outlined&quot;; }&apos; is not assignable to type &apos;IntrinsicAttributes &amp; ButtonProps&apos;.
   Property &apos;href&apos; does not exist on type &apos;IntrinsicAttributes &amp; ButtonProps&apos;." source="TS2322" />
 <error line="65" column="7" severity="error" message="Type &apos;{ children: string; className: string; href: never; }&apos; is not assignable to type &apos;IntrinsicAttributes &amp; ButtonProps&apos;.
@@ -3361,6 +3441,7 @@
           Property &apos;className&apos; is missing in type &apos;{ children?: ReactNode; }&apos; but required in type &apos;MiniCartShoppingButtonBlockProps&apos;." source="TS2322" />
 </file>
 <file name="assets/js/blocks/mini-cart/block.tsx">
+<error line="7" column="46" severity="error" message="Cannot find module &apos;@woocommerce/base-utils&apos; or its corresponding type declarations." source="TS2307" />
 <error line="106" column="6" severity="error" message="Type &apos;({ children, }: MiniCartContentsBlockProps) =&gt; JSX.Element&apos; is not assignable to type &apos;FunctionComponent&lt;{}&gt;&apos;.
   Types of parameters &apos;__0&apos; and &apos;props&apos; are incompatible.
     Type &apos;{ children?: ReactNode; }&apos; is not assignable to type &apos;MiniCartContentsBlockProps&apos;.
@@ -3368,14 +3449,8 @@
         Type &apos;ReactNode&apos; is not assignable to type &apos;Element | Element[]&apos;." source="TS2322" />
 </file>
 <file name="assets/js/blocks/mini-cart/component-frontend.tsx">
-<error line="30" column="3" severity="error" message="Type &apos;(attributes: Props) =&gt; JSX.Element&apos; is not assignable to type &apos;BlockType&lt;Record&lt;string, unknown&gt;, Record&lt;string, unknown&gt;&gt;&apos;.
-  Types of parameters &apos;attributes&apos; and &apos;props&apos; are incompatible.
-    Type &apos;BlockProps&lt;Record&lt;string, unknown&gt;, Record&lt;string, unknown&gt;&gt;&apos; is missing the following properties from type &apos;Props&apos;: contents, addToCartBehaviour, hasHiddenPrice" source="TS2322" />
-</file>
-<file name="assets/js/blocks/mini-cart/frontend.ts">
-<error line="5" column="27" severity="error" message="Cannot find module &apos;@woocommerce/base-utils/preload-script&apos; or its corresponding type declarations." source="TS2307" />
-<error line="6" column="28" severity="error" message="Cannot find module &apos;@woocommerce/base-utils/lazy-load-script&apos; or its corresponding type declarations." source="TS2307" />
-<error line="7" column="46" severity="error" message="Cannot find module &apos;@woocommerce/base-utils/legacy-events&apos; or its corresponding type declarations." source="TS2307" />
+<error line="4" column="32" severity="error" message="Cannot find module &apos;@woocommerce/base-utils&apos; or its corresponding type declarations." source="TS2307" />
+<error line="31" column="15" severity="error" message="Parameter &apos;el&apos; implicitly has an &apos;any&apos; type." source="TS7006" />
 </file>
 <file name="assets/js/blocks/mini-cart/index.tsx">
 <error line="36" column="3" severity="error" message="Type &apos;true&apos; has no properties in common with type &apos;Partial&lt;ColorProps&gt;&apos;." source="TS2559" />
@@ -3387,9 +3462,13 @@
           Type &apos;Readonly&lt;{}&gt;&apos; is missing the following properties from type &apos;Attributes&apos;: addToCartBehaviour, hasHiddenPrice" source="TS2322" />
 </file>
 <file name="assets/js/blocks/mini-cart/mini-cart-contents/edit.tsx">
+<error line="14" column="32" severity="error" message="Cannot find module &apos;@woocommerce/base-context&apos; or its corresponding type declarations." source="TS2307" />
 <error line="104" column="11" severity="error" message="Property &apos;selectorText&apos; does not exist on type &apos;CSSRule&apos;." source="TS2339" />
 <error line="105" column="11" severity="error" message="Property &apos;style&apos; does not exist on type &apos;CSSRule&apos;." source="TS2339" />
 <error line="110" column="35" severity="error" message="Property &apos;style&apos; does not exist on type &apos;CSSRule&apos;." source="TS2339" />
+</file>
+<file name="assets/js/blocks/mini-cart/mini-cart-contents/inner-blocks/empty-mini-cart-contents-block/edit.tsx">
+<error line="5" column="34" severity="error" message="Cannot find module &apos;@woocommerce/base-context&apos; or its corresponding type declarations." source="TS2307" />
 </file>
 <file name="assets/js/blocks/mini-cart/mini-cart-contents/inner-blocks/empty-mini-cart-contents-block/index.tsx">
 <error line="14" column="20" severity="error" message="No overload matches this call.
@@ -3401,6 +3480,9 @@
             Type &apos;{ type: string; default: { remove: boolean; move: boolean; }; }&apos; is missing the following properties from type &apos;Query&lt;unknown&gt;&apos;: source, selector, query
   Overload 2 of 2, &apos;(name: string, settings: BlockConfiguration&lt;{}&gt;): Block&lt;{}&gt; | undefined&apos;, gave the following error.
     Argument of type &apos;{ name: string; version: string; title: string; description: string; category: string; supports: { align: boolean; html: boolean; multiple: boolean; reusable: boolean; inserter: boolean; lock: boolean; }; attributes: { ...; }; parent: string[]; textdomain: string; apiVersion: number; }&apos; is not assignable to parameter of type &apos;string&apos;." source="TS2769" />
+</file>
+<file name="assets/js/blocks/mini-cart/mini-cart-contents/inner-blocks/filled-mini-cart-contents-block/edit.tsx">
+<error line="7" column="50" severity="error" message="Cannot find module &apos;@woocommerce/base-context&apos; or its corresponding type declarations." source="TS2307" />
 </file>
 <file name="assets/js/blocks/mini-cart/mini-cart-contents/inner-blocks/filled-mini-cart-contents-block/index.tsx">
 <error line="14" column="20" severity="error" message="No overload matches this call.
@@ -3486,6 +3568,9 @@
 <file name="assets/js/blocks/price-filter/edit.tsx">
 <error line="18" column="2" severity="error" message="Module &apos;&quot;@wordpress/components&quot;&apos; has no exported member &apos;__experimentalToggleGroupControl&apos;." source="TS2305" />
 <error line="20" column="2" severity="error" message="Module &apos;&quot;@wordpress/components&quot;&apos; has no exported member &apos;__experimentalToggleGroupControlOption&apos;." source="TS2305" />
+</file>
+<file name="assets/js/blocks/price-filter/frontend.ts">
+<error line="4" column="32" severity="error" message="Cannot find module &apos;@woocommerce/base-utils&apos; or its corresponding type declarations." source="TS2307" />
 </file>
 <file name="assets/js/blocks/price-filter/index.tsx">
 <error line="16" column="20" severity="error" message="No overload matches this call.
@@ -3731,6 +3816,7 @@
 <error line="6" column="52" severity="error" message="Parameter &apos;attributes&apos; implicitly has an &apos;any&apos; type." source="TS7006" />
 </file>
 <file name="assets/js/blocks/products/all-products/block.js">
+<error line="9" column="39" severity="error" message="Cannot find module &apos;@woocommerce/base-context&apos; or its corresponding type declarations." source="TS2307" />
 <error line="43" column="6" severity="error" message="Type &apos;{ attributes: any; urlParameterSuffix: any; }&apos; is not assignable to type &apos;IntrinsicAttributes &amp; Pick&lt;ProductListContainerProps, &quot;attributes&quot;&gt; &amp; Pick&lt;InferProps&lt;{ attributes: Validator&lt;object&gt;; hideOutOfStockItems: Requireable&lt;...&gt;; }&gt;, &quot;hideOutOfStockItems&quot;&gt; &amp; Pick&lt;...&gt;&apos;.
   Property &apos;urlParameterSuffix&apos; does not exist on type &apos;IntrinsicAttributes &amp; Pick&lt;ProductListContainerProps, &quot;attributes&quot;&gt; &amp; Pick&lt;InferProps&lt;{ attributes: Validator&lt;object&gt;; hideOutOfStockItems: Requireable&lt;...&gt;; }&gt;, &quot;hideOutOfStockItems&quot;&gt; &amp; Pick&lt;...&gt;&apos;." source="TS2322" />
 </file>
@@ -3749,6 +3835,7 @@
     Type &apos;boolean&apos; is not assignable to type &apos;EditorTemplateLock | undefined&apos;." source="TS2322" />
 </file>
 <file name="assets/js/blocks/products/all-products/frontend.js">
+<error line="4" column="32" severity="error" message="Cannot find module &apos;@woocommerce/base-utils&apos; or its corresponding type declarations." source="TS2307" />
 <error line="20" column="20" severity="error" message="Parameter &apos;el&apos; implicitly has an &apos;any&apos; type." source="TS7006" />
 </file>
 <file name="assets/js/blocks/products/all-products/save.js">
@@ -3818,6 +3905,9 @@
   Overload 2 of 2, &apos;(name: string, settings: BlockConfiguration&lt;{ columns: unknown; rows: unknown; stockStatus: unknown; attributes: unknown; attrOperator: unknown; contentVisibility: unknown; orderby: unknown; alignButtons: unknown; isPreview: unknown; }&gt;): Block&lt;...&gt; | undefined&apos;, gave the following error.
     Argument of type &apos;{ name: string; title: string; category: string; keywords: string[]; description: string; supports: { align: string[]; html: boolean; }; attributes: { attributes: { type: string; default: never[]; }; attrOperator: { ...; }; ... 6 more ...; stockStatus: { ...; }; }; textdomain: string; apiVersion: number; $schema: st...&apos; is not assignable to parameter of type &apos;string&apos;." source="TS2769" />
 </file>
+<file name="assets/js/blocks/rating-filter/frontend.ts">
+<error line="4" column="32" severity="error" message="Cannot find module &apos;@woocommerce/base-utils&apos; or its corresponding type declarations." source="TS2307" />
+</file>
 <file name="assets/js/blocks/rating-filter/index.tsx">
 <error line="16" column="20" severity="error" message="No overload matches this call.
   Overload 1 of 2, &apos;(metadata: BlockConfiguration&lt;Attributes&gt;, settings?: Partial&lt;BlockConfiguration&lt;Attributes&gt;&gt; | undefined): Block&lt;...&gt; | undefined&apos;, gave the following error.
@@ -3862,6 +3952,7 @@
 <error line="51" column="23" severity="error" message="Binding element &apos;newReviews&apos; implicitly has an &apos;any&apos; type." source="TS7031" />
 </file>
 <file name="assets/js/blocks/reviews/frontend.js">
+<error line="4" column="32" severity="error" message="Cannot find module &apos;@woocommerce/base-utils&apos; or its corresponding type declarations." source="TS2307" />
 <error line="17" column="20" severity="error" message="Parameter &apos;el&apos; implicitly has an &apos;any&apos; type." source="TS7006" />
 </file>
 <file name="assets/js/blocks/reviews/save.js">
@@ -3936,9 +4027,11 @@
 <error line="68" column="11" severity="error" message="Type &apos;{ constructor: Function; toString(): string; toLocaleString(): string; valueOf(): Object; hasOwnProperty(v: PropertyKey): boolean; isPrototypeOf(v: Object): boolean; propertyIsEnumerable(v: PropertyKey): boolean; }&apos; is missing the following properties from type &apos;Omit&lt;{ attributes: Object; debouncedSpeak: (arg0: any) =&gt; any; setAttributes: (arg0: any) =&gt; any; }, &quot;speak&quot; | &quot;debouncedSpeak&quot;&gt;&apos;: attributes, setAttributes" source="TS2739" />
 </file>
 <file name="assets/js/blocks/single-product/block.js">
+<error line="10" column="39" severity="error" message="Cannot find module &apos;@woocommerce/base-context&apos; or its corresponding type declarations." source="TS2307" />
 <error line="31" column="64" severity="error" message="Property &apos;id&apos; does not exist on type &apos;Object&apos;." source="TS2339" />
 </file>
 <file name="assets/js/blocks/single-product/frontend.js">
+<error line="4" column="41" severity="error" message="Cannot find module &apos;@woocommerce/base-utils&apos; or its corresponding type declarations." source="TS2307" />
 <error line="18" column="20" severity="error" message="Parameter &apos;el&apos; implicitly has an &apos;any&apos; type." source="TS7006" />
 <error line="25" column="2" severity="error" message="Type &apos;ComponentType&lt;{ isLoading: boolean; product: Object; children: ReactChildren; }&gt;&apos; is not assignable to type &apos;FunctionComponent&lt;{}&gt;&apos;.
   Type &apos;ComponentClass&lt;{ isLoading: boolean; product: Object; children: ReactChildren; }, any&gt;&apos; is not assignable to type &apos;FunctionComponent&lt;{}&gt;&apos;.
@@ -3973,6 +4066,9 @@
 </file>
 <file name="assets/js/blocks/single-product/save.js">
 <error line="7" column="18" severity="error" message="Binding element &apos;attributes&apos; implicitly has an &apos;any&apos; type." source="TS7031" />
+</file>
+<file name="assets/js/blocks/stock-filter/frontend.ts">
+<error line="4" column="32" severity="error" message="Cannot find module &apos;@woocommerce/base-utils&apos; or its corresponding type declarations." source="TS2307" />
 </file>
 <file name="assets/js/blocks/stock-filter/index.tsx">
 <error line="17" column="20" severity="error" message="No overload matches this call.
