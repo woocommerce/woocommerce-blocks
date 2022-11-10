@@ -143,4 +143,21 @@ describe( 'Product Image Block', () => {
 			expect( anchor ).toBe( null );
 		} );
 	} );
+
+	describe( 'without image', () => {
+		test( 'should render the placeholder with no inline width or height attributes', () => {
+			const component = render(
+				<ProductDataContextProvider product={ productWithoutImages }>
+					<Block showProductLink={ true } />
+				</ProductDataContextProvider>
+			);
+
+			const placeholderImage = component.getByAltText( '' );
+			expect( placeholderImage.getAttribute( 'src' ) ).toBe(
+				'placeholder.jpg'
+			);
+			expect( placeholderImage.getAttribute( 'width' ) ).toBe( null );
+			expect( placeholderImage.getAttribute( 'height' ) ).toBe( null );
+		} );
+	} );
 } );
