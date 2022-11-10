@@ -1457,16 +1457,6 @@
 <error line="252" column="56" severity="error" message="Argument of type &apos;null&apos; is not assignable to parameter of type &apos;Object&apos;." source="TS2345" />
 <error line="475" column="34" severity="error" message="Argument of type &apos;null&apos; is not assignable to parameter of type &apos;Object | undefined&apos;." source="TS2345" />
 </file>
-<file name="assets/js/atomic/blocks/product-elements/image/test/block.test.js">
-<error line="65" column="6" severity="error" message="Property &apos;isLoading&apos; is missing in type &apos;{ children: Element; product: { name: string; id: number; fallbackAlt: string; permalink: string; images: { id: number; src: string; thumbnail: string; srcset: string; sizes: string; name: string; alt: string; }[]; }; }&apos; but required in type &apos;{ product: any; children: Object; isLoading: boolean; }&apos;." source="TS2741" />
-<error line="82" column="12" severity="error" message="Object is possibly &apos;null&apos;." source="TS2531" />
-<error line="89" column="6" severity="error" message="Property &apos;isLoading&apos; is missing in type &apos;{ children: Element; product: { name: string; id: number; fallbackAlt: string; permalink: string; images: never[]; }; }&apos; but required in type &apos;{ product: any; children: Object; isLoading: boolean; }&apos;." source="TS2741" />
-<error line="100" column="12" severity="error" message="Object is possibly &apos;null&apos;." source="TS2531" />
-<error line="103" column="12" severity="error" message="Object is possibly &apos;null&apos;." source="TS2531" />
-<error line="112" column="6" severity="error" message="Property &apos;isLoading&apos; is missing in type &apos;{ children: Element; product: { name: string; id: number; fallbackAlt: string; permalink: string; images: { id: number; src: string; thumbnail: string; srcset: string; sizes: string; name: string; alt: string; }[]; }; }&apos; but required in type &apos;{ product: any; children: Object; isLoading: boolean; }&apos;." source="TS2741" />
-<error line="132" column="6" severity="error" message="Property &apos;isLoading&apos; is missing in type &apos;{ children: Element; product: { name: string; id: number; fallbackAlt: string; permalink: string; images: never[]; }; }&apos; but required in type &apos;{ product: any; children: Object; isLoading: boolean; }&apos;." source="TS2741" />
-<error line="150" column="6" severity="error" message="Property &apos;isLoading&apos; is missing in type &apos;{ children: Element; product: { name: string; id: number; fallbackAlt: string; permalink: string; images: never[]; }; }&apos; but required in type &apos;{ product: any; children: Object; isLoading: boolean; }&apos;." source="TS2741" />
-</file>
 <file name="assets/js/atomic/blocks/product-elements/title/test/block.test.js">
 <error line="22" column="6" severity="error" message="Property &apos;isLoading&apos; is missing in type &apos;{ children: Element; product: { id: number; name: string; permalink: string; }; }&apos; but required in type &apos;{ product: any; children: Object; isLoading: boolean; }&apos;." source="TS2741" />
 <error line="23" column="7" severity="error" message="Type &apos;{ showProductLink: false; }&apos; is missing the following properties from type &apos;Attributes&apos;: headingLevel, align" source="TS2739" />
