@@ -9,7 +9,10 @@ import { CHECKOUT_URL } from '@woocommerce/block-settings';
 import { usePositionRelativeToViewport } from '@woocommerce/base-hooks';
 import { getSetting } from '@woocommerce/settings';
 import { useSelect } from '@wordpress/data';
-import { CHECKOUT_STORE_KEY } from '@woocommerce/block-data';
+import {
+	CHECKOUT_STORE_KEY,
+	VALIDATION_STORE_KEY,
+} from '@woocommerce/block-data';
 
 /**
  * Internal dependencies
@@ -56,16 +59,38 @@ const Block = ( {
 		};
 	}, [] );
 
+	const { hasValidationErrors } = useSelect( ( select ) => {
+		return {
+			hasValidationErrors:
+				select( VALIDATION_STORE_KEY ).hasValidationErrors(),
+		};
+	} );
+
 	const submitContainerContents = (
-		<Button
-			className="wc-block-cart__submit-button"
-			href={ link || CHECKOUT_URL }
-			disabled={ isCalculating }
-			onClick={ () => setShowSpinner( true ) }
-			showSpinner={ showSpinner }
-		>
-			{ __( 'Proceed to Checkout', 'woo-gutenberg-products-block' ) }
-		</Button>
+		<div>
+			<Button
+				className="wc-block-cart__submit-button"
+				href={ link || CHECKOUT_URL }
+				disabled={ isCalculating || hasValidationErrors }
+				onClick={ () => setShowSpinner( true ) }
+				showSpinner={ showSpinner }
+			>
+				{ __( 'Proceed to Checkout', 'woo-gutenberg-products-block' ) }
+			</Button>
+			{ hasValidationErrors && (
+				<div
+					className="wc-block-components-validation-error"
+					role="alert"
+				>
+					<p>
+						{ __(
+							'There is a problem with an item in your cart. Please correct any errors before proceeding.',
+							'woo-gutenberg-products-block'
+						) }
+					</p>
+				</div>
+			) }
+		</div>
 	);
 
 	return (
