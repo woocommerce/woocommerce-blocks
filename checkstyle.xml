@@ -2282,7 +2282,7 @@
   Type &apos;Record&lt;string, any&gt;&apos; is missing the following properties from type &apos;{ title: { raw: string; }; slug: string; }&apos;: title, slug" source="TS2345" />
 </file>
 <file name="assets/js/blocks/cart/inner-blocks/proceed-to-checkout-block/block.tsx">
-<error line="62" column="4" severity="error" message="Type &apos;{ children: string; className: string; href: unknown; disabled: boolean; onClick: () =&gt; void; showSpinner: boolean; }&apos; is not assignable to type &apos;IntrinsicAttributes &amp; ButtonProps&apos;.
+<error line="73" column="5" severity="error" message="Type &apos;{ children: string; className: string; href: unknown; disabled: boolean; onClick: () =&gt; void; showSpinner: boolean; }&apos; is not assignable to type &apos;IntrinsicAttributes &amp; ButtonProps&apos;.
   Property &apos;href&apos; does not exist on type &apos;IntrinsicAttributes &amp; ButtonProps&apos;." source="TS2322" />
 </file>
 <file name="assets/js/blocks/cart/inner-blocks/proceed-to-checkout-block/edit.tsx">
