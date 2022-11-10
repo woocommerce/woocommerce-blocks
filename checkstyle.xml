@@ -1172,9 +1172,6 @@
 <error line="4" column="23" severity="error" message="Could not find a declaration file for module &apos;@wordpress/wordcount&apos;. &apos;/home/runner/work/woocommerce-blocks/woocommerce-blocks/node_modules/@wordpress/wordcount/build/index.js&apos; implicitly has an &apos;any&apos; type.
   Try `npm i --save-dev @types/wordpress__wordcount` if it exists or add a new declaration (.d.ts) file containing `declare module &apos;@wordpress/wordcount&apos;;`" source="TS7016" />
 </file>
-<file name="assets/js/atomic/blocks/product-elements/sku/block.tsx">
-<error line="17" column="15" severity="error" message="Module &apos;&quot;./types&quot;&apos; has no exported member &apos;BlockAttributes&apos;." source="TS2305" />
-</file>
 <file name="assets/js/atomic/blocks/product-elements/stock-indicator/block.js">
 <error line="69" column="24" severity="error" message="Parameter &apos;lowStock&apos; implicitly has an &apos;any&apos; type." source="TS7006" />
 <error line="77" column="21" severity="error" message="Parameter &apos;inStock&apos; implicitly has an &apos;any&apos; type." source="TS7006" />
@@ -1429,8 +1426,8 @@
 <error line="18" column="40" severity="error" message="Property &apos;productId&apos; does not exist on type &apos;Object&apos;." source="TS2339" />
 </file>
 <file name="assets/js/atomic/blocks/product-elements/sku/index.ts">
-<error line="26" column="2" severity="error" message="Type &apos;{ apiVersion: number; title: string; description: string; icon: { src: JSX.Element; }; usesContext: string[]; ancestor: string[]; attributes: Record&lt;string, Record&lt;string, unknown&gt;&gt;; ... 19 more ...; merge?: ((attributes: {}, attributesToMerge: {}) =&gt; Partial&lt;...&gt;) | undefined; }&apos; is not assignable to type &apos;BlockConfiguration&lt;{}&gt;&apos; with &apos;exactOptionalPropertyTypes: true&apos;. Consider adding &apos;undefined&apos; to the types of the target&apos;s properties.
-  Object literal may only specify known properties, and &apos;ancestor&apos; does not exist in type &apos;BlockConfiguration&lt;{}&gt;&apos;." source="TS2375" />
+<error line="25" column="2" severity="error" message="Type &apos;{ apiVersion: number; title: string; description: string; icon: { src: JSX.Element; }; usesContext: string[]; ancestor: string[]; attributes: Record&lt;string, Record&lt;string, unknown&gt;&gt;; edit: (props: any) =&gt; JSX.Element; }&apos; is not assignable to type &apos;BlockConfiguration&lt;{}&gt;&apos;.
+  Object literal may only specify known properties, and &apos;ancestor&apos; does not exist in type &apos;BlockConfiguration&lt;{}&gt;&apos;." source="TS2322" />
 </file>
 <file name="assets/js/atomic/blocks/product-elements/category-list/index.ts">
 <error line="36" column="5" severity="error" message="Type &apos;{ color?: { text: true; link: true; background: false; __experimentalSkipSerialization: true; }; typography?: { fontSize: true; lineHeight: true; __experimentalFontStyle: true; __experimentalFontWeight: true; __experimentalSkipSerialization: true; }; __experimentalSelector?: string; }&apos; is not assignable to type &apos;BlockSupports&apos;.
