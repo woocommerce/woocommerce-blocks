@@ -55,13 +55,6 @@ const reducer: Reducer< PaymentMethodDataState > = (
 			};
 			break;
 
-		case ACTION_TYPES.SET_COMPLETE:
-			newState = {
-				...state,
-				status: STATUS.COMPLETE,
-			};
-			break;
-
 		case ACTION_TYPES.SET_SHOULD_SAVE_PAYMENT_METHOD:
 			newState = {
 				...state,
