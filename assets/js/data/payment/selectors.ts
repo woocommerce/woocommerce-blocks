@@ -10,21 +10,23 @@ import { PaymentMethodDataState } from './default-state';
 import { filterActiveSavedPaymentMethods } from './utils';
 import { STATUS as PAYMENT_STATUS } from './constants';
 
-export const isPaymentStarted = ( state: PaymentMethodDataState ) => {
-	return state.status === PAYMENT_STATUS.STARTED;
-};
+export const isPaymentPristine = ( state: PaymentMethodDataState ) =>
+	state.status === PAYMENT_STATUS.PRISTINE;
 
-export const isPaymentProcessing = ( state: PaymentMethodDataState ) => {
-	return state.status === PAYMENT_STATUS.PROCESSING;
-};
+export const isPaymentStarted = ( state: PaymentMethodDataState ) =>
+	state.status === PAYMENT_STATUS.STARTED;
 
-export const isPaymentError = ( state: PaymentMethodDataState ) => {
-	return state.status === PAYMENT_STATUS.ERROR;
-};
+export const isPaymentProcessing = ( state: PaymentMethodDataState ) =>
+	state.status === PAYMENT_STATUS.PROCESSING;
 
-export const isPaymentFailed = ( state: PaymentMethodDataState ) => {
-	return state.status === PAYMENT_STATUS.FAILED;
-};
+export const isPaymentSuccess = ( state: PaymentMethodDataState ) =>
+	state.status === PAYMENT_STATUS.SUCCESS;
+
+export const hasPaymentError = ( state: PaymentMethodDataState ) =>
+	state.status === PAYMENT_STATUS.ERROR;
+
+export const isPaymentFailed = ( state: PaymentMethodDataState ) =>
+	state.status === PAYMENT_STATUS.FAILED;
 
 export const isPaymentFinished = ( state: PaymentMethodDataState ) => {
 	return (
@@ -98,8 +100,21 @@ export const expressPaymentMethodsInitialized = (
 	return state.expressPaymentMethodsInitialized;
 };
 
+/**
+ * @deprecated - use these selectors instead: isPaymentPristine, isPaymentStarted, isPaymentProcessing,
+ * isPaymentFinished, hasPaymentError, isPaymentSuccess, isPaymentFailed
+ */
 export const getCurrentStatus = ( state: PaymentMethodDataState ) => {
-	return state.currentStatus;
+	return {
+		isPristine: isPaymentPristine( state ),
+		isStarted: isPaymentStarted( state ),
+		isProcessing: isPaymentProcessing( state ),
+		isFinished: isPaymentFinished( state ),
+		hasError: hasPaymentError( state ),
+		hasFailed: isPaymentFailed( state ),
+		isSuccessful: isPaymentSuccess( state ),
+		isDoingExpressPayment: isExpressPaymentMethodActive( state ),
+	};
 };
 
 export const getShouldSavePaymentMethod = ( state: PaymentMethodDataState ) => {
