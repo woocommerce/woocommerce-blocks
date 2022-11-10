@@ -17,7 +17,6 @@ import {
 } from './constants';
 
 const blockConfig: BlockConfiguration = {
-	...sharedConfig,
 	apiVersion: 2,
 	title,
 	description,
