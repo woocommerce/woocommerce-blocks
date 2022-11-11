@@ -16,15 +16,6 @@ import { STATUS as PAYMENT_STATUS } from './constants';
 
 export interface PaymentMethodDataState {
 	status: string;
-	currentStatus: {
-		isPristine: boolean;
-		isStarted: boolean;
-		isProcessing: boolean;
-		isFinished: boolean;
-		hasError: boolean;
-		hasFailed: boolean;
-		isSuccessful: boolean;
-	};
 	activePaymentMethod: string;
 	activeSavedToken: string;
 	// Avilable payment methods are payment methods which have been validated and can make payment
@@ -40,15 +31,6 @@ export interface PaymentMethodDataState {
 }
 export const defaultPaymentMethodDataState: PaymentMethodDataState = {
 	status: PAYMENT_STATUS.PRISTINE,
-	currentStatus: {
-		isPristine: true,
-		isStarted: false,
-		isProcessing: false,
-		isFinished: false,
-		hasError: false,
-		hasFailed: false,
-		isSuccessful: false,
-	},
 	activePaymentMethod: '',
 	activeSavedToken: '',
 	availablePaymentMethods: {},

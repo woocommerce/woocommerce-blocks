@@ -76,26 +76,6 @@ const reducer: Reducer< PaymentMethodDataState > = (
 			};
 			break;
 
-		case ACTION_TYPES.SET_PAYMENT_STATUS:
-			newState = {
-				...state,
-				currentStatus: {
-					// When the status is changed to pristine, we need to reset the currentStatus properties
-					// to their default initial values
-					...( action.status?.isPristine === true
-						? defaultPaymentMethodDataState.currentStatus
-						: state.currentStatus ),
-					...action.status,
-					isFinished:
-						action.status.hasError ||
-						action.status.hasFailed ||
-						action.status.isSuccessful,
-				},
-				paymentMethodData:
-					action.paymentMethodData || state.paymentMethodData,
-			};
-			break;
-
 		case ACTION_TYPES.REMOVE_AVAILABLE_PAYMENT_METHOD:
 			const previousAvailablePaymentMethods = {
 				...state.availablePaymentMethods,
