@@ -85,7 +85,8 @@ export const PaymentEventsProvider = ( {
 	}, [ observers ] );
 
 	const {
-		__internalSetPaymentStatus,
+		__internalSetPaymentProcessing,
+		__internalSetPaymentPristine,
 		__internalSetPaymentMethodData,
 		__internalEmitPaymentProcessingEvent,
 	} = useDispatch( PAYMENT_STORE_KEY );
@@ -99,29 +100,29 @@ export const PaymentEventsProvider = ( {
 			! checkoutIsCalculating &&
 			! isPaymentFinished
 		) {
-			__internalSetPaymentStatus( { isProcessing: true } );
+			__internalSetPaymentProcessing();
 		}
 	}, [
 		checkoutIsProcessing,
 		checkoutHasError,
 		checkoutIsCalculating,
 		isPaymentFinished,
-		__internalSetPaymentStatus,
+		__internalSetPaymentProcessing,
 	] );
 
 	// When checkout is returned to idle, set payment status to pristine but only if payment status is already not finished.
 	useEffect( () => {
 		if ( checkoutIsIdle && ! isPaymentSuccess ) {
-			__internalSetPaymentStatus( { isPristine: true } );
+			__internalSetPaymentPristine();
 		}
-	}, [ checkoutIsIdle, isPaymentSuccess, __internalSetPaymentStatus ] );
+	}, [ checkoutIsIdle, isPaymentSuccess, __internalSetPaymentPristine ] );
 
 	// if checkout has an error sync payment status back to pristine.
 	useEffect( () => {
 		if ( checkoutHasError && isPaymentSuccess ) {
-			__internalSetPaymentStatus( { isPristine: true } );
+			__internalSetPaymentPristine();
 		}
-	}, [ checkoutHasError, isPaymentSuccess, __internalSetPaymentStatus ] );
+	}, [ checkoutHasError, isPaymentSuccess, __internalSetPaymentPristine ] );
 
 	// Emit the payment processing event
 	useEffect( () => {
@@ -138,7 +139,6 @@ export const PaymentEventsProvider = ( {
 	}, [
 		isPaymentProcessing,
 		setValidationErrors,
-		__internalSetPaymentStatus,
 		removeNotice,
 		createErrorNotice,
 		setBillingAddress,
