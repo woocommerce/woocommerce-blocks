@@ -1,8 +1,7 @@
 /**
  * External dependencies
  */
-import React from 'react';
-import ReactDOM from 'react-dom';
+import { render } from '@wordpress/element';
 
 /**
  * Internal dependencies
@@ -13,5 +12,5 @@ const settingsContainer = document.getElementById(
 	'wc-shipping-method-pickup-location-settings-container'
 );
 if ( settingsContainer ) {
-	ReactDOM.render( <SettingsPage />, settingsContainer );
+	render( <SettingsPage />, settingsContainer );
 }
