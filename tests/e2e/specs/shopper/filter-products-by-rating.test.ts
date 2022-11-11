@@ -91,7 +91,7 @@ describe( `${ block.name } Block`, () => {
 		} );
 	} );
 
-	describe( 'with PHP classic template ', () => {
+	describe( 'with PHP classic template', () => {
 		const productCatalogTemplateId =
 			'woocommerce/woocommerce//archive-product';
 
