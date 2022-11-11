@@ -565,6 +565,12 @@ const getExtensionsConfig = ( options = {} ) => {
 						},
 					},
 				},
+				{
+					test: /\.s[c|a]ss$/,
+					use: {
+						loader: 'ignore-loader',
+					},
+				},
 			],
 		},
 		optimization: {
