@@ -438,7 +438,7 @@ class BlockTemplatesController {
 				return;
 			}
 
-			if ( isset( $queried_object->slug ) && taxonomy_is_product_attribute( $queried_object->slug ) &&
+			if ( isset( $queried_object->taxonomy ) && taxonomy_is_product_attribute( $queried_object->taxonomy ) &&
 				! BlockTemplateUtils::theme_has_template( 'archive-product' ) &&
 				$this->block_template_is_available( 'archive-product' )
 			) {
