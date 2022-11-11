@@ -434,6 +434,9 @@ class BlockTemplatesController {
 			add_filter( 'woocommerce_has_block_template', '__return_true', 10, 0 );
 		} else {
 			$queried_object = get_queried_object();
+			if ( is_null( $queried_object ) ) {
+				return;
+			}
 
 			if ( taxonomy_is_product_attribute( $queried_object->slug ) &&
 				! BlockTemplateUtils::theme_has_template( 'archive-product' ) &&
