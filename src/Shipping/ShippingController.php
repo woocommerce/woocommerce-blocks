@@ -39,6 +39,7 @@ class ShippingController {
 	 * Initialization method.
 	 */
 	public function init() {
+		// @todo This should be moved inline for the settings page only.
 		$this->asset_data_registry->add(
 			'pickupLocationSettings',
 			get_option( 'woocommerce_pickup_location_settings', [] ),
