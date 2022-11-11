@@ -90,9 +90,9 @@ describeOrSkip( GUTENBERG_EDITOR_CONTEXT === 'gutenberg' )(
 			} );
 
 			/**
-		     * We changed the “Show only products on sale” from a top-level toggle
-		     * setting to a product filter, but tests for them haven't been updated
-		     * yet. We will fix these tests in a follow-up PR.
+			 * We changed the “Show only products on sale” from a top-level toggle
+			 * setting to a product filter, but tests for them haven't been updated
+			 * yet. We will fix these tests in a follow-up PR.
 			 */
 			it.skip( 'Does not have on sale toggle', async () => {
 				await openDocumentSettingsSidebar();
