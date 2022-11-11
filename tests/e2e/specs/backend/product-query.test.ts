@@ -45,9 +45,9 @@ describeOrSkip( GUTENBERG_EDITOR_CONTEXT === 'gutenberg' )(
 		} );
 
 		/**
-		 * we changed the show only products on sale from a top-level toggle
-		 * setting to a product filter but tests for them haven't been updated
-		 * yet. we will fix these tests in a follow-up pr.
+		 * We changed the “Show only products on sale” from a top-level toggle
+		 * setting to a product filter, but tests for them haven't been updated
+		 * yet. We will fix these tests in a follow-up PR.
 		 */
 		it.skip( 'Editor preview shows only on sale products after enabling `Show only products on sale`', async () => {
 			await visitBlockPage( `${ block.name } Block` );
@@ -90,9 +90,9 @@ describeOrSkip( GUTENBERG_EDITOR_CONTEXT === 'gutenberg' )(
 			} );
 
 			/**
-			 * we changed the show only products on sale from a top-level toggle
-			 * setting to a product filter but tests for them haven't been updated
-			 * yet. we will fix these tests in a follow-up pr.
+		     * We changed the “Show only products on sale” from a top-level toggle
+		     * setting to a product filter, but tests for them haven't been updated
+		     * yet. We will fix these tests in a follow-up PR.
 			 */
 			it.skip( 'Does not have on sale toggle', async () => {
 				await openDocumentSettingsSidebar();
