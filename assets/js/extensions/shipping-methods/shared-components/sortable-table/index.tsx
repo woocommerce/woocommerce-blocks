@@ -59,6 +59,7 @@ const TableRow = ( {
 					<Icon
 						icon={ dragHandle }
 						size={ 14 }
+						className={ 'sortable-table__handle' }
 						{ ...attributes }
 						{ ...listeners }
 					/>
@@ -104,7 +105,7 @@ const StyledTable = styled.table`
 		}
 	}
 
-	&__handle {
+	.sortable-table__handle {
 		cursor: move;
 	}
 
@@ -252,7 +253,11 @@ export const SortableTable = ( {
 							data.map(
 								( row ) =>
 									row && (
-										<TableRow key={ row.id } id={ row.id }>
+										<TableRow
+											key={ row.id }
+											id={ row.id }
+											className={ className }
+										>
 											{ columns.map( ( column ) => (
 												<td
 													key={ `${ row.id }-${ column.name }` }
