@@ -22,7 +22,7 @@ const Form = ( {
 } ) => {
 	const countries = getSetting< Record< string, string > >( 'countries', [] );
 	const states = getSetting< Record< string, Record< string, string > > >(
-		'states',
+		'countryStates',
 		[]
 	);
 	const setLocationField =

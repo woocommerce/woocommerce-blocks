@@ -61,6 +61,15 @@ class ShippingController {
 			},
 			true
 		);
+		if ( is_admin() ) {
+			$this->asset_data_registry->add(
+				'countryStates',
+				function() {
+					return WC()->countries->get_states();
+				},
+				true
+			);
+		}
 		add_action( 'rest_api_init', [ $this, 'register_settings' ] );
 		add_action( 'admin_enqueue_scripts', [ $this, 'admin_scripts' ] );
 		add_action( 'woocommerce_load_shipping_methods', array( $this, 'register_shipping_methods' ) );
