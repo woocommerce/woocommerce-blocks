@@ -34,7 +34,7 @@ const SettingsContext = createContext< SettingsContextType >( {
 	pickupLocations: [],
 	setPickupLocations: () => void null,
 	toggleLocation: () => void null,
-	updateLocation: () => () => void null,
+	updateLocation: () => void null,
 	isSaving: false,
 	save: () => void null,
 } );
@@ -77,34 +77,33 @@ export const SettingsProvider = ( {
 		} );
 	}, [] );
 
-	const updateLocation = useCallback(
-		( rowId: UniqueIdentifier | 'new' ) =>
-			( locationData: SortablePickupLocation ) => {
-				setPickupLocations( ( prevData ) => {
-					if ( rowId === 'new' ) {
-						return [
-							...prevData,
-							{
-								...locationData,
-								id:
-									cleanForSlug( locationData.name ) +
-									'-' +
-									prevData.length,
-							},
-						];
+	const updateLocation = (
+		rowId: UniqueIdentifier | 'new',
+		locationData: SortablePickupLocation
+	) => {
+		setPickupLocations( ( prevData ) => {
+			if ( rowId === 'new' ) {
+				return [
+					...prevData,
+					{
+						...locationData,
+						id:
+							cleanForSlug( locationData.name ) +
+							'-' +
+							prevData.length,
+					},
+				];
+			}
+			return prevData
+				.map( ( location ): SortablePickupLocation => {
+					if ( location.id === rowId ) {
+						return locationData;
 					}
-					return prevData
-						.map( ( location ): SortablePickupLocation => {
-							if ( location.id === rowId ) {
-								return locationData;
-							}
-							return location;
-						} )
-						.filter( Boolean );
-				} );
-			},
-		[]
-	);
+					return location;
+				} )
+				.filter( Boolean );
+		} );
+	};
 
 	const save = useCallback( () => {
 		const data = {

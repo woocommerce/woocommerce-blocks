@@ -142,10 +142,15 @@ const LocationSettings = () => {
 							  } ) || null
 					}
 					editingLocation={ editingLocation }
-					onSave={ updateLocation( editingLocation ) }
+					onSave={ ( values ) => {
+						updateLocation(
+							editingLocation,
+							values as SortablePickupLocation
+						);
+					} }
 					onClose={ () => setEditingLocation( '' ) }
 					onDelete={ () => {
-						updateLocation( editingLocation )( null );
+						updateLocation( editingLocation, null );
 						setEditingLocation( '' );
 					} }
 				/>

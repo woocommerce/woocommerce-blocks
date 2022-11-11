@@ -39,8 +39,9 @@ export type SettingsContextType = {
 	setPickupLocations: ( locations: SortablePickupLocation[] ) => void;
 	toggleLocation: ( rowId: UniqueIdentifier ) => void;
 	updateLocation: (
-		rowId: UniqueIdentifier | 'new'
-	) => ( location: SortablePickupLocation | null ) => void;
+		rowId: UniqueIdentifier | 'new',
+		location: SortablePickupLocation | null
+	) => void;
 	isSaving: boolean;
 	save: () => void;
 };
