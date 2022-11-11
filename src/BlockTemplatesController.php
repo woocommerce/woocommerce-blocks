@@ -110,7 +110,7 @@ class BlockTemplatesController {
 
 		list( $template_id, $template_slug ) = $template_name_parts;
 
-		// If the theme has an archive-product.html template, but not a taxonomy-product_cat/tag.html template let's use the themes archive-product.html template.
+		// If the theme has an archive-product.html template, but not a taxonomy-product_cat/tag/pa.html template let's use the themes archive-product.html template.
 		if ( BlockTemplateUtils::template_is_eligible_for_product_archive_fallback( $template_slug ) ) {
 			$template_path   = BlockTemplateUtils::get_theme_template_path( 'archive-product' );
 			$template_object = BlockTemplateUtils::create_new_block_template_object( $template_path, $template_type, $template_slug, true );
@@ -330,7 +330,7 @@ class BlockTemplatesController {
 				continue;
 			}
 
-			// If the theme has an archive-product.html template, but not a taxonomy-product_cat.html template let's use the themes archive-product.html template.
+			// If the theme has an archive-product.html template, but not a taxonomy-product_cat/tag/pa.html template let's use the themes archive-product.html template.
 			if ( BlockTemplateUtils::template_is_eligible_for_product_archive_fallback( $template_slug ) ) {
 				$template_file = BlockTemplateUtils::get_theme_template_path( 'archive-product' );
 				$templates[]   = BlockTemplateUtils::create_new_block_template_object( $template_file, $template_type, $template_slug, true );
@@ -439,8 +439,8 @@ class BlockTemplatesController {
 			}
 
 			if ( isset( $queried_object->taxonomy ) && taxonomy_is_product_attribute( $queried_object->taxonomy ) &&
-				! BlockTemplateUtils::theme_has_template( 'archive-product' ) &&
-				$this->block_template_is_available( 'archive-product' )
+				! BlockTemplateUtils::theme_has_template( 'taxonomy_-pa' ) &&
+				$this->block_template_is_available( 'taxonomy-pa' )
 			) {
 				add_filter( 'woocommerce_has_block_template', '__return_true', 10, 0 );
 			}
