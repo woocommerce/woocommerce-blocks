@@ -35,10 +35,10 @@ A filter is available for setting options for rate limiting:
 ```php
 add_filter( 'woocommerce_store_api_rate_limit_options', function() {
 	return [
-		'enabled' => RateLimits::ENABLED, // enables/disables Rate Limiting. Default: false
-		'proxy_support' => RateLimits::PROXY_SUPPORT, // enables/disables Proxy support. Default: false
-		'limit' => RateLimits::LIMIT, // limit of request per timeframe. Default: 25
-		'seconds' => RateLimits::SECONDS, // timeframe in seconds. Default: 10
+		'enabled' => false, // enables/disables Rate Limiting. Default: false
+		'proxy_support' => false, // enables/disables Proxy support. Default: false
+		'limit' => 25, // limit of request per timeframe. Default: 25
+		'seconds' => 10, // timeframe in seconds. Default: 10
 	];
 } );
 ```
@@ -92,3 +92,13 @@ add_action(
 🐞 Found a mistake, or have a suggestion? [Leave feedback about this document here.](https://github.com/woocommerce/woocommerce-gutenberg-products-block/issues/new?assignees=&labels=type%3A+documentation&template=--doc-feedback.md&title=Feedback%20on%20./src/StoreApi/docs/rate-limiting.md)
 
 <!-- /FEEDBACK -->
+<!-- FEEDBACK -->
+
+---
+
+[We're hiring!](https://woocommerce.com/careers/) Come work with us!
+
+🐞 Found a mistake, or have a suggestion? [Leave feedback about this document here.](https://github.com/woocommerce/woocommerce-blocks/issues/new?assignees=&labels=type%3A+documentation&template=--doc-feedback.md&title=Feedback%20on%20./src/StoreApi/docs/rate-limiting.md)
+
+<!-- /FEEDBACK -->
+
