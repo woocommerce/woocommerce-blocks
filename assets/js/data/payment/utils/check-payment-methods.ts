@@ -149,6 +149,7 @@ export const checkPaymentMethodsCanPay = async ( express = false ) => {
 		};
 	}
 
+	// Order payment methods
 	let paymentMethodsOrder;
 	if ( express ) {
 		paymentMethodsOrder = Object.keys( paymentMethods );
