@@ -93,10 +93,10 @@ const BLOCK_DATA = {
 		},
 		name: 'woocommerce/legacy-template',
 	},
-	'taxonomy-pa': {
+	'taxonomy-product_attribute': {
 		attributes: {
 			placeholder: 'archive-product',
-			template: 'taxonomy-pa',
+			template: 'taxonomy-product_attribute',
 			title: 'WooCommerce Product Attribute Block',
 		},
 		name: 'woocommerce/legacy-template',
@@ -550,15 +550,18 @@ describe( 'Store Editing Templates', () => {
 		runOnlyWhenGutenbergIsDisabled( () =>
 			it( 'should contain the "WooCommerce Product Taxonomy Block" classic template', async () => {
 				await goToTemplateEditor( {
-					postId: 'woocommerce/woocommerce//taxonomy-pa',
+					postId: 'woocommerce/woocommerce//taxonomy-product_attribute',
 				} );
 
 				const [ classicBlock ] = await filterCurrentBlocks(
-					( block ) => block.name === BLOCK_DATA[ 'taxonomy-pa' ].name
+					( block ) =>
+						block.name ===
+						BLOCK_DATA[ 'taxonomy-product_attribute' ].name
 				);
 
 				expect( classicBlock.attributes.template ).toBe(
-					BLOCK_DATA[ 'taxonomy-pa' ].attributes.template
+					BLOCK_DATA[ 'taxonomy-product_attribute' ].attributes
+						.template
 				);
 				expect( await getCurrentSiteEditorContent() ).toMatchSnapshot();
 			} )
@@ -570,7 +573,9 @@ describe( 'Store Editing Templates', () => {
 				hasActions: true,
 			};
 
-			await visitTemplateAndAddCustomParagraph( 'taxonomy-pa' );
+			await visitTemplateAndAddCustomParagraph(
+				'taxonomy-product_attribute'
+			);
 
 			await goToTemplatesList( { waitFor: 'actions' } );
 
@@ -591,7 +596,7 @@ describe( 'Store Editing Templates', () => {
 
 		it( 'should preserve and correctly show the user customization on the back-end', async () => {
 			await goToTemplateEditor( {
-				postId: 'woocommerce/woocommerce//taxonomy-pa',
+				postId: 'woocommerce/woocommerce//taxonomy-product_attribute',
 			} );
 
 			await expect( canvas() ).toMatchElement(

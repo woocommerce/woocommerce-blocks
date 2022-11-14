@@ -20,7 +20,7 @@ const TEMPLATES = {
 		title: 'Product Taxonomy Title',
 		placeholder: 'Product Taxonomy Placeholder',
 	},
-	'taxonomy-pa': {
+	'taxonomy-product_attribute': {
 		title: 'Product Attribute Title',
 		placeholder: 'Product Attribute Placeholder',
 	},

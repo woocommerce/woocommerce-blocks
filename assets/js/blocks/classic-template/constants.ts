@@ -38,7 +38,7 @@ export const TEMPLATES: TemplateDetails = {
 		),
 		placeholder: 'archive-product',
 	},
-	'taxonomy-pa': {
+	'taxonomy-product_attribute': {
 		title: __(
 			'WooCommerce Product Attribute Block',
 			'woo-gutenberg-products-block'

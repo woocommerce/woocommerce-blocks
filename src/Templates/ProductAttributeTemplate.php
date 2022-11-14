@@ -8,7 +8,7 @@ namespace Automattic\WooCommerce\Blocks\Templates;
  * @internal
  */
 class ProductAttributeTemplate {
-	const SLUG = 'taxonomy-pa';
+	const SLUG = 'taxonomy-product_attribute';
 
 	/**
 	 * Constructor.
