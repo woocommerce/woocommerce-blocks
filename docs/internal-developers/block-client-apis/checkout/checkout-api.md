@@ -85,20 +85,6 @@ Much of the data and api interface for components in the Checkout Block are cons
 
 You can find type definitions (`typedef`) for contexts in [this file](../../../../assets/js/types/type-defs/contexts.js).
 
-### Notices Context
-
-This system essentially does three things:
-
--   Contains and maintains a data store for keeping track of notices (using `@wordpress/notices` internally).
--   Optionally automatically outputs a notice container and outputs notices to that container for display when they are created.
--   Exposes (via the `useStoreNotices`) hook an api for getting and setting notices.
-
-This system is exposed on components by wrapping them in a `<StoreNoticesProvider>` component. Currently the checkout block implements `<StoreNoticesProvider>` in three areas of the checkout block:
-
--   The entire block (identified by the `wc/checkout` context value).
--   The express payments areas (using the `wc/express-payment-area` context value)
--   The payment methods area (using the `wc/payment-area` context value).
-
 ### Customer Data Context
 
 The customer data context exposes the api interfaces for the following things via the `useCustomerDataContext` hook:
@@ -146,13 +132,3 @@ This hook is used to expose all the interfaces for the registered payment method
 _Why don't payment methods just implement this hook_?
 
 The contract is established through props fed to the payment method components via props. This allows us to avoid having to expose the hook publicly and experiment with how the props are retrieved and exposed in the future.
-
-<!-- FEEDBACK -->
-
----
-
-[We're hiring!](https://woocommerce.com/careers/) Come work with us!
-
-🐞 Found a mistake, or have a suggestion? [Leave feedback about this document here.](https://github.com/woocommerce/woocommerce-blocks/issues/new?assignees=&labels=type%3A+documentation&template=--doc-feedback.md&title=Feedback%20on%20./docs/internal-developers/block-client-apis/checkout/checkout-api.md)
-
-<!-- /FEEDBACK -->
