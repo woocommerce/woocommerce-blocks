@@ -29,7 +29,7 @@ with. We do not encourage extensions to dispatch actions onto this data store ye
 
 ### isPaymentPristine
 
-Queries if the status is `pristine` or not.
+Queries if the status is `pristine`
 
 #### _Returns_
 
@@ -44,7 +44,7 @@ const isPaymentPristine = store.isPaymentPristine();
 
 ### isPaymentStarted
 
-Queries if the status is `started` or not.
+Queries if the status is `started`.
 
 #### _Returns_
 
@@ -59,7 +59,7 @@ const isPaymentStarted = store.isPaymentStarted();
 
 ### isPaymentProcessing
 
-Queries if the status is `processing` or not.
+Queries if the status is `processing`.
 
 #### _Returns_
 
@@ -74,7 +74,7 @@ const isPaymentProcessing = store.isPaymentProcessing();
 
 ### isPaymentSuccess
 
-Queries if the status is `success` or not.
+Queries if the status is `success`.
 
 #### _Returns_
 
@@ -89,7 +89,7 @@ const isPaymentSuccess = store.isPaymentSuccess();
 
 ### isPaymentFailed
 
-Queries if the status is `failed` or not.
+Queries if the status is `failed`.
 
 #### _Returns_
 
@@ -104,7 +104,7 @@ const isPaymentFailed = store.isPaymentFailed();
 
 ### hasPaymentError
 
-Queries if the status is `error` or not.
+Queries if the status is `error`.
 
 #### _Returns_
 
@@ -135,7 +135,7 @@ const isPaymentFinished = store.isPaymentFinished();
 ### getCurrentStatus (deprecated)
 
 Returns an object with booleans representing the payment status.
-_**This selector is deprecated and will be removed in a future release. Please use the 7 selectors above instead to query the payment status**_
+_**This selector is deprecated and will be removed in a future release. Please use the selectors above**_
 
 #### _Returns_
 

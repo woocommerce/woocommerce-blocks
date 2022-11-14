@@ -2,6 +2,7 @@
  * External dependencies
  */
 import { objectHasProp } from '@woocommerce/types';
+import deprecated from '@wordpress/deprecated';
 
 /**
  * Internal dependencies
@@ -105,6 +106,13 @@ export const expressPaymentMethodsInitialized = (
  * isPaymentFinished, hasPaymentError, isPaymentSuccess, isPaymentFailed
  */
 export const getCurrentStatus = ( state: PaymentMethodDataState ) => {
+	deprecated( 'getCurrentStatus', {
+		since: '8.9.0',
+		alternative:
+			'isPaymentPristine, isPaymentStarted, isPaymentProcessing, isPaymentFinished, hasPaymentError, isPaymentSuccess, isPaymentFailed',
+		plugin: 'WooCommerce Blocks',
+	} );
+
 	return {
 		isPristine: isPaymentPristine( state ),
 		isStarted: isPaymentStarted( state ),
