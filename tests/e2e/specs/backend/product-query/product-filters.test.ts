@@ -106,14 +106,7 @@ describeOrSkip( GUTENBERG_EDITOR_CONTEXT === 'gutenberg' )(
 				);
 			} );
 
-			it( 'Can add Sale Status filter', async () => {
-				await toggleProductFilter( 'Sale status' );
-				await expect( productFiltersPanel ).toMatch(
-					'Show only products on sale'
-				);
-			} );
-
-			it( 'Can remove Sale Status filter', async () => {
+			it( 'Can add and remove Sale Status filter', async () => {
 				await toggleProductFilter( 'Sale status' );
 				await expect( productFiltersPanel ).toMatch(
 					'Show only products on sale'
