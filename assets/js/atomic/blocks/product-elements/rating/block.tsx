@@ -24,11 +24,7 @@ type Props = {
 	className?: string;
 };
 
-const getAverageRating = (
-	product: Omit< ProductResponseItem, 'average_rating' > & {
-		average_rating: string;
-	}
-): number => {
+const getAverageRating = ( product: ProductResponseItem ): number => {
 	const rating = parseFloat( product.average_rating );
 
 	return Number.isFinite( rating ) && rating > 0 ? rating : 0;
