@@ -8,6 +8,7 @@ import {
 	selectBlockByName,
 	findToolsPanelWithTitle,
 	getFixtureProductsData,
+	getFormElementIdByLabel,
 } from '@woocommerce/blocks-test-utils';
 import { ElementHandle } from 'puppeteer';
 
@@ -148,6 +149,64 @@ describeOrSkip( GUTENBERG_EDITOR_CONTEXT === 'gutenberg' )(
 				await onSaleToggle.click();
 				expect( await getPreviewProducts() ).toHaveLength(
 					defaultCount
+				);
+			} );
+		} );
+
+		describe( 'Stock Status', () => {
+			it( 'Stock status is enabled by default', async () => {
+				await expect( productFiltersPanel ).toMatch( 'STOCK STATUS' );
+			} );
+
+			it( 'Can add and remove Sale Status filter', async () => {
+				await toggleProductFilter( 'Stock status' );
+				await expect( productFiltersPanel ).not.toMatch(
+					'STOCK STATUS'
+				);
+				await toggleProductFilter( 'Stock status' );
+				await expect( productFiltersPanel ).toMatch( 'STOCK STATUS' );
+			} );
+
+			it( 'All statuses are enabled by default', async () => {
+				await expect( productFiltersPanel ).toMatch( 'In Stock' );
+				await expect( productFiltersPanel ).toMatch( 'Out of Stock' );
+				await expect( productFiltersPanel ).toMatch( 'On backorder' );
+			} );
+
+			it( 'Editor preview shows all products by default', async () => {
+				const defaultCount = getFixtureProductsData().length;
+
+				expect( await getPreviewProducts() ).toHaveLength(
+					defaultCount
+				);
+			} );
+
+			// Skipping this test for now as Product Query doesn't show correct set of products based on stock status.
+			it.skip( 'Editor preview shows correct products that has enabled stock statuses', async () => {
+				const tokenRemoveButtons = await productFiltersPanel.$$(
+					'.components-token-field__remove-token'
+				);
+				for ( const el of tokenRemoveButtons ) {
+					await el.click();
+				}
+
+				const stockStatusInput = await canvas().$(
+					await getFormElementIdByLabel(
+						'Stock status',
+						'components-form-token-field__label'
+					)
+				);
+				await stockStatusInput.click();
+				await canvas().keyboard.type( 'Out of Stock' );
+				await canvas().keyboard.press( 'Enter' );
+				const outOfStockProducts =
+					getFixtureProductsData( 'stock_status' );
+				const outOfStockCount = outOfStockProducts.filter(
+					( product ) => product.stock_status === 'outofstock'
+				).length;
+
+				expect( await getPreviewProducts() ).toHaveLength(
+					outOfStockCount
 				);
 			} );
 		} );

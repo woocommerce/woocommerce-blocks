@@ -19,3 +19,4 @@ export * from './constants';
 export { insertInnerBlock } from './insert-inner-block';
 export { getFixtureProductsData } from './get-fixture-products-data';
 export { findToolsPanelWithTitle } from './find-tools-panel-with-title';
+export { getFormElementIdByLabel } from './get-form-element-id-by-label';
