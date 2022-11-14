@@ -439,7 +439,7 @@ class BlockTemplatesController {
 			}
 
 			if ( isset( $queried_object->taxonomy ) && taxonomy_is_product_attribute( $queried_object->taxonomy ) &&
-				! BlockTemplateUtils::theme_has_template( 'taxonomy_-pa' ) &&
+				! BlockTemplateUtils::theme_has_template( 'taxonomy-pa' ) &&
 				$this->block_template_is_available( 'taxonomy-pa' )
 			) {
 				add_filter( 'woocommerce_has_block_template', '__return_true', 10, 0 );
