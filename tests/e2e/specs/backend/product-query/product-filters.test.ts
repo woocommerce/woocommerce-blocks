@@ -31,17 +31,21 @@ describeOrSkip( GUTENBERG_EDITOR_CONTEXT === 'gutenberg' )(
 		beforeEach( async () => {
 			await visitBlockPage( `${ block.name } Block` );
 			await waitForCanvas();
-			await setPostContent( '' );
-			await insertBlock( block.name );
-			await saveOrPublish();
 			await openBlockEditorSettings( { isFSEEditor: false } );
 			await selectBlockByName( block.slug );
 		} );
 
 		/**
-		 * Reset the content of Product Query Block page to default so we don't
-		 * break other tests.
+		 * Reset the content of Product Query Block page before and after this
+		 * test suite to avoide breaking other tests.
 		 */
+		beforeAll( async () => {
+			await visitBlockPage( `${ block.name } Block` );
+			await waitForCanvas();
+			await setPostContent( '' );
+			await insertBlock( block.name );
+			await saveOrPublish();
+		} );
 		afterAll( async () => {
 			await visitBlockPage( `${ block.name } Block` );
 			await waitForCanvas();
