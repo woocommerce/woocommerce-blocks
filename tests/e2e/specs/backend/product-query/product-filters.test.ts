@@ -7,6 +7,7 @@ import {
 	saveOrPublish,
 	selectBlockByName,
 	findToolsPanelWithTitle,
+	getFixtureProductsData,
 } from '@woocommerce/blocks-test-utils';
 import { ElementHandle } from 'puppeteer';
 
@@ -47,6 +48,11 @@ const SELECTORS = {
 	productFiltersDropdown:
 		'.components-dropdown-menu__menu[aria-label="Product filters options"]',
 	productFiltersDropdownItem: '.components-menu-item__button',
+	editorPreview: {
+		productsGrid: 'ul.wp-block-post-template',
+		gridItem:
+			'ul.wp-block-post-template > li.block-editor-block-preview__live-content',
+	},
 };
 
 const toggleProductFilter = async ( filterName: string ) => {
@@ -73,10 +79,15 @@ const resetProductQueryBlockPage = async () => {
 	await saveOrPublish();
 };
 
+const getPreviewProducts = async (): Promise< ElementHandle[] > => {
+	await canvas().waitForSelector( SELECTORS.editorPreview.productsGrid );
+	return await canvas().$$( SELECTORS.editorPreview.gridItem );
+};
+
 describeOrSkip( GUTENBERG_EDITOR_CONTEXT === 'gutenberg' )(
 	'Product Query > Products Filters',
 	() => {
-		let productFiltersPanel: ElementHandle< Node > | null;
+		let productFiltersPanel: ElementHandle< Node >;
 		beforeEach( async () => {
 			/**
 			 * Reset the block page before each test to ensure the block is
@@ -114,6 +125,29 @@ describeOrSkip( GUTENBERG_EDITOR_CONTEXT === 'gutenberg' )(
 				await toggleProductFilter( 'Sale status' );
 				await expect( productFiltersPanel ).not.toMatch(
 					'Show only products on sale'
+				);
+			} );
+
+			it( 'Editor preview shows correct products corresponding to the value `Show only products on sale`', async () => {
+				const defaultCount = getFixtureProductsData().length;
+				const saleCount = getFixtureProductsData( 'sale_price' ).length;
+
+				expect( await getPreviewProducts() ).toHaveLength(
+					defaultCount
+				);
+
+				await toggleProductFilter( 'Sale status' );
+
+				const onSaleToggle = await productFiltersPanel.waitForXPath(
+					'//label[text()="Show only products on sale"]'
+				);
+
+				await onSaleToggle.click();
+				expect( await getPreviewProducts() ).toHaveLength( saleCount );
+
+				await onSaleToggle.click();
+				expect( await getPreviewProducts() ).toHaveLength(
+					defaultCount
 				);
 			} );
 		} );
