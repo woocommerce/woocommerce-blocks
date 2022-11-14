@@ -31,6 +31,9 @@ describeOrSkip( GUTENBERG_EDITOR_CONTEXT === 'gutenberg' )(
 		beforeEach( async () => {
 			await visitBlockPage( `${ block.name } Block` );
 			await waitForCanvas();
+			await setPostContent( '' );
+			await insertBlock( block.name );
+			await saveOrPublish();
 			await openBlockEditorSettings( { isFSEEditor: false } );
 			await selectBlockByName( block.slug );
 		} );
@@ -41,6 +44,7 @@ describeOrSkip( GUTENBERG_EDITOR_CONTEXT === 'gutenberg' )(
 		 */
 		afterAll( async () => {
 			await visitBlockPage( `${ block.name } Block` );
+			await waitForCanvas();
 			await setPostContent( '' );
 			await insertBlock( block.name );
 			await saveOrPublish();
