@@ -1,15 +1,12 @@
 /**
  * External dependencies
  */
-import {
-	setPostContent,
-	insertBlock,
-	findSidebarPanelWithTitle,
-} from '@wordpress/e2e-test-utils';
+import { setPostContent, insertBlock } from '@wordpress/e2e-test-utils';
 import {
 	visitBlockPage,
 	saveOrPublish,
 	selectBlockByName,
+	findToolsPanelWithTitle,
 } from '@woocommerce/blocks-test-utils';
 
 /**
@@ -34,7 +31,7 @@ describeOrSkip( GUTENBERG_EDITOR_CONTEXT === 'gutenberg' )(
 		beforeEach( async () => {
 			await visitBlockPage( `${ block.name } Block` );
 			await waitForCanvas();
-			await openBlockEditorSettings();
+			await openBlockEditorSettings( { isFSEEditor: false } );
 			await selectBlockByName( block.slug );
 		} );
 
@@ -45,17 +42,18 @@ describeOrSkip( GUTENBERG_EDITOR_CONTEXT === 'gutenberg' )(
 		afterAll( async () => {
 			await visitBlockPage( `${ block.name } Block` );
 			await setPostContent( '' );
-			await insertBlock( 'Product Query' );
+			await insertBlock( block.name );
 			await saveOrPublish();
 		} );
 
 		describe( 'Sale Status', () => {
 			it( 'Sale status is disabled by default', async () => {
-				const productFiltersPanel = await findSidebarPanelWithTitle(
+				const productFiltersPanel = await findToolsPanelWithTitle(
 					'Product filters'
 				);
-				expect( productFiltersPanel ).toBeFalsy();
-				expect( productFiltersPanel ).not.toBeFalsy();
+				await expect( productFiltersPanel ).not.toMatch(
+					'Show only products on sale'
+				);
 			} );
 		} );
 	}
