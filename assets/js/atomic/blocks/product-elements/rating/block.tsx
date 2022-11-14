@@ -28,13 +28,13 @@ const getAverageRating = (
 	product: Omit< ProductResponseItem, 'average_rating' > & {
 		average_rating: string;
 	}
-) => {
+): number => {
 	const rating = parseFloat( product.average_rating );
 
 	return Number.isFinite( rating ) && rating > 0 ? rating : 0;
 };
 
-const getRatingCount = ( product: ProductResponseItem ) => {
+const getRatingCount = ( product: ProductResponseItem ): number => {
 	const count = isNumber( product.review_count )
 		? product.review_count
 		: parseInt( product.review_count, 10 );
@@ -42,13 +42,6 @@ const getRatingCount = ( product: ProductResponseItem ) => {
 	return Number.isFinite( count ) && count > 0 ? count : 0;
 };
 
-/**
- * Product Rating Block Component.
- *
- * @param {Object} props             Incoming props.
- * @param {string} [props.className] CSS Class name for the component.
- * @return {*} The component.
- */
 export const Block = ( props: Props ): JSX.Element | null => {
 	const { parentClassName } = useInnerBlockLayoutContext();
 	const { product } = useProductDataContext();
