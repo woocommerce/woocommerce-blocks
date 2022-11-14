@@ -410,6 +410,8 @@ export const createCoupon = async ( coupon ) => {
 
 /**
  * Open the block editor settings menu if it hasn't opened.
+ *
+ * @todo Replace openBlockEditorSettings with ensureSidebarOpened when WordPress/gutenberg#45480 is released. See https://github.com/WordPress/gutenberg/pull/45480.
  */
 export const openBlockEditorSettings = async () => {
 	const toggleSidebarButton = await page.$(
