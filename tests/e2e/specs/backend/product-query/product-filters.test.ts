@@ -1,7 +1,7 @@
 /**
  * External dependencies
  */
-import { setPostContent, insertBlock } from '@wordpress/e2e-test-utils';
+import { canvas, setPostContent, insertBlock } from '@wordpress/e2e-test-utils';
 import {
 	visitBlockPage,
 	saveOrPublish,
@@ -23,6 +23,14 @@ const block = {
 	name: 'Product Query',
 	slug: 'core/query',
 	class: '.wp-block-query',
+};
+
+const SELECTORS = {
+	productFiltersDropdownButton:
+		'.components-tools-panel-header .components-dropdown-menu button',
+	productFiltersDropdown:
+		'.components-dropdown-menu__menu[aria-label="Product filters options"]',
+	productFiltersDropdownItem: '.components-menu-item__button',
 };
 
 describeOrSkip( GUTENBERG_EDITOR_CONTEXT === 'gutenberg' )(
@@ -61,6 +69,23 @@ describeOrSkip( GUTENBERG_EDITOR_CONTEXT === 'gutenberg' )(
 				);
 				await expect( productFiltersPanel ).not.toMatch(
 					'Show only products on sale'
+				);
+			} );
+
+			it( 'Can add Sale Status filter', async () => {
+				const productFiltersPanel = await findToolsPanelWithTitle(
+					'Product filters'
+				);
+				const button = await productFiltersPanel.$(
+					SELECTORS.productFiltersDropdownButton
+				);
+				await button.click();
+				await canvas().waitForSelector(
+					SELECTORS.productFiltersDropdown
+				);
+				await expect( canvas() ).toClick(
+					SELECTORS.productFiltersDropdownItem,
+					{ text: 'Sale status' }
 				);
 			} );
 		} );
