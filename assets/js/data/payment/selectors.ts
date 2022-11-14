@@ -7,7 +7,7 @@ import { objectHasProp } from '@woocommerce/types';
  * Internal dependencies
  */
 import { PaymentMethodDataState } from './default-state';
-import { filterActiveSavedPaymentMethods } from './utils';
+import { filterActiveSavedPaymentMethods } from './utils/filter-active-saved-payment-methods';
 
 export const isExpressPaymentMethodActive = (
 	state: PaymentMethodDataState

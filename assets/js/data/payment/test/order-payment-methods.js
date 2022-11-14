@@ -1,7 +1,7 @@
 /**
  * Internal dependencies
  */
-import { orderPaymentMethods } from '../utils';
+import { orderPaymentMethods } from '../utils/order-payment-methods';
 
 describe( 'orderPaymentMethods', () => {
 	it( 'orders methods correctly', () => {
