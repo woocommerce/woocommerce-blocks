@@ -49,7 +49,7 @@
 	}
 
 	.wc-block-components-notices {
-		margin: #{$gap} #{$gap-largest} -#{$gap};
+		margin: #{$gap} #{$gap-largest} -#{$gap} #{$gap};
 		margin-bottom: unset;
 
 		.wc-block-components-notices__notice {
