@@ -33,6 +33,28 @@ const SELECTORS = {
 	productFiltersDropdownItem: '.components-menu-item__button',
 };
 
+const addProductFilter = async ( filterName: string ) => {
+	const productFiltersPanel = await findToolsPanelWithTitle(
+		'Product filters'
+	);
+	const button = await productFiltersPanel.$(
+		SELECTORS.productFiltersDropdownButton
+	);
+	await button.click();
+	await canvas().waitForSelector( SELECTORS.productFiltersDropdown );
+	await expect( canvas() ).toClick( SELECTORS.productFiltersDropdownItem, {
+		text: filterName,
+	} );
+};
+
+const resetProductQueryBlockPage = async () => {
+	await visitBlockPage( `${ block.name } Block` );
+	await waitForCanvas();
+	await setPostContent( '' );
+	await insertBlock( block.name );
+	await saveOrPublish();
+};
+
 describeOrSkip( GUTENBERG_EDITOR_CONTEXT === 'gutenberg' )(
 	'Product Query > Products Filters',
 	() => {
@@ -48,18 +70,10 @@ describeOrSkip( GUTENBERG_EDITOR_CONTEXT === 'gutenberg' )(
 		 * test suite to avoide breaking other tests.
 		 */
 		beforeAll( async () => {
-			await visitBlockPage( `${ block.name } Block` );
-			await waitForCanvas();
-			await setPostContent( '' );
-			await insertBlock( block.name );
-			await saveOrPublish();
+			await resetProductQueryBlockPage();
 		} );
 		afterAll( async () => {
-			await visitBlockPage( `${ block.name } Block` );
-			await waitForCanvas();
-			await setPostContent( '' );
-			await insertBlock( block.name );
-			await saveOrPublish();
+			await resetProductQueryBlockPage();
 		} );
 
 		describe( 'Sale Status', () => {
@@ -73,19 +87,12 @@ describeOrSkip( GUTENBERG_EDITOR_CONTEXT === 'gutenberg' )(
 			} );
 
 			it( 'Can add Sale Status filter', async () => {
+				await addProductFilter( 'Sale status' );
 				const productFiltersPanel = await findToolsPanelWithTitle(
 					'Product filters'
 				);
-				const button = await productFiltersPanel.$(
-					SELECTORS.productFiltersDropdownButton
-				);
-				await button.click();
-				await canvas().waitForSelector(
-					SELECTORS.productFiltersDropdown
-				);
-				await expect( canvas() ).toClick(
-					SELECTORS.productFiltersDropdownItem,
-					{ text: 'Sale status' }
+				await expect( productFiltersPanel ).toMatch(
+					'Show only products on sale'
 				);
 			} );
 		} );
