@@ -27,7 +27,7 @@ with. We do not encourage extensions to dispatch actions onto this data store ye
 
 ## Selectors
 
-### isPaymentPrestine
+### isPaymentPristine
 
 Queries if the status is `pristine` or not.
 
