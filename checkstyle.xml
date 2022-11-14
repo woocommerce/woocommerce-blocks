@@ -1541,10 +1541,6 @@
     Type &apos;Element | undefined&apos; is not assignable to type &apos;Element&apos;.
       Type &apos;undefined&apos; is not assignable to type &apos;Element&apos;." source="TS2375" />
 </file>
-<file name="assets/js/base/components/cart-checkout/product-details/index.tsx">
-<error line="36" column="14" severity="error" message="Property &apos;className&apos; does not exist on type &apos;ProductResponseItemData&apos;.
-  Property &apos;className&apos; does not exist on type &apos;ProductResponseItemBaseData &amp; { key: string; name?: never; }&apos;." source="TS2339" />
-</file>
 <file name="assets/js/base/components/cart-checkout/product-summary/index.tsx">
 <error line="32" column="4" severity="error" message="Type &apos;{ className: string | undefined; source: string; maxLength: number; countType: WordCountType; }&apos; is not assignable to type &apos;SummaryProps&apos; with &apos;exactOptionalPropertyTypes: true&apos;. Consider adding &apos;undefined&apos; to the types of the target&apos;s properties.
   Types of property &apos;className&apos; are incompatible.
