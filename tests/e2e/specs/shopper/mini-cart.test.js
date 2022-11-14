@@ -559,7 +559,7 @@ describe( 'Shopper → Mini Cart', () => {
 			await expect( page ).toMatchElement( 'h1', { text: 'Checkout' } );
 
 			const orderSummaryToggle = await page.$(
-				block.selectors.frontend.checkoutOrderSummary.toggle
+				selectors.frontend.checkoutOrderSummary.toggle
 			);
 
 			if ( orderSummaryToggle ) {
@@ -567,7 +567,7 @@ describe( 'Shopper → Mini Cart', () => {
 			}
 
 			await expect( page ).toMatchElement(
-				block.selectors.frontend.checkoutOrderSummary.content,
+				selectors.frontend.checkoutOrderSummary.content,
 				{ text: productTitle }
 			);
 		} );
