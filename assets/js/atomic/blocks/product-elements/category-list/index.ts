@@ -18,7 +18,6 @@ import {
 	BLOCK_ICON as icon,
 	BLOCK_DESCRIPTION as description,
 } from './constants';
-import { Save } from './save';
 
 const blockConfig: BlockConfiguration = {
 	...sharedConfig,
@@ -27,6 +26,12 @@ const blockConfig: BlockConfiguration = {
 	description,
 	icon: { src: icon },
 	attributes,
+	usesContext: [ 'query', 'queryId', 'postId' ],
+	ancestor: [
+		'@woocommerce/all-products',
+		'@woocommerce/single-product',
+		'core/post-template',
+	],
 	supports: {
 		...( isFeaturePluginBuild() && {
 			color: {
@@ -46,7 +51,6 @@ const blockConfig: BlockConfiguration = {
 				'.wc-block-components-product-category-list',
 		} ),
 	},
-	save: Save,
 	edit,
 };
 
