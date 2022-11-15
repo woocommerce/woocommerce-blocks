@@ -57,6 +57,7 @@ const SELECTORS = {
 	},
 	productsGrid: `${ block.class } ul.wp-block-post-template`,
 	productsGridItem: `${ block.class } ul.wp-block-post-template > li.product`,
+	formTokenFieldLabel: '.components-form-token-field__label',
 };
 
 const toggleProductFilter = async ( filterName: string ) => {
@@ -177,21 +178,28 @@ describeOrSkip( GUTENBERG_EDITOR_CONTEXT === 'gutenberg' )(
 
 		describe( 'Stock Status', () => {
 			it( 'Stock status is enabled by default', async () => {
-				await expect( productFiltersPanel ).toMatch( 'STOCK STATUS' );
+				await expect( productFiltersPanel ).toMatchElement(
+					SELECTORS.formTokenFieldLabel,
+					{ text: 'Stock status' }
+				);
 			} );
 
-			it( 'Can add and remove Sale Status filter', async () => {
+			it( 'Can add and remove Stock Status filter', async () => {
 				await toggleProductFilter( 'Stock status' );
-				await expect( productFiltersPanel ).not.toMatch(
-					'STOCK STATUS'
+				await expect( productFiltersPanel ).not.toMatchElement(
+					SELECTORS.formTokenFieldLabel,
+					{ text: 'Stock status' }
 				);
 				await toggleProductFilter( 'Stock status' );
-				await expect( productFiltersPanel ).toMatch( 'STOCK STATUS' );
+				await expect( productFiltersPanel ).toMatchElement(
+					SELECTORS.formTokenFieldLabel,
+					{ text: 'Stock status' }
+				);
 			} );
 
 			it( 'All statuses are enabled by default', async () => {
-				await expect( productFiltersPanel ).toMatch( 'In Stock' );
-				await expect( productFiltersPanel ).toMatch( 'Out of Stock' );
+				await expect( productFiltersPanel ).toMatch( 'In stock' );
+				await expect( productFiltersPanel ).toMatch( 'Out of stock' );
 				await expect( productFiltersPanel ).toMatch( 'On backorder' );
 			} );
 
