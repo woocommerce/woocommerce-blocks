@@ -129,11 +129,8 @@ export const checkPaymentMethodsCanPay = async ( express = false ) => {
 			shippingRates: previewCart.shipping_rates,
 			isLoadingRates: false,
 			cartHasCalculatedShipping: previewCart.has_calculated_shipping,
-			paymentRequirements: previewCart.paymentRequirements,
-			receiveCart:
-				typeof previewCart?.receiveCart === 'function'
-					? previewCart.receiveCart
-					: () => undefined,
+			paymentRequirements: previewCart.payment_requirements,
+			receiveCart: () => undefined,
 		};
 		canPayArgument = {
 			cart: cartForCanPayArgument,
