@@ -1,7 +1,6 @@
 /**
  * External dependencies
  */
-import PropTypes from 'prop-types';
 import classnames from 'classnames';
 import ProductPrice from '@woocommerce/base-components/product-price';
 import { getCurrencyFromPriceResponse } from '@woocommerce/price-format';
@@ -76,12 +75,6 @@ export const Block = ( props: Props ): JSX.Element | null => {
 			} ) }
 		/>
 	);
-};
-
-Block.propTypes = {
-	className: PropTypes.string,
-	product: PropTypes.object,
-	textAlign: PropTypes.oneOf( [ 'left', 'right', 'center' ] ),
 };
 
 export default withProductDataContext( Block );
