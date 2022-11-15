@@ -46,7 +46,7 @@ $fontSizes: (
 	pointer-events: none;
 	box-shadow: none;
 	z-index: 1; /* Necessary for overflow: hidden to work correctly in Safari */
-	opacity: 0.3;
+	opacity: 0.15;
 
 	// Forces direct descendants to keep layout but lose visibility.
 	> * {
