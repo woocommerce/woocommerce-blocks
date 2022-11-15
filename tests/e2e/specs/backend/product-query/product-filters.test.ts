@@ -9,6 +9,7 @@ import {
 	findToolsPanelWithTitle,
 	getFixtureProductsData,
 	getFormElementIdByLabel,
+	shopper,
 } from '@woocommerce/blocks-test-utils';
 import { ElementHandle } from 'puppeteer';
 
@@ -51,9 +52,11 @@ const SELECTORS = {
 	productFiltersDropdownItem: '.components-menu-item__button',
 	editorPreview: {
 		productsGrid: 'ul.wp-block-post-template',
-		gridItem:
+		productsGridItem:
 			'ul.wp-block-post-template > li.block-editor-block-preview__live-content',
 	},
+	productsGrid: `${ block.class } ul.wp-block-post-template`,
+	productsGridItem: `${ block.class } ul.wp-block-post-template > li.product`,
 };
 
 const toggleProductFilter = async ( filterName: string ) => {
@@ -82,7 +85,12 @@ const resetProductQueryBlockPage = async () => {
 
 const getPreviewProducts = async (): Promise< ElementHandle[] > => {
 	await canvas().waitForSelector( SELECTORS.editorPreview.productsGrid );
-	return await canvas().$$( SELECTORS.editorPreview.gridItem );
+	return await canvas().$$( SELECTORS.editorPreview.productsGridItem );
+};
+
+const getFrontEndProducts = async (): Promise< ElementHandle[] > => {
+	await canvas().waitForSelector( SELECTORS.productsGrid );
+	return await canvas().$$( SELECTORS.productsGridItem );
 };
 
 describeOrSkip( GUTENBERG_EDITOR_CONTEXT === 'gutenberg' )(
@@ -150,6 +158,20 @@ describeOrSkip( GUTENBERG_EDITOR_CONTEXT === 'gutenberg' )(
 				expect( await getPreviewProducts() ).toHaveLength(
 					defaultCount
 				);
+			} );
+
+			it( 'Works on the front end', async () => {
+				await toggleProductFilter( 'Sale status' );
+
+				const onSaleToggle = await productFiltersPanel.waitForXPath(
+					'//label[text()="Show only products on sale"]'
+				);
+
+				await onSaleToggle.click();
+				await saveOrPublish();
+
+				await shopper.block.goToBlockPage( block.name );
+				expect( await getFrontEndProducts() ).toHaveLength( 1 );
 			} );
 		} );
 
