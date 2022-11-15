@@ -92,8 +92,7 @@ class ProductCategoryList extends AbstractBlock {
 		foreach ( $product_categories_terms as $product_category_term ) {
 			$output .= '
 				<li class="category-list-item-' . $product_category_term->slug . '">
-					<a href="' . get_term_link( $product_category_term->term_id ) . '">' . $product_category_term->name . '</a>
-				</li>
+					<a href="' . get_term_link( $product_category_term->term_id ) . '">' . $product_category_term->name . '</a></li>
 			';
 		}
 
