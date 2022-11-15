@@ -163,16 +163,17 @@ describeOrSkip( GUTENBERG_EDITOR_CONTEXT === 'gutenberg' )(
 
 			it( 'Works on the front end', async () => {
 				await toggleProductFilter( 'Sale status' );
-
 				const onSaleToggle = await productFiltersPanel.waitForXPath(
 					'//label[text()="Show only products on sale"]'
 				);
-
 				await onSaleToggle.click();
+				await canvas().waitForSelector(
+					SELECTORS.editorPreview.productsGrid
+				);
 				await saveOrPublish();
-
 				await shopper.block.goToBlockPage( block.name );
-				expect( await getFrontEndProducts() ).toHaveLength( 1 );
+				const saleCount = getFixtureProductsData( 'sale_price' ).length;
+				expect( await getFrontEndProducts() ).toHaveLength( saleCount );
 			} );
 		} );
 
@@ -218,7 +219,7 @@ describeOrSkip( GUTENBERG_EDITOR_CONTEXT === 'gutenberg' )(
 			 */
 			it.skip( 'Editor preview shows correct products that has enabled stock statuses', async () => {
 				const tokenRemoveButtons = await productFiltersPanel.$$(
-					'.components-token-field__remove-token'
+					'.components-form-token-field__remove-token'
 				);
 				for ( const el of tokenRemoveButtons ) {
 					await el.click();
@@ -233,13 +234,39 @@ describeOrSkip( GUTENBERG_EDITOR_CONTEXT === 'gutenberg' )(
 				await stockStatusInput.click();
 				await canvas().keyboard.type( 'Out of Stock' );
 				await canvas().keyboard.press( 'Enter' );
-				const outOfStockProducts =
-					getFixtureProductsData( 'stock_status' );
-				const outOfStockCount = outOfStockProducts.filter(
-					( product ) => product.stock_status === 'outofstock'
-				).length;
-
+				const outOfStockCount = getFixtureProductsData(
+					'stock_status'
+				).filter( ( status ) => status === 'outofstock' ).length;
 				expect( await getPreviewProducts() ).toHaveLength(
+					outOfStockCount
+				);
+			} );
+
+			it( 'Works on the front end', async () => {
+				const tokenRemoveButtons = await productFiltersPanel.$$(
+					'.components-form-token-field__remove-token'
+				);
+				for ( const el of tokenRemoveButtons ) {
+					await el.click();
+				}
+				const stockStatusInput = await canvas().$(
+					await getFormElementIdByLabel(
+						'Stock status',
+						'components-form-token-field__label'
+					)
+				);
+				await stockStatusInput.click();
+				await canvas().keyboard.type( 'Out of stock' );
+				await canvas().keyboard.press( 'Enter' );
+				await canvas().waitForSelector(
+					SELECTORS.editorPreview.productsGrid
+				);
+				await saveOrPublish();
+				await shopper.block.goToBlockPage( block.name );
+				const outOfStockCount = getFixtureProductsData(
+					'stock_status'
+				).filter( ( status ) => status === 'outofstock' ).length;
+				expect( await getFrontEndProducts() ).toHaveLength(
 					outOfStockCount
 				);
 			} );
