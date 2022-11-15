@@ -211,7 +211,11 @@ describeOrSkip( GUTENBERG_EDITOR_CONTEXT === 'gutenberg' )(
 				);
 			} );
 
-			// Skipping this test for now as Product Query doesn't show correct set of products based on stock status.
+			/**
+			 * Skipping this test for now as Product Query doesn't show correct set of products based on stock status.
+			 *
+			 * @see https://github.com/woocommerce/woocommerce-blocks/pull/7682
+			 */
 			it.skip( 'Editor preview shows correct products that has enabled stock statuses', async () => {
 				const tokenRemoveButtons = await productFiltersPanel.$$(
 					'.components-token-field__remove-token'
