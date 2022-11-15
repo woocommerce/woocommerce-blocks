@@ -11,21 +11,16 @@ import {
 } from '@woocommerce/shared-context';
 import { useColorProps, useTypographyProps } from '@woocommerce/base-hooks';
 import { withProductDataContext } from '@woocommerce/shared-hocs';
+import type { HTMLAttributes } from 'react';
 
 /**
  * Internal dependencies
  */
+import type { BlockAttributes } from './types';
 
-/**
- * Product Price Block Component.
- *
- * @param {Object} props             Incoming props.
- * @param {string} [props.className] CSS Class name for the component.
- * @param {string} [props.textAlign] Text alignment.
- *                                   context will be used if this is not provided.
- * @return {*} The component.
- */
-export const Block = ( props ) => {
+type Props = BlockAttributes & HTMLAttributes< HTMLDivElement >;
+
+export const Block = ( props: Props ): JSX.Element | null => {
 	const { className, textAlign } = props;
 	const { parentClassName } = useInnerBlockLayoutContext();
 	const { product } = useProductDataContext();

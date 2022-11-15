@@ -7,17 +7,44 @@ import {
 	BlockControls,
 	useBlockProps,
 } from '@wordpress/block-editor';
-import { __ } from '@wordpress/i18n';
 import { useEffect } from 'react';
+import type { BlockAlignment } from '@wordpress/blocks';
 
 /**
  * Internal dependencies
  */
 import Block from './block';
 import withProductSelector from '../shared/with-product-selector';
-import { BLOCK_TITLE, BLOCK_ICON } from './constants';
+import { BLOCK_TITLE as label, BLOCK_ICON as icon } from './constants';
 
-const PriceEdit = ( { attributes, setAttributes, context } ) => {
+type UnsupportedAligments = 'wide' | 'full';
+type AllowedAlignments = Exclude< BlockAlignment, UnsupportedAligments >;
+
+interface BlockAttributes {
+	textAlign?: AllowedAlignments;
+}
+
+interface Attributes {
+	textAlign: 'left' | 'center' | 'right';
+}
+
+interface Context {
+	queryId: number;
+}
+
+interface Props {
+	attributes: Attributes;
+	setAttributes: (
+		attributes: Partial< BlockAttributes > & Record< string, unknown >
+	) => void;
+	context: Context;
+}
+
+const PriceEdit = ( {
+	attributes,
+	setAttributes,
+	context,
+}: Props ): JSX.Element => {
 	const blockProps = useBlockProps();
 	const blockAttrs = {
 		...attributes,
@@ -36,8 +63,8 @@ const PriceEdit = ( { attributes, setAttributes, context } ) => {
 				{ isFeaturePluginBuild() && (
 					<AlignmentToolbar
 						value={ attributes.textAlign }
-						onChange={ ( newAlign ) => {
-							setAttributes( { textAlign: newAlign } );
+						onChange={ ( textAlign: AllowedAlignments ) => {
+							setAttributes( { textAlign } );
 						} }
 					/>
 				) }
@@ -49,11 +76,4 @@ const PriceEdit = ( { attributes, setAttributes, context } ) => {
 	);
 };
 
-export default withProductSelector( {
-	icon: BLOCK_ICON,
-	label: BLOCK_TITLE,
-	description: __(
-		'Choose a product to display its price.',
-		'woo-gutenberg-products-block'
-	),
-} )( PriceEdit );
+export default withProductSelector( { icon, label } )( PriceEdit );

@@ -28,7 +28,10 @@ const defaultProductData = {
 		price: '0',
 		regular_price: '0',
 		sale_price: '0',
-		price_range: null,
+		price_range: {
+			min_amount: '0',
+			max_amount: '0',
+		},
 	},
 	price_html: '',
 	average_rating: '0',

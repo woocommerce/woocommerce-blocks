@@ -191,17 +191,17 @@ export interface ProductPriceProps {
 	/**
 	 * Currency configuration object
 	 */
-	currency: Currency | Record< string, never >;
+	currency?: Currency | Record< string, never >;
 	/**
 	 * The string version of the element to use for the price interpolation
 	 *
 	 * **Note:** It should contain `<price/>` (which is also the default value)
 	 */
-	format: string;
+	format?: string;
 	/**
 	 * The current price
 	 */
-	price: number | string;
+	price?: number | string;
 	/**
 	 * CSS class for the current price wrapper
 	 */
