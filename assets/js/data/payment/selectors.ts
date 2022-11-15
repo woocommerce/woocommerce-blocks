@@ -111,6 +111,7 @@ export const getCurrentStatus = ( state: PaymentMethodDataState ) => {
 		alternative:
 			'isPaymentPristine, isPaymentStarted, isPaymentProcessing, isPaymentFinished, hasPaymentError, isPaymentSuccess, isPaymentFailed',
 		plugin: 'WooCommerce Blocks',
+		link: 'https://github.com/woocommerce/woocommerce-blocks/pull/7666',
 	} );
 
 	return {
