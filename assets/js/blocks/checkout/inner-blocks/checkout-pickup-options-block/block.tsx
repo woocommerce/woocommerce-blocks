@@ -101,40 +101,15 @@ const Block = (): JSX.Element | null => {
 	const [ selectedOption, setSelectedOption ] = useState< string >( '' );
 	const onSelectRate = useCallback(
 		( rateId: string ) => {
-			shippingRates.forEach( ( { package_id: packageId } ) => {
-				selectShippingRate( rateId, packageId );
-			} );
+			selectShippingRate( rateId );
 		},
-		[ selectShippingRate, shippingRates ]
+		[ selectShippingRate ]
 	);
 
 	// Get pickup locations from the first shipping package.
 	const pickupLocations = ( shippingRates[ 0 ]?.shipping_rates || [] ).filter(
 		( { method_id: methodId } ) => methodId === 'pickup_location'
 	);
-	/* Combine prices by rate ID.
-		.map( ( pickupLocation ) => {
-			// Find the cost and taxes from the shipping rates response.
-			const pickupRate = shippingRates.reduce(
-				( acc, shippingRatePackage ) => {
-					const rate =
-						shippingRatePackage.shipping_rates.find(
-							( { rate_id: rateId } ) =>
-								rateId === pickupLocation.rate_id
-						) || null;
-					if ( rate ) {
-						acc.price = acc.price + parseInt( rate.price, 10 );
-						acc.taxes = acc.taxes + parseInt( rate.taxes, 10 );
-					}
-					return acc;
-				},
-				{ price: 0, taxes: 0 }
-			);
-			return {
-				...pickupLocation,
-				...pickupRate,
-			};
-		} );*/
 
 	// Update the selected option if there is no rate selected on mount.
 	useEffect( () => {
