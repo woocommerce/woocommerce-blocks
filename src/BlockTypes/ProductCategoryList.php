@@ -1,6 +1,8 @@
 <?php
 namespace Automattic\WooCommerce\Blocks\BlockTypes;
 
+use Automattic\WooCommerce\Blocks\Utils\StyleAttributesUtils;
+
 /**
  * ProductCategoryList class.
  */
@@ -83,9 +85,11 @@ class ProductCategoryList extends AbstractBlock {
 		$product                  = wc_get_product( $post_id );
 		$product_categories_terms = get_the_terms( $product->get_id(), 'product_cat' );
 
+		$classes_and_styles = StyleAttributesUtils::get_classes_and_styles_by_attributes( $attributes, array( 'text_color', 'link_color', 'font_size', 'font_weight', 'line_height' ) );
+
 		$output  = '';
 		$output .= '
-			<div class="wc-block-components-product-category-list">
+			<div class="wc-block-components-product-category-list ' . $classes_and_styles['classes'] . '" style="' . $classes_and_styles['styles'] . '"">
 				' . __( 'Categories:', 'woo-gutenberg-products-block' )
 				. '<ul>';
 
