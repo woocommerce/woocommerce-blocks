@@ -94,8 +94,12 @@ class ProductQuery extends AbstractBlock {
 	 */
 	public function update_rest_query( $args, $request ) {
 		$on_sale_query = $request->get_param( '__woocommerceOnSale' ) !== 'true' ? array() : $this->get_on_sale_products_query();
+		$stock_query   = empty( $request->get_param( '__woocommerceStockStatus' ) ) ? array() : $this->get_stock_status_query( $request->get_param( '__woocommerceStockStatus' ) );
 
-		return array_merge( $args, $on_sale_query );
+		return $this->merge_queries(
+			array_merge( $args, $on_sale_query ),
+			$stock_query
+		);
 	}
 
 	/**
@@ -175,6 +179,18 @@ class ProductQuery extends AbstractBlock {
 	 * @return array
 	 */
 	private function merge_queries( $a, $b ) {
+		/**
+		 * Ensure the properties are arrays before merging to avoid fatal errors.
+		 */
+		$a = wp_parse_args(
+			$a,
+			array(
+				'post__in'   => array(),
+				'meta_query' => array(),
+				'tax_query'  => array(),
+			)
+		);
+
 		$a['post__in']   = ( isset( $b['post__in'] ) && ! empty( $b['post__in'] ) ) ? $this->intersect_arrays_when_not_empty( $a['post__in'], $b['post__in'] ) : $a['post__in'];
 		$a['meta_query'] = ( isset( $b['meta_query'] ) && ! empty( $b['meta_query'] ) ) ? array_merge( $a['meta_query'], array( $b['meta_query'] ) ) : $a['meta_query'];
 		$a['tax_query']  = ( isset( $b['tax_query'] ) && ! empty( $b['tax_query'] ) ) ? array_merge( $a['tax_query'], array( $b['tax_query'] ) ) : $a['tax_query'];
