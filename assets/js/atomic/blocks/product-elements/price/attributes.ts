@@ -3,7 +3,21 @@
  */
 import { isFeaturePluginBuild } from '@woocommerce/block-settings';
 
-let blockAttributes = {
+interface BlockAttributes {
+	productId: {
+		type: string;
+		default: number;
+	};
+	isDescendentOfQueryLoop: {
+		type: string;
+		default: boolean;
+	};
+	textAlign?: {
+		type: string;
+	};
+}
+
+let blockAttributes: BlockAttributes = {
 	productId: {
 		type: 'number',
 		default: 0,
