@@ -26,7 +26,7 @@ import {
 } from './types';
 import {
 	isWooQueryBlockVariation,
-	setCustomQueryAttribute,
+	setQueryAttribute,
 	useAllowedControls,
 } from './utils';
 import {
@@ -99,7 +99,7 @@ export const TOOLS_PANEL_CONTROLS = {
 					) }
 					checked={ query.__woocommerceOnSale || false }
 					onChange={ ( __woocommerceOnSale ) => {
-						setCustomQueryAttribute( props, {
+						setQueryAttribute( props, {
 							__woocommerceOnSale,
 						} );
 					} }
@@ -125,7 +125,7 @@ export const TOOLS_PANEL_CONTROLS = {
 							.map( getStockStatusIdByLabel )
 							.filter( Boolean ) as string[];
 
-						setCustomQueryAttribute( props, {
+						setQueryAttribute( props, {
 							__woocommerceStockStatus,
 						} );
 					} }
@@ -166,10 +166,7 @@ export const withProductQueryControls =
 							'woo-gutenberg-products-block'
 						) }
 						resetAll={ () => {
-							setCustomQueryAttribute(
-								props,
-								defaultWooQueryParams
-							);
+							setQueryAttribute( props, defaultWooQueryParams );
 						} }
 					>
 						{ Object.entries( TOOLS_PANEL_CONTROLS ).map(
