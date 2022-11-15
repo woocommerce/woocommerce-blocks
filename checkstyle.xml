@@ -1107,6 +1107,15 @@
 <error line="12" column="27" severity="error" message="Parameter &apos;OriginalComponent&apos; implicitly has an &apos;any&apos; type." source="TS7006" />
 <error line="13" column="12" severity="error" message="Parameter &apos;ownProps&apos; implicitly has an &apos;any&apos; type." source="TS7006" />
 </file>
+<file name="assets/js/atomic/blocks/product-elements/price/block.tsx">
+<error line="46" column="5" severity="error" message="Type &apos;{ align: &quot;center&quot; | &quot;left&quot; | &quot;right&quot; | undefined; className: string; }&apos; is not assignable to type &apos;ProductPriceProps&apos; with &apos;exactOptionalPropertyTypes: true&apos;. Consider adding &apos;undefined&apos; to the types of the target&apos;s properties.
+  Types of property &apos;align&apos; are incompatible.
+    Type &apos;&quot;center&quot; | &quot;left&quot; | &quot;right&quot; | undefined&apos; is not assignable to type &apos;&quot;center&quot; | &quot;left&quot; | &quot;right&quot;&apos;.
+      Type &apos;undefined&apos; is not assignable to type &apos;&quot;center&quot; | &quot;left&quot; | &quot;right&quot;&apos;." source="TS2375" />
+<error line="59" column="4" severity="error" message="Type &apos;{ align: &quot;center&quot; | &quot;left&quot; | &quot;right&quot; | undefined; className: string; priceStyle: { [x: string]: unknown; }; regularPriceStyle: { [x: string]: unknown; }; priceClassName: string; currency: Currency; ... 4 more ...; regularPriceClassName: string; }&apos; is not assignable to type &apos;ProductPriceProps&apos; with &apos;exactOptionalPropertyTypes: true&apos;. Consider adding &apos;undefined&apos; to the types of the target&apos;s properties.
+  Types of property &apos;align&apos; are incompatible.
+    Type &apos;&quot;center&quot; | &quot;left&quot; | &quot;right&quot; | undefined&apos; is not assignable to type &apos;&quot;center&quot; | &quot;left&quot; | &quot;right&quot;&apos;." source="TS2375" />
+</file>
 <file name="assets/js/atomic/blocks/product-elements/image/block.js">
 <error line="137" column="19" severity="error" message="Binding element &apos;image&apos; implicitly has an &apos;any&apos; type." source="TS7031" />
 <error line="137" column="26" severity="error" message="Binding element &apos;loaded&apos; implicitly has an &apos;any&apos; type." source="TS7031" />
@@ -2197,10 +2206,6 @@
       Property &apos;attributes&apos; is missing in type &apos;{ name: string; version: string; title: string; description: string; category: string; supports: { align: boolean; html: boolean; multiple: boolean; reusable: boolean; inserter: boolean; }; parent: string[]; textdomain: string; apiVersion: number; }&apos; but required in type &apos;Pick&lt;Block&lt;{}&gt;, &quot;title&quot; | &quot;category&quot; | &quot;attributes&quot;&gt;&apos;.
   Overload 2 of 2, &apos;(name: string, settings: BlockConfiguration&lt;{}&gt;): Block&lt;{}&gt; | undefined&apos;, gave the following error.
     Argument of type &apos;{ name: string; version: string; title: string; description: string; category: string; supports: { align: boolean; html: boolean; multiple: boolean; reusable: boolean; inserter: boolean; }; parent: string[]; textdomain: string; apiVersion: number; }&apos; is not assignable to parameter of type &apos;string&apos;." source="TS2769" />
-</file>
-<file name="assets/js/blocks/cart/cart-cross-sells-product-list/cart-cross-sells-product.tsx">
-<error line="51" column="8" severity="error" message="Type &apos;{}&apos; is missing the following properties from type &apos;BlockAttributes&apos;: productId, align" source="TS2739" />
-<error line="52" column="8" severity="error" message="Type &apos;{}&apos; is missing the following properties from type &apos;BlockAttributes&apos;: productId, className, textAlign, isDescendentOfQueryLoop" source="TS2739" />
 </file>
 <file name="assets/js/blocks/cart/inner-blocks/cart-cross-sells-products/index.tsx">
 <error line="13" column="20" severity="error" message="No overload matches this call.
