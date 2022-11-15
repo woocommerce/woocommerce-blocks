@@ -250,6 +250,9 @@
 <error line="59" column="3" severity="error" message="Object is of type &apos;unknown&apos;." source="TS2571" />
 <error line="62" column="3" severity="error" message="Object is of type &apos;unknown&apos;." source="TS2571" />
 <error line="63" column="3" severity="error" message="Object is of type &apos;unknown&apos;." source="TS2571" />
+<error line="94" column="3" severity="error" message="Type &apos;unknown&apos; is not assignable to type &apos;CurrencyCode&apos;." source="TS2322" />
+<error line="95" column="3" severity="error" message="Type &apos;unknown&apos; is not assignable to type &apos;string&apos;." source="TS2322" />
+<error line="100" column="3" severity="error" message="Type &apos;unknown&apos; is not assignable to type &apos;number&apos;." source="TS2322" />
 </file>
 <file name="packages/prices/utils/index.js">
 <error line="1" column="15" severity="error" message="File &apos;/home/runner/work/woocommerce-blocks/woocommerce-blocks/packages/prices/utils/price.ts&apos; is not listed within the file list of project &apos;/home/runner/work/woocommerce-blocks/woocommerce-blocks/tsconfig.json&apos;. Projects must list all files or use an &apos;include&apos; pattern." source="TS6307" />
@@ -266,7 +269,7 @@
     Imported via &apos;@woocommerce/price-format&apos; from file &apos;/home/runner/work/woocommerce-blocks/woocommerce-blocks/packages/checkout/components/totals/taxes/index.tsx&apos;
     Imported via &apos;@woocommerce/price-format&apos; from file &apos;/home/runner/work/woocommerce-blocks/woocommerce-blocks/packages/checkout/components/totals/fees/index.tsx&apos;
     Imported via &apos;@woocommerce/price-format&apos; from file &apos;/home/runner/work/woocommerce-blocks/woocommerce-blocks/assets/js/base/components/product-price/index.tsx&apos;
-    Imported via &apos;@woocommerce/price-format&apos; from file &apos;/home/runner/work/woocommerce-blocks/woocommerce-blocks/assets/js/atomic/blocks/product-elements/price/block.js&apos;
+    Imported via &apos;@woocommerce/price-format&apos; from file &apos;/home/runner/work/woocommerce-blocks/woocommerce-blocks/assets/js/atomic/blocks/product-elements/price/block.tsx&apos;
     Imported via &apos;@woocommerce/price-format&apos; from file &apos;/home/runner/work/woocommerce-blocks/woocommerce-blocks/assets/js/base/context/hooks/payment-methods/use-payment-method-interface.ts&apos;
     Imported via &apos;@woocommerce/price-format&apos; from file &apos;/home/runner/work/woocommerce-blocks/woocommerce-blocks/assets/js/base/components/cart-checkout/order-summary/order-summary-item.tsx&apos;
     Imported via &apos;@woocommerce/price-format&apos; from file &apos;/home/runner/work/woocommerce-blocks/woocommerce-blocks/assets/js/base/components/cart-checkout/product-sale-badge/index.tsx&apos;
@@ -753,18 +756,12 @@
   No index signature with a parameter of type &apos;string&apos; was found on type &apos;Object&apos;." source="TS7053" />
 </file>
 <file name="assets/js/base/components/product-price/index.tsx">
-<error line="285" column="5" severity="error" message="Type &apos;{ currency: Currency | Record&lt;string, never&gt;; price: string | number; priceClassName: string | undefined; priceStyle: CSSProperties | undefined; regularPrice: string | number; regularPriceClassName: string | undefined; regularPriceStyle: CSSProperties | undefined; }&apos; is not assignable to type &apos;SalePriceProps&apos; with &apos;exactOptionalPropertyTypes: true&apos;. Consider adding &apos;undefined&apos; to the types of the target&apos;s properties.
-  Types of property &apos;regularPriceClassName&apos; are incompatible.
-    Type &apos;string | undefined&apos; is not assignable to type &apos;string&apos;.
-      Type &apos;undefined&apos; is not assignable to type &apos;string&apos;." source="TS2375" />
-<error line="297" column="5" severity="error" message="Type &apos;{ currency: Currency | Record&lt;string, never&gt;; maxPrice: string | number; minPrice: string | number; priceClassName: string | undefined; priceStyle: CSSProperties | undefined; }&apos; is not assignable to type &apos;PriceRangeProps&apos; with &apos;exactOptionalPropertyTypes: true&apos;. Consider adding &apos;undefined&apos; to the types of the target&apos;s properties.
-  Types of property &apos;priceClassName&apos; are incompatible.
-    Type &apos;string | undefined&apos; is not assignable to type &apos;string&apos;.
-      Type &apos;undefined&apos; is not assignable to type &apos;string&apos;." source="TS2375" />
-<error line="307" column="5" severity="error" message="Type &apos;{ className: string; currency: Currency | Record&lt;string, never&gt;; value: string | number; style: CSSProperties | undefined; }&apos; is not assignable to type &apos;FormattedMonetaryAmountProps&apos; with &apos;exactOptionalPropertyTypes: true&apos;. Consider adding &apos;undefined&apos; to the types of the target&apos;s properties.
-  Types of property &apos;style&apos; are incompatible.
-    Type &apos;CSSProperties | undefined&apos; is not assignable to type &apos;CSSProperties&apos;.
-      Type &apos;undefined&apos; is not assignable to type &apos;Properties&lt;string | number, string &amp; {}&gt;&apos;." source="TS2375" />
+<error line="286" column="5" severity="error" message="Type &apos;Currency | Record&lt;string, never&gt; | undefined&apos; is not assignable to type &apos;Currency | Record&lt;string, never&gt;&apos;.
+  Type &apos;undefined&apos; is not assignable to type &apos;Currency | Record&lt;string, never&gt;&apos;." source="TS2322" />
+<error line="287" column="5" severity="error" message="Type &apos;string | number | undefined&apos; is not assignable to type &apos;string | number&apos;.
+  Type &apos;undefined&apos; is not assignable to type &apos;string | number&apos;." source="TS2322" />
+<error line="298" column="5" severity="error" message="Type &apos;Currency | Record&lt;string, never&gt; | undefined&apos; is not assignable to type &apos;Currency | Record&lt;string, never&gt;&apos;." source="TS2322" />
+<error line="312" column="5" severity="error" message="Type &apos;Currency | Record&lt;string, never&gt; | undefined&apos; is not assignable to type &apos;Currency | Record&lt;string, never&gt;&apos;." source="TS2322" />
 </file>
 <file name="assets/js/shared/context/inner-block-layout-context.js">
 <error line="26" column="2" severity="error" message="Binding element &apos;children&apos; implicitly has an &apos;any&apos; type." source="TS7031" />
@@ -1110,16 +1107,6 @@
 <error line="12" column="27" severity="error" message="Parameter &apos;OriginalComponent&apos; implicitly has an &apos;any&apos; type." source="TS7006" />
 <error line="13" column="12" severity="error" message="Parameter &apos;ownProps&apos; implicitly has an &apos;any&apos; type." source="TS7006" />
 </file>
-<file name="assets/js/atomic/blocks/product-elements/price/block.js">
-<error line="52" column="18" severity="error" message="Type &apos;string | undefined&apos; is not assignable to type &apos;&quot;center&quot; | &quot;left&quot; | &quot;right&quot; | undefined&apos; with &apos;exactOptionalPropertyTypes: true&apos;. Consider adding &apos;undefined&apos; to the type of the target." source="TS2412" />
-<error line="57" column="49" severity="error" message="Argument of type &apos;{ currency_code: string; currency_symbol: string; currency_minor_unit: number; currency_decimal_separator: string; currency_thousand_separator: string; currency_prefix: string; currency_suffix: string; price: string; regular_price: string; sale_price: string; price_range: null; }&apos; is not assignable to parameter of type &apos;CurrencyResponse | Record&lt;string, never&gt; | CartShippingPackageShippingRate | undefined&apos;.
-  Type &apos;{ currency_code: string; currency_symbol: string; currency_minor_unit: number; currency_decimal_separator: string; currency_thousand_separator: string; currency_prefix: string; currency_suffix: string; price: string; regular_price: string; sale_price: string; price_range: null; }&apos; is not assignable to type &apos;Record&lt;string, never&gt;&apos;.
-    Property &apos;currency_code&apos; is incompatible with index signature.
-      Type &apos;string&apos; is not assignable to type &apos;never&apos;." source="TS2345" />
-<error line="66" column="4" severity="error" message="Type &apos;string | undefined&apos; is not assignable to type &apos;&quot;center&quot; | &quot;left&quot; | &quot;right&quot; | undefined&apos; with &apos;exactOptionalPropertyTypes: true&apos;. Consider adding &apos;undefined&apos; to the type of the target." source="TS2412" />
-<error line="74" column="36" severity="error" message="Property &apos;min_amount&apos; does not exist on type &apos;never&apos;." source="TS2339" />
-<error line="75" column="36" severity="error" message="Property &apos;max_amount&apos; does not exist on type &apos;never&apos;." source="TS2339" />
-</file>
 <file name="assets/js/atomic/blocks/product-elements/image/block.js">
 <error line="137" column="19" severity="error" message="Binding element &apos;image&apos; implicitly has an &apos;any&apos; type." source="TS7031" />
 <error line="137" column="26" severity="error" message="Binding element &apos;loaded&apos; implicitly has an &apos;any&apos; type." source="TS7031" />
@@ -1127,13 +1114,13 @@
 <error line="137" column="48" severity="error" message="Binding element &apos;fallbackAlt&apos; implicitly has an &apos;any&apos; type." source="TS7031" />
 </file>
 <file name="assets/js/atomic/blocks/product-elements/rating/block.tsx">
-<error line="55" column="35" severity="error" message="Argument of type &apos;{ id: number; name: string; parent: number; type: string; variation: string; permalink: string; sku: string; short_description: string; description: string; on_sale: boolean; prices: { currency_code: string; ... 9 more ...; price_range: null; }; ... 14 more ...; add_to_cart: { ...; }; }&apos; is not assignable to parameter of type &apos;Omit&lt;ProductResponseItem, &quot;average_rating&quot;&gt; &amp; { average_rating: string; }&apos;.
-  Type &apos;{ id: number; name: string; parent: number; type: string; variation: string; permalink: string; sku: string; short_description: string; description: string; on_sale: boolean; prices: { currency_code: string; ... 9 more ...; price_range: null; }; ... 14 more ...; add_to_cart: { ...; }; }&apos; is not assignable to type &apos;Omit&lt;ProductResponseItem, &quot;average_rating&quot;&gt;&apos;.
+<error line="55" column="35" severity="error" message="Argument of type &apos;{ id: number; name: string; parent: number; type: string; variation: string; permalink: string; sku: string; short_description: string; description: string; on_sale: boolean; prices: { currency_code: string; ... 9 more ...; price_range: { ...; }; }; ... 14 more ...; add_to_cart: { ...; }; }&apos; is not assignable to parameter of type &apos;Omit&lt;ProductResponseItem, &quot;average_rating&quot;&gt; &amp; { average_rating: string; }&apos;.
+  Type &apos;{ id: number; name: string; parent: number; type: string; variation: string; permalink: string; sku: string; short_description: string; description: string; on_sale: boolean; prices: { currency_code: string; ... 9 more ...; price_range: { ...; }; }; ... 14 more ...; add_to_cart: { ...; }; }&apos; is not assignable to type &apos;Omit&lt;ProductResponseItem, &quot;average_rating&quot;&gt;&apos;.
     Types of property &apos;prices&apos; are incompatible.
-      Property &apos;raw_prices&apos; is missing in type &apos;{ currency_code: string; currency_symbol: string; currency_minor_unit: number; currency_decimal_separator: string; currency_thousand_separator: string; currency_prefix: string; currency_suffix: string; price: string; regular_price: string; sale_price: string; price_range: null; }&apos; but required in type &apos;ProductResponseItemPrices&apos;." source="TS2345" />
-<error line="74" column="34" severity="error" message="Argument of type &apos;{ id: number; name: string; parent: number; type: string; variation: string; permalink: string; sku: string; short_description: string; description: string; on_sale: boolean; prices: { currency_code: string; ... 9 more ...; price_range: null; }; ... 14 more ...; add_to_cart: { ...; }; }&apos; is not assignable to parameter of type &apos;ProductResponseItem&apos;.
+      Property &apos;raw_prices&apos; is missing in type &apos;{ currency_code: string; currency_symbol: string; currency_minor_unit: number; currency_decimal_separator: string; currency_thousand_separator: string; currency_prefix: string; currency_suffix: string; price: string; regular_price: string; sale_price: string; price_range: { ...; }; }&apos; but required in type &apos;ProductResponseItemPrices&apos;." source="TS2345" />
+<error line="74" column="34" severity="error" message="Argument of type &apos;{ id: number; name: string; parent: number; type: string; variation: string; permalink: string; sku: string; short_description: string; description: string; on_sale: boolean; prices: { currency_code: string; ... 9 more ...; price_range: { ...; }; }; ... 14 more ...; add_to_cart: { ...; }; }&apos; is not assignable to parameter of type &apos;ProductResponseItem&apos;.
   Types of property &apos;prices&apos; are incompatible.
-    Property &apos;raw_prices&apos; is missing in type &apos;{ currency_code: string; currency_symbol: string; currency_minor_unit: number; currency_decimal_separator: string; currency_thousand_separator: string; currency_prefix: string; currency_suffix: string; price: string; regular_price: string; sale_price: string; price_range: null; }&apos; but required in type &apos;ProductResponseItemPrices&apos;." source="TS2345" />
+    Property &apos;raw_prices&apos; is missing in type &apos;{ currency_code: string; currency_symbol: string; currency_minor_unit: number; currency_decimal_separator: string; currency_thousand_separator: string; currency_prefix: string; currency_suffix: string; price: string; regular_price: string; sale_price: string; price_range: { ...; }; }&apos; but required in type &apos;ProductResponseItemPrices&apos;." source="TS2345" />
 </file>
 <file name="assets/js/atomic/blocks/product-elements/button/block.js">
 <error line="100" column="3" severity="error" message="Property &apos;id&apos; does not exist on type &apos;Object | undefined&apos;." source="TS2339" />
@@ -1347,15 +1334,6 @@
       Type &apos;{ text: true; background: true; link: false; gradients: true; __experimentalSkipSerialization: true; }&apos; is not assignable to type &apos;Partial&lt;ColorProps&gt;&apos;.
         Object literal may only specify known properties, and &apos;__experimentalSkipSerialization&apos; does not exist in type &apos;Partial&lt;ColorProps&gt;&apos;." source="TS2322" />
 </file>
-<file name="assets/js/atomic/blocks/product-elements/price/edit.js">
-<error line="20" column="23" severity="error" message="Binding element &apos;attributes&apos; implicitly has an &apos;any&apos; type." source="TS7031" />
-<error line="20" column="35" severity="error" message="Binding element &apos;setAttributes&apos; implicitly has an &apos;any&apos; type." source="TS7031" />
-<error line="20" column="50" severity="error" message="Binding element &apos;context&apos; implicitly has an &apos;any&apos; type." source="TS7031" />
-</file>
-<file name="assets/js/atomic/blocks/product-elements/price/attributes.js">
-<error line="20" column="3" severity="error" message="Type &apos;{ textAlign: { type: string; }; productId: { type: string; default: number; }; isDescendentOfQueryLoop: { type: string; default: boolean; }; }&apos; is not assignable to type &apos;{ productId: { type: string; default: number; }; isDescendentOfQueryLoop: { type: string; default: boolean; }; }&apos;.
-  Object literal may only specify known properties, and &apos;textAlign&apos; does not exist in type &apos;{ productId: { type: string; default: number; }; isDescendentOfQueryLoop: { type: string; default: boolean; }; }&apos;." source="TS2322" />
-</file>
 <file name="assets/js/atomic/blocks/product-elements/image/edit.js">
 <error line="14" column="2" severity="error" message="Module &apos;&quot;@wordpress/components&quot;&apos; has no exported member &apos;__experimentalToggleGroupControl&apos;." source="TS2305" />
 <error line="16" column="2" severity="error" message="Module &apos;&quot;@wordpress/components&quot;&apos; has no exported member &apos;__experimentalToggleGroupControlOption&apos;." source="TS2305" />
@@ -1421,9 +1399,6 @@
         Types of property &apos;attributes&apos; are incompatible.
           Type &apos;Readonly&lt;{}&gt;&apos; is not assignable to type &apos;Record&lt;string, unknown&gt; &amp; { className: string; }&apos;.
             Property &apos;className&apos; is missing in type &apos;Readonly&lt;{}&gt;&apos; but required in type &apos;{ className: string; }&apos;." source="TS2322" />
-</file>
-<file name="assets/js/atomic/blocks/product-elements/stock-indicator/edit.js">
-<error line="15" column="18" severity="error" message="Binding element &apos;attributes&apos; implicitly has an &apos;any&apos; type." source="TS7031" />
 </file>
 <file name="assets/js/atomic/blocks/product-elements/add-to-cart/edit.js">
 <error line="25" column="18" severity="error" message="Binding element &apos;attributes&apos; implicitly has an &apos;any&apos; type." source="TS7031" />
@@ -2225,6 +2200,7 @@
 </file>
 <file name="assets/js/blocks/cart/cart-cross-sells-product-list/cart-cross-sells-product.tsx">
 <error line="51" column="8" severity="error" message="Type &apos;{}&apos; is missing the following properties from type &apos;BlockAttributes&apos;: productId, align" source="TS2739" />
+<error line="52" column="8" severity="error" message="Type &apos;{}&apos; is missing the following properties from type &apos;BlockAttributes&apos;: productId, className, textAlign, isDescendentOfQueryLoop" source="TS2739" />
 </file>
 <file name="assets/js/blocks/cart/inner-blocks/cart-cross-sells-products/index.tsx">
 <error line="13" column="20" severity="error" message="No overload matches this call.
