@@ -23,8 +23,6 @@ jest.mock( '@woocommerce/base-hooks', () => ( {
 	} ) ),
 } ) );
 
-const placeholderImageAlt = 'Generic placeholder';
-
 const productWithoutImages = {
 	name: 'Test product',
 	id: 1,
@@ -99,8 +97,7 @@ describe( 'Product Image Block', () => {
 				</ProductDataContextProvider>
 			);
 
-			const placeholderImage =
-				component.getByAltText( placeholderImageAlt );
+			const placeholderImage = component.getByAltText( '' );
 			expect( placeholderImage.getAttribute( 'src' ) ).toBe(
 				'placeholder.jpg'
 			);
@@ -149,8 +146,7 @@ describe( 'Product Image Block', () => {
 				</ProductDataContextProvider>
 			);
 
-			const placeholderImage =
-				component.getByAltText( placeholderImageAlt );
+			const placeholderImage = component.getByAltText( '' );
 			expect( placeholderImage.getAttribute( 'src' ) ).toBe(
 				'placeholder.jpg'
 			);
@@ -171,8 +167,7 @@ describe( 'Product Image Block', () => {
 				</ProductDataContextProvider>
 			);
 
-			const placeholderImage =
-				component.getByAltText( placeholderImageAlt );
+			const placeholderImage = component.getByAltText( '' );
 			expect( placeholderImage.getAttribute( 'src' ) ).toBe(
 				'placeholder.jpg'
 			);
