@@ -240,20 +240,6 @@
     Argument of type &apos;string | BlockConfiguration&lt;{}&gt;&apos; is not assignable to parameter of type &apos;string&apos;.
       Type &apos;BlockConfiguration&lt;{}&gt;&apos; is not assignable to type &apos;string&apos;." source="TS2769" />
 </file>
-<file name="packages/prices/utils/price.ts">
-<error line="52" column="8" severity="error" message="Object is of type &apos;unknown&apos;." source="TS2571" />
-<error line="53" column="10" severity="error" message="Object is of type &apos;unknown&apos;." source="TS2571" />
-<error line="54" column="21" severity="error" message="Object is of type &apos;unknown&apos;." source="TS2571" />
-<error line="55" column="20" severity="error" message="Object is of type &apos;unknown&apos;." source="TS2571" />
-<error line="56" column="13" severity="error" message="Object is of type &apos;unknown&apos;." source="TS2571" />
-<error line="58" column="3" severity="error" message="Object is of type &apos;unknown&apos;." source="TS2571" />
-<error line="59" column="3" severity="error" message="Object is of type &apos;unknown&apos;." source="TS2571" />
-<error line="62" column="3" severity="error" message="Object is of type &apos;unknown&apos;." source="TS2571" />
-<error line="63" column="3" severity="error" message="Object is of type &apos;unknown&apos;." source="TS2571" />
-<error line="94" column="3" severity="error" message="Type &apos;unknown&apos; is not assignable to type &apos;CurrencyCode&apos;." source="TS2322" />
-<error line="95" column="3" severity="error" message="Type &apos;unknown&apos; is not assignable to type &apos;string&apos;." source="TS2322" />
-<error line="100" column="3" severity="error" message="Type &apos;unknown&apos; is not assignable to type &apos;number&apos;." source="TS2322" />
-</file>
 <file name="packages/prices/utils/index.js">
 <error line="1" column="15" severity="error" message="File &apos;/home/runner/work/woocommerce-blocks/woocommerce-blocks/packages/prices/utils/price.ts&apos; is not listed within the file list of project &apos;/home/runner/work/woocommerce-blocks/woocommerce-blocks/tsconfig.json&apos;. Projects must list all files or use an &apos;include&apos; pattern." source="TS6307" />
 </file>
@@ -749,14 +735,6 @@
 <error line="78" column="28" severity="error" message="Element implicitly has an &apos;any&apos; type because expression of type &apos;string&apos; can&apos;t be used to index type &apos;Object&apos;.
   No index signature with a parameter of type &apos;string&apos; was found on type &apos;Object&apos;." source="TS7053" />
 </file>
-<file name="assets/js/base/components/product-price/index.tsx">
-<error line="286" column="5" severity="error" message="Type &apos;Currency | Record&lt;string, never&gt; | undefined&apos; is not assignable to type &apos;Currency | Record&lt;string, never&gt;&apos;.
-  Type &apos;undefined&apos; is not assignable to type &apos;Currency | Record&lt;string, never&gt;&apos;." source="TS2322" />
-<error line="287" column="5" severity="error" message="Type &apos;string | number | undefined&apos; is not assignable to type &apos;string | number&apos;.
-  Type &apos;undefined&apos; is not assignable to type &apos;string | number&apos;." source="TS2322" />
-<error line="298" column="5" severity="error" message="Type &apos;Currency | Record&lt;string, never&gt; | undefined&apos; is not assignable to type &apos;Currency | Record&lt;string, never&gt;&apos;." source="TS2322" />
-<error line="312" column="5" severity="error" message="Type &apos;Currency | Record&lt;string, never&gt; | undefined&apos; is not assignable to type &apos;Currency | Record&lt;string, never&gt;&apos;." source="TS2322" />
-</file>
 <file name="assets/js/shared/context/inner-block-layout-context.js">
 <error line="26" column="2" severity="error" message="Binding element &apos;children&apos; implicitly has an &apos;any&apos; type." source="TS7031" />
 <error line="33" column="37" severity="error" message="Property &apos;isLoading&apos; is missing in type &apos;{ parentName: string; parentClassName: string; }&apos; but required in type &apos;{ parentName: string; parentClassName: string; isLoading: boolean; }&apos;." source="TS2741" />
@@ -1100,6 +1078,14 @@
 <file name="assets/js/shared/hocs/with-filtered-attributes.js">
 <error line="12" column="27" severity="error" message="Parameter &apos;OriginalComponent&apos; implicitly has an &apos;any&apos; type." source="TS7006" />
 <error line="13" column="12" severity="error" message="Parameter &apos;ownProps&apos; implicitly has an &apos;any&apos; type." source="TS7006" />
+</file>
+<file name="assets/js/atomic/blocks/product-elements/price/block.tsx">
+<error line="60" column="5" severity="error" message="Type &apos;{ align: &quot;center&quot; | &quot;left&quot; | &quot;right&quot; | undefined; className: string; }&apos; is missing the following properties from type &apos;ProductPriceProps&apos;: currency, format, price" source="TS2739" />
+<error line="65" column="49" severity="error" message="Argument of type &apos;{ currency_code: string; currency_symbol: string; currency_minor_unit: number; currency_decimal_separator: string; currency_thousand_separator: string; currency_prefix: string; currency_suffix: string; price: string; regular_price: string; sale_price: string; price_range: { ...; } | null; }&apos; is not assignable to parameter of type &apos;CurrencyResponse | Record&lt;string, never&gt; | CartShippingPackageShippingRate | undefined&apos;.
+  Type &apos;{ currency_code: string; currency_symbol: string; currency_minor_unit: number; currency_decimal_separator: string; currency_thousand_separator: string; currency_prefix: string; currency_suffix: string; price: string; regular_price: string; sale_price: string; price_range: { ...; } | null; }&apos; is not assignable to type &apos;Record&lt;string, never&gt;&apos;.
+    Property &apos;currency_code&apos; is incompatible with index signature.
+      Type &apos;string&apos; is not assignable to type &apos;never&apos;." source="TS2345" />
+<error line="73" column="4" severity="error" message="Property &apos;format&apos; is missing in type &apos;{ align: &quot;center&quot; | &quot;left&quot; | &quot;right&quot; | undefined; className: string; priceStyle: { [x: string]: unknown; }; regularPriceStyle: { [x: string]: unknown; }; priceClassName: string; currency: Currency; ... 4 more ...; regularPriceClassName: string; }&apos; but required in type &apos;ProductPriceProps&apos;." source="TS2741" />
 </file>
 <file name="assets/js/atomic/blocks/product-elements/image/block.js">
 <error line="138" column="19" severity="error" message="Binding element &apos;image&apos; implicitly has an &apos;any&apos; type." source="TS7031" />
