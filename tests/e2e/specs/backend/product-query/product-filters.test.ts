@@ -226,7 +226,7 @@ describeOrSkip( GUTENBERG_EDITOR_CONTEXT === 'gutenberg' )(
 				const stockStatusInput = await canvas().$(
 					await getFormElementIdByLabel(
 						'Stock status',
-						SELECTORS.formTokenFieldLabel
+						SELECTORS.formTokenFieldLabel.replace( '.', '' )
 					)
 				);
 				await stockStatusInput.click();
@@ -250,7 +250,7 @@ describeOrSkip( GUTENBERG_EDITOR_CONTEXT === 'gutenberg' )(
 				const stockStatusInput = await canvas().$(
 					await getFormElementIdByLabel(
 						'Stock status',
-						SELECTORS.formTokenFieldLabel
+						SELECTORS.formTokenFieldLabel.replace( '.', '' )
 					)
 				);
 				await stockStatusInput.click();
