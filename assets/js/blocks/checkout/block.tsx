@@ -7,6 +7,8 @@ import { createInterpolateElement, useEffect } from '@wordpress/element';
 import { useStoreCart } from '@woocommerce/base-context/hooks';
 import {
 	CheckoutProvider,
+	noticeContexts,
+	StoreNoticeProvider,
 	SnackbarNoticesContainer,
 } from '@woocommerce/base-context';
 
@@ -186,23 +188,27 @@ const Block = ( {
 			) }
 			showErrorMessage={ CURRENT_USER_IS_ADMIN }
 		>
-			<SnackbarNoticesContainer context="wc/checkout" />
-			<StoreNoticesContainer context="wc/checkout" />
-			{ /* SlotFillProvider need to be defined before CheckoutProvider so fills have the SlotFill context ready when they mount. */ }
-			<SlotFillProvider>
-				<CheckoutProvider>
-					<SidebarLayout
-						className={ classnames( 'wc-block-checkout', {
-							'has-dark-controls': attributes.hasDarkControls,
-						} ) }
-					>
-						<Checkout attributes={ attributes }>
-							{ children }
-						</Checkout>
-						<ScrollOnError scrollToTop={ scrollToTop } />
-					</SidebarLayout>
-				</CheckoutProvider>
-			</SlotFillProvider>
+			<StoreNoticeProvider defaultContext={ noticeContexts.CHECKOUT }>
+				<SnackbarNoticesContainer
+					context={ noticeContexts.CHECKOUT }
+					forceType={ true }
+				/>
+				{ /* SlotFillProvider need to be defined before CheckoutProvider so fills have the SlotFill context ready when they mount. */ }
+				<SlotFillProvider>
+					<CheckoutProvider>
+						<SidebarLayout
+							className={ classnames( 'wc-block-checkout', {
+								'has-dark-controls': attributes.hasDarkControls,
+							} ) }
+						>
+							<Checkout attributes={ attributes }>
+								{ children }
+							</Checkout>
+							<ScrollOnError scrollToTop={ scrollToTop } />
+						</SidebarLayout>
+					</CheckoutProvider>
+				</SlotFillProvider>
+			</StoreNoticeProvider>
 		</BlockErrorBoundary>
 	);
 };

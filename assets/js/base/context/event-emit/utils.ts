@@ -28,6 +28,10 @@ export enum responseTypes {
 export enum noticeContexts {
 	PAYMENTS = 'wc/payment-area',
 	EXPRESS_PAYMENTS = 'wc/express-payment-area',
+	CART = 'wc/cart',
+	CHECKOUT = 'wc/checkout',
+	SHIPPING_ADDRESS = 'wc/checkout/shippingAddress',
+	SHIPPING_METHODS = 'wc/checkout/shippingMethods',
 }
 
 export interface ResponseType extends Record< string, unknown > {

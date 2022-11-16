@@ -17,4 +17,12 @@
 			margin-right: 10px;
 		}
 	}
+
+	.components-snackbar--status-error {
+		background-color: #e2401c;
+	}
+
+	.components-snackbar--status-info {
+		background-color: #0073aa;
+	}
 }
