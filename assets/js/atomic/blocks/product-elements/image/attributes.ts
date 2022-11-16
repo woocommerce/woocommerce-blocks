@@ -1,4 +1,4 @@
-export const attributes = {
+export const blockAttributes: Record< string, Record< string, unknown > > = {
 	showProductLink: {
 		type: 'boolean',
 		default: true,
@@ -24,3 +24,5 @@ export const attributes = {
 		default: false,
 	},
 };
+
+export default blockAttributes;
