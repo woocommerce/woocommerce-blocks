@@ -1104,18 +1104,6 @@
 <error line="12" column="27" severity="error" message="Parameter &apos;OriginalComponent&apos; implicitly has an &apos;any&apos; type." source="TS7006" />
 <error line="13" column="12" severity="error" message="Parameter &apos;ownProps&apos; implicitly has an &apos;any&apos; type." source="TS7006" />
 </file>
-<file name="assets/js/atomic/blocks/product-elements/price/block.tsx">
-<error line="60" column="5" severity="error" message="Type &apos;{ align: &quot;center&quot; | &quot;left&quot; | &quot;right&quot; | undefined; className: string; }&apos; is not assignable to type &apos;ProductPriceProps&apos; with &apos;exactOptionalPropertyTypes: true&apos;. Consider adding &apos;undefined&apos; to the types of the target&apos;s properties.
-  Types of property &apos;align&apos; are incompatible.
-    Type &apos;&quot;center&quot; | &quot;left&quot; | &quot;right&quot; | undefined&apos; is not assignable to type &apos;&quot;center&quot; | &quot;left&quot; | &quot;right&quot;&apos;.
-      Type &apos;undefined&apos; is not assignable to type &apos;&quot;center&quot; | &quot;left&quot; | &quot;right&quot;&apos;." source="TS2375" />
-<error line="65" column="49" severity="error" message="Argument of type &apos;PriceProps&apos; is not assignable to parameter of type &apos;CurrencyResponse | Record&lt;string, unknown&gt; | CartShippingPackageShippingRate | undefined&apos;.
-  Type &apos;PriceProps&apos; is not assignable to type &apos;Record&lt;string, unknown&gt;&apos;.
-    Index signature for type &apos;string&apos; is missing in type &apos;PriceProps&apos;." source="TS2345" />
-<error line="73" column="4" severity="error" message="Type &apos;{ align: &quot;center&quot; | &quot;left&quot; | &quot;right&quot; | undefined; className: string; priceStyle: { [x: string]: unknown; }; regularPriceStyle: { [x: string]: unknown; }; priceClassName: string; currency: Currency; ... 4 more ...; regularPriceClassName: string; }&apos; is not assignable to type &apos;ProductPriceProps&apos; with &apos;exactOptionalPropertyTypes: true&apos;. Consider adding &apos;undefined&apos; to the types of the target&apos;s properties.
-  Types of property &apos;align&apos; are incompatible.
-    Type &apos;&quot;center&quot; | &quot;left&quot; | &quot;right&quot; | undefined&apos; is not assignable to type &apos;&quot;center&quot; | &quot;left&quot; | &quot;right&quot;&apos;." source="TS2375" />
-</file>
 <file name="assets/js/atomic/blocks/product-elements/image/block.js">
 <error line="137" column="19" severity="error" message="Binding element &apos;image&apos; implicitly has an &apos;any&apos; type." source="TS7031" />
 <error line="137" column="26" severity="error" message="Binding element &apos;loaded&apos; implicitly has an &apos;any&apos; type." source="TS7031" />
