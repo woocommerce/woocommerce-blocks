@@ -2,6 +2,7 @@
  * Internal dependencies
  */
 import { DEFAULT_TIMEOUT } from './constants';
+import { getFormElementIdByLabel } from './get-form-element-id-by-label';
 
 /**
  * Get the ID of the setting toogle so test can manipulate the toggle using
@@ -19,16 +20,12 @@ export const getToggleIdByLabel = async (
 	retry = 0
 ): Promise< string > => {
 	const delay = 1000;
-	const labelElement = await page.waitForXPath(
-		`//label[contains(text(), "${ label }") and contains(@class, "components-toggle-control__label")]`,
-		{ visible: true }
-	);
-	const checkboxId = await page.evaluate(
-		( toggleLabel ) => `#${ toggleLabel.getAttribute( 'for' ) }`,
-		labelElement
-	);
 	// Wait a bit for toggle to finish rerendering.
 	await page.waitForTimeout( delay );
+	const checkboxId = await getFormElementIdByLabel(
+		label,
+		'components-toggle-control__label'
+	);
 	const checkbox = await page.$( checkboxId );
 	if ( ! checkbox ) {
 		if ( retry * delay < DEFAULT_TIMEOUT ) {
