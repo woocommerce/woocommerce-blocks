@@ -73,7 +73,7 @@ export const getCurrencyFromPriceResponse = (
 	// Currency data object, for example an API response containing currency formatting data.
 	currencyData?:
 		| CurrencyResponse
-		| Record< string, never | unknown >
+		| Record< string, never >
 		| CartShippingPackageShippingRate
 ): Currency => {
 	if ( ! currencyData?.currency_code ) {
