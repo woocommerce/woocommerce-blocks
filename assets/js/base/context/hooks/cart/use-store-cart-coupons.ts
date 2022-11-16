@@ -9,6 +9,7 @@ import {
 } from '@woocommerce/block-data';
 import { decodeEntities } from '@wordpress/html-entities';
 import type { StoreCartCoupon } from '@woocommerce/types';
+import { __experimentalApplyCheckoutFilter } from '@woocommerce/blocks-checkout';
 
 /**
  * Internal dependencies
@@ -51,7 +52,14 @@ export const useStoreCartCoupons = ( context = '' ): StoreCartCoupon => {
 	const applyCouponWithNotices = ( couponCode: string ) => {
 		applyCoupon( couponCode )
 			.then( ( result ) => {
-				if ( result === true ) {
+				if (
+					result === true &&
+					__experimentalApplyCheckoutFilter(
+						'showApplyCouponNotice',
+						true,
+						{ couponCode, context }
+					)
+				) {
 					createNotice(
 						'info',
 						sprintf(
