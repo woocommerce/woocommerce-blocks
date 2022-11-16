@@ -58,6 +58,7 @@ const SELECTORS = {
 	productsGrid: `${ block.class } ul.wp-block-post-template`,
 	productsGridItem: `${ block.class } ul.wp-block-post-template > li.product`,
 	formTokenFieldLabel: '.components-form-token-field__label',
+	tokenRemoveButton: '.components-form-token-field__remove-token',
 };
 
 const toggleProductFilter = async ( filterName: string ) => {
@@ -219,7 +220,7 @@ describeOrSkip( GUTENBERG_EDITOR_CONTEXT === 'gutenberg' )(
 			 */
 			it.skip( 'Editor preview shows correct products that has enabled stock statuses', async () => {
 				const tokenRemoveButtons = await productFiltersPanel.$$(
-					'.components-form-token-field__remove-token'
+					SELECTORS.tokenRemoveButton
 				);
 				for ( const el of tokenRemoveButtons ) {
 					await el.click();
@@ -228,7 +229,7 @@ describeOrSkip( GUTENBERG_EDITOR_CONTEXT === 'gutenberg' )(
 				const stockStatusInput = await canvas().$(
 					await getFormElementIdByLabel(
 						'Stock status',
-						'components-form-token-field__label'
+						SELECTORS.formTokenFieldLabel
 					)
 				);
 				await stockStatusInput.click();
@@ -244,7 +245,7 @@ describeOrSkip( GUTENBERG_EDITOR_CONTEXT === 'gutenberg' )(
 
 			it( 'Works on the front end', async () => {
 				const tokenRemoveButtons = await productFiltersPanel.$$(
-					'.components-form-token-field__remove-token'
+					SELECTORS.tokenRemoveButton
 				);
 				for ( const el of tokenRemoveButtons ) {
 					await el.click();
@@ -252,7 +253,7 @@ describeOrSkip( GUTENBERG_EDITOR_CONTEXT === 'gutenberg' )(
 				const stockStatusInput = await canvas().$(
 					await getFormElementIdByLabel(
 						'Stock status',
-						'components-form-token-field__label'
+						SELECTORS.formTokenFieldLabel
 					)
 				);
 				await stockStatusInput.click();
