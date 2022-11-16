@@ -137,7 +137,7 @@ class BlockTemplatesController {
 		list( $template_id, $template_slug ) = $template_name_parts;
 
 		// If the theme has an archive-product.html template, but not a taxonomy-product_cat/tag/attribute.html template let's use the themes archive-product.html template.
-		if ( BlockTemplateUtils::template_is_eligible_for_product_archive_fallback_in_theme( $template_slug ) ) {
+		if ( BlockTemplateUtils::template_is_eligible_for_product_archive_fallback_from_theme( $template_slug ) ) {
 			$template_path   = BlockTemplateUtils::get_theme_template_path( 'archive-product' );
 			$template_object = BlockTemplateUtils::create_new_block_template_object( $template_path, $template_type, $template_slug, true );
 			return BlockTemplateUtils::build_template_result_from_file( $template_object, $template_type );
@@ -199,6 +199,12 @@ class BlockTemplatesController {
 
 		// @todo: Add apply_filters to _gutenberg_get_template_files() in Gutenberg to prevent duplication of logic.
 		foreach ( $template_files as $template_file ) {
+
+			// If we have a template eligible for a custom `archive-product` fallback, we need to skip it because we want
+			// to actually render the fallback one.
+			if ( BlockTemplateUtils::template_is_eligible_for_product_archive_fallback_from_db( $template_file->slug, $template_files ) ) {
+				continue;
+			}
 
 			// If we have a template which is eligible for a fallback, we need to explicitly tell Gutenberg that
 			// it has a theme file (because it is using the fallback template file). And then `continue` to avoid
@@ -357,7 +363,7 @@ class BlockTemplatesController {
 			}
 
 			// If the theme has an archive-product.html template, but not a taxonomy-product_cat/tag/attribute.html template let's use the themes archive-product.html template.
-			if ( BlockTemplateUtils::template_is_eligible_for_product_archive_fallback_in_theme( $template_slug ) ) {
+			if ( BlockTemplateUtils::template_is_eligible_for_product_archive_fallback_from_theme( $template_slug ) ) {
 				$template_file = BlockTemplateUtils::get_theme_template_path( 'archive-product' );
 				$templates[]   = BlockTemplateUtils::create_new_block_template_object( $template_file, $template_type, $template_slug, true );
 				continue;

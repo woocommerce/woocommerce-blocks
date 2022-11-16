@@ -475,10 +475,58 @@ class BlockTemplateUtils {
 	 * @param string $template_slug Slug to check for fallbacks.
 	 * @return boolean
 	 */
-	public static function template_is_eligible_for_product_archive_fallback_in_theme( $template_slug ) {
+	public static function template_is_eligible_for_product_archive_fallback_from_theme( $template_slug ) {
 		return self::template_is_eligible_for_product_archive_fallback( $template_slug )
 			&& ! self::theme_has_template( $template_slug )
 			&& self::theme_has_template( 'archive-product' );
+	}
+
+	/**
+	 * Checks if we can fall back to a custom `archive-product` template from the db for the template specified on the
+	 * `$template_slug` parameter.
+	 *
+	 * We should only fall back to it if the `$template_slug` is eligible (meaning it's `taxonomy-product_cat`,
+	 * `taxonomy-product_tag` or `taxonomy-attribute`), there is not a custom template with higher priority
+	 * in the db and there is a custom template for `archive-product` on the db.
+	 *
+	 * @param string $template_slug Template slug to check for fallbacks.
+	 * @param array  $template_files Array of existing block template objects.
+	 *
+	 * @return bool
+	 */
+	public static function template_is_eligible_for_product_archive_fallback_from_db( $template_slug, $template_files ) {
+		$is_eligible_for_product_archive_fallback = self::template_is_eligible_for_product_archive_fallback( $template_slug );
+		if ( ! $is_eligible_for_product_archive_fallback ) {
+			return false;
+		}
+
+		if ( self::custom_template_exists_on_db( $template_slug, $template_files ) ) {
+			return false;
+		};
+
+		if ( self::custom_template_exists_on_db( 'archive-product', $template_files ) ) {
+			return true;
+		}
+
+		return false;
+	}
+
+	/**
+	 * Checks whether a custom template for the `$template_slug` exists on `$templates_files`.
+	 *
+	 * @param string $template_slug Template slug.
+	 * @param array  $template_files Array of existing block template objects.
+	 *
+	 * @return bool
+	 */
+	private static function custom_template_exists_on_db( $template_slug, $template_files ) {
+		foreach ( $template_files as $template_file ) {
+			if ( 'custom' === $template_file->source && $template_file->slug === $template_slug ) {
+				return true;
+			}
+		}
+
+		return false;
 	}
 
 	/**
@@ -504,7 +552,7 @@ class BlockTemplateUtils {
 				$query_result_template->slug === $template->slug
 				&& $query_result_template->theme === $template->theme
 			) {
-				if ( self::template_is_eligible_for_product_archive_fallback_in_theme( $template->slug ) ) {
+				if ( self::template_is_eligible_for_product_archive_fallback_from_theme( $template->slug ) ) {
 					$query_result_template->has_theme_file = true;
 				}
 
