@@ -1,4 +1,30 @@
-export const blockAttributes: Record< string, Record< string, unknown > > = {
+interface BlockAttributes {
+	productId: {
+		type: string;
+		default: number;
+	};
+	showProductLink: {
+		type: string;
+		default: boolean;
+	};
+	showSaleBadge: {
+		type: string;
+		default: boolean;
+	};
+	saleBadgeAlign: {
+		type: string;
+		default: string;
+	};
+	imageSizing: {
+		type: string;
+		default: string;
+	};
+	isDescendentOfQueryLoop: {
+		type: string;
+		default: boolean;
+	};
+}
+export const blockAttributes: BlockAttributes = {
 	showProductLink: {
 		type: 'boolean',
 		default: true,
