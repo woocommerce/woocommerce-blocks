@@ -14,6 +14,7 @@ export interface ProductResponseItemBaseData {
 	value: string;
 	display?: string;
 	hidden?: boolean;
+	className?: string;
 }
 
 export type ProductResponseItemData = ProductResponseItemBaseData &
