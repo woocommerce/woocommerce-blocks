@@ -90,15 +90,14 @@ export const __internalEmitAfterProcessingEvents: emitAfterProcessingEventsType 
 	( { observers, notices } ) => {
 		return ( { select, dispatch, registry } ) => {
 			const { createErrorNotice } = registry.dispatch( noticesStore );
-			const state = select.getCheckoutState();
 			const data = {
-				redirectUrl: state.redirectUrl,
-				orderId: state.orderId,
-				customerId: state.customerId,
-				orderNotes: state.orderNotes,
-				processingResponse: state.paymentResult,
+				redirectUrl: select.getRedirectUrl(),
+				orderId: select.getOrderId(),
+				customerId: select.getCustomerId(),
+				orderNotes: select.getOrderNotes(),
+				processingResponse: null, //this will be overwrriten by https://github.com/woocommerce/woocommerce-blocks/pull/7692
 			};
-			if ( state.hasError ) {
+			if ( select.hasError() ) {
 				// allow payment methods or other things to customize the error
 				// with a fallback if nothing customizes it.
 				emitEventWithAbort(
