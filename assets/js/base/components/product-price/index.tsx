@@ -31,13 +31,13 @@ interface PriceRangeProps {
 	 *
 	 * **Note:** this excludes the dash in between the elements
 	 */
-	priceClassName?: string;
+	priceClassName?: string | undefined;
 	/**
 	 * Any custom style to be applied to each of the elements containing the prices
 	 *
 	 * **Note:** this excludes the dash in between the elements
 	 */
-	priceStyle?: React.CSSProperties;
+	priceStyle?: React.CSSProperties | undefined;
 }
 
 const PriceRange = ( {
@@ -95,13 +95,13 @@ interface SalePriceProps {
 	 *
 	 * i.e. `<del>` element
 	 */
-	regularPriceClassName?: string;
+	regularPriceClassName?: string | undefined;
 	/**
 	 * Custom style to be applied to the regular price container
 	 *
 	 * i.e. `<del>` element
 	 */
-	regularPriceStyle?: React.CSSProperties;
+	regularPriceStyle?: React.CSSProperties | undefined;
 	/**
 	 * The regular price before the sale
 	 */
@@ -111,13 +111,13 @@ interface SalePriceProps {
 	 *
 	 * i.e. `<ins>` element
 	 */
-	priceClassName?: string;
+	priceClassName?: string | undefined;
 	/**
 	 * Custom style to be applied to the regular price container
 	 *
 	 * i.e. `<ins>` element
 	 */
-	priceStyle?: React.CSSProperties;
+	priceStyle?: React.CSSProperties | undefined;
 	/**
 	 * The new price during the sale
 	 */
@@ -183,7 +183,7 @@ export interface ProductPriceProps {
 	 * Applies the `wc-block-components-product-price--align-${ align }` utility
 	 * class to the wrapper.
 	 */
-	align?: 'left' | 'center' | 'right' | undefined;
+	align?: 'left' | 'center' | 'right';
 	/**
 	 * CSS class for the wrapper
 	 */
@@ -191,17 +191,17 @@ export interface ProductPriceProps {
 	/**
 	 * Currency configuration object
 	 */
-	currency?: Currency | Record< string, never >;
+	currency: Currency | Record< string, never >;
 	/**
 	 * The string version of the element to use for the price interpolation
 	 *
 	 * **Note:** It should contain `<price/>` (which is also the default value)
 	 */
-	format?: string;
+	format: string;
 	/**
 	 * The current price
 	 */
-	price?: number | string;
+	price: number | string;
 	/**
 	 * CSS class for the current price wrapper
 	 */
@@ -216,14 +216,14 @@ export interface ProductPriceProps {
 	 * If both `maxPrice` and `minPrice` are set, the component will be rendered
 	 * as a `PriceRange` component, otherwise, this value will be ignored.
 	 */
-	maxPrice?: number | string | undefined;
+	maxPrice?: number | string;
 	/**
 	 * The minimum price in a range
 	 *
 	 * If both `maxPrice` and `minPrice` are set, the component will be rendered
 	 * as a `PriceRange` component, otherwise, this value will be ignored.
 	 */
-	minPrice?: number | string | undefined;
+	minPrice?: number | string;
 	/**
 	 * The regular price if the item is currently on sale
 	 *
