@@ -63,7 +63,7 @@ export const Block = ( props: Props ): JSX.Element | null => {
 	}
 
 	const prices: PriceProps = product.prices;
-	const currency = getCurrencyFromPriceResponse( prices );
+	const currency = getCurrencyFromPriceResponse( { ...prices } );
 	const isOnSale = prices.price !== prices.regular_price;
 	const priceClassName = classnames( {
 		[ `${ parentClassName }__product-price__value` ]: parentClassName,

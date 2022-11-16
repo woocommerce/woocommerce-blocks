@@ -183,7 +183,7 @@ export interface ProductPriceProps {
 	 * Applies the `wc-block-components-product-price--align-${ align }` utility
 	 * class to the wrapper.
 	 */
-	align?: 'left' | 'center' | 'right';
+	align?: 'left' | 'center' | 'right' | undefined;
 	/**
 	 * CSS class for the wrapper
 	 */
@@ -216,14 +216,14 @@ export interface ProductPriceProps {
 	 * If both `maxPrice` and `minPrice` are set, the component will be rendered
 	 * as a `PriceRange` component, otherwise, this value will be ignored.
 	 */
-	maxPrice?: number | string;
+	maxPrice?: number | string | undefined;
 	/**
 	 * The minimum price in a range
 	 *
 	 * If both `maxPrice` and `minPrice` are set, the component will be rendered
 	 * as a `PriceRange` component, otherwise, this value will be ignored.
 	 */
-	minPrice?: number | string;
+	minPrice?: number | string | undefined;
 	/**
 	 * The regular price if the item is currently on sale
 	 *
