@@ -20,3 +20,6 @@ export { insertInnerBlock } from './insert-inner-block';
 export { getFixtureProductsData } from './get-fixture-products-data';
 export { findToolsPanelWithTitle } from './find-tools-panel-with-title';
 export { getFormElementIdByLabel } from './get-form-element-id-by-label';
+export { getToggleIdByLabel } from './get-toggle-id-by-label';
+export { insertBlockUsingQuickInserter } from './insert-block-using-quick-inserter';
+export { insertBlockUsingSlash } from './insert-block-using-slash';
