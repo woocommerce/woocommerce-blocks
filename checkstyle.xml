@@ -857,9 +857,6 @@
 <error line="12" column="56" severity="error" message="Namespace &apos;&quot;/home/runner/work/woocommerce-blocks/woocommerce-blocks/assets/js/types/type-defs/contexts&quot;&apos; has no exported member &apos;StoreNoticeObject&apos;." source="TS2694" />
 <error line="13" column="53" severity="error" message="Namespace &apos;&quot;/home/runner/work/woocommerce-blocks/woocommerce-blocks/assets/js/types/type-defs/hooks&quot;&apos; has no exported member &apos;CheckoutNotices&apos;." source="TS2694" />
 </file>
-<file name="assets/js/base/context/providers/cart-checkout/checkout-events/index.tsx">
-<error line="200" column="17" severity="error" message="Property &apos;paymentResult&apos; does not exist on type &apos;CheckoutState&apos;." source="TS2339" />
-</file>
 <file name="assets/js/base/context/providers/cart-checkout/shipping/constants.js">
 <error line="2" column="56" severity="error" message="Namespace &apos;&quot;/home/runner/work/woocommerce-blocks/woocommerce-blocks/assets/js/types/type-defs/contexts&quot;&apos; has no exported member &apos;ShippingErrorTypes&apos;." source="TS2694" />
 <error line="3" column="56" severity="error" message="Namespace &apos;&quot;/home/runner/work/woocommerce-blocks/woocommerce-blocks/assets/js/types/type-defs/shipping&quot;&apos; has no exported member &apos;ShippingAddress&apos;." source="TS2694" />
