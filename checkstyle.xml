@@ -240,6 +240,12 @@
     Argument of type &apos;string | BlockConfiguration&lt;{}&gt;&apos; is not assignable to parameter of type &apos;string&apos;.
       Type &apos;BlockConfiguration&lt;{}&gt;&apos; is not assignable to type &apos;string&apos;." source="TS2769" />
 </file>
+<file name="assets/js/base/components/formatted-monetary-amount/index.tsx">
+<error line="75" column="35" severity="error" message="Object is possibly &apos;undefined&apos;." source="TS2532" />
+<error line="88" column="30" severity="error" message="Argument of type &apos;Currency | Record&lt;string, never&gt; | undefined&apos; is not assignable to parameter of type &apos;Currency | Record&lt;string, never&gt;&apos;.
+  Type &apos;undefined&apos; is not assignable to type &apos;Currency | Record&lt;string, never&gt;&apos;." source="TS2345" />
+<error line="97" column="50" severity="error" message="Object is possibly &apos;undefined&apos;." source="TS2532" />
+</file>
 <file name="packages/prices/utils/index.js">
 <error line="1" column="15" severity="error" message="File &apos;/home/runner/work/woocommerce-blocks/woocommerce-blocks/packages/prices/utils/price.ts&apos; is not listed within the file list of project &apos;/home/runner/work/woocommerce-blocks/woocommerce-blocks/tsconfig.json&apos;. Projects must list all files or use an &apos;include&apos; pattern." source="TS6307" />
 </file>
@@ -646,12 +652,24 @@
 <file name="assets/js/previews/cart.ts">
 <error line="75" column="4" severity="error" message="Property &apos;price_range&apos; is missing in type &apos;{ currency_code: &quot;USD&quot;; currency_symbol: string; currency_minor_unit: number; currency_decimal_separator: string; currency_thousand_separator: string; currency_prefix: string; currency_suffix: string; price: string; regular_price: string; sale_price: string; raw_prices: { ...; }; }&apos; but required in type &apos;CartItemPrices&apos;." source="TS2741" />
 <error line="141" column="4" severity="error" message="Property &apos;price_range&apos; is missing in type &apos;{ currency_code: &quot;USD&quot;; currency_symbol: string; currency_minor_unit: number; currency_decimal_separator: string; currency_thousand_separator: string; currency_prefix: string; currency_suffix: string; price: string; regular_price: string; sale_price: string; raw_prices: { ...; }; }&apos; but required in type &apos;CartItemPrices&apos;." source="TS2741" />
-<error line="180" column="4" severity="error" message="Property &apos;price_range&apos; is missing in type &apos;{ currency_code: &quot;USD&quot;; currency_symbol: string; currency_minor_unit: number; currency_decimal_separator: string; currency_thousand_separator: string; currency_prefix: string; currency_suffix: string; price: string; regular_price: string; sale_price: string; raw_prices: { ...; }; }&apos; but required in type &apos;ProductResponseItemPrices&apos;." source="TS2741" />
-<error line="215" column="4" severity="error" message="Property &apos;price_range&apos; is missing in type &apos;{ currency_code: &quot;USD&quot;; currency_symbol: string; currency_minor_unit: number; currency_decimal_separator: string; currency_thousand_separator: string; currency_prefix: string; currency_suffix: string; price: string; regular_price: string; sale_price: string; raw_prices: { ...; }; }&apos; but required in type &apos;ProductResponseItemPrices&apos;." source="TS2741" />
-<error line="252" column="4" severity="error" message="Property &apos;price_range&apos; is missing in type &apos;{ currency_code: &quot;USD&quot;; currency_symbol: string; currency_minor_unit: number; currency_decimal_separator: string; currency_thousand_separator: string; currency_prefix: string; currency_suffix: string; price: string; regular_price: string; sale_price: string; raw_prices: { ...; }; }&apos; but required in type &apos;ProductResponseItemPrices&apos;." source="TS2741" />
-<error line="290" column="4" severity="error" message="Property &apos;price_range&apos; is missing in type &apos;{ currency_code: &quot;USD&quot;; currency_symbol: string; currency_minor_unit: number; currency_decimal_separator: string; currency_thousand_separator: string; currency_prefix: string; currency_suffix: string; price: string; regular_price: string; sale_price: string; raw_prices: { ...; }; }&apos; but required in type &apos;ProductResponseItemPrices&apos;." source="TS2741" />
-<error line="327" column="4" severity="error" message="Property &apos;price_range&apos; is missing in type &apos;{ currency_code: &quot;USD&quot;; currency_symbol: string; currency_minor_unit: number; currency_decimal_separator: string; currency_thousand_separator: string; currency_prefix: string; currency_suffix: string; price: string; regular_price: string; sale_price: string; raw_prices: { ...; }; }&apos; but required in type &apos;ProductResponseItemPrices&apos;." source="TS2741" />
-<error line="365" column="4" severity="error" message="Property &apos;price_range&apos; is missing in type &apos;{ currency_code: &quot;USD&quot;; currency_symbol: string; currency_minor_unit: number; currency_decimal_separator: string; currency_thousand_separator: string; currency_prefix: string; currency_suffix: string; price: string; regular_price: string; sale_price: string; raw_prices: { ...; }; }&apos; but required in type &apos;ProductResponseItemPrices&apos;." source="TS2741" />
+<error line="191" column="5" severity="error" message="Type &apos;{ currency_code: &quot;USD&quot;; currency_symbol: string; currency_minor_unit: number; currency_decimal_separator: string; currency_thousand_separator: string; currency_prefix: string; currency_suffix: string; price: string; regular_price: string; sale_price: string; raw_prices: { ...; }; }&apos; is not assignable to type &apos;ProductResponseItemPrices&apos;.
+  Object literal may only specify known properties, and &apos;raw_prices&apos; does not exist in type &apos;ProductResponseItemPrices&apos;." source="TS2322" />
+<error line="209" column="4" severity="error" message="Type &apos;number&apos; is not assignable to type &apos;string&apos;." source="TS2322" />
+<error line="226" column="5" severity="error" message="Type &apos;{ currency_code: &quot;USD&quot;; currency_symbol: string; currency_minor_unit: number; currency_decimal_separator: string; currency_thousand_separator: string; currency_prefix: string; currency_suffix: string; price: string; regular_price: string; sale_price: string; raw_prices: { ...; }; }&apos; is not assignable to type &apos;ProductResponseItemPrices&apos;.
+  Object literal may only specify known properties, and &apos;raw_prices&apos; does not exist in type &apos;ProductResponseItemPrices&apos;." source="TS2322" />
+<error line="245" column="4" severity="error" message="Type &apos;number&apos; is not assignable to type &apos;string&apos;." source="TS2322" />
+<error line="263" column="5" severity="error" message="Type &apos;{ currency_code: &quot;USD&quot;; currency_symbol: string; currency_minor_unit: number; currency_decimal_separator: string; currency_thousand_separator: string; currency_prefix: string; currency_suffix: string; price: string; regular_price: string; sale_price: string; raw_prices: { ...; }; }&apos; is not assignable to type &apos;ProductResponseItemPrices&apos;.
+  Object literal may only specify known properties, and &apos;raw_prices&apos; does not exist in type &apos;ProductResponseItemPrices&apos;." source="TS2322" />
+<error line="283" column="4" severity="error" message="Type &apos;number&apos; is not assignable to type &apos;string&apos;." source="TS2322" />
+<error line="301" column="5" severity="error" message="Type &apos;{ currency_code: &quot;USD&quot;; currency_symbol: string; currency_minor_unit: number; currency_decimal_separator: string; currency_thousand_separator: string; currency_prefix: string; currency_suffix: string; price: string; regular_price: string; sale_price: string; raw_prices: { ...; }; }&apos; is not assignable to type &apos;ProductResponseItemPrices&apos;.
+  Object literal may only specify known properties, and &apos;raw_prices&apos; does not exist in type &apos;ProductResponseItemPrices&apos;." source="TS2322" />
+<error line="320" column="4" severity="error" message="Type &apos;number&apos; is not assignable to type &apos;string&apos;." source="TS2322" />
+<error line="338" column="5" severity="error" message="Type &apos;{ currency_code: &quot;USD&quot;; currency_symbol: string; currency_minor_unit: number; currency_decimal_separator: string; currency_thousand_separator: string; currency_prefix: string; currency_suffix: string; price: string; regular_price: string; sale_price: string; raw_prices: { ...; }; }&apos; is not assignable to type &apos;ProductResponseItemPrices&apos;.
+  Object literal may only specify known properties, and &apos;raw_prices&apos; does not exist in type &apos;ProductResponseItemPrices&apos;." source="TS2322" />
+<error line="358" column="4" severity="error" message="Type &apos;number&apos; is not assignable to type &apos;string&apos;." source="TS2322" />
+<error line="376" column="5" severity="error" message="Type &apos;{ currency_code: &quot;USD&quot;; currency_symbol: string; currency_minor_unit: number; currency_decimal_separator: string; currency_thousand_separator: string; currency_prefix: string; currency_suffix: string; price: string; regular_price: string; sale_price: string; raw_prices: { ...; }; }&apos; is not assignable to type &apos;ProductResponseItemPrices&apos;.
+  Object literal may only specify known properties, and &apos;raw_prices&apos; does not exist in type &apos;ProductResponseItemPrices&apos;." source="TS2322" />
+<error line="394" column="4" severity="error" message="Type &apos;number&apos; is not assignable to type &apos;string&apos;." source="TS2322" />
 <error line="411" column="5" severity="error" message="Type &apos;{ currency_code: &quot;USD&quot;; currency_symbol: string; currency_minor_unit: number; currency_decimal_separator: string; currency_thousand_separator: string; currency_prefix: string; currency_suffix: string; total: string; total_tax: string; tax_lines: { ...; }[]; }&apos; is not assignable to type &apos;CartResponseFeeItemTotals&apos;.
   Object literal may only specify known properties, and &apos;tax_lines&apos; does not exist in type &apos;CartResponseFeeItemTotals&apos;." source="TS2322" />
 </file>
@@ -736,20 +754,12 @@
   No index signature with a parameter of type &apos;string&apos; was found on type &apos;Object&apos;." source="TS7053" />
 </file>
 <file name="assets/js/base/components/product-price/index.tsx">
-<error line="286" column="5" severity="error" message="Type &apos;Currency | Record&lt;string, never&gt; | undefined&apos; is not assignable to type &apos;Currency | Record&lt;string, never&gt;&apos;.
-  Type &apos;undefined&apos; is not assignable to type &apos;Currency | Record&lt;string, never&gt;&apos;." source="TS2322" />
-<error line="287" column="5" severity="error" message="Type &apos;string | number | undefined&apos; is not assignable to type &apos;string | number&apos;.
+<error line="173" column="5" severity="error" message="Type &apos;string | number | undefined&apos; is not assignable to type &apos;string | number&apos;.
   Type &apos;undefined&apos; is not assignable to type &apos;string | number&apos;." source="TS2322" />
-<error line="298" column="5" severity="error" message="Type &apos;Currency | Record&lt;string, never&gt; | undefined&apos; is not assignable to type &apos;Currency | Record&lt;string, never&gt;&apos;." source="TS2322" />
-<error line="312" column="5" severity="error" message="Type &apos;Currency | Record&lt;string, never&gt; | undefined&apos; is not assignable to type &apos;Currency | Record&lt;string, never&gt;&apos;." source="TS2322" />
 </file>
 <file name="assets/js/shared/context/inner-block-layout-context.js">
 <error line="26" column="2" severity="error" message="Binding element &apos;children&apos; implicitly has an &apos;any&apos; type." source="TS7031" />
 <error line="33" column="37" severity="error" message="Property &apos;isLoading&apos; is missing in type &apos;{ parentName: string; parentClassName: string; }&apos; but required in type &apos;{ parentName: string; parentClassName: string; isLoading: boolean; }&apos;." source="TS2741" />
-</file>
-<file name="assets/js/shared/context/product-data-context.tsx">
-<error line="21" column="2" severity="error" message="Property &apos;raw_prices&apos; is missing in type &apos;{ currency_code: &quot;USD&quot;; currency_symbol: string; currency_minor_unit: number; currency_decimal_separator: string; currency_thousand_separator: string; currency_prefix: string; currency_suffix: string; price: string; regular_price: string; sale_price: string; price_range: null; }&apos; but required in type &apos;ProductResponseItemPrices&apos;." source="TS2741" />
-<error line="35" column="2" severity="error" message="Type &apos;string&apos; is not assignable to type &apos;number&apos;." source="TS2322" />
 </file>
 <file name="assets/js/base/hooks/use-container-queries.ts">
 <error line="36" column="7" severity="error" message="Object is possibly &apos;null&apos;." source="TS2531" />
@@ -1097,12 +1107,6 @@
 <error line="138" column="34" severity="error" message="Binding element &apos;showFullSize&apos; implicitly has an &apos;any&apos; type." source="TS7031" />
 <error line="138" column="48" severity="error" message="Binding element &apos;fallbackAlt&apos; implicitly has an &apos;any&apos; type." source="TS7031" />
 </file>
-<file name="assets/js/atomic/blocks/product-elements/rating/block.tsx">
-<error line="55" column="35" severity="error" message="Argument of type &apos;ProductResponseItem&apos; is not assignable to parameter of type &apos;Omit&lt;ProductResponseItem, &quot;average_rating&quot;&gt; &amp; { average_rating: string; }&apos;.
-  Type &apos;ProductResponseItem&apos; is not assignable to type &apos;{ average_rating: string; }&apos;.
-    Types of property &apos;average_rating&apos; are incompatible.
-      Type &apos;number&apos; is not assignable to type &apos;string&apos;." source="TS2345" />
-</file>
 <file name="assets/js/atomic/blocks/product-elements/button/block.js">
 <error line="100" column="3" severity="error" message="Property &apos;id&apos; does not exist on type &apos;Object | undefined&apos;." source="TS2339" />
 <error line="101" column="3" severity="error" message="Property &apos;permalink&apos; does not exist on type &apos;Object | undefined&apos;." source="TS2339" />
@@ -1139,9 +1143,6 @@
 <file name="assets/js/base/components/summary/utils.js">
 <error line="4" column="23" severity="error" message="Could not find a declaration file for module &apos;@wordpress/wordcount&apos;. &apos;/home/runner/work/woocommerce-blocks/woocommerce-blocks/node_modules/@wordpress/wordcount/build/index.js&apos; implicitly has an &apos;any&apos; type.
   Try `npm i --save-dev @types/wordpress__wordcount` if it exists or add a new declaration (.d.ts) file containing `declare module &apos;@wordpress/wordcount&apos;;`" source="TS7016" />
-</file>
-<file name="assets/js/atomic/blocks/product-elements/stock-indicator/block.tsx">
-<error line="77" column="21" severity="error" message="Argument of type &apos;number&apos; is not assignable to parameter of type &apos;string&apos;." source="TS2345" />
 </file>
 <file name="assets/js/atomic/blocks/product-elements/add-to-cart/shared/add-to-cart-button.js">
 <error line="120" column="4" severity="error" message="Type &apos;{ children: string; className: string; href: string; onClick: () =&gt; any; rel: string; }&apos; is not assignable to type &apos;IntrinsicAttributes &amp; ButtonProps&apos;.
@@ -2179,9 +2180,6 @@
       Property &apos;attributes&apos; is missing in type &apos;{ name: string; version: string; title: string; description: string; category: string; supports: { align: boolean; html: boolean; multiple: boolean; reusable: boolean; inserter: boolean; }; parent: string[]; textdomain: string; apiVersion: number; }&apos; but required in type &apos;Pick&lt;Block&lt;{}&gt;, &quot;title&quot; | &quot;category&quot; | &quot;attributes&quot;&gt;&apos;.
   Overload 2 of 2, &apos;(name: string, settings: BlockConfiguration&lt;{}&gt;): Block&lt;{}&gt; | undefined&apos;, gave the following error.
     Argument of type &apos;{ name: string; version: string; title: string; description: string; category: string; supports: { align: boolean; html: boolean; multiple: boolean; reusable: boolean; inserter: boolean; }; parent: string[]; textdomain: string; apiVersion: number; }&apos; is not assignable to parameter of type &apos;string&apos;." source="TS2769" />
-</file>
-<file name="assets/js/blocks/cart/cart-cross-sells-product-list/cart-cross-sells-product.tsx">
-<error line="35" column="6" severity="error" message="This JSX tag&apos;s &apos;children&apos; prop expects a single child of type &apos;Element&apos;, but multiple children were provided." source="TS2746" />
 </file>
 <file name="assets/js/blocks/cart/inner-blocks/cart-cross-sells-products/index.tsx">
 <error line="13" column="20" severity="error" message="No overload matches this call.
@@ -3711,7 +3709,6 @@
 </file>
 <file name="assets/js/blocks/single-product/block.js">
 <error line="31" column="64" severity="error" message="Property &apos;id&apos; does not exist on type &apos;Object&apos;." source="TS2339" />
-<error line="45" column="5" severity="error" message="This JSX tag&apos;s &apos;children&apos; prop expects a single child of type &apos;Element&apos;, but multiple children were provided." source="TS2746" />
 <error line="46" column="5" severity="error" message="The &apos;Object&apos; type is assignable to very few other types. Did you mean to use the &apos;any&apos; type instead?
   Type &apos;Object&apos; is missing the following properties from type &apos;ProductResponseItem&apos;: id, name, parent, type, and 22 more." source="TS2696" />
 </file>
@@ -3732,7 +3729,6 @@
 <error line="17" column="16" severity="error" message="Parameter &apos;value&apos; implicitly has an &apos;any[]&apos; type." source="TS7006" />
 </file>
 <file name="assets/js/blocks/single-product/edit/layout-editor.js">
-<error line="50" column="5" severity="error" message="This JSX tag&apos;s &apos;children&apos; prop expects a single child of type &apos;Element&apos;, but multiple children were provided." source="TS2746" />
 <error line="51" column="5" severity="error" message="Type &apos;Object&apos; is not assignable to type &apos;ProductResponseItem&apos;.
   The &apos;Object&apos; type is assignable to very few other types. Did you mean to use the &apos;any&apos; type instead?" source="TS2322" />
 <error line="78" column="7" severity="error" message="Type &apos;{}[][]&apos; is not assignable to type &apos;readonly Template[]&apos;.
