@@ -17,7 +17,7 @@ interface PriceRangeProps {
 	/**
 	 * Currency configuration object
 	 */
-	currency: Currency | Record< string, never >;
+	currency: Currency | Record< string, never > | undefined;
 	/**
 	 * The maximum price for the range
 	 */
@@ -89,7 +89,7 @@ interface SalePriceProps {
 	/**
 	 * Currency configuration object
 	 */
-	currency: Currency | Record< string, never >;
+	currency: Currency | Record< string, never > | undefined;
 	/**
 	 * CSS class to be applied to the regular price container
 	 *
@@ -121,7 +121,7 @@ interface SalePriceProps {
 	/**
 	 * The new price during the sale
 	 */
-	price: number | string;
+	price: number | string | undefined;
 }
 
 const SalePrice = ( {
