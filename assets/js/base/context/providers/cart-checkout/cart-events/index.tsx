@@ -47,7 +47,7 @@ export const useCartEventsContext = () => {
 export const CartEventsProvider = ( {
 	children,
 }: {
-	children: React.ReactChildren;
+	children: React.ReactNode;
 } ): JSX.Element => {
 	const [ observers, observerDispatch ] = useReducer( emitReducer, {} );
 	const currentObservers = useRef( observers );
