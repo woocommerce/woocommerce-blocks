@@ -19,6 +19,20 @@ import type { BlockAttributes } from './types';
 
 type Props = BlockAttributes & HTMLAttributes< HTMLDivElement >;
 
+interface PriceProps {
+	currency_code: string;
+	currency_symbol: string;
+	currency_minor_unit: number;
+	currency_decimal_separator: string;
+	currency_thousand_separator: string;
+	currency_prefix: string;
+	currency_suffix: string;
+	price: string;
+	regular_price: string;
+	sale_price: string;
+	price_range: null | { min_amount: string; max_amount: string };
+}
+
 export const Block = ( props: Props ): JSX.Element | null => {
 	const { className, textAlign } = props;
 	const { parentClassName } = useInnerBlockLayoutContext();
@@ -47,7 +61,7 @@ export const Block = ( props: Props ): JSX.Element | null => {
 		);
 	}
 
-	const prices = product.prices;
+	const prices: PriceProps = product.prices;
 	const currency = getCurrencyFromPriceResponse( prices );
 	const isOnSale = prices.price !== prices.regular_price;
 	const priceClassName = classnames( {
