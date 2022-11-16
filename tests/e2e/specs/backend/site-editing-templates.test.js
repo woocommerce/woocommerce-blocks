@@ -609,7 +609,7 @@ describe( 'Store Editing Templates', () => {
 		} );
 
 		it( 'should show the user customization on the front-end', async () => {
-			await page.goto( new URL( '/color/red', BASE_URL ) );
+			await page.goto( new URL( '/shade/red', BASE_URL ) );
 
 			await expect( page ).toMatchElement( 'p', {
 				text: CUSTOMIZED_STRING,
