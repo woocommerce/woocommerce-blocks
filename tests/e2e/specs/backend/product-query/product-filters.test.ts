@@ -10,8 +10,10 @@ import {
 	getFixtureProductsData,
 	getFormElementIdByLabel,
 	shopper,
+	getToggleIdByLabel,
 } from '@woocommerce/blocks-test-utils';
 import { ElementHandle } from 'puppeteer';
+import { setCheckbox, unsetCheckbox } from '@woocommerce/e2e-utils';
 
 /**
  * Internal dependencies
@@ -142,21 +144,17 @@ describeOrSkip( GUTENBERG_EDITOR_CONTEXT === 'gutenberg' )(
 			it( 'Editor preview shows correct products corresponding to the value `Show only products on sale`', async () => {
 				const defaultCount = getFixtureProductsData().length;
 				const saleCount = getFixtureProductsData( 'sale_price' ).length;
-
 				expect( await getPreviewProducts() ).toHaveLength(
 					defaultCount
 				);
-
 				await toggleProductFilter( 'Sale status' );
-
-				const onSaleToggle = await productFiltersPanel.waitForXPath(
-					'//label[text()="Show only products on sale"]'
+				await setCheckbox(
+					await getToggleIdByLabel( 'Show only products on sale' )
 				);
-
-				await onSaleToggle.click();
 				expect( await getPreviewProducts() ).toHaveLength( saleCount );
-
-				await onSaleToggle.click();
+				await unsetCheckbox(
+					await getToggleIdByLabel( 'Show only products on sale' )
+				);
 				expect( await getPreviewProducts() ).toHaveLength(
 					defaultCount
 				);
@@ -164,10 +162,9 @@ describeOrSkip( GUTENBERG_EDITOR_CONTEXT === 'gutenberg' )(
 
 			it( 'Works on the front end', async () => {
 				await toggleProductFilter( 'Sale status' );
-				const onSaleToggle = await productFiltersPanel.waitForXPath(
-					'//label[text()="Show only products on sale"]'
+				await setCheckbox(
+					await getToggleIdByLabel( 'Show only products on sale' )
 				);
-				await onSaleToggle.click();
 				await canvas().waitForSelector(
 					SELECTORS.editorPreview.productsGrid
 				);
