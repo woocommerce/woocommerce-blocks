@@ -477,6 +477,16 @@ abstract class AbstractProductGrid extends AbstractDynamicBlock {
 			$classes[] = $this->attributes['className'];
 		}
 
+		/**
+		 * Filter the product grid container classes.
+		 *
+		 * @param array $classes
+		 * @param \AbstractProductGrid $this
+		 *
+		 * @return array
+		 */
+		$classes = apply_filters( 'woocommerce_blocks_product_grid_container_classes', $classes, $this );
+
 		return implode( ' ', $classes );
 	}
 
