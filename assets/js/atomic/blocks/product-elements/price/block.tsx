@@ -11,6 +11,7 @@ import {
 import { useColorProps, useTypographyProps } from '@woocommerce/base-hooks';
 import { withProductDataContext } from '@woocommerce/shared-hocs';
 import type { HTMLAttributes } from 'react';
+import { CurrencyCode } from '@woocommerce/type-defs/currency';
 
 /**
  * Internal dependencies
@@ -20,7 +21,7 @@ import type { BlockAttributes } from './types';
 type Props = BlockAttributes & HTMLAttributes< HTMLDivElement >;
 
 interface PriceProps {
-	currency_code: string;
+	currency_code: CurrencyCode;
 	currency_symbol: string;
 	currency_minor_unit: number;
 	currency_decimal_separator: string;
@@ -62,7 +63,7 @@ export const Block = ( props: Props ): JSX.Element | null => {
 	}
 
 	const prices: PriceProps = product.prices;
-	const currency = getCurrencyFromPriceResponse( { ...prices } );
+	const currency = getCurrencyFromPriceResponse( prices );
 	const isOnSale = prices.price !== prices.regular_price;
 	const priceClassName = classnames( {
 		[ `${ parentClassName }__product-price__value` ]: parentClassName,
