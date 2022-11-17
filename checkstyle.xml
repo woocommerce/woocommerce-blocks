@@ -252,47 +252,47 @@
 <error line="63" column="3" severity="error" message="Object is of type &apos;unknown&apos;." source="TS2571" />
 </file>
 <file name="packages/prices/utils/index.js">
-<error line="1" column="15" severity="error" message="File &apos;/Users/thomas/code/spooky-site/app/public/wp-content/plugins/woocommerce-blocks/packages/prices/utils/price.ts&apos; is not listed within the file list of project &apos;/Users/thomas/code/spooky-site/app/public/wp-content/plugins/woocommerce-blocks/tsconfig.json&apos;. Projects must list all files or use an &apos;include&apos; pattern." source="TS6307" />
+<error line="1" column="15" severity="error" message="File &apos;/home/runner/work/woocommerce-blocks/woocommerce-blocks/packages/prices/utils/price.ts&apos; is not listed within the file list of project &apos;/home/runner/work/woocommerce-blocks/woocommerce-blocks/tsconfig.json&apos;. Projects must list all files or use an &apos;include&apos; pattern." source="TS6307" />
 </file>
 <file name="packages/prices/index.js">
-<error line="1" column="15" severity="error" message="File &apos;/Users/thomas/code/spooky-site/app/public/wp-content/plugins/woocommerce-blocks/packages/prices/utils/index.js&apos; is not listed within the file list of project &apos;/Users/thomas/code/spooky-site/app/public/wp-content/plugins/woocommerce-blocks/tsconfig.json&apos;. Projects must list all files or use an &apos;include&apos; pattern." source="TS6307" />
+<error line="1" column="15" severity="error" message="File &apos;/home/runner/work/woocommerce-blocks/woocommerce-blocks/packages/prices/utils/index.js&apos; is not listed within the file list of project &apos;/home/runner/work/woocommerce-blocks/woocommerce-blocks/tsconfig.json&apos;. Projects must list all files or use an &apos;include&apos; pattern." source="TS6307" />
 </file>
 <file name="packages/checkout/components/totals/item/index.tsx">
 <error line="8" column="15" severity="error" message="Module &apos;&quot;@woocommerce/price-format&quot;&apos; has no exported member &apos;Currency&apos;." source="TS2305" />
-<error line="8" column="31" severity="error" message="File &apos;/Users/thomas/code/spooky-site/app/public/wp-content/plugins/woocommerce-blocks/packages/prices/index.js&apos; is not listed within the file list of project &apos;/Users/thomas/code/spooky-site/app/public/wp-content/plugins/woocommerce-blocks/tsconfig.json&apos;. Projects must list all files or use an &apos;include&apos; pattern.
+<error line="8" column="31" severity="error" message="File &apos;/home/runner/work/woocommerce-blocks/woocommerce-blocks/packages/prices/index.js&apos; is not listed within the file list of project &apos;/home/runner/work/woocommerce-blocks/woocommerce-blocks/tsconfig.json&apos;. Projects must list all files or use an &apos;include&apos; pattern.
   The file is in the program because:
-    Imported via &apos;@woocommerce/price-format&apos; from file &apos;/Users/thomas/code/spooky-site/app/public/wp-content/plugins/woocommerce-blocks/packages/checkout/components/totals/item/index.tsx&apos;
-    Imported via &apos;@woocommerce/price-format&apos; from file &apos;/Users/thomas/code/spooky-site/app/public/wp-content/plugins/woocommerce-blocks/packages/checkout/components/totals/subtotal/index.tsx&apos;
-    Imported via &apos;@woocommerce/price-format&apos; from file &apos;/Users/thomas/code/spooky-site/app/public/wp-content/plugins/woocommerce-blocks/packages/checkout/components/totals/taxes/index.tsx&apos;
-    Imported via &apos;@woocommerce/price-format&apos; from file &apos;/Users/thomas/code/spooky-site/app/public/wp-content/plugins/woocommerce-blocks/packages/checkout/components/totals/fees/index.tsx&apos;
-    Imported via &apos;@woocommerce/price-format&apos; from file &apos;/Users/thomas/code/spooky-site/app/public/wp-content/plugins/woocommerce-blocks/assets/js/base/components/product-price/index.tsx&apos;
-    Imported via &apos;@woocommerce/price-format&apos; from file &apos;/Users/thomas/code/spooky-site/app/public/wp-content/plugins/woocommerce-blocks/assets/js/atomic/blocks/product-elements/price/block.js&apos;
-    Imported via &apos;@woocommerce/price-format&apos; from file &apos;/Users/thomas/code/spooky-site/app/public/wp-content/plugins/woocommerce-blocks/assets/js/base/context/hooks/payment-methods/use-payment-method-interface.ts&apos;
-    Imported via &apos;@woocommerce/price-format&apos; from file &apos;/Users/thomas/code/spooky-site/app/public/wp-content/plugins/woocommerce-blocks/assets/js/base/components/cart-checkout/order-summary/order-summary-item.tsx&apos;
-    Imported via &apos;@woocommerce/price-format&apos; from file &apos;/Users/thomas/code/spooky-site/app/public/wp-content/plugins/woocommerce-blocks/assets/js/base/components/cart-checkout/product-sale-badge/index.tsx&apos;
-    Imported via &apos;@woocommerce/price-format&apos; from file &apos;/Users/thomas/code/spooky-site/app/public/wp-content/plugins/woocommerce-blocks/assets/js/base/components/cart-checkout/shipping-rates-control-package/render-package-rate-option.tsx&apos;
-    Imported via &apos;@woocommerce/price-format&apos; from file &apos;/Users/thomas/code/spooky-site/app/public/wp-content/plugins/woocommerce-blocks/assets/js/base/components/cart-checkout/totals/shipping/index.tsx&apos;
-    Imported via &apos;@woocommerce/price-format&apos; from file &apos;/Users/thomas/code/spooky-site/app/public/wp-content/plugins/woocommerce-blocks/assets/js/blocks/active-filters/utils.tsx&apos;
-    Imported via &apos;@woocommerce/price-format&apos; from file &apos;/Users/thomas/code/spooky-site/app/public/wp-content/plugins/woocommerce-blocks/assets/js/blocks/cart/cart-line-items-table/cart-line-item-row.tsx&apos;
-    Imported via &apos;@woocommerce/price-format&apos; from file &apos;/Users/thomas/code/spooky-site/app/public/wp-content/plugins/woocommerce-blocks/assets/js/blocks/cart/inner-blocks/cart-order-summary-block/edit.tsx&apos;
-    Imported via &apos;@woocommerce/price-format&apos; from file &apos;/Users/thomas/code/spooky-site/app/public/wp-content/plugins/woocommerce-blocks/assets/js/blocks/cart/inner-blocks/cart-order-summary-subtotal/block.tsx&apos;
-    Imported via &apos;@woocommerce/price-format&apos; from file &apos;/Users/thomas/code/spooky-site/app/public/wp-content/plugins/woocommerce-blocks/assets/js/blocks/cart/inner-blocks/cart-order-summary-fee/block.tsx&apos;
-    Imported via &apos;@woocommerce/price-format&apos; from file &apos;/Users/thomas/code/spooky-site/app/public/wp-content/plugins/woocommerce-blocks/assets/js/blocks/cart/inner-blocks/cart-order-summary-discount/block.tsx&apos;
-    Imported via &apos;@woocommerce/price-format&apos; from file &apos;/Users/thomas/code/spooky-site/app/public/wp-content/plugins/woocommerce-blocks/assets/js/blocks/cart/inner-blocks/cart-order-summary-shipping/block.tsx&apos;
-    Imported via &apos;@woocommerce/price-format&apos; from file &apos;/Users/thomas/code/spooky-site/app/public/wp-content/plugins/woocommerce-blocks/assets/js/blocks/cart/inner-blocks/cart-order-summary-taxes/block.tsx&apos;
-    Imported via &apos;@woocommerce/price-format&apos; from file &apos;/Users/thomas/code/spooky-site/app/public/wp-content/plugins/woocommerce-blocks/assets/js/blocks/cart/inner-blocks/cart-order-summary-block/frontend.tsx&apos;
-    Imported via &apos;@woocommerce/price-format&apos; from file &apos;/Users/thomas/code/spooky-site/app/public/wp-content/plugins/woocommerce-blocks/assets/js/blocks/checkout/inner-blocks/checkout-order-summary-block/edit.tsx&apos;
-    Imported via &apos;@woocommerce/price-format&apos; from file &apos;/Users/thomas/code/spooky-site/app/public/wp-content/plugins/woocommerce-blocks/assets/js/blocks/checkout/inner-blocks/checkout-shipping-methods-block/block.tsx&apos;
-    Imported via &apos;@woocommerce/price-format&apos; from file &apos;/Users/thomas/code/spooky-site/app/public/wp-content/plugins/woocommerce-blocks/assets/js/blocks/checkout/inner-blocks/checkout-order-summary-subtotal/block.tsx&apos;
-    Imported via &apos;@woocommerce/price-format&apos; from file &apos;/Users/thomas/code/spooky-site/app/public/wp-content/plugins/woocommerce-blocks/assets/js/blocks/checkout/inner-blocks/checkout-order-summary-fee/block.tsx&apos;
-    Imported via &apos;@woocommerce/price-format&apos; from file &apos;/Users/thomas/code/spooky-site/app/public/wp-content/plugins/woocommerce-blocks/assets/js/blocks/checkout/inner-blocks/checkout-order-summary-discount/block.tsx&apos;
-    Imported via &apos;@woocommerce/price-format&apos; from file &apos;/Users/thomas/code/spooky-site/app/public/wp-content/plugins/woocommerce-blocks/assets/js/blocks/checkout/inner-blocks/checkout-order-summary-shipping/block.tsx&apos;
-    Imported via &apos;@woocommerce/price-format&apos; from file &apos;/Users/thomas/code/spooky-site/app/public/wp-content/plugins/woocommerce-blocks/assets/js/blocks/checkout/inner-blocks/checkout-order-summary-taxes/block.tsx&apos;
-    Imported via &apos;@woocommerce/price-format&apos; from file &apos;/Users/thomas/code/spooky-site/app/public/wp-content/plugins/woocommerce-blocks/assets/js/blocks/checkout/inner-blocks/checkout-order-summary-block/frontend.tsx&apos;
-    Imported via &apos;@woocommerce/price-format&apos; from file &apos;/Users/thomas/code/spooky-site/app/public/wp-content/plugins/woocommerce-blocks/assets/js/blocks/price-filter/block.tsx&apos;
-    Imported via &apos;@woocommerce/price-format&apos; from file &apos;/Users/thomas/code/spooky-site/app/public/wp-content/plugins/woocommerce-blocks/assets/js/blocks/mini-cart/block.tsx&apos;
-    Imported via &apos;@woocommerce/price-format&apos; from file &apos;/Users/thomas/code/spooky-site/app/public/wp-content/plugins/woocommerce-blocks/assets/js/blocks/mini-cart/mini-cart-contents/inner-blocks/mini-cart-footer-block/block.tsx&apos;
-    Imported via &apos;@woocommerce/price-format&apos; from file &apos;/Users/thomas/code/spooky-site/app/public/wp-content/plugins/woocommerce-blocks/assets/js/blocks/mini-cart/edit.tsx&apos;" source="TS6307" />
+    Imported via &apos;@woocommerce/price-format&apos; from file &apos;/home/runner/work/woocommerce-blocks/woocommerce-blocks/packages/checkout/components/totals/item/index.tsx&apos;
+    Imported via &apos;@woocommerce/price-format&apos; from file &apos;/home/runner/work/woocommerce-blocks/woocommerce-blocks/packages/checkout/components/totals/subtotal/index.tsx&apos;
+    Imported via &apos;@woocommerce/price-format&apos; from file &apos;/home/runner/work/woocommerce-blocks/woocommerce-blocks/packages/checkout/components/totals/taxes/index.tsx&apos;
+    Imported via &apos;@woocommerce/price-format&apos; from file &apos;/home/runner/work/woocommerce-blocks/woocommerce-blocks/packages/checkout/components/totals/fees/index.tsx&apos;
+    Imported via &apos;@woocommerce/price-format&apos; from file &apos;/home/runner/work/woocommerce-blocks/woocommerce-blocks/assets/js/base/components/product-price/index.tsx&apos;
+    Imported via &apos;@woocommerce/price-format&apos; from file &apos;/home/runner/work/woocommerce-blocks/woocommerce-blocks/assets/js/atomic/blocks/product-elements/price/block.js&apos;
+    Imported via &apos;@woocommerce/price-format&apos; from file &apos;/home/runner/work/woocommerce-blocks/woocommerce-blocks/assets/js/base/context/hooks/payment-methods/use-payment-method-interface.ts&apos;
+    Imported via &apos;@woocommerce/price-format&apos; from file &apos;/home/runner/work/woocommerce-blocks/woocommerce-blocks/assets/js/base/components/cart-checkout/order-summary/order-summary-item.tsx&apos;
+    Imported via &apos;@woocommerce/price-format&apos; from file &apos;/home/runner/work/woocommerce-blocks/woocommerce-blocks/assets/js/base/components/cart-checkout/product-sale-badge/index.tsx&apos;
+    Imported via &apos;@woocommerce/price-format&apos; from file &apos;/home/runner/work/woocommerce-blocks/woocommerce-blocks/assets/js/base/components/cart-checkout/shipping-rates-control-package/render-package-rate-option.tsx&apos;
+    Imported via &apos;@woocommerce/price-format&apos; from file &apos;/home/runner/work/woocommerce-blocks/woocommerce-blocks/assets/js/base/components/cart-checkout/totals/shipping/index.tsx&apos;
+    Imported via &apos;@woocommerce/price-format&apos; from file &apos;/home/runner/work/woocommerce-blocks/woocommerce-blocks/assets/js/blocks/active-filters/utils.tsx&apos;
+    Imported via &apos;@woocommerce/price-format&apos; from file &apos;/home/runner/work/woocommerce-blocks/woocommerce-blocks/assets/js/blocks/cart/cart-line-items-table/cart-line-item-row.tsx&apos;
+    Imported via &apos;@woocommerce/price-format&apos; from file &apos;/home/runner/work/woocommerce-blocks/woocommerce-blocks/assets/js/blocks/cart/inner-blocks/cart-order-summary-block/edit.tsx&apos;
+    Imported via &apos;@woocommerce/price-format&apos; from file &apos;/home/runner/work/woocommerce-blocks/woocommerce-blocks/assets/js/blocks/cart/inner-blocks/cart-order-summary-subtotal/block.tsx&apos;
+    Imported via &apos;@woocommerce/price-format&apos; from file &apos;/home/runner/work/woocommerce-blocks/woocommerce-blocks/assets/js/blocks/cart/inner-blocks/cart-order-summary-fee/block.tsx&apos;
+    Imported via &apos;@woocommerce/price-format&apos; from file &apos;/home/runner/work/woocommerce-blocks/woocommerce-blocks/assets/js/blocks/cart/inner-blocks/cart-order-summary-discount/block.tsx&apos;
+    Imported via &apos;@woocommerce/price-format&apos; from file &apos;/home/runner/work/woocommerce-blocks/woocommerce-blocks/assets/js/blocks/cart/inner-blocks/cart-order-summary-shipping/block.tsx&apos;
+    Imported via &apos;@woocommerce/price-format&apos; from file &apos;/home/runner/work/woocommerce-blocks/woocommerce-blocks/assets/js/blocks/cart/inner-blocks/cart-order-summary-taxes/block.tsx&apos;
+    Imported via &apos;@woocommerce/price-format&apos; from file &apos;/home/runner/work/woocommerce-blocks/woocommerce-blocks/assets/js/blocks/cart/inner-blocks/cart-order-summary-block/frontend.tsx&apos;
+    Imported via &apos;@woocommerce/price-format&apos; from file &apos;/home/runner/work/woocommerce-blocks/woocommerce-blocks/assets/js/blocks/checkout/inner-blocks/checkout-order-summary-block/edit.tsx&apos;
+    Imported via &apos;@woocommerce/price-format&apos; from file &apos;/home/runner/work/woocommerce-blocks/woocommerce-blocks/assets/js/blocks/checkout/inner-blocks/checkout-shipping-methods-block/block.tsx&apos;
+    Imported via &apos;@woocommerce/price-format&apos; from file &apos;/home/runner/work/woocommerce-blocks/woocommerce-blocks/assets/js/blocks/checkout/inner-blocks/checkout-order-summary-subtotal/block.tsx&apos;
+    Imported via &apos;@woocommerce/price-format&apos; from file &apos;/home/runner/work/woocommerce-blocks/woocommerce-blocks/assets/js/blocks/checkout/inner-blocks/checkout-order-summary-fee/block.tsx&apos;
+    Imported via &apos;@woocommerce/price-format&apos; from file &apos;/home/runner/work/woocommerce-blocks/woocommerce-blocks/assets/js/blocks/checkout/inner-blocks/checkout-order-summary-discount/block.tsx&apos;
+    Imported via &apos;@woocommerce/price-format&apos; from file &apos;/home/runner/work/woocommerce-blocks/woocommerce-blocks/assets/js/blocks/checkout/inner-blocks/checkout-order-summary-shipping/block.tsx&apos;
+    Imported via &apos;@woocommerce/price-format&apos; from file &apos;/home/runner/work/woocommerce-blocks/woocommerce-blocks/assets/js/blocks/checkout/inner-blocks/checkout-order-summary-taxes/block.tsx&apos;
+    Imported via &apos;@woocommerce/price-format&apos; from file &apos;/home/runner/work/woocommerce-blocks/woocommerce-blocks/assets/js/blocks/checkout/inner-blocks/checkout-order-summary-block/frontend.tsx&apos;
+    Imported via &apos;@woocommerce/price-format&apos; from file &apos;/home/runner/work/woocommerce-blocks/woocommerce-blocks/assets/js/blocks/price-filter/block.tsx&apos;
+    Imported via &apos;@woocommerce/price-format&apos; from file &apos;/home/runner/work/woocommerce-blocks/woocommerce-blocks/assets/js/blocks/mini-cart/block.tsx&apos;
+    Imported via &apos;@woocommerce/price-format&apos; from file &apos;/home/runner/work/woocommerce-blocks/woocommerce-blocks/assets/js/blocks/mini-cart/mini-cart-contents/inner-blocks/mini-cart-footer-block/block.tsx&apos;
+    Imported via &apos;@woocommerce/price-format&apos; from file &apos;/home/runner/work/woocommerce-blocks/woocommerce-blocks/assets/js/blocks/mini-cart/edit.tsx&apos;" source="TS6307" />
 </file>
 <file name="packages/checkout/components/totals/subtotal/index.tsx">
 <error line="5" column="15" severity="error" message="Module &apos;&quot;@woocommerce/price-format&quot;&apos; has no exported member &apos;Currency&apos;." source="TS2305" />
@@ -311,7 +311,7 @@
 <error line="9" column="35" severity="error" message="Parameter &apos;error&apos; implicitly has an &apos;any&apos; type." source="TS7006" />
 </file>
 <file name="packages/checkout/slot/index.js">
-<error line="11" column="8" severity="error" message="Could not find a declaration file for module &apos;wordpress-components&apos;. &apos;/Users/thomas/code/spooky-site/app/public/wp-content/plugins/woocommerce-blocks/node_modules/wordpress-components/build/index.js&apos; implicitly has an &apos;any&apos; type.
+<error line="11" column="8" severity="error" message="Could not find a declaration file for module &apos;wordpress-components&apos;. &apos;/home/runner/work/woocommerce-blocks/woocommerce-blocks/node_modules/wordpress-components/build/index.js&apos; implicitly has an &apos;any&apos; type.
   If the &apos;@wordpress/components&apos; package actually exposes this module, consider sending a pull request to amend &apos;https://github.com/DefinitelyTyped/DefinitelyTyped/tree/master/types/wordpress__components&apos;" source="TS7016" />
 <error line="42" column="12" severity="error" message="Generic type &apos;Array&lt;T&gt;&apos; requires 1 type argument(s)." source="TS2314" />
 <error line="83" column="13" severity="error" message="Generic type &apos;Array&lt;T&gt;&apos; requires 1 type argument(s)." source="TS2314" />
@@ -353,7 +353,7 @@
 <error line="28" column="20" severity="error" message="Variable &apos;useSlot&apos; implicitly has an &apos;any&apos; type." source="TS7005" />
 </file>
 <file name="assets/js/base/components/button/index.tsx">
-<error line="4" column="36" severity="error" message="Could not find a declaration file for module &apos;wordpress-components&apos;. &apos;/Users/thomas/code/spooky-site/app/public/wp-content/plugins/woocommerce-blocks/node_modules/wordpress-components/build/index.js&apos; implicitly has an &apos;any&apos; type.
+<error line="4" column="36" severity="error" message="Could not find a declaration file for module &apos;wordpress-components&apos;. &apos;/home/runner/work/woocommerce-blocks/woocommerce-blocks/node_modules/wordpress-components/build/index.js&apos; implicitly has an &apos;any&apos; type.
   If the &apos;@wordpress/components&apos; package actually exposes this module, consider sending a pull request to amend &apos;https://github.com/DefinitelyTyped/DefinitelyTyped/tree/master/types/wordpress__components&apos;" source="TS7016" />
 </file>
 <file name="node_modules/@types/wordpress__block-editor/index.d.ts">
@@ -403,7 +403,7 @@
     Type &apos;&quot;core/editor&quot; | undefined&apos; is not assignable to type &apos;CombinedState&lt;{ routes: Object; }&gt; | undefined&apos;.
       Type &apos;string&apos; is not assignable to type &apos;CombinedState&lt;{ routes: Object; }&gt;&apos;.
         Type &apos;string&apos; is not assignable to type &apos;{ routes: Object; }&apos;." source="TS2322" />
-<error line="18" column="2" severity="error" message="Type &apos;typeof import(&quot;/Users/thomas/code/spooky-site/app/public/wp-content/plugins/woocommerce-blocks/assets/js/data/schema/actions&quot;)&apos; is not assignable to type &apos;{ [k: string]: (...args: readonly any[]) =&gt; AnyAction | Generator&lt;any, any, unknown&gt;; }&apos;.
+<error line="18" column="2" severity="error" message="Type &apos;typeof import(&quot;/home/runner/work/woocommerce-blocks/woocommerce-blocks/assets/js/data/schema/actions&quot;)&apos; is not assignable to type &apos;{ [k: string]: (...args: readonly any[]) =&gt; AnyAction | Generator&lt;any, any, unknown&gt;; }&apos;.
   Property &apos;receiveRoutes&apos; is incompatible with index signature.
     Type &apos;(routes: Object, namespace?: string) =&gt; Object&apos; is not assignable to type &apos;(...args: readonly any[]) =&gt; AnyAction | Generator&lt;any, any, unknown&gt;&apos;.
       Type &apos;Object&apos; is not assignable to type &apos;AnyAction | Generator&lt;any, any, unknown&gt;&apos;.
@@ -482,7 +482,7 @@
     Type &apos;({ options, }: ReturnType&lt;typeof apiFetchWithHeaders&gt;) =&gt; Promise&lt;unknown&gt;&apos; is not assignable to type &apos;(action: AnyAction) =&gt; any&apos;.
       Types of parameters &apos;__0&apos; and &apos;action&apos; are incompatible.
         Property &apos;options&apos; is missing in type &apos;AnyAction&apos; but required in type &apos;{ readonly type: &quot;API_FETCH_WITH_HEADERS&quot;; readonly options: APIFetchOptions; }&apos;." source="TS2322" />
-<error line="21" column="2" severity="error" message="Type &apos;typeof import(&quot;/Users/thomas/code/spooky-site/app/public/wp-content/plugins/woocommerce-blocks/assets/js/data/collections/selectors&quot;)&apos; is not assignable to type &apos;{ [k: string]: (state: Object, ...args: readonly any[]) =&gt; any; }&apos;.
+<error line="21" column="2" severity="error" message="Type &apos;typeof import(&quot;/home/runner/work/woocommerce-blocks/woocommerce-blocks/assets/js/data/collections/selectors&quot;)&apos; is not assignable to type &apos;{ [k: string]: (state: Object, ...args: readonly any[]) =&gt; any; }&apos;.
   Property &apos;getCollectionHeader&apos; is incompatible with index signature.
     Type &apos;(state: string, header: string, namespace: string, resourceName: string, query?: Object | undefined, ids?: any[] | undefined) =&gt; any&apos; is not assignable to type &apos;(state: Object, ...args: readonly any[]) =&gt; any&apos;.
       Types of parameters &apos;state&apos; and &apos;state&apos; are incompatible.
@@ -647,8 +647,8 @@
 </file>
 <file name="assets/js/data/checkout/thunks.ts">
 <error line="5" column="10" severity="error" message="Module &apos;&quot;@wordpress/notices&quot;&apos; has no exported member &apos;store&apos;." source="TS2305" />
-<error line="57" column="11" severity="error" message="Property &apos;createErrorNotice&apos; does not exist on type &apos;typeof import(&quot;/Users/thomas/code/spooky-site/app/public/wp-content/plugins/woocommerce-blocks/node_modules/@types/wordpress__rich-text/store/actions&quot;)&apos;." source="TS2339" />
-<error line="92" column="12" severity="error" message="Property &apos;createErrorNotice&apos; does not exist on type &apos;typeof import(&quot;/Users/thomas/code/spooky-site/app/public/wp-content/plugins/woocommerce-blocks/node_modules/@types/wordpress__rich-text/store/actions&quot;)&apos;." source="TS2339" />
+<error line="57" column="11" severity="error" message="Property &apos;createErrorNotice&apos; does not exist on type &apos;typeof import(&quot;/home/runner/work/woocommerce-blocks/woocommerce-blocks/node_modules/@types/wordpress__rich-text/store/actions&quot;)&apos;." source="TS2339" />
+<error line="92" column="12" severity="error" message="Property &apos;createErrorNotice&apos; does not exist on type &apos;typeof import(&quot;/home/runner/work/woocommerce-blocks/woocommerce-blocks/node_modules/@types/wordpress__rich-text/store/actions&quot;)&apos;." source="TS2339" />
 </file>
 <file name="assets/js/data/checkout/reducers.ts">
 <error line="164" column="25" severity="error" message="Property &apos;SET_PRISTINE&apos; does not exist on type &apos;{ readonly SET_IDLE: &quot;SET_IDLE&quot;; readonly SET_REDIRECT_URL: &quot;SET_REDIRECT_URL&quot;; readonly SET_COMPLETE: &quot;SET_CHECKOUT_COMPLETE&quot;; readonly SET_BEFORE_PROCESSING: &quot;SET_BEFORE_PROCESSING&quot;; ... 11 more ...; readonly SET_IS_CART: &quot;SET_IS_CART&quot;; }&apos;." source="TS2339" />
@@ -656,7 +656,7 @@
 <file name="assets/js/data/checkout/index.ts">
 <error line="21" column="44" severity="error" message="Argument of type &apos;{ reducer: (state: CheckoutState | undefined, action: actions.CheckoutAction) =&gt; CheckoutState; selectors: typeof selectors; actions: typeof actions; }&apos; is not assignable to parameter of type &apos;StoreConfig&lt;CheckoutState&gt;&apos;.
   Types of property &apos;actions&apos; are incompatible.
-    Type &apos;typeof import(&quot;/Users/thomas/code/spooky-site/app/public/wp-content/plugins/woocommerce-blocks/assets/js/data/checkout/actions&quot;)&apos; is not assignable to type &apos;{ [k: string]: (...args: readonly any[]) =&gt; AnyAction | Generator&lt;any, any, unknown&gt;; }&apos;.
+    Type &apos;typeof import(&quot;/home/runner/work/woocommerce-blocks/woocommerce-blocks/assets/js/data/checkout/actions&quot;)&apos; is not assignable to type &apos;{ [k: string]: (...args: readonly any[]) =&gt; AnyAction | Generator&lt;any, any, unknown&gt;; }&apos;.
       Property &apos;__internalProcessCheckoutResponse&apos; is incompatible with index signature.
         Type &apos;(response: CheckoutResponse) =&gt; ({ dispatch, }: { dispatch: DispatchFromMap&lt;typeof actions&gt;; }) =&gt; void&apos; is not assignable to type &apos;(...args: readonly any[]) =&gt; AnyAction | Generator&lt;any, any, unknown&gt;&apos;.
           Type &apos;({ dispatch, }: { dispatch: DispatchFromMap&lt;typeof actions&gt;; }) =&gt; void&apos; is not assignable to type &apos;AnyAction | Generator&lt;any, any, unknown&gt;&apos;." source="TS2345" />
@@ -678,7 +678,7 @@
 <error line="143" column="5" severity="error" message="Argument of type &apos;unknown&apos; is not assignable to parameter of type &apos;CartShippingRate[]&apos;." source="TS2345" />
 <error line="174" column="37" severity="error" message="Argument of type &apos;Record&lt;string, unknown&gt;&apos; is not assignable to parameter of type &apos;CanMakePaymentArgument&apos;.
   Type &apos;Record&lt;string, unknown&gt;&apos; is missing the following properties from type &apos;CanMakePaymentArgument&apos;: cart, cartTotals, cartNeedsShipping, billingData, and 3 more." source="TS2345" />
-<error line="186" column="13" severity="error" message="Property &apos;createErrorNotice&apos; does not exist on type &apos;typeof import(&quot;/Users/thomas/code/spooky-site/app/public/wp-content/plugins/woocommerce-blocks/node_modules/@types/wordpress__rich-text/store/actions&quot;)&apos;." source="TS2339" />
+<error line="186" column="13" severity="error" message="Property &apos;createErrorNotice&apos; does not exist on type &apos;typeof import(&quot;/home/runner/work/woocommerce-blocks/woocommerce-blocks/node_modules/@types/wordpress__rich-text/store/actions&quot;)&apos;." source="TS2339" />
 </file>
 <file name="assets/js/data/payment/thunks.ts">
 <error line="4" column="10" severity="error" message="Module &apos;&quot;@wordpress/notices&quot;&apos; has no exported member &apos;store&apos;." source="TS2305" />
@@ -706,7 +706,7 @@
 <file name="assets/js/data/payment/index.ts">
 <error line="25" column="44" severity="error" message="Argument of type &apos;{ reducer: Reducer&lt;PaymentMethodDataState, AnyAction&gt;; selectors: typeof selectors; actions: typeof actions; controls: any; }&apos; is not assignable to parameter of type &apos;StoreConfig&lt;PaymentMethodDataState&gt;&apos;.
   Types of property &apos;actions&apos; are incompatible.
-    Type &apos;typeof import(&quot;/Users/thomas/code/spooky-site/app/public/wp-content/plugins/woocommerce-blocks/assets/js/data/payment/actions&quot;)&apos; is not assignable to type &apos;{ [k: string]: (...args: readonly any[]) =&gt; AnyAction | Generator&lt;any, any, unknown&gt;; }&apos;.
+    Type &apos;typeof import(&quot;/home/runner/work/woocommerce-blocks/woocommerce-blocks/assets/js/data/payment/actions&quot;)&apos; is not assignable to type &apos;{ [k: string]: (...args: readonly any[]) =&gt; AnyAction | Generator&lt;any, any, unknown&gt;; }&apos;.
       Property &apos;__internalUpdateAvailablePaymentMethods&apos; is incompatible with index signature.
         Type &apos;() =&gt; ({ select, dispatch }: { select: any; dispatch: any; }) =&gt; Promise&lt;void&gt;&apos; is not assignable to type &apos;(...args: readonly any[]) =&gt; AnyAction | Generator&lt;any, any, unknown&gt;&apos;.
           Type &apos;({ select, dispatch }: { select: any; dispatch: any; }) =&gt; Promise&lt;void&gt;&apos; is not assignable to type &apos;AnyAction | Generator&lt;any, any, unknown&gt;&apos;." source="TS2345" />
@@ -722,14 +722,14 @@
 <error line="14" column="35" severity="error" message="Property &apos;value&apos; does not exist on type &apos;Object&apos;." source="TS2339" />
 </file>
 <file name="assets/js/data/query-state/index.js">
-<error line="16" column="2" severity="error" message="Type &apos;typeof import(&quot;/Users/thomas/code/spooky-site/app/public/wp-content/plugins/woocommerce-blocks/assets/js/data/query-state/actions&quot;)&apos; is not assignable to type &apos;{ [k: string]: (...args: readonly any[]) =&gt; AnyAction | Generator&lt;any, any, unknown&gt;; }&apos;.
+<error line="16" column="2" severity="error" message="Type &apos;typeof import(&quot;/home/runner/work/woocommerce-blocks/woocommerce-blocks/assets/js/data/query-state/actions&quot;)&apos; is not assignable to type &apos;{ [k: string]: (...args: readonly any[]) =&gt; AnyAction | Generator&lt;any, any, unknown&gt;; }&apos;.
   Property &apos;setQueryValue&apos; is incompatible with index signature.
     Type &apos;(context: string, queryKey: string, value: any) =&gt; Object&apos; is not assignable to type &apos;(...args: readonly any[]) =&gt; AnyAction | Generator&lt;any, any, unknown&gt;&apos;.
       Type &apos;Object&apos; is not assignable to type &apos;AnyAction | Generator&lt;any, any, unknown&gt;&apos;.
         The &apos;Object&apos; type is assignable to very few other types. Did you mean to use the &apos;any&apos; type instead?" source="TS2322" />
 </file>
 <file name="packages/checkout/components/store-notices-container/index.tsx">
-<error line="5" column="24" severity="error" message="Could not find a declaration file for module &apos;wordpress-components&apos;. &apos;/Users/thomas/code/spooky-site/app/public/wp-content/plugins/woocommerce-blocks/node_modules/wordpress-components/build/index.js&apos; implicitly has an &apos;any&apos; type.
+<error line="5" column="24" severity="error" message="Could not find a declaration file for module &apos;wordpress-components&apos;. &apos;/home/runner/work/woocommerce-blocks/woocommerce-blocks/node_modules/wordpress-components/build/index.js&apos; implicitly has an &apos;any&apos; type.
   If the &apos;@wordpress/components&apos; package actually exposes this module, consider sending a pull request to amend &apos;https://github.com/DefinitelyTyped/DefinitelyTyped/tree/master/types/wordpress__components&apos;" source="TS7016" />
 </file>
 <file name="packages/checkout/filter-registry/index.ts">
@@ -741,7 +741,7 @@
 <error line="44" column="43" severity="error" message="Property &apos;lock&apos; does not exist on type &apos;{}&apos;." source="TS2339" />
 </file>
 <file name="packages/checkout/index.js">
-<error line="6" column="34" severity="error" message="Could not find a declaration file for module &apos;wordpress-components&apos;. &apos;/Users/thomas/code/spooky-site/app/public/wp-content/plugins/woocommerce-blocks/node_modules/wordpress-components/build/index.js&apos; implicitly has an &apos;any&apos; type.
+<error line="6" column="34" severity="error" message="Could not find a declaration file for module &apos;wordpress-components&apos;. &apos;/home/runner/work/woocommerce-blocks/woocommerce-blocks/node_modules/wordpress-components/build/index.js&apos; implicitly has an &apos;any&apos; type.
   If the &apos;@wordpress/components&apos; package actually exposes this module, consider sending a pull request to amend &apos;https://github.com/DefinitelyTyped/DefinitelyTyped/tree/master/types/wordpress__components&apos;" source="TS7016" />
 </file>
 <file name="assets/js/blocks-registry/block-components/register-block-component.js">
@@ -794,17 +794,17 @@
 <error line="5" column="10" severity="error" message="Module &apos;&quot;@wordpress/block-editor&quot;&apos; has no exported member &apos;__experimentalUseBorderProps&apos;." source="TS2305" />
 </file>
 <file name="assets/js/base/context/providers/editor-context.js">
-<error line="8" column="56" severity="error" message="Namespace &apos;&quot;/Users/thomas/code/spooky-site/app/public/wp-content/plugins/woocommerce-blocks/assets/js/types/type-defs/contexts&quot;&apos; has no exported member &apos;EditorDataContext&apos;." source="TS2694" />
-<error line="9" column="52" severity="error" message="Namespace &apos;&quot;/Users/thomas/code/spooky-site/app/public/wp-content/plugins/woocommerce-blocks/assets/js/types/type-defs/cart&quot;&apos; has no exported member &apos;CartData&apos;." source="TS2694" />
+<error line="8" column="56" severity="error" message="Namespace &apos;&quot;/home/runner/work/woocommerce-blocks/woocommerce-blocks/assets/js/types/type-defs/contexts&quot;&apos; has no exported member &apos;EditorDataContext&apos;." source="TS2694" />
+<error line="9" column="52" severity="error" message="Namespace &apos;&quot;/home/runner/work/woocommerce-blocks/woocommerce-blocks/assets/js/types/type-defs/cart&quot;&apos; has no exported member &apos;CartData&apos;." source="TS2694" />
 <error line="59" column="12" severity="error" message="Element implicitly has an &apos;any&apos; type because expression of type &apos;any&apos; can&apos;t be used to index type &apos;Object&apos;." source="TS7053" />
 </file>
 <file name="assets/js/base/context/hooks/cart/use-store-cart-event-listeners.ts">
 <error line="20" column="23" severity="error" message="Parameter &apos;e&apos; implicitly has an &apos;any&apos; type." source="TS7006" />
-<error line="23" column="24" severity="error" message="Property &apos;invalidateResolutionForStore&apos; does not exist on type &apos;DispatchFromMap&lt;typeof import(&quot;/Users/thomas/code/spooky-site/app/public/wp-content/plugins/woocommerce-blocks/assets/js/data/cart/actions&quot;)&gt;&apos;." source="TS2339" />
+<error line="23" column="24" severity="error" message="Property &apos;invalidateResolutionForStore&apos; does not exist on type &apos;DispatchFromMap&lt;typeof import(&quot;/home/runner/work/woocommerce-blocks/woocommerce-blocks/assets/js/data/cart/actions&quot;)&gt;&apos;." source="TS2339" />
 </file>
 <file name="assets/js/base/context/hooks/cart/use-store-cart.ts">
 <error line="74" column="2" severity="error" message="Type &apos;&quot;&quot;&apos; is not assignable to type &apos;CurrencyCode&apos;." source="TS2322" />
-<error line="146" column="3" severity="error" message="Argument of type &apos;(select: any, { dispatch }: { dispatch: any; }) =&gt; StoreCart | { cartCoupons: any; cartItems: any; crossSellsProducts: any; cartFees: any; cartItemsCount: any; cartItemsWeight: any; cartNeedsPayment: any; ... 13 more ...; receiveCart: any; } | { ...; }&apos; is not assignable to parameter of type &apos;(s: { (storeNameOrDescriptor: string | StoreDescriptor): SelectorMap; (key: &quot;core/rich-text&quot;): typeof import(&quot;/Users/thomas/code/spooky-site/app/public/wp-content/plugins/woocommerce-blocks/node_modules/@types/wordpress__rich-text/store/selectors&quot;); (key: &quot;core/notices&quot;): typeof import(&quot;/Users/thomas/code/spooky-sit...&apos;." source="TS2345" />
+<error line="146" column="3" severity="error" message="Argument of type &apos;(select: any, { dispatch }: { dispatch: any; }) =&gt; StoreCart | { cartCoupons: any; cartItems: any; crossSellsProducts: any; cartFees: any; cartItemsCount: any; cartItemsWeight: any; cartNeedsPayment: any; ... 13 more ...; receiveCart: any; } | { ...; }&apos; is not assignable to parameter of type &apos;(s: { (storeNameOrDescriptor: string | StoreDescriptor): SelectorMap; (key: &quot;core/rich-text&quot;): typeof import(&quot;/home/runner/work/woocommerce-blocks/woocommerce-blocks/node_modules/@types/wordpress__rich-text/store/selectors&quot;); (key: &quot;core/notices&quot;): typeof import(&quot;/home/runner/work/woocommerce-blocks/woocommerce-bloc...&apos;." source="TS2345" />
 <error line="146" column="5" severity="error" message="Parameter &apos;select&apos; implicitly has an &apos;any&apos; type." source="TS7006" />
 <error line="146" column="15" severity="error" message="Binding element &apos;dispatch&apos; implicitly has an &apos;any&apos; type." source="TS7031" />
 <error line="227" column="44" severity="error" message="Argument of type &apos;Record&lt;string, unknown&gt;&apos; is not assignable to parameter of type &apos;CartResponseShippingAddress | CartResponseBillingAddress&apos;.
@@ -817,7 +817,7 @@
 <file name="assets/js/base/context/hooks/cart/use-store-cart-coupons.ts">
 <error line="41" column="3" severity="error" message="Type &apos;&quot;applyCoupon&quot; | &quot;removeCoupon&quot; | &quot;receiveApplyingCoupon&quot; | &quot;isApplyingCoupon&quot; | &quot;isRemovingCoupon&quot;&apos; does not satisfy the constraint &apos;keyof StoreCartCoupon&apos;.
   Type &apos;&quot;receiveApplyingCoupon&quot;&apos; is not assignable to type &apos;keyof StoreCartCoupon&apos;." source="TS2344" />
-<error line="47" column="3" severity="error" message="Argument of type &apos;(select: any, { dispatch }: { dispatch: any; }) =&gt; { applyCoupon: any; removeCoupon: any; isApplyingCoupon: any; isRemovingCoupon: any; receiveApplyingCoupon: any; }&apos; is not assignable to parameter of type &apos;(s: { (storeNameOrDescriptor: string | StoreDescriptor): SelectorMap; (key: &quot;core/rich-text&quot;): typeof import(&quot;/Users/thomas/code/spooky-site/app/public/wp-content/plugins/woocommerce-blocks/node_modules/@types/wordpress__rich-text/store/selectors&quot;); (key: &quot;core/notices&quot;): typeof import(&quot;/Users/thomas/code/spooky-sit...&apos;." source="TS2345" />
+<error line="47" column="3" severity="error" message="Argument of type &apos;(select: any, { dispatch }: { dispatch: any; }) =&gt; { applyCoupon: any; removeCoupon: any; isApplyingCoupon: any; isRemovingCoupon: any; receiveApplyingCoupon: any; }&apos; is not assignable to parameter of type &apos;(s: { (storeNameOrDescriptor: string | StoreDescriptor): SelectorMap; (key: &quot;core/rich-text&quot;): typeof import(&quot;/home/runner/work/woocommerce-blocks/woocommerce-blocks/node_modules/@types/wordpress__rich-text/store/selectors&quot;); (key: &quot;core/notices&quot;): typeof import(&quot;/home/runner/work/woocommerce-blocks/woocommerce-bloc...&apos;." source="TS2345" />
 <error line="47" column="5" severity="error" message="Parameter &apos;select&apos; implicitly has an &apos;any&apos; type." source="TS7006" />
 <error line="47" column="15" severity="error" message="Binding element &apos;dispatch&apos; implicitly has an &apos;any&apos; type." source="TS7031" />
 <error line="64" column="5" severity="error" message="Property &apos;then&apos; does not exist on type &apos;void&apos;." source="TS2339" />
@@ -855,13 +855,13 @@
         Type &apos;string&apos; is not assignable to type &apos;number&apos;." source="TS2322" />
 </file>
 <file name="assets/js/base/context/hooks/use-checkout-notices.js">
-<error line="12" column="56" severity="error" message="Namespace &apos;&quot;/Users/thomas/code/spooky-site/app/public/wp-content/plugins/woocommerce-blocks/assets/js/types/type-defs/contexts&quot;&apos; has no exported member &apos;StoreNoticeObject&apos;." source="TS2694" />
-<error line="13" column="53" severity="error" message="Namespace &apos;&quot;/Users/thomas/code/spooky-site/app/public/wp-content/plugins/woocommerce-blocks/assets/js/types/type-defs/hooks&quot;&apos; has no exported member &apos;CheckoutNotices&apos;." source="TS2694" />
+<error line="12" column="56" severity="error" message="Namespace &apos;&quot;/home/runner/work/woocommerce-blocks/woocommerce-blocks/assets/js/types/type-defs/contexts&quot;&apos; has no exported member &apos;StoreNoticeObject&apos;." source="TS2694" />
+<error line="13" column="53" severity="error" message="Namespace &apos;&quot;/home/runner/work/woocommerce-blocks/woocommerce-blocks/assets/js/types/type-defs/hooks&quot;&apos; has no exported member &apos;CheckoutNotices&apos;." source="TS2694" />
 </file>
 <file name="assets/js/base/context/providers/cart-checkout/shipping/constants.js">
-<error line="2" column="56" severity="error" message="Namespace &apos;&quot;/Users/thomas/code/spooky-site/app/public/wp-content/plugins/woocommerce-blocks/assets/js/types/type-defs/contexts&quot;&apos; has no exported member &apos;ShippingErrorTypes&apos;." source="TS2694" />
-<error line="3" column="56" severity="error" message="Namespace &apos;&quot;/Users/thomas/code/spooky-site/app/public/wp-content/plugins/woocommerce-blocks/assets/js/types/type-defs/shipping&quot;&apos; has no exported member &apos;ShippingAddress&apos;." source="TS2694" />
-<error line="4" column="56" severity="error" message="Namespace &apos;&quot;/Users/thomas/code/spooky-site/app/public/wp-content/plugins/woocommerce-blocks/assets/js/types/type-defs/contexts&quot;&apos; has no exported member &apos;ShippingDataContext&apos;." source="TS2694" />
+<error line="2" column="56" severity="error" message="Namespace &apos;&quot;/home/runner/work/woocommerce-blocks/woocommerce-blocks/assets/js/types/type-defs/contexts&quot;&apos; has no exported member &apos;ShippingErrorTypes&apos;." source="TS2694" />
+<error line="3" column="56" severity="error" message="Namespace &apos;&quot;/home/runner/work/woocommerce-blocks/woocommerce-blocks/assets/js/types/type-defs/shipping&quot;&apos; has no exported member &apos;ShippingAddress&apos;." source="TS2694" />
+<error line="4" column="56" severity="error" message="Namespace &apos;&quot;/home/runner/work/woocommerce-blocks/woocommerce-blocks/assets/js/types/type-defs/contexts&quot;&apos; has no exported member &apos;ShippingDataContext&apos;." source="TS2694" />
 </file>
 <file name="assets/js/base/context/providers/cart-checkout/shipping/utils.js">
 <error line="6" column="44" severity="error" message="Parameter &apos;errors&apos; implicitly has an &apos;any&apos; type." source="TS7006" />
@@ -875,7 +875,7 @@
 <error line="33" column="3" severity="error" message="Argument of type &apos;Function&apos; is not assignable to parameter of type &apos;Dispatch&lt;ActionType&gt;&apos;." source="TS2345" />
 </file>
 <file name="assets/js/base/context/providers/cart-checkout/shipping/index.js">
-<error line="32" column="56" severity="error" message="Namespace &apos;&quot;/Users/thomas/code/spooky-site/app/public/wp-content/plugins/woocommerce-blocks/assets/js/types/type-defs/contexts&quot;&apos; has no exported member &apos;ShippingDataContext&apos;." source="TS2694" />
+<error line="32" column="56" severity="error" message="Namespace &apos;&quot;/home/runner/work/woocommerce-blocks/woocommerce-blocks/assets/js/types/type-defs/contexts&quot;&apos; has no exported member &apos;ShippingDataContext&apos;." source="TS2694" />
 <error line="67" column="42" severity="error" message="Property &apos;onSuccess&apos; does not exist on type &apos;Object&apos;." source="TS2339" />
 <error line="68" column="61" severity="error" message="Property &apos;onFail&apos; does not exist on type &apos;Object&apos;." source="TS2339" />
 <error line="70" column="42" severity="error" message="Property &apos;onSelectSuccess&apos; does not exist on type &apos;Object&apos;." source="TS2339" />
@@ -917,7 +917,7 @@
 <error line="42" column="3" severity="error" message="Argument of type &apos;Function&apos; is not assignable to parameter of type &apos;Dispatch&lt;ActionType&gt;&apos;." source="TS2345" />
 </file>
 <file name="assets/js/base/context/providers/add-to-cart-form/form-state/index.js">
-<error line="39" column="56" severity="error" message="Namespace &apos;&quot;/Users/thomas/code/spooky-site/app/public/wp-content/plugins/woocommerce-blocks/assets/js/types/type-defs/contexts&quot;&apos; has no exported member &apos;AddToCartFormContext&apos;." source="TS2694" />
+<error line="39" column="56" severity="error" message="Namespace &apos;&quot;/home/runner/work/woocommerce-blocks/woocommerce-blocks/assets/js/types/type-defs/contexts&quot;&apos; has no exported member &apos;AddToCartFormContext&apos;." source="TS2694" />
 <error line="60" column="44" severity="error" message="Parameter &apos;callback&apos; implicitly has an &apos;any&apos; type." source="TS7006" />
 <error line="61" column="42" severity="error" message="Parameter &apos;callback&apos; implicitly has an &apos;any&apos; type." source="TS7006" />
 <error line="62" column="34" severity="error" message="Parameter &apos;callback&apos; implicitly has an &apos;any&apos; type." source="TS7006" />
@@ -1048,7 +1048,7 @@
   Object literal may only specify known properties, and &apos;__unstableHTML&apos; does not exist in type &apos;Partial&lt;Options&gt;&apos;." source="TS2345" />
 </file>
 <file name="assets/js/base/context/providers/cart-checkout/checkout-provider.js">
-<error line="4" column="28" severity="error" message="Could not find a declaration file for module &apos;@wordpress/plugins&apos;. &apos;/Users/thomas/code/spooky-site/app/public/wp-content/plugins/woocommerce-blocks/node_modules/@wordpress/plugins/build/index.js&apos; implicitly has an &apos;any&apos; type.
+<error line="4" column="28" severity="error" message="Could not find a declaration file for module &apos;@wordpress/plugins&apos;. &apos;/home/runner/work/woocommerce-blocks/woocommerce-blocks/node_modules/@wordpress/plugins/build/index.js&apos; implicitly has an &apos;any&apos; type.
   Try `npm i --save-dev @types/wordpress__plugins` if it exists or add a new declaration (.d.ts) file containing `declare module &apos;@wordpress/plugins&apos;;`" source="TS7016" />
 <error line="30" column="27" severity="error" message="Type &apos;string | undefined&apos; is not assignable to type &apos;string&apos;.
   Type &apos;undefined&apos; is not assignable to type &apos;string&apos;." source="TS2322" />
@@ -1066,7 +1066,7 @@
   Type &apos;undefined&apos; is not assignable to type &apos;Object&apos;." source="TS2322" />
 </file>
 <file name="assets/js/base/context/providers/store-snackbar-notices/components/snackbar-notices-container.js">
-<error line="5" column="30" severity="error" message="Could not find a declaration file for module &apos;wordpress-components&apos;. &apos;/Users/thomas/code/spooky-site/app/public/wp-content/plugins/woocommerce-blocks/node_modules/wordpress-components/build/index.js&apos; implicitly has an &apos;any&apos; type.
+<error line="5" column="30" severity="error" message="Could not find a declaration file for module &apos;wordpress-components&apos;. &apos;/home/runner/work/woocommerce-blocks/woocommerce-blocks/node_modules/wordpress-components/build/index.js&apos; implicitly has an &apos;any&apos; type.
   If the &apos;@wordpress/components&apos; package actually exposes this module, consider sending a pull request to amend &apos;https://github.com/DefinitelyTyped/DefinitelyTyped/tree/master/types/wordpress__components&apos;" source="TS7016" />
 <error line="18" column="2" severity="error" message="Binding element &apos;className&apos; implicitly has an &apos;any&apos; type." source="TS7031" />
 <error line="42" column="6" severity="error" message="Element implicitly has an &apos;any&apos; type because expression of type &apos;string&apos; can&apos;t be used to index type &apos;{}&apos;.
@@ -1075,7 +1075,7 @@
   No index signature with a parameter of type &apos;string&apos; was found on type &apos;{}&apos;." source="TS7053" />
 </file>
 <file name="assets/js/base/context/providers/container-width-context.js">
-<error line="10" column="56" severity="error" message="Namespace &apos;&quot;/Users/thomas/code/spooky-site/app/public/wp-content/plugins/woocommerce-blocks/assets/js/types/type-defs/contexts&quot;&apos; has no exported member &apos;ContainerWidthContext&apos;." source="TS2694" />
+<error line="10" column="56" severity="error" message="Namespace &apos;&quot;/home/runner/work/woocommerce-blocks/woocommerce-blocks/assets/js/types/type-defs/contexts&quot;&apos; has no exported member &apos;ContainerWidthContext&apos;." source="TS2694" />
 </file>
 <file name="assets/js/base/context/providers/index.js">
 <error line="5" column="1" severity="error" message="Module &apos;./cart-checkout&apos; has already exported a member named &apos;React&apos;. Consider explicitly re-exporting to resolve the ambiguity." source="TS2308" />
@@ -1156,7 +1156,7 @@
 <error line="221" column="22" severity="error" message="Property &apos;style&apos; does not exist on type &apos;Object&apos;." source="TS2339" />
 </file>
 <file name="assets/js/base/components/summary/utils.js">
-<error line="4" column="23" severity="error" message="Could not find a declaration file for module &apos;@wordpress/wordcount&apos;. &apos;/Users/thomas/code/spooky-site/app/public/wp-content/plugins/woocommerce-blocks/node_modules/@wordpress/wordcount/build/index.js&apos; implicitly has an &apos;any&apos; type.
+<error line="4" column="23" severity="error" message="Could not find a declaration file for module &apos;@wordpress/wordcount&apos;. &apos;/home/runner/work/woocommerce-blocks/woocommerce-blocks/node_modules/@wordpress/wordcount/build/index.js&apos; implicitly has an &apos;any&apos; type.
   Try `npm i --save-dev @types/wordpress__wordcount` if it exists or add a new declaration (.d.ts) file containing `declare module &apos;@wordpress/wordcount&apos;;`" source="TS7016" />
 </file>
 <file name="assets/js/atomic/blocks/product-elements/add-to-cart/shared/add-to-cart-button.js">
@@ -1168,7 +1168,7 @@
 <error line="67" column="15" severity="error" message="Expected 0 arguments, but got 1." source="TS2554" />
 </file>
 <file name="assets/js/atomic/blocks/product-elements/add-to-cart/product-types/variable/variation-attributes/attribute-select-control.js">
-<error line="6" column="31" severity="error" message="Could not find a declaration file for module &apos;wordpress-components&apos;. &apos;/Users/thomas/code/spooky-site/app/public/wp-content/plugins/woocommerce-blocks/node_modules/wordpress-components/build/index.js&apos; implicitly has an &apos;any&apos; type.
+<error line="6" column="31" severity="error" message="Could not find a declaration file for module &apos;wordpress-components&apos;. &apos;/home/runner/work/woocommerce-blocks/woocommerce-blocks/node_modules/wordpress-components/build/index.js&apos; implicitly has an &apos;any&apos; type.
   If the &apos;@wordpress/components&apos; package actually exposes this module, consider sending a pull request to amend &apos;https://github.com/DefinitelyTyped/DefinitelyTyped/tree/master/types/wordpress__components&apos;" source="TS7016" />
 </file>
 <file name="assets/js/atomic/blocks/product-elements/add-to-cart/product-types/variable/variation-attributes/utils.js">
@@ -1213,7 +1213,7 @@
 <error line="29" column="35" severity="error" message="Property &apos;setRequestParams&apos; does not exist on type &apos;Object&apos;." source="TS2339" />
 </file>
 <file name="assets/js/atomic/blocks/product-elements/add-to-cart/product-types/grouped/group-list/index.js">
-<error line="4" column="29" severity="error" message="Could not find a declaration file for module &apos;wordpress-components&apos;. &apos;/Users/thomas/code/spooky-site/app/public/wp-content/plugins/woocommerce-blocks/node_modules/wordpress-components/build/index.js&apos; implicitly has an &apos;any&apos; type.
+<error line="4" column="29" severity="error" message="Could not find a declaration file for module &apos;wordpress-components&apos;. &apos;/home/runner/work/woocommerce-blocks/woocommerce-blocks/node_modules/wordpress-components/build/index.js&apos; implicitly has an &apos;any&apos; type.
   If the &apos;@wordpress/components&apos; package actually exposes this module, consider sending a pull request to amend &apos;https://github.com/DefinitelyTyped/DefinitelyTyped/tree/master/types/wordpress__components&apos;" source="TS7016" />
 </file>
 <file name="assets/js/atomic/blocks/product-elements/save.js">
@@ -1455,7 +1455,7 @@
 <error line="297" column="13" severity="error" message="Cannot redeclare block-scoped variable &apos;__webpack_public_path__&apos;." source="TS2451" />
 </file>
 <file name="assets/js/base/components/combobox/index.tsx">
-<error line="8" column="33" severity="error" message="Could not find a declaration file for module &apos;wordpress-components&apos;. &apos;/Users/thomas/code/spooky-site/app/public/wp-content/plugins/woocommerce-blocks/node_modules/wordpress-components/build/index.js&apos; implicitly has an &apos;any&apos; type.
+<error line="8" column="33" severity="error" message="Could not find a declaration file for module &apos;wordpress-components&apos;. &apos;/home/runner/work/woocommerce-blocks/woocommerce-blocks/node_modules/wordpress-components/build/index.js&apos; implicitly has an &apos;any&apos; type.
   If the &apos;@wordpress/components&apos; package actually exposes this module, consider sending a pull request to amend &apos;https://github.com/DefinitelyTyped/DefinitelyTyped/tree/master/types/wordpress__components&apos;" source="TS7016" />
 <error line="148" column="32" severity="error" message="Argument of type &apos;({ id, className, label, onChange, options, value, required, errorMessage, errorId: incomingErrorId, instanceId, autoComplete, }: ComboboxProps) =&gt; JSX.Element&apos; is not assignable to parameter of type &apos;ComponentType&lt;{ instanceId: string | number; }&gt;&apos;.
   Type &apos;({ id, className, label, onChange, options, value, required, errorMessage, errorId: incomingErrorId, instanceId, autoComplete, }: ComboboxProps) =&gt; JSX.Element&apos; is not assignable to type &apos;FunctionComponent&lt;{ instanceId: string | number; }&gt;&apos;.
@@ -1516,7 +1516,7 @@
       Type &apos;undefined&apos; is not assignable to type &apos;string&apos;." source="TS2375" />
 </file>
 <file name="assets/js/base/components/cart-checkout/totals/shipping/shipping-rate-selector.js">
-<error line="5" column="24" severity="error" message="Could not find a declaration file for module &apos;wordpress-components&apos;. &apos;/Users/thomas/code/spooky-site/app/public/wp-content/plugins/woocommerce-blocks/node_modules/wordpress-components/build/index.js&apos; implicitly has an &apos;any&apos; type.
+<error line="5" column="24" severity="error" message="Could not find a declaration file for module &apos;wordpress-components&apos;. &apos;/home/runner/work/woocommerce-blocks/woocommerce-blocks/node_modules/wordpress-components/build/index.js&apos; implicitly has an &apos;any&apos; type.
   If the &apos;@wordpress/components&apos; package actually exposes this module, consider sending a pull request to amend &apos;https://github.com/DefinitelyTyped/DefinitelyTyped/tree/master/types/wordpress__components&apos;" source="TS7016" />
 <error line="14" column="2" severity="error" message="Binding element &apos;hasRates&apos; implicitly has an &apos;any&apos; type." source="TS7031" />
 <error line="15" column="2" severity="error" message="Binding element &apos;shippingRates&apos; implicitly has an &apos;any&apos; type." source="TS7031" />
@@ -1596,7 +1596,7 @@
       Type &apos;string&apos; is not assignable to type &apos;CurrencyCode&apos;." source="TS2322" />
 </file>
 <file name="assets/js/base/components/form-token-field/index.tsx">
-<error line="4" column="52" severity="error" message="Could not find a declaration file for module &apos;wordpress-components&apos;. &apos;/Users/thomas/code/spooky-site/app/public/wp-content/plugins/woocommerce-blocks/node_modules/wordpress-components/build/index.js&apos; implicitly has an &apos;any&apos; type.
+<error line="4" column="52" severity="error" message="Could not find a declaration file for module &apos;wordpress-components&apos;. &apos;/home/runner/work/woocommerce-blocks/woocommerce-blocks/node_modules/wordpress-components/build/index.js&apos; implicitly has an &apos;any&apos; type.
   If the &apos;@wordpress/components&apos; package actually exposes this module, consider sending a pull request to amend &apos;https://github.com/DefinitelyTyped/DefinitelyTyped/tree/master/types/wordpress__components&apos;" source="TS7016" />
 </file>
 <file name="assets/js/base/components/label/test/index.js">
@@ -2045,7 +2045,7 @@
   Property &apos;children&apos; does not exist on type &apos;IntrinsicAttributes&apos;." source="TS2322" />
 </file>
 <file name="assets/js/blocks/filter-wrapper/upgrade.tsx">
-<error line="28" column="12" severity="error" message="Property &apos;getBlockParentsByBlockName&apos; does not exist on type &apos;typeof import(&quot;/Users/thomas/code/spooky-site/app/public/wp-content/plugins/woocommerce-blocks/node_modules/@types/wordpress__block-editor/store/selectors&quot;)&apos;." source="TS2339" />
+<error line="28" column="12" severity="error" message="Property &apos;getBlockParentsByBlockName&apos; does not exist on type &apos;typeof import(&quot;/home/runner/work/woocommerce-blocks/woocommerce-blocks/node_modules/@types/wordpress__block-editor/store/selectors&quot;)&apos;." source="TS2339" />
 </file>
 <file name="assets/js/blocks/active-filters/edit.tsx">
 <error line="13" column="2" severity="error" message="Module &apos;&quot;@wordpress/components&quot;&apos; has no exported member &apos;__experimentalToggleGroupControl&apos;." source="TS2305" />
@@ -2068,7 +2068,7 @@
       Type &apos;undefined&apos; is not assignable to type &apos;string[]&apos;." source="TS2375" />
 </file>
 <file name="assets/js/blocks/attribute-filter/block.tsx">
-<error line="22" column="24" severity="error" message="Could not find a declaration file for module &apos;wordpress-components&apos;. &apos;/Users/thomas/code/spooky-site/app/public/wp-content/plugins/woocommerce-blocks/node_modules/wordpress-components/build/index.js&apos; implicitly has an &apos;any&apos; type.
+<error line="22" column="24" severity="error" message="Could not find a declaration file for module &apos;wordpress-components&apos;. &apos;/home/runner/work/woocommerce-blocks/woocommerce-blocks/node_modules/wordpress-components/build/index.js&apos; implicitly has an &apos;any&apos; type.
   If the &apos;@wordpress/components&apos; package actually exposes this module, consider sending a pull request to amend &apos;https://github.com/DefinitelyTyped/DefinitelyTyped/tree/master/types/wordpress__components&apos;" source="TS7016" />
 </file>
 <file name="assets/js/blocks/attribute-filter/edit.tsx">
@@ -2118,8 +2118,8 @@
     Type &apos;PropsWithChildren&lt;Record&lt;string, unknown&gt;&gt;&apos; is missing the following properties from type &apos;{ attributes: any; children: any; scrollToTop: any; }&apos;: attributes, scrollToTop" source="TS2345" />
 </file>
 <file name="assets/js/blocks/cart-checkout-shared/hacks.ts">
-<error line="58" column="44" severity="error" message="Property &apos;getSelectedBlock&apos; does not exist on type &apos;typeof import(&quot;/Users/thomas/code/spooky-site/app/public/wp-content/plugins/woocommerce-blocks/node_modules/@types/wordpress__rich-text/store/selectors&quot;)&apos;." source="TS2339" />
-<error line="81" column="10" severity="error" message="Property &apos;getBlock&apos; does not exist on type &apos;typeof import(&quot;/Users/thomas/code/spooky-site/app/public/wp-content/plugins/woocommerce-blocks/node_modules/@types/wordpress__rich-text/store/selectors&quot;)&apos;." source="TS2339" />
+<error line="58" column="44" severity="error" message="Property &apos;getSelectedBlock&apos; does not exist on type &apos;typeof import(&quot;/home/runner/work/woocommerce-blocks/woocommerce-blocks/node_modules/@types/wordpress__rich-text/store/selectors&quot;)&apos;." source="TS2339" />
+<error line="81" column="10" severity="error" message="Property &apos;getBlock&apos; does not exist on type &apos;typeof import(&quot;/home/runner/work/woocommerce-blocks/woocommerce-blocks/node_modules/@types/wordpress__rich-text/store/selectors&quot;)&apos;." source="TS2339" />
 <error line="91" column="43" severity="error" message="Property &apos;default&apos; does not exist on type &apos;BlockAttribute&lt;any&gt;&apos;.
   Property &apos;default&apos; does not exist on type &apos;&quot;string&quot;&apos;." source="TS2339" />
 <error line="92" column="39" severity="error" message="Property &apos;default&apos; does not exist on type &apos;BlockAttribute&lt;any&gt;&apos;.
@@ -2136,9 +2136,9 @@
 </file>
 <file name="assets/js/blocks/cart-checkout-shared/use-view-switcher.tsx">
 <error line="7" column="24" severity="error" message="Module &apos;&quot;@wordpress/components&quot;&apos; has no exported member &apos;ToolbarDropdownMenu&apos;." source="TS2305" />
-<error line="32" column="10" severity="error" message="Property &apos;getBlock&apos; does not exist on type &apos;typeof import(&quot;/Users/thomas/code/spooky-site/app/public/wp-content/plugins/woocommerce-blocks/node_modules/@types/wordpress__rich-text/store/selectors&quot;)&apos;." source="TS2339" />
-<error line="32" column="20" severity="error" message="Property &apos;getSelectedBlockClientId&apos; does not exist on type &apos;typeof import(&quot;/Users/thomas/code/spooky-site/app/public/wp-content/plugins/woocommerce-blocks/node_modules/@types/wordpress__rich-text/store/selectors&quot;)&apos;." source="TS2339" />
-<error line="32" column="46" severity="error" message="Property &apos;getBlockParentsByBlockName&apos; does not exist on type &apos;typeof import(&quot;/Users/thomas/code/spooky-site/app/public/wp-content/plugins/woocommerce-blocks/node_modules/@types/wordpress__rich-text/store/selectors&quot;)&apos;." source="TS2339" />
+<error line="32" column="10" severity="error" message="Property &apos;getBlock&apos; does not exist on type &apos;typeof import(&quot;/home/runner/work/woocommerce-blocks/woocommerce-blocks/node_modules/@types/wordpress__rich-text/store/selectors&quot;)&apos;." source="TS2339" />
+<error line="32" column="20" severity="error" message="Property &apos;getSelectedBlockClientId&apos; does not exist on type &apos;typeof import(&quot;/home/runner/work/woocommerce-blocks/woocommerce-blocks/node_modules/@types/wordpress__rich-text/store/selectors&quot;)&apos;." source="TS2339" />
+<error line="32" column="46" severity="error" message="Property &apos;getBlockParentsByBlockName&apos; does not exist on type &apos;typeof import(&quot;/home/runner/work/woocommerce-blocks/woocommerce-blocks/node_modules/@types/wordpress__rich-text/store/selectors&quot;)&apos;." source="TS2339" />
 </file>
 <file name="assets/js/editor-components/default-notice/index.tsx">
 <error line="52" column="6" severity="error" message="Object is of type &apos;unknown&apos;." source="TS2571" />
@@ -2160,8 +2160,8 @@
 <file name="assets/js/blocks/cart-checkout-shared/sidebar-notices/index.tsx">
 <error line="28" column="6" severity="error" message="Cannot redeclare block-scoped variable &apos;store&apos;." source="TS2451" />
 <error line="32" column="21" severity="error" message="Parameter &apos;props&apos; implicitly has an &apos;any&apos; type." source="TS7006" />
-<error line="49" column="13" severity="error" message="Property &apos;getBlockParentsByBlockName&apos; does not exist on type &apos;typeof import(&quot;/Users/thomas/code/spooky-site/app/public/wp-content/plugins/woocommerce-blocks/node_modules/@types/wordpress__rich-text/store/selectors&quot;)&apos;." source="TS2339" />
-<error line="49" column="41" severity="error" message="Property &apos;getBlockName&apos; does not exist on type &apos;typeof import(&quot;/Users/thomas/code/spooky-site/app/public/wp-content/plugins/woocommerce-blocks/node_modules/@types/wordpress__rich-text/store/selectors&quot;)&apos;." source="TS2339" />
+<error line="49" column="13" severity="error" message="Property &apos;getBlockParentsByBlockName&apos; does not exist on type &apos;typeof import(&quot;/home/runner/work/woocommerce-blocks/woocommerce-blocks/node_modules/@types/wordpress__rich-text/store/selectors&quot;)&apos;." source="TS2339" />
+<error line="49" column="41" severity="error" message="Property &apos;getBlockName&apos; does not exist on type &apos;typeof import(&quot;/home/runner/work/woocommerce-blocks/woocommerce-blocks/node_modules/@types/wordpress__rich-text/store/selectors&quot;)&apos;." source="TS2339" />
 </file>
 <file name="assets/js/blocks/cart/inner-blocks/filled-cart-block/index.tsx">
 <error line="13" column="1" severity="error" message="No overload matches this call.
@@ -2222,7 +2222,7 @@
       Type &apos;{ icon: { src: Element; }; edit: ({ clientId }: { clientId: string; }) =&gt; Element; save: () =&gt; Element; }&apos; is missing the following properties from type &apos;Pick&lt;Block&lt;{}&gt;, &quot;title&quot; | &quot;category&quot; | &quot;attributes&quot;&gt;&apos;: title, category, attributes" source="TS2769" />
 </file>
 <file name="assets/js/blocks/cart-checkout-shared/payment-methods/no-payment-methods/index.js">
-<error line="5" column="45" severity="error" message="Could not find a declaration file for module &apos;wordpress-components&apos;. &apos;/Users/thomas/code/spooky-site/app/public/wp-content/plugins/woocommerce-blocks/node_modules/wordpress-components/build/index.js&apos; implicitly has an &apos;any&apos; type.
+<error line="5" column="45" severity="error" message="Could not find a declaration file for module &apos;wordpress-components&apos;. &apos;/home/runner/work/woocommerce-blocks/woocommerce-blocks/node_modules/wordpress-components/build/index.js&apos; implicitly has an &apos;any&apos; type.
   If the &apos;@wordpress/components&apos; package actually exposes this module, consider sending a pull request to amend &apos;https://github.com/DefinitelyTyped/DefinitelyTyped/tree/master/types/wordpress__components&apos;" source="TS7016" />
 </file>
 <file name="assets/js/blocks/cart-checkout-shared/payment-methods/payment-method-error-boundary.js">
@@ -2243,8 +2243,8 @@
       Type &apos;undefined&apos; is not assignable to type &apos;ReactElement&lt;any, string | JSXElementConstructor&lt;any&gt;&gt;&apos;." source="TS2769" />
 </file>
 <file name="assets/js/blocks/cart-checkout-shared/payment-methods/saved-payment-method-options.js">
-<error line="17" column="56" severity="error" message="Namespace &apos;&quot;/Users/thomas/code/spooky-site/app/public/wp-content/plugins/woocommerce-blocks/assets/js/types/type-defs/contexts&quot;&apos; has no exported member &apos;CustomerPaymentMethod&apos;." source="TS2694" />
-<error line="18" column="56" severity="error" message="Namespace &apos;&quot;/Users/thomas/code/spooky-site/app/public/wp-content/plugins/woocommerce-blocks/assets/js/types/type-defs/contexts&quot;&apos; has no exported member &apos;PaymentStatusDispatch&apos;." source="TS2694" />
+<error line="17" column="56" severity="error" message="Namespace &apos;&quot;/home/runner/work/woocommerce-blocks/woocommerce-blocks/assets/js/types/type-defs/contexts&quot;&apos; has no exported member &apos;CustomerPaymentMethod&apos;." source="TS2694" />
+<error line="18" column="56" severity="error" message="Namespace &apos;&quot;/home/runner/work/woocommerce-blocks/woocommerce-blocks/assets/js/types/type-defs/contexts&quot;&apos; has no exported member &apos;PaymentStatusDispatch&apos;." source="TS2694" />
 <error line="89" column="19" severity="error" message="Parameter &apos;token&apos; implicitly has an &apos;any&apos; type." source="TS7006" />
 <error line="126" column="6" severity="error" message="No overload matches this call.
   The last overload gave the following error.
@@ -2254,7 +2254,7 @@
 <error line="50" column="7" severity="error" message="Type &apos;string[]&apos; is not assignable to type &apos;string&apos;." source="TS2322" />
 </file>
 <file name="assets/js/blocks/cart/inner-blocks/cart-express-payment-block/edit.tsx">
-<error line="6" column="37" severity="error" message="Could not find a declaration file for module &apos;wordpress-components&apos;. &apos;/Users/thomas/code/spooky-site/app/public/wp-content/plugins/woocommerce-blocks/node_modules/wordpress-components/build/index.js&apos; implicitly has an &apos;any&apos; type.
+<error line="6" column="37" severity="error" message="Could not find a declaration file for module &apos;wordpress-components&apos;. &apos;/home/runner/work/woocommerce-blocks/woocommerce-blocks/node_modules/wordpress-components/build/index.js&apos; implicitly has an &apos;any&apos; type.
   If the &apos;@wordpress/components&apos; package actually exposes this module, consider sending a pull request to amend &apos;https://github.com/DefinitelyTyped/DefinitelyTyped/tree/master/types/wordpress__components&apos;" source="TS7016" />
 </file>
 <file name="assets/js/blocks/cart/inner-blocks/cart-express-payment-block/index.tsx">
@@ -2538,7 +2538,7 @@
 <error line="67" column="7" severity="error" message="Property &apos;className&apos; is missing in type &apos;{ checkoutPageId: number; }&apos; but required in type &apos;{ checkoutPageId: number; className: string; }&apos;." source="TS2741" />
 <error line="68" column="7" severity="error" message="Property &apos;className&apos; is missing in type &apos;{}&apos; but required in type &apos;{ className: string; }&apos;." source="TS2741" />
 <error line="71" column="5" severity="error" message="Property &apos;className&apos; is missing in type &apos;{ children: Element; }&apos; but required in type &apos;{ children: Element; className: string; }&apos;." source="TS2741" />
-<error line="88" column="25" severity="error" message="Property &apos;invalidateResolutionForStore&apos; does not exist on type &apos;DispatchFromMap&lt;typeof import(&quot;/Users/thomas/code/spooky-site/app/public/wp-content/plugins/woocommerce-blocks/assets/js/data/cart/actions&quot;)&gt;&apos;." source="TS2339" />
+<error line="88" column="25" severity="error" message="Property &apos;invalidateResolutionForStore&apos; does not exist on type &apos;DispatchFromMap&lt;typeof import(&quot;/home/runner/work/woocommerce-blocks/woocommerce-blocks/assets/js/data/cart/actions&quot;)&gt;&apos;." source="TS2339" />
 <error line="89" column="38" severity="error" message="Argument of type &apos;Cart&apos; is not assignable to parameter of type &apos;CartResponse&apos;.
   Type &apos;Cart&apos; is missing the following properties from type &apos;CartResponse&apos;: shipping_rates, shipping_address, billing_address, items_count, and 6 more." source="TS2345" />
 <error line="103" column="5" severity="error" message="Property &apos;toBeInTheDocument&apos; does not exist on type &apos;JestMatchers&lt;HTMLElement&gt;&apos;." source="TS2339" />
@@ -2565,11 +2565,11 @@
 <error line="244" column="47" severity="error" message="Property &apos;cartItem&apos; does not exist on type &apos;CheckoutFilterArguments | undefined&apos;." source="TS2339" />
 </file>
 <file name="assets/js/blocks/cart/test/slots.js">
-<error line="11" column="32" severity="error" message="Could not find a declaration file for module &apos;@wordpress/plugins&apos;. &apos;/Users/thomas/code/spooky-site/app/public/wp-content/plugins/woocommerce-blocks/node_modules/@wordpress/plugins/build/index.js&apos; implicitly has an &apos;any&apos; type.
+<error line="11" column="32" severity="error" message="Could not find a declaration file for module &apos;@wordpress/plugins&apos;. &apos;/home/runner/work/woocommerce-blocks/woocommerce-blocks/node_modules/@wordpress/plugins/build/index.js&apos; implicitly has an &apos;any&apos; type.
   Try `npm i --save-dev @types/wordpress__plugins` if it exists or add a new declaration (.d.ts) file containing `declare module &apos;@wordpress/plugins&apos;;`" source="TS7016" />
 <error line="20" column="30" severity="error" message="Binding element &apos;cart&apos; implicitly has an &apos;any&apos; type." source="TS7031" />
 <error line="39" column="7" severity="error" message="Property &apos;cart&apos; is missing in type &apos;{}&apos; but required in type &apos;{ cart: any; }&apos;." source="TS2741" />
-<error line="54" column="25" severity="error" message="Property &apos;invalidateResolutionForStore&apos; does not exist on type &apos;DispatchFromMap&lt;typeof import(&quot;/Users/thomas/code/spooky-site/app/public/wp-content/plugins/woocommerce-blocks/assets/js/data/cart/actions&quot;)&gt;&apos;." source="TS2339" />
+<error line="54" column="25" severity="error" message="Property &apos;invalidateResolutionForStore&apos; does not exist on type &apos;DispatchFromMap&lt;typeof import(&quot;/home/runner/work/woocommerce-blocks/woocommerce-blocks/assets/js/data/cart/actions&quot;)&gt;&apos;." source="TS2339" />
 <error line="55" column="38" severity="error" message="Argument of type &apos;Cart&apos; is not assignable to parameter of type &apos;CartResponse&apos;." source="TS2345" />
 <error line="64" column="27" severity="error" message="No overload matches this call.
   Overload 1 of 2, &apos;(fn: MockResponseInitFunction): FetchMock&apos;, gave the following error.
@@ -2584,7 +2584,7 @@
 <error line="22" column="57" severity="error" message="Binding element &apos;onChange&apos; implicitly has an &apos;any&apos; type." source="TS7031" />
 <error line="34" column="7" severity="error" message="Binding element &apos;onChange&apos; implicitly has an &apos;any&apos; type." source="TS7031" />
 <error line="50" column="8" severity="error" message="This condition will always return &apos;false&apos; since the types &apos;&quot;core/editor&quot;&apos; and &apos;&quot;wc/store/payment&quot;&apos; have no overlap." source="TS2367" />
-<error line="104" column="5" severity="error" message="Property &apos;invalidateResolutionForStore&apos; does not exist on type &apos;DispatchFromMap&lt;typeof import(&quot;/Users/thomas/code/spooky-site/app/public/wp-content/plugins/woocommerce-blocks/assets/js/data/cart/actions&quot;)&gt;&apos;." source="TS2339" />
+<error line="104" column="5" severity="error" message="Property &apos;invalidateResolutionForStore&apos; does not exist on type &apos;DispatchFromMap&lt;typeof import(&quot;/home/runner/work/woocommerce-blocks/woocommerce-blocks/assets/js/data/cart/actions&quot;)&gt;&apos;." source="TS2339" />
 <error line="107" column="18" severity="error" message="Argument of type &apos;Cart&apos; is not assignable to parameter of type &apos;CartResponse&apos;." source="TS2345" />
 </file>
 <file name="assets/js/blocks/checkout/checkout-order-error/index.js">
@@ -2720,7 +2720,7 @@
     Type &apos;{ className: { type: string; default: string; }; lock: { type: string; default: { move: boolean; remove: boolean; }; }; }&apos; is missing the following properties from type &apos;{ readonly title: BlockAttribute&lt;string&gt;; readonly description: BlockAttribute&lt;string&gt;; readonly showStepNumber: BlockAttribute&lt;boolean&gt;; readonly className: BlockAttribute&lt;...&gt;; }&apos;: title, description, showStepNumber" source="TS2769" />
 </file>
 <file name="assets/js/blocks/checkout/inner-blocks/checkout-express-payment-block/edit.tsx">
-<error line="6" column="37" severity="error" message="Could not find a declaration file for module &apos;wordpress-components&apos;. &apos;/Users/thomas/code/spooky-site/app/public/wp-content/plugins/woocommerce-blocks/node_modules/wordpress-components/build/index.js&apos; implicitly has an &apos;any&apos; type.
+<error line="6" column="37" severity="error" message="Could not find a declaration file for module &apos;wordpress-components&apos;. &apos;/home/runner/work/woocommerce-blocks/woocommerce-blocks/node_modules/wordpress-components/build/index.js&apos; implicitly has an &apos;any&apos; type.
   If the &apos;@wordpress/components&apos; package actually exposes this module, consider sending a pull request to amend &apos;https://github.com/DefinitelyTyped/DefinitelyTyped/tree/master/types/wordpress__components&apos;" source="TS7016" />
 </file>
 <file name="assets/js/blocks/checkout/inner-blocks/checkout-express-payment-block/index.tsx">
@@ -2733,11 +2733,11 @@
       Type &apos;{ icon: { src: Element; }; edit: ({ attributes, }: { attributes: { className?: string; lock: { move: boolean; remove: boolean; }; }; }) =&gt; Element | null; save: () =&gt; Element; }&apos; is missing the following properties from type &apos;Pick&lt;Block&lt;{ className?: string; lock: { move: boolean; remove: boolean; }; }&gt;, &quot;title&quot; | &quot;category&quot; | &quot;attributes&quot;&gt;&apos;: title, category, attributes" source="TS2769" />
 </file>
 <file name="assets/js/blocks/checkout/inner-blocks/checkout-shipping-methods-block/no-shipping-placeholder/index.js">
-<error line="5" column="37" severity="error" message="Could not find a declaration file for module &apos;wordpress-components&apos;. &apos;/Users/thomas/code/spooky-site/app/public/wp-content/plugins/woocommerce-blocks/node_modules/wordpress-components/build/index.js&apos; implicitly has an &apos;any&apos; type.
+<error line="5" column="37" severity="error" message="Could not find a declaration file for module &apos;wordpress-components&apos;. &apos;/home/runner/work/woocommerce-blocks/woocommerce-blocks/node_modules/wordpress-components/build/index.js&apos; implicitly has an &apos;any&apos; type.
   If the &apos;@wordpress/components&apos; package actually exposes this module, consider sending a pull request to amend &apos;https://github.com/DefinitelyTyped/DefinitelyTyped/tree/master/types/wordpress__components&apos;" source="TS7016" />
 </file>
 <file name="assets/js/blocks/checkout/inner-blocks/checkout-shipping-methods-block/block.tsx">
-<error line="12" column="24" severity="error" message="Could not find a declaration file for module &apos;wordpress-components&apos;. &apos;/Users/thomas/code/spooky-site/app/public/wp-content/plugins/woocommerce-blocks/node_modules/wordpress-components/build/index.js&apos; implicitly has an &apos;any&apos; type.
+<error line="12" column="24" severity="error" message="Could not find a declaration file for module &apos;wordpress-components&apos;. &apos;/home/runner/work/woocommerce-blocks/woocommerce-blocks/node_modules/wordpress-components/build/index.js&apos; implicitly has an &apos;any&apos; type.
   If the &apos;@wordpress/components&apos; package actually exposes this module, consider sending a pull request to amend &apos;https://github.com/DefinitelyTyped/DefinitelyTyped/tree/master/types/wordpress__components&apos;" source="TS7016" />
 </file>
 <file name="assets/js/blocks/checkout/inner-blocks/checkout-shipping-methods-block/index.tsx">
@@ -2924,7 +2924,7 @@
 <error line="12" column="21" severity="error" message="Parameter &apos;_node&apos; implicitly has an &apos;any&apos; type." source="TS7006" />
 </file>
 <file name="assets/js/blocks/checkout/inner-blocks/checkout-order-summary-block/test/block.js">
-<error line="13" column="8" severity="error" message="File &apos;/Users/thomas/code/spooky-site/app/public/wp-content/plugins/woocommerce-blocks/tests/utils/find-by-text.ts&apos; is not listed within the file list of project &apos;/Users/thomas/code/spooky-site/app/public/wp-content/plugins/woocommerce-blocks/tsconfig.json&apos;. Projects must list all files or use an &apos;include&apos; pattern." source="TS6307" />
+<error line="13" column="8" severity="error" message="File &apos;/home/runner/work/woocommerce-blocks/woocommerce-blocks/tests/utils/find-by-text.ts&apos; is not listed within the file list of project &apos;/home/runner/work/woocommerce-blocks/woocommerce-blocks/tsconfig.json&apos;. Projects must list all files or use an &apos;include&apos; pattern." source="TS6307" />
 <error line="27" column="4" severity="error" message="Property &apos;className&apos; is missing in type &apos;{}&apos; but required in type &apos;{ className: string; }&apos;." source="TS2741" />
 <error line="198" column="39" severity="error" message="Parameter &apos;implementation&apos; implicitly has an &apos;any&apos; type." source="TS7006" />
 <error line="202" column="41" severity="error" message="Parameter &apos;value&apos; implicitly has an &apos;any&apos; type." source="TS7006" />
@@ -3071,7 +3071,7 @@
 <error line="261" column="28" severity="error" message="Property &apos;instance&apos; does not exist on type &apos;Attributes&apos;." source="TS2339" />
 </file>
 <file name="assets/js/blocks/handpicked-products/block.tsx">
-<error line="4" column="30" severity="error" message="Could not find a declaration file for module &apos;@wordpress/server-side-render&apos;. &apos;/Users/thomas/code/spooky-site/app/public/wp-content/plugins/woocommerce-blocks/node_modules/@wordpress/server-side-render/build/index.js&apos; implicitly has an &apos;any&apos; type.
+<error line="4" column="30" severity="error" message="Could not find a declaration file for module &apos;@wordpress/server-side-render&apos;. &apos;/home/runner/work/woocommerce-blocks/woocommerce-blocks/node_modules/@wordpress/server-side-render/build/index.js&apos; implicitly has an &apos;any&apos; type.
   Try `npm i --save-dev @types/wordpress__server-side-render` if it exists or add a new declaration (.d.ts) file containing `declare module &apos;@wordpress/server-side-render&apos;;`" source="TS7016" />
 </file>
 <file name="assets/js/editor-components/products-control/index.js">
@@ -3276,7 +3276,7 @@
 </file>
 <file name="assets/js/blocks/mini-cart/test/block.js">
 <error line="25" column="25" severity="error" message="Parameter &apos;props&apos; implicitly has an &apos;any&apos; type." source="TS7006" />
-<error line="59" column="25" severity="error" message="Property &apos;invalidateResolutionForStore&apos; does not exist on type &apos;DispatchFromMap&lt;typeof import(&quot;/Users/thomas/code/spooky-site/app/public/wp-content/plugins/woocommerce-blocks/assets/js/data/cart/actions&quot;)&gt;&apos;." source="TS2339" />
+<error line="59" column="25" severity="error" message="Property &apos;invalidateResolutionForStore&apos; does not exist on type &apos;DispatchFromMap&lt;typeof import(&quot;/home/runner/work/woocommerce-blocks/woocommerce-blocks/assets/js/data/cart/actions&quot;)&gt;&apos;." source="TS2339" />
 <error line="60" column="38" severity="error" message="Argument of type &apos;Cart&apos; is not assignable to parameter of type &apos;CartResponse&apos;." source="TS2345" />
 <error line="103" column="6" severity="error" message="Property &apos;toBeInTheDocument&apos; does not exist on type &apos;JestMatchers&lt;HTMLElement&gt;&apos;." source="TS2339" />
 <error line="125" column="6" severity="error" message="Property &apos;toBeInTheDocument&apos; does not exist on type &apos;JestMatchers&lt;HTMLElement&gt;&apos;." source="TS2339" />
@@ -3309,7 +3309,7 @@
   Type &apos;undefined&apos; is not assignable to type &apos;number&apos;." source="TS2345" />
 </file>
 <file name="assets/js/blocks/product-best-sellers/block.tsx">
-<error line="5" column="30" severity="error" message="Could not find a declaration file for module &apos;@wordpress/server-side-render&apos;. &apos;/Users/thomas/code/spooky-site/app/public/wp-content/plugins/woocommerce-blocks/node_modules/@wordpress/server-side-render/build/index.js&apos; implicitly has an &apos;any&apos; type.
+<error line="5" column="30" severity="error" message="Could not find a declaration file for module &apos;@wordpress/server-side-render&apos;. &apos;/home/runner/work/woocommerce-blocks/woocommerce-blocks/node_modules/@wordpress/server-side-render/build/index.js&apos; implicitly has an &apos;any&apos; type.
   Try `npm i --save-dev @types/wordpress__server-side-render` if it exists or add a new declaration (.d.ts) file containing `declare module &apos;@wordpress/server-side-render&apos;;`" source="TS7016" />
 </file>
 <file name="assets/js/blocks/product-best-sellers/index.tsx">
@@ -3324,7 +3324,7 @@
     Argument of type &apos;{ name: string; title: string; category: string; keywords: string[]; description: string; supports: { align: string[]; html: boolean; }; example: { attributes: { isPreview: boolean; }; }; attributes: { columns: { ...; }; ... 8 more ...; orderby: { ...; }; }; textdomain: string; apiVersion: number; $schema: string; }&apos; is not assignable to parameter of type &apos;string&apos;." source="TS2769" />
 </file>
 <file name="assets/js/blocks/product-categories/block.js">
-<error line="6" column="30" severity="error" message="Could not find a declaration file for module &apos;@wordpress/server-side-render&apos;. &apos;/Users/thomas/code/spooky-site/app/public/wp-content/plugins/woocommerce-blocks/node_modules/@wordpress/server-side-render/build/index.js&apos; implicitly has an &apos;any&apos; type.
+<error line="6" column="30" severity="error" message="Could not find a declaration file for module &apos;@wordpress/server-side-render&apos;. &apos;/home/runner/work/woocommerce-blocks/woocommerce-blocks/node_modules/@wordpress/server-side-render/build/index.js&apos; implicitly has an &apos;any&apos; type.
   Try `npm i --save-dev @types/wordpress__server-side-render` if it exists or add a new declaration (.d.ts) file containing `declare module &apos;@wordpress/server-side-render&apos;;`" source="TS7016" />
 <error line="15" column="2" severity="error" message="Module &apos;&quot;@wordpress/components&quot;&apos; has no exported member &apos;__experimentalToggleGroupControl&apos;." source="TS2305" />
 <error line="17" column="2" severity="error" message="Module &apos;&quot;@wordpress/components&quot;&apos; has no exported member &apos;__experimentalToggleGroupControlOption&apos;." source="TS2305" />
@@ -3363,7 +3363,7 @@
   Property &apos;data-is-hierarchical&apos; does not exist on type &apos;{}&apos;." source="TS7053" />
 </file>
 <file name="assets/js/blocks/product-category/block.tsx">
-<error line="5" column="30" severity="error" message="Could not find a declaration file for module &apos;@wordpress/server-side-render&apos;. &apos;/Users/thomas/code/spooky-site/app/public/wp-content/plugins/woocommerce-blocks/node_modules/@wordpress/server-side-render/build/index.js&apos; implicitly has an &apos;any&apos; type.
+<error line="5" column="30" severity="error" message="Could not find a declaration file for module &apos;@wordpress/server-side-render&apos;. &apos;/home/runner/work/woocommerce-blocks/woocommerce-blocks/node_modules/@wordpress/server-side-render/build/index.js&apos; implicitly has an &apos;any&apos; type.
   Try `npm i --save-dev @types/wordpress__server-side-render` if it exists or add a new declaration (.d.ts) file containing `declare module &apos;@wordpress/server-side-render&apos;;`" source="TS7016" />
 </file>
 <file name="assets/js/editor-components/product-stock-control/index.tsx">
@@ -3383,7 +3383,7 @@
     Argument of type &apos;{ name: string; title: string; category: string; keywords: string[]; description: string; supports: { align: string[]; html: boolean; }; example: { attributes: { isPreview: boolean; }; }; attributes: { columns: { ...; }; ... 8 more ...; orderby: { ...; }; }; textdomain: string; apiVersion: number; $schema: string; }&apos; is not assignable to parameter of type &apos;string&apos;." source="TS2769" />
 </file>
 <file name="assets/js/blocks/product-new/block.js">
-<error line="8" column="30" severity="error" message="Could not find a declaration file for module &apos;@wordpress/server-side-render&apos;. &apos;/Users/thomas/code/spooky-site/app/public/wp-content/plugins/woocommerce-blocks/node_modules/@wordpress/server-side-render/build/index.js&apos; implicitly has an &apos;any&apos; type.
+<error line="8" column="30" severity="error" message="Could not find a declaration file for module &apos;@wordpress/server-side-render&apos;. &apos;/home/runner/work/woocommerce-blocks/woocommerce-blocks/node_modules/@wordpress/server-side-render/build/index.js&apos; implicitly has an &apos;any&apos; type.
   Try `npm i --save-dev @types/wordpress__server-side-render` if it exists or add a new declaration (.d.ts) file containing `declare module &apos;@wordpress/server-side-render&apos;;`" source="TS7016" />
 <error line="82" column="20" severity="error" message="Parameter &apos;value&apos; implicitly has an &apos;any[]&apos; type." source="TS7006" />
 </file>
@@ -3399,7 +3399,7 @@
           Type &apos;{ type: string; default: any; }&apos; is missing the following properties from type &apos;Query&lt;unknown&gt;&apos;: source, selector, query" source="TS2769" />
 </file>
 <file name="assets/js/blocks/product-on-sale/block.js">
-<error line="8" column="30" severity="error" message="Could not find a declaration file for module &apos;@wordpress/server-side-render&apos;. &apos;/Users/thomas/code/spooky-site/app/public/wp-content/plugins/woocommerce-blocks/node_modules/@wordpress/server-side-render/build/index.js&apos; implicitly has an &apos;any&apos; type.
+<error line="8" column="30" severity="error" message="Could not find a declaration file for module &apos;@wordpress/server-side-render&apos;. &apos;/home/runner/work/woocommerce-blocks/woocommerce-blocks/node_modules/@wordpress/server-side-render/build/index.js&apos; implicitly has an &apos;any&apos; type.
   Try `npm i --save-dev @types/wordpress__server-side-render` if it exists or add a new declaration (.d.ts) file containing `declare module &apos;@wordpress/server-side-render&apos;;`" source="TS7016" />
 <error line="95" column="20" severity="error" message="Parameter &apos;value&apos; implicitly has an &apos;any[]&apos; type." source="TS7006" />
 </file>
@@ -3415,12 +3415,12 @@
 </file>
 <file name="assets/js/blocks/product-query/utils.tsx">
 <error line="5" column="10" severity="error" message="Module &apos;&quot;@wordpress/blocks&quot;&apos; has no exported member &apos;store&apos;." source="TS2305" />
-<error line="74" column="30" severity="error" message="Property &apos;getActiveBlockVariation&apos; does not exist on type &apos;typeof import(&quot;/Users/thomas/code/spooky-site/app/public/wp-content/plugins/woocommerce-blocks/node_modules/@types/wordpress__rich-text/store/selectors&quot;)&apos;." source="TS2339" />
+<error line="74" column="30" severity="error" message="Property &apos;getActiveBlockVariation&apos; does not exist on type &apos;typeof import(&quot;/home/runner/work/woocommerce-blocks/woocommerce-blocks/node_modules/@types/wordpress__rich-text/store/selectors&quot;)&apos;." source="TS2339" />
 </file>
 <file name="assets/js/blocks/product-query/inspector-controls.tsx">
 <error line="14" column="2" severity="error" message="Module &apos;&quot;@wordpress/components&quot;&apos; has no exported member &apos;__experimentalToolsPanel&apos;." source="TS2305" />
 <error line="16" column="2" severity="error" message="Module &apos;&quot;@wordpress/components&quot;&apos; has no exported member &apos;__experimentalToolsPanelItem&apos;." source="TS2305" />
-<error line="51" column="6" severity="error" message="Property &apos;getBlockVariations&apos; does not exist on type &apos;typeof import(&quot;/Users/thomas/code/spooky-site/app/public/wp-content/plugins/woocommerce-blocks/node_modules/@types/wordpress__blocks/store/selectors&quot;)&apos;." source="TS2339" />
+<error line="51" column="6" severity="error" message="Property &apos;getBlockVariations&apos; does not exist on type &apos;typeof import(&quot;/home/runner/work/woocommerce-blocks/woocommerce-blocks/node_modules/@types/wordpress__blocks/store/selectors&quot;)&apos;." source="TS2339" />
 <error line="118" column="6" severity="error" message="Type &apos;{ label: string; onChange: (statusLabels: readonly Value[]) =&gt; void; suggestions: string[]; validateInput: (value: string) =&gt; boolean; value: string[]; __experimentalExpandOnFocus: boolean; }&apos; is not assignable to type &apos;IntrinsicAttributes &amp; Props &amp; { children?: ReactNode; }&apos;.
   Property &apos;label&apos; does not exist on type &apos;IntrinsicAttributes &amp; Props &amp; { children?: ReactNode; }&apos;." source="TS2322" />
 </file>
@@ -3462,7 +3462,7 @@
   Type &apos;null&apos; is not assignable to type &apos;(search: string) =&gt; void&apos;." source="TS2322" />
 </file>
 <file name="assets/js/blocks/product-tag/block.js">
-<error line="6" column="30" severity="error" message="Could not find a declaration file for module &apos;@wordpress/server-side-render&apos;. &apos;/Users/thomas/code/spooky-site/app/public/wp-content/plugins/woocommerce-blocks/node_modules/@wordpress/server-side-render/build/index.js&apos; implicitly has an &apos;any&apos; type.
+<error line="6" column="30" severity="error" message="Could not find a declaration file for module &apos;@wordpress/server-side-render&apos;. &apos;/home/runner/work/woocommerce-blocks/woocommerce-blocks/node_modules/@wordpress/server-side-render/build/index.js&apos; implicitly has an &apos;any&apos; type.
   Try `npm i --save-dev @types/wordpress__server-side-render` if it exists or add a new declaration (.d.ts) file containing `declare module &apos;@wordpress/server-side-render&apos;;`" source="TS7016" />
 <error line="31" column="10" severity="error" message="A spread argument must either have a tuple type or be passed to a rest parameter." source="TS2556" />
 <error line="66" column="24" severity="error" message="Parameter &apos;attributes&apos; implicitly has an &apos;any&apos; type." source="TS7006" />
@@ -3487,7 +3487,7 @@
     Argument of type &apos;{ name: string; title: string; category: string; keywords: string[]; description: string; supports: { align: string[]; html: boolean; }; attributes: { columns: { type: string; default: number; }; rows: { type: string; default: number; }; ... 6 more ...; stockStatus: { ...; }; }; example: { ...; }; textdomain: string...&apos; is not assignable to parameter of type &apos;string&apos;." source="TS2769" />
 </file>
 <file name="assets/js/blocks/product-top-rated/block.js">
-<error line="8" column="30" severity="error" message="Could not find a declaration file for module &apos;@wordpress/server-side-render&apos;. &apos;/Users/thomas/code/spooky-site/app/public/wp-content/plugins/woocommerce-blocks/node_modules/@wordpress/server-side-render/build/index.js&apos; implicitly has an &apos;any&apos; type.
+<error line="8" column="30" severity="error" message="Could not find a declaration file for module &apos;@wordpress/server-side-render&apos;. &apos;/home/runner/work/woocommerce-blocks/woocommerce-blocks/node_modules/@wordpress/server-side-render/build/index.js&apos; implicitly has an &apos;any&apos; type.
   Try `npm i --save-dev @types/wordpress__server-side-render` if it exists or add a new declaration (.d.ts) file containing `declare module &apos;@wordpress/server-side-render&apos;;`" source="TS7016" />
 <error line="70" column="20" severity="error" message="Parameter &apos;value&apos; implicitly has an &apos;any[]&apos; type." source="TS7006" />
 </file>
@@ -3567,7 +3567,7 @@
                       Type &apos;{ type: string; }&apos; is missing the following properties from type &apos;Query&lt;any&gt;&apos;: source, selector, query" source="TS2769" />
 </file>
 <file name="assets/js/blocks/products-by-attribute/block.tsx">
-<error line="4" column="30" severity="error" message="Could not find a declaration file for module &apos;@wordpress/server-side-render&apos;. &apos;/Users/thomas/code/spooky-site/app/public/wp-content/plugins/woocommerce-blocks/node_modules/@wordpress/server-side-render/build/index.js&apos; implicitly has an &apos;any&apos; type.
+<error line="4" column="30" severity="error" message="Could not find a declaration file for module &apos;@wordpress/server-side-render&apos;. &apos;/home/runner/work/woocommerce-blocks/woocommerce-blocks/node_modules/@wordpress/server-side-render/build/index.js&apos; implicitly has an &apos;any&apos; type.
   Try `npm i --save-dev @types/wordpress__server-side-render` if it exists or add a new declaration (.d.ts) file containing `declare module &apos;@wordpress/server-side-render&apos;;`" source="TS7016" />
 </file>
 <file name="assets/js/editor-components/product-attribute-term-control/index.js">
@@ -3809,7 +3809,7 @@
 <error line="69" column="21" severity="error" message="Property &apos;toHaveErrored&apos; does not exist on type &apos;JestMatchers&lt;Console&gt;&apos;." source="TS2339" />
 </file>
 <file name="assets/js/data/cart/test/reducers.js">
-<error line="4" column="24" severity="error" message="Could not find a declaration file for module &apos;deep-freeze&apos;. &apos;/Users/thomas/code/spooky-site/app/public/wp-content/plugins/woocommerce-blocks/node_modules/deep-freeze/index.js&apos; implicitly has an &apos;any&apos; type.
+<error line="4" column="24" severity="error" message="Could not find a declaration file for module &apos;deep-freeze&apos;. &apos;/home/runner/work/woocommerce-blocks/woocommerce-blocks/node_modules/deep-freeze/index.js&apos; implicitly has an &apos;any&apos; type.
   Try `npm i --save-dev @types/deep-freeze` if it exists or add a new declaration (.d.ts) file containing `declare module &apos;deep-freeze&apos;;`" source="TS7016" />
 </file>
 <file name="assets/js/data/cart/test/resolvers.js">
@@ -3835,7 +3835,7 @@
 <error line="200" column="34" severity="error" message="Argument of type &apos;{ cartData: { coupons: { code: string; totals: { currency_code: string; currency_symbol: string; currency_minor_unit: number; currency_decimal_separator: string; currency_thousand_separator: string; currency_prefix: string; currency_suffix: string; total_discount: string; total_discount_tax: string; }; }[]; ... 5 mo...&apos; is not assignable to parameter of type &apos;CartState&apos;." source="TS2345" />
 </file>
 <file name="assets/js/data/collections/test/reducers.js">
-<error line="4" column="24" severity="error" message="Could not find a declaration file for module &apos;deep-freeze&apos;. &apos;/Users/thomas/code/spooky-site/app/public/wp-content/plugins/woocommerce-blocks/node_modules/deep-freeze/index.js&apos; implicitly has an &apos;any&apos; type.
+<error line="4" column="24" severity="error" message="Could not find a declaration file for module &apos;deep-freeze&apos;. &apos;/home/runner/work/woocommerce-blocks/woocommerce-blocks/node_modules/deep-freeze/index.js&apos; implicitly has an &apos;any&apos; type.
   Try `npm i --save-dev @types/deep-freeze` if it exists or add a new declaration (.d.ts) file containing `declare module &apos;deep-freeze&apos;;`" source="TS7016" />
 <error line="61" column="5" severity="error" message="Element implicitly has an &apos;any&apos; type because expression of type &apos;&quot;wc/blocks&quot;&apos; can&apos;t be used to index type &apos;Object&apos;.
   Property &apos;wc/blocks&apos; does not exist on type &apos;Object&apos;." source="TS7053" />
@@ -3881,16 +3881,16 @@
 <error line="112" column="25" severity="error" message="Argument of type &apos;{ &apos;wc/blocks&apos;: { products: { &apos;[]&apos;: { &apos;?someQuery=2&apos;: { items: string[]; headers: { get: (key: any) =&gt; any; has: (key: any) =&gt; boolean; }; }; }; }; &apos;products/attributes&apos;: { &apos;[10]&apos;: { &apos;?someQuery=2&apos;: { items: string[]; headers: { get: (key: any) =&gt; any; has: (key: any) =&gt; boolean; }; }; }; }; &apos;products/attributes/term...&apos; is not assignable to parameter of type &apos;string&apos;." source="TS2345" />
 </file>
 <file name="assets/js/data/payment/test/reducers.js">
-<error line="4" column="24" severity="error" message="Could not find a declaration file for module &apos;deep-freeze&apos;. &apos;/Users/thomas/code/spooky-site/app/public/wp-content/plugins/woocommerce-blocks/node_modules/deep-freeze/index.js&apos; implicitly has an &apos;any&apos; type.
+<error line="4" column="24" severity="error" message="Could not find a declaration file for module &apos;deep-freeze&apos;. &apos;/home/runner/work/woocommerce-blocks/woocommerce-blocks/node_modules/deep-freeze/index.js&apos; implicitly has an &apos;any&apos; type.
   Try `npm i --save-dev @types/deep-freeze` if it exists or add a new declaration (.d.ts) file containing `declare module &apos;deep-freeze&apos;;`" source="TS7016" />
 </file>
 <file name="assets/js/data/payment/test/selectors.js">
 <error line="32" column="7" severity="error" message="This condition will always return &apos;false&apos; since the types &apos;&quot;core/editor&quot;&apos; and &apos;&quot;wc/store/cart&quot;&apos; have no overlap." source="TS2367" />
 <error line="54" column="17" severity="error" message="Parameter &apos;setting&apos; implicitly has an &apos;any&apos; type." source="TS7006" />
 <error line="54" column="26" severity="error" message="Rest parameter &apos;rest&apos; implicitly has an &apos;any[]&apos; type." source="TS7019" />
-<error line="161" column="41" severity="error" message="Property &apos;invalidateResolutionForStore&apos; does not exist on type &apos;DispatchFromMap&lt;typeof import(&quot;/Users/thomas/code/spooky-site/app/public/wp-content/plugins/woocommerce-blocks/assets/js/data/cart/actions&quot;)&gt;&apos;." source="TS2339" />
+<error line="161" column="41" severity="error" message="Property &apos;invalidateResolutionForStore&apos; does not exist on type &apos;DispatchFromMap&lt;typeof import(&quot;/home/runner/work/woocommerce-blocks/woocommerce-blocks/assets/js/data/cart/actions&quot;)&gt;&apos;." source="TS2339" />
 <error line="164" column="19" severity="error" message="Argument of type &apos;Cart&apos; is not assignable to parameter of type &apos;CartResponse&apos;." source="TS2345" />
-<error line="243" column="41" severity="error" message="Property &apos;invalidateResolutionForStore&apos; does not exist on type &apos;DispatchFromMap&lt;typeof import(&quot;/Users/thomas/code/spooky-site/app/public/wp-content/plugins/woocommerce-blocks/assets/js/data/cart/actions&quot;)&gt;&apos;." source="TS2339" />
+<error line="243" column="41" severity="error" message="Property &apos;invalidateResolutionForStore&apos; does not exist on type &apos;DispatchFromMap&lt;typeof import(&quot;/home/runner/work/woocommerce-blocks/woocommerce-blocks/assets/js/data/cart/actions&quot;)&gt;&apos;." source="TS2339" />
 <error line="246" column="19" severity="error" message="Argument of type &apos;Cart&apos; is not assignable to parameter of type &apos;CartResponse&apos;." source="TS2345" />
 <error line="270" column="33" severity="error" message="Type &apos;{ onChange: () =&gt; undefined; }&apos; is not assignable to type &apos;IntrinsicAttributes&apos;.
   Property &apos;onChange&apos; does not exist on type &apos;IntrinsicAttributes&apos;." source="TS2322" />
@@ -3902,15 +3902,15 @@
 <error line="123" column="10" severity="error" message="This condition will always return &apos;false&apos; since the types &apos;&quot;core/editor&quot;&apos; and &apos;&quot;wc/store/payment&quot;&apos; have no overlap." source="TS2367" />
 </file>
 <file name="assets/js/data/query-state/test/reducers.js">
-<error line="4" column="24" severity="error" message="Could not find a declaration file for module &apos;deep-freeze&apos;. &apos;/Users/thomas/code/spooky-site/app/public/wp-content/plugins/woocommerce-blocks/node_modules/deep-freeze/index.js&apos; implicitly has an &apos;any&apos; type.
+<error line="4" column="24" severity="error" message="Could not find a declaration file for module &apos;deep-freeze&apos;. &apos;/home/runner/work/woocommerce-blocks/woocommerce-blocks/node_modules/deep-freeze/index.js&apos; implicitly has an &apos;any&apos; type.
   Try `npm i --save-dev @types/deep-freeze` if it exists or add a new declaration (.d.ts) file containing `declare module &apos;deep-freeze&apos;;`" source="TS7016" />
 </file>
 <file name="assets/js/data/query-state/test/selectors.js">
-<error line="4" column="24" severity="error" message="Could not find a declaration file for module &apos;deep-freeze&apos;. &apos;/Users/thomas/code/spooky-site/app/public/wp-content/plugins/woocommerce-blocks/node_modules/deep-freeze/index.js&apos; implicitly has an &apos;any&apos; type.
+<error line="4" column="24" severity="error" message="Could not find a declaration file for module &apos;deep-freeze&apos;. &apos;/home/runner/work/woocommerce-blocks/woocommerce-blocks/node_modules/deep-freeze/index.js&apos; implicitly has an &apos;any&apos; type.
   Try `npm i --save-dev @types/deep-freeze` if it exists or add a new declaration (.d.ts) file containing `declare module &apos;deep-freeze&apos;;`" source="TS7016" />
 </file>
 <file name="assets/js/data/schema/test/reducers.js">
-<error line="4" column="24" severity="error" message="Could not find a declaration file for module &apos;deep-freeze&apos;. &apos;/Users/thomas/code/spooky-site/app/public/wp-content/plugins/woocommerce-blocks/node_modules/deep-freeze/index.js&apos; implicitly has an &apos;any&apos; type.
+<error line="4" column="24" severity="error" message="Could not find a declaration file for module &apos;deep-freeze&apos;. &apos;/home/runner/work/woocommerce-blocks/woocommerce-blocks/node_modules/deep-freeze/index.js&apos; implicitly has an &apos;any&apos; type.
   Try `npm i --save-dev @types/deep-freeze` if it exists or add a new declaration (.d.ts) file containing `declare module &apos;deep-freeze&apos;;`" source="TS7016" />
 </file>
 <file name="assets/js/data/schema/test/resolvers.js">
@@ -3922,7 +3922,7 @@
 <error line="53" column="22" severity="error" message="Variable &apos;fulfillment&apos; implicitly has an &apos;any&apos; type." source="TS7005" />
 </file>
 <file name="assets/js/data/schema/test/selectors.js">
-<error line="4" column="24" severity="error" message="Could not find a declaration file for module &apos;deep-freeze&apos;. &apos;/Users/thomas/code/spooky-site/app/public/wp-content/plugins/woocommerce-blocks/node_modules/deep-freeze/index.js&apos; implicitly has an &apos;any&apos; type.
+<error line="4" column="24" severity="error" message="Could not find a declaration file for module &apos;deep-freeze&apos;. &apos;/home/runner/work/woocommerce-blocks/woocommerce-blocks/node_modules/deep-freeze/index.js&apos; implicitly has an &apos;any&apos; type.
   Try `npm i --save-dev @types/deep-freeze` if it exists or add a new declaration (.d.ts) file containing `declare module &apos;deep-freeze&apos;;`" source="TS7016" />
 <error line="14" column="28" severity="error" message="Parameter &apos;callback&apos; implicitly has an &apos;any&apos; type." source="TS7006" />
 <error line="38" column="5" severity="error" message="Parameter &apos;namespace&apos; implicitly has an &apos;any&apos; type." source="TS7006" />
@@ -4160,14 +4160,14 @@
               Type &apos;Record&lt;string, unknown&gt;&apos; is not assignable to type &apos;boolean&apos;." source="TS2345" />
 </file>
 <file name="assets/js/utils/test/notices.js">
-<error line="19" column="11" severity="error" message="Property &apos;mockReturnValue&apos; does not exist on type &apos;{ (storeNameOrDescriptor: string | StoreDescriptor): SelectorMap; (key: &quot;core/rich-text&quot;): typeof import(&quot;/Users/thomas/code/spooky-site/app/public/wp-content/plugins/woocommerce-blocks/node_modules/@types/wordpress__rich-text/store/selectors&quot;); (key: &quot;core/notices&quot;): typeof import(&quot;/Users/thomas/code/spooky-site/ap...&apos;." source="TS2339" />
-<error line="46" column="11" severity="error" message="Property &apos;mockReturnValue&apos; does not exist on type &apos;{ (storeNameOrDescriptor: string | StoreDescriptor): SelectorMap; (key: &quot;core/rich-text&quot;): typeof import(&quot;/Users/thomas/code/spooky-site/app/public/wp-content/plugins/woocommerce-blocks/node_modules/@types/wordpress__rich-text/store/selectors&quot;); (key: &quot;core/notices&quot;): typeof import(&quot;/Users/thomas/code/spooky-site/ap...&apos;." source="TS2339" />
-<error line="55" column="11" severity="error" message="Property &apos;mockReturnValue&apos; does not exist on type &apos;{ (storeNameOrDescriptor: string | StoreDescriptor): SelectorMap; (key: &quot;core/rich-text&quot;): typeof import(&quot;/Users/thomas/code/spooky-site/app/public/wp-content/plugins/woocommerce-blocks/node_modules/@types/wordpress__rich-text/store/selectors&quot;); (key: &quot;core/notices&quot;): typeof import(&quot;/Users/thomas/code/spooky-site/ap...&apos;." source="TS2339" />
-<error line="94" column="13" severity="error" message="Property &apos;mockReturnValue&apos; does not exist on type &apos;{ (storeNameOrDescriptor: string | StoreDescriptor): DispatcherMap; (key: &quot;core/rich-text&quot;): typeof import(&quot;/Users/thomas/code/spooky-site/app/public/wp-content/plugins/woocommerce-blocks/node_modules/@types/wordpress__rich-text/store/actions&quot;); (key: &quot;core/notices&quot;): typeof import(&quot;/Users/thomas/code/spooky-site/ap...&apos;." source="TS2339" />
+<error line="19" column="11" severity="error" message="Property &apos;mockReturnValue&apos; does not exist on type &apos;{ (storeNameOrDescriptor: string | StoreDescriptor): SelectorMap; (key: &quot;core/rich-text&quot;): typeof import(&quot;/home/runner/work/woocommerce-blocks/woocommerce-blocks/node_modules/@types/wordpress__rich-text/store/selectors&quot;); (key: &quot;core/notices&quot;): typeof import(&quot;/home/runner/work/woocommerce-blocks/woocommerce-blocks/n...&apos;." source="TS2339" />
+<error line="46" column="11" severity="error" message="Property &apos;mockReturnValue&apos; does not exist on type &apos;{ (storeNameOrDescriptor: string | StoreDescriptor): SelectorMap; (key: &quot;core/rich-text&quot;): typeof import(&quot;/home/runner/work/woocommerce-blocks/woocommerce-blocks/node_modules/@types/wordpress__rich-text/store/selectors&quot;); (key: &quot;core/notices&quot;): typeof import(&quot;/home/runner/work/woocommerce-blocks/woocommerce-blocks/n...&apos;." source="TS2339" />
+<error line="55" column="11" severity="error" message="Property &apos;mockReturnValue&apos; does not exist on type &apos;{ (storeNameOrDescriptor: string | StoreDescriptor): SelectorMap; (key: &quot;core/rich-text&quot;): typeof import(&quot;/home/runner/work/woocommerce-blocks/woocommerce-blocks/node_modules/@types/wordpress__rich-text/store/selectors&quot;); (key: &quot;core/notices&quot;): typeof import(&quot;/home/runner/work/woocommerce-blocks/woocommerce-blocks/n...&apos;." source="TS2339" />
+<error line="94" column="13" severity="error" message="Property &apos;mockReturnValue&apos; does not exist on type &apos;{ (storeNameOrDescriptor: string | StoreDescriptor): DispatcherMap; (key: &quot;core/rich-text&quot;): typeof import(&quot;/home/runner/work/woocommerce-blocks/woocommerce-blocks/node_modules/@types/wordpress__rich-text/store/actions&quot;); (key: &quot;core/notices&quot;): typeof import(&quot;/home/runner/work/woocommerce-blocks/woocommerce-blocks/n...&apos;." source="TS2339" />
 <error line="98" column="12" severity="error" message="Expected 1 arguments, but got 0." source="TS2554" />
 <error line="103" column="12" severity="error" message="Expected 1 arguments, but got 0." source="TS2554" />
-<error line="111" column="11" severity="error" message="Property &apos;mockReturnValue&apos; does not exist on type &apos;{ (storeNameOrDescriptor: string | StoreDescriptor): SelectorMap; (key: &quot;core/rich-text&quot;): typeof import(&quot;/Users/thomas/code/spooky-site/app/public/wp-content/plugins/woocommerce-blocks/node_modules/@types/wordpress__rich-text/store/selectors&quot;); (key: &quot;core/notices&quot;): typeof import(&quot;/Users/thomas/code/spooky-site/ap...&apos;." source="TS2339" />
-<error line="115" column="13" severity="error" message="Property &apos;mockReturnValue&apos; does not exist on type &apos;{ (storeNameOrDescriptor: string | StoreDescriptor): DispatcherMap; (key: &quot;core/rich-text&quot;): typeof import(&quot;/Users/thomas/code/spooky-site/app/public/wp-content/plugins/woocommerce-blocks/node_modules/@types/wordpress__rich-text/store/actions&quot;); (key: &quot;core/notices&quot;): typeof import(&quot;/Users/thomas/code/spooky-site/ap...&apos;." source="TS2339" />
+<error line="111" column="11" severity="error" message="Property &apos;mockReturnValue&apos; does not exist on type &apos;{ (storeNameOrDescriptor: string | StoreDescriptor): SelectorMap; (key: &quot;core/rich-text&quot;): typeof import(&quot;/home/runner/work/woocommerce-blocks/woocommerce-blocks/node_modules/@types/wordpress__rich-text/store/selectors&quot;); (key: &quot;core/notices&quot;): typeof import(&quot;/home/runner/work/woocommerce-blocks/woocommerce-blocks/n...&apos;." source="TS2339" />
+<error line="115" column="13" severity="error" message="Property &apos;mockReturnValue&apos; does not exist on type &apos;{ (storeNameOrDescriptor: string | StoreDescriptor): DispatcherMap; (key: &quot;core/rich-text&quot;): typeof import(&quot;/home/runner/work/woocommerce-blocks/woocommerce-blocks/node_modules/@types/wordpress__rich-text/store/actions&quot;); (key: &quot;core/notices&quot;): typeof import(&quot;/home/runner/work/woocommerce-blocks/woocommerce-blocks/n...&apos;." source="TS2339" />
 <error line="119" column="12" severity="error" message="Expected 1 arguments, but got 0." source="TS2554" />
 </file>
 <file name="assets/js/utils/test/products.js">
@@ -4187,15 +4187,15 @@
 </file>
 <file name="packages/checkout/components/store-notices-container/test/index.tsx">
 <error line="4" column="10" severity="error" message="Module &apos;&quot;@wordpress/notices&quot;&apos; has no exported member &apos;store&apos;." source="TS2305" />
-<error line="15" column="28" severity="error" message="Property &apos;createErrorNotice&apos; does not exist on type &apos;typeof import(&quot;/Users/thomas/code/spooky-site/app/public/wp-content/plugins/woocommerce-blocks/node_modules/@types/wordpress__rich-text/store/actions&quot;)&apos;." source="TS2339" />
-<error line="23" column="29" severity="error" message="Property &apos;removeNotice&apos; does not exist on type &apos;typeof import(&quot;/Users/thomas/code/spooky-site/app/public/wp-content/plugins/woocommerce-blocks/node_modules/@types/wordpress__rich-text/store/actions&quot;)&apos;." source="TS2339" />
-<error line="30" column="28" severity="error" message="Property &apos;getNotices&apos; does not exist on type &apos;typeof import(&quot;/Users/thomas/code/spooky-site/app/public/wp-content/plugins/woocommerce-blocks/node_modules/@types/wordpress__rich-text/store/selectors&quot;)&apos;." source="TS2339" />
-<error line="36" column="28" severity="error" message="Property &apos;createErrorNotice&apos; does not exist on type &apos;typeof import(&quot;/Users/thomas/code/spooky-site/app/public/wp-content/plugins/woocommerce-blocks/node_modules/@types/wordpress__rich-text/store/actions&quot;)&apos;." source="TS2339" />
-<error line="46" column="29" severity="error" message="Property &apos;removeNotice&apos; does not exist on type &apos;typeof import(&quot;/Users/thomas/code/spooky-site/app/public/wp-content/plugins/woocommerce-blocks/node_modules/@types/wordpress__rich-text/store/actions&quot;)&apos;." source="TS2339" />
-<error line="53" column="28" severity="error" message="Property &apos;getNotices&apos; does not exist on type &apos;typeof import(&quot;/Users/thomas/code/spooky-site/app/public/wp-content/plugins/woocommerce-blocks/node_modules/@types/wordpress__rich-text/store/selectors&quot;)&apos;." source="TS2339" />
-<error line="59" column="28" severity="error" message="Property &apos;createErrorNotice&apos; does not exist on type &apos;typeof import(&quot;/Users/thomas/code/spooky-site/app/public/wp-content/plugins/woocommerce-blocks/node_modules/@types/wordpress__rich-text/store/actions&quot;)&apos;." source="TS2339" />
-<error line="70" column="29" severity="error" message="Property &apos;removeNotice&apos; does not exist on type &apos;typeof import(&quot;/Users/thomas/code/spooky-site/app/public/wp-content/plugins/woocommerce-blocks/node_modules/@types/wordpress__rich-text/store/actions&quot;)&apos;." source="TS2339" />
-<error line="77" column="28" severity="error" message="Property &apos;getNotices&apos; does not exist on type &apos;typeof import(&quot;/Users/thomas/code/spooky-site/app/public/wp-content/plugins/woocommerce-blocks/node_modules/@types/wordpress__rich-text/store/selectors&quot;)&apos;." source="TS2339" />
+<error line="15" column="28" severity="error" message="Property &apos;createErrorNotice&apos; does not exist on type &apos;typeof import(&quot;/home/runner/work/woocommerce-blocks/woocommerce-blocks/node_modules/@types/wordpress__rich-text/store/actions&quot;)&apos;." source="TS2339" />
+<error line="23" column="29" severity="error" message="Property &apos;removeNotice&apos; does not exist on type &apos;typeof import(&quot;/home/runner/work/woocommerce-blocks/woocommerce-blocks/node_modules/@types/wordpress__rich-text/store/actions&quot;)&apos;." source="TS2339" />
+<error line="30" column="28" severity="error" message="Property &apos;getNotices&apos; does not exist on type &apos;typeof import(&quot;/home/runner/work/woocommerce-blocks/woocommerce-blocks/node_modules/@types/wordpress__rich-text/store/selectors&quot;)&apos;." source="TS2339" />
+<error line="36" column="28" severity="error" message="Property &apos;createErrorNotice&apos; does not exist on type &apos;typeof import(&quot;/home/runner/work/woocommerce-blocks/woocommerce-blocks/node_modules/@types/wordpress__rich-text/store/actions&quot;)&apos;." source="TS2339" />
+<error line="46" column="29" severity="error" message="Property &apos;removeNotice&apos; does not exist on type &apos;typeof import(&quot;/home/runner/work/woocommerce-blocks/woocommerce-blocks/node_modules/@types/wordpress__rich-text/store/actions&quot;)&apos;." source="TS2339" />
+<error line="53" column="28" severity="error" message="Property &apos;getNotices&apos; does not exist on type &apos;typeof import(&quot;/home/runner/work/woocommerce-blocks/woocommerce-blocks/node_modules/@types/wordpress__rich-text/store/selectors&quot;)&apos;." source="TS2339" />
+<error line="59" column="28" severity="error" message="Property &apos;createErrorNotice&apos; does not exist on type &apos;typeof import(&quot;/home/runner/work/woocommerce-blocks/woocommerce-blocks/node_modules/@types/wordpress__rich-text/store/actions&quot;)&apos;." source="TS2339" />
+<error line="70" column="29" severity="error" message="Property &apos;removeNotice&apos; does not exist on type &apos;typeof import(&quot;/home/runner/work/woocommerce-blocks/woocommerce-blocks/node_modules/@types/wordpress__rich-text/store/actions&quot;)&apos;." source="TS2339" />
+<error line="77" column="28" severity="error" message="Property &apos;getNotices&apos; does not exist on type &apos;typeof import(&quot;/home/runner/work/woocommerce-blocks/woocommerce-blocks/node_modules/@types/wordpress__rich-text/store/selectors&quot;)&apos;." source="TS2339" />
 </file>
 <file name="packages/checkout/components/text-input/test/validated-text-input.tsx">
 <error line="92" column="9" severity="error" message="Property &apos;toBeInTheDocument&apos; does not exist on type &apos;Matchers&lt;void, HTMLElement | null&gt;&apos;." source="TS2339" />
