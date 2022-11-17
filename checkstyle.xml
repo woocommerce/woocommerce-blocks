@@ -1698,9 +1698,6 @@
       Type &apos;string&apos; is not assignable to type &apos;never&apos;." source="TS2322" />
 <error line="56" column="5" severity="error" message="Type &apos;{ code: string; currency_code: string; currency_decimal_separator: string; currency_minor_unit: number; currency_prefix: string; currency_suffix: string; currency_symbol: string; currency_thousand_separator: string; ... 10 more ...; thousandSeparator: string; }&apos; is not assignable to type &apos;Currency | Record&lt;string, never&gt;&apos;." source="TS2322" />
 </file>
-<file name="assets/js/base/components/quantity-selector/index.tsx">
-<error line="10" column="34" severity="error" message="Cannot find module &apos;@woocommerce/base-components/validation-input-error&apos; or its corresponding type declarations." source="TS2307" />
-</file>
 <file name="assets/js/base/components/radio-control-accordion/index.js">
 <error line="13" column="2" severity="error" message="Binding element &apos;className&apos; implicitly has an &apos;any&apos; type." source="TS7031" />
 <error line="14" column="2" severity="error" message="Binding element &apos;instanceId&apos; implicitly has an &apos;any&apos; type." source="TS7031" />
