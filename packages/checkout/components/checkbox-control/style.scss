@@ -6,6 +6,7 @@
 		align-items: flex-start;
 		display: flex;
 		position: relative;
+		@include font-size(smaller);
 	}
 
 	.wc-block-components-checkbox__input[type="checkbox"] {
