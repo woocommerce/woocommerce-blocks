@@ -1404,13 +1404,6 @@
 <error line="252" column="56" severity="error" message="Argument of type &apos;null&apos; is not assignable to parameter of type &apos;Object&apos;." source="TS2345" />
 <error line="475" column="34" severity="error" message="Argument of type &apos;null&apos; is not assignable to parameter of type &apos;Object | undefined&apos;." source="TS2345" />
 </file>
-<file name="assets/js/atomic/blocks/product-elements/image/test/block.test.js">
-<error line="69" column="7" severity="error" message="Type &apos;{ showProductLink: true; }&apos; is missing the following properties from type &apos;BlockAttributes&apos;: productId, showSaleBadge, saleBadgeAlign, imageSizing, isDescendentOfQueryLoop" source="TS2739" />
-<error line="96" column="7" severity="error" message="Type &apos;{ showProductLink: true; }&apos; is missing the following properties from type &apos;BlockAttributes&apos;: productId, showSaleBadge, saleBadgeAlign, imageSizing, isDescendentOfQueryLoop" source="TS2739" />
-<error line="122" column="7" severity="error" message="Type &apos;{ showProductLink: false; }&apos; is missing the following properties from type &apos;BlockAttributes&apos;: productId, showSaleBadge, saleBadgeAlign, imageSizing, isDescendentOfQueryLoop" source="TS2739" />
-<error line="145" column="7" severity="error" message="Type &apos;{ showProductLink: false; }&apos; is missing the following properties from type &apos;BlockAttributes&apos;: productId, showSaleBadge, saleBadgeAlign, imageSizing, isDescendentOfQueryLoop" source="TS2739" />
-<error line="166" column="7" severity="error" message="Type &apos;{ showProductLink: true; }&apos; is missing the following properties from type &apos;BlockAttributes&apos;: productId, showSaleBadge, saleBadgeAlign, imageSizing, isDescendentOfQueryLoop" source="TS2739" />
-</file>
 <file name="assets/js/atomic/blocks/product-elements/title/test/block.test.js">
 <error line="22" column="6" severity="error" message="Property &apos;isLoading&apos; is missing in type &apos;{ children: Element; product: { id: number; name: string; permalink: string; }; }&apos; but required in type &apos;{ product: any; children: Object; isLoading: boolean; }&apos;." source="TS2741" />
 <error line="23" column="7" severity="error" message="Type &apos;{ showProductLink: false; }&apos; is missing the following properties from type &apos;Attributes&apos;: headingLevel, align" source="TS2739" />
@@ -2188,10 +2181,6 @@
       Property &apos;attributes&apos; is missing in type &apos;{ name: string; version: string; title: string; description: string; category: string; supports: { align: boolean; html: boolean; multiple: boolean; reusable: boolean; inserter: boolean; }; parent: string[]; textdomain: string; apiVersion: number; }&apos; but required in type &apos;Pick&lt;Block&lt;{}&gt;, &quot;title&quot; | &quot;category&quot; | &quot;attributes&quot;&gt;&apos;.
   Overload 2 of 2, &apos;(name: string, settings: BlockConfiguration&lt;{}&gt;): Block&lt;{}&gt; | undefined&apos;, gave the following error.
     Argument of type &apos;{ name: string; version: string; title: string; description: string; category: string; supports: { align: boolean; html: boolean; multiple: boolean; reusable: boolean; inserter: boolean; }; parent: string[]; textdomain: string; apiVersion: number; }&apos; is not assignable to parameter of type &apos;string&apos;." source="TS2769" />
-</file>
-<file name="assets/js/blocks/cart/cart-cross-sells-product-list/cart-cross-sells-product.tsx">
-<error line="41" column="8" severity="error" message="Type &apos;{ className: string; showSaleBadge: false; }&apos; is missing the following properties from type &apos;BlockAttributes&apos;: productId, showProductLink, saleBadgeAlign, imageSizing, isDescendentOfQueryLoop" source="TS2739" />
-<error line="51" column="8" severity="error" message="Type &apos;{}&apos; is missing the following properties from type &apos;BlockAttributes&apos;: productId, align" source="TS2739" />
 </file>
 <file name="assets/js/blocks/cart/inner-blocks/cart-cross-sells-products/index.tsx">
 <error line="13" column="20" severity="error" message="No overload matches this call.
