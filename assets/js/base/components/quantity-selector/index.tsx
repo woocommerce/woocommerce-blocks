@@ -7,7 +7,7 @@ import classNames from 'classnames';
 import { useCallback, useLayoutEffect } from '@wordpress/element';
 import { DOWN, UP } from '@wordpress/keycodes';
 import { useDebouncedCallback } from 'use-debounce';
-import ValidationInputError from '@woocommerce/base-components/validation-input-error';
+import { ValidationInputError } from '@woocommerce/blocks-checkout';
 import { withInstanceId } from '@wordpress/compose';
 import { useDispatch, useSelect } from '@wordpress/data';
 import { VALIDATION_STORE_KEY } from '@woocommerce/block-data';
