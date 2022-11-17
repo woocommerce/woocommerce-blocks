@@ -253,7 +253,7 @@ class BlockTemplatesController {
 		 */
 		$query_result = array_map(
 			function( $template ) {
-				if ( 'theme' === $template->origin && BlockTemplateUtils::template_has_title_in_theme( $template ) ) {
+				if ( 'theme' === $template->origin && BlockTemplateUtils::template_has_title( $template ) ) {
 					return $template;
 				}
 				if ( $template->title === $template->slug ) {

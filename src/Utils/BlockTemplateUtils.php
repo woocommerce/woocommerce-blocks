@@ -202,8 +202,8 @@ class BlockTemplateUtils {
 		$template->source         = $template_file->source ? $template_file->source : 'plugin';
 		$template->slug           = $template_file->slug;
 		$template->type           = $template_type;
-		$template->title          = self::template_has_title_in_theme( $template_file ) ? $template_file->title : self::get_block_template_title( $template_file->slug );
-		$template->description    = self::template_has_title_in_theme( $template_file ) ? $template_file->description : self::get_block_template_description( $template_file->slug );
+		$template->title          = self::template_has_title( $template_file ) ? $template_file->title : self::get_block_template_title( $template_file->slug );
+		$template->description    = self::template_has_title( $template_file ) ? $template_file->description : self::get_block_template_description( $template_file->slug );
 		$template->status         = 'publish';
 		$template->has_theme_file = true;
 		$template->origin         = $template_file->source;
@@ -605,7 +605,7 @@ class BlockTemplateUtils {
 	 * @param object $template The template object.
 	 * @return boolean
 	 */
-	public static function template_has_title_in_theme( $template ) {
+	public static function template_has_title( $template ) {
 		return ! empty( $template->title ) && $template->title !== $template->slug;
 	}
 }
