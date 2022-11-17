@@ -2,83 +2,89 @@
  * External dependencies
  */
 import classnames from 'classnames';
+import { useRef, useEffect } from '@wordpress/element';
 import { Notice } from 'wordpress-components';
 import { sanitizeHTML } from '@woocommerce/utils';
 import { useDispatch, useSelect } from '@wordpress/data';
-import { PAYMENT_STORE_KEY } from '@woocommerce/block-data';
-import type { Notice as NoticeType } from '@wordpress/notices';
+import { usePrevious } from '@woocommerce/base-hooks';
+import { decodeEntities } from '@wordpress/html-entities';
+import {
+	STORE_NOTICE_CONTAINERS_STORE_KEY,
+	PAYMENT_STORE_KEY,
+} from '@woocommerce/block-data';
 
 /**
  * Internal dependencies
  */
 import './style.scss';
+import { getClassNameFromStatus } from './utils';
+import type {
+	StoreNoticesContainerProps,
+	NoticeType,
+	NoticeOptions,
+} from './types';
 
-const getWooClassName = ( { status = 'default' } ) => {
-	switch ( status ) {
-		case 'error':
-			return 'woocommerce-error';
-		case 'success':
-			return 'woocommerce-message';
-		case 'info':
-		case 'warning':
-			return 'woocommerce-info';
-	}
-	return '';
-};
-
-interface StoreNoticesContainerProps {
-	className?: string;
-	context?: string;
-	additionalNotices?: NoticeType[];
-}
-
-/**
- * Component that displays notices from the core/notices data store. See
- * https://developer.wordpress.org/block-editor/reference-guides/data/data-core-notices/ for more information on this
- * data store.
- *
- * @param  props
- * @param  props.className         Class name to add to the container.
- * @param  props.context           Context to show notices from.
- * @param  props.additionalNotices Additional notices to display.
- * @function Object() { [native code] }
- */
-export const StoreNoticesContainer = ( {
+const StoreNoticesContainer = ( {
 	className,
 	context = 'default',
 	additionalNotices = [],
 }: StoreNoticesContainerProps ): JSX.Element | null => {
-	const isExpressPaymentMethodActive = useSelect( ( select ) =>
+	const ref = useRef< HTMLDivElement >( null );
+	const { registerContainer } = useDispatch(
+		STORE_NOTICE_CONTAINERS_STORE_KEY
+	);
+	const { removeNotice } = useDispatch( 'core/notices' );
+	const suppressNotices = useSelect( ( select ) =>
 		select( PAYMENT_STORE_KEY ).isExpressPaymentMethodActive()
 	);
 
-	const { notices } = useSelect( ( select ) => {
-		const store = select( 'core/notices' );
-		return {
-			notices: store.getNotices( context ),
-		};
-	} );
-	const { removeNotice } = useDispatch( 'core/notices' );
-	const regularNotices = notices
+	const notices = useSelect< Array< NoticeType & NoticeOptions > >(
+		( select ) =>
+			select( 'core/notices' ).getNotices( context ) as Array<
+				NoticeType & NoticeOptions
+			>
+	)
 		.filter( ( notice ) => notice.type !== 'snackbar' )
 		.concat( additionalNotices );
 
-	if ( ! regularNotices.length ) {
+	// Register the container with the parent.
+	useEffect( () => {
+		registerContainer( context, ref );
+	}, [ context, ref, registerContainer ] );
+
+	// Scroll to container when an error is added here.
+	const noticeIds = notices.map( ( notice ) => notice.id );
+	const previousNoticeIds = usePrevious( noticeIds );
+
+	useEffect( () => {
+		const newNoticeIds = noticeIds.filter(
+			( value ) =>
+				! previousNoticeIds || ! previousNoticeIds.includes( value )
+		);
+
+		if ( newNoticeIds.length ) {
+			ref.current?.scrollIntoView( {
+				behavior: 'smooth',
+			} );
+		}
+	}, [ noticeIds, previousNoticeIds, ref ] );
+
+	if ( suppressNotices ) {
 		return null;
 	}
 
-	const wrapperClass = classnames( className, 'wc-block-components-notices' );
-
-	// We suppress the notices when the express payment method is active
-	return isExpressPaymentMethodActive ? null : (
-		<div className={ wrapperClass }>
-			{ regularNotices.map( ( props ) => (
+	return (
+		<div
+			ref={ ref }
+			className={ classnames( className, 'wc-block-components-notices' ) }
+		>
+			{ notices.map( ( props ) => (
 				<Notice
 					key={ `store-notice-${ props.id }` }
 					{ ...props }
 					className={ classnames(
 						'wc-block-components-notices__notice',
-						getWooClassName( props )
+						getClassNameFromStatus( props )
 					) }
 					onRemove={ () => {
 						if ( props.isDismissible ) {
@@ -86,7 +92,7 @@ export const StoreNoticesContainer = ( {
 						}
 					} }
 				>
-					{ sanitizeHTML( props.content ) }
+					{ sanitizeHTML( decodeEntities( props.content ) ) }
 				</Notice>
 			) ) }
 		</div>

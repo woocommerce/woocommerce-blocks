@@ -5,19 +5,14 @@ import { __ } from '@wordpress/i18n';
 import classnames from 'classnames';
 import { createInterpolateElement, useEffect } from '@wordpress/element';
 import { useStoreCart } from '@woocommerce/base-context/hooks';
-import {
-	CheckoutProvider,
-	noticeContexts,
-	StoreNoticeProvider,
-	SnackbarNoticesContainer,
-} from '@woocommerce/base-context';
+import { CheckoutProvider, noticeContexts } from '@woocommerce/base-context';
 
 import BlockErrorBoundary from '@woocommerce/base-components/block-error-boundary';
 import { SidebarLayout } from '@woocommerce/base-components/sidebar-layout';
 import { CURRENT_USER_IS_ADMIN, getSetting } from '@woocommerce/settings';
 import {
 	SlotFillProvider,
-	StoreNoticesContainer,
+	SnackbarNoticesContainer,
 } from '@woocommerce/blocks-checkout';
 import withScrollToTop from '@woocommerce/base-hocs/with-scroll-to-top';
 import { useDispatch, useSelect } from '@wordpress/data';
@@ -25,6 +20,7 @@ import {
 	CHECKOUT_STORE_KEY,
 	VALIDATION_STORE_KEY,
 } from '@woocommerce/block-data';
+import { Button } from '@wordpress/components';
 
 /**
  * Internal dependencies
@@ -188,27 +184,38 @@ const Block = ( {
 			) }
 			showErrorMessage={ CURRENT_USER_IS_ADMIN }
 		>
-			<StoreNoticeProvider defaultContext={ noticeContexts.CHECKOUT }>
-				<SnackbarNoticesContainer
-					context={ noticeContexts.CHECKOUT }
-					forceType={ true }
-				/>
-				{ /* SlotFillProvider need to be defined before CheckoutProvider so fills have the SlotFill context ready when they mount. */ }
-				<SlotFillProvider>
-					<CheckoutProvider>
-						<SidebarLayout
-							className={ classnames( 'wc-block-checkout', {
-								'has-dark-controls': attributes.hasDarkControls,
-							} ) }
-						>
-							<Checkout attributes={ attributes }>
-								{ children }
-							</Checkout>
-							<ScrollOnError scrollToTop={ scrollToTop } />
-						</SidebarLayout>
-					</CheckoutProvider>
-				</SlotFillProvider>
-			</StoreNoticeProvider>
+			<SnackbarNoticesContainer
+				context={ noticeContexts.CHECKOUT }
+				forceType={ true }
+			/>
+			<Button>
+				{ __(
+					'Generate an error notice',
+					'woo-gutenberg-products-block'
+				) }
+			</Button>
+			{ Object.values( noticeContexts ).map( ( contextValue ) => {
+				return (
+					<Button key={ contextValue }>
+						{ contextValue + ' Error' }
+					</Button>
+				);
+			} ) }
+			{ /* SlotFillProvider need to be defined before CheckoutProvider so fills have the SlotFill context ready when they mount. */ }
+			<SlotFillProvider>
+				<CheckoutProvider>
+					<SidebarLayout
+						className={ classnames( 'wc-block-checkout', {
+							'has-dark-controls': attributes.hasDarkControls,
+						} ) }
+					>
+						<Checkout attributes={ attributes }>
+							{ children }
+						</Checkout>
+						<ScrollOnError scrollToTop={ scrollToTop } />
+					</SidebarLayout>
+				</CheckoutProvider>
+			</SlotFillProvider>
 		</BlockErrorBoundary>
 	);
 };
