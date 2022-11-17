@@ -208,7 +208,7 @@ class ProductQuery extends AbstractBlock {
 	 *
 	 * @return array
 	 */
-	private function extend_rest_query_params( $params ) {
+	private function extend_rest_query_allowed_params( $params ) {
 		return array_merge( $params, $this->custom_order_opts );
 	}
 
