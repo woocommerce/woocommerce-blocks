@@ -8,10 +8,12 @@ import {
 	useCheckoutAddress,
 	useStoreEvents,
 	useEditorContext,
-	StoreNoticesContainer,
 	noticeContexts,
 } from '@woocommerce/base-context';
-import { CheckboxControl } from '@woocommerce/blocks-checkout';
+import {
+	CheckboxControl,
+	StoreNoticesContainer,
+} from '@woocommerce/blocks-checkout';
 import Noninteractive from '@woocommerce/base-components/noninteractive';
 import type {
 	BillingAddress,
