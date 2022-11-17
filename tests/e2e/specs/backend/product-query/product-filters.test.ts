@@ -43,12 +43,10 @@ const block = {
  * know to update them.
  */
 const SELECTORS = {
-	productFiltersDropdownButton: {
-		default:
-			'.components-tools-panel-header .components-dropdown-menu button[aria-expanded="false"]',
-		expanded:
-			'.components-tools-panel-header .components-dropdown-menu button[aria-expanded="true"]',
-	},
+	productFiltersDropdownButton: (
+		{ expanded }: { expanded: boolean } = { expanded: false }
+	) =>
+		`.components-tools-panel-header .components-dropdown-menu button[aria-expanded="${ expanded }"]`,
 	productFiltersDropdown:
 		'.components-dropdown-menu__menu[aria-label="Product filters options"]',
 	productFiltersDropdownItem: '.components-menu-item__button',
@@ -68,14 +66,14 @@ const toggleProductFilter = async ( filterName: string ) => {
 		'Product filters'
 	);
 	await expect( productFiltersPanel ).toClick(
-		SELECTORS.productFiltersDropdownButton.default
+		SELECTORS.productFiltersDropdownButton()
 	);
 	await canvas().waitForSelector( SELECTORS.productFiltersDropdown );
 	await expect( canvas() ).toClick( SELECTORS.productFiltersDropdownItem, {
 		text: filterName,
 	} );
 	await expect( productFiltersPanel ).toClick(
-		SELECTORS.productFiltersDropdownButton.expanded
+		SELECTORS.productFiltersDropdownButton( { expanded: true } )
 	);
 };
 
