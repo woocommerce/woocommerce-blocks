@@ -105,7 +105,6 @@ describe( 'Shopper → Cart', () => {
 		await shopper.block.productIsInCart( SIMPLE_VIRTUAL_PRODUCT_NAME, 4 );
 	} );
 
-	// eslint-disable-next-line jest/expect-expect
 	it( 'User can see Cross-Sells products block', async () => {
 		await shopper.block.emptyCart();
 		await shopper.block.goToShop();
