@@ -199,7 +199,6 @@ class BlockTemplatesController {
 
 		// @todo: Add apply_filters to _gutenberg_get_template_files() in Gutenberg to prevent duplication of logic.
 		foreach ( $template_files as $template_file ) {
-
 			// If we have a template which is eligible for a fallback, we need to explicitly tell Gutenberg that
 			// it has a theme file (because it is using the fallback template file). And then `continue` to avoid
 			// adding duplicates.
@@ -254,7 +253,7 @@ class BlockTemplatesController {
 		 */
 		$query_result = array_map(
 			function( $template ) {
-				if ( 'theme' === $template->origin ) {
+				if ( 'theme' === $template->origin && BlockTemplateUtils::template_has_title_in_theme( $template ) ) {
 					return $template;
 				}
 				if ( $template->title === $template->slug ) {
@@ -443,13 +442,13 @@ class BlockTemplatesController {
 		} elseif (
 			( is_product_taxonomy() && is_tax( 'product_cat' ) ) &&
 			! BlockTemplateUtils::theme_has_template( 'taxonomy-product_cat' ) &&
-			$this->block_template_is_available( 'taxonomy-product_cat' )
+			$this->block_template_is_available( 'archive-product' )
 		) {
 			add_filter( 'woocommerce_has_block_template', '__return_true', 10, 0 );
 		} elseif (
 			( is_product_taxonomy() && is_tax( 'product_tag' ) ) &&
 			! BlockTemplateUtils::theme_has_template( 'taxonomy-product_tag' ) &&
-			$this->block_template_is_available( 'taxonomy-product_tag' )
+			$this->block_template_is_available( 'archive-product' )
 		) {
 			add_filter( 'woocommerce_has_block_template', '__return_true', 10, 0 );
 		} elseif (
@@ -466,7 +465,7 @@ class BlockTemplatesController {
 
 			if ( isset( $queried_object->taxonomy ) && taxonomy_is_product_attribute( $queried_object->taxonomy ) &&
 				! BlockTemplateUtils::theme_has_template( ProductAttributeTemplate::SLUG ) &&
-				$this->block_template_is_available( ProductAttributeTemplate::SLUG )
+				$this->block_template_is_available( 'archive-product' )
 			) {
 				add_filter( 'woocommerce_has_block_template', '__return_true', 10, 0 );
 			}

@@ -202,8 +202,8 @@ class BlockTemplateUtils {
 		$template->source         = $template_file->source ? $template_file->source : 'plugin';
 		$template->slug           = $template_file->slug;
 		$template->type           = $template_type;
-		$template->title          = ! empty( $template_file->title ) ? $template_file->title : self::get_block_template_title( $template_file->slug );
-		$template->description    = ! empty( $template_file->description ) ? $template_file->description : self::get_block_template_description( $template_file->slug );
+		$template->title          = self::template_has_title_in_theme( $template_file ) ? $template_file->title : self::get_block_template_title( $template_file->slug );
+		$template->description    = self::template_has_title_in_theme( $template_file ) ? $template_file->description : self::get_block_template_description( $template_file->slug );
 		$template->status         = 'publish';
 		$template->has_theme_file = true;
 		$template->origin         = $template_file->source;
@@ -483,7 +483,7 @@ class BlockTemplateUtils {
 	/**
 	 * Sets the `has_theme_file` to `true` for templates with fallbacks
 	 *
-	 * There are cases (such as tags and categories) in which fallback templates
+	 * There are cases (such as tags, categories and attributes) in which fallback templates
 	 * can be used; so, while *technically* the theme doesn't have a specific file
 	 * for them, it is important that we tell Gutenberg that we do, in fact,
 	 * have a theme file (i.e. the fallback one).
@@ -597,5 +597,15 @@ class BlockTemplateUtils {
 		}
 
 		return wc_string_to_bool( $use_blockified_templates );
+	}
+
+	/**
+	 * Returns whether the passed `$template` has a title, and it's different from the slug.
+	 *
+	 * @param object $template The template object.
+	 * @return boolean
+	 */
+	public static function template_has_title_in_theme( $template ) {
+		return ! empty( $template->title ) && $template->title !== $template->slug;
 	}
 }
