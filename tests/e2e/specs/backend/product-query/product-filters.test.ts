@@ -108,7 +108,7 @@ describeOrSkip( GUTENBERG_EDITOR_CONTEXT === 'gutenberg' )(
 			 * test can be run individually.
 			 */
 			await resetProductQueryBlockPage();
-			await openBlockEditorSettings( { isFSEEditor: false } );
+			await openBlockEditorSettings();
 			await selectBlockByName( block.slug );
 			productFiltersPanel = await findToolsPanelWithTitle(
 				'Product filters'
