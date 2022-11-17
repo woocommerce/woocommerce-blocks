@@ -356,6 +356,16 @@
 <error line="4" column="36" severity="error" message="Could not find a declaration file for module &apos;wordpress-components&apos;. &apos;/home/runner/work/woocommerce-blocks/woocommerce-blocks/node_modules/wordpress-components/build/index.js&apos; implicitly has an &apos;any&apos; type.
   If the &apos;@wordpress/components&apos; package actually exposes this module, consider sending a pull request to amend &apos;https://github.com/DefinitelyTyped/DefinitelyTyped/tree/master/types/wordpress__components&apos;" source="TS7016" />
 </file>
+<file name="node_modules/@types/wordpress__block-editor/index.d.ts">
+<error line="21" column="14" severity="error" message="Cannot redeclare block-scoped variable &apos;store&apos;." source="TS2451" />
+</file>
+<file name="assets/js/utils/global-style.js">
+<error line="5" column="10" severity="error" message="Module &apos;&quot;@wordpress/block-editor&quot;&apos; has no exported member &apos;__experimentalGetSpacingClassesAndStyles&apos;." source="TS2305" />
+</file>
+<file name="assets/js/utils/products.js">
+<error line="5" column="12" severity="error" message="Generic type &apos;Array&lt;T&gt;&apos; requires 1 type argument(s)." source="TS2314" />
+<error line="20" column="12" severity="error" message="Generic type &apos;Array&lt;T&gt;&apos; requires 1 type argument(s)." source="TS2314" />
+</file>
 <file name="assets/js/data/schema/selectors.js">
 <error line="19" column="12" severity="error" message="Generic type &apos;Array&lt;T&gt;&apos; requires 1 type argument(s)." source="TS2314" />
 <error line="106" column="7" severity="error" message="Variable &apos;namespaceRoutes&apos; implicitly has type &apos;any[]&apos; in some locations where its type cannot be determined." source="TS7034" />
@@ -635,9 +645,6 @@
 <file name="assets/js/data/cart/controls.js">
 <error line="18" column="31" severity="error" message="Parameter &apos;preserveCartData&apos; implicitly has an &apos;any&apos; type." source="TS7006" />
 </file>
-<file name="assets/js/utils/notices.ts">
-<error line="12" column="52" severity="error" message="Property &apos;type&apos; does not exist on type &apos;Notice&apos;." source="TS2339" />
-</file>
 <file name="assets/js/data/checkout/thunks.ts">
 <error line="5" column="10" severity="error" message="Module &apos;&quot;@wordpress/notices&quot;&apos; has no exported member &apos;store&apos;." source="TS2305" />
 <error line="57" column="11" severity="error" message="Property &apos;createErrorNotice&apos; does not exist on type &apos;typeof import(&quot;/home/runner/work/woocommerce-blocks/woocommerce-blocks/node_modules/@types/wordpress__rich-text/store/actions&quot;)&apos;." source="TS2339" />
@@ -666,15 +673,12 @@
 <error line="411" column="5" severity="error" message="Type &apos;{ currency_code: &quot;USD&quot;; currency_symbol: string; currency_minor_unit: number; currency_decimal_separator: string; currency_thousand_separator: string; currency_prefix: string; currency_suffix: string; total: string; total_tax: string; tax_lines: { ...; }[]; }&apos; is not assignable to type &apos;CartResponseFeeItemTotals&apos;.
   Object literal may only specify known properties, and &apos;tax_lines&apos; does not exist in type &apos;CartResponseFeeItemTotals&apos;." source="TS2322" />
 </file>
-<file name="assets/js/data/payment/check-payment-methods.ts">
+<file name="assets/js/data/payment/utils/check-payment-methods.ts">
 <error line="15" column="10" severity="error" message="Module &apos;&quot;@wordpress/notices&quot;&apos; has no exported member &apos;store&apos;." source="TS2305" />
-<error line="132" column="37" severity="error" message="Property &apos;paymentRequirements&apos; does not exist on type &apos;CartResponse&apos;. Did you mean &apos;payment_requirements&apos;?" source="TS2551" />
-<error line="134" column="25" severity="error" message="Property &apos;receiveCart&apos; does not exist on type &apos;CartResponse&apos;." source="TS2339" />
-<error line="135" column="20" severity="error" message="Property &apos;receiveCart&apos; does not exist on type &apos;CartResponse&apos;." source="TS2339" />
-<error line="146" column="5" severity="error" message="Argument of type &apos;unknown&apos; is not assignable to parameter of type &apos;CartShippingRate[]&apos;." source="TS2345" />
-<error line="176" column="37" severity="error" message="Argument of type &apos;Record&lt;string, unknown&gt;&apos; is not assignable to parameter of type &apos;CanMakePaymentArgument&apos;.
+<error line="143" column="5" severity="error" message="Argument of type &apos;unknown&apos; is not assignable to parameter of type &apos;CartShippingRate[]&apos;." source="TS2345" />
+<error line="174" column="37" severity="error" message="Argument of type &apos;Record&lt;string, unknown&gt;&apos; is not assignable to parameter of type &apos;CanMakePaymentArgument&apos;.
   Type &apos;Record&lt;string, unknown&gt;&apos; is missing the following properties from type &apos;CanMakePaymentArgument&apos;: cart, cartTotals, cartNeedsShipping, billingData, and 3 more." source="TS2345" />
-<error line="188" column="13" severity="error" message="Property &apos;createErrorNotice&apos; does not exist on type &apos;typeof import(&quot;/home/runner/work/woocommerce-blocks/woocommerce-blocks/node_modules/@types/wordpress__rich-text/store/actions&quot;)&apos;." source="TS2339" />
+<error line="186" column="13" severity="error" message="Property &apos;createErrorNotice&apos; does not exist on type &apos;typeof import(&quot;/home/runner/work/woocommerce-blocks/woocommerce-blocks/node_modules/@types/wordpress__rich-text/store/actions&quot;)&apos;." source="TS2339" />
 </file>
 <file name="assets/js/data/payment/thunks.ts">
 <error line="4" column="10" severity="error" message="Module &apos;&quot;@wordpress/notices&quot;&apos; has no exported member &apos;store&apos;." source="TS2305" />
@@ -723,6 +727,10 @@
     Type &apos;(context: string, queryKey: string, value: any) =&gt; Object&apos; is not assignable to type &apos;(...args: readonly any[]) =&gt; AnyAction | Generator&lt;any, any, unknown&gt;&apos;.
       Type &apos;Object&apos; is not assignable to type &apos;AnyAction | Generator&lt;any, any, unknown&gt;&apos;.
         The &apos;Object&apos; type is assignable to very few other types. Did you mean to use the &apos;any&apos; type instead?" source="TS2322" />
+</file>
+<file name="packages/checkout/components/store-notices-container/index.tsx">
+<error line="5" column="24" severity="error" message="Could not find a declaration file for module &apos;wordpress-components&apos;. &apos;/home/runner/work/woocommerce-blocks/woocommerce-blocks/node_modules/wordpress-components/build/index.js&apos; implicitly has an &apos;any&apos; type.
+  If the &apos;@wordpress/components&apos; package actually exposes this module, consider sending a pull request to amend &apos;https://github.com/DefinitelyTyped/DefinitelyTyped/tree/master/types/wordpress__components&apos;" source="TS7016" />
 </file>
 <file name="packages/checkout/filter-registry/index.ts">
 <error line="36" column="37" severity="error" message="Cannot find name &apos;T&apos;." source="TS2304" />
@@ -775,16 +783,6 @@
 <file name="assets/js/base/hooks/use-position-relative-to-viewport.js">
 <error line="26" column="13" severity="error" message="Generic type &apos;Array&lt;T&gt;&apos; requires 1 type argument(s)." source="TS2314" />
 <error line="75" column="24" severity="error" message="Argument of type &apos;null&apos; is not assignable to parameter of type &apos;Element&apos;." source="TS2345" />
-</file>
-<file name="node_modules/@types/wordpress__block-editor/index.d.ts">
-<error line="21" column="14" severity="error" message="Cannot redeclare block-scoped variable &apos;store&apos;." source="TS2451" />
-</file>
-<file name="assets/js/utils/global-style.js">
-<error line="5" column="10" severity="error" message="Module &apos;&quot;@wordpress/block-editor&quot;&apos; has no exported member &apos;__experimentalGetSpacingClassesAndStyles&apos;." source="TS2305" />
-</file>
-<file name="assets/js/utils/products.js">
-<error line="5" column="12" severity="error" message="Generic type &apos;Array&lt;T&gt;&apos; requires 1 type argument(s)." source="TS2314" />
-<error line="20" column="12" severity="error" message="Generic type &apos;Array&lt;T&gt;&apos; requires 1 type argument(s)." source="TS2314" />
 </file>
 <file name="assets/js/base/hooks/use-spacing-props.ts">
 <error line="5" column="10" severity="error" message="Module &apos;&quot;@wordpress/block-editor&quot;&apos; has no exported member &apos;__experimentalGetSpacingClassesAndStyles&apos;." source="TS2305" />
@@ -1067,18 +1065,10 @@
 <error line="20" column="4" severity="error" message="Type &apos;Object | undefined&apos; is not assignable to type &apos;Object&apos;.
   Type &apos;undefined&apos; is not assignable to type &apos;Object&apos;." source="TS2322" />
 </file>
-<file name="assets/js/base/context/providers/store-notices/components/store-notices-container.js">
-<error line="6" column="24" severity="error" message="Could not find a declaration file for module &apos;wordpress-components&apos;. &apos;/home/runner/work/woocommerce-blocks/woocommerce-blocks/node_modules/wordpress-components/build/index.js&apos; implicitly has an &apos;any&apos; type.
-  If the &apos;@wordpress/components&apos; package actually exposes this module, consider sending a pull request to amend &apos;https://github.com/DefinitelyTyped/DefinitelyTyped/tree/master/types/wordpress__components&apos;" source="TS7016" />
-<error line="30" column="2" severity="error" message="Binding element &apos;className&apos; implicitly has an &apos;any&apos; type." source="TS7031" />
-<error line="32" column="2" severity="error" message="Binding element &apos;additionalNotices&apos; implicitly has an &apos;any[]&apos; type." source="TS7031" />
-<error line="46" column="33" severity="error" message="Property &apos;type&apos; does not exist on type &apos;Notice&apos;." source="TS2339" />
-</file>
 <file name="assets/js/base/context/providers/store-snackbar-notices/components/snackbar-notices-container.js">
 <error line="5" column="30" severity="error" message="Could not find a declaration file for module &apos;wordpress-components&apos;. &apos;/home/runner/work/woocommerce-blocks/woocommerce-blocks/node_modules/wordpress-components/build/index.js&apos; implicitly has an &apos;any&apos; type.
   If the &apos;@wordpress/components&apos; package actually exposes this module, consider sending a pull request to amend &apos;https://github.com/DefinitelyTyped/DefinitelyTyped/tree/master/types/wordpress__components&apos;" source="TS7016" />
 <error line="18" column="2" severity="error" message="Binding element &apos;className&apos; implicitly has an &apos;any&apos; type." source="TS7031" />
-<error line="36" column="24" severity="error" message="Property &apos;type&apos; does not exist on type &apos;Notice&apos;." source="TS2339" />
 <error line="42" column="6" severity="error" message="Element implicitly has an &apos;any&apos; type because expression of type &apos;string&apos; can&apos;t be used to index type &apos;{}&apos;.
   No index signature with a parameter of type &apos;string&apos; was found on type &apos;{}&apos;." source="TS7053" />
 <error line="53" column="17" severity="error" message="Element implicitly has an &apos;any&apos; type because expression of type &apos;string&apos; can&apos;t be used to index type &apos;{}&apos;.
@@ -1088,7 +1078,7 @@
 <error line="10" column="56" severity="error" message="Namespace &apos;&quot;/home/runner/work/woocommerce-blocks/woocommerce-blocks/assets/js/types/type-defs/contexts&quot;&apos; has no exported member &apos;ContainerWidthContext&apos;." source="TS2694" />
 </file>
 <file name="assets/js/base/context/providers/index.js">
-<error line="6" column="1" severity="error" message="Module &apos;./cart-checkout&apos; has already exported a member named &apos;React&apos;. Consider explicitly re-exporting to resolve the ambiguity." source="TS2308" />
+<error line="5" column="1" severity="error" message="Module &apos;./cart-checkout&apos; has already exported a member named &apos;React&apos;. Consider explicitly re-exporting to resolve the ambiguity." source="TS2308" />
 </file>
 <file name="assets/js/base/context/hooks/use-checkout-extension-data.ts">
 <error line="12" column="15" severity="error" message="Module &apos;&quot;../../../data/checkout/types&quot;&apos; declares &apos;CheckoutState&apos; locally, but it is not exported." source="TS2459" />
@@ -1118,10 +1108,10 @@
 <error line="75" column="36" severity="error" message="Property &apos;max_amount&apos; does not exist on type &apos;never&apos;." source="TS2339" />
 </file>
 <file name="assets/js/atomic/blocks/product-elements/image/block.js">
-<error line="137" column="19" severity="error" message="Binding element &apos;image&apos; implicitly has an &apos;any&apos; type." source="TS7031" />
-<error line="137" column="26" severity="error" message="Binding element &apos;loaded&apos; implicitly has an &apos;any&apos; type." source="TS7031" />
-<error line="137" column="34" severity="error" message="Binding element &apos;showFullSize&apos; implicitly has an &apos;any&apos; type." source="TS7031" />
-<error line="137" column="48" severity="error" message="Binding element &apos;fallbackAlt&apos; implicitly has an &apos;any&apos; type." source="TS7031" />
+<error line="138" column="19" severity="error" message="Binding element &apos;image&apos; implicitly has an &apos;any&apos; type." source="TS7031" />
+<error line="138" column="26" severity="error" message="Binding element &apos;loaded&apos; implicitly has an &apos;any&apos; type." source="TS7031" />
+<error line="138" column="34" severity="error" message="Binding element &apos;showFullSize&apos; implicitly has an &apos;any&apos; type." source="TS7031" />
+<error line="138" column="48" severity="error" message="Binding element &apos;fallbackAlt&apos; implicitly has an &apos;any&apos; type." source="TS7031" />
 </file>
 <file name="assets/js/atomic/blocks/product-elements/rating/block.tsx">
 <error line="55" column="35" severity="error" message="Argument of type &apos;{ id: number; name: string; parent: number; type: string; variation: string; permalink: string; sku: string; short_description: string; description: string; on_sale: boolean; prices: { currency_code: string; ... 9 more ...; price_range: null; }; ... 14 more ...; add_to_cart: { ...; }; }&apos; is not assignable to parameter of type &apos;Omit&lt;ProductResponseItem, &quot;average_rating&quot;&gt; &amp; { average_rating: string; }&apos;.
@@ -1430,15 +1420,6 @@
 <error line="252" column="56" severity="error" message="Argument of type &apos;null&apos; is not assignable to parameter of type &apos;Object&apos;." source="TS2345" />
 <error line="475" column="34" severity="error" message="Argument of type &apos;null&apos; is not assignable to parameter of type &apos;Object | undefined&apos;." source="TS2345" />
 </file>
-<file name="assets/js/atomic/blocks/product-elements/image/test/block.test.js">
-<error line="65" column="6" severity="error" message="Property &apos;isLoading&apos; is missing in type &apos;{ children: Element; product: { name: string; id: number; fallbackAlt: string; permalink: string; images: { id: number; src: string; thumbnail: string; srcset: string; sizes: string; name: string; alt: string; }[]; }; }&apos; but required in type &apos;{ product: any; children: Object; isLoading: boolean; }&apos;." source="TS2741" />
-<error line="82" column="12" severity="error" message="Object is possibly &apos;null&apos;." source="TS2531" />
-<error line="89" column="6" severity="error" message="Property &apos;isLoading&apos; is missing in type &apos;{ children: Element; product: { name: string; id: number; fallbackAlt: string; permalink: string; images: never[]; }; }&apos; but required in type &apos;{ product: any; children: Object; isLoading: boolean; }&apos;." source="TS2741" />
-<error line="100" column="12" severity="error" message="Object is possibly &apos;null&apos;." source="TS2531" />
-<error line="103" column="12" severity="error" message="Object is possibly &apos;null&apos;." source="TS2531" />
-<error line="112" column="6" severity="error" message="Property &apos;isLoading&apos; is missing in type &apos;{ children: Element; product: { name: string; id: number; fallbackAlt: string; permalink: string; images: { id: number; src: string; thumbnail: string; srcset: string; sizes: string; name: string; alt: string; }[]; }; }&apos; but required in type &apos;{ product: any; children: Object; isLoading: boolean; }&apos;." source="TS2741" />
-<error line="132" column="6" severity="error" message="Property &apos;isLoading&apos; is missing in type &apos;{ children: Element; product: { name: string; id: number; fallbackAlt: string; permalink: string; images: never[]; }; }&apos; but required in type &apos;{ product: any; children: Object; isLoading: boolean; }&apos;." source="TS2741" />
-</file>
 <file name="assets/js/atomic/blocks/product-elements/title/test/block.test.js">
 <error line="22" column="6" severity="error" message="Property &apos;isLoading&apos; is missing in type &apos;{ children: Element; product: { id: number; name: string; permalink: string; }; }&apos; but required in type &apos;{ product: any; children: Object; isLoading: boolean; }&apos;." source="TS2741" />
 <error line="23" column="7" severity="error" message="Type &apos;{ showProductLink: false; }&apos; is missing the following properties from type &apos;Attributes&apos;: headingLevel, align" source="TS2739" />
@@ -1726,14 +1707,14 @@
 <error line="14" column="26" severity="error" message="Parameter &apos;review&apos; implicitly has an &apos;any&apos; type." source="TS7006" />
 <error line="14" column="34" severity="error" message="Parameter &apos;imageType&apos; implicitly has an &apos;any&apos; type." source="TS7006" />
 <error line="14" column="45" severity="error" message="Parameter &apos;isLoading&apos; implicitly has an &apos;any&apos; type." source="TS7006" />
-<error line="51" column="28" severity="error" message="Parameter &apos;review&apos; implicitly has an &apos;any&apos; type." source="TS7006" />
-<error line="77" column="32" severity="error" message="Parameter &apos;review&apos; implicitly has an &apos;any&apos; type." source="TS7006" />
-<error line="93" column="27" severity="error" message="Parameter &apos;review&apos; implicitly has an &apos;any&apos; type." source="TS7006" />
-<error line="102" column="25" severity="error" message="Parameter &apos;review&apos; implicitly has an &apos;any&apos; type." source="TS7006" />
-<error line="117" column="27" severity="error" message="Parameter &apos;review&apos; implicitly has an &apos;any&apos; type." source="TS7006" />
-<error line="150" column="28" severity="error" message="Binding element &apos;attributes&apos; implicitly has an &apos;any&apos; type." source="TS7031" />
-<error line="160" column="10" severity="error" message="Property &apos;rating&apos; does not exist on type &apos;{}&apos;." source="TS2339" />
-<error line="161" column="20" severity="error" message="Operator &apos;&gt;&apos; cannot be applied to types &apos;boolean&apos; and &apos;number&apos;." source="TS2365" />
+<error line="54" column="28" severity="error" message="Parameter &apos;review&apos; implicitly has an &apos;any&apos; type." source="TS7006" />
+<error line="80" column="32" severity="error" message="Parameter &apos;review&apos; implicitly has an &apos;any&apos; type." source="TS7006" />
+<error line="96" column="27" severity="error" message="Parameter &apos;review&apos; implicitly has an &apos;any&apos; type." source="TS7006" />
+<error line="105" column="25" severity="error" message="Parameter &apos;review&apos; implicitly has an &apos;any&apos; type." source="TS7006" />
+<error line="120" column="27" severity="error" message="Parameter &apos;review&apos; implicitly has an &apos;any&apos; type." source="TS7006" />
+<error line="153" column="28" severity="error" message="Binding element &apos;attributes&apos; implicitly has an &apos;any&apos; type." source="TS7031" />
+<error line="163" column="10" severity="error" message="Property &apos;rating&apos; does not exist on type &apos;{}&apos;." source="TS2339" />
+<error line="164" column="20" severity="error" message="Operator &apos;&gt;&apos; cannot be applied to types &apos;boolean&apos; and &apos;number&apos;." source="TS2365" />
 </file>
 <file name="assets/js/base/components/reviews/review-list/index.js">
 <error line="13" column="24" severity="error" message="Binding element &apos;attributes&apos; implicitly has an &apos;any&apos; type." source="TS7031" />
@@ -2210,26 +2191,25 @@
       Type &apos;{ icon: { src: Element; }; edit: ({ attributes, }: { attributes: { className: string; }; }) =&gt; Element; save: () =&gt; Element; }&apos; is missing the following properties from type &apos;Pick&lt;Block&lt;{ className: string; }&gt;, &quot;title&quot; | &quot;category&quot; | &quot;attributes&quot;&gt;&apos;: title, category, attributes" source="TS2769" />
 </file>
 <file name="assets/js/blocks/cart/inner-blocks/cart-cross-sells-block/index.tsx">
-<error line="13" column="20" severity="error" message="No overload matches this call.
+<error line="12" column="1" severity="error" message="No overload matches this call.
   Overload 1 of 2, &apos;(metadata: BlockConfiguration&lt;{}&gt;, settings?: Partial&lt;BlockConfiguration&lt;{}&gt;&gt; | undefined): Block&lt;{}&gt; | undefined&apos;, gave the following error.
-    Argument of type &apos;{ name: string; version: string; title: string; description: string; category: string; supports: { align: boolean; html: boolean; multiple: boolean; reusable: boolean; inserter: boolean; }; parent: string[]; textdomain: string; apiVersion: number; }&apos; is not assignable to parameter of type &apos;BlockConfiguration&lt;{}&gt;&apos;.
-      Property &apos;attributes&apos; is missing in type &apos;{ name: string; version: string; title: string; description: string; category: string; supports: { align: boolean; html: boolean; multiple: boolean; reusable: boolean; inserter: boolean; }; parent: string[]; textdomain: string; apiVersion: number; }&apos; but required in type &apos;Pick&lt;Block&lt;{}&gt;, &quot;title&quot; | &quot;category&quot; | &quot;attributes&quot;&gt;&apos;.
+    Argument of type &apos;string&apos; is not assignable to parameter of type &apos;BlockConfiguration&lt;{}&gt;&apos;.
+      Type &apos;string&apos; is not assignable to type &apos;Pick&lt;Block&lt;{}&gt;, &quot;title&quot; | &quot;category&quot; | &quot;attributes&quot;&gt;&apos;.
   Overload 2 of 2, &apos;(name: string, settings: BlockConfiguration&lt;{}&gt;): Block&lt;{}&gt; | undefined&apos;, gave the following error.
-    Argument of type &apos;{ name: string; version: string; title: string; description: string; category: string; supports: { align: boolean; html: boolean; multiple: boolean; reusable: boolean; inserter: boolean; }; parent: string[]; textdomain: string; apiVersion: number; }&apos; is not assignable to parameter of type &apos;string&apos;." source="TS2769" />
+    Argument of type &apos;{ icon: { src: JSX.Element; }; edit: () =&gt; JSX.Element; save: () =&gt; JSX.Element; }&apos; is not assignable to parameter of type &apos;BlockConfiguration&lt;{}&gt;&apos;.
+      Type &apos;{ icon: { src: Element; }; edit: () =&gt; Element; save: () =&gt; Element; }&apos; is missing the following properties from type &apos;Pick&lt;Block&lt;{}&gt;, &quot;title&quot; | &quot;category&quot; | &quot;attributes&quot;&gt;&apos;: title, category, attributes" source="TS2769" />
 </file>
 <file name="assets/js/blocks/cart/cart-cross-sells-product-list/cart-cross-sells-product.tsx">
 <error line="51" column="8" severity="error" message="Type &apos;{}&apos; is missing the following properties from type &apos;BlockAttributes&apos;: productId, align" source="TS2739" />
 </file>
 <file name="assets/js/blocks/cart/inner-blocks/cart-cross-sells-products/index.tsx">
-<error line="13" column="20" severity="error" message="No overload matches this call.
+<error line="12" column="1" severity="error" message="No overload matches this call.
   Overload 1 of 2, &apos;(metadata: BlockConfiguration&lt;{ className?: string; columns: number; }&gt;, settings?: Partial&lt;BlockConfiguration&lt;{ className?: string; columns: number; }&gt;&gt; | undefined): Block&lt;...&gt; | undefined&apos;, gave the following error.
-    Argument of type &apos;{ name: string; version: string; title: string; description: string; category: string; supports: { align: boolean; html: boolean; multiple: boolean; reusable: boolean; inserter: boolean; lock: boolean; }; attributes: { ...; }; parent: string[]; textdomain: string; apiVersion: number; }&apos; is not assignable to parameter of type &apos;BlockConfiguration&lt;{ className?: string; columns: number; }&gt;&apos;.
-      Type &apos;{ name: string; version: string; title: string; description: string; category: string; supports: { align: boolean; html: boolean; multiple: boolean; reusable: boolean; inserter: boolean; lock: boolean; }; attributes: { ...; }; parent: string[]; textdomain: string; apiVersion: number; }&apos; is not assignable to type &apos;Partial&lt;Omit&lt;Block&lt;{ className?: string; columns: number; }&gt;, &quot;icon&quot;&gt;&gt;&apos;.
-        The types of &apos;attributes.columns&apos; are incompatible between these types.
-          Type &apos;{ type: string; default: number; }&apos; is not assignable to type &apos;BlockAttribute&lt;number&gt;&apos;.
-            Type &apos;{ type: string; default: number; }&apos; is missing the following properties from type &apos;Query&lt;number&gt;&apos;: source, selector, query
+    Argument of type &apos;string&apos; is not assignable to parameter of type &apos;BlockConfiguration&lt;{ className?: string; columns: number; }&gt;&apos;.
+      Type &apos;string&apos; is not assignable to type &apos;Pick&lt;Block&lt;{ className?: string; columns: number; }&gt;, &quot;title&quot; | &quot;category&quot; | &quot;attributes&quot;&gt;&apos;.
   Overload 2 of 2, &apos;(name: string, settings: BlockConfiguration&lt;{ className?: string; columns: number; }&gt;): Block&lt;{ className?: string; columns: number; }&gt; | undefined&apos;, gave the following error.
-    Argument of type &apos;{ name: string; version: string; title: string; description: string; category: string; supports: { align: boolean; html: boolean; multiple: boolean; reusable: boolean; inserter: boolean; lock: boolean; }; attributes: { ...; }; parent: string[]; textdomain: string; apiVersion: number; }&apos; is not assignable to parameter of type &apos;string&apos;." source="TS2769" />
+    Argument of type &apos;{ icon: { src: JSX.Element; }; edit: ({ attributes, setAttributes }: Props) =&gt; JSX.Element; save: () =&gt; JSX.Element; }&apos; is not assignable to parameter of type &apos;BlockConfiguration&lt;{ className?: string; columns: number; }&gt;&apos;.
+      Type &apos;{ icon: { src: Element; }; edit: ({ attributes, setAttributes }: Props) =&gt; Element; save: () =&gt; Element; }&apos; is missing the following properties from type &apos;Pick&lt;Block&lt;{ className?: string; columns: number; }&gt;, &quot;title&quot; | &quot;category&quot; | &quot;attributes&quot;&gt;&apos;: title, category, attributes" source="TS2769" />
 </file>
 <file name="assets/js/blocks/cart/inner-blocks/cart-totals-block/index.tsx">
 <error line="12" column="1" severity="error" message="No overload matches this call.
@@ -2247,6 +2227,8 @@
 <file name="assets/js/blocks/cart-checkout-shared/payment-methods/payment-method-error-boundary.js">
 <error line="9" column="10" severity="error" message="Module &apos;&quot;@woocommerce/base-context/hooks&quot;&apos; has no exported member &apos;noticeContexts&apos;." source="TS2305" />
 <error line="14" column="35" severity="error" message="Parameter &apos;error&apos; implicitly has an &apos;any&apos; type." source="TS7006" />
+<error line="50" column="6" severity="error" message="Type &apos;{ id: string; content: string; isDismissible: boolean; status: string; }[]&apos; is not assignable to type &apos;Notice[]&apos;.
+  Type &apos;{ id: string; content: string; isDismissible: boolean; status: string; }&apos; is missing the following properties from type &apos;Notice&apos;: spokenMessage, __unstableHTML, type, speak, actions" source="TS2322" />
 </file>
 <file name="assets/js/blocks/cart-checkout-shared/payment-methods/payment-method-options.js">
 <error line="60" column="22" severity="error" message="No overload matches this call.
@@ -2614,13 +2596,13 @@
 <error line="15" column="68" severity="error" message="Expected 0 arguments, but got 1." source="TS2554" />
 </file>
 <file name="assets/js/blocks/checkout/block.tsx">
-<error line="95" column="4" severity="error" message="Type &apos;{ allowCreateAccount: boolean; showCompanyField: boolean; requireCompanyField: boolean; showApartmentField: boolean; showPhoneField: boolean; requirePhoneField: boolean; }&apos; is missing the following properties from type &apos;CheckoutBlockContextProps&apos;: showOrderNotes, showPolicyLinks, showReturnToCart, cartPageId, showRateAfterTaxName" source="TS2739" />
-<error line="184" column="4" severity="error" message="No overload matches this call.
+<error line="98" column="4" severity="error" message="Type &apos;{ allowCreateAccount: boolean; showCompanyField: boolean; requireCompanyField: boolean; showApartmentField: boolean; showPhoneField: boolean; requirePhoneField: boolean; }&apos; is missing the following properties from type &apos;CheckoutBlockContextProps&apos;: showOrderNotes, showPolicyLinks, showReturnToCart, cartPageId, showRateAfterTaxName" source="TS2739" />
+<error line="187" column="4" severity="error" message="No overload matches this call.
   Overload 1 of 2, &apos;(props: BlockErrorBoundaryProps | Readonly&lt;BlockErrorBoundaryProps&gt;): BlockErrorBoundary&apos;, gave the following error.
     Type &apos;unknown&apos; is not assignable to type &apos;boolean&apos;.
   Overload 2 of 2, &apos;(props: BlockErrorBoundaryProps, context: any): BlockErrorBoundary&apos;, gave the following error.
     Type &apos;unknown&apos; is not assignable to type &apos;boolean&apos;." source="TS2769" />
-<error line="207" column="33" severity="error" message="Argument of type &apos;({ attributes, children, scrollToTop, }: { attributes: Attributes; children: React.ReactChildren; scrollToTop: (props: Record&lt;string, unknown&gt;) =&gt; void; }) =&gt; JSX.Element&apos; is not assignable to parameter of type &apos;FunctionComponent&lt;Record&lt;string, unknown&gt;&gt;&apos;.
+<error line="210" column="33" severity="error" message="Argument of type &apos;({ attributes, children, scrollToTop, }: { attributes: Attributes; children: React.ReactChildren; scrollToTop: (props: Record&lt;string, unknown&gt;) =&gt; void; }) =&gt; JSX.Element&apos; is not assignable to parameter of type &apos;FunctionComponent&lt;Record&lt;string, unknown&gt;&gt;&apos;.
   Types of parameters &apos;__0&apos; and &apos;props&apos; are incompatible.
     Type &apos;PropsWithChildren&lt;Record&lt;string, unknown&gt;&gt;&apos; is missing the following properties from type &apos;{ attributes: Attributes; children: ReactChildren; scrollToTop: (props: Record&lt;string, unknown&gt;) =&gt; void; }&apos;: attributes, scrollToTop" source="TS2345" />
 </file>
@@ -4201,6 +4183,18 @@
 <error line="16" column="24" severity="error" message="Parameter &apos;blockName&apos; implicitly has an &apos;any&apos; type." source="TS7006" />
 <error line="16" column="35" severity="error" message="Parameter &apos;options&apos; implicitly has an &apos;any&apos; type." source="TS7006" />
 <error line="17" column="45" severity="error" message="Expected 1 arguments, but got 2." source="TS2554" />
+</file>
+<file name="packages/checkout/components/store-notices-container/test/index.tsx">
+<error line="4" column="10" severity="error" message="Module &apos;&quot;@wordpress/notices&quot;&apos; has no exported member &apos;store&apos;." source="TS2305" />
+<error line="15" column="28" severity="error" message="Property &apos;createErrorNotice&apos; does not exist on type &apos;typeof import(&quot;/home/runner/work/woocommerce-blocks/woocommerce-blocks/node_modules/@types/wordpress__rich-text/store/actions&quot;)&apos;." source="TS2339" />
+<error line="23" column="29" severity="error" message="Property &apos;removeNotice&apos; does not exist on type &apos;typeof import(&quot;/home/runner/work/woocommerce-blocks/woocommerce-blocks/node_modules/@types/wordpress__rich-text/store/actions&quot;)&apos;." source="TS2339" />
+<error line="30" column="28" severity="error" message="Property &apos;getNotices&apos; does not exist on type &apos;typeof import(&quot;/home/runner/work/woocommerce-blocks/woocommerce-blocks/node_modules/@types/wordpress__rich-text/store/selectors&quot;)&apos;." source="TS2339" />
+<error line="36" column="28" severity="error" message="Property &apos;createErrorNotice&apos; does not exist on type &apos;typeof import(&quot;/home/runner/work/woocommerce-blocks/woocommerce-blocks/node_modules/@types/wordpress__rich-text/store/actions&quot;)&apos;." source="TS2339" />
+<error line="46" column="29" severity="error" message="Property &apos;removeNotice&apos; does not exist on type &apos;typeof import(&quot;/home/runner/work/woocommerce-blocks/woocommerce-blocks/node_modules/@types/wordpress__rich-text/store/actions&quot;)&apos;." source="TS2339" />
+<error line="53" column="28" severity="error" message="Property &apos;getNotices&apos; does not exist on type &apos;typeof import(&quot;/home/runner/work/woocommerce-blocks/woocommerce-blocks/node_modules/@types/wordpress__rich-text/store/selectors&quot;)&apos;." source="TS2339" />
+<error line="59" column="28" severity="error" message="Property &apos;createErrorNotice&apos; does not exist on type &apos;typeof import(&quot;/home/runner/work/woocommerce-blocks/woocommerce-blocks/node_modules/@types/wordpress__rich-text/store/actions&quot;)&apos;." source="TS2339" />
+<error line="70" column="29" severity="error" message="Property &apos;removeNotice&apos; does not exist on type &apos;typeof import(&quot;/home/runner/work/woocommerce-blocks/woocommerce-blocks/node_modules/@types/wordpress__rich-text/store/actions&quot;)&apos;." source="TS2339" />
+<error line="77" column="28" severity="error" message="Property &apos;getNotices&apos; does not exist on type &apos;typeof import(&quot;/home/runner/work/woocommerce-blocks/woocommerce-blocks/node_modules/@types/wordpress__rich-text/store/selectors&quot;)&apos;." source="TS2339" />
 </file>
 <file name="packages/checkout/components/text-input/test/validated-text-input.tsx">
 <error line="92" column="9" severity="error" message="Property &apos;toBeInTheDocument&apos; does not exist on type &apos;Matchers&lt;void, HTMLElement | null&gt;&apos;." source="TS2339" />
