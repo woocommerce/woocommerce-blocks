@@ -223,13 +223,13 @@ describeOrSkip( GUTENBERG_EDITOR_CONTEXT === 'gutenberg' )(
 					await el.click();
 				}
 
-				const stockStatusInput = await canvas().$(
+				const $stockStatusInput = await canvas().$(
 					await getFormElementIdByLabel(
 						'Stock status',
 						SELECTORS.formTokenFieldLabel.replace( '.', '' )
 					)
 				);
-				await stockStatusInput.click();
+				await $stockStatusInput.click();
 				await canvas().keyboard.type( 'Out of Stock' );
 				await canvas().keyboard.press( 'Enter' );
 				const outOfStockCount = getFixtureProductsData(
@@ -247,13 +247,13 @@ describeOrSkip( GUTENBERG_EDITOR_CONTEXT === 'gutenberg' )(
 				for ( const el of tokenRemoveButtons ) {
 					await el.click();
 				}
-				const stockStatusInput = await canvas().$(
+				const $stockStatusInput = await canvas().$(
 					await getFormElementIdByLabel(
 						'Stock status',
 						SELECTORS.formTokenFieldLabel.replace( '.', '' )
 					)
 				);
-				await stockStatusInput.click();
+				await $stockStatusInput.click();
 				await canvas().keyboard.type( 'Out of stock' );
 				await canvas().keyboard.press( 'Enter' );
 				await canvas().waitForSelector(
