@@ -20,7 +20,7 @@ The below example will show all notices with type `default` that are in the `wc/
 On the Cart Block, a `StoreNoticesContainer` is already rendered with the `wc/cart` context, and on the Checkout Block, a `StoreNoticesContainer` is already rendered with the `wc/checkout` context. To display errors from other contexts, you can use the `StoreNoticesContainer` component with context passed as a prop.
 
 ```jsx
-import { StoreNoticesContainer } from '@woocommerce/base-components/store-notices-container';
+import { StoreNoticesContainer } from '@woocommerce/blocks-checkout';
 
 const PaymentErrors = () => {
 	return <StoreNoticesContainer context="wc/payment" />;
