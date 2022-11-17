@@ -31,20 +31,20 @@ const ImagePlaceholder = (): JSX.Element => {
 	);
 };
 
-type ImageProps = {
-	image: {
+interface ImageProps {
+	image?: null | {
 		alt?: string;
 		id: number;
 		name: string;
-		sizes: string;
-		src: string;
-		srcset: string;
+		sizes?: string;
+		src?: string;
+		srcset?: string;
 		thumbnail: string;
 	};
 	loaded: boolean;
 	showFullSize: boolean;
 	fallbackAlt: string;
-};
+}
 
 const Image = ( {
 	image,
