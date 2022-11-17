@@ -62,17 +62,17 @@ const SELECTORS = {
 };
 
 const toggleProductFilter = async ( filterName: string ) => {
-	const productFiltersPanel = await findToolsPanelWithTitle(
+	const $productFiltersPanel = await findToolsPanelWithTitle(
 		'Product filters'
 	);
-	await expect( productFiltersPanel ).toClick(
+	await expect( $productFiltersPanel ).toClick(
 		SELECTORS.productFiltersDropdownButton()
 	);
 	await canvas().waitForSelector( SELECTORS.productFiltersDropdown );
 	await expect( canvas() ).toClick( SELECTORS.productFiltersDropdownItem, {
 		text: filterName,
 	} );
-	await expect( productFiltersPanel ).toClick(
+	await expect( $productFiltersPanel ).toClick(
 		SELECTORS.productFiltersDropdownButton( { expanded: true } )
 	);
 };
@@ -98,7 +98,7 @@ const getFrontEndProducts = async (): Promise< ElementHandle[] > => {
 describeOrSkip( GUTENBERG_EDITOR_CONTEXT === 'gutenberg' )(
 	'Product Query > Products Filters',
 	() => {
-		let productFiltersPanel: ElementHandle< Node >;
+		let $productFiltersPanel: ElementHandle< Node >;
 		beforeEach( async () => {
 			/**
 			 * Reset the block page before each test to ensure the block is
@@ -108,7 +108,7 @@ describeOrSkip( GUTENBERG_EDITOR_CONTEXT === 'gutenberg' )(
 			await resetProductQueryBlockPage();
 			await openBlockEditorSettings();
 			await selectBlockByName( block.slug );
-			productFiltersPanel = await findToolsPanelWithTitle(
+			$productFiltersPanel = await findToolsPanelWithTitle(
 				'Product filters'
 			);
 		} );
@@ -123,18 +123,18 @@ describeOrSkip( GUTENBERG_EDITOR_CONTEXT === 'gutenberg' )(
 
 		describe( 'Sale Status', () => {
 			it( 'Sale status is disabled by default', async () => {
-				await expect( productFiltersPanel ).not.toMatch(
+				await expect( $productFiltersPanel ).not.toMatch(
 					'Show only products on sale'
 				);
 			} );
 
 			it( 'Can add and remove Sale Status filter', async () => {
 				await toggleProductFilter( 'Sale status' );
-				await expect( productFiltersPanel ).toMatch(
+				await expect( $productFiltersPanel ).toMatch(
 					'Show only products on sale'
 				);
 				await toggleProductFilter( 'Sale status' );
-				await expect( productFiltersPanel ).not.toMatch(
+				await expect( $productFiltersPanel ).not.toMatch(
 					'Show only products on sale'
 				);
 			} );
@@ -175,7 +175,7 @@ describeOrSkip( GUTENBERG_EDITOR_CONTEXT === 'gutenberg' )(
 
 		describe( 'Stock Status', () => {
 			it( 'Stock status is enabled by default', async () => {
-				await expect( productFiltersPanel ).toMatchElement(
+				await expect( $productFiltersPanel ).toMatchElement(
 					SELECTORS.formTokenFieldLabel,
 					{ text: 'Stock status' }
 				);
@@ -183,21 +183,21 @@ describeOrSkip( GUTENBERG_EDITOR_CONTEXT === 'gutenberg' )(
 
 			it( 'Can add and remove Stock Status filter', async () => {
 				await toggleProductFilter( 'Stock status' );
-				await expect( productFiltersPanel ).not.toMatchElement(
+				await expect( $productFiltersPanel ).not.toMatchElement(
 					SELECTORS.formTokenFieldLabel,
 					{ text: 'Stock status' }
 				);
 				await toggleProductFilter( 'Stock status' );
-				await expect( productFiltersPanel ).toMatchElement(
+				await expect( $productFiltersPanel ).toMatchElement(
 					SELECTORS.formTokenFieldLabel,
 					{ text: 'Stock status' }
 				);
 			} );
 
 			it( 'All statuses are enabled by default', async () => {
-				await expect( productFiltersPanel ).toMatch( 'In stock' );
-				await expect( productFiltersPanel ).toMatch( 'Out of stock' );
-				await expect( productFiltersPanel ).toMatch( 'On backorder' );
+				await expect( $productFiltersPanel ).toMatch( 'In stock' );
+				await expect( $productFiltersPanel ).toMatch( 'Out of stock' );
+				await expect( $productFiltersPanel ).toMatch( 'On backorder' );
 			} );
 
 			it( 'Editor preview shows all products by default', async () => {
@@ -214,11 +214,11 @@ describeOrSkip( GUTENBERG_EDITOR_CONTEXT === 'gutenberg' )(
 			 * @see https://github.com/woocommerce/woocommerce-blocks/pull/7682
 			 */
 			it.skip( 'Editor preview shows correct products that has enabled stock statuses', async () => {
-				const tokenRemoveButtons = await productFiltersPanel.$$(
+				const $$tokenRemoveButtons = await $productFiltersPanel.$$(
 					SELECTORS.tokenRemoveButton
 				);
-				for ( const el of tokenRemoveButtons ) {
-					await el.click();
+				for ( const $el of $$tokenRemoveButtons ) {
+					await $el.click();
 				}
 
 				const $stockStatusInput = await canvas().$(
@@ -239,7 +239,7 @@ describeOrSkip( GUTENBERG_EDITOR_CONTEXT === 'gutenberg' )(
 			} );
 
 			it( 'Works on the front end', async () => {
-				const tokenRemoveButtons = await productFiltersPanel.$$(
+				const tokenRemoveButtons = await $productFiltersPanel.$$(
 					SELECTORS.tokenRemoveButton
 				);
 				for ( const el of tokenRemoveButtons ) {
