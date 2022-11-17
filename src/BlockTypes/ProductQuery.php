@@ -122,12 +122,11 @@ class ProductQuery extends AbstractBlock {
 			'tax_query'      => array(),
 		);
 
-		$test = $this->merge_queries(
+		return $this->merge_queries(
 			$common_query_values,
 			...$this->get_queries_by_attributes( $parsed_block ),
 			...$this->get_queries_by_applied_filters()
 		);
-		return $test;
 	}
 
 	/**
