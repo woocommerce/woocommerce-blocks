@@ -189,8 +189,7 @@
 .editor-styles-wrapper .wc-block-attribute-filter__button.wc-block-attribute-filter__button,
 .wc-block-attribute-filter__button.wc-block-attribute-filter__button {
 	padding: em($gap-smaller) em($gap);
-	@include font-size(small);
+	@include font-size(smaller);
 	height: max-content;
-	line-height: normal;
 	width: max-content;
 }

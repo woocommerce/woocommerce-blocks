@@ -143,6 +143,7 @@
 	}
 
 	.wc-block-active-filters__list-item-name {
+		@include font-size(smaller);
 		display: flex;
 		align-items: center;
 		position: relative;
