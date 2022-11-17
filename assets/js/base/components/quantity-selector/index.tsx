@@ -87,7 +87,8 @@ const QuantitySelector = ( {
 	);
 
 	const hasMaximum = typeof maximum !== 'undefined';
-	const canDecrease = ! strictLimits || quantity - step >= minimum;
+	const canDecrease =
+		( ! strictLimits || quantity - step >= minimum ) && quantity !== 1;
 	const canIncrease =
 		! strictLimits || ! hasMaximum || quantity + step <= maximum;
 
