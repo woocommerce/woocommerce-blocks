@@ -3848,6 +3848,7 @@
 <error line="112" column="25" severity="error" message="Argument of type &apos;{ &apos;wc/blocks&apos;: { products: { &apos;[]&apos;: { &apos;?someQuery=2&apos;: { items: string[]; headers: { get: (key: any) =&gt; any; has: (key: any) =&gt; boolean; }; }; }; }; &apos;products/attributes&apos;: { &apos;[10]&apos;: { &apos;?someQuery=2&apos;: { items: string[]; headers: { get: (key: any) =&gt; any; has: (key: any) =&gt; boolean; }; }; }; }; &apos;products/attributes/term...&apos; is not assignable to parameter of type &apos;string&apos;." source="TS2345" />
 </file>
 <file name="assets/js/data/payment/test/check-payment-methods.tsx">
+<error line="16" column="43" severity="error" message="Cannot find module &apos;../check-payment-methods&apos; or its corresponding type declarations." source="TS2307" />
 <error line="18" column="28" severity="error" message="Parameter &apos;args&apos; implicitly has an &apos;any&apos; type." source="TS7006" />
 </file>
 <file name="assets/js/data/payment/test/reducers.js">
