@@ -65,10 +65,35 @@ class BlockTemplatesController {
 		add_filter( 'pre_get_block_file_template', array( $this, 'get_block_file_template' ), 10, 3 );
 		add_filter( 'get_block_templates', array( $this, 'add_block_templates' ), 10, 3 );
 		add_filter( 'current_theme_supports-block-templates', array( $this, 'remove_block_template_support_for_shop_page' ) );
+		add_filter( 'taxonomy_template_hierarchy', array( $this, 'add_archive_product_to_eligible_for_fallback_templates' ), 10, 1 );
 
 		if ( $this->package->is_experimental_build() ) {
 			add_action( 'after_switch_theme', array( $this, 'check_should_use_blockified_product_grid_templates' ), 10, 2 );
 		}
+	}
+
+	/**
+	 * Adds the `archive-product` template to the `taxonomy-product_cat`, `taxonomy-product_tag`, `taxonomy-attribute`
+	 * templates to be able to fall back to it.
+	 *
+	 * @param array $template_hierarchy A list of template candidates, in descending order of priority.
+	 */
+	public function add_archive_product_to_eligible_for_fallback_templates( $template_hierarchy ) {
+		$template_slugs = array_map(
+			'_strip_template_file_suffix',
+			$template_hierarchy
+		);
+
+		$templates_eligible_for_fallback = array_filter(
+			$template_slugs,
+			array( BlockTemplateUtils::class, 'template_is_eligible_for_product_archive_fallback' )
+		);
+
+		if ( count( $templates_eligible_for_fallback ) > 0 ) {
+			$template_hierarchy[] = 'archive-product';
+		}
+
+		return $template_hierarchy;
 	}
 
 	/**
@@ -112,7 +137,7 @@ class BlockTemplatesController {
 		list( $template_id, $template_slug ) = $template_name_parts;
 
 		// If the theme has an archive-product.html template, but not a taxonomy-product_cat/tag/attribute.html template let's use the themes archive-product.html template.
-		if ( BlockTemplateUtils::template_is_eligible_for_product_archive_fallback( $template_slug ) ) {
+		if ( BlockTemplateUtils::template_is_eligible_for_product_archive_fallback_from_theme( $template_slug ) ) {
 			$template_path   = BlockTemplateUtils::get_theme_template_path( 'archive-product' );
 			$template_object = BlockTemplateUtils::create_new_block_template_object( $template_path, $template_type, $template_slug, true );
 			return BlockTemplateUtils::build_template_result_from_file( $template_object, $template_type );
@@ -332,7 +357,7 @@ class BlockTemplatesController {
 			}
 
 			// If the theme has an archive-product.html template, but not a taxonomy-product_cat/tag/attribute.html template let's use the themes archive-product.html template.
-			if ( BlockTemplateUtils::template_is_eligible_for_product_archive_fallback( $template_slug ) ) {
+			if ( BlockTemplateUtils::template_is_eligible_for_product_archive_fallback_from_theme( $template_slug ) ) {
 				$template_file = BlockTemplateUtils::get_theme_template_path( 'archive-product' );
 				$templates[]   = BlockTemplateUtils::create_new_block_template_object( $template_file, $template_type, $template_slug, true );
 				continue;
