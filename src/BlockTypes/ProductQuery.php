@@ -122,19 +122,12 @@ class ProductQuery extends AbstractBlock {
 			'tax_query'      => array(),
 		);
 
-		$queries_by_attributes = $this->get_queries_by_attributes( $parsed_block );
-		$queries_by_filters    = $this->get_queries_by_applied_filters();
-
-		return array_reduce(
-			array_merge(
-				$queries_by_attributes,
-				$queries_by_filters
-			),
-			function( $acc, $query ) {
-				return $this->merge_queries( $acc, $query );
-			},
-			$common_query_values
+		$test = $this->merge_queries(
+			$common_query_values,
+			...$this->get_queries_by_attributes( $parsed_block ),
+			...$this->get_queries_by_applied_filters()
 		);
+		return $test;
 	}
 
 	/**
@@ -144,13 +137,7 @@ class ProductQuery extends AbstractBlock {
 	 * @return array
 	 */
 	private function get_products_ids_by_attributes( $parsed_block ) {
-		$queries_by_attributes = $this->get_queries_by_attributes( $parsed_block );
-
-		$query = array_reduce(
-			$queries_by_attributes,
-			function( $acc, $query ) {
-				return $this->merge_queries( $acc, $query );
-			},
+		$query = $this->merge_queries(
 			array(
 				'post_type'      => 'product',
 				'post__in'       => array(),
@@ -158,7 +145,8 @@ class ProductQuery extends AbstractBlock {
 				'posts_per_page' => -1,
 				'meta_query'     => array(),
 				'tax_query'      => array(),
-			)
+			),
+			...$this->get_queries_by_attributes( $parsed_block )
 		);
 
 		$products = new \WP_Query( $query );
@@ -170,16 +158,36 @@ class ProductQuery extends AbstractBlock {
 	/**
 	 * Merge in the first parameter the keys "post_in", "meta_query" and "tax_query" of the second parameter.
 	 *
-	 * @param array $a The first query.
-	 * @param array $b The second query.
+	 * @param array[] ...$queries Query arrays to be merged.
 	 * @return array
 	 */
-	private function merge_queries( $a, $b ) {
-		$a['post__in']   = ( isset( $b['post__in'] ) && ! empty( $b['post__in'] ) ) ? $this->intersect_arrays_when_not_empty( $a['post__in'], $b['post__in'] ) : $a['post__in'];
-		$a['meta_query'] = ( isset( $b['meta_query'] ) && ! empty( $b['meta_query'] ) ) ? array_merge( $a['meta_query'], array( $b['meta_query'] ) ) : $a['meta_query'];
-		$a['tax_query']  = ( isset( $b['tax_query'] ) && ! empty( $b['tax_query'] ) ) ? array_merge( $a['tax_query'], array( $b['tax_query'] ) ) : $a['tax_query'];
+	private function merge_queries( ...$queries ) {
+		$merged_query = array_reduce(
+			$queries,
+			function( $acc, $query ) {
+				return array_merge_recursive( $acc, $query );
+			},
+			array()
+		);
 
-		return $a;
+		/**
+		 * If there are duplicated items in post__in, it means that we need to
+		 * use the intersection of the results, which in this case, are the
+		 * duplicated items.
+		 */
+		if (
+			! empty( $merged_query['post__in'] ) &&
+			count( $merged_query['post__in'] ) > count( array_unique( $merged_query['post__in'] ) )
+		) {
+			$merged_query['post__in'] = array_unique(
+				array_diff(
+					$merged_query['post__in'],
+					array_unique( $merged_query['post__in'] )
+				)
+			);
+		}
+
+		return $merged_query;
 	}
 
 	/**
@@ -202,9 +210,11 @@ class ProductQuery extends AbstractBlock {
 	private function get_stock_status_query( $stock_statii ) {
 		return array(
 			'meta_query' => array(
-				'key'     => '_stock_status',
-				'value'   => (array) $stock_statii,
-				'compare' => 'IN',
+				array(
+					'key'     => '_stock_status',
+					'value'   => (array) $stock_statii,
+					'compare' => 'IN',
+				),
 			),
 		);
 	}
@@ -433,25 +443,6 @@ class ProductQuery extends AbstractBlock {
 
 				),
 			),
-		);
-	}
-
-	/**
-	 * Intersect arrays neither of them are empty, otherwise merge them.
-	 *
-	 * @param array ...$arrays Arrays.
-	 * @return array
-	 */
-	private function intersect_arrays_when_not_empty( ...$arrays ) {
-		return array_reduce(
-			$arrays,
-			function( $acc, $array ) {
-				if ( ! empty( $array ) && ! empty( $acc ) ) {
-					return array_intersect( $acc, $array );
-				}
-				return array_merge( $acc, $array );
-			},
-			array()
 		);
 	}
 
