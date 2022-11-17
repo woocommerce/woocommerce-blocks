@@ -10,6 +10,7 @@ import { usePositionRelativeToViewport } from '@woocommerce/base-hooks';
 import { getSetting } from '@woocommerce/settings';
 import { useSelect } from '@wordpress/data';
 import { CHECKOUT_STORE_KEY } from '@woocommerce/block-data';
+import { isErrorResponse } from '@woocommerce/base-context';
 
 /**
  * Internal dependencies
@@ -56,6 +57,8 @@ const Block = ( {
 			global.removeEventListener( 'pageshow', hideSpinner );
 		};
 	}, [] );
+
+	const { dispatchOnProceedToCheckout } = useCartEventsContext();
 
 	const submitContainerContents = (
 		<div>
