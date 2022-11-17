@@ -30,6 +30,9 @@ import {
 } from './constants';
 import type { BlockAttributes } from './types';
 
+type SaleBadgeAlignProps = 'left' | 'center' | 'right';
+type ImageSizingProps = 'full-size' | 'cropped';
+
 const Edit = ( {
 	attributes,
 	setAttributes,
@@ -101,7 +104,7 @@ const Edit = ( {
 								'woo-gutenberg-products-block'
 							) }
 							value={ saleBadgeAlign }
-							onChange={ ( value ) =>
+							onChange={ ( value: SaleBadgeAlignProps ) =>
 								setAttributes( { saleBadgeAlign: value } )
 							}
 						>
@@ -153,7 +156,7 @@ const Edit = ( {
 								}
 							) }
 							value={ imageSizing }
-							onChange={ ( value ) =>
+							onChange={ ( value: ImageSizingProps ) =>
 								setAttributes( { imageSizing: value } )
 							}
 						>
