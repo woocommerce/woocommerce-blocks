@@ -143,8 +143,10 @@
 		}
 	}
 
+	// The specificity here is needed to overwrite the margin-top that is inherited on WC block template pages such as Shop.
 	.wc-block-filter-submit-button.wc-block-components-filter-submit-button.wc-block-attribute-filter__button {
 		margin-top: 0;
+		@include font-size(smaller);
 	}
 }
 

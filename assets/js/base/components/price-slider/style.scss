@@ -155,6 +155,7 @@
 	button[type="submit"]:not(.wp-block-search__button).wc-block-components-filter-submit-button {
 		margin-top: 0;
 		margin-left: 0;
+		@include font-size(smaller);
 	}
 }
 
