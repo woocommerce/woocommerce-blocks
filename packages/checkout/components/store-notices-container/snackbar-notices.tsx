@@ -18,8 +18,12 @@ const SnackbarNotices = ( {
 	context: string;
 	className: string;
 	notices: Array< NoticeType & NoticeOptions >;
-} ): JSX.Element => {
+} ): JSX.Element | null => {
 	const { removeNotice } = useDispatch( 'core/notices' );
+
+	if ( ! notices.length ) {
+		return null;
+	}
 
 	return (
 		<SnackbarList
