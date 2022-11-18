@@ -4,7 +4,12 @@
 import { __, sprintf } from '@wordpress/i18n';
 import { speak } from '@wordpress/a11y';
 import classNames from 'classnames';
-import { useCallback, useLayoutEffect } from '@wordpress/element';
+import {
+	useCallback,
+	useEffect,
+	useLayoutEffect,
+	useRef,
+} from '@wordpress/element';
 import { DOWN, UP } from '@wordpress/keycodes';
 import { useDebouncedCallback } from 'use-debounce';
 import { ValidationInputError } from '@woocommerce/blocks-checkout';
@@ -16,6 +21,7 @@ import { VALIDATION_STORE_KEY } from '@woocommerce/block-data';
  * Internal dependencies
  */
 import './style.scss';
+import { useCartEventsContext } from '../../context/providers/cart-checkout/cart-events';
 
 export interface QuantitySelectorProps {
 	/**
@@ -76,13 +82,17 @@ const QuantitySelector = ( {
 }: QuantitySelectorProps ): JSX.Element => {
 	const errorId = `wc-block-components-quantity-selector-error-${ instanceId }`;
 
-	const hasValidationErrors = useSelect( ( select ) => {
-		return !! select( VALIDATION_STORE_KEY ).getValidationError( errorId );
+	const { hasValidationError, validationError } = useSelect( ( select ) => {
+		const store = select( VALIDATION_STORE_KEY );
+		return {
+			hasValidationError: !! store.getValidationError( errorId ),
+			validationError: store.getValidationError( errorId ),
+		};
 	} );
 
 	const classes = classNames(
 		'wc-block-components-quantity-selector',
-		hasValidationErrors ? 'has-error' : '',
+		hasValidationError ? 'has-error' : '',
 		className
 	);
 
@@ -123,7 +133,7 @@ const QuantitySelector = ( {
 				onChange( value );
 			}
 		},
-		[ hasMaximum, maximum, minimum, onChange, step ]
+		[ hasMaximum, maximum, minimum, onChange, step, strictLimits ]
 	);
 
 	/*
@@ -248,10 +258,37 @@ const QuantitySelector = ( {
 	 */
 	const stepToUse = ! strictLimits && quantity % step !== 0 ? 1 : step;
 
+	const { onProceedToCheckout } = useCartEventsContext();
+
+	const inputRef = useRef< HTMLInputElement >( null );
+
+	useEffect( () => {
+		// onProceedToCheckout returns an unsubscribe function. By returning it here, we ensure that the
+		// observer is removed when the component is unmounted/this effect reruns.
+		return onProceedToCheckout( () => {
+			if ( ! inputRef.current ) {
+				return;
+			}
+			const isValid = inputRef.current.checkValidity();
+
+			if ( ! isValid || hasValidationError ) {
+				inputRef.current.focus();
+				return {
+					type: 'error',
+					message:
+						inputRef.current.validationMessage ||
+						validationError?.message,
+				};
+			}
+			return true;
+		} );
+	}, [ errorId, hasValidationError, onProceedToCheckout, validationError ] );
+
 	return (
 		<div>
 			<div className={ classes }>
 				<input
+					ref={ inputRef }
 					className="wc-block-components-quantity-selector__input"
 					disabled={ disabled }
 					type="number"
@@ -334,7 +371,7 @@ const QuantitySelector = ( {
 					&#65291;
 				</button>
 			</div>
-			{ hasValidationErrors && ! strictLimits && (
+			{ hasValidationError && ! strictLimits && (
 				<div>
 					<ValidationInputError propertyName={ errorId } />
 				</div>

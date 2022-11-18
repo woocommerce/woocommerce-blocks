@@ -10,11 +10,13 @@ import { usePositionRelativeToViewport } from '@woocommerce/base-hooks';
 import { getSetting } from '@woocommerce/settings';
 import { useSelect } from '@wordpress/data';
 import { CHECKOUT_STORE_KEY } from '@woocommerce/block-data';
+import { isErrorResponse } from '@woocommerce/base-context';
 
 /**
  * Internal dependencies
  */
 import './style.scss';
+import { useCartEventsContext } from '../../../../base/context/providers/cart-checkout/cart-events';
 
 /**
  * Checkout button rendered in the full cart page.
@@ -56,13 +58,25 @@ const Block = ( {
 		};
 	}, [] );
 
+	const { dispatchOnProceedToCheckout } = useCartEventsContext();
+
 	const submitContainerContents = (
 		<div>
 			<Button
 				className="wc-block-cart__submit-button"
 				href={ link || CHECKOUT_URL }
 				disabled={ isCalculating }
-				onClick={ () => setShowSpinner( true ) }
+				onClick={ ( e ) => {
+					dispatchOnProceedToCheckout().then(
+						( observerResponses ) => {
+							if ( observerResponses.some( isErrorResponse ) ) {
+								e.preventDefault();
+								return;
+							}
+							setShowSpinner( true );
+						}
+					);
+				} }
 				showSpinner={ showSpinner }
 			>
 				{ __( 'Proceed to Checkout', 'woo-gutenberg-products-block' ) }

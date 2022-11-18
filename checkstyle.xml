@@ -1956,6 +1956,13 @@
 <error line="103" column="57" severity="error" message="Variable &apos;renderer&apos; implicitly has an &apos;any&apos; type." source="TS7005" />
 <error line="106" column="4" severity="error" message="Variable &apos;renderer&apos; implicitly has an &apos;any&apos; type." source="TS7005" />
 </file>
+<file name="assets/js/blocks/cart/inner-blocks/proceed-to-checkout-block/block.tsx">
+<error line="67" column="5" severity="error" message="Type &apos;{ children: string; className: string; href: unknown; disabled: boolean; onClick: (e: MouseEvent&lt;HTMLButtonElement, MouseEvent&gt;) =&gt; void; showSpinner: boolean; }&apos; is not assignable to type &apos;IntrinsicAttributes &amp; ButtonProps&apos;.
+  Property &apos;href&apos; does not exist on type &apos;IntrinsicAttributes &amp; ButtonProps&apos;." source="TS2322" />
+</file>
+<file name="assets/js/base/context/providers/cart-checkout/cart-events/test/index.tsx">
+<error line="36" column="49" severity="error" message="Property &apos;toBeInTheDocument&apos; does not exist on type &apos;JestMatchers&lt;HTMLElement&gt;&apos;." source="TS2339" />
+</file>
 <file name="assets/js/blocks/reviews/utils.js">
 <error line="8" column="30" severity="error" message="Parameter &apos;sortValue&apos; implicitly has an &apos;any&apos; type." source="TS7006" />
 <error line="32" column="29" severity="error" message="Parameter &apos;args&apos; implicitly has an &apos;any&apos; type." source="TS7006" />
@@ -2108,19 +2115,19 @@
 <error line="188" column="26" severity="error" message="Property &apos;toBeDisabled&apos; does not exist on type &apos;JestMatchers&lt;HTMLElement&gt;&apos;." source="TS2339" />
 </file>
 <file name="assets/js/blocks/cart/block.js">
-<error line="25" column="55" severity="error" message="Expected 0 arguments, but got 1." source="TS2554" />
-<error line="27" column="18" severity="error" message="Binding element &apos;children&apos; implicitly has an &apos;any&apos; type." source="TS7031" />
-<error line="29" column="10" severity="error" message="Property &apos;hasDarkControls&apos; does not exist on type &apos;{}&apos;." source="TS2339" />
-<error line="44" column="27" severity="error" message="Binding element &apos;scrollToTop&apos; implicitly has an &apos;any&apos; type." source="TS7031" />
-<error line="69" column="19" severity="error" message="Binding element &apos;attributes&apos; implicitly has an &apos;any&apos; type." source="TS7031" />
-<error line="69" column="31" severity="error" message="Binding element &apos;children&apos; implicitly has an &apos;any&apos; type." source="TS7031" />
-<error line="69" column="41" severity="error" message="Binding element &apos;scrollToTop&apos; implicitly has an &apos;any&apos; type." source="TS7031" />
-<error line="84" column="3" severity="error" message="No overload matches this call.
+<error line="28" column="55" severity="error" message="Expected 0 arguments, but got 1." source="TS2554" />
+<error line="30" column="18" severity="error" message="Binding element &apos;children&apos; implicitly has an &apos;any&apos; type." source="TS7031" />
+<error line="32" column="10" severity="error" message="Property &apos;hasDarkControls&apos; does not exist on type &apos;{}&apos;." source="TS2339" />
+<error line="47" column="27" severity="error" message="Binding element &apos;scrollToTop&apos; implicitly has an &apos;any&apos; type." source="TS7031" />
+<error line="72" column="19" severity="error" message="Binding element &apos;attributes&apos; implicitly has an &apos;any&apos; type." source="TS7031" />
+<error line="72" column="31" severity="error" message="Binding element &apos;children&apos; implicitly has an &apos;any&apos; type." source="TS7031" />
+<error line="72" column="41" severity="error" message="Binding element &apos;scrollToTop&apos; implicitly has an &apos;any&apos; type." source="TS7031" />
+<error line="87" column="3" severity="error" message="No overload matches this call.
   Overload 1 of 2, &apos;(props: BlockErrorBoundaryProps | Readonly&lt;BlockErrorBoundaryProps&gt;): BlockErrorBoundary&apos;, gave the following error.
     Type &apos;unknown&apos; is not assignable to type &apos;boolean&apos;.
   Overload 2 of 2, &apos;(props: BlockErrorBoundaryProps, context: any): BlockErrorBoundary&apos;, gave the following error.
     Type &apos;unknown&apos; is not assignable to type &apos;boolean&apos;." source="TS2769" />
-<error line="96" column="33" severity="error" message="Argument of type &apos;({ attributes, children, scrollToTop }: { attributes: any; children: any; scrollToTop: any; }) =&gt; Element&apos; is not assignable to parameter of type &apos;FunctionComponent&lt;Record&lt;string, unknown&gt;&gt;&apos;.
+<error line="101" column="33" severity="error" message="Argument of type &apos;({ attributes, children, scrollToTop }: { attributes: any; children: any; scrollToTop: any; }) =&gt; Element&apos; is not assignable to parameter of type &apos;FunctionComponent&lt;Record&lt;string, unknown&gt;&gt;&apos;.
   Types of parameters &apos;__0&apos; and &apos;props&apos; are incompatible.
     Type &apos;PropsWithChildren&lt;Record&lt;string, unknown&gt;&gt;&apos; is missing the following properties from type &apos;{ attributes: any; children: any; scrollToTop: any; }&apos;: attributes, scrollToTop" source="TS2345" />
 </file>
@@ -2281,10 +2288,6 @@
     Type &apos;number&apos; is not assignable to type &apos;string&apos;." source="TS2322" />
 <error line="35" column="29" severity="error" message="Argument of type &apos;Record&lt;string, any&gt;&apos; is not assignable to parameter of type &apos;{ title: { raw: string; }; slug: string; }&apos;.
   Type &apos;Record&lt;string, any&gt;&apos; is missing the following properties from type &apos;{ title: { raw: string; }; slug: string; }&apos;: title, slug" source="TS2345" />
-</file>
-<file name="assets/js/blocks/cart/inner-blocks/proceed-to-checkout-block/block.tsx">
-<error line="63" column="5" severity="error" message="Type &apos;{ children: string; className: string; href: unknown; disabled: boolean; onClick: () =&gt; void; showSpinner: boolean; }&apos; is not assignable to type &apos;IntrinsicAttributes &amp; ButtonProps&apos;.
-  Property &apos;href&apos; does not exist on type &apos;IntrinsicAttributes &amp; ButtonProps&apos;." source="TS2322" />
 </file>
 <file name="assets/js/blocks/cart/inner-blocks/proceed-to-checkout-block/edit.tsx">
 <error line="47" column="21" severity="error" message="Parameter &apos;id&apos; implicitly has an &apos;any&apos; type." source="TS7006" />
@@ -2534,6 +2537,9 @@
             Property &apos;isPreview&apos; is incompatible with index signature.
               Type &apos;{ type: string; default: boolean; save: boolean; }&apos; is not assignable to type &apos;BlockAttribute&lt;any&gt;&apos;.
                 Type &apos;{ type: string; default: boolean; save: boolean; }&apos; is missing the following properties from type &apos;Query&lt;any&gt;&apos;: source, selector, query" source="TS2769" />
+</file>
+<file name="assets/js/blocks/cart/inner-blocks/proceed-to-checkout-block/test/block.tsx">
+<error line="33" column="49" severity="error" message="Property &apos;toBeInTheDocument&apos; does not exist on type &apos;JestMatchers&lt;HTMLElement&gt;&apos;." source="TS2339" />
 </file>
 <file name="node_modules/@jest/test-result/build/index.d.ts">
 <error line="11" column="14" severity="error" message="Module &apos;&quot;jest-haste-map&quot;&apos; has no exported member &apos;IHasteFS&apos;. Did you mean to use &apos;import IHasteFS from &quot;jest-haste-map&quot;&apos; instead?" source="TS2614" />

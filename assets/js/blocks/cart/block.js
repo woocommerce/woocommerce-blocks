@@ -13,7 +13,10 @@ import { CURRENT_USER_IS_ADMIN } from '@woocommerce/settings';
 import BlockErrorBoundary from '@woocommerce/base-components/block-error-boundary';
 import { translateJQueryEventToNative } from '@woocommerce/base-utils';
 import withScrollToTop from '@woocommerce/base-hocs/with-scroll-to-top';
-import { CartProvider } from '@woocommerce/base-context/providers';
+import {
+	CartProvider,
+	CartEventsProvider,
+} from '@woocommerce/base-context/providers';
 import { SlotFillProvider } from '@woocommerce/blocks-checkout';
 
 /**
@@ -87,8 +90,10 @@ const Block = ( { attributes, children, scrollToTop } ) => (
 		<StoreNoticesContainer context="wc/cart" />
 		<SlotFillProvider>
 			<CartProvider>
-				<Cart attributes={ attributes }>{ children }</Cart>
-				<ScrollOnError scrollToTop={ scrollToTop } />
+				<CartEventsProvider>
+					<Cart attributes={ attributes }>{ children }</Cart>
+					<ScrollOnError scrollToTop={ scrollToTop } />
+				</CartEventsProvider>
 			</CartProvider>
 		</SlotFillProvider>
 	</BlockErrorBoundary>
