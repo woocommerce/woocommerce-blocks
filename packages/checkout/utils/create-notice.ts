@@ -29,12 +29,19 @@ export const createNotice = (
 	}
 
 	const containerRefs = select( STORE_NOTICES_STORE_KEY ).getContainers();
+	const registeredContext = Object.keys( containerRefs );
 
 	// If the container ref was not registered, use the parent context instead.
-	if ( ! Object.keys( containerRefs ).includes( noticeContext ) ) {
-		if ( noticeContext.includes( 'wc/checkout/' ) ) {
+	if ( ! registeredContext.includes( noticeContext ) ) {
+		if (
+			noticeContext.includes( 'wc/checkout/' ) &&
+			registeredContext.includes( 'wc/checkout' )
+		) {
 			noticeContext = 'wc/checkout';
-		} else if ( noticeContext.includes( 'wc/cart/' ) ) {
+		} else if (
+			noticeContext.includes( 'wc/cart/' ) &&
+			registeredContext.includes( 'wc/cart' )
+		) {
 			noticeContext = 'wc/cart';
 		} else {
 			noticeContext = 'wc/global';
