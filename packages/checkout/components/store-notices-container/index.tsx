@@ -19,21 +19,36 @@ import type {
 const StoreNoticesContainer = ( {
 	className = '',
 	context = 'default',
+	forceType = null,
+	showGlobal = false,
 	additionalNotices = [],
 }: StoreNoticesContainerProps ): JSX.Element | null => {
 	const suppressNotices = useSelect( ( select ) =>
 		select( PAYMENT_STORE_KEY ).isExpressPaymentMethodActive()
 	);
 
-	const notices = useSelect< Array< NoticeType & NoticeOptions > >(
-		( select ) =>
-			select( 'core/notices' ).getNotices( context ) as Array<
-				NoticeType & NoticeOptions
-			>
+	let notices = useSelect< Array< NoticeType & NoticeOptions > >(
+		( select ) => {
+			const { getNotices } = select( 'core/notices' );
+
+			const contextNotices = getNotices( context );
+			const globalNotices = showGlobal ? getNotices( 'wc/global' ) : [];
+
+			return [ ...contextNotices, ...globalNotices ].filter(
+				Boolean
+			) as Array< NoticeType & NoticeOptions >;
+		}
 	);
 
 	if ( suppressNotices ) {
 		return null;
+	}
+
+	if ( forceType !== null ) {
+		notices = notices.map( ( notice ) => ( {
+			...notice,
+			type: forceType,
+		} ) );
 	}
 
 	return (
@@ -42,7 +57,7 @@ const StoreNoticesContainer = ( {
 				className={ className }
 				context={ context }
 				notices={ notices
-					.filter( ( notice ) => notice.type !== 'snackbar' )
+					.filter( ( notice ) => notice.type === 'default' )
 					.concat( additionalNotices ) }
 			/>
 			<SnackbarNotices

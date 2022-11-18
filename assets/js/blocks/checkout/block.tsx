@@ -184,60 +184,66 @@ const Block = ( {
 			) }
 			showErrorMessage={ CURRENT_USER_IS_ADMIN }
 		>
-			<StoreNoticesContainer context={ noticeContexts.CHECKOUT } />
-			<Button
-				onClick={ () => {
-					Object.values( noticeContexts ).forEach(
-						( contextValue ) => {
-							removeNoticesByStatus( 'error', contextValue );
-						}
+			<StoreNoticesContainer
+				context={ noticeContexts.CHECKOUT }
+				forceType="snackbar"
+				showGlobal={ true }
+			/>
+			<>
+				<Button
+					onClick={ () => {
+						Object.values( noticeContexts ).forEach(
+							( contextValue ) => {
+								removeNoticesByStatus( 'error', contextValue );
+							}
+						);
+					} }
+				>
+					{ __( 'Clear all errors', 'woo-gutenberg-products-block' ) }
+				</Button>
+				<Button
+					onClick={ () => {
+						createNotice( 'error', 'Error Message', {
+							context: 'wc/checkout',
+						} );
+					} }
+				>
+					{ __(
+						'Generate an error notice',
+						'woo-gutenberg-products-block'
+					) }
+				</Button>
+				<Button
+					onClick={ () => {
+						createNotice( 'error', 'Error Message', {
+							context: 'wc/checkout/invalid',
+						} );
+					} }
+				>
+					{ __(
+						'Generate an error notice for invalid context',
+						'woo-gutenberg-products-block'
+					) }
+				</Button>
+				{ Object.values( noticeContexts ).map( ( contextValue ) => {
+					return (
+						<Button
+							key={ contextValue }
+							onClick={ () => {
+								createNotice(
+									'error',
+									'Notice in ' + contextValue,
+									{
+										context: contextValue,
+									}
+								);
+							} }
+						>
+							{ contextValue + ' Error' }
+						</Button>
 					);
-				} }
-			>
-				{ __( 'Clear all errors', 'woo-gutenberg-products-block' ) }
-			</Button>
-			<Button
-				onClick={ () => {
-					createNotice( 'error', 'Error Message', {
-						context: 'wc/checkout',
-					} );
-				} }
-			>
-				{ __(
-					'Generate an error notice',
-					'woo-gutenberg-products-block'
-				) }
-			</Button>
-			<Button
-				onClick={ () => {
-					createNotice( 'error', 'Error Message', {
-						context: 'wc/checkout/invalid',
-					} );
-				} }
-			>
-				{ __(
-					'Generate an error notice for invalid context',
-					'woo-gutenberg-products-block'
-				) }
-			</Button>
-			{ Object.values( noticeContexts ).map( ( contextValue ) => {
-				return (
-					<Button
-						key={ contextValue }
-						onClick={ () => {
-							createNotice(
-								'error',
-								'Notice in ' + contextValue,
-								{
-									context: contextValue,
-								}
-							);
-						} }
-					>
-						{ contextValue + ' Error' }
-					</Button>
-				);
-			} ) }
+				} ) }
+			</>
 			{ /* SlotFillProvider need to be defined before CheckoutProvider so fills have the SlotFill context ready when they mount. */ }
 			<SlotFillProvider>
 				<CheckoutProvider>

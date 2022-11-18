@@ -18,6 +18,8 @@ export interface StoreNoticesContainerProps {
 	className?: string;
 	context?: string;
 	additionalNotices?: ( NoticeType & NoticeOptions )[];
+	showGlobal: boolean;
+	forceType: 'default' | 'snackbar' | null;
 }
 
 export { NoticeType, NoticeOptions };
