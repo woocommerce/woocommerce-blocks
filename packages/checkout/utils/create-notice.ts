@@ -9,18 +9,6 @@ import {
 import { select, dispatch } from '@wordpress/data';
 
 /**
- * List of valid notice contexts included in blocks.
- */
-export const noticeContexts = {
-	CART: 'wc/cart',
-	CHECKOUT: 'wc/checkout',
-	PAYMENTS: 'wc/checkout/payments',
-	EXPRESS_PAYMENTS: 'wc/checkout/express-payments',
-	SHIPPING_ADDRESS: 'wc/checkout/shipping-address',
-	SHIPPING_METHODS: 'wc/checkout/shipping-methods',
-};
-
-/**
  * Wrapper for @wordpress/notices createNotice.
  *
  * This is used to create the correct type of notice based on the provided context, and to ensure the notice container
@@ -45,9 +33,9 @@ export const createNotice = (
 	// If the container ref was not registered, use the parent context instead.
 	if ( ! Object.keys( containerRefs ).includes( noticeContext ) ) {
 		if ( noticeContext.includes( 'wc/checkout/' ) ) {
-			noticeContext = noticeContexts.CHECKOUT;
+			noticeContext = 'wc/checkout';
 		} else if ( noticeContext.includes( 'wc/cart/' ) ) {
-			noticeContext = noticeContexts.CART;
+			noticeContext = 'wc/cart';
 		} else {
 			noticeContext = 'wc/global';
 		}

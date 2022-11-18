@@ -19,13 +19,13 @@ import {
 	getPaymentMethods,
 } from '@woocommerce/blocks-registry';
 import { previewCart } from '@woocommerce/resource-previews';
-import { noticeContexts } from '@woocommerce/blocks-checkout';
 
 /**
  * Internal dependencies
  */
 import { STORE_KEY as CART_STORE_KEY } from '../../cart/constants';
 import { STORE_KEY as PAYMENT_STORE_KEY } from '../constants';
+import { noticeContexts } from '../../../base/context/event-emit';
 import {
 	EMPTY_CART_ERRORS,
 	EMPTY_CART_ITEM_ERRORS,

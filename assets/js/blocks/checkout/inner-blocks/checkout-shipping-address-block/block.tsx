@@ -8,11 +8,11 @@ import {
 	useCheckoutAddress,
 	useStoreEvents,
 	useEditorContext,
+	noticeContexts,
 } from '@woocommerce/base-context';
 import {
 	CheckboxControl,
 	StoreNoticesContainer,
-	noticeContexts,
 } from '@woocommerce/blocks-checkout';
 import Noninteractive from '@woocommerce/base-components/noninteractive';
 import type {

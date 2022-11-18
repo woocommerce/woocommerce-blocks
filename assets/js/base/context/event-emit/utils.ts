@@ -2,7 +2,6 @@
  * External dependencies
  */
 import { isObject } from '@woocommerce/types';
-import { noticeContexts as storeNoticeContexts } from '@woocommerce/blocks-checkout';
 
 /**
  * Internal dependencies
@@ -26,7 +25,14 @@ export enum responseTypes {
 	ERROR = 'error',
 }
 
-export const noticeContexts = storeNoticeContexts;
+export enum noticeContexts {
+	CART = 'wc/cart',
+	CHECKOUT = 'wc/checkout',
+	PAYMENTS = 'wc/checkout/payments',
+	EXPRESS_PAYMENTS = 'wc/checkout/express-payments',
+	SHIPPING_ADDRESS = 'wc/checkout/shipping-address',
+	SHIPPING_METHODS = 'wc/checkout/shipping-methods',
+}
 
 export interface ResponseType extends Record< string, unknown > {
 	type: responseTypes;
