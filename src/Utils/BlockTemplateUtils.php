@@ -465,6 +465,13 @@ class BlockTemplateUtils {
 		return in_array( $template_slug, self::ELIGIBLE_FOR_ARCHIVE_PRODUCT_FALLBACK, true );
 	}
 
+	/**
+	 * Checks if we can fall back to an `archive-product` template stored on the db for a given slug.
+	 *
+	 * @param string $template_slug Slug to check for fallbacks.
+	 * @param array  $db_templates Templates that have already been found on the db.
+	 * @return boolean
+	 */
 	public static function template_is_eligible_for_product_archive_fallback_from_db( $template_slug, $db_templates ) {
 		$eligible_for_fallback = self::template_is_eligible_for_product_archive_fallback( $template_slug );
 		if ( ! $eligible_for_fallback ) {
@@ -475,7 +482,7 @@ class BlockTemplateUtils {
 			$db_templates,
 			function ( $template ) use ( $template_slug ) {
 				return self::template_is_eligible_for_product_archive_fallback( $template_slug )
-					&& $template->slug === 'archive-product';
+					&& 'archive-product' === $template->slug;
 			}
 		);
 
