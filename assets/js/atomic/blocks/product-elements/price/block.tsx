@@ -1,7 +1,6 @@
 /**
  * External dependencies
  */
-import PropTypes from 'prop-types';
 import classnames from 'classnames';
 import ProductPrice from '@woocommerce/base-components/product-price';
 import { getCurrencyFromPriceResponse } from '@woocommerce/price-format';
@@ -12,6 +11,7 @@ import {
 import { useColorProps, useTypographyProps } from '@woocommerce/base-hooks';
 import { withProductDataContext } from '@woocommerce/shared-hocs';
 import type { HTMLAttributes } from 'react';
+import { CurrencyCode } from '@woocommerce/type-defs/currency';
 
 /**
  * Internal dependencies
@@ -19,6 +19,20 @@ import type { HTMLAttributes } from 'react';
 import type { BlockAttributes } from './types';
 
 type Props = BlockAttributes & HTMLAttributes< HTMLDivElement >;
+
+interface PriceProps {
+	currency_code: CurrencyCode;
+	currency_symbol: string;
+	currency_minor_unit: number;
+	currency_decimal_separator: string;
+	currency_thousand_separator: string;
+	currency_prefix: string;
+	currency_suffix: string;
+	price: string;
+	regular_price: string;
+	sale_price: string;
+	price_range: null | { min_amount: string; max_amount: string };
+}
 
 export const Block = ( props: Props ): JSX.Element | null => {
 	const { className, textAlign } = props;
@@ -48,7 +62,7 @@ export const Block = ( props: Props ): JSX.Element | null => {
 		);
 	}
 
-	const prices = product.prices;
+	const prices: PriceProps = product.prices;
 	const currency = getCurrencyFromPriceResponse( prices );
 	const isOnSale = prices.price !== prices.regular_price;
 	const priceClassName = classnames( {
@@ -76,12 +90,6 @@ export const Block = ( props: Props ): JSX.Element | null => {
 			} ) }
 		/>
 	);
-};
-
-Block.propTypes = {
-	className: PropTypes.string,
-	product: PropTypes.object,
-	textAlign: PropTypes.oneOf( [ 'left', 'right', 'center' ] ),
 };
 
 export default withProductDataContext( Block );
