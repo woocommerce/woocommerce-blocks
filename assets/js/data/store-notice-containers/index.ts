@@ -29,7 +29,10 @@ const store = createReduxStore( STORE_KEY, {
 		},
 	},
 	selectors: {
-		getContainers: ( state ) => state,
+		getContainers: (
+			state
+		): Record< string, React.MutableRefObject< HTMLDivElement | null > > =>
+			state,
 	},
 } );
 
