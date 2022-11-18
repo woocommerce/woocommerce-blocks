@@ -455,7 +455,7 @@ class BlockTemplateUtils {
 	/**
 	 * Checks if we can fall back to the `archive-product` template for a given slug.
 	 *
-	 * `taxonomy-product_cat`, `taxonomy-product_tag`, `taxonomy-attribute` templates can
+	 * `taxonomy-product_cat`, `taxonomy-product_tag`, `taxonomy-product_attribute` templates can
 	 *  generally use the `archive-product` as a fallback if there are no specific overrides.
 	 *
 	 * @param string $template_slug Slug to check for fallbacks.
