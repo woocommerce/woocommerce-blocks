@@ -3694,9 +3694,15 @@
     Target requires 1 element(s) but source may have fewer." source="TS2322" />
 <error line="92" column="7" severity="error" message="Type &apos;false&apos; is not assignable to type &apos;ComponentType&lt;{}&gt; | undefined&apos;." source="TS2322" />
 </file>
-<file name="assets/js/blocks/single-product/edit/index.js">
-<error line="46" column="10" severity="error" message="Property &apos;productId&apos; does not exist on type &apos;Object&apos;." source="TS2339" />
-<error line="46" column="21" severity="error" message="Property &apos;isPreview&apos; does not exist on type &apos;Object&apos;." source="TS2339" />
+<file name="assets/js/blocks/single-product/edit/index.tsx">
+<error line="37" column="2" severity="error" message="Binding element &apos;className&apos; implicitly has an &apos;any&apos; type." source="TS7031" />
+<error line="38" column="2" severity="error" message="Binding element &apos;attributes&apos; implicitly has an &apos;any&apos; type." source="TS7031" />
+<error line="39" column="2" severity="error" message="Binding element &apos;setAttributes&apos; implicitly has an &apos;any&apos; type." source="TS7031" />
+<error line="40" column="2" severity="error" message="Binding element &apos;error&apos; implicitly has an &apos;any&apos; type." source="TS7031" />
+<error line="41" column="2" severity="error" message="Binding element &apos;getProduct&apos; implicitly has an &apos;any&apos; type." source="TS7031" />
+<error line="42" column="2" severity="error" message="Binding element &apos;product&apos; implicitly has an &apos;any&apos; type." source="TS7031" />
+<error line="43" column="2" severity="error" message="Binding element &apos;isLoading&apos; implicitly has an &apos;any&apos; type." source="TS7031" />
+<error line="44" column="2" severity="error" message="Binding element &apos;clientId&apos; implicitly has an &apos;any&apos; type." source="TS7031" />
 <error line="65" column="5" severity="error" message="No overload matches this call.
   Overload 1 of 2, &apos;(props: BlockErrorBoundaryProps | Readonly&lt;BlockErrorBoundaryProps&gt;): BlockErrorBoundary&apos;, gave the following error.
     Property &apos;text&apos; is missing in type &apos;{ children: Element[]; header: string; }&apos; but required in type &apos;Readonly&lt;BlockErrorBoundaryProps&gt;&apos;.
@@ -3704,8 +3710,6 @@
     Property &apos;text&apos; is missing in type &apos;{ children: Element[]; header: string; }&apos; but required in type &apos;Readonly&lt;BlockErrorBoundaryProps&gt;&apos;." source="TS2769" />
 <error line="113" column="24" severity="error" message="Type &apos;{ productId: any; }&apos; is not assignable to type &apos;IntrinsicAttributes &amp; Object&apos;.
   Property &apos;productId&apos; does not exist on type &apos;IntrinsicAttributes &amp; Object&apos;." source="TS2322" />
-<error line="116" column="8" severity="error" message="The &apos;Object&apos; type is assignable to very few other types. Did you mean to use the &apos;any&apos; type instead?
-  Type &apos;Object&apos; is missing the following properties from type &apos;ProductResponseItem&apos;: id, name, parent, type, and 22 more." source="TS2696" />
 </file>
 <file name="assets/js/blocks/single-product/save.js">
 <error line="7" column="18" severity="error" message="Binding element &apos;attributes&apos; implicitly has an &apos;any&apos; type." source="TS7031" />
