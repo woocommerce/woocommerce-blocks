@@ -84,7 +84,7 @@ describe( `${ block.name } Block`, () => {
 			await page.goto( link );
 		} );
 
-		it( 'should render', async () => {
+		it( 'should render products', async () => {
 			await waitForAllProductsBlockLoaded();
 			const products = await page.$$( selectors.frontend.productsList );
 
@@ -140,7 +140,7 @@ describe( `${ block.name } Block`, () => {
 			await deleteAllTemplates( 'wp_template_part' );
 		} );
 
-		it( 'should render', async () => {
+		it( 'should render products', async () => {
 			const products = await page.$$(
 				selectors.frontend.classicProductsList
 			);
@@ -180,7 +180,7 @@ describe( `${ block.name } Block`, () => {
 			await expect( page ).toMatch( block.foundProduct );
 		} );
 
-		it( 'should refresh the page only if the user click on button', async () => {
+		it( 'should refresh the page only if the user clicks on button', async () => {
 			await goToTemplateEditor( {
 				postId: productCatalogTemplateId,
 			} );
@@ -251,7 +251,7 @@ describe( `${ block.name } Block`, () => {
 			await page.goto( frontedPageUrl );
 		} );
 
-		it( 'should render', async () => {
+		it( 'should render products', async () => {
 			const products = await page.$$(
 				selectors.frontend.queryProductsList
 			);
