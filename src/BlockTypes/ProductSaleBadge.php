@@ -98,7 +98,7 @@ class ProductSaleBadge extends AbstractBlock {
 		$classes_and_styles = StyleAttributesUtils::get_classes_and_styles_by_attributes( $attributes );
 
 		$output  = '';
-		$output .= '<div class="wc-block-components-product-sale-badge ' . $classes_and_styles['classes'] . '" style="' . $classes_and_styles['styles'] . '"">';
+		$output .= '<div class="wc-block-components-product-sale-badge ' . $classes_and_styles['classes'] . ' ' . $attributes['className'] . '" style="' . $classes_and_styles['styles'] . '"">';
 		$output .= '<span class="wc-block-components-product-sale-badge__text" aria-hidden="true">' . __( 'Sale', 'woo-gutenberg-products-block' ) . '</span>';
 		$output .= '<span class="screen-reader-text">' . __(
 			'Product on sale',
