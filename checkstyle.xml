@@ -1097,6 +1097,7 @@
 <error line="12" column="27" severity="error" message="Parameter &apos;OriginalComponent&apos; implicitly has an &apos;any&apos; type." source="TS7006" />
 <error line="13" column="12" severity="error" message="Parameter &apos;ownProps&apos; implicitly has an &apos;any&apos; type." source="TS7006" />
 </file>
+<<<<<<< HEAD
 <file name="assets/js/atomic/blocks/product-elements/price/block.js">
 <error line="52" column="18" severity="error" message="Type &apos;string | undefined&apos; is not assignable to type &apos;&quot;center&quot; | &quot;left&quot; | &quot;right&quot; | undefined&apos; with &apos;exactOptionalPropertyTypes: true&apos;. Consider adding &apos;undefined&apos; to the type of the target." source="TS2412" />
 <error line="57" column="49" severity="error" message="Argument of type &apos;{ currency_code: string; currency_symbol: string; currency_minor_unit: number; currency_decimal_separator: string; currency_thousand_separator: string; currency_prefix: string; currency_suffix: string; price: string; regular_price: string; sale_price: string; price_range: null; }&apos; is not assignable to parameter of type &apos;CurrencyResponse | Record&lt;string, never&gt; | CartShippingPackageShippingRate | undefined&apos;.
@@ -1106,6 +1107,13 @@
 <error line="66" column="4" severity="error" message="Type &apos;string | undefined&apos; is not assignable to type &apos;&quot;center&quot; | &quot;left&quot; | &quot;right&quot; | undefined&apos; with &apos;exactOptionalPropertyTypes: true&apos;. Consider adding &apos;undefined&apos; to the type of the target." source="TS2412" />
 <error line="74" column="36" severity="error" message="Property &apos;min_amount&apos; does not exist on type &apos;never&apos;." source="TS2339" />
 <error line="75" column="36" severity="error" message="Property &apos;max_amount&apos; does not exist on type &apos;never&apos;." source="TS2339" />
+=======
+<file name="assets/js/atomic/blocks/product-elements/image/block.js">
+<error line="137" column="19" severity="error" message="Binding element &apos;image&apos; implicitly has an &apos;any&apos; type." source="TS7031" />
+<error line="137" column="26" severity="error" message="Binding element &apos;loaded&apos; implicitly has an &apos;any&apos; type." source="TS7031" />
+<error line="137" column="34" severity="error" message="Binding element &apos;showFullSize&apos; implicitly has an &apos;any&apos; type." source="TS7031" />
+<error line="137" column="48" severity="error" message="Binding element &apos;fallbackAlt&apos; implicitly has an &apos;any&apos; type." source="TS7031" />
+>>>>>>> 864d6ac04 (bot: update checkstyle.xml)
 </file>
 <file name="assets/js/atomic/blocks/product-elements/rating/block.tsx">
 <error line="55" column="35" severity="error" message="Argument of type &apos;{ id: number; name: string; parent: number; type: string; variation: string; permalink: string; sku: string; short_description: string; description: string; on_sale: boolean; prices: { currency_code: string; ... 9 more ...; price_range: null; }; ... 14 more ...; add_to_cart: { ...; }; }&apos; is not assignable to parameter of type &apos;Omit&lt;ProductResponseItem, &quot;average_rating&quot;&gt; &amp; { average_rating: string; }&apos;.
