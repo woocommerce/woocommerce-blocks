@@ -292,7 +292,7 @@ describe( `${ block.name } Block`, () => {
 		it( 'should refresh the page only if the user click on button', async () => {
 			await page.goto( editorPageUrl );
 
-			await openBlockEditorSettings( { isFSEEditor: false } );
+			await openBlockEditorSettings();
 			await selectBlockByName( block.slug );
 			await page.waitForXPath(
 				block.selectors.editor.filterButtonToggle
