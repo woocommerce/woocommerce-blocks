@@ -3,10 +3,12 @@
  */
 import type { CheckoutResponse } from '@woocommerce/types';
 import { store as noticesStore } from '@wordpress/notices';
+import { dispatch as wpDispatch, select as wpSelect } from '@wordpress/data';
 
 /**
  * Internal dependencies
  */
+import { STORE_KEY as PAYMENT_STORE_KEY } from '../payment/constants';
 import { removeNoticesByStatus } from '../../utils/notices';
 import {
 	getPaymentResultFromCheckoutResponse,
@@ -40,7 +42,11 @@ export const __internalProcessCheckoutResponse = (
 	} ) => {
 		const paymentResult = getPaymentResultFromCheckoutResponse( response );
 		dispatch.__internalSetRedirectUrl( paymentResult?.redirectUrl || '' );
-		dispatch.__internalSetPaymentResult( paymentResult );
+		// The local `dispatch` here is bound  to the actions of the data store. We need to use the global dispatch here
+		// to dispatch an action on a different store.
+		wpDispatch( PAYMENT_STORE_KEY ).__internalSetPaymentResult(
+			paymentResult
+		);
 		dispatch.__internalSetAfterProcessing();
 	};
 };
@@ -95,7 +101,8 @@ export const __internalEmitAfterProcessingEvents: emitAfterProcessingEventsType 
 				orderId: select.getOrderId(),
 				customerId: select.getCustomerId(),
 				orderNotes: select.getOrderNotes(),
-				processingResponse: null, //this will be overwrriten by https://github.com/woocommerce/woocommerce-blocks/pull/7692
+				processingResponse:
+					wpSelect( PAYMENT_STORE_KEY ).getPaymentResult(),
 			};
 			if ( select.hasError() ) {
 				// allow payment methods or other things to customize the error

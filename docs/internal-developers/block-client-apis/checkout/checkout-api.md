@@ -60,7 +60,6 @@ The following actions can be dispatched from the Checkout data store:
 -   `__internalSetIdle()`: Set `state.status` to `idle`
 -   `__internalSetComplete()`: Set `state.status` to `complete`
 -   `__internalSetProcessing()`: Set `state.status` to `processing`
--   `__internalSetPaymentResult( response: PaymentResult )`: Set `state.paymentResult` to `response`
 -   `__internalSetBeforeProcessing()`: Set `state.status` to `before_processing`
 -   `__internalSetAfterProcessing()`: Set `state.status` to `after_processing`
 -   `__internalSrocessCheckoutResponse( response: CheckoutResponse )`: This is a thunk that will extract the paymentResult from the CheckoutResponse, and dispatch 3 actions: `__internalSetRedirectUrl`, `__internalSetPaymentResult` and `__internalSetAfterProcessing`.
