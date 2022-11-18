@@ -133,7 +133,7 @@ const QuantitySelector = ( {
 				onChange( value );
 			}
 		},
-		[ hasMaximum, maximum, minimum, onChange, step ]
+		[ hasMaximum, maximum, minimum, onChange, step, strictLimits ]
 	);
 
 	/*
