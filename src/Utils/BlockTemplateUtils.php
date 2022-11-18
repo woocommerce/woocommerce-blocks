@@ -202,8 +202,8 @@ class BlockTemplateUtils {
 		$template->source         = $template_file->source ? $template_file->source : 'plugin';
 		$template->slug           = $template_file->slug;
 		$template->type           = $template_type;
-		$template->title          = self::template_has_title( $template_file ) ? $template_file->title : self::get_block_template_title( $template_file->slug );
-		$template->description    = self::template_has_title( $template_file ) ? $template_file->description : self::get_block_template_description( $template_file->slug );
+		$template->title          = ! empty( $template_file->title ) ? $template_file->title : self::get_block_template_title( $template_file->slug );
+		$template->description    = ! empty( $template_file->description ) ? $template_file->description : self::get_block_template_description( $template_file->slug );
 		$template->status         = 'publish';
 		$template->has_theme_file = true;
 		$template->origin         = $template_file->source;
@@ -465,6 +465,23 @@ class BlockTemplateUtils {
 		return in_array( $template_slug, self::ELIGIBLE_FOR_ARCHIVE_PRODUCT_FALLBACK, true );
 	}
 
+	public static function template_is_eligible_for_product_archive_fallback_from_db( $template_slug, $db_templates ) {
+		$eligible_for_fallback = self::template_is_eligible_for_product_archive_fallback( $template_slug );
+		if ( ! $eligible_for_fallback ) {
+			return false;
+		}
+
+		$array_filter = array_filter(
+			$db_templates,
+			function ( $template ) use ( $template_slug ) {
+				return self::template_is_eligible_for_product_archive_fallback( $template_slug )
+					&& $template->slug === 'archive-product';
+			}
+		);
+
+		return count( $array_filter ) > 0;
+	}
+
 	/**
 	 * Checks if we can fall back to the `archive-product` file template for a given slug in the current theme.
 	 *
@@ -597,15 +614,5 @@ class BlockTemplateUtils {
 		}
 
 		return wc_string_to_bool( $use_blockified_templates );
-	}
-
-	/**
-	 * Returns whether the passed `$template` has a title, and it's different from the slug.
-	 *
-	 * @param object $template The template object.
-	 * @return boolean
-	 */
-	public static function template_has_title( $template ) {
-		return ! empty( $template->title ) && $template->title !== $template->slug;
 	}
 }
