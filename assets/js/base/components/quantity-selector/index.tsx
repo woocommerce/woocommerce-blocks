@@ -82,13 +82,17 @@ const QuantitySelector = ( {
 }: QuantitySelectorProps ): JSX.Element => {
 	const errorId = `wc-block-components-quantity-selector-error-${ instanceId }`;
 
-	const hasValidationErrors = useSelect( ( select ) => {
-		return !! select( VALIDATION_STORE_KEY ).getValidationError( errorId );
+	const { hasValidationError, validationError } = useSelect( ( select ) => {
+		const store = select( VALIDATION_STORE_KEY );
+		return {
+			hasValidationError: !! store.getValidationError( errorId ),
+			validationError: store.getValidationError( errorId ),
+		};
 	} );
 
 	const classes = classNames(
 		'wc-block-components-quantity-selector',
-		hasValidationErrors ? 'has-error' : '',
+		hasValidationError ? 'has-error' : '',
 		className
 	);
 
@@ -266,16 +270,19 @@ const QuantitySelector = ( {
 				return;
 			}
 			const isValid = inputRef.current.checkValidity();
-			if ( ! isValid ) {
+
+			if ( ! isValid || hasValidationError ) {
 				inputRef.current.focus();
 				return {
 					type: 'error',
-					message: inputRef.current.validationMessage,
+					message:
+						inputRef.current.validationMessage ||
+						validationError?.message,
 				};
 			}
 			return true;
 		} );
-	}, [ onProceedToCheckout ] );
+	}, [ errorId, hasValidationError, onProceedToCheckout, validationError ] );
 
 	return (
 		<div>
@@ -364,7 +371,7 @@ const QuantitySelector = ( {
 					&#65291;
 				</button>
 			</div>
-			{ hasValidationErrors && ! strictLimits && (
+			{ hasValidationError && ! strictLimits && (
 				<div>
 					<ValidationInputError propertyName={ errorId } />
 				</div>
