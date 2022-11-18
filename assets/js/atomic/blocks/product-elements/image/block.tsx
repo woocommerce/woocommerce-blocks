@@ -33,13 +33,13 @@ const ImagePlaceholder = (): JSX.Element => {
 
 interface ImageProps {
 	image?: null | {
-		alt?: string;
+		alt?: string | undefined;
 		id: number;
 		name: string;
-		sizes?: string;
-		src?: string;
-		srcset?: string;
-		thumbnail: string;
+		sizes?: string | undefined;
+		src?: string | undefined;
+		srcset?: string | undefined;
+		thumbnail?: string | undefined;
 	};
 	loaded: boolean;
 	showFullSize: boolean;
