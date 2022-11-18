@@ -615,4 +615,14 @@ class BlockTemplateUtils {
 
 		return wc_string_to_bool( $use_blockified_templates );
 	}
+
+	/**
+	 * Returns whether the passed `$template` has a title, and it's different from the slug.
+	 *
+	 * @param object $template The template object.
+	 * @return boolean
+	 */
+	public static function template_has_title( $template ) {
+		return ! empty( $template->title ) && $template->title !== $template->slug;
+	}
 }
