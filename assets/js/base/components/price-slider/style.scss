@@ -145,6 +145,10 @@
 	display: flex;
 	justify-content: space-between;
 	margin: $gap-large 0;
+
+	.wc-block-components-formatted-money-amount {
+		@include font-size(smaller);
+	}
 }
 
 .wc-block-components-price-slider__actions {
