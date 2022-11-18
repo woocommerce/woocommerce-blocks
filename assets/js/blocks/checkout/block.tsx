@@ -12,7 +12,8 @@ import { SidebarLayout } from '@woocommerce/base-components/sidebar-layout';
 import { CURRENT_USER_IS_ADMIN, getSetting } from '@woocommerce/settings';
 import {
 	SlotFillProvider,
-	SnackbarNoticesContainer,
+	StoreNoticesContainer,
+	createNotice,
 } from '@woocommerce/blocks-checkout';
 import withScrollToTop from '@woocommerce/base-hocs/with-scroll-to-top';
 import { useDispatch, useSelect } from '@wordpress/data';
@@ -184,19 +185,45 @@ const Block = ( {
 			) }
 			showErrorMessage={ CURRENT_USER_IS_ADMIN }
 		>
-			<SnackbarNoticesContainer
-				context={ noticeContexts.CHECKOUT }
-				forceType={ true }
-			/>
-			<Button>
+			<StoreNoticesContainer context={ noticeContexts.CHECKOUT } />
+			<Button
+				onClick={ () => {
+					createNotice( 'error', 'Error Message', {
+						context: 'wc/checkout',
+					} );
+				} }
+			>
 				{ __(
 					'Generate an error notice',
 					'woo-gutenberg-products-block'
 				) }
 			</Button>
+			<Button
+				onClick={ () => {
+					createNotice( 'error', 'Error Message', {
+						context: 'wc/checkout/invalid',
+					} );
+				} }
+			>
+				{ __(
+					'Generate an error notice for invalid context',
+					'woo-gutenberg-products-block'
+				) }
+			</Button>
 			{ Object.values( noticeContexts ).map( ( contextValue ) => {
 				return (
-					<Button key={ contextValue }>
+					<Button
+						key={ contextValue }
+						onClick={ () => {
+							createNotice(
+								'error',
+								'Notice in ' + contextValue,
+								{
+									context: contextValue,
+								}
+							);
+						} }
+					>
 						{ contextValue + ' Error' }
 					</Button>
 				);
