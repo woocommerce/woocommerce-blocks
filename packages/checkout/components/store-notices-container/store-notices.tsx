@@ -8,7 +8,7 @@ import { sanitizeHTML } from '@woocommerce/utils';
 import { useDispatch } from '@wordpress/data';
 import { usePrevious } from '@woocommerce/base-hooks';
 import { decodeEntities } from '@wordpress/html-entities';
-import { STORE_NOTICE_CONTAINERS_STORE_KEY } from '@woocommerce/block-data';
+import { STORE_NOTICES_STORE_KEY } from '@woocommerce/block-data';
 
 /**
  * Internal dependencies
@@ -27,14 +27,17 @@ const StoreNotices = ( {
 } ): JSX.Element => {
 	const { removeNotice } = useDispatch( 'core/notices' );
 	const ref = useRef< HTMLDivElement >( null );
-	const { registerContainer } = useDispatch(
-		STORE_NOTICE_CONTAINERS_STORE_KEY
+	const { registerContainer, unregisterContainer } = useDispatch(
+		STORE_NOTICES_STORE_KEY
 	);
 
 	// Register the container with the parent.
 	useEffect( () => {
 		registerContainer( context, ref );
-	}, [ context, ref, registerContainer ] );
+		return function cleanup() {
+			unregisterContainer( context );
+		};
+	}, [ context, ref, registerContainer, unregisterContainer ] );
 
 	// Scroll to container when an error is added here.
 	const noticeIds = notices.map( ( notice ) => notice.id );
