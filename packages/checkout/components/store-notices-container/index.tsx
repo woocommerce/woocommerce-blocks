@@ -10,15 +10,25 @@ import { PAYMENT_STORE_KEY } from '@woocommerce/block-data';
 import './style.scss';
 import StoreNotices from './store-notices';
 import SnackbarNotices from './snackbar-notices';
-import type {
-	StoreNoticesContainerProps,
-	NoticeType,
-	NoticeOptions,
-} from './types';
+import type { StoreNoticesContainerProps, StoreNotice } from './types';
+
+const formatNotices = (
+	notices: StoreNotice[],
+	forceType: 'default' | 'snackbar' | null = null,
+	context: string
+): StoreNotice[] => {
+	return forceType !== null
+		? notices.map( ( notice ) => ( {
+				...notice,
+				type: forceType,
+				context,
+		  } ) )
+		: notices;
+};
 
 const StoreNoticesContainer = ( {
 	className = '',
-	context = 'default',
+	context = 'wc/global',
 	forceType = null,
 	showGlobal = false,
 	additionalNotices = [],
@@ -27,28 +37,31 @@ const StoreNoticesContainer = ( {
 		select( PAYMENT_STORE_KEY ).isExpressPaymentMethodActive()
 	);
 
-	let notices = useSelect< Array< NoticeType & NoticeOptions > >(
-		( select ) => {
-			const { getNotices } = select( 'core/notices' );
+	const notices = useSelect< StoreNotice[] >( ( select ) => {
+		const { getNotices } = select( 'core/notices' );
 
-			const contextNotices = getNotices( context );
-			const globalNotices = showGlobal ? getNotices( 'wc/global' ) : [];
+		const contextNotices = formatNotices(
+			( getNotices( context ) as StoreNotice[] ).concat(
+				additionalNotices
+			),
+			forceType,
+			context
+		);
+		const globalNotices = showGlobal
+			? formatNotices(
+					getNotices( 'wc/global' ) as StoreNotice[],
+					forceType,
+					'wc/global'
+			  )
+			: [];
 
-			return [ ...contextNotices, ...globalNotices ].filter(
-				Boolean
-			) as Array< NoticeType & NoticeOptions >;
-		}
-	);
+		return [ ...contextNotices, ...globalNotices ].filter(
+			Boolean
+		) as StoreNotice[];
+	} );
 
 	if ( suppressNotices ) {
 		return null;
-	}
-
-	if ( forceType !== null ) {
-		notices = notices.map( ( notice ) => ( {
-			...notice,
-			type: forceType,
-		} ) );
 	}
 
 	return (
@@ -56,9 +69,9 @@ const StoreNoticesContainer = ( {
 			<StoreNotices
 				className={ className }
 				context={ context }
-				notices={ notices
-					.filter( ( notice ) => notice.type === 'default' )
-					.concat( additionalNotices ) }
+				notices={ notices.filter(
+					( notice ) => notice.type === 'default'
+				) }
 			/>
 			<SnackbarNotices
 				className={ className }

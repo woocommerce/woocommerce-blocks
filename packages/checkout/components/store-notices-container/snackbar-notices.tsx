@@ -8,7 +8,7 @@ import { useDispatch } from '@wordpress/data';
 /**
  * Internal dependencies
  */
-import type { NoticeType, NoticeOptions } from './types';
+import type { StoreNotice } from './types';
 
 const SnackbarNotices = ( {
 	className,
@@ -17,7 +17,7 @@ const SnackbarNotices = ( {
 }: {
 	context: string;
 	className: string;
-	notices: Array< NoticeType & NoticeOptions >;
+	notices: StoreNotice[];
 } ): JSX.Element | null => {
 	const { removeNotice } = useDispatch( 'core/notices' );
 
@@ -40,9 +40,9 @@ const SnackbarNotices = ( {
 			onRemove={ ( noticeId: string ) => {
 				notices.forEach( ( notice ) => {
 					if ( notice.explicitDismiss && notice.id === noticeId ) {
-						removeNotice( notice.id, context );
+						removeNotice( notice.id, notice.context );
 					} else {
-						removeNotice( notice.id, context );
+						removeNotice( notice.id, notice.context );
 					}
 				} );
 			} }
