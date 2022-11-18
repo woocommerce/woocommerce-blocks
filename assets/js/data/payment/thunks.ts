@@ -2,7 +2,6 @@
  * External dependencies
  */
 import { store as noticesStore } from '@wordpress/notices';
-import { noticeContexts } from '@woocommerce/blocks-checkout';
 
 /**
  * Internal dependencies
@@ -13,6 +12,7 @@ import {
 	isErrorResponse,
 	isFailResponse,
 	isSuccessResponse,
+	noticeContexts,
 } from '../../base/context/event-emit';
 import { EMIT_TYPES } from '../../base/context/providers/cart-checkout/payment-events/event-emit';
 import type { emitProcessingEventType } from './types';

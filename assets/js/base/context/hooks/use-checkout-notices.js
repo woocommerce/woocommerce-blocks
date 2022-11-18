@@ -2,7 +2,11 @@
  * External dependencies
  */
 import { useSelect } from '@wordpress/data';
-import { noticeContexts } from '@woocommerce/blocks-checkout';
+
+/**
+ * Internal dependencies
+ */
+import { noticeContexts } from '../event-emit';
 
 /**
  * @typedef {import('@woocommerce/type-defs/contexts').StoreNoticeObject} StoreNoticeObject

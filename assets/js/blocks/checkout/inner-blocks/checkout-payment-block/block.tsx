@@ -1,10 +1,8 @@
 /**
  * External dependencies
  */
-import {
-	StoreNoticesContainer,
-	noticeContexts,
-} from '@woocommerce/blocks-checkout';
+import { StoreNoticesContainer } from '@woocommerce/blocks-checkout';
+import { noticeContexts } from '@woocommerce/base-context';
 
 /**
  * Internal dependencies

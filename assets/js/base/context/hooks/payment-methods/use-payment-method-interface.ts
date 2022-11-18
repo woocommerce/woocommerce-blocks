@@ -12,17 +12,14 @@ import LoadingMask from '@woocommerce/base-components/loading-mask';
 import type { PaymentMethodInterface } from '@woocommerce/types';
 import { useSelect, useDispatch } from '@wordpress/data';
 import { CHECKOUT_STORE_KEY, PAYMENT_STORE_KEY } from '@woocommerce/block-data';
-import {
-	ValidationInputError,
-	noticeContexts,
-} from '@woocommerce/blocks-checkout';
+import { ValidationInputError } from '@woocommerce/blocks-checkout';
 
 /**
  * Internal dependencies
  */
 import { useStoreCart } from '../cart/use-store-cart';
 import { useStoreCartCoupons } from '../cart/use-store-cart-coupons';
-import { responseTypes } from '../../event-emit';
+import { noticeContexts, responseTypes } from '../../event-emit';
 import { useCheckoutEventsContext } from '../../providers/cart-checkout/checkout-events';
 import { usePaymentEventsContext } from '../../providers/cart-checkout/payment-events';
 import { useShippingDataContext } from '../../providers/cart-checkout/shipping';
