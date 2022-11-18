@@ -226,8 +226,8 @@ class ShippingController {
 	}
 
 	/**
-	 * For Local Pickup to work during Block Checkout, all packages must support local pickup. This is because the entire
-	 * order must be picked up (so correct taxes are applied to the full order).
+	 * Local Pickup requires all packages to support local pickup. This is because the entire order must be picked up
+	 * so that all packages get the same tax rates applied during checkout.
 	 *
 	 * If a shipping package does not support local pickup (e.g. if disabled by an extension), this filters the option
 	 * out for all packages. This will in turn disable the "pickup" toggle in Block Checkout.
