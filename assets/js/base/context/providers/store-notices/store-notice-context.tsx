@@ -12,13 +12,13 @@ import { useDispatch, useSelect } from '@wordpress/data';
 import { Button } from '@wordpress/components';
 import type { Options as NoticeOptions } from '@wordpress/notices';
 import { PAYMENT_STORE_KEY } from '@woocommerce/block-data';
+import { noticeContexts } from '@woocommerce/blocks-checkout';
 
 /**
  * Internal dependencies
  */
 import { StoreNoticeContextType } from './types';
 import { useEditorContext } from '../editor-context';
-import { noticeContexts } from '../../event-emit/utils';
 
 const StoreNoticeContext = createContext< StoreNoticeContextType >( {
 	createNotice: () => void 0,

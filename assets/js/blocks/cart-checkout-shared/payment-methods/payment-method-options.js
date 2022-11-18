@@ -11,12 +11,12 @@ import classNames from 'classnames';
 import RadioControlAccordion from '@woocommerce/base-components/radio-control-accordion';
 import { useDispatch, useSelect } from '@wordpress/data';
 import { getPaymentMethods } from '@woocommerce/blocks-registry';
+import { noticeContexts } from '@woocommerce/blocks-checkout';
 
 /**
  * Internal dependencies
  */
 import PaymentMethodCard from './payment-method-card';
-import { noticeContexts } from '../../../base/context/event-emit';
 import { STORE_KEY as PAYMENT_STORE_KEY } from '../../../data/payment/constants';
 
 /**
