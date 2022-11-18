@@ -2,8 +2,11 @@
  * External dependencies
  */
 import { __ } from '@wordpress/i18n';
-import { useEditorContext, noticeContexts } from '@woocommerce/base-context';
-import { StoreNoticesContainer } from '@woocommerce/blocks-checkout';
+import { useEditorContext } from '@woocommerce/base-context';
+import {
+	StoreNoticesContainer,
+	noticeContexts,
+} from '@woocommerce/blocks-checkout';
 import Title from '@woocommerce/base-components/title';
 import LoadingMask from '@woocommerce/base-components/loading-mask';
 import { CURRENT_USER_IS_ADMIN } from '@woocommerce/settings';

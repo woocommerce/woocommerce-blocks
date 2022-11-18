@@ -9,6 +9,18 @@ import {
 import { select, dispatch } from '@wordpress/data';
 
 /**
+ * List of valid notice contexts included in blocks.
+ */
+export const noticeContexts = {
+	CART: 'wc/cart',
+	CHECKOUT: 'wc/checkout',
+	PAYMENTS: 'wc/checkout/payments',
+	EXPRESS_PAYMENTS: 'wc/checkout/express-payments',
+	SHIPPING_ADDRESS: 'wc/checkout/shipping-address',
+	SHIPPING_METHODS: 'wc/checkout/shipping-methods',
+};
+
+/**
  * Wrapper for @wordpress/notices createNotice.
  *
  * This is used to create the correct type of notice based on the provided context, and to ensure the notice container

@@ -5,14 +5,15 @@ import { __ } from '@wordpress/i18n';
 import { useStoreCart } from '@woocommerce/base-context/hooks';
 import { useEffect } from '@wordpress/element';
 import LoadingMask from '@woocommerce/base-components/loading-mask';
-import { noticeContexts, CartProvider } from '@woocommerce/base-context';
+import { CartProvider } from '@woocommerce/base-context';
 import { CURRENT_USER_IS_ADMIN } from '@woocommerce/settings';
 import BlockErrorBoundary from '@woocommerce/base-components/block-error-boundary';
 import { translateJQueryEventToNative } from '@woocommerce/base-utils';
 import withScrollToTop from '@woocommerce/base-hocs/with-scroll-to-top';
 import {
 	SlotFillProvider,
-	SnackbarNoticesContainer,
+	StoreNoticesContainer,
+	noticeContexts,
 } from '@woocommerce/blocks-checkout';
 
 /**
@@ -82,10 +83,7 @@ const Block = ( { attributes, children, scrollToTop } ) => (
 		}
 		showErrorMessage={ CURRENT_USER_IS_ADMIN }
 	>
-		<SnackbarNoticesContainer
-			context={ noticeContexts.CART }
-			forceType={ true }
-		/>
+		<StoreNoticesContainer context={ noticeContexts.CART } />
 		<SlotFillProvider>
 			<CartProvider>
 				<Cart attributes={ attributes }>{ children }</Cart>

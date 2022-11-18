@@ -16,14 +16,17 @@ import {
 	PAYMENT_STORE_KEY,
 	CART_STORE_KEY,
 } from '@woocommerce/block-data';
-import { ValidationInputError } from '@woocommerce/blocks-checkout';
+import {
+	ValidationInputError,
+	noticeContexts,
+} from '@woocommerce/blocks-checkout';
 
 /**
  * Internal dependencies
  */
 import { useStoreCart } from '../cart/use-store-cart';
 import { useStoreCartCoupons } from '../cart/use-store-cart-coupons';
-import { noticeContexts, responseTypes } from '../../event-emit';
+import { responseTypes } from '../../event-emit';
 import { useCheckoutEventsContext } from '../../providers/cart-checkout/checkout-events';
 import { usePaymentEventsContext } from '../../providers/cart-checkout/payment-events';
 import { useShippingDataContext } from '../../providers/cart-checkout/shipping';
