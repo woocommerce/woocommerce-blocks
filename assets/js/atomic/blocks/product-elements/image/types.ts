@@ -2,7 +2,7 @@ export interface BlockAttributes {
 	// The product ID.
 	productId: number;
 	// CSS Class name for the component.
-	className: string;
+	className?: string | undefined;
 	// Whether or not to display a link to the product page.
 	showProductLink: boolean;
 	// Whether or not to display the on sale badge.
