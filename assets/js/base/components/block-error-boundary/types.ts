@@ -4,13 +4,13 @@ interface BlockErrorBase {
 	 * If it's `null` or an empty string, no image will be displayed.
 	 * If it's not defined, the default image will be used.
 	 */
-	imageUrl?: string;
+	imageUrl?: string | undefined;
 	/**
 	 * Text to display as the heading of the error block.
 	 * If it's `null` or an empty string, no header will be displayed.
 	 * If it's not defined, the default header will be used.
 	 */
-	header?: string;
+	header?: string | undefined;
 	/**
 	 * Text to display in the error block below the header.
 	 * If it's `null` or an empty string, nothing will be displayed.
@@ -20,7 +20,7 @@ interface BlockErrorBase {
 	/**
 	 * Text preceeding the error message.
 	 */
-	errorMessagePrefix?: string;
+	errorMessagePrefix?: string | undefined;
 	/**
 	 * Button cta.
 	 */
