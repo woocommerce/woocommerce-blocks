@@ -435,16 +435,9 @@ export function* changeCartItemQuantity(
 	yield itemIsPendingQuantity( cartItemKey, false );
 }
 
-/**
- * Selects a shipping rate.
- *
- * @param {string}          rateId      The id of the rate being selected.
- * @param {number | string} [packageId] The key of the packages that we will
- *                                      select within.
- */
 export function* selectShippingRate(
 	rateId: string,
-	packageId = 0
+	packageId: number | string | undefined
 ): Generator< unknown, boolean, { response: CartResponse } > {
 	try {
 		yield shippingRatesBeingSelected( true );
