@@ -31,7 +31,7 @@ import CheckoutOrderError from './checkout-order-error';
 import { LOGIN_TO_CHECKOUT_URL, isLoginRequired, reloadPage } from './utils';
 import type { Attributes } from './types';
 import { CheckoutBlockContext } from './context';
-import { hasNoticesOfType } from '../../utils/notices';
+import { hasNoticesOfType, removeNoticesByStatus } from '../../utils/notices';
 
 const LoginPrompt = () => {
 	return (
@@ -185,6 +185,17 @@ const Block = ( {
 			showErrorMessage={ CURRENT_USER_IS_ADMIN }
 		>
 			<StoreNoticesContainer context={ noticeContexts.CHECKOUT } />
+			<Button
+				onClick={ () => {
+					Object.values( noticeContexts ).forEach(
+						( contextValue ) => {
+							removeNoticesByStatus( 'error', contextValue );
+						}
+					);
+				} }
+			>
+				{ __( 'Clear all errors', 'woo-gutenberg-products-block' ) }
+			</Button>
 			<Button
 				onClick={ () => {
 					createNotice( 'error', 'Error Message', {

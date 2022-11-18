@@ -6,6 +6,7 @@ import {
 	useCheckoutAddress,
 	useStoreEvents,
 	useEditorContext,
+	noticeContexts,
 } from '@woocommerce/base-context';
 import { AddressForm } from '@woocommerce/base-components/cart-checkout';
 import Noninteractive from '@woocommerce/base-components/noninteractive';
@@ -14,6 +15,7 @@ import type {
 	AddressField,
 	AddressFields,
 } from '@woocommerce/settings';
+import { StoreNoticesContainer } from '@woocommerce/blocks-checkout';
 
 /**
  * Internal dependencies
@@ -69,38 +71,41 @@ const Block = ( {
 	const AddressFormWrapperComponent = isEditor ? Noninteractive : Fragment;
 
 	return (
-		<AddressFormWrapperComponent>
-			<AddressForm
-				id="billing"
-				type="billing"
-				onChange={ ( values: Partial< BillingAddress > ) => {
-					setBillingAddress( values );
-					if ( forcedBillingAddress ) {
-						setShippingAddress( values );
-					}
-					dispatchCheckoutEvent( 'set-billing-address' );
-				} }
-				values={ billingAddress }
-				fields={
-					Object.keys(
-						defaultAddressFields
-					) as ( keyof AddressFields )[]
-				}
-				fieldConfig={ addressFieldsConfig }
-			/>
-			{ showPhoneField && (
-				<PhoneNumber
-					isRequired={ requirePhoneField }
-					value={ billingAddress.phone }
-					onChange={ ( value ) => {
-						setBillingPhone( value );
-						dispatchCheckoutEvent( 'set-phone-number', {
-							step: 'billing',
-						} );
+		<>
+			<StoreNoticesContainer context={ noticeContexts.BILLING_ADDRESS } />
+			<AddressFormWrapperComponent>
+				<AddressForm
+					id="billing"
+					type="billing"
+					onChange={ ( values: Partial< BillingAddress > ) => {
+						setBillingAddress( values );
+						if ( forcedBillingAddress ) {
+							setShippingAddress( values );
+						}
+						dispatchCheckoutEvent( 'set-billing-address' );
 					} }
+					values={ billingAddress }
+					fields={
+						Object.keys(
+							defaultAddressFields
+						) as ( keyof AddressFields )[]
+					}
+					fieldConfig={ addressFieldsConfig }
 				/>
-			) }
-		</AddressFormWrapperComponent>
+				{ showPhoneField && (
+					<PhoneNumber
+						isRequired={ requirePhoneField }
+						value={ billingAddress.phone }
+						onChange={ ( value ) => {
+							setBillingPhone( value );
+							dispatchCheckoutEvent( 'set-phone-number', {
+								step: 'billing',
+							} );
+						} }
+					/>
+				) }
+			</AddressFormWrapperComponent>
+		</>
 	);
 };
 

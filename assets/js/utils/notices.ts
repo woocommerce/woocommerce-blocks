@@ -12,11 +12,15 @@ export const hasNoticesOfType = (
 	return notices.some( ( notice: Notice ) => notice.type === type );
 };
 
-export const removeNoticesByStatus = ( status: string, context = '' ): void => {
-	const notices = select( 'core/notices' ).getNotices();
+// Note, if context is blank, the default context is used.
+export const removeNoticesByStatus = (
+	status: string,
+	context?: string
+): void => {
+	const notices = select( 'core/notices' ).getNotices( context );
 	const { removeNotice } = dispatch( 'core/notices' );
-	const noticesOfType = notices.filter(
-		( notice ) => notice.status === status
-	);
+	const noticesOfType = notices.filter( ( notice ) => {
+		return notice.status === status;
+	} );
 	noticesOfType.forEach( ( notice ) => removeNotice( notice.id, context ) );
 };
