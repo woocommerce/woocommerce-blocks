@@ -1360,7 +1360,7 @@
 <error line="252" column="56" severity="error" message="Argument of type &apos;null&apos; is not assignable to parameter of type &apos;Object&apos;." source="TS2345" />
 <error line="475" column="34" severity="error" message="Argument of type &apos;null&apos; is not assignable to parameter of type &apos;Object | undefined&apos;." source="TS2345" />
 </file>
-<file name="assets/js/atomic/blocks/product-elements/image/test/block.test.js">
+<file name="assets/js/atomic/blocks/product-elements/image/test/block.test.tsx">
 <error line="66" column="6" severity="error" message="Type &apos;{ name: string; id: number; fallbackAlt: string; permalink: string; images: { id: number; src: string; thumbnail: string; srcset: string; sizes: string; name: string; alt: string; }[]; }&apos; is missing the following properties from type &apos;ProductResponseItem&apos;: parent, type, variation, sku, and 18 more." source="TS2740" />
 <error line="100" column="6" severity="error" message="Type &apos;{ name: string; id: number; fallbackAlt: string; permalink: string; images: never[]; }&apos; is missing the following properties from type &apos;ProductResponseItem&apos;: parent, type, variation, sku, and 18 more." source="TS2740" />
 <error line="133" column="6" severity="error" message="Type &apos;{ name: string; id: number; fallbackAlt: string; permalink: string; images: { id: number; src: string; thumbnail: string; srcset: string; sizes: string; name: string; alt: string; }[]; }&apos; is not assignable to type &apos;ProductResponseItem&apos;." source="TS2322" />
@@ -3672,16 +3672,11 @@
         Type &apos;{ type: string; default: boolean; }&apos; is not assignable to type &apos;BlockAttribute&lt;unknown&gt;&apos;." source="TS2769" />
 <error line="68" column="11" severity="error" message="Type &apos;{ constructor: Function; toString(): string; toLocaleString(): string; valueOf(): Object; hasOwnProperty(v: PropertyKey): boolean; isPrototypeOf(v: Object): boolean; propertyIsEnumerable(v: PropertyKey): boolean; }&apos; is missing the following properties from type &apos;Omit&lt;{ attributes: Object; debouncedSpeak: (arg0: any) =&gt; any; setAttributes: (arg0: any) =&gt; any; }, &quot;speak&quot; | &quot;debouncedSpeak&quot;&gt;&apos;: attributes, setAttributes" source="TS2739" />
 </file>
-<file name="assets/js/blocks/single-product/block.js">
-<error line="31" column="64" severity="error" message="Property &apos;id&apos; does not exist on type &apos;Object&apos;." source="TS2339" />
-<error line="46" column="5" severity="error" message="The &apos;Object&apos; type is assignable to very few other types. Did you mean to use the &apos;any&apos; type instead?
-  Type &apos;Object&apos; is missing the following properties from type &apos;ProductResponseItem&apos;: id, name, parent, type, and 22 more." source="TS2696" />
-</file>
 <file name="assets/js/blocks/single-product/frontend.js">
 <error line="18" column="20" severity="error" message="Parameter &apos;el&apos; implicitly has an &apos;any&apos; type." source="TS7006" />
-<error line="25" column="2" severity="error" message="Type &apos;ComponentType&lt;{ isLoading: boolean; product: Object; children: ReactChildren; }&gt;&apos; is not assignable to type &apos;FunctionComponent&lt;{}&gt;&apos;.
-  Type &apos;ComponentClass&lt;{ isLoading: boolean; product: Object; children: ReactChildren; }, any&gt;&apos; is not assignable to type &apos;FunctionComponent&lt;{}&gt;&apos;.
-    Type &apos;ComponentClass&lt;{ isLoading: boolean; product: Object; children: ReactChildren; }, any&gt;&apos; provides no match for the signature &apos;(props: { children?: ReactNode; }, context?: any): ReactElement&lt;any, any&gt; | null&apos;." source="TS2322" />
+<error line="25" column="2" severity="error" message="Type &apos;ComponentType&lt;BlockProps&gt;&apos; is not assignable to type &apos;FunctionComponent&lt;{}&gt;&apos;.
+  Type &apos;ComponentClass&lt;BlockProps, any&gt;&apos; is not assignable to type &apos;FunctionComponent&lt;{}&gt;&apos;.
+    Type &apos;ComponentClass&lt;BlockProps, any&gt;&apos; provides no match for the signature &apos;(props: { children?: ReactNode; }, context?: any): ReactElement&lt;any, any&gt; | null&apos;." source="TS2322" />
 </file>
 <file name="assets/js/blocks/single-product/edit/api-error.js">
 <error line="17" column="3" severity="error" message="Type &apos;string&apos; is not assignable to type &apos;ErrorObject&apos;." source="TS2322" />
@@ -3693,13 +3688,11 @@
   Property &apos;showVariations&apos; does not exist on type &apos;IntrinsicAttributes &amp; { selected: number[]; } &amp; { children?: ReactNode; }&apos;." source="TS2322" />
 <error line="17" column="16" severity="error" message="Parameter &apos;value&apos; implicitly has an &apos;any[]&apos; type." source="TS7006" />
 </file>
-<file name="assets/js/blocks/single-product/edit/layout-editor.js">
-<error line="51" column="5" severity="error" message="Type &apos;Object&apos; is not assignable to type &apos;ProductResponseItem&apos;.
-  The &apos;Object&apos; type is assignable to very few other types. Did you mean to use the &apos;any&apos; type instead?" source="TS2322" />
-<error line="78" column="7" severity="error" message="Type &apos;{}[][]&apos; is not assignable to type &apos;readonly Template[]&apos;.
+<file name="assets/js/blocks/single-product/edit/layout-editor.tsx">
+<error line="89" column="7" severity="error" message="Type &apos;{}[][]&apos; is not assignable to type &apos;readonly Template[]&apos;.
   Type &apos;{}[]&apos; is not assignable to type &apos;Template&apos;.
     Target requires 1 element(s) but source may have fewer." source="TS2322" />
-<error line="81" column="7" severity="error" message="Type &apos;false&apos; is not assignable to type &apos;ComponentType&lt;{}&gt; | undefined&apos;." source="TS2322" />
+<error line="92" column="7" severity="error" message="Type &apos;false&apos; is not assignable to type &apos;ComponentType&lt;{}&gt; | undefined&apos;." source="TS2322" />
 </file>
 <file name="assets/js/blocks/single-product/edit/index.js">
 <error line="46" column="10" severity="error" message="Property &apos;productId&apos; does not exist on type &apos;Object&apos;." source="TS2339" />
@@ -3711,6 +3704,8 @@
     Property &apos;text&apos; is missing in type &apos;{ children: Element[]; header: string; }&apos; but required in type &apos;Readonly&lt;BlockErrorBoundaryProps&gt;&apos;." source="TS2769" />
 <error line="113" column="24" severity="error" message="Type &apos;{ productId: any; }&apos; is not assignable to type &apos;IntrinsicAttributes &amp; Object&apos;.
   Property &apos;productId&apos; does not exist on type &apos;IntrinsicAttributes &amp; Object&apos;." source="TS2322" />
+<error line="116" column="8" severity="error" message="The &apos;Object&apos; type is assignable to very few other types. Did you mean to use the &apos;any&apos; type instead?
+  Type &apos;Object&apos; is missing the following properties from type &apos;ProductResponseItem&apos;: id, name, parent, type, and 22 more." source="TS2696" />
 </file>
 <file name="assets/js/blocks/single-product/save.js">
 <error line="7" column="18" severity="error" message="Binding element &apos;attributes&apos; implicitly has an &apos;any&apos; type." source="TS7031" />
