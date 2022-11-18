@@ -79,6 +79,7 @@
 	}
 
 	.wc-blocks-components-form-token-field-wrapper .components-form-token-field__input-container {
+		@include reset-typography();
 		border: 0;
 		padding: $gap-smaller;
 
@@ -99,6 +100,11 @@
 				margin: $gap-small;
 				padding: $gap-small;
 			}
+		}
+
+		.components-form-token-field__token,
+		.components-form-token-field__suggestion {
+			@include font-size(smaller);
 		}
 	}
 }
