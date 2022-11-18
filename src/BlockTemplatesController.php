@@ -183,9 +183,9 @@ class BlockTemplatesController {
 	/**
 	 * Add the block template objects to be used.
 	 *
-	 * @param array $query_result Array of template objects.
-	 * @param array $query Optional. Arguments to retrieve templates.
-	 * @param array $template_type wp_template or wp_template_part.
+	 * @param array  $query_result Array of template objects.
+	 * @param array  $query Optional. Arguments to retrieve templates.
+	 * @param string $template_type wp_template or wp_template_part.
 	 * @return array
 	 */
 	public function add_block_templates( $query_result, $query, $template_type ) {
@@ -274,8 +274,8 @@ class BlockTemplatesController {
 	/**
 	 * Gets the templates saved in the database.
 	 *
-	 * @param array $slugs An array of slugs to retrieve templates for.
-	 * @param array $template_type wp_template or wp_template_part.
+	 * @param array  $slugs An array of slugs to retrieve templates for.
+	 * @param string $template_type wp_template or wp_template_part.
 	 *
 	 * @return int[]|\WP_Post[] An array of found templates.
 	 */
@@ -383,8 +383,8 @@ class BlockTemplatesController {
 	/**
 	 * Get and build the block template objects from the block template files.
 	 *
-	 * @param array $slugs An array of slugs to retrieve templates for.
-	 * @param array $template_type wp_template or wp_template_part.
+	 * @param array  $slugs An array of slugs to retrieve templates for.
+	 * @param string $template_type wp_template or wp_template_part.
 	 *
 	 * @return array WP_Block_Template[] An array of block template objects.
 	 */
@@ -399,7 +399,7 @@ class BlockTemplatesController {
 	/**
 	 * Gets the directory where templates of a specific template type can be found.
 	 *
-	 * @param array $template_type wp_template or wp_template_part.
+	 * @param string $template_type wp_template or wp_template_part.
 	 *
 	 * @return string
 	 */
@@ -416,6 +416,14 @@ class BlockTemplatesController {
 		return $this->templates_directory;
 	}
 
+	/**
+	 * Returns the path of a template on the Blocks template folder.
+	 *
+	 * @param string $template_slug Block template slug e.g. single-product.
+	 * @param string $template_type wp_template or wp_template_part.
+	 *
+	 * @return string
+	 */
 	public function get_template_path_from_woocommerce( $template_slug, $template_type = 'wp_template' ) {
 		return $this->get_templates_directory( $template_type ) . '/' . $template_slug . '.html';
 	}
