@@ -202,9 +202,12 @@ describe( `${ block.name } Block`, () => {
 			await page.waitForSelector( block.class + '.is-loading', {
 				hidden: true,
 			} );
+
 			expect( isRefreshed ).not.toBeCalled();
 
 			await setMaxPrice();
+
+			expect( isRefreshed ).not.toBeCalled();
 
 			await clickLink( selectors.frontend.submitButton );
 
@@ -310,9 +313,12 @@ describe( `${ block.name } Block`, () => {
 			await page.waitForSelector( block.class + '.is-loading', {
 				hidden: true,
 			} );
+
 			expect( isRefreshed ).not.toBeCalled();
 
 			await setMaxPrice();
+
+			expect( isRefreshed ).not.toBeCalled();
 
 			await clickLink( selectors.frontend.submitButton );
 
