@@ -6,20 +6,12 @@ import type {
 	Options as NoticeOptions,
 } from '@wordpress/notices';
 
-export interface StoreNotice {
-	content: string;
-	id: string;
-	status: string;
-	isDismissible?: boolean;
-	type: 'default' | 'snackbar';
-}
-
 export interface StoreNoticesContainerProps {
 	className?: string;
 	context?: string;
-	additionalNotices?: ( NoticeType & NoticeOptions )[];
 	showGlobal: boolean;
+	additionalNotices?: ( NoticeType & NoticeOptions )[];
 	forceType: 'default' | 'snackbar' | null;
 }
 
-export { NoticeType, NoticeOptions };
+export type StoreNotice = NoticeType & NoticeOptions;

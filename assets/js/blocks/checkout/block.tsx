@@ -186,8 +186,8 @@ const Block = ( {
 		>
 			<StoreNoticesContainer
 				context={ noticeContexts.CHECKOUT }
-				forceType="snackbar"
 				showGlobal={ true }
+				forceType="snackbar"
 			/>
 			<>
 				<Button

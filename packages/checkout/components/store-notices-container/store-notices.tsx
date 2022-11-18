@@ -14,7 +14,7 @@ import { STORE_NOTICES_STORE_KEY } from '@woocommerce/block-data';
  * Internal dependencies
  */
 import { getClassNameFromStatus } from './utils';
-import type { NoticeType, NoticeOptions } from './types';
+import type { StoreNotice } from './types';
 
 const StoreNotices = ( {
 	context,
@@ -23,7 +23,7 @@ const StoreNotices = ( {
 }: {
 	context: string;
 	className: string;
-	notices: Array< NoticeType & NoticeOptions >;
+	notices: StoreNotice[];
 } ): JSX.Element => {
 	const { removeNotice } = useDispatch( 'core/notices' );
 	const ref = useRef< HTMLDivElement >( null );
@@ -61,21 +61,21 @@ const StoreNotices = ( {
 			ref={ ref }
 			className={ classnames( className, 'wc-block-components-notices' ) }
 		>
-			{ notices.map( ( props ) => (
+			{ notices.map( ( notice ) => (
 				<Notice
-					key={ `store-notice-${ props.id }` }
-					{ ...props }
+					key={ `store-notice-${ notice.id }` }
+					{ ...notice }
 					className={ classnames(
 						'wc-block-components-notices__notice',
-						getClassNameFromStatus( props )
+						getClassNameFromStatus( notice )
 					) }
 					onRemove={ () => {
-						if ( props.isDismissible ) {
-							removeNotice( props.id, context );
+						if ( notice.isDismissible ) {
+							removeNotice( notice.id, notice.context );
 						}
 					} }
 				>
-					{ sanitizeHTML( decodeEntities( props.content ) ) }
+					{ sanitizeHTML( decodeEntities( notice.content ) ) }
 				</Notice>
 			) ) }
 		</div>
