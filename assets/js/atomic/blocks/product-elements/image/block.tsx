@@ -27,7 +27,12 @@ import type { BlockAttributes } from './types';
 
 const ImagePlaceholder = (): JSX.Element => {
 	return (
-		<img src={ PLACEHOLDER_IMG_SRC } alt="" width={ 500 } height={ 500 } />
+		<img
+			src={ PLACEHOLDER_IMG_SRC }
+			alt=""
+			width={ undefined }
+			height={ undefined }
+		/>
 	);
 };
 
