@@ -3,7 +3,7 @@
  */
 import type { Options as NoticeOptions } from '@wordpress/notices';
 import {
-	STORE_NOTICE_CONTAINERS_STORE_KEY,
+	STORE_NOTICES_STORE_KEY,
 	PAYMENT_STORE_KEY,
 } from '@woocommerce/block-data';
 import { select, dispatch } from '@wordpress/data';
@@ -33,13 +33,6 @@ export const createNotice = (
 ) => {
 	let noticeContext = options?.context || 'wc';
 
-	const containerRefs = select(
-		STORE_NOTICE_CONTAINERS_STORE_KEY
-	).getContainers() as Record<
-		string,
-		React.MutableRefObject< HTMLDivElement | null >
-	>;
-
 	const suppressNotices =
 		select( PAYMENT_STORE_KEY ).isExpressPaymentMethodActive();
 
@@ -47,12 +40,14 @@ export const createNotice = (
 		return;
 	}
 
+	const containerRefs = select( STORE_NOTICES_STORE_KEY ).getContainers();
+
 	// If the container ref was not registered, use the parent context instead.
 	if ( ! Object.keys( containerRefs ).includes( noticeContext ) ) {
 		if ( noticeContext.includes( 'wc/checkout/' ) ) {
-			noticeContext = 'wc/checkout';
+			noticeContext = noticeContexts.CHECKOUT;
 		} else if ( noticeContext.includes( 'wc/cart/' ) ) {
-			noticeContext = 'wc/cart';
+			noticeContext = noticeContexts.CART;
 		} else {
 			noticeContext = 'wc/global';
 		}
