@@ -209,7 +209,8 @@ class ProductQuery extends AbstractBlock {
 	 * @return array
 	 */
 	public function extend_rest_query_allowed_params( $params ) {
-		return array_merge( $params, $this->custom_order_opts );
+		$params['orderby']['enum'] = array_merge( $params['orderby']['enum'], $this->custom_order_opts );
+		return $params;
 	}
 
 	/**
