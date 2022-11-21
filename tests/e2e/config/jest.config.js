@@ -32,4 +32,5 @@ module.exports = {
 	],
 	testPathIgnorePatterns: [ '<rootDir>/tests/e2e/specs/performance' ],
 	transformIgnorePatterns: [ 'node_modules/(?!(woocommerce)/)' ],
+	testMatch: [ '**/?(*.)+(spec|test).[jt]s?(x)' ],
 };
