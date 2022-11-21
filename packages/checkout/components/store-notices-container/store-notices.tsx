@@ -34,7 +34,7 @@ const StoreNotices = ( {
 	// Register the container with the parent.
 	useEffect( () => {
 		registerContainer( context, ref );
-		return function cleanup() {
+		return () => {
 			unregisterContainer( context );
 		};
 	}, [ context, ref, registerContainer, unregisterContainer ] );
