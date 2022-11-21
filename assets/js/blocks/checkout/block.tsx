@@ -12,7 +12,6 @@ import { CURRENT_USER_IS_ADMIN, getSetting } from '@woocommerce/settings';
 import {
 	SlotFillProvider,
 	StoreNoticesContainer,
-	createNotice,
 } from '@woocommerce/blocks-checkout';
 import withScrollToTop from '@woocommerce/base-hocs/with-scroll-to-top';
 import { useDispatch, useSelect } from '@wordpress/data';
@@ -20,7 +19,6 @@ import {
 	CHECKOUT_STORE_KEY,
 	VALIDATION_STORE_KEY,
 } from '@woocommerce/block-data';
-import { Button } from '@wordpress/components';
 
 /**
  * Internal dependencies
@@ -31,7 +29,7 @@ import CheckoutOrderError from './checkout-order-error';
 import { LOGIN_TO_CHECKOUT_URL, isLoginRequired, reloadPage } from './utils';
 import type { Attributes } from './types';
 import { CheckoutBlockContext } from './context';
-import { hasNoticesOfType, removeNoticesByStatus } from '../../utils/notices';
+import { hasNoticesOfType } from '../../utils/notices';
 
 const LoginPrompt = () => {
 	return (
@@ -130,9 +128,7 @@ const ScrollOnError = ( {
 	const { showAllValidationErrors } = useDispatch( VALIDATION_STORE_KEY );
 
 	const hasErrorsToDisplay =
-		checkoutIsIdle &&
-		checkoutHasError &&
-		( hasValidationErrors || hasNoticesOfType( 'wc/checkout', 'default' ) );
+		checkoutIsIdle && checkoutHasError && hasValidationErrors;
 
 	useEffect( () => {
 		let scrollToTopTimeout: number;
@@ -189,61 +185,6 @@ const Block = ( {
 				showGlobal={ true }
 				forceType="snackbar"
 			/>
-			<>
-				<Button
-					onClick={ () => {
-						Object.values( noticeContexts ).forEach(
-							( contextValue ) => {
-								removeNoticesByStatus( 'error', contextValue );
-							}
-						);
-					} }
-				>
-					{ __( 'Clear all errors', 'woo-gutenberg-products-block' ) }
-				</Button>
-				<Button
-					onClick={ () => {
-						createNotice( 'error', 'Error Message', {
-							context: 'wc/checkout',
-						} );
-					} }
-				>
-					{ __(
-						'Generate an error notice',
-						'woo-gutenberg-products-block'
-					) }
-				</Button>
-				<Button
-					onClick={ () => {
-						createNotice( 'error', 'Error Message', {
-							context: 'wc/checkout/invalid',
-						} );
-					} }
-				>
-					{ __(
-						'Generate an error notice for invalid context',
-						'woo-gutenberg-products-block'
-					) }
-				</Button>
-				{ Object.values( noticeContexts ).map( ( contextValue ) => {
-					return (
-						<Button
-							key={ contextValue }
-							onClick={ () => {
-								createNotice(
-									'error',
-									'Notice in ' + contextValue,
-									{
-										context: contextValue,
-									}
-								);
-							} }
-						>
-							{ contextValue + ' Error' }
-						</Button>
-					);
-				} ) }
-			</>
 			{ /* SlotFillProvider need to be defined before CheckoutProvider so fills have the SlotFill context ready when they mount. */ }
 			<SlotFillProvider>
 				<CheckoutProvider>
