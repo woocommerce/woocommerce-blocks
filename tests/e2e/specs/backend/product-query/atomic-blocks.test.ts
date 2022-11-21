@@ -18,21 +18,7 @@ import {
 	describeOrSkip,
 	waitForCanvas,
 } from '../../../utils';
-
-const block = {
-	name: 'Product Query',
-	slug: 'woocommerce/product-query',
-	class: '.wp-block-query',
-};
-
-const SELECTORS = {
-	productButton: '.wc-block-components-product-button',
-	productPrice: '.wc-block-components-product-price',
-	productRating: '.wc-block-components-product-rating',
-	productImage: {
-		editor: 'li.block-editor-block-list__layout .wc-block-components-product-image',
-	},
-};
+import { block, SELECTORS } from './common';
 
 describeOrSkip( GUTENBERG_EDITOR_CONTEXT === 'gutenberg' )(
 	'Product Query > Atomic blocks',
