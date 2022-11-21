@@ -94,6 +94,12 @@ describe( 'useStoreCartItemQuantity', () => {
 			const TestComponent = getTestComponent( {
 				key: '123',
 				quantity: 1,
+				quantity_limits: {
+					minimum: 1,
+					maximum: 9999,
+					multiple_of: 1,
+					editable: true,
+				},
 			} );
 
 			act( () => {
@@ -121,6 +127,12 @@ describe( 'useStoreCartItemQuantity', () => {
 			const TestComponent = getTestComponent( {
 				key: '123',
 				quantity: 1,
+				quantity_limits: {
+					minimum: 1,
+					maximum: 9999,
+					multiple_of: 1,
+					editable: true,
+				},
 			} );
 
 			act( () => {
@@ -142,6 +154,12 @@ describe( 'useStoreCartItemQuantity', () => {
 			const TestComponent = getTestComponent( {
 				key: '123',
 				quantity: 1,
+				quantity_limits: {
+					minimum: 1,
+					maximum: 9999,
+					multiple_of: 1,
+					editable: true,
+				},
 			} );
 
 			act( () => {
@@ -175,6 +193,12 @@ describe( 'useStoreCartItemQuantity', () => {
 		const TestComponent = getTestComponent( {
 			key: '123',
 			quantity: 1,
+			quantity_limits: {
+				minimum: 1,
+				maximum: 9999,
+				multiple_of: 1,
+				editable: true,
+			},
 		} );
 
 		act( () => {
@@ -201,6 +225,12 @@ describe( 'useStoreCartItemQuantity', () => {
 		const TestComponent = getTestComponent( {
 			key: '123',
 			quantity: 1,
+			quantity_limits: {
+				minimum: 1,
+				maximum: 9999,
+				multiple_of: 1,
+				editable: true,
+			},
 		} );
 
 		act( () => {
@@ -212,5 +242,47 @@ describe( 'useStoreCartItemQuantity', () => {
 		const { isPendingDelete } = renderer.root.findByType( 'div' ).props; //eslint-disable-line testing-library/await-async-query
 
 		expect( isPendingDelete ).toBe( true );
+	} );
+
+	it( 'does not update the server if the quantity is invalid', () => {
+		setupMocks( {
+			isPendingDelete: false,
+			isPendingQuantity: false,
+		} );
+		mockUseStoreCart.useStoreCart.mockReturnValue( {
+			cartErrors: {},
+		} );
+
+		const TestComponent = getTestComponent( {
+			key: '123',
+			quantity: 1,
+			quantity_limits: {
+				minimum: 4,
+				maximum: 6,
+				multiple_of: 2,
+				editable: true,
+			},
+		} );
+
+		act( () => {
+			renderer = TestRenderer.create(
+				getWrappedComponents( TestComponent )
+			);
+		} );
+
+		const { setItemQuantity } = renderer.root.findByType( 'div' ).props; //eslint-disable-line testing-library/await-async-query
+		// Fails max quantity check.
+		act( () => {
+			setItemQuantity( 8 );
+		} );
+		// Fails multiple_of check.
+		act( () => {
+			setItemQuantity( 5 );
+		} );
+		// Fails minimum quantity check.
+		act( () => {
+			setItemQuantity( 3 );
+		} );
+		expect( mockChangeCartItemQuantity ).not.toHaveBeenCalled();
 	} );
 } );
