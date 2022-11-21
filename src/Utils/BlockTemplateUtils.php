@@ -490,6 +490,29 @@ class BlockTemplateUtils {
 	}
 
 	/**
+	 * Gets the `archive-product` fallback template stored on the db for a given slug.
+	 *
+	 * @param string $template_slug Slug to check for fallbacks.
+	 * @param array  $db_templates Templates that have already been found on the db.
+	 * @return boolean|object
+	 */
+	public static function get_fallback_template_from_db( $template_slug, $db_templates ) {
+		$eligible_for_fallback = self::template_is_eligible_for_product_archive_fallback( $template_slug );
+		if ( ! $eligible_for_fallback ) {
+			return false;
+		}
+
+		foreach ( $db_templates as $template ) {
+			if ( self::template_is_eligible_for_product_archive_fallback( $template_slug )
+				&& 'archive-product' === $template->slug ) {
+				return $template;
+			}
+		}
+
+		return false;
+	}
+
+	/**
 	 * Checks if we can fall back to the `archive-product` file template for a given slug in the current theme.
 	 *
 	 * `taxonomy-product_cat`, `taxonomy-product_tag`, `taxonomy-attribute` templates can

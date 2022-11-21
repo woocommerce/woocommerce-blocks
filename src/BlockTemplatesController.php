@@ -343,7 +343,6 @@ class BlockTemplatesController {
 			// If the theme already has a template, or the template is already in the list (i.e. it came from the
 			// database) then we should not overwrite it with the one from the filesystem.
 			if (
-				BlockTemplateUtils::template_is_eligible_for_product_archive_fallback_from_db( $template_slug, $already_found_templates ) ||
 				BlockTemplateUtils::theme_has_template( $template_slug ) ||
 				count(
 					array_filter(
@@ -354,6 +353,17 @@ class BlockTemplatesController {
 						}
 					)
 				) > 0 ) {
+				continue;
+			}
+
+			if ( BlockTemplateUtils::template_is_eligible_for_product_archive_fallback_from_db( $template_slug, $already_found_templates ) ) {
+				$template              = clone BlockTemplateUtils::get_fallback_template_from_db( $template_slug, $already_found_templates );
+				$template_id           = explode( '//', $template->id );
+				$template->id          = $template_id[0] . '//' . $template_slug;
+				$template->slug        = $template_slug;
+				$template->title       = BlockTemplateUtils::get_block_template_title( $template_slug );
+				$template->description = BlockTemplateUtils::get_block_template_description( $template_slug );
+				$templates[]           = $template;
 				continue;
 			}
 
@@ -392,8 +402,8 @@ class BlockTemplatesController {
 		$templates_from_db  = $this->get_block_templates_from_db( $slugs, $template_type );
 		$templates_from_woo = $this->get_block_templates_from_woocommerce( $slugs, $templates_from_db, $template_type );
 		$templates          = array_merge( $templates_from_db, $templates_from_woo );
-		return BlockTemplateUtils::filter_block_templates_by_feature_flag( $templates );
 
+		return BlockTemplateUtils::filter_block_templates_by_feature_flag( $templates );
 	}
 
 	/**
