@@ -2,7 +2,6 @@
  * External dependencies
  */
 import { createReduxStore, register } from '@wordpress/data';
-import { controls } from '@wordpress/data-controls';
 
 /**
  * Internal dependencies
@@ -17,7 +16,6 @@ const config = {
 	reducer,
 	actions,
 	selectors,
-	controls,
 };
 const store = createReduxStore( STORE_KEY, config );
 register( store );
