@@ -2,23 +2,63 @@
  * External dependencies
  */
 import type { Reducer } from 'redux';
-import { objectHasProp } from '@woocommerce/types';
+import { objectHasProp, PaymentResult } from '@woocommerce/types';
 
 /**
  * Internal dependencies
  */
-import {
-	defaultPaymentMethodDataState,
-	PaymentMethodDataState,
-} from './default-state';
+import { defaultPaymentState, PaymentState } from './default-state';
 import { ACTION_TYPES } from './action-types';
+import { STATUS } from './constants';
 
-const reducer: Reducer< PaymentMethodDataState > = (
-	state = defaultPaymentMethodDataState,
+const reducer: Reducer< PaymentState > = (
+	state = defaultPaymentState,
 	action
 ) => {
 	let newState = state;
 	switch ( action.type ) {
+		case ACTION_TYPES.SET_PAYMENT_PRISTINE:
+			newState = {
+				...state,
+				status: STATUS.PRISTINE,
+			};
+			break;
+
+		case ACTION_TYPES.SET_PAYMENT_STARTED:
+			newState = {
+				...state,
+				status: STATUS.STARTED,
+			};
+			break;
+
+		case ACTION_TYPES.SET_PAYMENT_PROCESSING:
+			newState = {
+				...state,
+				status: STATUS.PROCESSING,
+			};
+			break;
+
+		case ACTION_TYPES.SET_PAYMENT_FAILED:
+			newState = {
+				...state,
+				status: STATUS.FAILED,
+			};
+			break;
+
+		case ACTION_TYPES.SET_PAYMENT_ERROR:
+			newState = {
+				...state,
+				status: STATUS.ERROR,
+			};
+			break;
+
+		case ACTION_TYPES.SET_PAYMENT_SUCCESS:
+			newState = {
+				...state,
+				status: STATUS.SUCCESS,
+			};
+			break;
+
 		case ACTION_TYPES.SET_SHOULD_SAVE_PAYMENT_METHOD:
 			newState = {
 				...state,
@@ -33,27 +73,10 @@ const reducer: Reducer< PaymentMethodDataState > = (
 			};
 			break;
 
-		case ACTION_TYPES.SET_PAYMENT_STATUS:
+		case ACTION_TYPES.SET_PAYMENT_RESULT:
 			newState = {
 				...state,
-				currentStatus: {
-					// When the status is changed to pristine, we need to reset the currentStatus properties
-					// to their default initial values
-					...( action.status?.isPristine === true
-						? defaultPaymentMethodDataState.currentStatus
-						: state.currentStatus ),
-					...action.status,
-					isFinished:
-						action.status.hasError ||
-						action.status.hasFailed ||
-						action.status.isSuccessful,
-					isDoingExpressPayment:
-						! action.status.isPristine &&
-						! state.currentStatus.isPristine &&
-						state.isExpressPaymentMethodActive,
-				},
-				paymentMethodData:
-					action.paymentMethodData || state.paymentMethodData,
+				paymentResult: action.data as PaymentResult,
 			};
 			break;
 

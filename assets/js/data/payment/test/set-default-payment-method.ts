@@ -7,7 +7,7 @@ import * as wpDataFunctions from '@wordpress/data';
 /**
  * Internal dependencies
  */
-import { setDefaultPaymentMethod } from '../set-default-payment-method';
+import { setDefaultPaymentMethod } from '../utils/set-default-payment-method';
 import { PlainPaymentMethods } from '../../../types';
 import { PAYMENT_STORE_KEY } from '..';
 
@@ -28,7 +28,7 @@ describe( 'setDefaultPaymentMethod', () => {
 		},
 	};
 
-	it( ' correctly sets the first payment method in the list of available payment methods', async () => {
+	it( 'correctly sets the first payment method in the list of available payment methods', async () => {
 		jest.spyOn( wpDataFunctions, 'select' ).mockImplementation(
 			( storeName ) => {
 				const originalStore = originalSelect( storeName );
@@ -72,7 +72,7 @@ describe( 'setDefaultPaymentMethod', () => {
 			'wc-payment-gateway-1'
 		);
 	} );
-	it( ' correctly sets the saved payment method if one is available', async () => {
+	it( 'correctly sets the saved payment method if one is available', async () => {
 		jest.spyOn( wpDataFunctions, 'select' ).mockImplementation(
 			( storeName ) => {
 				const originalStore = originalSelect( storeName );
@@ -125,7 +125,12 @@ describe( 'setDefaultPaymentMethod', () => {
 						...originalStore,
 						__internalSetActivePaymentMethod:
 							setActivePaymentMethodMock,
-						__internalSetPaymentStatus: () => void 0,
+						__internalSetPaymentError: () => void 0,
+						__internalSetPaymentFailed: () => void 0,
+						__internalSetPaymentSuccess: () => void 0,
+						__internalSetPaymentPristine: () => void 0,
+						__internalSetPaymentStarted: () => void 0,
+						__internalSetPaymentProcessing: () => void 0,
 					};
 				}
 				return originalStore;

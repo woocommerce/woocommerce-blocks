@@ -12,7 +12,7 @@ import LoadingMask from '@woocommerce/base-components/loading-mask';
 import type { PaymentMethodInterface } from '@woocommerce/types';
 import { useSelect, useDispatch } from '@wordpress/data';
 import { CHECKOUT_STORE_KEY, PAYMENT_STORE_KEY } from '@woocommerce/block-data';
-import { ValidationInputError } from '@woocommerce/base-components/validation-input-error';
+import { ValidationInputError } from '@woocommerce/blocks-checkout';
 
 /**
  * Internal dependencies
@@ -50,12 +50,22 @@ export const usePaymentMethodInterface = (): PaymentMethodInterface => {
 				isCalculating: store.isCalculating(),
 			};
 		} );
-	const { currentStatus, activePaymentMethod, shouldSavePayment } = useSelect(
+	const { paymentStatus, activePaymentMethod, shouldSavePayment } = useSelect(
 		( select ) => {
 			const store = select( PAYMENT_STORE_KEY );
 
 			return {
-				currentStatus: store.getCurrentStatus(),
+				// The paymentStatus is exposed to third parties via the payment method interface so the API must not be changed
+				paymentStatus: {
+					isPristine: store.isPaymentPristine(),
+					isStarted: store.isPaymentStarted(),
+					isProcessing: store.isPaymentProcessing(),
+					isFinished: store.isPaymentFinished(),
+					hasError: store.hasPaymentError(),
+					hasFailed: store.isPaymentFailed(),
+					isSuccessful: store.isPaymentSuccess(),
+					isDoingExpressPayment: store.isExpressPaymentMethodActive(),
+				},
 				activePaymentMethod: store.getActivePaymentMethod(),
 				shouldSavePayment: store.getShouldSavePaymentMethod(),
 			};
@@ -168,7 +178,7 @@ export const usePaymentMethodInterface = (): PaymentMethodInterface => {
 			onShippingRateSuccess,
 		},
 		onSubmit,
-		paymentStatus: currentStatus,
+		paymentStatus,
 		setExpressPaymentError: deprecatedSetExpressPaymentError,
 		shippingData: {
 			isSelectingRate,
