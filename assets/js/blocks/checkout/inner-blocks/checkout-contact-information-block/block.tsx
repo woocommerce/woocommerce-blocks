@@ -58,7 +58,9 @@ const Block = (): JSX.Element => {
 
 	return (
 		<>
-			<StoreNoticesContainer context={ noticeContexts.CONTACT_INFO } />
+			<StoreNoticesContainer
+				context={ noticeContexts.CONTACT_INFORMATION }
+			/>
 			<ValidatedTextInput
 				id="email"
 				type="email"
