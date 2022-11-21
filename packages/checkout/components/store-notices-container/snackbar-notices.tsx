@@ -41,7 +41,7 @@ const SnackbarNotices = ( {
 				notices.forEach( ( notice ) => {
 					if ( notice.explicitDismiss && notice.id === noticeId ) {
 						removeNotice( notice.id, notice.context );
-					} else {
+					} else if ( ! notice.explicitDismiss ) {
 						removeNotice( notice.id, notice.context );
 					}
 				} );
