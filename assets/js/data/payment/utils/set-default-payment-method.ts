@@ -7,7 +7,7 @@ import { PlainPaymentMethods } from '@woocommerce/type-defs/payments';
 /**
  * Internal dependencies
  */
-import { STORE_KEY as PAYMENT_STORE_KEY } from './constants';
+import { STORE_KEY as PAYMENT_STORE_KEY } from '../constants';
 
 export const setDefaultPaymentMethod = async (
 	paymentMethods: PlainPaymentMethods
@@ -60,9 +60,7 @@ export const setDefaultPaymentMethod = async (
 		return;
 	}
 
-	dispatch( PAYMENT_STORE_KEY ).__internalSetPaymentStatus( {
-		isPristine: true,
-	} );
+	dispatch( PAYMENT_STORE_KEY ).__internalSetPaymentPristine();
 
 	dispatch( PAYMENT_STORE_KEY ).__internalSetActivePaymentMethod(
 		paymentMethodKeys[ 0 ]

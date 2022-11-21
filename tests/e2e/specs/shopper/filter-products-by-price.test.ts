@@ -8,7 +8,10 @@ import {
 	switchUserToAdmin,
 	publishPost,
 } from '@wordpress/e2e-test-utils';
-import { selectBlockByName } from '@woocommerce/blocks-test-utils';
+import {
+	selectBlockByName,
+	insertBlockUsingSlash,
+} from '@woocommerce/blocks-test-utils';
 
 /**
  * Internal dependencies
@@ -71,7 +74,7 @@ describe( `${ block.name } Block`, () => {
 			} );
 
 			await insertBlock( block.name );
-			await insertBlock( 'All Products' );
+			await insertBlockUsingSlash( 'All Products' );
 			await insertBlock( 'Active Product Filters' );
 			await publishPost();
 
@@ -81,7 +84,7 @@ describe( `${ block.name } Block`, () => {
 			await page.goto( link );
 		} );
 
-		it( 'should render', async () => {
+		it( 'should render products', async () => {
 			await waitForAllProductsBlockLoaded();
 			const products = await page.$$( selectors.frontend.productsList );
 
@@ -137,7 +140,7 @@ describe( `${ block.name } Block`, () => {
 			await deleteAllTemplates( 'wp_template_part' );
 		} );
 
-		it( 'should render', async () => {
+		it( 'should render products', async () => {
 			const products = await page.$$(
 				selectors.frontend.classicProductsList
 			);
@@ -177,13 +180,13 @@ describe( `${ block.name } Block`, () => {
 			await expect( page ).toMatch( block.foundProduct );
 		} );
 
-		it( 'should refresh the page only if the user click on button', async () => {
+		it( 'should refresh the page only if the user clicks on button', async () => {
 			await goToTemplateEditor( {
 				postId: productCatalogTemplateId,
 			} );
 
 			await selectBlockByName( block.slug );
-			await openBlockEditorSettings( { isFSEEditor: true } );
+			await openBlockEditorSettings();
 			await page.waitForXPath(
 				block.selectors.editor.filterButtonToggle
 			);
@@ -199,9 +202,12 @@ describe( `${ block.name } Block`, () => {
 			await page.waitForSelector( block.class + '.is-loading', {
 				hidden: true,
 			} );
+
 			expect( isRefreshed ).not.toBeCalled();
 
 			await setMaxPrice();
+
+			expect( isRefreshed ).not.toBeCalled();
 
 			await clickLink( selectors.frontend.submitButton );
 
@@ -248,7 +254,7 @@ describe( `${ block.name } Block`, () => {
 			await page.goto( frontedPageUrl );
 		} );
 
-		it( 'should render', async () => {
+		it( 'should render products', async () => {
 			const products = await page.$$(
 				selectors.frontend.queryProductsList
 			);
@@ -289,7 +295,7 @@ describe( `${ block.name } Block`, () => {
 		it( 'should refresh the page only if the user click on button', async () => {
 			await page.goto( editorPageUrl );
 
-			await openBlockEditorSettings( { isFSEEditor: false } );
+			await openBlockEditorSettings();
 			await selectBlockByName( block.slug );
 			await page.waitForXPath(
 				block.selectors.editor.filterButtonToggle
@@ -307,9 +313,12 @@ describe( `${ block.name } Block`, () => {
 			await page.waitForSelector( block.class + '.is-loading', {
 				hidden: true,
 			} );
+
 			expect( isRefreshed ).not.toBeCalled();
 
 			await setMaxPrice();
+
+			expect( isRefreshed ).not.toBeCalled();
 
 			await clickLink( selectors.frontend.submitButton );
 
