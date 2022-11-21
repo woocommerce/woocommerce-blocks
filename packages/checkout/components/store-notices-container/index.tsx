@@ -17,13 +17,11 @@ const formatNotices = (
 	forceType: 'default' | 'snackbar' | null = null,
 	context: string
 ): StoreNotice[] => {
-	return forceType !== null
-		? notices.map( ( notice ) => ( {
-				...notice,
-				type: forceType,
-				context,
-		  } ) )
-		: notices;
+	return notices.map( ( notice ) => ( {
+		...notice,
+		type: forceType !== null ? forceType : notice.type,
+		context,
+	} ) );
 };
 
 const StoreNoticesContainer = ( {
