@@ -49,7 +49,7 @@ const productPriceValidation = ( value: string ) =>
 	mustContain( value, '<price/>' );
 
 interface CartLineItemRowProps {
-	lineItem: CartItem | Record< string, never >;
+	lineItem: CartItem;
 	onRemove?: () => void;
 	tabIndex?: number;
 }
