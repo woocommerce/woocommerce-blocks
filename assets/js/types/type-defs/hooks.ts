@@ -23,7 +23,7 @@ export interface StoreCartItemQuantity {
 	isPendingDelete: boolean;
 	quantity: number;
 	setItemQuantity: React.Dispatch< React.SetStateAction< number > >;
-	removeItem: () => Promise< boolean >;
+	removeItem: () => Promise< boolean | void >;
 	cartItemQuantityErrors: Array< CartResponseErrorItem >;
 }
 
