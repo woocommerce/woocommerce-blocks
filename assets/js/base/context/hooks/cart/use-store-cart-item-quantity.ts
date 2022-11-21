@@ -41,7 +41,7 @@ const cartItemHasQuantityAndKey = (
  * @return {StoreCartItemQuantity} An object exposing data and actions relating to cart items.
  */
 export const useStoreCartItemQuantity = (
-	cartItem: CartItem | Record< string, unknown >
+	cartItem: CartItem
 ): StoreCartItemQuantity => {
 	const verifiedCartItem = { key: '', quantity: 1 };
 
@@ -58,6 +58,15 @@ export const useStoreCartItemQuantity = (
 	// Store quantity in hook state. This is used to keep the UI updated while server request is updated.
 	const [ quantity, setQuantity ] = useState< number >( cartItemQuantity );
 	const [ debouncedQuantity ] = useDebounce< number >( quantity, 400 );
+
+	const {
+		quantity_limits: quantityLimits,
+	}: { quantity_limits: CartItem[ 'quantity_limits' ] } = cartItem;
+	const isValidQuantity =
+		quantityLimits.maximum >= debouncedQuantity &&
+		quantityLimits.minimum <= debouncedQuantity &&
+		debouncedQuantity % quantityLimits.multiple_of === 0;
+
 	const previousDebouncedQuantity = usePrevious( debouncedQuantity );
 	const { removeItemFromCart, changeCartItemQuantity } =
 		useDispatch( CART_STORE_KEY );
@@ -95,11 +104,13 @@ export const useStoreCartItemQuantity = (
 			cartItemKey &&
 			isNumber( previousDebouncedQuantity ) &&
 			Number.isFinite( previousDebouncedQuantity ) &&
-			previousDebouncedQuantity !== debouncedQuantity
+			previousDebouncedQuantity !== debouncedQuantity &&
+			isValidQuantity
 		) {
 			changeCartItemQuantity( cartItemKey, debouncedQuantity );
 		}
 	}, [
+		isValidQuantity,
 		cartItemKey,
 		changeCartItemQuantity,
 		debouncedQuantity,
@@ -124,13 +135,19 @@ export const useStoreCartItemQuantity = (
 	] );
 
 	useEffect( () => {
-		if ( isPending.quantity || debouncedQuantity !== quantity ) {
+		if (
+			isPending.quantity ||
+			( debouncedQuantity !== quantity && isValidQuantity )
+		) {
 			__internalIncrementCalculating();
 		} else {
 			__internalDecrementCalculating();
 		}
 		return () => {
-			if ( isPending.quantity || debouncedQuantity !== quantity ) {
+			if (
+				isPending.quantity ||
+				( debouncedQuantity !== quantity && isValidQuantity )
+			) {
 				__internalDecrementCalculating();
 			}
 		};
@@ -139,6 +156,7 @@ export const useStoreCartItemQuantity = (
 		__internalDecrementCalculating,
 		isPending.quantity,
 		debouncedQuantity,
+		isValidQuantity,
 		quantity,
 	] );
 
