@@ -9,13 +9,14 @@ import {
 	__experimentalDeRegisterPaymentMethod,
 	__experimentalDeRegisterExpressPaymentMethod,
 } from '@woocommerce/blocks-registry';
+import { CanMakePaymentArgument } from '@woocommerce/type-defs/payments';
 
 /**
  * Internal dependencies
  */
-import { checkPaymentMethodsCanPay } from '../check-payment-methods';
+import { checkPaymentMethodsCanPay } from '../utils/check-payment-methods';
 
-const requiredKeyCheck = ( args ) => {
+const requiredKeyCheck = ( args: CanMakePaymentArgument ) => {
 	const requiredKeys = [
 		'billingData',
 		'billingAddress',
