@@ -75,7 +75,6 @@ const StoreNoticesContainer = ( {
 			/>
 			<SnackbarNotices
 				className={ className }
-				context={ context }
 				notices={ notices.filter(
 					( notice ) => notice.type === 'snackbar'
 				) }
