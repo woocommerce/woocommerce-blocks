@@ -97,10 +97,8 @@ const QuantitySelector = ( {
 	);
 
 	const hasMaximum = typeof maximum !== 'undefined';
-	const canDecrease =
-		( ! strictLimits || quantity - step >= minimum ) && quantity !== 1;
-	const canIncrease =
-		! strictLimits || ! hasMaximum || quantity + step <= maximum;
+	const canDecrease = quantity - step >= minimum && quantity !== 1;
+	const canIncrease = ! hasMaximum || quantity + step <= maximum;
 
 	/**
 	 * The goal of this function is to normalize what was inserted,
