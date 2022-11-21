@@ -12,10 +12,8 @@ import type { StoreNotice } from './types';
 
 const SnackbarNotices = ( {
 	className,
-	context,
 	notices,
 }: {
-	context: string;
 	className: string;
 	notices: StoreNotice[];
 } ): JSX.Element | null => {
