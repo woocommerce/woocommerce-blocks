@@ -8,6 +8,29 @@ import {
 } from '@woocommerce/block-data';
 import { select, dispatch } from '@wordpress/data';
 
+const DEFAULT_CONTEXT = 'wc/global';
+
+const hasContainer = ( container: string ): boolean => {
+	const containers = select( STORE_NOTICES_STORE_KEY ).getContainers();
+	return containers.includes( container );
+};
+
+const findParentContainer = ( container: string ): string => {
+	let parentContainer = DEFAULT_CONTEXT;
+	if (
+		container.includes( 'wc/checkout/' ) &&
+		hasContainer( 'wc/checkout' )
+	) {
+		parentContainer = 'wc/checkout';
+	} else if (
+		container.includes( 'wc/cart/' ) &&
+		hasContainer( 'wc/cart' )
+	) {
+		parentContainer = 'wc/cart';
+	}
+	return parentContainer;
+};
+
 /**
  * Wrapper for @wordpress/notices createNotice.
  *
@@ -19,7 +42,7 @@ export const createNotice = (
 	message: string,
 	options: Partial< NoticeOptions >
 ) => {
-	let noticeContext = options?.context || 'wc';
+	let noticeContext = options?.context || DEFAULT_CONTEXT;
 
 	const suppressNotices =
 		select( PAYMENT_STORE_KEY ).isExpressPaymentMethodActive();
@@ -28,24 +51,9 @@ export const createNotice = (
 		return;
 	}
 
-	const containerRefs = select( STORE_NOTICES_STORE_KEY ).getContainers();
-	const registeredContext = Object.keys( containerRefs );
-
-	// If the container ref was not registered, use the parent context instead.
-	if ( ! registeredContext.includes( noticeContext ) ) {
-		if (
-			noticeContext.includes( 'wc/checkout/' ) &&
-			registeredContext.includes( 'wc/checkout' )
-		) {
-			noticeContext = 'wc/checkout';
-		} else if (
-			noticeContext.includes( 'wc/cart/' ) &&
-			registeredContext.includes( 'wc/cart' )
-		) {
-			noticeContext = 'wc/cart';
-		} else {
-			noticeContext = 'wc/global';
-		}
+	if ( ! hasContainer( noticeContext ) ) {
+		// If the container ref was not registered, use the parent context instead.
+		noticeContext = findParentContainer( noticeContext );
 	}
 
 	const { createNotice: dispatchCreateNotice } = dispatch( 'core/notices' );
