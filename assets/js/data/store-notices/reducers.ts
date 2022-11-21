@@ -17,17 +17,15 @@ const reducer: Reducer< StoreNoticesState > = (
 		case ACTION_TYPES.REGISTER_CONTAINER:
 			return {
 				...state,
-				containers: {
-					...state.containers,
-					[ action.containerContext ]: action.ref,
-				},
+				containers: [ ...state.containers, action.containerContext ],
 			};
 		case ACTION_TYPES.UNREGISTER_CONTAINER:
-			const { [ action.containerContext ]: _, ...containers } =
-				state.containers;
+			const newContainers = state.containers.filter(
+				( container ) => container !== action.containerContext
+			);
 			return {
 				...state,
-				containers,
+				containers: newContainers,
 			};
 	}
 	return state;

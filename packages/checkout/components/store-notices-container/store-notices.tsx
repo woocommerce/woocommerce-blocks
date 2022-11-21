@@ -25,25 +25,16 @@ const StoreNotices = ( {
 	className: string;
 	notices: StoreNotice[];
 } ): JSX.Element => {
-	const { removeNotice } = useDispatch( 'core/notices' );
 	const ref = useRef< HTMLDivElement >( null );
+	const { removeNotice } = useDispatch( 'core/notices' );
 	const { registerContainer, unregisterContainer } = useDispatch(
 		STORE_NOTICES_STORE_KEY
 	);
-
-	// Register the container with the parent.
-	useEffect( () => {
-		registerContainer( context, ref );
-		return () => {
-			unregisterContainer( context );
-		};
-	}, [ context, ref, registerContainer, unregisterContainer ] );
-
-	// Scroll to container when an error is added here.
 	const noticeIds = notices.map( ( notice ) => notice.id );
 	const previousNoticeIds = usePrevious( noticeIds );
 
 	useEffect( () => {
+		// Scroll to container when an error is added here.
 		const newNoticeIds = noticeIds.filter(
 			( value ) =>
 				! previousNoticeIds || ! previousNoticeIds.includes( value )
@@ -55,6 +46,14 @@ const StoreNotices = ( {
 			} );
 		}
 	}, [ noticeIds, previousNoticeIds, ref ] );
+
+	// Register the container context with the parent.
+	useEffect( () => {
+		registerContainer( context );
+		return () => {
+			unregisterContainer( context );
+		};
+	}, [ context, registerContainer, unregisterContainer ] );
 
 	return (
 		<div
