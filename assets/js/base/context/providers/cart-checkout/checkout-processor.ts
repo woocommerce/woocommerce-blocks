@@ -12,18 +12,25 @@ import {
 } from '@wordpress/element';
 import {
 	emptyHiddenAddressFields,
-	formatStoreApiErrorMessage,
+	removeAllNotices,
 } from '@woocommerce/base-utils';
 import { useDispatch, useSelect } from '@wordpress/data';
 import {
 	CHECKOUT_STORE_KEY,
 	PAYMENT_STORE_KEY,
 	VALIDATION_STORE_KEY,
+	processErrorResponse,
 } from '@woocommerce/block-data';
 import {
 	getPaymentMethods,
 	getExpressPaymentMethods,
 } from '@woocommerce/blocks-registry';
+import {
+	ApiResponse,
+	CheckoutResponseSuccess,
+	CheckoutResponseError,
+	assertResponseIsValid,
+} from '@woocommerce/types';
 
 /**
  * Internal dependencies
@@ -41,7 +48,6 @@ import { useStoreCart } from '../../hooks/cart/use-store-cart';
  */
 const CheckoutProcessor = () => {
 	const { onCheckoutValidationBeforeProcessing } = useCheckoutEventsContext();
-
 	const {
 		hasError: checkoutHasError,
 		redirectUrl,
@@ -60,17 +66,14 @@ const CheckoutProcessor = () => {
 			isComplete: store.isComplete(),
 		};
 	} );
-
 	const { __internalSetHasError, __internalProcessCheckoutResponse } =
 		useDispatch( CHECKOUT_STORE_KEY );
-
 	const hasValidationErrors = useSelect(
 		( select ) => select( VALIDATION_STORE_KEY ).hasValidationErrors
 	);
 	const { shippingErrorStatus } = useShippingDataContext();
 	const { billingAddress, shippingAddress } = useCustomerDataContext();
 	const { cartNeedsPayment, cartNeedsShipping, receiveCart } = useStoreCart();
-	const { createErrorNotice, removeNotice } = useDispatch( 'core/notices' );
 
 	const {
 		activePaymentMethod,
@@ -118,8 +121,8 @@ const CheckoutProcessor = () => {
 		( isPaymentSuccess || ! cartNeedsPayment ) &&
 		checkoutIsProcessing;
 
-	// Determine if checkout has an error.
 	useEffect( () => {
+		// Determine if checkout has an error.
 		if (
 			checkoutWillHaveError !== checkoutHasError &&
 			( checkoutIsProcessing || checkoutIsBeforeProcessing ) &&
@@ -136,8 +139,8 @@ const CheckoutProcessor = () => {
 		__internalSetHasError,
 	] );
 
-	// Keep the billing, shipping and redirectUrl current
 	useEffect( () => {
+		// Keep the billing, shipping and redirectUrl current
 		currentBillingAddress.current = billingAddress;
 		currentShippingAddress.current = shippingAddress;
 		currentRedirectUrl.current = redirectUrl;
@@ -167,9 +170,9 @@ const CheckoutProcessor = () => {
 		return true;
 	}, [ hasValidationErrors, hasPaymentError, shippingErrorStatus.hasError ] );
 
-	// Validate the checkout using the CHECKOUT_VALIDATION_BEFORE_PROCESSING event
 	useEffect( () => {
-		let unsubscribeProcessing;
+		// Validate the checkout using the CHECKOUT_VALIDATION_BEFORE_PROCESSING event.
+		let unsubscribeProcessing: () => void;
 		if ( ! isExpressPaymentMethodActive ) {
 			unsubscribeProcessing = onCheckoutValidationBeforeProcessing(
 				checkValidation,
@@ -177,7 +180,10 @@ const CheckoutProcessor = () => {
 			);
 		}
 		return () => {
-			if ( ! isExpressPaymentMethodActive ) {
+			if (
+				! isExpressPaymentMethodActive &&
+				typeof unsubscribeProcessing === 'function'
+			) {
 				unsubscribeProcessing();
 			}
 		};
@@ -187,8 +193,8 @@ const CheckoutProcessor = () => {
 		isExpressPaymentMethodActive,
 	] );
 
-	// Redirect when checkout is complete and there is a redirect url.
 	useEffect( () => {
+		// Redirect when checkout is complete and there is a redirect url.
 		if ( currentRedirectUrl.current ) {
 			window.location.href = currentRedirectUrl.current;
 		}
@@ -199,8 +205,8 @@ const CheckoutProcessor = () => {
 		if ( isProcessingOrder ) {
 			return;
 		}
+		removeAllNotices();
 		setIsProcessingOrder( true );
-		removeNotice( 'checkout' );
 
 		const paymentData = cartNeedsPayment
 			? {
@@ -213,97 +219,67 @@ const CheckoutProcessor = () => {
 			  }
 			: {};
 
-		const data = {
-			billing_address: emptyHiddenAddressFields(
-				currentBillingAddress.current
-			),
-			customer_note: orderNotes,
-			create_account: shouldCreateAccount,
-			...paymentData,
-			extensions: { ...extensionData },
-		};
-
-		if ( cartNeedsShipping ) {
-			data.shipping_address = emptyHiddenAddressFields(
-				currentShippingAddress.current
-			);
-		}
-
 		triggerFetch( {
 			path: '/wc/store/v1/checkout',
 			method: 'POST',
-			data,
+			data: {
+				shipping_address: cartNeedsShipping
+					? emptyHiddenAddressFields( currentShippingAddress.current )
+					: undefined,
+				billing_address: emptyHiddenAddressFields(
+					currentBillingAddress.current
+				),
+				customer_note: orderNotes,
+				create_account: shouldCreateAccount,
+				...paymentData,
+				extensions: { ...extensionData },
+			},
 			cache: 'no-store',
 			parse: false,
 		} )
-			.then( ( response ) => {
+			.then( ( response: unknown ) => {
+				assertResponseIsValid( response );
 				processCheckoutResponseHeaders( response.headers );
 				if ( ! response.ok ) {
-					throw new Error( response );
+					throw response;
 				}
-				return response.json();
+				return response.json() as Promise< CheckoutResponseSuccess >;
 			} )
-			.then( ( responseJson ) => {
+			.then( ( responseJson: CheckoutResponseSuccess ) => {
 				__internalProcessCheckoutResponse( responseJson );
 				setIsProcessingOrder( false );
 			} )
-			.catch( ( errorResponse ) => {
+			.catch( ( errorResponse: ApiResponse ) => {
+				processCheckoutResponseHeaders( errorResponse?.headers );
 				try {
-					if ( errorResponse?.headers ) {
-						processCheckoutResponseHeaders( errorResponse.headers );
-					}
 					// This attempts to parse a JSON error response where the status code was 4xx/5xx.
-					errorResponse.json().then( ( response ) => {
-						// If updated cart state was returned, update the store.
-						if ( response.data?.cart ) {
-							receiveCart( response.data.cart );
-						}
-						createErrorNotice(
-							formatStoreApiErrorMessage( response ),
-							{
-								id: 'checkout',
-								context: 'wc/checkout',
-								__unstableHTML: true,
+					errorResponse
+						.json()
+						.then(
+							( response ) => response as CheckoutResponseError
+						)
+						.then( ( response: CheckoutResponseError ) => {
+							if ( response.data?.cart ) {
+								receiveCart( response.data.cart );
 							}
-						);
-						response?.additional_errors?.forEach?.(
-							( additionalError ) => {
-								createErrorNotice( additionalError.message, {
-									id: additionalError.error_code,
-									context: 'wc/checkout',
-									__unstableHTML: true,
-								} );
-							}
-						);
-						__internalProcessCheckoutResponse( response );
-					} );
+							processErrorResponse( response );
+							__internalProcessCheckoutResponse( response );
+						} );
 				} catch {
-					createErrorNotice(
-						sprintf(
-							// Translators: %s Error text.
-							__(
-								'%s Please try placing your order again.',
-								'woo-gutenberg-products-block'
-							),
-							errorResponse?.message ??
-								__(
-									'Something went wrong. Please contact us for assistance.',
-									'woo-gutenberg-products-block'
-								)
+					processErrorResponse( {
+						code: 'unknown_error',
+						message: __(
+							'Something went wrong. Please try placing your order again.',
+							'woo-gutenberg-products-block'
 						),
-						{
-							id: 'checkout',
-							context: 'wc/checkout',
-							__unstableHTML: true,
-						}
-					);
+						data: null,
+					} );
 				}
 				__internalSetHasError( true );
 				setIsProcessingOrder( false );
 			} );
 	}, [
 		isProcessingOrder,
-		removeNotice,
 		cartNeedsPayment,
 		paymentMethodId,
 		paymentMethodData,
@@ -313,7 +289,6 @@ const CheckoutProcessor = () => {
 		shouldCreateAccount,
 		extensionData,
 		cartNeedsShipping,
-		createErrorNotice,
 		receiveCart,
 		__internalSetHasError,
 		__internalProcessCheckoutResponse,
