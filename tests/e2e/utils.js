@@ -430,9 +430,11 @@ export const openBlockEditorSettings = async () => {
  *  Wait for all Products Block is loaded completely: when the skeleton disappears, and the products are visible
  */
 export const waitForAllProductsBlockLoaded = async () => {
-	await page.waitForSelector(
-		'.wc-block-grid__products.is-loading-products'
-	);
+	try {
+		await page.waitForSelector(
+			'.wc-block-grid__products.is-loading-products'
+		);
+	} catch ( ok ) {}
 	await page.waitForSelector(
 		'.wc-block-grid__products:not(.is-loading-products)'
 	);
