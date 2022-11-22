@@ -96,7 +96,7 @@ const getFrontEndProducts = async (): Promise< ElementHandle[] > => {
 };
 
 describeOrSkip( GUTENBERG_EDITOR_CONTEXT === 'gutenberg' )(
-	'Product Query > Products Filters',
+	'Product Query > Advanced Filters',
 	() => {
 		let $productFiltersPanel: ElementHandle< Node >;
 		beforeEach( async () => {
