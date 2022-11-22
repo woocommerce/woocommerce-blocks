@@ -2,6 +2,8 @@ export interface ApiResponse {
 	body: Record< string, unknown >;
 	headers: Headers;
 	status: number;
+	ok: boolean;
+	json: () => Promise< unknown >;
 }
 
 export function assertBatchResponseIsValid(
