@@ -481,8 +481,7 @@ class BlockTemplateUtils {
 		$array_filter = array_filter(
 			$db_templates,
 			function ( $template ) use ( $template_slug ) {
-				return self::template_is_eligible_for_product_archive_fallback( $template_slug )
-					&& 'archive-product' === $template->slug;
+				return 'archive-product' === $template->slug;
 			}
 		);
 
@@ -503,8 +502,7 @@ class BlockTemplateUtils {
 		}
 
 		foreach ( $db_templates as $template ) {
-			if ( self::template_is_eligible_for_product_archive_fallback( $template_slug )
-				&& 'archive-product' === $template->slug ) {
+			if ( 'archive-product' === $template->slug ) {
 				return $template;
 			}
 		}
