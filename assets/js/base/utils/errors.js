@@ -1,10 +1,4 @@
 /**
- * External dependencies
- */
-import { __ } from '@wordpress/i18n';
-import { decodeEntities } from '@wordpress/html-entities';
-
-/**
  * Given a JS error or a fetch response error, parse and format it, so it can be displayed to the user.
  *
  * @param {Object}   error           Error object.
