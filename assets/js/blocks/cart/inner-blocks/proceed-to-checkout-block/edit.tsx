@@ -4,14 +4,18 @@
 import { useRef } from '@wordpress/element';
 import { useSelect } from '@wordpress/data';
 import { __ } from '@wordpress/i18n';
-import { InspectorControls, useBlockProps } from '@wordpress/block-editor';
+import Button from '@woocommerce/base-components/button';
+import {
+	InspectorControls,
+	RichText,
+	useBlockProps,
+} from '@wordpress/block-editor';
 import PageSelector from '@woocommerce/editor-components/page-selector';
 import { CART_PAGE_ID } from '@woocommerce/block-settings';
-import Noninteractive from '@woocommerce/base-components/noninteractive';
+
 /**
  * Internal dependencies
  */
-import Block from './block';
 export const Edit = ( {
 	attributes,
 	setAttributes,
@@ -19,12 +23,16 @@ export const Edit = ( {
 	attributes: {
 		checkoutPageId: number;
 		className: string;
+		buttonLabel: string;
 	};
 	setAttributes: ( attributes: Record< string, unknown > ) => void;
 } ): JSX.Element => {
 	const blockProps = useBlockProps();
-	const { checkoutPageId = 0, className } = attributes;
+	const { checkoutPageId = 0, buttonLabel } = attributes;
 	const { current: savedCheckoutPageId } = useRef( checkoutPageId );
+
+	// console.log( 'buttonLabel', buttonLabel );
+
 	const currentPostId = useSelect(
 		( select ) => {
 			if ( ! savedCheckoutPageId ) {
@@ -60,12 +68,16 @@ export const Edit = ( {
 					/>
 				) }
 			</InspectorControls>
-			<Noninteractive>
-				<Block
-					checkoutPageId={ checkoutPageId }
-					className={ className }
+			<Button className="wc-block-cart__submit-button">
+				<RichText
+					multiline={ false }
+					allowedFormats={ [] }
+					value={ buttonLabel }
+					onChange={ ( content ) =>
+						setAttributes( { buttonLabel: content } )
+					}
 				/>
-			</Noninteractive>
+			</Button>
 		</div>
 	);
 };

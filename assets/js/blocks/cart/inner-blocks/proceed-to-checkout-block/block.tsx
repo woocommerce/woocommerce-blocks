@@ -22,9 +22,11 @@ import './style.scss';
 const Block = ( {
 	checkoutPageId,
 	className,
+	buttonLabel,
 }: {
 	checkoutPageId: number;
 	className: string;
+	buttonLabel: string;
 } ): JSX.Element => {
 	const link = getSetting( 'page-' + checkoutPageId, false );
 	const isCalculating = useSelect( ( select ) =>
@@ -64,7 +66,8 @@ const Block = ( {
 			onClick={ () => setShowSpinner( true ) }
 			showSpinner={ showSpinner }
 		>
-			{ __( 'Proceed to Checkout', 'woo-gutenberg-products-block' ) }
+			{ buttonLabel ||
+				__( 'Proceed to Checkout', 'woo-gutenberg-products-block' ) }
 		</Button>
 	);
 
