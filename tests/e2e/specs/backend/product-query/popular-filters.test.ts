@@ -67,17 +67,17 @@ const SELECTORS = {
 };
 
 const toggleProductFilter = async ( filterName: string ) => {
-	const $productFiltersPanel = await findToolsPanelWithTitle(
+	const $popularFiltersPanel = await findToolsPanelWithTitle(
 		'Product filters'
 	);
-	await expect( $productFiltersPanel ).toClick(
+	await expect( $popularFiltersPanel ).toClick(
 		SELECTORS.productFiltersDropdownButton()
 	);
 	await canvas().waitForSelector( SELECTORS.productFiltersDropdown );
 	await expect( canvas() ).toClick( SELECTORS.productFiltersDropdownItem, {
 		text: filterName,
 	} );
-	await expect( $productFiltersPanel ).toClick(
+	await expect( $popularFiltersPanel ).toClick(
 		SELECTORS.productFiltersDropdownButton( { expanded: true } )
 	);
 };
@@ -103,6 +103,7 @@ const getFrontEndProducts = async (): Promise< ElementHandle[] > => {
 describeOrSkip( GUTENBERG_EDITOR_CONTEXT === 'gutenberg' )(
 	'Product Query > Popular Filters',
 	() => {
+		let $popularFiltersPanel: ElementHandle< Node >;
 		beforeEach( async () => {
 			/**
 			 * Reset the block page before each test to ensure the block is
@@ -112,6 +113,9 @@ describeOrSkip( GUTENBERG_EDITOR_CONTEXT === 'gutenberg' )(
 			await resetProductQueryBlockPage();
 			await openBlockEditorSettings();
 			await selectBlockByName( block.slug );
+			$popularFiltersPanel = await findSidebarPanelWithTitle(
+				'Popular Filters'
+			);
 		} );
 
 		/**
@@ -123,20 +127,18 @@ describeOrSkip( GUTENBERG_EDITOR_CONTEXT === 'gutenberg' )(
 		} );
 
 		it( 'Popular Filters is expanded by default', async () => {
-			const $productFiltersPanel = await findSidebarPanelWithTitle(
-				'Popular Filters'
-			);
-			await expect( $productFiltersPanel ).toMatch(
+			await expect( $popularFiltersPanel ).toMatch(
 				'Arrange products by popular pre-sets.'
 			);
 		} );
 
-		it( 'Newest ', async () => {
-			const $productFiltersPanel = await findSidebarPanelWithTitle(
-				'Popular Filters'
-			);
-			await expect( $productFiltersPanel ).toMatch(
-				'Arrange products by popular pre-sets.'
+		it( 'Newest is the default preset', async () => {
+			await expect( $popularFiltersPanel ).toMatchElement(
+				await getFormElementIdByLabel(
+					'Choose among these pre-sets',
+					'components-visually-hidden'
+				),
+				{ text: 'Newest' }
 			);
 		} );
 	}
