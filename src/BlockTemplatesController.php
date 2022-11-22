@@ -62,6 +62,7 @@ class BlockTemplatesController {
 	 */
 	protected function init() {
 		add_action( 'template_redirect', array( $this, 'render_block_template' ) );
+		add_filter( 'pre_get_block_template', array( $this, 'get_block_template_fallback' ), 10, 3 );
 		add_filter( 'pre_get_block_file_template', array( $this, 'get_block_file_template' ), 10, 3 );
 		add_filter( 'get_block_templates', array( $this, 'add_block_templates' ), 10, 3 );
 		add_filter( 'current_theme_supports-block-templates', array( $this, 'remove_block_template_support_for_shop_page' ) );
@@ -70,6 +71,58 @@ class BlockTemplatesController {
 		if ( $this->package->is_experimental_build() ) {
 			add_action( 'after_switch_theme', array( $this, 'check_should_use_blockified_product_grid_templates' ), 10, 2 );
 		}
+	}
+
+	/**
+	 * This function is used on the `pre_get_block_template` hook to return the fallback template from the db in case
+	 * the template is eligible for it.
+	 *
+	 * @param \WP_Block_Template|null $template Block template object to short-circuit the default query,
+	 *                                          or null to allow WP to run its normal queries.
+	 * @param string                  $id Template unique identifier (example: theme_slug//template_slug).
+	 * @param string                  $template_type wp_template or wp_template_part.
+	 *
+	 * @return object|null
+	 */
+	public function get_block_template_fallback( $template, $id, $template_type ) {
+		$template_name_parts  = explode( '//', $id );
+		list( $theme, $slug ) = $template_name_parts;
+
+		if ( ! BlockTemplateUtils::template_is_eligible_for_product_archive_fallback( $slug ) ) {
+			return null;
+		}
+
+		$wp_query_args  = array(
+			'post_name__in'  => array( 'archive-product' ),
+			'post_type'      => $template_type,
+			'post_status'    => array( 'auto-draft', 'draft', 'publish', 'trash' ),
+			'posts_per_page' => 1,
+			'no_found_rows'  => true,
+			'tax_query'      => array( // phpcs:ignore WordPress.DB.SlowDBQuery.slow_db_query_tax_query
+				array(
+					'taxonomy' => 'wp_theme',
+					'field'    => 'name',
+					'terms'    => $theme,
+				),
+			),
+		);
+		$template_query = new \WP_Query( $wp_query_args );
+		$posts          = $template_query->posts;
+
+		if ( count( $posts ) > 0 ) {
+			$template = gutenberg_build_block_template_result_from_post( $posts[0] );
+
+			if ( ! is_wp_error( $template ) ) {
+				$template->id          = $theme . '//' . $slug;
+				$template->slug        = $slug;
+				$template->title       = BlockTemplateUtils::get_block_template_title( $slug );
+				$template->description = BlockTemplateUtils::get_block_template_description( $slug );
+
+				return $template;
+			}
+		}
+
+		return $template;
 	}
 
 	/**
