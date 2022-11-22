@@ -110,8 +110,6 @@ export const CheckoutEventsProvider = ( {
 	}
 
 	const { setValidationErrors } = useDispatch( VALIDATION_STORE_KEY );
-	const { createErrorNotice } = useDispatch( 'core/notices' );
-
 	const { dispatchCheckoutEvent } = useStoreEvents();
 	const { checkoutNotices, paymentNotices, expressPaymentNotices } =
 		useSelect( ( select ) => {
@@ -179,12 +177,7 @@ export const CheckoutEventsProvider = ( {
 				setValidationErrors,
 			} );
 		}
-	}, [
-		checkoutState.status,
-		setValidationErrors,
-		createErrorNotice,
-		checkoutActions,
-	] );
+	}, [ checkoutState.status, setValidationErrors, checkoutActions ] );
 
 	const previousStatus = usePrevious( checkoutState.status );
 	const previousHasError = usePrevious( checkoutState.hasError );
@@ -218,7 +211,6 @@ export const CheckoutEventsProvider = ( {
 		checkoutState.orderNotes,
 		previousStatus,
 		previousHasError,
-		createErrorNotice,
 		checkoutNotices,
 		expressPaymentNotices,
 		paymentNotices,
