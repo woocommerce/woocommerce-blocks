@@ -35,13 +35,30 @@ const StoreNotices = ( {
 
 	useEffect( () => {
 		// Scroll to container when an error is added here.
+		const containerRef = ref.current;
+
+		if ( ! containerRef ) {
+			return;
+		}
+
+		// Do not scroll if input has focus.
+		const activeElement = containerRef.ownerDocument.activeElement;
+		const inputs = [ 'input', 'select', 'button', 'textarea' ];
+
+		if (
+			activeElement &&
+			inputs.indexOf( activeElement.tagName.toLowerCase() ) !== -1
+		) {
+			return;
+		}
+
 		const newNoticeIds = noticeIds.filter(
 			( value ) =>
 				! previousNoticeIds || ! previousNoticeIds.includes( value )
 		);
 
 		if ( newNoticeIds.length ) {
-			ref.current?.scrollIntoView( {
+			containerRef.scrollIntoView( {
 				behavior: 'smooth',
 			} );
 		}
