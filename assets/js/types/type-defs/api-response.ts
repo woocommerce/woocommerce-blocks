@@ -1,12 +1,3 @@
-export interface ResponseError {
-	code: string;
-	message: string;
-	data: {
-		status: number;
-		[ key: string ]: unknown;
-	};
-}
-
 export interface ApiResponse {
 	body: Record< string, unknown >;
 	headers: Headers;
@@ -41,9 +32,4 @@ export function assertResponseIsValid(
 		return;
 	}
 	throw new Error( 'Response not valid' );
-}
-
-export interface FieldValidationStatus {
-	message: string;
-	hidden: boolean;
 }

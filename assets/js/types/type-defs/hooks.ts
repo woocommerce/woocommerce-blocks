@@ -18,7 +18,7 @@ import type {
 	CartResponse,
 	CartResponseCoupons,
 } from './cart-response';
-import type { ResponseError } from '../../data/types';
+import type { ApiErrorResponse } from './api-error-response';
 export interface StoreCartItemQuantity {
 	isPendingDelete: boolean;
 	quantity: number;
@@ -48,7 +48,7 @@ export interface StoreCart {
 	cartItemErrors: Array< CartResponseErrorItem >;
 	cartTotals: CartResponseTotals;
 	cartIsLoading: boolean;
-	cartErrors: Array< ResponseError >;
+	cartErrors: Array< ApiErrorResponse >;
 	billingAddress: CartResponseBillingAddress;
 	shippingAddress: CartResponseShippingAddress;
 	shippingRates: Array< CartResponseShippingRate >;
