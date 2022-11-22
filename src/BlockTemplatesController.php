@@ -110,7 +110,7 @@ class BlockTemplatesController {
 		$posts          = $template_query->posts;
 
 		if ( count( $posts ) > 0 ) {
-			$template = gutenberg_build_block_template_result_from_post( $posts[0] );
+			$template = _build_block_template_result_from_post( $posts[0] );
 
 			if ( ! is_wp_error( $template ) ) {
 				$template->id          = $theme . '//' . $slug;
