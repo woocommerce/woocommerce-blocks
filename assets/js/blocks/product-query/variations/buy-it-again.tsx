@@ -10,12 +10,10 @@ import { Icon, plusCircle } from '@wordpress/icons';
  * Internal dependencies
  */
 import {
-	//	DEFAULT_ALLOWED_CONTROLS,
 	INNER_BLOCKS_TEMPLATE,
 	QUERY_DEFAULT_ATTRIBUTES,
 	QUERY_LOOP_ID,
 } from '../constants';
-//import { ArrayXOR } from '../utils';
 
 const VARIATION_NAME = 'woocommerce/query-buy-it-again';
 const allowedInnerBlocks = INNER_BLOCKS_TEMPLATE[ 0 ];
@@ -45,7 +43,6 @@ if ( isExperimentalBuild() ) {
 		// https://github.com/WordPress/gutenberg/pull/43632
 		// eslint-disable-next-line @typescript-eslint/ban-ts-comment
 		// @ts-ignore
-		//allowedControls: ArrayXOR( DEFAULT_ALLOWED_CONTROLS ),
 		innerBlocks: [ allowedInnerBlocks ],
 		scope: [ 'block', 'inserter' ],
 	} );
