@@ -51,7 +51,7 @@ const getErrorDetails = ( response: ApiErrorResponse ): ApiParamError[] => {
 				{ code, message, additional_errors: additionalErrors = [] },
 			]
 		) => {
-			const details = [
+			return [
 				...acc,
 				{
 					param,
@@ -80,7 +80,6 @@ const getErrorDetails = ( response: ApiErrorResponse ): ApiParamError[] => {
 					  } )
 					: [] ),
 			];
-			return details;
 		},
 		[] as ApiParamError[]
 	);
