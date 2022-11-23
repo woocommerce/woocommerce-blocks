@@ -93,7 +93,6 @@ const processInvalidParamResponse = ( response: ApiErrorResponse ) => {
 
 	errorDetails.forEach( ( { code, message, id, param } ) => {
 		switch ( code ) {
-			case 'invalid_phone':
 			case 'invalid_email':
 				createNotice( 'error', message, {
 					id,
