@@ -193,17 +193,16 @@ export function LegacyNotice( { block }: { block: string } ) {
 
 export function IncompatibilityPaymentGatewaysNotice() {
 	// Everything below works the same for Cart/Checkout
-	const { IncompatibilityPaymentGateways } = useSelect( ( select ) => {
-		const { getIncompatiblePaymentMethodData } =
-			select( PAYMENT_STORE_KEY );
+	const { incompatiblePaymentMethods } = useSelect( ( select ) => {
+		const { getIncompatiblePaymentMethods } = select( PAYMENT_STORE_KEY );
 		return {
-			IncompatibilityPaymentGateways: getIncompatiblePaymentMethodData(),
+			incompatiblePaymentMethods: getIncompatiblePaymentMethods(),
 		};
 	}, [] );
 	const [ settingStatus, setStatus ] = useState( 'pristine' );
 
 	if (
-		IncompatibilityPaymentGateways.length === 0 ||
+		Object.keys( incompatiblePaymentMethods ).length === 0 ||
 		settingStatus === 'dismissed'
 	) {
 		return null;
@@ -223,11 +222,13 @@ export function IncompatibilityPaymentGatewaysNotice() {
 		>
 			<p>{ noticeContent }</p>
 			<ul>
-				{ IncompatibilityPaymentGateways.map( ( title, index ) => (
-					<li key={ index }>
-						<strong>- { title }</strong>
-					</li>
-				) ) }
+				{ Object.entries( incompatiblePaymentMethods ).map(
+					( [ id, title ] ) => (
+						<li key={ id }>
+							<strong>- { title }</strong>
+						</li>
+					)
+				) }
 			</ul>
 		</Notice>
 	);
