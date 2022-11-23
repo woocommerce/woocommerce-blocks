@@ -164,50 +164,51 @@ final class BlockTypesController {
 		global $pagenow;
 
 		$block_types = [
+			'ActiveFilters',
+			'AllProducts',
 			'AllReviews',
+			'AttributeFilter',
+			'ClassicTemplate',
 			'FeaturedCategory',
 			'FeaturedProduct',
+			'FilterWrapper',
 			'HandpickedProducts',
+			'MiniCart',
+			'MiniCartContents',
+			'PriceFilter',
+			'ProductAddToCart',
 			'ProductBestSellers',
+			'ProductButton',
 			'ProductCategories',
 			'ProductCategory',
-			'ProductNew',
-			'ProductOnSale',
-			'ProductsByAttribute',
-			'ProductTopRated',
-			'ReviewsByProduct',
-			'ReviewsByCategory',
-			'ProductSearch',
-			'ProductTag',
-			'AllProducts',
-			'PriceFilter',
-			'AttributeFilter',
-			'StockFilter',
-			'RatingFilter',
-			'ActiveFilters',
-			'ClassicTemplate',
-			'ProductAddToCart',
-			'ProductButton',
 			'ProductCategoryList',
 			'ProductImage',
+			'ProductNew',
+			'ProductOnSale',
 			'ProductPrice',
+			'ProductQuery',
 			'ProductRating',
 			'ProductSaleBadge',
+			'ProductsByAttribute',
+			'ProductSearch',
 			'ProductSKU',
 			'ProductStockIndicator',
 			'ProductSummary',
+			'ProductTag',
 			'ProductTagList',
 			'ProductTitle',
-			'MiniCart',
-			'MiniCartContents',
-			'ProductQuery',
-			'FilterWrapper',
+			'ProductTopRated',
+			'RatingFilter',
+			'ReviewsByCategory',
+			'ReviewsByProduct',
+			'StockFilter',
 		];
 
 		$block_types = array_merge( $block_types, Cart::get_cart_block_types(), Checkout::get_checkout_block_types() );
 
 		if ( Package::feature()->is_experimental_build() ) {
 			$block_types[] = 'SingleProduct';
+			$block_types[] = 'OrderReceivedOrderSummary';
 		}
 
 		/**
@@ -220,20 +221,7 @@ final class BlockTypesController {
 					'AllProducts',
 					'Cart',
 					'Checkout',
-				]
-			);
-		}
-
-		/**
-		 * This disables specific blocks in Widget Areas by not registering them.
-		 */
-		if ( in_array( $pagenow, [ 'widgets.php', 'themes.php', 'customize.php' ], true ) && ( empty( $_GET['page'] ) || 'gutenberg-edit-site' !== $_GET['page'] ) ) { // phpcs:ignore WordPress.Security.NonceVerification
-			$block_types = array_diff(
-				$block_types,
-				[
-					'AllProducts',
-					'Cart',
-					'Checkout',
+					'OrderReceivedOrderSummary',
 				]
 			);
 		}

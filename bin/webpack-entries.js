@@ -62,6 +62,10 @@ const blocks = {
 		isExperimental: true,
 	},
 	'filter-wrapper': {},
+	'order-received-order-summary': {
+		customDir: 'order-received/order-summary',
+		isExperimental: true,
+	},
 };
 
 // Returns the entries for each block given a relative path (ie: `index.js`,

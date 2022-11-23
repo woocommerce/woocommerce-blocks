@@ -1,0 +1,16 @@
+{
+	"name": "woocommerce/order-received-order-summary",
+	"version": "1.0.0",
+	"title": "Order Summary",
+	"description": "Display a summary of the order after checkout.",
+	"category": "woocommerce",
+	"keywords": [ "WooCommerce" ],
+	"supports": {
+		"align": [ "wide" ],
+		"html": false,
+		"multiple": false
+	},
+	"attributes": {},
+	"textdomain": "woo-gutenberg-products-block",
+	"apiVersion": 2
+}
