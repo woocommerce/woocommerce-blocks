@@ -2,7 +2,7 @@
  * External dependencies
  */
 import type { Reducer } from 'redux';
-import { objectHasProp, PaymentResult } from '@woocommerce/types';
+import { objectHasProp } from '@woocommerce/types';
 
 /**
  * Internal dependencies
@@ -70,20 +70,6 @@ const reducer: Reducer< PaymentState > = (
 			newState = {
 				...state,
 				paymentMethodData: action.paymentMethodData,
-			};
-			break;
-
-		case ACTION_TYPES.SET_INCOMPATIBLE_PAYMENT_METHODS:
-			newState = {
-				...state,
-				incompatiblePaymentMethods: action.incompatiblePaymentMethods,
-			};
-			break;
-
-		case ACTION_TYPES.SET_PAYMENT_STATUS:
-			newState = {
-				...state,
-				paymentResult: action.data as PaymentResult,
 			};
 			break;
 
