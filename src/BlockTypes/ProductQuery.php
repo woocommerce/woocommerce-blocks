@@ -111,7 +111,7 @@ class ProductQuery extends AbstractBlock {
 	/**
 	 * Return a custom query based on attributes, filters and global WP_Query.
 	 *
-	 * @param WP_Query $query The WordPress Query.
+	 * @param array $query The WordPress Query vars.
 	 * @return array
 	 */
 	public function build_query( $query ) {
@@ -120,9 +120,11 @@ class ProductQuery extends AbstractBlock {
 			return $query;
 		}
 
+		$query = array_merge( $query, $this->get_buy_it_again_products_query() ); // TODO: change this.
+
 		$common_query_values = array(
 			'post_type'      => 'product',
-			'post__in'       => array(),
+			'post__in'       => $query['post__in'] ?? array(),
 			'post_status'    => 'publish',
 			'posts_per_page' => $query['posts_per_page'],
 			'orderby'        => $query['orderby'],
@@ -221,6 +223,52 @@ class ProductQuery extends AbstractBlock {
 	private function get_on_sale_products_query() {
 		return array(
 			'post__in' => wc_get_product_ids_on_sale(),
+		);
+	}
+
+	/**
+	 * Return a query for products eligible for buy it again.
+	 *
+	 * @return array
+	 * @throws \Exception When it fails to get orders due to WC_Data_Store validation.
+	 */
+	private function get_buy_it_again_products_query() {
+		$buy_it_again_ids = array();
+
+		$current_user = wp_get_current_user();
+		if ( 0 === $current_user->ID ) {
+			return array(
+				'post__in' => array( - 1 ),
+			);
+		}
+
+		$query           = new \WC_Order_Query(
+			array(
+				'customer_id' => $current_user->ID,
+				'limit'       => - 1,
+				'status'      => array_values( wc_get_is_paid_statuses() ),
+				'orderby'     => 'date',
+				'order'       => 'DESC',
+			)
+		);
+		$customer_orders = $query->get_orders();
+
+		if ( empty( $customer_orders ) ) {
+			return array(
+				'post__in' => array( - 1 ),
+			);
+		}
+
+		foreach ( $customer_orders as $customer_order ) {
+			$items = $customer_order->get_items();
+			foreach ( $items as $item ) {
+				$buy_it_again_ids[] = $item->get_product_id();
+			}
+		}
+
+		return array(
+			'post__in' => array_unique( $buy_it_again_ids ),
+			'orderby'  => 'post__in',
 		);
 	}
 
