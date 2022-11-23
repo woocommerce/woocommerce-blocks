@@ -37,28 +37,6 @@ describe.only( 'Checkout Store Reducer', () => {
 		).toEqual( expectedState );
 	} );
 
-	it( 'should handle SET_PAYMENT_RESULT', () => {
-		const mockResponse = {
-			message: 'success',
-			redirectUrl: 'https://example.com',
-			paymentStatus: 'not set' as const,
-			paymentDetails: {},
-		};
-
-		const expectedState = {
-			...defaultState,
-			status: STATUS.IDLE,
-			paymentResult: mockResponse,
-		};
-
-		expect(
-			reducer(
-				defaultState,
-				actions.__internalSetPaymentResult( mockResponse )
-			)
-		).toEqual( expectedState );
-	} );
-
 	it( 'should handle SET_COMPLETE', () => {
 		const expectedState = {
 			...defaultState,
@@ -195,7 +173,7 @@ describe.only( 'Checkout Store Reducer', () => {
 		).toEqual( expectedState );
 	} );
 
-	it( 'should handle SET_SHIPPING_ADDRESS_AS_BILLING_ADDRESS', () => {
+	it( 'should handle SET_USE_SHIPPING_AS_BILLING', () => {
 		const expectedState = {
 			...defaultState,
 			status: STATUS.IDLE,
