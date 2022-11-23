@@ -1,0 +1,14 @@
+{
+	"name": "woocommerce/checkout-custom-field",
+	"version": "1.0.0",
+	"title": "Checkout Custom Field",
+	"description": "Display a custom field on the checkout page",
+	"category": "woocommerce",
+	"keywords": [ "WooCommerce" ],
+	"supports": {
+		"html": false,
+		"multiple": true
+	},
+	"textdomain": "woo-gutenberg-products-block",
+	"apiVersion": 2
+}
