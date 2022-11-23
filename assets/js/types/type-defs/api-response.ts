@@ -1,15 +1,15 @@
-export interface ApiResponse {
+export interface ApiResponse< T > {
 	body: Record< string, unknown >;
 	headers: Headers;
 	status: number;
 	ok: boolean;
-	json: () => Promise< unknown >;
+	json: () => Promise< T >;
 }
 
 export function assertBatchResponseIsValid(
 	response: unknown
 ): asserts response is {
-	responses: ApiResponse[];
+	responses: ApiResponse< unknown >[];
 	headers: Headers;
 } {
 	if (
@@ -22,9 +22,9 @@ export function assertBatchResponseIsValid(
 	throw new Error( 'Response not valid' );
 }
 
-export function assertResponseIsValid(
+export function assertResponseIsValid< T >(
 	response: unknown
-): asserts response is ApiResponse {
+): asserts response is ApiResponse< T > {
 	if (
 		typeof response === 'object' &&
 		response !== null &&
