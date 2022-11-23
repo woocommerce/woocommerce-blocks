@@ -84,6 +84,9 @@ export const createNoticeIfVisible = (
 
 /**
  * Remove notices from all contexts.
+ *
+ * @todo Remove this when supported in Gutenberg.
+ * @see https://github.com/WordPress/gutenberg/pull/44059
  */
 export const removeAllNotices = () => {
 	const containers = select( 'wc/store/notices' ).getContainers();
