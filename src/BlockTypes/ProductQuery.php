@@ -123,7 +123,7 @@ class ProductQuery extends AbstractBlock {
 		$query = array_merge( $query, $this->get_buy_it_again_products_query() ); // TODO: change this.
 
 		$common_query_values = array(
-			'post_type'      => 'product',
+			'post_type'      => $query['post_type'] ?? 'product',
 			'post__in'       => $query['post__in'] ?? array(),
 			'post_status'    => 'publish',
 			'posts_per_page' => $query['posts_per_page'],
@@ -233,7 +233,6 @@ class ProductQuery extends AbstractBlock {
 	 * @throws \Exception When it fails to get orders due to WC_Data_Store validation.
 	 */
 	private function get_buy_it_again_products_query() {
-		$buy_it_again_ids = array();
 
 		$current_user = wp_get_current_user();
 		if ( 0 === $current_user->ID ) {
@@ -259,16 +258,20 @@ class ProductQuery extends AbstractBlock {
 			);
 		}
 
+		$buy_it_again_ids = array();
+
 		foreach ( $customer_orders as $customer_order ) {
 			$items = $customer_order->get_items();
 			foreach ( $items as $item ) {
-				$buy_it_again_ids[] = $item->get_product_id();
+				$variation_id       = $item->get_variation_id();
+				$buy_it_again_ids[] = 0 === $variation_id ? $item->get_product_id() : $variation_id;
 			}
 		}
 
 		return array(
-			'post__in' => array_unique( $buy_it_again_ids ),
-			'orderby'  => 'post__in',
+			'post__in'  => array_unique( $buy_it_again_ids ),
+			'post_type' => array( 'product', 'product_variation' ),
+			'orderby'   => 'post__in',
 		);
 	}
 
