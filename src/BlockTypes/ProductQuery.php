@@ -269,8 +269,10 @@ class ProductQuery extends AbstractBlock {
 
 		$cart_items = array();
 
-		foreach ( WC()->cart->get_cart_contents() as $item ) {
-			$cart_items[] = $item['variation_id'] ?: $item['product_id'];
+		if ( WC()->cart instanceof \WC_Cart ) {
+			foreach ( WC()->cart->get_cart_contents() as $item ) {
+				$cart_items[] = $item['variation_id'] ?: $item['product_id'];
+			}
 		}
 
 		return array(
