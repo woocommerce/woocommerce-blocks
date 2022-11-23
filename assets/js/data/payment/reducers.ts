@@ -132,6 +132,13 @@ const reducer: Reducer< PaymentState > = (
 			newState = {
 				...state,
 				availablePaymentMethods: action.paymentMethods,
+				incompatiblePaymentMethods: Object.fromEntries(
+					Object.entries( state.incompatiblePaymentMethods ).filter(
+						( [ k ] ) => {
+							return ! ( k in action.paymentMethods );
+						}
+					)
+				),
 			};
 			break;
 
