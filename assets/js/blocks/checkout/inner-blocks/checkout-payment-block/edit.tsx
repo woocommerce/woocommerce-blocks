@@ -9,6 +9,7 @@ import { ADMIN_URL, getSetting } from '@woocommerce/settings';
 import ExternalLinkCard from '@woocommerce/editor-components/external-link-card';
 import { innerBlockAreas } from '@woocommerce/blocks-checkout';
 import Noninteractive from '@woocommerce/base-components/noninteractive';
+import { GlobalPaymentMethod } from '@woocommerce/type-defs/payments';
 
 /**
  * Internal dependencies
@@ -19,12 +20,6 @@ import {
 	AdditionalFieldsContent,
 } from '../../form-step';
 import Block from './block';
-
-type paymentAdminLink = {
-	id: number;
-	title: string;
-	description: string;
-};
 
 export const Edit = ( {
 	attributes,
@@ -38,9 +33,9 @@ export const Edit = ( {
 	};
 	setAttributes: ( attributes: Record< string, unknown > ) => void;
 } ): JSX.Element => {
-	const globalPaymentMethods = getSetting(
+	const globalPaymentMethods = getSetting< GlobalPaymentMethod[] >(
 		'globalPaymentMethods'
-	) as paymentAdminLink[];
+	);
 
 	return (
 		<FormStepBlock
