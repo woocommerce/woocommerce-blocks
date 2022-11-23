@@ -11,8 +11,6 @@ const Block = (): JSX.Element | null => {
 		return null;
 	}
 
-	console.log( orderData );
-
 	return (
 		<ul className="wc-block-components-order-summary">
 			<li className="wc-block-components-order-summary__order-number">
