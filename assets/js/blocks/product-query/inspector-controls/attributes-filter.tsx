@@ -11,9 +11,33 @@ import {
 /**
  * Internal dependencies
  */
-import { ProductQueryBlock } from '../types';
+import { AttributeWithTerms, ProductQueryBlock } from '../types';
 import useProductAttributes from '../useProductAttributes';
 import { setQueryAttribute } from '../utils';
+
+function getAttributeMetadataFromToken(
+	token: string,
+	productAttributes: AttributeWithTerms[]
+) {
+	const [ attributeLabel, termName ] = token.split( ': ' );
+	const taxonomy = productAttributes.find(
+		( attribute ) => attribute.attribute_label === attributeLabel
+	);
+
+	if ( ! taxonomy )
+		throw new Error( 'Product Query Filter: Invalid attribute label' );
+
+	const term = taxonomy.terms.find(
+		( currentTerm ) => currentTerm.name === termName
+	);
+
+	if ( ! term ) throw new Error( 'Product Query Filter: Invalid term name' );
+
+	return {
+		taxonomy,
+		term,
+	};
+}
 
 export const AttributesFilter = ( props: ProductQueryBlock ) => {
 	const { query } = props.attributes;
@@ -41,9 +65,29 @@ export const AttributesFilter = ( props: ProductQueryBlock ) => {
 					'woo-gutenberg-products-block'
 				) }
 				onChange={ ( attributes ) => {
-					setQueryAttribute( props, {
-						__woocommerceAttributes: attributes,
-					} );
+					let __woocommerceAttributes;
+
+					try {
+						__woocommerceAttributes = attributes.map(
+							( attribute ) => {
+								attribute =
+									typeof attribute === 'string'
+										? attribute
+										: attribute.value;
+
+								return getAttributeMetadataFromToken(
+									attribute,
+									productsAttributes
+								);
+							}
+						);
+
+						setQueryAttribute( props, {
+							__woocommerceAttributes,
+						} );
+					} catch ( e ) {
+						// Show error here
+					}
 				} }
 				suggestions={ attributesSuggestions }
 				validateInput={ ( value: string ) =>
@@ -52,7 +96,10 @@ export const AttributesFilter = ( props: ProductQueryBlock ) => {
 				value={
 					isLoadingAttributes
 						? [ __( 'Loading…', 'woo-gutenberg-products-block' ) ]
-						: query?.__woocommerceAttributes || []
+						: query?.__woocommerceAttributes?.map(
+								( { taxonomy, term } ) =>
+									`${ taxonomy.attribute_label }: ${ term.name }`
+						  ) || []
 				}
 				__experimentalExpandOnFocus={ true }
 			/>

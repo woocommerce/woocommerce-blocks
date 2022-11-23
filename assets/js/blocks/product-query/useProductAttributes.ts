@@ -4,9 +4,12 @@
 import { useEffect, useRef, useState } from '@wordpress/element';
 import { getTerms } from '@woocommerce/editor-components/utils';
 import { getSetting } from '@woocommerce/settings';
-import { AttributeSetting, AttributeTerm } from '@woocommerce/types';
+import { AttributeSetting } from '@woocommerce/types';
 
-type AttributeWithTerms = AttributeSetting & { terms: AttributeTerm[] };
+/**
+ * Internal dependencies
+ */
+import { AttributeWithTerms } from './types';
 
 export default function useProductAttributes( shouldLoadAttributes: boolean ) {
 	const STORE_ATTRIBUTES = getSetting< AttributeSetting[] >(

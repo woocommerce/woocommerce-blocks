@@ -1,7 +1,18 @@
 /**
  * External dependencies
  */
-import type { EditorBlock } from '@woocommerce/types';
+import type {
+	AttributeSetting,
+	AttributeTerm,
+	EditorBlock,
+} from '@woocommerce/types';
+
+export interface AttributeMetadata {
+	taxonomy: AttributeWithTerms;
+	term: AttributeTerm;
+}
+
+export type AttributeWithTerms = AttributeSetting & { terms: AttributeTerm[] };
 
 // The interface below disables the forbidden underscores
 // naming convention because we are namespacing our
@@ -16,7 +27,7 @@ export interface ProductQueryArguments {
 	 * the choice to those.
 	 */
 	orderBy: 'date' | 'popularity';
-	__woocommerceAttributes?: string[];
+	__woocommerceAttributes?: AttributeMetadata[];
 	/**
 	 * Display only products on sale.
 	 *

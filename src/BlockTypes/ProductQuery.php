@@ -250,6 +250,40 @@ class ProductQuery extends AbstractBlock {
 	}
 
 	/**
+	 * Return the `tax_query` for the requested attributes
+	 *
+	 * @param array $attributes  Attributes and their terms.
+	 *
+	 * @return array
+	 */
+	private function get_product_attributes_query( $attributes ) {
+		$grouped_attributes = array_reduce(
+			$attributes,
+			function ( $carry, $item ) {
+				$taxonomy = 'pa_' . sanitize_title( $item['taxonomy']['attribute_name'] );
+
+				if ( ! key_exists( $taxonomy, $carry ) ) {
+					$carry[ $taxonomy ] = array(
+						'field'    => 'term_id',
+						'operator' => 'IN',
+						'taxonomy' => $taxonomy,
+						'terms'    => array( $item['term']['id'] ),
+					);
+				} else {
+					$carry[ $taxonomy ]['terms'][] = $item['term']['id'];
+				}
+
+				return $carry;
+			},
+			array()
+		);
+
+		return array(
+			'tax_query' => array_values( $grouped_attributes ),
+		);
+	}
+
+	/**
 	 * Return a query for products depending on their stock status.
 	 *
 	 * @param array $stock_statii An array of acceptable stock statii.
@@ -362,10 +396,12 @@ class ProductQuery extends AbstractBlock {
 	 * @return array
 	 */
 	private function get_queries_by_attributes( $parsed_block ) {
-		$query           = $parsed_block['attrs']['query'];
-		$on_sale_enabled = isset( $query['__woocommerceOnSale'] ) && true === $query['__woocommerceOnSale'];
+		$query            = $parsed_block['attrs']['query'];
+		$on_sale_enabled  = isset( $query['__woocommerceOnSale'] ) && true === $query['__woocommerceOnSale'];
+		$attributes_query = isset( $query['__woocommerceAttributes'] ) ? $this->get_product_attributes_query( $query['__woocommerceAttributes'] ) : array();
 
 		return array(
+			'attributes'   => $attributes_query,
 			'on_sale'      => ( $on_sale_enabled ? $this->get_on_sale_products_query() : array() ),
 			'stock_status' => isset( $query['__woocommerceStockStatus'] ) ? $this->get_stock_status_query( $query['__woocommerceStockStatus'] ) : array(),
 		);
