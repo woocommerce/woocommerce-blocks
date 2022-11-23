@@ -24,10 +24,9 @@ import {
  * Internal dependencies
  */
 import { useEventEmitters, reducer as emitReducer } from './event-emit';
-import type { emitterCallback } from '../../../event-emit';
+import { emitterCallback, noticeContexts } from '../../../event-emit';
 import { STATUS } from '../../../../../data/checkout/constants';
 import { useStoreEvents } from '../../../hooks/use-store-events';
-import { useCheckoutNotices } from '../../../hooks/use-checkout-notices';
 import { CheckoutState } from '../../../../../data/checkout/default-state';
 import {
 	getExpressPaymentMethods,
@@ -111,11 +110,29 @@ export const CheckoutEventsProvider = ( {
 	}
 
 	const { setValidationErrors } = useDispatch( VALIDATION_STORE_KEY );
-	const { createErrorNotice } = useDispatch( 'core/notices' );
-
 	const { dispatchCheckoutEvent } = useStoreEvents();
 	const { checkoutNotices, paymentNotices, expressPaymentNotices } =
-		useCheckoutNotices();
+		useSelect( ( select ) => {
+			const { getNotices } = select( 'core/notices' );
+			const checkoutContexts = Object.values( noticeContexts ).filter(
+				( context ) =>
+					context !== noticeContexts.PAYMENTS &&
+					context !== noticeContexts.EXPRESS_PAYMENTS
+			);
+			const allCheckoutNotices = checkoutContexts.reduce(
+				( acc, context ) => {
+					return [ ...acc, ...getNotices( context ) ];
+				},
+				[]
+			);
+			return {
+				checkoutNotices: allCheckoutNotices,
+				paymentNotices: getNotices( noticeContexts.PAYMENTS ),
+				expressPaymentNotices: getNotices(
+					noticeContexts.EXPRESS_PAYMENTS
+				),
+			};
+		}, [] );
 
 	const [ observers, observerDispatch ] = useReducer( emitReducer, {} );
 	const currentObservers = useRef( observers );
@@ -160,12 +177,7 @@ export const CheckoutEventsProvider = ( {
 				setValidationErrors,
 			} );
 		}
-	}, [
-		checkoutState.status,
-		setValidationErrors,
-		createErrorNotice,
-		checkoutActions,
-	] );
+	}, [ checkoutState.status, setValidationErrors, checkoutActions ] );
 
 	const previousStatus = usePrevious( checkoutState.status );
 	const previousHasError = usePrevious( checkoutState.hasError );
@@ -199,7 +211,6 @@ export const CheckoutEventsProvider = ( {
 		checkoutState.orderNotes,
 		previousStatus,
 		previousHasError,
-		createErrorNotice,
 		checkoutNotices,
 		expressPaymentNotices,
 		paymentNotices,

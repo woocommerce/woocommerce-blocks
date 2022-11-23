@@ -5,15 +5,11 @@ import { __ } from '@wordpress/i18n';
 import triggerFetch, { APIFetchOptions } from '@wordpress/api-fetch';
 import DataLoader from 'dataloader';
 import { isWpVersion } from '@woocommerce/settings';
-
-/**
- * Internal dependencies
- */
 import {
+	ApiResponse,
 	assertBatchResponseIsValid,
 	assertResponseIsValid,
-	ApiResponse,
-} from './types';
+} from '@woocommerce/types';
 
 /**
  * Dispatched a control action for triggering an api fetch call with no parsing.

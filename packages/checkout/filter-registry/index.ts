@@ -1,7 +1,6 @@
 /**
  * External dependencies
  */
-import { useMemo } from '@wordpress/element';
 import { __, sprintf } from '@wordpress/i18n';
 import { CURRENT_USER_IS_ADMIN } from '@woocommerce/settings';
 import deprecated from '@wordpress/deprecated';
