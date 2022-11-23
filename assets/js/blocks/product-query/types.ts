@@ -16,6 +16,7 @@ export interface ProductQueryArguments {
 	 * the choice to those.
 	 */
 	orderBy: 'date' | 'popularity';
+	__woocommerceAttributes?: string[];
 	/**
 	 * Display only products on sale.
 	 *
