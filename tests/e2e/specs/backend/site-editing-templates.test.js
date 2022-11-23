@@ -155,6 +155,11 @@ describe( 'Store Editing Templates', () => {
 	} );
 
 	describe( 'Single Product block template', () => {
+		beforeAll( async () => {
+			await deleteAllTemplates( 'wp_template' );
+			await deleteAllTemplates( 'wp_template_part' );
+		} );
+
 		it( 'default template from WooCommerce Blocks is available on an FSE theme', async () => {
 			const EXPECTED_TEMPLATE = defaultTemplateProps( 'Single Product' );
 
@@ -251,6 +256,11 @@ describe( 'Store Editing Templates', () => {
 	} );
 
 	describe( 'Product Catalog block template', () => {
+		beforeAll( async () => {
+			await deleteAllTemplates( 'wp_template' );
+			await deleteAllTemplates( 'wp_template_part' );
+		} );
+
 		it( 'default template from WooCommerce Blocks is available on an FSE theme', async () => {
 			const EXPECTED_TEMPLATE = defaultTemplateProps( 'Product Catalog' );
 
@@ -345,6 +355,11 @@ describe( 'Store Editing Templates', () => {
 	} );
 
 	describe( 'Product by Category block template', () => {
+		beforeAll( async () => {
+			await deleteAllTemplates( 'wp_template' );
+			await deleteAllTemplates( 'wp_template_part' );
+		} );
+
 		it( 'default template from WooCommerce Blocks is available on an FSE theme', async () => {
 			const EXPECTED_TEMPLATE = defaultTemplateProps(
 				'Products by Category'
@@ -437,6 +452,11 @@ describe( 'Store Editing Templates', () => {
 	} );
 
 	describe( 'Products by Tag block template', () => {
+		beforeAll( async () => {
+			await deleteAllTemplates( 'wp_template' );
+			await deleteAllTemplates( 'wp_template_part' );
+		} );
+
 		it( 'default template from WooCommerce Blocks is available on an FSE theme', async () => {
 			const EXPECTED_TEMPLATE = defaultTemplateProps( 'Products by Tag' );
 
@@ -525,6 +545,11 @@ describe( 'Store Editing Templates', () => {
 	} );
 
 	describe( 'Products by Attribute template', () => {
+		beforeAll( async () => {
+			await deleteAllTemplates( 'wp_template' );
+			await deleteAllTemplates( 'wp_template_part' );
+		} );
+
 		it( 'default template from WooCommerce Blocks is available on an FSE theme', async () => {
 			const EXPECTED_TEMPLATE = defaultTemplateProps(
 				'Products by Attribute'
@@ -619,6 +644,11 @@ describe( 'Store Editing Templates', () => {
 	} );
 
 	describe( 'Product Search Results block template', () => {
+		beforeAll( async () => {
+			await deleteAllTemplates( 'wp_template' );
+			await deleteAllTemplates( 'wp_template_part' );
+		} );
+
 		it( 'default template from WooCommerce Blocks is available on an FSE theme', async () => {
 			const EXPECTED_TEMPLATE = defaultTemplateProps(
 				'Product Search Results'
