@@ -23,11 +23,11 @@ const EMPTY_PENDING_QUANTITY: [] = [];
 const EMPTY_PENDING_DELETE: [] = [];
 
 export interface CartState {
-	cartItemsPendingQuantity: Array< string >;
-	cartItemsPendingDelete: Array< string >;
+	cartItemsPendingQuantity: string[];
+	cartItemsPendingDelete: string[];
 	cartData: Cart;
 	metaData: CartMeta;
-	errors: Array< ApiErrorResponse >;
+	errors: ApiErrorResponse[];
 }
 export const defaultCartState: CartState = {
 	cartItemsPendingQuantity: EMPTY_PENDING_QUANTITY,

@@ -24,11 +24,11 @@ export interface StoreCartItemQuantity {
 	quantity: number;
 	setItemQuantity: React.Dispatch< React.SetStateAction< number > >;
 	removeItem: () => Promise< boolean >;
-	cartItemQuantityErrors: Array< CartResponseErrorItem >;
+	cartItemQuantityErrors: CartResponseErrorItem[];
 }
 
 export interface StoreCartCoupon {
-	appliedCoupons: Array< CartResponseCouponItem >;
+	appliedCoupons: CartResponseCouponItem[];
 	isLoading: boolean;
 	applyCoupon: ( coupon: string ) => void;
 	removeCoupon: ( coupon: string ) => void;
@@ -38,24 +38,24 @@ export interface StoreCartCoupon {
 
 export interface StoreCart {
 	cartCoupons: CartResponseCoupons;
-	cartItems: Array< CartResponseItem >;
-	crossSellsProducts: Array< ProductResponseItem >;
-	cartFees: Array< CartResponseFeeItem >;
+	cartItems: CartResponseItem[];
+	crossSellsProducts: ProductResponseItem[];
+	cartFees: CartResponseFeeItem[];
 	cartItemsCount: number;
 	cartItemsWeight: number;
 	cartNeedsPayment: boolean;
 	cartNeedsShipping: boolean;
-	cartItemErrors: Array< CartResponseErrorItem >;
+	cartItemErrors: CartResponseErrorItem[];
 	cartTotals: CartResponseTotals;
 	cartIsLoading: boolean;
-	cartErrors: Array< ApiErrorResponse >;
+	cartErrors: ApiErrorResponse[];
 	billingAddress: CartResponseBillingAddress;
 	shippingAddress: CartResponseShippingAddress;
-	shippingRates: Array< CartResponseShippingRate >;
+	shippingRates: CartResponseShippingRate[];
 	extensions: Record< string, unknown >;
 	isLoadingRates: boolean;
 	cartHasCalculatedShipping: boolean;
-	paymentRequirements: Array< string >;
+	paymentRequirements: string[];
 	receiveCart: ( cart: CartResponse ) => void;
 }
 

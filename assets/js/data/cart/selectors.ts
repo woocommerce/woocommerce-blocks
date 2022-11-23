@@ -91,9 +91,7 @@ export const getCartMeta = ( state: CartState ): CartMeta => {
 /**
  * Retrieves cart errors from state.
  */
-export const getCartErrors = (
-	state: CartState
-): Array< ApiErrorResponse > => {
+export const getCartErrors = ( state: CartState ): ApiErrorResponse[] => {
 	return state.errors;
 };
 
