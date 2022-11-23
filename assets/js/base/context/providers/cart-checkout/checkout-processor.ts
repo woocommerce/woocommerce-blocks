@@ -238,18 +238,18 @@ const CheckoutProcessor = () => {
 			parse: false,
 		} )
 			.then( ( response: unknown ) => {
-				assertResponseIsValid( response );
+				assertResponseIsValid< CheckoutResponseSuccess >( response );
 				processCheckoutResponseHeaders( response.headers );
 				if ( ! response.ok ) {
 					throw response;
 				}
-				return response.json() as Promise< CheckoutResponseSuccess >;
+				return response.json();
 			} )
 			.then( ( responseJson: CheckoutResponseSuccess ) => {
 				__internalProcessCheckoutResponse( responseJson );
 				setIsProcessingOrder( false );
 			} )
-			.catch( ( errorResponse: ApiResponse ) => {
+			.catch( ( errorResponse: ApiResponse< CheckoutResponseError > ) => {
 				processCheckoutResponseHeaders( errorResponse?.headers );
 				try {
 					// This attempts to parse a JSON error response where the status code was 4xx/5xx.
