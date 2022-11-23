@@ -339,13 +339,7 @@ describe( 'Store Editing Templates', () => {
 		} );
 
 		it( 'should show the user customization on the front-end', async () => {
-			await page.goto( new URL( '/?post_type=product', BASE_URL ) );
-			const exampleProductName = 'Woo Single #1';
-
-			await visitPostOfType( exampleProductName, 'product' );
-			const permalink = await getNormalPagePermalink();
-
-			await page.goto( permalink );
+			await page.goto( new URL( BASE_URL + '/shop' ) );
 
 			await expect( page ).toMatchElement( 'p', {
 				text: CUSTOMIZED_STRING,
