@@ -18,7 +18,7 @@ import {
 //import { ArrayXOR } from '../utils';
 
 const VARIATION_NAME = 'woocommerce/query-buy-it-again';
-
+const allowedInnerBlocks = INNER_BLOCKS_TEMPLATE[ 0 ];
 if ( isExperimentalBuild() ) {
 	registerBlockVariation( QUERY_LOOP_ID, {
 		name: VARIATION_NAME,
@@ -45,10 +45,7 @@ if ( isExperimentalBuild() ) {
 		// eslint-disable-next-line @typescript-eslint/ban-ts-comment
 		// @ts-ignore
 		//allowedControls: ArrayXOR( DEFAULT_ALLOWED_CONTROLS ),
-		innerBlocks: [
-			...INNER_BLOCKS_TEMPLATE,
-			[ 'woocommerce/product-add-to-cart' ],
-		],
+		innerBlocks: [ allowedInnerBlocks ],
 		scope: [ 'block', 'inserter' ],
 	} );
 }
