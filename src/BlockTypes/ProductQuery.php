@@ -263,13 +263,18 @@ class ProductQuery extends AbstractBlock {
 		foreach ( $customer_orders as $customer_order ) {
 			$items = $customer_order->get_items();
 			foreach ( $items as $item ) {
-				$variation_id       = $item->get_variation_id();
-				$buy_it_again_ids[] = 0 === $variation_id ? $item->get_product_id() : $variation_id;
+				$buy_it_again_ids[] = $item->get_variation_id() ?: $item->get_product_id();
 			}
 		}
 
+		$cart_items = array();
+
+		foreach ( WC()->cart->get_cart_contents() as $item ) {
+			$cart_items[] = $item['variation_id'] ?: $item['product_id'];
+		}
+
 		return array(
-			'post__in'  => array_unique( $buy_it_again_ids ),
+			'post__in'  => array_diff( array_unique( $buy_it_again_ids ), $cart_items ), // avoiding post__not_in to leverage memcache.
 			'post_type' => array( 'product', 'product_variation' ),
 			'orderby'   => 'post__in',
 		);
