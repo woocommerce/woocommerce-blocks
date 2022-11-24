@@ -5,13 +5,14 @@ import {
 	PlainPaymentMethods,
 	PlainExpressPaymentMethods,
 } from '@woocommerce/type-defs/payments';
+import type { PaymentResult } from '@woocommerce/types';
 
 /**
  * Internal dependencies
  */
 import { ACTION_TYPES } from './action-types';
-import { checkPaymentMethodsCanPay } from './check-payment-methods';
-import { setDefaultPaymentMethod } from './set-default-payment-method';
+import { checkPaymentMethodsCanPay } from './utils/check-payment-methods';
+import { setDefaultPaymentMethod } from './utils/set-default-payment-method';
 
 // `Thunks are functions that can be dispatched, similar to actions creators
 export * from './thunks';
@@ -110,6 +111,16 @@ export const __internalSetPaymentMethodData = (
 ) => ( {
 	type: ACTION_TYPES.SET_PAYMENT_METHOD_DATA,
 	paymentMethodData,
+} );
+
+/**
+ * Store the result of the payment attempt from the /checkout StoreApi call
+ *
+ * @param  data The result of the payment attempt through the StoreApi /checkout endpoints
+ */
+export const __internalSetPaymentResult = ( data: PaymentResult ) => ( {
+	type: ACTION_TYPES.SET_PAYMENT_RESULT,
+	data,
 } );
 
 /**
