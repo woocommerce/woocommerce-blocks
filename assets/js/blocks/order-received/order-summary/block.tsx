@@ -1,7 +1,7 @@
 /**
  * External dependencies
  */
-import { __, sprintf } from '@wordpress/i18n';
+import { __, _x, sprintf } from '@wordpress/i18n';
 import { createInterpolateElement, RawHTML } from '@wordpress/element';
 import { Icon } from '@wordpress/icons';
 import { checkCircle } from '@woocommerce/icons';
@@ -10,69 +10,69 @@ import type {
 	CartShippingAddress,
 	CartBillingAddress,
 } from '@woocommerce/types';
+import { formatPrice } from '@woocommerce/price-format';
+import { getDate, gmdateI18n } from '@wordpress/date';
 
 /**
  * Internal dependencies
  */
 import './style.scss';
 
-const Block = ( props: {
-	orderData: {
-		orderNumber: string;
-		orderDate: string;
-		orderTotal: string;
-		orderEmail: string;
-		orderPaymentMethod: string;
-		orderStatusText: string;
-		orderStatus: string;
-		billingAddress: CartBillingAddress;
-		shippingAddress: CartShippingAddress;
-		orderBillingAddress: string;
-		orderShippingAddress: string;
-	};
-} ): JSX.Element | null => {
-	const { orderData } = props;
+type OrderDataType = {
+	orderNumber: string;
+	orderDate: string;
+	orderTotal: string;
+	orderCurrency: string;
+	orderEmail: string;
+	orderPaymentMethod: string;
+	orderPaymentMethodTitle: string;
+	orderStatusText: string;
+	orderStatus: string;
+	billingAddress: CartBillingAddress;
+	shippingAddress: CartShippingAddress;
+	orderBillingAddress: string;
+	orderShippingAddress: string;
+};
 
-	if ( ! orderData || ! objectHasProp( orderData, 'orderNumber' ) ) {
-		return null;
-	}
-
-	const {
-		orderNumber,
-		orderDate,
-		orderEmail,
-		orderTotal,
-		orderPaymentMethod,
-		billingAddress,
-		orderStatusText,
-		orderStatus,
-		// shippingAddress,
-		orderBillingAddress,
-		orderShippingAddress,
-	} = orderData;
-
+const OrderSummaryHeading = ( {
+	orderData,
+}: {
+	orderData: OrderDataType;
+} ): JSX.Element => {
 	const thankYouHeading = sprintf(
 		/* translators: %s is referring to the order status */
 		__( 'Thank you %s!', 'woo-gutenberg-products-block' ),
-		billingAddress.first_name
+		orderData.billingAddress.first_name
 	);
 
-	const Address = ( { address }: { address: string } ) => {
-		return (
-			<address>
-				<RawHTML>{ address }</RawHTML>
-			</address>
-		);
-	};
+	return (
+		<div className="wc-block-components-order-summary__heading">
+			<Icon icon={ checkCircle } />
+			<div role="doc-subtitle">
+				{ sprintf(
+					/* translators: %s is referring to the order number */
+					__( 'Order #%s', 'woo-gutenberg-products-block' ),
+					orderData.orderNumber
+				) }
+			</div>
+			<h2>{ thankYouHeading }</h2>
+		</div>
+	);
+};
 
+const OrderSummaryStatus = ( {
+	orderData,
+}: {
+	orderData: OrderDataType;
+} ): JSX.Element => {
 	let orderStatusHeading = sprintf(
 		/* translators: %s is referring to the order status */
 		__( 'Your order is %s', 'woo-gutenberg-products-block' ),
-		orderStatusText
+		orderData.orderStatusText
 	);
 	let orderStatusDescription = '';
 
-	switch ( orderStatus ) {
+	switch ( orderData.orderStatus ) {
 		case 'pending':
 			orderStatusDescription = __(
 				"We've received your order and will start processing it once payment has been verified.",
@@ -107,88 +107,110 @@ const Block = ( props: {
 			break;
 	}
 
+	const date = getDate( orderData.orderDate );
+	const formattedDate = gmdateI18n(
+		_x(
+			'F j, Y',
+			'post schedule full date format',
+			'woo-gutenberg-products-block'
+		),
+		date
+	);
+
+	return (
+		<div className="wc-block-components-order-summary__status">
+			<h3>{ orderStatusHeading }</h3>
+			<p>
+				{ orderStatusDescription ? orderStatusDescription + ' ' : '' }
+				{ createInterpolateElement(
+					__(
+						'A confirmation email has been sent to <email/>. Come back to this page to see updates regarding your order status.',
+						'woo-gutenberg-products-block'
+					),
+					{
+						email: <strong>{ orderData.orderEmail }</strong>,
+					}
+				) }
+			</p>
+			<ul className="wc-block-components-order-summary__status_items">
+				<li className="wc-block-components-order-summary__status_item">
+					{ __( 'Date:', 'woo-gutenberg-products-block' ) }{ ' ' }
+					<strong>{ formattedDate }</strong>
+				</li>
+				<li className="wc-block-components-order-summary__status_item">
+					{ __( 'Total:', 'woo-gutenberg-products-block' ) }{ ' ' }
+					<strong>
+						{ formatPrice(
+							orderData.orderTotal,
+							orderData.orderCurrency
+						) }
+					</strong>
+				</li>
+				<li className="wc-block-components-order-summary__status_item">
+					{ __( 'Payment method:', 'woo-gutenberg-products-block' ) }{ ' ' }
+					<strong>
+						{ orderData.orderPaymentMethodTitle ||
+							orderData.orderPaymentMethod }
+					</strong>
+				</li>
+			</ul>
+		</div>
+	);
+};
+
+const Address = ( { address }: { address: string } ) => {
+	return (
+		<address>
+			<RawHTML>{ address }</RawHTML>
+		</address>
+	);
+};
+
+const OrderSummaryCustomer = ( {
+	orderData,
+}: {
+	orderData: OrderDataType;
+} ): JSX.Element => {
+	return (
+		<div className="wc-block-components-order-summary__customer">
+			{ orderData.orderShippingAddress !== '' && (
+				<div className="wc-block-components-order-summary__customer_address">
+					<h3>
+						{ __(
+							'Shipping address',
+							'woo-gutenberg-products-block'
+						) }
+					</h3>
+					<Address address={ orderData.orderShippingAddress } />
+				</div>
+			) }
+			{ orderData.orderBillingAddress !== '' && (
+				<div className="wc-block-components-order-summary__customer_address">
+					<h3>
+						{ __(
+							'Billing address',
+							'woo-gutenberg-products-block'
+						) }
+					</h3>
+					<Address address={ orderData.orderBillingAddress } />
+				</div>
+			) }
+		</div>
+	);
+};
+
+const Block = ( props: { orderData: OrderDataType } ): JSX.Element | null => {
+	const { orderData } = props;
+
+	if ( ! orderData || ! objectHasProp( orderData, 'orderNumber' ) ) {
+		return null;
+	}
+
 	return (
 		<div className="wc-block-components-order-summary">
-			<div className="wc-block-components-order-summary-title">
-				<Icon icon={ checkCircle } />
-				<div role="doc-subtitle">
-					{ sprintf(
-						/* translators: %s is referring to the order number */
-						__( 'Order #%s', 'woo-gutenberg-products-block' ),
-						orderNumber
-					) }
-				</div>
-				<h2>{ thankYouHeading }</h2>
-			</div>
-			<div className="wc-block-components-order-summary-box">
-				<h3>{ orderStatusHeading }</h3>
-				<p>
-					{ orderStatusDescription
-						? orderStatusDescription + ' '
-						: '' }
-					{ createInterpolateElement(
-						__(
-							'A confirmation email has been sent to <email/>. Come back to this page to see updates regarding your order status.',
-							'woo-gutenberg-products-block'
-						),
-						{
-							email: <strong>{ orderEmail }</strong>,
-						}
-					) }
-				</p>
-				<ul className="wc-block-components-order-summary-items">
-					<li className="wc-block-components-order-summary__order-number">
-						{ __(
-							'Order number:',
-							'woo-gutenberg-products-block'
-						) }{ ' ' }
-						<strong>{ orderNumber }</strong>
-					</li>
-					<li className="wc-block-components-order-summary__order-date">
-						{ __( 'Date:', 'woo-gutenberg-products-block' ) }{ ' ' }
-						<strong>{ orderDate }</strong>
-					</li>
-					<li className="wc-block-components-order-customer-email">
-						{ __( 'Email:', 'woo-gutenberg-products-block' ) }{ ' ' }
-						<strong>{ orderEmail }</strong>
-					</li>
-					<li className="wc-block-components-order-summary__order-total">
-						{ __( 'Total:', 'woo-gutenberg-products-block' ) }{ ' ' }
-						<strong>{ orderTotal }</strong>
-					</li>
-					<li className="wc-block-components-order-summary__payment-method">
-						{ __(
-							'Payment method:',
-							'woo-gutenberg-products-block'
-						) }{ ' ' }
-						<strong>{ orderPaymentMethod }</strong>
-					</li>
-				</ul>
-			</div>
-			<div className="wc-block-components-order-addresses-box">
-				{ orderShippingAddress !== '' && (
-					<div className="wc-block-components-order-addresses-box__shipping">
-						<h3>
-							{ __(
-								'Shipping address',
-								'woo-gutenberg-products-block'
-							) }
-						</h3>
-						<Address address={ orderShippingAddress } />
-					</div>
-				) }
-				{ orderBillingAddress !== '' && (
-					<div className="wc-block-components-order-addresses-box__billing">
-						<h3>
-							{ __(
-								'Billing address',
-								'woo-gutenberg-products-block'
-							) }
-						</h3>
-						<Address address={ orderBillingAddress } />
-					</div>
-				) }
-			</div>
+			<OrderSummaryHeading orderData={ orderData } />
+			<OrderSummaryStatus orderData={ orderData } />
+			<OrderSummaryCustomer orderData={ orderData } />
 		</div>
 	);
 };

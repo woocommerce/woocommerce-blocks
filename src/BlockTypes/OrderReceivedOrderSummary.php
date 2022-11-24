@@ -78,28 +78,83 @@ class OrderReceivedOrderSummary extends AbstractBlock {
 	 */
 	protected function enqueue_data( array $attributes = [] ) {
 		parent::enqueue_data( $attributes );
-		$order = $this->get_received_order();
+		$order     = $this->get_received_order();
+		$formatter = new \Automattic\WooCommerce\StoreApi\Formatters\MoneyFormatter();
 
 		if ( $order ) {
 			$this->asset_data_registry->add(
 				'orderReceivedData',
 				[
-					'orderId'              => $order->get_id(),
-					'orderNumber'          => $order->get_order_number(),
-					'orderDate'            => $order->get_date_created()->date( 'Y-m-d H:i:s' ),
-					'orderStatus'          => $order->get_status(),
-					'orderStatusText'      => wc_get_order_status_name( $order->get_status() ),
-					'orderTotal'           => $order->get_total(),
-					'orderCurrency'        => $order->get_currency(),
-					'orderPaymentMethod'   => $order->get_payment_method(),
-					'orderBillingAddress'  => $order->get_formatted_billing_address(),
-					'orderShippingAddress' => $order->get_formatted_shipping_address(),
-					'orderItems'           => $order->get_items(),
-					'orderNotes'           => $order->get_customer_order_notes(),
-					'orderEmail'           => $order->get_billing_email(),
-					'billingAddress'       => $order->get_address( 'billing' ),
+					'orderId'                 => $order->get_id(),
+					'orderNumber'             => $order->get_order_number(),
+					'orderDate'               => $order->get_date_created()->date( 'Y-m-d H:i:s' ),
+					'orderStatus'             => $order->get_status(),
+					'orderStatusText'         => wc_get_order_status_name( $order->get_status() ),
+					'orderTotal'              => $formatter->format(
+						$order->get_total(),
+						[
+							'decimals' => wc_get_price_decimals(),
+						]
+					),
+					'orderCurrency'           => $order->get_currency(),
+					'orderPaymentMethod'      => $order->get_payment_method(),
+					'orderPaymentMethodTitle' => $order->get_payment_method_title(),
+					'orderBillingAddress'     => $order->get_formatted_billing_address(),
+					'orderShippingAddress'    => $order->get_formatted_shipping_address(),
+					'orderItems'              => $order->get_items(),
+					'orderNotes'              => $order->get_customer_order_notes(),
+					'orderEmail'              => $order->get_billing_email(),
+					'billingAddress'          => $order->get_address( 'billing' ),
+					'shippingAddress'         => $order->get_address( 'shipping' ),
 				]
 			);
 		}
+	}
+
+	/**
+	 * Render the block. Extended by children.
+	 *
+	 * @param array    $attributes Block attributes.
+	 * @param string   $content    Block content.
+	 * @param WP_Block $block      Block instance.
+	 * @return string Rendered block type output.
+	 */
+	protected function render( $attributes, $content, $block ) {
+		$order = $this->get_received_order();
+
+		if ( $order ) {
+			ob_start();
+
+			// Remove core display of order details.
+			remove_action( 'woocommerce_thankyou', 'woocommerce_order_details_table' );
+
+			/**
+			 * Run legacy woocommerce_before_thankyou hook.
+			 *
+			 * Used to outout content on the thanks page before the main content.
+			 */
+			do_action( 'woocommerce_before_thankyou', $order->get_id() );
+
+			// Output default block content.
+			echo $content; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
+
+			/**
+			 * Run legacy woocommerce_thankyou_PAYMENTMETHOD hook.
+			 *
+			 * Used to outout content on the thanks page after the main content.
+			 */
+			do_action( 'woocommerce_thankyou_' . $order->get_payment_method(), $order->get_id() );
+
+			/**
+			 * Run legacy woocommerce_thankyou hook.
+			 *
+			 * Used to outout content on the thanks page after the main content.
+			 */
+			do_action( 'woocommerce_thankyou', $order->get_id() );
+
+			return ob_get_clean();
+		}
+
+		return $content;
 	}
 }

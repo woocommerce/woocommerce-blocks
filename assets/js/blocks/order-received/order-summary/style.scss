@@ -1,7 +1,7 @@
 
 
 .wc-block-components-order-summary {
-	.wc-block-components-order-summary-title {
+	.wc-block-components-order-summary__heading {
 		position: relative;
 		padding-left: 3.75em;
 		margin: 0 0 2em;
@@ -9,7 +9,7 @@
 		[role="doc-subtitle"] {
 			font-size: 1em;
 			line-height: 1.75;
-			color: #999;
+			color: $gray-700;
 			margin: 0;
 		}
 
@@ -29,13 +29,51 @@
 			position: absolute;
 		}
 	}
-	.wc-block-components-order-summary-box {
+	.wc-block-components-order-summary__status {
+		.wc-block-components-order-summary__status_items {
+			display: flex;
+			justify-content: space-between;
+			gap: 1.5em;
+			list-style: none outside;
+			margin: 0;
+			padding: 0;
+			.wc-block-components-order-summary__status_item {
+				@include with-translucent-border(0 1px 0 0);
+				flex: 1;
+				font-size: 0.875em;
+				line-height: 1.75;
+				color: $gray-700;
+				margin: 0;
+				padding: 0;
+				&:last-child::after {
+					border-right: none;
+
+				}
+				strong {
+					display: block;
+					font-weight: normal;
+				}
+			}
+		}
+	}
+	.wc-block-components-order-summary__customer {
+		display: flex;
+		gap: 1.5em;
+
+		.wc-block-components-order-summary__customer_address {
+			flex: 1;
+		}
+	}
+	.wc-block-components-order-summary__status,
+	.wc-block-components-order-summary__customer {
 		padding: 1.5em;
 		margin: 1.5em 0;
-		border: 1px solid #ddd;
-		border-radius: 4px;
+		@include with-translucent-border(1px);
+		&::after {
+			border-radius: 4px;
+		}
 		h3 {
-			margin: 0;
+			margin: 0 0 0.8em;
 			font-size: 1.25em;
 		}
 		&:first-child {
@@ -44,14 +82,5 @@
 		&:last-child {
 			margin-bottom: 0;
 		}
-	}
-}
-
-.wc-block-components-order-addresses-box {
-	display: flex;
-	gap: 1.5em;
-
-	.wc-block-components-order-addresses-box__address {
-		flex: 1;
 	}
 }
