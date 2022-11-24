@@ -9,7 +9,10 @@ import {
 	switchUserToAdmin,
 	publishPost,
 } from '@wordpress/e2e-test-utils';
-import { selectBlockByName } from '@woocommerce/blocks-test-utils';
+import {
+	selectBlockByName,
+	insertBlockUsingSlash,
+} from '@woocommerce/blocks-test-utils';
 
 /**
  * Internal dependencies
@@ -67,7 +70,7 @@ describe( `${ block.name } Block`, () => {
 				title: block.name,
 			} );
 
-			await insertBlock( 'All Products' );
+			await insertBlockUsingSlash( 'All Products' );
 			await insertBlock( block.name );
 			const canvasEl = canvas();
 
@@ -108,7 +111,7 @@ describe( `${ block.name } Block`, () => {
 		} );
 	} );
 
-	describe( 'with PHP classic template ', () => {
+	describe( 'with PHP classic template', () => {
 		const productCatalogTemplateId =
 			'woocommerce/woocommerce//archive-product';
 
@@ -187,7 +190,7 @@ describe( `${ block.name } Block`, () => {
 			} );
 
 			await selectBlockByName( block.slug );
-			await openBlockEditorSettings( { isFSEEditor: true } );
+			await openBlockEditorSettings();
 			const [ filterButtonToggle ] = await page.$x(
 				block.selectors.editor.filterButtonToggle
 			);

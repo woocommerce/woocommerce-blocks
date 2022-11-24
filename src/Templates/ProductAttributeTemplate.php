@@ -8,7 +8,7 @@ namespace Automattic\WooCommerce\Blocks\Templates;
  * @internal
  */
 class ProductAttributeTemplate {
-	const SLUG = 'archive-product';
+	const SLUG = 'taxonomy-product_attribute';
 
 	/**
 	 * Constructor.
@@ -25,13 +25,14 @@ class ProductAttributeTemplate {
 	}
 
 	/**
-	 * Render the Archive Product Template for product attributes.
+	 * Renders the Product by Attribute template for product attributes taxonomy pages.
 	 *
 	 * @param array $templates Templates that match the product attributes taxonomy.
 	 */
 	public function update_taxonomy_template_hierarchy( $templates ) {
-		if ( taxonomy_is_product_attribute( get_query_var( 'taxonomy' ) ) && wc_current_theme_is_fse_theme() ) {
-			array_unshift( $templates, self::SLUG );
+		$queried_object = get_queried_object();
+		if ( taxonomy_is_product_attribute( $queried_object->taxonomy ) && wc_current_theme_is_fse_theme() ) {
+			array_splice( $templates, count( $templates ) - 1, 0, self::SLUG );
 		}
 
 		return $templates;

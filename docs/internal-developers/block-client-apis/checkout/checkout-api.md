@@ -35,7 +35,6 @@ The following data is available:
 -   `orderId`: The order id for the order attached to the current checkout.
 -   `customerId`: The ID of the customer if the customer has an account, or `0` for guests.
 -   `calculatingCount`: If any of the totals, taxes, shipping, etc need to be calculated, the count will be increased here.
--   `paymentResult`: The result of processing the payment.
 -   `useShippingAsBilling`: Should the billing form be hidden and inherit the shipping address?
 -   `shouldCreateAccount`: Should a user account be created with this order?
 -   `extensionData`: This is used by plugins that extend Cart & Checkout to pass custom data to the Store API on checkout processing
@@ -65,7 +64,6 @@ The following actions can be dispatched from the Checkout data store:
 -   `__internalSetIdle()`: Set `state.status` to `idle`
 -   `__internalSetComplete()`: Set `state.status` to `complete`
 -   `__internalSetProcessing()`: Set `state.status` to `processing`
--   `__internalSetPaymentResult( response: PaymentResult )`: Set `state.paymentResult` to `response`
 -   `__internalSetBeforeProcessing()`: Set `state.status` to `before_processing`
 -   `__internalSetAfterProcessing()`: Set `state.status` to `after_processing`
 -   `__internalSrocessCheckoutResponse( response: CheckoutResponse )`: This is a thunk that will extract the paymentResult from the CheckoutResponse, and dispatch 3 actions: `__internalSetRedirectUrl`, `__internalSetPaymentResult` and `__internalSetAfterProcessing`.
@@ -132,13 +130,3 @@ This hook is used to expose all the interfaces for the registered payment method
 _Why don't payment methods just implement this hook_?
 
 The contract is established through props fed to the payment method components via props. This allows us to avoid having to expose the hook publicly and experiment with how the props are retrieved and exposed in the future.
-
-<!-- FEEDBACK -->
-
----
-
-[We're hiring!](https://woocommerce.com/careers/) Come work with us!
-
-🐞 Found a mistake, or have a suggestion? [Leave feedback about this document here.](https://github.com/woocommerce/woocommerce-blocks/issues/new?assignees=&labels=type%3A+documentation&template=--doc-feedback.md&title=Feedback%20on%20./docs/internal-developers/block-client-apis/checkout/checkout-api.md)
-
-<!-- /FEEDBACK -->

@@ -5,7 +5,7 @@
 import type PaymentMethodLabel from '@woocommerce/base-components/cart-checkout/payment-method-label';
 import type PaymentMethodIcons from '@woocommerce/base-components/cart-checkout/payment-method-icons';
 import type LoadingMask from '@woocommerce/base-components/loading-mask';
-import type ValidationInputError from '@woocommerce/base-components/validation-input-error';
+import { ValidationInputError } from '@woocommerce/blocks-checkout';
 
 /**
  * Internal dependencies
@@ -17,7 +17,6 @@ import type {
 	responseTypes,
 	noticeContexts,
 } from '../../base/context/event-emit';
-import type { PaymentMethodCurrentStatusType } from '../../base/context/providers/cart-checkout/payment-events/types';
 import type {
 	CartResponseShippingAddress,
 	CartResponseCouponItem,
@@ -165,7 +164,16 @@ export type PaymentMethodInterface = {
 	// Used to trigger checkout processing.
 	onSubmit: () => void;
 	// Various payment status helpers.
-	paymentStatus: PaymentMethodCurrentStatusType;
+	paymentStatus: {
+		isPristine: boolean;
+		isStarted: boolean;
+		isProcessing: boolean;
+		isFinished: boolean;
+		hasError: boolean;
+		hasFailed: boolean;
+		isSuccessful: boolean;
+		isDoingExpressPayment: boolean;
+	};
 	// Deprecated. For setting an error (error message string) for express payment methods. Does not change payment status.
 	setExpressPaymentError: ( errorMessage?: string ) => void;
 	// Various data related to shipping.
