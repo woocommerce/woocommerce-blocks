@@ -34,10 +34,6 @@ if ( isExperimentalBuild() ) {
 		attributes: {
 			...QUERY_DEFAULT_ATTRIBUTES,
 			namespace: VARIATION_NAME,
-			query: {
-				...QUERY_DEFAULT_ATTRIBUTES.query,
-				__woocommerceProductQuerySubType: VARIATION_NAME,
-			},
 		},
 		// Gutenberg doesn't support this type yet, discussion here:
 		// https://github.com/WordPress/gutenberg/pull/43632

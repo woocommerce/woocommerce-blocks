@@ -120,11 +120,9 @@ class ProductQuery extends AbstractBlock {
 			return $query;
 		}
 
-		$query = array_merge( $query, $this->get_buy_it_again_products_query() ); // TODO: change this.
-
 		$common_query_values = array(
-			'post_type'      => $query['post_type'] ?? 'product',
-			'post__in'       => $query['post__in'] ?? array(),
+			'post_type'      => 'product',
+			'post__in'       => array(),
 			'post_status'    => 'publish',
 			'posts_per_page' => $query['posts_per_page'],
 			'orderby'        => $query['orderby'],
@@ -417,12 +415,24 @@ class ProductQuery extends AbstractBlock {
 	 * @return array
 	 */
 	private function get_queries_by_attributes( $parsed_block ) {
-		$query           = $parsed_block['attrs']['query'];
-		$on_sale_enabled = isset( $query['__woocommerceOnSale'] ) && true === $query['__woocommerceOnSale'];
+		$query = $parsed_block['attrs']['query'];
 
+		$stock_status = isset( $query['__woocommerceStockStatus'] ) ? $this->get_stock_status_query( $query['__woocommerceStockStatus'] ) : array();
+
+		$is_buy_it_again_block = 'woocommerce/query-buy-it-again' === $parsed_block['attrs']['namespace'];
+
+		if ( $is_buy_it_again_block ) {
+
+			return array(
+				'buy_it_again' => $this->get_buy_it_again_products_query(),
+				'stock_status' => $stock_status,
+			);
+		}
+
+		$on_sale_enabled = isset( $query['__woocommerceOnSale'] ) && true === $query['__woocommerceOnSale'];
 		return array(
 			'on_sale'      => ( $on_sale_enabled ? $this->get_on_sale_products_query() : array() ),
-			'stock_status' => isset( $query['__woocommerceStockStatus'] ) ? $this->get_stock_status_query( $query['__woocommerceStockStatus'] ) : array(),
+			'stock_status' => $stock_status,
 		);
 	}
 
