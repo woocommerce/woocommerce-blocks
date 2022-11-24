@@ -16,6 +16,15 @@ import {
 } from '../constants';
 
 const VARIATION_NAME = 'woocommerce/query-buy-it-again';
+const BUY_IT_AGAIN_ATTRIBUTES = {
+	...QUERY_DEFAULT_ATTRIBUTES,
+	allowedControls: [],
+	query: {
+		...QUERY_DEFAULT_ATTRIBUTES.query,
+		orderBy: 'selected',
+		__woocommerceStockStatus: 'instock',
+	},
+};
 const allowedInnerBlocks = INNER_BLOCKS_TEMPLATE[ 0 ];
 if ( isExperimentalBuild() ) {
 	registerBlockVariation( QUERY_LOOP_ID, {
@@ -32,7 +41,7 @@ if ( isExperimentalBuild() ) {
 			),
 		},
 		attributes: {
-			...QUERY_DEFAULT_ATTRIBUTES,
+			...BUY_IT_AGAIN_ATTRIBUTES,
 			namespace: VARIATION_NAME,
 		},
 		// Gutenberg doesn't support this type yet, discussion here:
