@@ -28,7 +28,7 @@ class ProductQuery extends AbstractBlock {
 	 *
 	 * @var array
 	 */
-	protected $custom_order_opts = array( 'popularity', 'rating', 'selected' );
+	protected $custom_order_opts = array( 'popularity', 'rating' );
 
 	/**
 	 * All the query args related to the filter by attributes block.
@@ -132,14 +132,13 @@ class ProductQuery extends AbstractBlock {
 			'tax_query'      => array(),
 		);
 
-		$orderby_query = $this->get_custom_orderby_query( $query['orderby'] );
-
 		$queries_by_block_sub_types = $this->get_queries_by_block_sub_types( $parsed_block );
 
 		if ( ! empty( $queries_by_block_sub_types ) ) {
 			return array_merge( $common_query_values, $queries_by_block_sub_types );
 		}
 
+		$orderby_query         = $this->get_custom_orderby_query( $query['orderby'] );
 		$queries_by_attributes = $this->get_queries_by_attributes( $parsed_block );
 		$queries_by_filters    = $this->get_queries_by_applied_filters();
 
@@ -304,7 +303,6 @@ class ProductQuery extends AbstractBlock {
 		$meta_keys = array(
 			'popularity' => 'total_sales',
 			'rating'     => '_wc_average_rating',
-			'selected'   => 'post__in',
 		);
 
 		return array(
@@ -446,9 +444,19 @@ class ProductQuery extends AbstractBlock {
 	 */
 	private function get_queries_by_block_sub_types( $parsed_block ) {
 
+		$stock_status = array();
+
+		if ( isset( $parsed_block['attrs']['query']['__woocommerceStockStatus'] ) ) {
+			$stock_status = array(
+				'meta_query' => array(
+					$this->get_stock_status_query( $parsed_block['attrs']['query']['__woocommerceStockStatus'] )['meta_query'],
+				),
+			);
+		}
+
 		switch ( $parsed_block['attrs']['namespace'] ) {
 			case 'woocommerce/query-buy-it-again':
-				return $this->get_buy_it_again_products_query();
+				return array_merge( $this->get_buy_it_again_products_query(), $stock_status );
 			default:
 				return array();
 		}
