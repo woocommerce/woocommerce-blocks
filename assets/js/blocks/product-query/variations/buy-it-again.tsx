@@ -21,7 +21,7 @@ const BUY_IT_AGAIN_ATTRIBUTES = {
 	allowedControls: [],
 	query: {
 		...QUERY_DEFAULT_ATTRIBUTES.query,
-		orderBy: 'selected',
+		//	orderBy: 'selected',
 		__woocommerceStockStatus: 'instock',
 	},
 };

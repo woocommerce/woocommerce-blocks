@@ -11,6 +11,7 @@ import {
 	ToggleControl,
 	Notice,
 } from '@wordpress/components';
+import { useEffect } from '@wordpress/element';
 import { InspectorControls } from '@wordpress/block-editor';
 import { productSupportsAddToCartForm } from '@woocommerce/base-utils';
 
@@ -22,9 +23,15 @@ import Block from './block';
 import withProductSelector from '../shared/with-product-selector';
 import { BLOCK_TITLE, BLOCK_ICON } from './constants';
 
-const Edit = ( { attributes, setAttributes } ) => {
+const Edit = ( { attributes, setAttributes, context } ) => {
 	const { product } = useProductDataContext();
 	const { className, showFormElements } = attributes;
+	const isDescendentOfQueryLoop = Number.isFinite( context.queryId );
+
+	useEffect(
+		() => setAttributes( { isDescendentOfQueryLoop } ),
+		[ setAttributes, isDescendentOfQueryLoop ]
+	);
 
 	return (
 		<div

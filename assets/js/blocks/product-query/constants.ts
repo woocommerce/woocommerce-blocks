@@ -81,6 +81,7 @@ export const INNER_BLOCKS_TEMPLATE: InnerBlockTemplate[] = [
 				},
 				[],
 			],
+			[ 'woocommerce/product-add-to-cart' ],
 		],
 	],
 	[ 'core/query-pagination' ],
