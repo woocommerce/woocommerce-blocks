@@ -28,7 +28,7 @@ class ProductQuery extends AbstractBlock {
 	 *
 	 * @var array
 	 */
-	protected $custom_order_opts = array( 'popularity', 'rating', 'post__in' );
+	protected $custom_order_opts = array( 'popularity', 'rating', 'selected' );
 
 	/**
 	 * All the query args related to the filter by attributes block.
@@ -304,6 +304,7 @@ class ProductQuery extends AbstractBlock {
 		$meta_keys = array(
 			'popularity' => 'total_sales',
 			'rating'     => '_wc_average_rating',
+			'selected'   => 'post__in',
 		);
 
 		return array(
