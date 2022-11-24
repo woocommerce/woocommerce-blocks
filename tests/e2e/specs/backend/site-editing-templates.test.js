@@ -146,13 +146,8 @@ const runOnlyWhenGutenbergIsDisabled = ( fn ) => {
 	}
 };
 
-describe( 'Store Editing Templates', () => {
+describe.skip( 'Store Editing Templates', () => {
 	useTheme( 'emptytheme' );
-
-	beforeAll( async () => {
-		await deleteAllTemplates( 'wp_template' );
-		await deleteAllTemplates( 'wp_template_part' );
-	} );
 
 	describe( 'Single Product block template', () => {
 		beforeAll( async () => {
