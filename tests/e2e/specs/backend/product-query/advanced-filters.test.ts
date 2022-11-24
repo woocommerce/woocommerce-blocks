@@ -28,13 +28,13 @@ import {
 	resetProductQueryBlockPage,
 	getPreviewProducts,
 	getFrontEndProducts,
-	toggleProductFilter,
+	toggleAdvancedFilter,
 } from './common';
 
 describeOrSkip( GUTENBERG_EDITOR_CONTEXT === 'gutenberg' )(
 	'Product Query > Advanced Filters',
 	() => {
-		let $productFiltersPanel: ElementHandle< Node >;
+		let $advancedFiltersPanel: ElementHandle< Node >;
 		beforeEach( async () => {
 			/**
 			 * Reset the block page before each test to ensure the block is
@@ -44,7 +44,7 @@ describeOrSkip( GUTENBERG_EDITOR_CONTEXT === 'gutenberg' )(
 			await resetProductQueryBlockPage();
 			await openBlockEditorSettings();
 			await selectBlockByName( block.slug );
-			$productFiltersPanel = await findToolsPanelWithTitle(
+			$advancedFiltersPanel = await findToolsPanelWithTitle(
 				'Advanced Filters'
 			);
 		} );
@@ -59,18 +59,18 @@ describeOrSkip( GUTENBERG_EDITOR_CONTEXT === 'gutenberg' )(
 
 		describe( 'Sale Status', () => {
 			it( 'Sale status is disabled by default', async () => {
-				await expect( $productFiltersPanel ).not.toMatch(
+				await expect( $advancedFiltersPanel ).not.toMatch(
 					'Show only products on sale'
 				);
 			} );
 
 			it( 'Can add and remove Sale Status filter', async () => {
-				await toggleProductFilter( 'Sale status' );
-				await expect( $productFiltersPanel ).toMatch(
+				await toggleAdvancedFilter( 'Sale status' );
+				await expect( $advancedFiltersPanel ).toMatch(
 					'Show only products on sale'
 				);
-				await toggleProductFilter( 'Sale status' );
-				await expect( $productFiltersPanel ).not.toMatch(
+				await toggleAdvancedFilter( 'Sale status' );
+				await expect( $advancedFiltersPanel ).not.toMatch(
 					'Show only products on sale'
 				);
 			} );
@@ -81,7 +81,7 @@ describeOrSkip( GUTENBERG_EDITOR_CONTEXT === 'gutenberg' )(
 				expect( await getPreviewProducts() ).toHaveLength(
 					defaultCount
 				);
-				await toggleProductFilter( 'Sale status' );
+				await toggleAdvancedFilter( 'Sale status' );
 				await setCheckbox(
 					await getToggleIdByLabel( 'Show only products on sale' )
 				);
@@ -95,7 +95,7 @@ describeOrSkip( GUTENBERG_EDITOR_CONTEXT === 'gutenberg' )(
 			} );
 
 			it( 'Works on the front end', async () => {
-				await toggleProductFilter( 'Sale status' );
+				await toggleAdvancedFilter( 'Sale status' );
 				await setCheckbox(
 					await getToggleIdByLabel( 'Show only products on sale' )
 				);
@@ -111,29 +111,29 @@ describeOrSkip( GUTENBERG_EDITOR_CONTEXT === 'gutenberg' )(
 
 		describe( 'Stock Status', () => {
 			it( 'Stock status is enabled by default', async () => {
-				await expect( $productFiltersPanel ).toMatchElement(
+				await expect( $advancedFiltersPanel ).toMatchElement(
 					SELECTORS.formTokenFieldLabel,
 					{ text: 'Stock status' }
 				);
 			} );
 
 			it( 'Can add and remove Stock Status filter', async () => {
-				await toggleProductFilter( 'Stock status' );
-				await expect( $productFiltersPanel ).not.toMatchElement(
+				await toggleAdvancedFilter( 'Stock status' );
+				await expect( $advancedFiltersPanel ).not.toMatchElement(
 					SELECTORS.formTokenFieldLabel,
 					{ text: 'Stock status' }
 				);
-				await toggleProductFilter( 'Stock status' );
-				await expect( $productFiltersPanel ).toMatchElement(
+				await toggleAdvancedFilter( 'Stock status' );
+				await expect( $advancedFiltersPanel ).toMatchElement(
 					SELECTORS.formTokenFieldLabel,
 					{ text: 'Stock status' }
 				);
 			} );
 
 			it( 'All statuses are enabled by default', async () => {
-				await expect( $productFiltersPanel ).toMatch( 'In stock' );
-				await expect( $productFiltersPanel ).toMatch( 'Out of stock' );
-				await expect( $productFiltersPanel ).toMatch( 'On backorder' );
+				await expect( $advancedFiltersPanel ).toMatch( 'In stock' );
+				await expect( $advancedFiltersPanel ).toMatch( 'Out of stock' );
+				await expect( $advancedFiltersPanel ).toMatch( 'On backorder' );
 			} );
 
 			it( 'Editor preview shows all products by default', async () => {
@@ -150,7 +150,7 @@ describeOrSkip( GUTENBERG_EDITOR_CONTEXT === 'gutenberg' )(
 			 * @see https://github.com/woocommerce/woocommerce-blocks/pull/7682
 			 */
 			it.skip( 'Editor preview shows correct products that has enabled stock statuses', async () => {
-				const $$tokenRemoveButtons = await $productFiltersPanel.$$(
+				const $$tokenRemoveButtons = await $advancedFiltersPanel.$$(
 					SELECTORS.tokenRemoveButton
 				);
 				for ( const $el of $$tokenRemoveButtons ) {
@@ -175,7 +175,7 @@ describeOrSkip( GUTENBERG_EDITOR_CONTEXT === 'gutenberg' )(
 			} );
 
 			it( 'Works on the front end', async () => {
-				const tokenRemoveButtons = await $productFiltersPanel.$$(
+				const tokenRemoveButtons = await $advancedFiltersPanel.$$(
 					SELECTORS.tokenRemoveButton
 				);
 				for ( const el of tokenRemoveButtons ) {

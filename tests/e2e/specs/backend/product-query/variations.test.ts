@@ -44,17 +44,17 @@ describeOrSkip( GUTENBERG_EDITOR_CONTEXT === 'gutenberg' )(
 			it( 'Sale status is not available in product fitlers menu.', async () => {
 				await openBlockEditorSettings();
 				await selectBlockByName( block.slug );
-				const $productFiltersPanel = await findToolsPanelWithTitle(
+				const $advancedFiltersPanel = await findToolsPanelWithTitle(
 					'Product filters'
 				);
-				await expect( $productFiltersPanel ).toClick(
-					SELECTORS.productFiltersDropdownButton()
+				await expect( $advancedFiltersPanel ).toClick(
+					SELECTORS.advancedFiltersDropdownButton()
 				);
 				await canvas().waitForSelector(
-					SELECTORS.productFiltersDropdown
+					SELECTORS.advancedFiltersDropdown
 				);
 				await expect( canvas() ).not.toMatchElement(
-					SELECTORS.productFiltersDropdownItem,
+					SELECTORS.advancedFiltersDropdownItem,
 					{
 						text: 'Sale status',
 					}
@@ -63,7 +63,7 @@ describeOrSkip( GUTENBERG_EDITOR_CONTEXT === 'gutenberg' )(
 				 * Other product filters are available.
 				 */
 				await expect( canvas() ).toMatchElement(
-					SELECTORS.productFiltersDropdownItem,
+					SELECTORS.advancedFiltersDropdownItem,
 					{
 						text: 'Stock status',
 					}

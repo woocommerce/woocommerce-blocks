@@ -41,13 +41,13 @@ export const block = {
  * label is visible to end users.
  */
 export const SELECTORS = {
-	productFiltersDropdownButton: (
+	advancedFiltersDropdownButton: (
 		{ expanded }: { expanded: boolean } = { expanded: false }
 	) =>
 		`.components-tools-panel-header .components-dropdown-menu button[aria-expanded="${ expanded }"]`,
-	productFiltersDropdown:
+	advancedFiltersDropdown:
 		'.components-dropdown-menu__menu[aria-label="Product filters options"]',
-	productFiltersDropdownItem: '.components-menu-item__button',
+	advancedFiltersDropdownItem: '.components-menu-item__button',
 	editorPreview: {
 		productsGrid: 'ul.wp-block-post-template',
 		productsGridItem:
@@ -83,18 +83,18 @@ export const getFrontEndProducts = async (): Promise< ElementHandle[] > => {
 	return await canvas().$$( SELECTORS.productsGridItem );
 };
 
-export const toggleProductFilter = async ( filterName: string ) => {
-	const $productFiltersPanel = await findToolsPanelWithTitle(
+export const toggleAdvancedFilter = async ( filterName: string ) => {
+	const $advancedFiltersPanel = await findToolsPanelWithTitle(
 		'Advanced Filters'
 	);
-	await expect( $productFiltersPanel ).toClick(
-		SELECTORS.productFiltersDropdownButton()
+	await expect( $advancedFiltersPanel ).toClick(
+		SELECTORS.advancedFiltersDropdownButton()
 	);
-	await canvas().waitForSelector( SELECTORS.productFiltersDropdown );
-	await expect( canvas() ).toClick( SELECTORS.productFiltersDropdownItem, {
+	await canvas().waitForSelector( SELECTORS.advancedFiltersDropdown );
+	await expect( canvas() ).toClick( SELECTORS.advancedFiltersDropdownItem, {
 		text: filterName,
 	} );
-	await expect( $productFiltersPanel ).toClick(
-		SELECTORS.productFiltersDropdownButton( { expanded: true } )
+	await expect( $advancedFiltersPanel ).toClick(
+		SELECTORS.advancedFiltersDropdownButton( { expanded: true } )
 	);
 };
