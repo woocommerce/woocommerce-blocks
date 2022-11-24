@@ -3,26 +3,45 @@
 .wc-block-components-order-summary {
 	.wc-block-components-order-summary-title {
 		position: relative;
-		padding-left: 4em;
-		line-height: 1.5;
+		padding-left: 3.75em;
 
 		[role="doc-subtitle"] {
 			font-size: 1em;
+			line-height: 1.75;
 			color: #999;
 			margin: 0;
 		}
 
 		h2 {
-			font-size: 1.25em;
+			font-size: 1.5em;
 			margin-top: 0;
+			line-height: 1;
+		}
 
-			svg {
-				position: absolute;
-				left: 0;
-				top: 0;
-				height: 3em;
-				width: 3em;
-			}
+		svg {
+			left: 0;
+			top: 0;
+			height: 4em;
+			width: 4em;
+			font-size: 1em;
+			margin: -0.37em 0 0 -0.5em;
+			position: absolute;
+		}
+	}
+	.wc-block-components-order-summary-box {
+		padding: 1.5em;
+		margin: 1.5em 0;
+		border: 1px solid #ddd;
+		border-radius: 4px;
+		h3 {
+			margin: 0;
+			font-size: 1.25em;
+		}
+		&:first-child {
+			margin-top: 0;
+		}
+		&:last-child {
+			margin-bottom: 0;
 		}
 	}
 }

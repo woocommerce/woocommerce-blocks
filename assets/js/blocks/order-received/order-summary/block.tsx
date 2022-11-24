@@ -3,7 +3,8 @@
  */
 import { __, sprintf } from '@wordpress/i18n';
 import { createInterpolateElement } from '@wordpress/element';
-import { Icon, currencyDollar } from '@wordpress/icons';
+import { Icon } from '@wordpress/icons';
+import { checkCircle } from '@woocommerce/icons';
 import { objectHasProp } from '@woocommerce/types';
 
 /**
@@ -93,6 +94,7 @@ const Block = ( props: {
 	return (
 		<div className="wc-block-components-order-summary">
 			<div className="wc-block-components-order-summary-title">
+				<Icon icon={ checkCircle } />
 				<div role="doc-subtitle">
 					{ sprintf(
 						/* translators: %s is referring to the order number */
@@ -100,9 +102,7 @@ const Block = ( props: {
 						orderNumber
 					) }
 				</div>
-				<h2>
-					<Icon icon={ currencyDollar } /> { thankYouHeading }
-				</h2>
+				<h2>{ thankYouHeading }</h2>
 			</div>
 			<div className="wc-block-components-order-summary-box">
 				<h3>{ orderStatusHeading }</h3>
