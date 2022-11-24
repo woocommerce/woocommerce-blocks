@@ -1,7 +1,6 @@
 /**
  * External dependencies
  */
-import { __ } from '@wordpress/i18n';
 import { useBlockProps } from '@wordpress/block-editor';
 
 /**
@@ -9,8 +8,27 @@ import { useBlockProps } from '@wordpress/block-editor';
  */
 import Block from './block';
 
+const sampleData = {
+	orderNumber: '100',
+	orderDate: '2022-11-24 11:06:47',
+	orderTotal: '100',
+	orderEmail: 'dummy@email.com',
+	orderPaymentMethod: 'BACS',
+	orderStatusText: 'PENDING',
+	orderStatus: 'pending',
+	billingAddress: {
+		first_name: 'John',
+	},
+};
+
 export const Edit = () => {
-	return <Block />;
+	const blockProps = useBlockProps();
+
+	return (
+		<div { ...blockProps }>
+			<Block orderData={ sampleData } />
+		</div>
+	);
 };
 
 export const Save = (): JSX.Element => {

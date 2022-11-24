@@ -2,16 +2,16 @@
  * External dependencies
  */
 import { __, sprintf } from '@wordpress/i18n';
-import { getSetting } from '@woocommerce/settings';
 import { Icon, currencyDollar } from '@wordpress/icons';
+import { objectHasProp } from '@woocommerce/types';
 
 /**
  * Internal dependencies
  */
 import './style.scss';
 
-const Block = (): JSX.Element | null => {
-	const orderData = getSetting( 'orderReceivedData', {} ) as {
+const Block = ( props: {
+	orderData: {
 		orderNumber: string;
 		orderDate: string;
 		orderTotal: string;
@@ -23,8 +23,10 @@ const Block = (): JSX.Element | null => {
 			first_name: string;
 		};
 	};
+} ): JSX.Element | null => {
+	const { orderData } = props;
 
-	if ( ! orderData ) {
+	if ( ! orderData || ! objectHasProp( orderData, 'orderNumber' ) ) {
 		return null;
 	}
 
