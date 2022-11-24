@@ -24,7 +24,7 @@ const BUY_IT_AGAIN_ATTRIBUTES = {
 		__woocommerceStockStatus: 'instock',
 	},
 };
-const allowedInnerBlocks = INNER_BLOCKS_TEMPLATE[ 0 ];
+const allowedInnerBlocks = [ ...INNER_BLOCKS_TEMPLATE[ 0 ] ];
 if ( isExperimentalBuild() ) {
 	registerBlockVariation( QUERY_LOOP_ID, {
 		name: VARIATION_NAME,

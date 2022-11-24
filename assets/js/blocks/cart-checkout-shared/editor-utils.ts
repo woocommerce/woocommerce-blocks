@@ -5,6 +5,7 @@ import { getBlockTypes } from '@wordpress/blocks';
 
 // List of core block types to allow in inner block areas.
 const coreBlockTypes = [ 'core/paragraph', 'core/image', 'core/separator' ];
+const extraBlockTypes = [ 'woocommerce/query-buy-it-again' ];
 
 /**
  * Gets a list of allowed blocks types under a specific parent block type.
@@ -16,4 +17,5 @@ export const getAllowedBlocks = ( block: string ): string[] => [
 		)
 		.map( ( { name } ) => name ),
 	...coreBlockTypes,
+	...extraBlockTypes,
 ];
