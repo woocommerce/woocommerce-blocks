@@ -97,6 +97,7 @@ class OrderReceivedOrderSummary extends AbstractBlock {
 					'orderItems'           => $order->get_items(),
 					'orderNotes'           => $order->get_customer_order_notes(),
 					'orderEmail'           => $order->get_billing_email(),
+					'billingAddress'       => $order->get_address( 'billing' ),
 				]
 			);
 		}

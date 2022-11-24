@@ -1,0 +1,28 @@
+
+
+.wc-block-components-order-summary {
+	.wc-block-components-order-summary-title {
+		position: relative;
+		padding-left: 4em;
+		line-height: 1.5;
+
+		[role="doc-subtitle"] {
+			font-size: 1em;
+			color: #999;
+			margin: 0;
+		}
+
+		h2 {
+			font-size: 1.25em;
+			margin-top: 0;
+
+			svg {
+				position: absolute;
+				left: 0;
+				top: 0;
+				height: 3em;
+				width: 3em;
+			}
+		}
+	}
+}
