@@ -424,12 +424,6 @@ export const openBlockEditorSettings = async () => {
 	if ( toggleSidebarButton ) {
 		await toggleSidebarButton.click();
 	}
-
-	const blockSettingSelector = isFSEEditor
-		? 'button.edit-site-sidebar__panel-tab[data-label="Block"]'
-		: 'button.edit-post-sidebar__panel-tab[data-label="Block"]';
-
-	await page.$eval( blockSettingSelector, ( el ) => el.click() );
 };
 
 /**

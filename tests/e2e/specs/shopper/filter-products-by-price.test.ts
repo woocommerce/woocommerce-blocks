@@ -313,6 +313,7 @@ describe( `${ block.name } Block`, () => {
 			await page.waitForSelector( block.class + '.is-loading', {
 				hidden: true,
 			} );
+
 			expect( isRefreshed ).not.toBeCalled();
 
 			await setMaxPrice();

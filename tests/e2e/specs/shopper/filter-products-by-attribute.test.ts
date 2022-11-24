@@ -89,7 +89,7 @@ describe( `${ block.name } Block`, () => {
 			await page.goto( link );
 		} );
 
-		it( 'should render', async () => {
+		it( 'should render products', async () => {
 			await waitForAllProductsBlockLoaded();
 			const products = await page.$$( selectors.frontend.productsList );
 
@@ -144,7 +144,7 @@ describe( `${ block.name } Block`, () => {
 			await goToShopPage();
 		} );
 
-		it( 'should render', async () => {
+		it( 'should render products', async () => {
 			const products = await page.$$(
 				selectors.frontend.classicProductsList
 			);
@@ -303,7 +303,7 @@ describe( `${ block.name } Block`, () => {
 
 		it( 'should refresh the page only if the user clicks on button', async () => {
 			await page.goto( editorPageUrl );
-			await openBlockEditorSettings( { isFSEEditor: false } );
+			await openBlockEditorSettings();
 			await selectBlockByName( block.slug );
 			const [ filterButtonToggle ] = await page.$x(
 				block.selectors.editor.filterButtonToggle
