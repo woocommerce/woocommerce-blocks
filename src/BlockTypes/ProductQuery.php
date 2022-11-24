@@ -135,8 +135,8 @@ class ProductQuery extends AbstractBlock {
 		return $this->merge_queries(
 			$common_query_values,
 			$this->get_custom_orderby_query( $query['orderby'] ),
-			...$this->get_queries_by_attributes( $parsed_block ),
-			...$this->get_queries_by_applied_filters()
+			...array_values( $this->get_queries_by_attributes( $parsed_block ) ),
+			...array_values( $this->get_queries_by_applied_filters() )
 		);
 	}
 
@@ -156,7 +156,7 @@ class ProductQuery extends AbstractBlock {
 				'meta_query'     => array(),
 				'tax_query'      => array(),
 			),
-			...$this->get_queries_by_attributes( $parsed_block )
+			...array_values( $this->get_queries_by_attributes( $parsed_block ) )
 		);
 
 		$products = new \WP_Query( $query );
