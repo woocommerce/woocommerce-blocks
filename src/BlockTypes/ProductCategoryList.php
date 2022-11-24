@@ -85,10 +85,11 @@ class ProductCategoryList extends AbstractBlock {
 		$product_categories_terms = get_the_terms( $product->get_id(), 'product_cat' );
 
 		$classes_and_styles = StyleAttributesUtils::get_classes_and_styles_by_attributes( $attributes );
+		$classname          = isset( $attributes['className'] ) ? $attributes['className'] : '';
 
 		$output  = '';
 		$output .= '
-			<div class="wc-block-components-product-category-list ' . $classes_and_styles['classes'] . ' ' . $attributes['className'] . '" style="' . $classes_and_styles['styles'] . '"">
+			<div class="wc-block-components-product-category-list ' . $classes_and_styles['classes'] . ' ' . $classname . '" style="' . $classes_and_styles['styles'] . '"">
 				' . __( 'Categories:', 'woo-gutenberg-products-block' )
 				. '<ul>';
 
