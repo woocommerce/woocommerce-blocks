@@ -177,7 +177,27 @@ class ProductQuery extends AbstractBlock {
 		$valid_query_vars = array_keys( ( new WP_Query() )->fill_query_vars( array() ) );
 		$valid_query_vars = array_merge(
 			$valid_query_vars,
-			array( 'meta_query', 'tax_query', 'date_query' )
+			// fill_query_vars doesn't include these vars so we need to add them manually.
+			array(
+				'date_query',
+				'exact',
+				'ignore_sticky_posts',
+				'lazy_load_term_meta',
+				'meta_compare_key',
+				'meta_compare',
+				'meta_query',
+				'meta_type_key',
+				'meta_type',
+				'nopaging',
+				'offset',
+				'order',
+				'orderby',
+				'page',
+				'post_type',
+				'posts_per_page',
+				'suppress_filters',
+				'tax_query',
+			)
 		);
 
 		$merged_query = array_reduce(
