@@ -131,8 +131,10 @@ export const AttributesFilter = ( props: ProductQueryBlock ) => {
 						setQueryAttribute( props, {
 							__woocommerceAttributes,
 						} );
-					} catch ( e ) {
-						// Show error here
+					} catch ( ok ) {
+						// Not required to do anything here
+						// Input validation is handled by the `validateInput`
+						// below, and we don't need to save anything.
 					}
 				} }
 				suggestions={ attributesSuggestions }
