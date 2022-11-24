@@ -181,7 +181,7 @@ describe( `${ block.name } Block`, () => {
 			);
 		} );
 
-		it( 'should refresh the page only if the user click on button', async () => {
+		it( 'should refresh the page only if the user clicks on button', async () => {
 			await goToTemplateEditor( {
 				postId: productCatalogTemplateId,
 			} );
@@ -227,9 +227,6 @@ describe( `${ block.name } Block`, () => {
 		} );
 	} );
 
-	/*
-	 * @todo Remove this logic when WordPress 6.1 is released. This is a temporary fix because WP 6.0 doesn't ship the necessary changes to make it work properly the Product Query block.
-	 */
 	describe( 'with Product Query Block', () => {
 		let editorPageUrl = '';
 		let frontedPageUrl = '';
@@ -261,7 +258,7 @@ describe( `${ block.name } Block`, () => {
 			await page.goto( frontedPageUrl );
 		} );
 
-		it( 'should render', async () => {
+		it( 'should render products', async () => {
 			const products = await page.$$(
 				selectors.frontend.queryProductsList
 			);
@@ -301,7 +298,7 @@ describe( `${ block.name } Block`, () => {
 			);
 		} );
 
-		it( 'should refresh the page only if the user click on button', async () => {
+		it( 'should refresh the page only if the user clicks on button', async () => {
 			await page.goto( editorPageUrl );
 			await openBlockEditorSettings( { isFSEEditor: false } );
 			await selectBlockByName( block.slug );
