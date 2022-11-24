@@ -2,17 +2,19 @@
  * External dependencies
  */
 import classnames from 'classnames';
+import triggerFetch from '@wordpress/api-fetch';
 import { __ } from '@wordpress/i18n';
-import { useState } from '@wordpress/element';
+import { useState, useCallback } from '@wordpress/element';
 import { useStoreCart } from '@woocommerce/base-context/hooks';
-import { TotalsItem } from '@woocommerce/blocks-checkout';
+import { TotalsItem, ValidationInputError } from '@woocommerce/blocks-checkout';
 import type { Currency } from '@woocommerce/price-format';
-import type { ReactElement } from 'react';
+import { ReactElement, useEffect } from 'react';
 import {
 	getSetting,
 	ShippingAddress as ShippingAddressType,
 } from '@woocommerce/settings';
 import { ShippingVia } from '@woocommerce/base-components/cart-checkout/totals/shipping/shipping-via';
+import { useSelect } from '@wordpress/data';
 /**
  * Internal dependencies
  */
@@ -21,7 +23,6 @@ import hasShippingRate from './has-shipping-rate';
 import ShippingCalculator from '../../shipping-calculator';
 import ShippingLocation from '../../shipping-location';
 import './style.scss';
-import { ValidationInputError } from '../../../validation-input-error';
 
 interface CalculatorButtonProps {
 	label?: string;
@@ -60,19 +61,48 @@ const ShippingAddress = ( {
 	setIsShippingCalculatorOpen,
 	shippingAddress,
 }: ShippingAddressProps ): ReactElement | null => {
+	const [ validShippingAddress, setValidShippingAddress ] = useState( {} );
+	const getValidShippingAddress = useCallback( async () => {
+		const cartShippingAddress = await triggerFetch( {
+			path: '/wc/store/v1/cart/',
+		} ).then( ( cart ) => {
+			setValidShippingAddress( cart.shipping_address );
+			return cart.shipping_address;
+		} );
+		return cartShippingAddress;
+	}, [] );
+	useEffect( () => {
+		getValidShippingAddress();
+	}, [ shippingAddress, getValidShippingAddress ] );
+
+	const { hasValidationErrors } = useSelect( ( select ) => {
+		const store = select( 'wc/store/validation' );
+		return {
+			hasValidationErrors: store.hasValidationErrors(),
+		};
+	} );
+	const hasValidationError = hasValidationErrors;
+	useEffect( () => {
+		if ( hasValidationError ) {
+			setIsShippingCalculatorOpen( true );
+		}
+	}, [ hasValidationError, setIsShippingCalculatorOpen ] );
 	return (
 		<>
-			<ShippingLocation address={ shippingAddress } />
-			{ showCalculator && (
-				<CalculatorButton
-					label={ __(
-						'(change address)',
-						'woo-gutenberg-products-block'
-					) }
-					isShippingCalculatorOpen={ isShippingCalculatorOpen }
-					setIsShippingCalculatorOpen={ setIsShippingCalculatorOpen }
-				/>
-			) }
+			<ShippingLocation address={ validShippingAddress } />
+			{ showCalculator &&
+				Object.keys( validShippingAddress ).length !== 0 && (
+					<CalculatorButton
+						label={ __(
+							'(change address)',
+							'woo-gutenberg-products-block'
+						) }
+						isShippingCalculatorOpen={ isShippingCalculatorOpen }
+						setIsShippingCalculatorOpen={
+							setIsShippingCalculatorOpen
+						}
+					/>
+				) }
 		</>
 	);
 };
@@ -142,7 +172,6 @@ export const TotalsShipping = ( {
 		shippingRates,
 		isLoadingRates,
 	} = useStoreCart();
-
 	const totalShippingValue = getSetting(
 		'displayCartPricesIncludingTax',
 		false

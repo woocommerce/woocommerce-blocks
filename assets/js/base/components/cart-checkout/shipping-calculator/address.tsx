@@ -7,7 +7,7 @@ import { useState } from '@wordpress/element';
 import isShallowEqual from '@wordpress/is-shallow-equal';
 import type { ShippingAddress, AddressFields } from '@woocommerce/settings';
 import { VALIDATION_STORE_KEY } from '@woocommerce/block-data';
-import { dispatch, useDispatch, useSelect } from '@wordpress/data';
+import { useDispatch, useSelect } from '@wordpress/data';
 
 /**
  * Internal dependencies
@@ -39,7 +39,7 @@ const ShippingCalculatorAddress = ( {
 		showAllValidationErrors();
 		return ! hasValidationErrors();
 	};
-	const { clearValidationError } = dispatch( 'wc/store/validation' );
+	const { clearValidationError } = useDispatch( 'wc/store/validation' );
 
 	return (
 		<form className="wc-block-components-shipping-calculator-address">
