@@ -3,6 +3,7 @@
  */
 import { __, _x, sprintf } from '@wordpress/i18n';
 import { createInterpolateElement, RawHTML } from '@wordpress/element';
+import { Button } from '@wordpress/components';
 import { Icon } from '@wordpress/icons';
 import { checkCircle } from '@woocommerce/icons';
 import { objectHasProp } from '@woocommerce/types';
@@ -12,6 +13,7 @@ import type {
 } from '@woocommerce/types';
 import { formatPrice } from '@woocommerce/price-format';
 import { getDate, gmdateI18n } from '@wordpress/date';
+import { SHOP_URL, ACCOUNT_URL } from '@woocommerce/block-settings';
 
 /**
  * Internal dependencies
@@ -199,6 +201,30 @@ const OrderSummaryCustomer = ( {
 	);
 };
 
+const OrderSummaryActions = (): JSX.Element => {
+	return (
+		<div className="wc-block-components-order-summary__actions">
+			{ !! ACCOUNT_URL && (
+				<Button variant="link" href={ ACCOUNT_URL }>
+					{ __( 'My Account', 'woo-gutenberg-products-block' ) }
+				</Button>
+			) }{ ' ' }
+			{ !! SHOP_URL && (
+				<Button
+					className="components-button wc-block-components-button contained"
+					variant="primary"
+					href={ SHOP_URL }
+				>
+					{ __(
+						'Continue shopping',
+						'woo-gutenberg-products-block'
+					) }
+				</Button>
+			) }
+		</div>
+	);
+};
+
 const Block = ( props: { orderData: OrderDataType } ): JSX.Element | null => {
 	const { orderData } = props;
 
@@ -211,6 +237,7 @@ const Block = ( props: { orderData: OrderDataType } ): JSX.Element | null => {
 			<OrderSummaryHeading orderData={ orderData } />
 			<OrderSummaryStatus orderData={ orderData } />
 			<OrderSummaryCustomer orderData={ orderData } />
+			<OrderSummaryActions />
 		</div>
 	);
 };

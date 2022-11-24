@@ -38,6 +38,7 @@ export const TERMS_URL = STORE_PAGES.terms.permalink;
 export const TERMS_PAGE_NAME = STORE_PAGES.terms.title;
 export const CART_PAGE_ID = STORE_PAGES.cart.id;
 export const CART_URL = STORE_PAGES.cart.permalink;
+export const ACCOUNT_URL = STORE_PAGES.myaccount?.permalink || '';
 export const LOGIN_URL = STORE_PAGES.myaccount.permalink
 	? STORE_PAGES.myaccount.permalink
 	: getSetting( 'wpLoginUrl', '/wp-login.php' );

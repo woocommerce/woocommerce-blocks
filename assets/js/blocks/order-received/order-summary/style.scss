@@ -83,4 +83,14 @@
 			margin-bottom: 0;
 		}
 	}
+	.wc-block-components-order-summary__actions {
+		display: flex;
+		gap: 1.5em;
+		margin: 1.5em 0 0;
+		line-height: 3em;
+
+		a:last-child {
+			margin-left: auto !important;
+		}
+	}
 }
