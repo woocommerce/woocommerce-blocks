@@ -11,16 +11,20 @@ import {
 /**
  * Internal dependencies
  */
-import { AttributeWithTerms, ProductQueryBlock } from '../types';
+import {
+	AttributeMetadata,
+	AttributeWithTerms,
+	ProductQueryBlock,
+} from '../types';
 import useProductAttributes from '../useProductAttributes';
 import { setQueryAttribute } from '../utils';
 
 function getAttributeMetadataFromToken(
 	token: string,
-	productAttributes: AttributeWithTerms[]
+	productsAttributes: AttributeWithTerms[]
 ) {
 	const [ attributeLabel, termName ] = token.split( ': ' );
-	const taxonomy = productAttributes.find(
+	const taxonomy = productsAttributes.find(
 		( attribute ) => attribute.attribute_label === attributeLabel
 	);
 
@@ -34,16 +38,58 @@ function getAttributeMetadataFromToken(
 	if ( ! term ) throw new Error( 'Product Query Filter: Invalid term name' );
 
 	return {
-		taxonomy,
-		term,
+		taxonomy: `pa_${ taxonomy.attribute_name }`,
+		termId: term.id,
 	};
+}
+
+function getAttributeFromMetadata(
+	metadata: AttributeMetadata,
+	productsAttributes: AttributeWithTerms[]
+) {
+	const taxonomy = productsAttributes.find(
+		( attribute ) =>
+			attribute.attribute_name === metadata.taxonomy.slice( 3 )
+	);
+
+	return {
+		taxonomy,
+		term: taxonomy?.terms.find( ( term ) => term.id === metadata.termId ),
+	};
+}
+
+function getInputValueFromQueryParam(
+	queryParam: AttributeMetadata[] | undefined,
+	productAttributes: AttributeWithTerms[]
+): FormTokenField.Value[] {
+	return (
+		queryParam?.map( ( metadata ) => {
+			const { taxonomy, term } = getAttributeFromMetadata(
+				metadata,
+				productAttributes
+			);
+
+			return ! taxonomy || ! term
+				? {
+						title: __(
+							'Saved taxonomy was perhaps deleted or the slug was changed.',
+							'woo-gutenberg-products-block'
+						),
+						value: __(
+							`Error with saved taxonomy`,
+							'woo-gutenberg-products-block'
+						),
+						status: 'error',
+				  }
+				: `${ taxonomy.attribute_label }: ${ term.name }`;
+		} ) || []
+	);
 }
 
 export const AttributesFilter = ( props: ProductQueryBlock ) => {
 	const { query } = props.attributes;
-	const { isLoadingAttributes, productsAttributes } = useProductAttributes(
-		! query.__woocommerceAttributes?.length
-	);
+	const { isLoadingAttributes, productsAttributes } =
+		useProductAttributes( true );
 
 	const attributesSuggestions = productsAttributes.reduce( ( acc, curr ) => {
 		const namespacedTerms = curr.terms.map(
@@ -56,7 +102,7 @@ export const AttributesFilter = ( props: ProductQueryBlock ) => {
 	return (
 		<ToolsPanelItem
 			label={ __( 'Product Attributes', 'woo-gutenberg-products-block' ) }
-			hasValue={ () => query.__woocommerceStockStatus }
+			hasValue={ () => query.__woocommerceAttributes }
 		>
 			<FormTokenField
 				disabled={ isLoadingAttributes }
@@ -96,10 +142,10 @@ export const AttributesFilter = ( props: ProductQueryBlock ) => {
 				value={
 					isLoadingAttributes
 						? [ __( 'Loading…', 'woo-gutenberg-products-block' ) ]
-						: query?.__woocommerceAttributes?.map(
-								( { taxonomy, term } ) =>
-									`${ taxonomy.attribute_label }: ${ term.name }`
-						  ) || []
+						: getInputValueFromQueryParam(
+								query.__woocommerceAttributes,
+								productsAttributes
+						  )
 				}
 				__experimentalExpandOnFocus={ true }
 			/>

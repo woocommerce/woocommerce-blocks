@@ -8,8 +8,8 @@ import type {
 } from '@woocommerce/types';
 
 export interface AttributeMetadata {
-	taxonomy: AttributeWithTerms;
-	term: AttributeTerm;
+	taxonomy: string;
+	termId: number;
 }
 
 export type AttributeWithTerms = AttributeSetting & { terms: AttributeTerm[] };

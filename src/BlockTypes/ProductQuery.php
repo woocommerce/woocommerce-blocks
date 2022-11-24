@@ -104,8 +104,9 @@ class ProductQuery extends AbstractBlock {
 	public function update_rest_query( $args, $request ) {
 		$on_sale_query = $request->get_param( '__woocommerceOnSale' ) !== 'true' ? array() : $this->get_on_sale_products_query();
 		$orderby_query = $this->get_custom_orderby_query( $request->get_param( 'orderby' ) );
+		$tax_query     = $this->get_product_attributes_query( $request->get_param( '__woocommerceAttributes' ) );
 
-		return array_merge( $args, $on_sale_query, $orderby_query );
+		return array_merge( $args, $on_sale_query, $orderby_query, $tax_query );
 	}
 
 	/**
@@ -260,17 +261,17 @@ class ProductQuery extends AbstractBlock {
 		$grouped_attributes = array_reduce(
 			$attributes,
 			function ( $carry, $item ) {
-				$taxonomy = 'pa_' . sanitize_title( $item['taxonomy']['attribute_name'] );
+				$taxonomy = sanitize_title( $item['taxonomy'] );
 
 				if ( ! key_exists( $taxonomy, $carry ) ) {
 					$carry[ $taxonomy ] = array(
 						'field'    => 'term_id',
 						'operator' => 'IN',
 						'taxonomy' => $taxonomy,
-						'terms'    => array( $item['term']['id'] ),
+						'terms'    => array( $item['termId'] ),
 					);
 				} else {
-					$carry[ $taxonomy ]['terms'][] = $item['term']['id'];
+					$carry[ $taxonomy ]['terms'][] = $item['termId'];
 				}
 
 				return $carry;
