@@ -1,6 +1,8 @@
 <?php
 namespace Automattic\WooCommerce\Blocks\BlockTypes;
 
+use WP_Query;
+
 // phpcs:disable WordPress.DB.SlowDBQuery.slow_db_query_tax_query
 // phpcs:disable WordPress.DB.SlowDBQuery.slow_db_query_meta_query
 // phpcs:disable WordPress.DB.SlowDBQuery.slow_db_query_meta_key
@@ -132,41 +134,13 @@ class ProductQuery extends AbstractBlock {
 			'tax_query'      => array(),
 		);
 
-		$queries_by_attributes = $this->get_queries_by_attributes( $parsed_block );
-		$queries_by_filters    = $this->get_queries_by_applied_filters();
-		$global_query          = $this->get_global_query( $parsed_block );
-		$orderby_query         = $this->get_custom_orderby_query( $query['orderby'] );
-
-		$base_query = array_merge(
+		return $this->merge_queries(
 			$common_query_values,
-			$orderby_query
+			$this->get_global_query( $parsed_block ),
+			$this->get_custom_orderby_query( $query['orderby'] ),
+			$this->get_queries_by_attributes( $parsed_block ),
+			$this->get_queries_by_applied_filters()
 		);
-
-		return array_reduce(
-			array_merge(
-				$queries_by_attributes,
-				$queries_by_filters
-			),
-			function( $acc, $query ) {
-				return $this->merge_queries( $acc, $query );
-			},
-			$base_query
-		);
-	}
-
-	/**
-	 * Merge in the first parameter the keys "post_in", "meta_query" and "tax_query" of the second parameter.
-	 *
-	 * @param array $a The first query.
-	 * @param array $b The second query.
-	 * @return array
-	 */
-	private function merge_queries( $a, $b ) {
-		$a['post__in']   = ( isset( $b['post__in'] ) && ! empty( $b['post__in'] ) ) ? $this->intersect_arrays_when_not_empty( $a['post__in'], $b['post__in'] ) : $a['post__in'];
-		$a['meta_query'] = ( isset( $b['meta_query'] ) && ! empty( $b['meta_query'] ) ) ? array_merge( $a['meta_query'], array( $b['meta_query'] ) ) : $a['meta_query'];
-		$a['tax_query']  = ( isset( $b['tax_query'] ) && ! empty( $b['tax_query'] ) ) ? array_merge( $a['tax_query'], array( $b['tax_query'] ) ) : $a['tax_query'];
-
-		return $a;
 	}
 
 	/**
@@ -177,34 +151,90 @@ class ProductQuery extends AbstractBlock {
 	 * @return array
 	 */
 	private function get_products_ids_by_attributes( $parsed_block ) {
-		$queries_by_attributes = $this->get_queries_by_attributes( $parsed_block );
-		$global_query          = $this->get_global_query( $parsed_block );
-
-		$query = array_reduce(
-			$queries_by_attributes,
-			function( $acc, $query ) {
-				return $this->merge_queries( $acc, $query );
-			},
-			array_merge(
-				$global_query,
-				array(
-					'post_type'      => 'product',
-					'post__in'       => array(),
-					'post_status'    => 'publish',
-					'posts_per_page' => -1,
-					// Ignoring the warning of not using meta queries.
-					// phpcs:ignore WordPress.DB.SlowDBQuery.slow_db_query_meta_query
-					'meta_query'     => array(),
-					// phpcs:ignore WordPress.DB.SlowDBQuery.slow_db_query_tax_query
-					'tax_query'      => array(),
-				)
-			)
+		$query = $this->merge_queries(
+			array(
+				'post_type'      => 'product',
+				'post__in'       => array(),
+				'post_status'    => 'publish',
+				'posts_per_page' => -1,
+				'meta_query'     => array(),
+				'tax_query'      => array(),
+			),
+			$this->get_queries_by_attributes( $parsed_block ),
+			$this->get_global_query( $parsed_block )
 		);
 
 		$products = new \WP_Query( $query );
 		$post_ids = wp_list_pluck( $products->posts, 'ID' );
 
 		return $post_ids;
+	}
+
+	/**
+	 * Merge in the first parameter the keys "post_in", "meta_query" and "tax_query" of the second parameter.
+	 *
+	 * @param array[] ...$queries Query arrays to be merged.
+	 * @return array
+	 */
+	private function merge_queries( ...$queries ) {
+		$valid_query_vars = array_keys( ( new WP_Query() )->fill_query_vars( array() ) );
+		$valid_query_vars = array_merge(
+			$valid_query_vars,
+			// fill_query_vars doesn't include these vars so we need to add them manually.
+			array(
+				'date_query',
+				'exact',
+				'ignore_sticky_posts',
+				'lazy_load_term_meta',
+				'meta_compare_key',
+				'meta_compare',
+				'meta_query',
+				'meta_type_key',
+				'meta_type',
+				'nopaging',
+				'offset',
+				'order',
+				'orderby',
+				'page',
+				'post_type',
+				'posts_per_page',
+				'suppress_filters',
+				'tax_query',
+			)
+		);
+
+		$merged_query = array_reduce(
+			$queries,
+			function( $acc, $query ) use ( $valid_query_vars ) {
+				if ( ! is_array( $query ) ) {
+					return $acc;
+				}
+				if ( empty( array_intersect( $valid_query_vars, array_keys( $query ) ) ) ) {
+					return $this->merge_queries( $acc, ...array_values( $query ) );
+				}
+				return array_merge_recursive( $acc, $query );
+			},
+			array()
+		);
+
+		/**
+		 * If there are duplicated items in post__in, it means that we need to
+		 * use the intersection of the results, which in this case, are the
+		 * duplicated items.
+		 */
+		if (
+			! empty( $merged_query['post__in'] ) &&
+			count( $merged_query['post__in'] ) > count( array_unique( $merged_query['post__in'] ) )
+		) {
+			$merged_query['post__in'] = array_unique(
+				array_diff(
+					$merged_query['post__in'],
+					array_unique( $merged_query['post__in'] )
+				)
+			);
+		}
+
+		return $merged_query;
 	}
 
 	/**
@@ -267,9 +297,11 @@ class ProductQuery extends AbstractBlock {
 	private function get_stock_status_query( $stock_statii ) {
 		return array(
 			'meta_query' => array(
-				'key'     => '_stock_status',
-				'value'   => (array) $stock_statii,
-				'compare' => 'IN',
+				array(
+					'key'     => '_stock_status',
+					'value'   => (array) $stock_statii,
+					'compare' => 'IN',
+				),
 			),
 		);
 	}
@@ -498,25 +530,6 @@ class ProductQuery extends AbstractBlock {
 
 				),
 			),
-		);
-	}
-
-	/**
-	 * Intersect arrays neither of them are empty, otherwise merge them.
-	 *
-	 * @param array ...$arrays Arrays.
-	 * @return array
-	 */
-	private function intersect_arrays_when_not_empty( ...$arrays ) {
-		return array_reduce(
-			$arrays,
-			function( $acc, $array ) {
-				if ( ! empty( $array ) && ! empty( $acc ) ) {
-					return array_intersect( $acc, $array );
-				}
-				return array_merge( $acc, $array );
-			},
-			array()
 		);
 	}
 
