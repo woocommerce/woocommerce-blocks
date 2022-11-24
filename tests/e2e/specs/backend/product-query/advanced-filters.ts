@@ -32,7 +32,7 @@ import {
 } from './common';
 
 describeOrSkip( GUTENBERG_EDITOR_CONTEXT === 'gutenberg' )(
-	'Product Query > Products Filters',
+	'Product Query > Advanced Filters',
 	() => {
 		let $productFiltersPanel: ElementHandle< Node >;
 		beforeEach( async () => {
@@ -45,7 +45,7 @@ describeOrSkip( GUTENBERG_EDITOR_CONTEXT === 'gutenberg' )(
 			await openBlockEditorSettings();
 			await selectBlockByName( block.slug );
 			$productFiltersPanel = await findToolsPanelWithTitle(
-				'Product filters'
+				'Advanced Filters'
 			);
 		} );
 

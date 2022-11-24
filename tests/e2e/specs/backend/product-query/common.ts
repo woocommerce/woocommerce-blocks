@@ -85,7 +85,7 @@ export const getFrontEndProducts = async (): Promise< ElementHandle[] > => {
 
 export const toggleProductFilter = async ( filterName: string ) => {
 	const $productFiltersPanel = await findToolsPanelWithTitle(
-		'Product filters'
+		'Advanced Filters'
 	);
 	await expect( $productFiltersPanel ).toClick(
 		SELECTORS.productFiltersDropdownButton()
