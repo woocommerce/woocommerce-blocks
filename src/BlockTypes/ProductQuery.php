@@ -1,6 +1,8 @@
 <?php
 namespace Automattic\WooCommerce\Blocks\BlockTypes;
 
+use WP_Query;
+
 // phpcs:disable WordPress.DB.SlowDBQuery.slow_db_query_tax_query
 // phpcs:disable WordPress.DB.SlowDBQuery.slow_db_query_meta_query
 // phpcs:disable WordPress.DB.SlowDBQuery.slow_db_query_meta_key
@@ -135,8 +137,8 @@ class ProductQuery extends AbstractBlock {
 		return $this->merge_queries(
 			$common_query_values,
 			$this->get_custom_orderby_query( $query['orderby'] ),
-			...array_values( $this->get_queries_by_attributes( $parsed_block ) ),
-			...array_values( $this->get_queries_by_applied_filters() )
+			$this->get_queries_by_attributes( $parsed_block ),
+			$this->get_queries_by_applied_filters()
 		);
 	}
 
@@ -156,7 +158,7 @@ class ProductQuery extends AbstractBlock {
 				'meta_query'     => array(),
 				'tax_query'      => array(),
 			),
-			...array_values( $this->get_queries_by_attributes( $parsed_block ) )
+			$this->get_queries_by_attributes( $parsed_block )
 		);
 
 		$products = new \WP_Query( $query );
@@ -172,9 +174,21 @@ class ProductQuery extends AbstractBlock {
 	 * @return array
 	 */
 	private function merge_queries( ...$queries ) {
+		$valid_query_vars = array_keys( ( new WP_Query() )->fill_query_vars( array() ) );
+		$valid_query_vars = array_merge(
+			$valid_query_vars,
+			array( 'meta_query', 'tax_query', 'date_query' )
+		);
+
 		$merged_query = array_reduce(
 			$queries,
-			function( $acc, $query ) {
+			function( $acc, $query ) use ( $valid_query_vars ) {
+				if ( ! is_array( $query ) ) {
+					return $acc;
+				}
+				if ( empty( array_intersect( $valid_query_vars, array_keys( $query ) ) ) ) {
+					return $this->merge_queries( $acc, ...array_values( $query ) );
+				}
 				return array_merge_recursive( $acc, $query );
 			},
 			array()
