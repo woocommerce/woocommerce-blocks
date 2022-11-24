@@ -2,10 +2,14 @@
  * External dependencies
  */
 import { __, sprintf } from '@wordpress/i18n';
-import { createInterpolateElement } from '@wordpress/element';
+import { createInterpolateElement, RawHTML } from '@wordpress/element';
 import { Icon } from '@wordpress/icons';
 import { checkCircle } from '@woocommerce/icons';
 import { objectHasProp } from '@woocommerce/types';
+import type {
+	CartShippingAddress,
+	CartBillingAddress,
+} from '@woocommerce/types';
 
 /**
  * Internal dependencies
@@ -21,9 +25,10 @@ const Block = ( props: {
 		orderPaymentMethod: string;
 		orderStatusText: string;
 		orderStatus: string;
-		billingAddress: {
-			first_name: string;
-		};
+		billingAddress: CartBillingAddress;
+		shippingAddress: CartShippingAddress;
+		orderBillingAddress: string;
+		orderShippingAddress: string;
 	};
 } ): JSX.Element | null => {
 	const { orderData } = props;
@@ -41,6 +46,9 @@ const Block = ( props: {
 		billingAddress,
 		orderStatusText,
 		orderStatus,
+		// shippingAddress,
+		orderBillingAddress,
+		orderShippingAddress,
 	} = orderData;
 
 	const thankYouHeading = sprintf(
@@ -48,6 +56,14 @@ const Block = ( props: {
 		__( 'Thank you %s!', 'woo-gutenberg-products-block' ),
 		billingAddress.first_name
 	);
+
+	const Address = ( { address }: { address: string } ) => {
+		return (
+			<address>
+				<RawHTML>{ address }</RawHTML>
+			</address>
+		);
+	};
 
 	let orderStatusHeading = sprintf(
 		/* translators: %s is referring to the order status */
@@ -148,6 +164,30 @@ const Block = ( props: {
 						<strong>{ orderPaymentMethod }</strong>
 					</li>
 				</ul>
+			</div>
+			<div className="wc-block-components-order-addresses-box">
+				{ orderShippingAddress !== '' && (
+					<div className="wc-block-components-order-addresses-box__shipping">
+						<h3>
+							{ __(
+								'Shipping address',
+								'woo-gutenberg-products-block'
+							) }
+						</h3>
+						<Address address={ orderShippingAddress } />
+					</div>
+				) }
+				{ orderBillingAddress !== '' && (
+					<div className="wc-block-components-order-addresses-box__billing">
+						<h3>
+							{ __(
+								'Billing address',
+								'woo-gutenberg-products-block'
+							) }
+						</h3>
+						<Address address={ orderBillingAddress } />
+					</div>
+				) }
 			</div>
 		</div>
 	);

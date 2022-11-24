@@ -19,6 +19,10 @@ const sampleData = {
 	billingAddress: {
 		first_name: 'John',
 	},
+	orderShippingAddress:
+		'John Smith<br/>My street 3<br/>10933 Berlin<br/>Germany',
+	orderBillingAddress:
+		'John Smith<br/>My street 3<br/>10933 Berlin<br/>Germany',
 };
 
 export const Edit = () => {

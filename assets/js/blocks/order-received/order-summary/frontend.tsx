@@ -17,9 +17,6 @@ const orderData = getSetting( 'orderReceivedData', {} ) as {
 	orderPaymentMethod: string;
 	orderStatusText: string;
 	orderStatus: string;
-	billingAddress: {
-		first_name: string;
-	};
 };
 
 const getProps = () => {

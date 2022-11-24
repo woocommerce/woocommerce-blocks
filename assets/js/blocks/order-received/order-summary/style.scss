@@ -46,3 +46,12 @@
 		}
 	}
 }
+
+.wc-block-components-order-addresses-box {
+	display: flex;
+	gap: 1.5em;
+
+	.wc-block-components-order-addresses-box__address {
+		flex: 1;
+	}
+}
