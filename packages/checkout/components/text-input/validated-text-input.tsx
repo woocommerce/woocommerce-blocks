@@ -32,7 +32,6 @@ interface ValidatedTextInputProps
 	onChange: ( newValue: string ) => void;
 	label?: string | undefined;
 	value: string;
-	required?: boolean | undefined;
 	requiredMessage?: string | undefined;
 	customValidation?:
 		| ( ( inputObject: HTMLInputElement ) => boolean )
