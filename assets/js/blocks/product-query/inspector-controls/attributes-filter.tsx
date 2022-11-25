@@ -102,7 +102,7 @@ export const AttributesFilter = ( props: ProductQueryBlock ) => {
 	return (
 		<ToolsPanelItem
 			label={ __( 'Product Attributes', 'woo-gutenberg-products-block' ) }
-			hasValue={ () => query.__woocommerceAttributes }
+			hasValue={ () => query.__woocommerceAttributes?.length }
 		>
 			<FormTokenField
 				disabled={ isLoadingAttributes }
