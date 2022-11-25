@@ -2,6 +2,7 @@
  * External dependencies
  */
 import {
+	canvas,
 	setPostContent,
 	insertBlock,
 	findSidebarPanelWithTitle,
@@ -11,6 +12,7 @@ import {
 	saveOrPublish,
 	selectBlockByName,
 	getFormElementIdByLabel,
+	shopper,
 } from '@woocommerce/blocks-test-utils';
 import { ElementHandle } from 'puppeteer';
 
@@ -30,12 +32,41 @@ const block = {
 	class: '.wp-block-query',
 };
 
+const SELECTORS = {
+	editorPreview: {
+		productsGrid: 'ul.wp-block-post-template',
+		productsGridItem:
+			'ul.wp-block-post-template > li.block-editor-block-preview__live-content',
+	},
+	productsGrid: `${ block.class } ul.wp-block-post-template`,
+	productsGridItem: `${ block.class } ul.wp-block-post-template > li.product`,
+};
+
 const resetProductQueryBlockPage = async () => {
 	await visitBlockPage( `${ block.name } Block` );
 	await waitForCanvas();
 	await setPostContent( '' );
 	await insertBlock( block.name );
 	await saveOrPublish();
+};
+
+const getPreviewProducts = async (): Promise< ElementHandle[] > => {
+	await canvas().waitForSelector( SELECTORS.editorPreview.productsGrid );
+	return await canvas().$$( SELECTORS.editorPreview.productsGridItem );
+};
+
+const getFrontEndProducts = async (): Promise< ElementHandle[] > => {
+	await canvas().waitForSelector( SELECTORS.productsGrid );
+	return await canvas().$$( SELECTORS.productsGridItem );
+};
+
+const getProductTitle = async ( product: ElementHandle ): Promise< string > => {
+	return (
+		( await product.$eval(
+			'.wp-block-post-title',
+			( el ) => el.textContent
+		) ) || ''
+	);
 };
 
 describeOrSkip( GUTENBERG_EDITOR_CONTEXT === 'gutenberg' )(
@@ -79,6 +110,26 @@ describeOrSkip( GUTENBERG_EDITOR_CONTEXT === 'gutenberg' )(
 					),
 					{ text: 'Newest' }
 				);
+			} );
+
+			it( 'Editor preview and block frontend display the same products', async () => {
+				const previewProductsTitle = await Promise.all(
+					(
+						await getPreviewProducts()
+					 ).map(
+						async ( product ) => await getProductTitle( product )
+					)
+				);
+				await shopper.block.goToBlockPage( block.name );
+				await canvas().waitForSelector( SELECTORS.productsGrid );
+				const frontEndProductsTitle = await Promise.all(
+					(
+						await getFrontEndProducts()
+					 ).map(
+						async ( product ) => await getProductTitle( product )
+					)
+				);
+				expect( frontEndProductsTitle ).toEqual( previewProductsTitle );
 			} );
 		} );
 	}
