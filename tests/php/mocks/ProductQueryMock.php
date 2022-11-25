@@ -29,4 +29,13 @@ class ProductQueryMock extends ProductQuery {
 	 */
 	protected function initialize() {
 	}
+
+	/**
+	 * Allow test to set the parsed block data.
+	 *
+	 * @param array $parsed_block The block data.
+	 */
+	public function set_parsed_block( $parsed_block ) {
+		$this->parsed_block = $parsed_block;
+	}
 }

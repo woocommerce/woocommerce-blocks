@@ -15,19 +15,122 @@ class ProductQuery extends \WP_UnitTestCase {
 	private $block_instance;
 
 	/**
-	 * Initiate the cart mock.
+	 * Return starting point for parsed block test data.
+	 * Using a method instead of property to avoid sharing data between tests.
 	 */
-	protected function setUp(): void {
-		$this->block_instance = new ProductQueryMock();
-		$this->parsed_block   = array(
+	private function get_base_parsed_block() {
+		return array(
 			'blockName' => 'core/query',
-			'attrs'    => array(
+			'attrs'     => array(
 				'namespace' => 'woocommerce/product-query',
+				'query'     => array(
+					'posts_per_page' => 6,
+					'orderby'        => 'date',
+					'order'          => 'desc',
+					'offset'         => 0,
+				),
 			),
 		);
 	}
 
-	public function test_merging_queries() {
-		
+	/**
+	 * Initiate the mock object.
+	 */
+	protected function setUp(): void {
+		$this->block_instance = new ProductQueryMock();
+	}
+
+	/**
+	 * Test merging on sale queries.
+	 */
+	public function test_merging_on_sale_queries() {
+		// Mock the on sale product ids.
+		$on_sale_product_ids = array( 1, 2, 3, 4 );
+		set_transient( 'wc_products_onsale', $on_sale_product_ids, DAY_IN_SECONDS * 30 );
+
+		$parsed_block = $this->get_base_parsed_block();
+		$parsed_block['attrs']['query']['__woocommerceOnSale'] = true;
+		$this->block_instance->set_parsed_block( $parsed_block );
+
+		$merged_query = $this->block_instance->build_query( $parsed_block['attrs']['query'] );
+
+		foreach ( $on_sale_product_ids as $id ) {
+			$this->assertContains( $id, $merged_query['post__in'] );
+		}
+		$this->assertNotContains( 384123, $merged_query['post__in'] );
+	}
+
+	/**
+	 * Test merging stock status queries.
+	 */
+	public function test_merging_stock_status_queries() {
+		$parsed_block = $this->get_base_parsed_block();
+		$parsed_block['attrs']['query']['__woocommerceStockStatus'] = array(
+			'outofstock',
+			'onbackorder',
+		);
+		$this->block_instance->set_parsed_block( $parsed_block );
+
+		$merged_query = $this->block_instance->build_query( $parsed_block['attrs']['query'] );
+
+		$this->assertContains( 'outofstock', $merged_query['meta_query'][0]['value'] );
+		$this->assertContains( 'onbackorder', $merged_query['meta_query'][0]['value'] );
+		$this->assertNotContains( 'instock', $merged_query['meta_query'][0]['value'] );
+
+		$parsed_block = $this->get_base_parsed_block();
+		$parsed_block['attrs']['query']['__woocommerceStockStatus'] = array(
+			'instock',
+			'onbackorder',
+		);
+		$this->block_instance->set_parsed_block( $parsed_block );
+
+		$merged_query = $this->block_instance->build_query( $parsed_block['attrs']['query'] );
+
+		$this->assertContains( 'instock', $merged_query['meta_query'][0]['value'] );
+		$this->assertContains( 'onbackorder', $merged_query['meta_query'][0]['value'] );
+		$this->assertNotContains( 'outofstock', $merged_query['meta_query'][0]['value'] );
+	}
+
+	/**
+	 * Test merging order by rating queries.
+	 */
+	public function test_merging_order_by_rating_queries() {
+		$parsed_block                              = $this->get_base_parsed_block();
+		$parsed_block['attrs']['query']['orderby'] = 'rating';
+		$this->block_instance->set_parsed_block( $parsed_block );
+
+		$merged_query = $this->block_instance->build_query( $parsed_block['attrs']['query'] );
+
+		$this->assertEquals( 'meta_value_num', $merged_query['orderby'] );
+		$this->assertEquals( '_wc_average_rating', $merged_query['meta_key'] );
+	}
+
+	/**
+	 * Test merging order by popularity queries.
+	 */
+	public function test_merging_order_by_popularity_queries() {
+		$parsed_block                              = $this->get_base_parsed_block();
+		$parsed_block['attrs']['query']['orderby'] = 'popularity';
+		$this->block_instance->set_parsed_block( $parsed_block );
+
+		$merged_query = $this->block_instance->build_query( $parsed_block['attrs']['query'] );
+
+		$this->assertEquals( 'meta_value_num', $merged_query['orderby'] );
+		$this->assertEquals( 'total_sales', $merged_query['meta_key'] );
+	}
+
+	/**
+	 * Test merging filter by price queries.
+	 */
+	public function test_merging_filter_by_price_queries() {
+		set_query_var( 'max_price', 100 );
+
+		$parsed_block = $this->get_base_parsed_block();
+		$this->block_instance->set_parsed_block( $parsed_block );
+
+		$merged_query = $this->block_instance->build_query( $parsed_block['attrs']['query'] );
+
+		$this->assertArrayHasKey( 'relation', $merged_query['meta_query'] );
+		$this->assertEquals( 'AND', $merged_query['meta_query']['relation'] );
 	}
 }
