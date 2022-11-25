@@ -120,9 +120,9 @@ class ProductQuery extends \WP_UnitTestCase {
 	}
 
 	/**
-	 * Test merging filter by price queries.
+	 * Test merging filter by max price queries.
 	 */
-	public function test_merging_filter_by_price_queries() {
+	public function test_merging_filter_by_max_price_queries() {
 		set_query_var( 'max_price', 100 );
 
 		$parsed_block = $this->get_base_parsed_block();
@@ -130,7 +130,76 @@ class ProductQuery extends \WP_UnitTestCase {
 
 		$merged_query = $this->block_instance->build_query( $parsed_block['attrs']['query'] );
 
-		$this->assertArrayHasKey( 'relation', $merged_query['meta_query'] );
-		$this->assertEquals( 'AND', $merged_query['meta_query']['relation'] );
+		$price_meta_query = $merged_query['meta_query'][0];
+		$this->assertEquals( 'AND', $price_meta_query['relation'] );
+		$this->assertEqualsCanonicalizing(
+			array(
+				'key'     => '_price',
+				'value'   => 100,
+				'compare' => '<',
+				'type'    => 'numeric',
+			),
+			$price_meta_query[0]
+		);
+		$this->assertEmpty( $price_meta_query[1] );
+	}
+
+	/**
+	 * Test merging filter by min price queries.
+	 */
+	public function test_merging_filter_by_min_price_queries() {
+		set_query_var( 'min_price', 20 );
+
+		$parsed_block = $this->get_base_parsed_block();
+		$this->block_instance->set_parsed_block( $parsed_block );
+
+		$merged_query = $this->block_instance->build_query( $parsed_block['attrs']['query'] );
+
+		$price_meta_query = $merged_query['meta_query'][0];
+		$this->assertEquals( 'AND', $price_meta_query['relation'] );
+		$this->assertEmpty( $price_meta_query[0] );
+		$this->assertEqualsCanonicalizing(
+			array(
+				'key'     => '_price',
+				'value'   => 20,
+				'compare' => '>=',
+				'type'    => 'numeric',
+			),
+			$price_meta_query[1]
+		);
+	}
+
+	/**
+	 * Test merging filter by min and max price queries.
+	 */
+	public function test_merging_filter_by_min_and_max_price_queries() {
+		set_query_var( 'max_price', 100 );
+		set_query_var( 'min_price', 20 );
+
+		$parsed_block = $this->get_base_parsed_block();
+		$this->block_instance->set_parsed_block( $parsed_block );
+
+		$merged_query = $this->block_instance->build_query( $parsed_block['attrs']['query'] );
+
+		$price_meta_query = $merged_query['meta_query'][0];
+		$this->assertEquals( 'AND', $price_meta_query['relation'] );
+		$this->assertEqualsCanonicalizing(
+			array(
+				'key'     => '_price',
+				'value'   => 100,
+				'compare' => '<',
+				'type'    => 'numeric',
+			),
+			$price_meta_query[0]
+		);
+		$this->assertEqualsCanonicalizing(
+			array(
+				'key'     => '_price',
+				'value'   => 20,
+				'compare' => '>=',
+				'type'    => 'numeric',
+			),
+			$price_meta_query[1]
+		);
 	}
 }
