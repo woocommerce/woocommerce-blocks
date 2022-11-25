@@ -49,19 +49,6 @@ svg.wc-block-editor-components-block-icon--sparkles path {
 	}
 }
 
-// Selectors with extra specificity to override some editor styles.
-.woocommerce-search-list__list.woocommerce-search-list__list {
-	box-sizing: border-box;
-	margin: 0;
-	padding: 0;
-}
-
-.woocommerce-search-list__selected.woocommerce-search-list__selected > ul {
-	list-style: none;
-	margin: 0;
-	padding: 0;
-}
-
 .theme-twentytwenty {
 	.wp-block {
 		.wc-block-grid__product-title,
