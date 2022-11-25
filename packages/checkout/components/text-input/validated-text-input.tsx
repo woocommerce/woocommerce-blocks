@@ -54,7 +54,6 @@ const ValidatedTextInput = ( {
 	...rest
 }: ValidatedTextInputProps ): JSX.Element => {
 	const [ isPristine, setIsPristine ] = useState( true );
-	const [ inputValue, setInputValue ] = useState( value );
 	const inputRef = useRef< HTMLInputElement >( null );
 	const textInputId =
 		typeof id !== 'undefined' ? id : 'textinput-' + instanceId;
@@ -138,16 +137,6 @@ const ValidatedTextInput = ( {
 		} );
 	};
 
-	const inputIsValid = (): boolean => {
-		const inputObject = inputRef.current || null;
-
-		if ( inputObject === null ) {
-			return false;
-		}
-
-		return inputObject.validity.valid;
-	};
-
 	if ( passedErrorMessage !== '' && isObject( validationError ) ) {
 		validationError.message = passedErrorMessage;
 	}
@@ -178,22 +167,18 @@ const ValidatedTextInput = ( {
 				validateInput( true );
 			} }
 			onChange={ ( val ) => {
-				// Update our local state.
-				setInputValue( val );
 				// Hide errors while typing.
 				hideValidationError( errorIdString );
 				// Revalidate on user input so we know if the value is valid.
 				validateInput( true );
 				// Push the changes up to the parent component if the value is valid.
-				if ( inputIsValid() ) {
-					onChange( val );
-				}
+				onChange( val );
 			} }
 			onBlur={ () => {
 				validateInput( false );
 			} }
 			ariaDescribedBy={ describedBy }
-			value={ inputValue }
+			value={ value }
 			{ ...rest }
 		/>
 	);
