@@ -5,7 +5,7 @@ import { __ } from '@wordpress/i18n';
 import { useRef, useEffect, useState, InputHTMLAttributes } from 'react';
 import classnames from 'classnames';
 import { withInstanceId } from '@wordpress/compose';
-import { isObject, isString } from '@woocommerce/types';
+import { isObject } from '@woocommerce/types';
 import { useDispatch, useSelect } from '@wordpress/data';
 import { VALIDATION_STORE_KEY } from '@woocommerce/block-data';
 
