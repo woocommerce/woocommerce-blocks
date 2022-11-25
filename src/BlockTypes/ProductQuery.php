@@ -40,6 +40,13 @@ class ProductQuery extends AbstractBlock {
 	protected $attributes_filter_query_args = array();
 
 	/**
+	 * All query args from WP_Query.
+	 *
+	 * @var array
+	 */
+	protected $valid_query_vars;
+
+	/**
 	 * Initialize this block type.
 	 *
 	 * - Hook into WP lifecycle.
@@ -174,39 +181,14 @@ class ProductQuery extends AbstractBlock {
 	 * @return array
 	 */
 	private function merge_queries( ...$queries ) {
-		$valid_query_vars = array_keys( ( new WP_Query() )->fill_query_vars( array() ) );
-		$valid_query_vars = array_merge(
-			$valid_query_vars,
-			// fill_query_vars doesn't include these vars so we need to add them manually.
-			array(
-				'date_query',
-				'exact',
-				'ignore_sticky_posts',
-				'lazy_load_term_meta',
-				'meta_compare_key',
-				'meta_compare',
-				'meta_query',
-				'meta_type_key',
-				'meta_type',
-				'nopaging',
-				'offset',
-				'order',
-				'orderby',
-				'page',
-				'post_type',
-				'posts_per_page',
-				'suppress_filters',
-				'tax_query',
-			)
-		);
-
 		$merged_query = array_reduce(
 			$queries,
-			function( $acc, $query ) use ( $valid_query_vars ) {
+			function( $acc, $query ) {
 				if ( ! is_array( $query ) ) {
 					return $acc;
 				}
-				if ( empty( array_intersect( $valid_query_vars, array_keys( $query ) ) ) ) {
+				// If the $query doesn't contain any valid query keys, we unpack it then merge.
+				if ( empty( array_intersect( $this->get_valid_query_vars(), array_keys( $query ) ) ) ) {
 					return $this->merge_queries( $acc, ...array_values( $query ) );
 				}
 				return array_merge_recursive( $acc, $query );
@@ -528,6 +510,45 @@ class ProductQuery extends AbstractBlock {
 				),
 			),
 		);
+	}
+
+	/**
+	 * Return or initialize $valid_query_vars.
+	 *
+	 * @return array
+	 */
+	private function get_valid_query_vars() {
+		if ( ! empty( $this->valid_query_vars ) ) {
+			return $this->valid_query_vars;
+		}
+
+		$valid_query_vars       = array_keys( ( new WP_Query() )->fill_query_vars( array() ) );
+		$this->valid_query_vars = array_merge(
+			$valid_query_vars,
+			// fill_query_vars doesn't include these vars so we need to add them manually.
+			array(
+				'date_query',
+				'exact',
+				'ignore_sticky_posts',
+				'lazy_load_term_meta',
+				'meta_compare_key',
+				'meta_compare',
+				'meta_query',
+				'meta_type_key',
+				'meta_type',
+				'nopaging',
+				'offset',
+				'order',
+				'orderby',
+				'page',
+				'post_type',
+				'posts_per_page',
+				'suppress_filters',
+				'tax_query',
+			)
+		);
+
+		return $this->valid_query_vars;
 	}
 
 }
