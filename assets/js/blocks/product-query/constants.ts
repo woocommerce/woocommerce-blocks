@@ -77,12 +77,45 @@ export const INNER_BLOCKS_TEMPLATE: InnerBlockTemplate[] = [
 		[
 			[ 'woocommerce/product-image' ],
 			[
+				'core/post-terms',
+				{
+					term: 'product_cat',
+					textAlign: 'center',
+					fontSize: 'small',
+				},
+				[],
+			],
+			[
 				'core/post-title',
 				{
 					textAlign: 'center',
 					level: 3,
 					fontSize: 'medium',
-					__woocommerceNamespace: PRODUCT_TITLE_ID,
+				},
+				[],
+			],
+			[
+				'woocommerce/product-rating',
+				{
+					isDescendentOfQueryLoop: true,
+					fontSize: 'small',
+				},
+				[],
+			],
+			[
+				'woocommerce/product-price',
+				{
+					isDescendentOfQueryLoop: true,
+					textAlign: 'center',
+					fontSize: 'small',
+				},
+				[],
+			],
+			[
+				'woocommerce/product-button',
+				{
+					isDescendentOfQueryLoop: true,
+					fontSize: 'small',
 				},
 				[],
 			],
