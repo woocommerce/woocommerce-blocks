@@ -51,6 +51,8 @@ final class BlockTypesController {
 		add_filter( 'render_block', array( $this, 'add_data_attributes' ), 10, 2 );
 		add_action( 'woocommerce_login_form_end', array( $this, 'redirect_to_field' ) );
 		add_filter( 'widget_types_to_hide_from_legacy_widget_block', array( $this, 'hide_legacy_widgets_with_block_equivalent' ) );
+		add_filter( 'woocommerce_settings_pages', array( $this, 'add_order_received_page_setting' ) );
+		add_filter( 'woocommerce_get_checkout_order_received_url', array( $this, 'get_order_received_url' ), 10, 2 );
 	}
 
 	/**
@@ -153,6 +155,52 @@ final class BlockTypesController {
 		);
 
 		return $widget_types;
+	}
+
+	/**
+	 * Add the order received page to the list of pages in the settings.
+	 *
+	 * @param array $settings Array of settings.
+	 * @return array
+	 */
+	public function add_order_received_page_setting( $settings ) {
+		$pos         = array_search( 'woocommerce_checkout_page_id', array_column( $settings, 'id' ), true ) + 1;
+		$new_setting = array(
+			'title'    => __( 'Order received page', 'woo-gutenberg-products-block' ),
+			'desc'     => __( 'If defined, the customer will be redirected here after checkout instead of the `order-received` endpoint below.', 'woocommerce' ),
+			'id'       => 'woocommerce_order_received_page_id',
+			'default'  => '',
+			'class'    => 'wc-page-search',
+			'css'      => 'min-width:300px;',
+			'type'     => 'single_select_page_with_search',
+			'args'     => array( 'exclude' => [ wc_get_page_id( 'cart' ), wc_get_page_id( 'checkout' ) ] ),
+			'desc_tip' => true,
+			'autoload' => false,
+		);
+		return array_merge( array_slice( $settings, 0, $pos ), array( $new_setting ), array_slice( $settings, $pos ) );
+	}
+
+	/**
+	 * Get custom order received URL.
+	 *
+	 * @param string    $order_received_url URL to redirect to.
+	 * @param \WC_Order $order Order object.
+	 * @return string
+	 */
+	public function get_order_received_url( $order_received_url, $order ) {
+		$page_id = get_option( 'woocommerce_order_received_page_id', 0 );
+
+		if ( ! $page_id ) {
+			return $order_received_url;
+		}
+
+		return add_query_arg(
+			[
+				'order_id' => $order->get_id(),
+				'key'      => $order->get_order_key(),
+			],
+			get_permalink( $page_id )
+		);
 	}
 
 	/**
