@@ -61,9 +61,11 @@ export const QUERY_DEFAULT_ATTRIBUTES: QueryBlockAttributes = {
 		exclude: [],
 		sticky: '',
 		inherit: false,
-		__woocommerceStockStatus: GLOBAL_HIDE_OUT_OF_STOCK
-			? Object.keys( objectOmit( STOCK_STATUS_OPTIONS, 'outofstock' ) )
-			: Object.keys( STOCK_STATUS_OPTIONS ),
+		...( GLOBAL_HIDE_OUT_OF_STOCK && {
+			__woocommerceStockStatus: Object.keys(
+				objectOmit( STOCK_STATUS_OPTIONS, 'outofstock' )
+			),
+		} ),
 	},
 };
 
