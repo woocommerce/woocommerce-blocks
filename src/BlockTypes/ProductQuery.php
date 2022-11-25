@@ -420,9 +420,11 @@ class ProductQuery extends AbstractBlock {
 
 		return array(
 			'meta_query' => array(
-				'relation' => 'AND',
-				$max_price_query,
-				$min_price_query,
+				array(
+					'relation' => 'AND',
+					$max_price_query,
+					$min_price_query,
+				),
 			),
 		);
 	}
