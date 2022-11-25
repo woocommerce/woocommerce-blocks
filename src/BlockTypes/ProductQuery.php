@@ -561,13 +561,17 @@ class ProductQuery extends AbstractBlock {
 	 */
 	private function array_merge_recursive_replace_non_array_properties( $base, $new ) {
 		foreach ( $new as $key => $value ) {
-			if ( is_array( $value ) ) {
-				if ( ! isset( $base[ $key ] ) ) {
-					$base[ $key ] = array();
-				}
-				$base[ $key ] = $this->array_merge_recursive_replace_non_array_properties( $base[ $key ], $value );
+			if ( is_numeric( $key ) ) {
+				$base[] = $value;
 			} else {
-				$base[ $key ] = $value;
+				if ( is_array( $value ) ) {
+					if ( ! isset( $base[ $key ] ) ) {
+						$base[ $key ] = array();
+					}
+					$base[ $key ] = $this->array_merge_recursive_replace_non_array_properties( $base[ $key ], $value );
+				} else {
+					$base[ $key ] = $value;
+				}
 			}
 		}
 
