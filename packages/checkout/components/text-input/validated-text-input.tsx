@@ -2,13 +2,7 @@
  * External dependencies
  */
 import { __ } from '@wordpress/i18n';
-import {
-	useCallback,
-	useRef,
-	useEffect,
-	useState,
-	InputHTMLAttributes,
-} from 'react';
+import { useRef, useEffect, useState, InputHTMLAttributes } from 'react';
 import classnames from 'classnames';
 import { withInstanceId } from '@wordpress/compose';
 import { isObject, isString } from '@woocommerce/types';
@@ -61,6 +55,7 @@ const ValidatedTextInput = ( {
 	...rest
 }: ValidatedTextInputProps ): JSX.Element => {
 	const [ isPristine, setIsPristine ] = useState( true );
+	const [ inputValue, setInputValue ] = useState( value );
 	const inputRef = useRef< HTMLInputElement >( null );
 	const textInputId =
 		typeof id !== 'undefined' ? id : 'textinput-' + instanceId;
@@ -144,6 +139,16 @@ const ValidatedTextInput = ( {
 		} );
 	};
 
+	const inputIsValid = (): boolean => {
+		const inputObject = inputRef.current || null;
+
+		if ( inputObject === null ) {
+			return false;
+		}
+
+		return inputObject.validity.valid;
+	};
+
 	if ( passedErrorMessage !== '' && isObject( validationError ) ) {
 		validationError.message = passedErrorMessage;
 	}
@@ -161,9 +166,6 @@ const ValidatedTextInput = ( {
 			} ) }
 			aria-invalid={ hasError === true }
 			id={ textInputId }
-			onBlur={ () => {
-				validateInput( false );
-			} }
 			feedback={
 				showError && (
 					<ValidationInputError
@@ -173,12 +175,26 @@ const ValidatedTextInput = ( {
 				)
 			}
 			ref={ inputRef }
+			onInput={ () => {
+				validateInput( true );
+			} }
 			onChange={ ( val ) => {
+				// Update our local state.
+				setInputValue( val );
+				// Hide errors while typing.
 				hideValidationError( errorIdString );
-				onChange( val );
+				// Revalidate on user input so we know if the value is valid.
+				validateInput( true );
+				// Push the changes up to the parent component if the value is valid.
+				if ( inputIsValid() ) {
+					onChange( val );
+				}
+			} }
+			onBlur={ () => {
+				validateInput( false );
 			} }
 			ariaDescribedBy={ describedBy }
-			value={ value }
+			value={ inputValue }
 			{ ...rest }
 		/>
 	);
