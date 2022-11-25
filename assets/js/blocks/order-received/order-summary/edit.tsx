@@ -14,7 +14,7 @@ const sampleData = {
 	orderTotal: '100',
 	orderEmail: 'dummy@email.com',
 	orderPaymentMethod: 'BACS',
-	orderStatusText: 'PENDING',
+	orderStatusText: 'Pending',
 	orderStatus: 'pending',
 	billingAddress: {
 		first_name: 'John',
