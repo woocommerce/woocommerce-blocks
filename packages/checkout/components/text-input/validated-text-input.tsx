@@ -38,6 +38,11 @@ interface ValidatedTextInputProps
 	onChange: ( newValue: string ) => void;
 	label?: string | undefined;
 	value: string;
+	required?: boolean | undefined;
+	requiredMessage?: string | undefined;
+	customValidation?:
+		| ( ( inputObject: HTMLInputElement ) => boolean )
+		| undefined;
 }
 
 const ValidatedTextInput = ( {
@@ -51,16 +56,18 @@ const ValidatedTextInput = ( {
 	showError = true,
 	errorMessage: passedErrorMessage = '',
 	value = '',
+	requiredMessage,
+	customValidation,
 	...rest
 }: ValidatedTextInputProps ): JSX.Element => {
 	const [ isPristine, setIsPristine ] = useState( true );
 	const inputRef = useRef< HTMLInputElement >( null );
-
-	const { setValidationErrors, hideValidationError, clearValidationError } =
-		useDispatch( VALIDATION_STORE_KEY );
 	const textInputId =
 		typeof id !== 'undefined' ? id : 'textinput-' + instanceId;
 	const errorIdString = errorId !== undefined ? errorId : textInputId;
+
+	const { setValidationErrors, hideValidationError, clearValidationError } =
+		useDispatch( VALIDATION_STORE_KEY );
 
 	const { validationError, validationErrorId } = useSelect( ( select ) => {
 		const store = select( VALIDATION_STORE_KEY );
@@ -70,39 +77,8 @@ const ValidatedTextInput = ( {
 		};
 	} );
 
-	const validateInput = useCallback(
-		( errorsHidden = true ) => {
-			const inputObject = inputRef.current || null;
-			if ( ! inputObject ) {
-				return;
-			}
-			// Trim white space before validation.
-			inputObject.value = inputObject.value.trim();
-			const inputIsValid = inputObject.checkValidity();
-			if ( inputIsValid ) {
-				clearValidationError( errorIdString );
-			} else {
-				const validationErrors = {
-					[ errorIdString ]: {
-						message:
-							inputObject.validationMessage ||
-							__(
-								'Invalid value.',
-								'woo-gutenberg-products-block'
-							),
-						hidden: errorsHidden,
-					},
-				};
-				setValidationErrors( validationErrors );
-			}
-		},
-		[ clearValidationError, errorIdString, setValidationErrors ]
-	);
-
 	/**
-	 * Focus on mount
-	 *
-	 * If the input is in pristine state, focus the element.
+	 * If the input is in pristine state on mount, focus the element.
 	 */
 	useEffect( () => {
 		if ( isPristine && focusOnMount ) {
@@ -112,19 +88,19 @@ const ValidatedTextInput = ( {
 	}, [ focusOnMount, isPristine, setIsPristine ] );
 
 	/**
-	 * Value Validation
-	 *
-	 * Runs validation on state change if the current element is not in focus. This is because autofilled elements do not
+	 * Trigger validation on state change if the current element is not in focus. This is because autofilled elements do not
 	 * trigger the blur() event, and so values can be validated in the background if the state changes elsewhere.
 	 */
 	useEffect( () => {
 		if (
+			inputRef &&
+			inputRef.current !== null &&
 			inputRef.current?.ownerDocument?.activeElement !== inputRef.current
 		) {
-			validateInput( true );
+			inputRef.current.blur();
 		}
 		// We need to track value even if it is not directly used so we know when it changes.
-	}, [ value, validateInput ] );
+	}, [ value ] );
 
 	// Remove validation errors when unmounted.
 	useEffect( () => {
@@ -133,11 +109,42 @@ const ValidatedTextInput = ( {
 		};
 	}, [ clearValidationError, errorIdString ] );
 
-	if (
-		isString( passedErrorMessage ) &&
-		passedErrorMessage !== '' &&
-		isObject( passedErrorMessage )
-	) {
+	const validateInput = ( errorsHidden = true ) => {
+		const inputObject = inputRef.current || null;
+
+		if ( inputObject === null ) {
+			return;
+		}
+
+		inputObject.value = inputObject.value.trim(); // Trim white space before validation.
+		inputObject.setCustomValidity( '' );
+
+		const inputIsValid = customValidation
+			? inputObject.checkValidity() && customValidation( inputObject )
+			: inputObject.checkValidity();
+
+		if ( inputIsValid ) {
+			clearValidationError( errorIdString );
+			return;
+		}
+
+		const validityState = inputObject.validity;
+
+		if ( validityState.valueMissing && requiredMessage ) {
+			inputObject.setCustomValidity( requiredMessage );
+		}
+
+		setValidationErrors( {
+			[ errorIdString ]: {
+				message:
+					inputObject.validationMessage ||
+					__( 'Invalid value.', 'woo-gutenberg-products-block' ),
+				hidden: errorsHidden,
+			},
+		} );
+	};
+
+	if ( passedErrorMessage !== '' && isObject( validationError ) ) {
 		validationError.message = passedErrorMessage;
 	}
 
