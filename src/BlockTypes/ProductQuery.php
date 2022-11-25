@@ -191,7 +191,7 @@ class ProductQuery extends AbstractBlock {
 				if ( empty( array_intersect( $this->get_valid_query_vars(), array_keys( $query ) ) ) ) {
 					return $this->merge_queries( $acc, ...array_values( $query ) );
 				}
-				return array_merge_recursive( $acc, $query );
+				return $this->array_merge_recursive_replace_non_array_properties( $acc, $query );
 			},
 			array()
 		);
@@ -549,6 +549,27 @@ class ProductQuery extends AbstractBlock {
 		);
 
 		return $this->valid_query_vars;
+	}
+
+	/**
+	 * Merge two array recursively but replace the non-array values instead of merging them.
+	 *
+	 * @param array $base First array.
+	 * @param array $new  Second array.
+	 */
+	private function array_merge_recursive_replace_non_array_properties( $base, $new ) {
+		foreach ( $new as $key => $value ) {
+			if ( is_array( $value ) ) {
+				if ( ! isset( $base[ $key ] ) ) {
+					$base[ $key ] = array();
+				}
+				$base[ $key ] = $this->array_merge_recursive_replace_non_array_properties( $base[ $key ], $value );
+			} else {
+				$base[ $key ] = $value;
+			}
+		}
+
+		return $base;
 	}
 
 }
