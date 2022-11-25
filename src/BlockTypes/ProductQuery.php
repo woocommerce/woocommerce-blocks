@@ -471,8 +471,10 @@ class ProductQuery extends AbstractBlock {
 
 		return array(
 			'tax_query' => array(
-				'relation' => 'AND',
-				$queries,
+				array(
+					'relation' => 'AND',
+					$queries,
+				),
 			),
 		);
 	}
