@@ -23,7 +23,6 @@ export const QUERY_LOOP_ID = 'core/query';
 export const DEFAULT_CORE_ALLOWED_CONTROLS = [ 'taxQuery', 'search' ];
 
 export const ALL_PRODUCT_QUERY_CONTROLS = [
-	'wooInherit',
 	'presets',
 	'onSale',
 	'stockStatus',

@@ -39,6 +39,14 @@ class ProductQuery extends AbstractBlock {
 	 */
 	protected $attributes_filter_query_args = array();
 
+	/** This is a feature flag to enable the custom inherit Global Query implementation.
+	 * This is not intended to be a permanent feature flag, but rather a temporary.
+	 * https://github.com/woocommerce/woocommerce-blocks/pull/7382
+	 *
+	 * @var boolean
+	 */
+	protected $is_custom_inherit_global_query_implementation_enabled = false;
+
 	/**
 	 * Initialize this block type.
 	 *
@@ -541,6 +549,10 @@ class ProductQuery extends AbstractBlock {
 	 * @return array
 	 */
 	private function get_global_query( $parsed_block ) {
+		if ( ! $this->is_custom_inherit_global_query_implementation_enabled ) {
+			return array();
+		}
+
 		global $wp_query;
 
 		$inherit_enabled = isset( $parsed_block['attrs']['query']['__woocommerceInherit'] ) && true === $parsed_block['attrs']['query']['__woocommerceInherit'];
