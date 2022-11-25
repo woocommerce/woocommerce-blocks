@@ -202,4 +202,26 @@ class ProductQuery extends \WP_UnitTestCase {
 			$price_meta_query[1]
 		);
 	}
+
+	/**
+	 * Test merging filter by stock status queries.
+	 */
+	public function test_merging_filter_by_stock_status_queries() {
+		set_query_var( 'filter_stock_status', 'instock' );
+
+		$parsed_block = $this->get_base_parsed_block();
+		$this->block_instance->set_parsed_block( $parsed_block );
+
+		$merged_query = $this->block_instance->build_query( $parsed_block['attrs']['query'] );
+		error_log( print_r( $merged_query, true ) );
+
+		$this->assertEqualsCanonicalizing(
+			array(
+				'key'     => '_stock_status',
+				'value'   => array( 'instock' ),
+				'operator' => 'IN',
+			),
+			$merged_query['meta_query'][0]
+		);
+	}
 }
