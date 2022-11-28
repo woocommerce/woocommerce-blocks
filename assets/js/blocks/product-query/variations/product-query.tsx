@@ -21,6 +21,7 @@ const VARIATION_NAME = 'woocommerce/product-query';
 
 // This is a feature flag to enable the custom inherit Global Query implementation.
 // This is not intended to be a permanent feature flag, but rather a temporary.
+// It is also necessary to enable this feature flag on the PHP side: `src/BlockTypes/ProductQuery.php:49`.
 // https://github.com/woocommerce/woocommerce-blocks/pull/7382
 const isCustomInheritGlobalQueryImplementationEnabled = false;
 
