@@ -4,13 +4,17 @@
 import { __ } from '@wordpress/i18n';
 import classnames from 'classnames';
 import { useBlockProps, InspectorControls } from '@wordpress/block-editor';
+import type { BlockEditProps } from '@wordpress/blocks';
 import {
 	Disabled,
 	PanelBody,
 	ToggleControl,
 	withSpokenMessages,
+	// eslint-disable-next-line @wordpress/no-unsafe-wp-apis
+	__experimentalToggleGroupControl as ToggleGroupControl,
+	// eslint-disable-next-line @wordpress/no-unsafe-wp-apis
+	__experimentalToggleGroupControlOption as ToggleGroupControlOption,
 } from '@wordpress/components';
-import type { BlockEditProps } from '@wordpress/blocks';
 
 /**
  * Internal dependencies
@@ -22,7 +26,8 @@ const Edit = ( {
 	attributes,
 	setAttributes,
 }: BlockEditProps< Attributes > ) => {
-	const { className, showCounts, showFilterButton } = attributes;
+	const { className, displayStyle, showCounts, showFilterButton } =
+		attributes;
 
 	const blockProps = useBlockProps( {
 		className: classnames( 'wc-block-rating-filter', className ),
@@ -53,6 +58,34 @@ const Edit = ( {
 						'woo-gutenberg-products-block'
 					) }
 				>
+					<ToggleGroupControl
+						label={ __(
+							'Display Style',
+							'woo-gutenberg-products-block'
+						) }
+						value={ displayStyle }
+						onChange={ ( value: string ) =>
+							setAttributes( {
+								displayStyle: value,
+							} )
+						}
+						className="wc-block-attribute-filter__display-toggle"
+					>
+						<ToggleGroupControlOption
+							value="list"
+							label={ __(
+								'List',
+								'woo-gutenberg-products-block'
+							) }
+						/>
+						<ToggleGroupControlOption
+							value="dropdown"
+							label={ __(
+								'Dropdown',
+								'woo-gutenberg-products-block'
+							) }
+						/>
+					</ToggleGroupControl>
 					<ToggleControl
 						label={ __(
 							"Show 'Apply filters' button",

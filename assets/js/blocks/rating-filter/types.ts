@@ -1,5 +1,6 @@
 export interface Attributes {
 	className?: string;
+	displayStyle: string;
 	showCounts: boolean;
 	showFilterButton: boolean;
 	isPreview?: boolean;
