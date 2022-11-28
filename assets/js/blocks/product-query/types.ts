@@ -52,6 +52,7 @@ export interface ProductQueryArguments {
 	 * ```
 	 */
 	__woocommerceOnSale?: boolean;
+	__woocommerceInherit?: boolean;
 	/**
 	 * Filter products by their stock status.
 	 *
