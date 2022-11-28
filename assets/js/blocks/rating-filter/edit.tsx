@@ -48,7 +48,10 @@ const Edit = ( {
 					/>
 				</PanelBody>
 				<PanelBody
-					title={ __( 'Settings', 'woo-gutenberg-products-block' ) }
+					title={ __(
+						'Display Settings',
+						'woo-gutenberg-products-block'
+					) }
 				>
 					<ToggleControl
 						label={ __(
