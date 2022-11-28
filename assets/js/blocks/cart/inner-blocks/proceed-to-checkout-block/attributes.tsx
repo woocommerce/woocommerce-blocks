@@ -1,3 +1,8 @@
+/**
+ * External dependencies
+ */
+import { __ } from '@wordpress/i18n';
+
 export default {
 	checkoutPageId: {
 		type: 'number',
@@ -12,6 +17,6 @@ export default {
 	},
 	buttonLabel: {
 		type: 'string',
-		default: 'Proceed to Checkout',
+		default: __( 'Proceed to Checkout', 'woo-gutenberg-products-block' ),
 	},
 };

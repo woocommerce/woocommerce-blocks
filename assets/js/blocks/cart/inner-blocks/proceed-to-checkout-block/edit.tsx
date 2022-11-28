@@ -31,8 +31,6 @@ export const Edit = ( {
 	const { checkoutPageId = 0, buttonLabel } = attributes;
 	const { current: savedCheckoutPageId } = useRef( checkoutPageId );
 
-	// console.log( 'buttonLabel', buttonLabel );
-
 	const currentPostId = useSelect(
 		( select ) => {
 			if ( ! savedCheckoutPageId ) {
@@ -73,9 +71,20 @@ export const Edit = ( {
 					multiline={ false }
 					allowedFormats={ [] }
 					value={ buttonLabel }
-					onChange={ ( content ) =>
-						setAttributes( { buttonLabel: content } )
-					}
+					onChange={ ( content ) => {
+						if ( content === '' ) {
+							setAttributes( {
+								buttonLabel: __(
+									'Proceed to Checkout',
+									'woo-gutenberg-products-block'
+								),
+							} );
+						} else {
+							setAttributes( {
+								buttonLabel: content,
+							} );
+						}
+					} }
 				/>
 			</Button>
 		</div>
