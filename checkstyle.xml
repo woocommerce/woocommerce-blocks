@@ -1033,26 +1033,26 @@
 <error line="128" column="35" severity="error" message="Parameter &apos;response&apos; implicitly has an &apos;any&apos; type." source="TS7006" />
 </file>
 <file name="assets/js/base/context/providers/cart-checkout/checkout-processor.js">
-<error line="172" column="7" severity="error" message="Variable &apos;unsubscribeProcessing&apos; implicitly has type &apos;any&apos; in some locations where its type cannot be determined." source="TS7034" />
-<error line="181" column="5" severity="error" message="Variable &apos;unsubscribeProcessing&apos; implicitly has an &apos;any&apos; type." source="TS7005" />
-<error line="227" column="9" severity="error" message="Property &apos;shipping_address&apos; does not exist on type &apos;{ extensions: { [x: string]: Record&lt;string, unknown&gt;; }; payment_method: string | undefined; payment_data: { key: string; value: unknown; }[]; billing_address: BillingAddress; customer_note: string; create_account: boolean; } | { ...; }&apos;.
+<error line="176" column="7" severity="error" message="Variable &apos;unsubscribeProcessing&apos; implicitly has type &apos;any&apos; in some locations where its type cannot be determined." source="TS7034" />
+<error line="185" column="5" severity="error" message="Variable &apos;unsubscribeProcessing&apos; implicitly has an &apos;any&apos; type." source="TS7005" />
+<error line="231" column="9" severity="error" message="Property &apos;shipping_address&apos; does not exist on type &apos;{ extensions: { [x: string]: Record&lt;string, unknown&gt;; }; payment_method: string | undefined; payment_data: { key: string; value: unknown; }[]; billing_address: BillingAddress; customer_note: string; create_account: boolean; } | { ...; }&apos;.
   Property &apos;shipping_address&apos; does not exist on type &apos;{ extensions: { [x: string]: Record&lt;string, unknown&gt;; }; payment_method: string | undefined; payment_data: { key: string; value: unknown; }[]; billing_address: BillingAddress; customer_note: string; create_account: boolean; }&apos;." source="TS2339" />
-<error line="256" column="35" severity="error" message="Parameter &apos;response&apos; implicitly has an &apos;any&apos; type." source="TS7006" />
-<error line="266" column="9" severity="error" message="Argument of type &apos;{ id: string; context: string; __unstableHTML: boolean; }&apos; is not assignable to parameter of type &apos;Partial&lt;Options&gt;&apos;.
+<error line="260" column="35" severity="error" message="Parameter &apos;response&apos; implicitly has an &apos;any&apos; type." source="TS7006" />
+<error line="270" column="9" severity="error" message="Argument of type &apos;{ id: string; context: string; __unstableHTML: boolean; }&apos; is not assignable to parameter of type &apos;Partial&lt;Options&gt;&apos;.
   Object literal may only specify known properties, and &apos;__unstableHTML&apos; does not exist in type &apos;Partial&lt;Options&gt;&apos;." source="TS2345" />
-<error line="270" column="10" severity="error" message="Parameter &apos;additionalError&apos; implicitly has an &apos;any&apos; type." source="TS7006" />
-<error line="274" column="10" severity="error" message="Argument of type &apos;{ id: any; context: string; __unstableHTML: boolean; }&apos; is not assignable to parameter of type &apos;Partial&lt;Options&gt;&apos;.
+<error line="274" column="10" severity="error" message="Parameter &apos;additionalError&apos; implicitly has an &apos;any&apos; type." source="TS7006" />
+<error line="278" column="10" severity="error" message="Argument of type &apos;{ id: any; context: string; __unstableHTML: boolean; }&apos; is not assignable to parameter of type &apos;Partial&lt;Options&gt;&apos;.
   Object literal may only specify known properties, and &apos;__unstableHTML&apos; does not exist in type &apos;Partial&lt;Options&gt;&apos;." source="TS2345" />
-<error line="297" column="8" severity="error" message="Argument of type &apos;{ id: string; context: string; __unstableHTML: boolean; }&apos; is not assignable to parameter of type &apos;Partial&lt;Options&gt;&apos;.
+<error line="301" column="8" severity="error" message="Argument of type &apos;{ id: string; context: string; __unstableHTML: boolean; }&apos; is not assignable to parameter of type &apos;Partial&lt;Options&gt;&apos;.
   Object literal may only specify known properties, and &apos;__unstableHTML&apos; does not exist in type &apos;Partial&lt;Options&gt;&apos;." source="TS2345" />
 </file>
 <file name="assets/js/base/context/providers/cart-checkout/checkout-provider.js">
 <error line="4" column="28" severity="error" message="Could not find a declaration file for module &apos;@wordpress/plugins&apos;. &apos;/home/runner/work/woocommerce-blocks/woocommerce-blocks/node_modules/@wordpress/plugins/build/index.js&apos; implicitly has an &apos;any&apos; type.
   Try `npm i --save-dev @types/wordpress__plugins` if it exists or add a new declaration (.d.ts) file containing `declare module &apos;@wordpress/plugins&apos;;`" source="TS7016" />
-<error line="30" column="27" severity="error" message="Type &apos;string | undefined&apos; is not assignable to type &apos;string&apos;.
+<error line="29" column="27" severity="error" message="Type &apos;string | undefined&apos; is not assignable to type &apos;string&apos;.
   Type &apos;undefined&apos; is not assignable to type &apos;string&apos;." source="TS2322" />
-<error line="31" column="4" severity="error" message="Type &apos;Element&apos; is missing the following properties from type &apos;ReactChildren&apos;: map, forEach, count, only, toArray" source="TS2739" />
-<error line="38" column="8" severity="error" message="No overload matches this call.
+<error line="30" column="4" severity="error" message="Type &apos;Element&apos; is missing the following properties from type &apos;ReactChildren&apos;: map, forEach, count, only, toArray" source="TS2739" />
+<error line="36" column="7" severity="error" message="No overload matches this call.
   Overload 1 of 2, &apos;(props: BlockErrorBoundaryProps | Readonly&lt;BlockErrorBoundaryProps&gt;): BlockErrorBoundary&apos;, gave the following error.
     Type &apos;(() =&gt; null) | null&apos; is not assignable to type &apos;(props: RenderErrorProps) =&gt; ReactNode&apos;.
       Type &apos;null&apos; is not assignable to type &apos;(props: RenderErrorProps) =&gt; ReactNode&apos;.
@@ -1086,9 +1086,6 @@
 </file>
 <file name="assets/js/base/context/providers/index.js">
 <error line="6" column="1" severity="error" message="Module &apos;./cart-checkout&apos; has already exported a member named &apos;React&apos;. Consider explicitly re-exporting to resolve the ambiguity." source="TS2308" />
-</file>
-<file name="assets/js/base/context/hooks/use-checkout-extension-data.ts">
-<error line="12" column="15" severity="error" message="Module &apos;&quot;../../../data/checkout/types&quot;&apos; declares &apos;CheckoutState&apos; locally, but it is not exported." source="TS2459" />
 </file>
 <file name="assets/js/shared/hocs/with-product-data-context.js">
 <error line="16" column="10" severity="error" message="Property &apos;productId&apos; does not exist on type &apos;Object&apos;." source="TS2339" />
@@ -1408,17 +1405,10 @@
   Object literal may only specify known properties, and &apos;ancestor&apos; does not exist in type &apos;BlockConfiguration&lt;{}&gt;&apos;." source="TS2322" />
 </file>
 <file name="assets/js/atomic/blocks/product-elements/category-list/index.ts">
-<error line="36" column="5" severity="error" message="Type &apos;{ color?: { text: true; link: true; background: false; __experimentalSkipSerialization: true; }; typography?: { fontSize: true; lineHeight: true; __experimentalFontStyle: true; __experimentalFontWeight: true; __experimentalSkipSerialization: true; }; __experimentalSelector?: string; }&apos; is not assignable to type &apos;BlockSupports&apos;.
+<error line="41" column="5" severity="error" message="Type &apos;{ color?: { text: true; link: true; background: false; __experimentalSkipSerialization: true; }; typography?: { fontSize: true; lineHeight: true; __experimentalFontStyle: true; __experimentalFontWeight: true; __experimentalSkipSerialization: true; }; __experimentalSelector?: string; }&apos; is not assignable to type &apos;BlockSupports&apos;.
   Types of property &apos;color&apos; are incompatible.
     Type &apos;{ text: true; link: true; background: false; __experimentalSkipSerialization: true; }&apos; is not assignable to type &apos;Partial&lt;ColorProps&gt;&apos;.
       Object literal may only specify known properties, and &apos;__experimentalSkipSerialization&apos; does not exist in type &apos;Partial&lt;ColorProps&gt;&apos;." source="TS2322" />
-<error line="49" column="2" severity="error" message="Type &apos;({ attributes }: Props) =&gt; JSX.Element&apos; is not assignable to type &apos;ComponentType&lt;BlockSaveProps&lt;{}&gt;&gt;&apos;.
-  Type &apos;({ attributes }: Props) =&gt; JSX.Element&apos; is not assignable to type &apos;FunctionComponent&lt;BlockSaveProps&lt;{}&gt;&gt;&apos;.
-    Types of parameters &apos;__0&apos; and &apos;props&apos; are incompatible.
-      Type &apos;PropsWithChildren&lt;BlockSaveProps&lt;{}&gt;&gt;&apos; is not assignable to type &apos;Props&apos;.
-        Types of property &apos;attributes&apos; are incompatible.
-          Type &apos;Readonly&lt;{}&gt;&apos; is not assignable to type &apos;Record&lt;string, unknown&gt; &amp; { className: string; }&apos;.
-            Property &apos;className&apos; is missing in type &apos;Readonly&lt;{}&gt;&apos; but required in type &apos;{ className: string; }&apos;." source="TS2322" />
 </file>
 <file name="assets/js/atomic/blocks/product-elements/add-to-cart/edit.js">
 <error line="25" column="18" severity="error" message="Binding element &apos;attributes&apos; implicitly has an &apos;any&apos; type." source="TS7031" />
