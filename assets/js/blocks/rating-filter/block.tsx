@@ -4,6 +4,7 @@
 import { __, sprintf } from '@wordpress/i18n';
 import { speak } from '@wordpress/a11y';
 import Rating from '@woocommerce/base-components/product-rating';
+import { Notice } from 'wordpress-components';
 import { usePrevious, useShallowEqual } from '@woocommerce/base-hooks';
 import {
 	useQueryStateByKey,
@@ -271,6 +272,19 @@ const RatingFilterBlock = ( {
 		},
 		[ checked ]
 	);
+
+	if ( isEditor && ! isDisabled && displayedOptions.length === 0 ) {
+		return (
+			<Notice status="warning" isDismissible={ false }>
+				<p>
+					{ __(
+						'There are no products with ratings.',
+						'woo-gutenberg-products-block'
+					) }
+				</p>
+			</Notice>
+		);
+	}
 
 	if ( ! filteredCountsLoading && displayedOptions.length === 0 ) {
 		setWrapperVisibility( false );
