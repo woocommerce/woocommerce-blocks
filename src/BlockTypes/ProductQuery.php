@@ -40,13 +40,6 @@ class ProductQuery extends AbstractBlock {
 	protected $attributes_filter_query_args = array();
 
 	/**
-	 * All query args from WP_Query.
-	 *
-	 * @var array
-	 */
-	protected $valid_query_vars;
-
-	/**
 	 * Initialize this block type.
 	 *
 	 * - Hook into WP lifecycle.
@@ -187,8 +180,8 @@ class ProductQuery extends AbstractBlock {
 				if ( ! is_array( $query ) ) {
 					return $acc;
 				}
-				// If the $query doesn't contain any valid query keys, we unpack/destructure it then merge.
-				if ( empty( array_intersect( $this->get_valid_query_vars(), array_keys( $query ) ) ) ) {
+				// If the $query doesn't contain any keys, we unpack/destructure it then merge.
+				if ( ! $this->array_has_string_keys( $query ) ) {
 					return $this->merge_queries( $acc, ...array_values( $query ) );
 				}
 				return $this->array_merge_recursive_replace_non_array_properties( $acc, $query );
@@ -517,42 +510,13 @@ class ProductQuery extends AbstractBlock {
 	}
 
 	/**
-	 * Return or initialize $valid_query_vars.
+	 * Check if array has string key.
 	 *
-	 * @return array
+	 * @param array $array Input array.
+	 * @return bool
 	 */
-	private function get_valid_query_vars() {
-		if ( ! empty( $this->valid_query_vars ) ) {
-			return $this->valid_query_vars;
-		}
-
-		$valid_query_vars       = array_keys( ( new WP_Query() )->fill_query_vars( array() ) );
-		$this->valid_query_vars = array_merge(
-			$valid_query_vars,
-			// fill_query_vars doesn't include these vars so we need to add them manually.
-			array(
-				'date_query',
-				'exact',
-				'ignore_sticky_posts',
-				'lazy_load_term_meta',
-				'meta_compare_key',
-				'meta_compare',
-				'meta_query',
-				'meta_type_key',
-				'meta_type',
-				'nopaging',
-				'offset',
-				'order',
-				'orderby',
-				'page',
-				'post_type',
-				'posts_per_page',
-				'suppress_filters',
-				'tax_query',
-			)
-		);
-
-		return $this->valid_query_vars;
+	private function array_has_string_keys( $array ) {
+		return count( array_filter( array_keys( $array ), 'is_string' ) ) > 0;
 	}
 
 	/**
