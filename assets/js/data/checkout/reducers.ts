@@ -1,9 +1,4 @@
 /**
- * External dependencies
- */
-import { PaymentResult } from '@woocommerce/types';
-
-/**
  * Internal dependencies
  */
 import { ACTION_TYPES as types } from './action-types';
@@ -33,13 +28,6 @@ const reducer = ( state = defaultState, action: CheckoutAction ) => {
 							redirectUrl: action.redirectUrl,
 					  }
 					: state;
-			break;
-
-		case types.SET_PAYMENT_RESULT:
-			newState = {
-				...state,
-				paymentResult: action.data as PaymentResult,
-			};
 			break;
 
 		case types.SET_COMPLETE:
@@ -110,7 +98,7 @@ const reducer = ( state = defaultState, action: CheckoutAction ) => {
 			}
 			break;
 
-		case types.SET_SHIPPING_ADDRESS_AS_BILLING_ADDRESS:
+		case types.SET_USE_SHIPPING_AS_BILLING:
 			if (
 				action.useShippingAsBilling !== undefined &&
 				action.useShippingAsBilling !== state.useShippingAsBilling
