@@ -213,15 +213,14 @@ class ProductQuery extends \WP_UnitTestCase {
 		$this->block_instance->set_parsed_block( $parsed_block );
 
 		$merged_query = $this->block_instance->build_query( $parsed_block['attrs']['query'] );
-		error_log( print_r( $merged_query, true ) );
 
 		$this->assertEqualsCanonicalizing(
 			array(
-				'key'     => '_stock_status',
-				'value'   => array( 'instock' ),
+				'key'      => '_stock_status',
+				'value'    => array( 'instock' ),
 				'operator' => 'IN',
 			),
-			$merged_query['meta_query'][0]
+			$merged_query['meta_query'][0][0] // This should be updated once we merge #7697.
 		);
 	}
 }
