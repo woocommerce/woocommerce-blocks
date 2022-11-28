@@ -87,7 +87,7 @@
 			@include reset-typography(); // Required to override vendor styles providing media query: font-size 13px for screen wider than 600px
 
 			&::placeholder {
-				@include font-size(smaller);
+				@include font-size(small);
 				color: $black;
 			}
 		}
@@ -109,7 +109,7 @@
 
 		.components-form-token-field__token,
 		.components-form-token-field__suggestion {
-			@include font-size(smaller);
+			@include font-size(small);
 		}
 	}
 }
@@ -157,7 +157,7 @@
 	// The specificity here is needed to overwrite the margin-top that is inherited on WC block template pages such as Shop.
 	.wc-block-filter-submit-button.wc-block-components-filter-submit-button.wc-block-attribute-filter__button {
 		margin-top: 0;
-		@include font-size(smaller);
+		@include font-size(small);
 	}
 }
 
@@ -202,7 +202,7 @@
 .editor-styles-wrapper .wc-block-attribute-filter__button.wc-block-attribute-filter__button,
 .wc-block-attribute-filter__button.wc-block-attribute-filter__button {
 	padding: em($gap-smaller) em($gap);
-	@include font-size(smaller);
+	@include font-size(small);
 	height: max-content;
 	width: max-content;
 }

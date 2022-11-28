@@ -45,18 +45,18 @@
 	button[type="submit"]:not(.wp-block-search__button).wc-block-components-filter-submit-button {
 		margin-left: 0;
 		margin-top: 0;
-		@include font-size(smaller);
+		@include font-size(small);
 	}
 
 	.wc-block-rating-filter__button {
 		margin-top: em($gap-smaller);
 		padding: em($gap-smaller) em($gap);
-		@include font-size(smaller);
+		@include font-size(small);
 	}
 }
 
 .editor-styles-wrapper .wc-block-rating-filter .wc-block-rating-filter__button {
 	margin-top: em($gap-smaller);
 	padding: em($gap-smaller) em($gap);
-	@include font-size(smaller);
+	@include font-size(small);
 }
