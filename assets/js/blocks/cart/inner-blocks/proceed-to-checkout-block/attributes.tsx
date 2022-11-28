@@ -1,7 +1,7 @@
 /**
- * External dependencies
+ * Internal dependencies
  */
-import { __ } from '@wordpress/i18n';
+import { defaultButtonLabel } from './block';
 
 export default {
 	checkoutPageId: {
@@ -17,6 +17,6 @@ export default {
 	},
 	buttonLabel: {
 		type: 'string',
-		default: __( 'Proceed to Checkout', 'woo-gutenberg-products-block' ),
+		default: defaultButtonLabel,
 	},
 };

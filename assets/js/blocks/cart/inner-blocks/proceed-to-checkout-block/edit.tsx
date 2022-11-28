@@ -16,6 +16,8 @@ import { CART_PAGE_ID } from '@woocommerce/block-settings';
 /**
  * Internal dependencies
  */
+import { defaultButtonLabel } from './block';
+
 export const Edit = ( {
 	attributes,
 	setAttributes,
@@ -50,7 +52,7 @@ export const Edit = ( {
 				) && (
 					<PageSelector
 						pageId={ checkoutPageId }
-						setPageId={ ( id ) =>
+						setPageId={ ( id: number ) =>
 							setAttributes( { checkoutPageId: id } )
 						}
 						labels={ {
@@ -74,10 +76,7 @@ export const Edit = ( {
 					onChange={ ( content ) => {
 						if ( content === '' ) {
 							setAttributes( {
-								buttonLabel: __(
-									'Proceed to Checkout',
-									'woo-gutenberg-products-block'
-								),
+								buttonLabel: defaultButtonLabel,
 							} );
 						} else {
 							setAttributes( {

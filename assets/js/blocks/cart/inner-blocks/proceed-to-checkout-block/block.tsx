@@ -16,6 +16,11 @@ import { CHECKOUT_STORE_KEY } from '@woocommerce/block-data';
  */
 import './style.scss';
 
+export const defaultButtonLabel = __(
+	'Proceed to Checkout',
+	'woo-gutenberg-products-block'
+);
+
 /**
  * Checkout button rendered in the full cart page.
  */
@@ -66,8 +71,7 @@ const Block = ( {
 			onClick={ () => setShowSpinner( true ) }
 			showSpinner={ showSpinner }
 		>
-			{ buttonLabel ||
-				__( 'Proceed to Checkout', 'woo-gutenberg-products-block' ) }
+			{ buttonLabel || defaultButtonLabel }
 		</Button>
 	);
 
