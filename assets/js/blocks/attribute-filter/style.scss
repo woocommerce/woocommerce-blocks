@@ -83,8 +83,13 @@
 		border: 0;
 		padding: $gap-smaller;
 
-		.components-form-token-field__input::placeholder {
-			color: $black;
+		.components-form-token-field__input {
+			@include reset-typography(); // Required to override vendor styles providing media query: font-size 13px for screen wider than 600px
+
+			&::placeholder {
+				@include font-size(smaller);
+				color: $black;
+			}
 		}
 
 		.components-form-token-field__suggestions-list {
