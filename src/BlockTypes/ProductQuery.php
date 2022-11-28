@@ -187,7 +187,7 @@ class ProductQuery extends AbstractBlock {
 				if ( ! is_array( $query ) ) {
 					return $acc;
 				}
-				// If the $query doesn't contain any valid query keys, we unpack it then merge.
+				// If the $query doesn't contain any valid query keys, we unpack/destructure it then merge.
 				if ( empty( array_intersect( $this->get_valid_query_vars(), array_keys( $query ) ) ) ) {
 					return $this->merge_queries( $acc, ...array_values( $query ) );
 				}
@@ -556,7 +556,49 @@ class ProductQuery extends AbstractBlock {
 	}
 
 	/**
-	 * Merge two array recursively but replace the non-array values instead of merging them.
+	 * Merge two array recursively but replace the non-array values instead of
+	 * merging them. The merging strategy:
+	 *
+	 * - If keys from merge array doesn't exist in the base array, create them.
+	 * - For array items with numeric keys, we merge them as normal.
+	 * - For array items with string keys:
+	 *
+	 *   - If the value isn't array, we'll use the value comming from the merge array.
+	 *     $base = ['orderby' => 'date']
+	 *     $new  = ['orderby' => 'meta_value_num']
+	 *     Result: ['orderby' => 'meta_value_num']
+	 *
+	 *   - If the value is array, we'll use recursion to merge each key.
+	 *     $base = ['meta_query' => [
+	 *       [
+	 *         'key'     => '_stock_status',
+	 *         'compare' => 'IN'
+	 *         'value'   =>  ['instock', 'onbackorder']
+	 *       ]
+	 *     ]]
+	 *     $new  = ['meta_query' => [
+	 *       [
+	 *         'relation' => 'AND',
+	 *         [...<max_price_query>],
+	 *         [...<min_price_query>],
+	 *       ]
+	 *     ]]
+	 *     Result: ['meta_query' => [
+	 *       [
+	 *         'key'     => '_stock_status',
+	 *         'compare' => 'IN'
+	 *         'value'   =>  ['instock', 'onbackorder']
+	 *       ],
+	 *       [
+	 *         'relation' => 'AND',
+	 *         [...<max_price_query>],
+	 *         [...<min_price_query>],
+	 *       ]
+	 *     ]]
+	 *
+	 *     $base = ['post__in' => [1, 2, 3, 4, 5]]
+	 *     $new  = ['post__in' => [3, 4, 5, 6, 7]]
+	 *     Result: ['post__in' => [1, 2, 3, 4, 5, 3, 4, 5, 6, 7]]
 	 *
 	 * @param array $base First array.
 	 * @param array $new  Second array.
