@@ -16,7 +16,7 @@ import { __ } from '@wordpress/i18n';
 import { select } from '@wordpress/data';
 import { useEffect } from '@wordpress/element';
 
-const CustomField = ( { type, placeholder } ): JSX.Element | null => {
+const CustomField = ( { type, placeholder, label } ): JSX.Element | null => {
 	switch ( type ) {
 		case 'text':
 			return (
@@ -35,10 +35,13 @@ const CustomField = ( { type, placeholder } ): JSX.Element | null => {
 			);
 		case 'date':
 			return (
-				<DatePicker
-					currentDate={ new Date() }
-					onChange={ () => void 0 }
-				/>
+				<>
+					<p>{ label }</p>
+					<DatePicker
+						currentDate={ new Date() }
+						onChange={ () => void 0 }
+					/>
+				</>
 			);
 		case 'textarea':
 			return (
@@ -87,16 +90,25 @@ export const Edit = ( { attributes, setAttributes } ): JSX.Element => {
 							setAttributes( { type: value } )
 						}
 					/>
-					{ attributes.type === 'text' ||
-						( attributes.type === 'textarea' && (
-							<TextControl
-								label="Placeholder"
-								value={ attributes.placeholder }
-								onChange={ ( value ) =>
-									setAttributes( { placeholder: value } )
-								}
-							/>
-						) ) }
+					{ ( attributes.type === 'text' ||
+						attributes.type === 'textarea' ) && (
+						<TextControl
+							label="Placeholder"
+							value={ attributes.placeholder }
+							onChange={ ( value ) =>
+								setAttributes( { placeholder: value } )
+							}
+						/>
+					) }
+					{ attributes.type === 'date' && (
+						<TextControl
+							label="Label"
+							value={ attributes.label }
+							onChange={ ( value ) =>
+								setAttributes( { label: value } )
+							}
+						/>
+					) }
 					<ToggleControl
 						label="Required?"
 						checked={ attributes.required }
@@ -109,6 +121,7 @@ export const Edit = ( { attributes, setAttributes } ): JSX.Element => {
 			<CustomField
 				type={ attributes.type }
 				placeholder={ attributes.placeholder }
+				label={ attributes.label }
 			/>
 		</div>
 	);
