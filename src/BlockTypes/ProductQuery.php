@@ -187,7 +187,7 @@ class ProductQuery extends AbstractBlock {
 				if ( ! is_array( $query ) ) {
 					return $acc;
 				}
-				// If the $query doesn't contain any valid query keys, we unpack/destructure it then merge.
+				// If the $query doesn't contain any valid query keys, we unpack/spread it then merge.
 				if ( empty( array_intersect( $this->get_valid_query_vars(), array_keys( $query ) ) ) ) {
 					return $this->merge_queries( $acc, ...array_values( $query ) );
 				}
