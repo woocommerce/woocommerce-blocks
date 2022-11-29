@@ -17,6 +17,8 @@ export type ApiErrorResponseData = {
 	details: Record< string, ApiErrorResponseDataDetails >;
 	// Some endpoints return cart data to update the client.
 	cart?: CartResponse | undefined;
+	// Only used for top-level wc/cart or wc/checkout errors.
+	explicitDismiss?: boolean | undefined;
 } | null;
 
 // The details object lists individual errors for each field.
