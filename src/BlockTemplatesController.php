@@ -63,6 +63,7 @@ class BlockTemplatesController {
 	protected function init() {
 		add_action( 'template_redirect', array( $this, 'render_block_template' ) );
 		add_filter( 'pre_get_block_template', array( $this, 'get_block_template_fallback' ), 10, 3 );
+		add_filter( 'pre_get_block_templates', array( $this, 'add_archive_product_to_hierarchy' ), 10, 3 );
 		add_filter( 'pre_get_block_file_template', array( $this, 'get_block_file_template' ), 10, 3 );
 		add_filter( 'get_block_templates', array( $this, 'add_block_templates' ), 10, 3 );
 		add_filter( 'current_theme_supports-block-templates', array( $this, 'remove_block_template_support_for_shop_page' ) );
@@ -72,6 +73,54 @@ class BlockTemplatesController {
 		if ( $this->package->is_experimental_build() ) {
 			add_action( 'after_switch_theme', array( $this, 'check_should_use_blockified_product_grid_templates' ), 10, 2 );
 		}
+	}
+
+	/**
+	 * This function is used on the `pre_get_block_templates` hook to change the hierarchy of the templates with
+	 * `archive-product` fallback (e.g.`taxonomy-product_cat`, `taxonomy-product_tag`, `taxonomy-attribute`).
+	 * It adds `archive-product` in the hierarchy as the second template in priority (only after the `taxonomy-xxx`
+	 * template), then keeps the normal execution of the `get_block_templates` function.
+	 *
+	 * @param \WP_Block_Template[]|null $block_templates Array of block templates.
+	 * @param array                     $query Arguments to retrieve templates.
+	 * @param string                    $template_type wp_template or wp_template_part.
+	 *
+	 * @return array|null Array of templates or null to not filter.
+	 */
+	public function add_archive_product_to_hierarchy( $block_templates, $query, $template_type ) {
+		if ( 'wp_template_part' === $template_type ) {
+			return null;
+		}
+
+		if ( isset( $query['slug__in'] ) ) {
+			$template_slug = $query['slug__in'][0];
+
+			// When the template is not eligible for fallback we can just return null to keep the normal execution.
+			if ( ! BlockTemplateUtils::template_is_eligible_for_product_archive_fallback( $template_slug ) ) {
+				return null;
+			}
+
+			array_splice( $query['slug__in'], 1, 0, 'archive-product' );
+
+			// We need to remove the current filter to avoid an infinite loop when calling the `get_block_templates` next.
+			remove_filter( 'pre_get_block_templates', array( $this, 'add_archive_product_to_hierarchy' ), 10, 3 );
+
+			// We call again the `get_block_templates` function to carry on with the normal execution but with the
+			// modified hierarchy.
+			$block_templates = get_block_templates( $query, $template_type );
+			return array_filter(
+				$block_templates,
+				function( $template ) use ( $query ) {
+					if ( 'archive-product' === $template->slug ) {
+						$template->slug = $query['slug__in'][0];
+						return $template;
+					}
+					return $template;
+				}
+			);
+		}
+
+		return null;
 	}
 
 	/**
