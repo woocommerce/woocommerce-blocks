@@ -121,7 +121,7 @@ class ProductQuery extends AbstractBlock {
 	 */
 	public function update_rest_query( $args, $request ) {
 		$on_sale_query = $request->get_param( '__woocommerceOnSale' ) !== 'true' ? array() : $this->get_on_sale_products_query();
-		$stock_query   = empty( $request->get_param( '__woocommerceStockStatus' ) ) ? array() : $this->get_stock_status_query( $request->get_param( '__woocommerceStockStatus' ) );
+		$stock_query   = $this->get_stock_status_query( $request->get_param( '__woocommerceStockStatus' ) );
 		$orderby_query = $this->get_custom_orderby_query( $request->get_param( 'orderby' ) );
 		$tax_query     = $this->get_product_attributes_query( $request->get_param( '__woocommerceAttributes' ) );
 
@@ -322,6 +322,10 @@ class ProductQuery extends AbstractBlock {
 	 * @return array
 	 */
 	private function get_stock_status_query( $stock_statii ) {
+		if ( empty( $stock_statii ) ) {
+			return array();
+		}
+
 		return array(
 			'meta_query' => array(
 				array(
