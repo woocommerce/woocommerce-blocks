@@ -529,7 +529,8 @@ class CartController {
 
 			$error->add(
 				'woocommerce_rest_product_out_of_stock',
-				$this->add_product_names_to_message( $singular_error, $plural_error, $out_of_stock_products )
+				$this->add_product_names_to_message( $singular_error, $plural_error, $out_of_stock_products ),
+				[ 'explicitDismiss' => true ]
 			);
 		}
 
@@ -539,7 +540,8 @@ class CartController {
 
 			$error->add(
 				'woocommerce_rest_product_not_purchasable',
-				$this->add_product_names_to_message( $singular_error, $plural_error, $not_purchasable_products )
+				$this->add_product_names_to_message( $singular_error, $plural_error, $not_purchasable_products ),
+				[ 'explicitDismiss' => true ]
 			);
 		}
 
@@ -549,7 +551,8 @@ class CartController {
 
 			$error->add(
 				'woocommerce_rest_product_too_many_in_cart',
-				$this->add_product_names_to_message( $singular_error, $plural_error, $too_many_in_cart_products )
+				$this->add_product_names_to_message( $singular_error, $plural_error, $too_many_in_cart_products ),
+				[ 'explicitDismiss' => true ]
 			);
 		}
 
@@ -559,7 +562,8 @@ class CartController {
 
 			$error->add(
 				'woocommerce_rest_product_partially_out_of_stock',
-				$this->add_product_names_to_message( $singular_error, $plural_error, $partial_out_of_stock_products )
+				$this->add_product_names_to_message( $singular_error, $plural_error, $partial_out_of_stock_products ),
+				[ 'explicitDismiss' => true ]
 			);
 		}
 
