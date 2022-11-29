@@ -78,11 +78,11 @@ class ProductSummary extends AbstractBlock {
 			return $content;
 		}
 
-		$post_id      = $block->context['postId'];
-		$product      = wc_get_product( $post_id );
-		$summary_text = self::get_summary_text( $product );
+		$post_id         = $block->context['postId'];
+		$product         = wc_get_product( $post_id );
+		$summary_content = self::get_summary_content( $product );
 
-		if ( ! $summary_text ) {
+		if ( ! $summary_content ) {
 			return null;
 		}
 
@@ -90,11 +90,10 @@ class ProductSummary extends AbstractBlock {
 		$classname          = isset( $attributes['className'] ) ? $attributes['className'] : '';
 		$style              = isset( $classes_and_styles['styles'] ) ? ' style="' . $classes_and_styles['styles'] . '" ' : '';
 
-		$output  = '';
-		$output .= '<div class="wc-block-components-product-summary ' . $classes_and_styles['classes'] . ' ' . $classname . '"';
+		$output  = '<div class="wc-block-components-product-summary ' . $classes_and_styles['classes'] . ' ' . $classname . '"';
 		$output .= $style;
 		$output .= '>';
-		$output .= '<p>' . $summary_text . '</p>';
+		$output .= '<p>' . $summary_content . '</p>';
 		$output .= '</div>';
 
 		return $output;
@@ -106,15 +105,15 @@ class ProductSummary extends AbstractBlock {
 	 * @param [WC_Product] $product Product to get summary text for.
 	 * @return (string|null) Summary text for the product.
 	 */
-	protected function get_summary_text( $product ) {
+	protected function get_summary_content( $product ) {
 		$short_description = $product->get_short_description();
-		$summary_full_text = $short_description ? $short_description : $product->get_description();
+		$summary_content   = $short_description ? $short_description : $product->get_description();
 
-		if ( ! $summary_full_text ) {
+		if ( ! $summary_content ) {
 			return null;
 		}
 
-		$summary = wc_trim_string( $summary_full_text, 150, '...' );
+		$summary = wc_trim_string( $summary_content, 150, '...' );
 		return $summary;
 	}
 }
