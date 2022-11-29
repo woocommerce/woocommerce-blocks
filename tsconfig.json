@@ -2,18 +2,15 @@
 	"extends": "./tsconfig.base.json",
 	"include": [
 		"./assets/js/**/*",
+		"./packages/checkout/**/*",
 		"./assets/js/blocks/**/block.json",
 		"./assets/js/blocks/mini-cart/mini-cart-contents/inner-blocks/**/block.json",
 		"./storybook/**/*"
 	],
-	"exclude": [ "./assets/js/data" ],
-	"references": [
-		{ "path": "./assets/js/data" },
-		{ "path": "./assets/js/icons" },
-		{ "path": "./assets/js/base/components" },
-		{ "path": "./assets/js/base/context/hooks" },
-		{ "path": "./packages" },
-		{ "path": "./assets/js/extensions/google-analytics" },
-		{ "path": "./assets/js/base/context" }
+	"exclude": [
+		"./storybook/build",
+		"./storybook/webpack.config.js",
+		"./storybook/preview.js",
+		"./bin"
 	]
 }

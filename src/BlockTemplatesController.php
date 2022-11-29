@@ -2,6 +2,7 @@
 namespace Automattic\WooCommerce\Blocks;
 
 use Automattic\WooCommerce\Blocks\Domain\Package;
+use Automattic\WooCommerce\Blocks\Templates\ProductAttributeTemplate;
 use Automattic\WooCommerce\Blocks\Utils\BlockTemplateUtils;
 
 /**
@@ -61,13 +62,91 @@ class BlockTemplatesController {
 	 */
 	protected function init() {
 		add_action( 'template_redirect', array( $this, 'render_block_template' ) );
+		add_filter( 'pre_get_block_template', array( $this, 'get_block_template_fallback' ), 10, 3 );
 		add_filter( 'pre_get_block_file_template', array( $this, 'get_block_file_template' ), 10, 3 );
 		add_filter( 'get_block_templates', array( $this, 'add_block_templates' ), 10, 3 );
 		add_filter( 'current_theme_supports-block-templates', array( $this, 'remove_block_template_support_for_shop_page' ) );
+		add_filter( 'taxonomy_template_hierarchy', array( $this, 'add_archive_product_to_eligible_for_fallback_templates' ), 10, 1 );
 
 		if ( $this->package->is_experimental_build() ) {
 			add_action( 'after_switch_theme', array( $this, 'check_should_use_blockified_product_grid_templates' ), 10, 2 );
 		}
+	}
+
+	/**
+	 * This function is used on the `pre_get_block_template` hook to return the fallback template from the db in case
+	 * the template is eligible for it.
+	 *
+	 * @param \WP_Block_Template|null $template Block template object to short-circuit the default query,
+	 *                                          or null to allow WP to run its normal queries.
+	 * @param string                  $id Template unique identifier (example: theme_slug//template_slug).
+	 * @param string                  $template_type wp_template or wp_template_part.
+	 *
+	 * @return object|null
+	 */
+	public function get_block_template_fallback( $template, $id, $template_type ) {
+		$template_name_parts  = explode( '//', $id );
+		list( $theme, $slug ) = $template_name_parts;
+
+		if ( ! BlockTemplateUtils::template_is_eligible_for_product_archive_fallback( $slug ) ) {
+			return null;
+		}
+
+		$wp_query_args  = array(
+			'post_name__in'  => array( 'archive-product' ),
+			'post_type'      => $template_type,
+			'post_status'    => array( 'auto-draft', 'draft', 'publish', 'trash' ),
+			'posts_per_page' => 1,
+			'no_found_rows'  => true,
+			'tax_query'      => array( // phpcs:ignore WordPress.DB.SlowDBQuery.slow_db_query_tax_query
+				array(
+					'taxonomy' => 'wp_theme',
+					'field'    => 'name',
+					'terms'    => $theme,
+				),
+			),
+		);
+		$template_query = new \WP_Query( $wp_query_args );
+		$posts          = $template_query->posts;
+
+		if ( count( $posts ) > 0 ) {
+			$template = _build_block_template_result_from_post( $posts[0] );
+
+			if ( ! is_wp_error( $template ) ) {
+				$template->id          = $theme . '//' . $slug;
+				$template->slug        = $slug;
+				$template->title       = BlockTemplateUtils::get_block_template_title( $slug );
+				$template->description = BlockTemplateUtils::get_block_template_description( $slug );
+
+				return $template;
+			}
+		}
+
+		return $template;
+	}
+
+	/**
+	 * Adds the `archive-product` template to the `taxonomy-product_cat`, `taxonomy-product_tag`, `taxonomy-attribute`
+	 * templates to be able to fall back to it.
+	 *
+	 * @param array $template_hierarchy A list of template candidates, in descending order of priority.
+	 */
+	public function add_archive_product_to_eligible_for_fallback_templates( $template_hierarchy ) {
+		$template_slugs = array_map(
+			'_strip_template_file_suffix',
+			$template_hierarchy
+		);
+
+		$templates_eligible_for_fallback = array_filter(
+			$template_slugs,
+			array( BlockTemplateUtils::class, 'template_is_eligible_for_product_archive_fallback' )
+		);
+
+		if ( count( $templates_eligible_for_fallback ) > 0 ) {
+			$template_hierarchy[] = 'archive-product';
+		}
+
+		return $template_hierarchy;
 	}
 
 	/**
@@ -110,8 +189,8 @@ class BlockTemplatesController {
 
 		list( $template_id, $template_slug ) = $template_name_parts;
 
-		// If the theme has an archive-product.html template, but not a taxonomy-product_cat/tag.html template let's use the themes archive-product.html template.
-		if ( BlockTemplateUtils::template_is_eligible_for_product_archive_fallback( $template_slug ) ) {
+		// If the theme has an archive-product.html template, but not a taxonomy-product_cat/tag/attribute.html template let's use the themes archive-product.html template.
+		if ( BlockTemplateUtils::template_is_eligible_for_product_archive_fallback_from_theme( $template_slug ) ) {
 			$template_path   = BlockTemplateUtils::get_theme_template_path( 'archive-product' );
 			$template_object = BlockTemplateUtils::create_new_block_template_object( $template_path, $template_type, $template_slug, true );
 			return BlockTemplateUtils::build_template_result_from_file( $template_object, $template_type );
@@ -157,9 +236,9 @@ class BlockTemplatesController {
 	/**
 	 * Add the block template objects to be used.
 	 *
-	 * @param array $query_result Array of template objects.
-	 * @param array $query Optional. Arguments to retrieve templates.
-	 * @param array $template_type wp_template or wp_template_part.
+	 * @param array  $query_result Array of template objects.
+	 * @param array  $query Optional. Arguments to retrieve templates.
+	 * @param string $template_type wp_template or wp_template_part.
 	 * @return array
 	 */
 	public function add_block_templates( $query_result, $query, $template_type ) {
@@ -228,7 +307,7 @@ class BlockTemplatesController {
 		 */
 		$query_result = array_map(
 			function( $template ) {
-				if ( 'theme' === $template->origin ) {
+				if ( 'theme' === $template->origin && BlockTemplateUtils::template_has_title( $template ) ) {
 					return $template;
 				}
 				if ( $template->title === $template->slug ) {
@@ -248,8 +327,8 @@ class BlockTemplatesController {
 	/**
 	 * Gets the templates saved in the database.
 	 *
-	 * @param array $slugs An array of slugs to retrieve templates for.
-	 * @param array $template_type wp_template or wp_template_part.
+	 * @param array  $slugs An array of slugs to retrieve templates for.
+	 * @param string $template_type wp_template or wp_template_part.
 	 *
 	 * @return int[]|\WP_Post[] An array of found templates.
 	 */
@@ -330,10 +409,29 @@ class BlockTemplatesController {
 				continue;
 			}
 
-			// If the theme has an archive-product.html template, but not a taxonomy-product_cat.html template let's use the themes archive-product.html template.
-			if ( BlockTemplateUtils::template_is_eligible_for_product_archive_fallback( $template_slug ) ) {
+			if ( BlockTemplateUtils::template_is_eligible_for_product_archive_fallback_from_db( $template_slug, $already_found_templates ) ) {
+				$template              = clone BlockTemplateUtils::get_fallback_template_from_db( $template_slug, $already_found_templates );
+				$template_id           = explode( '//', $template->id );
+				$template->id          = $template_id[0] . '//' . $template_slug;
+				$template->slug        = $template_slug;
+				$template->title       = BlockTemplateUtils::get_block_template_title( $template_slug );
+				$template->description = BlockTemplateUtils::get_block_template_description( $template_slug );
+				$templates[]           = $template;
+				continue;
+			}
+
+			// If the theme has an archive-product.html template, but not a taxonomy-product_cat/tag/attribute.html template let's use the themes archive-product.html template.
+			if ( BlockTemplateUtils::template_is_eligible_for_product_archive_fallback_from_theme( $template_slug ) ) {
 				$template_file = BlockTemplateUtils::get_theme_template_path( 'archive-product' );
 				$templates[]   = BlockTemplateUtils::create_new_block_template_object( $template_file, $template_type, $template_slug, true );
+				continue;
+			}
+
+			// At this point the template only exists in the Blocks filesystem, if is a taxonomy-product_cat/tag/attribute.html template
+			// let's use the archive-product.html template from Blocks.
+			if ( BlockTemplateUtils::template_is_eligible_for_product_archive_fallback( $template_slug ) ) {
+				$template_file = $this->get_template_path_from_woocommerce( 'archive-product' );
+				$templates[]   = BlockTemplateUtils::create_new_block_template_object( $template_file, $template_type, $template_slug, false );
 				continue;
 			}
 
@@ -348,8 +446,8 @@ class BlockTemplatesController {
 	/**
 	 * Get and build the block template objects from the block template files.
 	 *
-	 * @param array $slugs An array of slugs to retrieve templates for.
-	 * @param array $template_type wp_template or wp_template_part.
+	 * @param array  $slugs An array of slugs to retrieve templates for.
+	 * @param string $template_type wp_template or wp_template_part.
 	 *
 	 * @return array WP_Block_Template[] An array of block template objects.
 	 */
@@ -357,14 +455,14 @@ class BlockTemplatesController {
 		$templates_from_db  = $this->get_block_templates_from_db( $slugs, $template_type );
 		$templates_from_woo = $this->get_block_templates_from_woocommerce( $slugs, $templates_from_db, $template_type );
 		$templates          = array_merge( $templates_from_db, $templates_from_woo );
-		return BlockTemplateUtils::filter_block_templates_by_feature_flag( $templates );
 
+		return BlockTemplateUtils::filter_block_templates_by_feature_flag( $templates );
 	}
 
 	/**
 	 * Gets the directory where templates of a specific template type can be found.
 	 *
-	 * @param array $template_type wp_template or wp_template_part.
+	 * @param string $template_type wp_template or wp_template_part.
 	 *
 	 * @return string
 	 */
@@ -379,6 +477,18 @@ class BlockTemplatesController {
 		// }.
 
 		return $this->templates_directory;
+	}
+
+	/**
+	 * Returns the path of a template on the Blocks template folder.
+	 *
+	 * @param string $template_slug Block template slug e.g. single-product.
+	 * @param string $template_type wp_template or wp_template_part.
+	 *
+	 * @return string
+	 */
+	public function get_template_path_from_woocommerce( $template_slug, $template_type = 'wp_template' ) {
+		return $this->get_templates_directory( $template_type ) . '/' . $template_slug . '.html';
 	}
 
 	/**
@@ -426,17 +536,24 @@ class BlockTemplatesController {
 			$this->block_template_is_available( 'taxonomy-product_tag' )
 		) {
 			add_filter( 'woocommerce_has_block_template', '__return_true', 10, 0 );
-		} elseif ( taxonomy_is_product_attribute( get_query_var( 'taxonomy' ) ) &&
-			! BlockTemplateUtils::theme_has_template( 'archive-product' ) &&
-			$this->block_template_is_available( 'archive-product' )
-		) {
-			add_filter( 'woocommerce_has_block_template', '__return_true', 10, 0 );
 		} elseif (
 			( is_post_type_archive( 'product' ) || is_page( wc_get_page_id( 'shop' ) ) ) &&
 			! BlockTemplateUtils::theme_has_template( 'archive-product' ) &&
 			$this->block_template_is_available( 'archive-product' )
 		) {
 			add_filter( 'woocommerce_has_block_template', '__return_true', 10, 0 );
+		} else {
+			$queried_object = get_queried_object();
+			if ( is_null( $queried_object ) ) {
+				return;
+			}
+
+			if ( isset( $queried_object->taxonomy ) && taxonomy_is_product_attribute( $queried_object->taxonomy ) &&
+				! BlockTemplateUtils::theme_has_template( ProductAttributeTemplate::SLUG ) &&
+				$this->block_template_is_available( ProductAttributeTemplate::SLUG )
+			) {
+				add_filter( 'woocommerce_has_block_template', '__return_true', 10, 0 );
+			}
 		}
 	}
 

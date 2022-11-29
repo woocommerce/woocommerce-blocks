@@ -30,10 +30,11 @@ jobs:
 
             - name: Get Composer cache directory
               id: composer-cache
-              run: echo "::set-output name=dir::$(composer config cache-files-dir)"
+              run: echo "dir=$(composer config cache-files-dir)" >> $GITHUB_OUTPUT
+
 
             - name: Set up Composer caching
-              uses: actions/cache@v2
+              uses: actions/cache@v3
               env:
                   cache-name: cache-composer-dependencies
               with:
@@ -44,7 +45,7 @@ jobs:
             - name: Set up PHP
               uses: shivammathur/setup-php@v2
               with:
-                  php-version: '7.4'
+                  php-version: '8.0'
                   coverage: none
                   tools: composer, cs2pr
 

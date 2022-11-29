@@ -118,7 +118,9 @@ describe( 'Shopper → Cart', () => {
 		await page.waitForSelector(
 			'.wp-block-woocommerce-cart-line-items-block tr:nth-child(2)'
 		);
-		await shopper.block.productIsInCart( '32GB USB Stick', 1 );
+		await expect(
+			shopper.block.productIsInCart( '32GB USB Stick', 1 )
+		).toBeTruthy();
 	} );
 
 	it( 'User can proceed to checkout', async () => {

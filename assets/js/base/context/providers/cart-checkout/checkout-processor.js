@@ -19,6 +19,7 @@ import {
 	CHECKOUT_STORE_KEY,
 	PAYMENT_STORE_KEY,
 	VALIDATION_STORE_KEY,
+	CART_STORE_KEY,
 } from '@woocommerce/block-data';
 import {
 	getPaymentMethods,
@@ -31,7 +32,6 @@ import {
 import { preparePaymentData, processCheckoutResponseHeaders } from './utils';
 import { useCheckoutEventsContext } from './checkout-events';
 import { useShippingDataContext } from './shipping';
-import { useCustomerDataContext } from './customer';
 import { useStoreCart } from '../../hooks/cart/use-store-cart';
 
 /**
@@ -54,10 +54,14 @@ const CheckoutProcessor = () => {
 	} = useSelect( ( select ) => {
 		const store = select( CHECKOUT_STORE_KEY );
 		return {
-			...store.getCheckoutState(),
+			hasError: store.hasError(),
+			redirectUrl: store.getRedirectUrl(),
 			isProcessing: store.isProcessing(),
 			isBeforeProcessing: store.isBeforeProcessing(),
 			isComplete: store.isComplete(),
+			orderNotes: store.getOrderNotes(),
+			shouldCreateAccount: store.getShouldCreateAccount(),
+			extensionData: store.getExtensionData(),
 		};
 	} );
 
@@ -68,7 +72,11 @@ const CheckoutProcessor = () => {
 		( select ) => select( VALIDATION_STORE_KEY ).hasValidationErrors
 	);
 	const { shippingErrorStatus } = useShippingDataContext();
-	const { billingAddress, shippingAddress } = useCustomerDataContext();
+
+	const { billingAddress, shippingAddress } = useSelect( ( select ) =>
+		select( CART_STORE_KEY ).getCustomerData()
+	);
+
 	const { cartNeedsPayment, cartNeedsShipping, receiveCart } = useStoreCart();
 	const { createErrorNotice, removeNotice } = useDispatch( 'core/notices' );
 
@@ -76,7 +84,8 @@ const CheckoutProcessor = () => {
 		activePaymentMethod,
 		paymentMethodData,
 		isExpressPaymentMethodActive,
-		currentPaymentStatus,
+		hasPaymentError,
+		isPaymentSuccess,
 		shouldSavePayment,
 	} = useSelect( ( select ) => {
 		const store = select( PAYMENT_STORE_KEY );
@@ -85,7 +94,8 @@ const CheckoutProcessor = () => {
 			activePaymentMethod: store.getActivePaymentMethod(),
 			paymentMethodData: store.getPaymentMethodData(),
 			isExpressPaymentMethodActive: store.isExpressPaymentMethodActive(),
-			currentPaymentStatus: store.getCurrentStatus(),
+			hasPaymentError: store.hasPaymentError(),
+			isPaymentSuccess: store.isPaymentSuccess(),
 			shouldSavePayment: store.getShouldSavePaymentMethod(),
 		};
 	}, [] );
@@ -107,13 +117,13 @@ const CheckoutProcessor = () => {
 
 	const checkoutWillHaveError =
 		( hasValidationErrors() && ! isExpressPaymentMethodActive ) ||
-		currentPaymentStatus.hasError ||
+		hasPaymentError ||
 		shippingErrorStatus.hasError;
 
 	const paidAndWithoutErrors =
 		! checkoutHasError &&
 		! checkoutWillHaveError &&
-		( currentPaymentStatus.isSuccessful || ! cartNeedsPayment ) &&
+		( isPaymentSuccess || ! cartNeedsPayment ) &&
 		checkoutIsProcessing;
 
 	// Determine if checkout has an error.
@@ -145,7 +155,7 @@ const CheckoutProcessor = () => {
 		if ( hasValidationErrors() ) {
 			return false;
 		}
-		if ( currentPaymentStatus.hasError ) {
+		if ( hasPaymentError ) {
 			return {
 				errorMessage: __(
 					'There was a problem with your payment option.',
@@ -163,11 +173,7 @@ const CheckoutProcessor = () => {
 		}
 
 		return true;
-	}, [
-		hasValidationErrors,
-		currentPaymentStatus.hasError,
-		shippingErrorStatus.hasError,
-	] );
+	}, [ hasValidationErrors, hasPaymentError, shippingErrorStatus.hasError ] );
 
 	// Validate the checkout using the CHECKOUT_VALIDATION_BEFORE_PROCESSING event
 	useEffect( () => {

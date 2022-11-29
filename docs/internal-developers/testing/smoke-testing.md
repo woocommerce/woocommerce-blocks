@@ -227,7 +227,7 @@ In the `wp:woocommerce/product-search` substitute the URL used for the `action` 
 		>
 			<span
 				aria-hidden="true"
-				class="wc-block-active-product-filters__placeholder"
+				class="wc-block-active-filters__placeholder"
 			></span>
 		</div>
 		<!-- /wp:woocommerce/active-filters -->
@@ -279,14 +279,3 @@ In the `wp:woocommerce/product-search` substitute the URL used for the `action` 
     -   [ ] Payment with Stripe (extension) and saved payment methods
     -   [ ] Payment with Express payment methods (Chrome Pay or Apple Pay)
     -   [ ] Make sure you test with logged in user and in browser incognito mode.
-
-<!-- FEEDBACK -->
-
----
-
-[We're hiring!](https://woocommerce.com/careers/) Come work with us!
-
-🐞 Found a mistake, or have a suggestion? [Leave feedback about this document here.](https://github.com/woocommerce/woocommerce-blocks/issues/new?assignees=&labels=type%3A+documentation&template=--doc-feedback.md&title=Feedback%20on%20./docs/internal-developers/testing/smoke-testing.md)
-
-<!-- /FEEDBACK -->
-

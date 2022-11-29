@@ -13,7 +13,6 @@ import {
 	box,
 	starEmpty,
 } from '@wordpress/icons';
-import { isFeaturePluginBuild } from '@woocommerce/block-settings';
 
 /**
  * Internal dependencies
@@ -120,12 +119,9 @@ registerBlockType( metadata, {
 	variations: [
 		{
 			name: 'active-filters',
-			title: __(
-				'Active Product Filters',
-				'woo-gutenberg-products-block'
-			),
+			title: __( 'Active Filters', 'woo-gutenberg-products-block' ),
 			description: __(
-				'Display the currently active product filters.',
+				'Display the currently active filters.',
 				'woo-gutenberg-products-block'
 			),
 			/**
@@ -226,31 +222,29 @@ registerBlockType( metadata, {
 			},
 		},
 		{
-			...( isFeaturePluginBuild() && {
-				name: 'rating-filter',
-				title: __( 'Filter by Rating', 'woo-gutenberg-products-block' ),
-				description: __(
-					'Enable customers to filter the product grid by rating.',
+			name: 'rating-filter',
+			title: __( 'Filter by Rating', 'woo-gutenberg-products-block' ),
+			description: __(
+				'Enable customers to filter the product grid by rating.',
+				'woo-gutenberg-products-block'
+			),
+			isActive: ( attributes ) =>
+				attributes.filterType === 'rating-filter',
+			attributes: {
+				filterType: 'rating-filter',
+				heading: __(
+					'Filter by rating',
 					'woo-gutenberg-products-block'
 				),
-				isActive: ( attributes ) =>
-					attributes.filterType === 'rating-filter',
-				attributes: {
-					filterType: 'rating-filter',
-					heading: __(
-						'Filter by rating',
-						'woo-gutenberg-products-block'
-					),
-				},
-				icon: {
-					src: (
-						<Icon
-							icon={ starEmpty }
-							className="wc-block-editor-components-block-icon"
-						/>
-					),
-				},
-			} ),
+			},
+			icon: {
+				src: (
+					<Icon
+						icon={ starEmpty }
+						className="wc-block-editor-components-block-icon"
+					/>
+				),
+			},
 		},
 	],
 	transforms: {

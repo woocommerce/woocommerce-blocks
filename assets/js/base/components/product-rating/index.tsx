@@ -32,8 +32,8 @@ const Rating = ( {
 
 	const ratingHTML = {
 		__html: sprintf(
-			/* translators: %f is referring to the rating value */
-			__( 'Rated %f out of 5', 'woo-gutenberg-products-block' ),
+			/* translators: %s is the rating value wrapped in HTML strong tags. */
+			__( 'Rated %s out of 5', 'woo-gutenberg-products-block' ),
 			sprintf( '<strong class="rating">%f</strong>', rating )
 		),
 	};
@@ -50,7 +50,11 @@ const Rating = ( {
 					dangerouslySetInnerHTML={ ratingHTML }
 				/>
 			</div>
-			{ ratedProductsCount !== null ? `(${ ratedProductsCount })` : null }
+			{ ratedProductsCount !== null ? (
+				<span className={ 'wc-block-components-product-rating-count' }>
+					({ ratedProductsCount })
+				</span>
+			) : null }
 		</div>
 	);
 };

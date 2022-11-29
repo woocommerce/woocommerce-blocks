@@ -2,10 +2,12 @@
  * External dependencies
  */
 import { __ } from '@wordpress/i18n';
-import { ValidatedTextInput } from '@woocommerce/base-components/text-input';
 import { useCheckoutAddress, useStoreEvents } from '@woocommerce/base-context';
 import { getSetting } from '@woocommerce/settings';
-import { CheckboxControl } from '@woocommerce/blocks-checkout';
+import {
+	CheckboxControl,
+	ValidatedTextInput,
+} from '@woocommerce/blocks-checkout';
 import { useDispatch, useSelect } from '@wordpress/data';
 import { CHECKOUT_STORE_KEY } from '@woocommerce/block-data';
 
@@ -18,9 +20,13 @@ const Block = ( {
 }: {
 	allowCreateAccount: boolean;
 } ): JSX.Element => {
-	const { customerId, shouldCreateAccount } = useSelect( ( select ) =>
-		select( CHECKOUT_STORE_KEY ).getCheckoutState()
-	);
+	const { customerId, shouldCreateAccount } = useSelect( ( select ) => {
+		const store = select( CHECKOUT_STORE_KEY );
+		return {
+			customerId: store.getCustomerId(),
+			shouldCreateAccount: store.getShouldCreateAccount(),
+		};
+	} );
 
 	const { __internalSetShouldCreateAccount } =
 		useDispatch( CHECKOUT_STORE_KEY );

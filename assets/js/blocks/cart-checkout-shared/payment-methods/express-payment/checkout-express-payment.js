@@ -2,11 +2,8 @@
  * External dependencies
  */
 import { __ } from '@wordpress/i18n';
-import {
-	StoreNoticesContainer,
-	useEditorContext,
-	noticeContexts,
-} from '@woocommerce/base-context';
+import { useEditorContext, noticeContexts } from '@woocommerce/base-context';
+import { StoreNoticesContainer } from '@woocommerce/blocks-checkout';
 import Title from '@woocommerce/base-components/title';
 import LoadingMask from '@woocommerce/base-components/loading-mask';
 import { CURRENT_USER_IS_ADMIN } from '@woocommerce/settings';
@@ -41,7 +38,7 @@ const CheckoutExpressPayment = () => {
 	const {
 		availableExpressPaymentMethods,
 		expressPaymentMethodsInitialized,
-		paymentStatus,
+		isExpressPaymentMethodActive,
 	} = useSelect( ( select ) => {
 		const store = select( PAYMENT_STORE_KEY );
 		return {
@@ -49,7 +46,7 @@ const CheckoutExpressPayment = () => {
 				store.getAvailableExpressPaymentMethods(),
 			expressPaymentMethodsInitialized:
 				store.expressPaymentMethodsInitialized(),
-			paymentStatus: store.getCurrentStatus(),
+			isExpressPaymentMethodActive: store.isExpressPaymentMethodActive(),
 		};
 	} );
 	const { isEditor } = useEditorContext();
@@ -84,7 +81,7 @@ const CheckoutExpressPayment = () => {
 				isLoading={
 					isCalculating ||
 					checkoutProcessing ||
-					paymentStatus.isDoingExpressPayment
+					isExpressPaymentMethodActive
 				}
 			>
 				<div className="wc-block-components-express-payment wc-block-components-express-payment--checkout">
