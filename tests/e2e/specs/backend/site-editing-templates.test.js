@@ -130,7 +130,7 @@ const CUSTOMIZED_STRING = 'My awesome customization';
 const WOOCOMMERCE_ID = 'woocommerce/woocommerce';
 const WOOCOMMERCE_PARSED_ID = 'WooCommerce';
 
-describe( 'Store Editing Templates', () => {
+describe.skip( 'Store Editing Templates', () => {
 	useTheme( 'emptytheme' );
 
 	describe( 'Single Product block template', () => {
@@ -535,25 +535,22 @@ describe( 'Store Editing Templates', () => {
 			}
 		} );
 
-		runOnlyWhenGutenbergIsDisabled( () =>
-			it( 'should contain the "WooCommerce Product Taxonomy Block" classic template', async () => {
-				await goToTemplateEditor( {
-					postId: 'woocommerce/woocommerce//taxonomy-product_attribute',
-				} );
+		it( 'should contain the "WooCommerce Product Taxonomy Block" classic template', async () => {
+			await goToTemplateEditor( {
+				postId: 'woocommerce/woocommerce//taxonomy-product_attribute',
+			} );
 
-				const [ classicBlock ] = await filterCurrentBlocks(
-					( block ) =>
-						block.name ===
-						BLOCK_DATA[ 'taxonomy-product_attribute' ].name
-				);
+			const [ classicBlock ] = await filterCurrentBlocks(
+				( block ) =>
+					block.name ===
+					BLOCK_DATA[ 'taxonomy-product_attribute' ].name
+			);
 
-				expect( classicBlock.attributes.template ).toBe(
-					BLOCK_DATA[ 'taxonomy-product_attribute' ].attributes
-						.template
-				);
-				expect( await getCurrentSiteEditorContent() ).toMatchSnapshot();
-			} )
-		);
+			expect( classicBlock.attributes.template ).toBe(
+				BLOCK_DATA[ 'taxonomy-product_attribute' ].attributes.template
+			);
+			expect( await getCurrentSiteEditorContent() ).toMatchSnapshot();
+		} );
 
 		it( 'should show the action menu if the template has been customized by the user', async () => {
 			const EXPECTED_TEMPLATE = {
