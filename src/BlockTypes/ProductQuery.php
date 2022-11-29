@@ -39,6 +39,15 @@ class ProductQuery extends AbstractBlock {
 	 */
 	protected $attributes_filter_query_args = array();
 
+	/** This is a feature flag to enable the custom inherit Global Query implementation.
+	 * This is not intended to be a permanent feature flag, but rather a temporary.
+	 * It is also necessary to enable this feature flag on the PHP side: `assets/js/blocks/product-query/variations/product-query.tsx:26`.
+	 * https://github.com/woocommerce/woocommerce-blocks/pull/7382
+	 *
+	 * @var boolean
+	 */
+	protected $is_custom_inherit_global_query_implementation_enabled = false;
+
 	/**
 	 * All query args from WP_Query.
 	 *
@@ -143,6 +152,7 @@ class ProductQuery extends AbstractBlock {
 
 		return $this->merge_queries(
 			$common_query_values,
+			$this->get_global_query( $parsed_block ),
 			$this->get_custom_orderby_query( $query['orderby'] ),
 			$this->get_queries_by_attributes( $parsed_block ),
 			$this->get_queries_by_applied_filters()
@@ -150,7 +160,8 @@ class ProductQuery extends AbstractBlock {
 	}
 
 	/**
-	 * Return the product ids based on the attributes.
+	 * Return the product ids based on the attributes and global query.
+	 * This is used to allow the filter blocks to render data that matches with variations. More details here: https://github.com/woocommerce/woocommerce-blocks/issues/7245
 	 *
 	 * @param array $parsed_block The block being rendered.
 	 * @return array
@@ -165,7 +176,8 @@ class ProductQuery extends AbstractBlock {
 				'meta_query'     => array(),
 				'tax_query'      => array(),
 			),
-			$this->get_queries_by_attributes( $parsed_block )
+			$this->get_queries_by_attributes( $parsed_block ),
+			$this->get_global_query( $parsed_block )
 		);
 
 		$products = new \WP_Query( $query );
@@ -622,4 +634,44 @@ class ProductQuery extends AbstractBlock {
 		return $base;
 	}
 
+	/**
+	 * Get product-related query variables from the global query.
+	 *
+	 * @param array $parsed_block The Product Query that being rendered.
+	 *
+	 * @return array
+	 */
+	private function get_global_query( $parsed_block ) {
+		if ( ! $this->is_custom_inherit_global_query_implementation_enabled ) {
+			return array();
+		}
+
+		global $wp_query;
+
+		$inherit_enabled = isset( $parsed_block['attrs']['query']['__woocommerceInherit'] ) && true === $parsed_block['attrs']['query']['__woocommerceInherit'];
+
+		if ( ! $inherit_enabled ) {
+			return array();
+		}
+
+		$query = array();
+
+		if ( isset( $wp_query->query_vars['taxonomy'] ) && isset( $wp_query->query_vars['term'] ) ) {
+			$query['tax_query'] = array(
+				array(
+					'taxonomy' => $wp_query->query_vars['taxonomy'],
+					'field'    => 'slug',
+					'terms'    => $wp_query->query_vars['term'],
+				),
+			);
+		}
+
+		if ( isset( $wp_query->query_vars['s'] ) ) {
+			$query['s'] = $wp_query->query_vars['s'];
+		}
+
+		return $query;
+	}
+
 }
+
