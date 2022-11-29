@@ -100,11 +100,9 @@ const updateCustomerData = debounce( (): void => {
 	}
 
 	if ( Object.keys( customerDataToUpdate ).length ) {
+		removeAllNotices();
 		dispatch( STORE_KEY )
 			.updateCustomerData( customerDataToUpdate )
-			.then( () => {
-				removeAllNotices();
-			} )
 			.catch( ( response ) => {
 				processErrorResponse( response );
 			} );
