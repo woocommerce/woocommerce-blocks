@@ -124,6 +124,7 @@ const processErrorResponse = ( response: ApiErrorResponse ) => {
 	if ( ! isApiResponse( response ) ) {
 		return;
 	}
+	const explicitDismiss = response?.data?.explicitDismiss === true;
 	switch ( response.code ) {
 		case 'rest_invalid_param':
 			processInvalidParamResponse( response );
@@ -132,6 +133,7 @@ const processErrorResponse = ( response: ApiErrorResponse ) => {
 			createNotice( 'error', response.message || DEFAULT_ERROR_MESSAGE, {
 				id: response.code,
 				context: noticeContexts.CHECKOUT,
+				explicitDismiss,
 			} );
 	}
 };
