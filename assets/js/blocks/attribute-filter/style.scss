@@ -84,10 +84,9 @@
 		padding: $gap-smaller;
 
 		.components-form-token-field__input {
-			@include reset-typography(); // Required to override vendor styles providing media query: font-size 13px for screen wider than 600px
+			@include font-size(small);
 
 			&::placeholder {
-				@include font-size(small);
 				color: $black;
 			}
 		}
