@@ -41,6 +41,21 @@ class ProductQuery extends \WP_UnitTestCase {
 	}
 
 	/**
+	 * Build the merged_query for testing
+	 *
+	 * @param array $parsed_block Parsed block data.
+	 */
+	private function initialize_merged_query( $parsed_block = array() ) {
+		if ( empty( $parsed_block ) ) {
+			$parsed_block = $this->get_base_parsed_block();
+		}
+
+		$this->block_instance->set_parsed_block( $parsed_block );
+
+		return $this->block_instance->build_query( $parsed_block['attrs']['query'] );
+	}
+
+	/**
 	 * Test merging on sale queries.
 	 */
 	public function test_merging_on_sale_queries() {
@@ -50,9 +65,8 @@ class ProductQuery extends \WP_UnitTestCase {
 
 		$parsed_block = $this->get_base_parsed_block();
 		$parsed_block['attrs']['query']['__woocommerceOnSale'] = true;
-		$this->block_instance->set_parsed_block( $parsed_block );
 
-		$merged_query = $this->block_instance->build_query( $parsed_block['attrs']['query'] );
+		$merged_query = $this->initialize_merged_query( $parsed_block );
 
 		foreach ( $on_sale_product_ids as $id ) {
 			$this->assertContains( $id, $merged_query['post__in'] );
@@ -69,9 +83,8 @@ class ProductQuery extends \WP_UnitTestCase {
 			'outofstock',
 			'onbackorder',
 		);
-		$this->block_instance->set_parsed_block( $parsed_block );
 
-		$merged_query = $this->block_instance->build_query( $parsed_block['attrs']['query'] );
+		$merged_query = $this->initialize_merged_query( $parsed_block );
 
 		$this->assertContains( 'outofstock', $merged_query['meta_query'][0]['value'] );
 		$this->assertContains( 'onbackorder', $merged_query['meta_query'][0]['value'] );
@@ -97,9 +110,8 @@ class ProductQuery extends \WP_UnitTestCase {
 	public function test_merging_order_by_rating_queries() {
 		$parsed_block                              = $this->get_base_parsed_block();
 		$parsed_block['attrs']['query']['orderby'] = 'rating';
-		$this->block_instance->set_parsed_block( $parsed_block );
 
-		$merged_query = $this->block_instance->build_query( $parsed_block['attrs']['query'] );
+		$merged_query = $this->initialize_merged_query( $parsed_block );
 
 		$this->assertEquals( 'meta_value_num', $merged_query['orderby'] );
 		$this->assertEquals( '_wc_average_rating', $merged_query['meta_key'] );
@@ -111,9 +123,8 @@ class ProductQuery extends \WP_UnitTestCase {
 	public function test_merging_order_by_popularity_queries() {
 		$parsed_block                              = $this->get_base_parsed_block();
 		$parsed_block['attrs']['query']['orderby'] = 'popularity';
-		$this->block_instance->set_parsed_block( $parsed_block );
 
-		$merged_query = $this->block_instance->build_query( $parsed_block['attrs']['query'] );
+		$merged_query = $this->initialize_merged_query( $parsed_block );
 
 		$this->assertEquals( 'meta_value_num', $merged_query['orderby'] );
 		$this->assertEquals( 'total_sales', $merged_query['meta_key'] );
@@ -125,10 +136,7 @@ class ProductQuery extends \WP_UnitTestCase {
 	public function test_merging_filter_by_max_price_queries() {
 		set_query_var( 'max_price', 100 );
 
-		$parsed_block = $this->get_base_parsed_block();
-		$this->block_instance->set_parsed_block( $parsed_block );
-
-		$merged_query = $this->block_instance->build_query( $parsed_block['attrs']['query'] );
+		$merged_query = $this->initialize_merged_query();
 
 		$price_meta_query = $merged_query['meta_query'][0];
 		$this->assertEquals( 'AND', $price_meta_query['relation'] );
@@ -150,10 +158,7 @@ class ProductQuery extends \WP_UnitTestCase {
 	public function test_merging_filter_by_min_price_queries() {
 		set_query_var( 'min_price', 20 );
 
-		$parsed_block = $this->get_base_parsed_block();
-		$this->block_instance->set_parsed_block( $parsed_block );
-
-		$merged_query = $this->block_instance->build_query( $parsed_block['attrs']['query'] );
+		$merged_query = $this->initialize_merged_query();
 
 		$price_meta_query = $merged_query['meta_query'][0];
 		$this->assertEquals( 'AND', $price_meta_query['relation'] );
@@ -176,10 +181,7 @@ class ProductQuery extends \WP_UnitTestCase {
 		set_query_var( 'max_price', 100 );
 		set_query_var( 'min_price', 20 );
 
-		$parsed_block = $this->get_base_parsed_block();
-		$this->block_instance->set_parsed_block( $parsed_block );
-
-		$merged_query = $this->block_instance->build_query( $parsed_block['attrs']['query'] );
+		$merged_query = $this->initialize_merged_query();
 
 		$price_meta_query = $merged_query['meta_query'][0];
 		$this->assertEquals( 'AND', $price_meta_query['relation'] );
@@ -209,10 +211,7 @@ class ProductQuery extends \WP_UnitTestCase {
 	public function test_merging_filter_by_stock_status_queries() {
 		set_query_var( 'filter_stock_status', 'instock' );
 
-		$parsed_block = $this->get_base_parsed_block();
-		$this->block_instance->set_parsed_block( $parsed_block );
-
-		$merged_query = $this->block_instance->build_query( $parsed_block['attrs']['query'] );
+		$merged_query = $this->initialize_merged_query();
 
 		$this->assertEqualsCanonicalizing(
 			array(
@@ -220,7 +219,7 @@ class ProductQuery extends \WP_UnitTestCase {
 				'value'    => array( 'instock' ),
 				'operator' => 'IN',
 			),
-			$merged_query['meta_query'][0][0] // This should be updated once we merge #7697.
+			$merged_query['meta_query'][0],
 		);
 	}
 }
