@@ -4,6 +4,11 @@
 import { isString } from '@woocommerce/types';
 import { getUrlParameter } from '@woocommerce/utils';
 
+/**
+ * Internal dependencies
+ */
+import metadata from './block.json';
+
 export const getActiveFilters = ( queryParamKey = 'filter_rating' ) => {
 	const params = getUrlParameter( queryParamKey );
 
@@ -23,5 +28,8 @@ export const parseAttributes = ( data: Record< string, unknown > ) => {
 		showFilterButton: data?.showFilterButton === 'true',
 		showCounts: data?.showCounts !== 'false',
 		isPreview: false,
+		displayStyle:
+			( isString( data?.displayStyle ) && data.displayStyle ) ||
+			metadata.attributes.displayStyle.default,
 	};
 };
