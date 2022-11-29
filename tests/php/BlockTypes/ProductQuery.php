@@ -140,16 +140,15 @@ class ProductQuery extends \WP_UnitTestCase {
 
 		$price_meta_query = $merged_query['meta_query'][0];
 		$this->assertEquals( 'AND', $price_meta_query['relation'] );
-		$this->assertEqualsCanonicalizing(
+		$this->assertContains(
 			array(
 				'key'     => '_price',
 				'value'   => 100,
 				'compare' => '<',
 				'type'    => 'numeric',
 			),
-			$price_meta_query[0]
+			$price_meta_query
 		);
-		$this->assertEmpty( $price_meta_query[1] );
 	}
 
 	/**
@@ -162,15 +161,14 @@ class ProductQuery extends \WP_UnitTestCase {
 
 		$price_meta_query = $merged_query['meta_query'][0];
 		$this->assertEquals( 'AND', $price_meta_query['relation'] );
-		$this->assertEmpty( $price_meta_query[0] );
-		$this->assertEqualsCanonicalizing(
+		$this->assertContains(
 			array(
 				'key'     => '_price',
 				'value'   => 20,
 				'compare' => '>=',
 				'type'    => 'numeric',
 			),
-			$price_meta_query[1]
+			$price_meta_query
 		);
 	}
 
@@ -185,23 +183,23 @@ class ProductQuery extends \WP_UnitTestCase {
 
 		$price_meta_query = $merged_query['meta_query'][0];
 		$this->assertEquals( 'AND', $price_meta_query['relation'] );
-		$this->assertEqualsCanonicalizing(
+		$this->assertContains(
 			array(
 				'key'     => '_price',
 				'value'   => 100,
 				'compare' => '<',
 				'type'    => 'numeric',
 			),
-			$price_meta_query[0]
+			$price_meta_query
 		);
-		$this->assertEqualsCanonicalizing(
+		$this->assertContains(
 			array(
 				'key'     => '_price',
 				'value'   => 20,
 				'compare' => '>=',
 				'type'    => 'numeric',
 			),
-			$price_meta_query[1]
+			$price_meta_query
 		);
 	}
 
@@ -213,13 +211,13 @@ class ProductQuery extends \WP_UnitTestCase {
 
 		$merged_query = $this->initialize_merged_query();
 
-		$this->assertEqualsCanonicalizing(
+		$this->assertContains(
 			array(
 				'key'      => '_stock_status',
 				'value'    => array( 'instock' ),
 				'operator' => 'IN',
 			),
-			$merged_query['meta_query'][0],
+			$merged_query['meta_query']
 		);
 	}
 }
