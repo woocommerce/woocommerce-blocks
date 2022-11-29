@@ -30,6 +30,10 @@
 			"type": "boolean",
 			"default": true
 		},
+		"displayStyle": {
+			"type": "string",
+			"default": "list"
+		},
 		"showFilterButton": {
 			"type": "boolean",
 			"default": false
