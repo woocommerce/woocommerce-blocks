@@ -41,8 +41,7 @@ const PlaceOrderButton = (): JSX.Element => {
 				isDisabled ||
 				hasNoticesVisible ||
 				waitingForProcessing ||
-				waitingForRedirect ||
-				hasNoticesVisible
+				waitingForRedirect
 			}
 			showSpinner={ waitingForProcessing }
 		>
