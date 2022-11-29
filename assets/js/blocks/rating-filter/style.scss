@@ -5,6 +5,42 @@
 		box-shadow: none;
 		border-radius: 0;
 	}
+
+	&.style-dropdown {
+		position: relative;
+		display: flex;
+		gap: $gap;
+		align-items: flex-start;
+
+		.wc-block-components-filter-submit-button {
+			height: 36px;
+			line-height: 1;
+		}
+
+		> svg {
+			position: absolute;
+			right: 8px;
+			top: 50%;
+			transform: translateY(-50%);
+			pointer-events: none;
+		}
+	}
+
+	.wc-blocks-components-form-token-field-wrapper {
+		flex-grow: 1;
+		max-width: unset;
+		width: 0;
+		height: max-content;
+
+		&:not(.is-loading) {
+			border: 1px solid $gray-700 !important;
+			border-radius: 4px;
+		}
+
+		&.is-loading {
+			border-radius: em(4px);
+		}
+	}
 }
 
 .wp-block-woocommerce-rating-filter {
