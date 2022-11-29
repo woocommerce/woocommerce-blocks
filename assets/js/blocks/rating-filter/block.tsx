@@ -3,8 +3,13 @@
  */
 import { __, sprintf } from '@wordpress/i18n';
 import { speak } from '@wordpress/a11y';
+import { Icon, chevronDown } from '@wordpress/icons';
 import Rating from '@woocommerce/base-components/product-rating';
-import { usePrevious, useShallowEqual } from '@woocommerce/base-hooks';
+import {
+	usePrevious,
+	useShallowEqual,
+	useBorderProps,
+} from '@woocommerce/base-hooks';
 import {
 	useQueryStateByKey,
 	useQueryStateByContext,
@@ -17,9 +22,11 @@ import { useState, useCallback, useMemo, useEffect } from '@wordpress/element';
 import CheckboxList from '@woocommerce/base-components/checkbox-list';
 import FilterSubmitButton from '@woocommerce/base-components/filter-submit-button';
 import FilterResetButton from '@woocommerce/base-components/filter-reset-button';
+import FormTokenField from '@woocommerce/base-components/form-token-field';
 import { addQueryArgs, removeQueryArgs } from '@wordpress/url';
 import { changeUrl } from '@woocommerce/utils';
 import classnames from 'classnames';
+import { difference } from 'lodash';
 
 /**
  * Internal dependencies
@@ -27,10 +34,13 @@ import classnames from 'classnames';
 import { previewOptions } from './preview';
 import './style.scss';
 import { Attributes } from './types';
-import { getActiveFilters } from './utils';
+import { formatSlug, getActiveFilters, generateUniqueId } from './utils';
 import { useSetWraperVisibility } from '../filter-wrapper/context';
 
 export const QUERY_PARAM_KEY = 'rating_filter';
+
+// TODO: mocked multiple, extend the config
+const multiple = true;
 
 /**
  * Component displaying a rating filter.
@@ -90,6 +100,15 @@ const RatingFilterBlock = ( {
 		initialFilters
 	);
 
+	/*
+		FormTokenField forces the dropdown to reopen on reset, so we create a unique ID to use as the components key.
+		This will force the component to remount on reset when we change this value.
+		More info: https://github.com/woocommerce/woocommerce-blocks/pull/6920#issuecomment-1222402482
+	 */
+	const [ remountKey, setRemountKey ] = useState( generateUniqueId() );
+
+	const borderProps = useBorderProps( blockAttributes );
+
 	/**
 	 * Used to redirect the page when filters are changed so templates using the Classic Template block can filter.
 	 *
@@ -123,6 +142,34 @@ const RatingFilterBlock = ( {
 
 		changeUrl( newUrl );
 	};
+
+	/**
+	 * When a checkbox in the list changes, update state.
+	 */
+
+	// TODO handle updateCheckedFilters function
+	const onChange = useCallback(
+		( checkedValue ) => {
+			const previouslyChecked = checked.includes( checkedValue );
+			let newChecked;
+
+			if ( ! multiple ) {
+				newChecked = previouslyChecked ? [] : [ checkedValue ];
+			} else {
+				newChecked = checked.filter(
+					( value ) => value !== checkedValue
+				);
+
+				if ( ! previouslyChecked ) {
+					newChecked.push( checkedValue );
+					newChecked.sort();
+				}
+			}
+
+			// updateCheckedFilters( newChecked );
+		},
+		[ checked, multiple ]
+	);
 
 	const onSubmit = useCallback(
 		( checkedOptions ) => {
@@ -223,6 +270,7 @@ const RatingFilterBlock = ( {
 			} );
 
 		setDisplayedOptions( newOptions );
+		setRemountKey( generateUniqueId() );
 	}, [
 		blockAttributes.showCounts,
 		blockAttributes.isPreview,
@@ -293,20 +341,129 @@ const RatingFilterBlock = ( {
 	return (
 		<>
 			<div
-				className={ classnames( 'wc-block-rating-filter', {
-					'is-loading': isLoading,
-				} ) }
+				className={ classnames(
+					'wc-block-rating-filter',
+					`style-${ blockAttributes.displayStyle }`,
+					{
+						'is-loading': isLoading,
+					}
+				) }
 			>
-				<CheckboxList
-					className={ 'wc-block-rating-filter-list' }
-					options={ displayedOptions }
-					checked={ checked }
-					onChange={ ( item ) => {
-						onClick( item.toString() );
-					} }
-					isLoading={ isLoading }
-					isDisabled={ isDisabled }
-				/>
+				{ blockAttributes.displayStyle === 'dropdown' ? (
+					<>
+						<FormTokenField
+							key={ remountKey }
+							className={ classnames( borderProps.className, {
+								'single-selection': ! multiple,
+								'is-loading': isLoading,
+							} ) }
+							style={ {
+								...borderProps.style,
+								borderStyle: 'none',
+							} }
+							suggestions={ displayedOptions
+								.filter(
+									( option ) =>
+										! checked.includes( option.value )
+								)
+								.map( ( option ) => option.value ) }
+							disabled={ isLoading }
+							placeholder={
+								( __(
+									'Select rating',
+									'woo-gutenberg-products-block'
+								),
+								'Select rating' )
+							}
+							onChange={ ( tokens: string[] ) => {
+								if ( ! multiple && tokens.length > 1 ) {
+									tokens = [ tokens[ tokens.length - 1 ] ];
+								}
+
+								tokens = tokens.map( ( token ) => {
+									const displayOption = displayedOptions.find(
+										( option ) => option.value === token
+									);
+
+									return displayOption
+										? displayOption.value
+										: token;
+								} );
+
+								const added = difference( tokens, checked );
+
+								if ( added.length === 1 ) {
+									return onChange( added[ 0 ] );
+								}
+
+								const removed = difference( checked, tokens );
+								if ( removed.length === 1 ) {
+									onChange( removed[ 0 ] );
+								}
+							} }
+							value={ checked }
+							displayTransform={ ( value: string ) => {
+								// const result = displayedOptions.find(
+								// 	( option ) =>
+								// 		[
+								// 			option.value,
+								// 			option.formattedValue,
+								// 		].includes( value )
+								// );
+								return value;
+							} }
+							saveTransform={ formatSlug }
+							messages={ {
+								added: sprintf(
+									/* translators: %s is the attribute label. */
+									__(
+										'%s filter added.',
+										'woo-gutenberg-products-block'
+									),
+									'Rating'
+								),
+								removed: sprintf(
+									/* translators: %s is the attribute label. */
+									__(
+										'%s filter removed.',
+										'woo-gutenberg-products-block'
+									),
+									'Rating'
+								),
+								remove: sprintf(
+									/* translators: %s is the attribute label. */
+									__(
+										'Remove %s filter.',
+										'woo-gutenberg-products-block'
+									),
+									'rating'
+								),
+								__experimentalInvalid: sprintf(
+									/* translators: %s is the attribute label. */
+									__(
+										'Invalid %s filter.',
+										'woo-gutenberg-products-block'
+									),
+									'rating'
+								),
+							} }
+						/>
+						{ multiple && (
+							<Icon icon={ chevronDown } size={ 30 } />
+						) }
+					</>
+				) : (
+					<CheckboxList
+						className={ 'wc-block-rating-filter-list' }
+						options={ displayedOptions }
+						checked={ checked }
+						onChange={ ( item ) => {
+							onClick( item.toString() );
+						} }
+						isLoading={ isLoading }
+						isDisabled={ isDisabled }
+					/>
+				) }
 			</div>
 			{
 				<div className="wc-block-rating-filter__actions">
