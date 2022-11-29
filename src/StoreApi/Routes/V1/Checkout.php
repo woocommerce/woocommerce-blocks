@@ -277,9 +277,9 @@ class Checkout extends AbstractCartRoute {
 	protected function get_route_error_response_from_object( $error_object, $http_status_code = 500, $additional_data = [] ) {
 		// 409 is when there was a conflict, so we return the cart so the client can resolve it.
 		if ( 409 === $http_status_code ) {
-			return $this->add_data_to_error_object( $error_object, $additional_data, $http_status_code, true );
+			return $this->add_data_to_error_object( $error_object, array_merge( $additional_data, $error_object->get_error_data() ), $http_status_code, true );
 		}
-		return $this->add_data_to_error_object( $error_object, $additional_data, $http_status_code );
+		return $this->add_data_to_error_object( $error_object, array_merge( $additional_data, $error_object->get_error_data() ), $http_status_code );
 	}
 
 	/**
