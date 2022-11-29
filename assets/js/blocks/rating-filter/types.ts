@@ -1,6 +1,8 @@
 export interface Attributes {
 	className?: string;
 	displayStyle: string;
+	selectType: string;
+	queryType: string;
 	showCounts: boolean;
 	showFilterButton: boolean;
 	isPreview?: boolean;

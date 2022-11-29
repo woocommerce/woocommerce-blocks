@@ -26,8 +26,14 @@ const Edit = ( {
 	attributes,
 	setAttributes,
 }: BlockEditProps< Attributes > ) => {
-	const { className, displayStyle, showCounts, showFilterButton } =
-		attributes;
+	const {
+		className,
+		displayStyle,
+		showCounts,
+		queryType,
+		showFilterButton,
+		selectType,
+	} = attributes;
 
 	const blockProps = useBlockProps( {
 		className: classnames( 'wc-block-rating-filter', className ),
@@ -58,6 +64,75 @@ const Edit = ( {
 						'woo-gutenberg-products-block'
 					) }
 				>
+					<ToggleGroupControl
+						label={ __(
+							'Allow selecting multiple options?',
+							'woo-gutenberg-products-block'
+						) }
+						value={ selectType || 'multiple' }
+						onChange={ ( value: string ) =>
+							setAttributes( {
+								selectType: value,
+							} )
+						}
+						className="wc-block-attribute-filter__multiple-toggle"
+					>
+						<ToggleGroupControlOption
+							value="multiple"
+							label={ __(
+								'Multiple',
+								'woo-gutenberg-products-block'
+							) }
+						/>
+						<ToggleGroupControlOption
+							value="single"
+							label={ __(
+								'Single',
+								'woo-gutenberg-products-block'
+							) }
+						/>
+					</ToggleGroupControl>
+					{ selectType === 'multiple' && (
+						<ToggleGroupControl
+							label={ __(
+								'Filter Conditions',
+								'woo-gutenberg-products-block'
+							) }
+							help={
+								queryType === 'and'
+									? __(
+											'Choose to return filter results for all of the attributes selected.',
+											'woo-gutenberg-products-block'
+									  )
+									: __(
+											'Choose to return filter results for any of the attributes selected.',
+											'woo-gutenberg-products-block'
+									  )
+							}
+							value={ queryType }
+							onChange={ ( value: string ) =>
+								setAttributes( {
+									queryType: value,
+								} )
+							}
+							className="wc-block-attribute-filter__conditions-toggle"
+						>
+							<ToggleGroupControlOption
+								value="and"
+								label={ __(
+									'All',
+									'woo-gutenberg-products-block'
+								) }
+							/>
+							<ToggleGroupControlOption
+								value="or"
+								label={ __(
+									'Any',
+									'woo-gutenberg-products-block'
+								) }
+							/>
+						</ToggleGroupControl>
+					) }
 					<ToggleGroupControl
 						label={ __(
 							'Display Style',

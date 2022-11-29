@@ -39,9 +39,6 @@ import { useSetWraperVisibility } from '../filter-wrapper/context';
 
 export const QUERY_PARAM_KEY = 'rating_filter';
 
-// TODO: mocked multiple, extend the config
-const multiple = true;
-
 /**
  * Component displaying a rating filter.
  *
@@ -142,6 +139,8 @@ const RatingFilterBlock = ( {
 
 		changeUrl( newUrl );
 	};
+
+	const multiple = blockAttributes.selectType !== 'single';
 
 	/**
 	 * When a checkbox in the list changes, update state.

@@ -43,5 +43,11 @@ export const parseAttributes = ( data: Record< string, unknown > ) => {
 		displayStyle:
 			( isString( data?.displayStyle ) && data.displayStyle ) ||
 			metadata.attributes.displayStyle.default,
+		selectType:
+			( isString( data?.selectType ) && data.selectType ) ||
+			metadata.attributes.selectType.default,
+		queryType:
+			( isString( data?.queryType ) && data.queryType ) ||
+			metadata.attributes.queryType.default,
 	};
 };
