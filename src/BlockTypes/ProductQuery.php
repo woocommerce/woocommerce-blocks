@@ -1,6 +1,8 @@
 <?php
 namespace Automattic\WooCommerce\Blocks\BlockTypes;
 
+use WP_Query;
+
 // phpcs:disable WordPress.DB.SlowDBQuery.slow_db_query_tax_query
 // phpcs:disable WordPress.DB.SlowDBQuery.slow_db_query_meta_query
 // phpcs:disable WordPress.DB.SlowDBQuery.slow_db_query_meta_key
@@ -36,6 +38,22 @@ class ProductQuery extends AbstractBlock {
 	 * @var array
 	 */
 	protected $attributes_filter_query_args = array();
+
+	/** This is a feature flag to enable the custom inherit Global Query implementation.
+	 * This is not intended to be a permanent feature flag, but rather a temporary.
+	 * It is also necessary to enable this feature flag on the PHP side: `assets/js/blocks/product-query/variations/product-query.tsx:26`.
+	 * https://github.com/woocommerce/woocommerce-blocks/pull/7382
+	 *
+	 * @var boolean
+	 */
+	protected $is_custom_inherit_global_query_implementation_enabled = false;
+
+	/**
+	 * All query args from WP_Query.
+	 *
+	 * @var array
+	 */
+	protected $valid_query_vars;
 
 	/**
 	 * Initialize this block type.
@@ -132,41 +150,24 @@ class ProductQuery extends AbstractBlock {
 			'tax_query'      => array(),
 		);
 
-		$queries_by_attributes = $this->get_queries_by_attributes( $parsed_block );
-		$queries_by_filters    = $this->get_queries_by_applied_filters();
-		$orderby_query         = $this->get_custom_orderby_query( $query['orderby'] );
-
-		$base_query = array_merge(
+		return $this->merge_queries(
 			$common_query_values,
-			$orderby_query
-		);
-
-		return array_reduce(
-			array_merge(
-				$queries_by_attributes,
-				$queries_by_filters
-			),
-			function( $acc, $query ) {
-				return $this->merge_queries( $acc, $query );
-			},
-			$base_query
+			$this->get_global_query( $parsed_block ),
+			$this->get_custom_orderby_query( $query['orderby'] ),
+			$this->get_queries_by_attributes( $parsed_block ),
+			$this->get_queries_by_applied_filters()
 		);
 	}
 
 	/**
-	 * Return the product ids based on the attributes.
+	 * Return the product ids based on the attributes and global query.
+	 * This is used to allow the filter blocks to render data that matches with variations. More details here: https://github.com/woocommerce/woocommerce-blocks/issues/7245
 	 *
 	 * @param array $parsed_block The block being rendered.
 	 * @return array
 	 */
 	private function get_products_ids_by_attributes( $parsed_block ) {
-		$queries_by_attributes = $this->get_queries_by_attributes( $parsed_block );
-
-		$query = array_reduce(
-			$queries_by_attributes,
-			function( $acc, $query ) {
-				return $this->merge_queries( $acc, $query );
-			},
+		$query = $this->merge_queries(
 			array(
 				'post_type'      => 'product',
 				'post__in'       => array(),
@@ -174,7 +175,9 @@ class ProductQuery extends AbstractBlock {
 				'posts_per_page' => -1,
 				'meta_query'     => array(),
 				'tax_query'      => array(),
-			)
+			),
+			$this->get_queries_by_attributes( $parsed_block ),
+			$this->get_global_query( $parsed_block )
 		);
 
 		$products = new \WP_Query( $query );
@@ -186,16 +189,43 @@ class ProductQuery extends AbstractBlock {
 	/**
 	 * Merge in the first parameter the keys "post_in", "meta_query" and "tax_query" of the second parameter.
 	 *
-	 * @param array $a The first query.
-	 * @param array $b The second query.
+	 * @param array[] ...$queries Query arrays to be merged.
 	 * @return array
 	 */
-	private function merge_queries( $a, $b ) {
-		$a['post__in']   = ( isset( $b['post__in'] ) && ! empty( $b['post__in'] ) ) ? $this->intersect_arrays_when_not_empty( $a['post__in'], $b['post__in'] ) : $a['post__in'];
-		$a['meta_query'] = ( isset( $b['meta_query'] ) && ! empty( $b['meta_query'] ) ) ? array_merge( $a['meta_query'], array( $b['meta_query'] ) ) : $a['meta_query'];
-		$a['tax_query']  = ( isset( $b['tax_query'] ) && ! empty( $b['tax_query'] ) ) ? array_merge( $a['tax_query'], array( $b['tax_query'] ) ) : $a['tax_query'];
+	private function merge_queries( ...$queries ) {
+		$merged_query = array_reduce(
+			$queries,
+			function( $acc, $query ) {
+				if ( ! is_array( $query ) ) {
+					return $acc;
+				}
+				// If the $query doesn't contain any valid query keys, we unpack/spread it then merge.
+				if ( empty( array_intersect( $this->get_valid_query_vars(), array_keys( $query ) ) ) ) {
+					return $this->merge_queries( $acc, ...array_values( $query ) );
+				}
+				return $this->array_merge_recursive_replace_non_array_properties( $acc, $query );
+			},
+			array()
+		);
 
-		return $a;
+		/**
+		 * If there are duplicated items in post__in, it means that we need to
+		 * use the intersection of the results, which in this case, are the
+		 * duplicated items.
+		 */
+		if (
+			! empty( $merged_query['post__in'] ) &&
+			count( $merged_query['post__in'] ) > count( array_unique( $merged_query['post__in'] ) )
+		) {
+			$merged_query['post__in'] = array_unique(
+				array_diff(
+					$merged_query['post__in'],
+					array_unique( $merged_query['post__in'] )
+				)
+			);
+		}
+
+		return $merged_query;
 	}
 
 	/**
@@ -258,9 +288,11 @@ class ProductQuery extends AbstractBlock {
 	private function get_stock_status_query( $stock_statii ) {
 		return array(
 			'meta_query' => array(
-				'key'     => '_stock_status',
-				'value'   => (array) $stock_statii,
-				'compare' => 'IN',
+				array(
+					'key'     => '_stock_status',
+					'value'   => (array) $stock_statii,
+					'compare' => 'IN',
+				),
 			),
 		);
 	}
@@ -400,9 +432,11 @@ class ProductQuery extends AbstractBlock {
 
 		return array(
 			'meta_query' => array(
-				'relation' => 'AND',
-				$max_price_query,
-				$min_price_query,
+				array(
+					'relation' => 'AND',
+					$max_price_query,
+					$min_price_query,
+				),
 			),
 		);
 	}
@@ -449,8 +483,10 @@ class ProductQuery extends AbstractBlock {
 
 		return array(
 			'tax_query' => array(
-				'relation' => 'AND',
-				$queries,
+				array(
+					'relation' => 'AND',
+					$queries,
+				),
 			),
 		);
 	}
@@ -493,22 +529,149 @@ class ProductQuery extends AbstractBlock {
 	}
 
 	/**
-	 * Intersect arrays neither of them are empty, otherwise merge them.
+	 * Return or initialize $valid_query_vars.
 	 *
-	 * @param array ...$arrays Arrays.
 	 * @return array
 	 */
-	private function intersect_arrays_when_not_empty( ...$arrays ) {
-		return array_reduce(
-			$arrays,
-			function( $acc, $array ) {
-				if ( ! empty( $array ) && ! empty( $acc ) ) {
-					return array_intersect( $acc, $array );
-				}
-				return array_merge( $acc, $array );
-			},
-			array()
+	private function get_valid_query_vars() {
+		if ( ! empty( $this->valid_query_vars ) ) {
+			return $this->valid_query_vars;
+		}
+
+		$valid_query_vars       = array_keys( ( new WP_Query() )->fill_query_vars( array() ) );
+		$this->valid_query_vars = array_merge(
+			$valid_query_vars,
+			// fill_query_vars doesn't include these vars so we need to add them manually.
+			array(
+				'date_query',
+				'exact',
+				'ignore_sticky_posts',
+				'lazy_load_term_meta',
+				'meta_compare_key',
+				'meta_compare',
+				'meta_query',
+				'meta_type_key',
+				'meta_type',
+				'nopaging',
+				'offset',
+				'order',
+				'orderby',
+				'page',
+				'post_type',
+				'posts_per_page',
+				'suppress_filters',
+				'tax_query',
+			)
 		);
+
+		return $this->valid_query_vars;
+	}
+
+	/**
+	 * Merge two array recursively but replace the non-array values instead of
+	 * merging them. The merging strategy:
+	 *
+	 * - If keys from merge array doesn't exist in the base array, create them.
+	 * - For array items with numeric keys, we merge them as normal.
+	 * - For array items with string keys:
+	 *
+	 *   - If the value isn't array, we'll use the value comming from the merge array.
+	 *     $base = ['orderby' => 'date']
+	 *     $new  = ['orderby' => 'meta_value_num']
+	 *     Result: ['orderby' => 'meta_value_num']
+	 *
+	 *   - If the value is array, we'll use recursion to merge each key.
+	 *     $base = ['meta_query' => [
+	 *       [
+	 *         'key'     => '_stock_status',
+	 *         'compare' => 'IN'
+	 *         'value'   =>  ['instock', 'onbackorder']
+	 *       ]
+	 *     ]]
+	 *     $new  = ['meta_query' => [
+	 *       [
+	 *         'relation' => 'AND',
+	 *         [...<max_price_query>],
+	 *         [...<min_price_query>],
+	 *       ]
+	 *     ]]
+	 *     Result: ['meta_query' => [
+	 *       [
+	 *         'key'     => '_stock_status',
+	 *         'compare' => 'IN'
+	 *         'value'   =>  ['instock', 'onbackorder']
+	 *       ],
+	 *       [
+	 *         'relation' => 'AND',
+	 *         [...<max_price_query>],
+	 *         [...<min_price_query>],
+	 *       ]
+	 *     ]]
+	 *
+	 *     $base = ['post__in' => [1, 2, 3, 4, 5]]
+	 *     $new  = ['post__in' => [3, 4, 5, 6, 7]]
+	 *     Result: ['post__in' => [1, 2, 3, 4, 5, 3, 4, 5, 6, 7]]
+	 *
+	 * @param array $base First array.
+	 * @param array $new  Second array.
+	 */
+	private function array_merge_recursive_replace_non_array_properties( $base, $new ) {
+		foreach ( $new as $key => $value ) {
+			if ( is_numeric( $key ) ) {
+				$base[] = $value;
+			} else {
+				if ( is_array( $value ) ) {
+					if ( ! isset( $base[ $key ] ) ) {
+						$base[ $key ] = array();
+					}
+					$base[ $key ] = $this->array_merge_recursive_replace_non_array_properties( $base[ $key ], $value );
+				} else {
+					$base[ $key ] = $value;
+				}
+			}
+		}
+
+		return $base;
+	}
+
+	/**
+	 * Get product-related query variables from the global query.
+	 *
+	 * @param array $parsed_block The Product Query that being rendered.
+	 *
+	 * @return array
+	 */
+	private function get_global_query( $parsed_block ) {
+		if ( ! $this->is_custom_inherit_global_query_implementation_enabled ) {
+			return array();
+		}
+
+		global $wp_query;
+
+		$inherit_enabled = isset( $parsed_block['attrs']['query']['__woocommerceInherit'] ) && true === $parsed_block['attrs']['query']['__woocommerceInherit'];
+
+		if ( ! $inherit_enabled ) {
+			return array();
+		}
+
+		$query = array();
+
+		if ( isset( $wp_query->query_vars['taxonomy'] ) && isset( $wp_query->query_vars['term'] ) ) {
+			$query['tax_query'] = array(
+				array(
+					'taxonomy' => $wp_query->query_vars['taxonomy'],
+					'field'    => 'slug',
+					'terms'    => $wp_query->query_vars['term'],
+				),
+			);
+		}
+
+		if ( isset( $wp_query->query_vars['s'] ) ) {
+			$query['s'] = $wp_query->query_vars['s'];
+		}
+
+		return $query;
 	}
 
 }
+
