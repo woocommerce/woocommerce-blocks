@@ -63,8 +63,8 @@ class BlockTemplatesController {
 	protected function init() {
 		add_action( 'template_redirect', array( $this, 'render_block_template' ) );
 		add_filter( 'pre_get_block_template', array( $this, 'get_block_template_fallback' ), 10, 3 );
-		add_filter( 'pre_get_block_templates', array( $this, 'add_archive_product_to_hierarchy' ), 10, 3 );
 		add_filter( 'pre_get_block_file_template', array( $this, 'get_block_file_template' ), 10, 3 );
+		add_filter( 'pre_get_block_templates', array( $this, 'add_archive_product_to_hierarchy' ), 10, 3 );
 		add_filter( 'get_block_templates', array( $this, 'add_block_templates' ), 10, 3 );
 		add_filter( 'current_theme_supports-block-templates', array( $this, 'remove_block_template_support_for_shop_page' ) );
 		add_filter( 'taxonomy_template_hierarchy', array( $this, 'add_archive_product_to_eligible_for_fallback_templates' ), 10, 1 );
