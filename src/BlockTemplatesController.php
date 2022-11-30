@@ -132,7 +132,7 @@ class BlockTemplatesController {
 	 */
 	public function extend_default_block_template_types( $default_template_types ) {
 		$default_template_types['taxonomy-product_attribute'] = array(
-			'title'       => _x( 'Product by Attribute', 'Template name', 'woo-gutenberg-products-block' ),
+			'title'       => _x( 'Attribute (product_attribute)', 'Template name', 'woo-gutenberg-products-block' ),
 			'description' => __( 'Displays products filtered by a product attribute.', 'woo-gutenberg-products-block' ),
 		);
 
