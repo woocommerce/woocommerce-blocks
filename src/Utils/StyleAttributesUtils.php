@@ -327,6 +327,44 @@ class StyleAttributesUtils {
 		return null;
 	}
 
+	/**
+	 * Get class and style for text align from attributes.
+	 *
+	 * @param array $attributes Block attributes.
+	 *
+	 * @return (array | null)
+	 */
+	public static function get_text_align_class_and_style( $attributes ) {
+
+		$text_align_attribute = isset( $attributes['textAlign'] ) ? $attributes['textAlign'] : null;
+
+		if ( ! $text_align_attribute ) {
+			return null;
+		};
+
+		if ( 'left' === $text_align_attribute ) {
+			return array(
+				'class' => 'has-text-align-left',
+				'style' => null,
+			);
+		}
+
+		if ( 'center' === $text_align_attribute ) {
+			return array(
+				'class' => 'has-text-align-center',
+				'style' => null,
+			);
+		}
+
+		if ( 'right' === $text_align_attribute ) {
+			return array(
+				'class' => 'has-text-align-right',
+				'style' => null,
+			);
+		}
+
+		return null;
+	}
 
 	/**
 	 * If spacing value is in preset format, convert it to a CSS var. Else return same value
