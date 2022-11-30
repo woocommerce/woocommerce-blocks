@@ -35,6 +35,7 @@ import {
 	STOCK_STATUS_OPTIONS,
 } from './constants';
 import { PopularPresets } from './inspector-controls/popular-presets';
+import { AttributesFilter } from './inspector-controls/attributes-filter';
 
 const NAMESPACED_CONTROLS = ALL_PRODUCT_QUERY_CONTROLS.map(
 	( id ) =>
@@ -84,6 +85,7 @@ function getStockStatusIdByLabel( statusLabel: FormTokenField.Value ) {
 }
 
 export const TOOLS_PANEL_CONTROLS = {
+	attributes: AttributesFilter,
 	onSale: ( props: ProductQueryBlock ) => {
 		const { query } = props.attributes;
 
@@ -143,6 +145,18 @@ export const TOOLS_PANEL_CONTROLS = {
 			</ToolsPanelItem>
 		);
 	},
+	wooInherit: ( props: ProductQueryBlock ) => (
+		<ToggleControl
+			label={ __(
+				'Woo Inherit query from template',
+				'woo-gutenberg-products-block'
+			) }
+			checked={ props.attributes.query.__woocommerceInherit || false }
+			onChange={ ( __woocommerceInherit ) => {
+				setQueryAttribute( props, { __woocommerceInherit } );
+			} }
+		/>
+	),
 };
 
 export const withProductQueryControls =
