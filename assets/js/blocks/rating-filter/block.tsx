@@ -4,7 +4,7 @@
 import { __, sprintf } from '@wordpress/i18n';
 import { speak } from '@wordpress/a11y';
 import Rating from '@woocommerce/base-components/product-rating';
-import { Notice } from 'wordpress-components';
+import { Notice } from '@wordpress/components';
 import { usePrevious, useShallowEqual } from '@woocommerce/base-hooks';
 import {
 	useQueryStateByKey,
