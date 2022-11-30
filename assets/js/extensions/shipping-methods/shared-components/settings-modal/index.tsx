@@ -2,7 +2,6 @@
  * External dependencies
  */
 import { Modal } from '@wordpress/components';
-import { HorizontalRule } from '@wordpress/primitives';
 import styled from '@emotion/styled';
 
 const StyledModal = styled( Modal )`

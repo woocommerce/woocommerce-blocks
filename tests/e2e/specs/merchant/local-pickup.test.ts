@@ -3,7 +3,6 @@
  */
 import { switchUserToAdmin, visitAdminPage } from '@wordpress/e2e-test-utils';
 import { findLabelWithText } from '@woocommerce/blocks-test-utils';
-import { setOption } from '@wordpress/e2e-test-utils';
 
 const goToSettingsPage = async () => {
 	await visitAdminPage(
