@@ -78,4 +78,33 @@ describe( 'TotalsFooterItem', () => {
 		);
 		expect( container ).toMatchSnapshot();
 	} );
+
+	it( 'Shows the "including %s TAX LABEL" line with single tax label', () => {
+		const valuesWithTax = {
+			...values,
+			total_tax: '100',
+			total_items_tax: '100',
+			tax_lines: [ { name: '10% VAT', price: '100' } ],
+		};
+		const { container } = render(
+			<TotalsFooterItem currency={ currency } values={ valuesWithTax } />
+		);
+		expect( container ).toMatchSnapshot();
+	} );
+
+	it( 'Shows the "including %s TAX LABELS" line with multiple tax labels', () => {
+		const valuesWithTax = {
+			...values,
+			total_tax: '100',
+			total_items_tax: '100',
+			tax_lines: [
+				{ name: '10% VAT', price: '50' },
+				{ name: '5% VAT', price: '50' },
+			],
+		};
+		const { container } = render(
+			<TotalsFooterItem currency={ currency } values={ valuesWithTax } />
+		);
+		expect( container ).toMatchSnapshot();
+	} );
 } );
