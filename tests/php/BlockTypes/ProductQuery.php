@@ -105,6 +105,49 @@ class ProductQuery extends \WP_UnitTestCase {
 	}
 
 	/**
+	 * Test merging attribute queries.
+	 */
+	public function test_merging_attribute_queries() {
+		$parsed_block = $this->get_base_parsed_block();
+		$parsed_block['attrs']['query']['__woocommerceAttributes'] = array(
+			array(
+				'taxonomy' => 'pa_test',
+				'termId'   => 1,
+			),
+			array(
+				'taxonomy' => 'pa_test',
+				'termId'   => 2,
+			),
+			array(
+				'taxonomy' => 'pa_another_test',
+				'termId'   => 3,
+			),
+		);
+
+		$merged_query = $this->initialize_merged_query( $parsed_block );
+
+		$this->assertContainsEquals(
+			array(
+				'field'    => 'term_id',
+				'terms'    => array( 3 ),
+				'operator' => 'IN',
+				'taxonomy' => 'pa_another_test',
+			),
+			$merged_query['tax_query']
+		);
+
+		$this->assertContainsEquals(
+			array(
+				'taxonomy' => 'pa_test',
+				'field'    => 'term_id',
+				'terms'    => array( 1, 2 ),
+				'operator' => 'IN',
+			),
+			$merged_query['tax_query']
+		);
+	}
+
+	/**
 	 * Test merging order by rating queries.
 	 */
 	public function test_merging_order_by_rating_queries() {
