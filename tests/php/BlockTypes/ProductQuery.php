@@ -69,7 +69,7 @@ class ProductQuery extends \WP_UnitTestCase {
 		$merged_query = $this->initialize_merged_query( $parsed_block );
 
 		foreach ( $on_sale_product_ids as $id ) {
-			$this->assertContains( $id, $merged_query['post__in'] );
+			$this->assertContainsEquals( $id, $merged_query['post__in'] );
 		}
 		$this->assertNotContains( 384123, $merged_query['post__in'] );
 	}
@@ -86,8 +86,8 @@ class ProductQuery extends \WP_UnitTestCase {
 
 		$merged_query = $this->initialize_merged_query( $parsed_block );
 
-		$this->assertContains( 'outofstock', $merged_query['meta_query'][0]['value'] );
-		$this->assertContains( 'onbackorder', $merged_query['meta_query'][0]['value'] );
+		$this->assertContainsEquals( 'outofstock', $merged_query['meta_query'][0]['value'] );
+		$this->assertContainsEquals( 'onbackorder', $merged_query['meta_query'][0]['value'] );
 		$this->assertNotContains( 'instock', $merged_query['meta_query'][0]['value'] );
 
 		$parsed_block = $this->get_base_parsed_block();
@@ -99,8 +99,8 @@ class ProductQuery extends \WP_UnitTestCase {
 
 		$merged_query = $this->block_instance->build_query( $parsed_block['attrs']['query'] );
 
-		$this->assertContains( 'instock', $merged_query['meta_query'][0]['value'] );
-		$this->assertContains( 'onbackorder', $merged_query['meta_query'][0]['value'] );
+		$this->assertContainsEquals( 'instock', $merged_query['meta_query'][0]['value'] );
+		$this->assertContainsEquals( 'onbackorder', $merged_query['meta_query'][0]['value'] );
 		$this->assertNotContains( 'outofstock', $merged_query['meta_query'][0]['value'] );
 	}
 
@@ -183,7 +183,7 @@ class ProductQuery extends \WP_UnitTestCase {
 
 		$price_meta_query = $merged_query['meta_query'][0];
 		$this->assertEquals( 'AND', $price_meta_query['relation'] );
-		$this->assertContains(
+		$this->assertContainsEquals(
 			array(
 				'key'     => '_price',
 				'value'   => 100,
@@ -204,7 +204,7 @@ class ProductQuery extends \WP_UnitTestCase {
 
 		$price_meta_query = $merged_query['meta_query'][0];
 		$this->assertEquals( 'AND', $price_meta_query['relation'] );
-		$this->assertContains(
+		$this->assertContainsEquals(
 			array(
 				'key'     => '_price',
 				'value'   => 20,
@@ -226,7 +226,7 @@ class ProductQuery extends \WP_UnitTestCase {
 
 		$price_meta_query = $merged_query['meta_query'][0];
 		$this->assertEquals( 'AND', $price_meta_query['relation'] );
-		$this->assertContains(
+		$this->assertContainsEquals(
 			array(
 				'key'     => '_price',
 				'value'   => 100,
@@ -235,7 +235,7 @@ class ProductQuery extends \WP_UnitTestCase {
 			),
 			$price_meta_query
 		);
-		$this->assertContains(
+		$this->assertContainsEquals(
 			array(
 				'key'     => '_price',
 				'value'   => 20,
@@ -254,13 +254,15 @@ class ProductQuery extends \WP_UnitTestCase {
 
 		$merged_query = $this->initialize_merged_query();
 
-		$this->assertContains(
+		$this->assertContainsEquals(
 			array(
+				'operator' => 'IN',
 				'key'      => '_stock_status',
 				'value'    => array( 'instock' ),
-				'operator' => 'IN',
 			),
 			$merged_query['meta_query']
 		);
 	}
+
 }
+
