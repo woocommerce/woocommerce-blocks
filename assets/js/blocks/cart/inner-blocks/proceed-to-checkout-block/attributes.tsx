@@ -1,7 +1,7 @@
 /**
  * Internal dependencies
  */
-import { defaultButtonLabel } from './block';
+import { defaultButtonLabel } from './constants';
 
 export default {
 	checkoutPageId: {

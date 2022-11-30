@@ -1,7 +1,6 @@
 /**
  * External dependencies
  */
-import { __ } from '@wordpress/i18n';
 import classnames from 'classnames';
 import { useState, useEffect } from '@wordpress/element';
 import Button from '@woocommerce/base-components/button';
@@ -15,11 +14,7 @@ import { CHECKOUT_STORE_KEY } from '@woocommerce/block-data';
  * Internal dependencies
  */
 import './style.scss';
-
-export const defaultButtonLabel = __(
-	'Proceed to Checkout',
-	'woo-gutenberg-products-block'
-);
+import { defaultButtonLabel } from './constants';
 
 /**
  * Checkout button rendered in the full cart page.

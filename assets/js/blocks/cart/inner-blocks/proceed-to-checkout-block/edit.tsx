@@ -16,7 +16,7 @@ import { CART_PAGE_ID } from '@woocommerce/block-settings';
 /**
  * Internal dependencies
  */
-import { defaultButtonLabel } from './block';
+import { defaultButtonLabel } from './constants';
 
 export const Edit = ( {
 	attributes,
@@ -73,16 +73,11 @@ export const Edit = ( {
 					multiline={ false }
 					allowedFormats={ [] }
 					value={ buttonLabel }
+					placeholder={ defaultButtonLabel }
 					onChange={ ( content ) => {
-						if ( content === '' ) {
-							setAttributes( {
-								buttonLabel: defaultButtonLabel,
-							} );
-						} else {
-							setAttributes( {
-								buttonLabel: content,
-							} );
-						}
+						setAttributes( {
+							buttonLabel: content,
+						} );
 					} }
 				/>
 			</Button>
