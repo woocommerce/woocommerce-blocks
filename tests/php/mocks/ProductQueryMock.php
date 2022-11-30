@@ -38,4 +38,13 @@ class ProductQueryMock extends ProductQuery {
 	public function set_parsed_block( $parsed_block ) {
 		$this->parsed_block = $parsed_block;
 	}
+
+	/**
+	 * Allow test to set the $attributes_filter_query_args.
+	 *
+	 * @param array $data The attribute data.
+	 */
+	public function set_attributes_filter_query_args( $data ) {
+		$this->attributes_filter_query_args = $data;
+	}
 }

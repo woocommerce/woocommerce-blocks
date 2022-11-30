@@ -2,6 +2,7 @@
 namespace Automattic\WooCommerce\Blocks\Tests\BlockTypes;
 
 use Automattic\WooCommerce\Blocks\Tests\Mocks\ProductQueryMock;
+use WC_Cache_Helper;
 
 /**
  * Tests for the ProductQuery block type
@@ -264,5 +265,53 @@ class ProductQuery extends \WP_UnitTestCase {
 		);
 	}
 
+	/**
+	 * Test merging filter by stock status queries.
+	 */
+	public function test_merging_filter_by_attribute_queries() {
+		// Mock the attribute data.
+		$this->block_instance->set_attributes_filter_query_args(
+			array(
+				array(
+					'filter'     => 'filter_color',
+					'query_type' => 'query_type_color',
+				),
+				array(
+					'filter'     => 'filter_size',
+					'query_type' => 'query_type_size',
+				),
+			)
+		);
+
+		set_query_var( 'filter_color', 'blue' );
+		set_query_var( 'query_type_color', 'or' );
+		set_query_var( 'filter_size', 'xl,xxl' );
+		set_query_var( 'query_type_size', 'and' );
+
+		$merged_query = $this->initialize_merged_query();
+
+		$attribute_tax_query         = $merged_query['tax_query'][0];
+		$attribute_tax_query_queries = $attribute_tax_query[0];
+		$this->assertEquals( 'AND', $attribute_tax_query['relation'] );
+
+		$this->assertContainsEquals(
+			array(
+				'taxonomy' => 'pa_color',
+				'field'    => 'slug',
+				'terms'    => array( 'blue' ),
+				'operator' => 'IN',
+			),
+			$attribute_tax_query_queries
+		);
+		$this->assertContainsEquals(
+			array(
+				'taxonomy' => 'pa_size',
+				'field'    => 'slug',
+				'terms'    => array( 'xl', 'xxl' ),
+				'operator' => 'AND',
+			),
+			$attribute_tax_query_queries
+		);
+	}
 }
 
