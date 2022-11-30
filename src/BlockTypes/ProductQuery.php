@@ -350,6 +350,7 @@ class ProductQuery extends AbstractBlock {
 			'price_filter_query_args'      => array( PriceFilter::MIN_PRICE_QUERY_VAR, PriceFilter::MAX_PRICE_QUERY_VAR ),
 			'stock_filter_query_args'      => array( StockFilter::STOCK_STATUS_QUERY_VAR ),
 			'attributes_filter_query_args' => $attributes_filter_query_args,
+			'rating_filter_query_args'     => array( RatingFilter::RATING_QUERY_VAR ),
 		);
 
 	}
@@ -419,6 +420,7 @@ class ProductQuery extends AbstractBlock {
 			'price_filter'        => $this->get_filter_by_price_query(),
 			'attributes_filter'   => $this->get_filter_by_attributes_query(),
 			'stock_status_filter' => $this->get_filter_by_stock_status_query(),
+			'rating_filter'       => $this->get_filter_by_rating_query(),
 		);
 	}
 
@@ -710,5 +712,42 @@ class ProductQuery extends AbstractBlock {
 		return $query;
 	}
 
-}
+	/**
+	 * Return a query that filters products by rating.
+	 *
+	 * @return array
+	 */
+	private function get_filter_by_rating_query() {
+		$filter_rating_values     = get_query_var( RatingFilter::RATING_QUERY_VAR );
+		$product_visibility_terms = wc_get_product_visibility_term_ids();
 
+		if ( empty( $filter_rating_values ) ) {
+			return array();
+		}
+
+		$parsed_filter_rating_values = explode( ',', $filter_rating_values );
+
+		if ( empty( $parsed_filter_rating_values ) || empty( $product_visibility_terms ) ) {
+			return array();
+		}
+
+		$rating_query = array_map(
+			function( $rating ) use ( $product_visibility_terms ) {
+				return $product_visibility_terms[ 'rated-' . $rating ];
+			},
+			$parsed_filter_rating_values
+		);
+
+		return array(
+			'tax_query' => array(
+				array(
+					'field'         => 'term_taxonomy_id',
+					'terms'         => $rating_query,
+					'operator'      => 'IN',
+					'rating_filter' => true,
+				),
+			),
+		);
+	}
+
+}
