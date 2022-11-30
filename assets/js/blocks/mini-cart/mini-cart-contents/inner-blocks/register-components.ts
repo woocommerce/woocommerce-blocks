@@ -2,25 +2,15 @@
  * External dependencies
  */
 import { WC_BLOCKS_BUILD_URL } from '@woocommerce/block-settings';
-import { registerCheckoutBlock } from '@woocommerce/blocks-checkout';
+import { registerBlockComponent } from '@woocommerce/blocks-registry';
 import { lazy } from '@wordpress/element';
-/**
- * Internal dependencies
- */
-import emptyMiniCartContentsMetadata from './empty-mini-cart-contents-block/block.json';
-import filledMiniCartMetadata from './filled-mini-cart-contents-block/block.json';
-import miniCartTitleMetadata from './mini-cart-title-block/block.json';
-import miniCartProductsTableMetadata from './mini-cart-products-table-block/block.json';
-import miniCartFooterMetadata from './mini-cart-footer-block/block.json';
-import miniCartItemsMetadata from './mini-cart-items-block/block.json';
-import miniCartShoppingButtonMetadata from './mini-cart-shopping-button-block/block.json';
 
 // Modify webpack publicPath at runtime based on location of WordPress Plugin.
 // eslint-disable-next-line no-undef,camelcase
 __webpack_public_path__ = WC_BLOCKS_BUILD_URL;
 
-registerCheckoutBlock( {
-	metadata: filledMiniCartMetadata,
+registerBlockComponent( {
+	blockName: 'woocommerce/filled-mini-cart-contents-block',
 	component: lazy(
 		() =>
 			import(
@@ -29,8 +19,8 @@ registerCheckoutBlock( {
 	),
 } );
 
-registerCheckoutBlock( {
-	metadata: emptyMiniCartContentsMetadata,
+registerBlockComponent( {
+	blockName: 'woocommerce/empty-mini-cart-contents-block',
 	component: lazy(
 		() =>
 			import(
@@ -39,8 +29,8 @@ registerCheckoutBlock( {
 	),
 } );
 
-registerCheckoutBlock( {
-	metadata: miniCartTitleMetadata,
+registerBlockComponent( {
+	blockName: 'woocommerce/mini-cart-title-block',
 	component: lazy(
 		() =>
 			import(
@@ -49,8 +39,8 @@ registerCheckoutBlock( {
 	),
 } );
 
-registerCheckoutBlock( {
-	metadata: miniCartItemsMetadata,
+registerBlockComponent( {
+	blockName: 'woocommerce/mini-cart-items-block',
 	component: lazy(
 		() =>
 			import(
@@ -59,8 +49,8 @@ registerCheckoutBlock( {
 	),
 } );
 
-registerCheckoutBlock( {
-	metadata: miniCartProductsTableMetadata,
+registerBlockComponent( {
+	blockName: 'woocommerce/mini-cart-products-table-block',
 	component: lazy(
 		() =>
 			import(
@@ -69,8 +59,8 @@ registerCheckoutBlock( {
 	),
 } );
 
-registerCheckoutBlock( {
-	metadata: miniCartFooterMetadata,
+registerBlockComponent( {
+	blockName: 'woocommerce/mini-cart-footer-block',
 	component: lazy(
 		() =>
 			import(
@@ -79,8 +69,8 @@ registerCheckoutBlock( {
 	),
 } );
 
-registerCheckoutBlock( {
-	metadata: miniCartShoppingButtonMetadata,
+registerBlockComponent( {
+	blockName: 'woocommerce/mini-cart-shopping-button-block',
 	component: lazy(
 		() =>
 			import(
