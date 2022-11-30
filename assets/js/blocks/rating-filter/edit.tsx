@@ -43,7 +43,10 @@ const Edit = ( {
 		return (
 			<InspectorControls key="inspector">
 				<PanelBody
-					title={ __( 'Content', 'woo-gutenberg-products-block' ) }
+					title={ __(
+						'Display Settings',
+						'woo-gutenberg-products-block'
+					) }
 				>
 					<ToggleControl
 						label={ __(
@@ -57,13 +60,6 @@ const Edit = ( {
 							} )
 						}
 					/>
-				</PanelBody>
-				<PanelBody
-					title={ __(
-						'Display Settings',
-						'woo-gutenberg-products-block'
-					) }
-				>
 					<ToggleGroupControl
 						label={ __(
 							'Allow selecting multiple options?',
