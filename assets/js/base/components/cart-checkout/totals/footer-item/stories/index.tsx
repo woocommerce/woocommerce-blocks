@@ -54,6 +54,8 @@ NoTaxLabel.decorators = [
 export const SingleTaxLabel = Template.bind( {} );
 SingleTaxLabel.args = {
 	values: {
+		total_price: '2500',
+		total_tax: '550',
 		tax_lines: [ { name: '10% VAT', price: '550', rate: '10.00' } ],
 	},
 };
@@ -68,6 +70,8 @@ SingleTaxLabel.decorators = [
 export const MultipleTaxLabels = Template.bind( {} );
 MultipleTaxLabels.args = {
 	values: {
+		total_price: '2500',
+		total_tax: '550',
 		tax_lines: [
 			{ name: '10% VAT', price: '300', rate: '10.00' },
 			{ name: '5% VAT', price: '250', rate: '5.00' },
