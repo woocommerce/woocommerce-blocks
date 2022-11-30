@@ -88,12 +88,12 @@ class ProductSummary extends AbstractBlock {
 
 		$classes_and_styles = StyleAttributesUtils::get_classes_and_styles_by_attributes( $attributes );
 		$classname          = isset( $attributes['className'] ) ? $attributes['className'] : '';
-		$style              = isset( $classes_and_styles['styles'] ) ? ' style="' . $classes_and_styles['styles'] . '" ' : '';
 
-		$output  = '<div class="wc-block-components-product-summary ' . $classes_and_styles['classes'] . ' ' . $classname . '"';
-		$output .= $style;
+		$output  = '<div class="wc-block-components-product-summary '
+			. esc_attr( $classes_and_styles['classes'] ) . ' ' . esc_attr( $classname ) . '"'
+			. isset( $classes_and_styles['styles'] ) ? ' style="' . esc_attr( $classes_and_styles['styles'] ) . '"' : '';
 		$output .= '>';
-		$output .= '<p>' . $summary_content . '</p>';
+		$output .= '<p>' . wp_kses_post( $summary_content ) . '</p>';
 		$output .= '</div>';
 
 		return $output;
@@ -113,7 +113,7 @@ class ProductSummary extends AbstractBlock {
 			return null;
 		}
 
-		$summary = wc_trim_string( $summary_content, 150, '...' );
+		$summary = wc_trim_string( $summary_content, 150 );
 		return $summary;
 	}
 }
