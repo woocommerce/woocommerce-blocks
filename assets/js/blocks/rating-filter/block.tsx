@@ -367,13 +367,10 @@ const RatingFilterBlock = ( {
 								)
 								.map( ( option ) => option.value ) }
 							disabled={ isLoading }
-							placeholder={
-								( __(
-									'Select rating',
-									'woo-gutenberg-products-block'
-								),
-								'Select rating' )
-							}
+							placeholder={ __(
+								'Select Rating',
+								'woo-gutenberg-products-block'
+							) }
 							onChange={ ( tokens: string[] ) => {
 								if ( ! multiple && tokens.length > 1 ) {
 									tokens = [ tokens[ tokens.length - 1 ] ];
@@ -402,48 +399,38 @@ const RatingFilterBlock = ( {
 							} }
 							value={ checked }
 							displayTransform={ ( value: string ) => {
-								// const result = displayedOptions.find(
-								// 	( option ) =>
-								// 		[
-								// 			option.value,
-								// 			option.formattedValue,
-								// 		].includes( value )
-								// );
+								const result = displayedOptions.find(
+									( option ) => option.value === value
+								);
+								if ( result ) {
+									const { label, value: rawValue } = result;
+									label.toLocaleLowerCase = () => rawValue;
+									label.substring = (
+										start: number,
+										end: number
+									) =>
+										start === 0 && end === 1 ? label : '';
+									return label;
+								}
 								return value;
 							} }
 							saveTransform={ formatSlug }
 							messages={ {
-								added: sprintf(
-									/* translators: %s is the attribute label. */
-									__(
-										'%s filter added.',
-										'woo-gutenberg-products-block'
-									),
-									'Rating'
+								added: __(
+									'Rating filter added.',
+									'woo-gutenberg-products-block'
 								),
-								removed: sprintf(
-									/* translators: %s is the attribute label. */
-									__(
-										'%s filter removed.',
-										'woo-gutenberg-products-block'
-									),
-									'Rating'
+								removed: __(
+									'Rating filter removed.',
+									'woo-gutenberg-products-block'
 								),
-								remove: sprintf(
-									/* translators: %s is the attribute label. */
-									__(
-										'Remove %s filter.',
-										'woo-gutenberg-products-block'
-									),
-									'rating'
+								remove: __(
+									'Remove rating filter.',
+									'woo-gutenberg-products-block'
 								),
-								__experimentalInvalid: sprintf(
-									/* translators: %s is the attribute label. */
-									__(
-										'Invalid %s filter.',
-										'woo-gutenberg-products-block'
-									),
-									'rating'
+								__experimentalInvalid: __(
+									'Invalid rating filter.',
+									'woo-gutenberg-products-block'
 								),
 							} }
 						/>
