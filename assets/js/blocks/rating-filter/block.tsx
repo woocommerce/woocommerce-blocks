@@ -39,6 +39,27 @@ import { useSetWraperVisibility } from '../filter-wrapper/context';
 
 export const QUERY_PARAM_KEY = 'rating_filter';
 
+const translations = {
+	ratingAdded: ( rating: string ): string =>
+		sprintf(
+			/* translators: %s is referring to the average rating value */
+			__(
+				'Rated %s out of 5 filter added.',
+				'woo-gutenberg-products-block'
+			),
+			rating
+		),
+	ratingRemoved: ( rating: string ): string =>
+		sprintf(
+			/* translators: %s is referring to the average rating value */
+			__(
+				'Rated %s out of 5 filter added.',
+				'woo-gutenberg-products-block'
+			),
+			rating
+		),
+};
+
 /**
  * Component displaying a rating filter.
  *
@@ -142,34 +163,6 @@ const RatingFilterBlock = ( {
 
 	const multiple = blockAttributes.selectType !== 'single';
 
-	/**
-	 * When a checkbox in the list changes, update state.
-	 */
-
-	// TODO handle updateCheckedFilters function
-	const onChange = useCallback(
-		( checkedValue ) => {
-			const previouslyChecked = checked.includes( checkedValue );
-			let newChecked;
-
-			if ( ! multiple ) {
-				newChecked = previouslyChecked ? [] : [ checkedValue ];
-			} else {
-				newChecked = checked.filter(
-					( value ) => value !== checkedValue
-				);
-
-				if ( ! previouslyChecked ) {
-					newChecked.push( checkedValue );
-					newChecked.sort();
-				}
-			}
-
-			// updateCheckedFilters( newChecked );
-		},
-		[ checked, multiple ]
-	);
-
 	const onSubmit = useCallback(
 		( checkedOptions ) => {
 			if ( isEditor ) {
@@ -235,6 +228,7 @@ const RatingFilterBlock = ( {
 		if ( filteredCountsLoading || blockAttributes.isPreview ) {
 			return;
 		}
+
 		const orderedRatings =
 			! filteredCountsLoading &&
 			objectHasProp( filteredCounts, 'rating_counts' ) &&
@@ -285,38 +279,31 @@ const RatingFilterBlock = ( {
 		( checkedValue: string ) => {
 			const previouslyChecked = checked.includes( checkedValue );
 
-			const newChecked = checked.filter(
-				( value ) => value !== checkedValue
-			);
-
-			if ( ! previouslyChecked ) {
-				newChecked.push( checkedValue );
-				newChecked.sort();
+			if ( ! multiple ) {
+				const newChecked = previouslyChecked ? [] : [ checkedValue ];
 				speak(
-					sprintf(
-						/* translators: %s is referring to the average rating value */
-						__(
-							'Rated %s out of 5 filter added.',
-							'woo-gutenberg-products-block'
-						),
-						checkedValue
-					)
+					previouslyChecked
+						? translations.ratingRemoved( checkedValue )
+						: translations.ratingAdded( checkedValue )
 				);
-			} else {
-				speak(
-					sprintf(
-						/* translators: %s is referring to the average rating value */
-						__(
-							'Rated %s out of 5 filter removed.',
-							'woo-gutenberg-products-block'
-						),
-						checkedValue
-					)
-				);
+				setChecked( newChecked );
+				return;
 			}
+
+			if ( previouslyChecked ) {
+				const newChecked = checked.filter(
+					( value ) => value !== checkedValue
+				);
+				speak( translations.ratingRemoved( checkedValue ) );
+				setChecked( newChecked );
+				return;
+			}
+
+			const newChecked = [ ...checked, checkedValue ].sort();
+			speak( translations.ratingAdded( checkedValue ) );
 			setChecked( newChecked );
 		},
-		[ checked ]
+		[ checked, multiple ]
 	);
 
 	if ( ! filteredCountsLoading && displayedOptions.length === 0 ) {
@@ -389,12 +376,12 @@ const RatingFilterBlock = ( {
 								const added = difference( tokens, checked );
 
 								if ( added.length === 1 ) {
-									return onChange( added[ 0 ] );
+									return onClick( added[ 0 ] );
 								}
 
 								const removed = difference( checked, tokens );
 								if ( removed.length === 1 ) {
-									onChange( removed[ 0 ] );
+									onClick( removed[ 0 ] );
 								}
 							} }
 							value={ checked }
