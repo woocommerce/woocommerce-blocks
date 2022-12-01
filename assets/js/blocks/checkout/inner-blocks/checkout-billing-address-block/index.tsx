@@ -3,12 +3,11 @@
  */
 import { Icon, mapMarker } from '@wordpress/icons';
 import { registerBlockType } from '@wordpress/blocks';
-
 /**
  * Internal dependencies
  */
 import { Edit, Save } from './edit';
-import attributes from './attributes';
+import { attributes } from './attributes';
 
 registerBlockType( 'woocommerce/checkout-billing-address-block', {
 	icon: {
