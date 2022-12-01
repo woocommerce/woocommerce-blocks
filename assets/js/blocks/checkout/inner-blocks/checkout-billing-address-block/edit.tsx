@@ -5,6 +5,7 @@ import classnames from 'classnames';
 import { useBlockProps } from '@wordpress/block-editor';
 import { useCheckoutAddress } from '@woocommerce/base-context/hooks';
 import { innerBlockAreas } from '@woocommerce/blocks-checkout';
+import { BlockAttributes } from '@wordpress/blocks';
 /**
  * Internal dependencies
  */
@@ -33,7 +34,7 @@ export const Edit = ( {
 		showStepNumber: boolean;
 		className: string;
 	};
-	setAttributes: ( attributes: Record< string, unknown > ) => void;
+	setAttributes: ( attributes: BlockAttributes ) => void;
 } ): JSX.Element | null => {
 	const {
 		showCompanyField,

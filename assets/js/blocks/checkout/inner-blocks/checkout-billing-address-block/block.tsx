@@ -52,6 +52,7 @@ const Block = ( {
 	}, [ showPhoneField, setBillingPhone ] );
 
 	const [ addressesSynced, setAddressesSynced ] = useState( false );
+
 	//Syncs shipping address with billing address if "Force shipping to the customer billing address" is enabled.
 	useEffect( () => {
 		if ( addressesSynced ) {
