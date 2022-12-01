@@ -70,7 +70,7 @@ class ProductStockIndicator extends AbstractBlock {
 	 * @param [bool]     $is_in_stock Whether the product is in stock.
 	 * @param [bool]     $is_low_stock Whether the product is low in stock.
 	 * @param [int|null] $low_stock_amount The amount of stock that is considered low.
-	 * @param [mixed]    $is_on_backorder Whether the product is on backorder.
+	 * @param [bool]     $is_on_backorder Whether the product is on backorder.
 	 * @return string Stock text.
 	 */
 	protected static function getTextBasedOnStock( $is_in_stock, $is_low_stock, $low_stock_amount, $is_on_backorder ) {
@@ -117,15 +117,15 @@ class ProductStockIndicator extends AbstractBlock {
 
 		$classes_and_styles = StyleAttributesUtils::get_classes_and_styles_by_attributes( $attributes );
 
-		$classnames  = isset( $classes_and_styles['classes'] ) ? ' ' . esc_attr( $classes_and_styles['classes'] ) . ' ' : '';
-		$classnames .= isset( $attributes['className'] ) ? ' ' . esc_attr( $attributes['className'] ) . ' ' : '';
+		$classnames  = isset( $classes_and_styles['classes'] ) ? ' ' . $classes_and_styles['classes'] . ' ' : '';
+		$classnames .= isset( $attributes['className'] ) ? ' ' . $attributes['className'] . ' ' : '';
 		$classnames .= ! $is_in_stock ? ' wc-block-components-product-stock-indicator--out-of-stock ' : '';
 		$classnames .= $is_in_stock ? ' wc-block-components-product-stock-indicator--in-stock ' : '';
 		$classnames .= $is_low_stock ? ' wc-block-components-product-stock-indicator--low-stock ' : '';
 		$classnames .= $is_on_backorder ? ' wc-block-components-product-stock-indicator--available-on-backorder ' : '';
 
 		$output  = '';
-		$output .= '<div class="wc-block-components-product-stock-indicator ' . $classnames . '"';
+		$output .= '<div class="wc-block-components-product-stock-indicator ' . esc_attr( $classnames ) . '"';
 		$output .= isset( $classes_and_styles['styles'] ) ? ' style="' . esc_attr( $classes_and_styles['styles'] ) . '"' : '';
 		$output .= '>';
 		$output .= wp_kses_post( self::getTextBasedOnStock( $is_in_stock, $is_low_stock, $low_stock_amount, $is_on_backorder ) );
