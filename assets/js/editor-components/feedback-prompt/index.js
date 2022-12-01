@@ -82,3 +82,13 @@ export const LegacyFeedbackPrompt = () => (
 		url="https://github.com/woocommerce/woocommerce-gutenberg-products-block/issues/new?template=--classic-block-feedback.md"
 	/>
 );
+
+export const ProductQueryFeedbackPrompt = () => (
+	<FeedbackPrompt
+		text={ __(
+			'This is an experimental block and we are listening closely to your feedback as we improve it',
+			'woo-gutenberg-products-block'
+		) }
+		url={ 'https://href.li/?https://airtable.com/shrFX5FAqmCY6hVYI' }
+	/>
+);
