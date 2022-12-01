@@ -48,7 +48,7 @@ const getRatingCount = ( product: ProductResponseItem ) => {
  *
  * @param {Object} props             Incoming props.
  * @param {string} [props.className] CSS Class name for the component.
- * @param {string} [props.textAlign]     Text alignment.
+ * @param {string} [props.textAlign] Text alignment.
  *
  * @return {*} The component.
  */
