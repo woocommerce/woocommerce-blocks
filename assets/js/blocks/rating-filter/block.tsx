@@ -244,13 +244,6 @@ const RatingFilterBlock = ( {
 				return {
 					label: (
 						<Rating
-							className={
-								Array.from( productRatings ).includes(
-									item?.rating?.toString()
-								)
-									? 'is-active'
-									: ''
-							}
 							key={ item?.rating }
 							rating={ item?.rating }
 							ratedProductsCount={
