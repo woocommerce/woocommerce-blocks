@@ -76,6 +76,7 @@ export const INNER_BLOCKS_TEMPLATE: InnerBlockTemplate[] = [
 		[
 			[ 'woocommerce/product-image' ],
 			[ 'woocommerce/product-sale-badge' ],
+			[ 'woocommerce/product-stock-indicator' ],
 			[
 				'core/post-terms',
 				{
