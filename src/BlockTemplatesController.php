@@ -113,7 +113,6 @@ class BlockTemplatesController {
 				function( $template ) use ( $query ) {
 					if ( 'archive-product' === $template->slug ) {
 						$template->slug = $query['slug__in'][0];
-						return $template;
 					}
 					return $template;
 				}
