@@ -30,7 +30,6 @@ const Edit = ( {
 		className,
 		displayStyle,
 		showCounts,
-		queryType,
 		showFilterButton,
 		selectType,
 	} = attributes;
@@ -88,47 +87,6 @@ const Edit = ( {
 							) }
 						/>
 					</ToggleGroupControl>
-					{ selectType === 'multiple' && (
-						<ToggleGroupControl
-							label={ __(
-								'Filter Conditions',
-								'woo-gutenberg-products-block'
-							) }
-							help={
-								queryType === 'and'
-									? __(
-											'Choose to return filter results for all of the attributes selected.',
-											'woo-gutenberg-products-block'
-									  )
-									: __(
-											'Choose to return filter results for any of the attributes selected.',
-											'woo-gutenberg-products-block'
-									  )
-							}
-							value={ queryType }
-							onChange={ ( value: string ) =>
-								setAttributes( {
-									queryType: value,
-								} )
-							}
-							className="wc-block-attribute-filter__conditions-toggle"
-						>
-							<ToggleGroupControlOption
-								value="and"
-								label={ __(
-									'All',
-									'woo-gutenberg-products-block'
-								) }
-							/>
-							<ToggleGroupControlOption
-								value="or"
-								label={ __(
-									'Any',
-									'woo-gutenberg-products-block'
-								) }
-							/>
-						</ToggleGroupControl>
-					) }
 					<ToggleGroupControl
 						label={ __(
 							'Display Style',

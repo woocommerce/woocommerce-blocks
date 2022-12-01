@@ -30,10 +30,6 @@
 			"type": "boolean",
 			"default": true
 		},
-		"queryType": {
-			"type": "string",
-			"default": "or"
-		},
 		"displayStyle": {
 			"type": "string",
 			"default": "list"

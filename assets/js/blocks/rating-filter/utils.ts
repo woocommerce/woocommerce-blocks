@@ -46,8 +46,5 @@ export const parseAttributes = ( data: Record< string, unknown > ) => {
 		selectType:
 			( isString( data?.selectType ) && data.selectType ) ||
 			metadata.attributes.selectType.default,
-		queryType:
-			( isString( data?.queryType ) && data.queryType ) ||
-			metadata.attributes.queryType.default,
 	};
 };
