@@ -124,7 +124,7 @@ class ProductQuery extends AbstractBlock {
 		$woo_attributes = $request->get_param( '__woocommerceAttributes' );
 		$on_sale_query  = $request->get_param( '__woocommerceOnSale' ) === 'true' ? $this->get_on_sale_products_query() : array();
 		$orderby_query  = isset( $orderby ) ? $this->get_custom_orderby_query( $orderby ) : array();
-		$tax_query      = isset( $woo_attributes ) ? $this->get_product_attributes_query( $woo_attributes ) : array();
+		$tax_query      = is_array( $woo_attributes ) ? $this->get_product_attributes_query( $woo_attributes ) : array();
 
 		return array_merge( $args, $on_sale_query, $orderby_query, $tax_query );
 	}
