@@ -116,7 +116,7 @@ class ProductRating extends AbstractBlock {
 				'<div class="wc-block-components-product-rating wc-block-grid__product-rating %s">
 					%s
 				</div>',
-				$classes_and_styles['class'] ?? '',
+				esc_attr( $classes_and_styles['class'] ?? '' ),
 				wc_get_rating_html( $product->get_average_rating() )
 			);
 		}
