@@ -14,6 +14,7 @@ import {
 	useCollectionData,
 } from '@woocommerce/base-context/hooks';
 import { useCallback, useEffect, useState, useMemo } from '@wordpress/element';
+import Label from '@woocommerce/base-components/filter-element-label';
 import FilterResetButton from '@woocommerce/base-components/filter-reset-button';
 import FilterSubmitButton from '@woocommerce/base-components/filter-submit-button';
 import isShallowEqual from '@wordpress/is-shallow-equal';
@@ -229,6 +230,12 @@ const AttributeFilterBlock = ( {
 					formattedValue: formatSlug( term.slug ),
 					value: term.slug,
 					name: decodeEntities( term.name ),
+					label: (
+						<Label
+							name={ decodeEntities( term.name ) }
+							count={ blockAttributes.showCounts ? count : null }
+						/>
+					),
 					textLabel: blockAttributes.showCounts
 						? `${ decodeEntities( term.name ) } (${ count })`
 						: decodeEntities( term.name ),
