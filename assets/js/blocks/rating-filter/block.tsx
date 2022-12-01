@@ -379,20 +379,33 @@ const RatingFilterBlock = ( {
 							} }
 							value={ checked }
 							displayTransform={ ( value: string ) => {
-								const result = displayedOptions.find(
-									( option ) => option.value === value
-								);
-								if ( result ) {
-									const { label, value: rawValue } = result;
-									label.toLocaleLowerCase = () => rawValue;
-									label.substring = (
-										start: number,
-										end: number
-									) =>
-										start === 0 && end === 1 ? label : '';
-									return label;
-								}
-								return value;
+								const resultWithZeroCount = {
+									value,
+									label: (
+										<Rating
+											key={ Number( value ) }
+											rating={ value }
+											ratedProductsCount={ 0 }
+										/>
+									),
+								};
+								const resultWithNonZeroCount =
+									displayedOptions.find(
+										( option ) => option.value === value
+									);
+
+								const displayedResult =
+									resultWithNonZeroCount ||
+									resultWithZeroCount;
+
+								const { label, value: rawValue } =
+									displayedResult;
+								label.toLocaleLowerCase = () => rawValue;
+								label.substring = (
+									start: number,
+									end: number
+								) => ( start === 0 && end === 1 ? label : '' );
+								return label;
 							} }
 							saveTransform={ formatSlug }
 							messages={ {
