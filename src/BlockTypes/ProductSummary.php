@@ -83,15 +83,19 @@ class ProductSummary extends AbstractBlock {
 		$summary_content = self::get_summary_content( $product );
 
 		if ( ! $summary_content ) {
-			return null;
+			return '';
 		}
 
 		$classes_and_styles = StyleAttributesUtils::get_classes_and_styles_by_attributes( $attributes );
 		$classname          = isset( $attributes['className'] ) ? $attributes['className'] : '';
 
-		$output  = '<div class="wc-block-components-product-summary '
-			. esc_attr( $classes_and_styles['classes'] ) . ' ' . esc_attr( $classname ) . '"'
-			. isset( $classes_and_styles['styles'] ) ? ' style="' . esc_attr( $classes_and_styles['styles'] ) . '"' : '';
+		$output = '<div class="wc-block-components-product-summary '
+			. esc_attr( $classes_and_styles['classes'] ) . ' ' . esc_attr( $classname ) . '"';
+
+		if ( isset( $classes_and_styles['styles'] ) ) {
+			$output .= ' style="' . esc_attr( $classes_and_styles['styles'] ) . '"';
+		}
+
 		$output .= '>';
 		$output .= '<p>' . wp_kses_post( $summary_content ) . '</p>';
 		$output .= '</div>';
