@@ -75,6 +75,7 @@ export const INNER_BLOCKS_TEMPLATE: InnerBlockTemplate[] = [
 		{},
 		[
 			[ 'woocommerce/product-image' ],
+			[ 'woocommerce/product-sale-badge' ],
 			[
 				'core/post-title',
 				{
@@ -83,6 +84,12 @@ export const INNER_BLOCKS_TEMPLATE: InnerBlockTemplate[] = [
 				},
 				[],
 			],
+			[ 'woocommerce/product-sku' ],
+			[ 'woocommerce/product-price' ],
+			[ 'woocommerce/product-rating' ],
+			[ 'woocommerce/product-button' ],
+			[ 'core/post-terms', { term: 'product_cat' } ],
+			[ 'core/post-terms', { term: 'product_tag' } ],
 		],
 	],
 	[ 'core/query-pagination' ],
