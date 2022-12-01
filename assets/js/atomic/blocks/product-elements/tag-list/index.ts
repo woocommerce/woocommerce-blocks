@@ -15,7 +15,6 @@ import {
 	BLOCK_ICON as icon,
 	BLOCK_DESCRIPTION as description,
 } from './constants';
-import { Save } from './save';
 import { supports } from './supports';
 
 const blockConfig: BlockConfiguration = {
@@ -27,7 +26,12 @@ const blockConfig: BlockConfiguration = {
 	attributes,
 	supports,
 	edit,
-	save: Save,
+	usesContext: [ 'query', 'queryId', 'postId' ],
+	ancestor: [
+		'@woocommerce/all-products',
+		'@woocommerce/single-product',
+		'core/post-template',
+	],
 };
 
 registerExperimentalBlockType( 'woocommerce/product-tag-list', {
