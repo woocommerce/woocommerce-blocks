@@ -85,8 +85,8 @@ class ProductPrice extends AbstractBlock {
 			$classes_and_styles = StyleAttributesUtils::get_text_align_class_and_style( $attributes );
 
 			return sprintf(
-				'<div class="wc-block-components-product-price wc-block-grid__product-price %s">
-					%s
+				'<div class="wc-block-components-product-price wc-block-grid__product-price %1$s">
+					%2$s
 				</div>',
 				$classes_and_styles['class'],
 				$product->get_price_html()
