@@ -87,9 +87,14 @@ class ProductQuery extends \WP_UnitTestCase {
 
 		$merged_query = $this->initialize_merged_query( $parsed_block );
 
-		$this->assertContainsEquals( 'outofstock', $merged_query['meta_query'][0]['value'] );
-		$this->assertContainsEquals( 'onbackorder', $merged_query['meta_query'][0]['value'] );
-		$this->assertNotContains( 'instock', $merged_query['meta_query'][0]['value'] );
+		$this->assertContainsEquals(
+			array(
+				'value'   => array( 'outofstock', 'onbackorder' ),
+				'compare' => 'IN',
+				'key'     => '_stock_status',
+			),
+			$merged_query['meta_query']
+		);
 
 		$parsed_block = $this->get_base_parsed_block();
 		$parsed_block['attrs']['query']['__woocommerceStockStatus'] = array(
@@ -100,9 +105,14 @@ class ProductQuery extends \WP_UnitTestCase {
 
 		$merged_query = $this->block_instance->build_query( $parsed_block['attrs']['query'] );
 
-		$this->assertContainsEquals( 'instock', $merged_query['meta_query'][0]['value'] );
-		$this->assertContainsEquals( 'onbackorder', $merged_query['meta_query'][0]['value'] );
-		$this->assertNotContains( 'outofstock', $merged_query['meta_query'][0]['value'] );
+		$this->assertContainsEquals(
+			array(
+				'compare' => 'IN',
+				'key'     => '_stock_status',
+				'value'   => array( 'instock', 'onbackorder' ),
+			),
+			$merged_query['meta_query']
+		);
 	}
 
 	/**
