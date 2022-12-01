@@ -103,5 +103,5 @@ export enum QueryVariation {
 	/** Only shows products on sale */
 	PRODUCTS_ON_SALE = 'woocommerce/query-products-on-sale',
 	/** Only shows previous purchased products */
-	Buy_IT_AGAIN = 'woocommerce/query-buy-it-again',
+	BUY_IT_AGAIN = 'woocommerce/query-buy-it-again',
 }
