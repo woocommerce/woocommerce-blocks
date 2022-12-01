@@ -13,6 +13,7 @@ import '../css/editor.scss';
 import '../css/style.scss';
 import './filters/block-list-block';
 import './filters/get-block-attributes';
+import './filters/extend-default-template-slugs';
 
 setCategories( [
 	...getCategories().filter(
