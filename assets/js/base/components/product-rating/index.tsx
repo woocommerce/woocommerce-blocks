@@ -58,10 +58,12 @@ const Rating = ( {
 		</div>
 	);
 };
+
+export type RatingValues = 0 | 1 | 2 | 3 | 4 | 5;
 interface RatingProps {
 	className?: string;
-	key: 0 | 1 | 2 | 3 | 4 | 5;
-	rating: 0 | 1 | 2 | 3 | 4 | 5;
+	key: RatingValues;
+	rating: RatingValues;
 	ratedProductsCount?: number | null;
 }
 

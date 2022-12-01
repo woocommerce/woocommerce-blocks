@@ -4,7 +4,9 @@
 import { __, sprintf } from '@wordpress/i18n';
 import { speak } from '@wordpress/a11y';
 import { Icon, chevronDown } from '@wordpress/icons';
-import Rating from '@woocommerce/base-components/product-rating';
+import Rating, {
+	RatingValues,
+} from '@woocommerce/base-components/product-rating';
 import {
 	usePrevious,
 	useShallowEqual,
@@ -378,13 +380,19 @@ const RatingFilterBlock = ( {
 								}
 							} }
 							value={ checked }
-							displayTransform={ ( value: string ) => {
+							// eslint-disable-next-line @typescript-eslint/ban-ts-comment
+							// @ts-ignore - FormTokenField doesn't accept custom components, forcing it here to display component
+							displayTransform={ ( value ) => {
 								const resultWithZeroCount = {
 									value,
 									label: (
 										<Rating
-											key={ Number( value ) }
-											rating={ value }
+											key={
+												Number( value ) as RatingValues
+											}
+											rating={
+												Number( value ) as RatingValues
+											}
 											ratedProductsCount={ 0 }
 										/>
 									),
@@ -400,7 +408,11 @@ const RatingFilterBlock = ( {
 
 								const { label, value: rawValue } =
 									displayedResult;
+								// eslint-disable-next-line @typescript-eslint/ban-ts-comment
+								// @ts-ignore - continue pretending this label is a string. Adding method required in further processing
 								label.toLocaleLowerCase = () => rawValue;
+								// eslint-disable-next-line @typescript-eslint/ban-ts-comment
+								// @ts-ignore - continue pretending this label is a string. Adding method required in further processing
 								label.substring = (
 									start: number,
 									end: number
