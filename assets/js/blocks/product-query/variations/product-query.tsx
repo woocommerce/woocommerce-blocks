@@ -1,7 +1,7 @@
 /**
  * External dependencies
  */
-import { isExperimentalBuild } from '@woocommerce/block-settings';
+import { isFeaturePluginBuild } from '@woocommerce/block-settings';
 import { registerBlockVariation } from '@wordpress/blocks';
 import { Icon } from '@wordpress/components';
 import { __ } from '@wordpress/i18n';
@@ -25,7 +25,7 @@ const VARIATION_NAME = 'woocommerce/product-query';
 // https://github.com/woocommerce/woocommerce-blocks/pull/7382
 const isCustomInheritGlobalQueryImplementationEnabled = false;
 
-if ( isExperimentalBuild() ) {
+if ( isFeaturePluginBuild() ) {
 	registerBlockVariation( QUERY_LOOP_ID, {
 		description: __(
 			'A block that displays a selection of products in your store.',
