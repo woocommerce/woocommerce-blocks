@@ -191,6 +191,7 @@ export const withProductQueryControls =
 								) : null
 						) }
 					</ToolsPanel>
+					<ProductQueryFeedbackPrompt />
 				</InspectorControls>
 				{
 					// Hacky temporary solution to display the feedback prompt
