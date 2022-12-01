@@ -19,11 +19,9 @@ import {
 } from '../../context';
 import Block from './block';
 import {
-	DEFAULT_TITLE,
-	DEFAULT_DESCRIPTION,
-	DEFAULT_FORCED_BILLING_DESCRIPTION,
-	DEFAULT_FORCED_BILLING_TITLE,
-} from './constants';
+	getBillingAddresssBlockTitle,
+	getBillingAddresssBlockDescription,
+} from './utils';
 
 export const Edit = ( {
 	attributes,
@@ -51,25 +49,15 @@ export const Edit = ( {
 	if ( ! showBillingFields && ! forcedBillingAddress ) {
 		return null;
 	}
-	if ( forcedBillingAddress ) {
-		attributes.title =
-			attributes.title === DEFAULT_TITLE
-				? DEFAULT_FORCED_BILLING_TITLE
-				: attributes.title;
-		attributes.description =
-			attributes.description === DEFAULT_DESCRIPTION
-				? DEFAULT_FORCED_BILLING_DESCRIPTION
-				: attributes.description;
-	} else {
-		attributes.title =
-			attributes.title === DEFAULT_FORCED_BILLING_TITLE
-				? DEFAULT_TITLE
-				: attributes.title;
-		attributes.description =
-			attributes.description === DEFAULT_FORCED_BILLING_DESCRIPTION
-				? DEFAULT_DESCRIPTION
-				: attributes.description;
-	}
+	attributes.title = getBillingAddresssBlockTitle(
+		attributes.title,
+		forcedBillingAddress
+	);
+	attributes.description = getBillingAddresssBlockDescription(
+		attributes.description,
+		forcedBillingAddress
+	);
+
 	return (
 		<FormStepBlock
 			setAttributes={ setAttributes }
