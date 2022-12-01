@@ -408,16 +408,23 @@ const RatingFilterBlock = ( {
 
 								const { label, value: rawValue } =
 									displayedResult;
-								// eslint-disable-next-line @typescript-eslint/ban-ts-comment
-								// @ts-ignore - continue pretending this label is a string. Adding method required in further processing
-								label.toLocaleLowerCase = () => rawValue;
-								// eslint-disable-next-line @typescript-eslint/ban-ts-comment
-								// @ts-ignore - continue pretending this label is a string. Adding method required in further processing
-								label.substring = (
-									start: number,
-									end: number
-								) => ( start === 0 && end === 1 ? label : '' );
-								return label;
+
+								// A label - JSX component - is extended with faked string methods to allow using JSX element as an option in FormTokenField
+								const extendedLabel = Object.assign(
+									{},
+									label,
+									{
+										toLocaleLowerCase: () => rawValue,
+										substring: (
+											start: number,
+											end: number
+										) =>
+											start === 0 && end === 1
+												? label
+												: '',
+									}
+								);
+								return extendedLabel;
 							} }
 							saveTransform={ formatSlug }
 							messages={ {
