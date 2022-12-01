@@ -105,7 +105,7 @@ class ProductCategoryList extends AbstractBlock {
 			. '</li>';
 		}
 
-		$output .= '</ul></div> ';
+		$output .= '</ul></div>';
 
 		return $output;
 	}
