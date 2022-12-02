@@ -3,7 +3,12 @@
  */
 import { __, sprintf } from '@wordpress/i18n';
 import { speak } from '@wordpress/a11y';
-import { usePrevious, useShallowEqual } from '@woocommerce/base-hooks';
+import { Icon, chevronDown } from '@wordpress/icons';
+import {
+	usePrevious,
+	useShallowEqual,
+	useBorderProps,
+} from '@woocommerce/base-hooks';
 import {
 	useQueryStateByKey,
 	useQueryStateByContext,
@@ -22,11 +27,13 @@ import FilterSubmitButton from '@woocommerce/base-components/filter-submit-butto
 import FilterResetButton from '@woocommerce/base-components/filter-reset-button';
 import FilterTitlePlaceholder from '@woocommerce/base-components/filter-placeholder';
 import Label from '@woocommerce/base-components/filter-element-label';
+import FormTokenField from '@woocommerce/base-components/form-token-field';
 import isShallowEqual from '@wordpress/is-shallow-equal';
 import { decodeEntities } from '@wordpress/html-entities';
 import { isBoolean, objectHasProp } from '@woocommerce/types';
 import { addQueryArgs, removeQueryArgs } from '@wordpress/url';
 import { changeUrl, PREFIX_QUERY_ARG_FILTER_TYPE } from '@woocommerce/utils';
+import { difference } from 'lodash';
 import classnames from 'classnames';
 
 /**
@@ -34,7 +41,7 @@ import classnames from 'classnames';
  */
 import { previewOptions } from './preview';
 import './style.scss';
-import { getActiveFilters } from './utils';
+import { formatSlug, getActiveFilters, generateUniqueId } from './utils';
 import { Attributes, DisplayOption } from './types';
 import { useSetWraperVisibility } from '../filter-wrapper/context';
 
@@ -127,6 +134,15 @@ const StockStatusFilterBlock = ( {
 		[ filteredCounts ]
 	);
 
+	/*
+		FormTokenField forces the dropdown to reopen on reset, so we create a unique ID to use as the components key.
+		This will force the component to remount on reset when we change this value.
+		More info: https://github.com/woocommerce/woocommerce-blocks/pull/6920#issuecomment-1222402482
+	 */
+	const [ remountKey, setRemountKey ] = useState( generateUniqueId() );
+
+	const borderProps = useBorderProps( blockAttributes );
+
 	/**
 	 * Compare intersection of all stock statuses and filtered counts to get a list of options to display.
 	 */
@@ -173,11 +189,15 @@ const StockStatusFilterBlock = ( {
 							count={ blockAttributes.showCounts ? count : null }
 						/>
 					),
+					textLabel: blockAttributes.showCounts
+						? `${ decodeEntities( status.name ) } (${ count })`
+						: decodeEntities( status.name ),
 				};
 			} )
 			.filter( ( option ): option is DisplayOption => !! option );
 
 		setDisplayedOptions( newOptions );
+		setRemountKey( generateUniqueId() );
 	}, [
 		blockAttributes.showCounts,
 		blockAttributes.isPreview,
@@ -220,6 +240,8 @@ const StockStatusFilterBlock = ( {
 
 		changeUrl( newUrl );
 	};
+
+	const multiple = blockAttributes.selectType !== 'single';
 
 	const onSubmit = useCallback(
 		( checkedOptions ) => {
@@ -327,21 +349,31 @@ const StockStatusFilterBlock = ( {
 
 			const previouslyChecked = checked.includes( checkedValue );
 
-			const newChecked = checked.filter(
-				( value ) => value !== checkedValue
-			);
-
-			if ( ! previouslyChecked ) {
-				newChecked.push( checkedValue );
-				newChecked.sort();
-				announceFilterChange( { filterAdded: checkedValue } );
-			} else {
-				announceFilterChange( { filterRemoved: checkedValue } );
+			if ( ! multiple ) {
+				const newChecked = previouslyChecked ? [] : [ checkedValue ];
+				announceFilterChange(
+					previouslyChecked
+						? { filterRemoved: checkedValue }
+						: { filterAdded: checkedValue }
+				);
+				setChecked( newChecked );
+				return;
 			}
 
+			if ( previouslyChecked ) {
+				const newChecked = checked.filter(
+					( value ) => value !== checkedValue
+				);
+
+				announceFilterChange( { filterRemoved: checkedValue } );
+				setChecked( newChecked );
+			}
+
+			const newChecked = [ ...checked, checkedValue ].sort();
+			announceFilterChange( { filterAdded: checkedValue } );
 			setChecked( newChecked );
 		},
-		[ checked, displayedOptions ]
+		[ checked, multiple, displayedOptions ]
 	);
 
 	if ( ! filteredCountsLoading && displayedOptions.length === 0 ) {
@@ -385,18 +417,106 @@ const StockStatusFilterBlock = ( {
 		<>
 			{ ! isEditor && blockAttributes.heading && filterHeading }
 			<div
-				className={ classnames( 'wc-block-stock-filter', {
-					'is-loading': isLoading,
-				} ) }
+				className={ classnames(
+					'wc-block-stock-filter',
+					`style-${ blockAttributes.displayStyle }`,
+					{
+						'is-loading': isLoading,
+					}
+				) }
 			>
-				<CheckboxList
-					className={ 'wc-block-stock-filter-list' }
-					options={ displayedOptions }
-					checked={ checked }
-					onChange={ onChange }
-					isLoading={ isLoading }
-					isDisabled={ isDisabled }
-				/>
+				{ blockAttributes.displayStyle === 'dropdown' ? (
+					<>
+						<FormTokenField
+							key={ remountKey }
+							className={ classnames( borderProps.className, {
+								'single-selection': ! multiple,
+								'is-loading': isLoading,
+							} ) }
+							style={ {
+								...borderProps.style,
+								borderStyle: 'none',
+							} }
+							suggestions={ displayedOptions
+								.filter(
+									( option ) =>
+										! checked.includes( option.value )
+								)
+								.map( ( option ) => option.value ) }
+							disabled={ isLoading }
+							placeholder={ __(
+								'Select stock status',
+								'woo-gutenberg-products-block'
+							) }
+							onChange={ ( tokens: string[] ) => {
+								if ( ! multiple && tokens.length > 1 ) {
+									tokens = [ tokens[ tokens.length - 1 ] ];
+								}
+
+								tokens = tokens.map( ( token ) => {
+									const displayOption = displayedOptions.find(
+										( option ) => option.value === token
+									);
+
+									return displayOption
+										? displayOption.value
+										: token;
+								} );
+
+								const added = difference( tokens, checked );
+
+								if ( added.length === 1 ) {
+									return onChange( added[ 0 ] );
+								}
+
+								const removed = difference( checked, tokens );
+								if ( removed.length === 1 ) {
+									onChange( removed[ 0 ] );
+								}
+							} }
+							value={ checked }
+							// eslint-disable-next-line @typescript-eslint/ban-ts-comment
+							// @ts-ignore - FormTokenField doesn't accept custom components, forcing it here to display component
+							displayTransform={ ( value: string ) => {
+								const result = displayedOptions.find(
+									( option ) => option.value === value
+								);
+								return result ? result.textLabel : value;
+							} }
+							saveTransform={ formatSlug }
+							messages={ {
+								added: __(
+									'Stock filter added.',
+									'woo-gutenberg-products-block'
+								),
+								removed: __(
+									'Stock filter removed.',
+									'woo-gutenberg-products-block'
+								),
+								remove: __(
+									'Remove stock filter.',
+									'woo-gutenberg-products-block'
+								),
+								__experimentalInvalid: __(
+									'Invalid stock filter.',
+									'woo-gutenberg-products-block'
+								),
+							} }
+						/>
+						{ multiple && (
+							<Icon icon={ chevronDown } size={ 30 } />
+						) }
+					</>
+				) : (
+					<CheckboxList
+						className={ 'wc-block-stock-filter-list' }
+						options={ displayedOptions }
+						checked={ checked }
+						onChange={ onChange }
+						isLoading={ isLoading }
+						isDisabled={ isDisabled }
+					/>
+				) }
 			</div>
 			{
 				<div className="wc-block-stock-filter__actions">

@@ -28,6 +28,18 @@ export const getActiveFilters = (
 	);
 };
 
+export function generateUniqueId() {
+	return Math.floor( Math.random() * Date.now() );
+}
+
+export const formatSlug = ( slug: string ) =>
+	slug
+		.trim()
+		.replace( /\s/g, '-' )
+		.replace( /_/g, '-' )
+		.replace( /-+/g, '-' )
+		.replace( /[^a-zA-Z0-9-]/g, '' );
+
 export const parseAttributes = ( data: Record< string, unknown > ) => {
 	return {
 		heading: isString( data?.heading ) ? data.heading : '',
