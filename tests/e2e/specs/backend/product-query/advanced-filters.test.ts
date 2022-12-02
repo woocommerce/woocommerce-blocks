@@ -81,6 +81,7 @@ const resetProductQueryBlockPage = async () => {
 	await visitBlockPage( `${ block.name } Block` );
 	await waitForCanvas();
 	await setPostContent( '' );
+	await saveOrPublish();
 	await insertBlock( block.name );
 	await saveOrPublish();
 };
@@ -238,7 +239,7 @@ describeOrSkip( GUTENBERG_EDITOR_CONTEXT === 'gutenberg' )(
 				);
 			} );
 
-			it( 'Works on the front end', async () => {
+			it( 'Works on the front end z', async () => {
 				const tokenRemoveButtons = await $productFiltersPanel.$$(
 					SELECTORS.tokenRemoveButton
 				);
