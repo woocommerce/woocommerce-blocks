@@ -3,7 +3,7 @@
  */
 import { __ } from '@wordpress/i18n';
 
-export const defaultShoppingButtonLabel = __(
+export const defaultStartShoppingButtonLabel = __(
 	'Start shopping',
 	'woo-gutenberg-products-block'
 );

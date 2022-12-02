@@ -1,11 +1,11 @@
 /**
  * Internal dependencies
  */
-import { defaultShoppingButtonLabel } from './constants';
+import { defaultStartShoppingButtonLabel } from './constants';
 
 export default {
-	shoppingButtonLabel: {
+	startShoppingButtonLabel: {
 		type: 'string',
-		default: defaultShoppingButtonLabel,
+		default: defaultStartShoppingButtonLabel,
 	},
 };

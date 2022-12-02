@@ -7,16 +7,16 @@ import classNames from 'classnames';
 /**
  * Internal dependencies
  */
-import { defaultShoppingButtonLabel } from './constants';
+import { defaultStartShoppingButtonLabel } from './constants';
 
 type MiniCartShoppingButtonBlockProps = {
 	className: string;
-	shoppingButtonLabel: string;
+	startShoppingButtonLabel: string;
 };
 
 const Block = ( {
 	className,
-	shoppingButtonLabel,
+	startShoppingButtonLabel,
 }: MiniCartShoppingButtonBlockProps ): JSX.Element | null => {
 	if ( ! SHOP_URL ) {
 		return null;
@@ -30,7 +30,7 @@ const Block = ( {
 			) }
 		>
 			<a href={ SHOP_URL }>
-				{ shoppingButtonLabel || defaultShoppingButtonLabel }
+				{ startShoppingButtonLabel || defaultStartShoppingButtonLabel }
 			</a>
 		</div>
 	);

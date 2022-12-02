@@ -7,19 +7,19 @@ import Button from '@woocommerce/base-components/button';
 /**
  * Internal dependencies
  */
-import { defaultShoppingButtonLabel } from './constants';
+import { defaultStartShoppingButtonLabel } from './constants';
 
 export const Edit = ( {
 	attributes,
 	setAttributes,
 }: {
 	attributes: {
-		shoppingButtonLabel: string;
+		startShoppingButtonLabel: string;
 	};
 	setAttributes: ( attributes: Record< string, unknown > ) => void;
 } ): JSX.Element => {
 	const blockProps = useBlockProps();
-	const { shoppingButtonLabel } = attributes;
+	const { startShoppingButtonLabel } = attributes;
 
 	return (
 		<div { ...blockProps }>
@@ -28,11 +28,11 @@ export const Edit = ( {
 					<RichText
 						multiline={ false }
 						allowedFormats={ [] }
-						value={ shoppingButtonLabel }
-						placeholder={ defaultShoppingButtonLabel }
+						value={ startShoppingButtonLabel }
+						placeholder={ defaultStartShoppingButtonLabel }
 						onChange={ ( content ) => {
 							setAttributes( {
-								shoppingButtonLabel: content,
+								startShoppingButtonLabel: content,
 							} );
 						} }
 					/>
