@@ -5,6 +5,8 @@ export interface Attributes {
 	showCounts: boolean;
 	showFilterButton: boolean;
 	isPreview?: boolean;
+	displayStyle: string;
+	selectType: string;
 }
 
 export interface DisplayOption {
