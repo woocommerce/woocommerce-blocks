@@ -191,6 +191,12 @@ export const withProductQueryControls =
 								) : null
 						) }
 					</ToolsPanel>
+				</InspectorControls>
+				{
+					// Hacky temporary solution to display the feedback prompt
+					// at the bottom of the inspector controls
+				 }
+				<InspectorControls __experimentalGroup="color">
 					<ProductQueryFeedbackPrompt />
 				</InspectorControls>
 				{
