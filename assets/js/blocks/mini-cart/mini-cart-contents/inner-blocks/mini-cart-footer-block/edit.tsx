@@ -3,6 +3,7 @@
  */
 import { useBlockProps, RichText } from '@wordpress/block-editor';
 import Button from '@woocommerce/base-components/button';
+
 /**
  * Internal dependencies
  */

@@ -1,22 +1,43 @@
 /**
  * External dependencies
  */
-import { useBlockProps } from '@wordpress/block-editor';
-import Noninteractive from '@woocommerce/base-components/noninteractive';
+import { useBlockProps, RichText } from '@wordpress/block-editor';
+import Button from '@woocommerce/base-components/button';
 
 /**
  * Internal dependencies
  */
-import Block from './block';
+import { defaultShoppingButtonLabel } from './constants';
 
-export const Edit = (): JSX.Element => {
+export const Edit = ( {
+	attributes,
+	setAttributes,
+}: {
+	attributes: {
+		shoppingButtonLabel: string;
+	};
+	setAttributes: ( attributes: Record< string, unknown > ) => void;
+} ): JSX.Element => {
 	const blockProps = useBlockProps();
+	const { shoppingButtonLabel } = attributes;
 
 	return (
 		<div { ...blockProps }>
-			<Noninteractive>
-				<Block />
-			</Noninteractive>
+			<div className="wp-block-button aligncenter">
+				<Button className="wc-block-mini-cart__shopping-button">
+					<RichText
+						multiline={ false }
+						allowedFormats={ [] }
+						value={ shoppingButtonLabel }
+						placeholder={ defaultShoppingButtonLabel }
+						onChange={ ( content ) => {
+							setAttributes( {
+								shoppingButtonLabel: content,
+							} );
+						} }
+					/>
+				</Button>
+			</div>
 		</div>
 	);
 };

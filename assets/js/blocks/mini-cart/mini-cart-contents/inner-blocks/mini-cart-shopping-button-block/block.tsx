@@ -1,20 +1,22 @@
 /**
  * External dependencies
  */
-import { __ } from '@wordpress/i18n';
 import { SHOP_URL } from '@woocommerce/block-settings';
 import classNames from 'classnames';
 
 /**
  * Internal dependencies
  */
+import { defaultShoppingButtonLabel } from './constants';
 
 type MiniCartShoppingButtonBlockProps = {
 	className: string;
+	shoppingButtonLabel: string;
 };
 
 const Block = ( {
 	className,
+	shoppingButtonLabel,
 }: MiniCartShoppingButtonBlockProps ): JSX.Element | null => {
 	if ( ! SHOP_URL ) {
 		return null;
@@ -28,7 +30,7 @@ const Block = ( {
 			) }
 		>
 			<a href={ SHOP_URL }>
-				{ __( 'Start shopping', 'woo-gutenberg-products-block' ) }
+				{ shoppingButtonLabel || defaultShoppingButtonLabel }
 			</a>
 		</div>
 	);
