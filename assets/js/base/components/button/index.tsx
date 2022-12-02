@@ -47,7 +47,7 @@ export interface ButtonProps extends WPButton.ButtonProps {
 	/**
 	 * Button href
 	 */
-	href?: string;
+	href?: string | undefined;
 }
 
 /**
