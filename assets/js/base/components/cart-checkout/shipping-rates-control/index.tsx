@@ -77,6 +77,7 @@ const Packages = ( {
 
 interface ShippingRatesControlProps {
 	collapsible?: TrinaryFlag;
+	showItems?: TrinaryFlag;
 	shippingRates: CartResponseShippingRate[];
 	className?: string;
 	isLoadingRates: boolean;
@@ -92,6 +93,7 @@ interface ShippingRatesControlProps {
  * @param {boolean}           props.isLoadingRates   True when rates are being loaded.
  * @param {string}            props.className        Class name for package rates.
  * @param {boolean|undefined} [props.collapsible]    If true, when multiple packages are rendered they can be toggled open and closed.
+ * @param {boolean|undefined} [props.showItems]      If true, when multiple packages are rendered, you can see each package's items.
  * @param {ReactElement}      props.noResultsMessage Rendered when there are no packages.
  * @param {Function}          [props.renderOption]   Function to render a shipping rate.
  * @param {string}            [props.context]        String equal to the block name where the Slot is rendered
@@ -101,6 +103,7 @@ const ShippingRatesControl = ( {
 	isLoadingRates,
 	className,
 	collapsible,
+	showItems,
 	noResultsMessage,
 	renderOption,
 	context,
@@ -158,6 +161,7 @@ const ShippingRatesControl = ( {
 	const slotFillProps = {
 		className,
 		collapsible,
+		showItems,
 		noResultsMessage,
 		renderOption,
 		extensions,

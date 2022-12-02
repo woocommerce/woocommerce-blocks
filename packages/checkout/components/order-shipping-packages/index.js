@@ -22,6 +22,8 @@ const Slot = ( {
 	cart,
 	components,
 	context,
+	collapsible,
+	showItems,
 } ) => {
 	return (
 		<OrderShippingPackagesSlot
@@ -30,6 +32,9 @@ const Slot = ( {
 				className
 			) }
 			fillProps={ {
+				collapse: collapsible,
+				collapsible,
+				showItems,
 				noResultsMessage,
 				renderOption,
 				extensions,
