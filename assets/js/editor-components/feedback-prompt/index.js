@@ -14,12 +14,14 @@ import './style.scss';
 /**
  * Component to render a Feedback prompt in the sidebar.
  *
- * @param {Object} props      Incoming props for the component.
+ * @param {Object} props       Incoming props for the component.
  * @param {string} props.text
+ * @param {string} props.title
  * @param {string} props.url
  */
 const FeedbackPrompt = ( {
 	text,
+	title = __( 'Feedback?', 'woo-gutenberg-products-block' ),
 	url = 'https://ideas.woocommerce.com/forums/133476-woocommerce?category_id=384565',
 } ) => {
 	// By returning false we ensure that this component is not entered into the InspectorControls
@@ -35,9 +37,7 @@ const FeedbackPrompt = ( {
 		isVisible && (
 			<div className="wc-block-feedback-prompt">
 				<Icon icon={ commentContent } />
-				<h2 className="wc-block-feedback-prompt__title">
-					{ __( 'Feedback?', 'woo-gutenberg-products-block' ) }
-				</h2>
+				<h2 className="wc-block-feedback-prompt__title">{ title }</h2>
 				<p className="wc-block-feedback-prompt__text">{ text }</p>
 				<a
 					href={ url }
@@ -86,9 +86,10 @@ export const LegacyFeedbackPrompt = () => (
 export const ProductQueryFeedbackPrompt = () => (
 	<FeedbackPrompt
 		text={ __(
-			'This is an experimental block and we are listening closely to your feedback as we improve it',
+			'Thanks for trying out the Products block! Help us make it better by sharing your feedback.',
 			'woo-gutenberg-products-block'
 		) }
-		url={ 'https://href.li/?https://airtable.com/shrFX5FAqmCY6hVYI' }
+		title={ __( 'Share your feedback!', 'woo-gutenberg-products-block' ) }
+		url={ 'https://airtable.com/shrFX5FAqmCY6hVYI' }
 	/>
 );
