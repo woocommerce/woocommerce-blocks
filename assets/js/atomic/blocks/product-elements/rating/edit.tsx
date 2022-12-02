@@ -41,12 +41,14 @@ const Edit = ( {
 	return (
 		<>
 			<BlockControls>
-				<AlignmentToolbar
-					value={ attributes.textAlign }
-					onChange={ ( newAlign ) => {
-						setAttributes( { textAlign: newAlign || '' } );
-					} }
-				/>
+				{ isDescendentOfQueryLoop && (
+					<AlignmentToolbar
+						value={ attributes.textAlign }
+						onChange={ ( newAlign ) => {
+							setAttributes( { textAlign: newAlign || '' } );
+						} }
+					/>
+				) }
 			</BlockControls>
 			<div { ...blockProps }>
 				<Block { ...blockAttrs } />
