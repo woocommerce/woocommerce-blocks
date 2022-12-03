@@ -8,6 +8,7 @@ import type { InnerBlockTemplate } from '@wordpress/blocks';
  * Internal dependencies
  */
 import { QueryBlockAttributes } from './types';
+import { VARIATION_NAME as PRODUCT_TITLE_ID } from './variations/elements/product-title';
 
 /**
  * Returns an object without a key.
@@ -80,6 +81,7 @@ export const INNER_BLOCKS_TEMPLATE: InnerBlockTemplate[] = [
 				{
 					level: 3,
 					fontSize: 'large',
+					__woocommerceNamespace: PRODUCT_TITLE_ID,
 				},
 				[],
 			],
