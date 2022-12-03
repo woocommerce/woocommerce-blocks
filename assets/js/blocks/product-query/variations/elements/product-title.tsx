@@ -7,7 +7,7 @@ import {
 	BLOCK_DESCRIPTION,
 	BLOCK_ICON,
 	BLOCK_TITLE,
-} from '@woocommerce/product-elements/title/constants';
+} from '@woocommerce/atomic-blocks/product-elements/title/constants';
 
 export const CORE_NAME = 'core/post-title';
 export const VARIATION_NAME = 'woocommerce/product-query/product-title';
