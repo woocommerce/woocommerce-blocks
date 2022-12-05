@@ -119,12 +119,20 @@ const processInvalidParamResponse = ( response: ApiErrorResponse ) => {
 
 /**
  * Takes an API response object and creates error notices to display to the customer.
+ *
+ * This is where we can handle specific error codes and display notices in specific contexts.
  */
 const processErrorResponse = ( response: ApiErrorResponse ) => {
 	if ( ! isApiResponse( response ) ) {
 		return;
 	}
 	switch ( response.code ) {
+		case 'woocommerce_rest_invalid_email_address':
+			createNotice( 'error', response.message, {
+				id: response.code,
+				context: noticeContexts.CONTACT_INFORMATION,
+			} );
+			break;
 		case 'rest_invalid_param':
 			processInvalidParamResponse( response );
 			break;
