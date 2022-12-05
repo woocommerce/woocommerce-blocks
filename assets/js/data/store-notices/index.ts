@@ -11,7 +11,7 @@ import * as selectors from './selectors';
 import reducer from './reducers';
 import { DispatchFromMap, SelectFromMap } from '../mapped-types';
 
-const STORE_KEY = 'wc/store/notices';
+const STORE_KEY = 'wc/store/store-notices';
 const config = {
 	reducer,
 	actions,

@@ -12,7 +12,7 @@ export const DEFAULT_ERROR_MESSAGE = __(
 );
 
 export const hasStoreNoticeContainer = ( container: string ): boolean => {
-	const containers = select( 'wc/store/notices' ).getContainers();
+	const containers = select( 'wc/store/store-notices' ).getContainers();
 	return containers.includes( container );
 };
 
@@ -89,7 +89,7 @@ export const createNoticeIfVisible = (
  * @see https://github.com/WordPress/gutenberg/pull/44059
  */
 export const removeAllNotices = () => {
-	const containers = select( 'wc/store/notices' ).getContainers();
+	const containers = select( 'wc/store/store-notices' ).getContainers();
 	const { removeNotice } = dispatch( 'core/notices' );
 	const { getNotices } = select( 'core/notices' );
 
