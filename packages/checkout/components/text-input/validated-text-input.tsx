@@ -109,7 +109,8 @@ const ValidatedTextInput = ( {
 			return;
 		}
 
-		inputObject.value = inputObject.value.trim(); // Trim white space before validation.
+		// Trim white space before validation.
+		inputObject.value = inputObject.value.trim();
 		inputObject.setCustomValidity( '' );
 
 		const inputIsValid = customValidation
