@@ -239,7 +239,7 @@ describeOrSkip( GUTENBERG_EDITOR_CONTEXT === 'gutenberg' )(
 				);
 			} );
 
-			it( 'Works on the front end z', async () => {
+			it( 'Works on the front end', async () => {
 				const tokenRemoveButtons = await $productFiltersPanel.$$(
 					SELECTORS.tokenRemoveButton
 				);
