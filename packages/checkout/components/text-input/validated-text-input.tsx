@@ -167,6 +167,7 @@ const ValidatedTextInput = ( {
 				validateInput( true );
 			} }
 			onChange={ ( val ) => {
+
 				// Hide errors while typing.
 				hideValidationError( errorIdString );
 
