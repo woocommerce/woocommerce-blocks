@@ -2,7 +2,7 @@
  * External dependencies
  */
 import React from 'react';
-import { render, screen, cleanup } from '@testing-library/react';
+import { render, screen, within } from '@testing-library/react';
 import * as hooks from '@woocommerce/base-context/hooks';
 import userEvent from '@testing-library/user-event';
 
@@ -27,6 +27,13 @@ const setWindowUrl = ( { url }: SetWindowUrlParams ) => {
 	} );
 };
 
+const acceptErrorWithDuplicatedKeys = () => {
+	// React throws an error about the duplicated `key` in the render tree.
+	// This is due to `FormTokenField` is forcefully used with incorrect children type,
+	// hence the error is acknowledged and consciously accepted.
+	expect( console ).toHaveErrored();
+};
+
 const stubCollectionData = () => ( {
 	price_range: null,
 	attribute_counts: null,
@@ -48,7 +55,8 @@ interface SetupParams {
 
 const selectors = {
 	list: '.wc-block-rating-filter.style-list',
-	dropdown: '.wc-block-rating-filter.style-dropdown',
+	suggestionsContainer: '.components-form-token-field__suggestions-list',
+	chipsContainer: '.components-form-token-field__token',
 };
 
 const setup = ( params: SetupParams ) => {
@@ -61,7 +69,7 @@ const setup = ( params: SetupParams ) => {
 		displayStyle: params.displayStyle || 'list',
 		selectType: params.selectType || 'single',
 		showCounts: true,
-		showFilterButton: false,
+		showFilterButton: true,
 		isPreview: false,
 	};
 
@@ -70,28 +78,62 @@ const setup = ( params: SetupParams ) => {
 		isLoading: false,
 	} );
 
-	// jest.spyOn( window.history, 'replaceState' ).mockImplementation(
-	// 	( state, u, newUrl ) => {
-	// 		setWindowUrl( newUrl );
-	// 	}
-	// );
-
 	const { container, ...utils } = render(
 		<RatingFilterBlock attributes={ attributes } />
 	);
-	const rating2 = screen.queryByLabelText( 'Rated 2 out of 5' );
-	const rating4 = screen.queryByLabelText( 'Rated 4 out of 5' );
-	const rating5 = screen.queryByLabelText( 'Rated 5 out of 5' );
-	const dropdown = container.querySelector( selectors.dropdown );
-	const list = container.querySelector( selectors.list );
+
+	const getList = () => container.querySelector( selectors.list );
+	const getDropdown = () => screen.queryByRole( 'combobox' );
+
+	const getChipsContainers = () =>
+		container.querySelectorAll( selectors.chipsContainer );
+	const getSuggestionsContainer = () =>
+		container.querySelector( selectors.suggestionsContainer );
+
+	const getChips = ( value: string ) => {
+		const chipsContainers = getChipsContainers();
+		const chips = Array.from( chipsContainers ).find( ( chipsContainer ) =>
+			chipsContainer
+				? within( chipsContainer ).queryByLabelText(
+						`Rated ${ value } out of 5`
+				  )
+				: false
+		);
+
+		return chips || null;
+	};
+	const getSuggestion = ( value: string ) => {
+		const suggestionsContainer = getSuggestionsContainer();
+		if ( suggestionsContainer ) {
+			return within( suggestionsContainer ).queryByLabelText(
+				`Rated ${ value } out of 5`
+			);
+		}
+		return null;
+	};
+
+	const getRating2Chips = () => getChips( '2' );
+	const getRating4Chips = () => getChips( '4' );
+	const getRating5Chips = () => getChips( '5' );
+
+	const getRating2Suggestion = () => getSuggestion( '2' );
+	const getRating4Suggestion = () => getSuggestion( '4' );
+	const getRating5Suggestion = () => getSuggestion( '5' );
+
+	// getCheckbox = ( value: string ) => {};
+	// const getRating2Checkbox = () => screen.queryByLabelText( '2' );
+
 	return {
 		...utils,
 		container,
-		rating2,
-		rating4,
-		rating5,
-		dropdown,
-		list,
+		getDropdown,
+		getList,
+		getRating2Chips,
+		getRating4Chips,
+		getRating5Chips,
+		getRating2Suggestion,
+		getRating4Suggestion,
+		getRating5Suggestion,
 	};
 };
 
@@ -101,12 +143,13 @@ interface SetupParams {
 	selectType: SelectType;
 }
 
-// const setupSingleChoiceList = ( filterRating = '5' ) =>
-// 	setup( {
-// 		filterRating,
-// 		displayStyle: 'list',
-// 		selectType: 'single',
-// 	} );
+const setupSingleChoiceList = ( filterRating = '5' ) =>
+	setup( {
+		filterRating,
+		displayStyle: 'list',
+		selectType: 'single',
+	} );
+
 // const setupMultipleChoiceList = ( filterRating = '5' ) =>
 // 	setup( {
 // 		filterRating,
@@ -121,51 +164,135 @@ const setupSingleChoiceDropdown = ( filterRating = '5' ) =>
 		selectType: 'single',
 	} );
 
-// const setupMultipleChoiceDropdown = ( filterRating = '5' ) =>
-// 	setup( {
-// 		filterRating,
-// 		displayStyle: 'dropdown',
-// 		selectType: 'single',
-// 	} );
-
-afterEach( cleanup );
+const setupMultipleChoiceDropdown = ( filterRating = '5' ) =>
+	setup( {
+		filterRating,
+		displayStyle: 'dropdown',
+		selectType: 'multiple',
+	} );
 
 describe( 'RatingFilterBlock', () => {
 	describe( 'Single choice Dropdown', () => {
 		test( 'renders dropdown', () => {
-			const { dropdown, list } = setupSingleChoiceDropdown();
-			expect( dropdown ).toBeDefined();
-			expect( list ).toBeNull();
+			const { getDropdown, getList } = setupSingleChoiceDropdown();
+			expect( getDropdown() ).toBeInTheDocument();
+			expect( getList() ).toBeNull();
 		} );
 
 		test( 'renders chips based on URL params', () => {
 			const ratingParam = '2';
-			const { rating2, rating4, rating5 } =
+			const { getRating2Chips, getRating4Chips, getRating5Chips } =
 				setupSingleChoiceDropdown( ratingParam );
 
-			expect( rating2 ).toBeInTheDocument();
-			expect( rating4 ).toBeNull();
-			expect( rating5 ).toBeNull();
+			expect( getRating2Chips() ).toBeInTheDocument();
+			expect( getRating4Chips() ).toBeNull();
+			expect( getRating5Chips() ).toBeNull();
 		} );
 
-		test( 'replaces chosen option when other one is clicked', () => {
+		test( 'replaces chosen option when another one is clicked', async () => {
 			const ratingParam = '2';
-			const { dropdown, rating2, rating4 } =
-				setupSingleChoiceDropdown( ratingParam );
+			const {
+				getDropdown,
+				getRating2Chips,
+				getRating4Chips,
+				getRating4Suggestion,
+			} = setupSingleChoiceDropdown( ratingParam );
 
-			expect( rating2 ).toBeDefined();
-			expect( rating4 ).toBeNull();
+			expect( getRating2Chips() ).toBeInTheDocument();
+			expect( getRating4Chips() ).toBeNull();
+
+			const dropdown = getDropdown();
 
 			if ( dropdown ) {
 				userEvent.click( dropdown );
+				acceptErrorWithDuplicatedKeys();
 			}
 
-			if ( rating4 ) {
-				userEvent.click( rating4 );
+			const rating4Suggestion = getRating4Suggestion();
+
+			if ( rating4Suggestion ) {
+				userEvent.click( rating4Suggestion );
 			}
 
-			expect( rating2 ).toBeDefined();
-			expect( rating4 ).toBeNull();
+			expect( getRating2Chips() ).toBeNull();
+			expect( getRating4Chips() ).toBeInTheDocument();
+		} );
+	} );
+
+	describe( 'Multiple choice Dropdown', () => {
+		test( 'renders dropdown', () => {
+			const { getDropdown, getList } = setupMultipleChoiceDropdown();
+			expect( getDropdown() ).toBeDefined();
+			expect( getList() ).toBeNull();
+		} );
+
+		test( 'renders chips based on URL params', () => {
+			const ratingParam = '2,4';
+			const { getRating2Chips, getRating4Chips, getRating5Chips } =
+				setupMultipleChoiceDropdown( ratingParam );
+
+			expect( getRating2Chips() ).toBeInTheDocument();
+			expect( getRating4Chips() ).toBeInTheDocument();
+			expect( getRating5Chips() ).toBeNull();
+		} );
+
+		test( 'adds chosen option when to another one that is clicked', async () => {
+			const ratingParam = '2';
+			const {
+				getDropdown,
+				getRating2Chips,
+				getRating4Chips,
+				getRating5Chips,
+				getRating4Suggestion,
+				getRating5Suggestion,
+			} = setupMultipleChoiceDropdown( ratingParam );
+
+			expect( getRating2Chips() ).toBeInTheDocument();
+			expect( getRating4Chips() ).toBeNull();
+			expect( getRating5Chips() ).toBeNull();
+
+			const dropdown = getDropdown();
+
+			if ( dropdown ) {
+				userEvent.click( dropdown );
+				acceptErrorWithDuplicatedKeys();
+			}
+
+			const rating4Suggestion = getRating4Suggestion();
+
+			if ( rating4Suggestion ) {
+				userEvent.click( rating4Suggestion );
+			}
+
+			expect( getRating2Chips() ).toBeInTheDocument();
+			expect( getRating4Chips() ).toBeInTheDocument();
+			expect( getRating5Chips() ).toBeNull();
+
+			const rating5Suggestion = getRating5Suggestion();
+
+			if ( rating5Suggestion ) {
+				userEvent.click( rating5Suggestion );
+			}
+
+			expect( getRating2Chips() ).toBeInTheDocument();
+			expect( getRating4Chips() ).toBeInTheDocument();
+			expect( getRating5Chips() ).toBeInTheDocument();
+		} );
+	} );
+
+	describe( 'Single choice List', () => {
+		test( 'renders list', () => {
+			const { getDropdown, getList } = setupSingleChoiceList();
+			expect( getDropdown() ).toBeNull();
+			expect( getList() ).toBeInTheDocument();
+		} );
+
+		test( 'renders checked options based on URL params', () => {
+			// const ratingParam = '2';
+			// const { getRating2Checkbox } =
+			// 	setupSingleChoiceDropdown( ratingParam );
+			// console.log( getRating2Checkbox() );
+			// expect( getRating2Chips() ).toBeInTheDocument();
 		} );
 	} );
 } );
