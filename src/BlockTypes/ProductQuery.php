@@ -723,20 +723,19 @@ class ProductQuery extends AbstractBlock {
 	 * @return array
 	 */
 	private function get_filter_by_rating_query() {
-		$filter_rating_values     = get_query_var( RatingFilter::RATING_QUERY_VAR );
-		$product_visibility_terms = wc_get_product_visibility_term_ids();
-
+		$filter_rating_values = get_query_var( RatingFilter::RATING_QUERY_VAR );
 		if ( empty( $filter_rating_values ) ) {
 			return array();
 		}
 
 		$parsed_filter_rating_values = explode( ',', $filter_rating_values );
+		$product_visibility_terms    = wc_get_product_visibility_term_ids();
 
 		if ( empty( $parsed_filter_rating_values ) || empty( $product_visibility_terms ) ) {
 			return array();
 		}
 
-		$rating_query = array_map(
+		$rating_terms = array_map(
 			function( $rating ) use ( $product_visibility_terms ) {
 				return $product_visibility_terms[ 'rated-' . $rating ];
 			},
@@ -747,7 +746,8 @@ class ProductQuery extends AbstractBlock {
 			'tax_query' => array(
 				array(
 					'field'         => 'term_taxonomy_id',
-					'terms'         => $rating_query,
+					'taxonomy'      => 'product_visibility',
+					'terms'         => $rating_terms,
 					'operator'      => 'IN',
 					'rating_filter' => true,
 				),

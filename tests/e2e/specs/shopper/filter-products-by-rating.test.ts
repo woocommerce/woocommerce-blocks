@@ -11,7 +11,11 @@ import {
 import {
 	selectBlockByName,
 	insertBlockUsingSlash,
+	saveOrPublish,
+	getToggleIdByLabel,
 } from '@woocommerce/blocks-test-utils';
+
+import { setCheckbox } from '@woocommerce/e2e-utils';
 
 /**
  * Internal dependencies
@@ -25,8 +29,6 @@ import {
 	waitForAllProductsBlockLoaded,
 	waitForCanvas,
 } from '../../utils';
-
-import { saveOrPublish } from '../../../utils';
 
 const block = {
 	name: 'Filter by Rating',
@@ -220,7 +222,7 @@ describe( `${ block.name } Block`, () => {
 				title: block.name,
 			} );
 
-			await insertBlock( 'Product Query' );
+			await insertBlock( 'Products (Beta)' );
 			await insertBlock( block.name );
 			await page.waitForNetworkIdle();
 			await publishPost();
@@ -230,18 +232,6 @@ describe( `${ block.name } Block`, () => {
 				wp.data.select( 'core/editor' ).getPermalink()
 			);
 			await page.goto( frontedPageUrl );
-		} );
-
-		it( 'should render', async () => {
-			await expect( page ).toMatchElement( block.class );
-		} );
-
-		it( 'should render products', async () => {
-			const products = await page.$$(
-				selectors.frontend.queryProductsList
-			);
-
-			expect( products ).toHaveLength( 5 );
 		} );
 
 		it( 'should show only products that match the filter', async () => {
@@ -276,17 +266,12 @@ describe( `${ block.name } Block`, () => {
 
 		it( 'should refresh the page only if the user click on button', async () => {
 			await page.goto( editorPageUrl );
-			await openBlockEditorSettings();
 			await selectBlockByName( block.slug );
 			await openBlockEditorSettings();
-			await page.waitForXPath(
-				block.selectors.editor.filterButtonToggle
+			await setCheckbox(
+				await getToggleIdByLabel( "Show 'Apply filters' button" )
 			);
 
-			const [ filterButtonToggle ] = await page.$x(
-				selectors.editor.filterButtonToggle
-			);
-			await filterButtonToggle.click();
 			await saveOrPublish();
 			await page.goto( frontedPageUrl );
 
