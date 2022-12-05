@@ -81,7 +81,7 @@ export const INNER_BLOCKS_TEMPLATE: InnerBlockTemplate[] = [
 				{
 					textAlign: 'center',
 					level: 3,
-					fontSize: 'large',
+					fontSize: 'medium',
 					__woocommerceNamespace: PRODUCT_TITLE_ID,
 				},
 				[],
