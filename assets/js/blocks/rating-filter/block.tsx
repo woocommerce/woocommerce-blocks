@@ -112,12 +112,9 @@ const RatingFilterBlock = ( {
 
 	const [ checked, setChecked ] = useState( initialFilters );
 
-	const [ productRatings, setProductRatings ] =
-		useQueryStateByKey( 'rating' );
-
-	const [ productRatingsQuery, setProductRatingsQuery ] = useQueryStateByKey(
+	const [ productRatings, setProductRatings ] = useQueryStateByKey(
 		'rating',
-		initialFilters
+		[]
 	);
 
 	/*
@@ -171,12 +168,12 @@ const RatingFilterBlock = ( {
 				return;
 			}
 			if ( checkedOptions && ! filteringForPhpTemplate ) {
-				setProductRatingsQuery( checkedOptions );
+				setProductRatings( checkedOptions );
 			}
 
 			updateFilterUrl( checkedOptions );
 		},
-		[ isEditor, setProductRatingsQuery, filteringForPhpTemplate ]
+		[ isEditor, setProductRatings, filteringForPhpTemplate ]
 	);
 
 	// Track checked STATE changes - if state changes, update the query.
@@ -187,8 +184,8 @@ const RatingFilterBlock = ( {
 	}, [ blockAttributes.showFilterButton, checked, onSubmit ] );
 
 	const checkedQuery = useMemo( () => {
-		return productRatingsQuery;
-	}, [ productRatingsQuery ] );
+		return productRatings;
+	}, [ productRatings ] );
 
 	const currentCheckedQuery = useShallowEqual( checkedQuery );
 	const previousCheckedQuery = usePrevious( currentCheckedQuery );
@@ -206,15 +203,27 @@ const RatingFilterBlock = ( {
 	 * Try get the rating filter from the URL.
 	 */
 	useEffect( () => {
-		if ( ! hasSetFilterDefaultsFromUrl ) {
-			setProductRatings( initialFilters );
+		if ( hasSetFilterDefaultsFromUrl || isLoading ) {
+			return;
+		}
+
+		if ( initialFilters.length > 0 ) {
+			setHasSetFilterDefaultsFromUrl( true );
+			setChecked( initialFilters );
+			return;
+		}
+
+		if ( ! filteringForPhpTemplate ) {
 			setHasSetFilterDefaultsFromUrl( true );
 		}
 	}, [
 		setProductRatings,
+		isLoading,
 		hasSetFilterDefaultsFromUrl,
+		setChecked,
 		setHasSetFilterDefaultsFromUrl,
 		initialFilters,
+		filteringForPhpTemplate,
 	] );
 
 	/**
