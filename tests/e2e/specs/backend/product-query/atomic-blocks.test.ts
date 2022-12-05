@@ -35,7 +35,7 @@ const SELECTORS = {
 };
 
 describeOrSkip( GUTENBERG_EDITOR_CONTEXT === 'gutenberg' )(
-	'Product Query > Atomic blocks',
+	`${ block.name } > Atomic blocks`,
 	() => {
 		beforeEach( async () => {
 			await visitBlockPage( `${ block.name } Block` );
@@ -46,7 +46,7 @@ describeOrSkip( GUTENBERG_EDITOR_CONTEXT === 'gutenberg' )(
 			await visitBlockPage( `${ block.name } Block` );
 			await setPostContent( '' );
 			await saveOrPublish();
-			await insertBlock( 'Product Query' );
+			await insertBlock( block.name );
 			await saveOrPublish();
 		} );
 

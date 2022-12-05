@@ -127,7 +127,7 @@ const selectToken = async ( formLabel: string, optionLabel: string ) => {
 };
 
 describeOrSkip( GUTENBERG_EDITOR_CONTEXT === 'gutenberg' )(
-	'Product Query > Advanced Filters',
+	`${ block.name } > Advanced Filters`,
 	() => {
 		let $productFiltersPanel: ElementHandle< Node >;
 		beforeEach( async () => {
