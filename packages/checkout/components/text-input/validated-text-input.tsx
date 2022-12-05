@@ -169,6 +169,7 @@ const ValidatedTextInput = ( {
 			onChange={ ( val ) => {
 				// Hide errors while typing.
 				hideValidationError( errorIdString );
+
 				// Revalidate on user input so we know if the value is valid.
 				validateInput( true );
 				// Push the changes up to the parent component if the value is valid.
