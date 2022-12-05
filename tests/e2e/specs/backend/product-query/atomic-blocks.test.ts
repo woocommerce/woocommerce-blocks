@@ -29,36 +29,50 @@ const SELECTORS = {
 	productButton: '.wc-block-components-product-button',
 	productPrice: '.wc-block-components-product-price',
 	productRating: '.wc-block-components-product-rating',
-	productImage: {
-		editor: 'li.block-editor-block-list__layout .wc-block-components-product-image',
-	},
+	productImage: '.wc-block-components-product-image',
+	cartItemRow: '.wc-block-cart-items__row',
 };
+
+const resetProductQueryBlockPage = async () => {
+	await visitBlockPage( `${ block.name } Block` );
+	await waitForCanvas();
+	await setPostContent( '' );
+	await saveOrPublish();
+	await insertBlock( block.name );
+	await saveOrPublish();
+};
+
+const getNodesCount = async ( selector: string ) => {
+	return await page.$$eval( selector, ( elements ) => elements.length );
+};
+
+const getEditorSelector = ( selector: string ) =>
+	`li.block-editor-block-list__layout ${ selector }`;
 
 describeOrSkip( GUTENBERG_EDITOR_CONTEXT === 'gutenberg' )(
 	`${ block.name } > Atomic blocks`,
 	() => {
 		beforeEach( async () => {
-			await visitBlockPage( `${ block.name } Block` );
-			await waitForCanvas();
+			await resetProductQueryBlockPage();
 		} );
 
 		afterAll( async () => {
-			await visitBlockPage( `${ block.name } Block` );
-			await setPostContent( '' );
-			await saveOrPublish();
-			await insertBlock( block.name );
-			await saveOrPublish();
+			await resetProductQueryBlockPage();
 		} );
 
 		it( 'Can add the Add to Cart Button block and render it on the front end', async () => {
+			await expect( canvas() ).toMatchElement( SELECTORS.productButton, {
+				text: 'Add to cart',
+			} );
 			await insertInnerBlock(
 				'Add to Cart Button',
 				'core/post-template'
 			);
-			await expect( canvas() ).toMatchElement( SELECTORS.productButton, {
-				text: 'Add to cart',
-			} );
-			await saveOrPublish();
+			expect(
+				await getNodesCount(
+					getEditorSelector( SELECTORS.productButton )
+				)
+			).toEqual( 2 );
 
 			await shopper.block.goToBlockPage( block.name );
 			await page.waitForSelector( SELECTORS.productButton );
@@ -67,20 +81,14 @@ describeOrSkip( GUTENBERG_EDITOR_CONTEXT === 'gutenberg' )(
 			} );
 			await shopper.block.goToCart();
 			await page.waitForSelector( '.wc-block-cart-items__row' );
-			expect(
-				await page.$$eval(
-					'.wc-block-cart-items__row',
-					( rows ) => rows.length
-				)
-			).toEqual( 1 );
+			expect( await getNodesCount( SELECTORS.cartItemRow ) ).toEqual( 1 );
 		} );
 
 		it( 'Can add the Product Image block', async () => {
 			await insertInnerBlock( 'Product Image', 'core/post-template' );
 			expect(
-				await canvas().$$eval(
-					SELECTORS.productImage.editor,
-					( images ) => images.length
+				await getNodesCount(
+					getEditorSelector( SELECTORS.productImage )
 				)
 			).toEqual( 2 );
 		} );
@@ -91,11 +99,15 @@ describeOrSkip( GUTENBERG_EDITOR_CONTEXT === 'gutenberg' )(
 				fixturePrices[
 					Math.floor( Math.random() * fixturePrices.length )
 				];
-			await insertInnerBlock( 'Product Price', 'core/post-template' );
 			await expect( canvas() ).toMatchElement( SELECTORS.productPrice, {
 				text: testPrice,
 			} );
-			await saveOrPublish();
+			await insertInnerBlock( 'Product Price', 'core/post-template' );
+			expect(
+				await getNodesCount(
+					getEditorSelector( SELECTORS.productPrice )
+				)
+			).toEqual( 2 );
 
 			await shopper.block.goToBlockPage( block.name );
 			await page.waitForSelector( SELECTORS.productPrice );
@@ -105,17 +117,18 @@ describeOrSkip( GUTENBERG_EDITOR_CONTEXT === 'gutenberg' )(
 		} );
 
 		it( 'Can add the Product Ratings block and render it on the front end', async () => {
-			await insertInnerBlock( 'Product Rating', 'core/post-template' );
 			await expect( canvas() ).toMatchElement( SELECTORS.productRating );
-			await saveOrPublish();
+			await insertInnerBlock( 'Product Rating', 'core/post-template' );
+			expect(
+				await getNodesCount(
+					getEditorSelector( SELECTORS.productRating )
+				)
+			).toEqual( 2 );
 
 			await shopper.block.goToBlockPage( block.name );
-			expect(
-				await page.$$eval(
-					SELECTORS.productRating,
-					( rows ) => rows.length
-				)
-			).toEqual( 5 );
+			expect( await getNodesCount( SELECTORS.productRating ) ).toEqual(
+				5
+			);
 		} );
 	}
 );
