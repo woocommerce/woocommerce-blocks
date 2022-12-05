@@ -14,7 +14,6 @@ import {
 	saveOrPublish,
 	getToggleIdByLabel,
 } from '@woocommerce/blocks-test-utils';
-
 import { setCheckbox } from '@woocommerce/e2e-utils';
 
 /**
@@ -266,10 +265,10 @@ describe( `${ block.name } Block`, () => {
 
 		it( 'should refresh the page only if the user click on button', async () => {
 			await page.goto( editorPageUrl );
-			await selectBlockByName( block.slug );
 			await openBlockEditorSettings();
+			await selectBlockByName( block.slug );
 			await setCheckbox(
-				await getToggleIdByLabel( "Show 'Apply filters' button" )
+				await getToggleIdByLabel( "Show 'Apply filters' button", 1 )
 			);
 
 			await saveOrPublish();

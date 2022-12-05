@@ -8,7 +8,6 @@ import { canvas } from '@wordpress/e2e-test-utils';
  */
 import { DEFAULT_TIMEOUT } from './constants';
 import { getFormElementIdByLabel } from './get-form-element-id-by-label';
-import { getPageElement } from './get-page-element';
 
 /**
  * Get the ID of the setting toogle so test can manipulate the toggle using
@@ -25,16 +24,14 @@ export const getToggleIdByLabel = async (
 	label: string,
 	retry = 0
 ): Promise< string > => {
-	const pageEl = getPageElement();
-
 	const delay = 1000;
 	// Wait a bit for toggle to finish rerendering.
-	await pageEl.waitForTimeout( delay );
+	await canvas().waitForTimeout( delay );
 	const checkboxId = await getFormElementIdByLabel(
 		label,
 		'components-toggle-control__label'
 	);
-	const checkbox = await pageEl.$( checkboxId );
+	const checkbox = await canvas().$( checkboxId );
 	if ( ! checkbox ) {
 		if ( retry * delay < DEFAULT_TIMEOUT ) {
 			return await getToggleIdByLabel( label, retry + 1 );
