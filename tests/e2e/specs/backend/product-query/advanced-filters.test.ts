@@ -57,8 +57,13 @@ const SELECTORS = {
 	},
 	productsGrid: `${ block.class } ul.wp-block-post-template`,
 	productsGridItem: `${ block.class } ul.wp-block-post-template > li.product`,
-	formTokenFieldLabel: '.components-form-token-field__label',
-	tokenRemoveButton: '.components-form-token-field__remove-token',
+	formTokenField: {
+		label: '.components-form-token-field__label',
+		removeToken: '.components-form-token-field__remove-token',
+		suggestionsList: '.components-form-token-field__suggestions-list',
+		firstSuggestion:
+			'.components-form-token-field__suggestions-list > li:first-child',
+	},
 };
 
 const toggleProductFilter = async ( filterName: string ) => {
@@ -94,6 +99,31 @@ const getPreviewProducts = async (): Promise< ElementHandle[] > => {
 const getFrontEndProducts = async (): Promise< ElementHandle[] > => {
 	await canvas().waitForSelector( SELECTORS.productsGrid );
 	return await canvas().$$( SELECTORS.productsGridItem );
+};
+
+const clearSelectedTokens = async ( $panel: ElementHandle< Node > ) => {
+	const tokenRemoveButtons = await $panel.$$(
+		SELECTORS.formTokenField.removeToken
+	);
+	for ( const el of tokenRemoveButtons ) {
+		await el.click();
+	}
+};
+
+const selectToken = async ( formLabel: string, optionLabel: string ) => {
+	const $stockStatusInput = await canvas().$(
+		await getFormElementIdByLabel(
+			formLabel,
+			SELECTORS.formTokenField.label.replace( '.', '' )
+		)
+	);
+	await $stockStatusInput.focus();
+	await canvas().keyboard.type( optionLabel );
+	const firstSuggestion = await canvas().waitForSelector(
+		SELECTORS.formTokenField.firstSuggestion
+	);
+	await firstSuggestion.click();
+	await canvas().waitForSelector( SELECTORS.editorPreview.productsGrid );
 };
 
 describeOrSkip( GUTENBERG_EDITOR_CONTEXT === 'gutenberg' )(
@@ -177,7 +207,7 @@ describeOrSkip( GUTENBERG_EDITOR_CONTEXT === 'gutenberg' )(
 		describe( 'Stock Status', () => {
 			it( 'Stock status is enabled by default', async () => {
 				await expect( $productFiltersPanel ).toMatchElement(
-					SELECTORS.formTokenFieldLabel,
+					SELECTORS.formTokenField.label,
 					{ text: 'Stock status' }
 				);
 			} );
@@ -185,12 +215,12 @@ describeOrSkip( GUTENBERG_EDITOR_CONTEXT === 'gutenberg' )(
 			it( 'Can add and remove Stock Status filter', async () => {
 				await toggleProductFilter( 'Stock status' );
 				await expect( $productFiltersPanel ).not.toMatchElement(
-					SELECTORS.formTokenFieldLabel,
+					SELECTORS.formTokenField.label,
 					{ text: 'Stock status' }
 				);
 				await toggleProductFilter( 'Stock status' );
 				await expect( $productFiltersPanel ).toMatchElement(
-					SELECTORS.formTokenFieldLabel,
+					SELECTORS.formTokenField.label,
 					{ text: 'Stock status' }
 				);
 			} );
@@ -209,60 +239,29 @@ describeOrSkip( GUTENBERG_EDITOR_CONTEXT === 'gutenberg' )(
 				);
 			} );
 
-			/**
-			 * Skipping this test for now as Product Query doesn't show correct set of products based on stock status.
-			 *
-			 * @see https://github.com/woocommerce/woocommerce-blocks/pull/7682
-			 */
-			it.skip( 'Editor preview shows correct products that has enabled stock statuses', async () => {
-				const $$tokenRemoveButtons = await $productFiltersPanel.$$(
-					SELECTORS.tokenRemoveButton
-				);
-				for ( const $el of $$tokenRemoveButtons ) {
-					await $el.click();
-				}
-
-				const $stockStatusInput = await canvas().$(
-					await getFormElementIdByLabel(
-						'Stock status',
-						SELECTORS.formTokenFieldLabel.replace( '.', '' )
-					)
-				);
-				await $stockStatusInput.click();
-				await canvas().keyboard.type( 'Out of Stock' );
-				await canvas().keyboard.press( 'Enter' );
+			it( 'Editor preview shows correct products that has enabled stock statuses', async () => {
+				await clearSelectedTokens( $productFiltersPanel );
+				await selectToken( 'Stock status', 'Out of stock' );
 				const outOfStockCount = getFixtureProductsData(
 					'stock_status'
-				).filter( ( status ) => status === 'outofstock' ).length;
+				).filter(
+					( status: string ) => status === 'outofstock'
+				).length;
 				expect( await getPreviewProducts() ).toHaveLength(
 					outOfStockCount
 				);
 			} );
 
 			it( 'Works on the front end', async () => {
-				const tokenRemoveButtons = await $productFiltersPanel.$$(
-					SELECTORS.tokenRemoveButton
-				);
-				for ( const el of tokenRemoveButtons ) {
-					await el.click();
-				}
-				const $stockStatusInput = await canvas().$(
-					await getFormElementIdByLabel(
-						'Stock status',
-						SELECTORS.formTokenFieldLabel.replace( '.', '' )
-					)
-				);
-				await $stockStatusInput.click();
-				await canvas().keyboard.type( 'Out of stock' );
-				await canvas().keyboard.press( 'Enter' );
-				await canvas().waitForSelector(
-					SELECTORS.editorPreview.productsGrid
-				);
+				await clearSelectedTokens( $productFiltersPanel );
+				await selectToken( 'Stock status', 'Out of stock' );
 				await saveOrPublish();
 				await shopper.block.goToBlockPage( block.name );
 				const outOfStockCount = getFixtureProductsData(
 					'stock_status'
-				).filter( ( status ) => status === 'outofstock' ).length;
+				).filter(
+					( status: string ) => status === 'outofstock'
+				).length;
 				expect( await getFrontEndProducts() ).toHaveLength(
 					outOfStockCount
 				);
