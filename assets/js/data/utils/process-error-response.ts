@@ -127,6 +127,7 @@ const processErrorResponse = ( response: ApiErrorResponse ) => {
 		return;
 	}
 	switch ( response.code ) {
+		case 'woocommerce_rest_missing_email_address':
 		case 'woocommerce_rest_invalid_email_address':
 			createNotice( 'error', response.message, {
 				id: response.code,
