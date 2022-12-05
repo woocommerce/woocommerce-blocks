@@ -2,12 +2,19 @@
  * External dependencies
  */
 import { __ } from '@wordpress/i18n';
-import { useRef, useEffect, useState, InputHTMLAttributes } from 'react';
+import {
+	useRef,
+	useEffect,
+	useState,
+	useCallback,
+	InputHTMLAttributes,
+} from 'react';
 import classnames from 'classnames';
 import { withInstanceId } from '@wordpress/compose';
 import { isObject } from '@woocommerce/types';
 import { useDispatch, useSelect } from '@wordpress/data';
 import { VALIDATION_STORE_KEY } from '@woocommerce/block-data';
+import { usePrevious } from '@woocommerce/base-hooks';
 
 /**
  * Internal dependencies
@@ -55,6 +62,7 @@ const ValidatedTextInput = ( {
 }: ValidatedTextInputProps ): JSX.Element => {
 	const [ isPristine, setIsPristine ] = useState( true );
 	const inputRef = useRef< HTMLInputElement >( null );
+	const previousValue = usePrevious( value );
 	const textInputId =
 		typeof id !== 'undefined' ? id : 'textinput-' + instanceId;
 	const errorIdString = errorId !== undefined ? errorId : textInputId;
@@ -70,6 +78,68 @@ const ValidatedTextInput = ( {
 		};
 	} );
 
+	const validateInput = useCallback(
+		( errorsHidden = true ) => {
+			const inputObject = inputRef.current || null;
+
+			if ( inputObject === null ) {
+				return;
+			}
+
+			// Trim white space before validation.
+			inputObject.value = inputObject.value.trim();
+			inputObject.setCustomValidity( '' );
+
+			const inputIsValid = customValidation
+				? inputObject.checkValidity() && customValidation( inputObject )
+				: inputObject.checkValidity();
+
+			if ( inputIsValid ) {
+				clearValidationError( errorIdString );
+				return;
+			}
+
+			const validityState = inputObject.validity;
+
+			if ( validityState.valueMissing && requiredMessage ) {
+				inputObject.setCustomValidity( requiredMessage );
+			}
+
+			setValidationErrors( {
+				[ errorIdString ]: {
+					message:
+						inputObject.validationMessage ||
+						__( 'Invalid value.', 'woo-gutenberg-products-block' ),
+					hidden: errorsHidden,
+				},
+			} );
+		},
+		[
+			clearValidationError,
+			customValidation,
+			errorIdString,
+			requiredMessage,
+			setValidationErrors,
+		]
+	);
+
+	/**
+	 * Trigger validation on state change if the current element is not in focus. This is because autofilled elements do not
+	 * trigger the blur() event, and so values can be validated in the background if the state changes elsewhere.
+	 */
+	useEffect( () => {
+		if (
+			value !== previousValue &&
+			( value || previousValue ) &&
+			inputRef &&
+			inputRef.current !== null &&
+			inputRef.current?.ownerDocument?.activeElement !== inputRef.current
+		) {
+			validateInput( false );
+		}
+		// We need to track value even if it is not directly used so we know when it changes.
+	}, [ value, previousValue, validateInput ] );
+
 	/**
 	 * If the input is in pristine state on mount, focus the element.
 	 */
@@ -80,63 +150,12 @@ const ValidatedTextInput = ( {
 		setIsPristine( false );
 	}, [ focusOnMount, isPristine, setIsPristine ] );
 
-	/**
-	 * Trigger validation on state change if the current element is not in focus. This is because autofilled elements do not
-	 * trigger the blur() event, and so values can be validated in the background if the state changes elsewhere.
-	 */
-	useEffect( () => {
-		if (
-			inputRef &&
-			inputRef.current !== null &&
-			inputRef.current?.ownerDocument?.activeElement !== inputRef.current
-		) {
-			inputRef.current.blur();
-		}
-		// We need to track value even if it is not directly used so we know when it changes.
-	}, [ value ] );
-
 	// Remove validation errors when unmounted.
 	useEffect( () => {
 		return () => {
 			clearValidationError( errorIdString );
 		};
 	}, [ clearValidationError, errorIdString ] );
-
-	const validateInput = ( errorsHidden = true ) => {
-		const inputObject = inputRef.current || null;
-
-		if ( inputObject === null ) {
-			return;
-		}
-
-		// Trim white space before validation.
-		inputObject.value = inputObject.value.trim();
-		inputObject.setCustomValidity( '' );
-
-		const inputIsValid = customValidation
-			? inputObject.checkValidity() && customValidation( inputObject )
-			: inputObject.checkValidity();
-
-		if ( inputIsValid ) {
-			clearValidationError( errorIdString );
-			return;
-		}
-
-		const validityState = inputObject.validity;
-
-		if ( validityState.valueMissing && requiredMessage ) {
-			inputObject.setCustomValidity( requiredMessage );
-		}
-
-		setValidationErrors( {
-			[ errorIdString ]: {
-				message:
-					inputObject.validationMessage ||
-					__( 'Invalid value.', 'woo-gutenberg-products-block' ),
-				hidden: errorsHidden,
-			},
-		} );
-	};
 
 	if ( passedErrorMessage !== '' && isObject( validationError ) ) {
 		validationError.message = passedErrorMessage;
@@ -164,11 +183,7 @@ const ValidatedTextInput = ( {
 				)
 			}
 			ref={ inputRef }
-			onInput={ () => {
-				validateInput( true );
-			} }
 			onChange={ ( val ) => {
-
 				// Hide errors while typing.
 				hideValidationError( errorIdString );
 
