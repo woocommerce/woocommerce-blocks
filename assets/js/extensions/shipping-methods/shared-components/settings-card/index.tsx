@@ -2,6 +2,7 @@
  * External dependencies
  */
 import { Card, CardBody } from '@wordpress/components';
+import type { ReactNode } from 'react';
 import styled from '@emotion/styled';
 
 const StyledCard = styled( Card )`
@@ -52,7 +53,7 @@ const SettingsCard = ( {
 	children,
 	...props
 }: {
-	children: ( JSX.Element | null )[];
+	children: ReactNode;
 } ): JSX.Element => (
 	<StyledCard>
 		<StyledCardBody { ...props }>{ children }</StyledCardBody>

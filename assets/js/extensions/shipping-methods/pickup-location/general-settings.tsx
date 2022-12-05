@@ -9,8 +9,10 @@ import {
 	SelectControl,
 	TextControl,
 	ExternalLink,
+	Notice,
 } from '@wordpress/components';
 import { useState } from '@wordpress/element';
+import styled from '@emotion/styled';
 
 /**
  * Internal dependencies
@@ -35,13 +37,27 @@ const GeneralSettingsDescription = () => (
 	</>
 );
 
+const StyledNotice = styled( Notice )`
+	margin-left: 0;
+	margin-right: 0;
+`;
+
 const GeneralSettings = () => {
-	const { settings, setSettingField } = useSettingsContext();
+	const { settings, setSettingField, readOnlySettings } =
+		useSettingsContext();
 	const [ showCosts, setShowCosts ] = useState( !! settings.cost );
 
 	return (
 		<SettingsSection Description={ GeneralSettingsDescription }>
 			<SettingsCard>
+				{ readOnlySettings.hasLegacyPickup && (
+					<StyledNotice status="warning" isDismissible={ false }>
+						{ __(
+							'You have duplicate options at checkout. Remove the local pickup shipping method from your shipping zones.',
+							'woo-gutenberg-products-block'
+						) }
+					</StyledNotice>
+				) }
 				<CheckboxControl
 					checked={ settings.enabled }
 					name="local_pickup_enabled"

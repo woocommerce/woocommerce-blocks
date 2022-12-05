@@ -2,7 +2,6 @@
  * External dependencies
  */
 import { cleanForSlug } from '@wordpress/url';
-import { getSetting } from '@woocommerce/settings';
 
 /**
  * Internal dependencies
@@ -25,20 +24,29 @@ export const indexLocationsById = (
 };
 
 export const defaultSettings = {
-	enabled: 'yes',
+	enabled: true,
 	title: '',
 	tax_status: 'taxable',
 	cost: '',
 };
 
+export const defaultReadyOnlySettings = {
+	hasLegacyPickup: false,
+};
+declare global {
+	const hydratedScreenSettings: {
+		pickupLocationSettings: typeof defaultSettings;
+		pickupLocations: PickupLocation[];
+		readonlySettings: typeof defaultReadyOnlySettings;
+	};
+}
+
 export const getInitialSettings = (): ShippingMethodSettings => {
-	const settings = getSetting(
-		'pickupLocationSettings',
-		defaultSettings
-	) as typeof defaultSettings;
+	const settings =
+		hydratedScreenSettings.pickupLocationSettings || defaultSettings;
 
 	return {
-		enabled: settings?.enabled === 'yes',
+		enabled: settings?.enabled,
 		title: settings?.title || defaultSettings.title,
 		tax_status: settings?.tax_status || defaultSettings.tax_status,
 		cost: settings?.cost || defaultSettings.cost,
@@ -46,4 +54,7 @@ export const getInitialSettings = (): ShippingMethodSettings => {
 };
 
 export const getInitialPickupLocations = (): SortablePickupLocation[] =>
-	indexLocationsById( getSetting( 'pickupLocations', [] ) );
+	indexLocationsById( hydratedScreenSettings.pickupLocations || [] );
+
+export const readOnlySettings =
+	hydratedScreenSettings.readonlySettings || defaultReadyOnlySettings;
