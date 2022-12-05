@@ -28,8 +28,8 @@ export function assertResponseIsValid< T >(
 	if (
 		typeof response === 'object' &&
 		response !== null &&
-		response.hasOwnProperty( 'body' ) &&
-		response.hasOwnProperty( 'headers' )
+		'body' in response &&
+		'headers' in response
 	) {
 		return;
 	}
