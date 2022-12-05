@@ -52,7 +52,7 @@ export const QUERY_DEFAULT_ATTRIBUTES: QueryBlockAttributes = {
 		columns: 3,
 	},
 	query: {
-		perPage: 6,
+		perPage: 9,
 		pages: 0,
 		offset: 0,
 		postType: 'product',
@@ -79,6 +79,7 @@ export const INNER_BLOCKS_TEMPLATE: InnerBlockTemplate[] = [
 			[
 				'core/post-title',
 				{
+					textAlign: 'center',
 					level: 3,
 					fontSize: 'large',
 					__woocommerceNamespace: PRODUCT_TITLE_ID,
