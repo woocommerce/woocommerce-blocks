@@ -77,15 +77,6 @@ export const INNER_BLOCKS_TEMPLATE: InnerBlockTemplate[] = [
 		[
 			[ 'woocommerce/product-image' ],
 			[
-				'core/post-terms',
-				{
-					term: 'product_cat',
-					textAlign: 'center',
-					fontSize: 'small',
-				},
-				[],
-			],
-			[
 				'core/post-title',
 				{
 					textAlign: 'center',
