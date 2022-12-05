@@ -86,8 +86,16 @@ export const INNER_BLOCKS_TEMPLATE: InnerBlockTemplate[] = [
 				},
 				[],
 			],
-			[ 'woocommerce/product-price' ],
-			[ 'woocommerce/product-button' ],
+			[
+				'woocommerce/product-price',
+				{ textAlign: 'center', fontSize: 'small' },
+				[],
+			],
+			[
+				'woocommerce/product-button',
+				{ textAlign: 'center', fontSize: 'small' },
+				[],
+			],
 		],
 	],
 	[ 'core/query-pagination' ],
