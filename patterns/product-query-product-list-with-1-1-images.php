@@ -1,7 +1,7 @@
 <?php
 /**
- * Title: WooCommerce Minimal Product List
- * Slug: woocommerce-blocks/product-query-minimal-product-list
+ * Title: WooCommerce Product list with 1:1 images
+ * Slug: woocommerce-blocks/product-query-list-with-1-1-images
  * Categories: WooCommerce
  * Block Types: core/query/woocommerce/product-query
  */
@@ -10,7 +10,7 @@
 <div class="wp-block-query"><!-- wp:post-template -->
 <!-- wp:columns {"isStackedOnMobile":false} -->
 <div class="wp-block-columns is-not-stacked-on-mobile"><!-- wp:column {"width":"33.33%"} -->
-<div class="wp-block-column" style="flex-basis:33.33%"><!-- wp:woocommerce/product-image {"isDescendentOfQueryLoop":true} /--></div>
+<div class="wp-block-column" style="flex-basis:33.33%"><!-- wp:woocommerce/product-image {"saleBadgeAlign":"left","isDescendentOfQueryLoop":true} /--></div>
 <!-- /wp:column -->
 
 <!-- wp:column {"width":"66.66%","layout":{"type":"default"}} -->
@@ -18,7 +18,11 @@
 
 <!-- wp:post-title {"level":3,"fontSize":"large"} /-->
 
-<!-- wp:woocommerce/product-price {"isDescendentOfQueryLoop":true,"fontSize":"small"} /--></div>
+<!-- wp:post-excerpt {"fontSize":"small","__woocommerceNamespace":"woocommerce/product-query/product-summary"} /-->
+
+<!-- wp:woocommerce/product-price {"isDescendentOfQueryLoop":true,"fontSize":"small"} /-->
+
+<!-- wp:woocommerce/product-button {"isDescendentOfQueryLoop":true,"fontSize":"small"} /--></div>
 <!-- /wp:column --></div>
 <!-- /wp:columns -->
 <!-- /wp:post-template -->

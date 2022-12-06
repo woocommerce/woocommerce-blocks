@@ -8,7 +8,7 @@
 ?>
 <!-- wp:query {"queryId":1,"query":{"perPage":"5","pages":0,"offset":0,"postType":"product","order":"desc","orderBy":"date","author":"","search":"","exclude":[],"sticky":"","inherit":false,"__woocommerceStockStatus":["instock","outofstock","onbackorder"]},"displayLayout":{"type":"flex","columns":5},"namespace":"woocommerce/product-query","align":"full","layout":{"type":"default"}} -->
 <div class="wp-block-query alignfull"><!-- wp:post-template -->
-<!-- wp:woocommerce/product-image {"isDescendentOfQueryLoop":true} /-->
+<!-- wp:woocommerce/product-image {"saleBadgeAlign":"left","isDescendentOfQueryLoop":true} /-->
 
 <!-- wp:columns -->
 <div class="wp-block-columns"><!-- wp:column {"width":"50%"} -->

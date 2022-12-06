@@ -18,7 +18,7 @@
 <!-- wp:woocommerce/product-rating {"isDescendentOfQueryLoop":true,"fontSize":"small"} /--></div>
 <!-- /wp:group -->
 
-<!-- wp:woocommerce/product-button {"isDescendentOfQueryLoop":true} /-->
+<!-- wp:woocommerce/product-button {"isDescendentOfQueryLoop":true,"fontSize":"small"} /-->
 <!-- /wp:post-template -->
 
 <!-- wp:query-pagination -->
