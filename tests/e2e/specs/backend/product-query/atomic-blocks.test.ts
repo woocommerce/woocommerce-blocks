@@ -126,10 +126,10 @@ describeOrSkip( GUTENBERG_EDITOR_CONTEXT === 'gutenberg' )(
 					getEditorSelector( SELECTORS.productRating )
 				)
 			).toEqual( 1 );
-
+			await saveOrPublish();
 			await shopper.block.goToBlockPage( block.name );
 			expect( await getNodesCount( SELECTORS.productRating ) ).toEqual(
-				5
+				getFixtureProductsData().length
 			);
 		} );
 	}
