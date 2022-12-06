@@ -52,7 +52,7 @@ export const useCheckoutSubmit = () => {
 	const waitingForProcessing =
 		isProcessing || isAfterProcessing || isBeforeProcessing;
 	const waitingForRedirect = isComplete && ! hasError;
-	const submitButtonText = paymentMethod.placeOrderButtonLabel || undefined;
+	const submitButtonText = paymentMethod.placeOrderButtonLabel;
 
 	return {
 		submitButtonText,
