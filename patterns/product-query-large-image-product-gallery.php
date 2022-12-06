@@ -1,7 +1,7 @@
 <?php
 /**
- * Title: WooCommerce Large Product Grid
- * Slug: woocommerce-blocks/product-query-large-product-grid
+ * Title: WooCommerce Large Image Product Gallery
+ * Slug: woocommerce-blocks/product-query-large-image-product-gallery
  * Categories: WooCommerce
  * Block Types: core/query/woocommerce/product-query
  */

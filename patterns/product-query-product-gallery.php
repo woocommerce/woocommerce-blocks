@@ -1,7 +1,7 @@
 <?php
 /**
- * Title: WooCommerce Featured Product Gallery
- * Slug: woocommerce-blocks/product-query-featured-product-gallery
+ * Title: WooCommerce Product Gallery
+ * Slug: woocommerce-blocks/product-query-product-gallery
  * Categories: WooCommerce
  * Block Types: core/query/woocommerce/product-query
  */
