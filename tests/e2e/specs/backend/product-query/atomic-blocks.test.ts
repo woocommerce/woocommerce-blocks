@@ -61,6 +61,7 @@ describeOrSkip( GUTENBERG_EDITOR_CONTEXT === 'gutenberg' )(
 		} );
 
 		it( 'Can add the Add to Cart Button block and render it on the front end', async () => {
+			await page.waitForSelector( SELECTORS.productButton );
 			await expect( canvas() ).toMatchElement( SELECTORS.productButton, {
 				text: 'Add to cart',
 			} );
@@ -85,6 +86,7 @@ describeOrSkip( GUTENBERG_EDITOR_CONTEXT === 'gutenberg' )(
 		} );
 
 		it( 'Can add the Product Image block', async () => {
+			await page.waitForSelector( SELECTORS.productImage );
 			await insertInnerBlock( 'Product Image', 'core/post-template' );
 			expect(
 				await getNodesCount(
@@ -99,6 +101,7 @@ describeOrSkip( GUTENBERG_EDITOR_CONTEXT === 'gutenberg' )(
 				fixturePrices[
 					Math.floor( Math.random() * fixturePrices.length )
 				];
+			await page.waitForSelector( SELECTORS.productPrice );
 			await expect( canvas() ).toMatchElement( SELECTORS.productPrice, {
 				text: testPrice,
 			} );
@@ -117,7 +120,7 @@ describeOrSkip( GUTENBERG_EDITOR_CONTEXT === 'gutenberg' )(
 		} );
 
 		it( 'Can add the Product Ratings block and render it on the front end', async () => {
-			await expect( canvas() ).toMatchElement( SELECTORS.productRating );
+			await page.waitForSelector( SELECTORS.productRating );
 			await insertInnerBlock( 'Product Rating', 'core/post-template' );
 			expect(
 				await getNodesCount(
