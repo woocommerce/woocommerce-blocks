@@ -15,6 +15,7 @@ import { CHECKOUT_PAGE_ID } from '@woocommerce/block-settings';
 import { getSetting } from '@woocommerce/settings';
 import { ReturnToCartButton } from '@woocommerce/base-components/cart-checkout';
 import Button from '@woocommerce/base-components/button';
+import Noninteractive from '@woocommerce/base-components/noninteractive';
 
 /**
  * Internal dependencies
@@ -96,11 +97,13 @@ export const Edit = ( {
 					) }
 			</InspectorControls>
 			<div className="wc-block-checkout__actions">
-				{ showReturnToCart && (
-					<ReturnToCartButton
-						link={ getSetting( 'page-' + cartPageId, false ) }
-					/>
-				) }
+				<Noninteractive>
+					{ showReturnToCart && (
+						<ReturnToCartButton
+							link={ getSetting( 'page-' + cartPageId, false ) }
+						/>
+					) }
+				</Noninteractive>
 				<Button className="wc-block-cart__submit-button wc-block-components-checkout-place-order-button">
 					<RichText
 						multiline={ false }
