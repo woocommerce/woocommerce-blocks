@@ -75,12 +75,17 @@
 	}
 
 	.wc-blocks-components-form-token-field-wrapper .components-form-token-field__input-container {
+		@include reset-typography();
 		border: 0;
 		padding: $gap-smaller;
 		border-radius: inherit;
 
-		.components-form-token-field__input::placeholder {
-			color: $black;
+		.components-form-token-field__input {
+			@include font-size(small);
+
+			&::placeholder {
+				color: $black;
+			}
 		}
 
 		.components-form-token-field__suggestions-list {
@@ -96,6 +101,11 @@
 				margin: $gap-small;
 				padding: $gap-small;
 			}
+		}
+
+		.components-form-token-field__token,
+		.components-form-token-field__suggestion {
+			@include font-size(small);
 		}
 	}
 
