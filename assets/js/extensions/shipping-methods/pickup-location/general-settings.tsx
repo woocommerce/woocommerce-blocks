@@ -54,7 +54,7 @@ const GeneralSettings = () => {
 					<StyledNotice status="warning" isDismissible={ false }>
 						{ createInterpolateElement(
 							__(
-								'You have duplicate options at checkout. Remove the local pickup shipping method from your <a>shipping zones</a>.',
+								'Enabling this will produce duplicate options at checkout. Remove the local pickup shipping method from your <a>shipping zones</a>.',
 								'woo-gutenberg-products-block'
 							),
 							{
