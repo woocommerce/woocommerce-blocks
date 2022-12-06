@@ -120,13 +120,12 @@ describeOrSkip( GUTENBERG_EDITOR_CONTEXT === 'gutenberg' )(
 		} );
 
 		it( 'Can add the Product Ratings block and render it on the front end', async () => {
-			await page.waitForSelector( SELECTORS.productRating );
 			await insertInnerBlock( 'Product Rating', 'core/post-template' );
 			expect(
 				await getNodesCount(
 					getEditorSelector( SELECTORS.productRating )
 				)
-			).toEqual( 2 );
+			).toEqual( 1 );
 
 			await shopper.block.goToBlockPage( block.name );
 			expect( await getNodesCount( SELECTORS.productRating ) ).toEqual(
