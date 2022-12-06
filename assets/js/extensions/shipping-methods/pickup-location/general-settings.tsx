@@ -2,6 +2,7 @@
  * External dependencies
  */
 import { __ } from '@wordpress/i18n';
+import { createInterpolateElement, useState } from '@wordpress/element';
 import { ADMIN_URL } from '@woocommerce/settings';
 import { CHECKOUT_PAGE_ID } from '@woocommerce/block-settings';
 import {
@@ -11,7 +12,6 @@ import {
 	ExternalLink,
 	Notice,
 } from '@wordpress/components';
-import { useState } from '@wordpress/element';
 import styled from '@emotion/styled';
 
 /**
@@ -52,9 +52,21 @@ const GeneralSettings = () => {
 			<SettingsCard>
 				{ readOnlySettings.hasLegacyPickup && (
 					<StyledNotice status="warning" isDismissible={ false }>
-						{ __(
-							'You have duplicate options at checkout. Remove the local pickup shipping method from your shipping zones.',
-							'woo-gutenberg-products-block'
+						{ createInterpolateElement(
+							__(
+								'You have duplicate options at checkout. Remove the local pickup shipping method from your <a>shipping zones</a>.',
+								'woo-gutenberg-products-block'
+							),
+							{
+								a: (
+									// eslint-disable-next-line jsx-a11y/anchor-has-content
+									<a
+										href={ `${ ADMIN_URL }admin.php?page=wc-settings&tab=shipping` }
+										target="_blank"
+										rel="noopener noreferrer"
+									/>
+								),
+							}
 						) }
 					</StyledNotice>
 				) }
