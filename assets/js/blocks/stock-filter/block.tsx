@@ -367,6 +367,7 @@ const StockStatusFilterBlock = ( {
 
 				announceFilterChange( { filterRemoved: checkedValue } );
 				setChecked( newChecked );
+				return;
 			}
 
 			const newChecked = [ ...checked, checkedValue ].sort();
