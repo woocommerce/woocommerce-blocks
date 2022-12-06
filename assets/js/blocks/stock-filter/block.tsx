@@ -476,8 +476,6 @@ const StockStatusFilterBlock = ( {
 								}
 							} }
 							value={ checked }
-							// eslint-disable-next-line @typescript-eslint/ban-ts-comment
-							// @ts-ignore - FormTokenField doesn't accept custom components, forcing it here to display component
 							displayTransform={ ( value: string ) => {
 								const result = displayedOptions.find(
 									( option ) => option.value === value
