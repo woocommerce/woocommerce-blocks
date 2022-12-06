@@ -35,18 +35,24 @@ export const defaultReadyOnlySettings = {
 };
 declare global {
 	const hydratedScreenSettings: {
-		pickupLocationSettings: typeof defaultSettings;
+		pickupLocationSettings: {
+			enabled: string;
+			title: string;
+			tax_status: string;
+			cost: string;
+		};
 		pickupLocations: PickupLocation[];
 		readonlySettings: typeof defaultReadyOnlySettings;
 	};
 }
 
 export const getInitialSettings = (): ShippingMethodSettings => {
-	const settings =
-		hydratedScreenSettings.pickupLocationSettings || defaultSettings;
+	const settings = hydratedScreenSettings.pickupLocationSettings;
 
 	return {
-		enabled: settings?.enabled,
+		enabled: settings?.enabled
+			? settings?.enabled === 'yes'
+			: defaultSettings.enabled,
 		title: settings?.title || defaultSettings.title,
 		tax_status: settings?.tax_status || defaultSettings.tax_status,
 		cost: settings?.cost || defaultSettings.cost,
