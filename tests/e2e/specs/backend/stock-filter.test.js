@@ -49,5 +49,26 @@ describe( `${ block.name } Block`, () => {
 				`${ block.class } .wc-block-filter-submit-button`
 			);
 		} );
+
+		it( 'allows changing the Display Style', async () => {
+			// Turn the display style to Dropdown
+			await expect( page ).toClick( 'button', { text: 'Dropdown' } );
+
+			await page.waitForSelector(
+				'.wc-block-stock-filter.style-dropdown'
+			);
+			await expect( page ).toMatchElement(
+				'.wc-block-stock-filter.style-dropdown'
+			);
+			// Turn the display style to List
+			await expect( page ).toClick( 'button', {
+				text: 'List',
+			} );
+
+			await page.waitForSelector( '.wc-block-stock-filter.style-list' );
+			await expect( page ).toMatchElement(
+				'.wc-block-stock-filter.style-list'
+			);
+		} );
 	} );
 } );
