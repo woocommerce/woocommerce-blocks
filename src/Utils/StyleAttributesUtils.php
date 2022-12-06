@@ -21,7 +21,7 @@ class StyleAttributesUtils {
 
 		if ( ! $font_size && '' === $custom_font_size ) {
 			return null;
-		};
+		}
 
 		if ( $font_size ) {
 			return array(
@@ -93,7 +93,7 @@ class StyleAttributesUtils {
 
 		if ( ! $text_color && ! $custom_text_color ) {
 			return null;
-		};
+		}
 
 		if ( $text_color ) {
 			return array(
@@ -122,7 +122,7 @@ class StyleAttributesUtils {
 
 		if ( ! isset( $attributes['style']['elements']['link']['color']['text'] ) ) {
 			return null;
-		};
+		}
 
 		$link_color = $attributes['style']['elements']['link']['color']['text'];
 
@@ -160,7 +160,7 @@ class StyleAttributesUtils {
 
 		if ( ! $line_height ) {
 			return null;
-		};
+		}
 
 		return array(
 			'class' => null,
@@ -183,7 +183,7 @@ class StyleAttributesUtils {
 
 		if ( ! $background_color && '' === $custom_background_color ) {
 			return null;
-		};
+		}
 
 		if ( $background_color ) {
 			return array(
@@ -216,7 +216,7 @@ class StyleAttributesUtils {
 
 		if ( ! $border_color && '' === $custom_border_color ) {
 			return null;
-		};
+		}
 
 		if ( $border_color ) {
 			return array(
@@ -245,7 +245,7 @@ class StyleAttributesUtils {
 
 		if ( '' === $custom_border_radius ) {
 			return null;
-		};
+		}
 
 		return array(
 			'class' => null,
@@ -266,7 +266,7 @@ class StyleAttributesUtils {
 
 		if ( '' === $custom_border_width ) {
 			return null;
-		};
+		}
 
 		return array(
 			'class' => null,
@@ -283,11 +283,11 @@ class StyleAttributesUtils {
 	 */
 	public static function get_align_class_and_style( $attributes ) {
 
-		$align_attribute = isset( $attributes['align'] ) ? $attributes['align'] : null;
+		$align_attribute = $attributes['align'] ?? null;
 
 		if ( ! $align_attribute ) {
 			return null;
-		};
+		}
 
 		if ( 'wide' === $align_attribute ) {
 			return array(
@@ -328,6 +328,65 @@ class StyleAttributesUtils {
 	}
 
 	/**
+	 * Get class and style for text align from attributes.
+	 *
+	 * @param array $attributes Block attributes.
+	 *
+	 * @return (array | null)
+	 */
+	public static function get_text_align_class_and_style( $attributes ) {
+
+		$text_align_attribute = $attributes['textAlign'] ?? null;
+
+		if ( ! $text_align_attribute ) {
+			return null;
+		}
+
+		if ( 'left' === $text_align_attribute ) {
+			return array(
+				'class' => 'has-text-align-left',
+				'style' => null,
+			);
+		}
+
+		if ( 'center' === $text_align_attribute ) {
+			return array(
+				'class' => 'has-text-align-center',
+				'style' => null,
+			);
+		}
+
+		if ( 'right' === $text_align_attribute ) {
+			return array(
+				'class' => 'has-text-align-right',
+				'style' => null,
+			);
+		}
+
+		return null;
+	}
+
+	/**
+	 * If spacing value is in preset format, convert it to a CSS var. Else return same value
+	 * For example:
+	 * "var:preset|spacing|50" -> "var(--wp--preset--spacing--50)"
+	 * "50px" -> "50px"
+	 *
+	 * @param string $spacing_value value to be processed.
+	 *
+	 * @return (string)
+	 */
+	public static function get_spacing_value( $spacing_value ) {
+		// Used following code as reference: https://github.com/WordPress/gutenberg/blob/cff6d70d6ff5a26e212958623dc3130569f95685/lib/block-supports/layout.php/#L219-L225.
+		if ( is_string( $spacing_value ) && str_contains( $spacing_value, 'var:preset|spacing|' ) ) {
+			$spacing_value = str_replace( 'var:preset|spacing|', '', $spacing_value );
+			return sprintf( 'var(--wp--preset--spacing--%s)', $spacing_value );
+		}
+
+		return $spacing_value;
+	}
+
+	/**
 	 * Get class and style for padding from attributes.
 	 *
 	 * @param array $attributes Block attributes.
@@ -335,15 +394,29 @@ class StyleAttributesUtils {
 	 * @return (array | null)
 	 */
 	public static function get_padding_class_and_style( $attributes ) {
-		$padding = isset( $attributes['style']['spacing']['padding'] ) ? $attributes['style']['spacing']['padding'] : null;
+		$padding = $attributes['style']['spacing']['padding'] ?? null;
 
 		if ( ! $padding ) {
 			return null;
 		}
 
+		$padding_top    = $padding['top'] ? self::get_spacing_value( $padding['top'] ) : null;
+		$padding_right  = $padding['right'] ? self::get_spacing_value( $padding['right'] ) : null;
+		$padding_bottom = $padding['bottom'] ? self::get_spacing_value( $padding['bottom'] ) : null;
+		$padding_left   = $padding['left'] ? self::get_spacing_value( $padding['left'] ) : null;
+
 		return array(
 			'class' => null,
-			'style' => sprintf( 'padding: %s;', implode( ' ', $padding ) ),
+			'style' => sprintf(
+				'padding-top:%s;
+				padding-right:%s;
+				padding-bottom:%s;
+				padding-left:%s;',
+				$padding_top,
+				$padding_right,
+				$padding_bottom,
+				$padding_left
+			),
 		);
 	}
 
@@ -355,7 +428,7 @@ class StyleAttributesUtils {
 	 * @return (array | null)
 	 */
 	public static function get_margin_class_and_style( $attributes ) {
-		$margin = isset( $attributes['style']['spacing']['margin'] ) ? $attributes['style']['spacing']['margin'] : null;
+		$margin = $attributes['style']['spacing']['margin'] ?? null;
 
 		if ( ! $margin ) {
 			return null;

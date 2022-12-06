@@ -21,16 +21,21 @@ import { isNumber, ProductResponseItem } from '@woocommerce/types';
 import './style.scss';
 
 type Props = {
+	textAlign?: string;
 	className?: string;
 };
 
-const getAverageRating = ( product: ProductResponseItem ): number => {
+const getAverageRating = (
+	product: Omit< ProductResponseItem, 'average_rating' > & {
+		average_rating: string;
+	}
+) => {
 	const rating = parseFloat( product.average_rating );
 
 	return Number.isFinite( rating ) && rating > 0 ? rating : 0;
 };
 
-const getRatingCount = ( product: ProductResponseItem ): number => {
+const getRatingCount = ( product: ProductResponseItem ) => {
 	const count = isNumber( product.review_count )
 		? product.review_count
 		: parseInt( product.review_count, 10 );
@@ -38,7 +43,17 @@ const getRatingCount = ( product: ProductResponseItem ): number => {
 	return Number.isFinite( count ) && count > 0 ? count : 0;
 };
 
+/**
+ * Product Rating Block Component.
+ *
+ * @param {Object} props             Incoming props.
+ * @param {string} [props.className] CSS Class name for the component.
+ * @param {string} [props.textAlign] Text alignment.
+ *
+ * @return {*} The component.
+ */
 export const Block = ( props: Props ): JSX.Element | null => {
+	const { textAlign } = props;
 	const { parentClassName } = useInnerBlockLayoutContext();
 	const { product } = useProductDataContext();
 	const rating = getAverageRating( product );
@@ -82,6 +97,9 @@ export const Block = ( props: Props ): JSX.Element | null => {
 				'wc-block-components-product-rating',
 				{
 					[ `${ parentClassName }__product-rating` ]: parentClassName,
+				},
+				{
+					[ `has-text-align-${ textAlign }` ]: textAlign,
 				}
 			) }
 			style={ {
