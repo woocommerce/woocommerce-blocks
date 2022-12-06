@@ -2,7 +2,7 @@
  * External dependencies
  */
 import React from 'react';
-import { render, screen, within } from '@testing-library/react';
+import { render, screen, waitFor, within } from '@testing-library/react';
 import * as hooks from '@woocommerce/base-context/hooks';
 import userEvent from '@testing-library/user-event';
 
@@ -111,6 +111,23 @@ const setup = ( params: SetupParams ) => {
 		}
 		return null;
 	};
+	const getCheckbox = ( value: string ) => {
+		const checkboxesContainer = getList();
+		const checkboxes = checkboxesContainer
+			? checkboxesContainer.querySelectorAll( 'input' )
+			: [];
+
+		const checkbox = Array.from( checkboxes ).find(
+			( input ) => input.id === value
+		);
+
+		return checkbox;
+	};
+
+	const getRemoveButtonFromChips = ( chips: HTMLElement | null ) =>
+		chips
+			? within( chips ).getByLabelText( 'Remove rating filter.' )
+			: null;
 
 	const getRating2Chips = () => getChips( '2' );
 	const getRating4Chips = () => getChips( '4' );
@@ -120,8 +137,9 @@ const setup = ( params: SetupParams ) => {
 	const getRating4Suggestion = () => getSuggestion( '4' );
 	const getRating5Suggestion = () => getSuggestion( '5' );
 
-	// getCheckbox = ( value: string ) => {};
-	// const getRating2Checkbox = () => screen.queryByLabelText( '2' );
+	const getRating2Checkbox = () => getCheckbox( '2' );
+	const getRating4Checkbox = () => getCheckbox( '4' );
+	const getRating5Checkbox = () => getCheckbox( '5' );
 
 	return {
 		...utils,
@@ -134,6 +152,10 @@ const setup = ( params: SetupParams ) => {
 		getRating2Suggestion,
 		getRating4Suggestion,
 		getRating5Suggestion,
+		getRating2Checkbox,
+		getRating4Checkbox,
+		getRating5Checkbox,
+		getRemoveButtonFromChips,
 	};
 };
 
@@ -150,12 +172,12 @@ const setupSingleChoiceList = ( filterRating = '5' ) =>
 		selectType: 'single',
 	} );
 
-// const setupMultipleChoiceList = ( filterRating = '5' ) =>
-// 	setup( {
-// 		filterRating,
-// 		displayStyle: 'list',
-// 		selectType: 'multiple',
-// 	} );
+const setupMultipleChoiceList = ( filterRating = '5' ) =>
+	setup( {
+		filterRating,
+		displayStyle: 'list',
+		selectType: 'multiple',
+	} );
 
 const setupSingleChoiceDropdown = ( filterRating = '5' ) =>
 	setup( {
@@ -189,7 +211,7 @@ describe( 'RatingFilterBlock', () => {
 			expect( getRating5Chips() ).toBeNull();
 		} );
 
-		test( 'replaces chosen option when another one is clicked', async () => {
+		test( 'replaces chosen option when another one is clicked', () => {
 			const ratingParam = '2';
 			const {
 				getDropdown,
@@ -217,6 +239,33 @@ describe( 'RatingFilterBlock', () => {
 			expect( getRating2Chips() ).toBeNull();
 			expect( getRating4Chips() ).toBeInTheDocument();
 		} );
+
+		test( 'removes the option when the X button is clicked', () => {
+			const ratingParam = '4';
+			const {
+				getRating2Chips,
+				getRating4Chips,
+				getRating5Chips,
+				getRemoveButtonFromChips,
+			} = setupMultipleChoiceDropdown( ratingParam );
+
+			expect( getRating2Chips() ).toBeNull();
+			expect( getRating4Chips() ).toBeInTheDocument();
+			expect( getRating5Chips() ).toBeNull();
+
+			const removeRating4Button = getRemoveButtonFromChips(
+				getRating4Chips()
+			);
+
+			if ( removeRating4Button ) {
+				userEvent.click( removeRating4Button );
+				acceptErrorWithDuplicatedKeys();
+			}
+
+			expect( getRating2Chips() ).toBeNull();
+			expect( getRating4Chips() ).toBeNull();
+			expect( getRating5Chips() ).toBeNull();
+		} );
 	} );
 
 	describe( 'Multiple choice Dropdown', () => {
@@ -236,7 +285,7 @@ describe( 'RatingFilterBlock', () => {
 			expect( getRating5Chips() ).toBeNull();
 		} );
 
-		test( 'adds chosen option when to another one that is clicked', async () => {
+		test( 'adds chosen option to another one that is clicked', () => {
 			const ratingParam = '2';
 			const {
 				getDropdown,
@@ -278,6 +327,32 @@ describe( 'RatingFilterBlock', () => {
 			expect( getRating4Chips() ).toBeInTheDocument();
 			expect( getRating5Chips() ).toBeInTheDocument();
 		} );
+
+		test( 'removes the option when the X button is clicked', () => {
+			const ratingParam = '2,4,5';
+			const {
+				getRating2Chips,
+				getRating4Chips,
+				getRating5Chips,
+				getRemoveButtonFromChips,
+			} = setupMultipleChoiceDropdown( ratingParam );
+
+			expect( getRating2Chips() ).toBeInTheDocument();
+			expect( getRating4Chips() ).toBeInTheDocument();
+			expect( getRating5Chips() ).toBeInTheDocument();
+
+			const removeRating4Button = getRemoveButtonFromChips(
+				getRating4Chips()
+			);
+
+			if ( removeRating4Button ) {
+				userEvent.click( removeRating4Button );
+			}
+
+			expect( getRating2Chips() ).toBeInTheDocument();
+			expect( getRating4Chips() ).toBeNull();
+			expect( getRating5Chips() ).toBeInTheDocument();
+		} );
 	} );
 
 	describe( 'Single choice List', () => {
@@ -288,11 +363,135 @@ describe( 'RatingFilterBlock', () => {
 		} );
 
 		test( 'renders checked options based on URL params', () => {
-			// const ratingParam = '2';
-			// const { getRating2Checkbox } =
-			// 	setupSingleChoiceDropdown( ratingParam );
-			// console.log( getRating2Checkbox() );
-			// expect( getRating2Chips() ).toBeInTheDocument();
+			const ratingParam = '4';
+			const {
+				getRating2Checkbox,
+				getRating4Checkbox,
+				getRating5Checkbox,
+			} = setupSingleChoiceList( ratingParam );
+
+			expect( getRating2Checkbox()?.checked ).toBeFalsy();
+			expect( getRating4Checkbox()?.checked ).toBeTruthy();
+			expect( getRating5Checkbox()?.checked ).toBeFalsy();
+		} );
+
+		test( 'replaces chosen option when another one is clicked', async () => {
+			const ratingParam = '2';
+			const {
+				getRating2Checkbox,
+				getRating4Checkbox,
+				getRating5Checkbox,
+			} = setupSingleChoiceList( ratingParam );
+
+			expect( getRating2Checkbox()?.checked ).toBeTruthy();
+			expect( getRating4Checkbox()?.checked ).toBeFalsy();
+			expect( getRating5Checkbox()?.checked ).toBeFalsy();
+
+			const rating4checkbox = getRating4Checkbox();
+
+			if ( rating4checkbox ) {
+				userEvent.click( rating4checkbox );
+			}
+
+			expect( getRating2Checkbox()?.checked ).toBeFalsy();
+			expect( getRating4Checkbox()?.checked ).toBeTruthy();
+			expect( getRating5Checkbox()?.checked ).toBeFalsy();
+		} );
+
+		test( 'removes the option when it is clicked again', async () => {
+			const ratingParam = '4';
+			const {
+				getRating2Checkbox,
+				getRating4Checkbox,
+				getRating5Checkbox,
+			} = setupMultipleChoiceList( ratingParam );
+
+			expect( getRating2Checkbox()?.checked ).toBeFalsy();
+			expect( getRating4Checkbox()?.checked ).toBeTruthy();
+			expect( getRating5Checkbox()?.checked ).toBeFalsy();
+
+			const rating4checkbox = getRating4Checkbox();
+
+			if ( rating4checkbox ) {
+				userEvent.click( rating4checkbox );
+			}
+
+			await waitFor( () => {
+				expect( getRating2Checkbox()?.checked ).toBeFalsy();
+				expect( getRating4Checkbox()?.checked ).toBeFalsy();
+				expect( getRating5Checkbox()?.checked ).toBeFalsy();
+			} );
+		} );
+	} );
+
+	describe( 'Multiple choice List', () => {
+		test( 'renders list', () => {
+			const { getDropdown, getList } = setupMultipleChoiceList();
+			expect( getDropdown() ).toBeNull();
+			expect( getList() ).toBeInTheDocument();
+		} );
+
+		test( 'renders chips based on URL params', () => {
+			const ratingParam = '4,5';
+			const {
+				getRating2Checkbox,
+				getRating4Checkbox,
+				getRating5Checkbox,
+			} = setupMultipleChoiceList( ratingParam );
+
+			expect( getRating2Checkbox()?.checked ).toBeFalsy();
+			expect( getRating4Checkbox()?.checked ).toBeTruthy();
+			expect( getRating5Checkbox()?.checked ).toBeTruthy();
+		} );
+
+		test( 'adds chosen option to another one that is clicked', async () => {
+			const ratingParam = '2,4';
+			const {
+				getRating2Checkbox,
+				getRating4Checkbox,
+				getRating5Checkbox,
+			} = setupMultipleChoiceList( ratingParam );
+
+			expect( getRating2Checkbox()?.checked ).toBeTruthy();
+			expect( getRating4Checkbox()?.checked ).toBeTruthy();
+			expect( getRating5Checkbox()?.checked ).toBeFalsy();
+
+			const rating5checkbox = getRating5Checkbox();
+
+			if ( rating5checkbox ) {
+				userEvent.click( rating5checkbox );
+			}
+
+			await waitFor( () => {
+				expect( getRating2Checkbox()?.checked ).toBeTruthy();
+				expect( getRating4Checkbox()?.checked ).toBeTruthy();
+				expect( getRating5Checkbox()?.checked ).toBeTruthy();
+			} );
+		} );
+
+		test( 'removes the option when it is clicked again', async () => {
+			const ratingParam = '2,4';
+			const {
+				getRating2Checkbox,
+				getRating4Checkbox,
+				getRating5Checkbox,
+			} = setupMultipleChoiceList( ratingParam );
+
+			expect( getRating2Checkbox()?.checked ).toBeTruthy();
+			expect( getRating4Checkbox()?.checked ).toBeTruthy();
+			expect( getRating5Checkbox()?.checked ).toBeFalsy();
+
+			const rating2checkbox = getRating2Checkbox();
+
+			if ( rating2checkbox ) {
+				userEvent.click( rating2checkbox );
+			}
+
+			await waitFor( () => {
+				expect( getRating2Checkbox()?.checked ).toBeFalsy();
+				expect( getRating4Checkbox()?.checked ).toBeTruthy();
+				expect( getRating5Checkbox()?.checked ).toBeFalsy();
+			} );
 		} );
 	} );
 } );
