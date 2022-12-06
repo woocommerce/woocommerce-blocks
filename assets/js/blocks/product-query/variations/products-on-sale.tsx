@@ -51,6 +51,6 @@ if ( isExperimentalBuild() ) {
 			DISABLED_INSPECTOR_CONTROLS
 		),
 		innerBlocks: INNER_BLOCKS_TEMPLATE,
-		scope: [ 'block', 'inserter' ],
+		scope: [ 'inserter' ],
 	} );
 }
