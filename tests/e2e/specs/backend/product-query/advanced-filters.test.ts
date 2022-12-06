@@ -130,6 +130,12 @@ describeOrSkip( GUTENBERG_EDITOR_CONTEXT === 'gutenberg' )(
 	`${ block.name } > Advanced Filters`,
 	() => {
 		let $productFiltersPanel: ElementHandle< Node >;
+		const defaultCount = getFixtureProductsData().length;
+		const saleCount = getFixtureProductsData( 'sale_price' ).length;
+		const outOfStockCount = getFixtureProductsData( 'stock_status' ).filter(
+			( status: string ) => status === 'outofstock'
+		).length;
+
 		beforeEach( async () => {
 			/**
 			 * Reset the block page before each test to ensure the block is
@@ -171,8 +177,6 @@ describeOrSkip( GUTENBERG_EDITOR_CONTEXT === 'gutenberg' )(
 			} );
 
 			it( 'Editor preview shows correct products corresponding to the value `Show only products on sale`', async () => {
-				const defaultCount = getFixtureProductsData().length;
-				const saleCount = getFixtureProductsData( 'sale_price' ).length;
 				expect( await getPreviewProducts() ).toHaveLength(
 					defaultCount
 				);
@@ -194,12 +198,9 @@ describeOrSkip( GUTENBERG_EDITOR_CONTEXT === 'gutenberg' )(
 				await setCheckbox(
 					await getToggleIdByLabel( 'Show only products on sale' )
 				);
-				await canvas().waitForSelector(
-					SELECTORS.editorPreview.productsGrid
-				);
+				expect( await getPreviewProducts() ).toHaveLength( saleCount );
 				await saveOrPublish();
 				await shopper.block.goToBlockPage( block.name );
-				const saleCount = getFixtureProductsData( 'sale_price' ).length;
 				expect( await getFrontEndProducts() ).toHaveLength( saleCount );
 			} );
 		} );
@@ -232,8 +233,6 @@ describeOrSkip( GUTENBERG_EDITOR_CONTEXT === 'gutenberg' )(
 			} );
 
 			it( 'Editor preview shows all products by default', async () => {
-				const defaultCount = getFixtureProductsData().length;
-
 				expect( await getPreviewProducts() ).toHaveLength(
 					defaultCount
 				);
@@ -242,11 +241,6 @@ describeOrSkip( GUTENBERG_EDITOR_CONTEXT === 'gutenberg' )(
 			it( 'Editor preview shows correct products that has enabled stock statuses', async () => {
 				await clearSelectedTokens( $productFiltersPanel );
 				await selectToken( 'Stock status', 'Out of stock' );
-				const outOfStockCount = getFixtureProductsData(
-					'stock_status'
-				).filter(
-					( status: string ) => status === 'outofstock'
-				).length;
 				expect( await getPreviewProducts() ).toHaveLength(
 					outOfStockCount
 				);
@@ -257,11 +251,6 @@ describeOrSkip( GUTENBERG_EDITOR_CONTEXT === 'gutenberg' )(
 				await selectToken( 'Stock status', 'Out of stock' );
 				await saveOrPublish();
 				await shopper.block.goToBlockPage( block.name );
-				const outOfStockCount = getFixtureProductsData(
-					'stock_status'
-				).filter(
-					( status: string ) => status === 'outofstock'
-				).length;
 				expect( await getFrontEndProducts() ).toHaveLength(
 					outOfStockCount
 				);
