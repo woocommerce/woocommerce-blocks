@@ -10,6 +10,22 @@ import { useTabState, Tab, TabList, TabPanel } from 'reakit/Tab';
  */
 import './style.scss';
 
+interface tabsProps {
+	className?: string;
+	onSelect?: ( tabName: string ) => void;
+	tabs: Array< {
+		name: string;
+		title: string;
+		content: JSX.Element;
+		ariaLabel?: string;
+	} >;
+	activeClass?: string;
+	initialTabName?: string;
+	ariaLabel?: string;
+	instanceId: number;
+	id?: string;
+}
+
 const Tabs = ( {
 	className,
 	onSelect = () => null,
@@ -19,7 +35,7 @@ const Tabs = ( {
 	ariaLabel = __( 'Tabbed Content', 'woo-gutenberg-products-block' ),
 	instanceId,
 	id,
-} ) => {
+}: tabsProps ): JSX.Element | null => {
 	const initialTab = initialTabName
 		? { selectedId: `${ instanceId }-${ initialTabName }` }
 		: undefined;
