@@ -13,7 +13,7 @@ import Block from '../block';
 import { allSettings } from '../../../settings/shared/settings-init';
 import { Attributes } from '../types';
 
-const setWindowUrl = ( { url }: SetWindowUrlParams ) => {
+const setWindowUrl = ( { url }: { url: string } ) => {
 	global.window = Object.create( window );
 	Object.defineProperty( window, 'location', {
 		value: {
@@ -55,9 +55,11 @@ jest.mock( '@woocommerce/settings', () => {
 type DisplayStyle = 'list' | 'dropdown';
 type SelectType = 'single' | 'multiple';
 interface SetupParams {
-	filterStock: string;
-	displayStyle: DisplayStyle;
-	selectType: SelectType;
+	filterStock?: string;
+	displayStyle?: DisplayStyle;
+	selectType?: SelectType;
+	showCounts?: boolean;
+	showFilterButton?: boolean;
 }
 
 const selectors = {
@@ -66,7 +68,7 @@ const selectors = {
 	chipsContainer: '.components-form-token-field__token',
 };
 
-const setup = ( params: SetupParams ) => {
+const setup = ( params: SetupParams = {} ) => {
 	const url = `http://woo.local/${
 		params.filterStock ? '?filter_stock_status=' + params.filterStock : ''
 	}`;
@@ -75,8 +77,11 @@ const setup = ( params: SetupParams ) => {
 	const attributes: Attributes = {
 		displayStyle: params.displayStyle || 'list',
 		selectType: params.selectType || 'single',
-		showCounts: true,
-		showFilterButton: true,
+		showCounts: params.showCounts !== undefined ? params.showCounts : true,
+		showFilterButton:
+			params.showFilterButton !== undefined
+				? params.showFilterButton
+				: true,
 		isPreview: false,
 		heading: '',
 		headingLevel: 3,
@@ -170,9 +175,9 @@ const setup = ( params: SetupParams ) => {
 };
 
 interface SetupParams {
-	filterStock: string;
-	displayStyle: DisplayStyle;
-	selectType: SelectType;
+	filterStock?: string;
+	displayStyle?: DisplayStyle;
+	selectType?: SelectType;
 }
 
 const setupSingleChoiceList = ( filterStock = 'instock' ) =>
@@ -203,7 +208,6 @@ const setupMultipleChoiceDropdown = ( filterStock = 'instock' ) =>
 		selectType: 'multiple',
 	} );
 
-const StockFilterBlock = ( props ) => <Block { ...props } />;
 describe( 'Testing stock filter', () => {
 	beforeEach( () => {
 		allSettings.stockStatusOptions = {
@@ -218,30 +222,26 @@ describe( 'Testing stock filter', () => {
 	} );
 
 	it( 'renders the stock filter block', async () => {
-		const { container } = render(
-			<StockFilterBlock attributes={ { isPreview: false } } />
-		);
+		const { container } = setup( {
+			showFilterButton: false,
+			showCounts: false,
+		} );
 		expect( container ).toMatchSnapshot();
 	} );
 
 	it( 'renders the stock filter block with the filter button', async () => {
-		const { container } = render(
-			<StockFilterBlock
-				attributes={ { isPreview: false, showFilterButton: true } }
-			/>
-		);
+		const { container } = setup( {
+			showFilterButton: true,
+			showCounts: false,
+		} );
 		expect( container ).toMatchSnapshot();
 	} );
 
 	it( 'renders the stock filter block with the product counts', async () => {
-		const { container } = render(
-			<StockFilterBlock
-				attributes={ {
-					isPreview: false,
-					showCounts: true,
-				} }
-			/>
-		);
+		const { container } = setup( {
+			showFilterButton: false,
+			showCounts: true,
+		} );
 		expect( container ).toMatchSnapshot();
 	} );
 

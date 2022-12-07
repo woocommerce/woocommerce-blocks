@@ -2,8 +2,9 @@
 
 exports[`Testing stock filter renders the stock filter block 1`] = `
 <div>
+  
   <div
-    class="wc-block-stock-filter style-undefined"
+    class="wc-block-stock-filter style-list"
   >
     <ul
       class="wc-block-checkbox-list wc-block-components-checkbox-list wc-block-stock-filter-list"
@@ -111,8 +112,9 @@ exports[`Testing stock filter renders the stock filter block 1`] = `
 
 exports[`Testing stock filter renders the stock filter block with the filter button 1`] = `
 <div>
+  
   <div
-    class="wc-block-stock-filter style-undefined"
+    class="wc-block-stock-filter style-list"
   >
     <ul
       class="wc-block-checkbox-list wc-block-components-checkbox-list wc-block-stock-filter-list"
@@ -236,8 +238,9 @@ exports[`Testing stock filter renders the stock filter block with the filter but
 
 exports[`Testing stock filter renders the stock filter block with the product counts 1`] = `
 <div>
+  
   <div
-    class="wc-block-stock-filter style-undefined"
+    class="wc-block-stock-filter style-list"
   >
     <ul
       class="wc-block-checkbox-list wc-block-components-checkbox-list wc-block-stock-filter-list"

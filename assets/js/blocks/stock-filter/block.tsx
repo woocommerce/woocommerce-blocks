@@ -185,7 +185,7 @@ const StockStatusFilterBlock = ( {
 					name: decodeEntities( status.name ),
 					label: (
 						<Label
-							name={ decodeEntities( status.name ) }
+							name={ decodeEntities( status.name ) as string }
 							count={ blockAttributes.showCounts ? count : null }
 						/>
 					),
