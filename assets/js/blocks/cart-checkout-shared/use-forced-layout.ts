@@ -13,13 +13,26 @@ import {
 	getBlockType,
 	createBlocksFromInnerBlocksTemplate,
 } from '@wordpress/blocks';
-import type { Block, AttributeSource, TemplateArray } from '@wordpress/blocks';
+import type { Block, TemplateArray } from '@wordpress/blocks';
 import { isEqual } from 'lodash';
 
+interface LockableBlock extends Block {
+	attributes: {
+		lock?: {
+			type: 'object';
+			remove?: boolean;
+			move: boolean;
+			default?: {
+				remove?: boolean;
+				move?: boolean;
+			};
+		};
+	};
+}
 const isBlockLocked = ( {
 	attributes,
 }: {
-	attributes: Record< string, AttributeSource.Attribute >;
+	attributes: LockableBlock[ 'attributes' ];
 } ) => Boolean( attributes.lock?.remove || attributes.lock?.default?.remove );
 
 /**
