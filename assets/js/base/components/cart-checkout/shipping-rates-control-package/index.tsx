@@ -81,11 +81,11 @@ export const ShippingRatesControlPackage = ( {
 
 	// If collapsible is not set, we check if we have multiple packages.
 	// We sometimes don't want to collapse even if we have multiple packages.
-	const shoulldBeCollapsible = collapsible ?? multiplePackages;
+	const shouldBeCollapsible = collapsible ?? multiplePackages;
 
 	const header = (
 		<>
-			{ ( shoulldBeCollapsible || shouldShowItems ) && (
+			{ ( shouldBeCollapsible || shouldShowItems ) && (
 				<div
 					className="wc-block-components-shipping-rates-control__package-title"
 					dangerouslySetInnerHTML={ {
@@ -142,7 +142,7 @@ export const ShippingRatesControlPackage = ( {
 			renderOption={ renderOption }
 		/>
 	);
-	if ( shoulldBeCollapsible ) {
+	if ( shouldBeCollapsible ) {
 		return (
 			<Panel
 				className="wc-block-components-shipping-rates-control__package"
