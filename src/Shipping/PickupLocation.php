@@ -45,7 +45,7 @@ class PickupLocation extends WC_Shipping_Method {
 					array(
 						'id'          => $this->id . ':' . $index,
 						// This is the label shown in shipping rate/method context e.g. London (Local Pickup).
-						'label'       => wp_kses_post( $location['name'] . ' (' . $this->title . ')' ),
+						'label'       => wp_kses_post( $this->title . ' (' . $location['name'] . ')' ),
 						'package'     => $package,
 						'cost'        => $this->cost,
 						'description' => $location['details'],
