@@ -12,9 +12,9 @@
 
 <!-- wp:woocommerce/product-rating {"isDescendentOfQueryLoop":true,"textAlign":"center","fontSize":"small"} /-->
 
-<!-- wp:post-title {"textAlign":"center","level":3,"fontSize":"medium","__woocommerceNamespace":"woocommerce/product-query/product-title"} /-->
+<!-- wp:post-title {"textAlign":"center","level":3,"style":{"spacing":{"margin":{"top":"0"}}},"fontSize":"medium","__woocommerceNamespace":"woocommerce/product-query/product-title"} /-->
 
-<!-- wp:post-excerpt {"textAlign":"center","showMoreOnNewLine":false,"fontSize":"small","__woocommerceNamespace":"woocommerce/product-query/product-summary"} /-->
+<!-- wp:post-excerpt {"textAlign":"center","showMoreOnNewLine":false,"style":{"spacing":{"margin":{"top":"0"}}},"fontSize":"small","__woocommerceNamespace":"woocommerce/product-query/product-summary"} /-->
 
 <!-- wp:woocommerce/product-price {"isDescendentOfQueryLoop":true,"textAlign":"center","fontSize":"small"} /-->
 <!-- /wp:post-template -->
