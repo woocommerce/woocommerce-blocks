@@ -25,7 +25,7 @@ const saveSettingsPageWithRefresh = async () => {
 };
 
 const setDefaults = async () => {
-	const enabledLabel = await findLabelWithText( 'Enable Local Pickup' );
+	const enabledLabel = await findLabelWithText( 'Enable local pickup' );
 	const enabledChecked = await page.$eval(
 		'#inspector-checkbox-control-1',
 		( el ) => ( el as HTMLInputElement ).checked
@@ -99,7 +99,7 @@ describe( `Local Pickup Settings`, () => {
 				( el ) => ( el as HTMLInputElement ).checked
 			);
 			const toggleLabel = await findLabelWithText(
-				'Enable Local Pickup'
+				'Enable local pickup'
 			);
 			await toggleLabel.click();
 			await saveSettingsPageWithRefresh();
@@ -187,7 +187,7 @@ describe( `Local Pickup Settings`, () => {
 			);
 
 			await expect( page ).toClick( 'button', {
-				text: 'Add Pickup Location',
+				text: 'Add pickup location',
 			} );
 			await expect( page ).toMatchElement( '.components-modal__content' );
 			await expect( page ).toFill(
