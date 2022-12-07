@@ -24,10 +24,23 @@ class ProductQuery extends \WP_UnitTestCase {
 			'attrs'     => array(
 				'namespace' => 'woocommerce/product-query',
 				'query'     => array(
-					'posts_per_page' => 6,
-					'orderby'        => 'date',
-					'order'          => 'desc',
-					'offset'         => 0,
+					'perPage'                  => 9,
+					'pages'                    => 0,
+					'offset'                   => 0,
+					'postType'                 => 'product',
+					'order'                    => 'desc',
+					'orderBy'                  => 'date',
+					'author'                   => '',
+					'search'                   => '',
+					'exclude'                  => array(),
+					'sticky'                   => '',
+					'inherit'                  => false,
+					'__woocommerceAttributes'  => array(),
+					'__woocommerceStockStatus' => array(
+						'instock',
+						'outofstock',
+						'onbackorder',
+					),
 				),
 			),
 		);
