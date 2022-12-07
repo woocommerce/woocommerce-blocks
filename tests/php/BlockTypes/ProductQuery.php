@@ -2,7 +2,6 @@
 namespace Automattic\WooCommerce\Blocks\Tests\BlockTypes;
 
 use Automattic\WooCommerce\Blocks\Tests\Mocks\ProductQueryMock;
-use WC_Cache_Helper;
 
 /**
  * Tests for the ProductQuery block type
@@ -72,7 +71,7 @@ class ProductQuery extends \WP_UnitTestCase {
 		foreach ( $on_sale_product_ids as $id ) {
 			$this->assertContainsEquals( $id, $merged_query['post__in'] );
 		}
-		$this->assertNotContains( 384123, $merged_query['post__in'] );
+		$this->assertCount( 4, $merged_query['post__in'] );
 	}
 
 	/**
@@ -182,6 +181,50 @@ class ProductQuery extends \WP_UnitTestCase {
 
 		$this->assertEquals( 'meta_value_num', $merged_query['orderby'] );
 		$this->assertEquals( 'total_sales', $merged_query['meta_key'] );
+	}
+
+	/**
+	 * Test merging multiple queries.
+	 */
+	public function test_merging_multiple_queries() {
+		$parsed_block                              = $this->get_base_parsed_block();
+		$parsed_block['attrs']['query']['orderby'] = 'rating';
+		$parsed_block['attrs']['query']['__woocommerceStockStatus'] = array(
+			'instock',
+			'onbackorder',
+		);
+		$parsed_block['attrs']['query']['__woocommerceAttributes']  = array(
+			array(
+				'taxonomy' => 'pa_test',
+				'termId'   => 1,
+			),
+			array(
+				'taxonomy' => 'pa_test',
+				'termId'   => 2,
+			),
+		);
+
+		$merged_query = $this->initialize_merged_query( $parsed_block );
+
+		$this->assertEquals( 'meta_value_num', $merged_query['orderby'] );
+		$this->assertEquals( '_wc_average_rating', $merged_query['meta_key'] );
+		$this->assertContainsEquals(
+			array(
+				'compare' => 'IN',
+				'key'     => '_stock_status',
+				'value'   => array( 'instock', 'onbackorder' ),
+			),
+			$merged_query['meta_query']
+		);
+		$this->assertContainsEquals(
+			array(
+				'taxonomy' => 'pa_test',
+				'field'    => 'term_id',
+				'terms'    => array( 1, 2 ),
+				'operator' => 'IN',
+			),
+			$merged_query['tax_query']
+		);
 	}
 
 	/**
@@ -321,6 +364,45 @@ class ProductQuery extends \WP_UnitTestCase {
 				'operator' => 'AND',
 			),
 			$attribute_tax_query_queries
+		);
+	}
+
+	/**
+	 * Test merging multiple filter queries.
+	 */
+	public function test_merging_multiple_filter_queries() {
+		set_query_var( 'max_price', 100 );
+		set_query_var( 'min_price', 20 );
+		set_query_var( 'filter_stock_status', 'instock' );
+
+		$merged_query = $this->initialize_merged_query();
+
+		$this->assertContainsEquals(
+			array(
+				'operator' => 'IN',
+				'key'      => '_stock_status',
+				'value'    => array( 'instock' ),
+			),
+			$merged_query['meta_query']
+		);
+
+		$this->assertContainsEquals(
+			array(
+				array(
+					'key'     => '_price',
+					'value'   => 100,
+					'compare' => '<',
+					'type'    => 'numeric',
+				),
+				array(
+					'key'     => '_price',
+					'value'   => 20,
+					'compare' => '>=',
+					'type'    => 'numeric',
+				),
+				'relation' => 'AND',
+			),
+			$merged_query['meta_query']
 		);
 	}
 }

@@ -8,12 +8,12 @@ use Automattic\WooCommerce\Blocks\Assets\AssetDataRegistry;
 use Automattic\WooCommerce\Blocks\Integrations\IntegrationRegistry;
 
 /**
- * ProductQueryMock used to test cart block functions.
+ * ProductQueryMock used to test Product Query block functions.
  */
 class ProductQueryMock extends ProductQuery {
 
 	/**
-	 * We initaite our mock class.
+	 * Initialize our mock class.
 	 */
 	public function __construct() {
 		parent::__construct(
