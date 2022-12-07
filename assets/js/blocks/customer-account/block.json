@@ -6,10 +6,23 @@
 	"category": "woocommerce",
 	"keywords": [ "WooCommerce" ],
 	"supports": {
+		"color": {
+		  "__experimentalDefaultControls": {
+			"text": true
+		  }
+		},
+		"typography": {
+			"fontSize": true,
+			"__experimentalFontFamily": true
+		}
 	},
 	"example": {
 	},
 	"attributes": {
+		"className": {
+			"type": "string",
+			"default": ""
+		}
 	},
 	"textdomain": "woo-gutenberg-products-block",
 	"apiVersion": 2,
