@@ -65,7 +65,16 @@ class ProductQuery extends \WP_UnitTestCase {
 
 		$this->block_instance->set_parsed_block( $parsed_block );
 
-		return $this->block_instance->build_query( $parsed_block['attrs']['query'] );
+		$query = array(
+			'post_type'      => 'product',
+			'order'          => 'DESC',
+			'orderby'        => 'date',
+			'post__not_in'   => array(),
+			'offset'         => 0,
+			'posts_per_page' => 9,
+		);
+
+		return $this->block_instance->build_query( $query );
 	}
 
 	/**
@@ -248,16 +257,18 @@ class ProductQuery extends \WP_UnitTestCase {
 
 		$merged_query = $this->initialize_merged_query();
 
-		$price_meta_query = $merged_query['meta_query'][0];
-		$this->assertEquals( 'AND', $price_meta_query['relation'] );
 		$this->assertContainsEquals(
 			array(
-				'key'     => '_price',
-				'value'   => 100,
-				'compare' => '<',
-				'type'    => 'numeric',
+				array(
+					'key'     => '_price',
+					'value'   => 100,
+					'compare' => '<',
+					'type'    => 'numeric',
+				),
+				array(),
+				'relation' => 'AND',
 			),
-			$price_meta_query
+			$merged_query['meta_query']
 		);
 	}
 
@@ -269,16 +280,18 @@ class ProductQuery extends \WP_UnitTestCase {
 
 		$merged_query = $this->initialize_merged_query();
 
-		$price_meta_query = $merged_query['meta_query'][0];
-		$this->assertEquals( 'AND', $price_meta_query['relation'] );
 		$this->assertContainsEquals(
 			array(
-				'key'     => '_price',
-				'value'   => 20,
-				'compare' => '>=',
-				'type'    => 'numeric',
+				array(),
+				array(
+					'key'     => '_price',
+					'value'   => 20,
+					'compare' => '>=',
+					'type'    => 'numeric',
+				),
+				'relation' => 'AND',
 			),
-			$price_meta_query
+			$merged_query['meta_query']
 		);
 	}
 
@@ -291,25 +304,23 @@ class ProductQuery extends \WP_UnitTestCase {
 
 		$merged_query = $this->initialize_merged_query();
 
-		$price_meta_query = $merged_query['meta_query'][0];
-		$this->assertEquals( 'AND', $price_meta_query['relation'] );
 		$this->assertContainsEquals(
 			array(
-				'key'     => '_price',
-				'value'   => 100,
-				'compare' => '<',
-				'type'    => 'numeric',
+				array(
+					'key'     => '_price',
+					'value'   => 100,
+					'compare' => '<',
+					'type'    => 'numeric',
+				),
+				array(
+					'key'     => '_price',
+					'value'   => 20,
+					'compare' => '>=',
+					'type'    => 'numeric',
+				),
+				'relation' => 'AND',
 			),
-			$price_meta_query
-		);
-		$this->assertContainsEquals(
-			array(
-				'key'     => '_price',
-				'value'   => 20,
-				'compare' => '>=',
-				'type'    => 'numeric',
-			),
-			$price_meta_query
+			$merged_query['meta_query']
 		);
 	}
 
