@@ -246,7 +246,7 @@ export const SortableTable = ( {
 						items={ items }
 						strategy={ verticalListSortingStrategy }
 					>
-						{ data && data.length ? (
+						{ !! data.length ? (
 							data.map(
 								( row ) =>
 									row && (
