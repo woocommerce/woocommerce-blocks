@@ -44,10 +44,10 @@ export type PackageRateRenderOption = (
 	option: CartShippingPackageShippingRate
 ) => PackageRateOption;
 
-// A flag can be trinary if true, false, and undefined are all valid options.
+// A flag can be ternary if true, false, and undefined are all valid options.
 // In our case, we use this for collapsible and showItems, having a boolean will force that
 // option, having undefined will let the component decide the logic based on other factors.
-export type TrinaryFlag = boolean | undefined;
+export type TernaryFlag = boolean | undefined;
 interface PackageProps {
 	/* PackageId can be a string, WooCommerce Subscriptions uses strings for example, but WooCommerce core uses numbers */
 	packageId: string | number;
@@ -55,9 +55,9 @@ interface PackageProps {
 	collapse?: boolean;
 	packageData: PackageData;
 	className?: string;
-	collapsible?: TrinaryFlag;
+	collapsible?: TernaryFlag;
 	noResultsMessage: ReactElement;
-	showItems?: TrinaryFlag;
+	showItems?: TernaryFlag;
 }
 
 export const ShippingRatesControlPackage = ( {

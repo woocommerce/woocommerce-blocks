@@ -19,13 +19,13 @@ import { ReactElement } from 'react';
  */
 import ShippingRatesControlPackage, {
 	PackageRateRenderOption,
-	TrinaryFlag,
+	TernaryFlag,
 } from '../shipping-rates-control-package';
 
 interface PackagesProps {
 	packages: CartResponseShippingRate[];
-	collapsible?: TrinaryFlag;
-	showItems?: TrinaryFlag;
+	collapsible?: TernaryFlag;
+	showItems?: TernaryFlag;
 	noResultsMessage: ReactElement;
 	renderOption: PackageRateRenderOption;
 }
@@ -71,8 +71,8 @@ const Packages = ( {
 };
 
 interface ShippingRatesControlProps {
-	collapsible?: TrinaryFlag;
-	showItems?: TrinaryFlag;
+	collapsible?: TernaryFlag;
+	showItems?: TernaryFlag;
 	shippingRates: CartResponseShippingRate[];
 	className?: string;
 	isLoadingRates: boolean;
