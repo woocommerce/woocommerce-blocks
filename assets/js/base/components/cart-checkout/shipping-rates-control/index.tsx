@@ -24,7 +24,6 @@ import ShippingRatesControlPackage, {
 
 interface PackagesProps {
 	packages: CartResponseShippingRate[];
-	collapse?: boolean;
 	collapsible?: TrinaryFlag;
 	showItems?: TrinaryFlag;
 	noResultsMessage: ReactElement;
@@ -39,15 +38,12 @@ interface PackagesProps {
  * @param {boolean|undefined}       props.collapsible      If the package should be rendered as a
  * @param {ReactElement}            props.noResultsMessage Rendered when there are no rates in a package.
  *                                                         collapsible panel.
- * @param {boolean}                 props.collapse         If the panel should be collapsed by default,
- *                                                         only works if collapsible is true.
  * @param {boolean|undefined}       props.showItems        If we should items below the package name.
  * @param {PackageRateRenderOption} [props.renderOption]   Function to render a shipping rate.
  * @return {JSX.Element|null} Rendered components.
  */
 const Packages = ( {
 	packages,
-	collapse,
 	showItems,
 	collapsible,
 	noResultsMessage,
@@ -65,7 +61,6 @@ const Packages = ( {
 					packageId={ packageId }
 					packageData={ packageData }
 					collapsible={ collapsible }
-					collapse={ collapse }
 					showItems={ showItems }
 					noResultsMessage={ noResultsMessage }
 					renderOption={ renderOption }

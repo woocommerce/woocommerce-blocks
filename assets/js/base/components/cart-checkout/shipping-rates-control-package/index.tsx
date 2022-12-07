@@ -147,7 +147,7 @@ export const ShippingRatesControlPackage = ( {
 			<Panel
 				className="wc-block-components-shipping-rates-control__package"
 				// initialOpen remembers only the first value provided to it, so by the
-				//time we know we have several packages, initialOpen would be hardcoded to true.
+				// time we know we have several packages, initialOpen would be hardcoded to true.
 				// If we're rendering a panel, we're more likely rendering several
 				// packages and we want to them to be closed initially.
 				initialOpen={ false }
