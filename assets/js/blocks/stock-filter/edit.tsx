@@ -55,7 +55,7 @@ const Edit = ( {
 				>
 					<ToggleControl
 						label={ __(
-							'Include product count',
+							'Display product count',
 							'woo-gutenberg-products-block'
 						) }
 						checked={ showCounts }
