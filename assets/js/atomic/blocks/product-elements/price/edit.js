@@ -1,7 +1,6 @@
 /**
  * External dependencies
  */
-import { isFeaturePluginBuild } from '@woocommerce/block-settings';
 import {
 	AlignmentToolbar,
 	BlockControls,
@@ -33,7 +32,7 @@ const PriceEdit = ( { attributes, setAttributes, context } ) => {
 	return (
 		<>
 			<BlockControls>
-				{ isFeaturePluginBuild() && (
+				{ isDescendentOfQueryLoop && (
 					<AlignmentToolbar
 						value={ attributes.textAlign }
 						onChange={ ( newAlign ) => {
