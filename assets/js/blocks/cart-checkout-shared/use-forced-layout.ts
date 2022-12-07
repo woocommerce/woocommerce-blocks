@@ -68,7 +68,39 @@ const getMissingBlocks = (
 /**
  * This hook is used to determine the position that a missing block should be inserted at.
  *
- * Responsible for ensuring FORCED blocks exist in the inner block layout. Forced blocks cannot be removed.
+ * @return The index to insert the missing block at.
+ */
+const findBlockPosition = ( {
+	defaultTemplatePosition,
+	innerBlocks,
+	currentDefaultTemplate,
+}: {
+	defaultTemplatePosition: number;
+	innerBlocks: BlockInstance[];
+	currentDefaultTemplate: MutableRefObject< TemplateArray >;
+} ) => {
+	switch ( defaultTemplatePosition ) {
+		case -1:
+			// The block is not part of the default template, so we append it to the current layout.
+			return innerBlocks.length;
+		// defaultTemplatePosition defaults to 0, so if this happens we can just return, this is because the block was
+		// the first block in the default layout, so we can prepend it to the current layout.
+		case 0:
+			return 0;
+		default:
+			// The new layout may have extra blocks compared to the default template, so rather than insert
+			// at the default position, we should append it after another default block.
+			const adjacentBlock =
+				currentDefaultTemplate.current[ defaultTemplatePosition - 1 ];
+			const position = innerBlocks.findIndex(
+				( { name: blockName } ) => blockName === adjacentBlock[ 0 ]
+			);
+			return position === -1 ? defaultTemplatePosition : position + 1;
+	}
+};
+
+/**
+ * Hook to ensure FORCED blocks are rendered in the correct place.
  */
 export const useForcedLayout = ( {
 	clientId,
