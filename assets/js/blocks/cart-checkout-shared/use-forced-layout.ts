@@ -36,7 +36,37 @@ const isBlockLocked = ( {
 } ) => Boolean( attributes.lock?.remove || attributes.lock?.default?.remove );
 
 /**
- * useForcedLayout hook
+ * This hook is used to determine which blocks are missing from a block. Given the list of inner blocks of a block
+ * ID for a block, we can check any registered blocks that:
+ * a) Are locked,
+ * b) Have the parent set as the current block, and
+ * c) Are not present in the list of inner blocks.
+ */
+const getMissingBlocks = (
+	innerBlocks: BlockInstance[],
+	registeredBlockTypes: ( LockableBlock | undefined )[]
+) => {
+	const lockedBlockTypes = registeredBlockTypes.filter(
+		( block: LockableBlock | undefined ) => block && isBlockLocked( block )
+	);
+	const missingBlocks: LockableBlock[] = [];
+	lockedBlockTypes.forEach( ( lockedBlock ) => {
+		if ( typeof lockedBlock === 'undefined' ) {
+			return;
+		}
+		const existingBlock = innerBlocks.find(
+			( block ) => block.name === lockedBlock.name
+		);
+
+		if ( ! existingBlock ) {
+			missingBlocks.push( lockedBlock );
+		}
+	} );
+	return missingBlocks;
+};
+
+/**
+ * This hook is used to determine the position that a missing block should be inserted at.
  *
  * Responsible for ensuring FORCED blocks exist in the inner block layout. Forced blocks cannot be removed.
  */
