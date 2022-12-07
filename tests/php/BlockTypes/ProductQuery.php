@@ -65,14 +65,10 @@ class ProductQuery extends \WP_UnitTestCase {
 
 		$this->block_instance->set_parsed_block( $parsed_block );
 
-		$query = array(
-			'post_type'      => 'product',
-			'order'          => 'DESC',
-			'orderby'        => 'date',
-			'post__not_in'   => array(),
-			'offset'         => 0,
-			'posts_per_page' => 9,
-		);
+		$block          = new \stdClass();
+		$block->context = $parsed_block['attrs'];
+
+		$query = build_query_vars_from_query_block( $block, 1 );
 
 		return $this->block_instance->build_query( $query );
 	}
@@ -184,7 +180,7 @@ class ProductQuery extends \WP_UnitTestCase {
 	 */
 	public function test_merging_order_by_rating_queries() {
 		$parsed_block                              = $this->get_base_parsed_block();
-		$parsed_block['attrs']['query']['orderby'] = 'rating';
+		$parsed_block['attrs']['query']['orderBy'] = 'rating';
 
 		$merged_query = $this->initialize_merged_query( $parsed_block );
 
@@ -197,7 +193,7 @@ class ProductQuery extends \WP_UnitTestCase {
 	 */
 	public function test_merging_order_by_popularity_queries() {
 		$parsed_block                              = $this->get_base_parsed_block();
-		$parsed_block['attrs']['query']['orderby'] = 'popularity';
+		$parsed_block['attrs']['query']['orderBy'] = 'popularity';
 
 		$merged_query = $this->initialize_merged_query( $parsed_block );
 
@@ -210,7 +206,7 @@ class ProductQuery extends \WP_UnitTestCase {
 	 */
 	public function test_merging_multiple_queries() {
 		$parsed_block                              = $this->get_base_parsed_block();
-		$parsed_block['attrs']['query']['orderby'] = 'rating';
+		$parsed_block['attrs']['query']['orderBy'] = 'rating';
 		$parsed_block['attrs']['query']['__woocommerceStockStatus'] = array(
 			'instock',
 			'onbackorder',
