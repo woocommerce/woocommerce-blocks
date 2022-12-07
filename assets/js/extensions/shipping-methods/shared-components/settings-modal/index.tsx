@@ -42,7 +42,7 @@ const StyledModal = styled( Modal )`
 		.components-base-control {
 			label {
 				margin-top: 8px;
-				text-transform: capitalize !important;
+				text-transform: none !important;
 			}
 		}
 	}
