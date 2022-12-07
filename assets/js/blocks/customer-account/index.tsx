@@ -9,6 +9,7 @@ import { Icon, starEmpty } from '@wordpress/icons';
  * Internal dependencies
  */
 import metadata from './block.json';
+import edit from './edit';
 
 if ( isExperimentalBuild() ) {
 	registerBlockType( metadata, {
@@ -23,5 +24,6 @@ if ( isExperimentalBuild() ) {
 		attributes: {
 			...metadata.attributes,
 		},
+		edit,
 	} );
 }
