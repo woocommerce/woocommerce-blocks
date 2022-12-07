@@ -21,12 +21,10 @@ import {
 	getProductsNameFromProductQuery,
 } from './utils';
 
-describe( `${ block.name } Block`, () => {
+// Re-enable this test once wordpress/e2e-test-utils is updated.
+// https://github.com/woocommerce/woocommerce-blocks/issues/7744
+describe.skip( `${ block.name } Block`, () => {
 	useTheme( 'emptytheme' );
-	afterAll( async () => {
-		await deleteAllTemplates( 'wp_template' );
-		await deleteAllTemplates( 'wp_template_part' );
-	} );
 
 	describe( 'with All Templates', () => {
 		beforeAll( async () => {
@@ -82,6 +80,10 @@ describe( `${ block.name } Block`, () => {
 			await page.waitForNetworkIdle();
 		} );
 
+		afterAll( async () => {
+			await deleteAllTemplates( 'wp_template' );
+		} );
+
 		it( 'should render the same products in the same position of the classic template', async () => {
 			const classicProducts = await getProductsNameFromClassicTemplate();
 			const products = await getProductsNameFromProductQuery();
@@ -109,6 +111,10 @@ describe( `${ block.name } Block`, () => {
 					waitUntil: 'networkidle0',
 				} ),
 			] );
+		} );
+
+		afterAll( async () => {
+			await deleteAllTemplates( 'wp_template' );
 		} );
 
 		it( 'should render the same products in the same position of the classic template', async () => {
@@ -139,6 +145,10 @@ describe( `${ block.name } Block`, () => {
 			] );
 		} );
 
+		afterAll( async () => {
+			await deleteAllTemplates( 'wp_template' );
+		} );
+
 		it( 'should render the same products in the same position of the classic template', async () => {
 			const classicProducts = await getProductsNameFromClassicTemplate();
 			const products = await getProductsNameFromProductQuery();
@@ -165,6 +175,10 @@ describe( `${ block.name } Block`, () => {
 					waitUntil: 'networkidle0',
 				} ),
 			] );
+		} );
+
+		afterAll( async () => {
+			await deleteAllTemplates( 'wp_template' );
 		} );
 
 		it( 'should render the same products in the same position of the classic template', async () => {
