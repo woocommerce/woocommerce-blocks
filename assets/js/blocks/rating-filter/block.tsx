@@ -303,7 +303,9 @@ const RatingFilterBlock = ( {
 				return;
 			}
 
-			const newChecked = [ ...checked, checkedValue ].sort();
+			const newChecked = [ ...checked, checkedValue ].sort(
+				( a, b ) => Number( b ) - Number( a )
+			);
 			speak( translations.ratingAdded( checkedValue ) );
 			setChecked( newChecked );
 		},
