@@ -5,7 +5,6 @@ import classnames from 'classnames';
 import { useBlockProps, InnerBlocks } from '@wordpress/block-editor';
 import { Main } from '@woocommerce/base-components/sidebar-layout';
 import { innerBlockAreas } from '@woocommerce/blocks-checkout';
-import { LOCAL_PICKUP_ENABLED } from '@woocommerce/block-settings';
 import type { TemplateArray } from '@wordpress/blocks';
 
 /**
@@ -41,16 +40,8 @@ export const Edit = ( {
 	const defaultTemplate = [
 		[ 'woocommerce/checkout-express-payment-block', {}, [] ],
 		[ 'woocommerce/checkout-contact-information-block', {}, [] ],
-		...[
-			LOCAL_PICKUP_ENABLED
-				? [ 'woocommerce/checkout-shipping-method-block', {}, [] ]
-				: null,
-		],
-		...[
-			LOCAL_PICKUP_ENABLED
-				? [ 'woocommerce/checkout-pickup-options-block', {}, [] ]
-				: null,
-		],
+		[ 'woocommerce/checkout-shipping-method-block', {}, [] ],
+		[ 'woocommerce/checkout-pickup-options-block', {}, [] ],
 		[ 'woocommerce/checkout-shipping-address-block', {}, [] ],
 		[ 'woocommerce/checkout-billing-address-block', {}, [] ],
 		[ 'woocommerce/checkout-shipping-methods-block', {}, [] ],
