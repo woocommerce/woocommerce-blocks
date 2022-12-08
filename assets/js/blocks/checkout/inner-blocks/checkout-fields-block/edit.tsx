@@ -5,7 +5,7 @@ import classnames from 'classnames';
 import { useBlockProps, InnerBlocks } from '@wordpress/block-editor';
 import { Main } from '@woocommerce/base-components/sidebar-layout';
 import { innerBlockAreas } from '@woocommerce/blocks-checkout';
-import { isExperimentalBuild } from '@woocommerce/block-settings';
+import { LOCAL_PICKUP_ENABLED } from '@woocommerce/block-settings';
 import type { TemplateArray } from '@wordpress/blocks';
 
 /**
@@ -42,12 +42,12 @@ export const Edit = ( {
 		[ 'woocommerce/checkout-express-payment-block', {}, [] ],
 		[ 'woocommerce/checkout-contact-information-block', {}, [] ],
 		...[
-			isExperimentalBuild()
+			LOCAL_PICKUP_ENABLED
 				? [ 'woocommerce/checkout-shipping-method-block', {}, [] ]
 				: null,
 		],
 		...[
-			isExperimentalBuild()
+			LOCAL_PICKUP_ENABLED
 				? [ 'woocommerce/checkout-pickup-options-block', {}, [] ]
 				: null,
 		],
