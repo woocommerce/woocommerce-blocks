@@ -25,7 +25,7 @@ import classnames from 'classnames';
 /**
  * Internal dependencies
  */
-import { previewOptions } from './preview';
+import { editorPreviewOptions, previewOptions } from './preview';
 import './style.scss';
 import { Attributes } from './types';
 import { getActiveFilters } from './utils';
@@ -190,12 +190,16 @@ const RatingFilterBlock = ( {
 		if ( filteredCountsLoading || blockAttributes.isPreview ) {
 			return;
 		}
+
+		const defaultPreviewCounts = isEditor ? editorPreviewOptions : [];
+
 		const orderedRatings =
 			! filteredCountsLoading &&
 			objectHasProp( filteredCounts, 'rating_counts' ) &&
-			Array.isArray( filteredCounts.rating_counts )
+			Array.isArray( filteredCounts.rating_counts ) &&
+			filteredCounts.rating_counts.length > 0
 				? [ ...filteredCounts.rating_counts ].reverse()
-				: [];
+				: defaultPreviewCounts;
 
 		const newOptions = orderedRatings
 			.filter(
@@ -230,6 +234,7 @@ const RatingFilterBlock = ( {
 		filteredCounts,
 		filteredCountsLoading,
 		productRatings,
+		isEditor,
 	] );
 
 	/**
@@ -273,20 +278,11 @@ const RatingFilterBlock = ( {
 		[ checked ]
 	);
 
-	if ( isEditor && ! isDisabled && displayedOptions.length === 0 ) {
-		return (
-			<Notice status="warning" isDismissible={ false }>
-				<p>
-					{ __(
-						'There are no products with ratings.',
-						'woo-gutenberg-products-block'
-					) }
-				</p>
-			</Notice>
-		);
-	}
-
-	if ( ! filteredCountsLoading && displayedOptions.length === 0 ) {
+	if (
+		! isEditor &&
+		! filteredCountsLoading &&
+		displayedOptions.length === 0
+	) {
 		setWrapperVisibility( false );
 		return null;
 	}
@@ -297,15 +293,31 @@ const RatingFilterBlock = ( {
 		isBoolean
 	);
 
-	if ( ! hasFilterableProducts ) {
+	if ( ! isEditor && ! hasFilterableProducts ) {
 		setWrapperVisibility( false );
 		return null;
 	}
 
 	setWrapperVisibility( true );
 
+	const isEditorWithNoProductRatings =
+		isEditor &&
+		objectHasProp( filteredCounts, 'rating_counts' ) &&
+		Array.isArray( filteredCounts.rating_counts ) &&
+		filteredCounts.rating_counts.length === 0;
+
 	return (
 		<>
+			{ isEditorWithNoProductRatings && (
+				<Notice status="warning" isDismissible={ false }>
+					<p>
+						{ __(
+							"Your store doesn't have any products with ratings yet. This filter option will display when a product receives a review.",
+							'woo-gutenberg-products-block'
+						) }
+					</p>
+				</Notice>
+			) }
 			<div
 				className={ classnames( 'wc-block-rating-filter', {
 					'is-loading': isLoading,
