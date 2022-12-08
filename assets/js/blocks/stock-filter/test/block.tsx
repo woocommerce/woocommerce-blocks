@@ -208,7 +208,7 @@ const setupMultipleChoiceDropdown = ( filterStock = 'instock' ) =>
 		selectType: 'multiple',
 	} );
 
-describe( 'Testing stock filter', () => {
+describe( 'Filter by Stock block', () => {
 	beforeEach( () => {
 		allSettings.stockStatusOptions = {
 			instock: 'In stock',
