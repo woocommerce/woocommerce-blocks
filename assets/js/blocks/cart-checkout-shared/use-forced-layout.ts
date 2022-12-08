@@ -33,8 +33,8 @@ const isBlockLocked = ( {
 } ) => Boolean( attributes.lock?.remove || attributes.lock?.default?.remove );
 
 /**
- * This hook is used to determine which blocks are missing from a block. Given the list of inner blocks of a block
- * ID for a block, we can check any registered blocks that:
+ * This hook is used to determine which blocks are missing from a block. Given the list of inner blocks of a block, we
+ * can check for any registered blocks that:
  * a) Are locked,
  * b) Have the parent set as the current block, and
  * c) Are not present in the list of inner blocks.
