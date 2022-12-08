@@ -590,7 +590,7 @@ const AttributeFilterBlock = ( {
 									'Select %s',
 									'woo-gutenberg-products-block'
 								),
-								attributeObject.label
+								attributeObject.label.toLocaleLowerCase()
 							) }
 							onChange={ ( tokens: string[] ) => {
 								if ( ! multiple && tokens.length > 1 ) {
