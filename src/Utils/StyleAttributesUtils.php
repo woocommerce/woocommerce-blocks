@@ -57,6 +57,25 @@ class StyleAttributesUtils {
 		return null;
 	}
 
+	/**
+	 * Get class and style for font-style from attributes.
+	 *
+	 * @param array $attributes Block attributes.
+	 *
+	 * @return (array | null)
+	 */
+	public static function get_font_style_class_and_style( $attributes ) {
+
+		$custom_font_style = $attributes['style']['typography']['fontStyle'] ?? '';
+
+		if ( '' !== $custom_font_style ) {
+			return array(
+				'class' => null,
+				'style' => sprintf( 'font-style: %s;', $custom_font_style ),
+			);
+		}
+		return null;
+	}
 
 	/**
 	 * Get class and style for font-family from attributes.
@@ -247,9 +266,24 @@ class StyleAttributesUtils {
 			return null;
 		}
 
+		$border_radius = array();
+
+		$border_radius['border-top-left-radius']     = $custom_border_radius['topLeft'] ?? '';
+		$border_radius['border-top-right-radius']    = $custom_border_radius['topRight'] ?? '';
+		$border_radius['border-bottom-right-radius'] = $custom_border_radius['bottomRight'] ?? '';
+		$border_radius['border-bottom-left-radius']  = $custom_border_radius['bottomLeft'] ?? '';
+
+		$border_radius_css = '';
+
+		foreach ( $border_radius as $border_radius_side => $border_radius_value ) {
+			if ( '' !== $border_radius_value ) {
+				$border_radius_css .= $border_radius_side . ':' . $border_radius_value . ';';
+			}
+		}
+
 		return array(
 			'class' => null,
-			'style' => sprintf( 'border-radius: %s;', $custom_border_radius ),
+			'style' => $border_radius_css,
 		);
 	}
 
@@ -400,23 +434,15 @@ class StyleAttributesUtils {
 			return null;
 		}
 
-		$padding_top    = $padding['top'] ? self::get_spacing_value( $padding['top'] ) : null;
-		$padding_right  = $padding['right'] ? self::get_spacing_value( $padding['right'] ) : null;
-		$padding_bottom = $padding['bottom'] ? self::get_spacing_value( $padding['bottom'] ) : null;
-		$padding_left   = $padding['left'] ? self::get_spacing_value( $padding['left'] ) : null;
+		$spacing_values_css = '';
+
+		foreach ( $padding as $padding_side => $padding_value ) {
+			$spacing_values_css .= 'padding-' . $padding_side . ':' . self::get_spacing_value( $padding_value ) . ';';
+		}
 
 		return array(
 			'class' => null,
-			'style' => sprintf(
-				'padding-top:%s;
-				padding-right:%s;
-				padding-bottom:%s;
-				padding-left:%s;',
-				$padding_top,
-				$padding_right,
-				$padding_bottom,
-				$padding_left
-			),
+			'style' => $spacing_values_css,
 		);
 	}
 
@@ -434,9 +460,15 @@ class StyleAttributesUtils {
 			return null;
 		}
 
+		$spacing_values_css = '';
+
+		foreach ( $margin as $margin_side => $margin_value ) {
+			$spacing_values_css .= 'margin-' . $margin_side . ':' . self::get_spacing_value( $margin_value ) . ';';
+		}
+
 		return array(
 			'class' => null,
-			'style' => sprintf( 'margin: %s;', implode( ' ', $margin ) ),
+			'style' => $spacing_values_css,
 		);
 	}
 
@@ -455,6 +487,7 @@ class StyleAttributesUtils {
 			'font_size'        => self::get_font_size_class_and_style( $attributes ),
 			'font_family'      => self::get_font_family_class_and_style( $attributes ),
 			'font_weight'      => self::get_font_weight_class_and_style( $attributes ),
+			'font_style'       => self::get_font_style_class_and_style( $attributes ),
 			'link_color'       => self::get_link_color_class_and_style( $attributes ),
 			'background_color' => self::get_background_color_class_and_style( $attributes ),
 			'border_color'     => self::get_border_color_class_and_style( $attributes ),
