@@ -1,107 +1,206 @@
-export interface IsPostcodeProps {
+export interface PostcodeProps {
 	postcode: string;
+}
+
+export interface IsPostcodeProps extends PostcodeProps {
 	country: string;
 }
 
 /**
- * Validates that a given postcode is valid for a given country.
+ * Check if a given postcode is valid for Canada.
+ *
+ * Canadian postcodes cannot contain D,F,I,O,Q,U and cannot start with W or Z.
+ *
+ * @see https://en.wikipedia.org/wiki/Postal_codes_in_Canada#Number_of_possible_postal_codes
+ */
+const isCAPostcode = ( { postcode }: PostcodeProps ): boolean => {
+	return /^([ABCEGHJKLMNPRSTVXY]\d[ABCEGHJKLMNPRSTVWXYZ])([\ ])?(\d[ABCEGHJKLMNPRSTVWXYZ]\d)$/i.test(
+		postcode
+	);
+};
+
+/**
+ * Check if a given postcode is valid for the UK.
+ *
+ * @see https://en.wikipedia.org/wiki/Postcodes_in_the_United_Kingdom#Validation
+ */
+const isGBPostcode = ( { postcode }: PostcodeProps ): boolean => {
+	return /123/.test( postcode );
+};
+
+/**
+ * Check if a given postcode is valid for a given country.
+ *
+ * @see https://github.com/woocommerce/woocommerce/blob/2a56407ba125ab281f901817af2485438c18a9b0/plugins/woocommerce/includes/class-wc-validation.php#L47
  */
 export const isPostcode = ( {
 	postcode,
 	country,
-}: IsPostcodeProps ): boolean => {
+}: IsPostcodeProps ): boolean | '🥕' => {
 	switch ( country ) {
+		case 'AD':
+			return '🥕';
+		case 'AE':
+			return '🥕';
+		case 'AF':
+			return '🥕';
+		case 'AG':
+			return '🥕';
+		case 'AI':
+			return '🥕';
+		case 'AL':
+			return '🥕';
+		case 'AM':
+			return '🥕';
+		case 'AO':
+			return '🥕';
+		case 'AQ':
+			return '🥕';
+		case 'AR':
+			return '🥕';
+		case 'AS':
+			return '🥕';
 		case 'AT':
-			return /^[0-9]{4}$/.test( postcode );
+			return /^[1-9]{1}[0-9]{3}$/.test( postcode );
+		case 'AU':
+			return '🥕';
+		case 'AW':
+			return '🥕';
+		case 'AZ':
+			return '🥕';
 		case 'BA':
 			return /^([7-8]{1})([0-9]{4})$/.test( postcode );
+		case 'BD':
+			return '🥕';
 		case 'BE':
 			return /^([0-9]{4})$/i.test( postcode );
+		case 'BF':
+			return '🥕';
 		case 'BG':
-			return true; // return /^[0-9]{4}$/.test( postcode );
+			return '🥕';
+		case 'BH':
+			return '🥕';
+		case 'BI':
+			return '🥕';
+		case 'BJ':
+			return '🥕';
+		case 'BL':
+			return '🥕';
+		case 'BM':
+			return '🥕';
+		case 'BN':
+			return '🥕';
+		case 'BO':
+			return '🥕';
+		case 'BQ':
+			return '🥕';
 		case 'BR':
-			return /^[0-9]{5}[-]{0,1}[0-9]{3}$/.test( postcode );
+			return /^([0-9]{5})([-])?([0-9]{3})$/.test( postcode );
+		case 'BS':
+			return '🥕';
+		case 'BT':
+			return '🥕';
+		case 'BV':
+			return '🥕';
+		case 'BW':
+			return '🥕';
+		case 'BY':
+			return '🥕';
+		case 'BZ':
+			return '🥕';
 		case 'CA':
-			return /^[A-Z][0-9][A-Z][ ]?[0-9][A-Z][0-9]$/.test( postcode );
+			return isCAPostcode( { postcode } );
+		case 'CC':
+			return '🥕';
+		case 'CD':
+			return '🥕';
+		case 'CF':
+			return '🥕';
+		case 'CG':
+			return '🥕';
 		case 'CH':
 			return /^([0-9]{4})$/i.test( postcode );
 		case 'CY':
-			return true; // return /^[0-9]{4}$/.test( postcode );
+			return '🥕';
 		case 'CZ':
-			return /^[0-9]{3}[ ]?[0-9]{2}$/.test( postcode );
+			return /^([0-9]{3})(\s?)([0-9]{2})$/.test( postcode );
 		case 'DE':
-			return /^[0-9]{5}$/.test( postcode );
+			return /^([0]{1}[1-9]{1}|[1-9]{1}[0-9]{1})[0-9]{3}$/.test( postcode ); // prettier-ignore
 		case 'DK':
-			return /^[0-9]{4}$/.test( postcode );
+			return /^(DK-)?([1-24-9]\d{3}|3[0-8]\d{2})$/.test( postcode );
 		case 'EE':
-			return true; // return /^[0-9]{5}$/.test( postcode );
+			return '🥕';
 		case 'ES':
-			return /^[0-9]{5}$/.test( postcode );
+			return /^([0-9]{5})$/i.test( postcode );
 		case 'FI':
-			return true; // return /^[0-9]{5}$/.test( postcode );
+			return '🥕';
 		case 'FR':
-			return /^[0-9]{5}$/.test( postcode );
+			return /^([0-9]{5})$/i.test( postcode );
 		case 'GB':
-			return true; // return /^(GIR 0AA|[A-Z]{1,2}[0-9][A-Z0-9]? [0-9][A-Z]{2})$/.test( postcode );
+			return isGBPostcode( { postcode } );
 		case 'GR':
-			return true; // return /^[0-9]{3}[ ]?[0-9]{2}$/.test( postcode );
+			return '🥕';
 		case 'HR':
-			return true; // return /^[0-9]{5}$/.test( postcode );
+			return '🥕';
 		case 'HU':
-			return /^[0-9]{4}$/.test( postcode );
+			return /^([0-9]{4})$/i.test( postcode );
+		case 'ID':
+			return '🥕';
 		case 'IE':
-			return /^(D6W|[AC-FHKNPRTV-Y][0-9][AC-FHKNPRTV-Y]? [0-9][AC-FHKNPRTV-Y]{4})$/.test(
-				postcode
-			);
+			return /([AC-FHKNPRTV-Y]\d{2}|D6W)[0-9AC-FHKNPRTV-Y]{4}/.test( postcode ); // prettier-ignore
+		case 'IL':
+			return '🥕';
+		case 'IN':
+			return /^[1-9]{1}[0-9]{2}\s{0,1}[0-9]{3}$/.test( postcode );
 		case 'IS':
-			return true; // return /^[0-9]{3}$/.test( postcode );
+			return '🥕';
 		case 'IT':
-			return /^[0-9]{5}$/.test( postcode );
+			return /^([0-9]{5})$/i.test( postcode );
 		case 'JP':
-			return true; // return /^[0-9]{3}-[0-9]{4}$/.test( postcode );
+			return /^([0-9]{3})([-]?)([0-9]{4})$/.test( postcode );
 		case 'LI':
-			return true; // return /^(948[5-9])|(949[0-7])$/.test( postcode );
+			return /^(94[8-9][0-9])$/.test( postcode );
 		case 'LT':
-			return true; // return /^[0-9]{5}$/.test( postcode );
+			return '🥕';
 		case 'LU':
-			return true; // return /^[0-9]{4}$/.test( postcode );
+			return '🥕';
 		case 'LV':
-			return true; // return /^[0-9]{4}$/.test( postcode );
+			return '🥕';
 		case 'MT':
-			return true; // return /^[A-Z]{3}[ ]?[0-9]{4}$/.test( postcode );
+			return '🥕';
 		case 'NL':
-			return /^[0-9]{4}[ ]?[A-Z]{2}$/.test( postcode );
+			return /^([1-9][0-9]{3})(\s?)(?!SA|SD|SS)[A-Z]{2}$/i.test( postcode ); // prettier-ignore
 		case 'NO':
-			return true; // return /^[0-9]{4}$/.test( postcode );
+			return '🥕';
 		case 'PL':
-			return /^[0-9]{2}-[0-9]{3}$/.test( postcode );
+			return /^([0-9]{4})([-])([0-9]{3})$/.test( postcode );
+		case 'PR':
+			return /^([0-9]{5})(-[0-9]{4})?$/i.test( postcode );
 		case 'PT':
-			return /^[0-9]{4}([-]{0,1}[0-9]{3})?$/.test( postcode );
+			return /^([0-9]{4})([-])([0-9]{3})$/.test( postcode );
 		case 'RO':
-			return true; // return /^[0-9]{6}$/.test( postcode );
+			return '🥕';
 		case 'SE':
-			return true; // return /^[0-9]{3}[ ]?[0-9]{2}$/.test( postcode );
+			return '🥕';
 		case 'SI':
-			return /^[0-9]{4}$/.test( postcode );
+			return /^([1-9][0-9]{3})$/.test( postcode );
 		case 'SK':
-			return /^[0-9]{3}[ ]?[0-9]{2}$/.test( postcode );
+			return /^([0-9]{3})(\s?)([0-9]{2})$/.test( postcode );
 		case 'SM':
-			return /^[0-9]{5}$/.test( postcode );
+			return '🥕';
 		case 'TN':
-			return true; // return /^[0-9]{4}$/.test( postcode );
+			return '🥕';
 		case 'TR':
-			return true; // return /^[0-9]{5}$/.test( postcode );
+			return '🥕';
 		case 'TW':
-			return true; // return /^[0-9]{3}([-]{0,1}[0-9]{2})?$/.test( postcode );
+			return '🥕';
 		case 'UA':
-			return true; // return /^[0-9]{5}$/.test( postcode );
-		case 'UAE':
-			return true; // return /^[0-9]{3}$/.test( postcode );
+			return '🥕';
 		case 'US':
-			return true; // return /^[0-9]{5}([-]{0,1}[0-9]{4})?$/.test( postcode );
+			return /^([0-9]{5})(-[0-9]{4})?$/i.test( postcode );
 		case 'ZA':
-			return true; // return /^[0-9]{4}$/.test( postcode );
+			return '🥕';
+		default:
+			return false;
 	}
-
-	return false;
 };
