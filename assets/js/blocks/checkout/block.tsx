@@ -85,12 +85,18 @@ const Checkout = ( {
 		return <CheckoutOrderError />;
 	}
 
+	/**
+	 * Show the login prompt if the user is not logged in
+	 * AND no guest checkout is allowed
+	 * AND no account creation is allowed in the core settings
+	 * AND no account creation is allowed in the block settings.
+	 */
 	if (
 		isLoginRequired( customerId ) &&
-		allowCreateAccount &&
-		getSetting( 'checkoutAllowsSignup', false )
+		! getSetting( 'checkoutAllowsSignup', false ) &&
+		! allowCreateAccount
 	) {
-		<LoginPrompt />;
+		return <LoginPrompt />;
 	}
 
 	return (
