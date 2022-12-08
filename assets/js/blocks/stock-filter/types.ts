@@ -15,3 +15,8 @@ export interface DisplayOption {
 	label: JSX.Element;
 	textLabel: string;
 }
+
+export type Current = {
+	slug: string;
+	name: string;
+};

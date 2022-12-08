@@ -42,7 +42,7 @@ import classnames from 'classnames';
 import { previewOptions } from './preview';
 import './style.scss';
 import { formatSlug, getActiveFilters, generateUniqueId } from './utils';
-import { Attributes, DisplayOption } from './types';
+import { Attributes, DisplayOption, Current } from './types';
 import { useSetWraperVisibility } from '../filter-wrapper/context';
 
 export const QUERY_PARAM_KEY = PREFIX_QUERY_ARG_FILTER_TYPE + 'stock_status';
@@ -81,7 +81,7 @@ const StockStatusFilterBlock = ( {
 		? []
 		: getSettingWithCoercion( 'product_ids', [], Array.isArray );
 
-	const STOCK_STATUS_OPTIONS = useRef(
+	const STOCK_STATUS_OPTIONS: { current: Current } = useRef(
 		getSetting( 'hideOutOfStockItems', false )
 			? otherStockStatusOptions
 			: { outofstock, ...otherStockStatusOptions }
@@ -185,7 +185,7 @@ const StockStatusFilterBlock = ( {
 					name: decodeEntities( status.name ),
 					label: (
 						<Label
-							name={ decodeEntities( status.name ) as string }
+							name={ decodeEntities( status.name ) }
 							count={ blockAttributes.showCounts ? count : null }
 						/>
 					),
