@@ -85,6 +85,11 @@ const Checkout = ( {
 		return <CheckoutOrderError />;
 	}
 
+	const checkoutAllowsSignup: boolean = getSetting(
+		'checkoutAllowsSignup',
+		false
+	);
+
 	/**
 	 * Show the login prompt if the user is not logged in
 	 * AND no guest checkout is allowed
@@ -93,16 +98,18 @@ const Checkout = ( {
 	 */
 	if (
 		isLoginRequired( customerId ) &&
-		! getSetting( 'checkoutAllowsSignup', false ) &&
+		! checkoutAllowsSignup &&
 		! allowCreateAccount
 	) {
 		return <LoginPrompt />;
 	}
 
+	const createAccount = allowCreateAccount || checkoutAllowsSignup;
+
 	return (
 		<CheckoutBlockContext.Provider
 			value={ {
-				allowCreateAccount,
+				allowCreateAccount: createAccount,
 				showCompanyField,
 				requireCompanyField,
 				showApartmentField,
