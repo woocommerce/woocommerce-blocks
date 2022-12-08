@@ -54,9 +54,6 @@ describe( `${ block.name } Block`, () => {
 			// Turn the display style to Dropdown
 			await expect( page ).toClick( 'button', { text: 'Dropdown' } );
 
-			await page.waitForSelector(
-				'.wc-block-stock-filter.style-dropdown'
-			);
 			await expect( page ).toMatchElement(
 				'.wc-block-stock-filter.style-dropdown'
 			);
@@ -65,7 +62,6 @@ describe( `${ block.name } Block`, () => {
 				text: 'List',
 			} );
 
-			await page.waitForSelector( '.wc-block-stock-filter.style-list' );
 			await expect( page ).toMatchElement(
 				'.wc-block-stock-filter.style-list'
 			);
