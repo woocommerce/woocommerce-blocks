@@ -193,7 +193,7 @@ const setupMultipleChoiceDropdown = ( filterRating = '5' ) =>
 		selectType: 'multiple',
 	} );
 
-describe( 'RatingFilterBlock', () => {
+describe( 'Filter by Rating block', () => {
 	describe( 'Single choice Dropdown', () => {
 		test( 'renders dropdown', () => {
 			const { getDropdown, getList } = setupSingleChoiceDropdown();
