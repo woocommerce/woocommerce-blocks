@@ -99,7 +99,7 @@ const Edit = ( {
 							'woo-gutenberg-products-block'
 						) }
 						value={ displayStyle }
-						onChange={ ( value: string ) =>
+						onChange={ ( value ) =>
 							setAttributes( {
 								displayStyle: value,
 							} )

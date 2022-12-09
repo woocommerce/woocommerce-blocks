@@ -241,7 +241,7 @@ const StockStatusFilterBlock = ( {
 		changeUrl( newUrl );
 	};
 
-	const multiple = blockAttributes.selectType !== 'single';
+	const allowsMultipleOptions = blockAttributes.selectType !== 'single';
 
 	const onSubmit = useCallback(
 		( checkedOptions ) => {
@@ -349,7 +349,7 @@ const StockStatusFilterBlock = ( {
 
 			const previouslyChecked = checked.includes( checkedValue );
 
-			if ( ! multiple ) {
+			if ( ! allowsMultipleOptions ) {
 				const newChecked = previouslyChecked ? [] : [ checkedValue ];
 				announceFilterChange(
 					previouslyChecked
@@ -374,7 +374,7 @@ const StockStatusFilterBlock = ( {
 			announceFilterChange( { filterAdded: checkedValue } );
 			setChecked( newChecked );
 		},
-		[ checked, multiple, displayedOptions ]
+		[ checked, allowsMultipleOptions, displayedOptions ]
 	);
 
 	if ( ! filteredCountsLoading && displayedOptions.length === 0 ) {
@@ -431,7 +431,7 @@ const StockStatusFilterBlock = ( {
 						<FormTokenField
 							key={ remountKey }
 							className={ classnames( borderProps.className, {
-								'single-selection': ! multiple,
+								'single-selection': ! allowsMultipleOptions,
 								'is-loading': isLoading,
 							} ) }
 							style={ {
@@ -450,7 +450,10 @@ const StockStatusFilterBlock = ( {
 								'woo-gutenberg-products-block'
 							) }
 							onChange={ ( tokens: string[] ) => {
-								if ( ! multiple && tokens.length > 1 ) {
+								if (
+									! allowsMultipleOptions &&
+									tokens.length > 1
+								) {
 									tokens = [ tokens[ tokens.length - 1 ] ];
 								}
 
@@ -502,7 +505,7 @@ const StockStatusFilterBlock = ( {
 								),
 							} }
 						/>
-						{ multiple && (
+						{ allowsMultipleOptions && (
 							<Icon icon={ chevronDown } size={ 30 } />
 						) }
 					</>
