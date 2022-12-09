@@ -266,18 +266,24 @@ class StyleAttributesUtils {
 			return null;
 		}
 
-		$border_radius = array();
-
-		$border_radius['border-top-left-radius']     = $custom_border_radius['topLeft'] ?? '';
-		$border_radius['border-top-right-radius']    = $custom_border_radius['topRight'] ?? '';
-		$border_radius['border-bottom-right-radius'] = $custom_border_radius['bottomRight'] ?? '';
-		$border_radius['border-bottom-left-radius']  = $custom_border_radius['bottomLeft'] ?? '';
-
 		$border_radius_css = '';
 
-		foreach ( $border_radius as $border_radius_side => $border_radius_value ) {
-			if ( '' !== $border_radius_value ) {
-				$border_radius_css .= $border_radius_side . ':' . $border_radius_value . ';';
+		if ( is_string( $custom_border_radius ) ) {
+			// Linked sides.
+			$custom_border_radius = 'border-radius:' . $custom_border_radius . ';';
+		} else {
+			// Unlinked sides.
+			$border_radius = array();
+
+			$border_radius['border-top-left-radius']     = $custom_border_radius['topLeft'] ?? '';
+			$border_radius['border-top-right-radius']    = $custom_border_radius['topRight'] ?? '';
+			$border_radius['border-bottom-right-radius'] = $custom_border_radius['bottomRight'] ?? '';
+			$border_radius['border-bottom-left-radius']  = $custom_border_radius['bottomLeft'] ?? '';
+
+			foreach ( $border_radius as $border_radius_side => $border_radius_value ) {
+				if ( '' !== $border_radius_value ) {
+					$border_radius_css .= $border_radius_side . ':' . $border_radius_value . ';';
+				}
 			}
 		}
 
@@ -296,15 +302,29 @@ class StyleAttributesUtils {
 	 */
 	public static function get_border_width_class_and_style( $attributes ) {
 
-		$custom_border_width = $attributes['style']['border']['width'] ?? '';
+		$custom_border = $attributes['style']['border'] ?? '';
 
-		if ( '' === $custom_border_width ) {
+		if ( '' === $custom_border ) {
 			return null;
+		}
+
+		$border_width_css = '';
+
+		if ( array_key_exists( 'width', ( $custom_border ) ) ) {
+			// Linked sides.
+			$border_width_css = 'border-width:' . $custom_border['width'] . ';';
+		} else {
+			// Unlinked sides.
+			foreach ( $custom_border as $border_width_side => $border_width_value ) {
+				if ( isset( $border_width_value['width'] ) ) {
+					$border_width_css .= 'border-' . $border_width_side . '-width:' . $border_width_value['width'] . ';';
+				}
+			}
 		}
 
 		return array(
 			'class' => null,
-			'style' => sprintf( 'border-width: %s;', $custom_border_width ),
+			'style' => $border_width_css,
 		);
 	}
 
