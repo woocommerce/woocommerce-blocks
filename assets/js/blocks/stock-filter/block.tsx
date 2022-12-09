@@ -434,10 +434,7 @@ const StockStatusFilterBlock = ( {
 								'single-selection': ! allowsMultipleOptions,
 								'is-loading': isLoading,
 							} ) }
-							style={ {
-								...borderProps.style,
-								borderStyle: 'none',
-							} }
+							style={ { ...borderProps.style } }
 							suggestions={ displayedOptions
 								.filter(
 									( option ) =>
