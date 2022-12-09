@@ -227,21 +227,23 @@ const CheckoutProcessor = () => {
 			  }
 			: {};
 
+		const data = {
+			shipping_address: cartNeedsShipping
+				? emptyHiddenAddressFields( currentShippingAddress.current )
+				: undefined,
+			billing_address: emptyHiddenAddressFields(
+				currentBillingAddress.current
+			),
+			customer_note: orderNotes,
+			create_account: shouldCreateAccount,
+			...paymentData,
+			extensions: { ...extensionData },
+		};
+
 		triggerFetch( {
 			path: '/wc/store/v1/checkout',
 			method: 'POST',
-			data: {
-				shipping_address: cartNeedsShipping
-					? emptyHiddenAddressFields( currentShippingAddress.current )
-					: undefined,
-				billing_address: emptyHiddenAddressFields(
-					currentBillingAddress.current
-				),
-				customer_note: orderNotes,
-				create_account: shouldCreateAccount,
-				...paymentData,
-				extensions: { ...extensionData },
-			},
+			data,
 			cache: 'no-store',
 			parse: false,
 		} )
