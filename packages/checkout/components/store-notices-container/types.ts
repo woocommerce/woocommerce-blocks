@@ -13,8 +13,6 @@ export interface StoreNoticesContainerProps {
 	showGlobal?: boolean | undefined;
 	// List of additional notices that were added inline and not stored in the `core/notices` store.
 	additionalNotices?: ( NoticeType & NoticeOptions )[];
-	// Passing forceType will force all notices in the context to be of a certain type. e.g. Regular notices would be displayed as Snack Bars.
-	forceType?: 'default' | 'snackbar' | null | undefined;
 }
 
 export type StoreNotice = NoticeType & NoticeOptions;

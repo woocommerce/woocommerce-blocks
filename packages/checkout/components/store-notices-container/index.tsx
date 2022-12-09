@@ -14,12 +14,10 @@ import type { StoreNoticesContainerProps, StoreNotice } from './types';
 
 const formatNotices = (
 	notices: StoreNotice[],
-	forceType: 'default' | 'snackbar' | null = null,
 	context: string
 ): StoreNotice[] => {
 	return notices.map( ( notice ) => ( {
 		...notice,
-		type: forceType !== null ? forceType : notice.type,
 		context,
 	} ) );
 };
@@ -27,7 +25,6 @@ const formatNotices = (
 const StoreNoticesContainer = ( {
 	className = '',
 	context = 'wc/global',
-	forceType = null,
 	showGlobal = false,
 	additionalNotices = [],
 }: StoreNoticesContainerProps ): JSX.Element | null => {
@@ -42,13 +39,11 @@ const StoreNoticesContainer = ( {
 			( getNotices( context ) as StoreNotice[] ).concat(
 				additionalNotices
 			),
-			forceType,
 			context
 		);
 		const globalNotices = showGlobal
 			? formatNotices(
 					getNotices( 'wc/global' ) as StoreNotice[],
-					forceType,
 					'wc/global'
 			  )
 			: [];

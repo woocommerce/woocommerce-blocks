@@ -179,7 +179,6 @@ const Block = ( {
 			<StoreNoticesContainer
 				context={ noticeContexts.CHECKOUT }
 				showGlobal={ true }
-				forceType="snackbar"
 			/>
 			{ /* SlotFillProvider need to be defined before CheckoutProvider so fills have the SlotFill context ready when they mount. */ }
 			<SlotFillProvider>

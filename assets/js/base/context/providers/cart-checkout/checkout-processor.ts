@@ -48,6 +48,7 @@ import { useStoreCart } from '../../hooks/cart/use-store-cart';
  */
 const CheckoutProcessor = () => {
 	const { onCheckoutValidationBeforeProcessing } = useCheckoutEventsContext();
+
 	const {
 		hasError: checkoutHasError,
 		redirectUrl,
@@ -70,8 +71,10 @@ const CheckoutProcessor = () => {
 			extensionData: store.getExtensionData(),
 		};
 	} );
+
 	const { __internalSetHasError, __internalProcessCheckoutResponse } =
 		useDispatch( CHECKOUT_STORE_KEY );
+
 	const hasValidationErrors = useSelect(
 		( select ) => select( VALIDATION_STORE_KEY ).hasValidationErrors
 	);

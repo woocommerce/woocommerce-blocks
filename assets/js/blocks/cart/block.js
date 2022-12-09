@@ -84,7 +84,6 @@ const Block = ( { attributes, children, scrollToTop } ) => (
 	>
 		<StoreNoticesContainer
 			context={ noticeContexts.CART }
-			forceType="snackbar"
 			showGlobal={ true }
 		/>
 		<SlotFillProvider>
