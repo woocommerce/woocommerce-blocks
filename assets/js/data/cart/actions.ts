@@ -528,7 +528,6 @@ export function* updateCustomerData(
 }
 
 export type CartAction = ReturnOrGeneratorYieldUnion<
-	| typeof receiveCart
 	| typeof receiveCartContents
 	| typeof setBillingAddress
 	| typeof setShippingAddress
@@ -545,4 +544,5 @@ export type CartAction = ReturnOrGeneratorYieldUnion<
 	| typeof removeItemFromCart
 	| typeof changeCartItemQuantity
 	| typeof addItemToCart
+	| typeof setCartData
 >;
