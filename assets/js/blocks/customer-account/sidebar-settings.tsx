@@ -50,6 +50,11 @@ const AccountSettingsLink = () => {
 	return <div className="account-link">{ linkText }</div>;
 };
 
+enum CustomerAccountIconValue {
+	DEFAULT = 'default',
+	ALT = 'alt',
+}
+
 export const BlockSettings = ( {
 	attributes,
 	setAttributes,
