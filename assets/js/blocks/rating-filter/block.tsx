@@ -20,6 +20,7 @@ import FilterResetButton from '@woocommerce/base-components/filter-reset-button'
 import { addQueryArgs, removeQueryArgs } from '@wordpress/url';
 import { changeUrl } from '@woocommerce/utils';
 import classnames from 'classnames';
+import { Notice } from 'wordpress-components';
 
 /**
  * Internal dependencies
@@ -67,6 +68,8 @@ const RatingFilterBlock = ( {
 	const [ displayedOptions, setDisplayedOptions ] = useState(
 		blockAttributes.isPreview ? previewOptions : []
 	);
+
+	const [ storeHasNoRating, setStoreHasNoRating ] = useState( false );
 
 	const isLoading =
 		! blockAttributes.isPreview &&
@@ -196,6 +199,12 @@ const RatingFilterBlock = ( {
 				? [ ...filteredCounts.rating_counts ].reverse()
 				: [];
 
+		if ( orderedRatings.length === 0 && isEditor ) {
+			setStoreHasNoRating( true );
+			setDisplayedOptions( previewOptions );
+			return;
+		}
+
 		const newOptions = orderedRatings
 			.filter(
 				( item ) => isObject( item ) && Object.keys( item ).length > 0
@@ -292,6 +301,16 @@ const RatingFilterBlock = ( {
 
 	return (
 		<>
+			{ storeHasNoRating && (
+				<Notice status="warning" isDismissible={ false }>
+					<p>
+						{ __(
+							"Your store doesn't have any products with ratings yet. This filter option will display when a product receives a review.",
+							'woo-gutenberg-products-block'
+						) }
+					</p>
+				</Notice>
+			) }
 			<div
 				className={ classnames( 'wc-block-rating-filter', {
 					'is-loading': isLoading,
