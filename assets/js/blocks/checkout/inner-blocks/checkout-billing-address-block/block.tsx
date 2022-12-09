@@ -90,42 +90,40 @@ const Block = ( {
 	const AddressFormWrapperComponent = isEditor ? Noninteractive : Fragment;
 
 	return (
-		<>
+		<AddressFormWrapperComponent>
 			<StoreNoticesContainer context={ noticeContexts.BILLING_ADDRESS } />
-			<AddressFormWrapperComponent>
-				<AddressForm
-					id="billing"
-					type="billing"
-					onChange={ ( values: Partial< BillingAddress > ) => {
-						setBillingAddress( values );
-						if ( forcedBillingAddress ) {
-							setShippingAddress( values );
-							dispatchCheckoutEvent( 'set-shipping-address' );
-						}
-						dispatchCheckoutEvent( 'set-billing-address' );
-					} }
-					values={ billingAddress }
-					fields={
-						Object.keys(
-							defaultAddressFields
-						) as ( keyof AddressFields )[]
+			<AddressForm
+				id="billing"
+				type="billing"
+				onChange={ ( values: Partial< BillingAddress > ) => {
+					setBillingAddress( values );
+					if ( forcedBillingAddress ) {
+						setShippingAddress( values );
+						dispatchCheckoutEvent( 'set-shipping-address' );
 					}
-					fieldConfig={ addressFieldsConfig }
+					dispatchCheckoutEvent( 'set-billing-address' );
+				} }
+				values={ billingAddress }
+				fields={
+					Object.keys(
+						defaultAddressFields
+					) as ( keyof AddressFields )[]
+				}
+				fieldConfig={ addressFieldsConfig }
+			/>
+			{ showPhoneField && (
+				<PhoneNumber
+					isRequired={ requirePhoneField }
+					value={ billingAddress.phone }
+					onChange={ ( value ) => {
+						setBillingPhone( value );
+						dispatchCheckoutEvent( 'set-phone-number', {
+							step: 'billing',
+						} );
+					} }
 				/>
-				{ showPhoneField && (
-					<PhoneNumber
-						isRequired={ requirePhoneField }
-						value={ billingAddress.phone }
-						onChange={ ( value ) => {
-							setBillingPhone( value );
-							dispatchCheckoutEvent( 'set-phone-number', {
-								step: 'billing',
-							} );
-						} }
-					/>
-				) }
-			</AddressFormWrapperComponent>
-		</>
+			) }
+		</AddressFormWrapperComponent>
 	);
 };
 

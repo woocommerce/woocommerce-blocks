@@ -100,10 +100,10 @@ const Block = ( {
 
 	return (
 		<>
-			<StoreNoticesContainer
-				context={ noticeContexts.SHIPPING_ADDRESS }
-			/>
 			<AddressFormWrapperComponent>
+				<StoreNoticesContainer
+					context={ noticeContexts.SHIPPING_ADDRESS }
+				/>
 				<AddressForm
 					id="shipping"
 					type="shipping"
