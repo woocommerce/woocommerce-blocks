@@ -304,7 +304,7 @@ class MiniCart extends AbstractBlock {
 		$cart                = $cart_controller->get_cart_instance();
 		$cart_contents_total = $cart->get_subtotal();
 
-		if ( $cart->display_prices_including_tax() ) { 
+		if ( $cart->display_prices_including_tax() ) {
 			$cart_contents_total += $cart->get_subtotal_tax();
 		}
 
