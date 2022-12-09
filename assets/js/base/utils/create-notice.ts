@@ -11,7 +11,7 @@ export const DEFAULT_ERROR_MESSAGE = __(
 	'woo-gutenberg-products-block'
 );
 
-export const hasStoreNoticeContainer = ( container: string ): boolean => {
+export const hasStoreNoticesContainer = ( container: string ): boolean => {
 	const containers = select( 'wc/store/store-notices' ).getContainers();
 	return containers.includes( container );
 };
@@ -20,12 +20,12 @@ const findParentContainer = ( container: string ): string => {
 	let parentContainer = GLOBAL_CONTEXT;
 	if (
 		container.includes( 'wc/checkout/' ) &&
-		hasStoreNoticeContainer( 'wc/checkout' )
+		hasStoreNoticesContainer( 'wc/checkout' )
 	) {
 		parentContainer = 'wc/checkout';
 	} else if (
 		container.includes( 'wc/cart/' ) &&
-		hasStoreNoticeContainer( 'wc/cart' )
+		hasStoreNoticesContainer( 'wc/cart' )
 	) {
 		parentContainer = 'wc/cart';
 	}
@@ -52,7 +52,7 @@ export const createNotice = (
 		return;
 	}
 
-	if ( ! hasStoreNoticeContainer( noticeContext ) ) {
+	if ( ! hasStoreNoticesContainer( noticeContext ) ) {
 		// If the container ref was not registered, use the parent context instead.
 		noticeContext = findParentContainer( noticeContext );
 	}
@@ -77,7 +77,7 @@ export const createNoticeIfVisible = (
 ) => {
 	const noticeContext = options?.context || GLOBAL_CONTEXT;
 
-	if ( hasStoreNoticeContainer( noticeContext ) ) {
+	if ( hasStoreNoticesContainer( noticeContext ) ) {
 		createNotice( status, message, options );
 	}
 };
