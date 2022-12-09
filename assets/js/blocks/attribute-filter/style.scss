@@ -1,3 +1,5 @@
+@import "../shared/styles/style";
+
 .wp-block-woocommerce-attribute-filter {
 	// We need to override it because by default the global styles applied the border-style: solid;
 	// Our goal is not to have a border on main wrapper DOM element
@@ -27,6 +29,8 @@
 	}
 
 	&.style-dropdown {
+		@include includeFormTokenFieldFix();
+
 		position: relative;
 		display: flex;
 		gap: $gap;

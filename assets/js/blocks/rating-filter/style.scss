@@ -1,3 +1,5 @@
+@import "../shared/styles/style";
+
 .wc-block-rating-filter {
 	&.is-loading {
 		@include placeholder();
@@ -7,6 +9,7 @@
 	}
 
 	&.style-dropdown {
+		@include includeFormTokenFieldFix();
 		position: relative;
 		display: flex;
 		gap: $gap;
