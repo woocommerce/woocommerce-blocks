@@ -38,11 +38,7 @@ export const useStoreCartCoupons = ( context = '' ): StoreCartCoupon => {
 		isRemovingCoupon,
 	}: Pick<
 		StoreCartCoupon,
-		| 'applyCoupon'
-		| 'removeCoupon'
-		| 'isApplyingCoupon'
-		| 'isRemovingCoupon'
-		| 'receiveApplyingCoupon'
+		'applyCoupon' | 'removeCoupon' | 'isApplyingCoupon' | 'isRemovingCoupon'
 	> = useSelect(
 		( select, { dispatch } ) => {
 			const store = select( storeKey );
@@ -58,6 +54,8 @@ export const useStoreCartCoupons = ( context = '' ): StoreCartCoupon => {
 		},
 		[ createErrorNotice, createNotice ]
 	);
+
+	const { receiveApplyingCoupon } = useDispatch( storeKey );
 
 	const applyCouponWithNotices = ( couponCode: string ) => {
 		applyCoupon( couponCode )
