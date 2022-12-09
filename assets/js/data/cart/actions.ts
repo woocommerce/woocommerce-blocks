@@ -235,38 +235,37 @@ export function* applyExtensionCartUpdate(
  * @param {string} couponCode The coupon code to apply to the cart.
  * @throws            Will throw an error if there is an API problem.
  */
-export function* applyCoupon(
-	couponCode: string
-): Generator< unknown, boolean, { response: CartResponse } > {
-	yield receiveApplyingCoupon( couponCode );
+export const applyCoupon =
+	async ( couponCode: string ) =>
+	async ( { dispatch } ) => {
+		dispatch.receiveApplyingCoupon( couponCode );
+		try {
+			const { response } = await apiFetchWithHeaders( {
+				path: '/wc/store/v1/cart/apply-coupon',
+				method: 'POST',
+				data: {
+					code: couponCode,
+				},
+				cache: 'no-store',
+			} );
 
-	try {
-		const { response } = yield apiFetchWithHeaders( {
-			path: '/wc/store/v1/cart/apply-coupon',
-			method: 'POST',
-			data: {
-				code: couponCode,
-			},
-			cache: 'no-store',
-		} );
+			dispatch.receiveCart( response );
+			dispatch.receiveApplyingCoupon( '' );
+		} catch ( error ) {
+			dispatch.receiveError( error );
+			dispatch.receiveApplyingCoupon( '' );
 
-		yield receiveCart( response );
-		yield receiveApplyingCoupon( '' );
-	} catch ( error ) {
-		yield receiveError( error );
-		yield receiveApplyingCoupon( '' );
+			// If updated cart state was returned, also update that.
+			if ( error.data?.cart ) {
+				dispatch.receiveCart( error.data.cart );
+			}
 
-		// If updated cart state was returned, also update that.
-		if ( error.data?.cart ) {
-			yield receiveCart( error.data.cart );
+			// Re-throw the error.
+			throw error;
 		}
 
-		// Re-throw the error.
-		throw error;
-	}
-
-	return true;
-}
+		return true;
+	};
 
 /**
  * Removes a coupon code and either invalidates caches, or receives an error if
