@@ -129,8 +129,8 @@ const CheckoutProcessor = () => {
 		( isPaymentSuccess || ! cartNeedsPayment ) &&
 		checkoutIsProcessing;
 
+	// Determine if checkout has an error.
 	useEffect( () => {
-		// Determine if checkout has an error.
 		if (
 			checkoutWillHaveError !== checkoutHasError &&
 			( checkoutIsProcessing || checkoutIsBeforeProcessing ) &&
@@ -147,8 +147,8 @@ const CheckoutProcessor = () => {
 		__internalSetHasError,
 	] );
 
+	// Keep the billing, shipping and redirectUrl current
 	useEffect( () => {
-		// Keep the billing, shipping and redirectUrl current
 		currentBillingAddress.current = billingAddress;
 		currentShippingAddress.current = shippingAddress;
 		currentRedirectUrl.current = redirectUrl;
@@ -178,8 +178,8 @@ const CheckoutProcessor = () => {
 		return true;
 	}, [ hasValidationErrors, hasPaymentError, shippingErrorStatus.hasError ] );
 
+	// Validate the checkout using the CHECKOUT_VALIDATION_BEFORE_PROCESSING event.
 	useEffect( () => {
-		// Validate the checkout using the CHECKOUT_VALIDATION_BEFORE_PROCESSING event.
 		let unsubscribeProcessing: () => void;
 		if ( ! isExpressPaymentMethodActive ) {
 			unsubscribeProcessing = onCheckoutValidationBeforeProcessing(
@@ -201,8 +201,8 @@ const CheckoutProcessor = () => {
 		isExpressPaymentMethodActive,
 	] );
 
+	// Redirect when checkout is complete and there is a redirect url.
 	useEffect( () => {
-		// Redirect when checkout is complete and there is a redirect url.
 		if ( currentRedirectUrl.current ) {
 			window.location.href = currentRedirectUrl.current;
 		}
