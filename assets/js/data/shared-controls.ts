@@ -15,18 +15,6 @@ import {
 	ApiResponse,
 } from './types';
 
-/**
- * Dispatched a control action for triggering an api fetch call with no parsing.
- * Typically this would be used in scenarios where headers are needed.
- *
- * @param {APIFetchOptions} options The options for the API request.
- */
-export const apiFetchWithHeaders = ( options: APIFetchOptions ) =>
-	( {
-		type: 'API_FETCH_WITH_HEADERS',
-		options,
-	} as const );
-
 const EMPTY_OBJECT = {};
 
 /**
@@ -119,79 +107,83 @@ const batchFetch = async ( request: APIFetchOptions ) => {
  * @return {Object} An object with the controls to register with the store on
  *                  the controls property of the registration object.
  */
-export const controls = {
-	API_FETCH_WITH_HEADERS: ( {
-		options,
-	}: ReturnType< typeof apiFetchWithHeaders > ): Promise< unknown > => {
-		return new Promise( ( resolve, reject ) => {
-			// GET Requests cannot be batched.
-			if (
-				! options.method ||
-				options.method === 'GET' ||
-				isWpVersion( '5.6', '<' )
-			) {
-				// Parse is disabled here to avoid returning just the body--we also need headers.
-				triggerFetch( {
-					...options,
-					parse: false,
+export const controls = {};
+
+/**
+ * Dispatched a control action for triggering an api fetch call with no parsing.
+ * Typically this would be used in scenarios where headers are needed.
+ *
+ * @param {APIFetchOptions} options The options for the API request.
+ */
+export const apiFetchWithHeaders = ( options: APIFetchOptions ) => {
+	return new Promise( ( resolve, reject ) => {
+		// GET Requests cannot be batched.
+		if (
+			! options.method ||
+			options.method === 'GET' ||
+			isWpVersion( '5.6', '<' )
+		) {
+			// Parse is disabled here to avoid returning just the body--we also need headers.
+			triggerFetch( {
+				...options,
+				parse: false,
+			} )
+				.then( ( fetchResponse ) => {
+					fetchResponse
+						.json()
+						.then( ( response ) => {
+							resolve( {
+								response,
+								headers: fetchResponse.headers,
+							} );
+							setNonceOnFetch( fetchResponse.headers );
+						} )
+						.catch( () => {
+							reject( invalidJsonError );
+						} );
 				} )
-					.then( ( fetchResponse ) => {
-						fetchResponse
+				.catch( ( errorResponse ) => {
+					setNonceOnFetch( errorResponse.headers );
+					if ( typeof errorResponse.json === 'function' ) {
+						// Parse error response before rejecting it.
+						errorResponse
 							.json()
-							.then( ( response ) => {
-								resolve( {
-									response,
-									headers: fetchResponse.headers,
-								} );
-								setNonceOnFetch( fetchResponse.headers );
+							.then( ( error: unknown ) => {
+								reject( error );
 							} )
 							.catch( () => {
 								reject( invalidJsonError );
 							} );
-					} )
-					.catch( ( errorResponse ) => {
+					} else {
+						reject( errorResponse.message );
+					}
+				} );
+		} else {
+			batchFetch( options )
+				.then( ( response: ApiResponse ) => {
+					assertResponseIsValid( response );
+
+					if ( response.status >= 200 && response.status < 300 ) {
+						resolve( {
+							response: response.body,
+							headers: response.headers,
+						} );
+						setNonceOnFetch( response.headers );
+					}
+
+					// Status code indicates error.
+					throw response;
+				} )
+				.catch( ( errorResponse: ApiResponse ) => {
+					if ( errorResponse.headers ) {
 						setNonceOnFetch( errorResponse.headers );
-						if ( typeof errorResponse.json === 'function' ) {
-							// Parse error response before rejecting it.
-							errorResponse
-								.json()
-								.then( ( error: unknown ) => {
-									reject( error );
-								} )
-								.catch( () => {
-									reject( invalidJsonError );
-								} );
-						} else {
-							reject( errorResponse.message );
-						}
-					} );
-			} else {
-				batchFetch( options )
-					.then( ( response: ApiResponse ) => {
-						assertResponseIsValid( response );
-
-						if ( response.status >= 200 && response.status < 300 ) {
-							resolve( {
-								response: response.body,
-								headers: response.headers,
-							} );
-							setNonceOnFetch( response.headers );
-						}
-
-						// Status code indicates error.
-						throw response;
-					} )
-					.catch( ( errorResponse: ApiResponse ) => {
-						if ( errorResponse.headers ) {
-							setNonceOnFetch( errorResponse.headers );
-						}
-						if ( errorResponse.body ) {
-							reject( errorResponse.body );
-						} else {
-							reject( errorResponse );
-						}
-					} );
-			}
-		} );
-	},
+					}
+					if ( errorResponse.body ) {
+						reject( errorResponse.body );
+					} else {
+						reject( errorResponse );
+					}
+				} );
+		}
+	} );
 };
