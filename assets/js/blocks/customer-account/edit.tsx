@@ -2,7 +2,7 @@
  * External dependencies
  */
 import classNames from 'classnames';
-import { useBlockProps } from '@wordpress/block-editor';
+import { InspectorControls, useBlockProps } from '@wordpress/block-editor';
 import { Disabled, withSpokenMessages } from '@wordpress/components';
 import type { BlockEditProps } from '@wordpress/blocks';
 
@@ -11,21 +11,29 @@ import type { BlockEditProps } from '@wordpress/blocks';
  */
 import Block from './block';
 import { Attributes } from './types';
+import { BlockSettings } from './sidebar-settings';
 
-const Edit = ( { attributes }: BlockEditProps< Attributes > ) => {
+const Edit = ( {
+	attributes,
+	setAttributes,
+}: BlockEditProps< Attributes > ) => {
 	const { className } = attributes;
 	const blockProps = useBlockProps( {
 		className: classNames( 'wc-block-customer-account', className ),
 	} );
 	return (
 		<>
-			{
-				<div { ...blockProps }>
-					<Disabled>
-						<Block />
-					</Disabled>
-				</div>
-			}
+			<InspectorControls>
+				<BlockSettings
+					attributes={ attributes }
+					setAttributes={ setAttributes }
+				/>
+			</InspectorControls>
+			<div { ...blockProps }>
+				<Disabled>
+					<Block />
+				</Disabled>
+			</div>
 		</>
 	);
 };
