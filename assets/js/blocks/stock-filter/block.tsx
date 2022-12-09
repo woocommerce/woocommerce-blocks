@@ -449,7 +449,7 @@ const StockStatusFilterBlock = ( {
 								'Select stock status',
 								'woo-gutenberg-products-block'
 							) }
-							onChange={ ( tokens: string[] ) => {
+							onChange={ ( tokens ) => {
 								if (
 									! allowsMultipleOptions &&
 									tokens.length > 1
