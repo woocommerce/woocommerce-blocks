@@ -72,28 +72,60 @@ const StoreNotices = ( {
 		};
 	}, [ context, registerContainer, unregisterContainer ] );
 
+	// Group notices by status. Do not group notices that are not dismissable.
+	const noticesByStatus = {
+		error: notices.filter( ( { status } ) => status === 'error' ),
+		success: notices.filter( ( { status } ) => status === 'success' ),
+		warning: notices.filter( ( { status } ) => status === 'warning' ),
+		info: notices.filter( ( { status } ) => status === 'info' ),
+	};
+
 	return (
 		<div
 			ref={ ref }
 			className={ classnames( className, 'wc-block-components-notices' ) }
 		>
-			{ notices.map( ( notice ) => (
-				<Notice
-					key={ `store-notice-${ notice.id }` }
-					{ ...notice }
-					className={ classnames(
-						'wc-block-components-notices__notice',
-						getClassNameFromStatus( notice )
-					) }
-					onRemove={ () => {
-						if ( notice.isDismissible ) {
-							removeNotice( notice.id, notice.context );
-						}
-					} }
-				>
-					{ sanitizeHTML( decodeEntities( notice.content ) ) }
-				</Notice>
-			) ) }
+			{ Object.entries( noticesByStatus ).map(
+				( [ status, noticeGroup ] ) => {
+					if ( ! noticeGroup.length ) {
+						return null;
+					}
+					return (
+						<Notice
+							key={ `store-notice-${ status }` }
+							className={ classnames(
+								'wc-block-components-notices__notice',
+								getClassNameFromStatus( status )
+							) }
+							onRemove={ () => {
+								noticeGroup.forEach( ( notice ) => {
+									removeNotice( notice.id, notice.context );
+								} );
+							} }
+						>
+							{ noticeGroup.length === 1 ? (
+								<>
+									{ sanitizeHTML(
+										decodeEntities(
+											noticeGroup[ 0 ].content
+										)
+									) }
+								</>
+							) : (
+								<ul>
+									{ noticeGroup.map( ( notice ) => (
+										<li key={ notice.id }>
+											{ sanitizeHTML(
+												decodeEntities( notice.content )
+											) }
+										</li>
+									) ) }
+								</ul>
+							) }
+						</Notice>
+					);
+				}
+			) }
 		</div>
 	);
 };

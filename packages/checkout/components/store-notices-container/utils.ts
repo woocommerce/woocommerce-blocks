@@ -1,4 +1,4 @@
-export const getClassNameFromStatus = ( { status = 'default' } ): string => {
+export const getClassNameFromStatus = ( status = 'default' ): string => {
 	switch ( status ) {
 		case 'error':
 			return 'woocommerce-error';
