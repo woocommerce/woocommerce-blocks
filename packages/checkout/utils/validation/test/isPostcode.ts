@@ -19,6 +19,9 @@ describe( 'isPostcode', () => {
 		[ false, '61000', 'BA' ],
 		[ false, '7850', 'BA' ],
 
+		// Belgian postcodes
+		[ false, '1', 'BE' ],
+
 		// Brazilian postcodes
 		[ true, '99999-999', 'BR' ],
 		[ true, '99999999', 'BR' ],
@@ -39,11 +42,35 @@ describe( 'isPostcode', () => {
 		[ false, '99999', 'CH' ],
 		[ false, 'ABCDE', 'CH' ],
 
+		// Czech postcodes
+		[ false, '1', 'CZ' ],
+
+		// German postcodes
+		[ false, '1', 'DE' ],
+
+		// Danish postcodes
+		[ false, '1', 'DK' ],
+
+		// Spanish postcodes
+		[ false, '1', 'ES' ],
+
+		// French postcodes
+		[ false, '1', 'FR' ],
+
 		// British postcodes
-		// [ true, 'A9 9AA', 'GB' ],
-		// [ true, 'GIR 0AA', 'GB' ],
-		// [ false, 'GIRO 0AA', 'GB' ],
-		// [ false, '99999', 'GB' ],
+		[ true, 'A9 9AA', 'GB' ],
+		[ true, 'GIR 0AA', 'GB' ],
+		[ false, 'GIRO 0AA', 'GB' ],
+		[ false, '99999', 'GB' ],
+
+		// Hungarian postcodes
+		[ false, '1', 'HU' ],
+
+		// Irish postcodes
+		[ false, '1', 'IE' ],
+
+		// Indian postcodes
+		[ false, '1', 'IN' ],
 
 		// Italian postcodes
 		[ true, '99999', 'IT' ],
@@ -59,6 +86,9 @@ describe( 'isPostcode', () => {
 		[ false, '12345', 'JP' ],
 		[ false, '0123', 'JP' ],
 
+		// Lithuanian postcodes
+		[ false, '1', 'LI' ],
+
 		// Dutch postcodes
 		[ true, '3852GC', 'NL' ],
 		[ true, '3852 GC', 'NL' ],
@@ -67,12 +97,24 @@ describe( 'isPostcode', () => {
 		[ false, '3852 SA', 'NL' ],
 		[ false, '3852 sa', 'NL' ],
 
+		// Polish postcodes
+		[ false, '1', 'PL' ],
+
+		// Puerto Rican postcodes
+		[ false, '1', 'PR' ],
+
+		// Portuguese postcodes
+		[ false, '1', 'PT' ],
+
 		// Slovenian postcodes
 		[ true, '1234', 'SI' ],
 		[ true, '1000', 'SI' ],
 		[ true, '9876', 'SI' ],
 		[ false, '12345', 'SI' ],
 		[ false, '0123', 'SI' ],
+
+		// Slovak postcodes
+		[ false, '1', 'SK' ],
 
 		// United States postcodes
 		[ true, '99999', 'US' ],
