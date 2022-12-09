@@ -6,6 +6,7 @@ import { __ } from '@wordpress/i18n';
 import { InspectorControls } from '@wordpress/block-editor';
 import { useSelect } from '@wordpress/data';
 import { addFilter } from '@wordpress/hooks';
+import { ProductQueryFeedbackPrompt } from '@woocommerce/editor-components/feedback-prompt';
 import { EditorBlock } from '@woocommerce/types';
 import {
 	FormTokenField,
@@ -35,6 +36,7 @@ import {
 	STOCK_STATUS_OPTIONS,
 } from './constants';
 import { PopularPresets } from './inspector-controls/popular-presets';
+import { AttributesFilter } from './inspector-controls/attributes-filter';
 
 const NAMESPACED_CONTROLS = ALL_PRODUCT_QUERY_CONTROLS.map(
 	( id ) =>
@@ -84,6 +86,7 @@ function getStockStatusIdByLabel( statusLabel: FormTokenField.Value ) {
 }
 
 export const TOOLS_PANEL_CONTROLS = {
+	attributes: AttributesFilter,
 	onSale: ( props: ProductQueryBlock ) => {
 		const { query } = props.attributes;
 
@@ -143,6 +146,18 @@ export const TOOLS_PANEL_CONTROLS = {
 			</ToolsPanelItem>
 		);
 	},
+	wooInherit: ( props: ProductQueryBlock ) => (
+		<ToggleControl
+			label={ __(
+				'Woo Inherit query from template',
+				'woo-gutenberg-products-block'
+			) }
+			checked={ props.attributes.query.__woocommerceInherit || false }
+			onChange={ ( __woocommerceInherit ) => {
+				setQueryAttribute( props, { __woocommerceInherit } );
+			} }
+		/>
+	),
 };
 
 export const withProductQueryControls =
@@ -160,7 +175,7 @@ export const withProductQueryControls =
 						<PopularPresets { ...props } />
 					) }
 					<ToolsPanel
-						class="woocommerce-product-query-toolspanel"
+						className="woocommerce-product-query-toolspanel"
 						label={ __(
 							'Advanced Filters',
 							'woo-gutenberg-products-block'
@@ -172,10 +187,17 @@ export const withProductQueryControls =
 						{ Object.entries( TOOLS_PANEL_CONTROLS ).map(
 							( [ key, Control ] ) =>
 								allowedControls?.includes( key ) ? (
-									<Control { ...props } />
+									<Control { ...props } key={ key } />
 								) : null
 						) }
 					</ToolsPanel>
+				</InspectorControls>
+				{
+					// Hacky temporary solution to display the feedback prompt
+					// at the bottom of the inspector controls
+				 }
+				<InspectorControls __experimentalGroup="color">
+					<ProductQueryFeedbackPrompt />
 				</InspectorControls>
 				<BlockEdit { ...props } />
 			</>

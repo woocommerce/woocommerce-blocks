@@ -8,6 +8,7 @@ import type { InnerBlockTemplate } from '@wordpress/blocks';
  * Internal dependencies
  */
 import { QueryBlockAttributes } from './types';
+import { VARIATION_NAME as PRODUCT_TITLE_ID } from './variations/elements/product-title';
 
 /**
  * Returns an object without a key.
@@ -23,6 +24,7 @@ export const QUERY_LOOP_ID = 'core/query';
 export const DEFAULT_CORE_ALLOWED_CONTROLS = [ 'taxQuery', 'search' ];
 
 export const ALL_PRODUCT_QUERY_CONTROLS = [
+	'attributes',
 	'presets',
 	'onSale',
 	'stockStatus',
@@ -50,7 +52,7 @@ export const QUERY_DEFAULT_ATTRIBUTES: QueryBlockAttributes = {
 		columns: 3,
 	},
 	query: {
-		perPage: 6,
+		perPage: 9,
 		pages: 0,
 		offset: 0,
 		postType: 'product',
@@ -61,6 +63,7 @@ export const QUERY_DEFAULT_ATTRIBUTES: QueryBlockAttributes = {
 		exclude: [],
 		sticky: '',
 		inherit: false,
+		__woocommerceAttributes: [],
 		__woocommerceStockStatus: GLOBAL_HIDE_OUT_OF_STOCK
 			? Object.keys( objectOmit( STOCK_STATUS_OPTIONS, 'outofstock' ) )
 			: Object.keys( STOCK_STATUS_OPTIONS ),
@@ -76,9 +79,21 @@ export const INNER_BLOCKS_TEMPLATE: InnerBlockTemplate[] = [
 			[
 				'core/post-title',
 				{
+					textAlign: 'center',
 					level: 3,
-					fontSize: 'large',
+					fontSize: 'medium',
+					__woocommerceNamespace: PRODUCT_TITLE_ID,
 				},
+				[],
+			],
+			[
+				'woocommerce/product-price',
+				{ textAlign: 'center', fontSize: 'small' },
+				[],
+			],
+			[
+				'woocommerce/product-button',
+				{ textAlign: 'center', fontSize: 'small' },
 				[],
 			],
 		],

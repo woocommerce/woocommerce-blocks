@@ -4,21 +4,27 @@ The checkout block has an API interface for payment methods to integrate that co
 
 ## Table of Contents <!-- omit in toc -->
 
--   [Client Side integration](#client-side-integration)
-    -   [Express payment methods - `registerExpressPaymentMethod( options )`](#express-payment-methods---registerexpresspaymentmethod-options-)
-    -   [`name` (required)](#name-required)
-    -   [`content` (required)](#content-required)
-    -   [`edit` (required)](#edit-required)
-    -   [`canMakePayment` (required):](#canmakepayment-required)
-    -   [`paymentMethodId`](#paymentmethodid)
-    -   [`supports:features`](#supportsfeatures)
-    -   [Payment Methods - `registerPaymentMethod( options )`](#payment-methods---registerpaymentmethod-options-)
-    -   [Props Fed to Payment Method Nodes](#props-fed-to-payment-method-nodes)
--   [Server Side Integration](#server-side-integration)
-    -   [Processing Payment](#processing-payment)
-    -   [Registering Assets](#registering-assets)
-    -   [Hooking into the Checkout processing by the Store API.](#hooking-into-the-checkout-processing-by-the-store-api)
-    -   [Putting it all together](#putting-it-all-together)
+- [Client Side integration](#client-side-integration)
+  - [Express payment methods - `registerExpressPaymentMethod( options )`](#express-payment-methods---registerexpresspaymentmethod-options-)
+    - [Aliased import](#aliased-import)
+    - [`wc global`](#wc-global)
+    - [The registration options](#the-registration-options)
+    - [`name` (required)](#name-required)
+    - [`content` (required)](#content-required)
+    - [`edit` (required)](#edit-required)
+    - [`canMakePayment` (required)](#canmakepayment-required)
+    - [`paymentMethodId`](#paymentmethodid)
+    - [`supports:features`](#supportsfeatures)
+  - [Payment Methods - `registerPaymentMethod( options )`](#payment-methods---registerpaymentmethod-options-)
+    - [Aliased import](#aliased-import-1)
+    - [`wc global`](#wc-global-1)
+    - [The registration options](#the-registration-options-1)
+  - [Props Fed to Payment Method Nodes](#props-fed-to-payment-method-nodes)
+- [Server Side Integration](#server-side-integration)
+  - [Processing Payment](#processing-payment)
+  - [Registering Assets](#registering-assets)
+  - [Hooking into the Checkout processing by the Store API](#hooking-into-the-checkout-processing-by-the-store-api)
+  - [Putting it all together](#putting-it-all-together)
 
 ## Client Side integration
 
@@ -45,6 +51,8 @@ import { registerExpressPaymentMethod } from '@woocommerce/blocks-registry';
 ```js
 const { registerExpressPaymentMethod } = wc.wcBlocksRegistry;
 ```
+
+#### The registration options
 
 The registry function expects a JavaScript object with options specific to the payment method:
 
@@ -130,6 +138,8 @@ import { registerPaymentMethod } from '@woocommerce/blocks-registry';
 ```js
 const { registerPaymentMethod } = wc.wcBlocksRegistry;
 ```
+
+#### The registration options
 
 The registry function expects a JavaScript object with options specific to the payment method (see `PaymentMethodRegistrationOptions` typedef):
 
