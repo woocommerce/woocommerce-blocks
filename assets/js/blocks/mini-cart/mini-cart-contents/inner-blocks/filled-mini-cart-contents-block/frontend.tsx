@@ -1,7 +1,7 @@
 /**
  * External dependencies
  */
-import { StoreNoticesContainer } from '@woocommerce/base-context';
+import { StoreNoticesContainer } from '@woocommerce/blocks-checkout';
 import { useStoreCart } from '@woocommerce/base-context/hooks';
 
 import { useDispatch } from '@wordpress/data';
