@@ -21,26 +21,19 @@ import { STORE_KEY as CART_STORE_KEY } from './constants';
 import { apiFetchWithHeaders } from '../shared-controls';
 import type { ResponseError } from '../types';
 import { ReturnOrGeneratorYieldUnion } from '../mapped-types';
+import { receiveCart } from './thunks';
 
 // `Thunks are functions that can be dispatched, similar to actions creators
 export * from './thunks';
 
 /**
- * Returns an action object used in updating the store with the provided items
- * retrieved from a request using the given querystring.
+ * An action creator that dispatches the plain action responsible for setting the cart data in the store.
  *
- * This is a generic response action.
- *
- * @param {CartResponse} response
+ * @param {Cart} cart the parsed cart object. (Parsed into camelCase).
  */
-export const receiveCart = (
-	response: CartResponse
-): { type: string; response: Cart } => {
-	const cart = mapKeys( response, ( _, key ) =>
-		camelCase( key )
-	) as unknown as Cart;
+export const setCartData = ( cart: Cart ): { type: string; response: Cart } => {
 	return {
-		type: types.RECEIVE_CART,
+		type: types.SET_CART_DATA,
 		response: cart,
 	};
 };
@@ -63,7 +56,7 @@ export const receiveCartContents = (
 	) as unknown as Cart;
 	const { shippingAddress, billingAddress, ...cartWithoutAddress } = cart;
 	return {
-		type: types.RECEIVE_CART,
+		type: types.SET_CART_DATA,
 		response: cartWithoutAddress,
 	};
 };
