@@ -7,7 +7,7 @@
  */
 
 export const CustomerAccountBlock = (): JSX.Element => {
-	return <div>hello block!</div>;
+	return <div>Log in</div>;
 };
 
 export default CustomerAccountBlock;
