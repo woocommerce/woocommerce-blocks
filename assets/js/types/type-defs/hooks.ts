@@ -30,7 +30,7 @@ export interface StoreCartItemQuantity {
 export interface StoreCartCoupon {
 	appliedCoupons: Array< CartResponseCouponItem >;
 	isLoading: boolean;
-	applyCoupon: ( coupon: string ) => void;
+	applyCoupon: ( coupon: string ) => Promise< boolean >;
 	removeCoupon: ( coupon: string ) => void;
 	isApplyingCoupon: boolean;
 	isRemovingCoupon: boolean;
