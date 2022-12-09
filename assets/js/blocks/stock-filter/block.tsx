@@ -377,6 +377,31 @@ const StockStatusFilterBlock = ( {
 		[ checked, allowsMultipleOptions, displayedOptions ]
 	);
 
+	const onDropdownChange = ( tokens: string[] ) => {
+		if ( ! allowsMultipleOptions && tokens.length > 1 ) {
+			tokens = tokens.slice( -1 );
+		}
+
+		tokens = tokens.map( ( token ) => {
+			const displayOption = displayedOptions.find(
+				( option ) => option.value === token
+			);
+
+			return displayOption ? displayOption.value : token;
+		} );
+
+		const added = difference( tokens, checked );
+
+		if ( added.length === 1 ) {
+			return onChange( added[ 0 ] );
+		}
+
+		const removed = difference( checked, tokens );
+		if ( removed.length === 1 ) {
+			onChange( removed[ 0 ] );
+		}
+	};
+
 	if ( ! filteredCountsLoading && displayedOptions.length === 0 ) {
 		setWrapperVisibility( false );
 		return null;
@@ -446,35 +471,7 @@ const StockStatusFilterBlock = ( {
 								'Select stock status',
 								'woo-gutenberg-products-block'
 							) }
-							onChange={ ( tokens ) => {
-								if (
-									! allowsMultipleOptions &&
-									tokens.length > 1
-								) {
-									tokens = [ tokens[ tokens.length - 1 ] ];
-								}
-
-								tokens = tokens.map( ( token ) => {
-									const displayOption = displayedOptions.find(
-										( option ) => option.value === token
-									);
-
-									return displayOption
-										? displayOption.value
-										: token;
-								} );
-
-								const added = difference( tokens, checked );
-
-								if ( added.length === 1 ) {
-									return onChange( added[ 0 ] );
-								}
-
-								const removed = difference( checked, tokens );
-								if ( removed.length === 1 ) {
-									onChange( removed[ 0 ] );
-								}
-							} }
+							onChange={ onDropdownChange }
 							value={ checked }
 							displayTransform={ ( value: string ) => {
 								const result = displayedOptions.find(
