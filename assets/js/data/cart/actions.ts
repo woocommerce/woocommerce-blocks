@@ -22,6 +22,9 @@ import { apiFetchWithHeaders } from '../shared-controls';
 import type { ResponseError } from '../types';
 import { ReturnOrGeneratorYieldUnion } from '../mapped-types';
 
+// `Thunks are functions that can be dispatched, similar to actions creators
+export * from './thunks';
+
 /**
  * Returns an action object used in updating the store with the provided items
  * retrieved from a request using the given querystring.
