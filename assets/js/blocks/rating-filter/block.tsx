@@ -361,7 +361,7 @@ const RatingFilterBlock = ( {
 								.map( ( option ) => option.value ) }
 							disabled={ isLoading }
 							placeholder={ __(
-								'Select rating',
+								'Select Rating',
 								'woo-gutenberg-products-block'
 							) }
 							onChange={ ( tokens: string[] ) => {
