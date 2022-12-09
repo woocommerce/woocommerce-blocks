@@ -2,7 +2,6 @@
  * External dependencies
  */
 import { __, sprintf } from '@wordpress/i18n';
-import PropTypes from 'prop-types';
 import classNames from 'classnames';
 import ReadMore from '@woocommerce/base-components/read-more';
 
@@ -202,11 +201,6 @@ const ReviewListItem = ( { attributes, review = {} } ) => {
 			{ showReviewContent && getReviewContent( review ) }
 		</li>
 	);
-};
-
-ReviewListItem.propTypes = {
-	attributes: PropTypes.object.isRequired,
-	review: PropTypes.object,
 };
 
 /**
