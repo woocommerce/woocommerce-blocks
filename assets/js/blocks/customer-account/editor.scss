@@ -1,0 +1,11 @@
+.wc-block-customer-account__icon-style-toggle {
+	width: 100%;
+}
+
+.wc-block-customer-account__icon-option {
+	color: $select-dropdown-dark;
+
+	&.active {
+		color: $select-dropdown-light;
+	}
+}

@@ -22,6 +22,14 @@
 		"className": {
 			"type": "string",
 			"default": ""
+		},
+		"customerAccountDisplayStyle": {
+			"type": "string",
+			"default": "icon_and_text"
+		},
+		"customerAccountIconStyle": {
+			"type": "string",
+			"default": "default"
 		}
 	},
 	"textdomain": "woo-gutenberg-products-block",

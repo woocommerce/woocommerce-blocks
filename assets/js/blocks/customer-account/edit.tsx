@@ -12,6 +12,7 @@ import type { BlockEditProps } from '@wordpress/blocks';
 import Block from './block';
 import { Attributes } from './types';
 import { BlockSettings } from './sidebar-settings';
+import './editor.scss';
 
 const Edit = ( {
 	attributes,
@@ -23,13 +24,13 @@ const Edit = ( {
 	} );
 	return (
 		<>
-			<InspectorControls>
-				<BlockSettings
-					attributes={ attributes }
-					setAttributes={ setAttributes }
-				/>
-			</InspectorControls>
 			<div { ...blockProps }>
+				<InspectorControls>
+					<BlockSettings
+						attributes={ attributes }
+						setAttributes={ setAttributes }
+					/>
+				</InspectorControls>
 				<Disabled>
 					<Block />
 				</Disabled>
