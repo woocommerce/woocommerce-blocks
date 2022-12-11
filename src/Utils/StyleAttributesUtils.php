@@ -223,32 +223,48 @@ class StyleAttributesUtils {
 	/**
 	 * Get class and style for border-color from attributes.
 	 *
+	 * Data passed to this function is not always consistent. It can be:
+	 * Linked - preset color: $attributes['borderColor'] => 'luminous-vivid-orange'.
+	 * Linked - custom color: $attributes['style']['border']['color'] => '#681228'.
+	 * Unlinked - preset color: $attributes['style']['border']['top']['color'] => 'var:preset|color|luminous-vivid-orange'
+	 * Unlinked - custom color: $attributes['style']['border']['top']['color'] => '#681228'.
+	 *
 	 * @param array $attributes Block attributes.
 	 *
 	 * @return (array | null)
 	 */
 	public static function get_border_color_class_and_style( $attributes ) {
 
-		$border_color = $attributes['borderColor'] ?? '';
+		$border_color_linked_preset = $attributes['borderColor'] ?? '';
+		$border_color_linked_custom = $attributes['style']['border']['color'] ?? '';
+		$custom_border              = $attributes['style']['border'] ?? '';
 
-		$custom_border_color = $attributes['style']['border']['color'] ?? '';
+		$border_color_class = '';
+		$border_color_css   = '';
 
-		if ( ! $border_color && '' === $custom_border_color ) {
+		if ( $border_color_linked_preset ) {
+			// Linked preset color.
+			$border_color_class = sprintf( 'has-border-color has-%s-border-color', $border_color_linked_preset );
+		} elseif ( $border_color_linked_custom ) {
+			// Linked custom color.
+			$border_color_css .= 'border-color:' . $border_color_linked_custom . ';';
+		} else {
+			// Unlinked.
+			foreach ( $custom_border as $border_color_key => $border_color_value ) {
+				if ( array_key_exists( 'color', ( $border_color_value ) ) ) {
+					$border_color_css .= 'border-' . $border_color_key . '-color:' . self::get_color_value( $border_color_value['color'] ) . ';';
+				}
+			}
+		}
+
+		if ( ! $border_color_class && ! $border_color_css ) {
 			return null;
 		}
 
-		if ( $border_color ) {
-			return array(
-				'class' => sprintf( 'has-border-color has-%s-border-color', $border_color ),
-				'style' => null,
-			);
-		} elseif ( '' !== $custom_border_color ) {
-			return array(
-				'class' => null,
-				'style' => sprintf( 'border-color: %s;', $custom_border_color ),
-			);
-		}
-		return null;
+		return array(
+			'class' => $border_color_class,
+			'style' => $border_color_css,
+		);
 	}
 
 	/**
@@ -270,7 +286,7 @@ class StyleAttributesUtils {
 
 		if ( is_string( $custom_border_radius ) ) {
 			// Linked sides.
-			$custom_border_radius = 'border-radius:' . $custom_border_radius . ';';
+			$border_radius_css = 'border-radius:' . $custom_border_radius . ';';
 		} else {
 			// Unlinked sides.
 			$border_radius = array();
@@ -587,5 +603,24 @@ class StyleAttributesUtils {
 	 */
 	public static function get_preset_value( $preset_name ) {
 		return "var(--wp--preset--color--$preset_name)";
+	}
+
+	/**
+	 * If color value is in preset format, convert it to a CSS var. Else return same value
+	 * For example:
+	 * "var:preset|color|pale-pink" -> "var(--wp--preset--color--pale-pink)"
+	 * "#98b66e" -> "#98b66e"
+	 *
+	 * @param string $color_value value to be processed.
+	 *
+	 * @return (string)
+	 */
+	public static function get_color_value( $color_value ) {
+		if ( is_string( $color_value ) && str_contains( $color_value, 'var:preset|color|' ) ) {
+			$color_value = str_replace( 'var:preset|color|', '', $color_value );
+			return sprintf( 'var(--wp--preset--color--%s)', $color_value );
+		}
+
+		return $color_value;
 	}
 }
