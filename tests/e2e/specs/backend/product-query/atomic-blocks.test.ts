@@ -31,7 +31,7 @@ describeOrSkip( GUTENBERG_EDITOR_CONTEXT === 'gutenberg' )(
 		afterAll( async () => {
 			await visitBlockPage( `${ block.name } Block` );
 			await setPostContent( '' );
-			await insertBlock( 'Product Query' );
+			await insertBlock( 'Products (Beta)' );
 			await saveOrPublish();
 		} );
 
