@@ -1,11 +1,11 @@
 /**
  * External dependencies
  */
-import { isExperimentalBuild } from '@woocommerce/block-settings';
+import { isFeaturePluginBuild } from '@woocommerce/block-settings';
 import { registerBlockVariation } from '@wordpress/blocks';
 import { Icon } from '@wordpress/components';
 import { __ } from '@wordpress/i18n';
-import { sparkles } from '@wordpress/icons';
+import { stacks } from '@woocommerce/icons';
 
 /**
  * Internal dependencies
@@ -19,20 +19,23 @@ import {
 
 const VARIATION_NAME = 'woocommerce/product-query';
 
-if ( isExperimentalBuild() ) {
+if ( isFeaturePluginBuild() ) {
 	registerBlockVariation( QUERY_LOOP_ID, {
+		description: __(
+			'A block that displays a selection of products in your store.',
+			'woo-gutenberg-products-block'
+		),
 		name: VARIATION_NAME,
-		title: __( 'Product Query', 'woo-gutenberg-products-block' ),
+		/* translators: “Products“ is the name of the block. */
+		title: __( 'Products (Beta)', 'woo-gutenberg-products-block' ),
 		isActive: ( blockAttributes ) =>
 			blockAttributes.namespace === VARIATION_NAME,
-		icon: {
-			src: (
-				<Icon
-					icon={ sparkles }
-					className="wc-block-editor-components-block-icon wc-block-editor-components-block-icon--sparkles"
-				/>
-			),
-		},
+		icon: (
+			<Icon
+				icon={ stacks }
+				className="wc-block-editor-components-block-icon wc-block-editor-components-block-icon--stacks"
+			/>
+		),
 		attributes: {
 			...QUERY_DEFAULT_ATTRIBUTES,
 			namespace: VARIATION_NAME,
@@ -43,6 +46,6 @@ if ( isExperimentalBuild() ) {
 		// @ts-ignore
 		allowedControls: DEFAULT_ALLOWED_CONTROLS,
 		innerBlocks: INNER_BLOCKS_TEMPLATE,
-		scope: [ 'block', 'inserter' ],
+		scope: [ 'inserter' ],
 	} );
 }

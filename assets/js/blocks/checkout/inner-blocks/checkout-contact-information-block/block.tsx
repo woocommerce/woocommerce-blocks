@@ -10,6 +10,7 @@ import {
 } from '@woocommerce/blocks-checkout';
 import { useDispatch, useSelect } from '@wordpress/data';
 import { CHECKOUT_STORE_KEY } from '@woocommerce/block-data';
+import { isEmail } from '@wordpress/url';
 
 /**
  * Internal dependencies
@@ -20,9 +21,13 @@ const Block = ( {
 }: {
 	allowCreateAccount: boolean;
 } ): JSX.Element => {
-	const { customerId, shouldCreateAccount } = useSelect( ( select ) =>
-		select( CHECKOUT_STORE_KEY ).getCheckoutState()
-	);
+	const { customerId, shouldCreateAccount } = useSelect( ( select ) => {
+		const store = select( CHECKOUT_STORE_KEY );
+		return {
+			customerId: store.getCustomerId(),
+			shouldCreateAccount: store.getShouldCreateAccount(),
+		};
+	} );
 
 	const { __internalSetShouldCreateAccount } =
 		useDispatch( CHECKOUT_STORE_KEY );
@@ -56,11 +61,27 @@ const Block = ( {
 			<ValidatedTextInput
 				id="email"
 				type="email"
+				autoComplete="email"
 				label={ __( 'Email address', 'woo-gutenberg-products-block' ) }
 				value={ billingAddress.email }
-				autoComplete="email"
-				onChange={ onChangeEmail }
 				required={ true }
+				onChange={ onChangeEmail }
+				requiredMessage={ __(
+					'Please provide a valid email address',
+					'woo-gutenberg-products-block'
+				) }
+				customValidation={ ( inputObject: HTMLInputElement ) => {
+					if ( ! isEmail( inputObject.value ) ) {
+						inputObject.setCustomValidity(
+							__(
+								'Please provide a valid email address',
+								'woo-gutenberg-products-block'
+							)
+						);
+						return false;
+					}
+					return true;
+				} }
 			/>
 			{ createAccountUI }
 		</>
