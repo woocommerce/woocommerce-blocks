@@ -41,7 +41,7 @@ class ProductQuery extends AbstractBlock {
 
 	/** This is a feature flag to enable the custom inherit Global Query implementation.
 	 * This is not intended to be a permanent feature flag, but rather a temporary.
-	 * It is also necessary to enable this feature flag on the PHP side: `assets/js/blocks/product-query/variations/product-query.tsx:26`.
+	 * It is also necessary to enable this feature flag on the PHP side: `assets/js/blocks/product-query/utils.tsx:83`.
 	 * https://github.com/woocommerce/woocommerce-blocks/pull/7382
 	 *
 	 * @var boolean
@@ -122,11 +122,13 @@ class ProductQuery extends AbstractBlock {
 	public function update_rest_query( $args, $request ) {
 		$orderby          = $request->get_param( 'orderby' );
 		$woo_attributes   = $request->get_param( '__woocommerceAttributes' );
+		$woo_stock_status = $request->get_param( '__woocommerceStockStatus' );
 		$on_sale_query    = $request->get_param( '__woocommerceOnSale' ) === 'true' ? $this->get_on_sale_products_query() : array();
 		$orderby_query    = isset( $orderby ) ? $this->get_custom_orderby_query( $orderby ) : array();
 		$attributes_query = is_array( $woo_attributes ) ? $this->get_product_attributes_query( $woo_attributes ) : array();
+		$stock_query      = is_array( $woo_stock_status ) ? $this->get_stock_status_query( $woo_stock_status ) : array();
 
-		return array_merge( $args, $on_sale_query, $orderby_query, $attributes_query );
+		return array_merge( $args, $on_sale_query, $orderby_query, $attributes_query, $stock_query );
 	}
 
 	/**
@@ -352,6 +354,7 @@ class ProductQuery extends AbstractBlock {
 			'price_filter_query_args'      => array( PriceFilter::MIN_PRICE_QUERY_VAR, PriceFilter::MAX_PRICE_QUERY_VAR ),
 			'stock_filter_query_args'      => array( StockFilter::STOCK_STATUS_QUERY_VAR ),
 			'attributes_filter_query_args' => $attributes_filter_query_args,
+			'rating_filter_query_args'     => array( RatingFilter::RATING_QUERY_VAR ),
 		);
 
 	}
@@ -421,6 +424,7 @@ class ProductQuery extends AbstractBlock {
 			'price_filter'        => $this->get_filter_by_price_query(),
 			'attributes_filter'   => $this->get_filter_by_attributes_query(),
 			'stock_status_filter' => $this->get_filter_by_stock_status_query(),
+			'rating_filter'       => $this->get_filter_by_rating_query(),
 		);
 	}
 
@@ -434,11 +438,12 @@ class ProductQuery extends AbstractBlock {
 		$query            = $parsed_block['attrs']['query'];
 		$on_sale_enabled  = isset( $query['__woocommerceOnSale'] ) && true === $query['__woocommerceOnSale'];
 		$attributes_query = isset( $query['__woocommerceAttributes'] ) ? $this->get_product_attributes_query( $query['__woocommerceAttributes'] ) : array();
+		$stock_query      = isset( $query['__woocommerceStockStatus'] ) ? $this->get_stock_status_query( $query['__woocommerceStockStatus'] ) : array();
 
 		return array(
-			'attributes'   => $attributes_query,
 			'on_sale'      => ( $on_sale_enabled ? $this->get_on_sale_products_query() : array() ),
-			'stock_status' => isset( $query['__woocommerceStockStatus'] ) ? $this->get_stock_status_query( $query['__woocommerceStockStatus'] ) : array(),
+			'attributes'   => $attributes_query,
+			'stock_status' => $stock_query,
 		);
 	}
 
@@ -712,5 +717,42 @@ class ProductQuery extends AbstractBlock {
 		return $query;
 	}
 
-}
+	/**
+	 * Return a query that filters products by rating.
+	 *
+	 * @return array
+	 */
+	private function get_filter_by_rating_query() {
+		$filter_rating_values = get_query_var( RatingFilter::RATING_QUERY_VAR );
+		if ( empty( $filter_rating_values ) ) {
+			return array();
+		}
 
+		$parsed_filter_rating_values = explode( ',', $filter_rating_values );
+		$product_visibility_terms    = wc_get_product_visibility_term_ids();
+
+		if ( empty( $parsed_filter_rating_values ) || empty( $product_visibility_terms ) ) {
+			return array();
+		}
+
+		$rating_terms = array_map(
+			function( $rating ) use ( $product_visibility_terms ) {
+				return $product_visibility_terms[ 'rated-' . $rating ];
+			},
+			$parsed_filter_rating_values
+		);
+
+		return array(
+			'tax_query' => array(
+				array(
+					'field'         => 'term_taxonomy_id',
+					'taxonomy'      => 'product_visibility',
+					'terms'         => $rating_terms,
+					'operator'      => 'IN',
+					'rating_filter' => true,
+				),
+			),
+		);
+	}
+
+}
