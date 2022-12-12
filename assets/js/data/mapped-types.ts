@@ -30,6 +30,14 @@ export type SelectFromMap< S extends object > = {
 	) => ReturnType< S[ selector ] >;
 };
 
+export type ResolveSelectFromMap< S extends object > = {
+	[ selector in FunctionKeys< S > ]: (
+		...args: Parameters< S[ selector ] >
+	) => ReturnType< S[ selector ] > extends Promise< any >
+		? Promise< ReturnType< S[ selector ] > >
+		: void;
+};
+
 /**
  * Maps a "raw" actionCreators object to the actions available when registered on the @wordpress/data store.
  *
