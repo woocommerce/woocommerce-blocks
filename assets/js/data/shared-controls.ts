@@ -115,7 +115,12 @@ export const controls = {};
  *
  * @param {APIFetchOptions} options The options for the API request.
  */
-export const apiFetchWithHeaders = ( options: APIFetchOptions ) => {
+export const apiFetchWithHeaders = (
+	options: APIFetchOptions
+): Promise<
+	| { response: Response; headers: Response[ 'headers' ] }
+	| { response: ApiResponse[ 'body' ]; headers: ApiResponse[ 'headers' ] }
+> => {
 	return new Promise( ( resolve, reject ) => {
 		// GET Requests cannot be batched.
 		if (
@@ -124,7 +129,7 @@ export const apiFetchWithHeaders = ( options: APIFetchOptions ) => {
 			isWpVersion( '5.6', '<' )
 		) {
 			// Parse is disabled here to avoid returning just the body--we also need headers.
-			triggerFetch( {
+			triggerFetch< Response >( {
 				...options,
 				parse: false,
 			} )
