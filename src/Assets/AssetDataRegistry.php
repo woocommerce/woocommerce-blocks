@@ -84,6 +84,7 @@ class AssetDataRegistry {
 			'adminUrl'           => admin_url(),
 			'countries'          => WC()->countries->get_countries(),
 			'currency'           => $this->get_currency_data(),
+			'currentUserId'      => get_current_user_id(),
 			'currentUserIsAdmin' => current_user_can( 'manage_woocommerce' ),
 			'homeUrl'            => esc_url( home_url( '/' ) ),
 			'locale'             => $this->get_locale_data(),

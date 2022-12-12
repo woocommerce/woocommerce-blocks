@@ -18,7 +18,6 @@ export const parseAttributes = ( data: Record< string, unknown > ) => {
 const getProps = ( el: HTMLElement ) => {
 	return {
 		attributes: parseAttributes( el.dataset ),
-		isEditor: false,
 	};
 };
 

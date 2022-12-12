@@ -33,7 +33,7 @@ const Edit = ( {
 					/>
 				</InspectorControls>
 				<Disabled>
-					<Block attributes={ attributes } isEditor={ true } />
+					<Block attributes={ attributes } />
 				</Disabled>
 			</div>
 		</>
