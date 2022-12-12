@@ -158,7 +158,7 @@ export const TOOLS_PANEL_CONTROLS = {
 					'woo-gutenberg-products-block'
 				) }
 				help={ __(
-					'Toggle to use the global query context that is set with the current template, such as an archive or search. Disable to customize the settings independently.',
+					'Toggle to use the global query context that is set with the current template, such as variations of the product catalog or search. Disable to customize the filtering independently.',
 					'woo-gutenberg-products-block'
 				) }
 				checked={
