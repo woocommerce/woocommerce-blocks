@@ -143,17 +143,12 @@ describeOrSkip( GUTENBERG_EDITOR_CONTEXT === 'gutenberg' )(
 				);
 			} );
 
-			it( 'Editor preview shows correct products that has enabled stock statuses', async () => {
+			it( 'The filter works in both editor and front end', async () => {
 				await clearSelectedTokens( $productFiltersPanel );
 				await selectToken( 'Stock status', 'Out of stock' );
 				expect( await getPreviewProducts() ).toHaveLength(
 					outOfStockCount
 				);
-			} );
-
-			it( 'Works on the front end', async () => {
-				await clearSelectedTokens( $productFiltersPanel );
-				await selectToken( 'Stock status', 'Out of stock' );
 				await saveOrPublish();
 				await shopper.block.goToBlockPage( block.name );
 				expect( await getFrontEndProducts() ).toHaveLength(
