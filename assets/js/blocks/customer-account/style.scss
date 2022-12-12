@@ -1,0 +1,20 @@
+.wc-block-customer-account__icon-style-toggle {
+	width: 100%;
+}
+
+.wp-block-woocommerce-customer-account {
+	a {
+		text-decoration: none;
+		align-items: center;
+		display: flex;
+		color: currentColor !important;
+
+		&:hover {
+			text-decoration: underline;
+		}
+
+		.icon + .label {
+			margin-left: $gap-smaller;
+		}
+	}
+}

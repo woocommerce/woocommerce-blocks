@@ -13,6 +13,7 @@ import { __ } from '@wordpress/i18n';
  * Internal dependencies
  */
 import { Attributes, DisplayStyle, IconStyle } from './types';
+import './style.scss';
 
 const AccountIcon = ( {
 	iconStyle,
@@ -22,13 +23,13 @@ const AccountIcon = ( {
 	displayStyle: DisplayStyle;
 } ) => {
 	const icon =
-		iconStyle === IconStyle.ALT ? (
-			<Icon icon={ customerAccountStyleAlt } size={ 18 } />
-		) : (
-			<Icon icon={ customerAccountStyle } size={ 18 } />
-		);
+		iconStyle === IconStyle.ALT
+			? customerAccountStyleAlt
+			: customerAccountStyle;
 
-	return displayStyle === DisplayStyle.TEXT_ONLY ? null : icon;
+	return displayStyle === DisplayStyle.TEXT_ONLY ? null : (
+		<Icon className="icon" icon={ icon } size={ 16 } />
+	);
 };
 
 const Label = ( { displayStyle }: { displayStyle: DisplayStyle } ) => {
@@ -39,7 +40,7 @@ const Label = ( { displayStyle }: { displayStyle: DisplayStyle } ) => {
 	}
 
 	return (
-		<span>
+		<span className="label">
 			{ currentUserId
 				? __( 'My Account', 'woo-gutenberg-products-block' )
 				: __( 'Log in', 'woo-gutenberg-products-block' ) }
