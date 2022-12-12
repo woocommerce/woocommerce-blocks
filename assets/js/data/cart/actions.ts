@@ -11,13 +11,11 @@ import type {
 import { camelCase, mapKeys } from 'lodash';
 import type { AddToCartEventDetail } from '@woocommerce/type-defs/events';
 import { BillingAddress, ShippingAddress } from '@woocommerce/settings';
-import { controls } from '@wordpress/data';
 
 /**
  * Internal dependencies
  */
 import { ACTION_TYPES as types } from './action-types';
-import { STORE_KEY as CART_STORE_KEY } from './constants';
 import { apiFetchWithHeaders } from '../shared-controls';
 import type { ResponseError } from '../types';
 import { ReturnOrGeneratorYieldUnion } from '../mapped-types';
@@ -204,29 +202,29 @@ export const triggerAddedToCartEvent = ( {
  *
  * @param {Object} args The data to be posted to the endpoint
  */
-export function* applyExtensionCartUpdate(
-	args: ExtensionCartUpdateArgs
-): Generator< unknown, CartResponse, { response: CartResponse } > {
-	try {
-		const { response } = yield apiFetchWithHeaders( {
-			path: '/wc/store/v1/cart/extensions',
-			method: 'POST',
-			data: { namespace: args.namespace, data: args.data },
-			cache: 'no-store',
-		} );
-		yield receiveCart( response );
-		return response;
-	} catch ( error ) {
-		yield receiveError( error );
-		// If updated cart state was returned, also update that.
-		if ( error.data?.cart ) {
-			yield receiveCart( error.data.cart );
-		}
+export const applyExtensionCartUpdate =
+	( args: ExtensionCartUpdateArgs ) =>
+	async ( { dispatch } ) => {
+		try {
+			const { response } = await apiFetchWithHeaders( {
+				path: '/wc/store/v1/cart/extensions',
+				method: 'POST',
+				data: { namespace: args.namespace, data: args.data },
+				cache: 'no-store',
+			} );
+			dispatch.receiveCart( response );
+			return response;
+		} catch ( error ) {
+			dispatch.receiveError( error );
+			// If updated cart state was returned, also update that.
+			if ( error.data?.cart ) {
+				dispatch.receiveCart( error.data.cart );
+			}
 
-		// Re-throw the error.
-		throw error;
-	}
-}
+			// Re-throw the error.
+			throw error;
+		}
+	};
 
 /**
  * Applies a coupon code and either invalidates caches, or receives an error if
@@ -393,42 +391,40 @@ export function* removeItemFromCart(
  * @param {string} cartItemKey Cart item being updated.
  * @param {number} quantity    Specified (new) quantity.
  */
-export function* changeCartItemQuantity(
-	cartItemKey: string,
-	quantity: number
-	// eslint-disable-next-line @typescript-eslint/no-explicit-any -- unclear how to represent multiple different yields as type
-): Generator< unknown, void, any > {
-	const cartItem = yield controls.resolveSelect(
-		CART_STORE_KEY,
-		'getCartItem',
-		cartItemKey
-	);
-	if ( cartItem?.quantity === quantity ) {
-		return;
-	}
-	yield itemIsPendingQuantity( cartItemKey );
-	try {
-		const { response } = yield apiFetchWithHeaders( {
-			path: '/wc/store/v1/cart/update-item',
-			method: 'POST',
-			data: {
-				key: cartItemKey,
-				quantity,
-			},
-			cache: 'no-store',
-		} );
-
-		yield receiveCart( response );
-	} catch ( error ) {
-		yield receiveError( error );
-
-		// If updated cart state was returned, also update that.
-		if ( error.data?.cart ) {
-			yield receiveCart( error.data.cart );
+export const changeCartItemQuantity =
+	(
+		cartItemKey: string,
+		quantity: number
+		// eslint-disable-next-line @typescript-eslint/no-explicit-any -- unclear how to represent multiple different yields as type
+	) =>
+	async ( { dispatch, resolveSelect }: CartThunk ) => {
+		const cartItem = await resolveSelect.getCartItem( cartItemKey );
+		if ( cartItem?.quantity === quantity ) {
+			return;
 		}
-	}
-	yield itemIsPendingQuantity( cartItemKey, false );
-}
+		dispatch.itemIsPendingQuantity( cartItemKey );
+		try {
+			const { response } = await apiFetchWithHeaders( {
+				path: '/wc/store/v1/cart/update-item',
+				method: 'POST',
+				data: {
+					key: cartItemKey,
+					quantity,
+				},
+				cache: 'no-store',
+			} );
+
+			dispatch.receiveCart( response );
+		} catch ( error ) {
+			dispatch.receiveError( error );
+
+			// If updated cart state was returned, also update that.
+			if ( error.data?.cart ) {
+				dispatch.receiveCart( error.data.cart );
+			}
+		}
+		dispatch.itemIsPendingQuantity( cartItemKey, false );
+	};
 
 /**
  * Selects a shipping rate.
