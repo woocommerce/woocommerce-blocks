@@ -1,11 +1,16 @@
 /**
  * Internal dependencies
  */
-import { isPostcode } from '../isPostcode';
+import isPostcode from '../isPostcode';
 import type { IsPostcodeProps } from '../isPostcode';
 
 describe( 'isPostcode', () => {
 	const cases = [
+		// Invalid postcodes
+		[ false, '!1000', undefined ],
+		[ false, '1.000', undefined ],
+		[ false, '10_00', undefined ],
+
 		// Austrian postcodes
 		[ true, '1000', 'AT' ],
 		[ true, '9999', 'AT' ],
