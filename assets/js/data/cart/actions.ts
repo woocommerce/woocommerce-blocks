@@ -540,4 +540,6 @@ export type CartAction = ReturnOrGeneratorYieldUnion<
 	| typeof changeCartItemQuantity
 	| typeof addItemToCart
 	| typeof setCartData
+	| typeof applyCoupon
+	| typeof removeCoupon
 >;
