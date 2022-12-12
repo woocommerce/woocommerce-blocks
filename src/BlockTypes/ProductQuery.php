@@ -41,12 +41,19 @@ class ProductQuery extends AbstractBlock {
 
 	/** This is a feature flag to enable the custom inherit Global Query implementation.
 	 * This is not intended to be a permanent feature flag, but rather a temporary.
-	 * It is also necessary to enable this feature flag on the PHP side: `assets/js/blocks/product-query/variations/product-query.tsx:26`.
+	 * It is also necessary to enable this feature flag on the PHP side: `assets/js/blocks/product-query/utils.tsx:83`.
 	 * https://github.com/woocommerce/woocommerce-blocks/pull/7382
 	 *
 	 * @var boolean
 	 */
 	protected $is_custom_inherit_global_query_implementation_enabled = false;
+
+	/**
+	 * All query args from WP_Query.
+	 *
+	 * @var array
+	 */
+	protected $valid_query_vars;
 
 	/**
 	 * Initialize this block type.
@@ -113,10 +120,15 @@ class ProductQuery extends AbstractBlock {
 	 * @param WP_REST_Request $request Request.
 	 */
 	public function update_rest_query( $args, $request ) {
-		$on_sale_query = $request->get_param( '__woocommerceOnSale' ) !== 'true' ? array() : $this->get_on_sale_products_query();
-		$orderby_query = $this->get_custom_orderby_query( $request->get_param( 'orderby' ) );
+		$orderby          = $request->get_param( 'orderby' );
+		$woo_attributes   = $request->get_param( '__woocommerceAttributes' );
+		$woo_stock_status = $request->get_param( '__woocommerceStockStatus' );
+		$on_sale_query    = $request->get_param( '__woocommerceOnSale' ) === 'true' ? $this->get_on_sale_products_query() : array();
+		$orderby_query    = isset( $orderby ) ? $this->get_custom_orderby_query( $orderby ) : array();
+		$attributes_query = is_array( $woo_attributes ) ? $this->get_product_attributes_query( $woo_attributes ) : array();
+		$stock_query      = is_array( $woo_stock_status ) ? $this->get_stock_status_query( $woo_stock_status ) : array();
 
-		return array_merge( $args, $on_sale_query, $orderby_query );
+		return array_merge( $args, $on_sale_query, $orderby_query, $attributes_query, $stock_query );
 	}
 
 	/**
@@ -186,42 +198,17 @@ class ProductQuery extends AbstractBlock {
 	 * @return array
 	 */
 	private function merge_queries( ...$queries ) {
-		$valid_query_vars = array_keys( ( new WP_Query() )->fill_query_vars( array() ) );
-		$valid_query_vars = array_merge(
-			$valid_query_vars,
-			// fill_query_vars doesn't include these vars so we need to add them manually.
-			array(
-				'date_query',
-				'exact',
-				'ignore_sticky_posts',
-				'lazy_load_term_meta',
-				'meta_compare_key',
-				'meta_compare',
-				'meta_query',
-				'meta_type_key',
-				'meta_type',
-				'nopaging',
-				'offset',
-				'order',
-				'orderby',
-				'page',
-				'post_type',
-				'posts_per_page',
-				'suppress_filters',
-				'tax_query',
-			)
-		);
-
 		$merged_query = array_reduce(
 			$queries,
-			function( $acc, $query ) use ( $valid_query_vars ) {
+			function( $acc, $query ) {
 				if ( ! is_array( $query ) ) {
 					return $acc;
 				}
-				if ( empty( array_intersect( $valid_query_vars, array_keys( $query ) ) ) ) {
+				// If the $query doesn't contain any valid query keys, we unpack/spread it then merge.
+				if ( empty( array_intersect( $this->get_valid_query_vars(), array_keys( $query ) ) ) ) {
 					return $this->merge_queries( $acc, ...array_values( $query ) );
 				}
-				return array_merge_recursive( $acc, $query );
+				return $this->array_merge_recursive_replace_non_array_properties( $acc, $query );
 			},
 			array()
 		);
@@ -298,6 +285,40 @@ class ProductQuery extends AbstractBlock {
 	}
 
 	/**
+	 * Return the `tax_query` for the requested attributes
+	 *
+	 * @param array $attributes  Attributes and their terms.
+	 *
+	 * @return array
+	 */
+	private function get_product_attributes_query( $attributes = array() ) {
+		$grouped_attributes = array_reduce(
+			$attributes,
+			function ( $carry, $item ) {
+				$taxonomy = sanitize_title( $item['taxonomy'] );
+
+				if ( ! key_exists( $taxonomy, $carry ) ) {
+					$carry[ $taxonomy ] = array(
+						'field'    => 'term_id',
+						'operator' => 'IN',
+						'taxonomy' => $taxonomy,
+						'terms'    => array( $item['termId'] ),
+					);
+				} else {
+					$carry[ $taxonomy ]['terms'][] = $item['termId'];
+				}
+
+				return $carry;
+			},
+			array()
+		);
+
+		return array(
+			'tax_query' => array_values( $grouped_attributes ),
+		);
+	}
+
+	/**
 	 * Return a query for products depending on their stock status.
 	 *
 	 * @param array $stock_statii An array of acceptable stock statii.
@@ -333,6 +354,7 @@ class ProductQuery extends AbstractBlock {
 			'price_filter_query_args'      => array( PriceFilter::MIN_PRICE_QUERY_VAR, PriceFilter::MAX_PRICE_QUERY_VAR ),
 			'stock_filter_query_args'      => array( StockFilter::STOCK_STATUS_QUERY_VAR ),
 			'attributes_filter_query_args' => $attributes_filter_query_args,
+			'rating_filter_query_args'     => array( RatingFilter::RATING_QUERY_VAR ),
 		);
 
 	}
@@ -402,6 +424,7 @@ class ProductQuery extends AbstractBlock {
 			'price_filter'        => $this->get_filter_by_price_query(),
 			'attributes_filter'   => $this->get_filter_by_attributes_query(),
 			'stock_status_filter' => $this->get_filter_by_stock_status_query(),
+			'rating_filter'       => $this->get_filter_by_rating_query(),
 		);
 	}
 
@@ -412,12 +435,15 @@ class ProductQuery extends AbstractBlock {
 	 * @return array
 	 */
 	private function get_queries_by_attributes( $parsed_block ) {
-		$query           = $parsed_block['attrs']['query'];
-		$on_sale_enabled = isset( $query['__woocommerceOnSale'] ) && true === $query['__woocommerceOnSale'];
+		$query            = $parsed_block['attrs']['query'];
+		$on_sale_enabled  = isset( $query['__woocommerceOnSale'] ) && true === $query['__woocommerceOnSale'];
+		$attributes_query = isset( $query['__woocommerceAttributes'] ) ? $this->get_product_attributes_query( $query['__woocommerceAttributes'] ) : array();
+		$stock_query      = isset( $query['__woocommerceStockStatus'] ) ? $this->get_stock_status_query( $query['__woocommerceStockStatus'] ) : array();
 
 		return array(
 			'on_sale'      => ( $on_sale_enabled ? $this->get_on_sale_products_query() : array() ),
-			'stock_status' => isset( $query['__woocommerceStockStatus'] ) ? $this->get_stock_status_query( $query['__woocommerceStockStatus'] ) : array(),
+			'attributes'   => $attributes_query,
+			'stock_status' => $stock_query,
 		);
 	}
 
@@ -450,9 +476,11 @@ class ProductQuery extends AbstractBlock {
 
 		return array(
 			'meta_query' => array(
-				'relation' => 'AND',
-				$max_price_query,
-				$min_price_query,
+				array(
+					'relation' => 'AND',
+					$max_price_query,
+					$min_price_query,
+				),
 			),
 		);
 	}
@@ -499,8 +527,10 @@ class ProductQuery extends AbstractBlock {
 
 		return array(
 			'tax_query' => array(
-				'relation' => 'AND',
-				$queries,
+				array(
+					'relation' => 'AND',
+					$queries,
+				),
 			),
 		);
 	}
@@ -543,6 +573,112 @@ class ProductQuery extends AbstractBlock {
 	}
 
 	/**
+	 * Return or initialize $valid_query_vars.
+	 *
+	 * @return array
+	 */
+	private function get_valid_query_vars() {
+		if ( ! empty( $this->valid_query_vars ) ) {
+			return $this->valid_query_vars;
+		}
+
+		$valid_query_vars       = array_keys( ( new WP_Query() )->fill_query_vars( array() ) );
+		$this->valid_query_vars = array_merge(
+			$valid_query_vars,
+			// fill_query_vars doesn't include these vars so we need to add them manually.
+			array(
+				'date_query',
+				'exact',
+				'ignore_sticky_posts',
+				'lazy_load_term_meta',
+				'meta_compare_key',
+				'meta_compare',
+				'meta_query',
+				'meta_type_key',
+				'meta_type',
+				'nopaging',
+				'offset',
+				'order',
+				'orderby',
+				'page',
+				'post_type',
+				'posts_per_page',
+				'suppress_filters',
+				'tax_query',
+			)
+		);
+
+		return $this->valid_query_vars;
+	}
+
+	/**
+	 * Merge two array recursively but replace the non-array values instead of
+	 * merging them. The merging strategy:
+	 *
+	 * - If keys from merge array doesn't exist in the base array, create them.
+	 * - For array items with numeric keys, we merge them as normal.
+	 * - For array items with string keys:
+	 *
+	 *   - If the value isn't array, we'll use the value comming from the merge array.
+	 *     $base = ['orderby' => 'date']
+	 *     $new  = ['orderby' => 'meta_value_num']
+	 *     Result: ['orderby' => 'meta_value_num']
+	 *
+	 *   - If the value is array, we'll use recursion to merge each key.
+	 *     $base = ['meta_query' => [
+	 *       [
+	 *         'key'     => '_stock_status',
+	 *         'compare' => 'IN'
+	 *         'value'   =>  ['instock', 'onbackorder']
+	 *       ]
+	 *     ]]
+	 *     $new  = ['meta_query' => [
+	 *       [
+	 *         'relation' => 'AND',
+	 *         [...<max_price_query>],
+	 *         [...<min_price_query>],
+	 *       ]
+	 *     ]]
+	 *     Result: ['meta_query' => [
+	 *       [
+	 *         'key'     => '_stock_status',
+	 *         'compare' => 'IN'
+	 *         'value'   =>  ['instock', 'onbackorder']
+	 *       ],
+	 *       [
+	 *         'relation' => 'AND',
+	 *         [...<max_price_query>],
+	 *         [...<min_price_query>],
+	 *       ]
+	 *     ]]
+	 *
+	 *     $base = ['post__in' => [1, 2, 3, 4, 5]]
+	 *     $new  = ['post__in' => [3, 4, 5, 6, 7]]
+	 *     Result: ['post__in' => [1, 2, 3, 4, 5, 3, 4, 5, 6, 7]]
+	 *
+	 * @param array $base First array.
+	 * @param array $new  Second array.
+	 */
+	private function array_merge_recursive_replace_non_array_properties( $base, $new ) {
+		foreach ( $new as $key => $value ) {
+			if ( is_numeric( $key ) ) {
+				$base[] = $value;
+			} else {
+				if ( is_array( $value ) ) {
+					if ( ! isset( $base[ $key ] ) ) {
+						$base[ $key ] = array();
+					}
+					$base[ $key ] = $this->array_merge_recursive_replace_non_array_properties( $base[ $key ], $value );
+				} else {
+					$base[ $key ] = $value;
+				}
+			}
+		}
+
+		return $base;
+	}
+
+	/**
 	 * Get product-related query variables from the global query.
 	 *
 	 * @param array $parsed_block The Product Query that being rendered.
@@ -579,6 +715,44 @@ class ProductQuery extends AbstractBlock {
 		}
 
 		return $query;
+	}
+
+	/**
+	 * Return a query that filters products by rating.
+	 *
+	 * @return array
+	 */
+	private function get_filter_by_rating_query() {
+		$filter_rating_values = get_query_var( RatingFilter::RATING_QUERY_VAR );
+		if ( empty( $filter_rating_values ) ) {
+			return array();
+		}
+
+		$parsed_filter_rating_values = explode( ',', $filter_rating_values );
+		$product_visibility_terms    = wc_get_product_visibility_term_ids();
+
+		if ( empty( $parsed_filter_rating_values ) || empty( $product_visibility_terms ) ) {
+			return array();
+		}
+
+		$rating_terms = array_map(
+			function( $rating ) use ( $product_visibility_terms ) {
+				return $product_visibility_terms[ 'rated-' . $rating ];
+			},
+			$parsed_filter_rating_values
+		);
+
+		return array(
+			'tax_query' => array(
+				array(
+					'field'         => 'term_taxonomy_id',
+					'taxonomy'      => 'product_visibility',
+					'terms'         => $rating_terms,
+					'operator'      => 'IN',
+					'rating_filter' => true,
+				),
+			),
+		);
 	}
 
 }
