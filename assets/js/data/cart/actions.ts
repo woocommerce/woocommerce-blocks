@@ -315,36 +315,35 @@ export const removeCoupon =
  * @param {number} [quantity=1] Number of product ID being added to cart.
  * @throws           Will throw an error if there is an API problem.
  */
-export function* addItemToCart(
-	productId: number,
-	quantity = 1
-): Generator< unknown, void, { response: CartResponse } > {
-	try {
-		yield triggerAddingToCartEvent();
-		const { response } = yield apiFetchWithHeaders( {
-			path: `/wc/store/v1/cart/add-item`,
-			method: 'POST',
-			data: {
-				id: productId,
-				quantity,
-			},
-			cache: 'no-store',
-		} );
+export const addItemToCart =
+	( productId: number, quantity = 1 ) =>
+	async ( { dispatch } ) => {
+		try {
+			dispatch.triggerAddingToCartEvent();
+			const { response } = await apiFetchWithHeaders( {
+				path: `/wc/store/v1/cart/add-item`,
+				method: 'POST',
+				data: {
+					id: productId,
+					quantity,
+				},
+				cache: 'no-store',
+			} );
 
-		yield receiveCart( response );
-		yield triggerAddedToCartEvent( { preserveCartData: true } );
-	} catch ( error ) {
-		yield receiveError( error );
+			dispatch.receiveCart( response );
+			dispatch.triggerAddedToCartEvent( { preserveCartData: true } );
+		} catch ( error ) {
+			dispatch.receiveError( error );
 
-		// If updated cart state was returned, also update that.
-		if ( error.data?.cart ) {
-			yield receiveCart( error.data.cart );
+			// If updated cart state was returned, also update that.
+			if ( error.data?.cart ) {
+				dispatch.receiveCart( error.data.cart );
+			}
+
+			// Re-throw the error.
+			throw error;
 		}
-
-		// Re-throw the error.
-		throw error;
-	}
-}
+	};
 
 /**
  * Removes specified item from the cart:
