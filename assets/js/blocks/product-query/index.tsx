@@ -12,7 +12,6 @@ import { CORE_NAME as PRODUCT_SUMMARY_ID } from './variations/elements/product-s
 import './inspector-controls';
 import './style.scss';
 import './variations/product-query';
-import './variations/products-on-sale';
 
 const EXTENDED_CORE_ELEMENTS = [ PRODUCT_SUMMARY_ID, PRODUCT_TITLE_ID ];
 
