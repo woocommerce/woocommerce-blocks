@@ -24,7 +24,6 @@ import {
 	getAllTemplates,
 	goToTemplateEditor,
 	goToTemplatesList,
-	GUTENBERG_EDITOR_CONTEXT,
 	saveTemplate,
 	useTheme,
 } from '../../utils';
@@ -131,30 +130,15 @@ const CUSTOMIZED_STRING = 'My awesome customization';
 const WOOCOMMERCE_ID = 'woocommerce/woocommerce';
 const WOOCOMMERCE_PARSED_ID = 'WooCommerce';
 
-/**
- * This is a workaround to avoid the E2E test suite failing when the test site has Gutenberg enabled.
- * The problem is that the current version of Gutenberg in WordPress Core and the version of the plugin Gutenberg generate different snapshots.
- * It is not easy having different snapshots for the same test: theoretically, we should have a dedicated snapshot when Gutenberg is enabled and another one when Gutenberg is disabled.
- * We can remove this workaround when WordPress 6.1 is released.
- *
- * @todo Remove runOnlyWhenGutenbergIsDisabled function and relative workarounds when WordPress 6.1 is released.
- */
-
-const runOnlyWhenGutenbergIsDisabled = ( fn ) => {
-	if ( GUTENBERG_EDITOR_CONTEXT === 'core' ) {
-		fn();
-	}
-};
-
-describe( 'Store Editing Templates', () => {
+describe.skip( 'Store Editing Templates', () => {
 	useTheme( 'emptytheme' );
 
-	beforeAll( async () => {
-		await deleteAllTemplates( 'wp_template' );
-		await deleteAllTemplates( 'wp_template_part' );
-	} );
-
 	describe( 'Single Product block template', () => {
+		beforeAll( async () => {
+			await deleteAllTemplates( 'wp_template' );
+			await deleteAllTemplates( 'wp_template_part' );
+		} );
+
 		it( 'default template from WooCommerce Blocks is available on an FSE theme', async () => {
 			const EXPECTED_TEMPLATE = defaultTemplateProps( 'Single Product' );
 
@@ -175,26 +159,23 @@ describe( 'Store Editing Templates', () => {
 			}
 		} );
 
-		runOnlyWhenGutenbergIsDisabled( () =>
-			it( 'should contain the "WooCommerce Single Product Block" classic template', async () => {
-				await goToTemplateEditor( {
-					postId: 'woocommerce/woocommerce//single-product',
-				} );
+		it( 'should contain the "WooCommerce Single Product Block" classic template', async () => {
+			await goToTemplateEditor( {
+				postId: 'woocommerce/woocommerce//single-product',
+			} );
 
-				const [ classicBlock ] = await filterCurrentBlocks(
-					( block ) =>
-						block.name === BLOCK_DATA[ 'single-product' ].name
-				);
+			const [ classicBlock ] = await filterCurrentBlocks(
+				( block ) => block.name === BLOCK_DATA[ 'single-product' ].name
+			);
 
-				// Comparing only the `template` property currently
-				// because the other properties seem to be slightly unreliable.
-				// Investigation pending.
-				expect( classicBlock.attributes.template ).toBe(
-					BLOCK_DATA[ 'single-product' ].attributes.template
-				);
-				expect( await getCurrentSiteEditorContent() ).toMatchSnapshot();
-			} )
-		);
+			// Comparing only the `template` property currently
+			// because the other properties seem to be slightly unreliable.
+			// Investigation pending.
+			expect( classicBlock.attributes.template ).toBe(
+				BLOCK_DATA[ 'single-product' ].attributes.template
+			);
+			expect( await getCurrentSiteEditorContent() ).toMatchSnapshot();
+		} );
 
 		it( 'should show the action menu if the template has been customized by the user', async () => {
 			const EXPECTED_TEMPLATE = {
@@ -251,6 +232,11 @@ describe( 'Store Editing Templates', () => {
 	} );
 
 	describe( 'Product Catalog block template', () => {
+		beforeAll( async () => {
+			await deleteAllTemplates( 'wp_template' );
+			await deleteAllTemplates( 'wp_template_part' );
+		} );
+
 		it( 'default template from WooCommerce Blocks is available on an FSE theme', async () => {
 			const EXPECTED_TEMPLATE = defaultTemplateProps( 'Product Catalog' );
 
@@ -271,23 +257,20 @@ describe( 'Store Editing Templates', () => {
 			}
 		} );
 
-		runOnlyWhenGutenbergIsDisabled( () =>
-			it( 'should contain the "WooCommerce Product Grid Block" classic template', async () => {
-				await goToTemplateEditor( {
-					postId: 'woocommerce/woocommerce//archive-product',
-				} );
+		it( 'should contain the "WooCommerce Product Grid Block" classic template', async () => {
+			await goToTemplateEditor( {
+				postId: 'woocommerce/woocommerce//archive-product',
+			} );
 
-				const [ classicBlock ] = await filterCurrentBlocks(
-					( block ) =>
-						block.name === BLOCK_DATA[ 'archive-product' ].name
-				);
+			const [ classicBlock ] = await filterCurrentBlocks(
+				( block ) => block.name === BLOCK_DATA[ 'archive-product' ].name
+			);
 
-				expect( classicBlock.attributes.template ).toBe(
-					BLOCK_DATA[ 'archive-product' ].attributes.template
-				);
-				expect( await getCurrentSiteEditorContent() ).toMatchSnapshot();
-			} )
-		);
+			expect( classicBlock.attributes.template ).toBe(
+				BLOCK_DATA[ 'archive-product' ].attributes.template
+			);
+			expect( await getCurrentSiteEditorContent() ).toMatchSnapshot();
+		} );
 
 		it( 'should show the action menu if the template has been customized by the user', async () => {
 			const EXPECTED_TEMPLATE = {
@@ -329,13 +312,7 @@ describe( 'Store Editing Templates', () => {
 		} );
 
 		it( 'should show the user customization on the front-end', async () => {
-			await page.goto( new URL( '/?post_type=product', BASE_URL ) );
-			const exampleProductName = 'Woo Single #1';
-
-			await visitPostOfType( exampleProductName, 'product' );
-			const permalink = await getNormalPagePermalink();
-
-			await page.goto( permalink );
+			await page.goto( new URL( BASE_URL + '/shop' ) );
 
 			await expect( page ).toMatchElement( 'p', {
 				text: CUSTOMIZED_STRING,
@@ -345,6 +322,11 @@ describe( 'Store Editing Templates', () => {
 	} );
 
 	describe( 'Product by Category block template', () => {
+		beforeAll( async () => {
+			await deleteAllTemplates( 'wp_template' );
+			await deleteAllTemplates( 'wp_template_part' );
+		} );
+
 		it( 'default template from WooCommerce Blocks is available on an FSE theme', async () => {
 			const EXPECTED_TEMPLATE = defaultTemplateProps(
 				'Products by Category'
@@ -367,23 +349,21 @@ describe( 'Store Editing Templates', () => {
 			}
 		} );
 
-		runOnlyWhenGutenbergIsDisabled( () =>
-			it( 'should contain the "WooCommerce Product Taxonomy Block" classic template', async () => {
-				await goToTemplateEditor( {
-					postId: 'woocommerce/woocommerce//taxonomy-product_cat',
-				} );
+		it( 'should contain the "WooCommerce Product Taxonomy Block" classic template', async () => {
+			await goToTemplateEditor( {
+				postId: 'woocommerce/woocommerce//taxonomy-product_cat',
+			} );
 
-				const [ classicBlock ] = await filterCurrentBlocks(
-					( block ) =>
-						block.name === BLOCK_DATA[ 'taxonomy-product_cat' ].name
-				);
+			const [ classicBlock ] = await filterCurrentBlocks(
+				( block ) =>
+					block.name === BLOCK_DATA[ 'taxonomy-product_cat' ].name
+			);
 
-				expect( classicBlock.attributes.template ).toBe(
-					BLOCK_DATA[ 'taxonomy-product_cat' ].attributes.template
-				);
-				expect( await getCurrentSiteEditorContent() ).toMatchSnapshot();
-			} )
-		);
+			expect( classicBlock.attributes.template ).toBe(
+				BLOCK_DATA[ 'taxonomy-product_cat' ].attributes.template
+			);
+			expect( await getCurrentSiteEditorContent() ).toMatchSnapshot();
+		} );
 
 		it( 'should show the action menu if the template has been customized by the user', async () => {
 			const EXPECTED_TEMPLATE = {
@@ -437,6 +417,11 @@ describe( 'Store Editing Templates', () => {
 	} );
 
 	describe( 'Products by Tag block template', () => {
+		beforeAll( async () => {
+			await deleteAllTemplates( 'wp_template' );
+			await deleteAllTemplates( 'wp_template_part' );
+		} );
+
 		it( 'default template from WooCommerce Blocks is available on an FSE theme', async () => {
 			const EXPECTED_TEMPLATE = defaultTemplateProps( 'Products by Tag' );
 
@@ -457,23 +442,21 @@ describe( 'Store Editing Templates', () => {
 			}
 		} );
 
-		runOnlyWhenGutenbergIsDisabled( () =>
-			it( 'should contain the "WooCommerce Product Taxonomy Block" classic template', async () => {
-				await goToTemplateEditor( {
-					postId: 'woocommerce/woocommerce//taxonomy-product_tag',
-				} );
+		it( 'should contain the "WooCommerce Product Taxonomy Block" classic template', async () => {
+			await goToTemplateEditor( {
+				postId: 'woocommerce/woocommerce//taxonomy-product_tag',
+			} );
 
-				const [ classicBlock ] = await filterCurrentBlocks(
-					( block ) =>
-						block.name === BLOCK_DATA[ 'taxonomy-product_tag' ].name
-				);
+			const [ classicBlock ] = await filterCurrentBlocks(
+				( block ) =>
+					block.name === BLOCK_DATA[ 'taxonomy-product_tag' ].name
+			);
 
-				expect( classicBlock.attributes.template ).toBe(
-					BLOCK_DATA[ 'taxonomy-product_tag' ].attributes.template
-				);
-				expect( await getCurrentSiteEditorContent() ).toMatchSnapshot();
-			} )
-		);
+			expect( classicBlock.attributes.template ).toBe(
+				BLOCK_DATA[ 'taxonomy-product_tag' ].attributes.template
+			);
+			expect( await getCurrentSiteEditorContent() ).toMatchSnapshot();
+		} );
 
 		it( 'should show the action menu if the template has been customized by the user', async () => {
 			const EXPECTED_TEMPLATE = {
@@ -525,6 +508,11 @@ describe( 'Store Editing Templates', () => {
 	} );
 
 	describe( 'Products by Attribute template', () => {
+		beforeAll( async () => {
+			await deleteAllTemplates( 'wp_template' );
+			await deleteAllTemplates( 'wp_template_part' );
+		} );
+
 		it( 'default template from WooCommerce Blocks is available on an FSE theme', async () => {
 			const EXPECTED_TEMPLATE = defaultTemplateProps(
 				'Products by Attribute'
@@ -547,25 +535,22 @@ describe( 'Store Editing Templates', () => {
 			}
 		} );
 
-		runOnlyWhenGutenbergIsDisabled( () =>
-			it( 'should contain the "WooCommerce Product Taxonomy Block" classic template', async () => {
-				await goToTemplateEditor( {
-					postId: 'woocommerce/woocommerce//taxonomy-product_attribute',
-				} );
+		it( 'should contain the "WooCommerce Product Taxonomy Block" classic template', async () => {
+			await goToTemplateEditor( {
+				postId: 'woocommerce/woocommerce//taxonomy-product_attribute',
+			} );
 
-				const [ classicBlock ] = await filterCurrentBlocks(
-					( block ) =>
-						block.name ===
-						BLOCK_DATA[ 'taxonomy-product_attribute' ].name
-				);
+			const [ classicBlock ] = await filterCurrentBlocks(
+				( block ) =>
+					block.name ===
+					BLOCK_DATA[ 'taxonomy-product_attribute' ].name
+			);
 
-				expect( classicBlock.attributes.template ).toBe(
-					BLOCK_DATA[ 'taxonomy-product_attribute' ].attributes
-						.template
-				);
-				expect( await getCurrentSiteEditorContent() ).toMatchSnapshot();
-			} )
-		);
+			expect( classicBlock.attributes.template ).toBe(
+				BLOCK_DATA[ 'taxonomy-product_attribute' ].attributes.template
+			);
+			expect( await getCurrentSiteEditorContent() ).toMatchSnapshot();
+		} );
 
 		it( 'should show the action menu if the template has been customized by the user', async () => {
 			const EXPECTED_TEMPLATE = {
@@ -619,6 +604,11 @@ describe( 'Store Editing Templates', () => {
 	} );
 
 	describe( 'Product Search Results block template', () => {
+		beforeAll( async () => {
+			await deleteAllTemplates( 'wp_template' );
+			await deleteAllTemplates( 'wp_template_part' );
+		} );
+
 		it( 'default template from WooCommerce Blocks is available on an FSE theme', async () => {
 			const EXPECTED_TEMPLATE = defaultTemplateProps(
 				'Product Search Results'
@@ -641,23 +631,20 @@ describe( 'Store Editing Templates', () => {
 			}
 		} );
 
-		runOnlyWhenGutenbergIsDisabled( () =>
-			it( 'should contain the "WooCommerce Product Grid Block" classic template', async () => {
-				await goToTemplateEditor( {
-					postId: 'woocommerce/woocommerce//product-search-results',
-				} );
+		it( 'should contain the "WooCommerce Product Grid Block" classic template', async () => {
+			await goToTemplateEditor( {
+				postId: 'woocommerce/woocommerce//product-search-results',
+			} );
 
-				const [ classicBlock ] = await filterCurrentBlocks(
-					( block ) =>
-						block.name === BLOCK_DATA[ 'archive-product' ].name
-				);
+			const [ classicBlock ] = await filterCurrentBlocks(
+				( block ) => block.name === BLOCK_DATA[ 'archive-product' ].name
+			);
 
-				expect( classicBlock.attributes.template ).toBe(
-					BLOCK_DATA[ 'product-search-results' ].attributes.template
-				);
-				expect( await getCurrentSiteEditorContent() ).toMatchSnapshot();
-			} )
-		);
+			expect( classicBlock.attributes.template ).toBe(
+				BLOCK_DATA[ 'product-search-results' ].attributes.template
+			);
+			expect( await getCurrentSiteEditorContent() ).toMatchSnapshot();
+		} );
 
 		it( 'should show the action menu if the template has been customized by the user', async () => {
 			const EXPECTED_TEMPLATE = {
