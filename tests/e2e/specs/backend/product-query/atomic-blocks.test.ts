@@ -1,9 +1,8 @@
 /**
  * External dependencies
  */
-import { canvas, setPostContent, insertBlock } from '@wordpress/e2e-test-utils';
+import { canvas } from '@wordpress/e2e-test-utils';
 import {
-	visitBlockPage,
 	saveOrPublish,
 	shopper,
 	insertInnerBlock,
@@ -13,41 +12,14 @@ import {
 /**
  * Internal dependencies
  */
+import { GUTENBERG_EDITOR_CONTEXT, describeOrSkip } from '../../../utils';
 import {
-	GUTENBERG_EDITOR_CONTEXT,
-	describeOrSkip,
-	waitForCanvas,
-} from '../../../utils';
-
-const block = {
-	name: 'Products (Beta)',
-	slug: 'woocommerce/product-query',
-	class: '.wp-block-query',
-};
-
-const SELECTORS = {
-	productButton: '.wc-block-components-product-button',
-	productPrice: '.wc-block-components-product-price',
-	productRating: '.wc-block-components-product-rating',
-	productImage: '.wc-block-components-product-image',
-	cartItemRow: '.wc-block-cart-items__row',
-};
-
-const resetProductQueryBlockPage = async () => {
-	await visitBlockPage( `${ block.name } Block` );
-	await waitForCanvas();
-	await setPostContent( '' );
-	await saveOrPublish();
-	await insertBlock( block.name );
-	await saveOrPublish();
-};
-
-const getNodesCount = async ( selector: string ) => {
-	return await page.$$eval( selector, ( elements ) => elements.length );
-};
-
-const getEditorSelector = ( selector: string ) =>
-	`li.block-editor-block-list__layout ${ selector }`;
+	block,
+	SELECTORS,
+	resetProductQueryBlockPage,
+	getProductElementNodesCount,
+	getEditorProductElementNodesCount,
+} from './common';
 
 describeOrSkip( GUTENBERG_EDITOR_CONTEXT === 'gutenberg' )(
 	`${ block.name } > Atomic blocks`,
@@ -70,8 +42,8 @@ describeOrSkip( GUTENBERG_EDITOR_CONTEXT === 'gutenberg' )(
 				'core/post-template'
 			);
 			expect(
-				await getNodesCount(
-					getEditorSelector( SELECTORS.productButton )
+				await getEditorProductElementNodesCount(
+					SELECTORS.productButton
 				)
 			).toEqual( 2 );
 
@@ -82,15 +54,17 @@ describeOrSkip( GUTENBERG_EDITOR_CONTEXT === 'gutenberg' )(
 			} );
 			await shopper.block.goToCart();
 			await page.waitForSelector( '.wc-block-cart-items__row' );
-			expect( await getNodesCount( SELECTORS.cartItemRow ) ).toEqual( 1 );
+			expect(
+				await getProductElementNodesCount( SELECTORS.cartItemRow )
+			).toEqual( 1 );
 		} );
 
 		it( 'Can add the Product Image block', async () => {
 			await page.waitForSelector( SELECTORS.productImage );
 			await insertInnerBlock( 'Product Image', 'core/post-template' );
 			expect(
-				await getNodesCount(
-					getEditorSelector( SELECTORS.productImage )
+				await getEditorProductElementNodesCount(
+					SELECTORS.productImage
 				)
 			).toEqual( 2 );
 		} );
@@ -107,8 +81,8 @@ describeOrSkip( GUTENBERG_EDITOR_CONTEXT === 'gutenberg' )(
 			} );
 			await insertInnerBlock( 'Product Price', 'core/post-template' );
 			expect(
-				await getNodesCount(
-					getEditorSelector( SELECTORS.productPrice )
+				await getEditorProductElementNodesCount(
+					SELECTORS.productPrice
 				)
 			).toEqual( 2 );
 
@@ -122,15 +96,15 @@ describeOrSkip( GUTENBERG_EDITOR_CONTEXT === 'gutenberg' )(
 		it( 'Can add the Product Ratings block and render it on the front end', async () => {
 			await insertInnerBlock( 'Product Rating', 'core/post-template' );
 			expect(
-				await getNodesCount(
-					getEditorSelector( SELECTORS.productRating )
+				await getEditorProductElementNodesCount(
+					SELECTORS.productRating
 				)
 			).toEqual( 1 );
 			await saveOrPublish();
 			await shopper.block.goToBlockPage( block.name );
-			expect( await getNodesCount( SELECTORS.productRating ) ).toEqual(
-				getFixtureProductsData().length
-			);
+			expect(
+				await getProductElementNodesCount( SELECTORS.productRating )
+			).toEqual( getFixtureProductsData().length );
 		} );
 	}
 );

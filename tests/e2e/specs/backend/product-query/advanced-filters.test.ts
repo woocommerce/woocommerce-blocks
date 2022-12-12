@@ -1,14 +1,11 @@
 /**
  * External dependencies
  */
-import { canvas, setPostContent, insertBlock } from '@wordpress/e2e-test-utils';
 import {
-	visitBlockPage,
 	saveOrPublish,
 	selectBlockByName,
 	findToolsPanelWithTitle,
 	getFixtureProductsData,
-	getFormElementIdByLabel,
 	shopper,
 	getToggleIdByLabel,
 } from '@woocommerce/blocks-test-utils';
@@ -21,110 +18,18 @@ import { setCheckbox, unsetCheckbox } from '@woocommerce/e2e-utils';
 import {
 	GUTENBERG_EDITOR_CONTEXT,
 	describeOrSkip,
-	waitForCanvas,
 	openBlockEditorSettings,
 } from '../../../utils';
-
-const block = {
-	name: 'Products (Beta)',
-	slug: 'core/query',
-	class: '.wp-block-query',
-};
-
-/**
- * Selectors used for interacting with the block in the editor. These selectors
- * can be changed upstream in Gutenberg, so we scope them here for
- * maintainability.
- *
- * There are also some labels that are used repeatedly, but we don't scope them
- * in favor of readability. Unlike selectors, those label are visible to end
- * users, so it's easier to understand what's going on if we don't scope them.
- * Those labels can get upated in the future, but the tests will fail and we'll
- * know to update them.
- */
-const SELECTORS = {
-	productFiltersDropdownButton: (
-		{ expanded }: { expanded: boolean } = { expanded: false }
-	) =>
-		`.components-tools-panel-header .components-dropdown-menu button[aria-expanded="${ expanded }"]`,
-	productFiltersDropdown:
-		'.components-dropdown-menu__menu[aria-label="Advanced Filters options"]',
-	productFiltersDropdownItem: '.components-menu-item__button',
-	editorPreview: {
-		productsGrid: 'ul.wp-block-post-template',
-		productsGridItem:
-			'ul.wp-block-post-template > li.block-editor-block-preview__live-content',
-	},
-	productsGrid: `${ block.class } ul.wp-block-post-template`,
-	productsGridItem: `${ block.class } ul.wp-block-post-template > li.product`,
-	formTokenField: {
-		label: '.components-form-token-field__label',
-		removeToken: '.components-form-token-field__remove-token',
-		suggestionsList: '.components-form-token-field__suggestions-list',
-		firstSuggestion:
-			'.components-form-token-field__suggestions-list > li:first-child',
-	},
-};
-
-const toggleProductFilter = async ( filterName: string ) => {
-	const $productFiltersPanel = await findToolsPanelWithTitle(
-		'Advanced Filters'
-	);
-	await expect( $productFiltersPanel ).toClick(
-		SELECTORS.productFiltersDropdownButton()
-	);
-	await canvas().waitForSelector( SELECTORS.productFiltersDropdown );
-	await expect( canvas() ).toClick( SELECTORS.productFiltersDropdownItem, {
-		text: filterName,
-	} );
-	await expect( $productFiltersPanel ).toClick(
-		SELECTORS.productFiltersDropdownButton( { expanded: true } )
-	);
-};
-
-const resetProductQueryBlockPage = async () => {
-	await visitBlockPage( `${ block.name } Block` );
-	await waitForCanvas();
-	await setPostContent( '' );
-	await saveOrPublish();
-	await insertBlock( block.name );
-	await saveOrPublish();
-};
-
-const getPreviewProducts = async (): Promise< ElementHandle[] > => {
-	await canvas().waitForSelector( SELECTORS.editorPreview.productsGrid );
-	return await canvas().$$( SELECTORS.editorPreview.productsGridItem );
-};
-
-const getFrontEndProducts = async (): Promise< ElementHandle[] > => {
-	await canvas().waitForSelector( SELECTORS.productsGrid );
-	return await canvas().$$( SELECTORS.productsGridItem );
-};
-
-const clearSelectedTokens = async ( $panel: ElementHandle< Node > ) => {
-	const tokenRemoveButtons = await $panel.$$(
-		SELECTORS.formTokenField.removeToken
-	);
-	for ( const el of tokenRemoveButtons ) {
-		await el.click();
-	}
-};
-
-const selectToken = async ( formLabel: string, optionLabel: string ) => {
-	const $stockStatusInput = await canvas().$(
-		await getFormElementIdByLabel(
-			formLabel,
-			SELECTORS.formTokenField.label.replace( '.', '' )
-		)
-	);
-	await $stockStatusInput.focus();
-	await canvas().keyboard.type( optionLabel );
-	const firstSuggestion = await canvas().waitForSelector(
-		SELECTORS.formTokenField.firstSuggestion
-	);
-	await firstSuggestion.click();
-	await canvas().waitForSelector( SELECTORS.editorPreview.productsGrid );
-};
+import {
+	block,
+	SELECTORS,
+	resetProductQueryBlockPage,
+	toggleAdvancedFilter,
+	getPreviewProducts,
+	getFrontEndProducts,
+	clearSelectedTokens,
+	selectToken,
+} from './common';
 
 describeOrSkip( GUTENBERG_EDITOR_CONTEXT === 'gutenberg' )(
 	`${ block.name } > Advanced Filters`,
@@ -166,11 +71,11 @@ describeOrSkip( GUTENBERG_EDITOR_CONTEXT === 'gutenberg' )(
 			} );
 
 			it( 'Can add and remove Sale Status filter', async () => {
-				await toggleProductFilter( 'Sale status' );
+				await toggleAdvancedFilter( 'Sale status' );
 				await expect( $productFiltersPanel ).toMatch(
 					'Show only products on sale'
 				);
-				await toggleProductFilter( 'Sale status' );
+				await toggleAdvancedFilter( 'Sale status' );
 				await expect( $productFiltersPanel ).not.toMatch(
 					'Show only products on sale'
 				);
@@ -180,7 +85,7 @@ describeOrSkip( GUTENBERG_EDITOR_CONTEXT === 'gutenberg' )(
 				expect( await getPreviewProducts() ).toHaveLength(
 					defaultCount
 				);
-				await toggleProductFilter( 'Sale status' );
+				await toggleAdvancedFilter( 'Sale status' );
 				await setCheckbox(
 					await getToggleIdByLabel( 'Show only products on sale' )
 				);
@@ -194,7 +99,7 @@ describeOrSkip( GUTENBERG_EDITOR_CONTEXT === 'gutenberg' )(
 			} );
 
 			it( 'Works on the front end', async () => {
-				await toggleProductFilter( 'Sale status' );
+				await toggleAdvancedFilter( 'Sale status' );
 				await setCheckbox(
 					await getToggleIdByLabel( 'Show only products on sale' )
 				);
@@ -214,12 +119,12 @@ describeOrSkip( GUTENBERG_EDITOR_CONTEXT === 'gutenberg' )(
 			} );
 
 			it( 'Can add and remove Stock Status filter', async () => {
-				await toggleProductFilter( 'Stock status' );
+				await toggleAdvancedFilter( 'Stock status' );
 				await expect( $productFiltersPanel ).not.toMatchElement(
 					SELECTORS.formTokenField.label,
 					{ text: 'Stock status' }
 				);
-				await toggleProductFilter( 'Stock status' );
+				await toggleAdvancedFilter( 'Stock status' );
 				await expect( $productFiltersPanel ).toMatchElement(
 					SELECTORS.formTokenField.label,
 					{ text: 'Stock status' }
