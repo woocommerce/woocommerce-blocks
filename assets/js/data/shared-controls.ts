@@ -115,11 +115,19 @@ export const controls = {};
  *
  * @param {APIFetchOptions} options The options for the API request.
  */
-export const apiFetchWithHeaders = (
+export const apiFetchWithHeaders = < T = void >(
 	options: APIFetchOptions
 ): Promise<
-	| { response: Response; headers: Response[ 'headers' ] }
-	| { response: ApiResponse[ 'body' ]; headers: ApiResponse[ 'headers' ] }
+	// If T has not been set, then we can return the default ApiResponse type.
+	T extends void
+		?
+				| { response: Response; headers: Response[ 'headers' ] }
+				| {
+						response: ApiResponse[ 'body' ];
+						headers: ApiResponse[ 'headers' ];
+				  }
+		: // If T was set, the `response` should be the type of T.
+		  { response: T; headers: Response[ 'headers' ] }
 > => {
 	return new Promise( ( resolve, reject ) => {
 		// GET Requests cannot be batched.
