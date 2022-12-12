@@ -30,11 +30,16 @@ export type SelectFromMap< S extends object > = {
 	) => ReturnType< S[ selector ] >;
 };
 
-export type ResolveSelectFromMap< S extends object > = {
-	[ selector in FunctionKeys< S > ]: (
-		...args: Parameters< S[ selector ] >
-	) => ReturnType< S[ selector ] > extends Promise< any >
-		? Promise< ReturnType< S[ selector ] > >
+/**
+ * Maps a "raw" resolver object to the resolvers available on a @wordpress/data store.
+ *
+ * @template R Resolver map, usually from `import * as resolvers from './my-store/resolvers';`
+ */
+export type ResolveSelectFromMap< R extends object > = {
+	[ resolver in FunctionKeys< R > ]: (
+		...args: Parameters< R[ resolver ] >
+	) => ReturnType< R[ resolver ] > extends Promise< any >
+		? Promise< ReturnType< R[ resolver ] > >
 		: void;
 };
 
