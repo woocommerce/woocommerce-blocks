@@ -250,7 +250,7 @@ class StyleAttributesUtils {
 			$border_color_css .= 'border-color:' . $border_color_linked_custom . ';';
 		} else {
 			// Unlinked.
-			if ( '' !== $custom_border ) {
+			if ( is_array( $custom_border ) ) {
 				foreach ( $custom_border as $border_color_key => $border_color_value ) {
 					if ( is_array( $border_color_value ) && array_key_exists( 'color', ( $border_color_value ) ) ) {
 						$border_color_css .= 'border-' . $border_color_key . '-color:' . self::get_color_value( $border_color_value['color'] ) . ';';
