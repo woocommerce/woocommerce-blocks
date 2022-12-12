@@ -72,6 +72,11 @@ const isGBPostcode = ( { postcode }: PostcodeProps ): boolean => {
  * @see https://github.com/woocommerce/woocommerce/blob/2a56407ba125ab281f901817af2485438c18a9b0/plugins/woocommerce/includes/class-wc-validation.php#L47
  */
 const isPostcode = ( { postcode, country }: IsPostcodeProps ): boolean => {
+	// Bail out early if the postcode contains invalid characters.
+	if ( ! /^[0-9A-Za-z\s-]+$/.test( postcode ) ) {
+		return false;
+	}
+
 	switch ( country ) {
 		case 'AT':
 			return /^[1-9]{1}[0-9]{3}$/.test( postcode );
