@@ -40,10 +40,24 @@ export type DispatchFromMap<
 > = {
 	[ actionCreator in keyof A ]: (
 		...args: Parameters< A[ actionCreator ] >
-	) => A[ actionCreator ] extends ( ...args: any[] ) => Generator
+	) => // If the action creator is a function that returns a generator return GeneratorReturnType, if not, then check
+	// if it's a function that returns a Promise, in other words: a thunk. https://developer.wordpress.org/block-editor/how-to-guides/thunks/
+	// If it is, then return the return type of the thunk (which in most cases will be void, but sometimes it won't be).
+	A[ actionCreator ] extends ( ...args: any[] ) => Generator
 		? Promise< GeneratorReturnType< A[ actionCreator ] > >
+		: A[ actionCreator ] extends Thunk
+		? ThunkReturnType< A[ actionCreator ] >
 		: void;
 };
+
+/**
+ * A thunk is a function (action creator) that returns a function.
+ */
+type Thunk = ( ...args: any[] ) => ( ...args: any[] ) => any;
+/**
+ * The function returned by a thunk action creator can return a value, too.
+ */
+type ThunkReturnType< A extends Thunk > = ReturnType< ReturnType< A > >;
 
 /**
  * Parameters type of a function, excluding the first parameter.
