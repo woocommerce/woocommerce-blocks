@@ -25,9 +25,45 @@ const isCAPostcode = ( { postcode }: PostcodeProps ): boolean => {
  * @see https://en.wikipedia.org/wiki/Postcodes_in_the_United_Kingdom#Validation
  */
 const isGBPostcode = ( { postcode }: PostcodeProps ): boolean => {
-	return /^([Gg][Ii][Rr] 0[Aa]{2})|((([A-Za-z][0-9]{1,2})|(([A-Za-z][A-Ha-hJ-Yj-y][0-9]{1,2})|(([A-Za-z][0-9][A-Za-z])|([A-Za-z][A-Ha-hJ-Yj-y][0-9]?[A-Za-z])))) [0-9][A-Za-z]{2})$/.test(
-		postcode
-	);
+	// Permitted letters depend upon their position in the postcode.
+	// https://en.wikipedia.org/wiki/Postcodes_in_the_United_Kingdom#Validation.
+	const alpha1 = '[abcdefghijklmnoprstuwyz]'; // Character 1.
+	const alpha2 = '[abcdefghklmnopqrstuvwxy]'; // Character 2.
+	const alpha3 = '[abcdefghjkpstuw]'; // Character 3 == ABCDEFGHJKPSTUW.
+	const alpha4 = '[abehmnprvwxy]'; // Character 4 == ABEHMNPRVWXY.
+	const alpha5 = '[abdefghjlnpqrstuwxyz]'; // Character 5 != CIKMOV.
+
+	const pcexp = [];
+
+	// Expression for postcodes: AN NAA, ANN NAA, AAN NAA, and AANN NAA.
+	pcexp[ 0 ] = new RegExp( '^(' + alpha1 + '{1}' + alpha2 + '{0,1}[0-9]{1,2})([0-9]{1}' + alpha5 + '{2})$' ); // prettier-ignore
+	// Expression for postcodes: ANA NAA.
+	pcexp[ 1 ] = new RegExp( '^(' + alpha1 + '{1}[0-9]{1}' + alpha3 + '{1})([0-9]{1}' + alpha5 + '{2})$' ); // prettier-ignore
+	// Expression for postcodes: AANA NAA.
+	pcexp[ 2 ] = new RegExp( '^(' + alpha1 + '{1}' + alpha2 + '[0-9]{1}' + alpha4 + ')([0-9]{1}' + alpha5 + '{2})$' ); // prettier-ignore
+	// Exception for the special postcode GIR 0AA.
+	pcexp[ 3 ] = new RegExp( '^(gir)(0aa)$' );
+	// Standard BFPO numbers.
+	pcexp[ 4 ] = new RegExp( '^(bfpo)([0-9]{1,4})$' );
+	// c/o BFPO numbers.
+	pcexp[ 5 ] = new RegExp( '^(bfpo)(c/o[0-9]{1,3})$' );
+
+	// Load up the string to check, converting into lowercase and removing spaces.
+	const input = postcode.toLowerCase().replace( ' ', '' );
+
+	// Assume we are not going to find a valid postcode.
+	let valid = false;
+
+	// Check the string against the six types of postcodes.
+	for ( const regexp of pcexp ) {
+		if ( regexp.test( input ) ) {
+			// Remember that we have found that the code is valid and break from loop.
+			valid = true;
+			break;
+		}
+	}
+
+	return valid;
 };
 
 /**
@@ -56,8 +92,6 @@ export const isPostcode = ( {
 			return /^([0-9]{3})(\s?)([0-9]{2})$/.test( postcode );
 		case 'DE':
 			return /^([0]{1}[1-9]{1}|[1-9]{1}[0-9]{1})[0-9]{3}$/.test( postcode ); // prettier-ignore
-		case 'DK':
-			return /^(DK-)?([1-24-9]\d{3}|3[0-8]\d{2})$/.test( postcode );
 		case 'ES':
 			return /^([0-9]{5})$/i.test( postcode );
 		case 'FR':
@@ -67,7 +101,7 @@ export const isPostcode = ( {
 		case 'HU':
 			return /^([0-9]{4})$/i.test( postcode );
 		case 'IE':
-			return /([AC-FHKNPRTV-Y]\d{2}|D6W)[0-9AC-FHKNPRTV-Y]{4}/.test( postcode ); // prettier-ignore
+			return /([AC-FHKNPRTV-Y]\d{2}|D6W)(\s|-{0,1})[0-9AC-FHKNPRTV-Y]{4}/.test( postcode ); // prettier-ignore
 		case 'IN':
 			return /^[1-9]{1}[0-9]{2}\s{0,1}[0-9]{3}$/.test( postcode );
 		case 'IT':
@@ -79,7 +113,7 @@ export const isPostcode = ( {
 		case 'NL':
 			return /^([1-9][0-9]{3})(\s?)(?!SA|SD|SS)[A-Z]{2}$/i.test( postcode ); // prettier-ignore
 		case 'PL':
-			return /^([0-9]{4})([-])([0-9]{3})$/.test( postcode );
+			return /^([0-9]{2})([-])([0-9]{3})$/.test( postcode );
 		case 'PR':
 			return /^([0-9]{5})(-[0-9]{4})?$/i.test( postcode );
 		case 'PT':
