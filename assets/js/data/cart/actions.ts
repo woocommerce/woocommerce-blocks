@@ -236,7 +236,7 @@ export function* applyExtensionCartUpdate(
  * @throws            Will throw an error if there is an API problem.
  */
 export const applyCoupon =
-	async ( couponCode: string ) =>
+	( couponCode: string ) =>
 	async ( { dispatch } ) => {
 		dispatch.receiveApplyingCoupon( couponCode );
 		try {
@@ -250,10 +250,8 @@ export const applyCoupon =
 			} );
 
 			dispatch.receiveCart( response );
-			dispatch.receiveApplyingCoupon( '' );
 		} catch ( error ) {
 			dispatch.receiveError( error );
-			dispatch.receiveApplyingCoupon( '' );
 
 			// If updated cart state was returned, also update that.
 			if ( error.data?.cart ) {
@@ -262,6 +260,8 @@ export const applyCoupon =
 
 			// Re-throw the error.
 			throw error;
+		} finally {
+			dispatch.receiveApplyingCoupon( '' );
 		}
 
 		return true;
