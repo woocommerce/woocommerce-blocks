@@ -112,7 +112,7 @@ const RatingFilterBlock = ( {
 
 	const [ checked, setChecked ] = useState( initialFilters );
 
-	const [ productRatings, setProductRatings ] = useQueryStateByKey(
+	const [ productRatingsQuery, setProductRatingsQuery ] = useQueryStateByKey(
 		'rating',
 		initialFilters
 	);
@@ -168,12 +168,12 @@ const RatingFilterBlock = ( {
 				return;
 			}
 			if ( checkedOptions && ! filteringForPhpTemplate ) {
-				setProductRatings( checkedOptions );
+				setProductRatingsQuery( checkedOptions );
 			}
 
 			updateFilterUrl( checkedOptions );
 		},
-		[ isEditor, setProductRatings, filteringForPhpTemplate ]
+		[ isEditor, setProductRatingsQuery, filteringForPhpTemplate ]
 	);
 
 	// Track checked STATE changes - if state changes, update the query.
@@ -184,8 +184,8 @@ const RatingFilterBlock = ( {
 	}, [ blockAttributes.showFilterButton, checked, onSubmit ] );
 
 	const checkedQuery = useMemo( () => {
-		return productRatings;
-	}, [ productRatings ] );
+		return productRatingsQuery;
+	}, [ productRatingsQuery ] );
 
 	const currentCheckedQuery = useShallowEqual( checkedQuery );
 	const previousCheckedQuery = usePrevious( currentCheckedQuery );
@@ -203,27 +203,15 @@ const RatingFilterBlock = ( {
 	 * Try get the rating filter from the URL.
 	 */
 	useEffect( () => {
-		if ( hasSetFilterDefaultsFromUrl || isLoading ) {
-			return;
-		}
-
-		if ( initialFilters.length > 0 ) {
-			setHasSetFilterDefaultsFromUrl( true );
-			setChecked( initialFilters );
-			return;
-		}
-
-		if ( ! filteringForPhpTemplate ) {
+		if ( ! hasSetFilterDefaultsFromUrl ) {
+			setProductRatingsQuery( initialFilters );
 			setHasSetFilterDefaultsFromUrl( true );
 		}
 	}, [
-		setProductRatings,
-		isLoading,
+		setProductRatingsQuery,
 		hasSetFilterDefaultsFromUrl,
-		setChecked,
 		setHasSetFilterDefaultsFromUrl,
 		initialFilters,
-		filteringForPhpTemplate,
 	] );
 
 	/**
@@ -273,7 +261,7 @@ const RatingFilterBlock = ( {
 		blockAttributes.isPreview,
 		filteredCounts,
 		filteredCountsLoading,
-		productRatings,
+		productRatingsQuery,
 	] );
 
 	/**
