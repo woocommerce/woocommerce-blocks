@@ -20,6 +20,7 @@ import {
 	updatePaymentMethods,
 	debouncedUpdatePaymentMethods,
 } from './update-payment-methods';
+import { ResolveSelectFromMap } from '../mapped-types';
 
 // Please update from deprecated "registerStore" to "createReduxStore" when this PR is merged:
 // https://github.com/WordPress/gutenberg/pull/45513
@@ -60,3 +61,6 @@ declare module '@wordpress/data' {
 		hasFinishedResolution: ( selector: string ) => boolean;
 	};
 }
+
+export type CartDispatchFromMap = DispatchFromMap< typeof actions >;
+export type CartResolveSelectFromMap = ResolveSelectFromMap< typeof resolvers >;
