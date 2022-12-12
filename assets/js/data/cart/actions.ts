@@ -20,6 +20,7 @@ import { apiFetchWithHeaders } from '../shared-controls';
 import type { ResponseError } from '../types';
 import { DispatchFromMap, ReturnOrGeneratorYieldUnion } from '../mapped-types';
 import { receiveCart } from './thunks';
+import { CartDispatchFromMap } from './index';
 
 // `Thunks are functions that can be dispatched, similar to actions creators
 export * from './thunks';
@@ -432,38 +433,37 @@ export const changeCartItemQuantity =
  * @param {number | string} [packageId] The key of the packages that we will
  *                                      select within.
  */
-export function* selectShippingRate(
-	rateId: string,
-	packageId = 0
-): Generator< unknown, boolean, { response: CartResponse } > {
-	try {
-		yield shippingRatesBeingSelected( true );
-		const { response } = yield apiFetchWithHeaders( {
-			path: `/wc/store/v1/cart/select-shipping-rate`,
-			method: 'POST',
-			data: {
-				package_id: packageId,
-				rate_id: rateId,
-			},
-			cache: 'no-store',
-		} );
+export const selectShippingRate =
+	( rateId: string, packageId = 0 ) =>
+	async ( { dispatch }: { dispatch: CartDispatchFromMap } ) => {
+		try {
+			dispatch.shippingRatesBeingSelected( true );
+			const { response } = await apiFetchWithHeaders< CartResponse >( {
+				path: `/wc/store/v1/cart/select-shipping-rate`,
+				method: 'POST',
+				data: {
+					package_id: packageId,
+					rate_id: rateId,
+				},
+				cache: 'no-store',
+			} );
 
-		yield receiveCart( response );
-	} catch ( error ) {
-		yield receiveError( error );
-		yield shippingRatesBeingSelected( false );
+			dispatch.receiveCart( response );
+		} catch ( error ) {
+			dispatch.receiveError( error );
+			dispatch.shippingRatesBeingSelected( false );
 
-		// If updated cart state was returned, also update that.
-		if ( error.data?.cart ) {
-			yield receiveCart( error.data.cart );
+			// If updated cart state was returned, also update that.
+			if ( error.data?.cart ) {
+				dispatch.receiveCart( error.data.cart );
+			}
+
+			// Re-throw the error.
+			throw error;
 		}
-
-		// Re-throw the error.
-		throw error;
-	}
-	yield shippingRatesBeingSelected( false );
-	return true;
-}
+		dispatch.shippingRatesBeingSelected( false );
+		return true;
+	};
 
 /**
  * Sets billing address locally, as opposed to updateCustomerData which sends it to the server.
