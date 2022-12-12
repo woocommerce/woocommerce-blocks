@@ -29,13 +29,23 @@ if ( isExperimentalBuild() ) {
 		},
 		edit,
 		save( { attributes }: { attributes: Attributes } ) {
-			const { className } = attributes;
+			const {
+				className,
+				customerAccountDisplayStyle,
+				customerAccountIconStyle,
+			} = attributes;
+			const data: Record< string, unknown > = {
+				'data-customer-account-display-style':
+					customerAccountDisplayStyle,
+				'data-customer-account-icon-style': customerAccountIconStyle,
+			};
 
 			return (
 				<div
 					{ ...useBlockProps.save( {
 						className,
 					} ) }
+					{ ...data }
 				></div>
 			);
 		},

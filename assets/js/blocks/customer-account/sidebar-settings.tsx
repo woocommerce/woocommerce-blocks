@@ -19,20 +19,14 @@ import {
 	__experimentalToggleGroupControlOption as ToggleGroupControlOption,
 } from '@wordpress/components';
 
+/**
+ * Internal dependencies
+ */
+import { CustomerAccountDisplayValue, CustomerAccountIconValue } from './types';
+
 interface BlockSettingsProps {
 	attributes: BlockAttributes;
 	setAttributes: ( attrs: BlockAttributes ) => void;
-}
-
-enum CustomerAccountDisplayValue {
-	ICON_AND_TEXT = 'icon_and_text',
-	TEXT_ONLY = 'text_only',
-	ICON_ONLY = 'icon_only',
-}
-
-enum CustomerAccountIconValue {
-	DEFAULT = 'default',
-	ALT = 'alt',
 }
 
 export const BlockSettings = ( {

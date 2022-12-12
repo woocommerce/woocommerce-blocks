@@ -22,6 +22,7 @@ const Edit = ( {
 	const blockProps = useBlockProps( {
 		className: classNames( 'wc-block-customer-account', className ),
 	} );
+
 	return (
 		<>
 			<div { ...blockProps }>
@@ -32,7 +33,7 @@ const Edit = ( {
 					/>
 				</InspectorControls>
 				<Disabled>
-					<Block />
+					<Block attributes={ attributes } isEditor={ true } />
 				</Disabled>
 			</div>
 		</>
