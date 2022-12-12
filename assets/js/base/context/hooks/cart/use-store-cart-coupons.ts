@@ -1,5 +1,3 @@
-/** @typedef { import('@woocommerce/type-defs/hooks').StoreCartCoupon } StoreCartCoupon */
-
 /**
  * External dependencies
  */
