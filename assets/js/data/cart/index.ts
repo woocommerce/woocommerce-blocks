@@ -62,5 +62,12 @@ declare module '@wordpress/data' {
 	};
 }
 
+/**
+ * CartDispatchFromMap is a type that maps the cart store's action creators to the dispatch function passed to thunks.
+ */
 export type CartDispatchFromMap = DispatchFromMap< typeof actions >;
+
+/**
+ * CartSelectFromMap is a type that maps the cart store's resolvers to the resolveSelect function passed to thunks.
+ */
 export type CartResolveSelectFromMap = ResolveSelectFromMap< typeof resolvers >;
