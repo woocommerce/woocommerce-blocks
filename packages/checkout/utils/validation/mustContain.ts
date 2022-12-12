@@ -6,10 +6,7 @@ import { __, sprintf } from '@wordpress/i18n';
 /**
  * Ensures that a given value contains a string, or throws an error.
  */
-export const mustContain = (
-	value: string,
-	requiredValue: string
-): true | never => {
+const mustContain = ( value: string, requiredValue: string ): true | never => {
 	if ( ! value.includes( requiredValue ) ) {
 		throw Error(
 			sprintf(
@@ -25,3 +22,5 @@ export const mustContain = (
 	}
 	return true;
 };
+
+export default mustContain;
