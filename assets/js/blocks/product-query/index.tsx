@@ -11,6 +11,7 @@ import { CORE_NAME as PRODUCT_TITLE_ID } from './variations/elements/product-tit
 import { CORE_NAME as PRODUCT_SUMMARY_ID } from './variations/elements/product-summary';
 import './inspector-controls';
 import './style.scss';
+import './variations/handpicked-products';
 import './variations/product-query';
 import './variations/products-on-sale';
 
