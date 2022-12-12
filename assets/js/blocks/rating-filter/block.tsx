@@ -114,7 +114,7 @@ const RatingFilterBlock = ( {
 
 	const [ productRatings, setProductRatings ] = useQueryStateByKey(
 		'rating',
-		[]
+		initialFilters
 	);
 
 	/*
