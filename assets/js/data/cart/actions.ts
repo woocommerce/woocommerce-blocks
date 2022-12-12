@@ -19,7 +19,6 @@ import { ACTION_TYPES as types } from './action-types';
 import { apiFetchWithHeaders } from '../shared-controls';
 import type { ResponseError } from '../types';
 import { DispatchFromMap, ReturnOrGeneratorYieldUnion } from '../mapped-types';
-import { receiveCart } from './thunks';
 import { CartDispatchFromMap } from './index';
 
 // `Thunks are functions that can be dispatched, similar to actions creators
@@ -486,36 +485,36 @@ export const setShippingAddress = (
  * @param {BillingAddressShippingAddress} customerData Address data to be updated; can contain both
  *                                                     billing_address and shipping_address.
  */
-export function* updateCustomerData(
-	customerData: Partial< BillingAddressShippingAddress >
-): Generator< unknown, boolean, { response: CartResponse } > {
-	yield updatingCustomerData( true );
+export const updateCustomerData =
+	( customerData: Partial< BillingAddressShippingAddress > ) =>
+	async ( { dispatch }: { dispatch: CartDispatchFromMap } ) => {
+		dispatch.updatingCustomerData( true );
 
-	try {
-		const { response } = yield apiFetchWithHeaders( {
-			path: '/wc/store/v1/cart/update-customer',
-			method: 'POST',
-			data: customerData,
-			cache: 'no-store',
-		} );
+		try {
+			const { response } = await apiFetchWithHeaders< CartResponse >( {
+				path: '/wc/store/v1/cart/update-customer',
+				method: 'POST',
+				data: customerData,
+				cache: 'no-store',
+			} );
 
-		yield receiveCartContents( response );
-	} catch ( error ) {
-		yield receiveError( error );
-		yield updatingCustomerData( false );
+			dispatch.receiveCartContents( response );
+		} catch ( error ) {
+			dispatch.receiveError( error );
+			dispatch.updatingCustomerData( false );
 
-		// If updated cart state was returned, also update that.
-		if ( error.data?.cart ) {
-			yield receiveCart( error.data.cart );
+			// If updated cart state was returned, also update that.
+			if ( error.data?.cart ) {
+				dispatch.receiveCart( error.data.cart );
+			}
+
+			// rethrow error.
+			throw error;
 		}
 
-		// rethrow error.
-		throw error;
-	}
-
-	yield updatingCustomerData( false );
-	return true;
-}
+		dispatch.updatingCustomerData( false );
+		return true;
+	};
 
 export type CartAction = ReturnOrGeneratorYieldUnion<
 	| typeof receiveCartContents
@@ -537,4 +536,5 @@ export type CartAction = ReturnOrGeneratorYieldUnion<
 	| typeof setCartData
 	| typeof applyCoupon
 	| typeof removeCoupon
+	| typeof selectShippingRate
 >;
