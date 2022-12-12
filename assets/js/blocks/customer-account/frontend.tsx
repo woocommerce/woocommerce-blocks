@@ -8,8 +8,16 @@ import { renderFrontend } from '@woocommerce/base-utils';
  */
 import Block from './block';
 
-const getProps = () => {
+export const parseAttributes = ( data: Record< string, unknown > ) => {
 	return {
+		customerAccountDisplayStyle: data?.customerAccountDisplayStyle,
+		customerAccountIconStyle: data?.customerAccountIconStyle,
+	};
+};
+
+const getProps = ( el: HTMLElement ) => {
+	return {
+		attributes: parseAttributes( el.dataset ),
 		isEditor: false,
 	};
 };
