@@ -10,8 +10,8 @@ import Block from './block';
 
 export const parseAttributes = ( data: Record< string, unknown > ) => {
 	return {
-		customerAccountDisplayStyle: data?.customerAccountDisplayStyle,
-		customerAccountIconStyle: data?.customerAccountIconStyle,
+		displayStyle: data?.displayStyle,
+		iconStyle: data?.iconStyle,
 	};
 };
 
