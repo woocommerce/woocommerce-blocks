@@ -18,7 +18,7 @@ import { BillingAddress, ShippingAddress } from '@woocommerce/settings';
 import { ACTION_TYPES as types } from './action-types';
 import { apiFetchWithHeaders } from '../shared-controls';
 import type { ResponseError } from '../types';
-import { ReturnOrGeneratorYieldUnion } from '../mapped-types';
+import { DispatchFromMap, ReturnOrGeneratorYieldUnion } from '../mapped-types';
 import { receiveCart } from './thunks';
 
 // `Thunks are functions that can be dispatched, similar to actions creators
@@ -354,32 +354,32 @@ export const addItemToCart =
  *
  * @param {string} cartItemKey Cart item being updated.
  */
-export function* removeItemFromCart(
-	cartItemKey: string
-): Generator< unknown, void, { response: CartResponse } > {
-	yield itemIsPendingDelete( cartItemKey );
+export const removeItemFromCart =
+	( cartItemKey: string ) =>
+	async ( { dispatch }: { dispatch: DispatchFromMap } ) => {
+		dispatch.itemIsPendingDelete( cartItemKey );
 
-	try {
-		const { response } = yield apiFetchWithHeaders( {
-			path: `/wc/store/v1/cart/remove-item`,
-			data: {
-				key: cartItemKey,
-			},
-			method: 'POST',
-			cache: 'no-store',
-		} );
+		try {
+			const { response } = await apiFetchWithHeaders( {
+				path: `/wc/store/v1/cart/remove-item`,
+				data: {
+					key: cartItemKey,
+				},
+				method: 'POST',
+				cache: 'no-store',
+			} );
 
-		yield receiveCart( response );
-	} catch ( error ) {
-		yield receiveError( error );
+			dispatch.receiveCart( response );
+		} catch ( error ) {
+			dispatch.receiveError( error );
 
-		// If updated cart state was returned, also update that.
-		if ( error.data?.cart ) {
-			yield receiveCart( error.data.cart );
+			// If updated cart state was returned, also update that.
+			if ( error.data?.cart ) {
+				dispatch.receiveCart( error.data.cart );
+			}
 		}
-	}
-	yield itemIsPendingDelete( cartItemKey, false );
-}
+		dispatch.itemIsPendingDelete( cartItemKey, false );
+	};
 
 /**
  * Persists a quantity change the for specified cart item:
