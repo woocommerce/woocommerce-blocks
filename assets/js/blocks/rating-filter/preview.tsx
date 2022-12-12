@@ -61,26 +61,3 @@ export const previewOptions = [
 		value: '1',
 	},
 ];
-
-export const editorPreviewOptions = [
-	{
-		rating: 5,
-		count: 1,
-	},
-	{
-		rating: 4,
-		count: 1,
-	},
-	{
-		rating: 3,
-		count: 1,
-	},
-	{
-		rating: 2,
-		count: 1,
-	},
-	{
-		rating: 1,
-		count: 1,
-	},
-];

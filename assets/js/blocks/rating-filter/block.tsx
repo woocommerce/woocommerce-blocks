@@ -25,7 +25,7 @@ import classnames from 'classnames';
 /**
  * Internal dependencies
  */
-import { editorPreviewOptions, previewOptions } from './preview';
+import { previewOptions } from './preview';
 import './style.scss';
 import { Attributes } from './types';
 import { getActiveFilters } from './utils';
@@ -90,6 +90,9 @@ const RatingFilterBlock = ( {
 		'rating',
 		initialFilters
 	);
+
+	const [ displayNoProductRatingsNotice, setDisplayNoProductRatingsNotice ] =
+		useState( false );
 
 	/**
 	 * Used to redirect the page when filters are changed so templates using the Classic Template block can filter.
@@ -191,15 +194,18 @@ const RatingFilterBlock = ( {
 			return;
 		}
 
-		const defaultPreviewCounts = isEditor ? editorPreviewOptions : [];
-
 		const orderedRatings =
 			! filteredCountsLoading &&
 			objectHasProp( filteredCounts, 'rating_counts' ) &&
-			Array.isArray( filteredCounts.rating_counts ) &&
-			filteredCounts.rating_counts.length > 0
+			Array.isArray( filteredCounts.rating_counts )
 				? [ ...filteredCounts.rating_counts ].reverse()
-				: defaultPreviewCounts;
+				: [];
+
+		if ( isEditor && orderedRatings.length === 0 ) {
+			setDisplayedOptions( previewOptions );
+			setDisplayNoProductRatingsNotice( true );
+			return;
+		}
 
 		const newOptions = orderedRatings
 			.filter(
@@ -278,11 +284,7 @@ const RatingFilterBlock = ( {
 		[ checked ]
 	);
 
-	if (
-		! isEditor &&
-		! filteredCountsLoading &&
-		displayedOptions.length === 0
-	) {
+	if ( ! filteredCountsLoading && displayedOptions.length === 0 ) {
 		setWrapperVisibility( false );
 		return null;
 	}
@@ -293,22 +295,16 @@ const RatingFilterBlock = ( {
 		isBoolean
 	);
 
-	if ( ! isEditor && ! hasFilterableProducts ) {
+	if ( ! hasFilterableProducts ) {
 		setWrapperVisibility( false );
 		return null;
 	}
 
 	setWrapperVisibility( true );
 
-	const isEditorWithNoProductRatings =
-		isEditor &&
-		objectHasProp( filteredCounts, 'rating_counts' ) &&
-		Array.isArray( filteredCounts.rating_counts ) &&
-		filteredCounts.rating_counts.length === 0;
-
 	return (
 		<>
-			{ isEditorWithNoProductRatings && (
+			{ displayNoProductRatingsNotice && (
 				<Notice status="warning" isDismissible={ false }>
 					<p>
 						{ __(
