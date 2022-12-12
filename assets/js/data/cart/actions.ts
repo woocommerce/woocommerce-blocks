@@ -274,38 +274,38 @@ export const applyCoupon =
  * @param {string} couponCode The coupon code to remove from the cart.
  * @throws            Will throw an error if there is an API problem.
  */
-export function* removeCoupon(
-	couponCode: string
-): Generator< unknown, boolean, { response: CartResponse } > {
-	yield receiveRemovingCoupon( couponCode );
+export const removeCoupon =
+	( couponCode: string ) =>
+	async ( { dispatch } ) => {
+		dispatch.receiveRemovingCoupon( couponCode );
 
-	try {
-		const { response } = yield apiFetchWithHeaders( {
-			path: '/wc/store/v1/cart/remove-coupon',
-			method: 'POST',
-			data: {
-				code: couponCode,
-			},
-			cache: 'no-store',
-		} );
+		try {
+			const { response } = await apiFetchWithHeaders( {
+				path: '/wc/store/v1/cart/remove-coupon',
+				method: 'POST',
+				data: {
+					code: couponCode,
+				},
+				cache: 'no-store',
+			} );
 
-		yield receiveCart( response );
-		yield receiveRemovingCoupon( '' );
-	} catch ( error ) {
-		yield receiveError( error );
-		yield receiveRemovingCoupon( '' );
+			dispatch.receiveCart( response );
+		} catch ( error ) {
+			dispatch.receiveError( error );
 
-		// If updated cart state was returned, also update that.
-		if ( error.data?.cart ) {
-			yield receiveCart( error.data.cart );
+			// If updated cart state was returned, also update that.
+			if ( error.data?.cart ) {
+				dispatch.receiveCart( error.data.cart );
+			}
+
+			// Re-throw the error.
+			throw error;
+		} finally {
+			dispatch.receiveRemovingCoupon( '' );
 		}
 
-		// Re-throw the error.
-		throw error;
-	}
-
-	return true;
-}
+		return true;
+	};
 
 /**
  * Adds an item to the cart:
