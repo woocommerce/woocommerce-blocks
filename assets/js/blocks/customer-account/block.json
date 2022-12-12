@@ -6,6 +6,7 @@
 	"category": "woocommerce",
 	"keywords": [ "WooCommerce" ],
 	"supports": {
+		"align": true,
 		"color": {
 		  "__experimentalDefaultControls": {
 			"text": true
