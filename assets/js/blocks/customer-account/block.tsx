@@ -56,7 +56,7 @@ export const CustomerAccountBlock = ( {
 	const { displayStyle, iconStyle } = attributes;
 
 	return (
-		<a href="/my-account">
+		<a href={ allSettings.dashboardUrl }>
 			<AccountIcon
 				iconStyle={ iconStyle }
 				displayStyle={ displayStyle }
