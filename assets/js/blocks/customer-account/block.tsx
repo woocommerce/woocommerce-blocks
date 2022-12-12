@@ -10,22 +10,17 @@ import {
 /**
  * Internal dependencies
  */
-import {
-	Attributes,
-	CustomerAccountDisplayValue,
-	CustomerAccountIconValue,
-} from './types';
+import { Attributes, DisplayStyle, IconStyle } from './types';
 
 export const CustomerAccountBlock = ( {
 	attributes,
 }: {
 	attributes: Attributes;
 } ): JSX.Element => {
-	const { customerAccountDisplayStyle, customerAccountIconStyle } =
-		attributes;
+	const { displayStyle, iconStyle } = attributes;
 
 	const icon =
-		customerAccountIconStyle === CustomerAccountIconValue.ALT ? (
+		iconStyle === IconStyle.ALT ? (
 			<Icon icon={ customerAccountStyleAlt } size={ 16 } />
 		) : (
 			<Icon icon={ customerAccountStyle } size={ 16 } />
@@ -33,12 +28,9 @@ export const CustomerAccountBlock = ( {
 
 	return (
 		<div>
-			{ customerAccountDisplayStyle ===
-				CustomerAccountDisplayValue.TEXT_ONLY && <span>Log in</span> }
-			{ customerAccountDisplayStyle ===
-				CustomerAccountDisplayValue.ICON_ONLY && icon }
-			{ customerAccountDisplayStyle ===
-				CustomerAccountDisplayValue.ICON_AND_TEXT && (
+			{ displayStyle === DisplayStyle.TEXT_ONLY && <span>Log in</span> }
+			{ displayStyle === DisplayStyle.ICON_ONLY && icon }
+			{ displayStyle === DisplayStyle.ICON_AND_TEXT && (
 				<span>{ icon } Log in</span>
 			) }
 		</div>

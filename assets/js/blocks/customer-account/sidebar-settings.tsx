@@ -22,7 +22,7 @@ import {
 /**
  * Internal dependencies
  */
-import { CustomerAccountDisplayValue, CustomerAccountIconValue } from './types';
+import { DisplayStyle, IconStyle } from './types';
 
 interface BlockSettingsProps {
 	attributes: BlockAttributes;
@@ -33,12 +33,11 @@ export const BlockSettings = ( {
 	attributes,
 	setAttributes,
 }: BlockSettingsProps ) => {
-	const { customerAccountDisplayStyle, customerAccountIconStyle } =
-		attributes;
+	const { displayStyle, iconStyle } = attributes;
 	const displayIconStyleSelector = [
-		CustomerAccountDisplayValue.ICON_ONLY,
-		CustomerAccountDisplayValue.ICON_AND_TEXT,
-	].includes( customerAccountDisplayStyle );
+		DisplayStyle.ICON_ONLY,
+		DisplayStyle.ICON_AND_TEXT,
+	].includes( displayStyle );
 
 	return (
 		<InspectorControls key="inspector">
@@ -50,9 +49,9 @@ export const BlockSettings = ( {
 						'Icon options',
 						'woo-gutenberg-products-block'
 					) }
-					value={ customerAccountDisplayStyle }
-					onChange={ ( value: CustomerAccountDisplayValue ) => {
-						setAttributes( { customerAccountDisplayStyle: value } );
+					value={ displayStyle }
+					onChange={ ( value: DisplayStyle ) => {
+						setAttributes( { displayStyle: value } );
 					} }
 					help={ __(
 						'Choose if you want to include an icon with the customer account link.',
@@ -60,21 +59,21 @@ export const BlockSettings = ( {
 					) }
 					options={ [
 						{
-							value: CustomerAccountDisplayValue.ICON_AND_TEXT,
+							value: DisplayStyle.ICON_AND_TEXT,
 							label: __(
 								'Icon and text',
 								'woo-gutenberg-products-block'
 							),
 						},
 						{
-							value: CustomerAccountDisplayValue.TEXT_ONLY,
+							value: DisplayStyle.TEXT_ONLY,
 							label: __(
 								'Text-only',
 								'woo-gutenberg-products-block'
 							),
 						},
 						{
-							value: CustomerAccountDisplayValue.ICON_ONLY,
+							value: DisplayStyle.ICON_ONLY,
 							label: __(
 								'Icon-only',
 								'woo-gutenberg-products-block'
@@ -88,16 +87,16 @@ export const BlockSettings = ( {
 							'Display Style',
 							'woo-gutenberg-products-block'
 						) }
-						value={ customerAccountIconStyle }
-						onChange={ ( value: CustomerAccountIconValue ) =>
+						value={ iconStyle }
+						onChange={ ( value: IconStyle ) =>
 							setAttributes( {
-								customerAccountIconStyle: value,
+								iconStyle: value,
 							} )
 						}
 						className="wc-block-customer-account__icon-style-toggle"
 					>
 						<ToggleGroupControlOption
-							value={ CustomerAccountIconValue.DEFAULT }
+							value={ IconStyle.DEFAULT }
 							label={
 								<Icon
 									icon={ customerAccountStyle }
@@ -106,15 +105,14 @@ export const BlockSettings = ( {
 										'wc-block-customer-account__icon-option',
 										{
 											active:
-												customerAccountIconStyle ===
-												CustomerAccountIconValue.DEFAULT,
+												iconStyle === IconStyle.DEFAULT,
 										}
 									) }
 								/>
 							}
 						/>
 						<ToggleGroupControlOption
-							value={ CustomerAccountIconValue.ALT }
+							value={ IconStyle.ALT }
 							label={
 								<Icon
 									icon={ customerAccountStyleAlt }
@@ -122,9 +120,7 @@ export const BlockSettings = ( {
 									className={ classNames(
 										'wc-block-customer-account__icon-option',
 										{
-											active:
-												customerAccountIconStyle ===
-												CustomerAccountIconValue.ALT,
+											active: iconStyle === IconStyle.ALT,
 										}
 									) }
 								/>

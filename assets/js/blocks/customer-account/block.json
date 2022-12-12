@@ -23,11 +23,11 @@
 			"type": "string",
 			"default": ""
 		},
-		"customerAccountDisplayStyle": {
+		"displayStyle": {
 			"type": "string",
 			"default": "icon_and_text"
 		},
-		"customerAccountIconStyle": {
+		"iconStyle": {
 			"type": "string",
 			"default": "default"
 		}

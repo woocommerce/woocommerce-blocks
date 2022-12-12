@@ -29,15 +29,10 @@ if ( isExperimentalBuild() ) {
 		},
 		edit,
 		save( { attributes }: { attributes: Attributes } ) {
-			const {
-				className,
-				customerAccountDisplayStyle,
-				customerAccountIconStyle,
-			} = attributes;
+			const { className, displayStyle, iconStyle } = attributes;
 			const data: Record< string, unknown > = {
-				'data-customer-account-display-style':
-					customerAccountDisplayStyle,
-				'data-customer-account-icon-style': customerAccountIconStyle,
+				'data-display-style': displayStyle,
+				'data-icon-style': iconStyle,
 			};
 
 			return (
