@@ -12,8 +12,8 @@ import { CartCheckoutSidebarCompatibilityNotice } from '@woocommerce/editor-comp
 import {
 	DefaultNotice,
 	LegacyNotice,
-	IncompatibilityPaymentGatewaysNotice,
 } from '@woocommerce/editor-components/default-notice';
+import { IncompatibilityPaymentGatewaysNotice } from '@woocommerce/editor-components/incompatible-payment-gateways-notice';
 import { useSelect } from '@wordpress/data';
 import { CartCheckoutFeedbackPrompt } from '@woocommerce/editor-components/feedback-prompt';
 import { isWcVersion } from '@woocommerce/settings';
