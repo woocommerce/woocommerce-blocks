@@ -1,3 +1,5 @@
+@import "../shared/styles/style";
+
 .wc-block-rating-filter {
 	&.is-loading {
 		@include placeholder();
@@ -25,12 +27,6 @@
 			transform: translateY(-50%);
 			pointer-events: none;
 		}
-	}
-
-	.wc-block-components-product-rating__stars {
-		display: inline-block;
-		line-height: 1;
-		height: 1em;
 	}
 
 	.wc-blocks-components-form-token-field-wrapper {
@@ -125,15 +121,6 @@
 
 .wp-block-woocommerce-rating-filter {
 	margin-bottom: $gap-large;
-
-	.wc-block-components-product-rating {
-		&.is-active {
-			font-weight: 700;
-			.wc-block-components-product-rating__stars span::before {
-				color: var(--wp--preset--color--primary, #7f54b3);
-			}
-		}
-	}
 
 	.wc-block-rating-filter .wc-block-rating-filter-list li input,
 	.wc-block-rating-filter .wc-block-rating-filter-list li label {
