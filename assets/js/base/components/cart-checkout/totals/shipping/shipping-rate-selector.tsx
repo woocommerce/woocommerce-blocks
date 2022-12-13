@@ -10,10 +10,9 @@ import type { CartResponseShippingRate } from '@woocommerce/types';
  * Internal dependencies
  */
 import ShippingRatesControl from '../../shipping-rates-control';
-import { renderPackageRateOption } from '../../shipping-rates-control-package/render-package-rate-option';
 
 interface ShippingRateSelectorProps {
-	hasRates: number | boolean;
+	hasRates: boolean;
 	shippingRates: CartResponseShippingRate[];
 	isLoadingRates: boolean;
 }
@@ -45,7 +44,6 @@ const ShippingRateSelector = ( {
 						) }
 					</Notice>
 				}
-				renderOption={ renderPackageRateOption }
 				shippingRates={ shippingRates }
 				isLoadingRates={ isLoadingRates }
 				context="woocommerce/cart"
