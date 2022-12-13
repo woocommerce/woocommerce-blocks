@@ -50,16 +50,27 @@ describe( 'isPostcode', () => {
 		[ false, 'ABCDE', 'CH' ],
 
 		// Czech postcodes
-		[ false, '1', 'CZ' ],
+		[ true, '160 00', 'CZ' ],
+		[ true, '16000', 'CZ' ],
+		[ false, '1600', 'CZ' ],
 
 		// German postcodes
-		[ false, '1', 'DE' ],
+		[ true, '01234', 'DE' ],
+		[ true, '12345', 'DE' ],
+		[ false, '12 345', 'DE' ],
+		[ false, '1234', 'DE' ],
 
 		// Spanish postcodes
-		[ false, '1', 'ES' ],
+		[ true, '03000', 'ES' ],
+		[ true, '08000', 'ES' ],
+		[ false, '08 000', 'ES' ],
+		[ false, '1234', 'ES' ],
 
 		// French postcodes
-		[ false, '1', 'FR' ],
+		[ true, '01000', 'FR' ],
+		[ true, '99999', 'FR' ],
+		[ false, '01 000', 'FR' ],
+		[ false, '1234', 'FR' ],
 
 		// British postcodes
 		[ true, 'AA9A 9AA', 'GB' ],
