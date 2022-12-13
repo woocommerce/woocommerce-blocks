@@ -21,7 +21,7 @@
 <!-- wp:woocommerce/product-button {"isDescendentOfQueryLoop":true,"fontSize":"small","style":{"spacing":{"margin":{"top":"1em"}}}} /-->
 <!-- /wp:post-template -->
 
-<!-- wp:query-pagination -->
+<!-- wp:query-pagination {"layout":{"type":"flex","justifyContent":"center"}} -->
 <!-- wp:query-pagination-previous /-->
 
 <!-- wp:query-pagination-numbers /-->
