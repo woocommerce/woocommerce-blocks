@@ -1,3 +1,5 @@
+@import "../shared/styles/style";
+
 .wp-block-woocommerce-stock-filter {
 	h1,
 	h2,
@@ -35,6 +37,7 @@
 	}
 
 	&.style-dropdown {
+		@include includeFormTokenFieldFix();
 		position: relative;
 		display: flex;
 		gap: $gap;
