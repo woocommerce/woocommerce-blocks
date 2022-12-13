@@ -61,10 +61,6 @@ export const Block = ( props: Props ): JSX.Element | null => {
 	const typographyProps = useTypographyProps( props );
 	const spacingProps = useSpacingProps( props );
 
-	if ( ! rating ) {
-		return null;
-	}
-
 	const starStyle = {
 		width: ( rating / 5 ) * 100 + '%',
 	};
