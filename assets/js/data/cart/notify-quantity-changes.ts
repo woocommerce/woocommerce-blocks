@@ -11,8 +11,7 @@ const notifyIfQuantityLimitsChanged = ( oldCart: Cart, newCart: Cart ) => {
 			return item.key === cartItem.key;
 		} );
 
-		// If getCartData has not finished resolving, then this is the first load. We should also check for min/max
-		// quantity discrepancies here.
+		// If getCartData has not finished resolving, then this is the first load.
 		const isFirstLoad = oldCart.items.length === 0;
 
 		// Item has been removed, we don't need to do any more checks.
