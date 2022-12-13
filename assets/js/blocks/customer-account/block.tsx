@@ -6,7 +6,7 @@ import {
 	customerAccountStyle,
 	customerAccountStyleAlt,
 } from '@woocommerce/icons';
-import { allSettings } from '@woocommerce/settings';
+import { getSetting } from '@woocommerce/settings';
 import { __ } from '@wordpress/i18n';
 
 /**
@@ -33,11 +33,11 @@ const AccountIcon = ( {
 };
 
 const Label = ( { displayStyle }: { displayStyle: DisplayStyle } ) => {
-	const { currentUserId } = allSettings;
-
 	if ( displayStyle === DisplayStyle.ICON_ONLY ) {
 		return null;
 	}
+
+	const currentUserId = getSetting( 'currentUserId', null );
 
 	return (
 		<span className="label">
@@ -56,7 +56,7 @@ export const CustomerAccountBlock = ( {
 	const { displayStyle, iconStyle } = attributes;
 
 	return (
-		<a href={ allSettings.dashboardUrl }>
+		<a href={ getSetting( 'dashboardUrl', '/wp-login.php' ) }>
 			<AccountIcon
 				iconStyle={ iconStyle }
 				displayStyle={ displayStyle }
