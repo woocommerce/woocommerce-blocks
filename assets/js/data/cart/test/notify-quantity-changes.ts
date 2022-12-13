@@ -70,6 +70,19 @@ describe( 'notifyQuantityChanges', () => {
 				id: '1-quantity-update',
 			}
 		);
+		newCart.items[ 0 ].quantity = 10;
+		oldCart.items[ 0 ].quantity = 10;
+		newCart.items[ 0 ].quantity_limits.multiple_of = 6;
+		notifyQuantityChanges( oldCart, newCart, [] );
+		expect( mockedCreateInfoNotice ).toHaveBeenLastCalledWith(
+			'The quantity of "Beanie" has been changed to 6. This product must be purchased in groups of 6.',
+			{
+				context: 'wc/cart',
+				speak: true,
+				type: 'snackbar',
+				id: '1-quantity-update',
+			}
+		);
 	} );
 	it( 'does not show notices if the quantity limit changes, and the quantity is within limits', () => {
 		const { oldCart, newCart } = getFreshCarts();
