@@ -26,6 +26,11 @@ class Authentication {
 			return $result;
 		}
 
+		// Disable Rate Limiting for logged in users with 'edit posts' capability.
+		if ( current_user_can( 'edit_posts' ) ) {
+			return ! empty( $result ) ? $result : true;
+		}
+
 		$rate_limiting_options = RateLimits::get_options();
 
 		if ( $rate_limiting_options->enabled ) {
