@@ -12,6 +12,7 @@ import {
 	useShallowEqual,
 	useBorderProps,
 } from '@woocommerce/base-hooks';
+import { Notice } from 'wordpress-components';
 import {
 	useQueryStateByKey,
 	useQueryStateByContext,
@@ -125,6 +126,8 @@ const RatingFilterBlock = ( {
 	const [ remountKey, setRemountKey ] = useState( generateUniqueId() );
 
 	const borderProps = useBorderProps( blockAttributes );
+	const [ displayNoProductRatingsNotice, setDisplayNoProductRatingsNotice ] =
+		useState( false );
 
 	/**
 	 * Used to redirect the page when filters are changed so templates using the Classic Template block can filter.
@@ -235,6 +238,12 @@ const RatingFilterBlock = ( {
 				? [ ...filteredCounts.rating_counts ].reverse()
 				: [];
 
+		if ( isEditor && orderedRatings.length === 0 ) {
+			setDisplayedOptions( previewOptions );
+			setDisplayNoProductRatingsNotice( true );
+			return;
+		}
+
 		const newOptions = orderedRatings
 			.filter(
 				( item ) => isObject( item ) && Object.keys( item ).length > 0
@@ -262,6 +271,7 @@ const RatingFilterBlock = ( {
 		filteredCounts,
 		filteredCountsLoading,
 		productRatingsQuery,
+		isEditor,
 	] );
 
 	/**
@@ -320,6 +330,16 @@ const RatingFilterBlock = ( {
 
 	return (
 		<>
+			{ displayNoProductRatingsNotice && (
+				<Notice status="warning" isDismissible={ false }>
+					<p>
+						{ __(
+							"Your store doesn't have any products with ratings yet. This filter option will display when a product receives a review.",
+							'woo-gutenberg-products-block'
+						) }
+					</p>
+				</Notice>
+			) }
 			<div
 				className={ classnames(
 					'wc-block-rating-filter',
