@@ -35,10 +35,39 @@ const notifyIfQuantityLimitsChanged = ( oldCart: Cart, newCart: Cart ) => {
 			cartItem.quantity > cartItem.quantity_limits.maximum;
 		const quantityBelowMin =
 			cartItem.quantity < cartItem.quantity_limits.minimum;
+		const quantityOutOfStep =
+			cartItem.quantity % cartItem.quantity_limits.multiple_of !== 0;
 
 		// If the quantity is still within the constraints, then we don't need to show any notice, this is because
 		// QuantitySelector will not automatically update the value.
-		if ( ! quantityAboveMax && ! quantityBelowMin ) {
+		if ( ! quantityAboveMax && ! quantityBelowMin && ! quantityOutOfStep ) {
+			return;
+		}
+
+		if ( quantityOutOfStep ) {
+			dispatch( 'core/notices' ).createInfoNotice(
+				sprintf(
+					/* translators: %1$s is the name of the item, %2$d is the quantity of the item. %3$d is a number that the quantity must be a multiple of. */
+					__(
+						'The quantity of "%1$s" has been changed to %2$d. This product must be purchased in groups of %3$d.',
+						'woo-gutenberg-products-block'
+					),
+					cartItem.name,
+					// We round down to the nearest step value here. We need to do it this way because at this point we
+					// don't know the next quantity. That only gets set once the HTML Input field applies its min/max
+					// constraints.
+					Math.floor(
+						cartItem.quantity / cartItem.quantity_limits.multiple_of
+					) * cartItem.quantity_limits.multiple_of,
+					cartItem.quantity_limits.multiple_of
+				),
+				{
+					context: 'wc/cart',
+					speak: true,
+					type: 'snackbar',
+					id: `${ cartItem.key }-quantity-update`,
+				}
+			);
 			return;
 		}
 
