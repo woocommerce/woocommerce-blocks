@@ -22,11 +22,7 @@ export type review =
 				src: string;
 				srcset: string;
 			};
-			reviewer_avatar_urls: {
-				'96': string;
-				'24': string;
-				'48': string;
-			};
+			reviewer_avatar_urls: { [ size: string ]: string };
 			verified: boolean;
 			rating: number;
 	  }
