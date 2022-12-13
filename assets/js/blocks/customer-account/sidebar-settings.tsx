@@ -67,6 +67,7 @@ export const BlockSettings = ( {
 				title={ __( 'Display', 'woo-gutenberg-products-block' ) }
 			>
 				<SelectControl
+					className="customer-account-display-style"
 					label={ __(
 						'Icon options',
 						'woo-gutenberg-products-block'
