@@ -1,9 +1,17 @@
 /**
  * External dependencies
  */
-import { Cart } from '@woocommerce/types';
+import { Cart, CartItem } from '@woocommerce/types';
 import { dispatch } from '@wordpress/data';
 import { __, sprintf } from '@wordpress/i18n';
+
+const isWithinQuantityLimits = ( cartItem: CartItem ) => {
+	return (
+		cartItem.quantity >= cartItem.quantity_limits.minimum &&
+		cartItem.quantity <= cartItem.quantity_limits.maximum &&
+		cartItem.quantity % cartItem.quantity_limits.multiple_of === 0
+	);
+};
 
 const notifyIfQuantityLimitsChanged = ( oldCart: Cart, newCart: Cart ) => {
 	newCart.items.forEach( ( cartItem ) => {
@@ -16,6 +24,10 @@ const notifyIfQuantityLimitsChanged = ( oldCart: Cart, newCart: Cart ) => {
 
 		// Item has been removed, we don't need to do any more checks.
 		if ( ! oldCartItem && ! isFirstLoad ) {
+			return;
+		}
+
+		if ( isWithinQuantityLimits( cartItem ) ) {
 			return;
 		}
 
@@ -87,13 +99,17 @@ const notifyIfQuantityChanged = (
 		if ( ! oldCartItem ) {
 			return;
 		}
+
 		if ( cartItem.key === oldCartItem.key ) {
-			if ( cartItem.quantity !== oldCartItem.quantity ) {
+			if (
+				cartItem.quantity !== oldCartItem.quantity &&
+				isWithinQuantityLimits( cartItem )
+			) {
 				dispatch( 'core/notices' ).createInfoNotice(
 					sprintf(
 						/* translators: %1$s is the name of the item, %2$d is the quantity of the item. */
 						__(
-							'The quantity of %1$s has been updated to %2$d.',
+							'The quantity of "%1$s" has been changed to %2$d.',
 							'woo-gutenberg-products-block'
 						),
 						cartItem.name,
