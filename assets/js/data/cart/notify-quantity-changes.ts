@@ -44,12 +44,15 @@ const notifyIfQuantityLimitsChanged = ( oldCart: Cart, newCart: Cart ) => {
 				),
 				{
 					context: 'wc/cart',
+					speak: true,
 					type: 'snackbar',
 					id: `${ cartItem.key }-quantity-update`,
 				}
 			);
 			return;
 		}
+
+		// Quantity is above max, so has been reduced.
 		dispatch( 'core/notices' ).createInfoNotice(
 			sprintf(
 				/* translators: %1$s is the name of the item, %2$d is the quantity of the item. */
@@ -62,6 +65,7 @@ const notifyIfQuantityLimitsChanged = ( oldCart: Cart, newCart: Cart ) => {
 			),
 			{
 				context: 'wc/cart',
+				speak: true,
 				type: 'snackbar',
 				id: `${ cartItem.key }-quantity-update`,
 			}
@@ -98,6 +102,7 @@ const notifyIfQuantityChanged = (
 					),
 					{
 						context: 'wc/cart',
+						speak: true,
 						type: 'snackbar',
 						id: `${ cartItem.key }-quantity-update`,
 					}
