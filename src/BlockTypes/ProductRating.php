@@ -76,11 +76,9 @@ class ProductRating extends AbstractBlock {
 	 * @return string
 	 */
 	public function filter_rating_html( $html, $rating, $count ) {
-		if ( 0 < $rating ) {
-			/* translators: %s: rating */
-			$label = sprintf( __( 'Rated %s out of 5', 'woo-gutenberg-products-block' ), $rating );
-			$html  = '<div class="wc-block-components-product-rating__stars wc-block-grid__product-rating__stars" role="img" aria-label="' . esc_attr( $label ) . '">' . wc_get_star_rating_html( $rating, $count ) . '</div>';
-		}
+		/* translators: %s: rating */
+		$label = 0 < $rating ? sprintf( __( 'Rated %s out of 5', 'woo-gutenberg-products-block' ), $rating ) : sprintf( __( 'No rating available', 'woo-gutenberg-products-block' ) );
+		$html  = '<div class="wc-block-components-product-rating__stars wc-block-grid__product-rating__stars" role="img" aria-label="' . esc_attr( $label ) . '">' . wc_get_star_rating_html( $rating, $count ) . '</div>';
 		return $html;
 	}
 

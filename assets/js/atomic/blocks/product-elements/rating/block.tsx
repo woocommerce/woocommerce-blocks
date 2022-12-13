@@ -43,6 +43,17 @@ const getRatingCount = ( product: ProductResponseItem ) => {
 	return Number.isFinite( count ) && count > 0 ? count : 0;
 };
 
+const getRatingText = ( rating: number ) => {
+	if ( rating === 0 ) {
+		return __( 'No rating available', 'woo-gutenberg-products-block' );
+	}
+	return sprintf(
+		/* translators: %f is referring to the average rating value */
+		__( 'Rated %f out of 5', 'woo-gutenberg-products-block' ),
+		rating
+	);
+};
+
 /**
  * Product Rating Block Component.
  *
@@ -65,11 +76,7 @@ export const Block = ( props: Props ): JSX.Element | null => {
 		width: ( rating / 5 ) * 100 + '%',
 	};
 
-	const ratingText = sprintf(
-		/* translators: %f is referring to the average rating value */
-		__( 'Rated %f out of 5', 'woo-gutenberg-products-block' ),
-		rating
-	);
+	const ratingText = getRatingText( rating );
 
 	const reviews = getRatingCount( product );
 	const ratingHTML = {
