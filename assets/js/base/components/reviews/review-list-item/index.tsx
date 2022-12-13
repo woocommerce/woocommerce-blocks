@@ -4,13 +4,19 @@
 import { __, sprintf } from '@wordpress/i18n';
 import classNames from 'classnames';
 import ReadMore from '@woocommerce/base-components/read-more';
+import type { BlockAttributes } from '@wordpress/blocks';
 
 /**
  * Internal dependencies
  */
 import './style.scss';
+import type { review } from '../types';
 
-function getReviewImage( review, imageType, isLoading ) {
+function getReviewImage(
+	review: review,
+	imageType: string,
+	isLoading: boolean
+): JSX.Element {
 	if ( isLoading || ! review ) {
 		return (
 			<div className="wc-block-review-list-item__image wc-block-components-review-list-item__image" />
@@ -50,7 +56,7 @@ function getReviewImage( review, imageType, isLoading ) {
 	);
 }
 
-function getReviewContent( review ) {
+function getReviewContent( review: review ): JSX.Element {
 	return (
 		<ReadMore
 			maxLines={ 10 }
@@ -76,7 +82,7 @@ function getReviewContent( review ) {
 	);
 }
 
-function getReviewProductName( review ) {
+function getReviewProductName( review: review ): JSX.Element {
 	return (
 		<div className="wc-block-review-list-item__product wc-block-components-review-list-item__product">
 			<a
@@ -92,7 +98,7 @@ function getReviewProductName( review ) {
 	);
 }
 
-function getReviewerName( review ) {
+function getReviewerName( review: review ): JSX.Element {
 	const { reviewer = '' } = review;
 	return (
 		<div className="wc-block-review-list-item__author wc-block-components-review-list-item__author">
@@ -101,7 +107,7 @@ function getReviewerName( review ) {
 	);
 }
 
-function getReviewDate( review ) {
+function getReviewDate( review: review ): JSX.Element {
 	const {
 		date_created: dateCreated,
 		formatted_date_created: formattedDateCreated,
@@ -116,7 +122,7 @@ function getReviewDate( review ) {
 	);
 }
 
-function getReviewRating( review ) {
+function getReviewRating( review: review ): JSX.Element {
 	const { rating } = review;
 	const starStyle = {
 		width: ( rating / 5 ) * 100 + '%' /* stylelint-disable-line */,
@@ -148,8 +154,12 @@ function getReviewRating( review ) {
 		</div>
 	);
 }
+interface ReviewListItemProps {
+	attributes: BlockAttributes;
+	review?: review;
+}
 
-const ReviewListItem = ( { attributes, review = {} } ) => {
+const ReviewListItem = ( { attributes, review = {} }: ReviewListItemProps ) => {
 	const {
 		imageType,
 		showReviewDate,
@@ -160,7 +170,7 @@ const ReviewListItem = ( { attributes, review = {} } ) => {
 		showProductName,
 	} = attributes;
 	const { rating } = review;
-	const isLoading = ! Object.keys( review ).length > 0;
+	const isLoading = ! ( Object.keys( review ).length > 0 );
 	const showReviewRating = Number.isFinite( rating ) && showReviewRatingAttr;
 
 	return (
