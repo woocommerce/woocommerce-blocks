@@ -13,7 +13,7 @@ import './style.scss';
 interface ReviewSortSelectProps {
 	onChange: ChangeEventHandler;
 	readOnly: boolean;
-	value: 'most-recent' | 'highest-rating' | 'lowest-rating';
+	value: string;
 }
 
 const ReviewSortSelect = ( {
