@@ -2,9 +2,11 @@
  * External dependencies
  */
 import { __ } from '@wordpress/i18n';
-import { Notice } from '@wordpress/components';
+import { Notice, ExternalLink } from '@wordpress/components';
 import { useSelect } from '@wordpress/data';
-import { useState } from '@wordpress/element';
+import { useState, createInterpolateElement } from '@wordpress/element';
+import { alert } from '@woocommerce/icons';
+import { Icon } from '@wordpress/icons';
 /**
  * Internal dependencies
  */
@@ -28,15 +30,24 @@ export function IncompatibilityPaymentGatewaysNotice() {
 		return null;
 	}
 
-	const noticeContent = __(
-		'The following payment gateway(s) are not compatible with the Cart & Checkout Blocks:',
-		'woo-gutenberg-products-block'
+	const noticeContent = createInterpolateElement(
+		__(
+			'The following extensions are incompatible with the block-based checkout. <a>Learn more</a>',
+			'woo-gutenberg-products-block'
+		),
+		{
+			a: (
+				// Suppress the warning as this <a> will be interpolated into the string with content.
+				// eslint-disable-next-line jsx-a11y/anchor-has-content
+				<ExternalLink href="https://woocommerce.com/document/cart-checkout-blocks-support-status/" />
+			),
+		}
 	);
 
 	return (
 		<Notice
-			className="wc-default-page-notice"
-			status={ 'error' }
+			className="wc-blocks-incompatible-extensions-notice"
+			status={ 'warning' }
 			onRemove={ () => setStatus( 'dismissed' ) }
 			spokenMessage={ noticeContent }
 		>
@@ -44,8 +55,12 @@ export function IncompatibilityPaymentGatewaysNotice() {
 			<ul>
 				{ Object.entries( incompatiblePaymentMethods ).map(
 					( [ id, title ] ) => (
-						<li key={ id }>
-							<strong>- { title }</strong>
+						<li
+							key={ id }
+							className="wc-blocks-incompatible-extension-element"
+						>
+							<Icon icon={ alert } />
+							<span>{ title }</span>
 						</li>
 					)
 				) }
