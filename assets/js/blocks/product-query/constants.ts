@@ -98,6 +98,15 @@ export const INNER_BLOCKS_TEMPLATE: InnerBlockTemplate[] = [
 			],
 		],
 	],
-	[ 'core/query-pagination' ],
+	[
+		'core/query-pagination',
+		{
+			layout: {
+				type: 'flex',
+				justifyContent: 'center',
+			},
+		},
+		[],
+	],
 	[ 'core/query-no-results' ],
 ];
