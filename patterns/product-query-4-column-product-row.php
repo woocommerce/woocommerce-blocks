@@ -10,7 +10,7 @@
 <div class="wp-block-query"><!-- wp:post-template -->
 <!-- wp:woocommerce/product-image {"isDescendentOfQueryLoop":true} /-->
 
-<!-- wp:post-title {"fontSize":"medium"} /-->
+<!-- wp:post-title {"isLink":true,"fontSize":"medium"} /-->
 
 <!-- wp:group {"layout":{"type":"flex","flexWrap":"wrap","verticalAlignment":"top","justifyContent":"space-between","orientation":"horizontal"}} -->
 <div class="wp-block-group"><!-- wp:woocommerce/product-price {"isDescendentOfQueryLoop":true,"fontSize":"small"} /-->
@@ -18,7 +18,7 @@
 <!-- wp:woocommerce/product-rating {"isDescendentOfQueryLoop":true,"fontSize":"small"} /--></div>
 <!-- /wp:group -->
 
-<!-- wp:woocommerce/product-button {"isDescendentOfQueryLoop":true,"fontSize":"small"} /-->
+<!-- wp:woocommerce/product-button {"isDescendentOfQueryLoop":true,"fontSize":"small","style":{"spacing":{"margin":{"top":"1em"}}}} /-->
 <!-- /wp:post-template -->
 
 <!-- wp:query-pagination -->

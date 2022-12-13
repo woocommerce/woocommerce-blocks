@@ -12,7 +12,7 @@
 
 <!-- wp:columns -->
 <div class="wp-block-columns"><!-- wp:column {"width":"50%"} -->
-<div class="wp-block-column" style="flex-basis:50%"><!-- wp:post-title {"fontSize":"small"} /--></div>
+<div class="wp-block-column" style="flex-basis:50%"><!-- wp:post-title {"isLink":true,"fontSize":"small"} /--></div>
 <!-- /wp:column -->
 
 <!-- wp:column {"width":"50%"} -->

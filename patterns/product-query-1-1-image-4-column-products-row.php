@@ -1,7 +1,7 @@
 <?php
 /**
- * Title: WooCommerce 4-column featured products
- * Slug: woocommerce-blocks/product-query-4-column-featured-products
+ * Title: WooCommerce 1:1 Image 4-Column Products Row
+ * Slug: woocommerce-blocks/product-query-1-1-image-4-column-products-row
  * Categories: WooCommerce
  * Block Types: core/query/woocommerce/product-query
  */
@@ -10,7 +10,7 @@
 <div class="wp-block-query"><!-- wp:post-template -->
 <!-- wp:woocommerce/product-image {"isDescendentOfQueryLoop":true} /-->
 
-<!-- wp:post-title {"textAlign":"center","level":3,"fontSize":"medium"} /-->
+<!-- wp:post-title {"textAlign":"center","level":3,"isLink":true,"fontSize":"medium"} /-->
 
 <!-- wp:woocommerce/product-price {"isDescendentOfQueryLoop":true,"textAlign":"center","fontSize":"small"} /-->
 
