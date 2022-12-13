@@ -10,6 +10,8 @@ import {
 import { InspectorControls } from '@wordpress/block-editor';
 import { __ } from '@wordpress/i18n';
 import type { BlockAttributes } from '@wordpress/blocks';
+import { getSetting } from '@woocommerce/settings';
+import { createInterpolateElement } from '@wordpress/element';
 import {
 	PanelBody,
 	SelectControl,
@@ -17,6 +19,7 @@ import {
 	__experimentalToggleGroupControl as ToggleGroupControl,
 	// eslint-disable-next-line @wordpress/no-unsafe-wp-apis
 	__experimentalToggleGroupControlOption as ToggleGroupControlOption,
+	ExternalLink,
 } from '@wordpress/components';
 
 /**
@@ -28,6 +31,24 @@ interface BlockSettingsProps {
 	attributes: BlockAttributes;
 	setAttributes: ( attrs: BlockAttributes ) => void;
 }
+
+const AccountSettingsLink = () => {
+	const accountSettingsUrl = `${ getSetting(
+		'adminUrl'
+	) }admin.php?page=wc-settings&tab=account`;
+
+	const linkText = createInterpolateElement(
+		`<a>${ __(
+			'Manage account settings',
+			'woo-gutenberg-products-block'
+		) }</a>`,
+		{
+			a: <ExternalLink href={ accountSettingsUrl } />,
+		}
+	);
+
+	return <div className="account-link">{ linkText }</div>;
+};
 
 export const BlockSettings = ( {
 	attributes,
@@ -41,6 +62,7 @@ export const BlockSettings = ( {
 
 	return (
 		<InspectorControls key="inspector">
+			<AccountSettingsLink />
 			<PanelBody
 				title={ __( 'Display', 'woo-gutenberg-products-block' ) }
 			>
