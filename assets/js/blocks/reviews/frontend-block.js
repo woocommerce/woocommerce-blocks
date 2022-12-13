@@ -42,6 +42,7 @@ const FrontendBlock = ( {
 				<ReviewSortSelect
 					value={ sortSelectValue }
 					onChange={ onChangeOrderby }
+					readOnly
 				/>
 			) }
 			<ReviewList attributes={ attributes } reviews={ reviews } />
