@@ -2,7 +2,10 @@
  * External dependencies
  */
 import classnames from 'classnames';
-import { useBlockProps } from '@wordpress/block-editor';
+import { __ } from '@wordpress/i18n';
+import { InspectorControls, useBlockProps } from '@wordpress/block-editor';
+import { PanelBody, ExternalLink } from '@wordpress/components';
+import { ADMIN_URL } from '@woocommerce/settings';
 import { innerBlockAreas } from '@woocommerce/blocks-checkout';
 import Noninteractive from '@woocommerce/base-components/noninteractive';
 
@@ -15,10 +18,6 @@ import {
 	AdditionalFieldsContent,
 } from '../../form-step';
 import Block from './block';
-import {
-	useCheckoutBlockContext,
-	useCheckoutBlockControlsContext,
-} from '../../context';
 
 export const Edit = ( {
 	attributes,
@@ -32,8 +31,6 @@ export const Edit = ( {
 	};
 	setAttributes: ( attributes: Record< string, unknown > ) => void;
 } ): JSX.Element => {
-	const { allowCreateAccount } = useCheckoutBlockContext();
-	const { accountControls: Controls } = useCheckoutBlockControlsContext();
 	return (
 		<FormStepBlock
 			attributes={ attributes }
@@ -43,9 +40,28 @@ export const Edit = ( {
 				attributes?.className
 			) }
 		>
-			<Controls />
+			<InspectorControls>
+				<PanelBody
+					title={ __( 'Account', 'woo-gutenberg-products-block' ) }
+				>
+					<p className="wc-block-checkout__controls-text">
+						{ __(
+							'Account creation and guest checkout settings can be managed in the WooCommerce settings.',
+							'woo-gutenberg-products-block'
+						) }
+					</p>
+					<ExternalLink
+						href={ `${ ADMIN_URL }admin.php?page=wc-settings&tab=account` }
+					>
+						{ __(
+							'Manage account settings',
+							'woo-gutenberg-products-block'
+						) }
+					</ExternalLink>
+				</PanelBody>
+			</InspectorControls>
 			<Noninteractive>
-				<Block allowCreateAccount={ allowCreateAccount } />
+				<Block />
 			</Noninteractive>
 			<AdditionalFields block={ innerBlockAreas.CONTACT_INFORMATION } />
 		</FormStepBlock>
