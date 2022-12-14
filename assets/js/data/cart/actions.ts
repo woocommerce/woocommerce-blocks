@@ -27,7 +27,7 @@ export * from './thunks';
 /**
  * An action creator that dispatches the plain action responsible for setting the cart data in the store.
  *
- * @param {Cart} cart the parsed cart object. (Parsed into camelCase).
+ * @param  cart the parsed cart object. (Parsed into camelCase).
  */
 export const setCartData = ( cart: Cart ): { type: string; response: Cart } => {
 	return {
