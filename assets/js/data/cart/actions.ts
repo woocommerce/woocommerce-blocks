@@ -21,7 +21,7 @@ import type { ResponseError } from '../types';
 import { DispatchFromMap, ReturnOrGeneratorYieldUnion } from '../mapped-types';
 import { CartDispatchFromMap } from './index';
 
-// `Thunks are functions that can be dispatched, similar to actions creators
+// Thunks are functions that can be dispatched, similar to actions creators
 export * from './thunks';
 
 /**
