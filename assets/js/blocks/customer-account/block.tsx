@@ -13,7 +13,6 @@ import { __ } from '@wordpress/i18n';
  * Internal dependencies
  */
 import { Attributes, DisplayStyle, IconStyle } from './types';
-import './style.scss';
 
 const AccountIcon = ( {
 	iconStyle,
