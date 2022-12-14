@@ -113,20 +113,11 @@ export const apiFetchWithHeadersControl = ( options: APIFetchOptions ) =>
 		options,
 	} as const );
 
-const doApiFetch = < T = void >(
-	options: APIFetchOptions
-): Promise<
-	// If T has not been set, then we can return the default ApiResponse type.
-	T extends void
-		?
-				| { response: Response; headers: Response[ 'headers' ] }
-				| {
-						response: ApiResponse[ 'body' ];
-						headers: ApiResponse[ 'headers' ];
-				  }
-		: // If T was set, the `response` should be the type of T.
-		  { response: T; headers: Response[ 'headers' ] }
-> =>
+/**
+ * The underlying function that actually does the fetch. This is used by both the generator (control) version of
+ * apiFetchWithHeadersControl and the async function apiFetchWithHeaders.
+ */
+const doApiFetchWithHeaders = ( options: APIFetchOptions ) =>
 	new Promise( ( resolve, reject ) => {
 		// GET Requests cannot be batched.
 		if (
@@ -199,26 +190,13 @@ const doApiFetch = < T = void >(
 	} );
 
 /**
- * Dispatched a control action for triggering an api fetch call with no parsing.
+ * Triggers an api fetch call with no parsing.
  * Typically this would be used in scenarios where headers are needed.
  *
  * @param {APIFetchOptions} options The options for the API request.
  */
-export const apiFetchWithHeaders = < T = void >(
-	options: APIFetchOptions
-): Promise<
-	// If T has not been set, then we can return the default ApiResponse type.
-	T extends void
-		?
-				| { response: Response; headers: Response[ 'headers' ] }
-				| {
-						response: ApiResponse[ 'body' ];
-						headers: ApiResponse[ 'headers' ];
-				  }
-		: // If T was set, the `response` should be the type of T.
-		  { response: T; headers: Response[ 'headers' ] }
-> => {
-	return doApiFetch( options );
+export const apiFetchWithHeaders = ( options: APIFetchOptions ) => {
+	return doApiFetchWithHeaders( options );
 };
 
 /**
@@ -233,6 +211,6 @@ export const controls = {
 	}: ReturnType<
 		typeof apiFetchWithHeadersControl
 	> ): Promise< unknown > => {
-		return doApiFetch( options );
+		return doApiFetchWithHeaders( options );
 	},
 };

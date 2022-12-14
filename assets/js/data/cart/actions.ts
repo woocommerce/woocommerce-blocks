@@ -437,7 +437,7 @@ export const selectShippingRate =
 	async ( { dispatch }: { dispatch: CartDispatchFromMap } ) => {
 		try {
 			dispatch.shippingRatesBeingSelected( true );
-			const { response } = await apiFetchWithHeaders< CartResponse >( {
+			const { response } = await apiFetchWithHeaders( {
 				path: `/wc/store/v1/cart/select-shipping-rate`,
 				method: 'POST',
 				data: {
@@ -491,7 +491,7 @@ export const updateCustomerData =
 		dispatch.updatingCustomerData( true );
 
 		try {
-			const { response } = await apiFetchWithHeaders< CartResponse >( {
+			const { response } = await apiFetchWithHeaders( {
 				path: '/wc/store/v1/cart/update-customer',
 				method: 'POST',
 				data: customerData,
