@@ -61,12 +61,12 @@ describe( `${ block.name } Block`, () => {
 		it( 'icon options can be set to Icon and text', async () => {
 			await expect( page ).toSelect(
 				SELECTORS.displayDropdown,
-				'Icon-only'
+				'Icon and text'
 			);
 			await expect( page ).toMatchElement( SELECTORS.iconToggle );
 
 			await expect( page ).toMatchElement( SELECTORS.icon );
-			await expect( page ).not.toMatchElement( SELECTORS.label );
+			await expect( page ).toMatchElement( SELECTORS.label );
 		} );
 	} );
 } );
