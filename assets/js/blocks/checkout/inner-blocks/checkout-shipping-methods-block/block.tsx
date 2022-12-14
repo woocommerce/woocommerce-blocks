@@ -49,6 +49,7 @@ const renderShippingRatesControlOption = (
 
 const Block = (): JSX.Element | null => {
 	const { isEditor } = useEditorContext();
+
 	const {
 		shippingRates,
 		needsShipping,
