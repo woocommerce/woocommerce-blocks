@@ -176,10 +176,7 @@ const Block = ( {
 			) }
 			showErrorMessage={ CURRENT_USER_IS_ADMIN }
 		>
-			<StoreNoticesContainer
-				context={ noticeContexts.CHECKOUT }
-				showGlobal={ true }
-			/>
+			<StoreNoticesContainer context={ noticeContexts.CHECKOUT } />
 			{ /* SlotFillProvider need to be defined before CheckoutProvider so fills have the SlotFill context ready when they mount. */ }
 			<SlotFillProvider>
 				<CheckoutProvider>

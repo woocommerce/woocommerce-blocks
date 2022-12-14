@@ -24,8 +24,7 @@ const formatNotices = (
 
 const StoreNoticesContainer = ( {
 	className = '',
-	context = 'wc/global',
-	showGlobal = false,
+	context,
 	additionalNotices = [],
 }: StoreNoticesContainerProps ): JSX.Element | null => {
 	const suppressNotices = useSelect( ( select ) =>
@@ -35,22 +34,12 @@ const StoreNoticesContainer = ( {
 	const notices = useSelect< StoreNotice[] >( ( select ) => {
 		const { getNotices } = select( 'core/notices' );
 
-		const contextNotices = formatNotices(
+		return formatNotices(
 			( getNotices( context ) as StoreNotice[] ).concat(
 				additionalNotices
 			),
 			context
-		);
-		const globalNotices = showGlobal
-			? formatNotices(
-					getNotices( 'wc/global' ) as StoreNotice[],
-					'wc/global'
-			  )
-			: [];
-
-		return [ ...contextNotices, ...globalNotices ].filter(
-			Boolean
-		) as StoreNotice[];
+		).filter( Boolean ) as StoreNotice[];
 	} );
 
 	if ( suppressNotices ) {

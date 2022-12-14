@@ -7,6 +7,8 @@ import { withFilteredAttributes } from '@woocommerce/shared-hocs';
 import { FormStep } from '@woocommerce/base-components/cart-checkout';
 import { useSelect } from '@wordpress/data';
 import { CHECKOUT_STORE_KEY } from '@woocommerce/block-data';
+import { StoreNoticesContainer } from '@woocommerce/blocks-checkout';
+import { noticeContexts } from '@woocommerce/base-context';
 
 /**
  * Internal dependencies
@@ -47,6 +49,7 @@ const FrontendBlock = ( {
 			description={ description }
 			showStepNumber={ showStepNumber }
 		>
+			<StoreNoticesContainer context={ noticeContexts.PAYMENTS } />
 			<Block />
 			{ children }
 		</FormStep>

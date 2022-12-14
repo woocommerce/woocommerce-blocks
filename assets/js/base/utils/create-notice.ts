@@ -5,7 +5,11 @@ import { __ } from '@wordpress/i18n';
 import type { Options as NoticeOptions } from '@wordpress/notices';
 import { select, dispatch } from '@wordpress/data';
 
-export const GLOBAL_CONTEXT = 'wc/global';
+/**
+ * Internal dependencies
+ */
+import { noticeContexts } from '../context/event-emit/utils';
+
 export const DEFAULT_ERROR_MESSAGE = __(
 	'Something went wrong. Please contact us to get assistance.',
 	'woo-gutenberg-products-block'
@@ -17,19 +21,15 @@ export const hasStoreNoticesContainer = ( container: string ): boolean => {
 };
 
 const findParentContainer = ( container: string ): string => {
-	let parentContainer = GLOBAL_CONTEXT;
-	if (
-		container.includes( 'wc/checkout/' ) &&
-		hasStoreNoticesContainer( 'wc/checkout' )
-	) {
-		parentContainer = 'wc/checkout';
-	} else if (
-		container.includes( 'wc/cart/' ) &&
-		hasStoreNoticesContainer( 'wc/cart' )
-	) {
-		parentContainer = 'wc/cart';
+	if ( container.includes( noticeContexts.CHECKOUT + '/' ) ) {
+		return noticeContexts.CHECKOUT;
 	}
-	return parentContainer;
+	if ( container.includes( noticeContexts.CART + '/' ) ) {
+		return hasStoreNoticesContainer( noticeContexts.CART )
+			? noticeContexts.CART
+			: noticeContexts.CHECKOUT;
+	}
+	return container;
 };
 
 /**
@@ -43,27 +43,22 @@ export const createNotice = (
 	message: string,
 	options: Partial< NoticeOptions >
 ) => {
-	let noticeContext = options?.context || GLOBAL_CONTEXT;
-
+	const noticeContext = options?.context;
 	const suppressNotices =
 		select( 'wc/store/payment' ).isExpressPaymentMethodActive();
 
-	if ( suppressNotices ) {
+	if ( suppressNotices || noticeContext === undefined ) {
 		return;
-	}
-
-	if ( ! hasStoreNoticesContainer( noticeContext ) ) {
-		// If the container ref was not registered, use the parent context instead.
-		noticeContext = findParentContainer( noticeContext );
 	}
 
 	const { createNotice: dispatchCreateNotice } = dispatch( 'core/notices' );
 
 	dispatchCreateNotice( status, message, {
 		isDismissible: true,
-		__unstableHTML: true,
 		...options,
-		context: noticeContext,
+		context: hasStoreNoticesContainer( noticeContext )
+			? noticeContext
+			: findParentContainer( noticeContext ),
 	} );
 };
 
@@ -75,9 +70,7 @@ export const createNoticeIfVisible = (
 	message: string,
 	options: Partial< NoticeOptions >
 ) => {
-	const noticeContext = options?.context || GLOBAL_CONTEXT;
-
-	if ( hasStoreNoticesContainer( noticeContext ) ) {
+	if ( options?.context && hasStoreNoticesContainer( options.context ) ) {
 		createNotice( status, message, options );
 	}
 };

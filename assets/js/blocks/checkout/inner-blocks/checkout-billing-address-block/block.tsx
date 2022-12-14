@@ -41,7 +41,6 @@ const Block = ( {
 		setBillingAddress,
 		setShippingAddress,
 		setBillingPhone,
-		setShippingPhone,
 		forcedBillingAddress,
 	} = useCheckoutAddress();
 	const { dispatchCheckoutEvent } = useStoreEvents();

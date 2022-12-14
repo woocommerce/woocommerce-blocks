@@ -26,7 +26,6 @@ export enum responseTypes {
 }
 
 export enum noticeContexts {
-	GLOBAL = 'wc/global',
 	CART = 'wc/cart',
 	CHECKOUT = 'wc/checkout',
 	PAYMENTS = 'wc/checkout/payments',

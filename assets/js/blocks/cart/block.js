@@ -82,10 +82,7 @@ const Block = ( { attributes, children, scrollToTop } ) => (
 		}
 		showErrorMessage={ CURRENT_USER_IS_ADMIN }
 	>
-		<StoreNoticesContainer
-			context={ noticeContexts.CART }
-			showGlobal={ true }
-		/>
+		<StoreNoticesContainer context={ noticeContexts.CART } />
 		<SlotFillProvider>
 			<CartProvider>
 				<Cart attributes={ attributes }>{ children }</Cart>
