@@ -8,6 +8,7 @@ import { PanelBody, ExternalLink } from '@wordpress/components';
 import { ADMIN_URL } from '@woocommerce/settings';
 import { innerBlockAreas } from '@woocommerce/blocks-checkout';
 import Noninteractive from '@woocommerce/base-components/noninteractive';
+import { CartCheckoutFeedbackPrompt } from '@woocommerce/editor-components/feedback-prompt';
 
 /**
  * Internal dependencies
@@ -59,6 +60,7 @@ export const Edit = ( {
 						) }
 					</ExternalLink>
 				</PanelBody>
+				<CartCheckoutFeedbackPrompt />
 			</InspectorControls>
 			<Noninteractive>
 				<Block />
