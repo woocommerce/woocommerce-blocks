@@ -377,8 +377,9 @@ export const removeItemFromCart =
 			if ( error.data?.cart ) {
 				dispatch.receiveCart( error.data.cart );
 			}
+		} finally {
+			dispatch.itemIsPendingDelete( cartItemKey, false );
 		}
-		dispatch.itemIsPendingDelete( cartItemKey, false );
 	};
 
 /**
@@ -427,8 +428,9 @@ export const changeCartItemQuantity =
 			if ( error.data?.cart ) {
 				dispatch.receiveCart( error.data.cart );
 			}
+		} finally {
+			dispatch.itemIsPendingQuantity( cartItemKey, false );
 		}
-		dispatch.itemIsPendingQuantity( cartItemKey, false );
 	};
 
 /**
