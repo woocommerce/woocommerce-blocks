@@ -49,7 +49,7 @@ const notifyIfQuantityLimitsChanged = ( oldCart: Cart, newCart: Cart ) => {
 				sprintf(
 					/* translators: %1$s is the name of the item, %2$d is the quantity of the item. %3$d is a number that the quantity must be a multiple of. */
 					__(
-						'The quantity of "%1$s" has been changed to %2$d. This product must be purchased in groups of %3$d.',
+						'The quantity of "%1$s" was changed to %2$d. You must purchase this product in groups of %3$d.',
 						'woo-gutenberg-products-block'
 					),
 					cartItem.name,
@@ -76,7 +76,7 @@ const notifyIfQuantityLimitsChanged = ( oldCart: Cart, newCart: Cart ) => {
 				sprintf(
 					/* translators: %1$s is the name of the item, %2$d is the quantity of the item. */
 					__(
-						'The quantity of "%1$s" has been increased to %2$d. This is the minimum required quantity.',
+						'The quantity of "%1$s" was increased to %2$d. This is the minimum required quantity.',
 						'woo-gutenberg-products-block'
 					),
 					cartItem.name,
@@ -97,7 +97,7 @@ const notifyIfQuantityLimitsChanged = ( oldCart: Cart, newCart: Cart ) => {
 			sprintf(
 				/* translators: %1$s is the name of the item, %2$d is the quantity of the item. */
 				__(
-					'The quantity of "%1$s" has been decreased to %2$d. This is the maximum allowed quantity.',
+					'The quantity of "%1$s" was decreased to %2$d. This is the maximum allowed quantity.',
 					'woo-gutenberg-products-block'
 				),
 				cartItem.name,
@@ -138,7 +138,7 @@ const notifyIfQuantityChanged = (
 					sprintf(
 						/* translators: %1$s is the name of the item, %2$d is the quantity of the item. */
 						__(
-							'The quantity of "%1$s" has been changed to %2$d.',
+							'The quantity of "%1$s" was changed to %2$d.',
 							'woo-gutenberg-products-block'
 						),
 						cartItem.name,
