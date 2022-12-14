@@ -24,7 +24,7 @@ const FrontendBlock = ( {
 	const { hasDarkControls } = useCartBlockContext();
 	const { createErrorNotice } = useDispatch( 'core/notices' );
 
-	// @todo Cart errors need to be watched for and created as notices elsewhere.
+	// Ensures any cart errors listed in the API response get shown.
 	useEffect( () => {
 		cartItemErrors.forEach( ( error ) => {
 			createErrorNotice( decodeEntities( error.message ), {

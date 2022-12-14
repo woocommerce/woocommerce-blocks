@@ -181,7 +181,7 @@ const CheckoutProcessor = () => {
 		return true;
 	}, [ hasValidationErrors, hasPaymentError, shippingErrorStatus.hasError ] );
 
-	// Validate the checkout using the CHECKOUT_VALIDATION_BEFORE_PROCESSING event.
+	// Validate the checkout using the CHECKOUT_VALIDATION_BEFORE_PROCESSING event
 	useEffect( () => {
 		let unsubscribeProcessing: () => void;
 		if ( ! isExpressPaymentMethodActive ) {
@@ -216,8 +216,8 @@ const CheckoutProcessor = () => {
 		if ( isProcessingOrder ) {
 			return;
 		}
-		removeAllNotices();
 		setIsProcessingOrder( true );
+		removeAllNotices();
 
 		const paymentData = cartNeedsPayment
 			? {
