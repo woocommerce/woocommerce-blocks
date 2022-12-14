@@ -79,27 +79,23 @@ const Block = ( {
 	const { dispatchOnProceedToCheckout } = useCartEventsContext();
 
 	const submitContainerContents = (
-		<div>
-			<Button
-				className="wc-block-cart__submit-button"
-				href={ filteredLink }
-				disabled={ isCalculating }
-				onClick={ ( e ) => {
-					dispatchOnProceedToCheckout().then(
-						( observerResponses ) => {
-							if ( observerResponses.some( isErrorResponse ) ) {
-								e.preventDefault();
-								return;
-							}
-							setShowSpinner( true );
-						}
-					);
-				} }
-				showSpinner={ showSpinner }
-			>
-				{ label }
-			</Button>
-		</div>
+		<Button
+			className="wc-block-cart__submit-button"
+			href={ filteredLink }
+			disabled={ isCalculating }
+			onClick={ ( e ) => {
+				dispatchOnProceedToCheckout().then( ( observerResponses ) => {
+					if ( observerResponses.some( isErrorResponse ) ) {
+						e.preventDefault();
+						return;
+					}
+					setShowSpinner( true );
+				} );
+			} }
+			showSpinner={ showSpinner }
+		>
+			{ label }
+		</Button>
 	);
 
 	// Get the body background color to use as the sticky container background color.
