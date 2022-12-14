@@ -456,7 +456,6 @@ export const selectShippingRate =
 			dispatch.receiveCart( response );
 		} catch ( error ) {
 			dispatch.receiveError( error );
-			dispatch.shippingRatesBeingSelected( false );
 
 			// If updated cart state was returned, also update that.
 			if ( error.data?.cart ) {
@@ -465,8 +464,9 @@ export const selectShippingRate =
 
 			// Re-throw the error.
 			throw error;
+		} finally {
+			dispatch.shippingRatesBeingSelected( false );
 		}
-		dispatch.shippingRatesBeingSelected( false );
 		return true;
 	};
 
@@ -507,7 +507,6 @@ export const updateCustomerData =
 			dispatch.receiveCartContents( response );
 		} catch ( error ) {
 			dispatch.receiveError( error );
-			dispatch.updatingCustomerData( false );
 
 			// If updated cart state was returned, also update that.
 			if ( error.data?.cart ) {
@@ -516,9 +515,9 @@ export const updateCustomerData =
 
 			// rethrow error.
 			throw error;
+		} finally {
+			dispatch.updatingCustomerData( false );
 		}
-
-		dispatch.updatingCustomerData( false );
 		return true;
 	};
 
