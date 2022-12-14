@@ -69,4 +69,6 @@ export type CartDispatchFromMap = DispatchFromMap< typeof actions >;
 /**
  * CartSelectFromMap is a type that maps the cart store's resolvers to the resolveSelect function passed to thunks.
  */
-export type CartResolveSelectFromMap = ResolveSelectFromMap< typeof resolvers >;
+export type CartResolveSelectFromMap = ResolveSelectFromMap<
+	typeof resolvers & typeof selectors
+>;

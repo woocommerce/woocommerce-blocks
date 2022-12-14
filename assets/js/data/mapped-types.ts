@@ -37,7 +37,9 @@ export type SelectFromMap< S extends object > = {
  */
 export type ResolveSelectFromMap< R extends object > = {
 	[ resolver in FunctionKeys< R > ]: (
-		...args: Parameters< R[ resolver ] >
+		...args: ReturnType< R[ resolver ] > extends Promise< any >
+			? Parameters< R[ resolver ] >
+			: TailParameters< R[ resolver ] >
 	) => ReturnType< R[ resolver ] > extends Promise< any >
 		? Promise< ReturnType< R[ resolver ] > >
 		: void;
