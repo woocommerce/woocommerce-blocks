@@ -107,7 +107,13 @@ const batchFetch = async ( request: APIFetchOptions ) => {
  *
  * @param {APIFetchOptions} options The options for the API request.
  */
-export const apiFetchWithHeaders = < T = void >(
+export const apiFetchWithHeadersControl = ( options: APIFetchOptions ) =>
+	( {
+		type: 'API_FETCH_WITH_HEADERS',
+		options,
+	} as const );
+
+const doApiFetch = < T = void >(
 	options: APIFetchOptions
 ): Promise<
 	// If T has not been set, then we can return the default ApiResponse type.
@@ -120,8 +126,8 @@ export const apiFetchWithHeaders = < T = void >(
 				  }
 		: // If T was set, the `response` should be the type of T.
 		  { response: T; headers: Response[ 'headers' ] }
-> => {
-	return new Promise( ( resolve, reject ) => {
+> =>
+	new Promise( ( resolve, reject ) => {
 		// GET Requests cannot be batched.
 		if (
 			! options.method ||
@@ -129,7 +135,7 @@ export const apiFetchWithHeaders = < T = void >(
 			isWpVersion( '5.6', '<' )
 		) {
 			// Parse is disabled here to avoid returning just the body--we also need headers.
-			triggerFetch< Response >( {
+			triggerFetch( {
 				...options,
 				parse: false,
 			} )
@@ -191,4 +197,42 @@ export const apiFetchWithHeaders = < T = void >(
 				} );
 		}
 	} );
+
+/**
+ * Dispatched a control action for triggering an api fetch call with no parsing.
+ * Typically this would be used in scenarios where headers are needed.
+ *
+ * @param {APIFetchOptions} options The options for the API request.
+ */
+export const apiFetchWithHeaders = < T = void >(
+	options: APIFetchOptions
+): Promise<
+	// If T has not been set, then we can return the default ApiResponse type.
+	T extends void
+		?
+				| { response: Response; headers: Response[ 'headers' ] }
+				| {
+						response: ApiResponse[ 'body' ];
+						headers: ApiResponse[ 'headers' ];
+				  }
+		: // If T was set, the `response` should be the type of T.
+		  { response: T; headers: Response[ 'headers' ] }
+> => {
+	return doApiFetch( options );
+};
+
+/**
+ * Default export for registering the controls with the store.
+ *
+ * @return {Object} An object with the controls to register with the store on
+ *                  the controls property of the registration object.
+ */
+export const controls = {
+	API_FETCH_WITH_HEADERS: ( {
+		options,
+	}: ReturnType<
+		typeof apiFetchWithHeadersControl
+	> ): Promise< unknown > => {
+		return doApiFetch( options );
+	},
 };
