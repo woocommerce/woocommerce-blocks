@@ -18,8 +18,8 @@ import { BillingAddress, ShippingAddress } from '@woocommerce/settings';
 import { ACTION_TYPES as types } from './action-types';
 import { apiFetchWithHeaders } from '../shared-controls';
 import type { ResponseError } from '../types';
-import { DispatchFromMap, ReturnOrGeneratorYieldUnion } from '../mapped-types';
-import { CartDispatchFromMap } from './index';
+import { ReturnOrGeneratorYieldUnion } from '../mapped-types';
+import { CartDispatchFromMap, CartResolveSelectFromMap } from './index';
 
 // Thunks are functions that can be dispatched, similar to actions creators
 export * from './thunks';
@@ -356,7 +356,7 @@ export const addItemToCart =
  */
 export const removeItemFromCart =
 	( cartItemKey: string ) =>
-	async ( { dispatch }: { dispatch: DispatchFromMap } ) => {
+	async ( { dispatch }: { dispatch: CartDispatchFromMap } ) => {
 		dispatch.itemIsPendingDelete( cartItemKey );
 
 		try {
@@ -396,7 +396,13 @@ export const changeCartItemQuantity =
 		quantity: number
 		// eslint-disable-next-line @typescript-eslint/no-explicit-any -- unclear how to represent multiple different yields as type
 	) =>
-	async ( { dispatch, resolveSelect }: CartThunk ) => {
+	async ( {
+		dispatch,
+		resolveSelect,
+	}: {
+		dispatch: CartDispatchFromMap;
+		resolveSelect: CartResolveSelectFromMap;
+	} ) => {
 		const cartItem = await resolveSelect.getCartItem( cartItemKey );
 		if ( cartItem?.quantity === quantity ) {
 			return;
