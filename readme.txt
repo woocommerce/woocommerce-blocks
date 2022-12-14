@@ -85,10 +85,10 @@ Release and roadmap notes available on the [WooCommerce Developers Blog](https:/
 
 - Products block: Add patterns. ([7857](https://github.com/woocommerce/woocommerce-blocks/pull/7857))
 - Filter by Stock: Add dropdown version.
-> Filter by Stock: Add option to choose multiple or single option. ([7831](https://github.com/woocommerce/woocommerce-blocks/pull/7831))
+- Filter by Stock: Add option to choose multiple or single option. ([7831](https://github.com/woocommerce/woocommerce-blocks/pull/7831))
 - Filter by Rating: Add dropdown version.
-> Filter by Rating: Add option to choose multiple or single option.
-> Filters: Fix the little gaps on the border corners in the filters Dropdown version. ([7771](https://github.com/woocommerce/woocommerce-blocks/pull/7771))
+- Filter by Rating: Add option to choose multiple or single option.
+- Filters: Fix the little gaps on the border corners in the filters Dropdown version. ([7771](https://github.com/woocommerce/woocommerce-blocks/pull/7771))
 - Product Query - Enable "Inherit Query from template" option. ([7641](https://github.com/woocommerce/woocommerce-blocks/pull/7641))
 
 #### Bug Fixes
