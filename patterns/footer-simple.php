@@ -11,7 +11,10 @@
 <div class="wp-block-group alignfull" style="padding-top:32px;padding-right:48px;padding-bottom:32px;padding-left:48px"><!-- wp:columns -->
 <div class="wp-block-columns"><!-- wp:column {"width":"50%"} -->
 <div class="wp-block-column" style="flex-basis:50%"><!-- wp:group {"style":{"spacing":{"blockGap":"32px"}},"layout":{"type":"flex","flexWrap":"wrap","justifyContent":"center"}} -->
-<div class="wp-block-group"><!-- wp:navigation -->
+<div class="wp-block-group">
+<!-- wp:woocommerce/customer-account -->
+<div class="wp-block-woocommerce-customer-account" data-display-style="icon_and_text" data-icon-style="default"></div>
+<!-- /wp:woocommerce/customer-account --><!-- wp:navigation -->
 <!-- /wp:navigation --></div>
 <!-- /wp:group --></div>
 <!-- /wp:column -->

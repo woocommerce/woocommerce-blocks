@@ -35,6 +35,11 @@
 
 <!-- wp:column {"verticalAlignment":"top","width":"20%","style":{"spacing":{"blockGap":"16px"}}} -->
 <div class="wp-block-column is-vertically-aligned-top" style="flex-basis:20%"><!-- wp:navigation {"layout":{"type":"flex","orientation":"vertical"}} /--></div>
+<!-- /wp:column -->
+<!-- wp:column {"verticalAlignment":"top","width":"20%","style":{"spacing":{"blockGap":"16px"}}} -->
+<div class="wp-block-column is-vertically-aligned-top" style="flex-basis:20%"><!-- wp:woocommerce/customer-account {"displayStyle":"text_only"} -->
+<div class="wp-block-woocommerce-customer-account" data-display-style="text_only" data-icon-style="default"></div>
+<!-- /wp:woocommerce/customer-account --></div>
 <!-- /wp:column --></div>
 <!-- /wp:columns -->
 
