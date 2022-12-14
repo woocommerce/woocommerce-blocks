@@ -42,7 +42,6 @@ export const useCheckoutAddress = (): CheckoutAddress => {
 	const useShippingAsBilling = useSelect( ( select ) =>
 		select( CHECKOUT_STORE_KEY ).getUseShippingAsBilling()
 	);
-
 	const { __internalSetUseShippingAsBilling } =
 		useDispatch( CHECKOUT_STORE_KEY );
 	const {
