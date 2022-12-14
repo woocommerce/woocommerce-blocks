@@ -12,6 +12,7 @@ import type { BlockEditProps } from '@wordpress/blocks';
 import Block from './block';
 import { Attributes } from './types';
 import { BlockSettings } from './sidebar-settings';
+import './editor.scss';
 
 const Edit = ( {
 	attributes,
