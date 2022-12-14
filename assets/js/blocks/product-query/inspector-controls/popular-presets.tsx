@@ -13,7 +13,7 @@ import { setQueryAttribute } from '../utils';
 const PRESETS = [
 	{
 		key: 'title/asc',
-		name: __( 'Sort by title', 'woo-gutenberg-products-block' ),
+		name: __( 'Sorted by title', 'woo-gutenberg-products-block' ),
 	},
 	{ key: 'date/desc', name: __( 'Newest', 'woo-gutenberg-products-block' ) },
 	{
