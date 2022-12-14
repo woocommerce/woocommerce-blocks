@@ -17,13 +17,7 @@
 			"__experimentalFontFamily": true
 		}
 	},
-	"example": {
-	},
 	"attributes": {
-		"className": {
-			"type": "string",
-			"default": ""
-		},
 		"displayStyle": {
 			"type": "string",
 			"default": "icon_and_text"

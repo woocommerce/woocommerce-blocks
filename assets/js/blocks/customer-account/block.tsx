@@ -13,7 +13,6 @@ import { __ } from '@wordpress/i18n';
  * Internal dependencies
  */
 import { Attributes, DisplayStyle, IconStyle } from './types';
-import './style.scss';
 
 const AccountIcon = ( {
 	iconStyle,
@@ -56,7 +55,12 @@ export const CustomerAccountBlock = ( {
 	const { displayStyle, iconStyle } = attributes;
 
 	return (
-		<a href={ getSetting( 'dashboardUrl', '/wp-login.php' ) }>
+		<a
+			href={ getSetting(
+				'dashboardUrl',
+				getSetting( 'wpLoginUrl', '/wp-login.php' )
+			) }
+		>
 			<AccountIcon
 				iconStyle={ iconStyle }
 				displayStyle={ displayStyle }
