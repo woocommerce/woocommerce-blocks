@@ -64,7 +64,10 @@ export const BlockSettings = ( {
 		<InspectorControls key="inspector">
 			<AccountSettingsLink />
 			<PanelBody
-				title={ __( 'Display', 'woo-gutenberg-products-block' ) }
+				title={ __(
+					'Display settings',
+					'woo-gutenberg-products-block'
+				) }
 			>
 				<SelectControl
 					className="customer-account-display-style"
