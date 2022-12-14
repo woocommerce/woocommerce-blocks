@@ -102,14 +102,6 @@ const batchFetch = async ( request: APIFetchOptions ) => {
 };
 
 /**
- * Default export for registering the controls with the store.
- *
- * @return {Object} An object with the controls to register with the store on
- *                  the controls property of the registration object.
- */
-export const controls = {};
-
-/**
  * Dispatched a control action for triggering an api fetch call with no parsing.
  * Typically this would be used in scenarios where headers are needed.
  *
