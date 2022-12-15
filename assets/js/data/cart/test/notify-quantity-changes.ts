@@ -145,4 +145,38 @@ describe( 'notifyQuantityChanges', () => {
 		} );
 		expect( mockedCreateInfoNotice ).not.toHaveBeenCalled();
 	} );
+	it( 'does not show notices when a deleted item is the one being removed', () => {
+		const { oldCart, newCart } = getFreshCarts();
+
+		// Remove both items from the new cart.
+		delete newCart.items[ 0 ];
+		delete newCart.items[ 1 ];
+		notifyQuantityChanges( {
+			oldCart,
+			newCart,
+			// This means the user is only actively removing item with key '1'. The second item is "unexpected" so we
+			// expect exactly one notification to be shown.
+			cartItemsPendingDelete: [ '1' ],
+		} );
+		// Check it was called for item 2, but not item 1.
+		expect( mockedCreateInfoNotice ).toHaveBeenCalledTimes( 1 );
+	} );
+
+	it( 'shows a notice when an item is unexpectedly removed', () => {
+		const { oldCart, newCart } = getFreshCarts();
+		delete newCart.items[ 0 ];
+		notifyQuantityChanges( {
+			oldCart,
+			newCart,
+		} );
+		expect( mockedCreateInfoNotice ).toHaveBeenLastCalledWith(
+			'"Beanie" was removed from your cart.',
+			{
+				context: 'wc/cart',
+				speak: true,
+				type: 'snackbar',
+				id: '1-removed',
+			}
+		);
+	} );
 } );
