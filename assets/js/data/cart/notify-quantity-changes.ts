@@ -23,7 +23,7 @@ const isWithinQuantityLimits = ( cartItem: CartItem ) => {
 const notifyIfQuantityLimitsChanged = ( oldCart: Cart, newCart: Cart ) => {
 	newCart.items.forEach( ( cartItem ) => {
 		const oldCartItem = oldCart.items.find( ( item ) => {
-			return item.key === cartItem.key;
+			return item && item.key === cartItem.key;
 		} );
 
 		// If getCartData has not finished resolving, then this is the first load.
@@ -130,7 +130,7 @@ const notifyIfQuantityChanged = (
 			return;
 		}
 		const oldCartItem = oldCart.items.find( ( item ) => {
-			return item.key === cartItem.key;
+			return item && item.key === cartItem.key;
 		} );
 		if ( ! oldCartItem ) {
 			return;
@@ -182,7 +182,7 @@ const notifyIfRemoved = (
 		}
 
 		const newCartItem = newCart.items.find( ( item: CartItem ) => {
-			return item.key === oldCartItem.key;
+			return item && item.key === oldCartItem.key;
 		} );
 
 		if ( ! newCartItem ) {
