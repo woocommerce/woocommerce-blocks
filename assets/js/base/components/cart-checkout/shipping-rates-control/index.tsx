@@ -4,12 +4,17 @@
 import { __ } from '@wordpress/i18n';
 import { useEffect } from '@wordpress/element';
 import LoadingMask from '@woocommerce/base-components/loading-mask';
+import { Notice } from 'wordpress-components';
 import { ExperimentalOrderShippingPackages } from '@woocommerce/blocks-checkout';
 import {
 	getShippingRatesPackageCount,
 	getShippingRatesRateCount,
 } from '@woocommerce/base-utils';
-import { useStoreCart, useEditorContext } from '@woocommerce/base-context';
+import {
+	useStoreCart,
+	useEditorContext,
+	useShippingData,
+} from '@woocommerce/base-context';
 
 /**
  * Internal dependencies
@@ -90,6 +95,7 @@ const ShippingRatesControl = ( {
 		context,
 	};
 	const { isEditor } = useEditorContext();
+	const { hasSelectedLocalPickup } = useShippingData();
 
 	return (
 		<LoadingMask
@@ -100,6 +106,18 @@ const ShippingRatesControl = ( {
 			) }
 			showSpinner={ true }
 		>
+			{ hasSelectedLocalPickup && ! isEditor && (
+				<Notice
+					className="wc-block-components-notice"
+					isDismissible={ false }
+					status="info"
+				>
+					{ __(
+						'Multiple shipments must use the same pickup location',
+						'woo-gutenberg-products-block'
+					) }
+				</Notice>
+			) }
 			{ isEditor ? (
 				<Packages
 					packages={ shippingRates }

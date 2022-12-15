@@ -7,7 +7,7 @@ import { decodeEntities } from '@wordpress/html-entities';
 import type { ReactElement } from 'react';
 import { Panel } from '@woocommerce/blocks-checkout';
 import Label from '@woocommerce/base-components/label';
-import { useSelectShippingRate } from '@woocommerce/base-context/hooks';
+import { useShippingData } from '@woocommerce/base-context/hooks';
 import { sanitizeHTML } from '@woocommerce/utils';
 
 /**
@@ -26,7 +26,7 @@ export const ShippingRatesControlPackage = ( {
 	collapsible,
 	showItems,
 }: PackageProps ): ReactElement => {
-	const { selectShippingRate } = useSelectShippingRate();
+	const { selectShippingRate } = useShippingData();
 	const multiplePackages =
 		document.querySelectorAll(
 			'.wc-block-components-shipping-rates-control__package'
