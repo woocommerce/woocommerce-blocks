@@ -17,13 +17,8 @@ import {
 	GUTENBERG_EDITOR_CONTEXT,
 	describeOrSkip,
 	waitForCanvas,
-} from '../../../utils';
-
-const block = {
-	name: 'Products (Beta)',
-	slug: 'woocommerce/product-query',
-	class: '.wp-block-query',
-};
+} from '../../utils';
+import { block } from './utils';
 
 const SELECTORS = {
 	productButton: '.wc-block-components-product-button',
