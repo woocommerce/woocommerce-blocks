@@ -10,10 +10,10 @@ import type { BlockAttributes } from '@wordpress/blocks';
  * Internal dependencies
  */
 import './style.scss';
-import type { review } from '../types';
+import type { Review } from '../types';
 
 function getReviewImage(
-	review: review,
+	review: Review,
 	imageType: string,
 	isLoading: boolean
 ): JSX.Element {
@@ -56,7 +56,7 @@ function getReviewImage(
 	);
 }
 
-function getReviewContent( review: review ): JSX.Element {
+function getReviewContent( review: Review ): JSX.Element {
 	return (
 		<ReadMore
 			maxLines={ 10 }
@@ -82,7 +82,7 @@ function getReviewContent( review: review ): JSX.Element {
 	);
 }
 
-function getReviewProductName( review: review ): JSX.Element {
+function getReviewProductName( review: Review ): JSX.Element {
 	return (
 		<div className="wc-block-review-list-item__product wc-block-components-review-list-item__product">
 			<a
@@ -98,7 +98,7 @@ function getReviewProductName( review: review ): JSX.Element {
 	);
 }
 
-function getReviewerName( review: review ): JSX.Element {
+function getReviewerName( review: Review ): JSX.Element {
 	const { reviewer = '' } = review;
 	return (
 		<div className="wc-block-review-list-item__author wc-block-components-review-list-item__author">
@@ -107,7 +107,7 @@ function getReviewerName( review: review ): JSX.Element {
 	);
 }
 
-function getReviewDate( review: review ): JSX.Element {
+function getReviewDate( review: Review ): JSX.Element {
 	const {
 		date_created: dateCreated,
 		formatted_date_created: formattedDateCreated,
@@ -122,7 +122,7 @@ function getReviewDate( review: review ): JSX.Element {
 	);
 }
 
-function getReviewRating( review: review ): JSX.Element {
+function getReviewRating( review: Review ): JSX.Element {
 	const { rating } = review;
 	const starStyle = {
 		width: ( rating / 5 ) * 100 + '%' /* stylelint-disable-line */,
@@ -156,7 +156,7 @@ function getReviewRating( review: review ): JSX.Element {
 }
 interface ReviewListItemProps {
 	attributes: BlockAttributes;
-	review?: review;
+	review?: Review;
 }
 
 const ReviewListItem = ( { attributes, review = {} }: ReviewListItemProps ) => {

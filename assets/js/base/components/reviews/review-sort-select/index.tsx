@@ -11,7 +11,7 @@ import { ChangeEventHandler } from 'react';
 import './style.scss';
 
 interface ReviewSortSelectProps {
-	onChange?: ChangeEventHandler;
+	onChange: ChangeEventHandler;
 	readOnly: boolean;
 	value: string;
 }
