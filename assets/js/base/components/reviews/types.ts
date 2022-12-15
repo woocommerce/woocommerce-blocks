@@ -3,7 +3,7 @@
  */
 import { EmptyObjectType } from '@woocommerce/types';
 
-export type review =
+export type Review =
 	| {
 			date_created: string;
 			date_created_gmt: string;
