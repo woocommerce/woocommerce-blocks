@@ -29,7 +29,6 @@ const ShippingRateSelector = ( {
 			<legend className="screen-reader-text">{ legend }</legend>
 			<ShippingRatesControl
 				className="wc-block-components-totals-shipping__options"
-				collapsible={ true }
 				noResultsMessage={
 					<Notice
 						isDismissible={ false }
