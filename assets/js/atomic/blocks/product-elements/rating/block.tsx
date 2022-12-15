@@ -25,6 +25,10 @@ type Props = {
 	className?: string;
 };
 
+type AddReviewProps = {
+	href?: string;
+};
+
 const getAverageRating = (
 	product: Omit< ProductResponseItem, 'average_rating' > & {
 		average_rating: string;
@@ -35,6 +39,11 @@ const getAverageRating = (
 	return Number.isFinite( rating ) && rating > 0 ? rating : 0;
 };
 
+const getReviewsHref = ( product: ProductResponseItem ) => {
+	const { permalink } = product;
+	return `${ permalink }#reviews`;
+};
+
 const getRatingCount = ( product: ProductResponseItem ) => {
 	const count = isNumber( product.review_count )
 		? product.review_count
@@ -43,15 +52,11 @@ const getRatingCount = ( product: ProductResponseItem ) => {
 	return Number.isFinite( count ) && count > 0 ? count : 0;
 };
 
-const getRatingText = ( rating: number ) => {
-	if ( rating === 0 ) {
-		return __( 'No rating available', 'woo-gutenberg-products-block' );
-	}
-	return sprintf(
-		/* translators: %f is referring to the average rating value */
-		__( 'Rated %f out of 5', 'woo-gutenberg-products-block' ),
-		rating
-	);
+const AddReview = ( props: AddReviewProps ): JSX.Element | null => {
+	const { href } = props;
+	const label = __( 'Add review', 'woo-gutenberg-products-block' );
+
+	return href ? <a href={ href }>{ label }</a> : null;
 };
 
 /**
@@ -76,7 +81,11 @@ export const Block = ( props: Props ): JSX.Element | null => {
 		width: ( rating / 5 ) * 100 + '%',
 	};
 
-	const ratingText = getRatingText( rating );
+	const ratingText = sprintf(
+		/* translators: %f is referring to the average rating value */
+		__( 'Rated %f out of 5', 'woo-gutenberg-products-block' ),
+		rating
+	);
 
 	const reviews = getRatingCount( product );
 	const ratingHTML = {
@@ -92,6 +101,23 @@ export const Block = ( props: Props ): JSX.Element | null => {
 			sprintf( '<span class="rating">%d</span>', reviews )
 		),
 	};
+
+	const href = getReviewsHref( product );
+
+	const content = reviews ? (
+		<div
+			className={ classnames(
+				'wc-block-components-product-rating__stars',
+				`${ parentClassName }__product-rating__stars`
+			) }
+			role="img"
+			aria-label={ ratingText }
+		>
+			<span style={ starStyle } dangerouslySetInnerHTML={ ratingHTML } />
+		</div>
+	) : (
+		<AddReview href={ href } />
+	);
 
 	return (
 		<div
@@ -111,19 +137,7 @@ export const Block = ( props: Props ): JSX.Element | null => {
 				...spacingProps.style,
 			} }
 		>
-			<div
-				className={ classnames(
-					'wc-block-components-product-rating__stars',
-					`${ parentClassName }__product-rating__stars`
-				) }
-				role="img"
-				aria-label={ ratingText }
-			>
-				<span
-					style={ starStyle }
-					dangerouslySetInnerHTML={ ratingHTML }
-				/>
-			</div>
+			{ content }
 		</div>
 	);
 };

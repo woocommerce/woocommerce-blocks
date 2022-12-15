@@ -46,8 +46,16 @@
 		}
 	}
 }
+
 .wc-block-single-product {
 	.wc-block-components-product-rating__stars {
 		margin: 0;
+	}
+}
+
+.is-loading {
+	.wc-block-components-product-rating {
+		@include placeholder();
+		width: 7em;
 	}
 }
