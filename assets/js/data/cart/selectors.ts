@@ -215,10 +215,6 @@ export const isShippingRateBeingSelected = ( state: CartState ): boolean => {
 
 /**
  * Retrieves the item keys for items whose quantity is currently being updated.
- *
- * @param {CartState} state The current state.
- *
- * @return {string[]} The item keys of items currently being updates.
  */
 export const getItemsPendingQuantityUpdate = ( state: CartState ): string[] => {
 	return state.cartItemsPendingQuantity;
