@@ -4,8 +4,10 @@
 import { __ } from '@wordpress/i18n';
 import { useEffect } from '@wordpress/element';
 import LoadingMask from '@woocommerce/base-components/loading-mask';
-import { Notice } from 'wordpress-components';
-import { ExperimentalOrderShippingPackages } from '@woocommerce/blocks-checkout';
+import {
+	ExperimentalOrderShippingPackages,
+	StoreNotice,
+} from '@woocommerce/blocks-checkout';
 import {
 	getShippingRatesPackageCount,
 	getShippingRatesRateCount,
@@ -107,16 +109,16 @@ const ShippingRatesControl = ( {
 			showSpinner={ true }
 		>
 			{ hasSelectedLocalPickup && ! isEditor && (
-				<Notice
+				<StoreNotice
 					className="wc-block-components-notice"
 					isDismissible={ false }
-					status="info"
+					status="warning"
 				>
 					{ __(
-						'Multiple shipments must use the same pickup location',
+						'Multiple shipments must have the same pickup location',
 						'woo-gutenberg-products-block'
 					) }
-				</Notice>
+				</StoreNotice>
 			) }
 			{ isEditor ? (
 				<Packages
