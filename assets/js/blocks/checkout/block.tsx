@@ -69,7 +69,6 @@ const Checkout = ( {
 	const { cartItems, cartIsLoading } = useStoreCart();
 
 	const {
-		allowCreateAccount,
 		showCompanyField,
 		requireCompanyField,
 		showApartmentField,
@@ -98,8 +97,7 @@ const Checkout = ( {
 	 */
 	if (
 		isLoginRequired( customerId ) &&
-		! checkoutAllowsSignup &&
-		! allowCreateAccount
+		getSetting( 'checkoutAllowsSignup', false )
 	) {
 		return <LoginPrompt />;
 	}
@@ -109,7 +107,6 @@ const Checkout = ( {
 	return (
 		<CheckoutBlockContext.Provider
 			value={ {
-				allowCreateAccount: createAccount,
 				showCompanyField,
 				requireCompanyField,
 				showApartmentField,
