@@ -219,3 +219,9 @@ export const isShippingRateBeingSelected = ( state: CartState ): boolean => {
 export const getItemsPendingQuantityUpdate = ( state: CartState ): string[] => {
 	return state.cartItemsPendingQuantity;
 };
+/**
+ * Retrieves the item keys for items that are currently being deleted.
+ */
+export const getItemsPendingDelete = ( state: CartState ): string[] => {
+	return state.cartItemsPendingDelete;
+};
