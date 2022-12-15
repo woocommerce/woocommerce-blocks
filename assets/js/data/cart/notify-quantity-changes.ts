@@ -8,8 +8,8 @@ import { __, sprintf } from '@wordpress/i18n';
 interface NotifyQuantityChangesArgs {
 	oldCart: Cart;
 	newCart: Cart;
-	cartItemsPendingQuantity: string[];
-	cartItemsPendingDelete: string[];
+	cartItemsPendingQuantity?: string[] | undefined;
+	cartItemsPendingDelete?: string[] | undefined;
 }
 
 const isWithinQuantityLimits = ( cartItem: CartItem ) => {
