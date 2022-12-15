@@ -9,6 +9,7 @@ interface NotifyQuantityChangesArgs {
 	oldCart: Cart;
 	newCart: Cart;
 	cartItemsPendingQuantity: string[];
+	cartItemsPendingDelete: string[];
 }
 
 const isWithinQuantityLimits = ( cartItem: CartItem ) => {
@@ -164,6 +165,48 @@ const notifyIfQuantityChanged = (
 };
 
 /**
+ * Checks whether the old cart contains an item that the new cart doesn't, and that the item was not slated for removal.
+ *
+ * @param  oldCart                The old cart.
+ * @param  newCart                The new cart.
+ * @param  cartItemsPendingDelete The cart items that are pending deletion.
+ */
+const notifyIfRemoved = (
+	oldCart: Cart,
+	newCart: Cart,
+	cartItemsPendingDelete: string[]
+) => {
+	oldCart.items.forEach( ( oldCartItem ) => {
+		if ( cartItemsPendingDelete.includes( oldCartItem.key ) ) {
+			return;
+		}
+
+		const newCartItem = newCart.items.find( ( item: CartItem ) => {
+			return item.key === oldCartItem.key;
+		} );
+
+		if ( ! newCartItem ) {
+			dispatch( 'core/notices' ).createInfoNotice(
+				sprintf(
+					/* translators: %s is the name of the item. */
+					__(
+						'The "%s" product was removed from your cart.',
+						'woo-gutenberg-products-block'
+					),
+					oldCartItem.name
+				),
+				{
+					context: 'wc/cart',
+					speak: true,
+					type: 'snackbar',
+					id: `${ oldCartItem.key }-removed`,
+				}
+			);
+		}
+	} );
+};
+
+/**
  * This function is used to notify the user when the quantity of an item in the cart has changed. It checks both the
  * item's quantity and quantity limits.
  */
@@ -171,7 +214,9 @@ export const notifyQuantityChanges = ( {
 	oldCart,
 	newCart,
 	cartItemsPendingQuantity = [],
+	cartItemsPendingDelete = [],
 }: NotifyQuantityChangesArgs ) => {
+	notifyIfRemoved( oldCart, newCart, cartItemsPendingDelete );
 	notifyIfQuantityLimitsChanged( oldCart, newCart );
 	notifyIfQuantityChanged( oldCart, newCart, cartItemsPendingQuantity );
 };
