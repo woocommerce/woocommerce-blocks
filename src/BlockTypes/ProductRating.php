@@ -114,6 +114,7 @@ class ProductRating extends AbstractBlock {
 			$text_align_styles_and_classes = StyleAttributesUtils::get_text_align_class_and_style( $attributes );
 
 			$average_rating = $product->get_average_rating();
+			$rating_count   = $product->get_rating_count();
 			$reviews_link   = $product->get_permalink() . '#reviews';
 			$link_label     = __( 'Add review', 'woo-gutenberg-products-block' );
 			$link_html      = '<a class="wc-block-components-product-rating__link" href="' . $reviews_link . '">' . esc_attr( $link_label ) . '</a>';
