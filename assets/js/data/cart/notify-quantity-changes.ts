@@ -5,6 +5,12 @@ import { Cart, CartItem } from '@woocommerce/types';
 import { dispatch } from '@wordpress/data';
 import { __, sprintf } from '@wordpress/i18n';
 
+interface NotifyQuantityChangesArgs {
+	oldCart: Cart;
+	newCart: Cart;
+	cartItemsPendingQuantity: string[];
+}
+
 const isWithinQuantityLimits = ( cartItem: CartItem ) => {
 	return (
 		cartItem.quantity >= cartItem.quantity_limits.minimum &&
@@ -161,11 +167,11 @@ const notifyIfQuantityChanged = (
  * This function is used to notify the user when the quantity of an item in the cart has changed. It checks both the
  * item's quantity and quantity limits.
  */
-export const notifyQuantityChanges = (
-	oldCart: Cart,
-	newCart: Cart,
-	cartItemsPendingQuantity: string[]
-) => {
+export const notifyQuantityChanges = ( {
+	oldCart,
+	newCart,
+	cartItemsPendingQuantity = [],
+}: NotifyQuantityChangesArgs ) => {
 	notifyIfQuantityLimitsChanged( oldCart, newCart );
 	notifyIfQuantityChanged( oldCart, newCart, cartItemsPendingQuantity );
 };
