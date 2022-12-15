@@ -190,7 +190,7 @@ const notifyIfRemoved = (
 				sprintf(
 					/* translators: %s is the name of the item. */
 					__(
-						'The "%s" product was removed from your cart.',
+						'"%s" was removed from your cart.',
 						'woo-gutenberg-products-block'
 					),
 					oldCartItem.name
