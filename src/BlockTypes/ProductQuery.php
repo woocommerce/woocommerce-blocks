@@ -328,14 +328,28 @@ class ProductQuery extends AbstractBlock {
 	private function get_stock_status_query( $stock_statii ) {
 		$stock_status_options = array_keys( wc_get_product_stock_status_options() );
 
+		if ( ! is_array( $stock_statii ) ) {
+			return array();
+		}
+
+		/**
+		 * If all available stock status are selected, we don't need to add the
+		 * meta query for stock status.
+		 */
 		if (
-			! is_array( $stock_statii ) ||
-			(
-				count( $stock_statii ) === count( $stock_status_options ) &&
-				array_diff( $stock_statii, $stock_status_options ) === array_diff( $stock_status_options, $stock_statii )
-			) ||
-			array_diff( $stock_status_options, $stock_statii ) === 'outofstock'
-			) {
+			count( $stock_statii ) === count( $stock_status_options ) &&
+			array_diff( $stock_statii, $stock_status_options ) === array_diff( $stock_status_options, $stock_statii )
+		) {
+			return array();
+		}
+
+		/**
+		 * If all stock status are selected except for 'outofstock', we use the
+		 * product visibility query to filter out out of stock products.
+		 *
+		 * @see get_product_visibility_query()
+		 */
+		if ( array_diff( $stock_status_options, $stock_statii ) === 'outofstock' ) {
 			return array();
 		}
 
