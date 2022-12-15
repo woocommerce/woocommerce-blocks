@@ -114,7 +114,7 @@ const Block = (): JSX.Element | null => {
 					}
 					renderOption={ renderShippingRatesControlOption }
 					collapsible={ false }
-					shippingRates={ shippingRates }
+					shippingRates={ filteredShippingRates }
 					isLoadingRates={ isLoadingRates }
 					context="woocommerce/checkout"
 				/>
