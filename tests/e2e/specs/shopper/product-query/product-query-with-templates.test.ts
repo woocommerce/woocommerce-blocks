@@ -21,9 +21,7 @@ import {
 	getProductsNameFromProductQuery,
 } from './utils';
 
-// Re-enable this test once wordpress/e2e-test-utils is updated.
-// https://github.com/woocommerce/woocommerce-blocks/issues/7744
-describe.skip( `${ block.name } Block`, () => {
+describe( `${ block.name } Block`, () => {
 	useTheme( 'emptytheme' );
 
 	describe( 'with All Templates', () => {

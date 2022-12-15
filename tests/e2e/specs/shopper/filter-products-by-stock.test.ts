@@ -92,9 +92,7 @@ describe( `${ block.name } Block`, () => {
 		} );
 	} );
 
-	// Re-enable this test once wordpress/e2e-test-utils is updated.
-	// https://github.com/woocommerce/woocommerce-blocks/issues/7744
-	describe.skip( 'with PHP classic template', () => {
+	describe( 'with PHP classic template', () => {
 		const productCatalogTemplateId =
 			'woocommerce/woocommerce//archive-product';
 
