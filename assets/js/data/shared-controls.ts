@@ -4,7 +4,6 @@
 import { __ } from '@wordpress/i18n';
 import triggerFetch, { APIFetchOptions } from '@wordpress/api-fetch';
 import DataLoader from 'dataloader';
-import { isWpVersion } from '@woocommerce/settings';
 
 /**
  * Internal dependencies
@@ -120,11 +119,7 @@ export const apiFetchWithHeadersControl = ( options: APIFetchOptions ) =>
 const doApiFetchWithHeaders = ( options: APIFetchOptions ) =>
 	new Promise( ( resolve, reject ) => {
 		// GET Requests cannot be batched.
-		if (
-			! options.method ||
-			options.method === 'GET' ||
-			isWpVersion( '5.6', '<' )
-		) {
+		if ( ! options.method || options.method === 'GET' ) {
 			// Parse is disabled here to avoid returning just the body--we also need headers.
 			triggerFetch( {
 				...options,
