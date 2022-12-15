@@ -108,18 +108,20 @@ const ShippingRatesControl = ( {
 			) }
 			showSpinner={ true }
 		>
-			{ hasSelectedLocalPickup && ! isEditor && (
-				<StoreNotice
-					className="wc-block-components-notice"
-					isDismissible={ false }
-					status="warning"
-				>
-					{ __(
-						'Multiple shipments must have the same pickup location',
-						'woo-gutenberg-products-block'
-					) }
-				</StoreNotice>
-			) }
+			{ hasSelectedLocalPickup &&
+				shippingRates.length > 1 &&
+				! isEditor && (
+					<StoreNotice
+						className="wc-block-components-notice"
+						isDismissible={ false }
+						status="warning"
+					>
+						{ __(
+							'Multiple shipments must have the same pickup location',
+							'woo-gutenberg-products-block'
+						) }
+					</StoreNotice>
+				) }
 			{ isEditor ? (
 				<Packages
 					packages={ shippingRates }
