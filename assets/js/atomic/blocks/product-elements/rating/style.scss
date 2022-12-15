@@ -50,6 +50,7 @@
 		display: inline-block;
 		width: 100%;
 		text-align: center;
+		@include font-size(small);
 	}
 }
 
