@@ -221,7 +221,7 @@ class CartItems extends ControllerTestCase {
 		$request->set_header( 'Nonce', wp_create_nonce( 'wc_store_api' ) );
 		$this->assertAPIResponse(
 			$request,
-			404
+			409
 		);
 	}
 
