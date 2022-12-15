@@ -27,9 +27,9 @@ const Block = ( {
 	className?: string;
 	placeOrderButtonLabel: string;
 } ): JSX.Element => {
-	const { submitButtonText } = useCheckoutSubmit();
+	const { paymentMethodButtonLabel } = useCheckoutSubmit();
 	const defaultLabel =
-		submitButtonText ||
+		paymentMethodButtonLabel ||
 		placeOrderButtonLabel ||
 		defaultPlaceOrderButtonLabel;
 	const label = __experimentalApplyCheckoutFilter( {
