@@ -45,9 +45,13 @@ describe( 'notifyQuantityChanges', () => {
 	it( 'shows notices when the quantity limits of an item change', () => {
 		const { oldCart, newCart } = getFreshCarts();
 		newCart.items[ 0 ].quantity_limits.minimum = 50;
-		notifyQuantityChanges( oldCart, newCart, [] );
+		notifyQuantityChanges( {
+			oldCart,
+			newCart,
+			cartItemsPendingQuantity: [],
+		} );
 		expect( mockedCreateInfoNotice ).toHaveBeenLastCalledWith(
-			'The quantity of "Beanie" has been increased to 50. This is the minimum required quantity.',
+			'The quantity of "Beanie" was increased to 50. This is the minimum required quantity.',
 			{
 				context: 'wc/cart',
 				speak: true,
@@ -60,9 +64,13 @@ describe( 'notifyQuantityChanges', () => {
 		newCart.items[ 0 ].quantity_limits.maximum = 10;
 		// Quantity needs to be outside the limits for the notice to show.
 		newCart.items[ 0 ].quantity = 11;
-		notifyQuantityChanges( oldCart, newCart, [] );
+		notifyQuantityChanges( {
+			oldCart,
+			newCart,
+			cartItemsPendingQuantity: [],
+		} );
 		expect( mockedCreateInfoNotice ).toHaveBeenLastCalledWith(
-			'The quantity of "Beanie" has been decreased to 10. This is the maximum allowed quantity.',
+			'The quantity of "Beanie" was decreased to 10. This is the maximum allowed quantity.',
 			{
 				context: 'wc/cart',
 				speak: true,
@@ -73,9 +81,13 @@ describe( 'notifyQuantityChanges', () => {
 		newCart.items[ 0 ].quantity = 10;
 		oldCart.items[ 0 ].quantity = 10;
 		newCart.items[ 0 ].quantity_limits.multiple_of = 6;
-		notifyQuantityChanges( oldCart, newCart, [] );
+		notifyQuantityChanges( {
+			oldCart,
+			newCart,
+			cartItemsPendingQuantity: [],
+		} );
 		expect( mockedCreateInfoNotice ).toHaveBeenLastCalledWith(
-			'The quantity of "Beanie" has been changed to 6. This product must be purchased in groups of 6.',
+			'The quantity of "Beanie" was changed to 6. You must purchase this product in groups of 6.',
 			{
 				context: 'wc/cart',
 				speak: true,
@@ -89,19 +101,31 @@ describe( 'notifyQuantityChanges', () => {
 		newCart.items[ 0 ].quantity = 5;
 		oldCart.items[ 0 ].quantity = 5;
 		newCart.items[ 0 ].quantity_limits.maximum = 10;
-		notifyQuantityChanges( oldCart, newCart, [] );
+		notifyQuantityChanges( {
+			oldCart,
+			newCart,
+			cartItemsPendingQuantity: [],
+		} );
 		expect( mockedCreateInfoNotice ).not.toHaveBeenCalled();
 
 		newCart.items[ 0 ].quantity_limits.minimum = 4;
-		notifyQuantityChanges( oldCart, newCart, [] );
+		notifyQuantityChanges( {
+			oldCart,
+			newCart,
+			cartItemsPendingQuantity: [],
+		} );
 		expect( mockedCreateInfoNotice ).not.toHaveBeenCalled();
 	} );
 	it( 'shows notices when the quantity of an item changes', () => {
 		const { oldCart, newCart } = getFreshCarts();
 		newCart.items[ 0 ].quantity = 50;
-		notifyQuantityChanges( oldCart, newCart, [] );
+		notifyQuantityChanges( {
+			oldCart,
+			newCart,
+			cartItemsPendingQuantity: [],
+		} );
 		expect( mockedCreateInfoNotice ).toHaveBeenLastCalledWith(
-			'The quantity of "Beanie" has been changed to 50.',
+			'The quantity of "Beanie" was changed to 50.',
 			{
 				context: 'wc/cart',
 				speak: true,
@@ -114,7 +138,11 @@ describe( 'notifyQuantityChanges', () => {
 		const { oldCart, newCart } = getFreshCarts();
 		newCart.items[ 0 ].quantity = 5;
 		newCart.items[ 0 ].quantity_limits.maximum = 10;
-		notifyQuantityChanges( oldCart, newCart, [ '1' ] );
+		notifyQuantityChanges( {
+			oldCart,
+			newCart,
+			cartItemsPendingQuantity: [ '1' ],
+		} );
 		expect( mockedCreateInfoNotice ).not.toHaveBeenCalled();
 	} );
 } );
