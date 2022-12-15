@@ -28,13 +28,12 @@ const Block = ( {
 	placeOrderButtonLabel: string;
 } ): JSX.Element => {
 	const { paymentMethodButtonLabel } = useCheckoutSubmit();
-	const defaultLabel =
-		paymentMethodButtonLabel ||
-		placeOrderButtonLabel ||
-		defaultPlaceOrderButtonLabel;
 	const label = __experimentalApplyCheckoutFilter( {
 		filterName: 'placeOrderButtonLabel',
-		defaultValue: defaultLabel,
+		defaultValue:
+			paymentMethodButtonLabel ||
+			placeOrderButtonLabel ||
+			defaultPlaceOrderButtonLabel,
 	} );
 
 	return (
