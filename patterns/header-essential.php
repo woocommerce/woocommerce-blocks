@@ -12,13 +12,13 @@
 	<div class="wp-block-group">
 		<!-- wp:site-logo {"shouldSyncIcon":false} /-->
 		<!-- wp:search {"label":"Search","showLabel":false,"width":100,"widthUnit":"%","buttonText":"Search","buttonUseIcon":true} /-->
-		<!-- wp:navigation {"textColor":"background","layout":{"type":"flex","justifyContent":"center"}} /-->
+		<!-- wp:navigation {"layout":{"type":"flex","justifyContent":"center"}} /-->
 	</div>
 	<!-- /wp:group -->
 
 	<!-- wp:group {"style":{"spacing":{"blockGap":"8px"},"typography":{"fontSize":"14px"}},"layout":{"type":"flex","flexWrap":"nowrap","justifyContent":"right"}} -->
 	<div class="wp-block-group" style="font-size:14px">
-		<!-- wp:woocommerce/customer-account /-->
+		<!-- wp:woocommerce/customer-account {"displayStyle":"icon_only","iconStyle":"alt"} /-->
 		<!-- wp:woocommerce/mini-cart {"style":{"typography":{"fontSize":"14px"}}} /-->
 	</div>
 	<!-- /wp:group -->
