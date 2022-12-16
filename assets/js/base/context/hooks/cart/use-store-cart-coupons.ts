@@ -16,6 +16,7 @@ import type { StoreCartCoupon } from '@woocommerce/types';
  * Internal dependencies
  */
 import { useStoreCart } from './use-store-cart';
+import { receiveApplyingCoupon } from '../../../../data/cart/actions';
 
 /**
  * This is a custom hook for loading the Store API /cart/coupons endpoint and an
