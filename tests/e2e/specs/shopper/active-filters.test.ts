@@ -66,7 +66,7 @@ const insertBlocks = async () => {
 	await insertBlock( block.name );
 };
 
-const configurateFilterProductsByAttributeBlock = async (
+const configurateFilterByAttributeBlock = async (
 	pageOrCanvas: Page | Frame
 ) => {
 	await pageOrCanvas.$eval(
@@ -99,7 +99,7 @@ describe( 'Shopper → Active Filters Block', () => {
 
 			await insertBlocks();
 			await insertBlockUsingSlash( 'All Products' );
-			await configurateFilterProductsByAttributeBlock( page );
+			await configurateFilterByAttributeBlock( page );
 			await publishPost();
 
 			const link = await page.evaluate( () =>
@@ -223,7 +223,7 @@ describe( 'Shopper → Active Filters Block', () => {
 			await insertBlocks();
 
 			const canvasEl = canvas();
-			await configurateFilterProductsByAttributeBlock( canvasEl );
+			await configurateFilterByAttributeBlock( canvasEl );
 			await saveTemplate();
 		} );
 
