@@ -117,7 +117,7 @@ class ProductRating extends AbstractBlock {
 			$rating_count   = $product->get_rating_count();
 			$reviews_link   = $product->get_permalink() . '#reviews';
 			$link_label     = __( 'Add review', 'woo-gutenberg-products-block' );
-			$link_html      = '<a class="wc-block-components-product-rating__link" href="' . $reviews_link . '">' . esc_attr( $link_label ) . '</a>';
+			$link_html      = '<a class="wc-block-components-product-rating__link" href="' . esc_url( $reviews_link ) . '">' . esc_attr( $link_label ) . '</a>';
 
 			$content = $rating_count ? wc_get_rating_html( $average_rating ) : $link_html;
 
