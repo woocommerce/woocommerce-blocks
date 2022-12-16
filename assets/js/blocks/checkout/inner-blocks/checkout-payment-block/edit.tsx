@@ -10,6 +10,8 @@ import ExternalLinkCard from '@woocommerce/editor-components/external-link-card'
 import { innerBlockAreas } from '@woocommerce/blocks-checkout';
 import Noninteractive from '@woocommerce/base-components/noninteractive';
 import { GlobalPaymentMethod } from '@woocommerce/type-defs/payments';
+import { useSelect } from '@wordpress/data';
+import { PAYMENT_STORE_KEY } from '@woocommerce/block-data';
 
 /**
  * Internal dependencies
@@ -37,6 +39,15 @@ export const Edit = ( {
 		'globalPaymentMethods'
 	);
 
+	const { incompatiblePaymentMethods } = useSelect( ( select ) => {
+		const { getIncompatiblePaymentMethods } = select( PAYMENT_STORE_KEY );
+		return {
+			incompatiblePaymentMethods: getIncompatiblePaymentMethods(),
+		};
+	}, [] );
+	const incompatiblePaymentMethodMessage =
+		'Incompatible with block-based checkout';
+
 	return (
 		<FormStepBlock
 			attributes={ attributes }
@@ -61,12 +72,21 @@ export const Edit = ( {
 							) }
 						</p>
 						{ globalPaymentMethods.map( ( method ) => {
+							const isIncompatible =
+								!! incompatiblePaymentMethods[ method.id ];
+
 							return (
 								<ExternalLinkCard
 									key={ method.id }
 									href={ `${ ADMIN_URL }admin.php?page=wc-settings&tab=checkout&section=${ method.id }` }
 									title={ method.title }
 									description={ method.description }
+									{ ...( isIncompatible
+										? {
+												warning:
+													incompatiblePaymentMethodMessage,
+										  }
+										: {} ) }
 								/>
 							);
 						} ) }
