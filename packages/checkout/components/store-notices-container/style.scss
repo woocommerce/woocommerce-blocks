@@ -34,8 +34,15 @@
 				margin-bottom: 0;
 			}
 		}
-		.components-notice__content ul {
-			margin: 0;
+		.components-notice__content {
+			ul {
+				margin: 0;
+				padding: 0;
+				list-style: none;
+			}
+			li + li {
+				margin: 0.25em 0 0 0;
+			}
 		}
 	}
 	.wc-block-components-notices__notice + .wc-block-components-notices__notice {
