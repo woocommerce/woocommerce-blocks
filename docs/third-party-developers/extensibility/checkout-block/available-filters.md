@@ -2,18 +2,18 @@
 
 ## Table of Contents <!-- omit in toc -->
 
-- [Cart Line Items](#cart-line-items)
-- [Order Summary Items](#order-summary-items)
-- [Totals footer item (in Mini Cart, Cart and Checkout)](#totals-footer-item-in-mini-cart-cart-and-checkout)
-- [Coupons](#coupons)
-- [Place Order Button Label](#place-order-button-label)
-- [Examples](#examples)
-  - [Changing the wording of the Totals label in the Mini Cart, Cart and Checkout](#changing-the-wording-of-the-totals-label-in-the-mini-cart-cart-and-checkout)
-  - [Changing the format of the item's single price](#changing-the-format-of-the-items-single-price)
-  - [Change the name of a coupon](#change-the-name-of-a-coupon)
-  - [Hide the "Remove item" link on a cart item](#hide-the-remove-item-link-on-a-cart-item)
-  - [Change the label of the Place Order button](#change-the-label-of-the-place-order-button)
-- [Troubleshooting](#troubleshooting)
+-   [Cart Line Items](#cart-line-items)
+-   [Order Summary Items](#order-summary-items)
+-   [Totals footer item (in Mini Cart, Cart and Checkout)](#totals-footer-item-in-mini-cart-cart-and-checkout)
+-   [Coupons](#coupons)
+-   [Place Order Button Label](#place-order-button-label)
+-   [Examples](#examples)
+    -   [Changing the wording of the Totals label in the Mini Cart, Cart and Checkout](#changing-the-wording-of-the-totals-label-in-the-mini-cart-cart-and-checkout)
+    -   [Changing the format of the item's single price](#changing-the-format-of-the-items-single-price)
+    -   [Change the name of a coupon](#change-the-name-of-a-coupon)
+    -   [Hide the "Remove item" link on a cart item](#hide-the-remove-item-link-on-a-cart-item)
+    -   [Change the label of the Place Order button](#change-the-label-of-the-place-order-button)
+-   [Troubleshooting](#troubleshooting)
 
 This document lists the filters that are currently available to extensions and offers usage information for each one of them. Information on registering filters can be found on the [Checkout - Filter Registry](../../../../packages/checkout/filter-registry/README.md) page.
 
@@ -185,6 +185,26 @@ __experimentalRegisterCheckoutFilters( 'automatic-coupon-extension', {
 | Before                                                                                                         | After                                                                                                          |
 | -------------------------------------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------------------------- |
 | ![image](https://user-images.githubusercontent.com/5656702/123768988-bc55eb80-d8c0-11eb-9262-5d629837706d.png) | ![image](https://user-images.githubusercontent.com/5656702/124126048-2c57a380-da72-11eb-9b45-b2cae0cffc37.png) |
+
+### Prevent a snackbar notice from appearing for coupons
+
+If you want to prevent a coupon apply notice from appearing, you can use the `showApplyCouponNotice` filter. If it returns `false` then the notice will not be created.
+
+The same can be done with the `showRemoveCouponNotice` filter to prevent a notice when a coupon is removed from the cart.
+
+```ts
+import { __experimentalRegisterCheckoutFilters } from '@woocommerce/blocks-checkout';
+
+__experimentalRegisterCheckoutFilters( 'example-extension', {
+	showApplyCouponNotice: ( value, extensions, { couponCode } ) => {
+		// Prevent a couponCode called '10off' from creating a notice.
+		return couponCode === '10off' ? false : value;
+	},
+	showRemoveCouponNotice: ( value, _, { couponCode } ) => {
+		return couponCode === '10off' ? false : value;
+	},
+} );
+```
 
 ### Hide the "Remove item" link on a cart item
 
