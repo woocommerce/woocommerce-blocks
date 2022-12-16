@@ -101,12 +101,14 @@ const withSidebarNotices = createHigherOrderComponent(
 						/>
 
 						{ isIncompatibilityPaymentGatewaysNoticeDismissed ? (
-							<MakeAsDefaultNotice />
+							<>
+								<MakeAsDefaultNotice />
+								<CartCheckoutSidebarCompatibilityNotice
+									block={ isCheckout ? 'checkout' : 'cart' }
+								/>
+							</>
 						) : null }
 
-						<CartCheckoutSidebarCompatibilityNotice
-							block={ isCheckout ? 'checkout' : 'cart' }
-						/>
 						{ isAddressFieldBlock ? null : (
 							<CartCheckoutFeedbackPrompt />
 						) }
