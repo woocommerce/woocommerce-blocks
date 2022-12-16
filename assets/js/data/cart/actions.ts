@@ -9,8 +9,11 @@ import type {
 	BillingAddressShippingAddress,
 } from '@woocommerce/types';
 import { camelCase, mapKeys } from 'lodash';
-import type { AddToCartEventDetail } from '@woocommerce/type-defs/events';
 import { BillingAddress, ShippingAddress } from '@woocommerce/settings';
+import {
+	triggerAddedToCartEvent,
+	triggerAddingToCartEvent,
+} from '@woocommerce/base-utils';
 
 /**
  * Internal dependencies
@@ -179,25 +182,6 @@ export const shippingRatesBeingSelected = ( isResolving: boolean ) =>
 	} as const );
 
 /**
- * Triggers an adding to cart event so other blocks can update accordingly.
- */
-export const triggerAddingToCartEvent = () =>
-	( {
-		type: types.TRIGGER_ADDING_TO_CART_EVENT,
-	} as const );
-
-/**
- * Triggers an added to cart event so other blocks can update accordingly.
- */
-export const triggerAddedToCartEvent = ( {
-	preserveCartData,
-}: AddToCartEventDetail ) =>
-	( {
-		type: types.TRIGGER_ADDED_TO_CART_EVENT,
-		preserveCartData,
-	} as const );
-
-/**
  * POSTs to the /cart/extensions endpoint with the data supplied by the extension.
  *
  * @param {Object} args The data to be posted to the endpoint
@@ -319,7 +303,7 @@ export const addItemToCart =
 	( productId: number, quantity = 1 ) =>
 	async ( { dispatch } ) => {
 		try {
-			dispatch.triggerAddingToCartEvent();
+			triggerAddingToCartEvent();
 			const { response } = await apiFetchWithHeaders( {
 				path: `/wc/store/v1/cart/add-item`,
 				method: 'POST',
@@ -331,7 +315,7 @@ export const addItemToCart =
 			} );
 
 			dispatch.receiveCart( response );
-			dispatch.triggerAddedToCartEvent( { preserveCartData: true } );
+			triggerAddedToCartEvent( { preserveCartData: true } );
 		} catch ( error ) {
 			dispatch.receiveError( error );
 
