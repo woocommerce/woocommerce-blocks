@@ -2,7 +2,7 @@
  * External dependencies
  */
 import PropTypes from 'prop-types';
-import { SnackbarList } from 'wordpress-components';
+import { SnackbarList } from '@wordpress/components';
 import classnames from 'classnames';
 import { __experimentalApplyCheckoutFilter } from '@woocommerce/blocks-checkout';
 import { useDispatch, useSelect } from '@wordpress/data';

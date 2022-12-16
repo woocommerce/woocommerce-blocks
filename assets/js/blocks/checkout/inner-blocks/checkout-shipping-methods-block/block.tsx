@@ -9,7 +9,7 @@ import { getCurrencyFromPriceResponse } from '@woocommerce/price-format';
 import FormattedMonetaryAmount from '@woocommerce/base-components/formatted-monetary-amount';
 import { useEditorContext } from '@woocommerce/base-context';
 import { decodeEntities } from '@wordpress/html-entities';
-import { Notice } from 'wordpress-components';
+import { Notice } from '@wordpress/components';
 import classnames from 'classnames';
 import { getSetting } from '@woocommerce/settings';
 import type { PackageRateOption } from '@woocommerce/type-defs/shipping';

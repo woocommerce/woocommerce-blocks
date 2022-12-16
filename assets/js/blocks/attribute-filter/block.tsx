@@ -19,7 +19,7 @@ import FilterResetButton from '@woocommerce/base-components/filter-reset-button'
 import FilterSubmitButton from '@woocommerce/base-components/filter-submit-button';
 import isShallowEqual from '@wordpress/is-shallow-equal';
 import { decodeEntities } from '@wordpress/html-entities';
-import { Notice } from 'wordpress-components';
+import { Notice } from '@wordpress/components';
 import { getSettingWithCoercion } from '@woocommerce/settings';
 import { getQueryArgs, removeQueryArgs } from '@wordpress/url';
 import {

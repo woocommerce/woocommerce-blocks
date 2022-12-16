@@ -2,7 +2,7 @@
  * External dependencies
  */
 import { __ } from '@wordpress/i18n';
-import { Notice } from 'wordpress-components';
+import { Notice } from '@wordpress/components';
 import classnames from 'classnames';
 import type { CartResponseShippingRate } from '@woocommerce/types';
 

@@ -2,7 +2,7 @@
  * External dependencies
  */
 import { __ } from '@wordpress/i18n';
-import { Placeholder, Button, Notice } from 'wordpress-components';
+import { Placeholder, Button, Notice } from '@wordpress/components';
 import { Icon, payment } from '@wordpress/icons';
 import { ADMIN_URL } from '@woocommerce/settings';
 import { useEditorContext } from '@woocommerce/base-context';

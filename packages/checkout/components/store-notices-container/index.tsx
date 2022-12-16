@@ -2,7 +2,7 @@
  * External dependencies
  */
 import classnames from 'classnames';
-import { Notice } from 'wordpress-components';
+import { Notice } from '@wordpress/components';
 import { sanitizeHTML } from '@woocommerce/utils';
 import { useDispatch, useSelect } from '@wordpress/data';
 import { PAYMENT_STORE_KEY } from '@woocommerce/block-data';
