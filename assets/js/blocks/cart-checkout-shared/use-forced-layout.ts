@@ -7,7 +7,7 @@ import {
 	useCallback,
 	useMemo,
 } from '@wordpress/element';
-import { useSelect, useDispatch } from '@wordpress/data';
+import { useSelect, useRegistry } from '@wordpress/data';
 import {
 	createBlock,
 	getBlockType,
@@ -42,8 +42,9 @@ export const useForcedLayout = ( {
 	const currentRegisteredBlocks = useRef( registeredBlocks );
 	const currentDefaultTemplate = useRef( defaultTemplate );
 
-	const { insertBlock, replaceInnerBlocks } =
-		useDispatch( 'core/block-editor' );
+	// We use registry here instead of useDispatch because we need a stable reference to the actions due to this bug on WP.com
+	// https://github.com/Automattic/wp-calypso/issues/66092
+	const registry = useRegistry();
 
 	const { innerBlocks, registeredBlockTypes } = useSelect(
 		( select ) => {
@@ -61,11 +62,11 @@ export const useForcedLayout = ( {
 	const appendBlock = useCallback(
 		( block, position ) => {
 			const newBlock = createBlock( block.name );
-			insertBlock( newBlock, position, clientId, false );
+			registry
+				.dispatch( 'core/block-editor' )
+				.insertBlock( newBlock, position, clientId, false );
 		},
-		// We need to skip insertBlock here due to a cache issue in wordpress.com that causes an inifinite loop, see https://github.com/Automattic/wp-calypso/issues/66092 for an expanded doc.
-		// eslint-disable-next-line react-hooks/exhaustive-deps
-		[ clientId ]
+		[ clientId, registry ]
 	);
 
 	const lockedBlockTypes = useMemo(
@@ -93,7 +94,9 @@ export const useForcedLayout = ( {
 				currentDefaultTemplate.current
 			);
 			if ( ! isEqual( nextBlocks, innerBlocks ) ) {
-				replaceInnerBlocks( clientId, nextBlocks );
+				registry
+					.dispatch( 'core/block-editor' )
+					.replaceInnerBlocks( clientId, nextBlocks );
 				return;
 			}
 		}
@@ -142,10 +145,5 @@ export const useForcedLayout = ( {
 					break;
 			}
 		} );
-		/*
-		We need to skip replaceInnerBlocks here due to a cache issue in wordpress.com that causes an inifinite loop, see https://github.com/Automattic/wp-calypso/issues/66092 for an expanded doc.
-		 @todo Add replaceInnerBlocks and insertBlock after fixing https://github.com/Automattic/wp-calypso/issues/66092
-		*/
-		// eslint-disable-next-line react-hooks/exhaustive-deps
-	}, [ clientId, innerBlocks, lockedBlockTypes, appendBlock ] );
+	}, [ clientId, innerBlocks, lockedBlockTypes, appendBlock, registry ] );
 };
