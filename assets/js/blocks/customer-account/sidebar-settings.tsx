@@ -147,7 +147,7 @@ export const BlockSettings = ( {
 							label={
 								<Icon
 									icon={ customerAccountStyleAlt }
-									size={ 18 }
+									size={ 20 }
 									className={ classNames(
 										'wc-block-customer-account__icon-option',
 										{
