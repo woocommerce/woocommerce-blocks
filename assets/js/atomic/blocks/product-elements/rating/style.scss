@@ -4,6 +4,7 @@
 	margin-bottom: $gap-small;
 
 	&__stars {
+		display: inline-block;
 		overflow: hidden;
 		position: relative;
 		width: 5.3em;
@@ -49,7 +50,7 @@
 	&__link {
 		display: inline-block;
 		width: 100%;
-		text-align: center;
+		text-align: inherit;
 		@include font-size(small);
 	}
 }
@@ -66,5 +67,12 @@
 		width: 7em;
 		margin-left: auto;
 		margin-right: auto;
+	}
+}
+
+// Fix applied specifically to Classic Template
+.woocommerce-loop-product__link {
+	.wc-block-components-product-rating__stars {
+		display: block;
 	}
 }
