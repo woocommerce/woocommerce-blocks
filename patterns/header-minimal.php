@@ -26,7 +26,7 @@
 		</div>
 		<!-- /wp:group -->
 
-		<!-- wp:woocommerce/customer-account {"displayStyle":"icon_only"} /-->
+		<!-- wp:woocommerce/customer-account {"displayStyle":"icon_only","style":{"typography":{"fontSize":"16px"}}} /-->
 
 		<!-- wp:woocommerce/mini-cart {"style":{"typography":{"fontSize":"14px"}}} /-->
 	</div>
