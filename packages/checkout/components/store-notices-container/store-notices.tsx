@@ -57,7 +57,7 @@ const StoreNotices = ( {
 				! previousNoticeIds || ! previousNoticeIds.includes( value )
 		);
 
-		if ( newNoticeIds.length ) {
+		if ( newNoticeIds.length && containerRef?.scrollIntoView ) {
 			containerRef.scrollIntoView( {
 				behavior: 'smooth',
 			} );
