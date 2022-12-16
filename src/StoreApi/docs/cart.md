@@ -3,8 +3,8 @@
 ## Table of Contents <!-- omit in toc -->
 
 - [Responses](#responses)
-  - [Cart Response](#cart-response)
-  - [Error Response](#error-response)
+	- [Cart Response](#cart-response)
+	- [Error Response](#error-response)
 - [Get Cart](#get-cart)
 - [Add Item](#add-item)
 - [Remove Item](#remove-item)
