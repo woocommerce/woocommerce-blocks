@@ -27,6 +27,7 @@ export interface StoreCartItemQuantity {
 	cartItemQuantityErrors: CartResponseErrorItem[];
 }
 
+// An object exposing data and actions from/for the store api /cart/coupons endpoint.
 export interface StoreCartCoupon {
 	appliedCoupons: CartResponseCouponItem[];
 	isLoading: boolean;
