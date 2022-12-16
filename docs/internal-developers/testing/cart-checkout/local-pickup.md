@@ -1,6 +1,6 @@
 # Local Pickup
 
-To test the new local pickup, you need to use this zip: [woocommerce-gutenberg-products-block.zip](https://github.com/woocommerce/woocommerce-blocks/files/10241580/woocommerce-gutenberg-products-block.zip)
+To test the new local pickup, you need to use this zip: [woocommerce-gutenberg-products-block.zip](https://github.com/woocommerce/woocommerce-blocks/files/10241650/woocommerce-gutenberg-products-block.zip)
 
 ## Managing Local Pickup
 
