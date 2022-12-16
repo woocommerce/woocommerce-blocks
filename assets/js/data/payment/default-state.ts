@@ -36,11 +36,14 @@ export interface PaymentState {
 	shouldSavePaymentMethod: boolean;
 }
 const incompatiblePaymentMethods: Record< string, string > = {};
-getSetting< GlobalPaymentMethod[] >( 'globalPaymentMethods' ).forEach(
-	( method ) => {
-		incompatiblePaymentMethods[ method.id ] = method.title;
-	}
-);
+
+if ( getSetting( 'globalPaymentMethods' ) ) {
+	getSetting< GlobalPaymentMethod[] >( 'globalPaymentMethods' ).forEach(
+		( method ) => {
+			incompatiblePaymentMethods[ method.id ] = method.title;
+		}
+	);
+}
 
 export const defaultPaymentState: PaymentState = {
 	status: PAYMENT_STATUS.PRISTINE,
