@@ -1,7 +1,12 @@
 /**
  * External dependencies
  */
-import { canvas, setPostContent, insertBlock } from '@wordpress/e2e-test-utils';
+import {
+	canvas,
+	setPostContent,
+	insertBlock,
+	ensureSidebarOpened,
+} from '@wordpress/e2e-test-utils';
 import {
 	visitBlockPage,
 	saveOrPublish,
@@ -14,7 +19,7 @@ import { setCheckbox } from '@woocommerce/e2e-utils';
 /**
  * Internal dependencies
  */
-import { waitForCanvas, openBlockEditorSettings } from '../../utils';
+import { waitForCanvas } from '../../utils';
 
 export const block = {
 	name: 'Products (Beta)',
@@ -102,7 +107,7 @@ export const toggleInheritQueryFromTemplateSetting = async () => {
 };
 
 export const configurateProductQueryBlock = async () => {
-	await openBlockEditorSettings();
+	await ensureSidebarOpened();
 	await toggleInheritQueryFromTemplateSetting();
 };
 

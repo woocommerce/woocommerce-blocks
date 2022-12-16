@@ -1,7 +1,7 @@
 /**
  * External dependencies
  */
-import { canvas } from '@wordpress/e2e-test-utils';
+import { canvas, ensureSidebarOpened } from '@wordpress/e2e-test-utils';
 import {
 	saveOrPublish,
 	selectBlockByName,
@@ -17,7 +17,6 @@ import { setCheckbox, unsetCheckbox } from '@woocommerce/e2e-utils';
 /**
  * Internal dependencies
  */
-import { openBlockEditorSettings } from '../../utils';
 import {
 	getFrontEndProducts,
 	getPreviewProducts,
@@ -70,7 +69,7 @@ describe( 'Product Query > Advanced Filters', () => {
 		 * test can be run individually.
 		 */
 		await resetProductQueryBlockPage();
-		await openBlockEditorSettings();
+		await ensureSidebarOpened();
 		await selectBlockByName( block.slug );
 		$productFiltersPanel = await findToolsPanelWithTitle(
 			'Advanced Filters'
