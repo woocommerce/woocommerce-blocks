@@ -101,17 +101,6 @@ const getCoreConfig = ( options = {} ) => {
 						loader: 'ignore-loader',
 					},
 				},
-				// New resolver added after bumping the version of @wordpress/components, wordpress-components and related dependencies.
-				// There's open bug in framer-motion library: https://github.com/framer/motion/issues/1525.
-				// The solution is to add resolver for .mjs files (mentioned in following threads):
-				// - https://stackoverflow.com/questions/69343038/cant-import-the-named-export-xxxx-from-non-ecmascript-module-only-default-expo
-				// - https://stackoverflow.com/questions/69769360/error-importing-framer-motion-v5-in-react-with-create-react-app
-				// - https://github.com/storybookjs/storybook/issues/16690#issuecomment-971579785
-				{
-					test: /\.mjs$/,
-					include: /node_modules/,
-					type: 'javascript/auto',
-				},
 			],
 		},
 		plugins: [
@@ -227,17 +216,6 @@ const getMainConfig = ( options = {} ) => {
 					use: {
 						loader: 'ignore-loader',
 					},
-				},
-				// New resolver added after bumping the version of @wordpress/components, wordpress-components and related dependencies.
-				// There's open bug in framer-motion library: https://github.com/framer/motion/issues/1525.
-				// The solution is to add resolver for .mjs files (mentioned in following threads):
-				// - https://stackoverflow.com/questions/69343038/cant-import-the-named-export-xxxx-from-non-ecmascript-module-only-default-expo
-				// - https://stackoverflow.com/questions/69769360/error-importing-framer-motion-v5-in-react-with-create-react-app
-				// - https://github.com/storybookjs/storybook/issues/16690#issuecomment-971579785
-				{
-					test: /\.mjs$/,
-					include: /node_modules/,
-					type: 'javascript/auto',
 				},
 			],
 		},
@@ -386,17 +364,6 @@ const getFrontConfig = ( options = {} ) => {
 					use: {
 						loader: 'ignore-loader',
 					},
-				},
-				// New resolver added after bumping the version of @wordpress/components, wordpress-components and related dependencies.
-				// There's open bug in framer-motion library: https://github.com/framer/motion/issues/1525, which prevented the project to build properly.
-				// The solution is to add resolver for .mjs files (mentioned in following threads):
-				// - https://stackoverflow.com/questions/69343038/cant-import-the-named-export-xxxx-from-non-ecmascript-module-only-default-expo
-				// - https://stackoverflow.com/questions/69769360/error-importing-framer-motion-v5-in-react-with-create-react-app
-				// - https://github.com/storybookjs/storybook/issues/16690#issuecomment-971579785
-				{
-					test: /\.mjs$/,
-					include: /node_modules/,
-					type: 'javascript/auto',
 				},
 			],
 		},
