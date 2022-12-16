@@ -17,6 +17,7 @@ import { IncompatibilityPaymentGatewaysNotice } from '@woocommerce/editor-compon
 import { useSelect } from '@wordpress/data';
 import { CartCheckoutFeedbackPrompt } from '@woocommerce/editor-components/feedback-prompt';
 import { isWcVersion } from '@woocommerce/settings';
+import { useState } from '@wordpress/element';
 declare module '@wordpress/editor' {
 	let store: StoreDescriptor;
 }
@@ -37,6 +38,17 @@ const withSidebarNotices = createHigherOrderComponent(
 		if ( ! blockName.startsWith( 'woocommerce/' ) || ! isBlockSelected ) {
 			return <BlockEdit { ...props } />;
 		}
+
+		const [
+			isIncompatibilityPaymentGatewaysNoticeDismissed,
+			setIsIncompatibilityPaymentGatewaysNoticeDismissed,
+		] = useState( true );
+
+		const toggleIncompatibilityPaymentGatewaysNoticeDismissedStatus = (
+			isDismissed: boolean
+		) => {
+			setIsIncompatibilityPaymentGatewaysNoticeDismissed( isDismissed );
+		};
 
 		const addressFieldOrAccountBlocks = [
 			'woocommerce/checkout-shipping-address-block',
@@ -68,20 +80,29 @@ const withSidebarNotices = createHigherOrderComponent(
 				};
 			}
 		);
+		const MakeAsDefaultNotice = () => (
+			<>
+				{ isWcVersion( '6.9.0', '>=' ) ? (
+					<DefaultNotice block={ isCheckout ? 'checkout' : 'cart' } />
+				) : (
+					<LegacyNotice block={ isCheckout ? 'checkout' : 'cart' } />
+				) }
+			</>
+		);
+
 		return (
 			<>
 				{ ( isCart || isCheckout ) && (
 					<InspectorControls>
-						<IncompatibilityPaymentGatewaysNotice />
-						{ isWcVersion( '6.9.0', '>=' ) ? (
-							<DefaultNotice
-								block={ isCheckout ? 'checkout' : 'cart' }
-							/>
-						) : (
-							<LegacyNotice
-								block={ isCheckout ? 'checkout' : 'cart' }
-							/>
-						) }
+						<IncompatibilityPaymentGatewaysNotice
+							toggleDismissedStatus={
+								toggleIncompatibilityPaymentGatewaysNoticeDismissedStatus
+							}
+						/>
+
+						{ isIncompatibilityPaymentGatewaysNoticeDismissed ? (
+							<MakeAsDefaultNotice />
+						) : null }
 
 						<CartCheckoutSidebarCompatibilityNotice
 							block={ isCheckout ? 'checkout' : 'cart' }

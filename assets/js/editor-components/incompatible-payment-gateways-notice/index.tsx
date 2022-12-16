@@ -4,7 +4,11 @@
 import { __ } from '@wordpress/i18n';
 import { Notice, ExternalLink } from '@wordpress/components';
 import { useSelect } from '@wordpress/data';
-import { useState, createInterpolateElement } from '@wordpress/element';
+import {
+	useState,
+	createInterpolateElement,
+	useEffect,
+} from '@wordpress/element';
 import { alert } from '@woocommerce/icons';
 import { Icon } from '@wordpress/icons';
 /**
@@ -13,7 +17,13 @@ import { Icon } from '@wordpress/icons';
 import { STORE_KEY as PAYMENT_STORE_KEY } from '../../data/payment/constants';
 import './editor.scss';
 
-export function IncompatibilityPaymentGatewaysNotice() {
+interface PaymentGatewaysNoticeProps {
+	toggleDismissedStatus: ( status: boolean ) => void;
+}
+
+export function IncompatibilityPaymentGatewaysNotice( {
+	toggleDismissedStatus,
+}: PaymentGatewaysNoticeProps ) {
 	// Everything below works the same for Cart/Checkout
 	const { incompatiblePaymentMethods } = useSelect( ( select ) => {
 		const { getIncompatiblePaymentMethods } = select( PAYMENT_STORE_KEY );
@@ -23,10 +33,15 @@ export function IncompatibilityPaymentGatewaysNotice() {
 	}, [] );
 	const [ settingStatus, setStatus ] = useState( 'pristine' );
 
-	if (
+	const isNoticeDismissed =
 		Object.keys( incompatiblePaymentMethods ).length === 0 ||
-		settingStatus === 'dismissed'
-	) {
+		settingStatus === 'dismissed';
+
+	useEffect( () => {
+		toggleDismissedStatus( isNoticeDismissed );
+	}, [ isNoticeDismissed, toggleDismissedStatus ] );
+
+	if ( isNoticeDismissed ) {
 		return null;
 	}
 
