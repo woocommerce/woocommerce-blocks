@@ -147,7 +147,7 @@ woocommerce_blocks_env = ${ NODE_ENV }
 		},
 		resolve: {
 			...resolve,
-			extensions: [ '.js', '.ts', '.tsx', '.mjs' ],
+			extensions: [ '.js', '.ts', '.tsx' ],
 		},
 	};
 };
@@ -285,7 +285,7 @@ const getMainConfig = ( options = {} ) => {
 		],
 		resolve: {
 			...resolve,
-			extensions: [ '.js', '.jsx', '.ts', '.tsx', '.mjs' ],
+			extensions: [ '.js', '.jsx', '.ts', '.tsx' ],
 		},
 	};
 };
@@ -400,7 +400,7 @@ const getFrontConfig = ( options = {} ) => {
 		],
 		resolve: {
 			...resolve,
-			extensions: [ '.js', '.ts', '.tsx', '.mjs' ],
+			extensions: [ '.js', '.ts', '.tsx' ],
 		},
 	};
 };
