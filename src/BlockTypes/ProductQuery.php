@@ -349,7 +349,8 @@ class ProductQuery extends AbstractBlock {
 		 *
 		 * @see get_product_visibility_query()
 		 */
-		if ( array_diff( $stock_status_options, $stock_statii ) === 'outofstock' ) {
+		$diff = array_diff( $stock_status_options, $stock_statii );
+		if ( count( $diff ) === 1 && in_array( 'outofstock', $diff, true ) ) {
 			return array();
 		}
 
