@@ -29,25 +29,23 @@ const runner = async () => {
 
 		let commentId, commentBody;
 
-		{
-			const currentComments = await octokit.rest.issues.listComments( {
-				owner,
-				repo,
-				issue_number: payload.pull_request.number,
-			} );
+		const currentComments = await octokit.rest.issues.listComments( {
+			owner,
+			repo,
+			issue_number: payload.pull_request.number,
+		} );
 
-			if (
-				Array.isArray( currentComments.data ) &&
-				currentComments.data.length > 0
-			) {
-				const comment = currentComments.data.find( ( comment ) =>
-					isMergedComment( comment )
-				);
+		if (
+			Array.isArray( currentComments.data ) &&
+			currentComments.data.length > 0
+		) {
+			const comment = currentComments.data.find( ( comment ) =>
+				isMergedComment( comment )
+			);
 
-				if ( comment ) {
-					commentId = comment.id;
-					commentBody = comment.body;
-				}
+			if ( comment ) {
+				commentId = comment.id;
+				commentBody = comment.body;
 			}
 		}
 

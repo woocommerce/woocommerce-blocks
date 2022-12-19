@@ -1,6 +1,6 @@
 const fs = require( 'fs' );
 const { getOctokit, context } = require( '@actions/github' );
-const { setFailed, getInput } = require( '@actions/core' );
+const { setFailed, getInput, setOutput } = require( '@actions/core' );
 const { parseXml, getFilesWithNewErrors } = require( './utils/xml' );
 const { generateMarkdownMessage } = require( './utils/markdown' );
 const { addRecord } = require( './utils/airtable' );

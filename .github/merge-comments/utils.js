@@ -6,7 +6,7 @@ function getSectionId( section ) {
 	return match ? match[ 1 ] : null;
 }
 
-function parse( comment ) {
+function parseComment( comment ) {
 	if ( ! comment ) {
 		return [];
 	}
@@ -14,6 +14,11 @@ function parse( comment ) {
 	return sections
 		.map( ( section ) => {
 			const sectionId = getSectionId( section );
+			/**
+			 * This also remove the footer as it doesn't have a section id. This
+			 * is intentional as we want the footer to always be the last
+			 * section.
+			 */
 			if ( ! sectionId ) {
 				return null;
 			}
@@ -40,12 +45,6 @@ function updateSection( sections, sectionId, content ) {
 	return sections;
 }
 
-function removeFooter( sections ) {
-	return sections.filter(
-		( section ) => ! section.content.includes( footer )
-	);
-}
-
 function appendFooter( sections ) {
 	return sections.concat( {
 		id: 'footer',
@@ -60,10 +59,12 @@ function combineSections( sections ) {
 }
 
 exports.updateComment = function ( comment, sectionId, content ) {
-	let sections = parse( comment );
-	sections = removeFooter( sections );
+	console.log( comment );
+	let sections = parseComment( comment );
+	console.log( sections );
 	sections = updateSection( sections, sectionId, content );
 	sections = appendFooter( sections );
+	console.log( sections );
 	return combineSections( sections );
 };
 
