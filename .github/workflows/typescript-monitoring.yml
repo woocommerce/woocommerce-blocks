@@ -50,6 +50,7 @@ jobs:
 
             - name: Monitor TypeScript errors
               uses: ./.github/monitor-typescript-errors
+              id: ts-errors
               with:
                   repo-token: '${{ secrets.GITHUB_TOKEN }}'
                   checkstyle: checkstyle.xml
@@ -57,3 +58,9 @@ jobs:
               env:
                   AIRTABLE_API_KEY: ${{ secrets.AIRTABLE_API_KEY }}
                   CURRENT_BRANCH: ${{ steps.branch-name.outputs.current_branch }}
+            - name: Append report
+              uses: ./.github/merge-comments
+              with:
+                  repo-token: '${{ secrets.GITHUB_TOKEN }}'
+                  section-id: compare-assets-with-trunk
+                  content: ${{steps.ts-errors.outputs.comment}}

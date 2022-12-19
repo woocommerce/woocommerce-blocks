@@ -1,0 +1,80 @@
+/**
+ * External dependencies
+ */
+const { getOctokit, context } = require( '@actions/github' );
+const { setFailed, getInput } = require( '@actions/core' );
+
+/**
+ * Internal dependencies
+ */
+const { updateComment } = require( './utils' );
+
+const runner = async () => {
+	try {
+		const token = getInput( 'repo-token', { required: true } );
+		const octokit = getOctokit( token );
+		const payload = context.payload;
+		const repo = payload.repository.name;
+		const owner = payload.repository.owner.login;
+		const sectionId = getInput( 'section-id', {
+			required: true,
+		} );
+		const content = getInput( 'content', {
+			required: true,
+		} );
+
+		if ( ! sectionId || ! content ) {
+			return;
+		}
+
+		let commentId;
+		let commentBody = '';
+
+		{
+			const currentComments = await octokit.rest.issues.listComments( {
+				owner,
+				repo,
+				issue_number: payload.pull_request.number,
+			} );
+
+			if (
+				Array.isArray( currentComments.data ) &&
+				currentComments.data.length > 0
+			) {
+				const comment = currentComments.data.find(
+					( comment ) =>
+						comment.body.includes(
+							'This comment is created by merge-comments.'
+						) && comment.user.login === 'github-actions[bot]'
+				);
+
+				if ( comment ) {
+					commentId = comment.id;
+					commentBody = comment.body;
+				}
+			}
+		}
+
+		commentBody = updateComment( commentBody, sectionId, content );
+
+		if ( commentId ) {
+			await octokit.rest.issues.updateComment( {
+				owner,
+				repo,
+				comment_id: commentId,
+				body: commentBody,
+			} );
+		} else {
+			await octokit.rest.issues.createComment( {
+				owner,
+				repo,
+				issue_number: payload.pull_request.number,
+				body: commentBody,
+			} );
+		}
+	} catch ( error ) {
+		setFailed( error.message );
+	}
+};
+
+runner();

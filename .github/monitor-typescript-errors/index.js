@@ -18,6 +18,7 @@ const runner = async () => {
 	const trunkFileName = getInput( 'checkstyle-trunk', {
 		required: true,
 	} );
+	const createComment = getInput( 'create-comment' );
 
 	const newCheckStyleFile = fs.readFileSync( fileName );
 	const newCheckStyleFileParsed = parseXml( newCheckStyleFile );
@@ -44,13 +45,17 @@ const runner = async () => {
 			: '🎉 🎉 This PR does not introduce new TS errors.' );
 
 	if ( process.env[ 'CURRENT_BRANCH' ] !== 'trunk' ) {
-		await addComment( {
-			octokit,
-			owner,
-			repo,
-			message,
-			payload,
-		} );
+		if ( createComment !== 'true' ) {
+			setOutput( 'comment', message );
+		} else {
+			await addComment( {
+				octokit,
+				owner,
+				repo,
+				message,
+				payload,
+			} );
+		}
 	}
 
 	if ( process.env[ 'CURRENT_BRANCH' ] === 'trunk' ) {
