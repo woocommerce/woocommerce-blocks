@@ -37,18 +37,18 @@ import { hasNoticesOfType } from '../../utils/notices';
 
 const MustLoginPrompt = () => {
 	return (
-		<>
+		<div className="wc-block-must-login-prompt">
 			{ __(
-				'You must be logged in to checkout. ',
+				'You must be logged in to checkout.',
 				'woo-gutenberg-products-block'
-			) }
+			) }{ ' ' }
 			<a href={ LOGIN_TO_CHECKOUT_URL }>
 				{ __(
 					'Click here to log in.',
 					'woo-gutenberg-products-block'
 				) }
 			</a>
-		</>
+		</div>
 	);
 };
 
