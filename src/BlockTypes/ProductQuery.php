@@ -344,7 +344,7 @@ class ProductQuery extends AbstractBlock {
 		}
 
 		/**
-		 * If all stock status are selected except for 'outofstock', we use the
+		 * If all stock statuses are selected except 'outofstock', we use the
 		 * product visibility query to filter out out of stock products.
 		 *
 		 * @see get_product_visibility_query()
