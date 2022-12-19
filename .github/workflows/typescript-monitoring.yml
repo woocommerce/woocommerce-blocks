@@ -50,7 +50,7 @@ jobs:
 
             - name: Monitor TypeScript errors
               uses: ./.github/monitor-typescript-errors
-              id: ts-errors
+              id: monitor-typescript-errors
               with:
                   repo-token: '${{ secrets.GITHUB_TOKEN }}'
                   checkstyle: checkstyle.xml
@@ -63,5 +63,5 @@ jobs:
               uses: ./.github/merge-comments
               with:
                   repo-token: '${{ secrets.GITHUB_TOKEN }}'
-                  section-id: compare-assets-with-trunk
-                  content: ${{steps.ts-errors.outputs.comment}}
+                  section-id: monitor-typescript-errors
+                  content: ${{steps.monitor-typescript-errors.outputs.comment}}

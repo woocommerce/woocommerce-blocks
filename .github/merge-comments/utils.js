@@ -1,4 +1,4 @@
-const separator = '<hr separator --->';
+const separator = '<!-- separator --->';
 const footer = '<small>This comment is created by merge-comments.</small>';
 
 function getSectionId( section ) {
