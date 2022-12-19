@@ -35,7 +35,7 @@ import type { Attributes } from './types';
 import { CheckoutBlockContext } from './context';
 import { hasNoticesOfType } from '../../utils/notices';
 
-const LoginPrompt = () => {
+const MustLoginPrompt = () => {
 	return (
 		<>
 			{ __(
@@ -86,14 +86,14 @@ const Checkout = ( {
 
 	/**
 	 * If checkout requires an account (guest checkout is turned off), render
-	 * a notice and prevent access to the checkout, unless we explicitly allow 
+	 * a notice and prevent access to the checkout, unless we explicitly allow
 	 * account creation during the checkout flow.
 	 */
 	if (
 		isLoginRequired( customerId ) &&
 		! getSetting( 'checkoutAllowsSignup', false )
 	) {
-		return <LoginPrompt />;
+		return <MustLoginPrompt />;
 	}
 
 	return (
