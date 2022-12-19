@@ -2,7 +2,7 @@ const separator = '<!-- separator --->';
 const footer = '<small>This comment is created by merge-comments.</small>';
 
 function getSectionId( section ) {
-	const match = section.match( /<!-- section-id: (.*) -->/gm );
+	const match = section.match( /section-id: ([^\s]+) --/ );
 	return match ? match[ 1 ] : null;
 }
 
@@ -59,12 +59,9 @@ function combineSections( sections ) {
 }
 
 exports.updateComment = function ( comment, sectionId, content ) {
-	console.log( comment );
 	let sections = parseComment( comment );
-	console.log( sections );
 	sections = updateSection( sections, sectionId, content );
 	sections = appendFooter( sections );
-	console.log( sections );
 	return combineSections( sections );
 };
 
