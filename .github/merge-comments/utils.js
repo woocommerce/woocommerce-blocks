@@ -1,4 +1,5 @@
-const separator = '<!-- separator --->';
+const separator = '<hr separator --->';
+const footer = '<small>This comment is created by merge-comments.</small>';
 
 function getSectionId( section ) {
 	const match = section.match( /<!-- section-id: (.*) -->/gm );
@@ -39,6 +40,19 @@ function updateSection( sections, sectionId, content ) {
 	return sections;
 }
 
+function removeFooter( sections ) {
+	return sections.filter(
+		( section ) => ! section.content.includes( footer )
+	);
+}
+
+function appendFooter( sections ) {
+	return sections.concat( {
+		id: 'footer',
+		content: footer,
+	} );
+}
+
 function combineSections( sections ) {
 	return sections
 		.map( ( section ) => section.content )
@@ -46,6 +60,16 @@ function combineSections( sections ) {
 }
 
 exports.updateComment = function ( comment, sectionId, content ) {
-	const sections = updateSection( parse( comment ), sectionId, content );
+	let sections = parse( comment );
+	sections = removeFooter( sections );
+	sections = updateSection( sections, sectionId, content );
+	sections = appendFooter( sections );
 	return combineSections( sections );
+};
+
+exports.isMergedComment = function ( comment ) {
+	return (
+		comment.body.includes( footer ) &&
+		comment.user.login === 'github-actions[bot]'
+	);
 };

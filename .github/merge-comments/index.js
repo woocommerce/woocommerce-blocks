@@ -7,7 +7,7 @@ const { setFailed, getInput } = require( '@actions/core' );
 /**
  * Internal dependencies
  */
-const { updateComment } = require( './utils' );
+const { updateComment, isMergedComment } = require( './utils' );
 
 const runner = async () => {
 	try {
@@ -27,9 +27,7 @@ const runner = async () => {
 			return;
 		}
 
-		const detector = '<!-- This comment is created by merge-comments. -->';
-		let commentId;
-		let commentBody = detector;
+		let commentId, commentBody;
 
 		{
 			const currentComments = await octokit.rest.issues.listComments( {
@@ -42,10 +40,8 @@ const runner = async () => {
 				Array.isArray( currentComments.data ) &&
 				currentComments.data.length > 0
 			) {
-				const comment = currentComments.data.find(
-					( comment ) =>
-						comment.body.includes( detector ) &&
-						comment.user.login === 'github-actions[bot]'
+				const comment = currentComments.data.find( ( comment ) =>
+					isMergedComment( comment )
 				);
 
 				if ( comment ) {
