@@ -326,11 +326,11 @@ class ProductQuery extends AbstractBlock {
 	 * @return array
 	 */
 	private function get_stock_status_query( $stock_statii ) {
-		$stock_status_options = array_keys( wc_get_product_stock_status_options() );
-
 		if ( ! is_array( $stock_statii ) ) {
 			return array();
 		}
+
+		$stock_status_options = array_keys( wc_get_product_stock_status_options() );
 
 		/**
 		 * If all available stock status are selected, we don't need to add the
