@@ -85,9 +85,9 @@ const Checkout = ( {
 	}
 
 	/**
-	 * Show the login prompt if the user is not logged in
-	 * AND no guest checkout is allowed
-	 * AND no account creation is allowed..
+	 * If checkout requires an account (guest checkout is turned off), render
+	 * a notice and prevent access to the checkout, unless we explicitly allow 
+	 * account creation during the checkout flow.
 	 */
 	if (
 		isLoginRequired( customerId ) &&
