@@ -27,8 +27,9 @@ const runner = async () => {
 			return;
 		}
 
+		const detector = '<!-- This comment is created by merge-comments. -->';
 		let commentId;
-		let commentBody = '';
+		let commentBody = detector;
 
 		{
 			const currentComments = await octokit.rest.issues.listComments( {
@@ -43,9 +44,8 @@ const runner = async () => {
 			) {
 				const comment = currentComments.data.find(
 					( comment ) =>
-						comment.body.includes(
-							'This comment is created by merge-comments.'
-						) && comment.user.login === 'github-actions[bot]'
+						comment.body.includes( detector ) &&
+						comment.user.login === 'github-actions[bot]'
 				);
 
 				if ( comment ) {
