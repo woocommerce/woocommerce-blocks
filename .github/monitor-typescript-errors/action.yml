@@ -13,7 +13,7 @@ inputs:
     create-comment:
         description: 'Create a dedicate comment for this report?'
         required: false
-        default: 'true'
+        default: true
 outputs:
     comment:
         description: 'Markdown comment'
