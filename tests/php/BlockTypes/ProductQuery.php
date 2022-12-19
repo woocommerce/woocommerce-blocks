@@ -89,7 +89,10 @@ class ProductQuery extends \WP_UnitTestCase {
 		foreach ( $on_sale_product_ids as $id ) {
 			$this->assertContainsEquals( $id, $merged_query['post__in'] );
 		}
+
 		$this->assertCount( 4, $merged_query['post__in'] );
+
+		delete_transient( 'wc_products_onsale' );
 	}
 
 	/**
@@ -232,12 +235,14 @@ class ProductQuery extends \WP_UnitTestCase {
 			$merged_query['tax_query']
 		);
 
+		$fn = function() {
+			return 'yes';
+		};
+
 		// Test with hide out of stock items option enabled.
 		add_filter(
 			'pre_option_woocommerce_hide_out_of_stock_items',
-			function() {
-				return 'yes';
-			}
+			$fn
 		);
 		$product_visibility_not_in[] = $product_visibility_terms['outofstock'];
 
@@ -253,6 +258,10 @@ class ProductQuery extends \WP_UnitTestCase {
 				'operator' => 'NOT IN',
 			),
 			$merged_query['tax_query']
+		);
+		remove_filter(
+			'pre_option_woocommerce_hide_out_of_stock_items',
+			$fn
 		);
 	}
 
@@ -321,6 +330,7 @@ class ProductQuery extends \WP_UnitTestCase {
 			),
 			$merged_query['meta_query']
 		);
+		set_query_var( 'max_price', '' );
 	}
 
 	/**
@@ -344,6 +354,7 @@ class ProductQuery extends \WP_UnitTestCase {
 			),
 			$merged_query['meta_query']
 		);
+		set_query_var( 'min_price', '' );
 	}
 
 	/**
@@ -373,6 +384,9 @@ class ProductQuery extends \WP_UnitTestCase {
 			),
 			$merged_query['meta_query']
 		);
+
+		set_query_var( 'max_price', '' );
+		set_query_var( 'min_price', '' );
 	}
 
 	/**
@@ -391,6 +405,8 @@ class ProductQuery extends \WP_UnitTestCase {
 			),
 			$merged_query['meta_query']
 		);
+
+		set_query_var( 'filter_stock_status', '' );
 	}
 
 	/**
@@ -448,6 +464,11 @@ class ProductQuery extends \WP_UnitTestCase {
 			),
 			$attribute_tax_query_queries
 		);
+
+		set_query_var( 'filter_color', '' );
+		set_query_var( 'query_type_color', '' );
+		set_query_var( 'filter_size', '' );
+		set_query_var( 'query_type_size', '' );
 	}
 
 	/**
@@ -487,6 +508,10 @@ class ProductQuery extends \WP_UnitTestCase {
 			),
 			$merged_query['meta_query']
 		);
+
+		set_query_var( 'max_price', '' );
+		set_query_var( 'min_price', '' );
+		set_query_var( 'filter_stock_status', '' );
 	}
 }
 
