@@ -1,5 +1,6 @@
 const separator = '<!-- separator -->';
-const footerText = 'This comment is aggregated by merge-comments.';
+const footerText =
+	'This comment is created by [comments-aggregator](https://github.com/woocommerce/woocommerce-blocks/tree/trunk/.github/comments-aggregator).';
 const footer = `\n> <sub>${ footerText }</sub>`;
 
 function getSectionId( section ) {

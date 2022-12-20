@@ -75,7 +75,7 @@ jobs:
                   compare: assets-list/assets.json
                   create-comment: false
             - name: Append report
-              uses: ./.github/merge-comments
+              uses: ./.github/comments-aggregator
               with:
                   repo-token: '${{ secrets.GITHUB_TOKEN }}'
                   section-id: compare-assets-with-trunk

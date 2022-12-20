@@ -48,7 +48,7 @@ jobs:
           targetDir: ${{ secrets.FTP_DIR }}
 
       - name: Add release ZIP URL as comment to the PR
-        uses: ./.github/merge-comments
+        uses: ./.github/comments-aggregator
         with:
           repo-token: ${{ secrets.GITHUB_TOKEN }}
           section-id: release-zip-url
