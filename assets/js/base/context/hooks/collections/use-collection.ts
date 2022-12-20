@@ -46,6 +46,8 @@ export interface useCollectionOptions {
 	resourceValues?: number[];
 	query?: Record< string, unknown >;
 	shouldSelect?: boolean;
+	isEditor: boolean;
+	isSelected: boolean;
 }
 
 export const useCollection = (
@@ -60,6 +62,8 @@ export const useCollection = (
 		resourceValues = [],
 		query = {},
 		shouldSelect = true,
+		isEditor,
+		isSelected,
 	} = options;
 	if ( ! namespace || ! resourceName ) {
 		throw new Error(
@@ -77,9 +81,24 @@ export const useCollection = (
 	const throwError = useThrowError();
 	const results = useSelect(
 		( select ) => {
-			if ( ! shouldSelect ) {
-				return null;
+			if (
+				isEditor &&
+				isSelected &&
+				typeof currentResults === 'object' &&
+				currentResults.hasOwnProperty( 'current' ) &&
+				currentResults.current.hasOwnProperty( 'results' ) &&
+				Object.keys( currentResults.current.results ).length > 0
+			) {
+				return {
+					results: currentResults.current.results,
+					isLoading: false,
+				};
 			}
+
+			// if ( ! shouldSelect ) {
+			// 	return null;
+			// }
+
 			const store = select( storeKey );
 			const args = [
 				namespace,
