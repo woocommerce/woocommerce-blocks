@@ -1,8 +1,9 @@
 const separator = '<hr />';
-const footer = '<small>This comment is aggregated by merge-comments.</small>';
+const footerText = 'This comment is aggregated by merge-comments.';
+const footer = `\n<sub>${ footerText }</sub>`;
 
 function getSectionId( section ) {
-	const match = section.match( /section-id: ([^\s]+) --/ );
+	const match = section.match( /-- section-id: ([^\s]+) --/ );
 	return match ? match[ 1 ] : null;
 }
 
@@ -48,7 +49,7 @@ function updateSection( sections, sectionId, content ) {
 function appendFooter( sections ) {
 	return sections.concat( {
 		id: 'footer',
-		content: `\n${ footer }`,
+		content: footer,
 	} );
 }
 
@@ -67,7 +68,7 @@ exports.updateComment = function ( comment, sectionId, content ) {
 
 exports.isMergedComment = function ( comment ) {
 	return (
-		comment.body.includes( footer ) &&
+		comment.body.includes( footerText ) &&
 		comment.user.login === 'github-actions[bot]'
 	);
 };
