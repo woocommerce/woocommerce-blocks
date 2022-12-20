@@ -12,6 +12,7 @@ import {
 	saveOrPublish,
 	findToolsPanelWithTitle,
 	getToggleIdByLabel,
+	selectBlockByName,
 } from '@woocommerce/blocks-test-utils';
 import { ElementHandle } from 'puppeteer';
 import { setCheckbox } from '@woocommerce/e2e-utils';
@@ -102,7 +103,7 @@ export const addProductQueryBlock = async () => {
 
 export const toggleInheritQueryFromTemplateSetting = async () => {
 	await setCheckbox(
-		getToggleIdByLabel( SELECTORS.inheritQueryFromTemplateSetting )
+		await getToggleIdByLabel( 'Inherit query from template' )
 	);
 };
 

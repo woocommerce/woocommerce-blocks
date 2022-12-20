@@ -62,8 +62,8 @@ describe( `${ block.name } Block`, () => {
 				SELECTORS.advanceFilterOptionsButton
 			);
 
-			expect( popularFilterEl ).toBeNull();
-			expect( advanceFilterOptionsButton ).toBeNull();
+			await expect( popularFilterEl ).toBeNull();
+			await expect( advanceFilterOptionsButton ).toBeNull();
 		} );
 	} );
 
