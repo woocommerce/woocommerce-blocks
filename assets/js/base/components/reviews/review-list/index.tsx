@@ -8,12 +8,12 @@ import type { BlockAttributes } from '@wordpress/blocks';
  * Internal dependencies
  */
 import ReviewListItem from '../review-list-item';
-import type { review } from '../types';
+import type { Review } from '../types';
 import './style.scss';
 
 interface ReviewListProps {
 	attributes: BlockAttributes;
-	reviews: review[];
+	reviews: Review[];
 }
 
 const ReviewList = ( {
