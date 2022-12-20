@@ -12,10 +12,7 @@ type WithStyle = {
 };
 
 export const useSpacingProps = ( attributes: unknown ): WithStyle => {
-	if (
-		! isFeaturePluginBuild() ||
-		__experimentalGetSpacingClassesAndStyles !== 'function'
-	) {
+	if ( ! isFeaturePluginBuild() ) {
 		return {
 			style: {},
 		};
