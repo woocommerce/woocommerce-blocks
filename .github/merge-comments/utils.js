@@ -55,7 +55,7 @@ function appendFooter( sections ) {
 function combineSections( sections ) {
 	return sections
 		.map( ( section ) => section.content )
-		.join( `\n${ separator }\n` );
+		.join( `\n\n${ separator }\n\n` );
 }
 
 exports.updateComment = function ( comment, sectionId, content ) {
