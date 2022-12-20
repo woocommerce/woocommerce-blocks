@@ -18,7 +18,10 @@ type WithStyle = {
 export const useBorderProps = (
 	attributes: unknown
 ): WithStyle & WithClass => {
-	if ( ! isFeaturePluginBuild() ) {
+	if (
+		! isFeaturePluginBuild() ||
+		__experimentalUseBorderProps !== 'function'
+	) {
 		return {
 			className: '',
 			style: {},

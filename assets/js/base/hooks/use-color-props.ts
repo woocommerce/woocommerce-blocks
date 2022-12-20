@@ -16,7 +16,10 @@ type WithStyle = {
 };
 
 export const useColorProps = ( attributes: unknown ): WithStyle & WithClass => {
-	if ( ! isFeaturePluginBuild() ) {
+	if (
+		! isFeaturePluginBuild() ||
+		__experimentalUseColorProps !== 'function'
+	) {
 		return {
 			className: '',
 			style: {},
