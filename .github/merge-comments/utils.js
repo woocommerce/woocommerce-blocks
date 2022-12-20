@@ -1,6 +1,8 @@
-const separator = '<hr />';
+const separator = '<!-- separator -->';
+const separatorMarkdown = `${ separator }`;
+const separatorRegex = new RegExp( `${ separator }.+` );
 const footerText = 'This comment is aggregated by merge-comments.';
-const footer = `\n<sub>${ footerText }</sub>`;
+const footer = `\n> <sub>${ footerText }</sub>`;
 
 function getSectionId( section ) {
 	const match = section.match( /-- section-id: ([^\s]+) --/ );
@@ -11,7 +13,7 @@ function parseComment( comment ) {
 	if ( ! comment ) {
 		return [];
 	}
-	const sections = comment.split( separator );
+	const sections = comment.split( separatorRegex );
 	return sections
 		.map( ( section ) => {
 			const sectionId = getSectionId( section );
@@ -56,7 +58,7 @@ function appendFooter( sections ) {
 function combineSections( sections ) {
 	return sections
 		.map( ( section ) => section.content )
-		.join( `\n\n${ separator }\n\n` );
+		.join( `\n\n${ separatorMarkdown }\n\n` );
 }
 
 exports.updateComment = function ( comment, sectionId, content ) {
