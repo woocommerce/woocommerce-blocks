@@ -57,10 +57,10 @@
 
 	&.outlined {
 		background-color: transparent;
-		color: $gray-900;
+		color: currentColor;
 
 		&:not(:focus) {
-			box-shadow: inset 0 0 0 1px $gray-900;
+			box-shadow: inset 0 0 0 1px currentColor;
 		}
 
 		&:disabled,
