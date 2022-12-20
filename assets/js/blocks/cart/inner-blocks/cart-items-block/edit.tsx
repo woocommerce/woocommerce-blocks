@@ -12,7 +12,6 @@ import {
 	useForcedLayout,
 	getAllowedBlocks,
 } from '../../../cart-checkout-shared';
-import { CartViewSwitcher } from '../../CartViewSwitcher';
 
 interface Props {
 	clientId: string;
@@ -33,7 +32,6 @@ export const Edit = ( { clientId }: Props ): JSX.Element => {
 	} );
 	return (
 		<Main { ...blockProps }>
-			<CartViewSwitcher clientId={ clientId } />
 			<InnerBlocks
 				allowedBlocks={ allowedBlocks }
 				template={ defaultTemplate }
