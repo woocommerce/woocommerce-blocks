@@ -50,6 +50,8 @@ To test the new local pickup, you need to use this zip: [woocommerce-gutenberg-p
 
 ### Editing Shipping methods toggle titles
 
+[Issue pending](https://github.com/woocommerce/woocommerce-blocks/issues/7991)
+
 1. Visit your Checkout block page on the editor.
 2. You should be able to click on the toggle buttons to edit them.
 3. Change the text of one button and save the page.
@@ -116,6 +118,8 @@ To test the new local pickup, you need to use this zip: [woocommerce-gutenberg-p
 
 ### Local pickup in cart
 
+[Enhancement pending](https://github.com/woocommerce/woocommerce-blocks/issues/7997)
+
 1. In Cart, you should see both pickup locations and shipping rates together for a package.
 2. Selecting a pickup location should change the text of "shipping to \[customer address\]" to "Pick up from \[location address\]".
 3. Selecting Local Pickup or regular shipping in Cart should be carried over to Checkout.
@@ -179,11 +183,15 @@ To test multiple packages, you need to install and configure a plugin:
 
 #### Pickup title
 
+[Issue pending](https://github.com/woocommerce/woocommerce-blocks/issues/7989)
+
 1. In  **WooCommerce -> Settings -> Shipping -> Local Pickup**, empty the title field and try to save.
 2. The save button should be grayed out.
 3. The title input should be red with an error message "title is required".
 
 #### Location title
+
+[Issue pending](https://github.com/woocommerce/woocommerce-blocks/issues/7988)
 
 1. Try to add a new location without adding the location title.
 2. The "Done" button should be grayed out.
