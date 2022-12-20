@@ -1,6 +1,4 @@
 const separator = '<!-- separator -->';
-const separatorMarkdown = `${ separator }`;
-const separatorRegex = new RegExp( `${ separator }.+` );
 const footerText = 'This comment is aggregated by merge-comments.';
 const footer = `\n> <sub>${ footerText }</sub>`;
 
@@ -9,14 +7,20 @@ function getSectionId( section ) {
 	return match ? match[ 1 ] : null;
 }
 
+function getSectionOrder( section ) {
+	const match = section.match( /-- section-order: ([^\s]+) --/ );
+	return match ? match[ 1 ] : null;
+}
+
 function parseComment( comment ) {
 	if ( ! comment ) {
 		return [];
 	}
-	const sections = comment.split( separatorRegex );
+	const sections = comment.split( separator );
 	return sections
 		.map( ( section ) => {
 			const sectionId = getSectionId( section );
+			const order = getSectionOrder( section );
 			/**
 			 * This also remove the footer as it doesn't have a section id. This
 			 * is intentional as we want the footer to always be the last
@@ -27,15 +31,17 @@ function parseComment( comment ) {
 			}
 			return {
 				id: sectionId,
+				order: parseInt( order, 10 ),
 				content: section.trim(),
 			};
 		} )
 		.filter( Boolean );
 }
 
-function updateSection( sections, sectionId, content ) {
+function updateSection( sections, data ) {
+	const { sectionId, content, order } = data;
 	const index = sections.findIndex( ( section ) => section.id === sectionId );
-	const formattedContent = `<!-- section-id: ${ sectionId } -->\n\n${ content }`;
+	const formattedContent = `<!-- section-id: ${ sectionId } -->\n\n<!-- section-order: ${ order } -->\n\n${ content }`;
 	if ( index === -1 ) {
 		sections.push( {
 			id: sectionId,
@@ -55,15 +61,20 @@ function appendFooter( sections ) {
 	} );
 }
 
+function sortSections( sections ) {
+	return sections.sort( ( a, b ) => a.order - b.order );
+}
+
 function combineSections( sections ) {
 	return sections
 		.map( ( section ) => section.content )
-		.join( `\n\n${ separatorMarkdown }\n\n` );
+		.join( `\n\n${ separator }\n\n` );
 }
 
-exports.updateComment = function ( comment, sectionId, content ) {
+exports.updateComment = function ( comment, data ) {
 	let sections = parseComment( comment );
-	sections = updateSection( sections, sectionId, content );
+	sections = updateSection( sections, data );
+	sections = sortSections( sections );
 	sections = appendFooter( sections );
 	return combineSections( sections );
 };

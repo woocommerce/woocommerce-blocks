@@ -52,6 +52,7 @@ jobs:
         with:
           repo-token: ${{ secrets.GITHUB_TOKEN }}
           section-id: release-zip-url
+          order: 1
           content: |
             The release ZIP for this PR is accessible via:
             ```

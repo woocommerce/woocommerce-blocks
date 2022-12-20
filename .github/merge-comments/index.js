@@ -22,6 +22,7 @@ const runner = async () => {
 		const content = getInput( 'content', {
 			required: true,
 		} );
+		const order = getInput( 'order' );
 
 		if ( ! sectionId || ! content ) {
 			return;
@@ -49,7 +50,11 @@ const runner = async () => {
 			}
 		}
 
-		commentBody = updateComment( commentBody, sectionId, content );
+		commentBody = updateComment( commentBody, {
+			sectionId,
+			content,
+			order,
+		} );
 
 		if ( commentId ) {
 			await octokit.rest.issues.updateComment( {
