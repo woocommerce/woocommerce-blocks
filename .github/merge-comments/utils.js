@@ -1,5 +1,5 @@
 const separator = '<hr />';
-const footer = '<small>This comment is created by merge-comments.</small>';
+const footer = '<small>This comment is aggregated by merge-comments.</small>';
 
 function getSectionId( section ) {
 	const match = section.match( /section-id: ([^\s]+) --/ );
