@@ -1,11 +1,12 @@
 /**
  * External dependencies
  */
-import { useMemo, useEffect, Fragment } from '@wordpress/element';
+import { useMemo, useEffect, Fragment, useState } from '@wordpress/element';
 import {
 	useCheckoutAddress,
 	useStoreEvents,
 	useEditorContext,
+	noticeContexts,
 } from '@woocommerce/base-context';
 import { AddressForm } from '@woocommerce/base-components/cart-checkout';
 import Noninteractive from '@woocommerce/base-components/noninteractive';
@@ -14,6 +15,7 @@ import type {
 	AddressField,
 	AddressFields,
 } from '@woocommerce/settings';
+import { StoreNoticesContainer } from '@woocommerce/blocks-checkout';
 
 /**
  * Internal dependencies
@@ -39,16 +41,34 @@ const Block = ( {
 		setBillingAddress,
 		setShippingAddress,
 		setBillingPhone,
+		forcedBillingAddress,
 	} = useCheckoutAddress();
 	const { dispatchCheckoutEvent } = useStoreEvents();
 	const { isEditor } = useEditorContext();
-	const { forcedBillingAddress } = useCheckoutAddress();
 	// Clears data if fields are hidden.
 	useEffect( () => {
 		if ( ! showPhoneField ) {
 			setBillingPhone( '' );
 		}
 	}, [ showPhoneField, setBillingPhone ] );
+
+	const [ addressesSynced, setAddressesSynced ] = useState( false );
+
+	// Syncs shipping address with billing address if "Force shipping to the customer billing address" is enabled.
+	useEffect( () => {
+		if ( addressesSynced ) {
+			return;
+		}
+		if ( forcedBillingAddress ) {
+			setShippingAddress( billingAddress );
+		}
+		setAddressesSynced( true );
+	}, [
+		addressesSynced,
+		setShippingAddress,
+		billingAddress,
+		forcedBillingAddress,
+	] );
 
 	const addressFieldsConfig = useMemo( () => {
 		return {
@@ -70,6 +90,7 @@ const Block = ( {
 
 	return (
 		<AddressFormWrapperComponent>
+			<StoreNoticesContainer context={ noticeContexts.BILLING_ADDRESS } />
 			<AddressForm
 				id="billing"
 				type="billing"
@@ -77,6 +98,7 @@ const Block = ( {
 					setBillingAddress( values );
 					if ( forcedBillingAddress ) {
 						setShippingAddress( values );
+						dispatchCheckoutEvent( 'set-shipping-address' );
 					}
 					dispatchCheckoutEvent( 'set-billing-address' );
 				} }

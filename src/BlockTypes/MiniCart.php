@@ -103,7 +103,7 @@ class MiniCart extends AbstractBlock {
 		$script = [
 			'handle'       => 'wc-' . $this->block_name . '-block-frontend',
 			'path'         => $this->asset_api->get_block_asset_build_path( $this->block_name . '-frontend' ),
-			'dependencies' => [],
+			'dependencies' => [ 'wc-blocks-registry' ],
 		];
 		return $key ? $script[ $key ] : $script;
 	}
@@ -273,7 +273,7 @@ class MiniCart extends AbstractBlock {
 				}
 			}
 		}
-		if ( ! $script->src ) {
+		if ( ! $script->src || 'wc-blocks-registry' === $script->handle ) {
 			return;
 		}
 
@@ -303,6 +303,11 @@ class MiniCart extends AbstractBlock {
 		$cart_controller     = $this->get_cart_controller();
 		$cart                = $cart_controller->get_cart_instance();
 		$cart_contents_total = $cart->get_subtotal();
+
+		if ( $cart->display_prices_including_tax() ) {
+			$cart_contents_total += $cart->get_subtotal_tax();
+		}
+
 		return '<span class="wc-block-mini-cart__amount">' . esc_html( wp_strip_all_tags( wc_price( $cart_contents_total ) ) ) . '</span>
 		' . $this->get_include_tax_label_markup();
 	}
@@ -410,7 +415,7 @@ class MiniCart extends AbstractBlock {
 			);
 		}
 
-		return '<div class="' . $wrapper_classes . '" style="' . $wrapper_styles . '">
+		return '<div class="' . esc_attr( $wrapper_classes ) . '" style="' . esc_attr( $wrapper_styles ) . '">
 			<button class="wc-block-mini-cart__button" aria-label="' . esc_attr( $aria_label ) . '">' . $button_html . '</button>
 			<div class="wc-block-mini-cart__drawer is-loading is-mobile wc-block-components-drawer__screen-overlay wc-block-components-drawer__screen-overlay--is-hidden" aria-hidden="true">
 				<div class="components-modal__frame wc-block-components-drawer">
