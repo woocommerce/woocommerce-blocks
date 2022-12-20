@@ -1,4 +1,4 @@
-const separator = '<!-- separator --->';
+const separator = '<hr />';
 const footer = '<small>This comment is created by merge-comments.</small>';
 
 function getSectionId( section ) {
@@ -48,7 +48,7 @@ function updateSection( sections, sectionId, content ) {
 function appendFooter( sections ) {
 	return sections.concat( {
 		id: 'footer',
-		content: footer,
+		content: `\n${ footer }`,
 	} );
 }
 
