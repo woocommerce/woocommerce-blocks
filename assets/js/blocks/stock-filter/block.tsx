@@ -52,14 +52,17 @@ export const QUERY_PARAM_KEY = PREFIX_QUERY_ARG_FILTER_TYPE + 'stock_status';
  *
  * @param {Object}  props            Incoming props for the component.
  * @param {Object}  props.attributes Incoming block attributes.
- * @param {boolean} props.isEditor
+ * @param {boolean} props.isEditor   Whether the component is being rendered in the editor.
+ * @param {boolean} props.isSelected Whether the block is selected.
  */
 const StockStatusFilterBlock = ( {
 	attributes: blockAttributes,
 	isEditor = false,
+	isSelected,
 }: {
 	attributes: Attributes;
 	isEditor?: boolean;
+	isSelected: boolean;
 } ) => {
 	const setWrapperVisibility = useSetWraperVisibility();
 
@@ -113,6 +116,8 @@ const StockStatusFilterBlock = ( {
 			queryStock: true,
 			queryState,
 			productIds,
+			isEditor,
+			isSelected,
 		} );
 
 	/**

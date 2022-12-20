@@ -29,6 +29,7 @@ const Edit = ( {
 	clientId,
 	attributes,
 	setAttributes,
+	isSelected,
 }: BlockEditProps< Attributes > ) => {
 	const {
 		className,
@@ -171,7 +172,11 @@ const Edit = ( {
 						/>
 					) }
 					<Disabled>
-						<Block attributes={ attributes } isEditor={ true } />
+						<Block
+							attributes={ attributes }
+							isEditor={ true }
+							isSelected={ isSelected }
+						/>
 					</Disabled>
 				</div>
 			}
