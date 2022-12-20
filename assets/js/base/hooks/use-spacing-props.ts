@@ -2,7 +2,7 @@
 /**
  * External dependencies
  */
-import { __experimentalGetSpacingClassesAndStyles } from 'wordpress-block-editor';
+import { __experimentalGetSpacingClassesAndStyles } from '@wordpress/block-editor';
 import { isFeaturePluginBuild } from '@woocommerce/block-settings';
 import { isObject } from '@woocommerce/types';
 import { parseStyle } from '@woocommerce/base-utils';
@@ -11,6 +11,7 @@ type WithStyle = {
 	style: Record< string, unknown >;
 };
 
+// @todo The @wordpress/block-editor dependency should never be used on the frontend of the store due to excessive side and its dependency on @wordpress/components
 export const useSpacingProps = ( attributes: unknown ): WithStyle => {
 	if ( ! isFeaturePluginBuild() ) {
 		return {

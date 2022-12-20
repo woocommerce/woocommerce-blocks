@@ -2,7 +2,7 @@
 /**
  * External dependencies
  */
-import { __experimentalUseBorderProps } from 'wordpress-block-editor';
+import { __experimentalUseBorderProps } from '@wordpress/block-editor';
 import { isFeaturePluginBuild } from '@woocommerce/block-settings';
 import { isObject } from '@woocommerce/types';
 import { parseStyle } from '@woocommerce/base-utils';
@@ -15,6 +15,7 @@ type WithStyle = {
 	style: Record< string, unknown >;
 };
 
+// @todo The @wordpress/block-editor dependency should never be used on the frontend of the store due to excessive side and its dependency on @wordpress/components
 export const useBorderProps = (
 	attributes: unknown
 ): WithStyle & WithClass => {
