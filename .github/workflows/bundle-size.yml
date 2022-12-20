@@ -14,7 +14,6 @@ jobs:
               with:
                   node-version-file: '.nvmrc'
             - uses: preactjs/compressed-size-action@v2
-              id: compressed-size-action 
               with:
                   repo-token: '${{ secrets.GITHUB_TOKEN }}'
                   pattern: '{build/**/*.js,build/**/*.css}'
