@@ -2,10 +2,9 @@
 /**
  * External dependencies
  */
-import { __experimentalGetSpacingClassesAndStyles } from '@wordpress/block-editor';
+import { __experimentalGetSpacingClassesAndStyles } from 'wordpress-block-editor';
 import { isFeaturePluginBuild } from '@woocommerce/block-settings';
 import { isObject } from '@woocommerce/types';
-import { hasSpacingStyleSupport } from '@woocommerce/utils';
 import { parseStyle } from '@woocommerce/base-utils';
 
 type WithStyle = {
@@ -13,7 +12,7 @@ type WithStyle = {
 };
 
 export const useSpacingProps = ( attributes: unknown ): WithStyle => {
-	if ( ! isFeaturePluginBuild() || ! hasSpacingStyleSupport() ) {
+	if ( ! isFeaturePluginBuild() ) {
 		return {
 			style: {},
 		};

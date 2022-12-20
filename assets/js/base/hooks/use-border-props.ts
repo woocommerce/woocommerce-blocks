@@ -2,7 +2,7 @@
 /**
  * External dependencies
  */
-import { __experimentalUseBorderProps } from '@wordpress/block-editor';
+import { __experimentalUseBorderProps } from 'wordpress-block-editor';
 import { isFeaturePluginBuild } from '@woocommerce/block-settings';
 import { isObject } from '@woocommerce/types';
 import { parseStyle } from '@woocommerce/base-utils';
