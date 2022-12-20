@@ -109,7 +109,7 @@ const runner = async () => {
 			);
 
 			commentBody =
-				'# Script Dependencies Report' +
+				'## Script Dependencies Report' +
 				'\n\n' +
 				'The `compare-assets` action has detected some changed script dependencies between this branch and ' +
 				'trunk. Please review and confirm the following are correct before merging.' +

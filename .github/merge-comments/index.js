@@ -44,7 +44,6 @@ const runner = async () => {
 			);
 
 			if ( comment ) {
-				console.log( comment );
 				commentId = comment.id;
 				commentBody = comment.body;
 			}

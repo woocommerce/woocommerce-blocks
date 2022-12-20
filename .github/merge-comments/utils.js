@@ -62,7 +62,6 @@ exports.updateComment = function ( comment, sectionId, content ) {
 	let sections = parseComment( comment );
 	sections = updateSection( sections, sectionId, content );
 	sections = appendFooter( sections );
-	console.log( sections );
 	return combineSections( sections );
 };
 
