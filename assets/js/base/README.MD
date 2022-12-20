@@ -8,10 +8,4 @@ e.g. Instead of importing from `@wordpress/components`, use:
 import { Component } from 'wordpress-components';
 ```
 
-And instead of importing from `@wordpress/block-editor`, use:
-
-```js
-import { Component } from 'wordpress-block-editor';
-```
-
 Check the built `.assets.php` files to ensure extra dependencies aren't being added to the build.

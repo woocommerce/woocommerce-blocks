@@ -41,9 +41,6 @@ module.exports = ( { config: storybookConfig } ) => {
 		'wordpress-components': require.resolve(
 			'../node_modules/wordpress-components'
 		),
-		'wordpress-block-editor': require.resolve(
-			'../node_modules/wordpress-block-editor'
-		),
 	};
 	storybookConfig.module.rules.push(
 		{
