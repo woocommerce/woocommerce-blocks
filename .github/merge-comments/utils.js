@@ -24,7 +24,7 @@ function parseComment( comment ) {
 			}
 			return {
 				id: sectionId,
-				content: section,
+				content: section.trim(),
 			};
 		} )
 		.filter( Boolean );
@@ -32,7 +32,7 @@ function parseComment( comment ) {
 
 function updateSection( sections, sectionId, content ) {
 	const index = sections.findIndex( ( section ) => section.id === sectionId );
-	const formattedContent = `<!-- section-id: ${ sectionId } -->\n${ content }`;
+	const formattedContent = `<!-- section-id: ${ sectionId } -->\n\n${ content }`;
 	if ( index === -1 ) {
 		sections.push( {
 			id: sectionId,
