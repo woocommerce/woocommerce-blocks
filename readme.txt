@@ -79,6 +79,12 @@ Release and roadmap notes available on the [WooCommerce Developers Blog](https:/
 
 == Changelog ==
 
+= 9.1.3 - 2022-12-21 =
+
+#### Enhancements
+
+- Enable Product SKU and Product Stock Indicator in Core ([8009](https://github.com/woocommerce/woocommerce-blocks/pull/8009))
+
 = 9.1.2 - 2022-12-21 =
 
 #### Enhancements
