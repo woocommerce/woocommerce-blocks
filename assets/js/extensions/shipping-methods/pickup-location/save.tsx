@@ -26,7 +26,12 @@ const SaveSettings = () => {
 				variant="primary"
 				isBusy={ isSaving }
 				disabled={ isSaving }
-				onClick={ save }
+				onClick={ ( event ) => {
+					if ( event.target.form.reportValidity() ) {
+						save();
+					}
+				} }
+				type="submit"
 			>
 				{ __( 'Save changes', 'woo-gutenberg-products-block' ) }
 			</Button>
