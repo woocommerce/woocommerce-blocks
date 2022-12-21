@@ -58,11 +58,11 @@ export const QUERY_PARAM_KEY = PREFIX_QUERY_ARG_FILTER_TYPE + 'stock_status';
 const StockStatusFilterBlock = ( {
 	attributes: blockAttributes,
 	isEditor = false,
-	isSelected,
+	isSelected = false,
 }: {
 	attributes: Attributes;
 	isEditor?: boolean;
-	isSelected: boolean;
+	isSelected?: boolean;
 } ) => {
 	const setWrapperVisibility = useSetWraperVisibility();
 

@@ -83,11 +83,11 @@ function formatPrice( value: unknown, minorUnit: number ) {
 const PriceFilterBlock = ( {
 	attributes,
 	isEditor = false,
-	isSelected,
+	isSelected = false,
 }: {
 	attributes: Attributes;
 	isEditor: boolean;
-	isSelected: boolean;
+	isSelected?: boolean;
 } ) => {
 	const setWrapperVisibility = useSetWraperVisibility();
 	const hasFilterableProducts = getSettingWithCoercion(

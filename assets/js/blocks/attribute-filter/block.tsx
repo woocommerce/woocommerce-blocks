@@ -80,11 +80,11 @@ import { useSetWraperVisibility } from '../filter-wrapper/context';
 const AttributeFilterBlock = ( {
 	attributes: blockAttributes,
 	isEditor = false,
-	isSelected,
+	isSelected = false,
 }: {
 	attributes: BlockAttributes;
 	isEditor?: boolean;
-	isSelected: boolean;
+	isSelected?: boolean;
 } ) => {
 	const hasFilterableProducts = getSettingWithCoercion(
 		'has_filterable_products',

@@ -74,11 +74,11 @@ const translations = {
 const RatingFilterBlock = ( {
 	attributes: blockAttributes,
 	isEditor,
-	isSelected,
+	isSelected = false,
 }: {
 	isEditor: boolean;
 	attributes: Attributes;
-	isSelected: boolean;
+	isSelected?: boolean;
 } ) => {
 	const setWrapperVisibility = useSetWraperVisibility();
 
