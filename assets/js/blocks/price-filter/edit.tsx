@@ -32,6 +32,7 @@ export default function ( {
 	attributes,
 	setAttributes,
 	clientId,
+	isSelected,
 }: BlockEditProps< Attributes > ) {
 	const {
 		heading,
@@ -182,7 +183,11 @@ export default function ( {
 						/>
 					) }
 					<Disabled>
-						<Block attributes={ attributes } isEditor={ true } />
+						<Block
+							attributes={ attributes }
+							isEditor={ true }
+							isSelected={ isSelected }
+						/>
 					</Disabled>
 				</>
 			) }
