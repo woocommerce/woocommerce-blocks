@@ -18,7 +18,7 @@ export const blockAttributes = {
 		default: 'woocommerce/filled-cart-block',
 		save: false,
 	},
-	views: {
+	editorViews: {
 		type: 'object',
 		default: [
 			{
