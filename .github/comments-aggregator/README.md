@@ -1,16 +1,12 @@
 # comments-aggregator
 
-> This GitHub Action helps you keep the PR page clean by merging comments/reports
-> by multiple workflows into a single comment.
+> This GitHub Action helps you keep the PR page clean by merging comments/reports by multiple workflows into a single comment.
 
 ![screenshot](./screenshot.png)
 
 ## Usage
 
-This action is meant to be used as the poster/commenter. Instead of having
-existing actions post the comment by themselves, set those comments as the
-action output, then feed that output to `comments-aggregator` to let this action
-manage those comments for you.
+This action is meant to be used as the poster/commenter. Instead of having existing actions post the comment by themselves, set those comments as the action output, then feed that output to `comments-aggregator` to let this action manage those comments for you.
 
 ```yml
 	- name: Compare Assets
@@ -30,13 +26,10 @@ manage those comments for you.
 
 ## Inputs
 
-- **`repo-token`** (required): This is the GitHub token. This is required to
-  manipulate PR comments.
-- **`section-id`** (required): The unique ID that helps this action to update
-  the correct part of the aggregated comment.
+- **`repo-token`** (required): This is the GitHub token. This is required to manipulate PR comments.
+- **`section-id`** (required): The unique ID that helps this action to update the correct part of the aggregated comment.
 - **`content`** (required): The comment content.
-- **`order`** (optional): The order of the comment part inside the aggregated
-  comment. Default to 10.
+- **`order`** (optional): The order of the comment part inside the aggregated comment. Default to 10.
 
 ## More examples
 
