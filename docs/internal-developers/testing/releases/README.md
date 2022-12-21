@@ -108,6 +108,8 @@ Every release includes specific testing instructions for new features and bug fi
 -   [9.0.0](./900.md)
 -   [9.1.0](./910.md)
 -   [9.1.1](./911.md)
+-   [9.1.2](./912.md)
+
 
 <!-- FEEDBACK -->
 
