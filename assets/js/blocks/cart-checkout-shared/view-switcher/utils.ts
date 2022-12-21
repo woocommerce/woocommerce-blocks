@@ -22,12 +22,20 @@ const defaultView = {
 };
 
 export const findParentBlockEditorViews = (
-	clintId: string
+	clintId: string,
+	maxDepth = 10,
+	currentDepth = 0
 ): {
 	views: View[];
 	currentView: string;
 	viewClientId: string;
 } => {
+	const depth = currentDepth + 1;
+
+	if ( depth > maxDepth ) {
+		return defaultView;
+	}
+
 	const { getBlockAttributes, getBlockRootClientId } =
 		select( 'core/block-editor' );
 	const rootId = getBlockRootClientId( clintId ) as string;
@@ -47,5 +55,5 @@ export const findParentBlockEditorViews = (
 		};
 	}
 
-	return findParentBlockEditorViews( rootId );
+	return findParentBlockEditorViews( rootId, maxDepth, depth );
 };

@@ -14,7 +14,7 @@ import { findParentBlockEditorViews } from './utils';
 const withViewSwitcher = createHigherOrderComponent(
 	( BlockEdit ) =>
 		( props: Record< string, unknown > ): JSX.Element => {
-			const clientId = props.clientId as string;
+			const { clientId } = props as { clientId: string };
 			const { views, currentView, viewClientId } = useSelect(
 				( select ) => {
 					const blockAttributes =
