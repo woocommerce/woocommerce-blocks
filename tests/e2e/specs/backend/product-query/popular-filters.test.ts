@@ -1,15 +1,8 @@
 /**
  * External dependencies
  */
+import { canvas, findSidebarPanelWithTitle } from '@wordpress/e2e-test-utils';
 import {
-	canvas,
-	setPostContent,
-	insertBlock,
-	findSidebarPanelWithTitle,
-} from '@wordpress/e2e-test-utils';
-import {
-	visitBlockPage,
-	saveOrPublish,
 	selectBlockByName,
 	getFormElementIdByLabel,
 	shopper,
@@ -22,52 +15,16 @@ import { ElementHandle } from 'puppeteer';
 import {
 	GUTENBERG_EDITOR_CONTEXT,
 	describeOrSkip,
-	waitForCanvas,
 	openBlockEditorSettings,
 } from '../../../utils';
-
-const block = {
-	name: 'Product Query',
-	slug: 'core/query',
-	class: '.wp-block-query',
-};
-
-const SELECTORS = {
-	editorPreview: {
-		productsGrid: 'ul.wp-block-post-template',
-		productsGridItem:
-			'ul.wp-block-post-template > li.block-editor-block-preview__live-content',
-	},
-	productsGrid: `${ block.class } ul.wp-block-post-template`,
-	productsGridItem: `${ block.class } ul.wp-block-post-template > li.product`,
-};
-
-const resetProductQueryBlockPage = async () => {
-	await visitBlockPage( `${ block.name } Block` );
-	await waitForCanvas();
-	await setPostContent( '' );
-	await insertBlock( block.name );
-	await saveOrPublish();
-};
-
-const getPreviewProducts = async (): Promise< ElementHandle[] > => {
-	await canvas().waitForSelector( SELECTORS.editorPreview.productsGrid );
-	return await canvas().$$( SELECTORS.editorPreview.productsGridItem );
-};
-
-const getFrontEndProducts = async (): Promise< ElementHandle[] > => {
-	await canvas().waitForSelector( SELECTORS.productsGrid );
-	return await canvas().$$( SELECTORS.productsGridItem );
-};
-
-const getProductTitle = async ( product: ElementHandle ): Promise< string > => {
-	return (
-		( await product.$eval(
-			'.wp-block-post-title',
-			( el ) => el.textContent
-		) ) || ''
-	);
-};
+import {
+	block,
+	SELECTORS,
+	resetProductQueryBlockPage,
+	getPreviewProducts,
+	getFrontEndProducts,
+	getProductTitle,
+} from './common';
 
 describeOrSkip( GUTENBERG_EDITOR_CONTEXT === 'gutenberg' )(
 	'Product Query > Popular Filters',

@@ -144,3 +144,14 @@ export const getEditorProductElementNodesCount = async ( selector: string ) => {
 		`li.block-editor-block-list__layout ${ selector }`
 	);
 };
+
+export const getProductTitle = async (
+	product: ElementHandle
+): Promise< string > => {
+	return (
+		( await product.$eval(
+			'.wp-block-post-title',
+			( el ) => el.textContent
+		) ) || ''
+	);
+};
