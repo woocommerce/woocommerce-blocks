@@ -42,7 +42,11 @@ export const Switcher = ( {
 					}
 					controls={ views.map( ( view ) => ( {
 						...view,
-						title: <span>{ view.label }</span>,
+						title: (
+							<span style={ { marginLeft: '8px' } }>
+								{ view.label }
+							</span>
+						),
 						isActive: view.view === currentView,
 						onClick: () => {
 							updateBlockAttributes( clientId, {
