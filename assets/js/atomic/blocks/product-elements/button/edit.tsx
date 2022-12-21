@@ -21,9 +21,11 @@ const Edit = ( {
 	attributes,
 	setAttributes,
 	context,
-}: BlockEditProps< BlockAttributes > & { context: Context } ): JSX.Element => {
+}: BlockEditProps< BlockAttributes > & {
+	context?: Context | undefined;
+} ): JSX.Element => {
 	const blockProps = useBlockProps();
-	const isDescendentOfQueryLoop = Number.isFinite( context.queryId );
+	const isDescendentOfQueryLoop = Number.isFinite( context?.queryId );
 
 	useEffect(
 		() => setAttributes( { isDescendentOfQueryLoop } ),
