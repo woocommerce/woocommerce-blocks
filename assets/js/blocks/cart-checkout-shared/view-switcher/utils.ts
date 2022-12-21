@@ -38,8 +38,13 @@ export const findParentBlockEditorViews = (
 
 	const { getBlockAttributes, getBlockRootClientId } =
 		select( 'core/block-editor' );
-	const rootId = getBlockRootClientId( clientId ) as string;
-	const rootAttributes = rootId ? getBlockAttributes( rootId ) : null;
+	const rootId = getBlockRootClientId( clientId );
+
+	if ( rootId === null || rootId === '' ) {
+		return defaultView;
+	}
+
+	const rootAttributes = getBlockAttributes( rootId );
 
 	if ( ! rootAttributes ) {
 		return defaultView;
