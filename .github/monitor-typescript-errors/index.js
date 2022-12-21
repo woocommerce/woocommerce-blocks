@@ -59,7 +59,6 @@ const runner = async () => {
 	}
 
 	if ( process.env[ 'CURRENT_BRANCH' ] === 'trunk' ) {
-		setOutput( 'comment', '' );
 		try {
 			await addRecord( currentCheckStyleFileContentParsed.totalErrors );
 		} catch ( error ) {
