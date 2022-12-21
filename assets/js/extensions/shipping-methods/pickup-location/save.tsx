@@ -26,8 +26,11 @@ const SaveSettings = () => {
 				variant="primary"
 				isBusy={ isSaving }
 				disabled={ isSaving }
-				onClick={ ( event ) => {
-					if ( event.target.form.reportValidity() ) {
+				onClick={ (
+					event: React.MouseEvent< HTMLButtonElement, MouseEvent >
+				) => {
+					const target = event.target as HTMLButtonElement;
+					if ( target?.form?.reportValidity() ) {
 						save();
 					}
 				} }

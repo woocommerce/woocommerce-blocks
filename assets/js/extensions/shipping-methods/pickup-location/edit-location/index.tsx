@@ -68,8 +68,14 @@ const EditLocation = ( {
 					</Button>
 					<Button
 						variant="primary"
-						onClick={ () => {
-							if ( formRef?.current?.reportValidity() ) {
+						onClick={ (
+							event: React.MouseEvent<
+								HTMLButtonElement,
+								MouseEvent
+							>
+						) => {
+							const target = event.target as HTMLButtonElement;
+							if ( target?.form?.reportValidity() ) {
 								onSave( values );
 								onClose();
 							}
