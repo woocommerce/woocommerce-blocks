@@ -1,8 +1,8 @@
-const indentifier = `<!-- comments-aggregator -->`;
+const identifier = `<!-- comments-aggregator -->`;
 const separator = '<!-- separator -->';
 const footerText =
 	'This comment is created by [comments-aggregator](https://github.com/woocommerce/woocommerce-blocks/tree/trunk/.github/comments-aggregator).';
-const footer = `\n> <sub>${ footerText }</sub>\n${ indentifier }`;
+const footer = `\n> <sub>${ footerText }</sub>\n${ identifier }`;
 
 function getSectionId( section ) {
 	const match = section.match( /-- section-id: ([^\s]+) --/ );
@@ -83,7 +83,7 @@ exports.updateComment = function ( comment, data ) {
 
 exports.isMergedComment = function ( comment ) {
 	return (
-		comment.body.includes( indentifier ) &&
+		comment.body.includes( identifier ) &&
 		comment.user.login === 'github-actions[bot]'
 	);
 };
