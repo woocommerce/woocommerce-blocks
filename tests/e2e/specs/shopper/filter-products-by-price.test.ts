@@ -75,7 +75,7 @@ describe( `${ block.name } Block`, () => {
 
 			await insertBlock( block.name );
 			await insertBlockUsingSlash( 'All Products' );
-			await insertBlock( 'Active Product Filters' );
+			await insertBlock( 'Active Filters' );
 			await publishPost();
 
 			const link = await page.evaluate( () =>
@@ -114,7 +114,9 @@ describe( `${ block.name } Block`, () => {
 		} );
 	} );
 
-	describe( 'with PHP classic template', () => {
+	// Re-enable this test once wordpress/e2e-test-utils is updated.
+	// https://github.com/woocommerce/woocommerce-blocks/issues/7744
+	describe.skip( 'with PHP classic template', () => {
 		const productCatalogTemplateId =
 			'woocommerce/woocommerce//archive-product';
 
@@ -241,9 +243,9 @@ describe( `${ block.name } Block`, () => {
 				title: block.name,
 			} );
 
-			await insertBlock( 'Product Query' );
+			await insertBlock( 'Products (Beta)' );
 			await insertBlock( block.name );
-			await insertBlock( 'Active Product Filters' );
+			await insertBlock( 'Active Filters' );
 			await page.waitForNetworkIdle();
 			await publishPost();
 

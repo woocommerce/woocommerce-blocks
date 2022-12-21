@@ -27,24 +27,14 @@ We are transitioning much of what is now available in Contexts, to `@wordpress/d
 
 This is responsible for holding all the data required for the checkout process.
 
-The following data is available:
-
--   `status`: The status of the current checkout. Possible values are `pristine`, `idle`, `processing`, `complete`, `before_processing` or `after_processing`
--   `hasError`: This is true when anything in the checkout has created an error condition state. This might be validation errors, request errors, coupon application errors, payment processing errors etc.
--   `redirectUrl`: The current set url that the checkout will redirect to when it is complete.
--   `orderId`: The order id for the order attached to the current checkout.
--   `customerId`: The ID of the customer if the customer has an account, or `0` for guests.
--   `calculatingCount`: If any of the totals, taxes, shipping, etc need to be calculated, the count will be increased here.
--   `useShippingAsBilling`: Should the billing form be hidden and inherit the shipping address?
--   `shouldCreateAccount`: Should a user account be created with this order?
--   `extensionData`: This is used by plugins that extend Cart & Checkout to pass custom data to the Store API on checkout processing
--   `orderNotes`: Order notes introduced by the user in the checkout form.
+For more details on the checkout data store, see the [Checkout Data Store](../../../third-party-developers/extensibility/data-store/checkout.md) docs.
 
 ##### Selectors
 
+For a full list of selectors see the [Checkout Data Store](
+
 Data can be accessed through the following selectors:
 
--   `getCheckoutState()`: Returns all the data above.
 -   `isComplete()`: True when checkout has finished processing and the subscribed checkout processing callbacks have all been invoked along with a successful processing of the checkout by the server.
 -   `isIdle()`: When the checkout status is `IDLE` this flag is true. Checkout will be this status after any change to checkout state after the block is loaded. It will also be this status when retrying a purchase is possible after processing happens with an error.
 -   `isBeforeProcessing()`: When the checkout status is `BEFORE_PROCESSING` this flag is true. Checkout will be this status when the user submits checkout for processing.
@@ -56,6 +46,12 @@ Data can be accessed through the following selectors:
 -   `hasError()`: This is true when the checkout has an error.
 -   `getOrderNotes()`: Returns the order notes.
 -   `getCustomerId()`: Returns the customer ID.
+-   `getOrderId()`: Returns the order ID.
+-   `getRedirectUrl()`: Returns the redirect URL.
+-   `getExtensionData()`: Returns the data registered by extensions.
+-   `getCheckoutStatus()`: Returns the checkout status.
+-   `getShouldCreateAccount()`: Returns true if the shopper has opted to create an account with their order.
+-   `getUseShippingAsBilling()`: Returns the value of the `useShippingAsBilling` flag.
 
 ##### Actions
 
@@ -82,15 +78,6 @@ The following actions can be dispatched from the Checkout data store:
 Much of the data and api interface for components in the Checkout Block are constructed and exposed via [usage of `React.Context`](https://reactjs.org/docs/context.html). In some cases the context maintains the "tree" state within the context itself (via `useReducer`) and in others it interacts with a global `wp.data` store (for data that communicates with the server).
 
 You can find type definitions (`typedef`) for contexts in [this file](../../../../assets/js/types/type-defs/contexts.js).
-
-### Customer Data Context
-
-The customer data context exposes the api interfaces for the following things via the `useCustomerDataContext` hook:
-
--   `billingData`: The currently set billing data.
--   `setBillingData`: A state updated for updating the billing data state with new billing data.
--   `shippingAddress`: The current set shipping address.
--   `setShippingAddress`: A function for setting the shipping address. This will trigger shipping rates updates.
 
 ### Shipping Method Data context
 
