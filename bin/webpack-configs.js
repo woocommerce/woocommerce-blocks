@@ -78,10 +78,6 @@ const getCoreConfig = ( options = {} ) => {
 			path: path.resolve( __dirname, '../build/' ),
 			library: [ 'wc', '[name]' ],
 			libraryTarget: 'this',
-			// This fixes an issue with multiple webpack projects using chunking
-			// overwriting each other's chunk loader function.
-			// See https://webpack.js.org/configuration/output/#outputjsonpfunction
-			jsonpFunction: 'webpackWcBlocksJsonp',
 		},
 		module: {
 			rules: [
@@ -185,12 +181,6 @@ const getMainConfig = ( options = {} ) => {
 			filename: `[name]${ fileSuffix }.js`,
 			library: [ 'wc', 'blocks', '[name]' ],
 			libraryTarget: 'this',
-			// This fixes an issue with multiple webpack projects using chunking
-			// overwriting each other's chunk loader function.
-			// See https://webpack.js.org/configuration/output/#outputjsonpfunction
-			// This can be removed when moving to webpack 5:
-			// https://webpack.js.org/blog/2020-10-10-webpack-5-release/#automatic-unique-naming
-			jsonpFunction: 'webpackWcBlocksJsonp',
 		},
 		module: {
 			rules: [
@@ -321,12 +311,6 @@ const getFrontConfig = ( options = {} ) => {
 			// @see https://github.com/Automattic/jetpack/pull/20926
 			chunkFilename: `[name]-frontend${ fileSuffix }.js?ver=[contenthash]`,
 			filename: `[name]-frontend${ fileSuffix }.js`,
-			// This fixes an issue with multiple webpack projects using chunking
-			// overwriting each other's chunk loader function.
-			// See https://webpack.js.org/configuration/output/#outputjsonpfunction
-			// This can be removed when moving to webpack 5:
-			// https://webpack.js.org/blog/2020-10-10-webpack-5-release/#automatic-unique-naming
-			jsonpFunction: 'webpackWcBlocksJsonp',
 		},
 		module: {
 			rules: [
@@ -426,10 +410,6 @@ const getPaymentsConfig = ( options = {} ) => {
 			devtoolNamespace: 'wc',
 			path: path.resolve( __dirname, '../build/' ),
 			filename: `[name].js`,
-			// This fixes an issue with multiple webpack projects using chunking
-			// overwriting each other's chunk loader function.
-			// See https://webpack.js.org/configuration/output/#outputjsonpfunction
-			jsonpFunction: 'webpackWcBlocksPaymentMethodExtensionJsonp',
 		},
 		module: {
 			rules: [
@@ -532,7 +512,6 @@ const getExtensionsConfig = ( options = {} ) => {
 			devtoolNamespace: 'wc',
 			path: path.resolve( __dirname, '../build/' ),
 			filename: `[name].js`,
-			jsonpFunction: 'webpackWcBlocksExtensionsMethodExtensionJsonp',
 		},
 		module: {
 			rules: [
@@ -633,10 +612,6 @@ const getStylingConfig = ( options = {} ) => {
 			filename: `[name]-style${ fileSuffix }.js`,
 			library: [ 'wc', 'blocks', '[name]' ],
 			libraryTarget: 'this',
-			// This fixes an issue with multiple webpack projects using chunking
-			// overwriting each other's chunk loader function.
-			// See https://webpack.js.org/configuration/output/#outputjsonpfunction
-			jsonpFunction: 'webpackWcBlocksJsonp',
 		},
 		optimization: {
 			splitChunks: {
