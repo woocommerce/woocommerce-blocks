@@ -286,3 +286,15 @@ function woocommerce_blocks_plugin_outdated_notice() {
 }
 
 add_action( 'admin_notices', 'woocommerce_blocks_plugin_outdated_notice' );
+
+function add_interactiviry_scripts( $block_content , $block , $instance){
+	if (
+		isset( $block['attrs']['namespace'] ) &&
+		$block['attrs']['namespace'] === 'woocommerce/product-query'
+	) {
+		wp_enqueue_script( 'wc-interactivity' , plugin_dir_url(__FILE__) . '/build/wc-blocks-interactivity.js' );
+	}
+	return $block_content;
+}
+
+add_filter( 'render_block_core/query',	'add_interactiviry_scripts', 10, 3 );
