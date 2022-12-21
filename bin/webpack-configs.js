@@ -124,7 +124,6 @@ woocommerce_blocks_env = ${ NODE_ENV }
 			},
 			minimizer: [
 				new TerserPlugin( {
-					cache: true,
 					parallel: true,
 					terserOptions: {
 						output: {
@@ -226,7 +225,6 @@ const getMainConfig = ( options = {} ) => {
 			},
 			minimizer: [
 				new TerserPlugin( {
-					cache: true,
 					parallel: true,
 					terserOptions: {
 						output: {
@@ -359,7 +357,6 @@ const getFrontConfig = ( options = {} ) => {
 			},
 			minimizer: [
 				new TerserPlugin( {
-					cache: true,
 					parallel: true,
 					terserOptions: {
 						output: {
@@ -458,7 +455,6 @@ const getPaymentsConfig = ( options = {} ) => {
 			},
 			minimizer: [
 				new TerserPlugin( {
-					cache: true,
 					parallel: true,
 					terserOptions: {
 						output: {
@@ -554,7 +550,6 @@ const getExtensionsConfig = ( options = {} ) => {
 			},
 			minimizer: [
 				new TerserPlugin( {
-					cache: true,
 					parallel: true,
 					terserOptions: {
 						output: {
