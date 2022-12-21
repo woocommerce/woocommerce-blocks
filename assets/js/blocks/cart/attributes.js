@@ -11,12 +11,11 @@ export const blockAttributes = {
 	isPreview: {
 		type: 'boolean',
 		default: false,
-		save: false,
 	},
 	currentView: {
 		type: 'string',
 		default: 'woocommerce/filled-cart-block',
-		save: false,
+		source: 'readonly', // custom source to prevent saving to post content
 	},
 	editorViews: {
 		type: 'object',
@@ -32,7 +31,6 @@ export const blockAttributes = {
 				icon: <Icon icon={ removeCart } />,
 			},
 		],
-		save: false,
 	},
 	hasDarkControls: {
 		type: 'boolean',

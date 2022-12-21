@@ -46,7 +46,6 @@ const settings: BlockConfiguration = {
 		isPreview: {
 			type: 'boolean',
 			default: false,
-			save: false,
 		},
 		lock: {
 			type: 'object',
@@ -58,7 +57,7 @@ const settings: BlockConfiguration = {
 		currentView: {
 			type: 'string',
 			default: 'woocommerce/filled-mini-cart-contents-block',
-			save: false,
+			source: 'readonly', // custom source to prevent saving to post content
 		},
 		editorViews: {
 			type: 'object',
@@ -80,7 +79,6 @@ const settings: BlockConfiguration = {
 					icon: <Icon icon={ removeCart } />,
 				},
 			],
-			save: false,
 		},
 	},
 	example: {
