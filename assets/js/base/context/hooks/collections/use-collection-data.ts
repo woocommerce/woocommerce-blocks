@@ -149,7 +149,7 @@ export const useCollectionData = ( {
 	] );
 
 	// Defer the select query so all collection-data query vars can be gathered.
-	const [ shouldSelect, setShouldSelect ] = useState( false );
+	const [ shouldSelect, setShouldSelect ] = useState( isEditor );
 	const [ debouncedShouldSelect ] = useDebounce( shouldSelect, 200 );
 
 	if ( ! shouldSelect ) {

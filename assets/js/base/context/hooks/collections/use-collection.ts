@@ -95,9 +95,9 @@ export const useCollection = (
 				};
 			}
 
-			// if ( ! shouldSelect ) {
-			// 	return null;
-			// }
+			if ( ! shouldSelect ) {
+				return null;
+			}
 
 			const store = select( storeKey );
 			const args = [
