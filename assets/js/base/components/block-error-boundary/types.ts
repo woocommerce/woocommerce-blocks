@@ -16,7 +16,7 @@ interface BlockErrorBase {
 	 * If it's `null` or an empty string, nothing will be displayed.
 	 * If it's not defined, the default text will be used.
 	 */
-	text: React.ReactNode;
+	text?: React.ReactNode | undefined;
 	/**
 	 * Text preceeding the error message.
 	 */
