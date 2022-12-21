@@ -1,7 +1,6 @@
 /**
  * External dependencies
  */
-import PropTypes from 'prop-types';
 import classnames from 'classnames';
 import { __, _n, sprintf } from '@wordpress/i18n';
 import {
@@ -27,59 +26,11 @@ import { withProductDataContext } from '@woocommerce/shared-hocs';
  * Internal dependencies
  */
 import './style.scss';
-
-/**
- * Product Button Block Component.
- *
- * @param {Object} props             Incoming props.
- * @param {string} [props.className] CSS Class name for the component.
- * @param {string} [props.textAlign] Text alignment.
- * @return {*} The component.
- */
-export const Block = ( props ) => {
-	const { className } = props;
-	const { parentClassName } = useInnerBlockLayoutContext();
-	const { product } = useProductDataContext();
-	const colorProps = useColorProps( props );
-	const borderProps = useBorderProps( props );
-	const typographyProps = useTypographyProps( props );
-	const spacingProps = useSpacingProps( props );
-	const { textAlign } = props;
-
-	return (
-		<div
-			className={ classnames(
-				className,
-				'wp-block-button',
-				'wc-block-components-product-button',
-				{
-					[ `${ parentClassName }__product-add-to-cart` ]:
-						parentClassName,
-				},
-				{
-					[ `has-text-align-${ textAlign }` ]: textAlign,
-				}
-			) }
-		>
-			{ product.id ? (
-				<AddToCartButton
-					product={ product }
-					colorStyles={ colorProps }
-					borderStyles={ borderProps }
-					typographyStyles={ typographyProps }
-					spacingStyles={ spacingProps }
-				/>
-			) : (
-				<AddToCartButtonPlaceholder
-					colorStyles={ colorProps }
-					borderStyles={ borderProps }
-					typographyStyles={ typographyProps }
-					spacingStyles={ spacingProps }
-				/>
-			) }
-		</div>
-	);
-};
+import type {
+	BlockAttributes,
+	AddToCartButtonAttributes,
+	AddToCartButtonPlaceholderAttributes,
+} from './types';
 
 /**
  * Product Button Block Component.
@@ -101,7 +52,7 @@ const AddToCartButton = ( {
 	typographyStyles,
 	spacingStyles,
 	textAlign,
-} ) => {
+}: AddToCartButtonAttributes ): JSX.Element => {
 	const {
 		id,
 		permalink,
@@ -138,7 +89,7 @@ const AddToCartButton = ( {
 		  );
 
 	const ButtonTag = allowAddToCart ? 'button' : 'a';
-	const buttonProps = {};
+	const buttonProps = {} as HTMLAnchorElement & { onClick: () => void };
 
 	if ( ! allowAddToCart ) {
 		buttonProps.href = permalink;
@@ -211,7 +162,7 @@ const AddToCartButtonPlaceholder = ( {
 	borderStyles,
 	typographyStyles,
 	spacingStyles,
-} ) => {
+}: AddToCartButtonPlaceholderAttributes ): JSX.Element => {
 	return (
 		<button
 			className={ classnames(
@@ -234,8 +185,56 @@ const AddToCartButtonPlaceholder = ( {
 	);
 };
 
-Block.propTypes = {
-	className: PropTypes.string,
+/**
+ * Product Button Block Component.
+ *
+ * @param {Object} props             Incoming props.
+ * @param {string} [props.className] CSS Class name for the component.
+ * @param {string} [props.textAlign] Text alignment.
+ * @return {*} The component.
+ */
+export const Block = ( props: BlockAttributes ): JSX.Element => {
+	const { className, textAlign } = props;
+	const { parentClassName } = useInnerBlockLayoutContext();
+	const { product } = useProductDataContext();
+	const colorProps = useColorProps( props );
+	const borderProps = useBorderProps( props );
+	const typographyProps = useTypographyProps( props );
+	const spacingProps = useSpacingProps( props );
+
+	return (
+		<div
+			className={ classnames(
+				className,
+				'wp-block-button',
+				'wc-block-components-product-button',
+				{
+					[ `${ parentClassName }__product-add-to-cart` ]:
+						parentClassName,
+				},
+				{
+					[ `has-text-align-${ textAlign }` ]: textAlign,
+				}
+			) }
+		>
+			{ product.id ? (
+				<AddToCartButton
+					product={ product }
+					colorStyles={ colorProps }
+					borderStyles={ borderProps }
+					typographyStyles={ typographyProps }
+					spacingStyles={ spacingProps }
+				/>
+			) : (
+				<AddToCartButtonPlaceholder
+					colorStyles={ colorProps }
+					borderStyles={ borderProps }
+					typographyStyles={ typographyProps }
+					spacingStyles={ spacingProps }
+				/>
+			) }
+		</div>
+	);
 };
 
 export default withProductDataContext( Block );
