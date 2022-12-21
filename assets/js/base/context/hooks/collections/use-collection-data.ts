@@ -48,8 +48,8 @@ interface UseCollectionDataProps {
 	queryRating?: boolean;
 	queryState: Record< string, unknown >;
 	productIds?: number[];
-	isEditor: boolean;
-	isSelected: boolean;
+	isEditor?: boolean;
+	isSelected?: boolean;
 }
 
 export const useCollectionData = ( {
@@ -59,8 +59,8 @@ export const useCollectionData = ( {
 	queryRating,
 	queryState,
 	productIds,
-	isEditor,
-	isSelected,
+	isEditor = false,
+	isSelected = false,
 }: UseCollectionDataProps ) => {
 	let context = useQueryStateContext();
 	context = `${ context }-collection-data`;

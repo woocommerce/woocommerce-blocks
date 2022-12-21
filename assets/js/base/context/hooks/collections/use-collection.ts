@@ -46,8 +46,8 @@ export interface useCollectionOptions {
 	resourceValues?: number[];
 	query?: Record< string, unknown >;
 	shouldSelect?: boolean;
-	isEditor: boolean;
-	isSelected: boolean;
+	isEditor?: boolean;
+	isSelected?: boolean;
 }
 
 export const useCollection = (
@@ -62,8 +62,8 @@ export const useCollection = (
 		resourceValues = [],
 		query = {},
 		shouldSelect = true,
-		isEditor,
-		isSelected,
+		isEditor = false,
+		isSelected = false,
 	} = options;
 	if ( ! namespace || ! resourceName ) {
 		throw new Error(
