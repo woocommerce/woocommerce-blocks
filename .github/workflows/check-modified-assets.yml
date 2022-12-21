@@ -69,7 +69,7 @@ jobs:
                   path: assets-list
             - name: Compare Assets
               uses: ./.github/compare-assets
-              id: compare-assets 
+              id: compare-assets
               with:
                   repo-token: '${{ secrets.GITHUB_TOKEN }}'
                   compare: assets-list/assets.json

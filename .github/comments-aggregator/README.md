@@ -9,19 +9,19 @@
 This action is meant to be used as the poster/commenter. Instead of having existing actions post the comment by themselves, set those comments as the action output, then feed that output to `comments-aggregator` to let this action manage those comments for you.
 
 ```yml
-	- name: Compare Assets
-		uses: ./.github/compare-assets
-		id: compare-assets
-		with:
-			repo-token: '${{ secrets.GITHUB_TOKEN }}'
-			compare: assets-list/assets.json
-			create-comment: false
-	- name: Append report
-		uses: ./.github/comments-aggregator
-		with:
-			repo-token: '${{ secrets.GITHUB_TOKEN }}'
-			section-id: compare-assets-with-trunk
-			content: ${{steps.compare-assets.outputs.comment}}
+      - name: Compare Assets
+        uses: ./.github/compare-assets
+        id: compare-assets
+        with:
+          repo-token: '${{ secrets.GITHUB_TOKEN }}'
+          compare: assets-list/assets.json
+          create-comment: false
+      - name: Append report
+        uses: ./.github/comments-aggregator
+        with:
+          repo-token: '${{ secrets.GITHUB_TOKEN }}'
+          section-id: compare-assets-with-trunk
+          content: ${{steps.compare-assets.outputs.comment}}
 ```
 
 ## Inputs
@@ -36,15 +36,15 @@ This action is meant to be used as the poster/commenter. Instead of having exist
 ### Message contains GitHub Event properties
 
 ```yml
-	- name: Add release ZIP URL as comment to the PR
-		uses: ./.github/comments-aggregator
-		with:
-			repo-token: ${{ secrets.GITHUB_TOKEN }}
-			section-id: release-zip-url
-			order: 1
-			content: |
-			The release ZIP for this PR is accessible via:
-			```
-			https://example.com/woocommerce-gutenberg-products-block-${{ github.event.pull_request.number }}.zip
-			```
+      - name: Add release ZIP URL as comment to the PR
+        uses: ./.github/comments-aggregator
+        with:
+          repo-token: ${{ secrets.GITHUB_TOKEN }}
+          section-id: release-zip-url
+          order: 1
+          content: |
+            The release ZIP for this PR is accessible via:
+            ```
+            https://wcblocks.wpcomstaging.com/wp-content/uploads/woocommerce-gutenberg-products-block-${{ github.event.pull_request.number }}.zip
+            ```
 ```
