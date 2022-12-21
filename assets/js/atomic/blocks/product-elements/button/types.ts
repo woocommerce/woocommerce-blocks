@@ -1,7 +1,7 @@
 export interface BlockAttributes {
-	className: string;
-	textAlign: string;
-	isDescendentOfQueryLoop: boolean;
+	className?: string | undefined;
+	textAlign?: string | undefined;
+	isDescendentOfQueryLoop?: boolean | undefined;
 }
 
 interface WithClass {
