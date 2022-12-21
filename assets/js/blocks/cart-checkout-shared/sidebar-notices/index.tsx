@@ -13,7 +13,7 @@ import {
 	DefaultNotice,
 	LegacyNotice,
 } from '@woocommerce/editor-components/default-notice';
-import { IncompatibilityPaymentGatewaysNotice } from '@woocommerce/editor-components/incompatible-payment-gateways-notice';
+import { IncompatiblePaymentGatewaysNotice } from '@woocommerce/editor-components/incompatible-payment-gateways-notice';
 import { useSelect } from '@wordpress/data';
 import { CartCheckoutFeedbackPrompt } from '@woocommerce/editor-components/feedback-prompt';
 import { isWcVersion } from '@woocommerce/settings';
@@ -40,14 +40,14 @@ const withSidebarNotices = createHigherOrderComponent(
 		}
 
 		const [
-			isIncompatibilityPaymentGatewaysNoticeDismissed,
-			setIsIncompatibilityPaymentGatewaysNoticeDismissed,
+			isIncompatiblePaymentGatewaysNoticeDismissed,
+			setIsIncompatiblePaymentGatewaysNoticeDismissed,
 		] = useState( true );
 
-		const toggleIncompatibilityPaymentGatewaysNoticeDismissedStatus = (
+		const toggleIncompatiblePaymentGatewaysNoticeDismissedStatus = (
 			isDismissed: boolean
 		) => {
-			setIsIncompatibilityPaymentGatewaysNoticeDismissed( isDismissed );
+			setIsIncompatiblePaymentGatewaysNoticeDismissed( isDismissed );
 		};
 
 		const addressFieldOrAccountBlocks = [
@@ -94,13 +94,13 @@ const withSidebarNotices = createHigherOrderComponent(
 			<>
 				{ ( isCart || isCheckout ) && (
 					<InspectorControls>
-						<IncompatibilityPaymentGatewaysNotice
+						<IncompatiblePaymentGatewaysNotice
 							toggleDismissedStatus={
-								toggleIncompatibilityPaymentGatewaysNoticeDismissedStatus
+								toggleIncompatiblePaymentGatewaysNoticeDismissedStatus
 							}
 						/>
 
-						{ isIncompatibilityPaymentGatewaysNoticeDismissed ? (
+						{ isIncompatiblePaymentGatewaysNoticeDismissed ? (
 							<>
 								<MakeAsDefaultNotice />
 								<CartCheckoutSidebarCompatibilityNotice

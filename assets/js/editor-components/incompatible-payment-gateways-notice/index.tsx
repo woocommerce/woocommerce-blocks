@@ -21,7 +21,7 @@ interface PaymentGatewaysNoticeProps {
 	toggleDismissedStatus: ( status: boolean ) => void;
 }
 
-export function IncompatibilityPaymentGatewaysNotice( {
+export function IncompatiblePaymentGatewaysNotice( {
 	toggleDismissedStatus,
 }: PaymentGatewaysNoticeProps ) {
 	// Everything below works the same for Cart/Checkout
