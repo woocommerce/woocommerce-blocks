@@ -1,20 +1,7 @@
 /**
  * External dependencies
  */
-
-interface BlockAttributes {
-	productId: {
-		type: string;
-		default: number;
-	};
-	isDescendentOfQueryLoop: {
-		type: string;
-		default: boolean;
-	};
-	textAlign?: {
-		type: string;
-	};
-}
+import { BlockAttributes } from '@wordpress/blocks';
 
 export const blockAttributes: BlockAttributes = {
 	productId: {
