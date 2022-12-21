@@ -1,7 +1,7 @@
 /**
  * External dependencies
  */
-import { __ } from '@wordpress/i18n';
+import { _n } from '@wordpress/i18n';
 import { Notice, ExternalLink } from '@wordpress/components';
 import { useSelect } from '@wordpress/data';
 import {
@@ -33,8 +33,11 @@ export function IncompatiblePaymentGatewaysNotice( {
 	}, [] );
 	const [ settingStatus, setStatus ] = useState( 'pristine' );
 
+	const numberOfIncompatiblePaymentMethods = Object.keys(
+		incompatiblePaymentMethods
+	).length;
 	const isNoticeDismissed =
-		Object.keys( incompatiblePaymentMethods ).length === 0 ||
+		numberOfIncompatiblePaymentMethods === 0 ||
 		settingStatus === 'dismissed';
 
 	useEffect( () => {
@@ -46,8 +49,10 @@ export function IncompatiblePaymentGatewaysNotice( {
 	}
 
 	const noticeContent = createInterpolateElement(
-		__(
+		_n(
+			'The following extension is incompatible with the block-based checkout. <a>Learn more</a>',
 			'The following extensions are incompatible with the block-based checkout. <a>Learn more</a>',
+			numberOfIncompatiblePaymentMethods,
 			'woo-gutenberg-products-block'
 		),
 		{
