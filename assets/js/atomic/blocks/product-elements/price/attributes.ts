@@ -1,7 +1,6 @@
 /**
  * External dependencies
  */
-import { isFeaturePluginBuild } from '@woocommerce/block-settings';
 
 interface BlockAttributes {
 	productId: {
@@ -17,7 +16,7 @@ interface BlockAttributes {
 	};
 }
 
-let blockAttributes: BlockAttributes = {
+export const blockAttributes: BlockAttributes = {
 	productId: {
 		type: 'number',
 		default: 0,
@@ -26,14 +25,9 @@ let blockAttributes: BlockAttributes = {
 		type: 'boolean',
 		default: false,
 	},
+	textAlign: {
+		type: 'string',
+	},
 };
 
-if ( isFeaturePluginBuild() ) {
-	blockAttributes = {
-		...blockAttributes,
-		textAlign: {
-			type: 'string',
-		},
-	};
-}
 export default blockAttributes;

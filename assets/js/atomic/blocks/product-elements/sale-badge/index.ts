@@ -15,10 +15,13 @@ import {
 	BLOCK_ICON as icon,
 	BLOCK_DESCRIPTION as description,
 } from './constants';
-import { Save } from './save';
 import { supports } from './support';
 
-const blockConfig: BlockConfiguration = {
+type CustomBlockConfiguration = BlockConfiguration & {
+	ancestor: string[];
+};
+
+const blockConfig: CustomBlockConfiguration = {
 	...sharedConfig,
 	title,
 	description,
@@ -27,7 +30,12 @@ const blockConfig: BlockConfiguration = {
 	supports,
 	attributes,
 	edit,
-	save: Save,
+	usesContext: [ 'query', 'queryId', 'postId' ],
+	ancestor: [
+		'woocommerce/all-products',
+		'woocommerce/single-product',
+		'core/post-template',
+	],
 };
 
 registerBlockType( 'woocommerce/product-sale-badge', { ...blockConfig } );

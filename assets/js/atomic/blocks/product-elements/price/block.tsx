@@ -17,6 +17,7 @@ import { CurrencyCode } from '@woocommerce/type-defs/currency';
  * Internal dependencies
  */
 import type { BlockAttributes } from './types';
+import './style.scss';
 
 type Props = BlockAttributes & HTMLAttributes< HTMLDivElement >;
 
