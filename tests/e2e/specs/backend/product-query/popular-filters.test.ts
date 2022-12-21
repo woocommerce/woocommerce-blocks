@@ -1,11 +1,16 @@
 /**
  * External dependencies
  */
-import { canvas, findSidebarPanelWithTitle } from '@wordpress/e2e-test-utils';
+import {
+	canvas,
+	findSidebarPanelWithTitle,
+	insertBlock,
+} from '@wordpress/e2e-test-utils';
 import {
 	selectBlockByName,
 	getFormElementIdByLabel,
 	shopper,
+	saveOrPublish,
 } from '@woocommerce/blocks-test-utils';
 import { ElementHandle } from 'puppeteer';
 
@@ -24,6 +29,7 @@ import {
 	getPreviewProducts,
 	getFrontEndProducts,
 	getProductTitle,
+	getShortcodeProducts,
 } from './common';
 
 describeOrSkip( GUTENBERG_EDITOR_CONTEXT === 'gutenberg' )(
@@ -58,14 +64,14 @@ describeOrSkip( GUTENBERG_EDITOR_CONTEXT === 'gutenberg' )(
 			);
 		} );
 
-		describe( 'Newest', () => {
-			it( 'Newest is the default preset', async () => {
+		describe( 'Sorted by title', () => {
+			it( 'Is the default preset', async () => {
 				await expect( $popularFiltersPanel ).toMatchElement(
 					await getFormElementIdByLabel(
 						'Choose among these pre-sets',
 						'components-visually-hidden'
 					),
-					{ text: 'Newest' }
+					{ text: 'Sorted by title' }
 				);
 			} );
 
@@ -87,6 +93,32 @@ describeOrSkip( GUTENBERG_EDITOR_CONTEXT === 'gutenberg' )(
 					)
 				);
 				expect( frontEndProductsTitle ).toEqual( previewProductsTitle );
+			} );
+
+			it( 'Products are displayed in the correct order', async () => {
+				await insertBlock( 'Shortcode' );
+				await page.keyboard.type(
+					'[products orderby="title" order="ASC" limit="9"]'
+				);
+				await saveOrPublish();
+				await shopper.block.goToBlockPage( block.name );
+				const frontEndProductsTitle = await Promise.all(
+					(
+						await getFrontEndProducts()
+					 ).map(
+						async ( product ) => await getProductTitle( product )
+					)
+				);
+				const shortcodeProductsTitle = await Promise.all(
+					(
+						await getShortcodeProducts()
+					 ).map(
+						async ( product ) => await getProductTitle( product )
+					)
+				);
+				expect( frontEndProductsTitle ).toEqual(
+					shortcodeProductsTitle
+				);
 			} );
 		} );
 	}

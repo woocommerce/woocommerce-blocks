@@ -63,6 +63,8 @@ export const SELECTORS = {
 	productRating: '.wc-block-components-product-rating',
 	productImage: '.wc-block-components-product-image',
 	cartItemRow: '.wc-block-cart-items__row',
+	shortcodeProductsGrid: `${ block.class } ul.wp-block-post-template`,
+	shortcodeProductsGridItem: `${ block.class } ul.wp-block-post-template > li`,
 };
 
 export const resetProductQueryBlockPage = async ( variation = '' ) => {
@@ -92,6 +94,11 @@ export const getPreviewProducts = async (): Promise< ElementHandle[] > => {
 export const getFrontEndProducts = async (): Promise< ElementHandle[] > => {
 	await canvas().waitForSelector( SELECTORS.productsGrid );
 	return await canvas().$$( SELECTORS.productsGridItem );
+};
+
+export const getShortcodeProducts = async (): Promise< ElementHandle[] > => {
+	await canvas().waitForSelector( SELECTORS.shortcodeProductsGrid );
+	return await canvas().$$( SELECTORS.shortcodeProductsGridItem );
 };
 
 export const toggleAdvancedFilter = async ( filterName: string ) => {
