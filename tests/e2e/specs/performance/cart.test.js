@@ -105,7 +105,7 @@ describe( 'Cart performance', () => {
 		const timesForResponse = [];
 		while ( i-- ) {
 			const start = performance.now();
-			await expect( page ).toClick( 'button', { text: 'Coupon code' } );
+			await expect( page ).toClick( 'link', { text: 'Add a coupon' } );
 			await expect( page ).toFill(
 				'[aria-label="Enter code"]',
 				'test_coupon'
@@ -117,8 +117,7 @@ describe( 'Cart performance', () => {
 					response.status() === 207
 			);
 			const end = performance.now();
-			// Close the coupon panel.
-			await expect( page ).toClick( 'button', { text: 'Coupon code' } );
+
 			timesForResponse.push( end - start );
 		}
 		logPerformanceResult( 'Cart block: Coupon entry', timesForResponse );
