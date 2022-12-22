@@ -93,15 +93,6 @@ const getAlias = ( options = {} ) => {
 	};
 };
 
-function findModuleMatch( module, match ) {
-	if ( module.request && match.test( module.request ) ) {
-		return true;
-	} else if ( module.issuer ) {
-		return findModuleMatch( module.issuer, match );
-	}
-	return false;
-}
-
 const requestToExternal = ( request ) => {
 	if ( wcDepMap[ request ] ) {
 		return wcDepMap[ request ];
@@ -137,7 +128,6 @@ module.exports = {
 	CHECK_CIRCULAR_DEPS,
 	ASSET_CHECK,
 	getAlias,
-	findModuleMatch,
 	requestToHandle,
 	requestToExternal,
 	getProgressBarPluginConfig,

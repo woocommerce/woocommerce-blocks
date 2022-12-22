@@ -25,7 +25,6 @@ const {
 	CHECK_CIRCULAR_DEPS,
 	requestToExternal,
 	requestToHandle,
-	findModuleMatch,
 	getProgressBarPluginConfig,
 } = require( './webpack-helpers' );
 
@@ -603,13 +602,22 @@ const getStylingConfig = ( options = {} ) => {
 				cacheGroups: {
 					editorStyle: {
 						// Capture all `editor` stylesheets and editor-components stylesheets.
-						test: ( module = {} ) =>
-							module.constructor.name === 'CssModule' &&
-							( findModuleMatch( module, /editor\.scss$/ ) ||
-								findModuleMatch(
-									module,
-									/[\\/]assets[\\/]js[\\/]editor-components[\\/]/
-								) ),
+						test: ( module = {}, { moduleGraph } ) => {
+							if ( ! module.type.includes( 'css' ) ) return false;
+
+							const moduleIssuer =
+								moduleGraph.getIssuer( module );
+							if ( ! moduleIssuer ) return false;
+
+							return (
+								moduleIssuer.resource.endsWith(
+									'editor.scss'
+								) ||
+								moduleIssuer.resource.includes(
+									`${ path.sep }assets${ path.sep }js${ path.sep }editor-components${ path.sep }`
+								)
+							);
+						},
 						name: 'wc-blocks-editor-style',
 						chunks: 'all',
 						priority: 10,
