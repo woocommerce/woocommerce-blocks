@@ -40,6 +40,7 @@ export const TotalsCoupon = ( {
 }: TotalsCouponProps ): JSX.Element => {
 	const [ couponValue, setCouponValue ] = useState( '' );
 	const [ displayCouponForm, setdisplayCouponForm ] = useState( false );
+	const [ displayAddCouponLink, setdisplayAddCouponLink ] = useState( true );
 	const currentIsLoading = useRef( false );
 
 	const validationErrorKey = 'coupon';
@@ -58,6 +59,7 @@ export const TotalsCoupon = ( {
 			if ( ! isLoading && couponValue && ! validationError ) {
 				setCouponValue( '' );
 				setdisplayCouponForm( false );
+				setdisplayAddCouponLink( true );
 			}
 			currentIsLoading.current = isLoading;
 		}
@@ -65,13 +67,16 @@ export const TotalsCoupon = ( {
 
 	return (
 		<>
-			{ ! displayCouponForm && (
+			{ displayAddCouponLink && (
 				// eslint-disable-next-line jsx-a11y/anchor-is-valid
 				<a
 					role="button"
 					href="#"
 					className="wc-block-components-totals-coupon-link"
-					onClick={ ( e ) => {
+					onClick={ (
+						e: React.MouseEvent< HTMLAnchorElement, MouseEvent >
+					) => {
+						setdisplayAddCouponLink( false );
 						setdisplayCouponForm( true );
 						e.preventDefault();
 					} }
