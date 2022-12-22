@@ -13,7 +13,6 @@ import '../css/editor.scss';
 import '../css/style.scss';
 import './filters/block-list-block';
 import './filters/get-block-attributes';
-import './blocks/cart-checkout-shared/view-switcher';
 
 setCategories( [
 	...getCategories().filter(
