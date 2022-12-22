@@ -118,11 +118,14 @@ const updateCustomerData = debounce( (): void => {
  */
 export const pushChanges = (): void => {
 	const store = select( STORE_KEY );
-	const hasValidationErrors =
-		select( VALIDATION_STORE_KEY ).hasValidationErrors();
+	const { hasValidationError } = select( VALIDATION_STORE_KEY );
 	const isInitialized = store.hasFinishedResolution( 'getCartData' );
 
-	if ( ! isInitialized || hasValidationErrors ) {
+	if (
+		! isInitialized ||
+		hasValidationError( 'shippingAddress' ) ||
+		hasValidationError( 'billingAddress' )
+	) {
 		return;
 	}
 
