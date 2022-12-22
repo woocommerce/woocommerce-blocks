@@ -1,7 +1,7 @@
 /**
  * External dependencies
  */
-import { registerFeaturePluginBlockType } from '@woocommerce/block-settings';
+import { registerBlockType } from '@wordpress/blocks';
 import type { BlockConfiguration } from '@wordpress/blocks';
 
 /**
@@ -36,4 +36,4 @@ const blockConfig: CustomBlockConfiguration = {
 	edit,
 };
 
-registerFeaturePluginBlockType( 'woocommerce/product-sku', { ...blockConfig } );
+registerBlockType( 'woocommerce/product-sku', { ...blockConfig } );
