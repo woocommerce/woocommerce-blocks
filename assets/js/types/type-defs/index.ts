@@ -10,6 +10,7 @@ export * from './objects';
 export * from './payments';
 export * from './payment-method-interface';
 export * from './product-response';
+export * from './shipping';
 export * from './utils';
 export * from './taxes';
 export * from './attributes';
