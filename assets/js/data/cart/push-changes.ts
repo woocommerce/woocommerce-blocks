@@ -1,7 +1,7 @@
 /**
  * External dependencies
  */
-import { debounce } from 'lodash';
+import { debounce, pick } from 'lodash';
 import { select, dispatch } from '@wordpress/data';
 import {
 	pluckAddress,
@@ -64,6 +64,23 @@ const isAddressDirty = <
 	);
 };
 
+type BaseAddressKeys =
+	| keyof CartResponseBillingAddress[]
+	| keyof CartResponseShippingAddress[];
+
+const getDirtyKeys = <
+	T extends CartResponseBillingAddress | CartResponseShippingAddress
+>(
+	// An object containing all previous address information
+	previousAddress: T,
+	// An object containing all address information.
+	address: T
+): Partial< BaseAddressKeys > => {
+	return Object.keys( previousAddress ).filter( ( key ) => {
+		return previousAddress[ key ] !== address[ key ];
+	} );
+};
+
 /**
  * Local cache of customerData used for comparisons.
  */
@@ -90,18 +107,24 @@ const updateCustomerData = debounce( (): void => {
 	const customerDataToUpdate = {} as Partial< BillingAddressShippingAddress >;
 
 	if ( dirtyProps.billingAddress ) {
-		customerDataToUpdate.billing_address = billingAddress;
+		customerDataToUpdate.billing_address = pick(
+			billingAddress,
+			dirtyProps.billingAddress
+		);
 		dirtyProps.billingAddress = false;
 	}
 
 	if ( dirtyProps.shippingAddress ) {
-		customerDataToUpdate.shipping_address = shippingAddress;
+		customerDataToUpdate.shipping_address = pick(
+			shippingAddress,
+			dirtyProps.shippingAddress
+		);
 		dirtyProps.shippingAddress = false;
 	}
 
 	if ( Object.keys( customerDataToUpdate ).length ) {
 		dispatch( STORE_KEY )
-			.updateCustomerData( customerDataToUpdate )
+			.updateCustomerData( customerDataToUpdate, true )
 			.then( () => {
 				removeAllNotices();
 			} )
@@ -138,7 +161,10 @@ export const pushChanges = (): void => {
 			newCustomerData.billingAddress
 		)
 	) {
-		dirtyProps.billingAddress = true;
+		dirtyProps.billingAddress = getDirtyKeys(
+			customerData.billingAddress,
+			newCustomerData.billingAddress
+		);
 	}
 
 	if (
@@ -147,7 +173,10 @@ export const pushChanges = (): void => {
 			newCustomerData.shippingAddress
 		)
 	) {
-		dirtyProps.shippingAddress = true;
+		dirtyProps.shippingAddress = getDirtyKeys(
+			customerData.shippingAddress,
+			newCustomerData.shippingAddress
+		);
 	}
 
 	customerData = newCustomerData;

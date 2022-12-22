@@ -57,6 +57,28 @@ class CartUpdateCustomer extends AbstractCartRoute {
 					],
 				],
 			],
+			[
+				'methods'             => \WP_REST_Server::EDITABLE,
+				'callback'            => [ $this, 'get_response' ],
+				'permission_callback' => '__return_true',
+				'args'                => [
+					'billing_address'  => [
+						'description'       => __( 'Billing address.', 'woo-gutenberg-products-block' ),
+						'type'              => 'object',
+						'context'           => [ 'view', 'edit' ],
+						'properties'        => $this->schema->billing_address_schema->get_properties(),
+						'sanitize_callback' => [ $this->schema->billing_address_schema, 'sanitize_callback' ],
+
+					],
+					'shipping_address' => [
+						'description'       => __( 'Shipping address.', 'woo-gutenberg-products-block' ),
+						'type'              => 'object',
+						'context'           => [ 'view', 'edit' ],
+						'properties'        => $this->schema->shipping_address_schema->get_properties(),
+						'sanitize_callback' => [ $this->schema->shipping_address_schema, 'sanitize_callback' ],
+					],
+				],
+			],
 			'schema'      => [ $this->schema, 'get_public_item_schema' ],
 			'allow_batch' => [ 'v1' => true ],
 		];
@@ -78,32 +100,39 @@ class CartUpdateCustomer extends AbstractCartRoute {
 			// If the cart does not need shipping, shipping address is forced to match billing address unless defined.
 			$shipping = $request['billing_address'] ?? $this->get_customer_billing_address( $customer );
 		}
-
-		$customer->set_props(
-			array(
-				'billing_first_name'  => $billing['first_name'] ?? null,
-				'billing_last_name'   => $billing['last_name'] ?? null,
-				'billing_company'     => $billing['company'] ?? null,
-				'billing_address_1'   => $billing['address_1'] ?? null,
-				'billing_address_2'   => $billing['address_2'] ?? null,
-				'billing_city'        => $billing['city'] ?? null,
-				'billing_state'       => $billing['state'] ?? null,
-				'billing_postcode'    => $billing['postcode'] ?? null,
-				'billing_country'     => $billing['country'] ?? null,
-				'billing_phone'       => $billing['phone'] ?? null,
-				'billing_email'       => $billing['email'] ?? null,
-				'shipping_first_name' => $shipping['first_name'] ?? null,
-				'shipping_last_name'  => $shipping['last_name'] ?? null,
-				'shipping_company'    => $shipping['company'] ?? null,
-				'shipping_address_1'  => $shipping['address_1'] ?? null,
-				'shipping_address_2'  => $shipping['address_2'] ?? null,
-				'shipping_city'       => $shipping['city'] ?? null,
-				'shipping_state'      => $shipping['state'] ?? null,
-				'shipping_postcode'   => $shipping['postcode'] ?? null,
-				'shipping_country'    => $shipping['country'] ?? null,
-				'shipping_phone'      => $shipping['phone'] ?? null,
-			)
+		$customer_data = array(
+			'billing_first_name'  => $billing['first_name'] ?? null,
+			'billing_last_name'   => $billing['last_name'] ?? null,
+			'billing_company'     => $billing['company'] ?? null,
+			'billing_address_1'   => $billing['address_1'] ?? null,
+			'billing_address_2'   => $billing['address_2'] ?? null,
+			'billing_city'        => $billing['city'] ?? null,
+			'billing_state'       => $billing['state'] ?? null,
+			'billing_postcode'    => $billing['postcode'] ?? null,
+			'billing_country'     => $billing['country'] ?? null,
+			'billing_phone'       => $billing['phone'] ?? null,
+			'billing_email'       => $billing['email'] ?? null,
+			'shipping_first_name' => $shipping['first_name'] ?? null,
+			'shipping_last_name'  => $shipping['last_name'] ?? null,
+			'shipping_company'    => $shipping['company'] ?? null,
+			'shipping_address_1'  => $shipping['address_1'] ?? null,
+			'shipping_address_2'  => $shipping['address_2'] ?? null,
+			'shipping_city'       => $shipping['city'] ?? null,
+			'shipping_state'      => $shipping['state'] ?? null,
+			'shipping_postcode'   => $shipping['postcode'] ?? null,
+			'shipping_country'    => $shipping['country'] ?? null,
+			'shipping_phone'      => $shipping['phone'] ?? null,
 		);
+
+		// This prevent us from reseting values.
+		$customer_data = array_filter(
+			$customer_data,
+			function( $value ) {
+				return null !== $value;
+			}
+		);
+
+		$customer->set_props( $customer_data );
 
 		wc_do_deprecated_action(
 			'woocommerce_blocks_cart_update_customer_from_request',
@@ -129,6 +158,17 @@ class CartUpdateCustomer extends AbstractCartRoute {
 		$this->cart_controller->calculate_totals();
 
 		return rest_ensure_response( $this->schema->get_item_response( $cart ) );
+	}
+
+	/**
+	 * Handle the request and return a valid response for this endpoint.
+	 *
+	 * @param \WP_REST_Request $request Request object.
+	 * @return \WP_REST_Response
+	 */
+	protected function get_route_update_response( \WP_REST_Request $request ) {
+		// shortcut for now.
+		return $this->get_route_post_response( $request );
 	}
 
 	/**
