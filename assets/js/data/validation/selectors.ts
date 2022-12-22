@@ -36,3 +36,18 @@ export const getValidationErrorId = ( state: State, errorId: string ) => {
 export const hasValidationErrors = ( state: State ) => {
 	return Object.keys( state ).length > 0;
 };
+
+/**
+ * Whether the store has a particular type of validation error.
+ */
+export const hasValidationError = (
+	state: State,
+	errorGroup?: string | undefined
+) => {
+	if ( errorGroup ) {
+		return Object.keys( state ).some(
+			( errorId ) => state[ errorId ].errorGroup === errorGroup
+		);
+	}
+	return Object.keys( state ).length > 0;
+};

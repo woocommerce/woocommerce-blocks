@@ -153,6 +153,9 @@ const AddressForm = ( {
 					return null;
 				}
 
+				const errorGroup =
+					type === 'shipping' ? 'shippingAddress' : 'billingAddress';
+
 				if ( field.key === 'country' ) {
 					const Tag =
 						type === 'shipping'
@@ -181,6 +184,7 @@ const AddressForm = ( {
 									? 'shipping-missing-country'
 									: null
 							}
+							errorGroup={ errorGroup }
 							errorMessage={ field.errorMessage }
 							required={ field.required }
 						/>
@@ -212,6 +216,7 @@ const AddressForm = ( {
 							}
 							errorMessage={ field.errorMessage }
 							required={ field.required }
+							errorGroup={ errorGroup }
 						/>
 					);
 				}
@@ -220,6 +225,7 @@ const AddressForm = ( {
 					<ValidatedTextInput
 						key={ field.key }
 						id={ `${ id }-${ field.key }` }
+						errorGroup={ errorGroup }
 						className={ `wc-block-components-address-form__${ field.key }` }
 						label={
 							field.required ? field.label : field.optionalLabel

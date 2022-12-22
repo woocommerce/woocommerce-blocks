@@ -8,6 +8,7 @@ export interface StateInputProps {
 	onChange: ( value: string ) => void;
 	required?: boolean;
 	errorMessage?: string;
+	errorGroup?: string | undefined;
 }
 
 export type StateInputWithStatesProps = StateInputProps & {

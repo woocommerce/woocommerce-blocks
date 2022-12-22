@@ -25,6 +25,7 @@ export interface ComboboxProps {
 	autoComplete?: string;
 	className?: string;
 	errorId: string | null;
+	errorGroup?: string | undefined;
 	errorMessage?: string;
 	id: string;
 	instanceId?: string;
@@ -51,6 +52,7 @@ const Combobox = ( {
 		'woo-gutenberg-products-block'
 	),
 	errorId: incomingErrorId,
+	errorGroup = 'default',
 	instanceId = '0',
 	autoComplete = 'off',
 }: ComboboxProps ): JSX.Element => {
@@ -73,6 +75,7 @@ const Combobox = ( {
 				[ errorId ]: {
 					message: errorMessage,
 					hidden: true,
+					errorGroup,
 				},
 			} );
 		}
@@ -86,6 +89,7 @@ const Combobox = ( {
 		errorMessage,
 		required,
 		setValidationErrors,
+		errorGroup,
 	] );
 
 	// @todo Remove patch for ComboboxControl once https://github.com/WordPress/gutenberg/pull/33928 is released

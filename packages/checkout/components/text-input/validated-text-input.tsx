@@ -32,7 +32,8 @@ interface ValidatedTextInputProps
 	instanceId: string;
 	className?: string | undefined;
 	ariaDescribedBy?: string | undefined;
-	errorId?: string;
+	errorId?: string | undefined;
+	errorGroup?: string | undefined;
 	focusOnMount?: boolean;
 	showError?: boolean;
 	errorMessage?: string | undefined;
@@ -51,6 +52,7 @@ const ValidatedTextInput = ( {
 	id,
 	ariaDescribedBy,
 	errorId,
+	errorGroup = 'default',
 	focusOnMount = false,
 	onChange,
 	showError = true,
@@ -111,6 +113,7 @@ const ValidatedTextInput = ( {
 						inputObject.validationMessage ||
 						__( 'Invalid value.', 'woo-gutenberg-products-block' ),
 					hidden: errorsHidden,
+					errorGroup,
 				},
 			} );
 		},
@@ -118,6 +121,7 @@ const ValidatedTextInput = ( {
 			clearValidationError,
 			customValidation,
 			errorIdString,
+			errorGroup,
 			requiredMessage,
 			setValidationErrors,
 		]

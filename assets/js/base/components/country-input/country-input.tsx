@@ -27,6 +27,7 @@ export const CountryInput = ( {
 		'Please select a country.',
 		'woo-gutenberg-products-block'
 	),
+	errorGroup = 'default',
 }: CountryInputWithCountriesProps ): JSX.Element => {
 	const options = useMemo(
 		() =>
@@ -56,6 +57,7 @@ export const CountryInput = ( {
 				errorMessage={ errorMessage }
 				required={ required }
 				autoComplete={ autoComplete }
+				errorGroup={ errorGroup }
 			/>
 		</div>
 	);

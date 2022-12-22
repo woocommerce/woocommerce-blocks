@@ -36,6 +36,7 @@ const StateInput = ( {
 	autoComplete = 'off',
 	value = '',
 	required = false,
+	errorGroup = 'default',
 }: StateInputWithStatesProps ): JSX.Element => {
 	const countryStates = states[ country ];
 	const options = useMemo(
@@ -104,6 +105,7 @@ const StateInput = ( {
 				) }
 				required={ required }
 				autoComplete={ autoComplete }
+				errorGroup={ errorGroup }
 			/>
 		);
 	}
@@ -117,6 +119,7 @@ const StateInput = ( {
 			autoComplete={ autoComplete }
 			value={ value }
 			required={ required }
+			errorGroup={ errorGroup }
 		/>
 	);
 };
