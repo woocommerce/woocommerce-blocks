@@ -11,7 +11,7 @@ import type { EditorBlock } from '@woocommerce/types';
 import Switcher from './switcher';
 import { findParentBlockEditorViews } from './utils';
 
-export const withViewSwitcher =
+const withViewSwitcher =
 	< T extends EditorBlock< T > >( BlockEdit: React.ElementType ) =>
 	( props: Record< string, unknown > ) => {
 		const { clientId } = props as { clientId: string };
