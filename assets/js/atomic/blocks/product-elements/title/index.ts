@@ -46,7 +46,7 @@ const blockConfig: BlockConfiguration = {
 				gradients: true,
 				__experimentalSkipSerialization: true,
 			},
-			...( __experimentalGetSpacingClassesAndStyles === 'function' && {
+			...( typeof __experimentalGetSpacingClassesAndStyles === 'function' && {
 				spacing: {
 					margin: true,
 					__experimentalSkipSerialization: true,
