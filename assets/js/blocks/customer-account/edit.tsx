@@ -3,7 +3,7 @@
  */
 import classNames from 'classnames';
 import { InspectorControls, useBlockProps } from '@wordpress/block-editor';
-import { Disabled, withSpokenMessages } from '@wordpress/components';
+import { Disabled } from '@wordpress/components';
 import type { BlockEditProps } from '@wordpress/blocks';
 
 /**
@@ -40,4 +40,4 @@ const Edit = ( {
 	);
 };
 
-export default withSpokenMessages( Edit );
+export default Edit;

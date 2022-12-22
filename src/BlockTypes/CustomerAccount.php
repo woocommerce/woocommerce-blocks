@@ -33,11 +33,25 @@ class CustomerAccount extends AbstractBlock {
 
 		$account_link = get_option( 'woocommerce_myaccount_page_id' ) ? wc_get_account_endpoint_url( 'dashboard' ) : wp_login_url();
 
+		$allowed_svg = array(
+			'svg'  => array(
+				'class'   => true,
+				'xmlns'   => true,
+				'width'   => true,
+				'height'  => true,
+				'viewbox' => true,
+			),
+			'path' => array(
+				'd'    => true,
+				'fill' => true,
+			),
+		);
+
 		return "<div class='wp-block-woocommerce-customer-account " . esc_attr( $classes_and_styles['classes'] ) . "' style='" . esc_attr( $classes_and_styles['styles'] ) . "'>
-			<a href='$account_link'>
-				{$this->icon( $attributes )}<span class='label'>{$this->label( $attributes )}</span>
+			<a href='" . esc_attr( $account_link ) . "'>
+				" . wp_kses( $this->render_icon( $attributes ), $allowed_svg ) . "<span class='label'>" . wp_kses( $this->render_label( $attributes ), array() ) . '</span>
 			</a>
-		</div>";
+		</div>';
 	}
 
 	/**
@@ -47,7 +61,7 @@ class CustomerAccount extends AbstractBlock {
 	 *
 	 * @return string Label to render on the block
 	 */
-	private function icon( $attributes ) {
+	private function render_icon( $attributes ) {
 		if ( self::TEXT_ONLY === $attributes['displayStyle'] ) {
 			return '';
 		}
@@ -83,7 +97,7 @@ class CustomerAccount extends AbstractBlock {
 	 *
 	 * @return string Label to render on the block
 	 */
-	private function label( $attributes ) {
+	private function render_label( $attributes ) {
 		if ( self::ICON_ONLY === $attributes['displayStyle'] ) {
 			return '';
 		}

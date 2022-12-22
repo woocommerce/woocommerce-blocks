@@ -8,9 +8,7 @@
 	"supports": {
 		"align": true,
 		"color": {
-		  "__experimentalDefaultControls": {
 			"text": true
-		  }
 		},
 		"typography": {
 			"fontSize": true,
