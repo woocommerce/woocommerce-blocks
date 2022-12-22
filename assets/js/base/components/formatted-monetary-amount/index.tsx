@@ -49,7 +49,7 @@ type CustomFormattedMonetaryAmountProps = Omit<
 	FormattedMonetaryAmountProps,
 	'currency'
 > & {
-	currency?: Currency | Record< string, never > | undefined;
+	currency: Currency | Record< string, never >;
 };
 
 /**
