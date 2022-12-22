@@ -33,6 +33,15 @@ jobs:
                   asset_path: ${{github.workspace}}/woo-gutenberg-products-block.zip
                   asset_name: woo-gutenberg-products-block.zip
                   asset_content_type: application/zip
+            - name: 'Get Previous tag'
+              id: previoustag
+              uses: "WyriHaximus/github-action-get-previous-tag@v1"
+            - name: Set milestone due date
+              uses: woocommerce/automations@v1
+              with:
+                github_token: ${{ secrets.GITHUB_TOKEN }}
+                automations: update-milestone
+                target_milestone: ${{ steps.previoustag.outputs.tag }}
             - uses: act10ns/slack@v2
               with:
                   status: ${{ job.status }}
