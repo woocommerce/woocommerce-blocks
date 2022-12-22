@@ -228,7 +228,9 @@ export const selectPopularFilterPreset = async ( preset: string ) => {
 		`//li[contains(text(), "${ preset }")]`
 	);
 	if ( $preset ) {
-		return await $preset.click();
+		await $preset.click();
+		await saveOrPublish();
+		return;
 	}
 	throw new Error(
 		`Preset "${ preset }" not found among Popular Filters options`

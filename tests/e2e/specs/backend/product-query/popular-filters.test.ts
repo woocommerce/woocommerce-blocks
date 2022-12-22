@@ -5,7 +5,6 @@ import { findSidebarPanelWithTitle } from '@wordpress/e2e-test-utils';
 import {
 	selectBlockByName,
 	getFormElementIdByLabel,
-	saveOrPublish,
 } from '@woocommerce/blocks-test-utils';
 import { ElementHandle } from 'puppeteer';
 
@@ -86,7 +85,6 @@ describeOrSkip( GUTENBERG_EDITOR_CONTEXT === 'gutenberg' )(
 		describe( 'Newest', () => {
 			beforeEach( async () => {
 				await selectPopularFilterPreset( 'Newest' );
-				await saveOrPublish();
 			} );
 			it( 'Editor preview and block frontend display the same products', async () => {
 				const { previewProducts, frontEndProducts } =
@@ -98,6 +96,44 @@ describeOrSkip( GUTENBERG_EDITOR_CONTEXT === 'gutenberg' )(
 				const { productQueryProducts, shortcodeProducts } =
 					await setupProductQueryShortcodeComparison(
 						'[products orderby="date" order="DESC" limit="9"]'
+					);
+				expect( productQueryProducts ).toEqual( shortcodeProducts );
+			} );
+		} );
+
+		describe( 'Best Selling', () => {
+			beforeEach( async () => {
+				await selectPopularFilterPreset( 'Best Selling' );
+			} );
+			it( 'Editor preview and block frontend display the same products', async () => {
+				const { previewProducts, frontEndProducts } =
+					await setupEditorFrontendComparison();
+				expect( frontEndProducts ).toEqual( previewProducts );
+			} );
+
+			it( 'Products are displayed in the correct order', async () => {
+				const { productQueryProducts, shortcodeProducts } =
+					await setupProductQueryShortcodeComparison(
+						'[products best_selling="true" limit="9"]'
+					);
+				expect( productQueryProducts ).toEqual( shortcodeProducts );
+			} );
+		} );
+
+		describe( 'Top Rated', () => {
+			beforeEach( async () => {
+				await selectPopularFilterPreset( 'Top Rated' );
+			} );
+			it( 'Editor preview and block frontend display the same products', async () => {
+				const { previewProducts, frontEndProducts } =
+					await setupEditorFrontendComparison();
+				expect( frontEndProducts ).toEqual( previewProducts );
+			} );
+
+			it( 'Products are displayed in the correct order', async () => {
+				const { productQueryProducts, shortcodeProducts } =
+					await setupProductQueryShortcodeComparison(
+						'[products top_rated="true" limit="9"]'
 					);
 				expect( productQueryProducts ).toEqual( shortcodeProducts );
 			} );
