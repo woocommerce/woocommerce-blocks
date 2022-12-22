@@ -8,7 +8,7 @@ const RemoveFilesPlugin = require( './remove-files-webpack-plugin' );
 const MiniCssExtractPlugin = require( 'mini-css-extract-plugin' );
 const ProgressBarPlugin = require( 'progress-bar-webpack-plugin' );
 const DependencyExtractionWebpackPlugin = require( '@wordpress/dependency-extraction-webpack-plugin' );
-const WebpackRTLPlugin = require( 'webpack-rtl-plugin' );
+const WebpackRTLPlugin = require( '@automattic/webpack-rtl-plugin' );
 const TerserPlugin = require( 'terser-webpack-plugin' );
 const CreateFileWebpack = require( 'create-file-webpack' );
 const CircularDependencyPlugin = require( 'circular-dependency-plugin' );
@@ -716,12 +716,7 @@ const getStylingConfig = ( options = {} ) => {
 		},
 		plugins: [
 			new ProgressBarPlugin( getProgressBarPluginConfig( 'Styles' ) ),
-			new WebpackRTLPlugin( {
-				filename: `[name]${ fileSuffix }-rtl.css`,
-				minify: {
-					safe: true,
-				},
-			} ),
+			new WebpackRTLPlugin(),
 			new MiniCssExtractPlugin( {
 				filename: `[name]${ fileSuffix }.css`,
 			} ),
