@@ -29,14 +29,6 @@ interface LayoutEditorProps {
 	clientId: string;
 }
 
-/**
- * Component to handle edit mode of the "Single Product Block".
- *
- * @param {Object}  props           Incoming props for the component.
- * @param {boolean} props.isLoading
- * @param {Object}  props.product
- * @param {string}  props.clientId
- */
 const LayoutEditor = ( {
 	isLoading,
 	product,

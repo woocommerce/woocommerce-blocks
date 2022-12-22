@@ -20,7 +20,7 @@ interface BlockErrorBase {
 	/**
 	 * Text preceeding the error message.
 	 */
-	errorMessagePrefix?: string;
+	errorMessagePrefix?: string | undefined;
 	/**
 	 * Button cta.
 	 */

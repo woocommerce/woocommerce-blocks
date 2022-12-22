@@ -19,18 +19,9 @@ import { BLOCK_NAME } from './constants';
 interface BlockProps {
 	isLoading: boolean;
 	product: ProductResponseItem;
-	children: JSX.Element[];
+	children: JSX.Element | JSX.Element[];
 }
 
-/** @typedef {import('react')} React */
-/**
- * The Single Product Block.
- *
- * @param {Object}              props           Incoming props for the component.
- * @param {boolean}             props.isLoading
- * @param {Object}              props.product
- * @param {React.ReactChildren} props.children
- */
 const Block = ( { isLoading, product, children }: BlockProps ) => {
 	const { dispatchStoreEvent } = useStoreEvents();
 	const className = 'wc-block-single-product wc-block-layout';
