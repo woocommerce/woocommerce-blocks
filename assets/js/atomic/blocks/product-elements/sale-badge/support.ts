@@ -24,7 +24,7 @@ export const supports = {
 			width: true,
 			__experimentalSkipSerialization: true,
 		},
-		...( __experimentalGetSpacingClassesAndStyles === 'function' && {
+		...( typeof __experimentalGetSpacingClassesAndStyles === 'function' && {
 			spacing: {
 				padding: true,
 				__experimentalSkipSerialization: true,
