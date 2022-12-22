@@ -48,12 +48,14 @@
 		margin: unset;
 	}
 
-	.wc-block-components-notices {
-		margin: #{$gap} #{$gap-largest} -#{$gap} #{$gap};
-		margin-bottom: unset;
-
-		.wc-block-components-notices__notice {
+	.wp-block-woocommerce-mini-cart-contents {
+		.wc-block-components-notices {
+			margin: #{$gap} #{$gap-largest} -#{$gap} #{$gap};
 			margin-bottom: unset;
+
+			.wc-block-components-notices__notice {
+				margin-bottom: unset;
+			}
 		}
 	}
 
