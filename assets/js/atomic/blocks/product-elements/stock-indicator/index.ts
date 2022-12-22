@@ -1,7 +1,7 @@
 /**
  * External dependencies
  */
-import { registerFeaturePluginBlockType } from '@woocommerce/block-settings';
+import { registerBlockType } from '@wordpress/blocks';
 import type { BlockConfiguration } from '@wordpress/blocks';
 
 /**
@@ -29,12 +29,12 @@ const blockConfig: BlockConfiguration = {
 	edit,
 	usesContext: [ 'query', 'queryId', 'postId' ],
 	ancestor: [
-		'@woocommerce/all-products',
-		'@woocommerce/single-product',
+		'woocommerce/all-products',
+		'woocommerce/single-product',
 		'core/post-template',
 	],
 };
 
-registerFeaturePluginBlockType( 'woocommerce/product-stock-indicator', {
+registerBlockType( 'woocommerce/product-stock-indicator', {
 	...blockConfig,
 } );
