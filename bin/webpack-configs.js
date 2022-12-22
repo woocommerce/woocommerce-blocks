@@ -101,9 +101,7 @@ const getCoreConfig = ( options = {} ) => {
 		},
 		plugins: [
 			...sharedPlugins,
-			new ProgressBarPlugin(
-				getProgressBarPluginConfig( 'Core', options.fileSuffix )
-			),
+			new ProgressBarPlugin( getProgressBarPluginConfig( 'Core' ) ),
 			new CreateFileWebpack( {
 				path: './',
 				// file name
@@ -243,9 +241,7 @@ const getMainConfig = ( options = {} ) => {
 		},
 		plugins: [
 			...sharedPlugins,
-			new ProgressBarPlugin(
-				getProgressBarPluginConfig( 'Main', options.fileSuffix )
-			),
+			new ProgressBarPlugin( getProgressBarPluginConfig( 'Main' ) ),
 			new CopyWebpackPlugin( {
 				patterns: [
 					{
@@ -375,9 +371,7 @@ const getFrontConfig = ( options = {} ) => {
 		},
 		plugins: [
 			...sharedPlugins,
-			new ProgressBarPlugin(
-				getProgressBarPluginConfig( 'Frontend', options.fileSuffix )
-			),
+			new ProgressBarPlugin( getProgressBarPluginConfig( 'Frontend' ) ),
 		],
 		resolve: {
 			...resolve,
@@ -474,10 +468,7 @@ const getPaymentsConfig = ( options = {} ) => {
 		plugins: [
 			...sharedPlugins,
 			new ProgressBarPlugin(
-				getProgressBarPluginConfig(
-					'Payment Method Extensions',
-					options.fileSuffix
-				)
+				getProgressBarPluginConfig( 'Payment Method Extensions' )
 			),
 		],
 		resolve: {
@@ -569,10 +560,7 @@ const getExtensionsConfig = ( options = {} ) => {
 		plugins: [
 			...sharedPlugins,
 			new ProgressBarPlugin(
-				getProgressBarPluginConfig(
-					'Experimental Extensions',
-					options.fileSuffix
-				)
+				getProgressBarPluginConfig( 'Experimental Extensions' )
 			),
 		],
 		resolve: {
@@ -727,9 +715,7 @@ const getStylingConfig = ( options = {} ) => {
 			],
 		},
 		plugins: [
-			new ProgressBarPlugin(
-				getProgressBarPluginConfig( 'Styles', options.fileSuffix )
-			),
+			new ProgressBarPlugin( getProgressBarPluginConfig( 'Styles' ) ),
 			new WebpackRTLPlugin( {
 				filename: `[name]${ fileSuffix }-rtl.css`,
 				minify: {
