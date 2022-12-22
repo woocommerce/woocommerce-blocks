@@ -20,7 +20,7 @@ export const supports = {
 			fontSize: true,
 			__experimentalSkipSerialization: true,
 		},
-		...( __experimentalGetSpacingClassesAndStyles === 'function' && {
+		...( typeof __experimentalGetSpacingClassesAndStyles === 'function' && {
 			spacing: {
 				margin: true,
 				__experimentalSkipSerialization: true,
