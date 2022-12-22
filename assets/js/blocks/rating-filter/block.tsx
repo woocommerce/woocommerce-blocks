@@ -93,6 +93,7 @@ const RatingFilterBlock = ( {
 		useCollectionData( {
 			queryRating: true,
 			queryState,
+			isEditor,
 		} );
 
 	const [ displayedOptions, setDisplayedOptions ] = useState(

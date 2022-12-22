@@ -113,6 +113,7 @@ const StockStatusFilterBlock = ( {
 			queryStock: true,
 			queryState,
 			productIds,
+			isEditor,
 		} );
 
 	/**

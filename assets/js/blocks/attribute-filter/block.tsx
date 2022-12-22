@@ -163,6 +163,7 @@ const AttributeFilterBlock = ( {
 				attributes: filterAvailableTerms ? queryState.attributes : null,
 			},
 			productIds,
+			isEditor,
 		} );
 
 	/**

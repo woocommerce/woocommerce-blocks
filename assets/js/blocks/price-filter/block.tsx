@@ -113,6 +113,7 @@ const PriceFilterBlock = ( {
 		queryPrices: true,
 		queryState,
 		productIds,
+		isEditor,
 	} );
 
 	const currency = getCurrencyFromPriceResponse(
