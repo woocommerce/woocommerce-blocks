@@ -10,12 +10,19 @@
 /**
  * External dependencies
  */
-import { canvas, setPostContent, insertBlock } from '@wordpress/e2e-test-utils';
 import {
+	canvas,
+	setPostContent,
+	insertBlock,
+	findSidebarPanelWithTitle,
+} from '@wordpress/e2e-test-utils';
+import {
+	shopper,
 	visitBlockPage,
 	saveOrPublish,
 	findToolsPanelWithTitle,
 	getFormElementIdByLabel,
+	insertShortcodeBlock,
 } from '@woocommerce/blocks-test-utils';
 import { ElementHandle } from 'puppeteer';
 
@@ -65,6 +72,15 @@ export const SELECTORS = {
 	cartItemRow: '.wc-block-cart-items__row',
 	shortcodeProductsGrid: `${ block.class } ul.wp-block-post-template`,
 	shortcodeProductsGridItem: `${ block.class } ul.wp-block-post-template > li`,
+	customSelectControl: {
+		button: '.components-custom-select-control__button',
+		menu: ( { hidden }: { hidden: boolean } = { hidden: true } ) =>
+			`.components-custom-select-control__menu[aria-hidden="${ hidden }"]`,
+	},
+};
+
+export const goToProductQueryBlockPage = async () => {
+	await shopper.block.goToBlockPage( block.name );
 };
 
 export const resetProductQueryBlockPage = async ( variation = '' ) => {
@@ -130,7 +146,7 @@ export const selectToken = async ( formLabel: string, optionLabel: string ) => {
 	const $stockStatusInput = await canvas().$(
 		await getFormElementIdByLabel(
 			formLabel,
-			SELECTORS.formTokenField.label.replace( '.', '' )
+			SELECTORS.formTokenField.label
 		)
 	);
 	await $stockStatusInput.focus();
@@ -160,5 +176,61 @@ export const getProductTitle = async (
 			'.wp-block-post-title',
 			( el ) => el.textContent
 		) ) || ''
+	);
+};
+
+export const setupEditorFrontendComparison = async () => {
+	const previewProducts = await Promise.all(
+		(
+			await getPreviewProducts()
+		 ).map( async ( product ) => await getProductTitle( product ) )
+	);
+	await goToProductQueryBlockPage();
+	await canvas().waitForSelector( SELECTORS.productsGrid );
+	const frontEndProducts = await Promise.all(
+		(
+			await getFrontEndProducts()
+		 ).map( async ( product ) => await getProductTitle( product ) )
+	);
+	return { previewProducts, frontEndProducts };
+};
+
+export const setupProductQueryShortcodeComparison = async (
+	shortcode: string
+) => {
+	await insertShortcodeBlock( shortcode );
+	await saveOrPublish();
+	await goToProductQueryBlockPage();
+	const productQueryProducts = await Promise.all(
+		(
+			await getFrontEndProducts()
+		 ).map( async ( product ) => await getProductTitle( product ) )
+	);
+	const shortcodeProducts = await Promise.all(
+		(
+			await getShortcodeProducts()
+		 ).map( async ( product ) => await getProductTitle( product ) )
+	);
+	return { productQueryProducts, shortcodeProducts };
+};
+
+export const selectPopularFilterPreset = async ( preset: string ) => {
+	const $popularFiltersPanel: ElementHandle< Node > =
+		await findSidebarPanelWithTitle( 'Popular Filters' );
+	const $toggleButton = await $popularFiltersPanel.$(
+		SELECTORS.customSelectControl.button
+	);
+	await $toggleButton.click();
+	await $popularFiltersPanel.waitForSelector(
+		SELECTORS.customSelectControl.menu( { hidden: false } )
+	);
+	const [ $preset ] = await $popularFiltersPanel.$x(
+		`//li[contains(text(), "${ preset }")]`
+	);
+	if ( $preset ) {
+		return await $preset.click();
+	}
+	throw new Error(
+		`Preset "${ preset }" not found among Popular Filters options`
 	);
 };

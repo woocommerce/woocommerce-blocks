@@ -1,15 +1,10 @@
 /**
  * External dependencies
  */
-import {
-	canvas,
-	findSidebarPanelWithTitle,
-	insertBlock,
-} from '@wordpress/e2e-test-utils';
+import { findSidebarPanelWithTitle } from '@wordpress/e2e-test-utils';
 import {
 	selectBlockByName,
 	getFormElementIdByLabel,
-	shopper,
 	saveOrPublish,
 } from '@woocommerce/blocks-test-utils';
 import { ElementHandle } from 'puppeteer';
@@ -24,12 +19,10 @@ import {
 } from '../../../utils';
 import {
 	block,
-	SELECTORS,
 	resetProductQueryBlockPage,
-	getPreviewProducts,
-	getFrontEndProducts,
-	getProductTitle,
-	getShortcodeProducts,
+	setupProductQueryShortcodeComparison,
+	setupEditorFrontendComparison,
+	selectPopularFilterPreset,
 } from './common';
 
 describeOrSkip( GUTENBERG_EDITOR_CONTEXT === 'gutenberg' )(
@@ -76,49 +69,37 @@ describeOrSkip( GUTENBERG_EDITOR_CONTEXT === 'gutenberg' )(
 			} );
 
 			it( 'Editor preview and block frontend display the same products', async () => {
-				const previewProductsTitle = await Promise.all(
-					(
-						await getPreviewProducts()
-					 ).map(
-						async ( product ) => await getProductTitle( product )
-					)
-				);
-				await shopper.block.goToBlockPage( block.name );
-				await canvas().waitForSelector( SELECTORS.productsGrid );
-				const frontEndProductsTitle = await Promise.all(
-					(
-						await getFrontEndProducts()
-					 ).map(
-						async ( product ) => await getProductTitle( product )
-					)
-				);
-				expect( frontEndProductsTitle ).toEqual( previewProductsTitle );
+				const { previewProducts, frontEndProducts } =
+					await setupEditorFrontendComparison();
+				expect( frontEndProducts ).toEqual( previewProducts );
 			} );
 
 			it( 'Products are displayed in the correct order', async () => {
-				await insertBlock( 'Shortcode' );
-				await page.keyboard.type(
-					'[products orderby="title" order="ASC" limit="9"]'
-				);
+				const { productQueryProducts, shortcodeProducts } =
+					await setupProductQueryShortcodeComparison(
+						'[products orderby="title" order="ASC" limit="9"]'
+					);
+				expect( productQueryProducts ).toEqual( shortcodeProducts );
+			} );
+		} );
+
+		describe( 'Newest', () => {
+			beforeEach( async () => {
+				await selectPopularFilterPreset( 'Newest' );
 				await saveOrPublish();
-				await shopper.block.goToBlockPage( block.name );
-				const frontEndProductsTitle = await Promise.all(
-					(
-						await getFrontEndProducts()
-					 ).map(
-						async ( product ) => await getProductTitle( product )
-					)
-				);
-				const shortcodeProductsTitle = await Promise.all(
-					(
-						await getShortcodeProducts()
-					 ).map(
-						async ( product ) => await getProductTitle( product )
-					)
-				);
-				expect( frontEndProductsTitle ).toEqual(
-					shortcodeProductsTitle
-				);
+			} );
+			it( 'Editor preview and block frontend display the same products', async () => {
+				const { previewProducts, frontEndProducts } =
+					await setupEditorFrontendComparison();
+				expect( frontEndProducts ).toEqual( previewProducts );
+			} );
+
+			it( 'Products are displayed in the correct order', async () => {
+				const { productQueryProducts, shortcodeProducts } =
+					await setupProductQueryShortcodeComparison(
+						'[products orderby="date" order="DESC" limit="9"]'
+					);
+				expect( productQueryProducts ).toEqual( shortcodeProducts );
 			} );
 		} );
 	}
