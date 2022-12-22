@@ -17,7 +17,7 @@ export const supports = {
 			radius: true,
 			__experimentalSkipSerialization: true,
 		},
-		...( __experimentalGetSpacingClassesAndStyles === 'function' && {
+		...( typeof __experimentalGetSpacingClassesAndStyles === 'function' && {
 			spacing: {
 				margin: true,
 				padding: true,
