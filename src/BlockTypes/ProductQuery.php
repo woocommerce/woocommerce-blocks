@@ -41,7 +41,7 @@ class ProductQuery extends AbstractBlock {
 
 	/** This is a feature flag to enable the custom inherit Global Query implementation.
 	 * This is not intended to be a permanent feature flag, but rather a temporary.
-	 * It is also necessary to enable this feature flag on the PHP side: `assets/js/blocks/product-query/variations/product-query.tsx:26`.
+	 * It is also necessary to enable this feature flag on the PHP side: `assets/js/blocks/product-query/utils.tsx:83`.
 	 * https://github.com/woocommerce/woocommerce-blocks/pull/7382
 	 *
 	 * @var boolean
@@ -127,8 +127,9 @@ class ProductQuery extends AbstractBlock {
 		$orderby_query    = isset( $orderby ) ? $this->get_custom_orderby_query( $orderby ) : array();
 		$attributes_query = is_array( $woo_attributes ) ? $this->get_product_attributes_query( $woo_attributes ) : array();
 		$stock_query      = is_array( $woo_stock_status ) ? $this->get_stock_status_query( $woo_stock_status ) : array();
+		$visibility_query = $this->get_product_visibility_query( $stock_query );
 
-		return array_merge( $args, $on_sale_query, $orderby_query, $attributes_query, $stock_query );
+		return array_merge( $args, $on_sale_query, $orderby_query, $attributes_query, $stock_query, $visibility_query );
 	}
 
 	/**
@@ -325,12 +326,68 @@ class ProductQuery extends AbstractBlock {
 	 * @return array
 	 */
 	private function get_stock_status_query( $stock_statii ) {
+		if ( ! is_array( $stock_statii ) ) {
+			return array();
+		}
+
+		$stock_status_options = array_keys( wc_get_product_stock_status_options() );
+
+		/**
+		 * If all available stock status are selected, we don't need to add the
+		 * meta query for stock status.
+		 */
+		if (
+			count( $stock_statii ) === count( $stock_status_options ) &&
+			array_diff( $stock_statii, $stock_status_options ) === array_diff( $stock_status_options, $stock_statii )
+		) {
+			return array();
+		}
+
+		/**
+		 * If all stock statuses are selected except 'outofstock', we use the
+		 * product visibility query to filter out out of stock products.
+		 *
+		 * @see get_product_visibility_query()
+		 */
+		$diff = array_diff( $stock_status_options, $stock_statii );
+		if ( count( $diff ) === 1 && in_array( 'outofstock', $diff, true ) ) {
+			return array();
+		}
+
 		return array(
 			'meta_query' => array(
 				array(
 					'key'     => '_stock_status',
 					'value'   => (array) $stock_statii,
 					'compare' => 'IN',
+				),
+			),
+		);
+	}
+
+	/**
+	 * Return a query for product visibility depending on their stock status.
+	 *
+	 * @param array $stock_query Stock status query.
+	 *
+	 * @return array Tax query for product visibility.
+	 */
+	private function get_product_visibility_query( $stock_query ) {
+		$product_visibility_terms  = wc_get_product_visibility_term_ids();
+		$product_visibility_not_in = array( is_search() ? $product_visibility_terms['exclude-from-search'] : $product_visibility_terms['exclude-from-catalog'] );
+
+		// Hide out of stock products.
+		if ( empty( $stock_query ) && 'yes' === get_option( 'woocommerce_hide_out_of_stock_items' ) ) {
+			$product_visibility_not_in[] = $product_visibility_terms['outofstock'];
+		}
+
+		return array(
+			'tax_query' => array(
+				array(
+					'taxonomy' => 'product_visibility',
+					'field'    => 'term_taxonomy_id',
+					'terms'    => $product_visibility_not_in,
+					'operator' => 'NOT IN',
 				),
 			),
 		);
@@ -354,6 +411,7 @@ class ProductQuery extends AbstractBlock {
 			'price_filter_query_args'      => array( PriceFilter::MIN_PRICE_QUERY_VAR, PriceFilter::MAX_PRICE_QUERY_VAR ),
 			'stock_filter_query_args'      => array( StockFilter::STOCK_STATUS_QUERY_VAR ),
 			'attributes_filter_query_args' => $attributes_filter_query_args,
+			'rating_filter_query_args'     => array( RatingFilter::RATING_QUERY_VAR ),
 		);
 
 	}
@@ -423,6 +481,7 @@ class ProductQuery extends AbstractBlock {
 			'price_filter'        => $this->get_filter_by_price_query(),
 			'attributes_filter'   => $this->get_filter_by_attributes_query(),
 			'stock_status_filter' => $this->get_filter_by_stock_status_query(),
+			'rating_filter'       => $this->get_filter_by_rating_query(),
 		);
 	}
 
@@ -437,11 +496,13 @@ class ProductQuery extends AbstractBlock {
 		$on_sale_enabled  = isset( $query['__woocommerceOnSale'] ) && true === $query['__woocommerceOnSale'];
 		$attributes_query = isset( $query['__woocommerceAttributes'] ) ? $this->get_product_attributes_query( $query['__woocommerceAttributes'] ) : array();
 		$stock_query      = isset( $query['__woocommerceStockStatus'] ) ? $this->get_stock_status_query( $query['__woocommerceStockStatus'] ) : array();
+		$visibility_query = $this->get_product_visibility_query( $stock_query );
 
 		return array(
 			'on_sale'      => ( $on_sale_enabled ? $this->get_on_sale_products_query() : array() ),
 			'attributes'   => $attributes_query,
 			'stock_status' => $stock_query,
+			'visibility'   => $visibility_query,
 		);
 	}
 
@@ -715,5 +776,42 @@ class ProductQuery extends AbstractBlock {
 		return $query;
 	}
 
-}
+	/**
+	 * Return a query that filters products by rating.
+	 *
+	 * @return array
+	 */
+	private function get_filter_by_rating_query() {
+		$filter_rating_values = get_query_var( RatingFilter::RATING_QUERY_VAR );
+		if ( empty( $filter_rating_values ) ) {
+			return array();
+		}
 
+		$parsed_filter_rating_values = explode( ',', $filter_rating_values );
+		$product_visibility_terms    = wc_get_product_visibility_term_ids();
+
+		if ( empty( $parsed_filter_rating_values ) || empty( $product_visibility_terms ) ) {
+			return array();
+		}
+
+		$rating_terms = array_map(
+			function( $rating ) use ( $product_visibility_terms ) {
+				return $product_visibility_terms[ 'rated-' . $rating ];
+			},
+			$parsed_filter_rating_values
+		);
+
+		return array(
+			'tax_query' => array(
+				array(
+					'field'         => 'term_taxonomy_id',
+					'taxonomy'      => 'product_visibility',
+					'terms'         => $rating_terms,
+					'operator'      => 'IN',
+					'rating_filter' => true,
+				),
+			),
+		);
+	}
+
+}

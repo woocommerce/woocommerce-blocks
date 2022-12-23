@@ -1,7 +1,7 @@
 /**
  * External dependencies
  */
-import { registerFeaturePluginBlockType } from '@woocommerce/block-settings';
+import { registerBlockType } from '@wordpress/blocks';
 import type { BlockConfiguration } from '@wordpress/blocks';
 
 /**
@@ -23,15 +23,15 @@ const blockConfig: BlockConfiguration = {
 	icon: { src: icon },
 	usesContext: [ 'query', 'queryId', 'postId' ],
 	ancestor: [
-		'@woocommerce/all-products',
-		'@woocommerce/single-product',
+		'woocommerce/all-products',
+		'woocommerce/single-product',
 		'core/post-template',
 	],
 	attributes,
 	edit,
 };
 
-registerFeaturePluginBlockType( 'woocommerce/product-sku', {
+registerBlockType( 'woocommerce/product-sku', {
 	...sharedConfig,
 	...blockConfig,
 } );

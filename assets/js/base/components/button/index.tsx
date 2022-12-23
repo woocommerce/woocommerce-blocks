@@ -44,6 +44,10 @@ export interface ButtonProps extends WPButton.ButtonProps {
 	 * Button variant
 	 */
 	variant?: 'text' | 'contained' | 'outlined';
+	/**
+	 * Button href
+	 */
+	href?: string | undefined;
 }
 
 /**
@@ -59,6 +63,7 @@ const Button = ( {
 }: ButtonProps ): JSX.Element => {
 	const buttonClassName = classNames(
 		'wc-block-components-button',
+		'wp-element-button',
 		className,
 		variant,
 		{
