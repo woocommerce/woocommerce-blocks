@@ -10,12 +10,7 @@
 /**
  * External dependencies
  */
-import {
-	canvas,
-	setPostContent,
-	insertBlock,
-	findSidebarPanelWithTitle,
-} from '@wordpress/e2e-test-utils';
+import { canvas, setPostContent, insertBlock } from '@wordpress/e2e-test-utils';
 import {
 	shopper,
 	visitBlockPage,
@@ -57,6 +52,7 @@ export const SELECTORS = {
 		'.components-dropdown-menu__menu[aria-label="Advanced Filters options"]',
 	advancedFiltersDropdownItem: '.components-menu-item__button',
 	productsGrid: `${ block.class } ul.wp-block-post-template`,
+	productsGridLoading: `${ block.class } p.wp-block-post-template`,
 	productsGridItem: `${ block.class } ul.wp-block-post-template > li`,
 	formTokenField: {
 		label: '.components-form-token-field__label',
@@ -87,6 +83,17 @@ export const resetProductQueryBlockPage = async ( variation = '' ) => {
 	await visitBlockPage( `${ block.name } Block` );
 	await waitForCanvas();
 	await setPostContent( '' );
+	/**
+	 * Save the block and reload the page is intentional. We randomly have
+	 * issues with priority-queue making Product Query stuck at loading state if
+	 * we insert block right after clear the current content. This is just a
+	 * workaround to avoid the error to happen. Investigating the root cause may
+	 * not worth the effort. We can't reproduce the issue manually, it only
+	 * happens in E2E tests.
+	 */
+	await saveOrPublish();
+	await visitBlockPage( `${ block.name } Block` );
+	await waitForCanvas();
 	await insertBlock( variation || block.name );
 	await canvas().waitForSelector( SELECTORS.productsGridItem );
 	// Wait until all product elements finish loading.
@@ -214,25 +221,27 @@ export const setupProductQueryShortcodeComparison = async (
 	return { productQueryProducts, shortcodeProducts };
 };
 
-export const selectPopularFilterPreset = async ( preset: string ) => {
-	const $popularFiltersPanel: ElementHandle< Node > =
-		await findSidebarPanelWithTitle( 'Popular Filters' );
-	const $toggleButton = await $popularFiltersPanel.$(
+export const selectPopularFilterPreset = async (
+	$panel: ElementHandle< Node >,
+	preset: string
+) => {
+	const $toggleButton = await $panel.$(
 		SELECTORS.customSelectControl.button
 	);
 	await $toggleButton.click();
-	await $popularFiltersPanel.waitForSelector(
+	await $panel.waitForSelector(
 		SELECTORS.customSelectControl.menu( { hidden: false } )
 	);
-	const [ $preset ] = await $popularFiltersPanel.$x(
+	const [ $preset ] = await $panel.$x(
 		`//li[contains(text(), "${ preset }")]`
 	);
-	if ( $preset ) {
-		await $preset.click();
-		await saveOrPublish();
-		return;
+	if ( ! $preset ) {
+		throw new Error(
+			`Preset "${ preset }" not found among Popular Filters options`
+		);
 	}
-	throw new Error(
-		`Preset "${ preset }" not found among Popular Filters options`
-	);
+	await $preset.click();
+	await canvas().waitForSelector( SELECTORS.productsGridLoading );
+	await canvas().waitForSelector( SELECTORS.productsGrid );
+	await saveOrPublish();
 };

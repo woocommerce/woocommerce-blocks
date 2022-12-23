@@ -83,7 +83,10 @@ describeOrSkip( GUTENBERG_EDITOR_CONTEXT === 'gutenberg' )(
 
 		describe( 'Newest', () => {
 			beforeEach( async () => {
-				await selectPopularFilterPreset( 'Newest' );
+				await selectPopularFilterPreset(
+					$popularFiltersPanel,
+					'Newest'
+				);
 			} );
 			it( 'Editor preview and block frontend display the same products', async () => {
 				const { previewProducts, frontEndProducts } =
@@ -102,7 +105,10 @@ describeOrSkip( GUTENBERG_EDITOR_CONTEXT === 'gutenberg' )(
 
 		describe( 'Best Selling', () => {
 			beforeEach( async () => {
-				await selectPopularFilterPreset( 'Best Selling' );
+				await selectPopularFilterPreset(
+					$popularFiltersPanel,
+					'Best Selling'
+				);
 			} );
 			it( 'Editor preview and block frontend display the same products', async () => {
 				const { previewProducts, frontEndProducts } =
@@ -121,7 +127,10 @@ describeOrSkip( GUTENBERG_EDITOR_CONTEXT === 'gutenberg' )(
 
 		describe( 'Top Rated', () => {
 			beforeEach( async () => {
-				await selectPopularFilterPreset( 'Top Rated' );
+				await selectPopularFilterPreset(
+					$popularFiltersPanel,
+					'Top Rated'
+				);
 			} );
 			it( 'Editor preview and block frontend display the same products', async () => {
 				const { previewProducts, frontEndProducts } =
