@@ -11,15 +11,19 @@
 		width: 16px;
 		height: 16px;
 	}
-	li.wc-blocks-incompatible-extension-element {
+	.wc-blocks-incompatible-extensions-notice__content {
 		display: flex;
-		align-items: center;
 
-		svg {
+		.wc-blocks-incompatible-extensions-notice__warning-icon {
 			width: 24px;
 			height: 24px;
 			margin-right: 6px;
+			min-width: max-content;
 		}
+	}
+	.wc-blocks-incompatible-extensions-notice__element {
+		display: flex;
+		align-items: center;
 	}
 }
 

@@ -71,20 +71,27 @@ export function IncompatiblePaymentGatewaysNotice( {
 			onRemove={ () => setStatus( 'dismissed' ) }
 			spokenMessage={ noticeContent }
 		>
-			<p>{ noticeContent }</p>
-			<ul>
-				{ Object.entries( incompatiblePaymentMethods ).map(
-					( [ id, title ] ) => (
-						<li
-							key={ id }
-							className="wc-blocks-incompatible-extension-element"
-						>
-							<Icon icon={ alert } />
-							<span>{ title }</span>
-						</li>
-					)
-				) }
-			</ul>
+			<div className="wc-blocks-incompatible-extensions-notice__content">
+				<Icon
+					className="wc-blocks-incompatible-extensions-notice__warning-icon"
+					icon={ alert }
+				/>
+				<div>
+					<p>{ noticeContent }</p>
+					<ul>
+						{ Object.entries( incompatiblePaymentMethods ).map(
+							( [ id, title ] ) => (
+								<li
+									key={ id }
+									className="wc-blocks-incompatible-extensions-notice__element"
+								>
+									{ title }
+								</li>
+							)
+						) }
+					</ul>
+				</div>
+			</div>
 		</Notice>
 	);
 }
