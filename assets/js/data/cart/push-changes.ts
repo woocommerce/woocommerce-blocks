@@ -7,10 +7,11 @@ import {
 	pluckAddress,
 	pluckEmail,
 	removeAllNotices,
+	isValidAddressKey,
 } from '@woocommerce/base-utils';
 import {
-	CartResponseBillingAddress,
-	CartResponseShippingAddress,
+	CartBillingAddress,
+	CartShippingAddress,
 	BillingAddressShippingAddress,
 } from '@woocommerce/types';
 import isShallowEqual from '@wordpress/is-shallow-equal';
@@ -22,17 +23,17 @@ import { STORE_KEY } from './constants';
 import { VALIDATION_STORE_KEY } from '../validation';
 import { processErrorResponse } from '../utils';
 
-declare type CustomerData = {
-	billingAddress: CartResponseBillingAddress;
-	shippingAddress: CartResponseShippingAddress;
+type CustomerData = {
+	billingAddress: CartBillingAddress;
+	shippingAddress: CartShippingAddress;
 };
 
 /**
  * Checks if a cart response contains an email property.
  */
-const isCartResponseBillingAddress = (
-	address: CartResponseBillingAddress | CartResponseShippingAddress
-): address is CartResponseBillingAddress => {
+const isBillingAddress = (
+	address: CartBillingAddress | CartShippingAddress
+): address is CartBillingAddress => {
 	return 'email' in address;
 };
 
@@ -40,18 +41,16 @@ const isCartResponseBillingAddress = (
  * Does a shallow compare of important address data to determine if the cart needs updating on the server. This takes
  * the current and previous address into account, as well as the billing email field.
  */
-const isAddressDirty = <
-	T extends CartResponseBillingAddress | CartResponseShippingAddress
->(
+const isAddressDirty = < T extends CartBillingAddress | CartShippingAddress >(
 	// An object containing all previous address information
 	previousAddress: T,
 	// An object containing all address information.
 	address: T
 ): boolean => {
 	if (
-		isCartResponseBillingAddress( address ) &&
+		isBillingAddress( address ) &&
 		pluckEmail( address ) !==
-			pluckEmail( previousAddress as CartResponseBillingAddress )
+			pluckEmail( previousAddress as CartBillingAddress )
 	) {
 		return true;
 	}
@@ -65,21 +64,25 @@ const isAddressDirty = <
 	);
 };
 
-type BaseAddressKeys =
-	| keyof CartResponseBillingAddress[]
-	| keyof CartResponseShippingAddress[];
+type BaseAddressKey = keyof CartBillingAddress | keyof CartShippingAddress;
 
-const getDirtyKeys = <
-	T extends CartResponseBillingAddress | CartResponseShippingAddress
->(
+const getDirtyKeys = < T extends CartBillingAddress | CartShippingAddress >(
 	// An object containing all previous address information
 	previousAddress: T,
 	// An object containing all address information.
 	address: T
-): Partial< BaseAddressKeys > =>
-	Object.keys( previousAddress ).filter( ( key ) => {
-		return previousAddress[ key ] !== address[ key ];
+): BaseAddressKey[] => {
+	const previousAddressKeys = Object.keys(
+		previousAddress
+	) as BaseAddressKey[];
+
+	return previousAddressKeys.filter( ( key ) => {
+		return (
+			isValidAddressKey( key, address ) &&
+			previousAddress[ key ] !== address[ key ]
+		);
 	} );
+};
 
 /**
  * Local cache of customerData used for comparisons.
@@ -88,13 +91,19 @@ let customerData = <CustomerData>{
 	billingAddress: {},
 	shippingAddress: {},
 };
+
 // Tracks if customerData has been populated.
 let customerDataIsInitialized = false;
 
 /**
  * Tracks which props have changed so the correct data gets pushed to the server.
  */
-const dirtyProps = {
+const dirtyProps = <
+	{
+		billingAddress: BaseAddressKey[];
+		shippingAddress: BaseAddressKey[];
+	}
+>{
 	billingAddress: [],
 	shippingAddress: [],
 };
@@ -138,7 +147,7 @@ const updateCustomerData = debounce( (): void => {
 	}
 
 	if ( dirtyProps.shippingAddress.length ) {
-		customerDataToUpdate.shippingAddress = pick(
+		customerDataToUpdate.shipping_address = pick(
 			shippingAddress,
 			dirtyProps.shippingAddress
 		);
@@ -202,7 +211,7 @@ export const pushChanges = (): void => {
 	if ( shippingIsDirty ) {
 		dirtyProps.shippingAddress = [
 			...dirtyProps.shippingAddress,
-			getDirtyKeys(
+			...getDirtyKeys(
 				customerData.shippingAddress,
 				newCustomerData.shippingAddress
 			),
@@ -213,7 +222,10 @@ export const pushChanges = (): void => {
 	customerData = newCustomerData;
 
 	// Trigger the update if we have any dirty props.
-	if ( dirtyProps.billingAddress || dirtyProps.shippingAddress ) {
+	if (
+		dirtyProps.billingAddress.length ||
+		dirtyProps.shippingAddress.length
+	) {
 		updateCustomerData();
 	}
 };

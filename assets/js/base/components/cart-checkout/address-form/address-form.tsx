@@ -153,8 +153,7 @@ const AddressForm = ( {
 					return null;
 				}
 
-				// Create a consistent error ID based on the field key and type to reference later on when checking
-				// validation errors.
+				// Create a consistent error ID based on the field key and type
 				const errorId = `${ type }_${ field.key }`;
 
 				if ( field.key === 'country' ) {

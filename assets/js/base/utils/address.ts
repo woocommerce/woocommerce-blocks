@@ -70,7 +70,7 @@ export const pluckEmail = ( {
 /**
  * Type-guard.
  */
-const isValidAddressKey = (
+export const isValidAddressKey = (
 	key: string,
 	address: CartResponseBillingAddress | CartResponseShippingAddress
 ): key is keyof typeof address => {
