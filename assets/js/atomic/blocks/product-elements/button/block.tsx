@@ -30,7 +30,6 @@ import type {
 	BlockAttributes,
 	AddToCartButtonAttributes,
 	AddToCartButtonPlaceholderAttributes,
-	CartRedirectAfterAdd,
 } from './types';
 
 /**
@@ -105,9 +104,8 @@ const AddToCartButton = ( {
 			} );
 			// redirect to cart if the setting to redirect to the cart page
 			// on cart add item is enabled
-			const { cartRedirectAfterAdd } = getSetting(
-				'productsSettings'
-			) as CartRedirectAfterAdd;
+			const { cartRedirectAfterAdd }: { cartRedirectAfterAdd: boolean } =
+				getSetting( 'productsSettings' );
 			if ( cartRedirectAfterAdd ) {
 				window.location.href = CART_URL;
 			}

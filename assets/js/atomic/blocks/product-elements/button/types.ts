@@ -6,9 +6,6 @@ interface WithStyle {
 	style: Record< string, unknown >;
 }
 
-export interface CartRedirectAfterAdd {
-	cartRedirectAfterAdd: boolean;
-}
 export interface BlockAttributes {
 	className?: string | undefined;
 	textAlign?: string | undefined;
