@@ -178,9 +178,10 @@ class CartUpdateCustomer extends AbstractCartRoute {
 		do_action( 'woocommerce_store_api_cart_update_customer_from_request', $customer, $request );
 
 		$customer->save();
+
 		$this->cart_controller->calculate_totals();
 
-		return rest_ensure_response( $this->schema->get_item_response( $this->cart_controller->get_cart_instance() ) );
+		return rest_ensure_response( $this->schema->get_item_response( $cart ) );
 	}
 
 	/**
