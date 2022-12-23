@@ -87,13 +87,18 @@ abstract class AbstractAddressSchema extends AbstractSchema {
 	 * @return array
 	 */
 	public function sanitize_callback( $address, $request, $param ) {
-		$address_keys                  = array_keys( $this->get_properties() );
-		$address                       = array_merge( array_fill_keys( $address_keys, '' ), (array) $address );
-		$sanitized_address             = array_map( [ $this, 'clean_param' ], $address );
-		$sanitized_address['country']  = wc_strtoupper( $sanitized_address['country'] );
-		$sanitized_address['postcode'] = wc_format_postcode( $sanitized_address['postcode'], $sanitized_address['country'] );
-		$sanitized_address['state']    = $this->format_state( $sanitized_address['state'], $sanitized_address['country'] );
-		return $sanitized_address;
+		$address               = array_merge( array_fill_keys( array_keys( $this->get_properties() ), '' ), (array) $address );
+		$address['country']    = wc_strtoupper( wc_clean( wp_unslash( $address['country'] ) ) );
+		$address['first_name'] = wc_clean( wp_unslash( $address['first_name'] ) );
+		$address['last_name']  = wc_clean( wp_unslash( $address['last_name'] ) );
+		$address['company']    = wc_clean( wp_unslash( $address['company'] ) );
+		$address['address_1']  = wc_clean( wp_unslash( $address['address_1'] ) );
+		$address['address_2']  = wc_clean( wp_unslash( $address['address_2'] ) );
+		$address['city']       = wc_clean( wp_unslash( $address['city'] ) );
+		$address['state']      = $this->format_state( wc_clean( wp_unslash( $address['state'] ) ), $address['country'] );
+		$address['postcode']   = $address['postcode'] ? wc_format_postcode( wc_clean( wp_unslash( $address['postcode'] ) ), $address['country'] ) : '';
+		$address['phone']      = wc_clean( wp_unslash( $address['phone'] ) );
+		return $address;
 	}
 
 	/**
@@ -104,16 +109,6 @@ abstract class AbstractAddressSchema extends AbstractSchema {
 	 */
 	protected function get_states_for_country( $country ) {
 		return $country ? array_filter( (array) \wc()->countries->get_states( $country ) ) : [];
-	}
-
-	/**
-	 * Cleans params.
-	 *
-	 * @param string $param The param to clean.
-	 * @return string The cleaned param.
-	 */
-	protected function clean_param( $param ) {
-		return wc_clean( wp_unslash( $param ) );
 	}
 
 	/**
