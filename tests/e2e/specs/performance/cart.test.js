@@ -101,13 +101,12 @@ describe( 'Cart performance', () => {
 			'button.wc-block-components-quantity-selector__button--plus'
 		);
 		let i = 3;
-
+		await expect( page ).toClick(
+			'.wc-block-components-totals-coupon-link'
+		);
 		const timesForResponse = [];
 		while ( i-- ) {
 			const start = performance.now();
-			await expect( page ).toClick(
-				'.wc-block-components-totals-coupon-link'
-			);
 			await expect( page ).toFill(
 				'[aria-label="Enter code"]',
 				'test_coupon'
