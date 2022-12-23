@@ -46,9 +46,7 @@ options.vnode = ( vnode ) => {
 			{ ...vnode.props, context },
 			vnode.props.children
 		);
-	}
-
-	if ( wp ) {
+	} else if ( wp ) {
 		const props = vnode.props;
 		delete props.wp;
 		if ( ! props._wrapped ) {
