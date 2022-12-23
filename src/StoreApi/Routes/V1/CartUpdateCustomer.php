@@ -2,6 +2,7 @@
 namespace Automattic\WooCommerce\StoreApi\Routes\V1;
 
 use Automattic\WooCommerce\StoreApi\Utilities\DraftOrderTrait;
+use Automattic\WooCommerce\StoreApi\Exceptions\RouteException;
 
 /**
  * CartUpdateCustomer class.
@@ -44,38 +45,14 @@ class CartUpdateCustomer extends AbstractCartRoute {
 						'type'              => 'object',
 						'context'           => [ 'view', 'edit' ],
 						'properties'        => $this->schema->billing_address_schema->get_properties(),
-						'sanitize_callback' => [ $this->schema->billing_address_schema, 'sanitize_callback' ],
-						'validate_callback' => [ $this->schema->billing_address_schema, 'validate_callback' ],
+						'sanitize_callback' => null,
 					],
 					'shipping_address' => [
 						'description'       => __( 'Shipping address.', 'woo-gutenberg-products-block' ),
 						'type'              => 'object',
 						'context'           => [ 'view', 'edit' ],
 						'properties'        => $this->schema->shipping_address_schema->get_properties(),
-						'sanitize_callback' => [ $this->schema->shipping_address_schema, 'sanitize_callback' ],
-						'validate_callback' => [ $this->schema->shipping_address_schema, 'validate_callback' ],
-					],
-				],
-			],
-			[
-				'methods'             => \WP_REST_Server::EDITABLE,
-				'callback'            => [ $this, 'get_response' ],
-				'permission_callback' => '__return_true',
-				'args'                => [
-					'billing_address'  => [
-						'description'       => __( 'Billing address.', 'woo-gutenberg-products-block' ),
-						'type'              => 'object',
-						'context'           => [ 'view', 'edit' ],
-						'properties'        => $this->schema->billing_address_schema->get_properties(),
-						'sanitize_callback' => [ $this->schema->billing_address_schema, 'sanitize_callback' ],
-
-					],
-					'shipping_address' => [
-						'description'       => __( 'Shipping address.', 'woo-gutenberg-products-block' ),
-						'type'              => 'object',
-						'context'           => [ 'view', 'edit' ],
-						'properties'        => $this->schema->shipping_address_schema->get_properties(),
-						'sanitize_callback' => [ $this->schema->shipping_address_schema, 'sanitize_callback' ],
+						'sanitize_callback' => null,
 					],
 				],
 			],
@@ -85,64 +62,111 @@ class CartUpdateCustomer extends AbstractCartRoute {
 	}
 
 	/**
+	 * Validate address params now they are populated.
+	 *
+	 * @param \WP_REST_Request $request Request object.
+	 * @param array            $billing Billing address.
+	 * @param array            $shipping Shipping address.
+	 * @return \WP_Error|true
+	 */
+	protected function validate_address_params( $request, $billing, $shipping ) {
+		$billing_validation_check  = $this->schema->billing_address_schema->validate_callback( $billing, $request, 'billing_address' );
+		$shipping_validation_check = $this->schema->shipping_address_schema->validate_callback( $shipping, $request, 'shipping_address' );
+
+		$invalid_params  = array();
+		$invalid_details = array();
+
+		if ( false === $billing_validation_check ) {
+			$invalid_params['billing_address'] = __( 'Invalid parameter.', 'woo-gutenberg-products-block' );
+		} elseif ( is_wp_error( $billing_validation_check ) ) {
+			$invalid_params['billing_address']  = implode( ' ', $billing_validation_check->get_error_messages() );
+			$invalid_details['billing_address'] = \rest_convert_error_to_response( $billing_validation_check )->get_data();
+		}
+
+		if ( false === $shipping_validation_check ) {
+			$invalid_params['shipping_address'] = __( 'Invalid parameter.', 'woo-gutenberg-products-block' );
+		} elseif ( is_wp_error( $shipping_validation_check ) ) {
+			$invalid_params['shipping_address']  = implode( ' ', $shipping_validation_check->get_error_messages() );
+			$invalid_details['shipping_address'] = \rest_convert_error_to_response( $shipping_validation_check )->get_data();
+		}
+
+		if ( $invalid_params ) {
+			return new \WP_Error(
+				'rest_invalid_param',
+				/* translators: %s: List of invalid parameters. */
+				sprintf( __( 'Invalid parameter(s): %s', 'woo-gutenberg-products-block' ), implode( ', ', array_keys( $invalid_params ) ) ),
+				[
+					'status'  => 400,
+					'params'  => $invalid_params,
+					'details' => $invalid_details,
+				]
+			);
+		}
+
+		return true;
+	}
+
+	/**
 	 * Handle the request and return a valid response for this endpoint.
+	 *
+	 * @throws RouteException Exception thrown if country is missing.
 	 *
 	 * @param \WP_REST_Request $request Request object.
 	 * @return \WP_REST_Response
 	 */
 	protected function get_route_post_response( \WP_REST_Request $request ) {
 		$cart     = $this->cart_controller->get_cart_instance();
-		$billing  = $request['billing_address'] ?? [];
-		$shipping = $request['shipping_address'] ?? [];
 		$customer = wc()->customer;
 
+		// Get data from request object and merge with customer object.
+		$billing  = wp_parse_args( $request['billing_address'] ?? [], $this->get_customer_billing_address( $customer ) );
+		$shipping = wp_parse_args( $request['shipping_address'] ?? [], $this->get_customer_shipping_address( $customer ) );
+
+		// If the cart does not need shipping, shipping address is forced to match billing address unless defined.
 		if ( ! $cart->needs_shipping() && ! isset( $request['shipping_address'] ) ) {
-			// If the cart does not need shipping, shipping address is forced to match billing address unless defined.
 			$shipping = $request['billing_address'] ?? $this->get_customer_billing_address( $customer );
 		}
-		$customer_data = array(
-			'billing_first_name'  => $billing['first_name'] ?? null,
-			'billing_last_name'   => $billing['last_name'] ?? null,
-			'billing_company'     => $billing['company'] ?? null,
-			'billing_address_1'   => $billing['address_1'] ?? null,
-			'billing_address_2'   => $billing['address_2'] ?? null,
-			'billing_city'        => $billing['city'] ?? null,
-			'billing_state'       => $billing['state'] ?? null,
-			'billing_postcode'    => $billing['postcode'] ?? null,
-			'billing_country'     => $billing['country'] ?? null,
-			'billing_phone'       => $billing['phone'] ?? null,
-			'billing_email'       => $billing['email'] ?? null,
-			'shipping_first_name' => $shipping['first_name'] ?? null,
-			'shipping_last_name'  => $shipping['last_name'] ?? null,
-			'shipping_company'    => $shipping['company'] ?? null,
-			'shipping_address_1'  => $shipping['address_1'] ?? null,
-			'shipping_address_2'  => $shipping['address_2'] ?? null,
-			'shipping_city'       => $shipping['city'] ?? null,
-			'shipping_state'      => $shipping['state'] ?? null,
-			'shipping_postcode'   => $shipping['postcode'] ?? null,
-			'shipping_country'    => $shipping['country'] ?? null,
-			'shipping_phone'      => $shipping['phone'] ?? null,
-		);
 
-		// This prevent us from reseting values.
-		$customer_data = array_filter(
-			$customer_data,
-			function( $value ) {
-				return null !== $value;
-			}
-		);
+		// Validate required fields.
+		if ( empty( $billing['country'] ) || empty( $shipping['country'] ) ) {
+			throw new RouteException( 'woocommerce_rest_customer_address_missing_country', __( 'Country is required', 'woo-gutenberg-products-block' ), 400 );
+		}
 
-		$customer->set_props( $customer_data );
+		// Run validation and sanitization now that the cart and customer data is loaded.
+		$billing  = $this->schema->billing_address_schema->sanitize_callback( $billing, $request, 'billing_address' );
+		$shipping = $this->schema->shipping_address_schema->sanitize_callback( $shipping, $request, 'shipping_address' );
 
-		wc_do_deprecated_action(
-			'woocommerce_blocks_cart_update_customer_from_request',
+		// Validate data now everything is clean..
+		$validation_check = $this->validate_address_params( $request, $billing, $shipping );
+
+		if ( is_wp_error( $validation_check ) ) {
+			return rest_ensure_response( $validation_check );
+		}
+
+		$customer->set_props(
 			array(
-				$customer,
-				$request,
-			),
-			'7.2.0',
-			'woocommerce_store_api_cart_update_customer_from_request',
-			'This action was deprecated in WooCommerce Blocks version 7.2.0. Please use woocommerce_store_api_cart_update_customer_from_request instead.'
+				'billing_first_name'  => $billing['first_name'] ?? null,
+				'billing_last_name'   => $billing['last_name'] ?? null,
+				'billing_company'     => $billing['company'] ?? null,
+				'billing_address_1'   => $billing['address_1'] ?? null,
+				'billing_address_2'   => $billing['address_2'] ?? null,
+				'billing_city'        => $billing['city'] ?? null,
+				'billing_state'       => $billing['state'] ?? null,
+				'billing_postcode'    => $billing['postcode'] ?? null,
+				'billing_country'     => $billing['country'] ?? null,
+				'billing_phone'       => $billing['phone'] ?? null,
+				'billing_email'       => $billing['email'] ?? null,
+				'shipping_first_name' => $shipping['first_name'] ?? null,
+				'shipping_last_name'  => $shipping['last_name'] ?? null,
+				'shipping_company'    => $shipping['company'] ?? null,
+				'shipping_address_1'  => $shipping['address_1'] ?? null,
+				'shipping_address_2'  => $shipping['address_2'] ?? null,
+				'shipping_city'       => $shipping['city'] ?? null,
+				'shipping_state'      => $shipping['state'] ?? null,
+				'shipping_postcode'   => $shipping['postcode'] ?? null,
+				'shipping_country'    => $shipping['country'] ?? null,
+				'shipping_phone'      => $shipping['phone'] ?? null,
+			)
 		);
 
 		/**
@@ -154,21 +178,9 @@ class CartUpdateCustomer extends AbstractCartRoute {
 		do_action( 'woocommerce_store_api_cart_update_customer_from_request', $customer, $request );
 
 		$customer->save();
-
 		$this->cart_controller->calculate_totals();
 
-		return rest_ensure_response( $this->schema->get_item_response( $cart ) );
-	}
-
-	/**
-	 * Handle the request and return a valid response for this endpoint.
-	 *
-	 * @param \WP_REST_Request $request Request object.
-	 * @return \WP_REST_Response
-	 */
-	protected function get_route_update_response( \WP_REST_Request $request ) {
-		// shortcut for now.
-		return $this->get_route_post_response( $request );
+		return rest_ensure_response( $this->schema->get_item_response( $this->cart_controller->get_cart_instance() ) );
 	}
 
 	/**
@@ -189,6 +201,27 @@ class CartUpdateCustomer extends AbstractCartRoute {
 			'postcode'   => $customer->get_billing_postcode(),
 			'country'    => $customer->get_billing_country(),
 			'phone'      => $customer->get_billing_phone(),
+		];
+	}
+
+	/**
+	 * Get full customer shipping address.
+	 *
+	 * @param \WC_Customer $customer Customer object.
+	 * @return array
+	 */
+	protected function get_customer_shipping_address( \WC_Customer $customer ) {
+		return [
+			'first_name' => $customer->get_shipping_first_name(),
+			'last_name'  => $customer->get_shipping_last_name(),
+			'company'    => $customer->get_shipping_company(),
+			'address_1'  => $customer->get_shipping_address_1(),
+			'address_2'  => $customer->get_shipping_address_2(),
+			'city'       => $customer->get_shipping_city(),
+			'state'      => $customer->get_shipping_state(),
+			'postcode'   => $customer->get_shipping_postcode(),
+			'country'    => $customer->get_shipping_country(),
+			'phone'      => $customer->get_shipping_phone(),
 		];
 	}
 }

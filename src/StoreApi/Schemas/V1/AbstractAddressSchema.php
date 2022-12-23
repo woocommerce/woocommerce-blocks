@@ -87,18 +87,13 @@ abstract class AbstractAddressSchema extends AbstractSchema {
 	 * @return array
 	 */
 	public function sanitize_callback( $address, $request, $param ) {
-		$address               = array_merge( array_fill_keys( array_keys( $this->get_properties() ), null ), (array) $address );
-		$address['country']    = null !== $address['country'] ? wc_strtoupper( wc_clean( wp_unslash( $address['country'] ) ) ) : null;
-		$address['first_name'] = $this->clean_param( $address['first_name'] );
-		$address['last_name']  = $this->clean_param( $address['last_name'] );
-		$address['company']    = $this->clean_param( $address['company'] );
-		$address['address_1']  = $this->clean_param( $address['address_1'] );
-		$address['address_2']  = $this->clean_param( $address['address_2'] );
-		$address['city']       = $this->clean_param( $address['city'] );
-		$address['state']      = $this->format_state( $this->clean_param( $address['state'] ), $address['country'] );
-		$address['postcode']   = null !== $address['postcode'] ? wc_format_postcode( wc_clean( wp_unslash( $address['postcode'] ) ), $address['country'] ) : null;
-		$address['phone']      = $this->clean_param( $address['phone'] );
-		return $address;
+		$address_keys                  = array_keys( $this->get_properties() );
+		$address                       = array_merge( array_fill_keys( $address_keys, '' ), (array) $address );
+		$sanitized_address             = array_map( [ $this, 'clean_param' ], $address );
+		$sanitized_address['country']  = wc_strtoupper( $sanitized_address['country'] );
+		$sanitized_address['postcode'] = wc_format_postcode( $sanitized_address['postcode'], $sanitized_address['country'] );
+		$sanitized_address['state']    = $this->format_state( $sanitized_address['state'], $sanitized_address['country'] );
+		return $sanitized_address;
 	}
 
 	/**
@@ -112,16 +107,12 @@ abstract class AbstractAddressSchema extends AbstractSchema {
 	}
 
 	/**
-	 * Cleans a parametere if its set and not null.
+	 * Cleans params.
 	 *
-	 * @param string|null $param The param to clean.
-	 * @return string|null The cleaned param.
+	 * @param string $param The param to clean.
+	 * @return string The cleaned param.
 	 */
 	protected function clean_param( $param ) {
-		if ( null === $param ) {
-			return null;
-		}
-
 		return wc_clean( wp_unslash( $param ) );
 	}
 

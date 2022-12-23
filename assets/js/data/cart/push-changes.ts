@@ -7,7 +7,6 @@ import {
 	pluckAddress,
 	pluckEmail,
 	removeAllNotices,
-	isValidAddressKey,
 } from '@woocommerce/base-utils';
 import {
 	CartBillingAddress,
@@ -77,10 +76,7 @@ const getDirtyKeys = < T extends CartBillingAddress | CartShippingAddress >(
 	) as BaseAddressKey[];
 
 	return previousAddressKeys.filter( ( key ) => {
-		return (
-			isValidAddressKey( key, address ) &&
-			previousAddress[ key ] !== address[ key ]
-		);
+		return previousAddress[ key ] !== address[ key ];
 	} );
 };
 
@@ -156,7 +152,7 @@ const updateCustomerData = debounce( (): void => {
 
 	if ( Object.keys( customerDataToUpdate ).length ) {
 		dispatch( STORE_KEY )
-			.updateCustomerData( customerDataToUpdate, true )
+			.updateCustomerData( customerDataToUpdate )
 			.then( () => {
 				removeAllNotices();
 			} )
