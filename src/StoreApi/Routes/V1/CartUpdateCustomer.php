@@ -2,7 +2,6 @@
 namespace Automattic\WooCommerce\StoreApi\Routes\V1;
 
 use Automattic\WooCommerce\StoreApi\Utilities\DraftOrderTrait;
-use Automattic\WooCommerce\StoreApi\Exceptions\RouteException;
 
 /**
  * CartUpdateCustomer class.
@@ -108,8 +107,6 @@ class CartUpdateCustomer extends AbstractCartRoute {
 
 	/**
 	 * Handle the request and return a valid response for this endpoint.
-	 *
-	 * @throws RouteException Exception thrown if country is missing.
 	 *
 	 * @param \WP_REST_Request $request Request object.
 	 * @return \WP_REST_Response
