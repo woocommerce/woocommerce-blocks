@@ -1,15 +1,14 @@
-export interface BlockAttributes {
-	className?: string | undefined;
-	textAlign?: string | undefined;
-	isDescendentOfQueryLoop?: boolean | undefined;
-}
-
 interface WithClass {
 	className: string;
 }
 
 interface WithStyle {
 	style: Record< string, unknown >;
+}
+export interface BlockAttributes {
+	className?: string | undefined;
+	textAlign?: string | undefined;
+	isDescendentOfQueryLoop?: boolean | undefined;
 }
 
 export interface AddToCartButtonPlaceholderAttributes {
