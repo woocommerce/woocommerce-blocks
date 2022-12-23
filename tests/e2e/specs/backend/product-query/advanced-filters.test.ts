@@ -10,16 +10,16 @@ import {
 	getToggleIdByLabel,
 } from '@woocommerce/blocks-test-utils';
 import { ElementHandle } from 'puppeteer';
-import { setCheckbox, unsetCheckbox } from '@woocommerce/e2e-utils';
+import {
+	setCheckbox,
+	unsetCheckbox,
+	ensureSidebarOpened,
+} from '@woocommerce/e2e-utils';
 
 /**
  * Internal dependencies
  */
-import {
-	GUTENBERG_EDITOR_CONTEXT,
-	describeOrSkip,
-	openBlockEditorSettings,
-} from '../../../utils';
+import { GUTENBERG_EDITOR_CONTEXT, describeOrSkip } from '../../../utils';
 import {
 	block,
 	SELECTORS,
@@ -48,7 +48,7 @@ describeOrSkip( GUTENBERG_EDITOR_CONTEXT === 'gutenberg' )(
 			 * test can be run individually.
 			 */
 			await resetProductQueryBlockPage();
-			await openBlockEditorSettings();
+			await ensureSidebarOpened();
 			await selectBlockByName( block.slug );
 			$productFiltersPanel = await findToolsPanelWithTitle(
 				'Advanced Filters'

@@ -1,7 +1,10 @@
 /**
  * External dependencies
  */
-import { findSidebarPanelWithTitle } from '@wordpress/e2e-test-utils';
+import {
+	findSidebarPanelWithTitle,
+	ensureSidebarOpened,
+} from '@wordpress/e2e-test-utils';
 import {
 	selectBlockByName,
 	getFormElementIdByLabel,
@@ -11,11 +14,7 @@ import { ElementHandle } from 'puppeteer';
 /**
  * Internal dependencies
  */
-import {
-	GUTENBERG_EDITOR_CONTEXT,
-	describeOrSkip,
-	openBlockEditorSettings,
-} from '../../../utils';
+import { GUTENBERG_EDITOR_CONTEXT, describeOrSkip } from '../../../utils';
 import {
 	block,
 	resetProductQueryBlockPage,
@@ -35,7 +34,7 @@ describeOrSkip( GUTENBERG_EDITOR_CONTEXT === 'gutenberg' )(
 			 * test can be run individually.
 			 */
 			await resetProductQueryBlockPage();
-			await openBlockEditorSettings();
+			await ensureSidebarOpened();
 			await selectBlockByName( block.slug );
 			$popularFiltersPanel = await findSidebarPanelWithTitle(
 				'Popular Filters'
