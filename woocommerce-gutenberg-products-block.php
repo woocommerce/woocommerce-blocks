@@ -286,32 +286,3 @@ function woocommerce_blocks_plugin_outdated_notice() {
 }
 
 add_action( 'admin_notices', 'woocommerce_blocks_plugin_outdated_notice' );
-
-function add_cst_meta_tag()
-{
-	echo '<meta itemprop="wp-client-side-transitions" content="active">';
-	add_filter(
-		'client_side_transitions',
-		true
-	);
-}
-
-add_action('wp_head', 'add_cst_meta_tag');
-
-function add_interactivity_scripts( ){
-	wp_enqueue_script( 'wc-interactivity' , plugin_dir_url(__FILE__) . '/build/wc-blocks-interactivity.js' );
-}
-
-add_filter( 'wp_head',	'add_interactivity_scripts', 10, 3 );
-
-function prefetch_navigation_links($block_content, $block, $instance)
-{
-	$block_content = str_replace(
-		'<a ',
-		'<a wp-link=\'{"prefetch": true, "scroll": false}\'',
-		$block_content
-	);
-	return $block_content;
-}
-
-add_filter('render_block_core/query-pagination',	'prefetch_navigation_links', 10, 3);
