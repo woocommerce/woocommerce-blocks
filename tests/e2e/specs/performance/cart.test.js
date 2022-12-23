@@ -105,7 +105,7 @@ describe( 'Cart performance', () => {
 		const timesForResponse = [];
 		while ( i-- ) {
 			const start = performance.now();
-			await await expect( page ).toClick(
+			await expect( page ).toClick(
 				'.wc-block-components-totals-coupon-link'
 			);
 			await expect( page ).toFill(
