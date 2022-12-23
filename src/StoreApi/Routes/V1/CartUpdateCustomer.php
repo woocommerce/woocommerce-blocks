@@ -127,11 +127,6 @@ class CartUpdateCustomer extends AbstractCartRoute {
 			$shipping = $request['billing_address'] ?? $this->get_customer_billing_address( $customer );
 		}
 
-		// Validate required fields.
-		if ( empty( $billing['country'] ) || empty( $shipping['country'] ) ) {
-			throw new RouteException( 'woocommerce_rest_customer_address_missing_country', __( 'Country is required', 'woo-gutenberg-products-block' ), 400 );
-		}
-
 		// Run validation and sanitization now that the cart and customer data is loaded.
 		$billing  = $this->schema->billing_address_schema->sanitize_callback( $billing, $request, 'billing_address' );
 		$shipping = $this->schema->shipping_address_schema->sanitize_callback( $shipping, $request, 'shipping_address' );
