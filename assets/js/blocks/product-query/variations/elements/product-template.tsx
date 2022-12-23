@@ -20,12 +20,7 @@ if ( isFeaturePluginBuild() ) {
 			'Contains the block elements used to render a product, like the title, date, featured image, content or excerpt, and more.',
 			'woo-gutenberg-products-block'
 		),
-		blockIcon: (
-			<Icon
-				icon={ layout }
-				className="wc-block-editor-components-block-icon"
-			/>
-		),
+		blockIcon: <Icon icon={ layout } />,
 		blockTitle: __( 'Product template', 'woo-gutenberg-products-block' ),
 		variationName: VARIATION_NAME,
 	} );
