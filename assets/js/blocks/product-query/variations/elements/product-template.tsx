@@ -17,7 +17,7 @@ export const VARIATION_NAME = 'woocommerce/product-query/product-template';
 if ( isFeaturePluginBuild() ) {
 	registerElementVariation( CORE_NAME, {
 		blockDescription: __(
-			'Contains the block elements used to render a product, like the title, date, featured image, content or excerpt, and more.',
+			'Contains the block elements used to render a product, like its name, featured image, rating, and more.',
 			'woo-gutenberg-products-block'
 		),
 		blockIcon: <Icon icon={ layout } />,
