@@ -6,8 +6,8 @@ import { CURRENT_USER_IS_ADMIN } from '@woocommerce/settings';
 import { Children, cloneElement } from '@wordpress/element';
 import {
 	createSlotFill as baseCreateSlotFill,
-	__experimentalUseSlot,
-	useSlot as __useSlot, //eslint-disable-line
+	__experimentalUseSlotFills,
+	useSlotFills as __useSlotFills, //eslint-disable-line
 } from '@wordpress/components';
 
 /**
@@ -46,22 +46,22 @@ export const hasValidFills = ( fills ) =>
 	Array.isArray( fills ) && fills.filter( Boolean ).length > 0;
 
 /**
- * A hook that is used inside a slotFillProvider to return information on the a slot.
+ * A hook that is used inside a slotFillProvider to return information on the a slot fills.
  *
  * @param {string} slotName The slot name to be hooked into.
  * @return {Object} slot data.
  */
-let useSlot;
+let useSlotFills;
 
-if ( typeof __useSlot === 'function' ) {
-	useSlot = __useSlot;
-} else if ( typeof __experimentalUseSlot === 'function' ) {
-	useSlot = __experimentalUseSlot;
+if ( typeof __useSlotFills === 'function' ) {
+	useSlotFills = __useSlotFills;
+} else if ( typeof __experimentalUseSlotFills === 'function' ) {
+	useSlotFills = __experimentalUseSlotFills;
 } else {
-	useSlot = mockedUseSlot;
+	useSlotFills = mockedUseSlot;
 }
 
-export { useSlot };
+export { useSlotFills };
 
 /**
  * Abstracts @wordpress/components createSlotFill, wraps Fill in an error boundary and passes down fillProps.
