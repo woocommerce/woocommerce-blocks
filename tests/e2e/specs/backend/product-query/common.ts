@@ -10,7 +10,7 @@
 /**
  * External dependencies
  */
-import { canvas, setPostContent, insertBlock } from '@wordpress/e2e-test-utils';
+import { canvas, setPostContent } from '@wordpress/e2e-test-utils';
 import {
 	shopper,
 	visitBlockPage,
@@ -25,6 +25,7 @@ import { ElementHandle } from 'puppeteer';
  * Internal dependencies
  */
 import { waitForCanvas } from '../../../utils';
+import fixture from '../__fixtures__/products-beta.fixture.json';
 
 export const block = {
 	name: 'Products (Beta)',
@@ -79,31 +80,11 @@ export const goToProductQueryBlockPage = async () => {
 	await shopper.block.goToBlockPage( block.name );
 };
 
-export const resetProductQueryBlockPage = async ( variation = '' ) => {
+export const resetProductQueryBlockPage = async () => {
 	await visitBlockPage( `${ block.name } Block` );
 	await waitForCanvas();
-	await setPostContent( '' );
-	/**
-	 * Save the block and reload the page is intentional. We randomly have
-	 * issues with priority-queue making Product Query stuck at loading state if
-	 * we insert block right after clear the current content. This is just a
-	 * workaround to avoid the error to happen. Investigating the root cause may
-	 * not worth the effort. We can't reproduce the issue manually, it only
-	 * happens in E2E tests.
-	 */
-	await saveOrPublish();
-	await visitBlockPage( `${ block.name } Block` );
-	await waitForCanvas();
-	await insertBlock( variation || block.name );
-	await canvas().waitForSelector( SELECTORS.productsGridItem );
-	// Wait until all product elements finish loading.
-	await canvas().waitForFunction(
-		( wrapperClass: string ) =>
-			document.querySelectorAll( `${ wrapperClass } .is-loading` )
-				.length === 0,
-		{},
-		block.class
-	);
+	await setPostContent( fixture.pageContent );
+	await canvas().waitForSelector( SELECTORS.productsGrid );
 	await saveOrPublish();
 };
 
@@ -241,7 +222,9 @@ export const selectPopularFilterPreset = async (
 		);
 	}
 	await $preset.click();
-	await canvas().waitForSelector( SELECTORS.productsGridLoading );
+	try {
+		await canvas().waitForSelector( SELECTORS.productsGridLoading );
+	} catch ( _ok ) {}
 	await canvas().waitForSelector( SELECTORS.productsGrid );
 	await saveOrPublish();
 };
