@@ -9,7 +9,7 @@ import { ADMIN_URL, getSetting } from '@woocommerce/settings';
 import ExternalLinkCard from '@woocommerce/editor-components/external-link-card';
 import { innerBlockAreas } from '@woocommerce/blocks-checkout';
 import Noninteractive from '@woocommerce/base-components/noninteractive';
-import { GlobalPaymentMethod } from '@woocommerce/type-defs/payments';
+import { GlobalPaymentMethod } from '@woocommerce/types';
 import { useSelect } from '@wordpress/data';
 import { PAYMENT_STORE_KEY } from '@woocommerce/block-data';
 
