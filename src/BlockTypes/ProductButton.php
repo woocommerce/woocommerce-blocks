@@ -90,6 +90,13 @@ class ProductButton extends AbstractBlock {
 			$styles_and_classes            = StyleAttributesUtils::get_classes_and_styles_by_attributes( $attributes, array( 'border_radius', 'font_size', 'font_weight', 'margin', 'padding', 'text_color' ) );
 			$text_align_styles_and_classes = StyleAttributesUtils::get_text_align_class_and_style( $attributes );
 
+			/**
+			 * Filters the add to cart button class.
+			 *
+			 * @since 8.7.0
+			 *
+			 * @param string $class The class.
+			 */
 			return apply_filters(
 				'woocommerce_loop_add_to_cart_link',
 				sprintf(
