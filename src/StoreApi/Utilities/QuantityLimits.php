@@ -184,8 +184,6 @@ final class QuantityLimits {
 	/**
 	 * Get a quantity for a product or cart item by running it through a filter hook.
 	 *
-	 * @since 6.8.0
-	 *
 	 * @param int|null          $value Value to filter.
 	 * @param string            $value_type Type of value. Used for filter suffix.
 	 * @param \WC_Product|array $cart_item_or_product Either a cart item or a product instance.
