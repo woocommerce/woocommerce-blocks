@@ -108,7 +108,7 @@ class CartController {
 		/**
 		 * Filters the item being added to the cart.
 		 *
-		 * @since 2.6.0
+		 * @since 2.5.0
 		 *
 		 * @internal Matches filter name in WooCommerce core.
 		 *
@@ -136,7 +136,7 @@ class CartController {
 		/**
 		 * Filters the entire cart contents when the cart changes.
 		 *
-		 * @since 3.2.0
+		 * @since 2.5.0
 		 *
 		 * @internal Matches filter name in WooCommerce core.
 		 *
@@ -151,7 +151,7 @@ class CartController {
 		 * This hook fires when an item is added to the cart. This is triggered from the Store API in this context, but
 		 * WooCommerce core add to cart events trigger the same hook.
 		 *
-		 * @since 2.6.0
+		 * @since 2.5.0
 		 *
 		 * @internal Matches action name in WooCommerce core.
 		 *

@@ -153,6 +153,8 @@ final class QuantityLimits {
 		 *
 		 * Filters the variation option name for custom option slugs.
 		 *
+		 * @since 6.8.0
+		 *
 		 * @param integer $quantity_limit Quantity limit which defaults to 9999 unless sold individually.
 		 * @param \WC_Product $product Product instance.
 		 * @return integer
@@ -182,6 +184,8 @@ final class QuantityLimits {
 	/**
 	 * Get a quantity for a product or cart item by running it through a filter hook.
 	 *
+	 * @since 6.8.0
+	 *
 	 * @param int|null          $value Value to filter.
 	 * @param string            $value_type Type of value. Used for filter suffix.
 	 * @param \WC_Product|array $cart_item_or_product Either a cart item or a product instance.
@@ -197,6 +201,8 @@ final class QuantityLimits {
 		 *
 		 * The suffix of the hook will vary depending on the value being filtered.
 		 * For example, minimum, maximum, multiple_of, editable.
+		 *
+		 * @since 6.8.0
 		 *
 		 * @param mixed $value The value being filtered.
 		 * @param \WC_Product $product The product object.
