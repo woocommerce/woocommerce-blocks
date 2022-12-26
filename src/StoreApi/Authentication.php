@@ -16,21 +16,11 @@ class Authentication {
 	}
 
 	/**
-	 * The Store API does not require authentication.
+	 * Apply rate limiting to the Store API.
 	 *
-	 * @param \WP_Error|mixed $result Error from another authentication handler, null if we should handle it, or another value if not.
-	 * @return \WP_Error|null|bool
+	 * @return \WP_Error
 	 */
-	public function check_authentication( $result ) {
-		if ( ! $this->is_request_to_store_api() ) {
-			return $result;
-		}
-
-		// Disable Rate Limiting for logged in users with 'edit posts' capability.
-		if ( current_user_can( 'edit_posts' ) ) {
-			return ! empty( $result ) ? $result : true;
-		}
-
+	protected function apply_rate_limiting() {
 		$rate_limiting_options = RateLimits::get_options();
 
 		if ( $rate_limiting_options->enabled ) {
@@ -68,6 +58,23 @@ class Authentication {
 			$rate_limit = RateLimits::update_rate_limit( $action_id );
 			$server->send_header( 'RateLimit-Remaining', $rate_limit->remaining );
 			$server->send_header( 'RateLimit-Reset', $rate_limit->reset );
+		}
+	}
+
+	/**
+	 * The Store API does not require authentication.
+	 *
+	 * @param \WP_Error|mixed $result Error from another authentication handler, null if we should handle it, or another value if not.
+	 * @return \WP_Error|null|bool
+	 */
+	public function check_authentication( $result ) {
+		if ( ! $this->is_request_to_store_api() ) {
+			return $result;
+		}
+
+		// Disable Rate Limiting for logged in users with 'edit posts' capability.
+		if ( ! current_user_can( 'edit_posts' ) ) {
+			$this->apply_rate_limiting();
 		}
 
 		// Pass through errors from other authentication methods used before this one.
