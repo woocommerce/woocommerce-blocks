@@ -10,6 +10,10 @@
                 "long_description": "This hook defines which block names should have block name and attribute data- attributes appended on render.",
                 "tags": [
                     {
+                        "name": "since",
+                        "content": "5.9.0"
+                    },
+                    {
                         "name": "param",
                         "content": "List of namespaces.",
                         "types": [
@@ -31,6 +35,10 @@
                 "long_description": "This hook defines which block namespaces should have block name and attribute `data-` attributes appended on render.",
                 "tags": [
                     {
+                        "name": "since",
+                        "content": "5.9.0"
+                    },
+                    {
                         "name": "param",
                         "content": "List of namespaces.",
                         "types": [
@@ -51,6 +59,10 @@
                 "description": "Filter to control what features are available for each payment gateway.",
                 "long_description": "",
                 "tags": [
+                    {
+                        "name": "since",
+                        "content": "4.4.0"
+                    },
                     {
                         "name": "example",
                         "content": "docs/examples/payment-gateways-features-list.md"
@@ -88,9 +100,22 @@
             "file": "Domain/Bootstrap.php",
             "type": "filter",
             "doc": {
-                "description": "",
+                "description": "Filters whether to trigger an error for deprecated functions. (Same as WP core)",
                 "long_description": "",
-                "tags": [],
+                "tags": [
+                    {
+                        "name": "since",
+                        "content": "7.3.0"
+                    },
+                    {
+                        "name": "param",
+                        "content": "Whether to trigger the error for deprecated functions. Default true.",
+                        "types": [
+                            "bool"
+                        ],
+                        "variable": "$trigger"
+                    }
+                ],
                 "long_description_html": ""
             },
             "args": 1
@@ -100,9 +125,22 @@
             "file": "StoreApi/Routes/V1/AbstractCartRoute.php",
             "type": "filter",
             "doc": {
-                "description": "",
+                "description": "Filters the session expiration.",
                 "long_description": "",
-                "tags": [],
+                "tags": [
+                    {
+                        "name": "since",
+                        "content": "8.7.0"
+                    },
+                    {
+                        "name": "param",
+                        "content": "Expiration in seconds.",
+                        "types": [
+                            "int"
+                        ],
+                        "variable": "$expiration"
+                    }
+                ],
                 "long_description_html": ""
             },
             "args": 1
@@ -592,6 +630,10 @@
                 "long_description": "",
                 "tags": [
                     {
+                        "name": "since",
+                        "content": "3.0.0"
+                    },
+                    {
                         "name": "param",
                         "content": "The list of script dependencies.",
                         "types": [
@@ -693,6 +735,10 @@
                 "long_description": "Filters the variation option name for custom option slugs.",
                 "tags": [
                     {
+                        "name": "since",
+                        "content": "4.3.0"
+                    },
+                    {
                         "name": "internal",
                         "content": "Matches filter name in WooCommerce core."
                     },
@@ -729,9 +775,22 @@
             "file": "BlockTypes/ProductButton.php",
             "type": "filter",
             "doc": {
-                "description": "",
+                "description": "Filters the add to cart button class.",
                 "long_description": "",
-                "tags": [],
+                "tags": [
+                    {
+                        "name": "since",
+                        "content": "8.7.0"
+                    },
+                    {
+                        "name": "param",
+                        "content": "The class.",
+                        "types": [
+                            "string"
+                        ],
+                        "variable": "$class"
+                    }
+                ],
                 "long_description_html": ""
             },
             "args": 2
@@ -828,6 +887,10 @@
                 "description": "Filters the array of shared settings.",
                 "long_description": "Low level hook for registration of new data late in the cycle. This is deprecated. Instead, use the data api:\n ```php Automattic\\WooCommerce\\Blocks\\Package::container()->get( Automattic\\WooCommerce\\Blocks\\Assets\\AssetDataRegistry::class )->add( $key, $value ) ```",
                 "tags": [
+                    {
+                        "name": "since",
+                        "content": "5.0.0"
+                    },
                     {
                         "name": "deprecated",
                         "content": ""
@@ -961,6 +1024,10 @@
                 "description": "Filters the Store API nonce check.",
                 "long_description": "This can be used to disable the nonce check when testing API endpoints via a REST API client.",
                 "tags": [
+                    {
+                        "name": "since",
+                        "content": "4.5.0"
+                    },
                     {
                         "name": "param",
                         "content": "If true, nonce checks will be disabled.",
@@ -1110,6 +1177,10 @@
                 "description": "Filters the variation option name.",
                 "long_description": "Filters the variation option name for custom option slugs.",
                 "tags": [
+                    {
+                        "name": "since",
+                        "content": "2.5.0"
+                    },
                     {
                         "name": "internal",
                         "content": "Matches filter name in WooCommerce core."

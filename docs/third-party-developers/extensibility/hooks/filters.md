@@ -141,11 +141,17 @@ add_filter( '__experimental_woocommerce_blocks_payment_gateway_features_list', '
 ## deprecated_function_trigger_error
 
 
-
+Filters whether to trigger an error for deprecated functions. (Same as WP core)
 
 ```php
-apply_filters( 'deprecated_function_trigger_error' )
+apply_filters( 'deprecated_function_trigger_error', bool $trigger )
 ```
+
+### Parameters
+
+| Argument | Type | Description |
+| -------- | ---- | ----------- |
+| $trigger | bool | Whether to trigger the error for deprecated functions. Default true. |
 
 ### Source
 
@@ -157,11 +163,17 @@ apply_filters( 'deprecated_function_trigger_error' )
 ## wc_session_expiration
 
 
-
+Filters the session expiration.
 
 ```php
-apply_filters( 'wc_session_expiration' )
+apply_filters( 'wc_session_expiration', int $expiration )
 ```
+
+### Parameters
+
+| Argument | Type | Description |
+| -------- | ---- | ----------- |
+| $expiration | int | Expiration in seconds. |
 
 ### Source
 
@@ -583,11 +595,17 @@ apply_filters( 'woocommerce_get_item_data', array $item_data, array $cart_item )
 ## woocommerce_loop_add_to_cart_link
 
 
-
+Filters the add to cart button class.
 
 ```php
-apply_filters( 'woocommerce_loop_add_to_cart_link' )
+apply_filters( 'woocommerce_loop_add_to_cart_link', string $class )
 ```
+
+### Parameters
+
+| Argument | Type | Description |
+| -------- | ---- | ----------- |
+| $class | string | The class. |
 
 ### Source
 

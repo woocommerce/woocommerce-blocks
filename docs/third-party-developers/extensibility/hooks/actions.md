@@ -45,7 +45,7 @@
 ## deprecated_function_run
 
 
-
+Fires when a deprecated function is called.
 
 ```php
 do_action( 'deprecated_function_run' )
