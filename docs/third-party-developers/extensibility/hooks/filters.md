@@ -732,16 +732,15 @@ apply_filters( 'woocommerce_shipping_package_name', string $shipping_package_nam
 ## woocommerce_show_page_title
 
 
-We need to load the scripts here because when using block templates wp_head() gets run after the block template. As a result we are trying to enqueue required scripts before we have even registered them.
+Hook: woocommerce_show_page_title
 
 ```php
 apply_filters( 'woocommerce_show_page_title' )
 ```
 
-### See
+### Description
 
-
- - https://github.com/woocommerce/woocommerce-gutenberg-products-block/issues/5328#issuecomment-989013447
+<p>Allows controlling the display of the page title.</p>
 
 ### Source
 

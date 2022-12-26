@@ -755,11 +755,17 @@ do_action( 'woocommerce_store_api_checkout_update_order_meta', \WC_Order $order 
 ## woocommerce_store_api_rate_limit_exceeded
 
 
-
+Fires when the rate limit is exceeded.
 
 ```php
-do_action( 'woocommerce_store_api_rate_limit_exceeded' )
+do_action( 'woocommerce_store_api_rate_limit_exceeded', string $ip_address )
 ```
+
+### Parameters
+
+| Argument | Type | Description |
+| -------- | ---- | ----------- |
+| $ip_address | string | The IP address of the request. |
 
 ### Source
 

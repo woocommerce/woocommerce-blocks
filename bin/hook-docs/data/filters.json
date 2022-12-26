@@ -116,6 +116,10 @@
                 "long_description": "",
                 "tags": [
                     {
+                        "name": "since",
+                        "content": "2.5.0"
+                    },
+                    {
                         "name": "internal",
                         "content": "Matches filter name in WooCommerce core."
                     },
@@ -155,6 +159,10 @@
                 "description": "Filter cart item data for add to cart requests.",
                 "long_description": "",
                 "tags": [
+                    {
+                        "name": "since",
+                        "content": "2.5.0"
+                    },
                     {
                         "name": "internal",
                         "content": "Matches filter name in WooCommerce core."
@@ -211,6 +219,10 @@
                 "description": "Filter sold individually quantity for add to cart requests.",
                 "long_description": "",
                 "tags": [
+                    {
+                        "name": "since",
+                        "content": "2.5.0"
+                    },
                     {
                         "name": "internal",
                         "content": "Matches filter name in WooCommerce core."
@@ -276,6 +288,10 @@
                 "long_description": "Allow 3rd parties to validate if an item can be added to the cart. This is a legacy hook from Woo core. This filter will be deprecated because it encourages usage of wc_add_notice. For the API we need to capture notices and convert to exceptions instead.",
                 "tags": [
                     {
+                        "name": "since",
+                        "content": "7.2.0"
+                    },
+                    {
                         "name": "deprecated",
                         "content": ""
                     },
@@ -340,6 +356,10 @@
                 "long_description": "The woocommerce_adjust_non_base_location_prices filter can stop base taxes being taken off when dealing with out of base locations. e.g. If a product costs 10 including tax, all users will pay 10 regardless of location and taxes.",
                 "tags": [
                     {
+                        "name": "since",
+                        "content": "2.6.0"
+                    },
+                    {
                         "name": "internal",
                         "content": "Matches filter name in WooCommerce core."
                     },
@@ -371,6 +391,10 @@
                 "description": "Filter coupons to remove when applying an individual use coupon.",
                 "long_description": "",
                 "tags": [
+                    {
+                        "name": "since",
+                        "content": "2.6.0"
+                    },
                     {
                         "name": "internal",
                         "content": "Matches filter name in WooCommerce core."
@@ -419,6 +443,10 @@
                 "description": "Filters if a coupon can be applied alongside other individual use coupons.",
                 "long_description": "",
                 "tags": [
+                    {
+                        "name": "since",
+                        "content": "2.6.0"
+                    },
                     {
                         "name": "internal",
                         "content": "Matches filter name in WooCommerce core."
@@ -497,6 +525,10 @@
                         "types": [
                             "array"
                         ]
+                    },
+                    {
+                        "name": "since",
+                        "content": "2.5.0"
                     }
                 ],
                 "long_description_html": ""
@@ -541,6 +573,10 @@
                         "types": [
                             "string"
                         ]
+                    },
+                    {
+                        "name": "since",
+                        "content": "2.2.0"
                     }
                 ],
                 "long_description_html": ""
@@ -591,6 +627,10 @@
                 "description": "Filters the entire cart contents when the cart changes.",
                 "long_description": "",
                 "tags": [
+                    {
+                        "name": "since",
+                        "content": "2.5.0"
+                    },
                     {
                         "name": "internal",
                         "content": "Matches filter name in WooCommerce core."
@@ -705,6 +745,10 @@
                 "long_description": "This hook filters customer data. It allows user data to be changed, for example, username, password, email, first name, last name, and role.",
                 "tags": [
                     {
+                        "name": "since",
+                        "content": "7.2.0"
+                    },
+                    {
                         "name": "param",
                         "content": "An array of customer (user) data.",
                         "types": [
@@ -732,6 +776,10 @@
                 "description": "Filters registration errors before a customer account is registered.",
                 "long_description": "This hook filters registration errors. This can be used to manipulate the array of errors before they are displayed.",
                 "tags": [
+                    {
+                        "name": "since",
+                        "content": "7.2.0"
+                    },
                     {
                         "name": "internal",
                         "content": "Matches filter name in WooCommerce core."
@@ -813,6 +861,10 @@
                 "long_description": "",
                 "tags": [
                     {
+                        "name": "since",
+                        "content": "4.3.0"
+                    },
+                    {
                         "name": "internal",
                         "content": "Matches filter name in WooCommerce core."
                     },
@@ -857,16 +909,15 @@
             "file": "BlockTypes/ClassicTemplate.php",
             "type": "filter",
             "doc": {
-                "description": "We need to load the scripts here because when using block templates wp_head() gets run after the block template. As a result we are trying to enqueue required scripts before we have even registered them.",
-                "long_description": "",
+                "description": "Hook: woocommerce_show_page_title",
+                "long_description": "Allows controlling the display of the page title.",
                 "tags": [
                     {
-                        "name": "see",
-                        "content": "",
-                        "refers": "https://github.com/woocommerce/woocommerce-gutenberg-products-block/issues/5328#issuecomment-989013447"
+                        "name": "since",
+                        "content": "6.3.0"
                     }
                 ],
-                "long_description_html": ""
+                "long_description_html": "<p>Allows controlling the display of the page title.</p>"
             },
             "args": 1
         },
@@ -878,6 +929,10 @@
                 "description": "Filters cart item data sent via the API before it is passed to the cart controller.",
                 "long_description": "This hook filters cart items. It allows the request data to be changed, for example, quantity, or supplemental cart item data, before it is passed into CartController::add_to_cart and stored to session.\n CartController::add_to_cart only expects the keys id, quantity, variation, and cart_item_data, so other values may be ignored. CartController::add_to_cart (and core) do already have a filter hook called woocommerce_add_cart_item, but this does not have access to the original Store API request like this hook does.",
                 "tags": [
+                    {
+                        "name": "since",
+                        "content": "8.8.0"
+                    },
                     {
                         "name": "param",
                         "content": "An array of customer (user) data.",
@@ -935,6 +990,10 @@
                 "long_description": "Filters the variation option name for custom option slugs.",
                 "tags": [
                     {
+                        "name": "since",
+                        "content": "6.8.0"
+                    },
+                    {
                         "name": "param",
                         "content": "Quantity limit which defaults to 9999 unless sold individually.",
                         "types": [
@@ -970,6 +1029,10 @@
                 "description": "Filters the quantity minimum for a cart item in Store API. This allows extensions to control the minimum qty of items already within the cart.",
                 "long_description": "The suffix of the hook will vary depending on the value being filtered. For example, minimum, maximum, multiple_of, editable.",
                 "tags": [
+                    {
+                        "name": "since",
+                        "content": "6.8.0"
+                    },
                     {
                         "name": "param",
                         "content": "The value being filtered.",
@@ -1029,6 +1092,10 @@
                         "types": [
                             "array"
                         ]
+                    },
+                    {
+                        "name": "since",
+                        "content": "8.9.0"
                     }
                 ],
                 "long_description_html": ""
