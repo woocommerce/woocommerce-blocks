@@ -17,14 +17,19 @@ import {
 } from './constants';
 import { supports } from './support';
 
-const blockConfig: BlockConfiguration = {
+type CustomBlockConfiguration = BlockConfiguration & {
+	ancestor: string[];
+};
+
+const blockConfig: CustomBlockConfiguration = {
+	...sharedConfig,
 	apiVersion: 2,
 	title,
 	description,
 	usesContext: [ 'query', 'queryId', 'postId' ],
 	ancestor: [
-		'@woocommerce/all-products',
-		'@woocommerce/single-product',
+		'woocommerce/all-products',
+		'woocommerce/single-product',
 		'core/post-template',
 	],
 	icon: { src: icon },
@@ -33,7 +38,4 @@ const blockConfig: BlockConfiguration = {
 	edit,
 };
 
-registerBlockType( 'woocommerce/product-rating', {
-	...sharedConfig,
-	...blockConfig,
-} );
+registerBlockType( 'woocommerce/product-rating', { ...blockConfig } );
