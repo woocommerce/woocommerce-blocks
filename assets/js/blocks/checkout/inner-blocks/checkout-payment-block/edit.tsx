@@ -45,8 +45,10 @@ export const Edit = ( {
 			incompatiblePaymentMethods: getIncompatiblePaymentMethods(),
 		};
 	}, [] );
-	const incompatiblePaymentMethodMessage =
-		'Incompatible with block-based checkout';
+	const incompatiblePaymentMethodMessage = __(
+		'Incompatible with block-based checkout',
+		'woo-gutenberg-products-block'
+	);
 
 	return (
 		<FormStepBlock
