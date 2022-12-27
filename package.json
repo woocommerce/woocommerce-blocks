@@ -136,7 +136,7 @@
 		"@woocommerce/eslint-plugin": "2.2.0",
 		"@woocommerce/woocommerce-rest-api": "1.0.1",
 		"@wordpress/api-fetch": "6.19.0",
-		"@wordpress/babel-preset-default": "6.14.0",
+		"@wordpress/babel-preset-default": "7.7.0",
 		"@wordpress/base-styles": "4.0.4",
 		"@wordpress/block-editor": "8.2.0",
 		"@wordpress/blocks": "11.1.5",
