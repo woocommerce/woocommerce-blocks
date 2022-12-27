@@ -85,9 +85,10 @@ const getCoreConfig = ( options = {} ) => {
 					test: /\.(t|j)sx?$/,
 					exclude: /node_modules/,
 					use: {
-						loader: 'babel-loader?cacheDirectory',
+						loader: 'babel-loader',
 						options: {
 							presets: [ '@wordpress/babel-preset-default' ],
+							cacheDirectory: true,
 						},
 					},
 				},
@@ -186,7 +187,7 @@ const getMainConfig = ( options = {} ) => {
 					test: /\.(j|t)sx?$/,
 					exclude: /node_modules/,
 					use: {
-						loader: 'babel-loader?cacheDirectory',
+						loader: 'babel-loader',
 						options: {
 							presets: [ '@wordpress/babel-preset-default' ],
 							plugins: [
@@ -196,6 +197,7 @@ const getMainConfig = ( options = {} ) => {
 									  )
 									: false,
 							].filter( Boolean ),
+							cacheDirectory: true,
 						},
 					},
 				},
@@ -314,7 +316,7 @@ const getFrontConfig = ( options = {} ) => {
 					test: /\.(j|t)sx?$/,
 					exclude: /node_modules/,
 					use: {
-						loader: 'babel-loader?cacheDirectory',
+						loader: 'babel-loader',
 						options: {
 							presets: [
 								[
@@ -336,6 +338,7 @@ const getFrontConfig = ( options = {} ) => {
 									  )
 									: false,
 							].filter( Boolean ),
+							cacheDirectory: true,
 						},
 					},
 				},
@@ -411,7 +414,7 @@ const getPaymentsConfig = ( options = {} ) => {
 					test: /\.(j|t)sx?$/,
 					exclude: /node_modules/,
 					use: {
-						loader: 'babel-loader?cacheDirectory',
+						loader: 'babel-loader',
 						options: {
 							presets: [
 								[
@@ -433,6 +436,7 @@ const getPaymentsConfig = ( options = {} ) => {
 									  )
 									: false,
 							].filter( Boolean ),
+							cacheDirectory: true,
 						},
 					},
 				},
@@ -510,7 +514,7 @@ const getExtensionsConfig = ( options = {} ) => {
 					test: /\.(j|t)sx?$/,
 					exclude: /node_modules/,
 					use: {
-						loader: 'babel-loader?cacheDirectory',
+						loader: 'babel-loader',
 						options: {
 							presets: [
 								[
@@ -532,6 +536,7 @@ const getExtensionsConfig = ( options = {} ) => {
 									  )
 									: false,
 							].filter( Boolean ),
+							cacheDirectory: true,
 						},
 					},
 				},
