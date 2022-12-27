@@ -76,11 +76,16 @@ class ProductRating extends AbstractBlock {
 	 * @return string
 	 */
 	public function filter_rating_html( $html, $rating, $count ) {
-		if ( 0 < $rating ) {
+		$product_permalink = get_permalink();
+		if ( 0 < $rating || false === $product_permalink ) {
 			/* translators: %s: rating */
 			$label = sprintf( __( 'Rated %s out of 5', 'woo-gutenberg-products-block' ), $rating );
 			$html  = '<div class="wc-block-components-product-rating__stars wc-block-grid__product-rating__stars" role="img" aria-label="' . esc_attr( $label ) . '">' . wc_get_star_rating_html( $rating, $count ) . '</div>';
+		} else {
+			$product_review_url = esc_url( $product_permalink . '#reviews' );
+			$html               = '<a class="wc-block-components-product-rating__link" href="' . $product_review_url . '">' . __( 'Add review', 'woo-gutenberg-products-block' ) . '</a>';
 		}
+
 		return $html;
 	}
 
@@ -113,14 +118,6 @@ class ProductRating extends AbstractBlock {
 			$styles_and_classes            = StyleAttributesUtils::get_classes_and_styles_by_attributes( $attributes, array( 'font_size', 'margin', 'text_color' ) );
 			$text_align_styles_and_classes = StyleAttributesUtils::get_text_align_class_and_style( $attributes );
 
-			$average_rating = $product->get_average_rating();
-			$rating_count   = $product->get_rating_count();
-			$reviews_link   = $product->get_permalink() . '#reviews';
-			$link_label     = __( 'Add review', 'woo-gutenberg-products-block' );
-			$link_html      = '<a class="wc-block-components-product-rating__link" href="' . esc_url( $reviews_link ) . '">' . esc_attr( $link_label ) . '</a>';
-
-			$content = $rating_count ? wc_get_rating_html( $average_rating ) : $link_html;
-
 			return sprintf(
 				'<div class="wc-block-components-product-rating wc-block-grid__product-rating %1$s %2$s" style="%3$s">
 					%4$s
@@ -128,7 +125,7 @@ class ProductRating extends AbstractBlock {
 				esc_attr( $text_align_styles_and_classes['class'] ?? '' ),
 				esc_attr( $styles_and_classes['classes'] ),
 				esc_attr( $styles_and_classes['styles'] ?? '' ),
-				$content
+				wc_get_rating_html( $product->get_average_rating() )
 			);
 		}
 	}
