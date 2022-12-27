@@ -77,6 +77,7 @@ const getCoreConfig = ( options = {} ) => {
 			path: path.resolve( __dirname, '../build/' ),
 			library: [ 'wc', '[name]' ],
 			libraryTarget: 'this',
+			uniqueName: 'webpackWcBlocksJsonp',
 		},
 		module: {
 			rules: [
@@ -177,6 +178,7 @@ const getMainConfig = ( options = {} ) => {
 			filename: `[name]${ fileSuffix }.js`,
 			library: [ 'wc', 'blocks', '[name]' ],
 			libraryTarget: 'this',
+			uniqueName: 'webpackWcBlocksJsonp',
 		},
 		module: {
 			rules: [
@@ -304,6 +306,7 @@ const getFrontConfig = ( options = {} ) => {
 			// @see https://github.com/Automattic/jetpack/pull/20926
 			chunkFilename: `[name]-frontend${ fileSuffix }.js?ver=[contenthash]`,
 			filename: `[name]-frontend${ fileSuffix }.js`,
+			uniqueName: 'webpackWcBlocksJsonp',
 		},
 		module: {
 			rules: [
@@ -400,6 +403,7 @@ const getPaymentsConfig = ( options = {} ) => {
 			devtoolNamespace: 'wc',
 			path: path.resolve( __dirname, '../build/' ),
 			filename: `[name].js`,
+			uniqueName: 'webpackWcBlocksPaymentMethodExtensionJsonp',
 		},
 		module: {
 			rules: [
@@ -498,6 +502,7 @@ const getExtensionsConfig = ( options = {} ) => {
 			devtoolNamespace: 'wc',
 			path: path.resolve( __dirname, '../build/' ),
 			filename: `[name].js`,
+			uniqueName: 'webpackWcBlocksExtensionsMethodExtensionJsonp',
 		},
 		module: {
 			rules: [
@@ -594,6 +599,7 @@ const getStylingConfig = ( options = {} ) => {
 			filename: `[name]-style${ fileSuffix }.js`,
 			library: [ 'wc', 'blocks', '[name]' ],
 			libraryTarget: 'this',
+			uniqueName: 'webpackWcBlocksJsonp',
 		},
 		optimization: {
 			splitChunks: {
