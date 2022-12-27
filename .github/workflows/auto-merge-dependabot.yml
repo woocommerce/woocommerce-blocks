@@ -1,0 +1,37 @@
+name: Dependabot auto-merge
+on: pull_request
+
+permissions:
+    pull-requests: write
+    contents: write
+    repository-projects: write
+
+jobs:
+    dependabot:
+        runs-on: ubuntu-latest
+        if: ${{ github.actor == 'dependabot[bot]' }}
+        steps:
+            - name: Dependabot metadata
+              id: metadata
+              uses: dependabot/fetch-metadata@v1.3.1
+              with:
+                  github-token: "${{ secrets.GITHUB_TOKEN }}"
+
+            - name: Enable auto-merge for Dependabot PRs
+              # Automatically merge selected dependencies upgrades
+              if: "${{ steps.metadata.outputs.dependency-names == '@actions/core' ||
+                  steps.metadata.outputs.dependency-names == '@automattic/color-studio' ||
+                  steps.metadata.outputs.dependency-names == '@babel/cli' ||
+                  steps.metadata.outputs.dependency-names == '@babel/core' ||
+                  steps.metadata.outputs.dependency-names == '@babel/plugin-proposal-class-properties' ||
+                  steps.metadata.outputs.dependency-names == '@babel/plugin-syntax-jsx' ||
+                  steps.metadata.outputs.dependency-names == '@babel/polyfill'
+              }}"
+
+              run: |
+                gh pr edit --add-label 'dependencies-auto-merged' "$PR_URL"
+                gh pr merge --auto --squash "$PR_URL"
+                gh pr review --approve "$PR_URL"
+              env:
+                  PR_URL: ${{github.event.pull_request.html_url}}
+                  GITHUB_TOKEN: ${{secrets.GITHUB_TOKEN}}
