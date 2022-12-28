@@ -4,22 +4,22 @@
 import { debounce } from 'lodash';
 import { select, dispatch } from '@wordpress/data';
 import {
-	formatStoreApiErrorMessage,
 	pluckAddress,
 	pluckEmail,
+	removeAllNotices,
 } from '@woocommerce/base-utils';
 import {
 	CartResponseBillingAddress,
 	CartResponseShippingAddress,
-} from '@woocommerce/type-defs/cart-response';
+	BillingAddressShippingAddress,
+} from '@woocommerce/types';
 import isShallowEqual from '@wordpress/is-shallow-equal';
-import { BillingAddressShippingAddress } from '@woocommerce/type-defs/cart';
 
 /**
  * Internal dependencies
  */
 import { STORE_KEY } from './constants';
-import { VALIDATION_STORE_KEY } from '../validation';
+import { processErrorResponse } from '../utils';
 
 declare type CustomerData = {
 	billingAddress: CartResponseBillingAddress;
@@ -103,20 +103,10 @@ const updateCustomerData = debounce( (): void => {
 		dispatch( STORE_KEY )
 			.updateCustomerData( customerDataToUpdate )
 			.then( () => {
-				dispatch( 'core/notices' ).removeNotice(
-					'checkout',
-					'wc/checkout'
-				);
+				removeAllNotices();
 			} )
 			.catch( ( response ) => {
-				dispatch( 'core/notices' ).createNotice(
-					'error',
-					formatStoreApiErrorMessage( response ),
-					{
-						id: 'checkout',
-						context: 'wc/checkout',
-					}
-				);
+				processErrorResponse( response );
 			} );
 	}
 }, 1000 );
@@ -127,11 +117,9 @@ const updateCustomerData = debounce( (): void => {
  */
 export const pushChanges = (): void => {
 	const store = select( STORE_KEY );
-	const hasValidationErrors =
-		select( VALIDATION_STORE_KEY ).hasValidationErrors();
 	const isInitialized = store.hasFinishedResolution( 'getCartData' );
 
-	if ( ! isInitialized || hasValidationErrors ) {
+	if ( ! isInitialized ) {
 		return;
 	}
 
