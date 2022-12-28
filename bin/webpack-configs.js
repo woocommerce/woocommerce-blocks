@@ -14,6 +14,7 @@ const CreateFileWebpack = require( 'create-file-webpack' );
 const CircularDependencyPlugin = require( 'circular-dependency-plugin' );
 const { BundleAnalyzerPlugin } = require( 'webpack-bundle-analyzer' );
 const CopyWebpackPlugin = require( 'copy-webpack-plugin' );
+const ReactRefreshWebpackPlugin = require( '@pmmmwh/react-refresh-webpack-plugin' );
 
 /**
  * Internal dependencies
@@ -29,6 +30,7 @@ const {
 } = require( './webpack-helpers' );
 
 const isProduction = NODE_ENV === 'production';
+const isDevelopment = NODE_ENV === 'development';
 
 /**
  * Shared config for all script builds.
@@ -51,6 +53,7 @@ const sharedPlugins = [
 		requestToExternal,
 		requestToHandle,
 	} ),
+	isDevelopment && new ReactRefreshWebpackPlugin(),
 ].filter( Boolean );
 
 /**
@@ -88,6 +91,10 @@ const getCoreConfig = ( options = {} ) => {
 						loader: 'babel-loader',
 						options: {
 							presets: [ '@wordpress/babel-preset-default' ],
+							plugins: [
+								isDevelopment &&
+									require.resolve( 'react-refresh/babel' ),
+							].filter( Boolean ),
 							cacheDirectory: true,
 						},
 					},
@@ -196,6 +203,8 @@ const getMainConfig = ( options = {} ) => {
 											'babel-plugin-transform-react-remove-prop-types'
 									  )
 									: false,
+								isDevelopment &&
+									require.resolve( 'react-refresh/babel' ),
 							].filter( Boolean ),
 							cacheDirectory: true,
 						},
@@ -337,6 +346,8 @@ const getFrontConfig = ( options = {} ) => {
 											'babel-plugin-transform-react-remove-prop-types'
 									  )
 									: false,
+								isDevelopment &&
+									require.resolve( 'react-refresh/babel' ),
 							].filter( Boolean ),
 							cacheDirectory: true,
 						},
@@ -435,6 +446,8 @@ const getPaymentsConfig = ( options = {} ) => {
 											'babel-plugin-transform-react-remove-prop-types'
 									  )
 									: false,
+								isDevelopment &&
+									require.resolve( 'react-refresh/babel' ),
 							].filter( Boolean ),
 							cacheDirectory: true,
 						},
@@ -535,6 +548,8 @@ const getExtensionsConfig = ( options = {} ) => {
 											'babel-plugin-transform-react-remove-prop-types'
 									  )
 									: false,
+								isDevelopment &&
+									require.resolve( 'react-refresh/babel' ),
 							].filter( Boolean ),
 							cacheDirectory: true,
 						},

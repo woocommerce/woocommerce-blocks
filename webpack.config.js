@@ -11,9 +11,11 @@ const {
 	getStylingConfig,
 } = require( './bin/webpack-configs.js' );
 
+const isDevelopment = process.env.NODE_ENV !== 'production';
+
 // Only options shared between all configs should be defined here.
 const sharedConfig = {
-	mode: NODE_ENV,
+	mode: isDevelopment ? 'development' : 'production',
 	performance: {
 		hints: false,
 	},
@@ -30,6 +32,20 @@ const sharedConfig = {
 		ignored: /node_modules/,
 	},
 	devtool: NODE_ENV === 'development' ? 'source-map' : false,
+};
+
+const DevServerConfig = {
+	...sharedConfig,
+	devServer: {
+		hot: true,
+		static: './build',
+		devMiddleware: {
+			writeToDisk: true,
+		},
+	},
+	optimization: {
+		runtimeChunk: 'single',
+	},
 };
 
 // Core config for shared libraries.
@@ -77,6 +93,7 @@ const StylingConfig = {
 };
 
 module.exports = [
+	DevServerConfig,
 	CoreConfig,
 	MainConfig,
 	FrontendConfig,
@@ -84,3 +101,5 @@ module.exports = [
 	PaymentsConfig,
 	StylingConfig,
 ];
+
+module.exports.parallelism = 1;
