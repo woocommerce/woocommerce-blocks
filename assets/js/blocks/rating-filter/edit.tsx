@@ -25,7 +25,6 @@ import { Attributes } from './types';
 const Edit = ( {
 	attributes,
 	setAttributes,
-	isSelected,
 }: BlockEditProps< Attributes > ) => {
 	const {
 		className,
@@ -150,11 +149,7 @@ const Edit = ( {
 			{
 				<div { ...blockProps }>
 					<Disabled>
-						<Block
-							attributes={ attributes }
-							isEditor={ true }
-							isSelected={ isSelected }
-						/>
+						<Block attributes={ attributes } isEditor={ true } />
 					</Disabled>
 				</div>
 			}

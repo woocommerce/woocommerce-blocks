@@ -45,7 +45,6 @@ const Edit = ( {
 	setAttributes,
 	debouncedSpeak,
 	clientId,
-	isSelected,
 }: EditProps ) => {
 	const {
 		attributeId,
@@ -424,11 +423,7 @@ const Edit = ( {
 						/>
 					) }
 					<Disabled>
-						<Block
-							attributes={ attributes }
-							isEditor={ true }
-							isSelected={ isSelected }
-						/>
+						<Block attributes={ attributes } isEditor={ true } />
 					</Disabled>
 				</div>
 			) }

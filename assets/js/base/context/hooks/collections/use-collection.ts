@@ -47,7 +47,6 @@ export interface useCollectionOptions {
 	query?: Record< string, unknown >;
 	shouldSelect?: boolean;
 	isEditor?: boolean;
-	isSelected?: boolean;
 }
 
 export const useCollection = (
@@ -63,7 +62,6 @@ export const useCollection = (
 		query = {},
 		shouldSelect = true,
 		isEditor = false,
-		isSelected = false,
 	} = options;
 	if ( ! namespace || ! resourceName ) {
 		throw new Error(
@@ -83,7 +81,6 @@ export const useCollection = (
 		( select ) => {
 			if (
 				isEditor &&
-				isSelected &&
 				typeof currentResults === 'object' &&
 				currentResults.hasOwnProperty( 'current' ) &&
 				currentResults.current.hasOwnProperty( 'results' ) &&

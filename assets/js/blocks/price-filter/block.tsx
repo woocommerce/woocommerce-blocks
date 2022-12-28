@@ -78,16 +78,13 @@ function formatPrice( value: unknown, minorUnit: number ) {
  * @param {Object}  props            Component props.
  * @param {Object}  props.attributes Incoming block attributes.
  * @param {boolean} props.isEditor   Whether the component is being rendered in the editor.
- * @param {boolean} props.isSelected Whether the block is selected.
  */
 const PriceFilterBlock = ( {
 	attributes,
 	isEditor = false,
-	isSelected = false,
 }: {
 	attributes: Attributes;
 	isEditor: boolean;
-	isSelected?: boolean;
 } ) => {
 	const setWrapperVisibility = useSetWraperVisibility();
 	const hasFilterableProducts = getSettingWithCoercion(
@@ -117,7 +114,6 @@ const PriceFilterBlock = ( {
 		queryState,
 		productIds,
 		isEditor,
-		isSelected,
 	} );
 
 	const currency = getCurrencyFromPriceResponse(

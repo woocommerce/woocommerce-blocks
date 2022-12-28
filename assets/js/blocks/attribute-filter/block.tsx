@@ -75,16 +75,13 @@ import { useSetWraperVisibility } from '../filter-wrapper/context';
  * @param {Object}  props            Incoming props for the component.
  * @param {Object}  props.attributes Incoming block attributes.
  * @param {boolean} props.isEditor   Whether the component is being rendered in the editor.
- * @param {boolean} props.isSelected Whether the block is selected.
  */
 const AttributeFilterBlock = ( {
 	attributes: blockAttributes,
 	isEditor = false,
-	isSelected = false,
 }: {
 	attributes: BlockAttributes;
 	isEditor?: boolean;
-	isSelected?: boolean;
 } ) => {
 	const hasFilterableProducts = getSettingWithCoercion(
 		'has_filterable_products',
@@ -151,7 +148,6 @@ const AttributeFilterBlock = ( {
 			resourceValues: [ attributeObject?.id || 0 ],
 			shouldSelect: blockAttributes.attributeId > 0,
 			isEditor,
-			isSelected,
 		} );
 
 	const filterAvailableTerms =
@@ -169,7 +165,6 @@ const AttributeFilterBlock = ( {
 			},
 			productIds,
 			isEditor,
-			isSelected,
 		} );
 
 	/**
