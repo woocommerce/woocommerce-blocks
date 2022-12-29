@@ -247,7 +247,7 @@
 		"snakecase-keys": "5.4.2",
 		"trim-html": "0.1.9",
 		"use-debounce": "7.0.1",
-		"wordpress-components": "npm:@wordpress/components@14.2.0"
+		"wordpress-components": "npm:@wordpress/components@22.0.0"
 	},
 	"peerDependencies": {
 		"react": "^17.0.0",

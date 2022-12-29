@@ -101,6 +101,11 @@ const getCoreConfig = ( options = {} ) => {
 						loader: 'ignore-loader',
 					},
 				},
+				{
+					test: /\.mjs$/,
+					include: /node_modules/,
+					type: 'javascript/auto',
+				},
 			],
 		},
 		plugins: [
@@ -119,8 +124,7 @@ woocommerce_blocks_env = ${ NODE_ENV }
 		],
 		optimization: {
 			// Only concatenate modules in production, when not analyzing bundles.
-			concatenateModules:
-				isProduction && ! process.env.WP_BUNDLE_ANALYZER,
+			concatenateModules: isProduction,
 			splitChunks: {
 				automaticNameDelimiter: '--',
 			},
@@ -145,7 +149,7 @@ woocommerce_blocks_env = ${ NODE_ENV }
 		},
 		resolve: {
 			...resolve,
-			extensions: [ '.js', '.ts', '.tsx' ],
+			extensions: [ '.js', '.ts', '.tsx', '.mjs' ],
 		},
 	};
 };
@@ -215,11 +219,15 @@ const getMainConfig = ( options = {} ) => {
 						loader: 'ignore-loader',
 					},
 				},
+				{
+					test: /\.mjs$/,
+					include: /node_modules/,
+					type: 'javascript/auto',
+				},
 			],
 		},
 		optimization: {
-			concatenateModules:
-				isProduction && ! process.env.WP_BUNDLE_ANALYZER,
+			concatenateModules: isProduction,
 			splitChunks: {
 				minSize: 0,
 				automaticNameDelimiter: '--',
@@ -281,7 +289,7 @@ const getMainConfig = ( options = {} ) => {
 		],
 		resolve: {
 			...resolve,
-			extensions: [ '.js', '.jsx', '.ts', '.tsx' ],
+			extensions: [ '.js', '.jsx', '.ts', '.tsx', '.mjs' ],
 		},
 	};
 };
@@ -361,14 +369,15 @@ const getFrontConfig = ( options = {} ) => {
 						loader: 'ignore-loader',
 					},
 				},
+				{
+					test: /\.mjs$/,
+					include: /node_modules/,
+					type: 'javascript/auto',
+				},
 			],
 		},
 		optimization: {
-			concatenateModules:
-				isProduction && ! process.env.WP_BUNDLE_ANALYZER,
-			splitChunks: {
-				automaticNameDelimiter: '--',
-			},
+			concatenateModules: isProduction,
 			minimizer: [
 				new TerserPlugin( {
 					cache: true,
@@ -394,7 +403,7 @@ const getFrontConfig = ( options = {} ) => {
 		],
 		resolve: {
 			...resolve,
-			extensions: [ '.js', '.ts', '.tsx' ],
+			extensions: [ '.js', '.ts', '.tsx', '.mjs' ],
 		},
 	};
 };
@@ -462,11 +471,15 @@ const getPaymentsConfig = ( options = {} ) => {
 						loader: 'ignore-loader',
 					},
 				},
+				{
+					test: /\.mjs$/,
+					include: /node_modules/,
+					type: 'javascript/auto',
+				},
 			],
 		},
 		optimization: {
-			concatenateModules:
-				isProduction && ! process.env.WP_BUNDLE_ANALYZER,
+			concatenateModules: isProduction,
 			splitChunks: {
 				automaticNameDelimiter: '--',
 			},
@@ -497,7 +510,7 @@ const getPaymentsConfig = ( options = {} ) => {
 		],
 		resolve: {
 			...resolve,
-			extensions: [ '.js', '.ts', '.tsx' ],
+			extensions: [ '.js', '.ts', '.tsx', '.mjs' ],
 		},
 	};
 };
@@ -559,8 +572,7 @@ const getExtensionsConfig = ( options = {} ) => {
 			],
 		},
 		optimization: {
-			concatenateModules:
-				isProduction && ! process.env.WP_BUNDLE_ANALYZER,
+			concatenateModules: isProduction,
 			splitChunks: {
 				automaticNameDelimiter: '--',
 			},
