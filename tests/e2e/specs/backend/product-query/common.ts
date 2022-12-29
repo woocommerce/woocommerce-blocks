@@ -224,7 +224,8 @@ export const selectPopularFilterPreset = async (
 	await $preset.click();
 	try {
 		await canvas().waitForSelector( SELECTORS.productsGridLoading );
-	} catch ( _ok ) {}
+	} catch ( ok ) {}
 	await canvas().waitForSelector( SELECTORS.productsGrid );
+	await page.waitForTimeout( 1000 );
 	await saveOrPublish();
 };
