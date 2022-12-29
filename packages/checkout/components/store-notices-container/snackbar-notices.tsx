@@ -2,7 +2,7 @@
  * External dependencies
  */
 import classnames from 'classnames';
-import { SnackbarList } from 'wordpress-components';
+import { SnackbarList } from '@wordpress/components';
 import { useDispatch } from '@wordpress/data';
 
 /**
