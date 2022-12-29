@@ -18,7 +18,7 @@ jobs:
                   github-token: "${{ secrets.GITHUB_TOKEN }}"
 
             - name: Enable auto-merge for Dependabot PRs
-              # Automatically merge selected dependencies upgrades
+              # Automatically merge the following dependency upgrades:
               if: "${{ steps.metadata.outputs.dependency-names == '@actions/core' ||
                   steps.metadata.outputs.dependency-names == '@automattic/color-studio' ||
                   steps.metadata.outputs.dependency-names == '@babel/cli' ||
@@ -59,8 +59,8 @@ jobs:
 
               run: |
                 gh pr edit --add-label 'dependencies-auto-merged' "$PR_URL"
-                gh pr merge --auto --squash "$PR_URL"
                 gh pr review --approve "$PR_URL"
+                gh pr merge --auto --squash "$PR_URL"
               env:
                   PR_URL: ${{github.event.pull_request.html_url}}
                   GITHUB_TOKEN: ${{secrets.GITHUB_TOKEN}}
