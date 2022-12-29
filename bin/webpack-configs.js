@@ -124,7 +124,8 @@ woocommerce_blocks_env = ${ NODE_ENV }
 		],
 		optimization: {
 			// Only concatenate modules in production, when not analyzing bundles.
-			concatenateModules: isProduction,
+			concatenateModules:
+				isProduction && ! process.env.WP_BUNDLE_ANALYZER,
 			splitChunks: {
 				automaticNameDelimiter: '--',
 			},
@@ -227,7 +228,8 @@ const getMainConfig = ( options = {} ) => {
 			],
 		},
 		optimization: {
-			concatenateModules: isProduction,
+			concatenateModules:
+				isProduction && ! process.env.WP_BUNDLE_ANALYZER,
 			splitChunks: {
 				minSize: 0,
 				automaticNameDelimiter: '--',
@@ -377,7 +379,8 @@ const getFrontConfig = ( options = {} ) => {
 			],
 		},
 		optimization: {
-			concatenateModules: isProduction,
+			concatenateModules:
+				isProduction && ! process.env.WP_BUNDLE_ANALYZER,
 			minimizer: [
 				new TerserPlugin( {
 					cache: true,
@@ -479,7 +482,8 @@ const getPaymentsConfig = ( options = {} ) => {
 			],
 		},
 		optimization: {
-			concatenateModules: isProduction,
+			concatenateModules:
+				isProduction && ! process.env.WP_BUNDLE_ANALYZER,
 			splitChunks: {
 				automaticNameDelimiter: '--',
 			},
@@ -572,7 +576,8 @@ const getExtensionsConfig = ( options = {} ) => {
 			],
 		},
 		optimization: {
-			concatenateModules: isProduction,
+			concatenateModules:
+				isProduction && ! process.env.WP_BUNDLE_ANALYZER,
 			splitChunks: {
 				automaticNameDelimiter: '--',
 			},

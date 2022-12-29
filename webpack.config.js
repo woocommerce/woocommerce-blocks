@@ -4,6 +4,7 @@
 const { NODE_ENV, getAlias } = require( './bin/webpack-helpers.js' );
 const {
 	getCoreConfig,
+	getMainConfig,
 	getFrontConfig,
 	getPaymentsConfig,
 	getExtensionsConfig,
@@ -38,12 +39,12 @@ const CoreConfig = {
 };
 
 // Main Blocks config for registering Blocks and for the Editor.
-// const MainConfig = {
-// 	...sharedConfig,
-// 	...getMainConfig( {
-// 		alias: getAlias(),
-// 	} ),
-// };
+const MainConfig = {
+	...sharedConfig,
+	...getMainConfig( {
+		alias: getAlias(),
+	} ),
+};
 
 // Frontend config for scripts used in the store itself.
 const FrontendConfig = {
@@ -77,7 +78,7 @@ const StylingConfig = {
 
 module.exports = [
 	CoreConfig,
-	// MainConfig,
+	MainConfig,
 	FrontendConfig,
 	ExtensionsConfig,
 	PaymentsConfig,
