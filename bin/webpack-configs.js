@@ -496,7 +496,9 @@ const getPaymentsConfig = ( options = {} ) => {
 			],
 		},
 		plugins: [
-			...getSharedPlugins( { bundleAnalyzerReportTitle: 'Payment' } ),
+			...getSharedPlugins( {
+				bundleAnalyzerReportTitle: 'Payment Method Extensions',
+			} ),
 			new ProgressBarPlugin(
 				getProgressBarPluginConfig( 'Payment Method Extensions' )
 			),
@@ -590,7 +592,9 @@ const getExtensionsConfig = ( options = {} ) => {
 			],
 		},
 		plugins: [
-			...getSharedPlugins( { bundleAnalyzerReportTitle: 'Extensions' } ),
+			...getSharedPlugins( {
+				bundleAnalyzerReportTitle: 'Experimental Extensions',
+			} ),
 			new ProgressBarPlugin(
 				getProgressBarPluginConfig( 'Experimental Extensions' )
 			),
