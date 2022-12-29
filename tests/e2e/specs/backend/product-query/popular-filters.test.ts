@@ -104,21 +104,19 @@ describeOrSkip( GUTENBERG_EDITOR_CONTEXT === 'gutenberg' )(
 		} );
 
 		describe( 'Best Selling', () => {
-			it( 'Editor preview and block frontend display the same products', async () => {
+			beforeEach( async () => {
 				await selectPopularFilterPreset(
 					$popularFiltersPanel,
 					'Best Selling'
 				);
+			} );
+			it( 'Editor preview and block frontend display the same products', async () => {
 				const { previewProducts, frontEndProducts } =
 					await setupEditorFrontendComparison();
 				expect( frontEndProducts ).toEqual( previewProducts );
 			} );
 
 			it( 'Products are displayed in the correct order', async () => {
-				await selectPopularFilterPreset(
-					$popularFiltersPanel,
-					'Best Selling'
-				);
 				const { productQueryProducts, shortcodeProducts } =
 					await setupProductQueryShortcodeComparison(
 						'[products best_selling="true" limit="9"]'
@@ -128,21 +126,19 @@ describeOrSkip( GUTENBERG_EDITOR_CONTEXT === 'gutenberg' )(
 		} );
 
 		describe( 'Top Rated', () => {
-			it( 'Editor preview and block frontend display the same products', async () => {
+			beforeEach( async () => {
 				await selectPopularFilterPreset(
 					$popularFiltersPanel,
 					'Top Rated'
 				);
+			} );
+			it( 'Editor preview and block frontend display the same products', async () => {
 				const { previewProducts, frontEndProducts } =
 					await setupEditorFrontendComparison();
 				expect( frontEndProducts ).toEqual( previewProducts );
 			} );
 
 			it( 'Products are displayed in the correct order', async () => {
-				await selectPopularFilterPreset(
-					$popularFiltersPanel,
-					'Top Rated'
-				);
 				const { productQueryProducts, shortcodeProducts } =
 					await setupProductQueryShortcodeComparison(
 						'[products top_rated="true" limit="9"]'
