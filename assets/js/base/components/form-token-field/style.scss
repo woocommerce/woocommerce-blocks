@@ -20,10 +20,20 @@
 		border-radius: 0;
 		box-shadow: none;
 		color: #000;
+		padding: $gap-smaller;
 		position: relative;
 
+		> .components-flex {
+			box-sizing: border-box;
+			padding-bottom: 0;
+			padding-top: 0;
+		}
+
+		.components-form-token-field__token-text,
 		input[type="text"].components-form-token-field__input {
-			min-height: 30px;
+			min-height: calc(31.5px - 0.5em);
+			padding: em(5px) 0 em(5px) 4px;
+			margin: 0;
 		}
 	}
 
@@ -53,7 +63,7 @@
 	}
 
 	.components-form-token-field__suggestion {
-		padding: 8px;
+		padding: emp(8px);
 
 		&.is-selected {
 			background: $gray-100;
@@ -62,10 +72,12 @@
 	}
 
 	&.single-selection {
+		.components-flex-item {
+			width: 100%;
+		}
 		.components-form-token-field__token {
 			margin-right: 0;
 			position: relative;
-			width: 100%;
 			z-index: 1;
 		}
 
@@ -79,14 +91,16 @@
 			width: 100%;
 		}
 
-		.components-form-token-field__token + input[type="text"].components-form-token-field__input {
-			position: absolute;
+		.components-flex-item + input[type="text"].components-form-token-field__input {
+			display: none;
 		}
 
-		.is-active .components-form-token-field__token + input[type="text"].components-form-token-field__input {
+		.is-active .components-flex-item + input[type="text"].components-form-token-field__input {
 			border: 1px solid $gray-600;
-			margin: 0 2px 4px;
-			padding: 0 5px;
+			border-radius: em(4px);
+			display: block;
+			margin-bottom: em(4px);
+			padding: em(5px);
 			position: static;
 		}
 
