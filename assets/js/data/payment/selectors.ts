@@ -66,6 +66,10 @@ export const getPaymentMethodData = ( state: PaymentState ) => {
 	return state.paymentMethodData;
 };
 
+export const getIncompatiblePaymentMethods = ( state: PaymentState ) => {
+	return state.incompatiblePaymentMethods;
+};
+
 export const getSavedPaymentMethods = ( state: PaymentState ) => {
 	return state.savedPaymentMethods;
 };
@@ -126,6 +130,9 @@ export const getPaymentResult = ( state: PaymentState ) => {
 	return state.paymentResult;
 };
 
+// We should avoid using this selector and instead use the focused selectors
+// We're keeping it because it's used in our unit test: assets/js/blocks/cart-checkout-shared/payment-methods/test/payment-methods.js
+// to mock the selectors.
 export const getState = ( state: PaymentState ) => {
 	return state;
 };
