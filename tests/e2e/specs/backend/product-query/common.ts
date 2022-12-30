@@ -222,10 +222,14 @@ export const selectPopularFilterPreset = async (
 		);
 	}
 	await $preset.click();
-	try {
-		await canvas().waitForSelector( SELECTORS.productsGridLoading );
-	} catch ( ok ) {}
-	await canvas().waitForSelector( SELECTORS.productsGrid );
+	/**
+	 * In general, we avoid using timeouts in tests, but in this case, it's
+	 * acceptable to use timeout to give the block time to update the
+	 * corresponding products order and order by. Simply waiting for the grid to
+	 * hidden and shown up again is quite tricky and is the source of flakiness.
+	 * In testing, this reduces most of flaky test related to preset selection.
+	 */
 	await page.waitForTimeout( 1000 );
+	await canvas().waitForSelector( SELECTORS.productsGrid );
 	await saveOrPublish();
 };
