@@ -64,6 +64,10 @@ const SELECTORS = {
 		saveButton: '.edit-site-save-button__button',
 		savePrompt: '.entities-saved-states__text-prompt',
 	},
+	templateEditor: {
+		editButton:
+			'.edit-site-layout__edit-button[aria-label="Open the editor"]',
+	},
 };
 
 /**
@@ -184,6 +188,10 @@ export async function goToTemplateEditor( {
 
 	await disableSiteEditorWelcomeGuide();
 	await waitForCanvas();
+	if ( GUTENBERG_EDITOR_CONTEXT === 'gutenberg' ) {
+		await page.waitForSelector( SELECTORS.templateEditor.editButton );
+		await page.click( SELECTORS.templateEditor.editButton );
+	}
 }
 
 /**
