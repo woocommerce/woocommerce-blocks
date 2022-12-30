@@ -167,7 +167,7 @@ export const isBlockInsertedInWidgetsArea = async ( blockName ) => {
 export async function goToSiteEditor( params = {} ) {
 	await visitAdminPage( 'site-editor.php', addQueryArgs( '', params ) );
 
-	if ( GUTENBERG_EDITOR_CONTEXT === 'gutenberg' ) {
+	if ( GUTENBERG_EDITOR_CONTEXT === 'gutenberg' && params.postId ) {
 		await page.waitForSelector( SELECTORS.templateEditor.editButton );
 		await page.click( SELECTORS.templateEditor.editButton );
 	}
