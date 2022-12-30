@@ -31,7 +31,6 @@
 
 		.components-form-token-field__token-text,
 		input[type="text"].components-form-token-field__input {
-			min-height: calc(31.5px - 0.5em);
 			padding: em(5px) 0 em(5px) 4px;
 			margin: 0;
 		}
@@ -63,8 +62,6 @@
 	}
 
 	.components-form-token-field__suggestion {
-		padding: emp(8px);
-
 		&.is-selected {
 			background: $gray-100;
 			color: $gray-800;
