@@ -1,14 +1,6 @@
 /**
  * External dependencies
  */
-import {
-	findSidebarPanelWithTitle,
-	ensureSidebarOpened,
-} from '@wordpress/e2e-test-utils';
-import {
-	selectBlockByName,
-	getFormElementIdByLabel,
-} from '@woocommerce/blocks-test-utils';
 import { ElementHandle } from 'puppeteer';
 
 /**
@@ -16,11 +8,12 @@ import { ElementHandle } from 'puppeteer';
  */
 import { GUTENBERG_EDITOR_CONTEXT, describeOrSkip } from '../../../utils';
 import {
-	block,
 	resetProductQueryBlockPage,
 	setupProductQueryShortcodeComparison,
 	setupEditorFrontendComparison,
-	selectPopularFilterPreset,
+	selectPopularFilter,
+	getPopularFilterPanel,
+	getCurrentPopularFilter,
 } from './common';
 
 describeOrSkip( GUTENBERG_EDITOR_CONTEXT === 'gutenberg' )(
@@ -34,11 +27,7 @@ describeOrSkip( GUTENBERG_EDITOR_CONTEXT === 'gutenberg' )(
 			 * test can be run individually.
 			 */
 			await resetProductQueryBlockPage();
-			await ensureSidebarOpened();
-			await selectBlockByName( block.slug );
-			$popularFiltersPanel = await findSidebarPanelWithTitle(
-				'Popular Filters'
-			);
+			$popularFiltersPanel = await getPopularFilterPanel();
 		} );
 
 		/**
@@ -57,13 +46,10 @@ describeOrSkip( GUTENBERG_EDITOR_CONTEXT === 'gutenberg' )(
 
 		describe( 'Sorted by title', () => {
 			it( 'Is the default preset', async () => {
-				await expect( $popularFiltersPanel ).toMatchElement(
-					await getFormElementIdByLabel(
-						'Choose among these pre-sets',
-						'components-visually-hidden'
-					),
-					{ text: 'Sorted by title' }
+				const currentFilter = await getCurrentPopularFilter(
+					$popularFiltersPanel
 				);
+				expect( currentFilter ).toEqual( 'Sorted by title' );
 			} );
 
 			it( 'Editor preview and block frontend display the same products', async () => {
@@ -83,10 +69,7 @@ describeOrSkip( GUTENBERG_EDITOR_CONTEXT === 'gutenberg' )(
 
 		describe( 'Newest', () => {
 			beforeEach( async () => {
-				await selectPopularFilterPreset(
-					$popularFiltersPanel,
-					'Newest'
-				);
+				await selectPopularFilter( 'Newest' );
 			} );
 			it( 'Editor preview and block frontend display the same products', async () => {
 				const { previewProducts, frontEndProducts } =
@@ -105,10 +88,7 @@ describeOrSkip( GUTENBERG_EDITOR_CONTEXT === 'gutenberg' )(
 
 		describe( 'Best Selling', () => {
 			beforeEach( async () => {
-				await selectPopularFilterPreset(
-					$popularFiltersPanel,
-					'Best Selling'
-				);
+				await selectPopularFilter( 'Best Selling' );
 			} );
 			it( 'Editor preview and block frontend display the same products', async () => {
 				const { previewProducts, frontEndProducts } =
@@ -127,10 +107,7 @@ describeOrSkip( GUTENBERG_EDITOR_CONTEXT === 'gutenberg' )(
 
 		describe( 'Top Rated', () => {
 			beforeEach( async () => {
-				await selectPopularFilterPreset(
-					$popularFiltersPanel,
-					'Top Rated'
-				);
+				await selectPopularFilter( 'Top Rated' );
 			} );
 			it( 'Editor preview and block frontend display the same products', async () => {
 				const { previewProducts, frontEndProducts } =

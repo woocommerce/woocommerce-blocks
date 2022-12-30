@@ -10,7 +10,12 @@
 /**
  * External dependencies
  */
-import { canvas, setPostContent } from '@wordpress/e2e-test-utils';
+import {
+	canvas,
+	setPostContent,
+	ensureSidebarOpened,
+	findSidebarPanelWithTitle,
+} from '@wordpress/e2e-test-utils';
 import {
 	shopper,
 	visitBlockPage,
@@ -18,6 +23,7 @@ import {
 	findToolsPanelWithTitle,
 	getFormElementIdByLabel,
 	insertShortcodeBlock,
+	selectBlockByName,
 } from '@woocommerce/blocks-test-utils';
 import { ElementHandle } from 'puppeteer';
 
@@ -74,6 +80,7 @@ export const SELECTORS = {
 		menu: ( { hidden }: { hidden: boolean } = { hidden: true } ) =>
 			`.components-custom-select-control__menu[aria-hidden="${ hidden }"]`,
 	},
+	visuallyHiddenComponents: '.components-visually-hidden',
 };
 
 export const goToProductQueryBlockPage = async () => {
@@ -202,10 +209,26 @@ export const setupProductQueryShortcodeComparison = async (
 	return { productQueryProducts, shortcodeProducts };
 };
 
-export const selectPopularFilterPreset = async (
-	$panel: ElementHandle< Node >,
-	preset: string
+export const getPopularFilterPanel = async () => {
+	await ensureSidebarOpened();
+	await selectBlockByName( block.slug );
+	return await findSidebarPanelWithTitle( 'Popular Filters' );
+};
+
+export const getCurrentPopularFilter = async (
+	$panel: ElementHandle< Node >
 ) => {
+	const $selectedFilter = await $panel.$(
+		SELECTORS.customSelectControl.button
+	);
+	if ( ! $selectedFilter ) {
+		throw new Error( 'Can not find selected filter.' );
+	}
+	return await page.evaluate( ( el ) => el.textContent, $selectedFilter );
+};
+
+export const selectPopularFilter = async ( filter: string ) => {
+	let $panel = await getPopularFilterPanel();
 	const $toggleButton = await $panel.$(
 		SELECTORS.customSelectControl.button
 	);
@@ -213,23 +236,32 @@ export const selectPopularFilterPreset = async (
 	await $panel.waitForSelector(
 		SELECTORS.customSelectControl.menu( { hidden: false } )
 	);
-	const [ $preset ] = await $panel.$x(
-		`//li[contains(text(), "${ preset }")]`
+	const [ $filter ] = await $panel.$x(
+		`//li[contains(text(), "${ filter }")]`
 	);
-	if ( ! $preset ) {
+	if ( ! $filter ) {
 		throw new Error(
-			`Preset "${ preset }" not found among Popular Filters options`
+			`Filter "${ filter }" not found among Popular Filters options`
 		);
 	}
-	await $preset.click();
+	await $filter.click();
 	/**
-	 * In general, we avoid using timeouts in tests, but in this case, it's
-	 * acceptable to use timeout to give the block time to update the
-	 * corresponding products order and order by. Simply waiting for the grid to
-	 * hidden and shown up again is quite tricky and is the source of flakiness.
-	 * In testing, this reduces most of flaky test related to preset selection.
+	 * We use try with empty catch block here to avoid the race condition
+	 * between the block loading and the test execution. After user actions,
+	 * the products may or may not finish loading at the time we try to wait for
+	 * the loading class.
 	 */
-	await page.waitForTimeout( 1000 );
+	try {
+		await canvas().waitForSelector( SELECTORS.productsGridLoading );
+	} catch ( ok ) {}
 	await canvas().waitForSelector( SELECTORS.productsGrid );
 	await saveOrPublish();
+
+	// Verify if filter is selected or try again.
+	await visitBlockPage( `${ block.name } Block` );
+	$panel = await getPopularFilterPanel();
+	const currentSelectedFilter = await getCurrentPopularFilter( $panel );
+	if ( currentSelectedFilter !== filter ) {
+		await selectPopularFilter( filter );
+	}
 };
