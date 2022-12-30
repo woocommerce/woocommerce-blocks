@@ -93,6 +93,7 @@ export async function searchForBlock( searchTerm ) {
 export async function insertBlockDontWaitForInsertClose( searchTerm ) {
 	await openGlobalBlockInserter();
 	await searchForBlock( searchTerm );
+	await page.waitForXPath( `//button//span[text()='${ searchTerm }']` );
 	const insertButton = (
 		await page.$x( `//button//span[text()='${ searchTerm }']` )
 	 )[ 0 ];
@@ -164,10 +165,12 @@ export const isBlockInsertedInWidgetsArea = async ( blockName ) => {
  * @param {'wp_template' | 'wp_template_part'} [params.postType='wp_template'] Type of template.
  */
 export async function goToSiteEditor( params = {} ) {
-	return await visitAdminPage(
-		'site-editor.php',
-		addQueryArgs( '', params )
-	);
+	await visitAdminPage( 'site-editor.php', addQueryArgs( '', params ) );
+
+	if ( GUTENBERG_EDITOR_CONTEXT === 'gutenberg' ) {
+		await page.waitForSelector( SELECTORS.templateEditor.editButton );
+		await page.click( SELECTORS.templateEditor.editButton );
+	}
 }
 
 /**
@@ -188,10 +191,6 @@ export async function goToTemplateEditor( {
 
 	await disableSiteEditorWelcomeGuide();
 	await waitForCanvas();
-	if ( GUTENBERG_EDITOR_CONTEXT === 'gutenberg' ) {
-		await page.waitForSelector( SELECTORS.templateEditor.editButton );
-		await page.click( SELECTORS.templateEditor.editButton );
-	}
 }
 
 /**
