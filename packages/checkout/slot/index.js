@@ -8,6 +8,7 @@ import {
 	createSlotFill as baseCreateSlotFill,
 	__experimentalUseSlotFills,
 	useSlotFills as __useSlotFills, //eslint-disable-line
+	__experimentalUseSlot,
 } from '@wordpress/components';
 
 /**
@@ -57,6 +58,15 @@ if ( typeof __useSlotFills === 'function' ) {
 	useSlotFills = __useSlotFills;
 } else if ( typeof __experimentalUseSlotFills === 'function' ) {
 	useSlotFills = __experimentalUseSlotFills;
+} else if ( typeof __experimentalUseSlot === 'function' ) {
+	// Depends on the version of `@wordpress/components`, there's either
+	// __useSlotFills function that returns object containing `fills` property
+	// (in older versions) or __experimentalUseSlotFills function that returns
+	// `fill` directly, hence it's required to adjust the interface of the
+	// `useSlotFills` function exported from this module.
+	useSlotFills = ( slotName ) => {
+		return __experimentalUseSlot( slotName ).fills;
+	};
 } else {
 	useSlotFills = mockedUseSlot;
 }
