@@ -77,6 +77,7 @@ const CartBlock = ( {
 
 describe( 'Testing cart', () => {
 	beforeEach( () => {
+		window.scrollTo = jest.fn();
 		act( () => {
 			fetchMock.mockResponse( ( req ) => {
 				if ( req.url.match( /wc\/store\/v1\/cart/ ) ) {

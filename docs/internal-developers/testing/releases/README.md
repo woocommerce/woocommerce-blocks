@@ -107,7 +107,10 @@ Every release includes specific testing instructions for new features and bug fi
     -   [8.9.2](./892.md)
 -   [9.0.0](./900.md)
 -   [9.1.0](./910.md)
--   [9.1.1](./911.md)
+    -   [9.1.1](./911.md)
+    -   [9.1.2](./912.md)
+    -   [9.1.3](./913.md)
+-   [9.2.0](./920.md)
 
 <!-- FEEDBACK -->
 
@@ -118,4 +121,3 @@ Every release includes specific testing instructions for new features and bug fi
 🐞 Found a mistake, or have a suggestion? [Leave feedback about this document here.](https://github.com/woocommerce/woocommerce-blocks/issues/new?assignees=&labels=type%3A+documentation&template=--doc-feedback.md&title=Feedback%20on%20./docs/internal-developers/testing/releases/README.md)
 
 <!-- /FEEDBACK -->
-

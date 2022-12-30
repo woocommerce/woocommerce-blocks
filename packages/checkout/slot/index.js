@@ -86,7 +86,7 @@ export const createSlotFill = ( slotName, onError = null ) => {
 
 	/**
 	 * A Fill that will get rendered inside associate slot.
-	 * If the code inside has a error, it would be caught ad removed.
+	 * If the code inside has a error, it would be caught and removed.
 	 * The error is only visible to admins.
 	 *
 	 * @param {Object} props          Items props.
