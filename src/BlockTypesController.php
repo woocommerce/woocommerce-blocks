@@ -203,6 +203,7 @@ final class BlockTypesController {
 			'ProductQuery',
 			'FilterWrapper',
 			'CustomerAccount',
+			'ResultsCount',
 		];
 
 		$block_types = array_merge( $block_types, Cart::get_cart_block_types(), Checkout::get_checkout_block_types() );

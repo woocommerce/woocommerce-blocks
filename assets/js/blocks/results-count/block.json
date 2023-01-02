@@ -1,0 +1,21 @@
+{
+	"name": "woocommerce/results-count",
+	"version": "1.0.0",
+	"title": "Results Count",
+	"description": "Display the number of results that match filters and search.",
+	"category": "woocommerce",
+	"keywords": [ "WooCommerce" ],
+	"supports": {
+		"align": true,
+		"color": {
+			"text": true
+		},
+		"typography": {
+			"fontSize": true,
+			"__experimentalFontFamily": true
+		}
+	},
+	"textdomain": "woo-gutenberg-products-block",
+	"apiVersion": 2,
+	"$schema": "https://schemas.wp.org/trunk/block.json"
+}
