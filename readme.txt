@@ -79,7 +79,13 @@ Release and roadmap notes available on the [WooCommerce Developers Blog](https:/
 
 == Changelog ==
 
-= 8.9.2 - 2022-12-01
+= 8.9.3 - 2023-01-02 =
+
+#### Bug fixes
+
+- Fix fatal error in WordPress 5.9 and 6.0 when creating a post or page. [#7496](https://github.com/woocommerce/woocommerce-blocks/pull/7496)
+
+= 8.9.2 - 2022-12-01 =
 
 #### Bug Fixes
 
