@@ -26,46 +26,9 @@ class Authentication {
 			return $result;
 		}
 
-		// Disable Rate Limiting for logged in users with 'edit posts' capability.
+		// Enable Rate Limiting for logged-in users without 'edit posts' capability.
 		if ( ! current_user_can( 'edit_posts' ) ) {
-			$rate_limiting_options = RateLimits::get_options();
-
-			if ( $rate_limiting_options->enabled ) {
-				$action_id = 'store_api_request_';
-
-				if ( is_user_logged_in() ) {
-					$action_id .= get_current_user_id();
-				} else {
-					$ip_address = self::get_ip_address( $rate_limiting_options->proxy_support );
-					$action_id .= md5( $ip_address );
-				}
-
-				$retry  = RateLimits::is_exceeded_retry_after( $action_id );
-				$server = rest_get_server();
-				$server->send_header( 'RateLimit-Limit', $rate_limiting_options->limit );
-
-				if ( false !== $retry ) {
-					$server->send_header( 'RateLimit-Retry-After', $retry );
-					$server->send_header( 'RateLimit-Remaining', 0 );
-					$server->send_header( 'RateLimit-Reset', time() + $retry );
-
-					$ip_address = $ip_address ?? self::get_ip_address( $rate_limiting_options->proxy_support );
-					do_action( 'woocommerce_store_api_rate_limit_exceeded', $ip_address );
-
-					return new \WP_Error(
-						'rate_limit_exceeded',
-						sprintf(
-							'Too many requests. Please wait %d seconds before trying again.',
-							$retry
-						),
-						array( 'status' => 400 )
-					);
-				}
-
-				$rate_limit = RateLimits::update_rate_limit( $action_id );
-				$server->send_header( 'RateLimit-Remaining', $rate_limit->remaining );
-				$server->send_header( 'RateLimit-Reset', $rate_limit->reset );
-			}
+			$result = $this->apply_rate_limiting( $result );
 		}
 
 		// Pass through errors from other authentication methods used before this one.
@@ -83,6 +46,55 @@ class Authentication {
 			return;
 		}
 		$_COOKIE[ LOGGED_IN_COOKIE ] = $logged_in_cookie;
+	}
+
+	/**
+	 * Applies Rate Limiting to the request, and passes through any errors from other authentication methods used before this one.
+	 *
+	 * @param \WP_Error|mixed $result Error from another authentication handler, null if we should handle it, or another value if not.
+	 * @return \WP_Error|null|bool
+	 */
+	protected function apply_rate_limiting( $result ) {
+		$rate_limiting_options = RateLimits::get_options();
+
+		if ( $rate_limiting_options->enabled ) {
+			$action_id = 'store_api_request_';
+
+			if ( is_user_logged_in() ) {
+				$action_id .= get_current_user_id();
+			} else {
+				$ip_address = self::get_ip_address( $rate_limiting_options->proxy_support );
+				$action_id .= md5( $ip_address );
+			}
+
+			$retry  = RateLimits::is_exceeded_retry_after( $action_id );
+			$server = rest_get_server();
+			$server->send_header( 'RateLimit-Limit', $rate_limiting_options->limit );
+
+			if ( false !== $retry ) {
+				$server->send_header( 'RateLimit-Retry-After', $retry );
+				$server->send_header( 'RateLimit-Remaining', 0 );
+				$server->send_header( 'RateLimit-Reset', time() + $retry );
+
+				$ip_address = $ip_address ?? self::get_ip_address( $rate_limiting_options->proxy_support );
+				do_action( 'woocommerce_store_api_rate_limit_exceeded', $ip_address );
+
+				return new \WP_Error(
+					'rate_limit_exceeded',
+					sprintf(
+						'Too many requests. Please wait %d seconds before trying again.',
+						$retry
+					),
+					array( 'status' => 400 )
+				);
+			}
+
+			$rate_limit = RateLimits::update_rate_limit( $action_id );
+			$server->send_header( 'RateLimit-Remaining', $rate_limit->remaining );
+			$server->send_header( 'RateLimit-Reset', $rate_limit->reset );
+		}
+
+		return $result;
 	}
 
 	/**
