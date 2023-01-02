@@ -232,7 +232,7 @@ describe( 'Testing utils', () => {
 				Logo: {
 					id: 0,
 					name: 'Logo',
-					taxonomy: null,
+					taxonomy: 'pa_logo',
 					has_variations: true,
 					terms: [
 						{
