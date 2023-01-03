@@ -10,11 +10,8 @@ import {
 	getToggleIdByLabel,
 } from '@woocommerce/blocks-test-utils';
 import { ElementHandle } from 'puppeteer';
-import {
-	setCheckbox,
-	unsetCheckbox,
-	ensureSidebarOpened,
-} from '@woocommerce/e2e-utils';
+import { setCheckbox, unsetCheckbox } from '@woocommerce/e2e-utils';
+import { ensureSidebarOpened } from '@wordpress/e2e-test-utils';
 
 /**
  * Internal dependencies
