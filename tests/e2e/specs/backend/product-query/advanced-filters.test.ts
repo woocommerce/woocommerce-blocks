@@ -10,8 +10,8 @@ import {
 	getToggleIdByLabel,
 } from '@woocommerce/blocks-test-utils';
 import { ElementHandle } from 'puppeteer';
-import { setCheckbox, unsetCheckbox } from '@woocommerce/e2e-utils';
-import { ensureSidebarOpened } from '@wordpress/e2e-test-utils';
+import { setCheckbox } from '@woocommerce/e2e-utils';
+import { ensureSidebarOpened, canvas } from '@wordpress/e2e-test-utils';
 
 /**
  * Internal dependencies
@@ -78,29 +78,33 @@ describeOrSkip( GUTENBERG_EDITOR_CONTEXT === 'gutenberg' )(
 				);
 			} );
 
-			it( 'Editor preview shows correct products corresponding to the value `Show only products on sale`', async () => {
-				expect( await getPreviewProducts() ).toHaveLength(
-					defaultCount
-				);
-				await toggleAdvancedFilter( 'Sale status' );
-				await setCheckbox(
-					await getToggleIdByLabel( 'Show only products on sale' )
-				);
-				expect( await getPreviewProducts() ).toHaveLength( saleCount );
-				await unsetCheckbox(
-					await getToggleIdByLabel( 'Show only products on sale' )
-				);
+			it( 'Disable Sale Status > Editor preview shows all products', async () => {
 				expect( await getPreviewProducts() ).toHaveLength(
 					defaultCount
 				);
 			} );
 
-			it( 'Works on the front end', async () => {
+			it( 'Disable Sale Status > On the front end, block shows all products', async () => {
+				await shopper.block.goToBlockPage( block.name );
+				expect( await getFrontEndProducts() ).toHaveLength(
+					defaultCount
+				);
+			} );
+
+			it( 'Enable Sale Status > Editor preview shows only on sale products', async () => {
 				await toggleAdvancedFilter( 'Sale status' );
 				await setCheckbox(
 					await getToggleIdByLabel( 'Show only products on sale' )
 				);
 				expect( await getPreviewProducts() ).toHaveLength( saleCount );
+			} );
+
+			it( 'Enable Sale Status > On the front end, block shows only on sale products', async () => {
+				await toggleAdvancedFilter( 'Sale status' );
+				await setCheckbox(
+					await getToggleIdByLabel( 'Show only products on sale' )
+				);
+				await canvas().waitForSelector( SELECTORS.productsGrid );
 				await saveOrPublish();
 				await shopper.block.goToBlockPage( block.name );
 				expect( await getFrontEndProducts() ).toHaveLength( saleCount );
@@ -140,12 +144,18 @@ describeOrSkip( GUTENBERG_EDITOR_CONTEXT === 'gutenberg' )(
 				);
 			} );
 
-			it( 'The filter works in both editor and front end', async () => {
+			it( 'Set Stock status to Out of stock > Editor preview shows only out-of-stock products', async () => {
 				await clearSelectedTokens( $productFiltersPanel );
 				await selectToken( 'Stock status', 'Out of stock' );
 				expect( await getPreviewProducts() ).toHaveLength(
 					outOfStockCount
 				);
+			} );
+
+			it( 'Set Stock status to Out of stock > On the front end, block shows only out-of-stock products', async () => {
+				await clearSelectedTokens( $productFiltersPanel );
+				await selectToken( 'Stock status', 'Out of stock' );
+				await canvas().waitForSelector( SELECTORS.productsGrid );
 				await saveOrPublish();
 				await shopper.block.goToBlockPage( block.name );
 				expect( await getFrontEndProducts() ).toHaveLength(
