@@ -500,7 +500,7 @@ const StockStatusFilterBlock = ( {
 								),
 							} }
 						/>
-						{ allowsMultipleOptions && (
+						{ checked.length === 0 && (
 							<Icon icon={ chevronDown } size={ 30 } />
 						) }
 					</>

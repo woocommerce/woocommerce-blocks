@@ -666,7 +666,7 @@ const AttributeFilterBlock = ( {
 								),
 							} }
 						/>
-						{ multiple && (
+						{ checked.length === 0 && ! isLoading && (
 							<Icon icon={ chevronDown } size={ 30 } />
 						) }
 					</>
