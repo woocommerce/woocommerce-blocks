@@ -2,19 +2,83 @@
  * External dependencies
  */
 import { ElementHandle } from 'puppeteer';
+import {
+	canvas,
+	ensureSidebarOpened,
+	findSidebarPanelWithTitle,
+} from '@wordpress/e2e-test-utils';
+import {
+	selectBlockByName,
+	visitBlockPage,
+	saveOrPublish,
+} from '@woocommerce/blocks-test-utils';
 
 /**
  * Internal dependencies
  */
 import { GUTENBERG_EDITOR_CONTEXT, describeOrSkip } from '../../../utils';
 import {
+	block,
+	SELECTORS,
 	resetProductQueryBlockPage,
 	setupProductQueryShortcodeComparison,
 	setupEditorFrontendComparison,
-	selectPopularFilter,
-	getPopularFilterPanel,
-	getCurrentPopularFilter,
 } from './common';
+
+const getPopularFilterPanel = async () => {
+	await ensureSidebarOpened();
+	await selectBlockByName( block.slug );
+	return await findSidebarPanelWithTitle( 'Popular Filters' );
+};
+
+const getCurrentPopularFilter = async ( $panel: ElementHandle< Node > ) => {
+	const $selectedFilter = await $panel.$(
+		SELECTORS.customSelectControl.button
+	);
+	if ( ! $selectedFilter ) {
+		throw new Error( 'Can not find selected filter.' );
+	}
+	return await page.evaluate( ( el ) => el.textContent, $selectedFilter );
+};
+
+const selectPopularFilter = async ( filter: string ) => {
+	let $panel = await getPopularFilterPanel();
+	const $toggleButton = await $panel.$(
+		SELECTORS.customSelectControl.button
+	);
+	await $toggleButton.click();
+	await $panel.waitForSelector(
+		SELECTORS.customSelectControl.menu( { hidden: false } )
+	);
+	const [ $filter ] = await $panel.$x(
+		`//li[contains(text(), "${ filter }")]`
+	);
+	if ( ! $filter ) {
+		throw new Error(
+			`Filter "${ filter }" not found among Popular Filters options`
+		);
+	}
+	await $filter.click();
+	/**
+	 * We use try with empty catch block here to avoid the race condition
+	 * between the block loading and the test execution. After user actions,
+	 * the products may or may not finish loading at the time we try to wait for
+	 * the loading class.
+	 */
+	try {
+		await canvas().waitForSelector( SELECTORS.productsGridLoading );
+	} catch ( ok ) {}
+	await canvas().waitForSelector( SELECTORS.productsGrid );
+	await saveOrPublish();
+
+	// Verify if filter is selected or try again.
+	await visitBlockPage( `${ block.name } Block` );
+	$panel = await getPopularFilterPanel();
+	const currentSelectedFilter = await getCurrentPopularFilter( $panel );
+	if ( currentSelectedFilter !== filter ) {
+		await selectPopularFilter( filter );
+	}
+};
 
 describeOrSkip( GUTENBERG_EDITOR_CONTEXT === 'gutenberg' )(
 	'Product Query > Popular Filters',
