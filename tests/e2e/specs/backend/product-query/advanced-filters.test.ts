@@ -60,6 +60,14 @@ describeOrSkip( GUTENBERG_EDITOR_CONTEXT === 'gutenberg' )(
 			await resetProductQueryBlockPage();
 		} );
 
+		it( 'Editor preview shows all products by default', async () => {
+			expect( await getPreviewProducts() ).toHaveLength( defaultCount );
+		} );
+
+		it( 'On the front end, blocks shows all products by default', async () => {
+			expect( await getPreviewProducts() ).toHaveLength( defaultCount );
+		} );
+
 		describe( 'Sale Status', () => {
 			it( 'Sale status is disabled by default', async () => {
 				await expect( $productFiltersPanel ).not.toMatch(
@@ -75,19 +83,6 @@ describeOrSkip( GUTENBERG_EDITOR_CONTEXT === 'gutenberg' )(
 				await toggleAdvancedFilter( 'Sale status' );
 				await expect( $productFiltersPanel ).not.toMatch(
 					'Show only products on sale'
-				);
-			} );
-
-			it( 'Disable Sale Status > Editor preview shows all products', async () => {
-				expect( await getPreviewProducts() ).toHaveLength(
-					defaultCount
-				);
-			} );
-
-			it( 'Disable Sale Status > On the front end, block shows all products', async () => {
-				await shopper.block.goToBlockPage( block.name );
-				expect( await getFrontEndProducts() ).toHaveLength(
-					defaultCount
 				);
 			} );
 
@@ -136,12 +131,6 @@ describeOrSkip( GUTENBERG_EDITOR_CONTEXT === 'gutenberg' )(
 				await expect( $productFiltersPanel ).toMatch( 'In stock' );
 				await expect( $productFiltersPanel ).toMatch( 'Out of stock' );
 				await expect( $productFiltersPanel ).toMatch( 'On backorder' );
-			} );
-
-			it( 'Editor preview shows all products by default', async () => {
-				expect( await getPreviewProducts() ).toHaveLength(
-					defaultCount
-				);
 			} );
 
 			it( 'Set Stock status to Out of stock > Editor preview shows only out-of-stock products', async () => {
