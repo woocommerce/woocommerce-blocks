@@ -168,6 +168,7 @@ final class BlockTypesController {
 			'AllProducts',
 			'AllReviews',
 			'AttributeFilter',
+			'CatalogSorting',
 			'ClassicTemplate',
 			'CustomerAccount',
 			'FeaturedCategory',

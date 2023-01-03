@@ -1,0 +1,22 @@
+{
+	"name": "woocommerce/catalog-sorting",
+	"version": "1.0.0",
+	"title": "Sorting Filter",
+	"description": "Display the sorting filter dropdown.",
+	"category": "woocommerce",
+	"keywords": [ "WooCommerce" ],
+	"supports": {
+		"align": true,
+		"color": {
+			"text": true
+		},
+		"typography": {
+			"fontSize": true,
+			"__experimentalFontFamily": true
+		},
+		"inserter": false
+	},
+	"textdomain": "woo-gutenberg-products-block",
+	"apiVersion": 2,
+	"$schema": "https://schemas.wp.org/trunk/block.json"
+}

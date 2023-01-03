@@ -22,7 +22,7 @@ function objectOmit< T, K extends keyof T >( obj: T, key: K ) {
 
 export const QUERY_LOOP_ID = 'core/query';
 
-export const DEFAULT_CORE_ALLOWED_CONTROLS = [ 'taxQuery', 'search' ];
+export const DEFAULT_CORE_ALLOWED_CONTROLS = [ 'taxQuery', 'search', 'order' ];
 
 export const ALL_PRODUCT_QUERY_CONTROLS = [
 	'attributes',
@@ -73,6 +73,7 @@ export const QUERY_DEFAULT_ATTRIBUTES: QueryBlockAttributes = {
 };
 
 export const INNER_BLOCKS_TEMPLATE: InnerBlockTemplate[] = [
+	[ 'woocommerce/catalog-sorting' ],
 	[
 		'core/post-template',
 		{ __woocommerceNamespace: PRODUCT_TEMPLATE_ID },
