@@ -26,16 +26,10 @@ class ResultsCount extends AbstractBlock {
 	 * @return string Rendered block output.
 	 */
 	protected function render( $attributes, $content, $block ) {
-		if ( ! wc_get_loop_prop( 'is_paginated' ) || ! woocommerce_products_will_display() ) {
-			return;
-		}
+		ob_start();
+		woocommerce_result_count();
+		$results_count = ob_get_clean();
 
-		$args = array(
-			'total'    => wc_get_loop_prop( 'total' ),
-			'per_page' => wc_get_loop_prop( 'per_page' ),
-			'current'  => wc_get_loop_prop( 'current_page' ),
-		);
-
-		return wc_get_template( 'loop/result-count.php', $args );
+		return '<div class="wc-block-results-count">' . $results_count . '</div>';
 	}
 }
