@@ -4,7 +4,7 @@
 import {
 	PlainPaymentMethods,
 	PlainExpressPaymentMethods,
-} from '@woocommerce/type-defs/payments';
+} from '@woocommerce/types';
 import type { PaymentResult } from '@woocommerce/types';
 
 /**
@@ -111,6 +111,13 @@ export const __internalSetPaymentMethodData = (
 ) => ( {
 	type: ACTION_TYPES.SET_PAYMENT_METHOD_DATA,
 	paymentMethodData,
+} );
+
+export const setIncompatiblePaymentMethods = (
+	incompatiblePaymentMethods: Array< string > = []
+) => ( {
+	type: ACTION_TYPES.SET_INCOMPATIBLE_PAYMENT_METHODS,
+	incompatiblePaymentMethods,
 } );
 
 /**
