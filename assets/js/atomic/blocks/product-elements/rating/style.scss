@@ -4,6 +4,7 @@
 	margin-bottom: $gap-small;
 
 	&__stars {
+		display: inline-block;
 		overflow: hidden;
 		position: relative;
 		width: 5.3em;
@@ -49,5 +50,12 @@
 .wc-block-single-product {
 	.wc-block-components-product-rating__stars {
 		margin: 0;
+	}
+}
+
+// Fix applied specifically to Classic Template
+.woocommerce-loop-product__link {
+	.wc-block-components-product-rating__stars {
+		display: block;
 	}
 }
