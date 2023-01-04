@@ -40,6 +40,9 @@ export const hasPaymentError = ( state: PaymentState ) =>
 export const isPaymentFailed = ( state: PaymentState ) =>
 	state.status === PAYMENT_STATUS.FAILED;
 
+export const isPaymentReady = ( state: PaymentState ) =>
+	state.status === PAYMENT_STATUS.READY;
+
 export const isPaymentFinished = ( state: PaymentState ) => {
 	return (
 		state.status === PAYMENT_STATUS.SUCCESS ||
