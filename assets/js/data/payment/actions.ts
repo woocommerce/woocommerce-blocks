@@ -37,6 +37,10 @@ export const __internalSetPaymentReady = () => ( {
 	type: ACTION_TYPES.SET_PAYMENT_READY,
 } );
 
+export const __internalSetPaymentReady = () => ( {
+	type: ACTION_TYPES.SET_PAYMENT_READY,
+} );
+
 /**
  * Set whether the payment methods have been initialised or not
  *
