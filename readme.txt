@@ -90,6 +90,10 @@ Release and roadmap notes available on the [WooCommerce Developers Blog](https:/
 #### Bug Fixes
 
 - Mini Cart block: fix compatibility with Page Optimize and Product Bundles plugins [#7794](https://github.com/woocommerce/woocommerce-blocks/pull/7794)
+<<<<<<< HEAD
+- Mini Cart block: Load wc-blocks-registry package at the page's load instead of lazy load it [#7813](https://github.com/woocommerce/woocommerce-blocks/pull/7813)
+=======
+>>>>>>> release/8.9.2
 
 = 8.9.1 - 2022-11-14 =
 
