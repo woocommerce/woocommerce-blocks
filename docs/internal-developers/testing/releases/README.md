@@ -105,6 +105,7 @@ Every release includes specific testing instructions for new features and bug fi
     -   [8.9.1](./891.md)
     -   [8.9.2](./892.md)
     -   [8.9.3](./893.md)
+    -   [8.9.4](./894.md)
 
 <!-- FEEDBACK -->
 
