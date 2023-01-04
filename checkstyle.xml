@@ -1492,14 +1492,18 @@
               Types of property &apos;text&apos; are incompatible.
                 Type &apos;boolean&apos; is not assignable to type &apos;string&apos;." source="TS2769" />
 </file>
+<file name="assets/js/editor-components/toggle-button-control/index.js">
+<error line="16" column="10" severity="error" message="A spread argument must either have a tuple type or be passed to a rest parameter." source="TS2556" />
+<error line="21" column="11" severity="error" message="Parameter &apos;event&apos; implicitly has an &apos;any&apos; type." source="TS7006" />
+<error line="55" column="23" severity="error" message="Parameter &apos;option&apos; implicitly has an &apos;any&apos; type." source="TS7006" />
+<error line="55" column="31" severity="error" message="Parameter &apos;index&apos; implicitly has an &apos;any&apos; type." source="TS7006" />
+</file>
 <file name="assets/js/atomic/blocks/product-elements/image/edit.js">
-<error line="14" column="2" severity="error" message="Module &apos;&quot;@wordpress/components&quot;&apos; has no exported member &apos;__experimentalToggleGroupControl&apos;." source="TS2305" />
-<error line="16" column="2" severity="error" message="Module &apos;&quot;@wordpress/components&quot;&apos; has no exported member &apos;__experimentalToggleGroupControlOption&apos;." source="TS2305" />
-<error line="24" column="18" severity="error" message="Binding element &apos;attributes&apos; implicitly has an &apos;any&apos; type." source="TS7031" />
-<error line="24" column="30" severity="error" message="Binding element &apos;setAttributes&apos; implicitly has an &apos;any&apos; type." source="TS7031" />
-<error line="24" column="45" severity="error" message="Binding element &apos;context&apos; implicitly has an &apos;any&apos; type." source="TS7031" />
-<error line="94" column="21" severity="error" message="Parameter &apos;value&apos; implicitly has an &apos;any&apos; type." source="TS7006" />
-<error line="146" column="21" severity="error" message="Parameter &apos;value&apos; implicitly has an &apos;any&apos; type." source="TS7006" />
+<error line="17" column="18" severity="error" message="Binding element &apos;attributes&apos; implicitly has an &apos;any&apos; type." source="TS7031" />
+<error line="17" column="30" severity="error" message="Binding element &apos;setAttributes&apos; implicitly has an &apos;any&apos; type." source="TS7031" />
+<error line="17" column="45" severity="error" message="Binding element &apos;context&apos; implicitly has an &apos;any&apos; type." source="TS7031" />
+<error line="110" column="21" severity="error" message="Parameter &apos;value&apos; implicitly has an &apos;any&apos; type." source="TS7006" />
+<error line="140" column="21" severity="error" message="Parameter &apos;value&apos; implicitly has an &apos;any&apos; type." source="TS7006" />
 </file>
 <file name="assets/js/atomic/blocks/product-elements/image/index.js">
 <error line="46" column="1" severity="error" message="No overload matches this call.
@@ -2230,10 +2234,6 @@
 <file name="assets/js/blocks/filter-wrapper/upgrade.tsx">
 <error line="28" column="12" severity="error" message="Property &apos;getBlockParentsByBlockName&apos; does not exist on type &apos;typeof import(&quot;/home/runner/work/woocommerce-blocks/woocommerce-blocks/node_modules/@types/wordpress__block-editor/store/selectors&quot;)&apos;." source="TS2339" />
 </file>
-<file name="assets/js/blocks/active-filters/edit.tsx">
-<error line="13" column="2" severity="error" message="Module &apos;&quot;@wordpress/components&quot;&apos; has no exported member &apos;__experimentalToggleGroupControl&apos;." source="TS2305" />
-<error line="15" column="2" severity="error" message="Module &apos;&quot;@wordpress/components&quot;&apos; has no exported member &apos;__experimentalToggleGroupControlOption&apos;." source="TS2305" />
-</file>
 <file name="assets/js/blocks/active-filters/index.tsx">
 <error line="18" column="20" severity="error" message="No overload matches this call.
   Overload 1 of 2, &apos;(metadata: BlockConfiguration&lt;Attributes&gt;, settings?: Partial&lt;BlockConfiguration&lt;Attributes&gt;&gt; | undefined): Block&lt;...&gt; | undefined&apos;, gave the following error.
@@ -2255,12 +2255,10 @@
   If the &apos;@wordpress/components&apos; package actually exposes this module, consider sending a pull request to amend &apos;https://github.com/DefinitelyTyped/DefinitelyTyped/tree/master/types/wordpress__components&apos;" source="TS7016" />
 </file>
 <file name="assets/js/blocks/attribute-filter/edit.tsx">
-<error line="28" column="2" severity="error" message="Module &apos;&quot;@wordpress/components&quot;&apos; has no exported member &apos;__experimentalToggleGroupControl&apos;." source="TS2305" />
-<error line="30" column="2" severity="error" message="Module &apos;&quot;@wordpress/components&quot;&apos; has no exported member &apos;__experimentalToggleGroupControlOption&apos;." source="TS2305" />
-<error line="153" column="5" severity="error" message="Type &apos;{ id: number; name: string; }[]&apos; is not assignable to type &apos;SearchListItemsType&apos;.
+<error line="150" column="5" severity="error" message="Type &apos;{ id: number; name: string; }[]&apos; is not assignable to type &apos;SearchListItemsType&apos;.
   Type &apos;{ id: number; name: string; }[]&apos; is not assignable to type &apos;SearchListItemType[]&apos;.
     Type &apos;{ id: number; name: string; }&apos; is missing the following properties from type &apos;SearchListItemType&apos;: value, parent, count, children, breadcrumbs" source="TS2322" />
-<error line="154" column="5" severity="error" message="Type &apos;{ id: number; name: string; }[]&apos; is not assignable to type &apos;SearchListItemsType&apos;." source="TS2322" />
+<error line="151" column="5" severity="error" message="Type &apos;{ id: number; name: string; }[]&apos; is not assignable to type &apos;SearchListItemsType&apos;." source="TS2322" />
 </file>
 <file name="assets/js/blocks/attribute-filter/index.tsx">
 <error line="18" column="20" severity="error" message="No overload matches this call.
@@ -3484,10 +3482,6 @@
 <error line="135" column="42" severity="error" message="Property &apos;toBeInTheDocument&apos; does not exist on type &apos;JestMatchers&lt;HTMLElement&gt;&apos;." source="TS2339" />
 <error line="147" column="52" severity="error" message="Property &apos;toBeInTheDocument&apos; does not exist on type &apos;Matchers&lt;void, HTMLElement | null&gt;&apos;." source="TS2339" />
 </file>
-<file name="assets/js/blocks/price-filter/edit.tsx">
-<error line="18" column="2" severity="error" message="Module &apos;&quot;@wordpress/components&quot;&apos; has no exported member &apos;__experimentalToggleGroupControl&apos;." source="TS2305" />
-<error line="20" column="2" severity="error" message="Module &apos;&quot;@wordpress/components&quot;&apos; has no exported member &apos;__experimentalToggleGroupControlOption&apos;." source="TS2305" />
-</file>
 <file name="assets/js/blocks/price-filter/index.tsx">
 <error line="16" column="20" severity="error" message="No overload matches this call.
   Overload 1 of 2, &apos;(metadata: BlockConfiguration&lt;Attributes&gt;, settings?: Partial&lt;BlockConfiguration&lt;Attributes&gt;&gt; | undefined): Block&lt;...&gt; | undefined&apos;, gave the following error.
@@ -3527,14 +3521,12 @@
 <file name="assets/js/blocks/product-categories/block.js">
 <error line="6" column="30" severity="error" message="Could not find a declaration file for module &apos;@wordpress/server-side-render&apos;. &apos;/home/runner/work/woocommerce-blocks/woocommerce-blocks/node_modules/@wordpress/server-side-render/build/index.js&apos; implicitly has an &apos;any&apos; type.
   Try `npm i --save-dev @types/wordpress__server-side-render` if it exists or add a new declaration (.d.ts) file containing `declare module &apos;@wordpress/server-side-render&apos;;`" source="TS7016" />
-<error line="15" column="2" severity="error" message="Module &apos;&quot;@wordpress/components&quot;&apos; has no exported member &apos;__experimentalToggleGroupControl&apos;." source="TS2305" />
-<error line="17" column="2" severity="error" message="Module &apos;&quot;@wordpress/components&quot;&apos; has no exported member &apos;__experimentalToggleGroupControlOption&apos;." source="TS2305" />
-<error line="46" column="11" severity="error" message="Property &apos;hasCount&apos; does not exist on type &apos;Object&apos;." source="TS2339" />
-<error line="46" column="21" severity="error" message="Property &apos;hasImage&apos; does not exist on type &apos;Object&apos;." source="TS2339" />
-<error line="46" column="31" severity="error" message="Property &apos;hasEmpty&apos; does not exist on type &apos;Object&apos;." source="TS2339" />
-<error line="46" column="41" severity="error" message="Property &apos;isDropdown&apos; does not exist on type &apos;Object&apos;." source="TS2339" />
-<error line="46" column="53" severity="error" message="Property &apos;isHierarchical&apos; does not exist on type &apos;Object&apos;." source="TS2339" />
-<error line="64" column="20" severity="error" message="Parameter &apos;value&apos; implicitly has an &apos;any&apos; type." source="TS7006" />
+<error line="43" column="11" severity="error" message="Property &apos;hasCount&apos; does not exist on type &apos;Object&apos;." source="TS2339" />
+<error line="43" column="21" severity="error" message="Property &apos;hasImage&apos; does not exist on type &apos;Object&apos;." source="TS2339" />
+<error line="43" column="31" severity="error" message="Property &apos;hasEmpty&apos; does not exist on type &apos;Object&apos;." source="TS2339" />
+<error line="43" column="41" severity="error" message="Property &apos;isDropdown&apos; does not exist on type &apos;Object&apos;." source="TS2339" />
+<error line="43" column="53" severity="error" message="Property &apos;isHierarchical&apos; does not exist on type &apos;Object&apos;." source="TS2339" />
+<error line="77" column="20" severity="error" message="Parameter &apos;value&apos; implicitly has an &apos;any&apos; type." source="TS7006" />
 </file>
 <file name="assets/js/blocks/product-categories/edit.tsx">
 <error line="17" column="5" severity="error" message="Type &apos;unknown&apos; is not assignable to type &apos;IntrinsicAttributes &amp; Pick&lt;{ attributes: Object; setAttributes: (arg0: any) =&gt; any; name: string; }, &quot;name&quot; | &quot;attributes&quot; | &quot;setAttributes&quot;&gt; &amp; Pick&lt;...&gt; &amp; Pick&lt;...&gt;&apos;.
@@ -3831,16 +3823,14 @@
     Argument of type &apos;{ name: string; version: string; title: string; description: string; category: string; keywords: string[]; supports: { html: boolean; multiple: boolean; color: { __experimentalDefaultControls: { text: boolean; }; }; inserter: boolean; lock: boolean; }; ... 4 more ...; $schema: string; }&apos; is not assignable to parameter of type &apos;string&apos;." source="TS2769" />
 </file>
 <file name="assets/js/blocks/reviews/edit-utils.js">
-<error line="15" column="2" severity="error" message="Module &apos;&quot;@wordpress/components&quot;&apos; has no exported member &apos;__experimentalToggleGroupControl&apos;." source="TS2305" />
-<error line="17" column="2" severity="error" message="Module &apos;&quot;@wordpress/components&quot;&apos; has no exported member &apos;__experimentalToggleGroupControlOption&apos;." source="TS2305" />
-<error line="20" column="35" severity="error" message="Parameter &apos;editMode&apos; implicitly has an &apos;any&apos; type." source="TS7006" />
-<error line="20" column="45" severity="error" message="Parameter &apos;setAttributes&apos; implicitly has an &apos;any&apos; type." source="TS7006" />
-<error line="20" column="60" severity="error" message="Parameter &apos;buttonTitle&apos; implicitly has an &apos;any&apos; type." source="TS7006" />
-<error line="35" column="49" severity="error" message="Parameter &apos;attributes&apos; implicitly has an &apos;any&apos; type." source="TS7006" />
-<error line="35" column="61" severity="error" message="Parameter &apos;setAttributes&apos; implicitly has an &apos;any&apos; type." source="TS7006" />
-<error line="118" column="20" severity="error" message="Parameter &apos;value&apos; implicitly has an &apos;any&apos; type." source="TS7006" />
-<error line="168" column="46" severity="error" message="Parameter &apos;attributes&apos; implicitly has an &apos;any&apos; type." source="TS7006" />
-<error line="168" column="58" severity="error" message="Parameter &apos;setAttributes&apos; implicitly has an &apos;any&apos; type." source="TS7006" />
+<error line="17" column="35" severity="error" message="Parameter &apos;editMode&apos; implicitly has an &apos;any&apos; type." source="TS7006" />
+<error line="17" column="45" severity="error" message="Parameter &apos;setAttributes&apos; implicitly has an &apos;any&apos; type." source="TS7006" />
+<error line="17" column="60" severity="error" message="Parameter &apos;buttonTitle&apos; implicitly has an &apos;any&apos; type." source="TS7006" />
+<error line="32" column="49" severity="error" message="Parameter &apos;attributes&apos; implicitly has an &apos;any&apos; type." source="TS7006" />
+<error line="32" column="61" severity="error" message="Parameter &apos;setAttributes&apos; implicitly has an &apos;any&apos; type." source="TS7006" />
+<error line="131" column="20" severity="error" message="Parameter &apos;value&apos; implicitly has an &apos;any&apos; type." source="TS7006" />
+<error line="166" column="46" severity="error" message="Parameter &apos;attributes&apos; implicitly has an &apos;any&apos; type." source="TS7006" />
+<error line="166" column="58" severity="error" message="Parameter &apos;setAttributes&apos; implicitly has an &apos;any&apos; type." source="TS7006" />
 </file>
 <file name="assets/js/blocks/reviews/editor-block.js">
 <error line="64" column="7" severity="error" message="Property &apos;onClick&apos; is missing in type &apos;{ screenReaderLabel: string; }&apos; but required in type &apos;LoadMoreButtonProps&apos;." source="TS2741" />
