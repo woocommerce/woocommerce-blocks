@@ -3182,8 +3182,6 @@
 <file name="assets/js/blocks/featured-items/inspector-controls.tsx">
 <error line="11" column="2" severity="error" message="Module &apos;&quot;@wordpress/block-editor&quot;&apos; has no exported member &apos;__experimentalPanelColorGradientSettings&apos;." source="TS2305" />
 <error line="12" column="2" severity="error" message="Module &apos;&quot;@wordpress/block-editor&quot;&apos; has no exported member &apos;__experimentalUseGradient&apos;." source="TS2305" />
-<error line="19" column="2" severity="error" message="Module &apos;&quot;@wordpress/components&quot;&apos; has no exported member &apos;__experimentalToggleGroupControl&apos;." source="TS2305" />
-<error line="20" column="2" severity="error" message="Module &apos;&quot;@wordpress/components&quot;&apos; has no exported member &apos;__experimentalToggleGroupControlOption&apos;." source="TS2305" />
 </file>
 <file name="assets/js/blocks/featured-items/register.tsx">
 <error line="74" column="43" severity="error" message="Property &apos;background&apos; does not exist on type &apos;never&apos;." source="TS2339" />
