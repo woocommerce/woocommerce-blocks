@@ -24,11 +24,8 @@ import {
 	Button,
 	ToolbarGroup,
 	withSpokenMessages,
-	// eslint-disable-next-line @wordpress/no-unsafe-wp-apis
-	__experimentalToggleGroupControl as ToggleGroupControl,
-	// eslint-disable-next-line @wordpress/no-unsafe-wp-apis
-	__experimentalToggleGroupControlOption as ToggleGroupControlOption,
 } from '@wordpress/components';
+import ToggleButtonControl from '@woocommerce/editor-components/toggle-button-control';
 
 /**
  * Internal dependencies
@@ -181,36 +178,37 @@ const Edit = ( {
 							} )
 						}
 					/>
-					<ToggleGroupControl
+					<ToggleButtonControl
 						label={ __(
 							'Allow selecting multiple options?',
 							'woo-gutenberg-products-block'
 						) }
 						value={ selectType || 'multiple' }
+						options={ [
+							{
+								label: __(
+									'Multiple',
+									'woo-gutenberg-products-block'
+								),
+								value: 'multiple',
+							},
+							{
+								label: __(
+									'Single',
+									'woo-gutenberg-products-block'
+								),
+								value: 'single',
+							},
+						] }
 						onChange={ ( value: string ) =>
 							setAttributes( {
 								selectType: value,
 							} )
 						}
 						className="wc-block-attribute-filter__multiple-toggle"
-					>
-						<ToggleGroupControlOption
-							value="multiple"
-							label={ __(
-								'Multiple',
-								'woo-gutenberg-products-block'
-							) }
-						/>
-						<ToggleGroupControlOption
-							value="single"
-							label={ __(
-								'Single',
-								'woo-gutenberg-products-block'
-							) }
-						/>
-					</ToggleGroupControl>
+					/>
 					{ selectType === 'multiple' && (
-						<ToggleGroupControl
+						<ToggleButtonControl
 							label={ __(
 								'Filter Conditions',
 								'woo-gutenberg-products-block'
@@ -232,25 +230,26 @@ const Edit = ( {
 									queryType: value,
 								} )
 							}
+							options={ [
+								{
+									label: __(
+										'All',
+										'woo-gutenberg-products-block'
+									),
+									value: 'and',
+								},
+								{
+									label: __(
+										'Any',
+										'woo-gutenberg-products-block'
+									),
+									value: 'or',
+								},
+							] }
 							className="wc-block-attribute-filter__conditions-toggle"
-						>
-							<ToggleGroupControlOption
-								value="and"
-								label={ __(
-									'All',
-									'woo-gutenberg-products-block'
-								) }
-							/>
-							<ToggleGroupControlOption
-								value="or"
-								label={ __(
-									'Any',
-									'woo-gutenberg-products-block'
-								) }
-							/>
-						</ToggleGroupControl>
+						/>
 					) }
-					<ToggleGroupControl
+					<ToggleButtonControl
 						label={ __(
 							'Display Style',
 							'woo-gutenberg-products-block'
@@ -261,23 +260,24 @@ const Edit = ( {
 								displayStyle: value,
 							} )
 						}
+						options={ [
+							{
+								label: __(
+									'List',
+									'woo-gutenberg-products-block'
+								),
+								value: 'list',
+							},
+							{
+								label: __(
+									'Dropdown',
+									'woo-gutenberg-products-block'
+								),
+								value: 'dropdown',
+							},
+						] }
 						className="wc-block-attribute-filter__display-toggle"
-					>
-						<ToggleGroupControlOption
-							value="list"
-							label={ __(
-								'List',
-								'woo-gutenberg-products-block'
-							) }
-						/>
-						<ToggleGroupControlOption
-							value="dropdown"
-							label={ __(
-								'Dropdown',
-								'woo-gutenberg-products-block'
-							) }
-						/>
-					</ToggleGroupControl>
+					/>
 					<ToggleControl
 						label={ __(
 							"Show 'Apply filters' button",
