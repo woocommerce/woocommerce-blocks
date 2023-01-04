@@ -79,7 +79,13 @@ Release and roadmap notes available on the [WooCommerce Developers Blog](https:/
 
 == Changelog ==
 
-= 8.9.3 - 2023-01-02 =
+= 8.9.4 - 2023-01-04 =
+
+#### Bug fixes
+
+- Fix hangs in the block editor with WordPress 5.8. [#8095](https://github.com/woocommerce/woocommerce-blocks/pull/8095)
+
+= 8.9.3 - 2023-01-03 =
 
 #### Bug fixes
 
