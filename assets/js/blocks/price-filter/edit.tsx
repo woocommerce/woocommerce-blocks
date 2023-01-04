@@ -14,11 +14,8 @@ import {
 	PanelBody,
 	ToggleControl,
 	Button,
-	// eslint-disable-next-line @wordpress/no-unsafe-wp-apis
-	__experimentalToggleGroupControl as ToggleGroupControl,
-	// eslint-disable-next-line @wordpress/no-unsafe-wp-apis
-	__experimentalToggleGroupControlOption as ToggleGroupControlOption,
 } from '@wordpress/components';
+import ToggleButtonControl from '@woocommerce/editor-components/toggle-button-control';
 
 /**
  * Internal dependencies
@@ -49,34 +46,35 @@ export default function ( {
 				<PanelBody
 					title={ __( 'Settings', 'woo-gutenberg-products-block' ) }
 				>
-					<ToggleGroupControl
+					<ToggleButtonControl
 						label={ __(
 							'Price Range Selector',
 							'woo-gutenberg-products-block'
 						) }
 						value={ showInputFields ? 'editable' : 'text' }
+						options={ [
+							{
+								label: __(
+									'Editable',
+									'woo-gutenberg-products-block'
+								),
+								value: 'editable',
+							},
+							{
+								label: __(
+									'Text',
+									'woo-gutenberg-products-block'
+								),
+								value: 'text',
+							},
+						] }
 						onChange={ ( value: string ) =>
 							setAttributes( {
 								showInputFields: value === 'editable',
 							} )
 						}
 						className="wc-block-price-filter__price-range-toggle"
-					>
-						<ToggleGroupControlOption
-							value="editable"
-							label={ __(
-								'Editable',
-								'woo-gutenberg-products-block'
-							) }
-						/>
-						<ToggleGroupControlOption
-							value="text"
-							label={ __(
-								'Text',
-								'woo-gutenberg-products-block'
-							) }
-						/>
-					</ToggleGroupControl>
+					/>
 					{ showInputFields && (
 						<ToggleControl
 							label={ __(

@@ -11,11 +11,8 @@ import {
 	PanelBody,
 	ToggleControl,
 	Placeholder,
-	// eslint-disable-next-line @wordpress/no-unsafe-wp-apis
-	__experimentalToggleGroupControl as ToggleGroupControl,
-	// eslint-disable-next-line @wordpress/no-unsafe-wp-apis
-	__experimentalToggleGroupControlOption as ToggleGroupControlOption,
 } from '@wordpress/components';
+import ToggleButtonControl from '@woocommerce/editor-components/toggle-button-control';
 
 const EmptyPlaceholder = () => (
 	<Placeholder
@@ -55,33 +52,34 @@ const ProductCategoriesBlock = ( { attributes, setAttributes, name } ) => {
 					) }
 					initialOpen
 				>
-					<ToggleGroupControl
+					<ToggleButtonControl
 						label={ __(
 							'Display style',
 							'woo-gutenberg-products-block'
 						) }
 						value={ isDropdown ? 'dropdown' : 'list' }
+						options={ [
+							{
+								label: __(
+									'List',
+									'woo-gutenberg-products-block'
+								),
+								value: 'list',
+							},
+							{
+								label: __(
+									'Dropdown',
+									'woo-gutenberg-products-block'
+								),
+								value: 'dropdown',
+							},
+						] }
 						onChange={ ( value ) =>
 							setAttributes( {
 								isDropdown: value === 'dropdown',
 							} )
 						}
-					>
-						<ToggleGroupControlOption
-							value="list"
-							label={ __(
-								'List',
-								'woo-gutenberg-products-block'
-							) }
-						/>
-						<ToggleGroupControlOption
-							value="dropdown"
-							label={ __(
-								'Dropdown',
-								'woo-gutenberg-products-block'
-							) }
-						/>
-					</ToggleGroupControl>
+					/>
 				</PanelBody>
 				<PanelBody
 					title={ __( 'Content', 'woo-gutenberg-products-block' ) }

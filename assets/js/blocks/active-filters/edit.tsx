@@ -5,15 +5,8 @@ import { __ } from '@wordpress/i18n';
 import { InspectorControls, useBlockProps } from '@wordpress/block-editor';
 import type { BlockEditProps } from '@wordpress/blocks';
 import BlockTitle from '@woocommerce/editor-components/block-title';
-import {
-	Disabled,
-	PanelBody,
-	withSpokenMessages,
-	// eslint-disable-next-line @wordpress/no-unsafe-wp-apis
-	__experimentalToggleGroupControl as ToggleGroupControl,
-	// eslint-disable-next-line @wordpress/no-unsafe-wp-apis
-	__experimentalToggleGroupControlOption as ToggleGroupControlOption,
-} from '@wordpress/components';
+import { Disabled, PanelBody, withSpokenMessages } from '@wordpress/components';
+import ToggleButtonControl from '@woocommerce/editor-components/toggle-button-control';
 
 /**
  * Internal dependencies
@@ -43,34 +36,36 @@ const Edit = ( {
 						'woo-gutenberg-products-block'
 					) }
 				>
-					<ToggleGroupControl
+					<ToggleButtonControl
 						label={ __(
 							'Display Style',
 							'woo-gutenberg-products-block'
 						) }
 						value={ displayStyle }
+						options={ [
+							{
+								label: __(
+									'List',
+									'woo-gutenberg-products-block'
+								),
+								value: 'list',
+							},
+							{
+								/* translators: "Chips" is a tag-like display style for chosen attributes. */
+								label: __(
+									'Chips',
+									'woo-gutenberg-products-block'
+								),
+								value: 'chips',
+							},
+						] }
 						onChange={ ( value: Attributes[ 'displayStyle' ] ) =>
 							setAttributes( {
 								displayStyle: value,
 							} )
 						}
 						className="wc-block-active-filter__style-toggle"
-					>
-						<ToggleGroupControlOption
-							value="list"
-							label={ __(
-								'List',
-								'woo-gutenberg-products-block'
-							) }
-						/>
-						<ToggleGroupControlOption
-							value="chips"
-							label={ __(
-								'Chips',
-								'woo-gutenberg-products-block'
-							) }
-						/>
-					</ToggleGroupControl>
+					/>
 				</PanelBody>
 			</InspectorControls>
 		);
