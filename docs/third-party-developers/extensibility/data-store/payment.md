@@ -27,19 +27,19 @@ with. We do not encourage extensions to dispatch actions onto this data store ye
 
 ## Selectors
 
-### isPaymentPristine
+### isPaymentIdle
 
-Queries if the status is `pristine`
+Queries if the status is `idle`
 
 #### _Returns_
 
-`boolean`: True if the payment status is `pristine`, false otherwise.
+`boolean`: True if the payment status is `idle`, false otherwise.
 
 #### _Example_
 
 ```js
 const store = select( 'wc/store/payment' );
-const isPaymentPristine = store.isPaymentPristine();
+const isPaymentIdle = store.isPaymentIdle();
 ```
 
 ### isPaymentStarted

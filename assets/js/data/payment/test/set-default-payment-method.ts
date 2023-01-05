@@ -128,7 +128,7 @@ describe( 'setDefaultPaymentMethod', () => {
 						__internalSetPaymentError: () => void 0,
 						__internalSetPaymentFailed: () => void 0,
 						__internalSetPaymentSuccess: () => void 0,
-						__internalSetPaymentPristine: () => void 0,
+						__internalSetPaymentIdle: () => void 0,
 						__internalSetPaymentStarted: () => void 0,
 						__internalSetPaymentProcessing: () => void 0,
 					};

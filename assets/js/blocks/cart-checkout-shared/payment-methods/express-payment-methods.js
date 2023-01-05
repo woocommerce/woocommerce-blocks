@@ -37,7 +37,7 @@ const ExpressPaymentMethods = () => {
 	const {
 		__internalSetActivePaymentMethod,
 		__internalSetPaymentStarted,
-		__internalSetPaymentPristine,
+		__internalSetPaymentIdle,
 		__internalSetPaymentError,
 		__internalSetPaymentMethodData,
 		__internalSetExpressPaymentError,
@@ -75,12 +75,12 @@ const ExpressPaymentMethods = () => {
 	 * This restores the active method and returns the state to pristine.
 	 */
 	const onExpressPaymentClose = useCallback( () => {
-		__internalSetPaymentPristine();
+		__internalSetPaymentIdle();
 		__internalSetActivePaymentMethod(
 			previousActivePaymentMethod.current,
 			previousPaymentMethodData.current
 		);
-	}, [ __internalSetActivePaymentMethod, __internalSetPaymentPristine ] );
+	}, [ __internalSetActivePaymentMethod, __internalSetPaymentIdle ] );
 
 	/**
 	 * onExpressPaymentError should be triggered when the express payment process errors.

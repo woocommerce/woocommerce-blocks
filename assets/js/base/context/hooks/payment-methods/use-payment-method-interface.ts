@@ -60,7 +60,15 @@ export const usePaymentMethodInterface = (): PaymentMethodInterface => {
 			return {
 				// The paymentStatus is exposed to third parties via the payment method interface so the API must not be changed
 				paymentStatus: {
-					isPristine: store.isPaymentPristine(),
+					get isPristine() {
+						deprecated( 'isPristine', {
+							since: '9.3.0',
+							alternative: 'isIdle',
+							plugin: 'WooCommerce Blocks',
+						} );
+						return store.isPaymentIdle();
+					}, // isPristine is the same as isIdle
+					isIdle: store.isPaymentIdle(),
 					isStarted: store.isPaymentStarted(),
 					isProcessing: store.isPaymentProcessing(),
 					isFinished: store.isPaymentFinished(),

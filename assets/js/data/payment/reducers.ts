@@ -17,10 +17,10 @@ const reducer: Reducer< PaymentState > = (
 ) => {
 	let newState = state;
 	switch ( action.type ) {
-		case ACTION_TYPES.SET_PAYMENT_PRISTINE:
+		case ACTION_TYPES.SET_PAYMENT_IDLE:
 			newState = {
 				...state,
-				status: STATUS.PRISTINE,
+				status: STATUS.IDLE,
 			};
 			break;
 

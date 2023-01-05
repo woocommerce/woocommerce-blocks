@@ -14,6 +14,7 @@ import { filterActiveSavedPaymentMethods } from './utils/filter-active-saved-pay
 import { STATUS as PAYMENT_STATUS } from './constants';
 
 const globalPaymentMethods: Record< string, string > = {};
+
 if ( getSetting( 'globalPaymentMethods' ) ) {
 	getSetting< GlobalPaymentMethod[] >( 'globalPaymentMethods' ).forEach(
 		( method ) => {
@@ -22,8 +23,19 @@ if ( getSetting( 'globalPaymentMethods' ) ) {
 	);
 }
 
-export const isPaymentPristine = ( state: PaymentState ) =>
-	state.status === PAYMENT_STATUS.PRISTINE;
+export const isPaymentPristine = ( state: PaymentState ) => {
+	deprecated( 'isPaymentPristine', {
+		since: '9.3.0',
+		alternative: 'isPaymentIdle',
+		plugin: 'WooCommerce Blocks',
+		link: 'https://github.com/woocommerce/woocommerce-blocks/pull/8110',
+	} );
+
+	return state.status === PAYMENT_STATUS.IDLE;
+};
+
+export const isPaymentIdle = ( state: PaymentState ) =>
+	state.status === PAYMENT_STATUS.IDLE;
 
 export const isPaymentStarted = ( state: PaymentState ) =>
 	state.status === PAYMENT_STATUS.STARTED;
@@ -122,20 +134,28 @@ export const expressPaymentMethodsInitialized = ( state: PaymentState ) => {
 };
 
 /**
- * @deprecated - use these selectors instead: isPaymentPristine, isPaymentStarted, isPaymentProcessing,
+ * @deprecated - use these selectors instead: isPaymentIdle, isPaymentStarted, isPaymentProcessing,
  * isPaymentFinished, hasPaymentError, isPaymentSuccess, isPaymentFailed
  */
 export const getCurrentStatus = ( state: PaymentState ) => {
 	deprecated( 'getCurrentStatus', {
 		since: '8.9.0',
 		alternative:
-			'isPaymentPristine, isPaymentStarted, isPaymentProcessing, isPaymentFinished, hasPaymentError, isPaymentSuccess, isPaymentFailed',
+			'isPaymentIdle, isPaymentStarted, isPaymentProcessing, isPaymentFinished, hasPaymentError, isPaymentSuccess, isPaymentFailed',
 		plugin: 'WooCommerce Blocks',
 		link: 'https://github.com/woocommerce/woocommerce-blocks/pull/7666',
 	} );
 
 	return {
-		isPristine: isPaymentPristine( state ),
+		get isPristine() {
+			deprecated( 'isPristine', {
+				since: '9.3.0',
+				alternative: 'isIdle',
+				plugin: 'WooCommerce Blocks',
+			} );
+			return isPaymentIdle( state );
+		}, // isPristine is the same as isIdle
+		isIdle: isPaymentIdle( state ),
 		isStarted: isPaymentStarted( state ),
 		isProcessing: isPaymentProcessing( state ),
 		isFinished: isPaymentFinished( state ),

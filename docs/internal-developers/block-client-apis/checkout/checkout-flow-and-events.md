@@ -109,7 +109,7 @@ import { select } from '@wordpress/data';
 import { PAYMENT_STORE_KEY } from '@woocommerce/blocks-data';
 
 const MyComponent = ( props ) => {
-	const isPaymentPristine = select( PAYMENT_STORE_KEY ).isPaymentPristine();
+	const isPaymentIdle = select( PAYMENT_STORE_KEY ).isPaymentIdle();
 	const isPaymentStarted = select( PAYMENT_STORE_KEY ).isPaymentStarted();
 	const isPaymentProcessing =
 		select( PAYMENT_STORE_KEY ).isPaymentProcessing();

@@ -17,8 +17,8 @@ import { setDefaultPaymentMethod } from './utils/set-default-payment-method';
 // `Thunks are functions that can be dispatched, similar to actions creators
 export * from './thunks';
 
-export const __internalSetPaymentPristine = () => ( {
-	type: ACTION_TYPES.SET_PAYMENT_PRISTINE,
+export const __internalSetPaymentIdle = () => ( {
+	type: ACTION_TYPES.SET_PAYMENT_IDLE,
 } );
 
 export const __internalSetPaymentStarted = () => ( {
