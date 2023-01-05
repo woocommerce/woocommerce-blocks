@@ -7,7 +7,7 @@ use Automattic\WooCommerce\Blocks\Utils\StyleAttributesUtils;
 /**
  * ResultsCount class.
  */
-class ResultsCount extends AbstractBlock {
+class ProductResultsCount extends AbstractBlock {
 
 	/**
 	 * Block name.
