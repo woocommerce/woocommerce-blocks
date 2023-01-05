@@ -73,7 +73,7 @@ export const QUERY_DEFAULT_ATTRIBUTES: QueryBlockAttributes = {
 };
 
 export const INNER_BLOCKS_TEMPLATE: InnerBlockTemplate[] = [
-	[ 'woocommerce/results-count' ],
+	[ 'woocommerce/product-results-count' ],
 	[
 		'core/post-template',
 		{ __woocommerceNamespace: PRODUCT_TEMPLATE_ID },

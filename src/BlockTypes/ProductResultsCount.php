@@ -30,6 +30,6 @@ class ResultsCount extends AbstractBlock {
 		woocommerce_result_count();
 		$results_count = ob_get_clean();
 
-		return '<div class="wc-block-results-count">' . $results_count . '</div>';
+		return '<div class="wc-block-product-results-count">' . $results_count . '</div>';
 	}
 }

@@ -16,7 +16,7 @@ const getProps = ( el: HTMLElement ) => {
 };
 
 renderFrontend( {
-	selector: '.wp-block-woocommerce-results-count',
+	selector: '.wp-block-woocommerce-product-results-count',
 	Block,
 	getProps,
 } );

@@ -1,8 +1,8 @@
 {
-	"name": "woocommerce/results-count",
+	"name": "woocommerce/product-results-count",
 	"version": "1.0.0",
-	"title": "Results Count",
-	"description": "Display the number of results that match filters and search.",
+	"title": "Product Results Count",
+	"description": "Display the number of products on the archive page or search result page",
 	"category": "woocommerce",
 	"keywords": [ "WooCommerce" ],
 	"supports": {

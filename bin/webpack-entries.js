@@ -63,7 +63,7 @@ const blocks = {
 	},
 	'filter-wrapper': {},
 	'customer-account': {},
-	'results-count': {},
+	'product-results-count': {},
 };
 
 // Returns the entries for each block given a relative path (ie: `index.js`,

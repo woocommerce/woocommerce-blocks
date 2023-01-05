@@ -3,8 +3,8 @@
  */
 import './style.scss';
 
-const ResultsCount = ( props ) => {
+const ProductResultsCount = ( props ) => {
 	return <p>Results { JSON.stringify( props ) }</p>;
 };
 
-export default ResultsCount;
+export default ProductResultsCount;
