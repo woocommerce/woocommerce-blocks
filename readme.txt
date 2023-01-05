@@ -81,10 +81,9 @@ Release and roadmap notes available on the [WooCommerce Developers Blog](https:/
 
 = 9.1.4 - 2023-01-04 =
 
-#### Bug Fixes
+#### Compatibility
 
-- Products (Beta): Add compatibility to WordPress 5.9. ([8082](https://github.com/woocommerce/woocommerce-blocks/pull/8082))
-- Products (Beta): Fix the Rating block alignment ([8104](https://github.com/woocommerce/woocommerce-blocks/pull/8104))
+- Products (Beta): Remove the block from WordPress 6.0 and lower. ([8112](https://github.com/woocommerce/woocommerce-blocks/pull/8112))
 
 = 9.1.3 - 2022-12-21 =
 
