@@ -3,6 +3,7 @@
  */
 import type { Block } from '@wordpress/blocks';
 import { addFilter } from '@wordpress/hooks';
+import { isWpVersion } from '@woocommerce/settings';
 
 /**
  * Internal dependencies
@@ -35,8 +36,10 @@ function registerProductQueryElementsNamespace(
 	return props;
 }
 
-addFilter(
-	'blocks.registerBlockType',
-	'core/custom-class-name/attribute',
-	registerProductQueryElementsNamespace
-);
+if ( isWpVersion( '6.0', '>' ) ) {
+	addFilter(
+		'blocks.registerBlockType',
+		'core/custom-class-name/attribute',
+		registerProductQueryElementsNamespace
+	);
+}
