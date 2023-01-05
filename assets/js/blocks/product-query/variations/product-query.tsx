@@ -19,7 +19,7 @@ import {
 
 const VARIATION_NAME = 'woocommerce/product-query';
 
-if ( isWpVersion( '6.0', '>' ) ) {
+if ( isWpVersion( '6.1', '>=' ) ) {
 	registerBlockVariation( QUERY_LOOP_ID, {
 		description: __(
 			'A block that displays a selection of products in your store.',

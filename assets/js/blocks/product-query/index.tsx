@@ -36,7 +36,7 @@ function registerProductQueryElementsNamespace(
 	return props;
 }
 
-if ( isWpVersion( '6.0', '>' ) ) {
+if ( isWpVersion( '6.1', '>=' ) ) {
 	addFilter(
 		'blocks.registerBlockType',
 		'core/custom-class-name/attribute',
