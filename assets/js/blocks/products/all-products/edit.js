@@ -18,7 +18,7 @@ import {
 	Disabled,
 	Tip,
 } from '@wordpress/components';
-import { Component } from '@wordpress/element';
+import { Component, createRef } from '@wordpress/element';
 import { compose } from '@wordpress/compose';
 import PropTypes from 'prop-types';
 import { Icon, grid } from '@wordpress/icons';
@@ -79,6 +79,63 @@ class Editor extends Component {
 		this.setState( { innerBlocks: block.innerBlocks } );
 	};
 
+	onDone = () => {
+		const { block, setAttributes } = this.props;
+		setAttributes( {
+			layoutConfig: getProductLayoutConfig( block.innerBlocks ),
+		} );
+		this.setState( { innerBlocks: block.innerBlocks } );
+		this.togglePreview();
+	};
+
+	onCancel = () => {
+		const { block, replaceInnerBlocks } = this.props;
+		const { innerBlocks } = this.state;
+		replaceInnerBlocks( block.clientId, innerBlocks, false );
+		this.togglePreview();
+	};
+
+	onReset = () => {
+		const { block, replaceInnerBlocks } = this.props;
+		const newBlocks = [];
+		DEFAULT_PRODUCT_LIST_LAYOUT.map( ( [ name, attributes ] ) => {
+			newBlocks.push( createBlock( name, attributes ) );
+			return true;
+		} );
+		replaceInnerBlocks( block.clientId, newBlocks, false );
+		this.setState( { innerBlocks: block.innerBlocks } );
+	};
+
+	doneButtonRef = createRef();
+	cancelButtonRef = createRef();
+	resetButtonRef = createRef();
+
+	componentWillUnmount() {
+		if (
+			this.doneButtonRef?.current?.className?.includes(
+				'wc-block-all-products__done-button'
+			)
+		) {
+			this.onDone();
+		}
+
+		if (
+			this.cancelButtonRef?.current?.className?.includes(
+				'wc-block-all-products__cancel-button'
+			)
+		) {
+			this.onCancel();
+		}
+
+		if (
+			this.resetButtonRef?.current?.className?.includes(
+				'wc-block-all-products__reset-button'
+			)
+		) {
+			this.onReset();
+		}
+	}
+
 	getTitle = () => {
 		return __( 'All Products', 'woo-gutenberg-products-block' );
 	};
@@ -89,7 +146,6 @@ class Editor extends Component {
 
 	togglePreview = () => {
 		const { debouncedSpeak } = this.props;
-
 		this.setState( { isEditing: ! this.state.isEditing } );
 
 		if ( ! this.state.isEditing ) {
@@ -162,33 +218,6 @@ class Editor extends Component {
 	};
 
 	renderEditMode = () => {
-		const onDone = () => {
-			const { block, setAttributes } = this.props;
-			setAttributes( {
-				layoutConfig: getProductLayoutConfig( block.innerBlocks ),
-			} );
-			this.setState( { innerBlocks: block.innerBlocks } );
-			this.togglePreview();
-		};
-
-		const onCancel = () => {
-			const { block, replaceInnerBlocks } = this.props;
-			const { innerBlocks } = this.state;
-			replaceInnerBlocks( block.clientId, innerBlocks, false );
-			this.togglePreview();
-		};
-
-		const onReset = () => {
-			const { block, replaceInnerBlocks } = this.props;
-			const newBlocks = [];
-			DEFAULT_PRODUCT_LIST_LAYOUT.map( ( [ name, attributes ] ) => {
-				newBlocks.push( createBlock( name, attributes ) );
-				return true;
-			} );
-			replaceInnerBlocks( block.clientId, newBlocks, false );
-			this.setState( { innerBlocks: block.innerBlocks } );
-		};
-
 		const InnerBlockProps = {
 			template: this.props.attributes.layoutConfig,
 			templateLock: false,
@@ -232,14 +261,16 @@ class Editor extends Component {
 						<Button
 							className="wc-block-all-products__done-button"
 							isPrimary
-							onClick={ onDone }
+							onClick={ this.onDone }
+							ref={ this.doneButtonRef }
 						>
 							{ __( 'Done', 'woo-gutenberg-products-block' ) }
 						</Button>
 						<Button
 							className="wc-block-all-products__cancel-button"
 							isTertiary
-							onClick={ onCancel }
+							onClick={ this.onCancel }
+							ref={ this.cancelButtonRef }
 						>
 							{ __( 'Cancel', 'woo-gutenberg-products-block' ) }
 						</Button>
@@ -250,7 +281,8 @@ class Editor extends Component {
 								'Reset layout to default',
 								'woo-gutenberg-products-block'
 							) }
-							onClick={ onReset }
+							onClick={ this.onReset }
+							ref={ this.resetButtonRef }
 						>
 							{ __(
 								'Reset Layout',
