@@ -201,7 +201,7 @@ const QuantitySelector = ( {
 					onChange( newQuantity );
 					speak(
 						sprintf(
-							/* translators: %s refers to the item new quantity in the cart. */
+							/* translators: %s refers to the item's new quantity in the cart. */
 							__(
 								'Quantity reduced to %s.',
 								'woo-gutenberg-products-block'
