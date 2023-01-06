@@ -37,8 +37,15 @@ export const isPaymentPristine = ( state: PaymentState ) => {
 export const isPaymentIdle = ( state: PaymentState ) =>
 	state.status === PAYMENT_STATUS.IDLE;
 
-export const isPaymentStarted = ( state: PaymentState ) =>
-	state.status === PAYMENT_STATUS.STARTED;
+export const isPaymentStarted = ( state: PaymentState ) => {
+	deprecated( 'isPaymentStarted', {
+		since: '8.9.0',
+		alternative: 'isPaymentProcessing',
+		plugin: 'WooCommerce Blocks',
+		link: 'https://github.com/woocommerce/woocommerce-blocks/pull/8110',
+	} );
+	return state.status === PAYMENT_STATUS.STARTED;
+};
 
 export const isPaymentProcessing = ( state: PaymentState ) =>
 	state.status === PAYMENT_STATUS.PROCESSING;
@@ -134,14 +141,14 @@ export const expressPaymentMethodsInitialized = ( state: PaymentState ) => {
 };
 
 /**
- * @deprecated - use these selectors instead: isPaymentIdle, isPaymentStarted, isPaymentProcessing,
+ * @deprecated - use these selectors instead: isPaymentIdle, isPaymentProcessing,
  * isPaymentFinished, hasPaymentError, isPaymentSuccess, isPaymentFailed
  */
 export const getCurrentStatus = ( state: PaymentState ) => {
 	deprecated( 'getCurrentStatus', {
 		since: '8.9.0',
 		alternative:
-			'isPaymentIdle, isPaymentStarted, isPaymentProcessing, isPaymentFinished, hasPaymentError, isPaymentSuccess, isPaymentFailed',
+			'isPaymentIdle, isPaymentProcessing, hasPaymentError, isPaymentSuccess, isPaymentFailed',
 		plugin: 'WooCommerce Blocks',
 		link: 'https://github.com/woocommerce/woocommerce-blocks/pull/7666',
 	} );
@@ -156,9 +163,23 @@ export const getCurrentStatus = ( state: PaymentState ) => {
 			return isPaymentIdle( state );
 		}, // isPristine is the same as isIdle
 		isIdle: isPaymentIdle( state ),
-		isStarted: isPaymentStarted( state ),
+		get isStarted() {
+			deprecated( 'isStarted', {
+				since: '9.3.0',
+				plugin: 'WooCommerce Blocks',
+				link: 'https://github.com/woocommerce/woocommerce-blocks/pull/8110',
+			} );
+			return isPaymentStarted( state );
+		},
 		isProcessing: isPaymentProcessing( state ),
-		isFinished: isPaymentFinished( state ),
+		get isFinished() {
+			deprecated( 'isFinished', {
+				since: '9.3.0',
+				plugin: 'WooCommerce Blocks',
+				link: 'https://github.com/woocommerce/woocommerce-blocks/pull/8110',
+			} );
+			return isPaymentFinished( state );
+		},
 		hasError: hasPaymentError( state ),
 		hasFailed: isPaymentFailed( state ),
 		isSuccessful: isPaymentSuccess( state ),

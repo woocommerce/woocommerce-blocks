@@ -61,16 +61,14 @@ export const PaymentEventsProvider = ( {
 			isCalculating: store.isCalculating(),
 		};
 	} );
-	const { isPaymentSuccess, isPaymentFinished, isPaymentProcessing } =
-		useSelect( ( select ) => {
-			const store = select( PAYMENT_STORE_KEY );
+	const { isPaymentSuccess, isPaymentProcessing } = useSelect( ( select ) => {
+		const store = select( PAYMENT_STORE_KEY );
 
-			return {
-				isPaymentSuccess: store.isPaymentSuccess(),
-				isPaymentFinished: store.isPaymentFinished(),
-				isPaymentProcessing: store.isPaymentProcessing(),
-			};
-		} );
+		return {
+			isPaymentSuccess: store.isPaymentSuccess(),
+			isPaymentProcessing: store.isPaymentProcessing(),
+		};
+	} );
 
 	const { setValidationErrors } = useDispatch( VALIDATION_STORE_KEY );
 	const [ observers, observerDispatch ] = useReducer( emitReducer, {} );
@@ -93,8 +91,7 @@ export const PaymentEventsProvider = ( {
 		if (
 			checkoutIsProcessing &&
 			! checkoutHasError &&
-			! checkoutIsCalculating &&
-			! isPaymentFinished
+			! checkoutIsCalculating
 		) {
 			__internalSetPaymentProcessing();
 		}
@@ -102,7 +99,6 @@ export const PaymentEventsProvider = ( {
 		checkoutIsProcessing,
 		checkoutHasError,
 		checkoutIsCalculating,
-		isPaymentFinished,
 		__internalSetPaymentProcessing,
 	] );
 

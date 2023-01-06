@@ -71,7 +71,14 @@ export const usePaymentMethodInterface = (): PaymentMethodInterface => {
 					isIdle: store.isPaymentIdle(),
 					isStarted: store.isPaymentStarted(),
 					isProcessing: store.isPaymentProcessing(),
-					isFinished: store.isPaymentFinished(),
+					get isFinished() {
+						deprecated( 'isFinished', {
+							since: '9.3.0',
+							alternative: 'isIdle',
+							plugin: 'WooCommerce Blocks',
+						} );
+						return store.isPaymentFinished();
+					},
 					hasError: store.hasPaymentError(),
 					hasFailed: store.isPaymentFailed(),
 					isSuccessful: store.isPaymentSuccess(),
