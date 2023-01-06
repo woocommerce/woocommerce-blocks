@@ -246,6 +246,9 @@ describe( `${ block.name } Block`, () => {
 			await insertBlock( block.name );
 			await page.waitForNetworkIdle();
 
+			await page.waitForSelector(
+				block.selectors.editor.firstAttributeInTheList
+			);
 			// It seems that .click doesn't work well with radio input element.
 			await page.$eval(
 				block.selectors.editor.firstAttributeInTheList,
