@@ -312,7 +312,7 @@ const CartLineItemRow: React.ForwardRefExoticComponent<
 								<button
 									className="wc-block-cart-item__remove-link"
 									aria-label={ sprintf(
-										/* translators: %s refers to the item name in the cart. */
+										/* translators: %s refers to the item's name in the cart. */
 										__(
 											'Remove %s from cart',
 											'woo-gutenberg-products-block'

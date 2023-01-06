@@ -216,7 +216,7 @@ const QuantitySelector = ( {
 			</button>
 			<button
 				aria-label={ sprintf(
-					/* translators: %s refers to the item name in the cart. */
+					/* translators: %s refers to the item's name in the cart. */
 					__(
 						'Increase quantity of %s',
 						'woo-gutenberg-products-block'
