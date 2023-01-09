@@ -1,8 +1,8 @@
 === WooCommerce Blocks ===
 Contributors: automattic, woocommerce, claudiulodro, tiagonoronha, jameskoster, ryelle, levinmedia, aljullu, mikejolley, nerrad, joshuawold, assassinateur, haszari, mppfeiffer, nielslange, opr18, ralucastn, tjcafferkey
 Tags: gutenberg, woocommerce, woo commerce, products, blocks, woocommerce blocks
-Requires at least: 6.1.1
-Tested up to: 6.1.1
+Requires at least: 5.9
+Tested up to: 5.9
 Requires PHP: 7.0
 Stable tag: 9.1.4
 License: GPLv3
@@ -78,6 +78,12 @@ Yes you can! Join in on our [GitHub repository](https://github.com/woocommerce/w
 Release and roadmap notes available on the [WooCommerce Developers Blog](https://woocommerce.wordpress.com/2019/01/15/woocommerce-blocks-1-3-0-release-notes/)
 
 == Changelog ==
+
+= 9.1.5 - 2023-01-10 =
+
+#### Bug fixes
+
+- Add thunk support for < WP 5.9 ([#8136](https://github.com/woocommerce/woocommerce-blocks/pull/8136))
 
 = 9.1.4 - 2023-01-04 =
 
