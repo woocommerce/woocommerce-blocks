@@ -1,8 +1,8 @@
 {
 	"name": "woocommerce/catalog-sorting",
 	"version": "1.0.0",
-	"title": "Sorting Filter",
-	"description": "Display the sorting filter dropdown.",
+	"title": "Catalog Sorting",
+	"description": "Enable customers to change the sorting order of the products.",
 	"category": "woocommerce",
 	"keywords": [ "WooCommerce" ],
 	"supports": {
