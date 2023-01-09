@@ -1,6 +1,7 @@
 export const STORE_KEY = 'wc/store/payment';
 
 export enum STATUS {
+	PRISTINE = 'pristine',
 	IDLE = 'idle',
 	EXPRESS_STARTED = 'express_started',
 	PROCESSING = 'processing',
