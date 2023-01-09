@@ -23,11 +23,11 @@ import {
 	findToolsPanelWithTitle,
 	getFormElementIdByLabel,
 	insertShortcodeBlock,
-	setCheckbox,
 	getToggleIdByLabel,
 } from '@woocommerce/blocks-test-utils';
 import { ElementHandle } from 'puppeteer';
 
+import { setCheckbox } from '@woocommerce/e2e-utils';
 /**
  * Internal dependencies
  */
