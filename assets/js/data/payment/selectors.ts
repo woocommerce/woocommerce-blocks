@@ -59,7 +59,6 @@ export const isPaymentReady = ( state: PaymentState ) =>
 export const isPaymentFinished = ( state: PaymentState ) => {
 	return (
 		state.status === PAYMENT_STATUS.SUCCESS ||
-		state.status === PAYMENT_STATUS.ERROR ||
 		state.status === PAYMENT_STATUS.FAILED
 	);
 };

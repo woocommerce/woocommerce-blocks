@@ -107,6 +107,9 @@ const CheckoutProcessor = () => {
 		};
 	}, [] );
 
+	const { __internalSetPaymentFailed, __internalSetPaymentSuccess } =
+		useDispatch( PAYMENT_STORE_KEY );
+
 	const paymentMethods = getPaymentMethods();
 	const expressPaymentMethods = getExpressPaymentMethods();
 	const currentBillingAddress = useRef( billingAddress );
@@ -259,6 +262,7 @@ const CheckoutProcessor = () => {
 				if ( ! response.ok ) {
 					throw response;
 				}
+				__internalSetPaymentSuccess();
 				return response.json();
 			} )
 			.then( ( responseJson: CheckoutResponseSuccess ) => {
@@ -266,6 +270,7 @@ const CheckoutProcessor = () => {
 				setIsProcessingOrder( false );
 			} )
 			.catch( ( errorResponse: ApiResponse< CheckoutResponseError > ) => {
+				__internalSetPaymentFailed();
 				processCheckoutResponseHeaders( errorResponse?.headers );
 				try {
 					// This attempts to parse a JSON error response where the status code was 4xx/5xx.
