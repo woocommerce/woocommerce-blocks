@@ -67,11 +67,11 @@ export const __internalEmitPaymentProcessingEvent: emitProcessingEventType = (
 				shippingAddress: ShippingAddress | undefined;
 			observerResponses.forEach( ( response ) => {
 				if ( isSuccessResponse( response ) ) {
-					// the last observer response always "wins" for success.
+					// The last observer response always "wins" for success.
 					successResponse = response;
 				}
 
-				// We consider both failed and error responses as an error
+				// We consider both failed and error responses as an error.
 				if (
 					isErrorResponse( response ) ||
 					isFailResponse( response )
@@ -127,7 +127,7 @@ export const __internalEmitPaymentProcessingEvent: emitProcessingEventType = (
 			const { setBillingAddress, setShippingAddress } =
 				registry.dispatch( CART_STORE_KEY );
 
-			// Observer returned success, we sync the payment method data and billing address
+			// Observer returned success, we sync the payment method data and billing address.
 			if ( isObserverResponse( successResponse ) && ! errorResponse ) {
 				const { paymentMethodData } = successResponse?.meta || {};
 

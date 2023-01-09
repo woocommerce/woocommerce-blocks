@@ -141,8 +141,8 @@ export const expressPaymentMethodsInitialized = ( state: PaymentState ) => {
 };
 
 /**
- * @deprecated - use these selectors instead: isPaymentIdle, isPaymentProcessing,
- * isPaymentFinished, hasPaymentError, isPaymentSuccess, isPaymentFailed
+ * @deprecated - Use these selectors instead: isPaymentIdle, isPaymentProcessing,
+ * isPaymentFinished, hasPaymentError, isPaymentSuccess, isPaymentFailed.
  */
 export const getCurrentStatus = ( state: PaymentState ) => {
 	deprecated( 'getCurrentStatus', {
@@ -161,7 +161,7 @@ export const getCurrentStatus = ( state: PaymentState ) => {
 				plugin: 'WooCommerce Blocks',
 			} );
 			return isPaymentIdle( state );
-		}, // isPristine is the same as isIdle
+		}, // isPristine is the same as isIdle.
 		isIdle: isPaymentIdle( state ),
 		get isStarted() {
 			deprecated( 'isStarted', {
