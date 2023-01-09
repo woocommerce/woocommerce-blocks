@@ -35,7 +35,7 @@ const SELECTORS = {
 describe( `${ block.name } Block`, () => {
 	useTheme( 'emptytheme' );
 
-	fdescribe( 'with All Templates', () => {
+	describe( 'with All Templates', () => {
 		beforeAll( async () => {
 			const productCatalogTemplateId =
 				'woocommerce/woocommerce//archive-product';
@@ -47,7 +47,7 @@ describe( `${ block.name } Block`, () => {
 			await addProductQueryBlock();
 		} );
 
-		it( 'when Inherit Query from template is disabled all the settings that customize the query should be hide', async () => {
+		it( 'when Inherit Query from template is disabled all the settings that customize the query should be visible', async () => {
 			await expect( page ).toMatchElement( SELECTORS.popularFilter );
 
 			await expect( page ).toMatchElement(
