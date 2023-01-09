@@ -15,6 +15,9 @@ import { TotalsCoupon, TotalsCouponProps } from '..';
 export default {
 	title: 'WooCommerce Blocks/@base-components/cart-checkout/totals/Coupon',
 	component: TotalsCoupon,
+	args: {
+		initialOpen: true,
+	},
 } as Meta< TotalsCouponProps >;
 
 const INVALID_COUPON_ERROR = {
@@ -50,6 +53,7 @@ export const ErrorState: Story< TotalsCouponProps > = ( args ) => {
 	const { setValidationErrors } = useDispatch( VALIDATION_STORE_KEY );
 
 	setValidationErrors( { coupon: INVALID_COUPON_ERROR } );
+
 	return <TotalsCoupon { ...args } />;
 };
 
