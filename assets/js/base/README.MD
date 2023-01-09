@@ -8,4 +8,4 @@ e.g. Instead of importing from `@wordpress/components`, use:
 import { Component } from 'wordpress-components';
 ```
 
-Check the built `.assets.php` files to ensure extra dependencies aren't being added to the build.
+Check the built `*.assets.php` files to ensure extra dependencies aren't being added to the build.
