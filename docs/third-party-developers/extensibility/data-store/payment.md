@@ -27,6 +27,21 @@ with. We do not encourage extensions to dispatch actions onto this data store ye
 
 ## Selectors
 
+### (@deprecated) isPaymentPristine
+
+use `isPaymentIdle` instead.
+
+#### _Returns_
+
+`boolean`: True if the payment status is `idle`, false otherwise.
+
+#### _Example_
+
+```js
+const store = select( 'wc/store/payment' );
+const isPaymentIdle = store.isPaymentIdle();
+```
+
 ### isPaymentIdle
 
 Queries if the status is `idle`

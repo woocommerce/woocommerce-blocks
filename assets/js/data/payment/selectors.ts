@@ -38,12 +38,6 @@ export const isPaymentIdle = ( state: PaymentState ) =>
 	state.status === PAYMENT_STATUS.IDLE;
 
 export const isPaymentStarted = ( state: PaymentState ) => {
-	deprecated( 'isPaymentStarted', {
-		since: '8.9.0',
-		alternative: 'isPaymentProcessing',
-		plugin: 'WooCommerce Blocks',
-		link: 'https://github.com/woocommerce/woocommerce-blocks/pull/8110',
-	} );
 	return state.status === PAYMENT_STATUS.STARTED;
 };
 
