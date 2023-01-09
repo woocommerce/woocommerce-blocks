@@ -22,7 +22,7 @@ function objectOmit< T, K extends keyof T >( obj: T, key: K ) {
 
 export const QUERY_LOOP_ID = 'core/query';
 
-export const DEFAULT_CORE_ALLOWED_CONTROLS = [ 'taxQuery', 'search', 'order' ];
+export const DEFAULT_CORE_ALLOWED_CONTROLS = [ 'taxQuery', 'search' ];
 
 export const ALL_PRODUCT_QUERY_CONTROLS = [
 	'attributes',
