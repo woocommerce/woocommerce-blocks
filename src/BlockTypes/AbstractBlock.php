@@ -6,6 +6,7 @@ use Automattic\WooCommerce\Blocks\Package;
 use Automattic\WooCommerce\Blocks\Assets\AssetDataRegistry;
 use Automattic\WooCommerce\Blocks\Assets\Api as AssetApi;
 use Automattic\WooCommerce\Blocks\Integrations\IntegrationRegistry;
+use WP_Block_Type_Registry;
 
 /**
  * AbstractBlock class.
@@ -194,8 +195,6 @@ abstract class AbstractBlock {
 	}
 	/**
 	 * Registers the block type with WordPress.
-	 *
-	 * @return string[] Chunks paths.
 	 */
 	protected function register_block_type() {
 		$block_settings = [
@@ -212,9 +211,10 @@ abstract class AbstractBlock {
 		$metadata_path = $this->asset_api->get_block_metadata_path( $this->block_name );
 		// Prefer to register with metadata if the path is set in the block's class.
 		if ( ! empty( $metadata_path ) ) {
-			register_block_type_from_metadata(
+			$this->register_block_type_from_metadata(
 				$metadata_path,
-				$block_settings
+				$block_settings,
+				$this->block_name
 			);
 			return;
 		}
@@ -231,6 +231,221 @@ abstract class AbstractBlock {
 		register_block_type(
 			$this->get_block_type(),
 			$block_settings
+		);
+	}
+
+	/**
+	 * Return the cached registered block metadata.
+	 *
+	 * @return mixed
+	 */
+	private function get_registered_block_metadata() {
+		return get_transient( 'woocommerce_block_types' );
+	}
+
+	/**
+	 * Add the registered block metadata to cache.
+	 *
+	 * @param $block_name
+	 * @param $metadata
+	 *
+	 * @return mixed
+	 */
+	private function set_registered_block_metadata( $block_name, $metadata ) {
+		set_transient( 'woocommerce_block_types', $metadata );
+
+		return $metadata[ $block_name ];
+	}
+
+
+	/**
+	 * Dedicated method for registering block types using metadata.
+	 *
+	 * @param $file_or_folder
+	 * @param  array  $args
+	 * @param  string  $block_name
+	 *
+	 * @return false|\WP_Block_Type|null
+	 */
+	protected function register_block_type_from_metadata( $file_or_folder, $args = array(), $block_name = '' ) {
+		$metadata_file = ( ! str_ends_with( $file_or_folder, 'block.json' ) ) ?
+			trailingslashit( $file_or_folder ) . 'block.json' :
+			$file_or_folder;
+
+		if ( ! file_exists( $metadata_file ) ) {
+			return false;
+		}
+
+		$plugin_blocks_metadata = $this->get_registered_block_metadata();
+		$should_update_metadata = ! isset( $plugin_blocks_metadata[ $block_name ]['file_last_modified'] ) || filemtime( $metadata_file ) !== $plugin_blocks_metadata[ $block_name ]['file_last_modified'];
+
+		if ( is_array( $plugin_blocks_metadata ) && isset( $plugin_blocks_metadata[ $block_name ]['metadata'] ) && $should_update_metadata ) {
+			$metadata = $plugin_blocks_metadata[ $block_name ]['metadata'];
+		} else {
+			$metadata = wp_json_file_decode( $metadata_file, array( 'associative' => true ) );
+
+			if ( ! is_array( $metadata ) || empty( $metadata['name'] ) ) {
+				return false;
+			}
+
+			$metadata['file'] = wp_normalize_path( realpath( $metadata_file ) );
+
+			$payload = array(
+				'file_last_modified' => filemtime( $metadata_file ),
+				'metadata'           => $metadata,
+			);
+
+			if ( ! empty( $plugin_blocks_metadata ) ) {
+				$plugin_blocks_metadata[ $block_name ] = $payload;
+			} else {
+				$plugin_blocks_metadata = array( $block_name => $payload );
+			}
+
+			$this->set_registered_block_metadata( $block_name, $plugin_blocks_metadata );
+		}
+
+		$settings          = array();
+		$property_mappings = array(
+			'apiVersion'      => 'api_version',
+			'title'           => 'title',
+			'category'        => 'category',
+			'parent'          => 'parent',
+			'ancestor'        => 'ancestor',
+			'icon'            => 'icon',
+			'description'     => 'description',
+			'keywords'        => 'keywords',
+			'attributes'      => 'attributes',
+			'providesContext' => 'provides_context',
+			'usesContext'     => 'uses_context',
+			'supports'        => 'supports',
+			'styles'          => 'styles',
+			'variations'      => 'variations',
+			'example'         => 'example',
+		);
+		$textdomain        = ! empty( $metadata['textdomain'] ) ? $metadata['textdomain'] : null;
+		$i18n_schema       = get_block_metadata_i18n_schema();
+
+		foreach ( $property_mappings as $key => $mapped_key ) {
+			if ( isset( $metadata[ $key ] ) ) {
+				$settings[ $mapped_key ] = $metadata[ $key ];
+				if ( $textdomain && isset( $i18n_schema->$key ) ) {
+					$settings[ $mapped_key ] = translate_settings_using_i18n_schema( $i18n_schema->$key, $settings[ $key ], $textdomain );
+				}
+			}
+		}
+
+		$script_fields = array(
+			'editorScript' => 'editor_script_handles',
+			'script'       => 'script_handles',
+			'viewScript'   => 'view_script_handles',
+		);
+		foreach ( $script_fields as $metadata_field_name => $settings_field_name ) {
+			if ( ! empty( $metadata[ $metadata_field_name ] ) ) {
+				$scripts           = $metadata[ $metadata_field_name ];
+				$processed_scripts = array();
+				if ( is_array( $scripts ) ) {
+					for ( $index = 0; $index < count( $scripts ); $index++ ) {
+						$result = register_block_script_handle(
+							$metadata,
+							$metadata_field_name,
+							$index
+						);
+						if ( $result ) {
+							$processed_scripts[] = $result;
+						}
+					}
+				} else {
+					$result = register_block_script_handle(
+						$metadata,
+						$metadata_field_name
+					);
+					if ( $result ) {
+						$processed_scripts[] = $result;
+					}
+				}
+				$settings[ $settings_field_name ] = $processed_scripts;
+			}
+		}
+
+		$style_fields = array(
+			'editorStyle' => 'editor_style_handles',
+			'style'       => 'style_handles',
+		);
+		foreach ( $style_fields as $metadata_field_name => $settings_field_name ) {
+			if ( ! empty( $metadata[ $metadata_field_name ] ) ) {
+				$styles           = $metadata[ $metadata_field_name ];
+				$processed_styles = array();
+				if ( is_array( $styles ) ) {
+					for ( $index = 0; $index < count( $styles ); $index++ ) {
+						$result = register_block_style_handle(
+							$metadata,
+							$metadata_field_name,
+							$index
+						);
+						if ( $result ) {
+							$processed_styles[] = $result;
+						}
+					}
+				} else {
+					$result = register_block_style_handle(
+						$metadata,
+						$metadata_field_name
+					);
+					if ( $result ) {
+						$processed_styles[] = $result;
+					}
+				}
+				$settings[ $settings_field_name ] = $processed_styles;
+			}
+		}
+
+		if ( ! empty( $metadata['render'] ) ) {
+			$template_path = wp_normalize_path(
+				realpath(
+					dirname( $metadata['file'] ) . '/' .
+					remove_block_asset_path_prefix( $metadata['render'] )
+				)
+			);
+			if ( $template_path ) {
+				/**
+				 * Renders the block on the server.
+				 *
+				 * @since 6.1.0
+				 *
+				 * @param array    $attributes Block attributes.
+				 * @param string   $content    Block default content.
+				 * @param WP_Block $block      Block instance.
+				 *
+				 * @return string Returns the block content.
+				 */
+				$settings['render_callback'] = function( $attributes, $content, $block ) use ( $template_path ) { // phpcs:ignore VariableAnalysis.CodeAnalysis.VariableAnalysis.UnusedVariable
+					ob_start();
+					require $template_path;
+					return ob_get_clean();
+				};
+			}
+		}
+
+		/**
+		 * Filters the settings determined from the block type metadata.
+		 *
+		 * @since 5.7.0
+		 *
+		 * @param array $settings Array of determined settings for registering a block type.
+		 * @param array $metadata Metadata provided for registering a block type.
+		 */
+		$settings = apply_filters(
+			'block_type_metadata_settings',
+			array_merge(
+				$settings,
+				$args
+			),
+			$metadata
+		);
+
+		return WP_Block_Type_Registry::get_instance()->register(
+			$metadata['name'],
+			$settings
 		);
 	}
 
