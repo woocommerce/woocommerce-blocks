@@ -11,18 +11,42 @@ import { useTabState, Tab, TabList, TabPanel } from 'reakit/Tab';
 import './style.scss';
 
 export interface TabsProps {
+	/**
+	 * Component wrapper classname
+	 */
 	className?: string;
+	/**
+	 * Event handler triggered when a tab is selected
+	 */
 	onSelect?: ( tabName: string ) => void;
+	/**
+	 * Array of tab objects
+	 */
 	tabs: Array< {
 		name: string;
 		title: string;
 		content: JSX.Element;
 		ariaLabel?: string;
 	} >;
+	/**
+	 * Classname to be applied to the active tab
+	 */
 	activeClass?: string;
-	initialTabName?: string | undefined;
+	/**
+	 * Name of the tab to be selected by default
+	 */
+	initialTabName?: string;
+	/**
+	 * Aria label for the tablist
+	 */
 	ariaLabel?: string;
+	/**
+	 * Instance ID for the component
+	 */
 	instanceId: number;
+	/**
+	 * ID for the component
+	 */
 	id?: string;
 }
 

@@ -42,7 +42,7 @@ const Template: Story< TabsProps > = ( args ) => {
 
 	return (
 		<Tabs
-			initialTabName={ initialTab }
+			initialTabName={ initialTab ? initialTab : '' }
 			onSelect={ ( newTabName ) => {
 				setInitialTab( newTabName );
 			} }
