@@ -100,3 +100,16 @@ export const emptyHiddenAddressFields = <
 
 	return newAddress;
 };
+
+/**
+ * Returns true if the address is complete (for the purposes of calculating shipping).
+ *
+ * @param  address The address to check.
+ *
+ * @return {boolean} True if the address is complete.
+ */
+export const isAddressComplete = (
+	address: ShippingAddress | BillingAddress
+) => {
+	return !! address.city && !! address.country && !! address.postcode;
+};
