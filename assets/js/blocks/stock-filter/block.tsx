@@ -52,7 +52,7 @@ export const QUERY_PARAM_KEY = PREFIX_QUERY_ARG_FILTER_TYPE + 'stock_status';
  *
  * @param {Object}  props            Incoming props for the component.
  * @param {Object}  props.attributes Incoming block attributes.
- * @param {boolean} props.isEditor
+ * @param {boolean} props.isEditor   Whether the component is being rendered in the editor.
  */
 const StockStatusFilterBlock = ( {
 	attributes: blockAttributes,
@@ -113,6 +113,7 @@ const StockStatusFilterBlock = ( {
 			queryStock: true,
 			queryState,
 			productIds,
+			isEditor,
 		} );
 
 	/**
@@ -425,6 +426,10 @@ const StockStatusFilterBlock = ( {
 		return null;
 	}
 
+	const showChevron = allowsMultipleOptions
+		? ! isLoading && checked.length < displayedOptions.length
+		: ! isLoading && checked.length === 0;
+
 	const heading = (
 		<TagName className="wc-block-stock-filter__title">
 			{ blockAttributes.heading }
@@ -499,7 +504,7 @@ const StockStatusFilterBlock = ( {
 								),
 							} }
 						/>
-						{ allowsMultipleOptions && (
+						{ showChevron && (
 							<Icon icon={ chevronDown } size={ 30 } />
 						) }
 					</>
