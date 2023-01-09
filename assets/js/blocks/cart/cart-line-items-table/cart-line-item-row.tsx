@@ -26,7 +26,7 @@ import {
 } from '@woocommerce/blocks-checkout';
 import Dinero from 'dinero.js';
 import { forwardRef, useMemo } from '@wordpress/element';
-import type { CartItem } from '@woocommerce/type-defs/cart';
+import type { CartItem } from '@woocommerce/types';
 import { objectHasProp, Currency } from '@woocommerce/types';
 import { getSetting } from '@woocommerce/settings';
 
@@ -311,6 +311,14 @@ const CartLineItemRow: React.ForwardRefExoticComponent<
 							{ showRemoveItemLink && (
 								<button
 									className="wc-block-cart-item__remove-link"
+									aria-label={ sprintf(
+										/* translators: %s refers to the item's name in the cart. */
+										__(
+											'Remove %s from cart',
+											'woo-gutenberg-products-block'
+										),
+										name
+									) }
 									onClick={ () => {
 										onRemove();
 										removeItem();

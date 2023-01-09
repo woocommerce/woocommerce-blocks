@@ -11,18 +11,19 @@ import {
  */
 
 import {
-	useTheme,
-	goToTemplateEditor,
 	BASE_URL,
+	goToTemplateEditor,
 	saveTemplate,
+	useTheme,
 } from '../../utils';
+
 import {
 	addProductQueryBlock,
 	block,
 	configurateProductQueryBlock,
 	getProductsNameFromClassicTemplate,
 	getProductsNameFromProductQuery,
-} from './utils';
+} from './common';
 
 const SELECTORS = {
 	inheritQueryFromTemplateSetting:
