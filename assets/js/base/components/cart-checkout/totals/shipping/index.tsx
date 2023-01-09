@@ -3,6 +3,7 @@
  */
 import classnames from 'classnames';
 import { __ } from '@wordpress/i18n';
+import { isAddressComplete } from '@woocommerce/base-utils';
 import { useState } from '@wordpress/element';
 import { useStoreCart } from '@woocommerce/base-context/hooks';
 import { TotalsItem } from '@woocommerce/blocks-checkout';
@@ -166,6 +167,8 @@ export const TotalsShipping = ( {
 		}
 	);
 
+	const addressComplete = isAddressComplete( shippingAddress );
+
 	return (
 		<div
 			className={ classnames(
@@ -214,6 +217,7 @@ export const TotalsShipping = ( {
 					hasRates={ hasRates }
 					shippingRates={ shippingRates }
 					isLoadingRates={ isLoadingRates }
+					isAddressComplete={ addressComplete }
 				/>
 			) }
 		</div>

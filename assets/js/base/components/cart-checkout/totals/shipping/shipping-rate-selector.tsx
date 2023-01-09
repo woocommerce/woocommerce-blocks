@@ -13,11 +13,13 @@ interface ShippingRateSelectorProps {
 	hasRates: boolean;
 	shippingRates: CartResponseShippingRate[];
 	isLoadingRates: boolean;
+	isAddressComplete: boolean;
 }
 const ShippingRateSelector = ( {
 	hasRates,
 	shippingRates,
 	isLoadingRates,
+	isAddressComplete,
 }: ShippingRateSelectorProps ): JSX.Element => {
 	const legend = hasRates
 		? __( 'Shipping options', 'woo-gutenberg-products-block' )
@@ -29,10 +31,15 @@ const ShippingRateSelector = ( {
 				className="wc-block-components-totals-shipping__options"
 				noResultsMessage={
 					<>
-						{ __(
-							'No shipping options were found.',
-							'woo-gutenberg-products-block'
-						) }
+						{ isAddressComplete
+							? __(
+									'No shipping options were found.',
+									'woo-gutenberg-products-block'
+							  )
+							: __(
+									'Add a shipping address to view shipping options.',
+									'woo-gutenberg-products-block'
+							  ) }
 					</>
 				}
 				shippingRates={ shippingRates }
