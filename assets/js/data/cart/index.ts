@@ -30,6 +30,7 @@ const registeredStore = registerStore< State >( STORE_KEY, {
 	controls: { ...dataControls, ...sharedControls, ...controls } as any,
 	selectors,
 	resolvers,
+	__experimentalUseThunks: true,
 } );
 
 registeredStore.subscribe( pushChanges );
