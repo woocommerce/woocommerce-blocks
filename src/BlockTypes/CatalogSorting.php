@@ -23,11 +23,19 @@ class CatalogSorting extends AbstractBlock {
 	 * @param string   $content Block content.
 	 * @param WP_Block $block Block instance.
 	 *
-	 * @return string Rendered block output.
+	 * @return string | void Rendered block output.
 	 */
 	protected function render( $attributes, $content, $block ) {
 		ob_start();
 		woocommerce_catalog_ordering();
-		return ob_get_clean();
+		$catalog_sorting = ob_get_clean();
+
+		if ( ! $catalog_sorting ) {
+			return;
+		}
+
+		$classes_and_styles = StyleAttributesUtils::get_classes_and_styles_by_attributes( $attributes );
+
+		return "<div class='wc-block-catalog-sorting " . esc_attr( $classes_and_styles['classes'] ) . "' style='" . esc_attr( $classes_and_styles['styles'] ) . "'>" . $catalog_sorting . '</div>';
 	}
 }

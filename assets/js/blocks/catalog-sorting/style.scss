@@ -1,0 +1,8 @@
+.wc-block-catalog-sorting {
+	display: flex;
+
+	.woocommerce-ordering,
+	> div {
+		margin-left: auto;
+	}
+}
