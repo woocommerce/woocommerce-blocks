@@ -73,7 +73,6 @@ export const QUERY_DEFAULT_ATTRIBUTES: QueryBlockAttributes = {
 };
 
 export const INNER_BLOCKS_TEMPLATE: InnerBlockTemplate[] = [
-	[ 'woocommerce/catalog-sorting' ],
 	[
 		'core/post-template',
 		{ __woocommerceNamespace: PRODUCT_TEMPLATE_ID },
