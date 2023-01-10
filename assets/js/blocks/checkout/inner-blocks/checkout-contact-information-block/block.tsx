@@ -69,10 +69,6 @@ const Block = (): JSX.Element => {
 				value={ billingAddress.email }
 				required={ true }
 				onChange={ onChangeEmail }
-				requiredMessage={ __(
-					'Please provide a valid email address',
-					'woo-gutenberg-products-block'
-				) }
 				customValidation={ ( inputObject: HTMLInputElement ) => {
 					if ( ! isEmail( inputObject.value ) ) {
 						inputObject.setCustomValidity(
