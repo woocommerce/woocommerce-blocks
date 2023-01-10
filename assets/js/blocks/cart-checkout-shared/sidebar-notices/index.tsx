@@ -34,7 +34,7 @@ const withSidebarNotices = createHigherOrderComponent(
 
 		// Show sidebar notices only when a WooCommerce block is selected.
 		if ( ! blockName.startsWith( 'woocommerce/' ) || ! isBlockSelected ) {
-			return <BlockEdit { ...props } />;
+			return <BlockEdit key="edit" { ...props } />;
 		}
 
 		const addressFieldOrAccountBlocks = [
@@ -90,7 +90,7 @@ const withSidebarNotices = createHigherOrderComponent(
 					</InspectorControls>
 				) }
 
-				<BlockEdit { ...props } />
+				<BlockEdit key="edit" { ...props } />
 			</>
 		);
 	},
