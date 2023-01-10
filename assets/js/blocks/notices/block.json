@@ -1,0 +1,21 @@
+{
+	"name": "woocommerce/notices",
+	"version": "1.0.0",
+	"title": "WooCommerce Notices",
+	"description": "Display notifications as customers interact with the store.",
+	"category": "woocommerce",
+	"keywords": [ "WooCommerce" ],
+	"supports": {
+		"align": true,
+		"color": {
+			"text": true
+		},
+		"typography": {
+			"fontSize": true,
+			"__experimentalFontFamily": true
+		}
+	},
+	"textdomain": "woo-gutenberg-products-block",
+	"apiVersion": 2,
+	"$schema": "https://schemas.wp.org/trunk/block.json"
+}
