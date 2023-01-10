@@ -13,8 +13,7 @@
 		"typography": {
 			"fontSize": true,
 			"__experimentalFontFamily": true
-		},
-		"inserter": false
+		}
 	},
 	"textdomain": "woo-gutenberg-products-block",
 	"apiVersion": 2,
