@@ -240,7 +240,7 @@ abstract class AbstractBlock {
 	 * @return mixed
 	 */
 	private function get_registered_block_metadata() {
-		return get_transient( 'woocommerce_blocks_metadata' );
+		return get_option( 'woocommerce_blocks_metadata' );
 	}
 
 	/**
@@ -252,7 +252,7 @@ abstract class AbstractBlock {
 	 * @return mixed
 	 */
 	private function set_registered_block_metadata( $block_name, $metadata ) {
-		set_transient( 'woocommerce_blocks_metadata', $metadata );
+		update_option( 'woocommerce_blocks_metadata', $metadata );
 
 		return $metadata[ $block_name ];
 	}
