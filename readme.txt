@@ -42,6 +42,7 @@ Use this plugin if you want access to the bleeding edge of available blocks for 
 - **Reviews by Category**
 - **Reviews by Product**
 - **Top Rated Products**
+- **Customer Account**
 
 == Getting Started ==
 
@@ -218,6 +219,19 @@ Release and roadmap notes available on the [WooCommerce Developers Blog](https:/
 
 - Change action type name for use shipping as billing option. ([7695](https://github.com/woocommerce/woocommerce-blocks/pull/7695))
 - Block Checkout: Apply selected Local Pickup rate to entire order (all packages). ([7484](https://github.com/woocommerce/woocommerce-blocks/pull/7484))
+
+= 8.9.4 - 2023-01-04 =
+
+#### Bug fixes
+
+- Fix hangs in the block editor with WordPress 5.8. [#8095](https://github.com/woocommerce/woocommerce-blocks/pull/8095)
+- Fix Filter by Attribute block crashing in the editor of WordPress 5.8. [#8101](https://github.com/woocommerce/woocommerce-blocks/pull/8101)
+
+= 8.9.3 - 2023-01-03 =
+
+#### Bug fixes
+
+- Fix fatal error in WordPress 5.8 when creating a post or page. [#7496](https://github.com/woocommerce/woocommerce-blocks/pull/7496)
 
 = 8.9.2 - 2022-12-01 =
 
