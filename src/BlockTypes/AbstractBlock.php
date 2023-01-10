@@ -240,7 +240,7 @@ abstract class AbstractBlock {
 	 * @return mixed
 	 */
 	private function get_registered_block_metadata() {
-		return get_transient( 'woocommerce_block_types' );
+		return get_transient( 'woocommerce_blocks_metadata' );
 	}
 
 	/**
@@ -252,7 +252,7 @@ abstract class AbstractBlock {
 	 * @return mixed
 	 */
 	private function set_registered_block_metadata( $block_name, $metadata ) {
-		set_transient( 'woocommerce_block_types', $metadata );
+		set_transient( 'woocommerce_blocks_metadata', $metadata );
 
 		return $metadata[ $block_name ];
 	}
@@ -279,7 +279,7 @@ abstract class AbstractBlock {
 		$plugin_blocks_metadata = $this->get_registered_block_metadata();
 		$should_update_metadata = ! isset( $plugin_blocks_metadata[ $block_name ]['file_last_modified'] ) || filemtime( $metadata_file ) !== $plugin_blocks_metadata[ $block_name ]['file_last_modified'];
 
-		if ( is_array( $plugin_blocks_metadata ) && isset( $plugin_blocks_metadata[ $block_name ]['metadata'] ) && $should_update_metadata ) {
+		if ( ! $should_update_metadata && is_array( $plugin_blocks_metadata ) && isset( $plugin_blocks_metadata[ $block_name ]['metadata'] ) ) {
 			$metadata = $plugin_blocks_metadata[ $block_name ]['metadata'];
 		} else {
 			$metadata = wp_json_file_decode( $metadata_file, array( 'associative' => true ) );
@@ -426,22 +426,7 @@ abstract class AbstractBlock {
 			}
 		}
 
-		/**
-		 * Filters the settings determined from the block type metadata.
-		 *
-		 * @since 5.7.0
-		 *
-		 * @param array $settings Array of determined settings for registering a block type.
-		 * @param array $metadata Metadata provided for registering a block type.
-		 */
-		$settings = apply_filters(
-			'block_type_metadata_settings',
-			array_merge(
-				$settings,
-				$args
-			),
-			$metadata
-		);
+		$settings = array_merge( $settings, $args );
 
 		return WP_Block_Type_Registry::get_instance()->register(
 			$metadata['name'],
