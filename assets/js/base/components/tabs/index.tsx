@@ -35,7 +35,7 @@ export interface TabsProps {
 	/**
 	 * Name of the tab to be selected by default
 	 */
-	initialTabName?: string;
+	initialTabName?: string | undefined;
 	/**
 	 * Aria label for the tablist
 	 */
@@ -50,7 +50,10 @@ export interface TabsProps {
 	id?: string;
 }
 
-const Tabs = ( {
+/**
+ * Exporting the component for Storybook. Use the default export instead.
+ */
+export const __Tabs = ( {
 	className,
 	onSelect = () => null,
 	tabs,
@@ -117,4 +120,4 @@ const Tabs = ( {
 	);
 };
 
-export default withInstanceId( Tabs );
+export default withInstanceId( __Tabs );

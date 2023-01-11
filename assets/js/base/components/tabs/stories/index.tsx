@@ -7,7 +7,7 @@ import { useState } from '@wordpress/element';
 /**
  * Internal dependencies
  */
-import Tabs, { TabsProps } from '..';
+import { __Tabs as Tabs, TabsProps } from '..';
 
 export default {
 	title: 'WooCommerce Blocks/@base-components/Tabs',
@@ -42,7 +42,7 @@ const Template: Story< TabsProps > = ( args ) => {
 
 	return (
 		<Tabs
-			initialTabName={ initialTab ? initialTab : '' }
+			initialTabName={ initialTab }
 			onSelect={ ( newTabName ) => {
 				setInitialTab( newTabName );
 			} }
