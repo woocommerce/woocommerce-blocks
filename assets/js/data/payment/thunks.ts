@@ -121,7 +121,6 @@ export const __internalEmitPaymentProcessingEvent: emitProcessingEventType = (
 
 			if ( successResponse && ! errorResponse ) {
 				const { paymentMethodData } = successResponse?.meta || {};
-
 				if ( billingAddress && isBillingAddress( billingAddress ) ) {
 					setBillingAddress( billingAddress );
 				}
