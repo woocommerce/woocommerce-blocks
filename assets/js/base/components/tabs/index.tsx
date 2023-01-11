@@ -53,7 +53,7 @@ export interface TabsProps {
 /**
  * Exporting the component for Storybook. Use the default export instead.
  */
-export const __Tabs = ( {
+export const __TabsWithoutInstanceId = ( {
 	className,
 	onSelect = () => null,
 	tabs,
@@ -120,4 +120,4 @@ export const __Tabs = ( {
 	);
 };
 
-export default withInstanceId( __Tabs );
+export default withInstanceId( __TabsWithoutInstanceId );

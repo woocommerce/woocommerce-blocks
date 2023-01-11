@@ -7,7 +7,7 @@ import { useState } from '@wordpress/element';
 /**
  * Internal dependencies
  */
-import { __Tabs as Tabs, TabsProps } from '..';
+import { __TabsWithoutInstanceId as Tabs, TabsProps } from '..';
 
 export default {
 	title: 'WooCommerce Blocks/@base-components/Tabs',
