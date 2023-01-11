@@ -2,11 +2,11 @@
  * External dependencies
  */
 import { store as noticesStore } from '@wordpress/notices';
+import deprecated from '@wordpress/deprecated';
 
 /**
  * Internal dependencies
  */
-
 import {
 	emitEventWithAbort,
 	isErrorResponse,
@@ -70,8 +70,24 @@ export const __internalEmitPaymentProcessingEvent: emitProcessingEventType = (
 				registry.dispatch( CART_STORE_KEY );
 
 			if ( successResponse && ! errorResponse ) {
-				const { paymentMethodData, billingAddress, shippingData } =
-					successResponse?.meta || {};
+				const {
+					paymentMethodData,
+					billingAddress,
+					billingData,
+					shippingData,
+				} = successResponse?.meta || {};
+
+				if ( billingData ) {
+					setBillingAddress( billingData );
+					deprecated(
+						'returning billingData from an onPaymentProcessing observer in WooCommerce Blocks',
+						{
+							version: '9.4.0',
+							alternative: 'billingAddress',
+							link: '',
+						}
+					);
+				}
 
 				if ( billingAddress ) {
 					setBillingAddress( billingAddress );
