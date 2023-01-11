@@ -7,7 +7,7 @@ import { useEffect } from 'preact/hooks';
 /**
  * Internal dependencies
  */
-import { prefetch, navigate, directive } from './full-vdom';
+import { prefetch, navigate, directive } from './runtime';
 
 // The `wp-client-navigation` directive.
 directive( 'clientNavigation', ( props ) => {
