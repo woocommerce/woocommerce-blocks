@@ -1,0 +1,12 @@
+{
+	"name": "woocommerce/product-gallery",
+	"version": "1.0.0",
+	"title": "Product Gallery",
+	"description": "Enable customers to filter the product grid by selecting one or more attributes, such as color.",
+	"usesContext": [ "query", "queryId", "postId" ],
+	"category": "woocommerce",
+	"keywords": [ "WooCommerce" ],
+	"textdomain": "woo-gutenberg-products-block",
+	"apiVersion": 2,
+	"$schema": "https://schemas.wp.org/trunk/block.json"
+}
