@@ -11,7 +11,6 @@ export const isApiErrorResponse = (
 	return (
 		isObject( response ) &&
 		objectHasProp( response, 'code' ) &&
-		objectHasProp( response, 'message' ) &&
-		objectHasProp( response, 'data' )
+		objectHasProp( response, 'message' )
 	);
 };

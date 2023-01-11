@@ -21,10 +21,10 @@ export const hasStoreNoticesContainer = ( container: string ): boolean => {
 };
 
 const findParentContainer = ( container: string ): string => {
-	if ( container.includes( noticeContexts.CHECKOUT + '/' ) ) {
+	if ( container.includes( noticeContexts.CHECKOUT ) ) {
 		return noticeContexts.CHECKOUT;
 	}
-	if ( container.includes( noticeContexts.CART + '/' ) ) {
+	if ( container.includes( noticeContexts.CART ) ) {
 		return hasStoreNoticesContainer( noticeContexts.CART )
 			? noticeContexts.CART
 			: noticeContexts.CHECKOUT;

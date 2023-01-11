@@ -75,7 +75,7 @@ describe( 'cartReducer', () => {
 	} );
 	it( 'sets expected state when an error is added', () => {
 		const testAction = {
-			type: types.RECEIVE_ERROR,
+			type: types.SET_ERROR_DATA,
 			error: {
 				code: '101',
 				message: 'Test Error',
