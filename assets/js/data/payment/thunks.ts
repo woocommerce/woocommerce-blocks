@@ -84,7 +84,7 @@ export const __internalEmitPaymentProcessingEvent: emitProcessingEventType = (
 						{
 							version: '9.4.0',
 							alternative: 'billingAddress',
-							link: '',
+							link: 'https://github.com/woocommerce/woocommerce-blocks/pull/6369',
 						}
 					);
 				}
