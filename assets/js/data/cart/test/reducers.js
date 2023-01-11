@@ -54,26 +54,7 @@ describe( 'cartReducer', () => {
 			totals: {},
 		} );
 	} );
-	it( 'sets expected state when errors are replaced', () => {
-		const testAction = {
-			type: types.REPLACE_ERRORS,
-			error: {
-				code: '101',
-				message: 'Test Error',
-				data: {},
-			},
-		};
-		const newState = cartReducer( originalState, testAction );
-		expect( newState ).not.toBe( originalState );
-		expect( newState.errors ).toEqual( [
-			{
-				code: '101',
-				message: 'Test Error',
-				data: {},
-			},
-		] );
-	} );
-	it( 'sets expected state when an error is added', () => {
+	it( 'sets expected state when errors are set', () => {
 		const testAction = {
 			type: types.SET_ERROR_DATA,
 			error: {
@@ -85,11 +66,6 @@ describe( 'cartReducer', () => {
 		const newState = cartReducer( originalState, testAction );
 		expect( newState ).not.toBe( originalState );
 		expect( newState.errors ).toEqual( [
-			{
-				code: '100',
-				message: 'Test Error',
-				data: {},
-			},
 			{
 				code: '101',
 				message: 'Test Error',
