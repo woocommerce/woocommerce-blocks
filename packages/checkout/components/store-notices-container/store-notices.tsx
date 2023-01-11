@@ -47,7 +47,8 @@ const StoreNotices = ( {
 
 		if (
 			activeElement &&
-			inputs.indexOf( activeElement.tagName.toLowerCase() ) !== -1
+			inputs.indexOf( activeElement.tagName.toLowerCase() ) !== -1 &&
+			activeElement.getAttribute( 'type' ) !== 'radio'
 		) {
 			return;
 		}
