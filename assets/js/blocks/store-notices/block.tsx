@@ -3,7 +3,7 @@
  */
 import { __ } from '@wordpress/i18n';
 
-const Notices = () => {
+const StoreNotices = () => {
 	return (
 		<div className="woocommerce-notice">
 			{ __( 'This is a demo notice.', 'woo-gutenberg-products-block' ) }
@@ -11,4 +11,4 @@ const Notices = () => {
 	);
 };
 
-export default Notices;
+export default StoreNotices;

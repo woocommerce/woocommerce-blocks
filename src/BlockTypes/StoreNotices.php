@@ -5,16 +5,16 @@ namespace Automattic\WooCommerce\Blocks\BlockTypes;
 use Automattic\WooCommerce\Blocks\Utils\StyleAttributesUtils;
 
 /**
- * CatalogSorting class.
+ * StoreNotices class.
  */
-class Notices extends AbstractBlock {
+class StoreNotices extends AbstractBlock {
 
 	/**
 	 * Block name.
 	 *
 	 * @var string
 	 */
-	protected $block_name = 'notices';
+	protected $block_name = 'store-notices';
 
 	/**
 	 * Render the block.
@@ -36,6 +36,6 @@ class Notices extends AbstractBlock {
 
 		$classes_and_styles = StyleAttributesUtils::get_classes_and_styles_by_attributes( $attributes );
 
-		return "<div class='wc-block-notices " . esc_attr( $classes_and_styles['classes'] ) . "' style='" . esc_attr( $classes_and_styles['styles'] ) . "'>" . $notices . '</div>';
+		return "<div class='wc-block-store-notices " . esc_attr( $classes_and_styles['classes'] ) . "' style='" . esc_attr( $classes_and_styles['styles'] ) . "'>" . $notices . '</div>';
 	}
 }

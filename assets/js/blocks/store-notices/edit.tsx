@@ -18,7 +18,7 @@ export interface Attributes {
 const Edit = ( { attributes }: BlockEditProps< Attributes > ) => {
 	const { className } = attributes;
 	const blockProps = useBlockProps( {
-		className: classNames( 'wc-block-notices', className ),
+		className: classNames( 'wc-block-store-notices', className ),
 	} );
 
 	return (

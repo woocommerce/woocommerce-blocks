@@ -11,9 +11,9 @@ import { visitBlockPage } from '@woocommerce/blocks-test-utils';
 import { insertBlockDontWaitForInsertClose } from '../../utils.js';
 
 const block = {
-	name: 'Notices',
-	slug: 'woocommerce/notices',
-	class: '.wc-block-notices',
+	name: 'Store Notices',
+	slug: 'woocommerce/store-notices',
+	class: '.wc-block-store-notices',
 };
 
 describe( `${ block.name } Block`, () => {
