@@ -48,7 +48,12 @@ const FrontendBlock = ( {
 				context: 'wc/cart',
 			} );
 		} );
-	}, [ createErrorNotice, cartItemErrors ] );
+	}, [
+		createErrorNotice,
+		cartItemErrors,
+		currentlyDisplayedErrorNoticeCodes,
+		removeNotice,
+	] );
 
 	if ( cartIsLoading || cartItems.length >= 1 ) {
 		return (
