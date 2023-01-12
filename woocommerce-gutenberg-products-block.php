@@ -286,3 +286,29 @@ function woocommerce_blocks_plugin_outdated_notice() {
 }
 
 add_action( 'admin_notices', 'woocommerce_blocks_plugin_outdated_notice' );
+
+/**
+ * Register the scripts. This code is basically the same we use in
+ * WordPress/block-hydration-experiments for the directives plugin.
+ *
+ * TODO: add a filter to control when these scripts should be enqueued.
+ */
+function wp_directives_register_scripts() {
+	wp_register_script(
+		'wp-directives-vendors',
+		plugins_url( 'build/wp-directives-vendors.js', __FILE__ ),
+		array(),
+		'1.0.0',
+		true
+	);
+	wp_register_script(
+		'wp-directives-runtime',
+		plugins_url( 'build/wp-directives-runtime.js', __FILE__ ),
+		array( 'wp-directives-vendors' ),
+		'1.0.0',
+		true
+	);
+
+	wp_enqueue_script( 'wp-directives-runtime' );
+}
+add_action( 'wp_enqueue_scripts', 'wp_directives_register_scripts' );
