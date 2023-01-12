@@ -1,19 +1,20 @@
 /**
  * External dependencies
  */
+
 import { useContext, useMemo, useEffect } from 'preact/hooks';
 import { useSignalEffect } from '@preact/signals';
+import { deepSignal } from 'deepsignal';
 
 /**
  * Internal dependencies
  */
 import { directive } from './hooks';
-import { deepSignal } from './deepsignal';
 import { prefetch, navigate, hasClientSideTransitions } from './router';
-import { getCallback } from './utils';
 
+// Until useSignalEffects is fixed:
+// https://github.com/preactjs/signals/issues/228
 const raf = window.requestAnimationFrame;
-// Until useSignalEffects is fixed: https://github.com/preactjs/signals/issues/228
 const tick = () => new Promise( ( r ) => raf( () => raf( r ) ) );
 
 // Check if current page has client-side transitions enabled.
@@ -35,33 +36,25 @@ export default () => {
 		}
 	);
 
-	// wp-effect
-	directive(
-		'effect',
-		( { directives: { effect }, element, context: mainContext } ) => {
-			const context = useContext( mainContext );
-			Object.values( effect ).forEach( ( callback ) => {
-				useSignalEffect( () => {
-					const cb = getCallback( callback );
-					cb( { context, tick, ref: element.ref.current } );
-				} );
+	// wp-effect:[name]
+	directive( 'effect', ( { directives: { effect }, context, evaluate } ) => {
+		const contextValue = useContext( context );
+		Object.values( effect ).forEach( ( path ) => {
+			useSignalEffect( () => {
+				evaluate( path, { context: contextValue } );
 			} );
-		}
-	);
+		} );
+	} );
 
 	// wp-on:[event]
-	directive(
-		'on',
-		( { directives: { on }, element, context: mainContext } ) => {
-			const context = useContext( mainContext );
-			Object.entries( on ).forEach( ( [ name, callback ] ) => {
-				element.props[ `on${ name }` ] = ( event ) => {
-					const cb = getCallback( callback );
-					cb( { context, event } );
-				};
-			} );
-		}
-	);
+	directive( 'on', ( { directives: { on }, element, evaluate, context } ) => {
+		const contextValue = useContext( context );
+		Object.entries( on ).forEach( ( [ name, path ] ) => {
+			element.props[ `on${ name }` ] = ( event ) => {
+				evaluate( path, { event, context: contextValue } );
+			};
+		} );
+	} );
 
 	// wp-class:[classname]
 	directive(
@@ -69,17 +62,41 @@ export default () => {
 		( {
 			directives: { class: className },
 			element,
-			context: mainContext,
+			evaluate,
+			context,
 		} ) => {
-			const context = useContext( mainContext );
+			const contextValue = useContext( context );
 			Object.keys( className )
 				.filter( ( n ) => n !== 'default' )
 				.forEach( ( name ) => {
-					const cb = getCallback( className[ name ] );
-					const result = cb( { context } );
-					if ( ! result ) element.props.class.replace( name, '' );
-					else if ( ! element.props.class.includes( name ) )
+					const result = evaluate( className[ name ], {
+						className: name,
+						context: contextValue,
+					} );
+					if ( ! result )
+						element.props.class = element.props.class
+							.replace(
+								new RegExp( `(^|\\s)${ name }(\\s|$)`, 'g' ),
+								' '
+							)
+							.trim();
+					else if (
+						! new RegExp( `(^|\\s)${ name }(\\s|$)` ).test(
+							element.props.class
+						)
+					)
 						element.props.class += ` ${ name }`;
+
+					useEffect( () => {
+						// This seems necessary because Preact doesn't change the class names
+						// on the hydration, so we have to do it manually. It doesn't need
+						// deps because it only needs to do it the first time.
+						if ( ! result ) {
+							element.ref.current.classList.remove( name );
+						} else {
+							element.ref.current.classList.add( name );
+						}
+					}, [] );
 				} );
 		}
 	);
@@ -87,18 +104,19 @@ export default () => {
 	// wp-bind:[attribute]
 	directive(
 		'bind',
-		( { directives: { bind }, element, context: mainContext } ) => {
-			const context = useContext( mainContext );
+		( { directives: { bind }, element, context, evaluate } ) => {
+			const contextValue = useContext( context );
 			Object.entries( bind )
 				.filter( ( n ) => n !== 'default' )
-				.forEach( ( [ attribute, callback ] ) => {
-					const cb = getCallback( callback );
-					element.props[ attribute ] = cb( { context } );
+				.forEach( ( [ attribute, path ] ) => {
+					element.props[ attribute ] = evaluate( path, {
+						context: contextValue,
+					} );
 				} );
 		}
 	);
 
-	// The `wp-link` directive.
+	// wp-link
 	directive(
 		'link',
 		( {

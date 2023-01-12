@@ -4,7 +4,12 @@
 import { h, options, createContext } from 'preact';
 import { useRef } from 'preact/hooks';
 
-// Main context
+/**
+ * Internal dependencies
+ */
+import { store } from './wpx';
+
+// Main context.
 const context = createContext( {} );
 
 // WordPress Directives.
@@ -19,12 +24,34 @@ export const component = ( name, Comp ) => {
 	components[ name ] = Comp;
 };
 
+// Resolve the path to some property of the wpx object.
+const resolve = ( path, context ) => {
+	let current = { ...store, context };
+	path.split( '.' ).forEach( ( p ) => ( current = current[ p ] ) );
+	return current;
+};
+
+// Generate the evaluate function.
+const getEvaluate =
+	( { ref } = {} ) =>
+	( path, extraArgs = {} ) => {
+		const value = resolve( path, extraArgs.context );
+		return typeof value === 'function'
+			? value( {
+					state: store.state,
+					...( ref !== undefined ? { ref } : {} ),
+					...extraArgs,
+			  } )
+			: value;
+	};
+
 // Directive wrapper.
 const WpDirective = ( { type, wp, props: originalProps } ) => {
 	const ref = useRef( null );
 	const element = h( type, { ...originalProps, ref, _wrapped: true } );
 	const props = { ...originalProps, children: element };
-	const directiveArgs = { directives: wp, props, element, context };
+	const evaluate = getEvaluate( { ref: ref.current } );
+	const directiveArgs = { directives: wp, props, element, context, evaluate };
 
 	for ( const d in wp ) {
 		const wrapper = directives[ d ]?.( directiveArgs );
@@ -43,7 +70,7 @@ options.vnode = ( vnode ) => {
 	if ( typeof type === 'string' && type.startsWith( 'wp-' ) ) {
 		vnode.props.children = h(
 			components[ type ],
-			{ ...vnode.props, context },
+			{ ...vnode.props, context, evaluate: getEvaluate() },
 			vnode.props.children
 		);
 	} else if ( wp ) {
