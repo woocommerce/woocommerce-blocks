@@ -163,7 +163,7 @@ describe( 'ValidatedTextInput', () => {
 		};
 		render( <TestComponent /> );
 		const textInputElement = await screen.getByLabelText( 'Test Input' );
-		await userEvent.type( textInputElement, '' );
+		await userEvent.type( textInputElement, '{selectall}{del}' );
 		await expect(
 			select( VALIDATION_STORE_KEY ).getValidationError( 'test-input' )
 		).not.toBe( 'Please enter a valid test input' );
