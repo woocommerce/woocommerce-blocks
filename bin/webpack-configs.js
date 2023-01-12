@@ -33,25 +33,31 @@ const isProduction = NODE_ENV === 'production';
 /**
  * Shared config for all script builds.
  */
-const sharedPlugins = [
-	CHECK_CIRCULAR_DEPS === 'true'
-		? new CircularDependencyPlugin( {
-				exclude: /node_modules/,
-				cwd: process.cwd(),
-				failOnError: 'warn',
-		  } )
-		: false,
-	// The WP_BUNDLE_ANALYZER global variable enables a utility that represents bundle
-	// content as a convenient interactive zoomable treemap.
-	process.env.WP_BUNDLE_ANALYZER && new BundleAnalyzerPlugin(),
-	new DependencyExtractionWebpackPlugin( {
-		injectPolyfill: true,
-		combineAssets: ASSET_CHECK,
-		outputFormat: ASSET_CHECK ? 'json' : 'php',
-		requestToExternal,
-		requestToHandle,
-	} ),
-].filter( Boolean );
+let initialBundleAnalyzerPort = 8888;
+const getSharedPlugins = ( { bundleAnalyzerReportTitle } ) =>
+	[
+		CHECK_CIRCULAR_DEPS === 'true'
+			? new CircularDependencyPlugin( {
+					exclude: /node_modules/,
+					cwd: process.cwd(),
+					failOnError: 'warn',
+			  } )
+			: false,
+		// The WP_BUNDLE_ANALYZER global variable enables a utility that represents bundle
+		// content as a convenient interactive zoomable treemap.
+		process.env.WP_BUNDLE_ANALYZER &&
+			new BundleAnalyzerPlugin( {
+				analyzerPort: initialBundleAnalyzerPort++,
+				reportTitle: bundleAnalyzerReportTitle,
+			} ),
+		new DependencyExtractionWebpackPlugin( {
+			injectPolyfill: true,
+			combineAssets: ASSET_CHECK,
+			outputFormat: ASSET_CHECK ? 'json' : 'php',
+			requestToExternal,
+			requestToHandle,
+		} ),
+	].filter( Boolean );
 
 /**
  * Build config for core packages.
@@ -101,7 +107,7 @@ const getCoreConfig = ( options = {} ) => {
 			],
 		},
 		plugins: [
-			...sharedPlugins,
+			...getSharedPlugins( { bundleAnalyzerReportTitle: 'Core' } ),
 			new ProgressBarPlugin( getProgressBarPluginConfig( 'Core' ) ),
 			new CreateFileWebpack( {
 				path: './',
@@ -243,7 +249,7 @@ const getMainConfig = ( options = {} ) => {
 			],
 		},
 		plugins: [
-			...sharedPlugins,
+			...getSharedPlugins( { bundleAnalyzerReportTitle: 'Main' } ),
 			new ProgressBarPlugin( getProgressBarPluginConfig( 'Main' ) ),
 			new CopyWebpackPlugin( {
 				patterns: [
@@ -375,7 +381,7 @@ const getFrontConfig = ( options = {} ) => {
 			],
 		},
 		plugins: [
-			...sharedPlugins,
+			...getSharedPlugins( { bundleAnalyzerReportTitle: 'Frontend' } ),
 			new ProgressBarPlugin( getProgressBarPluginConfig( 'Frontend' ) ),
 		],
 		resolve: {
@@ -473,7 +479,9 @@ const getPaymentsConfig = ( options = {} ) => {
 			],
 		},
 		plugins: [
-			...sharedPlugins,
+			...getSharedPlugins( {
+				bundleAnalyzerReportTitle: 'Payment Method Extensions',
+			} ),
 			new ProgressBarPlugin(
 				getProgressBarPluginConfig( 'Payment Method Extensions' )
 			),
@@ -567,7 +575,9 @@ const getExtensionsConfig = ( options = {} ) => {
 			],
 		},
 		plugins: [
-			...sharedPlugins,
+			...getSharedPlugins( {
+				bundleAnalyzerReportTitle: 'Experimental Extensions',
+			} ),
 			new ProgressBarPlugin(
 				getProgressBarPluginConfig( 'Experimental Extensions' )
 			),
