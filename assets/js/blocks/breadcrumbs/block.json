@@ -19,6 +19,10 @@
 		"displayStyle": {
 			"type": "string",
 			"default": "icon_and_text"
+		},
+		"iconStyle": {
+			"type": "string",
+			"default": "default"
 		}
 	},
 	"textdomain": "woo-gutenberg-products-block",

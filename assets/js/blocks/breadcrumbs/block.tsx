@@ -4,33 +4,21 @@
 import { getSetting } from '@woocommerce/settings';
 import { __ } from '@wordpress/i18n';
 
-/**
- * Internal dependencies
- */
-import { Attributes, DisplayStyle } from './types';
-
-const Label = ( { displayStyle }: { displayStyle: DisplayStyle } ) => {
-	if ( displayStyle === DisplayStyle.ICON_ONLY ) {
-		return null;
-	}
-
+const Label = () => {
 	return (
 		<span className="label">
-			{ __( 'Home', 'woo-gutenberg-products-block' ) }
+			{ __(
+				'Home / Clothing / Accessories / Beanie',
+				'woo-gutenberg-products-block'
+			) }
 		</span>
 	);
 };
 
-export const BreadcrumbsBlock = ( {
-	attributes,
-}: {
-	attributes: Attributes;
-} ): JSX.Element => {
-	const { displayStyle } = attributes;
-
+export const BreadcrumbsBlock = (): JSX.Element => {
 	return (
 		<a href={ getSetting( 'homeUrl' ) }>
-			<Label displayStyle={ displayStyle } />
+			<Label />
 		</a>
 	);
 };

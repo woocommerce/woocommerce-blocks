@@ -29,7 +29,7 @@ class Breadcrumbs extends AbstractBlock {
 	 * @return string Rendered block output.
 	 */
 	protected function render( $attributes, $content, $block ) {
-		return 'hi there!';
+		return 'Home / Clothing / Accessories / Beanie';
 	}
 
 	/**
