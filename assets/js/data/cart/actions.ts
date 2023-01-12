@@ -49,7 +49,7 @@ export const setErrorData = (
 ): { type: string; response: ApiErrorResponse | null } => {
 	return {
 		type: types.SET_ERROR_DATA,
-		response: error,
+		error,
 	};
 };
 
