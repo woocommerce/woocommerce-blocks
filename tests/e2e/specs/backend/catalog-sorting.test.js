@@ -1,14 +1,23 @@
 /**
  * External dependencies
  */
-import { getAllBlocks, switchUserToAdmin } from '@wordpress/e2e-test-utils';
-
-import { visitBlockPage } from '@woocommerce/blocks-test-utils';
+import {
+	canvas,
+	createNewPost,
+	insertBlock,
+	switchUserToAdmin,
+} from '@wordpress/e2e-test-utils';
+import { searchForBlock } from '@wordpress/e2e-test-utils/build/inserter';
 
 /**
  * Internal dependencies
  */
-import { insertBlockDontWaitForInsertClose } from '../../utils.js';
+import {
+	filterCurrentBlocks,
+	goToSiteEditor,
+	useTheme,
+	waitForCanvas,
+} from '../../utils.js';
 
 const block = {
 	name: 'Catalog Sorting',
@@ -17,17 +26,41 @@ const block = {
 };
 
 describe( `${ block.name } Block`, () => {
-	beforeAll( async () => {
-		await switchUserToAdmin();
-		await visitBlockPage( `${ block.name } Block` );
+	describe( 'in a block page', () => {
+		beforeAll( async () => {
+			await switchUserToAdmin();
+		} );
+
+		it( 'can not be inserted', async () => {
+			await createNewPost( {
+				postType: 'post',
+				title: block.name,
+			} );
+			await searchForBlock( block.name );
+			expect( page ).toMatch( 'No results found.' );
+		} );
 	} );
 
-	it( 'renders without crashing', async () => {
-		await expect( page ).toRenderBlock( block );
-	} );
+	describe( 'in FSE editor', () => {
+		useTheme( 'emptytheme' );
 
-	it( 'can be inserted more than once', async () => {
-		await insertBlockDontWaitForInsertClose( block.name );
-		expect( await getAllBlocks() ).toHaveLength( 2 );
+		beforeEach( async () => {
+			await goToSiteEditor();
+			await waitForCanvas();
+		} );
+
+		it( 'can be inserted in FSE area', async () => {
+			await insertBlock( block.name );
+			await expect( canvas() ).toMatchElement( block.class );
+		} );
+
+		it( 'can be inserted more than once', async () => {
+			await insertBlock( block.name );
+			await insertBlock( block.name );
+			const foo = await filterCurrentBlocks(
+				( b ) => b.name === block.slug
+			);
+			expect( foo ).toHaveLength( 2 );
+		} );
 	} );
 } );
