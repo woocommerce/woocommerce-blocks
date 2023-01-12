@@ -111,6 +111,14 @@ class BlockTemplatesCompatibility {
 			return;
 		}
 
+		/**
+		 * We're only support Archive Template for now. In the future, we'll
+		 * support other templates as well.
+		 */
+		if ( ! is_shop() && ! is_product_taxonomy() ) {
+			return;
+		}
+
 		add_filter( 'render_block_data', array( $this, 'update_render_block_data' ), 10, 3 );
 		add_filter( 'render_block', array( $this, 'inject_hooks' ), 10, 2 );
 		add_action( 'after_setup_theme', array( $this, 'remove_default_hooks' ) );
@@ -165,14 +173,6 @@ class BlockTemplatesCompatibility {
 	 * @return string
 	 */
 	public function inject_hooks( $block_content, $block ) {
-		/**
-		 * We're only support Archive Template for now. In the future, we'll
-		 * support other templates as well.
-		 */
-		if ( ! is_shop() && ! is_product_taxonomy() ) {
-			return $block_content;
-		}
-
 		/**
 		 * If the block is not inherited, we don't need to inject hooks.
 		 */
