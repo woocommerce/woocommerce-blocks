@@ -200,12 +200,13 @@ final class BlockTypesController {
 			'ProductTag',
 			'ProductTagList',
 			'ProductTitle',
-			'ProductTopRated',
-			'ProductsByAttribute',
-			'RatingFilter',
-			'ReviewsByCategory',
-			'ReviewsByProduct',
-			'StockFilter',
+			'MiniCart',
+			'MiniCartContents',
+			'ProductQuery',
+			'ProductAddToCartButton',
+			'FilterWrapper',
+			'CustomerAccount',
+			'ProductAddToCartButton',
 		];
 
 		$block_types = array_merge( $block_types, Cart::get_cart_block_types(), Checkout::get_checkout_block_types() );
