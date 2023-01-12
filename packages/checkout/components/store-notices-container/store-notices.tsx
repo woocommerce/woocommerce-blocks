@@ -73,7 +73,7 @@ const StoreNotices = ( {
 		};
 	}, [ context, registerContainer, unregisterContainer ] );
 
-	// Group notices by whether or not they are dismissable. Dismissable notices can be grouped.
+	// Group notices by whether or not they are dismissible. Dismissible notices can be grouped.
 	const dismissibleNotices = notices.filter(
 		( { isDismissible } ) => !! isDismissible
 	);
