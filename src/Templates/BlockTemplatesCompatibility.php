@@ -111,17 +111,16 @@ class BlockTemplatesCompatibility {
 			return;
 		}
 
-		/**
-		 * We're only support Archive Template for now. In the future, we'll
-		 * support other templates as well.
-		 */
-		if ( ! is_shop() && ! is_product_taxonomy() ) {
-			return;
-		}
-
 		add_filter( 'render_block_data', array( $this, 'update_render_block_data' ), 10, 3 );
 		add_filter( 'render_block', array( $this, 'inject_hooks' ), 10, 2 );
-		add_action( 'after_setup_theme', array( $this, 'remove_default_hooks' ) );
+		add_action( 'template_redirect', array( $this, 'remove_default_hooks' ) );
+	}
+
+	/**
+	 * Check if current page is a product archive template.
+	 */
+	protected function is_archive_template() {
+		return is_shop() || is_product_taxonomy();
 	}
 
 	/**
@@ -130,6 +129,10 @@ class BlockTemplatesCompatibility {
 	 * content.
 	 */
 	public function remove_default_hooks() {
+		if ( ! $this->is_archive_template() ) {
+			return;
+		}
+
 		$hooks = array_merge( ...array_values( $this->hook_data ) );
 		foreach ( $hooks as $hook => $data ) {
 			if ( ! isset( $data['hooked'] ) ) {
@@ -152,6 +155,11 @@ class BlockTemplatesCompatibility {
 	 * @return array
 	 */
 	public function update_render_block_data( $parsed_block, $source_block, $parent_block ) {
+
+		if ( ! $this->is_archive_template() ) {
+			return $parsed_block;
+		}
+
 		/**
 		 * Custom data can be injected to top level block only, as Gutenberg
 		 * will use this data to render the blocks and its nested blocks.
@@ -173,6 +181,9 @@ class BlockTemplatesCompatibility {
 	 * @return string
 	 */
 	public function inject_hooks( $block_content, $block ) {
+		if ( ! $this->is_archive_template() ) {
+			return $block_content;
+		}
 		/**
 		 * If the block is not inherited, we don't need to inject hooks.
 		 */
