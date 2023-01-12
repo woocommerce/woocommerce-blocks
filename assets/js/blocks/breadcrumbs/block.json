@@ -1,7 +1,7 @@
 {
 	"name": "woocommerce/breadcrumbs",
 	"version": "1.0.0",
-	"title": "Product Breadcrumbs",
+	"title": "Store Breadcrumbs",
 	"description": "A block that allows you to add breadcrumbs to your store.",
 	"category": "woocommerce",
 	"keywords": [ "WooCommerce" ],
