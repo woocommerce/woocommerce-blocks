@@ -52,7 +52,7 @@ export const __internalEmitPaymentProcessingEvent: emitProcessingEventType = (
 			EMIT_TYPES.PAYMENT_PROCESSING,
 			{}
 		).then( ( observerResponses ) => {
-			let successResponse, errorResponse;
+			let successResponse, errorResponse, billingAddress;
 			observerResponses.forEach( ( response ) => {
 				if ( isSuccessResponse( response ) ) {
 					// the last observer response always "wins" for success.
@@ -64,21 +64,16 @@ export const __internalEmitPaymentProcessingEvent: emitProcessingEventType = (
 				) {
 					errorResponse = response;
 				}
-			} );
-
-			const { setBillingAddress, setShippingAddress } =
-				registry.dispatch( CART_STORE_KEY );
-
-			if ( successResponse && ! errorResponse ) {
 				const {
-					paymentMethodData,
-					billingAddress,
-					billingData,
-					shippingData,
-				} = successResponse?.meta || {};
+					billingAddress: billingAddressFromResponse,
+					billingData: billingDataFromResponse,
+				} = response?.meta || {};
 
-				if ( billingData ) {
-					setBillingAddress( billingData );
+				billingAddress = billingAddressFromResponse;
+
+				if ( billingDataFromResponse ) {
+					// Set this here so that old extensions still using billingData can set the billingAddress.
+					billingAddress = billingDataFromResponse;
 					deprecated(
 						'returning billingData from an onPaymentProcessing observer in WooCommerce Blocks',
 						{
@@ -88,6 +83,14 @@ export const __internalEmitPaymentProcessingEvent: emitProcessingEventType = (
 						}
 					);
 				}
+			} );
+
+			const { setBillingAddress, setShippingAddress } =
+				registry.dispatch( CART_STORE_KEY );
+
+			if ( successResponse && ! errorResponse ) {
+				const { paymentMethodData, shippingData } =
+					successResponse?.meta || {};
 
 				if ( billingAddress ) {
 					setBillingAddress( billingAddress );
@@ -113,8 +116,7 @@ export const __internalEmitPaymentProcessingEvent: emitProcessingEventType = (
 					} );
 				}
 
-				const { paymentMethodData, billingAddress } =
-					errorResponse?.meta || {};
+				const { paymentMethodData } = errorResponse?.meta || {};
 
 				if ( billingAddress ) {
 					setBillingAddress( billingAddress );
