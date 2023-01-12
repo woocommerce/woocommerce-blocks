@@ -36,6 +36,6 @@ class StoreNotices extends AbstractBlock {
 
 		$classes_and_styles = StyleAttributesUtils::get_classes_and_styles_by_attributes( $attributes );
 
-		return "<div class='wc-block-store-notices " . esc_attr( $classes_and_styles['classes'] ) . "' style='" . esc_attr( $classes_and_styles['styles'] ) . "'>" . $notices . '</div>';
+		return "<div class='woocommerce wc-block-store-notices " . esc_attr( $classes_and_styles['classes'] ) . "' style='" . esc_attr( $classes_and_styles['styles'] ) . "'>" . $notices . '</div>';
 	}
 }
