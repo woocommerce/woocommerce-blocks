@@ -201,6 +201,7 @@ final class BlockTypesController {
 			'MiniCart',
 			'MiniCartContents',
 			'ProductQuery',
+			'ProductAddToCartButton',
 			'FilterWrapper',
 			'CustomerAccount',
 		];
