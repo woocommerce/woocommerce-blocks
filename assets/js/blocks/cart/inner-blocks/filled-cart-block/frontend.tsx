@@ -24,6 +24,10 @@ const FrontendBlock = ( {
 	const { hasDarkControls } = useCartBlockContext();
 	const { createErrorNotice, removeNotice } = useDispatch( 'core/notices' );
 
+	/*
+	 * The code for removing old notices is also present in the filled-mini-cart-contents-block/frontend.tsx file and
+	 * will take care of removing outdated errors in the Mini Cart block.
+	 */
 	const currentlyDisplayedErrorNoticeCodes = useSelect( ( select ) => {
 		return select( 'core/notices' )
 			.getNotices( 'wc/cart' )
