@@ -73,7 +73,7 @@ const Block = (): JSX.Element => {
 					if ( ! isEmail( inputObject.value ) ) {
 						inputObject.setCustomValidity(
 							__(
-								'Please provide a valid email address',
+								'Please enter a valid email address',
 								'woo-gutenberg-products-block'
 							)
 						);
