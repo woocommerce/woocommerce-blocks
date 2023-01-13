@@ -9,7 +9,7 @@ import type { InnerBlockTemplate } from '@wordpress/blocks';
  */
 import { QueryBlockAttributes } from './types';
 import { VARIATION_NAME as PRODUCT_TITLE_ID } from './variations/elements/product-title';
-import { VARIATION_NAME as ADD_TO_CART_ID } from './variations/elements/add-to-cart-button';
+import { VARIATION_NAME as ADD_TO_CART_BUTTON_ID } from './variations/elements/add-to-cart-button';
 import { VARIATION_NAME as PRODUCT_TEMPLATE_ID } from './variations/elements/product-template';
 
 /**
@@ -102,12 +102,10 @@ export const INNER_BLOCKS_TEMPLATE: InnerBlockTemplate[] = [
 			[
 				'core/button',
 				{
-					__woocommerceNamespace: ADD_TO_CART_ID,
-					placeholder: 'Add to cart',
+					__woocommerceNamespace: ADD_TO_CART_BUTTON_ID,
 					text: 'Add to cart',
 					textAlign: 'center',
 					fontSize: 'small',
-					disabled: true,
 				},
 				[],
 			],

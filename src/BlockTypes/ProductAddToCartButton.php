@@ -22,155 +22,111 @@ class ProductAddToCartButton extends AbstractBlock {
 	 */
 	protected $api_version = '2';
 
+
 	/**
-	 * Initialize this block type.
-	 *
-	 * - Hook into WP lifecycle.
-	 * - Register the block with WordPress.
-	 * - Hook into pre_render_block to update the query.
+	 * Adding a filter to the render_block hook
+	 * that calls the on_render_block method when the filter is triggered
 	 */
 	protected function initialize() {
 		parent::initialize();
-		// add_filter(
-		// 'render_block_context',
-		// array( $this, 'render_block_context' ),
-		// 10,
-		// 3
-		// );
+
+		// render_block hook allows us to modify the rendered HTML of a block.
+		// When a block is rendered, the filter is applied, and any functions attached to it are called,
+		// providing the opportunity to modify the HTML output of the block.
 		add_filter(
 			'render_block',
 			[ $this, 'on_render_block' ],
 			10,
 			3
 		);
-		// add_filter(
-		// 'pre_render_block',
-		// array( $this, 'update_query' ),
-		// 10,
-		// 3
-		// );
 	}
 
 	/**
-	 * Register the context.
-	 */
-	protected function get_block_type_uses_context() {
-		return [ 'query', 'queryId', 'postId' ];
-	}
-
-
-	// public function update_query( $attributes, $content, $parent_block ) {
-	// if ( 'core/button' !== $content['blockName'] ) {
-	// return;
-	// }
-
-	// if ( $this->is_woocommerce_variation( $content ) ) {
-	// do_action( 'qm/debug', $parent_block );
-	// }
-
-	// return array( $attributes, $content );
-	// }
-
-	public function render_block_context( $context ) {
-		// do_action( 'qm/debug', $context );
-		return $context;
-	}
-
-	/**
-	 * Update the query for the product query block.
+	 * Callback function that modifies the HTML content of a "core/button" block.
+	 * The function checks if the block is a WooCommerce variation, fetches the product information, modifies the HTML structure of the block,
+	 * and applies the filters to the block content before returning it.
 	 *
-	 * @param string|null $pre_render   The pre-rendered content. Default null.
-	 * @param array       $parsed_block The block being rendered.
+	 * @param string $block_content HTML content of the block being rendered.
+	 * @param array  $block         The full block, including name and attributes.
 	 */
-	// public function on_render_block( $block_content, $block, $instance ) {
-	// if ( 'core/button' !== $block['blockName'] ) {
-	// return $block_content;
-	// }
-
-	// if ( $this->is_woocommerce_variation( $block ) ) {
-	// do_action( 'qm/debug', $instance );
-	// Read context from $instance
-	// do_action( 'qm/debug', $instance->__get( 'context' ) );
-
-	// Replace 'Add to Cart' in $block_content with "Manish"
-	// return str_replace( 'Add to cart', '<button href="?add-to-cart=24" rel="nofollow" data-product_id="24" data-product_sku="woo-album">Add to cart</button>', $block_content );
-
-	// }
-
-	// return $block_content;
-	// }
-
-	public function on_render_block( $block_content, $block, $instance ) {
+	public function on_render_block( $block_content, $block ) {
+		// return $block_content;
 		if ( 'core/button' !== $block['blockName'] ) {
 			return $block_content;
 		}
 
 		global $post;
+		$post_id = $post->ID;
 
 		if ( $this->is_woocommerce_variation( $block ) ) {
-			// do_action( 'qm/debug', 'use :' . $post->ID );
-
-			$post_id = $post->ID;
 			$product = wc_get_product( $post_id );
 
+			do_action( 'qm/debug', $block );
+
 			if ( $product ) {
-				// return str_replace(
-				// 'Add to cart',
-				// '<button href="?add-to-cart=24" rel="nofollow" data-product_id="24" data-product_sku="woo-album" class="ajax_add_to_cart add_to_cart_button ">Add to cart</button>',
-				// $block_content
-				// );
+				$styles_and_classes = $this->extract_style_and_class_from_block_content( $block_content );
+				$div_class          = $styles_and_classes['div_class'];
+				$div_style          = $styles_and_classes['div_style'];
+				$anchor_class       = $styles_and_classes['anchor_class'];
+				$anchor_style       = $styles_and_classes['anchor_style'];
 
-				$cart_redirect_after_add = get_option( 'woocommerce_cart_redirect_after_add' ) === 'yes';
-				$html_element            = ( ! $product->has_options() && $product->is_purchasable() && $product->is_in_stock() && ! $cart_redirect_after_add ) ? 'button' : 'a';
-
-				$html = '<div class="wp-block-button has-custom-font-size has-small-font-size"><a class="wp-block-button__link has-primary-color has-pale-pink-background-color has-text-color has-background wp-element-button">Add to cart</a></div>';
-
-				$dom = new DOMDocument();
-				$dom->loadHTML( $html );
-
-				$div       = $dom->getElementsByTagName( 'div' )->item( 0 );
-				$div_class = $div->getAttribute( 'class' );
-
-				$div          = $dom->getElementsByTagName( 'a' )->item( 0 );
-				$anchor_class = $div->getAttribute( 'class' );
-
-				do_action( 'qm/debug', $div_class );
-				// do_action( 'qm/debug', [ $block_content, $block ] );
-
-				return apply_filters(
-					'woocommerce_loop_add_to_cart_link',
-					sprintf(
-						'
-						<div class="wp-block-button wc-block-components-product-button wc-block-grid__product-add-to-cart %9$s">
-						<%1$s href="%2$s" rel="nofollow" data-product_id="%3$s" data-product_sku="%4$s" class="wp-block-button__link %5$s wc-block-components-product-button__button product_type_%6$s %10$s" >%7$s</%8$s>
-						</div>
-						',
-						$html_element,
-						esc_url( $product->add_to_cart_url() ),
-						esc_attr( $product->get_id() ),
-						esc_attr( $product->get_sku() ),
-						$product->is_purchasable() ? 'ajax_add_to_cart add_to_cart_button' : '',
-						esc_attr( $product->get_type() ),
-						esc_html( $product->add_to_cart_text() ),
-						$html_element,
-						$div_class,
-						$anchor_class
-					),
-					$product
-				);
+				return '<div class="wp-block-button wc-block-components-product-button wc-block-grid__product-add-to-cart ' . $div_class . '" style="' . $div_style . '">
+							<a
+								href="' . esc_url( $product->add_to_cart_url() ) . '"
+								rel="nofollow"
+								data-product_id="' . esc_attr( $product->get_id() ) . '"
+								data-product_sku="' . esc_attr( $product->get_sku() ) . '"
+								class="wp-block-button__link ' . ( $product->is_purchasable() ? 'ajax_add_to_cart add_to_cart_button' : '' ) . ' wc-block-components-product-button__button product_type_' . esc_attr( $product->get_type() ) . ' ' . $anchor_class . '"
+								style="' . $anchor_style . '">'
+									. esc_html( $this->extract_anchor_content_from( $block_content ) )
+							. '</a>'
+					. '</div>';
 			}
-
-			// return apply_filters(
-			// 'woocommerce_loop_add_to_cart_link',
-			// '<button href="?add-to-cart=24" rel="nofollow" data-product_id="24" data-product_sku="woo-album" class="ajax_add_to_cart add_to_cart_button ">Add to cart</button>'
-			// );
 		}
 
 		return $block_content;
 	}
 
 	/**
-	 * Check if a given block
+	 * Extracts style and class from block content
+	 *
+	 * @param string $block_content The HTML content of the block.
+	 *
+	 * @return array
+	 */
+	private function extract_style_and_class_from_block_content( $block_content ) {
+		$dom = new DOMDocument();
+		$dom->loadHTML( $block_content );
+
+		$div       = $dom->getElementsByTagName( 'div' )->item( 0 );
+		$div_class = $div->getattribute( 'class' );
+		$div_style = $div->getattribute( 'style' );
+
+		$div          = $dom->getElementsByTagName( 'a' )->item( 0 );
+		$anchor_class = $div->getattribute( 'class' );
+		$anchor_style = $div->getattribute( 'style' );
+
+		return array(
+			'div_class'    => $div_class,
+			'div_style'    => $div_style,
+			'anchor_class' => $anchor_class,
+			'anchor_style' => $anchor_style,
+		);
+	}
+
+	/**
+	 * Extract anchor content from block content
+	 */
+	private function extract_anchor_content_from( $block_content ) {
+		$dom = new DOMDocument();
+		$dom->loadHTML( $block_content );
+
+		$div = $dom->getElementsByTagName( 'a' )->item( 0 );
+		return $div->nodeValue;
+	}
+
+	/**
+	 * Check if block is a WooCommerce variation.
 	 *
 	 * @param array $parsed_block The block being rendered.
 	 * @return boolean
@@ -178,61 +134,5 @@ class ProductAddToCartButton extends AbstractBlock {
 	private function is_woocommerce_variation( $parsed_block ) {
 		return isset( $parsed_block['attrs']['__woocommerceNamespace'] )
 		&& substr( $parsed_block['attrs']['__woocommerceNamespace'], 0, 11 ) === 'woocommerce';
-	}
-
-	/**
-	 * Include and render the block.
-	 *
-	 * @param array    $attributes Block attributes. Default empty array.
-	 * @param string   $content    Block content. Default empty string.
-	 * @param WP_Block $block      Block instance.
-	 * @return string Rendered block type output.
-	 */
-	protected function render( $attributes, $content, $block ) {
-		do_action( 'qm/debug', $attributes, $content, $block );
-		if ( 'core/button' === $block['blockName'] && $this->is_woocommerce_variation( $block ) ) {
-			do_action( 'qm/debug', $attributes, $content, $block );
-		}
-
-		parent::register_block_type_assets();
-		$this->register_chunk_translations( [ $this->block_name ] );
-		return $content;
-
-		// if ( ! empty( $content ) ) {
-		// parent::register_block_type_assets();
-		// $this->register_chunk_translations( [ $this->block_name ] );
-		// return $content;
-		// }
-
-		// $post_id = $block->context['postId'];
-		// $product = wc_get_product( $post_id );
-
-		// if ( $product ) {
-		// $cart_redirect_after_add       = get_option( 'woocommerce_cart_redirect_after_add' ) === 'yes';
-		// $html_element                  = ( ! $product->has_options() && $product->is_purchasable() && $product->is_in_stock() && ! $cart_redirect_after_add ) ? 'button' : 'a';
-		// $styles_and_classes            = StyleAttributesUtils::get_classes_and_styles_by_attributes( $attributes, array( 'border_radius', 'font_size', 'font_weight', 'margin', 'padding', 'text_color' ) );
-		// $text_align_styles_and_classes = StyleAttributesUtils::get_text_align_class_and_style( $attributes );
-
-		// return apply_filters(
-		// 'woocommerce_loop_add_to_cart_link',
-		// sprintf(
-		// '<div class="wp-block-button wc-block-components-product-button wc-block-grid__product-add-to-cart %1$s">
-		// <%2$s href="%3$s" rel="nofollow" data-product_id="%4$s" data-product_sku="%5$s" class="wp-block-button__link %6$s wc-block-components-product-button__button product_type_%7$s %8$s" style="%9$s">%10$s</%11$s>
-		// </div>',
-		// esc_attr( $text_align_styles_and_classes['class'] ?? '' ),
-		// $html_element,
-		// esc_url( $product->add_to_cart_url() ),
-		// esc_attr( $product->get_id() ),
-		// esc_attr( $product->get_sku() ),
-		// $product->is_purchasable() ? 'ajax_add_to_cart add_to_cart_button' : '',
-		// esc_attr( $product->get_type() ),
-		// esc_attr( $styles_and_classes['classes'] ),
-		// esc_attr( $styles_and_classes['styles'] ),
-		// esc_html( $product->add_to_cart_text() ),
-		// $html_element
-		// ),
-		// $product
-		// );
-		// }
 	}
 }
