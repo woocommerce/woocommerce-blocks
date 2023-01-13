@@ -14,6 +14,7 @@ export interface ShippingData {
 		newShippingRateId: string,
 		packageId: string | number
 	) => unknown;
+	// Only true when ALL packages support local pickup. If true, we can show the collection/delivery toggle
 	isCollectable: boolean;
 	// True when a rate is currently being selected and persisted to the server.
 	isSelectingRate: boolean;
