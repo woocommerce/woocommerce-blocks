@@ -248,6 +248,7 @@ final class BlockTypesController {
 				$block_types,
 				[
 					'ClassicTemplate',
+					'StoreNotices',
 				]
 			);
 		}
