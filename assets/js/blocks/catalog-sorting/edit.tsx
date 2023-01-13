@@ -4,31 +4,30 @@
 import classNames from 'classnames';
 import { useBlockProps } from '@wordpress/block-editor';
 import { Disabled } from '@wordpress/components';
-import type { BlockEditProps } from '@wordpress/blocks';
 
 /**
  * Internal dependencies
  */
 import Block from './block';
 
-export interface Attributes {
-	className?: string;
+interface Props {
+	attributes: {
+		className?: string;
+	};
 }
 
-const Edit = ( { attributes }: BlockEditProps< Attributes > ) => {
+const Edit = ( { attributes }: Props ): JSX.Element => {
 	const { className } = attributes;
 	const blockProps = useBlockProps( {
 		className: classNames( 'wc-block-catalog-sorting', className ),
 	} );
 
 	return (
-		<>
-			<div { ...blockProps }>
-				<Disabled>
-					<Block attributes={ attributes } />
-				</Disabled>
-			</div>
-		</>
+		<div { ...blockProps }>
+			<Disabled>
+				<Block />
+			</Disabled>
+		</div>
 	);
 };
 
