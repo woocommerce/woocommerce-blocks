@@ -11,7 +11,7 @@ import { isWpVersion } from '@woocommerce/settings';
 import { CORE_NAME as PRODUCT_TITLE_ID } from './variations/elements/product-title';
 import { CORE_NAME as PRODUCT_SUMMARY_ID } from './variations/elements/product-summary';
 import { CORE_NAME as PRODUCT_TEMPLATE_ID } from './variations/elements/product-template';
-import { CORE_NAME as ADD_TO_CART_ID } from './variations/elements/add-to-cart-button';
+import { CORE_NAME as ADD_TO_CART_BUTTON_ID } from './variations/elements/add-to-cart-button';
 import './inspector-controls';
 import './style.scss';
 import './variations/product-query';
@@ -20,7 +20,7 @@ const EXTENDED_CORE_ELEMENTS = [
 	PRODUCT_SUMMARY_ID,
 	PRODUCT_TEMPLATE_ID,
 	PRODUCT_TITLE_ID,
-	ADD_TO_CART_ID,
+	ADD_TO_CART_BUTTON_ID,
 ];
 
 function registerProductQueryElementsNamespace(

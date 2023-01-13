@@ -6,7 +6,7 @@ import {
 	BLOCK_DESCRIPTION,
 	BLOCK_ICON,
 	BLOCK_TITLE,
-} from '@woocommerce/atomic-blocks/product-elements/summary/constants';
+} from '@woocommerce/atomic-blocks/product-elements/button/constants';
 
 /**
  * Internal dependencies
@@ -18,9 +18,9 @@ export const VARIATION_NAME = 'woocommerce/product-add-to-cart-button';
 
 if ( isFeaturePluginBuild() ) {
 	registerElementVariation( CORE_NAME, {
-		blockDescription: 'This is a block description',
+		blockDescription: BLOCK_DESCRIPTION,
 		blockIcon: BLOCK_ICON,
-		blockTitle: 'Add to Cart',
+		blockTitle: BLOCK_TITLE,
 		variationName: VARIATION_NAME,
 	} );
 }
