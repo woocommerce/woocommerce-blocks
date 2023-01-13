@@ -3,6 +3,7 @@ namespace Automattic\WooCommerce\Blocks;
 
 use Automattic\WooCommerce\Blocks\Domain\Package;
 use Automattic\WooCommerce\Blocks\Templates\ProductAttributeTemplate;
+use Automattic\WooCommerce\Blocks\Templates\SingleProductTemplate;
 use Automattic\WooCommerce\Blocks\Utils\BlockTemplateUtils;
 
 /**
@@ -195,6 +196,8 @@ class BlockTemplatesController {
 
 		list( $template_id, $template_slug ) = $template_name_parts;
 
+		$template_slug = 'taxonomy-product_type' === $template_slug ? 'single-product' : $template_slug;
+
 		// If the theme has an archive-product.html template, but not a taxonomy-product_cat/tag/attribute.html template let's use the themes archive-product.html template.
 		if ( BlockTemplateUtils::template_is_eligible_for_product_archive_fallback_from_theme( $template_slug ) ) {
 			$template_path   = BlockTemplateUtils::get_theme_template_path( 'archive-product' );
@@ -223,6 +226,7 @@ class BlockTemplatesController {
 
 		// If we don't have a template let Gutenberg do its thing.
 		if ( ! $this->block_template_is_available( $template_slug, $template_type ) ) {
+			error_log( "Template not available: $template_slug" );
 			return $template;
 		}
 
@@ -252,8 +256,9 @@ class BlockTemplatesController {
 			return $query_result;
 		}
 
-		$post_type      = isset( $query['post_type'] ) ? $query['post_type'] : '';
-		$slugs          = isset( $query['slug__in'] ) ? $query['slug__in'] : array();
+		$post_type = isset( $query['post_type'] ) ? $query['post_type'] : '';
+		$slugs     = isset( $query['slug__in'] ) ? $query['slug__in'] : array();
+
 		$template_files = $this->get_block_templates( $slugs, $template_type );
 
 		// @todo: Add apply_filters to _gutenberg_get_template_files() in Gutenberg to prevent duplication of logic.
@@ -394,6 +399,7 @@ class BlockTemplatesController {
 
 			$template_slug = BlockTemplateUtils::generate_template_slug_from_path( $template_file );
 
+			$template_slug = 'single-product' === $template_slug ? SingleProductTemplate::SLUG : $template_slug;
 			// This template does not have a slug we're looking for. Skip it.
 			if ( is_array( $slugs ) && count( $slugs ) > 0 && ! in_array( $template_slug, $slugs, true ) ) {
 				continue;

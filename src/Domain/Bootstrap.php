@@ -24,6 +24,7 @@ use Automattic\WooCommerce\Blocks\Registry\Container;
 use Automattic\WooCommerce\Blocks\Templates\ClassicTemplatesCompatibility;
 use Automattic\WooCommerce\Blocks\Templates\ProductAttributeTemplate;
 use Automattic\WooCommerce\Blocks\Templates\ProductSearchResultsTemplate;
+use Automattic\WooCommerce\Blocks\Templates\SingleProductTemplate;
 use Automattic\WooCommerce\StoreApi\RoutesController;
 use Automattic\WooCommerce\StoreApi\SchemaController;
 use Automattic\WooCommerce\StoreApi\StoreApi;
@@ -124,6 +125,7 @@ class Bootstrap {
 		$this->container->get( BlockTypesController::class );
 		$this->container->get( BlockTemplatesController::class );
 		$this->container->get( ProductSearchResultsTemplate::class );
+		$this->container->get( SingleProductTemplate::class );
 		$this->container->get( ProductAttributeTemplate::class );
 		$this->container->get( ClassicTemplatesCompatibility::class );
 		$this->container->get( BlockPatterns::class );
@@ -256,6 +258,13 @@ class Bootstrap {
 			ProductSearchResultsTemplate::class,
 			function () {
 				return new ProductSearchResultsTemplate();
+			}
+		);
+
+		$this->container->register(
+			SingleProductTemplate::class,
+			function () {
+				return new SingleProductTemplate();
 			}
 		);
 		$this->container->register(

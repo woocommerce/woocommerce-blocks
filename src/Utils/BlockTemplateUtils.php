@@ -6,6 +6,7 @@ use Automattic\WooCommerce\Blocks\Templates\ProductSearchResultsTemplate;
 use Automattic\WooCommerce\Blocks\Domain\Services\FeatureGating;
 use Automattic\WooCommerce\Blocks\Options;
 use Automattic\WooCommerce\Blocks\Templates\MiniCartTemplate;
+use Automattic\WooCommerce\Blocks\Templates\SingleProductTemplate;
 
 /**
  * Utility methods used for serving block templates from WooCommerce Blocks.
@@ -13,6 +14,8 @@ use Automattic\WooCommerce\Blocks\Templates\MiniCartTemplate;
  */
 class BlockTemplateUtils {
 	const ELIGIBLE_FOR_ARCHIVE_PRODUCT_FALLBACK = array( 'taxonomy-product_cat', 'taxonomy-product_tag', ProductAttributeTemplate::SLUG );
+	const ELIGIBLE_FOR_SINGLE_PRODUCT_FALLBACK  = array( 'taxonomy-product_type' );
+
 	/**
 	 * Directory names for block templates
 	 *
@@ -187,6 +190,8 @@ class BlockTemplateUtils {
 	public static function build_template_result_from_file( $template_file, $template_type ) {
 		$template_file = (object) $template_file;
 
+		$template_file->slug = 'single-product' === $template_file->slug ? SingleProductTemplate::SLUG : $template_file->slug;
+
 		// If the theme has an archive-products.html template but does not have product taxonomy templates
 		// then we will load in the archive-product.html template from the theme to use for product taxonomies on the frontend.
 		$template_is_from_theme = 'theme' === $template_file->source;
@@ -298,7 +303,7 @@ class BlockTemplateUtils {
 	 */
 	public static function get_plugin_block_template_types() {
 		$plugin_template_types = array(
-			'single-product'                   => array(
+			SingleProductTemplate::SLUG        => array(
 				'title'       => _x( 'Single Product', 'Template name', 'woo-gutenberg-products-block' ),
 				'description' => __( 'Displays a single product.', 'woo-gutenberg-products-block' ),
 			),
