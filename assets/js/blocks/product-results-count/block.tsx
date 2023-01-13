@@ -21,7 +21,7 @@ const ProductResultsCount = ( { attributes }: Props ): JSX.Element => {
 	return (
 		<div
 			className={ classNames(
-				'.wc-block-product-results-count',
+				'wc-block-product-results-count',
 				className
 			) }
 		>
