@@ -6,14 +6,7 @@
 	"category": "woocommerce",
 	"keywords": [ "WooCommerce" ],
 	"supports": {
-		"align": true,
-		"color": {
-			"text": true
-		},
-		"typography": {
-			"fontSize": true,
-			"__experimentalFontFamily": true
-		}
+		"align": true
 	},
 	"textdomain": "woo-gutenberg-products-block",
 	"apiVersion": 2,
