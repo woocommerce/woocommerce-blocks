@@ -21,7 +21,7 @@ import {
 
 const block = {
 	name: 'Product Results Count',
-	slug: '"woocommerce/product-results-count',
+	slug: 'woocommerce/product-results-count',
 	class: '.wc-block-product-results-count',
 };
 
