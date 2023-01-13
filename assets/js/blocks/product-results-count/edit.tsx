@@ -11,10 +11,14 @@ import type { BlockEditProps } from '@wordpress/blocks';
  */
 import Block from './block';
 
+export interface Attributes {
+	className?: string;
+}
+
 const Edit = ( { attributes }: BlockEditProps< Attributes > ) => {
 	const { className } = attributes;
 	const blockProps = useBlockProps( {
-		className: classNames( 'wc-block-customer-account', className ),
+		className: classNames( 'wc-block-product-results-count', className ),
 	} );
 
 	return (

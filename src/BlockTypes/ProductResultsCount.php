@@ -5,7 +5,7 @@ namespace Automattic\WooCommerce\Blocks\BlockTypes;
 use Automattic\WooCommerce\Blocks\Utils\StyleAttributesUtils;
 
 /**
- * ResultsCount class.
+ * ProductResultsCount class.
  */
 class ProductResultsCount extends AbstractBlock {
 
@@ -14,7 +14,7 @@ class ProductResultsCount extends AbstractBlock {
 	 *
 	 * @var string
 	 */
-	protected $block_name = 'results-count';
+	protected $block_name = 'product-results-count';
 
 	/**
 	 * Render the block.
@@ -28,8 +28,8 @@ class ProductResultsCount extends AbstractBlock {
 	protected function render( $attributes, $content, $block ) {
 		ob_start();
 		woocommerce_result_count();
-		$results_count = ob_get_clean();
+		$product_results_count = ob_get_clean();
 
-		return '<div class="wc-block-product-results-count">' . $results_count . '</div>';
+		return '<div class="wc-block-product-results-count">' . $product_results_count . '</div>';
 	}
 }
