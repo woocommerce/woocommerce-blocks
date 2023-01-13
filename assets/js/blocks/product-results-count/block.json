@@ -15,6 +15,7 @@
 			"__experimentalFontFamily": true
 		}
 	},
+	"attributes": {},
 	"textdomain": "woo-gutenberg-products-block",
 	"apiVersion": 2,
 	"$schema": "https://schemas.wp.org/trunk/block.json"
