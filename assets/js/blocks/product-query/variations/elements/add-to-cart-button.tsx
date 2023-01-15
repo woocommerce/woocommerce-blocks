@@ -13,7 +13,7 @@ import {
  */
 import { registerElementVariation } from './utils';
 
-export const CORE_NAME = 'core/button';
+export const CORE_NAME = 'core/buttons';
 export const VARIATION_NAME = 'woocommerce/product-add-to-cart-button';
 
 if ( isFeaturePluginBuild() ) {

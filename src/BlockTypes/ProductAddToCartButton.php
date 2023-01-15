@@ -34,11 +34,29 @@ class ProductAddToCartButton extends AbstractBlock {
 		// When a block is rendered, the filter is applied, and any functions attached to it are called,
 		// providing the opportunity to modify the HTML output of the block.
 		add_filter(
+			'render_block_data',
+			[ $this, 'render_block_data' ],
+			10,
+			3
+		);
+		add_filter(
 			'render_block',
 			[ $this, 'on_render_block' ],
 			10,
 			3
 		);
+	}
+
+	public function render_block_data( $parsed_block, $source_block, $parent_block ) {
+		if ( 'core/button' !== $source_block['blockName'] ) {
+			return $parsed_block;
+		}
+
+		if ( $this->is_woocommerce_variation( $parent_block->parsed_block ) ) {
+			$parsed_block['attrs']['__woocommerceNamespace'] = $parent_block->parsed_block['attrs']['__woocommerceNamespace'];
+		}
+
+		return $parsed_block;
 	}
 
 	/**
@@ -49,7 +67,7 @@ class ProductAddToCartButton extends AbstractBlock {
 	 * @param string $block_content HTML content of the block being rendered.
 	 * @param array  $block         The full block, including name and attributes.
 	 */
-	public function on_render_block( $block_content, $block ) {
+	public function on_render_block( $block_content, $block, $parent_block ) {
 		// return $block_content;
 		if ( 'core/button' !== $block['blockName'] ) {
 			return $block_content;

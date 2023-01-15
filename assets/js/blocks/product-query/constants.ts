@@ -121,7 +121,7 @@ export const INNER_BLOCKS_TEMPLATE: InnerBlockTemplate[] = [
 				[],
 			],
 			[
-				'core/button',
+				'core/buttons',
 				{
 					__woocommerceNamespace: ADD_TO_CART_BUTTON_ID,
 					text: 'Add to cart',
