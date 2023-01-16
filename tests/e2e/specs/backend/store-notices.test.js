@@ -12,17 +12,17 @@ import { searchForBlock } from '@wordpress/e2e-test-utils/build/inserter';
 /**
  * Internal dependencies
  */
-import {
-	filterCurrentBlocks,
-	goToSiteEditor,
-	useTheme,
-	waitForCanvas,
-} from '../../utils.js';
+import { goToSiteEditor, useTheme, waitForCanvas } from '../../utils.js';
 
 const block = {
 	name: 'Store Notices',
 	slug: 'woocommerce/store-notices',
 	class: '.wc-block-store-notices',
+	selectors: {
+		insertButton: "//button//span[text()='Store Notices']",
+		insertButtonDisabled:
+			"//button[@aria-disabled]//span[text()='Store Notices']",
+	},
 };
 
 describe( `${ block.name } Block`, () => {
@@ -54,13 +54,13 @@ describe( `${ block.name } Block`, () => {
 			await expect( canvas() ).toMatchElement( block.class );
 		} );
 
-		it( 'can be inserted more than once', async () => {
+		it( 'can only be inserted once', async () => {
 			await insertBlock( block.name );
-			await insertBlock( block.name );
-			const foo = await filterCurrentBlocks(
-				( b ) => b.name === block.slug
+			await searchForBlock( block.name );
+			const storeNoticesButton = await page.$x(
+				block.selectors.insertButtonDisabled
 			);
-			expect( foo ).toHaveLength( 2 );
+			expect( storeNoticesButton ).toHaveLength( 1 );
 		} );
 	} );
 } );
