@@ -1,15 +1,8 @@
 /**
  * External dependencies
  */
-import classNames from 'classnames';
 import { useBlockProps } from '@wordpress/block-editor';
 import { __ } from '@wordpress/i18n';
-
-interface Props {
-	attributes: {
-		className?: string;
-	};
-}
 
 const StoreNotices = () => {
 	return (
@@ -22,10 +15,9 @@ const StoreNotices = () => {
 	);
 };
 
-const Edit = ( { attributes }: Props ): JSX.Element => {
-	const { className } = attributes;
+const Edit = (): JSX.Element => {
 	const blockProps = useBlockProps( {
-		className: classNames( 'wc-block-store-notices', className ),
+		className: 'wc-block-store-notices',
 	} );
 
 	return (
