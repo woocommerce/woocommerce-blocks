@@ -3,17 +3,24 @@
  */
 import classNames from 'classnames';
 import { useBlockProps } from '@wordpress/block-editor';
-
-/**
- * Internal dependencies
- */
-import Block from './block';
+import { __ } from '@wordpress/i18n';
 
 interface Props {
 	attributes: {
 		className?: string;
 	};
 }
+
+const StoreNotices = () => {
+	return (
+		<div className="wc-block-woocommerce-notice">
+			{ __(
+				'This is an example notice. Notices added WooCommerce or extensions will show up here.',
+				'woo-gutenberg-products-block'
+			) }
+		</div>
+	);
+};
 
 const Edit = ( { attributes }: Props ): JSX.Element => {
 	const { className } = attributes;
@@ -23,7 +30,7 @@ const Edit = ( { attributes }: Props ): JSX.Element => {
 
 	return (
 		<div { ...blockProps }>
-			<Block />
+			<StoreNotices />
 		</div>
 	);
 };
