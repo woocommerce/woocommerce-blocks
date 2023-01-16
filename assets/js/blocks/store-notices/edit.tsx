@@ -3,7 +3,6 @@
  */
 import classNames from 'classnames';
 import { useBlockProps } from '@wordpress/block-editor';
-import { Disabled } from '@wordpress/components';
 
 /**
  * Internal dependencies
@@ -24,9 +23,7 @@ const Edit = ( { attributes }: Props ): JSX.Element => {
 
 	return (
 		<div { ...blockProps }>
-			<Disabled>
-				<Block />
-			</Disabled>
+			<Block />
 		</div>
 	);
 };
