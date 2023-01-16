@@ -6,7 +6,6 @@
 	"category": "woocommerce",
 	"keywords": [ "WooCommerce" ],
 	"supports": {
-		"align": true,
 		"multiple": false
 	},
 	"textdomain": "woo-gutenberg-products-block",
