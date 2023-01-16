@@ -3,11 +3,17 @@
  */
 import { useBlockProps } from '@wordpress/block-editor';
 import { Disabled } from '@wordpress/components';
+import { __ } from '@wordpress/i18n';
 
-/**
- * Internal dependencies
- */
-import Block from './block';
+const CatalogSorting = () => {
+	return (
+		<select>
+			<option>
+				{ __( 'Default sorting', 'woo-gutenberg-products-block' ) }
+			</option>
+		</select>
+	);
+};
 
 const Edit = () => {
 	const blockProps = useBlockProps( {
@@ -18,7 +24,7 @@ const Edit = () => {
 		<>
 			<div { ...blockProps }>
 				<Disabled>
-					<Block />
+					<CatalogSorting />
 				</Disabled>
 			</div>
 		</>

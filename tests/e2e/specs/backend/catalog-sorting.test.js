@@ -26,7 +26,7 @@ const block = {
 };
 
 describe( `${ block.name } Block`, () => {
-	describe( 'in a block page', () => {
+	describe( 'in a post', () => {
 		beforeAll( async () => {
 			await switchUserToAdmin();
 		} );
