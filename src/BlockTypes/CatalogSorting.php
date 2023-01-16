@@ -34,9 +34,10 @@ class CatalogSorting extends AbstractBlock {
 			return;
 		}
 
+		$classname          = isset( $attributes['className'] ) ? $attributes['className'] : '';
 		$classes_and_styles = StyleAttributesUtils::get_classes_and_styles_by_attributes( $attributes );
 
-		return "<div class='wc-block-catalog-sorting " . esc_attr( $classes_and_styles['classes'] ) . "' style='" . esc_attr( $classes_and_styles['styles'] ) . "'>" . $catalog_sorting . '</div>';
+		return "<div class='wc-block-catalog-sorting " . esc_attr( $classes_and_styles['classes'] ) . ' ' . esc_attr( $classname ) . "' style='" . esc_attr( $classes_and_styles['styles'] ) . "'>" . $catalog_sorting . '</div>';
 	}
 
 	/**
