@@ -8,7 +8,8 @@
 	"supports": {
 		"align": true,
 		"color": {
-			"text": true
+			"text": true,
+			"background": false
 		},
 		"typography": {
 			"fontSize": true,
