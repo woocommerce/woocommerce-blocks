@@ -18,6 +18,10 @@ import {
 import { EMIT_TYPES } from '../../base/context/providers/cart-checkout/payment-events/event-emit';
 import type { emitProcessingEventType } from './types';
 import { CART_STORE_KEY } from '../cart';
+import {
+	isBillingAddress,
+	isShippingAddress,
+} from '../../types/type-guards/address';
 
 export const __internalSetExpressPaymentError = ( message?: string ) => {
 	return ( { registry } ) => {
@@ -112,10 +116,13 @@ export const __internalEmitPaymentProcessingEvent: emitProcessingEventType = (
 				const { paymentMethodData, shippingData } =
 					successResponse?.meta || {};
 
-				if ( billingAddress ) {
+				if ( billingAddress && isBillingAddress( billingAddress ) ) {
 					setBillingAddress( billingAddress );
 				}
-				if ( typeof shippingAddress !== 'undefined' ) {
+				if (
+					typeof shippingAddress !== 'undefined' &&
+					isShippingAddress( shippingAddress )
+				) {
 					setShippingAddress(
 						shippingData as Record< string, unknown >
 					);
@@ -135,7 +142,7 @@ export const __internalEmitPaymentProcessingEvent: emitProcessingEventType = (
 
 				const { paymentMethodData } = errorResponse?.meta || {};
 
-				if ( billingAddress ) {
+				if ( billingAddress && isBillingAddress( billingAddress ) ) {
 					setBillingAddress( billingAddress );
 				}
 				dispatch.__internalSetPaymentFailed();
