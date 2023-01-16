@@ -6,11 +6,13 @@ import { __ } from '@wordpress/i18n';
 
 const StoreNotices = () => {
 	return (
-		<div className="wc-block-woocommerce-notice">
-			{ __(
-				'This is an example notice. Notices added by WooCommerce or extensions will show up here.',
-				'woo-gutenberg-products-block'
-			) }
+		<div className="woocommerce-notices-wrapper">
+			<div className="woocommerce-info">
+				{ __(
+					'This is an example notice. Notices added by WooCommerce or extensions will show up here.',
+					'woo-gutenberg-products-block'
+				) }
+			</div>
 		</div>
 	);
 };
