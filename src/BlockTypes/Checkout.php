@@ -264,7 +264,7 @@ class Checkout extends AbstractBlock {
 
 		// Hydrate the following data depending on admin or frontend context.
 		if ( $is_block_editor && ! $this->asset_data_registry->exists( 'shippingMethodsExist' ) ) {
-			$methods_exist = wc_get_shipping_method_count( false, true ) > 0;
+			$methods_exist = wc_get_shipping_method_count( true, true ) > 0;
 			$this->asset_data_registry->add( 'shippingMethodsExist', $methods_exist );
 		}
 
