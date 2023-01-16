@@ -239,6 +239,10 @@ export interface ProductPriceProps {
 	 * Custom style to apply to the regular price wrapper.
 	 */
 	regularPriceStyle?: React.CSSProperties | undefined;
+	/**
+	 * Custom margin to apply to the price wrapper.
+	 */
+	spacingStyle?: React.CSSProperties | undefined;
 }
 
 const ProductPrice = ( {
@@ -254,6 +258,7 @@ const ProductPrice = ( {
 	regularPrice,
 	regularPriceClassName,
 	regularPriceStyle,
+	spacingStyle,
 }: ProductPriceProps ): JSX.Element => {
 	const wrapperClassName = classNames(
 		className,
@@ -317,7 +322,7 @@ const ProductPrice = ( {
 	}
 
 	return (
-		<span className={ wrapperClassName }>
+		<span className={ wrapperClassName } style={ spacingStyle }>
 			{ createInterpolateElement( format, {
 				price: priceComponent,
 			} ) }
