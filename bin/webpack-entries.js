@@ -41,6 +41,7 @@ const blocks = {
 		customDir: 'products/all-products',
 	},
 	'price-filter': {},
+	'simple-price-filter': {},
 	'attribute-filter': {},
 	'stock-filter': {},
 	'active-filters': {},

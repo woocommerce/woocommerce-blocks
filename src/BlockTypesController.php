@@ -181,6 +181,7 @@ final class BlockTypesController {
 			'ProductTag',
 			'AllProducts',
 			'PriceFilter',
+			'SimplePriceFilter',
 			'AttributeFilter',
 			'StockFilter',
 			'RatingFilter',

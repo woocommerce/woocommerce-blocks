@@ -780,6 +780,8 @@ const getInteractivityAPIConfig = ( options = {} ) => {
 	return {
 		entry: {
 			runtime: './assets/js/base/interactivity',
+			'simple-price-filter':
+				'./assets/js/blocks/simple-price-filter/view.js',
 		},
 		output: {
 			filename: 'wp-directives-[name].js',
