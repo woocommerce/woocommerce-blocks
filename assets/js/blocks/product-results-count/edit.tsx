@@ -3,7 +3,6 @@
  */
 import classNames from 'classnames';
 import { useBlockProps } from '@wordpress/block-editor';
-import { Disabled } from '@wordpress/components';
 import type { BlockEditProps } from '@wordpress/blocks';
 
 /**
@@ -24,9 +23,7 @@ const Edit = ( { attributes }: BlockEditProps< Attributes > ) => {
 	return (
 		<>
 			<div { ...blockProps }>
-				<Disabled>
-					<Block attributes={ attributes } />
-				</Disabled>
+				<Block attributes={ attributes } />
 			</div>
 		</>
 	);
