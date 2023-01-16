@@ -80,7 +80,13 @@ export const getPaymentMethodData = ( state: PaymentState ) => {
 export const getIncompatiblePaymentMethods = ( state: PaymentState ) => {
 	return Object.fromEntries(
 		Object.entries( globalPaymentMethods ).filter( ( [ k ] ) => {
-			return ! ( k in state.availablePaymentMethods );
+			return ! (
+				k in
+				{
+					...state.availablePaymentMethods,
+					...state.availableExpressPaymentMethods,
+				}
+			);
 		} )
 	);
 };
