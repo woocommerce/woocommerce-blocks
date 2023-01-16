@@ -26,19 +26,15 @@ const block = {
 };
 
 describe( `${ block.name } Block`, () => {
-	describe( 'in a post', () => {
-		beforeAll( async () => {
-			await switchUserToAdmin();
-		} );
+	it( 'can not be inserted in the Post Editor', async () => {
+		await switchUserToAdmin();
 
-		it( 'can not be inserted', async () => {
-			await createNewPost( {
-				postType: 'post',
-				title: block.name,
-			} );
-			await searchForBlock( block.name );
-			expect( page ).toMatch( 'No results found.' );
+		await createNewPost( {
+			postType: 'post',
+			title: block.name,
 		} );
+		await searchForBlock( block.name );
+		expect( page ).toMatch( 'No results found.' );
 	} );
 
 	describe( 'in FSE editor', () => {
