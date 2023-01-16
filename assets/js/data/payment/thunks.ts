@@ -3,6 +3,7 @@
  */
 import { store as noticesStore } from '@wordpress/notices';
 import deprecated from '@wordpress/deprecated';
+import type { BillingAddress, ShippingAddress } from '@woocommerce/settings';
 
 /**
  * Internal dependencies
@@ -52,7 +53,10 @@ export const __internalEmitPaymentProcessingEvent: emitProcessingEventType = (
 			EMIT_TYPES.PAYMENT_PROCESSING,
 			{}
 		).then( ( observerResponses ) => {
-			let successResponse, errorResponse, billingAddress;
+			let successResponse,
+				errorResponse,
+				billingAddress: BillingAddress | undefined,
+				shippingAddress: ShippingAddress | undefined;
 			observerResponses.forEach( ( response ) => {
 				if ( isSuccessResponse( response ) ) {
 					// the last observer response always "wins" for success.
@@ -67,9 +71,12 @@ export const __internalEmitPaymentProcessingEvent: emitProcessingEventType = (
 				const {
 					billingAddress: billingAddressFromResponse,
 					billingData: billingDataFromResponse,
+					shippingAddress: shippingAddressFromResponse,
+					shippingData: shippingDataFromResponse,
 				} = response?.meta || {};
 
 				billingAddress = billingAddressFromResponse;
+				shippingAddress = shippingAddressFromResponse;
 
 				if ( billingDataFromResponse ) {
 					// Set this here so that old extensions still using billingData can set the billingAddress.
@@ -80,6 +87,19 @@ export const __internalEmitPaymentProcessingEvent: emitProcessingEventType = (
 							version: '9.4.0',
 							alternative: 'billingAddress',
 							link: 'https://github.com/woocommerce/woocommerce-blocks/pull/6369',
+						}
+					);
+				}
+
+				if ( shippingDataFromResponse ) {
+					// Set this here so that old extensions still using shippingData can set the shippingAddress.
+					shippingAddress = shippingDataFromResponse;
+					deprecated(
+						'returning shippingData from an onPaymentProcessing observer in WooCommerce Blocks',
+						{
+							version: '9.4.0',
+							alternative: 'shippingAddress',
+							link: 'https://github.com/woocommerce/woocommerce-blocks/pull/8163',
 						}
 					);
 				}
@@ -95,12 +115,9 @@ export const __internalEmitPaymentProcessingEvent: emitProcessingEventType = (
 				if ( billingAddress ) {
 					setBillingAddress( billingAddress );
 				}
-				if (
-					typeof shippingData !== undefined &&
-					shippingData?.address
-				) {
+				if ( typeof shippingAddress !== 'undefined' ) {
 					setShippingAddress(
-						shippingData.address as Record< string, unknown >
+						shippingData as Record< string, unknown >
 					);
 				}
 				dispatch.__internalSetPaymentMethodData( paymentMethodData );
