@@ -200,7 +200,7 @@ abstract class AbstractCartRoute extends AbstractRoute {
 		 *
 		 * @param int $expiration Expiration in seconds.
 		 */
-		return time() + intval( apply_filters( 'wc_session_expiration', 60 * 60 * 48 ) );
+		return time() + intval( apply_filters( 'wc_session_expiration', DAY_IN_SECONDS * 2 ) );
 	}
 
 	/**
