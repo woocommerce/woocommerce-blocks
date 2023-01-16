@@ -47,6 +47,9 @@ class ProductAddToCartButton extends AbstractBlock {
 		);
 	}
 
+	/*
+	 * Add __woocommerceNamespace to 'core/button' block if it's parent block i.e. 'core/buttons' is a WooCommerce variation
+	 */
 	public function render_block_data( $parsed_block, $source_block, $parent_block ) {
 		if ( 'core/button' !== $source_block['blockName'] ) {
 			return $parsed_block;
