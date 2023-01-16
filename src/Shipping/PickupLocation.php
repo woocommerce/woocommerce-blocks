@@ -101,7 +101,7 @@ class PickupLocation extends WC_Shipping_Method {
 		$hide_save_button = true;
 
 		wp_enqueue_script( 'wc-shipping-method-pickup-location' );
-
+		\WC_Cache_Helper::get_transient_version( 'shipping', true );
 		echo '<h2>' . esc_html__( 'Local pickup', 'woo-gutenberg-products-block' ) . '</h2>';
 		echo '<div class="wrap"><div id="wc-shipping-method-pickup-location-settings-container"></div></div>';
 	}
