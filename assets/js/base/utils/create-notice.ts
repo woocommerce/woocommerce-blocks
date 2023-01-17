@@ -15,28 +15,19 @@ export const DEFAULT_ERROR_MESSAGE = __(
 	'woo-gutenberg-products-block'
 );
 
-export const hasStoreNoticesContainer = ( container: string ): boolean => {
-	const containers = select( 'wc/store/store-notices' ).getContainers();
-	return containers.includes( container );
+export const getNoticeContexts = () => {
+	return Object.values( noticeContexts );
 };
 
-const findParentContainer = ( container: string ): string => {
-	if ( container.includes( noticeContexts.CHECKOUT ) ) {
-		return noticeContexts.CHECKOUT;
-	}
-	if ( container.includes( noticeContexts.CART ) ) {
-		return hasStoreNoticesContainer( noticeContexts.CART )
-			? noticeContexts.CART
-			: noticeContexts.CHECKOUT;
-	}
-	return container;
+const hasStoreNoticesContainer = ( container: string ): boolean => {
+	const containers = select(
+		'wc/store/store-notices'
+	).getRegisteredContainers();
+	return containers.includes( container );
 };
 
 /**
  * Wrapper for @wordpress/notices createNotice.
- *
- * This is used to create the correct type of notice based on the provided context, and to ensure the notice container
- * exists first, otherwise it uses the default context instead.
  */
 export const createNotice = (
 	status: 'error' | 'warning' | 'info' | 'success',
@@ -51,14 +42,10 @@ export const createNotice = (
 		return;
 	}
 
-	const { createNotice: dispatchCreateNotice } = dispatch( 'core/notices' );
-
-	dispatchCreateNotice( status, message, {
+	dispatch( 'core/notices' ).createNotice( status, message, {
 		isDismissible: true,
 		...options,
-		context: hasStoreNoticesContainer( noticeContext )
-			? noticeContext
-			: findParentContainer( noticeContext ),
+		context: noticeContext,
 	} );
 };
 
@@ -82,7 +69,9 @@ export const createNoticeIfVisible = (
  * @see https://github.com/WordPress/gutenberg/pull/44059
  */
 export const removeAllNotices = () => {
-	const containers = select( 'wc/store/store-notices' ).getContainers();
+	const containers = select(
+		'wc/store/store-notices'
+	).getRegisteredContainers();
 	const { removeNotice } = dispatch( 'core/notices' );
 	const { getNotices } = select( 'core/notices' );
 

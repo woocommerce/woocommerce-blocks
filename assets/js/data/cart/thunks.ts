@@ -13,7 +13,7 @@ import { camelCase, mapKeys } from 'lodash';
  * Internal dependencies
  */
 import { notifyQuantityChanges } from './notify-quantity-changes';
-import { notifyErrors } from './notify-errors';
+import { notifyErrors, notifyCartErrors } from './notify-errors';
 import { CartDispatchFromMap, CartSelectFromMap } from './index';
 
 /**
@@ -31,16 +31,18 @@ export const receiveCart =
 		dispatch: CartDispatchFromMap;
 		select: CartSelectFromMap;
 	} ) => {
-		const cart = mapKeys( response, ( _, key ) =>
+		const newCart = mapKeys( response, ( _, key ) =>
 			camelCase( key )
 		) as unknown as Cart;
+		const oldCart = select.getCartData();
+		notifyCartErrors( newCart.errors, oldCart.errors );
 		notifyQuantityChanges( {
-			oldCart: select.getCartData(),
-			newCart: cart,
+			oldCart,
+			newCart,
 			cartItemsPendingQuantity: select.getItemsPendingQuantityUpdate(),
 			cartItemsPendingDelete: select.getItemsPendingDelete(),
 		} );
-		dispatch.setCartData( cart );
+		dispatch.setCartData( newCart );
 	};
 
 /**
