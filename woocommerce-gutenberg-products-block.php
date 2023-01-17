@@ -317,3 +317,17 @@ function wp_directives_register_scripts() {
 	wp_enqueue_script( 'wp-directives-runtime' );
 }
 add_action( 'wp_enqueue_scripts', 'wp_directives_register_scripts' );
+
+// Enqueue the WP directives runtime.
+add_filter( '__experimental_woocommerce_blocks_enqueue_directives_runtime', function () { return true; } );
+
+// Insert the required meta tag for client-side transitions.
+function add_cst_meta_tag() {
+	echo '<meta itemprop="wp-client-side-transitions" content="active">';
+	add_filter(
+		'client_side_transitions',
+		true
+	);
+}
+
+add_action('wp_head', 'add_cst_meta_tag');
