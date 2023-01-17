@@ -262,7 +262,7 @@ class BlockTemplatesCompatibility {
 		 *
 		 * @param array $data Additional hooked data. Default to empty
 		 */
-		$additional_hook_data = apply_filters( 'woocommerce_blocks_hook_compatibility_additional_hook_data', array() );
+		$additional_hook_data = apply_filters( 'woocommerce_blocks_hook_compatibility_additional_data', array() );
 
 		foreach ( $additional_hook_data as $data ) {
 			if (
