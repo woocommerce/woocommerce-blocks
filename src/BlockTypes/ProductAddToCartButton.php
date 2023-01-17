@@ -63,6 +63,18 @@ class ProductAddToCartButton extends AbstractBlock {
 
 			do_action( 'qm/debug', $block );
 
+			/**
+			 * $product->add_to_cart_text() is a method that retrieves the text
+			 * that should be displayed on the "Add to Cart" button for a specific product
+			 *
+			 * For example, if the product is a simple product and is in stock,
+			 * the text will be "Add to cart". If the product is a variable product,
+			 * the text will be "Select options". If the product is out of stock,
+			 * the text will be "Out of stock".
+			 */
+			$add_to_cart_text = $product->add_to_cart_text();
+			$link_text        = strtolower( $add_to_cart_text ) === 'add to cart' ? $this->extract_anchor_content_from( $block_content ) : $add_to_cart_text;
+
 			if ( $product ) {
 				$styles_and_classes = $this->extract_style_and_class_from_block_content( $block_content );
 				$div_class          = $styles_and_classes['div_class'];
@@ -78,7 +90,7 @@ class ProductAddToCartButton extends AbstractBlock {
 								data-product_sku="' . esc_attr( $product->get_sku() ) . '"
 								class="wp-block-button__link ' . ( $product->is_purchasable() ? 'ajax_add_to_cart add_to_cart_button' : '' ) . ' wc-block-components-product-button__button product_type_' . esc_attr( $product->get_type() ) . ' ' . $anchor_class . '"
 								style="' . $anchor_style . '">'
-									. esc_html( $this->extract_anchor_content_from( $block_content ) )
+									. esc_html( $link_text )
 							. '</a>'
 					. '</div>';
 			}
