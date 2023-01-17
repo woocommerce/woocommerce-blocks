@@ -249,6 +249,7 @@ final class BlockTypesController {
 			$block_types = array_diff(
 				$block_types,
 				[
+					'Breadcrumbs',
 					'CatalogSorting',
 					'ClassicTemplate',
 					'ProductResultsCount',
