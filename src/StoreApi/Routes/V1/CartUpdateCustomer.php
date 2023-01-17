@@ -121,7 +121,7 @@ class CartUpdateCustomer extends AbstractCartRoute {
 
 		// If the cart does not need shipping, shipping address is forced to match billing address unless defined.
 		if ( ! $cart->needs_shipping() && ! isset( $request['shipping_address'] ) ) {
-			$shipping = $request['billing_address'] ?? $this->get_customer_billing_address( $customer );
+			$shipping = $billing;
 		}
 
 		// Run validation and sanitization now that the cart and customer data is loaded.
