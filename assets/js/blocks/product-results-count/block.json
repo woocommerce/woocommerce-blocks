@@ -6,7 +6,6 @@
 	"category": "woocommerce",
 	"keywords": [ "WooCommerce" ],
 	"supports": {
-		"align": true,
 		"color": {
 			"text": true
 		},
