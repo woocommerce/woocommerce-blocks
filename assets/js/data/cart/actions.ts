@@ -225,11 +225,6 @@ export const applyCoupon =
 			dispatch.receiveCart( response );
 		} catch ( error ) {
 			dispatch.receiveError( error );
-
-			// If updated cart state was returned, also update that.
-			if ( error.data?.cart ) {
-				dispatch.receiveCart( error.data.cart );
-			}
 		}
 
 		return true;
