@@ -168,5 +168,57 @@ describe( 'wc/store/payment thunks', () => {
 				testPaymentMethodData
 			);
 		} );
+		it( 'sets payment status to error if one observer is successful, but another errors', async () => {
+			const testErrorCallbackWithMetadata = jest
+				.fn()
+				.mockImplementation( () => {
+					return {
+						type: 'error',
+					};
+				} );
+
+			const testSuccessCallback = jest.fn().mockReturnValue( {
+				type: 'success',
+			} );
+
+			currentObservers.payment_processing.set( 'test5', {
+				callback: testErrorCallbackWithMetadata,
+				priority: 10,
+			} );
+			currentObservers.payment_processing.set( 'test6', {
+				callback: testSuccessCallback,
+				priority: 9,
+			} );
+
+			const setPaymentErrorMock = jest.fn();
+			const setPaymentSuccessMock = jest.fn();
+			const registryMock = {
+				dispatch: jest
+					.fn()
+					.mockImplementation( wpDataFunctions.dispatch ),
+			};
+
+			// Await here because the function returned by the __internalEmitPaymentProcessingEvent action creator
+			// (a thunk) returns a Promise.
+			await __internalEmitPaymentProcessingEvent(
+				currentObservers,
+				jest.fn()
+			)( {
+				// eslint-disable-next-line @typescript-eslint/ban-ts-comment
+				// @ts-ignore - it would be too much work to mock the entire registry, so we only mock dispatch on it,
+				// which is all we need to test this thunk.
+				registry: registryMock,
+				dispatch: {
+					...wpDataFunctions.dispatch( PAYMENT_STORE_KEY ),
+					__internalSetPaymentError: setPaymentErrorMock,
+					__internalSetPaymentSuccess: setPaymentSuccessMock,
+				},
+			} );
+
+			// The observer throwing will cause this.
+			//expect( console ).toHaveErroredWith( new Error( 'test error' ) );
+			expect( setPaymentErrorMock ).toHaveBeenCalled();
+			expect( setPaymentSuccessMock ).not.toHaveBeenCalled();
+		} );
 	} );
 } );
