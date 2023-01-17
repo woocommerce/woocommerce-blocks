@@ -10,20 +10,18 @@ export interface Attributes {
 
 const Edit = () => {
 	const blockProps = useBlockProps( {
-		className: 'wc-block-product-results-count',
+		className: 'woocommerce wc-block-product-results-count',
 	} );
 
 	return (
-		<>
-			<div { ...blockProps }>
-				<div>
-					{ __(
-						'Showing 1-X of X results',
-						'woo-gutenberg-products-block'
-					) }
-				</div>
-			</div>
-		</>
+		<div { ...blockProps }>
+			<p className="woocommerce-result-count">
+				{ __(
+					'Showing 1-X of X results',
+					'woo-gutenberg-products-block'
+				) }
+			</p>
+		</div>
 	);
 };
 
