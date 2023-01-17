@@ -120,5 +120,53 @@ describe( 'wc/store/payment thunks', () => {
 				testPaymentMethodData
 			);
 		} );
+		it( 'sets metadata if failed observers return it', async () => {
+			const testFailingCallbackWithMetadata = jest.fn().mockReturnValue( {
+				type: 'failure',
+				meta: {
+					billingAddress: testBillingAddress,
+					paymentMethodData: testPaymentMethodData,
+				},
+			} );
+
+			currentObservers.payment_processing.set( 'test4', {
+				callback: testFailingCallbackWithMetadata,
+				priority: 10,
+			} );
+
+			const setBillingAddressMock = jest.fn();
+			const setPaymentMethodDataMock = jest.fn();
+			const registryMock = {
+				dispatch: jest.fn().mockImplementation( ( store: string ) => {
+					return {
+						...wpDataFunctions.dispatch( store ),
+						setBillingAddress: setBillingAddressMock,
+					};
+				} ),
+			};
+
+			// Await here because the function returned by the __internalEmitPaymentProcessingEvent action creator
+			// (a thunk) returns a Promise.
+			await __internalEmitPaymentProcessingEvent(
+				currentObservers,
+				jest.fn()
+			)( {
+				// eslint-disable-next-line @typescript-eslint/ban-ts-comment
+				// @ts-ignore - it would be too much work to mock the entire registry, so we only mock dispatch on it,
+				// which is all we need to test this thunk.
+				registry: registryMock,
+				dispatch: {
+					...wpDataFunctions.dispatch( PAYMENT_STORE_KEY ),
+					__internalSetPaymentMethodData: setPaymentMethodDataMock,
+				},
+			} );
+
+			expect( setBillingAddressMock ).toHaveBeenCalledWith(
+				testBillingAddress
+			);
+			expect( setPaymentMethodDataMock ).toHaveBeenCalledWith(
+				testPaymentMethodData
+			);
+		} );
 	} );
 } );
