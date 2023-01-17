@@ -9,6 +9,31 @@ import { EventObserversType } from '@woocommerce/base-context';
  */
 import { PAYMENT_STORE_KEY } from '../index';
 import { __internalEmitPaymentProcessingEvent } from '../thunks';
+
+/**
+ * If an observer returns billingAddress, shippingAddress, or paymentData, then the values of these
+ * should be updated in the data stores.
+ */
+const testShippingAddress = {
+	first_name: 'test',
+	last_name: 'test',
+	company: 'test',
+	address_1: 'test',
+	address_2: 'test',
+	city: 'test',
+	state: 'test',
+	postcode: 'test',
+	country: 'test',
+	phone: 'test',
+};
+const testBillingAddress = {
+	...testShippingAddress,
+	email: 'test@test.com',
+};
+const testPaymentMethodData = {
+	payment_method: 'test',
+};
+
 describe( 'wc/store/payment thunks', () => {
 	const testPaymentProcessingCallback = jest.fn();
 	const testPaymentProcessingCallback2 = jest.fn();
@@ -41,31 +66,8 @@ describe( 'wc/store/payment thunks', () => {
 			expect( testPaymentProcessingCallback2 ).toHaveBeenCalled();
 		} );
 
-		it( 'sets metadata if an observer returns it', async () => {
-			/**
-			 * If an observer returns billingAddress, shippingAddress, or paymentData, then the values of these
-			 * should be updated in the data stores.
-			 */
-			const testShippingAddress = {
-				first_name: 'test',
-				last_name: 'test',
-				company: 'test',
-				address_1: 'test',
-				address_2: 'test',
-				city: 'test',
-				state: 'test',
-				postcode: 'test',
-				country: 'test',
-				phone: 'test',
-			};
-			const testBillingAddress = {
-				...testShippingAddress,
-				email: 'test@test.com',
-			};
-			const testPaymentMethodData = {
-				payment_method: 'test',
-			};
-			const testCallbackWithMetadata = jest.fn().mockReturnValue( {
+		it( 'sets metadata if successful observers return it', async () => {
+			const testSuccessCallbackWithMetadata = jest.fn().mockReturnValue( {
 				type: 'success',
 				meta: {
 					billingAddress: testBillingAddress,
