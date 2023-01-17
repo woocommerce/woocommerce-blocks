@@ -37,7 +37,7 @@ class StoreNotices extends AbstractBlock {
 		$classname = isset( $attributes['className'] ) ? $attributes['className'] : '';
 
 		return sprintf(
-			'<div class="woocommerce wc-block-store-notices %s">%s</div>',
+			'<div class="woocommerce wc-block-store-notices %1$s">%2$s</div>',
 			esc_attr( $classname ),
 			wc_kses_notice( $notices )
 		);
