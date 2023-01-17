@@ -90,8 +90,6 @@ describe( 'wc/store/payment thunks', () => {
 						...wpDataFunctions.dispatch( store ),
 						setBillingAddress: setBillingAddressMock,
 						setShippingAddress: setShippingAddressMock,
-						__internalSetPaymentMethodData:
-							setPaymentMethodDataMock,
 					};
 				} ),
 			};
@@ -106,15 +104,18 @@ describe( 'wc/store/payment thunks', () => {
 				// @ts-ignore - it would be too much work to mock the entire registry, so we only mock dispatch on it,
 				// which is all we need to test this thunk.
 				registry: registryMock,
-				dispatch: wpDataFunctions.dispatch( PAYMENT_STORE_KEY ),
+				dispatch: {
+					...wpDataFunctions.dispatch( PAYMENT_STORE_KEY ),
+					__internalSetPaymentMethodData: setPaymentMethodDataMock,
+				},
 			} );
 
 			expect( setBillingAddressMock ).toHaveBeenCalledWith(
 				testBillingAddress
 			);
-			// expect( setShippingAddressMock ).toHaveBeenCalledWith(
-			// 	testShippingAddress
-			// );
+			expect( setShippingAddressMock ).toHaveBeenCalledWith(
+				testShippingAddress
+			);
 			expect( setPaymentMethodDataMock ).toHaveBeenCalledWith(
 				testPaymentMethodData
 			);
