@@ -10,12 +10,24 @@ namespace Automattic\WooCommerce\Blocks\Templates;
  */
 class BlockTemplatesCompatibility {
 
+	/**
+	 * The custom ID of the loop item block as the replacement of the core/null block.
+	 */
 	const LOOP_ITEM_ID = 'product-loop-item';
+
+	/**
+	 * The data of supported hooks, containing the hook name, the block name,
+	 * position, and the callbacks.
+	 *
+	 * @var array $hook_data The hook data.
+	 */
+	protected $hook_data;
 
 	/**
 	 * Constructor.
 	 */
 	public function __construct() {
+		$this->set_hook_data();
 		$this->init();
 	}
 
@@ -93,13 +105,11 @@ class BlockTemplatesCompatibility {
 			$block_name = self::LOOP_ITEM_ID;
 		}
 
-		$hook_data = $this->get_hook_data();
-
 		$supported_blocks = array_map(
 			function( $hook ) {
 				return $hook['block_name'];
 			},
-			array_values( $hook_data )
+			array_values( $this->hook_data )
 		);
 
 		if ( ! in_array( $block_name, $supported_blocks, true ) ) {
@@ -119,7 +129,7 @@ class BlockTemplatesCompatibility {
 		}
 
 		$block_hooks = array_filter(
-			$hook_data,
+			$this->hook_data,
 			function( $hook ) use ( $block_name ) {
 				return $hook['block_name'] === $block_name;
 			}
@@ -155,11 +165,9 @@ class BlockTemplatesCompatibility {
 	 * - hooked is an array of functions hooked to the hook that will be
 	 *   replaced. The key is the function name and the value is the
 	 *   priority.
-	 *
-	 * @return array Hook data.
 	 */
-	protected function get_hook_data() {
-		$hook_data = array(
+	protected function set_hook_data() {
+		$this->hook_data = array(
 			'woocommerce_before_main_content'         => array(
 				'block_name' => 'core/query',
 				'position'   => 'before',
@@ -237,6 +245,29 @@ class BlockTemplatesCompatibility {
 				),
 			),
 		);
+	}
+
+	/**
+	 * Check if current page is a product archive template.
+	 */
+	protected function is_archive_template() {
+		return is_shop() || is_product_taxonomy();
+	}
+
+	/**
+	 * Remove the default callback added by WooCommerce. We replaced these
+	 * callbacks by blocks so we have to remove them to prevent duplicated
+	 * content.
+	 */
+	protected function remove_default_hooks() {
+		foreach ( $this->hook_data as $hook => $data ) {
+			if ( ! isset( $data['hooked'] ) ) {
+				continue;
+			}
+			foreach ( $data['hooked'] as $callback => $priority ) {
+				remove_action( $hook, $callback, $priority );
+			}
+		}
 
 		/**
 		 * When extentions implement their equivalent blocks of the template
@@ -264,42 +295,15 @@ class BlockTemplatesCompatibility {
 		 */
 		$additional_hook_data = apply_filters( 'woocommerce_blocks_hook_compatibility_additional_data', array() );
 
-		foreach ( $additional_hook_data as $data ) {
-			if (
-				! is_string( $data['hook'] ) ||
-				! is_int( $data['priority'] ) ||
-				! in_array( $data['hook'], array_keys( $hook_data ), true ) ||
-				isset( $hook_data[ $data['hook'] ]['hooked'][ $data['function'] ] )
-			) {
-				continue;
-			}
-
-			$hook_data[ $data['hook'] ]['hooked'][ $data['function'] ] = $data['priority'];
+		if ( empty( $additional_hook_data ) ) {
+			return;
 		}
 
-		return $hook_data;
-	}
-
-	/**
-	 * Check if current page is a product archive template.
-	 */
-	protected function is_archive_template() {
-		return is_shop() || is_product_taxonomy();
-	}
-
-	/**
-	 * Remove the default callback added by WooCommerce. We replaced these
-	 * callbacks by blocks so we have to remove them to prevent duplicated
-	 * content.
-	 */
-	protected function remove_default_hooks() {
-		foreach ( $this->get_hook_data() as $hook => $data ) {
-			if ( ! isset( $data['hooked'] ) ) {
+		foreach ( $additional_hook_data as $data ) {
+			if ( ! isset( $data['hook'], $data['function'], $data['priority'] ) ) {
 				continue;
 			}
-			foreach ( $data['hooked'] as $callback => $priority ) {
-				remove_action( $hook, $callback, $priority );
-			}
+			remove_action( $data['hook'], $data['function'], $data['priority'] );
 		}
 	}
 
