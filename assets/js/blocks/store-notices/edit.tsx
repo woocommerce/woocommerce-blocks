@@ -3,17 +3,16 @@
  */
 import { useBlockProps } from '@wordpress/block-editor';
 import { __ } from '@wordpress/i18n';
+import { Notice } from '@wordpress/components';
 
 const StoreNotices = () => {
 	return (
-		<div className="woocommerce-notices-wrapper">
-			<div className="woocommerce-info">
-				{ __(
-					'This is an example notice. Notices added by WooCommerce or extensions will show up here.',
-					'woo-gutenberg-products-block'
-				) }
-			</div>
-		</div>
+		<Notice status="warning" isDismissible={ false }>
+			{ __(
+				'Notices added by WooCommerce or extensions will show up here.',
+				'woo-gutenberg-products-block'
+			) }
+		</Notice>
 	);
 };
 
