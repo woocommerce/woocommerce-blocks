@@ -77,7 +77,7 @@ describe( 'wc/store/payment thunks', () => {
 			} );
 
 			currentObservers.payment_processing.set( 'test3', {
-				callback: testCallbackWithMetadata,
+				callback: testSuccessCallbackWithMetadata,
 				priority: 10,
 			} );
 
