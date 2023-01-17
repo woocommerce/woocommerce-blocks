@@ -1,7 +1,7 @@
 /**
  * Internal dependencies
  */
-import { CurrencyResponse } from './currency';
+import type { CurrencyResponse } from './currency';
 
 export interface ProductResponseItemPrices extends CurrencyResponse {
 	price: string;
@@ -31,6 +31,7 @@ export interface ProductResponseImageItem {
 }
 
 export interface ProductResponseTermItem {
+	default?: boolean;
 	id: number;
 	name: string;
 	slug: string;
