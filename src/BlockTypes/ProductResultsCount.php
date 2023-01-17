@@ -40,7 +40,13 @@ class ProductResultsCount extends AbstractBlock {
 		$product_results_count = ob_get_clean();
 
 		$classes_and_styles = StyleAttributesUtils::get_classes_and_styles_by_attributes( $attributes );
+		$classname          = isset( $attributes['className'] ) ? $attributes['className'] : '';
 
-		return "<div class='woocommerce wc-block-product-results-count " . esc_attr( $classes_and_styles['classes'] ) . "' style='" . esc_attr( $classes_and_styles['styles'] ) . "'>" . $product_results_count . '</div>';
+		return sprintf(
+			'<div class="woocommerce wc-block-product-results-count %s %s">%s</div>',
+			esc_attr( $classes_and_styles['classes'] ),
+			$classname,
+			$product_results_count
+		);
 	}
 }
