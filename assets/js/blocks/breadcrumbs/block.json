@@ -1,5 +1,5 @@
 {
-	"name": "woocommerce/store-breadcrumbs",
+	"name": "woocommerce/breadcrumbs",
 	"version": "1.0.0",
 	"title": "Store Breadcrumbs",
 	"description": "Enable customers to keep track of their locations within the store and navigate back to parent pages.",
@@ -11,24 +11,9 @@
 		"contentJustification": {
 			"type": "string"
 		},
-		"separator": {
+		"fontSize": {
 			"type": "string",
-			"default": "/"
-		},
-		"showCurrentPageTitle": {
-			"type": "boolean",
-			"default": false
-		},
-		"showLeadingSeparator": {
-			"type": "boolean",
-			"default": false
-		},
-		"showSiteTitle": {
-			"type": "boolean",
-			"default": true
-		},
-		"siteTitleOverride": {
-			"type": "string"
+			"default": "small"
 		}
 	},
 	"supports": {

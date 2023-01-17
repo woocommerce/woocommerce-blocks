@@ -14,7 +14,7 @@ class Breadcrumbs extends AbstractBlock {
 	 *
 	 * @var string
 	 */
-	protected $block_name = 'store-breadcrumbs';
+	protected $block_name = 'breadcrumbs';
 
 	/**
 	 * Render the block.
@@ -27,17 +27,17 @@ class Breadcrumbs extends AbstractBlock {
 	 */
 	protected function render( $attributes, $content, $block ) {
 		ob_start();
-		woocommerce_catalog_ordering();
-		$catalog_sorting = ob_get_clean();
+		woocommerce_breadcrumb();
+		$breadcrumb = ob_get_clean();
 
-		if ( ! $catalog_sorting ) {
+		if ( ! $breadcrumb ) {
 			return;
 		}
 
-		$classname          = isset( $attributes['className'] ) ? $attributes['className'] : '';
+		$classname          = $attributes['className'] ?? '';
 		$classes_and_styles = StyleAttributesUtils::get_classes_and_styles_by_attributes( $attributes );
 
-		return "<div class='wc-block-catalog-sorting " . esc_attr( $classes_and_styles['classes'] ) . ' ' . esc_attr( $classname ) . "' style='" . esc_attr( $classes_and_styles['styles'] ) . "'>" . $catalog_sorting . '</div>';
+		return "<div class='wc-block-breadcrumbs " . esc_attr( $classes_and_styles['classes'] ) . ' ' . esc_attr( $classname ) . "' style='" . esc_attr( $classes_and_styles['styles'] ) . "'>" . $breadcrumb . '</div>';
 	}
 
 	/**
