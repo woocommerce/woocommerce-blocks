@@ -34,15 +34,21 @@ class StoreNotices extends AbstractBlock {
 			return;
 		}
 
-		$classname          = isset( $attributes['className'] ) ? $attributes['className'] : '';
-		$classes_and_styles = StyleAttributesUtils::get_classes_and_styles_by_attributes( $attributes );
+		$classname = isset( $attributes['className'] ) ? $attributes['className'] : '';
 
 		return sprintf(
-			'<div class="woocommerce wc-block-store-notices %s %s" style="%s">%s</div>',
-			esc_attr( $classes_and_styles['classes'] ),
+			'<div class="woocommerce wc-block-store-notices %s">%s</div>',
 			esc_attr( $classname ),
-			esc_attr( $classes_and_styles['styles'] ),
 			wc_kses_notice( $notices )
 		);
+	}
+
+	/**
+	 * Get the frontend script handle for this block type.
+	 *
+	 * @param string $key Data to get, or default to everything.
+	 */
+	protected function get_block_type_script( $key = null ) {
+		return null;
 	}
 }
