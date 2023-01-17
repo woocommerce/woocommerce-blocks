@@ -222,10 +222,6 @@ class BlockTemplatesCompatibility {
 	 * content.
 	 */
 	protected function remove_default_hooks() {
-		if ( ! $this->is_archive_template() ) {
-			return;
-		}
-
 		$hooks = array_merge( ...array_values( $this->get_hook_data() ) );
 		foreach ( $hooks as $hook => $data ) {
 			if ( ! isset( $data['hooked'] ) ) {
