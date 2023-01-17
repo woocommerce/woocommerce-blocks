@@ -7,7 +7,8 @@
 	"keywords": [ "WooCommerce" ],
 	"supports": {
 		"color": {
-			"text": true
+			"text": true,
+			"background": false
 		},
 		"typography": {
 			"fontSize": true,
