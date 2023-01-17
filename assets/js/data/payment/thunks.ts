@@ -52,7 +52,7 @@ export const __internalEmitPaymentProcessingEvent: emitProcessingEventType = (
 		const { createErrorNotice, removeNotice } =
 			registry.dispatch( 'core/notices' );
 		removeNotice( 'wc-payment-error', noticeContexts.PAYMENTS );
-		emitEventWithAbort(
+		return emitEventWithAbort(
 			currentObserver,
 			EMIT_TYPES.PAYMENT_PROCESSING,
 			{}
