@@ -1,0 +1,59 @@
+{
+	"name": "woocommerce/store-breadcrumbs",
+	"version": "1.0.0",
+	"title": "Store Breadcrumbs",
+	"description": "Enable customers to keep track of their locations within the store and navigate back to parent pages.",
+	"category": "woocommerce",
+	"keywords": [ "WooCommerce" ],
+	"textdomain": "woo-gutenberg-products-block",
+	"usesContext": [ "postId", "postType" ],
+	"attributes": {
+		"contentJustification": {
+			"type": "string"
+		},
+		"separator": {
+			"type": "string",
+			"default": "/"
+		},
+		"showCurrentPageTitle": {
+			"type": "boolean",
+			"default": false
+		},
+		"showLeadingSeparator": {
+			"type": "boolean",
+			"default": false
+		},
+		"showSiteTitle": {
+			"type": "boolean",
+			"default": true
+		},
+		"siteTitleOverride": {
+			"type": "string"
+		}
+	},
+	"supports": {
+		"align": [ "wide", "full" ],
+		"color": {
+			"background": false,
+			"link": true,
+			"__experimentalDefaultControls": {
+				"text": true,
+				"link": true
+			}
+		},
+		"html": false,
+		"typography": {
+			"fontSize": true,
+			"lineHeight": true,
+			"__experimentalFontFamily": true,
+			"__experimentalFontStyle": true,
+			"__experimentalFontWeight": true,
+			"__experimentalTextTransform": true,
+			"__experimentalDefaultControls": {
+				"fontSize": true
+			}
+		}
+	},
+	"apiVersion": 2,
+	"$schema": "https://schemas.wp.org/trunk/block.json"
+}
