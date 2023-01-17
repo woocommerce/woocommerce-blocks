@@ -88,7 +88,7 @@ export const __internalEmitPaymentProcessingEvent: emitProcessingEventType = (
 					deprecated(
 						'returning billingData from an onPaymentProcessing observer in WooCommerce Blocks',
 						{
-							version: '9.4.0',
+							version: '9.5.0',
 							alternative: 'billingAddress',
 							link: 'https://github.com/woocommerce/woocommerce-blocks/pull/6369',
 						}
@@ -101,7 +101,7 @@ export const __internalEmitPaymentProcessingEvent: emitProcessingEventType = (
 					deprecated(
 						'returning shippingData from an onPaymentProcessing observer in WooCommerce Blocks',
 						{
-							version: '9.4.0',
+							version: '9.5.0',
 							alternative: 'shippingAddress',
 							link: 'https://github.com/woocommerce/woocommerce-blocks/pull/8163',
 						}
