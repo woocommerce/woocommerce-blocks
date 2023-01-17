@@ -15,8 +15,6 @@ class Breadcrumbs extends AbstractBlock {
 	 * @var string
 	 */
 	protected $block_name = 'store-breadcrumbs';
-	//Notice: Undefined index: enabled in /Users/patriciahillebrandt/Woo/plugins/woocommerce-blocks/src/BlockTypes/Checkout.php on line 258
-
 
 	/**
 	 * Render the block.
