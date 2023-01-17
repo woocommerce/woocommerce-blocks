@@ -204,6 +204,7 @@ final class BlockTypesController {
 			'RatingFilter',
 			'ReviewsByCategory',
 			'ReviewsByProduct',
+			'SingleProductDetails',
 			'StockFilter',
 		];
 
