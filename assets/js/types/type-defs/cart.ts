@@ -1,7 +1,7 @@
 /**
  * External dependencies
  */
-import { CurrencyCode } from '@woocommerce/type-defs/currency';
+import type { CurrencyCode } from '@woocommerce/types';
 
 /**
  * Internal dependencies
@@ -67,7 +67,7 @@ export interface CartShippingPackageShippingRate extends CurrencyInfo {
 }
 
 export interface CartShippingRate {
-	package_id: number;
+	package_id: string | number;
 	name: string;
 	destination: BaseAddress;
 	items: Array< ShippingRateItem >;

@@ -5,7 +5,7 @@ import classnames from 'classnames';
 import { useBlockProps } from '@wordpress/block-editor';
 import { useCheckoutAddress } from '@woocommerce/base-context/hooks';
 import { innerBlockAreas } from '@woocommerce/blocks-checkout';
-import { BlockAttributes } from '@wordpress/blocks';
+import type { BlockAttributes } from '@wordpress/blocks';
 /**
  * Internal dependencies
  */
@@ -45,9 +45,10 @@ export const Edit = ( {
 	} = useCheckoutBlockContext();
 	const { addressFieldControls: Controls } =
 		useCheckoutBlockControlsContext();
-	const { showBillingFields, forcedBillingAddress } = useCheckoutAddress();
+	const { showBillingFields, forcedBillingAddress, useBillingAsShipping } =
+		useCheckoutAddress();
 
-	if ( ! showBillingFields && ! forcedBillingAddress ) {
+	if ( ! showBillingFields && ! useBillingAsShipping ) {
 		return null;
 	}
 	attributes.title = getBillingAddresssBlockTitle(

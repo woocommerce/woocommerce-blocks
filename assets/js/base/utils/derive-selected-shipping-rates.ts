@@ -1,7 +1,7 @@
 /**
  * External dependencies
  */
-import { CartShippingRate } from '@woocommerce/type-defs/cart';
+import { CartShippingRate } from '@woocommerce/types';
 
 /**
  * Get an array of selected shipping rates keyed by Package ID.
@@ -11,12 +11,12 @@ import { CartShippingRate } from '@woocommerce/type-defs/cart';
  */
 export const deriveSelectedShippingRates = (
 	shippingRates: CartShippingRate[]
-): Record< string, string | unknown > =>
+): Record< string, string > =>
 	Object.fromEntries(
 		shippingRates.map(
 			( { package_id: packageId, shipping_rates: packageRates } ) => [
 				packageId,
-				packageRates.find( ( rate ) => rate.selected )?.rate_id,
+				packageRates.find( ( rate ) => rate.selected )?.rate_id || '',
 			]
 		)
 	);

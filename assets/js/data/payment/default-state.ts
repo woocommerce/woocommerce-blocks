@@ -6,7 +6,7 @@ import { getSetting } from '@woocommerce/settings';
 import {
 	PlainPaymentMethods,
 	PlainExpressPaymentMethods,
-} from '@woocommerce/type-defs/payments';
+} from '@woocommerce/types';
 
 /**
  * Internal dependencies
@@ -30,6 +30,7 @@ export interface PaymentState {
 	expressPaymentMethodsInitialized: boolean;
 	shouldSavePaymentMethod: boolean;
 }
+
 export const defaultPaymentState: PaymentState = {
 	status: PAYMENT_STATUS.PRISTINE,
 	activePaymentMethod: '',

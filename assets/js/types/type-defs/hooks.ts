@@ -1,7 +1,7 @@
 /**
  * External dependencies
  */
-import { ProductResponseItem } from '@woocommerce/type-defs/product-response';
+import type { ProductResponseItem } from '@woocommerce/types';
 
 /**
  * Internal dependencies
