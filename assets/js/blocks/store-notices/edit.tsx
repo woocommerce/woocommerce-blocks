@@ -12,7 +12,7 @@ const Edit = (): JSX.Element => {
 
 	return (
 		<div { ...blockProps }>
-			<Notice status="warning" isDismissible={ false }>
+			<Notice status="info" isDismissible={ false }>
 				{ __(
 					'Notices added by WooCommerce or extensions will show up here.',
 					'woo-gutenberg-products-block'
