@@ -47,6 +47,11 @@ wpx( {
 				state.filters.maxPrice = value;
 				navigate( getHrefWithFilters( { state } ) );
 			},
+			reset: ( { state } ) => {
+				state.filters.minPrice = 0;
+				state.filters.maxPrice = Infinity;
+				navigate( getHrefWithFilters( { state } ) );
+			},
 		},
 	},
 } );
