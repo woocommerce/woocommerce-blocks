@@ -17,7 +17,7 @@ const CatalogSorting = () => {
 
 const Edit = () => {
 	const blockProps = useBlockProps( {
-		className: 'wc-block-catalog-sorting',
+		className: 'woocommerce wc-block-catalog-sorting',
 	} );
 
 	return (
