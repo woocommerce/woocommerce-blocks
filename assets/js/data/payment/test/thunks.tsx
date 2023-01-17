@@ -90,6 +90,8 @@ describe( 'wc/store/payment thunks', () => {
 						...wpDataFunctions.dispatch( store ),
 						setBillingAddress: setBillingAddressMock,
 						setShippingAddress: setShippingAddressMock,
+						__internalSetPaymentMethodData:
+							setPaymentMethodDataMock,
 					};
 				} ),
 			};
