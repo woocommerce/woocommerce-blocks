@@ -13,90 +13,6 @@ class BlockTemplatesCompatibility {
 	const LOOP_ITEM_ID = 'product-loop-item';
 
 	/**
-	 * Hoding the supported hooks, their positions and the hooked functions.
-	 *
-	 * @var array $hook_data
-	 */
-	protected $hook_data = array(
-		'core/query'            => array(
-			'woocommerce_before_main_content' => array(
-				'position' => 'before',
-				'hooked'   => array(
-					'woocommerce_output_content_wrapper' => 10,
-					'woocommerce_breadcrumb'             => 20,
-				),
-			),
-			'woocommerce_after_main_content'  => array(
-				'position' => 'after',
-				'hooked'   => array(
-					'woocommerce_output_content_wrapper_end' => 10,
-				),
-			),
-		),
-		'core/post-title'       => array(
-			'woocommerce_before_shop_loop_item_title' => array(
-				'position' => 'before',
-				'hooked'   => array(
-					'woocommerce_show_product_loop_sale_flash' => 10,
-					'woocommerce_template_loop_product_thumbnail' => 10,
-				),
-			),
-			'woocommerce_shop_loop_item_title'        => array(
-				'position' => 'after',
-				'hooked'   => array(
-					'woocommerce_template_loop_product_title' => 10,
-				),
-			),
-			'woocommerce_after_shop_loop_item_title'  => array(
-				'position' => 'after',
-				'hooked'   => array(
-					'woocommerce_template_loop_rating' => 5,
-					'woocommerce_template_loop_price'  => 10,
-				),
-			),
-		),
-		self::LOOP_ITEM_ID      => array(
-			'woocommerce_before_shop_loop_item' => array(
-				'position' => 'before',
-				'hooked'   => array(
-					'woocommerce_template_loop_product_link_open' => 10,
-				),
-			),
-			'woocommerce_after_shop_loop_item'  => array(
-				'position' => 'after',
-				'hooked'   => array(
-					'woocommerce_template_loop_product_link_close' => 5,
-					'woocommerce_template_loop_add_to_cart' => 10,
-				),
-			),
-		),
-		'core/post-template'    => array(
-			'woocommerce_before_shop_loop' => array(
-				'position' => 'before',
-				'hooked'   => array(
-					'woocommerce_output_all_notices' => 10,
-					'woocommerce_result_count'       => 20,
-					'woocommerce_catalog_ordering'   => 30,
-				),
-			),
-			'woocommerce_after_shop_loop'  => array(
-				'position' => 'after',
-				'hooked'   => array(
-					'woocommerce_pagination' => 10,
-				),
-			),
-		),
-		'core/query-no-results' => array(
-			'woocommerce_no_products_found' => array(
-				'position' => 'before',
-				'hooked'   => array(
-					'wc_no_products_found' => 10,
-				),
-			),
-		),
-	);
-
-	/**
 	 * Constructor.
 	 */
 	public function __construct() {
@@ -113,35 +29,6 @@ class BlockTemplatesCompatibility {
 
 		add_filter( 'render_block_data', array( $this, 'update_render_block_data' ), 10, 3 );
 		add_filter( 'render_block', array( $this, 'inject_hooks' ), 10, 2 );
-		add_action( 'template_redirect', array( $this, 'remove_default_hooks' ) );
-	}
-
-	/**
-	 * Check if current page is a product archive template.
-	 */
-	protected function is_archive_template() {
-		return is_shop() || is_product_taxonomy();
-	}
-
-	/**
-	 * Remove the default callback added by WooCommerce. We replaced these
-	 * callbacks by blocks so we have to remove them to prevent duplicated
-	 * content.
-	 */
-	public function remove_default_hooks() {
-		if ( ! $this->is_archive_template() ) {
-			return;
-		}
-
-		$hooks = array_merge( ...array_values( $this->hook_data ) );
-		foreach ( $hooks as $hook => $data ) {
-			if ( ! isset( $data['hooked'] ) ) {
-				continue;
-			}
-			foreach ( $data['hooked'] as $callback => $priority ) {
-				remove_action( $hook, $callback, $priority );
-			}
-		}
 	}
 
 	/**
@@ -206,11 +93,20 @@ class BlockTemplatesCompatibility {
 			$block_name = self::LOOP_ITEM_ID;
 		}
 
-		if ( ! in_array( $block_name, array_keys( $this->hook_data ), true ) ) {
+		$hook_data = $this->get_hook_data();
+
+		if ( ! in_array( $block_name, array_keys( $hook_data ), true ) ) {
 			return $block_content;
 		}
 
-		$hooks = $this->hook_data[ $block_name ];
+		/**
+		 * If the block is empty, we don't need to inject hooks.
+		 */
+		if ( empty( $block_content ) ) {
+			return $block_content;
+		}
+
+		$hooks = $hook_data[ $block_name ];
 
 		return sprintf(
 			'%1$s%2$s%3$s',
@@ -218,6 +114,127 @@ class BlockTemplatesCompatibility {
 			$block_content,
 			$this->get_hooks_buffer( $hooks, 'after' )
 		);
+	}
+
+	/**
+	 * Hoding the supported hooks, their positions and the hooked functions.
+	 *
+	 * @return array Hook data.
+	 */
+	protected function get_hook_data() {
+		$hook_data = array(
+			'core/query'            => array(
+				'woocommerce_before_main_content' => array(
+					'position' => 'before',
+					'hooked'   => array(
+						'woocommerce_output_content_wrapper' => 10,
+						'woocommerce_breadcrumb' => 20,
+					),
+				),
+				'woocommerce_after_main_content'  => array(
+					'position' => 'after',
+					'hooked'   => array(
+						'woocommerce_output_content_wrapper_end' => 10,
+					),
+				),
+			),
+			'core/post-title'       => array(
+				'woocommerce_before_shop_loop_item_title' => array(
+					'position' => 'before',
+					'hooked'   => array(
+						'woocommerce_show_product_loop_sale_flash' => 10,
+						'woocommerce_template_loop_product_thumbnail' => 10,
+					),
+				),
+				'woocommerce_shop_loop_item_title'        => array(
+					'position' => 'after',
+					'hooked'   => array(
+						'woocommerce_template_loop_product_title' => 10,
+					),
+				),
+				'woocommerce_after_shop_loop_item_title'  => array(
+					'position' => 'before',
+					'hooked'   => array(
+						'woocommerce_template_loop_rating' => 5,
+						'woocommerce_template_loop_price'  => 10,
+					),
+				),
+			),
+			self::LOOP_ITEM_ID      => array(
+				'woocommerce_before_shop_loop_item' => array(
+					'position' => 'before',
+					'hooked'   => array(
+						'woocommerce_template_loop_product_link_open' => 10,
+					),
+				),
+				'woocommerce_after_shop_loop_item'  => array(
+					'position' => 'after',
+					'hooked'   => array(
+						'woocommerce_template_loop_product_link_close' => 5,
+						'woocommerce_template_loop_add_to_cart' => 10,
+					),
+				),
+			),
+			'core/post-template'    => array(
+				'woocommerce_before_shop_loop' => array(
+					'position' => 'before',
+					'hooked'   => array(
+						'woocommerce_output_all_notices' => 10,
+						'woocommerce_result_count'       => 20,
+						'woocommerce_catalog_ordering'   => 30,
+					),
+				),
+				'woocommerce_after_shop_loop'  => array(
+					'position' => 'after',
+					'hooked'   => array(
+						'woocommerce_pagination' => 10,
+					),
+				),
+			),
+			'core/query-no-results' => array(
+				'woocommerce_no_products_found' => array(
+					'position' => 'before',
+					'hooked'   => array(
+						'wc_no_products_found' => 10,
+					),
+				),
+			),
+		);
+
+		/**
+		 * Filter the hook data used to replace the default WooCommerce hooks.
+		 *
+		 * @param array $hook_data Hook data.
+		 */
+		return apply_filters( 'woocommerce_blocks_hooks_compatibility_data', $hook_data );
+	}
+
+	/**
+	 * Check if current page is a product archive template.
+	 */
+	protected function is_archive_template() {
+		return is_shop() || is_product_taxonomy();
+	}
+
+	/**
+	 * Remove the default callback added by WooCommerce. We replaced these
+	 * callbacks by blocks so we have to remove them to prevent duplicated
+	 * content.
+	 */
+	protected function remove_default_hooks() {
+		if ( ! $this->is_archive_template() ) {
+			return;
+		}
+
+		$hooks = array_merge( ...array_values( $this->get_hook_data() ) );
+		foreach ( $hooks as $hook => $data ) {
+			if ( ! isset( $data['hooked'] ) ) {
+				continue;
+			}
+			foreach ( $data['hooked'] as $callback => $priority ) {
+				remove_action( $hook, $callback, $priority );
+			}
+		}
 	}
 
 	/**
@@ -252,8 +269,8 @@ class BlockTemplatesCompatibility {
 			isset( $block['attrs']['query']['inherit'] ) &&
 			$block['attrs']['query']['inherit']
 		) {
-			$block['attrs']['isInherited'] = 1;
-			array_walk( $block['innerBlocks'], array( $this, 'inject_attribute' ) );
+			$this->inject_attribute( $block );
+			$this->remove_default_hooks();
 		}
 
 		if ( ! empty( $block['innerBlocks'] ) ) {
