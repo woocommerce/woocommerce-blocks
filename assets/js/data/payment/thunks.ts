@@ -113,8 +113,7 @@ export const __internalEmitPaymentProcessingEvent: emitProcessingEventType = (
 				registry.dispatch( CART_STORE_KEY );
 
 			if ( successResponse && ! errorResponse ) {
-				const { paymentMethodData, shippingData } =
-					successResponse?.meta || {};
+				const { paymentMethodData } = successResponse?.meta || {};
 
 				if ( billingAddress && isBillingAddress( billingAddress ) ) {
 					setBillingAddress( billingAddress );
@@ -123,9 +122,7 @@ export const __internalEmitPaymentProcessingEvent: emitProcessingEventType = (
 					typeof shippingAddress !== 'undefined' &&
 					isShippingAddress( shippingAddress )
 				) {
-					setShippingAddress(
-						shippingData as Record< string, unknown >
-					);
+					setShippingAddress( shippingAddress );
 				}
 				dispatch.__internalSetPaymentMethodData( paymentMethodData );
 				dispatch.__internalSetPaymentSuccess();
