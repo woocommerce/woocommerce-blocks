@@ -70,9 +70,13 @@ export const __internalEmitValidateEvent: emitValidateEventType = ( {
 			if ( response !== true ) {
 				if ( Array.isArray( response ) ) {
 					response.forEach(
-						( { errorMessage, validationErrors } ) => {
+						( {
+							errorMessage,
+							validationErrors,
+							errorMessageContext = 'wc/checkout',
+						} ) => {
 							createErrorNotice( errorMessage, {
-								context: 'wc/checkout',
+								errorMessageContext,
 							} );
 							setValidationErrors( validationErrors );
 						}
