@@ -22,6 +22,7 @@ const blocks = {
 	'attribute-filter': {},
 	breadcrumbs: {},
 	cart: {},
+	'catalog-sorting': {},
 	checkout: {},
 	'customer-account': {},
 	'featured-category': {
@@ -49,6 +50,7 @@ const blocks = {
 	'product-query': {
 		isExperimental: true,
 	},
+	'product-results-count': {},
 	'product-search': {},
 	'product-tag': {},
 	'product-top-rated': {},
