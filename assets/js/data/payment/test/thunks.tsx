@@ -46,7 +46,7 @@ describe( 'wc/store/payment thunks', () => {
 			 * If an observer returns billingAddress, shippingAddress, or paymentData, then the values of these
 			 * should be updated in the data stores.
 			 */
-			const testBillingAddress = {
+			const testShippingAddress = {
 				first_name: 'test',
 				last_name: 'test',
 				company: 'test',
@@ -56,13 +56,21 @@ describe( 'wc/store/payment thunks', () => {
 				state: 'test',
 				postcode: 'test',
 				country: 'test',
-				email: 'test',
 				phone: 'test',
+			};
+			const testBillingAddress = {
+				...testShippingAddress,
+				email: 'test@test.com',
+			};
+			const testPaymentMethodData = {
+				payment_method: 'test',
 			};
 			const testCallbackWithMetadata = jest.fn().mockReturnValue( {
 				type: 'success',
 				meta: {
 					billingAddress: testBillingAddress,
+					shippingAddress: testShippingAddress,
+					paymentMethodData: testPaymentMethodData,
 				},
 			} );
 
@@ -72,11 +80,16 @@ describe( 'wc/store/payment thunks', () => {
 			} );
 
 			const setBillingAddressMock = jest.fn();
+			const setShippingAddressMock = jest.fn();
+			const setPaymentMethodDataMock = jest.fn();
 			const registryMock = {
 				dispatch: jest.fn().mockImplementation( ( store: string ) => {
 					return {
 						...wpDataFunctions.dispatch( store ),
 						setBillingAddress: setBillingAddressMock,
+						setShippingAddress: setShippingAddressMock,
+						__internalSetPaymentMethodData:
+							setPaymentMethodDataMock,
 					};
 				} ),
 			};
@@ -87,11 +100,22 @@ describe( 'wc/store/payment thunks', () => {
 				currentObservers,
 				jest.fn()
 			)( {
+				// eslint-disable-next-line @typescript-eslint/ban-ts-comment
+				// @ts-ignore - it would be too much work to mock the entire registry, so we only mock dispatch on it,
+				// which is all we need to test this thunk.
 				registry: registryMock,
 				dispatch: wpDataFunctions.dispatch( PAYMENT_STORE_KEY ),
 			} );
 
-			expect( setBillingAddressMock ).toHaveBeenCalled();
+			expect( setBillingAddressMock ).toHaveBeenCalledWith(
+				testBillingAddress
+			);
+			// expect( setShippingAddressMock ).toHaveBeenCalledWith(
+			// 	testShippingAddress
+			// );
+			expect( setPaymentMethodDataMock ).toHaveBeenCalledWith(
+				testPaymentMethodData
+			);
 		} );
 	} );
 } );
