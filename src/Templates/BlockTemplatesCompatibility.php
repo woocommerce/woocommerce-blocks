@@ -270,7 +270,7 @@ class BlockTemplatesCompatibility {
 		}
 
 		/**
-		 * When extentions implement their equivalent blocks of the template
+		 * When extensions implement their equivalent blocks of the template
 		 * hook functions, they can use this filter to register their old hooked
 		 * data here, so in the blockified template, the old hooked functions
 		 * can be removed in favor of the new blocks while keeping the old
