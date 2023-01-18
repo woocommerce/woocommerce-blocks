@@ -73,11 +73,9 @@ export const __internalEmitValidateEvent: emitValidateEventType = ( {
 						( {
 							errorMessage,
 							validationErrors,
-							errorMessageContext = 'wc/checkout',
+							context = 'wc/checkout',
 						} ) => {
-							createErrorNotice( errorMessage, {
-								errorMessageContext,
-							} );
+							createErrorNotice( errorMessage, { context } );
 							setValidationErrors( validationErrors );
 						}
 					);
