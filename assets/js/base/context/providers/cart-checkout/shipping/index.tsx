@@ -186,12 +186,12 @@ export const ShippingDataProvider = ( {
 		currentErrorStatus.hasInvalidAddress,
 	] );
 
-	const ShippingData = {
+	const ShippingData: ShippingDataContextType = {
 		shippingErrorStatus: currentErrorStatus,
 		dispatchErrorStatus,
 		shippingErrorTypes: ERROR_TYPES,
 		...eventObservers,
-	} as ShippingDataContextType;
+	};
 
 	return (
 		<>
