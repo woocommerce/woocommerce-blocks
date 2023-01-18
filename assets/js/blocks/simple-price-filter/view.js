@@ -15,7 +15,7 @@ const getHrefWithFilters = ( { state } ) => {
 		searchParams.delete( 'min_price' );
 	}
 
-	if ( maxPrice < Infinity ) {
+	if ( maxPrice < state.filters.maxRange ) {
 		searchParams.set( 'max_price', maxPrice );
 	} else {
 		searchParams.delete( 'max_price' );
