@@ -49,15 +49,11 @@ export const notifyCartErrors = (
 	if ( errors !== null ) {
 		errors.forEach( ( error ) => {
 			if ( isApiErrorResponse( error ) ) {
-				createNotice(
-					'error',
-					decodeEntities( error.message ) + 'thnk',
-					{
-						id: error.code,
-						context: 'wc/cart',
-						isDismissible: true,
-					}
-				);
+				createNotice( 'error', decodeEntities( error.message ), {
+					id: error.code,
+					context: 'wc/cart',
+					isDismissible: true,
+				} );
 			}
 		} );
 	}
