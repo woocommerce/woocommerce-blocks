@@ -41,7 +41,7 @@ const StoreNoticesContainer = ( {
 
 	// Find sub-contexts that have not been registered. We will show notices from those contexts here too.
 	const allContexts = getNoticeContexts();
-	const subContexts = allContexts.filter(
+	const unregisteredSubContexts = allContexts.filter(
 		( subContext: string ) =>
 			subContext.includes( context + '/' ) &&
 			! registeredContainers.includes( subContext )
@@ -53,7 +53,7 @@ const StoreNoticesContainer = ( {
 		const { getNotices } = select( 'core/notices' );
 
 		return [
-			...subContexts.map( ( subContext: string ) =>
+			...unregisteredSubContexts.map( ( subContext: string ) =>
 				formatNotices( getNotices( subContext ), subContext )
 			),
 			...formatNotices(
