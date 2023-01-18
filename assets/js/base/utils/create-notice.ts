@@ -15,6 +15,11 @@ export const DEFAULT_ERROR_MESSAGE = __(
 	'woo-gutenberg-products-block'
 );
 
+/**
+ * Returns a list of all notice contexts defined by Blocks.
+ *
+ * Contexts are defined in enum format, but this returns an array of strings instead.
+ */
 export const getNoticeContexts = () => {
 	return Object.values( noticeContexts );
 };
