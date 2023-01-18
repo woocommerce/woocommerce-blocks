@@ -20,9 +20,9 @@ class SimplePriceFilter extends AbstractBlock {
 	 */
 	public function render( $attributes = [], $content = '', $block = null ) {
 		$wrapper_attributes = get_block_wrapper_attributes();
-		$min_price = get_query_var( self::MIN_PRICE_QUERY_VAR );
-		$max_price = get_query_var( self::MAX_PRICE_QUERY_VAR );
 		$max_range = 90; // TODO: get this value from DB.
+		$min_price = get_query_var( self::MIN_PRICE_QUERY_VAR, 0 );
+		$max_price = get_query_var( self::MAX_PRICE_QUERY_VAR, $max_range );
 
 		// CSS variables for the range bar style.
 		$__low = 100 * $min_price / $max_range;

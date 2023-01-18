@@ -25,15 +25,20 @@ const getHrefWithFilters = ( { state } ) => {
 };
 
 const initialSearchParams = new URL( window.location.href ).searchParams;
-const initialMinPrice = initialSearchParams.get( 'min_price' ) || '';
-const initialMaxPrice = initialSearchParams.get( 'max_price' ) || '';
+
+// TODO: get this values from SSR
+const ssrMaxRange = 90;
+const ssrMinPrice =
+	parseFloat( initialSearchParams.get( 'min_price' ) || '' ) || 0;
+const ssrMaxPrice =
+	parseFloat( initialSearchParams.get( 'max_price' ) || '' ) || ssrMaxRange;
 
 wpx( {
 	state: {
 		filters: {
-			minPrice: parseFloat( initialMinPrice ) || 0,
-			maxPrice: parseFloat( initialMaxPrice ) || Infinity,
-			maxRange: 90, // TODO: get this value from SSR.
+			minPrice: ssrMinPrice,
+			maxPrice: ssrMaxPrice,
+			maxRange: ssrMaxRange,
 			isMinActive: true,
 			isMaxActive: false,
 		},
@@ -65,7 +70,7 @@ wpx( {
 			},
 			reset: ( { state } ) => {
 				state.filters.minPrice = 0;
-				state.filters.maxPrice = Infinity;
+				state.filters.maxPrice = state.filters.maxRange;
 				navigate( getHrefWithFilters( { state } ) );
 			},
 			updateActiveHandle: ( { state, event } ) => {
