@@ -22,11 +22,64 @@ class SimplePriceFilter extends AbstractBlock {
 		$wrapper_attributes = get_block_wrapper_attributes();
 		$min_price = get_query_var( self::MIN_PRICE_QUERY_VAR );
 		$max_price = get_query_var( self::MAX_PRICE_QUERY_VAR );
-		return "<div $wrapper_attributes>
-			<label>Min price: <input type='text' wp-on:change='actions.filters.setMinPrice' wp-bind:value='state.filters.minPrice' value='$min_price'></label>
-			<label>Max price: <input type='text' wp-on:change='actions.filters.setMaxPrice' wp-bind:value='state.filters.maxPrice' value='$max_price'></label>
+		$max_range = 90; // TODO: get this value from DB.
+
+		// CSS variables for the range bar style.
+		$__low = 100 * $min_price / $max_range;
+		$__high = 100 * $max_price / $max_range;
+		$range_style = "--low: $__low%; --high: $__high%";
+
+		return "
+		<div $wrapper_attributes>
+			<div
+				class='range'
+				style='$range_style'
+				wp-bind:style='derived.filters.rangeStyle'
+				wp-on:mousemove='actions.filters.updateActiveHandle'
+			>
+				<div class='range-bar'></div>
+				<input
+					class='active'
+					type='range'
+					value='$min_price'
+					min='0'
+					max='$max_range'
+					wp-bind:value='state.filters.minPrice'
+					wp-class:active='state.filters.isMinActive'
+					wp-on:input='actions.filters.setMinPrice'
+					wp-on:change='actions.filters.updateProducts'
+				>
+				<input
+					class=''
+					type='range'
+					value='$max_price'
+					min='0'
+					max='$max_range'
+					wp-bind:value='state.filters.maxPrice'
+					wp-class:active='state.filters.isMaxActive'
+					wp-on:input='actions.filters.setMaxPrice'
+					wp-on:change='actions.filters.updateProducts'
+				>
+			</div>
+			<div>
+				<input
+					type='text'
+					value='$min_price'
+					wp-bind:value='state.filters.minPrice'
+					wp-on:input='actions.filters.setMinPrice'
+					wp-on:change='actions.filters.updateProducts'
+				>
+				<input
+					type='text'
+					value='$max_price'
+					wp-bind:value='state.filters.maxPrice'
+					wp-on:input='actions.filters.setMaxPrice'
+					wp-on:change='actions.filters.updateProducts'
+				>
+			</div>
 			<button wp-on:click='actions.filters.reset'>Reset</button>
-		</div>";
+		</div>
+		";
 	}
 
 	/**
