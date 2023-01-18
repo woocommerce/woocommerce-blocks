@@ -31,6 +31,7 @@ class SimplePriceFilter extends AbstractBlock {
 
 		return "
 		<div $wrapper_attributes>
+			<h3>Filter by price</h3>
 			<div
 				class='range'
 				style='$range_style'
@@ -61,7 +62,7 @@ class SimplePriceFilter extends AbstractBlock {
 					wp-on:change='actions.filters.updateProducts'
 				>
 			</div>
-			<div>
+			<div class='text'>
 				<input
 					type='text'
 					value='$min_price'

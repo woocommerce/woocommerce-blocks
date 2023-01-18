@@ -37,5 +37,31 @@
 				z-index: 10;
 			}
 		}
+
+		input[type="range" i] {
+			color: -internal-light-dark(rgb(16, 16, 16), rgb(255, 255, 255));
+			padding: initial;
+		}
+	}
+
+	.text {
+		display: flex;
+		align-items: center;
+		justify-content: space-between;
+		margin: 16px 0;
+		gap: 8px;
+
+		input[type="text"] {
+			padding: 8px;
+			margin: 0;
+			width: auto;
+			max-width: 60px;
+			min-width: 0;
+			font-size: .875em;
+			border-width: 1px;
+			border-style: solid;
+			border-color: currentColor;
+			border-radius: 4px;
+		}
 	}
 }
