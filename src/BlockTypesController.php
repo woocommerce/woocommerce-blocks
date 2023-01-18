@@ -251,7 +251,7 @@ final class BlockTypesController {
 				[
 					'CatalogSorting',
 					'ClassicTemplate',
-          'ProductResultsCount',
+					'ProductResultsCount',
 					'StoreNotices',
 				]
 			);
