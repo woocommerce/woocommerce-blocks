@@ -102,7 +102,7 @@ const StoreNotices = ( {
 		>
 			{ nonDismissibleNotices.map( ( notice ) => (
 				<Notice
-					key={ notice.id }
+					key={ notice.id + '-' + notice.context }
 					className={ classnames(
 						'wc-block-components-notices__notice',
 						getClassNameFromStatus( notice.status )
@@ -141,7 +141,11 @@ const StoreNotices = ( {
 							) : (
 								<ul>
 									{ noticeGroup.map( ( notice ) => (
-										<li key={ notice.id }>
+										<li
+											key={
+												notice.id + '-' + notice.context
+											}
+										>
 											{ sanitizeHTML(
 												decodeEntities( notice.content )
 											) }

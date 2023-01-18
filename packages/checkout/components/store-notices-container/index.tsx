@@ -53,7 +53,7 @@ const StoreNoticesContainer = ( {
 		const { getNotices } = select( 'core/notices' );
 
 		return [
-			...unregisteredSubContexts.map( ( subContext: string ) =>
+			...unregisteredSubContexts.flatMap( ( subContext: string ) =>
 				formatNotices( getNotices( subContext ), subContext )
 			),
 			...formatNotices(
