@@ -17,6 +17,7 @@ export const notifyErrors = ( error: ApiErrorResponse | null = null ) => {
 
 	let errorMessage = error.message || DEFAULT_ERROR_MESSAGE;
 
+	// Replace the generic invalid JSON message with something more user friendly.
 	if ( error.code === 'invalid_json' ) {
 		errorMessage = __(
 			'Something went wrong. Please contact us for assistance.',
