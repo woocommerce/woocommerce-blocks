@@ -1,13 +1,15 @@
 /**
  * External dependencies
  */
-import { ElementType } from 'react';
+import { Children, ElementType } from 'react';
 import { __ } from '@wordpress/i18n';
 import { InspectorControls } from '@wordpress/block-editor';
 import { useSelect } from '@wordpress/data';
 import { addFilter } from '@wordpress/hooks';
+import { createHigherOrderComponent } from '@wordpress/compose';
 import { ProductQueryFeedbackPrompt } from '@woocommerce/editor-components/feedback-prompt';
 import { EditorBlock } from '@woocommerce/types';
+import ReactDOMServer from 'react-dom/server';
 import {
 	FormTokenField,
 	ToggleControl,
@@ -40,6 +42,7 @@ import { PopularPresets } from './inspector-controls/popular-presets';
 import { AttributesFilter } from './inspector-controls/attributes-filter';
 
 import './editor.scss';
+import { VARIATION_NAME } from './variations/elements/add-to-cart-button';
 
 const NAMESPACED_CONTROLS = ALL_PRODUCT_QUERY_CONTROLS.map(
 	( id ) =>
@@ -233,3 +236,19 @@ export const withProductQueryControls =
 	};
 
 addFilter( 'editor.BlockEdit', QUERY_LOOP_ID, withProductQueryControls );
+
+export const withWrapperElement =
+	< T extends EditorBlock< T > >( BlockEdit: ElementType ) =>
+	( props: ProductQueryBlock ) => {
+		if ( VARIATION_NAME === props.attributes.__woocommerceNamespace ) {
+			return (
+				<div className="wp-block-buttons">
+					<BlockEdit { ...props } />
+				</div>
+			);
+		}
+
+		return <BlockEdit { ...props } />;
+	};
+
+addFilter( 'editor.BlockEdit', VARIATION_NAME, withWrapperElement );
