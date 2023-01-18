@@ -105,6 +105,8 @@ Every release includes specific testing instructions for new features and bug fi
 -   [8.9.0](./890.md)
     -   [8.9.1](./891.md)
     -   [8.9.2](./892.md)
+    -   [8.9.3](./893.md)
+    -   [8.9.4](./894.md)
 -   [9.0.0](./900.md)
 -   [9.1.0](./910.md)
     -   [9.1.1](./911.md)
@@ -112,6 +114,8 @@ Every release includes specific testing instructions for new features and bug fi
     -   [9.1.3](./913.md)
 -   [9.2.0](./920.md)
 -   [9.3.0](./930.md)
+-   [9.4.0](./940.md)
+
 
 <!-- FEEDBACK -->
 
