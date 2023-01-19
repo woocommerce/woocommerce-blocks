@@ -72,10 +72,17 @@ export const __internalEmitPaymentProcessingEvent: emitProcessingEventType = (
 				) {
 					errorResponse = response;
 				}
+				// Extensions may return shippingData, shippingAddress, billingData, and billingAddress in the response,
+				// so we need to check for all. If we detect either shippingData or billingData we need to show a
+				// deprecated warning for it, but also apply the changes to the wc/store/cart store.
 				const {
 					billingAddress: billingAddressFromResponse,
+
+					// Deprecated, but keeping it for now, for compatibility with extensions returning it.
 					billingData: billingDataFromResponse,
 					shippingAddress: shippingAddressFromResponse,
+
+					// Deprecated, but keeping it for now, for compatibility with extensions returning it.
 					shippingData: shippingDataFromResponse,
 				} = response?.meta || {};
 
