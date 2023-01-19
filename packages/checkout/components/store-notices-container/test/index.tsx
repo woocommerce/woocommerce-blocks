@@ -119,7 +119,7 @@ describe( 'StoreNoticesContainer', () => {
 			}
 		);
 		render( <StoreNoticesContainer context="wc/checkout" /> );
-		// This is 3; 2 error messages, and the spoken message where they are combined into one element.
+		// This should match against 3 elements; 2 error messages, and the spoken message where they are combined into one element.
 		expect(
 			screen.getAllByText( /Custom sub-context error/i )
 		).toHaveLength( 3 );
