@@ -242,7 +242,12 @@ export interface ProductPriceProps {
 	/**
 	 * Custom margin to apply to the price wrapper.
 	 */
-	spacingStyle?: React.CSSProperties | undefined;
+	spacingStyle?:
+		| Pick<
+				React.CSSProperties,
+				'marginTop' | 'marginRight' | 'marginBottom' | 'marginLeft'
+		  >
+		| undefined;
 }
 
 const ProductPrice = ( {
