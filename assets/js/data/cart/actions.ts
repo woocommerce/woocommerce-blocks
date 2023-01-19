@@ -225,6 +225,7 @@ export const applyCoupon =
 				},
 				cache: 'no-store',
 			} );
+			dispatch.receiveApplyingCoupon( '' );
 
 			dispatch.receiveCart( response );
 		} catch ( error ) {
@@ -237,8 +238,6 @@ export const applyCoupon =
 
 			// Re-throw the error.
 			throw error;
-		} finally {
-			dispatch.receiveApplyingCoupon( '' );
 		}
 
 		return true;
@@ -466,14 +465,15 @@ export const setShippingAddress = (
 ) => ( { type: types.SET_SHIPPING_ADDRESS, shippingAddress } as const );
 
 /**
- * Updates the shipping and/or billing address for the customer and returns an
- * updated cart.
- *
- * @param {BillingAddressShippingAddress} customerData Address data to be updated; can contain both
- *                                                     billing_address and shipping_address.
+ * Updates the shipping and/or billing address for the customer and returns an updated cart.
  */
 export const updateCustomerData =
-	( customerData: Partial< BillingAddressShippingAddress > ) =>
+	(
+		// Address data to be updated; can contain both billing_address and shipping_address.
+		customerData: Partial< BillingAddressShippingAddress >,
+		// If the address is being edited, we don't update the customer data in the store from the response.
+		editing = true
+	) =>
 	async ( { dispatch }: { dispatch: CartDispatchFromMap } ) => {
 		dispatch.updatingCustomerData( true );
 
@@ -484,22 +484,24 @@ export const updateCustomerData =
 				data: customerData,
 				cache: 'no-store',
 			} );
-
-			dispatch.receiveCartContents( response );
+			if ( editing ) {
+				dispatch.receiveCartContents( response );
+			} else {
+				dispatch.receiveCart( response );
+			}
+			dispatch.updatingCustomerData( false );
 		} catch ( error ) {
 			dispatch.receiveError( error );
+			dispatch.updatingCustomerData( false );
 
 			// If updated cart state was returned, also update that.
 			if ( error.data?.cart ) {
 				dispatch.receiveCart( error.data.cart );
 			}
 
-			// rethrow error.
-			throw error;
-		} finally {
-			dispatch.updatingCustomerData( false );
+			return Promise.reject( error );
 		}
-		return true;
+		return Promise.resolve( true );
 	};
 
 export type CartAction = ReturnOrGeneratorYieldUnion<

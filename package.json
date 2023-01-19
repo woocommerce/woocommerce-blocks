@@ -2,7 +2,7 @@
 	"name": "@woocommerce/block-library",
 	"title": "WooCommerce Blocks",
 	"author": "Automattic",
-	"version": "9.4.0-dev",
+	"version": "9.5.0-dev",
 	"description": "WooCommerce blocks for the Gutenberg editor.",
 	"homepage": "https://github.com/woocommerce/woocommerce-gutenberg-products-block/",
 	"keywords": [
@@ -225,6 +225,11 @@
 		"npm": "^8.0.0"
 	},
 	"dependencies": {
+		"@dnd-kit/core": "^6.0.5",
+		"@dnd-kit/modifiers": "^6.0.0",
+		"@dnd-kit/sortable": "^7.0.1",
+		"@dnd-kit/utilities": "^3.2.0",
+		"@emotion/styled": "^11.10.5",
 		"@wordpress/autop": "3.16.0",
 		"@wordpress/compose": "5.5.0",
 		"@wordpress/deprecated": "3.16.0",
