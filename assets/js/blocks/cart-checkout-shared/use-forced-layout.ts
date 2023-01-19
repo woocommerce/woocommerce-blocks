@@ -10,7 +10,6 @@ import {
 	BlockInstance,
 } from '@wordpress/blocks';
 import type { Block, TemplateArray } from '@wordpress/blocks';
-import { isEqual } from 'lodash';
 import { MutableRefObject } from 'react';
 
 interface LockableBlock extends Block {
@@ -130,7 +129,7 @@ export const useForcedLayout = ( {
 				const nextBlocks = createBlocksFromInnerBlocksTemplate(
 					currentDefaultTemplate.current
 				);
-				if ( ! isEqual( nextBlocks, innerBlocks ) ) {
+				if ( nextBlocks.length !== 0 ) {
 					replaceInnerBlocks( clientId, nextBlocks );
 					return;
 				}
