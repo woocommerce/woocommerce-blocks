@@ -178,6 +178,6 @@ export const useForcedLayout = ( {
 					.dispatch( 'core/block-editor' )
 					.insertBlocks( blockConfig, insertAtPosition, clientId );
 			} );
-		} );
+		}, 'core/block-editor' );
 	}, [ clientId, registry ] );
 };
