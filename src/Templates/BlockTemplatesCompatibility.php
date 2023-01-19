@@ -295,7 +295,7 @@ class BlockTemplatesCompatibility {
 		 */
 		$additional_hook_data = apply_filters( 'woocommerce_blocks_hook_compatibility_additional_data', array() );
 
-		if ( empty( $additional_hook_data ) ) {
+		if ( empty( $additional_hook_data ) || ! is_array( $additional_hook_data ) ) {
 			return;
 		}
 
