@@ -95,7 +95,7 @@ export const INNER_BLOCKS_TEMPLATE: InnerBlockTemplate[] = [
 					fontSize: 'small',
 					style: {
 						spacing: {
-							margin: { bottom: 'var:preset|spacing|30' },
+							margin: { bottom: '1rem' },
 						},
 					},
 				},
