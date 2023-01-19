@@ -37,7 +37,13 @@ class Breadcrumbs extends AbstractBlock {
 		$classname          = $attributes['className'] ?? '';
 		$classes_and_styles = StyleAttributesUtils::get_classes_and_styles_by_attributes( $attributes );
 
-		return "<div class='wc-block-breadcrumbs " . esc_attr( $classes_and_styles['classes'] ) . ' ' . esc_attr( $classname ) . "' style='" . esc_attr( $classes_and_styles['styles'] ) . "'>" . $breadcrumb . '</div>';
+		return sprintf(
+			'<div class="woocommerce wc-block-breadcrumbs %1$s %2$s" style="%3$s">%4$s</div>',
+			esc_attr( $classes_and_styles['classes'] ),
+			esc_attr( $classname ),
+			esc_attr( $classes_and_styles['styles'] ),
+			$breadcrumb
+		);
 	}
 
 	/**
