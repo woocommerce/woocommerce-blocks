@@ -199,6 +199,25 @@ class ShippingController {
 	}
 
 	/**
+	 * Gets a list of payment method ids that support the 'collectible' feature.
+	 *
+	 * @return string[] List of payment method ids that support the 'collectible' feature.
+	 */
+	public function get_collectible_method_ids() {
+		return array_keys(
+			wp_list_pluck(
+				array_filter(
+					WC()->shipping()->get_shipping_methods(),
+					function( $method ) {
+						return in_array( 'collectible', $method->supports, true );
+					}
+				),
+				'id'
+			)
+		);
+	}
+
+	/**
 	 * Register Local Pickup settings for rest api.
 	 */
 	public function register_settings() {
