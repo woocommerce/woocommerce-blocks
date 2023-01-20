@@ -7,5 +7,4 @@ export enum STATUS {
 	PROCESSING = 'processing',
 	ERROR = 'has_error',
 	SUCCESS = 'success',
-	READY = 'ready', // Indicates observers have finished processing and payment is ready to be processed.
 }
