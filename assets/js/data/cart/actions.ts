@@ -40,6 +40,20 @@ export const setCartData = ( cart: Cart ): { type: string; response: Cart } => {
 };
 
 /**
+ * An action creator that dispatches the plain action responsible for setting the cart error data in the store.
+ *
+ * @param  error the parsed error object (Parsed into camelCase).
+ */
+export const setErrorData = (
+	error: ApiErrorResponse | null
+): { type: string; response: ApiErrorResponse | null } => {
+	return {
+		type: types.SET_ERROR_DATA,
+		error,
+	};
+};
+
+/**
  * Returns an action object used in updating the store with the provided cart.
  *
  * This omits the customer addresses so that only updates to cart items and totals are received. This is useful when
@@ -61,18 +75,6 @@ export const receiveCartContents = (
 		response: cartWithoutAddress,
 	};
 };
-
-/**
- * Returns an action object used for receiving customer facing errors from the API.
- */
-export const receiveError = (
-	error: ApiErrorResponse | null = null,
-	replace = true
-) =>
-	( {
-		type: replace ? types.REPLACE_ERRORS : types.RECEIVE_ERROR,
-		error,
-	} as const );
 
 /**
  * Returns an action object used to track when a coupon is applying.
@@ -195,13 +197,6 @@ export const applyExtensionCartUpdate =
 			return response;
 		} catch ( error ) {
 			dispatch.receiveError( error );
-			// If updated cart state was returned, also update that.
-			if ( error.data?.cart ) {
-				dispatch.receiveCart( error.data.cart );
-			}
-
-			// Re-throw the error.
-			throw error;
 		}
 	};
 
@@ -225,20 +220,11 @@ export const applyCoupon =
 				},
 				cache: 'no-store',
 			} );
+			dispatch.receiveApplyingCoupon( '' );
 
 			dispatch.receiveCart( response );
 		} catch ( error ) {
 			dispatch.receiveError( error );
-
-			// If updated cart state was returned, also update that.
-			if ( error.data?.cart ) {
-				dispatch.receiveCart( error.data.cart );
-			}
-
-			// Re-throw the error.
-			throw error;
-		} finally {
-			dispatch.receiveApplyingCoupon( '' );
 		}
 
 		return true;
@@ -269,14 +255,6 @@ export const removeCoupon =
 			dispatch.receiveCart( response );
 		} catch ( error ) {
 			dispatch.receiveError( error );
-
-			// If updated cart state was returned, also update that.
-			if ( error.data?.cart ) {
-				dispatch.receiveCart( error.data.cart );
-			}
-
-			// Re-throw the error.
-			throw error;
 		} finally {
 			dispatch.receiveRemovingCoupon( '' );
 		}
@@ -313,14 +291,6 @@ export const addItemToCart =
 			triggerAddedToCartEvent( { preserveCartData: true } );
 		} catch ( error ) {
 			dispatch.receiveError( error );
-
-			// If updated cart state was returned, also update that.
-			if ( error.data?.cart ) {
-				dispatch.receiveCart( error.data.cart );
-			}
-
-			// Re-throw the error.
-			throw error;
 		}
 	};
 
@@ -351,11 +321,6 @@ export const removeItemFromCart =
 			dispatch.receiveCart( response );
 		} catch ( error ) {
 			dispatch.receiveError( error );
-
-			// If updated cart state was returned, also update that.
-			if ( error.data?.cart ) {
-				dispatch.receiveCart( error.data.cart );
-			}
 		} finally {
 			dispatch.itemIsPendingDelete( cartItemKey, false );
 		}
@@ -402,11 +367,6 @@ export const changeCartItemQuantity =
 			dispatch.receiveCart( response );
 		} catch ( error ) {
 			dispatch.receiveError( error );
-
-			// If updated cart state was returned, also update that.
-			if ( error.data?.cart ) {
-				dispatch.receiveCart( error.data.cart );
-			}
 		} finally {
 			dispatch.itemIsPendingQuantity( cartItemKey, false );
 		}
@@ -437,14 +397,6 @@ export const selectShippingRate =
 			dispatch.receiveCart( response );
 		} catch ( error ) {
 			dispatch.receiveError( error );
-
-			// If updated cart state was returned, also update that.
-			if ( error.data?.cart ) {
-				dispatch.receiveCart( error.data.cart );
-			}
-
-			// Re-throw the error.
-			throw error;
 		} finally {
 			dispatch.shippingRatesBeingSelected( false );
 		}
@@ -466,14 +418,15 @@ export const setShippingAddress = (
 ) => ( { type: types.SET_SHIPPING_ADDRESS, shippingAddress } as const );
 
 /**
- * Updates the shipping and/or billing address for the customer and returns an
- * updated cart.
- *
- * @param {BillingAddressShippingAddress} customerData Address data to be updated; can contain both
- *                                                     billing_address and shipping_address.
+ * Updates the shipping and/or billing address for the customer and returns an updated cart.
  */
 export const updateCustomerData =
-	( customerData: Partial< BillingAddressShippingAddress > ) =>
+	(
+		// Address data to be updated; can contain both billing_address and shipping_address.
+		customerData: Partial< BillingAddressShippingAddress >,
+		// If the address is being edited, we don't update the customer data in the store from the response.
+		editing = true
+	) =>
 	async ( { dispatch }: { dispatch: CartDispatchFromMap } ) => {
 		dispatch.updatingCustomerData( true );
 
@@ -484,29 +437,26 @@ export const updateCustomerData =
 				data: customerData,
 				cache: 'no-store',
 			} );
-
-			dispatch.receiveCartContents( response );
+			if ( editing ) {
+				dispatch.receiveCartContents( response );
+			} else {
+				dispatch.receiveCart( response );
+			}
+			dispatch.updatingCustomerData( false );
 		} catch ( error ) {
 			dispatch.receiveError( error );
-
-			// If updated cart state was returned, also update that.
-			if ( error.data?.cart ) {
-				dispatch.receiveCart( error.data.cart );
-			}
-
-			// rethrow error.
-			throw error;
-		} finally {
 			dispatch.updatingCustomerData( false );
+
+			return Promise.reject( error );
 		}
-		return true;
+		return Promise.resolve( true );
 	};
 
 export type CartAction = ReturnOrGeneratorYieldUnion<
 	| typeof receiveCartContents
 	| typeof setBillingAddress
 	| typeof setShippingAddress
-	| typeof receiveError
+	| typeof setErrorData
 	| typeof receiveApplyingCoupon
 	| typeof receiveRemovingCoupon
 	| typeof receiveCartItem

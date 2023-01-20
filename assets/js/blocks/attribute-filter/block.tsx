@@ -138,7 +138,6 @@ const AttributeFilterBlock = ( {
 			resourceName: 'products/attributes/terms',
 			resourceValues: [ attributeObject?.id || 0 ],
 			shouldSelect: blockAttributes.attributeId > 0,
-			isEditor,
 		} );
 
 	const filterAvailableTerms =
@@ -527,6 +526,10 @@ const AttributeFilterBlock = ( {
 		return null;
 	}
 
+	const showChevron = multiple
+		? ! isLoading && checked.length < displayedOptions.length
+		: ! isLoading && checked.length === 0;
+
 	const heading = (
 		<TagName className="wc-block-attribute-filter__title">
 			{ blockAttributes.heading }
@@ -666,7 +669,7 @@ const AttributeFilterBlock = ( {
 								),
 							} }
 						/>
-						{ multiple && (
+						{ showChevron && (
 							<Icon icon={ chevronDown } size={ 30 } />
 						) }
 					</>
