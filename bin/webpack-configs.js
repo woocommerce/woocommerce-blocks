@@ -779,7 +779,7 @@ const getInteractivityAPIConfig = ( options = {} ) => {
 	const { alias, resolvePlugins = [] } = options;
 	return {
 		entry: {
-			runtime: './assets/js/base/interactivity',
+			runtime: './assets/js/interactivity',
 		},
 		output: {
 			filename: 'wp-directives-[name].js',
