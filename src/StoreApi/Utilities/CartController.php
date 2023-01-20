@@ -1228,6 +1228,8 @@ class CartController {
 			);
 		}
 
+		ksort( $request['variation'] );
+
 		return $request;
 	}
 
