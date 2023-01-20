@@ -45,6 +45,13 @@ const reducer: Reducer< PaymentState > = (
 			};
 			break;
 
+		case ACTION_TYPES.SET_PAYMENT_FAILED:
+			newState = {
+				...state,
+				status: STATUS.FAILED,
+			};
+			break;
+
 		case ACTION_TYPES.SET_PAYMENT_ERROR:
 			newState = {
 				...state,

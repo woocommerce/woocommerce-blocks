@@ -6,5 +6,6 @@ export enum STATUS {
 	STARTED = 'started',
 	PROCESSING = 'processing',
 	ERROR = 'has_error',
+	FAILED = 'failed',
 	SUCCESS = 'success',
 }
