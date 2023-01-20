@@ -3,6 +3,7 @@
  */
 import {
 	createBlock,
+	createBlocksFromInnerBlocksTemplate,
 	getBlockType,
 	registerBlockType,
 	unregisterBlockType,
@@ -18,6 +19,7 @@ import { __, sprintf } from '@wordpress/i18n';
 import { box, Icon } from '@wordpress/icons';
 import { select, useDispatch, subscribe } from '@wordpress/data';
 import { useEffect } from '@wordpress/element';
+import { isWpVersion } from '@woocommerce/settings';
 
 /**
  * Internal dependencies
@@ -30,6 +32,7 @@ import {
 	hasTemplateSupportForClassicTemplateBlock,
 	getTemplateDetailsBySlug,
 } from './utils';
+import { INNER_BLOCKS_TEMPLATE } from '../product-query/constants';
 
 type Attributes = {
 	template: string;
@@ -92,18 +95,27 @@ const Edit = ( {
 					</p>
 				</div>
 				<div className="wp-block-woocommerce-classic-template__placeholder-wireframe">
-					{ isExperimentalBuild() && (
+					{ isWpVersion( '6.1', '>=' ) && (
 						<div className="wp-block-woocommerce-classic-template__placeholder-migration-button-container">
 							<Button
 								isPrimary
 								onClick={ () => {
 									replaceBlock(
 										clientId,
-										// TODO: Replace with the blockified version of the Product Grid Block when it will be available.
-										createBlock( 'core/paragraph', {
-											content:
-												'Instead of this block, the new Product Grid Block will be rendered',
-										} )
+										createBlock( 'core/group', {}, [
+											createBlock(
+												'woocommerce/store-notices'
+											),
+											createBlock(
+												'woocommerce/product-results-count'
+											),
+											createBlock(
+												'woocommerce/catalog-sorting'
+											),
+											...createBlocksFromInnerBlocksTemplate(
+												INNER_BLOCKS_TEMPLATE
+											),
+										] )
 									);
 								} }
 								text={ __(
