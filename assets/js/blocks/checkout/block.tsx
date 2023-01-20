@@ -14,11 +14,10 @@ import {
 	StoreNoticesContainer,
 } from '@woocommerce/blocks-checkout';
 import withScrollToTop from '@woocommerce/base-hocs/with-scroll-to-top';
-import { useDispatch, useSelect, dispatch } from '@wordpress/data';
+import { useDispatch, useSelect } from '@wordpress/data';
 import {
 	CHECKOUT_STORE_KEY,
 	VALIDATION_STORE_KEY,
-	CART_STORE_KEY,
 } from '@woocommerce/block-data';
 
 /**
@@ -162,26 +161,6 @@ const Block = ( {
 	children: React.ReactChildren;
 	scrollToTop: ( props: Record< string, unknown > ) => void;
 } ): JSX.Element => {
-	// Refreshes the cart when the user navigates back to the page.
-	useEffect( () => {
-		const refreshCartData = ( event: PageTransitionEvent ) => {
-			// The deprecated performance object is needed in chrome.
-			const historyPage =
-				event.persisted ||
-				( typeof window.performance !== undefined &&
-					window.performance.navigation.type === 2 );
-			if ( historyPage ) {
-				dispatch( CART_STORE_KEY ).invalidateResolutionForStore();
-			}
-		};
-
-		global.addEventListener( 'pageshow', refreshCartData );
-
-		return () => {
-			global.removeEventListener( 'pageshow', refreshCartData );
-		};
-	}, [] );
-
 	return (
 		<BlockErrorBoundary
 			header={ __(
