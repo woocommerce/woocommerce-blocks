@@ -25,7 +25,7 @@ if ( getSetting( 'globalPaymentMethods' ) ) {
 
 export const isPaymentPristine = ( state: PaymentState ) => {
 	deprecated( 'isPaymentPristine', {
-		since: '9.3.0',
+		since: '9.5.0',
 		alternative: 'isPaymentIdle',
 		plugin: 'WooCommerce Blocks',
 		link: 'https://github.com/woocommerce/woocommerce-blocks/pull/8110',
@@ -50,8 +50,15 @@ export const isPaymentSuccess = ( state: PaymentState ) =>
 export const hasPaymentError = ( state: PaymentState ) =>
 	state.status === PAYMENT_STATUS.ERROR;
 
-export const isPaymentFailed = ( state: PaymentState ) =>
-	state.status === PAYMENT_STATUS.FAILED;
+export const isPaymentFailed = ( state: PaymentState ) => {
+	deprecated( 'isPaymentFailed', {
+		since: '9.5.0',
+		alternative: 'hasPaymentError',
+		plugin: 'WooCommerce Blocks',
+		link: 'https://github.com/woocommerce/woocommerce-blocks/pull/8110',
+	} );
+	return hasPaymentError( state );
+};
 
 export const isPaymentReady = ( state: PaymentState ) =>
 	state.status === PAYMENT_STATUS.READY;

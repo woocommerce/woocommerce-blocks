@@ -126,7 +126,6 @@ describe( 'setDefaultPaymentMethod', () => {
 						__internalSetActivePaymentMethod:
 							setActivePaymentMethodMock,
 						__internalSetPaymentError: () => void 0,
-						__internalSetPaymentFailed: () => void 0,
 						__internalSetPaymentSuccess: () => void 0,
 						__internalSetPaymentIdle: () => void 0,
 						__internalSetPaymentStarted: () => void 0,
