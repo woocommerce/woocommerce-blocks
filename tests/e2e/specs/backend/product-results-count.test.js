@@ -26,8 +26,9 @@ const block = {
 };
 
 describe( `${ block.name } Block`, () => {
-	it( 'in can not be inserted in a post', async () => {
+	it( 'can not be inserted in a post', async () => {
 		await switchUserToAdmin();
+
 		await createNewPost( {
 			postType: 'post',
 			title: block.name,
