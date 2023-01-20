@@ -84,7 +84,7 @@ class ProductAddToCartButton extends AbstractBlock {
 
 			do_action( 'qm/debug', $block );
 
-			if ( $product ) {
+			if ( $product && $block_content ) {
 				$styles_and_classes = $this->extract_style_and_class_from_block_content( $block_content );
 				$div_class          = $styles_and_classes['div_class'];
 				$div_style          = $styles_and_classes['div_style'];

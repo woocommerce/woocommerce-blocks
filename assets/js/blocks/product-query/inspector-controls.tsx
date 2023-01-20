@@ -8,6 +8,7 @@ import { useSelect } from '@wordpress/data';
 import { addFilter } from '@wordpress/hooks';
 import { ProductQueryFeedbackPrompt } from '@woocommerce/editor-components/feedback-prompt';
 import { EditorBlock } from '@woocommerce/types';
+import { select } from '@wordpress/data';
 import {
 	FormTokenField,
 	ToggleControl,
@@ -40,6 +41,7 @@ import { PopularPresets } from './inspector-controls/popular-presets';
 import { AttributesFilter } from './inspector-controls/attributes-filter';
 
 import './editor.scss';
+import { VARIATION_NAME } from './variations/elements/add-to-cart-button';
 
 const NAMESPACED_CONTROLS = ALL_PRODUCT_QUERY_CONTROLS.map(
 	( id ) =>
@@ -233,3 +235,34 @@ export const withProductQueryControls =
 	};
 
 addFilter( 'editor.BlockEdit', QUERY_LOOP_ID, withProductQueryControls );
+
+export const withWrapperElement =
+	< T extends EditorBlock< T > >( BlockEdit: ElementType ) =>
+	( props: ProductQueryBlock ) => {
+		if ( props.name === 'core/button' ) {
+			const coreEditor = select( 'core/block-editor' );
+			const parentBlocks = coreEditor.getBlockParents(
+				props.clientId,
+				true
+			);
+			const parentButtonsBlock = coreEditor.getBlock( parentBlocks[ 0 ] );
+
+			if (
+				VARIATION_NAME ===
+				parentButtonsBlock?.attributes?.__woocommerceNamespace
+			) {
+				const extraProps = {
+					attributes: {
+						text: 'Add to cart',
+						textAlign: 'center',
+						fontSize: 'small',
+					},
+				};
+				return <BlockEdit { ...props } { ...extraProps } />;
+			}
+		}
+
+		return <BlockEdit { ...props } />;
+	};
+
+addFilter( 'editor.BlockEdit', VARIATION_NAME, withWrapperElement );
