@@ -116,9 +116,14 @@ const renderPickupLocation = (
 const Block = (): JSX.Element | null => {
 	const { shippingRates, selectShippingRate } = useShippingData();
 
+	const collectibleMethods = [
+		...getSetting< string[] >( 'collectibleMethodIds', [] ),
+		'pickup_location',
+	];
+
 	// Get pickup locations from the first shipping package.
 	const pickupLocations = ( shippingRates[ 0 ]?.shipping_rates || [] ).filter(
-		( { method_id: methodId } ) => methodId === 'pickup_location'
+		( { method_id: methodId } ) => collectibleMethods.includes( methodId )
 	);
 
 	const [ selectedOption, setSelectedOption ] = useState< string >(
