@@ -49,12 +49,8 @@ const FilledMiniCartContentsBlock = ( {
 				context: 'wc/cart',
 			} );
 		} );
-	}, [
-		createErrorNotice,
-		cartItemErrors,
-		currentlyDisplayedErrorNoticeCodes,
-		removeNotice,
-	] );
+		// eslint-disable-next-line react-hooks/exhaustive-deps
+	}, [ createErrorNotice, cartItemErrors, removeNotice ] );
 
 	if ( cartItems.length === 0 ) {
 		return null;
