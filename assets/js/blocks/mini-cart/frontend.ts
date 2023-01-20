@@ -76,6 +76,21 @@ window.addEventListener( 'load', () => {
 
 	document.body.addEventListener( 'wc-blocks_adding_to_cart', loadScripts );
 
+	// Load scripts if a page is reloaded via the back button (potentially out of date cart data).
+	// Based on refreshDataIfPersisted() in assets/js/base/context/cart-checkout/cart/index.js.
+	window.addEventListener(
+		'pageshow',
+		( event: PageTransitionEvent ): void => {
+			if (
+				event?.persisted ||
+				( typeof window.performance !== undefined &&
+					window.performance.navigation.type === 2 )
+			) {
+				loadScripts();
+			}
+		}
+	);
+
 	miniCartBlocks.forEach( ( miniCartBlock, i ) => {
 		if ( ! ( miniCartBlock instanceof HTMLElement ) ) {
 			return;
