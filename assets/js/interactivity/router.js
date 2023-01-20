@@ -19,7 +19,7 @@ const stylesheets = new Map();
 // Helper to remove domain and hash from the URL. We are only interesting in
 // caching the path and the query.
 const cleanUrl = ( url ) => {
-	const u = new URL( url, 'http://a.bc' );
+	const u = new URL( url, window.location );
 	return u.pathname + u.search;
 };
 

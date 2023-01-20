@@ -779,7 +779,7 @@ const getInteractivityAPIConfig = ( options = {} ) => {
 	const { alias, resolvePlugins = [] } = options;
 	return {
 		entry: {
-			runtime: './assets/js/base/interactivity',
+			runtime: './assets/js/interactivity',
 			'simple-price-filter':
 				'./assets/js/blocks/simple-price-filter/view.js',
 		},
