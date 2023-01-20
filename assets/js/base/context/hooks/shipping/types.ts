@@ -12,7 +12,7 @@ export interface ShippingData {
 	// Returns a function that accepts a shipping rate ID and a package ID.
 	selectShippingRate: (
 		newShippingRateId: string,
-		packageId: string | number
+		packageId?: string | number | undefined
 	) => void;
 	// Only true when ALL packages support local pickup. If true, we can show the collection/delivery toggle
 	isCollectable: boolean;
