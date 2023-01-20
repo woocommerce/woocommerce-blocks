@@ -1,8 +1,8 @@
 /**
  * External dependencies
  */
-import { wpx } from '@woocommerce/base-interactivity/wpx';
-import { navigate } from '@woocommerce/base-interactivity/router';
+import { wpx } from '@woocommerce/interactivity/wpx';
+import { navigate } from '@woocommerce/interactivity/router';
 
 const getHrefWithFilters = ( { state } ) => {
 	const { minPrice, maxPrice } = state.filters;
