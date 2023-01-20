@@ -21,6 +21,7 @@ const blocks = {
 	},
 	'attribute-filter': {},
 	cart: {},
+	'catalog-sorting': {},
 	checkout: {},
 	'customer-account': {},
 	'featured-category': {
@@ -39,6 +40,7 @@ const blocks = {
 	'mini-cart-contents': {
 		customDir: 'mini-cart/mini-cart-contents',
 	},
+	'store-notices': {},
 	'price-filter': {},
 	'product-best-sellers': {},
 	'product-category': {},
@@ -48,6 +50,7 @@ const blocks = {
 	'product-query': {
 		isExperimental: true,
 	},
+	'product-results-count': {},
 	'product-search': {},
 	'product-tag': {},
 	'product-top-rated': {},
@@ -142,17 +145,19 @@ const entries = {
 	},
 	payments: {
 		'wc-payment-method-cheque':
-			'./assets/js/payment-method-extensions/payment-methods/cheque/index.js',
+			'./assets/js/extensions/payment-methods/cheque/index.js',
 		'wc-payment-method-paypal':
-			'./assets/js/payment-method-extensions/payment-methods/paypal/index.js',
+			'./assets/js/extensions/payment-methods/paypal/index.js',
 		'wc-payment-method-bacs':
-			'./assets/js/payment-method-extensions/payment-methods/bacs/index.js',
+			'./assets/js/extensions/payment-methods/bacs/index.js',
 		'wc-payment-method-cod':
-			'./assets/js/payment-method-extensions/payment-methods/cod/index.js',
+			'./assets/js/extensions/payment-methods/cod/index.js',
 	},
 	extensions: {
 		'wc-blocks-google-analytics':
 			'./assets/js/extensions/google-analytics/index.ts',
+		'wc-shipping-method-pickup-location':
+			'./assets/js/extensions/shipping-methods/pickup-location/index.js',
 	},
 };
 

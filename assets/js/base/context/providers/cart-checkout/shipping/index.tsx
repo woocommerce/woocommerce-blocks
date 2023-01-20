@@ -15,6 +15,10 @@ import { CHECKOUT_STORE_KEY } from '@woocommerce/block-data';
 /**
  * Internal dependencies
  */
+import type {
+	ShippingDataContextType,
+	ShippingDataProviderProps,
+} from './types';
 import { ERROR_TYPES, DEFAULT_SHIPPING_CONTEXT_DATA } from './constants';
 import { hasInvalidShippingAddress } from './utils';
 import { errorStatusReducer } from './reducers';
@@ -25,36 +29,25 @@ import {
 	emitEvent,
 } from './event-emit';
 import { useStoreCart } from '../../../hooks/cart/use-store-cart';
-import { useSelectShippingRate } from '../../../hooks/shipping/use-select-shipping-rate';
 import { useShippingData } from '../../../hooks/shipping/use-shipping-data';
-
-/**
- * @typedef {import('@woocommerce/type-defs/contexts').ShippingDataContext} ShippingDataContext
- * @typedef {import('react')} React
- */
 
 const { NONE, INVALID_ADDRESS, UNKNOWN } = ERROR_TYPES;
 const ShippingDataContext = createContext( DEFAULT_SHIPPING_CONTEXT_DATA );
 
-/**
- * @return {ShippingDataContext} Returns data and functions related to shipping methods.
- */
-export const useShippingDataContext = () => {
+export const useShippingDataContext = (): ShippingDataContextType => {
 	return useContext( ShippingDataContext );
 };
 
 /**
  * The shipping data provider exposes the interface for shipping in the checkout/cart.
- *
- * @param {Object}             props          Incoming props for provider
- * @param {React.ReactElement} props.children
  */
-export const ShippingDataProvider = ( { children } ) => {
+export const ShippingDataProvider = ( {
+	children,
+}: ShippingDataProviderProps ) => {
 	const { __internalIncrementCalculating, __internalDecrementCalculating } =
 		useDispatch( CHECKOUT_STORE_KEY );
 	const { shippingRates, isLoadingRates, cartErrors } = useStoreCart();
-	const { isSelectingRate } = useSelectShippingRate();
-	const { selectedRates } = useShippingData();
+	const { selectedRates, isSelectingRate } = useShippingData();
 	const [ shippingErrorStatus, dispatchErrorStatus ] = useReducer(
 		errorStatusReducer,
 		NONE
@@ -193,10 +186,7 @@ export const ShippingDataProvider = ( { children } ) => {
 		currentErrorStatus.hasInvalidAddress,
 	] );
 
-	/**
-	 * @type {ShippingDataContext}
-	 */
-	const ShippingData = {
+	const ShippingData: ShippingDataContextType = {
 		shippingErrorStatus: currentErrorStatus,
 		dispatchErrorStatus,
 		shippingErrorTypes: ERROR_TYPES,
