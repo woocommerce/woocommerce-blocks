@@ -2,14 +2,16 @@
  * External dependencies
  */
 import { registerBlockType } from '@wordpress/blocks';
-import metadata from './block.json';
 
 /**
  * Internal dependencies
  */
-import { ProductImageGalleryEdit } from './edit';
+import edit from './edit';
+import save from './save';
+import metadata from './block.json';
 
 registerBlockType( metadata, {
 	icon: 'tickets',
-	edit: ProductImageGalleryEdit,
+	edit,
+	save,
 } );
