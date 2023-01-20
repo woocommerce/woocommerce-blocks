@@ -32,7 +32,11 @@ import {
 	hasTemplateSupportForClassicTemplateBlock,
 	getTemplateDetailsBySlug,
 } from './utils';
-import { INNER_BLOCKS_TEMPLATE } from '../product-query/constants';
+import {
+	INNER_BLOCKS_TEMPLATE,
+	QUERY_DEFAULT_ATTRIBUTES,
+} from '../product-query/constants';
+import { VARIATION_NAME } from '../product-query/variations/product-query';
 
 type Attributes = {
 	template: string;
@@ -112,8 +116,15 @@ const Edit = ( {
 											createBlock(
 												'woocommerce/catalog-sorting'
 											),
-											...createBlocksFromInnerBlocksTemplate(
-												INNER_BLOCKS_TEMPLATE
+											createBlock(
+												'core/query',
+												{
+													...QUERY_DEFAULT_ATTRIBUTES,
+													namespace: VARIATION_NAME,
+												},
+												createBlocksFromInnerBlocksTemplate(
+													INNER_BLOCKS_TEMPLATE
+												)
 											),
 										] )
 									);

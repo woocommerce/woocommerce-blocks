@@ -17,7 +17,7 @@ import {
 	QUERY_LOOP_ID,
 } from '../constants';
 
-const VARIATION_NAME = 'woocommerce/product-query';
+export const VARIATION_NAME = 'woocommerce/product-query';
 
 if ( isWpVersion( '6.1', '>=' ) ) {
 	registerBlockVariation( QUERY_LOOP_ID, {
