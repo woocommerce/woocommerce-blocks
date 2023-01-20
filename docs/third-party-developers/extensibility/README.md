@@ -39,7 +39,7 @@ In addition to the reference material below, [please see the `block-checkout` pa
 
 | Document                                                                                         | Description                                                                                                       |
 | ------------------------------------------------------------------------------------------------ | ----------------------------------------------------------------------------------------------------------------- |
-| [How the Checkout Block processes an order](./checkout-block/how-checkout-processes-an-order.md) | The `IntegrationInterface` class and how to use it to register scripts, styles, and data with WooCommerce Blocks. |
+| [How the Checkout Block processes an order](./checkout-block/how-checkout-processes-an-order.md) | The detailed inner workings of the Checkout Flow. |
 | [IntegrationInterface](./checkout-block/integration-interface.md)                                | The `IntegrationInterface` class and how to use it to register scripts, styles, and data with WooCommerce Blocks. |
 | [Available Filters](./checkout-block/available-filters.md)                                       | All about the filters that you may use to change values of certain elements of WooCommerce Blocks.                |
 | [Slots and Fills](./checkout-block/slot-fills.md)                                                | Explains Slot Fills and how to use them to render your own components in Cart and Checkout.                       |
