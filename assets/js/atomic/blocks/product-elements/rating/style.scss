@@ -71,3 +71,10 @@
 		}
 	}
 }
+
+// Fix applied specifically to Classic Template
+.woocommerce-loop-product__link {
+	.wc-block-components-product-rating__stars {
+		display: block;
+	}
+}
