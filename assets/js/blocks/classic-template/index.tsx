@@ -2,8 +2,6 @@
  * External dependencies
  */
 import {
-	createBlock,
-	createBlocksFromInnerBlocksTemplate,
 	getBlockType,
 	registerBlockType,
 	unregisterBlockType,
@@ -32,11 +30,7 @@ import {
 	hasTemplateSupportForClassicTemplateBlock,
 	getTemplateDetailsBySlug,
 } from './utils';
-import {
-	INNER_BLOCKS_TEMPLATE,
-	QUERY_DEFAULT_ATTRIBUTES,
-} from '../product-query/constants';
-import { VARIATION_NAME } from '../product-query/variations/product-query';
+import { getProductArchiveTemplate } from '../../../../templates/templates/blockified/archive-product';
 
 type Attributes = {
 	template: string;
@@ -106,27 +100,7 @@ const Edit = ( {
 								onClick={ () => {
 									replaceBlock(
 										clientId,
-										createBlock( 'core/group', {}, [
-											createBlock(
-												'woocommerce/store-notices'
-											),
-											createBlock(
-												'woocommerce/product-results-count'
-											),
-											createBlock(
-												'woocommerce/catalog-sorting'
-											),
-											createBlock(
-												'core/query',
-												{
-													...QUERY_DEFAULT_ATTRIBUTES,
-													namespace: VARIATION_NAME,
-												},
-												createBlocksFromInnerBlocksTemplate(
-													INNER_BLOCKS_TEMPLATE
-												)
-											),
-										] )
+										getProductArchiveTemplate()
 									);
 								} }
 								text={ __(
