@@ -6,6 +6,7 @@
 		"./assets/js/blocks/**/block.json",
 		"./assets/js/blocks/mini-cart/mini-cart-contents/inner-blocks/**/block.json",
 		"./storybook/**/*",
+		"./templates/**/*.ts",
 		"./tests/js/setup-after-env.ts"
 	],
 	"exclude": [
