@@ -61,6 +61,8 @@ const Edit = ( {
 		[ attributes.align, attributes.template, setAttributes ]
 	);
 
+	const isBlockificationPossible = isWpVersion( '6.1', '>=' );
+
 	return (
 		<div { ...blockProps }>
 			<Placeholder
@@ -80,6 +82,12 @@ const Edit = ( {
 							'Removing this will cause unintended effects on your store.',
 							'woo-gutenberg-products-block'
 						) }
+						<br />
+						{ isBlockificationPossible &&
+							__(
+								'We encourage you to use the blockified version of this block instead. Use the button below to migrate.',
+								'woo-gutenberg-products-block'
+							) }
 					</p>
 					<p>
 						{ sprintf(
@@ -93,7 +101,7 @@ const Edit = ( {
 					</p>
 				</div>
 				<div className="wp-block-woocommerce-classic-template__placeholder-wireframe">
-					{ isWpVersion( '6.1', '>=' ) && (
+					{ isBlockificationPossible && (
 						<div className="wp-block-woocommerce-classic-template__placeholder-migration-button-container">
 							<Button
 								isPrimary
