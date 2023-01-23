@@ -307,4 +307,4 @@ function wp_directives_register_scripts() {
 		true
 	);
 }
-add_action( 'wp_enqueue_scripts', 'wp_directives_register_scripts' );
+add_action( 'init', 'wp_directives_register_scripts' );
