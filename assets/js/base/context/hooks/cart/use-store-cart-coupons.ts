@@ -40,14 +40,12 @@ export const useStoreCartCoupons = ( context = '' ): StoreCartCoupon => {
 			[ createErrorNotice, createNotice ]
 		);
 
-	const { applyCoupon, removeCoupon, receiveApplyingCoupon } =
-		useDispatch( CART_STORE_KEY );
+	const { applyCoupon, removeCoupon } = useDispatch( CART_STORE_KEY );
 
 	const applyCouponWithNotices = ( couponCode: string ) => {
 		applyCoupon( couponCode )
-			.then( ( result ) => {
+			.then( () => {
 				if (
-					result === true &&
 					__experimentalApplyCheckoutFilter( {
 						filterName: 'showApplyCouponNotice',
 						defaultValue: true,
@@ -79,16 +77,13 @@ export const useStoreCartCoupons = ( context = '' ): StoreCartCoupon => {
 						hidden: false,
 					},
 				} );
-				// Finished handling the coupon.
-				receiveApplyingCoupon( '' );
 			} );
 	};
 
 	const removeCouponWithNotices = ( couponCode: string ) => {
 		removeCoupon( couponCode )
-			.then( ( result ) => {
+			.then( () => {
 				if (
-					result === true &&
 					__experimentalApplyCheckoutFilter( {
 						filterName: 'showRemoveCouponNotice',
 						defaultValue: true,
@@ -118,8 +113,6 @@ export const useStoreCartCoupons = ( context = '' ): StoreCartCoupon => {
 					id: 'coupon-form',
 					context,
 				} );
-				// Finished handling the coupon.
-				receiveApplyingCoupon( '' );
 			} );
 	};
 

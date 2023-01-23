@@ -144,7 +144,8 @@ export const processErrorResponse = (
 		return processInvalidParamResponse( response, context );
 	}
 
-	let errorMessage = response.message || DEFAULT_ERROR_MESSAGE;
+	let errorMessage =
+		decodeEntities( response.message ) || DEFAULT_ERROR_MESSAGE;
 
 	// Replace the generic invalid JSON message with something more user friendly.
 	if ( response.code === 'invalid_json' ) {
