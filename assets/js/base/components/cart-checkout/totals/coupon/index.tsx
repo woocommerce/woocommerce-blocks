@@ -35,7 +35,7 @@ export interface TotalsCouponProps {
 	/**
 	 * Submit handler
 	 */
-	onSubmit?: ( couponValue: string ) => Promise< boolean >;
+	onSubmit?: ( couponValue: string ) => Promise< boolean > | undefined;
 }
 
 export const TotalsCoupon = ( {
