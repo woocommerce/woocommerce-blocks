@@ -1,13 +1,13 @@
 /**
  * External dependencies
  */
-import { isApiErrorResponse } from '@woocommerce/types';
-import type {
+import {
 	Cart,
 	CartResponse,
 	ExtensionCartUpdateArgs,
 	BillingAddressShippingAddress,
 	ApiErrorResponse,
+	isApiErrorResponse,
 } from '@woocommerce/types';
 import { camelCase, mapKeys } from 'lodash';
 import {
@@ -20,7 +20,7 @@ import {
  */
 import { apiFetchWithHeaders } from '../shared-controls';
 import { notifyQuantityChanges } from './notify-quantity-changes';
-import { notifyErrors, notifyCartErrors } from './notify-errors';
+import { notifyCartErrors } from './notify-errors';
 import {
 	CartDispatchFromMap,
 	CartResolveSelectFromMap,
@@ -57,7 +57,7 @@ export const receiveCart =
 	};
 
 /**
- * A thunk used in updating the store with cart errors retrieved from a request. This also notifies the shopper of any errors that occur.
+ * A thunk used in updating the store with cart errors retrieved from a request.
  */
 export const receiveError =
 	( response: ApiErrorResponse | null = null ) =>
@@ -68,8 +68,6 @@ export const receiveError =
 			if ( response.data?.cart ) {
 				dispatch.receiveCart( response?.data?.cart );
 			}
-
-			notifyErrors( response );
 		}
 	};
 
@@ -122,7 +120,7 @@ export const applyCoupon =
 			dispatch.receiveError( error );
 			return Promise.reject( error );
 		} finally {
-			dispatch.receiveRemovingCoupon( '' );
+			dispatch.receiveApplyingCoupon( '' );
 		}
 	};
 
@@ -272,8 +270,7 @@ export const changeCartItemQuantity =
  * Selects a shipping rate.
  *
  * @param {string}          rateId      The id of the rate being selected.
- * @param {number | string} [packageId] The key of the packages that we will
- *                                      select within.
+ * @param {number | string} [packageId] The key of the packages that we will select within.
  */
 export const selectShippingRate =
 	( rateId: string, packageId = 0 ) =>
@@ -290,7 +287,7 @@ export const selectShippingRate =
 				cache: 'no-store',
 			} );
 			dispatch.receiveCart( response );
-			return response;
+			return response as CartResponse;
 		} catch ( error ) {
 			dispatch.receiveError( error );
 			return Promise.reject( error );
