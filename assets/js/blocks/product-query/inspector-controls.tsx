@@ -1,9 +1,10 @@
 /**
  * External dependencies
  */
-import { ElementType } from 'react';
+import React, { ElementType } from 'react';
+import { createPortal, useContext } from '@wordpress/element';
 import { __ } from '@wordpress/i18n';
-import { InspectorControls } from '@wordpress/block-editor';
+import { BlockList, InspectorControls } from '@wordpress/block-editor';
 import { useSelect } from '@wordpress/data';
 import { addFilter } from '@wordpress/hooks';
 import { ProductQueryFeedbackPrompt } from '@woocommerce/editor-components/feedback-prompt';
@@ -38,8 +39,7 @@ import {
 } from './constants';
 import { PopularPresets } from './inspector-controls/popular-presets';
 import { AttributesFilter } from './inspector-controls/attributes-filter';
-
-import './editor.scss';
+import { LayoutControls } from './inspector-controls/layout-controls';
 
 const NAMESPACED_CONTROLS = ALL_PRODUCT_QUERY_CONTROLS.map(
 	( id ) =>
@@ -222,10 +222,29 @@ const ProductQueryControls = ( props: ProductQueryBlock ) => {
 export const withProductQueryControls =
 	< T extends EditorBlock< T > >( BlockEdit: ElementType ) =>
 	( props: ProductQueryBlock ) => {
+		const $rootContainer: HTMLElement = useContext(
+			BlockList.__unstableElementContext
+		);
+
+		const gap = props.attributes?.style?.spacing?.blockGap;
+
+		const Styles = (
+			<style>
+				{ `
+			[data-block='${ props.clientId }'] .wp-block-post-template {
+				column-gap: ${ gap?.left };
+				row-gap: ${ gap?.top }
+			}` }
+			</style>
+		);
+		const NewStyles = () =>
+			$rootContainer ? createPortal( Styles, $rootContainer ) : null;
 		return isWooQueryBlockVariation( props ) ? (
 			<>
+				<NewStyles />
 				<ProductQueryControls { ...props } />
 				<BlockEdit { ...props } />
+				<LayoutControls { ...props } />
 			</>
 		) : (
 			<BlockEdit { ...props } />
