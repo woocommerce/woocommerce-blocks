@@ -256,6 +256,7 @@ export const withWrapperElement =
 						text: 'Add to cart',
 						textAlign: 'center',
 						fontSize: 'small',
+						...props.attributes,
 					},
 				};
 				return <BlockEdit { ...props } { ...extraProps } />;
