@@ -10,6 +10,7 @@ import type { Currency } from '@woocommerce/price-format';
 import { ShippingVia } from '@woocommerce/base-components/cart-checkout/totals/shipping/shipping-via';
 import { useSelect } from '@wordpress/data';
 import { CHECKOUT_STORE_KEY } from '@woocommerce/block-data';
+import { formatShippingAddress } from '@woocommerce/base-utils';
 
 /**
  * Internal dependencies
@@ -66,6 +67,8 @@ export const TotalsShipping = ( {
 				.flatMap( ( rate ) => rate.name );
 		}
 	);
+
+	const isAddressComplete = !! formatShippingAddress( shippingAddress );
 
 	return (
 		<div
@@ -132,6 +135,7 @@ export const TotalsShipping = ( {
 						hasRates={ hasRates }
 						shippingRates={ shippingRates }
 						isLoadingRates={ isLoadingRates }
+						isAddressComplete={ isAddressComplete }
 					/>
 				) }
 		</div>

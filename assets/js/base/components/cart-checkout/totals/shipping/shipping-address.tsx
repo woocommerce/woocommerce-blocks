@@ -3,6 +3,7 @@
  */
 import { __ } from '@wordpress/i18n';
 import { EnteredAddress } from '@woocommerce/settings';
+import { formatShippingAddress } from '@woocommerce/base-utils';
 
 /**
  * Internal dependencies
@@ -23,9 +24,13 @@ export const ShippingAddress = ( {
 	setIsShippingCalculatorOpen,
 	shippingAddress,
 }: ShippingAddressProps ): JSX.Element | null => {
+	const formattedLocation = formatShippingAddress( shippingAddress );
+	if ( ! formattedLocation ) {
+		return null;
+	}
 	return (
 		<>
-			<ShippingLocation address={ shippingAddress } />
+			<ShippingLocation formattedLocation={ formattedLocation } />
 			{ showCalculator && (
 				<CalculatorButton
 					label={ __(
