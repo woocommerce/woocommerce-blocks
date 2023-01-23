@@ -624,11 +624,15 @@ const getStylingConfig = ( options = {} ) => {
 					editorStyle: {
 						// Capture all `editor` stylesheets and editor-components stylesheets.
 						test: ( module = {}, { moduleGraph } ) => {
-							if ( ! module.type.includes( 'css' ) ) return false;
+							if ( ! module.type.includes( 'css' ) ) {
+								return false;
+							}
 
 							const moduleIssuer =
 								moduleGraph.getIssuer( module );
-							if ( ! moduleIssuer ) return false;
+							if ( ! moduleIssuer ) {
+								return false;
+							}
 
 							return (
 								moduleIssuer.resource.endsWith(
