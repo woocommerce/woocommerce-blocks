@@ -43,7 +43,7 @@ export const useStoreCartCoupons = ( context = '' ): StoreCartCoupon => {
 	const { applyCoupon, removeCoupon } = useDispatch( CART_STORE_KEY );
 
 	const applyCouponWithNotices = ( couponCode: string ) => {
-		applyCoupon( couponCode )
+		return applyCoupon( couponCode )
 			.then( () => {
 				if (
 					__experimentalApplyCheckoutFilter( {
@@ -69,6 +69,7 @@ export const useStoreCartCoupons = ( context = '' ): StoreCartCoupon => {
 						}
 					);
 				}
+				return Promise.resolve( true );
 			} )
 			.catch( ( error ) => {
 				setValidationErrors( {
@@ -77,11 +78,12 @@ export const useStoreCartCoupons = ( context = '' ): StoreCartCoupon => {
 						hidden: false,
 					},
 				} );
+				return Promise.resolve( false );
 			} );
 	};
 
 	const removeCouponWithNotices = ( couponCode: string ) => {
-		removeCoupon( couponCode )
+		return removeCoupon( couponCode )
 			.then( () => {
 				if (
 					__experimentalApplyCheckoutFilter( {
@@ -107,12 +109,14 @@ export const useStoreCartCoupons = ( context = '' ): StoreCartCoupon => {
 						}
 					);
 				}
+				return Promise.resolve( true );
 			} )
 			.catch( ( error ) => {
 				createErrorNotice( error.message, {
 					id: 'coupon-form',
 					context,
 				} );
+				return Promise.resolve( false );
 			} );
 	};
 
