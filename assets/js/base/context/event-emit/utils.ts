@@ -42,6 +42,16 @@ export interface ResponseType extends Record< string, unknown > {
 	retry?: boolean;
 }
 
+/**
+ * Observers of checkout/cart events can return a response object to indicate success/error/failure. They may also
+ * optionally pass metadata.
+ */
+export interface ObserverResponse {
+	// The response
+	type: responseTypes;
+	meta?: Record< string, unknown > | undefined;
+}
+
 const isResponseOf = (
 	response: unknown,
 	type: string
