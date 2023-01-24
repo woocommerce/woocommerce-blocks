@@ -21,6 +21,7 @@ const blocks = {
 	},
 	'attribute-filter': {},
 	cart: {},
+	'catalog-sorting': {},
 	checkout: {},
 	'customer-account': {},
 	'featured-category': {
@@ -39,6 +40,7 @@ const blocks = {
 	'mini-cart-contents': {
 		customDir: 'mini-cart/mini-cart-contents',
 	},
+	'store-notices': {},
 	'price-filter': {},
 	'product-best-sellers': {},
 	'product-category': {},
@@ -48,6 +50,7 @@ const blocks = {
 	'product-query': {
 		isExperimental: true,
 	},
+	'product-results-count': {},
 	'product-search': {},
 	'product-tag': {},
 	'product-top-rated': {},
