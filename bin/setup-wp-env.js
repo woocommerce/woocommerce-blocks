@@ -18,8 +18,6 @@ if ( process.env.WORDPRESS_VERSION ) {
 	wpEnv.core = `WordPress/WordPress#${ process.env.WORDPRESS_VERSION }`;
 }
 
-console.log( JSON.stringify( wpEnv ) );
-
 fs.writeFileSync(
 	path.join( __dirname, '..', '.wp-env.override.json' ),
 	JSON.stringify( wpEnv )
