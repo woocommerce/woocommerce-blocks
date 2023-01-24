@@ -13,7 +13,6 @@ inputs:
     PHP_VERSION: 
         description: "PHP Version"
         required: true
-        default: 8.0
 
 runs:
     using: 'composite'
@@ -61,7 +60,7 @@ runs:
         - name: Set up PHP
           uses: shivammathur/setup-php@v2
           with:
-              php-version: 8.0
+              php-version: ${{ inputs.PHP_VERSION }}
               coverage: none
               tools: composer
 

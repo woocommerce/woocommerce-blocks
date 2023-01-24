@@ -21,7 +21,7 @@ jobs:
                   WOOCOMMERCE_BLOCKS_PHASE: 3
                   GUTENBERG_EDITOR_CONTEXT: 'gutenberg'
                   WORDPRESS_VERSION: '6.1'
-                  PHP_VERSION: 8.0
+                  PHP_VERSION: "8.0"
 
     JSE2E:
         strategy:
@@ -38,7 +38,7 @@ jobs:
                   WOOCOMMERCE_BLOCKS_PHASE: 3
                   GUTENBERG_EDITOR_CONTEXT: ''
                   WORDPRESS_VERSION: '6.1'
-                  PHP_VERSION: 8.0
+                  PHP_VERSION: '8.0'
 
     JSE2EPrevious:
         strategy:
@@ -48,11 +48,13 @@ jobs:
         name: JavaScript E2E Tests (WP 6.0)
         runs-on: ubuntu-latest
         steps:
+            - uses: actions/checkout@v3
+
             - uses: ./.github/e2e-tests
               with:
                   WOOCOMMERCE_BLOCKS_PHASE: 3
                   GUTENBERG_EDITOR_CONTEXT: ''
-                  PHP_VERSION: 7.4
+                  PHP_VERSION: '7.4'
                   WORDPRESS_VERSION: '6.0'
 
     JSE2EMinimiumWordPress:
@@ -63,9 +65,11 @@ jobs:
         name: JavaScript E2E Tests (WP 5.9)
         runs-on: ubuntu-latest
         steps:
+            - uses: actions/checkout@v3
+
             - uses: ./.github/e2e-tests
               with:
                   WOOCOMMERCE_BLOCKS_PHASE: 3
                   GUTENBERG_EDITOR_CONTEXT: ''
-                  PHP_VERSION: 7.4
+                  PHP_VERSION: '7.4'
                   WORDPRESS_VERSION: '5.9'

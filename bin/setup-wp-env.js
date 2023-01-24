@@ -1,5 +1,6 @@
 const fs = require( 'fs' );
 const path = require( 'path' );
+const { isEmpty } = require( 'lodash' );
 
 const wpEnvRaw = fs.readFileSync(
 	path.join( __dirname, '..', '.wp-env.json' )
@@ -7,7 +8,7 @@ const wpEnvRaw = fs.readFileSync(
 
 const wpEnv = JSON.parse( wpEnvRaw );
 
-if ( process.env.GUTENBERG_EDITOR_CONTEXT ) {
+if ( ! isEmpty( process.env.GUTENBERG_EDITOR_CONTEXT ) ) {
 	wpEnv.plugins.push(
 		'https://downloads.wordpress.org/plugin/gutenberg.latest-stable.zip'
 	);
