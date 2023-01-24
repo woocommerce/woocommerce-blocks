@@ -336,3 +336,7 @@
 .screen-reader-text:focus {
 	@include visually-hidden-focus-reveal();
 }
+
+.components-notice__content {
+	color: $black;
+}
