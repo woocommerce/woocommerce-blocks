@@ -20,7 +20,7 @@ jobs:
               with:
                   WOOCOMMERCE_BLOCKS_PHASE: 3
                   GUTENBERG_EDITOR_CONTEXT: 'gutenberg'
-                  WORDPRESS_VERSION: ''
+                  WORDPRESS_VERSION: '6.1'
 
     JSE2E:
         strategy:
@@ -36,7 +36,7 @@ jobs:
               with:
                   WOOCOMMERCE_BLOCKS_PHASE: 3
                   GUTENBERG_EDITOR_CONTEXT: ''
-                  WORDPRESS_VERSION: ''
+                  WORDPRESS_VERSION: '6.1'
 
     JSE2EPrevious:
         strategy:
@@ -52,6 +52,7 @@ jobs:
               with:
                   WOOCOMMERCE_BLOCKS_PHASE: 3
                   GUTENBERG_EDITOR_CONTEXT: ''
+                  PHP_VERSION: 7.4
                   WORDPRESS_VERSION: '6.0'
 
     JSE2EMinimiumWordPress:
@@ -68,4 +69,5 @@ jobs:
               with:
                   WOOCOMMERCE_BLOCKS_PHASE: 3
                   GUTENBERG_EDITOR_CONTEXT: ''
+                  PHP_VERSION: 7.4
                   WORDPRESS_VERSION: '5.9'
