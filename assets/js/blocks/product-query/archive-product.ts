@@ -56,4 +56,4 @@ export const getProductArchiveTemplate = () =>
 			createBlock( 'woocommerce/catalog-sorting' ),
 		] ),
 		createProductsBlock(),
-	].filter( Boolean );
+	].filter( Boolean ) as BlockInstance[];
