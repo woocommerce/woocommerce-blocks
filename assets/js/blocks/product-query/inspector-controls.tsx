@@ -4,11 +4,10 @@
 import { ElementType } from 'react';
 import { __ } from '@wordpress/i18n';
 import { InspectorControls } from '@wordpress/block-editor';
-import { useSelect } from '@wordpress/data';
+import { useSelect, select } from '@wordpress/data';
 import { addFilter } from '@wordpress/hooks';
 import { ProductQueryFeedbackPrompt } from '@woocommerce/editor-components/feedback-prompt';
 import { EditorBlock } from '@woocommerce/types';
-import { select } from '@wordpress/data';
 import {
 	FormTokenField,
 	ToggleControl,
@@ -54,8 +53,8 @@ function useDefaultWooQueryParamsForVariation(
 	variationName: string | undefined
 ): Partial< ProductQueryArguments > {
 	const variationAttributes: QueryBlockAttributes = useSelect(
-		( select ) =>
-			select( 'core/blocks' )
+		( tmpSelect ) =>
+			tmpSelect( 'core/blocks' )
 				.getBlockVariations( QUERY_LOOP_ID )
 				.find(
 					( variation: ProductQueryBlock ) =>
@@ -247,10 +246,29 @@ export const withWrapperElement =
 			);
 			const parentButtonsBlock = coreEditor.getBlock( parentBlocks[ 0 ] );
 
-			if (
+			const isWoocommerceVariation =
 				VARIATION_NAME ===
-				parentButtonsBlock?.attributes?.__woocommerceNamespace
-			) {
+				parentButtonsBlock?.attributes?.__woocommerceNamespace;
+
+			if ( isWoocommerceVariation ) {
+				/**
+				 * Hide the link button in the button block toolbar because
+				 * the link is provided dynamically during render in PHP file
+				 *
+				 * We are using hacky workaround here until there is a broader proposal for
+				 * toolbar customization, as it would be overkill to have one attribute per enabled/disabled feature.
+				 */
+
+				if ( props.isSelected ) {
+					setTimeout( () => {
+						const linkElement: HTMLElement | null =
+							document.querySelector(
+								'.edit-post-visual-editor button[name="link"]'
+							);
+						if ( linkElement ) linkElement.style.display = 'none';
+					}, 0 );
+				}
+
 				const extraProps = {
 					attributes: {
 						text: 'Add to cart',
