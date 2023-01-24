@@ -21,6 +21,7 @@ jobs:
                   WOOCOMMERCE_BLOCKS_PHASE: 3
                   GUTENBERG_EDITOR_CONTEXT: 'gutenberg'
                   WORDPRESS_VERSION: '6.1'
+                  PHP_VERSION: 8.0
 
     JSE2E:
         strategy:
@@ -37,6 +38,7 @@ jobs:
                   WOOCOMMERCE_BLOCKS_PHASE: 3
                   GUTENBERG_EDITOR_CONTEXT: ''
                   WORDPRESS_VERSION: '6.1'
+                  PHP_VERSION: 8.0
 
     JSE2EPrevious:
         strategy:

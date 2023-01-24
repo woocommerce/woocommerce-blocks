@@ -13,7 +13,7 @@ inputs:
     PHP_VERSION: 
         description: "PHP Version"
         required: true
-        default: "8.0"
+        default: 8.0
 
 runs:
     using: 'composite'
