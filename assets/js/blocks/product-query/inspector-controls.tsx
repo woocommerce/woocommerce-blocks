@@ -271,10 +271,15 @@ export const withWrapperElement =
 
 				const extraProps = {
 					attributes: {
-						text: 'Add to cart',
 						textAlign: 'center',
 						fontSize: 'small',
 						...props.attributes,
+						text: props.attributes?.text?.length
+							? props.attributes?.text
+							: __(
+									'Add to cart',
+									'woo-gutenberg-products-block'
+							  ),
 					},
 				};
 				return <BlockEdit { ...props } { ...extraProps } />;

@@ -47,8 +47,12 @@ class ProductAddToCartButton extends AbstractBlock {
 		);
 	}
 
-	/*
-	 * Add __woocommerceNamespace to 'core/button' block if it's parent block i.e. 'core/buttons' is a WooCommerce variation
+	/**
+	 * Add __woocommerceNamespace to 'core/button' block if it's parent block 'core/buttons' is a WooCommerce variation
+	 *
+	 * @param array $parsed_block The parsed block.
+	 * @param array $source_block The original block.
+	 * @param array $parent_block The parent block.
 	 */
 	public function render_block_data( $parsed_block, $source_block, $parent_block ) {
 		if ( 'core/button' !== $source_block['blockName'] ) {
@@ -70,9 +74,8 @@ class ProductAddToCartButton extends AbstractBlock {
 	 * @param string $block_content HTML content of the block being rendered.
 	 * @param array  $block         The full block, including name and attributes.
 	 */
-	public function on_render_block( $block_content, $block, $parent_block ) {
-		// return $block_content;
-		if ( 'core/button' !== $block['blockName'] ) {
+	public function on_render_block( $block_content, $block ) {
+		if ( 'core/button' !== $block['blockName'] || ! $block_content ) {
 			return $block_content;
 		}
 
@@ -82,9 +85,19 @@ class ProductAddToCartButton extends AbstractBlock {
 		if ( $this->is_woocommerce_variation( $block ) ) {
 			$product = wc_get_product( $post_id );
 
-			do_action( 'qm/debug', $block );
+			/**
+			 * $product->add_to_cart_text() is a method that retrieves the text
+			 * that should be displayed on the "Add to Cart" button for a specific product
+			 *
+			 * For example, if the product is a simple product and is in stock,
+			 * the text will be "Add to cart". If the product is a variable product,
+			 * the text will be "Select options". If the product is out of stock,
+			 * the text will be "Out of stock".
+			 */
+			$add_to_cart_text = $product->add_to_cart_text();
+			$link_text        = ! $product->is_type( 'simple' ) ? $add_to_cart_text : $this->extract_anchor_content_from( $block_content );
 
-			if ( $product && $block_content ) {
+			if ( $product ) {
 				$styles_and_classes = $this->extract_style_and_class_from_block_content( $block_content );
 				$div_class          = $styles_and_classes['div_class'];
 				$div_style          = $styles_and_classes['div_style'];
@@ -99,7 +112,7 @@ class ProductAddToCartButton extends AbstractBlock {
 								data-product_sku="' . esc_attr( $product->get_sku() ) . '"
 								class="wp-block-button__link ' . ( $product->is_purchasable() ? 'ajax_add_to_cart add_to_cart_button' : '' ) . ' wc-block-components-product-button__button product_type_' . esc_attr( $product->get_type() ) . ' ' . $anchor_class . '"
 								style="' . $anchor_style . '">'
-									. esc_html( $this->extract_anchor_content_from( $block_content ) )
+									. esc_html( $link_text )
 							. '</a>'
 					. '</div>';
 			}
@@ -137,12 +150,15 @@ class ProductAddToCartButton extends AbstractBlock {
 
 	/**
 	 * Extract anchor content from block content
+	 *
+	 * @param string $block_content The HTML content of the block.
 	 */
 	private function extract_anchor_content_from( $block_content ) {
 		$dom = new DOMDocument();
 		$dom->loadHTML( $block_content );
 
 		$div = $dom->getElementsByTagName( 'a' )->item( 0 );
+		// phpcs:ignore WordPress.NamingConventions.ValidVariableName.UsedPropertyNotSnakeCase
 		return $div->nodeValue;
 	}
 
