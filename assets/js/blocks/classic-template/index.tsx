@@ -37,6 +37,26 @@ type Attributes = {
 	align: string;
 };
 
+const getDescriptionAllowingConversion = ( templateTitle: string ) =>
+	sprintf(
+		/* translators: %s is the template title */
+		__(
+			"This block serves as a placeholder for your %s. We recommend upgrading to the Products block for more features to edit your products visually. Don't worry, you can always revert back.",
+			'woo-gutenberg-products-block'
+		),
+		templateTitle
+	);
+
+const getDescriptionDisallowingConversion = ( templateTitle: string ) =>
+	sprintf(
+		/* translators: %s is the template title */
+		__(
+			'This block serves as a placeholder for your %s. It will display the actual product image, title, price in your store. You can move this placeholder around and add more blocks around to customize the template.',
+			'woo-gutenberg-products-block'
+		),
+		templateTitle
+	);
+
 const Edit = ( {
 	clientId,
 	attributes,
@@ -61,7 +81,12 @@ const Edit = ( {
 		[ attributes.align, attributes.template, setAttributes ]
 	);
 
+	// Blockification is possible for the WP version 6.1 and above,
+	// which are the versions the Products block supports.
 	const isBlockificationPossible = isWpVersion( '6.1', '>=' );
+	const placeholderDescription = isBlockificationPossible
+		? getDescriptionAllowingConversion( templateTitle )
+		: getDescriptionDisallowingConversion( templateTitle );
 
 	return (
 		<div { ...blockProps }>
@@ -71,16 +96,7 @@ const Edit = ( {
 				className="wp-block-woocommerce-classic-template__placeholder"
 			>
 				<div className="wp-block-woocommerce-classic-template__placeholder-copy">
-					<p>
-						{ sprintf(
-							/* translators: %s is the template title */
-							__(
-								"This block serves as a placeholder for your %s. We recommend upgrading to the Products block for more features to edit your products visually. Don't worry, you can always revert back.",
-								'woo-gutenberg-products-block'
-							),
-							templateTitle
-						) }
-					</p>
+					<p>{ placeholderDescription }</p>
 				</div>
 				<div className="wp-block-woocommerce-classic-template__placeholder-wireframe">
 					{ isBlockificationPossible && (
