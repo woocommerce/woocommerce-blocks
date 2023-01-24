@@ -19,6 +19,7 @@ export const supports = {
 		},
 		...( typeof __experimentalGetSpacingClassesAndStyles === 'function' && {
 			spacing: {
+				margin: true,
 				padding: true,
 				__experimentalSkipSerialization: true,
 			},
@@ -31,9 +32,10 @@ export const supports = {
 		__experimentalSelector:
 			'.wp-block-button.wc-block-components-product-button .wc-block-components-product-button__button',
 	} ),
-	...( typeof __experimentalGetSpacingClassesAndStyles === 'function' && {
-		spacing: {
-			margin: true,
-		},
-	} ),
+	...( typeof __experimentalGetSpacingClassesAndStyles === 'function' &&
+		! isFeaturePluginBuild() && {
+			spacing: {
+				margin: true,
+			},
+		} ),
 };
