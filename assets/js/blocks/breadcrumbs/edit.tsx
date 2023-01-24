@@ -15,10 +15,10 @@ const Edit = () => {
 
 	return (
 		<div { ...blockProps }>
-			{ __(
-				'Breadcrumbs / Navigation / Path',
-				'woo-gutenberg-products-block'
-			) }
+			<a href="/">
+				{ __( 'Breadcrumbs', 'woo-gutenberg-products-block' ) }
+			</a>
+			{ __( ' / Navigation / Path', 'woo-gutenberg-products-block' ) }
 		</div>
 	);
 };
