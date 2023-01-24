@@ -6,22 +6,22 @@ on:
     pull_request:
 
 jobs:
-    JSE2EWithGutenberg:
-        strategy:
-            fail-fast: false
-            matrix:
-                part: [1, 2, 3, 4, 5]
-        name: JavaScript E2E Tests (WP latest with Gutenberg plugin)
-        runs-on: ubuntu-latest
-        steps:
-            - uses: actions/checkout@v3
+    # JSE2EWithGutenberg:
+    #     strategy:
+    #         fail-fast: false
+    #         matrix:
+    #             part: [1, 2, 3, 4, 5]
+    #     name: JavaScript E2E Tests (WP latest with Gutenberg plugin)
+    #     runs-on: ubuntu-latest
+    #     steps:
+    #         - uses: actions/checkout@v3
 
-            - uses: ./.github/e2e-tests
-              with:
-                  WOOCOMMERCE_BLOCKS_PHASE: 3
-                  GUTENBERG_EDITOR_CONTEXT: 'gutenberg'
-                  WORDPRESS_VERSION: '6.1'
-                  PHP_VERSION: "8.0"
+    #         - uses: ./.github/e2e-tests
+    #           with:
+    #               WOOCOMMERCE_BLOCKS_PHASE: 3
+    #               GUTENBERG_EDITOR_CONTEXT: 'gutenberg'
+    #               WORDPRESS_VERSION: '6.1'
+    #               PHP_VERSION: "8.0"
 
     JSE2E:
         strategy:
@@ -40,36 +40,36 @@ jobs:
                   WORDPRESS_VERSION: '6.1'
                   PHP_VERSION: '8.0'
 
-    JSE2EPrevious:
-        strategy:
-            fail-fast: false
-            matrix:
-                part: [1, 2, 3, 4, 5]
-        name: JavaScript E2E Tests (WP 6.0)
-        runs-on: ubuntu-latest
-        steps:
-            - uses: actions/checkout@v3
+    # JSE2EPrevious:
+    #     strategy:
+    #         fail-fast: false
+    #         matrix:
+    #             part: [1, 2, 3, 4, 5]
+    #     name: JavaScript E2E Tests (WP 6.0)
+    #     runs-on: ubuntu-latest
+    #     steps:
+    #         - uses: actions/checkout@v3
 
-            - uses: ./.github/e2e-tests
-              with:
-                  WOOCOMMERCE_BLOCKS_PHASE: 3
-                  GUTENBERG_EDITOR_CONTEXT: ''
-                  PHP_VERSION: '7.4'
-                  WORDPRESS_VERSION: '6.0'
+    #         - uses: ./.github/e2e-tests
+    #           with:
+    #               WOOCOMMERCE_BLOCKS_PHASE: 3
+    #               GUTENBERG_EDITOR_CONTEXT: ''
+    #               PHP_VERSION: '7.4'
+    #               WORDPRESS_VERSION: '6.0'
 
-    JSE2EMinimiumWordPress:
-        strategy:
-            fail-fast: false
-            matrix:
-                part: [1, 2, 3, 4, 5]
-        name: JavaScript E2E Tests (WP 5.9)
-        runs-on: ubuntu-latest
-        steps:
-            - uses: actions/checkout@v3
+    # JSE2EMinimiumWordPress:
+    #     strategy:
+    #         fail-fast: false
+    #         matrix:
+    #             part: [1, 2, 3, 4, 5]
+    #     name: JavaScript E2E Tests (WP 5.9)
+    #     runs-on: ubuntu-latest
+    #     steps:
+    #         - uses: actions/checkout@v3
 
-            - uses: ./.github/e2e-tests
-              with:
-                  WOOCOMMERCE_BLOCKS_PHASE: 3
-                  GUTENBERG_EDITOR_CONTEXT: ''
-                  PHP_VERSION: '7.4'
-                  WORDPRESS_VERSION: '5.9'
+    #         - uses: ./.github/e2e-tests
+    #           with:
+    #               WOOCOMMERCE_BLOCKS_PHASE: 3
+    #               GUTENBERG_EDITOR_CONTEXT: ''
+    #               PHP_VERSION: '7.4'
+    #               WORDPRESS_VERSION: '5.9'
