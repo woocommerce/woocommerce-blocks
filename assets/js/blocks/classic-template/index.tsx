@@ -71,29 +71,11 @@ const Edit = ( {
 				className="wp-block-woocommerce-classic-template__placeholder"
 			>
 				<div className="wp-block-woocommerce-classic-template__placeholder-copy">
-					<p className="wp-block-woocommerce-classic-template__placeholder-warning">
-						<strong>
-							{ __(
-								'Do not remove this block!',
-								'woo-gutenberg-products-block'
-							) }
-						</strong>{ ' ' }
-						{ __(
-							'Removing this will cause unintended effects on your store.',
-							'woo-gutenberg-products-block'
-						) }
-						<br />
-						{ isBlockificationPossible &&
-							__(
-								'We encourage you to use the blockified version of this block instead. Use the button below to migrate.',
-								'woo-gutenberg-products-block'
-							) }
-					</p>
 					<p>
 						{ sprintf(
 							/* translators: %s is the template title */
 							__(
-								'This is a placeholder for the %s. In your store it will display the actual product image, title, price, etc. You can move this placeholder around and add more blocks around it to customize the template.',
+								"This block serves as a placeholder for your %s. We recommend upgrading to the Products block for more features to edit your products visually. Don't worry, you can always revert back.",
 								'woo-gutenberg-products-block'
 							),
 							templateTitle
@@ -112,7 +94,7 @@ const Edit = ( {
 									);
 								} }
 								text={ __(
-									'Use the blockified Product Grid Block',
+									'Upgrade to Products block',
 									'woo-gutenberg-products-block'
 								) }
 							/>
