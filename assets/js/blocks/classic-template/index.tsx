@@ -30,7 +30,7 @@ import {
 	hasTemplateSupportForClassicTemplateBlock,
 	getTemplateDetailsBySlug,
 } from './utils';
-import { getProductArchiveTemplate } from '../../../../templates/templates/blockified/archive-product';
+import { getProductArchiveTemplate } from '../product-query/archive-product';
 
 type Attributes = {
 	template: string;
