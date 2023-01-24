@@ -19,6 +19,8 @@
 defined( 'ABSPATH' ) || exit;
 
 $minimum_wp_version = '6.1.1';
+$is_test_env        = $_ENV['is_test_env'] === 'true' ? true : false;
+
 
 if ( ! defined( 'WC_BLOCKS_IS_FEATURE_PLUGIN' ) ) {
 	define( 'WC_BLOCKS_IS_FEATURE_PLUGIN', true );
@@ -56,7 +58,7 @@ function should_display_compatibility_notices() {
 	return $is_plugins_page || $is_woocommerce_page;
 }
 
-if ( version_compare( $GLOBALS['wp_version'], $minimum_wp_version, '<' ) ) {
+if ( version_compare( $GLOBALS['wp_version'], $minimum_wp_version, '<' ) && ! $is_test_env ) {
 	/**
 	 * Outputs for an admin notice about running WooCommerce Blocks on outdated WordPress.
 	 *

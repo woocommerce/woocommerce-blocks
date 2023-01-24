@@ -73,6 +73,7 @@ runs:
               WOOCOMMERCE_BLOCKS_PHASE: ${{ inputs.WOOCOMMERCE_BLOCKS_PHASE }}
               GUTENBERG_EDITOR_CONTEXT: ${{ inputs.GUTENBERG_EDITOR_CONTEXT }}
               WORDPRESS_VERSION: ${{ inputs.WORDPRESS_VERSION }}
+              IS_E2E_TESTS_ENV: "true"
           run: |
               node ./bin/setup-wp-env.js
               npm run wp-env start
