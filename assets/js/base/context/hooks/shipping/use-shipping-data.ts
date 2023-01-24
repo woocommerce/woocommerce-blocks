@@ -86,13 +86,14 @@ export const useShippingData = (): ShippingData => {
 	/**
 	 * Local function to check if the chosen rates are collectible.
 	 */
-	const areRatesCollectible = (
-		chosenRates: Record< string, string >
-	): boolean => {
-		return !! Object.values( chosenRates ).find( ( rate ) =>
-			collectibleMethodIds.includes( rate.split( ':' )[ 0 ] )
-		);
-	};
+	const areRatesCollectible = useCallback(
+		( chosenRates: Record< string, string > ): boolean => {
+			return !! Object.values( chosenRates ).find( ( rate ) =>
+				collectibleMethodIds.includes( rate.split( ':' )[ 0 ] )
+			);
+		},
+		[ collectibleMethodIds ]
+	);
 
 	// Selects a shipping rate, fires an event, and catch any errors.
 	const { dispatchCheckoutEvent } = useStoreEvents();
@@ -133,7 +134,12 @@ export const useShippingData = (): ShippingData => {
 					processErrorResponse( error );
 				} );
 		},
-		[ dispatchSelectShippingRate, dispatchCheckoutEvent, selectedRates ]
+		[
+			areRatesCollectible,
+			dispatchSelectShippingRate,
+			dispatchCheckoutEvent,
+			selectedRates,
+		]
 	);
 
 	return {
