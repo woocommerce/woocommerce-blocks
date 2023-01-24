@@ -14,7 +14,7 @@ if ( ! isEmpty( process.env.GUTENBERG_EDITOR_CONTEXT ) ) {
 	);
 }
 
-if ( process.env.WORDPRESS_VERSION ) {
+if ( ! isEmpty( process.env.WORDPRESS_VERSION ) ) {
 	wpEnv.core = `WordPress/WordPress#${ process.env.WORDPRESS_VERSION }`;
 }
 

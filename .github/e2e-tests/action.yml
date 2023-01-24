@@ -9,7 +9,7 @@ inputs:
         required: true
     WORDPRESS_VERSION:
         description: 'Path to assets file to compare the build assets with.'
-        required: true
+        required: false
     PHP_VERSION: 
         description: "PHP Version"
         required: true
