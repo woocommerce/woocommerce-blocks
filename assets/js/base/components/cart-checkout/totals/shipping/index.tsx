@@ -104,18 +104,17 @@ export const TotalsShipping = ( {
 							<ShippingVia
 								selectedShippingRates={ selectedShippingRates }
 							/>
-							{ ! prefersCollection && (
-								<ShippingAddress
-									shippingAddress={ shippingAddress }
-									showCalculator={ showCalculator }
-									isShippingCalculatorOpen={
-										isShippingCalculatorOpen
-									}
-									setIsShippingCalculatorOpen={
-										setIsShippingCalculatorOpen
-									}
-								/>
-							) }
+							<ShippingAddress
+								shippingAddress={ shippingAddress }
+								showCalculator={ showCalculator }
+								isShippingCalculatorOpen={
+									isShippingCalculatorOpen
+								}
+								setIsShippingCalculatorOpen={
+									setIsShippingCalculatorOpen
+								}
+								prefersCollection={ prefersCollection }
+							/>
 						</>
 					) : null
 				}
