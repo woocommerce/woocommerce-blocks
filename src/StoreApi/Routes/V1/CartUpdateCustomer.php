@@ -69,24 +69,31 @@ class CartUpdateCustomer extends AbstractCartRoute {
 	 * @return \WP_Error|true
 	 */
 	protected function validate_address_params( $request, $billing, $shipping ) {
-		$billing_validation_check  = $this->schema->billing_address_schema->validate_callback( $billing, $request, 'billing_address' );
-		$shipping_validation_check = $this->schema->shipping_address_schema->validate_callback( $shipping, $request, 'shipping_address' );
-
+		$posted_billing  = isset( $request['billing_address'] );
+		$posted_shipping = isset( $request['shipping_address'] );
 		$invalid_params  = array();
 		$invalid_details = array();
 
-		if ( false === $billing_validation_check ) {
-			$invalid_params['billing_address'] = __( 'Invalid parameter.', 'woo-gutenberg-products-block' );
-		} elseif ( is_wp_error( $billing_validation_check ) ) {
-			$invalid_params['billing_address']  = implode( ' ', $billing_validation_check->get_error_messages() );
-			$invalid_details['billing_address'] = \rest_convert_error_to_response( $billing_validation_check )->get_data();
+		if ( $posted_billing ) {
+			$billing_validation_check = $this->schema->billing_address_schema->validate_callback( $billing, $request, 'billing_address' );
+
+			if ( false === $billing_validation_check ) {
+				$invalid_params['billing_address'] = __( 'Invalid parameter.', 'woo-gutenberg-products-block' );
+			} elseif ( is_wp_error( $billing_validation_check ) ) {
+				$invalid_params['billing_address']  = implode( ' ', $billing_validation_check->get_error_messages() );
+				$invalid_details['billing_address'] = \rest_convert_error_to_response( $billing_validation_check )->get_data();
+			}
 		}
 
-		if ( false === $shipping_validation_check ) {
-			$invalid_params['shipping_address'] = __( 'Invalid parameter.', 'woo-gutenberg-products-block' );
-		} elseif ( is_wp_error( $shipping_validation_check ) ) {
-			$invalid_params['shipping_address']  = implode( ' ', $shipping_validation_check->get_error_messages() );
-			$invalid_details['shipping_address'] = \rest_convert_error_to_response( $shipping_validation_check )->get_data();
+		if ( $posted_shipping ) {
+			$shipping_validation_check = $this->schema->shipping_address_schema->validate_callback( $shipping, $request, 'shipping_address' );
+
+			if ( false === $shipping_validation_check ) {
+				$invalid_params['shipping_address'] = __( 'Invalid parameter.', 'woo-gutenberg-products-block' );
+			} elseif ( is_wp_error( $shipping_validation_check ) ) {
+				$invalid_params['shipping_address']  = implode( ' ', $shipping_validation_check->get_error_messages() );
+				$invalid_details['shipping_address'] = \rest_convert_error_to_response( $shipping_validation_check )->get_data();
+			}
 		}
 
 		if ( $invalid_params ) {
@@ -115,9 +122,23 @@ class CartUpdateCustomer extends AbstractCartRoute {
 		$cart     = $this->cart_controller->get_cart_instance();
 		$customer = wc()->customer;
 
-		// Get data from request object and merge with customer object.
-		$billing  = wp_parse_args( $request['billing_address'] ?? [], $this->get_customer_billing_address( $customer ) );
-		$shipping = wp_parse_args( $request['shipping_address'] ?? [], $this->get_customer_shipping_address( $customer ) );
+		// Get data from request object and merge with customer object, then sanitize.
+		$billing  = $this->schema->billing_address_schema->sanitize_callback(
+			wp_parse_args(
+				$request['billing_address'] ?? [],
+				$this->get_customer_billing_address( $customer )
+			),
+			$request,
+			'billing_address'
+		);
+		$shipping = $this->schema->billing_address_schema->sanitize_callback(
+			wp_parse_args(
+				$request['shipping_address'] ?? [],
+				$this->get_customer_shipping_address( $customer )
+			),
+			$request,
+			'shipping_address'
+		);
 
 		// If the cart does not need shipping, shipping address is forced to match billing address unless defined.
 		if ( ! $cart->needs_shipping() && ! isset( $request['shipping_address'] ) ) {
