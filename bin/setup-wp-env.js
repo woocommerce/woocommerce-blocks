@@ -14,9 +14,9 @@ if ( ! isEmpty( process.env.GUTENBERG_EDITOR_CONTEXT ) ) {
 	);
 }
 
-if ( process.env.WORDPRESS_VERSION ) {
-	wpEnv.core = `WordPress/WordPress#${ process.env.WORDPRESS_VERSION }`;
-}
+// if ( process.env.WORDPRESS_VERSION ) {
+// 	wpEnv.core = `WordPress/WordPress#${ process.env.WORDPRESS_VERSION }`;
+// }
 
 fs.writeFileSync(
 	path.join( __dirname, '..', '.wp-env.override.json' ),
