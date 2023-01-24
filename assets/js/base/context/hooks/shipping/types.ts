@@ -18,4 +18,6 @@ export interface ShippingData {
 	isCollectable: boolean;
 	// True when a rate is currently being selected and persisted to the server.
 	isSelectingRate: boolean;
+
+	hasSelectedLocalPickup: boolean;
 }
