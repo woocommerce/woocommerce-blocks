@@ -11,6 +11,7 @@ import { useEffect, useRef, useCallback } from '@wordpress/element';
 import { deriveSelectedShippingRates } from '@woocommerce/base-utils';
 import isShallowEqual from '@wordpress/is-shallow-equal';
 import { previewCart } from '@woocommerce/resource-previews';
+import { getSetting } from '@woocommerce/settings';
 
 /**
  * Internal dependencies
@@ -19,6 +20,11 @@ import { useStoreEvents } from '../use-store-events';
 import type { ShippingData } from './types';
 
 export const useShippingData = (): ShippingData => {
+	const collectibleMethodIds = getSetting< string[] >(
+		'collectibleMethodIds',
+		[]
+	);
+
 	const {
 		shippingRates,
 		needsShipping,
@@ -43,9 +49,8 @@ export const useShippingData = (): ShippingData => {
 			isLoadingRates: isEditor ? false : store.isCustomerDataUpdating(),
 			isCollectable: rates.every(
 				( { shipping_rates: packageShippingRates } ) =>
-					packageShippingRates.find(
-						( { method_id: methodId } ) =>
-							methodId === 'pickup_location'
+					packageShippingRates.find( ( { method_id: methodId } ) =>
+						collectibleMethodIds.includes( methodId )
 					)
 			),
 			isSelectingRate: isEditor
@@ -78,6 +83,17 @@ export const useShippingData = (): ShippingData => {
 		) => Promise< unknown >;
 	};
 
+	/**
+	 * Local function to check if the chosen rates are collectible.
+	 */
+	const areRatesCollectible = (
+		chosenRates: Record< string, string >
+	): boolean => {
+		return !! Object.values( chosenRates ).find( ( rate ) =>
+			collectibleMethodIds.includes( rate.split( ':' )[ 0 ] )
+		);
+	};
+
 	// Selects a shipping rate, fires an event, and catch any errors.
 	const { dispatchCheckoutEvent } = useStoreEvents();
 	const selectShippingRate = useCallback(
@@ -92,12 +108,12 @@ export const useShippingData = (): ShippingData => {
 			 *
 			 * Forces pickup location to be selected for all packages since we don't allow a mix of shipping and pickup.
 			 */
-			const hasSelectedLocalPickup = !! Object.values(
+			const hasSelectedLocalPickup = areRatesCollectible(
 				selectedRates.current
-			).find( ( rate ) => rate.includes( 'pickup_location:' ) );
+			);
 
 			if (
-				newShippingRateId.includes( 'pickup_location:' ) ||
+				areRatesCollectible( { newShippingRateId } ) ||
 				hasSelectedLocalPickup
 			) {
 				selectPromise = dispatchSelectShippingRate( newShippingRateId );
@@ -129,8 +145,6 @@ export const useShippingData = (): ShippingData => {
 		hasCalculatedShipping,
 		isLoadingRates,
 		isCollectable,
-		hasSelectedLocalPickup: !! Object.values( selectedRates.current ).find(
-			( rate ) => rate.includes( 'pickup_location:' )
-		),
+		hasSelectedLocalPickup: areRatesCollectible( selectedRates.current ),
 	};
 };
