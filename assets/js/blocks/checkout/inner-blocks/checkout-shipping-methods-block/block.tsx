@@ -61,10 +61,10 @@ const Block = (): JSX.Element | null => {
 	} = useShippingData();
 
 	// get collectible methods from getSetting
-	const collectibleMethods = [
-		...getSetting< string[] >( 'collectibleMethodIds', [] ),
-		'pickup_location',
-	];
+	const collectibleMethodIds = getSetting< string[] >(
+		'collectibleMethodIds',
+		[]
+	);
 
 	const filteredShippingRates = isCollectable
 		? shippingRates.map( ( shippingRatesPackage ) => {
@@ -72,7 +72,7 @@ const Block = (): JSX.Element | null => {
 					...shippingRatesPackage,
 					shipping_rates: shippingRatesPackage.shipping_rates.filter(
 						( shippingRatesPackageRate ) =>
-							! collectibleMethods.includes(
+							! collectibleMethodIds.includes(
 								shippingRatesPackageRate.method_id
 							)
 					),
