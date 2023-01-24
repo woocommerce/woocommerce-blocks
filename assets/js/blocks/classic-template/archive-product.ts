@@ -14,8 +14,8 @@ import {
 import {
 	INNER_BLOCKS_TEMPLATE as productsInnerBlocksTemplate,
 	QUERY_DEFAULT_ATTRIBUTES as productsQueryDefaultAttributes,
-} from './constants';
-import { VARIATION_NAME as productsVariationName } from './variations/product-query';
+} from '../product-query/constants';
+import { VARIATION_NAME as productsVariationName } from '../product-query/variations/product-query';
 
 const createRowBlock = ( innerBlocks: Array< BlockInstance > ) => {
 	const rowVariationName = `group-row`;
