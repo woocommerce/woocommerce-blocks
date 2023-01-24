@@ -61,7 +61,7 @@ runs:
         - name: Set up PHP
           uses: shivammathur/setup-php@v2
           with:
-              php-version: ${{ inputs.PHP_VERSION }}
+              php-version: 8.0
               coverage: none
               tools: composer
 
