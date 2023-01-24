@@ -8,6 +8,8 @@ const wpEnvRaw = fs.readFileSync(
 
 const wpEnv = JSON.parse( wpEnvRaw );
 
+console.log( 'ci entro' );
+
 if ( ! isEmpty( process.env.GUTENBERG_EDITOR_CONTEXT ) ) {
 	wpEnv.plugins.push(
 		'https://downloads.wordpress.org/plugin/gutenberg.latest-stable.zip'
