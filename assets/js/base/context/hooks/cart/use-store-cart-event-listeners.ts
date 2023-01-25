@@ -111,7 +111,7 @@ const removeListeners = (): void => {
 };
 
 /**
- * Keeps track of jQuery and DOM events that invalidates the store resolution accordingly.
+ * This will keep track of jQuery and DOM events that invalidate the store resolution.
  */
 export const useStoreCartEventListeners = (): void => {
 	useEffect( () => {
