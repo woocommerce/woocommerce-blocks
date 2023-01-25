@@ -200,12 +200,12 @@ final class BlockTypesController {
 			'ProductTag',
 			'ProductTagList',
 			'ProductTitle',
-			'MiniCart',
-			'MiniCartContents',
-			'ProductQuery',
-			'ProductAddToCartButton',
-			'FilterWrapper',
-			'CustomerAccount',
+			'ProductTopRated',
+			'ProductsByAttribute',
+			'RatingFilter',
+			'ReviewsByCategory',
+			'ReviewsByProduct',
+			'StockFilter',
 			'ProductAddToCartButton',
 		];
 

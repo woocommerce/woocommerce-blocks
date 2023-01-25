@@ -40,7 +40,7 @@ import { PopularPresets } from './inspector-controls/popular-presets';
 import { AttributesFilter } from './inspector-controls/attributes-filter';
 
 import './editor.scss';
-import { VARIATION_NAME } from './variations/elements/add-to-cart-button';
+import { VARIATION_NAME as ADD_TO_CART_BUTTON_VARIATION_NAME } from './variations/elements/add-to-cart-button';
 
 const NAMESPACED_CONTROLS = ALL_PRODUCT_QUERY_CONTROLS.map(
 	( id ) =>
@@ -247,7 +247,7 @@ export const withWrapperElement =
 			const parentButtonsBlock = coreEditor.getBlock( parentBlocks[ 0 ] );
 
 			const isWoocommerceVariation =
-				VARIATION_NAME ===
+				ADD_TO_CART_BUTTON_VARIATION_NAME ===
 				parentButtonsBlock?.attributes?.__woocommerceNamespace;
 
 			if ( isWoocommerceVariation && ! props.attributes?.text?.length ) {
@@ -296,4 +296,8 @@ export const withWrapperElement =
 		return <BlockEdit { ...props } />;
 	};
 
-addFilter( 'editor.BlockEdit', VARIATION_NAME, withWrapperElement );
+addFilter(
+	'editor.BlockEdit',
+	ADD_TO_CART_BUTTON_VARIATION_NAME,
+	withWrapperElement
+);
