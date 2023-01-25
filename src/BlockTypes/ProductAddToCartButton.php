@@ -99,7 +99,9 @@ class ProductAddToCartButton extends AbstractBlock {
 								data-product_sku="' . esc_attr( $product->get_sku() ) . '"
 								class="wp-block-button__link ' . ( $product->is_purchasable() && ! $product->has_options() ? 'ajax_add_to_cart add_to_cart_button' : '' ) . ' product_type_' . esc_attr( $product->get_type() ) . ' ' . $anchor_class . '"
 								style="' . esc_attr( $anchor_style ) . '">'
+									. '<span>'
 									. $this->get_anchor_inner_html( $block_content, $product )
+									. '</span>'
 							. '</a>'
 					. '</div>',
 					$product
@@ -183,7 +185,7 @@ class ProductAddToCartButton extends AbstractBlock {
 		}
 
 		$inner_html     = '';
-		$anchor_element = $dom->getElementsByTagName( 'a' )[0];
+		$anchor_element = $dom->getElementsByTagName( 'a' )->item( 0 );
 		// phpcs:ignore WordPress.NamingConventions.ValidVariableName.UsedPropertyNotSnakeCase
 		$children = $anchor_element->childNodes;
 		foreach ( $children as $child ) {
@@ -216,7 +218,8 @@ class ProductAddToCartButton extends AbstractBlock {
 		foreach ( $children as $child ) {
 			// phpcs:ignore WordPress.NamingConventions.ValidVariableName.UsedPropertyNotSnakeCase
 			if ( XML_TEXT_NODE === $child->nodeType ) {
-				$dom->removeChild( $child );
+				// phpcs:ignore WordPress.NamingConventions.ValidVariableName.UsedPropertyNotSnakeCase
+				$child->nodeValue = '';
 			} else {
 				$this->remove_text_nodes_recursively( $child );
 			}
