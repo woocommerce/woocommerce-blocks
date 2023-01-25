@@ -103,6 +103,7 @@ describe( 'useStoreCart', () => {
 		extensions: {},
 		errors: [],
 		receiveCart: undefined,
+		receiveCartContents: undefined,
 		paymentRequirements: [],
 	};
 	const mockCartTotals = {
@@ -130,6 +131,7 @@ describe( 'useStoreCart', () => {
 		isLoadingRates: false,
 		cartHasCalculatedShipping: true,
 		receiveCart: undefined,
+		receiveCartContents: undefined,
 		paymentRequirements: [],
 	};
 
