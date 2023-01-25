@@ -13,11 +13,10 @@ import {
 } from '@woocommerce/block-settings';
 import { useBlockProps } from '@wordpress/block-editor';
 import { Button, Placeholder } from '@wordpress/components';
-import { __, sprintf } from '@wordpress/i18n';
+import { __ } from '@wordpress/i18n';
 import { box, Icon } from '@wordpress/icons';
 import { select, useDispatch, subscribe } from '@wordpress/data';
 import { useEffect } from '@wordpress/element';
-import { isWpVersion } from '@woocommerce/settings';
 
 /**
  * Internal dependencies
@@ -30,65 +29,30 @@ import {
 	hasTemplateSupportForClassicTemplateBlock,
 	getTemplateDetailsBySlug,
 } from './utils';
-import { getProductArchiveTemplate } from './archive-product';
+import * as blockifiedProductArchive from './archive-product';
 
 type Attributes = {
 	template: string;
 	align: string;
 };
 
-const isProductArchiveBlockificationPossible = (
-	templatePlaceholder: string
-) => {
-	// At the moment blockification is available for product archive only.
-	// Blockification is possible for the WP version 6.1 and above,
-	// which are the versions the Products block supports.
-	return (
-		templatePlaceholder === PLACEHOLDERS.archiveProduct &&
-		isWpVersion( '6.1', '>=' )
-	);
+const blockifiedFallbackConfig = {
+	isBlockificationPossible: () => false,
+	getBlockifiedTemplate: () => null,
+	getDescriptionAllowingConversion: () => '',
+	getDescriptionDisallowingConversion: () => '',
+	getButtonLabel: () => '',
 };
 
-const getProductArchiveDescriptionAllowingConversion = (
-	templateTitle: string
-) =>
-	sprintf(
-		/* translators: %s is the template title */
-		__(
-			"This block serves as a placeholder for your %s. We recommend upgrading to the Products block for more features to edit your products visually. Don't worry, you can always revert back.",
-			'woo-gutenberg-products-block'
-		),
-		templateTitle
-	);
-
-const getDescriptionDisallowingConversion = ( templateTitle: string ) =>
-	sprintf(
-		/* translators: %s is the template title */
-		__(
-			'This block serves as a placeholder for your %s. It will display the actual product image, title, price in your store. You can move this placeholder around and add more blocks around to customize the template.',
-			'woo-gutenberg-products-block'
-		),
-		templateTitle
-	);
-
 const blockificationConfig = {
-	[ PLACEHOLDERS.archiveProduct ]: {
-		isBlockificationPossible: isProductArchiveBlockificationPossible,
-		getDescriptionAllowingConversion:
-			getProductArchiveDescriptionAllowingConversion,
-		getBlockifiedTemplate: getProductArchiveTemplate,
-	},
-	// TODO: Extend the config when single product blockification is available.
+	[ PLACEHOLDERS.archiveProduct ]: blockifiedProductArchive,
+	// TODO: Replace the fallback config with proper one when single product blockification is available.
 	[ PLACEHOLDERS.singleProduct ]: {
-		isBlockificationPossible: () => false,
-		getDescriptionAllowingConversion: () => '',
-		getBlockifiedTemplate: () => [],
+		...blockifiedFallbackConfig,
+		getDescriptionDisallowingConversion:
+			blockifiedProductArchive.getDescriptionDisallowingConversion,
 	},
-	fallback: {
-		isBlockificationPossible: () => false,
-		getDescriptionAllowingConversion: () => '',
-		getBlockifiedTemplate: () => [],
-	},
+	fallback: blockifiedFallbackConfig,
 };
 
 const Edit = ( {
@@ -116,9 +80,11 @@ const Edit = ( {
 	);
 
 	const {
+		getBlockifiedTemplate,
 		isBlockificationPossible,
 		getDescriptionAllowingConversion,
-		getBlockifiedTemplate,
+		getDescriptionDisallowingConversion,
+		getButtonLabel,
 	} = blockificationConfig[ templatePlaceholder ];
 
 	const blockificationPossible =
@@ -148,10 +114,7 @@ const Edit = ( {
 										getBlockifiedTemplate()
 									);
 								} }
-								text={ __(
-									'Upgrade to Products block',
-									'woo-gutenberg-products-block'
-								) }
+								text={ getButtonLabel() }
 							/>
 						</div>
 					) }
