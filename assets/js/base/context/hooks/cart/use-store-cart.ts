@@ -175,7 +175,10 @@ export const useStoreCart = (
 						typeof previewCart?.receiveCart === 'function'
 							? previewCart.receiveCart
 							: () => undefined,
-					receiveCartContents: () => undefined,
+					receiveCartContents:
+						typeof previewCart?.receiveCartContents === 'function'
+							? previewCart.receiveCartContents
+							: () => undefined,
 				};
 			}
 

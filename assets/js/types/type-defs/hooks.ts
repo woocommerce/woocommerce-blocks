@@ -58,6 +58,7 @@ export interface StoreCart {
 	cartHasCalculatedShipping: boolean;
 	paymentRequirements: string[];
 	receiveCart: ( cart: CartResponse ) => void;
+	receiveCartContents: ( cart: CartResponse ) => void;
 }
 
 export type Query = {

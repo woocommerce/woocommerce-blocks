@@ -26,6 +26,7 @@ describe( 'useStoreCart', () => {
 	let registry, renderer;
 
 	const receiveCartMock = () => {};
+	const receiveCartContentsMock = () => {};
 
 	const previewCartData = {
 		cartCoupons: previewCart.coupons,
@@ -227,6 +228,7 @@ describe( 'useStoreCart', () => {
 					previewCart: {
 						...previewCart,
 						receiveCart: receiveCartMock,
+						receiveCartContents: receiveCartContentsMock,
 					},
 				},
 			} );
@@ -241,11 +243,12 @@ describe( 'useStoreCart', () => {
 				);
 			} );
 
-			const { results, receiveCart } =
+			const { results, receiveCart, receiveCartContents } =
 				renderer.root.findByType( 'div' ).props; //eslint-disable-line testing-library/await-async-query
 
 			expect( results ).toEqual( previewCartData );
 			expect( receiveCart ).toEqual( receiveCartMock );
+			expect( receiveCartContents ).toEqual( receiveCartContentsMock );
 		} );
 	} );
 } );
