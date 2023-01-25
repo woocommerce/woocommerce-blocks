@@ -3,6 +3,10 @@
  */
 import { useBlockProps } from '@wordpress/block-editor';
 import { __ } from '@wordpress/i18n';
+/**
+ * Internal dependencies
+ */
+import './editor.scss';
 
 export interface Attributes {
 	className?: string;
