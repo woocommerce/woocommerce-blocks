@@ -24,7 +24,9 @@ const createRowBlock = ( innerBlocks: Array< BlockInstance > ) => {
 		( { name }: { name: string } ) => name === rowVariationName
 	);
 
-	if ( ! rowVariation ) return null;
+	if ( ! rowVariation ) {
+		return null;
+	}
 
 	const { attributes } = rowVariation;
 	const extendedAttributes = {
