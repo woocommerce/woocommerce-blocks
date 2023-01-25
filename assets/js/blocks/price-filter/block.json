@@ -40,6 +40,10 @@
 		"headingLevel": {
 			"type": "number",
 			"default": 3
+		},
+		"isPreview": {
+			"type": "boolean",
+			"default": false
 		}
 	},
 	"textdomain": "woo-gutenberg-products-block",

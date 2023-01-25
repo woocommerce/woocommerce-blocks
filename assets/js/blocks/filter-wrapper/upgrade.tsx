@@ -73,7 +73,7 @@ export const UpgradeNotice = ( {
 		} );
 	};
 
-	if ( isInsideFilterWrapper || ! filterType ) {
+	if ( isInsideFilterWrapper || ! filterType || attributes?.isPreview ) {
 		return null;
 	}
 
