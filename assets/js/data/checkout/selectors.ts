@@ -85,6 +85,7 @@ export const prefersCollection = ( state: CheckoutState ) => {
 		const selectedRate = shippingRates[ 0 ].shipping_rates.find(
 			( rate ) => rate.selected
 		);
+
 		if (
 			objectHasProp( selectedRate, 'method_id' ) &&
 			isString( selectedRate.method_id )
