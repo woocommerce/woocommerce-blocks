@@ -4,7 +4,10 @@
 import { useEffect } from '@wordpress/element';
 import { CART_STORE_KEY } from '@woocommerce/block-data';
 import { dispatch } from '@wordpress/data';
-import { translateJQueryEventToNative } from '@woocommerce/base-utils';
+import {
+	translateJQueryEventToNative,
+	getNavigationType,
+} from '@woocommerce/base-utils';
 
 interface StoreCartListenersType {
 	// Counts the number of consumers of this hook so we can remove listeners when no longer needed.
@@ -37,14 +40,11 @@ const refreshData = ( event: CartDataCustomEvent ): void => {
 /**
  * Refreshes data if the pageshow event is triggered by the browser history.
  *
- * The deprecated performance object is needed in chrome since persisted is not reliable.
+ * - In Chrome, `back_forward` will be returned by getNavigationType() when the browser history is used.
+ * - In safari we instead need to use `event.persisted` which is true when page cache is used.
  */
 const refreshCachedCartData = ( event: PageTransitionEvent ): void => {
-	if (
-		event?.persisted ||
-		( typeof window.performance !== undefined &&
-			window.performance.navigation.type === 2 )
-	) {
+	if ( event?.persisted || getNavigationType() === 'back_forward' ) {
 		dispatch( CART_STORE_KEY ).invalidateResolutionForStore();
 	}
 };
