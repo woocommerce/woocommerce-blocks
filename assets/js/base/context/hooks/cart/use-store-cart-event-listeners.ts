@@ -39,7 +39,7 @@ const refreshData = ( event: CartDataCustomEvent ): void => {
  *
  * The deprecated performance object is needed in chrome since persisted is not reliable.
  */
-const refreshDataIfPersisted = ( event: PageTransitionEvent ): void => {
+const refreshCachedCartData = ( event: PageTransitionEvent ): void => {
 	if (
 		event?.persisted ||
 		( typeof window.performance !== undefined &&
@@ -76,7 +76,7 @@ const addListeners = (): void => {
 		'wc-blocks_removed_from_cart',
 		refreshData
 	);
-	window.addEventListener( 'pageshow', refreshDataIfPersisted );
+	window.addEventListener( 'pageshow', refreshCachedCartData );
 
 	const removeJQueryAddedToCartEvent = translateJQueryEventToNative(
 		'added_to_cart',
@@ -97,7 +97,7 @@ const addListeners = (): void => {
 			'wc-blocks_removed_from_cart',
 			refreshData
 		);
-		window.removeEventListener( 'pageshow', refreshDataIfPersisted );
+		window.removeEventListener( 'pageshow', refreshCachedCartData );
 		removeJQueryAddedToCartEvent();
 		removeJQueryRemovedFromCartEvent();
 	};

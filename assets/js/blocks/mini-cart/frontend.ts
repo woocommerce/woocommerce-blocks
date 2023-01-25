@@ -77,7 +77,7 @@ window.addEventListener( 'load', () => {
 	document.body.addEventListener( 'wc-blocks_adding_to_cart', loadScripts );
 
 	// Load scripts if a page is reloaded via the back button (potentially out of date cart data).
-	// Based on refreshDataIfPersisted() in assets/js/base/context/cart-checkout/cart/index.js.
+	// Based on refreshCachedCartData() in assets/js/base/context/cart-checkout/cart/index.js.
 	window.addEventListener(
 		'pageshow',
 		( event: PageTransitionEvent ): void => {
