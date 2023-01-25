@@ -27,6 +27,8 @@ class SingleProductDetails extends AbstractBlock {
 	protected function render( $attributes, $content, $block ) {
 		$classes_and_styles = StyleAttributesUtils::get_classes_and_styles_by_attributes( $attributes );
 
-		return "<div class='wp-block-woocommerce-single-product-details /></div>";
+		return sprintf(
+			'<div class="wp-block-woocommerce-single-product-details"></div>'
+		);
 	}
 }
