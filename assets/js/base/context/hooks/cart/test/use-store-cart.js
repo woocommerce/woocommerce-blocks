@@ -103,9 +103,9 @@ describe( 'useStoreCart', () => {
 		hasCalculatedShipping: true,
 		extensions: {},
 		errors: [],
+		paymentRequirements: [],
 		receiveCart: undefined,
 		receiveCartContents: undefined,
-		paymentRequirements: [],
 	};
 	const mockCartTotals = {
 		currency_code: 'USD',
@@ -131,9 +131,9 @@ describe( 'useStoreCart', () => {
 		extensions: {},
 		isLoadingRates: false,
 		cartHasCalculatedShipping: true,
+		paymentRequirements: [],
 		receiveCart: undefined,
 		receiveCartContents: undefined,
-		paymentRequirements: [],
 	};
 
 	const getWrappedComponents = ( Component ) => (
@@ -143,8 +143,15 @@ describe( 'useStoreCart', () => {
 	);
 
 	const getTestComponent = ( options ) => () => {
-		const { receiveCart, ...results } = useStoreCart( options );
-		return <div results={ results } receiveCart={ receiveCart } />;
+		const { receiveCart, receiveCartContents, ...results } =
+			useStoreCart( options );
+		return (
+			<div
+				results={ results }
+				receiveCart={ receiveCart }
+				receiveCartContents={ receiveCartContents }
+			/>
+		);
 	};
 
 	const setUpMocks = () => {
@@ -193,12 +200,16 @@ describe( 'useStoreCart', () => {
 				);
 			} );
 
-			const { results, receiveCart } =
+			const { results, receiveCart, receiveCartContents } =
 				renderer.root.findByType( 'div' ).props; //eslint-disable-line testing-library/await-async-query
-			const { receiveCart: defaultReceiveCart, ...remaining } =
-				defaultCartData;
+			const {
+				receiveCart: defaultReceiveCart,
+				receiveCartContents: defaultReceiveCartContents,
+				...remaining
+			} = defaultCartData;
 			expect( results ).toEqual( remaining );
 			expect( receiveCart ).toEqual( defaultReceiveCart );
+			expect( receiveCartContents ).toEqual( defaultReceiveCartContents );
 		} );
 
 		it( 'return store data when shouldSelect is true', () => {
@@ -212,11 +223,12 @@ describe( 'useStoreCart', () => {
 				);
 			} );
 
-			const { results, receiveCart } =
+			const { results, receiveCart, receiveCartContents } =
 				renderer.root.findByType( 'div' ).props; //eslint-disable-line testing-library/await-async-query
 
 			expect( results ).toEqual( mockStoreCartData );
 			expect( receiveCart ).toBeUndefined();
+			expect( receiveCartContents ).toBeUndefined();
 		} );
 	} );
 
