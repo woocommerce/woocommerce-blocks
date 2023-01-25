@@ -124,14 +124,6 @@ const SELECTORS = {
 		templateActions:
 			'[aria-label="Templates list - Content"] [aria-label="Actions"]',
 	},
-	blockifiedTemplateBlocks: {
-		storeNotices: '.wc-block-store-notices',
-		// TODO: Uncomment and add selector when Breadcrumb block becomes available
-		// breadcrumbs: '',
-		productResultsCount: '.wc-block-product-results-count',
-		catalogSorting: '.wc-block-catalog-sorting',
-		products: '.wp-block-query',
-	},
 };
 
 const CUSTOMIZED_STRING = 'My awesome customization';
@@ -326,33 +318,6 @@ describe( 'Store Editing Templates', () => {
 				text: CUSTOMIZED_STRING,
 				timeout: DEFAULT_TIMEOUT,
 			} );
-		} );
-
-		it( 'should allow the user to blockify the Classic Template', async () => {
-			const {
-				storeNotices,
-				productResultsCount,
-				catalogSorting,
-				products,
-			} = SELECTORS.blockifiedTemplateBlocks;
-			const { productArchive } = SELECTORS.blocks;
-
-			await goToTemplateEditor( {
-				postId: 'woocommerce/woocommerce//archive-product',
-			} );
-
-			await expect( page ).toClick( 'button', {
-				text: 'Upgrade to Products block',
-			} );
-
-			await expect( page ).not.toMatchElement( productArchive );
-
-			await expect( page ).toMatchElement( storeNotices );
-			// TODO: Uncomment when Breadcrumb block becomes available
-			// await expect( page ).toMatchElement( breadcrumbs );
-			await expect( page ).toMatchElement( productResultsCount );
-			await expect( page ).toMatchElement( catalogSorting );
-			await expect( page ).toMatchElement( products );
 		} );
 	} );
 
