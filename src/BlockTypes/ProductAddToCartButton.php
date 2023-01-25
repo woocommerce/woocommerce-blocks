@@ -2,6 +2,7 @@
 namespace Automattic\WooCommerce\Blocks\BlockTypes;
 
 use DOMDocument;
+use DOMXPath;
 
 /**
  * ProductAddToCartButton class.
@@ -50,9 +51,9 @@ class ProductAddToCartButton extends AbstractBlock {
 	/**
 	 * Add __woocommerceNamespace to 'core/button' block if it's parent block 'core/buttons' is a WooCommerce variation
 	 *
-	 * @param array $parsed_block The parsed block.
-	 * @param array $source_block The original block.
-	 * @param array $parent_block The parent block.
+	 * @param array  $parsed_block The parsed block.
+	 * @param object $source_block The original block.
+	 * @param object $parent_block The parent block.
 	 */
 	public function render_block_data( $parsed_block, $source_block, $parent_block ) {
 		if ( 'core/button' !== $source_block['blockName'] ) {
@@ -75,7 +76,7 @@ class ProductAddToCartButton extends AbstractBlock {
 	 * @param array  $block         The full block, including name and attributes.
 	 */
 	public function on_render_block( $block_content, $block ) {
-		if ( 'core/button' !== $block['blockName'] || ! $block_content ) {
+		if ( 'core/button' !== $block['blockName'] ) {
 			return $block_content;
 		}
 
@@ -84,18 +85,6 @@ class ProductAddToCartButton extends AbstractBlock {
 
 		if ( $this->is_woocommerce_variation( $block ) ) {
 			$product = wc_get_product( $post_id );
-
-			/**
-			 * $product->add_to_cart_text() is a method that retrieves the text
-			 * that should be displayed on the "Add to Cart" button for a specific product
-			 *
-			 * For example, if the product is a simple product and is in stock,
-			 * the text will be "Add to cart". If the product is a variable product,
-			 * the text will be "Select options". If the product is out of stock,
-			 * the text will be "Out of stock".
-			 */
-			$add_to_cart_text = $product->add_to_cart_text();
-			$link_text        = ! $product->is_type( 'simple' ) ? $add_to_cart_text : $this->extract_anchor_content_from( $block_content );
 
 			if ( $product ) {
 				$styles_and_classes = $this->extract_style_and_class_from_block_content( $block_content );
@@ -110,9 +99,9 @@ class ProductAddToCartButton extends AbstractBlock {
 								rel="nofollow"
 								data-product_id="' . esc_attr( $product->get_id() ) . '"
 								data-product_sku="' . esc_attr( $product->get_sku() ) . '"
-								class="wp-block-button__link ' . ( $product->is_purchasable() ? 'ajax_add_to_cart add_to_cart_button' : '' ) . ' wc-block-components-product-button__button product_type_' . esc_attr( $product->get_type() ) . ' ' . $anchor_class . '"
+								class="wp-block-button__link ' . ( $product->is_purchasable() ? 'ajax_add_to_cart add_to_cart_button' : '' ) . ' product_type_' . esc_attr( $product->get_type() ) . ' ' . $anchor_class . '"
 								style="' . $anchor_style . '">'
-									. esc_html( $link_text )
+									. $this->get_anchor_inner_html( $block_content, $product )
 							. '</a>'
 					. '</div>';
 			}
@@ -129,6 +118,15 @@ class ProductAddToCartButton extends AbstractBlock {
 	 * @return array
 	 */
 	private function extract_style_and_class_from_block_content( $block_content ) {
+		if ( empty( $block_content ) ) {
+			return array(
+				'div_class'    => '',
+				'div_style'    => '',
+				'anchor_class' => '',
+				'anchor_style' => '',
+			);
+		}
+
 		$dom = new DOMDocument();
 		$dom->loadHTML( $block_content );
 
@@ -148,18 +146,91 @@ class ProductAddToCartButton extends AbstractBlock {
 		);
 	}
 
+
 	/**
-	 * Extract anchor content from block content
+	 * Return inner html of anchor block
 	 *
-	 * @param string $block_content The HTML content of the block.
+	 * @param string      $block_content The HTML content of the block.
+	 * @param \WC_Product $product The product object.
 	 */
-	private function extract_anchor_content_from( $block_content ) {
+	private function get_anchor_inner_html( $block_content, $product ) {
 		$dom = new DOMDocument();
 		$dom->loadHTML( $block_content );
 
-		$div = $dom->getElementsByTagName( 'a' )->item( 0 );
+		if ( ! $product->is_type( 'simple' ) ) {
+			$anchor_element = $dom->getElementsByTagName( 'a' )->item( 0 );
+			$this->remove_text_nodes_recursively( $anchor_element );
+
+			/**
+			 * $product->add_to_cart_text() is a method that retrieves the text
+			 * that should be displayed on the "Add to Cart" button for a specific product
+			 *
+			 * For example, if the product is a simple product and is in stock,
+			 * the text will be "Add to cart". If the product is a variable product,
+			 * the text will be "Select options". If the product is out of stock,
+			 * the text will be "Out of stock".
+			 */
+			$add_to_cart_text = $product->add_to_cart_text();
+			$this->add_anchor_node_text( $anchor_element, $add_to_cart_text );
+		}
+
+		$inner_html     = '';
+		$anchor_element = $dom->getElementsByTagName( 'a' )->item( 0 );
 		// phpcs:ignore WordPress.NamingConventions.ValidVariableName.UsedPropertyNotSnakeCase
-		return $div->nodeValue;
+		$children = $anchor_element->childNodes;
+		foreach ( $children as $child ) {
+			// phpcs:ignore WordPress.NamingConventions.ValidVariableName.UsedPropertyNotSnakeCase
+			$inner_html .= $child->ownerDocument->saveXML( $child );
+		}
+		return $inner_html;
+	}
+
+	/**
+	 * Add text to fist leaf node of anchor element
+	 *
+	 * @param DOMElement $anchor_element The anchor element.
+	 * @param string     $text The text to add.
+	 */
+	private function add_anchor_node_text( $anchor_element, $text ) {
+		$first_leaf_node = $this->get_first_leaf_node( $anchor_element );
+		// phpcs:ignore WordPress.NamingConventions.ValidVariableName.UsedPropertyNotSnakeCase
+		$first_leaf_node->nodeValue = $text;
+	}
+
+	/**
+	 * Remove text nodes recursively
+	 *
+	 * @param DOMElement $dom The DOM element.
+	 */
+	private function remove_text_nodes_recursively( $dom ) {
+		// phpcs:ignore WordPress.NamingConventions.ValidVariableName.UsedPropertyNotSnakeCase
+		$children = $dom->childNodes;
+		foreach ( $children as $child ) {
+			// phpcs:ignore WordPress.NamingConventions.ValidVariableName.UsedPropertyNotSnakeCase
+			if ( XML_TEXT_NODE === $child->nodeType ) {
+				$dom->removeChild( $child );
+			} else {
+				$this->remove_text_nodes_recursively( $child );
+			}
+		}
+	}
+
+	/**
+	 * Get first leaf node
+	 *
+	 * @param DOMElement $dom The DOM element.
+	 */
+	private function get_first_leaf_node( $dom ) {
+		// phpcs:ignore WordPress.NamingConventions.ValidVariableName.UsedPropertyNotSnakeCase
+		$children = $dom->childNodes;
+		foreach ( $children as $child ) {
+			// phpcs:ignore WordPress.NamingConventions.ValidVariableName.UsedPropertyNotSnakeCase
+			if ( 0 === $child->childNodes->length ) {
+				return $child;
+			} else {
+				return $this->get_first_leaf_node( $child );
+			}
+		}
 	}
 
 	/**

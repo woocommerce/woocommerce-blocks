@@ -237,7 +237,7 @@ addFilter( 'editor.BlockEdit', QUERY_LOOP_ID, withProductQueryControls );
 
 export const withWrapperElement =
 	< T extends EditorBlock< T > >( BlockEdit: ElementType ) =>
-	( props: ProductQueryBlock ) => {
+	( props ) => {
 		if ( props.name === 'core/button' ) {
 			const coreEditor = select( 'core/block-editor' );
 			const parentBlocks = coreEditor.getBlockParents(
@@ -249,6 +249,26 @@ export const withWrapperElement =
 			const isWoocommerceVariation =
 				VARIATION_NAME ===
 				parentButtonsBlock?.attributes?.__woocommerceNamespace;
+
+			if ( isWoocommerceVariation && ! props.attributes?.text?.length ) {
+				// Set initial attributes when this is added to the editor.
+				props.setAttributes( {
+					...props.attributes,
+					text: __( 'Add to cart', 'woo-gutenberg-products-block' ),
+					style: ! props.attributes.style && {
+						spacing: {
+							padding: {
+								top: 'var:preset|spacing|30',
+								right: 'var:preset|spacing|40',
+								bottom: 'var:preset|spacing|30',
+								left: 'var:preset|spacing|40',
+							},
+						},
+					},
+					align: 'center',
+					fontSize: 'small',
+				} );
+			}
 
 			if ( isWoocommerceVariation ) {
 				/**
@@ -269,20 +289,7 @@ export const withWrapperElement =
 					}, 0 );
 				}
 
-				const extraProps = {
-					attributes: {
-						textAlign: 'center',
-						fontSize: 'small',
-						...props.attributes,
-						text: props.attributes?.text?.length
-							? props.attributes?.text
-							: __(
-									'Add to cart',
-									'woo-gutenberg-products-block'
-							  ),
-					},
-				};
-				return <BlockEdit { ...props } { ...extraProps } />;
+				return <BlockEdit { ...props } />;
 			}
 		}
 
