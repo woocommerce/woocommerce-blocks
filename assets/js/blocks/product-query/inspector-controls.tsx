@@ -4,7 +4,7 @@
 import { ElementType } from 'react';
 import { __ } from '@wordpress/i18n';
 import { InspectorControls } from '@wordpress/block-editor';
-import { useSelect, select } from '@wordpress/data';
+import { useSelect } from '@wordpress/data';
 import { addFilter } from '@wordpress/hooks';
 import { ProductQueryFeedbackPrompt } from '@woocommerce/editor-components/feedback-prompt';
 import { EditorBlock } from '@woocommerce/types';
@@ -40,7 +40,6 @@ import { PopularPresets } from './inspector-controls/popular-presets';
 import { AttributesFilter } from './inspector-controls/attributes-filter';
 
 import './editor.scss';
-import { VARIATION_NAME as ADD_TO_CART_BUTTON_VARIATION_NAME } from './variations/elements/add-to-cart-button';
 
 const NAMESPACED_CONTROLS = ALL_PRODUCT_QUERY_CONTROLS.map(
 	( id ) =>
@@ -53,8 +52,8 @@ function useDefaultWooQueryParamsForVariation(
 	variationName: string | undefined
 ): Partial< ProductQueryArguments > {
 	const variationAttributes: QueryBlockAttributes = useSelect(
-		( tmpSelect ) =>
-			tmpSelect( 'core/blocks' )
+		( select ) =>
+			select( 'core/blocks' )
 				.getBlockVariations( QUERY_LOOP_ID )
 				.find(
 					( variation: ProductQueryBlock ) =>
@@ -234,70 +233,3 @@ export const withProductQueryControls =
 	};
 
 addFilter( 'editor.BlockEdit', QUERY_LOOP_ID, withProductQueryControls );
-
-export const withWrapperElement =
-	< T extends EditorBlock< T > >( BlockEdit: ElementType ) =>
-	( props ) => {
-		if ( props.name === 'core/button' ) {
-			const coreEditor = select( 'core/block-editor' );
-			const parentBlocks = coreEditor.getBlockParents(
-				props.clientId,
-				true
-			);
-			const parentButtonsBlock = coreEditor.getBlock( parentBlocks[ 0 ] );
-
-			const isWoocommerceVariation =
-				ADD_TO_CART_BUTTON_VARIATION_NAME ===
-				parentButtonsBlock?.attributes?.__woocommerceNamespace;
-
-			if ( isWoocommerceVariation && ! props.attributes?.text?.length ) {
-				// Set initial attributes when this is added to the editor.
-				props.setAttributes( {
-					...props.attributes,
-					text: __( 'Add to cart', 'woo-gutenberg-products-block' ),
-					style: ! props.attributes.style && {
-						spacing: {
-							padding: {
-								top: 'var:preset|spacing|30',
-								right: 'var:preset|spacing|40',
-								bottom: 'var:preset|spacing|30',
-								left: 'var:preset|spacing|40',
-							},
-						},
-					},
-					align: 'center',
-					fontSize: 'small',
-				} );
-			}
-
-			if ( isWoocommerceVariation ) {
-				/**
-				 * Hide the link button in the button block toolbar because
-				 * the link is provided dynamically during render in PHP file
-				 *
-				 * We are using hacky workaround here until there is a broader proposal for
-				 * toolbar customization, as it would be overkill to have one attribute per enabled/disabled feature.
-				 */
-
-				if ( props.isSelected ) {
-					setTimeout( () => {
-						const linkElement: HTMLElement | null =
-							document.querySelector(
-								'.edit-post-visual-editor button[name="link"]'
-							);
-						if ( linkElement ) linkElement.style.display = 'none';
-					}, 0 );
-				}
-
-				return <BlockEdit { ...props } />;
-			}
-		}
-
-		return <BlockEdit { ...props } />;
-	};
-
-addFilter(
-	'editor.BlockEdit',
-	ADD_TO_CART_BUTTON_VARIATION_NAME,
-	withWrapperElement
-);

@@ -5,41 +5,36 @@ use DOMDocument;
 use DOMXPath;
 
 /**
- * ProductAddToCartButton class.
+ * This help us to generate frontend UI for
+ * `Add to cart` button variation from `core/button` block
  */
 class ProductAddToCartButton extends AbstractBlock {
-
-	/**
-	 * Block name.
-	 *
-	 * @var string
-	 */
-	protected $block_name = 'product-add-to-cart-button';
 
 	/**
 	 * API version name.
 	 *
 	 * @var string
 	 */
-	protected $api_version = '2';
+	protected $api_version = '1';
 
 
 	/**
-	 * Adding a filter to the render_block hook
-	 * that calls the on_render_block method when the filter is triggered
+	 * Initialize the block
 	 */
 	protected function initialize() {
 		parent::initialize();
 
-		// render_block hook allows us to modify the rendered HTML of a block.
-		// When a block is rendered, the filter is applied, and any functions attached to it are called,
-		// providing the opportunity to modify the HTML output of the block.
+		// render_block_data hook allows us to modify the parsed block data.
 		add_filter(
 			'render_block_data',
 			[ $this, 'render_block_data' ],
 			10,
 			3
 		);
+
+		// render_block hook allows us to modify the rendered HTML of a block.
+		// When a block is rendered, the filter is applied, and any functions attached to it are called,
+		// providing the opportunity to modify the HTML output of the block.
 		add_filter(
 			'render_block',
 			[ $this, 'on_render_block' ],
@@ -49,7 +44,8 @@ class ProductAddToCartButton extends AbstractBlock {
 	}
 
 	/**
-	 * Add __woocommerceNamespace to 'core/button' block if it's parent block 'core/buttons' is a WooCommerce variation
+	 * Add __woocommerceNamespace to 'core/button' block if it's parent block
+	 * 'core/buttons' is a WooCommerce variation.
 	 *
 	 * @param array  $parsed_block The parsed block.
 	 * @param object $source_block The original block.
@@ -93,17 +89,21 @@ class ProductAddToCartButton extends AbstractBlock {
 				$anchor_class       = $styles_and_classes['anchor_class'];
 				$anchor_style       = $styles_and_classes['anchor_style'];
 
-				return '<div class="wp-block-button wc-block-components-product-button wc-block-grid__product-add-to-cart ' . $div_class . '" style="' . $div_style . '">
+				return apply_filters(
+					'woocommerce_loop_add_to_cart_link',
+					'<div class="wp-block-button wc-block-components-product-button wc-block-grid__product-add-to-cart ' . $div_class . '" style="' . $div_style . '">
 							<a
 								href="' . esc_url( $product->add_to_cart_url() ) . '"
 								rel="nofollow"
 								data-product_id="' . esc_attr( $product->get_id() ) . '"
 								data-product_sku="' . esc_attr( $product->get_sku() ) . '"
-								class="wp-block-button__link ' . ( $product->is_purchasable() ? 'ajax_add_to_cart add_to_cart_button' : '' ) . ' product_type_' . esc_attr( $product->get_type() ) . ' ' . $anchor_class . '"
-								style="' . $anchor_style . '">'
+								class="wp-block-button__link ' . ( $product->is_purchasable() && ! $product->has_options() ? 'ajax_add_to_cart add_to_cart_button' : '' ) . ' product_type_' . esc_attr( $product->get_type() ) . ' ' . $anchor_class . '"
+								style="' . esc_attr( $anchor_style ) . '">'
 									. $this->get_anchor_inner_html( $block_content, $product )
 							. '</a>'
-					. '</div>';
+					. '</div>',
+					$product
+				);
 			}
 		}
 
@@ -148,7 +148,9 @@ class ProductAddToCartButton extends AbstractBlock {
 
 
 	/**
-	 * Return inner html of anchor block
+	 * Return inner html of anchor block. Some examples of inner html of `a` tag:
+	 * - <strong><em><mark><code>Add to cart</code></mark></em></strong>
+	 * - <strong>Add</strong> <strong><em>to</em></strong> <em>cart</em>
 	 *
 	 * @param string      $block_content The HTML content of the block.
 	 * @param \WC_Product $product The product object.
@@ -157,6 +159,12 @@ class ProductAddToCartButton extends AbstractBlock {
 		$dom = new DOMDocument();
 		$dom->loadHTML( $block_content );
 
+		/**
+		 * If the product is not a simple product, we need to remove the text
+		 * that is inside the anchor element and replace it with the text
+		 * that should be displayed on the "Add to Cart" button based on
+		 * product type & stock status.
+		 */
 		if ( ! $product->is_type( 'simple' ) ) {
 			$anchor_element = $dom->getElementsByTagName( 'a' )->item( 0 );
 			$this->remove_text_nodes_recursively( $anchor_element );
@@ -175,7 +183,7 @@ class ProductAddToCartButton extends AbstractBlock {
 		}
 
 		$inner_html     = '';
-		$anchor_element = $dom->getElementsByTagName( 'a' )->item( 0 );
+		$anchor_element = $dom->getElementsByTagName( 'a' )[0];
 		// phpcs:ignore WordPress.NamingConventions.ValidVariableName.UsedPropertyNotSnakeCase
 		$children = $anchor_element->childNodes;
 		foreach ( $children as $child ) {
@@ -218,11 +226,16 @@ class ProductAddToCartButton extends AbstractBlock {
 	/**
 	 * Get first leaf node
 	 *
-	 * @param DOMElement $dom The DOM element.
+	 * @param DOMElement $node The node element.
 	 */
-	private function get_first_leaf_node( $dom ) {
+	private function get_first_leaf_node( $node ) {
 		// phpcs:ignore WordPress.NamingConventions.ValidVariableName.UsedPropertyNotSnakeCase
-		$children = $dom->childNodes;
+		if ( 0 === $node->childNodes->length ) {
+			return $node;
+		}
+
+		// phpcs:ignore WordPress.NamingConventions.ValidVariableName.UsedPropertyNotSnakeCase
+		$children = $node->childNodes;
 		foreach ( $children as $child ) {
 			// phpcs:ignore WordPress.NamingConventions.ValidVariableName.UsedPropertyNotSnakeCase
 			if ( 0 === $child->childNodes->length ) {
