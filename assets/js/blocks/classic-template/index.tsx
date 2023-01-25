@@ -24,7 +24,7 @@ import { isWpVersion } from '@woocommerce/settings';
  */
 import './editor.scss';
 import './style.scss';
-import { BLOCK_SLUG, TEMPLATES } from './constants';
+import { BLOCK_SLUG, TEMPLATES, PLACEHOLDERS } from './constants';
 import {
 	isClassicTemplateBlockRegisteredWithAnotherTitle,
 	hasTemplateSupportForClassicTemplateBlock,
@@ -37,7 +37,21 @@ type Attributes = {
 	align: string;
 };
 
-const getDescriptionAllowingConversion = ( templateTitle: string ) =>
+const isProductArchiveBlockificationPossible = (
+	templatePlaceholder: string
+) => {
+	// At the moment blockification is available for product archive only.
+	// Blockification is possible for the WP version 6.1 and above,
+	// which are the versions the Products block supports.
+	return (
+		templatePlaceholder === PLACEHOLDERS.archiveProduct &&
+		isWpVersion( '6.1', '>=' )
+	);
+};
+
+const getProductArchiveDescriptionAllowingConversion = (
+	templateTitle: string
+) =>
 	sprintf(
 		/* translators: %s is the template title */
 		__(
@@ -56,6 +70,26 @@ const getDescriptionDisallowingConversion = ( templateTitle: string ) =>
 		),
 		templateTitle
 	);
+
+const blockificationConfig = {
+	[ PLACEHOLDERS.archiveProduct ]: {
+		isBlockificationPossible: isProductArchiveBlockificationPossible,
+		getDescriptionAllowingConversion:
+			getProductArchiveDescriptionAllowingConversion,
+		getBlockifiedTemplate: getProductArchiveTemplate,
+	},
+	// TODO: Extend the config when single product blockification is available.
+	[ PLACEHOLDERS.singleProduct ]: {
+		isBlockificationPossible: () => false,
+		getDescriptionAllowingConversion: () => '',
+		getBlockifiedTemplate: () => [],
+	},
+	fallback: {
+		isBlockificationPossible: () => false,
+		getDescriptionAllowingConversion: () => '',
+		getBlockifiedTemplate: () => [],
+	},
+};
 
 const Edit = ( {
 	clientId,
@@ -81,10 +115,15 @@ const Edit = ( {
 		[ attributes.align, attributes.template, setAttributes ]
 	);
 
-	// Blockification is possible for the WP version 6.1 and above,
-	// which are the versions the Products block supports.
-	const isBlockificationPossible = isWpVersion( '6.1', '>=' );
-	const placeholderDescription = isBlockificationPossible
+	const {
+		isBlockificationPossible,
+		getDescriptionAllowingConversion,
+		getBlockifiedTemplate,
+	} = blockificationConfig[ templatePlaceholder ];
+
+	const blockificationPossible =
+		isBlockificationPossible( templatePlaceholder );
+	const placeholderDescription = blockificationPossible
 		? getDescriptionAllowingConversion( templateTitle )
 		: getDescriptionDisallowingConversion( templateTitle );
 
@@ -99,14 +138,14 @@ const Edit = ( {
 					<p>{ placeholderDescription }</p>
 				</div>
 				<div className="wp-block-woocommerce-classic-template__placeholder-wireframe">
-					{ isBlockificationPossible && (
+					{ blockificationPossible && (
 						<div className="wp-block-woocommerce-classic-template__placeholder-migration-button-container">
 							<Button
 								isPrimary
 								onClick={ () => {
 									replaceBlock(
 										clientId,
-										getProductArchiveTemplate()
+										getBlockifiedTemplate()
 									);
 								} }
 								text={ __(
