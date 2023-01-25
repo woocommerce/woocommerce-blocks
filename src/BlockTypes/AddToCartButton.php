@@ -26,10 +26,19 @@ class AddToCartButton extends AbstractBlock {
 	 */
 	protected function render( $attributes, $content, $block ) {
 		ob_start();
-		// TBD: add to cart button.
-		$breadcrumb = ob_get_clean();
 
-		if ( ! $breadcrumb ) {
+		while ( have_posts() ) {
+			the_post();
+			global $product;
+			/**
+			 * Trigger the single product add to cart action for each product type.
+			 */
+			do_action( 'woocommerce_' . $product->get_type() . '_add_to_cart' );
+		}
+
+		$product = ob_get_clean();
+
+		if ( ! $product ) {
 			return;
 		}
 
@@ -41,7 +50,7 @@ class AddToCartButton extends AbstractBlock {
 			esc_attr( $classes_and_styles['classes'] ),
 			esc_attr( $classname ),
 			esc_attr( $classes_and_styles['styles'] ),
-			$breadcrumb
+			$product
 		);
 	}
 
