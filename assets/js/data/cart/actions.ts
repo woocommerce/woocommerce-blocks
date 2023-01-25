@@ -454,25 +454,25 @@ export const updateCustomerData =
 	};
 
 type Actions =
+	| typeof addItemToCart
+	| typeof applyCoupon
+	| typeof changeCartItemQuantity
 	| typeof itemIsPendingDelete
 	| typeof itemIsPendingQuantity
 	| typeof receiveApplyingCoupon
 	| typeof receiveCartContents
 	| typeof receiveCartItem
 	| typeof receiveRemovingCoupon
+	| typeof removeCoupon
+	| typeof removeItemFromCart
+	| typeof selectShippingRate
 	| typeof setBillingAddress
 	| typeof setCartData
 	| typeof setErrorData
 	| typeof setIsCartDataStale
 	| typeof setShippingAddress
 	| typeof shippingRatesBeingSelected
-	| typeof updatingCustomerData
-	| typeof addItemToCart
-	| typeof applyCoupon
-	| typeof changeCartItemQuantity
-	| typeof removeCoupon
-	| typeof removeItemFromCart
-	| typeof selectShippingRate
-	| typeof updateCustomerData;
+	| typeof updateCustomerData
+	| typeof updatingCustomerData;
 
 export type CartAction = ReturnOrGeneratorYieldUnion< Actions | Thunks >;
