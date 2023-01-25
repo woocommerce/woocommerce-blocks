@@ -136,7 +136,7 @@ export const processErrorResponse = (
 	response: ApiErrorResponse | null,
 	context?: string | undefined
 ) => {
-	if ( response === null || ! isApiErrorResponse( response ) ) {
+	if ( ! isApiErrorResponse( response ) ) {
 		return;
 	}
 
