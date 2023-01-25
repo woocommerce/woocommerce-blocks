@@ -4,7 +4,6 @@
 import {
 	canvas,
 	createNewPost,
-	insertBlock,
 	switchUserToAdmin,
 	searchForBlock,
 } from '@wordpress/e2e-test-utils';
@@ -15,6 +14,7 @@ import {
 import {
 	filterCurrentBlocks,
 	goToSiteEditor,
+	GUTENBERG_EDITOR_CONTEXT,
 	useTheme,
 	waitForCanvas,
 } from '../../utils.js';
@@ -41,22 +41,29 @@ describe( `${ block.name } Block`, () => {
 		} );
 	} );
 
-	describe.skip( 'in FSE editor', () => {
+	describe( 'in FSE editor', () => {
 		useTheme( 'emptytheme' );
 
 		beforeEach( async () => {
 			await goToSiteEditor();
+			const selector =
+				'.edit-site-site-hub__edit-button[aria-label="Open the editor"]';
+			if ( GUTENBERG_EDITOR_CONTEXT === 'gutenberg' ) {
+				await page.waitForSelector( selector );
+				await page.click( selector );
+			}
 			await waitForCanvas();
 		} );
 
 		it( 'can be inserted in FSE area', async () => {
-			await insertBlock( block.name );
+			await insertCatalogSorting();
+
 			await expect( canvas() ).toMatchElement( block.class );
 		} );
 
 		it( 'can be inserted more than once', async () => {
-			await insertBlock( block.name );
-			await insertBlock( block.name );
+			await insertCatalogSorting();
+			await insertCatalogSorting();
 			const foo = await filterCurrentBlocks(
 				( b ) => b.name === block.slug
 			);
@@ -64,3 +71,12 @@ describe( `${ block.name } Block`, () => {
 		} );
 	} );
 } );
+
+const insertCatalogSorting = async () => {
+	await searchForBlock( block.name );
+	await page.waitForXPath( `//button//span[text()='${ block.name }']` );
+	const insertButton = (
+		await page.$x( `//button//span[text()='${ block.name }']` )
+	 )[ 0 ];
+	await insertButton.click();
+};
