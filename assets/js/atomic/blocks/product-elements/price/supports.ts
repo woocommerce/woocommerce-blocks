@@ -2,6 +2,7 @@
  * External dependencies
  */
 import { isFeaturePluginBuild } from '@woocommerce/block-settings';
+import { __experimentalGetSpacingClassesAndStyles } from '@wordpress/block-editor';
 
 /**
  * Internal dependencies
@@ -24,5 +25,10 @@ export const supports = {
 			__experimentalSkipSerialization: true,
 		},
 		__experimentalSelector: '.wc-block-components-product-price',
+	} ),
+	...( typeof __experimentalGetSpacingClassesAndStyles === 'function' && {
+		spacing: {
+			margin: true,
+		},
 	} ),
 };
