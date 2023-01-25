@@ -14,7 +14,6 @@ import {
 import {
 	filterCurrentBlocks,
 	goToSiteEditor,
-	GUTENBERG_EDITOR_CONTEXT,
 	useTheme,
 	waitForCanvas,
 } from '../../utils.js';
@@ -46,12 +45,6 @@ describe( `${ block.name } Block`, () => {
 
 		beforeEach( async () => {
 			await goToSiteEditor();
-			const selector =
-				'.edit-site-site-hub__edit-button[aria-label="Open the editor"]';
-			if ( GUTENBERG_EDITOR_CONTEXT === 'gutenberg' ) {
-				await page.waitForSelector( selector );
-				await page.click( selector );
-			}
 			await waitForCanvas();
 		} );
 
