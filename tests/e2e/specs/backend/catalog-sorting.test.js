@@ -25,19 +25,14 @@ const block = {
 };
 
 describe( `${ block.name } Block`, () => {
-	describe( 'in a post', () => {
-		beforeAll( async () => {
-			await switchUserToAdmin();
+	it( 'can not be inserted in a post', async () => {
+		await switchUserToAdmin();
+		await createNewPost( {
+			postType: 'post',
+			title: block.name,
 		} );
-
-		it( 'can not be inserted', async () => {
-			await createNewPost( {
-				postType: 'post',
-				title: block.name,
-			} );
-			await searchForBlock( block.name );
-			expect( page ).toMatch( 'No results found.' );
-		} );
+		await searchForBlock( block.name );
+		expect( page ).toMatch( 'No results found.' );
 	} );
 
 	describe( 'in FSE editor', () => {
@@ -57,10 +52,10 @@ describe( `${ block.name } Block`, () => {
 		it( 'can be inserted more than once', async () => {
 			await insertCatalogSorting();
 			await insertCatalogSorting();
-			const foo = await filterCurrentBlocks(
+			const catalogStoringBlock = await filterCurrentBlocks(
 				( b ) => b.name === block.slug
 			);
-			expect( foo ).toHaveLength( 2 );
+			expect( catalogStoringBlock ).toHaveLength( 2 );
 		} );
 	} );
 } );
