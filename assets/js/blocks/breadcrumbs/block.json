@@ -13,6 +13,10 @@
 		"fontSize": {
 			"type": "string",
 			"default": "small"
+		},
+		"align": {
+			"type": "string",
+			"default": "wide"
 		}
 	},
 	"supports": {
