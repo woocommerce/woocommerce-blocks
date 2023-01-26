@@ -36,7 +36,8 @@ const PickupLocation = (): JSX.Element | null => {
 			);
 			if (
 				isObject( selectedRateMetaData ) &&
-				objectHasProp( selectedRateMetaData, 'value' )
+				objectHasProp( selectedRateMetaData, 'value' ) &&
+				selectedRateMetaData.value
 			) {
 				const selectedRatePickupAddress = selectedRateMetaData.value;
 				return {
