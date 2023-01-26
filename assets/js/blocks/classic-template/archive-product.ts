@@ -38,6 +38,7 @@ const createRowBlock = ( innerBlocks: Array< BlockInstance > ) => {
 			...attributes.layout,
 			justifyContent: 'space-between',
 		},
+		align: 'wide',
 	};
 
 	return createBlock( `core/group`, extendedAttributes, innerBlocks );
@@ -49,13 +50,14 @@ const createProductsBlock = () =>
 		{
 			...productsQueryDefaultAttributes,
 			namespace: productsVariationName,
+			align: 'wide',
 		},
 		createBlocksFromInnerBlocksTemplate( productsInnerBlocksTemplate )
 	);
 
 const getBlockifiedTemplate = () =>
 	[
-		createBlock( 'woocommerce/store-notices' ),
+		createBlock( 'woocommerce/store-notices', { align: 'wide' } ),
 		createRowBlock( [
 			createBlock( 'woocommerce/product-results-count' ),
 			createBlock( 'woocommerce/catalog-sorting' ),
