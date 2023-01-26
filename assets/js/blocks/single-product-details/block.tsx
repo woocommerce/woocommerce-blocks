@@ -88,7 +88,19 @@ export const SingleProductDetails = ( props ) => {
 		<ProductTabsList
 			className="wc-block-single-product-details"
 			productTabs={ [
-				{ id: 1, title: 'test', active: true, content: 'Content' },
+				{
+					id: 1,
+					title: 'Description',
+					active: true,
+					content: 'Content',
+				},
+				{
+					id: 1,
+					title: 'Additional Information',
+					active: false,
+					content: 'Content',
+				},
+				{ id: 1, title: 'Reviews', active: false, content: 'Content' },
 			] }
 		/>
 	);
