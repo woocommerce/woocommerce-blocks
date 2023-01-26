@@ -9,6 +9,9 @@ import { TotalsItem } from '@woocommerce/blocks-checkout';
 import type { Currency } from '@woocommerce/price-format';
 import { ShippingVia } from '@woocommerce/base-components/cart-checkout/totals/shipping/shipping-via';
 import { isAddressComplete } from '@woocommerce/base-utils';
+import { CHECKOUT_STORE_KEY } from '@woocommerce/block-data';
+import { useSelect } from '@wordpress/data';
+import { getSetting } from '@woocommerce/settings';
 
 /**
  * Internal dependencies
@@ -32,6 +35,10 @@ export interface TotalShippingProps {
 	isCheckout?: boolean;
 }
 
+const collectibleMethodIds = getSetting< string[] >(
+	'collectibleMethodIds',
+	[]
+);
 export const TotalsShipping = ( {
 	currency,
 	values,
@@ -52,10 +59,21 @@ export const TotalsShipping = ( {
 	const hasRates = hasShippingRate( shippingRates ) || totalShippingValue > 0;
 	const showShippingCalculatorForm =
 		showCalculator && isShippingCalculatorOpen;
+	const prefersCollection = useSelect( ( select ) => {
+		return select( CHECKOUT_STORE_KEY ).prefersCollection();
+	} );
 	const selectedShippingRates = shippingRates.flatMap(
 		( shippingPackage ) => {
 			return shippingPackage.shipping_rates
-				.filter( ( rate ) => rate.selected )
+				.filter(
+					( rate ) =>
+						// If the shopper prefers collection, the rate is collectible AND selected.
+						( prefersCollection &&
+							collectibleMethodIds.includes( rate.method_id ) &&
+							rate.selected ) ||
+						// Or the shopper does not prefer collection and the rate is selected
+						( ! prefersCollection && rate.selected )
+				)
 				.flatMap( ( rate ) => rate.name );
 		}
 	);
