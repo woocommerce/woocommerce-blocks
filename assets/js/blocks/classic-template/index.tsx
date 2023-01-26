@@ -30,6 +30,7 @@ import {
 	getTemplateDetailsBySlug,
 } from './utils';
 import * as blockifiedProductArchive from './archive-product';
+import * as blockifiedSingleProduct from './single-product';
 
 type Attributes = {
 	template: string;
@@ -46,12 +47,7 @@ const blockifiedFallbackConfig = {
 
 const blockificationConfig = {
 	[ PLACEHOLDERS.archiveProduct ]: blockifiedProductArchive,
-	// TODO: Replace the fallback config with proper one when single product blockification is available.
-	[ PLACEHOLDERS.singleProduct ]: {
-		...blockifiedFallbackConfig,
-		getDescriptionDisallowingConversion:
-			blockifiedProductArchive.getDescriptionDisallowingConversion,
-	},
+	[ PLACEHOLDERS.singleProduct ]: blockifiedSingleProduct,
 	fallback: blockifiedFallbackConfig,
 };
 
