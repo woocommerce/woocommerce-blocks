@@ -8,8 +8,6 @@ import { useStoreCart } from '@woocommerce/base-context/hooks';
 import { TotalsItem } from '@woocommerce/blocks-checkout';
 import type { Currency } from '@woocommerce/price-format';
 import { ShippingVia } from '@woocommerce/base-components/cart-checkout/totals/shipping/shipping-via';
-import { useSelect } from '@wordpress/data';
-import { CHECKOUT_STORE_KEY } from '@woocommerce/block-data';
 import { isAddressComplete } from '@woocommerce/base-utils';
 
 /**
@@ -50,12 +48,6 @@ export const TotalsShipping = ( {
 		shippingRates,
 		isLoadingRates,
 	} = useStoreCart();
-	const { prefersCollection } = useSelect( ( select ) => {
-		const checkoutStore = select( CHECKOUT_STORE_KEY );
-		return {
-			prefersCollection: checkoutStore.prefersCollection(),
-		};
-	} );
 	const totalShippingValue = getTotalShippingValue( values );
 	const hasRates = hasShippingRate( shippingRates ) || totalShippingValue > 0;
 	const showShippingCalculatorForm =
@@ -113,7 +105,6 @@ export const TotalsShipping = ( {
 								setIsShippingCalculatorOpen={
 									setIsShippingCalculatorOpen
 								}
-								prefersCollection={ prefersCollection }
 							/>
 						</>
 					) : null
