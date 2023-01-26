@@ -10,10 +10,10 @@ import { isObject, objectHasProp } from '@woocommerce/types';
  * Shows a formatted pickup location.
  */
 const PickupLocation = (): JSX.Element | null => {
-	const collectibleMethodIds = [
-		...getSetting< string[] >( 'collectibleMethodIds', [] ),
-		'pickup_location',
-	];
+	const collectibleMethodIds = getSetting< string[] >(
+		'collectibleMethodIds',
+		[]
+	);
 
 	const { pickupAddress, pickupMethod } = useSelect( ( select ) => {
 		const cartShippingRates = select( 'wc/store/cart' ).getShippingRates();
