@@ -2,12 +2,13 @@
  * External dependencies
  */
 import { __ } from '@wordpress/i18n';
-import { EnteredAddress } from '@woocommerce/settings';
 import {
 	formatShippingAddress,
 	isAddressComplete,
 } from '@woocommerce/base-utils';
 import { useEditorContext } from '@woocommerce/base-context';
+import { ShippingAddress as ShippingAddressType } from '@woocommerce/settings';
+import PickupLocation from '@woocommerce/base-components/cart-checkout/pickup-location';
 
 /**
  * Internal dependencies
@@ -19,7 +20,8 @@ export interface ShippingAddressProps {
 	showCalculator: boolean;
 	isShippingCalculatorOpen: boolean;
 	setIsShippingCalculatorOpen: CalculatorButtonProps[ 'setIsShippingCalculatorOpen' ];
-	shippingAddress: EnteredAddress;
+	shippingAddress: ShippingAddressType;
+	prefersCollection?: boolean | undefined;
 }
 
 export const ShippingAddress = ( {
@@ -27,6 +29,7 @@ export const ShippingAddress = ( {
 	isShippingCalculatorOpen,
 	setIsShippingCalculatorOpen,
 	shippingAddress,
+	prefersCollection = false,
 }: ShippingAddressProps ): JSX.Element | null => {
 	const addressComplete = isAddressComplete( shippingAddress );
 	const { isEditor } = useEditorContext();
@@ -38,7 +41,11 @@ export const ShippingAddress = ( {
 	const formattedLocation = formatShippingAddress( shippingAddress );
 	return (
 		<>
-			<ShippingLocation formattedLocation={ formattedLocation } />
+			{ prefersCollection ? (
+				<PickupLocation />
+			) : (
+				<ShippingLocation formattedLocation={ formattedLocation } />
+			) }
 			{ showCalculator && (
 				<CalculatorButton
 					label={ __(
