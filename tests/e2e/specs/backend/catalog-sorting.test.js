@@ -44,6 +44,8 @@ describe( `${ block.name } Block`, () => {
 		} );
 
 		it( 'can be inserted in FSE area', async () => {
+			// We are using here the "insertCatalogSorting" function because the
+			// tests are flickering when we use the "insertBlock" function.
 			await insertCatalogSorting();
 
 			await expect( canvas() ).toMatchElement( block.class );
