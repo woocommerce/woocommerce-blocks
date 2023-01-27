@@ -90,12 +90,13 @@ export const __internalEmitPaymentProcessingEvent: emitProcessingEventType = (
 					shippingData: shippingDataFromResponse,
 				} = response?.meta || {};
 
-				billingAddress = billingAddressFromResponse;
-				shippingAddress = shippingAddressFromResponse;
+				billingAddress = billingAddressFromResponse as BillingAddress;
+				shippingAddress =
+					shippingAddressFromResponse as ShippingAddress;
 
 				if ( billingDataFromResponse ) {
 					// Set this here so that old extensions still using billingData can set the billingAddress.
-					billingAddress = billingDataFromResponse;
+					billingAddress = billingDataFromResponse as BillingAddress;
 					deprecated(
 						'returning billingData from an onPaymentProcessing observer in WooCommerce Blocks',
 						{
@@ -108,7 +109,8 @@ export const __internalEmitPaymentProcessingEvent: emitProcessingEventType = (
 
 				if ( shippingDataFromResponse ) {
 					// Set this here so that old extensions still using shippingData can set the shippingAddress.
-					shippingAddress = shippingDataFromResponse;
+					shippingAddress =
+						shippingDataFromResponse as ShippingAddress;
 					deprecated(
 						'returning shippingData from an onPaymentProcessing observer in WooCommerce Blocks',
 						{
