@@ -40,8 +40,7 @@ type Attributes = {
 const blockifiedFallbackConfig = {
 	isBlockificationPossible: () => false,
 	getBlockifiedTemplate: () => [],
-	getDescriptionAllowingConversion: () => '',
-	getDescriptionDisallowingConversion: () => '',
+	getDescription: () => '',
 	getButtonLabel: () => '',
 };
 
@@ -78,16 +77,12 @@ const Edit = ( {
 	const {
 		getBlockifiedTemplate,
 		isBlockificationPossible,
-		getDescriptionAllowingConversion,
-		getDescriptionDisallowingConversion,
+		getDescription,
 		getButtonLabel,
 	} = blockificationConfig[ templatePlaceholder ];
 
-	const blockificationPossible =
-		isBlockificationPossible( templatePlaceholder );
-	const placeholderDescription = blockificationPossible
-		? getDescriptionAllowingConversion( templateTitle )
-		: getDescriptionDisallowingConversion( templateTitle );
+	const canConvert = isBlockificationPossible( templatePlaceholder );
+	const placeholderDescription = getDescription( templateTitle, canConvert );
 
 	return (
 		<div { ...blockProps }>
@@ -100,7 +95,7 @@ const Edit = ( {
 					<p>{ placeholderDescription }</p>
 				</div>
 				<div className="wp-block-woocommerce-classic-template__placeholder-wireframe">
-					{ blockificationPossible && (
+					{ canConvert && (
 						<div className="wp-block-woocommerce-classic-template__placeholder-migration-button-container">
 							<Button
 								isPrimary

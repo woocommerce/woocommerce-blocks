@@ -105,13 +105,20 @@ const getDescriptionDisallowingConversion = ( templateTitle: string ) =>
 		templateTitle
 	);
 
+const getDescription = ( templateTitle: string, canConvert: boolean ) => {
+	if ( canConvert ) {
+		return getDescriptionAllowingConversion( templateTitle );
+	}
+
+	return getDescriptionDisallowingConversion( templateTitle );
+};
+
 const getButtonLabel = () =>
 	__( 'Upgrade to Products block', 'woo-gutenberg-products-block' );
 
 export {
 	getBlockifiedTemplate,
 	isBlockificationPossible,
-	getDescriptionAllowingConversion,
-	getDescriptionDisallowingConversion,
+	getDescription,
 	getButtonLabel,
 };

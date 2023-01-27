@@ -21,12 +21,19 @@ const getDescriptionDisallowingConversion = ( templateTitle: string ) =>
 		templateTitle
 	);
 
+const getDescription = ( templateTitle: string, canConvert: boolean ) => {
+	if ( canConvert ) {
+		return getDescriptionAllowingConversion();
+	}
+
+	return getDescriptionDisallowingConversion( templateTitle );
+};
+
 const getButtonLabel = () => '';
 
 export {
 	getBlockifiedTemplate,
 	isBlockificationPossible,
-	getDescriptionAllowingConversion,
-	getDescriptionDisallowingConversion,
+	getDescription,
 	getButtonLabel,
 };
