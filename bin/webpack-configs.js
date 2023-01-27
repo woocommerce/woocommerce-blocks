@@ -790,7 +790,7 @@ const getInteractivityAPIConfig = ( options = {} ) => {
 				'./assets/js/blocks/simple-price-filter/view.js',
 		},
 		output: {
-			filename: 'wp-directives-[name].js',
+			filename: 'woo-directives-[name].js',
 			path: path.resolve( __dirname, '../build/' ),
 		},
 		resolve: {
