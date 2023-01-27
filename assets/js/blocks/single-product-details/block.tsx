@@ -2,107 +2,91 @@
  * External dependencies
  */
 import classnames from 'classnames';
+import { __ } from '@wordpress/i18n';
 
 /**
  * Internal dependencies
  */
-const ReviewsTab = () => {
-	return <div>tab</div>;
+
+interface SingleProductTab {
+	id: string;
+	title: string;
+	active: boolean;
+	content: string | undefined;
+}
+
+const ProductTabTitle = ( {
+	id,
+	title,
+	active,
+}: Pick< SingleProductTab, 'id' | 'title' | 'active' > ) => {
+	return (
+		<li
+			className={ classnames( `${ id }_tab`, {
+				active,
+			} ) }
+			id={ `tab-title-${ id }` }
+			role="tab"
+			aria-controls={ `tab-${ id }` }
+		>
+			<a href={ `#tab-${ id }` }>{ title }</a>
+		</li>
+	);
 };
 
-const AdditionalInformationTab = () => {
-	return <div>tab</div>;
-};
-
-const DescriptionTab = () => {
+const ProductTabContent = ( {
+	id,
+	content,
+}: Pick< SingleProductTab, 'id' | 'content' > ) => {
 	return (
 		<div
-			className="woocommerce-Tabs-panel woocommerce-Tabs-panel--<?php echo esc_attr( $key ); ?> panel entry-content wc-tab"
-			id="tab-<?php echo esc_attr( $key ); ?>"
-			role="tabpanel"
-			aria-labelledby="tab-title-<?php echo esc_attr( $key ); ?>"
+			className={ `${ id }_tab` }
+			id={ `tab-title-${ id }` }
+			role="tab"
+			aria-controls={ `tab-${ id }` }
 		>
-			{ /* <?php
-	if ( isset( $product_tab['callback'] ) ) {
-		call_user_func( $product_tab['callback'], $key, $product_tab );
-	}
-	?> */ }
+			{ content }
 		</div>
 	);
 };
 
-const ProductTabContent = ( { content } ) => {
-	return (
-		<li
-			className="<?php echo esc_attr( $key ); ?>_tab"
-			id="tab-title-<?php echo esc_attr( $key ); ?>"
-			role="tab"
-			aria-controls="tab-<?php echo esc_attr( $key ); ?>"
-		>
-			{ content }
-		</li>
-	);
-};
+export const SingleProductDetails = () => {
+	const productTabs = [
+		{
+			id: 'description',
+			title: 'Description',
+			active: true,
+			content: __(
+				'This block lists description, attributes and reviews for a single product.',
+				'woo-gutenberg-products-block'
+			),
+		},
+		{
+			id: 'additional_information',
+			title: 'Additional Information',
+			active: false,
+		},
+		{ id: 'reviews', title: 'Reviews', active: false },
+	];
+	const tabsTitle = productTabs.map( ( { id, title, active } ) => (
+		<ProductTabTitle
+			key={ id }
+			id={ id }
+			title={ title }
+			active={ active }
+		/>
+	) );
+	const tabsContent = productTabs.map( ( { id, content } ) => (
+		<ProductTabContent key={ id } id={ id } content={ content } />
+	) );
 
-const ProductTabTitle = ( { title, active } ) => {
-	return (
-		<li
-			className={ classnames( '<?php echo esc_attr( $key ); ?>_tab', {
-				active,
-			} ) }
-			id="tab-title-<?php echo esc_attr( $key ); ?>"
-			role="tab"
-			aria-controls="tab-<?php echo esc_attr( $key ); ?>"
-		>
-			<a href="#tab-<?php echo esc_attr( $key ); ?>">{ title }</a>
-		</li>
-	);
-};
-
-const ProductTabsList = ( { productTabs } ) => {
 	return (
 		<div className="woocommerce-tabs wc-tabs-wrapper">
 			<ul className="tabs" role="tablist">
-				{ productTabs.map( ( productTab ) => (
-					<ProductTabTitle
-						title={ productTab.title }
-						active={ productTab.active }
-					/>
-				) ) }
+				{ tabsTitle }
 			</ul>
-			{ productTabs.map( ( productTab ) => (
-				<ProductTabContent
-					content={ productTab.content }
-					active={ productTab.active }
-				/>
-			) ) }
-
-			{ /* <?php do_action( 'woocommerce_product_after_tabs' ); ?> */ }
+			{ tabsContent }
 		</div>
-	);
-};
-
-export const SingleProductDetails = ( props ) => {
-	console.log( { props } );
-	return (
-		<ProductTabsList
-			className="wc-block-single-product-details"
-			productTabs={ [
-				{
-					id: 1,
-					title: 'Description',
-					active: true,
-					content: 'Content',
-				},
-				{
-					id: 1,
-					title: 'Additional Information',
-					active: false,
-					content: 'Content',
-				},
-				{ id: 1, title: 'Reviews', active: false, content: 'Content' },
-			] }
-		/>
 	);
 };
 
