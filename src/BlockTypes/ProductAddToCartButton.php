@@ -2,7 +2,6 @@
 namespace Automattic\WooCommerce\Blocks\BlockTypes;
 
 use DOMDocument;
-use DOMXPath;
 
 /**
  * This help us to generate frontend UI for
@@ -151,7 +150,6 @@ class ProductAddToCartButton extends AbstractBlock {
 		);
 	}
 
-
 	/**
 	 * Return inner html of anchor block.
 	 *
@@ -166,33 +164,26 @@ class ProductAddToCartButton extends AbstractBlock {
 	 * @param \WC_Product $product The product object.
 	 */
 	private function get_anchor_inner_html( $block_content, $product ) {
-		$dom = new DOMDocument();
-		$dom->loadHTML( $block_content );
-
 		/**
-		 * If the product is not a simple product, we need to remove the text
-		 * that is inside the anchor element and replace it with the text
-		 * that should be displayed on the "Add to Cart" button based on
-		 * product type & stock status.
+		 * If the product is not a simple product, than we don't need to show any text
+		 * styling because text styling is not supported for non-simple products. In other
+		 * words, merchants can change text styling for simple products only using Editor.
 		 */
 		if ( ! $product->is_type( 'simple' ) ) {
-			$anchor_element = $dom->getElementsByTagName( 'a' )->item( 0 );
-			$this->remove_text_nodes_recursively( $anchor_element );
-
 			/**
 			 * $product->add_to_cart_text() is a method that retrieves the text
 			 * that should be displayed on the "Add to Cart" button for a specific product
 			 *
-			 * For example, if the product is a simple product and is in stock,
-			 * the text will be "Add to cart". If the product is a variable product,
-			 * the text will be "Select options". If the product is out of stock,
-			 * the text will be "Out of stock".
+			 * For example, If the product is a variable product, text will be "Select options".
+			 * If the product is out of stock, the text will be "Out of stock".
 			 */
-			$add_to_cart_text = $product->add_to_cart_text();
-			$this->add_anchor_node_text( $anchor_element, $add_to_cart_text );
+
+			return $product->add_to_cart_text();
 		}
 
-		$inner_html     = '';
+		$inner_html = '';
+		$dom        = new DOMDocument();
+		$dom->loadHTML( $block_content );
 		$anchor_element = $dom->getElementsByTagName( 'a' )->item( 0 );
 		// phpcs:ignore WordPress.NamingConventions.ValidVariableName.UsedPropertyNotSnakeCase
 		$children = $anchor_element->childNodes;
@@ -201,60 +192,6 @@ class ProductAddToCartButton extends AbstractBlock {
 			$inner_html .= $child->ownerDocument->saveXML( $child );
 		}
 		return $inner_html;
-	}
-
-	/**
-	 * Add text to fist leaf node of anchor element
-	 *
-	 * @param DOMElement $anchor_element The anchor element.
-	 * @param string     $text The text to add.
-	 */
-	private function add_anchor_node_text( $anchor_element, $text ) {
-		$first_leaf_node = $this->get_first_leaf_node( $anchor_element );
-		// phpcs:ignore WordPress.NamingConventions.ValidVariableName.UsedPropertyNotSnakeCase
-		$first_leaf_node->nodeValue = $text;
-	}
-
-	/**
-	 * Remove text nodes recursively
-	 *
-	 * @param DOMElement $dom The DOM element.
-	 */
-	private function remove_text_nodes_recursively( $dom ) {
-		// phpcs:ignore WordPress.NamingConventions.ValidVariableName.UsedPropertyNotSnakeCase
-		$children = $dom->childNodes;
-		foreach ( $children as $child ) {
-			// phpcs:ignore WordPress.NamingConventions.ValidVariableName.UsedPropertyNotSnakeCase
-			if ( XML_TEXT_NODE === $child->nodeType ) {
-				// phpcs:ignore WordPress.NamingConventions.ValidVariableName.UsedPropertyNotSnakeCase
-				$child->nodeValue = '';
-			} else {
-				$this->remove_text_nodes_recursively( $child );
-			}
-		}
-	}
-
-	/**
-	 * Get first leaf node
-	 *
-	 * @param DOMElement $node The node element.
-	 */
-	private function get_first_leaf_node( $node ) {
-		// phpcs:ignore WordPress.NamingConventions.ValidVariableName.UsedPropertyNotSnakeCase
-		if ( 0 === $node->childNodes->length ) {
-			return $node;
-		}
-
-		// phpcs:ignore WordPress.NamingConventions.ValidVariableName.UsedPropertyNotSnakeCase
-		$children = $node->childNodes;
-		foreach ( $children as $child ) {
-			// phpcs:ignore WordPress.NamingConventions.ValidVariableName.UsedPropertyNotSnakeCase
-			if ( 0 === $child->childNodes->length ) {
-				return $child;
-			} else {
-				return $this->get_first_leaf_node( $child );
-			}
-		}
 	}
 
 	/**
