@@ -20,7 +20,14 @@ import {
 } from '../product-query/constants';
 import { VARIATION_NAME as productsVariationName } from '../product-query/variations/product-query';
 
-const createRowBlock = ( innerBlocks: Array< BlockInstance > ) => {
+type Attributes = {
+	align?: string;
+};
+
+const createRowBlock = (
+	innerBlocks: Array< BlockInstance >,
+	inheritedAttributes: Attributes
+) => {
 	const rowVariationName = `group-row`;
 	const groupBlockVariations = getBlockType( 'core/group' )?.variations || [];
 	const rowVariation = groupBlockVariations.find(
@@ -34,35 +41,38 @@ const createRowBlock = ( innerBlocks: Array< BlockInstance > ) => {
 	const { attributes } = rowVariation;
 	const extendedAttributes = {
 		...attributes,
+		...inheritedAttributes,
 		layout: {
 			...attributes.layout,
 			justifyContent: 'space-between',
 		},
-		align: 'wide',
 	};
 
 	return createBlock( `core/group`, extendedAttributes, innerBlocks );
 };
 
-const createProductsBlock = () =>
+const createProductsBlock = ( inheritedAttributes: Attributes ) =>
 	createBlock(
 		'core/query',
 		{
 			...productsQueryDefaultAttributes,
+			...inheritedAttributes,
 			namespace: productsVariationName,
-			align: 'wide',
 		},
 		createBlocksFromInnerBlocksTemplate( productsInnerBlocksTemplate )
 	);
 
-const getBlockifiedTemplate = () =>
+const getBlockifiedTemplate = ( inheritedAttributes: Attributes = {} ) =>
 	[
-		createBlock( 'woocommerce/store-notices', { align: 'wide' } ),
-		createRowBlock( [
-			createBlock( 'woocommerce/product-results-count' ),
-			createBlock( 'woocommerce/catalog-sorting' ),
-		] ),
-		createProductsBlock(),
+		createBlock( 'woocommerce/store-notices', inheritedAttributes ),
+		createRowBlock(
+			[
+				createBlock( 'woocommerce/product-results-count' ),
+				createBlock( 'woocommerce/catalog-sorting' ),
+			],
+			inheritedAttributes
+		),
+		createProductsBlock( inheritedAttributes ),
 	].filter( Boolean ) as BlockInstance[];
 
 const isBlockificationPossible = ( templatePlaceholder: string ) => {

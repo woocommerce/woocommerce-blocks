@@ -39,7 +39,7 @@ type Attributes = {
 
 const blockifiedFallbackConfig = {
 	isBlockificationPossible: () => false,
-	getBlockifiedTemplate: () => null,
+	getBlockifiedTemplate: () => [],
 	getDescriptionAllowingConversion: () => '',
 	getDescriptionDisallowingConversion: () => '',
 	getButtonLabel: () => '',
@@ -105,9 +105,15 @@ const Edit = ( {
 							<Button
 								isPrimary
 								onClick={ () => {
+									const classicTemplateAttributes =
+										select(
+											`core/block-editor`
+										).getBlockAttributes( clientId );
 									replaceBlock(
 										clientId,
-										getBlockifiedTemplate()
+										getBlockifiedTemplate(
+											classicTemplateAttributes
+										)
 									);
 								} }
 								text={ getButtonLabel() }
