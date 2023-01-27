@@ -2,11 +2,8 @@
  * External dependencies
  */
 import { useBlockProps } from '@wordpress/block-editor';
+import { Disabled } from '@wordpress/components';
 import { __ } from '@wordpress/i18n';
-/**
- * Internal dependencies
- */
-import './editor.scss';
 
 export interface Attributes {
 	className?: string;
@@ -19,10 +16,12 @@ const Edit = () => {
 
 	return (
 		<div { ...blockProps }>
-			<a href="/">
-				{ __( 'Breadcrumbs', 'woo-gutenberg-products-block' ) }
-			</a>
-			{ __( ' / Navigation / Path', 'woo-gutenberg-products-block' ) }
+			<Disabled>
+				<a href="/">
+					{ __( 'Breadcrumbs', 'woo-gutenberg-products-block' ) }
+				</a>
+				{ __( ' / Navigation / Path', 'woo-gutenberg-products-block' ) }
+			</Disabled>
 		</div>
 	);
 };

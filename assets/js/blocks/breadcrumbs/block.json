@@ -2,7 +2,7 @@
 	"name": "woocommerce/breadcrumbs",
 	"version": "1.0.0",
 	"title": "Store Breadcrumbs",
-	"description": "Enable customers to keep track of their locations within the store and navigate back to parent pages.",
+	"description": "Enable customers to keep track of their location within the store and navigate back to parent pages.",
 	"category": "woocommerce",
 	"keywords": [ "WooCommerce" ],
 	"textdomain": "woo-gutenberg-products-block",
