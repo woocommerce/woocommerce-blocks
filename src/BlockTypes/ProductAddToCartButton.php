@@ -88,7 +88,7 @@ class ProductAddToCartButton extends AbstractBlock {
 					'div_class' => $div_class,
 					'div_style' => $div_style,
 					'anchor_class' => $anchor_class,
-					'ancor_style' => $anchor_style
+					'anchor_style' => $anchor_style
 				] = $this->extract_style_and_class_from_block_content( $block_content );
 
 				return apply_filters(
