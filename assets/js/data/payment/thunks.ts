@@ -15,6 +15,7 @@ import {
 	isFailResponse,
 	isSuccessResponse,
 	noticeContexts,
+	ObserverResponse,
 } from '../../base/context/event-emit';
 import { EMIT_TYPES } from '../../base/context/providers/cart-checkout/payment-events/event-emit';
 import type { emitProcessingEventType } from './types';
@@ -23,6 +24,7 @@ import {
 	isBillingAddress,
 	isShippingAddress,
 } from '../../types/type-guards/address';
+import { isObserverResponse } from '../../types/type-guards/observers';
 
 export const __internalSetExpressPaymentError = ( message?: string ) => {
 	return ( { registry } ) => {
@@ -58,8 +60,8 @@ export const __internalEmitPaymentProcessingEvent: emitProcessingEventType = (
 			EMIT_TYPES.PAYMENT_PROCESSING,
 			{}
 		).then( ( observerResponses ) => {
-			let successResponse,
-				errorResponse,
+			let successResponse: ObserverResponse | undefined,
+				errorResponse: ObserverResponse | undefined,
 				billingAddress: BillingAddress | undefined,
 				shippingAddress: ShippingAddress | undefined;
 			observerResponses.forEach( ( response ) => {
@@ -120,7 +122,11 @@ export const __internalEmitPaymentProcessingEvent: emitProcessingEventType = (
 			const { setBillingAddress, setShippingAddress } =
 				registry.dispatch( CART_STORE_KEY );
 
-			if ( successResponse && ! errorResponse ) {
+			if (
+				isObserverResponse( successResponse ) &&
+				successResponse &&
+				! errorResponse
+			) {
 				const { paymentMethodData } = successResponse?.meta || {};
 				if ( billingAddress && isBillingAddress( billingAddress ) ) {
 					setBillingAddress( billingAddress );
