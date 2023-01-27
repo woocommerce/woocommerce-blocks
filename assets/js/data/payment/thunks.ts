@@ -4,6 +4,7 @@
 import { store as noticesStore } from '@wordpress/notices';
 import deprecated from '@wordpress/deprecated';
 import type { BillingAddress, ShippingAddress } from '@woocommerce/settings';
+import { isObject } from '@woocommerce/types';
 
 /**
  * Internal dependencies
@@ -130,7 +131,10 @@ export const __internalEmitPaymentProcessingEvent: emitProcessingEventType = (
 				) {
 					setShippingAddress( shippingAddress );
 				}
-				dispatch.__internalSetPaymentMethodData( paymentMethodData );
+				const paymentDataToSet = isObject( paymentMethodData )
+					? paymentMethodData
+					: {};
+				dispatch.__internalSetPaymentMethodData( paymentDataToSet );
 				dispatch.__internalSetPaymentSuccess();
 			} else if ( errorResponse && isFailResponse( errorResponse ) ) {
 				if ( errorResponse.message && errorResponse.message.length ) {
