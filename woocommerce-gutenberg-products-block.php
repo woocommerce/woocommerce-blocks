@@ -3,14 +3,14 @@
  * Plugin Name: WooCommerce Blocks
  * Plugin URI: https://github.com/woocommerce/woocommerce-gutenberg-products-block
  * Description: WooCommerce blocks for the Gutenberg editor.
- * Version: 9.3.0-dev
+ * Version: 9.5.0-dev
  * Author: Automattic
  * Author URI: https://woocommerce.com
  * Text Domain:  woo-gutenberg-products-block
  * Requires at least: 6.1.1
- * Requires PHP: 7.0
- * WC requires at least: 7.1
- * WC tested up to: 7.2
+ * Requires PHP: 7.2
+ * WC requires at least: 7.2
+ * WC tested up to: 7.3
  *
  * @package WooCommerce\Blocks
  * @internal This file is only used when running as a feature plugin.
@@ -96,7 +96,7 @@ function woocommerce_blocks_is_development_version() {
 /**
  * If development version is detected and the Jetpack constant is not defined, show a notice.
  */
-if ( woocommerce_blocks_is_development_version() && ! defined( 'JETPACK_AUTOLOAD_DEV' ) ) {
+if ( woocommerce_blocks_is_development_version() && ( ! defined( 'JETPACK_AUTOLOAD_DEV' ) || true !== JETPACK_AUTOLOAD_DEV ) ) {
 	add_action(
 		'admin_notices',
 		function () {
@@ -307,12 +307,19 @@ function wp_directives_register_scripts() {
 		true
 	);
 }
-add_action( 'wp_enqueue_scripts', 'wp_directives_register_scripts' );
+add_action( 'init', 'wp_directives_register_scripts' );
 
 // Enqueue the WP directives runtime.
-add_filter( '__experimental_woocommerce_blocks_enqueue_directives_runtime', function () { return true; } );
+add_filter(
+	'__experimental_woocommerce_blocks_enqueue_directives_runtime',
+	function () {
+		return true;
+	}
+);
 
-// Insert the required meta tag for client-side transitions.
+/**
+ * Insert the required meta tag for client-side transitions.
+ */
 function add_cst_meta_tag() {
 	echo '<meta itemprop="wp-client-side-transitions" content="active">';
 	add_filter(
@@ -321,4 +328,4 @@ function add_cst_meta_tag() {
 	);
 }
 
-add_action('wp_head', 'add_cst_meta_tag');
+add_action( 'wp_head', 'add_cst_meta_tag' );

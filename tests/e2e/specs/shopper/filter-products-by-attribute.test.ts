@@ -13,6 +13,7 @@ import {
 import {
 	selectBlockByName,
 	insertBlockUsingSlash,
+	switchBlockInspectorTabWhenGutenbergIsInstalled,
 } from '@woocommerce/blocks-test-utils';
 
 /**
@@ -189,8 +190,10 @@ describe( `${ block.name } Block`, () => {
 				postId: productCatalogTemplateId,
 			} );
 
-			await selectBlockByName( block.slug );
 			await ensureSidebarOpened();
+			await selectBlockByName( block.slug );
+			await switchBlockInspectorTabWhenGutenbergIsInstalled( 'Settings' );
+
 			const [ filterButtonToggle ] = await page.$x(
 				block.selectors.editor.filterButtonToggle
 			);
@@ -246,12 +249,15 @@ describe( `${ block.name } Block`, () => {
 			await insertBlock( block.name );
 			await page.waitForNetworkIdle();
 
+			await canvas().waitForSelector(
+				block.selectors.editor.firstAttributeInTheList
+			);
 			// It seems that .click doesn't work well with radio input element.
-			await page.$eval(
+			await canvas().$eval(
 				block.selectors.editor.firstAttributeInTheList,
 				( el ) => ( el as HTMLInputElement ).click()
 			);
-			await page.click( selectors.editor.doneButton );
+			await canvas().click( selectors.editor.doneButton );
 			await publishPost();
 
 			editorPageUrl = page.url();
@@ -305,6 +311,8 @@ describe( `${ block.name } Block`, () => {
 			await page.goto( editorPageUrl );
 			await ensureSidebarOpened();
 			await selectBlockByName( block.slug );
+			await switchBlockInspectorTabWhenGutenbergIsInstalled( 'Settings' );
+
 			const [ filterButtonToggle ] = await page.$x(
 				block.selectors.editor.filterButtonToggle
 			);

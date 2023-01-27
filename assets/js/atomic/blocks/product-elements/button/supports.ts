@@ -1,12 +1,9 @@
+/* eslint-disable @wordpress/no-unsafe-wp-apis */
 /**
  * External dependencies
  */
 import { isFeaturePluginBuild } from '@woocommerce/block-settings';
-
-/**
- * Internal dependencies
- */
-import { hasSpacingStyleSupport } from '../../../../utils/global-style';
+import { __experimentalGetSpacingClassesAndStyles } from '@wordpress/block-editor';
 
 export const supports = {
 	...( isFeaturePluginBuild() && {
@@ -20,7 +17,7 @@ export const supports = {
 			radius: true,
 			__experimentalSkipSerialization: true,
 		},
-		...( hasSpacingStyleSupport() && {
+		...( typeof __experimentalGetSpacingClassesAndStyles === 'function' && {
 			spacing: {
 				margin: true,
 				padding: true,
@@ -35,4 +32,10 @@ export const supports = {
 		__experimentalSelector:
 			'.wp-block-button.wc-block-components-product-button .wc-block-components-product-button__button',
 	} ),
+	...( typeof __experimentalGetSpacingClassesAndStyles === 'function' &&
+		! isFeaturePluginBuild() && {
+			spacing: {
+				margin: true,
+			},
+		} ),
 };
