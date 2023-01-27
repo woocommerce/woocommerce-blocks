@@ -2,7 +2,8 @@
  * External dependencies
  */
 import { registerBlockType } from '@wordpress/blocks';
-import { Icon, queryPagination } from '@wordpress/icons';
+import { Icon } from '@wordpress/icons';
+import { cart } from '@woocommerce/icons';
 
 /**
  * Internal dependencies
@@ -14,7 +15,7 @@ registerBlockType( metadata, {
 	icon: {
 		src: (
 			<Icon
-				icon={ queryPagination }
+				icon={ cart }
 				className="wc-block-editor-components-block-icon"
 			/>
 		),
