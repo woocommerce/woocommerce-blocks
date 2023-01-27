@@ -31,6 +31,7 @@ import {
 } from './utils';
 import * as blockifiedProductArchive from './archive-product';
 import * as blockifiedSingleProduct from './single-product';
+import type { BlockifiedTemplate } from './types';
 
 type Attributes = {
 	template: string;
@@ -44,7 +45,7 @@ const blockifiedFallbackConfig = {
 	getButtonLabel: () => '',
 };
 
-const blockificationConfig = {
+const blockificationConfig: { [ key: string ]: BlockifiedTemplate } = {
 	[ PLACEHOLDERS.archiveProduct ]: blockifiedProductArchive,
 	[ PLACEHOLDERS.singleProduct ]: blockifiedSingleProduct,
 	fallback: blockifiedFallbackConfig,
@@ -103,7 +104,7 @@ const Edit = ( {
 									const classicTemplateAttributes =
 										select(
 											`core/block-editor`
-										).getBlockAttributes( clientId );
+										).getBlockAttributes( clientId ) || {};
 									replaceBlock(
 										clientId,
 										getBlockifiedTemplate(

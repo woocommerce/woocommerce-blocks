@@ -19,14 +19,11 @@ import {
 	QUERY_DEFAULT_ATTRIBUTES as productsQueryDefaultAttributes,
 } from '../product-query/constants';
 import { VARIATION_NAME as productsVariationName } from '../product-query/variations/product-query';
-
-type Attributes = {
-	align?: string;
-};
+import { type InheritedAttributes } from './types';
 
 const createRowBlock = (
 	innerBlocks: Array< BlockInstance >,
-	inheritedAttributes: Attributes
+	inheritedAttributes: InheritedAttributes
 ) => {
 	const rowVariationName = `group-row`;
 	const groupBlockVariations = getBlockType( 'core/group' )?.variations || [];
@@ -51,7 +48,7 @@ const createRowBlock = (
 	return createBlock( `core/group`, extendedAttributes, innerBlocks );
 };
 
-const createProductsBlock = ( inheritedAttributes: Attributes ) =>
+const createProductsBlock = ( inheritedAttributes: InheritedAttributes ) =>
 	createBlock(
 		'core/query',
 		{
@@ -62,7 +59,7 @@ const createProductsBlock = ( inheritedAttributes: Attributes ) =>
 		createBlocksFromInnerBlocksTemplate( productsInnerBlocksTemplate )
 	);
 
-const getBlockifiedTemplate = ( inheritedAttributes: Attributes = {} ) =>
+const getBlockifiedTemplate = ( inheritedAttributes: InheritedAttributes ) =>
 	[
 		createBlock( 'woocommerce/store-notices', inheritedAttributes ),
 		createRowBlock(
