@@ -34,7 +34,7 @@ const Edit = ( { clientId, attributes }: Props ): ReactElement => {
 		 * @see https://github.com/woocommerce/woocommerce-gutenberg-products-block/pull/5825
 		 */
 		style: {
-			minHeight: '100vh',
+			minHeight: attributes.isPreview ? '500px' : '100vh',
 		},
 	} );
 
