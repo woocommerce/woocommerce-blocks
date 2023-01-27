@@ -7,13 +7,13 @@ use Automattic\WooCommerce\Blocks\Utils\StyleAttributesUtils;
 /**
  * CatalogSorting class.
  */
-class AddToCartButton extends AbstractBlock {
+class AddToCartForm extends AbstractBlock {
 	/**
 	 * Block name.
 	 *
 	 * @var string
 	 */
-	protected $block_name = 'add-to-cart-button';
+	protected $block_name = 'add-to-cart-form';
 
 	/**
 	 * Render the block.
@@ -46,7 +46,7 @@ class AddToCartButton extends AbstractBlock {
 		$classes_and_styles = StyleAttributesUtils::get_classes_and_styles_by_attributes( $attributes );
 
 		return sprintf(
-			'<div class="woocommerce wc-block-add-to-cart-button %1$s %2$s" style="%3$s">%4$s</div>',
+			'<div class="woocommerce wc-block-add-to-cart-form %1$s %2$s" style="%3$s">%4$s</div>',
 			esc_attr( $classes_and_styles['classes'] ),
 			esc_attr( $classname ),
 			esc_attr( $classes_and_styles['styles'] ),
