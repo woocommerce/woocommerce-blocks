@@ -1,7 +1,7 @@
 /**
  * External dependencies
  */
-import { isObject } from '@woocommerce/types';
+import { FieldValidationStatus, isObject } from '@woocommerce/types';
 
 /**
  * Internal dependencies
@@ -50,6 +50,7 @@ export interface ObserverResponse {
 	// The response
 	type: responseTypes;
 	meta?: Record< string, unknown > | undefined;
+	validationErrors?: Record< string, FieldValidationStatus > | undefined;
 }
 
 const isResponseOf = (
