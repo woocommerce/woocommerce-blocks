@@ -62,19 +62,27 @@ const isResponseOf = (
 
 export const isSuccessResponse = (
 	response: unknown
-): response is ResponseType => {
+): response is ObserverFailResponse => {
 	return isResponseOf( response, responseTypes.SUCCESS );
 };
-
+interface ObserverSuccessResponse extends ObserverResponse {
+	type: responseTypes.SUCCESS;
+}
 export const isErrorResponse = (
 	response: unknown
-): response is ResponseType => {
+): response is ObserverSuccessResponse => {
 	return isResponseOf( response, responseTypes.ERROR );
 };
+interface ObserverErrorResponse extends ObserverResponse {
+	type: responseTypes.ERROR;
+}
 
+interface ObserverFailResponse extends ObserverResponse {
+	type: responseTypes.FAIL;
+}
 export const isFailResponse = (
 	response: unknown
-): response is ResponseType => {
+): response is ObserverErrorResponse => {
 	return isResponseOf( response, responseTypes.FAIL );
 };
 
