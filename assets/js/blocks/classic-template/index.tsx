@@ -45,7 +45,7 @@ const blockifiedFallbackConfig = {
 	getButtonLabel: () => '',
 };
 
-const blockificationConfig: { [ key: string ]: BlockifiedTemplate } = {
+const conversionConfig: { [ key: string ]: BlockifiedTemplate } = {
 	[ PLACEHOLDERS.archiveProduct ]: blockifiedProductArchive,
 	[ PLACEHOLDERS.singleProduct ]: blockifiedSingleProduct,
 	fallback: blockifiedFallbackConfig,
@@ -80,7 +80,7 @@ const Edit = ( {
 		isConversionPossible,
 		getDescription,
 		getButtonLabel,
-	} = blockificationConfig[ templatePlaceholder ];
+	} = conversionConfig[ templatePlaceholder ];
 
 	const canConvert = isConversionPossible();
 	const placeholderDescription = getDescription( templateTitle, canConvert );
