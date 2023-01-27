@@ -1,3 +1,3 @@
-export const cstMetaTagItemprop = 'wp-client-side-transitions';
-export const componentPrefix = 'wp-';
-export const directivePrefix = 'wp-';
+export const cstMetaTagItemprop = 'woo-client-side-transitions';
+export const componentPrefix = 'woo-';
+export const directivePrefix = 'data-woo-';
