@@ -13,7 +13,7 @@ export type BlockifiedTemplate = {
 	getBlockifiedTemplate: (
 		inheritedAttributes: InheritedAttributes
 	) => BlockInstance[];
-	isBlockificationPossible: ( templatePlaceholder: string ) => boolean;
+	isConversionPossible: () => boolean;
 	getDescription: ( templateTitle: string, canConvert: boolean ) => string;
 	getButtonLabel: () => string;
 };

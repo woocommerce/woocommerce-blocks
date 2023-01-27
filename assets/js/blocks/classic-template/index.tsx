@@ -39,7 +39,7 @@ type Attributes = {
 };
 
 const blockifiedFallbackConfig = {
-	isBlockificationPossible: () => false,
+	isConversionPossible: () => false,
 	getBlockifiedTemplate: () => [],
 	getDescription: () => '',
 	getButtonLabel: () => '',
@@ -77,12 +77,12 @@ const Edit = ( {
 
 	const {
 		getBlockifiedTemplate,
-		isBlockificationPossible,
+		isConversionPossible,
 		getDescription,
 		getButtonLabel,
 	} = blockificationConfig[ templatePlaceholder ];
 
-	const canConvert = isBlockificationPossible( templatePlaceholder );
+	const canConvert = isConversionPossible();
 	const placeholderDescription = getDescription( templateTitle, canConvert );
 
 	return (

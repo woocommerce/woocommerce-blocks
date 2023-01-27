@@ -7,7 +7,7 @@ import { __, sprintf } from '@wordpress/i18n';
 // other functions accordingly.
 const getBlockifiedTemplate = () => [];
 
-const isBlockificationPossible = () => false;
+const isConversionPossible = () => false;
 
 const getDescriptionAllowingConversion = () => '';
 
@@ -33,7 +33,7 @@ const getButtonLabel = () => '';
 
 export {
 	getBlockifiedTemplate,
-	isBlockificationPossible,
+	isConversionPossible,
 	getDescription,
 	getButtonLabel,
 };

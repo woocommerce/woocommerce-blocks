@@ -13,7 +13,6 @@ import { __, sprintf } from '@wordpress/i18n';
 /**
  * Internal dependencies
  */
-import { PLACEHOLDERS } from './constants';
 import {
 	INNER_BLOCKS_TEMPLATE as productsInnerBlocksTemplate,
 	QUERY_DEFAULT_ATTRIBUTES as productsQueryDefaultAttributes,
@@ -72,14 +71,10 @@ const getBlockifiedTemplate = ( inheritedAttributes: InheritedAttributes ) =>
 		createProductsBlock( inheritedAttributes ),
 	].filter( Boolean ) as BlockInstance[];
 
-const isBlockificationPossible = ( templatePlaceholder: string ) => {
-	// At the moment blockification is available for product archive only.
+const isConversionPossible = () => {
 	// Blockification is possible for the WP version 6.1 and above,
 	// which are the versions the Products block supports.
-	return (
-		templatePlaceholder === PLACEHOLDERS.archiveProduct &&
-		isWpVersion( '6.1', '>=' )
-	);
+	return isWpVersion( '6.1', '>=' );
 };
 
 const getDescriptionAllowingConversion = ( templateTitle: string ) =>
@@ -115,7 +110,7 @@ const getButtonLabel = () =>
 
 export {
 	getBlockifiedTemplate,
-	isBlockificationPossible,
+	isConversionPossible,
 	getDescription,
 	getButtonLabel,
 };
