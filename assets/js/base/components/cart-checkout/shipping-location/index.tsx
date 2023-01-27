@@ -7,13 +7,7 @@ interface ShippingLocationProps {
 	formattedLocation: string | null;
 }
 
-/**
- * Shows a formatted shipping location.
- *
- * @param {Object} props                   Incoming props for the component.
- * @param {string} props.formattedLocation Formatted location.
- * @return {JSX.Element|null} The component.
- */
+// Shows a formatted shipping location.
 const ShippingLocation = ( {
 	formattedLocation,
 }: ShippingLocationProps ): JSX.Element | null => {

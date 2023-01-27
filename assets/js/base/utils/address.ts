@@ -116,14 +116,14 @@ export const formatShippingAddress = (
 	if ( Object.values( address ).length === 0 ) {
 		return null;
 	}
-	const shippingCountries = getSetting( 'shippingCountries', {} ) as Record<
-		string,
-		string
-	>;
-	const shippingStates = getSetting( 'shippingStates', {} ) as Record<
-		string,
-		Record< string, string >
-	>;
+	const shippingCountries = getSetting< Record< string, string > >(
+		'shippingCountries',
+		{}
+	);
+	const shippingStates = getSetting< Record< string, string > >(
+		'shippingStates',
+		{}
+	);
 	const formattedCountry =
 		typeof shippingCountries[ address.country ] === 'string'
 			? decodeEntities( shippingCountries[ address.country ] )
