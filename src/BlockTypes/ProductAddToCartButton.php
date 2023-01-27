@@ -65,7 +65,9 @@ class ProductAddToCartButton extends AbstractBlock {
 
 	/**
 	 * Callback function that modifies the HTML content of a "core/button" block.
-	 * The function checks if the block is a WooCommerce variation, fetches the product information, modifies the HTML structure of the block,
+	 *
+	 * The function checks if the block is a WooCommerce variation,
+	 * fetches the product information, modifies the HTML structure of the block,
 	 * and applies the filters to the block content before returning it.
 	 *
 	 * @param string $block_content HTML content of the block being rendered.
@@ -83,11 +85,12 @@ class ProductAddToCartButton extends AbstractBlock {
 			$product = wc_get_product( $post_id );
 
 			if ( $product ) {
-				$styles_and_classes = $this->extract_style_and_class_from_block_content( $block_content );
-				$div_class          = $styles_and_classes['div_class'];
-				$div_style          = $styles_and_classes['div_style'];
-				$anchor_class       = $styles_and_classes['anchor_class'];
-				$anchor_style       = $styles_and_classes['anchor_style'];
+				[
+					'div_class' => $div_class,
+					'div_style' => $div_style,
+					'anchor_class' => $anchor_class,
+					'ancor_style' => $anchor_style
+				] = $this->extract_style_and_class_from_block_content( $block_content );
 
 				return apply_filters(
 					'woocommerce_loop_add_to_cart_link',
@@ -150,9 +153,14 @@ class ProductAddToCartButton extends AbstractBlock {
 
 
 	/**
-	 * Return inner html of anchor block. Some examples of inner html of `a` tag:
+	 * Return inner html of anchor block.
+	 *
+	 * Due to the rich text capabilities of the Button block, the markup can look
+	 * quite convoluted. Here are some examples of the inner HTML of `a` tag:
+	 * ```html
 	 * - <strong><em><mark><code>Add to cart</code></mark></em></strong>
 	 * - <strong>Add</strong> <strong><em>to</em></strong> <em>cart</em>
+	 * ```
 	 *
 	 * @param string      $block_content The HTML content of the block.
 	 * @param \WC_Product $product The product object.

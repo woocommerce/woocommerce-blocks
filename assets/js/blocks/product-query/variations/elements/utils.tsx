@@ -5,7 +5,7 @@ import { registerBlockVariation } from '@wordpress/blocks';
 
 interface VariationDetails {
 	blockDescription: string;
-	blockIcon: JSX.Element;
+	blockIcon?: JSX.Element;
 	blockTitle: string;
 	variationName: string;
 }
@@ -20,12 +20,12 @@ export function registerElementVariation(
 		title: blockTitle,
 		isActive: ( blockAttributes ) =>
 			blockAttributes.__woocommerceNamespace === variationName,
-		icon: {
-			src: blockIcon,
-		},
 		attributes: {
 			__woocommerceNamespace: variationName,
 		},
 		scope: [ 'block', 'inserter' ],
+		...( blockIcon && {
+			icon: blockIcon,
+		} ),
 	} );
 }
