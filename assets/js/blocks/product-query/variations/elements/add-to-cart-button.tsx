@@ -7,7 +7,7 @@ import { __ } from '@wordpress/i18n';
 import { addFilter } from '@wordpress/hooks';
 import { select } from '@wordpress/data';
 import { EditorBlock } from '@woocommerce/types';
-import { ElementType } from 'react';
+import { ElementType, useEffect } from 'react';
 
 /**
  * Internal dependencies
@@ -45,62 +45,63 @@ if ( isFeaturePluginBuild() ) {
 export const withCoreButtonVariation =
 	< T extends EditorBlock< T > >( BlockEdit: ElementType ) =>
 	( props ) => {
-		if ( props.name === 'core/button' ) {
-			/**
-			 * Get the parent block to check if it is a variation
-			 */
+		const isCoreButton = props.name === 'core/button';
+
+		// Calculate if `core/button` is variation using it's parent block i.e. `core/buttons`
+		let isWoocommerceVariation = false;
+		if ( isCoreButton ) {
 			const coreEditor = select( 'core/block-editor' );
 			const parentBlocks = coreEditor.getBlockParents(
 				props.clientId,
 				true
 			);
 			const parentButtonsBlock = coreEditor.getBlock( parentBlocks[ 0 ] );
-
-			const isWoocommerceVariation =
+			isWoocommerceVariation =
 				VARIATION_NAME ===
 				parentButtonsBlock?.attributes?.__woocommerceNamespace;
+		}
 
-			if ( isWoocommerceVariation && ! props.attributes?.text?.length ) {
-				// Set initial attributes when block is added to the editor.
-				props.setAttributes( {
-					...props.attributes,
-					text: __( 'Add to cart', 'woo-gutenberg-products-block' ),
-					style: ! props.attributes.style && {
-						spacing: {
-							padding: {
-								top: 'var:preset|spacing|30',
-								right: 'var:preset|spacing|40',
-								bottom: 'var:preset|spacing|30',
-								left: 'var:preset|spacing|40',
-							},
+		/**
+		 * Hide the link button in the button block toolbar because
+		 * the link is provided dynamically during render in PHP file
+		 *
+		 * We are using hacky workaround here until there is a broader proposal for
+		 * toolbar customization, as it would be overkill to have one attribute per enabled/disabled feature.
+		 */
+		useEffect( () => {
+			if ( isWoocommerceVariation ) {
+				if ( props.isSelected ) {
+					const linkElement: HTMLElement | null =
+						document.querySelector(
+							'.edit-post-visual-editor button[name="link"]'
+						);
+					if ( linkElement ) linkElement.style.display = 'none';
+				}
+			}
+		}, [ isWoocommerceVariation, props.isSelected ] );
+
+		// When variation is added to editor, initialize attributes with default values
+		if (
+			isCoreButton &&
+			isWoocommerceVariation &&
+			! props.attributes?.text?.length
+		) {
+			props.setAttributes( {
+				...props.attributes,
+				text: __( 'Add to cart', 'woo-gutenberg-products-block' ),
+				style: {
+					spacing: {
+						padding: {
+							top: 'var:preset|spacing|30',
+							right: 'var:preset|spacing|40',
+							bottom: 'var:preset|spacing|30',
+							left: 'var:preset|spacing|40',
 						},
 					},
-					align: 'center',
-					fontSize: 'small',
-				} );
-			}
-
-			if ( isWoocommerceVariation ) {
-				/**
-				 * Hide the link button in the button block toolbar because
-				 * the link is provided dynamically during render in PHP file
-				 *
-				 * We are using hacky workaround here until there is a broader proposal for
-				 * toolbar customization, as it would be overkill to have one attribute per enabled/disabled feature.
-				 */
-
-				if ( props.isSelected ) {
-					setTimeout( () => {
-						const linkElement: HTMLElement | null =
-							document.querySelector(
-								'.edit-post-visual-editor button[name="link"]'
-							);
-						if ( linkElement ) linkElement.style.display = 'none';
-					}, 0 );
-				}
-
-				return <BlockEdit { ...props } />;
-			}
+				},
+				align: 'center',
+				fontSize: 'small',
+			} );
 		}
 
 		return <BlockEdit { ...props } />;
