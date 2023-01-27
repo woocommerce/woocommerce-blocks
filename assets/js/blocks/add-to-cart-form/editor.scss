@@ -1,0 +1,23 @@
+.wc-add-to-cart-form {
+	display: grid;
+	grid-template-columns: 50% 50%;
+}
+
+.quantity-placeholder {
+	background: #e5e5e5;
+	margin-bottom: 10px;
+	width: 60px;
+	height: 50px;
+	text-align: center;
+	display: grid;
+	place-items: center;
+	color: #c7c0c0;
+}
+
+.single_add_to_cart_button {
+	margin-left: 10px;
+	text-decoration: none;
+	font-size: medium;
+	width: inherit;
+	height: inherit;
+}
