@@ -321,7 +321,7 @@ add_filter(
  * Insert the required meta tag for client-side transitions.
  */
 function add_cst_meta_tag() {
-	echo '<meta itemprop="wp-client-side-transitions" content="active">';
+	echo '<meta itemprop="woo-client-side-transitions" content="active">';
 	add_filter(
 		'client_side_transitions',
 		true
