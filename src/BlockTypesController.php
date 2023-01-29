@@ -169,6 +169,7 @@ final class BlockTypesController {
 			'AllProducts',
 			'AllReviews',
 			'AttributeFilter',
+			'Breadcrumbs',
 			'CatalogSorting',
 			'ClassicTemplate',
 			'CustomerAccount',
@@ -251,6 +252,7 @@ final class BlockTypesController {
 				$block_types,
 				[
 					'AddToCartForm',
+					'Breadcrumbs',
 					'CatalogSorting',
 					'ClassicTemplate',
 					'ProductResultsCount',

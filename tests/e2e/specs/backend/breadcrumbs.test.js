@@ -4,9 +4,10 @@
 import {
 	canvas,
 	createNewPost,
+	insertBlock,
 	switchUserToAdmin,
-	searchForBlock,
 } from '@wordpress/e2e-test-utils';
+import { searchForBlock } from '@wordpress/e2e-test-utils/build/inserter';
 
 /**
  * Internal dependencies
@@ -19,13 +20,13 @@ import {
 } from '../../utils.js';
 
 const block = {
-	name: 'Catalog Sorting',
-	slug: 'woocommerce/catalog-sorting',
-	class: '.wc-block-catalog-sorting',
+	name: 'Store Breadcrumbs',
+	slug: 'woocommerce/breadcrumbs',
+	class: '.wc-block-breadcrumbs',
 };
 
 describe( `${ block.name } Block`, () => {
-	it( 'can not be inserted in a post', async () => {
+	it( 'in can not be inserted in a post', async () => {
 		await switchUserToAdmin();
 		await createNewPost( {
 			postType: 'post',
@@ -44,29 +45,17 @@ describe( `${ block.name } Block`, () => {
 		} );
 
 		it( 'can be inserted in FSE area', async () => {
-			// We are using here the "insertCatalogSorting" function because the
-			// tests are flickering when we use the "insertBlock" function.
-			await insertCatalogSorting();
-
+			await insertBlock( block.name );
 			await expect( canvas() ).toMatchElement( block.class );
 		} );
 
 		it( 'can be inserted more than once', async () => {
-			await insertCatalogSorting();
-			await insertCatalogSorting();
-			const catalogStoringBlock = await filterCurrentBlocks(
+			await insertBlock( block.name );
+			await insertBlock( block.name );
+			const foo = await filterCurrentBlocks(
 				( b ) => b.name === block.slug
 			);
-			expect( catalogStoringBlock ).toHaveLength( 2 );
+			expect( foo ).toHaveLength( 2 );
 		} );
 	} );
 } );
-
-const insertCatalogSorting = async () => {
-	await searchForBlock( block.name );
-	await page.waitForXPath( `//button//span[text()='${ block.name }']` );
-	const insertButton = (
-		await page.$x( `//button//span[text()='${ block.name }']` )
-	 )[ 0 ];
-	await insertButton.click();
-};
