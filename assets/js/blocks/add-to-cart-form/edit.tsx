@@ -3,7 +3,12 @@
  */
 import { useBlockProps } from '@wordpress/block-editor';
 import { __ } from '@wordpress/i18n';
-import { Disabled } from '@wordpress/components';
+import {
+	Button,
+	Disabled,
+	Notice,
+	__experimentalInputControl as InputControl,
+} from '@wordpress/components';
 /**
  * Internal dependencies
  */
@@ -20,14 +25,29 @@ const Edit = () => {
 	return (
 		<div { ...blockProps }>
 			<Disabled>
-				<div className="quantity-placeholder">Qty</div>
-				<button
-					type="submit"
-					name="add-to-cart"
-					className="single_add_to_cart_button button alt wp-element-button"
+				<Notice
+					className={ 'wc-block-add-to-cart-form__notice' }
+					status={ 'warning' }
+					isDismissible={ false }
+				>
+					<p>
+						{ __(
+							'The content displayed on this block can vary depending on the product type. The editor preview corresponds to a Simple Product.',
+							'woo-gutenberg-products-block'
+						) }
+					</p>
+				</Notice>
+				<InputControl
+					type={ 'number' }
+					value={ '1' }
+					className={ 'wc-block-add-to-cart-form__quantity' }
+				/>
+				<Button
+					variant={ 'primary' }
+					className={ 'wc-block-add-to-cart-form__button' }
 				>
 					{ __( 'Add to Cart', 'woo-gutenberg-products-block' ) }
-				</button>
+				</Button>
 			</Disabled>
 		</div>
 	);
