@@ -1,23 +1,35 @@
-.wc-add-to-cart-form {
-	display: grid;
-	grid-template-columns: 50% 50%;
+.wc-block-add-to-cart-form {
+	display: flex;
+	flex-direction: row;
+	justify-content: space-between;
+	align-items: center;
 }
 
-.quantity-placeholder {
-	background: #e5e5e5;
-	margin-bottom: 10px;
-	width: 60px;
-	height: 50px;
-	text-align: center;
-	display: grid;
-	place-items: center;
-	color: #c7c0c0;
+.wc-block-add-to-cart-form__notice {
+	margin: 10px 0;
 }
 
-.single_add_to_cart_button {
-	margin-left: 10px;
-	text-decoration: none;
-	font-size: medium;
-	width: inherit;
-	height: inherit;
+.wc-block-add-to-cart-form__quantity {
+	width: 70px;
+	padding-right: 10px;
+	float: left;
+	font-size: var(--wp--preset--font-size--small);
+
+	input[type="number"]::-webkit-inner-spin-button {
+		opacity: 1;
+	}
+
+	.components-input-control__input {
+		padding: 12px !important;
+		height: 50px !important;
+	}
+}
+
+.wc-block-add-to-cart-form__button.is-primary {
+	float: left;
+	color: var(--wp--preset--color--black);
+	background-color: var(--wp--preset--color--primary);
+	font-size: var(--wp--preset--font-size--small);
+	padding: 25px;
+	border-radius: 0;
 }
