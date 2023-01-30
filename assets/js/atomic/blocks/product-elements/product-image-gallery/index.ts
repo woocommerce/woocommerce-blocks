@@ -10,7 +10,6 @@ import { registerBlockSingleProductTemplate } from '@woocommerce/atomic-utils';
 import edit from './edit';
 import save from './save';
 import metadata from './block.json';
-import './style.scss';
 
 registerBlockSingleProductTemplate( {
 	registerBlockFn: () => {

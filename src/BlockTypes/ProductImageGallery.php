@@ -24,16 +24,6 @@ class ProductImageGallery extends AbstractBlock {
 		return [ 'query', 'queryId', 'postId' ];
 	}
 
-	/**
-	 * Get block attributes.
-	 *
-	 * @return array
-	 */
-	protected function get_block_type_supports() {
-		return array(
-			'__experimentalSelector' => 'img',
-		);
-	}
 
 	/**
 	 * Include and render the block.
