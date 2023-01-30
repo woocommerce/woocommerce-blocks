@@ -60,6 +60,7 @@ const createProductsBlock = ( inheritedAttributes: InheritedAttributes ) =>
 
 const getBlockifiedTemplate = ( inheritedAttributes: InheritedAttributes ) =>
 	[
+		createBlock( 'woocommerce/breadcrumbs', inheritedAttributes ),
 		createBlock( 'woocommerce/store-notices', inheritedAttributes ),
 		createRowBlock(
 			[
