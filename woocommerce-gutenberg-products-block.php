@@ -3,14 +3,14 @@
  * Plugin Name: WooCommerce Blocks
  * Plugin URI: https://github.com/woocommerce/woocommerce-gutenberg-products-block
  * Description: WooCommerce blocks for the Gutenberg editor.
- * Version: 9.4.0-dev
+ * Version: 9.5.0-dev
  * Author: Automattic
  * Author URI: https://woocommerce.com
  * Text Domain:  woo-gutenberg-products-block
  * Requires at least: 6.1.1
  * Requires PHP: 7.2
- * WC requires at least: 7.1
- * WC tested up to: 7.2
+ * WC requires at least: 7.2
+ * WC tested up to: 7.3
  *
  * @package WooCommerce\Blocks
  * @internal This file is only used when running as a feature plugin.
@@ -96,7 +96,7 @@ function woocommerce_blocks_is_development_version() {
 /**
  * If development version is detected and the Jetpack constant is not defined, show a notice.
  */
-if ( woocommerce_blocks_is_development_version() && ! defined( 'JETPACK_AUTOLOAD_DEV' ) ) {
+if ( woocommerce_blocks_is_development_version() && ( ! defined( 'JETPACK_AUTOLOAD_DEV' ) || true !== JETPACK_AUTOLOAD_DEV ) ) {
 	add_action(
 		'admin_notices',
 		function () {
@@ -286,3 +286,25 @@ function woocommerce_blocks_plugin_outdated_notice() {
 }
 
 add_action( 'admin_notices', 'woocommerce_blocks_plugin_outdated_notice' );
+
+/**
+ * Register the Interactivity API scripts. These files are enqueued when a block
+ * defines `wp-directives-runtime` as a dependency.
+ */
+function wp_directives_register_scripts() {
+	wp_register_script(
+		'wp-directives-vendors',
+		plugins_url( 'build/wp-directives-vendors.js', __FILE__ ),
+		array(),
+		'1.0.0',
+		true
+	);
+	wp_register_script(
+		'wp-directives-runtime',
+		plugins_url( 'build/wp-directives-runtime.js', __FILE__ ),
+		array( 'wp-directives-vendors' ),
+		'1.0.0',
+		true
+	);
+}
+add_action( 'init', 'wp_directives_register_scripts' );

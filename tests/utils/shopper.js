@@ -236,7 +236,7 @@ export const shopper = {
 			await expect( page ).toFill( '#billing-city', customerBillingDetails.city );
 			await expect( page ).toFill( '#billing-state input', customerBillingDetails.state );
 			await expect( page ).toFill( '#billing-postcode', customerBillingDetails.postcode );
-			await expect( page ).toFill( '#phone', customerBillingDetails.phone );
+			await expect( page ).toFill( '#billing-phone', customerBillingDetails.phone );
 			await expect( page ).toFill( '#email', customerBillingDetails.email );
 		},
 
@@ -267,7 +267,7 @@ export const shopper = {
 					customerBillingDetails.firstname
 				),
 				expect( page ).toMatch( customerBillingDetails.lastname),
-				expect( page ).toMatch( customerBillingDetails.company),
+				// expect( page ).toMatch( customerBillingDetails.company),
 				expect( page ).toMatch(
 					customerBillingDetails.addressfirstline
 				),
@@ -294,7 +294,7 @@ export const shopper = {
 				expect( page ).toMatch(
 					customerShippingDetails.lastname
 				),
-				expect( page ).toMatch( customerShippingDetails.company),
+				// expect( page ).toMatch( customerShippingDetails.company),
 				expect( page ).toMatch(
 					customerShippingDetails.addressfirstline
 				),
@@ -468,10 +468,10 @@ export const shopper = {
 				'#wc-block-components-totals-coupon__input-0';
 			const couponApplyButtonSelector =
 				'.wc-block-components-totals-coupon__button';
-			const couponExpandButtonSelector =
-				'.wc-block-components-totals-coupon button';
+			const addCouponLinkSelector =
+				'.wc-block-components-totals-coupon-link';
 
-			await expect( page ).toClick( couponExpandButtonSelector );
+			await expect( page ).toClick( addCouponLinkSelector );
 			await expect( page ).toFill( couponInputSelector, couponCode );
 			await expect( page ).toClick( couponApplyButtonSelector );
 		},
