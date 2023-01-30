@@ -1,6 +1,9 @@
 <?php
 namespace Automattic\WooCommerce\Blocks\BlockTypes;
 
+use Automattic\WooCommerce\Blocks\Utils\StyleAttributesUtils;
+
+
 /**
  * ProductImageGallery class.
  */
@@ -22,6 +25,17 @@ class ProductImageGallery extends AbstractBlock {
 	}
 
 	/**
+	 * Get block attributes.
+	 *
+	 * @return array
+	 */
+	protected function get_block_type_supports() {
+		return array(
+			'__experimentalSelector' => 'img',
+		);
+	}
+
+	/**
 	 * Include and render the block.
 	 *
 	 * @param array    $attributes Block attributes. Default empty array.
@@ -40,10 +54,20 @@ class ProductImageGallery extends AbstractBlock {
 			$frontend_scripts::load_scripts();
 		}
 
+		$classname          = $attributes['className'] ?? '';
+		$classes_and_styles = StyleAttributesUtils::get_classes_and_styles_by_attributes( $attributes );
+
 		ob_start();
 		woocommerce_show_product_images();
 		$product_image_gallery_html = ob_get_clean();
 
-		return $product_image_gallery_html;
+		return sprintf(
+			'<div class="wp-block-woocommerce-product-image-gallery %1$s %2$s" style="%3$s">%4$s</div>',
+			esc_attr( $classes_and_styles['classes'] ),
+			esc_attr( $classname ),
+			esc_attr( $classes_and_styles['styles'] ),
+			$product_image_gallery_html
+		);
+
 	}
 }

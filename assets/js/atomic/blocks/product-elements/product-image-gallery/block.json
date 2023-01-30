@@ -1,9 +1,22 @@
 {
 	"name": "woocommerce/product-image-gallery",
 	"version": "1.0.0",
-	"title": "Product image gallery",
-	"description": "",
+	"title": "Product Image Gallery",
+	"icon": "image",
+	"description": "Display the main product images.",
 	"category": "woocommerce",
+	"supports": {
+		"align": true,
+		"reusable": false,
+		"spacing": {
+			"margin": true
+		},
+		"__experimentalBorder": {
+			"radius": true,
+			"__experimentalSkipSerialization": true
+		},
+		"__experimentalSelector": ".wp-block-woocommerce-product-image-gallery img"
+	},
 	"keywords": [ "WooCommerce" ],
 	"usesContext": [ "postId", "postType", "queryId" ],
 	"textdomain": "woo-gutenberg-products-block",
