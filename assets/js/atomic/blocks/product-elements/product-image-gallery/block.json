@@ -7,15 +7,7 @@
 	"category": "woocommerce",
 	"supports": {
 		"align": true,
-		"reusable": false,
-		"spacing": {
-			"margin": true
-		},
-		"__experimentalBorder": {
-			"radius": true,
-			"__experimentalSkipSerialization": true
-		},
-		"__experimentalSelector": ".wp-block-woocommerce-product-image-gallery img"
+		"reusable": false
 	},
 	"keywords": [ "WooCommerce" ],
 	"usesContext": [ "postId", "postType", "queryId" ],

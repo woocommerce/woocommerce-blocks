@@ -6,6 +6,7 @@ import { WC_BLOCKS_IMAGE_URL } from '@woocommerce/block-settings';
 import { isEmptyObject } from '@woocommerce/types';
 import { useBlockProps } from '@wordpress/block-editor';
 import { BlockAttributes } from '@wordpress/blocks';
+import { Disabled } from '@wordpress/components';
 
 /**
  * Internal dependencies
@@ -63,7 +64,9 @@ const Edit = ( { context, attributes }: Props ) => {
 	if ( isEmptyObject( context ) ) {
 		return (
 			<div { ...blockProps }>
-				<Placeholder attributes={ attributes } />
+				<Disabled>
+					<Placeholder attributes={ attributes } />
+				</Disabled>
 			</div>
 		);
 	}
