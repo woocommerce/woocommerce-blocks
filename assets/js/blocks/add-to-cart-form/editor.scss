@@ -6,20 +6,16 @@
 .wc-block-add-to-cart-form__notice {
 	margin: 10px 0;
 }
-
-.wc-block-add-to-cart-form__quantity {
-	width: 70px;
-	padding-right: 10px;
+input.wc-block-add-to-cart-form__quantity {
+	width: 40px;
 	float: left;
+	padding: 13px 12px;
+	margin-right: 10px;
+	height: 20px;
+}
 
-	input[type="number"]::-webkit-inner-spin-button {
-		opacity: 1;
-	}
-
-	.components-input-control__input {
-		padding: 12px !important;
-		height: 50px !important;
-	}
+input[type="number"]::-webkit-inner-spin-button {
+	opacity: 1;
 }
 
 .wc-block-add-to-cart-form__button {

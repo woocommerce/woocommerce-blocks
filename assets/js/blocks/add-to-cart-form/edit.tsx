@@ -3,12 +3,7 @@
  */
 import { useBlockProps } from '@wordpress/block-editor';
 import { __ } from '@wordpress/i18n';
-import {
-	Button,
-	Disabled,
-	Notice,
-	__experimentalInputControl as InputControl,
-} from '@wordpress/components';
+import { Button, Disabled, Notice } from '@wordpress/components';
 /**
  * Internal dependencies
  */
@@ -37,7 +32,7 @@ const Edit = () => {
 						) }
 					</p>
 				</Notice>
-				<InputControl
+				<input
 					type={ 'number' }
 					value={ '1' }
 					className={ 'wc-block-add-to-cart-form__quantity' }
