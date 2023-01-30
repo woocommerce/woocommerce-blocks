@@ -7,7 +7,6 @@
     -   [Error Response](#error-response)
 -   [Get Cart](#get-cart)
 -   [Add Item](#add-item)
--   [Add Items](#add-items)
 -   [Remove Item](#remove-item)
 -   [Update Item](#update-item)
 -   [Apply Coupon](#apply-coupon)
@@ -334,8 +333,6 @@ curl --header "Nonce: 12345" --request POST https://example-store.com/wp-json/wc
 Returns the full [Cart Response](#cart-response) on success, or an [Error Response](#error-response) on failure.
 
 If you want to add supplemental cart item data before it is passed into `CartController::add_to_cart` use the [`woocommerce_store_api_add_to_cart_data`](https://github.com/woocommerce/woocommerce-blocks/blob/4d1c295a2bace9a4f6397cfd5469db31083d477a/docs/third-party-developers/extensibility/hooks/filters.md#woocommerce_store_api_add_to_cart_data) filter.
-
-## Add Items
 
 If you want to add multiple items at once, you need to use the batch endpoint:
 
