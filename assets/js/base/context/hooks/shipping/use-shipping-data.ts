@@ -1,14 +1,16 @@
 /**
  * External dependencies
  */
-import { CART_STORE_KEY as storeKey } from '@woocommerce/block-data';
+import {
+	CART_STORE_KEY as storeKey,
+	processErrorResponse,
+} from '@woocommerce/block-data';
 import { useSelect, useDispatch } from '@wordpress/data';
 import { isObject } from '@woocommerce/types';
 import { useEffect, useRef, useCallback } from '@wordpress/element';
 import { deriveSelectedShippingRates } from '@woocommerce/base-utils';
 import isShallowEqual from '@wordpress/is-shallow-equal';
 import { previewCart } from '@woocommerce/resource-previews';
-import { useThrowError } from '@woocommerce/base-hooks';
 
 /**
  * Internal dependencies
@@ -23,6 +25,7 @@ export const useShippingData = (): ShippingData => {
 		hasCalculatedShipping,
 		isLoadingRates,
 		isCollectable,
+		isSelectingRate,
 	} = useSelect( ( select ) => {
 		const isEditor = !! select( 'core/editor' );
 		const store = select( storeKey );
@@ -45,13 +48,11 @@ export const useShippingData = (): ShippingData => {
 							methodId === 'pickup_location'
 					)
 			),
+			isSelectingRate: isEditor
+				? false
+				: store.isShippingRateBeingSelected(),
 		};
 	} );
-
-	// See if rates are being selected.
-	const isSelectingRate = useSelect< boolean >( ( select ) => {
-		return select( storeKey ).isShippingRateBeingSelected();
-	}, [] );
 
 	// set selected rates on ref so it's always current.
 	const selectedRates = useRef< Record< string, string > >( {} );
@@ -73,12 +74,11 @@ export const useShippingData = (): ShippingData => {
 	} as {
 		selectShippingRate: (
 			newShippingRateId: string,
-			packageId?: string | number
+			packageId?: string | number | undefined
 		) => Promise< unknown >;
 	};
 
 	// Selects a shipping rate, fires an event, and catch any errors.
-	const throwError = useThrowError();
 	const { dispatchCheckoutEvent } = useStoreEvents();
 	const selectShippingRate = useCallback(
 		(
@@ -114,16 +114,10 @@ export const useShippingData = (): ShippingData => {
 					} );
 				} )
 				.catch( ( error ) => {
-					// Throw an error because an error when selecting a rate is problematic.
-					throwError( error );
+					processErrorResponse( error );
 				} );
 		},
-		[
-			dispatchSelectShippingRate,
-			dispatchCheckoutEvent,
-			throwError,
-			selectedRates,
-		]
+		[ dispatchSelectShippingRate, dispatchCheckoutEvent, selectedRates ]
 	);
 
 	return {

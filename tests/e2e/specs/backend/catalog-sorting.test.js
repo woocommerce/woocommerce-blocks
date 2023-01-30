@@ -4,10 +4,9 @@
 import {
 	canvas,
 	createNewPost,
-	insertBlock,
 	switchUserToAdmin,
+	searchForBlock,
 } from '@wordpress/e2e-test-utils';
-import { searchForBlock } from '@wordpress/e2e-test-utils/build/inserter';
 
 /**
  * Internal dependencies
@@ -26,19 +25,14 @@ const block = {
 };
 
 describe( `${ block.name } Block`, () => {
-	describe( 'in a post', () => {
-		beforeAll( async () => {
-			await switchUserToAdmin();
+	it( 'can not be inserted in a post', async () => {
+		await switchUserToAdmin();
+		await createNewPost( {
+			postType: 'post',
+			title: block.name,
 		} );
-
-		it( 'can not be inserted', async () => {
-			await createNewPost( {
-				postType: 'post',
-				title: block.name,
-			} );
-			await searchForBlock( block.name );
-			expect( page ).toMatch( 'No results found.' );
-		} );
+		await searchForBlock( block.name );
+		expect( page ).toMatch( 'No results found.' );
 	} );
 
 	describe( 'in FSE editor', () => {
@@ -50,17 +44,29 @@ describe( `${ block.name } Block`, () => {
 		} );
 
 		it( 'can be inserted in FSE area', async () => {
-			await insertBlock( block.name );
+			// We are using here the "insertCatalogSorting" function because the
+			// tests are flickering when we use the "insertBlock" function.
+			await insertCatalogSorting();
+
 			await expect( canvas() ).toMatchElement( block.class );
 		} );
 
 		it( 'can be inserted more than once', async () => {
-			await insertBlock( block.name );
-			await insertBlock( block.name );
-			const foo = await filterCurrentBlocks(
+			await insertCatalogSorting();
+			await insertCatalogSorting();
+			const catalogStoringBlock = await filterCurrentBlocks(
 				( b ) => b.name === block.slug
 			);
-			expect( foo ).toHaveLength( 2 );
+			expect( catalogStoringBlock ).toHaveLength( 2 );
 		} );
 	} );
 } );
+
+const insertCatalogSorting = async () => {
+	await searchForBlock( block.name );
+	await page.waitForXPath( `//button//span[text()='${ block.name }']` );
+	const insertButton = (
+		await page.$x( `//button//span[text()='${ block.name }']` )
+	 )[ 0 ];
+	await insertButton.click();
+};
