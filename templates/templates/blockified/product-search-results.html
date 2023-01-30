@@ -2,19 +2,19 @@
 
 <!-- wp:group {"layout":{"inherit":true,"type":"constrained"}} -->
 <div class="wp-block-group">
-	<!-- wp:query-title {"type":"archive","showPrefix":false,"align":"wide"} /-->
-
-	<!-- wp:woocommerce/store-notices {"align":"wide"} /-->
-
-	<!-- wp:group {"align":"wide","layout":{"type":"flex","flexWrap":"nowrap","justifyContent":"space-between"}} -->
-	<div class="wp-block-group alignwide">
-		<!-- wp:woocommerce/product-results-count /-->
-		<!-- wp:woocommerce/catalog-sorting /-->
-	</div>
-	<!-- /wp:group -->
-
-	<!-- wp:query {"queryId":2,"query":{"perPage":9,"pages":0,"offset":0,"postType":"product","order":"asc","orderBy":"title","author":"","search":"","exclude":[],"sticky":"","inherit":true,"__woocommerceAttributes":[],"__woocommerceStockStatus":["instock","outofstock","onbackorder"]},"displayLayout":{"type":"flex","columns":3},"namespace":"woocommerce/product-query","align":"wide"} -->
+	<!-- wp:query {"query":{"perPage":9,"pages":0,"offset":0,"postType":"product","order":"asc","orderBy":"title","author":"","search":"","exclude":[],"sticky":"","inherit":true,"__woocommerceAttributes":[],"__woocommerceStockStatus":["instock","outofstock","onbackorder"]},"displayLayout":{"type":"flex","columns":3},"namespace":"woocommerce/product-query","align":"wide"} -->
 	<div class="wp-block-query alignwide">
+		<!-- wp:query-title {"type":"search","showPrefix":false} /-->
+
+		<!-- wp:woocommerce/store-notices /-->
+
+		<!-- wp:group {"layout":{"type":"flex","flexWrap":"nowrap","justifyContent":"space-between"}} -->
+		<div class="wp-block-group alignwide">
+			<!-- wp:woocommerce/product-results-count /-->
+			<!-- wp:woocommerce/catalog-sorting /-->
+		</div>
+		<!-- /wp:group -->
+
 		<!-- wp:post-template {"__woocommerceNamespace":"woocommerce/product-query/product-template"} -->
 			<!-- wp:woocommerce/product-image {"isDescendentOfQueryLoop":true} /-->
 			<!-- wp:post-title {"textAlign":"center","level":3,"fontSize":"medium","__woocommerceNamespace":"woocommerce/product-query/product-title"} /-->
@@ -29,9 +29,8 @@
 		<!-- /wp:query-pagination -->
 
 		<!-- wp:query-no-results -->
-		<!-- wp:paragraph {"placeholder":"Add text or blocks that will display when a query returns no results."} -->
-		<p></p>
-		<!-- /wp:paragraph -->
+			<!-- wp:pattern {"slug":"woocommerce/no-products-found"} /-->
+			<!-- wp:pattern {"slug":"woocommerce/product-search-form"} /-->
 		<!-- /wp:query-no-results -->
 	</div>
 	<!-- /wp:query -->
