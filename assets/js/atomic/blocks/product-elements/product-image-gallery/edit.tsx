@@ -1,7 +1,6 @@
 /**
  * External dependencies
  */
-import { useBorderProps } from '@woocommerce/base-hooks';
 import { WC_BLOCKS_IMAGE_URL } from '@woocommerce/block-settings';
 import { isEmptyObject } from '@woocommerce/types';
 import { useBlockProps } from '@wordpress/block-editor';
@@ -13,9 +12,7 @@ import { Disabled } from '@wordpress/components';
  */
 import './editor.scss';
 
-const Placeholder = ( { attributes }: BlockAttributes ) => {
-	const marginProps = useBorderProps( attributes );
-
+const Placeholder = () => {
 	return (
 		<div className="wc-block-editor-product-gallery">
 			<img
@@ -23,7 +20,6 @@ const Placeholder = ( { attributes }: BlockAttributes ) => {
 				style={ {
 					width: '500px',
 					height: '500px',
-					...marginProps.style,
 				} }
 				alt="Placeholder"
 			/>
@@ -36,7 +32,6 @@ const Placeholder = ( { attributes }: BlockAttributes ) => {
 							style={ {
 								width: '100px',
 								height: '100px',
-								...marginProps.style,
 							} }
 							alt="Placeholder"
 						/>
@@ -58,14 +53,14 @@ interface Props {
 	context: Context;
 }
 
-const Edit = ( { context, attributes }: Props ) => {
+const Edit = ( { context }: Props ) => {
 	const blockProps = useBlockProps();
 
 	if ( isEmptyObject( context ) ) {
 		return (
 			<div { ...blockProps }>
 				<Disabled>
-					<Placeholder attributes={ attributes } />
+					<Placeholder />
 				</Disabled>
 			</div>
 		);
