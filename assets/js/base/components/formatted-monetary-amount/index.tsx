@@ -72,7 +72,7 @@ const FormattedMonetaryAmount = ( {
 		return null;
 	}
 
-	const priceValue = value / 10 ** currency.minorUnit;
+	const priceValue = value / 10 ** ( currency?.minorUnit || 2 );
 
 	if ( ! Number.isFinite( priceValue ) ) {
 		return null;
