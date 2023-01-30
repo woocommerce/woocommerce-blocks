@@ -3,10 +3,17 @@
  */
 import { __, sprintf } from '@wordpress/i18n';
 import { isWpVersion } from '@woocommerce/settings';
+import { BlockInstance, createBlock } from '@wordpress/blocks';
+import { InheritedAttributes } from '@woocommerce/blocks/classic-template/types';
 
-// TODO: Provide the blockified template for the single product page and adjust
-// other functions accordingly.
-const getBlockifiedTemplate = () => [];
+const getBlockifiedTemplate = ( inheritedAttributes: InheritedAttributes ) =>
+	[
+		createBlock( 'core/paragraph', {
+			...inheritedAttributes,
+			content:
+				'This is a placeholder for the blockified single product template.',
+		} ),
+	].filter( Boolean ) as BlockInstance[];
 
 const isConversionPossible = () => {
 	// Blockification is possible for the WP version 6.1 and above,
