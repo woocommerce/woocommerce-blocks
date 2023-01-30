@@ -4,6 +4,7 @@
 import { __ } from '@wordpress/i18n';
 import { EnteredAddress } from '@woocommerce/settings';
 import { formatShippingAddress } from '@woocommerce/base-utils';
+import { useEditorContext } from '@woocommerce/base-context';
 
 /**
  * Internal dependencies
@@ -25,7 +26,10 @@ export const ShippingAddress = ( {
 	shippingAddress,
 }: ShippingAddressProps ): JSX.Element | null => {
 	const formattedLocation = formatShippingAddress( shippingAddress );
-	if ( ! formattedLocation ) {
+	const { isEditor } = useEditorContext();
+
+	// If there is no address, and we're not in the editor, don't show anything.
+	if ( ! formattedLocation && ! isEditor ) {
 		return null;
 	}
 	return (
