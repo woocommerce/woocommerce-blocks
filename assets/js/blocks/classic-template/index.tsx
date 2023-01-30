@@ -101,15 +101,9 @@ const Edit = ( {
 							<Button
 								isPrimary
 								onClick={ () => {
-									const classicTemplateAttributes =
-										select(
-											`core/block-editor`
-										).getBlockAttributes( clientId ) || {};
 									replaceBlock(
 										clientId,
-										getBlockifiedTemplate(
-											classicTemplateAttributes
-										)
+										getBlockifiedTemplate( attributes )
 									);
 								} }
 								text={ getButtonLabel() }
