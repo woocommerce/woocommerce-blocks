@@ -348,10 +348,6 @@ The JSON payload for adding multiple items to the cart would look like this:
 		{
 			"path": "/wc/store/v1/cart/add-item",
 			"method": "POST",
-			"data": {
-				"id": 26,
-				"quantity": 1
-			},
 			"cache": "no-store",
 			"body": {
 				"id": 26,
@@ -364,10 +360,6 @@ The JSON payload for adding multiple items to the cart would look like this:
 		{
 			"path": "/wc/store/v1/cart/add-item",
 			"method": "POST",
-			"data": {
-				"id": 27,
-				"quantity": 1
-			},
 			"cache": "no-store",
 			"body": {
 				"id": 27,
