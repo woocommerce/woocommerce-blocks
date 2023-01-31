@@ -8,9 +8,9 @@ import type { InnerBlockTemplate } from '@wordpress/blocks';
  * Internal dependencies
  */
 import { QueryBlockAttributes } from './types';
-import { VARIATION_NAME as PRODUCT_TITLE_ID } from './variations/elements/product-title';
+import { VARIATION_NAME as PRODUCT_TITLE_VARIATION_NAME } from './variations/elements/product-title';
 import { VARIATION_NAME as ADD_TO_CART_BUTTON_VARIATION_NAME } from './variations/elements/add-to-cart-button';
-import { VARIATION_NAME as PRODUCT_TEMPLATE_ID } from './variations/elements/product-template';
+import { VARIATION_NAME as PRODUCT_TEMPLATE_VARIATION_NAME } from './variations/elements/product-template';
 
 /**
  * Returns an object without a key.
@@ -81,7 +81,7 @@ export const QUERY_DEFAULT_ATTRIBUTES: QueryBlockAttributes = {
 export const INNER_BLOCKS_TEMPLATE: InnerBlockTemplate[] = [
 	[
 		'core/post-template',
-		{ __woocommerceNamespace: PRODUCT_TEMPLATE_ID },
+		{ __woocommerceNamespace: PRODUCT_TEMPLATE_VARIATION_NAME },
 		[
 			[ 'woocommerce/product-image' ],
 			[
@@ -90,7 +90,7 @@ export const INNER_BLOCKS_TEMPLATE: InnerBlockTemplate[] = [
 					textAlign: 'center',
 					level: 3,
 					fontSize: 'medium',
-					__woocommerceNamespace: PRODUCT_TITLE_ID,
+					__woocommerceNamespace: PRODUCT_TITLE_VARIATION_NAME,
 				},
 				[],
 			],
