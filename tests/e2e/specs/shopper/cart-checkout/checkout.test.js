@@ -304,7 +304,7 @@ describe( 'Shopper → Checkout', () => {
 			await shopper.block.goToCheckout();
 			await shopper.block.applyCouponFromCheckout( coupon.code );
 			await page.waitForSelector(
-				'.wc-block-components-totals-coupon__form .wc-block-components-validation-error'
+				'.wc-block-components-totals-coupon__content .wc-block-components-validation-error'
 			);
 			await expect( page ).toMatch(
 				'Coupon usage limit has been reached.'
