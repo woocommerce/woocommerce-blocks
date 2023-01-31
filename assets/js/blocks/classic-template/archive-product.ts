@@ -2,9 +2,9 @@
  * External dependencies
  */
 import {
-	getBlockType,
 	createBlock,
 	createBlocksFromInnerBlocksTemplate,
+	getBlockType,
 	type BlockInstance,
 } from '@wordpress/blocks';
 import { isWpVersion } from '@woocommerce/settings';
@@ -20,12 +20,39 @@ import {
 import { VARIATION_NAME as productsVariationName } from '../product-query/variations/product-query';
 import { type InheritedAttributes } from './types';
 
+const createArchiveTitleBlock = (
+	inheritedAttributes: InheritedAttributes
+) => {
+	const queryTitleBlockName = 'core/query-title';
+	const archiveTitleVariationName = `archive-title`;
+	const queryTitleBlockVariations =
+		getBlockType( queryTitleBlockName )?.variations || [];
+	const archiveTitleVariation = queryTitleBlockVariations.find(
+		( { name }: { name: string } ) => name === archiveTitleVariationName
+	);
+
+	if ( ! archiveTitleVariation ) {
+		return null;
+	}
+
+	const { attributes } = archiveTitleVariation;
+	const extendedAttributes = {
+		...attributes,
+		...inheritedAttributes,
+		showPrefix: false,
+	};
+
+	return createBlock( queryTitleBlockName, extendedAttributes );
+};
+
 const createRowBlock = (
 	innerBlocks: Array< BlockInstance >,
 	inheritedAttributes: InheritedAttributes
 ) => {
+	const groupBlockName = 'core/group';
 	const rowVariationName = `group-row`;
-	const groupBlockVariations = getBlockType( 'core/group' )?.variations || [];
+	const groupBlockVariations =
+		getBlockType( groupBlockName )?.variations || [];
 	const rowVariation = groupBlockVariations.find(
 		( { name }: { name: string } ) => name === rowVariationName
 	);
@@ -44,7 +71,7 @@ const createRowBlock = (
 		},
 	};
 
-	return createBlock( `core/group`, extendedAttributes, innerBlocks );
+	return createBlock( groupBlockName, extendedAttributes, innerBlocks );
 };
 
 const createProductsBlock = ( inheritedAttributes: InheritedAttributes ) =>
@@ -61,6 +88,7 @@ const createProductsBlock = ( inheritedAttributes: InheritedAttributes ) =>
 const getBlockifiedTemplate = ( inheritedAttributes: InheritedAttributes ) =>
 	[
 		createBlock( 'woocommerce/breadcrumbs', inheritedAttributes ),
+		createArchiveTitleBlock( inheritedAttributes ),
 		createBlock( 'woocommerce/store-notices', inheritedAttributes ),
 		createRowBlock(
 			[
