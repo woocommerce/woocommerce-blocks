@@ -10,7 +10,17 @@ import { useLocalStorageState } from '@woocommerce/base-hooks';
  */
 import { STORE_KEY as PAYMENT_STORE_KEY } from '../../data/payment/constants';
 
-const initialDismissedNotices: string[] = [];
+const initialDismissedNotices: React.SetStateAction< object[] > = [];
+
+const areEqual = ( array1: string[], array2: string[] ) => {
+	if ( array1.length !== array2.length ) {
+		return false;
+	}
+
+	const uniqueCollectionValues = new Set( [ ...array1, ...array2 ] );
+
+	return uniqueCollectionValues.size === array1.length;
+};
 
 export const useIncompatiblePaymentGatewaysNotice = (
 	blockName: string
@@ -27,16 +37,28 @@ export const useIncompatiblePaymentGatewaysNotice = (
 			incompatiblePaymentMethods: getIncompatiblePaymentMethods(),
 		};
 	}, [] );
-	const numberOfIncompatiblePaymentMethods = Object.keys(
+	const incompatiblePaymentMethodsIDs = Object.keys(
 		incompatiblePaymentMethods
-	).length;
+	);
+	const numberOfIncompatiblePaymentMethods =
+		incompatiblePaymentMethodsIDs.length;
+
+	const isDismissedNoticeUpToDate = dismissedNotices.some(
+		( notice ) =>
+			Object.keys( notice ).includes( blockName ) &&
+			areEqual(
+				notice[ blockName as keyof object ],
+				incompatiblePaymentMethodsIDs
+			)
+	);
 
 	const isDismissed =
-		numberOfIncompatiblePaymentMethods === 0 ||
-		dismissedNotices.includes( blockName );
+		numberOfIncompatiblePaymentMethods === 0 || isDismissedNoticeUpToDate;
 	const dismissNotice = () => {
 		const dismissedNoticesSet = new Set( dismissedNotices );
-		dismissedNoticesSet.add( blockName );
+		dismissedNoticesSet.add( {
+			[ blockName ]: incompatiblePaymentMethodsIDs,
+		} );
 		setDismissedNotices( [ ...dismissedNoticesSet ] );
 	};
 
@@ -44,7 +66,25 @@ export const useIncompatiblePaymentGatewaysNotice = (
 	// Gutenberg doesn't steal the focus from the Guide and focuses the block.
 	useEffect( () => {
 		setIsVisible( ! isDismissed );
-	}, [ isDismissed ] );
+
+		if ( ! isDismissed && ! isDismissedNoticeUpToDate ) {
+			setDismissedNotices( ( previousDismissedNotices ) =>
+				previousDismissedNotices.reduce( ( acc, curr ) => {
+					if ( Object.keys( curr ).includes( blockName ) ) {
+						return acc;
+					}
+					acc.push( curr );
+
+					return acc;
+				}, [] )
+			);
+		}
+	}, [
+		isDismissed,
+		isDismissedNoticeUpToDate,
+		setDismissedNotices,
+		blockName,
+	] );
 
 	return [
 		isVisible,
