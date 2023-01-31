@@ -9,9 +9,13 @@ export const supports = {
 	...( isFeaturePluginBuild() && {
 		color: {
 			text: true,
-			background: false,
+			background: true,
 			link: false,
 			__experimentalSkipSerialization: true,
+		},
+		spacing: {
+			margin: true,
+			padding: true,
 		},
 		typography: {
 			fontSize: true,
@@ -19,9 +23,10 @@ export const supports = {
 		},
 		__experimentalSelector: '.wc-block-components-product-rating',
 	} ),
-	...( typeof __experimentalGetSpacingClassesAndStyles === 'function' && {
-		spacing: {
-			margin: true,
-		},
-	} ),
+	...( ! isFeaturePluginBuild() &&
+		typeof __experimentalGetSpacingClassesAndStyles === 'function' && {
+			spacing: {
+				margin: true,
+			},
+		} ),
 };
