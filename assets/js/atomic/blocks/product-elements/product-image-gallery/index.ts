@@ -8,14 +8,12 @@ import { registerBlockSingleProductTemplate } from '@woocommerce/atomic-utils';
  * Internal dependencies
  */
 import edit from './edit';
-import save from './save';
 import metadata from './block.json';
 
 registerBlockSingleProductTemplate( {
 	registerBlockFn: () => {
 		registerBlockType( metadata, {
 			edit,
-			save,
 		} );
 	},
 	unregisterBlockFn: () => {
