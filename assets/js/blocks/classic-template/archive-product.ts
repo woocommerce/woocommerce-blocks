@@ -2,9 +2,9 @@
  * External dependencies
  */
 import {
-	getBlockType,
 	createBlock,
 	createBlocksFromInnerBlocksTemplate,
+	getBlockType,
 	type BlockInstance,
 } from '@wordpress/blocks';
 import { isWpVersion } from '@woocommerce/settings';
@@ -49,8 +49,10 @@ const createRowBlock = (
 	innerBlocks: Array< BlockInstance >,
 	inheritedAttributes: InheritedAttributes
 ) => {
+	const groupBlockName = 'core/group';
 	const rowVariationName = `group-row`;
-	const groupBlockVariations = getBlockType( 'core/group' )?.variations || [];
+	const groupBlockVariations =
+		getBlockType( groupBlockName )?.variations || [];
 	const rowVariation = groupBlockVariations.find(
 		( { name }: { name: string } ) => name === rowVariationName
 	);
@@ -69,7 +71,7 @@ const createRowBlock = (
 		},
 	};
 
-	return createBlock( `core/group`, extendedAttributes, innerBlocks );
+	return createBlock( groupBlockName, extendedAttributes, innerBlocks );
 };
 
 const createProductsBlock = ( inheritedAttributes: InheritedAttributes ) =>
