@@ -52,4 +52,15 @@ export const TEMPLATES: TemplateDetails = {
 		),
 		placeholder: 'archive-product',
 	},
+	cart: {
+		title: __( 'WooCommerce Cart Block', 'woo-gutenberg-products-block' ),
+		placeholder: 'cart',
+	},
+	checkout: {
+		title: __(
+			'WooCommerce Checkout Block',
+			'woo-gutenberg-products-block'
+		),
+		placeholder: 'checkout',
+	},
 };

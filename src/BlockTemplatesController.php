@@ -2,6 +2,8 @@
 namespace Automattic\WooCommerce\Blocks;
 
 use Automattic\WooCommerce\Blocks\Domain\Package;
+use Automattic\WooCommerce\Blocks\Templates\CartTemplate;
+use Automattic\WooCommerce\Blocks\Templates\CheckoutTemplate;
 use Automattic\WooCommerce\Blocks\Templates\ProductAttributeTemplate;
 use Automattic\WooCommerce\Blocks\Utils\BlockTemplateUtils;
 
@@ -546,6 +548,16 @@ class BlockTemplatesController {
 			( is_post_type_archive( 'product' ) || is_page( wc_get_page_id( 'shop' ) ) ) &&
 			! BlockTemplateUtils::theme_has_template( 'archive-product' ) &&
 			$this->block_template_is_available( 'archive-product' )
+		) {
+			add_filter( 'woocommerce_has_block_template', '__return_true', 10, 0 );
+		} elseif (
+			is_cart() &&
+			! BlockTemplateUtils::theme_has_template( CartTemplate::SLUG ) && $this->block_template_is_available( CartTemplate::SLUG )
+		) {
+			add_filter( 'woocommerce_has_block_template', '__return_true', 10, 0 );
+		} elseif (
+			is_checkout() &&
+			! BlockTemplateUtils::theme_has_template( CheckoutTemplate::SLUG ) && $this->block_template_is_available( CheckoutTemplate::SLUG )
 		) {
 			add_filter( 'woocommerce_has_block_template', '__return_true', 10, 0 );
 		} else {

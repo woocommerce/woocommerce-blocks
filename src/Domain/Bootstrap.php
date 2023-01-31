@@ -21,14 +21,16 @@ use Automattic\WooCommerce\Blocks\Payments\Integrations\Cheque;
 use Automattic\WooCommerce\Blocks\Payments\Integrations\PayPal;
 use Automattic\WooCommerce\Blocks\Payments\PaymentMethodRegistry;
 use Automattic\WooCommerce\Blocks\Registry\Container;
-use Automattic\WooCommerce\Blocks\Templates\ClassicTemplatesCompatibility;
+use Automattic\WooCommerce\Blocks\Shipping\ShippingController;
 use Automattic\WooCommerce\Blocks\Templates\BlockTemplatesCompatibility;
+use Automattic\WooCommerce\Blocks\Templates\CartTemplate;
+use Automattic\WooCommerce\Blocks\Templates\CheckoutTemplate;
+use Automattic\WooCommerce\Blocks\Templates\ClassicTemplatesCompatibility;
 use Automattic\WooCommerce\Blocks\Templates\ProductAttributeTemplate;
 use Automattic\WooCommerce\Blocks\Templates\ProductSearchResultsTemplate;
 use Automattic\WooCommerce\StoreApi\RoutesController;
 use Automattic\WooCommerce\StoreApi\SchemaController;
 use Automattic\WooCommerce\StoreApi\StoreApi;
-use Automattic\WooCommerce\Blocks\Shipping\ShippingController;
 
 /**
  * Takes care of bootstrapping the plugin.
@@ -127,6 +129,8 @@ class Bootstrap {
 		$this->container->get( BlockTemplatesController::class );
 		$this->container->get( ProductSearchResultsTemplate::class );
 		$this->container->get( ProductAttributeTemplate::class );
+		$this->container->get( CartTemplate::class );
+		$this->container->get( CheckoutTemplate::class );
 		$this->container->get( ClassicTemplatesCompatibility::class );
 		$this->container->get( BlockTemplatesCompatibility::class );
 		$this->container->get( BlockPatterns::class );
@@ -265,6 +269,18 @@ class Bootstrap {
 			ProductAttributeTemplate::class,
 			function () {
 				return new ProductAttributeTemplate();
+			}
+		);
+		$this->container->register(
+			CartTemplate::class,
+			function () {
+				return new CartTemplate();
+			}
+		);
+		$this->container->register(
+			CheckoutTemplate::class,
+			function () {
+				return new CheckoutTemplate();
 			}
 		);
 		$this->container->register(
