@@ -31,6 +31,7 @@ import {
 } from './utils';
 import * as blockifiedProductArchive from './archive-product';
 import * as blockifiedSingleProduct from './single-product';
+import * as blockifiedProductSearchResults from './product-search-results';
 import type { BlockifiedTemplate } from './types';
 
 type Attributes = {
@@ -48,6 +49,7 @@ const blockifiedFallbackConfig = {
 const conversionConfig: { [ key: string ]: BlockifiedTemplate } = {
 	[ TYPES.archiveProduct ]: blockifiedProductArchive,
 	[ TYPES.singleProduct ]: blockifiedSingleProduct,
+	[ TYPES.productSearchResults ]: blockifiedProductSearchResults,
 	fallback: blockifiedFallbackConfig,
 };
 
