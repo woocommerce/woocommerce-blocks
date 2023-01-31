@@ -100,10 +100,14 @@ const createProductsBlock = ( inheritedAttributes: InheritedAttributes ) => {
 		( block ) => block[ 0 ] === noResultsBlockName
 	);
 	const noResultsBlock = productsInnerBlocksTemplate[ noResultsBlockIndex ];
+	const attributes = {
+		...( noResultsBlock[ 1 ] || {} ),
+		...inheritedAttributes,
+	};
 
 	const extendedNoResults = [
 		noResultsBlockName,
-		noResultsBlock[ 1 ],
+		attributes,
 		noResultsInnerBlocks,
 	];
 
