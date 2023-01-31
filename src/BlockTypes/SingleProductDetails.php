@@ -27,14 +27,13 @@ class SingleProductDetails extends AbstractBlock {
 	protected function render( $attributes, $content, $block ) {
 		$tabs = $this->render_tabs();
 
-		$classes_and_styles = StyleAttributesUtils::get_classes_and_styles_by_attributes( $attributes );
+		$classname = $attributes['className'] ?? '';
 
 		return sprintf(
-			'<div class="wp-block-woocommerce-single-product-details %1$s" style="%2$s">
-				%3$s
+			'<div class="wp-block-woocommerce-single-product-details %1$s">
+				%2$s
 			</div>',
-			esc_attr( $classes_and_styles['classes'] ),
-			esc_attr( $classes_and_styles['styles'] ),
+			esc_attr( $classname ),
 			$tabs,
 		);
 	}
