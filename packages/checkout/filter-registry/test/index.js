@@ -5,10 +5,7 @@ import { renderHook } from '@testing-library/react-hooks';
 /**
  * Internal dependencies
  */
-import {
-	registerCheckoutFilters,
-	__experimentalApplyCheckoutFilter,
-} from '../';
+import { registerCheckoutFilters, applyCheckoutFilter } from '../';
 
 describe( 'Checkout registry', () => {
 	const filterName = 'loremIpsum';
@@ -16,7 +13,7 @@ describe( 'Checkout registry', () => {
 	test( 'should return default value if there are no filters', () => {
 		const value = 'Hello World';
 		const { result: newValue } = renderHook( () =>
-			__experimentalApplyCheckoutFilter( {
+			applyCheckoutFilter( {
 				filterName,
 				defaultValue: value,
 			} )
@@ -31,7 +28,7 @@ describe( 'Checkout registry', () => {
 				val.toUpperCase() + args.punctuationSign,
 		} );
 		const { result: newValue } = renderHook( () =>
-			__experimentalApplyCheckoutFilter( {
+			applyCheckoutFilter( {
 				filterName,
 				defaultValue: value,
 				arg: {
@@ -49,7 +46,7 @@ describe( 'Checkout registry', () => {
 			[ filterName ]: ( val ) => val.toUpperCase(),
 		} );
 		const { result: newValue } = renderHook( () =>
-			__experimentalApplyCheckoutFilter( {
+			applyCheckoutFilter( {
 				filterName,
 				defaultValue: value,
 				validation: ( val ) => ! val.includes( 'HELLO' ),
@@ -75,7 +72,7 @@ describe( 'Checkout registry', () => {
 			},
 		} );
 		const { result: newValue } = renderHook( () =>
-			__experimentalApplyCheckoutFilter( {
+			applyCheckoutFilter( {
 				filterName: filterNameThatThrows,
 				defaultValue: value,
 			} )

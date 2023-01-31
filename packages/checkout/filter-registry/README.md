@@ -7,7 +7,7 @@
     -   [Options](#options)
         -   [`namespace (string)`](#namespace-string)
         -   [`filters (object)`](#filters-object)
--   [\_\_experimentalApplyCheckoutFilter](#__experimentalapplycheckoutfilter)
+-   [applyCheckoutFilter](#applycheckoutfilter)
     -   [Usage](#usage-1)
     -   [Options](#options-1)
         -   [`filterName (string, required)`](#filtername-string-required)
@@ -74,7 +74,7 @@ A list of filter names and functions (`CheckoutFilterFunction`) to execute when 
 -   `extensions` A n object containing extension data. If your extension has extended any of the store's API routes, one of the keys of this object will be your extension's namespace. The value will contain any data you add to the endpoint. Each key in the `extensions` object is an extension namespace, so a third party extension cannot interfere with _your_ extension's schema modifications, unless there is a naming collision, so please ensure your extension has a unique namespace that is unlikely to conflict with other extensions.
 -   `args` - An object containing any additional data passed to the filter function. This usually (but not always) contains at least a key called `context`. The value of `context` will be (at the moment) either `cart` or `checkout`. This is provided to inform extensions about the exact location that the filter is being applied. The same filter can be applied in multiple places.
 
-## \_\_experimentalApplyCheckoutFilter
+## applyCheckoutFilter
 
 This function applies a filter, and all registered callbacks, to a given value.
 
@@ -82,17 +82,17 @@ This function applies a filter, and all registered callbacks, to a given value.
 
 ```js
 // Aliased import
-import { __experimentalApplyCheckoutFilter } from '@woocommerce/blocks-checkout';
+import { applyCheckoutFilter } from '@woocommerce/blocks-checkout';
 
 // Global import
-// const { __experimentalApplyCheckoutFilter } = wc.blocksCheckout;
+ const { applyCheckoutFilter } = wc.blocksCheckout;
 
 const options = {
 	filterName: 'my-filter',
 	defaultValue: 'Default Value',
 };
 
-const filteredValue = __experimentalApplyCheckoutFilter( options );
+const filteredValue = applyCheckoutFilter( options );
 ```
 
 ### Options
@@ -121,7 +121,7 @@ A function that needs to return true when the filtered value is passed in order 
 
 ## Available Filters
 
-Filters are implemented throughout the Mini Cart, Cart and Checkout Blocks, as well as some components. For a list of filters, [see this document](../../../docs/third-party-developers/extensibility/checkout-block/available-filters.md). You can also search for [usage of `__experimentalApplyCheckoutFilter` within the source code](https://github.com/woocommerce/woocommerce-gutenberg-products-block/search?q=__experimentalApplyCheckoutFilter).
+Filters are implemented throughout the Mini Cart, Cart and Checkout Blocks, as well as some components. For a list of filters, [see this document](../../../docs/third-party-developers/extensibility/checkout-block/available-filters.md). You can also search for [usage of `applyCheckoutFilter` within the source code](https://github.com/woocommerce/woocommerce-gutenberg-products-block/search?q=applyCheckoutFilter).
 
 <!-- FEEDBACK -->
 

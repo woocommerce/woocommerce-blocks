@@ -276,12 +276,12 @@ export const __experimentalApplyCheckoutFilter = < T >( {
 	/** Function that needs to return true when the filtered value is passed in order for the filter to be applied. */
 	validation?: ( value: T ) => true | Error;
 } ): T => {
-	deprecated( '__experimentalRegisterCheckoutFilters', {
-		alternative: 'registerCheckoutFilters',
+	deprecated( '__experimentalApplyCheckoutFilter', {
+		alternative: 'applyCheckoutFilter',
 		plugin: 'WooCommerce Blocks',
 		link: '',
 		since: '6.0.0',
-		hint: '__experimentalRegisterCheckoutFilters has graduated to stable and this experimental function will be removed.',
+		hint: '__experimentalApplyCheckoutFilter has graduated to stable and this experimental function will be removed.',
 	} );
 	return applyCheckoutFilter( {
 		filterName,
