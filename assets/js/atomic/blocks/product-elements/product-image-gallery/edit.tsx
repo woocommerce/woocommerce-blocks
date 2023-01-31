@@ -17,22 +17,14 @@ const Placeholder = () => {
 		<div className="wc-block-editor-product-gallery">
 			<img
 				src={ `${ WC_BLOCKS_IMAGE_URL }template-placeholders/fallback.svg` }
-				style={ {
-					width: '500px',
-					height: '500px',
-				} }
 				alt="Placeholder"
 			/>
-			<div className="wc-block-editor-product-gallery__gallery">
+			<div className="wc-block-editor-product-gallery__other-images">
 				{ [ ...Array( 4 ).keys() ].map( ( index ) => {
 					return (
 						<img
 							key={ index }
 							src={ `${ WC_BLOCKS_IMAGE_URL }template-placeholders/fallback.svg` }
-							style={ {
-								width: '100px',
-								height: '100px',
-							} }
 							alt="Placeholder"
 						/>
 					);
