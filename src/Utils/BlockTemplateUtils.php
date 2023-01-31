@@ -1,11 +1,13 @@
 <?php
 namespace Automattic\WooCommerce\Blocks\Utils;
 
-use Automattic\WooCommerce\Blocks\Templates\ProductAttributeTemplate;
-use Automattic\WooCommerce\Blocks\Templates\ProductSearchResultsTemplate;
 use Automattic\WooCommerce\Blocks\Domain\Services\FeatureGating;
 use Automattic\WooCommerce\Blocks\Options;
+use Automattic\WooCommerce\Blocks\Templates\CartTemplate;
+use Automattic\WooCommerce\Blocks\Templates\CheckoutTemplate;
 use Automattic\WooCommerce\Blocks\Templates\MiniCartTemplate;
+use Automattic\WooCommerce\Blocks\Templates\ProductAttributeTemplate;
+use Automattic\WooCommerce\Blocks\Templates\ProductSearchResultsTemplate;
 
 /**
  * Utility methods used for serving block templates from WooCommerce Blocks.
@@ -302,7 +304,7 @@ class BlockTemplateUtils {
 	 * @return array The plugin template types.
 	 */
 	public static function get_plugin_block_template_types() {
-		$plugin_template_types = array(
+		return array(
 			'single-product'                   => array(
 				'title'       => _x( 'Single Product', 'Template name', 'woo-gutenberg-products-block' ),
 				'description' => __( 'Displays a single product.', 'woo-gutenberg-products-block' ),
@@ -331,9 +333,15 @@ class BlockTemplateUtils {
 				'title'       => _x( 'Mini-Cart', 'Template name', 'woo-gutenberg-products-block' ),
 				'description' => __( 'Template used to display the Mini-Cart drawer.', 'woo-gutenberg-products-block' ),
 			),
+			CartTemplate::SLUG                 => array(
+				'title'       => _x( 'Cart', 'Template name', 'woo-gutenberg-products-block' ),
+				'description' => __( 'Template used to display the Cart.', 'woo-gutenberg-products-block' ),
+			),
+			CheckoutTemplate::SLUG             => array(
+				'title'       => _x( 'Checkout', 'Template name', 'woo-gutenberg-products-block' ),
+				'description' => __( 'Template used to display the Checkout.', 'woo-gutenberg-products-block' ),
+			),
 		);
-
-		return $plugin_template_types;
 	}
 
 	/**
