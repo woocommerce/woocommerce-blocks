@@ -20,6 +20,31 @@ import {
 import { VARIATION_NAME as productsVariationName } from '../product-query/variations/product-query';
 import { type InheritedAttributes } from './types';
 
+const createArchiveTitleBlock = (
+	inheritedAttributes: InheritedAttributes
+) => {
+	const queryTitleBlockName = 'core/query-title';
+	const archiveTitleVariationName = `archive-title`;
+	const queryTitleBlockVariations =
+		getBlockType( queryTitleBlockName )?.variations || [];
+	const archiveTitleVariation = queryTitleBlockVariations.find(
+		( { name }: { name: string } ) => name === archiveTitleVariationName
+	);
+
+	if ( ! archiveTitleVariation ) {
+		return null;
+	}
+
+	const { attributes } = archiveTitleVariation;
+	const extendedAttributes = {
+		...attributes,
+		...inheritedAttributes,
+		showPrefix: false,
+	};
+
+	return createBlock( queryTitleBlockName, extendedAttributes );
+};
+
 const createRowBlock = (
 	innerBlocks: Array< BlockInstance >,
 	inheritedAttributes: InheritedAttributes
@@ -61,6 +86,7 @@ const createProductsBlock = ( inheritedAttributes: InheritedAttributes ) =>
 const getBlockifiedTemplate = ( inheritedAttributes: InheritedAttributes ) =>
 	[
 		createBlock( 'woocommerce/breadcrumbs', inheritedAttributes ),
+		createArchiveTitleBlock( inheritedAttributes ),
 		createBlock( 'woocommerce/store-notices', inheritedAttributes ),
 		createRowBlock(
 			[
