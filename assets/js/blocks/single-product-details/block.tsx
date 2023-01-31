@@ -3,6 +3,7 @@
  */
 import classnames from 'classnames';
 import { __ } from '@wordpress/i18n';
+import { useBlockProps } from '@wordpress/block-editor';
 
 /**
  * Internal dependencies
@@ -51,6 +52,7 @@ const ProductTabContent = ( {
 };
 
 export const SingleProductDetails = () => {
+	const blockProps = useBlockProps();
 	const productTabs = [
 		{
 			id: 'description',
@@ -81,7 +83,7 @@ export const SingleProductDetails = () => {
 	) );
 
 	return (
-		<div className="woocommerce-tabs wc-tabs-wrapper">
+		<div { ...blockProps }>
 			<ul className="tabs" role="tablist">
 				{ tabsTitle }
 			</ul>

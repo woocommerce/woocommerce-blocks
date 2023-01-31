@@ -1,7 +1,6 @@
 /**
  * External dependencies
  */
-import classNames from 'classnames';
 import { useBlockProps } from '@wordpress/block-editor';
 import { Disabled } from '@wordpress/components';
 import type { BlockEditProps } from '@wordpress/blocks';
@@ -16,7 +15,7 @@ import './editor.scss';
 const Edit = ( { attributes }: BlockEditProps< Attributes > ) => {
 	const { className } = attributes;
 	const blockProps = useBlockProps( {
-		className: classNames( 'wc-block-single-product-details', className ),
+		className,
 	} );
 
 	return (
