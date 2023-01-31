@@ -520,6 +520,7 @@ class StyleAttributesUtils {
 	 */
 	public static function get_classes_and_styles_by_attributes( $attributes, $properties = array() ) {
 		$classes_and_styles = array(
+			'align'            => self::get_align_class_and_style( $attributes ),
 			'line_height'      => self::get_line_height_class_and_style( $attributes ),
 			'text_color'       => self::get_text_color_class_and_style( $attributes ),
 			'font_size'        => self::get_font_size_class_and_style( $attributes ),
@@ -533,6 +534,7 @@ class StyleAttributesUtils {
 			'border_width'     => self::get_border_width_class_and_style( $attributes ),
 			'padding'          => self::get_padding_class_and_style( $attributes ),
 			'margin'           => self::get_margin_class_and_style( $attributes ),
+			'text_align'       => self::get_text_align_class_and_style( $attributes ),
 		);
 
 		if ( ! empty( $properties ) ) {
