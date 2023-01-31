@@ -33,10 +33,11 @@ let checkoutFilters: Record<
 > = {};
 
 const cachedValues: Record< string, T > = {};
+
 /**
  * Register filters for a specific extension.
  */
-export const __experimentalRegisterCheckoutFilters = (
+export const registerCheckoutFilters = (
 	namespace: string,
 	filters: Record< string, CheckoutFilterFunction >
 ): void => {
@@ -57,6 +58,24 @@ export const __experimentalRegisterCheckoutFilters = (
 		...checkoutFilters,
 		[ namespace ]: filters,
 	};
+};
+
+/**
+ * Backward compatibility for __experimentalRegisterCheckoutFilters, this has been graduated to stable now.
+ * Remove after July 2023.
+ */
+export const __experimentalRegisterCheckoutFilters = (
+	namespace: string,
+	filters: Record< string, CheckoutFilterFunction >
+) => {
+	deprecated( '__experimentalRegisterCheckoutFilters', {
+		alternative: 'registerCheckoutFilters',
+		plugin: 'WooCommerce Blocks',
+		link: '',
+		since: '6.0.0',
+		hint: '__experimentalRegisterCheckoutFilters has graduated to stable and this experimental function will be removed.',
+	} );
+	registerCheckoutFilters( namespace, filters );
 };
 
 /**
