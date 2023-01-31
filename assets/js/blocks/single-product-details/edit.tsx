@@ -13,9 +13,7 @@ import Block from './block';
 import { Attributes } from './types';
 import './editor.scss';
 
-const Edit = ( { attributes, ...rest }: BlockEditProps< Attributes > ) => {
-	console.log( { attributes } );
-	console.log( { rest } );
+const Edit = ( { attributes }: BlockEditProps< Attributes > ) => {
 	const { className } = attributes;
 	const blockProps = useBlockProps( {
 		className: classNames( 'wc-block-single-product-details', className ),
