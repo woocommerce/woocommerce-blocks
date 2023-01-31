@@ -2,7 +2,7 @@
 
 ## Table of Contents <!-- omit in toc -->
 
--   [\_\_experimentalRegisterCheckoutFilters](#__experimentalregistercheckoutfilters)
+-   [registerCheckoutFilters](#registercheckoutfilters)
     -   [Usage](#usage)
     -   [Options](#options)
         -   [`namespace (string)`](#namespace-string)
@@ -19,7 +19,7 @@
 
 The filter registry allows callbacks to be registered to manipulate certain values. This is similar to the traditional filter system in WordPress (where you register a callback with a specific filter and return a modified value).
 
-## \_\_experimentalRegisterCheckoutFilters
+## registerCheckoutFilters
 
 Registers a callback function with an available filter. This function has the following signature:
 
@@ -44,16 +44,16 @@ type CheckoutFilterFunction = < T >(
 
 ```js
 // Aliased import
-import { __experimentalRegisterCheckoutFilters } from '@woocommerce/blocks-checkout';
+import { registerCheckoutFilters } from '@woocommerce/blocks-checkout';
 
 // Global import
-// const { __experimentalRegisterCheckoutFilters } = wc.blocksCheckout;
+ const { registerCheckoutFilters } = wc.blocksCheckout;
 
 const callback = ( value ) => {
 	return value;
 };
 
-__experimentalRegisterCheckoutFilters( 'my-extension-namespace', {
+registerCheckoutFilters( 'my-extension-namespace', {
 	filterName: callback,
 } );
 ```

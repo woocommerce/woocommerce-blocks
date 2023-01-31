@@ -6,7 +6,7 @@ import { renderHook } from '@testing-library/react-hooks';
  * Internal dependencies
  */
 import {
-	__experimentalRegisterCheckoutFilters,
+	registerCheckoutFilters,
 	__experimentalApplyCheckoutFilter,
 } from '../';
 
@@ -26,7 +26,7 @@ describe( 'Checkout registry', () => {
 
 	test( 'should return filtered value when a filter is registered', () => {
 		const value = 'Hello World';
-		__experimentalRegisterCheckoutFilters( filterName, {
+		registerCheckoutFilters( filterName, {
 			[ filterName ]: ( val, extensions, args ) =>
 				val.toUpperCase() + args.punctuationSign,
 		} );
@@ -45,7 +45,7 @@ describe( 'Checkout registry', () => {
 
 	test( 'should not return filtered value if validation failed', () => {
 		const value = 'Hello World';
-		__experimentalRegisterCheckoutFilters( filterName, {
+		registerCheckoutFilters( filterName, {
 			[ filterName ]: ( val ) => val.toUpperCase(),
 		} );
 		const { result: newValue } = renderHook( () =>
@@ -69,7 +69,7 @@ describe( 'Checkout registry', () => {
 		// We use this new filter name here to avoid return the cached value for the filter
 		const filterNameThatThrows = 'throw';
 		const value = 'Hello World';
-		__experimentalRegisterCheckoutFilters( filterNameThatThrows, {
+		registerCheckoutFilters( filterNameThatThrows, {
 			[ filterNameThatThrows ]: () => {
 				throw error;
 			},

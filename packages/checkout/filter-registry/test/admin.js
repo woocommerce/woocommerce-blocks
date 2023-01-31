@@ -6,7 +6,7 @@ import { renderHook } from '@testing-library/react-hooks';
  * Internal dependencies
  */
 import {
-	__experimentalRegisterCheckoutFilters,
+	registerCheckoutFilters,
 	__experimentalApplyCheckoutFilter,
 } from '../';
 
@@ -23,7 +23,7 @@ describe( 'Checkout registry (as admin user)', () => {
 	test( 'should throw if the filter throws and user is an admin', () => {
 		const filterName = 'ErrorTestFilter';
 		const value = 'Hello World';
-		__experimentalRegisterCheckoutFilters( filterName, {
+		registerCheckoutFilters( filterName, {
 			[ filterName ]: () => {
 				throw new Error( 'test error' );
 			},
@@ -41,7 +41,7 @@ describe( 'Checkout registry (as admin user)', () => {
 	test( 'should throw if validation throws and user is an admin', () => {
 		const filterName = 'ValidationTestFilter';
 		const value = 'Hello World';
-		__experimentalRegisterCheckoutFilters( filterName, {
+		registerCheckoutFilters( filterName, {
 			[ filterName ]: ( val ) => val,
 		} );
 		const { result } = renderHook( () =>
