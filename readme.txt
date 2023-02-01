@@ -80,6 +80,12 @@ Release and roadmap notes available on the [WooCommerce Developers Blog](https:/
 
 == Changelog ==
 
+= 9.4.3 - 2023-02-01 =
+
+#### Bug Fixes
+
+Fix a bug in WordPress 5.9 in which changing quantity doesn't work inside Cart and Mini Cart blocks.
+
 = 9.4.2 - 2023-01-26 =
 
 #### Bug Fixes
