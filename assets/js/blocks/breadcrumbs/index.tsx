@@ -15,8 +15,7 @@ const featurePluginSupport = {
 	...metadata.supports,
 	...( isFeaturePluginBuild() && {
 		typography: {
-			fontSize: true,
-			lineHeight: true,
+			...metadata.supports.typography,
 			__experimentalFontFamily: true,
 			__experimentalFontStyle: true,
 			__experimentalFontWeight: true,
