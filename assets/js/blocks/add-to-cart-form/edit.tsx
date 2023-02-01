@@ -27,7 +27,7 @@ const Edit = () => {
 				>
 					<p>
 						{ __(
-							'The content displayed on this block can vary depending on the product type. The editor preview corresponds to a Simple Product.',
+							'Customers will see product add-to-cart options displayed here, dependent on the product type.',
 							'woo-gutenberg-products-block'
 						) }
 					</p>
@@ -41,7 +41,7 @@ const Edit = () => {
 					variant={ 'primary' }
 					className={ 'wc-block-add-to-cart-form__button' }
 				>
-					{ __( 'Add to Cart', 'woo-gutenberg-products-block' ) }
+					{ __( 'Add to cart', 'woo-gutenberg-products-block' ) }
 				</Button>
 			</Disabled>
 		</div>

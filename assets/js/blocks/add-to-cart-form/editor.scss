@@ -1,17 +1,18 @@
 .wc-block-add-to-cart-form {
 	display: flex;
 	flex-direction: row;
+	margin-left: 10px;
 }
 
 .wc-block-add-to-cart-form__notice {
 	margin: 10px 0;
 }
 input.wc-block-add-to-cart-form__quantity {
-	width: 40px;
+	width: 32px;
 	float: left;
-	padding: 13px 12px;
+	padding: 10px 7px;
 	margin-right: 10px;
-	height: 20px;
+	height: 15px;
 }
 
 input[type="number"]::-webkit-inner-spin-button {
@@ -20,6 +21,6 @@ input[type="number"]::-webkit-inner-spin-button {
 
 .wc-block-add-to-cart-form__button {
 	float: left;
-	padding: 25px;
+	padding: 20px;
 	border-radius: 0;
 }
