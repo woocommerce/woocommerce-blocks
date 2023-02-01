@@ -34,11 +34,16 @@ class SingleProductDetails extends AbstractBlock {
 				%2$s
 			</div>',
 			esc_attr( $classname ),
-			$tabs,
+			$tabs
 		);
 	}
 
-	protected function render_tabs(){
+	/**
+	 * Gets the tabs with their content to be rendered by the block.
+	 *
+	 * @return string The tabs html to be rendered by the block
+	 */
+	protected function render_tabs() {
 		ob_start();
 
 		while ( have_posts() ) {
