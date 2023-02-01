@@ -84,6 +84,10 @@ const createProductsBlock = ( inheritedAttributes: InheritedAttributes ) => {
 			...productsQueryDefaultAttributes,
 			...inheritedAttributes,
 			namespace: productsVariationName,
+			query: {
+				...productsQueryDefaultAttributes.query,
+				inherit: true,
+			},
 		},
 		createBlocksFromInnerBlocksTemplate( productsInnerBlocksWithNoResults )
 	);
