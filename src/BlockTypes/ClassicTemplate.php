@@ -64,7 +64,7 @@ class ClassicTemplate extends AbstractDynamicBlock {
 
 		$archive_templates = array( 'archive-product', 'taxonomy-product_cat', 'taxonomy-product_tag', ProductAttributeTemplate::SLUG, ProductSearchResultsTemplate::SLUG );
 
-		if ( 'single-product' === $attributes['template'] ) {
+		if ( strpos( $attributes['template'], 'single-product' ) !== false ) {
 			return $this->render_single_product();
 		} elseif ( in_array( $attributes['template'], $archive_templates, true ) ) {
 			// Set this so that our product filters can detect if it's a PHP template.

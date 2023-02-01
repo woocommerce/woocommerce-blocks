@@ -71,6 +71,43 @@ class BlockTemplatesController {
 		if ( $this->package->is_experimental_build() ) {
 			add_action( 'after_switch_theme', array( $this, 'check_should_use_blockified_product_grid_templates' ), 10, 2 );
 		}
+
+		add_filter( 'extra_template_types', array( $this, 'add_single_product_templates' ) );
+		add_filter( 'single_template_hierarchy', array( $this, 'update_single_product_template_hierarchy' ), 1, 3 );
+	}
+
+	/**
+	 * Add the single-product-type template to the single template hierarchy.
+	 *
+	 * @param array $templates Template hierarchy.
+	 *
+	 * @return array
+	 */
+	public function update_single_product_template_hierarchy( $templates ) {
+		$product_type = wc_get_product()->get_type();
+		array_splice( $templates, 1, 0, 'single-product-' . $product_type );
+
+		return $templates;
+	}
+
+	/**
+	 * Add a single-product template type for each product type to the list
+	 * of extra template types.
+	 *
+	 * @param array $extra_template_types Array of extra template types.
+	 *
+	 * @return array
+	 */
+	public function add_single_product_templates( $extra_template_types ) {
+		$product_types = array_keys( wc_get_product_types() );
+		foreach ( $product_types as $product_type ) {
+			$extra_template_types[] = array(
+				'slug'  => 'single-product-' . $product_type,
+				'title' => 'Single Product: ' . ucfirst( $product_type ),
+			);
+		}
+
+		return $extra_template_types;
 	}
 
 	/**
