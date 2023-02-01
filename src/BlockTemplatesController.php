@@ -73,6 +73,26 @@ class BlockTemplatesController {
 		if ( $this->package->is_experimental_build() ) {
 			add_action( 'after_switch_theme', array( $this, 'check_should_use_blockified_product_grid_templates' ), 10, 2 );
 		}
+
+		add_filter( 'extra_template_types', array( $this, 'add_extra_template_types' ) );
+	}
+
+	/**
+	 * Add the taxonomy-product_attribute template type to the list of extra template types.
+	 *
+	 * @param array $extra_template_types Array of extra template types.
+	 *
+	 * @return array
+	 */
+	public function add_extra_template_types( $extra_template_types ) {
+		$extra_template_types[] = array(
+			'slug'        => 'taxonomy-product_attribute',
+			'title'       => __( 'Attribute (product_attribute)', 'woo-gutenberg-products-block' ),
+			'description' => __( 'Displays products filtered by a product attribute.', 'woo-gutenberg-products-block' ),
+			'icon'        => 'feedback',
+		);
+
+		return $extra_template_types;
 	}
 
 	/**
