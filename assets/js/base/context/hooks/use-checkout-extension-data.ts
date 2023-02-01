@@ -22,8 +22,8 @@ export const useCheckoutExtensionData = (): {
 	) => void;
 } => {
 	const { __internalSetExtensionData } = useDispatch( CHECKOUT_STORE_KEY );
-	const extensionData = useSelect( ( selectData ) =>
-		selectData( CHECKOUT_STORE_KEY ).getExtensionData()
+	const extensionData = useSelect( ( select ) =>
+		select( CHECKOUT_STORE_KEY ).getExtensionData()
 	);
 	const extensionDataRef = useRef( extensionData );
 
