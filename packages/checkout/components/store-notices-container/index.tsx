@@ -1,95 +1,88 @@
 /**
  * External dependencies
  */
-import classnames from 'classnames';
-import { Notice } from 'wordpress-components';
-import { sanitizeHTML } from '@woocommerce/utils';
-import { useDispatch, useSelect } from '@wordpress/data';
-import { PAYMENT_STORE_KEY } from '@woocommerce/block-data';
-import type { Notice as NoticeType } from '@wordpress/notices';
+import { useSelect } from '@wordpress/data';
+import {
+	PAYMENT_STORE_KEY,
+	STORE_NOTICES_STORE_KEY,
+} from '@woocommerce/block-data';
+import { getNoticeContexts } from '@woocommerce/base-utils';
+import type { Notice } from '@wordpress/notices';
 
 /**
  * Internal dependencies
  */
 import './style.scss';
+import StoreNotices from './store-notices';
+import SnackbarNotices from './snackbar-notices';
+import type { StoreNoticesContainerProps, StoreNotice } from './types';
 
-const getWooClassName = ( { status = 'default' } ) => {
-	switch ( status ) {
-		case 'error':
-			return 'woocommerce-error';
-		case 'success':
-			return 'woocommerce-message';
-		case 'info':
-		case 'warning':
-			return 'woocommerce-info';
-	}
-	return '';
+const formatNotices = ( notices: Notice[], context: string ): StoreNotice[] => {
+	return notices.map( ( notice ) => ( {
+		...notice,
+		context,
+	} ) ) as StoreNotice[];
 };
 
-interface StoreNoticesContainerProps {
-	className?: string;
-	context?: string;
-	additionalNotices?: NoticeType[];
-}
-
-/**
- * Component that displays notices from the core/notices data store. See
- * https://developer.wordpress.org/block-editor/reference-guides/data/data-core-notices/ for more information on this
- * data store.
- *
- * @param  props
- * @param  props.className         Class name to add to the container.
- * @param  props.context           Context to show notices from.
- * @param  props.additionalNotices Additional notices to display.
- * @function Object() { [native code] }
- */
-export const StoreNoticesContainer = ( {
-	className,
-	context = 'default',
+const StoreNoticesContainer = ( {
+	className = '',
+	context,
 	additionalNotices = [],
 }: StoreNoticesContainerProps ): JSX.Element | null => {
-	const isExpressPaymentMethodActive = useSelect( ( select ) =>
-		select( PAYMENT_STORE_KEY ).isExpressPaymentMethodActive()
+	const { suppressNotices, registeredContainers } = useSelect(
+		( select ) => ( {
+			suppressNotices:
+				select( PAYMENT_STORE_KEY ).isExpressPaymentMethodActive(),
+			registeredContainers: select(
+				STORE_NOTICES_STORE_KEY
+			).getRegisteredContainers(),
+		} )
 	);
 
-	const { notices } = useSelect( ( select ) => {
-		const store = select( 'core/notices' );
-		return {
-			notices: store.getNotices( context ),
-		};
-	} );
-	const { removeNotice } = useDispatch( 'core/notices' );
-	const regularNotices = notices
-		.filter( ( notice ) => notice.type !== 'snackbar' )
-		.concat( additionalNotices );
+	// Find sub-contexts that have not been registered. We will show notices from those contexts here too.
+	const allContexts = getNoticeContexts();
+	const unregisteredSubContexts = allContexts.filter(
+		( subContext: string ) =>
+			subContext.includes( context + '/' ) &&
+			! registeredContainers.includes( subContext )
+	);
 
-	if ( ! regularNotices.length ) {
+	// Get notices from the current context and any sub-contexts and append the name of the context to the notice
+	// objects for later reference.
+	const notices = useSelect< StoreNotice[] >( ( select ) => {
+		const { getNotices } = select( 'core/notices' );
+
+		return [
+			...unregisteredSubContexts.flatMap( ( subContext: string ) =>
+				formatNotices( getNotices( subContext ), subContext )
+			),
+			...formatNotices(
+				getNotices( context ).concat( additionalNotices ),
+				context
+			),
+		].filter( Boolean ) as StoreNotice[];
+	} );
+
+	if ( suppressNotices || ! notices.length ) {
 		return null;
 	}
 
-	const wrapperClass = classnames( className, 'wc-block-components-notices' );
-
-	// We suppress the notices when the express payment method is active
-	return isExpressPaymentMethodActive ? null : (
-		<div className={ wrapperClass }>
-			{ regularNotices.map( ( props ) => (
-				<Notice
-					key={ `store-notice-${ props.id }` }
-					{ ...props }
-					className={ classnames(
-						'wc-block-components-notices__notice',
-						getWooClassName( props )
-					) }
-					onRemove={ () => {
-						if ( props.isDismissible ) {
-							removeNotice( props.id, context );
-						}
-					} }
-				>
-					{ sanitizeHTML( props.content ) }
-				</Notice>
-			) ) }
-		</div>
+	return (
+		<>
+			<StoreNotices
+				className={ className }
+				context={ context }
+				notices={ notices.filter(
+					( notice ) => notice.type === 'default'
+				) }
+			/>
+			<SnackbarNotices
+				className={ className }
+				notices={ notices.filter(
+					( notice ) => notice.type === 'snackbar'
+				) }
+			/>
+		</>
 	);
 };
 

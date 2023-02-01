@@ -8,10 +8,12 @@ import {
 	insertBlock,
 	switchUserToAdmin,
 	publishPost,
+	ensureSidebarOpened,
 } from '@wordpress/e2e-test-utils';
 import {
 	selectBlockByName,
 	insertBlockUsingSlash,
+	switchBlockInspectorTabWhenGutenbergIsInstalled,
 } from '@woocommerce/blocks-test-utils';
 
 /**
@@ -20,7 +22,6 @@ import {
 import {
 	BASE_URL,
 	goToTemplateEditor,
-	openBlockEditorSettings,
 	saveTemplate,
 	useTheme,
 	waitForAllProductsBlockLoaded,
@@ -61,7 +62,7 @@ const goToShopPage = () =>
 		waitUntil: 'networkidle0',
 	} );
 
-describe.skip( `${ block.name } Block`, () => {
+describe( `${ block.name } Block`, () => {
 	describe( 'with All Products Block', () => {
 		beforeAll( async () => {
 			await switchUserToAdmin();
@@ -189,8 +190,10 @@ describe.skip( `${ block.name } Block`, () => {
 				postId: productCatalogTemplateId,
 			} );
 
+			await ensureSidebarOpened();
 			await selectBlockByName( block.slug );
-			await openBlockEditorSettings();
+			await switchBlockInspectorTabWhenGutenbergIsInstalled( 'Settings' );
+
 			const [ filterButtonToggle ] = await page.$x(
 				block.selectors.editor.filterButtonToggle
 			);
@@ -242,16 +245,19 @@ describe.skip( `${ block.name } Block`, () => {
 				title: block.name,
 			} );
 
-			await insertBlock( 'Product Query' );
+			await insertBlock( 'Products (Beta)' );
 			await insertBlock( block.name );
 			await page.waitForNetworkIdle();
 
+			await canvas().waitForSelector(
+				block.selectors.editor.firstAttributeInTheList
+			);
 			// It seems that .click doesn't work well with radio input element.
-			await page.$eval(
+			await canvas().$eval(
 				block.selectors.editor.firstAttributeInTheList,
 				( el ) => ( el as HTMLInputElement ).click()
 			);
-			await page.click( selectors.editor.doneButton );
+			await canvas().click( selectors.editor.doneButton );
 			await publishPost();
 
 			editorPageUrl = page.url();
@@ -303,8 +309,10 @@ describe.skip( `${ block.name } Block`, () => {
 
 		it( 'should refresh the page only if the user clicks on button', async () => {
 			await page.goto( editorPageUrl );
-			await openBlockEditorSettings();
+			await ensureSidebarOpened();
 			await selectBlockByName( block.slug );
+			await switchBlockInspectorTabWhenGutenbergIsInstalled( 'Settings' );
+
 			const [ filterButtonToggle ] = await page.$x(
 				block.selectors.editor.filterButtonToggle
 			);

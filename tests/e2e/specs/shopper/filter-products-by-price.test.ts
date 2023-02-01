@@ -7,10 +7,12 @@ import {
 	insertBlock,
 	switchUserToAdmin,
 	publishPost,
+	ensureSidebarOpened,
 } from '@wordpress/e2e-test-utils';
 import {
 	selectBlockByName,
 	insertBlockUsingSlash,
+	switchBlockInspectorTabWhenGutenbergIsInstalled,
 } from '@woocommerce/blocks-test-utils';
 
 /**
@@ -19,7 +21,6 @@ import {
 import {
 	BASE_URL,
 	goToTemplateEditor,
-	openBlockEditorSettings,
 	saveTemplate,
 	useTheme,
 	waitForAllProductsBlockLoaded,
@@ -64,7 +65,7 @@ const setMaxPrice = async () => {
 	await page.keyboard.press( 'Tab' );
 };
 
-describe.skip( `${ block.name } Block`, () => {
+describe( `${ block.name } Block`, () => {
 	describe( 'with All Products Block', () => {
 		beforeAll( async () => {
 			await switchUserToAdmin();
@@ -186,7 +187,9 @@ describe.skip( `${ block.name } Block`, () => {
 			} );
 
 			await selectBlockByName( block.slug );
-			await openBlockEditorSettings();
+			await ensureSidebarOpened();
+			await switchBlockInspectorTabWhenGutenbergIsInstalled( 'Settings' );
+
 			await page.waitForXPath(
 				block.selectors.editor.filterButtonToggle
 			);
@@ -241,7 +244,7 @@ describe.skip( `${ block.name } Block`, () => {
 				title: block.name,
 			} );
 
-			await insertBlock( 'Product Query' );
+			await insertBlock( 'Products (Beta)' );
 			await insertBlock( block.name );
 			await insertBlock( 'Active Filters' );
 			await page.waitForNetworkIdle();
@@ -295,8 +298,9 @@ describe.skip( `${ block.name } Block`, () => {
 		it( 'should refresh the page only if the user click on button', async () => {
 			await page.goto( editorPageUrl );
 
-			await openBlockEditorSettings();
+			await ensureSidebarOpened();
 			await selectBlockByName( block.slug );
+			await switchBlockInspectorTabWhenGutenbergIsInstalled( 'Settings' );
 			await page.waitForXPath(
 				block.selectors.editor.filterButtonToggle
 			);

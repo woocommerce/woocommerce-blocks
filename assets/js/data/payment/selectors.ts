@@ -3,6 +3,8 @@
  */
 import { objectHasProp } from '@woocommerce/types';
 import deprecated from '@wordpress/deprecated';
+import { getSetting } from '@woocommerce/settings';
+import type { GlobalPaymentMethod } from '@woocommerce/types';
 
 /**
  * Internal dependencies
@@ -10,6 +12,15 @@ import deprecated from '@wordpress/deprecated';
 import { PaymentState } from './default-state';
 import { filterActiveSavedPaymentMethods } from './utils/filter-active-saved-payment-methods';
 import { STATUS as PAYMENT_STATUS } from './constants';
+
+const globalPaymentMethods: Record< string, string > = {};
+if ( getSetting( 'globalPaymentMethods' ) ) {
+	getSetting< GlobalPaymentMethod[] >( 'globalPaymentMethods' ).forEach(
+		( method ) => {
+			globalPaymentMethods[ method.id ] = method.title;
+		}
+	);
+}
 
 export const isPaymentPristine = ( state: PaymentState ) =>
 	state.status === PAYMENT_STATUS.PRISTINE;
@@ -64,6 +75,20 @@ export const getAvailableExpressPaymentMethods = ( state: PaymentState ) => {
 
 export const getPaymentMethodData = ( state: PaymentState ) => {
 	return state.paymentMethodData;
+};
+
+export const getIncompatiblePaymentMethods = ( state: PaymentState ) => {
+	return Object.fromEntries(
+		Object.entries( globalPaymentMethods ).filter( ( [ k ] ) => {
+			return ! (
+				k in
+				{
+					...state.availablePaymentMethods,
+					...state.availableExpressPaymentMethods,
+				}
+			);
+		} )
+	);
 };
 
 export const getSavedPaymentMethods = ( state: PaymentState ) => {
@@ -126,6 +151,9 @@ export const getPaymentResult = ( state: PaymentState ) => {
 	return state.paymentResult;
 };
 
+// We should avoid using this selector and instead use the focused selectors
+// We're keeping it because it's used in our unit test: assets/js/blocks/cart-checkout-shared/payment-methods/test/payment-methods.js
+// to mock the selectors.
 export const getState = ( state: PaymentState ) => {
 	return state;
 };

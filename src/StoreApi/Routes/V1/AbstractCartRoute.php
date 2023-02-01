@@ -27,6 +27,13 @@ abstract class AbstractCartRoute extends AbstractRoute {
 	const SCHEMA_TYPE = 'cart';
 
 	/**
+	 * Schema class instance.
+	 *
+	 * @var CartSchema
+	 */
+	protected $schema;
+
+	/**
 	 * Schema class for the cart.
 	 *
 	 * @var CartSchema
@@ -193,7 +200,7 @@ abstract class AbstractCartRoute extends AbstractRoute {
 	 * @return int
 	 */
 	protected function get_cart_token_expiration() {
-		return time() + intval( apply_filters( 'wc_session_expiration', 60 * 60 * 48 ) );
+		return time() + intval( apply_filters( 'wc_session_expiration', DAY_IN_SECONDS * 2 ) );
 	}
 
 	/**

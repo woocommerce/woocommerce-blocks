@@ -8,6 +8,8 @@ import type { InnerBlockTemplate } from '@wordpress/blocks';
  * Internal dependencies
  */
 import { QueryBlockAttributes } from './types';
+import { VARIATION_NAME as PRODUCT_TITLE_ID } from './variations/elements/product-title';
+import { VARIATION_NAME as PRODUCT_TEMPLATE_ID } from './variations/elements/product-template';
 
 /**
  * Returns an object without a key.
@@ -27,6 +29,7 @@ export const ALL_PRODUCT_QUERY_CONTROLS = [
 	'presets',
 	'onSale',
 	'stockStatus',
+	'wooInherit',
 ];
 
 export const DEFAULT_ALLOWED_CONTROLS = [
@@ -51,12 +54,12 @@ export const QUERY_DEFAULT_ATTRIBUTES: QueryBlockAttributes = {
 		columns: 3,
 	},
 	query: {
-		perPage: 6,
+		perPage: 9,
 		pages: 0,
 		offset: 0,
 		postType: 'product',
-		order: 'desc',
-		orderBy: 'date',
+		order: 'asc',
+		orderBy: 'title',
 		author: '',
 		search: '',
 		exclude: [],
@@ -72,19 +75,56 @@ export const QUERY_DEFAULT_ATTRIBUTES: QueryBlockAttributes = {
 export const INNER_BLOCKS_TEMPLATE: InnerBlockTemplate[] = [
 	[
 		'core/post-template',
-		{},
+		{ __woocommerceNamespace: PRODUCT_TEMPLATE_ID },
 		[
 			[ 'woocommerce/product-image' ],
 			[
 				'core/post-title',
 				{
+					textAlign: 'center',
 					level: 3,
-					fontSize: 'large',
+					fontSize: 'medium',
+					__woocommerceNamespace: PRODUCT_TITLE_ID,
+				},
+				[],
+			],
+			[
+				'woocommerce/product-price',
+				{
+					textAlign: 'center',
+					fontSize: 'small',
+					style: {
+						spacing: {
+							margin: { bottom: '1rem' },
+						},
+					},
+				},
+				[],
+			],
+			[
+				'woocommerce/product-button',
+				{
+					textAlign: 'center',
+					fontSize: 'small',
+					style: {
+						spacing: {
+							margin: { bottom: '1rem' },
+						},
+					},
 				},
 				[],
 			],
 		],
 	],
-	[ 'core/query-pagination' ],
+	[
+		'core/query-pagination',
+		{
+			layout: {
+				type: 'flex',
+				justifyContent: 'center',
+			},
+		},
+		[],
+	],
 	[ 'core/query-no-results' ],
 ];

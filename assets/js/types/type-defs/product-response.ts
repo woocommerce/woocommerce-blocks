@@ -1,19 +1,13 @@
 /**
  * Internal dependencies
  */
-import { CurrencyResponse } from './currency';
+import type { CurrencyResponse } from './currency';
 
 export interface ProductResponseItemPrices extends CurrencyResponse {
 	price: string;
 	regular_price: string;
 	sale_price: string;
 	price_range: null | { min_amount: string; max_amount: string };
-	raw_prices: {
-		precision: number;
-		price: string;
-		regular_price: string;
-		sale_price: string;
-	};
 }
 
 export interface ProductResponseItemBaseData {
@@ -37,6 +31,7 @@ export interface ProductResponseImageItem {
 }
 
 export interface ProductResponseTermItem {
+	default?: boolean;
 	id: number;
 	name: string;
 	slug: string;
@@ -74,7 +69,7 @@ export interface ProductResponseItem {
 	on_sale: boolean;
 	prices: ProductResponseItemPrices;
 	price_html: string;
-	average_rating: number;
+	average_rating: string;
 	review_count: number;
 	images: Array< ProductResponseImageItem >;
 	categories: Array< ProductResponseTermItem >;

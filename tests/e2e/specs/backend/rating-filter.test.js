@@ -5,7 +5,10 @@ import {
 	switchUserToAdmin,
 	openDocumentSettingsSidebar,
 } from '@wordpress/e2e-test-utils';
-import { visitBlockPage } from '@woocommerce/blocks-test-utils';
+import {
+	visitBlockPage,
+	switchBlockInspectorTabWhenGutenbergIsInstalled,
+} from '@woocommerce/blocks-test-utils';
 
 /**
  * Internal dependencies
@@ -30,6 +33,7 @@ describe( `${ block.name } Block`, () => {
 	describe( 'attributes', () => {
 		beforeEach( async () => {
 			await openDocumentSettingsSidebar();
+			await switchBlockInspectorTabWhenGutenbergIsInstalled( 'Settings' );
 			await page.click( block.class );
 		} );
 
@@ -63,6 +67,27 @@ describe( `${ block.name } Block`, () => {
 			await expect( page ).toClick( 'label', {
 				text: "Show 'Apply filters' button",
 			} );
+		} );
+
+		it( 'allows changing the Display Style', async () => {
+			// Turn the display style to Dropdown
+			await expect( page ).toClick( 'button', { text: 'Dropdown' } );
+
+			await page.waitForSelector(
+				'.wc-block-rating-filter.style-dropdown'
+			);
+			await expect( page ).toMatchElement(
+				'.wc-block-rating-filter.style-dropdown'
+			);
+			// Turn the display style to List
+			await expect( page ).toClick( 'button', {
+				text: 'List',
+			} );
+
+			await page.waitForSelector( '.wc-block-rating-filter.style-list' );
+			await expect( page ).toMatchElement(
+				'.wc-block-rating-filter.style-list'
+			);
 		} );
 	} );
 } );

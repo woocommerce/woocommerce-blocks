@@ -10,6 +10,7 @@ import {
 	visitBlockPage,
 	saveOrPublish,
 	selectBlockByName,
+	switchBlockInspectorTabWhenGutenbergIsInstalled,
 } from '@woocommerce/blocks-test-utils';
 
 const block = {
@@ -64,6 +65,7 @@ describe( `${ block.name } Block`, () => {
 		beforeEach( async () => {
 			await openDocumentSettingsSidebar();
 			await selectBlockByName( block.slug );
+			await switchBlockInspectorTabWhenGutenbergIsInstalled( 'Settings' );
 		} );
 
 		it( "allows changing the block's title", async () => {
@@ -85,14 +87,14 @@ describe( `${ block.name } Block`, () => {
 				'.wc-filter-element-label-list-count'
 			);
 			await expect( page ).toClick( 'label', {
-				text: 'Include product count',
+				text: 'Display product count',
 			} );
 			await expect( page ).not.toMatchElement(
 				'.wc-filter-element-label-list-count'
 			);
 			// reset
 			await expect( page ).toClick( 'label', {
-				text: 'Include product count',
+				text: 'Display product count',
 			} );
 		} );
 

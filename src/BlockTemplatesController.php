@@ -179,12 +179,11 @@ class BlockTemplatesController {
 		}
 
 		$wp_query_args  = array(
-			'post_name__in'  => array( 'archive-product' ),
-			'post_type'      => $template_type,
-			'post_status'    => array( 'auto-draft', 'draft', 'publish', 'trash' ),
-			'posts_per_page' => 1,
-			'no_found_rows'  => true,
-			'tax_query'      => array( // phpcs:ignore WordPress.DB.SlowDBQuery.slow_db_query_tax_query
+			'post_name__in' => array( 'archive-product', $slug ),
+			'post_type'     => $template_type,
+			'post_status'   => array( 'auto-draft', 'draft', 'publish', 'trash' ),
+			'no_found_rows' => true,
+			'tax_query'     => array( // phpcs:ignore WordPress.DB.SlowDBQuery.slow_db_query_tax_query
 				array(
 					'taxonomy' => 'wp_theme',
 					'field'    => 'name',
@@ -195,6 +194,12 @@ class BlockTemplatesController {
 		$template_query = new \WP_Query( $wp_query_args );
 		$posts          = $template_query->posts;
 
+		// If we have more than one result from the query, it means that the current template is present in the db (has
+		// been customized by the user) and we should not return the `archive-product` template.
+		if ( count( $posts ) > 1 ) {
+			return null;
+		}
+
 		if ( count( $posts ) > 0 ) {
 			$template = _build_block_template_result_from_post( $posts[0] );
 
@@ -203,6 +208,7 @@ class BlockTemplatesController {
 				$template->slug        = $slug;
 				$template->title       = BlockTemplateUtils::get_block_template_title( $slug );
 				$template->description = BlockTemplateUtils::get_block_template_description( $slug );
+				unset( $template->source );
 
 				return $template;
 			}

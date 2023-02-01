@@ -7,13 +7,16 @@ import { ShippingRatesControl } from '@woocommerce/base-components/cart-checkout
 import { getShippingRatesPackageCount } from '@woocommerce/base-utils';
 import { getCurrencyFromPriceResponse } from '@woocommerce/price-format';
 import FormattedMonetaryAmount from '@woocommerce/base-components/formatted-monetary-amount';
-import { useEditorContext } from '@woocommerce/base-context';
+import { useEditorContext, noticeContexts } from '@woocommerce/base-context';
+import { StoreNoticesContainer } from '@woocommerce/blocks-checkout';
 import { decodeEntities } from '@wordpress/html-entities';
 import { Notice } from 'wordpress-components';
 import classnames from 'classnames';
 import { getSetting } from '@woocommerce/settings';
-import type { PackageRateOption } from '@woocommerce/type-defs/shipping';
-import type { CartShippingPackageShippingRate } from '@woocommerce/type-defs/cart';
+import type {
+	PackageRateOption,
+	CartShippingPackageShippingRate,
+} from '@woocommerce/types';
 
 /**
  * Internal dependencies
@@ -54,7 +57,21 @@ const Block = (): JSX.Element | null => {
 		needsShipping,
 		isLoadingRates,
 		hasCalculatedShipping,
+		isCollectable,
 	} = useShippingData();
+
+	const filteredShippingRates = isCollectable
+		? shippingRates.map( ( shippingRatesPackage ) => {
+				return {
+					...shippingRatesPackage,
+					shipping_rates: shippingRatesPackage.shipping_rates.filter(
+						( shippingRatesPackageRate ) =>
+							shippingRatesPackageRate.method_id !==
+							'pickup_location'
+					),
+				};
+		  } )
+		: shippingRates;
 
 	if ( ! needsShipping ) {
 		return null;
@@ -80,6 +97,9 @@ const Block = (): JSX.Element | null => {
 
 	return (
 		<>
+			<StoreNoticesContainer
+				context={ noticeContexts.SHIPPING_METHODS }
+			/>
 			{ isEditor && ! shippingRatesPackageCount ? (
 				<NoShippingPlaceholder />
 			) : (
@@ -99,7 +119,8 @@ const Block = (): JSX.Element | null => {
 						</Notice>
 					}
 					renderOption={ renderShippingRatesControlOption }
-					shippingRates={ shippingRates }
+					collapsible={ false }
+					shippingRates={ filteredShippingRates }
 					isLoadingRates={ isLoadingRates }
 					context="woocommerce/checkout"
 				/>
