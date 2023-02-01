@@ -63,6 +63,7 @@ class BlockTemplatesController {
 	protected function init() {
 		add_action( 'template_redirect', array( $this, 'render_block_template' ) );
 		add_filter( 'pre_get_block_template', array( $this, 'get_block_template_fallback' ), 10, 3 );
+		add_filter( 'pre_get_block_templates', array( $this, 'add_archive_product_to_hierarchy' ), 10, 3 );
 		add_filter( 'pre_get_block_file_template', array( $this, 'get_block_file_template' ), 10, 3 );
 		add_filter( 'get_block_templates', array( $this, 'add_block_templates' ), 10, 3 );
 		add_filter( 'current_theme_supports-block-templates', array( $this, 'remove_block_template_support_for_shop_page' ) );
@@ -71,8 +72,75 @@ class BlockTemplatesController {
 		if ( $this->package->is_experimental_build() ) {
 			add_action( 'after_switch_theme', array( $this, 'check_should_use_blockified_product_grid_templates' ), 10, 2 );
 		}
+
+		add_filter( 'extra_template_types', array( $this, 'add_extra_template_types' ) );
 	}
 
+	/**
+	 * Add the taxonomy-product_attribute template type to the list of extra template types.
+	 *
+	 * @param array $extra_template_types Array of extra template types.
+	 *
+	 * @return array
+	 */
+	public function add_extra_template_types( $extra_template_types ) {
+		$extra_template_types[] = array(
+			'slug'        => 'taxonomy-product_attribute',
+			'title'       => __( 'Attribute (product_attribute)', 'woo-gutenberg-products-block' ),
+			'description' => __( 'Displays products filtered by a product attribute.', 'woo-gutenberg-products-block' ),
+			'icon'        => 'feedback',
+		);
+
+		return $extra_template_types;
+	}
+
+	/**
+	 * This function is used on the `pre_get_block_templates` hook to change the hierarchy of the templates with
+	 * `archive-product` fallback (e.g.`taxonomy-product_cat`, `taxonomy-product_tag`, `taxonomy-attribute`).
+	 * It adds `archive-product` in the hierarchy as the second template in priority (only after the `taxonomy-xxx`
+	 * template), then keeps the normal execution of the `get_block_templates` function.
+	 *
+	 * @param \WP_Block_Template[]|null $block_templates Array of block templates.
+	 * @param array                     $query Arguments to retrieve templates.
+	 * @param string                    $template_type wp_template or wp_template_part.
+	 *
+	 * @return array|null Array of templates or null to not filter.
+	 */
+	public function add_archive_product_to_hierarchy( $block_templates, $query, $template_type ) {
+		if ( 'wp_template_part' === $template_type ) {
+			return null;
+		}
+
+		if ( isset( $query['slug__in'] ) ) {
+			$template_slug = $query['slug__in'][0];
+
+			// When the template is not eligible for fallback we can just return null to keep the normal execution.
+			if ( ! BlockTemplateUtils::template_is_eligible_for_product_archive_fallback( $template_slug ) ) {
+				return null;
+			}
+
+			array_splice( $query['slug__in'], 1, 0, 'archive-product' );
+
+			// We need to remove the current filter to avoid an infinite loop when calling the `get_block_templates` next.
+			remove_filter( 'pre_get_block_templates', array( $this, 'add_archive_product_to_hierarchy' ), 10, 3 );
+
+			// We call again the `get_block_templates` function to carry on with the normal execution but with the
+			// modified hierarchy.
+			$block_templates = get_block_templates( $query, $template_type );
+			return array_filter(
+				$block_templates,
+				function( $template ) use ( $query ) {
+					if ( 'archive-product' === $template->slug ) {
+						$template->slug = $query['slug__in'][0];
+						return $template;
+					}
+					return $template;
+				}
+			);
+		}
+
+		return null;
+	}
 	/**
 	 * This function is used on the `pre_get_block_template` hook to return the fallback template from the db in case
 	 * the template is eligible for it.
@@ -122,7 +190,6 @@ class BlockTemplatesController {
 				$template->slug        = $slug;
 				$template->title       = BlockTemplateUtils::get_block_template_title( $slug );
 				$template->description = BlockTemplateUtils::get_block_template_description( $slug );
-				unset( $template->source );
 
 				return $template;
 			}
@@ -402,6 +469,7 @@ class BlockTemplatesController {
 			// If the theme already has a template, or the template is already in the list (i.e. it came from the
 			// database) then we should not overwrite it with the one from the filesystem.
 			if (
+				BlockTemplateUtils::template_is_eligible_for_product_archive_fallback_from_db( $template_slug, $already_found_templates ) ||
 				BlockTemplateUtils::theme_has_template( $template_slug ) ||
 				count(
 					array_filter(
@@ -415,17 +483,6 @@ class BlockTemplatesController {
 				continue;
 			}
 
-			if ( BlockTemplateUtils::template_is_eligible_for_product_archive_fallback_from_db( $template_slug, $already_found_templates ) ) {
-				$template              = clone BlockTemplateUtils::get_fallback_template_from_db( $template_slug, $already_found_templates );
-				$template_id           = explode( '//', $template->id );
-				$template->id          = $template_id[0] . '//' . $template_slug;
-				$template->slug        = $template_slug;
-				$template->title       = BlockTemplateUtils::get_block_template_title( $template_slug );
-				$template->description = BlockTemplateUtils::get_block_template_description( $template_slug );
-				$templates[]           = $template;
-				continue;
-			}
-
 			// If the theme has an archive-product.html template, but not a taxonomy-product_cat/tag/attribute.html template let's use the themes archive-product.html template.
 			if ( BlockTemplateUtils::template_is_eligible_for_product_archive_fallback_from_theme( $template_slug ) ) {
 				$template_file = BlockTemplateUtils::get_theme_template_path( 'archive-product' );
@@ -436,8 +493,6 @@ class BlockTemplatesController {
 			// At this point the template only exists in the Blocks filesystem, if is a taxonomy-product_cat/tag/attribute.html template
 			// let's use the archive-product.html template from Blocks.
 			if ( BlockTemplateUtils::template_is_eligible_for_product_archive_fallback( $template_slug ) ) {
-				$template_file = $this->get_template_path_from_woocommerce( 'archive-product' );
-				$templates[]   = BlockTemplateUtils::create_new_block_template_object( $template_file, $template_type, $template_slug, false );
 				continue;
 			}
 
