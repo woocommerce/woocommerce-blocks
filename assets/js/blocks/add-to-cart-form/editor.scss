@@ -6,11 +6,12 @@
 .wc-block-add-to-cart-form__notice {
 	margin: 10px 0;
 	color: $black;
+	max-width: 60%;
 }
 input.wc-block-add-to-cart-form__quantity {
-	width: 32px;
+	width: 35px;
 	float: left;
-	padding: 10px 7px;
+	padding: 10px 8px;
 	margin-right: 10px;
 	height: 15px;
 }
@@ -21,6 +22,6 @@ input[type="number"]::-webkit-inner-spin-button {
 
 .wc-block-add-to-cart-form__button {
 	float: left;
-	padding: 20px;
+	padding: 20px 30px;
 	border-radius: 0;
 }
