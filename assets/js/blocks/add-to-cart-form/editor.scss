@@ -1,11 +1,11 @@
 .wc-block-add-to-cart-form {
 	display: flex;
 	flex-direction: row;
-	margin-left: 10px;
 }
 
 .wc-block-add-to-cart-form__notice {
 	margin: 10px 0;
+	color: $black;
 }
 input.wc-block-add-to-cart-form__quantity {
 	width: 32px;
