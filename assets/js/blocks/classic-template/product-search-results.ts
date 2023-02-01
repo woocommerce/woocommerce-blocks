@@ -4,8 +4,8 @@
 import {
 	createBlock,
 	createBlocksFromInnerBlocksTemplate,
-	getBlockType,
 	type BlockInstance,
+	type InnerBlockTemplate,
 } from '@wordpress/blocks';
 import { isWpVersion } from '@woocommerce/settings';
 import { __, sprintf } from '@wordpress/i18n';
@@ -18,61 +18,16 @@ import {
 	QUERY_DEFAULT_ATTRIBUTES as productsQueryDefaultAttributes,
 } from '../product-query/constants';
 import { VARIATION_NAME as productsVariationName } from '../product-query/variations/product-query';
+import { createArchiveTitleBlock, createRowBlock } from './utils';
 import { type InheritedAttributes } from './types';
 
-const createArchiveTitleBlock = (
-	inheritedAttributes: InheritedAttributes
-) => {
-	const queryTitleBlockName = 'core/query-title';
-	const archiveTitleVariationName = `search-title`;
-	const queryTitleBlockVariations =
-		getBlockType( queryTitleBlockName )?.variations || [];
-	const archiveTitleVariation = queryTitleBlockVariations.find(
-		( { name }: { name: string } ) => name === archiveTitleVariationName
-	);
-
-	if ( ! archiveTitleVariation ) {
-		return null;
-	}
-
-	const { attributes } = archiveTitleVariation;
-	const extendedAttributes = {
-		...attributes,
-		...inheritedAttributes,
-		showPrefix: false,
-	};
-
-	return createBlock( queryTitleBlockName, extendedAttributes );
-};
-
-const createRowBlock = (
-	innerBlocks: Array< BlockInstance >,
-	inheritedAttributes: InheritedAttributes
-) => {
-	const groupBlockName = 'core/group';
-	const rowVariationName = `group-row`;
-	const groupBlockVariations =
-		getBlockType( groupBlockName )?.variations || [];
-	const rowVariation = groupBlockVariations.find(
-		( { name }: { name: string } ) => name === rowVariationName
-	);
-
-	if ( ! rowVariation ) {
-		return null;
-	}
-
-	const { attributes } = rowVariation;
-	const extendedAttributes = {
-		...attributes,
-		...inheritedAttributes,
-		layout: {
-			...attributes.layout,
-			justifyContent: 'space-between',
-		},
-	};
-
-	return createBlock( groupBlockName, extendedAttributes, innerBlocks );
-};
+const createNoResultsParagraph = () =>
+	createBlock( 'core/paragraph', {
+		content: __(
+			'No products were found matching your selection.',
+			'woo-gutenberg-products-block'
+		),
+	} );
 
 const createProductSearch = () =>
 	createBlock( 'core/search', {
@@ -84,22 +39,20 @@ const createProductSearch = () =>
 		query: { post_type: 'product' },
 	} );
 
-const createProductsBlock = ( inheritedAttributes: InheritedAttributes ) => {
-	const noResultsInnerBlocks = [
-		createBlock( 'core/paragraph', {
-			content: __(
-				'No products were found matching your selection.',
-				'woo-gutenberg-products-block'
-			),
-		} ),
+const extendInnerBlocksWithNoResultsContent = (
+	innerBlocks: InnerBlockTemplate[],
+	inheritedAttributes: InheritedAttributes
+) => {
+	const noResultsContent = [
+		createNoResultsParagraph(),
 		createProductSearch(),
 	];
 
 	const noResultsBlockName = 'core/query-no-results';
-	const noResultsBlockIndex = productsInnerBlocksTemplate.findIndex(
+	const noResultsBlockIndex = innerBlocks.findIndex(
 		( block ) => block[ 0 ] === noResultsBlockName
 	);
-	const noResultsBlock = productsInnerBlocksTemplate[ noResultsBlockIndex ];
+	const noResultsBlock = innerBlocks[ noResultsBlockIndex ];
 	const attributes = {
 		...( noResultsBlock[ 1 ] || {} ),
 		...inheritedAttributes,
@@ -108,14 +61,22 @@ const createProductsBlock = ( inheritedAttributes: InheritedAttributes ) => {
 	const extendedNoResults = [
 		noResultsBlockName,
 		attributes,
-		noResultsInnerBlocks,
+		noResultsContent,
 	];
 
-	const finalProductsInnerBlocksTemplate = [
+	return [
 		...productsInnerBlocksTemplate.slice( 0, noResultsBlockIndex ),
 		extendedNoResults,
 		...productsInnerBlocksTemplate.slice( noResultsBlockIndex + 1 ),
 	];
+};
+
+const createProductsBlock = ( inheritedAttributes: InheritedAttributes ) => {
+	const productsInnerBlocksWithNoResults =
+		extendInnerBlocksWithNoResultsContent(
+			productsInnerBlocksTemplate,
+			inheritedAttributes
+		);
 
 	return createBlock(
 		'core/query',
@@ -124,13 +85,13 @@ const createProductsBlock = ( inheritedAttributes: InheritedAttributes ) => {
 			...inheritedAttributes,
 			namespace: productsVariationName,
 		},
-		createBlocksFromInnerBlocksTemplate( finalProductsInnerBlocksTemplate )
+		createBlocksFromInnerBlocksTemplate( productsInnerBlocksWithNoResults )
 	);
 };
 
 const getBlockifiedTemplate = ( inheritedAttributes: InheritedAttributes ) =>
 	[
-		createArchiveTitleBlock( inheritedAttributes ),
+		createArchiveTitleBlock( 'search-title', inheritedAttributes ),
 		createBlock( 'woocommerce/store-notices', inheritedAttributes ),
 		createRowBlock(
 			[
