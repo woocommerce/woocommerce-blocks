@@ -361,4 +361,68 @@ class BlockTemplatesCompatibility {
 		}
 	}
 
+	/**
+	 * For compatibility reason, we need to wrap the Single Product template in a div with specific class.
+	 * For more details, see https://github.com/woocommerce/woocommerce-blocks/issues/8314.
+	 *
+	 * @param string $template_content Template Content.
+	 * @return string Wrapped template content inside a div.
+	 */
+	public static function wrap_single_product_template( $template_content ) {
+		$parsed_blocks                             = parse_blocks( $template_content );
+		$last_template_parts_before_template_index = self::find_first_block( $parsed_blocks );
+
+		$wrap_block_group = self::create_wrap_block_group(
+			$parsed_blocks[ $last_template_parts_before_template_index ]
+		);
+
+		$parsed_blocks[ $last_template_parts_before_template_index ] = $wrap_block_group[0];
+
+		return serialize_blocks( $parsed_blocks );
+	}
+
+	/**
+	 * Find the first block that is not a template part.
+	 *
+	 * @param array $parsed_blocks Array of parsed block objects.
+	 */
+	private static function find_first_block( $parsed_blocks ) {
+		$last_template_parts_before_template = null;
+		foreach ( $parsed_blocks as $key => $value ) {
+			if ( 'core/template-part' === $value['blockName'] || empty( $value['blockName'] ) ) {
+				continue;
+			}
+
+			$last_template_parts_before_template = $key;
+			break;
+		}
+		return $last_template_parts_before_template;
+	}
+
+	/**
+	 * Wrap all the blocks inside the template in a group block.
+	 *
+	 * @param array $inner_blocks Array of parsed block objects.
+	 * @return array Group block with the inner blocks.
+	 */
+	private static function create_wrap_block_group( $inner_blocks ) {
+		$serialized_blocks = serialize_block( $inner_blocks );
+
+		$new_block = parse_blocks(
+			sprintf(
+				'<!-- wp:group {"className":"woocommerce product"} -->
+				<div class="wp-block-group woocommerce product">
+					%1$s
+				</div>
+			<!-- /wp:group -->',
+				$serialized_blocks
+			)
+		);
+
+		$new_block['innerBlocks'] = $inner_blocks;
+
+		return $new_block;
+
+	}
+
 }
