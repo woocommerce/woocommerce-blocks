@@ -8,9 +8,7 @@
 	"supports": {
 		"html": false,
 		"multiple": false,
-		"color": {
-		  "link": true
-		},
+		"color": true,
 		"inserter": false,
 		"lock": false
 	},
