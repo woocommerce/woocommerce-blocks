@@ -2,17 +2,12 @@
  * External dependencies
  */
 import type { CartShippingPackageShippingRate } from '@woocommerce/type-defs/cart';
-import { getSetting } from '@woocommerce/settings';
+import { hasCollectableRate } from '@woocommerce/base-utils';
 
 export interface minMaxPrices {
 	min: CartShippingPackageShippingRate | undefined;
 	max: CartShippingPackageShippingRate | undefined;
 }
-
-const collectibleMethodIds = getSetting< string[] >(
-	'collectibleMethodIds',
-	[]
-);
 
 /**
  * Returns the cheapest and most expensive rate that isn't a local pickup.
@@ -31,9 +26,7 @@ export function getShippingPrices(
 					lowestRate: CartShippingPackageShippingRate | undefined,
 					currentRate: CartShippingPackageShippingRate
 				) => {
-					if (
-						collectibleMethodIds.includes( currentRate.method_id )
-					) {
+					if ( hasCollectableRate( currentRate.method_id ) ) {
 						return lowestRate;
 					}
 					if (
@@ -52,9 +45,7 @@ export function getShippingPrices(
 					highestRate: CartShippingPackageShippingRate | undefined,
 					currentRate: CartShippingPackageShippingRate
 				) => {
-					if (
-						collectibleMethodIds.includes( currentRate.method_id )
-					) {
+					if ( hasCollectableRate( currentRate.method_id ) ) {
 						return highestRate;
 					}
 					if (
@@ -93,9 +84,7 @@ export function getLocalPickupPrices(
 					lowestRate: CartShippingPackageShippingRate | undefined,
 					currentRate: CartShippingPackageShippingRate
 				) => {
-					if (
-						collectibleMethodIds.includes( currentRate.method_id )
-					) {
+					if ( hasCollectableRate( currentRate.method_id ) ) {
 						return lowestRate;
 					}
 					if (
@@ -113,9 +102,7 @@ export function getLocalPickupPrices(
 					highestRate: CartShippingPackageShippingRate | undefined,
 					currentRate: CartShippingPackageShippingRate
 				) => {
-					if (
-						collectibleMethodIds.includes( currentRate.method_id )
-					) {
+					if ( hasCollectableRate( currentRate.method_id ) ) {
 						return highestRate;
 					}
 					if (

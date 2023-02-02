@@ -17,6 +17,7 @@ import { Icon, mapMarker } from '@wordpress/icons';
 import RadioControl from '@woocommerce/base-components/radio-control';
 import type { RadioControlOption } from '@woocommerce/base-components/radio-control/types';
 import { CartShippingPackageShippingRate } from '@woocommerce/types';
+import { isPackageRateCollectible } from '@woocommerce/base-utils';
 
 /**
  * Internal dependencies
@@ -116,14 +117,9 @@ const renderPickupLocation = (
 const Block = (): JSX.Element | null => {
 	const { shippingRates, selectShippingRate } = useShippingData();
 
-	const collectibleMethods = [
-		...getSetting< string[] >( 'collectibleMethodIds', [] ),
-		'pickup_location',
-	];
-
 	// Get pickup locations from the first shipping package.
 	const pickupLocations = ( shippingRates[ 0 ]?.shipping_rates || [] ).filter(
-		( { method_id: methodId } ) => collectibleMethods.includes( methodId )
+		isPackageRateCollectible
 	);
 
 	const [ selectedOption, setSelectedOption ] = useState< string >(
