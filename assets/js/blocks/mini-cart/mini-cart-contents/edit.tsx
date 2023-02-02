@@ -30,11 +30,12 @@ const Edit = ( { clientId, attributes }: Props ): ReactElement => {
 		/**
 		 * This is a workaround for the Site Editor to calculate the
 		 * correct height of the Mini Cart template part on the first load.
+		 * 770px is the height for showing the filled mini cart contents preview without any scrollbar.
 		 *
 		 * @see https://github.com/woocommerce/woocommerce-gutenberg-products-block/pull/5825
 		 */
 		style: {
-			minHeight: attributes.isPreview ? '500px' : '100vh',
+			minHeight: attributes.isPreview ? '770px' : '100vh',
 		},
 	} );
 
