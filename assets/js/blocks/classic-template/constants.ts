@@ -11,7 +11,8 @@ import { TemplateDetails } from './types';
 export const BLOCK_SLUG = 'woocommerce/legacy-template';
 export const TYPES = {
 	singleProduct: 'single-product',
-	archiveProduct: 'archive-product',
+	productCatalog: 'product-catalog',
+	productsBy: 'products-by',
 	productSearchResults: 'product-search-results',
 };
 export const PLACEHOLDERS = {
@@ -29,7 +30,7 @@ export const TEMPLATES: TemplateDetails = {
 		placeholder: PLACEHOLDERS.singleProduct,
 	},
 	'archive-product': {
-		type: TYPES.archiveProduct,
+		type: TYPES.productCatalog,
 		title: __(
 			'WooCommerce Product Grid Block',
 			'woo-gutenberg-products-block'
@@ -37,7 +38,7 @@ export const TEMPLATES: TemplateDetails = {
 		placeholder: PLACEHOLDERS.archiveProduct,
 	},
 	'taxonomy-product_cat': {
-		type: TYPES.archiveProduct,
+		type: TYPES.productsBy,
 		title: __(
 			'WooCommerce Product Taxonomy Block',
 			'woo-gutenberg-products-block'
@@ -45,7 +46,7 @@ export const TEMPLATES: TemplateDetails = {
 		placeholder: PLACEHOLDERS.archiveProduct,
 	},
 	'taxonomy-product_tag': {
-		type: TYPES.archiveProduct,
+		type: TYPES.productsBy,
 		title: __(
 			'WooCommerce Product Tag Block',
 			'woo-gutenberg-products-block'
@@ -53,7 +54,7 @@ export const TEMPLATES: TemplateDetails = {
 		placeholder: PLACEHOLDERS.archiveProduct,
 	},
 	'taxonomy-product_attribute': {
-		type: TYPES.archiveProduct,
+		type: TYPES.productsBy,
 		title: __(
 			'WooCommerce Product Attribute Block',
 			'woo-gutenberg-products-block'

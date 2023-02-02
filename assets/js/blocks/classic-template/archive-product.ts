@@ -35,10 +35,16 @@ const createProductsBlock = ( inheritedAttributes: InheritedAttributes ) =>
 		createBlocksFromInnerBlocksTemplate( productsInnerBlocksTemplate )
 	);
 
-const getBlockifiedTemplate = ( inheritedAttributes: InheritedAttributes ) =>
+const getBlockifiedTemplate = (
+	inheritedAttributes: InheritedAttributes,
+	withTermDescription = false
+) =>
 	[
 		createBlock( 'woocommerce/breadcrumbs', inheritedAttributes ),
 		createArchiveTitleBlock( 'archive-title', inheritedAttributes ),
+		withTermDescription
+			? createBlock( 'core/term-description', inheritedAttributes )
+			: null,
 		createBlock( 'woocommerce/store-notices', inheritedAttributes ),
 		createRowBlock(
 			[
@@ -49,6 +55,10 @@ const getBlockifiedTemplate = ( inheritedAttributes: InheritedAttributes ) =>
 		),
 		createProductsBlock( inheritedAttributes ),
 	].filter( Boolean ) as BlockInstance[];
+
+const getBlockifiedTemplateWithTermDescription = (
+	inheritedAttributes: InheritedAttributes
+) => getBlockifiedTemplate( inheritedAttributes, true );
 
 const isConversionPossible = () => {
 	// Blockification is possible for the WP version 6.1 and above,
@@ -87,8 +97,15 @@ const getDescription = ( templateTitle: string, canConvert: boolean ) => {
 const getButtonLabel = () =>
 	__( 'Upgrade to Products block', 'woo-gutenberg-products-block' );
 
-export {
+export const blockifiedProductCatalogConfig = {
 	getBlockifiedTemplate,
+	isConversionPossible,
+	getDescription,
+	getButtonLabel,
+};
+
+export const blockifiedProductsByConfig = {
+	getBlockifiedTemplate: getBlockifiedTemplateWithTermDescription,
 	isConversionPossible,
 	getDescription,
 	getButtonLabel,

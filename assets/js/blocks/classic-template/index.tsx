@@ -29,7 +29,10 @@ import {
 	hasTemplateSupportForClassicTemplateBlock,
 	getTemplateDetailsBySlug,
 } from './utils';
-import * as blockifiedProductArchive from './archive-product';
+import {
+	blockifiedProductCatalogConfig,
+	blockifiedProductsByConfig,
+} from './archive-product';
 import * as blockifiedSingleProduct from './single-product';
 import * as blockifiedProductSearchResults from './product-search-results';
 import type { BlockifiedTemplateConfig } from './types';
@@ -47,7 +50,8 @@ const blockifiedFallbackConfig = {
 };
 
 const conversionConfig: { [ key: string ]: BlockifiedTemplateConfig } = {
-	[ TYPES.archiveProduct ]: blockifiedProductArchive,
+	[ TYPES.productCatalog ]: blockifiedProductCatalogConfig,
+	[ TYPES.productsBy ]: blockifiedProductsByConfig,
 	[ TYPES.singleProduct ]: blockifiedSingleProduct,
 	[ TYPES.productSearchResults ]: blockifiedProductSearchResults,
 	fallback: blockifiedFallbackConfig,
