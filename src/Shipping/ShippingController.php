@@ -64,22 +64,25 @@ class ShippingController {
 	/**
 	 * Gets a list of payment method ids that support the 'local_pickup' feature.
 	 *
-	 * @return string[] List of payment method ids that support the 'collectible' feature.
+	 * @return string[] List of payment method ids that support the 'local_pickup' feature.
 	 */
 	public function get_local_pickup_method_ids() {
-		$collectible_method_ids = array_keys(
-			array_filter(
-				WC()->shipping()->get_shipping_methods(),
+		$methods_supporting_local_pickup = array_unique(
+			array_map(
 				function( $method ) {
-					return $method->supports( 'local_pickup' );
+					return $method->id;
 				},
-				true
+				array_filter(
+					WC()->shipping()->get_shipping_methods(),
+					function( $method ) {
+						return $method->supports( 'local_pickup' );
+					},
+					true
+				)
 			)
 		);
-		// `pickup_location` will always be collectible. Adding it here means we can avoid hard coding it elsewhere on
-		// the client.
-		$collectible_method_ids[] = 'pickup_location';
-		return $collectible_method_ids;
+
+		return array_values( $methods_supporting_local_pickup );
 	}
 
 	/**
