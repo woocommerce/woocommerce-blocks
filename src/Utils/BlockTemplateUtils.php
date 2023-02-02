@@ -466,6 +466,16 @@ class BlockTemplateUtils {
 	}
 
 	/**
+	 * Checks if we can fall back to the `single-product` template for a given slug.
+	 *
+	 * @param string $template_slug Slug to check for fallbacks.
+	 * @return boolean
+	 */
+	public static function template_is_eligible_for_single_product_fallback( $template_slug ) {
+		return str_contains( $template_slug, 'single-product' );
+	}
+
+	/**
 	 * Checks if we can fall back to an `archive-product` template stored on the db for a given slug.
 	 *
 	 * @param string $template_slug Slug to check for fallbacks.

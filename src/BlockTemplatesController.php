@@ -71,6 +71,22 @@ class BlockTemplatesController {
 		if ( $this->package->is_experimental_build() ) {
 			add_action( 'after_switch_theme', array( $this, 'check_should_use_blockified_product_grid_templates' ), 10, 2 );
 		}
+
+		add_filter( 'single_template_hierarchy', array( $this, 'update_single_product_template_hierarchy' ), 1, 3 );
+	}
+
+	/**
+	 * Add the single-product-type template to the single template hierarchy.
+	 *
+	 * @param array $templates Template hierarchy.
+	 *
+	 * @return array
+	 */
+	public function update_single_product_template_hierarchy( $templates ) {
+		$product_type = wc_get_product()->get_type();
+		array_splice( $templates, 1, 0, 'single-product-' . $product_type );
+
+		return $templates;
 	}
 
 	/**
@@ -192,7 +208,6 @@ class BlockTemplatesController {
 		if ( count( $template_name_parts ) < 2 ) {
 			return $template;
 		}
-
 		list( $template_id, $template_slug ) = $template_name_parts;
 
 		// If the theme has an archive-product.html template, but not a taxonomy-product_cat/tag/attribute.html template let's use the themes archive-product.html template.
@@ -219,6 +234,14 @@ class BlockTemplatesController {
 		// If we are not dealing with a WooCommerce template let's return early and let it continue through the process.
 		if ( BlockTemplateUtils::PLUGIN_SLUG !== $template_id ) {
 			return $template;
+		}
+
+		if ( BlockTemplateUtils::template_is_eligible_for_single_product_fallback( $template_slug ) ) {
+			$directory          = $this->get_templates_directory( $template_type );
+			$template_file_path = $directory . '/single-product.html';
+			$template_object    = BlockTemplateUtils::create_new_block_template_object( $template_file_path, $template_type, $template_slug );
+			$template_built     = BlockTemplateUtils::build_template_result_from_file( $template_object, $template_type );
+			return $template_built;
 		}
 
 		// If we don't have a template let Gutenberg do its thing.
@@ -461,6 +484,43 @@ class BlockTemplatesController {
 		$templates_from_db  = $this->get_block_templates_from_db( $slugs, $template_type );
 		$templates_from_woo = $this->get_block_templates_from_woocommerce( $slugs, $templates_from_db, $template_type );
 		$templates          = array_merge( $templates_from_db, $templates_from_woo );
+
+		// Exploration start.
+		$single_product_template = array_filter(
+			$templates,
+			function( $template ) {
+				return 'single-product' === $template->slug;
+			}
+		);
+		$single_product_template = reset( $single_product_template );
+
+		if ( $single_product_template ) {
+			$product_types            = array_keys( wc_get_product_types() );
+			$single_product_templates = array_map(
+				function( $product_type ) use ( $single_product_template ) {
+					$template         = clone $single_product_template;
+					$template->slug  .= '-' . $product_type;
+					$template->id    .= '-' . $product_type;
+					$template->title .= ' ' . ucfirst( $product_type );
+					return $template;
+				},
+				$product_types
+			);
+
+			if ( $slugs ) {
+				foreach ( $slugs as $slug ) {
+					$single_product_templates = array_filter(
+						$single_product_templates,
+						function( $template ) use ( $slug ) {
+							return $template->slug === $slug;
+						}
+					);
+				}
+			}
+
+			$templates = array_merge( $templates, $single_product_templates );
+		}
+		// Exploration end.
 
 		return BlockTemplateUtils::filter_block_templates_by_feature_flag( $templates );
 	}
