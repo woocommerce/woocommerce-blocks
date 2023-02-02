@@ -84,7 +84,8 @@ Release and roadmap notes available on the [WooCommerce Developers Blog](https:/
 
 #### Bug Fixes
 
-Fix a bug in WordPress 5.9 in which changing quantity doesn't work inside Cart and Mini Cart blocks.
+- Fix a bug in WordPress 5.9 in which changing quantity doesn't work inside Cart and Mini Cart blocks.
+- Mini Cart block: Fix the drawer content height to allow the checkout button to be visible.
 
 = 9.4.2 - 2023-01-26 =
 
