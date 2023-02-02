@@ -9,7 +9,7 @@ export const supports = {
 	...( isFeaturePluginBuild() && {
 		color: {
 			text: true,
-			background: true,
+			background: false,
 			link: false,
 			__experimentalSkipSerialization: true,
 		},

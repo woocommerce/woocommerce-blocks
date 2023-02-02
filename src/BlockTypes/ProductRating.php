@@ -32,7 +32,7 @@ class ProductRating extends AbstractBlock {
 			'color'                  =>
 			array(
 				'text'                            => true,
-				'background'                      => true,
+				'background'                      => false,
 				'link'                            => false,
 				'__experimentalSkipSerialization' => true,
 			),
