@@ -67,22 +67,24 @@ class ShippingController {
 	 * @return string[] List of payment method ids that support the 'local_pickup' feature.
 	 */
 	public function get_local_pickup_method_ids() {
-		$methods_supporting_local_pickup = array_unique(
-			array_map(
-				function( $method ) {
-					return $method->id;
-				},
-				array_filter(
-					WC()->shipping()->get_shipping_methods(),
-					function( $method ) {
-						return $method->supports( 'local_pickup' );
-					},
-					true
-				)
-			)
+		$all_methods_supporting_local_pickup = array_reduce(
+			WC()->shipping()->get_shipping_methods(),
+			function( $methods, $method ) {
+				if ( $method->supports( 'local_pickup' ) ) {
+					$methods[] = $method->id;
+				}
+				return $methods;
+			},
+			array()
 		);
 
-		return array_values( $methods_supporting_local_pickup );
+		// This array_unique is necessary because WC()->shipping()->get_shipping_methods() can return duplicates.
+		return array_unique(
+			// We use array_values because this will be used in JS, so we don't need the (numerical) keys.
+			array_values(
+				$all_methods_supporting_local_pickup
+			)
+		);
 	}
 
 	/**
