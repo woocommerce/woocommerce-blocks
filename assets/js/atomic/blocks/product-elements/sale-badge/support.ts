@@ -35,7 +35,6 @@ export const supports = {
 			spacing: {
 				margin: true,
 				padding: true,
-				__experimentalSkipSerialization: true,
 			},
 		} ),
 		__experimentalSelector: '.wc-block-components-product-sale-badge',
