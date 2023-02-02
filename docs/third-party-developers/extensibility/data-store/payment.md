@@ -132,21 +132,6 @@ const store = select( 'wc/store/payment' );
 const hasPaymentError = store.hasPaymentError();
 ```
 
-### isPaymentFinished
-
-Checks wether the payment has finished processing. This includes failed payments, payments with errors or successful payments.
-
-#### _Returns_
-
-`boolean`: True if the payment status is `success`, `failed` or `error`, false otherwise.
-
-#### _Example_
-
-```js
-const store = select( 'wc/store/payment' );
-const isPaymentFinished = store.isPaymentFinished();
-```
-
 ### getCurrentStatus (deprecated)
 
 Returns an object with booleans representing the payment status.

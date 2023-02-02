@@ -17,13 +17,6 @@ const reducer: Reducer< PaymentState > = (
 ) => {
 	let newState = state;
 	switch ( action.type ) {
-		case ACTION_TYPES.SET_PAYMENT_PRISTINE:
-			newState = {
-				...state,
-				status: STATUS.PRISTINE,
-			};
-			break;
-
 		case ACTION_TYPES.SET_PAYMENT_IDLE:
 			newState = {
 				...state,
@@ -52,24 +45,10 @@ const reducer: Reducer< PaymentState > = (
 			};
 			break;
 
-		case ACTION_TYPES.SET_PAYMENT_FAILED:
-			newState = {
-				...state,
-				status: STATUS.FAILED,
-			};
-			break;
-
 		case ACTION_TYPES.SET_PAYMENT_ERROR:
 			newState = {
 				...state,
 				status: STATUS.ERROR,
-			};
-			break;
-
-		case ACTION_TYPES.SET_PAYMENT_SUCCESS:
-			newState = {
-				...state,
-				status: STATUS.SUCCESS,
 			};
 			break;
 

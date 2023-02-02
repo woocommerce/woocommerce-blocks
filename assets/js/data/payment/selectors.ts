@@ -47,20 +47,28 @@ export const isPaymentProcessing = ( state: PaymentState ) =>
 export const isPaymentReady = ( state: PaymentState ) =>
 	state.status === PAYMENT_STATUS.READY;
 
-export const isPaymentSuccess = ( state: PaymentState ) =>
-	state.status === PAYMENT_STATUS.SUCCESS;
+export const isPaymentSuccess = ( state: PaymentState ) => {
+	deprecated( 'isPaymentSuccess', {
+		since: '9.6.0',
+		alternative: 'isPaymentReady',
+		plugin: 'WooCommerce Blocks',
+		link: 'https://github.com/woocommerce/woocommerce-blocks/pull/8110',
+	} );
+
+	return state.status === PAYMENT_STATUS.READY;
+};
 
 export const hasPaymentError = ( state: PaymentState ) =>
 	state.status === PAYMENT_STATUS.ERROR;
 
-export const isPaymentFailed = ( state: PaymentState ) =>
-	state.status === PAYMENT_STATUS.FAILED;
+export const isPaymentFailed = ( state: PaymentState ) => {
+	deprecated( 'isPaymentFailed', {
+		since: '9.6.0',
+		plugin: 'WooCommerce Blocks',
+		link: 'https://github.com/woocommerce/woocommerce-blocks/pull/8110',
+	} );
 
-export const isPaymentFinished = ( state: PaymentState ) => {
-	return (
-		state.status === PAYMENT_STATUS.SUCCESS ||
-		state.status === PAYMENT_STATUS.FAILED
-	);
+	return state.status === PAYMENT_STATUS.ERROR;
 };
 
 export const isExpressPaymentMethodActive = ( state: PaymentState ) => {
@@ -135,13 +143,12 @@ export const expressPaymentMethodsInitialized = ( state: PaymentState ) => {
 
 /**
  * @deprecated - Use these selectors instead: isPaymentIdle, isPaymentProcessing,
- * isPaymentFinished, hasPaymentError, isPaymentSuccess, isPaymentFailed.
+ * hasPaymentError
  */
 export const getCurrentStatus = ( state: PaymentState ) => {
 	deprecated( 'getCurrentStatus', {
 		since: '8.9.0',
-		alternative:
-			'isPaymentIdle, isPaymentProcessing, hasPaymentError, isPaymentSuccess, isPaymentFailed',
+		alternative: 'isPaymentIdle, isPaymentProcessing, hasPaymentError',
 		plugin: 'WooCommerce Blocks',
 		link: 'https://github.com/woocommerce/woocommerce-blocks/pull/7666',
 	} );
@@ -149,7 +156,7 @@ export const getCurrentStatus = ( state: PaymentState ) => {
 	return {
 		get isPristine() {
 			deprecated( 'isPristine', {
-				since: '9.3.0',
+				since: '9.6.0',
 				alternative: 'isIdle',
 				plugin: 'WooCommerce Blocks',
 			} );
@@ -158,7 +165,7 @@ export const getCurrentStatus = ( state: PaymentState ) => {
 		isIdle: isPaymentIdle( state ),
 		get isStarted() {
 			deprecated( 'isStarted', {
-				since: '9.3.0',
+				since: '9.6.0',
 				plugin: 'WooCommerce Blocks',
 				link: 'https://github.com/woocommerce/woocommerce-blocks/pull/8110',
 			} );
@@ -167,11 +174,11 @@ export const getCurrentStatus = ( state: PaymentState ) => {
 		isProcessing: isPaymentProcessing( state ),
 		get isFinished() {
 			deprecated( 'isFinished', {
-				since: '9.3.0',
+				since: '9.6.0',
 				plugin: 'WooCommerce Blocks',
 				link: 'https://github.com/woocommerce/woocommerce-blocks/pull/8110',
 			} );
-			return isPaymentFinished( state );
+			return isPaymentFailed( state ) || isPaymentSuccess( state );
 		},
 		hasError: hasPaymentError( state ),
 		hasFailed: isPaymentFailed( state ),

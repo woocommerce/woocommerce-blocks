@@ -62,9 +62,10 @@ export const usePaymentMethodInterface = (): PaymentMethodInterface => {
 				paymentStatus: {
 					get isPristine() {
 						deprecated( 'isPristine', {
-							since: '9.3.0',
+							since: '9.6.0',
 							alternative: 'isIdle',
 							plugin: 'WooCommerce Blocks',
+							link: 'https://github.com/woocommerce/woocommerce-blocks/pull/8110',
 						} );
 						return store.isPaymentIdle();
 					}, // isPristine is the same as isIdle
@@ -73,14 +74,23 @@ export const usePaymentMethodInterface = (): PaymentMethodInterface => {
 					isProcessing: store.isPaymentProcessing(),
 					get isFinished() {
 						deprecated( 'isFinished', {
-							since: '9.3.0',
-							alternative: 'isIdle',
+							since: '9.6.0',
 							plugin: 'WooCommerce Blocks',
+							link: 'https://github.com/woocommerce/woocommerce-blocks/pull/8110',
 						} );
-						return store.isPaymentFinished();
+						return (
+							store.isPaymentFailed() || store.isPaymentSuccess()
+						);
 					},
 					hasError: store.hasPaymentError(),
-					hasFailed: store.hasPaymentError(),
+					get hasFailed() {
+						deprecated( 'hasFailed', {
+							since: '9.6.0',
+							plugin: 'WooCommerce Blocks',
+							link: 'https://github.com/woocommerce/woocommerce-blocks/pull/8110',
+						} );
+						return store.isPaymentFailed();
+					},
 					isSuccessful: store.isPaymentReady(),
 					isDoingExpressPayment: store.isExpressPaymentMethodActive(),
 				},
