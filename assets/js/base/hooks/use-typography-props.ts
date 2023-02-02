@@ -2,7 +2,6 @@
 /**
  * External dependencies
  */
-import { isFeaturePluginBuild } from '@woocommerce/block-settings';
 import { isObject, isString } from '@woocommerce/types';
 import { parseStyle } from '@woocommerce/base-utils';
 
@@ -17,13 +16,6 @@ type WithStyle = {
 export const useTypographyProps = (
 	attributes: unknown
 ): WithStyle & WithClass => {
-	if ( ! isFeaturePluginBuild() ) {
-		return {
-			className: '',
-			style: {},
-		};
-	}
-
 	const attributesObject = isObject( attributes ) ? attributes : {};
 	const style = parseStyle( attributesObject.style );
 	const typography = isObject( style.typography )
