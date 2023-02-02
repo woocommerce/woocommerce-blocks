@@ -47,7 +47,6 @@ export interface ResponseType extends Record< string, unknown > {
  * optionally pass metadata.
  */
 export interface ObserverResponse {
-	// The response
 	type: responseTypes;
 	meta?: Record< string, unknown > | undefined;
 	validationErrors?: Record< string, FieldValidationStatus > | undefined;
