@@ -92,7 +92,7 @@ const CheckoutProcessor = () => {
 		paymentMethodData,
 		isExpressPaymentMethodActive,
 		hasPaymentError,
-		isPaymentStarted,
+		isPaymentReady,
 		shouldSavePayment,
 	} = useSelect( ( select ) => {
 		const store = select( PAYMENT_STORE_KEY );
@@ -102,7 +102,7 @@ const CheckoutProcessor = () => {
 			paymentMethodData: store.getPaymentMethodData(),
 			isExpressPaymentMethodActive: store.isExpressPaymentMethodActive(),
 			hasPaymentError: store.hasPaymentError(),
-			isPaymentStarted: store.isPaymentStarted(),
+			isPaymentReady: store.isPaymentReady(),
 			shouldSavePayment: store.getShouldSavePaymentMethod(),
 		};
 	}, [] );
@@ -133,7 +133,7 @@ const CheckoutProcessor = () => {
 	const paidAndWithoutErrors =
 		! checkoutHasError &&
 		! checkoutWillHaveError &&
-		( isPaymentStarted || ! cartNeedsPayment ) &&
+		( isPaymentReady || ! cartNeedsPayment ) &&
 		checkoutIsProcessing;
 
 	// Determine if checkout has an error.
