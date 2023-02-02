@@ -78,10 +78,10 @@ class ShippingController {
 			array()
 		);
 
-		// This array_unique is necessary because WC()->shipping()->get_shipping_methods() can return duplicates.
-		return array_unique(
-			// We use array_values because this will be used in JS, so we don't need the (numerical) keys.
-			array_values(
+		// We use array_values because this will be used in JS, so we don't need the (numerical) keys.
+		return array_values(
+			// This array_unique is necessary because WC()->shipping()->get_shipping_methods() can return duplicates.
+			array_unique(
 				$all_methods_supporting_local_pickup
 			)
 		);
