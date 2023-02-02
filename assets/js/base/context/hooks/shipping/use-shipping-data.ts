@@ -9,7 +9,7 @@ import { useSelect, useDispatch } from '@wordpress/data';
 import { isObject } from '@woocommerce/types';
 import { useEffect, useRef, useCallback } from '@wordpress/element';
 import {
-	hasCollectableRate,
+	hasCollectibleRate,
 	deriveSelectedShippingRates,
 } from '@woocommerce/base-utils';
 import isShallowEqual from '@wordpress/is-shallow-equal';
@@ -47,7 +47,7 @@ export const useShippingData = (): ShippingData => {
 			isCollectable: rates.every(
 				( { shipping_rates: packageShippingRates } ) =>
 					packageShippingRates.find( ( { method_id: methodId } ) =>
-						hasCollectableRate( methodId )
+						hasCollectibleRate( methodId )
 					)
 			),
 			isSelectingRate: isEditor
@@ -80,7 +80,7 @@ export const useShippingData = (): ShippingData => {
 		) => Promise< unknown >;
 	};
 
-	const hasSelectedLocalPickup = hasCollectableRate(
+	const hasSelectedLocalPickup = hasCollectibleRate(
 		Object.values( selectedRates.current ).map(
 			( rate ) => rate.split( ':' )[ 0 ]
 		)
@@ -101,7 +101,7 @@ export const useShippingData = (): ShippingData => {
 			 * Forces pickup location to be selected for all packages since we don't allow a mix of shipping and pickup.
 			 */
 			if (
-				hasCollectableRate( newShippingRateId.split( ':' )[ 0 ] ) ||
+				hasCollectibleRate( newShippingRateId.split( ':' )[ 0 ] ) ||
 				hasSelectedLocalPickup
 			) {
 				selectPromise = dispatchSelectShippingRate( newShippingRateId );

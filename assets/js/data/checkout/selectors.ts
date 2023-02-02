@@ -2,7 +2,7 @@
  * External dependencies
  */
 import { select } from '@wordpress/data';
-import { hasCollectableRate } from '@woocommerce/base-utils';
+import { hasCollectibleRate } from '@woocommerce/base-utils';
 import { isString, objectHasProp } from '@woocommerce/types';
 
 /**
@@ -89,7 +89,7 @@ export const prefersCollection = ( state: CheckoutState ) => {
 			objectHasProp( selectedRate, 'method_id' ) &&
 			isString( selectedRate.method_id )
 		) {
-			return hasCollectableRate( selectedRate?.method_id );
+			return hasCollectibleRate( selectedRate?.method_id );
 		}
 	}
 	return state.prefersCollection;

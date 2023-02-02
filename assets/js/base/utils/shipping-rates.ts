@@ -33,7 +33,7 @@ export const isPackageRateCollectible = (
 /**
  * Check if the specified rates are collectible. Accepts either an array of rate names, or a single string.
  */
-export const hasCollectableRate = (
+export const hasCollectibleRate = (
 	chosenRates: string[] | string
 ): boolean => {
 	if ( Array.isArray( chosenRates ) ) {

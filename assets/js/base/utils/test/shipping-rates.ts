@@ -2,7 +2,7 @@
  * External dependencies
  */
 import {
-	hasCollectableRate,
+	hasCollectibleRate,
 	isPackageRateCollectible,
 } from '@woocommerce/base-utils';
 import { CartShippingRate } from '@woocommerce/type-defs/cart';
@@ -23,9 +23,9 @@ jest.mock( '@woocommerce/settings', () => {
 describe( 'hasCollectableRate', () => {
 	it( 'correctly identifies if an array contains a collectible rate', () => {
 		const ratesToTest = [ 'flat_rate', 'local_pickup' ];
-		expect( hasCollectableRate( ratesToTest ) ).toBe( true );
+		expect( hasCollectibleRate( ratesToTest ) ).toBe( true );
 		const ratesToTest2 = [ 'flat_rate', 'free_shipping' ];
-		expect( hasCollectableRate( ratesToTest2 ) ).toBe( false );
+		expect( hasCollectibleRate( ratesToTest2 ) ).toBe( false );
 	} );
 } );
 
