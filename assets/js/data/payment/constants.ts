@@ -5,6 +5,7 @@ export enum STATUS {
 	IDLE = 'idle',
 	STARTED = 'started',
 	PROCESSING = 'processing',
+	READY = 'ready',
 	ERROR = 'has_error',
 	FAILED = 'failed',
 	SUCCESS = 'success',

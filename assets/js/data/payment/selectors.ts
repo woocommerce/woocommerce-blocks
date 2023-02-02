@@ -44,6 +44,9 @@ export const isPaymentStarted = ( state: PaymentState ) => {
 export const isPaymentProcessing = ( state: PaymentState ) =>
 	state.status === PAYMENT_STATUS.PROCESSING;
 
+export const isPaymentReady = ( state: PaymentState ) =>
+	state.status === PAYMENT_STATUS.READY;
+
 export const isPaymentSuccess = ( state: PaymentState ) =>
 	state.status === PAYMENT_STATUS.SUCCESS;
 

@@ -204,7 +204,7 @@ export const __internalEmitPaymentProcessingEvent: emitProcessingEventType = (
 					setValidationErrors( errorResponse.validationErrors );
 				}
 			} else {
-				// otherwise there are no payment methods doing anything so just assume payment method is ready
+				// Otherwise there are no payment methods doing anything so just assume payment method is ready.
 				dispatch.__internalSetPaymentReady();
 			}
 		} );

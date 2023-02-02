@@ -86,7 +86,7 @@ export const PaymentEventsProvider = ( {
 		__internalEmitPaymentProcessingEvent,
 	} = useDispatch( PAYMENT_STORE_KEY );
 
-	// flip payment to processing if checkout processing is complete, there are no errors, and payment status is started.
+	// flip payment to processing if checkout processing is complete, there are no errors
 	useEffect( () => {
 		if (
 			checkoutIsProcessing &&
