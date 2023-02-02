@@ -32,7 +32,7 @@ import {
 import * as blockifiedProductArchive from './archive-product';
 import * as blockifiedSingleProduct from './single-product';
 import * as blockifiedProductSearchResults from './product-search-results';
-import type { BlockifiedTemplate } from './types';
+import type { BlockifiedTemplateConfig } from './types';
 
 type Attributes = {
 	template: string;
@@ -46,7 +46,7 @@ const blockifiedFallbackConfig = {
 	getButtonLabel: () => '',
 };
 
-const conversionConfig: { [ key: string ]: BlockifiedTemplate } = {
+const conversionConfig: { [ key: string ]: BlockifiedTemplateConfig } = {
 	[ TYPES.archiveProduct ]: blockifiedProductArchive,
 	[ TYPES.singleProduct ]: blockifiedSingleProduct,
 	[ TYPES.productSearchResults ]: blockifiedProductSearchResults,

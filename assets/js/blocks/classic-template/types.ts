@@ -9,7 +9,7 @@ export type InheritedAttributes = {
 	align?: string;
 };
 
-export type BlockifiedTemplate = {
+export type BlockifiedTemplateConfig = {
 	getBlockifiedTemplate: (
 		inheritedAttributes: InheritedAttributes
 	) => BlockInstance[];
