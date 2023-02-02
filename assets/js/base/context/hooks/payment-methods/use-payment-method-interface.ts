@@ -80,8 +80,8 @@ export const usePaymentMethodInterface = (): PaymentMethodInterface => {
 						return store.isPaymentFinished();
 					},
 					hasError: store.hasPaymentError(),
-					hasFailed: store.isPaymentFailed(),
-					isSuccessful: store.isPaymentSuccess(),
+					hasFailed: store.hasPaymentError(),
+					isSuccessful: store.isPaymentReady(),
 					isDoingExpressPayment: store.isExpressPaymentMethodActive(),
 				},
 				activePaymentMethod: store.getActivePaymentMethod(),
