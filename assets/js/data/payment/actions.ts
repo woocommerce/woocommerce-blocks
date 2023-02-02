@@ -29,10 +29,6 @@ export const __internalSetPaymentProcessing = () => ( {
 	type: ACTION_TYPES.SET_PAYMENT_PROCESSING,
 } );
 
-export const __internalSetPaymentFailed = () => ( {
-	type: ACTION_TYPES.SET_PAYMENT_FAILED,
-} );
-
 export const __internalSetPaymentError = () => ( {
 	type: ACTION_TYPES.SET_PAYMENT_ERROR,
 } );
