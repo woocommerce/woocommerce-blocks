@@ -7,42 +7,53 @@ namespace Automattic\WooCommerce\Blocks\Utils;
 class StyleAttributesUtils {
 
 	/**
-	 * Get class and style for text align from attributes.
+	 * If color value is in preset format, convert it to a CSS var. Else return same value
+	 * For example:
+	 * "var:preset|color|pale-pink" -> "var(--wp--preset--color--pale-pink)"
+	 * "#98b66e" -> "#98b66e"
 	 *
-	 * @param array $attributes Block attributes.
+	 * @param string $color_value value to be processed.
 	 *
-	 * @return (array | null)
+	 * @return (string)
 	 */
-	public static function get_text_align_class_and_style( $attributes ) {
-
-		$text_align_attribute = $attributes['textAlign'] ?? null;
-
-		if ( ! $text_align_attribute ) {
-			return null;
+	public static function get_color_value( $color_value ) {
+		if ( is_string( $color_value ) && str_contains( $color_value, 'var:preset|color|' ) ) {
+			$color_value = str_replace( 'var:preset|color|', '', $color_value );
+			return sprintf( 'var(--wp--preset--color--%s)', $color_value );
 		}
 
-		if ( 'left' === $text_align_attribute ) {
-			return array(
-				'class' => 'has-text-align-left',
-				'style' => null,
-			);
+		return $color_value;
+	}
+
+	/**
+	 * Get CSS value for color preset.
+	 *
+	 * @param string $preset_name Preset name.
+	 *
+	 * @return string CSS value for color preset.
+	 */
+	public static function get_preset_value( $preset_name ) {
+		return "var(--wp--preset--color--$preset_name)";
+	}
+
+	/**
+	 * If spacing value is in preset format, convert it to a CSS var. Else return same value
+	 * For example:
+	 * "var:preset|spacing|50" -> "var(--wp--preset--spacing--50)"
+	 * "50px" -> "50px"
+	 *
+	 * @param string $spacing_value value to be processed.
+	 *
+	 * @return (string)
+	 */
+	public static function get_spacing_value( $spacing_value ) {
+		// Used following code as reference: https://github.com/WordPress/gutenberg/blob/cff6d70d6ff5a26e212958623dc3130569f95685/lib/block-supports/layout.php/#L219-L225.
+		if ( is_string( $spacing_value ) && str_contains( $spacing_value, 'var:preset|spacing|' ) ) {
+			$spacing_value = str_replace( 'var:preset|spacing|', '', $spacing_value );
+			return sprintf( 'var(--wp--preset--spacing--%s)', $spacing_value );
 		}
 
-		if ( 'center' === $text_align_attribute ) {
-			return array(
-				'class' => 'has-text-align-center',
-				'style' => null,
-			);
-		}
-
-		if ( 'right' === $text_align_attribute ) {
-			return array(
-				'class' => 'has-text-align-right',
-				'style' => null,
-			);
-		}
-
-		return null;
+		return $spacing_value;
 	}
 
 	/**
@@ -255,6 +266,20 @@ class StyleAttributesUtils {
 			'class' => null,
 			'style' => $border_width_css,
 		);
+	}
+
+	/**
+	 * Get space-separated classes from block attributes.
+	 *
+	 * @param array $attributes Block attributes.
+	 * @param array $properties Properties to get classes from.
+	 *
+	 * @return string Space-separated classes.
+	 */
+	public static function get_classes_by_attributes( $attributes, $properties = array() ) {
+		$classes_and_styles = self::get_classes_and_styles_by_attributes( $attributes, $properties );
+
+		return $classes_and_styles['classes'];
 	}
 
 	/**
@@ -478,6 +503,59 @@ class StyleAttributesUtils {
 	}
 
 	/**
+	 * Get space-separated style rules from block attributes.
+	 *
+	 * @param array $attributes Block attributes.
+	 * @param array $properties Properties to get styles from.
+	 *
+	 * @return string Space-separated style rules.
+	 */
+	public static function get_styles_by_attributes( $attributes, $properties = array() ) {
+		$classes_and_styles = self::get_classes_and_styles_by_attributes( $attributes, $properties );
+
+		return $classes_and_styles['styles'];
+	}
+
+	/**
+	 * Get class and style for text align from attributes.
+	 *
+	 * @param array $attributes Block attributes.
+	 *
+	 * @return (array | null)
+	 */
+	public static function get_text_align_class_and_style( $attributes ) {
+
+		$text_align_attribute = $attributes['textAlign'] ?? null;
+
+		if ( ! $text_align_attribute ) {
+			return null;
+		}
+
+		if ( 'left' === $text_align_attribute ) {
+			return array(
+				'class' => 'has-text-align-left',
+				'style' => null,
+			);
+		}
+
+		if ( 'center' === $text_align_attribute ) {
+			return array(
+				'class' => 'has-text-align-center',
+				'style' => null,
+			);
+		}
+
+		if ( 'right' === $text_align_attribute ) {
+			return array(
+				'class' => 'has-text-align-right',
+				'style' => null,
+			);
+		}
+
+		return null;
+	}
+
+	/**
 	 * Get class and style for text-color from attributes.
 	 *
 	 * @param array $attributes Block attributes.
@@ -609,83 +687,5 @@ class StyleAttributesUtils {
 			'classes' => implode( ' ', $classes ),
 			'styles'  => implode( ' ', $styles ),
 		);
-	}
-
-	/**
-	 * Get space-separated classes from block attributes.
-	 *
-	 * @param array $attributes Block attributes.
-	 * @param array $properties Properties to get classes from.
-	 *
-	 * @return string Space-separated classes.
-	 */
-	public static function get_classes_by_attributes( $attributes, $properties = array() ) {
-		$classes_and_styles = self::get_classes_and_styles_by_attributes( $attributes, $properties );
-
-		return $classes_and_styles['classes'];
-	}
-
-	/**
-	 * Get space-separated style rules from block attributes.
-	 *
-	 * @param array $attributes Block attributes.
-	 * @param array $properties Properties to get styles from.
-	 *
-	 * @return string Space-separated style rules.
-	 */
-	public static function get_styles_by_attributes( $attributes, $properties = array() ) {
-		$classes_and_styles = self::get_classes_and_styles_by_attributes( $attributes, $properties );
-
-		return $classes_and_styles['styles'];
-	}
-
-	/**
-	 * Get CSS value for color preset.
-	 *
-	 * @param string $preset_name Preset name.
-	 *
-	 * @return string CSS value for color preset.
-	 */
-	public static function get_preset_value( $preset_name ) {
-		return "var(--wp--preset--color--$preset_name)";
-	}
-
-	/**
-	 * If spacing value is in preset format, convert it to a CSS var. Else return same value
-	 * For example:
-	 * "var:preset|spacing|50" -> "var(--wp--preset--spacing--50)"
-	 * "50px" -> "50px"
-	 *
-	 * @param string $spacing_value value to be processed.
-	 *
-	 * @return (string)
-	 */
-	public static function get_spacing_value( $spacing_value ) {
-		// Used following code as reference: https://github.com/WordPress/gutenberg/blob/cff6d70d6ff5a26e212958623dc3130569f95685/lib/block-supports/layout.php/#L219-L225.
-		if ( is_string( $spacing_value ) && str_contains( $spacing_value, 'var:preset|spacing|' ) ) {
-			$spacing_value = str_replace( 'var:preset|spacing|', '', $spacing_value );
-			return sprintf( 'var(--wp--preset--spacing--%s)', $spacing_value );
-		}
-
-		return $spacing_value;
-	}
-
-	/**
-	 * If color value is in preset format, convert it to a CSS var. Else return same value
-	 * For example:
-	 * "var:preset|color|pale-pink" -> "var(--wp--preset--color--pale-pink)"
-	 * "#98b66e" -> "#98b66e"
-	 *
-	 * @param string $color_value value to be processed.
-	 *
-	 * @return (string)
-	 */
-	public static function get_color_value( $color_value ) {
-		if ( is_string( $color_value ) && str_contains( $color_value, 'var:preset|color|' ) ) {
-			$color_value = str_replace( 'var:preset|color|', '', $color_value );
-			return sprintf( 'var(--wp--preset--color--%s)', $color_value );
-		}
-
-		return $color_value;
 	}
 }
