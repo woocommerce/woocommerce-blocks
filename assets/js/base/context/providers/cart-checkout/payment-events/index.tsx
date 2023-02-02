@@ -61,11 +61,11 @@ export const PaymentEventsProvider = ( {
 			isCalculating: store.isCalculating(),
 		};
 	} );
-	const { isPaymentSuccess, isPaymentProcessing } = useSelect( ( select ) => {
+	const { isPaymentReady } = useSelect( ( select ) => {
 		const store = select( PAYMENT_STORE_KEY );
 
 		return {
-			isPaymentSuccess: store.isPaymentSuccess(),
+			isPaymentReady: store.isPaymentReady(),
 			isPaymentProcessing: store.isPaymentProcessing(),
 		};
 	} );
@@ -94,45 +94,38 @@ export const PaymentEventsProvider = ( {
 			! checkoutIsCalculating
 		) {
 			__internalSetPaymentProcessing();
-		}
-	}, [
-		checkoutIsProcessing,
-		checkoutHasError,
-		checkoutIsCalculating,
-		__internalSetPaymentProcessing,
-	] );
 
-	// When checkout is returned to idle, set payment status to pristine but only if payment status is already not finished.
-	useEffect( () => {
-		if ( checkoutIsIdle && ! isPaymentSuccess ) {
-			__internalSetPaymentIdle();
-		}
-	}, [ checkoutIsIdle, isPaymentSuccess, __internalSetPaymentIdle ] );
-
-	// if checkout has an error sync payment status back to pristine.
-	useEffect( () => {
-		if ( checkoutHasError && isPaymentSuccess ) {
-			__internalSetPaymentIdle();
-		}
-	}, [ checkoutHasError, isPaymentSuccess, __internalSetPaymentIdle ] );
-
-	// Emit the payment processing event
-	useEffect( () => {
-		// Note: the nature of this event emitter is that it will bail on any
-		// observer that returns a response that !== true. However, this still
-		// allows for other observers that return true for continuing through
-		// to the next observer (or bailing if there's a problem).
-		if ( isPaymentProcessing ) {
+			// Note: the nature of this event emitter is that it will bail on any
+			// observer that returns a response that !== true. However, this still
+			// allows for other observers that return true for continuing through
+			// to the next observer (or bailing if there's a problem).
 			__internalEmitPaymentProcessingEvent(
 				currentObservers.current,
 				setValidationErrors
 			);
 		}
 	}, [
-		isPaymentProcessing,
-		setValidationErrors,
+		checkoutIsProcessing,
+		checkoutHasError,
+		checkoutIsCalculating,
+		__internalSetPaymentProcessing,
 		__internalEmitPaymentProcessingEvent,
+		setValidationErrors,
 	] );
+
+	// When checkout is returned to idle, and the payment setup has not completed, set payment status to idle
+	useEffect( () => {
+		if ( checkoutIsIdle && ! isPaymentReady ) {
+			__internalSetPaymentIdle();
+		}
+	}, [ checkoutIsIdle, isPaymentReady, __internalSetPaymentIdle ] );
+
+	// if checkout has an error sync payment status back to idle.
+	useEffect( () => {
+		if ( checkoutHasError && isPaymentReady ) {
+			__internalSetPaymentIdle();
+		}
+	}, [ checkoutHasError, isPaymentReady, __internalSetPaymentIdle ] );
 
 	const paymentContextData = {
 		onPaymentProcessing,

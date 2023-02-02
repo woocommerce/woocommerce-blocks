@@ -87,9 +87,11 @@ const store = select( 'wc/store/payment' );
 const isPaymentProcessing = store.isPaymentProcessing();
 ```
 
-### isPaymentSuccess
+### isPaymentSuccess (deprecated)
 
 Queries if the status is `success`.
+
+_**This selector is deprecated and will be removed in a future release. Please use isPaymentReady instead**_
 
 #### _Returns_
 
@@ -102,9 +104,26 @@ const store = select( 'wc/store/payment' );
 const isPaymentSuccess = store.isPaymentSuccess();
 ```
 
-### isPaymentFailed
+### isPaymentReady
+
+Queries if the status is `ready`.
+
+#### _Returns_
+
+`boolean`: True if the payment status is `ready`, false otherwise.
+
+#### _Example_
+
+```js
+const store = select( 'wc/store/payment' );
+const isPaymentReady = store.isPaymentReady();
+```
+
+### isPaymentFailed (deprecated)
 
 Queries if the status is `failed`.
+
+_**This selector is deprecated and will be removed in a future release. Please use hasPaymentError instead**_
 
 #### _Returns_
 

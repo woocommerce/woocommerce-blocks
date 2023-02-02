@@ -79,7 +79,7 @@ export const usePaymentMethodInterface = (): PaymentMethodInterface => {
 							link: 'https://github.com/woocommerce/woocommerce-blocks/pull/8110',
 						} );
 						return (
-							store.isPaymentFailed() || store.isPaymentSuccess()
+							store.hasPaymentError() || store.isPaymentReady()
 						);
 					},
 					hasError: store.hasPaymentError(),
@@ -89,7 +89,7 @@ export const usePaymentMethodInterface = (): PaymentMethodInterface => {
 							plugin: 'WooCommerce Blocks',
 							link: 'https://github.com/woocommerce/woocommerce-blocks/pull/8110',
 						} );
-						return store.isPaymentFailed();
+						return store.hasPaymentError();
 					},
 					isSuccessful: store.isPaymentReady(),
 					isDoingExpressPayment: store.isExpressPaymentMethodActive(),

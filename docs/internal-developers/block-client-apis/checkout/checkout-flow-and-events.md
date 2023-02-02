@@ -113,10 +113,8 @@ const MyComponent = ( props ) => {
 	const isPaymentStarted = select( PAYMENT_STORE_KEY ).isPaymentStarted();
 	const isPaymentProcessing =
 		select( PAYMENT_STORE_KEY ).isPaymentProcessing();
-	const isPaymentSuccess = select( PAYMENT_STORE_KEY ).isPaymentSuccess();
-	const isPaymentFailed = select( PAYMENT_STORE_KEY ).isPaymentFailed();
+	const isPaymentReady = select( PAYMENT_STORE_KEY ).isPaymentReady();
 	const hasPaymentError = select( PAYMENT_STORE_KEY ).hasPaymentError();
-	const hasPaymentFinished = select( PAYMENT_STORE_KEY ).hasPaymentFinished();
 
 	// do something with the boolean values
 };

@@ -178,11 +178,25 @@ export const getCurrentStatus = ( state: PaymentState ) => {
 				plugin: 'WooCommerce Blocks',
 				link: 'https://github.com/woocommerce/woocommerce-blocks/pull/8110',
 			} );
-			return isPaymentFailed( state ) || isPaymentSuccess( state );
+			return hasPaymentError( state ) || isPaymentReady( state );
 		},
 		hasError: hasPaymentError( state ),
-		hasFailed: isPaymentFailed( state ),
-		isSuccessful: isPaymentSuccess( state ),
+		get hasFailed() {
+			deprecated( 'hasFailed', {
+				since: '9.6.0',
+				plugin: 'WooCommerce Blocks',
+				link: 'https://github.com/woocommerce/woocommerce-blocks/pull/8110',
+			} );
+			return hasPaymentError( state );
+		},
+		get isSuccessful() {
+			deprecated( 'isSuccessful', {
+				since: '9.6.0',
+				plugin: 'WooCommerce Blocks',
+				link: 'https://github.com/woocommerce/woocommerce-blocks/pull/8110',
+			} );
+			return isPaymentReady( state );
+		},
 		isDoingExpressPayment: isExpressPaymentMethodActive( state ),
 	};
 };
