@@ -65,7 +65,7 @@ export const PaymentEventsProvider = ( {
 		const store = select( PAYMENT_STORE_KEY );
 
 		return {
-			// The PROCESSING status represents befor the checkout runs the observers
+			// The PROCESSING status represents before the checkout runs the observers
 			// registered for the payment_setup event.
 			isPaymentProcessing: store.isPaymentProcessing(),
 			// the READY status represents when the observers have finished processing and payment data
