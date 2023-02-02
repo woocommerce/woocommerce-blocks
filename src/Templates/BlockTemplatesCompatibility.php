@@ -371,9 +371,21 @@ class BlockTemplatesCompatibility {
 	public static function wrap_single_product_template( $template_content ) {
 		$parsed_blocks                             = parse_blocks( $template_content );
 		$last_template_parts_before_template_index = self::find_first_block( $parsed_blocks );
+		$parsed_block_without_template_parts       = array_filter(
+			$parsed_blocks,
+			function( $block ) {
+				return 'core/template-part' !== $block['blockName'] && ! empty( $block['blockName'] );
+			}
+		);
+
+		$single_product_template_blocks = array( 'woocommerce/breadcrumbs', 'woocommerce/product-gallery-image', 'woocommerce/product-add-to-cart', 'woocommerce/product-details', 'woocommerce/add-to-cart-form' );
+
+		if ( ! self::has_single_product_template_blocks( $parsed_block_without_template_parts, $single_product_template_blocks ) ) {
+			return $template_content;
+		}
 
 		$wrap_block_group = self::create_wrap_block_group(
-			$parsed_blocks[ $last_template_parts_before_template_index ]
+			$parsed_block_without_template_parts
 		);
 
 		$parsed_blocks[ $last_template_parts_before_template_index ] = $wrap_block_group[0];
@@ -402,11 +414,11 @@ class BlockTemplatesCompatibility {
 	/**
 	 * Wrap all the blocks inside the template in a group block.
 	 *
-	 * @param array $inner_blocks Array of parsed block objects.
-	 * @return array Group block with the inner blocks.
+	 * @param array $blocks Array of parsed block objects.
+	 * @return array Group block with the blocks inside.
 	 */
-	private static function create_wrap_block_group( $inner_blocks ) {
-		$serialized_blocks = serialize_block( $inner_blocks );
+	private static function create_wrap_block_group( $blocks ) {
+		$serialized_blocks = serialize_blocks( $blocks );
 
 		$new_block = parse_blocks(
 			sprintf(
@@ -419,10 +431,34 @@ class BlockTemplatesCompatibility {
 			)
 		);
 
-		$new_block['innerBlocks'] = $inner_blocks;
+		$new_block['innerBlocks'] = $blocks;
 
 		return $new_block;
 
+	}
+
+	/**
+	 * Check if the Single Product template has a single product template block:
+	 * [woocommerce/breadcrumbs, woocommerce/product-gallery-image, woocommerce/product-add-to-cart, woocommerce/product-details, woocommerce/add-to-cart-form]
+	 *
+	 * @param array $parsed_blocks Array of parsed block objects.
+	 * @param array $single_product_template_blocks Array of single product template blocks.
+	 * @return bool True if the template has a single product template block, false otherwise.
+	 */
+	private static function has_single_product_template_blocks( $parsed_blocks, $single_product_template_blocks ) {
+		$found = false;
+
+		foreach ( $parsed_blocks as $block ) {
+			if ( isset( $block['blockName'] ) && in_array( $block['blockName'], $single_product_template_blocks, true ) ) {
+				$found = true;
+				break;
+			}
+			$found = self::has_single_product_template_blocks( $block['innerBlocks'], $single_product_template_blocks );
+			if ( $found ) {
+				break;
+			}
+		}
+		return $found;
 	}
 
 }
