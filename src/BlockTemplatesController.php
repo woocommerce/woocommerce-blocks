@@ -599,7 +599,11 @@ class BlockTemplatesController {
 	 * @return string
 	 */
 	public function update_product_archive_title( $post_type_name, $post_type ) {
-		if ( 'product' === $post_type ) {
+		if (
+			function_exists( 'is_shop' ) &&
+			is_shop() &&
+			'product' === $post_type
+		) {
 			return __( 'Shop', 'woo-gutenberg-products-block' );
 		}
 
