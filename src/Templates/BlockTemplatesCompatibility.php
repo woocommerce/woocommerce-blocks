@@ -369,9 +369,10 @@ class BlockTemplatesCompatibility {
 	 * @return string Wrapped template content inside a div.
 	 */
 	public static function wrap_single_product_template( $template_content ) {
-		$parsed_blocks                             = parse_blocks( $template_content );
-		$last_template_parts_before_template_index = self::find_first_block( $parsed_blocks );
-		$parsed_block_without_template_parts       = array_filter(
+		$parsed_blocks   = parse_blocks( $template_content );
+		$splitted_blocks = self::split_blocks_by_type( $parsed_blocks );
+
+		$parsed_block_without_template_parts = array_filter(
 			$parsed_blocks,
 			function( $block ) {
 				return 'core/template-part' !== $block['blockName'] && ! empty( $block['blockName'] );
@@ -385,30 +386,14 @@ class BlockTemplatesCompatibility {
 		}
 
 		$wrap_block_group = self::create_wrap_block_group(
-			$parsed_block_without_template_parts
+			$splitted_blocks['blocks']
 		);
 
-		$parsed_blocks[ $last_template_parts_before_template_index ] = $wrap_block_group[0];
+		$headers = serialize_blocks( $splitted_blocks['pre-blocks-template-parts'] );
+		$blocks  = serialize_block( $wrap_block_group[0] );
+		$footer  = serialize_blocks( $splitted_blocks['post-blocks-template-parts'] );
 
-		return serialize_blocks( $parsed_blocks );
-	}
-
-	/**
-	 * Find the first block that is not a template part.
-	 *
-	 * @param array $parsed_blocks Array of parsed block objects.
-	 */
-	private static function find_first_block( $parsed_blocks ) {
-		$last_template_parts_before_template = null;
-		foreach ( $parsed_blocks as $key => $value ) {
-			if ( 'core/template-part' === $value['blockName'] || empty( $value['blockName'] ) ) {
-				continue;
-			}
-
-			$last_template_parts_before_template = $key;
-			break;
-		}
-		return $last_template_parts_before_template;
+		return $headers . $blocks . $footer;
 	}
 
 	/**
@@ -459,6 +444,43 @@ class BlockTemplatesCompatibility {
 			}
 		}
 		return $found;
+	}
+
+
+	/**
+	 * Create a dictionary of blocks split by type:
+	 * template parts before the blocks.
+	 * blocks (they can include a template part).
+	 * template parts after the blocks.
+	 *
+	 * @param array $parsed_blocks Array of parsed block objects.
+	 * @return array Array of blocks split by type.
+	 */
+	private static function split_blocks_by_type( $parsed_blocks ) {
+		return array_reduce(
+			$parsed_blocks,
+			function( $carry, $block ) {
+				if ( 'core/template-part' === $block['blockName'] ) {
+					if ( empty( $carry['blocks'] ) ) {
+						array_push( $carry['pre-blocks-template-parts'], $block );
+						return $carry;
+					} else {
+						array_push( $carry['post-blocks-template-parts'], $block );
+						return $carry;
+					}
+				}
+				if ( empty( $block['blockName'] ) ) {
+					return $carry;
+				}
+				array_push( $carry['blocks'], $block );
+				return $carry;
+			},
+			array(
+				'pre-blocks-template-parts'  => array(),
+				'blocks'                     => array(),
+				'post-blocks-template-parts' => array(),
+			)
+		);
 	}
 
 }
