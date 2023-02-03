@@ -1,7 +1,10 @@
 /**
  * External dependencies
  */
-import { registerBlockVariation } from '@wordpress/blocks';
+import {
+	registerBlockVariation,
+	unregisterBlockVariation,
+} from '@wordpress/blocks';
 import { Icon } from '@wordpress/components';
 import { __ } from '@wordpress/i18n';
 import { stacks } from '@woocommerce/icons';
@@ -80,6 +83,8 @@ if ( isWpVersion( '6.1', '>=' ) ) {
 					ARCHIVE_PRODUCT_TEMPLATES.includes( currentTemplateId ),
 			},
 		};
+
+		unregisterBlockVariation( QUERY_LOOP_ID, VARIATION_NAME );
 
 		registerProductsBlock( queryAttributes );
 	} );
