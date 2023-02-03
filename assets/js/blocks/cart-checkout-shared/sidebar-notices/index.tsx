@@ -98,7 +98,11 @@ const withSidebarNotices = createHigherOrderComponent(
 							toggleDismissedStatus={
 								toggleIncompatiblePaymentGatewaysNoticeDismissedStatus
 							}
-							block={ isCheckout ? 'checkout' : 'cart' }
+							block={
+								isCheckout
+									? 'woocommerce/checkout'
+									: 'woocommerce/cart'
+							}
 						/>
 
 						{ isIncompatiblePaymentGatewaysNoticeDismissed ? (

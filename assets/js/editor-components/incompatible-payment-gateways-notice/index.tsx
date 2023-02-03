@@ -14,7 +14,7 @@ import './editor.scss';
 
 interface PaymentGatewaysNoticeProps {
 	toggleDismissedStatus: ( status: boolean ) => void;
-	block: 'cart' | 'checkout';
+	block: 'woocommerce/cart' | 'woocommerce/checkout';
 }
 
 export function IncompatiblePaymentGatewaysNotice( {
