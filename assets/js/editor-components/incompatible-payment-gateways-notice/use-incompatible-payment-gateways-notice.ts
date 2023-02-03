@@ -52,7 +52,7 @@ export const useIncompatiblePaymentGatewaysNotice = (
 			)
 	);
 
-	const isDismissed =
+	const shouldBeDismissed =
 		numberOfIncompatiblePaymentMethods === 0 || isDismissedNoticeUpToDate;
 	const dismissNotice = () => {
 		const dismissedNoticesSet = new Set( dismissedNotices );
@@ -65,9 +65,9 @@ export const useIncompatiblePaymentGatewaysNotice = (
 	// This ensures the modal is not loaded on first render. This is required so
 	// Gutenberg doesn't steal the focus from the Guide and focuses the block.
 	useEffect( () => {
-		setIsVisible( ! isDismissed );
+		setIsVisible( ! shouldBeDismissed );
 
-		if ( ! isDismissed && ! isDismissedNoticeUpToDate ) {
+		if ( ! shouldBeDismissed && ! isDismissedNoticeUpToDate ) {
 			setDismissedNotices( ( previousDismissedNotices ) =>
 				previousDismissedNotices.reduce( ( acc, curr ) => {
 					if ( Object.keys( curr ).includes( blockName ) ) {
@@ -80,7 +80,7 @@ export const useIncompatiblePaymentGatewaysNotice = (
 			);
 		}
 	}, [
-		isDismissed,
+		shouldBeDismissed,
 		isDismissedNoticeUpToDate,
 		setDismissedNotices,
 		blockName,
