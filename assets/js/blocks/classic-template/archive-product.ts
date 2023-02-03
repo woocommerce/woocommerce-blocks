@@ -104,7 +104,7 @@ export const blockifiedProductCatalogConfig = {
 	getButtonLabel,
 };
 
-export const blockifiedProductsByConfig = {
+export const blockifiedProductTaxonomyConfig = {
 	getBlockifiedTemplate: getBlockifiedTemplateWithTermDescription,
 	isConversionPossible,
 	getDescription,

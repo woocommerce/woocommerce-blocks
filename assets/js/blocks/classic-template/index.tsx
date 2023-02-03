@@ -31,7 +31,7 @@ import {
 } from './utils';
 import {
 	blockifiedProductCatalogConfig,
-	blockifiedProductsByConfig,
+	blockifiedProductTaxonomyConfig,
 } from './archive-product';
 import * as blockifiedSingleProduct from './single-product';
 import * as blockifiedProductSearchResults from './product-search-results';
@@ -51,7 +51,7 @@ const blockifiedFallbackConfig = {
 
 const conversionConfig: { [ key: string ]: BlockifiedTemplateConfig } = {
 	[ TYPES.productCatalog ]: blockifiedProductCatalogConfig,
-	[ TYPES.productsBy ]: blockifiedProductsByConfig,
+	[ TYPES.productTaxonomy ]: blockifiedProductTaxonomyConfig,
 	[ TYPES.singleProduct ]: blockifiedSingleProduct,
 	[ TYPES.productSearchResults ]: blockifiedProductSearchResults,
 	fallback: blockifiedFallbackConfig,
