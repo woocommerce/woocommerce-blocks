@@ -369,31 +369,42 @@ class BlockTemplatesCompatibility {
 	 * @return string Wrapped template content inside a div.
 	 */
 	public static function wrap_single_product_template( $template_content ) {
-		$parsed_blocks   = parse_blocks( $template_content );
-		$splitted_blocks = self::split_blocks_by_type( $parsed_blocks );
-
-		$parsed_block_without_template_parts = array_filter(
-			$parsed_blocks,
-			function( $block ) {
-				return 'core/template-part' !== $block['blockName'] && ! empty( $block['blockName'] );
-			}
-		);
+		$parsed_blocks  = parse_blocks( $template_content );
+		$grouped_blocks = self::group_blocks( $parsed_blocks );
 
 		$single_product_template_blocks = array( 'woocommerce/breadcrumbs', 'woocommerce/product-gallery-image', 'woocommerce/product-add-to-cart', 'woocommerce/product-details', 'woocommerce/add-to-cart-form' );
 
-		if ( ! self::has_single_product_template_blocks( $parsed_block_without_template_parts, $single_product_template_blocks ) ) {
-			return $template_content;
-		}
+		$wrapped_blocks = array_map(
+			function( $blocks ) use ( $single_product_template_blocks ) {
+				$has_single_product_template_blocks = false;
 
-		$wrap_block_group = self::create_wrap_block_group(
-			$splitted_blocks['blocks']
+				if ( 'core/template-part' === $blocks[0]['blockName'] ) {
+					return $blocks;
+				}
+
+				$has_single_product_template_blocks = self::has_single_product_template_blocks( $blocks, $single_product_template_blocks );
+
+				if ( $has_single_product_template_blocks ) {
+					$wrapped_block = self::create_wrap_block_group( $blocks );
+					return array( $wrapped_block[0] );
+				}
+				return $blocks;
+			},
+			$grouped_blocks
 		);
 
-		$headers = serialize_blocks( $splitted_blocks['pre-blocks-template-parts'] );
-		$blocks  = serialize_block( $wrap_block_group[0] );
-		$footer  = serialize_blocks( $splitted_blocks['post-blocks-template-parts'] );
+		$template = array_reduce(
+			$wrapped_blocks,
+			function( $carry, $item ) {
+				if ( is_array( $item ) ) {
+					return $carry . serialize_blocks( $item );
+				}
+				return $carry . serialize_block( $item );
+			},
+			''
+		);
 
-		return $headers . $blocks . $footer;
+		return $template;
 	}
 
 	/**
@@ -448,38 +459,35 @@ class BlockTemplatesCompatibility {
 
 
 	/**
-	 * Create a dictionary of blocks split by type:
-	 * template parts before the blocks.
-	 * blocks (they can include a template part).
-	 * template parts after the blocks.
+	 * Group blocks in this way:
+	 * B1 + TP1 + B2 + B3 + B4 + TP2 + B5
+	 * (B = Block, TP = Template Part)
+	 * becomes:
+	 * [[B1], [TP1], [B2, B3, B4], [TP2], [B5]]
 	 *
 	 * @param array $parsed_blocks Array of parsed block objects.
-	 * @return array Array of blocks split by type.
+	 * @return array Array of blocks grouped by template part.
 	 */
-	private static function split_blocks_by_type( $parsed_blocks ) {
+	private static function group_blocks( $parsed_blocks ) {
 		return array_reduce(
 			$parsed_blocks,
 			function( $carry, $block ) {
 				if ( 'core/template-part' === $block['blockName'] ) {
-					if ( empty( $carry['blocks'] ) ) {
-						array_push( $carry['pre-blocks-template-parts'], $block );
-						return $carry;
-					} else {
-						array_push( $carry['post-blocks-template-parts'], $block );
-						return $carry;
-					}
+					array_push( $carry, array( $block ) );
+					return $carry;
 				}
 				if ( empty( $block['blockName'] ) ) {
 					return $carry;
 				}
-				array_push( $carry['blocks'], $block );
+				$last_element_index = count( $carry ) - 1;
+				if ( isset( $carry[ $last_element_index ][0]['blockName'] ) && 'core/template-part' !== $carry[ $last_element_index ][0]['blockName'] ) {
+					array_push( $carry[ $last_element_index ], $block );
+					return $carry;
+				}
+				array_push( $carry, array( $block ) );
 				return $carry;
 			},
-			array(
-				'pre-blocks-template-parts'  => array(),
-				'blocks'                     => array(),
-				'post-blocks-template-parts' => array(),
-			)
+			array()
 		);
 	}
 

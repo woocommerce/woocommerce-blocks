@@ -286,4 +286,45 @@ class BlockTemplatesCompatibilityTests extends WP_UnitTestCase {
 
 		$this->assertEquals( $result_without_withespace, $expected_single_product_template_without_whitespace, '' );
 	}
+
+	/**
+	 * Test that the Single Product Template is wrapped in a div with the correct class if it contains a block related to the Single Product Template.
+	 */
+	public function test_wrap_single_product_template_with_multiple_blocks_related_to_the_single_product_template() {
+
+		$default_single_product_template = '
+		<!-- wp:paragraph -->
+			<p>test</p>
+		<!-- /wp:paragraph -->
+		<!-- wp:template-part {"slug":"header","theme":"twentytwentythree","tagName":"header"} /-->
+		<!-- wp:woocommerce/breadcrumbs /-->
+		<!-- wp:template-part {"slug":"footer","theme":"twentytwentythree","tagName":"footer"} /-->
+		<!-- wp:woocommerce/breadcrumbs /-->
+		<!-- wp:template-part {"slug":"footer","theme":"twentytwentythree","tagName":"footer"} /-->';
+
+		$expected_single_product_template = '
+		<!-- wp:paragraph -->
+			<p>test</p>
+		<!-- /wp:paragraph -->
+		<!-- wp:template-part {"slug":"header","theme":"twentytwentythree","tagName":"header"} /-->
+		<!-- wp:group {"className":"woocommerce product"} -->
+		<div class="wp-block-group woocommerce product">
+		   <!-- wp:woocommerce/breadcrumbs /-->
+		</div>
+		<!-- /wp:group -->
+		<!-- wp:template-part {"slug":"footer","theme":"twentytwentythree","tagName":"footer"} /-->
+		<!-- wp:group {"className":"woocommerce product"} -->
+		<div class="wp-block-group woocommerce product">
+		   <!-- wp:woocommerce/breadcrumbs /-->
+		</div>
+		<!-- /wp:group -->
+		<!-- wp:template-part {"slug":"footer","theme":"twentytwentythree","tagName":"footer"} /-->';
+
+		$result = BlockTemplatesCompatibility::wrap_single_product_template( $default_single_product_template );
+
+		$result_without_withespace                           = preg_replace( '/\s+/', '', $result );
+		$expected_single_product_template_without_whitespace = preg_replace( '/\s+/', '', $expected_single_product_template );
+
+		$this->assertEquals( $result_without_withespace, $expected_single_product_template_without_whitespace, '' );
+	}
 }
