@@ -76,6 +76,7 @@ if ( isWpVersion( '6.1', '>=' ) ) {
 				inherit:
 					ARCHIVE_PRODUCT_TEMPLATES.includes( currentTemplateId ),
 			},
+			namespace: VARIATION_NAME,
 		};
 
 		registerProductsBlock( queryAttributes );
