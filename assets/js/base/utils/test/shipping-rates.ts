@@ -2,8 +2,8 @@
  * External dependencies
  */
 import {
-	hasCollectibleRate,
-	isPackageRateCollectible,
+	hasCollectableRate,
+	isPackageRateCollectable,
 } from '@woocommerce/base-utils';
 import { CartShippingRate } from '@woocommerce/type-defs/cart';
 
@@ -11,7 +11,7 @@ jest.mock( '@woocommerce/settings', () => {
 	return {
 		...jest.requireActual( '@woocommerce/settings' ),
 		getSetting: ( setting: string ) => {
-			if ( setting === 'collectibleMethodIds' ) {
+			if ( setting === 'collectableMethodIds' ) {
 				return [ 'local_pickup' ];
 			}
 			return jest
@@ -21,16 +21,16 @@ jest.mock( '@woocommerce/settings', () => {
 	};
 } );
 describe( 'hasCollectableRate', () => {
-	it( 'correctly identifies if an array contains a collectible rate', () => {
+	it( 'correctly identifies if an array contains a collectable rate', () => {
 		const ratesToTest = [ 'flat_rate', 'local_pickup' ];
-		expect( hasCollectibleRate( ratesToTest ) ).toBe( true );
+		expect( hasCollectableRate( ratesToTest ) ).toBe( true );
 		const ratesToTest2 = [ 'flat_rate', 'free_shipping' ];
-		expect( hasCollectibleRate( ratesToTest2 ) ).toBe( false );
+		expect( hasCollectableRate( ratesToTest2 ) ).toBe( false );
 	} );
 } );
 
-describe( 'isPackageRateCollectible', () => {
-	it( 'correctly identifies if a package rate is collectible or not', () => {
+describe( 'isPackageRateCollectable', () => {
+	it( 'correctly identifies if a package rate is collectable or not', () => {
 		const testPackage: CartShippingRate = {
 			package_id: 0,
 			name: 'Shipping',
@@ -85,10 +85,10 @@ describe( 'isPackageRateCollectible', () => {
 			],
 		};
 		expect(
-			isPackageRateCollectible( testPackage.shipping_rates[ 0 ] )
+			isPackageRateCollectable( testPackage.shipping_rates[ 0 ] )
 		).toBe( false );
 		expect(
-			isPackageRateCollectible( testPackage.shipping_rates[ 1 ] )
+			isPackageRateCollectable( testPackage.shipping_rates[ 1 ] )
 		).toBe( true );
 	} );
 } );

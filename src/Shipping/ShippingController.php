@@ -49,7 +49,7 @@ class ShippingController {
 				true
 			);
 		}
-		$this->asset_data_registry->add( 'collectibleMethodIds', array( $this, 'get_local_pickup_method_ids' ), true );
+		$this->asset_data_registry->add( 'collectableMethodIds', array( $this, 'get_local_pickup_method_ids' ), true );
 		add_action( 'rest_api_init', [ $this, 'register_settings' ] );
 		add_action( 'admin_enqueue_scripts', [ $this, 'admin_scripts' ] );
 		add_action( 'admin_enqueue_scripts', [ $this, 'hydrate_client_settings' ] );

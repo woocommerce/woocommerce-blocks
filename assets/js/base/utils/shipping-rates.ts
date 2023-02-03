@@ -18,30 +18,30 @@ export const getShippingRatesPackageCount = (
 	return shippingRates.length;
 };
 
-const collectibleMethodIds = getSetting< string[] >(
-	'collectibleMethodIds',
+const collectableMethodIds = getSetting< string[] >(
+	'collectableMethodIds',
 	[]
 );
 
 /**
- * If the package rate's method_id is in the collectibleMethodIds array, return true.
+ * If the package rate's method_id is in the collectableMethodIds array, return true.
  */
-export const isPackageRateCollectible = (
+export const isPackageRateCollectable = (
 	rate: CartShippingPackageShippingRate
-): boolean => collectibleMethodIds.includes( rate.method_id );
+): boolean => collectableMethodIds.includes( rate.method_id );
 
 /**
- * Check if the specified rates are collectible. Accepts either an array of rate names, or a single string.
+ * Check if the specified rates are collectable. Accepts either an array of rate names, or a single string.
  */
-export const hasCollectibleRate = (
+export const hasCollectableRate = (
 	chosenRates: string[] | string
 ): boolean => {
 	if ( Array.isArray( chosenRates ) ) {
 		return !! chosenRates.find( ( rate ) =>
-			collectibleMethodIds.includes( rate )
+			collectableMethodIds.includes( rate )
 		);
 	}
-	return collectibleMethodIds.includes( chosenRates );
+	return collectableMethodIds.includes( chosenRates );
 };
 /**
  * Get the number of rates in a shippingRates array.
