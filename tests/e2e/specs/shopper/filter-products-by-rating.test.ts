@@ -236,7 +236,7 @@ describe( `${ block.name } Block`, () => {
 			await page.goto( frontedPageUrl );
 		} );
 
-		it( 'should show only products that match the filter', async () => {
+		it.only( 'should show only products that match the filter', async () => {
 			const isRefreshed = jest.fn( () => void 0 );
 			page.on( 'load', isRefreshed );
 

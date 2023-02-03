@@ -64,28 +64,34 @@ const registerProductsBlock = ( attributes: QueryBlockAttributes ) => {
 };
 
 if ( isWpVersion( '6.1', '>=' ) ) {
-	let currentTemplateId: string | undefined;
+	const store = select( 'core/edit-site' );
 
-	subscribe( () => {
-		const previousTemplateId = currentTemplateId;
-		const store = select( 'core/edit-site' );
-		currentTemplateId = store?.getEditedPostId();
+	if ( store ) {
+		let currentTemplateId: string | undefined;
 
-		if ( previousTemplateId === currentTemplateId ) {
-			return;
-		}
+		subscribe( () => {
+			const previousTemplateId = currentTemplateId;
 
-		const queryAttributes = {
-			...QUERY_DEFAULT_ATTRIBUTES,
-			query: {
-				...QUERY_DEFAULT_ATTRIBUTES.query,
-				inherit:
-					ARCHIVE_PRODUCT_TEMPLATES.includes( currentTemplateId ),
-			},
-		};
+			currentTemplateId = store?.getEditedPostId();
 
-		unregisterBlockVariation( QUERY_LOOP_ID, VARIATION_NAME );
+			if ( previousTemplateId === currentTemplateId ) {
+				return;
+			}
 
-		registerProductsBlock( queryAttributes );
-	} );
+			const queryAttributes = {
+				...QUERY_DEFAULT_ATTRIBUTES,
+				query: {
+					...QUERY_DEFAULT_ATTRIBUTES.query,
+					inherit:
+						ARCHIVE_PRODUCT_TEMPLATES.includes( currentTemplateId ),
+				},
+			};
+
+			unregisterBlockVariation( QUERY_LOOP_ID, VARIATION_NAME );
+
+			registerProductsBlock( queryAttributes );
+		} );
+	} else {
+		registerProductsBlock( QUERY_DEFAULT_ATTRIBUTES );
+	}
 }
