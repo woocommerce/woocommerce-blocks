@@ -62,15 +62,15 @@ class ShippingController {
 	}
 
 	/**
-	 * Gets a list of payment method ids that support the 'local_pickup' feature.
+	 * Gets a list of payment method ids that support the 'local-pickup' feature.
 	 *
-	 * @return string[] List of payment method ids that support the 'local_pickup' feature.
+	 * @return string[] List of payment method ids that support the 'local-pickup' feature.
 	 */
 	public function get_local_pickup_method_ids() {
 		$all_methods_supporting_local_pickup = array_reduce(
 			WC()->shipping()->get_shipping_methods(),
 			function( $methods, $method ) {
-				if ( $method->supports( 'local_pickup' ) ) {
+				if ( $method->supports( 'local-pickup' ) ) {
 					$methods[] = $method->id;
 				}
 				return $methods;
