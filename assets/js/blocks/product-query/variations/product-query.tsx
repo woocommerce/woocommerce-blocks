@@ -46,7 +46,10 @@ const registerProductsBlock = ( attributes: QueryBlockAttributes ) => {
 				className="wc-block-editor-components-block-icon wc-block-editor-components-block-icon--stacks"
 			/>
 		),
-		attributes,
+		attributes: {
+			...attributes,
+			namespace: VARIATION_NAME,
+		},
 		// Gutenberg doesn't support this type yet, discussion here:
 		// https://github.com/WordPress/gutenberg/pull/43632
 		// eslint-disable-next-line @typescript-eslint/ban-ts-comment
@@ -76,7 +79,6 @@ if ( isWpVersion( '6.1', '>=' ) ) {
 				inherit:
 					ARCHIVE_PRODUCT_TEMPLATES.includes( currentTemplateId ),
 			},
-			namespace: VARIATION_NAME,
 		};
 
 		registerProductsBlock( queryAttributes );
