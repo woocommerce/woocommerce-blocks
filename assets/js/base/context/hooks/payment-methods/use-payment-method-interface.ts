@@ -91,7 +91,15 @@ export const usePaymentMethodInterface = (): PaymentMethodInterface => {
 						} );
 						return store.hasPaymentError();
 					},
-					isSuccessful: store.isPaymentReady(),
+					get isSuccessful() {
+						deprecated( 'isSuccessful', {
+							since: '9.6.0',
+							plugin: 'WooCommerce Blocks',
+							link: 'https://github.com/woocommerce/woocommerce-blocks/pull/8110',
+						} );
+						return store.isPaymentReady();
+					},
+					isReady: store.isPaymentReady(),
 					isDoingExpressPayment: store.isExpressPaymentMethodActive(),
 				},
 				activePaymentMethod: store.getActivePaymentMethod(),
