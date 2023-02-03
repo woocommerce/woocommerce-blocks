@@ -36,6 +36,25 @@ class ClassicTemplate extends AbstractDynamicBlock {
 		add_filter( 'render_block', array( $this, 'add_alignment_class_to_wrapper' ), 10, 2 );
 		add_filter( 'woocommerce_product_query_meta_query', array( $this, 'filter_products_by_stock' ) );
 
+		$product_types = array_keys( wc_get_product_types() );
+		$resp          = register_post_type(
+			'products-simple',
+			array(
+				'label'               => __( 'Products - Simple', 'woo-gutenberg-products-block' ),
+				'description'         => __( 'Layout your simple product', 'woo-gutenberg-products-block' ),
+				'public'              => true,
+				'map_meta_cap'        => true,
+				'publicly_queryable'  => true,
+				'exclude_from_search' => true,
+				'hierarchical'        => true,
+				'rewrite'             => false,
+				'query_var'           => false,
+				'supports'            => array( 'title' ),
+				'show_in_admin_bar'   => true,
+				'template'            => array( 'woocommerce/classic-template' ),
+				'show_in_rest'        => true,
+			)
+		);
 	}
 
 	/**
