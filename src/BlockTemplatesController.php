@@ -71,7 +71,39 @@ class BlockTemplatesController {
 		if ( $this->package->is_experimental_build() ) {
 			add_action( 'after_switch_theme', array( $this, 'check_should_use_blockified_product_grid_templates' ), 10, 2 );
 		}
+
+		add_single_product_post_types();
 	}
+
+
+	/**
+	 * This function is used to register single product post types, so they can be displayed
+	 * as a separate entries in the templates list.
+	 */
+	public function add_single_product_post_types() {
+		$product_types = array_keys( wc_get_product_types() );
+		foreach ( $product_types as $product_type ) {
+			$args = array(
+				/* translators: %s is the product type */
+				'label'               => sprintf( __( 'Product - %s', 'woo-gutenberg-products-block' ), $product_type ),
+				/* translators: %s is the product type */
+				'description'         => sprintf( __( 'Layout your product: %s', 'woo-gutenberg-products-block' ), $product_type ),
+				'public'              => false,
+				'publicly_queryable'  => true,
+				'exclude_from_search' => true,
+				'hierarchical'        => true,
+				'rewrite'             => false,
+				'show_in_rest'        => true,
+				'template'            => array( array( 'core/group', array( 'woocommerce/legacy-template' ) ) ),
+			);
+
+			register_post_type(
+				'product:' . $product_type,
+				$args
+			);
+		}
+	}
+
 
 	/**
 	 * This function is used on the `pre_get_block_template` hook to return the fallback template from the db in case
