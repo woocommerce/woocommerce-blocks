@@ -37,4 +37,5 @@ export const currencyControl = {
 	control: 'select',
 	options: currencies,
 	mapping: Object.keys( currencies ),
+	defaultValue: currencies.USD,
 };

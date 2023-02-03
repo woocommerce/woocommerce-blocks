@@ -72,10 +72,7 @@ const FormattedMonetaryAmount = ( {
 		return null;
 	}
 
-	const minorUnit =
-		typeof currency?.minorUnit === 'undefined' ? 2 : currency.minorUnit;
-
-	const priceValue = value / 10 ** minorUnit;
+	const priceValue = value / 10 ** currency.minorUnit;
 
 	if ( ! Number.isFinite( priceValue ) ) {
 		return null;
@@ -97,7 +94,7 @@ const FormattedMonetaryAmount = ( {
 	// Wrapper for NumberFormat onValueChange which handles subunit conversion.
 	const onValueChangeWrapper = onValueChange
 		? ( values: NumberFormatValues ) => {
-				const minorUnitValue = +values.value * 10 ** minorUnit;
+				const minorUnitValue = +values.value * 10 ** currency.minorUnit;
 				onValueChange( minorUnitValue );
 		  }
 		: () => void 0;
