@@ -40,8 +40,13 @@ if ( isWpVersion( '6.1', '>=' ) ) {
 			return;
 		}
 
-		QUERY_DEFAULT_ATTRIBUTES.query.inherit =
-			ARCHIVE_PRODUCT_TEMPLATES.includes( currentTemplateId );
+		const queryAttributes = {
+		    ...QUERY_DEFAULT_ATTRIBUTES,
+		    query: {
+		        ...QUERY_DEFAULT_ATTRIBUTES.query,
+		        inherit: ARCHIVE_PRODUCT_TEMPLATES.includes( currentTemplateId );
+		    },
+		}	
 
 		registerBlockVariation( QUERY_LOOP_ID, {
 			description: __(
