@@ -486,9 +486,9 @@ class ProductQuery extends AbstractBlock {
 			'rating_filter'       => $this->get_filter_by_rating_query(),
 		);
 
-		// "Product Categories" could be provided using "Filters" ToolsPanel available in Inspector Controls.
+		// "Product Categories" & "Product Tags" could be provided using "Filters" ToolsPanel available in Inspector Controls.
 		if ( isset( $query['tax_query'] ) ) {
-			$result['tax_query'] = $this->get_filter_by_product_categories_query( $query['tax_query'] );
+			$result['tax_query'] = $this->get_filter_by_product_categories_or_tags_query( $query['tax_query'] );
 		}
 
 		// "Keyword" could be provided using "Filters" ToolsPanel available in Inspector Controls.
@@ -843,21 +843,27 @@ class ProductQuery extends AbstractBlock {
 	 *            )
 	 *    )
 	 *
+	 * For product categories, taxonomy would be "product_tag"
+	 *
 	 * @param array $tax_query Tax query.
 	 * @return array
 	 */
-	private function get_filter_by_product_categories_query( $tax_query ) {
+	private function get_filter_by_product_categories_or_tags_query( $tax_query ) {
 		if ( ! is_array( $tax_query ) ) {
 			return array();
 		}
 
+		$result = array();
 		foreach ( $tax_query as $item ) {
-			if ( isset( $item['taxonomy'] ) && 'product_cat' === $item['taxonomy'] ) {
-				return array( $item );
+			if ( isset( $item['taxonomy'] ) && (
+				'product_cat' === $item['taxonomy'] ||
+				'product_tag' === $item['taxonomy']
+			) ) {
+				$result[] = $item;
 			}
 		}
 
-		return array();
+		return $result;
 	}
 
 }
