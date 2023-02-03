@@ -125,7 +125,6 @@ export const useShippingData = (): ShippingData => {
 			hasSelectedLocalPickup,
 			dispatchSelectShippingRate,
 			dispatchCheckoutEvent,
-			selectedRates,
 		]
 	);
 
