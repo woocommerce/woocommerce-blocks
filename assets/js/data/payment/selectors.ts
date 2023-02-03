@@ -38,7 +38,17 @@ export const isPaymentIdle = ( state: PaymentState ) =>
 	state.status === PAYMENT_STATUS.IDLE;
 
 export const isPaymentStarted = ( state: PaymentState ) => {
-	return state.status === PAYMENT_STATUS.STARTED;
+	deprecated( 'isPaymentStarted', {
+		since: '9.6.0',
+		alternative: 'isExpressPaymentStarted',
+		plugin: 'WooCommerce Blocks',
+		link: 'https://github.com/woocommerce/woocommerce-blocks/pull/8110',
+	} );
+	return state.status === PAYMENT_STATUS.EXPRESS_STARTED;
+};
+
+export const isExpressPaymentStarted = ( state: PaymentState ) => {
+	return state.status === PAYMENT_STATUS.EXPRESS_STARTED;
 };
 
 export const isPaymentProcessing = ( state: PaymentState ) =>
@@ -163,14 +173,7 @@ export const getCurrentStatus = ( state: PaymentState ) => {
 			return isPaymentIdle( state );
 		}, // isPristine is the same as isIdle.
 		isIdle: isPaymentIdle( state ),
-		get isStarted() {
-			deprecated( 'isStarted', {
-				since: '9.6.0',
-				plugin: 'WooCommerce Blocks',
-				link: 'https://github.com/woocommerce/woocommerce-blocks/pull/8110',
-			} );
-			return isPaymentStarted( state );
-		},
+		isStarted: isExpressPaymentStarted( state ),
 		isProcessing: isPaymentProcessing( state ),
 		get isFinished() {
 			deprecated( 'isFinished', {

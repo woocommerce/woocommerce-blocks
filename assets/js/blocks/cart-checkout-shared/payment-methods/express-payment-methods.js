@@ -36,7 +36,7 @@ const ExpressPaymentMethods = () => {
 	);
 	const {
 		__internalSetActivePaymentMethod,
-		__internalSetPaymentStarted,
+		__internalSetExpressPaymentStarted,
 		__internalSetPaymentIdle,
 		__internalSetPaymentError,
 		__internalSetPaymentMethodData,
@@ -58,14 +58,14 @@ const ExpressPaymentMethods = () => {
 		( paymentMethodId ) => () => {
 			previousActivePaymentMethod.current = activePaymentMethod;
 			previousPaymentMethodData.current = paymentMethodData;
-			__internalSetPaymentStarted();
+			__internalSetExpressPaymentStarted();
 			__internalSetActivePaymentMethod( paymentMethodId );
 		},
 		[
 			activePaymentMethod,
 			paymentMethodData,
 			__internalSetActivePaymentMethod,
-			__internalSetPaymentStarted,
+			__internalSetExpressPaymentStarted,
 		]
 	);
 

@@ -127,7 +127,7 @@ describe( 'setDefaultPaymentMethod', () => {
 							setActivePaymentMethodMock,
 						__internalSetPaymentError: () => void 0,
 						__internalSetPaymentIdle: () => void 0,
-						__internalSetPaymentStarted: () => void 0,
+						__internalSetExpressPaymentStarted: () => void 0,
 						__internalSetPaymentProcessing: () => void 0,
 						__internalSetPaymentReady: () => void 0,
 					};

@@ -70,7 +70,7 @@ export const usePaymentMethodInterface = (): PaymentMethodInterface => {
 						return store.isPaymentIdle();
 					}, // isPristine is the same as isIdle
 					isIdle: store.isPaymentIdle(),
-					isStarted: store.isPaymentStarted(),
+					isStarted: store.isExpressPaymentStarted(),
 					isProcessing: store.isPaymentProcessing(),
 					get isFinished() {
 						deprecated( 'isFinished', {

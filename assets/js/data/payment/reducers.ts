@@ -24,10 +24,10 @@ const reducer: Reducer< PaymentState > = (
 			};
 			break;
 
-		case ACTION_TYPES.SET_PAYMENT_STARTED:
+		case ACTION_TYPES.SET_EXPRESS_PAYMENT_STARTED:
 			newState = {
 				...state,
-				status: STATUS.STARTED,
+				status: STATUS.EXPRESS_STARTED,
 			};
 			break;
 

@@ -29,7 +29,7 @@ with. We do not encourage extensions to dispatch actions onto this data store ye
 
 ### (@deprecated) isPaymentPristine
 
-use `isPaymentIdle` instead.
+_**This selector is deprecated and will be removed in a future release. Please use isPaymentIdle instead**_
 
 #### _Returns_
 
@@ -57,13 +57,32 @@ const store = select( 'wc/store/payment' );
 const isPaymentIdle = store.isPaymentIdle();
 ```
 
-### isPaymentStarted
+### (@deprecated) isPaymentStarted
 
 Queries if the status is `started`.
+
+_**This selector is deprecated and will be removed in a future release. Please use isExpressPaymentStarted instead**_
 
 #### _Returns_
 
 `boolean`: True if the payment status is `started`, false otherwise.
+
+#### _Example_
+
+```js
+const store = select( 'wc/store/payment' );
+const isPaymentStarted = store.isPaymentStarted();
+```
+
+### isExpressPaymentStarted
+
+Queries if an express payment method has been clicked.
+
+_**This selector is deprecated and will be removed in a future release. Please use isExpressPaymentStarted instead**_
+
+#### _Returns_
+
+`boolean`: True if the button for an express payment method has been clicked, false otherwise.
 
 #### _Example_
 
@@ -87,7 +106,7 @@ const store = select( 'wc/store/payment' );
 const isPaymentProcessing = store.isPaymentProcessing();
 ```
 
-### isPaymentSuccess (deprecated)
+### (@deprecated) isPaymentSuccess
 
 Queries if the status is `success`.
 
@@ -119,7 +138,7 @@ const store = select( 'wc/store/payment' );
 const isPaymentReady = store.isPaymentReady();
 ```
 
-### isPaymentFailed (deprecated)
+### (@deprecated) isPaymentFailed
 
 Queries if the status is `failed`.
 
@@ -151,9 +170,10 @@ const store = select( 'wc/store/payment' );
 const hasPaymentError = store.hasPaymentError();
 ```
 
-### getCurrentStatus (deprecated)
+### (@deprecated) getCurrentStatus
 
 Returns an object with booleans representing the payment status.
+
 _**This selector is deprecated and will be removed in a future release. Please use the selectors above**_
 
 #### _Returns_

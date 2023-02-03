@@ -21,8 +21,8 @@ export const __internalSetPaymentIdle = () => ( {
 	type: ACTION_TYPES.SET_PAYMENT_IDLE,
 } );
 
-export const __internalSetPaymentStarted = () => ( {
-	type: ACTION_TYPES.SET_PAYMENT_STARTED,
+export const __internalSetExpressPaymentStarted = () => ( {
+	type: ACTION_TYPES.SET_EXPRESS_PAYMENT_STARTED,
 } );
 
 export const __internalSetPaymentProcessing = () => ( {
