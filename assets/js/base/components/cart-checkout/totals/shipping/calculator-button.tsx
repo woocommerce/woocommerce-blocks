@@ -39,7 +39,8 @@ export const CalculatorButton = ( {
 			href="#wc-block-components-shipping-calculator-address__link"
 			className="wc-block-components-totals-shipping__change-address__link"
 			id="wc-block-components-totals-shipping__change-address__link"
-			onClick={ () => {
+			onClick={ ( e ) => {
+				e.preventDefault();
 				setIsShippingCalculatorOpen( ! isShippingCalculatorOpen );
 			} }
 			aria-label={ label }
