@@ -8,6 +8,7 @@ import {
 } from '@woocommerce/block-data';
 import { getNoticeContexts } from '@woocommerce/base-utils';
 import type { Notice } from '@wordpress/notices';
+import { useMemo } from '@wordpress/element';
 
 /**
  * Internal dependencies
@@ -26,7 +27,7 @@ const formatNotices = ( notices: Notice[], context: string ): StoreNotice[] => {
 
 const StoreNoticesContainer = ( {
 	className = '',
-	context,
+	context = '',
 	additionalNotices = [],
 }: StoreNoticesContainerProps ): JSX.Element | null => {
 	const { suppressNotices, registeredContainers } = useSelect(
@@ -38,7 +39,10 @@ const StoreNoticesContainer = ( {
 			).getRegisteredContainers(),
 		} )
 	);
-	const contexts = Array.isArray( context ) ? context : [ context ];
+	const contexts = useMemo(
+		() => ( Array.isArray( context ) ? context : [ context ] ),
+		[ context ]
+	);
 	// Find sub-contexts that have not been registered. We will show notices from those contexts here too.
 	const allContexts = getNoticeContexts();
 	const unregisteredSubContexts = allContexts.filter(
@@ -50,6 +54,7 @@ const StoreNoticesContainer = ( {
 
 	// Get notices from the current context and any sub-contexts and append the name of the context to the notice
 	// objects for later reference.
+
 	const notices = useSelect< StoreNotice[] >( ( select ) => {
 		const { getNotices } = select( 'core/notices' );
 
@@ -63,7 +68,9 @@ const StoreNoticesContainer = ( {
 					subContext
 				)
 			),
-		].filter( Boolean ) as StoreNotice[];
+		]
+			.filter( removeDuplicateNotices )
+			.filter( Boolean ) as StoreNotice[];
 	} );
 	if ( suppressNotices || ! notices.length ) {
 		return null;
@@ -73,7 +80,6 @@ const StoreNoticesContainer = ( {
 		<>
 			<StoreNotices
 				className={ className }
-				context={ contexts }
 				notices={ notices.filter(
 					( notice ) => notice.type === 'default'
 				) }
