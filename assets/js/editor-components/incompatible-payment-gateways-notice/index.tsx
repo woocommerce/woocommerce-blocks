@@ -85,7 +85,7 @@ export function IncompatiblePaymentGatewaysNotice( {
 									key={ id }
 									className="wc-blocks-incompatible-extensions-notice__element"
 								>
-									• { title }
+									{ title }
 								</li>
 							)
 						) }
