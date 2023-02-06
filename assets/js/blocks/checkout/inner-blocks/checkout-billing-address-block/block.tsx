@@ -91,7 +91,14 @@ const Block = ( {
 
 	return (
 		<AddressFormWrapperComponent>
-			<StoreNoticesContainer context={ noticeContexts.BILLING_ADDRESS } />
+			<StoreNoticesContainer
+				context={ noticeContexts.BILLING_ADDRESS }
+				capturedContexts={
+					useBillingAsShipping
+						? [ noticeContexts.SHIPPING_ADDRESS ]
+						: []
+				}
+			/>
 			<AddressForm
 				id="billing"
 				type="billing"

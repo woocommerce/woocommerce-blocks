@@ -8,6 +8,7 @@ import {
 } from '@woocommerce/block-data';
 import { getNoticeContexts } from '@woocommerce/base-utils';
 import type { Notice } from '@wordpress/notices';
+import { useMemo } from '@wordpress/element';
 
 /**
  * Internal dependencies
@@ -24,9 +25,19 @@ const formatNotices = ( notices: Notice[], context: string ): StoreNotice[] => {
 	} ) ) as StoreNotice[];
 };
 
+const removeDuplicateNotices = (
+	notice: Notice,
+	noticeIndex: number,
+	noticesArray: Notice[]
+) =>
+	noticesArray.findIndex(
+		( _notice: Notice ) => _notice.content === notice.content
+	) === noticeIndex;
+
 const StoreNoticesContainer = ( {
 	className = '',
 	context,
+	capturedContexts = [],
 	additionalNotices = [],
 }: StoreNoticesContainerProps ): JSX.Element | null => {
 	const { suppressNotices, registeredContainers } = useSelect(
@@ -46,9 +57,13 @@ const StoreNoticesContainer = ( {
 			subContext.includes( context + '/' ) &&
 			! registeredContainers.includes( subContext )
 	);
-
+	const contexts = useMemo(
+		() => [ context, ...capturedContexts ],
+		[ capturedContexts, context ]
+	);
 	// Get notices from the current context and any sub-contexts and append the name of the context to the notice
 	// objects for later reference.
+
 	const notices = useSelect< StoreNotice[] >( ( select ) => {
 		const { getNotices } = select( 'core/notices' );
 
@@ -56,13 +71,17 @@ const StoreNoticesContainer = ( {
 			...unregisteredSubContexts.flatMap( ( subContext: string ) =>
 				formatNotices( getNotices( subContext ), subContext )
 			),
+			...capturedContexts.flatMap( ( capturedNotice: string ) =>
+				formatNotices( getNotices( capturedNotice ), capturedNotice )
+			),
 			...formatNotices(
 				getNotices( context ).concat( additionalNotices ),
 				context
 			),
-		].filter( Boolean ) as StoreNotice[];
+		]
+			.filter( removeDuplicateNotices )
+			.filter( Boolean ) as StoreNotice[];
 	} );
-
 	if ( suppressNotices || ! notices.length ) {
 		return null;
 	}
@@ -71,7 +90,7 @@ const StoreNoticesContainer = ( {
 		<>
 			<StoreNotices
 				className={ className }
-				context={ context }
+				contexts={ contexts }
 				notices={ notices.filter(
 					( notice ) => notice.type === 'default'
 				) }

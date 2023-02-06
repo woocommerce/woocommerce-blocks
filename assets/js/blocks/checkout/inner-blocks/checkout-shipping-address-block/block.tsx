@@ -103,6 +103,11 @@ const Block = ( {
 			<AddressFormWrapperComponent>
 				<StoreNoticesContainer
 					context={ noticeContexts.SHIPPING_ADDRESS }
+					capturedContexts={
+						useShippingAsBilling
+							? [ noticeContexts.BILLING_ADDRESS ]
+							: []
+					}
 				/>
 				<AddressForm
 					id="shipping"
