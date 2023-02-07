@@ -2,6 +2,8 @@
  * External dependencies
  */
 import { useMemo, useEffect, Fragment, useState } from '@wordpress/element';
+import { useDispatch } from '@wordpress/data';
+import { STORE_NOTICES_STORE_KEY } from '@woocommerce/block-data';
 import {
 	useCheckoutAddress,
 	useStoreEvents,
@@ -45,6 +47,9 @@ const Block = ( {
 		useBillingAsShipping,
 	} = useCheckoutAddress();
 	const { dispatchCheckoutEvent } = useStoreEvents();
+	const { registerContainer, unregisterContainer } = useDispatch(
+		STORE_NOTICES_STORE_KEY
+	);
 	const { isEditor } = useEditorContext();
 	// Clears data if fields are hidden.
 	useEffect( () => {
@@ -70,6 +75,18 @@ const Block = ( {
 		billingAddress,
 		useBillingAsShipping,
 	] );
+
+	// Capture sibling block notices
+	useEffect( () => {
+		if ( useBillingAsShipping ) {
+			registerContainer( noticeContexts.SHIPPING_ADDRESS );
+		}
+		return () => {
+			if ( useBillingAsShipping ) {
+				unregisterContainer( noticeContexts.SHIPPING_ADDRESS );
+			}
+		};
+	}, [ registerContainer, unregisterContainer, useBillingAsShipping ] );
 
 	const addressFieldsConfig = useMemo( () => {
 		return {

@@ -3,6 +3,8 @@
  */
 import { __ } from '@wordpress/i18n';
 import { useMemo, useEffect, Fragment, useState } from '@wordpress/element';
+import { useDispatch } from '@wordpress/data';
+import { STORE_NOTICES_STORE_KEY } from '@woocommerce/block-data';
 import { AddressForm } from '@woocommerce/base-components/cart-checkout';
 import {
 	useCheckoutAddress,
@@ -50,6 +52,9 @@ const Block = ( {
 		setUseShippingAsBilling,
 	} = useCheckoutAddress();
 	const { dispatchCheckoutEvent } = useStoreEvents();
+	const { registerContainer, unregisterContainer } = useDispatch(
+		STORE_NOTICES_STORE_KEY
+	);
 	const { isEditor } = useEditorContext();
 
 	// This is used to track whether the "Use shipping as billing" checkbox was checked on first load and if we synced
@@ -79,6 +84,18 @@ const Block = ( {
 		shippingAddress,
 		useShippingAsBilling,
 	] );
+
+	// Capture sibling block notices
+	useEffect( () => {
+		if ( useShippingAsBilling ) {
+			registerContainer( noticeContexts.BILLING_ADDRESS );
+		}
+		return () => {
+			if ( useShippingAsBilling ) {
+				unregisterContainer( noticeContexts.BILLING_ADDRESS );
+			}
+		};
+	}, [ registerContainer, unregisterContainer, useShippingAsBilling ] );
 
 	const addressFieldsConfig = useMemo( () => {
 		return {
