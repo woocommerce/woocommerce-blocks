@@ -48,7 +48,7 @@ class PaymentMethodErrorBoundary extends Component {
 			return (
 				<StoreNoticesContainer
 					additionalNotices={ notices }
-					context={ noticeContexts.PAYMENTS }
+					contexts={ [ noticeContexts.PAYMENTS ] }
 				/>
 			);
 		}

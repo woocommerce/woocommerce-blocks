@@ -61,7 +61,7 @@ const CheckoutExpressPayment = () => {
 		if ( isEditor || CURRENT_USER_IS_ADMIN ) {
 			return (
 				<StoreNoticesContainer
-					context={ noticeContexts.EXPRESS_PAYMENTS }
+					contexts={ [ noticeContexts.EXPRESS_PAYMENTS ] }
 				/>
 			);
 		}
@@ -98,7 +98,7 @@ const CheckoutExpressPayment = () => {
 					</div>
 					<div className="wc-block-components-express-payment__content">
 						<StoreNoticesContainer
-							context={ noticeContexts.EXPRESS_PAYMENTS }
+							contexts={ [ noticeContexts.EXPRESS_PAYMENTS ] }
 						/>
 						<ExpressPaymentMethods />
 					</div>

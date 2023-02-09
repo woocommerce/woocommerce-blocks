@@ -43,7 +43,7 @@ const Block = ( { isLoading, product, children }: BlockProps ) => {
 				product={ product }
 				isLoading={ isLoading }
 			>
-				<StoreNoticesContainer context={ noticeContext } />
+				<StoreNoticesContainer contexts={ [ noticeContext ] } />
 				<div className={ className }>{ children }</div>
 			</ProductDataContextProvider>
 		</InnerBlockLayoutContextProvider>

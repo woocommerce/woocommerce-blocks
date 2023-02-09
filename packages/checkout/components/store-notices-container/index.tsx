@@ -8,7 +8,6 @@ import {
 } from '@woocommerce/block-data';
 import { getNoticeContexts } from '@woocommerce/base-utils';
 import type { Notice } from '@wordpress/notices';
-import { useMemo } from '@wordpress/element';
 
 /**
  * Internal dependencies
@@ -36,8 +35,7 @@ const removeDuplicateNotices = (
 
 const StoreNoticesContainer = ( {
 	className = '',
-	context,
-	capturedContexts = [],
+	contexts,
 	additionalNotices = [],
 }: StoreNoticesContainerProps ): JSX.Element | null => {
 	const { suppressNotices, registeredContainers } = useSelect(
@@ -54,16 +52,13 @@ const StoreNoticesContainer = ( {
 	const allContexts = getNoticeContexts();
 	const unregisteredSubContexts = allContexts.filter(
 		( subContext: string ) =>
-			subContext.includes( context + '/' ) &&
-			! registeredContainers.includes( subContext )
+			contexts.some( ( context ) =>
+				subContext.includes( context + '/' )
+			) && ! registeredContainers.includes( subContext )
 	);
-	const contexts = useMemo(
-		() => [ context, ...capturedContexts ],
-		[ capturedContexts, context ]
-	);
+
 	// Get notices from the current context and any sub-contexts and append the name of the context to the notice
 	// objects for later reference.
-
 	const notices = useSelect< StoreNotice[] >( ( select ) => {
 		const { getNotices } = select( 'core/notices' );
 
@@ -71,12 +66,11 @@ const StoreNoticesContainer = ( {
 			...unregisteredSubContexts.flatMap( ( subContext: string ) =>
 				formatNotices( getNotices( subContext ), subContext )
 			),
-			...capturedContexts.flatMap( ( capturedNotice: string ) =>
-				formatNotices( getNotices( capturedNotice ), capturedNotice )
-			),
-			...formatNotices(
-				getNotices( context ).concat( additionalNotices ),
-				context
+			...contexts.flatMap( ( subContext: string ) =>
+				formatNotices(
+					getNotices( subContext ).concat( additionalNotices ),
+					subContext
+				)
 			),
 		]
 			.filter( removeDuplicateNotices )
