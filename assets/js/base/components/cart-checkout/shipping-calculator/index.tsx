@@ -32,9 +32,7 @@ const ShippingCalculator = ( {
 	const { shippingAddress } = useCustomerData();
 	return (
 		<div className="wc-block-components-shipping-calculator">
-			<StoreNoticesContainer
-				contexts={ [ 'wc/cart/shipping-calculator' ] }
-			/>
+			<StoreNoticesContainer context={ 'wc/cart/shipping-calculator' } />
 			<ShippingCalculatorAddress
 				address={ shippingAddress }
 				addressFields={ addressFields }

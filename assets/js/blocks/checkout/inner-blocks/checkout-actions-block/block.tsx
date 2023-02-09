@@ -45,7 +45,7 @@ const Block = ( {
 			className={ classnames( 'wc-block-checkout__actions', className ) }
 		>
 			<StoreNoticesContainer
-				contexts={ [ noticeContexts.CHECKOUT_ACTIONS ] }
+				context={ noticeContexts.CHECKOUT_ACTIONS }
 			/>
 			<div className="wc-block-checkout__actions_row">
 				{ showReturnToCart && (

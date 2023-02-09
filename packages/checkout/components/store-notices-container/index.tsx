@@ -35,7 +35,7 @@ const removeDuplicateNotices = (
 
 const StoreNoticesContainer = ( {
 	className = '',
-	contexts,
+	context,
 	additionalNotices = [],
 }: StoreNoticesContainerProps ): JSX.Element | null => {
 	const { suppressNotices, registeredContainers } = useSelect(
@@ -47,13 +47,13 @@ const StoreNoticesContainer = ( {
 			).getRegisteredContainers(),
 		} )
 	);
-
+	const contexts = Array.isArray( context ) ? context : [ context ];
 	// Find sub-contexts that have not been registered. We will show notices from those contexts here too.
 	const allContexts = getNoticeContexts();
 	const unregisteredSubContexts = allContexts.filter(
 		( subContext: string ) =>
-			contexts.some( ( context ) =>
-				subContext.includes( context + '/' )
+			contexts.some( ( _context: string ) =>
+				subContext.includes( _context + '/' )
 			) && ! registeredContainers.includes( subContext )
 	);
 
