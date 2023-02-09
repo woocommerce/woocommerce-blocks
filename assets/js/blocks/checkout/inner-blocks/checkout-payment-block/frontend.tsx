@@ -49,7 +49,7 @@ const FrontendBlock = ( {
 			description={ description }
 			showStepNumber={ showStepNumber }
 		>
-			<StoreNoticesContainer context={ noticeContexts.PAYMENTS } />
+			<StoreNoticesContainer contexts={ [ noticeContexts.PAYMENTS ] } />
 			<Block />
 			{ children }
 		</FormStep>

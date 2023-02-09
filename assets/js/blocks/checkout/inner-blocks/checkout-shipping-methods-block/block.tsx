@@ -102,7 +102,7 @@ const Block = (): JSX.Element | null => {
 	return (
 		<>
 			<StoreNoticesContainer
-				context={ noticeContexts.SHIPPING_METHODS }
+				contexts={ [ noticeContexts.SHIPPING_METHODS ] }
 			/>
 			{ isEditor && ! shippingRatesPackageCount ? (
 				<NoShippingPlaceholder />

@@ -47,14 +47,12 @@ const StoreNoticesContainer = ( {
 	const allContexts = getNoticeContexts();
 	const unregisteredSubContexts = allContexts.filter(
 		( subContext: string ) =>
-			contexts.some( ( _context: string ) =>
-				subContext.includes( _context + '/' )
-			) && ! registeredContainers.includes( subContext )
+			subContext.includes( context + '/' ) &&
+			! registeredContainers.includes( subContext )
 	);
 
 	// Get notices from the current context and any sub-contexts and append the name of the context to the notice
 	// objects for later reference.
-
 	const notices = useSelect< StoreNotice[] >( ( select ) => {
 		const { getNotices } = select( 'core/notices' );
 
@@ -68,9 +66,7 @@ const StoreNoticesContainer = ( {
 					subContext
 				)
 			),
-		]
-			.filter( removeDuplicateNotices )
-			.filter( Boolean ) as StoreNotice[];
+		].filter( Boolean ) as StoreNotice[];
 	} );
 	if ( suppressNotices || ! notices.length ) {
 		return null;

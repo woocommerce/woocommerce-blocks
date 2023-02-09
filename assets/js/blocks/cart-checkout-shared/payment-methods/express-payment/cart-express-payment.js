@@ -65,7 +65,7 @@ const CartExpressPayment = () => {
 				<div className="wc-block-components-express-payment wc-block-components-express-payment--cart">
 					<div className="wc-block-components-express-payment__content">
 						<StoreNoticesContainer
-							context={ noticeContexts.EXPRESS_PAYMENTS }
+							contexts={ [ noticeContexts.EXPRESS_PAYMENTS ] }
 						/>
 						<ExpressPaymentMethods />
 					</div>

@@ -8,10 +8,9 @@ import type {
 
 export interface StoreNoticesContainerProps {
 	className?: string | undefined;
-	context: string | string[];
+	context?: string | string[];
 	// List of additional notices that were added inline and not stored in the `core/notices` store.
 	additionalNotices?: ( NoticeType & NoticeOptions )[];
-	capturedContexts: string[];
 }
 
 export type StoreNotice = NoticeType & NoticeOptions;
