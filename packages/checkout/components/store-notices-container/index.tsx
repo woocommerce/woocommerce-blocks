@@ -47,8 +47,9 @@ const StoreNoticesContainer = ( {
 	const allContexts = getNoticeContexts();
 	const unregisteredSubContexts = allContexts.filter(
 		( subContext: string ) =>
-			subContext.includes( context + '/' ) &&
-			! registeredContainers.includes( subContext )
+			contexts.some( ( _context: string ) =>
+				subContext.includes( _context + '/' )
+			) && ! registeredContainers.includes( subContext )
 	);
 
 	// Get notices from the current context and any sub-contexts and append the name of the context to the notice
