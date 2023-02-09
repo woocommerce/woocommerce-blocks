@@ -16,9 +16,17 @@ import { getClassNameFromStatus } from './utils';
 import type { StoreNotice } from './types';
 
 const StoreNotices = ( {
+<<<<<<< HEAD
 	className,
 	notices,
 }: {
+=======
+	context,
+	className,
+	notices,
+}: {
+	context: string | string[];
+>>>>>>> a99279d33 (support context as array in StoreNotice)
 	className: string;
 	notices: StoreNotice[];
 } ): JSX.Element => {
@@ -59,6 +67,16 @@ const StoreNotices = ( {
 		}
 	}, [ noticeIds, previousNoticeIds, ref ] );
 	// Register the container context with the parent.
+<<<<<<< HEAD
+=======
+	useEffect( () => {
+		const contexts = Array.isArray( context ) ? context : [ context ];
+		contexts.map( ( _context ) => registerContainer( _context ) );
+		return () => {
+			contexts.map( ( _context ) => unregisterContainer( _context ) );
+		};
+	}, [ context, registerContainer, unregisterContainer ] );
+>>>>>>> a99279d33 (support context as array in StoreNotice)
 
 	// Group notices by whether or not they are dismissible. Dismissible notices can be grouped.
 	const dismissibleNotices = notices.filter(
