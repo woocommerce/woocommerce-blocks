@@ -37,7 +37,7 @@ class Block extends Component {
 				parentName="woocommerce/all-products"
 				parentClassName="wc-block-grid"
 			>
-				<StoreNoticesContainer contexts={ [ 'wc/all-products' ] } />
+				<StoreNoticesContainer context={ 'wc/all-products' } />
 				<ProductListContainer
 					attributes={ attributes }
 					urlParameterSuffix={ urlParameterSuffix }

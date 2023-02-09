@@ -84,7 +84,7 @@ const StoreNoticesContainer = ( {
 		<>
 			<StoreNotices
 				className={ className }
-				contexts={ contexts }
+				context={ contexts }
 				notices={ notices.filter(
 					( notice ) => notice.type === 'default'
 				) }

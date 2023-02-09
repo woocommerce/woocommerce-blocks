@@ -5,7 +5,6 @@
 -   [Notices in WooCommerce Blocks](#notices-in-woocommerce-blocks)
     -   [`StoreNoticesContainer`](#storenoticescontainer)
 -   [Snackbar notices in WooCommerce Blocks](#snackbar-notices-in-woocommerce-blocks)
-    -   [`SnackbarNoticesContainer`](#snackbarnoticescontainer)
 
 ## Notices in WooCommerce Blocks
 
@@ -73,18 +72,4 @@ dispatch( 'core/notices' ).createNotice(
 	},
 	'snackbar-notice-id'
 );
-```
-
-### `SnackbarNoticesContainer`
-
-To display snackbar notices, use the `SnackbarNoticesContainer` component. This component is rendered with the Cart and Checkout blocks, so there is no need to add another. The context it displays notices for is `default`. If, for some reason you do need to show snackbar messages for a different context, you can render this component again and pass the context as a prop to the component.
-
-```jsx
-import { SnackbarNoticesContainer } from '@woocommerce/base-components/snackbar-notices-container';
-
-const AlternativeSnackbarNotices = () => {
-	return (
-		<SnackbarNoticesContainer context="wc/alternative-snackbar-notices" />
-	);
-};
 ```

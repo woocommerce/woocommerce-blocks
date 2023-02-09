@@ -17,11 +17,11 @@ import { getClassNameFromStatus } from './utils';
 import type { StoreNotice } from './types';
 
 const StoreNotices = ( {
-	contexts,
+	context,
 	className,
 	notices,
 }: {
-	contexts: string[];
+	context: string | string[];
 	className: string;
 	notices: StoreNotice[];
 } ): JSX.Element => {
@@ -64,14 +64,14 @@ const StoreNotices = ( {
 			} );
 		}
 	}, [ noticeIds, previousNoticeIds, ref ] );
-
 	// Register the container context with the parent.
 	useEffect( () => {
-		contexts.map( ( context ) => registerContainer( context ) );
+		const contexts = Array.isArray( context ) ? context : [ context ];
+		contexts.map( ( _context ) => registerContainer( _context ) );
 		return () => {
-			contexts.map( ( context ) => unregisterContainer( context ) );
+			contexts.map( ( _context ) => unregisterContainer( _context ) );
 		};
-	}, [ contexts, registerContainer, unregisterContainer ] );
+	}, [ context, registerContainer, unregisterContainer ] );
 
 	// Group notices by whether or not they are dismissible. Dismissible notices can be grouped.
 	const dismissibleNotices = notices.filter(
