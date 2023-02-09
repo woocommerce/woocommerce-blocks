@@ -117,6 +117,17 @@ const StoreNotices = ( {
 					if ( ! noticeGroup.length ) {
 						return null;
 					}
+					const uniqueNotices = noticeGroup.filter(
+						(
+							notice: Notice,
+							noticeIndex: number,
+							noticesArray: Notice[]
+						) =>
+							noticesArray.findIndex(
+								( _notice: Notice ) =>
+									_notice.content === notice.content
+							) === noticeIndex
+					);
 					return (
 						<Notice
 							key={ `store-notice-${ status }` }
@@ -130,7 +141,7 @@ const StoreNotices = ( {
 								} );
 							} }
 						>
-							{ noticeGroup.length === 1 ? (
+							{ uniqueNotices.length === 1 ? (
 								<>
 									{ sanitizeHTML(
 										decodeEntities(
@@ -140,7 +151,7 @@ const StoreNotices = ( {
 								</>
 							) : (
 								<ul>
-									{ noticeGroup.map( ( notice ) => (
+									{ uniqueNotices.map( ( notice ) => (
 										<li
 											key={
 												notice.id + '-' + notice.context

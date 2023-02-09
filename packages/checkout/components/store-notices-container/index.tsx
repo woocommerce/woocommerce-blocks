@@ -24,15 +24,6 @@ const formatNotices = ( notices: Notice[], context: string ): StoreNotice[] => {
 	} ) ) as StoreNotice[];
 };
 
-const removeDuplicateNotices = (
-	notice: Notice,
-	noticeIndex: number,
-	noticesArray: Notice[]
-) =>
-	noticesArray.findIndex(
-		( _notice: Notice ) => _notice.content === notice.content
-	) === noticeIndex;
-
 const StoreNoticesContainer = ( {
 	className = '',
 	context,
@@ -72,9 +63,7 @@ const StoreNoticesContainer = ( {
 					subContext
 				)
 			),
-		]
-			.filter( removeDuplicateNotices )
-			.filter( Boolean ) as StoreNotice[];
+		].filter( Boolean ) as StoreNotice[];
 	} );
 	if ( suppressNotices || ! notices.length ) {
 		return null;
