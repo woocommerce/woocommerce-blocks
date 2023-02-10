@@ -8,7 +8,6 @@ import { sanitizeHTML } from '@woocommerce/utils';
 import { useDispatch } from '@wordpress/data';
 import { usePrevious } from '@woocommerce/base-hooks';
 import { decodeEntities } from '@wordpress/html-entities';
-import { STORE_NOTICES_STORE_KEY } from '@woocommerce/block-data';
 
 /**
  * Internal dependencies
@@ -17,19 +16,14 @@ import { getClassNameFromStatus } from './utils';
 import type { StoreNotice } from './types';
 
 const StoreNotices = ( {
-	context,
 	className,
 	notices,
 }: {
-	context: string;
 	className: string;
 	notices: StoreNotice[];
 } ): JSX.Element => {
 	const ref = useRef< HTMLDivElement >( null );
 	const { removeNotice } = useDispatch( 'core/notices' );
-	const { registerContainer, unregisterContainer } = useDispatch(
-		STORE_NOTICES_STORE_KEY
-	);
 	const noticeIds = notices.map( ( notice ) => notice.id );
 	const previousNoticeIds = usePrevious( noticeIds );
 
@@ -64,14 +58,6 @@ const StoreNotices = ( {
 			} );
 		}
 	}, [ noticeIds, previousNoticeIds, ref ] );
-
-	// Register the container context with the parent.
-	useEffect( () => {
-		registerContainer( context );
-		return () => {
-			unregisterContainer( context );
-		};
-	}, [ context, registerContainer, unregisterContainer ] );
 
 	// Group notices by whether or not they are dismissible. Dismissible notices can be grouped.
 	const dismissibleNotices = notices.filter(
@@ -117,6 +103,17 @@ const StoreNotices = ( {
 					if ( ! noticeGroup.length ) {
 						return null;
 					}
+					const uniqueNotices = noticeGroup.filter(
+						(
+							notice: Notice,
+							noticeIndex: number,
+							noticesArray: Notice[]
+						) =>
+							noticesArray.findIndex(
+								( _notice: Notice ) =>
+									_notice.content === notice.content
+							) === noticeIndex
+					);
 					return (
 						<Notice
 							key={ `store-notice-${ status }` }
@@ -130,7 +127,7 @@ const StoreNotices = ( {
 								} );
 							} }
 						>
-							{ noticeGroup.length === 1 ? (
+							{ uniqueNotices.length === 1 ? (
 								<>
 									{ sanitizeHTML(
 										decodeEntities(
@@ -140,7 +137,7 @@ const StoreNotices = ( {
 								</>
 							) : (
 								<ul>
-									{ noticeGroup.map( ( notice ) => (
+									{ uniqueNotices.map( ( notice ) => (
 										<li
 											key={
 												notice.id + '-' + notice.context
