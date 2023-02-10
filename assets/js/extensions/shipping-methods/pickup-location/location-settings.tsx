@@ -137,7 +137,7 @@ const LocationSettings = () => {
 									address: {
 										address_1: '',
 										city: '',
-										state: '',
+										state: readOnlySettings.storeState,
 										postcode: '',
 										country: readOnlySettings.storeCountry,
 									},
