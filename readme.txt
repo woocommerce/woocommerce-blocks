@@ -80,6 +80,13 @@ Release and roadmap notes available on the [WooCommerce Developers Blog](https:/
 
 == Changelog ==
 
+= 9.5.1 - 2023-02-10 =
+
+#### Bug Fixes
+
+- Fix a bug where certain checkout fields were being reset when changing the shipping option. ([8440](https://github.com/woocommerce/woocommerce-blocks/pull/8400))
+- Fix bug in which errors would be shown twice in Checkout block. ([8390](https://github.com/woocommerce/woocommerce-blocks/pull/8390))
+
 = 9.5.0 - 2023-01-30 =
 
 #### Enhancements
