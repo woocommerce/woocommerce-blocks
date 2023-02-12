@@ -97,7 +97,7 @@ export interface QueryBlockQuery {
 	orderBy: 'date' | 'relevance' | 'title';
 	pages?: number;
 	parents?: number[];
-	perPage?: number;
+	perPage: number;
 	postType: string;
 	search?: string;
 	sticky?: string;

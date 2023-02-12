@@ -3,3 +3,19 @@
 		grid-column: 1 / -1;
 	}
 }
+
+.wc-block-controls-container {
+	align-items: center;
+	display: grid;
+	grid-template-columns: auto 1fr auto;
+	grid-template-rows: 16px auto;
+
+	.components-base-control {
+		margin-bottom: 0;
+	}
+}
+
+.woo-inherit-query-toggle {
+	grid-column-start: 1;
+	grid-column-end: 3;
+}
