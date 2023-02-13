@@ -26,7 +26,7 @@
 
 				&:hover {
 					text-decoration: none;
-					color: lighten($black, 10%);
+					color: color.adjust($black, $lightness: 10%);
 				}
 			}
 
