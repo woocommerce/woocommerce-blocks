@@ -10,7 +10,7 @@ import { visitBlockPage } from '@woocommerce/blocks-test-utils';
 import { insertBlockDontWaitForInsertClose } from '../../utils.js';
 
 const block = {
-	name: 'Single Product Details',
+	name: 'Product Details',
 	slug: 'woocommerce/single-product-details',
 	class: '.wc-block-single-product-details',
 };
