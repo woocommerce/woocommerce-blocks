@@ -13,6 +13,7 @@ import metadata from './block.json';
 
 registerBlockSingleProductTemplate( {
 	registerBlockFn: () => {
+		// @ts-expect-error: `registerBlockType` is a function that is typed in WordPress core.
 		registerBlockType( metadata, {
 			icon,
 			edit,
