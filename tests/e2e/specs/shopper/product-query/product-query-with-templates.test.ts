@@ -30,7 +30,7 @@ describe( `${ block.name } Block`, () => {
 	useTheme( 'emptytheme' );
 
 	describe( 'with All Templates', () => {
-		beforeAll( async () => {
+		beforeEach( async () => {
 			const productCatalogTemplateId =
 				'woocommerce/woocommerce//archive-product';
 
