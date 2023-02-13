@@ -123,8 +123,7 @@ The WooCommerce Blocks Handbook provides documentation for designers and develop
 
 ### Tools
 
--   [@woocommerce/extend-cart-checkout-block](https://www.npmjs.com/package/@woocommerce/extend-cart-checkout-block) This is a template to be used with @wordpress/create-block to create a WooCommerce Blocks extension starting point.
--   [How to integrate with inner blocks in the WooCommerce Blocks Checkout](https://github.com/woocommerce/newsletter-test) A repository with some example code showing how an extension can register an inner block for use in the Checkout Block.
+-   [@woocommerce/extend-cart-checkout-block](https://www.npmjs.com/package/@woocommerce/extend-cart-checkout-block) This is a template to be used with @wordpress/create-block to create a WooCommerce Blocks extension starting point. It also showcases how to use some extensibility points, like registering an inner block in the Checkout Block.
 
 ### Articles
 
