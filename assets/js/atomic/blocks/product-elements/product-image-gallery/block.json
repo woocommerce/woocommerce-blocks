@@ -2,8 +2,8 @@
 	"name": "woocommerce/product-image-gallery",
 	"version": "1.0.0",
 	"title": "Product Image Gallery",
-	"icon": "image",
-	"description": "Display the main product images.",
+	"icon": "gallery",
+	"description": "Display a product's images.",
 	"category": "woocommerce",
 	"supports": {
 		"align": true,

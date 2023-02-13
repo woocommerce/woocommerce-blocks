@@ -16,7 +16,7 @@ const Placeholder = () => {
 	return (
 		<div className="wc-block-editor-product-gallery">
 			<img
-				src={ `${ WC_BLOCKS_IMAGE_URL }template-placeholders/fallback.svg` }
+				src={ `${ WC_BLOCKS_IMAGE_URL }block-placeholders/product-image-gallery.svg` }
 				alt="Placeholder"
 			/>
 			<div className="wc-block-editor-product-gallery__other-images">
@@ -24,7 +24,7 @@ const Placeholder = () => {
 					return (
 						<img
 							key={ index }
-							src={ `${ WC_BLOCKS_IMAGE_URL }template-placeholders/fallback.svg` }
+							src={ `${ WC_BLOCKS_IMAGE_URL }block-placeholders/product-image-gallery.svg` }
 							alt="Placeholder"
 						/>
 					);
