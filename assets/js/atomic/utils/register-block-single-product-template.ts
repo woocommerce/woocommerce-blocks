@@ -42,6 +42,5 @@ export const registerBlockSingleProductTemplate = ( {
 		if ( block !== undefined ) {
 			unregisterBlockFn();
 		}
-		// @ts-expect-error: The type definition for `subscribe` is incorrect. This PR fixes it: https://github.com/DefinitelyTyped/DefinitelyTyped/pull/64177
 	}, 'core/edit-site' );
 };
