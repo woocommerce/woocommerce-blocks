@@ -1,7 +1,7 @@
 /**
  * External dependencies
  */
-import { Placeholder } from 'wordpress-components';
+import { Placeholder } from '@woocommerce/wordpress-components';
 
 const GroupedProducts = () => {
 	return (

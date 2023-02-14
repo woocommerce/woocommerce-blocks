@@ -2,7 +2,8 @@
  * External dependencies
  */
 import { __ } from '@wordpress/i18n';
-import { Placeholder, Button } from 'wordpress-components';
+import { Button } from 'wordpress-components';
+import { Placeholder } from '@woocommerce/wordpress-components';
 import { Icon, shipping } from '@wordpress/icons';
 import { ADMIN_URL } from '@woocommerce/settings';
 
