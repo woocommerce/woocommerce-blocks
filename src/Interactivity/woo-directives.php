@@ -17,14 +17,14 @@ require_once __DIR__ . '/directives/tags/woo-context.php';
 function woo_directives_register_scripts() {
 	wp_register_script(
 		'woo-directives-vendors',
-		plugins_url( 'build/woo-directives-vendors.js', __FILE__ ),
+		plugins_url( '../../build/woo-directives-vendors.js', __FILE__ ),
 		array(),
 		'1.0.0',
 		true
 	);
 	wp_register_script(
 		'woo-directives-runtime',
-		plugins_url( 'build/woo-directives-runtime.js', __FILE__ ),
+		plugins_url( '../../build/woo-directives-runtime.js', __FILE__ ),
 		array( 'woo-directives-vendors' ),
 		'1.0.0',
 		true
