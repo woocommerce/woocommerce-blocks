@@ -3,13 +3,13 @@
 namespace Automattic\WooCommerce\Blocks\Tests\Templates;
 
 use \WP_UnitTestCase;
-use Automattic\WooCommerce\Blocks\Templates\BlockTemplatesCompatibility;
+use Automattic\WooCommerce\Blocks\Templates\SingleProductTemplateCompatibility;
 
 /**
- * Tests the BlockTemplatesCompatibility class
+ * Tests the SingleProductTemplateCompatibility class
  *
  */
-class BlockTemplatesCompatibilityTests extends WP_UnitTestCase {
+class SingleProductTemplateCompatibilityTests extends WP_UnitTestCase {
 
 	/**
 	 * Test that the default Single Product Template is not wrapped in a div.
@@ -35,7 +35,7 @@ class BlockTemplatesCompatibilityTests extends WP_UnitTestCase {
 		<!-- /wp:group -->
 		<!-- wp:template-part {"slug":"footer","theme":"twentytwentythree","tagName":"footer"} /-->';
 
-		$result = BlockTemplatesCompatibility::wrap_single_product_template( $default_single_product_template );
+		$result = SingleProductTemplateCompatibility::wrap_single_product_template( $default_single_product_template );
 
 		$result_without_withespace                           = preg_replace( '/\s+/', '', $result );
 		$expected_single_product_template_without_whitespace = preg_replace( '/\s+/', '', $expected_single_product_template );
@@ -70,7 +70,7 @@ class BlockTemplatesCompatibilityTests extends WP_UnitTestCase {
 		<!-- /wp:group -->
 		<!-- wp:template-part {"slug":"footer","theme":"twentytwentythree","tagName":"footer"} /-->';
 
-		$result = BlockTemplatesCompatibility::wrap_single_product_template( $default_single_product_template );
+		$result = SingleProductTemplateCompatibility::wrap_single_product_template( $default_single_product_template );
 
 		$result_without_withespace                           = preg_replace( '/\s+/', '', $result );
 		$expected_single_product_template_without_whitespace = preg_replace( '/\s+/', '', $expected_single_product_template );
@@ -153,7 +153,7 @@ class BlockTemplatesCompatibilityTests extends WP_UnitTestCase {
 		<!-- /wp:group -->
 		<!-- wp:template-part {"slug":"footer","theme":"twentytwentythree","tagName":"footer"} /-->';
 
-		$result = BlockTemplatesCompatibility::wrap_single_product_template( $default_single_product_template );
+		$result = SingleProductTemplateCompatibility::wrap_single_product_template( $default_single_product_template );
 
 		$result_without_withespace                           = preg_replace( '/\s+/', '', $result );
 		$expected_single_product_template_without_whitespace = preg_replace( '/\s+/', '', $expected_single_product_template );
@@ -220,7 +220,7 @@ class BlockTemplatesCompatibilityTests extends WP_UnitTestCase {
 		<!-- /wp:group -->
 		<!-- wp:template-part {"slug":"footer","theme":"twentytwentythree","tagName":"footer"} /-->';
 
-		$result = BlockTemplatesCompatibility::wrap_single_product_template( $default_single_product_template );
+		$result = SingleProductTemplateCompatibility::wrap_single_product_template( $default_single_product_template );
 
 		$result_without_withespace                           = preg_replace( '/\s+/', '', $result );
 		$expected_single_product_template_without_whitespace = preg_replace( '/\s+/', '', $expected_single_product_template );
@@ -249,7 +249,7 @@ class BlockTemplatesCompatibilityTests extends WP_UnitTestCase {
 		<!-- /wp:group -->
 		<!-- wp:template-part {"slug":"footer","theme":"twentytwentythree","tagName":"footer"} /-->';
 
-		$result = BlockTemplatesCompatibility::wrap_single_product_template( $default_single_product_template );
+		$result = SingleProductTemplateCompatibility::wrap_single_product_template( $default_single_product_template );
 
 		$result_without_withespace                           = preg_replace( '/\s+/', '', $result );
 		$expected_single_product_template_without_whitespace = preg_replace( '/\s+/', '', $expected_single_product_template );
@@ -279,7 +279,7 @@ class BlockTemplatesCompatibilityTests extends WP_UnitTestCase {
 		<!-- wp:template-part {"slug":"footer","theme":"twentytwentythree","tagName":"footer"} /-->
 		<!-- wp:template-part {"slug":"footer","theme":"twentytwentythree","tagName":"footer"} /-->';
 
-		$result = BlockTemplatesCompatibility::wrap_single_product_template( $default_single_product_template );
+		$result = SingleProductTemplateCompatibility::wrap_single_product_template( $default_single_product_template );
 
 		$result_without_withespace                           = preg_replace( '/\s+/', '', $result );
 		$expected_single_product_template_without_whitespace = preg_replace( '/\s+/', '', $expected_single_product_template );
@@ -320,7 +320,7 @@ class BlockTemplatesCompatibilityTests extends WP_UnitTestCase {
 		<!-- /wp:group -->
 		<!-- wp:template-part {"slug":"footer","theme":"twentytwentythree","tagName":"footer"} /-->';
 
-		$result = BlockTemplatesCompatibility::wrap_single_product_template( $default_single_product_template );
+		$result = SingleProductTemplateCompatibility::wrap_single_product_template( $default_single_product_template );
 
 		$result_without_withespace                           = preg_replace( '/\s+/', '', $result );
 		$expected_single_product_template_without_whitespace = preg_replace( '/\s+/', '', $expected_single_product_template );
