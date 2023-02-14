@@ -2,18 +2,16 @@
 
 namespace Automattic\WooCommerce\Blocks\BlockTypes;
 
-use Automattic\WooCommerce\Blocks\Utils\StyleAttributesUtils;
-
 /**
- * SingleProductDetails class.
+ * ProductDetails class.
  */
-class SingleProductDetails extends AbstractBlock {
+class ProductDetails extends AbstractBlock {
 	/**
 	 * Block name.
 	 *
 	 * @var string
 	 */
-	protected $block_name = 'single-product-details';
+	protected $block_name = 'product-details';
 
 	/**
 	 * Render the block.
