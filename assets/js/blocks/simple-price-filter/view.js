@@ -24,21 +24,9 @@ const getHrefWithFilters = ( { state } ) => {
 	return url.href;
 };
 
-const initialSearchParams = new URL( window.location.href ).searchParams;
-
-// TODO: get this values from SSR
-const ssrMaxRange = 90;
-const ssrMinPrice =
-	parseFloat( initialSearchParams.get( 'min_price' ) || '' ) || 0;
-const ssrMaxPrice =
-	parseFloat( initialSearchParams.get( 'max_price' ) || '' ) || ssrMaxRange;
-
 store( {
 	state: {
 		filters: {
-			minPrice: ssrMinPrice,
-			maxPrice: ssrMaxPrice,
-			maxRange: ssrMaxRange,
 			isMinActive: true,
 			isMaxActive: false,
 		},
