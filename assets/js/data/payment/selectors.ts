@@ -25,7 +25,7 @@ if ( getSetting( 'globalPaymentMethods' ) ) {
 
 export const isPaymentPristine = ( state: PaymentState ) => {
 	deprecated( 'isPaymentPristine', {
-		since: '9.3.0',
+		since: '9.6.0',
 		alternative: 'isPaymentIdle',
 		plugin: 'WooCommerce Blocks',
 		link: 'https://github.com/woocommerce/woocommerce-blocks/pull/8110',
