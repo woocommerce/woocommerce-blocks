@@ -27,12 +27,6 @@ const getHrefWithFilters = ( { state } ) => {
 store( {
 	state: {
 		filters: {
-			isMinActive: true,
-			isMaxActive: false,
-		},
-	},
-	derived: {
-		filters: {
 			rangeStyle: ( { state } ) => {
 				const { minPrice, maxPrice, maxRange } = state.filters;
 				return {
