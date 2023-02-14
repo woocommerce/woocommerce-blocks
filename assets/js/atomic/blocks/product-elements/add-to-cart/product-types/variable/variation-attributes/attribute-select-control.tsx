@@ -3,8 +3,10 @@
  */
 import { __ } from '@wordpress/i18n';
 import { decodeEntities } from '@wordpress/html-entities';
-import { SelectControl } from 'wordpress-components';
-import type { SelectControl as SelectControlType } from '@wordpress/components';
+import {
+	SelectControl,
+	type SelectControl as SelectControlType,
+} from '@woocommerce/wordpress-components';
 import { useEffect } from 'react';
 import classnames from 'classnames';
 import { ValidationInputError } from '@woocommerce/blocks-checkout';
