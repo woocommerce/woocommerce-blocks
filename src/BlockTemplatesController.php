@@ -72,7 +72,7 @@ class BlockTemplatesController {
 			add_action( 'after_switch_theme', array( $this, 'check_should_use_blockified_product_grid_templates' ), 10, 2 );
 		}
 
-		add_single_product_post_types();
+		$this->add_single_product_post_types();
 	}
 
 
