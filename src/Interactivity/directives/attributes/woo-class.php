@@ -7,7 +7,7 @@ function process_woo_class( $tags, $context ) {
 		return;
 	}
 
-	$prefixed_attributes = $tags->get_attribute_names_with_prefix( 'woo-class:' );
+	$prefixed_attributes = $tags->get_attribute_names_with_prefix( 'data-woo-class:' );
 
 	foreach ( $prefixed_attributes as $attr ) {
 		list( , $class_name ) = explode( ':', $attr );

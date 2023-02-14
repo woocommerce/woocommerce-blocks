@@ -7,7 +7,7 @@ function process_woo_bind( $tags, $context ) {
 		return;
 	}
 
-	$prefixed_attributes = $tags->get_attribute_names_with_prefix( 'woo-bind:' );
+	$prefixed_attributes = $tags->get_attribute_names_with_prefix( 'data-woo-bind:' );
 
 	foreach ( $prefixed_attributes as $attr ) {
 		list( , $bound_attr ) = explode( ':', $attr );
