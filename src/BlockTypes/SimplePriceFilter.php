@@ -30,35 +30,37 @@ class SimplePriceFilter extends AbstractBlock {
 		$min_price          = get_query_var( self::MIN_PRICE_QUERY_VAR, 0 );
 		$max_price          = get_query_var( self::MAX_PRICE_QUERY_VAR, $max_range );
 
+		// CSS variables for the range bar style.
+		// TODO: Use style directive instead when available.
+		$__low       = 100 * $min_price / $max_range;
+		$__high      = 100 * $max_price / $max_range;
+		$range_style = "--low: $__low%; --high: $__high%";
+
 		store(
 			array(
 				'state' => array(
 					'filters' => array(
-						'minPrice' => $min_price,
-						'maxPrice' => $max_price,
-						'maxRange' => $max_range,
+						'minPrice'    => $min_price,
+						'maxPrice'    => $max_price,
+						'maxRange'    => $max_range,
+						'rangeStyle'  => $range_style,
+						'isMinActive' => true,
+						'isMaxActive' => false
 					)
 				)
 			)
 		);
-
-		// CSS variables for the range bar style.
-		$__low       = 100 * $min_price / $max_range;
-		$__high      = 100 * $max_price / $max_range;
-		$range_style = "--low: $__low%; --high: $__high%";
 
 		return "
 		<div $wrapper_attributes>
 			<h3>Filter by price</h3>
 			<div
 				class='range'
-				style='$range_style'
-				data-woo-bind:style='derived.filters.rangeStyle'
+				data-woo-bind:style='state.filters.rangeStyle'
 				data-woo-on:mousemove='actions.filters.updateActiveHandle'
 			>
 				<div class='range-bar'></div>
 				<input
-					class='active'
 					type='range'
 					value='$min_price'
 					min='0'
@@ -69,7 +71,6 @@ class SimplePriceFilter extends AbstractBlock {
 					data-woo-on:change='actions.filters.updateProducts'
 				>
 				<input
-					class=''
 					type='range'
 					value='$max_price'
 					min='0'
