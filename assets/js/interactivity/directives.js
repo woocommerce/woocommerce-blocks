@@ -91,19 +91,19 @@ export default () => {
 						className: name,
 						context: contextValue,
 					} );
+					const currentClass = element.props.class || '';
+					const classFinder = new RegExp(
+						`(^|\\s)${ name }(\\s|$)`,
+						'g'
+					);
 					if ( ! result )
-						element.props.class = element.props.class
-							.replace(
-								new RegExp( `(^|\\s)${ name }(\\s|$)`, 'g' ),
-								' '
-							)
+						element.props.class = currentClass
+							.replace( classFinder, ' ' )
 							.trim();
-					else if (
-						! new RegExp( `(^|\\s)${ name }(\\s|$)` ).test(
-							element.props.class
-						)
-					)
-						element.props.class += ` ${ name }`;
+					else if ( ! classFinder.test( currentClass ) )
+						element.props.class = currentClass
+							? `${ currentClass } ${ name }`
+							: name;
 
 					useEffect( () => {
 						// This seems necessary because Preact doesn't change the class names
