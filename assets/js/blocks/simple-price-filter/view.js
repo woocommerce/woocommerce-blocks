@@ -1,7 +1,7 @@
 /**
  * External dependencies
  */
-import { wpx } from '@woocommerce/interactivity/wpx';
+import { store } from '@woocommerce/interactivity/store';
 import { navigate } from '@woocommerce/interactivity/router';
 
 const getHrefWithFilters = ( { state } ) => {
@@ -33,7 +33,7 @@ const ssrMinPrice =
 const ssrMaxPrice =
 	parseFloat( initialSearchParams.get( 'max_price' ) || '' ) || ssrMaxRange;
 
-wpx( {
+store( {
 	state: {
 		filters: {
 			minPrice: ssrMinPrice,
