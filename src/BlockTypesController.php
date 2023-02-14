@@ -188,6 +188,7 @@ final class BlockTypesController {
 			'ProductCategory',
 			'ProductCategoryList',
 			'ProductImage',
+			'ProductImageGallery',
 			'ProductNew',
 			'ProductOnSale',
 			'ProductPrice',
