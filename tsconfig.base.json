@@ -39,6 +39,7 @@
 			],
 			"@woocommerce/base-hocs/*": [ "assets/js/base/hocs/*" ],
 			"@woocommerce/base-hooks": [ "assets/js/base/hooks" ],
+			"@woocommerce/wordpress-components": [ "assets/js/base/wordpress-components" ],
 			"@woocommerce/interactivity": [ "assets/js/interactivity" ],
 			"@woocommerce/interactivity/*": [ "assets/js/interactivity/*" ],
 			"@woocommerce/base-utils": [ "assets/js/base/utils" ],
