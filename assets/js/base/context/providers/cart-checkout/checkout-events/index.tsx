@@ -252,7 +252,7 @@ export const CheckoutEventsProvider = ( {
 	const previousStatus = usePrevious( checkoutStatus );
 	const previousHasError = usePrevious( checkoutHasError );
 
-	// Emit CHECKOUT_SUCCESS and CHECKOUT_FAL events
+	// Emit CHECKOUT_SUCCESS and CHECKOUT_FAIL events
 	// and set checkout errors according to the callback responses
 	useEffect( () => {
 		if (
