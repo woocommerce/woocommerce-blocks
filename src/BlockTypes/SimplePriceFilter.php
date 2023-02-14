@@ -62,9 +62,8 @@ class SimplePriceFilter extends AbstractBlock {
 				<div class='range-bar'></div>
 				<input
 					type='range'
-					value='$min_price'
 					min='0'
-					max='$max_range'
+					data-woo-bind:max='state.filters.maxRange'
 					data-woo-bind:value='state.filters.minPrice'
 					data-woo-class:active='state.filters.isMinActive'
 					data-woo-on:input='actions.filters.setMinPrice'
@@ -72,9 +71,8 @@ class SimplePriceFilter extends AbstractBlock {
 				>
 				<input
 					type='range'
-					value='$max_price'
 					min='0'
-					max='$max_range'
+					data-woo-bind:max='state.filters.maxRange'
 					data-woo-bind:value='state.filters.maxPrice'
 					data-woo-class:active='state.filters.isMaxActive'
 					data-woo-on:input='actions.filters.setMaxPrice'
@@ -84,14 +82,12 @@ class SimplePriceFilter extends AbstractBlock {
 			<div class='text'>
 				<input
 					type='text'
-					value='$min_price'
 					data-woo-bind:value='state.filters.minPrice'
 					data-woo-on:input='actions.filters.setMinPrice'
 					data-woo-on:change='actions.filters.updateProducts'
 				>
 				<input
 					type='text'
-					value='$max_price'
 					data-woo-bind:value='state.filters.maxPrice'
 					data-woo-on:input='actions.filters.setMaxPrice'
 					data-woo-on:change='actions.filters.updateProducts'
