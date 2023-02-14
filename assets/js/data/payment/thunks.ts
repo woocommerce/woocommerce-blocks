@@ -4,6 +4,7 @@
 import { store as noticesStore } from '@wordpress/notices';
 import deprecated from '@wordpress/deprecated';
 import type { BillingAddress, ShippingAddress } from '@woocommerce/settings';
+import { isObject, isString, objectHasProp } from '@woocommerce/types';
 
 /**
  * Internal dependencies
@@ -14,6 +15,7 @@ import {
 	isFailResponse,
 	isSuccessResponse,
 	noticeContexts,
+	ObserverResponse,
 } from '../../base/context/event-emit';
 import { EMIT_TYPES } from '../../base/context/providers/cart-checkout/payment-events/event-emit';
 import type { emitProcessingEventType } from './types';
@@ -22,6 +24,8 @@ import {
 	isBillingAddress,
 	isShippingAddress,
 } from '../../types/type-guards/address';
+import { isObserverResponse } from '../../types/type-guards/observers';
+import { isValidValidationErrorsObject } from '../../types/type-guards/validation';
 
 export const __internalSetExpressPaymentError = ( message?: string ) => {
 	return ( { registry } ) => {
@@ -57,15 +61,17 @@ export const __internalEmitPaymentProcessingEvent: emitProcessingEventType = (
 			EMIT_TYPES.PAYMENT_PROCESSING,
 			{}
 		).then( ( observerResponses ) => {
-			let successResponse,
-				errorResponse,
+			let successResponse: ObserverResponse | undefined,
+				errorResponse: ObserverResponse | undefined,
 				billingAddress: BillingAddress | undefined,
 				shippingAddress: ShippingAddress | undefined;
 			observerResponses.forEach( ( response ) => {
 				if ( isSuccessResponse( response ) ) {
-					// the last observer response always "wins" for success.
+					// The last observer response always "wins" for success.
 					successResponse = response;
 				}
+
+				// We consider both failed and error responses as an error.
 				if (
 					isErrorResponse( response ) ||
 					isFailResponse( response )
@@ -86,12 +92,13 @@ export const __internalEmitPaymentProcessingEvent: emitProcessingEventType = (
 					shippingData: shippingDataFromResponse,
 				} = response?.meta || {};
 
-				billingAddress = billingAddressFromResponse;
-				shippingAddress = shippingAddressFromResponse;
+				billingAddress = billingAddressFromResponse as BillingAddress;
+				shippingAddress =
+					shippingAddressFromResponse as ShippingAddress;
 
 				if ( billingDataFromResponse ) {
 					// Set this here so that old extensions still using billingData can set the billingAddress.
-					billingAddress = billingDataFromResponse;
+					billingAddress = billingDataFromResponse as BillingAddress;
 					deprecated(
 						'returning billingData from an onPaymentProcessing observer in WooCommerce Blocks',
 						{
@@ -104,7 +111,8 @@ export const __internalEmitPaymentProcessingEvent: emitProcessingEventType = (
 
 				if ( shippingDataFromResponse ) {
 					// Set this here so that old extensions still using shippingData can set the shippingAddress.
-					shippingAddress = shippingDataFromResponse;
+					shippingAddress =
+						shippingDataFromResponse as ShippingAddress;
 					deprecated(
 						'returning shippingData from an onPaymentProcessing observer in WooCommerce Blocks',
 						{
@@ -119,54 +127,85 @@ export const __internalEmitPaymentProcessingEvent: emitProcessingEventType = (
 			const { setBillingAddress, setShippingAddress } =
 				registry.dispatch( CART_STORE_KEY );
 
-			if ( successResponse && ! errorResponse ) {
+			// Observer returned success, we sync the payment method data and billing address.
+			if ( isObserverResponse( successResponse ) && ! errorResponse ) {
 				const { paymentMethodData } = successResponse?.meta || {};
 
-				if ( billingAddress && isBillingAddress( billingAddress ) ) {
+				if ( isBillingAddress( billingAddress ) ) {
 					setBillingAddress( billingAddress );
 				}
-				if (
-					typeof shippingAddress !== 'undefined' &&
-					isShippingAddress( shippingAddress )
-				) {
+				if ( isShippingAddress( shippingAddress ) ) {
 					setShippingAddress( shippingAddress );
 				}
-				dispatch.__internalSetPaymentMethodData( paymentMethodData );
-				dispatch.__internalSetPaymentSuccess();
-			} else if ( errorResponse && isFailResponse( errorResponse ) ) {
-				if ( errorResponse.message && errorResponse.message.length ) {
+
+				dispatch.__internalSetPaymentMethodData(
+					isObject( paymentMethodData ) ? paymentMethodData : {}
+				);
+				dispatch.__internalSetPaymentReady();
+			} else if ( isFailResponse( errorResponse ) ) {
+				const { paymentMethodData } = errorResponse?.meta || {};
+
+				if (
+					objectHasProp( errorResponse, 'message' ) &&
+					isString( errorResponse.message ) &&
+					errorResponse.message.length
+				) {
+					let context: string = noticeContexts.PAYMENTS;
+					if (
+						objectHasProp( errorResponse, 'messageContext' ) &&
+						isString( errorResponse.messageContext ) &&
+						errorResponse.messageContext.length
+					) {
+						context = errorResponse.messageContext;
+					}
 					createErrorNotice( errorResponse.message, {
 						id: 'wc-payment-error',
 						isDismissible: false,
-						context:
-							errorResponse?.messageContext ||
-							noticeContexts.PAYMENTS,
+						context,
 					} );
 				}
 
-				const { paymentMethodData } = errorResponse?.meta || {};
-				if ( billingAddress && isBillingAddress( billingAddress ) ) {
+				if ( isBillingAddress( billingAddress ) ) {
 					setBillingAddress( billingAddress );
 				}
-				dispatch.__internalSetPaymentFailed();
-				dispatch.__internalSetPaymentMethodData( paymentMethodData );
-			} else if ( errorResponse ) {
-				if ( errorResponse.message && errorResponse.message.length ) {
+
+				dispatch.__internalSetPaymentMethodData(
+					isObject( paymentMethodData ) ? paymentMethodData : {}
+				);
+				dispatch.__internalSetPaymentError();
+			} else if ( isErrorResponse( errorResponse ) ) {
+				if (
+					objectHasProp( errorResponse, 'message' ) &&
+					isString( errorResponse.message ) &&
+					errorResponse.message.length
+				) {
+					let context: string = noticeContexts.PAYMENTS;
+					if (
+						objectHasProp( errorResponse, 'messageContext' ) &&
+						isString( errorResponse.messageContext ) &&
+						errorResponse.messageContext.length
+					) {
+						context = errorResponse.messageContext;
+					}
 					createErrorNotice( errorResponse.message, {
 						id: 'wc-payment-error',
 						isDismissible: false,
-						context:
-							errorResponse?.messageContext ||
-							noticeContexts.PAYMENTS,
+						context,
 					} );
 				}
 
 				dispatch.__internalSetPaymentError();
-				setValidationErrors( errorResponse?.validationErrors );
+
+				if (
+					isValidValidationErrorsObject(
+						errorResponse.validationErrors
+					)
+				) {
+					setValidationErrors( errorResponse.validationErrors );
+				}
 			} else {
-				// otherwise there are no payment methods doing anything so
-				// just consider success
-				dispatch.__internalSetPaymentSuccess();
+				// Otherwise there are no payment methods doing anything so just assume payment method is ready.
+				dispatch.__internalSetPaymentReady();
 			}
 		} );
 	};

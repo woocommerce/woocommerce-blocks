@@ -171,11 +171,6 @@ const registerClassicTemplateBlock = ( {
 			reusable: false,
 			inserter,
 		},
-		example: {
-			attributes: {
-				isPreview: true,
-			},
-		},
 		attributes: {
 			/**
 			 * Template attribute is used to determine which core PHP template gets rendered.
