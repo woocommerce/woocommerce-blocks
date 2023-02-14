@@ -11,10 +11,7 @@ import { getSetting } from '@woocommerce/settings';
 import type { PickupLocation } from '../types';
 
 // Outputs the list of countries and states in a single dropdown select.
-const countryStateDropdownOptions = (
-	selectedCountry = '',
-	selectedState = ''
-) => {
+const countryStateDropdownOptions = () => {
 	const countries = getSetting< Record< string, string > >( 'countries', [] );
 	const states = getSetting< Record< string, Record< string, string > > >(
 		'countryStates',
@@ -40,29 +37,14 @@ const countryStateDropdownOptions = (
 		} ) );
 		return {
 			label: countries[ country ],
-			options: [
-				// {
-				// 	value: country,
-				// 	label: countries[ country ],
-				// },
-				...stateOptions,
-			],
+			options: [ ...stateOptions ],
 		};
 	} );
-	const selectedCountryState = `${ selectedCountry }:${ selectedState }`;
-	const selectedCountryStateOption = countryStateOptions
-		.map( ( option ) => option.options )
-		.flat()
-		.find( ( option ) => option.value === selectedCountryState );
-	// const selectedCountryOption = countryStateOptions.find(
-	// 	( option ) => option.options[ 0 ].value === selectedCountry
-	// );
-	const selectedOption = selectedCountryStateOption || '';
 	return {
 		options: countryStateOptions,
-		selected: selectedOption,
 	};
 };
+const countryStateOptions = countryStateDropdownOptions();
 
 const Form = ( {
 	formRef,
@@ -74,10 +56,6 @@ const Form = ( {
 	setValues: React.Dispatch< React.SetStateAction< PickupLocation > >;
 } ) => {
 	const { country: selectedCountry, state: selectedState } = values.address;
-	const countryStateOptions = countryStateDropdownOptions(
-		selectedCountry,
-		selectedState
-	);
 	const states = getSetting< Record< string, Record< string, string > > >(
 		'countryStates',
 		[]
@@ -161,12 +139,12 @@ const Form = ( {
 			<SelectControl
 				name="location_country_state"
 				label={ __(
-					'Country / Region',
+					'Country / State',
 					'woo-gutenberg-products-block'
 				) }
 				hideLabelFromVision={ true }
 				placeholder={ __(
-					'Country / Region',
+					'Country / State',
 					'woo-gutenberg-products-block'
 				) }
 				value={ `${ selectedCountry }${
@@ -214,7 +192,7 @@ const Form = ( {
 			{ ! countryHasStates && (
 				<TextControl
 					placeholder={ __(
-						'State / County',
+						'State',
 						'woo-gutenberg-products-block'
 					) }
 					value={ selectedState }
