@@ -373,7 +373,7 @@ class BlockTemplatesCompatibility {
 		$grouped_blocks = self::group_blocks( $parsed_blocks );
 
 		// WIP: The list of blocks is WIP.
-		$single_product_template_blocks = array( 'woocommerce/product-gallery-image', 'woocommerce/product-details', 'woocommerce/add-to-cart-form' );
+		$single_product_template_blocks = array( 'woocommerce/product-image-gallery', 'woocommerce/product-details', 'woocommerce/add-to-cart-form' );
 
 		$wrapped_blocks = array_map(
 			function( $blocks ) use ( $single_product_template_blocks ) {
@@ -478,7 +478,7 @@ class BlockTemplatesCompatibility {
 				if ( empty( $block['blockName'] ) ) {
 					return $carry;
 				}
-				$last_element_index = count( $carry ) - 1;
+				$last_element_index = count( $carry ) - 1 < 0 ? 0 : count( $carry ) - 1;
 				if ( isset( $carry[ $last_element_index ][0]['blockName'] ) && 'core/template-part' !== $carry[ $last_element_index ][0]['blockName'] ) {
 					array_push( $carry[ $last_element_index ], $block );
 					return $carry;
