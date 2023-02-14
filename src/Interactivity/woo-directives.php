@@ -132,12 +132,13 @@ function woo_process_directives( $block_content ) {
 			$attributes = $attributes ?? array();
 
 			foreach ( $attributes as $attribute ) {
-				if ( ! array_key_exists( $attribute, $attribute_directives ) ) {
+				list( $type ) = explode( ':', $attribute );
+				if ( ! array_key_exists( $type, $attribute_directives ) ) {
 					continue;
 				}
 
 				call_user_func(
-					$attribute_directives[ $attribute ],
+					$attribute_directives[ $type ],
 					$tags,
 					$context
 				);
@@ -145,7 +146,7 @@ function woo_process_directives( $block_content ) {
 		}
 	}
 
-	return $block_content;
+	return $tags->get_updated_html();
 }
 add_filter(
 	'render_block',
