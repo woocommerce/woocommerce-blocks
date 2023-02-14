@@ -52,7 +52,7 @@ class BlockTemplatesCompatibilityTests extends WP_UnitTestCase {
 		<!-- wp:template-part {"slug":"header","theme":"twentytwentythree","tagName":"header"} /-->
 		<!-- wp:group {"layout":{"inherit":true,"type":"constrained"}} -->
 		<div class="wp-block-group">
-		   <!-- wp:woocommerce/breadcrumbs /-->
+		   <!-- wp:woocommerce/product-gallery-image /-->
 		</div>
 		<!-- /wp:group -->
 		<!-- wp:template-part {"slug":"footer","theme":"twentytwentythree","tagName":"footer"} /-->';
@@ -63,7 +63,7 @@ class BlockTemplatesCompatibilityTests extends WP_UnitTestCase {
 		<div class="wp-block-group woocommerce product">
 		   <!-- wp:group {"layout":{"inherit":true,"type":"constrained"}} -->
 		   <div class="wp-block-group">
-			  <!-- wp:woocommerce/breadcrumbs /-->
+			  <!-- wp:woocommerce/product-gallery-image /-->
 		   </div>
 		   <!-- /wp:group -->
 		</div>
@@ -89,7 +89,7 @@ class BlockTemplatesCompatibilityTests extends WP_UnitTestCase {
 		<div class="wp-block-group">
 		   <!-- wp:group {"align":"wide","layout":{"type":"constrained"}} -->
 		   <div class="wp-block-group alignwide">
-			  <!-- wp:woocommerce/breadcrumbs /-->
+			  <!-- wp:woocommerce/product-gallery-image /-->
 		   </div>
 		   <!-- /wp:group -->
 		   <!-- wp:query {"queryId":2,"query":{"perPage":9,"pages":0,"offset":0,"postType":"product","order":"asc","orderBy":"title","author":"","search":"","exclude":[],"sticky":"","inherit":false,"__woocommerceAttributes":[],"__woocommerceStockStatus":["instock","outofstock","onbackorder"]},"displayLayout":{"type":"flex","columns":3},"namespace":"woocommerce/product-query"} -->
@@ -124,7 +124,7 @@ class BlockTemplatesCompatibilityTests extends WP_UnitTestCase {
 			<div class="wp-block-group">
 			<!-- wp:group {"align":"wide","layout":{"type":"constrained"}} -->
 			<div class="wp-block-group alignwide">
-				<!-- wp:woocommerce/breadcrumbs /-->
+				<!-- wp:woocommerce/product-gallery-image /-->
 			</div>
 			<!-- /wp:group -->
 			<!-- wp:query {"queryId":2,"query":{"perPage":9,"pages":0,"offset":0,"postType":"product","order":"asc","orderBy":"title","author":"","search":"","exclude":[],"sticky":"","inherit":false,"__woocommerceAttributes":[],"__woocommerceStockStatus":["instock","outofstock","onbackorder"]},"displayLayout":{"type":"flex","columns":3},"namespace":"woocommerce/product-query"} -->
@@ -168,7 +168,7 @@ class BlockTemplatesCompatibilityTests extends WP_UnitTestCase {
 
 		$default_single_product_template = '
 		<!-- wp:template-part {"slug":"header","theme":"twentytwentythree","tagName":"header"} /-->
-		<!-- wp:woocommerce/breadcrumbs /-->
+		<!-- wp:woocommerce/product-gallery-image /-->
 		<!-- wp:query {"queryId":2,"query":{"perPage":9,"pages":0,"offset":0,"postType":"product","order":"asc","orderBy":"title","author":"","search":"","exclude":[],"sticky":"","inherit":false,"__woocommerceAttributes":[],"__woocommerceStockStatus":["instock","outofstock","onbackorder"]},"displayLayout":{"type":"flex","columns":3},"namespace":"woocommerce/product-query"} -->
 		<div class="wp-block-query">
 		   <!-- wp:post-template {"__woocommerceNamespace":"woocommerce/product-query/product-template"} -->
@@ -195,7 +195,7 @@ class BlockTemplatesCompatibilityTests extends WP_UnitTestCase {
 		<!-- wp:template-part {"slug":"header","theme":"twentytwentythree","tagName":"header"} /-->
 		<!-- wp:group {"className":"woocommerce product"} -->
 		<div class="wp-block-group woocommerce product">
-		   <!-- wp:woocommerce/breadcrumbs /-->
+		   <!-- wp:woocommerce/product-gallery-image /-->
 		   <!-- wp:query {"queryId":2,"query":{"perPage":9,"pages":0,"offset":0,"postType":"product","order":"asc","orderBy":"title","author":"","search":"","exclude":[],"sticky":"","inherit":false,"__woocommerceAttributes":[],"__woocommerceStockStatus":["instock","outofstock","onbackorder"]},"displayLayout":{"type":"flex","columns":3},"namespace":"woocommerce/product-query"} -->
 		   <div class="wp-block-query">
 			  <!-- wp:post-template {"__woocommerceNamespace":"woocommerce/product-query/product-template"} -->
@@ -236,7 +236,7 @@ class BlockTemplatesCompatibilityTests extends WP_UnitTestCase {
 		$default_single_product_template = '
 		<!-- wp:template-part {"slug":"header","theme":"twentytwentythree","tagName":"header"} /-->
 		<!-- wp:template-part {"slug":"header","theme":"twentytwentythree","tagName":"header"} /-->
-		<!-- wp:woocommerce/breadcrumbs /-->
+		<!-- wp:woocommerce/product-gallery-image /-->
 		<!-- wp:template-part {"slug":"footer","theme":"twentytwentythree","tagName":"footer"} /-->';
 
 		$expected_single_product_template = '
@@ -244,7 +244,7 @@ class BlockTemplatesCompatibilityTests extends WP_UnitTestCase {
 		<!-- wp:template-part {"slug":"header","theme":"twentytwentythree","tagName":"header"} /-->
 		<!-- wp:group {"className":"woocommerce product"} -->
 		<div class="wp-block-group woocommerce product">
-		   <!-- wp:woocommerce/breadcrumbs /-->
+		   <!-- wp:woocommerce/product-gallery-image /-->
 		</div>
 		<!-- /wp:group -->
 		<!-- wp:template-part {"slug":"footer","theme":"twentytwentythree","tagName":"footer"} /-->';
@@ -265,7 +265,7 @@ class BlockTemplatesCompatibilityTests extends WP_UnitTestCase {
 
 		$default_single_product_template = '
 		<!-- wp:template-part {"slug":"header","theme":"twentytwentythree","tagName":"header"} /-->
-		<!-- wp:woocommerce/breadcrumbs /-->
+		<!-- wp:woocommerce/product-gallery-image /-->
 		<!-- wp:template-part {"slug":"footer","theme":"twentytwentythree","tagName":"footer"} /-->
 		<!-- wp:template-part {"slug":"footer","theme":"twentytwentythree","tagName":"footer"} /-->';
 
@@ -273,7 +273,7 @@ class BlockTemplatesCompatibilityTests extends WP_UnitTestCase {
 		<!-- wp:template-part {"slug":"header","theme":"twentytwentythree","tagName":"header"} /-->
 		<!-- wp:group {"className":"woocommerce product"} -->
 		<div class="wp-block-group woocommerce product">
-		   <!-- wp:woocommerce/breadcrumbs /-->
+		   <!-- wp:woocommerce/product-gallery-image /-->
 		</div>
 		<!-- /wp:group -->
 		<!-- wp:template-part {"slug":"footer","theme":"twentytwentythree","tagName":"footer"} /-->
@@ -297,9 +297,9 @@ class BlockTemplatesCompatibilityTests extends WP_UnitTestCase {
 			<p>test</p>
 		<!-- /wp:paragraph -->
 		<!-- wp:template-part {"slug":"header","theme":"twentytwentythree","tagName":"header"} /-->
-		<!-- wp:woocommerce/breadcrumbs /-->
+		<!-- wp:woocommerce/product-gallery-image /-->
 		<!-- wp:template-part {"slug":"footer","theme":"twentytwentythree","tagName":"footer"} /-->
-		<!-- wp:woocommerce/breadcrumbs /-->
+		<!-- wp:woocommerce/product-gallery-image /-->
 		<!-- wp:template-part {"slug":"footer","theme":"twentytwentythree","tagName":"footer"} /-->';
 
 		$expected_single_product_template = '
@@ -309,13 +309,13 @@ class BlockTemplatesCompatibilityTests extends WP_UnitTestCase {
 		<!-- wp:template-part {"slug":"header","theme":"twentytwentythree","tagName":"header"} /-->
 		<!-- wp:group {"className":"woocommerce product"} -->
 		<div class="wp-block-group woocommerce product">
-		   <!-- wp:woocommerce/breadcrumbs /-->
+		   <!-- wp:woocommerce/product-gallery-image /-->
 		</div>
 		<!-- /wp:group -->
 		<!-- wp:template-part {"slug":"footer","theme":"twentytwentythree","tagName":"footer"} /-->
 		<!-- wp:group {"className":"woocommerce product"} -->
 		<div class="wp-block-group woocommerce product">
-		   <!-- wp:woocommerce/breadcrumbs /-->
+		   <!-- wp:woocommerce/product-gallery-image /-->
 		</div>
 		<!-- /wp:group -->
 		<!-- wp:template-part {"slug":"footer","theme":"twentytwentythree","tagName":"footer"} /-->';

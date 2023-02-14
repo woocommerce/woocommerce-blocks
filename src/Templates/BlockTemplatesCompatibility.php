@@ -372,12 +372,11 @@ class BlockTemplatesCompatibility {
 		$parsed_blocks  = parse_blocks( $template_content );
 		$grouped_blocks = self::group_blocks( $parsed_blocks );
 
-		$single_product_template_blocks = array( 'woocommerce/breadcrumbs', 'woocommerce/product-gallery-image', 'woocommerce/product-add-to-cart', 'woocommerce/product-details', 'woocommerce/add-to-cart-form' );
+		// WIP: The list of blocks is WIP.
+		$single_product_template_blocks = array( 'woocommerce/product-gallery-image', 'woocommerce/product-details', 'woocommerce/add-to-cart-form' );
 
 		$wrapped_blocks = array_map(
 			function( $blocks ) use ( $single_product_template_blocks ) {
-				$has_single_product_template_blocks = false;
-
 				if ( 'core/template-part' === $blocks[0]['blockName'] ) {
 					return $blocks;
 				}
@@ -435,7 +434,7 @@ class BlockTemplatesCompatibility {
 
 	/**
 	 * Check if the Single Product template has a single product template block:
-	 * [woocommerce/breadcrumbs, woocommerce/product-gallery-image, woocommerce/product-add-to-cart, woocommerce/product-details, woocommerce/add-to-cart-form]
+	 * woocommerce/product-gallery-image, woocommerce/product-details, woocommerce/add-to-cart-form]
 	 *
 	 * @param array $parsed_blocks Array of parsed block objects.
 	 * @param array $single_product_template_blocks Array of single product template blocks.
