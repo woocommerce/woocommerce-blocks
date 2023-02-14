@@ -266,7 +266,6 @@ describe.only( 'Checkout Store Reducer', () => {
 			};
 			const expectedState = {
 				...defaultState,
-				status: STATUS.IDLE,
 				extensionData: mockExtensionData,
 			};
 			const firstState = reducer(

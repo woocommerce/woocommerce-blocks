@@ -172,7 +172,7 @@ export const __internalEmitPaymentProcessingEvent: emitProcessingEventType = (
 				dispatch.__internalSetPaymentMethodData(
 					isObject( paymentMethodData ) ? paymentMethodData : {}
 				);
-				dispatch.__internalSetPaymentFailed();
+				dispatch.__internalSetPaymentError();
 			} else if ( isErrorResponse( errorResponse ) ) {
 				if (
 					objectHasProp( errorResponse, 'message' ) &&
