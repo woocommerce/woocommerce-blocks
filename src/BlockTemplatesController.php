@@ -325,8 +325,10 @@ class BlockTemplatesController {
 				}
 
 				if ( 'single-product' === $template->slug ) {
-					$new_content       = BlockTemplatesCompatibility::wrap_single_product_template( $template->content );
-					$template->content = $new_content;
+					if ( ! is_admin() ) {
+						$new_content       = BlockTemplatesCompatibility::wrap_single_product_template( $template->content );
+						$template->content = $new_content;
+					}
 					return $template;
 				}
 
