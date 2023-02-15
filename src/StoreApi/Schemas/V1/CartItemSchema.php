@@ -458,15 +458,19 @@ class CartItemSchema extends ProductSchema {
 		 * @param array $cart_item Cart item array.
 		 * @return array
 		 */
-		$item_data = apply_filters( 'woocommerce_get_item_data', array(), $cart_item );
-		return array_values(
-			array_filter(
-				array_map( [ $this, 'format_item_data_element' ], $item_data ),
-				function ( $item ) {
-						return ! empty( $item );
-				}
-			)
+		$item_data           = apply_filters( 'woocommerce_get_item_data', array(), $cart_item );
+		$formatted_item_data = array_map( [ $this, 'format_item_data_element' ], $item_data );
+
+		// Remove empty arrays from the data.
+		$valid_item_data = array_filter(
+			$formatted_item_data,
+			function ( $item ) {
+				return ! empty( $item );
+			}
 		);
+
+		// Return only the values, so that this will be an object when it reaches the client.
+		return array_values( $valid_item_data );
 	}
 
 	/**
@@ -480,6 +484,9 @@ class CartItemSchema extends ProductSchema {
 			$item_data_element['hidden'] = $item_data_element['__experimental_woocommerce_blocks_hidden'];
 		}
 
+		// We will check each piece of data in the item data element to ensure it is scalar. Extensions could add arrays
+		// to this, which would cause a fatal in wp_strip_all_tags. If it is not scalar, we will return an empty array,
+		// which will be filtered out in get_item_data (after this function has run).
 		foreach ( $item_data_element as $item ) {
 			if ( ! is_scalar( $item ) ) {
 				return [];
