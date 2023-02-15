@@ -177,7 +177,7 @@ export const CheckoutEventsProvider = ( {
 	}, [ observers ] );
 
 	/**
-	 * @deprecated use onCheckoutValidationBeforeProcessing instead
+	 * @deprecated use onCheckoutValidation instead
 	 *
 	 * To prevent the deprecation message being shown at render time
 	 * we need an extra function between useMemo and event emitters
@@ -188,7 +188,7 @@ export const CheckoutEventsProvider = ( {
 	const onCheckoutBeforeProcessing = useMemo( () => {
 		return function ( ...args: Parameters< typeof onCheckoutValidation > ) {
 			deprecated( 'onCheckoutBeforeProcessing', {
-				alternative: 'onCheckoutValidationBeforeProcessing',
+				alternative: 'onCheckoutValidation',
 				plugin: 'WooCommerce Blocks',
 			} );
 			return onCheckoutValidation( ...args );
