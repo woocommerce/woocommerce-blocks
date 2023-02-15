@@ -465,7 +465,7 @@ class CartItemSchema extends ProductSchema {
 		$valid_item_data = array_filter(
 			$formatted_item_data,
 			function ( $item ) {
-				return ! empty( $item );
+				return null !== $item;
 			}
 		);
 
@@ -489,7 +489,7 @@ class CartItemSchema extends ProductSchema {
 		// which will be filtered out in get_item_data (after this function has run).
 		foreach ( $item_data_element as $item ) {
 			if ( ! is_scalar( $item ) ) {
-				return [];
+				return null;
 			}
 		}
 		return array_map( 'wp_strip_all_tags', $item_data_element );
