@@ -116,12 +116,3 @@ registerBlockComponent( {
 		)
 	),
 } );
-
-registerBlockComponent( {
-	blockName: 'woocommerce/product-details',
-	component: lazy( () =>
-		import(
-			/* webpackChunkName: "product-details" */ './product-elements/product-details/block'
-		)
-	),
-} );

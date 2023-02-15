@@ -14,6 +14,13 @@ class ProductDetails extends AbstractBlock {
 	protected $block_name = 'product-details';
 
 	/**
+	 * It isn't necessary register block assets because it is a server side block.
+	 */
+	protected function register_block_type_assets() {
+		return null;
+	}
+
+	/**
 	 * Render the block.
 	 *
 	 * @param array    $attributes Block attributes.
