@@ -200,6 +200,7 @@ export interface Cart {
 	fees: Array< CartFeeItem >;
 	totals: CartTotals;
 	errors: Array< CartErrorItem >;
+	paymentMethods: Array< string >;
 	paymentRequirements: Array< string >;
 	extensions: ExtensionsData;
 }
