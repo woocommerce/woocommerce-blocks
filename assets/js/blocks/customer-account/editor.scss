@@ -3,10 +3,10 @@
 }
 
 /* In sidebar without tabs (WP <=6.1) */
-.block-editor-block-card + div > .account-link {
+.block-editor-block-card + div > .wc-block-editor-customer-account__link {
 	padding: 0 $gap $gap 52px;
 }
 /* In tabbed sidebar (ie: WP >=6.2) */
-.account-link {
+.wc-block-editor-customer-account__link {
 	padding: $gap;
 }
