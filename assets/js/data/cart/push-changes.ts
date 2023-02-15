@@ -176,7 +176,7 @@ const updateCustomerData = debounce( (): void => {
 				processErrorResponse( response );
 			} );
 	}
-}, 3000 );
+}, 5000 );
 
 /**
  * After cart has fully initialized, pushes changes to the server when data in the store is changed. Updates to the
@@ -240,4 +240,8 @@ export const pushChanges = (): void => {
 	) {
 		updateCustomerData();
 	}
+};
+
+export const flushChanges = (): void => {
+	updateCustomerData.flush();
 };
