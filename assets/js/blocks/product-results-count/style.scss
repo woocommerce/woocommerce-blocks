@@ -5,6 +5,8 @@
 	.woocommerce-result-count {
 		float: none;
 		font-size: inherit;
-		margin: 0;
+		// reset for margin
+		margin: auto;
 	}
 }
+

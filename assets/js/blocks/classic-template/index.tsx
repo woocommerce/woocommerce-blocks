@@ -23,15 +23,19 @@ import { useEffect } from '@wordpress/element';
  */
 import './editor.scss';
 import './style.scss';
-import { BLOCK_SLUG, TEMPLATES, PLACEHOLDERS } from './constants';
+import { BLOCK_SLUG, TEMPLATES, TYPES } from './constants';
 import {
 	isClassicTemplateBlockRegisteredWithAnotherTitle,
 	hasTemplateSupportForClassicTemplateBlock,
 	getTemplateDetailsBySlug,
 } from './utils';
-import * as blockifiedProductArchive from './archive-product';
+import {
+	blockifiedProductCatalogConfig,
+	blockifiedProductTaxonomyConfig,
+} from './archive-product';
 import * as blockifiedSingleProduct from './single-product';
-import type { BlockifiedTemplate } from './types';
+import * as blockifiedProductSearchResults from './product-search-results';
+import type { BlockifiedTemplateConfig } from './types';
 
 type Attributes = {
 	template: string;
@@ -45,9 +49,11 @@ const blockifiedFallbackConfig = {
 	getButtonLabel: () => '',
 };
 
-const conversionConfig: { [ key: string ]: BlockifiedTemplate } = {
-	[ PLACEHOLDERS.archiveProduct ]: blockifiedProductArchive,
-	[ PLACEHOLDERS.singleProduct ]: blockifiedSingleProduct,
+const conversionConfig: { [ key: string ]: BlockifiedTemplateConfig } = {
+	[ TYPES.productCatalog ]: blockifiedProductCatalogConfig,
+	[ TYPES.productTaxonomy ]: blockifiedProductTaxonomyConfig,
+	[ TYPES.singleProduct ]: blockifiedSingleProduct,
+	[ TYPES.productSearchResults ]: blockifiedProductSearchResults,
 	fallback: blockifiedFallbackConfig,
 };
 
@@ -65,6 +71,7 @@ const Edit = ( {
 	);
 	const templateTitle = templateDetails?.title ?? attributes.template;
 	const templatePlaceholder = templateDetails?.placeholder ?? 'fallback';
+	const templateType = templateDetails?.type ?? 'fallback';
 
 	useEffect(
 		() =>
@@ -80,7 +87,7 @@ const Edit = ( {
 		isConversionPossible,
 		getDescription,
 		getButtonLabel,
-	} = conversionConfig[ templatePlaceholder ];
+	} = conversionConfig[ templateType ];
 
 	const canConvert = isConversionPossible();
 	const placeholderDescription = getDescription( templateTitle, canConvert );
@@ -163,11 +170,6 @@ const registerClassicTemplateBlock = ( {
 			multiple: false,
 			reusable: false,
 			inserter,
-		},
-		example: {
-			attributes: {
-				isPreview: true,
-			},
 		},
 		attributes: {
 			/**

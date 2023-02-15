@@ -4,7 +4,6 @@
 import {
 	createBlock,
 	createBlocksFromInnerBlocksTemplate,
-	getBlockType,
 	type BlockInstance,
 } from '@wordpress/blocks';
 import { isWpVersion } from '@woocommerce/settings';
@@ -18,61 +17,8 @@ import {
 	QUERY_DEFAULT_ATTRIBUTES as productsQueryDefaultAttributes,
 } from '../product-query/constants';
 import { VARIATION_NAME as productsVariationName } from '../product-query/variations/product-query';
+import { createArchiveTitleBlock, createRowBlock } from './utils';
 import { type InheritedAttributes } from './types';
-
-const createArchiveTitleBlock = (
-	inheritedAttributes: InheritedAttributes
-) => {
-	const queryTitleBlockName = 'core/query-title';
-	const archiveTitleVariationName = `archive-title`;
-	const queryTitleBlockVariations =
-		getBlockType( queryTitleBlockName )?.variations || [];
-	const archiveTitleVariation = queryTitleBlockVariations.find(
-		( { name }: { name: string } ) => name === archiveTitleVariationName
-	);
-
-	if ( ! archiveTitleVariation ) {
-		return null;
-	}
-
-	const { attributes } = archiveTitleVariation;
-	const extendedAttributes = {
-		...attributes,
-		...inheritedAttributes,
-		showPrefix: false,
-	};
-
-	return createBlock( queryTitleBlockName, extendedAttributes );
-};
-
-const createRowBlock = (
-	innerBlocks: Array< BlockInstance >,
-	inheritedAttributes: InheritedAttributes
-) => {
-	const groupBlockName = 'core/group';
-	const rowVariationName = `group-row`;
-	const groupBlockVariations =
-		getBlockType( groupBlockName )?.variations || [];
-	const rowVariation = groupBlockVariations.find(
-		( { name }: { name: string } ) => name === rowVariationName
-	);
-
-	if ( ! rowVariation ) {
-		return null;
-	}
-
-	const { attributes } = rowVariation;
-	const extendedAttributes = {
-		...attributes,
-		...inheritedAttributes,
-		layout: {
-			...attributes.layout,
-			justifyContent: 'space-between',
-		},
-	};
-
-	return createBlock( groupBlockName, extendedAttributes, innerBlocks );
-};
 
 const createProductsBlock = ( inheritedAttributes: InheritedAttributes ) =>
 	createBlock(
@@ -81,14 +27,24 @@ const createProductsBlock = ( inheritedAttributes: InheritedAttributes ) =>
 			...productsQueryDefaultAttributes,
 			...inheritedAttributes,
 			namespace: productsVariationName,
+			query: {
+				...productsQueryDefaultAttributes.query,
+				inherit: true,
+			},
 		},
 		createBlocksFromInnerBlocksTemplate( productsInnerBlocksTemplate )
 	);
 
-const getBlockifiedTemplate = ( inheritedAttributes: InheritedAttributes ) =>
+const getBlockifiedTemplate = (
+	inheritedAttributes: InheritedAttributes,
+	withTermDescription = false
+) =>
 	[
 		createBlock( 'woocommerce/breadcrumbs', inheritedAttributes ),
-		createArchiveTitleBlock( inheritedAttributes ),
+		createArchiveTitleBlock( 'archive-title', inheritedAttributes ),
+		withTermDescription
+			? createBlock( 'core/term-description', inheritedAttributes )
+			: null,
 		createBlock( 'woocommerce/store-notices', inheritedAttributes ),
 		createRowBlock(
 			[
@@ -99,6 +55,10 @@ const getBlockifiedTemplate = ( inheritedAttributes: InheritedAttributes ) =>
 		),
 		createProductsBlock( inheritedAttributes ),
 	].filter( Boolean ) as BlockInstance[];
+
+const getBlockifiedTemplateWithTermDescription = (
+	inheritedAttributes: InheritedAttributes
+) => getBlockifiedTemplate( inheritedAttributes, true );
 
 const isConversionPossible = () => {
 	// Blockification is possible for the WP version 6.1 and above,
@@ -137,8 +97,15 @@ const getDescription = ( templateTitle: string, canConvert: boolean ) => {
 const getButtonLabel = () =>
 	__( 'Upgrade to Products block', 'woo-gutenberg-products-block' );
 
-export {
+export const blockifiedProductCatalogConfig = {
 	getBlockifiedTemplate,
+	isConversionPossible,
+	getDescription,
+	getButtonLabel,
+};
+
+export const blockifiedProductTaxonomyConfig = {
+	getBlockifiedTemplate: getBlockifiedTemplateWithTermDescription,
 	isConversionPossible,
 	getDescription,
 	getButtonLabel,
