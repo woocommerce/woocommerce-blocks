@@ -480,7 +480,7 @@ class CartItemSchema extends ProductSchema {
 			$item_data_element['hidden'] = $item_data_element['__experimental_woocommerce_blocks_hidden'];
 		}
 
-		foreach ( $item_data_element as $key => $item ) {
+		foreach ( $item_data_element as $item ) {
 			if ( ! is_scalar( $item ) ) {
 				return [];
 			}
