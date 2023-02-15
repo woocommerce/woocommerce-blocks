@@ -459,7 +459,14 @@ class CartItemSchema extends ProductSchema {
 		 * @return array
 		 */
 		$item_data = apply_filters( 'woocommerce_get_item_data', array(), $cart_item );
-		return array_map( [ $this, 'format_item_data_element' ], $item_data );
+		return array_values(
+			array_filter(
+				array_map( [ $this, 'format_item_data_element' ], $item_data ),
+				function ( $item ) {
+						return ! empty( $item );
+				}
+			)
+		);
 	}
 
 	/**
@@ -471,6 +478,12 @@ class CartItemSchema extends ProductSchema {
 	protected function format_item_data_element( $item_data_element ) {
 		if ( array_key_exists( '__experimental_woocommerce_blocks_hidden', $item_data_element ) ) {
 			$item_data_element['hidden'] = $item_data_element['__experimental_woocommerce_blocks_hidden'];
+		}
+
+		foreach ( $item_data_element as $key => $item ) {
+			if ( ! is_scalar( $item ) ) {
+				return [];
+			}
 		}
 		return array_map( 'wp_strip_all_tags', $item_data_element );
 	}
