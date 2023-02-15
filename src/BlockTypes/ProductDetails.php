@@ -28,7 +28,7 @@ class ProductDetails extends AbstractBlock {
 		$classname = $attributes['className'] ?? '';
 
 		return sprintf(
-			'<div class="wp-block-woocommerce-single-product-details %1$s">
+			'<div class="wp-block-woocommerce-product-details %1$s">
 				%2$s
 			</div>',
 			esc_attr( $classname ),
