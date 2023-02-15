@@ -2,6 +2,11 @@
 	width: 100%;
 }
 
-.account-link {
+/* In sidebar without tabs (WP <=6.1) */
+.block-editor-block-card + div > .account-link {
 	padding: 0 $gap $gap 52px;
+}
+/* In tabbed sidebar (ie: WP >=6.2) */
+.account-link {
+	padding: $gap;
 }
