@@ -102,9 +102,10 @@ describe( 'PaymentMethods', () => {
 		wpDataFunctions
 			.dispatch( CART_STORE_KEY )
 			.invalidateResolutionForStore();
-		wpDataFunctions
-			.dispatch( CART_STORE_KEY )
-			.receiveCart( defaultCartState.cartData );
+		wpDataFunctions.dispatch( CART_STORE_KEY ).receiveCart( {
+			...defaultCartState.cartData,
+			payment_methods: [ 'cod', 'credit-card' ],
+		} );
 	} );
 
 	afterEach( () => {
