@@ -1,18 +1,19 @@
 /**
  * External dependencies
  */
-import { __ } from '@wordpress/i18n';
+import { __, sprintf } from '@wordpress/i18n';
 import classNames from 'classnames';
 import { createInterpolateElement } from '@wordpress/element';
 import FormattedMonetaryAmount from '@woocommerce/base-components/formatted-monetary-amount';
-import {
-	__experimentalApplyCheckoutFilter,
-	TotalsItem,
-} from '@woocommerce/blocks-checkout';
+import { applyCheckoutFilter, TotalsItem } from '@woocommerce/blocks-checkout';
 import { useStoreCart } from '@woocommerce/base-context/hooks';
 import { getSetting } from '@woocommerce/settings';
-import { CartResponseTotals, Currency } from '@woocommerce/types';
-import { LooselyMustHave } from '@woocommerce/type-defs/utils';
+import {
+	CartResponseTotals,
+	Currency,
+	LooselyMustHave,
+} from '@woocommerce/types';
+import { formatPrice } from '@woocommerce/price-format';
 
 /**
  * Internal dependencies
@@ -50,13 +51,17 @@ const TotalsFooterItem = ( {
 		getSetting< boolean >( 'taxesEnabled', true ) &&
 		getSetting< boolean >( 'displayCartPricesIncludingTax', false );
 
-	const { total_price: totalPrice, total_tax: totalTax } = values;
+	const {
+		total_price: totalPrice,
+		total_tax: totalTax,
+		tax_lines: taxLines,
+	} = values;
 
-	// Prepare props to pass to the __experimentalApplyCheckoutFilter filter.
+	// Prepare props to pass to the applyCheckoutFilter filter.
 	// We need to pluck out receiveCart.
 	// eslint-disable-next-line no-unused-vars
 	const { receiveCart, ...cart } = useStoreCart();
-	const label = __experimentalApplyCheckoutFilter( {
+	const label = applyCheckoutFilter( {
 		filterName: 'totalLabel',
 		defaultValue: __( 'Total', 'woo-gutenberg-products-block' ),
 		extensions: cart.extensions,
@@ -64,6 +69,24 @@ const TotalsFooterItem = ( {
 	} );
 
 	const parsedTaxValue = parseInt( totalTax, 10 );
+	const description =
+		taxLines && taxLines.length > 0
+			? sprintf(
+					/* translators: %s is a list of tax rates */
+					__( 'Including %s', 'woo-gutenberg-products-block' ),
+					taxLines
+						.map( ( { name, price } ) => {
+							return `${ formatPrice(
+								price,
+								currency
+							) } ${ name }`;
+						} )
+						.join( ', ' )
+			  )
+			: __(
+					'Including <TaxAmount/> in taxes',
+					'woo-gutenberg-products-block'
+			  );
 
 	return (
 		<TotalsItem
@@ -78,21 +101,15 @@ const TotalsFooterItem = ( {
 				SHOW_TAXES &&
 				parsedTaxValue !== 0 && (
 					<p className="wc-block-components-totals-footer-item-tax">
-						{ createInterpolateElement(
-							__(
-								'Including <TaxAmount/> in taxes',
-								'woo-gutenberg-products-block'
+						{ createInterpolateElement( description, {
+							TaxAmount: (
+								<FormattedMonetaryAmount
+									className="wc-block-components-totals-footer-item-tax-value"
+									currency={ currency }
+									value={ parsedTaxValue }
+								/>
 							),
-							{
-								TaxAmount: (
-									<FormattedMonetaryAmount
-										className="wc-block-components-totals-footer-item-tax-value"
-										currency={ currency }
-										value={ parsedTaxValue }
-									/>
-								),
-							}
-						) }
+						} ) }
 					</p>
 				)
 			}

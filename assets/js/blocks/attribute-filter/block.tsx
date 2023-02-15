@@ -58,22 +58,14 @@ import {
 } from './utils';
 import { BlockAttributes, DisplayOption } from './types';
 import CheckboxFilter from './checkbox-filter';
-
-/**
- * Formats filter values into a string for the URL parameters needed for filtering PHP templates.
- *
- * @param {string} url    Current page URL.
- * @param {Array}  params Parameters and their constraints.
- *
- * @return {string}       New URL with query parameters in it.
- */
+import { useSetWraperVisibility } from '../filter-wrapper/context';
 
 /**
  * Component displaying an attribute filter.
  *
  * @param {Object}  props            Incoming props for the component.
  * @param {Object}  props.attributes Incoming block attributes.
- * @param {boolean} props.isEditor
+ * @param {boolean} props.isEditor   Whether the component is being rendered in the editor.
  */
 const AttributeFilterBlock = ( {
 	attributes: blockAttributes,
@@ -99,6 +91,10 @@ const AttributeFilterBlock = ( {
 		window.location.href,
 		isString
 	);
+
+	const productIds = isEditor
+		? []
+		: getSettingWithCoercion( 'product_ids', [], Array.isArray );
 
 	const [ hasSetFilterDefaultsFromUrl, setHasSetFilterDefaultsFromUrl ] =
 		useState( false );
@@ -157,6 +153,8 @@ const AttributeFilterBlock = ( {
 				...queryState,
 				attributes: filterAvailableTerms ? queryState.attributes : null,
 			},
+			productIds,
+			isEditor,
 		} );
 
 	/**
@@ -276,6 +274,13 @@ const AttributeFilterBlock = ( {
 	 */
 	const updateFilterUrl = useCallback(
 		( query, allFiltersRemoved = false ) => {
+			query = query.map( ( item: AttributeQuery ) => ( {
+				...item,
+				slug: item.slug.map( ( slug: string ) =>
+					decodeURIComponent( slug )
+				),
+			} ) );
+
 			if ( allFiltersRemoved ) {
 				if ( ! attributeObject?.taxonomy ) {
 					return;
@@ -468,7 +473,10 @@ const AttributeFilterBlock = ( {
 		filteringForPhpTemplate,
 	] );
 
+	const setWrapperVisibility = useSetWraperVisibility();
+
 	if ( ! hasFilterableProducts ) {
+		setWrapperVisibility( false );
 		return null;
 	}
 
@@ -486,6 +494,7 @@ const AttributeFilterBlock = ( {
 				</Notice>
 			);
 		}
+		setWrapperVisibility( false );
 		return null;
 	}
 
@@ -513,8 +522,13 @@ const AttributeFilterBlock = ( {
 		( termsLoading || countsLoading ) && displayedOptions.length === 0;
 
 	if ( ! isLoading && displayedOptions.length === 0 ) {
+		setWrapperVisibility( false );
 		return null;
 	}
+
+	const showChevron = multiple
+		? ! isLoading && checked.length < displayedOptions.length
+		: ! isLoading && checked.length === 0;
 
 	const heading = (
 		<TagName className="wc-block-attribute-filter__title">
@@ -527,6 +541,23 @@ const AttributeFilterBlock = ( {
 	) : (
 		heading
 	);
+
+	setWrapperVisibility( true );
+
+	const getIsApplyButtonDisabled = () => {
+		if ( termsLoading || countsLoading ) {
+			return true;
+		}
+
+		const activeFilters = getActiveFilters( attributeObject );
+		if ( activeFilters.length === checked.length ) {
+			return checked.every( ( value ) =>
+				activeFilters.includes( value )
+			);
+		}
+
+		return false;
+	};
 
 	return (
 		<>
@@ -638,7 +669,7 @@ const AttributeFilterBlock = ( {
 								),
 							} }
 						/>
-						{ multiple && (
+						{ showChevron && (
 							<Icon icon={ chevronDown } size={ 30 } />
 						) }
 					</>
@@ -654,7 +685,7 @@ const AttributeFilterBlock = ( {
 			</div>
 
 			<div className="wc-block-attribute-filter__actions">
-				{ checked.length > 0 && ! isLoading && (
+				{ ( checked.length > 0 || isEditor ) && ! isLoading && (
 					<FilterResetButton
 						onClick={ () => {
 							setChecked( [] );
@@ -673,11 +704,7 @@ const AttributeFilterBlock = ( {
 					<FilterSubmitButton
 						className="wc-block-attribute-filter__button"
 						isLoading={ isLoading }
-						disabled={
-							termsLoading ||
-							countsLoading ||
-							checked.length === 0
-						}
+						disabled={ getIsApplyButtonDisabled() }
 						onClick={ () => onSubmit( checked ) }
 					/>
 				) }

@@ -29,6 +29,7 @@ import {
 import usePriceConstraints from './use-price-constraints';
 import './style.scss';
 import { Attributes } from './types';
+import { useSetWraperVisibility } from '../filter-wrapper/context';
 
 /**
  * Formats filter values into a string for the URL parameters needed for filtering PHP templates.
@@ -76,7 +77,7 @@ function formatPrice( value: unknown, minorUnit: number ) {
  *
  * @param {Object}  props            Component props.
  * @param {Object}  props.attributes Incoming block attributes.
- * @param {boolean} props.isEditor   Whether in editor context or not.
+ * @param {boolean} props.isEditor   Whether the component is being rendered in the editor.
  */
 const PriceFilterBlock = ( {
 	attributes,
@@ -85,6 +86,7 @@ const PriceFilterBlock = ( {
 	attributes: Attributes;
 	isEditor: boolean;
 } ) => {
+	const setWrapperVisibility = useSetWraperVisibility();
 	const hasFilterableProducts = getSettingWithCoercion(
 		'has_filterable_products',
 		false,
@@ -97,6 +99,10 @@ const PriceFilterBlock = ( {
 		isBoolean
 	);
 
+	const productIds = isEditor
+		? []
+		: getSettingWithCoercion( 'product_ids', [], Array.isArray );
+
 	const [ hasSetFilterDefaultsFromUrl, setHasSetFilterDefaultsFromUrl ] =
 		useState( false );
 
@@ -106,6 +112,8 @@ const PriceFilterBlock = ( {
 	const { results, isLoading } = useCollectionData( {
 		queryPrices: true,
 		queryState,
+		productIds,
+		isEditor,
 	} );
 
 	const currency = getCurrencyFromPriceResponse(
@@ -292,6 +300,7 @@ const PriceFilterBlock = ( {
 	] );
 
 	if ( ! hasFilterableProducts ) {
+		setWrapperVisibility( false );
 		return null;
 	}
 
@@ -301,11 +310,14 @@ const PriceFilterBlock = ( {
 			maxConstraint === null ||
 			minConstraint === maxConstraint )
 	) {
+		setWrapperVisibility( false );
 		return null;
 	}
 
 	const TagName =
 		`h${ attributes.headingLevel }` as keyof JSX.IntrinsicElements;
+
+	setWrapperVisibility( true );
 
 	if ( ! isLoading && isUpdating ) {
 		setIsUpdating( false );
@@ -341,6 +353,7 @@ const PriceFilterBlock = ( {
 					onSubmit={ () => onSubmit( minPrice, maxPrice ) }
 					isLoading={ isLoading }
 					isUpdating={ isUpdating }
+					isEditor={ isEditor }
 				/>
 			</div>
 		</>

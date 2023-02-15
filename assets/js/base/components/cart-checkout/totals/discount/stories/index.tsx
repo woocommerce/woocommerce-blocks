@@ -2,16 +2,16 @@
  * External dependencies
  */
 import { useArgs } from '@storybook/client-api';
-import { Story, Meta } from '@storybook/react';
+import type { Story, Meta } from '@storybook/react';
 import {
 	currenciesAPIShape as currencies,
 	currencyControl,
 	INTERACTION_TIMEOUT,
 } from '@woocommerce/storybook-controls';
-import { LooselyMustHave } from '@woocommerce/type-defs/utils';
 import {
 	CartResponseCouponItemWithLabel,
 	CartTotalsItem,
+	LooselyMustHave,
 } from '@woocommerce/types';
 
 /**

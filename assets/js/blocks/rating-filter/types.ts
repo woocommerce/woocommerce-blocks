@@ -1,7 +1,9 @@
 export interface Attributes {
 	className?: string;
-	heading: string;
-	headingLevel: number;
+	displayStyle: string;
+	selectType: string;
+	showCounts: boolean;
+	showFilterButton: boolean;
 	isPreview?: boolean;
 }
 

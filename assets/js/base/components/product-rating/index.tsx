@@ -7,11 +7,9 @@ import { __, sprintf } from '@wordpress/i18n';
 /**
  * Internal dependencies
  */
-import './style.scss';
 
 const Rating = ( {
 	className,
-	key,
 	rating,
 	ratedProductsCount,
 }: RatingProps ): JSX.Element => {
@@ -32,14 +30,14 @@ const Rating = ( {
 
 	const ratingHTML = {
 		__html: sprintf(
-			/* translators: %f is referring to the rating value */
-			__( 'Rated %f out of 5', 'woo-gutenberg-products-block' ),
+			/* translators: %s is the rating value wrapped in HTML strong tags. */
+			__( 'Rated %s out of 5', 'woo-gutenberg-products-block' ),
 			sprintf( '<strong class="rating">%f</strong>', rating )
 		),
 	};
 
 	return (
-		<div className={ ratingClassName } key={ key }>
+		<div className={ ratingClassName }>
 			<div
 				className={ 'wc-block-components-product-rating__stars' }
 				role="img"
@@ -50,15 +48,20 @@ const Rating = ( {
 					dangerouslySetInnerHTML={ ratingHTML }
 				/>
 			</div>
-			{ ratedProductsCount ? `(${ ratedProductsCount })` : null }
+			{ ratedProductsCount !== null ? (
+				<span className={ 'wc-block-components-product-rating-count' }>
+					({ ratedProductsCount })
+				</span>
+			) : null }
 		</div>
 	);
 };
+
+export type RatingValues = 0 | 1 | 2 | 3 | 4 | 5;
 interface RatingProps {
-	className: string;
-	key: 0 | 1 | 2 | 3 | 4 | 5;
-	rating: 0 | 1 | 2 | 3 | 4 | 5;
-	ratedProductsCount: number;
+	className?: string;
+	rating: RatingValues;
+	ratedProductsCount?: number | null;
 }
 
 export default Rating;

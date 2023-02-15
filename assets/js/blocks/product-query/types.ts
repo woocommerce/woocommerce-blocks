@@ -1,9 +1,33 @@
 /**
  * External dependencies
  */
-import type { EditorBlock } from '@woocommerce/types';
+import type {
+	AttributeSetting,
+	AttributeTerm,
+	EditorBlock,
+} from '@woocommerce/types';
 
+export interface AttributeMetadata {
+	taxonomy: string;
+	termId: number;
+}
+
+export type AttributeWithTerms = AttributeSetting & { terms: AttributeTerm[] };
+
+// The interface below disables the forbidden underscores
+// naming convention because we are namespacing our
+// custom attributes inside a core block. Prefixing with underscores
+// will help signify our intentions.
+/* eslint-disable @typescript-eslint/naming-convention */
 export interface ProductQueryArguments {
+	/**
+	 * Available sorting options specific to the Product Query block
+	 *
+	 * Other sorting options may be possible, but we are restricting
+	 * the choice to those.
+	 */
+	orderBy: 'date' | 'popularity';
+	__woocommerceAttributes?: AttributeMetadata[];
 	/**
 	 * Display only products on sale.
 	 *
@@ -27,36 +51,41 @@ export interface ProductQueryArguments {
 	 * )
 	 * ```
 	 */
-	// Disabling naming convention because we are namespacing our
-	// custom attributes inside a core block. Prefixing with underscores
-	// will help signify our intentions.
-	// eslint-disable-next-line @typescript-eslint/naming-convention
 	__woocommerceOnSale?: boolean;
+	__woocommerceInherit?: boolean;
+	/**
+	 * Filter products by their stock status.
+	 *
+	 * Will generate the following `meta_query`:
+	 *
+	 * ```
+	 * array(
+	 *   'key'     => '_stock_status',
+	 *   'value'   => (array) $stock_statii,
+	 *   'compare' => 'IN',
+	 * ),
+	 * ```
+	 */
+	__woocommerceStockStatus?: string[];
 }
+/* eslint-enable */
 
 export type ProductQueryBlock = EditorBlock< QueryBlockAttributes >;
 
-export interface ProductQueryAttributes {
-	/**
-	 * An array of controls to disable in the inspector.
-	 *
-	 * @example  `[ 'stockStatus' ]`  will not render the dropdown for stock status.
-	 */
-	disabledInspectorControls?: string[];
-	/**
-	 * Query attributes that define which products will be fetched.
-	 */
-	query?: ProductQueryArguments;
-}
+export type ProductQueryBlockQuery = Omit<
+	QueryBlockQuery,
+	keyof ProductQueryArguments
+> &
+	ProductQueryArguments;
 
 export interface QueryBlockAttributes {
-	allowControls?: string[];
+	allowedControls?: string[];
 	displayLayout?: {
 		type: 'flex' | 'list';
 		columns?: number;
 	};
 	namespace?: string;
-	query: QueryBlockQuery & ProductQueryArguments;
+	query: ProductQueryBlockQuery;
 }
 
 export interface QueryBlockQuery {
@@ -65,7 +94,7 @@ export interface QueryBlockQuery {
 	inherit: boolean;
 	offset?: number;
 	order: 'asc' | 'desc';
-	orderBy: 'date' | 'relevance';
+	orderBy: 'date' | 'relevance' | 'title';
 	pages?: number;
 	parents?: number[];
 	perPage?: number;
@@ -75,9 +104,12 @@ export interface QueryBlockQuery {
 	taxQuery?: string;
 }
 
+export interface ProductQueryContext {
+	query?: ProductQueryBlockQuery;
+	queryId?: number;
+}
+
 export enum QueryVariation {
 	/** The main, fully customizable, Product Query block */
 	PRODUCT_QUERY = 'woocommerce/product-query',
-	/** Only shows products on sale */
-	PRODUCTS_ON_SALE = 'woocommerce/query-products-on-sale',
 }

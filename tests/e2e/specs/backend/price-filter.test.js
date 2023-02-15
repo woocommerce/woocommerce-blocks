@@ -4,17 +4,12 @@
 import {
 	openDocumentSettingsSidebar,
 	switchUserToAdmin,
-	getAllBlocks,
 } from '@wordpress/e2e-test-utils';
 import {
 	visitBlockPage,
 	selectBlockByName,
+	switchBlockInspectorTabWhenGutenbergIsInstalled,
 } from '@woocommerce/blocks-test-utils';
-
-/**
- * Internal dependencies
- */
-import { insertBlockDontWaitForInsertClose } from '../../utils.js';
 
 const block = {
 	name: 'Filter by Price',
@@ -29,11 +24,6 @@ describe( `${ block.name } Block`, () => {
 			await visitBlockPage( `${ block.name } Block` );
 		} );
 
-		it( 'can only be inserted once', async () => {
-			await insertBlockDontWaitForInsertClose( block.name );
-			expect( await getAllBlocks() ).toHaveLength( 1 );
-		} );
-
 		it( 'renders without crashing', async () => {
 			await expect( page ).toRenderBlock( block );
 		} );
@@ -41,33 +31,27 @@ describe( `${ block.name } Block`, () => {
 		describe( 'Attributes', () => {
 			beforeEach( async () => {
 				await openDocumentSettingsSidebar();
+				await switchBlockInspectorTabWhenGutenbergIsInstalled(
+					'Settings'
+				);
 				await selectBlockByName( block.slug );
 			} );
 
 			it( "allows changing the block's title", async () => {
-				const textareaSelector = `.wp-block[data-type="${ block.slug }"] textarea.wc-block-editor-components-title`;
+				const textareaSelector =
+					'.wp-block-woocommerce-filter-wrapper .wp-block-heading';
+
 				await expect( page ).toFill( textareaSelector, 'New Title' );
+
 				await page.click( block.class );
 
-				// Change title to h6.
-				await page.click(
-					'.components-toolbar button[aria-label="Heading 6"]'
-				);
-				await expect( page ).toMatchElement(
-					`.wp-block[data-type="${ block.slug }"] h6 textarea`,
-					{ text: 'New Title' }
-				);
+				await expect( page ).toMatchElement( textareaSelector, {
+					text: 'New Title',
+				} );
+
 				await expect( page ).toFill(
 					textareaSelector,
 					'Filter by price'
-				);
-				// Change title to h3.
-				await page.click(
-					'.components-toolbar button[aria-label="Heading 3"]'
-				);
-				await expect( page ).not.toMatchElement(
-					`.wp-block[data-type="${ block.slug }"] h6 textarea`,
-					{ text: 'New Title' }
 				);
 			} );
 

@@ -19,7 +19,6 @@ import {
  * Internal dependencies
  */
 import { useEventEmitters, reducer as emitReducer } from './event-emit';
-import { useCustomerData } from '../../../hooks/use-customer-data';
 import { emitterCallback } from '../../../event-emit';
 
 type PaymentEventsContextType = {
@@ -62,15 +61,19 @@ export const PaymentEventsProvider = ( {
 			isCalculating: store.isCalculating(),
 		};
 	} );
-	const { currentStatus } = useSelect( ( select ) => {
+	const { isPaymentReady } = useSelect( ( select ) => {
 		const store = select( PAYMENT_STORE_KEY );
 
 		return {
-			currentStatus: store.getCurrentStatus(),
+			// The PROCESSING status represents befor the checkout runs the observers
+			// registered for the payment_setup event.
+			isPaymentProcessing: store.isPaymentProcessing(),
+			// the READY status represents when the observers have finished processing and payment data
+			// synced with the payment store, ready to be sent to the StoreApi
+			isPaymentReady: store.isPaymentReady(),
 		};
 	} );
 
-	const { createErrorNotice, removeNotice } = useDispatch( 'core/notices' );
 	const { setValidationErrors } = useDispatch( VALIDATION_STORE_KEY );
 	const [ observers, observerDispatch ] = useReducer( emitReducer, {} );
 	const { onPaymentProcessing } = useEventEmitters( observerDispatch );
@@ -82,75 +85,51 @@ export const PaymentEventsProvider = ( {
 	}, [ observers ] );
 
 	const {
-		__internalSetPaymentStatus,
-		__internalSetPaymentMethodData,
+		__internalSetPaymentProcessing,
+		__internalSetPaymentIdle,
 		__internalEmitPaymentProcessingEvent,
 	} = useDispatch( PAYMENT_STORE_KEY );
-	const { setBillingAddress, setShippingAddress } = useCustomerData();
 
-	// flip payment to processing if checkout processing is complete, there are no errors, and payment status is started.
+	// flip payment to processing if checkout processing is complete and there are no errors
 	useEffect( () => {
 		if (
 			checkoutIsProcessing &&
 			! checkoutHasError &&
-			! checkoutIsCalculating &&
-			! currentStatus.isFinished
+			! checkoutIsCalculating
 		) {
-			__internalSetPaymentStatus( { isProcessing: true } );
-		}
-	}, [
-		checkoutIsProcessing,
-		checkoutHasError,
-		checkoutIsCalculating,
-		currentStatus.isFinished,
-		__internalSetPaymentStatus,
-	] );
+			__internalSetPaymentProcessing();
 
-	// When checkout is returned to idle, set payment status to pristine but only if payment status is already not finished.
-	useEffect( () => {
-		if ( checkoutIsIdle && ! currentStatus.isSuccessful ) {
-			__internalSetPaymentStatus( { isPristine: true } );
-		}
-	}, [
-		checkoutIsIdle,
-		currentStatus.isSuccessful,
-		__internalSetPaymentStatus,
-	] );
-
-	// if checkout has an error sync payment status back to pristine.
-	useEffect( () => {
-		if ( checkoutHasError && currentStatus.isSuccessful ) {
-			__internalSetPaymentStatus( { isPristine: true } );
-		}
-	}, [
-		checkoutHasError,
-		currentStatus.isSuccessful,
-		__internalSetPaymentStatus,
-	] );
-
-	// Emit the payment processing event
-	useEffect( () => {
-		// Note: the nature of this event emitter is that it will bail on any
-		// observer that returns a response that !== true. However, this still
-		// allows for other observers that return true for continuing through
-		// to the next observer (or bailing if there's a problem).
-		if ( currentStatus.isProcessing ) {
+			// Note: the nature of this event emitter is that it will bail on any
+			// observer that returns a response that !== true. However, this still
+			// allows for other observers that return true for continuing through
+			// to the next observer (or bailing if there's a problem).
 			__internalEmitPaymentProcessingEvent(
 				currentObservers.current,
 				setValidationErrors
 			);
 		}
 	}, [
-		currentStatus.isProcessing,
-		setValidationErrors,
-		__internalSetPaymentStatus,
-		removeNotice,
-		createErrorNotice,
-		setBillingAddress,
-		__internalSetPaymentMethodData,
-		setShippingAddress,
+		checkoutIsProcessing,
+		checkoutHasError,
+		checkoutIsCalculating,
+		__internalSetPaymentProcessing,
 		__internalEmitPaymentProcessingEvent,
+		setValidationErrors,
 	] );
+
+	// When checkout is returned to idle, and the payment setup has not completed, set payment status to idle
+	useEffect( () => {
+		if ( checkoutIsIdle && ! isPaymentReady ) {
+			__internalSetPaymentIdle();
+		}
+	}, [ checkoutIsIdle, isPaymentReady, __internalSetPaymentIdle ] );
+
+	// if checkout has an error sync payment status back to idle.
+	useEffect( () => {
+		if ( checkoutHasError && isPaymentReady ) {
+			__internalSetPaymentIdle();
+		}
+	}, [ checkoutHasError, isPaymentReady, __internalSetPaymentIdle ] );
 
 	const paymentContextData = {
 		onPaymentProcessing,

@@ -33,6 +33,17 @@ class CartController {
 	}
 
 	/**
+	 * Recalculates the cart totals.
+	 */
+	public function calculate_totals() {
+		$cart = $this->get_cart_instance();
+		$cart->get_cart();
+		$cart->calculate_fees();
+		$cart->calculate_shipping();
+		$cart->calculate_totals();
+	}
+
+	/**
 	 * Based on the core cart class but returns errors rather than rendering notices directly.
 	 *
 	 * @todo Overriding the core add_to_cart method was necessary because core outputs notices when an item is added to
@@ -42,7 +53,7 @@ class CartController {
 	 * @throws RouteException Exception if invalid data is detected.
 	 *
 	 * @param array $request Add to cart request params.
-	 * @return string|Error
+	 * @return string
 	 */
 	public function add_to_cart( $request ) {
 		$cart    = $this->get_cart_instance();
@@ -171,7 +182,7 @@ class CartController {
 		$cart_item = $this->get_cart_item( $item_id );
 
 		if ( empty( $cart_item ) ) {
-			throw new RouteException( 'woocommerce_rest_cart_invalid_key', __( 'Cart item does not exist.', 'woo-gutenberg-products-block' ), 404 );
+			throw new RouteException( 'woocommerce_rest_cart_invalid_key', __( 'Cart item does not exist.', 'woo-gutenberg-products-block' ), 409 );
 		}
 
 		$product = $cart_item['data'];
@@ -788,11 +799,6 @@ class CartController {
 			return [];
 		}
 
-		if ( Package::feature()->is_experimental_build() ) {
-			// This is a temporary measure until we can bring such change to WooCommerce core.
-			add_filter( 'woocommerce_get_shipping_methods', [ $this, 'enable_local_pickup_without_address' ] );
-		}
-
 		$packages = $cart->get_shipping_packages();
 
 		// Add extra package data to array.
@@ -811,38 +817,9 @@ class CartController {
 
 		$packages = $calculate_rates ? wc()->shipping()->calculate_shipping( $packages ) : $packages;
 
-		if ( Package::feature()->is_experimental_build() ) {
-			// This is a temporary measure until we can bring such change to WooCommerce core.
-			remove_filter( 'woocommerce_get_shipping_methods', [ $this, 'enable_local_pickup_without_address' ] );
-		}
-
 		return $packages;
 	}
 
-	/**
-	 * We want to make local pickup always avaiable without checking for a shipping zone or address.
-	 *
-	 * @param array $shipping_methods Package we're checking against right now.
-	 * @return array $shipping_methods Shipping methods with local pickup.
-	 */
-	public function enable_local_pickup_without_address( $shipping_methods ) {
-		$shipping_zones = \WC_Shipping_Zones::get_zones( 'admin' );
-		$worldwide_zone = new \WC_Shipping_Zone( 0 );
-		$all_methods    = array_map(
-			function( $_shipping_zone ) {
-				return $_shipping_zone['shipping_methods'];
-			},
-			$shipping_zones
-		);
-		$all_methods    = array_merge_recursive( $worldwide_zone->get_shipping_methods( false, 'admin' ), ...$all_methods );
-		$local_pickups  = array_filter(
-			$all_methods,
-			function( $method ) {
-				return 'local_pickup' === $method->id;
-			}
-		);
-		return array_merge( $shipping_methods, $local_pickups );
-	}
 	/**
 	 * Creates a name for a package.
 	 *
@@ -866,10 +843,10 @@ class CartController {
 			$index > 1 ?
 				sprintf(
 					/* translators: %d: shipping package number */
-					_x( 'Shipping method %d', 'shipping packages', 'woo-gutenberg-products-block' ),
+					_x( 'Shipment %d', 'shipping packages', 'woo-gutenberg-products-block' ),
 					$index
 				) :
-				_x( 'Shipping method', 'shipping packages', 'woo-gutenberg-products-block' ),
+				_x( 'Shipment 1', 'shipping packages', 'woo-gutenberg-products-block' ),
 			$package['package_id'],
 			$package
 		);
@@ -1231,6 +1208,11 @@ class CartController {
 				);
 			}
 
+			// Fills request array with unspecified attributes that have default values. This ensures the variation always has full data.
+			if ( '' !== $expected_value && ! isset( $request['variation'][ wc_variation_attribute_name( $attribute['name'] ) ] ) ) {
+				$request['variation'][ wc_variation_attribute_name( $attribute['name'] ) ] = $expected_value;
+			}
+
 			// If no attribute was posted, only error if the variation has an 'any' attribute which requires a value.
 			if ( '' === $expected_value ) {
 				$missing_attributes[] = $attribute_label;
@@ -1245,6 +1227,8 @@ class CartController {
 				400
 			);
 		}
+
+		ksort( $request['variation'] );
 
 		return $request;
 	}

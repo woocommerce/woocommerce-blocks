@@ -5,7 +5,7 @@ import {
 	InnerBlockLayoutContextProvider,
 	ProductDataContextProvider,
 } from '@woocommerce/shared-context';
-import { ProductResponseItem } from '@woocommerce/type-defs/product-response';
+import { ProductResponseItem } from '@woocommerce/types';
 
 /**
  * Internal dependencies
@@ -41,14 +41,22 @@ const CartCrossSellsProduct = ( {
 						<ProductImage
 							className={ '' }
 							showSaleBadge={ false }
+							productId={ product.id }
+							showProductLink={ false }
+							saleBadgeAlign={ 'left' }
+							imageSizing={ 'full-size' }
+							isDescendentOfQueryLoop={ false }
 						/>
 						<ProductName
 							align={ '' }
-							headingLevel={ 2 }
+							headingLevel={ 3 }
 							showProductLink={ true }
 						/>
 						<ProductRating />
-						<ProductSaleBadge />
+						<ProductSaleBadge
+							productId={ product.id }
+							align={ 'left' }
+						/>
 						<ProductPrice />
 					</div>
 					{ product.is_in_stock ? (

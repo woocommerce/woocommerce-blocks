@@ -1,9 +1,4 @@
 /**
- * External dependencies
- */
-import { PaymentResult } from '@woocommerce/types';
-
-/**
  * Internal dependencies
  */
 import { ACTION_TYPES as types } from './action-types';
@@ -33,13 +28,6 @@ const reducer = ( state = defaultState, action: CheckoutAction ) => {
 							redirectUrl: action.redirectUrl,
 					  }
 					: state;
-			break;
-
-		case types.SET_PAYMENT_RESULT:
-			newState = {
-				...state,
-				paymentResult: action.data as PaymentResult,
-			};
 			break;
 
 		case types.SET_COMPLETE:
@@ -110,7 +98,7 @@ const reducer = ( state = defaultState, action: CheckoutAction ) => {
 			}
 			break;
 
-		case types.SET_SHIPPING_ADDRESS_AS_BILLING_ADDRESS:
+		case types.SET_USE_SHIPPING_AS_BILLING:
 			if (
 				action.useShippingAsBilling !== undefined &&
 				action.useShippingAsBilling !== state.useShippingAsBilling
@@ -134,6 +122,18 @@ const reducer = ( state = defaultState, action: CheckoutAction ) => {
 			}
 			break;
 
+		case types.SET_PREFERS_COLLECTION:
+			if (
+				action.prefersCollection !== undefined &&
+				action.prefersCollection !== state.prefersCollection
+			) {
+				newState = {
+					...state,
+					prefersCollection: action.prefersCollection,
+				};
+			}
+			break;
+
 		case types.SET_ORDER_NOTES:
 			if (
 				action.orderNotes !== undefined &&
@@ -149,22 +149,22 @@ const reducer = ( state = defaultState, action: CheckoutAction ) => {
 		case types.SET_EXTENSION_DATA:
 			if (
 				action.extensionData !== undefined &&
-				state.extensionData !== action.extensionData
+				action.namespace !== undefined
 			) {
 				newState = {
 					...state,
-					extensionData: action.extensionData,
+					extensionData: {
+						...state.extensionData,
+						[ action.namespace ]: action.replace
+							? action.extensionData
+							: {
+									...state.extensionData[ action.namespace ],
+									...action.extensionData,
+							  },
+					},
 				};
 			}
 			break;
-	}
-
-	if (
-		newState !== state &&
-		action.type !== types.SET_PRISTINE &&
-		newState?.status === STATUS.PRISTINE
-	) {
-		newState.status = STATUS.IDLE;
 	}
 	return newState;
 };

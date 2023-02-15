@@ -7,12 +7,21 @@ import type { ReactNode } from 'react';
  * Internal dependencies
  */
 import type { CartTotals, Cart } from './cart';
-import {
+import type {
 	CartResponseBillingAddress,
 	CartResponseShippingAddress,
 } from './cart-response';
 import type { EmptyObjectType } from './objects';
 import type { CheckoutResponseSuccess } from './checkout';
+
+/**
+ * The shape of objects on the `globalPaymentMethods` object from `allSettings`.
+ */
+export interface GlobalPaymentMethod {
+	id: string | number;
+	title: string;
+	description: string;
+}
 
 export interface SupportsConfiguration {
 	showSavedCards?: boolean;
@@ -90,6 +99,16 @@ export type ExpressPaymentMethodConfiguration = Omit<
 export type PaymentMethods =
 	| Record< string, PaymentMethodConfigInstance >
 	| EmptyObjectType;
+
+/**
+ * Used to represent payment methods in a context where storing objects is not allowed, i.e. in data stores.
+ */
+export type PlainPaymentMethods = Record< string, { name: string } >;
+
+/**
+ * Used to represent payment methods in a context where storing objects is not allowed, i.e. in data stores.
+ */
+export type PlainExpressPaymentMethods = PlainPaymentMethods;
 
 export type ExpressPaymentMethods =
 	| Record< string, ExpressPaymentMethodConfigInstance >

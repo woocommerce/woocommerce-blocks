@@ -27,6 +27,13 @@ abstract class AbstractCartRoute extends AbstractRoute {
 	const SCHEMA_TYPE = 'cart';
 
 	/**
+	 * Schema class instance.
+	 *
+	 * @var CartSchema
+	 */
+	protected $schema;
+
+	/**
 	 * Schema class for the cart.
 	 *
 	 * @var CartSchema
@@ -70,6 +77,16 @@ abstract class AbstractCartRoute extends AbstractRoute {
 	}
 
 	/**
+	 * Are we updating data or getting data?
+	 *
+	 * @param \WP_REST_Request $request Request object.
+	 * @return boolean
+	 */
+	protected function is_update_request( \WP_REST_Request $request ) {
+		return in_array( $request->get_method(), [ 'POST', 'PUT', 'PATCH', 'DELETE' ], true );
+	}
+
+	/**
 	 * Get the route response based on the type of request.
 	 *
 	 * @param \WP_REST_Request $request Request object.
@@ -78,7 +95,7 @@ abstract class AbstractCartRoute extends AbstractRoute {
 	 */
 	public function get_response( \WP_REST_Request $request ) {
 		$this->load_cart_session( $request );
-		$this->calculate_totals();
+		$this->cart_controller->calculate_totals();
 
 		if ( $this->requires_nonce( $request ) ) {
 			$nonce_check = $this->check_nonce( $request );
@@ -97,8 +114,10 @@ abstract class AbstractCartRoute extends AbstractRoute {
 		}
 
 		if ( is_wp_error( $response ) ) {
-			$response = $this->error_to_response( $response );
-		} elseif ( in_array( $request->get_method(), [ 'POST', 'PUT', 'PATCH', 'DELETE' ], true ) ) {
+			return $this->error_to_response( $response );
+		}
+
+		if ( $this->is_update_request( $request ) ) {
 			$this->cart_updated( $request );
 		}
 
@@ -181,7 +200,7 @@ abstract class AbstractCartRoute extends AbstractRoute {
 	 * @return int
 	 */
 	protected function get_cart_token_expiration() {
-		return time() + intval( apply_filters( 'wc_session_expiration', 60 * 60 * 48 ) );
+		return time() + intval( apply_filters( 'wc_session_expiration', DAY_IN_SECONDS * 2 ) );
 	}
 
 	/**
@@ -192,7 +211,7 @@ abstract class AbstractCartRoute extends AbstractRoute {
 	 * @return bool
 	 */
 	protected function requires_nonce( \WP_REST_Request $request ) {
-		return 'GET' !== $request->get_method();
+		return $this->is_update_request( $request );
 	}
 
 	/**
@@ -227,16 +246,6 @@ abstract class AbstractCartRoute extends AbstractRoute {
 			 */
 			do_action( 'woocommerce_store_api_cart_update_order_from_request', $draft_order, $request );
 		}
-	}
-
-	/**
-	 * Ensures the cart totals are calculated before an API response is generated.
-	 */
-	protected function calculate_totals() {
-		wc()->cart->get_cart();
-		wc()->cart->calculate_fees();
-		wc()->cart->calculate_shipping();
-		wc()->cart->calculate_totals();
 	}
 
 	/**

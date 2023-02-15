@@ -102,17 +102,22 @@ The status is exposed on the `currentErrorStatus` object provided by the `useShi
 
 ### Payment Method Data Store Status
 
-The status of the payment lives in the payment data store. It can be retrieved with the `getCurrentStatus` selector, liek so:
+The status of the payment lives in the payment data store. You can query the status with the following selectors:
 
 ```jsx
-import { useSelect } from '@wordpress/data';
+import { select } from '@wordpress/data';
 import { PAYMENT_STORE_KEY } from '@woocommerce/blocks-data';
 
 const MyComponent = ( props ) => {
-	const currentStatus = useSelect( ( select ) =>
-		select( PAYMENT_STORE_KEY ).getCurrentStatus()
-	);
-	// do something with status
+	const isPaymentIdle = select( PAYMENT_STORE_KEY ).isPaymentIdle();
+	const isExpressPaymentStarted =
+		select( PAYMENT_STORE_KEY ).isExpressPaymentStarted();
+	const isPaymentProcessing =
+		select( PAYMENT_STORE_KEY ).isPaymentProcessing();
+	const isPaymentReady = select( PAYMENT_STORE_KEY ).isPaymentReady();
+	const hasPaymentError = select( PAYMENT_STORE_KEY ).hasPaymentError();
+
+	// do something with the boolean values
 };
 ```
 
@@ -120,22 +125,11 @@ The status here will help inform the current state of _client side_ processing f
 
 The possible _internal_ statuses that may be set are:
 
--   `PRISTINE`: This is the status when checkout is initialized and there are payment methods that are not doing anything. This status is also set whenever the checkout status is changed to `IDLE`.
--   `STARTED`: **Express Payment Methods Only** - This status is used when an express payment method has been triggered by the user clicking it's button. This flow happens before processing, usually in a modal window.
+-   `IDLE`: This is the status when checkout is initialized and there are payment methods that are not doing anything. This status is also set whenever the checkout status is changed to `IDLE`.
+-   `EXPRESS_STARTED`: **Express Payment Methods Only** - This status is used when an express payment method has been triggered by the user clicking it's button. This flow happens before processing, usually in a modal window.
 -   `PROCESSING`: This status is set when the checkout status is `PROCESSING`, checkout `hasError` is false, checkout is not calculating, and the current payment status is not `FINISHED`. When this status is set, it will trigger the payment processing event emitter.
--   `SUCCESS`: This status is set after all the observers hooked into the payment processing event have completed successfully. The `CheckoutProcessor` component uses this along with the checkout `PROCESSING` status to signal things are ready to send the order to the server with data for processing.
--   `FAILED`: This status is set after an observer hooked into the payment processing event returns a fail response. This in turn will end up causing the checkout `hasError` flag to be set to true.
+-   `READY`: This status is set after all the observers hooked into the payment processing event have completed successfully. The `CheckoutProcessor` component uses this along with the checkout `PROCESSING` status to signal things are ready to send the order to the server with data for processing and to take payment
 -   `ERROR`: This status is set after an observer hooked into the payment processing event returns an error response. This in turn will end up causing the checkout `hasError` flag to be set to true.
-
-The `currentStatus` object has the following properties:
-
--   `isPristine`: This is true when the current payment status is `PRISTINE`.
--   `isStarted`: This is true when the current payment status is `STARTED`.
--   `isProcessing`: This is true when the current payment status is `PROCESSING`.
--   `isFinished`: This is true when the current payment status is one of `ERROR`, `FAILED`, or`SUCCESS`.
--   `hasError`: This is true when the current payment status is `ERROR`.
--   `hasFailed`: This is true when the current payment status is `FAILED`.
--   `isSuccessful`: This is true when the current payment status is `SUCCESS`
 
 ### Emitting Events
 
@@ -486,13 +480,3 @@ This event emitter doesn't care about any registered observer response and will 
 This event emitter is fired when a shipping rate selection is not being persisted to the server and the shipping data context error state is `UNKNOWN` or `INVALID_ADDRESS`.
 
 This event emitter doesn't care about any registered observer response and will simply execute all registered observers passing them the current error status in the context.
-
-<!-- FEEDBACK -->
-
----
-
-[We're hiring!](https://woocommerce.com/careers/) Come work with us!
-
-🐞 Found a mistake, or have a suggestion? [Leave feedback about this document here.](https://github.com/woocommerce/woocommerce-blocks/issues/new?assignees=&labels=type%3A+documentation&template=--doc-feedback.md&title=Feedback%20on%20./docs/internal-developers/block-client-apis/checkout/checkout-flow-and-events.md)
-
-<!-- /FEEDBACK -->

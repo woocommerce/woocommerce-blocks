@@ -1,16 +1,12 @@
-/** @typedef { import('@woocommerce/type-defs/hooks').StoreCartCoupon } StoreCartCoupon */
-
 /**
  * External dependencies
  */
 import { __, sprintf } from '@wordpress/i18n';
 import { useDispatch, useSelect } from '@wordpress/data';
-import {
-	CART_STORE_KEY as storeKey,
-	VALIDATION_STORE_KEY,
-} from '@woocommerce/block-data';
+import { CART_STORE_KEY, VALIDATION_STORE_KEY } from '@woocommerce/block-data';
 import { decodeEntities } from '@wordpress/html-entities';
 import type { StoreCartCoupon } from '@woocommerce/types';
+import { applyCheckoutFilter } from '@woocommerce/blocks-checkout';
 
 /**
  * Internal dependencies
@@ -21,9 +17,6 @@ import { useStoreCart } from './use-store-cart';
  * This is a custom hook for loading the Store API /cart/coupons endpoint and an
  * action for adding a coupon _to_ the cart.
  * See also: https://github.com/woocommerce/woocommerce-gutenberg-products-block/tree/trunk/src/RestApi/StoreApi
- *
- * @return {StoreCartCoupon} An object exposing data and actions from/for the
- * store api /cart/coupons endpoint.
  */
 export const useStoreCartCoupons = ( context = '' ): StoreCartCoupon => {
 	const { cartCoupons, cartIsLoading } = useStoreCart();
@@ -32,37 +25,33 @@ export const useStoreCartCoupons = ( context = '' ): StoreCartCoupon => {
 	const { setValidationErrors } = useDispatch( VALIDATION_STORE_KEY );
 
 	const {
-		applyCoupon,
-		removeCoupon,
 		isApplyingCoupon,
 		isRemovingCoupon,
-	}: Pick<
-		StoreCartCoupon,
-		| 'applyCoupon'
-		| 'removeCoupon'
-		| 'isApplyingCoupon'
-		| 'isRemovingCoupon'
-		| 'receiveApplyingCoupon'
-	> = useSelect(
-		( select, { dispatch } ) => {
-			const store = select( storeKey );
-			const actions = dispatch( storeKey );
+	}: Pick< StoreCartCoupon, 'isApplyingCoupon' | 'isRemovingCoupon' > =
+		useSelect(
+			( select ) => {
+				const store = select( CART_STORE_KEY );
 
-			return {
-				applyCoupon: actions.applyCoupon,
-				removeCoupon: actions.removeCoupon,
-				isApplyingCoupon: store.isApplyingCoupon(),
-				isRemovingCoupon: store.isRemovingCoupon(),
-				receiveApplyingCoupon: actions.receiveApplyingCoupon,
-			};
-		},
-		[ createErrorNotice, createNotice ]
-	);
+				return {
+					isApplyingCoupon: store.isApplyingCoupon(),
+					isRemovingCoupon: store.isRemovingCoupon(),
+				};
+			},
+			[ createErrorNotice, createNotice ]
+		);
+
+	const { applyCoupon, removeCoupon } = useDispatch( CART_STORE_KEY );
 
 	const applyCouponWithNotices = ( couponCode: string ) => {
-		applyCoupon( couponCode )
-			.then( ( result ) => {
-				if ( result === true ) {
+		return applyCoupon( couponCode )
+			.then( () => {
+				if (
+					applyCheckoutFilter( {
+						filterName: 'showApplyCouponNotice',
+						defaultValue: true,
+						arg: { couponCode, context },
+					} )
+				) {
 					createNotice(
 						'info',
 						sprintf(
@@ -80,6 +69,7 @@ export const useStoreCartCoupons = ( context = '' ): StoreCartCoupon => {
 						}
 					);
 				}
+				return Promise.resolve( true );
 			} )
 			.catch( ( error ) => {
 				setValidationErrors( {
@@ -88,15 +78,20 @@ export const useStoreCartCoupons = ( context = '' ): StoreCartCoupon => {
 						hidden: false,
 					},
 				} );
-				// Finished handling the coupon.
-				receiveApplyingCoupon( '' );
+				return Promise.resolve( false );
 			} );
 	};
 
 	const removeCouponWithNotices = ( couponCode: string ) => {
-		removeCoupon( couponCode )
-			.then( ( result ) => {
-				if ( result === true ) {
+		return removeCoupon( couponCode )
+			.then( () => {
+				if (
+					applyCheckoutFilter( {
+						filterName: 'showRemoveCouponNotice',
+						defaultValue: true,
+						arg: { couponCode, context },
+					} )
+				) {
 					createNotice(
 						'info',
 						sprintf(
@@ -114,14 +109,14 @@ export const useStoreCartCoupons = ( context = '' ): StoreCartCoupon => {
 						}
 					);
 				}
+				return Promise.resolve( true );
 			} )
 			.catch( ( error ) => {
 				createErrorNotice( error.message, {
 					id: 'coupon-form',
 					context,
 				} );
-				// Finished handling the coupon.
-				receiveApplyingCoupon( '' );
+				return Promise.resolve( false );
 			} );
 	};
 

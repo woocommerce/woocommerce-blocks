@@ -3,10 +3,13 @@
  */
 import { useSelect, useDispatch } from '@wordpress/data';
 import { useCallback, useState, useEffect } from '@wordpress/element';
-import { CART_STORE_KEY, CHECKOUT_STORE_KEY } from '@woocommerce/block-data';
+import {
+	CART_STORE_KEY,
+	CHECKOUT_STORE_KEY,
+	processErrorResponse,
+} from '@woocommerce/block-data';
 import { useDebounce } from 'use-debounce';
 import { usePrevious } from '@woocommerce/base-hooks';
-import { triggerFragmentRefresh } from '@woocommerce/base-utils';
 import {
 	CartItem,
 	StoreCartItemQuantity,
@@ -85,12 +88,12 @@ export const useStoreCartItemQuantity = (
 	);
 
 	const removeItem = useCallback( () => {
-		return cartItemKey
-			? removeItemFromCart( cartItemKey ).then( () => {
-					triggerFragmentRefresh();
-					return true;
-			  } )
-			: Promise.resolve( false );
+		if ( cartItemKey ) {
+			return removeItemFromCart( cartItemKey ).catch( ( error ) => {
+				processErrorResponse( error );
+			} );
+		}
+		return Promise.resolve( false );
 	}, [ cartItemKey, removeItemFromCart ] );
 
 	// Observe debounced quantity value, fire action to update server on change.
@@ -101,7 +104,11 @@ export const useStoreCartItemQuantity = (
 			Number.isFinite( previousDebouncedQuantity ) &&
 			previousDebouncedQuantity !== debouncedQuantity
 		) {
-			changeCartItemQuantity( cartItemKey, debouncedQuantity );
+			changeCartItemQuantity( cartItemKey, debouncedQuantity ).catch(
+				( error ) => {
+					processErrorResponse( error );
+				}
+			);
 		}
 	}, [
 		cartItemKey,

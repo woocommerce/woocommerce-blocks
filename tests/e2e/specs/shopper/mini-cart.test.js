@@ -3,11 +3,7 @@
  */
 import { setDefaultOptions, getDefaultOptions } from 'expect-puppeteer';
 import { default as WooCommerceRestApi } from '@woocommerce/woocommerce-rest-api';
-import {
-	SHOP_PAGE,
-	SHOP_CART_PAGE,
-	SHOP_CHECKOUT_PAGE,
-} from '@woocommerce/e2e-utils';
+import { SHOP_PAGE, SHOP_CART_PAGE } from '@woocommerce/e2e-utils';
 
 /**
  * Internal dependencies
@@ -15,7 +11,7 @@ import {
 import { shopper } from '../../../utils';
 import { merchant } from '../../../utils/merchant';
 import { getTextContent } from '../../page-utils';
-import { useTheme } from '../../utils';
+import { SHOP_CHECKOUT_BLOCK_PAGE, useTheme } from '../../utils';
 
 const block = {
 	name: 'Mini Cart',
@@ -28,6 +24,10 @@ const block = {
 			productPrice:
 				'.wc-block-grid__product:nth-child(2) .wc-block-grid__product-price',
 			addToCartButton: 'button.add_to_cart_button',
+			checkoutOrderSummary: {
+				content: '.wc-block-components-order-summary__content',
+				toggle: '.wc-block-components-order-summary button[aria-expanded="false"]',
+			},
 		},
 	},
 };
@@ -552,13 +552,24 @@ describe( 'Shopper → Mini Cart', () => {
 				( el ) => el.href
 			);
 
-			expect( checkoutUrl ).toMatch( SHOP_CHECKOUT_PAGE );
+			expect( checkoutUrl ).toMatch( SHOP_CHECKOUT_BLOCK_PAGE );
 
 			await page.goto( checkoutUrl, { waitUntil: 'networkidle0' } );
 
 			await expect( page ).toMatchElement( 'h1', { text: 'Checkout' } );
 
-			await expect( page ).toMatch( productTitle );
+			const orderSummaryToggle = await page.$(
+				selectors.frontend.checkoutOrderSummary.toggle
+			);
+
+			if ( orderSummaryToggle ) {
+				await orderSummaryToggle.click();
+			}
+
+			await expect( page ).toMatchElement(
+				selectors.frontend.checkoutOrderSummary.content,
+				{ text: productTitle }
+			);
 		} );
 	} );
 
@@ -566,6 +577,10 @@ describe( 'Shopper → Mini Cart', () => {
 		beforeAll( async () => {
 			await merchant.changeLanguage( 'nl_NL' );
 			await shopper.block.emptyCart();
+		} );
+
+		beforeEach( async () => {
+			await shopper.block.goToBlockPage( block.name );
 		} );
 
 		afterAll( async () => {

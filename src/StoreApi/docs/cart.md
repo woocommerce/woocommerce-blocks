@@ -2,17 +2,17 @@
 
 ## Table of Contents <!-- omit in toc -->
 
-- [Responses](#responses)
-    - [Cart Response](#cart-response)
-    - [Error Response](#error-response)
-- [Get Cart](#get-cart)
-- [Add Item](#add-item)
-- [Remove Item](#remove-item)
-- [Update Item](#update-item)
-- [Apply Coupon](#apply-coupon)
-- [Remove Coupon](#remove-coupon)
-- [Update Customer](#update-customer)
-- [Select Shipping Rate](#select-shipping-rate)
+-   [Responses](#responses)
+    -   [Cart Response](#cart-response)
+    -   [Error Response](#error-response)
+-   [Get Cart](#get-cart)
+-   [Add Item](#add-item)
+-   [Remove Item](#remove-item)
+-   [Update Item](#update-item)
+-   [Apply Coupon](#apply-coupon)
+-   [Remove Coupon](#remove-coupon)
+-   [Update Customer](#update-customer)
+-   [Select Shipping Rate](#select-shipping-rate)
 
 The cart API returns the current state of the cart for the current session or logged in user.
 
@@ -332,6 +332,47 @@ curl --header "Nonce: 12345" --request POST https://example-store.com/wp-json/wc
 
 Returns the full [Cart Response](#cart-response) on success, or an [Error Response](#error-response) on failure.
 
+If you want to add supplemental cart item data before it is passed into `CartController::add_to_cart` use the [`woocommerce_store_api_add_to_cart_data`](https://github.com/woocommerce/woocommerce-blocks/blob/4d1c295a2bace9a4f6397cfd5469db31083d477a/docs/third-party-developers/extensibility/hooks/filters.md#woocommerce_store_api_add_to_cart_data) filter.
+
+If you want to add multiple items at once, you need to use the batch endpoint:
+
+```http
+POST /wc/store/v1/batch
+```
+
+The JSON payload for adding multiple items to the cart would look like this:
+
+```json
+{
+	"requests": [
+		{
+			"path": "/wc/store/v1/cart/add-item",
+			"method": "POST",
+			"cache": "no-store",
+			"body": {
+				"id": 26,
+				"quantity": 1
+			},
+			"headers": {
+				"Nonce": "1db1d13784"
+			}
+		},
+		{
+			"path": "/wc/store/v1/cart/add-item",
+			"method": "POST",
+			"cache": "no-store",
+			"body": {
+				"id": 27,
+				"quantity": 1
+			},
+			"headers": {
+				"Nonce": "1db1d13784"
+			}
+		}
+	]
+}
+```
+
 ## Remove Item
 
 Remove an item from the cart and return the full cart response, or an error.
@@ -458,10 +499,10 @@ This endpoint will return an error unless a valid [Nonce Token](nonce-tokens.md)
 POST /cart/select-shipping-rate
 ```
 
-| Attribute    | Type    | Required | Description                         |
-| :----------- | :------ | :------: | :---------------------------------- |
-| `package_id` | integer |  string  | yes                                 | The ID of the shipping package within the cart. |
-| `rate_id`    | string  |   yes    | The chosen rate ID for the package. |
+| Attribute    | Type    | Required | Description                                     |
+| :----------- | :------ | :------: | :---------------------------------------------- |
+| `package_id` | integer |   yes    | The ID of the shipping package within the cart. |
+| `rate_id`    | string  |   yes    | The chosen rate ID for the package.             |
 
 ```sh
 curl --header "Nonce: 12345" --request POST /cart/select-shipping-rate?package_id=1&rate_id=flat_rate:1
@@ -478,4 +519,3 @@ Returns the full [Cart Response](#cart-response) on success, or an [Error Respon
 🐞 Found a mistake, or have a suggestion? [Leave feedback about this document here.](https://github.com/woocommerce/woocommerce-blocks/issues/new?assignees=&labels=type%3A+documentation&template=--doc-feedback.md&title=Feedback%20on%20./src/StoreApi/docs/cart.md)
 
 <!-- /FEEDBACK -->
-

@@ -1,4 +1,9 @@
-export const attributes = {
+/**
+ * External dependencies
+ */
+import type { BlockAttributes } from '@wordpress/blocks';
+
+export const blockAttributes: BlockAttributes = {
 	showProductLink: {
 		type: 'boolean',
 		default: true,
@@ -24,3 +29,5 @@ export const attributes = {
 		default: false,
 	},
 };
+
+export default blockAttributes;

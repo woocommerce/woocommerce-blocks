@@ -19,6 +19,7 @@ import {
 	ToggleControl,
 	CheckboxControl,
 } from '@wordpress/components';
+import { SlotFillProvider } from '@woocommerce/blocks-checkout';
 import type { TemplateArray } from '@wordpress/blocks';
 import { CartCheckoutFeedbackPrompt } from '@woocommerce/editor-components/feedback-prompt';
 
@@ -53,7 +54,6 @@ export const Edit = ( {
 	setAttributes: ( attributes: Record< string, unknown > ) => undefined;
 } ): JSX.Element => {
 	const {
-		allowCreateAccount,
 		showCompanyField,
 		requireCompanyField,
 		showApartmentField,
@@ -76,31 +76,6 @@ export const Edit = ( {
 		newAttributes[ key ] = ! ( attributes[ key ] as boolean );
 		setAttributes( newAttributes );
 	};
-
-	const accountControls = (): JSX.Element => (
-		<InspectorControls>
-			<PanelBody
-				title={ __(
-					'Account options',
-					'woo-gutenberg-products-block'
-				) }
-			>
-				<ToggleControl
-					label={ __(
-						'Allow shoppers to sign up for a user account during checkout',
-						'woo-gutenberg-products-block'
-					) }
-					checked={ allowCreateAccount }
-					onChange={ () =>
-						setAttributes( {
-							allowCreateAccount: ! allowCreateAccount,
-						} )
-					}
-				/>
-			</PanelBody>
-			<CartCheckoutFeedbackPrompt />
-		</InspectorControls>
-	);
 
 	const addressFieldControls = (): JSX.Element => (
 		<InspectorControls>
@@ -173,42 +148,40 @@ export const Edit = ( {
 			<EditorProvider
 				previewData={ { previewCart, previewSavedPaymentMethods } }
 			>
-				<CheckoutProvider>
-					<SidebarLayout
-						className={ classnames( 'wc-block-checkout', {
-							'has-dark-controls': attributes.hasDarkControls,
-						} ) }
-					>
-						<CheckoutBlockControlsContext.Provider
-							value={ {
-								addressFieldControls,
-								accountControls,
-							} }
+				<SlotFillProvider>
+					<CheckoutProvider>
+						<SidebarLayout
+							className={ classnames( 'wc-block-checkout', {
+								'has-dark-controls': attributes.hasDarkControls,
+							} ) }
 						>
-							<CheckoutBlockContext.Provider
-								value={ {
-									allowCreateAccount,
-									showCompanyField,
-									requireCompanyField,
-									showApartmentField,
-									showPhoneField,
-									requirePhoneField,
-									showOrderNotes,
-									showPolicyLinks,
-									showReturnToCart,
-									cartPageId,
-									showRateAfterTaxName,
-								} }
+							<CheckoutBlockControlsContext.Provider
+								value={ { addressFieldControls } }
 							>
-								<InnerBlocks
-									allowedBlocks={ ALLOWED_BLOCKS }
-									template={ defaultTemplate }
-									templateLock="insert"
-								/>
-							</CheckoutBlockContext.Provider>
-						</CheckoutBlockControlsContext.Provider>
-					</SidebarLayout>
-				</CheckoutProvider>
+								<CheckoutBlockContext.Provider
+									value={ {
+										showCompanyField,
+										requireCompanyField,
+										showApartmentField,
+										showPhoneField,
+										requirePhoneField,
+										showOrderNotes,
+										showPolicyLinks,
+										showReturnToCart,
+										cartPageId,
+										showRateAfterTaxName,
+									} }
+								>
+									<InnerBlocks
+										allowedBlocks={ ALLOWED_BLOCKS }
+										template={ defaultTemplate }
+										templateLock="insert"
+									/>
+								</CheckoutBlockContext.Provider>
+							</CheckoutBlockControlsContext.Provider>
+						</SidebarLayout>
+					</CheckoutProvider>
+				</SlotFillProvider>
 			</EditorProvider>
 		</div>
 	);

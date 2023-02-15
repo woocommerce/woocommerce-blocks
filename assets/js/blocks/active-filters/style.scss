@@ -20,11 +20,11 @@
 	overflow: hidden;
 
 	.wc-block-active-filters__clear-all {
+		@include filter-link-button();
 		@include font-size(small);
 		border: none;
 		margin-top: 15px;
 		padding: 0;
-		text-decoration: underline;
 		cursor: pointer;
 		float: right;
 
@@ -143,6 +143,7 @@
 	}
 
 	.wc-block-active-filters__list-item-name {
+		@include font-size(small);
 		display: flex;
 		align-items: center;
 		position: relative;

@@ -1,8 +1,12 @@
 /**
+ * External dependencies
+ */
+import { FieldValidationStatus } from '@woocommerce/types';
+
+/**
  * Internal dependencies
  */
 import reducer from '../reducers';
-import { FieldValidationStatus } from '../../types';
 import { ACTION_TYPES as types } from '.././action-types';
 import { ValidationAction } from '../actions';
 
@@ -129,7 +133,8 @@ describe( 'Validation reducer', () => {
 			},
 		};
 		const clearAllErrors: ValidationAction = {
-			type: types.CLEAR_ALL_VALIDATION_ERRORS,
+			type: types.CLEAR_VALIDATION_ERRORS,
+			errors: undefined,
 		};
 		const nextState = reducer( state, clearAllErrors );
 		expect( nextState ).toEqual( {} );
@@ -153,6 +158,26 @@ describe( 'Validation reducer', () => {
 		const nextState = reducer( state, clearError );
 		expect( nextState ).not.toHaveProperty( 'existingError' );
 		expect( nextState ).toHaveProperty( 'testError' );
+	} );
+
+	it( 'Clears multiple validation errors', () => {
+		const state: Record< string, FieldValidationStatus > = {
+			existingError: {
+				message: 'This is an existing error message',
+				hidden: false,
+			},
+			testError: {
+				message: 'This is error should also be removed',
+				hidden: false,
+			},
+		};
+		const clearError: ValidationAction = {
+			type: types.CLEAR_VALIDATION_ERRORS,
+			errors: [ 'existingError', 'testError' ],
+		};
+		const nextState = reducer( state, clearError );
+		expect( nextState ).not.toHaveProperty( 'existingError' );
+		expect( nextState ).not.toHaveProperty( 'testError' );
 	} );
 
 	it( 'Hides a single validation error', () => {

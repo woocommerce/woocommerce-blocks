@@ -5,8 +5,8 @@ import { __ } from '@wordpress/i18n';
 import { Component } from 'react';
 import PropTypes from 'prop-types';
 import { CURRENT_USER_IS_ADMIN } from '@woocommerce/settings';
-import { StoreNoticesContainer } from '@woocommerce/base-context';
-import { noticeContexts } from '@woocommerce/base-context/hooks';
+import { StoreNoticesContainer } from '@woocommerce/blocks-checkout';
+import { noticeContexts } from '@woocommerce/base-context';
 
 class PaymentMethodErrorBoundary extends Component {
 	state = { errorMessage: '', hasError: false };

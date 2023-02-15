@@ -7,9 +7,10 @@ import { store as WP_BLOCKS_STORE } from '@wordpress/blocks';
 /**
  * Internal dependencies
  */
+import { QUERY_LOOP_ID } from './constants';
 import {
-	ProductQueryArguments,
 	ProductQueryBlock,
+	ProductQueryBlockQuery,
 	QueryVariation,
 } from './types';
 
@@ -29,7 +30,7 @@ export function ArrayXOR< T extends Array< unknown > >( a: T, b: T ) {
  */
 export function isWooQueryBlockVariation( block: ProductQueryBlock ) {
 	return (
-		block.name === 'core/query' &&
+		block.name === QUERY_LOOP_ID &&
 		Object.values( QueryVariation ).includes(
 			block.attributes.namespace as QueryVariation
 		)
@@ -39,14 +40,11 @@ export function isWooQueryBlockVariation( block: ProductQueryBlock ) {
 /**
  * Sets the new query arguments of a Product Query block
  *
- * Because we add a new set of deeply nested attributes to the query
- * block, this utility function makes it easier to change just the
- * options relating to our custom query, while keeping the code
- * clean.
+ * Shorthand for setting new nested query parameters.
  */
-export function setCustomQueryAttribute(
+export function setQueryAttribute(
 	block: ProductQueryBlock,
-	queryParams: Partial< ProductQueryArguments >
+	queryParams: Partial< ProductQueryBlockQuery >
 ) {
 	const { query } = block.attributes;
 
@@ -56,6 +54,19 @@ export function setCustomQueryAttribute(
 			...queryParams,
 		},
 	} );
+}
+
+// This is a feature flag to enable the custom inherit Global Query implementation.
+// This is not intended to be a permanent feature flag, but rather a temporary.
+// https://github.com/woocommerce/woocommerce-blocks/pull/7382
+export const isCustomInheritGlobalQueryImplementationEnabled = false;
+
+export function isWooInheritQueryEnabled(
+	attributes: ProductQueryBlock[ 'attributes' ]
+) {
+	return isCustomInheritGlobalQueryImplementationEnabled
+		? attributes.query.__woocommerceInherit
+		: attributes.query.inherit;
 }
 
 /**
@@ -68,13 +79,22 @@ export function setCustomQueryAttribute(
 export function useAllowedControls(
 	attributes: ProductQueryBlock[ 'attributes' ]
 ) {
-	return useSelect(
+	const isSiteEditor = useSelect( 'core/edit-site' ) !== undefined;
+
+	const controls = useSelect(
 		( select ) =>
 			select( WP_BLOCKS_STORE ).getActiveBlockVariation(
-				'core/query',
+				QUERY_LOOP_ID,
 				attributes
-			)?.allowControls,
-
+			)?.allowedControls,
 		[ attributes ]
 	);
+
+	if ( ! isSiteEditor ) {
+		return controls.filter( ( control ) => control !== 'wooInherit' );
+	}
+
+	return isWooInheritQueryEnabled( attributes )
+		? controls.filter( ( control ) => control === 'wooInherit' )
+		: controls;
 }

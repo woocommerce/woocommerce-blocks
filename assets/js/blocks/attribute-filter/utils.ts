@@ -8,7 +8,12 @@ import {
 	PREFIX_QUERY_ARG_FILTER_TYPE,
 	PREFIX_QUERY_ARG_QUERY_TYPE,
 } from '@woocommerce/utils';
-import { AttributeObject } from '@woocommerce/types';
+import { AttributeObject, isString } from '@woocommerce/types';
+
+/**
+ * Internal dependencies
+ */
+import metadata from './block.json';
 
 interface Param {
 	attribute: string;
@@ -23,6 +28,14 @@ export function generateUniqueId() {
 export const parseTaxonomyToGenerateURL = ( taxonomy: string ) =>
 	taxonomy.replace( 'pa_', '' );
 
+/**
+ * Formats filter values into a string for the URL parameters needed for filtering PHP templates.
+ *
+ * @param {string} url    Current page URL.
+ * @param {Array}  params Parameters and their constraints.
+ *
+ * @return {string}       New URL with query parameters in it.
+ */
 export const formatParams = ( url: string, params: Array< Param > = [] ) => {
 	const paramObject: Record< string, string > = {};
 
@@ -66,7 +79,9 @@ export const getActiveFilters = (
 				? defaultAttributeParam.split( ',' )
 				: [];
 
-		return defaultCheckedValue;
+		return defaultCheckedValue.map( ( value ) =>
+			encodeURIComponent( value ).toLowerCase()
+		);
 	}
 
 	return [];
@@ -104,3 +119,30 @@ export const formatSlug = ( slug: string ) =>
 		.replace( /_/g, '-' )
 		.replace( /-+/g, '-' )
 		.replace( /[^a-zA-Z0-9-]/g, '' );
+
+export const parseAttributes = ( data: Record< string, unknown > ) => {
+	return {
+		className: isString( data?.className ) ? data.className : '',
+		attributeId: parseInt(
+			isString( data?.attributeId ) ? data.attributeId : '0',
+			10
+		),
+		showCounts: data?.showCounts !== 'false',
+		queryType:
+			( isString( data?.queryType ) && data.queryType ) ||
+			metadata.attributes.queryType.default,
+		heading: isString( data?.heading ) ? data.heading : '',
+		headingLevel:
+			( isString( data?.headingLevel ) &&
+				parseInt( data.headingLevel, 10 ) ) ||
+			metadata.attributes.headingLevel.default,
+		displayStyle:
+			( isString( data?.displayStyle ) && data.displayStyle ) ||
+			metadata.attributes.displayStyle.default,
+		showFilterButton: data?.showFilterButton === 'true',
+		selectType:
+			( isString( data?.selectType ) && data.selectType ) ||
+			metadata.attributes.selectType.default,
+		isPreview: false,
+	};
+};
