@@ -84,14 +84,15 @@ const CheckoutProcessor = () => {
 		select( CART_STORE_KEY ).getCustomerData()
 	);
 
-	const { cartNeedsPayment, cartNeedsShipping, receiveCart } = useStoreCart();
+	const { cartNeedsPayment, cartNeedsShipping, receiveCartContents } =
+		useStoreCart();
 
 	const {
 		activePaymentMethod,
 		paymentMethodData,
 		isExpressPaymentMethodActive,
 		hasPaymentError,
-		isPaymentSuccess,
+		isPaymentReady,
 		shouldSavePayment,
 	} = useSelect( ( select ) => {
 		const store = select( PAYMENT_STORE_KEY );
@@ -101,7 +102,7 @@ const CheckoutProcessor = () => {
 			paymentMethodData: store.getPaymentMethodData(),
 			isExpressPaymentMethodActive: store.isExpressPaymentMethodActive(),
 			hasPaymentError: store.hasPaymentError(),
-			isPaymentSuccess: store.isPaymentSuccess(),
+			isPaymentReady: store.isPaymentReady(),
 			shouldSavePayment: store.getShouldSavePaymentMethod(),
 		};
 	}, [] );
@@ -129,7 +130,7 @@ const CheckoutProcessor = () => {
 	const paidAndWithoutErrors =
 		! checkoutHasError &&
 		! checkoutWillHaveError &&
-		( isPaymentSuccess || ! cartNeedsPayment ) &&
+		( isPaymentReady || ! cartNeedsPayment ) &&
 		checkoutIsProcessing;
 
 	// Determine if checkout has an error.
@@ -167,6 +168,7 @@ const CheckoutProcessor = () => {
 					'There was a problem with your payment option.',
 					'woo-gutenberg-products-block'
 				),
+				context: 'wc/checkout/payments',
 			};
 		}
 		if ( shippingErrorStatus.hasError ) {
@@ -175,6 +177,7 @@ const CheckoutProcessor = () => {
 					'There was a problem with your shipping option.',
 					'woo-gutenberg-products-block'
 				),
+				context: 'wc/checkout/shipping-methods',
 			};
 		}
 
@@ -273,7 +276,8 @@ const CheckoutProcessor = () => {
 						)
 						.then( ( response: CheckoutResponseError ) => {
 							if ( response.data?.cart ) {
-								receiveCart( response.data.cart );
+								// We don't want to receive the address here because it will overwrite fields.
+								receiveCartContents( response.data.cart );
 							}
 							processErrorResponse( response );
 							__internalProcessCheckoutResponse( response );
@@ -302,7 +306,7 @@ const CheckoutProcessor = () => {
 		shouldCreateAccount,
 		extensionData,
 		cartNeedsShipping,
-		receiveCart,
+		receiveCartContents,
 		__internalSetHasError,
 		__internalProcessCheckoutResponse,
 	] );

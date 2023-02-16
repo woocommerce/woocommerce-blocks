@@ -3,9 +3,12 @@
 		float: none;
 	}
 
-	select {
-		color: inherit !important;
+	select.orderby {
 		font-size: inherit;
-		font-family: inherit;
+		color: inherit;
+	}
+
+	.woocommerce-ordering {
+		margin: auto;
 	}
 }

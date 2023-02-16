@@ -4,27 +4,27 @@ The checkout block has an API interface for payment methods to integrate that co
 
 ## Table of Contents <!-- omit in toc -->
 
-- [Client Side integration](#client-side-integration)
-	- [Express payment methods - `registerExpressPaymentMethod( options )`](#express-payment-methods---registerexpresspaymentmethod-options-)
-		- [Aliased import](#aliased-import)
-		- [`wc global`](#wc-global)
-		- [The registration options](#the-registration-options)
-		- [`name` (required)](#name-required)
-		- [`content` (required)](#content-required)
-		- [`edit` (required)](#edit-required)
-		- [`canMakePayment` (required)](#canmakepayment-required)
-		- [`paymentMethodId`](#paymentmethodid)
-		- [`supports:features`](#supportsfeatures)
-	- [Payment Methods - `registerPaymentMethod( options )`](#payment-methods---registerpaymentmethod-options-)
-		- [Aliased import](#aliased-import-1)
-		- [`wc global`](#wc-global-1)
-		- [The registration options](#the-registration-options-1)
-	- [Props Fed to Payment Method Nodes](#props-fed-to-payment-method-nodes)
-- [Server Side Integration](#server-side-integration)
-	- [Processing Payment](#processing-payment)
-	- [Registering Assets](#registering-assets)
-	- [Hooking into the Checkout processing by the Store API](#hooking-into-the-checkout-processing-by-the-store-api)
-	- [Putting it all together](#putting-it-all-together)
+-   [Client Side integration](#client-side-integration)
+    -   [Express payment methods - `registerExpressPaymentMethod( options )`](#express-payment-methods---registerexpresspaymentmethod-options-)
+        -   [Aliased import](#aliased-import)
+        -   [`wc global`](#wc-global)
+        -   [The registration options](#the-registration-options)
+        -   [`name` (required)](#name-required)
+        -   [`content` (required)](#content-required)
+        -   [`edit` (required)](#edit-required)
+        -   [`canMakePayment` (required)](#canmakepayment-required)
+        -   [`paymentMethodId`](#paymentmethodid)
+        -   [`supports:features`](#supportsfeatures)
+    -   [Payment Methods - `registerPaymentMethod( options )`](#payment-methods---registerpaymentmethod-options-)
+        -   [Aliased import](#aliased-import-1)
+        -   [`wc global`](#wc-global-1)
+        -   [The registration options](#the-registration-options-1)
+    -   [Props Fed to Payment Method Nodes](#props-fed-to-payment-method-nodes)
+-   [Server Side Integration](#server-side-integration)
+    -   [Processing Payment](#processing-payment)
+    -   [Registering Assets](#registering-assets)
+    -   [Hooking into the Checkout processing by the Store API](#hooking-into-the-checkout-processing-by-the-store-api)
+    -   [Putting it all together](#putting-it-all-together)
 
 ## Client Side integration
 
@@ -180,7 +180,7 @@ A big part of the payment method integration is the interface that is exposed fo
 | `shouldSavePayment`      | Boolean  | Indicates whether or not the shopper has selected to save their payment method details (for payment methods that support saved payments). True if selected, false otherwise. Defaults to false.                                                                                                                    | -                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      |
 
 -   `isPristine`: This is true when the current payment status is `PRISTINE`.
--   `isStarted`: This is true when the current payment status is `STARTED`.
+-   `isStarted`: This is true when the current payment status is `EXPRESS_STARTED`.
 -   `isProcessing`: This is true when the current payment status is `PROCESSING`.
 -   `isFinished`: This is true when the current payment status is one of `ERROR`, `FAILED`, or`SUCCESS`.
 -   `hasError`: This is true when the current payment status is `ERROR`.

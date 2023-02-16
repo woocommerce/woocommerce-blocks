@@ -2,6 +2,7 @@
 namespace Automattic\WooCommerce\Blocks;
 
 use Automattic\WooCommerce\Blocks\Domain\Package;
+use Automattic\WooCommerce\Blocks\Templates\BlockTemplatesCompatibility;
 use Automattic\WooCommerce\Blocks\Templates\ProductAttributeTemplate;
 use Automattic\WooCommerce\Blocks\Utils\BlockTemplateUtils;
 
@@ -67,7 +68,6 @@ class BlockTemplatesController {
 		add_filter( 'get_block_templates', array( $this, 'add_block_templates' ), 10, 3 );
 		add_filter( 'current_theme_supports-block-templates', array( $this, 'remove_block_template_support_for_shop_page' ) );
 		add_filter( 'taxonomy_template_hierarchy', array( $this, 'add_archive_product_to_eligible_for_fallback_templates' ), 10, 1 );
-
 		if ( $this->package->is_experimental_build() ) {
 			add_action( 'after_switch_theme', array( $this, 'check_should_use_blockified_product_grid_templates' ), 10, 2 );
 		}
@@ -322,6 +322,15 @@ class BlockTemplatesController {
 				if ( ! $template->description ) {
 					$template->description = BlockTemplateUtils::get_block_template_description( $template->slug );
 				}
+
+				if ( 'single-product' === $template->slug ) {
+					if ( ! is_admin() ) {
+						$new_content       = BlockTemplatesCompatibility::wrap_single_product_template( $template->content );
+						$template->content = $new_content;
+					}
+					return $template;
+				}
+
 				return $template;
 			},
 			$query_result

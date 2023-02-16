@@ -21,6 +21,7 @@ import {
  */
 import Block from './block';
 import { Attributes } from './types';
+import './editor.scss';
 
 const Edit = ( {
 	attributes,
@@ -120,17 +121,10 @@ const Edit = ( {
 							"Show 'Apply filters' button",
 							'woo-gutenberg-products-block'
 						) }
-						help={
-							showFilterButton
-								? __(
-										'Products will only update when the button is clicked.',
-										'woo-gutenberg-products-block'
-								  )
-								: __(
-										'Products will update as soon as attributes are selected.',
-										'woo-gutenberg-products-block'
-								  )
-						}
+						help={ __(
+							'Products will update when the button is clicked.',
+							'woo-gutenberg-products-block'
+						) }
 						checked={ showFilterButton }
 						onChange={ ( value ) =>
 							setAttributes( {

@@ -6,6 +6,8 @@ import {
 	ensureSidebarOpened,
 } from '@wordpress/e2e-test-utils';
 
+import { switchBlockInspectorTabWhenGutenbergIsInstalled } from '@woocommerce/blocks-test-utils';
+
 /**
  * Internal dependencies
  */
@@ -18,16 +20,17 @@ import {
 import {
 	addProductQueryBlock,
 	block,
-	configurateProductQueryBlock,
+	configureProductQueryBlock,
 	getProductsNameFromClassicTemplate,
 	getProductsNameFromProductQuery,
+	toggleInheritQueryFromTemplateSetting,
 } from './utils';
 
 describe( `${ block.name } Block`, () => {
 	useTheme( 'emptytheme' );
 
 	describe( 'with All Templates', () => {
-		beforeAll( async () => {
+		beforeEach( async () => {
 			const productCatalogTemplateId =
 				'woocommerce/woocommerce//archive-product';
 
@@ -36,9 +39,12 @@ describe( `${ block.name } Block`, () => {
 			} );
 			await ensureSidebarOpened();
 			await addProductQueryBlock();
+			await switchBlockInspectorTabWhenGutenbergIsInstalled( 'Settings' );
 		} );
 
-		it( 'when Inherit Query from template is disabled all the settings that customize the query should be hide', async () => {
+		it( 'when Inherit Query from template is disabled all the settings that customize the query should be hidden', async () => {
+			await toggleInheritQueryFromTemplateSetting();
+
 			await expect( page ).toMatchElement(
 				block.selectors.editor.popularFilter
 			);
@@ -48,8 +54,8 @@ describe( `${ block.name } Block`, () => {
 			);
 		} );
 
-		it( 'when Inherit Query from template is enabled all the settings that customize the query should be hide', async () => {
-			await configurateProductQueryBlock();
+		it( 'when Inherit Query from template is enabled all the settings that customize the query should be hidden', async () => {
+			await configureProductQueryBlock();
 
 			const popularFilterEl = await page.$(
 				block.selectors.editor.popularFilter
@@ -72,7 +78,7 @@ describe( `${ block.name } Block`, () => {
 				postId: productCatalogTemplateId,
 			} );
 			await addProductQueryBlock();
-			await configurateProductQueryBlock();
+			await configureProductQueryBlock();
 			await page.waitForNetworkIdle();
 			await saveTemplate();
 			await page.waitForNetworkIdle();
@@ -101,7 +107,7 @@ describe( `${ block.name } Block`, () => {
 				postId: taxonomyProductCategory,
 			} );
 			await addProductQueryBlock();
-			await configurateProductQueryBlock();
+			await configureProductQueryBlock();
 			await page.waitForNetworkIdle();
 			await saveTemplate();
 			await page.waitForNetworkIdle();
@@ -133,7 +139,7 @@ describe( `${ block.name } Block`, () => {
 				postId: tagProductCategory,
 			} );
 			await addProductQueryBlock();
-			await configurateProductQueryBlock();
+			await configureProductQueryBlock();
 			await page.waitForNetworkIdle();
 			await saveTemplate();
 			await page.waitForNetworkIdle();
@@ -165,7 +171,7 @@ describe( `${ block.name } Block`, () => {
 				postId: productSearchResults,
 			} );
 			await addProductQueryBlock();
-			await configurateProductQueryBlock();
+			await configureProductQueryBlock();
 			await page.waitForNetworkIdle();
 			await saveTemplate();
 			await page.waitForNetworkIdle();
