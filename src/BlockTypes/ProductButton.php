@@ -109,11 +109,16 @@ class ProductButton extends AbstractBlock {
 					'attributes' => array(
 						'data-product_id'  => $product->get_id(),
 						'data-product_sku' => $product->get_sku(),
+						'aria-label'       => $product->add_to_cart_description(),
 						'rel'              => 'nofollow',
 					),
 				),
 				$product
 			);
+
+			if ( isset( $args['attributes']['aria-label'] ) ) {
+				$args['attributes']['aria-label'] = wp_strip_all_tags( $args['attributes']['aria-label'] );
+			}
 
 			return apply_filters(
 				'woocommerce_loop_add_to_cart_link',
