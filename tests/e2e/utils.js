@@ -93,13 +93,22 @@ export async function searchForBlock( searchTerm ) {
  */
 export async function insertBlockDontWaitForInsertClose( searchTerm ) {
 	await openGlobalBlockInserter();
+	await insertWCBlock( searchTerm );
+}
+
+/**
+ * Searches for the given term and selects the first result that appears.
+ *
+ * @param {string} searchTerm The text to search the inserter for.
+ */
+export const insertWCBlock = async ( searchTerm ) => {
 	await searchForBlock( searchTerm );
 	await page.waitForXPath( `//button//span[text()='${ searchTerm }']` );
 	const insertButton = (
 		await page.$x( `//button//span[text()='${ searchTerm }']` )
 	 )[ 0 ];
 	await insertButton.click();
-}
+};
 
 export const closeInserter = async () => {
 	if (

@@ -14,6 +14,7 @@ import {
 import {
 	filterCurrentBlocks,
 	goToSiteEditor,
+	insertWCBlock,
 	useTheme,
 	waitForCanvas,
 } from '../../utils.js';
@@ -44,16 +45,16 @@ describe( `${ block.name } Block`, () => {
 		} );
 
 		it( 'can be inserted in FSE area', async () => {
-			// We are using here the "insertCatalogSorting" function because the
+			// We are using here the "insertWCBlock" function because the
 			// tests are flickering when we use the "insertBlock" function.
-			await insertCatalogSorting();
+			await insertWCBlock( block.name );
 
 			await expect( canvas() ).toMatchElement( block.class );
 		} );
 
 		it( 'can be inserted more than once', async () => {
-			await insertCatalogSorting();
-			await insertCatalogSorting();
+			await insertWCBlock( block.name );
+			await insertWCBlock( block.name );
 			const catalogStoringBlock = await filterCurrentBlocks(
 				( b ) => b.name === block.slug
 			);
@@ -61,12 +62,3 @@ describe( `${ block.name } Block`, () => {
 		} );
 	} );
 } );
-
-const insertCatalogSorting = async () => {
-	await searchForBlock( block.name );
-	await page.waitForXPath( `//button//span[text()='${ block.name }']` );
-	const insertButton = (
-		await page.$x( `//button//span[text()='${ block.name }']` )
-	 )[ 0 ];
-	await insertButton.click();
-};
