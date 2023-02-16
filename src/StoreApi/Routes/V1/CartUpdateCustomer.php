@@ -209,12 +209,46 @@ class CartUpdateCustomer extends AbstractCartRoute {
 	}
 
 	/**
+	 * Get list of states for a country.
+	 *
+	 * @param string $country Country code.
+	 * @return array Array of state names indexed by state keys.
+	 */
+	protected function get_states_for_country( $country ) {
+		return $country ? array_filter( (array) \wc()->countries->get_states( $country ) ) : [];
+	}
+
+	/**
+	 * Validate provided state against a countries list of defined states.
+	 *
+	 * If there are no defined states for a country, any given state is valid.
+	 *
+	 * @param string $state State name or code (sanitized).
+	 * @param string $country Country code.
+	 * @return boolean Valid or not valid.
+	 */
+	protected function validate_state( $state, $country ) {
+		$states = $this->get_states_for_country( $country );
+
+		if ( count( $states ) && ! in_array( \wc_strtoupper( $state ), array_map( '\wc_strtoupper', array_keys( $states ) ), true ) ) {
+			return false;
+		}
+
+		return true;
+	}
+	/**
 	 * Get full customer billing address.
 	 *
 	 * @param \WC_Customer $customer Customer object.
 	 * @return array
 	 */
 	protected function get_customer_billing_address( \WC_Customer $customer ) {
+		$billing_country = $customer->get_billing_country();
+		$billing_state   = $customer->get_billing_state();
+
+		if ( ! $this->validate_state( $billing_state, $billing_country ) ) {
+			$billing_state = '';
+		}
 		return [
 			'first_name' => $customer->get_billing_first_name(),
 			'last_name'  => $customer->get_billing_last_name(),
@@ -222,9 +256,9 @@ class CartUpdateCustomer extends AbstractCartRoute {
 			'address_1'  => $customer->get_billing_address_1(),
 			'address_2'  => $customer->get_billing_address_2(),
 			'city'       => $customer->get_billing_city(),
-			'state'      => $customer->get_billing_state(),
+			'state'      => $billing_state,
 			'postcode'   => $customer->get_billing_postcode(),
-			'country'    => $customer->get_billing_country(),
+			'country'    => $billing_country,
 			'phone'      => $customer->get_billing_phone(),
 			'email'      => $customer->get_billing_email(),
 		];
