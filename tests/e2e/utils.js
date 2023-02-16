@@ -128,7 +128,18 @@ export const openWidgetEditor = async () => {
 export const closeModalIfExists = async () => {
 	if (
 		await page.evaluate( () => {
-			return !! document.querySelector( '.components-modal__header' );
+			return !! document.querySelector(
+				'.components-modal__header [aria-label="Close"]'
+			);
+		} )
+	) {
+		await page.click( '.components-modal__header [aria-label="Close"]' );
+	} else if (
+		// Previous versions of Gutenberg/WP used a different aria-label.
+		await page.evaluate( () => {
+			return !! document.querySelector(
+				'.components-modal__header [aria-label="Close dialog"]'
+			);
 		} )
 	) {
 		await page.click(
