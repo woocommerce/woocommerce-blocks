@@ -14,6 +14,13 @@ class ProductDetails extends AbstractBlock {
 	protected $block_name = 'product-details';
 
 	/**
+	 * It isn't necessary register block assets because it is a server side block.
+	 */
+	protected function register_block_type_assets() {
+		return null;
+	}
+
+	/**
 	 * Render the block.
 	 *
 	 * @param array    $attributes Block attributes.
@@ -28,7 +35,7 @@ class ProductDetails extends AbstractBlock {
 		$classname = $attributes['className'] ?? '';
 
 		return sprintf(
-			'<div class="wp-block-woocommerce-single-product-details %1$s">
+			'<div class="wp-block-woocommerce-product-details %1$s">
 				%2$s
 			</div>',
 			esc_attr( $classname ),
