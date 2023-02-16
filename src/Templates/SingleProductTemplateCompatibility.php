@@ -27,21 +27,89 @@ class SingleProductTemplateCompatibility extends AbstractTemplateCompatibility {
 
 		$this->remove_default_hooks();
 
-		if ( isset( $block['attrs'][ self::IS_FIRST_BLOCK ] ) ) {
+		$first_or_last_block_content = $this->inject_hook_to_first_and_last_blocks( $block_content, $block );
+
+		if ( isset( $first_or_last_block_content ) ) {
+			return $first_or_last_block_content;
+		}
+
+		$block_name = $block['blockName'];
+
+		$block_hooks = array_filter(
+			$this->hook_data,
+			function( $hook ) use ( $block_name ) {
+				return $hook['block_name'] === $block_name;
+			}
+		);
+
+		return sprintf(
+			'%1$s%2$s%3$s',
+			$this->get_hooks_buffer( $block_hooks, 'before' ),
+			$block_content,
+			$this->get_hooks_buffer( $block_hooks, 'after' )
+		);
+	}
+
+	/**
+	 * Inject custom hooks to the first and last blocks.
+	 * Since that there is a custom logic for the first and last block, we have to inject the hooks manually.
+	 * The first block supports the following hooks:
+	 * woocommerce_before_single_product
+	 * woocommerce_before_single_product_summary
+	 * woocommerce_single_product_summary
+	 *
+	 * The last block supports the following hooks:
+	 * woocommerce_after_single_product
+	 *
+	 * @param mixed $block_content The rendered block content.
+	 * @param mixed $block         The parsed block data.
+	 * @return string
+	 */
+	private function inject_hook_to_first_and_last_blocks( $block_content, $block ) {
+		$first_block_hook = array(
+			'before' => array(
+				'woocommerce_before_single_product'  => $this->hook_data['woocommerce_before_single_product'],
+				'woocommerce_before_single_product_summary' => $this->hook_data['woocommerce_before_single_product_summary'],
+				'woocommerce_single_product_summary' => $this->hook_data['woocommerce_single_product_summary'],
+			),
+			'after'  => array(),
+		);
+
+		$last_block_hook = array(
+			'before' => array(),
+			'after'  => array(
+				'woocommerce_after_single_product' => $this->hook_data['woocommerce_after_single_product'],
+			),
+		);
+
+		if ( isset( $block['attrs'][ self::IS_FIRST_BLOCK ] ) && isset( $block['attrs'][ self::IS_FIRST_BLOCK ] ) ) {
 			return sprintf(
 				'%1$s%2$s%3$s',
 				$this->get_hooks_buffer(
-					array(
-						'woocommerce_before_single_product' => $this->hook_data['woocommerce_before_single_product'],
-						'woocommerce_before_single_product_summary' => $this->hook_data['woocommerce_before_single_product_summary'],
-					),
+					$first_block_hook['before'],
 					'before'
 				),
 				$block_content,
 				$this->get_hooks_buffer(
-					array(
-						'woocommerce_single_product_summary' => $this->hook_data['woocommerce_single_product_summary'],
+					array_merge(
+						$first_block_hook['after'],
+						$last_block_hook['after']
 					),
+					'after'
+				)
+			);
+		}
+
+		if ( isset( $block['attrs'][ self::IS_FIRST_BLOCK ] ) ) {
+			return sprintf(
+				'%1$s%2$s%3$s',
+				$this->get_hooks_buffer(
+					$first_block_hook['before'],
+					'before'
+				),
+				$block_content,
+				$this->get_hooks_buffer(
+					$first_block_hook['after'],
 					'after'
 				)
 			);
@@ -53,15 +121,11 @@ class SingleProductTemplateCompatibility extends AbstractTemplateCompatibility {
 				$this->get_hooks_buffer( array(), 'before' ),
 				$block_content,
 				$this->get_hooks_buffer(
-					array(
-						'woocommerce_after_single_product' => $this->hook_data['woocommerce_after_single_product'],
-					),
+					$last_block_hook['after'],
 					'after'
 				)
 			);
 		}
-
-		return $block_content;
 	}
 
 	/**
@@ -101,7 +165,7 @@ class SingleProductTemplateCompatibility extends AbstractTemplateCompatibility {
 			),
 			'woocommerce_single_product_summary'        => array(
 				'block_name' => '',
-				'position'   => 'after',
+				'position'   => 'before',
 				'hooked'     => array(
 					'woocommerce_template_single_title'   => 5,
 					'woocommerce_template_single_rating'  => 10,
@@ -114,8 +178,22 @@ class SingleProductTemplateCompatibility extends AbstractTemplateCompatibility {
 			),
 			'woocommerce_after_single_product'          => array(
 				'block_name' => '',
+				'position'   => 'after',
+				'hooked'     => array(),
+			),
+			'woocommerce_share'                         => array(
+				'block_name' => 'woocommerce/product-details',
 				'position'   => 'before',
 				'hooked'     => array(),
+			),
+			'woocommerce_after_single_product_summary'  => array(
+				'block_name' => 'woocommerce/product-details',
+				'position'   => 'before',
+				'hooked'     => array(
+					'woocommerce_output_product_data_tabs' => 10,
+					'woocommerce_upsell_display'           => 15,
+					'woocommerce_output_related_products'  => 20,
+				),
 			),
 		);
 	}
@@ -190,7 +268,7 @@ class SingleProductTemplateCompatibility extends AbstractTemplateCompatibility {
 
 	/**
 	 * Add custom attributes to the first group block and last group block that wrap Single Product Template blocks.
-	 * This is necessary to add the hooks woocommerce_before_single_product and woocommerce_after_single_product to the right block compatibility layer to the Single Product Template.
+	 * This is necessary to add the hooks woocommerce_before_single_product and woocommerce_after_single_product to the right block.
 	 *
 	 * @param array $wrapped_blocks Wrapped blocks.
 	 * @return array
