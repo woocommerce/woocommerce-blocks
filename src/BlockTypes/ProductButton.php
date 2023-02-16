@@ -124,7 +124,7 @@ class ProductButton extends AbstractBlock {
 					esc_attr( $text_align_styles_and_classes['class'] ?? '' ),
 					$html_element,
 					esc_url( $product->add_to_cart_url() ),
-					esc_attr( array_key_exists( 'class', $args ) ? $args['class'] : '' ),
+					isset( $args['class'] ) ? esc_attr( $args['class'] ) : '',
 					esc_attr( $styles_and_classes['styles'] ),
 					isset( $args['attributes'] ) ? wc_implode_html_attributes( $args['attributes'] ) : '',
 					esc_html( $product->add_to_cart_text() )
