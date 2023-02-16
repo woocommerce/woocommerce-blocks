@@ -1,7 +1,7 @@
 <?php
 namespace Automattic\WooCommerce\StoreApi\Schemas\V1;
 
-use Automattic\WooCommerce\StoreApi\Utilities\CustomerController;
+use Automattic\WooCommerce\StoreApi\Utilities\ValidationUtils;
 
 /**
  * AddressSchema class.
@@ -89,7 +89,7 @@ abstract class AbstractAddressSchema extends AbstractSchema {
 	 * @return array
 	 */
 	public function sanitize_callback( $address, $request, $param ) {
-		$controller = new CustomerController();
+		$validation_util = new ValidationUtils();
 
 		$address               = array_merge( array_fill_keys( array_keys( $this->get_properties() ), '' ), (array) $address );
 		$address['country']    = wc_strtoupper( wc_clean( wp_unslash( $address['country'] ) ) );
@@ -99,7 +99,7 @@ abstract class AbstractAddressSchema extends AbstractSchema {
 		$address['address_1']  = wc_clean( wp_unslash( $address['address_1'] ) );
 		$address['address_2']  = wc_clean( wp_unslash( $address['address_2'] ) );
 		$address['city']       = wc_clean( wp_unslash( $address['city'] ) );
-		$address['state']      = $controller->format_state( wc_clean( wp_unslash( $address['state'] ) ), $address['country'] );
+		$address['state']      = $validation_util->format_state( wc_clean( wp_unslash( $address['state'] ) ), $address['country'] );
 		$address['postcode']   = $address['postcode'] ? wc_format_postcode( wc_clean( wp_unslash( $address['postcode'] ) ), $address['country'] ) : '';
 		$address['phone']      = wc_clean( wp_unslash( $address['phone'] ) );
 		return $address;
@@ -116,9 +116,9 @@ abstract class AbstractAddressSchema extends AbstractSchema {
 	 * @return true|\WP_Error
 	 */
 	public function validate_callback( $address, $request, $param ) {
-		$errors     = new \WP_Error();
-		$address    = $this->sanitize_callback( $address, $request, $param );
-		$controller = new CustomerController();
+		$errors          = new \WP_Error();
+		$address         = $this->sanitize_callback( $address, $request, $param );
+		$validation_util = new ValidationUtils();
 
 		if ( ! empty( $address['country'] ) && ! in_array( $address['country'], array_keys( wc()->countries->get_countries() ), true ) ) {
 			$errors->add(
@@ -132,7 +132,7 @@ abstract class AbstractAddressSchema extends AbstractSchema {
 			return $errors;
 		}
 
-		if ( ! empty( $address['state'] ) && ! $controller->validate_state( $address['state'], $address['country'] ) ) {
+		if ( ! empty( $address['state'] ) && ! $validation_util->validate_state( $address['state'], $address['country'] ) ) {
 			$errors->add(
 				'invalid_state',
 				sprintf(

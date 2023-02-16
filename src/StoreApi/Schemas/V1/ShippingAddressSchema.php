@@ -2,7 +2,7 @@
 namespace Automattic\WooCommerce\StoreApi\Schemas\V1;
 
 use Automattic\WooCommerce\StoreApi\Exceptions\RouteException;
-use Automattic\WooCommerce\StoreApi\Utilities\CustomerController;
+use Automattic\WooCommerce\StoreApi\Utilities\ValidationUtils;
 
 /**
  * ShippingAddressSchema class.
@@ -33,12 +33,12 @@ class ShippingAddressSchema extends AbstractAddressSchema {
 	 * @return stdClass
 	 */
 	public function get_item_response( $address ) {
-		$controller = new CustomerController();
+		$validation_util = new ValidationUtils();
 		if ( ( $address instanceof \WC_Customer || $address instanceof \WC_Order ) ) {
 			$shipping_country = $address->get_shipping_country();
 			$shipping_state   = $address->get_shipping_state();
 
-			if ( ! $controller->validate_state( $shipping_state, $shipping_country ) ) {
+			if ( ! $validation_util->validate_state( $shipping_state, $shipping_country ) ) {
 				$shipping_state = '';
 			}
 

@@ -2,7 +2,7 @@
 namespace Automattic\WooCommerce\StoreApi\Routes\V1;
 
 use Automattic\WooCommerce\StoreApi\Utilities\DraftOrderTrait;
-use Automattic\WooCommerce\StoreApi\Utilities\CartController;
+use Automattic\WooCommerce\StoreApi\Utilities\ValidationUtils;
 
 /**
  * CartUpdateCustomer class.
@@ -216,11 +216,11 @@ class CartUpdateCustomer extends AbstractCartRoute {
 	 * @return array
 	 */
 	protected function get_customer_billing_address( \WC_Customer $customer ) {
-		$controller      = new CustomerController();
+		$validation_util = new ValidationUtils();
 		$billing_country = $customer->get_billing_country();
 		$billing_state   = $customer->get_billing_state();
 
-		if ( ! $controller->validate_state( $billing_state, $billing_country ) ) {
+		if ( ! $validation_util->validate_state( $billing_state, $billing_country ) ) {
 			$billing_state = '';
 		}
 		return [

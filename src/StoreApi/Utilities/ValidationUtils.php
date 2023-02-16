@@ -5,10 +5,10 @@ use \Exception;
 use Automattic\WooCommerce\StoreApi\Exceptions\RouteException;
 
 /**
- * CustomerController class.
+ * ValidationUtils class.
  * Helper class which validates and update customer info.
  */
-class CustomerController {
+class ValidationUtils {
 	/**
 	 * Get list of states for a country.
 	 *
