@@ -198,27 +198,12 @@ export const shopper = {
 				email: 'john.doe@test.com',
 			};
 			await expect( page ).toFill( `#email`, testData.email );
-			await shopper.block.fillInCheckoutAddress(
-				testData,
-				shippingOrBilling
-			);
+			if ( shippingOrBilling === 'shipping' ) {
+				await shopper.block.fillShippingDetails( testData );
+			} else {
+				await shopper.block.fillBillingDetails( testData );
+			}
 		},
-
-		// prettier-ignore
-		fillInCheckoutAddress: async (
-			address,
-			shippingOrBilling = 'shipping'
-		) => {
-			await expect( page ).toFill( `#${ shippingOrBilling }-first_name`, address.first_name );
-			await expect( page ).toFill( `#${ shippingOrBilling }-first_name`, address.first_name );
-			await expect( page ).toFill( `#${ shippingOrBilling }-last_name`, address.last_name );
-			await expect( page ).toFill( `#${ shippingOrBilling }-address_1`, address.shipping_address_1 );
-			await expect( page ).toFill( `#${ shippingOrBilling }-country input`, address.country );
-			await expect( page ).toFill( `#${ shippingOrBilling }-city`, address.city );
-			await expect( page ).toFill( `#${ shippingOrBilling }-state input`, address.state );
-			await expect( page ).toFill( `#${ shippingOrBilling }-postcode`, address.postcode );
-		},
-
 		// prettier-ignore
 		fillBillingDetails: async ( customerBillingDetails ) => {
 			await page.waitForSelector("#billing-fields");
@@ -238,6 +223,8 @@ export const shopper = {
 			await expect( page ).toFill( '#billing-postcode', customerBillingDetails.postcode );
 			await expect( page ).toFill( '#billing-phone', customerBillingDetails.phone );
 			await expect( page ).toFill( '#email', customerBillingDetails.email );
+
+			await page.waitForTimeout(1500);
 		},
 
 		// prettier-ignore
@@ -257,6 +244,8 @@ export const shopper = {
 			await expect( page ).toFill( '#shipping-state input', customerShippingDetails.state );
 			await expect( page ).toFill( '#shipping-postcode', customerShippingDetails.postcode );
 			await expect( page ).toFill( '#shipping-phone', customerShippingDetails.phone );
+
+			await page.waitForTimeout(1500);
 		},
 
 		// prettier-ignore
