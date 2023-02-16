@@ -268,7 +268,6 @@ class SingleProductTemplateCompatibility extends AbstractTemplateCompatibility {
 
 	/**
 	 * Add custom attributes to the first group block and last group block that wrap Single Product Template blocks.
-	 * This is necessary to add the hooks woocommerce_before_single_product and woocommerce_after_single_product to the right block.
 	 *
 	 * @param array $wrapped_blocks Wrapped blocks.
 	 * @return array
