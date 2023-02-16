@@ -43,8 +43,8 @@
 			}
 		}
 	}
-	// Ensures the review form is properly rendered when the Product Details block is used alongside
-	// the Classic Single Product Block. It can be removed when the Classic Single Product Block is deprecated.
+	// Ensures the stars review form is properly rendered when the Product Details block is used alongside
+	// the Classic Single Product Block. This can be removed as soon as the Classic Single Product Block is deprecated.
 	.woocommerce-Reviews .comment-form-rating p.stars:nth-child(2) {
 		display: none;
 	}
