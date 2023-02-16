@@ -208,7 +208,7 @@ final class BlockTypesController {
 			'RatingFilter',
 			'ReviewsByCategory',
 			'ReviewsByProduct',
-			'SingleProductDetails',
+			'ProductDetails',
 			'StockFilter',
 		];
 
@@ -258,7 +258,7 @@ final class BlockTypesController {
 					'CatalogSorting',
 					'ClassicTemplate',
 					'ProductResultsCount',
-					'SingleProductDetails',
+					'ProductDetails',
 					'StoreNotices',
 				]
 			);
