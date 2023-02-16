@@ -28,7 +28,6 @@ class ProductImageGallery extends AbstractBlock {
 		return [ 'query', 'queryId', 'postId' ];
 	}
 
-
 	/**
 	 * Include and render the block.
 	 *
