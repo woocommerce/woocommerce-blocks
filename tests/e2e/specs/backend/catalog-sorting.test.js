@@ -14,7 +14,7 @@ import {
 import {
 	filterCurrentBlocks,
 	goToSiteEditor,
-	insertWCBlock,
+	insertBlockDontWaitForInsertClose,
 	useTheme,
 	waitForCanvas,
 } from '../../utils.js';
@@ -45,16 +45,16 @@ describe( `${ block.name } Block`, () => {
 		} );
 
 		it( 'can be inserted in FSE area', async () => {
-			// We are using here the "insertWCBlock" function because the
+			// We are using here the "insertBlockDontWaitForInsertClose" function because the
 			// tests are flickering when we use the "insertBlock" function.
-			await insertWCBlock( block.name );
+			await insertBlockDontWaitForInsertClose( block.name );
 
 			await expect( canvas() ).toMatchElement( block.class );
 		} );
 
 		it( 'can be inserted more than once', async () => {
-			await insertWCBlock( block.name );
-			await insertWCBlock( block.name );
+			await insertBlockDontWaitForInsertClose( block.name );
+			await insertBlockDontWaitForInsertClose( block.name );
 			const catalogStoringBlock = await filterCurrentBlocks(
 				( b ) => b.name === block.slug
 			);

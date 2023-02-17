@@ -14,7 +14,7 @@ import kebabCase from 'lodash/kebabCase';
  * Internal dependencies
  */
 import { clickLink } from '.';
-import { insertWCBlock } from '../e2e/utils.js';
+import { insertBlockDontWaitForInsertClose } from '../e2e/utils.js';
 
 /**
  * This will visit a GB page or post, and will hide the welcome guide.
@@ -76,7 +76,9 @@ export async function visitBlockPage( title ) {
 			title,
 			showWelcomeGuide: false,
 		} );
-		await insertWCBlock( title.replace( /block/i, '' ).trim() );
+		await insertBlockDontWaitForInsertClose(
+			title.replace( /block/i, '' ).trim()
+		);
 		const pageContent = await getEditedPostContent();
 		await outputFile(
 			`${ dirname(
