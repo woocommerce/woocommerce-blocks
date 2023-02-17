@@ -21,7 +21,7 @@ class SingleProductTemplateCompatibility extends AbstractTemplateCompatibility {
 	 * @return string
 	 */
 	public function inject_hooks( $block_content, $block ) {
-		if ( ! $this->is_single_product_template() ) {
+		if ( ! is_product() ) {
 			return $block_content;
 		}
 
@@ -198,16 +198,6 @@ class SingleProductTemplateCompatibility extends AbstractTemplateCompatibility {
 		);
 	}
 
-
-	/**
-	 * Check if the current template is a single product template.
-	 *
-	 * @return bool
-	 */
-	private function is_single_product_template() {
-		return is_product();
-	}
-
 	/**
 	 * Add compatibility layer to the first and last block of the Single Product Template.
 	 *
@@ -231,19 +221,18 @@ class SingleProductTemplateCompatibility extends AbstractTemplateCompatibility {
 
 	}
 
-
 	/**
 	 * For compatibility reason, we need to wrap the Single Product template in a div with specific class.
 	 * For more details, see https://github.com/woocommerce/woocommerce-blocks/issues/8314.
 	 *
 	 * @param string $template_content Template Content.
-	 * @return string Wrapped template content inside a div.
+	 * @return array Wrapped template content inside a div.
 	 */
 	private static function wrap_single_product_template( $template_content ) {
 		$parsed_blocks  = parse_blocks( $template_content );
 		$grouped_blocks = self::group_blocks( $parsed_blocks );
 
-		// WIP: The list of blocks is WIP.
+		// @TODO: Check this list before terminating the Blockfied Single Product Template project.
 		$single_product_template_blocks = array( 'woocommerce/product-image-gallery', 'woocommerce/product-details', 'woocommerce/add-to-cart-form' );
 
 		$wrapped_blocks = array_map(
@@ -282,7 +271,7 @@ class SingleProductTemplateCompatibility extends AbstractTemplateCompatibility {
 				$block          = $item[0];
 
 				if ( 'core/template-part' === $block['blockName'] ) {
-					array_push( $carry['template'], $block );
+					$carry['template'][] = $block;
 					return $carry;
 				}
 
@@ -297,7 +286,7 @@ class SingleProductTemplateCompatibility extends AbstractTemplateCompatibility {
 					$block['attrs'][ self::IS_LAST_BLOCK ] = true;
 					unset( $carry['template'][ $index_element ]['attrs'][ self::IS_LAST_BLOCK ] );
 
-					array_push( $carry['template'], $block );
+					$carry['template'][] = $block;
 
 					return $carry;
 				}
@@ -306,7 +295,7 @@ class SingleProductTemplateCompatibility extends AbstractTemplateCompatibility {
 				$carry['last_block']['found']          = true;
 				$carry['last_block']['index']          = $index;
 
-				array_push( $carry['template'], $block );
+				$carry['template'][] = $block;
 
 				return $carry;
 			},
@@ -393,7 +382,7 @@ class SingleProductTemplateCompatibility extends AbstractTemplateCompatibility {
 			$parsed_blocks,
 			function( $carry, $block ) {
 				if ( 'core/template-part' === $block['blockName'] ) {
-					array_push( $carry, array( $block ) );
+					$carry[] = array( $block );
 					return $carry;
 				}
 				if ( empty( $block['blockName'] ) ) {
@@ -401,10 +390,10 @@ class SingleProductTemplateCompatibility extends AbstractTemplateCompatibility {
 				}
 				$last_element_index = count( $carry ) - 1;
 				if ( isset( $carry[ $last_element_index ][0]['blockName'] ) && 'core/template-part' !== $carry[ $last_element_index ][0]['blockName'] ) {
-					array_push( $carry[ $last_element_index ], $block );
+					$carry[ $last_element_index ][] = $block;
 					return $carry;
 				}
-				array_push( $carry, array( $block ) );
+				$carry[] = array( $block );
 				return $carry;
 			},
 			array()
