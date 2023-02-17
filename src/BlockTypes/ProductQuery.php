@@ -162,7 +162,7 @@ class ProductQuery extends AbstractBlock {
 			$this->get_custom_orderby_query( $query['orderby'] ),
 			$this->get_queries_by_custom_attributes( $parsed_block ),
 			$this->get_queries_by_applied_filters(),
-			$this->get_filter_by_taxonomies_query( $query['tax_query'] ),
+			$this->get_filter_by_taxonomies_query( isset( $query['tax_query'] ) ? $query['tax_query'] : [] ),
 			$this->get_filter_by_keyword_query( $query )
 		);
 	}
@@ -222,8 +222,8 @@ class ProductQuery extends AbstractBlock {
 		 * duplicated items.
 		 */
 		if (
-		! empty( $merged_query['post__in'] ) &&
-		count( $merged_query['post__in'] ) > count( array_unique( $merged_query['post__in'] ) )
+			! empty( $merged_query['post__in'] ) &&
+			count( $merged_query['post__in'] ) > count( array_unique( $merged_query['post__in'] ) )
 		) {
 			$merged_query['post__in'] = array_unique(
 				array_diff(
@@ -339,8 +339,8 @@ class ProductQuery extends AbstractBlock {
 		 * meta query for stock status.
 		 */
 		if (
-		count( $stock_statii ) === count( $stock_status_options ) &&
-		array_diff( $stock_statii, $stock_status_options ) === array_diff( $stock_status_options, $stock_statii )
+			count( $stock_statii ) === count( $stock_status_options ) &&
+			array_diff( $stock_statii, $stock_status_options ) === array_diff( $stock_status_options, $stock_statii )
 		) {
 			return array();
 		}
@@ -621,15 +621,14 @@ class ProductQuery extends AbstractBlock {
 
 		return array(
 			// Ignoring the warning of not using meta queries.
-		// phpcs:ignore WordPress.DB.SlowDBQuery.slow_db_query_meta_query
-		'meta_query' => array(
-			array(
-				'key'      => '_stock_status',
-				'value'    => $filtered_stock_status_values,
-				'operator' => 'IN',
-
+			// phpcs:ignore WordPress.DB.SlowDBQuery.slow_db_query_meta_query
+			'meta_query' => array(
+				array(
+					'key'      => '_stock_status',
+					'value'    => $filtered_stock_status_values,
+					'operator' => 'IN',
+				),
 			),
-		),
 		);
 	}
 
@@ -864,9 +863,12 @@ class ProductQuery extends AbstractBlock {
 	 *
 	 * @param WP_Query $query The query to extract the keyword filter from.
 	 * @return array The keyword filter, or an empty array if none is found.
-	 * @throws InvalidArgumentException If $query is not an array.
 	 */
 	private function get_filter_by_keyword_query( $query ): array {
+		if ( ! is_array( $query ) ) {
+			return [];
+		}
+
 		if ( isset( $query['s'] ) ) {
 			return [ 's' => $query['s'] ];
 		}
