@@ -79,6 +79,7 @@ const SELECTORS = {
  * @param {string} searchTerm The text to search the inserter for.
  */
 export async function searchForBlock( searchTerm ) {
+	await openGlobalBlockInserter();
 	await page.waitForSelector( SELECTORS.inserter.search );
 	await page.focus( SELECTORS.inserter.search );
 	await pressKeyWithModifier( 'primary', 'a' );
@@ -92,7 +93,6 @@ export async function searchForBlock( searchTerm ) {
  * @param {string} searchTerm The text to search the inserter for.
  */
 export async function insertBlockDontWaitForInsertClose( searchTerm ) {
-	await openGlobalBlockInserter();
 	await insertWCBlock( searchTerm );
 }
 
