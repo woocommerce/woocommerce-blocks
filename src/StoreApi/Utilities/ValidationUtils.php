@@ -13,8 +13,7 @@ class ValidationUtils {
 	 * @return array Array of state names indexed by state keys.
 	 */
 	public function get_states_for_country( $country ) {
-		$states = $country ? array_filter( (array) \wc()->countries->get_states( $country ) ) : [];
-		return array_map( '\wc_strtoupper', array_keys( $states ) );
+		return $country ? array_filter( (array) \wc()->countries->get_states( $country ) ) : [];
 	}
 
 	/**
@@ -29,7 +28,7 @@ class ValidationUtils {
 	public function validate_state( $state, $country ) {
 		$states = $this->get_states_for_country( $country );
 
-		if ( count( $states ) && ! in_array( \wc_strtoupper( $state ), $states, true ) ) {
+		if ( count( $states ) && ! in_array( \wc_strtoupper( $state ), array_map( '\wc_strtoupper', array_keys( $states ) ), true ) ) {
 			return false;
 		}
 
@@ -49,7 +48,7 @@ class ValidationUtils {
 
 		if ( count( $states ) ) {
 			$state        = \wc_strtoupper( $state );
-			$state_values = array_map( 'wc_strtoupper', array_flip( $states ) );
+			$state_values = array_map( 'wc_strtoupper', array_flip( array_map( '\wc_strtoupper', $states ) ) );
 
 			if ( isset( $state_values[ $state ] ) ) {
 				// Convert to state code if a state name was provided.
