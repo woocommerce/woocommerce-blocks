@@ -6,7 +6,7 @@ import { useShippingData } from '@woocommerce/base-context/hooks';
 import {
 	__experimentalRadio as Radio,
 	__experimentalRadioGroup as RadioGroup,
-} from 'wordpress-components';
+} from '@woocommerce/wordpress-components';
 import classnames from 'classnames';
 import { Icon, store, shipping } from '@wordpress/icons';
 

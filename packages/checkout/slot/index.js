@@ -8,7 +8,7 @@ import {
 	createSlotFill as baseCreateSlotFill,
 	__experimentalUseSlot,
 	useSlot as __useSlot, //eslint-disable-line
-} from 'wordpress-components';
+} from '@woocommerce/wordpress-components';
 
 /**
  * Internal dependencies

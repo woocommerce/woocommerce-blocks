@@ -2,7 +2,7 @@
  * External dependencies
  */
 import classnames from 'classnames';
-import { Notice } from 'wordpress-components';
+import { Notice } from '@woocommerce/wordpress-components';
 import { info, warning, Icon } from '@wordpress/icons';
 
 /**

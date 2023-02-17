@@ -3,7 +3,7 @@
  */
 import classnames from 'classnames';
 import { useRef, useEffect } from '@wordpress/element';
-import { Notice } from 'wordpress-components';
+import { Notice } from '@woocommerce/wordpress-components';
 import { sanitizeHTML } from '@woocommerce/utils';
 import { useDispatch } from '@wordpress/data';
 import { usePrevious } from '@woocommerce/base-hooks';

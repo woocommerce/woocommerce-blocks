@@ -1,7 +1,7 @@
 /**
  * External dependencies
  */
-import { FormTokenField as WPFormTokenField } from 'wordpress-components';
+import { FormTokenField as WPFormTokenField } from '@woocommerce/wordpress-components';
 import classNames from 'classnames';
 
 /**

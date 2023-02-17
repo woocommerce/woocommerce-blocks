@@ -1,7 +1,7 @@
 /**
  * External dependencies
  */
-import { Button as WPButton } from 'wordpress-components';
+import { Button as WPButton } from '@woocommerce/wordpress-components';
 import type { Button as WPButtonType } from '@wordpress/components';
 import classNames from 'classnames';
 import Spinner from '@woocommerce/base-components/spinner';

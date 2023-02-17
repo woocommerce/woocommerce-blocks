@@ -13,7 +13,7 @@ import FormattedMonetaryAmount from '@woocommerce/base-components/formatted-mone
 import { useEditorContext, noticeContexts } from '@woocommerce/base-context';
 import { StoreNoticesContainer } from '@woocommerce/blocks-checkout';
 import { decodeEntities } from '@wordpress/html-entities';
-import { Notice } from 'wordpress-components';
+import { Notice } from '@woocommerce/wordpress-components';
 import classnames from 'classnames';
 import { getSetting } from '@woocommerce/settings';
 import type {
