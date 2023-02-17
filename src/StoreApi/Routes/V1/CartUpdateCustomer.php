@@ -220,6 +220,12 @@ class CartUpdateCustomer extends AbstractCartRoute {
 		$billing_country = $customer->get_billing_country();
 		$billing_state   = $customer->get_billing_state();
 
+		/**
+		 * There's a bug in WooCommerce core in which not having a state ("") would result in us validating against the store's state.
+		 * This resets the state to an empty string if it doesn't match the country.
+		 *
+		 * @todo Removing this handling once we fix the issue with the state value always being the store one.
+		 */
 		if ( ! $validation_util->validate_state( $billing_state, $billing_country ) ) {
 			$billing_state = '';
 		}
