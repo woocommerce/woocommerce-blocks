@@ -162,7 +162,7 @@ class ProductQuery extends AbstractBlock {
 			$this->get_custom_orderby_query( $query['orderby'] ),
 			$this->get_queries_by_custom_attributes( $parsed_block ),
 			$this->get_queries_by_applied_filters(),
-			$this->get_filter_by_taxonomies_query( isset( $query['tax_query'] ) ? $query['tax_query'] : [] ),
+			$this->get_filter_by_taxonomies_query( $query ),
 			$this->get_filter_by_keyword_query( $query )
 		);
 	}
@@ -835,14 +835,15 @@ class ProductQuery extends AbstractBlock {
 	 *
 	 * For product categories, taxonomy would be "product_tag"
 	 *
-	 * @param array $tax_query taxonomy query.
+	 * @param array $query WP_Query.
 	 * @return array Query to filter products by taxonomies.
 	 */
-	private function get_filter_by_taxonomies_query( $tax_query ): array {
-		if ( ! is_array( $tax_query ) ) {
+	private function get_filter_by_taxonomies_query( $query ): array {
+		if ( ! isset( $query['tax_query'] ) || ! is_array( $query['tax_query'] ) ) {
 			return [];
 		}
 
+		$tax_query = $query['tax_query'];
 		/**
 		 * Get an array of taxonomy names associated with the "product" post type because
 		 * we also want to include custom taxonomies associated with the "product" post type.
