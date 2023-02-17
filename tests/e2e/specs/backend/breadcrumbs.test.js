@@ -4,7 +4,6 @@
 import {
 	canvas,
 	createNewPost,
-	insertBlock,
 	switchUserToAdmin,
 } from '@wordpress/e2e-test-utils';
 import { searchForBlock } from '@wordpress/e2e-test-utils/build/inserter';
@@ -15,6 +14,7 @@ import { searchForBlock } from '@wordpress/e2e-test-utils/build/inserter';
 import {
 	filterCurrentBlocks,
 	goToSiteEditor,
+	insertWCBlock,
 	useTheme,
 	waitForCanvas,
 } from '../../utils.js';
@@ -45,13 +45,13 @@ describe( `${ block.name } Block`, () => {
 		} );
 
 		it( 'can be inserted in FSE area', async () => {
-			await insertBlock( block.name );
+			await insertWCBlock( block.name );
 			await expect( canvas() ).toMatchElement( block.class );
 		} );
 
 		it( 'can be inserted more than once', async () => {
-			await insertBlock( block.name );
-			await insertBlock( block.name );
+			await insertWCBlock( block.name );
+			await insertWCBlock( block.name );
 			const foo = await filterCurrentBlocks(
 				( b ) => b.name === block.slug
 			);
