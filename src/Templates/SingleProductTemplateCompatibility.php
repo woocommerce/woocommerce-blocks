@@ -82,7 +82,7 @@ class SingleProductTemplateCompatibility extends AbstractTemplateCompatibility {
 			),
 		);
 
-		if ( isset( $block['attrs'][ self::IS_FIRST_BLOCK ] ) && isset( $block['attrs'][ self::IS_FIRST_BLOCK ] ) ) {
+		if ( isset( $block['attrs'][ self::IS_FIRST_BLOCK ] ) && isset( $block['attrs'][ self::IS_LAST_BLOCK ] ) ) {
 			return sprintf(
 				'%1$s%2$s%3$s',
 				$this->get_hooks_buffer(
