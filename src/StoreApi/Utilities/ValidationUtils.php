@@ -48,7 +48,7 @@ class ValidationUtils {
 
 		if ( count( $states ) ) {
 			$state        = \wc_strtoupper( $state );
-			$state_values = array_map( 'wc_strtoupper', array_flip( array_map( '\wc_strtoupper', $states ) ) );
+			$state_values = array_map( '\wc_strtoupper', array_flip( array_map( '\wc_strtoupper', $states ) ) );
 
 			if ( isset( $state_values[ $state ] ) ) {
 				// Convert to state code if a state name was provided.
