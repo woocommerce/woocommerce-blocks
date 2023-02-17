@@ -29,6 +29,7 @@ use Automattic\WooCommerce\StoreApi\RoutesController;
 use Automattic\WooCommerce\StoreApi\SchemaController;
 use Automattic\WooCommerce\StoreApi\StoreApi;
 use Automattic\WooCommerce\Blocks\Shipping\ShippingController;
+use Automattic\WooCommerce\Blocks\Templates\SingleProductTemplateCompatibility;
 
 /**
  * Takes care of bootstrapping the plugin.
@@ -129,6 +130,7 @@ class Bootstrap {
 		$this->container->get( ProductAttributeTemplate::class );
 		$this->container->get( ClassicTemplatesCompatibility::class );
 		$this->container->get( BlockTemplatesCompatibility::class );
+		$this->container->get( SingleProductTemplateCompatibility::class );
 		$this->container->get( BlockPatterns::class );
 		$this->container->get( PaymentsApi::class );
 		$this->container->get( ShippingController::class )->init();
@@ -278,6 +280,13 @@ class Bootstrap {
 			BlockTemplatesCompatibility::class,
 			function () {
 				return new BlockTemplatesCompatibility();
+			}
+		);
+
+		$this->container->register(
+			SingleProductTemplateCompatibility::class,
+			function () {
+				return new SingleProductTemplateCompatibility();
 			}
 		);
 		$this->container->register(
