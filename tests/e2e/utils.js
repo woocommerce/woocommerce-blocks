@@ -145,15 +145,6 @@ export const closeModalIfExists = async () => {
 	}
 };
 
-export const openWidgetsEditorBlockInserter = async () => {
-	await page.waitForSelector(
-		'.edit-widgets-header [aria-label="Add block"],.edit-widgets-header [aria-label="Toggle block inserter"]'
-	);
-	await page.click(
-		'.edit-widgets-header [aria-label="Add block"],.edit-widgets-header [aria-label="Toggle block inserter"]'
-	);
-};
-
 export const isBlockInsertedInWidgetsArea = async ( blockName ) => {
 	const widgetAreaSelector = '.wp-block-widget-area';
 
