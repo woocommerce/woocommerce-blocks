@@ -1,5 +1,5 @@
 /**
- * External dependencies
+ * WordPress dependencies
  */
 import { useInstanceId } from '@wordpress/compose';
 import { forwardRef } from '@wordpress/element';

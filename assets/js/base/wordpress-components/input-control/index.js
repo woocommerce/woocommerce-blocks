@@ -3,6 +3,10 @@
  */
 import { noop } from 'lodash';
 import classNames from 'classnames';
+
+/**
+ * WordPress dependencies
+ */
 import { useInstanceId } from '@wordpress/compose';
 import { useState, forwardRef } from '@wordpress/element';
 

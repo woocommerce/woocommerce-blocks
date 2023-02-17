@@ -2,6 +2,9 @@
  * External dependencies
  */
 import { isEmpty } from 'lodash';
+/**
+ * WordPress dependencies
+ */
 import { useReducer } from '@wordpress/element';
 
 const initialStateReducer = ( state ) => state;

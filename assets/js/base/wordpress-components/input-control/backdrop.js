@@ -1,8 +1,7 @@
 /**
- * External dependencies
+ * WordPress dependencies
  */
 import { memo } from '@wordpress/element';
-
 /**
  * Internal dependencies
  */

@@ -1,7 +1,12 @@
 /**
  * External dependencies
  */
+// eslint-disable-next-line no-restricted-imports
 import type { ComponentType, HTMLProps, SVGProps } from 'react';
+
+/**
+ * WordPress dependencies
+ */
 import {
 	cloneElement,
 	createElement,
@@ -38,7 +43,7 @@ type AdditionalProps< T > = T extends ComponentType< infer U >
 	? U
 	: T extends DashiconIconKey
 	? SVGProps< SVGSVGElement >
-	: object;
+	: {};
 
 export type Props< P > = BaseProps< P > & AdditionalProps< IconType< P > >;
 
@@ -47,7 +52,7 @@ function Icon< P >( {
 	size = 24,
 	...additionalProps
 }: Props< P > ) {
-	if ( typeof icon === 'string' ) {
+	if ( 'string' === typeof icon ) {
 		return (
 			<Dashicon
 				icon={ icon }
@@ -62,15 +67,15 @@ function Icon< P >( {
 		} );
 	}
 
-	if ( typeof icon === 'function' ) {
+	if ( 'function' === typeof icon ) {
 		if ( icon.prototype instanceof Component ) {
-			return createElement( icon, {
+			return createElement( icon, ( {
 				size,
 				...additionalProps,
-			} as unknown as P );
+			} as unknown ) as P );
 		}
 
-		return ( icon as ( ...args ) => JSX.Element )( {
+		return ( icon as ( ...args: any[] ) => JSX.Element )( {
 			size,
 			...additionalProps,
 		} );
@@ -89,6 +94,7 @@ function Icon< P >( {
 
 	if ( isValidElement( icon ) ) {
 		return cloneElement( icon, {
+			// @ts-ignore Just forwarding the size prop along
 			size,
 			...additionalProps,
 		} );
