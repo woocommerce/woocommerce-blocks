@@ -162,7 +162,7 @@ class ProductQuery extends AbstractBlock {
 			$this->get_custom_orderby_query( $query['orderby'] ),
 			$this->get_queries_by_custom_attributes( $parsed_block ),
 			$this->get_queries_by_applied_filters(),
-			$this->get_filter_by_product_categories_or_tags_query( $query['tax_query'] ),
+			$this->get_filter_by_taxonomies_query( $query['tax_query'] ),
 			$this->get_filter_by_keyword_query( $query )
 		);
 	}
@@ -818,6 +818,9 @@ class ProductQuery extends AbstractBlock {
 
 
 	/**
+	 * Return a query to filter products by taxonomies (product categories, product tags, etc.)
+	 *
+	 * For example:
 	 * User could provide "Product Categories" using "Filters" ToolsPanel available in Inspector Controls.
 	 * We use this function to extract it's query from $tax_query.
 	 *
@@ -833,15 +836,19 @@ class ProductQuery extends AbstractBlock {
 	 *
 	 * For product categories, taxonomy would be "product_tag"
 	 *
-	 * @param array $tax_query Tax query.
-	 * @return array
+	 * @param array $tax_query taxonomy query.
+	 * @return array Query to filter products by taxonomies.
 	 */
-	private function get_filter_by_product_categories_or_tags_query( $tax_query ): array {
+	private function get_filter_by_taxonomies_query( $tax_query ): array {
 		if ( ! is_array( $tax_query ) ) {
 			return [];
 		}
 
-		$product_taxonomies = [ 'product_cat', 'product_tag' ];
+		/**
+		 * Get an array of taxonomy names associated with the "product" post type because
+		 * we also want to include custom taxonomies associated with the "product" post type.
+		 */
+		$product_taxonomies = get_taxonomies( array( 'object_type' => array( 'product' ) ), 'names' );
 		$result             = array_filter(
 			$tax_query,
 			function( $item ) use ( $product_taxonomies ) {
