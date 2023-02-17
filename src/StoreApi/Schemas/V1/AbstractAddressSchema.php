@@ -139,7 +139,7 @@ abstract class AbstractAddressSchema extends AbstractSchema {
 					/* translators: %1$s given state, %2$s valid states */
 					__( 'The provided state (%1$s) is not valid. Must be one of: %2$s', 'woo-gutenberg-products-block' ),
 					esc_html( $address['state'] ),
-					implode( ', ', array_keys( $this->get_states_for_country( $address['country'] ) ) )
+					implode( ', ', array_keys( $validation_util->get_states_for_country( $address['country'] ) ) )
 				)
 			);
 		}

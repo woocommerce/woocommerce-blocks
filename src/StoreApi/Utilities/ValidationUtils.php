@@ -1,9 +1,6 @@
 <?php
 namespace Automattic\WooCommerce\StoreApi\Utilities;
 
-use \Exception;
-use Automattic\WooCommerce\StoreApi\Exceptions\RouteException;
-
 /**
  * ValidationUtils class.
  * Helper class which validates and update customer info.
@@ -16,7 +13,8 @@ class ValidationUtils {
 	 * @return array Array of state names indexed by state keys.
 	 */
 	public function get_states_for_country( $country ) {
-		return $country ? array_filter( (array) \wc()->countries->get_states( $country ) ) : [];
+		$states = $country ? array_filter( (array) \wc()->countries->get_states( $country ) ) : [];
+		return array_map( '\wc_strtoupper', array_keys( $states ) );
 	}
 
 	/**
@@ -31,7 +29,7 @@ class ValidationUtils {
 	public function validate_state( $state, $country ) {
 		$states = $this->get_states_for_country( $country );
 
-		if ( count( $states ) && ! in_array( \wc_strtoupper( $state ), array_map( '\wc_strtoupper', array_keys( $states ) ), true ) ) {
+		if ( count( $states ) && ! in_array( \wc_strtoupper( $state ), $states, true ) ) {
 			return false;
 		}
 
@@ -51,7 +49,7 @@ class ValidationUtils {
 
 		if ( count( $states ) ) {
 			$state        = \wc_strtoupper( $state );
-			$state_values = array_map( 'wc_strtoupper', array_flip( array_map( '\wc_strtoupper', $states ) ) );
+			$state_values = array_map( 'wc_strtoupper', array_flip( $states ) );
 
 			if ( isset( $state_values[ $state ] ) ) {
 				// Convert to state code if a state name was provided.
