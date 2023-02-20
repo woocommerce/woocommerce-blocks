@@ -1,10 +1,5 @@
 name: Nightly builds
-on:
-  pull_request:
-    branches:
-      - trunk
-  schedule:
-    - cron: '0 0 * * *' # Run at 12 AM UTC.
+on: [pull_request]
   workflow_dispatch:
 jobs:
   build:
@@ -20,14 +15,16 @@ jobs:
         with:
           ref: ${{ matrix.build }}
 
+      - name: Install Node
+        uses: actions/setup-node@v3
+        with:
+          node-version-file: '.nvmrc'
+
       - name: Install Node Dependencies
         run: npm ci --no-optional
 
       - name: Build zip
         run: bash bin/build-plugin-zip.sh -d
-        uses: actions/setup-node@v3
-        with:
-          node-version-file: '.nvmrc'
 
       - name: Deploy nightly build
         uses: WebFreak001/deploy-nightly@v2.0.0
