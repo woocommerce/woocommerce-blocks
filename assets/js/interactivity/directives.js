@@ -31,6 +31,25 @@ const mergeDeepSignals = ( target, source ) => {
 	}
 };
 
+const isObject = ( item ) =>
+	item && typeof item === 'object' && ! Array.isArray( item );
+
+const mergeDeepSignals = ( target, source ) => {
+	for ( const k in source ) {
+		if ( typeof peek( target, k ) === 'undefined' ) {
+			target[ `$${ k }` ] = source[ `$${ k }` ];
+		} else if (
+			isObject( peek( target, k ) ) &&
+			isObject( peek( source, k ) )
+		) {
+			mergeDeepSignals(
+				target[ `$${ k }` ].peek(),
+				source[ `$${ k }` ].peek()
+			);
+		}
+	}
+};
+
 export default () => {
 	// wp-context
 	directive(
