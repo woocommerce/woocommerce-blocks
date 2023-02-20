@@ -25,38 +25,52 @@ class ShippingAddressSchema extends AbstractAddressSchema {
 	const IDENTIFIER = 'shipping-address';
 
 	/**
-	 * Convert a term object into an object suitable for the response.
+	 * Returns the address data in array format.
 	 *
-	 * @param \WC_Order|\WC_Customer $address An object with shipping address.
-	 *
-	 * @throws RouteException When the invalid object types are provided.
-	 * @return stdClass
+	 * @param \WC_Order|\WC_Customer $customer_or_order An object with shipping address.
+	 * @return array|null
 	 */
-	public function get_item_response( $address ) {
-		$validation_util = new ValidationUtils();
-		if ( ( $address instanceof \WC_Customer || $address instanceof \WC_Order ) ) {
-			$shipping_country = $address->get_shipping_country();
-			$shipping_state   = $address->get_shipping_state();
+	public function get_address_data( $customer_or_order ) {
+		if ( ( $customer_or_order instanceof \WC_Customer || $customer_or_order instanceof \WC_Order ) ) {
+			$validation_util  = new ValidationUtils();
+			$shipping_country = $customer_or_order->get_shipping_country();
+			$shipping_state   = $customer_or_order->get_shipping_state();
 
 			if ( ! $validation_util->validate_state( $shipping_state, $shipping_country ) ) {
 				$shipping_state = '';
 			}
 
-			return (object) $this->prepare_html_response(
-				[
-					'first_name' => $address->get_shipping_first_name(),
-					'last_name'  => $address->get_shipping_last_name(),
-					'company'    => $address->get_shipping_company(),
-					'address_1'  => $address->get_shipping_address_1(),
-					'address_2'  => $address->get_shipping_address_2(),
-					'city'       => $address->get_shipping_city(),
-					'state'      => $shipping_state,
-					'postcode'   => $address->get_shipping_postcode(),
-					'country'    => $shipping_country,
-					'phone'      => $address->get_shipping_phone(),
-				]
-			);
+			return [
+				'first_name' => $customer_or_order->get_shipping_first_name(),
+				'last_name'  => $customer_or_order->get_shipping_last_name(),
+				'company'    => $customer_or_order->get_shipping_company(),
+				'address_1'  => $customer_or_order->get_shipping_address_1(),
+				'address_2'  => $customer_or_order->get_shipping_address_2(),
+				'city'       => $customer_or_order->get_shipping_city(),
+				'state'      => $shipping_state,
+				'postcode'   => $customer_or_order->get_shipping_postcode(),
+				'country'    => $shipping_country,
+				'phone'      => $customer_or_order->get_shipping_phone(),
+			];
 		}
+		return null;
+	}
+
+	/**
+	 * Convert a term object into an object suitable for the response.
+	 *
+	 * @param \WC_Order|\WC_Customer $customer_or_order An object with shipping address.
+	 *
+	 * @throws RouteException When the invalid object types are provided.
+	 * @return stdClass
+	 */
+	public function get_item_response( $customer_or_order ) {
+		$address = $this->get_address_data( $customer_or_order );
+
+		if ( ! is_null( $address ) ) {
+			return (object) $this->prepare_html_response( $address );
+		}
+
 		throw new RouteException(
 			'invalid_object_type',
 			sprintf(
