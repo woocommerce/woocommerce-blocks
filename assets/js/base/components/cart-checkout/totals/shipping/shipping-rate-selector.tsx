@@ -3,6 +3,8 @@
  */
 import { __ } from '@wordpress/i18n';
 import type { CartResponseShippingRate } from '@woocommerce/types';
+import { Notice } from 'wordpress-components';
+import classnames from 'classnames';
 
 /**
  * Internal dependencies
@@ -32,11 +34,20 @@ export const ShippingRateSelector = ( {
 				className="wc-block-components-totals-shipping__options"
 				noResultsMessage={
 					<>
-						{ isAddressComplete &&
-							__(
-								'No shipping options were found.',
-								'woo-gutenberg-products-block'
-							) }
+						{ isAddressComplete && (
+							<Notice
+								isDismissible={ false }
+								className={ classnames(
+									'wc-block-components-shipping-rates-control__no-results-notice',
+									'woocommerce-error'
+								) }
+							>
+								{ __(
+									'There are no shipping options available. Please check your shipping address.',
+									'woo-gutenberg-products-block'
+								) }
+							</Notice>
+						) }
 					</>
 				}
 				shippingRates={ shippingRates }

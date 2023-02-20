@@ -80,23 +80,26 @@ export const TotalsShipping = ( {
 			<TotalsItem
 				label={ __( 'Shipping', 'woo-gutenberg-products-block' ) }
 				value={
-					hasRates && cartHasCalculatedShipping ? (
-						totalShippingValue
-					) : (
-						<ShippingPlaceholder
-							showCalculator={ showCalculator }
-							isCheckout={ isCheckout }
-							isShippingCalculatorOpen={
-								isShippingCalculatorOpen
-							}
-							setIsShippingCalculatorOpen={
-								setIsShippingCalculatorOpen
-							}
-						/>
-					)
+					hasRates && cartHasCalculatedShipping
+						? totalShippingValue
+						: // if address is not complete, display the link to add an address.
+						  ! isAddressComplete && (
+								<ShippingPlaceholder
+									showCalculator={ showCalculator }
+									isCheckout={ isCheckout }
+									isShippingCalculatorOpen={
+										isShippingCalculatorOpen
+									}
+									setIsShippingCalculatorOpen={
+										setIsShippingCalculatorOpen
+									}
+								/>
+						  )
 				}
 				description={
-					hasRates && cartHasCalculatedShipping ? (
+					// If address is complete, display the shipping address.
+					( hasRates && cartHasCalculatedShipping ) ||
+					isAddressComplete ? (
 						<>
 							<ShippingVia
 								selectedShippingRates={ selectedShippingRates }
