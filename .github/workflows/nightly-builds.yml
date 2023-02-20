@@ -1,6 +1,9 @@
 name: Nightly builds
 
-on: [pull_request]
+on:
+  schedule:
+    - cron: '0 0 * * *' # Run at 12 AM UTC.
+  workflow_dispatch:
 
 jobs:
   build:
