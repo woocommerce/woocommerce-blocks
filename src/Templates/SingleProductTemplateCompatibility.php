@@ -254,7 +254,6 @@ class SingleProductTemplateCompatibility extends AbstractTemplateCompatibility {
 		return $wrapped_blocks;
 	}
 
-
 	/**
 	 * Add custom attributes to the first group block and last group block that wrap Single Product Template blocks.
 	 *
