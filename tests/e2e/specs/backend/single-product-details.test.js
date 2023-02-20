@@ -13,10 +13,9 @@ import { searchForBlock } from '@wordpress/e2e-test-utils/build/inserter';
  */
 import {
 	filterCurrentBlocks,
-	goToSiteEditor,
+	goToTemplateEditor,
 	insertBlockDontWaitForInsertClose,
 	useTheme,
-	waitForCanvas,
 } from '../../utils.js';
 
 const block = {
@@ -40,8 +39,9 @@ describe( `${ block.name } Block`, () => {
 		useTheme( 'emptytheme' );
 
 		beforeEach( async () => {
-			await goToSiteEditor();
-			await waitForCanvas();
+			await goToTemplateEditor( {
+				postId: 'woocommerce/woocommerce//single-product',
+			} );
 		} );
 
 		it( 'can be inserted in FSE area', async () => {
