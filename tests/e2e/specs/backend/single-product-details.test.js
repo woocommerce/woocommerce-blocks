@@ -20,8 +20,8 @@ import {
 
 const block = {
 	name: 'Product Details',
-	slug: 'woocommerce/single-product-details',
-	class: '.wc-block-single-product-details',
+	slug: 'woocommerce/product-details',
+	class: '.wp-block-woocommerce-product-details',
 };
 
 describe( `${ block.name } Block`, () => {
