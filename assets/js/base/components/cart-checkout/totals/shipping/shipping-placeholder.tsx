@@ -45,7 +45,6 @@ export const ShippingPlaceholder = ( {
 			) }
 			isShippingCalculatorOpen={ isShippingCalculatorOpen }
 			setIsShippingCalculatorOpen={ setIsShippingCalculatorOpen }
-			hasRates={ false }
 		/>
 	);
 };
