@@ -129,8 +129,8 @@ class Bootstrap {
 		$this->container->get( ProductSearchResultsTemplate::class );
 		$this->container->get( ProductAttributeTemplate::class );
 		$this->container->get( ClassicTemplatesCompatibility::class );
-		$this->container->get( BlockTemplatesCompatibility::class );
-		$this->container->get( SingleProductTemplateCompatibility::class );
+		$this->container->get( BlockTemplatesCompatibility::class )->init();
+		$this->container->get( SingleProductTemplateCompatibility::class )->init();
 		$this->container->get( BlockPatterns::class );
 		$this->container->get( PaymentsApi::class );
 		$this->container->get( ShippingController::class )->init();

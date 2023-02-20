@@ -18,20 +18,14 @@ abstract class AbstractTemplateCompatibility {
 	protected $hook_data;
 
 	/**
-	 * Constructor.
-	 */
-	public function __construct() {
-		$this->set_hook_data();
-		$this->init();
-	}
-
-	/**
 	 * Initialization method.
 	 */
-	protected function init() {
+	public function init() {
 		if ( ! wc_current_theme_is_fse_theme() ) {
 			return;
 		}
+
+		$this->set_hook_data();
 
 		add_filter( 'render_block_data', array( $this, 'update_render_block_data' ), 10, 3 );
 		add_filter( 'render_block', array( $this, 'inject_hooks' ), 10, 2 );

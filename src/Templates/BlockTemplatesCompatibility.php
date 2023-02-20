@@ -238,7 +238,7 @@ class BlockTemplatesCompatibility extends AbstractTemplateCompatibility {
 	/**
 	 * Check if current page is a product archive template.
 	 */
-	protected function is_archive_template() {
+	private function is_archive_template() {
 		return is_shop() || is_product_taxonomy();
 	}
 
@@ -248,7 +248,7 @@ class BlockTemplatesCompatibility extends AbstractTemplateCompatibility {
 	 *
 	 * @param array $block Parsed block data.
 	 */
-	protected function inner_blocks_walker( &$block ) {
+	private function inner_blocks_walker( &$block ) {
 		if (
 			'core/query' === $block['blockName'] &&
 			isset( $block['attrs']['namespace'] ) &&
@@ -270,7 +270,7 @@ class BlockTemplatesCompatibility extends AbstractTemplateCompatibility {
 	 *
 	 * @param array $block Parsed block data.
 	 */
-	protected function inject_attribute( &$block ) {
+	private function inject_attribute( &$block ) {
 		$block['attrs']['isInherited'] = 1;
 
 		if ( ! empty( $block['innerBlocks'] ) ) {
