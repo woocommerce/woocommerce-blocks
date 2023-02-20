@@ -7,6 +7,7 @@ import { ShippingRatesControl } from '@woocommerce/base-components/cart-checkout
 import {
 	getShippingRatesPackageCount,
 	formatShippingAddress,
+	hasCollectableRate,
 } from '@woocommerce/base-utils';
 import { getCurrencyFromPriceResponse } from '@woocommerce/price-format';
 import FormattedMonetaryAmount from '@woocommerce/base-components/formatted-monetary-amount';
@@ -69,8 +70,9 @@ const Block = (): JSX.Element | null => {
 					...shippingRatesPackage,
 					shipping_rates: shippingRatesPackage.shipping_rates.filter(
 						( shippingRatesPackageRate ) =>
-							shippingRatesPackageRate.method_id !==
-							'pickup_location'
+							! hasCollectableRate(
+								shippingRatesPackageRate.method_id
+							)
 					),
 				};
 		  } )
