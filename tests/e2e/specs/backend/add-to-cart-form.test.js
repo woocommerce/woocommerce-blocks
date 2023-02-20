@@ -13,16 +13,16 @@ import { searchForBlock } from '@wordpress/e2e-test-utils/build/inserter';
  */
 import {
 	filterCurrentBlocks,
-	goToSiteEditor,
 	insertBlockDontWaitForInsertClose,
+	goToSiteEditor,
 	useTheme,
 	waitForCanvas,
 } from '../../utils.js';
 
 const block = {
-	name: 'Store Breadcrumbs',
-	slug: 'woocommerce/breadcrumbs',
-	class: '.wc-block-breadcrumbs',
+	name: 'Add to Cart form',
+	slug: 'woocommerce/add-to-cart-form',
+	class: '.wc-block-add-to-cart-form',
 };
 
 describe( `${ block.name } Block`, () => {
@@ -45,6 +45,8 @@ describe( `${ block.name } Block`, () => {
 		} );
 
 		it( 'can be inserted in FSE area', async () => {
+			// We are using here the "insertBlockDontWaitForInsertClose" function because the
+			// tests are flickering when we use the "insertBlock" function.
 			await insertBlockDontWaitForInsertClose( block.name );
 			await expect( canvas() ).toMatchElement( block.class );
 		} );
