@@ -62,4 +62,11 @@ class AddToCartForm extends AbstractBlock {
 	protected function get_block_type_script( $key = null ) {
 		return null;
 	}
+
+	/**
+	 * It isn't necessary register block assets because it is a server side block.
+	 */
+	protected function register_block_type_assets() {
+		return null;
+	}
 }
