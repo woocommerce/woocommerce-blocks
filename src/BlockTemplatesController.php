@@ -2,6 +2,7 @@
 namespace Automattic\WooCommerce\Blocks;
 
 use Automattic\WooCommerce\Blocks\Domain\Package;
+use Automattic\WooCommerce\Blocks\Templates\BlockTemplatesCompatibility;
 use Automattic\WooCommerce\Blocks\Templates\ProductAttributeTemplate;
 use Automattic\WooCommerce\Blocks\Utils\BlockTemplateUtils;
 
@@ -296,7 +297,7 @@ class BlockTemplatesController {
 			$fits_slug_query =
 				! isset( $query['slug__in'] ) || in_array( $template_file->slug, $query['slug__in'], true );
 			$fits_area_query =
-				! isset( $query['area'] ) || $template_file->area === $query['area'];
+				! isset( $query['area'] ) || ( property_exists( $template_file, 'area' ) && $template_file->area === $query['area'] );
 			$should_include  = $is_not_custom && $fits_slug_query && $fits_area_query;
 			if ( $should_include ) {
 				$query_result[] = $template;
@@ -323,6 +324,15 @@ class BlockTemplatesController {
 				if ( ! $template->description ) {
 					$template->description = BlockTemplateUtils::get_block_template_description( $template->slug );
 				}
+
+				if ( 'single-product' === $template->slug ) {
+					if ( ! is_admin() ) {
+						$new_content       = BlockTemplatesCompatibility::wrap_single_product_template( $template->content );
+						$template->content = $new_content;
+					}
+					return $template;
+				}
+
 				return $template;
 			},
 			$query_result

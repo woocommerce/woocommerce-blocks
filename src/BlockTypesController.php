@@ -165,9 +165,11 @@ final class BlockTypesController {
 
 		$block_types = [
 			'ActiveFilters',
+			'AddToCartForm',
 			'AllProducts',
 			'AllReviews',
 			'AttributeFilter',
+			'Breadcrumbs',
 			'CatalogSorting',
 			'ClassicTemplate',
 			'CustomerAccount',
@@ -186,6 +188,7 @@ final class BlockTypesController {
 			'ProductCategory',
 			'ProductCategoryList',
 			'ProductImage',
+			'ProductImageGallery',
 			'ProductNew',
 			'ProductOnSale',
 			'ProductPrice',
@@ -205,6 +208,7 @@ final class BlockTypesController {
 			'RatingFilter',
 			'ReviewsByCategory',
 			'ReviewsByProduct',
+			'ProductDetails',
 			'StockFilter',
 		];
 
@@ -249,9 +253,12 @@ final class BlockTypesController {
 			$block_types = array_diff(
 				$block_types,
 				[
+					'AddToCartForm',
+					'Breadcrumbs',
 					'CatalogSorting',
 					'ClassicTemplate',
 					'ProductResultsCount',
+					'ProductDetails',
 					'StoreNotices',
 				]
 			);
