@@ -248,7 +248,7 @@ class SingleProductTemplateCompatibility extends AbstractTemplateCompatibility {
 
 		$wrapped_blocks = array_map(
 			function( $blocks ) use ( $single_product_template_blocks ) {
-				if ( 'core/template-part' === $blocks[0]['blockName'] ) {
+				if ( self::is_template_part( $blocks[0] ) ) {
 					return $blocks;
 				}
 
@@ -281,7 +281,7 @@ class SingleProductTemplateCompatibility extends AbstractTemplateCompatibility {
 				$carry['index'] = $carry['index'] + 1;
 				$block          = $item[0];
 
-				if ( 'core/template-part' === $block['blockName'] ) {
+				if ( self::is_template_part( $block ) ) {
 					array_push( $carry['template'], $block );
 					return $carry;
 				}
@@ -392,7 +392,7 @@ class SingleProductTemplateCompatibility extends AbstractTemplateCompatibility {
 		return array_reduce(
 			$parsed_blocks,
 			function( $carry, $block ) {
-				if ( 'core/template-part' === $block['blockName'] ) {
+				if ( self::is_template_part( $block ) ) {
 					array_push( $carry, array( $block ) );
 					return $carry;
 				}
@@ -400,7 +400,7 @@ class SingleProductTemplateCompatibility extends AbstractTemplateCompatibility {
 					return $carry;
 				}
 				$last_element_index = count( $carry ) - 1;
-				if ( isset( $carry[ $last_element_index ][0]['blockName'] ) && 'core/template-part' !== $carry[ $last_element_index ][0]['blockName'] ) {
+				if ( isset( $carry[ $last_element_index ][0]['blockName'] ) && ! self::is_template_part( $carry[ $last_element_index ][0] ) ) {
 					array_push( $carry[ $last_element_index ], $block );
 					return $carry;
 				}
@@ -409,5 +409,25 @@ class SingleProductTemplateCompatibility extends AbstractTemplateCompatibility {
 			},
 			array()
 		);
+	}
+
+
+	/**
+	 * Check if the block is a template part except for the product meta template part.
+	 *
+	 * @param array $block Block object.
+	 * @return bool True if the block is a template part, false otherwise.
+	 */
+	private static function is_template_part( $block ) {
+		if ( 'core/template-part' === $block['blockName'] && isset( $block['attrs']['slug'] ) && 'product-meta' === $block['attrs']['slug'] ) {
+			return false;
+		}
+
+		if ( 'core/template-part' === $block['blockName'] ) {
+			return true;
+		}
+
+		return false;
+
 	}
 }

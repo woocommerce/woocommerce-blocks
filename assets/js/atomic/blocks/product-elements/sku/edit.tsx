@@ -25,11 +25,25 @@ const Edit = ( {
 		...context,
 	};
 	const isDescendentOfQueryLoop = Number.isFinite( context.queryId );
+	const isDescendentOfSingleProductTemplate =
+		attributes.isDescendentOfSingleProductTemplate;
 
 	useEffect(
-		() => setAttributes( { isDescendentOfQueryLoop } ),
-		[ setAttributes, isDescendentOfQueryLoop ]
+		() =>
+			setAttributes( {
+				isDescendentOfQueryLoop,
+				showProductSelector:
+					! isDescendentOfQueryLoop &&
+					! isDescendentOfSingleProductTemplate,
+			} ),
+		[
+			setAttributes,
+			isDescendentOfQueryLoop,
+			isDescendentOfSingleProductTemplate,
+		]
 	);
+
+	console.log( blockAttrs );
 
 	return (
 		<>
