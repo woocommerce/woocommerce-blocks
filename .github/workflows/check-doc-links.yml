@@ -22,6 +22,7 @@ jobs:
                   use-quiet-mode: 'yes'
                   use-verbose-mode: 'no'
                   config-file: '.github/workflows/check-doc-links-config.json'
-                  folder-path: './'
+                  folder-path: './docs'
+                  file-path: './README.md'
                   max-depth: 3
                   base-branch: 'trunk'
