@@ -101,13 +101,13 @@ const entries = {
 	styling: {
 		// @wordpress/components styles
 		'custom-select-control-style':
-			'./assets/js/base/wordpress-components/custom-select-control/style.scss',
+			'./node_modules/@wordpress/components/src/custom-select-control/style.scss',
 		'snackbar-notice-style':
-			'./assets/js/base/wordpress-components/snackbar/style.scss',
+			'./node_modules/@wordpress/components/src/snackbar/style.scss',
 		'combobox-control-style':
-			'./assets/js/base/wordpress-components/combobox-control/style.scss',
+			'./node_modules/@wordpress/components/src/combobox-control/style.scss',
 		'form-token-field-style':
-			'./assets/js/base/wordpress-components/form-token-field/style.scss',
+			'./node_modules/@wordpress/components/src/form-token-field/style.scss',
 
 		'general-style': glob.sync( './assets/**/*.scss', {
 			ignore: [
