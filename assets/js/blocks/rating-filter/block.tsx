@@ -65,11 +65,6 @@ const translations = {
 
 /**
  * Component displaying a rating filter.
- *
- * @param {Object}  props                 Incoming props for the component.
- * @param {Object}  props.attributes      Incoming block attributes.
- * @param {boolean} props.isEditor        Whether the component is being rendered in the editor.
- * @param {boolean} props.noRatingsNotice Element displayed in the editor if there's no ratings to display.
  */
 const RatingFilterBlock = ( {
 	attributes: blockAttributes,
