@@ -15,7 +15,7 @@ import warning from '@wordpress/warning';
 /**
  * Internal dependencies
  */
-import { Button } from '../';
+import { Button } from '../button';
 
 const NOTICE_TIMEOUT = 10000;
 

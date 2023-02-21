@@ -13,7 +13,6 @@ import { forwardRef } from '@wordpress/element';
 /**
  * Internal dependencies
  */
-import Tooltip from '../tooltip';
 import Icon from '../icon';
 import VisuallyHidden from '../visually-hidden';
 
@@ -176,22 +175,7 @@ export function Button( props, ref ) {
 		);
 	}
 
-	return (
-		<>
-			<Tooltip
-				text={ describedBy ? describedBy : label }
-				shortcut={ shortcut }
-				position={ tooltipPosition }
-			>
-				{ element }
-			</Tooltip>
-			{ describedBy && (
-				<VisuallyHidden>
-					<span id={ descriptionId }>{ describedBy }</span>
-				</VisuallyHidden>
-			) }
-		</>
-	);
+	return null;
 }
 
 export default forwardRef( Button );

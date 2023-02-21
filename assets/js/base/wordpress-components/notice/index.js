@@ -15,7 +15,7 @@ import { close } from '@wordpress/icons';
 /**
  * Internal dependencies
  */
-import { Button } from '../';
+import { Button } from '../button';
 
 /** @typedef {import('@wordpress/element').WPElement} WPElement */
 
