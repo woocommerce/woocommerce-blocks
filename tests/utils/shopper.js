@@ -224,7 +224,10 @@ export const shopper = {
 			await expect( page ).toFill( '#billing-phone', customerBillingDetails.phone );
 			await expect( page ).toFill( '#email', customerBillingDetails.email );
 
-			await page.waitForTimeout(1500);
+			// blur #email field to trigger shipping rates update, then wait for requests to finish
+			await page.evaluate('document.activeElement.blur()' );
+			await page.waitForRequest( ( request ) => request.url().includes( '/wp-json/wc/store/v1/batch' ) );
+			await page.waitForResponse( ( response ) => response.url().includes( '/wp-json/wc/store/v1/batch' ) );
 		},
 
 		// prettier-ignore
@@ -245,7 +248,10 @@ export const shopper = {
 			await expect( page ).toFill( '#shipping-postcode', customerShippingDetails.postcode );
 			await expect( page ).toFill( '#shipping-phone', customerShippingDetails.phone );
 
-			await page.waitForTimeout(1500);
+			// blur #shipping-phone field to trigger shipping rates update, then wait for requests to finish
+			await page.evaluate('document.activeElement.blur()' );
+			await page.waitForRequest( ( request ) => request.url().includes( '/wp-json/wc/store/v1/batch' ) );
+			await page.waitForResponse( ( response ) => response.url().includes( '/wp-json/wc/store/v1/batch' ) );
 		},
 
 		// prettier-ignore
