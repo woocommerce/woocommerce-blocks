@@ -190,7 +190,7 @@ export const shopper = {
 			const testData = {
 				first_name: 'John',
 				last_name: 'Doe',
-				shipping_address_1: '123 Easy Street',
+				address_1: '123 Easy Street',
 				address_2: 'Testville',
 				country: 'United States (US)',
 				city: 'New York',
@@ -214,11 +214,11 @@ export const shopper = {
 				await expect( page ).toFill( '#billing-company', customerBillingDetails.company );
 			}
 
-			await expect( page ).toFill( '#billing-first_name', customerBillingDetails.firstname );
+			await expect( page ).toFill( '#billing-first_name', customerBillingDetails.first_name );
 			await expect( page ).toFill( '#billing-last_name', customerBillingDetails.lastname );
 			await expect( page ).toFill( '#billing-country input', customerBillingDetails.country );
-			await expect( page ).toFill( '#billing-address_1', customerBillingDetails.addressfirstline );
-			await expect( page ).toFill( '#billing-address_2', customerBillingDetails.addresssecondline );
+			await expect( page ).toFill( '#billing-address_1', customerBillingDetails.address_1 );
+			await expect( page ).toFill( '#billing-address_2', customerBillingDetails.address_2 );
 			await expect( page ).toFill( '#billing-city', customerBillingDetails.city );
 			await expect( page ).toFill( '#billing-state input', customerBillingDetails.state );
 			await expect( page ).toFill( '#billing-postcode', customerBillingDetails.postcode );
@@ -239,11 +239,11 @@ export const shopper = {
 				await expect( page ).toFill( '#shipping-company', customerShippingDetails.company );
 			}
 
-			await expect( page ).toFill( '#shipping-first_name', customerShippingDetails.firstname );
-			await expect( page ).toFill( '#shipping-last_name', customerShippingDetails.lastname );
+			await expect( page ).toFill( '#shipping-first_name', customerShippingDetails.first_name );
+			await expect( page ).toFill( '#shipping-last_name', customerShippingDetails.last_name );
 			await expect( page ).toFill( '#shipping-country input', customerShippingDetails.country );
-			await expect( page ).toFill( '#shipping-address_1', customerShippingDetails.addressfirstline );
-			await expect( page ).toFill( '#shipping-address_2', customerShippingDetails.addresssecondline );
+			await expect( page ).toFill( '#shipping-address_1', customerShippingDetails.address_1 );
+			await expect( page ).toFill( '#shipping-address_2', customerShippingDetails.address_2 );
 			await expect( page ).toFill( '#shipping-city', customerShippingDetails.city );
 			await expect( page ).toFill( '#shipping-state input', customerShippingDetails.state );
 			await expect( page ).toFill( '#shipping-postcode', customerShippingDetails.postcode );
