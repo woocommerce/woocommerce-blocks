@@ -206,7 +206,7 @@ export const shopper = {
 		},
 		// prettier-ignore
 		fillBillingDetails: async ( customerBillingDetails ) => {
-			await page.waitForSelector("#billing-fields");
+			await page.waitForSelector( '#billing-fields' );
 			const companyInputField = await page.$( '#billing-company' );
 
 			if ( companyInputField ) {
