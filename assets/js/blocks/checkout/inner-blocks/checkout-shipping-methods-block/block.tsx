@@ -86,7 +86,7 @@ const Block = (): JSX.Element | null => {
 		return null;
 	}
 
-	const addressComplete = !! formatShippingAddress( shippingAddress );
+	const isAddressComplete = !! formatShippingAddress( shippingAddress );
 	const shippingRatesPackageCount =
 		getShippingRatesPackageCount( shippingRates );
 
@@ -116,7 +116,7 @@ const Block = (): JSX.Element | null => {
 				<ShippingRatesControl
 					noResultsMessage={
 						<>
-							{ addressComplete
+							{ isAddressComplete
 								? __(
 										'There are no shipping options available. Please check your shipping address.',
 										'woo-gutenberg-products-block'
