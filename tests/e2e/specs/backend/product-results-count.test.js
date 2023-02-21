@@ -52,10 +52,10 @@ describe( `${ block.name } Block`, () => {
 		it( 'can be inserted more than once', async () => {
 			await insertBlock( block.name );
 			await insertBlock( block.name );
-			const foo = await filterCurrentBlocks(
+			const filteredBlocks = await filterCurrentBlocks(
 				( b ) => b.name === block.slug
 			);
-			expect( foo ).toHaveLength( 2 );
+			expect( filteredBlocks ).toHaveLength( 2 );
 		} );
 	} );
 } );
