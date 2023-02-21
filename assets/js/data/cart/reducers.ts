@@ -1,7 +1,8 @@
+/* eslint-disable jsdoc/check-line-alignment */
 /**
  * External dependencies
  */
-import type { CartItem } from '@woocommerce/types';
+import type { CartItem, CartShippingRate } from '@woocommerce/types';
 import type { Reducer } from 'redux';
 
 /**
@@ -15,24 +16,66 @@ import type { CartAction } from './actions';
 /**
  * Sub-reducer for cart items array.
  *
- * @param {Array<CartItem>} state  cartData.items state slice.
- * @param {CartAction}      action Action object.
+ * @param {Array<CartItem>} cartItems  cartData.items state slice.
+ * @param {CartAction}      action     Action object.
+ *
+ * @return {Array<CartItem>}           New or existing state.
  */
 const cartItemsReducer = (
-	state: Array< CartItem > = [],
+	cartItems: Array< CartItem > = [],
 	action: Partial< CartAction >
-) => {
+): Array< CartItem > => {
 	switch ( action.type ) {
 		case types.RECEIVE_CART_ITEM:
 			// Replace specified cart element with the new data from server.
-			return state.map( ( cartItem ) => {
+			return cartItems.map( ( cartItem ) => {
 				if ( cartItem.key === action.cartItem?.key ) {
 					return action.cartItem;
 				}
 				return cartItem;
 			} );
 	}
-	return state;
+	return cartItems;
+};
+
+/**
+ * Sub-reducer for cart items array.
+ *
+ * @param {Array<CartShippingRate>} shippingRates  cartData.shippingRates state slice.
+ * @param {CartAction}      action     Action object.
+ *
+ * @return {Array<CartShippingRate>}           New or existing state.
+ */
+const selectShippingReducer = (
+	shippingRates: Array< CartShippingRate > = [],
+	action: Partial< CartAction >
+): Array< CartShippingRate > => {
+	let cartShippingRates = shippingRates;
+	if ( action.rateId && isFinite( action.packageId ) ) {
+		cartShippingRates = shippingRates.map( ( shippingRate ) => {
+			if ( shippingRate.package_id === action.packageId ) {
+				return {
+					...shippingRate,
+					shipping_rates: shippingRate.shipping_rates.map(
+						( rate ) => {
+							if ( rate.rate_id === action.rateId ) {
+								return {
+									...rate,
+									selected: true,
+								};
+							}
+							return {
+								...rate,
+								selected: false,
+							};
+						}
+					),
+				};
+			}
+			return shippingRate;
+		} );
+	}
+	return cartShippingRates;
 };
 
 /**
@@ -163,38 +206,14 @@ const reducer: Reducer< CartState > = (
 			};
 			break;
 		case types.UPDATING_SELECTED_SHIPPING_RATE:
-			let cartShippingRates = state.cartData.shippingRates;
-			if ( action.rateId && isFinite( action.packageId ) ) {
-				cartShippingRates = state.cartData.shippingRates.map(
-					( shippingRate ) => {
-						if ( shippingRate.package_id === action.packageId ) {
-							return {
-								...shippingRate,
-								shipping_rates: shippingRate.shipping_rates.map(
-									( rate ) => {
-										if ( rate.rate_id === action.rateId ) {
-											return {
-												...rate,
-												selected: true,
-											};
-										}
-										return {
-											...rate,
-											selected: false,
-										};
-									}
-								),
-							};
-						}
-						return shippingRate;
-					}
-				);
-			}
 			state = {
 				...state,
 				cartData: {
 					...state.cartData,
-					shippingRates: cartShippingRates,
+					shippingRates: selectShippingReducer(
+						state.cartData.shippingRates,
+						action
+					),
 				},
 				metaData: {
 					...state.metaData,

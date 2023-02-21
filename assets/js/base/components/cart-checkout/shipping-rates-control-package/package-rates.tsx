@@ -30,14 +30,6 @@ const PackageRates = ( {
 	renderOption = renderPackageRateOption,
 	selectedRate,
 }: PackageRates ): JSX.Element => {
-	// Update the selected option if cart state changes in the data stores.
-	/*useEffect( () => {
-		if ( selected ) {
-			setSelectedOption( selected );
-		}
-	}, [ selected ] );*/
-	// write a useEffect that console logs the following props, one useEffect for each prop: onSelectRate, rates, selectedRate
-
 	useEffect( () => {
 		if ( ! selectedRate && rates.length > 0 ) {
 			onSelectRate( rates[ 0 ]?.rate_id );
