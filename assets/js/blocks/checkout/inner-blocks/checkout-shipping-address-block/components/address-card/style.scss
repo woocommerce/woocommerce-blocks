@@ -1,0 +1,38 @@
+.wc-block-components-address-card {
+	border: 1px solid $input-border-gray;
+	margin: 0;
+	font-size: 0.875em;
+	padding: em($gap-small);
+	margin: 0;
+	border-radius: 4px;
+	display: flex;
+	justify-content: flex-start;
+	align-items: flex-start;
+
+	address {
+		margin: 0;
+		font-style: normal;
+		color: $gray-700;
+
+		strong {
+			color: $input-text-active;
+		}
+	}
+}
+.wc-block-components-address-card__icon {
+	width: 1em;
+	font-size: 1.5em;
+	margin-right: 0.25em;
+	vertical-align: top;
+}
+.wc-block-components-address-card__edit {
+	background: transparent none;
+	border: 0;
+	padding: 0 !important;
+	margin: calc((em($gap) + em($gap)) * -1) 0 0 0;
+	appearance: none;
+	line-height: 1;
+	height: 1em;
+	min-height: auto !important;
+	margin: 0 0 0 auto;
+}

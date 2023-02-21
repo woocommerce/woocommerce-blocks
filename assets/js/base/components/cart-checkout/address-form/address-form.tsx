@@ -65,7 +65,7 @@ interface AddressFormProps {
 	// Id for component.
 	id?: string;
 	// Unique id for form.
-	instanceId: string;
+	instanceId?: string | number;
 	// Array of fields in form.
 	fields: ( keyof AddressFields )[];
 	// Field configuration for fields in form.
@@ -87,7 +87,7 @@ const AddressForm = ( {
 		defaultAddressFields
 	) as unknown as ( keyof AddressFields )[],
 	fieldConfig = {} as Record< keyof AddressFields, Partial< AddressField > >,
-	instanceId,
+	instanceId = '',
 	onChange,
 	type = 'shipping',
 	values,
@@ -241,4 +241,4 @@ const AddressForm = ( {
 	);
 };
 
-export default withInstanceId( AddressForm );
+export default withInstanceId( AddressForm ) as typeof AddressForm;

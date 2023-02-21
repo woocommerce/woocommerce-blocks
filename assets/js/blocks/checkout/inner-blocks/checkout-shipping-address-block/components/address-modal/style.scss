@@ -1,0 +1,123 @@
+$modal-animation-duration: 0.3s;
+$modal-width: 560px;
+$modal-width-mobile: 100vw;
+
+@keyframes fadein {
+	from {
+		opacity: 0;
+	}
+
+	to {
+		opacity: 1;
+	}
+}
+
+@keyframes slidein {
+	from {
+		transform: translateY(0);
+	}
+
+	to {
+		transform: translateY(100vh);
+	}
+}
+
+body.modal-open {
+	overflow: hidden;
+}
+
+.wc-block-components-address-modal__screen-overlay {
+	background-color: rgba(95, 95, 95, 0.35);
+	bottom: 0;
+	left: 0;
+	position: fixed;
+	right: 0;
+	top: 0;
+	transition: opacity $modal-animation-duration;
+	z-index: 9999;
+	opacity: 1;
+	animation-duration: $modal-animation-duration;
+	animation-name: fadein;
+	display: flex;
+}
+
+.wc-block-components-address-modal {
+	@include with-translucent-border(0 0 0 1px);
+	background: #fff;
+	display: flex;
+	max-height: 70%;
+	width: $modal-width;
+	margin: auto;
+	overflow: hidden;
+	transition: $modal-animation-duration transform;
+	border-radius: 4px;
+
+	&--hidden {
+		transform: translateY(100vh);
+	}
+	.components-modal__content {
+		padding: calc(1.2em + $gap-large + $gap-large) $gap-large 0;
+		position: relative;
+		margin: 0;
+		flex: 1;
+		overflow: auto;
+	}
+	.components-button {
+		width: 100%;
+	}
+	.components-modal__header-heading-container {
+		align-items: center;
+		flex-grow: 1;
+		display: flex;
+		flex-direction: row;
+		justify-content: left;
+	}
+	// Fix header to the top so it is always there to provide context to the modal if the content needs to be scrolled
+	// (for example, on the keyboard shortcuts modal screen).
+	.components-modal__header {
+		@include with-translucent-border(0 0 1px 0);
+		border-bottom-color: transparent;
+		box-sizing: border-box;
+		display: flex;
+		flex-direction: row;
+		justify-content: space-between;
+		align-items: center;
+		width: 100%;
+		z-index: z-index(".components-modal__header");
+		position: absolute;
+		margin: 0;
+		top: 0;
+		left: 0;
+		height: auto;
+		padding: $gap-large;
+
+		h1.components-modal__header-heading {
+			font-size: 1.2em;
+			font-weight: 600;
+			line-height: 1;
+			margin: 0;
+		}
+
+		.components-button {
+			margin: 0 0 0 auto;
+			height: auto;
+			min-height: auto;
+			padding: 0;
+			background: none;
+			width: auto;
+		}
+	}
+	.wc-block-components-address-modal__footer {
+		display: flex;
+		justify-content: flex-end;
+		border-top: 1px solid #e0e0e0;
+		margin: 24px -24px 0;
+		padding: 24px;
+
+		> * {
+			&:not(:first-of-type) {
+				margin-left: 8px;
+			}
+		}
+	}
+}
