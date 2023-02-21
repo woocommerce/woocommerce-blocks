@@ -1,7 +1,7 @@
 /**
  * External dependencies
  */
-import { useState, useEffect } from '@wordpress/element';
+import { useEffect } from '@wordpress/element';
 import RadioControl, {
 	RadioControlOptionLayout,
 } from '@woocommerce/base-components/radio-control';
@@ -30,25 +30,19 @@ const PackageRates = ( {
 	renderOption = renderPackageRateOption,
 	selectedRate,
 }: PackageRates ): JSX.Element => {
-	const selectedRateId = selectedRate?.rate_id || '';
-
-	// Store selected rate ID in local state so shipping rates changes are shown in the UI instantly.
-	const [ selectedOption, setSelectedOption ] = useState( selectedRateId );
-
 	// Update the selected option if cart state changes in the data stores.
-	useEffect( () => {
-		if ( selectedRateId ) {
-			setSelectedOption( selectedRateId );
+	/*useEffect( () => {
+		if ( selected ) {
+			setSelectedOption( selected );
 		}
-	}, [ selectedRateId ] );
+	}, [ selected ] );*/
+	// write a useEffect that console logs the following props, one useEffect for each prop: onSelectRate, rates, selectedRate
 
-	// Update the selected option if there is no rate selected on mount.
 	useEffect( () => {
-		if ( ! selectedOption && rates[ 0 ] ) {
-			setSelectedOption( rates[ 0 ].rate_id );
-			onSelectRate( rates[ 0 ].rate_id );
+		if ( ! selectedRate && rates.length > 0 ) {
+			onSelectRate( rates[ 0 ]?.rate_id );
 		}
-	}, [ onSelectRate, rates, selectedOption ] );
+	}, [ onSelectRate, rates, selectedRate ] );
 
 	if ( rates.length === 0 ) {
 		return noResultsMessage;
@@ -59,10 +53,9 @@ const PackageRates = ( {
 			<RadioControl
 				className={ className }
 				onChange={ ( value: string ) => {
-					setSelectedOption( value );
 					onSelectRate( value );
 				} }
-				selected={ selectedOption }
+				selected={ selectedRate?.rate_id }
 				options={ rates.map( renderOption ) }
 			/>
 		);

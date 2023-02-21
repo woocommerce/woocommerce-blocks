@@ -8,6 +8,8 @@ import type {
 	ExtensionCartUpdateArgs,
 	BillingAddressShippingAddress,
 	ApiErrorResponse,
+	CartShippingPackageShippingRate,
+	CartShippingRate,
 } from '@woocommerce/types';
 import { camelCase, mapKeys } from 'lodash';
 import { BillingAddress, ShippingAddress } from '@woocommerce/settings';
@@ -175,10 +177,16 @@ export const updatingCustomerData = ( isResolving: boolean ) =>
  *
  * @param {boolean} isResolving True if shipping rate is being selected.
  */
-export const shippingRatesBeingSelected = ( isResolving: boolean ) =>
+export const shippingRatesBeingSelected = (
+	isResolving: boolean,
+	rateId?: string,
+	packageId?: number
+) =>
 	( {
 		type: types.UPDATING_SELECTED_SHIPPING_RATE,
 		isResolving,
+		rateId,
+		packageId,
 	} as const );
 
 /**
@@ -384,9 +392,28 @@ export const changeCartItemQuantity =
  */
 export const selectShippingRate =
 	( rateId: string, packageId = 0 ) =>
-	async ( { dispatch }: { dispatch: CartDispatchFromMap } ) => {
+	async ( {
+		dispatch,
+		select,
+	}: {
+		dispatch: CartDispatchFromMap;
+		select: CartSelectFromMap;
+	} ) => {
+		const selectedShippingRate = select
+			.getShippingRates()
+			.find(
+				( shippingPackage: CartShippingRate ) =>
+					shippingPackage.package_id === packageId
+			)
+			?.shipping_rates.find(
+				( rate: CartShippingPackageShippingRate ) =>
+					rate.selected === true
+			);
+		if ( selectedShippingRate?.rate_id === rateId ) {
+			return;
+		}
 		try {
-			dispatch.shippingRatesBeingSelected( true );
+			dispatch.shippingRatesBeingSelected( true, rateId, packageId );
 			const { response } = await apiFetchWithHeaders( {
 				path: `/wc/store/v1/cart/select-shipping-rate`,
 				method: 'POST',

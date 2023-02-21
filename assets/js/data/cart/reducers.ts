@@ -163,8 +163,39 @@ const reducer: Reducer< CartState > = (
 			};
 			break;
 		case types.UPDATING_SELECTED_SHIPPING_RATE:
+			let cartShippingRates = state.cartData.shippingRates;
+			if ( action.rateId && isFinite( action.packageId ) ) {
+				cartShippingRates = state.cartData.shippingRates.map(
+					( shippingRate ) => {
+						if ( shippingRate.package_id === action.packageId ) {
+							return {
+								...shippingRate,
+								shipping_rates: shippingRate.shipping_rates.map(
+									( rate ) => {
+										if ( rate.rate_id === action.rateId ) {
+											return {
+												...rate,
+												selected: true,
+											};
+										}
+										return {
+											...rate,
+											selected: false,
+										};
+									}
+								),
+							};
+						}
+						return shippingRate;
+					}
+				);
+			}
 			state = {
 				...state,
+				cartData: {
+					...state.cartData,
+					shippingRates: cartShippingRates,
+				},
 				metaData: {
 					...state.metaData,
 					updatingSelectedRate: !! action.isResolving,
