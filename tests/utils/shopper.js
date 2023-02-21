@@ -191,6 +191,7 @@ export const shopper = {
 				first_name: 'John',
 				last_name: 'Doe',
 				shipping_address_1: '123 Easy Street',
+				address_2: 'Testville',
 				country: 'United States (US)',
 				city: 'New York',
 				state: 'New York',
