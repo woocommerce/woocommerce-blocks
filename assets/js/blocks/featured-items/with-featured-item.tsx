@@ -17,6 +17,7 @@ import {
 	useState,
 } from 'react';
 import { WP_REST_API_Category } from 'wp-types';
+import { useBorderProps } from '@woocommerce/base-hooks';
 
 /**
  * Internal dependencies
@@ -156,6 +157,8 @@ export const withFeaturedItem =
 			</Placeholder>
 		);
 
+		const borderProps = useBorderProps( attributes );
+
 		const renderItem = () => {
 			const {
 				contentAlign,
@@ -194,6 +197,7 @@ export const withFeaturedItem =
 				color: textColor
 					? `var(--wp--preset--color--${ textColor })`
 					: style?.color?.text,
+				boxSizing: 'border-box',
 			};
 
 			const wrapperStyle = {
@@ -224,7 +228,10 @@ export const withFeaturedItem =
 						showHandle={ isSelected }
 						style={ { minHeight } }
 					/>
-					<div className={ classes } style={ containerStyle }>
+					<div
+						className={ classes }
+						style={ { containerStyle, ...borderProps.style } }
+					>
 						<div
 							className={ `${ className }__wrapper` }
 							style={ wrapperStyle }

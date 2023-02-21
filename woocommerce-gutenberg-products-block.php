@@ -3,7 +3,7 @@
  * Plugin Name: WooCommerce Blocks
  * Plugin URI: https://github.com/woocommerce/woocommerce-gutenberg-products-block
  * Description: WooCommerce blocks for the Gutenberg editor.
- * Version: 9.5.0-dev
+ * Version: 9.7.0-dev
  * Author: Automattic
  * Author URI: https://woocommerce.com
  * Text Domain:  woo-gutenberg-products-block
@@ -287,45 +287,6 @@ function woocommerce_blocks_plugin_outdated_notice() {
 
 add_action( 'admin_notices', 'woocommerce_blocks_plugin_outdated_notice' );
 
-/**
- * Register the Interactivity API scripts. These files are enqueued when a block
- * defines `woo-directives-runtime` as a dependency.
- */
-function woo_directives_register_scripts() {
-	wp_register_script(
-		'woo-directives-vendors',
-		plugins_url( 'build/woo-directives-vendors.js', __FILE__ ),
-		array(),
-		'1.0.0',
-		true
-	);
-	wp_register_script(
-		'woo-directives-runtime',
-		plugins_url( 'build/woo-directives-runtime.js', __FILE__ ),
-		array( 'woo-directives-vendors' ),
-		'1.0.0',
-		true
-	);
-}
-add_action( 'init', 'woo_directives_register_scripts' );
+// Include the Interactivity API.
+require_once __DIR__ . '/src/Interactivity/woo-directives.php';
 
-// Enqueue the WP directives runtime.
-add_filter(
-	'__experimental_woocommerce_blocks_enqueue_directives_runtime',
-	function () {
-		return true;
-	}
-);
-
-/**
- * Insert the required meta tag for client-side transitions.
- */
-function add_cst_meta_tag() {
-	echo '<meta itemprop="woo-client-side-transitions" content="active">';
-	add_filter(
-		'client_side_transitions',
-		true
-	);
-}
-
-add_action( 'wp_head', 'add_cst_meta_tag' );
