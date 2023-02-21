@@ -176,7 +176,7 @@ const updateCustomerData = debounce( (): void => {
 				processErrorResponse( response );
 			} );
 	}
-}, 1000 );
+}, 500 );
 
 /**
  * After cart has fully initialized, pushes changes to the server when data in the store is changed. Updates to the

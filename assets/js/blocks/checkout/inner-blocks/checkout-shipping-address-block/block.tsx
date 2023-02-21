@@ -57,7 +57,7 @@ const Block = ( {
 			return;
 		}
 		if ( useShippingAsBilling ) {
-			syncBillingWithShipping();
+			//syncBillingWithShipping();
 		}
 		setAddressesSynced( true );
 	}, [
@@ -88,6 +88,11 @@ const Block = ( {
 		? [ noticeContexts.SHIPPING_ADDRESS, noticeContexts.BILLING_ADDRESS ]
 		: [ noticeContexts.SHIPPING_ADDRESS ];
 
+	const hasAddress = !! (
+		shippingAddress.address_1 &&
+		( shippingAddress.first_name || shippingAddress.last_name )
+	);
+
 	return (
 		<>
 			<StoreNoticesContainer context={ noticeContext } />
@@ -95,21 +100,24 @@ const Block = ( {
 				addressFieldsConfig={ addressFieldsConfig }
 				showPhoneField={ showPhoneField }
 				requirePhoneField={ requirePhoneField }
+				hasAddress={ hasAddress }
 			/>
-			<CheckboxControl
-				className="wc-block-checkout__use-address-for-billing"
-				label={ __(
-					'Use same address for billing',
-					'woo-gutenberg-products-block'
-				) }
-				checked={ useShippingAsBilling }
-				onChange={ ( checked: boolean ) => {
-					setUseShippingAsBilling( checked );
-					if ( checked ) {
-						syncBillingWithShipping();
-					}
-				} }
-			/>
+			{ hasAddress && (
+				<CheckboxControl
+					className="wc-block-checkout__use-address-for-billing"
+					label={ __(
+						'Use same address for billing',
+						'woo-gutenberg-products-block'
+					) }
+					checked={ useShippingAsBilling }
+					onChange={ ( checked: boolean ) => {
+						setUseShippingAsBilling( checked );
+						if ( checked ) {
+							syncBillingWithShipping();
+						}
+					} }
+				/>
+			) }
 		</>
 	);
 };

@@ -10,20 +10,14 @@ import {
 	useStoreEvents,
 	useEditorContext,
 } from '@woocommerce/base-context';
-import { StoreNoticesContainer } from '@woocommerce/blocks-checkout';
 import Noninteractive from '@woocommerce/base-components/noninteractive';
 import type {
 	ShippingAddress,
 	AddressField,
 	AddressFields,
 } from '@woocommerce/settings';
-import { useDispatch, useSelect, dispatch } from '@wordpress/data';
-import {
-	CART_STORE_KEY,
-	VALIDATION_STORE_KEY,
-	processErrorResponse,
-} from '@woocommerce/block-data';
-import { removeNoticesWithContext } from '@woocommerce/base-utils';
+import { useDispatch, useSelect } from '@wordpress/data';
+import { CART_STORE_KEY, VALIDATION_STORE_KEY } from '@woocommerce/block-data';
 
 /**
  * Internal dependencies
@@ -36,12 +30,20 @@ const AddressFormContainer = ( {
 	addressFieldsConfig,
 	showPhoneField,
 	requirePhoneField,
+	hasAddress,
 }: {
 	addressFieldsConfig: Record< keyof AddressFields, Partial< AddressField > >;
 	showPhoneField: boolean;
 	requirePhoneField: boolean;
+	hasAddress: boolean;
 } ) => {
-	const { defaultAddressFields, shippingAddress } = useCheckoutAddress();
+	const {
+		defaultAddressFields,
+		shippingAddress,
+		setShippingAddress,
+		setBillingAddress,
+		useShippingAsBilling,
+	} = useCheckoutAddress();
 	const { dispatchCheckoutEvent } = useStoreEvents();
 	const { isEditor } = useEditorContext();
 	const { showAllValidationErrors } = useDispatch( VALIDATION_STORE_KEY );
@@ -59,35 +61,23 @@ const AddressFormContainer = ( {
 	const [ modalShippingAddress, setModalShippingAddress ] =
 		useState< ShippingAddress >( shippingAddress );
 	const WrapperComponent = isEditor ? Noninteractive : Fragment;
-	const noticeContext = 'wc/checkout/shipping-address-form';
-	const hasAddress =
-		shippingAddress.address_1 &&
-		( shippingAddress.first_name || shippingAddress.last_name );
 
 	const onSaveAddress = () => {
 		showAllValidationErrors();
 
 		if ( ! hasValidationErrors() ) {
-			dispatch( CART_STORE_KEY )
-				.updateCustomerData(
-					{
-						shipping_address: {
-							...modalShippingAddress,
-							phone: showPhoneField
-								? modalShippingAddress.phone
-								: '',
-						},
-					},
-					false
-				)
-				.then( () => {
-					removeNoticesWithContext( noticeContext );
-					setEditing( false );
-					dispatchCheckoutEvent( 'set-shipping-address' );
-				} )
-				.catch( ( response ) => {
-					processErrorResponse( response, noticeContext );
+			setShippingAddress( {
+				...modalShippingAddress,
+				phone: showPhoneField ? modalShippingAddress.phone : '',
+			} );
+			if ( useShippingAsBilling ) {
+				setBillingAddress( {
+					...modalShippingAddress,
+					phone: showPhoneField ? modalShippingAddress.phone : '',
 				} );
+			}
+			dispatchCheckoutEvent( 'set-shipping-address' );
+			setEditing( false );
 		}
 	};
 
@@ -102,10 +92,10 @@ const AddressFormContainer = ( {
 				/>
 			) : (
 				<Button
-					className="wc-block-components-checkout-add-address-button"
 					onClick={ () => {
 						setEditing( true );
 					} }
+					style={ { width: '100%', marginBottom: '1.5em' } }
 				>
 					{ __( 'Add address', 'woo-gutenberg-products-block' ) }
 				</Button>
@@ -128,7 +118,6 @@ const AddressFormContainer = ( {
 						</Button>
 					}
 				>
-					<StoreNoticesContainer context={ noticeContext } />
 					<AddressForm
 						id="shipping"
 						type="shipping"
