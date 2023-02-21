@@ -584,8 +584,6 @@ export const previewCart: CartResponse = {
 	items_weight: 0,
 	needs_payment: true,
 	needs_shipping: getSetting( 'shippingEnabled', true ),
-	has_shipping_address: false,
-	has_billing_address: false,
 	has_calculated_shipping: true,
 	shipping_address: {
 		first_name: '',

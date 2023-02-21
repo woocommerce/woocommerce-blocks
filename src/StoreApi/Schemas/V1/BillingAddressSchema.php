@@ -82,53 +82,39 @@ class BillingAddressSchema extends AbstractAddressSchema {
 	}
 
 	/**
-	 * Returns the address data in array format.
+	 * Convert a term object into an object suitable for the response.
 	 *
-	 * @param \WC_Order|\WC_Customer $customer_or_order An object with shipping address.
-	 * @return array|null
+	 * @param \WC_Order|\WC_Customer $address An object with billing address.
+	 *
+	 * @throws RouteException When the invalid object types are provided.
+	 * @return stdClass
 	 */
-	public function get_address_data( $customer_or_order ) {
-		if ( ( $customer_or_order instanceof \WC_Customer || $customer_or_order instanceof \WC_Order ) ) {
-			$validation_util = new ValidationUtils();
-			$billing_country = $customer_or_order->get_billing_country();
-			$billing_state   = $customer_or_order->get_billing_state();
+	public function get_item_response( $address ) {
+		$validation_util = new ValidationUtils();
+		if ( ( $address instanceof \WC_Customer || $address instanceof \WC_Order ) ) {
+			$billing_country = $address->get_billing_country();
+			$billing_state   = $address->get_billing_state();
 
 			if ( ! $validation_util->validate_state( $billing_state, $billing_country ) ) {
 				$billing_state = '';
 			}
 
-			return [
-				'first_name' => $customer_or_order->get_billing_first_name(),
-				'last_name'  => $customer_or_order->get_billing_last_name(),
-				'company'    => $customer_or_order->get_billing_company(),
-				'address_1'  => $customer_or_order->get_billing_address_1(),
-				'address_2'  => $customer_or_order->get_billing_address_2(),
-				'city'       => $customer_or_order->get_billing_city(),
-				'state'      => $billing_state,
-				'postcode'   => $customer_or_order->get_billing_postcode(),
-				'country'    => $billing_country,
-				'email'      => $customer_or_order->get_billing_email(),
-				'phone'      => $customer_or_order->get_billing_phone(),
-			];
+			return (object) $this->prepare_html_response(
+				[
+					'first_name' => $address->get_billing_first_name(),
+					'last_name'  => $address->get_billing_last_name(),
+					'company'    => $address->get_billing_company(),
+					'address_1'  => $address->get_billing_address_1(),
+					'address_2'  => $address->get_billing_address_2(),
+					'city'       => $address->get_billing_city(),
+					'state'      => $billing_state,
+					'postcode'   => $address->get_billing_postcode(),
+					'country'    => $billing_country,
+					'email'      => $address->get_billing_email(),
+					'phone'      => $address->get_billing_phone(),
+				]
+			);
 		}
-		return null;
-	}
-
-	/**
-	 * Convert a term object into an object suitable for the response.
-	 *
-	 * @param \WC_Order|\WC_Customer $customer_or_order An object with billing address.
-	 *
-	 * @throws RouteException When the invalid object types are provided.
-	 * @return stdClass
-	 */
-	public function get_item_response( $customer_or_order ) {
-		$address = $this->get_address_data( $customer_or_order );
-
-		if ( ! is_null( $address ) ) {
-			return (object) $this->prepare_html_response( $address );
-		}
-
 		throw new RouteException(
 			'invalid_object_type',
 			sprintf(

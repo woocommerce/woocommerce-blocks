@@ -24,8 +24,6 @@ export const useStoreCart = () => ( {
 	shippingAddress: {},
 	shippingRates: previewShippingRates,
 	isLoadingRates: false,
-	cartHasShippingAddress: false,
-	cartHasBillingAddress: false,
 	cartHasCalculatedShipping: previewCart.has_calculated_shipping,
 	receiveCart: () => void null,
 } );

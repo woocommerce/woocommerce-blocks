@@ -174,8 +174,6 @@ export interface CartResponse {
 	cross_sells: Array< ProductResponseItem >;
 	needs_payment: boolean;
 	needs_shipping: boolean;
-	has_shipping_address: boolean;
-	has_billing_address: boolean;
 	has_calculated_shipping: boolean;
 	fees: Array< CartResponseFeeItem >;
 	totals: CartResponseTotals;

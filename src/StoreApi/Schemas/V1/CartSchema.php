@@ -3,7 +3,6 @@ namespace Automattic\WooCommerce\StoreApi\Schemas\V1;
 
 use Automattic\WooCommerce\StoreApi\SchemaController;
 use Automattic\WooCommerce\StoreApi\Utilities\CartController;
-use Automattic\WooCommerce\StoreApi\Utilities\OrderController;
 use Automattic\WooCommerce\StoreApi\Schemas\ExtendSchema;
 use WC_Tax;
 
@@ -184,18 +183,6 @@ class CartSchema extends AbstractSchema {
 				'context'     => [ 'view', 'edit' ],
 				'readonly'    => true,
 			],
-			'has_shipping_address'    => [
-				'description' => __( 'True if the cart as a valid (complete) shipping address.', 'woo-gutenberg-products-block' ),
-				'type'        => 'boolean',
-				'context'     => [ 'view', 'edit' ],
-				'readonly'    => true,
-			],
-			'has_billing_address'     => [
-				'description' => __( 'True if the cart as a valid (complete) billing address.', 'woo-gutenberg-products-block' ),
-				'type'        => 'boolean',
-				'context'     => [ 'view', 'edit' ],
-				'readonly'    => true,
-			],
 			'has_calculated_shipping' => [
 				'description' => __( 'True if the cart meets the criteria for showing shipping costs, and rates have been calculated and included in the totals.', 'woo-gutenberg-products-block' ),
 				'type'        => 'boolean',
@@ -339,27 +326,10 @@ class CartSchema extends AbstractSchema {
 	 * @return array
 	 */
 	public function get_item_response( $cart ) {
-		$cart_controller  = new CartController();
-		$order_controller = new OrderController();
+		$controller = new CartController();
 
 		// Get cart errors first so if recalculations are performed, it's reflected in the response.
 		$cart_errors = $this->get_cart_errors( $cart );
-
-		// Checks to see if the order would have a valid address given the current data.
-		$errors = new \WP_Error();
-		$order_controller->validate_address_fields(
-			$this->shipping_address_schema->get_address_data( wc()->customer ),
-			'shipping',
-			$errors
-		);
-		$has_shipping_address = ! $errors->has_errors();
-		$errors               = new \WP_Error();
-		$order_controller->validate_address_fields(
-			$this->billing_address_schema->get_address_data( wc()->customer ),
-			'billing',
-			$errors
-		);
-		$has_billing_address = ! $errors->has_errors();
 
 		// The core cart class will not include shipping in the cart totals if `show_shipping()` returns false. This can
 		// happen if an address is required, or through the use of hooks. This tracks if shipping has actually been
@@ -367,7 +337,7 @@ class CartSchema extends AbstractSchema {
 		$has_calculated_shipping = $cart->show_shipping();
 
 		// Get shipping packages to return in the response from the cart.
-		$shipping_packages = $has_calculated_shipping ? $cart_controller->get_shipping_packages() : [];
+		$shipping_packages = $has_calculated_shipping ? $controller->get_shipping_packages() : [];
 
 		// Get visible cross sells products.
 		$cross_sells = array_filter( array_map( 'wc_get_product', $cart->get_cross_sells() ), 'wc_products_array_filter_visible' );
@@ -383,8 +353,6 @@ class CartSchema extends AbstractSchema {
 			'cross_sells'             => $this->get_item_responses_from_schema( $this->cross_sells_item_schema, $cross_sells ),
 			'needs_payment'           => $cart->needs_payment(),
 			'needs_shipping'          => $cart->needs_shipping(),
-			'has_shipping_address'    => $has_shipping_address,
-			'has_billing_address'     => $has_billing_address,
 			'has_calculated_shipping' => $has_calculated_shipping,
 			'fees'                    => $this->get_item_responses_from_schema( $this->fee_schema, $cart->get_fees() ),
 			'totals'                  => (object) $this->prepare_currency_response(
