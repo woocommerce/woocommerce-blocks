@@ -3,6 +3,7 @@ require_once __DIR__ . '/../../../gutenberg/lib/experimental/html/wp-html.php';
 
 require_once __DIR__ . '/directives/class-woo-directive-context.php';
 require_once __DIR__ . '/directives/class-woo-directive-store.php';
+require_once __DIR__ . '/directives/woo-process-directives.php';
 
 require_once __DIR__ . '/directives/attributes/woo-bind.php';
 require_once __DIR__ . '/directives/attributes/woo-class.php';
@@ -48,16 +49,6 @@ function woo_directives_add_client_side_navigation_meta_tag() {
 }
 add_action( 'wp_head', 'woo_directives_add_client_side_navigation_meta_tag' );
 
-function woo_directives_client_site_navigation_option() {
-	// $options = get_option( 'woo_directives_plugin_settings' );
-	// return $options['client_side_navigation'];
-	return true;
-}
-add_filter(
-	'client_side_navigation',
-	'woo_directives_client_site_navigation_option',
-	9
-);
 
 function woo_directives_mark_interactive_blocks( $block_content, $block, $instance ) {
 	if ( woo_directives_get_client_side_navigation() ) {
@@ -106,7 +97,7 @@ function woo_directives_inner_blocks( $parsed_block, $source_block, $parent_bloc
 }
 add_filter( 'render_block_data', 'woo_directives_inner_blocks', 10, 3 );
 
-function woo_process_directives( $block_content ) {
+function woo_process_directives_in_block( $block_content ) {
 	// TODO: Add some directive/components registration mechanism.
 	$tag_directives = array(
 		'woo-context' => 'process_woo_context_tag',
@@ -120,36 +111,12 @@ function woo_process_directives( $block_content ) {
 	);
 
 	$tags = new WP_HTML_Tag_Processor( $block_content );
-
-	$context = new Woo_Directive_Context();
-	while ( $tags->next_tag( array( 'tag_closers' => 'visit' ) ) ) {
-		$tag_name = strtolower( $tags->get_tag() );
-		if ( array_key_exists( $tag_name, $tag_directives ) ) {
-			call_user_func( $tag_directives[ $tag_name ], $tags, $context );
-		} else {
-			// Components can't have directives (unless we change our mind about this).
-			$attributes = $tags->get_attribute_names_with_prefix( 'data-woo-' );
-			$attributes = $attributes ?? array();
-
-			foreach ( $attributes as $attribute ) {
-				if ( ! array_key_exists( $attribute, $attribute_directives ) ) {
-					continue;
-				}
-
-				call_user_func(
-					$attribute_directives[ $attribute ],
-					$tags,
-					$context
-				);
-			}
-		}
-	}
-
-	return $block_content;
+	$tags = woo_process_directives( $tags, 'data-woo-', $tag_directives, $attribute_directives );
+	return $tags->get_updated_html();
 }
 add_filter(
 	'render_block',
-	'woo_process_directives',
+	'woo_process_directives_in_block',
 	10,
 	1
 );
