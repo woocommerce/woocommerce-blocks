@@ -6,7 +6,7 @@ function process_woo_context_attribute( $tags, $context ) {
 		return;
 	}
 
-	$value = $tags->get_attribute( 'woo-context' );
+	$value = $tags->get_attribute( 'data-woo-context' );
 	if ( null === $value ) {
 		// No woo-context directive.
 		return;
