@@ -2,6 +2,7 @@
  * External dependencies
  */
 import { __ } from '@wordpress/i18n';
+import { Fragment } from '@wordpress/element';
 import Button from '@woocommerce/base-components/button';
 import { Icon, home } from '@wordpress/icons';
 import { ALLOWED_COUNTRIES } from '@woocommerce/block-settings';
@@ -44,11 +45,11 @@ const AddressCard = ( {
 						: address.country,
 				]
 					.filter( ( field ) => !! field )
-					.map( ( field ) => (
-						<>
+					.map( ( field, index ) => (
+						<Fragment key={ `address-` + index }>
 							{ field }
 							<br />
-						</>
+						</Fragment>
 					) ) }
 			</address>
 			{ onEdit && (

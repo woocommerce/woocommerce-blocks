@@ -42,7 +42,6 @@ body.modal-open {
 }
 
 .wc-block-components-address-modal {
-	@include with-translucent-border(0 0 0 1px);
 	background: #fff;
 	display: flex;
 	max-height: 70%;
@@ -51,6 +50,7 @@ body.modal-open {
 	overflow: hidden;
 	transition: $modal-animation-duration transform;
 	border-radius: 4px;
+	box-shadow: 4px 4px 12px rgba(0, 0, 0, 0.1);
 
 	&--hidden {
 		transform: translateY(100vh);
