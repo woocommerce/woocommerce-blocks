@@ -17,8 +17,8 @@ This folder contains documentation for developers and contributors looking to ge
 ---
 
 [We're hiring!](https://woocommerce.com/careers/) Come work with us!
-
+<!-- markdown-link-check-disable -->
 🐞 Found a mistake, or have a suggestion? [Leave feedback about this document here.](https://github.com/woocommerce/woocommerce-blocks/issues/new?assignees=&labels=type%3A+documentation&template=--doc-feedback.md&title=Feedback%20on%20./docs/contributors/README.md)
-
+<!-- markdown-link-check-enable -->
 <!-- /FEEDBACK -->
 
