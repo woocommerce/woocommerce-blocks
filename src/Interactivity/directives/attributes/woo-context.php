@@ -13,7 +13,6 @@ function process_woo_context_attribute( $tags, $context ) {
 	}
 
 	$new_context = json_decode( $value, true );
-	// TODO: Error handling.
 
 	$context->set_context( $new_context );
 }

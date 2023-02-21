@@ -22,7 +22,6 @@ function process_woo_style( $tags, $context ) {
 			$style_attr = set_style( $style_attr, $style_name, $style_value );
 			$tags->set_attribute( 'style', $style_attr );
 		} else {
-			// TODO: Do we want to unset styles if they're null?
 			// $tags->remove_class( $style_name );
 		}
 	}

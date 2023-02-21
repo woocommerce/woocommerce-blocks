@@ -61,7 +61,6 @@ function woo_process_directives( $tags, $prefix, $tag_directives, $attribute_dir
 	return $tags;
 }
 
-// TODO: Move into `WP_HTML_Tag_Processor` (or `WP_HTML_Processor`).
 // See e.g. https://github.com/WordPress/gutenberg/pull/47573.
 function is_html_void_element( $tag_name ) {
 	switch ( $tag_name ) {
