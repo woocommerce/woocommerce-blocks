@@ -24,7 +24,6 @@ class Woo_Directive_Store {
 			return;
 		}
 
-		// TODO: find a better ID for the script tag.
 		$id    = 'store';
 		$store = self::serialize();
 		echo "<script id=\"$id\" type=\"application/json\">$store</script>";

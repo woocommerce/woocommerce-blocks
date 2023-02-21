@@ -6,7 +6,6 @@ function store( $data ) {
 	Woo_Directive_Store::merge_data( $data );
 }
 
-// TODO: Implement evaluation of complex logical expressions.
 function evaluate( string $path, array $context = array() ) {
 	$current = array_merge(
 		Woo_Directive_Store::get_data(),
@@ -30,7 +29,6 @@ function set_style( $style, $name, $value ) {
 	foreach ( $style_assignments as $style_assignment ) {
 		list( $style_name ) = explode( ':', $style_assignment );
 		if ( trim( $style_name ) === $name ) {
-			// TODO: Retain surrounding whitespace from $style_value, if any.
 			$style_assignment = $style_name . ': ' . $value;
 			$modified         = true;
 			break;

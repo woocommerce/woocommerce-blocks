@@ -98,7 +98,6 @@ function woo_directives_inner_blocks( $parsed_block, $source_block, $parent_bloc
 add_filter( 'render_block_data', 'woo_directives_inner_blocks', 10, 3 );
 
 function woo_process_directives_in_block( $block_content ) {
-	// TODO: Add some directive/components registration mechanism.
 	$tag_directives = array(
 		'woo-context' => 'process_woo_context_tag',
 	);
@@ -121,6 +120,4 @@ add_filter(
 	1
 );
 
-// TODO: check if priority 9 is enough.
-// TODO: check if `wp_footer` is the most appropriate hook.
 add_action( 'wp_footer', array( 'Woo_Directive_Store', 'render' ), 9 );
