@@ -64,7 +64,6 @@
 		"package-plugin:dev": "rimraf woocommerce-gutenberg-products-block.zip && ./bin/build-plugin-zip.sh -d",
 		"package-plugin:zip-only": "rimraf woocommerce-gutenberg-products-block.zip && ./bin/build-plugin-zip.sh -z",
 		"package-plugin:deploy": "npm run build:deploy && npm run package-plugin:zip-only",
-		"postinstall": "patch-package",
 		"reformat-files": "prettier --ignore-path .eslintignore --write \"**/*.{js,jsx,json,ts,tsx}\"",
 		"release": "sh ./bin/wordpress-deploy.sh",
 		"start": "rimraf build/* && cross-env BABEL_ENV=default CHECK_CIRCULAR_DEPS=true webpack --watch --info-verbosity none",
@@ -198,7 +197,6 @@
 		"markdown-it": "13.0.1",
 		"merge-config": "2.0.0",
 		"mini-css-extract-plugin": "1.6.2",
-		"patch-package": "6.4.7",
 		"postcss": "8.4.14",
 		"postcss-loader": "4.2.0",
 		"prettier": "npm:wp-prettier@2.6.2",
@@ -255,6 +253,7 @@
 		"react-number-format": "4.9.3",
 		"reakit": "1.3.11",
 		"snakecase-keys": "5.4.2",
+		"tinycolor2": "^1.6.0",
 		"trim-html": "0.1.9",
 		"use-debounce": "7.0.1"
 	},
