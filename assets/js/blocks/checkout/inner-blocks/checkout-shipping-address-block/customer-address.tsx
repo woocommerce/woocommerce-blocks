@@ -3,30 +3,27 @@
  */
 import { __ } from '@wordpress/i18n';
 import Button from '@woocommerce/base-components/button';
-import { Fragment, useState } from '@wordpress/element';
+import { useState } from '@wordpress/element';
 import { AddressForm } from '@woocommerce/base-components/cart-checkout';
-import {
-	useCheckoutAddress,
-	useStoreEvents,
-	useEditorContext,
-} from '@woocommerce/base-context';
-import Noninteractive from '@woocommerce/base-components/noninteractive';
+import { useCheckoutAddress, useStoreEvents } from '@woocommerce/base-context';
 import type {
 	ShippingAddress,
 	AddressField,
 	AddressFields,
 } from '@woocommerce/settings';
-import { dispatch, useSelect } from '@wordpress/data';
-import { VALIDATION_STORE_KEY } from '@woocommerce/block-data';
+import {
+	getInvalidAddressKeys,
+	showValidationErrorsForAddressKeys,
+} from '@woocommerce/block-data';
 
 /**
  * Internal dependencies
  */
 import PhoneNumber from '../../phone-number';
-import AddressCard from './components/address-card';
-import AddressModal from './components/address-modal';
+import AddressCard from '../../address-card';
+import AddressModal from '../../address-modal';
 
-const AddressFormContainer = ( {
+const CustomerAddress = ( {
 	addressFieldsConfig,
 	showPhoneField,
 	requirePhoneField,
@@ -45,68 +42,41 @@ const AddressFormContainer = ( {
 		useShippingAsBilling,
 	} = useCheckoutAddress();
 	const { dispatchCheckoutEvent } = useStoreEvents();
-	const { isEditor } = useEditorContext();
-	const { hasValidationErrors, getValidationError } = useSelect(
-		( select ) => {
-			return {
-				hasValidationErrors:
-					select( VALIDATION_STORE_KEY ).hasValidationErrors,
-				getValidationError:
-					select( VALIDATION_STORE_KEY ).getValidationError,
-			};
-		}
-	);
+
 	const [ editing, setEditing ] = useState( false );
-	const [ modalShippingAddress, setModalShippingAddress ] =
+	const [ addressState, setAddressState ] =
 		useState< ShippingAddress >( shippingAddress );
-	const WrapperComponent = isEditor ? Noninteractive : Fragment;
+
 	const addressFieldKeys = Object.keys(
 		defaultAddressFields
 	) as ( keyof AddressFields )[];
 
 	const onSaveAddress = () => {
-		if ( hasValidationErrors() ) {
-			const invalidProps = [
-				...addressFieldKeys.filter( ( key ) => {
-					return (
-						getValidationError( 'shipping_' + key ) !== undefined
-					);
-				} ),
-			].filter( Boolean );
-			const invalidPhone =
-				getValidationError( 'shipping_phone' ) !== undefined;
+		const invalidProps = getInvalidAddressKeys(
+			[ ...addressFieldKeys, 'phone' ],
+			'shipping'
+		);
 
-			if ( invalidProps.length || invalidPhone ) {
-				invalidProps.forEach( ( prop ) => {
-					dispatch( VALIDATION_STORE_KEY ).showValidationError(
-						'shipping_' + prop
-					);
-				} );
-				if ( invalidPhone ) {
-					dispatch( VALIDATION_STORE_KEY ).showValidationError(
-						'shipping_phone'
-					);
-				}
-				return;
-			}
+		if ( invalidProps.length ) {
+			showValidationErrorsForAddressKeys( invalidProps, 'shipping' );
+			return;
 		}
 
-		setShippingAddress( {
-			...modalShippingAddress,
-			phone: showPhoneField ? modalShippingAddress.phone : '',
-		} );
+		const addressData = {
+			...addressState,
+			phone: showPhoneField ? addressState.phone : '',
+		};
+
+		setShippingAddress( addressData );
 		if ( useShippingAsBilling ) {
-			setBillingAddress( {
-				...modalShippingAddress,
-				phone: showPhoneField ? modalShippingAddress.phone : '',
-			} );
+			setBillingAddress( addressData );
 		}
 		dispatchCheckoutEvent( 'set-shipping-address' );
 		setEditing( false );
 	};
 
 	return (
-		<WrapperComponent>
+		<>
 			{ hasAddress ? (
 				<AddressCard
 					address={ shippingAddress }
@@ -143,12 +113,12 @@ const AddressFormContainer = ( {
 						id="shipping"
 						type="shipping"
 						onChange={ ( values: Partial< ShippingAddress > ) => {
-							setModalShippingAddress( {
-								...modalShippingAddress,
+							setAddressState( {
+								...addressState,
 								...values,
 							} );
 						} }
-						values={ modalShippingAddress }
+						values={ addressState }
 						fields={ addressFieldKeys }
 						fieldConfig={ addressFieldsConfig }
 					/>
@@ -157,10 +127,10 @@ const AddressFormContainer = ( {
 							id="shipping-phone"
 							errorId={ 'shipping_phone' }
 							isRequired={ requirePhoneField }
-							value={ modalShippingAddress.phone }
+							value={ addressState.phone }
 							onChange={ ( value ) => {
-								setModalShippingAddress( {
-									...modalShippingAddress,
+								setAddressState( {
+									...addressState,
 									phone: value,
 								} );
 							} }
@@ -168,8 +138,8 @@ const AddressFormContainer = ( {
 					) }
 				</AddressModal>
 			) }
-		</WrapperComponent>
+		</>
 	);
 };
 
-export default AddressFormContainer;
+export default CustomerAddress;

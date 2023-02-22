@@ -2,8 +2,14 @@
  * External dependencies
  */
 import { __ } from '@wordpress/i18n';
-import { useMemo, useEffect, useState, useCallback } from '@wordpress/element';
-import { useCheckoutAddress, noticeContexts } from '@woocommerce/base-context';
+import { useMemo, Fragment } from '@wordpress/element';
+import { useEffectOnce } from 'usehooks-ts';
+import Noninteractive from '@woocommerce/base-components/noninteractive';
+import {
+	useCheckoutAddress,
+	noticeContexts,
+	useEditorContext,
+} from '@woocommerce/base-context';
 import {
 	CheckboxControl,
 	StoreNoticesContainer,
@@ -17,7 +23,7 @@ import type {
 /**
  * Internal dependencies
  */
-import AddressFormContainer from './address-form-container';
+import CustomerAddress from './customer-address';
 
 const Block = ( {
 	showCompanyField = false,
@@ -38,34 +44,22 @@ const Block = ( {
 		useShippingAsBilling,
 		setUseShippingAsBilling,
 	} = useCheckoutAddress();
-
-	// This is used to track whether the "Use shipping as billing" checkbox was checked on first load and if we synced
-	// the shipping address to the billing address if it was. This is not used on further toggles of the checkbox.
-	const [ addressesSynced, setAddressesSynced ] = useState( false );
+	const { isEditor } = useEditorContext();
 
 	// Sets the billing address to the shipping address.
-	const syncBillingWithShipping = useCallback( () => {
+	const syncBillingWithShipping = () => {
 		setBillingAddress( {
 			...shippingAddress,
 			phone: showPhoneField ? shippingAddress.phone : '',
 		} as BillingAddress );
-	}, [ setBillingAddress, shippingAddress, showPhoneField ] );
+	};
 
 	// Run this on first render to ensure addresses sync if needed (this is not re-ran when toggling the checkbox).
-	useEffect( () => {
-		if ( addressesSynced ) {
-			return;
-		}
+	useEffectOnce( () => {
 		if ( useShippingAsBilling ) {
-			//syncBillingWithShipping();
+			syncBillingWithShipping();
 		}
-		setAddressesSynced( true );
-	}, [
-		addressesSynced,
-		setBillingAddress,
-		syncBillingWithShipping,
-		useShippingAsBilling,
-	] );
+	} );
 
 	// Create address fields config from block attributes.
 	const addressFieldsConfig = useMemo( () => {
@@ -88,6 +82,8 @@ const Block = ( {
 		? [ noticeContexts.SHIPPING_ADDRESS, noticeContexts.BILLING_ADDRESS ]
 		: [ noticeContexts.SHIPPING_ADDRESS ];
 
+	const WrapperComponent = isEditor ? Noninteractive : Fragment;
+
 	const hasAddress = !! (
 		shippingAddress.address_1 &&
 		( shippingAddress.first_name || shippingAddress.last_name )
@@ -96,12 +92,14 @@ const Block = ( {
 	return (
 		<>
 			<StoreNoticesContainer context={ noticeContext } />
-			<AddressFormContainer
-				addressFieldsConfig={ addressFieldsConfig }
-				showPhoneField={ showPhoneField }
-				requirePhoneField={ requirePhoneField }
-				hasAddress={ hasAddress }
-			/>
+			<WrapperComponent>
+				<CustomerAddress
+					addressFieldsConfig={ addressFieldsConfig }
+					showPhoneField={ showPhoneField }
+					requirePhoneField={ requirePhoneField }
+					hasAddress={ hasAddress }
+				/>
+			</WrapperComponent>
 			{ hasAddress && (
 				<CheckboxControl
 					className="wc-block-checkout__use-address-for-billing"

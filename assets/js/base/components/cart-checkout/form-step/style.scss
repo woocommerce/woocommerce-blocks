@@ -27,8 +27,7 @@
 	margin-bottom: em($gap);
 }
 .wc-block-components-checkout-step--with-step-number .wc-block-components-checkout-step__content > :last-child {
-	margin-bottom: 0;
-	padding-bottom: em($gap-large);
+	margin-bottom: em($gap-large);
 }
 
 .wc-block-components-checkout-step__heading {
@@ -103,6 +102,8 @@
 		position: absolute;
 		left: -$gap-large;
 		top: 0;
+		padding-bottom: em($gap-large);
+		box-sizing: content-box;
 	}
 
 	.is-mobile &,
