@@ -3,6 +3,7 @@
  */
 import classNames from 'classnames';
 import { CheckboxControl } from '@wordpress/components';
+import { useCallback } from '@wordpress/element';
 
 /**
  * Internal dependencies
@@ -47,11 +48,17 @@ export const SearchListItem = ( {
 	const name = props.name || `search-list-item-${ controlId }`;
 	const id = `${ name }-${ item.id }`;
 
+	const togglePanel = useCallback( () => {
+		setExpandedPanelId( isExpanded ? -1 : item.id );
+	}, [ isExpanded, item.id, setExpandedPanelId ] );
+
 	return hasChildren ? (
 		<div
 			className={ classes }
-			onClick={ () => setExpandedPanelId( isExpanded ? -1 : item.id ) }
-			onKeyDown={ () => void 0 }
+			onClick={ togglePanel }
+			onKeyDown={ ( e ) =>
+				e.key === 'Enter' || e.key === ' ' ? togglePanel() : null
+			}
 			role="treeitem"
 			tabIndex={ 0 }
 		>
