@@ -3,12 +3,7 @@
  */
 import { _n } from '@wordpress/i18n';
 import { Notice, ExternalLink } from '@wordpress/components';
-import { useSelect } from '@wordpress/data';
-import {
-	useState,
-	createInterpolateElement,
-	useEffect,
-} from '@wordpress/element';
+import { createInterpolateElement, useEffect } from '@wordpress/element';
 import { Alert } from '@woocommerce/icons';
 import { Icon } from '@wordpress/icons';
 /**
