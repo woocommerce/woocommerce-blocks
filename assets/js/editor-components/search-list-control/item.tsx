@@ -1,7 +1,12 @@
 /**
+ * External dependencies
+ */
+import classNames from 'classnames';
+import { CheckboxControl } from '@wordpress/components';
+
+/**
  * Internal dependencies
  */
-import { CheckboxControl } from '@wordpress/components';
 import type { renderItemArgs } from './types';
 import { getHighlightedName, getBreadcrumbsForDisplay } from './utils';
 
@@ -25,24 +30,27 @@ export const SearchListItem = ( {
 		countLabel !== null &&
 		item.count !== undefined &&
 		item.count !== null;
-	const classes = [ className, 'woocommerce-search-list__item' ];
-	classes.push( `depth-${ depth }` );
-	if ( isSingle ) {
-		classes.push( 'is-radio-button' );
-	}
-	if ( showCount ) {
-		classes.push( 'has-count' );
-	}
 	const hasBreadcrumbs = item.breadcrumbs && item.breadcrumbs.length;
+	const hasChildren = item.children.length;
+	const isExpanded = expandedPanelId === item.id;
+	const classes = classNames(
+		[ 'woocommerce-search-list__item', `depth-${ depth }` ],
+		{
+			'has-breadcrumbs': hasBreadcrumbs,
+			'has-children': hasChildren,
+			'has-count': showCount,
+			'is-expanded': isExpanded,
+			'is-radio-button': isSingle,
+		}
+	);
+
 	const name = props.name || `search-list-item-${ controlId }`;
 	const id = `${ name }-${ item.id }`;
 
-	return item.children.length ? (
+	return hasChildren ? (
 		<div
-			className={ classes.join( ' ' ) }
-			onClick={ () =>
-				setExpandedPanelId( expandedPanelId === item.id ? -1 : item.id )
-			}
+			className={ classes }
+			onClick={ () => setExpandedPanelId( isExpanded ? -1 : item.id ) }
 			onKeyDown={ () => void 0 }
 			role="treeitem"
 			tabIndex={ 0 }
@@ -73,7 +81,7 @@ export const SearchListItem = ( {
 			) }
 		</div>
 	) : (
-		<label htmlFor={ id } className={ classes.join( ' ' ) }>
+		<label htmlFor={ id } className={ classes }>
 			{ isSingle ? (
 				<input
 					type="radio"
