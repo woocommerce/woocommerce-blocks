@@ -294,6 +294,7 @@ export const SearchListControl = (
 		<div
 			className={ classnames( 'woocommerce-search-list', className, {
 				'is-compact': isCompact,
+				'is-token': type === 'token',
 			} ) }
 		>
 			{ type === 'text' && (
