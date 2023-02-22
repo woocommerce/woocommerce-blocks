@@ -239,6 +239,7 @@ const AddressForm = ( {
 						<ValidatedTextInput
 							id={ `${ id }-${ field.key }` }
 							key={ `${ id }-${ field.key }` }
+							errorId={ errorId }
 							value={ values.postcode }
 							label={ field.label }
 							required={ field.required }
