@@ -54,7 +54,7 @@ const AddressCard = ( {
 			</address>
 			{ onEdit && (
 				<Button
-					className="wc-block-components-address-card__edit"
+					className="wc-block-components-address-card__edit is-link"
 					onClick={ onEdit }
 					variant="link"
 				>

@@ -51,6 +51,7 @@ body.modal-open {
 	transition: $modal-animation-duration transform;
 	border-radius: 10px;
 	box-shadow: 4px 4px 12px rgba(0, 0, 0, 0.1);
+	box-sizing: border-box;
 
 	@media only screen and (max-width: 600px) {
 		width: $modal-width-mobile;
@@ -104,19 +105,24 @@ body.modal-open {
 		left: 0;
 		height: auto;
 		padding: $gap-large;
+		box-sizing: border-box;
 		h1.components-modal__header-heading {
 			font-size: 1.2em;
 			font-weight: 600;
 			line-height: 1;
 			margin: 0;
+			padding: 0;
 		}
 		.components-button {
 			margin: 0 0 0 auto;
 			height: auto;
 			min-height: auto;
 			padding: 0;
+			border: 0;
 			background: none;
 			width: auto;
+			background-color: transparent none;
+			line-height: 1;
 		}
 		@media only screen and (max-width: 600px) {
 			position: fixed;
@@ -131,6 +137,7 @@ body.modal-open {
 		margin-left: -$gap-large;
 		margin-right: -$gap-large;
 		padding: $gap-large;
+		box-sizing: border-box;
 
 		.components-button {
 			border-radius: 5px;

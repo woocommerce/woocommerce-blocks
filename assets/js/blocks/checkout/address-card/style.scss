@@ -26,8 +26,9 @@
 	vertical-align: top;
 }
 .wc-block-components-address-card__edit {
-	background: transparent none;
-	border: 0;
+	background: transparent none !important;
+	color: inherit !important;
+	border: 0 !important;
 	padding: 0 !important;
 	margin: calc((em($gap) + em($gap)) * -1) 0 0 0;
 	appearance: none;
