@@ -34,7 +34,7 @@ export const SearchListItem = ( {
 	const hasChildren = item.children.length;
 	const isExpanded = expandedPanelId === item.id;
 	const classes = classNames(
-		[ 'woocommerce-search-list__item', `depth-${ depth }` ],
+		[ 'woocommerce-search-list__item', `depth-${ depth }`, className ],
 		{
 			'has-breadcrumbs': hasBreadcrumbs,
 			'has-children': hasChildren,
