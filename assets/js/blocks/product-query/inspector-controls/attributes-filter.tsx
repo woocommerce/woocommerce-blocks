@@ -3,6 +3,7 @@
  */
 import { __ } from '@wordpress/i18n';
 import {
+	ExternalLink,
 	FormTokenField,
 	// eslint-disable-next-line @wordpress/no-unsafe-wp-apis
 	__experimentalToolsPanelItem as ToolsPanelItem,
@@ -20,6 +21,7 @@ import {
 import useProductAttributes from '../useProductAttributes';
 import { setQueryAttribute } from '../utils';
 import ProductAttributeTermControl from '@woocommerce/editor-components/product-attribute-term-control';
+import { EDIT_ATTRIBUTES_URL } from '../constants';
 
 function getAttributeMetadataFromToken(
 	token: string,
@@ -124,6 +126,12 @@ export const AttributesFilter = ( props: ProductQueryBlock ) => {
 				operator={ 'any' }
 				isCompact={ true }
 			/>
+			<ExternalLink
+				className="woocommerce-product-query-panel__external-link"
+				href={ EDIT_ATTRIBUTES_URL }
+			>
+				{ __( 'Manage attributes', 'woo-gutenberg-products-block' ) }
+			</ExternalLink>
 		</ToolsPanelItem>
 	);
 };
