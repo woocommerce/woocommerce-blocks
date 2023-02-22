@@ -1,18 +1,29 @@
 /**
  * External dependencies
  */
-import { __, _n, sprintf } from '@wordpress/i18n';
+import classNames from 'classnames';
 import PropTypes from 'prop-types';
+import { useEffect, useState } from '@wordpress/element';
+import { __, _n, sprintf } from '@wordpress/i18n';
 import {
 	SearchListControl,
 	SearchListItem,
 } from '@woocommerce/editor-components/search-list-control';
 import { SelectControl } from '@wordpress/components';
 import { withInstanceId } from '@wordpress/compose';
+import useProductAttributes from '@woocommerce/base-context/hooks/use-product-attributes';
 import { withAttributes } from '@woocommerce/block-hocs';
 import ErrorMessage from '@woocommerce/editor-components/error-placeholder/error-message';
-import classNames from 'classnames';
-import ExpandableSearchListItem from '@woocommerce/editor-components/expandable-search-list-item/expandable-search-list-item.tsx';
+import ExpandableSearchListItem from '@woocommerce/editor-components/expandable-search-list-item/expandable-search-list-item';
+import {
+	AttributeObject,
+	AttributeTerm,
+	AttributeWithTerms,
+} from '@woocommerce/types';
+import {
+	renderItemArgs,
+	SearchListItemType,
+} from '@woocommerce/editor-components/search-list-control/types';
 
 /**
  * Internal dependencies
@@ -23,6 +34,7 @@ const ProductAttributeTermControl = ( {
 	attributes,
 	error,
 	expandedAttribute,
+	expandedItemId,
 	onChange,
 	onExpandAttribute,
 	onOperatorChange,
@@ -34,7 +46,10 @@ const ProductAttributeTermControl = ( {
 	termsAreLoading,
 	termsList,
 } ) => {
-	const renderItem = ( args ) => {
+	const { isLoadingAttributes, productsAttributes } =
+		useProductAttributes( true );
+
+	const renderItem = ( args: renderItemArgs ) => {
 		const { item, search, depth = 0 } = args;
 		const classes = [
 			'woocommerce-product-attributes__item',
@@ -46,17 +61,17 @@ const ProductAttributeTermControl = ( {
 		];
 
 		if ( ! item.breadcrumbs.length ) {
-			const isSelected = expandedAttribute === item.id;
+			const isExpanded = expandedItemId === item.id;
 			return (
 				<ExpandableSearchListItem
 					{ ...args }
 					className={ classNames( ...classes, {
-						'is-selected': isSelected,
+						'is-selected': isExpanded,
 					} ) }
-					isSelected={ isSelected }
+					isExpanded={ isExpanded }
 					item={ item }
-					isLoading={ termsAreLoading }
-					disabled={ item.count === '0' }
+					isLoading={ isLoadingAttributes }
+					disabled={ item.count === 0 }
 					onSelect={ ( { id } ) => {
 						return () => {
 							onChange( [] );
@@ -121,8 +136,11 @@ const ProductAttributeTermControl = ( {
 		);
 	};
 
-	const currentTerms = termsList[ expandedAttribute ] || [];
-	const currentList = [ ...attributes, ...currentTerms ];
+	const list = productsAttributes.reduce( ( acc, curr ) => {
+		const { terms, ...props } = curr;
+
+		return [ ...acc, { ...props }, ...terms ];
+	}, [] as Array< AttributeObject | AttributeTerm > );
 
 	const messages = {
 		clear: __(
@@ -138,7 +156,7 @@ const ProductAttributeTermControl = ( {
 			'Search for product attributes',
 			'woo-gutenberg-products-block'
 		),
-		selected: ( n ) =>
+		selected: ( n: number ) =>
 			sprintf(
 				/* translators: %d is the count of attributes selected. */
 				_n(
@@ -163,13 +181,11 @@ const ProductAttributeTermControl = ( {
 		<>
 			<SearchListControl
 				className="woocommerce-product-attributes"
-				list={ currentList }
+				list={ list }
 				isLoading={ isLoading }
 				selected={ selected
 					.map( ( { id } ) =>
-						currentList.find(
-							( currentListItem ) => currentListItem.id === id
-						)
+						list.find( ( term ) => term.id === id )
 					)
 					.filter( Boolean ) }
 				onChange={ onChange }
@@ -177,6 +193,7 @@ const ProductAttributeTermControl = ( {
 				messages={ messages }
 				isCompact={ isCompact }
 				isHierarchical
+				type={ 'token' }
 			/>
 			{ !! onOperatorChange && (
 				<div hidden={ selected.length < 2 }>

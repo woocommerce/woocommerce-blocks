@@ -4,6 +4,7 @@
 import { __, sprintf } from '@wordpress/i18n';
 import {
 	Button,
+	FormTokenField,
 	Spinner,
 	TextControl,
 	withSpokenMessages,
@@ -38,6 +39,7 @@ const defaultRenderListItem = ( args: renderItemArgs ): JSX.Element => {
 };
 
 const ListItems = ( props: {
+	expandedPanelId: number;
 	list: SearchListItemsType;
 	selected: SearchListItemsType;
 	renderItem: ( args: renderItemArgs ) => JSX.Element;
@@ -56,15 +58,27 @@ const ListItems = ( props: {
 		instanceId,
 		isSingle,
 		search,
+		useExpandedPanelId,
 	} = props;
+
+	const [ expandedPanelId ] = useExpandedPanelId;
+
 	if ( ! list ) {
 		return null;
 	}
 	return (
 		<>
 			{ list.map( ( item ) => {
-				const isSelected =
-					selected.findIndex( ( { id } ) => id === item.id ) !== -1;
+				const isSelected = item.children.length
+					? item.children.every( ( { id } ) =>
+							selected.find(
+								( selectedItem ) => selectedItem.id === id
+							)
+					  )
+					: !! selected.find( ( { id } ) => id === item.id );
+				const isExpanded =
+					item.children.length && expandedPanelId === item.id;
+
 				return (
 					<Fragment key={ item.id }>
 						<li>
@@ -73,16 +87,20 @@ const ListItems = ( props: {
 								isSelected,
 								onSelect,
 								isSingle,
+								selected,
 								search,
 								depth,
+								useExpandedPanelId,
 								controlId: instanceId,
 							} ) }
 						</li>
-						<ListItems
-							{ ...props }
-							list={ item.children }
-							depth={ depth + 1 }
-						/>
+						{ isExpanded ? (
+							<ListItems
+								{ ...props }
+								list={ item.children }
+								depth={ depth + 1 }
+							/>
+						) : null }
 					</Fragment>
 				);
 			} ) }
@@ -142,6 +160,7 @@ const ListItemsContainer = ( {
 	search,
 	onSelect,
 	instanceId,
+	useExpandedPanelId,
 	...props
 }: SearchListControlProps & {
 	messages: SearchListMessages;
@@ -172,6 +191,7 @@ const ListItemsContainer = ( {
 	return (
 		<ul className="woocommerce-search-list__list">
 			<ListItems
+				useExpandedPanelId={ useExpandedPanelId }
 				list={ filteredList }
 				selected={ selected }
 				renderItem={ renderItemCallback }
@@ -201,9 +221,12 @@ export const SearchListControl = (
 		onChange,
 		onSearch,
 		selected,
+		type,
 		debouncedSpeak,
 	} = props;
+
 	const [ search, setSearch ] = useState( '' );
+	const useExpandedPanelId = useState< number >( -1 );
 	const instanceId = useInstanceId( SearchListControl );
 	const messages = useMemo(
 		() => ( { ...defaultMessages, ...customMessages } ),
@@ -262,18 +285,31 @@ export const SearchListControl = (
 				'is-compact': isCompact,
 			} ) }
 		>
-			<SelectedListItems
-				{ ...props }
-				onRemove={ onRemove }
-				messages={ messages }
-			/>
-			<div className="woocommerce-search-list__search">
-				<TextControl
-					label={ messages.search }
-					type="search"
-					value={ search }
-					onChange={ ( value ) => setSearch( value ) }
+			{ type === 'text' && (
+				<SelectedListItems
+					{ ...props }
+					onRemove={ onRemove }
+					messages={ messages }
 				/>
+			) }
+			<div className="woocommerce-search-list__search">
+				{ type === 'text' ? (
+					<TextControl
+						label={ messages.search }
+						type="search"
+						value={ search }
+						onChange={ ( value ) => setSearch( value ) }
+					/>
+				) : (
+					<FormTokenField
+						label={ messages.search }
+						suggestions={ [] }
+						value={ selected.map( ( token ) => token.name ) }
+						onInputChange={ ( value ) => setSearch( value ) }
+						validateInput={ () => false }
+						__experimentalShowHowTo={ false }
+					/>
+				) }
 			</div>
 			{ isLoading ? (
 				<div className="woocommerce-search-list__list is-loading">
@@ -287,6 +323,7 @@ export const SearchListControl = (
 					messages={ messages }
 					onSelect={ onSelect }
 					instanceId={ instanceId }
+					useExpandedPanelId={ useExpandedPanelId }
 				/>
 			) }
 		</div>

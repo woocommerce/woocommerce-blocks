@@ -7,6 +7,7 @@ import {
 	// eslint-disable-next-line @wordpress/no-unsafe-wp-apis
 	__experimentalToolsPanelItem as ToolsPanelItem,
 } from '@wordpress/components';
+import { useEffect, useState } from '@wordpress/element';
 
 /**
  * Internal dependencies
@@ -18,6 +19,7 @@ import {
 } from '../types';
 import useProductAttributes from '../useProductAttributes';
 import { setQueryAttribute } from '../utils';
+import ProductAttributeTermControl from '@woocommerce/editor-components/product-attribute-term-control';
 
 function getAttributeMetadataFromToken(
 	token: string,
@@ -88,68 +90,39 @@ function getInputValueFromQueryParam(
 
 export const AttributesFilter = ( props: ProductQueryBlock ) => {
 	const { query } = props.attributes;
-	const { isLoadingAttributes, productsAttributes } =
-		useProductAttributes( true );
+	const [ selected, setSelected ] = useState< { id: number }[] >( [] );
 
-	const attributesSuggestions = productsAttributes.reduce( ( acc, curr ) => {
-		const namespacedTerms = curr.terms.map(
-			( term ) => `${ curr.attribute_label }: ${ term.name }`
-		);
-
-		return [ ...acc, ...namespacedTerms ];
-	}, [] as string[] );
+	useEffect( () => {
+		if ( query.__woocommerceAttributes?.length ) {
+			setSelected(
+				query.__woocommerceAttributes.map( ( { termId: id } ) => ( {
+					id,
+				} ) )
+			);
+		}
+	}, [ query.__woocommerceAttributes ] );
 
 	return (
 		<ToolsPanelItem
 			label={ __( 'Product Attributes', 'woo-gutenberg-products-block' ) }
 			hasValue={ () => query.__woocommerceAttributes?.length }
 		>
-			<FormTokenField
-				disabled={ isLoadingAttributes }
-				label={ __(
-					'Product Attributes',
-					'woo-gutenberg-products-block'
-				) }
-				onChange={ ( attributes ) => {
-					let __woocommerceAttributes;
+			<ProductAttributeTermControl
+				selected={ selected }
+				onChange={ ( value ) => {
+					const __woocommerceAttributes = value.map(
+						( { id, attr_slug } ) => ( {
+							termId: id,
+							taxonomy: attr_slug,
+						} )
+					);
 
-					try {
-						__woocommerceAttributes = attributes.map(
-							( attribute ) => {
-								attribute =
-									typeof attribute === 'string'
-										? attribute
-										: attribute.value;
-
-								return getAttributeMetadataFromToken(
-									attribute,
-									productsAttributes
-								);
-							}
-						);
-
-						setQueryAttribute( props, {
-							__woocommerceAttributes,
-						} );
-					} catch ( ok ) {
-						// Not required to do anything here
-						// Input validation is handled by the `validateInput`
-						// below, and we don't need to save anything.
-					}
+					setQueryAttribute( props, {
+						__woocommerceAttributes,
+					} );
 				} }
-				suggestions={ attributesSuggestions }
-				validateInput={ ( value: string ) =>
-					attributesSuggestions.includes( value )
-				}
-				value={
-					isLoadingAttributes
-						? [ __( 'Loading…', 'woo-gutenberg-products-block' ) ]
-						: getInputValueFromQueryParam(
-								query.__woocommerceAttributes,
-								productsAttributes
-						  )
-				}
-				__experimentalExpandOnFocus={ true }
+				operator={ 'any' }
+				isCompact={ true }
 			/>
 		</ToolsPanelItem>
 	);

@@ -2,20 +2,15 @@
  * External dependencies
  */
 import { SearchListItem } from '@woocommerce/editor-components/search-list-control';
+import {
+	renderItemArgs,
+	SearchListItemType,
+} from '@woocommerce/editor-components/search-list-control/types';
 import { Spinner } from '@wordpress/components';
 import classNames from 'classnames';
 
-interface SearchListItem {
-	id: string;
-}
-
-interface ExpandableSearchListItemProps {
-	className?: string;
-	item: SearchListItem;
-	isSelected: boolean;
+interface ExpandableSearchListItemProps extends renderItemArgs {
 	isLoading: boolean;
-	onSelect: () => void;
-	disabled: boolean;
 }
 
 const ExpandableSearchListItem = ( {

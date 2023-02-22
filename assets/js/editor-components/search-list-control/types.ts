@@ -32,15 +32,21 @@ export interface SearchListMessages {
 
 export interface renderItemArgs {
 	// Additional CSS classes.
-	className?: string;
+	className?: string | undefined;
+	// Whether the item is disable.
+	disabled?: boolean | undefined;
 	// Current item to display.
 	item: SearchListItemType;
+	// Whether the item is expanded (if it's a parent element)
+	isExpanded: boolean;
 	// Whether this item is selected.
 	isSelected: boolean;
 	// Callback for selecting the item.
 	onSelect: ( item: SearchListItemType ) => () => void;
 	// Whether this should only display a single item (controls radio vs checkbox icon).
 	isSingle: boolean;
+	// The list of currently selected items.
+	selected: SearchListItemsType;
 	// Search string, used to highlight the substring in the item name.
 	search: string;
 	// Depth, non-zero if the list is hierarchical.
@@ -60,6 +66,8 @@ export interface renderItemArgs {
 export interface SearchListControlProps {
 	// Additional CSS classes.
 	className: string;
+	// ID of the expanded parent (if `isHierarchical`)
+	expandedPanelId: number;
 	// Whether it should be displayed in a compact way, so it occupies less space.
 	isCompact: boolean;
 	// Whether the list of items is hierarchical or not. If true, each list item is expected to have a parent property.
@@ -80,6 +88,8 @@ export interface SearchListControlProps {
 	renderItem?: ( args: renderItemArgs ) => JSX.Element;
 	// The list of currently selected items.
 	selected: SearchListItemsType;
+	// Whether to show a text field or a token field as search
+	type: 'text' | 'token';
 	// from withSpokenMessages
 	debouncedSpeak?: ( message: string ) => void;
 }
