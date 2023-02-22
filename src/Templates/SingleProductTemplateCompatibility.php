@@ -152,7 +152,6 @@ class SingleProductTemplateCompatibility extends AbstractTemplateCompatibility {
 				'position'   => 'before',
 				'hooked'     => array(
 					'woocommerce_output_all_notices' => 10,
-					'woocommerce_breadcrumb'         => 20,
 				),
 			),
 			'woocommerce_before_single_product_summary' => array(
