@@ -230,8 +230,20 @@ export const shopper = {
 
 			// Blur #email field to trigger shipping rates update, then wait for requests to finish.
 			await page.evaluate('document.activeElement.blur()' );
-			await page.waitForRequest( ( request ) => request.url().includes( '/wp-json/wc/store/v1/batch' ) );
-			await page.waitForResponse( ( response ) => response.url().includes( '/wp-json/wc/store/v1/batch' ) );
+			await page.waitForRequest( ( request ) => {
+				const isBatch = request.url().includes( '/wp-json/wc/store/v1/batch' );
+				const parsedPostData = JSON.parse( request.postData() );
+				const isAddressPush = parsedPostData?.requests?.[ 0 ]?.path?.includes( '/wc/store/v1/cart/update-customer' );
+				return isBatch && isAddressPush;
+			} );
+			await page.waitForResponse( async ( response ) => {
+				const isBatch = response.url().includes( '/wp-json/wc/store/v1/batch' );
+				const responseJson = await response.text();
+				const parsedResponse = JSON.parse( responseJson );
+				const responseContainsShippingPostcode = parsedResponse?.responses[0]?.body.billing_address.postcode === customerBillingDetails.postcode;
+				return isBatch&& responseContainsShippingPostcode;
+			} );
+			await page.waitForTimeout( 1500 );
 		},
 
 		// prettier-ignore
@@ -254,8 +266,20 @@ export const shopper = {
 
 			// Blur #shipping-phone field to trigger shipping rates update, then wait for requests to finish.
 			await page.evaluate('document.activeElement.blur()' );
-			await page.waitForRequest( ( request ) => request.url().includes( '/wp-json/wc/store/v1/batch' ) );
-			await page.waitForResponse( ( response ) => response.url().includes( '/wp-json/wc/store/v1/batch' ) );
+			await page.waitForRequest( ( request ) => {
+				const isBatch = request.url().includes( '/wp-json/wc/store/v1/batch' );
+				const parsedPostData = JSON.parse( request.postData() );
+				const isAddressPush = parsedPostData?.requests?.[ 0 ]?.path?.includes( '/wc/store/v1/cart/update-customer' );
+				return isBatch && isAddressPush;
+			} );
+			await page.waitForResponse( async ( response ) => {
+				const isBatch = response.url().includes( '/wp-json/wc/store/v1/batch' );
+				const responseJson = await response.text();
+				const parsedResponse = JSON.parse( responseJson );
+				const responseContainsShippingPostcode = parsedResponse?.responses[0]?.body.shipping_address.postcode === customerShippingDetails.postcode;
+				return isBatch&& responseContainsShippingPostcode;
+			} );
+			await page.waitForTimeout( 1500 );
 		},
 
 		// prettier-ignore
