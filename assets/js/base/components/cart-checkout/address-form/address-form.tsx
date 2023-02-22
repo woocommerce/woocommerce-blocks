@@ -1,7 +1,7 @@
 /**
  * External dependencies
  */
-import { ValidatedTextInput } from '@woocommerce/blocks-checkout';
+import { ValidatedTextInput, isPostcode } from '@woocommerce/blocks-checkout';
 import {
 	BillingCountryInput,
 	ShippingCountryInput,
@@ -210,6 +210,46 @@ const AddressForm = ( {
 							}
 							errorMessage={ field.errorMessage }
 							required={ field.required }
+						/>
+					);
+				}
+
+				const customValidationHandler = (
+					inputObject: HTMLInputElement
+				) => {
+					if (
+						! isPostcode( {
+							postcode: values.postcode,
+							country: values.country,
+						} )
+					) {
+						inputObject.setCustomValidity(
+							__(
+								'Please provide a valid postcode',
+								'woo-gutenberg-products-block'
+							)
+						);
+						return false;
+					}
+					return true;
+				};
+
+				if ( field.key === 'postcode' ) {
+					return (
+						<ValidatedTextInput
+							id={ `${ id }-${ field.key }` }
+							key={ `${ id }-${ field.key }` }
+							value={ values.postcode }
+							label={ field.label }
+							required={ field.required }
+							onChange={ ( newValue: string ) =>
+								onChange( {
+									...values,
+									[ field.key ]: newValue,
+								} )
+							}
+							customValidation={ customValidationHandler }
+							errorMessage={ field.errorMessage }
 						/>
 					);
 				}
