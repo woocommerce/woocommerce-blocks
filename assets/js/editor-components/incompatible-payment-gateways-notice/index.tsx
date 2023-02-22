@@ -3,8 +3,13 @@
  */
 import { _n } from '@wordpress/i18n';
 import { Notice, ExternalLink } from '@wordpress/components';
-import { createInterpolateElement, useEffect } from '@wordpress/element';
-import { alert } from '@woocommerce/icons';
+import { useSelect } from '@wordpress/data';
+import {
+	useState,
+	createInterpolateElement,
+	useEffect,
+} from '@wordpress/element';
+import { Alert } from '@woocommerce/icons';
 import { Icon } from '@wordpress/icons';
 /**
  * Internal dependencies
@@ -62,7 +67,7 @@ export function IncompatiblePaymentGatewaysNotice( {
 			<div className="wc-blocks-incompatible-extensions-notice__content">
 				<Icon
 					className="wc-blocks-incompatible-extensions-notice__warning-icon"
-					icon={ alert }
+					icon={ <Alert /> }
 				/>
 				<div>
 					<p>{ noticeContent }</p>
