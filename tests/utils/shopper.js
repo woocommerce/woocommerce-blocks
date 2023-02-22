@@ -207,12 +207,6 @@ export const shopper = {
 			}
 			// Blur active field to trigger shipping rates update, then wait for requests to finish.
 			await page.evaluate( 'document.activeElement.blur()' );
-			await page.waitForRequest( ( request ) =>
-				request.url().includes( '/wp-json/wc/store/v1/batch' )
-			);
-			await page.waitForResponse( ( response ) =>
-				response.url().includes( '/wp-json/wc/store/v1/batch' )
-			);
 		},
 		// prettier-ignore
 		fillBillingDetails: async ( customerBillingDetails ) => {
