@@ -279,6 +279,17 @@ export const SearchListControl = (
 		[ isSingle, onRemove, onChange, selected ]
 	);
 
+	const onRemoveToken = useCallback(
+		( tokens: Array< SearchListItemType & { value: string } > ) => {
+			const [ removedItem ] = selected.filter(
+				( item ) => ! tokens.find( ( token ) => item.id === token.id )
+			);
+
+			onRemove( removedItem.id )();
+		},
+		[ onRemove, selected ]
+	);
+
 	return (
 		<div
 			className={ classnames( 'woocommerce-search-list', className, {
@@ -303,10 +314,14 @@ export const SearchListControl = (
 				) : (
 					<FormTokenField
 						label={ messages.search }
-						suggestions={ [] }
-						value={ selected.map( ( token ) => token.name ) }
+						onChange={ onRemoveToken }
 						onInputChange={ ( value ) => setSearch( value ) }
-						validateInput={ () => false }
+						suggestions={ [] }
+						__experimentalValidateInput={ () => false }
+						value={ selected.map( ( token ) => ( {
+							...token,
+							value: token.name,
+						} ) ) }
 						__experimentalShowHowTo={ false }
 					/>
 				) }
