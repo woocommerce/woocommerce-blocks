@@ -10,7 +10,10 @@ import { useLocalStorageState } from '@woocommerce/base-hooks';
  */
 import { STORE_KEY as PAYMENT_STORE_KEY } from '../../data/payment/constants';
 
-const initialDismissedNotices: React.SetStateAction< object[] > = [];
+type StoredIncompatibleGateway = { [ k: string ]: string[] };
+const initialDismissedNotices: React.SetStateAction<
+	StoredIncompatibleGateway[]
+> = [];
 
 const areEqual = ( array1: string[], array2: string[] ) => {
 	if ( array1.length !== array2.length ) {
@@ -25,7 +28,9 @@ const areEqual = ( array1: string[], array2: string[] ) => {
 export const useIncompatiblePaymentGatewaysNotice = (
 	blockName: string
 ): [ boolean, () => void, { [ k: string ]: string }, number ] => {
-	const [ dismissedNotices, setDismissedNotices ] = useLocalStorageState(
+	const [ dismissedNotices, setDismissedNotices ] = useLocalStorageState<
+		StoredIncompatibleGateway[]
+	>(
 		`wc-blocks_dismissed_incompatible_payment_gateways_notices`,
 		initialDismissedNotices
 	);
@@ -69,14 +74,17 @@ export const useIncompatiblePaymentGatewaysNotice = (
 
 		if ( ! shouldBeDismissed && ! isDismissedNoticeUpToDate ) {
 			setDismissedNotices( ( previousDismissedNotices ) =>
-				previousDismissedNotices.reduce( ( acc, curr ) => {
-					if ( Object.keys( curr ).includes( blockName ) ) {
-						return acc;
-					}
-					acc.push( curr );
+				previousDismissedNotices.reduce(
+					( acc: StoredIncompatibleGateway[], curr ) => {
+						if ( Object.keys( curr ).includes( blockName ) ) {
+							return acc;
+						}
+						acc.push( curr );
 
-					return acc;
-				}, [] )
+						return acc;
+					},
+					[]
+				)
 			);
 		}
 	}, [
