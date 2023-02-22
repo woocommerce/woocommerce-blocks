@@ -177,16 +177,10 @@ export const updatingCustomerData = ( isResolving: boolean ) =>
  *
  * @param {boolean} isResolving True if shipping rate is being selected.
  */
-export const shippingRatesBeingSelected = (
-	isResolving: boolean,
-	rateId?: string,
-	packageId?: number
-) =>
+export const shippingRatesBeingSelected = ( isResolving: boolean ) =>
 	( {
 		type: types.UPDATING_SELECTED_SHIPPING_RATE,
 		isResolving,
-		rateId,
-		packageId,
 	} as const );
 
 /**
@@ -413,7 +407,7 @@ export const selectShippingRate =
 			return;
 		}
 		try {
-			dispatch.shippingRatesBeingSelected( true, rateId, packageId );
+			dispatch.shippingRatesBeingSelected( true );
 			const { response } = await apiFetchWithHeaders( {
 				path: `/wc/store/v1/cart/select-shipping-rate`,
 				method: 'POST',

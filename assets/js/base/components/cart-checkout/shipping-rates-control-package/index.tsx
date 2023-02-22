@@ -97,7 +97,7 @@ export const ShippingRatesControlPackage = ( {
 				shippingRateId: newShippingRateId,
 			} );
 		},
-		[ packageId, selectShippingRate, dispatchCheckoutEvent ]
+		[ dispatchCheckoutEvent, packageId, selectShippingRate ]
 	);
 	const packageRatesProps = {
 		className,

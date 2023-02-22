@@ -3,9 +3,10 @@
  */
 import { _n, __ } from '@wordpress/i18n';
 import {
+	useState,
 	useEffect,
+	useCallback,
 	createInterpolateElement,
-	useMemo,
 } from '@wordpress/element';
 import { useShippingData } from '@woocommerce/base-context/hooks';
 import { getCurrencyFromPriceResponse } from '@woocommerce/price-format';
@@ -121,24 +122,32 @@ const Block = (): JSX.Element | null => {
 		isPackageRateCollectable
 	);
 
-	const selectedRate = useMemo(
-		() => pickupLocations.find( ( rate ) => rate.selected )?.rate_id,
-		[ pickupLocations ]
+	const [ selectedOption, setSelectedOption ] = useState< string >(
+		() => pickupLocations.find( ( rate ) => rate.selected )?.rate_id || ''
+	);
+
+	const onSelectRate = useCallback(
+		( rateId: string ) => {
+			selectShippingRate( rateId );
+		},
+		[ selectShippingRate ]
 	);
 
 	// Update the selected option if there is no rate selected on mount.
 	useEffect( () => {
-		if ( ! selectedRate && pickupLocations.length > 0 ) {
-			selectShippingRate( pickupLocations[ 0 ]?.rate_id );
+		if ( ! selectedOption && pickupLocations[ 0 ] ) {
+			setSelectedOption( pickupLocations[ 0 ].rate_id );
+			onSelectRate( pickupLocations[ 0 ].rate_id );
 		}
-	}, [ selectShippingRate, pickupLocations, selectedRate ] );
+	}, [ onSelectRate, pickupLocations, selectedOption ] );
 
 	return (
 		<RadioControl
 			onChange={ ( value: string ) => {
-				selectShippingRate( value );
+				setSelectedOption( value );
+				onSelectRate( value );
 			} }
-			selected={ selectedRate }
+			selected={ selectedOption }
 			options={ pickupLocations.map( ( location ) =>
 				renderPickupLocation( location, shippingRates.length )
 			) }
