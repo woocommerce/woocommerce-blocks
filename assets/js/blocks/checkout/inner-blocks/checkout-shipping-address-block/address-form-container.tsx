@@ -16,8 +16,8 @@ import type {
 	AddressField,
 	AddressFields,
 } from '@woocommerce/settings';
-import { useDispatch, useSelect } from '@wordpress/data';
-import { CART_STORE_KEY, VALIDATION_STORE_KEY } from '@woocommerce/block-data';
+import { dispatch, useSelect } from '@wordpress/data';
+import { VALIDATION_STORE_KEY } from '@woocommerce/block-data';
 
 /**
  * Internal dependencies
@@ -46,14 +46,13 @@ const AddressFormContainer = ( {
 	} = useCheckoutAddress();
 	const { dispatchCheckoutEvent } = useStoreEvents();
 	const { isEditor } = useEditorContext();
-	const { showAllValidationErrors } = useDispatch( VALIDATION_STORE_KEY );
-	const { hasValidationErrors, isCustomerDataUpdating } = useSelect(
+	const { hasValidationErrors, getValidationError } = useSelect(
 		( select ) => {
 			return {
 				hasValidationErrors:
 					select( VALIDATION_STORE_KEY ).hasValidationErrors,
-				isCustomerDataUpdating:
-					select( CART_STORE_KEY ).isCustomerDataUpdating(),
+				getValidationError:
+					select( VALIDATION_STORE_KEY ).getValidationError,
 			};
 		}
 	);
@@ -61,24 +60,49 @@ const AddressFormContainer = ( {
 	const [ modalShippingAddress, setModalShippingAddress ] =
 		useState< ShippingAddress >( shippingAddress );
 	const WrapperComponent = isEditor ? Noninteractive : Fragment;
+	const addressFieldKeys = Object.keys(
+		defaultAddressFields
+	) as ( keyof AddressFields )[];
 
 	const onSaveAddress = () => {
-		showAllValidationErrors();
+		if ( hasValidationErrors() ) {
+			const invalidProps = [
+				...addressFieldKeys.filter( ( key ) => {
+					return (
+						getValidationError( 'shipping_' + key ) !== undefined
+					);
+				} ),
+			].filter( Boolean );
+			const invalidPhone =
+				getValidationError( 'shipping_phone' ) !== undefined;
 
-		if ( ! hasValidationErrors() ) {
-			setShippingAddress( {
+			if ( invalidProps.length || invalidPhone ) {
+				invalidProps.forEach( ( prop ) => {
+					dispatch( VALIDATION_STORE_KEY ).showValidationError(
+						'shipping_' + prop
+					);
+				} );
+				if ( invalidPhone ) {
+					dispatch( VALIDATION_STORE_KEY ).showValidationError(
+						'shipping_phone'
+					);
+				}
+				return;
+			}
+		}
+
+		setShippingAddress( {
+			...modalShippingAddress,
+			phone: showPhoneField ? modalShippingAddress.phone : '',
+		} );
+		if ( useShippingAsBilling ) {
+			setBillingAddress( {
 				...modalShippingAddress,
 				phone: showPhoneField ? modalShippingAddress.phone : '',
 			} );
-			if ( useShippingAsBilling ) {
-				setBillingAddress( {
-					...modalShippingAddress,
-					phone: showPhoneField ? modalShippingAddress.phone : '',
-				} );
-			}
-			dispatchCheckoutEvent( 'set-shipping-address' );
-			setEditing( false );
 		}
+		dispatchCheckoutEvent( 'set-shipping-address' );
+		setEditing( false );
 	};
 
 	return (
@@ -107,10 +131,7 @@ const AddressFormContainer = ( {
 						setEditing( false );
 					} }
 					actions={
-						<Button
-							onClick={ onSaveAddress }
-							showSpinner={ isCustomerDataUpdating }
-						>
+						<Button onClick={ onSaveAddress }>
 							{ __(
 								'Save address',
 								'woo-gutenberg-products-block'
@@ -128,11 +149,7 @@ const AddressFormContainer = ( {
 							} );
 						} }
 						values={ modalShippingAddress }
-						fields={
-							Object.keys(
-								defaultAddressFields
-							) as ( keyof AddressFields )[]
-						}
+						fields={ addressFieldKeys }
 						fieldConfig={ addressFieldsConfig }
 					/>
 					{ showPhoneField && (

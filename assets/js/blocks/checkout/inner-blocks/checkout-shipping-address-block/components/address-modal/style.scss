@@ -52,6 +52,14 @@ body.modal-open {
 	border-radius: 4px;
 	box-shadow: 4px 4px 12px rgba(0, 0, 0, 0.1);
 
+	@media only screen and (max-width: 600px) {
+		width: $modal-width-mobile;
+		max-height: 100%;
+		height: 100%;
+		border-radius: 0;
+		box-shadow: none;
+	}
+
 	&--hidden {
 		transform: translateY(100vh);
 	}
@@ -61,6 +69,11 @@ body.modal-open {
 		margin: 0;
 		flex: 1;
 		overflow: auto;
+
+		@media only screen and (max-width: 600px) {
+			// pad bottom and top for position fixed elements.
+			padding: calc(1.2em + $gap-large + $gap-large) $gap-large calc(3em + $gap + $gap + $gap-large);
+		}
 	}
 	.components-button {
 		width: 100%;
@@ -76,6 +89,7 @@ body.modal-open {
 	// (for example, on the keyboard shortcuts modal screen).
 	.components-modal__header {
 		@include with-translucent-border(0 0 1px 0);
+		background-color: #fff;
 		border-bottom-color: transparent;
 		box-sizing: border-box;
 		display: flex;
@@ -83,21 +97,19 @@ body.modal-open {
 		justify-content: space-between;
 		align-items: center;
 		width: 100%;
-		z-index: z-index(".components-modal__header");
+		z-index: 1;
 		position: absolute;
 		margin: 0;
 		top: 0;
 		left: 0;
 		height: auto;
 		padding: $gap-large;
-
 		h1.components-modal__header-heading {
 			font-size: 1.2em;
 			font-weight: 600;
 			line-height: 1;
 			margin: 0;
 		}
-
 		.components-button {
 			margin: 0 0 0 auto;
 			height: auto;
@@ -106,18 +118,33 @@ body.modal-open {
 			background: none;
 			width: auto;
 		}
+		@media only screen and (max-width: 600px) {
+			position: fixed;
+		}
 	}
 	.wc-block-components-address-modal__footer {
 		display: flex;
+		background-color: #fff;
 		justify-content: flex-end;
 		border-top: 1px solid #e0e0e0;
-		margin: 24px -24px 0;
-		padding: 24px;
+		margin-top: $gap;
+		margin-bottom: 0;
+		margin-left: -$gap-large;
+		margin-right: -$gap-large;
+		padding: $gap $gap-large;
 
 		> * {
 			&:not(:first-of-type) {
 				margin-left: 8px;
 			}
+		}
+
+		@media only screen and (max-width: 600px) {
+			position: fixed;
+			bottom: 0;
+			left: 0;
+			margin: 0;
+			width: 100%;
 		}
 	}
 }
