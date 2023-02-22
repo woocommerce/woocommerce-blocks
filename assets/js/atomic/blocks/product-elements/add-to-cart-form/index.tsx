@@ -23,9 +23,6 @@ registerBlockSingleProductTemplate( {
 					/>
 				),
 			},
-			attributes: {
-				...metadata.attributes,
-			},
 			edit,
 			save() {
 				return null;
