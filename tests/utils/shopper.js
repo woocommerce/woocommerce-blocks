@@ -360,6 +360,7 @@ export const shopper = {
 			shippingName,
 			shippingPrice
 		) => {
+			await page.waitForNetworkIdle( { idleTime: 1000 } );
 			await page.waitForSelector(
 				'.wc-block-components-radio-control__label'
 			);
