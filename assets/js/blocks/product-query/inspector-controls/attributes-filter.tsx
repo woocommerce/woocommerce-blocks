@@ -18,7 +18,6 @@ import {
 	AttributeWithTerms,
 	ProductQueryBlock,
 } from '../types';
-import useProductAttributes from '../useProductAttributes';
 import { setQueryAttribute } from '../utils';
 import ProductAttributeTermControl from '@woocommerce/editor-components/product-attribute-term-control';
 import { EDIT_ATTRIBUTES_URL } from '../constants';
@@ -110,6 +109,9 @@ export const AttributesFilter = ( props: ProductQueryBlock ) => {
 			hasValue={ () => query.__woocommerceAttributes?.length }
 		>
 			<ProductAttributeTermControl
+				messages={ {
+					search: __( 'Attributes', 'woo-gutenberg-products-block' ),
+				} }
 				selected={ selected }
 				onChange={ ( value ) => {
 					const __woocommerceAttributes = value.map(
@@ -125,6 +127,7 @@ export const AttributesFilter = ( props: ProductQueryBlock ) => {
 				} }
 				operator={ 'any' }
 				isCompact={ true }
+				type={ 'token' }
 			/>
 			<ExternalLink
 				className="woocommerce-product-query-panel__external-link"

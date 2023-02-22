@@ -41,10 +41,12 @@ const ProductAttributeTermControl = ( {
 	instanceId,
 	isCompact,
 	isLoading,
+	messages = {},
 	operator,
 	selected,
 	termsAreLoading,
 	termsList,
+	type = 'text',
 } ) => {
 	const { isLoadingAttributes, productsAttributes } =
 		useProductAttributes( true );
@@ -142,7 +144,7 @@ const ProductAttributeTermControl = ( {
 		return [ ...acc, { ...props }, ...terms ];
 	}, [] as Array< AttributeObject | AttributeTerm > );
 
-	const messages = {
+	messages = {
 		clear: __(
 			'Clear all product attributes',
 			'woo-gutenberg-products-block'
@@ -171,6 +173,7 @@ const ProductAttributeTermControl = ( {
 			'Product attribute search results updated.',
 			'woo-gutenberg-products-block'
 		),
+		...messages,
 	};
 
 	if ( error ) {
@@ -193,7 +196,7 @@ const ProductAttributeTermControl = ( {
 				messages={ messages }
 				isCompact={ isCompact }
 				isHierarchical
-				type={ 'token' }
+				type={ type }
 			/>
 			{ !! onOperatorChange && (
 				<div hidden={ selected.length < 2 }>
