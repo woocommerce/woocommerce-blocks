@@ -49,7 +49,7 @@ body.modal-open {
 	margin: auto;
 	overflow: hidden;
 	transition: $modal-animation-duration transform;
-	border-radius: 4px;
+	border-radius: 10px;
 	box-shadow: 4px 4px 12px rgba(0, 0, 0, 0.1);
 
 	@media only screen and (max-width: 600px) {
@@ -72,7 +72,7 @@ body.modal-open {
 
 		@media only screen and (max-width: 600px) {
 			// pad bottom and top for position fixed elements.
-			padding: calc(1.2em + $gap-large + $gap-large) $gap-large calc(3em + $gap + $gap + $gap-large);
+			padding: calc(1.2em + $gap-large + $gap-large) $gap-large calc(3em + ($gap-large * 3));
 		}
 	}
 	.components-button {
@@ -126,12 +126,15 @@ body.modal-open {
 		display: flex;
 		background-color: #fff;
 		justify-content: flex-end;
-		border-top: 1px solid #e0e0e0;
-		margin-top: $gap;
+		margin-top: 0;
 		margin-bottom: 0;
 		margin-left: -$gap-large;
 		margin-right: -$gap-large;
-		padding: $gap $gap-large;
+		padding: $gap-large;
+
+		.components-button {
+			border-radius: 5px;
+		}
 
 		> * {
 			&:not(:first-of-type) {
@@ -145,6 +148,8 @@ body.modal-open {
 			left: 0;
 			margin: 0;
 			width: 100%;
+			border-top: 1px solid #e0e0e0;
+			padding: $gap $gap-large;
 		}
 	}
 }
