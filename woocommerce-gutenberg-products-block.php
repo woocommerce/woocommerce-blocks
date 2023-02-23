@@ -290,3 +290,10 @@ add_action( 'admin_notices', 'woocommerce_blocks_plugin_outdated_notice' );
 // Include the Interactivity API.
 require_once __DIR__ . '/src/Interactivity/woo-directives.php';
 
+// Enable client-side navigation.
+add_filter(
+	'client_side_navigation',
+	function () {
+		return true;
+	}
+);
