@@ -7,7 +7,7 @@ import {
 	useState,
 	useCallback,
 	InputHTMLAttributes,
-} from 'react';
+} from '@wordpress/element';
 import classnames from 'classnames';
 import { withInstanceId } from '@wordpress/compose';
 import { isObject } from '@woocommerce/types';

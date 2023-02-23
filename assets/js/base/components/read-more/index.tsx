@@ -1,7 +1,7 @@
 /**
  * External dependencies
  */
-import React, { createRef, Component } from 'react';
+import React, { createRef, Component } from '@wordpress/element';
 import { __ } from '@wordpress/i18n';
 
 /**
