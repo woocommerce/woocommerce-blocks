@@ -4,6 +4,7 @@
 import { getQueryArg } from '@wordpress/url';
 import { getSettingWithCoercion } from '@woocommerce/settings';
 import { isBoolean } from '@woocommerce/types';
+import { navigate } from '@woocommerce/interactivity';
 
 const filteringForPhpTemplate = getSettingWithCoercion(
 	'is_rendering_php_template',
@@ -34,7 +35,7 @@ export function getUrlParameter( name: string ) {
  */
 export function changeUrl( newUrl: string ) {
 	if ( filteringForPhpTemplate ) {
-		window.location.href = newUrl;
+		navigate( newUrl );
 	} else {
 		window.history.replaceState( {}, '', newUrl );
 	}
