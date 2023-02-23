@@ -53,6 +53,43 @@ body.modal-open {
 	box-shadow: 4px 4px 12px rgba(0, 0, 0, 0.1);
 	box-sizing: border-box;
 
+	.wc-block-components-address-form {
+		margin-left: #{-$gap-small * 0.5};
+		margin-right: #{-$gap-small * 0.5};
+
+		&::after {
+			content: "";
+			clear: both;
+			display: block;
+		}
+
+		.wc-block-components-text-input,
+		.wc-block-components-country-input,
+		.wc-block-components-state-input {
+			float: left;
+			margin-left: #{$gap-small * 0.5};
+			margin-right: #{$gap-small * 0.5};
+			position: relative;
+			width: calc(50% - #{$gap-small});
+
+			&:nth-of-type(2),
+			&:first-of-type {
+				margin-top: 0;
+			}
+		}
+
+		.wc-block-components-address-form__company,
+		.wc-block-components-address-form__company,
+		.wc-block-components-address-form__address_1,
+		.wc-block-components-address-form__address_2 {
+			width: calc(100% - #{$gap-small});
+		}
+
+		.wc-block-components-checkbox {
+			clear: both;
+		}
+	}
+
 	@media only screen and (max-width: 600px) {
 		width: $modal-width-mobile;
 		max-height: 100%;
@@ -65,7 +102,7 @@ body.modal-open {
 		transform: translateY(100vh);
 	}
 	.components-modal__content {
-		padding: calc(1.2em + $gap-large + $gap-large) $gap-large 0;
+		padding: calc(1.2em + ( $gap-large * 3 )) $gap-large 0;
 		position: relative;
 		margin: 0;
 		flex: 1;
@@ -73,7 +110,7 @@ body.modal-open {
 
 		@media only screen and (max-width: 600px) {
 			// pad bottom and top for position fixed elements.
-			padding: calc(1.2em + $gap-large + $gap-large) $gap-large calc(3em + ($gap-large * 3));
+			padding: calc(1.2em + ( $gap-large * 3 )) $gap-large calc(3em + ($gap-large * 3));
 		}
 	}
 	.components-button {

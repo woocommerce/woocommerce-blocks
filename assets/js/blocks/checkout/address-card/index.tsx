@@ -3,7 +3,6 @@
  */
 import { __ } from '@wordpress/i18n';
 import { Fragment } from '@wordpress/element';
-import Button from '@woocommerce/base-components/button';
 import { Icon, home } from '@wordpress/icons';
 import { ALLOWED_COUNTRIES } from '@woocommerce/block-settings';
 import type {
@@ -53,13 +52,13 @@ const AddressCard = ( {
 					) ) }
 			</address>
 			{ onEdit && (
-				<Button
+				<button
+					type="button"
 					className="wc-block-components-address-card__edit is-link"
 					onClick={ onEdit }
-					variant="link"
 				>
 					{ __( 'Change', 'woo-gutenberg-products-block' ) }
-				</Button>
+				</button>
 			) }
 		</div>
 	);
