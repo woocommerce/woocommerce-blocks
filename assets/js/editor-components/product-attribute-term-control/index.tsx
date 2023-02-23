@@ -179,7 +179,7 @@ const ProductAttributeTermControl = ( {
 			<SearchListControl
 				className="woocommerce-product-attributes"
 				list={ list }
-				isLoading={ isLoading }
+				isLoading={ isLoadingAttributes }
 				selected={ selected
 					.map( ( { id } ) =>
 						list.find( ( term ) => term.id === id )

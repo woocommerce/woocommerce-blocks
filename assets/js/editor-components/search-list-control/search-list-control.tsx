@@ -319,15 +319,25 @@ export const SearchListControl = (
 					/>
 				) : (
 					<FormTokenField
+						disabled={ isLoading }
 						label={ messages.search }
 						onChange={ onRemoveToken }
 						onInputChange={ ( value ) => setSearch( value ) }
 						suggestions={ [] }
 						__experimentalValidateInput={ () => false }
-						value={ selected.map( ( token ) => ( {
-							...token,
-							value: token.name,
-						} ) ) }
+						value={
+							isLoading
+								? [
+										__(
+											'Loading…',
+											'woo-gutenberg-products-block'
+										),
+								  ]
+								: selected.map( ( token ) => ( {
+										...token,
+										value: token.name,
+								  } ) )
+						}
 						__experimentalShowHowTo={ false }
 					/>
 				) }
