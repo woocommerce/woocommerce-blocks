@@ -26,7 +26,7 @@ function woo_directives_register_scripts() {
 	wp_register_script(
 		'wc-interactivity',
 		plugins_url( '../../build/wc-interactivity.js', __FILE__ ),
-		array( 'wc-interacitivy-vendors' ),
+		array( 'wc-interactivity-vendors' ),
 		'1.0.0',
 		true
 	);
