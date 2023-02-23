@@ -26,9 +26,10 @@ export const supports = {
 		},
 		__experimentalSelector: '.wc-block-components-product-price',
 	} ),
-	...( typeof __experimentalGetSpacingClassesAndStyles === 'function' && {
-		spacing: {
-			margin: true,
-		},
-	} ),
+	...( typeof __experimentalGetSpacingClassesAndStyles === 'function' &&
+		isFeaturePluginBuild() && {
+			spacing: {
+				margin: true,
+			},
+		} ),
 };
