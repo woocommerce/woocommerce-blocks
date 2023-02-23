@@ -74,12 +74,6 @@ const ProductAttributeTermControl = ( {
 					item={ item }
 					isLoading={ isLoadingAttributes }
 					disabled={ item.count === 0 }
-					onSelect={ ( { id } ) => {
-						return () => {
-							onChange( [] );
-							onExpandAttribute( id );
-						};
-					} }
 					name={ `attributes-${ instanceId }` }
 					countLabel={ sprintf(
 						/* translators: %d is the count of terms. */

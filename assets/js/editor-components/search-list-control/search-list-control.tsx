@@ -265,7 +265,12 @@ export const SearchListControl = (
 	);
 
 	const onSelect = useCallback(
-		( item: SearchListItemType ) => () => {
+		( item: SearchListItemType | SearchListItemType[] ) => () => {
+			if ( Array.isArray( item ) ) {
+				onChange( item );
+				return;
+			}
+
 			if ( selected.findIndex( ( { id } ) => id === item.id ) !== -1 ) {
 				onRemove( item.id )();
 				return;

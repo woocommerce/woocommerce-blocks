@@ -75,10 +75,13 @@ export const SearchListItem = ( {
 				}
 				label={ getHighlightedName( item.name, search ) }
 				onChange={ () => {
-					for ( const child of item.children ) {
-						onSelect( child );
+					if ( isSelected ) {
+						onSelect( [] )();
+					} else {
+						onSelect( item.children )();
 					}
 				} }
+				onClick={ ( e ) => e.stopPropagation() }
 			/>
 
 			{ !! showCount && (

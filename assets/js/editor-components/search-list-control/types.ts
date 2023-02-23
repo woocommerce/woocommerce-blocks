@@ -42,7 +42,7 @@ export interface renderItemArgs {
 	// Whether this item is selected.
 	isSelected: boolean;
 	// Callback for selecting the item.
-	onSelect: ( item: SearchListItemType ) => () => void;
+	onSelect: ( item: SearchListItemType | SearchListItemType[] ) => () => void;
 	// Whether this should only display a single item (controls radio vs checkbox icon).
 	isSingle: boolean;
 	// The list of currently selected items.
