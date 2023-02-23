@@ -218,6 +218,7 @@ const AddressForm = ( {
 					inputObject: HTMLInputElement
 				) => {
 					if (
+						values.country &&
 						! isPostcode( {
 							postcode: values.postcode,
 							country: values.country,
