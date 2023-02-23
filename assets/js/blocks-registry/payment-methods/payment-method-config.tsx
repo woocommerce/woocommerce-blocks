@@ -2,7 +2,7 @@
  * External dependencies
  */
 import deprecated from '@wordpress/deprecated';
-import type { ReactNode } from '@wordpress/element';
+import type { ReactNode } from 'react';
 import type {
 	PaymentMethodConfiguration,
 	Supports,
