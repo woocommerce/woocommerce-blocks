@@ -22,7 +22,7 @@ export interface IsPostcodeProps {
 	country: string;
 }
 
-const isPostcode = ( { postcode, country }: IsPostcodeProps ) => {
+const isPostcode = ( { postcode, country }: IsPostcodeProps ): boolean => {
 	const CUSTOM_POSTCODE_REGEXES = getCustomRegexes();
 	// eslint-disable-next-line @typescript-eslint/no-non-null-assertion
 	return CUSTOM_POSTCODE_REGEXES.get( country )!.test( postcode );
