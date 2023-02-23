@@ -785,10 +785,10 @@ const getInteractivityAPIConfig = ( options = {} ) => {
 	const { alias, resolvePlugins = [] } = options;
 	return {
 		entry: {
-			runtime: './assets/js/interactivity',
+			'wc-interactivity': './assets/js/interactivity',
 		},
 		output: {
-			filename: 'woo-directives-[name].js',
+			filename: '[name].js',
 			path: path.resolve( __dirname, '../build/' ),
 		},
 		resolve: {
@@ -806,13 +806,13 @@ const getInteractivityAPIConfig = ( options = {} ) => {
 		],
 		optimization: {
 			runtimeChunk: {
-				name: 'vendors',
+				name: 'wc-interactivity-vendors',
 			},
 			splitChunks: {
 				cacheGroups: {
 					vendors: {
 						test: /[\\/]node_modules[\\/]/,
-						name: 'vendors',
+						name: 'wc-interactivity-vendors',
 						minSize: 0,
 						chunks: 'all',
 					},

@@ -13,20 +13,20 @@ require_once __DIR__ . '/directives/tags/woo-context.php';
 
 /**
  * Register the Interactivity API scripts. These files are enqueued when a block
- * defines `woo-directives-runtime` as a dependency.
+ * defines `wc-interactivity` as a dependency.
  */
 function woo_directives_register_scripts() {
 	wp_register_script(
-		'woo-directives-vendors',
-		plugins_url( '../../build/woo-directives-vendors.js', __FILE__ ),
+		'wc-interactivity-vendors',
+		plugins_url( '../../build/wc-interactivity-vendors.js', __FILE__ ),
 		array(),
 		'1.0.0',
 		true
 	);
 	wp_register_script(
-		'woo-directives-runtime',
-		plugins_url( '../../build/woo-directives-runtime.js', __FILE__ ),
-		array( 'woo-directives-vendors' ),
+		'wc-interactivity',
+		plugins_url( '../../build/wc-interactivity.js', __FILE__ ),
+		array( 'wc-interacitivy-vendors' ),
 		'1.0.0',
 		true
 	);
