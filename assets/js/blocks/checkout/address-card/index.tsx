@@ -52,13 +52,18 @@ const AddressCard = ( {
 					) ) }
 			</address>
 			{ onEdit && (
-				<button
-					type="button"
-					className="wc-block-components-address-card__edit is-link"
+				<a
+					role="button"
+					href="#wc-block-components-address-modal"
+					className="wc-block-components-address-card__edit"
+					aria-label={ __(
+						'Change address',
+						'woo-gutenberg-products-block'
+					) }
 					onClick={ onEdit }
 				>
 					{ __( 'Change', 'woo-gutenberg-products-block' ) }
-				</button>
+				</a>
 			) }
 		</div>
 	);

@@ -34,6 +34,7 @@ const AddressModal = ( {
 	return (
 		<Modal
 			className={ className }
+			id="wc-block-components-address-modal"
 			overlayClassName={ overlayClassName }
 			shouldCloseOnClickOutside={ false }
 			{ ...props }

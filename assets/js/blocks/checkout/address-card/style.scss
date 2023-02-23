@@ -26,15 +26,5 @@
 	vertical-align: top;
 }
 .wc-block-components-address-card__edit {
-	appearance: none;
-	overflow: auto;
-	height: auto;
-	background: transparent none !important;
-	color: inherit !important;
-	outline: 0;
-	border: 0 !important;
-	padding: 0 !important;
 	margin: 0 0 0 auto;
-	@include font-size(regular);
-	cursor: pointer;
 }
