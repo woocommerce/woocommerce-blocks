@@ -20,6 +20,70 @@ import {
 	getQtyMinusButtonPathExpression,
 } from './path-expressions';
 
+const checkCustomerPushCompleted = async (
+	shippingOrBilling,
+	addressToCheck
+) => {
+	// Blur active field to trigger customer information update, then wait for requests to finish.
+	await page.evaluate( 'document.activeElement.blur()' );
+
+	await page.waitForResponse( async ( response ) => {
+		const isBatch = response.url().includes( '/wp-json/wc/store/v1/batch' );
+		const responseJson = await response.text();
+		const parsedResponse = JSON.parse( responseJson );
+		if ( ! Array.isArray( parsedResponse?.responses ) || ! isBatch ) {
+			return false;
+		}
+
+		const keyToCheck =
+			shippingOrBilling === 'shipping'
+				? 'shipping_address'
+				: 'billing_address';
+
+		return parsedResponse.responses.some( ( singleResponse ) => {
+			const firstname =
+				singleResponse.body[ keyToCheck ].first_name ===
+				addressToCheck.firstname;
+			const lastname =
+				singleResponse.body[ keyToCheck ].last_name ===
+				addressToCheck.lastname;
+			const address1 =
+				singleResponse.body[ keyToCheck ].address_1 ===
+				addressToCheck.addressfirstline;
+			const address2 =
+				singleResponse.body[ keyToCheck ].address_2 ===
+				addressToCheck.addresssecondline;
+			const postcode =
+				singleResponse.body[ keyToCheck ].postcode ===
+				addressToCheck.postcode;
+			const city =
+				singleResponse.body[ keyToCheck ].city === addressToCheck.city;
+			const phone =
+				singleResponse.body[ keyToCheck ].phone ===
+				addressToCheck.phone;
+			const email =
+				shippingOrBilling === 'billing'
+					? singleResponse.body[ keyToCheck ].email ===
+					  addressToCheck.email
+					: true;
+
+			// Note, we skip checking State and Country here because the value returned by the server is not the same as
+			// what gets input into the form. The server returns the code, but the form accepts the full name.
+			return (
+				firstname &&
+				lastname &&
+				address1 &&
+				address2 &&
+				postcode &&
+				city &&
+				phone &&
+				email
+			);
+		} );
+	} );
+	await page.waitForTimeout( 1500 );
+};
+
 export const shopper = {
 	...wcShopper,
 
@@ -183,21 +247,24 @@ export const shopper = {
 			);
 		},
 
-		fillInCheckoutWithTestData: async () => {
+		fillInCheckoutWithTestData: async ( overrideData = {} ) => {
 			const shippingOrBilling = ( await page.$( '#shipping-first_name' ) )
 				? 'shipping'
 				: 'billing';
 			const testData = {
-				firstname: 'John',
-				lastname: 'Doe',
-				addressfirstline: '123 Easy Street',
-				addresssecondline: 'Testville',
-				country: 'United States (US)',
-				city: 'New York',
-				state: 'New York',
-				postcode: '90210',
-				email: 'john.doe@test.com',
-				phone: '01234567890',
+				...{
+					firstname: 'John',
+					lastname: 'Doe',
+					addressfirstline: '123 Easy Street',
+					addresssecondline: 'Testville',
+					country: 'United States (US)',
+					city: 'New York',
+					state: 'New York',
+					postcode: '90210',
+					email: 'john.doe@test.com',
+					phone: '01234567890',
+				},
+				...overrideData,
 			};
 			await expect( page ).toFill( `#email`, testData.email );
 			if ( shippingOrBilling === 'shipping' ) {
@@ -227,23 +294,7 @@ export const shopper = {
 			await expect( page ).toFill( '#billing-postcode', customerBillingDetails.postcode );
 			await expect( page ).toFill( '#billing-phone', customerBillingDetails.phone );
 			await expect( page ).toFill( '#email', customerBillingDetails.email );
-
-			// Blur #email field to trigger shipping rates update, then wait for requests to finish.
-			await page.evaluate('document.activeElement.blur()' );
-			await page.waitForRequest( ( request ) => {
-				const isBatch = request.url().includes( '/wp-json/wc/store/v1/batch' );
-				const parsedPostData = JSON.parse( request.postData() );
-				const isAddressPush = parsedPostData?.requests?.[ 0 ]?.path?.includes( '/wc/store/v1/cart/update-customer' );
-				return isBatch && isAddressPush;
-			} );
-			await page.waitForResponse( async ( response ) => {
-				const isBatch = response.url().includes( '/wp-json/wc/store/v1/batch' );
-				const responseJson = await response.text();
-				const parsedResponse = JSON.parse( responseJson );
-				const responseContainsShippingPostcode = parsedResponse?.responses[0]?.body.billing_address.postcode === customerBillingDetails.postcode;
-				return isBatch&& responseContainsShippingPostcode;
-			} );
-			await page.waitForTimeout( 1500 );
+			await checkCustomerPushCompleted( 'billing', customerBillingDetails );
 		},
 
 		// prettier-ignore
@@ -263,23 +314,7 @@ export const shopper = {
 			await expect( page ).toFill( '#shipping-state input', customerShippingDetails.state );
 			await expect( page ).toFill( '#shipping-postcode', customerShippingDetails.postcode );
 			await expect( page ).toFill( '#shipping-phone', customerShippingDetails.phone );
-
-			// Blur #shipping-phone field to trigger shipping rates update, then wait for requests to finish.
-			await page.evaluate('document.activeElement.blur()' );
-			await page.waitForRequest( ( request ) => {
-				const isBatch = request.url().includes( '/wp-json/wc/store/v1/batch' );
-				const parsedPostData = JSON.parse( request.postData() );
-				const isAddressPush = parsedPostData?.requests?.[ 0 ]?.path?.includes( '/wc/store/v1/cart/update-customer' );
-				return isBatch && isAddressPush;
-			} );
-			await page.waitForResponse( async ( response ) => {
-				const isBatch = response.url().includes( '/wp-json/wc/store/v1/batch' );
-				const responseJson = await response.text();
-				const parsedResponse = JSON.parse( responseJson );
-				const responseContainsShippingPostcode = parsedResponse?.responses[0]?.body.shipping_address.postcode === customerShippingDetails.postcode;
-				return isBatch&& responseContainsShippingPostcode;
-			} );
-			await page.waitForTimeout( 1500 );
+			await checkCustomerPushCompleted( 'shipping', customerShippingDetails );
 		},
 
 		// prettier-ignore
