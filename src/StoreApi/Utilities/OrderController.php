@@ -504,6 +504,33 @@ class OrderController {
 	 * @param \WC_Order $order The order object to update.
 	 */
 	protected function update_addresses_from_cart( \WC_Order $order ) {
+
+		// Set these here because they may be overridden later if the customer is using local pickup.
+		$shipping_address_1 = wc()->customer->get_shipping_address_1();
+		$shipping_address_2 = wc()->customer->get_shipping_address_2();
+		$shipping_city      = wc()->customer->get_shipping_city();
+		$shipping_state     = wc()->customer->get_shipping_state();
+		$shipping_postcode  = wc()->customer->get_shipping_postcode();
+		$shipping_country   = wc()->customer->get_shipping_country();
+
+		$chosen_method          = current( WC()->session->get( 'chosen_shipping_methods', array() ) ) ?? '';
+		$chosen_method_id       = explode( ':', $chosen_method )[0];
+		$chosen_method_instance = explode( ':', $chosen_method )[1] ?? 0;
+
+		if ( 'pickup_location' === $chosen_method_id ) {
+			$pickup_locations = get_option( 'pickup_location_pickup_locations', [] );
+			$pickup_location  = $pickup_locations[ $chosen_method_instance ] ?? [];
+
+			if ( isset( $pickup_location['address'], $pickup_location['address']['country'] ) && ! empty( $pickup_location['address']['country'] ) ) {
+				$shipping_address_1 = $pickup_locations[ $chosen_method_instance ]['address']['address_1'];
+				$shipping_address_2 = '';
+				$shipping_country   = $pickup_locations[ $chosen_method_instance ]['address']['country'];
+				$shipping_state     = $pickup_locations[ $chosen_method_instance ]['address']['state'];
+				$shipping_postcode  = $pickup_locations[ $chosen_method_instance ]['address']['postcode'];
+				$shipping_city      = $pickup_locations[ $chosen_method_instance ]['address']['city'];
+			}
+		}
+
 		$order->set_props(
 			[
 				'billing_first_name'  => wc()->customer->get_billing_first_name(),
@@ -520,12 +547,12 @@ class OrderController {
 				'shipping_first_name' => wc()->customer->get_shipping_first_name(),
 				'shipping_last_name'  => wc()->customer->get_shipping_last_name(),
 				'shipping_company'    => wc()->customer->get_shipping_company(),
-				'shipping_address_1'  => wc()->customer->get_shipping_address_1(),
-				'shipping_address_2'  => wc()->customer->get_shipping_address_2(),
-				'shipping_city'       => wc()->customer->get_shipping_city(),
-				'shipping_state'      => wc()->customer->get_shipping_state(),
-				'shipping_postcode'   => wc()->customer->get_shipping_postcode(),
-				'shipping_country'    => wc()->customer->get_shipping_country(),
+				'shipping_address_1'  => $shipping_address_1,
+				'shipping_address_2'  => $shipping_address_2,
+				'shipping_city'       => $shipping_city,
+				'shipping_state'      => $shipping_state,
+				'shipping_postcode'   => $shipping_postcode,
+				'shipping_country'    => $shipping_country,
 				'shipping_phone'      => wc()->customer->get_shipping_phone(),
 			]
 		);
