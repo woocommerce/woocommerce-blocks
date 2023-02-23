@@ -225,7 +225,7 @@ const AddressForm = ( {
 					) {
 						inputObject.setCustomValidity(
 							__(
-								'Please provide a valid postcode',
+								'Please enter a valid postcode',
 								'woo-gutenberg-products-block'
 							)
 						);
