@@ -218,6 +218,7 @@ const AddressForm = ( {
 					inputObject: HTMLInputElement
 				) => {
 					if (
+						field.key === 'postcode' &&
 						values.country &&
 						! isPostcode( {
 							postcode: values.postcode,
@@ -234,27 +235,6 @@ const AddressForm = ( {
 					}
 					return true;
 				};
-
-				if ( field.key === 'postcode' ) {
-					return (
-						<ValidatedTextInput
-							id={ `${ id }-${ field.key }` }
-							key={ `${ id }-${ field.key }` }
-							errorId={ errorId }
-							value={ values.postcode }
-							label={ field.label }
-							required={ field.required }
-							onChange={ ( newValue: string ) =>
-								onChange( {
-									...values,
-									[ field.key ]: newValue,
-								} )
-							}
-							customValidation={ customValidationHandler }
-							errorMessage={ field.errorMessage }
-						/>
-					);
-				}
 
 				return (
 					<ValidatedTextInput
@@ -274,6 +254,7 @@ const AddressForm = ( {
 								[ field.key ]: newValue,
 							} )
 						}
+						customValidation={ customValidationHandler }
 						errorMessage={ field.errorMessage }
 						required={ field.required }
 					/>
