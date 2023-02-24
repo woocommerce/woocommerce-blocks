@@ -21,16 +21,7 @@ abstract class AbstractTemplateCompatibility {
 	 * Initialization method.
 	 */
 	public function init() {
-		/**
-		 * Filters to disable the compatibility layer for the blockified templates.
-		 *
-		 * This hooks allows to disable the compatibility layer for the blockified.
-		 *
-		 * @param boolean.
-		 */
-		$is_disabled_compatility_layer = apply_filters( 'woocommerce_disable_compatibility_layer', false );
-
-		if ( ! wc_current_theme_is_fse_theme() || $is_disabled_compatility_layer ) {
+		if ( ! wc_current_theme_is_fse_theme() ) {
 			return;
 		}
 
@@ -40,6 +31,14 @@ abstract class AbstractTemplateCompatibility {
 		add_filter(
 			'render_block',
 			function ( $block_content, $block ) {
+				/**
+				* Filters to disable the compatibility layer for the blockified templates.
+				*
+				* This hooks allows to disable the compatibility layer for the blockified.
+				*
+				* @since 9.7.0
+				* @param boolean.
+				*/
 				$is_disabled_compatility_layer = apply_filters( 'woocommerce_disable_compatibility_layer', false );
 
 				if ( $is_disabled_compatility_layer ) {
@@ -166,6 +165,11 @@ abstract class AbstractTemplateCompatibility {
 		ob_start();
 		foreach ( $hooks as $hook => $data ) {
 			if ( $data['position'] === $position ) {
+				/**
+				 * Action to render the content of a hook.
+				 *
+				 * @since 9.5.0
+				 */
 				do_action( $hook );
 			}
 		}
