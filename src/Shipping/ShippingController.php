@@ -3,6 +3,7 @@ namespace Automattic\WooCommerce\Blocks\Shipping;
 
 use Automattic\WooCommerce\Blocks\Assets\Api as AssetApi;
 use Automattic\WooCommerce\Blocks\Assets\AssetDataRegistry;
+use Automattic\WooCommerce\StoreApi\Utilities\LocalPickupUtils;
 use Automattic\WooCommerce\Utilities\ArrayUtil;
 
 /**
@@ -267,7 +268,7 @@ class ShippingController {
 		$chosen_method_instance = explode( ':', $chosen_method )[1] ?? 0;
 
 		// phpcs:ignore WooCommerce.Commenting.CommentHooks.MissingHookComment
-		if ( $chosen_method_id && true === apply_filters( 'woocommerce_apply_base_tax_for_local_pickup', true ) && 'pickup_location' === $chosen_method_id ) {
+		if ( $chosen_method_id && true === apply_filters( 'woocommerce_apply_base_tax_for_local_pickup', true ) && in_array( $chosen_method_id, LocalPickupUtils::get_local_pickup_method_ids(), true ) ) {
 			$pickup_locations = get_option( 'pickup_location_pickup_locations', [] );
 			$pickup_location  = $pickup_locations[ $chosen_method_instance ] ?? [];
 
@@ -295,12 +296,12 @@ class ShippingController {
 	 * @return array
 	 */
 	public function filter_shipping_packages( $packages ) {
-		// Check all packages for an instance of the pickup_location shipping method.
+		// Check all packages for an instance of a collectable shipping method.
 		$valid_packages = array_filter(
 			$packages,
 			function( $package ) {
 				$shipping_method_ids = ArrayUtil::select( $package['rates'] ?? [], 'get_method_id', ArrayUtil::SELECT_BY_OBJECT_METHOD );
-				return in_array( 'pickup_location', $shipping_method_ids, true );
+				return ! empty( array_intersect( LocalPickupUtils::get_local_pickup_method_ids(), $shipping_method_ids ) );
 			}
 		);
 
@@ -311,7 +312,7 @@ class ShippingController {
 					$package['rates'] = array_filter(
 						$package['rates'],
 						function( $rate ) {
-							return 'pickup_location' !== $rate->get_method_id();
+							return ! in_array( $rate->get_method_id(), LocalPickupUtils::get_local_pickup_method_ids(), true );
 						}
 					);
 					return $package;
