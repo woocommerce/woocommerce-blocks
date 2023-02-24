@@ -21,14 +21,37 @@ abstract class AbstractTemplateCompatibility {
 	 * Initialization method.
 	 */
 	public function init() {
-		if ( ! wc_current_theme_is_fse_theme() ) {
+		/**
+		 * Filters to disable the compatibility layer for the blockified templates.
+		 *
+		 * This hooks allows to disable the compatibility layer for the blockified.
+		 *
+		 * @param boolean.
+		 */
+		$is_disabled_compatility_layer = apply_filters( 'woocommerce_disable_compatibility_layer', false );
+
+		if ( ! wc_current_theme_is_fse_theme() || $is_disabled_compatility_layer ) {
 			return;
 		}
 
 		$this->set_hook_data();
 
 		add_filter( 'render_block_data', array( $this, 'update_render_block_data' ), 10, 3 );
-		add_filter( 'render_block', array( $this, 'inject_hooks' ), 10, 2 );
+		add_filter(
+			'render_block',
+			function ( $block_content, $block ) {
+				$is_disabled_compatility_layer = apply_filters( 'woocommerce_disable_compatibility_layer', false );
+
+				if ( $is_disabled_compatility_layer ) {
+					return $block_content;
+				}
+
+				$this->inject_hooks( $block_content, $block );
+			},
+			10,
+			2
+		);
+
 	}
 
 	/**
