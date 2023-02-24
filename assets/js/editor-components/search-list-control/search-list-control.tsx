@@ -60,13 +60,14 @@ const ListItems = ( props: ListItemsProps ): JSX.Element | null => {
 	return (
 		<>
 			{ list.map( ( item ) => {
-				const isSelected = item.children.length
-					? item.children.every( ( { id } ) =>
-							selected.find(
-								( selectedItem ) => selectedItem.id === id
-							)
-					  )
-					: !! selected.find( ( { id } ) => id === item.id );
+				const isSelected =
+					item.children.length && ! isSingle
+						? item.children.every( ( { id } ) =>
+								selected.find(
+									( selectedItem ) => selectedItem.id === id
+								)
+						  )
+						: !! selected.find( ( { id } ) => id === item.id );
 				const isExpanded =
 					item.children.length && expandedPanelId === item.id;
 
@@ -192,9 +193,7 @@ const ListItemsContainer = ( {
 /**
  * Component to display a searchable, selectable list of items.
  */
-export const SearchListControl = (
-	props: SearchListControlProps
-): JSX.Element => {
+export const SearchListControl = ( props: SearchListControlProps ) => {
 	const {
 		className = '',
 		isCompact,
@@ -206,7 +205,7 @@ export const SearchListControl = (
 		onChange,
 		onSearch,
 		selected,
-		type,
+		type = 'text',
 		debouncedSpeak,
 	} = props;
 

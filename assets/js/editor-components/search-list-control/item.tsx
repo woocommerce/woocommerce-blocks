@@ -9,8 +9,35 @@ import { arrayDifferenceBy, arrayUnionBy } from '@woocommerce/utils';
 /**
  * Internal dependencies
  */
-import type { renderItemArgs } from './types';
+import type {
+	renderItemArgs,
+	SearchListItem as SearchListItemProps,
+} from './types';
 import { getHighlightedName, getBreadcrumbsForDisplay } from './utils';
+
+const Count = ( { label }: { label: string | React.ReactNode | number } ) => {
+	return (
+		<span className="woocommerce-search-list__item-count">{ label }</span>
+	);
+};
+
+const ItemLabel = ( props: { item: SearchListItemProps; search: string } ) => {
+	const { item, search } = props;
+	const hasBreadcrumbs = item.breadcrumbs && item.breadcrumbs.length;
+
+	return (
+		<span className="woocommerce-search-list__item-label">
+			{ hasBreadcrumbs ? (
+				<span className="woocommerce-search-list__item-prefix">
+					{ getBreadcrumbsForDisplay( item.breadcrumbs ) }
+				</span>
+			) : null }
+			<span className="woocommerce-search-list__item-name">
+				{ getHighlightedName( item.name, search ) }
+			</span>
+		</span>
+	);
+};
 
 export const SearchListItem = ( {
 	countLabel,
@@ -63,36 +90,67 @@ export const SearchListItem = ( {
 			role="treeitem"
 			tabIndex={ 0 }
 		>
-			<CheckboxControl
-				className="woocommerce-search-list__item-input"
-				checked={ isSelected }
-				indeterminate={
-					! isSelected &&
-					item.children.some( ( child ) =>
-						selected.find(
-							( selectedItem ) => selectedItem.id === child.id
-						)
-					)
-				}
-				label={ getHighlightedName( item.name, search ) }
-				onChange={ () => {
-					if ( isSelected ) {
-						onSelect(
-							arrayDifferenceBy( selected, item.children, 'id' )
-						)();
-					} else {
-						onSelect(
-							arrayUnionBy( selected, item.children, 'id' )
-						)();
-					}
-				} }
-				onClick={ ( e ) => e.stopPropagation() }
-			/>
+			{ isSingle ? (
+				<>
+					<input
+						type="radio"
+						id={ id }
+						name={ name }
+						value={ item.value }
+						onChange={ onSelect( item ) }
+						onClick={ ( e ) => e.stopPropagation() }
+						checked={ isSelected }
+						className="woocommerce-search-list__item-input"
+						{ ...props }
+					/>
 
-			{ !! showCount && (
-				<span className="woocommerce-search-list__item-count">
-					{ countLabel || item.count }
-				</span>
+					<ItemLabel item={ item } search={ search } />
+
+					{ showCount ? (
+						<Count label={ countLabel || item.count } />
+					) : null }
+				</>
+			) : (
+				<>
+					<CheckboxControl
+						className="woocommerce-search-list__item-input"
+						checked={ isSelected }
+						indeterminate={
+							! isSelected &&
+							item.children.some( ( child ) =>
+								selected.find(
+									( selectedItem ) =>
+										selectedItem.id === child.id
+								)
+							)
+						}
+						label={ getHighlightedName( item.name, search ) }
+						onChange={ () => {
+							if ( isSelected ) {
+								onSelect(
+									arrayDifferenceBy(
+										selected,
+										item.children,
+										'id'
+									)
+								)();
+							} else {
+								onSelect(
+									arrayUnionBy(
+										selected,
+										item.children,
+										'id'
+									)
+								)();
+							}
+						} }
+						onClick={ ( e ) => e.stopPropagation() }
+					/>
+
+					{ showCount ? (
+						<Count label={ countLabel || item.count } />
+					) : null }
+				</>
 			) }
 		</div>
 	) : (
@@ -121,22 +179,9 @@ export const SearchListItem = ( {
 				></input>
 			) }
 
-			<span className="woocommerce-search-list__item-label">
-				{ hasBreadcrumbs ? (
-					<span className="woocommerce-search-list__item-prefix">
-						{ getBreadcrumbsForDisplay( item.breadcrumbs ) }
-					</span>
-				) : null }
-				<span className="woocommerce-search-list__item-name">
-					{ getHighlightedName( item.name, search ) }
-				</span>
-			</span>
+			<ItemLabel item={ item } search={ search } />
 
-			{ !! showCount && (
-				<span className="woocommerce-search-list__item-count">
-					{ countLabel || item.count }
-				</span>
-			) }
+			{ showCount ? <Count label={ countLabel || item.count } /> : null }
 		</label>
 	);
 };
