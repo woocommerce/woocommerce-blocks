@@ -1,12 +1,9 @@
 /**
  * External dependencies
  */
-import { SearchListItem } from '@woocommerce/editor-components/search-list-control';
-import {
-	renderItemArgs,
-	SearchListItemType,
-} from '@woocommerce/editor-components/search-list-control/types';
 import { Spinner } from '@wordpress/components';
+import { SearchListItem } from '@woocommerce/editor-components/search-list-control';
+import { renderItemArgs } from '@woocommerce/editor-components/search-list-control/types';
 import classNames from 'classnames';
 
 interface ExpandableSearchListItemProps extends renderItemArgs {

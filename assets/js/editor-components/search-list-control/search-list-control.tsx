@@ -27,28 +27,19 @@ import { getFilteredList, defaultMessages } from './utils';
 import SearchListItem from './item';
 import Tag from '../tag';
 import type {
-	SearchListItemsType,
-	SearchListItemType,
+	SearchListItem as SearchListItemProps,
 	SearchListControlProps,
 	SearchListMessages,
 	renderItemArgs,
+	ListItemsProps,
+	SearchListItemsContainerProps,
 } from './types';
 
 const defaultRenderListItem = ( args: renderItemArgs ): JSX.Element => {
 	return <SearchListItem { ...args } />;
 };
 
-const ListItems = ( props: {
-	expandedPanelId: number;
-	list: SearchListItemsType;
-	selected: SearchListItemsType;
-	renderItem: ( args: renderItemArgs ) => JSX.Element;
-	depth?: number;
-	onSelect: ( item: SearchListItemType ) => () => void;
-	instanceId: string | number;
-	isSingle: boolean;
-	search: string;
-} ): JSX.Element | null => {
+const ListItems = ( props: ListItemsProps ): JSX.Element | null => {
 	const {
 		list,
 		selected,
@@ -162,13 +153,7 @@ const ListItemsContainer = ( {
 	instanceId,
 	useExpandedPanelId,
 	...props
-}: SearchListControlProps & {
-	messages: SearchListMessages;
-	filteredList: SearchListItemsType;
-	search: string;
-	instanceId: string | number;
-	onSelect: ( item: SearchListItemType ) => () => void;
-} ) => {
+}: SearchListItemsContainerProps ) => {
 	const { messages, renderItem, selected, isSingle } = props;
 	const renderItemCallback = renderItem || defaultRenderListItem;
 
@@ -265,7 +250,7 @@ export const SearchListControl = (
 	);
 
 	const onSelect = useCallback(
-		( item: SearchListItemType | SearchListItemType[] ) => () => {
+		( item: SearchListItemProps | SearchListItemProps[] ) => () => {
 			if ( Array.isArray( item ) ) {
 				onChange( item );
 				return;
@@ -285,7 +270,7 @@ export const SearchListControl = (
 	);
 
 	const onRemoveToken = useCallback(
-		( tokens: Array< SearchListItemType & { value: string } > ) => {
+		( tokens: Array< SearchListItemProps & { value: string } > ) => {
 			const [ removedItem ] = selected.filter(
 				( item ) => ! tokens.find( ( token ) => item.id === token.id )
 			);
@@ -325,6 +310,8 @@ export const SearchListControl = (
 						onChange={ onRemoveToken }
 						onInputChange={ ( value ) => setSearch( value ) }
 						suggestions={ [] }
+						// eslint-disable-next-line @typescript-eslint/ban-ts-comment
+						// @ts-ignore - Ignoring because `__experimentalValidateInput` is not yet in the type definitions.
 						__experimentalValidateInput={ () => false }
 						value={
 							isLoading

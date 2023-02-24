@@ -2,92 +2,20 @@
  * External dependencies
  */
 import { __ } from '@wordpress/i18n';
+import { useEffect, useState } from '@wordpress/element';
+import ProductAttributeTermControl from '@woocommerce/editor-components/product-attribute-term-control';
 import {
 	ExternalLink,
-	FormTokenField,
 	// eslint-disable-next-line @wordpress/no-unsafe-wp-apis
 	__experimentalToolsPanelItem as ToolsPanelItem,
 } from '@wordpress/components';
-import { useEffect, useState } from '@wordpress/element';
 
 /**
  * Internal dependencies
  */
-import {
-	AttributeMetadata,
-	AttributeWithTerms,
-	ProductQueryBlock,
-} from '../types';
+import { ProductQueryBlock } from '../types';
 import { setQueryAttribute } from '../utils';
-import ProductAttributeTermControl from '@woocommerce/editor-components/product-attribute-term-control';
 import { EDIT_ATTRIBUTES_URL } from '../constants';
-
-function getAttributeMetadataFromToken(
-	token: string,
-	productsAttributes: AttributeWithTerms[]
-) {
-	const [ attributeLabel, termName ] = token.split( ': ' );
-	const taxonomy = productsAttributes.find(
-		( attribute ) => attribute.attribute_label === attributeLabel
-	);
-
-	if ( ! taxonomy )
-		throw new Error( 'Product Query Filter: Invalid attribute label' );
-
-	const term = taxonomy.terms.find(
-		( currentTerm ) => currentTerm.name === termName
-	);
-
-	if ( ! term ) throw new Error( 'Product Query Filter: Invalid term name' );
-
-	return {
-		taxonomy: `pa_${ taxonomy.attribute_name }`,
-		termId: term.id,
-	};
-}
-
-function getAttributeFromMetadata(
-	metadata: AttributeMetadata,
-	productsAttributes: AttributeWithTerms[]
-) {
-	const taxonomy = productsAttributes.find(
-		( attribute ) =>
-			attribute.attribute_name === metadata.taxonomy.slice( 3 )
-	);
-
-	return {
-		taxonomy,
-		term: taxonomy?.terms.find( ( term ) => term.id === metadata.termId ),
-	};
-}
-
-function getInputValueFromQueryParam(
-	queryParam: AttributeMetadata[] | undefined,
-	productAttributes: AttributeWithTerms[]
-): FormTokenField.Value[] {
-	return (
-		queryParam?.map( ( metadata ) => {
-			const { taxonomy, term } = getAttributeFromMetadata(
-				metadata,
-				productAttributes
-			);
-
-			return ! taxonomy || ! term
-				? {
-						title: __(
-							'Saved taxonomy was perhaps deleted or the slug was changed.',
-							'woo-gutenberg-products-block'
-						),
-						value: __(
-							`Error with saved taxonomy`,
-							'woo-gutenberg-products-block'
-						),
-						status: 'error',
-				  }
-				: `${ taxonomy.attribute_label }: ${ term.name }`;
-		} ) || []
-	);
-}
 
 export const AttributesFilter = ( props: ProductQueryBlock ) => {
 	const { query } = props.attributes;
@@ -115,6 +43,7 @@ export const AttributesFilter = ( props: ProductQueryBlock ) => {
 				selected={ selected }
 				onChange={ ( value ) => {
 					const __woocommerceAttributes = value.map(
+						// eslint-disable-next-line @typescript-eslint/naming-convention
 						( { id, attr_slug } ) => ( {
 							termId: id,
 							taxonomy: attr_slug,

@@ -8,8 +8,11 @@ import {
 	AttributeTerm,
 	AttributeWithTerms,
 } from '@woocommerce/types';
+import { formatError } from '@woocommerce/base-utils';
 
 export default function useProductAttributes( shouldLoadAttributes: boolean ) {
+	const [ errorLoadingAttributes, setErrorLoadingAttributes ] =
+		useState< Awaited< ReturnType< typeof formatError > > | null >( null );
 	const [ isLoadingAttributes, setIsLoadingAttributes ] = useState( false );
 	const [ productsAttributes, setProductsAttributes ] = useState<
 		AttributeWithTerms[]
@@ -27,29 +30,38 @@ export default function useProductAttributes( shouldLoadAttributes: boolean ) {
 		async function fetchAttributesWithTerms() {
 			setIsLoadingAttributes( true );
 
-			const attributes: AttributeObject[] = await getAttributes();
-			const attributesWithTerms: AttributeWithTerms[] = [];
+			try {
+				const attributes: AttributeObject[] = await getAttributes();
+				const attributesWithTerms: AttributeWithTerms[] = [];
 
-			for ( const attribute of attributes ) {
-				const terms: AttributeTerm[] = await getTerms( attribute.id );
+				for ( const attribute of attributes ) {
+					const terms: AttributeTerm[] = await getTerms(
+						attribute.id
+					);
 
-				attributesWithTerms.push( {
-					...attribute,
-					parent: 0,
-					// Manually adding the parent id because of a Rest API bug
-					// returning always `0` as parent.
-					// see https://github.com/woocommerce/woocommerce-blocks/issues/8501
-					terms: terms.map( ( term ) => ( {
-						...term,
-						attr_slug: attribute.taxonomy,
-						parent: attribute.id,
-					} ) ),
-				} );
+					attributesWithTerms.push( {
+						...attribute,
+						// Manually adding the parent id because of a Rest API bug
+						// returning always `0` as parent.
+						// see https://github.com/woocommerce/woocommerce-blocks/issues/8501
+						parent: 0,
+						terms: terms.map( ( term ) => ( {
+							...term,
+							attr_slug: attribute.taxonomy,
+							parent: attribute.id,
+						} ) ),
+					} );
+				}
+
+				setProductsAttributes( attributesWithTerms );
+				hasLoadedAttributes.current = true;
+			} catch ( e ) {
+				if ( e instanceof Error ) {
+					setErrorLoadingAttributes( await formatError( e ) );
+				}
+			} finally {
+				setIsLoadingAttributes( false );
 			}
-
-			setProductsAttributes( attributesWithTerms );
-			hasLoadedAttributes.current = true;
-			setIsLoadingAttributes( false );
 		}
 
 		fetchAttributesWithTerms();
@@ -59,5 +71,9 @@ export default function useProductAttributes( shouldLoadAttributes: boolean ) {
 		};
 	}, [ isLoadingAttributes, shouldLoadAttributes ] );
 
-	return { isLoadingAttributes, productsAttributes };
+	return {
+		errorLoadingAttributes,
+		isLoadingAttributes,
+		productsAttributes,
+	};
 }

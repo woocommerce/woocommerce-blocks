@@ -50,7 +50,7 @@ export const SearchListItem = ( {
 	const id = `${ name }-${ item.id }`;
 
 	const togglePanel = useCallback( () => {
-		setExpandedPanelId( isExpanded ? -1 : item.id );
+		setExpandedPanelId( isExpanded ? -1 : Number( item.id ) );
 	}, [ isExpanded, item.id, setExpandedPanelId ] );
 
 	return hasChildren ? (
