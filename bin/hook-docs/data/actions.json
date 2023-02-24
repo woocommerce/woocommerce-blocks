@@ -307,23 +307,6 @@
         },
         {
             "name": "woocommerce_blocks_cart_enqueue_data",
-            "file": "BlockTypes/MiniCart.php",
-            "type": "action",
-            "doc": {
-                "description": "Fires after cart block data is registered.",
-                "long_description": "",
-                "tags": [
-                    {
-                        "name": "since",
-                        "content": "5.8.0"
-                    }
-                ],
-                "long_description_html": ""
-            },
-            "args": 0
-        },
-        {
-            "name": "woocommerce_blocks_cart_enqueue_data",
             "file": "BlockTypes/Cart.php",
             "type": "action",
             "doc": {
@@ -333,6 +316,23 @@
                     {
                         "name": "since",
                         "content": "2.6.0"
+                    }
+                ],
+                "long_description_html": ""
+            },
+            "args": 0
+        },
+        {
+            "name": "woocommerce_blocks_cart_enqueue_data",
+            "file": "BlockTypes/MiniCart.php",
+            "type": "action",
+            "doc": {
+                "description": "Fires after cart block data is registered.",
+                "long_description": "",
+                "tags": [
+                    {
+                        "name": "since",
+                        "content": "5.8.0"
                     }
                 ],
                 "long_description_html": ""
@@ -1047,6 +1047,18 @@
                         "content": "9.7.0"
                     }
                 ],
+                "long_description_html": ""
+            },
+            "args": 0
+        },
+        {
+            "name": "{$hook}",
+            "file": "Templates/AbstractTemplateCompatibility.php",
+            "type": "action",
+            "doc": {
+                "description": "",
+                "long_description": "",
+                "tags": [],
                 "long_description_html": ""
             },
             "args": 0

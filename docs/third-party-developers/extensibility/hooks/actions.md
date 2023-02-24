@@ -252,8 +252,8 @@ do_action( 'woocommerce_blocks_cart_enqueue_data' )
 ### Source
 
 
- - [BlockTypes/MiniCart.php](../../../../src/BlockTypes/MiniCart.php)
  - [BlockTypes/Cart.php](../../../../src/BlockTypes/Cart.php)
+ - [BlockTypes/MiniCart.php](../../../../src/BlockTypes/MiniCart.php)
 
 ---
 
@@ -874,7 +874,7 @@ do_action( 'woocommerce_{$product->get_type()}_add_to_cart' )
 ## {$hook}
 
 
-Action to render the content of a hook.
+
 
 ```php
 do_action( '{$hook}' )
@@ -883,6 +883,7 @@ do_action( '{$hook}' )
 ### Source
 
 
+ - [Templates/AbstractTemplateCompatibility.php](../../../../src/Templates/AbstractTemplateCompatibility.php)
  - [Templates/BlockTemplatesCompatibility.php](../../../../src/Templates/BlockTemplatesCompatibility.php)
 
 ---
