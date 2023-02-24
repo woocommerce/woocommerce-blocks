@@ -7,7 +7,7 @@ import { ShippingRatesControl } from '@woocommerce/base-components/cart-checkout
 import {
 	getShippingRatesPackageCount,
 	hasCollectableRate,
-	formatShippingAddress,
+	isAddressComplete,
 } from '@woocommerce/base-utils';
 import { getCurrencyFromPriceResponse } from '@woocommerce/price-format';
 import FormattedMonetaryAmount from '@woocommerce/base-components/formatted-monetary-amount';
@@ -86,7 +86,7 @@ const Block = (): JSX.Element | null => {
 		return null;
 	}
 
-	const isAddressComplete = !! formatShippingAddress( shippingAddress );
+	const addressComplete = isAddressComplete( shippingAddress );
 	const shippingRatesPackageCount =
 		getShippingRatesPackageCount( shippingRates );
 
@@ -116,7 +116,7 @@ const Block = (): JSX.Element | null => {
 				<ShippingRatesControl
 					noResultsMessage={
 						<>
-							{ isAddressComplete
+							{ addressComplete
 								? __(
 										'There are no shipping options available. Please check your shipping address.',
 										'woo-gutenberg-products-block'

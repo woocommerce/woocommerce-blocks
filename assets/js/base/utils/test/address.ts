@@ -1,7 +1,11 @@
 /**
  * External dependencies
  */
-import { emptyHiddenAddressFields } from '@woocommerce/base-utils';
+import {
+	emptyHiddenAddressFields,
+	isAddressComplete,
+	formatShippingAddress,
+} from '@woocommerce/base-utils';
 
 describe( 'emptyHiddenAddressFields', () => {
 	it( "Removes state from an address where the country doesn't use states", () => {
@@ -20,5 +24,103 @@ describe( 'emptyHiddenAddressFields', () => {
 		};
 		const filteredAddress = emptyHiddenAddressFields( address );
 		expect( filteredAddress ).toHaveProperty( 'state', '' );
+	} );
+} );
+
+describe( 'isAddressComplete', () => {
+	it( 'correctly checks address is empty', () => {
+		const address = {
+			first_name: '',
+			last_name: '',
+			company: '',
+			address_1: '',
+			address_2: '',
+			city: '',
+			postcode: '',
+			country: '',
+			state: '',
+			email: '',
+			phone: '',
+		};
+		expect( isAddressComplete( address ) ).toBe( false );
+	} );
+
+	it( 'correctly checks is not complete', () => {
+		const address = {
+			first_name: 'John',
+			last_name: 'Deo',
+			company: 'Company',
+			address_1: '409 Main Street',
+			address_2: 'Apt 1',
+			city: '',
+			postcode: '',
+			country: '',
+			state: '',
+			email: 'john.deo@company',
+			phone: '+1234567890',
+		};
+		expect( isAddressComplete( address ) ).toBe( false );
+
+		address.city = 'London';
+		expect( isAddressComplete( address ) ).toBe( false );
+
+		address.postcode = 'W1T 4JG';
+		address.country = 'GB';
+		expect( isAddressComplete( address ) ).toBe( true );
+	} );
+
+	it( 'correctly checks is  complete', () => {
+		const address = {
+			first_name: 'John',
+			last_name: 'Deo',
+			company: 'Company',
+			address_1: '409 Main Street',
+			address_2: 'Apt 1',
+			city: 'London',
+			postcode: 'W1T 4JG',
+			country: 'GB',
+			state: '',
+			email: 'john.deo@company',
+			phone: '+1234567890',
+		};
+		expect( isAddressComplete( address ) ).toBe( true );
+	} );
+} );
+
+describe( 'formatShippingAddress', () => {
+	it( 'correctly returns null address is empty', () => {
+		const address = {
+			first_name: '',
+			last_name: '',
+			company: '',
+			address_1: '',
+			address_2: '',
+			city: '',
+			postcode: '',
+			country: '',
+			state: '',
+			email: '',
+			phone: '',
+		};
+		expect( formatShippingAddress( address ) ).toBe( null );
+	} );
+
+	it( 'correctly returns the formatted address', () => {
+		const address = {
+			first_name: 'John',
+			last_name: 'Deo',
+			company: 'Company',
+			address_1: '409 Main Street',
+			address_2: 'Apt 1',
+			city: 'London',
+			postcode: 'W1T 4JG',
+			country: 'GB',
+			state: '',
+			email: 'john.deo@company',
+			phone: '+1234567890',
+		};
+		expect( formatShippingAddress( address ) ).toBe(
+			'W1T 4JG, London, United Kingdom (UK)'
+		);
 	} );
 } );

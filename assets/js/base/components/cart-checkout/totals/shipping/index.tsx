@@ -10,7 +10,7 @@ import type { Currency } from '@woocommerce/price-format';
 import { ShippingVia } from '@woocommerce/base-components/cart-checkout/totals/shipping/shipping-via';
 import { useSelect } from '@wordpress/data';
 import { CHECKOUT_STORE_KEY } from '@woocommerce/block-data';
-import { formatShippingAddress } from '@woocommerce/base-utils';
+import { isAddressComplete } from '@woocommerce/base-utils';
 
 /**
  * Internal dependencies
@@ -68,7 +68,7 @@ export const TotalsShipping = ( {
 		}
 	);
 
-	const isAddressComplete = !! formatShippingAddress( shippingAddress );
+	const addressComplete = isAddressComplete( shippingAddress );
 
 	return (
 		<div
@@ -83,7 +83,7 @@ export const TotalsShipping = ( {
 					hasRates && cartHasCalculatedShipping
 						? totalShippingValue
 						: // if address is not complete, display the link to add an address.
-						  ! isAddressComplete && (
+						  ! addressComplete && (
 								<ShippingPlaceholder
 									showCalculator={ showCalculator }
 									isCheckout={ isCheckout }
@@ -99,7 +99,7 @@ export const TotalsShipping = ( {
 				description={
 					// If address is complete, display the shipping address.
 					( hasRates && cartHasCalculatedShipping ) ||
-					isAddressComplete ? (
+					addressComplete ? (
 						<>
 							<ShippingVia
 								selectedShippingRates={ selectedShippingRates }
@@ -138,7 +138,7 @@ export const TotalsShipping = ( {
 						hasRates={ hasRates }
 						shippingRates={ shippingRates }
 						isLoadingRates={ isLoadingRates }
-						isAddressComplete={ isAddressComplete }
+						isAddressComplete={ addressComplete }
 					/>
 				) }
 		</div>

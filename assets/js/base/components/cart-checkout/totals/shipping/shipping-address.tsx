@@ -3,7 +3,10 @@
  */
 import { __ } from '@wordpress/i18n';
 import { EnteredAddress } from '@woocommerce/settings';
-import { formatShippingAddress } from '@woocommerce/base-utils';
+import {
+	formatShippingAddress,
+	isAddressComplete,
+} from '@woocommerce/base-utils';
 import { useEditorContext } from '@woocommerce/base-context';
 
 /**
@@ -25,13 +28,14 @@ export const ShippingAddress = ( {
 	setIsShippingCalculatorOpen,
 	shippingAddress,
 }: ShippingAddressProps ): JSX.Element | null => {
-	const formattedLocation = formatShippingAddress( shippingAddress );
+	const addressComplete = isAddressComplete( shippingAddress );
 	const { isEditor } = useEditorContext();
 
 	// If there is no address, and we're not in the editor, don't show anything.
-	if ( ! formattedLocation && ! isEditor ) {
+	if ( ! addressComplete && ! isEditor ) {
 		return null;
 	}
+	const formattedLocation = formatShippingAddress( shippingAddress );
 	return (
 		<>
 			<ShippingLocation formattedLocation={ formattedLocation } />

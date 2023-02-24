@@ -152,3 +152,12 @@ export const formatShippingAddress = (
 
 	return formattedLocation;
 };
+
+/**
+ * Returns true if the address have city, country and postcode.
+ */
+export const isAddressComplete = (
+	address: ShippingAddress | BillingAddress
+): boolean => {
+	return !! address.city && !! address.country && !! address.postcode;
+};
