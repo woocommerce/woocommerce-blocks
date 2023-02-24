@@ -94,7 +94,7 @@ export const AttributesFilter = ( props: ProductQueryBlock ) => {
 	const [ selected, setSelected ] = useState< { id: number }[] >( [] );
 
 	useEffect( () => {
-		if ( query.__woocommerceAttributes?.length ) {
+		if ( query.__woocommerceAttributes ) {
 			setSelected(
 				query.__woocommerceAttributes.map( ( { termId: id } ) => ( {
 					id,

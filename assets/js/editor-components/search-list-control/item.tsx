@@ -4,6 +4,7 @@
 import classNames from 'classnames';
 import { CheckboxControl } from '@wordpress/components';
 import { useCallback } from '@wordpress/element';
+import { arrayDifferenceBy, arrayUnionBy } from '@woocommerce/utils';
 
 /**
  * Internal dependencies
@@ -76,9 +77,13 @@ export const SearchListItem = ( {
 				label={ getHighlightedName( item.name, search ) }
 				onChange={ () => {
 					if ( isSelected ) {
-						onSelect( [] )();
+						onSelect(
+							arrayDifferenceBy( selected, item.children, 'id' )
+						)();
 					} else {
-						onSelect( item.children )();
+						onSelect(
+							arrayUnionBy( selected, item.children, 'id' )
+						)();
 					}
 				} }
 				onClick={ ( e ) => e.stopPropagation() }
