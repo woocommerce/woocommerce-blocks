@@ -143,6 +143,11 @@ abstract class AbstractTemplateCompatibility {
 		ob_start();
 		foreach ( $hooks as $hook => $data ) {
 			if ( $data['position'] === $position ) {
+				/**
+				 * Action to render the content of a hook.
+				 *
+				 * @since 9.5.0
+				 */
 				do_action( $hook );
 			}
 		}
