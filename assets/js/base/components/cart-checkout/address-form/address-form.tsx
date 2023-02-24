@@ -144,6 +144,29 @@ const AddressForm = ( {
 
 	id = id || instanceId;
 
+	const customValidationHandler = (
+		inputObject: HTMLInputElement,
+		fieldName: string
+	) => {
+		if (
+			fieldName === 'postcode' &&
+			values.country &&
+			! isPostcode( {
+				postcode: values.postcode,
+				country: values.country,
+			} )
+		) {
+			inputObject.setCustomValidity(
+				__(
+					'Please enter a valid postcode',
+					'woo-gutenberg-products-block'
+				)
+			);
+			return false;
+		}
+		return true;
+	};
+
 	return (
 		<div id={ id } className="wc-block-components-address-form">
 			{ addressFormFields.map( ( field ) => {
@@ -214,32 +237,11 @@ const AddressForm = ( {
 					);
 				}
 
-				const customValidationHandler = (
-					inputObject: HTMLInputElement
-				) => {
-					if (
-						field.key === 'postcode' &&
-						values.country &&
-						! isPostcode( {
-							postcode: values.postcode,
-							country: values.country,
-						} )
-					) {
-						inputObject.setCustomValidity(
-							__(
-								'Please enter a valid postcode',
-								'woo-gutenberg-products-block'
-							)
-						);
-						return false;
-					}
-					return true;
-				};
-
 				return (
 					<ValidatedTextInput
 						key={ field.key }
 						id={ `${ id }-${ field.key }` }
+						fieldName={ field.key }
 						errorId={ errorId }
 						className={ `wc-block-components-address-form__${ field.key }` }
 						label={

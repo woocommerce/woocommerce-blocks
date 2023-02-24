@@ -52,8 +52,9 @@ interface ValidatedTextInputProps
 	errorMessage?: string | undefined;
 	// Custom validation function that is run on change. Use setCustomValidity to set an error message.
 	customValidation?:
-		| ( ( inputObject: HTMLInputElement ) => boolean )
+		| ( ( inputObject: HTMLInputElement, fieldName: string ) => boolean )
 		| undefined;
+	fieldName: string;
 }
 
 const ValidatedTextInput = ( {
@@ -69,6 +70,7 @@ const ValidatedTextInput = ( {
 	value = '',
 	customValidation,
 	label,
+	fieldName,
 	...rest
 }: ValidatedTextInputProps ): JSX.Element => {
 	const [ isPristine, setIsPristine ] = useState( true );
@@ -106,7 +108,8 @@ const ValidatedTextInput = ( {
 			}
 
 			const inputIsValid = customValidation
-				? inputObject.checkValidity() && customValidation( inputObject )
+				? inputObject.checkValidity() &&
+				  customValidation( inputObject, fieldName )
 				: inputObject.checkValidity();
 
 			if ( inputIsValid ) {
@@ -130,6 +133,7 @@ const ValidatedTextInput = ( {
 			errorIdString,
 			setValidationErrors,
 			label,
+			fieldName,
 		]
 	);
 
