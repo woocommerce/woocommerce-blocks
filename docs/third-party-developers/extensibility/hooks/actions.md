@@ -884,7 +884,6 @@ do_action( '{$hook}' )
 
 
  - [Templates/AbstractTemplateCompatibility.php](../../../../src/Templates/AbstractTemplateCompatibility.php)
- - [Templates/BlockTemplatesCompatibility.php](../../../../src/Templates/BlockTemplatesCompatibility.php)
 
 ---
 <!-- FEEDBACK -->

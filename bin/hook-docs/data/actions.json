@@ -1062,23 +1062,6 @@
                 "long_description_html": ""
             },
             "args": 0
-        },
-        {
-            "name": "{$hook}",
-            "file": "Templates/BlockTemplatesCompatibility.php",
-            "type": "action",
-            "doc": {
-                "description": "Action to render the content of a hook.",
-                "long_description": "",
-                "tags": [
-                    {
-                        "name": "since",
-                        "content": "9.5.0"
-                    }
-                ],
-                "long_description_html": ""
-            },
-            "args": 0
         }
     ]
 }
