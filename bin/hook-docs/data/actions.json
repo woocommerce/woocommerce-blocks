@@ -307,23 +307,6 @@
         },
         {
             "name": "woocommerce_blocks_cart_enqueue_data",
-            "file": "BlockTypes/Cart.php",
-            "type": "action",
-            "doc": {
-                "description": "Fires after cart block data is registered.",
-                "long_description": "",
-                "tags": [
-                    {
-                        "name": "since",
-                        "content": "2.6.0"
-                    }
-                ],
-                "long_description_html": ""
-            },
-            "args": 0
-        },
-        {
-            "name": "woocommerce_blocks_cart_enqueue_data",
             "file": "BlockTypes/MiniCart.php",
             "type": "action",
             "doc": {
@@ -333,6 +316,23 @@
                     {
                         "name": "since",
                         "content": "5.8.0"
+                    }
+                ],
+                "long_description_html": ""
+            },
+            "args": 0
+        },
+        {
+            "name": "woocommerce_blocks_cart_enqueue_data",
+            "file": "BlockTypes/Cart.php",
+            "type": "action",
+            "doc": {
+                "description": "Fires after cart block data is registered.",
+                "long_description": "",
+                "tags": [
+                    {
+                        "name": "since",
+                        "content": "2.6.0"
                     }
                 ],
                 "long_description_html": ""
@@ -698,6 +698,48 @@
             "args": 2
         },
         {
+            "name": "woocommerce_store_api_cart_select_shipping_rate",
+            "file": "StoreApi/Routes/V1/CartSelectShippingRate.php",
+            "type": "action",
+            "doc": {
+                "description": "Fires an action after a shipping method has been chosen for package(s) via the Store API.",
+                "long_description": "This allows extensions to perform addition actions after a shipping method has been chosen, but before the cart totals are recalculated.",
+                "tags": [
+                    {
+                        "name": "since",
+                        "content": "9.0.0"
+                    },
+                    {
+                        "name": "param",
+                        "content": "The sanitized ID of the package being updated. Null if all packages are being updated.",
+                        "types": [
+                            "string",
+                            "null"
+                        ],
+                        "variable": "$package_id"
+                    },
+                    {
+                        "name": "param",
+                        "content": "The sanitized chosen rate ID for the package.",
+                        "types": [
+                            "string"
+                        ],
+                        "variable": "$rate_id"
+                    },
+                    {
+                        "name": "param",
+                        "content": "Full details about the request.",
+                        "types": [
+                            "\\WP_REST_Request"
+                        ],
+                        "variable": "$request"
+                    }
+                ],
+                "long_description_html": "<p>This allows extensions to perform addition actions after a shipping method has been chosen, but before the cart totals are recalculated.</p>"
+            },
+            "args": 3
+        },
+        {
             "name": "woocommerce_store_api_cart_update_customer_from_request",
             "file": "StoreApi/Routes/V1/CartUpdateCustomer.php",
             "type": "action",
@@ -991,6 +1033,40 @@
                 "long_description_html": ""
             },
             "args": 2
+        },
+        {
+            "name": "woocommerce_{$product->get_type()}_add_to_cart",
+            "file": "BlockTypes/AddToCartForm.php",
+            "type": "action",
+            "doc": {
+                "description": "Trigger the single product add to cart action for each product type.",
+                "long_description": "",
+                "tags": [
+                    {
+                        "name": "since",
+                        "content": "9.7.0"
+                    }
+                ],
+                "long_description_html": ""
+            },
+            "args": 0
+        },
+        {
+            "name": "{$hook}",
+            "file": "Templates/BlockTemplatesCompatibility.php",
+            "type": "action",
+            "doc": {
+                "description": "Action to render the content of a hook.",
+                "long_description": "",
+                "tags": [
+                    {
+                        "name": "since",
+                        "content": "9.5.0"
+                    }
+                ],
+                "long_description_html": ""
+            },
+            "args": 0
         }
     ]
 }

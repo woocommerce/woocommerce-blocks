@@ -422,6 +422,18 @@
             "args": 1
         },
         {
+            "name": "woocommerce_apply_base_tax_for_local_pickup",
+            "file": "Shipping/ShippingController.php",
+            "type": "filter",
+            "doc": {
+                "description": "",
+                "long_description": "",
+                "tags": [],
+                "long_description_html": ""
+            },
+            "args": 1
+        },
+        {
             "name": "woocommerce_apply_individual_use_coupon",
             "file": "StoreApi/Utilities/CartController.php",
             "type": "filter",
@@ -532,6 +544,31 @@
                 "long_description_html": ""
             },
             "args": 4
+        },
+        {
+            "name": "woocommerce_blocks_hook_compatibility_additional_data",
+            "file": "Templates/BlockTemplatesCompatibility.php",
+            "type": "filter",
+            "doc": {
+                "description": "When extensions implement their equivalent blocks of the template hook functions, they can use this filter to register their old hooked data here, so in the blockified template, the old hooked functions can be removed in favor of the new blocks while keeping the old hooked functions working in classic templates.",
+                "long_description": "Accepts an array of hooked data. The array should be in the following format: [   [     hook => <hook-name>,     function => <function-name>,     priority => <priority>,  ],  ... ] Where: - hook-name is the name of the hook that have the functions hooked to. - function-name is the hooked function name. - priority is the priority of the hooked function.",
+                "tags": [
+                    {
+                        "name": "param",
+                        "content": "Additional hooked data. Default to empty",
+                        "types": [
+                            "array"
+                        ],
+                        "variable": "$data"
+                    },
+                    {
+                        "name": "since",
+                        "content": "9.5.0"
+                    }
+                ],
+                "long_description_html": "<p>Accepts an array of hooked data. The array should be in the following format: [ [ hook =&gt; <hook-name>, function =&gt; <function-name>, priority =&gt; <priority>, ], ... ] Where:</p> <ul> <li>hook-name is the name of the hook that have the functions hooked to.</li> <li>function-name is the hooked function name.</li> <li>priority is the priority of the hooked function.</li> </ul>"
+            },
+            "args": 1
         },
         {
             "name": "woocommerce_blocks_product_grid_is_cacheable",
@@ -771,6 +808,23 @@
             "args": 2
         },
         {
+            "name": "woocommerce_loop_add_to_cart_args",
+            "file": "BlockTypes/ProductButton.php",
+            "type": "filter",
+            "doc": {
+                "description": "Allow filtering of the add to cart button arguments.",
+                "long_description": "",
+                "tags": [
+                    {
+                        "name": "since",
+                        "content": "9.7.0"
+                    }
+                ],
+                "long_description_html": ""
+            },
+            "args": 2
+        },
+        {
             "name": "woocommerce_loop_add_to_cart_link",
             "file": "BlockTypes/ProductButton.php",
             "type": "filter",
@@ -793,7 +847,7 @@
                 ],
                 "long_description_html": ""
             },
-            "args": 2
+            "args": 3
         },
         {
             "name": "woocommerce_new_customer_data",
@@ -963,6 +1017,18 @@
                         ]
                     }
                 ],
+                "long_description_html": ""
+            },
+            "args": 3
+        },
+        {
+            "name": "woocommerce_shipping_{$this->id}_is_available",
+            "file": "Shipping/PickupLocation.php",
+            "type": "filter",
+            "doc": {
+                "description": "",
+                "long_description": "",
+                "tags": [],
                 "long_description_html": ""
             },
             "args": 3
