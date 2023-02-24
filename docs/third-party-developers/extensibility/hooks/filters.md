@@ -459,7 +459,7 @@ apply_filters( 'woocommerce_blocks_hook_compatibility_additional_data', array $d
 ### Source
 
 
- - [Templates/BlockTemplatesCompatibility.php](../../../../src/Templates/BlockTemplatesCompatibility.php)
+ - [Templates/AbstractTemplateCompatibility.php](../../../../src/Templates/AbstractTemplateCompatibility.php)
 
 ---
 

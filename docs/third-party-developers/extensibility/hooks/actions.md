@@ -874,7 +874,7 @@ do_action( 'woocommerce_{$product->get_type()}_add_to_cart' )
 ## {$hook}
 
 
-Action to render the content of a hook.
+
 
 ```php
 do_action( '{$hook}' )
@@ -883,7 +883,7 @@ do_action( '{$hook}' )
 ### Source
 
 
- - [Templates/BlockTemplatesCompatibility.php](../../../../src/Templates/BlockTemplatesCompatibility.php)
+ - [Templates/AbstractTemplateCompatibility.php](../../../../src/Templates/AbstractTemplateCompatibility.php)
 
 ---
 <!-- FEEDBACK -->
