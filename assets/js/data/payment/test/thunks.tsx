@@ -38,13 +38,13 @@ describe( 'wc/store/payment thunks', () => {
 	const testPaymentProcessingCallback = jest.fn();
 	const testPaymentProcessingCallback2 = jest.fn();
 	const currentObservers: EventObserversType = {
-		payment_processing: new Map(),
+		payment_setup: new Map(),
 	};
-	currentObservers.payment_processing.set( 'test', {
+	currentObservers.payment_setup.set( 'test', {
 		callback: testPaymentProcessingCallback,
 		priority: 10,
 	} );
-	currentObservers.payment_processing.set( 'test2', {
+	currentObservers.payment_setup.set( 'test2', {
 		callback: testPaymentProcessingCallback2,
 		priority: 10,
 	} );
@@ -76,7 +76,7 @@ describe( 'wc/store/payment thunks', () => {
 				},
 			} );
 
-			currentObservers.payment_processing.set( 'test3', {
+			currentObservers.payment_setup.set( 'test3', {
 				callback: testSuccessCallbackWithMetadata,
 				priority: 10,
 			} );
@@ -129,7 +129,7 @@ describe( 'wc/store/payment thunks', () => {
 				},
 			} );
 
-			currentObservers.payment_processing.set( 'test4', {
+			currentObservers.payment_setup.set( 'test4', {
 				callback: testFailingCallbackWithMetadata,
 				priority: 10,
 			} );
@@ -181,17 +181,17 @@ describe( 'wc/store/payment thunks', () => {
 				type: 'success',
 			} );
 
-			currentObservers.payment_processing.set( 'test5', {
+			currentObservers.payment_setup.set( 'test5', {
 				callback: testErrorCallbackWithMetadata,
 				priority: 10,
 			} );
-			currentObservers.payment_processing.set( 'test6', {
+			currentObservers.payment_setup.set( 'test6', {
 				callback: testSuccessCallback,
 				priority: 9,
 			} );
 
 			const setPaymentErrorMock = jest.fn();
-			const setPaymentSuccessMock = jest.fn();
+			const setPaymentReadyMock = jest.fn();
 			const registryMock = {
 				dispatch: jest
 					.fn()
@@ -211,14 +211,14 @@ describe( 'wc/store/payment thunks', () => {
 				dispatch: {
 					...wpDataFunctions.dispatch( PAYMENT_STORE_KEY ),
 					__internalSetPaymentError: setPaymentErrorMock,
-					__internalSetPaymentSuccess: setPaymentSuccessMock,
+					__internalSetPaymentReady: setPaymentReadyMock,
 				},
 			} );
 
 			// The observer throwing will cause this.
 			//expect( console ).toHaveErroredWith( new Error( 'test error' ) );
 			expect( setPaymentErrorMock ).toHaveBeenCalled();
-			expect( setPaymentSuccessMock ).not.toHaveBeenCalled();
+			expect( setPaymentReadyMock ).not.toHaveBeenCalled();
 		} );
 	} );
 } );

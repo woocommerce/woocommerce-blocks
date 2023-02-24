@@ -2,6 +2,7 @@
 namespace Automattic\WooCommerce\Blocks;
 
 use Automattic\WooCommerce\Blocks\Domain\Package;
+use Automattic\WooCommerce\Blocks\Templates\BlockTemplatesCompatibility;
 use Automattic\WooCommerce\Blocks\Templates\ProductAttributeTemplate;
 use Automattic\WooCommerce\Blocks\Utils\BlockTemplateUtils;
 
@@ -67,6 +68,7 @@ class BlockTemplatesController {
 		add_filter( 'get_block_templates', array( $this, 'add_block_templates' ), 10, 3 );
 		add_filter( 'current_theme_supports-block-templates', array( $this, 'remove_block_template_support_for_shop_page' ) );
 		add_filter( 'taxonomy_template_hierarchy', array( $this, 'add_archive_product_to_eligible_for_fallback_templates' ), 10, 1 );
+		add_filter( 'post_type_archive_title', array( $this, 'update_product_archive_title' ), 10, 2 );
 
 		if ( $this->package->is_experimental_build() ) {
 			add_action( 'after_switch_theme', array( $this, 'check_should_use_blockified_product_grid_templates' ), 10, 2 );
@@ -295,7 +297,7 @@ class BlockTemplatesController {
 			$fits_slug_query =
 				! isset( $query['slug__in'] ) || in_array( $template_file->slug, $query['slug__in'], true );
 			$fits_area_query =
-				! isset( $query['area'] ) || $template_file->area === $query['area'];
+				! isset( $query['area'] ) || ( property_exists( $template_file, 'area' ) && $template_file->area === $query['area'] );
 			$should_include  = $is_not_custom && $fits_slug_query && $fits_area_query;
 			if ( $should_include ) {
 				$query_result[] = $template;
@@ -322,6 +324,15 @@ class BlockTemplatesController {
 				if ( ! $template->description ) {
 					$template->description = BlockTemplateUtils::get_block_template_description( $template->slug );
 				}
+
+				if ( 'single-product' === $template->slug ) {
+					if ( ! is_admin() ) {
+						$new_content       = BlockTemplatesCompatibility::wrap_single_product_template( $template->content );
+						$template->content = $new_content;
+					}
+					return $template;
+				}
+
 				return $template;
 			},
 			$query_result
@@ -587,5 +598,25 @@ class BlockTemplatesController {
 		}
 
 		return $is_support;
+	}
+
+	/**
+	 * Update the product archive title to "Shop".
+	 *
+	 * @param string $post_type_name Post type 'name' label.
+	 * @param string $post_type      Post type.
+	 *
+	 * @return string
+	 */
+	public function update_product_archive_title( $post_type_name, $post_type ) {
+		if (
+			function_exists( 'is_shop' ) &&
+			is_shop() &&
+			'product' === $post_type
+		) {
+			return __( 'Shop', 'woo-gutenberg-products-block' );
+		}
+
+		return $post_type_name;
 	}
 }
