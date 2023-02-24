@@ -101,7 +101,11 @@ class ProductButton extends AbstractBlock {
 					)
 				)
 			);
-
+			/**
+			 * Allow filtering of the add to cart button arguments.
+			 *
+			 * @since 9.7.0
+			 */
 			$args = apply_filters(
 				'woocommerce_loop_add_to_cart_args',
 				array(
