@@ -36,7 +36,7 @@ abstract class AbstractTemplateCompatibility {
 				*
 				* This hooks allows to disable the compatibility layer for the blockified.
 				*
-				* @since 9.7.0
+				* @since TBD
 				* @param boolean.
 				*/
 				$is_disabled_compatility_layer = apply_filters( 'woocommerce_disable_compatibility_layer', false );
