@@ -115,6 +115,7 @@ abstract class AbstractTemplateCompatibility {
 		 * - function-name is the hooked function name.
 		 * - priority is the priority of the hooked function.
 		 *
+		 * @since 9.5.0
 		 * @param array $data Additional hooked data. Default to empty
 		 */
 		$additional_hook_data = apply_filters( 'woocommerce_blocks_hook_compatibility_additional_data', array() );
