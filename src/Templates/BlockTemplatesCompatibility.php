@@ -251,6 +251,84 @@ class BlockTemplatesCompatibility extends AbstractTemplateCompatibility {
 	}
 
 	/**
+	 * Remove the default callback added by WooCommerce. We replaced these
+	 * callbacks by blocks so we have to remove them to prevent duplicated
+	 * content.
+	 */
+	protected function remove_default_hooks() {
+		foreach ( $this->hook_data as $hook => $data ) {
+			if ( ! isset( $data['hooked'] ) ) {
+				continue;
+			}
+			foreach ( $data['hooked'] as $callback => $priority ) {
+				remove_action( $hook, $callback, $priority );
+			}
+		}
+
+		/**
+		 * When extensions implement their equivalent blocks of the template
+		 * hook functions, they can use this filter to register their old hooked
+		 * data here, so in the blockified template, the old hooked functions
+		 * can be removed in favor of the new blocks while keeping the old
+		 * hooked functions working in classic templates.
+		 *
+		 * Accepts an array of hooked data. The array should be in the following
+		 * format:
+		 * [
+		 *   [
+		 *     hook => <hook-name>,
+		 *     function => <function-name>,
+		 *     priority => <priority>,
+		 *  ],
+		 *  ...
+		 * ]
+		 * Where:
+		 * - hook-name is the name of the hook that have the functions hooked to.
+		 * - function-name is the hooked function name.
+		 * - priority is the priority of the hooked function.
+		 *
+		 * @param array $data Additional hooked data. Default to empty
+		 *
+		 * @since 9.5.0
+		 */
+		$additional_hook_data = apply_filters( 'woocommerce_blocks_hook_compatibility_additional_data', array() );
+
+		if ( empty( $additional_hook_data ) || ! is_array( $additional_hook_data ) ) {
+			return;
+		}
+
+		foreach ( $additional_hook_data as $data ) {
+			if ( ! isset( $data['hook'], $data['function'], $data['priority'] ) ) {
+				continue;
+			}
+			remove_action( $data['hook'], $data['function'], $data['priority'] );
+		}
+	}
+
+	/**
+	 * Get the buffer content of the hooks to append/prepend to render content.
+	 *
+	 * @param array  $hooks    The hooks to be rendered.
+	 * @param string $position The position of the hooks.
+	 *
+	 * @return string
+	 */
+	protected function get_hooks_buffer( $hooks, $position ) {
+		ob_start();
+		foreach ( $hooks as $hook => $data ) {
+			if ( $data['position'] === $position ) {
+				/**
+				 * Action to render the content of a hook.
+				 *
+				 * @since 9.5.0
+				 */
+				do_action( $hook );
+			}
+		}
+		return ob_get_clean();
+	}
+
+	/**
 	 * Loop through inner blocks recursively to find the Products blocks that
 	 * inherits query from template.
 	 *
