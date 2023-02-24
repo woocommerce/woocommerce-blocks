@@ -23,6 +23,20 @@
 		}
 	}
 
+	&.is-loading {
+		.woocommerce-search-list__list {
+			padding: $gap-small 0;
+			text-align: center;
+			border: none;
+		}
+
+		.components-form-token-field__remove-token {
+			// We use a placeholder “Loading…” text when loading passed
+			// as a value to the `FormTokenField`, so we hide the “X”.
+			display: none;
+		}
+	}
+
 	&.is-token {
 		.woocommerce-search-list__list {
 			border-top: 0;
@@ -90,12 +104,6 @@
 
 	li {
 		margin-bottom: 0;
-	}
-
-	&.is-loading {
-		padding: $gap-small 0;
-		text-align: center;
-		border: none;
 	}
 
 	&.is-not-found {

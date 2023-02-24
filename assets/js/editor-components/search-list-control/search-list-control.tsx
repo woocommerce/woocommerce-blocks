@@ -299,6 +299,7 @@ export const SearchListControl = (
 		<div
 			className={ classnames( 'woocommerce-search-list', className, {
 				'is-compact': isCompact,
+				'is-loading': isLoading,
 				'is-token': type === 'token',
 			} ) }
 		>
@@ -343,7 +344,7 @@ export const SearchListControl = (
 				) }
 			</div>
 			{ isLoading ? (
-				<div className="woocommerce-search-list__list is-loading">
+				<div className="woocommerce-search-list__list">
 					<Spinner />
 				</div>
 			) : (
