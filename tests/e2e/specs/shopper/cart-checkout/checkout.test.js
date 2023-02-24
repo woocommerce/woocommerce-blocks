@@ -15,7 +15,7 @@ import {
 	getToggleIdByLabel,
 	switchBlockInspectorTabWhenGutenbergIsInstalled,
 } from '@woocommerce/blocks-test-utils';
-
+import { visitAdminPage } from '@wordpress/e2e-test-utils';
 /**
  * Internal dependencies
  */
@@ -27,6 +27,7 @@ import {
 	SHIPPING_DETAILS,
 	SIMPLE_PHYSICAL_PRODUCT_NAME,
 	SIMPLE_VIRTUAL_PRODUCT_NAME,
+	BASE_URL,
 } from '../../../../utils';
 
 import { createCoupon } from '../../../utils';
@@ -35,7 +36,46 @@ let coupon;
 
 describe( 'Shopper → Checkout', () => {
 	beforeAll( async () => {
+		// Check that Woo Collection is enabled.
+		await page.goto(
+			`${ BASE_URL }?check_third_party_local_pickup_method`
+		);
+		// eslint-disable-next-line jest/no-standalone-expect
+		await expect( page ).toMatch( 'Woo Collection' );
+
 		await shopper.block.emptyCart();
+	} );
+
+	describe( 'Local pickup', () => {
+		beforeAll( async () => {
+			await visitAdminPage(
+				'admin.php',
+				'page=wc-settings&tab=shipping&section=pickup_location'
+			);
+			// eslint-disable-next-line jest/no-standalone-expect
+			await expect( page ).toClick( 'label', {
+				text: 'Enable local pickup',
+			} );
+			// eslint-disable-next-line jest/no-standalone-expect
+			await expect( page ).toClick( 'button', {
+				text: 'Save changes',
+			} );
+		} );
+		it( 'The shopper can choose a local pickup option', async () => {
+			await shopper.block.emptyCart();
+			await shopper.block.goToShop();
+			await shopper.addToCartFromShopPage( SIMPLE_PHYSICAL_PRODUCT_NAME );
+			await shopper.block.goToCheckout();
+			expect( page ).toClick(
+				'.wc-block-checkout__shipping-method-option-title',
+				{
+					text: 'Local Pickup',
+				}
+			);
+			expect( page ).toMatch( 'Woo Collection' );
+			await shopper.block.fillBillingDetails( BILLING_DETAILS );
+			await shopper.block.placeOrder();
+		} );
 	} );
 
 	describe( 'Payment Methods', () => {
