@@ -79,6 +79,7 @@ const SELECTORS = {
  * @param {string} searchTerm The text to search the inserter for.
  */
 export async function searchForBlock( searchTerm ) {
+	await openGlobalBlockInserter();
 	await page.waitForSelector( SELECTORS.inserter.search );
 	await page.focus( SELECTORS.inserter.search );
 	await pressKeyWithModifier( 'primary', 'a' );
@@ -92,7 +93,6 @@ export async function searchForBlock( searchTerm ) {
  * @param {string} searchTerm The text to search the inserter for.
  */
 export async function insertBlockDontWaitForInsertClose( searchTerm ) {
-	await openGlobalBlockInserter();
 	await searchForBlock( searchTerm );
 	await page.waitForXPath( `//button//span[text()='${ searchTerm }']` );
 	const insertButton = (
@@ -126,24 +126,14 @@ export const openWidgetEditor = async () => {
 };
 
 export const closeModalIfExists = async () => {
-	if (
-		await page.evaluate( () => {
-			return !! document.querySelector( '.components-modal__header' );
-		} )
-	) {
-		await page.click(
-			'.components-modal__header [aria-label="Close dialog"]'
-		);
+	// The modal close button can have different aria-labels, depending on the version of Gutenberg/WP.
+	// Newer versions (WP >=6.2) use `Close`, while older versions (WP <6.1) use `Close dialog`.
+	const closeButton = await page.$(
+		'.components-modal__header [aria-label="Close"], .components-modal__header [aria-label="Close dialog"]'
+	);
+	if ( closeButton ) {
+		await closeButton.click();
 	}
-};
-
-export const openWidgetsEditorBlockInserter = async () => {
-	await page.waitForSelector(
-		'.edit-widgets-header [aria-label="Add block"],.edit-widgets-header [aria-label="Toggle block inserter"]'
-	);
-	await page.click(
-		'.edit-widgets-header [aria-label="Add block"],.edit-widgets-header [aria-label="Toggle block inserter"]'
-	);
 };
 
 export const isBlockInsertedInWidgetsArea = async ( blockName ) => {
