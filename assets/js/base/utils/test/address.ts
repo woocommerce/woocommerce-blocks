@@ -28,7 +28,7 @@ describe( 'emptyHiddenAddressFields', () => {
 } );
 
 describe( 'isAddressComplete', () => {
-	it( 'correctly checks address is empty', () => {
+	it( 'correctly checks empty addresses', () => {
 		const address = {
 			first_name: '',
 			last_name: '',
