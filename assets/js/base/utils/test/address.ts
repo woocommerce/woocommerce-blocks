@@ -45,7 +45,7 @@ describe( 'isAddressComplete', () => {
 		expect( isAddressComplete( address ) ).toBe( false );
 	} );
 
-	it( 'correctly checks is not complete', () => {
+	it( 'correctly checks incomplete addresses', () => {
 		const address = {
 			first_name: 'John',
 			last_name: 'Deo',
