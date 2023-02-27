@@ -39,8 +39,52 @@ class BlockTemplatesCompatibility {
 			return;
 		}
 
-		add_filter( 'render_block_data', array( $this, 'update_render_block_data' ), 10, 3 );
-		add_filter( 'render_block', array( $this, 'inject_hooks' ), 10, 2 );
+		add_filter(
+			'render_block_data',
+			function( $parsed_block, $source_block, $parent_block ) {
+				/**
+				* Filter to disable the compatibility layer for the blockified templates.
+				*
+				* This hook allows to disable the compatibility layer for the blockified templates.
+				*
+				* @since TBD
+				* @param boolean.
+				*/
+				$is_disabled_compatility_layer = apply_filters( 'woocommerce_disable_compatibility_layer', false );
+
+				if ( $is_disabled_compatility_layer ) {
+					return $parsed_block;
+				}
+
+				return $this->update_render_block_data( $parsed_block, $source_block, $parent_block );
+
+			},
+			10,
+			3
+		);
+
+		add_filter(
+			'render_block',
+			function ( $block_content, $block ) {
+				/**
+				* Filters to disable the compatibility layer for the blockified templates.
+				*
+				* This hooks allows to disable the compatibility layer for the blockified.
+				*
+				* @since TBD
+				* @param boolean.
+				*/
+				$is_disabled_compatility_layer = apply_filters( 'woocommerce_disable_compatibility_layer', false );
+
+				if ( $is_disabled_compatility_layer ) {
+					return $block_content;
+				}
+
+				return $this->inject_hooks( $block_content, $block );
+			},
+			10,
+			2
+		);
 	}
 
 	/**
@@ -244,6 +288,14 @@ class BlockTemplatesCompatibility {
 					'wc_no_products_found' => 10,
 				),
 			),
+			'woocommerce_archive_description'         => array(
+				'block_name' => 'core/term-description',
+				'position'   => 'before',
+				'hooked'     => array(
+					'woocommerce_taxonomy_archive_description' => 10,
+					'woocommerce_product_archive_description'  => 10,
+				),
+			),
 		);
 	}
 
@@ -292,6 +344,8 @@ class BlockTemplatesCompatibility {
 		 * - priority is the priority of the hooked function.
 		 *
 		 * @param array $data Additional hooked data. Default to empty
+		 *
+		 * @since 9.5.0
 		 */
 		$additional_hook_data = apply_filters( 'woocommerce_blocks_hook_compatibility_additional_data', array() );
 
@@ -319,6 +373,11 @@ class BlockTemplatesCompatibility {
 		ob_start();
 		foreach ( $hooks as $hook => $data ) {
 			if ( $data['position'] === $position ) {
+				/**
+				 * Action to render the content of a hook.
+				 *
+				 * @since 9.5.0
+				 */
 				do_action( $hook );
 			}
 		}
@@ -359,6 +418,135 @@ class BlockTemplatesCompatibility {
 		if ( ! empty( $block['innerBlocks'] ) ) {
 			array_walk( $block['innerBlocks'], array( $this, 'inject_attribute' ) );
 		}
+	}
+
+	/**
+	 * For compatibility reason, we need to wrap the Single Product template in a div with specific class.
+	 * For more details, see https://github.com/woocommerce/woocommerce-blocks/issues/8314.
+	 *
+	 * @param string $template_content Template Content.
+	 * @return string Wrapped template content inside a div.
+	 */
+	public static function wrap_single_product_template( $template_content ) {
+		$parsed_blocks  = parse_blocks( $template_content );
+		$grouped_blocks = self::group_blocks( $parsed_blocks );
+
+		// WIP: The list of blocks is WIP.
+		$single_product_template_blocks = array( 'woocommerce/product-image-gallery', 'woocommerce/product-details', 'woocommerce/add-to-cart-form' );
+
+		$wrapped_blocks = array_map(
+			function( $blocks ) use ( $single_product_template_blocks ) {
+				if ( 'core/template-part' === $blocks[0]['blockName'] ) {
+					return $blocks;
+				}
+
+				$has_single_product_template_blocks = self::has_single_product_template_blocks( $blocks, $single_product_template_blocks );
+
+				if ( $has_single_product_template_blocks ) {
+					$wrapped_block = self::create_wrap_block_group( $blocks );
+					return array( $wrapped_block[0] );
+				}
+				return $blocks;
+			},
+			$grouped_blocks
+		);
+
+		$template = array_reduce(
+			$wrapped_blocks,
+			function( $carry, $item ) {
+				if ( is_array( $item ) ) {
+					return $carry . serialize_blocks( $item );
+				}
+				return $carry . serialize_block( $item );
+			},
+			''
+		);
+
+		return $template;
+	}
+
+	/**
+	 * Wrap all the blocks inside the template in a group block.
+	 *
+	 * @param array $blocks Array of parsed block objects.
+	 * @return array Group block with the blocks inside.
+	 */
+	private static function create_wrap_block_group( $blocks ) {
+		$serialized_blocks = serialize_blocks( $blocks );
+
+		$new_block = parse_blocks(
+			sprintf(
+				'<!-- wp:group {"className":"woocommerce product"} -->
+				<div class="wp-block-group woocommerce product">
+					%1$s
+				</div>
+			<!-- /wp:group -->',
+				$serialized_blocks
+			)
+		);
+
+		$new_block['innerBlocks'] = $blocks;
+
+		return $new_block;
+
+	}
+
+	/**
+	 * Check if the Single Product template has a single product template block:
+	 * woocommerce/product-gallery-image, woocommerce/product-details, woocommerce/add-to-cart-form]
+	 *
+	 * @param array $parsed_blocks Array of parsed block objects.
+	 * @param array $single_product_template_blocks Array of single product template blocks.
+	 * @return bool True if the template has a single product template block, false otherwise.
+	 */
+	private static function has_single_product_template_blocks( $parsed_blocks, $single_product_template_blocks ) {
+		$found = false;
+
+		foreach ( $parsed_blocks as $block ) {
+			if ( isset( $block['blockName'] ) && in_array( $block['blockName'], $single_product_template_blocks, true ) ) {
+				$found = true;
+				break;
+			}
+			$found = self::has_single_product_template_blocks( $block['innerBlocks'], $single_product_template_blocks );
+			if ( $found ) {
+				break;
+			}
+		}
+		return $found;
+	}
+
+
+	/**
+	 * Group blocks in this way:
+	 * B1 + TP1 + B2 + B3 + B4 + TP2 + B5
+	 * (B = Block, TP = Template Part)
+	 * becomes:
+	 * [[B1], [TP1], [B2, B3, B4], [TP2], [B5]]
+	 *
+	 * @param array $parsed_blocks Array of parsed block objects.
+	 * @return array Array of blocks grouped by template part.
+	 */
+	private static function group_blocks( $parsed_blocks ) {
+		return array_reduce(
+			$parsed_blocks,
+			function( $carry, $block ) {
+				if ( 'core/template-part' === $block['blockName'] ) {
+					array_push( $carry, array( $block ) );
+					return $carry;
+				}
+				if ( empty( $block['blockName'] ) ) {
+					return $carry;
+				}
+				$last_element_index = count( $carry ) - 1 < 0 ? 0 : count( $carry ) - 1;
+				if ( isset( $carry[ $last_element_index ][0]['blockName'] ) && 'core/template-part' !== $carry[ $last_element_index ][0]['blockName'] ) {
+					array_push( $carry[ $last_element_index ], $block );
+					return $carry;
+				}
+				array_push( $carry, array( $block ) );
+				return $carry;
+			},
+			array()
+		);
 	}
 
 }

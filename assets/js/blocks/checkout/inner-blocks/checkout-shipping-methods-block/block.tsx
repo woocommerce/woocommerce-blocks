@@ -1,10 +1,14 @@
 /**
  * External dependencies
  */
+import { type ReactElement } from 'react';
 import { __ } from '@wordpress/i18n';
 import { useShippingData } from '@woocommerce/base-context/hooks';
 import { ShippingRatesControl } from '@woocommerce/base-components/cart-checkout';
-import { getShippingRatesPackageCount } from '@woocommerce/base-utils';
+import {
+	getShippingRatesPackageCount,
+	hasCollectableRate,
+} from '@woocommerce/base-utils';
 import { getCurrencyFromPriceResponse } from '@woocommerce/price-format';
 import FormattedMonetaryAmount from '@woocommerce/base-components/formatted-monetary-amount';
 import { useEditorContext, noticeContexts } from '@woocommerce/base-context';
@@ -21,7 +25,6 @@ import type {
 /**
  * Internal dependencies
  */
-import NoShippingPlaceholder from './no-shipping-placeholder';
 import './style.scss';
 
 /**
@@ -49,7 +52,7 @@ const renderShippingRatesControlOption = (
 	};
 };
 
-const Block = (): JSX.Element | null => {
+const Block = ( { noShippingPlaceholder = null } ): ReactElement | null => {
 	const { isEditor } = useEditorContext();
 
 	const {
@@ -66,8 +69,9 @@ const Block = (): JSX.Element | null => {
 					...shippingRatesPackage,
 					shipping_rates: shippingRatesPackage.shipping_rates.filter(
 						( shippingRatesPackageRate ) =>
-							shippingRatesPackageRate.method_id !==
-							'pickup_location'
+							! hasCollectableRate(
+								shippingRatesPackageRate.method_id
+							)
 					),
 				};
 		  } )
@@ -101,7 +105,7 @@ const Block = (): JSX.Element | null => {
 				context={ noticeContexts.SHIPPING_METHODS }
 			/>
 			{ isEditor && ! shippingRatesPackageCount ? (
-				<NoShippingPlaceholder />
+				noShippingPlaceholder
 			) : (
 				<ShippingRatesControl
 					noResultsMessage={

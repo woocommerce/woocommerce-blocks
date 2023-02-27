@@ -67,6 +67,7 @@ class BlockTemplatesController {
 		add_filter( 'get_block_templates', array( $this, 'add_block_templates' ), 10, 3 );
 		add_filter( 'current_theme_supports-block-templates', array( $this, 'remove_block_template_support_for_shop_page' ) );
 		add_filter( 'taxonomy_template_hierarchy', array( $this, 'add_archive_product_to_eligible_for_fallback_templates' ), 10, 1 );
+		add_filter( 'post_type_archive_title', array( $this, 'update_product_archive_title' ), 10, 2 );
 
 		if ( $this->package->is_experimental_build() ) {
 			add_action( 'after_switch_theme', array( $this, 'check_should_use_blockified_product_grid_templates' ), 10, 2 );
@@ -295,7 +296,7 @@ class BlockTemplatesController {
 			$fits_slug_query =
 				! isset( $query['slug__in'] ) || in_array( $template_file->slug, $query['slug__in'], true );
 			$fits_area_query =
-				! isset( $query['area'] ) || $template_file->area === $query['area'];
+				! isset( $query['area'] ) || ( property_exists( $template_file, 'area' ) && $template_file->area === $query['area'] );
 			$should_include  = $is_not_custom && $fits_slug_query && $fits_area_query;
 			if ( $should_include ) {
 				$query_result[] = $template;
@@ -322,6 +323,7 @@ class BlockTemplatesController {
 				if ( ! $template->description ) {
 					$template->description = BlockTemplateUtils::get_block_template_description( $template->slug );
 				}
+
 				return $template;
 			},
 			$query_result
@@ -529,24 +531,48 @@ class BlockTemplatesController {
 			! BlockTemplateUtils::theme_has_template( 'single-product' ) &&
 			$this->block_template_is_available( 'single-product' )
 		) {
+			$templates = get_block_templates( array( 'slug__in' => array( 'single-product' ) ) );
+
+			if ( isset( $templates[0] ) && BlockTemplateUtils::template_has_legacy_template_block( $templates[0] ) ) {
+				add_filter( 'woocommerce_disable_compatibility_layer', '__return_true' );
+			}
+
 			add_filter( 'woocommerce_has_block_template', '__return_true', 10, 0 );
 		} elseif (
 			( is_product_taxonomy() && is_tax( 'product_cat' ) ) &&
 			! BlockTemplateUtils::theme_has_template( 'taxonomy-product_cat' ) &&
 			$this->block_template_is_available( 'taxonomy-product_cat' )
 		) {
+			$templates = get_block_templates( array( 'slug__in' => array( 'taxonomy-product_cat' ) ) );
+
+			if ( isset( $templates[0] ) && BlockTemplateUtils::template_has_legacy_template_block( $templates[0] ) ) {
+				add_filter( 'woocommerce_disable_compatibility_layer', '__return_true' );
+			}
+
 			add_filter( 'woocommerce_has_block_template', '__return_true', 10, 0 );
 		} elseif (
 			( is_product_taxonomy() && is_tax( 'product_tag' ) ) &&
 			! BlockTemplateUtils::theme_has_template( 'taxonomy-product_tag' ) &&
 			$this->block_template_is_available( 'taxonomy-product_tag' )
 		) {
+			$templates = get_block_templates( array( 'slug__in' => array( 'taxonomy-product_tag' ) ) );
+
+			if ( isset( $templates[0] ) && BlockTemplateUtils::template_has_legacy_template_block( $templates[0] ) ) {
+				add_filter( 'woocommerce_disable_compatibility_layer', '__return_true' );
+			}
+
 			add_filter( 'woocommerce_has_block_template', '__return_true', 10, 0 );
 		} elseif (
 			( is_post_type_archive( 'product' ) || is_page( wc_get_page_id( 'shop' ) ) ) &&
 			! BlockTemplateUtils::theme_has_template( 'archive-product' ) &&
 			$this->block_template_is_available( 'archive-product' )
 		) {
+			$templates = get_block_templates( array( 'slug__in' => array( 'archive-product' ) ) );
+
+			if ( isset( $templates[0] ) && BlockTemplateUtils::template_has_legacy_template_block( $templates[0] ) ) {
+				add_filter( 'woocommerce_disable_compatibility_layer', '__return_true' );
+			}
+
 			add_filter( 'woocommerce_has_block_template', '__return_true', 10, 0 );
 		} else {
 			$queried_object = get_queried_object();
@@ -558,6 +584,12 @@ class BlockTemplatesController {
 				! BlockTemplateUtils::theme_has_template( ProductAttributeTemplate::SLUG ) &&
 				$this->block_template_is_available( ProductAttributeTemplate::SLUG )
 			) {
+				$templates = get_block_templates( array( 'slug__in' => array( ProductAttributeTemplate::SLUG ) ) );
+
+				if ( isset( $templates[0] ) && BlockTemplateUtils::template_has_legacy_template_block( $templates[0] ) ) {
+					add_filter( 'woocommerce_disable_compatibility_layer', '__return_true' );
+				}
+
 				add_filter( 'woocommerce_has_block_template', '__return_true', 10, 0 );
 			}
 		}
@@ -587,5 +619,25 @@ class BlockTemplatesController {
 		}
 
 		return $is_support;
+	}
+
+	/**
+	 * Update the product archive title to "Shop".
+	 *
+	 * @param string $post_type_name Post type 'name' label.
+	 * @param string $post_type      Post type.
+	 *
+	 * @return string
+	 */
+	public function update_product_archive_title( $post_type_name, $post_type ) {
+		if (
+			function_exists( 'is_shop' ) &&
+			is_shop() &&
+			'product' === $post_type
+		) {
+			return __( 'Shop', 'woo-gutenberg-products-block' );
+		}
+
+		return $post_type_name;
 	}
 }

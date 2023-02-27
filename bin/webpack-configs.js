@@ -778,7 +778,7 @@ const getInteractivityAPIConfig = ( options = {} ) => {
 			runtime: './assets/js/interactivity',
 		},
 		output: {
-			filename: 'wp-directives-[name].js',
+			filename: 'woo-directives-[name].js',
 			path: path.resolve( __dirname, '../build/' ),
 		},
 		resolve: {
