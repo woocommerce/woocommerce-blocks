@@ -398,7 +398,7 @@ class BlockTemplatesController {
 			// Until the blockified Product Grid Block is implemented, we need to always skip the blockified templates.
 			// phpcs:ignore Squiz.PHP.CommentedOutCode
 			if ( // $this->package->is_experimental_build() &&
-				! BlockTemplateUtils::should_use_blockified_product_grid_templates() &&
+				// ! BlockTemplateUtils::should_use_blockified_product_grid_templates() &&
 				strpos( $template_file, 'blockified' ) !== false ) {
 				continue;
 			}
@@ -489,9 +489,9 @@ class BlockTemplatesController {
 		}
 
 		// When the blockified Product Grid Block will be implemented, we need to use the blockified templates.
-		if ( $this->package->is_experimental_build() && BlockTemplateUtils::should_use_blockified_product_grid_templates() ) {
-			return $this->templates_directory . '/blockified';
-		}
+		// if ( $this->package->is_experimental_build() && BlockTemplateUtils::should_use_blockified_product_grid_templates() ) {
+		// return $this->templates_directory . '/blockified';
+		// }.
 
 		return $this->templates_directory;
 	}
