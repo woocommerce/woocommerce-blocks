@@ -1,0 +1,48 @@
+.wc-block-components-address-card {
+	border: 1px solid $input-border-gray;
+	margin: 0;
+	font-size: 0.875em;
+	padding: em($gap-small);
+	margin: 0;
+	border-radius: 4px;
+	display: flex;
+	justify-content: flex-start;
+	align-items: flex-start;
+
+	address {
+		margin: 0;
+		font-style: normal;
+		color: $gray-700;
+
+		strong {
+			color: $input-text-active;
+		}
+		.wc-block-components-address-card__address-section {
+			display: block;
+			margin: 0 0 2px 0;
+			span {
+				display: inline-block;
+				padding: 0 4px 0 0;
+				&::after {
+					content: ", ";
+				}
+				&:last-child::after {
+					content: "";
+				}
+			}
+			&:last-child {
+				margin-bottom: 0;
+			}
+		}
+	}
+}
+.wc-block-components-address-card__icon {
+	width: 1em;
+	font-size: 2em;
+	margin: 0 0.15em 0 -0.1em;
+	position: relative;
+	vertical-align: top;
+}
+.wc-block-components-address-card__edit {
+	margin: 0 0 0 auto;
+}
