@@ -43,9 +43,9 @@ class BlockTemplatesCompatibility {
 			'render_block_data',
 			function( $parsed_block, $source_block, $parent_block ) {
 				/**
-				* Filters to disable the compatibility layer for the blockified templates.
+				* Filter to disable the compatibility layer for the blockified templates.
 				*
-				* This hooks allows to disable the compatibility layer for the blockified.
+				* This hook allows to disable the compatibility layer for the blockified templates.
 				*
 				* @since TBD
 				* @param boolean.
