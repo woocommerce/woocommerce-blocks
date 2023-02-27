@@ -59,8 +59,8 @@ const CustomerAddress = ( {
 			{ ( editing || ! hasAddress ) && (
 				<>
 					<AddressForm
-						id="shipping"
-						type="shipping"
+						id="billing"
+						type="billing"
 						onChange={ ( values: Partial< BillingAddress > ) => {
 							setBillingAddress( values );
 							if ( useBillingAsShipping ) {
