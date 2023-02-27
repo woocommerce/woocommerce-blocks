@@ -69,7 +69,7 @@ describe( 'isAddressComplete', () => {
 		expect( isAddressComplete( address ) ).toBe( true );
 	} );
 
-	it( 'correctly checks is  complete', () => {
+	it( 'correctly checks complete addresses', () => {
 		const address = {
 			first_name: 'John',
 			last_name: 'Deo',
