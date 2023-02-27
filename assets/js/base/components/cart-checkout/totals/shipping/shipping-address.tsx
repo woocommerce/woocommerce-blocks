@@ -31,7 +31,7 @@ export const ShippingAddress = ( {
 	const addressComplete = isAddressComplete( shippingAddress );
 	const { isEditor } = useEditorContext();
 
-	// If there is no address, and we're not in the editor, don't show anything.
+	// If the address is incomplete, and we're not in the editor, don't show anything.
 	if ( ! addressComplete && ! isEditor ) {
 		return null;
 	}
