@@ -7,6 +7,7 @@ import { decodeEntities } from '@wordpress/html-entities';
 import type { ReactElement } from 'react';
 import { Panel } from '@woocommerce/blocks-checkout';
 import Label from '@woocommerce/base-components/label';
+import { useCallback } from '@wordpress/element';
 import {
 	useShippingData,
 	useStoreEvents,
@@ -90,17 +91,23 @@ export const ShippingRatesControlPackage = ( {
 			) }
 		</>
 	);
-
+	const onSelectRate = debounce(
+		useCallback(
+			( newShippingRateId: string ) => {
+				selectShippingRate( newShippingRateId, packageId );
+				dispatchCheckoutEvent( 'set-selected-shipping-rate', {
+					shippingRateId: newShippingRateId,
+				} );
+			},
+			[ dispatchCheckoutEvent, packageId, selectShippingRate ]
+		),
+		1000
+	);
 	const packageRatesProps = {
 		className,
 		noResultsMessage,
 		rates: packageData.shipping_rates,
-		onSelectRate: debounce( ( newShippingRateId: string ) => {
-			selectShippingRate( newShippingRateId, packageId );
-			dispatchCheckoutEvent( 'set-selected-shipping-rate', {
-				shippingRateId: newShippingRateId,
-			} );
-		}, 1000 ),
+		onSelectRate,
 		selectedRate: packageData.shipping_rates.find(
 			( rate ) => rate.selected
 		),
