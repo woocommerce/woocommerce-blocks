@@ -112,7 +112,7 @@ export const emptyHiddenAddressFields = <
 export const formatShippingAddress = (
 	address: ShippingAddress | BillingAddress
 ): string | null => {
-	// we bail early if we don't have an address.
+	// We bail early if we don't have an address.
 	if ( Object.values( address ).length === 0 ) {
 		return null;
 	}
