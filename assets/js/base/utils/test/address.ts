@@ -88,7 +88,7 @@ describe( 'isAddressComplete', () => {
 } );
 
 describe( 'formatShippingAddress', () => {
-	it( 'correctly returns null address is empty', () => {
+	it( 'returns null if address is empty', () => {
 		const address = {
 			first_name: '',
 			last_name: '',
