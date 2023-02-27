@@ -301,12 +301,12 @@ class SingleProductTemplateCompatibility extends AbstractTemplateCompatibility {
 					return $carry;
 				}
 
-				if (  $carry['first_block']['index'] === '' ) {
+				if ( '' === $carry['first_block']['index'] ) {
 					$block['attrs'][ self::IS_FIRST_BLOCK ] = true;
 					$carry['first_block']['index']          = $index;
 				}
 
-				if (  $carry['last_block']['index']  !== '' ) {
+				if ( '' === $carry['last_block']['index'] ) {
 					$index_element                         = $carry['last_block']['index'];
 					$carry['last_block']['index']          = $index;
 					$block['attrs'][ self::IS_LAST_BLOCK ] = true;
