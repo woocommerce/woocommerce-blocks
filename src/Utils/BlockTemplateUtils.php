@@ -130,10 +130,15 @@ class BlockTemplateUtils {
 	 * @return string Updated wp_template content.
 	 */
 	private static function remove_block_from_template( $template_content, $block_name ) {
-		$new_content     = '';
-		$template_blocks = parse_blocks( $template_content );
+		$new_content         = '';
+		$template_blocks     = parse_blocks( $template_content );
+		$has_updated_content = false;
 
-		self::recursive_remove_block( $template_blocks, $block_name );
+		self::recursive_remove_block( $template_blocks, $block_name, $has_updated_content );
+
+		if ( ! $has_updated_content ) {
+			return $template_content;
+		}
 
 		foreach ( $template_blocks as &$block ) {
 			$new_content .= serialize_block( $block );
@@ -145,16 +150,19 @@ class BlockTemplateUtils {
 	/**
 	 * Remove block recursively from block list.
 	 *
-	 * @param array  $blocks      Parsed blocks array.
-	 * @param string $block_name Block to be removed.
+	 * @param array   $blocks              Parsed blocks array.
+	 * @param string  $block_name          Block to be removed.
+	 * @param boolean $has_updated_content Block to be removed.
 	 * @return void
 	 */
-	private static function recursive_remove_block( &$blocks, $block_name ) {
+	private static function recursive_remove_block( &$blocks, $block_name, &$has_updated_content ) {
 		foreach ( $blocks as $index => &$block ) {
 			if ( $block_name === $block['blockName'] ) {
+				$has_updated_content = true;
 				unset( $blocks[ $index ] );
+				$blocks = array_values( $blocks );
 			} elseif ( ! empty( $block['innerBlocks'] ) ) {
-				self::recursive_remove_block( $block['innerBlocks'], $block_name );
+				self::recursive_remove_block( $block['innerBlocks'], $block_name, $has_updated_content );
 			}
 		}
 	}
