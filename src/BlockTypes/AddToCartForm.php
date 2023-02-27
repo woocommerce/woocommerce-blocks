@@ -32,6 +32,8 @@ class AddToCartForm extends AbstractBlock {
 			global $product;
 			/**
 			 * Trigger the single product add to cart action for each product type.
+			 *
+			 * @since 9.7.0
 			 */
 			do_action( 'woocommerce_' . $product->get_type() . '_add_to_cart' );
 		}
@@ -46,7 +48,7 @@ class AddToCartForm extends AbstractBlock {
 		$classes_and_styles = StyleAttributesUtils::get_classes_and_styles_by_attributes( $attributes );
 
 		return sprintf(
-			'<div class="woocommerce wc-block-add-to-cart-form %1$s %2$s" style="%3$s"><div class="product type-product"><div class="summary entry-summary">%4$s</div></div></div>',
+			'<div class="wp-block-add-to-cart-form %1$s %2$s" style="%3$s">%4$s</div>',
 			esc_attr( $classes_and_styles['classes'] ),
 			esc_attr( $classname ),
 			esc_attr( $classes_and_styles['styles'] ),
@@ -60,6 +62,13 @@ class AddToCartForm extends AbstractBlock {
 	 * @param string $key Data to get, or default to everything.
 	 */
 	protected function get_block_type_script( $key = null ) {
+		return null;
+	}
+
+	/**
+	 * It isn't necessary register block assets because it is a server side block.
+	 */
+	protected function register_block_type_assets() {
 		return null;
 	}
 }
