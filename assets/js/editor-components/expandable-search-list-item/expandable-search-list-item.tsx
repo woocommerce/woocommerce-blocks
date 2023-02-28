@@ -28,7 +28,6 @@ const ExpandableSearchListItem = ( {
 				isSelected={ isSelected }
 				item={ item }
 				onSelect={ onSelect }
-				isSingle
 				disabled={ disabled }
 			/>
 			{ isSelected && isLoading && (
