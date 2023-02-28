@@ -48,7 +48,7 @@ describe( 'isAddressComplete', () => {
 	it( 'correctly checks incomplete addresses', () => {
 		const address = {
 			first_name: 'John',
-			last_name: 'Deo',
+			last_name: 'Doe',
 			company: 'Company',
 			address_1: '409 Main Street',
 			address_2: 'Apt 1',
@@ -56,7 +56,7 @@ describe( 'isAddressComplete', () => {
 			postcode: '',
 			country: '',
 			state: '',
-			email: 'john.deo@company',
+			email: 'john.doe@company',
 			phone: '+1234567890',
 		};
 		expect( isAddressComplete( address ) ).toBe( false );
@@ -72,7 +72,7 @@ describe( 'isAddressComplete', () => {
 	it( 'correctly checks complete addresses', () => {
 		const address = {
 			first_name: 'John',
-			last_name: 'Deo',
+			last_name: 'Doe',
 			company: 'Company',
 			address_1: '409 Main Street',
 			address_2: 'Apt 1',
@@ -80,7 +80,7 @@ describe( 'isAddressComplete', () => {
 			postcode: 'W1T 4JG',
 			country: 'GB',
 			state: '',
-			email: 'john.deo@company',
+			email: 'john.doe@company',
 			phone: '+1234567890',
 		};
 		expect( isAddressComplete( address ) ).toBe( true );
@@ -108,7 +108,7 @@ describe( 'formatShippingAddress', () => {
 	it( 'correctly returns the formatted address', () => {
 		const address = {
 			first_name: 'John',
-			last_name: 'Deo',
+			last_name: 'Doe',
 			company: 'Company',
 			address_1: '409 Main Street',
 			address_2: 'Apt 1',
@@ -116,7 +116,7 @@ describe( 'formatShippingAddress', () => {
 			postcode: 'W1T 4JG',
 			country: 'GB',
 			state: '',
-			email: 'john.deo@company',
+			email: 'john.doe@company',
 			phone: '+1234567890',
 		};
 		expect( formatShippingAddress( address ) ).toBe(
