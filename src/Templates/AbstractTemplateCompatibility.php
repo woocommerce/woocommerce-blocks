@@ -55,9 +55,9 @@ abstract class AbstractTemplateCompatibility {
 			'render_block',
 			function ( $block_content, $block ) {
 				/**
-				* Filters to disable the compatibility layer for the blockified templates.
+				* Filter to disable the compatibility layer for the blockified templates.
 				*
-				* This hooks allows to disable the compatibility layer for the blockified.
+				* This hook allows to disable the compatibility layer for the blockified.
 				*
 				* @since TBD
 				* @param boolean.

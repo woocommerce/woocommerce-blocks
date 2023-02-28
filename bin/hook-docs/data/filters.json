@@ -739,8 +739,8 @@
             "file": "Templates/AbstractTemplateCompatibility.php",
             "type": "filter",
             "doc": {
-                "description": "Filters to disable the compatibility layer for the blockified templates.",
-                "long_description": "This hooks allows to disable the compatibility layer for the blockified.",
+                "description": "Filter to disable the compatibility layer for the blockified templates.",
+                "long_description": "This hook allows to disable the compatibility layer for the blockified.",
                 "tags": [
                     {
                         "name": "since",
@@ -756,7 +756,7 @@
                         "variable": ""
                     }
                 ],
-                "long_description_html": "<p>This hooks allows to disable the compatibility layer for the blockified.</p>"
+                "long_description_html": "<p>This hook allows to disable the compatibility layer for the blockified.</p>"
             },
             "args": 1
         },
