@@ -9,12 +9,14 @@
 	max-width: 60%;
 }
 
-input.wc-block-add-to-cart-form__quantity {
-	max-width: 55px;
+input.wc-block-add-to-cart-form__quantity[type="number"] {
+	max-width: 50px;
+	min-height: 22px;
 	float: left;
-	padding: 10px 6px 10px 12px;
+	padding: 6px 6px 6px 12px;
 	margin-right: 10px;
 	font-size: 13px;
+	height: inherit;
 }
 
 input[type="number"]::-webkit-inner-spin-button {
