@@ -306,7 +306,7 @@ class SingleProductTemplateCompatibility extends AbstractTemplateCompatibility {
 					$carry['first_block']['index']          = $index;
 				}
 
-				if ( '' === $carry['last_block']['index'] ) {
+				if ( '' !== $carry['last_block']['index'] ) {
 					$index_element                         = $carry['last_block']['index'];
 					$carry['last_block']['index']          = $index;
 					$block['attrs'][ self::IS_LAST_BLOCK ] = true;
@@ -318,7 +318,6 @@ class SingleProductTemplateCompatibility extends AbstractTemplateCompatibility {
 				}
 
 				$block['attrs'][ self::IS_LAST_BLOCK ] = true;
-				$carry['last_block']['found']          = true;
 				$carry['last_block']['index']          = $index;
 
 				$carry['template'][] = $block;
