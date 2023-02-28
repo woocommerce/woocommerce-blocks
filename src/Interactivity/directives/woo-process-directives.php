@@ -45,7 +45,7 @@ function woo_process_directives( $tags, $prefix, $tag_directives, $attribute_dir
 				// directives so we can call its directive processor once we encounter the
 				// matching closing tag.
 				if (
-					! is_html_void_element( $tags->get_tag() ) &&
+					! woo_directives_is_html_void_element( $tags->get_tag() ) &&
 					( 0 !== count( $attributes ) || 0 !== count( $tag_stack ) )
 				) {
 					$tag_stack[] = array( $tag_name, $attributes );
@@ -62,7 +62,7 @@ function woo_process_directives( $tags, $prefix, $tag_directives, $attribute_dir
 }
 
 // See e.g. https://github.com/WordPress/gutenberg/pull/47573.
-function is_html_void_element( $tag_name ) {
+function woo_directives_is_html_void_element( $tag_name ) {
 	switch ( $tag_name ) {
 		case 'AREA':
 		case 'BASE':

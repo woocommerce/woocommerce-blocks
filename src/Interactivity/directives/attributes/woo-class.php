@@ -16,7 +16,7 @@ function process_woo_class( $tags, $context ) {
 		}
 
 		$expr      = $tags->get_attribute( $attr );
-		$add_class = evaluate( $expr, $context->get_context() );
+		$add_class = woo_directives_evaluate( $expr, $context->get_context() );
 		if ( $add_class ) {
 			$tags->add_class( $class_name );
 		} else {
