@@ -582,7 +582,7 @@ apply_filters( 'woocommerce_cart_contents_changed', array $cart_contents )
 ## woocommerce_disable_compatibility_layer
 
 
-Filters to disable the compatibility layer for the blockified templates.
+Filter to disable the compatibility layer for the blockified templates.
 
 ```php
 apply_filters( 'woocommerce_disable_compatibility_layer', \Automattic\WooCommerce\Blocks\Templates\boolean. $argument0 )
@@ -590,7 +590,7 @@ apply_filters( 'woocommerce_disable_compatibility_layer', \Automattic\WooCommerc
 
 ### Description
 
-<p>This hooks allows to disable the compatibility layer for the blockified.</p>
+<p>This hook allows to disable the compatibility layer for the blockified.</p>
 
 ### Parameters
 
@@ -601,8 +601,8 @@ apply_filters( 'woocommerce_disable_compatibility_layer', \Automattic\WooCommerc
 ### Source
 
 
- - [Templates/BlockTemplatesCompatibility.php](../../../../src/Templates/BlockTemplatesCompatibility.php)
- - [Templates/BlockTemplatesCompatibility.php](../../../../src/Templates/BlockTemplatesCompatibility.php)
+ - [Templates/AbstractTemplateCompatibility.php](../../../../src/Templates/AbstractTemplateCompatibility.php)
+ - [Templates/AbstractTemplateCompatibility.php](../../../../src/Templates/AbstractTemplateCompatibility.php)
 
 ---
 

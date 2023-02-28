@@ -1056,9 +1056,14 @@
             "file": "Templates/AbstractTemplateCompatibility.php",
             "type": "action",
             "doc": {
-                "description": "",
+                "description": "Action to render the content of a hook.",
                 "long_description": "",
-                "tags": [],
+                "tags": [
+                    {
+                        "name": "since",
+                        "content": "9.5.0"
+                    }
+                ],
                 "long_description_html": ""
             },
             "args": 0
