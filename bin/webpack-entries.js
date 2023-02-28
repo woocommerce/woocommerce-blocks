@@ -67,6 +67,7 @@ const blocks = {
 	'single-product': {
 		isExperimental: true,
 	},
+	'single-product-server-side': {},
 	'stock-filter': {},
 };
 
