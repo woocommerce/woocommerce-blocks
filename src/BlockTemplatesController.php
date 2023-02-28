@@ -3,6 +3,7 @@ namespace Automattic\WooCommerce\Blocks;
 
 use Automattic\WooCommerce\Blocks\Domain\Package;
 use Automattic\WooCommerce\Blocks\Templates\ProductAttributeTemplate;
+use Automattic\WooCommerce\Blocks\Templates\SingleProductTemplateCompatibility;
 use Automattic\WooCommerce\Blocks\Utils\BlockTemplateUtils;
 
 /**
@@ -322,6 +323,14 @@ class BlockTemplatesController {
 				}
 				if ( ! $template->description ) {
 					$template->description = BlockTemplateUtils::get_block_template_description( $template->slug );
+				}
+
+				if ( 'single-product' === $template->slug ) {
+					if ( ! is_admin() ) {
+						$new_content       = SingleProductTemplateCompatibility::add_compatibility_layer( $template->content );
+						$template->content = $new_content;
+					}
+					return $template;
 				}
 
 				return $template;
