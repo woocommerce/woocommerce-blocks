@@ -31,7 +31,6 @@ use Automattic\WooCommerce\Blocks\Shipping\ShippingController;
 use Automattic\WooCommerce\Blocks\Templates\SingleProductTemplateCompatibility;
 use Automattic\WooCommerce\Blocks\Templates\BlockTemplatesCompatibility;
 
-
 /**
  * Takes care of bootstrapping the plugin.
  *
