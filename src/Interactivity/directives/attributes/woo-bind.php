@@ -16,7 +16,7 @@ function process_woo_bind( $tags, $context ) {
 		}
 
 		$expr  = $tags->get_attribute( $attr );
-		$value = evaluate( $expr, $context->get_context() );
+		$value = woo_directives_evaluate( $expr, $context->get_context() );
 		$tags->set_attribute( $bound_attr, $value );
 	}
 }

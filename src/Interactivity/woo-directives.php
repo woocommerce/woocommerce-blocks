@@ -1,5 +1,5 @@
 <?php
-include_once __DIR__ . '/../../../gutenberg/lib/experimental/html/wp-html.php';
+require_once __DIR__ . '/directives/wp-html.php';
 
 require_once __DIR__ . '/directives/class-woo-directive-context.php';
 require_once __DIR__ . '/directives/class-woo-directive-store.php';
@@ -59,7 +59,7 @@ function woo_directives_mark_interactive_blocks( $block_content, $block, $instan
 	if ( isset( $instance->parsed_block['isolated'] ) ) {
 		$w = new WP_HTML_Tag_Processor( $block_content );
 		$w->next_tag();
-		$w->set_attribute( 'data-woo-ignore', '' );
+		$w->set_attribute( 'data-woo-ignore', true );
 		$block_content = (string) $w;
 	}
 
@@ -71,7 +71,7 @@ function woo_directives_mark_interactive_blocks( $block_content, $block, $instan
 	// Add the `data-woo-island` attribute if it's interactive.
 	$w = new WP_HTML_Tag_Processor( $block_content );
 	$w->next_tag();
-	$w->set_attribute( 'data-woo-island', '' );
+	$w->set_attribute( 'data-woo-island', true );
 
 	return (string) $w;
 }
