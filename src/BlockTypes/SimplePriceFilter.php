@@ -36,7 +36,7 @@ class SimplePriceFilter extends AbstractBlock {
 		$__high      = 100 * $max_price / $max_range;
 		$range_style = "--low: $__low%; --high: $__high%";
 
-		store(
+		woo_directives_store(
 			array(
 				'state' => array(
 					'filters' => array(
@@ -45,9 +45,9 @@ class SimplePriceFilter extends AbstractBlock {
 						'maxRange'    => $max_range,
 						'rangeStyle'  => $range_style,
 						'isMinActive' => true,
-						'isMaxActive' => false
-					)
-				)
+						'isMaxActive' => false,
+					),
+				),
 			)
 		);
 
