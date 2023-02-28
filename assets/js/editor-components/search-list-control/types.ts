@@ -116,7 +116,8 @@ export interface SearchListControlProps {
 	// The list of currently selected items.
 	selected: SearchListItem[];
 	// Whether to show a text field or a token field as search
-	type: 'text' | 'token';
+	// Defaults to `'text'`
+	type?: 'text' | 'token';
 	// from withSpokenMessages
 	debouncedSpeak?: ( message: string ) => void;
 }

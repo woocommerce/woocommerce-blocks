@@ -1,7 +1,7 @@
 /**
  * External dependencies
  */
-import type { EditorBlock } from '@woocommerce/types';
+import type { AttributeMetadata, EditorBlock } from '@woocommerce/types';
 
 // The interface below disables the forbidden underscores
 // naming convention because we are namespacing our

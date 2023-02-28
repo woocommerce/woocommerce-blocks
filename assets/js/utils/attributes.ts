@@ -1,8 +1,13 @@
 /**
  * External dependencies
  */
+import { SearchListItem } from '@woocommerce/editor-components/search-list-control/types';
 import { getSetting } from '@woocommerce/settings';
-import { AttributeObject, AttributeSetting } from '@woocommerce/types';
+import {
+	AttributeObject,
+	AttributeSetting,
+	AttributeTerm,
+} from '@woocommerce/types';
 
 const ATTRIBUTES = getSetting< AttributeSetting[] >( 'attributes', [] );
 
@@ -27,7 +32,7 @@ const attributeSettingToObject = ( attribute: AttributeSetting ) => {
  * Format all attribute settings into objects.
  */
 const attributeObjects = ATTRIBUTES.reduce(
-	( acc: AttributeObject[], current ) => {
+	( acc: Partial< AttributeObject >[], current ) => {
 		const attributeObject = attributeSettingToObject( current );
 
 		if ( attributeObject && attributeObject.id ) {
@@ -38,6 +43,26 @@ const attributeObjects = ATTRIBUTES.reduce(
 	},
 	[]
 );
+
+/**
+ * Converts an Attribute object into a shape compatible with the `SearchListControl`
+ */
+export const convertAttributeObjectToSearchItem = ( {
+	count,
+	id,
+	name,
+	parent,
+}: AttributeObject | AttributeTerm ): SearchListItem => {
+	return {
+		count,
+		id,
+		name,
+		parent,
+		breadcrumbs: [],
+		children: [],
+		value: '',
+	};
+};
 
 /**
  * Get attribute data by taxonomy.

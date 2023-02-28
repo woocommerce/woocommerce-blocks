@@ -12,12 +12,12 @@ import { withInstanceId } from '@wordpress/compose';
 import useProductAttributes from '@woocommerce/base-context/hooks/use-product-attributes';
 import ErrorMessage from '@woocommerce/editor-components/error-placeholder/error-message';
 import ExpandableSearchListItem from '@woocommerce/editor-components/expandable-search-list-item/expandable-search-list-item';
-import { AttributeObject, AttributeTerm } from '@woocommerce/types';
 import {
 	renderItemArgs,
 	SearchListControlProps,
 	SearchListItem as SearchListItemProps,
 } from '@woocommerce/editor-components/search-list-control/types';
+import { convertAttributeObjectToSearchItem } from '@woocommerce/utils';
 
 /**
  * Internal dependencies
@@ -39,23 +39,6 @@ interface Props
 	 * The list of currently selected attribute ids.
 	 */
 	selected: { id: number }[];
-}
-
-function convertAttributeObjectToSearchItem( {
-	count,
-	id,
-	name,
-	parent,
-}: AttributeObject | AttributeTerm ): SearchListItemProps {
-	return {
-		count,
-		id,
-		name,
-		parent,
-		breadcrumbs: [],
-		children: [],
-		value: '',
-	};
 }
 
 const ProductAttributeTermControl = ( {
