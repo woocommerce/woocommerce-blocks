@@ -59,8 +59,8 @@ export const SearchListItem = ( {
 		countLabel !== null &&
 		item.count !== undefined &&
 		item.count !== null;
-	const hasBreadcrumbs = item.breadcrumbs && item.breadcrumbs.length;
-	const hasChildren = item.children.length;
+	const hasBreadcrumbs = !! item.breadcrumbs?.length;
+	const hasChildren = !! item.children?.length;
 	const isExpanded = expandedPanelId === item.id;
 	const classes = classNames(
 		[ 'woocommerce-search-list__item', `depth-${ depth }`, className ],
@@ -117,11 +117,14 @@ export const SearchListItem = ( {
 						checked={ isSelected }
 						indeterminate={
 							! isSelected &&
-							item.children.some( ( child ) =>
-								selected.find(
-									( selectedItem ) =>
-										selectedItem.id === child.id
-								)
+							// We know that `item.children` is not `undefined` because
+							// we are here only if `hasChildren` is `true`.
+							( item.children as SearchListItemProps[] ).some(
+								( child ) =>
+									selected.find(
+										( selectedItem ) =>
+											selectedItem.id === child.id
+									)
 							)
 						}
 						label={ getHighlightedName( item.name, search ) }
@@ -130,7 +133,7 @@ export const SearchListItem = ( {
 								onSelect(
 									arrayDifferenceBy(
 										selected,
-										item.children,
+										item.children as SearchListItemProps[],
 										'id'
 									)
 								)();
@@ -138,7 +141,7 @@ export const SearchListItem = ( {
 								onSelect(
 									arrayUnionBy(
 										selected,
-										item.children,
+										item.children as SearchListItemProps[],
 										'id'
 									)
 								)();
