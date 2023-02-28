@@ -27,7 +27,30 @@ abstract class AbstractTemplateCompatibility {
 
 		$this->set_hook_data();
 
-		add_filter( 'render_block_data', array( $this, 'update_render_block_data' ), 10, 3 );
+		add_filter(
+			'render_block_data',
+			function( $parsed_block, $source_block, $parent_block ) {
+				/**
+				* Filter to disable the compatibility layer for the blockified templates.
+				*
+				* This hook allows to disable the compatibility layer for the blockified templates.
+				*
+				* @since TBD
+				* @param boolean.
+				*/
+				$is_disabled_compatility_layer = apply_filters( 'woocommerce_disable_compatibility_layer', false );
+
+				if ( $is_disabled_compatility_layer ) {
+					return $parsed_block;
+				}
+
+				return $this->update_render_block_data( $parsed_block, $source_block, $parent_block );
+
+			},
+			10,
+			3
+		);
+
 		add_filter(
 			'render_block',
 			function ( $block_content, $block ) {
@@ -45,12 +68,11 @@ abstract class AbstractTemplateCompatibility {
 					return $block_content;
 				}
 
-				$this->inject_hooks( $block_content, $block );
+				return $this->inject_hooks( $block_content, $block );
 			},
 			10,
 			2
 		);
-
 	}
 
 	/**

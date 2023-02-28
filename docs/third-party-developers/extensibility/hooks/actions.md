@@ -252,8 +252,8 @@ do_action( 'woocommerce_blocks_cart_enqueue_data' )
 ### Source
 
 
- - [BlockTypes/Cart.php](../../../../src/BlockTypes/Cart.php)
  - [BlockTypes/MiniCart.php](../../../../src/BlockTypes/MiniCart.php)
+ - [BlockTypes/Cart.php](../../../../src/BlockTypes/Cart.php)
 
 ---
 

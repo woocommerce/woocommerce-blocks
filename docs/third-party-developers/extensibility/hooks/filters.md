@@ -602,6 +602,7 @@ apply_filters( 'woocommerce_disable_compatibility_layer', \Automattic\WooCommerc
 
 
  - [Templates/AbstractTemplateCompatibility.php](../../../../src/Templates/AbstractTemplateCompatibility.php)
+ - [Templates/AbstractTemplateCompatibility.php](../../../../src/Templates/AbstractTemplateCompatibility.php)
 
 ---
 

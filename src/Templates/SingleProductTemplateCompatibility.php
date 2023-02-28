@@ -89,7 +89,10 @@ class SingleProductTemplateCompatibility extends AbstractTemplateCompatibility {
 			return sprintf(
 				'%1$s%2$s%3$s',
 				$this->get_hooks_buffer(
-					$first_block_hook['before'],
+					array_merge(
+						$first_block_hook['before'],
+						$last_block_hook['before']
+					),
 					'before'
 				),
 				$block_content,
@@ -121,7 +124,7 @@ class SingleProductTemplateCompatibility extends AbstractTemplateCompatibility {
 		if ( isset( $block['attrs'][ self::IS_LAST_BLOCK ] ) ) {
 			return sprintf(
 				'%1$s%2$s%3$s',
-				$this->get_hooks_buffer( array(), 'before' ),
+				$this->get_hooks_buffer( $last_block_hook['before'], 'before' ),
 				$block_content,
 				$this->get_hooks_buffer(
 					$last_block_hook['after'],
@@ -256,7 +259,7 @@ class SingleProductTemplateCompatibility extends AbstractTemplateCompatibility {
 		$parsed_blocks  = parse_blocks( $template_content );
 		$grouped_blocks = self::group_blocks( $parsed_blocks );
 
-		// @TODO: Check this list before terminating the Blockfied Single Product Template project.
+		// @todo Check this list before terminating the Blockfied Single Product Template project.
 		$single_product_template_blocks = array( 'woocommerce/product-image-gallery', 'woocommerce/product-details', 'woocommerce/add-to-cart-form' );
 
 		$wrapped_blocks = array_map(
@@ -298,12 +301,12 @@ class SingleProductTemplateCompatibility extends AbstractTemplateCompatibility {
 					return $carry;
 				}
 
-				if ( false === $carry['first_block']['found'] ) {
+				if ( '' === $carry['first_block']['index'] ) {
 					$block['attrs'][ self::IS_FIRST_BLOCK ] = true;
-					$carry['first_block']['found']          = true;
+					$carry['first_block']['index']          = $index;
 				}
 
-				if ( true === $carry['last_block']['found'] ) {
+				if ( '' === $carry['last_block']['index'] ) {
 					$index_element                         = $carry['last_block']['index'];
 					$carry['last_block']['index']          = $index;
 					$block['attrs'][ self::IS_LAST_BLOCK ] = true;
@@ -326,11 +329,9 @@ class SingleProductTemplateCompatibility extends AbstractTemplateCompatibility {
 				'template'    => array(),
 				'first_block' => array(
 					'index' => '',
-					'found' => false,
 				),
 				'last_block'  => array(
 					'index' => '',
-					'found' => false,
 				),
 				'index'       => 0,
 			)

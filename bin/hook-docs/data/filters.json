@@ -554,6 +554,10 @@
                 "long_description": "Accepts an array of hooked data. The array should be in the following format: [   [     hook => <hook-name>,     function => <function-name>,     priority => <priority>,  ],  ... ] Where: - hook-name is the name of the hook that have the functions hooked to. - function-name is the hooked function name. - priority is the priority of the hooked function.",
                 "tags": [
                     {
+                        "name": "since",
+                        "content": "9.5.0"
+                    },
+                    {
                         "name": "param",
                         "content": "Additional hooked data. Default to empty",
                         "types": [
@@ -739,6 +743,11 @@
                 "long_description": "This hooks allows to disable the compatibility layer for the blockified.",
                 "tags": [
                     {
+                        "name": "since",
+                        "content": "TBD",
+                        "description": "TBD"
+                    },
+                    {
                         "name": "param",
                         "content": "",
                         "types": [
@@ -748,6 +757,32 @@
                     }
                 ],
                 "long_description_html": "<p>This hooks allows to disable the compatibility layer for the blockified.</p>"
+            },
+            "args": 1
+        },
+        {
+            "name": "woocommerce_disable_compatibility_layer",
+            "file": "Templates/AbstractTemplateCompatibility.php",
+            "type": "filter",
+            "doc": {
+                "description": "Filter to disable the compatibility layer for the blockified templates.",
+                "long_description": "This hook allows to disable the compatibility layer for the blockified templates.",
+                "tags": [
+                    {
+                        "name": "since",
+                        "content": "TBD",
+                        "description": "TBD"
+                    },
+                    {
+                        "name": "param",
+                        "content": "",
+                        "types": [
+                            "\\Automattic\\WooCommerce\\Blocks\\Templates\\boolean."
+                        ],
+                        "variable": ""
+                    }
+                ],
+                "long_description_html": "<p>This hook allows to disable the compatibility layer for the blockified templates.</p>"
             },
             "args": 1
         },
