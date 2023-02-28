@@ -61,7 +61,7 @@ const ListItems = ( props: ListItemsProps ): JSX.Element | null => {
 		<>
 			{ list.map( ( item ) => {
 				const isSelected =
-					item.children.length && ! isSingle
+					item.children?.length && ! isSingle
 						? item.children.every( ( { id } ) =>
 								selected.find(
 									( selectedItem ) => selectedItem.id === id
@@ -69,7 +69,7 @@ const ListItems = ( props: ListItemsProps ): JSX.Element | null => {
 						  )
 						: !! selected.find( ( { id } ) => id === item.id );
 				const isExpanded =
-					item.children.length && expandedPanelId === item.id;
+					item.children?.length && expandedPanelId === item.id;
 
 				return (
 					<Fragment key={ item.id }>
@@ -89,7 +89,7 @@ const ListItems = ( props: ListItemsProps ): JSX.Element | null => {
 						{ isExpanded ? (
 							<ListItems
 								{ ...props }
-								list={ item.children }
+								list={ item.children as SearchListItemProps[] }
 								depth={ depth + 1 }
 							/>
 						) : null }
