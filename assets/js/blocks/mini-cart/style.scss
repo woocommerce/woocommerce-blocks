@@ -120,7 +120,7 @@
 }
 
 .wp-block-woocommerce-empty-mini-cart-contents-block
-	.wc-block-mini-cart__empty-cart-wrapper {
+.wc-block-mini-cart__empty-cart-wrapper {
 	overflow-y: auto;
 	padding: $gap-largest $gap $gap;
 }
@@ -225,8 +225,8 @@ h2.wc-block-mini-cart__title {
 }
 
 .admin-bar
-	.wc-block-components-drawer
-	.components-modal__header
-	.components-button {
+.wc-block-components-drawer
+.components-modal__header
+.components-button {
 	top: 32px;
 }
