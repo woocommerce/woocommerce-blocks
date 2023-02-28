@@ -1,5 +1,5 @@
 <?php
-include_once __DIR__ . '/../../../gutenberg/lib/experimental/html/wp-html.php';
+require_once __DIR__ . '/directives/wp-html.php';
 
 require_once __DIR__ . '/directives/class-woo-directive-context.php';
 require_once __DIR__ . '/directives/class-woo-directive-store.php';
