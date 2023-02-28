@@ -78,7 +78,6 @@ const Noninteractive = ( {
 
 	return (
 		<div
-			className="wc-block-components-noninteractive"
 			ref={ node }
 			aria-disabled="true"
 			style={ {
