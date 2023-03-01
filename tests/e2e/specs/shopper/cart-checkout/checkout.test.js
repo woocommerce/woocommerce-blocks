@@ -118,6 +118,7 @@ describe( 'Shopper → Checkout', () => {
 			expect( page ).toMatch( 'Woo Collection' );
 			await shopper.block.fillBillingDetails( BILLING_DETAILS );
 			await shopper.block.placeOrder();
+			await shopper.block.verifyBillingDetails( BILLING_DETAILS );
 		} );
 	} );
 
