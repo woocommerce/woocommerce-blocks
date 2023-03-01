@@ -3,11 +3,7 @@
  */
 import { debounce, pick } from 'lodash';
 import { select, dispatch } from '@wordpress/data';
-import {
-	pluckAddress,
-	pluckEmail,
-	removeAllNotices,
-} from '@woocommerce/base-utils';
+import { pluckEmail, removeAllNotices } from '@woocommerce/base-utils';
 import {
 	CartBillingAddress,
 	CartShippingAddress,
@@ -27,18 +23,39 @@ type CustomerData = {
 	shippingAddress: CartShippingAddress;
 };
 
+type BillingOrShippingAddress = CartBillingAddress | CartShippingAddress;
+
 /**
  * Checks if a cart response contains an email property.
  */
 const isBillingAddress = (
-	address: CartBillingAddress | CartShippingAddress
+	address: BillingOrShippingAddress
 ): address is CartBillingAddress => {
 	return 'email' in address;
 };
 
 /**
- * Does a shallow compare of important address data to determine if the cart needs updating on the server. This takes
- * the current and previous address into account, as well as the billing email field.
+ * Trims and normalizes address data for comparison.
+ */
+export const normalizeAddress = ( address: BillingOrShippingAddress ) => {
+	const trimmedAddress = Object.entries( address ).reduce(
+		( acc, [ key, value ] ) => {
+			if ( key === 'postcode' ) {
+				acc[ key as keyof BillingOrShippingAddress ] = value
+					.replace( ' ', '' )
+					.toUpperCase();
+			} else {
+				acc[ key as keyof BillingOrShippingAddress ] = value.trim();
+			}
+			return acc;
+		},
+		{} as BillingOrShippingAddress
+	);
+	return trimmedAddress;
+};
+
+/**
+ * Does a shallow compare of all address data to determine if the cart needs updating on the server.
  */
 const isAddressDirty = < T extends CartBillingAddress | CartShippingAddress >(
 	// An object containing all previous address information
@@ -54,13 +71,12 @@ const isAddressDirty = < T extends CartBillingAddress | CartShippingAddress >(
 		return true;
 	}
 
-	return (
-		!! address.country &&
-		! isShallowEqual(
-			pluckAddress( previousAddress ),
-			pluckAddress( address )
-		)
+	const addressMatches = isShallowEqual(
+		normalizeAddress( previousAddress ),
+		normalizeAddress( address )
 	);
+
+	return ! addressMatches;
 };
 
 type BaseAddressKey = keyof CartBillingAddress | keyof CartShippingAddress;
@@ -224,4 +240,8 @@ export const pushChanges = (): void => {
 	) {
 		updateCustomerData();
 	}
+};
+
+export const flushChanges = (): void => {
+	updateCustomerData.flush();
 };

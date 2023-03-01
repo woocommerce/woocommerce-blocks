@@ -3,7 +3,7 @@
  * Plugin Name: WooCommerce Blocks
  * Plugin URI: https://github.com/woocommerce/woocommerce-gutenberg-products-block
  * Description: WooCommerce blocks for the Gutenberg editor.
- * Version: 9.6.0-dev
+ * Version: 9.7.0-dev
  * Author: Automattic
  * Author URI: https://woocommerce.com
  * Text Domain:  woo-gutenberg-products-block
@@ -287,24 +287,6 @@ function woocommerce_blocks_plugin_outdated_notice() {
 
 add_action( 'admin_notices', 'woocommerce_blocks_plugin_outdated_notice' );
 
-/**
- * Register the Interactivity API scripts. These files are enqueued when a block
- * defines `wp-directives-runtime` as a dependency.
- */
-function wp_directives_register_scripts() {
-	wp_register_script(
-		'wp-directives-vendors',
-		plugins_url( 'build/wp-directives-vendors.js', __FILE__ ),
-		array(),
-		'1.0.0',
-		true
-	);
-	wp_register_script(
-		'wp-directives-runtime',
-		plugins_url( 'build/wp-directives-runtime.js', __FILE__ ),
-		array( 'wp-directives-vendors' ),
-		'1.0.0',
-		true
-	);
-}
-add_action( 'init', 'wp_directives_register_scripts' );
+// Include the Interactivity API.
+require_once __DIR__ . '/src/Interactivity/woo-directives.php';
+

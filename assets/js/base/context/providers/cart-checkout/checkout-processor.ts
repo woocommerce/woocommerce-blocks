@@ -47,7 +47,7 @@ import { useStoreCart } from '../../hooks/cart/use-store-cart';
  * Subscribes to checkout context and triggers processing via the API.
  */
 const CheckoutProcessor = () => {
-	const { onCheckoutValidationBeforeProcessing } = useCheckoutEventsContext();
+	const { onCheckoutValidation } = useCheckoutEventsContext();
 
 	const {
 		hasError: checkoutHasError,
@@ -92,7 +92,7 @@ const CheckoutProcessor = () => {
 		paymentMethodData,
 		isExpressPaymentMethodActive,
 		hasPaymentError,
-		isPaymentSuccess,
+		isPaymentReady,
 		shouldSavePayment,
 	} = useSelect( ( select ) => {
 		const store = select( PAYMENT_STORE_KEY );
@@ -102,7 +102,7 @@ const CheckoutProcessor = () => {
 			paymentMethodData: store.getPaymentMethodData(),
 			isExpressPaymentMethodActive: store.isExpressPaymentMethodActive(),
 			hasPaymentError: store.hasPaymentError(),
-			isPaymentSuccess: store.isPaymentSuccess(),
+			isPaymentReady: store.isPaymentReady(),
 			shouldSavePayment: store.getShouldSavePaymentMethod(),
 		};
 	}, [] );
@@ -130,7 +130,7 @@ const CheckoutProcessor = () => {
 	const paidAndWithoutErrors =
 		! checkoutHasError &&
 		! checkoutWillHaveError &&
-		( isPaymentSuccess || ! cartNeedsPayment ) &&
+		( isPaymentReady || ! cartNeedsPayment ) &&
 		checkoutIsProcessing;
 
 	// Determine if checkout has an error.
@@ -188,10 +188,7 @@ const CheckoutProcessor = () => {
 	useEffect( () => {
 		let unsubscribeProcessing: () => void;
 		if ( ! isExpressPaymentMethodActive ) {
-			unsubscribeProcessing = onCheckoutValidationBeforeProcessing(
-				checkValidation,
-				0
-			);
+			unsubscribeProcessing = onCheckoutValidation( checkValidation, 0 );
 		}
 		return () => {
 			if (
@@ -202,7 +199,7 @@ const CheckoutProcessor = () => {
 			}
 		};
 	}, [
-		onCheckoutValidationBeforeProcessing,
+		onCheckoutValidation,
 		checkValidation,
 		isExpressPaymentMethodActive,
 	] );
