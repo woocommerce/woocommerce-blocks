@@ -248,7 +248,7 @@ class ProductQueryFilters {
 					WHERE `taxonomy` = %s
 					AND `term_id` IN (" . $term_ids . ")
 					",
-					$taxonomy
+					wc_attribute_taxonomy_name( $taxonomy )
 				)
 			);
 		}
@@ -265,7 +265,7 @@ class ProductQueryFilters {
 					GROUP BY `product_or_parent_id`
 					HAVING COUNT( DISTINCT `term_id` ) >= %d
 					",
-					$taxonomy,
+					wc_attribute_taxonomy_name( $taxonomy ),
 					$term_count
 				)
 			);
