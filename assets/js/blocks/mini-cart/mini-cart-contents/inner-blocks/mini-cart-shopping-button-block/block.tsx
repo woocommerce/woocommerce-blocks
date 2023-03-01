@@ -24,7 +24,7 @@ const Block = ( {
 	}
 
 	return (
-		<div className="wp-block-button aligncenter">
+		<div className="wp-block-button has-text-align-center">
 			<Button
 				className={ classNames(
 					className,
