@@ -48,10 +48,53 @@ describe( 'Shopper → Checkout', () => {
 
 	describe( 'Local pickup', () => {
 		beforeAll( async () => {
+			// Enable local pickup.
 			await visitAdminPage(
 				'admin.php',
 				'page=wc-settings&tab=shipping&section=pickup_location'
 			);
+
+			const localPickupCheckbox = await page.waitForXPath(
+				'//input[@name="local_pickup_enabled"]'
+			);
+			const isCheckboxChecked = await page.evaluate(
+				( checkbox ) => checkbox.checked,
+				localPickupCheckbox
+			);
+
+			if ( isCheckboxChecked === true ) {
+				return;
+			}
+
+			// eslint-disable-next-line jest/no-standalone-expect
+			await expect( page ).toClick( 'label', {
+				text: 'Enable local pickup',
+			} );
+			// eslint-disable-next-line jest/no-standalone-expect
+			await expect( page ).toClick( 'button', {
+				text: 'Save changes',
+			} );
+		} );
+		afterAll( async () => {
+			// Disable local pickup.
+			await visitAdminPage(
+				'admin.php',
+				'page=wc-settings&tab=shipping&section=pickup_location'
+			);
+
+			const localPickupCheckbox = await page.waitForXPath(
+				'//input[@name="local_pickup_enabled"]'
+			);
+			const isCheckboxChecked = await page.evaluate(
+				( checkbox ) => checkbox.checked,
+				localPickupCheckbox
+			);
+
+			// Skip this if it's already unchecked.
+			if ( isCheckboxChecked === false ) {
+				return;
+			}
+
 			// eslint-disable-next-line jest/no-standalone-expect
 			await expect( page ).toClick( 'label', {
 				text: 'Enable local pickup',
