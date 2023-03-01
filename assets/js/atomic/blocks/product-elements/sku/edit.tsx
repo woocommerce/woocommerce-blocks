@@ -11,11 +11,13 @@ import { useEffect } from 'react';
  * Internal dependencies
  */
 import Block from './block';
-import withProductSelector from '../shared/with-product-selector';
 import { BLOCK_TITLE, BLOCK_ICON } from './constants';
 import type { Attributes } from './types';
+import { ProductSelector } from '../shared/product-selector';
+import { useBlockProps } from '@wordpress/block-editor';
+import { useSelect } from '@wordpress/data';
 
-const Edit = ( {
+export default ( {
 	attributes,
 	setAttributes,
 	context,
@@ -25,39 +27,71 @@ const Edit = ( {
 		...context,
 	};
 	const isDescendentOfQueryLoop = Number.isFinite( context.queryId );
-	const isDescendentOfSingleProductTemplate =
-		attributes.isDescendentOfSingleProductTemplate;
+
+	const { showProductSelector, isDescendentOfSingleProductTemplate } =
+		useSelect(
+			( select ) => {
+				const store = select( 'core/edit-site' );
+				const postId = store?.getEditedPostId();
+
+				const descendentOfSingleProductTemplate =
+					( postId === 'woocommerce/woocommerce//product-meta' ||
+						postId ===
+							'woocommerce/woocommerce//single-product' ) &&
+					! isDescendentOfQueryLoop;
+
+				return {
+					isDescendentOfSingleProductTemplate:
+						descendentOfSingleProductTemplate,
+					showProductSelector:
+						! isDescendentOfQueryLoop &&
+						! descendentOfSingleProductTemplate,
+				};
+			},
+			[ isDescendentOfQueryLoop ]
+		);
+
+	const blockProps = useBlockProps();
 
 	useEffect(
 		() =>
 			setAttributes( {
 				isDescendentOfQueryLoop,
-				showProductSelector:
-					! isDescendentOfQueryLoop &&
-					! isDescendentOfSingleProductTemplate,
+				isDescendentOfSingleProductTemplate,
+				showProductSelector,
 			} ),
 		[
-			setAttributes,
 			isDescendentOfQueryLoop,
 			isDescendentOfSingleProductTemplate,
+			setAttributes,
+			showProductSelector,
 		]
 	);
 
-	console.log( blockAttrs );
+	if ( ! showProductSelector ) {
+		return (
+			<div { ...blockProps }>
+				<EditProductLink />
+				<Block { ...blockAttrs } />
+			</div>
+		);
+	}
 
 	return (
-		<>
-			<EditProductLink />
-			<Block { ...blockAttrs } />
-		</>
+		<div { ...blockProps }>
+			<ProductSelector
+				productId={ attributes.productId }
+				setAttributes={ setAttributes }
+				icon={ BLOCK_ICON }
+				label={ BLOCK_TITLE }
+				description={ __(
+					'Choose a product to display its SKU.',
+					'woo-gutenberg-products-block'
+				) }
+			>
+				<EditProductLink />
+				<Block { ...blockAttrs } />
+			</ProductSelector>
+		</div>
 	);
 };
-
-export default withProductSelector( {
-	icon: BLOCK_ICON,
-	label: BLOCK_TITLE,
-	description: __(
-		'Choose a product to display its SKU.',
-		'woo-gutenberg-products-block'
-	),
-} )( Edit );

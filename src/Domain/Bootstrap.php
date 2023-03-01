@@ -22,7 +22,6 @@ use Automattic\WooCommerce\Blocks\Payments\Integrations\PayPal;
 use Automattic\WooCommerce\Blocks\Payments\PaymentMethodRegistry;
 use Automattic\WooCommerce\Blocks\Registry\Container;
 use Automattic\WooCommerce\Blocks\Templates\ClassicTemplatesCompatibility;
-use Automattic\WooCommerce\Blocks\Templates\BlockTemplatesCompatibility;
 use Automattic\WooCommerce\Blocks\Templates\ProductAttributeTemplate;
 use Automattic\WooCommerce\Blocks\Templates\ProductSearchResultsTemplate;
 use Automattic\WooCommerce\StoreApi\RoutesController;
@@ -30,6 +29,7 @@ use Automattic\WooCommerce\StoreApi\SchemaController;
 use Automattic\WooCommerce\StoreApi\StoreApi;
 use Automattic\WooCommerce\Blocks\Shipping\ShippingController;
 use Automattic\WooCommerce\Blocks\Templates\SingleProductTemplateCompatibility;
+use Automattic\WooCommerce\Blocks\Templates\ArchiveProductTemplatesCompatibility;
 
 /**
  * Takes care of bootstrapping the plugin.
@@ -81,6 +81,8 @@ class Bootstrap {
 			 * To ensure blocks are initialized, you must use the `woocommerce_blocks_loaded`
 			 * hook instead of the `plugins_loaded` hook. This is because the functions
 			 * hooked into plugins_loaded on the same priority load in an inconsistent and unpredictable manner.
+			 *
+			 * @since 2.5.0
 			 */
 			do_action( 'woocommerce_blocks_loaded' );
 		}
@@ -129,8 +131,8 @@ class Bootstrap {
 		$this->container->get( ProductSearchResultsTemplate::class );
 		$this->container->get( ProductAttributeTemplate::class );
 		$this->container->get( ClassicTemplatesCompatibility::class );
-		$this->container->get( BlockTemplatesCompatibility::class );
-		$this->container->get( SingleProductTemplateCompatibility::class );
+		$this->container->get( ArchiveProductTemplatesCompatibility::class )->init();
+		$this->container->get( SingleProductTemplateCompatibility::class )->init();
 		$this->container->get( BlockPatterns::class );
 		$this->container->get( PaymentsApi::class );
 		$this->container->get( ShippingController::class )->init();
@@ -277,9 +279,9 @@ class Bootstrap {
 			}
 		);
 		$this->container->register(
-			BlockTemplatesCompatibility::class,
+			ArchiveProductTemplatesCompatibility::class,
 			function () {
-				return new BlockTemplatesCompatibility();
+				return new ArchiveProductTemplatesCompatibility();
 			}
 		);
 
@@ -395,7 +397,11 @@ class Bootstrap {
 			$function,
 			$version
 		);
-
+		/**
+		 * Fires when a deprecated function is called.
+		 *
+		 * @since 7.3.0
+		 */
 		do_action( 'deprecated_function_run', $function, $replacement, $version );
 
 		$log_error = false;
@@ -410,7 +416,13 @@ class Bootstrap {
 			$log_error = true;
 		}
 
-		// Apply same filter as WP core.
+		/**
+		 * Filters whether to trigger an error for deprecated functions. (Same as WP core)
+		 *
+		 * @since 7.3.0
+		 *
+		 * @param bool $trigger Whether to trigger the error for deprecated functions. Default true.
+		 */
 		if ( ! apply_filters( 'deprecated_function_trigger_error', true ) ) {
 			$log_error = true;
 		}

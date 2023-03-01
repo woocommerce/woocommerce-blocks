@@ -21,7 +21,7 @@ class SingleProductTemplateCompatibility extends AbstractTemplateCompatibility {
 	 * @return string
 	 */
 	public function inject_hooks( $block_content, $block ) {
-		if ( ! $this->is_single_product_template() ) {
+		if ( ! is_product() ) {
 			return $block_content;
 		}
 
@@ -68,6 +68,7 @@ class SingleProductTemplateCompatibility extends AbstractTemplateCompatibility {
 	private function inject_hook_to_first_and_last_blocks( $block_content, $block ) {
 		$first_block_hook = array(
 			'before' => array(
+				'woocommerce_before_main_content'    => $this->hook_data['woocommerce_before_main_content'],
 				'woocommerce_before_single_product'  => $this->hook_data['woocommerce_before_single_product'],
 				'woocommerce_before_single_product_summary' => $this->hook_data['woocommerce_before_single_product_summary'],
 				'woocommerce_single_product_summary' => $this->hook_data['woocommerce_single_product_summary'],
@@ -79,14 +80,34 @@ class SingleProductTemplateCompatibility extends AbstractTemplateCompatibility {
 			'before' => array(),
 			'after'  => array(
 				'woocommerce_after_single_product' => $this->hook_data['woocommerce_after_single_product'],
+				'woocommerce_after_main_content'   => $this->hook_data['woocommerce_after_main_content'],
+				'woocommerce_sidebar'              => $this->hook_data['woocommerce_sidebar'],
 			),
 		);
+
+		if ( 'core/template-part' === $block['blockName'] && isset( $block['attrs']['slug'] ) && 'product-meta' === $block['attrs']['slug'] ) {
+			return sprintf(
+				'%1$s%2$s%3$s',
+				$this->get_hooks_buffer(
+					$this->hook_data['woocommerce_product_meta_start'],
+					'before'
+				),
+				$block_content,
+				$this->get_hooks_buffer(
+					$this->hook_data['woocommerce_product_meta_end'],
+					'after'
+				)
+			);
+		}
 
 		if ( isset( $block['attrs'][ self::IS_FIRST_BLOCK ] ) && isset( $block['attrs'][ self::IS_LAST_BLOCK ] ) ) {
 			return sprintf(
 				'%1$s%2$s%3$s',
 				$this->get_hooks_buffer(
-					$first_block_hook['before'],
+					array_merge(
+						$first_block_hook['before'],
+						$last_block_hook['before']
+					),
 					'before'
 				),
 				$block_content,
@@ -118,7 +139,7 @@ class SingleProductTemplateCompatibility extends AbstractTemplateCompatibility {
 		if ( isset( $block['attrs'][ self::IS_LAST_BLOCK ] ) ) {
 			return sprintf(
 				'%1$s%2$s%3$s',
-				$this->get_hooks_buffer( array(), 'before' ),
+				$this->get_hooks_buffer( $last_block_hook['before'], 'before' ),
 				$block_content,
 				$this->get_hooks_buffer(
 					$last_block_hook['after'],
@@ -147,12 +168,33 @@ class SingleProductTemplateCompatibility extends AbstractTemplateCompatibility {
 	 */
 	protected function set_hook_data() {
 		$this->hook_data = array(
+			'woocommerce_before_main_content'           => array(
+				'block_name' => '',
+				'position'   => 'before',
+				'hooked'     => array(
+					'woocommerce_output_content_wrapper' => 10,
+					'woocommerce_breadcrumb'             => 20,
+				),
+			),
+			'woocommerce_after_main_content'            => array(
+				'block_name' => '',
+				'position'   => 'after',
+				'hooked'     => array(
+					'woocommerce_output_content_wrapper_end' => 10,
+				),
+			),
+			'woocommerce_sidebar'                       => array(
+				'block_name' => '',
+				'position'   => 'after',
+				'hooked'     => array(
+					'woocommerce_get_sidebar' => 10,
+				),
+			),
 			'woocommerce_before_single_product'         => array(
 				'block_name' => '',
 				'position'   => 'before',
 				'hooked'     => array(
 					'woocommerce_output_all_notices' => 10,
-					'woocommerce_breadcrumb'         => 20,
 				),
 			),
 			'woocommerce_before_single_product_summary' => array(
@@ -176,6 +218,16 @@ class SingleProductTemplateCompatibility extends AbstractTemplateCompatibility {
 					'woocommerce_template_single_sharing' => 50,
 				),
 			),
+			'woocommerce_product_meta_start'            => array(
+				'block_name' => '',
+				'position'   => 'before',
+				'hooked'     => array(),
+			),
+			'woocommerce_product_meta_end'              => array(
+				'block_name' => '',
+				'position'   => 'after',
+				'hooked'     => array(),
+			),
 			'woocommerce_after_single_product'          => array(
 				'block_name' => '',
 				'position'   => 'after',
@@ -196,16 +248,6 @@ class SingleProductTemplateCompatibility extends AbstractTemplateCompatibility {
 				),
 			),
 		);
-	}
-
-
-	/**
-	 * Check if the current template is a single product template.
-	 *
-	 * @return bool
-	 */
-	private function is_single_product_template() {
-		return is_product();
 	}
 
 	/**
@@ -231,19 +273,18 @@ class SingleProductTemplateCompatibility extends AbstractTemplateCompatibility {
 
 	}
 
-
 	/**
 	 * For compatibility reason, we need to wrap the Single Product template in a div with specific class.
 	 * For more details, see https://github.com/woocommerce/woocommerce-blocks/issues/8314.
 	 *
 	 * @param string $template_content Template Content.
-	 * @return string Wrapped template content inside a div.
+	 * @return array Wrapped template content inside a div.
 	 */
 	private static function wrap_single_product_template( $template_content ) {
 		$parsed_blocks  = parse_blocks( $template_content );
 		$grouped_blocks = self::group_blocks( $parsed_blocks );
 
-		// WIP: The list of blocks is WIP.
+		// @todo Check this list before terminating the Blockfied Single Product Template project.
 		$single_product_template_blocks = array( 'woocommerce/product-image-gallery', 'woocommerce/product-details', 'woocommerce/add-to-cart-form' );
 
 		$wrapped_blocks = array_map(
@@ -265,7 +306,6 @@ class SingleProductTemplateCompatibility extends AbstractTemplateCompatibility {
 		return $wrapped_blocks;
 	}
 
-
 	/**
 	 * Add custom attributes to the first group block and last group block that wrap Single Product Template blocks.
 	 *
@@ -282,31 +322,30 @@ class SingleProductTemplateCompatibility extends AbstractTemplateCompatibility {
 				$block          = $item[0];
 
 				if ( self::is_template_part( $block ) ) {
-					array_push( $carry['template'], $block );
+					$carry['template'][] = $block;
 					return $carry;
 				}
 
-				if ( false === $carry['first_block']['found'] ) {
+				if ( '' === $carry['first_block']['index'] ) {
 					$block['attrs'][ self::IS_FIRST_BLOCK ] = true;
-					$carry['first_block']['found']          = true;
+					$carry['first_block']['index']          = $index;
 				}
 
-				if ( true === $carry['last_block']['found'] ) {
+				if ( '' !== $carry['last_block']['index'] ) {
 					$index_element                         = $carry['last_block']['index'];
 					$carry['last_block']['index']          = $index;
 					$block['attrs'][ self::IS_LAST_BLOCK ] = true;
 					unset( $carry['template'][ $index_element ]['attrs'][ self::IS_LAST_BLOCK ] );
 
-					array_push( $carry['template'], $block );
+					$carry['template'][] = $block;
 
 					return $carry;
 				}
 
 				$block['attrs'][ self::IS_LAST_BLOCK ] = true;
-				$carry['last_block']['found']          = true;
 				$carry['last_block']['index']          = $index;
 
-				array_push( $carry['template'], $block );
+				$carry['template'][] = $block;
 
 				return $carry;
 			},
@@ -314,11 +353,9 @@ class SingleProductTemplateCompatibility extends AbstractTemplateCompatibility {
 				'template'    => array(),
 				'first_block' => array(
 					'index' => '',
-					'found' => false,
 				),
 				'last_block'  => array(
 					'index' => '',
-					'found' => false,
 				),
 				'index'       => 0,
 			)
@@ -393,7 +430,7 @@ class SingleProductTemplateCompatibility extends AbstractTemplateCompatibility {
 			$parsed_blocks,
 			function( $carry, $block ) {
 				if ( self::is_template_part( $block ) ) {
-					array_push( $carry, array( $block ) );
+					$carry[] = array( $block );
 					return $carry;
 				}
 				if ( empty( $block['blockName'] ) ) {
@@ -401,16 +438,15 @@ class SingleProductTemplateCompatibility extends AbstractTemplateCompatibility {
 				}
 				$last_element_index = count( $carry ) - 1;
 				if ( isset( $carry[ $last_element_index ][0]['blockName'] ) && ! self::is_template_part( $carry[ $last_element_index ][0] ) ) {
-					array_push( $carry[ $last_element_index ], $block );
+					$carry[ $last_element_index ][] = $block;
 					return $carry;
 				}
-				array_push( $carry, array( $block ) );
+				$carry[] = array( $block );
 				return $carry;
 			},
 			array()
 		);
 	}
-
 
 	/**
 	 * Check if the block is a template part except for the product meta template part.

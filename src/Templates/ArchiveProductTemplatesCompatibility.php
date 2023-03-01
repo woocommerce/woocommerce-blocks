@@ -2,13 +2,13 @@
 namespace Automattic\WooCommerce\Blocks\Templates;
 
 /**
- * BlockTemplatesCompatibility class.
+ * ArchiveProductTemplatesCompatibility class.
  *
- * To bridge the gap on compatibility with PHP hooks and blockified templates.
+ * To bridge the gap on compatibility with PHP hooks and Product Archive blockified templates.
  *
  * @internal
  */
-class BlockTemplatesCompatibility extends AbstractTemplateCompatibility {
+class ArchiveProductTemplatesCompatibility extends AbstractTemplateCompatibility {
 
 	/**
 	 * The custom ID of the loop item block as the replacement of the core/null block.
@@ -232,13 +232,21 @@ class BlockTemplatesCompatibility extends AbstractTemplateCompatibility {
 					'wc_no_products_found' => 10,
 				),
 			),
+			'woocommerce_archive_description'         => array(
+				'block_name' => 'core/term-description',
+				'position'   => 'before',
+				'hooked'     => array(
+					'woocommerce_taxonomy_archive_description' => 10,
+					'woocommerce_product_archive_description'  => 10,
+				),
+			),
 		);
 	}
 
 	/**
 	 * Check if current page is a product archive template.
 	 */
-	protected function is_archive_template() {
+	private function is_archive_template() {
 		return is_shop() || is_product_taxonomy();
 	}
 
@@ -248,7 +256,7 @@ class BlockTemplatesCompatibility extends AbstractTemplateCompatibility {
 	 *
 	 * @param array $block Parsed block data.
 	 */
-	protected function inner_blocks_walker( &$block ) {
+	private function inner_blocks_walker( &$block ) {
 		if (
 			'core/query' === $block['blockName'] &&
 			isset( $block['attrs']['namespace'] ) &&
@@ -270,7 +278,7 @@ class BlockTemplatesCompatibility extends AbstractTemplateCompatibility {
 	 *
 	 * @param array $block Parsed block data.
 	 */
-	protected function inject_attribute( &$block ) {
+	private function inject_attribute( &$block ) {
 		$block['attrs']['isInherited'] = 1;
 
 		if ( ! empty( $block['innerBlocks'] ) ) {

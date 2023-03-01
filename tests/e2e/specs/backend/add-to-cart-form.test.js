@@ -4,7 +4,6 @@
 import {
 	canvas,
 	createNewPost,
-	insertBlock,
 	switchUserToAdmin,
 } from '@wordpress/e2e-test-utils';
 import { searchForBlock } from '@wordpress/e2e-test-utils/build/inserter';
@@ -14,6 +13,7 @@ import { searchForBlock } from '@wordpress/e2e-test-utils/build/inserter';
  */
 import {
 	filterCurrentBlocks,
+	insertBlockDontWaitForInsertClose,
 	goToSiteEditor,
 	useTheme,
 	waitForCanvas,
@@ -26,7 +26,7 @@ const block = {
 };
 
 describe( `${ block.name } Block`, () => {
-	it( 'in can not be inserted in a post', async () => {
+	it( 'can not be inserted in a post', async () => {
 		await switchUserToAdmin();
 		await createNewPost( {
 			postType: 'post',
@@ -45,17 +45,19 @@ describe( `${ block.name } Block`, () => {
 		} );
 
 		it( 'can be inserted in FSE area', async () => {
-			await insertBlock( block.name );
+			// We are using here the "insertBlockDontWaitForInsertClose" function because the
+			// tests are flickering when we use the "insertBlock" function.
+			await insertBlockDontWaitForInsertClose( block.name );
 			await expect( canvas() ).toMatchElement( block.class );
 		} );
 
 		it( 'can be inserted more than once', async () => {
-			await insertBlock( block.name );
-			await insertBlock( block.name );
-			const foo = await filterCurrentBlocks(
+			await insertBlockDontWaitForInsertClose( block.name );
+			await insertBlockDontWaitForInsertClose( block.name );
+			const filteredBlocks = await filterCurrentBlocks(
 				( b ) => b.name === block.slug
 			);
-			expect( foo ).toHaveLength( 2 );
+			expect( filteredBlocks ).toHaveLength( 2 );
 		} );
 	} );
 } );

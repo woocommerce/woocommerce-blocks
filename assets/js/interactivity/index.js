@@ -1,9 +1,7 @@
-/**
- * Internal dependencies
- */
 import registerDirectives from './directives';
 import registerComponents from './components';
 import { init } from './router';
+export { store } from './store';
 
 /**
  * Initialize the initial vDOM.
