@@ -2,7 +2,7 @@
 	"name": "woocommerce/single-product-server-side",
 	"version": "1.0.0",
 	"icon": "info",
-	"title": "Single Product",
+	"title": "Single Product (Server Side)",
 	"description": "Display a single product.",
 	"category": "woocommerce",
 	"keywords": [ "WooCommerce" ],
