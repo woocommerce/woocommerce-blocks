@@ -6,13 +6,11 @@ import deepFreeze from 'deep-freeze';
 /**
  * Internal dependencies
  */
-import { STATUS as PAYMENT_STATUS } from '../constants';
 import reducer from '../reducers';
 import { ACTION_TYPES } from '../action-types';
 
 describe( 'paymentMethodDataReducer', () => {
 	const originalState = deepFreeze( {
-		paymentStatuses: PAYMENT_STATUS,
 		currentStatus: {
 			isPristine: true,
 			isStarted: false,
@@ -21,18 +19,17 @@ describe( 'paymentMethodDataReducer', () => {
 			hasError: false,
 			hasFailed: false,
 			isSuccessful: false,
-			isDoingExpressPayment: false,
 		},
 		availablePaymentMethods: {},
 		availableExpressPaymentMethods: {},
 		paymentMethodData: {},
 		paymentMethodsInitialized: false,
 		expressPaymentMethodsInitialized: false,
-		isExpressPaymentMethodActive: false,
 		shouldSavePaymentMethod: false,
 		errorMessage: '',
 		activePaymentMethod: '',
 		activeSavedToken: '',
+		incompatiblePaymentMethods: {},
 	} );
 
 	it( 'sets state as expected when adding a payment method', () => {
@@ -41,7 +38,6 @@ describe( 'paymentMethodDataReducer', () => {
 			paymentMethods: { 'my-new-method': { express: false } },
 		} );
 		expect( nextState ).toEqual( {
-			paymentStatuses: PAYMENT_STATUS,
 			currentStatus: {
 				isPristine: true,
 				isStarted: false,
@@ -50,24 +46,22 @@ describe( 'paymentMethodDataReducer', () => {
 				hasError: false,
 				hasFailed: false,
 				isSuccessful: false,
-				isDoingExpressPayment: false,
 			},
 			availablePaymentMethods: { 'my-new-method': { express: false } },
 			availableExpressPaymentMethods: {},
 			paymentMethodData: {},
 			paymentMethodsInitialized: false,
 			expressPaymentMethodsInitialized: false,
-			isExpressPaymentMethodActive: false,
 			shouldSavePaymentMethod: false,
 			errorMessage: '',
 			activePaymentMethod: '',
 			activeSavedToken: '',
+			incompatiblePaymentMethods: {},
 		} );
 	} );
 
 	it( 'sets state as expected when removing a payment method', () => {
 		const stateWithRegisteredMethod = deepFreeze( {
-			paymentStatuses: PAYMENT_STATUS,
 			currentStatus: {
 				isPristine: true,
 				isStarted: false,
@@ -76,25 +70,23 @@ describe( 'paymentMethodDataReducer', () => {
 				hasError: false,
 				hasFailed: false,
 				isSuccessful: false,
-				isDoingExpressPayment: false,
 			},
 			availablePaymentMethods: { 'my-new-method': { express: false } },
 			availableExpressPaymentMethods: {},
 			paymentMethodData: {},
 			paymentMethodsInitialized: false,
 			expressPaymentMethodsInitialized: false,
-			isExpressPaymentMethodActive: false,
 			shouldSavePaymentMethod: false,
 			errorMessage: '',
 			activePaymentMethod: '',
 			activeSavedToken: '',
+			incompatiblePaymentMethods: {},
 		} );
 		const nextState = reducer( stateWithRegisteredMethod, {
 			type: ACTION_TYPES.REMOVE_AVAILABLE_PAYMENT_METHOD,
 			name: 'my-new-method',
 		} );
 		expect( nextState ).toEqual( {
-			paymentStatuses: PAYMENT_STATUS,
 			currentStatus: {
 				isPristine: true,
 				isStarted: false,
@@ -103,18 +95,17 @@ describe( 'paymentMethodDataReducer', () => {
 				hasError: false,
 				hasFailed: false,
 				isSuccessful: false,
-				isDoingExpressPayment: false,
 			},
 			availablePaymentMethods: {},
 			availableExpressPaymentMethods: {},
 			paymentMethodData: {},
 			paymentMethodsInitialized: false,
 			expressPaymentMethodsInitialized: false,
-			isExpressPaymentMethodActive: false,
 			shouldSavePaymentMethod: false,
 			errorMessage: '',
 			activePaymentMethod: '',
 			activeSavedToken: '',
+			incompatiblePaymentMethods: {},
 		} );
 	} );
 
@@ -124,7 +115,6 @@ describe( 'paymentMethodDataReducer', () => {
 			paymentMethods: { 'my-new-method': { express: true } },
 		} );
 		expect( nextState ).toEqual( {
-			paymentStatuses: PAYMENT_STATUS,
 			currentStatus: {
 				isPristine: true,
 				isStarted: false,
@@ -133,7 +123,6 @@ describe( 'paymentMethodDataReducer', () => {
 				hasError: false,
 				hasFailed: false,
 				isSuccessful: false,
-				isDoingExpressPayment: false,
 			},
 			availablePaymentMethods: {},
 			availableExpressPaymentMethods: {
@@ -142,17 +131,16 @@ describe( 'paymentMethodDataReducer', () => {
 			paymentMethodData: {},
 			paymentMethodsInitialized: false,
 			expressPaymentMethodsInitialized: false,
-			isExpressPaymentMethodActive: false,
 			shouldSavePaymentMethod: false,
 			errorMessage: '',
 			activePaymentMethod: '',
 			activeSavedToken: '',
+			incompatiblePaymentMethods: {},
 		} );
 	} );
 
 	it( 'sets state as expected when removing an express payment method', () => {
 		const stateWithRegisteredMethod = deepFreeze( {
-			paymentStatuses: PAYMENT_STATUS,
 			currentStatus: {
 				isPristine: true,
 				isStarted: false,
@@ -161,25 +149,23 @@ describe( 'paymentMethodDataReducer', () => {
 				hasError: false,
 				hasFailed: false,
 				isSuccessful: false,
-				isDoingExpressPayment: false,
 			},
 			availablePaymentMethods: {},
 			availableExpressPaymentMethods: [ 'my-new-method' ],
 			paymentMethodData: {},
 			paymentMethodsInitialized: false,
 			expressPaymentMethodsInitialized: false,
-			isExpressPaymentMethodActive: false,
 			shouldSavePaymentMethod: false,
 			errorMessage: '',
 			activePaymentMethod: '',
 			activeSavedToken: '',
+			incompatiblePaymentMethods: {},
 		} );
 		const nextState = reducer( stateWithRegisteredMethod, {
 			type: ACTION_TYPES.REMOVE_AVAILABLE_EXPRESS_PAYMENT_METHOD,
 			name: 'my-new-method',
 		} );
 		expect( nextState ).toEqual( {
-			paymentStatuses: PAYMENT_STATUS,
 			currentStatus: {
 				isPristine: true,
 				isStarted: false,
@@ -188,18 +174,38 @@ describe( 'paymentMethodDataReducer', () => {
 				hasError: false,
 				hasFailed: false,
 				isSuccessful: false,
-				isDoingExpressPayment: false,
 			},
 			availablePaymentMethods: {},
 			availableExpressPaymentMethods: {},
 			paymentMethodData: {},
 			paymentMethodsInitialized: false,
 			expressPaymentMethodsInitialized: false,
-			isExpressPaymentMethodActive: false,
 			shouldSavePaymentMethod: false,
 			errorMessage: '',
 			activePaymentMethod: '',
 			activeSavedToken: '',
+			incompatiblePaymentMethods: {},
 		} );
+	} );
+
+	it( 'should handle SET_PAYMENT_RESULT', () => {
+		const mockResponse = {
+			message: 'success',
+			redirectUrl: 'https://example.com',
+			paymentStatus: 'not set',
+			paymentDetails: {},
+		};
+
+		const expectedState = {
+			...originalState,
+			paymentResult: mockResponse,
+		};
+
+		expect(
+			reducer( originalState, {
+				type: ACTION_TYPES.SET_PAYMENT_RESULT,
+				data: mockResponse,
+			} )
+		).toEqual( expectedState );
 	} );
 } );

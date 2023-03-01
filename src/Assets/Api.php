@@ -150,6 +150,8 @@ class Api {
 		/**
 		 * Filters the list of script dependencies.
 		 *
+		 * @since 3.0.0
+		 *
 		 * @param array $dependencies The list of script dependencies.
 		 * @param string $handle The script's handle.
 		 * @return array
@@ -183,20 +185,14 @@ class Api {
 	}
 
 	/**
-	 * Returns the appropriate asset path for loading either legacy builds or
-	 * current builds.
+	 * Returns the appropriate asset path for current builds.
 	 *
 	 * @param   string $filename  Filename for asset path (without extension).
 	 * @param   string $type      File type (.css or .js).
-	 *
 	 * @return  string             The generated path.
 	 */
 	public function get_block_asset_build_path( $filename, $type = 'js' ) {
-		global $wp_version;
-		$suffix = version_compare( $wp_version, '5.3', '>=' )
-			? ''
-			: '-legacy';
-		return "build/$filename$suffix.$type";
+		return "build/$filename.$type";
 	}
 
 	/**

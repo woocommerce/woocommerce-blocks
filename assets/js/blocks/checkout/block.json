@@ -10,6 +10,11 @@
 		"html": false,
 		"multiple": false
 	},
+	"example": {
+		"attributes": {
+			"isPreview": true
+		}
+	},
 	"attributes": {
 		"isPreview": {
 			"type": "boolean",
@@ -21,10 +26,6 @@
 			"default": false
 		},
 		"requireCompanyField": {
-			"type": "boolean",
-			"default": false
-		},
-		"allowCreateAccount": {
 			"type": "boolean",
 			"default": false
 		},

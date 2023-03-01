@@ -8,18 +8,9 @@
 	"supports": {
 		"html": false,
 		"multiple": false,
-		"color": {
-		  "__experimentalDefaultControls": {
-			"text": true
-		  }
-		},
+		"color": true,
 		"inserter": false,
 		"lock": false
-	},
-	"example": {
-		"attributes": {
-			"isPreview": true
-		}
 	},
 	"attributes": {
 		"className": {
@@ -30,9 +21,17 @@
 			"type": "boolean",
 			"default": true
 		},
+		"displayStyle": {
+			"type": "string",
+			"default": "list"
+		},
 		"showFilterButton": {
 			"type": "boolean",
 			"default": false
+		},
+		"selectType": {
+			"type": "string",
+			"default": "multiple"
 		},
 		"isPreview": {
 			"type": "boolean",

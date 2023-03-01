@@ -105,8 +105,8 @@ class ProductImage extends AbstractBlock {
 		</div>
 	',
 			$attributes['saleBadgeAlign'],
-			isset( $font_size['class'] ) ? $font_size['class'] : '',
-			isset( $font_size['style'] ) ? $font_size['style'] : '',
+			isset( $font_size['class'] ) ? esc_attr( $font_size['class'] ) : '',
+			isset( $font_size['style'] ) ? esc_attr( $font_size['style'] ) : '',
 			esc_html__( 'Sale', 'woo-gutenberg-products-block' )
 		);
 		return $on_sale_badge;
@@ -147,7 +147,10 @@ class ProductImage extends AbstractBlock {
 		$image_info = wp_get_attachment_image_src( get_post_thumbnail_id( $product->get_id() ), 'woocommerce_thumbnail' );
 
 		if ( ! isset( $image_info[0] ) ) {
-			return sprintf( '<img src="%s" alt="" width="500 height="500" />', wc_placeholder_img_src( 'woocommerce_thumbnail' ) );
+			// The alt text is left empty on purpose, as it's considered a decorative image.
+			// More can be found here: https://www.w3.org/WAI/tutorials/images/decorative/.
+			// Github discussion for a context: https://github.com/woocommerce/woocommerce-blocks/pull/7651#discussion_r1019560494.
+			return sprintf( '<img src="%s" alt="" />', wc_placeholder_img_src( 'woocommerce_thumbnail' ) );
 		}
 
 		return sprintf(
@@ -165,7 +168,7 @@ class ProductImage extends AbstractBlock {
 	 *                           not in the post content on editor load.
 	 */
 	protected function enqueue_data( array $attributes = [] ) {
-		$this->asset_data_registry->add( 'is_block_theme_enabled', wp_is_block_theme(), false );
+		$this->asset_data_registry->add( 'is_block_theme_enabled', wc_current_theme_is_fse_theme(), false );
 	}
 
 
@@ -196,8 +199,8 @@ class ProductImage extends AbstractBlock {
 				'<div class="wc-block-components-product-image wc-block-grid__product-image" style="%1$s %2$s">
 					%3$s
 				</div>',
-				isset( $border_radius['style'] ) ? $border_radius['style'] : '',
-				isset( $margin['style'] ) ? $margin['style'] : '',
+				isset( $border_radius['style'] ) ? esc_attr( $border_radius['style'] ) : '',
+				isset( $margin['style'] ) ? esc_attr( $margin['style'] ) : '',
 				$this->render_anchor(
 					$product,
 					$this->render_on_sale_badge( $product, $parsed_attributes ),

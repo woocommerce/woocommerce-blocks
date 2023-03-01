@@ -348,6 +348,8 @@ abstract class AbstractProductGrid extends AbstractDynamicBlock {
 		 * @param boolean $is_cacheable The list of script dependencies.
 		 * @param array $query_args Query args for the products query passed to BlocksWpQuery.
 		 * @return array True to enable cache, false to disable cache.
+		 *
+		 * @since 2.5.0
 		 */
 		$is_cacheable      = (bool) apply_filters( 'woocommerce_blocks_product_grid_is_cacheable', true, $this->query_args );
 		$transient_version = \WC_Cache_Helper::get_transient_version( 'product_query' );
@@ -504,6 +506,8 @@ abstract class AbstractProductGrid extends AbstractDynamicBlock {
 		 * @param array $data Product data passed to the template.
 		 * @param \WC_Product $product Product object.
 		 * @return string Updated product grid item HTML.
+		 *
+		 * @since 2.2.0
 		 */
 		return apply_filters(
 			'woocommerce_blocks_product_grid_item_html',
@@ -572,7 +576,6 @@ abstract class AbstractProductGrid extends AbstractDynamicBlock {
 			return '';
 		}
 		$rating_count = $product->get_rating_count();
-		$review_count = $product->get_review_count();
 		$average      = $product->get_average_rating();
 
 		if ( $rating_count > 0 ) {
@@ -647,7 +650,7 @@ abstract class AbstractProductGrid extends AbstractDynamicBlock {
 			'data-product_id'  => $product->get_id(),
 			'data-product_sku' => $product->get_sku(),
 			'rel'              => 'nofollow',
-			'class'            => 'wp-block-button__link add_to_cart_button',
+			'class'            => 'wp-block-button__link ' . ( function_exists( 'wc_wp_theme_get_element_class_name' ) ? wc_wp_theme_get_element_class_name( 'button' ) : '' ) . ' add_to_cart_button',
 		);
 
 		if (

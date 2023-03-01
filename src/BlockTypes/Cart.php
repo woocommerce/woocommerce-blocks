@@ -64,11 +64,15 @@ class Cart extends AbstractBlock {
 	protected function enqueue_assets( array $attributes ) {
 		/**
 		 * Fires before cart block scripts are enqueued.
+		 *
+		 * @since 2.6.0
 		 */
 		do_action( 'woocommerce_blocks_enqueue_cart_block_scripts_before' );
 		parent::enqueue_assets( $attributes );
 		/**
 		 * Fires after cart block scripts are enqueued.
+		 *
+		 * @since 2.6.0
 		 */
 		do_action( 'woocommerce_blocks_enqueue_cart_block_scripts_after' );
 	}
@@ -207,6 +211,8 @@ class Cart extends AbstractBlock {
 
 		/**
 		 * Fires after cart block data is registered.
+		 *
+		 * @since 2.6.0
 		 */
 		do_action( 'woocommerce_blocks_cart_enqueue_data' );
 	}
@@ -250,8 +256,8 @@ class Cart extends AbstractBlock {
 		parent::register_block_type_assets();
 		$chunks        = $this->get_chunks_paths( $this->chunks_folder );
 		$vendor_chunks = $this->get_chunks_paths( 'vendors--cart-blocks' );
-
-		$this->register_chunk_translations( array_merge( $chunks, $vendor_chunks ) );
+		$shared_chunks = [];
+		$this->register_chunk_translations( array_merge( $chunks, $vendor_chunks, $shared_chunks ) );
 	}
 
 	/**
@@ -278,6 +284,8 @@ class Cart extends AbstractBlock {
 			'CartOrderSummaryFeeBlock',
 			'CartOrderSummaryHeadingBlock',
 			'CartOrderSummaryShippingBlock',
+			'CartCrossSellsBlock',
+			'CartCrossSellsProductsBlock',
 		];
 	}
 }

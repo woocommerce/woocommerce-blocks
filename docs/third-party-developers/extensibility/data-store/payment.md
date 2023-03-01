@@ -27,6 +27,175 @@ with. We do not encourage extensions to dispatch actions onto this data store ye
 
 ## Selectors
 
+### (@deprecated) isPaymentPristine
+
+_**This selector is deprecated and will be removed in a future release. Please use isPaymentIdle instead**_
+
+#### _Returns_
+
+`boolean`: True if the payment status is `idle`, false otherwise.
+
+#### _Example_
+
+```js
+const store = select( 'wc/store/payment' );
+const isPaymentIdle = store.isPaymentIdle();
+```
+
+### isPaymentIdle
+
+Queries if the status is `idle`
+
+#### _Returns_
+
+`boolean`: True if the payment status is `idle`, false otherwise.
+
+#### _Example_
+
+```js
+const store = select( 'wc/store/payment' );
+const isPaymentIdle = store.isPaymentIdle();
+```
+
+### (@deprecated) isPaymentStarted
+
+Queries if the status is `started`.
+
+_**This selector is deprecated and will be removed in a future release. Please use isExpressPaymentStarted instead**_
+
+#### _Returns_
+
+`boolean`: True if the payment status is `started`, false otherwise.
+
+#### _Example_
+
+```js
+const store = select( 'wc/store/payment' );
+const isPaymentStarted = store.isPaymentStarted();
+```
+
+### isExpressPaymentStarted
+
+Queries if an express payment method has been clicked.
+
+_**This selector is deprecated and will be removed in a future release. Please use isExpressPaymentStarted instead**_
+
+#### _Returns_
+
+`boolean`: True if the button for an express payment method has been clicked, false otherwise.
+
+#### _Example_
+
+```js
+const store = select( 'wc/store/payment' );
+const isPaymentStarted = store.isPaymentStarted();
+```
+
+### isPaymentProcessing
+
+Queries if the status is `processing`.
+
+#### _Returns_
+
+`boolean`: True if the payment status is `processing`, false otherwise.
+
+#### _Example_
+
+```js
+const store = select( 'wc/store/payment' );
+const isPaymentProcessing = store.isPaymentProcessing();
+```
+
+### (@deprecated) isPaymentSuccess
+
+Queries if the status is `success`.
+
+_**This selector is deprecated and will be removed in a future release. Please use isPaymentReady instead**_
+
+#### _Returns_
+
+`boolean`: True if the payment status is `success`, false otherwise.
+
+#### _Example_
+
+```js
+const store = select( 'wc/store/payment' );
+const isPaymentSuccess = store.isPaymentSuccess();
+```
+
+### isPaymentReady
+
+Queries if the status is `ready`.
+
+#### _Returns_
+
+`boolean`: True if the payment status is `ready`, false otherwise.
+
+#### _Example_
+
+```js
+const store = select( 'wc/store/payment' );
+const isPaymentReady = store.isPaymentReady();
+```
+
+### (@deprecated) isPaymentFailed
+
+Queries if the status is `failed`.
+
+_**This selector is deprecated and will be removed in a future release. Please use hasPaymentError instead**_
+
+#### _Returns_
+
+`boolean`: True if the payment status is `failed`, false otherwise.
+
+#### _Example_
+
+```js
+const store = select( 'wc/store/payment' );
+const isPaymentFailed = store.isPaymentFailed();
+```
+
+### hasPaymentError
+
+Queries if the status is `error`.
+
+#### _Returns_
+
+`boolean`: True if the payment status is `error`, false otherwise.
+
+#### _Example_
+
+```js
+const store = select( 'wc/store/payment' );
+const hasPaymentError = store.hasPaymentError();
+```
+
+### (@deprecated) getCurrentStatus
+
+Returns an object with booleans representing the payment status.
+
+_**This selector is deprecated and will be removed in a future release. Please use the selectors above**_
+
+#### _Returns_
+
+`object` - The current payment status. This will be an object with the following keys, the values are all booleans:
+
+-   `isPristine` - True if the payment process has not started, does not have an error and has not finished. This is true
+    initially.
+-   `isStarted` - True if the payment process has started.
+-   `isProcessing` - True if the payment is processing.
+-   `hasError` - True if the payment process has resulted in an error.
+-   `hasFailed` - True if the payment process has failed.
+-   `isSuccessful` - True if the payment process is successful.
+-   `isDoingExpressPayment` - True if an express payment method is active, false otherwise
+
+#### Example
+
+```js
+const store = select( 'wc/store/payment' );
+const currentStatus = store.getCurrentStatus();
+```
+
 ### isExpressPaymentMethodActive
 
 Returns whether an express payment method is active, this will be true when the express payment method is open and
@@ -120,7 +289,8 @@ member contains a `name` entry with the payment method ID as its value.
 
 ```js
 const store = select( 'wc/store/payment' );
-const availableExpressPaymentMethods = store.getAvailableExpressPaymentMethods();
+const availableExpressPaymentMethods =
+	store.getAvailableExpressPaymentMethods();
 ```
 
 `availableExpressPaymentMethods` will look like this:
@@ -166,24 +336,24 @@ method. As an example, Stripe's saved tokens are returned like so:
 
 ```js
 savedPaymentMethods: {
-    cc: [
-        {
-            method: {
-                gateway: 'stripe',
-                last4: '4242',
-                brand: 'Visa'
-            },
-            expires: '04/24',
-            is_default: true,
-            actions: {
-                wcs_deletion_error: {
-                    url: '#choose_default',
-                    name: 'Delete'
-                }
-            },
-            tokenId: 2
-        }
-    ]
+	cc: [
+		{
+			method: {
+				gateway: 'stripe',
+				last4: '4242',
+				brand: 'Visa',
+			},
+			expires: '04/24',
+			is_default: true,
+			actions: {
+				wcs_deletion_error: {
+					url: '#choose_default',
+					name: 'Delete',
+				},
+			},
+			tokenId: 2,
+		},
+	];
 }
 ```
 
@@ -207,24 +377,24 @@ returned like so:
 
 ```js
 activeSavedPaymentMethods: {
-    cc: [
-        {
-            method: {
-                gateway: 'stripe',
-                last4: '4242',
-                brand: 'Visa'
-            },
-            expires: '04/24',
-            is_default: true,
-            actions: {
-                wcs_deletion_error: {
-                    url: '#choose_default',
-                    name: 'Delete'
-                }
-            },
-            tokenId: 2
-        }
-    ]
+	cc: [
+		{
+			method: {
+				gateway: 'stripe',
+				last4: '4242',
+				brand: 'Visa',
+			},
+			expires: '04/24',
+			is_default: true,
+			actions: {
+				wcs_deletion_error: {
+					url: '#choose_default',
+					name: 'Delete',
+				},
+			},
+			tokenId: 2,
+		},
+	];
 }
 ```
 
@@ -241,30 +411,6 @@ Returns whether the payment method should be saved to the customer's account.
 ```js
 const store = select( 'wc/store/payment' );
 const shouldSavePaymentMethod = store.getShouldSavePaymentMethod();
-```
-
-### getCurrentStatus
-
-Returns the current payment status.
-
-#### _Returns_
-
-`object` - The current payment status. This will be an object with the following keys, the values are all booleans:
-
-- `isPristine` - True if the payment process has not started, does not have an error and has not finished. This is true
-initially.
-- `isStarted` - True if the payment process has started.
-- `isProcessing` - True if the payment is processing.
-- `hasError` - True if the payment process has resulted in an error.
-- `hasFailed` - True if the payment process has failed.
-- `isSuccessful` - True if the payment process is successful.
-- `isDoingExpressPayment` - True if the payment process is being done using an express payment method.
-
-#### Example
-
-```js
-const store = select( 'wc/store/payment' );
-const currentStatus = store.getCurrentStatus();
 ```
 
 ### paymentMethodsInitialized
@@ -294,7 +440,33 @@ Returns whether the express payment methods have been initialized.
 
 ```js
 const store = select( 'wc/store/payment' );
-const expressPaymentMethodsInitialized = store.expressPaymentMethodsInitialized();
+const expressPaymentMethodsInitialized =
+	store.expressPaymentMethodsInitialized();
+```
+
+### getPaymentResult
+
+Returns the result of the last payment attempt
+
+#### _Returns_
+
+`object` - An object with the following properties:
+
+```ts
+{
+	message: string;
+	paymentStatus: 'success' | 'failure' | 'pending' | 'error' | 'not set';
+	paymentDetails: Record< string, string > | Record< string, never >;
+	redirectUrl: string;
+}
+```
+
+#### Example
+
+```js
+const store = select( 'wc/store/payment' );
+const expressPaymentMethodsInitialized =
+	store.expressPaymentMethodsInitialized();
 ```
 
 <!-- FEEDBACK -->
@@ -303,6 +475,7 @@ const expressPaymentMethodsInitialized = store.expressPaymentMethodsInitialized(
 
 [We're hiring!](https://woocommerce.com/careers/) Come work with us!
 
-🐞 Found a mistake, or have a suggestion? [Leave feedback about this document here.](https://github.com/woocommerce/woocommerce-blocks/issues/new?assignees=&labels=type%3A+documentation&template=--doc-feedback.md&title=Feedback%20on%20./docs/third-party-developers/extensibility/checkout-payment-methods/checkout-flow-and-events.md)
+🐞 Found a mistake, or have a suggestion? [Leave feedback about this document here.](https://github.com/woocommerce/woocommerce-blocks/issues/new?assignees=&labels=type%3A+documentation&template=--doc-feedback.md&title=Feedback%20on%20./docs/third-party-developers/extensibility/data-store/payment.md)
 
 <!-- /FEEDBACK -->
+

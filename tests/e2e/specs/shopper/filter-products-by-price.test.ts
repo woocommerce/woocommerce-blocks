@@ -7,8 +7,13 @@ import {
 	insertBlock,
 	switchUserToAdmin,
 	publishPost,
+	ensureSidebarOpened,
 } from '@wordpress/e2e-test-utils';
-import { selectBlockByName } from '@woocommerce/blocks-test-utils';
+import {
+	selectBlockByName,
+	insertBlockUsingSlash,
+	switchBlockInspectorTabWhenGutenbergIsInstalled,
+} from '@woocommerce/blocks-test-utils';
 
 /**
  * Internal dependencies
@@ -16,12 +21,11 @@ import { selectBlockByName } from '@woocommerce/blocks-test-utils';
 import {
 	BASE_URL,
 	goToTemplateEditor,
-	openBlockEditorSettings,
 	saveTemplate,
 	useTheme,
 	waitForAllProductsBlockLoaded,
 } from '../../utils';
-import { clickLink } from '../../../utils';
+import { clickLink, saveOrPublish } from '../../../utils';
 
 const block = {
 	name: 'Filter by Price',
@@ -35,6 +39,7 @@ const block = {
 		frontend: {
 			priceMaxAmount: '.wc-block-price-filter__amount--max',
 			productsList: '.wc-block-grid__products > li',
+			queryProductsList: '.wp-block-post-template > li',
 			classicProductsList: '.products.columns-3 > li',
 			submitButton: '.wc-block-components-filter-submit-button',
 		},
@@ -70,8 +75,8 @@ describe( `${ block.name } Block`, () => {
 			} );
 
 			await insertBlock( block.name );
-			await insertBlock( 'All Products' );
-			await insertBlock( 'Active Product Filters' );
+			await insertBlockUsingSlash( 'All Products' );
+			await insertBlock( 'Active Filters' );
 			await publishPost();
 
 			const link = await page.evaluate( () =>
@@ -80,7 +85,7 @@ describe( `${ block.name } Block`, () => {
 			await page.goto( link );
 		} );
 
-		it( 'should render', async () => {
+		it( 'should render products', async () => {
 			await waitForAllProductsBlockLoaded();
 			const products = await page.$$( selectors.frontend.productsList );
 
@@ -110,7 +115,7 @@ describe( `${ block.name } Block`, () => {
 		} );
 	} );
 
-	describe( 'with PHP classic template ', () => {
+	describe( 'with PHP classic template', () => {
 		const productCatalogTemplateId =
 			'woocommerce/woocommerce//archive-product';
 
@@ -136,7 +141,7 @@ describe( `${ block.name } Block`, () => {
 			await deleteAllTemplates( 'wp_template_part' );
 		} );
 
-		it( 'should render', async () => {
+		it( 'should render products', async () => {
 			const products = await page.$$(
 				selectors.frontend.classicProductsList
 			);
@@ -176,13 +181,15 @@ describe( `${ block.name } Block`, () => {
 			await expect( page ).toMatch( block.foundProduct );
 		} );
 
-		it( 'should refresh the page only if the user click on button', async () => {
+		it( 'should refresh the page only if the user clicks on button', async () => {
 			await goToTemplateEditor( {
 				postId: productCatalogTemplateId,
 			} );
 
 			await selectBlockByName( block.slug );
-			await openBlockEditorSettings( { isFSEEditor: true } );
+			await ensureSidebarOpened();
+			await switchBlockInspectorTabWhenGutenbergIsInstalled( 'Settings' );
+
 			await page.waitForXPath(
 				block.selectors.editor.filterButtonToggle
 			);
@@ -198,9 +205,12 @@ describe( `${ block.name } Block`, () => {
 			await page.waitForSelector( block.class + '.is-loading', {
 				hidden: true,
 			} );
+
 			expect( isRefreshed ).not.toBeCalled();
 
 			await setMaxPrice();
+
+			expect( isRefreshed ).not.toBeCalled();
 
 			await clickLink( selectors.frontend.submitButton );
 
@@ -210,6 +220,116 @@ describe( `${ block.name } Block`, () => {
 
 			const products = await page.$$(
 				selectors.frontend.classicProductsList
+			);
+
+			const pageURL = page.url();
+			const parsedURL = new URL( pageURL );
+
+			expect( isRefreshed ).toBeCalledTimes( 1 );
+			expect( products ).toHaveLength( 1 );
+			await expect( page ).toMatch( block.foundProduct );
+			expect( parsedURL.search ).toEqual(
+				block.urlSearchParamWhenFilterIsApplied
+			);
+		} );
+	} );
+
+	describe( 'with Product Query Block', () => {
+		let editorPageUrl = '';
+		let frontedPageUrl = '';
+		beforeAll( async () => {
+			await switchUserToAdmin();
+			await createNewPost( {
+				postType: 'post',
+				title: block.name,
+			} );
+
+			await insertBlock( 'Products (Beta)' );
+			await insertBlock( block.name );
+			await insertBlock( 'Active Filters' );
+			await page.waitForNetworkIdle();
+			await publishPost();
+
+			editorPageUrl = page.url();
+			frontedPageUrl = await page.evaluate( () =>
+				wp.data.select( 'core/editor' ).getPermalink()
+			);
+			await page.goto( frontedPageUrl );
+		} );
+
+		it( 'should render products', async () => {
+			const products = await page.$$(
+				selectors.frontend.queryProductsList
+			);
+
+			expect( products ).toHaveLength( 5 );
+		} );
+
+		it( 'should show only products that match the filter', async () => {
+			const isRefreshed = jest.fn( () => void 0 );
+			page.on( 'load', isRefreshed );
+
+			await page.waitForSelector( block.class + '.is-loading', {
+				hidden: true,
+			} );
+
+			await expect( page ).toMatch( block.foundProduct );
+			expect( isRefreshed ).not.toBeCalled();
+
+			await Promise.all( [ setMaxPrice(), page.waitForNavigation() ] );
+
+			await page.waitForSelector( selectors.frontend.queryProductsList );
+			const products = await page.$$(
+				selectors.frontend.queryProductsList
+			);
+
+			const pageURL = page.url();
+			const parsedURL = new URL( pageURL );
+
+			expect( isRefreshed ).toBeCalledTimes( 1 );
+			expect( products ).toHaveLength( 1 );
+
+			expect( parsedURL.search ).toEqual(
+				block.urlSearchParamWhenFilterIsApplied
+			);
+			await expect( page ).toMatch( block.foundProduct );
+		} );
+
+		it( 'should refresh the page only if the user click on button', async () => {
+			await page.goto( editorPageUrl );
+
+			await ensureSidebarOpened();
+			await selectBlockByName( block.slug );
+			await switchBlockInspectorTabWhenGutenbergIsInstalled( 'Settings' );
+			await page.waitForXPath(
+				block.selectors.editor.filterButtonToggle
+			);
+			const [ filterButtonToggle ] = await page.$x(
+				block.selectors.editor.filterButtonToggle
+			);
+			await filterButtonToggle.click();
+
+			await saveOrPublish();
+			await page.goto( frontedPageUrl );
+
+			const isRefreshed = jest.fn( () => void 0 );
+			page.on( 'load', isRefreshed );
+			await page.waitForSelector( block.class + '.is-loading', {
+				hidden: true,
+			} );
+
+			expect( isRefreshed ).not.toBeCalled();
+
+			await setMaxPrice();
+
+			expect( isRefreshed ).not.toBeCalled();
+
+			await clickLink( selectors.frontend.submitButton );
+
+			await page.waitForSelector( selectors.frontend.queryProductsList );
+
+			const products = await page.$$(
+				selectors.frontend.queryProductsList
 			);
 
 			const pageURL = page.url();

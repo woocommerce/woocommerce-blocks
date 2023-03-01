@@ -2,18 +2,20 @@
  * External dependencies
  */
 import { __ } from '@wordpress/i18n';
-import { ValidatedTextInput } from '@woocommerce/base-components/text-input';
+import { ValidatedTextInput } from '@woocommerce/blocks-checkout';
 
 /**
  * Renders a phone number input.
  */
 const PhoneNumber = ( {
 	id = 'phone',
+	errorId = 'phone',
 	isRequired = false,
 	value = '',
 	onChange,
 }: {
 	id?: string;
+	errorId?: string;
 	isRequired: boolean;
 	value: string;
 	onChange: ( value: string ) => void;
@@ -21,6 +23,7 @@ const PhoneNumber = ( {
 	return (
 		<ValidatedTextInput
 			id={ id }
+			errorId={ errorId }
 			type="tel"
 			autoComplete="tel"
 			required={ isRequired }

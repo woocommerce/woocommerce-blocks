@@ -1,7 +1,7 @@
 /**
  * External dependencies
  */
-import { SymbolPosition } from '@woocommerce/type-defs/currency';
+import { SymbolPosition, CurrencyCode } from '@woocommerce/types';
 
 declare global {
 	interface Window {
@@ -11,7 +11,7 @@ declare global {
 
 export interface WooCommerceSiteCurrency {
 	// The ISO code for the currency.
-	code: string;
+	code: CurrencyCode;
 	// The precision (decimal places).
 	precision: number;
 	// The symbol for the currency (eg '$')
@@ -39,6 +39,7 @@ export interface WooCommerceSharedSettings {
 	adminUrl: string;
 	countries: Record< string, string > | never[];
 	currency: WooCommerceSiteCurrency;
+	currentUserId: number;
 	currentUserIsAdmin: boolean;
 	homeUrl: string;
 	locale: WooCommerceSiteLocale;
@@ -64,6 +65,7 @@ const defaults: WooCommerceSharedSettings = {
 		priceFormat: '%1$s%2$s',
 		thousandSeparator: ',',
 	},
+	currentUserId: 0,
 	currentUserIsAdmin: false,
 	homeUrl: '',
 	locale: {
@@ -84,15 +86,19 @@ const defaults: WooCommerceSharedSettings = {
 const globalSharedSettings =
 	typeof window.wcSettings === 'object' ? window.wcSettings : {};
 
+interface AllSettings extends Record< string, unknown > {
+	currency: WooCommerceSiteCurrency;
+}
+
 // Use defaults or global settings, depending on what is set.
-const allSettings: Record< string, unknown > = {
+const allSettings: AllSettings = {
 	...defaults,
 	...globalSharedSettings,
 };
 
 allSettings.currency = {
 	...defaults.currency,
-	...( allSettings.currency as Record< string, unknown > ),
+	...( allSettings.currency as WooCommerceSiteCurrency ),
 };
 
 allSettings.locale = {

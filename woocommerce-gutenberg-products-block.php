@@ -3,14 +3,14 @@
  * Plugin Name: WooCommerce Blocks
  * Plugin URI: https://github.com/woocommerce/woocommerce-gutenberg-products-block
  * Description: WooCommerce blocks for the Gutenberg editor.
- * Version: 8.9.0-dev
+ * Version: 9.7.0-dev
  * Author: Automattic
  * Author URI: https://woocommerce.com
  * Text Domain:  woo-gutenberg-products-block
- * Requires at least: 6.0
- * Requires PHP: 7.0
- * WC requires at least: 6.8
- * WC tested up to: 6.9
+ * Requires at least: 6.1.1
+ * Requires PHP: 7.2
+ * WC requires at least: 7.2
+ * WC tested up to: 7.3
  *
  * @package WooCommerce\Blocks
  * @internal This file is only used when running as a feature plugin.
@@ -18,7 +18,7 @@
 
 defined( 'ABSPATH' ) || exit;
 
-$minimum_wp_version = '6.0';
+$minimum_wp_version = '6.1.1';
 
 if ( ! defined( 'WC_BLOCKS_IS_FEATURE_PLUGIN' ) ) {
 	define( 'WC_BLOCKS_IS_FEATURE_PLUGIN', true );
@@ -96,7 +96,7 @@ function woocommerce_blocks_is_development_version() {
 /**
  * If development version is detected and the Jetpack constant is not defined, show a notice.
  */
-if ( woocommerce_blocks_is_development_version() && ! defined( 'JETPACK_AUTOLOAD_DEV' ) ) {
+if ( woocommerce_blocks_is_development_version() && ( ! defined( 'JETPACK_AUTOLOAD_DEV' ) || true !== JETPACK_AUTOLOAD_DEV ) ) {
 	add_action(
 		'admin_notices',
 		function () {
@@ -286,3 +286,7 @@ function woocommerce_blocks_plugin_outdated_notice() {
 }
 
 add_action( 'admin_notices', 'woocommerce_blocks_plugin_outdated_notice' );
+
+// Include the Interactivity API.
+require_once __DIR__ . '/src/Interactivity/woo-directives.php';
+

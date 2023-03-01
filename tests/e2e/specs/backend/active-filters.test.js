@@ -9,10 +9,11 @@ import {
 import {
 	visitBlockPage,
 	selectBlockByName,
+	switchBlockInspectorTabWhenGutenbergIsInstalled,
 } from '@woocommerce/blocks-test-utils';
 
 const block = {
-	name: 'Active Product Filters',
+	name: 'Active Filters',
 	slug: 'woocommerce/active-filters',
 	class: '.wc-block-active-filters',
 	title: 'Active filters',
@@ -31,6 +32,7 @@ describe( `${ block.name } Block`, () => {
 	describe( 'attributes', () => {
 		beforeEach( async () => {
 			await openDocumentSettingsSidebar();
+			await switchBlockInspectorTabWhenGutenbergIsInstalled( 'Settings' );
 			await selectBlockByName( block.slug );
 		} );
 

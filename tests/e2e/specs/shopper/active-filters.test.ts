@@ -11,6 +11,7 @@ import {
 } from '@wordpress/e2e-test-utils';
 import { SHOP_PAGE } from '@woocommerce/e2e-utils';
 import { Frame, Page } from 'puppeteer';
+import { insertBlockUsingSlash } from '@woocommerce/blocks-test-utils';
 
 /**
  * Internal dependencies
@@ -28,7 +29,7 @@ import {
 } from '../../../utils';
 
 const block = {
-	name: 'Active Product Filters',
+	name: 'Active Filters',
 	slug: 'woocommerce/active-filters',
 	class: '.wp-block-woocommerce-active-filters',
 	selectors: {
@@ -65,9 +66,7 @@ const insertBlocks = async () => {
 	await insertBlock( block.name );
 };
 
-const configurateFilterProductsByAttributeBlock = async (
-	pageOrCanvas: Page | Frame
-) => {
+const configureAttributeFilterBlock = async ( pageOrCanvas: Page | Frame ) => {
 	await pageOrCanvas.$eval(
 		selectors.editor.firstAttributeInTheList,
 		( el ) => ( el as HTMLElement ).click()
@@ -97,8 +96,8 @@ describe( 'Shopper → Active Filters Block', () => {
 			} );
 
 			await insertBlocks();
-			await insertBlock( 'All Products' );
-			await configurateFilterProductsByAttributeBlock( page );
+			await insertBlockUsingSlash( 'All Products' );
+			await configureAttributeFilterBlock( page );
 			await publishPost();
 
 			const link = await page.evaluate( () =>
@@ -222,7 +221,7 @@ describe( 'Shopper → Active Filters Block', () => {
 			await insertBlocks();
 
 			const canvasEl = canvas();
-			await configurateFilterProductsByAttributeBlock( canvasEl );
+			await configureAttributeFilterBlock( canvasEl );
 			await saveTemplate();
 		} );
 

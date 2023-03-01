@@ -27,6 +27,9 @@ use Automattic\WooCommerce\Blocks\Templates\ProductSearchResultsTemplate;
 use Automattic\WooCommerce\StoreApi\RoutesController;
 use Automattic\WooCommerce\StoreApi\SchemaController;
 use Automattic\WooCommerce\StoreApi\StoreApi;
+use Automattic\WooCommerce\Blocks\Shipping\ShippingController;
+use Automattic\WooCommerce\Blocks\Templates\SingleProductTemplateCompatibility;
+use Automattic\WooCommerce\Blocks\Templates\BlockTemplatesCompatibility;
 
 /**
  * Takes care of bootstrapping the plugin.
@@ -70,10 +73,16 @@ class Bootstrap {
 		if ( $this->has_core_dependencies() ) {
 			$this->init();
 			/**
-			 * Fires after WooCommerce Blocks plugin has loaded.
+			 * Fires when the woocommerce blocks are loaded and ready to use.
 			 *
-			 * This hook is intended to be used as a safe event hook for when the plugin has been loaded, and all
-			 * dependency requirements have been met.
+			 * This hook is intended to be used as a safe event hook for when the plugin
+			 * has been loaded, and all dependency requirements have been met.
+			 *
+			 * To ensure blocks are initialized, you must use the `woocommerce_blocks_loaded`
+			 * hook instead of the `plugins_loaded` hook. This is because the functions
+			 * hooked into plugins_loaded on the same priority load in an inconsistent and unpredictable manner.
+			 *
+			 * @since 2.5.0
 			 */
 			do_action( 'woocommerce_blocks_loaded' );
 		}
@@ -122,9 +131,11 @@ class Bootstrap {
 		$this->container->get( ProductSearchResultsTemplate::class );
 		$this->container->get( ProductAttributeTemplate::class );
 		$this->container->get( ClassicTemplatesCompatibility::class );
+		$this->container->get( BlockTemplatesCompatibility::class )->init();
+		$this->container->get( SingleProductTemplateCompatibility::class )->init();
 		$this->container->get( BlockPatterns::class );
 		$this->container->get( PaymentsApi::class );
-
+		$this->container->get( ShippingController::class )->init();
 	}
 
 	/**
@@ -268,6 +279,19 @@ class Bootstrap {
 			}
 		);
 		$this->container->register(
+			BlockTemplatesCompatibility::class,
+			function () {
+				return new BlockTemplatesCompatibility();
+			}
+		);
+
+		$this->container->register(
+			SingleProductTemplateCompatibility::class,
+			function () {
+				return new SingleProductTemplateCompatibility();
+			}
+		);
+		$this->container->register(
 			DraftOrders::class,
 			function( Container $container ) {
 				return new DraftOrders( $container->get( Package::class ) );
@@ -309,34 +333,42 @@ class Bootstrap {
 			'Automattic\WooCommerce\Blocks\StoreApi\Formatters',
 			function( Container $container ) {
 				$this->deprecated_dependency( 'Automattic\WooCommerce\Blocks\StoreApi\Formatters', '7.2.0', 'Automattic\WooCommerce\StoreApi\Formatters', '7.4.0' );
-				return $container->get( StoreApi::class )::container()->get( \Automattic\WooCommerce\StoreApi\Formatters::class );
+				return $container->get( StoreApi::class )->container()->get( \Automattic\WooCommerce\StoreApi\Formatters::class );
 			}
 		);
 		$this->container->register(
 			'Automattic\WooCommerce\Blocks\Domain\Services\ExtendRestApi',
 			function( Container $container ) {
 				$this->deprecated_dependency( 'Automattic\WooCommerce\Blocks\Domain\Services\ExtendRestApi', '7.2.0', 'Automattic\WooCommerce\StoreApi\Schemas\ExtendSchema', '7.4.0' );
-				return $container->get( StoreApi::class )::container()->get( \Automattic\WooCommerce\StoreApi\Schemas\ExtendSchema::class );
+				return $container->get( StoreApi::class )->container()->get( \Automattic\WooCommerce\StoreApi\Schemas\ExtendSchema::class );
 			}
 		);
 		$this->container->register(
 			'Automattic\WooCommerce\Blocks\StoreApi\SchemaController',
 			function( Container $container ) {
 				$this->deprecated_dependency( 'Automattic\WooCommerce\Blocks\StoreApi\SchemaController', '7.2.0', 'Automattic\WooCommerce\StoreApi\SchemaController', '7.4.0' );
-				return $container->get( StoreApi::class )::container()->get( SchemaController::class );
+				return $container->get( StoreApi::class )->container()->get( SchemaController::class );
 			}
 		);
 		$this->container->register(
 			'Automattic\WooCommerce\Blocks\StoreApi\RoutesController',
 			function( Container $container ) {
 				$this->deprecated_dependency( 'Automattic\WooCommerce\Blocks\StoreApi\RoutesController', '7.2.0', 'Automattic\WooCommerce\StoreApi\RoutesController', '7.4.0' );
-				return $container->get( StoreApi::class )::container()->get( RoutesController::class );
+				return $container->get( StoreApi::class )->container()->get( RoutesController::class );
 			}
 		);
 		$this->container->register(
 			BlockPatterns::class,
 			function () {
 				return new BlockPatterns( $this->package );
+			}
+		);
+		$this->container->register(
+			ShippingController::class,
+			function ( $container ) {
+				$asset_api           = $container->get( AssetApi::class );
+				$asset_data_registry = $container->get( AssetDataRegistry::class );
+				return new ShippingController( $asset_api, $asset_data_registry );
 			}
 		);
 	}
@@ -365,7 +397,11 @@ class Bootstrap {
 			$function,
 			$version
 		);
-
+		/**
+		 * Fires when a deprecated function is called.
+		 *
+		 * @since 7.3.0
+		 */
 		do_action( 'deprecated_function_run', $function, $replacement, $version );
 
 		$log_error = false;
@@ -380,7 +416,13 @@ class Bootstrap {
 			$log_error = true;
 		}
 
-		// Apply same filter as WP core.
+		/**
+		 * Filters whether to trigger an error for deprecated functions. (Same as WP core)
+		 *
+		 * @since 7.3.0
+		 *
+		 * @param bool $trigger Whether to trigger the error for deprecated functions. Default true.
+		 */
 		if ( ! apply_filters( 'deprecated_function_trigger_error', true ) ) {
 			$log_error = true;
 		}

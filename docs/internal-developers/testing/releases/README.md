@@ -90,13 +90,41 @@ Every release includes specific testing instructions for new features and bug fi
 -   [8.4.0](./840.md)
 -   [8.5.0](./850.md)
     -   [8.5.1](./851.md)
+    -   [8.5.2](./852.md)
 -   [8.6.0](./860.md)
 -   [8.7.0](./870.md)
     -   [8.7.1](./871.md)
     -   [8.7.2](./872.md)
     -   [8.7.3](./873.md)
     -   [8.7.4](./874.md)
+    -   [8.7.5](./875.md)
+    -   [8.7.6](./876.md)
 -   [8.8.0](./880.md)
+    -   [8.8.1](./881.md)
+    -   [8.8.2](./882.md)
+-   [8.9.0](./890.md)
+    -   [8.9.1](./891.md)
+    -   [8.9.2](./892.md)
+    -   [8.9.3](./893.md)
+    -   [8.9.4](./894.md)
+-   [9.0.0](./900.md)
+-   [9.1.0](./910.md)
+    -   [9.1.1](./911.md)
+    -   [9.1.2](./912.md)
+    -   [9.1.3](./913.md)
+-   [9.2.0](./920.md)
+-   [9.3.0](./930.md)
+-   [9.4.0](./940.md)
+    -   [9.4.1](./941.md)
+    -   [9.4.2](./942.md)
+    -   [9.4.3](./943.md)
+    -   [9.4.4](./944.md)
+-   [9.5.0](./950.md)
+-   [9.6.0](./960.md)
+    -   [9.6.1](./961.md)
+    -   [9.6.2](./962.md)
+    -   [9.6.3](./963.md)
+
 
 <!-- FEEDBACK -->
 
@@ -107,4 +135,3 @@ Every release includes specific testing instructions for new features and bug fi
 🐞 Found a mistake, or have a suggestion? [Leave feedback about this document here.](https://github.com/woocommerce/woocommerce-blocks/issues/new?assignees=&labels=type%3A+documentation&template=--doc-feedback.md&title=Feedback%20on%20./docs/internal-developers/testing/releases/README.md)
 
 <!-- /FEEDBACK -->
-

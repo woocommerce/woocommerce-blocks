@@ -7,6 +7,7 @@
 ## Table of Contents
 
 
+ - [deprecated_function_run](#deprecated_function_run)
  - [woocommerce_add_to_cart](#woocommerce_add_to_cart)
  - [woocommerce_after_main_content](#woocommerce_after_main_content)
  - [woocommerce_after_shop_loop](#woocommerce_after_shop_loop)
@@ -20,6 +21,7 @@
  - [woocommerce_blocks_enqueue_cart_block_scripts_before](#woocommerce_blocks_enqueue_cart_block_scripts_before)
  - [woocommerce_blocks_enqueue_checkout_block_scripts_after](#woocommerce_blocks_enqueue_checkout_block_scripts_after)
  - [woocommerce_blocks_enqueue_checkout_block_scripts_before](#woocommerce_blocks_enqueue_checkout_block_scripts_before)
+ - [woocommerce_blocks_loaded](#woocommerce_blocks_loaded)
  - [woocommerce_blocks_{$this->registry_identifier}_registration](#woocommerce_blocks_-this--registry_identifier-_registration)
  - [woocommerce_check_cart_items](#-woocommerce_check_cart_items)
  - [woocommerce_created_customer](#woocommerce_created_customer)
@@ -28,14 +30,34 @@
  - [woocommerce_rest_checkout_process_payment_with_context](#woocommerce_rest_checkout_process_payment_with_context)
  - [woocommerce_shop_loop](#woocommerce_shop_loop)
  - [woocommerce_store_api_cart_errors](#woocommerce_store_api_cart_errors)
+ - [woocommerce_store_api_cart_select_shipping_rate](#woocommerce_store_api_cart_select_shipping_rate)
  - [woocommerce_store_api_cart_update_customer_from_request](#woocommerce_store_api_cart_update_customer_from_request)
  - [woocommerce_store_api_cart_update_order_from_request](#woocommerce_store_api_cart_update_order_from_request)
  - [woocommerce_store_api_checkout_order_processed](#woocommerce_store_api_checkout_order_processed)
  - [woocommerce_store_api_checkout_update_customer_from_request](#woocommerce_store_api_checkout_update_customer_from_request)
  - [woocommerce_store_api_checkout_update_order_from_request](#woocommerce_store_api_checkout_update_order_from_request)
  - [woocommerce_store_api_checkout_update_order_meta](#woocommerce_store_api_checkout_update_order_meta)
+ - [woocommerce_store_api_rate_limit_exceeded](#woocommerce_store_api_rate_limit_exceeded)
  - [woocommerce_store_api_validate_add_to_cart](#woocommerce_store_api_validate_add_to_cart)
  - [woocommerce_store_api_validate_cart_item](#woocommerce_store_api_validate_cart_item)
+ - [woocommerce_{$product->get_type()}_add_to_cart](#woocommerce_-product--get_type-_add_to_cart)
+ - [{$hook}](#-hook)
+
+---
+
+## deprecated_function_run
+
+
+Fires when a deprecated function is called.
+
+```php
+do_action( 'deprecated_function_run' )
+```
+
+### Source
+
+
+ - [Domain/Bootstrap.php](../../../../src/Domain/Bootstrap.php)
 
 ---
 
@@ -230,8 +252,8 @@ do_action( 'woocommerce_blocks_cart_enqueue_data' )
 ### Source
 
 
- - [BlockTypes/Cart.php](../../../../src/BlockTypes/Cart.php)
  - [BlockTypes/MiniCart.php](../../../../src/BlockTypes/MiniCart.php)
+ - [BlockTypes/Cart.php](../../../../src/BlockTypes/Cart.php)
 
 ---
 
@@ -312,6 +334,26 @@ do_action( 'woocommerce_blocks_enqueue_checkout_block_scripts_before' )
 
 
  - [BlockTypes/Checkout.php](../../../../src/BlockTypes/Checkout.php)
+
+---
+
+## woocommerce_blocks_loaded
+
+
+Fires when the woocommerce blocks are loaded and ready to use.
+
+```php
+do_action( 'woocommerce_blocks_loaded' )
+```
+
+### Description
+
+<p>This hook is intended to be used as a safe event hook for when the plugin has been loaded, and all dependency requirements have been met.</p> <p>To ensure blocks are initialized, you must use the <code>woocommerce_blocks_loaded</code> hook instead of the <code>plugins_loaded</code> hook. This is because the functions hooked into plugins_loaded on the same priority load in an inconsistent and unpredictable manner.</p>
+
+### Source
+
+
+ - [Domain/Bootstrap.php](../../../../src/Domain/Bootstrap.php)
 
 ---
 
@@ -539,6 +581,34 @@ add_action( 'woocommerce_store_api_cart_errors', 'my_function_callback', 10 );
 
 ---
 
+## woocommerce_store_api_cart_select_shipping_rate
+
+
+Fires an action after a shipping method has been chosen for package(s) via the Store API.
+
+```php
+do_action( 'woocommerce_store_api_cart_select_shipping_rate', string|null $package_id, string $rate_id, \WP_REST_Request $request )
+```
+
+### Description
+
+<p>This allows extensions to perform addition actions after a shipping method has been chosen, but before the cart totals are recalculated.</p>
+
+### Parameters
+
+| Argument | Type | Description |
+| -------- | ---- | ----------- |
+| $package_id | string, null | The sanitized ID of the package being updated. Null if all packages are being updated. |
+| $rate_id | string | The sanitized chosen rate ID for the package. |
+| $request | \WP_REST_Request | Full details about the request. |
+
+### Source
+
+
+ - [StoreApi/Routes/V1/CartSelectShippingRate.php](../../../../src/StoreApi/Routes/V1/CartSelectShippingRate.php)
+
+---
+
 ## woocommerce_store_api_cart_update_customer_from_request
 
 
@@ -713,6 +783,28 @@ do_action( 'woocommerce_store_api_checkout_update_order_meta', \WC_Order $order 
 
 ---
 
+## woocommerce_store_api_rate_limit_exceeded
+
+
+Fires when the rate limit is exceeded.
+
+```php
+do_action( 'woocommerce_store_api_rate_limit_exceeded', string $ip_address )
+```
+
+### Parameters
+
+| Argument | Type | Description |
+| -------- | ---- | ----------- |
+| $ip_address | string | The IP address of the request. |
+
+### Source
+
+
+ - [StoreApi/Authentication.php](../../../../src/StoreApi/Authentication.php)
+
+---
+
 ## woocommerce_store_api_validate_add_to_cart
 
 
@@ -760,6 +852,38 @@ do_action( 'woocommerce_store_api_validate_cart_item', \WC_Product $product, arr
 
 
  - [StoreApi/Utilities/CartController.php](../../../../src/StoreApi/Utilities/CartController.php)
+
+---
+
+## woocommerce_{$product->get_type()}_add_to_cart
+
+
+Trigger the single product add to cart action for each product type.
+
+```php
+do_action( 'woocommerce_{$product->get_type()}_add_to_cart' )
+```
+
+### Source
+
+
+ - [BlockTypes/AddToCartForm.php](../../../../src/BlockTypes/AddToCartForm.php)
+
+---
+
+## {$hook}
+
+
+Action to render the content of a hook.
+
+```php
+do_action( '{$hook}' )
+```
+
+### Source
+
+
+ - [Templates/AbstractTemplateCompatibility.php](../../../../src/Templates/AbstractTemplateCompatibility.php)
 
 ---
 <!-- FEEDBACK -->

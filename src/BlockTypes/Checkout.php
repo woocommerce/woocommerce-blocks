@@ -2,6 +2,7 @@
 namespace Automattic\WooCommerce\Blocks\BlockTypes;
 
 use Automattic\WooCommerce\Blocks\Package;
+use Automattic\WooCommerce\StoreApi\Utilities\LocalPickupUtils;
 
 /**
  * Checkout class.
@@ -62,11 +63,15 @@ class Checkout extends AbstractBlock {
 	protected function enqueue_assets( array $attributes ) {
 		/**
 		 * Fires before checkout block scripts are enqueued.
+		 *
+		 * @since 4.6.0
 		 */
 		do_action( 'woocommerce_blocks_enqueue_checkout_block_scripts_before' );
 		parent::enqueue_assets( $attributes );
 		/**
 		 * Fires after checkout block scripts are enqueued.
+		 *
+		 * @since 4.6.0
 		 */
 		do_action( 'woocommerce_blocks_enqueue_checkout_block_scripts_after' );
 	}
@@ -144,6 +149,18 @@ class Checkout extends AbstractBlock {
 
 		if ( $has_i2_template ) {
 			$content = preg_replace( $regex_for_order_summary, $order_summary_with_inner_blocks, $content );
+		}
+
+		/**
+		 * Add the Local Pickup toggle to checkouts missing this forced template.
+		 */
+		$local_pickup_inner_blocks = '<div data-block-name="woocommerce/checkout-shipping-method-block" class="wp-block-woocommerce-checkout-shipping-method-block"></div>' . PHP_EOL . PHP_EOL . '<div data-block-name="woocommerce/checkout-pickup-options-block" class="wp-block-woocommerce-checkout-pickup-options-block"></div>' . PHP_EOL . PHP_EOL . '$0';
+		$has_local_pickup_regex    = '/<div[\n\r\s\ta-zA-Z0-9_\-=\'"]*data-block-name="woocommerce\/checkout-shipping-method-block"[\n\r\s\ta-zA-Z0-9_\-=\'"]*>/mi';
+		$has_local_pickup          = preg_match( $has_local_pickup_regex, $content );
+
+		if ( ! $has_local_pickup ) {
+			$shipping_address_block_regex = '/<div[\n\r\s\ta-zA-Z0-9_\-=\'"]*data-block-name="woocommerce\/checkout-shipping-address-block" class="wp-block-woocommerce-checkout-shipping-address-block"[\n\r\s\ta-zA-Z0-9_\-=\'"]*><\/div>/mi';
+			$content                      = preg_replace( $shipping_address_block_regex, $local_pickup_inner_blocks, $content );
 		}
 
 		return $content;
@@ -243,6 +260,11 @@ class Checkout extends AbstractBlock {
 		$this->asset_data_registry->add( 'hasDarkEditorStyleSupport', current_theme_supports( 'dark-editor-style' ), true );
 		$this->asset_data_registry->register_page_id( isset( $attributes['cartPageId'] ) ? $attributes['cartPageId'] : 0 );
 
+		$pickup_location_settings = get_option( 'woocommerce_pickup_location_settings', [] );
+		$local_pickup_enabled     = wc_string_to_bool( $pickup_location_settings['enabled'] ?? 'no' );
+
+		$this->asset_data_registry->add( 'localPickupEnabled', $local_pickup_enabled, true );
+
 		$is_block_editor = $this->is_block_editor();
 
 		// Hydrate the following data depending on admin or frontend context.
@@ -256,6 +278,9 @@ class Checkout extends AbstractBlock {
 			$formatted_shipping_methods = array_reduce(
 				$shipping_methods,
 				function( $acc, $method ) {
+					if ( in_array( $method->id, LocalPickupUtils::get_local_pickup_method_ids(), true ) ) {
+						return $acc;
+					}
 					if ( $method->supports( 'settings' ) ) {
 						$acc[] = [
 							'id'          => $method->id,
@@ -293,9 +318,9 @@ class Checkout extends AbstractBlock {
 		}
 
 		if ( $is_block_editor && ! $this->asset_data_registry->exists( 'globalPaymentMethods' ) ) {
-			$payment_methods           = WC()->payment_gateways->payment_gateways();
+			$payment_gateways          = $this->get_enabled_payment_gateways();
 			$formatted_payment_methods = array_reduce(
-				$payment_methods,
+				$payment_gateways,
 				function( $acc, $method ) {
 					if ( 'yes' === $method->enabled ) {
 						$acc[] = [
@@ -318,8 +343,25 @@ class Checkout extends AbstractBlock {
 
 		/**
 		 * Fires after checkout block data is registered.
+		 *
+		 * @since 2.6.0
 		 */
 		do_action( 'woocommerce_blocks_checkout_enqueue_data' );
+	}
+
+	/**
+	 * Get payment methods that are enabled in settings.
+	 *
+	 * @return array
+	 */
+	protected function get_enabled_payment_gateways() {
+		$payment_gateways = WC()->payment_gateways->payment_gateways();
+		return array_filter(
+			$payment_gateways,
+			function( $payment_gateway ) {
+				return 'yes' === $payment_gateway->enabled;
+			}
+		);
 	}
 
 	/**
@@ -362,9 +404,23 @@ class Checkout extends AbstractBlock {
 			return;
 		}
 		add_filter( 'woocommerce_payment_methods_list_item', [ $this, 'include_token_id_with_payment_methods' ], 10, 2 );
+
+		$payment_gateways = $this->get_enabled_payment_gateways();
+		$payment_methods  = wc_get_customer_saved_methods_list( get_current_user_id() );
+
+		// Filter out payment methods that are not enabled.
+		foreach ( $payment_methods as $payment_method_group => $saved_payment_methods ) {
+			$payment_methods[ $payment_method_group ] = array_filter(
+				$saved_payment_methods,
+				function( $saved_payment_method ) use ( $payment_gateways ) {
+					return in_array( $saved_payment_method['method']['gateway'], array_keys( $payment_gateways ), true );
+				}
+			);
+		}
+
 		$this->asset_data_registry->add(
 			'customerPaymentMethods',
-			wc_get_customer_saved_methods_list( get_current_user_id() )
+			$payment_methods
 		);
 		remove_filter( 'woocommerce_payment_methods_list_item', [ $this, 'include_token_id_with_payment_methods' ], 10, 2 );
 	}
@@ -414,8 +470,8 @@ class Checkout extends AbstractBlock {
 	protected function register_block_type_assets() {
 		parent::register_block_type_assets();
 		$chunks        = $this->get_chunks_paths( $this->chunks_folder );
-		$vendor_chunks = $this->get_chunks_paths( 'vendors--cart-blocks' );
-		$shared_chunks = [ 'cart-blocks/order-summary-shipping--checkout-blocks/order-summary-shipping-frontend' ];
+		$vendor_chunks = $this->get_chunks_paths( 'vendors--checkout-blocks' );
+		$shared_chunks = [ 'cart-blocks/cart-express-payment--checkout-blocks/express-payment-frontend' ];
 		$this->register_chunk_translations( array_merge( $chunks, $vendor_chunks, $shared_chunks ) );
 	}
 
@@ -444,6 +500,8 @@ class Checkout extends AbstractBlock {
 			'CheckoutPaymentBlock',
 			'CheckoutShippingAddressBlock',
 			'CheckoutShippingMethodsBlock',
+			'CheckoutShippingMethodBlock',
+			'CheckoutPickupOptionsBlock',
 			'CheckoutTermsBlock',
 			'CheckoutTotalsBlock',
 		];

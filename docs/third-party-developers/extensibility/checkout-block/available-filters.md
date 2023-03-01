@@ -6,13 +6,12 @@
 -   [Order Summary Items](#order-summary-items)
 -   [Totals footer item (in Mini Cart, Cart and Checkout)](#totals-footer-item-in-mini-cart-cart-and-checkout)
 -   [Coupons](#coupons)
--   [Snackbar notices](#snackbar-notices)
 -   [Place Order Button Label](#place-order-button-label)
 -   [Examples](#examples)
     -   [Changing the wording of the Totals label in the Mini Cart, Cart and Checkout](#changing-the-wording-of-the-totals-label-in-the-mini-cart-cart-and-checkout)
     -   [Changing the format of the item's single price](#changing-the-format-of-the-items-single-price)
     -   [Change the name of a coupon](#change-the-name-of-a-coupon)
-    -   [Hide a snackbar notice containing a certain string](#hide-a-snackbar-notice-containing-a-certain-string)
+    -   [Hide the "Remove item" link on a cart item](#hide-the-remove-item-link-on-a-cart-item)
     -   [Change the label of the Place Order button](#change-the-label-of-the-place-order-button)
 -   [Troubleshooting](#troubleshooting)
 
@@ -27,7 +26,7 @@ Line items refer to each item listed in the cart or checkout. For instance, the 
 The following filters are available for line items:
 
 | Filter name            | Description                                                                                                                            | Return type                                                                           |
-| ---------------------- |----------------------------------------------------------------------------------------------------------------------------------------|---------------------------------------------------------------------------------------|
+| ---------------------- | -------------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------- |
 | `itemName`             | Used to change the name of the item before it is rendered onto the page                                                                | `string`                                                                              |
 | `cartItemPrice`        | This is the price of the item, multiplied by the number of items in the cart.                                                          | `string` and **must** contain the substring `<price/>` where the price should appear. |
 | `cartItemClass`        | This is the className of the item cell.                                                                                                | `string`                                                                              |
@@ -91,31 +90,6 @@ CartCoupon {
 }
 ```
 
-## Snackbar notices
-
-There is a snackbar at the bottom of the page used to display notices to the customer, it looks like this:
-
-![Snackbar notices](https://user-images.githubusercontent.com/5656702/120882329-d573c100-c5ce-11eb-901b-d7f206f74a66.png)
-
-It may be desirable to hide this if there's a notice you don't want the shopper to see.
-
-| Filter name                | Description                                                                                                                           | Return type |
-| -------------------------- | ------------------------------------------------------------------------------------------------------------------------------------- | ----------- |
-| `snackbarNoticeVisibility` | An object keyed by the content of the notices slated to be displayed. The value of each member of this object will initially be true. | `object`    |
-
-The filter passes an object whose keys are the `content` of each notice.
-
-If there are two notices slated to be displayed ('Coupon code "10off" has been applied to your basket.', and 'Coupon code "50off" has been removed from your basket.'), the value passed to the filter would look like so:
-
-```js
-{
-  'Coupon code "10off" has been applied to your basket.': true,
-  'Coupon code "50off" has been removed from your basket.': true
-}
-```
-
-To reiterate, the _value_ here will determine whether this notice gets displayed or not. It will display if true.
-
 ## Place Order Button Label
 
 The Checkout block contains a button which is labelled 'Place Order' by default, but can be changed using the following filter.
@@ -136,11 +110,11 @@ For this example, let's suppose we are building an extension that lets customers
 const replaceTotalWithDeposit = () => 'Deposit due today';
 ```
 
-2. Now we need to register this filter function, and have it executed when the `totalLabel` filter is applied. We can access the `__experimentalRegisterCheckoutFilters` function on the `window.wc.blocksCheckout` object. As long as your extension's script is enqueued _after_ WooCommerce Blocks' scripts (i.e. by registering `wc-blocks-checkout` as a dependency), then this will be available.
+2. Now we need to register this filter function, and have it executed when the `totalLabel` filter is applied. We can access the `registerCheckoutFilters` function on the `window.wc.blocksCheckout` object. As long as your extension's script is enqueued _after_ WooCommerce Blocks' scripts (i.e. by registering `wc-blocks-checkout` as a dependency), then this will be available.
 
 ```ts
-const { __experimentalRegisterCheckoutFilters } = window.wc.blocksCheckout;
-__experimentalRegisterCheckoutFilters( 'my-hypothetical-deposit-plugin', {
+const { registerCheckoutFilters } = window.wc.blocksCheckout;
+registerCheckoutFilters( 'my-hypothetical-deposit-plugin', {
 	totalLabel: replaceTotalWithDeposit,
 } );
 ```
@@ -166,11 +140,11 @@ const appendTextToPriceInCart = ( value, extensions, args ) => {
 };
 ```
 
-2. Now we must register it. Refer to the first example for information about `__experimentalRegisterCheckoutFilters`.
+2. Now we must register it. Refer to the first example for information about `registerCheckoutFilters`.
 
 ```ts
-const { __experimentalRegisterCheckoutFilters } = window.wc.blocksCheckout;
-__experimentalRegisterCheckoutFilters( 'my-hypothetical-price-plugin', {
+const { registerCheckoutFilters } = window.wc.blocksCheckout;
+registerCheckoutFilters( 'my-hypothetical-price-plugin', {
 	subtotalPriceFormat: appendTextToPriceInCart,
 } );
 ```
@@ -201,9 +175,9 @@ const filterCoupons = ( coupons ) => {
 We'd register our filter like this:
 
 ```ts
-import { __experimentalRegisterCheckoutFilters } from '@woocommerce/blocks-checkout';
+import { registerCheckoutFilters } from '@woocommerce/blocks-checkout';
 
-__experimentalRegisterCheckoutFilters( 'automatic-coupon-extension', {
+registerCheckoutFilters( 'automatic-coupon-extension', {
 	coupons: filterCoupons,
 } );
 ```
@@ -212,21 +186,22 @@ __experimentalRegisterCheckoutFilters( 'automatic-coupon-extension', {
 | -------------------------------------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------------------------- |
 | ![image](https://user-images.githubusercontent.com/5656702/123768988-bc55eb80-d8c0-11eb-9262-5d629837706d.png) | ![image](https://user-images.githubusercontent.com/5656702/124126048-2c57a380-da72-11eb-9b45-b2cae0cffc37.png) |
 
-### Hide a snackbar notice containing a certain string
+### Prevent a snackbar notice from appearing for coupons
 
-Let's say we want to hide all notices that contain the string `auto-generated-coupon`. We would do this by setting the value of the `snackbarNoticeVisibility` to false for the notices we would like to hide.
+If you want to prevent a coupon apply notice from appearing, you can use the `showApplyCouponNotice` filter. If it returns `false` then the notice will not be created.
+
+The same can be done with the `showRemoveCouponNotice` filter to prevent a notice when a coupon is removed from the cart.
 
 ```ts
-import { __experimentalRegisterCheckoutFilters } from '@woocommerce/blocks-checkout';
+import { registerCheckoutFilters } from '@woocommerce/blocks-checkout';
 
-__experimentalRegisterCheckoutFilters( 'automatic-coupon-extension', {
-	snackbarNoticeVisibility: ( value ) => {
-		// Copy the value so we don't mutate what is being passed by the filter.
-		const valueCopy = Object.assign( {}, value );
-		Object.keys( value ).forEach( ( key ) => {
-			valueCopy[ key ] = key.indexOf( 'auto-generated-coupon' ) === -1;
-		} );
-		return valueCopy;
+registerCheckoutFilters( 'example-extension', {
+	showApplyCouponNotice: ( value, extensions, { couponCode } ) => {
+		// Prevent a couponCode called '10off' from creating a notice.
+		return couponCode === '10off' ? false : value;
+	},
+	showRemoveCouponNotice: ( value, _, { couponCode } ) => {
+		return couponCode === '10off' ? false : value;
 	},
 } );
 ```
@@ -234,15 +209,15 @@ __experimentalRegisterCheckoutFilters( 'automatic-coupon-extension', {
 ### Hide the "Remove item" link on a cart item
 
 If you want to stop customers from being able to remove a specific item from their cart **on the front end**, you can do
-this by using the  `showRemoveItemLink` filter. If it returns `false` for that line item the link will not show.
+this by using the `showRemoveItemLink` filter. If it returns `false` for that line item the link will not show.
 
 An important caveat to note is this does _not_ prevent the item from being removed from the cart using StoreAPI or by
 removing it in the Mini Cart, or traditional shortcode cart.
 
 ```ts
-import { __experimentalRegisterCheckoutFilters } from '@woocommerce/blocks-checkout';
+import { registerCheckoutFilters } from '@woocommerce/blocks-checkout';
 
-__experimentalRegisterCheckoutFilters( 'example-extension', {
+registerCheckoutFilters( 'example-extension', {
 	showRemoveItemLink: ( value, extensions, { cartItem } ) => {
 		// Prevent items with ID 1 being removed from the cart.
 		return cartItem.id !== 1;
@@ -260,11 +235,11 @@ Let's assume a merchant want to change the label of the Place Order button _Plac
 const label = () => `Pay now`;
 ```
 
-2. Now we have to register this filter function, and have it executed when the `placeOrderButtonLabel` filter is applied. We can access the `__experimentalRegisterCheckoutFilters` function on the `window.wc.blocksCheckout` object. As long as your extension's script is enqueued _after_ WooCommerce Blocks' scripts (i.e. by registering `wc-blocks-checkout` as a dependency), then this will be available.
+2. Now we have to register this filter function, and have it executed when the `placeOrderButtonLabel` filter is applied. We can access the `registerCheckoutFilters` function on the `window.wc.blocksCheckout` object. As long as your extension's script is enqueued _after_ WooCommerce Blocks' scripts (i.e. by registering `wc-blocks-checkout` as a dependency), then this will be available.
 
 ```ts
-const { __experimentalRegisterCheckoutFilters } = window.wc.blocksCheckout;
-__experimentalRegisterCheckoutFilters( 'custom-place-order-button-label', {
+const { registerCheckoutFilters } = window.wc.blocksCheckout;
+registerCheckoutFilters( 'custom-place-order-button-label', {
 	placeOrderButtonLabel: label,
 } );
 ```
@@ -291,3 +266,4 @@ The error will also be shown in your console.
 🐞 Found a mistake, or have a suggestion? [Leave feedback about this document here.](https://github.com/woocommerce/woocommerce-blocks/issues/new?assignees=&labels=type%3A+documentation&template=--doc-feedback.md&title=Feedback%20on%20./docs/third-party-developers/extensibility/checkout-block/available-filters.md)
 
 <!-- /FEEDBACK -->
+

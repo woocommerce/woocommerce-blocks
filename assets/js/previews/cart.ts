@@ -30,15 +30,19 @@ const displayWithTax = getSetting( 'displayCartPricesIncludingTax', false );
 // https://github.com/woocommerce/woocommerce-gutenberg-products-block/blob/trunk/src/StoreApi/docs/cart.md#cart-response
 export const previewCart: CartResponse = {
 	coupons: [],
-	shipping_rates: getSetting( 'shippingMethodsExist', false )
-		? previewShippingRates
-		: [],
+	shipping_rates:
+		getSetting( 'shippingMethodsExist', false ) ||
+		getSetting( 'localPickupEnabled', false )
+			? previewShippingRates
+			: [],
 	items: [
 		{
 			key: '1',
 			id: 1,
 			quantity: 2,
+			catalog_visibility: 'visible',
 			name: __( 'Beanie', 'woo-gutenberg-products-block' ),
+			summary: __( 'Beanie', 'woo-gutenberg-products-block' ),
 			short_description: __(
 				'Warm hat for winter',
 				'woo-gutenberg-products-block'
@@ -51,6 +55,12 @@ export const previewCart: CartResponse = {
 			backorders_allowed: false,
 			show_backorder_badge: false,
 			sold_individually: false,
+			quantity_limits: {
+				minimum: 1,
+				maximum: 99,
+				multiple_of: 1,
+				editable: true,
+			},
 			images: [
 				{
 					id: 10,
@@ -83,6 +93,7 @@ export const previewCart: CartResponse = {
 				price: displayWithTax ? '12000' : '10000',
 				regular_price: displayWithTax ? '12000' : '10000',
 				sale_price: displayWithTax ? '12000' : '10000',
+				price_range: null,
 				raw_prices: {
 					precision: 6,
 					price: displayWithTax ? '12000000' : '10000000',
@@ -104,12 +115,15 @@ export const previewCart: CartResponse = {
 				line_total_tax: '400',
 			},
 			extensions: {},
+			item_data: [],
 		},
 		{
 			key: '2',
 			id: 2,
 			quantity: 1,
+			catalog_visibility: 'visible',
 			name: __( 'Cap', 'woo-gutenberg-products-block' ),
+			summary: __( 'Cap', 'woo-gutenberg-products-block' ),
 			short_description: __(
 				'Lightweight baseball cap',
 				'woo-gutenberg-products-block'
@@ -117,10 +131,17 @@ export const previewCart: CartResponse = {
 			description:
 				'Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. Vestibulum tortor quam, feugiat vitae, ultricies eget, tempor sit amet, ante. Donec eu libero sit amet quam egestas semper. Aenean ultricies mi vitae est. Mauris placerat eleifend leo.',
 			sku: 'woo-cap',
+			low_stock_remaining: null,
 			permalink: 'https://example.org',
 			backorders_allowed: false,
 			show_backorder_badge: false,
 			sold_individually: false,
+			quantity_limits: {
+				minimum: 1,
+				maximum: 99,
+				multiple_of: 1,
+				editable: true,
+			},
 			images: [
 				{
 					id: 11,
@@ -149,6 +170,7 @@ export const previewCart: CartResponse = {
 				price: displayWithTax ? '2400' : '2000',
 				regular_price: displayWithTax ? '2400' : '2000',
 				sale_price: displayWithTax ? '2400' : '2000',
+				price_range: null,
 				raw_prices: {
 					precision: 6,
 					price: displayWithTax ? '24000000' : '20000000',
@@ -170,13 +192,21 @@ export const previewCart: CartResponse = {
 				line_total_tax: '400',
 			},
 			extensions: {},
+			item_data: [],
 		},
 	],
 	cross_sells: [
 		{
 			id: 1,
 			name: __( 'Polo', 'woo-gutenberg-products-block' ),
+			parent: 0,
+			type: 'simple',
+			variation: '',
 			permalink: 'https://example.org',
+			sku: 'woo-polo',
+			short_description: __( 'Polo', 'woo-gutenberg-products-block' ),
+			description: __( 'Polo', 'woo-gutenberg-products-block' ),
+			on_sale: false,
 			prices: {
 				currency_code: 'USD',
 				currency_symbol: '$',
@@ -188,13 +218,11 @@ export const previewCart: CartResponse = {
 				price: displayWithTax ? '24000' : '20000',
 				regular_price: displayWithTax ? '24000' : '20000',
 				sale_price: displayWithTax ? '12000' : '10000',
-				raw_prices: {
-					precision: 6,
-					price: displayWithTax ? '24000000' : '20000000',
-					regular_price: displayWithTax ? '24000000' : '20000000',
-					sale_price: displayWithTax ? '12000000' : '10000000',
-				},
+				price_range: null,
 			},
+			price_html: '',
+			average_rating: '4.5',
+			review_count: 2,
 			images: [
 				{
 					id: 17,
@@ -206,12 +234,42 @@ export const previewCart: CartResponse = {
 					alt: '',
 				},
 			],
-			average_rating: 4.5,
+			categories: [],
+			tags: [],
+			attributes: [],
+			variations: [],
+			has_options: false,
+			is_purchasable: true,
+			is_in_stock: true,
+			is_on_backorder: false,
+			low_stock_remaining: null,
+			sold_individually: false,
+			add_to_cart: {
+				text: '',
+				description: '',
+				url: '',
+				minimum: 1,
+				maximum: 99,
+				multiple_of: 1,
+			},
 		},
 		{
 			id: 2,
 			name: __( 'Long Sleeve Tee', 'woo-gutenberg-products-block' ),
+			parent: 0,
+			type: 'simple',
+			variation: '',
 			permalink: 'https://example.org',
+			sku: 'woo-long-sleeve-tee',
+			short_description: __(
+				'Long Sleeve Tee',
+				'woo-gutenberg-products-block'
+			),
+			description: __(
+				'Long Sleeve Tee',
+				'woo-gutenberg-products-block'
+			),
+			on_sale: false,
 			prices: {
 				currency_code: 'USD',
 				currency_symbol: '$',
@@ -223,13 +281,11 @@ export const previewCart: CartResponse = {
 				price: displayWithTax ? '30000' : '25000',
 				regular_price: displayWithTax ? '30000' : '25000',
 				sale_price: displayWithTax ? '30000' : '25000',
-				raw_prices: {
-					precision: 6,
-					price: displayWithTax ? '30000000' : '25000000',
-					regular_price: displayWithTax ? '30000000' : '25000000',
-					sale_price: displayWithTax ? '30000000' : '25000000',
-				},
+				price_range: null,
 			},
+			price_html: '',
+			average_rating: '4',
+			review_count: 2,
 			images: [
 				{
 					id: 17,
@@ -242,12 +298,41 @@ export const previewCart: CartResponse = {
 					alt: '',
 				},
 			],
-			average_rating: 4,
+			categories: [],
+			tags: [],
+			attributes: [],
+			variations: [],
+			has_options: false,
+			is_purchasable: true,
+			is_in_stock: true,
+			is_on_backorder: false,
+			low_stock_remaining: null,
+			sold_individually: false,
+			add_to_cart: {
+				text: '',
+				description: '',
+				url: '',
+				minimum: 1,
+				maximum: 99,
+				multiple_of: 1,
+			},
 		},
 		{
 			id: 3,
 			name: __( 'Hoodie with Zipper', 'woo-gutenberg-products-block' ),
+			parent: 0,
+			type: 'simple',
+			variation: '',
 			permalink: 'https://example.org',
+			sku: 'woo-hoodie-with-zipper',
+			short_description: __(
+				'Hoodie with Zipper',
+				'woo-gutenberg-products-block'
+			),
+			description: __(
+				'Hoodie with Zipper',
+				'woo-gutenberg-products-block'
+			),
 			on_sale: true,
 			prices: {
 				currency_code: 'USD',
@@ -260,13 +345,11 @@ export const previewCart: CartResponse = {
 				price: displayWithTax ? '15000' : '12500',
 				regular_price: displayWithTax ? '30000' : '25000',
 				sale_price: displayWithTax ? '15000' : '12500',
-				raw_prices: {
-					precision: 6,
-					price: displayWithTax ? '15000000' : '12500000',
-					regular_price: displayWithTax ? '30000000' : '25000000',
-					sale_price: displayWithTax ? '15000000' : '12500000',
-				},
+				price_range: null,
 			},
+			price_html: '',
+			average_rating: '1',
+			review_count: 2,
 			images: [
 				{
 					id: 17,
@@ -280,12 +363,35 @@ export const previewCart: CartResponse = {
 					alt: '',
 				},
 			],
-			average_rating: 1,
+			categories: [],
+			tags: [],
+			attributes: [],
+			variations: [],
+			has_options: false,
+			is_purchasable: true,
+			is_in_stock: true,
+			is_on_backorder: false,
+			low_stock_remaining: null,
+			sold_individually: false,
+			add_to_cart: {
+				text: '',
+				description: '',
+				url: '',
+				minimum: 1,
+				maximum: 99,
+				multiple_of: 1,
+			},
 		},
 		{
 			id: 4,
 			name: __( 'Hoodie with Logo', 'woo-gutenberg-products-block' ),
+			parent: 0,
+			type: 'simple',
+			variation: '',
 			permalink: 'https://example.org',
+			sku: 'woo-hoodie-with-logo',
+			short_description: __( 'Polo', 'woo-gutenberg-products-block' ),
+			description: __( 'Polo', 'woo-gutenberg-products-block' ),
 			on_sale: false,
 			prices: {
 				currency_code: 'USD',
@@ -298,13 +404,11 @@ export const previewCart: CartResponse = {
 				price: displayWithTax ? '4500' : '4250',
 				regular_price: displayWithTax ? '4500' : '4250',
 				sale_price: displayWithTax ? '4500' : '4250',
-				raw_prices: {
-					precision: 6,
-					price: displayWithTax ? '45000000' : '42500000',
-					regular_price: displayWithTax ? '45000000' : '42500000',
-					sale_price: displayWithTax ? '45000000' : '42500000',
-				},
+				price_range: null,
 			},
+			price_html: '',
+			average_rating: '5',
+			review_count: 2,
 			images: [
 				{
 					id: 17,
@@ -317,12 +421,41 @@ export const previewCart: CartResponse = {
 					alt: '',
 				},
 			],
-			average_rating: 5,
+			categories: [],
+			tags: [],
+			attributes: [],
+			variations: [],
+			has_options: false,
+			is_purchasable: true,
+			is_in_stock: true,
+			is_on_backorder: false,
+			low_stock_remaining: null,
+			sold_individually: false,
+			add_to_cart: {
+				text: '',
+				description: '',
+				url: '',
+				minimum: 1,
+				maximum: 99,
+				multiple_of: 1,
+			},
 		},
 		{
 			id: 5,
 			name: __( 'Hoodie with Pocket', 'woo-gutenberg-products-block' ),
+			parent: 0,
+			type: 'simple',
+			variation: '',
 			permalink: 'https://example.org',
+			sku: 'woo-hoodie-with-pocket',
+			short_description: __(
+				'Hoodie with Pocket',
+				'woo-gutenberg-products-block'
+			),
+			description: __(
+				'Hoodie with Pocket',
+				'woo-gutenberg-products-block'
+			),
 			on_sale: true,
 			prices: {
 				currency_code: 'USD',
@@ -335,13 +468,11 @@ export const previewCart: CartResponse = {
 				price: displayWithTax ? '3500' : '3250',
 				regular_price: displayWithTax ? '4500' : '4250',
 				sale_price: displayWithTax ? '3500' : '3250',
-				raw_prices: {
-					precision: 6,
-					price: displayWithTax ? '35000000' : '32500000',
-					regular_price: displayWithTax ? '45000000' : '42500000',
-					sale_price: displayWithTax ? '35000000' : '32500000',
-				},
+				price_range: null,
 			},
+			price_html: '',
+			average_rating: '3.75',
+			review_count: 4,
 			images: [
 				{
 					id: 17,
@@ -355,12 +486,35 @@ export const previewCart: CartResponse = {
 					alt: '',
 				},
 			],
-			average_rating: 3.75,
+			categories: [],
+			tags: [],
+			attributes: [],
+			variations: [],
+			has_options: false,
+			is_purchasable: true,
+			is_in_stock: true,
+			is_on_backorder: false,
+			low_stock_remaining: null,
+			sold_individually: false,
+			add_to_cart: {
+				text: '',
+				description: '',
+				url: '',
+				minimum: 1,
+				maximum: 99,
+				multiple_of: 1,
+			},
 		},
 		{
 			id: 6,
 			name: __( 'T-Shirt', 'woo-gutenberg-products-block' ),
+			parent: 0,
+			type: 'simple',
+			variation: '',
 			permalink: 'https://example.org',
+			sku: 'woo-t-shirt',
+			short_description: __( 'T-Shirt', 'woo-gutenberg-products-block' ),
+			description: __( 'T-Shirt', 'woo-gutenberg-products-block' ),
 			on_sale: false,
 			prices: {
 				currency_code: 'USD',
@@ -373,13 +527,11 @@ export const previewCart: CartResponse = {
 				price: displayWithTax ? '1800' : '1500',
 				regular_price: displayWithTax ? '1800' : '1500',
 				sale_price: displayWithTax ? '1800' : '1500',
-				raw_prices: {
-					precision: 6,
-					price: displayWithTax ? '1800000' : '1500000',
-					regular_price: displayWithTax ? '1800000' : '1500000',
-					sale_price: displayWithTax ? '1800000' : '1500000',
-				},
+				price_range: null,
 			},
+			price_html: '',
+			average_rating: '3',
+			review_count: 2,
 			images: [
 				{
 					id: 17,
@@ -391,7 +543,24 @@ export const previewCart: CartResponse = {
 					alt: '',
 				},
 			],
-			average_rating: 3,
+			categories: [],
+			tags: [],
+			attributes: [],
+			variations: [],
+			has_options: false,
+			is_purchasable: true,
+			is_in_stock: true,
+			is_on_backorder: false,
+			low_stock_remaining: null,
+			sold_individually: false,
+			add_to_cart: {
+				text: '',
+				description: '',
+				url: '',
+				minimum: 1,
+				maximum: 99,
+				multiple_of: 1,
+			},
 		},
 	],
 	fees: [
@@ -408,13 +577,6 @@ export const previewCart: CartResponse = {
 				currency_suffix: '',
 				total: '100',
 				total_tax: '20',
-				tax_lines: [
-					{
-						name: __( 'Sales tax', 'woo-gutenberg-products-block' ),
-						rate: '20%',
-						price: '20',
-					},
-				],
 			},
 		},
 	],

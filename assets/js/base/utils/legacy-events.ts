@@ -1,7 +1,7 @@
 /**
  * External dependencies
  */
-import type { AddToCartEventDetail } from '@woocommerce/type-defs/events';
+import type { AddToCartEventDetail } from '@woocommerce/types';
 
 const CustomEvent = window.CustomEvent || null;
 
@@ -40,23 +40,6 @@ export const dispatchEvent = (
 		detail,
 	} );
 	element.dispatchEvent( event );
-};
-
-let fragmentRequestTimeoutId: ReturnType< typeof setTimeout >;
-
-// This is a hack to trigger cart updates till we migrate to block based cart
-// that relies on the store, see
-// https://github.com/woocommerce/woocommerce-gutenberg-products-block/issues/1247
-export const triggerFragmentRefresh = (): void => {
-	if ( fragmentRequestTimeoutId ) {
-		clearTimeout( fragmentRequestTimeoutId );
-	}
-	fragmentRequestTimeoutId = setTimeout( () => {
-		dispatchEvent( 'wc_fragment_refresh', {
-			bubbles: true,
-			cancelable: true,
-		} );
-	}, 50 );
 };
 
 export const triggerAddingToCartEvent = (): void => {

@@ -10,6 +10,7 @@ import {
 	visitAdminPage,
 	pressKeyWithModifier,
 	searchForBlock as searchForFSEBlock,
+	enterEditMode,
 } from '@wordpress/e2e-test-utils';
 import { addQueryArgs } from '@wordpress/url';
 import { WP_ADMIN_DASHBOARD } from '@woocommerce/e2e-utils';
@@ -43,7 +44,7 @@ export const DEFAULT_TIMEOUT = 30000;
 export const SHOP_CHECKOUT_BLOCK_PAGE = BASE_URL + 'checkout-block/';
 
 const SELECTORS = {
-	canvas: 'iframe[name="editor-canvas"]',
+	canvas: 'iframe[name="editor-canvas"],.edit-post-visual-editor',
 	inserter: {
 		search: '.components-search-control__input,.block-editor-inserter__search input,.block-editor-inserter__search-input,input.block-editor-inserter__search',
 	},
@@ -64,6 +65,10 @@ const SELECTORS = {
 		saveButton: '.edit-site-save-button__button',
 		savePrompt: '.entities-saved-states__text-prompt',
 	},
+	templateEditor: {
+		editButton:
+			'.edit-site-site-hub__edit-button[aria-label="Open the editor"]',
+	},
 };
 
 /**
@@ -74,6 +79,7 @@ const SELECTORS = {
  * @param {string} searchTerm The text to search the inserter for.
  */
 export async function searchForBlock( searchTerm ) {
+	await openGlobalBlockInserter();
 	await page.waitForSelector( SELECTORS.inserter.search );
 	await page.focus( SELECTORS.inserter.search );
 	await pressKeyWithModifier( 'primary', 'a' );
@@ -87,8 +93,8 @@ export async function searchForBlock( searchTerm ) {
  * @param {string} searchTerm The text to search the inserter for.
  */
 export async function insertBlockDontWaitForInsertClose( searchTerm ) {
-	await openGlobalBlockInserter();
 	await searchForBlock( searchTerm );
+	await page.waitForXPath( `//button//span[text()='${ searchTerm }']` );
 	const insertButton = (
 		await page.$x( `//button//span[text()='${ searchTerm }']` )
 	 )[ 0 ];
@@ -120,24 +126,14 @@ export const openWidgetEditor = async () => {
 };
 
 export const closeModalIfExists = async () => {
-	if (
-		await page.evaluate( () => {
-			return !! document.querySelector( '.components-modal__header' );
-		} )
-	) {
-		await page.click(
-			'.components-modal__header [aria-label="Close dialog"]'
-		);
+	// The modal close button can have different aria-labels, depending on the version of Gutenberg/WP.
+	// Newer versions (WP >=6.2) use `Close`, while older versions (WP <6.1) use `Close dialog`.
+	const closeButton = await page.$(
+		'.components-modal__header [aria-label="Close"], .components-modal__header [aria-label="Close dialog"]'
+	);
+	if ( closeButton ) {
+		await closeButton.click();
 	}
-};
-
-export const openWidgetsEditorBlockInserter = async () => {
-	await page.waitForSelector(
-		'.edit-widgets-header [aria-label="Add block"],.edit-widgets-header [aria-label="Toggle block inserter"]'
-	);
-	await page.click(
-		'.edit-widgets-header [aria-label="Add block"],.edit-widgets-header [aria-label="Toggle block inserter"]'
-	);
 };
 
 export const isBlockInsertedInWidgetsArea = async ( blockName ) => {
@@ -160,10 +156,15 @@ export const isBlockInsertedInWidgetsArea = async ( blockName ) => {
  * @param {'wp_template' | 'wp_template_part'} [params.postType='wp_template'] Type of template.
  */
 export async function goToSiteEditor( params = {} ) {
-	return await visitAdminPage(
-		'site-editor.php',
-		addQueryArgs( '', params )
-	);
+	await visitAdminPage( 'site-editor.php', addQueryArgs( '', params ) );
+
+	// @todo Remove the Gutenberg guard clause in goToSiteEditor when WP 6.2 is released.
+	if (
+		GUTENBERG_EDITOR_CONTEXT === 'gutenberg' &&
+		( params?.postId || Object.keys( params ).length === 0 )
+	) {
+		await enterEditMode();
+	}
 }
 
 /**
@@ -409,34 +410,25 @@ export const createCoupon = async ( coupon ) => {
 };
 
 /**
- * Open the block editor settings menu.
- *
- * @param {Object}  [root0]
- * @param {boolean} [root0.isFSEEditor] Amount to be applied. Defaults to 5.
- */
-
-export const openBlockEditorSettings = async ( { isFSEEditor = false } ) => {
-	const buttonSelector = isFSEEditor
-		? '.edit-site-header__actions button[aria-label="Settings"]'
-		: '.edit-post-header__settings button[aria-label="Settings"]';
-
-	const isPressed = `${ buttonSelector }.is-pressed`;
-
-	const isSideBarAlreadyOpened = await page.$( isPressed );
-
-	if ( isSideBarAlreadyOpened === null ) {
-		// @ts-ignore
-		await page.$eval( buttonSelector, ( el ) => el.click() );
-	}
-};
-
-/**
  *  Wait for all Products Block is loaded completely: when the skeleton disappears, and the products are visible
  */
 export const waitForAllProductsBlockLoaded = async () => {
-	await page.waitForSelector(
-		'.wc-block-grid__products.is-loading-products'
-	);
+	/**
+	 * We use try with empty catch block here to avoid the race condition
+	 * between the block loading and the test execution. After user actions,
+	 * the products may or may not finish loading at the time we try to wait for
+	 * the loading class.
+	 *
+	 * We need to wait for the loading class to be added then removed because
+	 * only waiting for the loading class to be removed could result in a false
+	 * positive pass.
+	 */
+	try {
+		await page.waitForSelector(
+			'.wc-block-grid__products.is-loading-products'
+		);
+	} catch ( ok ) {}
+
 	await page.waitForSelector(
 		'.wc-block-grid__products:not(.is-loading-products)'
 	);
@@ -449,10 +441,3 @@ export const waitForAllProductsBlockLoaded = async () => {
  */
 export const describeOrSkip = ( condition ) =>
 	condition ? describe : describe.skip;
-
-/**
- * Execute or skip the test base on the provided condition.
- *
- * @param {boolean} condition Condition to execute test.
- */
-export const itOrSkip = ( condition ) => ( condition ? it : it.skip );

@@ -12,13 +12,13 @@ const TEMPLATES = {
 		title: 'Product Archive Title',
 		placeholder: 'Product Archive Placeholder',
 	},
-	'archive-product': {
-		title: 'Product Archive Title',
-		placeholder: 'Product Archive Placeholder',
-	},
 	'taxonomy-product_cat': {
 		title: 'Product Taxonomy Title',
 		placeholder: 'Product Taxonomy Placeholder',
+	},
+	'taxonomy-product_attribute': {
+		title: 'Product Attribute Title',
+		placeholder: 'Product Attribute Placeholder',
 	},
 };
 

@@ -11,8 +11,12 @@ import deprecated from '@wordpress/deprecated';
 import LoadingMask from '@woocommerce/base-components/loading-mask';
 import type { PaymentMethodInterface } from '@woocommerce/types';
 import { useSelect, useDispatch } from '@wordpress/data';
-import { CHECKOUT_STORE_KEY, PAYMENT_STORE_KEY } from '@woocommerce/block-data';
-import { ValidationInputError } from '@woocommerce/base-components/validation-input-error';
+import {
+	CHECKOUT_STORE_KEY,
+	PAYMENT_STORE_KEY,
+	CART_STORE_KEY,
+} from '@woocommerce/block-data';
+import { ValidationInputError } from '@woocommerce/blocks-checkout';
 
 /**
  * Internal dependencies
@@ -23,7 +27,6 @@ import { noticeContexts, responseTypes } from '../../event-emit';
 import { useCheckoutEventsContext } from '../../providers/cart-checkout/checkout-events';
 import { usePaymentEventsContext } from '../../providers/cart-checkout/payment-events';
 import { useShippingDataContext } from '../../providers/cart-checkout/shipping';
-import { useCustomerDataContext } from '../../providers/cart-checkout/customer';
 import { prepareTotalItems } from './utils';
 import { useShippingData } from '../shipping/use-shipping-data';
 
@@ -37,6 +40,9 @@ export const usePaymentMethodInterface = (): PaymentMethodInterface => {
 		onCheckoutAfterProcessingWithSuccess,
 		onCheckoutAfterProcessingWithError,
 		onSubmit,
+		onCheckoutSuccess,
+		onCheckoutFail,
+		onCheckoutValidation,
 	} = useCheckoutEventsContext();
 
 	const { isCalculating, isComplete, isIdle, isProcessing, customerId } =
@@ -50,12 +56,55 @@ export const usePaymentMethodInterface = (): PaymentMethodInterface => {
 				isCalculating: store.isCalculating(),
 			};
 		} );
-	const { currentStatus, activePaymentMethod, shouldSavePayment } = useSelect(
+	const { paymentStatus, activePaymentMethod, shouldSavePayment } = useSelect(
 		( select ) => {
 			const store = select( PAYMENT_STORE_KEY );
 
 			return {
-				currentStatus: store.getCurrentStatus(),
+				// The paymentStatus is exposed to third parties via the payment method interface so the API must not be changed
+				paymentStatus: {
+					get isPristine() {
+						deprecated( 'isPristine', {
+							since: '9.6.0',
+							alternative: 'isIdle',
+							plugin: 'WooCommerce Blocks',
+							link: 'https://github.com/woocommerce/woocommerce-blocks/pull/8110',
+						} );
+						return store.isPaymentIdle();
+					}, // isPristine is the same as isIdle
+					isIdle: store.isPaymentIdle(),
+					isStarted: store.isExpressPaymentStarted(),
+					isProcessing: store.isPaymentProcessing(),
+					get isFinished() {
+						deprecated( 'isFinished', {
+							since: '9.6.0',
+							plugin: 'WooCommerce Blocks',
+							link: 'https://github.com/woocommerce/woocommerce-blocks/pull/8110',
+						} );
+						return (
+							store.hasPaymentError() || store.isPaymentReady()
+						);
+					},
+					hasError: store.hasPaymentError(),
+					get hasFailed() {
+						deprecated( 'hasFailed', {
+							since: '9.6.0',
+							plugin: 'WooCommerce Blocks',
+							link: 'https://github.com/woocommerce/woocommerce-blocks/pull/8110',
+						} );
+						return store.hasPaymentError();
+					},
+					get isSuccessful() {
+						deprecated( 'isSuccessful', {
+							since: '9.6.0',
+							plugin: 'WooCommerce Blocks',
+							link: 'https://github.com/woocommerce/woocommerce-blocks/pull/8110',
+						} );
+						return store.isPaymentReady();
+					},
+					isReady: store.isPaymentReady(),
+					isDoingExpressPayment: store.isExpressPaymentMethodActive(),
+				},
 				activePaymentMethod: store.getActivePaymentMethod(),
 				shouldSavePayment: store.getShouldSavePaymentMethod(),
 			};
@@ -65,7 +114,7 @@ export const usePaymentMethodInterface = (): PaymentMethodInterface => {
 	const { __internalSetExpressPaymentError } =
 		useDispatch( PAYMENT_STORE_KEY );
 
-	const { onPaymentProcessing } = usePaymentEventsContext();
+	const { onPaymentProcessing, onPaymentSetup } = usePaymentEventsContext();
 	const {
 		shippingErrorStatus,
 		shippingErrorTypes,
@@ -82,8 +131,11 @@ export const usePaymentMethodInterface = (): PaymentMethodInterface => {
 		selectShippingRate,
 		needsShipping,
 	} = useShippingData();
-	const { billingAddress, shippingAddress, setShippingAddress } =
-		useCustomerDataContext();
+
+	const { billingAddress, shippingAddress } = useSelect( ( select ) =>
+		select( CART_STORE_KEY ).getCustomerData()
+	);
+	const { setShippingAddress } = useDispatch( CART_STORE_KEY );
 	const { cartItems, cartFees, cartTotals, extensions } = useStoreCart();
 	const { appliedCoupons } = useStoreCartCoupons();
 	const currentCartTotals = useRef(
@@ -161,14 +213,18 @@ export const usePaymentMethodInterface = (): PaymentMethodInterface => {
 			onCheckoutAfterProcessingWithSuccess,
 			onCheckoutBeforeProcessing,
 			onCheckoutValidationBeforeProcessing,
+			onCheckoutSuccess,
+			onCheckoutFail,
+			onCheckoutValidation,
 			onPaymentProcessing,
+			onPaymentSetup,
 			onShippingRateFail,
 			onShippingRateSelectFail,
 			onShippingRateSelectSuccess,
 			onShippingRateSuccess,
 		},
 		onSubmit,
-		paymentStatus: currentStatus,
+		paymentStatus,
 		setExpressPaymentError: deprecatedSetExpressPaymentError,
 		shippingData: {
 			isSelectingRate,

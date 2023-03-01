@@ -4,6 +4,7 @@
 import { getSetting } from '@woocommerce/settings';
 import preloadScript from '@woocommerce/base-utils/preload-script';
 import lazyLoadScript from '@woocommerce/base-utils/lazy-load-script';
+import getNavigationType from '@woocommerce/base-utils/get-navigation-type';
 import { translateJQueryEventToNative } from '@woocommerce/base-utils/legacy-events';
 
 interface dependencyData {
@@ -75,6 +76,17 @@ window.addEventListener( 'load', () => {
 	};
 
 	document.body.addEventListener( 'wc-blocks_adding_to_cart', loadScripts );
+
+	// Load scripts if a page is reloaded via the back button (potentially out of date cart data).
+	// Based on refreshCachedCartData() in assets/js/base/context/cart-checkout/cart/index.js.
+	window.addEventListener(
+		'pageshow',
+		( event: PageTransitionEvent ): void => {
+			if ( event?.persisted || getNavigationType() === 'back_forward' ) {
+				loadScripts();
+			}
+		}
+	);
 
 	miniCartBlocks.forEach( ( miniCartBlock, i ) => {
 		if ( ! ( miniCartBlock instanceof HTMLElement ) ) {
@@ -152,4 +164,25 @@ window.addEventListener( 'load', () => {
 			);
 		}
 	} );
+
+	/**
+	 * Get the background color of the body then set it as the background color
+	 * of the Mini Cart Contents block. We use :where here to make customized
+	 * background color alway have higher priority.
+	 *
+	 * We only set the background color, instead of the whole background. As
+	 * we only provide the option to customize the background color.
+	 */
+	const style = document.createElement( 'style' );
+	const backgroundColor = getComputedStyle( document.body ).backgroundColor;
+
+	style.appendChild(
+		document.createTextNode(
+			`:where(.wp-block-woocommerce-mini-cart-contents) {
+				background-color: ${ backgroundColor };
+			}`
+		)
+	);
+
+	document.head.appendChild( style );
 } );

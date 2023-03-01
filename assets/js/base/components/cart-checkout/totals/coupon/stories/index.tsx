@@ -2,7 +2,7 @@
  * External dependencies
  */
 import { useArgs } from '@storybook/client-api';
-import { Story, Meta } from '@storybook/react';
+import type { Story, Meta } from '@storybook/react';
 import { INTERACTION_TIMEOUT } from '@woocommerce/storybook-controls';
 import { useDispatch } from '@wordpress/data';
 import { VALIDATION_STORE_KEY } from '@woocommerce/block-data';
@@ -31,11 +31,12 @@ const Template: Story< TotalsCouponProps > = ( args ) => {
 	const onSubmit = ( code: string ) => {
 		args.onSubmit?.( code );
 		setArgs( { isLoading: true } );
-
-		setTimeout(
-			() => setArgs( { isLoading: false } ),
-			INTERACTION_TIMEOUT
-		);
+		return new Promise( ( resolve ) => {
+			setTimeout( () => {
+				setArgs( { isLoading: false } );
+				resolve( true );
+			}, INTERACTION_TIMEOUT );
+		} );
 	};
 
 	return <TotalsCoupon { ...args } onSubmit={ onSubmit } />;

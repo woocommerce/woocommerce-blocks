@@ -249,7 +249,7 @@ class ProductSchema extends AbstractSchema {
 				],
 			],
 			'attributes'          => [
-				'description' => __( 'List of attributes assigned to the product/variation that are visible or used for variations.', 'woo-gutenberg-products-block' ),
+				'description' => __( 'List of attributes (taxonomy terms) assigned to the product. For variable products, these are mapped to variations (see the `variations` field).', 'woo-gutenberg-products-block' ),
 				'type'        => 'array',
 				'context'     => [ 'view', 'edit' ],
 				'items'       => [
@@ -494,7 +494,7 @@ class ProductSchema extends AbstractSchema {
 	protected function get_images( \WC_Product $product ) {
 		$attachment_ids = array_merge( [ $product->get_image_id() ], $product->get_gallery_image_ids() );
 
-		return array_filter( array_map( [ $this->image_attachment_schema, 'get_item_response' ], $attachment_ids ) );
+		return array_values( array_filter( array_map( [ $this->image_attachment_schema, 'get_item_response' ], $attachment_ids ) ) );
 	}
 
 	/**

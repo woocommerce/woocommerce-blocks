@@ -3,15 +3,17 @@
  */
 import type { CheckoutResponse } from '@woocommerce/types';
 import { store as noticesStore } from '@wordpress/notices';
+import { dispatch as wpDispatch, select as wpSelect } from '@wordpress/data';
 
 /**
  * Internal dependencies
  */
+import { STORE_KEY as PAYMENT_STORE_KEY } from '../payment/constants';
 import { removeNoticesByStatus } from '../../utils/notices';
 import {
 	getPaymentResultFromCheckoutResponse,
-	runCheckoutAfterProcessingWithErrorObservers,
-	runCheckoutAfterProcessingWithSuccessObservers,
+	runCheckoutFailObservers,
+	runCheckoutSuccessObservers,
 } from './utils';
 import {
 	EVENTS,
@@ -40,13 +42,17 @@ export const __internalProcessCheckoutResponse = (
 	} ) => {
 		const paymentResult = getPaymentResultFromCheckoutResponse( response );
 		dispatch.__internalSetRedirectUrl( paymentResult?.redirectUrl || '' );
-		dispatch.__internalSetPaymentResult( paymentResult );
+		// The local `dispatch` here is bound  to the actions of the data store. We need to use the global dispatch here
+		// to dispatch an action on a different store.
+		wpDispatch( PAYMENT_STORE_KEY ).__internalSetPaymentResult(
+			paymentResult
+		);
 		dispatch.__internalSetAfterProcessing();
 	};
 };
 
 /**
- * Emit the CHECKOUT_VALIDATION_BEFORE_PROCESSING event and process all
+ * Emit the CHECKOUT_VALIDATION event and process all
  * registered observers
  */
 export const __internalEmitValidateEvent: emitValidateEventType = ( {
@@ -56,57 +62,57 @@ export const __internalEmitValidateEvent: emitValidateEventType = ( {
 	return ( { dispatch, registry } ) => {
 		const { createErrorNotice } = registry.dispatch( noticesStore );
 		removeNoticesByStatus( 'error' );
-		emitEvent(
-			observers,
-			EVENTS.CHECKOUT_VALIDATION_BEFORE_PROCESSING,
-			{}
-		).then( ( response ) => {
-			if ( response !== true ) {
-				if ( Array.isArray( response ) ) {
-					response.forEach(
-						( { errorMessage, validationErrors } ) => {
-							createErrorNotice( errorMessage, {
-								context: 'wc/checkout',
-							} );
-							setValidationErrors( validationErrors );
-						}
-					);
+		emitEvent( observers, EVENTS.CHECKOUT_VALIDATION, {} ).then(
+			( response ) => {
+				if ( response !== true ) {
+					if ( Array.isArray( response ) ) {
+						response.forEach(
+							( {
+								errorMessage,
+								validationErrors,
+								context = 'wc/checkout',
+							} ) => {
+								createErrorNotice( errorMessage, { context } );
+								setValidationErrors( validationErrors );
+							}
+						);
+					}
+					dispatch.__internalSetIdle();
+					dispatch.__internalSetHasError();
+				} else {
+					dispatch.__internalSetProcessing();
 				}
-				dispatch.__internalSetIdle();
-				dispatch.__internalSetHasError();
-			} else {
-				dispatch.__internalSetProcessing();
 			}
-		} );
+		);
 	};
 };
 
 /**
- * Emit the CHECKOUT_AFTER_PROCESSING_WITH_ERROR if the checkout contains an error,
- * or the CHECKOUT_AFTER_PROCESSING_WITH_SUCCESS if not. Set checkout errors according
+ * Emit the CHECKOUT_FAIL if the checkout contains an error,
+ * or the CHECKOUT_SUCCESS if not. Set checkout errors according
  * to the observer responses
  */
 export const __internalEmitAfterProcessingEvents: emitAfterProcessingEventsType =
 	( { observers, notices } ) => {
 		return ( { select, dispatch, registry } ) => {
 			const { createErrorNotice } = registry.dispatch( noticesStore );
-			const state = select.getCheckoutState();
 			const data = {
-				redirectUrl: state.redirectUrl,
-				orderId: state.orderId,
-				customerId: state.customerId,
-				orderNotes: state.orderNotes,
-				processingResponse: state.paymentResult,
+				redirectUrl: select.getRedirectUrl(),
+				orderId: select.getOrderId(),
+				customerId: select.getCustomerId(),
+				orderNotes: select.getOrderNotes(),
+				processingResponse:
+					wpSelect( PAYMENT_STORE_KEY ).getPaymentResult(),
 			};
-			if ( state.hasError ) {
+			if ( select.hasError() ) {
 				// allow payment methods or other things to customize the error
 				// with a fallback if nothing customizes it.
 				emitEventWithAbort(
 					observers,
-					EVENTS.CHECKOUT_AFTER_PROCESSING_WITH_ERROR,
+					EVENTS.CHECKOUT_FAIL,
 					data
 				).then( ( observerResponses ) => {
-					runCheckoutAfterProcessingWithErrorObservers( {
+					runCheckoutFailObservers( {
 						observerResponses,
 						notices,
 						dispatch,
@@ -117,10 +123,10 @@ export const __internalEmitAfterProcessingEvents: emitAfterProcessingEventsType 
 			} else {
 				emitEventWithAbort(
 					observers,
-					EVENTS.CHECKOUT_AFTER_PROCESSING_WITH_SUCCESS,
+					EVENTS.CHECKOUT_SUCCESS,
 					data
 				).then( ( observerResponses: unknown[] ) => {
-					runCheckoutAfterProcessingWithSuccessObservers( {
+					runCheckoutSuccessObservers( {
 						observerResponses,
 						dispatch,
 						createErrorNotice,

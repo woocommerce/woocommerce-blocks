@@ -4,14 +4,13 @@
 import type { Reducer } from 'redux';
 import { pickBy } from 'lodash';
 import isShallowEqual from '@wordpress/is-shallow-equal';
-import { isString } from '@woocommerce/types';
+import { isString, FieldValidationStatus } from '@woocommerce/types';
 
 /**
  * Internal dependencies
  */
 import { ValidationAction } from './actions';
 import { ACTION_TYPES as types } from './action-types';
-import { FieldValidationStatus } from '../types';
 
 const reducer: Reducer< Record< string, FieldValidationStatus > > = (
 	state: Record< string, FieldValidationStatus > = {},
@@ -33,8 +32,6 @@ const reducer: Reducer< Record< string, FieldValidationStatus > > = (
 				return state;
 			}
 			return { ...state, ...action.errors };
-		case types.CLEAR_ALL_VALIDATION_ERRORS:
-			return {};
 
 		case types.CLEAR_VALIDATION_ERROR:
 			if (
@@ -44,6 +41,20 @@ const reducer: Reducer< Record< string, FieldValidationStatus > > = (
 				return newState;
 			}
 			delete newState[ action.error ];
+			return newState;
+		case types.CLEAR_VALIDATION_ERRORS:
+			const { errors } = action;
+			if ( typeof errors === 'undefined' ) {
+				return {};
+			}
+			if ( ! Array.isArray( errors ) ) {
+				return newState;
+			}
+			errors.forEach( ( error ) => {
+				if ( newState.hasOwnProperty( error ) ) {
+					delete newState[ error ];
+				}
+			} );
 			return newState;
 		case types.HIDE_VALIDATION_ERROR:
 			if (
