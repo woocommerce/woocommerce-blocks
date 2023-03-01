@@ -109,7 +109,7 @@ describe( 'Shopper → Checkout', () => {
 			await shopper.block.goToShop();
 			await shopper.addToCartFromShopPage( SIMPLE_PHYSICAL_PRODUCT_NAME );
 			await shopper.block.goToCheckout();
-			expect( page ).toClick(
+			await expect( page ).toClick(
 				'.wc-block-checkout__shipping-method-option-title',
 				{
 					text: 'Local Pickup',
@@ -177,8 +177,12 @@ describe( 'Shopper → Checkout', () => {
 			await shopper.block.goToShop();
 			await shopper.addToCartFromShopPage( SIMPLE_PHYSICAL_PRODUCT_NAME );
 			await shopper.block.goToCheckout();
-			await page.waitForSelector( '#checkbox-control-0' );
-			await unsetCheckbox( '#checkbox-control-0' );
+			await page.waitForSelector(
+				'.wc-block-checkout__use-address-for-billing input[type="checkbox"]'
+			);
+			await unsetCheckbox(
+				'.wc-block-checkout__use-address-for-billing input[type="checkbox"]'
+			);
 			await shopper.block.fillShippingDetails( SHIPPING_DETAILS );
 			await shopper.block.fillBillingDetails( BILLING_DETAILS );
 			await shopper.block.placeOrder();
