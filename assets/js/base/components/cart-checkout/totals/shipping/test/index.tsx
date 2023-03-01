@@ -2,7 +2,8 @@
  * External dependencies
  */
 import { screen, render } from '@testing-library/react';
-require( '@wordpress/data' );
+import { SlotFillProvider } from '@woocommerce/blocks-checkout';
+import { previewCart as mockPreviewCart } from '@woocommerce/resource-previews';
 
 /**
  * Internal dependencies
@@ -124,26 +125,39 @@ jest.mock( '@woocommerce/base-context/hooks', () => ( {
 			},
 		],
 	} ),
+	useStoreCart: jest.fn().mockReturnValue( {
+		cartItems: mockPreviewCart.items,
+		cartTotals: mockPreviewCart.totals,
+		cartCoupons: mockPreviewCart.coupons,
+		cartFees: mockPreviewCart.fees,
+		cartNeedsShipping: mockPreviewCart.needs_shipping,
+		shippingRates: mockPreviewCart.shipping_rates,
+		shippingAddress: mockPreviewCart.shipping_address,
+		billingAddress: mockPreviewCart.billing_address,
+		cartHasCalculatedShipping: mockPreviewCart.has_calculated_shipping,
+	} ),
 } ) );
 describe( 'TotalsShipping', () => {
 	it( 'should show correct calculator button label if address is complete', () => {
 		const { rerender } = render(
-			<TotalsShipping
-				currency={ {
-					code: 'USD',
-					symbol: '$',
-					position: 'left',
-					precision: 2,
-				} }
-				values={ {
-					total_shipping: '10',
-					total_shipping_tax: '0',
-				} }
-				showCalculator={ true }
-				showRateSelector={ true }
-				isCheckout={ true }
-				className={ '' }
-			/>
+			<SlotFillProvider>
+				<TotalsShipping
+					currency={ {
+						code: 'USD',
+						symbol: '$',
+						position: 'left',
+						precision: 2,
+					} }
+					values={ {
+						total_shipping: '10',
+						total_shipping_tax: '0',
+					} }
+					showCalculator={ true }
+					showRateSelector={ true }
+					isCheckout={ true }
+					className={ '' }
+				/>
+			</SlotFillProvider>
 		);
 		expect( screen.getByText( 'Calculate' ) ).toBeInTheDocument();
 	} );
