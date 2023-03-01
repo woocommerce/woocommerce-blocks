@@ -641,7 +641,7 @@ class BlockTemplateUtils {
 	 * @return boolean
 	 */
 	public static function should_use_blockified_product_grid_templates() {
-		$minimum_wp_version = '6.1.1';
+		$minimum_wp_version = '6.1';
 
 		if ( version_compare( $GLOBALS['wp_version'], $minimum_wp_version, '<' ) ) {
 			return false;
