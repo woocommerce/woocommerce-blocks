@@ -288,22 +288,18 @@ function woocommerce_blocks_plugin_outdated_notice() {
 add_action( 'admin_notices', 'woocommerce_blocks_plugin_outdated_notice' );
 
 /**
- * Check if Guntenberg plugin is enabled (required by the Interactivity API).
+ * Disable the Interactivity API if the required `WP_HTML_Tag_Processor` class
+ * doesn't exist, regardless of whether it was enabled manually.
  *
- * This is a temporary fix until `WP_HTML_Tag_Processor` is released in WP 6.2.
- *
- * @param bool $enabled True if the Interactivity API is manually enabled.
- * @return bool True if _also_ the Gutenberg plugin is enabled.
+ * @param bool $enabled Current filter value.
+ * @return bool True if _also_ the `WP_HTML_Tag_Processor` class was found.
  */
-function woocommerce_blocks_is_gutenberg_enabled( $enabled ) {
-	if ( ! function_exists( 'is_plugin_active' ) ) {
-		include_once ABSPATH . 'wp-admin/includes/plugin.php';
-	}
-	return $enabled && is_plugin_active( 'gutenberg/gutenberg.php' );
+function woocommerce_blocks_has_wp_html_tag_processor( $enabled ) {
+	return $enabled && class_exists( 'WP_HTML_Tag_Processor' );
 }
 add_filter(
 	'woocommerce_blocks_enable_interactivity_api',
-	'woocommerce_blocks_is_gutenberg_enabled',
+	'woocommerce_blocks_has_wp_html_tag_processor',
 	999
 );
 
