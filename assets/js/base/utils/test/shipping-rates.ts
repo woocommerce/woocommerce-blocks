@@ -6,26 +6,47 @@ import {
 	isPackageRateCollectable,
 } from '@woocommerce/base-utils';
 import { CartShippingRate } from '@woocommerce/type-defs/cart';
+import { getSetting } from '@woocommerce/settings';
 
 jest.mock( '@woocommerce/settings', () => {
 	return {
+		__esModule: true,
 		...jest.requireActual( '@woocommerce/settings' ),
-		getSetting: ( setting: string ) => {
+		getSetting: jest.fn().mockImplementation( ( setting: string ) => {
 			if ( setting === 'collectableMethodIds' ) {
 				return [ 'local_pickup' ];
+			}
+			if ( setting === 'localPickupEnabled' ) {
+				return true;
 			}
 			return jest
 				.requireActual( '@woocommerce/settings' )
 				.getSetting( setting );
-		},
+		} ),
 	};
 } );
+
 describe( 'hasCollectableRate', () => {
 	it( 'correctly identifies if an array contains a collectable rate', () => {
 		const ratesToTest = [ 'flat_rate', 'local_pickup' ];
 		expect( hasCollectableRate( ratesToTest ) ).toBe( true );
 		const ratesToTest2 = [ 'flat_rate', 'free_shipping' ];
 		expect( hasCollectableRate( ratesToTest2 ) ).toBe( false );
+	} );
+	it( 'returns false for all rates if local pickup is disabled', () => {
+		getSetting.mockImplementation( ( setting: string ) => {
+			if ( setting === 'collectableMethodIds' ) {
+				return [ 'local_pickup' ];
+			}
+			if ( setting === 'localPickupEnabled' ) {
+				return false;
+			}
+			return jest
+				.requireActual( '@woocommerce/settings' )
+				.getSetting( setting );
+		} );
+		const ratesToTest = [ 'flat_rate', 'local_pickup' ];
+		expect( hasCollectableRate( ratesToTest ) ).toBe( false );
 	} );
 } );
 
