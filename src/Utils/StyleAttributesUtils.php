@@ -525,29 +525,9 @@ class StyleAttributesUtils {
 	 */
 	public static function get_text_align_class_and_style( $attributes ) {
 
-		$text_align_attribute = $attributes['textAlign'] ?? null;
-
-		if ( ! $text_align_attribute ) {
-			return null;
-		}
-
-		if ( 'left' === $text_align_attribute ) {
+		if ( isset( $attributes['textAlign'] ) ) {
 			return array(
-				'class' => 'has-text-align-left',
-				'style' => null,
-			);
-		}
-
-		if ( 'center' === $text_align_attribute ) {
-			return array(
-				'class' => 'has-text-align-center',
-				'style' => null,
-			);
-		}
-
-		if ( 'right' === $text_align_attribute ) {
-			return array(
-				'class' => 'has-text-align-right',
+				'class' => 'has-text-align-' . $attributes['textAlign'],
 				'style' => null,
 			);
 		}
@@ -638,6 +618,7 @@ class StyleAttributesUtils {
 	 */
 	public static function get_classes_and_styles_by_attributes( $attributes, $properties = array() ) {
 		$classes_and_styles = array(
+			'align'            => self::get_align_class_and_style( $attributes ),
 			'background_color' => self::get_background_color_class_and_style( $attributes ),
 			'border_color'     => self::get_border_color_class_and_style( $attributes ),
 			'border_radius'    => self::get_border_radius_class_and_style( $attributes ),
@@ -651,6 +632,7 @@ class StyleAttributesUtils {
 			'link_color'       => self::get_link_color_class_and_style( $attributes ),
 			'margin'           => self::get_margin_class_and_style( $attributes ),
 			'padding'          => self::get_padding_class_and_style( $attributes ),
+			'text_align'       => self::get_text_align_class_and_style( $attributes ),
 			'text_color'       => self::get_text_color_class_and_style( $attributes ),
 			'text_decoration'  => self::get_text_decoration_class_and_style( $attributes ),
 			'text_transform'   => self::get_text_transform_class_and_style( $attributes ),
