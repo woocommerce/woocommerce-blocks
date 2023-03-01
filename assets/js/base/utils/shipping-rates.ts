@@ -36,6 +36,9 @@ export const isPackageRateCollectable = (
 export const hasCollectableRate = (
 	chosenRates: string[] | string
 ): boolean => {
+	if ( ! getSetting< boolean >( 'localPickupEnabled', false ) ) {
+		return false;
+	}
 	if ( Array.isArray( chosenRates ) ) {
 		return !! chosenRates.find( ( rate ) =>
 			collectableMethodIds.includes( rate )
