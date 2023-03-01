@@ -82,6 +82,8 @@ final class BlockTypesController {
 		 *
 		 * This hook defines which block namespaces should have block name and attribute `data-` attributes appended on render.
 		 *
+		 * @since 5.9.0
+		 *
 		 * @param array $allowed_namespaces List of namespaces.
 		 */
 		$allowed_namespaces = array_merge( [ 'woocommerce', 'woocommerce-checkout' ], (array) apply_filters( '__experimental_woocommerce_blocks_add_data_attributes_to_namespace', [] ) );
@@ -90,6 +92,8 @@ final class BlockTypesController {
 		 * Filters the list of allowed Block Names
 		 *
 		 * This hook defines which block names should have block name and attribute data- attributes appended on render.
+		 *
+		 * @since 5.9.0
 		 *
 		 * @param array $allowed_namespaces List of namespaces.
 		 */
@@ -165,6 +169,7 @@ final class BlockTypesController {
 
 		$block_types = [
 			'ActiveFilters',
+			'AddToCartForm',
 			'AllProducts',
 			'AllReviews',
 			'AttributeFilter',
@@ -187,6 +192,7 @@ final class BlockTypesController {
 			'ProductCategory',
 			'ProductCategoryList',
 			'ProductImage',
+			'ProductImageGallery',
 			'ProductNew',
 			'ProductOnSale',
 			'ProductPrice',
@@ -206,6 +212,8 @@ final class BlockTypesController {
 			'RatingFilter',
 			'ReviewsByCategory',
 			'ReviewsByProduct',
+			'RelatedProducts',
+			'ProductDetails',
 			'StockFilter',
 		];
 
@@ -250,10 +258,12 @@ final class BlockTypesController {
 			$block_types = array_diff(
 				$block_types,
 				[
+					'AddToCartForm',
 					'Breadcrumbs',
 					'CatalogSorting',
 					'ClassicTemplate',
 					'ProductResultsCount',
+					'ProductDetails',
 					'StoreNotices',
 				]
 			);
