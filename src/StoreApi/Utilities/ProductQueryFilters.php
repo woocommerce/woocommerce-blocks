@@ -110,6 +110,83 @@ class ProductQueryFilters {
 		";
 	}
 
+	public function get_attribute_and_meta_counts( $request, $attributes = [] ) {
+		global $wpdb;
+
+		$attributes = array_map( 'esc_sql', $attributes );
+		$taxonomy   = $attributes[0];
+
+		$query_type = 'or';
+		foreach ( $request['calculate_attribute_counts'] as $attributes_to_count ) {
+			if ( ! empty( $attributes_to_count['query_type'] ) ) {
+				$query_type = $attributes_to_count['query_type'];
+			}
+		}
+
+		$term_ids = [];
+		foreach ( $_GET['attributes'] as $attribute ) {
+			if ( empty( $attribute['term_id'] ) && empty( $attribute['slug'] ) ) {
+				continue;
+			}
+
+			if ( in_array( $attribute['attribute'], wc_get_attribute_taxonomy_names(), true ) ) {
+				if ( ! empty( $attribute['term_id'] ) ) {
+					$term_ids[] = $attribute['term_id'];
+				} elseif ( ! empty( $attribute['slug'] ) ) {
+					$term = get_term_by( 'slug', $attribute['slug'][0], $attribute['attribute'] );
+					if ( is_object( $term ) ) {
+						$term_ids[] = $term->term_id;
+					}
+				}
+			}
+		}
+
+		$term_ids_count = count( $term_ids );
+		$term_ids       = implode( ',', array_map( 'intval', $term_ids ) );
+
+		if ( 'and' === $query_type ) {
+			$condition_query = "SELECT product_or_parent_id
+        FROM wp_wc_product_attributes_lookup
+        WHERE taxonomy = '{$taxonomy}'
+          AND term_id IN ({$term_ids})
+        GROUP BY product_or_parent_id
+        HAVING count(DISTINCT term_id) >= {$term_ids_count})";
+		} else {
+			$condition_query = "SELECT product_or_parent_id
+        FROM wp_wc_product_attributes_lookup
+        WHERE taxonomy = '{$taxonomy}'
+          AND term_id IN ({$term_ids})";
+		}
+
+		$products = $wpdb->get_col( $condition_query );
+		$products = implode( ',', array_map( 'intval', $products ) );
+
+		$query = "SELECT attributes.term_id as term_count_id, coalesce(term_count, 0) as term_count
+FROM (
+         SELECT DISTINCT term_id
+         FROM wp_wc_product_attributes_lookup
+         WHERE taxonomy = '{$taxonomy}') as attributes
+         LEFT JOIN (
+    SELECT COUNT(product_attribute_lookup.product_id) as term_count, product_attribute_lookup.term_id
+    FROM wp_wc_product_attributes_lookup product_attribute_lookup
+             INNER JOIN wp_posts posts
+                        ON posts.ID = product_attribute_lookup.product_id
+    WHERE posts.post_type IN ('product', 'product_variation')
+      AND posts.post_status = 'publish'
+      AND product_attribute_lookup.product_or_parent_id IN ({$products})
+      AND product_attribute_lookup.product_id IN (
+        SELECT product_meta_lookup.product_id
+        FROM wp_wc_product_meta_lookup product_meta_lookup
+        WHERE product_meta_lookup.max_price <= 16.000000)
+    GROUP BY product_attribute_lookup.term_id
+) summarize ON attributes.term_id = summarize.term_id";
+
+		$counts = $wpdb->get_results( $query );
+
+		return array_map( 'absint', wp_list_pluck( $counts, 'term_count', 'term_count_id' ) );
+	}
+
+
 	/**
 	 * Get attribute counts for the current products.
 	 *
