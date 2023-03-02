@@ -32,7 +32,7 @@ let checkoutFilters: Record<
 	Record< string, CheckoutFilterFunction >
 > = {};
 
-const cachedValues: Record< string, unknown > = {};
+let cachedValues: Record< string, unknown > = {};
 
 /**
  * Register filters for a specific extension.
@@ -53,7 +53,8 @@ export const registerCheckoutFilters = (
 			link: 'https://github.com/woocommerce/woocommerce-gutenberg-products-block/blob/bb921d21f42e21f38df2b1c87b48e07aa4cb0538/docs/extensibility/available-filters.md#coupons',
 		} );
 	}
-
+	// Clear cached values when registering new filters because otherwise we get outdated results when applying them.
+	cachedValues = {};
 	checkoutFilters = {
 		...checkoutFilters,
 		[ namespace ]: filters,
