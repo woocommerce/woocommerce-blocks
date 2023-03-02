@@ -136,6 +136,16 @@ const Form = ( {
 				onChange={ setLocationAddressField( 'postcode' ) }
 				autoComplete="off"
 			/>
+			{ ! countryHasStates && (
+				<TextControl
+					placeholder={ __(
+						'State',
+						'woo-gutenberg-products-block'
+					) }
+					value={ selectedState }
+					onChange={ setLocationAddressField( 'state' ) }
+				/>
+			) }
 			<SelectControl
 				name="location_country_state"
 				label={ __(
@@ -189,16 +199,6 @@ const Form = ( {
 				} ) }
 			</SelectControl>
 
-			{ ! countryHasStates && (
-				<TextControl
-					placeholder={ __(
-						'State',
-						'woo-gutenberg-products-block'
-					) }
-					value={ selectedState }
-					onChange={ setLocationAddressField( 'state' ) }
-				/>
-			) }
 			<TextControl
 				label={ __( 'Pickup details', 'woo-gutenberg-products-block' ) }
 				name={ 'pickup_details' }
