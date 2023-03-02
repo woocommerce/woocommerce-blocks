@@ -99,11 +99,14 @@
 	.wc-block-components-checkout-step__container::after {
 		content: "";
 		height: 100%;
-		border-left: 1px solid;
-		opacity: 0.3;
+		border-left: 1px solid $form-step-border;
 		position: absolute;
 		left: -$gap-large;
 		top: 0;
+
+		.has-dark-controls & {
+			border-color: $form-step-border-dark;
+		}
 	}
 
 	.is-mobile &,

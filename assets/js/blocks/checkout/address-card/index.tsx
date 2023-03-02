@@ -32,9 +32,9 @@ const AddressCard = ( {
 				className="wc-block-components-address-card__icon"
 			/>
 			<address>
-				<strong className="wc-block-components-address-card__address-section">
+				<span className="wc-block-components-address-card__address-section">
 					{ address.first_name + ' ' + address.last_name }
-				</strong>
+				</span>
 				<div className="wc-block-components-address-card__address-section">
 					{ [
 						address.address_1,
