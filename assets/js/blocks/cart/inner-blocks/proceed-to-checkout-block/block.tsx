@@ -9,6 +9,7 @@ import { usePositionRelativeToViewport } from '@woocommerce/base-hooks';
 import { getSetting } from '@woocommerce/settings';
 import { useSelect } from '@wordpress/data';
 import { CHECKOUT_STORE_KEY } from '@woocommerce/block-data';
+import { applyCheckoutFilter } from '@woocommerce/blocks-checkout';
 
 /**
  * Internal dependencies
@@ -58,15 +59,25 @@ const Block = ( {
 		};
 	}, [] );
 
+	const label = applyCheckoutFilter< string >( {
+		filterName: 'proceedToCheckoutButtonLabel',
+		defaultValue: buttonLabel || defaultButtonLabel,
+	} );
+
+	const filteredLink = applyCheckoutFilter< string >( {
+		filterName: 'proceedToCheckoutButtonLink',
+		defaultValue: link || CHECKOUT_URL,
+	} );
+
 	const submitContainerContents = (
 		<Button
 			className="wc-block-cart__submit-button"
-			href={ link || CHECKOUT_URL }
+			href={ filteredLink }
 			disabled={ isCalculating }
 			onClick={ () => setShowSpinner( true ) }
 			showSpinner={ showSpinner }
 		>
-			{ buttonLabel || defaultButtonLabel }
+			{ label }
 		</Button>
 	);
 
