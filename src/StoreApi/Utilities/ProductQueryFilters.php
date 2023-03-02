@@ -123,8 +123,12 @@ class ProductQueryFilters {
 			}
 		}
 
+		if ( ! isset( $_REQUEST['attributes'] ) ) {
+			return [];
+		}
+
 		$term_ids = [];
-		foreach ( $_GET['attributes'] as $attribute ) {
+		foreach ( $_REQUEST['attributes'] as $attribute ) {
 			if ( empty( $attribute['term_id'] ) && empty( $attribute['slug'] ) ) {
 				continue;
 			}
@@ -139,6 +143,15 @@ class ProductQueryFilters {
 					}
 				}
 			}
+		}
+
+		if ( empty( $term_ids ) ) {
+			$empty_query = "SELECT DISTINCT term_id as term_count_id, 0 as term_tount
+         FROM wp_wc_product_attributes_lookup
+         WHERE taxonomy = '{$taxonomy}'";
+			$counts      = $wpdb->get_results( $empty_query );
+
+			return array_map( 'absint', wp_list_pluck( $counts, 'term_count', 'term_count_id' ) );
 		}
 
 		$term_ids_count = count( $term_ids );
