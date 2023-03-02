@@ -3,48 +3,12 @@
  */
 import { __ } from '@wordpress/i18n';
 import { SelectControl, TextControl } from '@wordpress/components';
-import { getSetting } from '@woocommerce/settings';
 
 /**
  * Internal dependencies
  */
 import type { PickupLocation } from '../types';
-
-// Outputs the list of countries and states in a single dropdown select.
-const countryStateDropdownOptions = () => {
-	const countries = getSetting< Record< string, string > >( 'countries', [] );
-	const states = getSetting< Record< string, Record< string, string > > >(
-		'countryStates',
-		[]
-	);
-	const countryStateOptions = Object.keys( countries ).map( ( country ) => {
-		const countryStates = states[ country ] || {};
-
-		if ( Object.keys( countryStates ).length === 0 ) {
-			return {
-				options: [
-					{
-						value: country,
-						label: countries[ country ],
-					},
-				],
-			};
-		}
-
-		const stateOptions = Object.keys( countryStates ).map( ( state ) => ( {
-			value: `${ country }:${ state }`,
-			label: `${ countries[ country ] } — ${ countryStates[ state ] }`,
-		} ) );
-		return {
-			label: countries[ country ],
-			options: [ ...stateOptions ],
-		};
-	} );
-	return {
-		options: countryStateOptions,
-	};
-};
-const countryStateOptions = countryStateDropdownOptions();
+import { countryStateOptions, states } from '../utils';
 
 const Form = ( {
 	formRef,
@@ -56,10 +20,6 @@ const Form = ( {
 	setValues: React.Dispatch< React.SetStateAction< PickupLocation > >;
 } ) => {
 	const { country: selectedCountry, state: selectedState } = values.address;
-	const states = getSetting< Record< string, Record< string, string > > >(
-		'countryStates',
-		[]
-	);
 	const setLocationField =
 		( field: keyof PickupLocation ) => ( newValue: string | boolean ) => {
 			setValues( ( prevValue: PickupLocation ) => ( {
