@@ -116,6 +116,7 @@ $drawer-width-mobile: 100vw;
 	.components-button {
 		@include reset-box();
 		background: transparent;
+		color: inherit;
 		position: absolute;
 		right: 0;
 		top: 0;
