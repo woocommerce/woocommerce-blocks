@@ -28,7 +28,7 @@ const Block = ( {
 	className: string;
 	buttonLabel: string;
 } ): JSX.Element => {
-	const link = getSetting( 'page-' + checkoutPageId, false );
+	const link = getSetting< string >( 'page-' + checkoutPageId, false );
 	const isCalculating = useSelect( ( select ) =>
 		select( CHECKOUT_STORE_KEY ).isCalculating()
 	);
