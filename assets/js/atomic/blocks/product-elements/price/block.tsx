@@ -114,8 +114,8 @@ export const Block = ( props: Props ): JSX.Element | null => {
 };
 
 export default ( props: Props ) => {
-	// It is necessary because this block has to support serveral context:
-	// 	-	 Inside `All Products Block` -> `withProductDataContext` HOC
+	// It is necessary because this block has to support serveral contexts:
+	// - Inside `All Products Block` -> `withProductDataContext` HOC
 	// - Inside `Products Block` -> Gutenberg Context
 	// - Inside `Single Product Template` -> Gutenberg Context
 	// - Without any parent -> `WithSelector` and `withProductDataContext` HOCs
