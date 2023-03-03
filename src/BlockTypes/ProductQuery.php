@@ -116,17 +116,17 @@ class ProductQuery extends AbstractBlock {
 	/**
 	 * Merge tax_queries from various queries.
 	 *
-	 * @param array[] ...$queries Query arrays to be merged.
+	 * @param array ...$queries Query arrays to be merged.
 	 * @return array
 	 */
 	private function merge_tax_queries( ...$queries ) {
-		$tax_query = array();
+		$tax_query = [];
 		foreach ( $queries as $query ) {
 			if ( ! empty( $query['tax_query'] ) ) {
 				$tax_query = array_merge( $tax_query, $query['tax_query'] );
 			}
 		}
-		return array( 'tax_query' => $tax_query );
+		return [ 'tax_query' => $tax_query ];
 	}
 
 	/**

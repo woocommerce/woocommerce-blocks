@@ -79,7 +79,7 @@ class ProductQuery extends \WP_UnitTestCase {
 	 * @param bool  $woocommerce_on_sale WooCommerce on sale.
 	 * @param array $woocommerce_attributes WooCommerce attributes.
 	 * @param array $woocommerce_stock_status WooCommerce stock status.
-	 * @return array
+	 * @return WP_REST_Request
 	 */
 	private function build_request( $woocommerce_on_sale = 'false', $woocommerce_attributes = array(), $woocommerce_stock_status = array() ) {
 		$request = new \WP_REST_Request( 'GET', '/wp/v2/product' );
