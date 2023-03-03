@@ -115,18 +115,18 @@ export const SearchListItem = ( {
 					<CheckboxControl
 						className="woocommerce-search-list__item-input"
 						checked={ isSelected }
-						indeterminate={
-							! isSelected &&
-							// We know that `item.children` is not `undefined` because
-							// we are here only if `hasChildren` is `true`.
-							( item.children as SearchListItemProps[] ).some(
-								( child ) =>
-									selected.find(
-										( selectedItem ) =>
-											selectedItem.id === child.id
-									)
-							)
-						}
+						{ ...( ! isSelected &&
+						// We know that `item.children` is not `undefined` because
+						// we are here only if `hasChildren` is `true`.
+						( item.children as SearchListItemProps[] ).some(
+							( child ) =>
+								selected.find(
+									( selectedItem ) =>
+										selectedItem.id === child.id
+								)
+						)
+							? { indeterminate: true }
+							: {} ) }
 						label={ getHighlightedName( item.name, search ) }
 						onChange={ () => {
 							if ( isSelected ) {
