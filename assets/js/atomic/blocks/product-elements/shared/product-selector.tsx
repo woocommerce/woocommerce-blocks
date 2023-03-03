@@ -6,7 +6,7 @@ import ProductControl from '@woocommerce/editor-components/product-control';
 import { Placeholder, Button, ToolbarGroup } from '@wordpress/components';
 import { BlockControls } from '@wordpress/block-editor';
 import TextToolbarButton from '@woocommerce/editor-components/text-toolbar-button';
-import { useState } from 'react';
+import { useState } from '@wordpress/element';
 
 export const ProductSelector = ( {
 	productId,
