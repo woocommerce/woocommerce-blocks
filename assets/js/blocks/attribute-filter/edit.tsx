@@ -1,6 +1,7 @@
 /**
  * External dependencies
  */
+import { sortBy } from 'lodash';
 import { __, sprintf, _n } from '@wordpress/i18n';
 import { useState } from '@wordpress/element';
 import {
@@ -10,12 +11,11 @@ import {
 } from '@wordpress/block-editor';
 import { Icon, category, external } from '@wordpress/icons';
 import { SearchListControl } from '@woocommerce/editor-components/search-list-control';
-import { getAdminLink } from '@woocommerce/settings';
+import { getAdminLink, getSetting } from '@woocommerce/settings';
 import BlockTitle from '@woocommerce/editor-components/block-title';
 import classnames from 'classnames';
-import useProductAttributes from '@woocommerce/base-context/hooks/use-product-attributes';
 import { SearchListItem } from '@woocommerce/editor-components/search-list-control/types';
-import { convertAttributeObjectToSearchItem } from '@woocommerce/utils';
+import { AttributeSetting } from '@woocommerce/types';
 import {
 	Placeholder,
 	Disabled,
@@ -38,6 +38,8 @@ import Block from './block';
 import './editor.scss';
 import type { EditProps, GetNotice } from './types';
 import { UpgradeNotice } from '../filter-wrapper/upgrade';
+
+const ATTRIBUTES = getSetting< AttributeSetting[] >( 'attributes', [] );
 
 const noticeContent = {
 	noAttributes: __(
@@ -82,8 +84,6 @@ const Edit = ( {
 		! attributeId && ! isPreview
 	);
 
-	const { isLoadingAttributes, productsAttributes } =
-		useProductAttributes( true );
 	const blockProps = useBlockProps();
 
 	const getBlockControls = () => {
@@ -109,8 +109,8 @@ const Edit = ( {
 		}
 
 		const selectedId = selected[ 0 ].id;
-		const productAttribute = productsAttributes.find(
-			( attribute ) => attribute.id === selectedId
+		const productAttribute = ATTRIBUTES.find(
+			( attribute ) => attribute.attribute_id === selectedId.toString()
 		);
 
 		if ( ! productAttribute || attributeId === selectedId ) {
@@ -158,15 +158,15 @@ const Edit = ( {
 			),
 		};
 
-		const list = productsAttributes.reduce( ( acc, curr ) => {
-			const { terms, ...props } = curr;
-
-			return [
-				...acc,
-				convertAttributeObjectToSearchItem( props ),
-				...terms.map( convertAttributeObjectToSearchItem ),
-			];
-		}, [] as SearchListItem[] );
+		const list = sortBy(
+			ATTRIBUTES.map( ( item ) => {
+				return {
+					id: parseInt( item.attribute_id, 10 ),
+					name: item.attribute_label,
+				};
+			} ),
+			'name'
+		);
 
 		return (
 			<SearchListControl
@@ -175,7 +175,6 @@ const Edit = ( {
 				selected={ list.filter( ( { id } ) => id === attributeId ) }
 				onChange={ onChange }
 				messages={ messages }
-				isLoading={ isLoadingAttributes }
 				isSingle
 				isCompact={ isCompact }
 			/>
@@ -406,7 +405,7 @@ const Edit = ( {
 		);
 	};
 
-	return Object.keys( productsAttributes ).length === 0 ? (
+	return Object.keys( ATTRIBUTES ).length === 0 ? (
 		noAttributesPlaceholder()
 	) : (
 		<div { ...blockProps }>
