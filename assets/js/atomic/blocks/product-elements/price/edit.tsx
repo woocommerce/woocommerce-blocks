@@ -6,7 +6,7 @@ import {
 	BlockControls,
 	useBlockProps,
 } from '@wordpress/block-editor';
-import { useEffect } from 'react';
+import { useEffect } from '@wordpress/element';
 import type { BlockAlignment } from '@wordpress/blocks';
 
 /**
@@ -59,14 +59,12 @@ const PriceEdit = ( {
 	return (
 		<>
 			<BlockControls>
-				{ isDescendentOfQueryLoop && (
-					<AlignmentToolbar
-						value={ attributes.textAlign }
-						onChange={ ( textAlign: AllowedAlignments ) => {
-							setAttributes( { textAlign } );
-						} }
-					/>
-				) }
+				<AlignmentToolbar
+					value={ attributes.textAlign }
+					onChange={ ( textAlign: AllowedAlignments ) => {
+						setAttributes( { textAlign } );
+					} }
+				/>
 			</BlockControls>
 			<div { ...blockProps }>
 				<Block { ...blockAttrs } />

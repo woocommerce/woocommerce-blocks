@@ -50,11 +50,6 @@ const GLOBAL_HIDE_OUT_OF_STOCK = getSetting< boolean >(
 	false
 );
 
-const isArchiveProductTemplate = getSetting< boolean >(
-	'is_archive_product_template',
-	false
-);
-
 export const QUERY_DEFAULT_ATTRIBUTES: QueryBlockAttributes = {
 	allowedControls: DEFAULT_ALLOWED_CONTROLS,
 	displayLayout: {
@@ -72,7 +67,7 @@ export const QUERY_DEFAULT_ATTRIBUTES: QueryBlockAttributes = {
 		search: '',
 		exclude: [],
 		sticky: '',
-		inherit: isArchiveProductTemplate,
+		inherit: false,
 		__woocommerceAttributes: [],
 		__woocommerceStockStatus: GLOBAL_HIDE_OUT_OF_STOCK
 			? Object.keys( objectOmit( STOCK_STATUS_OPTIONS, 'outofstock' ) )
@@ -92,6 +87,7 @@ export const INNER_BLOCKS_TEMPLATE: InnerBlockTemplate[] = [
 					textAlign: 'center',
 					level: 3,
 					fontSize: 'medium',
+					isLink: true,
 					__woocommerceNamespace: PRODUCT_TITLE_ID,
 				},
 				[],

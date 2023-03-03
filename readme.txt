@@ -4,7 +4,7 @@ Tags: gutenberg, woocommerce, woo commerce, products, blocks, woocommerce blocks
 Requires at least: 6.1.1
 Tested up to: 6.1.1
 Requires PHP: 7.2
-Stable tag: 9.5.0-dev
+Stable tag: 9.8.0-dev
 License: GPLv3
 License URI: https://www.gnu.org/licenses/gpl-3.0.html
 
@@ -79,6 +79,144 @@ Yes you can! Join in on our [GitHub repository](https://github.com/woocommerce/w
 Release and roadmap notes available on the [WooCommerce Developers Blog](https://woocommerce.wordpress.com/2019/01/15/woocommerce-blocks-1-3-0-release-notes/)
 
 == Changelog ==
+
+= 9.7.0 - 2023-02-28 =
+
+#### Enhancements
+
+- Add Related Products block. ([8522](https://github.com/woocommerce/woocommerce-blocks/pull/8522))
+- Products block: Set the Product Title as a link by default. ([8519](https://github.com/woocommerce/woocommerce-blocks/pull/8519))
+- Add support for the `woocommerce_loop_add_to_cart_args` filter in the Products block. ([8422](https://github.com/woocommerce/woocommerce-blocks/pull/8422))
+- Enable the `Inherit query from template` setting by default for the _Products_ block in archive products templates. ([8375](https://github.com/woocommerce/woocommerce-blocks/pull/8375))
+- Update the blockified archive templates to use the Products block. ([8308](https://github.com/woocommerce/woocommerce-blocks/pull/8308))
+- Improve the dismissal behavior of the incompatible gateways notice. ([8299](https://github.com/woocommerce/woocommerce-blocks/pull/8299))
+- Add the _Add to Cart Form_ block, allowing merchants to display a button so the customer can add a product to their cart. Options will also be displayed depending on product type. e.g. quantity, variation. ([8284](https://github.com/woocommerce/woocommerce-blocks/pull/8284))
+- All Products: Add alignment settings for the Product Rating and Product Price blocks. ([8264](https://github.com/woocommerce/woocommerce-blocks/pull/8264))
+- Enable users to migrate to blockified Product Archive templates. ([8248](https://github.com/woocommerce/woocommerce-blocks/pull/8248))
+- Add Product Image Gallery block. ([8235](https://github.com/woocommerce/woocommerce-blocks/pull/8235))
+- Add Single Product Details block that displays the product description, information, and reviews. ([8225](https://github.com/woocommerce/woocommerce-blocks/pull/8225))
+
+#### Bug Fixes
+
+- Add the `woocommerce_disable_compatibility_layer` filter to disable the compatibility layer. Disable the compatibility layer when Archive Product and Single Product templates contain the WooCommerce Product Grid Block. ([8550](https://github.com/woocommerce/woocommerce-blocks/pull/8550))
+- Ensure custom shipping methods supporting local pickup show up in the shipping options when no WC Blocks pickup locations are enabled. ([8542](https://github.com/woocommerce/woocommerce-blocks/pull/8542))
+- Focus the coupon code input when the form is revealed in the cart. ([8525](https://github.com/woocommerce/woocommerce-blocks/pull/8525))
+- Fix: Make `Price product` margin work in the `All products` block. ([8518](https://github.com/woocommerce/woocommerce-blocks/pull/8518))
+- Fix an issue in which setting the city/state would not persist in the first time for certain customers. ([8497](https://github.com/woocommerce/woocommerce-blocks/pull/8497))
+- Fix noticeContext declaration in the Shipping calculator. ([8495](https://github.com/woocommerce/woocommerce-blocks/pull/8495))
+- Update Product Details block so it inherits more styles from the theme. ([8494](https://github.com/woocommerce/woocommerce-blocks/pull/8494))
+- Add Cart and Checkout blocks to the Style Book. ([8489](https://github.com/woocommerce/woocommerce-blocks/pull/8489))
+- Fix: Adjust `Catalog Sorting` colors in dark themes. ([8483](https://github.com/woocommerce/woocommerce-blocks/pull/8483))
+- Remove opinionated styles from Button component on block themes that define button styles. ([8478](https://github.com/woocommerce/woocommerce-blocks/pull/8478))
+- Fix individual border controls not showing in the editor for Featured Product and Featured Category blocks. ([8472](https://github.com/woocommerce/woocommerce-blocks/pull/8472))
+- Fix potential console warnings when certain Checkout Blocks are disabled. ([8471](https://github.com/woocommerce/woocommerce-blocks/pull/8471))
+- Prevent saved cards from appearing that belong to gateways that are not enabled. ([8461](https://github.com/woocommerce/woocommerce-blocks/pull/8461))
+- Fix error: "Undefined property $area" error on the BlockTemplatesController. ([8443](https://github.com/woocommerce/woocommerce-blocks/pull/8443))
+- Fixed an issue where warnings relating to payment method script dependencies were shown when editing pages with Elementor. ([8428](https://github.com/woocommerce/woocommerce-blocks/pull/8428))
+- Performance - Prevent extra API hydration in the editor when using All Products block. ([8413](https://github.com/woocommerce/woocommerce-blocks/pull/8413))
+- Product Price: Fix typography styles in the editor. ([8398](https://github.com/woocommerce/woocommerce-blocks/pull/8398))
+- Fix spacing and display issues for Store Breadcrumbs, Catalog Sorting and Product Result Counts blocks. ([8391](https://github.com/woocommerce/woocommerce-blocks/pull/8391))
+- Fix Product categories, Product Tags & Keyword filter not working in Products block. ([8377](https://github.com/woocommerce/woocommerce-blocks/pull/8377))
+
+#### Technical debt
+
+- Rename the checkout events. ([8381](https://github.com/woocommerce/woocommerce-blocks/pull/8381))
+
+= 9.6.3 - 2023-02-27 =
+
+#### Bug Fixes
+
+- Fix: Ensure that Express Payment buttons are visible next to each other. ([8548](https://github.com/woocommerce/woocommerce-blocks/pull/8548))
+- Check if session is set before returning updated customer address. ([8537](https://github.com/woocommerce/woocommerce-blocks/pull/8537))
+- Fix the Checkout Blocks "Payment Options" settings crash in the editor. ([8535](https://github.com/woocommerce/woocommerce-blocks/pull/8535))
+
+= 9.6.2 - 2023-02-22 =
+
+#### Bug Fixes
+
+- Disable compatibility layer ([8507](https://github.com/woocommerce/woocommerce-blocks/pull/8507))
+
+= 9.6.1 - 2023-02-17 =
+
+#### Bug Fixes
+
+- Make Mini Cart Contents block visible in the Style Book. ([8458](https://github.com/woocommerce/woocommerce-blocks/pull/8458))
+- Fixed an issue where cart item data could cause fatal errors if it was an array. ([8440](https://github.com/woocommerce/woocommerce-blocks/pull/8440))
+- Fix Customer account sidebar link incorrect margin in WP 6.2. ([8437](https://github.com/woocommerce/woocommerce-blocks/pull/8437))
+- Fix cases in which Checkout would validate customer country against the wrong state. ([8460](https://github.com/woocommerce/woocommerce-blocks/pull/8460))
+
+= 9.6.0 - 2023-02-14 =
+
+#### Enhancements
+
+- Improved default headings and styling of the cart block and fixed the display of cart and checkout block editable fields when using dark themes. ([8380](https://github.com/woocommerce/woocommerce-blocks/pull/8380))
+- Add a reset button for the Filter blocks. ([8366](https://github.com/woocommerce/woocommerce-blocks/pull/8366))
+- Update the incompatible gateways notice design. ([8365](https://github.com/woocommerce/woocommerce-blocks/pull/8365))
+- Product Rating: Add support for the Padding setting. ([8347](https://github.com/woocommerce/woocommerce-blocks/pull/8347))
+- Update apply button description to be more clear for filter blocks. ([8339](https://github.com/woocommerce/woocommerce-blocks/pull/8339))
+- Allow third party shipping methods to declare compatibility with WC Blocks local pickup. ([8256](https://github.com/woocommerce/woocommerce-blocks/pull/8256))
+
+#### Bug Fixes
+
+- Fix a bug where certain checkout fields were being reset when changing the shipping option. ([8400](https://github.com/woocommerce/woocommerce-blocks/pull/8400))
+- Fix bug in which errors would be shown twice in Checkout block. ([8390](https://github.com/woocommerce/woocommerce-blocks/pull/8390))
+- Filter by Rating: Fix functionality to for resetting filters using the Reset button. ([8374](https://github.com/woocommerce/woocommerce-blocks/pull/8374))
+- Fix a bug in WordPress 5.9 in which changing quantity doesn't work inside Cart and Mini Cart blocks. ([8356](https://github.com/woocommerce/woocommerce-blocks/pull/8356))
+- Fix potential conflict between newsletter extensions on the checkout page. ([8354](https://github.com/woocommerce/woocommerce-blocks/pull/8354))
+- Mini Cart block: Fix the drawer content height to allow the checkout button to be visible. ([8351](https://github.com/woocommerce/woocommerce-blocks/pull/8351))
+- Prevent errors relating to the coupon input disappearing when focusing/blurring the coupon input and the value of the input field remains unchanged. ([8349](https://github.com/woocommerce/woocommerce-blocks/pull/8349))
+- Fix: The experimental typography styles for the Store Breadcrumbs block are now restricted to the feature plugin. ([8345](https://github.com/woocommerce/woocommerce-blocks/pull/8345))
+- Fix console error of `isLoading` for Price filter block. ([8340](https://github.com/woocommerce/woocommerce-blocks/pull/8340))
+- Checkout - Allow partial pushes of address data to work before a country is provided ([8425](https://github.com/woocommerce/woocommerce-blocks/pull/8425))
+
+= 9.5.0 - 2023-01-30 =
+
+#### Enhancements
+
+- Enhancement: Add _Store Breadcrumbs_ block, allowing merchants to keep track of their locations within the store and navigate back to parent pages. ([8222](https://github.com/woocommerce/woocommerce-blocks/pull/8222))
+- Enhancement: Add _Catalog Sorting_ block. ([8122](https://github.com/woocommerce/woocommerce-blocks/pull/8122))
+- Enhancement: Add _Product Results Count_ block. ([8078](https://github.com/woocommerce/woocommerce-blocks/pull/8078))
+- Enhancement: Add a `reset` button for the _Filter by Attributes_ block. ([8285](https://github.com/woocommerce/woocommerce-blocks/pull/8285))
+- Enhancement: Add a compatibility layer to keep extensions continue working with Blockified Archive Templates. ([8172](https://github.com/woocommerce/woocommerce-blocks/pull/8172))
+- Enhancement: Add border style previews in the editor for featured items. ([8304](https://github.com/woocommerce/woocommerce-blocks/pull/8304))
+- Enhancement: Graduate margin styling for _Product Price block_ to WooCommerce core. ([8269](https://github.com/woocommerce/woocommerce-blocks/pull/8269))
+- Enhancement: Improve free local pickup display during checkout. ([8241](https://github.com/woocommerce/woocommerce-blocks/pull/8241))
+- Enhancement: Improve how checkout pushes data to the server when entering address data. ([8030](https://github.com/woocommerce/woocommerce-blocks/pull/8030))
+- Enhancement: Move margin for _Product Rating_ from CSS to Global Styles. ([8202](https://github.com/woocommerce/woocommerce-blocks/pull/8202))
+- Enhancement: Prevent an edge case where adding the _Product_ blocks above the Classic Template block would cause its ratings to change the markup. ([8247](https://github.com/woocommerce/woocommerce-blocks/pull/8247))
+- Enhancement: Refresh the cart after using the back button to return to checkout. ([8236](https://github.com/woocommerce/woocommerce-blocks/pull/8236))
+- Enhancement: Replace the collapsed section for the coupon code with a link. ([7993](https://github.com/woocommerce/woocommerce-blocks/pull/7993))
+- Enhancement: Set `inherit` setting to true when is inserted in the archive product template. ([8251](https://github.com/woocommerce/woocommerce-blocks/pull/8251))
+- Enhancement: Transition _Product Button_ from using CSS margin to Global Styles. ([8239](https://github.com/woocommerce/woocommerce-blocks/pull/8239))
+
+#### Bug Fixes
+
+- Fix: Adjust _Featured Product_ and _Featured Category_ blocks preview for Style Book. ([8313](https://github.com/woocommerce/woocommerce-blocks/pull/8313))
+- Fix: Adjust _Store Notices_ text color in dark themes. ([8278](https://github.com/woocommerce/woocommerce-blocks/pull/8278))
+- Fix: Adjust _Catalog Sorting_ colors in dark themes. ([8270](https://github.com/woocommerce/woocommerce-blocks/pull/8270))
+- Fix: Adjust color and direction of the arrow of the return to cart button on the checkout page. ([8289](https://github.com/woocommerce/woocommerce-blocks/pull/8289))
+- Fix: Hide filter blocks and _Product Search_ block for Style Book. ([8309](https://github.com/woocommerce/woocommerce-blocks/pull/8309))
+- Fix: Resolve a bug that would display Billing Address for Shipping Address on checkout rest endpoint. ([8291](https://github.com/woocommerce/woocommerce-blocks/pull/8291))
+- Fix: Resolve an issue where the WooCommerce tab of the style book would crash and certain blocks would not load correctly. ([8243](https://github.com/woocommerce/woocommerce-blocks/pull/8243))
+
+= 9.4.4 - 2023-02-27 =
+
+#### Bug Fixes
+
+- Check if session is set before returing updated customer address. ([8537](https://github.com/woocommerce/woocommerce-blocks/pull/8537))
+
+= 9.4.3 - 2023-02-01 =
+
+#### Bug Fixes
+
+- Fix a bug in WordPress 5.9 in which changing quantity doesn't work inside Cart and Mini Cart blocks. ([8297](https://github.com/woocommerce/woocommerce-blocks/pull/8356))
+- Mini Cart block: Fix the drawer content height to allow the checkout button to be visible. ([8297](https://github.com/woocommerce/woocommerce-blocks/pull/8351))
+
+= 9.4.2 - 2023-01-26 =
+
+#### Bug Fixes
+
+Product Elements: remove feature plugin flag from Product Title, Product Summary and Product Template block. ([8297](https://github.com/woocommerce/woocommerce-blocks/pull/8297))
 
 = 9.4.1 - 2023-01-23 =
 

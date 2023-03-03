@@ -1,14 +1,19 @@
 /**
  * External dependencies
  */
-import { CART_STORE_KEY as storeKey } from '@woocommerce/block-data';
+import {
+	CART_STORE_KEY as storeKey,
+	processErrorResponse,
+} from '@woocommerce/block-data';
 import { useSelect, useDispatch } from '@wordpress/data';
 import { isObject } from '@woocommerce/types';
 import { useEffect, useRef, useCallback } from '@wordpress/element';
-import { deriveSelectedShippingRates } from '@woocommerce/base-utils';
+import {
+	hasCollectableRate,
+	deriveSelectedShippingRates,
+} from '@woocommerce/base-utils';
 import isShallowEqual from '@wordpress/is-shallow-equal';
 import { previewCart } from '@woocommerce/resource-previews';
-import { useThrowError } from '@woocommerce/base-hooks';
 
 /**
  * Internal dependencies
@@ -41,9 +46,8 @@ export const useShippingData = (): ShippingData => {
 			isLoadingRates: isEditor ? false : store.isCustomerDataUpdating(),
 			isCollectable: rates.every(
 				( { shipping_rates: packageShippingRates } ) =>
-					packageShippingRates.find(
-						( { method_id: methodId } ) =>
-							methodId === 'pickup_location'
+					packageShippingRates.find( ( { method_id: methodId } ) =>
+						hasCollectableRate( methodId )
 					)
 			),
 			isSelectingRate: isEditor
@@ -72,12 +76,17 @@ export const useShippingData = (): ShippingData => {
 	} as {
 		selectShippingRate: (
 			newShippingRateId: string,
-			packageId?: string | number
+			packageId?: string | number | undefined
 		) => Promise< unknown >;
 	};
 
+	const hasSelectedLocalPickup = hasCollectableRate(
+		Object.values( selectedRates.current ).map(
+			( rate ) => rate.split( ':' )[ 0 ]
+		)
+	);
+
 	// Selects a shipping rate, fires an event, and catch any errors.
-	const throwError = useThrowError();
 	const { dispatchCheckoutEvent } = useStoreEvents();
 	const selectShippingRate = useCallback(
 		(
@@ -91,12 +100,8 @@ export const useShippingData = (): ShippingData => {
 			 *
 			 * Forces pickup location to be selected for all packages since we don't allow a mix of shipping and pickup.
 			 */
-			const hasSelectedLocalPickup = !! Object.values(
-				selectedRates.current
-			).find( ( rate ) => rate.includes( 'pickup_location:' ) );
-
 			if (
-				newShippingRateId.includes( 'pickup_location:' ) ||
+				hasCollectableRate( newShippingRateId.split( ':' )[ 0 ] ) ||
 				hasSelectedLocalPickup
 			) {
 				selectPromise = dispatchSelectShippingRate( newShippingRateId );
@@ -113,15 +118,13 @@ export const useShippingData = (): ShippingData => {
 					} );
 				} )
 				.catch( ( error ) => {
-					// Throw an error because an error when selecting a rate is problematic.
-					throwError( error );
+					processErrorResponse( error );
 				} );
 		},
 		[
+			hasSelectedLocalPickup,
 			dispatchSelectShippingRate,
 			dispatchCheckoutEvent,
-			throwError,
-			selectedRates,
 		]
 	);
 
@@ -134,8 +137,6 @@ export const useShippingData = (): ShippingData => {
 		hasCalculatedShipping,
 		isLoadingRates,
 		isCollectable,
-		hasSelectedLocalPickup: !! Object.values( selectedRates.current ).find(
-			( rate ) => rate.includes( 'pickup_location:' )
-		),
+		hasSelectedLocalPickup,
 	};
 };

@@ -2,13 +2,13 @@
 namespace Automattic\WooCommerce\Blocks\Templates;
 
 /**
- * BlockTemplatesCompatibility class.
+ * ArchiveProductTemplatesCompatibility class.
  *
- * To bridge the gap on compatibility with PHP hooks and blockified templates.
+ * To bridge the gap on compatibility with PHP hooks and Product Archive blockified templates.
  *
  * @internal
  */
-class BlockTemplatesCompatibility {
+class ArchiveProductTemplatesCompatibility extends AbstractTemplateCompatibility {
 
 	/**
 	 * The custom ID of the loop item block as the replacement of the core/null block.
@@ -29,18 +29,6 @@ class BlockTemplatesCompatibility {
 	public function __construct() {
 		$this->set_hook_data();
 		$this->init();
-	}
-
-	/**
-	 * Initialization method.
-	 */
-	protected function init() {
-		if ( ! wc_current_theme_is_fse_theme() ) {
-			return;
-		}
-
-		add_filter( 'render_block_data', array( $this, 'update_render_block_data' ), 10, 3 );
-		add_filter( 'render_block', array( $this, 'inject_hooks' ), 10, 2 );
 	}
 
 	/**
@@ -244,85 +232,22 @@ class BlockTemplatesCompatibility {
 					'wc_no_products_found' => 10,
 				),
 			),
+			'woocommerce_archive_description'         => array(
+				'block_name' => 'core/term-description',
+				'position'   => 'before',
+				'hooked'     => array(
+					'woocommerce_taxonomy_archive_description' => 10,
+					'woocommerce_product_archive_description'  => 10,
+				),
+			),
 		);
 	}
 
 	/**
 	 * Check if current page is a product archive template.
 	 */
-	protected function is_archive_template() {
+	private function is_archive_template() {
 		return is_shop() || is_product_taxonomy();
-	}
-
-	/**
-	 * Remove the default callback added by WooCommerce. We replaced these
-	 * callbacks by blocks so we have to remove them to prevent duplicated
-	 * content.
-	 */
-	protected function remove_default_hooks() {
-		foreach ( $this->hook_data as $hook => $data ) {
-			if ( ! isset( $data['hooked'] ) ) {
-				continue;
-			}
-			foreach ( $data['hooked'] as $callback => $priority ) {
-				remove_action( $hook, $callback, $priority );
-			}
-		}
-
-		/**
-		 * When extensions implement their equivalent blocks of the template
-		 * hook functions, they can use this filter to register their old hooked
-		 * data here, so in the blockified template, the old hooked functions
-		 * can be removed in favor of the new blocks while keeping the old
-		 * hooked functions working in classic templates.
-		 *
-		 * Accepts an array of hooked data. The array should be in the following
-		 * format:
-		 * [
-		 *   [
-		 *     hook => <hook-name>,
-		 *     function => <function-name>,
-		 *     priority => <priority>,
-		 *  ],
-		 *  ...
-		 * ]
-		 * Where:
-		 * - hook-name is the name of the hook that have the functions hooked to.
-		 * - function-name is the hooked function name.
-		 * - priority is the priority of the hooked function.
-		 *
-		 * @param array $data Additional hooked data. Default to empty
-		 */
-		$additional_hook_data = apply_filters( 'woocommerce_blocks_hook_compatibility_additional_data', array() );
-
-		if ( empty( $additional_hook_data ) || ! is_array( $additional_hook_data ) ) {
-			return;
-		}
-
-		foreach ( $additional_hook_data as $data ) {
-			if ( ! isset( $data['hook'], $data['function'], $data['priority'] ) ) {
-				continue;
-			}
-			remove_action( $data['hook'], $data['function'], $data['priority'] );
-		}
-	}
-
-	/**
-	 * Get the buffer content of the hooks to append/prepend to render content.
-	 *
-	 * @param array  $hooks    The hooks to be rendered.
-	 * @param string $position The position of the hooks.
-	 *
-	 * @return string
-	 */
-	protected function get_hooks_buffer( $hooks, $position ) {
-		ob_start();
-		foreach ( $hooks as $hook => $data ) {
-			if ( $data['position'] === $position ) {
-				do_action( $hook );
-			}
-		}
-		return ob_get_clean();
 	}
 
 	/**
@@ -331,7 +256,7 @@ class BlockTemplatesCompatibility {
 	 *
 	 * @param array $block Parsed block data.
 	 */
-	protected function inner_blocks_walker( &$block ) {
+	private function inner_blocks_walker( &$block ) {
 		if (
 			'core/query' === $block['blockName'] &&
 			isset( $block['attrs']['namespace'] ) &&
@@ -353,12 +278,11 @@ class BlockTemplatesCompatibility {
 	 *
 	 * @param array $block Parsed block data.
 	 */
-	protected function inject_attribute( &$block ) {
+	private function inject_attribute( &$block ) {
 		$block['attrs']['isInherited'] = 1;
 
 		if ( ! empty( $block['innerBlocks'] ) ) {
 			array_walk( $block['innerBlocks'], array( $this, 'inject_attribute' ) );
 		}
 	}
-
 }

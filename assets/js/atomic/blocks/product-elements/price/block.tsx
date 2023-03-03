@@ -14,8 +14,8 @@ import {
 	useTypographyProps,
 } from '@woocommerce/base-hooks';
 import { withProductDataContext } from '@woocommerce/shared-hocs';
-import type { HTMLAttributes } from 'react';
 import { CurrencyCode } from '@woocommerce/type-defs/currency';
+import type { HTMLAttributes } from 'react';
 
 /**
  * Internal dependencies
@@ -83,6 +83,7 @@ export const Block = ( props: Props ): JSX.Element | null => {
 			align={ textAlign }
 			className={ wrapperClassName }
 			regularPriceStyle={ style }
+			priceStyle={ style }
 			priceClassName={ priceClassName }
 			currency={ currency }
 			price={ prices.price }
