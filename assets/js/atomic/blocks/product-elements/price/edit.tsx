@@ -9,6 +9,7 @@ import {
 import { useEffect } from '@wordpress/element';
 import type { BlockAlignment } from '@wordpress/blocks';
 import { useSelect } from '@wordpress/data';
+import { __ } from '@wordpress/i18n';
 
 /**
  * Internal dependencies
@@ -110,7 +111,7 @@ const PriceEdit = ( {
 				icon={ BLOCK_ICON }
 				label={ BLOCK_TITLE }
 				description={ __(
-					'Choose a product to display its SKU.',
+					'Choose a product to display its price.',
 					'woo-gutenberg-products-block'
 				) }
 			>
