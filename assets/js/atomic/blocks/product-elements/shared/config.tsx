@@ -14,9 +14,7 @@ import save from '../save';
  * Holds default config for this collection of blocks.
  * attributes and title are omitted here as these are added on an individual block level.
  */
-const sharedConfig: Omit< BlockConfiguration, 'attributes' | 'title' > & {
-	ancestor: string[];
-} = {
+const sharedConfig: Omit< BlockConfiguration, 'attributes' | 'title' > = {
 	category: 'woocommerce-product-elements',
 	keywords: [ __( 'WooCommerce', 'woo-gutenberg-products-block' ) ],
 	icon: {
