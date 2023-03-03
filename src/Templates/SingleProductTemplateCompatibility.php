@@ -208,6 +208,16 @@ class SingleProductTemplateCompatibility extends AbstractTemplateCompatibility {
 				'position'   => 'after',
 				'hooked'     => array(),
 			),
+			'woocommerce_product_meta_start'            => array(
+				'block_name' => 'woocommerce/product-meta',
+				'position'   => 'before',
+				'hooked'     => array(),
+			),
+			'woocommerce_product_meta_end'              => array(
+				'block_name' => 'woocommerce/product-meta',
+				'position'   => 'after',
+				'hooked'     => array(),
+			),
 			'woocommerce_share'                         => array(
 				'block_name' => 'woocommerce/product-details',
 				'position'   => 'before',
