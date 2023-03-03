@@ -53,18 +53,16 @@ const PriceEdit = ( {
 	};
 	const isDescendentOfQueryLoop = Number.isFinite( context.queryId );
 
-	const { isDescendentOfSingleProductTemplate } = useSelect(
+	const isDescendentOfSingleProductTemplate = useSelect(
 		( select ) => {
 			const store = select( 'core/edit-site' );
 			const postId = store?.getEditedPostId();
 
-			return {
-				isDescendentOfSingleProductTemplate:
-					( postId === 'woocommerce/woocommerce//product-meta' ||
-						postId ===
-							'woocommerce/woocommerce//single-product' ) &&
-					! isDescendentOfQueryLoop,
-			};
+			return (
+				( postId === 'woocommerce/woocommerce//product-meta' ||
+					postId === 'woocommerce/woocommerce//single-product' ) &&
+				! isDescendentOfQueryLoop
+			);
 		},
 		[ isDescendentOfQueryLoop ]
 	);
