@@ -95,7 +95,7 @@ CartCoupon {
 
 ## Proceed to Checkout Button Label
 
-The Cart block contains a button which is labelled 'Proceed to Checkout' by default, but can be changed using the following filter.
+The Cart block contains a button which is labelled 'Proceed to Checkout' by default. It can be changed using the following filter.
 
 | Filter name                    | Description                                         | Return type |
 |--------------------------------|-----------------------------------------------------| ----------- |
