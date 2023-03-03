@@ -10,7 +10,7 @@
 		}
 
 		.icon + .label,
-		.account-icon + .label {
+		.wc-block-customer-account__account-icon + .label {
 			margin-left: $gap-smaller;
 		}
 
@@ -19,7 +19,7 @@
 			width: em(16px);
 		}
 
-		.account-icon {
+		.wc-block-customer-account__account-icon {
 			height: em(23px);
 			width: em(23px);
 		}

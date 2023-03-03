@@ -36,6 +36,6 @@ registerBlockVariation( 'woocommerce/customer-account', {
 	isDefault: true,
 	attributes: {
 		...metadata.attributes,
-		iconClass: 'account-icon',
+		iconClass: 'wc-block-customer-account__account-icon',
 	},
 } );
