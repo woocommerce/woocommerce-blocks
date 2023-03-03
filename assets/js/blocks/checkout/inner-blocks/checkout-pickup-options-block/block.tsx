@@ -14,11 +14,11 @@ import FormattedMonetaryAmount from '@woocommerce/base-components/formatted-mone
 import { decodeEntities } from '@wordpress/html-entities';
 import { getSetting } from '@woocommerce/settings';
 import { Icon, mapMarker } from '@wordpress/icons';
-import RadioControl from '@woocommerce/base-components/radio-control';
 import type { RadioControlOption } from '@woocommerce/base-components/radio-control/types';
 import { CartShippingPackageShippingRate } from '@woocommerce/types';
 import { isPackageRateCollectable } from '@woocommerce/base-utils';
 import { ExperimentalOrderLocalPickupPackages } from '@woocommerce/blocks-checkout';
+import { LocalPickupSelect } from '@woocommerce/base-components/cart-checkout/local-pickup-select';
 
 /**
  * Internal dependencies
@@ -144,7 +144,7 @@ const Block = (): JSX.Element | null => {
 		cart,
 		components: {
 			ShippingRatesControlPackage,
-			RadioControl,
+			LocalPickupSelect,
 		},
 		renderPickupLocation,
 	};
@@ -161,15 +161,13 @@ const Block = (): JSX.Element | null => {
 		<>
 			<ExperimentalOrderLocalPickupPackages.Slot { ...slotFillProps } />
 			<ExperimentalOrderLocalPickupPackages>
-				<RadioControl
-					onChange={ ( value: string ) => {
-						setSelectedOption( value );
-						onSelectRate( value );
-					} }
-					selected={ selectedOption }
-					options={ pickupLocations.map( ( location ) =>
-						renderPickupLocation( location, shippingRates.length )
-					) }
+				<LocalPickupSelect
+					title={ shippingRates[ 0 ].name }
+					setSelectedOption={ setSelectedOption }
+					onSelectRate={ onSelectRate }
+					selectedOption={ selectedOption }
+					renderPickupLocation={ renderPickupLocation }
+					pickupLocations={ pickupLocations }
 				/>
 			</ExperimentalOrderLocalPickupPackages>
 		</>
