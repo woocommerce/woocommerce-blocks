@@ -85,21 +85,6 @@ class SingleProductTemplateCompatibility extends AbstractTemplateCompatibility {
 			),
 		);
 
-		if ( 'core/template-part' === $block['blockName'] && isset( $block['attrs']['slug'] ) && 'product-meta' === $block['attrs']['slug'] ) {
-			return sprintf(
-				'%1$s%2$s%3$s',
-				$this->get_hooks_buffer(
-					$this->hook_data['woocommerce_product_meta_start'],
-					'before'
-				),
-				$block_content,
-				$this->get_hooks_buffer(
-					$this->hook_data['woocommerce_product_meta_end'],
-					'after'
-				)
-			);
-		}
-
 		if ( isset( $block['attrs'][ self::IS_FIRST_BLOCK ] ) && isset( $block['attrs'][ self::IS_LAST_BLOCK ] ) ) {
 			return sprintf(
 				'%1$s%2$s%3$s',
@@ -218,18 +203,18 @@ class SingleProductTemplateCompatibility extends AbstractTemplateCompatibility {
 					'woocommerce_template_single_sharing' => 50,
 				),
 			),
-			'woocommerce_product_meta_start'            => array(
-				'block_name' => '',
-				'position'   => 'before',
-				'hooked'     => array(),
-			),
-			'woocommerce_product_meta_end'              => array(
+			'woocommerce_after_single_product'          => array(
 				'block_name' => '',
 				'position'   => 'after',
 				'hooked'     => array(),
 			),
-			'woocommerce_after_single_product'          => array(
-				'block_name' => '',
+			'woocommerce_product_meta_start'            => array(
+				'block_name' => 'woocommerce/product-meta',
+				'position'   => 'before',
+				'hooked'     => array(),
+			),
+			'woocommerce_product_meta_end'              => array(
+				'block_name' => 'woocommerce/product-meta',
 				'position'   => 'after',
 				'hooked'     => array(),
 			),
@@ -289,7 +274,7 @@ class SingleProductTemplateCompatibility extends AbstractTemplateCompatibility {
 
 		$wrapped_blocks = array_map(
 			function( $blocks ) use ( $single_product_template_blocks ) {
-				if ( self::is_template_part( $blocks[0] ) ) {
+				if ( 'core/template-part' === $blocks[0]['blockName'] ) {
 					return $blocks;
 				}
 
@@ -321,7 +306,7 @@ class SingleProductTemplateCompatibility extends AbstractTemplateCompatibility {
 				$carry['index'] = $carry['index'] + 1;
 				$block          = $item[0];
 
-				if ( self::is_template_part( $block ) ) {
+				if ( 'core/template-part' === $block['blockName'] ) {
 					$carry['template'][] = $block;
 					return $carry;
 				}
@@ -429,7 +414,7 @@ class SingleProductTemplateCompatibility extends AbstractTemplateCompatibility {
 		return array_reduce(
 			$parsed_blocks,
 			function( $carry, $block ) {
-				if ( self::is_template_part( $block ) ) {
+				if ( 'core/template-part' === $block['blockName'] ) {
 					$carry[] = array( $block );
 					return $carry;
 				}
@@ -437,7 +422,7 @@ class SingleProductTemplateCompatibility extends AbstractTemplateCompatibility {
 					return $carry;
 				}
 				$last_element_index = count( $carry ) - 1;
-				if ( isset( $carry[ $last_element_index ][0]['blockName'] ) && ! self::is_template_part( $carry[ $last_element_index ][0] ) ) {
+				if ( isset( $carry[ $last_element_index ][0]['blockName'] ) && 'core/template-part' !== $carry[ $last_element_index ][0]['blockName'] ) {
 					$carry[ $last_element_index ][] = $block;
 					return $carry;
 				}
@@ -446,24 +431,5 @@ class SingleProductTemplateCompatibility extends AbstractTemplateCompatibility {
 			},
 			array()
 		);
-	}
-
-	/**
-	 * Check if the block is a template part except for the product meta template part.
-	 *
-	 * @param array $block Block object.
-	 * @return bool True if the block is a template part, false otherwise.
-	 */
-	private static function is_template_part( $block ) {
-		if ( 'core/template-part' === $block['blockName'] && isset( $block['attrs']['slug'] ) && 'product-meta' === $block['attrs']['slug'] ) {
-			return false;
-		}
-
-		if ( 'core/template-part' === $block['blockName'] ) {
-			return true;
-		}
-
-		return false;
-
 	}
 }

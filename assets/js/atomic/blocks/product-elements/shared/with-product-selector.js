@@ -23,7 +23,7 @@ import './editor.scss';
 const withProductSelector = ( selectorArgs ) => ( OriginalComponent ) => {
 	return ( props ) => {
 		const productDataContext = useProductDataContext();
-		const { attributes, setAttributes, showProductSelector } = props;
+		const { attributes, setAttributes } = props;
 		const { productId } = attributes;
 		const [ isEditing, setIsEditing ] = useState( ! productId );
 
