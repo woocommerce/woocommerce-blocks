@@ -1,0 +1,1 @@
+(window.webpackWcBlocksJsonp=window.webpackWcBlocksJsonp||[]).push([[3],{112:function(e,t,c){"use strict";c.d(t,"a",(function(){return a}));var n=c(5),s=c(55),o=c(32),r=c(98);const a=e=>{if(!Object(s.b)())return{style:{}};const t=Object(o.b)(e)?e:{},c=Object(r.a)(t.style);return Object(n.__experimentalGetSpacingClassesAndStyles)({...t,style:c})}}}]);
