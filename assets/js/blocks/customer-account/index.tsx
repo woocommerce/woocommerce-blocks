@@ -1,9 +1,10 @@
 /**
  * External dependencies
  */
-import { registerBlockType } from '@wordpress/blocks';
+import { registerBlockType, registerBlockVariation } from '@wordpress/blocks';
 import { Icon } from '@wordpress/icons';
 import { customerAccount } from '@woocommerce/icons';
+import { __ } from '@wordpress/i18n';
 
 /**
  * Internal dependencies
@@ -26,5 +27,15 @@ registerBlockType( metadata, {
 	edit,
 	save() {
 		return null;
+	},
+} );
+
+registerBlockVariation( 'woocommerce/customer-account', {
+	name: 'woocommerce/customer-account',
+	title: __( 'Customer account', 'woo-gutenberg-products-block' ),
+	isDefault: true,
+	attributes: {
+		...metadata.attributes,
+		iconClass: 'account-icon',
 	},
 } );
