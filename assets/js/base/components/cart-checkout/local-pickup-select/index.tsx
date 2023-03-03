@@ -9,7 +9,7 @@ import { CartShippingPackageShippingRate } from '@woocommerce/types';
 import RadioControl from '../../radio-control';
 
 interface LocalPickupSelectProps {
-	title: string;
+	title?: string | undefined;
 	setSelectedOption: ( value: string ) => void;
 	selectedOption: string;
 	pickupLocations: CartShippingPackageShippingRate[];
@@ -38,7 +38,7 @@ export const LocalPickupSelect = ( {
 		).length > 1;
 	return (
 		<div className="wc-block-components-local-pickup-select">
-			{ multiplePackages && <div>{ title }</div> }
+			{ multiplePackages && title ? <div>{ title }</div> : false }
 			<RadioControl
 				onChange={ ( value ) => {
 					setSelectedOption( value );
