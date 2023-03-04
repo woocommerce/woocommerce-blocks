@@ -211,4 +211,64 @@ class ProductQueryFilters {
 
 		return array_map( 'absint', wp_list_pluck( $results, 'product_count', 'rounded_average_rating' ) );
 	}
+
+	/**
+	 * Gets product by metas.
+	 *
+	 * @since TBD
+	 * @param array $metas Array of metas to query.
+	 * @return array $results
+	 */
+	public function get_product_by_metas( $metas = array() ) {
+		global $wpdb;
+
+		if ( empty( $metas ) ) {
+			return array();
+		}
+
+		$transient_key = 'wc_get_product_by_metas_' . md5( wp_json_encode( $metas ) );
+		$where         = array();
+		$results       = array();
+
+		$cached_results = get_transient( $transient_key );
+
+		if ( false === $cached_results ) {
+			foreach ( $metas as $column => $value ) {
+				if ( 'min_price' === $column ) {
+					$value   = number_format( (float) $value, 4 );
+					$where[] = $wpdb->prepare( "{$column} >= %s", $value ); // phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared
+					continue;
+				}
+
+				if ( 'max_price' === $column ) {
+					$value   = number_format( (float) $value, 4 );
+					$where[] = $wpdb->prepare( "{$column} <= %s", $value ); // phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared
+					continue;
+				}
+
+				$where[] = $wpdb->prepare( "{$column} = %s", $value ); // phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared
+			}
+
+			if ( ! empty( $where ) ) {
+				$where_clause = implode( ' AND ', $where );
+
+				// phpcs:disable
+				$results = $wpdb->get_results(
+					"
+					SELECT DISTINCT `product_id`
+					FROM {$wpdb->prefix}wc_product_meta_lookup
+					WHERE {$where_clause}
+					",
+					ARRAY_A
+				);
+				// phpcs:enable
+			}
+
+			set_transient( $transient_key, $results, 24 * HOUR_IN_SECONDS );
+
+			return $results;
+		} else {
+			return $cached_results;
+		}
+	}
 }
