@@ -217,60 +217,85 @@ class ProductQueryFilters {
 	 *
 	 * @since TBD
 	 * @param string $taxonomy Taxonomy name.
-	 * @param array $term_ids Term IDs.
+	 * @param array  $term_ids Term IDs.
 	 * @param string $query_type all | any.
 	 * @return array
 	 */
 	public function get_product_by_filtered_terms( $taxonomy = '', $term_ids = array(), $query_type = 'any' ) {
 		global $wpdb;
 
-		$term_count = count( $term_ids );
-		$results    = array();
-
-		/*
-		 * Escaping the term_ids outside of the prepared statement
-		 * to prevent the prepare function from clobbering the imploded
-		 * string.
-		 */
-		$term_ids = array_map( function( $t ) {
-			return "'" . esc_sql( absint( $t ) ) . "'";
-		}, $term_ids );
-
-		$term_ids = implode( ',', $term_ids );
-
-		// query type is 'OR'.
-		if ( $query_type === 'any' ) {
-			$results = $wpdb->get_results(
-				$wpdb->prepare(
-					"
-					SELECT DISTINCT `product_or_parent_id` as product_id
-					FROM {$wpdb->prefix}wc_product_attributes_lookup
-					WHERE `taxonomy` = %s
-					AND `term_id` IN (" . $term_ids . ")
-					",
-					wc_attribute_taxonomy_name( $taxonomy )
+		$transient_key  = 'wc_get_product_by_filtered_terms_' . md5(
+			wp_json_encode(
+				array(
+					'taxonomy' => $taxonomy,
+					'terms'    => $term_ids,
+					'type'     => $query_type,
 				)
-			);
-		}
+			)
+		);
+		$term_count     = count( $term_ids );
+		$results        = array();
+		$cached_results = get_transient( $transient_key );
 
-		// query type is 'AND'.
-		if ( $query_type === 'all' ) {
-			$results = $wpdb->get_results(
-				$wpdb->prepare(
-					"
-					SELECT DISTINCT `product_or_parent_id` as product_id
-					FROM {$wpdb->prefix}wc_product_attributes_lookup
-					WHERE `taxonomy` = %s
-					AND `term_id` IN (" . $term_ids . ")
-					GROUP BY `product_or_parent_id`
-					HAVING COUNT( DISTINCT `term_id` ) >= %d
-					",
-					wc_attribute_taxonomy_name( $taxonomy ),
-					$term_count
-				)
+		if ( false === $cached_results ) {
+			/*
+			* Escaping the term_ids outside of the prepared statement
+			* to prevent the prepare function from clobbering the imploded
+			* string.
+			*/
+			$term_ids = array_map(
+				function( $t ) {
+					return "'" . esc_sql( absint( $t ) ) . "'";
+				},
+				$term_ids
 			);
-		}
 
-		return $results;
+			$term_ids = implode( ',', $term_ids );
+
+			// query type is 'OR'.
+			if ( 'any' === $query_type ) {
+				// phpcs:disable
+				$results = $wpdb->get_results(
+					$wpdb->prepare(
+						"
+						SELECT DISTINCT `product_or_parent_id` as product_id
+						FROM {$wpdb->prefix}wc_product_attributes_lookup
+						WHERE `taxonomy` = %s
+						AND `term_id` IN (" . $term_ids . ")
+						",
+						wc_attribute_taxonomy_name( $taxonomy )
+					),
+					ARRAY_A
+				);
+				// phpcs:enable
+			}
+
+			// query type is 'AND'.
+			if ( 'all' === $query_type ) {
+				// phpcs:disable
+				$results = $wpdb->get_results(
+					$wpdb->prepare(
+						"
+						SELECT DISTINCT `product_or_parent_id` as product_id
+						FROM {$wpdb->prefix}wc_product_attributes_lookup
+						WHERE `taxonomy` = %s
+						AND `term_id` IN (" . $term_ids . ")
+						GROUP BY `product_or_parent_id`
+						HAVING COUNT( DISTINCT `term_id` ) >= %d
+						",
+						wc_attribute_taxonomy_name( $taxonomy ),
+						$term_count
+					),
+					ARRAY_A
+				);
+				// phpcs:enable
+			}
+
+			set_transient( $transient_key, $results, 24 * HOUR_IN_SECONDS );
+
+			return $results;
+		} else {
+			return $cached_results;
+		}
 	}
 }
