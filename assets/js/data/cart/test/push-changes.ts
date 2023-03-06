@@ -179,7 +179,7 @@ describe( 'pushChanges', () => {
 			},
 		} );
 
-		//Although only one property was updated between calls, we should expect City, State, and Postcode to be pushed
+		// Although only one property was updated between calls, we should expect City, State, and Postcode to be pushed
 		// to the server because the previous push failed when they were originally changed.
 		pushChanges();
 		await expect( updateCustomerDataMock ).toHaveBeenLastCalledWith( {
