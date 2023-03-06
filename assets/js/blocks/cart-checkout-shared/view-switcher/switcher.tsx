@@ -3,7 +3,7 @@
  */
 import { __ } from '@wordpress/i18n';
 import { useLayoutEffect } from '@wordpress/element';
-import { select as dataSelect } from '@wordpress/data';
+import { useSelect } from '@wordpress/data';
 import { ToolbarGroup, ToolbarDropdownMenu } from '@wordpress/components';
 import { BlockControls } from '@wordpress/block-editor';
 import { Icon } from '@wordpress/icons';
@@ -28,7 +28,15 @@ export const Switcher = ( {
 		getBlockName,
 		getSelectedBlockClientId,
 		getBlockParentsByBlockName,
-	} = dataSelect( 'core/block-editor' );
+	} = useSelect( ( select ) => {
+		const blockEditor = select( 'core/block-editor' );
+		return {
+			getBlockName: blockEditor.getBlockName,
+			getSelectedBlockClientId: blockEditor.getSelectedBlockClientId,
+			getBlockParentsByBlockName: blockEditor.getBlockParentsByBlockName,
+		};
+	}, [] );
+
 	const selectedBlockClientId = getSelectedBlockClientId();
 	const currentViewObject = getView( currentView, views ) || views[ 0 ];
 	const currentViewLabel = currentViewObject.label;
