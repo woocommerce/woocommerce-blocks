@@ -36,7 +36,6 @@ export const Switcher = ( {
 			getBlockParentsByBlockName: blockEditor.getBlockParentsByBlockName,
 		};
 	}, [] );
-
 	const selectedBlockClientId = getSelectedBlockClientId();
 	const currentViewObject = getView( currentView, views ) || views[ 0 ];
 	const currentViewLabel = currentViewObject.label;
@@ -74,7 +73,7 @@ export const Switcher = ( {
 			return;
 		}
 
-		selectView( clientId, parentBlock );
+		selectView( clientId, parentBlock, false );
 	}, [
 		clientId,
 		currentView,

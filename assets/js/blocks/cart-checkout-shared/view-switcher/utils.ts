@@ -15,19 +15,25 @@ export const getView = (
 	return views.find( ( view ) => view.view === viewName );
 };
 
-export const selectView = ( clientId: string, viewName: string ) => {
+export const selectView = (
+	clientId: string,
+	viewName: string,
+	selectParent = true
+) => {
 	const { updateBlockAttributes, selectBlock } =
 		dispatch( 'core/block-editor' );
 	updateBlockAttributes( clientId, {
 		currentView: viewName,
 	} );
-	selectBlock(
-		select( 'core/block-editor' )
-			.getBlock( clientId )
-			?.innerBlocks.find(
-				( block: { name: string } ) => block.name === viewName
-			)?.clientId || clientId
-	);
+	if ( selectParent ) {
+		selectBlock(
+			select( 'core/block-editor' )
+				.getBlock( clientId )
+				?.innerBlocks.find(
+					( block: { name: string } ) => block.name === viewName
+				)?.clientId || clientId
+		);
+	}
 };
 
 const defaultView = {
