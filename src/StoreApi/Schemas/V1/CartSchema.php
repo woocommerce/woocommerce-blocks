@@ -310,7 +310,7 @@ class CartSchema extends AbstractSchema {
 				],
 			],
 			'payment_methods'         => [
-				'description' => __( 'List of available payment method IDs that can used to process the order.', 'woo-gutenberg-products-block' ),
+				'description' => __( 'List of available payment method IDs that can be used to process the order.', 'woo-gutenberg-products-block' ),
 				'type'        => 'array',
 				'context'     => [ 'view', 'edit' ],
 				'readonly'    => true,
