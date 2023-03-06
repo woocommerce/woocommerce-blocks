@@ -9,8 +9,8 @@ import { registerCheckoutFilters } from '@woocommerce/blocks-checkout';
  */
 import Block from '../block';
 
-describe( 'proceed to checkout block', () => {
-	it( 'Allows the text to be filtered', () => {
+describe( 'Proceed to checkout block', () => {
+	it( 'allows the text to be filtered', () => {
 		registerCheckoutFilters( 'test-extension', {
 			proceedToCheckoutButtonLabel: () => {
 				return 'Proceed to step two';
@@ -21,7 +21,7 @@ describe( 'proceed to checkout block', () => {
 		);
 		expect( screen.getByText( 'Proceed to step two' ) ).toBeInTheDocument();
 	} );
-	it( 'Allows the link to be filtered', () => {
+	it( 'allows the link to be filtered', () => {
 		registerCheckoutFilters( 'test-extension', {
 			proceedToCheckoutButtonLink: () => {
 				return 'https://woocommerce.com';
