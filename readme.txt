@@ -80,6 +80,12 @@ Release and roadmap notes available on the [WooCommerce Developers Blog](https:/
 
 == Changelog ==
 
+= 9.6.5 - 2023-03-06 =
+
+#### Bug Fixes
+
+- Checkout: Fix state validation after changing shipping country. ([8633](https://github.com/woocommerce/woocommerce-blocks/pull/8633)
+
 = 9.6.4 - 2023-03-03 =
 
 #### Bug Fixes
