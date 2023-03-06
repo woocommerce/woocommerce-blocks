@@ -4,16 +4,16 @@
 import classnames from 'classnames';
 import { __ } from '@wordpress/i18n';
 import type { SyntheticEvent } from 'react';
-import { Icon, info, close, megaphone } from '@wordpress/icons';
+import { Icon, close } from '@wordpress/icons';
 
 /**
  * Internal dependencies
  */
 import './style.scss';
-import Button from '../button';
-import { getDefaultPoliteness } from './utils';
-import useSpokenMessage from './use-spoken-message';
-import type { NoticeProps } from './types';
+import Button from '../../button';
+import { getDefaultPoliteness, getStatusIcon } from '../shared/utils';
+import { useSpokenMessage } from '../shared/use-spoken-message';
+import { NoticeBannerProps } from './types';
 
 /**
  * Notice Banner
@@ -28,8 +28,15 @@ function NoticeBanner( {
 	onRemove = () => void 0,
 	isDismissible = true,
 	politeness = getDefaultPoliteness( status ),
-}: NoticeProps ) {
+}: NoticeBannerProps ) {
 	useSpokenMessage( spokenMessage, politeness );
+
+	const dismiss = ( event: SyntheticEvent ) => {
+		if ( event && event.preventDefault ) {
+			event.preventDefault();
+		}
+		onRemove();
+	};
 
 	const classes = classnames(
 		className,
@@ -42,20 +49,19 @@ function NoticeBanner( {
 
 	return (
 		<div className={ classes }>
-			<Icon icon={ status === 'default' ? megaphone : info } />
-			<div className="components-notice__content">{ children }</div>
+			<Icon icon={ getStatusIcon( status ) } />
+			<div className="wc-block-components-notice-banner__content">
+				{ children }
+			</div>
 			{ isDismissible && (
 				<Button
-					className="components-notice__dismiss"
+					className="wc-block-components-notice-banner__dismiss"
 					icon={ close }
 					label={ __(
 						'Dismiss this notice',
 						'woo-gutenberg-products-block'
 					) }
-					onClick={ ( event: SyntheticEvent ) => {
-						event?.preventDefault?.();
-						onRemove();
-					} }
+					onClick={ dismiss }
 					showTooltip={ false }
 				/>
 			) }
