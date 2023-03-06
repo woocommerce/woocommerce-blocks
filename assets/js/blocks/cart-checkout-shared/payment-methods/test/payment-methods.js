@@ -17,7 +17,6 @@ import { dispatch } from '@wordpress/data';
  * Internal dependencies
  */
 import PaymentMethods from '../payment-methods';
-import { defaultCartState } from '../../../../data/cart/default-state';
 
 jest.mock( '../saved-payment-method-options', () => ( { onChange } ) => {
 	return (
@@ -103,7 +102,7 @@ describe( 'PaymentMethods', () => {
 			.dispatch( CART_STORE_KEY )
 			.invalidateResolutionForStore();
 		wpDataFunctions.dispatch( CART_STORE_KEY ).receiveCart( {
-			...defaultCartState.cartData,
+			...previewCart,
 			payment_methods: [ 'cod', 'credit-card' ],
 		} );
 	} );
