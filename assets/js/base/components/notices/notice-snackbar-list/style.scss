@@ -1,0 +1,29 @@
+.wc-block-components-notice-snackbar-list {
+	z-index: 100000;
+	box-sizing: border-box;
+	// Disable pointer events, so that clicking this area
+	// outside of an individual notice still allows the UI
+	// underneath to be clicked.
+	pointer-events: none;
+	position: fixed;
+	bottom: $gap-large;
+	left: $gap-large;
+	right: $gap-large;
+}
+
+.wc-block-components-notice-snackbar-list__notice-container {
+	position: relative;
+	padding-top: $gap-large;
+
+	.wc-block-components-notice-snackbar {
+		display: inline-flex;
+		width: auto;
+		max-width: 600px;
+		margin: 0;
+
+		@include breakpoint("<782px") {
+			width: 100%;
+			max-width: none;
+		}
+	}
+}
