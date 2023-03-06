@@ -2,7 +2,7 @@
  * External dependencies
  */
 import classnames from 'classnames';
-import { SnackbarList } from 'wordpress-components';
+import NoticeSnackbarList from '@woocommerce/base-components/notices/notice-snackbar-list';
 import { useDispatch } from '@wordpress/data';
 
 /**
@@ -24,7 +24,7 @@ const SnackbarNotices = ( {
 	}
 
 	return (
-		<SnackbarList
+		<NoticeSnackbarList
 			className={ classnames(
 				className,
 				'wc-block-components-notices__snackbar'
