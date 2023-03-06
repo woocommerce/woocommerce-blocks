@@ -1,4 +1,4 @@
-export interface NoticeProps {
+export interface NoticeBannerProps {
 	className?: string | undefined;
 	status: 'success' | 'error' | 'info' | 'warning' | 'default';
 	politeness?: 'polite' | 'assertive' | undefined;
