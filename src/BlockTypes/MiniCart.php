@@ -201,13 +201,20 @@ class MiniCart extends AbstractBlock {
 			current_user_can( 'edit_theme_options' ) &&
 			wc_current_theme_is_fse_theme()
 		) {
-			$theme_slug      = BlockTemplateUtils::theme_has_template_part( 'mini-cart' ) ? wp_get_theme()->get_stylesheet() : BlockTemplateUtils::PLUGIN_SLUG;
-			$site_editor_uri = admin_url( 'site-editor.php' );
+			$theme_slug = BlockTemplateUtils::theme_has_template_part( 'mini-cart' ) ? wp_get_theme()->get_stylesheet() : BlockTemplateUtils::PLUGIN_SLUG;
 
 			if ( version_compare( get_bloginfo( 'version' ), '5.9', '<' ) ) {
 				$site_editor_uri = add_query_arg(
 					array( 'page' => 'gutenberg-edit-site' ),
 					admin_url( 'themes.php' )
+				);
+			} else {
+				$site_editor_uri = add_query_arg(
+					array(
+						'canvas' => 'edit',
+						'path'   => '/template-parts/single',
+					),
+					admin_url( 'site-editor.php' )
 				);
 			}
 
@@ -228,6 +235,8 @@ class MiniCart extends AbstractBlock {
 
 		/**
 		 * Fires after cart block data is registered.
+		 *
+		 * @since 5.8.0
 		 */
 		do_action( 'woocommerce_blocks_cart_enqueue_data' );
 	}
@@ -354,7 +363,6 @@ class MiniCart extends AbstractBlock {
 		$cart_controller     = $this->get_cart_controller();
 		$cart                = $cart_controller->get_cart_instance();
 		$cart_contents_count = $cart->get_cart_contents_count();
-		$cart_contents       = $cart->get_cart();
 		$cart_contents_total = $cart->get_subtotal();
 
 		if ( $cart->display_prices_including_tax() ) {
@@ -369,7 +377,7 @@ class MiniCart extends AbstractBlock {
 		$wrapper_styles = $classes_styles['styles'];
 
 		$aria_label = sprintf(
-		/* translators: %1$d is the number of products in the cart. %2$s is the cart total */
+			/* translators: %1$d is the number of products in the cart. %2$s is the cart total */
 			_n(
 				'%1$d item in cart, total price of %2$s',
 				'%1$d items in cart, total price of %2$s',
@@ -392,7 +400,7 @@ class MiniCart extends AbstractBlock {
 
 		if ( is_cart() || is_checkout() ) {
 			// It is not necessary to load the Mini Cart Block on Cart and Checkout page.
-				return '<div class="' . $wrapper_classes . '" style="visibility:hidden" aria-hidden="true">
+			return '<div class="' . $wrapper_classes . '" style="visibility:hidden" aria-hidden="true">
 				<button class="wc-block-mini-cart__button" aria-label="' . esc_attr( $aria_label ) . '" disabled>' . $button_html . '</button>
 			</div>';
 		}
