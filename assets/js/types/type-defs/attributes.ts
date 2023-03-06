@@ -26,6 +26,7 @@ export interface AttributeQuery {
 }
 
 export interface AttributeTerm {
+	attr_slug: string;
 	count: number;
 	description: string;
 	id: number;

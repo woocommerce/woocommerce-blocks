@@ -7,6 +7,8 @@ import {
 	AttributeObject,
 	AttributeSetting,
 	AttributeTerm,
+	AttributeWithTerms,
+	isAttributeTerm,
 } from '@woocommerce/types';
 
 const ATTRIBUTES = getSetting< AttributeSetting[] >( 'attributes', [] );
@@ -47,12 +49,11 @@ const attributeObjects = ATTRIBUTES.reduce(
 /**
  * Converts an Attribute object into a shape compatible with the `SearchListControl`
  */
-export const convertAttributeObjectToSearchItem = ( {
-	count,
-	id,
-	name,
-	parent,
-}: AttributeObject | AttributeTerm ): SearchListItem => {
+export const convertAttributeObjectToSearchItem = (
+	attribute: AttributeObject | AttributeTerm | AttributeWithTerms
+): SearchListItem => {
+	const { count, id, name, parent } = attribute;
+
 	return {
 		count,
 		id,
@@ -60,7 +61,7 @@ export const convertAttributeObjectToSearchItem = ( {
 		parent,
 		breadcrumbs: [],
 		children: [],
-		value: '',
+		value: isAttributeTerm( attribute ) ? attribute.attr_slug : '',
 	};
 };
 

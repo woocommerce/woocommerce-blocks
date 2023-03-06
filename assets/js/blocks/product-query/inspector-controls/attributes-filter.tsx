@@ -41,12 +41,12 @@ export const AttributesFilter = ( props: ProductQueryBlock ) => {
 					search: __( 'Attributes', 'woo-gutenberg-products-block' ),
 				} }
 				selected={ selected }
-				onChange={ ( value ) => {
-					const __woocommerceAttributes = value.map(
+				onChange={ ( attributes ) => {
+					const __woocommerceAttributes = attributes.map(
 						// eslint-disable-next-line @typescript-eslint/naming-convention
-						( { id, attr_slug } ) => ( {
+						( { id, value } ) => ( {
 							termId: id,
-							taxonomy: attr_slug,
+							taxonomy: value,
 						} )
 					);
 
