@@ -172,11 +172,13 @@ export const checkPaymentMethodsCanPay = async ( express = false ) => {
 					...( getSetting( 'paymentGatewaySortOrder', [] ) as [] ),
 					...Object.keys( paymentMethods ),
 				] )
-		  ).filter( ( key ) => canPayArgument.paymentMethods.includes( key ) );
+		  );
+	const cartPaymentMethods = canPayArgument.paymentMethods as string[];
 
 	for ( let i = 0; i < paymentMethodsOrder.length; i++ ) {
 		const paymentMethodName = paymentMethodsOrder[ i ];
 		const paymentMethod = paymentMethods[ paymentMethodName ];
+
 		if ( ! paymentMethod ) {
 			continue;
 		}
@@ -185,9 +187,10 @@ export const checkPaymentMethodsCanPay = async ( express = false ) => {
 		try {
 			const canPay = isEditor
 				? true
-				: await Promise.resolve(
+				: cartPaymentMethods.includes( paymentMethodName ) &&
+				  ( await Promise.resolve(
 						paymentMethod.canMakePayment( canPayArgument )
-				  );
+				  ) );
 
 			if ( canPay ) {
 				if ( typeof canPay === 'object' && canPay.error ) {
