@@ -101,10 +101,9 @@ const Block = ( {
 	const addressComplete = isAddressComplete( shippingAddress );
 
 	if (
-		( ! isEditor &&
-			! hasCalculatedShipping &&
-			! shippingRatesPackageCount ) ||
-		( shippingCostRequiresAddress && ! addressComplete )
+		! isEditor &&
+		( ( ! hasCalculatedShipping && ! shippingRatesPackageCount ) ||
+			( shippingCostRequiresAddress && ! addressComplete ) )
 	) {
 		return (
 			<p>
