@@ -63,7 +63,25 @@ class ShippingController {
 		add_filter( 'pre_update_option_woocommerce_pickup_location_settings', array( $this, 'flush_cache' ) );
 		add_filter( 'pre_update_option_pickup_location_pickup_locations', array( $this, 'flush_cache' ) );
 		add_filter( 'woocommerce_shipping_settings', array( $this, 'remove_shipping_settings' ) );
-		add_filter( 'wc_shipping_enabled', array( $this, 'force_shipping_enabled' ) );
+		add_filter( 'wc_shipping_enabled', array( $this, 'force_shipping_enabled' ), 100, 1 );
+
+		// This is required to short circuit `show_shipping` from class-wc-cart.php - without it, that function
+		// returns based on the option's value in the DB and we can't override it any other way.
+		add_filter( 'option_woocommerce_shipping_cost_requires_address', array( $this, 'override_cost_requires_address_option' ) );
+	}
+
+	/**
+	 * Overrides the option to force shipping calculations NOT to wait until an address is entered, but only if the
+	 * Checkout page contains the Checkout Block.
+	 *
+	 * @param boolean $value Whether shipping cost calculation requires address to be entered.
+	 * @return boolean Whether shipping cost calculation should require an address to be entered before calculating.
+	 */
+	public function override_cost_requires_address_option( $value ) {
+		if ( CartCheckoutUtils::is_checkout_block_default() ) {
+			return 'no';
+		}
+		return $value;
 	}
 
 	/**
