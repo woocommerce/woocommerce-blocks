@@ -1,26 +1,26 @@
 /**
  * External dependencies
  */
+import { __ } from '@wordpress/i18n';
 import classnames from 'classnames';
 import { useRef, useEffect } from '@wordpress/element';
-import { Notice } from 'wordpress-components';
 import { sanitizeHTML } from '@woocommerce/utils';
 import { useDispatch } from '@wordpress/data';
 import { usePrevious } from '@woocommerce/base-hooks';
 import { decodeEntities } from '@wordpress/html-entities';
+import type { NoticeType } from '@woocommerce/types';
 
 /**
  * Internal dependencies
  */
-import { getClassNameFromStatus } from './utils';
-import type { StoreNotice } from './types';
+import StoreNotice from '../store-notice';
 
 const StoreNotices = ( {
 	className,
 	notices,
 }: {
 	className: string;
-	notices: StoreNotice[];
+	notices: NoticeType[];
 } ): JSX.Element => {
 	const ref = useRef< HTMLDivElement >( null );
 	const { removeNotice } = useDispatch( 'core/notices' );
@@ -79,6 +79,9 @@ const StoreNotices = ( {
 			( { status } ) => status === 'warning'
 		),
 		info: dismissibleNotices.filter( ( { status } ) => status === 'info' ),
+		default: dismissibleNotices.filter(
+			( { status } ) => status === 'default'
+		),
 	};
 
 	return (
@@ -87,70 +90,71 @@ const StoreNotices = ( {
 			className={ classnames( className, 'wc-block-components-notices' ) }
 		>
 			{ nonDismissibleNotices.map( ( notice ) => (
-				<Notice
+				<StoreNotice
 					key={ notice.id + '-' + notice.context }
-					className={ classnames(
-						'wc-block-components-notices__notice',
-						getClassNameFromStatus( notice.status )
-					) }
 					{ ...notice }
 				>
 					{ sanitizeHTML( decodeEntities( notice.content ) ) }
-				</Notice>
+				</StoreNotice>
 			) ) }
 			{ Object.entries( dismissibleNoticeGroups ).map(
 				( [ status, noticeGroup ] ) => {
 					if ( ! noticeGroup.length ) {
 						return null;
 					}
-					const uniqueNotices = noticeGroup.filter(
-						(
-							notice: Notice,
-							noticeIndex: number,
-							noticesArray: Notice[]
-						) =>
-							noticesArray.findIndex(
-								( _notice: Notice ) =>
-									_notice.content === notice.content
-							) === noticeIndex
-					);
-					return (
-						<Notice
-							key={ `store-notice-${ status }` }
-							className={ classnames(
-								'wc-block-components-notices__notice',
-								getClassNameFromStatus( status )
-							) }
-							onRemove={ () => {
-								noticeGroup.forEach( ( notice ) => {
-									removeNotice( notice.id, notice.context );
-								} );
-							} }
+					const uniqueNotices = noticeGroup
+						.filter(
+							(
+								notice: NoticeType,
+								noticeIndex: number,
+								noticesArray: NoticeType[]
+							) =>
+								noticesArray.findIndex(
+									( _notice: NoticeType ) =>
+										_notice.content === notice.content
+								) === noticeIndex
+						)
+						.map( ( notice ) => ( {
+							...notice,
+							content: sanitizeHTML(
+								decodeEntities( notice.content )
+							),
+						} ) );
+					const noticeProps = {
+						key: `store-notice-${ status }`,
+						status: 'error',
+						onRemove: () => {
+							noticeGroup.forEach( ( notice ) => {
+								removeNotice( notice.id, notice.context );
+							} );
+						},
+					};
+					return uniqueNotices.length === 1 ? (
+						<StoreNotice { ...noticeProps }>
+							{ noticeGroup[ 0 ].content }
+						</StoreNotice>
+					) : (
+						<StoreNotice
+							{ ...noticeProps }
+							summary={
+								status === 'error'
+									? __(
+											'Please fix the following errors before continuing',
+											'woo-gutenberg-products-block'
+									  )
+									: ''
+							}
 						>
-							{ uniqueNotices.length === 1 ? (
-								<>
-									{ sanitizeHTML(
-										decodeEntities(
-											noticeGroup[ 0 ].content
-										)
-									) }
-								</>
-							) : (
-								<ul>
-									{ uniqueNotices.map( ( notice ) => (
-										<li
-											key={
-												notice.id + '-' + notice.context
-											}
-										>
-											{ sanitizeHTML(
-												decodeEntities( notice.content )
-											) }
-										</li>
-									) ) }
-								</ul>
-							) }
-						</Notice>
+							<ul>
+								{ uniqueNotices.map( ( notice ) => (
+									<li
+										key={ notice.id + '-' + notice.context }
+									>
+										{ notice.content }
+									</li>
+								) ) }
+							</ul>
+						</StoreNotice>
 					);
 				}
 			) }
