@@ -144,16 +144,26 @@ const AddressForm = ( {
 
 	id = id || instanceId;
 
-	const customValidationHandler = (
+	type customValidationHandlerType = (
 		inputObject: HTMLInputElement,
-		fieldName: string
+		field: string,
+		customValues: {
+			country: string;
+			postcode: string;
+		}
+	) => boolean;
+
+	const customValidationHandler: customValidationHandlerType = (
+		inputObject,
+		field,
+		customValues
 	) => {
 		if (
-			fieldName === 'postcode' &&
-			values.country &&
+			field === 'postcode' &&
+			customValues.country &&
 			! isPostcode( {
-				postcode: values.postcode,
-				country: values.country,
+				postcode: customValues.postcode,
+				country: customValues.country,
 			} )
 		) {
 			inputObject.setCustomValidity(
@@ -241,7 +251,6 @@ const AddressForm = ( {
 					<ValidatedTextInput
 						key={ field.key }
 						id={ `${ id }-${ field.key }` }
-						fieldName={ field.key }
 						errorId={ errorId }
 						className={ `wc-block-components-address-form__${ field.key }` }
 						label={
@@ -256,7 +265,13 @@ const AddressForm = ( {
 								[ field.key ]: newValue,
 							} )
 						}
-						customValidation={ customValidationHandler }
+						customValidation={ ( inputObject: HTMLInputElement ) =>
+							customValidationHandler(
+								inputObject,
+								field.key,
+								values
+							)
+						}
 						errorMessage={ field.errorMessage }
 						required={ field.required }
 					/>
