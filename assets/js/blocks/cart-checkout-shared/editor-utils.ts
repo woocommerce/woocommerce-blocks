@@ -13,8 +13,8 @@ const coreBlockTypes = [ 'core/paragraph', 'core/image', 'core/separator' ];
  * Gets a list of allowed blocks types under a specific parent block type.
  */
 export const getAllowedBlocks = ( block: string ): string[] => {
-	const additionalBlockTypes = applyCheckoutFilter( {
-		filterName: 'allowedBlockTypes',
+	const additionalCartCheckoutInnerBlockTypes = applyCheckoutFilter( {
+		filterName: 'additionalCartCheckoutInnerBlockTypes',
 		defaultValue: [],
 		extensions: select( CART_STORE_KEY ).getCartData().extensions,
 		arg: { block },
@@ -40,7 +40,7 @@ export const getAllowedBlocks = ( block: string ): string[] => {
 				)
 				.map( ( { name } ) => name ),
 			...coreBlockTypes,
-			...additionalBlockTypes,
+			...additionalCartCheckoutInnerBlockTypes,
 		] )
 	);
 };
