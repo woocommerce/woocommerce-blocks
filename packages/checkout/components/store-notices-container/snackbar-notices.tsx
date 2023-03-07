@@ -2,20 +2,16 @@
  * External dependencies
  */
 import classnames from 'classnames';
-import NoticeSnackbarList from '@woocommerce/base-components/notices/notice-snackbar-list';
+import SnackbarList from '@woocommerce/base-components/snackbar-list';
 import { useDispatch } from '@wordpress/data';
-
-/**
- * Internal dependencies
- */
-import type { StoreNotice } from './types';
+import type { NoticeType } from '@woocommerce/types';
 
 const SnackbarNotices = ( {
 	className,
 	notices,
 }: {
 	className: string;
-	notices: StoreNotice[];
+	notices: NoticeType[];
 } ): JSX.Element | null => {
 	const { removeNotice } = useDispatch( 'core/notices' );
 
@@ -24,17 +20,12 @@ const SnackbarNotices = ( {
 	}
 
 	return (
-		<NoticeSnackbarList
+		<SnackbarList
 			className={ classnames(
 				className,
 				'wc-block-components-notices__snackbar'
 			) }
-			notices={ notices.map( ( notice ) => {
-				return {
-					...notice,
-					className: 'components-snackbar--status-' + notice.status,
-				};
-			} ) }
+			notices={ notices }
 			onRemove={ ( noticeId: string ) => {
 				notices.forEach( ( notice ) => {
 					if ( notice.explicitDismiss && notice.id === noticeId ) {
