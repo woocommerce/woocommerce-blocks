@@ -93,17 +93,11 @@ const Block = ( {
 	const shippingRatesPackageCount =
 		getShippingRatesPackageCount( shippingRates );
 
-	const shippingCostRequiresAddress = getSetting< boolean >(
-		'shippingCostRequiresAddress',
-		false
-	);
-
 	const addressComplete = isAddressComplete( shippingAddress );
 
 	if (
-		! isEditor &&
-		( ( ! hasCalculatedShipping && ! shippingRatesPackageCount ) ||
-			( shippingCostRequiresAddress && ! addressComplete ) )
+		( ! hasCalculatedShipping && ! shippingRatesPackageCount ) ||
+		( shippingCostRequiresAddress && ! addressComplete )
 	) {
 		return (
 			<p>
