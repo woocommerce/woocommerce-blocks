@@ -56,7 +56,10 @@ const renderShippingRatesControlOption = (
 	};
 };
 
-const Block = ( { noShippingPlaceholder = null } ): ReactElement | null => {
+const Block = ( {
+	noShippingPlaceholder = null,
+	shippingCostRequiresAddress = false,
+} ): ReactElement | null => {
 	const { isEditor } = useEditorContext();
 
 	const {
@@ -90,17 +93,11 @@ const Block = ( { noShippingPlaceholder = null } ): ReactElement | null => {
 	const shippingRatesPackageCount =
 		getShippingRatesPackageCount( shippingRates );
 
-	const shippingCostRequiresAddress = getSetting< boolean >(
-		'shippingCostRequiresAddress',
-		false
-	);
-
 	const addressComplete = isAddressComplete( shippingAddress );
 
 	if (
-		! isEditor &&
-		( ( ! hasCalculatedShipping && ! shippingRatesPackageCount ) ||
-			( shippingCostRequiresAddress && ! addressComplete ) )
+		( ! hasCalculatedShipping && ! shippingRatesPackageCount ) ||
+		( shippingCostRequiresAddress && ! addressComplete )
 	) {
 		return (
 			<p>
