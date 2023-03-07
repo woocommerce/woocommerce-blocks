@@ -3,7 +3,7 @@
  */
 import { __ } from '@wordpress/i18n';
 import type { CartResponseShippingRate } from '@woocommerce/types';
-import NoticeBanner from '@woocommerce/base-components/notices/notice-banner';
+import NoticeBanner from '@woocommerce/base-components/notice-banner';
 
 /**
  * Internal dependencies

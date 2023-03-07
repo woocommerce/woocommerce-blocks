@@ -21,7 +21,7 @@ import type {
 } from '@woocommerce/types';
 import { CART_STORE_KEY } from '@woocommerce/block-data';
 import { useSelect } from '@wordpress/data';
-import NoticeBanner from '@woocommerce/base-components/notices/notice-banner';
+import NoticeBanner from '@woocommerce/base-components/notice-banner';
 
 /**
  * Internal dependencies

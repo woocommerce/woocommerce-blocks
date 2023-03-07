@@ -1,6 +1,6 @@
 .wc-block-components-notice-banner {
 	display: flex;
-	align-items: center;
+	align-items: stretch;
 	align-content: flex-start;
 	color: $gray-800;
 	padding: $gap;
@@ -11,12 +11,24 @@
 	font-weight: 400;
 	line-height: 1.5;
 	border: 1px solid;
-	@include font-size(regular);
+	@include font-size(small);
 	background-color: #fff;
 	box-sizing: border-box;
 
 	> .wc-block-components-notice-banner__content {
 		padding-right: $gap;
+		align-self: center;
+
+		.wc-block-components-notice-banner__summary {
+			margin: 0 0 $gap-smaller;
+			font-weight: 600;
+		}
+
+		ul,
+		ol {
+			margin: 0 0 0 $gap-large;
+			padding: 0;
+		}
 	}
 
 	> svg {
@@ -24,19 +36,21 @@
 		border-radius: 50%;
 		padding: 2px;
 		background-color: $gray-800;
+		flex-shrink: 0;
 	}
 
 	> .wc-block-components-button {
-		margin: 0;
+		margin: 6px 0 0;
 		margin-left: auto;
 		background: transparent none !important;
 		box-shadow: none;
 		outline: none;
 		padding: 0;
-		height: $gap;
-		width: $gap;
+		height: 16px;
+		width: 16px;
 		min-height: auto;
 		color: $gray-800;
+		flex-shrink: 0;
 	}
 
 	&.is-error {

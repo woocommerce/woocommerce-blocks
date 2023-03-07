@@ -14,7 +14,7 @@ import {
 	useEditorContext,
 	useShippingData,
 } from '@woocommerce/base-context';
-import NoticeBanner from '@woocommerce/base-components/notices/notice-banner';
+import NoticeBanner from '@woocommerce/base-components/notice-banner';
 
 /**
  * Internal dependencies

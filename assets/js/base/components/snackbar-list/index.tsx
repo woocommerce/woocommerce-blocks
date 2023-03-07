@@ -7,20 +7,22 @@ import { useRef } from '@wordpress/element';
 import {
 	__unstableMotion as motion,
 	__unstableAnimatePresence as AnimatePresence,
-} from '@wordpress/components'; // This should be replaced by framer-motion if possible to avoid the componets dependency.
+} from '@wordpress/components';
 
 /**
  * Internal dependencies
  */
 import './style.scss';
-import NoticeSnackbar from '../notice-snackbar';
-import { SnackbarListProps } from './types';
+import Snackbar from './snackbar';
 import { SNACKBAR_VARIANTS } from './constants';
+import type { SnackbarListProps } from './types';
 
-const NoticeSnackbarList = ( {
+/**
+ * Component which renders a list of snackbar notices.
+ */
+const SnackbarList = ( {
 	notices,
 	className,
-	children,
 	onRemove = () => void 0,
 }: SnackbarListProps ): JSX.Element => {
 	const listRef = useRef< HTMLDivElement | null >( null );
@@ -39,7 +41,6 @@ const NoticeSnackbarList = ( {
 			tabIndex={ -1 }
 			ref={ listRef }
 		>
-			{ children }
 			<AnimatePresence>
 				{ notices.map( ( notice ) => {
 					const { content, ...restNotice } = notice;
@@ -55,15 +56,13 @@ const NoticeSnackbarList = ( {
 								isReducedMotion ? undefined : SNACKBAR_VARIANTS
 							}
 						>
-							<div className="wc-block-components-notice-snackbar-list__notice-container">
-								<NoticeSnackbar
-									{ ...restNotice }
-									onRemove={ removeNotice( notice ) }
-									listRef={ listRef }
-								>
-									{ notice.content }
-								</NoticeSnackbar>
-							</div>
+							<Snackbar
+								{ ...restNotice }
+								onRemove={ removeNotice( notice ) }
+								listRef={ listRef }
+							>
+								{ notice.content }
+							</Snackbar>
 						</motion.div>
 					);
 				} ) }
@@ -72,4 +71,4 @@ const NoticeSnackbarList = ( {
 	);
 };
 
-export default NoticeSnackbarList;
+export default SnackbarList;
