@@ -6,8 +6,7 @@ import { useEffect } from '@wordpress/element';
 /**
  * Internal dependencies
  */
-import NoticeBanner from '../notice-banner';
-import type { NoticeBannerProps } from '../notice-banner/types';
+import NoticeBanner, { NoticeBannerProps } from '../notice-banner';
 import { SNACKBAR_TIMEOUT } from './constants';
 
 const Snackbar = ( {

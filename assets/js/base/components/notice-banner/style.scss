@@ -54,12 +54,18 @@
 		background: transparent none !important;
 		box-shadow: none;
 		outline: none;
-		padding: 0;
+		padding: 0 !important;
 		height: 16px;
 		width: 16px;
 		min-height: auto;
-		color: $gray-800;
+		color: $gray-800 !important;
 		flex-shrink: 0;
+		flex-grow: 0;
+		min-width: 0 !important;
+
+		> svg {
+			margin: 0 !important;
+		}
 	}
 
 	&.is-error {
