@@ -22,6 +22,7 @@
 	> .wc-block-components-notice-banner__content {
 		padding-right: $gap;
 		align-self: center;
+		white-space: normal;
 
 		&:last-child {
 			padding-right: 0;
