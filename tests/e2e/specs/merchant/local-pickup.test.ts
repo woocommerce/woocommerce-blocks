@@ -6,11 +6,6 @@ import { findLabelWithText } from '@woocommerce/blocks-test-utils';
 import WooCommerceRestApi from '@woocommerce/woocommerce-rest-api';
 import { default as axios } from 'axios';
 
-/**
- * Internal dependencies
- */
-import { setupPageSettings } from '../../fixtures/fixture-loaders';
-
 const goToSettingsPage = async () => {
 	await visitAdminPage(
 		'admin.php',
