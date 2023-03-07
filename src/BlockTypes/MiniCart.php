@@ -120,6 +120,8 @@ class MiniCart extends AbstractBlock {
 			return;
 		}
 
+		$cart = WC()->cart;
+
 		parent::enqueue_data( $attributes );
 
 		// Hydrate the following data depending on admin or frontend context.
@@ -182,6 +184,25 @@ class MiniCart extends AbstractBlock {
 			'version'      => $script_data['version'],
 			'translations' => $this->get_inner_blocks_translations(),
 		);
+
+		// Preload inner blocks frontend scripts.
+		$inner_blocks_frontend_scripts = $cart->is_empty() ? array(
+			'empty-cart-frontend',
+			'shopping-button-frontend',
+		) : array(
+			'filled-cart-frontend',
+			'title-frontend',
+			'items-frontend',
+			'footer-frontend',
+			'products-table-frontend',
+		);
+		foreach ( $inner_blocks_frontend_scripts as $inner_block_frontend_script ) {
+			$script_data = $this->asset_api->get_script_data( 'build/mini-cart-contents-block/' . $inner_block_frontend_script . '.js' );
+			$this->scripts_to_lazy_load[ 'wc-block-' . $inner_block_frontend_script ] = array(
+				'src'     => $script_data['src'],
+				'version' => $script_data['version'],
+			);
+		}
 
 		$this->asset_data_registry->add(
 			'mini_cart_block_frontend_dependencies',
