@@ -33,6 +33,12 @@
 	}
 }
 
+.wc-block-mini-cart--preview {
+	.wc-block-mini-cart__amount {
+		display: initial;
+	}
+}
+
 .wc-block-mini-cart__tax-label {
 	margin-right: em($gap-smaller);
 }
