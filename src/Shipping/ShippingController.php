@@ -3,6 +3,7 @@ namespace Automattic\WooCommerce\Blocks\Shipping;
 
 use Automattic\WooCommerce\Blocks\Assets\Api as AssetApi;
 use Automattic\WooCommerce\Blocks\Assets\AssetDataRegistry;
+use Automattic\WooCommerce\Blocks\Tests\BlockTypes\Cart;
 use Automattic\WooCommerce\Blocks\Utils\CartCheckoutUtils;
 use Automattic\WooCommerce\StoreApi\Utilities\LocalPickupUtils;
 use Automattic\WooCommerce\Utilities\ArrayUtil;
@@ -62,6 +63,20 @@ class ShippingController {
 		add_filter( 'pre_update_option_woocommerce_pickup_location_settings', array( $this, 'flush_cache' ) );
 		add_filter( 'pre_update_option_pickup_location_pickup_locations', array( $this, 'flush_cache' ) );
 		add_filter( 'woocommerce_shipping_settings', array( $this, 'remove_shipping_settings' ) );
+		add_filter( 'wc_shipping_enabled', array( $this, 'force_shipping_enabled' ) );
+	}
+
+	/**
+	 * Force shipping to be enabled if the Checkout block is in use on the Checkout page.
+	 *
+	 * @param boolean $enabled Whether shipping is currently enabled.
+	 * @return boolean Whether shipping should continue to be enabled/disabled.
+	 */
+	public function force_shipping_enabled( $enabled ) {
+		if ( CartCheckoutUtils::is_checkout_block_default() ) {
+			return true;
+		}
+		return $enabled;
 	}
 
 	/**
