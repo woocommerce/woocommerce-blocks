@@ -100,12 +100,3 @@ export const emptyHiddenAddressFields = <
 
 	return newAddress;
 };
-
-/**
- * Returns true if the address has a city and country.
- */
-export const isAddressComplete = (
-	address: ShippingAddress | BillingAddress
-): boolean => {
-	return !! address.city && !! address.country;
-};
