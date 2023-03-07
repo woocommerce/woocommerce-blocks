@@ -61,6 +61,49 @@ class ShippingController {
 		add_filter( 'woocommerce_shipping_packages', array( $this, 'filter_shipping_packages' ) );
 		add_filter( 'pre_update_option_woocommerce_pickup_location_settings', array( $this, 'flush_cache' ) );
 		add_filter( 'pre_update_option_pickup_location_pickup_locations', array( $this, 'flush_cache' ) );
+		add_filter( 'woocommerce_shipping_settings', array( $this, 'remove_shipping_settings' ) );
+	}
+
+	/**
+	 * If the Checkout block Remove shipping settings from WC Core's admin panels that are now block settings.
+	 *
+	 * @param array $settings The default WC shipping settings.
+	 * @return array|mixed The filtered settings with relevant items removed.
+	 */
+	public function remove_shipping_settings( $settings ) {
+
+		// Do not add the "Hide shipping costs until an address is entered" setting if the Checkout block is not used on the WC checkout page.
+		if ( CartCheckoutUtils::is_checkout_block_default() ) {
+			$settings = array_filter(
+				$settings,
+				function( $setting ) {
+					return ! in_array(
+						$setting['id'],
+						array(
+							'woocommerce_shipping_cost_requires_address',
+						),
+						true
+					);
+				}
+			);
+		}
+
+		// Do not add the shipping calculator setting if the Cart block is not used on the WC cart page.
+		if ( CartCheckoutUtils::is_cart_block_default() ) {
+			$settings = array_filter(
+				$settings,
+				function( $setting ) {
+					return ! in_array(
+						$setting['id'],
+						array(
+							'woocommerce_enable_shipping_calc',
+						),
+						true
+					);
+				}
+			);
+		}
+		return $settings;
 	}
 
 	/**
