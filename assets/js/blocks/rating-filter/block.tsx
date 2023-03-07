@@ -12,7 +12,6 @@ import {
 	useShallowEqual,
 	useBorderProps,
 } from '@woocommerce/base-hooks';
-import { Notice } from 'wordpress-components';
 import {
 	useQueryStateByKey,
 	useQueryStateByContext,
@@ -30,6 +29,7 @@ import { addQueryArgs, removeQueryArgs } from '@wordpress/url';
 import { changeUrl } from '@woocommerce/utils';
 import classnames from 'classnames';
 import { difference } from 'lodash';
+import type { ReactElement } from 'react';
 
 /**
  * Internal dependencies
@@ -65,17 +65,15 @@ const translations = {
 
 /**
  * Component displaying a rating filter.
- *
- * @param {Object}  props            Incoming props for the component.
- * @param {Object}  props.attributes Incoming block attributes.
- * @param {boolean} props.isEditor   Whether the component is being rendered in the editor.
  */
 const RatingFilterBlock = ( {
 	attributes: blockAttributes,
 	isEditor,
+	noRatingsNotice = null,
 }: {
-	isEditor: boolean;
 	attributes: Attributes;
+	isEditor: boolean;
+	noRatingsNotice?: ReactElement | null;
 } ) => {
 	const setWrapperVisibility = useSetWraperVisibility();
 
@@ -335,16 +333,7 @@ const RatingFilterBlock = ( {
 
 	return (
 		<>
-			{ displayNoProductRatingsNotice && (
-				<Notice status="warning" isDismissible={ false }>
-					<p>
-						{ __(
-							"Your store doesn't have any products with ratings yet. This filter option will display when a product receives a review.",
-							'woo-gutenberg-products-block'
-						) }
-					</p>
-				</Notice>
-			) }
+			{ displayNoProductRatingsNotice && noRatingsNotice }
 			<div
 				className={ classnames(
 					'wc-block-rating-filter',
@@ -489,11 +478,11 @@ const RatingFilterBlock = ( {
 			</div>
 			{
 				<div className="wc-block-rating-filter__actions">
-					{ checked.length > 0 && ! isLoading && (
+					{ ( checked.length > 0 || isEditor ) && ! isLoading && (
 						<FilterResetButton
 							onClick={ () => {
 								setChecked( [] );
-								setProductRatings( [] );
+								setProductRatingsQuery( [] );
 								onSubmit( [] );
 							} }
 							screenReaderLabel={ __(

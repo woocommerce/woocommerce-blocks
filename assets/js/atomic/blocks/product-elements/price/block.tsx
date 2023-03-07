@@ -8,10 +8,14 @@ import {
 	useInnerBlockLayoutContext,
 	useProductDataContext,
 } from '@woocommerce/shared-context';
-import { useColorProps, useTypographyProps } from '@woocommerce/base-hooks';
+import {
+	useColorProps,
+	useSpacingProps,
+	useTypographyProps,
+} from '@woocommerce/base-hooks';
 import { withProductDataContext } from '@woocommerce/shared-hocs';
-import type { HTMLAttributes } from 'react';
 import { CurrencyCode } from '@woocommerce/type-defs/currency';
+import type { HTMLAttributes } from 'react';
 
 /**
  * Internal dependencies
@@ -36,11 +40,12 @@ interface PriceProps {
 }
 
 export const Block = ( props: Props ): JSX.Element | null => {
-	const { className, textAlign } = props;
+	const { className, textAlign, isDescendentOfSingleProductTemplate } = props;
 	const { parentClassName } = useInnerBlockLayoutContext();
 	const { product } = useProductDataContext();
 
 	const colorProps = useColorProps( props );
+	const spacingProps = useSpacingProps( props );
 	const typographyProps = useTypographyProps( props );
 
 	const wrapperClassName = classnames(
@@ -52,19 +57,25 @@ export const Block = ( props: Props ): JSX.Element | null => {
 		}
 	);
 
-	const style = {
-		...typographyProps.style,
-		...colorProps.style,
-	};
-
-	if ( ! product.id ) {
+	if ( ! product.id && ! isDescendentOfSingleProductTemplate ) {
 		return (
 			<ProductPrice align={ textAlign } className={ wrapperClassName } />
 		);
 	}
 
+	const style = {
+		...colorProps.style,
+		...typographyProps.style,
+	};
+	const spacingStyle = {
+		...spacingProps.style,
+	};
 	const prices: PriceProps = product.prices;
-	const currency = getCurrencyFromPriceResponse( prices );
+	const currency = isDescendentOfSingleProductTemplate
+		? getCurrencyFromPriceResponse()
+		: getCurrencyFromPriceResponse( prices );
+
+	const pricePreview = '5000';
 	const isOnSale = prices.price !== prices.regular_price;
 	const priceClassName = classnames( {
 		[ `${ parentClassName }__product-price__value` ]: parentClassName,
@@ -75,22 +86,42 @@ export const Block = ( props: Props ): JSX.Element | null => {
 		<ProductPrice
 			align={ textAlign }
 			className={ wrapperClassName }
-			priceStyle={ style }
 			regularPriceStyle={ style }
+			priceStyle={ style }
 			priceClassName={ priceClassName }
 			currency={ currency }
-			price={ prices.price }
+			price={
+				isDescendentOfSingleProductTemplate
+					? pricePreview
+					: prices.price
+			}
 			// Range price props
 			minPrice={ prices?.price_range?.min_amount }
 			maxPrice={ prices?.price_range?.max_amount }
 			// This is the regular or original price when the `price` value is a sale price.
-			regularPrice={ prices.regular_price }
+			regularPrice={
+				isDescendentOfSingleProductTemplate
+					? pricePreview
+					: prices.regular_price
+			}
 			regularPriceClassName={ classnames( {
 				[ `${ parentClassName }__product-price__regular` ]:
 					parentClassName,
 			} ) }
+			spacingStyle={ spacingStyle }
 		/>
 	);
 };
 
-export default withProductDataContext( Block );
+export default ( props: Props ) => {
+	// It is necessary because this block has to support serveral contexts:
+	// - Inside `All Products Block` -> `withProductDataContext` HOC
+	// - Inside `Products Block` -> Gutenberg Context
+	// - Inside `Single Product Template` -> Gutenberg Context
+	// - Without any parent -> `WithSelector` and `withProductDataContext` HOCs
+	// For more details, check https://github.com/woocommerce/woocommerce-blocks/pull/8609
+	if ( props.isDescendentOfSingleProductTemplate ) {
+		return <Block { ...props } />;
+	}
+	return withProductDataContext( Block )( props );
+};
