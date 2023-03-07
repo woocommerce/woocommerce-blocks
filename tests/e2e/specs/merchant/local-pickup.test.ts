@@ -3,6 +3,8 @@
  */
 import { switchUserToAdmin, visitAdminPage } from '@wordpress/e2e-test-utils';
 import { findLabelWithText } from '@woocommerce/blocks-test-utils';
+import WooCommerceRestApi from '@woocommerce/woocommerce-rest-api';
+import { default as axios } from 'axios';
 
 const goToSettingsPage = async () => {
 	await visitAdminPage(
@@ -66,6 +68,48 @@ const clearLocations = async () => {
 	}
 };
 
+/**
+ * Sets the WC Cart and Checkout page IDs to the IDs of the pages with the given slugs.
+ */
+const setCartCheckoutPages = async ( {
+	cartSlug,
+	checkoutSlug,
+}: {
+	cartSlug: string;
+	checkoutSlug: string;
+} ) => {
+	const WPAPI = `${ process.env.WORDPRESS_BASE_URL }/wp-json/wp/v2/pages`;
+	const response = await axios.get( `${ WPAPI }?per_page=100` );
+	const pages = response.data;
+	const cartBlock = pages.find( ( page ) => page.slug === cartSlug );
+	const checkoutBlock = pages.find( ( page ) => page.slug === checkoutSlug );
+	const WooCommerce = new WooCommerceRestApi( {
+		url: `${ process.env.WORDPRESS_BASE_URL }/`,
+		consumerKey: 'consumer_key', // Your consumer key
+		consumerSecret: 'consumer_secret', // Your consumer secret
+		version: 'wc/v3',
+		axiosConfig: {
+			auth: {
+				username: process.env.WORDPRESS_LOGIN,
+				password: process.env.WORDPRESS_PASSWORD,
+			},
+		},
+	} );
+	const fixture = [
+		{
+			id: 'woocommerce_cart_page_id',
+			value: cartBlock.id.toString() || '',
+		},
+		{
+			id: 'woocommerce_checkout_page_id',
+			value: checkoutBlock.id.toString() || '',
+		},
+	];
+
+	await WooCommerce.post( 'settings/advanced/batch', {
+		update: fixture,
+	} );
+};
 describe( `Local Pickup Settings`, () => {
 	beforeAll( async () => {
 		await switchUserToAdmin();
