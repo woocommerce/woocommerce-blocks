@@ -9,7 +9,7 @@
 -   [Proceed to Checkout Button Label](#proceed-to-checkout-button-label)
 -   [Proceed to Checkout Button Link](#proceed-to-checkout-button-link)
 -   [Place Order Button Label](#place-order-button-label)
--   [Additional Cart and Checkout inner block types](#additional-cart-checkout-inner-block-types)
+-   [Additional Cart Checkout inner block types](#additional-cart-checkout-inner-block-types)
 -   [Examples](#examples)
     -   [Changing the wording and the link on the "Proceed to Checkout" button when a specific item is in the Cart](#changing-the-wording-and-the-link-on-the-proceed-to-checkout-button-when-a-specific-item-is-in-the-cart)
     -   [Allowing blocks in specific areas in the Cart and Checkout blocks](#allowing-blocks-in-specific-areas-in-the-cart-and-checkout-blocks)
