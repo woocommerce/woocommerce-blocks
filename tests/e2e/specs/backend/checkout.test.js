@@ -70,7 +70,7 @@ describe( `${ block.name } Block`, () => {
 			// Register a checkout filter to allow `core/table` block in the Checkout block's inner blocks.
 			await page.evaluate(
 				"wc.blocksCheckout.registerCheckoutFilters( 'woo-test-namespace'," +
-					'{ allowedBlockTypes: ( value, extensions, { block } ) => {' +
+					'{ additionalCartCheckoutInnerBlockTypes: ( value, extensions, { block } ) => {' +
 					"    value.push('core/table');" +
 					"    if ( block === 'woocommerce/checkout-shipping-address-block' ) {" +
 					"        value.push( 'core/audio' );" +
