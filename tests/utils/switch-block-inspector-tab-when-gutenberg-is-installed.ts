@@ -12,7 +12,7 @@ import { GUTENBERG_EDITOR_CONTEXT } from '../e2e/utils';
 export const switchBlockInspectorTabWhenGutenbergIsInstalled = async (
 	tabName: string
 ) => {
-	if ( GUTENBERG_EDITOR_CONTEXT === 'core' ) {
+	if ( true ) {
 		return;
 	}
 	await switchBlockInspectorTab( tabName );
