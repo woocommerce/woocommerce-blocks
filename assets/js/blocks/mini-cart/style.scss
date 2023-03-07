@@ -99,9 +99,10 @@
 
 .wp-block-woocommerce-empty-mini-cart-contents-block,
 .wp-block-woocommerce-filled-mini-cart-contents-block {
-	height: 100vh;
-	height: 100dvh;
+	height: 100%;
 	max-height: -webkit-fill-available;
+	max-height: -moz-available;
+	max-height: fill-available;
 	display: flex;
 	flex-direction: column;
 }
