@@ -72,28 +72,25 @@ interface ProductDataContextProviderProps {
 	product: ProductResponseItem | null;
 	children: JSX.Element | JSX.Element[];
 	isLoading: boolean;
-	hasContext?: boolean;
 }
 
 /**
  * This context is used to pass product data down to all children blocks in a given tree.
  *
- * @param {Object}   object            A react context object
- * @param {any|null} object.product    The product data to be passed down
- * @param {Object}   object.children   The product data to be passed down
- * @param {boolean}  object.isLoading  The product data to be passed down
- * @param {boolean}  object.hasContext The product data to be passed down
+ * @param {Object}   object           A react context object
+ * @param {any|null} object.product   The product data to be passed down
+ * @param {Object}   object.children  The product data to be passed down
+ * @param {boolean}  object.isLoading The product data to be passed down
  */
 export const ProductDataContextProvider = ( {
 	product = null,
 	children,
 	isLoading,
-	hasContext = true,
 }: ProductDataContextProviderProps ) => {
 	const contextValue = {
 		product: product || defaultProductData,
 		isLoading,
-		hasContext,
+		hasContext: true,
 	};
 
 	return (
