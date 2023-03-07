@@ -2,8 +2,9 @@
  * External dependencies
  */
 import classnames from 'classnames';
-import NoticeBanner from '@woocommerce/base-components/notice-banner';
-import type { NoticeBannerProps } from '@woocommerce/base-components/notice-banner/types';
+import NoticeBanner, {
+	NoticeBannerProps,
+} from '@woocommerce/base-components/notice-banner';
 
 /**
  * Wrapper for NoticeBanner component.
