@@ -2,14 +2,15 @@
  * External dependencies
  */
 import {
-	getAllBlocks,
 	openDocumentSettingsSidebar,
 	switchUserToAdmin,
+	openGlobalBlockInserter,
 } from '@wordpress/e2e-test-utils';
 import {
 	findLabelWithText,
 	visitBlockPage,
 	selectBlockByName,
+	switchBlockInspectorTabWhenGutenbergIsInstalled,
 } from '@woocommerce/blocks-test-utils';
 import { merchant } from '@woocommerce/e2e-utils';
 
@@ -18,17 +19,17 @@ import { merchant } from '@woocommerce/e2e-utils';
  */
 import {
 	searchForBlock,
-	insertBlockDontWaitForInsertClose,
 	openWidgetEditor,
 	closeModalIfExists,
-	openWidgetsEditorBlockInserter,
-	closeInserter,
 } from '../../utils.js';
 
 const block = {
 	name: 'Checkout',
 	slug: 'woocommerce/checkout',
 	class: '.wp-block-woocommerce-checkout',
+	selectors: {
+		insertButton: "//button//span[text()='Checkout']",
+	},
 };
 
 if ( process.env.WOOCOMMERCE_BLOCKS_PHASE < 2 ) {
@@ -44,9 +45,10 @@ describe( `${ block.name } Block`, () => {
 		} );
 
 		it( 'can only be inserted once', async () => {
-			await insertBlockDontWaitForInsertClose( block.name );
-			await closeInserter();
-			expect( await getAllBlocks() ).toHaveLength( 1 );
+			await openGlobalBlockInserter();
+			await page.keyboard.type( block.name );
+			const button = await page.$x( block.selectors.insertButton );
+			expect( button ).toHaveLength( 0 );
 		} );
 
 		it( 'renders without crashing', async () => {
@@ -56,6 +58,9 @@ describe( `${ block.name } Block`, () => {
 		describe( 'attributes', () => {
 			beforeEach( async () => {
 				await openDocumentSettingsSidebar();
+				await switchBlockInspectorTabWhenGutenbergIsInstalled(
+					'Settings'
+				);
 				await selectBlockByName( block.slug );
 			} );
 
@@ -80,6 +85,9 @@ describe( `${ block.name } Block`, () => {
 		describe( 'shipping address block attributes', () => {
 			beforeEach( async () => {
 				await openDocumentSettingsSidebar();
+				await switchBlockInspectorTabWhenGutenbergIsInstalled(
+					'Settings'
+				);
 				await selectBlockByName(
 					'woocommerce/checkout-shipping-address-block'
 				);
@@ -129,6 +137,9 @@ describe( `${ block.name } Block`, () => {
 		describe( 'action block attributes', () => {
 			beforeEach( async () => {
 				await openDocumentSettingsSidebar();
+				await switchBlockInspectorTabWhenGutenbergIsInstalled(
+					'Settings'
+				);
 				await selectBlockByName( 'woocommerce/checkout-actions-block' );
 			} );
 
@@ -149,7 +160,6 @@ describe( `${ block.name } Block`, () => {
 			await merchant.login();
 			await openWidgetEditor();
 			await closeModalIfExists();
-			await openWidgetsEditorBlockInserter();
 			await searchForBlock( block.name );
 			const checkoutButton = await page.$x(
 				`//button//span[text()='${ block.name }']`

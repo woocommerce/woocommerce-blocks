@@ -13,16 +13,20 @@ export const supports = {
 			link: false,
 			__experimentalSkipSerialization: true,
 		},
+		spacing: {
+			margin: true,
+			padding: true,
+		},
 		typography: {
 			fontSize: true,
 			__experimentalSkipSerialization: true,
 		},
-		...( typeof __experimentalGetSpacingClassesAndStyles === 'function' && {
-			spacing: {
-				margin: true,
-				__experimentalSkipSerialization: true,
-			},
-		} ),
 		__experimentalSelector: '.wc-block-components-product-rating',
 	} ),
+	...( ! isFeaturePluginBuild() &&
+		typeof __experimentalGetSpacingClassesAndStyles === 'function' && {
+			spacing: {
+				margin: true,
+			},
+		} ),
 };

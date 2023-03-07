@@ -84,18 +84,35 @@ export const INNER_BLOCKS_TEMPLATE: InnerBlockTemplate[] = [
 					textAlign: 'center',
 					level: 3,
 					fontSize: 'medium',
+					isLink: true,
 					__woocommerceNamespace: PRODUCT_TITLE_ID,
 				},
 				[],
 			],
 			[
 				'woocommerce/product-price',
-				{ textAlign: 'center', fontSize: 'small' },
+				{
+					textAlign: 'center',
+					fontSize: 'small',
+					style: {
+						spacing: {
+							margin: { bottom: '1rem' },
+						},
+					},
+				},
 				[],
 			],
 			[
 				'woocommerce/product-button',
-				{ textAlign: 'center', fontSize: 'small' },
+				{
+					textAlign: 'center',
+					fontSize: 'small',
+					style: {
+						spacing: {
+							margin: { bottom: '1rem' },
+						},
+					},
+				},
 				[],
 			],
 		],

@@ -97,8 +97,122 @@ describe( 'StoreNoticesContainer', () => {
 				] }
 			/>
 		);
+		// Also counts the spokenMessage.
 		expect( screen.getAllByText( /Additional test error/i ) ).toHaveLength(
 			2
+		);
+	} );
+
+	it( 'Shows notices from unregistered sub-contexts', async () => {
+		dispatch( noticesStore ).createErrorNotice(
+			'Custom first sub-context error',
+			{
+				id: 'custom-subcontext-test-error',
+				context: 'wc/checkout/shipping-address',
+			}
+		);
+		dispatch( noticesStore ).createErrorNotice(
+			'Custom second sub-context error',
+			{
+				id: 'custom-subcontext-test-error',
+				context: 'wc/checkout/billing-address',
+			}
+		);
+		render( <StoreNoticesContainer context="wc/checkout" /> );
+		// This should match against 2 messages, one for each sub-context.
+		expect(
+			screen.getAllByText( /Custom first sub-context error/i )
+		).toHaveLength( 2 );
+		expect(
+			screen.getAllByText( /Custom second sub-context error/i )
+		).toHaveLength( 2 );
+		// Clean up notices.
+		await act( () =>
+			dispatch( noticesStore ).removeNotice(
+				'custom-subcontext-test-error',
+				'wc/checkout/shipping-address'
+			)
+		);
+		await act( () =>
+			dispatch( noticesStore ).removeNotice(
+				'custom-subcontext-test-error',
+				'wc/checkout/billing-address'
+			)
+		);
+	} );
+
+	it( 'Shows notices from several contexts', async () => {
+		dispatch( noticesStore ).createErrorNotice( 'Custom shipping error', {
+			id: 'custom-subcontext-test-error',
+			context: 'wc/checkout/shipping-address',
+		} );
+		dispatch( noticesStore ).createErrorNotice( 'Custom billing error', {
+			id: 'custom-subcontext-test-error',
+			context: 'wc/checkout/billing-address',
+		} );
+		render(
+			<StoreNoticesContainer
+				context={ [
+					'wc/checkout/billing-address',
+					'wc/checkout/shipping-address',
+				] }
+			/>
+		);
+		// This should match against 4 elements; A written and spoken message for each error.
+		expect( screen.getAllByText( /Custom shipping error/i ) ).toHaveLength(
+			2
+		);
+		expect( screen.getAllByText( /Custom billing error/i ) ).toHaveLength(
+			2
+		);
+		// Clean up notices.
+		await act( () =>
+			dispatch( noticesStore ).removeNotice(
+				'custom-subcontext-test-error',
+				'wc/checkout/shipping-address'
+			)
+		);
+		await act( () =>
+			dispatch( noticesStore ).removeNotice(
+				'custom-subcontext-test-error',
+				'wc/checkout/billing-address'
+			)
+		);
+	} );
+
+	it( 'Combine same notices from several contexts', async () => {
+		dispatch( noticesStore ).createErrorNotice( 'Custom generic error', {
+			id: 'custom-subcontext-test-error',
+			context: 'wc/checkout/shipping-address',
+		} );
+		dispatch( noticesStore ).createErrorNotice( 'Custom generic error', {
+			id: 'custom-subcontext-test-error',
+			context: 'wc/checkout/billing-address',
+		} );
+		render(
+			<StoreNoticesContainer
+				context={ [
+					'wc/checkout/billing-address',
+					'wc/checkout/shipping-address',
+				] }
+			/>
+		);
+		// This should match against 2 elements; A written and spoken message.
+		expect( screen.getAllByText( /Custom generic error/i ) ).toHaveLength(
+			2
+		);
+		// Clean up notices.
+		await act( () =>
+			dispatch( noticesStore ).removeNotice(
+				'custom-subcontext-test-error',
+				'wc/checkout/shipping-address'
+			)
+		);
+		await act( () =>
+			dispatch( noticesStore ).removeNotice(
+				'custom-subcontext-test-error',
+				'wc/checkout/billing-address'
+			)
 		);
 	} );
 } );
