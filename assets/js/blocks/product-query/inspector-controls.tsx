@@ -1,7 +1,7 @@
 /**
  * External dependencies
  */
-import { ElementType } from 'react';
+import type { ElementType } from 'react';
 import { __ } from '@wordpress/i18n';
 import { InspectorControls } from '@wordpress/block-editor';
 import { useSelect } from '@wordpress/data';
@@ -208,13 +208,6 @@ const ProductQueryControls = ( props: ProductQueryBlock ) => {
 					) }
 				</ToolsPanel>
 			</InspectorControls>
-			{
-				// Hacky temporary solution to display the feedback prompt
-				// at the bottom of the inspector controls
-			 }
-			<InspectorControls __experimentalGroup="color">
-				<ProductQueryFeedbackPrompt />
-			</InspectorControls>
 		</>
 	);
 };
@@ -226,6 +219,9 @@ export const withProductQueryControls =
 			<>
 				<ProductQueryControls { ...props } />
 				<BlockEdit { ...props } />
+				<InspectorControls>
+					<ProductQueryFeedbackPrompt />
+				</InspectorControls>
 			</>
 		) : (
 			<BlockEdit { ...props } />

@@ -1,20 +1,14 @@
 /**
  * External dependencies
  */
-import { __ } from '@wordpress/i18n';
-import {
-	useRef,
-	useEffect,
-	useState,
-	useCallback,
-	InputHTMLAttributes,
-} from 'react';
+import { useRef, useEffect, useState, useCallback } from '@wordpress/element';
 import classnames from 'classnames';
 import { withInstanceId } from '@wordpress/compose';
 import { isObject } from '@woocommerce/types';
 import { useDispatch, useSelect } from '@wordpress/data';
 import { VALIDATION_STORE_KEY } from '@woocommerce/block-data';
 import { usePrevious } from '@woocommerce/base-hooks';
+import type { InputHTMLAttributes } from 'react';
 
 /**
  * Internal dependencies
@@ -22,24 +16,36 @@ import { usePrevious } from '@woocommerce/base-hooks';
 import TextInput from './text-input';
 import './style.scss';
 import { ValidationInputError } from '../validation-input-error';
+import { getValidityMessageForInput } from '../../utils';
 
 interface ValidatedTextInputProps
 	extends Omit<
 		InputHTMLAttributes< HTMLInputElement >,
 		'onChange' | 'onBlur'
 	> {
+	// id to use for the input. If not provided, an id will be generated.
 	id?: string;
+	// Unique instance ID. id will be used instead if provided.
 	instanceId: string;
+	// Class name to add to the input.
 	className?: string | undefined;
+	// aria-describedby attribute to add to the input.
 	ariaDescribedBy?: string | undefined;
+	// id to use for the error message. If not provided, an id will be generated.
 	errorId?: string;
+	// if true, the input will be focused on mount.
 	focusOnMount?: boolean;
-	showError?: boolean;
-	errorMessage?: string | undefined;
+	// Callback to run on change which is passed the updated value.
 	onChange: ( newValue: string ) => void;
+	// Optional label for the field.
 	label?: string | undefined;
+	// Field value.
 	value: string;
-	requiredMessage?: string | undefined;
+	// If true, validation errors will be shown.
+	showError?: boolean;
+	// Error message to display alongside the field regardless of validation.
+	errorMessage?: string | undefined;
+	// Custom validation function that is run on change. Use setCustomValidity to set an error message.
 	customValidation?:
 		| ( ( inputObject: HTMLInputElement ) => boolean )
 		| undefined;
@@ -56,8 +62,8 @@ const ValidatedTextInput = ( {
 	showError = true,
 	errorMessage: passedErrorMessage = '',
 	value = '',
-	requiredMessage,
 	customValidation,
+	label,
 	...rest
 }: ValidatedTextInputProps ): JSX.Element => {
 	const [ isPristine, setIsPristine ] = useState( true );
@@ -90,6 +96,10 @@ const ValidatedTextInput = ( {
 			inputObject.value = inputObject.value.trim();
 			inputObject.setCustomValidity( '' );
 
+			if ( previousValue === inputObject.value ) {
+				return;
+			}
+
 			const inputIsValid = customValidation
 				? inputObject.checkValidity() && customValidation( inputObject )
 				: inputObject.checkValidity();
@@ -99,27 +109,22 @@ const ValidatedTextInput = ( {
 				return;
 			}
 
-			const validityState = inputObject.validity;
-
-			if ( validityState.valueMissing && requiredMessage ) {
-				inputObject.setCustomValidity( requiredMessage );
-			}
-
 			setValidationErrors( {
 				[ errorIdString ]: {
-					message:
-						inputObject.validationMessage ||
-						__( 'Invalid value.', 'woo-gutenberg-products-block' ),
+					message: label
+						? getValidityMessageForInput( label, inputObject )
+						: inputObject.validationMessage,
 					hidden: errorsHidden,
 				},
 			} );
 		},
 		[
+			previousValue,
 			clearValidationError,
 			customValidation,
 			errorIdString,
-			requiredMessage,
 			setValidationErrors,
+			label,
 		]
 	);
 
@@ -211,6 +216,8 @@ const ValidatedTextInput = ( {
 			} }
 			ariaDescribedBy={ describedBy }
 			value={ value }
+			title=""
+			label={ label }
 			{ ...rest }
 		/>
 	);

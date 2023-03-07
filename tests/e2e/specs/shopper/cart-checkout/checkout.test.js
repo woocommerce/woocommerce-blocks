@@ -13,6 +13,7 @@ import {
 	selectBlockByName,
 	saveOrPublish,
 	getToggleIdByLabel,
+	switchBlockInspectorTabWhenGutenbergIsInstalled,
 } from '@woocommerce/blocks-test-utils';
 
 /**
@@ -29,12 +30,6 @@ import {
 } from '../../../../utils';
 
 import { createCoupon } from '../../../utils';
-
-if ( process.env.WOOCOMMERCE_BLOCKS_PHASE < 2 ) {
-	// Skips all the tests if it's a WooCommerce Core process environment.
-	// eslint-disable-next-line jest/no-focused-tests, jest/expect-expect
-	test.only( 'Skipping Cart & Checkout tests', () => {} );
-}
 
 let coupon;
 
@@ -70,6 +65,7 @@ describe( 'Shopper → Checkout', () => {
 			await merchant.login();
 			await visitBlockPage( 'Checkout Block' );
 			await openDocumentSettingsSidebar();
+			await switchBlockInspectorTabWhenGutenbergIsInstalled( 'Settings' );
 			await selectBlockByName(
 				'woocommerce/checkout-shipping-address-block'
 			);
@@ -83,6 +79,7 @@ describe( 'Shopper → Checkout', () => {
 			await shopper.block.emptyCart();
 			await visitBlockPage( 'Checkout Block' );
 			await openDocumentSettingsSidebar();
+			await switchBlockInspectorTabWhenGutenbergIsInstalled( 'Settings' );
 			await selectBlockByName(
 				'woocommerce/checkout-shipping-address-block'
 			);
@@ -145,37 +142,37 @@ describe( 'Shopper → Checkout', () => {
 			await expect( page ).toMatchElement(
 				'#email ~ .wc-block-components-validation-error p',
 				{
-					text: 'Please provide a valid email address',
+					text: 'Please enter a valid email address',
 				}
 			);
 			await expect( page ).toMatchElement(
 				'#billing-first_name ~ .wc-block-components-validation-error p',
 				{
-					text: 'Please fill',
+					text: 'Please enter',
 				}
 			);
 			await expect( page ).toMatchElement(
 				'#billing-last_name ~ .wc-block-components-validation-error p',
 				{
-					text: 'Please fill',
+					text: 'Please enter',
 				}
 			);
 			await expect( page ).toMatchElement(
 				'#billing-address_1 ~ .wc-block-components-validation-error p',
 				{
-					text: 'Please fill',
+					text: 'Please enter',
 				}
 			);
 			await expect( page ).toMatchElement(
 				'#billing-city ~ .wc-block-components-validation-error p',
 				{
-					text: 'Please fill',
+					text: 'Please enter',
 				}
 			);
 			await expect( page ).toMatchElement(
 				'#billing-postcode ~ .wc-block-components-validation-error p',
 				{
-					text: 'Please fill',
+					text: 'Please enter',
 				}
 			);
 		} );
@@ -301,7 +298,7 @@ describe( 'Shopper → Checkout', () => {
 			await shopper.block.goToCheckout();
 			await shopper.block.applyCouponFromCheckout( coupon.code );
 			await page.waitForSelector(
-				'.wc-block-components-validation-error'
+				'.wc-block-components-totals-coupon__content .wc-block-components-validation-error'
 			);
 			await expect( page ).toMatch(
 				'Coupon usage limit has been reached.'

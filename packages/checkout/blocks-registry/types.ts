@@ -1,7 +1,7 @@
 /**
  * External dependencies
  */
-import type { LazyExoticComponent } from 'react';
+import type { LazyExoticComponent } from '@wordpress/element';
 import type { BlockConfiguration } from '@wordpress/blocks';
 import type { RegisteredBlockComponent } from '@woocommerce/types';
 
@@ -12,7 +12,9 @@ export enum innerBlockAreas {
 	CONTACT_INFORMATION = 'woocommerce/checkout-contact-information-block',
 	SHIPPING_ADDRESS = 'woocommerce/checkout-shipping-address-block',
 	BILLING_ADDRESS = 'woocommerce/checkout-billing-address-block',
+	SHIPPING_METHOD = 'woocommerce/checkout-shipping-method-block',
 	SHIPPING_METHODS = 'woocommerce/checkout-shipping-methods-block',
+	PICKUP_LOCATION = 'woocommerce/checkout-pickup-options-block',
 	PAYMENT_METHODS = 'woocommerce/checkout-payment-methods-block',
 	CART = 'woocommerce/cart',
 	EMPTY_CART = 'woocommerce/empty-cart-block',

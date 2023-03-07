@@ -114,6 +114,7 @@ export const defaultCartData: StoreCart = {
 	cartHasCalculatedShipping: false,
 	paymentRequirements: EMPTY_PAYMENT_REQUIREMENTS,
 	receiveCart: () => undefined,
+	receiveCartContents: () => undefined,
 	extensions: EMPTY_EXTENSIONS,
 };
 
@@ -138,8 +139,7 @@ export const useStoreCart = (
 	const { shouldSelect } = options;
 	const currentResults = useRef();
 
-	// This will keep track of jQuery and DOM events triggered by other blocks
-	// or components and will invalidate the store resolution accordingly.
+	// This will keep track of jQuery and DOM events that invalidate the store resolution.
 	useStoreCartEventListeners();
 
 	const results: StoreCart = useSelect(
@@ -175,6 +175,10 @@ export const useStoreCart = (
 						typeof previewCart?.receiveCart === 'function'
 							? previewCart.receiveCart
 							: () => undefined,
+					receiveCartContents:
+						typeof previewCart?.receiveCartContents === 'function'
+							? previewCart.receiveCartContents
+							: () => undefined,
 				};
 			}
 
@@ -186,7 +190,7 @@ export const useStoreCart = (
 				! store.hasFinishedResolution( 'getCartData' );
 
 			const isLoadingRates = store.isCustomerDataUpdating();
-			const { receiveCart } = dispatch( storeKey );
+			const { receiveCart, receiveCartContents } = dispatch( storeKey );
 			const billingAddress = decodeValues( cartData.billingAddress );
 			const shippingAddress = cartData.needsShipping
 				? decodeValues( cartData.shippingAddress )
@@ -233,6 +237,7 @@ export const useStoreCart = (
 				cartHasCalculatedShipping: cartData.hasCalculatedShipping,
 				paymentRequirements: cartData.paymentRequirements,
 				receiveCart,
+				receiveCartContents,
 			};
 		},
 		[ shouldSelect ]

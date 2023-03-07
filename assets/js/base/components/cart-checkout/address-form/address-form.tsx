@@ -22,10 +22,8 @@ import {
 	ShippingAddress,
 } from '@woocommerce/settings';
 import { useSelect, useDispatch } from '@wordpress/data';
-import {
-	VALIDATION_STORE_KEY,
-	FieldValidationStatus,
-} from '@woocommerce/block-data';
+import { VALIDATION_STORE_KEY } from '@woocommerce/block-data';
+import { FieldValidationStatus } from '@woocommerce/types';
 
 /**
  * Internal dependencies
@@ -42,7 +40,7 @@ const validateShippingCountry = (
 	clearValidationError: ( error: string ) => void,
 	hasValidationError: boolean
 ): void => {
-	const validationErrorId = 'shipping-missing-country';
+	const validationErrorId = 'shipping_country';
 	if (
 		! hasValidationError &&
 		! values.country &&
@@ -94,7 +92,7 @@ const AddressForm = ( {
 	type = 'shipping',
 	values,
 }: AddressFormProps ): JSX.Element => {
-	const validationErrorId = 'shipping-missing-country';
+	const validationErrorId = 'shipping_country';
 	const { setValidationErrors, clearValidationError } =
 		useDispatch( VALIDATION_STORE_KEY );
 
@@ -153,6 +151,9 @@ const AddressForm = ( {
 					return null;
 				}
 
+				// Create a consistent error ID based on the field key and type
+				const errorId = `${ type }_${ field.key }`;
+
 				if ( field.key === 'country' ) {
 					const Tag =
 						type === 'shipping'
@@ -162,6 +163,7 @@ const AddressForm = ( {
 						<Tag
 							key={ field.key }
 							id={ `${ id }-${ field.key }` }
+							errorId={ errorId }
 							label={
 								field.required
 									? field.label
@@ -175,11 +177,6 @@ const AddressForm = ( {
 									country: newValue,
 									state: '',
 								} )
-							}
-							errorId={
-								type === 'shipping'
-									? 'shipping-missing-country'
-									: null
 							}
 							errorMessage={ field.errorMessage }
 							required={ field.required }
@@ -196,6 +193,7 @@ const AddressForm = ( {
 						<Tag
 							key={ field.key }
 							id={ `${ id }-${ field.key }` }
+							errorId={ errorId }
 							country={ values.country }
 							label={
 								field.required
@@ -220,6 +218,7 @@ const AddressForm = ( {
 					<ValidatedTextInput
 						key={ field.key }
 						id={ `${ id }-${ field.key }` }
+						errorId={ errorId }
 						className={ `wc-block-components-address-form__${ field.key }` }
 						label={
 							field.required ? field.label : field.optionalLabel
