@@ -31,12 +31,6 @@ import {
 
 import { createCoupon } from '../../../utils';
 
-if ( process.env.WOOCOMMERCE_BLOCKS_PHASE < 2 ) {
-	// Skips all the tests if it's a WooCommerce Core process environment.
-	// eslint-disable-next-line jest/no-focused-tests, jest/expect-expect
-	test.only( 'Skipping Cart & Checkout tests', () => {} );
-}
-
 let coupon;
 
 describe( 'Shopper → Checkout', () => {
@@ -304,7 +298,7 @@ describe( 'Shopper → Checkout', () => {
 			await shopper.block.goToCheckout();
 			await shopper.block.applyCouponFromCheckout( coupon.code );
 			await page.waitForSelector(
-				'.wc-block-components-notices__notice'
+				'.wc-block-components-totals-coupon__content .wc-block-components-validation-error'
 			);
 			await expect( page ).toMatch(
 				'Coupon usage limit has been reached.'

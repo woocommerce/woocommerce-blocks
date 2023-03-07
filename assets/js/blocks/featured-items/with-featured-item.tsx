@@ -9,14 +9,10 @@ import { __experimentalGetSpacingClassesAndStyles as getSpacingClassesAndStyles 
 import { Icon, Placeholder, Spinner } from '@wordpress/components';
 import classnames from 'classnames';
 import { isEmpty } from 'lodash';
-import {
-	ComponentType,
-	Dispatch,
-	SetStateAction,
-	useCallback,
-	useState,
-} from 'react';
+import { useCallback, useState } from '@wordpress/element';
 import { WP_REST_API_Category } from 'wp-types';
+import { useBorderProps } from '@woocommerce/base-hooks';
+import type { ComponentType, Dispatch, SetStateAction } from 'react';
 
 /**
  * Internal dependencies
@@ -50,7 +46,6 @@ export interface FeaturedItemRequiredAttributes {
 	overlayGradient: string;
 	showDesc: boolean;
 	showPrice: boolean;
-	borderColor: string;
 }
 
 interface FeaturedCategoryRequiredAttributes
@@ -157,6 +152,8 @@ export const withFeaturedItem =
 			</Placeholder>
 		);
 
+		const borderProps = useBorderProps( attributes );
+
 		const renderItem = () => {
 			const {
 				contentAlign,
@@ -172,7 +169,6 @@ export const withFeaturedItem =
 				showPrice,
 				style,
 				textColor,
-				borderColor,
 			} = attributes;
 
 			const classes = classnames(
@@ -196,10 +192,6 @@ export const withFeaturedItem =
 				color: textColor
 					? `var(--wp--preset--color--${ textColor })`
 					: style?.color?.text,
-				borderColor: borderColor
-					? `var(--wp--preset--color--${ borderColor })`
-					: 'transparent',
-				borderWidth: style?.border?.width,
 				boxSizing: 'border-box',
 			};
 
@@ -231,7 +223,10 @@ export const withFeaturedItem =
 						showHandle={ isSelected }
 						style={ { minHeight } }
 					/>
-					<div className={ classes } style={ containerStyle }>
+					<div
+						className={ classes }
+						style={ { containerStyle, ...borderProps.style } }
+					>
 						<div
 							className={ `${ className }__wrapper` }
 							style={ wrapperStyle }

@@ -71,7 +71,7 @@ The following actions can be dispatched from the Checkout data store:
 -   `__internalSetUseShippingAsBilling( useShippingAsBilling: boolean )`: Set `state.useShippingAsBilling` to `useShippingAsBilling`
 -   `__internalSetShouldCreateAccount( shouldCreateAccount: boolean )`: Set `state.shouldCreateAccount` to `shouldCreateAccount`
 -   `__internalSetOrderNotes( orderNotes: string )`: Set `state.orderNotes` to `orderNotes`
--   `__internalSetExtensionData( extensionData: Record< string, Record< string, unknown > > )`: Set `state.extensionData` to `extensionData`
+-   `__internalSetExtensionData( namespace: string, extensionData: Record< string, unknown > )`: Set `state.extensionData` to `extensionData`
 
 ## Contexts
 
@@ -102,9 +102,9 @@ The payment method events context exposes any event handlers related to payments
 The checkout events contexy exposes any event handlers related to the processing of the checkout:
 
 -   `onSubmit`: This is a callback to be invoked either by submitting the checkout button, or by express payment methods to start checkout processing after they have finished their initialization process when their button has been clicked.
--   `onCheckoutValidationBeforeProcessing`: Used to register observers that will be invoked at validation time, after the checkout has been submitted but before the processing request is sent to the server.
--   `onCheckoutAfterProcessingWithSuccess`: Used to register observers that will be invoked after checkout has been processed by the server successfully.
--   `onCheckoutAfterProcessingWithError`: Used to register observers that will be invoked after checkout has been processed by the server and there was an error.
+-   `onCheckoutValidation`: Used to register observers that will be invoked at validation time, after the checkout has been submitted but before the processing request is sent to the server.
+-   `onCheckoutSuccess`: Used to register observers that will be invoked after checkout has been processed by the server successfully.
+-   `onCheckoutError`: Used to register observers that will be invoked after checkout has been processed by the server and there was an error.
 
 ## Hooks
 

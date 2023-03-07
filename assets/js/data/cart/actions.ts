@@ -8,6 +8,8 @@ import type {
 	ExtensionCartUpdateArgs,
 	BillingAddressShippingAddress,
 	ApiErrorResponse,
+	CartShippingPackageShippingRate,
+	CartShippingRate,
 } from '@woocommerce/types';
 import { camelCase, mapKeys } from 'lodash';
 import { BillingAddress, ShippingAddress } from '@woocommerce/settings';
@@ -22,7 +24,7 @@ import {
 import { ACTION_TYPES as types } from './action-types';
 import { apiFetchWithHeaders } from '../shared-controls';
 import { ReturnOrGeneratorYieldUnion } from '../mapped-types';
-import { CartDispatchFromMap, CartResolveSelectFromMap } from './index';
+import { CartDispatchFromMap, CartSelectFromMap } from './index';
 import type { Thunks } from './thunks';
 
 // Thunks are functions that can be dispatched, similar to actions creators
@@ -188,7 +190,7 @@ export const shippingRatesBeingSelected = ( isResolving: boolean ) =>
  */
 export const applyExtensionCartUpdate =
 	( args: ExtensionCartUpdateArgs ) =>
-	async ( { dispatch } ) => {
+	async ( { dispatch }: { dispatch: CartDispatchFromMap } ) => {
 		try {
 			const { response } = await apiFetchWithHeaders( {
 				path: '/wc/store/v1/cart/extensions',
@@ -213,7 +215,7 @@ export const applyExtensionCartUpdate =
  */
 export const applyCoupon =
 	( couponCode: string ) =>
-	async ( { dispatch } ) => {
+	async ( { dispatch }: { dispatch: CartDispatchFromMap } ) => {
 		try {
 			dispatch.receiveApplyingCoupon( couponCode );
 			const { response } = await apiFetchWithHeaders( {
@@ -243,7 +245,7 @@ export const applyCoupon =
  */
 export const removeCoupon =
 	( couponCode: string ) =>
-	async ( { dispatch } ) => {
+	async ( { dispatch }: { dispatch: CartDispatchFromMap } ) => {
 		try {
 			dispatch.receiveRemovingCoupon( couponCode );
 			const { response } = await apiFetchWithHeaders( {
@@ -276,7 +278,7 @@ export const removeCoupon =
  */
 export const addItemToCart =
 	( productId: number, quantity = 1 ) =>
-	async ( { dispatch } ) => {
+	async ( { dispatch }: { dispatch: CartDispatchFromMap } ) => {
 		try {
 			triggerAddingToCartEvent();
 			const { response } = await apiFetchWithHeaders( {
@@ -346,12 +348,12 @@ export const changeCartItemQuantity =
 	) =>
 	async ( {
 		dispatch,
-		resolveSelect,
+		select,
 	}: {
 		dispatch: CartDispatchFromMap;
-		resolveSelect: CartResolveSelectFromMap;
+		select: CartSelectFromMap;
 	} ) => {
-		const cartItem = await resolveSelect.getCartItem( cartItemKey );
+		const cartItem = select.getCartItem( cartItemKey );
 		if ( cartItem?.quantity === quantity ) {
 			return;
 		}
@@ -384,7 +386,26 @@ export const changeCartItemQuantity =
  */
 export const selectShippingRate =
 	( rateId: string, packageId = 0 ) =>
-	async ( { dispatch }: { dispatch: CartDispatchFromMap } ) => {
+	async ( {
+		dispatch,
+		select,
+	}: {
+		dispatch: CartDispatchFromMap;
+		select: CartSelectFromMap;
+	} ) => {
+		const selectedShippingRate = select
+			.getShippingRates()
+			.find(
+				( shippingPackage: CartShippingRate ) =>
+					shippingPackage.package_id === packageId
+			)
+			?.shipping_rates.find(
+				( rate: CartShippingPackageShippingRate ) =>
+					rate.selected === true
+			);
+		if ( selectedShippingRate?.rate_id === rateId ) {
+			return;
+		}
 		try {
 			dispatch.shippingRatesBeingSelected( true );
 			const { response } = await apiFetchWithHeaders( {
