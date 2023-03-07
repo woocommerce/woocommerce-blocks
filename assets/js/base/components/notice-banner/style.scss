@@ -3,9 +3,9 @@
 	align-items: stretch;
 	align-content: flex-start;
 	color: $gray-800;
-	padding: $gap;
+	padding: $gap !important;
 	gap: $gap-small;
-	margin: $gap-large 0;
+	margin: $gap 0;
 	border-radius: 4px;
 	border-color: $gray-800;
 	font-weight: 400;
@@ -15,9 +15,17 @@
 	background-color: #fff;
 	box-sizing: border-box;
 
+	&:last-child {
+		margin-bottom: 0;
+	}
+
 	> .wc-block-components-notice-banner__content {
 		padding-right: $gap;
 		align-self: center;
+
+		&:last-child {
+			padding-right: 0;
+		}
 
 		.wc-block-components-notice-banner__summary {
 			margin: 0 0 $gap-smaller;
