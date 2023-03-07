@@ -20,6 +20,7 @@ const FrontendBlock = ( {
 	showStepNumber,
 	children,
 	className,
+	shippingCostRequiresAddress = false,
 }: {
 	title: string;
 	description: string;
@@ -54,7 +55,9 @@ const FrontendBlock = ( {
 			description={ description }
 			showStepNumber={ showStepNumber }
 		>
-			<Block />
+			<Block
+				shippingCostRequiresAddress={ shippingCostRequiresAddress }
+			/>
 			{ children }
 		</FormStep>
 	);
