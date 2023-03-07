@@ -6,7 +6,7 @@ import { Placeholder, Button } from 'wordpress-components';
 import { Icon, payment } from '@wordpress/icons';
 import { ADMIN_URL } from '@woocommerce/settings';
 import { useEditorContext } from '@woocommerce/base-context';
-import NoticeBanner from '@woocommerce/base-components/notices/notice-banner';
+import NoticeBanner from '@woocommerce/base-components/notice-banner';
 
 /**
  * Internal dependencies

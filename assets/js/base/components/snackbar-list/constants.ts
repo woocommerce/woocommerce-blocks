@@ -17,3 +17,5 @@ export const SNACKBAR_VARIANTS = {
 		},
 	},
 };
+
+export const SNACKBAR_TIMEOUT = 10000;
