@@ -41,6 +41,10 @@ const settings: BlockConfiguration = {
 			link: true,
 		},
 		lock: false,
+		__experimentalBorder: {
+			color: true,
+			width: true,
+		},
 	},
 	attributes: {
 		isPreview: {
