@@ -2,11 +2,15 @@
  * External dependencies
  */
 import { __ } from '@wordpress/i18n';
-import { useShippingData } from '@woocommerce/base-context/hooks';
+import {
+	useCustomerData,
+	useShippingData,
+} from '@woocommerce/base-context/hooks';
 import { ShippingRatesControl } from '@woocommerce/base-components/cart-checkout';
 import {
 	getShippingRatesPackageCount,
 	hasCollectableRate,
+	isAddressComplete,
 } from '@woocommerce/base-utils';
 import { getCurrencyFromPriceResponse } from '@woocommerce/price-format';
 import FormattedMonetaryAmount from '@woocommerce/base-components/formatted-monetary-amount';
@@ -63,6 +67,8 @@ const Block = ( { noShippingPlaceholder = null } ): ReactElement | null => {
 		isCollectable,
 	} = useShippingData();
 
+	const { shippingAddress } = useCustomerData();
+
 	const filteredShippingRates = isCollectable
 		? shippingRates.map( ( shippingRatesPackage ) => {
 				return {
@@ -84,10 +90,18 @@ const Block = ( { noShippingPlaceholder = null } ): ReactElement | null => {
 	const shippingRatesPackageCount =
 		getShippingRatesPackageCount( shippingRates );
 
+	const shippingCostRequiresAddress = getSetting< boolean >(
+		'shippingCostRequiresAddress',
+		false
+	);
+
+	const addressComplete = isAddressComplete( shippingAddress );
+
 	if (
-		! isEditor &&
-		! hasCalculatedShipping &&
-		! shippingRatesPackageCount
+		( ! isEditor &&
+			! hasCalculatedShipping &&
+			! shippingRatesPackageCount ) ||
+		( shippingCostRequiresAddress && ! addressComplete )
 	) {
 		return (
 			<p>
