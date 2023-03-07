@@ -3,6 +3,7 @@ namespace Automattic\WooCommerce\Blocks\Shipping;
 
 use Automattic\WooCommerce\Blocks\Assets\Api as AssetApi;
 use Automattic\WooCommerce\Blocks\Assets\AssetDataRegistry;
+use Automattic\WooCommerce\Blocks\Utils\CartCheckoutUtils;
 use Automattic\WooCommerce\StoreApi\Utilities\LocalPickupUtils;
 use Automattic\WooCommerce\Utilities\ArrayUtil;
 
@@ -223,8 +224,7 @@ class ShippingController {
 	 * Registers the Local Pickup shipping method used by the Checkout Block.
 	 */
 	public function register_local_pickup() {
-		$checkout_page_id = wc_get_page_id( 'checkout' );
-		if ( $checkout_page_id && has_block( 'woocommerce/checkout', $checkout_page_id ) ) {
+		if ( CartCheckoutUtils::is_checkout_block_default() ) {
 			wc()->shipping->register_shipping_method( new PickupLocation() );
 		}
 	}
