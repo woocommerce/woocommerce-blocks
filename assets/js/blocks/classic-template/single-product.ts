@@ -4,15 +4,36 @@
 import { __, sprintf } from '@wordpress/i18n';
 import { isWpVersion } from '@woocommerce/settings';
 import { BlockInstance, createBlock } from '@wordpress/blocks';
-import { InheritedAttributes } from '@woocommerce/blocks/classic-template/types';
 
-const getBlockifiedTemplate = ( inheritedAttributes: InheritedAttributes ) =>
+const getBlockifiedTemplate = () =>
 	[
-		createBlock( 'core/paragraph', {
-			...inheritedAttributes,
-			content:
-				'This is a placeholder for the blockified single product template.',
-		} ),
+		createBlock( 'woocommerce/breadcrumbs' ),
+		createBlock(
+			'core/columns',
+			{
+				align: 'wide',
+			},
+			[
+				createBlock( 'core/column', {}, [
+					createBlock( 'woocommerce/product-image-gallery' ),
+				] ),
+				createBlock( 'core/column', {}, [
+					createBlock( 'core/post-title', {
+						__woocommerceNamespace:
+							'woocommerce/product-query/product-title',
+					} ),
+					createBlock( 'core/post-excerpt', {
+						__woocommerceNamespace:
+							'woocommerce/product-query/product-title',
+					} ),
+					createBlock( 'woocommerce/product-price' ),
+					createBlock( 'woocommerce/add-to-cart-form' ),
+					createBlock( 'woocommerce/product-meta' ),
+				] ),
+			]
+		),
+		createBlock( 'woocommerce/product-details' ),
+		createBlock( 'woocommerce/related-products' ),
 	].filter( Boolean ) as BlockInstance[];
 
 const isConversionPossible = () => {
