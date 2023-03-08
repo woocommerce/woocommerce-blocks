@@ -1,3 +1,3 @@
-export { default as mustContain } from './mustContain';
-export { default as getValidityMessageForInput } from './getValidityMessageForInput';
-export { default as isPostcode } from './isPostcode';
+export { default as mustContain } from './must-contain';
+export { default as getValidityMessageForInput } from './get-validity-message-for-input';
+export { default as isPostcode } from './is-postcode';

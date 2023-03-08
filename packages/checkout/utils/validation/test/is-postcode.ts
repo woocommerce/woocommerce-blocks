@@ -1,8 +1,8 @@
 /**
  * Internal dependencies
  */
-import isPostcode from '../isPostcode';
-import type { IsPostcodeProps } from '../isPostcode';
+import isPostcode from '../is-postcode';
+import type { IsPostcodeProps } from '../is-postcode';
 
 describe( 'isPostcode', () => {
 	const cases = [
