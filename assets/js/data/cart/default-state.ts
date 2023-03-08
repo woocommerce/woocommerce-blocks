@@ -98,6 +98,7 @@ export const defaultCartState: CartState = {
 		applyingCoupon: '',
 		removingCoupon: '',
 		isCartDataStale: false,
+		fullShippingAddressPushed: false,
 	},
 	errors: EMPTY_CART_ERRORS,
 };
