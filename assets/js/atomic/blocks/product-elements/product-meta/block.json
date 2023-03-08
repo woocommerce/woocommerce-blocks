@@ -1,14 +1,14 @@
 {
-	"name": "woocommerce/product-image-gallery",
+	"name": "woocommerce/product-meta",
 	"version": "1.0.0",
-	"title": "Product Image Gallery",
-	"icon": "gallery",
-	"description": "Display a product's images.",
+	"title": "Product Meta",
+	"icon": "product",
+	"description": "Display Product Meta",
 	"category": "woocommerce",
 	"supports": {
+		"align": true,
 		"reusable": false
 	},
-	"attributes": {},
 	"keywords": [ "WooCommerce" ],
 	"usesContext": [ "postId", "postType", "queryId" ],
 	"textdomain": "woo-gutenberg-products-block",
