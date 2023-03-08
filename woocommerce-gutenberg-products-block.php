@@ -3,14 +3,14 @@
  * Plugin Name: WooCommerce Blocks
  * Plugin URI: https://github.com/woocommerce/woocommerce-gutenberg-products-block
  * Description: WooCommerce blocks for the Gutenberg editor.
- * Version: 9.7.0-dev
+ * Version: 9.8.0-dev
  * Author: Automattic
  * Author URI: https://woocommerce.com
  * Text Domain:  woo-gutenberg-products-block
- * Requires at least: 6.1.1
+ * Requires at least: 6.1
  * Requires PHP: 7.2
- * WC requires at least: 7.2
- * WC tested up to: 7.3
+ * WC requires at least: 7.3
+ * WC tested up to: 7.4
  *
  * @package WooCommerce\Blocks
  * @internal This file is only used when running as a feature plugin.
@@ -18,7 +18,7 @@
 
 defined( 'ABSPATH' ) || exit;
 
-$minimum_wp_version = '6.1.1';
+$minimum_wp_version = '6.1';
 
 if ( ! defined( 'WC_BLOCKS_IS_FEATURE_PLUGIN' ) ) {
 	define( 'WC_BLOCKS_IS_FEATURE_PLUGIN', true );
@@ -287,6 +287,33 @@ function woocommerce_blocks_plugin_outdated_notice() {
 
 add_action( 'admin_notices', 'woocommerce_blocks_plugin_outdated_notice' );
 
-// Include the Interactivity API.
-require_once __DIR__ . '/src/Interactivity/woo-directives.php';
+/**
+ * Disable the Interactivity API if the required `WP_HTML_Tag_Processor` class
+ * doesn't exist, regardless of whether it was enabled manually.
+ *
+ * @param bool $enabled Current filter value.
+ * @return bool True if _also_ the `WP_HTML_Tag_Processor` class was found.
+ */
+function woocommerce_blocks_has_wp_html_tag_processor( $enabled ) {
+	return $enabled && class_exists( 'WP_HTML_Tag_Processor' );
+}
+add_filter(
+	'woocommerce_blocks_enable_interactivity_api',
+	'woocommerce_blocks_has_wp_html_tag_processor',
+	999
+);
 
+/**
+ * Load and setup the Interactivity API if enabled.
+ */
+function woocommerce_blocks_interactivity_setup() {
+	$is_enabled = apply_filters(
+		'woocommerce_blocks_enable_interactivity_api',
+		false
+	);
+
+	if ( $is_enabled ) {
+		require_once __DIR__ . '/src/Interactivity/woo-directives.php';
+	}
+}
+add_action( 'plugins_loaded', 'woocommerce_blocks_interactivity_setup' );
