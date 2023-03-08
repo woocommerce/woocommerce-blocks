@@ -24,7 +24,7 @@ export type SnackbarListProps = {
 };
 
 /**
- * Component which renders a list of snackbar notices.
+ * A temporary informational UI displayed at the bottom left of store pages.
  */
 const SnackbarList = ( {
 	notices,
