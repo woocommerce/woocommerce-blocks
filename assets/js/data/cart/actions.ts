@@ -417,7 +417,14 @@ export const selectShippingRate =
 				},
 				cache: 'no-store',
 			} );
-			dispatch.receiveCart( response );
+			// Remove shipping and billing address from the response, so we don't overwrite what the shopper is
+			// entering in the form if rates suddenly appear mid-edit.
+			const {
+				shipping_address: shippingAddress,
+				billing_address: billingAddress,
+				...rest
+			} = response;
+			dispatch.receiveCart( rest );
 			return response as CartResponse;
 		} catch ( error ) {
 			dispatch.receiveError( error );
