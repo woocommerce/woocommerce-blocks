@@ -198,6 +198,11 @@ class BlockTemplateUtils {
 		$template->id      = $template_is_from_theme ? $theme_name . '//' . $template_file->slug : self::PLUGIN_SLUG . '//' . $template_file->slug;
 		$template->theme   = $template_is_from_theme ? $theme_name : self::PLUGIN_SLUG;
 		$template->content = self::inject_theme_attribute_in_content( $template_content );
+		// Remove the term description block from the archive-product template
+		// as the Product Catalog/Shop page doesn't have a description.
+		if ( 'archive-product' === $template_file->slug ) {
+			$template->content = str_replace( '<!-- wp:term-description /-->', '', $template->content );
+		}
 		// Plugin was agreed as a valid source value despite existing inline docs at the time of creating: https://github.com/WordPress/gutenberg/issues/36597#issuecomment-976232909.
 		$template->source         = $template_file->source ? $template_file->source : 'plugin';
 		$template->slug           = $template_file->slug;
@@ -630,11 +635,18 @@ class BlockTemplateUtils {
 
 	/**
 	 * Returns whether the blockified templates should be used or not.
-	 * If the option is not stored on the db, we need to check if the current theme is a block one or not.
+	 * First, we need to make sure WordPress version is higher than 6.1 (lowest that supports Products block).
+	 * Then, if the option is not stored on the db, we need to check if the current theme is a block one or not.
 	 *
 	 * @return boolean
 	 */
 	public static function should_use_blockified_product_grid_templates() {
+		$minimum_wp_version = '6.1';
+
+		if ( version_compare( $GLOBALS['wp_version'], $minimum_wp_version, '<' ) ) {
+			return false;
+		}
+
 		$use_blockified_templates = get_option( Options::WC_BLOCK_USE_BLOCKIFIED_PRODUCT_GRID_BLOCK_AS_TEMPLATE );
 
 		if ( false === $use_blockified_templates ) {
@@ -652,5 +664,15 @@ class BlockTemplateUtils {
 	 */
 	public static function template_has_title( $template ) {
 		return ! empty( $template->title ) && $template->title !== $template->slug;
+	}
+
+	/**
+	 * Returns whether the passed `$template` has the legacy template block.
+	 *
+	 * @param object $template The template object.
+	 * @return boolean
+	 */
+	public static function template_has_legacy_template_block( $template ) {
+		return has_block( 'woocommerce/legacy-template', $template->content );
 	}
 }
