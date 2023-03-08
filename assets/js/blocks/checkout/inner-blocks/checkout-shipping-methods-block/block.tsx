@@ -2,15 +2,11 @@
  * External dependencies
  */
 import { __ } from '@wordpress/i18n';
-import {
-	useCustomerData,
-	useShippingData,
-} from '@woocommerce/base-context/hooks';
+import { useShippingData } from '@woocommerce/base-context/hooks';
 import { ShippingRatesControl } from '@woocommerce/base-components/cart-checkout';
 import {
 	getShippingRatesPackageCount,
 	hasCollectableRate,
-	isAddressComplete,
 } from '@woocommerce/base-utils';
 import { getCurrencyFromPriceResponse } from '@woocommerce/price-format';
 import FormattedMonetaryAmount from '@woocommerce/base-components/formatted-monetary-amount';
@@ -25,11 +21,14 @@ import type {
 	CartShippingPackageShippingRate,
 } from '@woocommerce/types';
 import type { ReactElement } from 'react';
+import { useSelect } from '@wordpress/data';
+import { CART_STORE_KEY } from '@woocommerce/block-data';
 
 /**
  * Internal dependencies
  */
 import './style.scss';
+import { shippingAddressHasValidationErrors } from '../../../../data/cart/utils';
 
 /**
  * Renders a shipping rate control option.
@@ -70,7 +69,9 @@ const Block = ( {
 		isCollectable,
 	} = useShippingData();
 
-	const { shippingAddress } = useCustomerData();
+	const shippingAddressPushed = useSelect( ( select ) => {
+		return select( CART_STORE_KEY ).getFullShippingAddressPushed();
+	} );
 
 	const filteredShippingRates = isCollectable
 		? shippingRates.map( ( shippingRatesPackage ) => {
@@ -90,14 +91,15 @@ const Block = ( {
 		return null;
 	}
 
+	const shippingAddressIsComplete = ! shippingAddressHasValidationErrors();
+
 	const shippingRatesPackageCount =
 		getShippingRatesPackageCount( shippingRates );
 
-	const addressComplete = isAddressComplete( shippingAddress );
-
 	if (
 		( ! hasCalculatedShipping && ! shippingRatesPackageCount ) ||
-		( shippingCostRequiresAddress && ! addressComplete )
+		( shippingCostRequiresAddress && ! shippingAddressPushed ) ||
+		! shippingAddressIsComplete
 	) {
 		return (
 			<p>
