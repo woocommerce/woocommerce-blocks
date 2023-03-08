@@ -238,6 +238,72 @@ describe( 'Shopper → Checkout', () => {
 			await expect( page ).toMatch( 'Order received' );
 			await expect( page ).toMatch( NORMAL_SHIPPING_NAME );
 		} );
+
+		it( 'User sees the correct shipping options based on block settings', async () => {
+			await preventCompatibilityNotice();
+			await merchant.login();
+			await visitBlockPage( 'Checkout Block' );
+			await openDocumentSettingsSidebar();
+			await switchBlockInspectorTabWhenGutenbergIsInstalled( 'Settings' );
+			await selectBlockByName(
+				'woocommerce/checkout-shipping-methods-block'
+			);
+
+			await setCheckbox(
+				await getToggleIdByLabel(
+					'Hide shipping costs until an address is entered'
+				)
+			);
+			await saveOrPublish();
+			await shopper.block.emptyCart();
+			// Log out to have a fresh empty cart.
+			await shopper.logout();
+			await shopper.block.goToShop();
+			await shopper.addToCartFromShopPage( SIMPLE_PHYSICAL_PRODUCT_NAME );
+			await shopper.block.goToCheckout();
+
+			// Expect no shipping options to be shown, but with a friendly message.
+			const shippingOptionsRequireAddressText = await page.$x(
+				'//p[contains(text(), "Shipping options will be displayed here after entering your full shipping address.")]'
+			);
+			expect( shippingOptionsRequireAddressText ).toHaveLength( 1 );
+
+			// Enter the address and expect shipping options to be shown.
+			await shopper.block.fillInCheckoutWithTestData();
+			await expect( page ).toMatchElement(
+				'.wc-block-components-shipping-rates-control'
+			);
+
+			// This sequence will reset the checkout form.
+			await shopper.login();
+			await shopper.logout();
+
+			await preventCompatibilityNotice();
+			await merchant.login();
+			await visitBlockPage( 'Checkout Block' );
+			await openDocumentSettingsSidebar();
+			await switchBlockInspectorTabWhenGutenbergIsInstalled( 'Settings' );
+			await selectBlockByName(
+				'woocommerce/checkout-shipping-methods-block'
+			);
+
+			await unsetCheckbox(
+				await getToggleIdByLabel(
+					'Hide shipping costs until an address is entered'
+				)
+			);
+			await saveOrPublish();
+			await shopper.block.emptyCart();
+
+			await shopper.block.goToShop();
+			await shopper.addToCartFromShopPage( SIMPLE_PHYSICAL_PRODUCT_NAME );
+			await shopper.block.goToCheckout();
+
+			// Expect the shipping options to be displayed without entering an address.
+			await expect( page ).toMatchElement(
+				'.wc-block-components-shipping-rates-control'
+			);
+		} );
 	} );
 
 	describe( 'Coupons', () => {
