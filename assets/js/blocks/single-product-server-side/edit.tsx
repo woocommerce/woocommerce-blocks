@@ -8,6 +8,7 @@ import { withProductDataContext } from '@woocommerce/shared-hocs';
 import type { BlockEditProps, InnerBlockTemplate } from '@wordpress/blocks';
 import { __ } from '@wordpress/i18n';
 import { InnerBlockLayoutContextProvider } from '@woocommerce/shared-context';
+import { withProduct } from '@woocommerce/block-hocs';
 
 /**
  * Internal dependencies
@@ -92,5 +93,6 @@ export default compose( [
 			'woo-gutenberg-products-block'
 		),
 	} ),
+	withProduct,
 	withProductDataContext,
 ] )( Edit );
