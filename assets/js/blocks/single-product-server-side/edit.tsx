@@ -4,7 +4,6 @@
 import { InnerBlocks, useBlockProps } from '@wordpress/block-editor';
 import { Disabled } from '@wordpress/components';
 import { compose } from '@wordpress/compose';
-import { withProduct } from '@woocommerce/block-hocs';
 import { withProductDataContext } from '@woocommerce/shared-hocs';
 import type { BlockEditProps, InnerBlockTemplate } from '@wordpress/blocks';
 import { __ } from '@wordpress/i18n';
@@ -18,6 +17,39 @@ import { Attributes } from './types';
 import { BLOCK_ICON } from './constants';
 import metadata from './block.json';
 // import { useSelect } from '@wordpress/data';
+
+const DEFAULT_INNER_BLOCKS: InnerBlockTemplate[] = [
+	[
+		'core/columns',
+		{},
+		[
+			[
+				'core/column',
+				{},
+				[ [ 'woocommerce/product-image', { showSaleBadge: false } ] ],
+			],
+			[
+				'core/column',
+				{},
+				[
+					[ 'woocommerce/product-sale-badge' ],
+					[ 'woocommerce/product-title', { headingLevel: 2 } ],
+					[ 'woocommerce/product-rating' ],
+					[ 'woocommerce/product-price' ],
+					[ 'woocommerce/product-summary' ],
+					[ 'woocommerce/product-stock-indicator' ],
+					[
+						'woocommerce/product-add-to-cart',
+						{ showFormElements: true },
+					],
+					[ 'woocommerce/product-sku' ],
+					[ 'woocommerce/product-category-list' ],
+					[ 'woocommerce/product-tag-list' ],
+				],
+			],
+		],
+	],
+];
 
 const Edit = ( { attributes }: BlockEditProps< Attributes > ) => {
 	const { className } = attributes;
@@ -37,39 +69,6 @@ const Edit = ( { attributes }: BlockEditProps< Attributes > ) => {
 	// 	);
 	// }, [] );
 
-	const TEMPLATE: InnerBlockTemplate[] = [
-		[
-			'core/group',
-			{ layout: { type: 'constrained', contentSize: '1000px' } },
-			[
-				[ 'woocommerce/breadcrumbs' ],
-				[
-					'core/columns',
-					{},
-					[
-						[
-							'core/column',
-							{},
-							[ [ 'woocommerce/product-image-gallery' ] ],
-						],
-						[
-							'core/column',
-							{},
-							[
-								[ 'woocommerce/product-title' ],
-								[ 'woocommerce/product-price' ],
-								[ 'woocommerce/product-summary' ],
-								[ 'woocommerce/add-to-cart-form' ],
-							],
-						],
-					],
-				],
-				[ 'core/heading', { placeholder: 'Related Products' } ],
-				[ 'woocommerce/related-products' ],
-			],
-		],
-	];
-
 	return (
 		<InnerBlockLayoutContextProvider
 			parentName={ metadata.name }
@@ -77,7 +76,7 @@ const Edit = ( { attributes }: BlockEditProps< Attributes > ) => {
 		>
 			<div { ...blockProps }>
 				<Disabled>
-					<InnerBlocks template={ TEMPLATE } />
+					<InnerBlocks template={ DEFAULT_INNER_BLOCKS } />
 				</Disabled>
 			</div>
 		</InnerBlockLayoutContextProvider>
@@ -85,8 +84,6 @@ const Edit = ( { attributes }: BlockEditProps< Attributes > ) => {
 };
 
 export default compose( [
-	withProduct,
-	withProductDataContext,
 	withProductSelector( {
 		icon: BLOCK_ICON,
 		label: metadata.name,
@@ -95,4 +92,5 @@ export default compose( [
 			'woo-gutenberg-products-block'
 		),
 	} ),
+	withProductDataContext,
 ] )( Edit );
