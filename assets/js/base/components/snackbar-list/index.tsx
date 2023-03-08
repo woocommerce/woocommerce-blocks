@@ -2,12 +2,10 @@
  * External dependencies
  */
 import classnames from 'classnames';
+import type { NoticeType } from '@woocommerce/types';
 import { useReducedMotion } from '@wordpress/compose';
 import { useRef } from '@wordpress/element';
-import {
-	__unstableMotion as motion,
-	__unstableAnimatePresence as AnimatePresence,
-} from '@wordpress/components';
+import { motion, AnimatePresence } from 'framer-motion/dist/framer-motion';
 
 /**
  * Internal dependencies
@@ -15,7 +13,15 @@ import {
 import './style.scss';
 import Snackbar from './snackbar';
 import { SNACKBAR_VARIANTS } from './constants';
-import type { SnackbarListProps } from './types';
+
+export type SnackbarListProps = {
+	// Class name to be added to the container.
+	className?: string | undefined;
+	// List of notices to be rendered.
+	notices: Partial< NoticeType >[];
+	// Callback to be called when a notice is dismissed.
+	onRemove: ( id: string ) => void;
+};
 
 /**
  * Component which renders a list of snackbar notices.
@@ -30,7 +36,7 @@ const SnackbarList = ( {
 
 	const removeNotice =
 		( notice: SnackbarListProps[ 'notices' ][ number ] ) => () =>
-			onRemove( notice.id );
+			onRemove( notice?.id || '' );
 
 	return (
 		<div
