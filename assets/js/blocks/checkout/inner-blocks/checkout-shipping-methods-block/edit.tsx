@@ -11,6 +11,7 @@ import { innerBlockAreas } from '@woocommerce/blocks-checkout';
 import { useCheckoutAddress } from '@woocommerce/base-context/hooks';
 import Noninteractive from '@woocommerce/base-components/noninteractive';
 import { Attributes } from '@woocommerce/blocks/checkout/types';
+import { updateAttributeInSiblingBlock } from '@woocommerce/utils';
 
 /**
  * Internal dependencies
@@ -33,7 +34,9 @@ type shippingAdminLink = {
 export const Edit = ( {
 	attributes,
 	setAttributes,
+	clientId,
 }: {
+	clientId: string;
 	attributes: {
 		title: string;
 		description: string;
@@ -84,9 +87,15 @@ export const Edit = ( {
 							'woo-gutenberg-products-block'
 						) }
 						checked={ attributes.shippingCostRequiresAddress }
-						onChange={ () =>
-							toggleAttribute( 'shippingCostRequiresAddress' )
-						}
+						onChange={ ( selected ) => {
+							updateAttributeInSiblingBlock(
+								clientId,
+								'shippingCostRequiresAddress',
+								selected,
+								'woocommerce/checkout-shipping-method-block'
+							);
+							toggleAttribute( 'shippingCostRequiresAddress' );
+						} }
 					/>
 				</PanelBody>
 				{ globalShippingMethods.length > 0 && (
