@@ -28,7 +28,10 @@ export const shippingAddressHasValidationErrors = () => {
 		validationStore.getValidationError( 'shipping_country' );
 	const postcodeValidationErrors =
 		validationStore.getValidationError( 'shipping_postcode' );
+	const cityValidationErrors =
+		validationStore.getValidationError( 'shipping_city' );
 	return [
+		cityValidationErrors,
 		stateValidationErrors,
 		address1ValidationErrors,
 		countryValidationErrors,
