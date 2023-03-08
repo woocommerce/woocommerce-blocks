@@ -40,7 +40,7 @@ const isScriptTagInDOM = ( scriptId: string, src = '' ): boolean => {
 	// Because of that, we add an extra protection to the wc-blocks-registry-js
 	// script, to avoid ending up with two registries.
 	if ( scriptId === 'wc-blocks-registry-js' ) {
-		if ( typeof window.wc.wcBlocksRegistry !== 'undefined' ) {
+		if ( typeof window?.wc?.wcBlocksRegistry === 'object' ) {
 			return true;
 		}
 	}
