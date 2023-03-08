@@ -34,6 +34,7 @@ export const merchant = {
 		await merchant.goToLocalPickupSettingsPage();
 	},
 	enableLocalPickup: async () => {
+		await merchant.goToLocalPickupSettingsPage();
 		const enabledLabel = await findLabelWithText( 'Enable local pickup' );
 		const enabledChecked = await page.$eval(
 			'#inspector-checkbox-control-1',
@@ -47,16 +48,19 @@ export const merchant = {
 			'input[name="local_pickup_title"]',
 			'Local Pickup'
 		);
+		await merchant.saveLocalPickupSettingsPageWithRefresh();
 	},
 	disableLocalPickup: async () => {
+		await merchant.goToLocalPickupSettingsPage();
 		const enabledLabel = await findLabelWithText( 'Enable local pickup' );
 		const enabledChecked = await page.$eval(
 			'#inspector-checkbox-control-1',
 			( el ) => ( el as HTMLInputElement ).checked
 		);
-		if ( ! enabledChecked ) {
+		if ( enabledChecked ) {
 			await enabledLabel.click();
 		}
+		await merchant.saveLocalPickupSettingsPageWithRefresh();
 	},
 	removeCostForLocalPickup: async () => {
 		const costLabel = await findLabelWithText(
