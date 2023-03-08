@@ -6,51 +6,14 @@ import { findLabelWithText } from '@woocommerce/blocks-test-utils';
 import WooCommerceRestApi from '@woocommerce/woocommerce-rest-api';
 import { default as axios } from 'axios';
 
-const goToSettingsPage = async () => {
-	await visitAdminPage(
-		'admin.php',
-		'page=wc-settings&tab=shipping&section=pickup_location'
-	);
-	await page.waitForSelector(
-		'#wc-shipping-method-pickup-location-settings-container'
-	);
-};
-
-const saveSettingsPageWithRefresh = async () => {
-	await expect( page ).toClick( 'button', {
-		text: 'Save changes',
-	} );
-	await expect( page ).toMatchElement( '.components-snackbar__content', {
-		text: 'Local Pickup settings have been saved.',
-	} );
-	await goToSettingsPage();
-};
+/**
+ * Internal dependencies
+ */
+import { merchant } from '../../../utils';
 
 const setDefaults = async () => {
-	const enabledLabel = await findLabelWithText( 'Enable local pickup' );
-	const enabledChecked = await page.$eval(
-		'#inspector-checkbox-control-1',
-		( el ) => ( el as HTMLInputElement ).checked
-	);
-	if ( enabledChecked ) {
-		await enabledLabel.click();
-	}
-
-	await expect( page ).toFill(
-		'input[name="local_pickup_title"]',
-		'Local Pickup'
-	);
-
-	const costLabel = await findLabelWithText(
-		'Add a price for customers who choose local pickup'
-	);
-	const costChecked = await page.$eval(
-		'#inspector-checkbox-control-1',
-		( el ) => ( el as HTMLInputElement ).checked
-	);
-	if ( costChecked ) {
-		await costLabel.click();
-	}
+	await merchant.enableLocalPickup();
+	await merchant.removeCostForLocalPickup();
 };
 
 const clearLocations = async () => {
@@ -113,23 +76,23 @@ const setCartCheckoutPages = async ( {
 describe( `Local Pickup Settings`, () => {
 	beforeAll( async () => {
 		await switchUserToAdmin();
-		await goToSettingsPage();
+		await merchant.goToLocalPickupSettingsPage();
 		await setDefaults();
 		await clearLocations();
-		await saveSettingsPageWithRefresh();
+		await merchant.saveLocalPickupSettingsPageWithRefresh();
 	} );
 
 	afterAll( async () => {
 		await switchUserToAdmin();
-		await goToSettingsPage();
+		await merchant.goToLocalPickupSettingsPage();
 		await setDefaults();
 		await clearLocations();
-		await saveSettingsPageWithRefresh();
+		await merchant.saveLocalPickupSettingsPageWithRefresh();
 	} );
 
 	beforeEach( async () => {
 		await switchUserToAdmin();
-		await goToSettingsPage();
+		await merchant.goToLocalPickupSettingsPage();
 	} );
 
 	it( 'renders without crashing', async () => {
@@ -195,7 +158,7 @@ describe( `Local Pickup Settings`, () => {
 				'Enable local pickup'
 			);
 			await toggleLabel.click();
-			await saveSettingsPageWithRefresh();
+			await merchant.saveLocalPickupSettingsPageWithRefresh();
 
 			expect(
 				await page.$eval(
@@ -211,7 +174,7 @@ describe( `Local Pickup Settings`, () => {
 				'Local Pickup Test'
 			);
 
-			await saveSettingsPageWithRefresh();
+			await merchant.saveLocalPickupSettingsPageWithRefresh();
 
 			expect(
 				await page.$eval(
@@ -251,7 +214,7 @@ describe( `Local Pickup Settings`, () => {
 				'none'
 			);
 
-			await saveSettingsPageWithRefresh();
+			await merchant.saveLocalPickupSettingsPageWithRefresh();
 
 			const refreshChecked = await page.$eval(
 				'#inspector-checkbox-control-1',
@@ -311,7 +274,7 @@ describe( `Local Pickup Settings`, () => {
 				text: 'Done',
 			} );
 
-			await saveSettingsPageWithRefresh();
+			await merchant.saveLocalPickupSettingsPageWithRefresh();
 
 			await expect( page ).toMatchElement(
 				'.pickup-locations tbody tr td',
@@ -340,7 +303,7 @@ describe( `Local Pickup Settings`, () => {
 				text: 'Delete location',
 			} );
 
-			await saveSettingsPageWithRefresh();
+			await merchant.saveLocalPickupSettingsPageWithRefresh();
 			await expect( page ).not.toMatchElement(
 				'.pickup-locations tbody tr td',
 				{
