@@ -74,4 +74,37 @@ export const merchant = {
 			await costLabel.click();
 		}
 	},
+	addLocalPickupLocation: async () => {
+		await merchant.goToLocalPickupSettingsPage();
+		await expect( page ).toClick( 'button', {
+			text: 'Add pickup location',
+		} );
+		await expect( page ).toFill(
+			'input[name="location_name"]',
+			'Test Location'
+		);
+		await expect( page ).toFill(
+			'input[name="location_address"]',
+			'Test Address 1'
+		);
+		await expect( page ).toFill(
+			'input[name="location_city"]',
+			'Test City'
+		);
+		await expect( page ).toFill(
+			'input[name="location_postcode"]',
+			'90210'
+		);
+		await expect( page ).toFill(
+			'input[name="pickup_details"]',
+			'Collect from store'
+		);
+		await expect( page ).toSelect(
+			'select[name="location_country"]',
+			'US'
+		);
+		await expect( page ).toSelect( 'select[name="location_state"]', 'CA' );
+		await expect( page ).toClick( 'button', { text: 'Done' } );
+		await merchant.saveLocalPickupSettingsPageWithRefresh();
+	},
 };
