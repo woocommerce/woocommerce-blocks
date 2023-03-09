@@ -92,6 +92,55 @@ describe( `Local Pickup Settings`, () => {
 		await expect( page ).toMatchElement( '#local-pickup-settings' );
 	} );
 
+	describe( 'Core Settings', () => {
+		afterAll( async () => {
+			await setCartCheckoutPages( {
+				cartSlug: 'cart-block',
+				checkoutSlug: 'checkout-block',
+			} );
+		} );
+		it( 'hides the correct shipping options if Checkout block is the default', async () => {
+			await visitAdminPage(
+				'admin.php',
+				'page=wc-settings&tab=shipping&section=options'
+			);
+			const hideShippingLabel = await findLabelWithText(
+				'Hide shipping costs until an address is entered'
+			);
+			expect( hideShippingLabel ).toBeUndefined();
+
+			const shippingCalculatorLabel = await findLabelWithText(
+				'Enable the shipping calculator on the cart page'
+			);
+			expect( shippingCalculatorLabel ).toBeUndefined();
+		} );
+
+		it( 'does not hide the relevant setting if Cart or Checkout block is not the default', async () => {
+			await setCartCheckoutPages( {
+				cartSlug: 'cart',
+				checkoutSlug: 'checkout',
+			} );
+
+			await visitAdminPage(
+				'admin.php',
+				'page=wc-settings&tab=advanced'
+			);
+			await visitAdminPage(
+				'admin.php',
+				'page=wc-settings&tab=shipping&section=options'
+			);
+			const hideShippingLabel = await page.$x(
+				'//label[contains(., "Hide shipping costs until an address is entered")]'
+			);
+			await expect( hideShippingLabel ).toHaveLength( 1 );
+
+			const shippingCalculatorLabel = await page.$x(
+				'//label[contains(., "Enable the shipping calculator on the cart page")]'
+			);
+			await expect( shippingCalculatorLabel ).toHaveLength( 1 );
+		} );
+	} );
+
 	describe( 'Global Settings', () => {
 		it( 'allows toggling of enabled on', async () => {
 			const initialChecked = await page.$eval(
