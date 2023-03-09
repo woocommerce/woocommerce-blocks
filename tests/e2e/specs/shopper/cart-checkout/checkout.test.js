@@ -337,11 +337,33 @@ describe( 'Shopper → Checkout', () => {
 				'woocommerce/checkout-shipping-methods-block'
 			);
 
-			await setCheckbox(
-				await getToggleIdByLabel(
-					'Hide shipping costs until an address is entered'
-				)
+			const [ label ] = await page.$x(
+				'//label[contains(., "Hide shipping costs until an address is entered")]'
 			);
+			const shippingMethodForValue = await page.evaluate(
+				( passedLabel ) => passedLabel.getAttribute( 'for' ),
+				label
+			);
+			let shippingMethodSettingIsChecked = await page.evaluate(
+				( passedShippingMethodForValue ) =>
+					document.getElementById( passedShippingMethodForValue )
+						.checked,
+				shippingMethodForValue
+			);
+			if ( ! shippingMethodSettingIsChecked ) {
+				await setCheckbox(
+					await getToggleIdByLabel(
+						'Hide shipping costs until an address is entered'
+					)
+				);
+			}
+			shippingMethodSettingIsChecked = await page.evaluate(
+				( passedShippingMethodForValue ) =>
+					document.getElementById( passedShippingMethodForValue )
+						.checked,
+				shippingMethodForValue
+			);
+			expect( shippingMethodSettingIsChecked ).toBe( true );
 			await saveOrPublish();
 			await shopper.block.emptyCart();
 			// Log out to have a fresh empty cart.
@@ -349,7 +371,6 @@ describe( 'Shopper → Checkout', () => {
 			await shopper.block.goToShop();
 			await shopper.addToCartFromShopPage( SIMPLE_PHYSICAL_PRODUCT_NAME );
 			await shopper.block.goToCheckout();
-
 			// Expect no shipping options to be shown, but with a friendly message.
 			const shippingOptionsRequireAddressText = await page.$x(
 				'//p[contains(text(), "Shipping options will be displayed here after entering your full shipping address.")]'
