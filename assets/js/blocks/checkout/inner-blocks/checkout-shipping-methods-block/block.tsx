@@ -98,8 +98,8 @@ const Block = ( {
 
 	if (
 		( ! hasCalculatedShipping && ! shippingRatesPackageCount ) ||
-		( shippingCostRequiresAddress && ! shippingAddressPushed ) ||
-		! shippingAddressIsComplete
+		( shippingCostRequiresAddress &&
+			( ! shippingAddressPushed || ! shippingAddressIsComplete ) )
 	) {
 		return (
 			<p>
