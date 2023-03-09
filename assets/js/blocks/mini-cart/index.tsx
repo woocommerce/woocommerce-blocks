@@ -61,9 +61,9 @@ const settings: BlockConfiguration = {
 			type: 'boolean',
 			default: false,
 		},
-		renderInCartAndCheckout: {
+		makeInvisibleInCartAndCheckout: {
 			type: 'boolean',
-			default: false,
+			default: true,
 		},
 	},
 

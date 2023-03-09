@@ -399,7 +399,7 @@ class MiniCart extends AbstractBlock {
 		</span>';
 
 		if ( is_cart() || is_checkout() ) {
-			if ( isset( $attributes['renderInCartAndCheckout'] ) && false === $attributes['renderInCartAndCheckout'] ) {
+			if ( $this->shouldNotRenderMiniCart( $attributes ) ) {
 				return '';
 			}
 
@@ -543,5 +543,16 @@ class MiniCart extends AbstractBlock {
 				'content'  => '<!-- wp:paragraph {"align":"center"} --><p class="has-text-align-center"><strong>' . __( 'Your cart is currently empty!', 'woo-gutenberg-products-block' ) . '</strong></p><!-- /wp:paragraph -->',
 			)
 		);
+	}
+
+	/**
+	 * Returns whether the mini cart should be rendered or not.
+	 *
+	 * @param array $attributes Block attributes.
+	 *
+	 * @return bool
+	 */
+	public function shouldNotRenderMiniCart( array $attributes ) {
+		return isset( $attributes['makeInvisibleInCartAndCheckout'] ) && false === $attributes['makeInvisibleInCartAndCheckout'];
 	}
 }
