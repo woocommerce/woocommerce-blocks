@@ -8,7 +8,7 @@ import { select } from '@wordpress/data';
 /**
  * Internal dependencies
  */
-import { VALIDATION_STORE_KEY } from '../validation';
+import { STORE_KEY as VALIDATION_STORE_KEY } from '../validation/constants';
 
 export const mapCartResponseToCart = ( responseCart: CartResponse ): Cart => {
 	return mapKeys( responseCart, ( _, key ) =>
