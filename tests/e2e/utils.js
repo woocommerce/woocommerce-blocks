@@ -156,7 +156,10 @@ export const isBlockInsertedInWidgetsArea = async ( blockName ) => {
  * @param {'wp_template' | 'wp_template_part'} [params.postType='wp_template'] Type of template.
  */
 export async function goToSiteEditor( params = {} ) {
-	await visitAdminPage( 'site-editor.php', addQueryArgs( '', params ) );
+	await visitAdminPage(
+		'site-editor.php',
+		addQueryArgs( '', { ...params, canvas: 'edit' } )
+	);
 
 	// @todo Remove the Gutenberg guard clause in goToSiteEditor when WP 6.2 is released.
 	if (
