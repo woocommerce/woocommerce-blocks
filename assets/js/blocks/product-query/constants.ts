@@ -20,6 +20,9 @@ function objectOmit< T, K extends keyof T >( obj: T, key: K ) {
 	return rest;
 }
 
+export const EDIT_ATTRIBUTES_URL =
+	'/wp-admin/edit.php?post_type=product&page=product_attributes';
+
 export const QUERY_LOOP_ID = 'core/query';
 
 export const DEFAULT_CORE_ALLOWED_CONTROLS = [ 'taxQuery', 'search' ];
@@ -104,6 +107,7 @@ export const INNER_BLOCKS_TEMPLATE: InnerBlockTemplate[] = [
 							},
 						},
 					},
+					isLink: true,
 					__woocommerceNamespace: PRODUCT_TITLE_ID,
 				},
 				[],

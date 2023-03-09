@@ -14,7 +14,11 @@ export const blockAttributes: BlockAttributes = {
 	},
 	textAlign: {
 		type: 'string',
-		default: 'center',
+		default: '',
+	},
+	isDescendentOfSingleProductTemplate: {
+		type: 'boolean',
+		default: false,
 	},
 };
 
