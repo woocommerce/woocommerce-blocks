@@ -209,6 +209,44 @@ describe( 'Shopper → Checkout', () => {
 		const NORMAL_SHIPPING_NAME = 'Normal Shipping';
 		const NORMAL_SHIPPING_PRICE = '$20.00';
 
+		afterAll( async () => {
+			await merchant.login();
+			await visitBlockPage( 'Checkout Block' );
+			await openDocumentSettingsSidebar();
+			await switchBlockInspectorTabWhenGutenbergIsInstalled( 'Settings' );
+			await selectBlockByName(
+				'woocommerce/checkout-shipping-methods-block'
+			);
+			const [ label ] = await page.$x(
+				'//label[contains(., "Hide shipping costs until an address is entered")]'
+			);
+			const shippingMethodForValue = await page.evaluate(
+				( passedLabel ) => passedLabel.getAttribute( 'for' ),
+				label
+			);
+			let shippingMethodSettingIsChecked = await page.evaluate(
+				( passedShippingMethodForValue ) =>
+					document.getElementById( passedShippingMethodForValue )
+						.checked,
+				shippingMethodForValue
+			);
+			if ( ! shippingMethodSettingIsChecked ) {
+				await setCheckbox(
+					await getToggleIdByLabel(
+						'Hide shipping costs until an address is entered'
+					)
+				);
+			}
+			shippingMethodSettingIsChecked = await page.evaluate(
+				( passedShippingMethodForValue ) =>
+					document.getElementById( passedShippingMethodForValue )
+						.checked,
+				shippingMethodForValue
+			);
+
+			await merchantUtils.disableLocalPickup();
+		} );
+
 		it( 'User can choose free shipping', async () => {
 			await shopper.block.goToShop();
 			await shopper.addToCartFromShopPage( SIMPLE_PHYSICAL_PRODUCT_NAME );
@@ -275,7 +313,7 @@ describe( 'Shopper → Checkout', () => {
 						.checked,
 				shippingMethodForValue
 			);
-			expect( shippingMethodSettingIsChecked ).toBe( true );
+			await expect( shippingMethodSettingIsChecked ).toBe( true );
 			await saveOrPublish();
 			await shopper.block.emptyCart();
 			// Log out to have a fresh empty cart.
@@ -406,6 +444,7 @@ describe( 'Shopper → Checkout', () => {
 	describe( 'Coupons', () => {
 		beforeAll( async () => {
 			coupon = await createCoupon( { usageLimit: 1 } );
+			await shopper.logout();
 			await shopper.login();
 		} );
 
