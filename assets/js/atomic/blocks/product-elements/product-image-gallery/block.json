@@ -6,7 +6,8 @@
 	"description": "Display a product's images.",
 	"category": "woocommerce",
 	"supports": {
-		"reusable": false
+		"align": true,
+		"multiple": false
 	},
 	"attributes": {},
 	"keywords": [ "WooCommerce" ],
