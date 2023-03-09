@@ -6,6 +6,7 @@ import { cart, filledCart, removeCart } from '@woocommerce/icons';
 import { Icon } from '@wordpress/icons';
 import { registerBlockType } from '@wordpress/blocks';
 import type { BlockConfiguration } from '@wordpress/blocks';
+import { isFeaturePluginBuild } from '@woocommerce/block-settings';
 
 /**
  * Internal dependencies
@@ -41,10 +42,12 @@ const settings: BlockConfiguration = {
 			link: true,
 		},
 		lock: false,
-		__experimentalBorder: {
-			color: true,
-			width: true,
-		},
+		...( isFeaturePluginBuild() && {
+			__experimentalBorder: {
+				color: true,
+				width: true,
+			},
+		} ),
 	},
 	attributes: {
 		isPreview: {
