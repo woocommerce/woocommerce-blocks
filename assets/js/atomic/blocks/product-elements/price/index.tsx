@@ -32,7 +32,8 @@ const blockConfig = {
 	save: () => {
 		if (
 			attributes.isDescendentOfQueryLoop ||
-			attributes.isDescendentOfSingleProductTemplate
+			attributes.isDescendentOfSingleProductTemplate ||
+			attributes.renderOnServerSide
 		) {
 			return null;
 		}
