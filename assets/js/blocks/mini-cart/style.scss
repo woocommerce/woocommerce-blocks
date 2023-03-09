@@ -218,3 +218,8 @@ h2.wc-block-mini-cart__title {
 .admin-bar .wp-block-woocommerce-filled-mini-cart-contents-block {
 	height: calc(100vh - 32px);
 }
+
+.wc-block-mini-cart__add-to-cart-behaviour-toggle,
+.wc-block-mini-cart__render-in-cart-and-checkout-toggle {
+	width: 100%;
+}

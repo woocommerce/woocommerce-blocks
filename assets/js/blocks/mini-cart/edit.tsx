@@ -23,6 +23,7 @@ import QuantityBadge from './quantity-badge';
 interface Attributes {
 	addToCartBehaviour: string;
 	hasHiddenPrice: boolean;
+	renderInCartAndCheckout: boolean;
 }
 
 interface Props {
@@ -31,7 +32,8 @@ interface Props {
 }
 
 const Edit = ( { attributes, setAttributes }: Props ): ReactElement => {
-	const { addToCartBehaviour, hasHiddenPrice } = attributes;
+	const { addToCartBehaviour, hasHiddenPrice, renderInCartAndCheckout } =
+		attributes;
 	const blockProps = useBlockProps( {
 		className: `wc-block-mini-cart`,
 	} );
@@ -54,6 +56,7 @@ const Edit = ( { attributes, setAttributes }: Props ): ReactElement => {
 					) }
 				>
 					<ToggleGroupControl
+						className="wc-block-mini-cart__add-to-cart-behaviour-toggle"
 						label={ __(
 							'Add-to-Cart behaviour',
 							'woo-gutenberg-products-block'
@@ -98,6 +101,36 @@ const Edit = ( { attributes, setAttributes }: Props ): ReactElement => {
 							} )
 						}
 					/>
+					<ToggleGroupControl
+						className="wc-block-mini-cart__render-in-cart-and-checkout-toggle"
+						label={ __(
+							'Mini Cart in cart and checkout pages',
+							'woo-gutenberg-products-block'
+						) }
+						value={ renderInCartAndCheckout }
+						onChange={ ( value ) => {
+							setAttributes( { renderInCartAndCheckout: value } );
+						} }
+						help={ __(
+							'Select how the Mini Cart behaves in the Cart and Checkout pages. This might affect the header layout.',
+							'woo-gutenberg-products-block'
+						) }
+					>
+						<ToggleGroupControlOption
+							value={ false }
+							label={ __(
+								'Make invisible',
+								'woo-gutenberg-products-block'
+							) }
+						/>
+						<ToggleGroupControlOption
+							value={ true }
+							label={ __(
+								"Don't render",
+								'woo-gutenberg-products-block'
+							) }
+						/>
+					</ToggleGroupControl>
 				</PanelBody>
 				{ templatePartEditUri && (
 					<PanelBody

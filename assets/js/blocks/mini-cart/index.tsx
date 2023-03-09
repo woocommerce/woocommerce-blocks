@@ -61,6 +61,10 @@ const settings: BlockConfiguration = {
 			type: 'boolean',
 			default: false,
 		},
+		renderInCartAndCheckout: {
+			type: 'boolean',
+			default: false,
+		},
 	},
 
 	edit,
