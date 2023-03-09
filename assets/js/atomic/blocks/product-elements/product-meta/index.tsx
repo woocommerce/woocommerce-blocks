@@ -1,7 +1,7 @@
 /**
  * External dependencies
  */
-import { gallery as icon } from '@wordpress/icons';
+import { box as icon } from '@wordpress/icons';
 import { registerBlockType, unregisterBlockType } from '@wordpress/blocks';
 import { registerBlockSingleProductTemplate } from '@woocommerce/atomic-utils';
 
@@ -9,8 +9,8 @@ import { registerBlockSingleProductTemplate } from '@woocommerce/atomic-utils';
  * Internal dependencies
  */
 import edit from './edit';
+import save from './save';
 import metadata from './block.json';
-import './style.scss';
 
 registerBlockSingleProductTemplate( {
 	registerBlockFn: () => {
@@ -18,6 +18,7 @@ registerBlockSingleProductTemplate( {
 		registerBlockType( metadata, {
 			icon,
 			edit,
+			save,
 		} );
 	},
 	unregisterBlockFn: () => {
