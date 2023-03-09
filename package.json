@@ -184,7 +184,7 @@
 		"fs-extra": "10.1.0",
 		"gh-pages": "4.0.0",
 		"github-label-sync": "2.2.0",
-		"glob": "7.1.7",
+		"glob": "7.2.3",
 		"glob-promise": "4.2.2",
 		"husky": "2.4.1",
 		"ignore-loader": "0.1.2",
@@ -218,7 +218,7 @@
 		"webpack-bundle-analyzer": "4.5.0",
 		"webpack-cli": "3.3.12",
 		"webpack-rtl-plugin": "2.0.0",
-		"wp-types": "3.60.0",
+		"wp-types": "3.61.0",
 		"zenhub-api": "0.2.0"
 	},
 	"engines": {
