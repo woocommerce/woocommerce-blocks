@@ -99,6 +99,7 @@ export const updateAttributeInSiblingBlock = (
 	const parentBlocks = store.getBlockParents( clientId );
 
 	let shippingMethodsBlockClientId = '';
+
 	// Loop through parent block's children until we find woocommerce/checkout-shipping-methods-block.
 	// Also set this attribute in the woocommerce/checkout-shipping-methods-block.
 	parentBlocks.forEach( ( parent ) => {
@@ -108,7 +109,6 @@ export const updateAttributeInSiblingBlock = (
 		if ( ! childBlock ) {
 			return;
 		}
-		//console.log( childBlock );
 		shippingMethodsBlockClientId = childBlock.clientId;
 	} );
 	actions.updateBlockAttributes( shippingMethodsBlockClientId, {
