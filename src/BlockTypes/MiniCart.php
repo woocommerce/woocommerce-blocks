@@ -188,8 +188,10 @@ class MiniCart extends AbstractBlock {
 			// Preload inner blocks frontend scripts.
 			$inner_blocks_frontend_scripts = $cart->is_empty() ? array(
 				'empty-cart-frontend',
+				'filled-cart-frontend',
 				'shopping-button-frontend',
 			) : array(
+				'empty-cart-frontend',
 				'filled-cart-frontend',
 				'title-frontend',
 				'items-frontend',
