@@ -14,10 +14,10 @@ import FormattedMonetaryAmount from '@woocommerce/base-components/formatted-mone
 import { decodeEntities } from '@wordpress/html-entities';
 import { getSetting } from '@woocommerce/settings';
 import { Icon, mapMarker } from '@wordpress/icons';
-import RadioControl from '@woocommerce/base-components/radio-control';
 import type { RadioControlOption } from '@woocommerce/base-components/radio-control/types';
 import { CartShippingPackageShippingRate } from '@woocommerce/types';
 import { isPackageRateCollectable } from '@woocommerce/base-utils';
+import LocalPickupSelect from '@woocommerce/base-components/cart-checkout/local-pickup-select';
 
 /**
  * Internal dependencies
@@ -142,15 +142,16 @@ const Block = (): JSX.Element | null => {
 	}, [ onSelectRate, pickupLocations, selectedOption ] );
 
 	return (
-		<RadioControl
-			onChange={ ( value: string ) => {
+		<LocalPickupSelect
+			setSelectedOption={ setSelectedOption }
+			selectedOption={ selectedOption }
+			pickupLocations={ pickupLocations }
+			renderPickupLocation={ renderPickupLocation }
+			onSelectRate={ ( value: string ) => {
 				setSelectedOption( value );
 				onSelectRate( value );
 			} }
-			selected={ selectedOption }
-			options={ pickupLocations.map( ( location ) =>
-				renderPickupLocation( location, shippingRates.length )
-			) }
+			packageCount={ shippingRates.length }
 		/>
 	);
 };
