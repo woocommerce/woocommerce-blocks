@@ -28,6 +28,10 @@ export const blockAttributes: BlockAttributes = {
 		type: 'boolean',
 		default: false,
 	},
+	renderOnServerSide: {
+		type: 'boolean',
+		default: false,
+	},
 };
 
 export default blockAttributes;

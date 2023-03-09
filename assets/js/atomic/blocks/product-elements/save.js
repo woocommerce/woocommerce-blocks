@@ -4,7 +4,7 @@
 import classnames from 'classnames';
 
 const save = ( { attributes } ) => {
-	if ( attributes.isDescendentOfQueryLoop ) {
+	if ( attributes.isDescendentOfQueryLoop || attributes.renderOnServerSide ) {
 		return null;
 	}
 

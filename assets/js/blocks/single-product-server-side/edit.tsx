@@ -27,7 +27,12 @@ const DEFAULT_INNER_BLOCKS: InnerBlockTemplate[] = [
 			[
 				'core/column',
 				{},
-				[ [ 'woocommerce/product-image', { showSaleBadge: false } ] ],
+				[
+					[
+						'woocommerce/product-image',
+						{ showSaleBadge: false, renderOnServerSide: true },
+					],
+				],
 			],
 			[
 				'core/column',
