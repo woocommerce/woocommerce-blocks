@@ -27,9 +27,10 @@ class SingleProductServerSide extends AbstractBlock {
 
 		return sprintf(
 			'<div class="wp-block-woocommerce-single-product-server-side %1$s">
-				Single Product
+				%2$s
 			</div>',
 			esc_attr( $classname ),
+			$content
 		);
 	}
 }
