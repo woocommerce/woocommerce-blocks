@@ -209,9 +209,13 @@ h2.wc-block-mini-cart__title {
 }
 
 .admin-bar .wp-block-woocommerce-mini-cart-contents {
-	margin-top: 32px;
+	margin-top: 46px;
+	height: calc(100dvh - 46px);
 }
 
-.admin-bar .wp-block-woocommerce-mini-cart-contents {
-	height: calc(100vh - 32px);
+@media only screen and (min-width: 783px) {
+	.admin-bar .wp-block-woocommerce-mini-cart-contents {
+		margin-top: 32px;
+		height: calc(100dvh - 32px);
+	}
 }
