@@ -14,6 +14,7 @@ import { getSetting } from '@woocommerce/settings';
 import { __ } from '@wordpress/i18n';
 import Noninteractive from '@woocommerce/base-components/noninteractive';
 import type { ReactElement } from 'react';
+import { useSelect } from '@wordpress/data';
 
 /**
  * Internal dependencies
@@ -37,6 +38,8 @@ const Edit = ( { attributes, setAttributes }: Props ): ReactElement => {
 	const blockProps = useBlockProps( {
 		className: `wc-block-mini-cart`,
 	} );
+
+	const isSiteEditor = useSelect( 'core/edit-site' ) !== undefined;
 
 	const templatePartEditUri = getSetting(
 		'templatePartEditUri',
@@ -101,36 +104,40 @@ const Edit = ( { attributes, setAttributes }: Props ): ReactElement => {
 							} )
 						}
 					/>
-					<ToggleGroupControl
-						className="wc-block-mini-cart__render-in-cart-and-checkout-toggle"
-						label={ __(
-							'Mini Cart in cart and checkout pages',
-							'woo-gutenberg-products-block'
-						) }
-						value={ renderInCartAndCheckout }
-						onChange={ ( value ) => {
-							setAttributes( { renderInCartAndCheckout: value } );
-						} }
-						help={ __(
-							'Select how the Mini Cart behaves in the Cart and Checkout pages. This might affect the header layout.',
-							'woo-gutenberg-products-block'
-						) }
-					>
-						<ToggleGroupControlOption
-							value={ false }
+					{ isSiteEditor && (
+						<ToggleGroupControl
+							className="wc-block-mini-cart__render-in-cart-and-checkout-toggle"
 							label={ __(
-								'Make invisible',
+								'Mini Cart in cart and checkout pages',
 								'woo-gutenberg-products-block'
 							) }
-						/>
-						<ToggleGroupControlOption
-							value={ true }
-							label={ __(
-								"Don't render",
+							value={ renderInCartAndCheckout }
+							onChange={ ( value ) => {
+								setAttributes( {
+									renderInCartAndCheckout: value,
+								} );
+							} }
+							help={ __(
+								'Select how the Mini Cart behaves in the Cart and Checkout pages. This might affect the header layout.',
 								'woo-gutenberg-products-block'
 							) }
-						/>
-					</ToggleGroupControl>
+						>
+							<ToggleGroupControlOption
+								value={ false }
+								label={ __(
+									'Make invisible',
+									'woo-gutenberg-products-block'
+								) }
+							/>
+							<ToggleGroupControlOption
+								value={ true }
+								label={ __(
+									"Don't render",
+									'woo-gutenberg-products-block'
+								) }
+							/>
+						</ToggleGroupControl>
+					) }
 				</PanelBody>
 				{ templatePartEditUri && (
 					<PanelBody
