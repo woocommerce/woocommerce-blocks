@@ -20,6 +20,10 @@ let blockAttributes: BlockAttributes = {
 		type: 'number',
 		default: 0,
 	},
+	renderOnServerSide: {
+		type: 'boolean',
+		default: false,
+	},
 };
 
 if ( isFeaturePluginBuild() ) {
