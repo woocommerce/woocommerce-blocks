@@ -262,7 +262,10 @@ const AddressForm = ( {
 						onChange={ ( newValue: string ) =>
 							onChange( {
 								...values,
-								[ field.key ]: newValue,
+								[ field.key ]:
+									field.key === 'postcode'
+										? newValue.trimStart().toUpperCase()
+										: newValue,
 							} )
 						}
 						customValidation={ ( inputObject: HTMLInputElement ) =>
