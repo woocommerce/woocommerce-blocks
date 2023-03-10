@@ -115,9 +115,9 @@ describe( `${ block.name } Block`, () => {
 		describe( 'attributes', () => {
 			beforeEach( async () => {
 				await openDocumentSettingsSidebar();
-				await switchBlockInspectorTabWhenGutenbergIsInstalled(
-					'Settings'
-				);
+				// await switchBlockInspectorTabWhenGutenbergIsInstalled(
+				// 	'Settings'
+				// );
 				await selectBlockByName(
 					'woocommerce/cart-order-summary-shipping-block'
 				);

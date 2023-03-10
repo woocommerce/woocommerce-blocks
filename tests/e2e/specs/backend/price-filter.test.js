@@ -31,9 +31,9 @@ describe( `${ block.name } Block`, () => {
 		describe( 'Attributes', () => {
 			beforeEach( async () => {
 				await openDocumentSettingsSidebar();
-				await switchBlockInspectorTabWhenGutenbergIsInstalled(
-					'Settings'
-				);
+				// await switchBlockInspectorTabWhenGutenbergIsInstalled(
+				// 	'Settings'
+				// );
 				await selectBlockByName( block.slug );
 			} );
 
