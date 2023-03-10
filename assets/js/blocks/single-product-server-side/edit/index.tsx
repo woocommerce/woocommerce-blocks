@@ -19,7 +19,8 @@ import ApiError from './api-error';
 import SharedProductControl from './shared-product-control';
 import EditorBlockControls from './editor-block-controls';
 import LayoutEditor from './layout-editor';
-import { BLOCK_TITLE, BLOCK_ICON, BLOCK_DESCRIPTION } from '../constants';
+import { BLOCK_ICON } from '../constants';
+import metadata from '../block.json';
 
 interface EditorProps {
 	className: string;
@@ -93,10 +94,10 @@ const Editor = ( {
 				{ isEditing ? (
 					<Placeholder
 						icon={ BLOCK_ICON }
-						label={ BLOCK_TITLE }
+						label={ metadata.name }
 						className="wc-block-single-product"
 					>
-						{ BLOCK_DESCRIPTION }
+						{ metadata.description }
 						<div className="wc-block-single-product__selection">
 							<SharedProductControl
 								attributes={ attributes }

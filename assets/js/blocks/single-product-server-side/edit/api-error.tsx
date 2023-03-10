@@ -1,7 +1,15 @@
 /**
  * External dependencies
  */
-import ErrorPlaceholder from '@woocommerce/editor-components/error-placeholder';
+import ErrorPlaceholder, {
+	ErrorObject,
+} from '@woocommerce/editor-components/error-placeholder';
+
+interface ApiErrorProps {
+	error: ErrorObject;
+	isLoading: boolean;
+	getProduct: () => void;
+}
 
 /**
  * Shown when there is an API error getting a product.
@@ -11,7 +19,7 @@ import ErrorPlaceholder from '@woocommerce/editor-components/error-placeholder';
  * @param {boolean}           props.isLoading
  * @param {function(any):any} props.getProduct
  */
-const ApiError = ( { error, isLoading, getProduct } ) => (
+const ApiError = ( { error, isLoading, getProduct }: ApiErrorProps ) => (
 	<ErrorPlaceholder
 		className="wc-block-single-product-error"
 		error={ error }

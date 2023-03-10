@@ -5,6 +5,11 @@ import { __ } from '@wordpress/i18n';
 import { BlockControls } from '@wordpress/block-editor';
 import { ToolbarGroup } from '@wordpress/components';
 
+interface EditorBlockControlsProps {
+	isEditing: boolean;
+	setIsEditing: ( isEditing: boolean ) => void;
+}
+
 /**
  * Adds controls to the editor toolbar.
  *
@@ -12,7 +17,10 @@ import { ToolbarGroup } from '@wordpress/components';
  * @param {boolean}               props.isEditing
  * @param {function(boolean):any} props.setIsEditing
  */
-const EditorBlockControls = ( { isEditing, setIsEditing } ) => {
+const EditorBlockControls = ( {
+	isEditing,
+	setIsEditing,
+}: EditorBlockControlsProps ) => {
 	return (
 		<BlockControls>
 			<ToolbarGroup

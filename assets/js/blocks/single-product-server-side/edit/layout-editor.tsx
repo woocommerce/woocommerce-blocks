@@ -17,11 +17,8 @@ import { ProductResponseItem } from '@woocommerce/types';
 /**
  * Internal dependencies
  */
-import {
-	BLOCK_NAME,
-	DEFAULT_INNER_BLOCKS,
-	ALLOWED_INNER_BLOCKS,
-} from '../constants';
+import { DEFAULT_INNER_BLOCKS, ALLOWED_INNER_BLOCKS } from '../constants';
+import metadata from '../block.json';
 
 interface LayoutEditorProps {
 	isLoading: boolean;
@@ -47,7 +44,7 @@ const LayoutEditor = ( {
 
 	return (
 		<InnerBlockLayoutContextProvider
-			parentName={ BLOCK_NAME }
+			parentName={ metadata.name }
 			parentClassName={ baseClassName }
 		>
 			<ProductDataContextProvider
