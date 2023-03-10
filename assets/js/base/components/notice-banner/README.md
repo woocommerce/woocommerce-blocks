@@ -111,4 +111,4 @@ const errorMessages = [
 </NoticeBanner>;
 ```
 
-In this example, the summary prop is used to indicate to the user that there are errors in the form submission. The list of error messages is rendered within the NoticeBanner component using an unordered list (`<ul>`) and list items (`<li>`). The status prop is set to "error" to indicate that the notice represents an error message.
+In this example, the summary prop is used to indicate to the user that there are errors in the form submission. The list of error messages is rendered within the NoticeBanner component using an unordered list (`<ul>`) and list items (`<li>`). The `status` prop is set to `error` to indicate that the notice represents an error message.
