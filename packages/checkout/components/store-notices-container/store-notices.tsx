@@ -3,7 +3,7 @@
  */
 import { __ } from '@wordpress/i18n';
 import classnames from 'classnames';
-import { useRef, useEffect } from '@wordpress/element';
+import { useRef, useEffect, RawHTML } from '@wordpress/element';
 import { sanitizeHTML } from '@woocommerce/utils';
 import { useDispatch } from '@wordpress/data';
 import { usePrevious } from '@woocommerce/base-hooks';
@@ -95,7 +95,9 @@ const StoreNotices = ( {
 					key={ notice.id + '-' + notice.context }
 					{ ...notice }
 				>
-					{ sanitizeHTML( decodeEntities( notice.content ) ) }
+					<RawHTML>
+						{ sanitizeHTML( decodeEntities( notice.content ) ) }
+					</RawHTML>
 				</StoreNotice>
 			) ) }
 			{ Object.entries( dismissibleNoticeGroups ).map(
@@ -134,7 +136,7 @@ const StoreNotices = ( {
 					};
 					return uniqueNotices.length === 1 ? (
 						<StoreNotice { ...noticeProps }>
-							{ noticeGroup[ 0 ].content }
+							<RawHTML>{ noticeGroup[ 0 ].content }</RawHTML>
 						</StoreNotice>
 					) : (
 						<StoreNotice
@@ -153,7 +155,7 @@ const StoreNotices = ( {
 									<li
 										key={ notice.id + '-' + notice.context }
 									>
-										{ notice.content }
+										<RawHTML>{ notice.content }</RawHTML>
 									</li>
 								) ) }
 							</ul>
