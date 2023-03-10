@@ -169,7 +169,7 @@ describe( `${ block.name } Block`, () => {
 			await waitForCanvas();
 			await selectBlockByName( block.slug );
 			await ensureSidebarOpened();
-			await switchBlockInspectorTabWhenGutenbergIsInstalled( 'Settings' );
+			// await switchBlockInspectorTabWhenGutenbergIsInstalled( 'Settings' );
 			await page.waitForXPath(
 				block.selectors.editor.filterButtonToggle
 			);
@@ -276,7 +276,7 @@ describe( `${ block.name } Block`, () => {
 			await waitForCanvas();
 			await ensureSidebarOpened();
 			await selectBlockByName( block.slug );
-			await switchBlockInspectorTabWhenGutenbergIsInstalled( 'Settings' );
+			// await switchBlockInspectorTabWhenGutenbergIsInstalled( 'Settings' );
 			await setCheckbox(
 				await getToggleIdByLabel( "Show 'Apply filters' button" )
 			);

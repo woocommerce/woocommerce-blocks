@@ -48,7 +48,7 @@ describeOrSkip( GUTENBERG_EDITOR_CONTEXT === 'gutenberg' )(
 			await resetProductQueryBlockPage();
 			await ensureSidebarOpened();
 			await selectBlockByName( block.slug );
-			await switchBlockInspectorTabWhenGutenbergIsInstalled( 'Settings' );
+			// await switchBlockInspectorTabWhenGutenbergIsInstalled( 'Settings' );
 			$productFiltersPanel = await findToolsPanelWithTitle(
 				'Advanced Filters'
 			);

@@ -29,7 +29,7 @@ import {
 const getPopularFilterPanel = async () => {
 	await ensureSidebarOpened();
 	await selectBlockByName( block.slug );
-	await switchBlockInspectorTabWhenGutenbergIsInstalled( 'Settings' );
+	// await switchBlockInspectorTabWhenGutenbergIsInstalled( 'Settings' );
 	return await findSidebarPanelWithTitle( 'Popular Filters' );
 };
 

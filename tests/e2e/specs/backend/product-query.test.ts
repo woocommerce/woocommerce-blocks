@@ -54,7 +54,7 @@ describeOrSkip( GUTENBERG_EDITOR_CONTEXT === 'gutenberg' )(
 			await visitBlockPage( `${ block.name } Block` );
 			const canvasEl = canvas();
 			await openDocumentSettingsSidebar();
-			await switchBlockInspectorTabWhenGutenbergIsInstalled( 'Settings' );
+			// await switchBlockInspectorTabWhenGutenbergIsInstalled( 'Settings' );
 			await openListView();
 			await page.click(
 				'.block-editor-list-view-block__contents-container a.components-button'

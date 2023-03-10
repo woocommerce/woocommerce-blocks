@@ -65,7 +65,7 @@ describe( `${ block.name } Block`, () => {
 		beforeEach( async () => {
 			await openDocumentSettingsSidebar();
 			await selectBlockByName( block.slug );
-			await switchBlockInspectorTabWhenGutenbergIsInstalled( 'Settings' );
+			// await switchBlockInspectorTabWhenGutenbergIsInstalled( 'Settings' );
 		} );
 
 		it( "allows changing the block's title", async () => {

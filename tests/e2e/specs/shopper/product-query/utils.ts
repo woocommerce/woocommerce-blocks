@@ -41,7 +41,7 @@ export const toggleInheritQueryFromTemplateSetting = async () => {
 
 export const configureProductQueryBlock = async () => {
 	await ensureSidebarOpened();
-	await switchBlockInspectorTabWhenGutenbergIsInstalled( 'Settings' );
+	// await switchBlockInspectorTabWhenGutenbergIsInstalled( 'Settings' );
 };
 
 export const getProductsNameFromClassicTemplate = async () => {
