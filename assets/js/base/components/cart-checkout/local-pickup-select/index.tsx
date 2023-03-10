@@ -18,7 +18,6 @@ interface LocalPickupSelectProps {
 		location: CartShippingPackageShippingRate,
 		pickupLocationsCount: number
 	) => RadioControlOption;
-	packageCount: number;
 }
 /**
  * Local pickup select component, used to render a package title and local pickup options.
@@ -30,7 +29,6 @@ export const LocalPickupSelect = ( {
 	pickupLocations,
 	onSelectRate,
 	renderPickupLocation,
-	packageCount,
 }: LocalPickupSelectProps ) => {
 	// Hacky way to check if there are multiple packages, this way is borrowed from  `assets/js/base/components/cart-checkout/shipping-rates-control-package/index.tsx`
 	// We have no built-in way of checking if other extensions have added packages.
@@ -48,7 +46,7 @@ export const LocalPickupSelect = ( {
 				} }
 				selected={ selectedOption }
 				options={ pickupLocations.map( ( location ) =>
-					renderPickupLocation( location, packageCount )
+					renderPickupLocation( location, pickupLocations.length )
 				) }
 			/>
 		</div>
