@@ -34,9 +34,8 @@ const SnackbarList = ( {
 	const listRef = useRef< HTMLDivElement | null >( null );
 	const isReducedMotion = useReducedMotion();
 
-	const removeNotice =
-		( notice: SnackbarListProps[ 'notices' ][ number ] ) => () =>
-			onRemove( notice?.id || '' );
+	const removeNotice = ( notice: NoticeType ) => () =>
+		onRemove( notice?.id || '' );
 
 	return (
 		<div
