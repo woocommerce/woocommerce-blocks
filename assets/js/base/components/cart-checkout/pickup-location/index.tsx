@@ -2,19 +2,14 @@
  * External dependencies
  */
 import { __, sprintf } from '@wordpress/i18n';
-import { getSetting } from '@woocommerce/settings';
 import { useSelect } from '@wordpress/data';
 import { isObject, objectHasProp } from '@woocommerce/types';
+import { isPackageRateCollectable } from '@woocommerce/base-utils';
 
 /**
  * Shows a formatted pickup location.
  */
 const PickupLocation = (): JSX.Element | null => {
-	const collectibleMethodIds = getSetting< string[] >(
-		'collectibleMethodIds',
-		[]
-	);
-
 	const { pickupAddress, pickupMethod } = useSelect( ( select ) => {
 		const cartShippingRates = select( 'wc/store/cart' ).getShippingRates();
 
@@ -22,8 +17,7 @@ const PickupLocation = (): JSX.Element | null => {
 			( cartShippingRate ) => cartShippingRate.shipping_rates
 		);
 		const selectedCollectibleRate = flattenedRates.find(
-			( rate ) =>
-				rate.selected && collectibleMethodIds.includes( rate.method_id )
+			( rate ) => rate.selected && isPackageRateCollectable( rate )
 		);
 
 		// If the rate has an address specified in its metadata.
