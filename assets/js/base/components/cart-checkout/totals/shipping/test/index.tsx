@@ -15,8 +15,6 @@ import { TotalsShipping } from '../index';
 jest.mock( '@wordpress/data', () => ( {
 	__esModule: true,
 	...jest.requireActual( '@wordpress/data' ),
-	AsyncModeProvider:
-		jest.requireActual( '@wordpress/data' ).AsyncModeProvider,
 	useSelect: jest.fn(),
 } ) );
 
