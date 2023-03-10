@@ -185,9 +185,13 @@ export const checkPaymentMethodsCanPay = async ( express = false ) => {
 
 		// See if payment method should be available. This always evaluates to true in the editor context.
 		try {
+			const validForCart =
+				isEditor || express
+					? true
+					: cartPaymentMethods.includes( paymentMethodName );
 			const canPay = isEditor
 				? true
-				: cartPaymentMethods.includes( paymentMethodName ) &&
+				: validForCart &&
 				  ( await Promise.resolve(
 						paymentMethod.canMakePayment( canPayArgument )
 				  ) );
