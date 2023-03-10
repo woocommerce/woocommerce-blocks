@@ -51,7 +51,10 @@ const NoticeBanner = ( {
 	useSpokenMessage( spokenMessage, politeness );
 
 	const dismiss = ( event: React.SyntheticEvent ) => {
-		if ( event && event.preventDefault ) {
+		if (
+			typeof event?.preventDefault === 'function' &&
+			event.preventDefault
+		) {
 			event.preventDefault();
 		}
 		onRemove();
