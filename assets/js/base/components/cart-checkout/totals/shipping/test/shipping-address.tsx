@@ -18,7 +18,7 @@ jest.mock( '@woocommerce/settings', () => {
 			if ( setting === 'localPickupEnabled' ) {
 				return true;
 			}
-			if ( setting === 'collectibleMethodIds' ) {
+			if ( setting === 'collectableMethodIds' ) {
 				return [ 'pickup_location' ];
 			}
 			return originalModule.getSetting( setting, ...rest );
