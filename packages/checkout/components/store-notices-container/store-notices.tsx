@@ -9,6 +9,7 @@ import { useDispatch } from '@wordpress/data';
 import { usePrevious } from '@woocommerce/base-hooks';
 import { decodeEntities } from '@wordpress/html-entities';
 import type { NoticeType } from '@woocommerce/types';
+import type { NoticeBannerProps } from '@woocommerce/base-components/notice-banner';
 
 /**
  * Internal dependencies
@@ -120,7 +121,9 @@ const StoreNotices = ( {
 								decodeEntities( notice.content )
 							),
 						} ) );
-					const noticeProps = {
+					const noticeProps: Omit< NoticeBannerProps, 'children' > & {
+						key: string;
+					} = {
 						key: `store-notice-${ status }`,
 						status: 'error',
 						onRemove: () => {
