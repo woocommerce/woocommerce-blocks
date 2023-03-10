@@ -22,11 +22,6 @@ export default {
 			control: 'boolean',
 			description: 'Determines whether the notice can be dismissed.',
 		},
-		children: {
-			description:
-				'The content of the notice; either text or a React node such as a list of errors.',
-			control: 'text',
-		},
 		summary: {
 			description:
 				'Optional summary text shown above notice content, used when several notices are listed together.',
@@ -46,6 +41,11 @@ export default {
 			options: [ 'polite', 'assertive' ],
 			description:
 				'Determines the level of politeness for the notice for assistive technology.',
+		},
+		children: {
+			description:
+				'The content of the notice; either text or a React node such as a list of errors.',
+			disable: true,
 		},
 		onRemove: {
 			description: 'Function called when dismissing the notice.',
