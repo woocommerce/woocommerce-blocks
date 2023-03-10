@@ -58,7 +58,7 @@ import { NoticeBanner } from '@woocommerce/base-components';
 
 #### `children`: `React.ReactNode`
 
-The displayed message of a notice. Also used as the spoken message for assistive technology, unless spokenMessage is provided as an alternative message.
+The displayed message of a notice. Also used as the spoken message for assistive technology, unless `spokenMessage` is provided as an alternative message.
 
 #### `className`: `string`
 
