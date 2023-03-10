@@ -147,7 +147,18 @@ class ProductQueryFilters {
 			}
 		}
 
-		if ( ! isset( $_REQUEST['attributes'] ) ) {
+		$product_metas = [];
+		if ( isset( $_REQUEST['min_price'] ) ) {
+			$product_metas['min_price'] = intval( $_REQUEST['min_price'] ) / 100;
+		}
+
+		if ( isset( $_REQUEST['max_price'] ) ) {
+			$product_metas['max_price'] = intval( $_REQUEST['max_price'] ) / 100;
+		}
+
+		$product_metas = $this->get_product_by_metas( $product_metas );
+
+		if ( ! isset( $_REQUEST['attributes'] ) || ( ! isset( $_REQUEST['min_price'] ) && ! isset( $_REQUEST['max_price'] ) ) ) {
 			$counts = $this->get_terms_list( $taxonomy );
 
 			return array_map( 'absint', wp_list_pluck( $counts, 'term_count', 'term_count_id' ) );
@@ -212,10 +223,7 @@ FROM (
     WHERE posts.post_type IN ('product', 'product_variation')
       AND posts.post_status = 'publish'
       AND product_attribute_lookup.product_or_parent_id IN ({$products})
-      AND product_attribute_lookup.product_id IN (
-        SELECT product_meta_lookup.product_id
-        FROM wp_wc_product_meta_lookup product_meta_lookup
-        WHERE product_meta_lookup.max_price <= 200.000000)
+      AND product_attribute_lookup.product_id IN ({$product_metas})
     GROUP BY product_attribute_lookup.term_id
 ) summarize ON attributes.term_id = summarize.term_id";
 
