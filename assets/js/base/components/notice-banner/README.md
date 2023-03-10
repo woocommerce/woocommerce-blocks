@@ -82,7 +82,7 @@ Optionally provided to change the spoken message for assistive technology. If no
 
 #### `status`: `'success' | 'error' | 'info' | 'warning' | 'default'`
 
-Status determines the color of the notice and the icon. Acceptable values are 'success', 'error', 'info', 'warning', and 'default'.
+Status determines the color of the notice and the icon. Acceptable values are `success`, `error`, `info`, `warning`, and `default`.
 
 #### `summary`: `string`
 
