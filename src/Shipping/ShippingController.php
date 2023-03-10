@@ -200,27 +200,6 @@ class ShippingController {
 	}
 
 	/**
-	 * Gets a list of payment method ids that support the 'collectible' feature.
-	 *
-	 * @return string[] List of payment method ids that support the 'collectible' feature.
-	 */
-	public function get_collectible_method_ids() {
-		$collectible_method_ids = array_keys(
-			array_filter(
-				WC()->shipping()->get_shipping_methods(),
-				function( $method ) {
-					return $method->supports( 'collectible' );
-				},
-				true
-			)
-		);
-		// `pickup_location` will always be collectible. Adding it here means we can avoid hard coding it elsewhere on
-		// the client.
-		$collectible_method_ids[] = 'pickup_location';
-		return $collectible_method_ids;
-	}
-
-	/**
 	 * Register Local Pickup settings for rest api.
 	 */
 	public function register_settings() {
