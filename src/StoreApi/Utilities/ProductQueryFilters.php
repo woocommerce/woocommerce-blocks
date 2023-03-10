@@ -124,7 +124,12 @@ class ProductQueryFilters {
 		}
 
 		if ( ! isset( $_REQUEST['attributes'] ) ) {
-			return [];
+			$empty_query = "SELECT DISTINCT term_id as term_count_id, 0 as term_tount
+         FROM wp_wc_product_attributes_lookup
+         WHERE taxonomy = '{$taxonomy}'";
+			$counts      = $wpdb->get_results( $empty_query );
+
+			return array_map( 'absint', wp_list_pluck( $counts, 'term_count', 'term_count_id' ) );
 		}
 
 		$term_ids = [];
@@ -137,9 +142,11 @@ class ProductQueryFilters {
 				if ( ! empty( $attribute['term_id'] ) ) {
 					$term_ids[] = $attribute['term_id'];
 				} elseif ( ! empty( $attribute['slug'] ) ) {
-					$term = get_term_by( 'slug', $attribute['slug'][0], $attribute['attribute'] );
-					if ( is_object( $term ) ) {
-						$term_ids[] = $term->term_id;
+					foreach ( $attribute['slug'] as $slug ) {
+						$term = get_term_by( 'slug', $slug, $attribute['attribute'] );
+						if ( is_object( $term ) ) {
+							$term_ids[] = $term->term_id;
+						}
 					}
 				}
 			}
@@ -163,7 +170,7 @@ class ProductQueryFilters {
         WHERE taxonomy = '{$taxonomy}'
           AND term_id IN ({$term_ids})
         GROUP BY product_or_parent_id
-        HAVING count(DISTINCT term_id) >= {$term_ids_count})";
+        HAVING count(DISTINCT term_id) >= {$term_ids_count}";
 		} else {
 			$condition_query = "SELECT product_or_parent_id
         FROM wp_wc_product_attributes_lookup
@@ -190,7 +197,7 @@ FROM (
       AND product_attribute_lookup.product_id IN (
         SELECT product_meta_lookup.product_id
         FROM wp_wc_product_meta_lookup product_meta_lookup
-        WHERE product_meta_lookup.max_price <= 16.000000)
+        WHERE product_meta_lookup.max_price <= 200.000000)
     GROUP BY product_attribute_lookup.term_id
 ) summarize ON attributes.term_id = summarize.term_id";
 
