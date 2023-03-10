@@ -22,7 +22,7 @@ Snackbar notices work in the same way as the NoticeBanner component, and support
 
 ### Usage
 
-To display a snackbar notices, pass an array of `notices` to the `SnackbarList` component:
+To display snackbar notices, pass an array of `notices` to the `SnackbarList` component:
 
 ```jsx
 import { SnackbarList } from '@woocommerce/base-components';
@@ -39,7 +39,7 @@ const notices = [
 <SnackbarList notices={ notices }>;
 ```
 
-The component consuming `SnackbarList` is responsible for managing the notices state. The `SnackbarList` component will automatically remove notices from the list when they are dismissed by the user using the provided `onRemove` callback.
+The component consuming `SnackbarList` is responsible for managing the notices state. The `SnackbarList` component will automatically remove notices from the list when they are dismissed by the user using the provided `onRemove` callback, and also when the notice times out after 10000ms.
 
 ### Props
 
