@@ -22,7 +22,7 @@ An informational UI displayed near the top of the store pages.
 
 Notices are informational UI displayed near the top of store pages. WooCommerce blocks, themes, and plugins all use notices to indicate the result of an action, or to draw the user’s attention to necessary information.
 
-Notices are color-coded to indicate the type of message being communicated, and also show an icon to reinforce the meaning of the message. The color and icon used for a notice are determined by the status prop.
+Notices are color-coded to indicate the type of message being communicated, and also show an icon to reinforce the meaning of the message. The color and icon used for a notice are determined by the `status` prop.
 
 -   Informational - Blue notices used for general information for buyers that are not blocking and do not require action.
 -   Error - Red notices to show that an error has occurred and that the user needs to take action.
