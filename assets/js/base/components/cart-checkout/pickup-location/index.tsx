@@ -16,16 +16,16 @@ const PickupLocation = (): JSX.Element | null => {
 		const flattenedRates = cartShippingRates.flatMap(
 			( cartShippingRate ) => cartShippingRate.shipping_rates
 		);
-		const selectedCollectibleRate = flattenedRates.find(
+		const selectedCollectableRate = flattenedRates.find(
 			( rate ) => rate.selected && isPackageRateCollectable( rate )
 		);
 
 		// If the rate has an address specified in its metadata.
 		if (
-			isObject( selectedCollectibleRate ) &&
-			objectHasProp( selectedCollectibleRate, 'meta_data' )
+			isObject( selectedCollectableRate ) &&
+			objectHasProp( selectedCollectableRate, 'meta_data' )
 		) {
-			const selectedRateMetaData = selectedCollectibleRate.meta_data.find(
+			const selectedRateMetaData = selectedCollectableRate.meta_data.find(
 				( meta ) => meta.key === 'pickup_address'
 			);
 			if (
@@ -36,15 +36,15 @@ const PickupLocation = (): JSX.Element | null => {
 				const selectedRatePickupAddress = selectedRateMetaData.value;
 				return {
 					pickupAddress: selectedRatePickupAddress,
-					pickupMethod: selectedCollectibleRate.name,
+					pickupMethod: selectedCollectableRate.name,
 				};
 			}
 		}
 
-		if ( isObject( selectedCollectibleRate ) ) {
+		if ( isObject( selectedCollectableRate ) ) {
 			return {
 				pickupAddress: undefined,
-				pickupMethod: selectedCollectibleRate.name,
+				pickupMethod: selectedCollectableRate.name,
 			};
 		}
 		return {
