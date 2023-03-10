@@ -18,7 +18,7 @@ export type SnackbarListProps = {
 	// Class name to be added to the container.
 	className?: string | undefined;
 	// List of notices to be rendered.
-	notices: Partial< NoticeType >[];
+	notices: NoticeType[];
 	// Callback to be called when a notice is dismissed.
 	onRemove: ( id: string ) => void;
 };
@@ -50,16 +50,22 @@ const SnackbarList = ( {
 				{ notices.map( ( notice ) => {
 					const { content, ...restNotice } = notice;
 
-					return (
+					return isReducedMotion ? (
+						<Snackbar
+							{ ...restNotice }
+							onRemove={ removeNotice( notice ) }
+							listRef={ listRef }
+						>
+							{ notice.content }
+						</Snackbar>
+					) : (
 						<motion.div
 							layout={ ! isReducedMotion }
 							initial={ 'init' }
 							animate={ 'open' }
 							exit={ 'exit' }
 							key={ notice.id }
-							variants={
-								isReducedMotion ? undefined : SNACKBAR_VARIANTS
-							}
+							variants={ SNACKBAR_VARIANTS }
 						>
 							<Snackbar
 								{ ...restNotice }
