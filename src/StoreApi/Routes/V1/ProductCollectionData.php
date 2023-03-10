@@ -121,7 +121,7 @@ class ProductCollectionData extends AbstractRoute {
 					}
 
 					$filter_request->set_param( 'attributes', $filter_attributes );
-					$counts = $filters->get_attribute_counts( $filter_request, [ $taxonomy ] );
+					$counts = $filters->get_attribute_and_meta_counts( $filter_request, [ $taxonomy ] );
 
 					foreach ( $counts as $key => $value ) {
 						$data['attribute_counts'][] = (object) [
@@ -133,7 +133,7 @@ class ProductCollectionData extends AbstractRoute {
 			}
 
 			if ( $taxonomy__and_queries ) {
-				$counts = $filters->get_attribute_counts( $request, $taxonomy__and_queries );
+				$counts = $filters->get_attribute_and_meta_counts( $request, $taxonomy__and_queries );
 
 				foreach ( $counts as $key => $value ) {
 					$data['attribute_counts'][] = (object) [
