@@ -151,9 +151,9 @@ export const isBlockInsertedInWidgetsArea = async ( blockName ) => {
 /**
  * Visits site editor dependening on used WordPress version and how Gutenberg is installed.
  *
- * @param {Object}                             params                          Query parameters to add to the URL.
- * @param {string}                             [params.postId]                 ID of the template if we want to access template editor.
- * @param {'wp_template' | 'wp_template_part'} [params.postType='wp_template'] Type of template.
+ * @param {Object}                                                  params                      Query parameters to add to the URL.
+ * @param {string}                                                  [params.postId]             ID of the template if we want to access template editor.
+ * @param {'wp_template' | 'wp_template_part' | '/wp_template/all'} [params.path='wp_template'] Type of template.
  */
 export async function goToSiteEditor( params = {} ) {
 	await visitAdminPage(
@@ -174,15 +174,15 @@ export async function goToSiteEditor( params = {} ) {
  * Visits the Site Editor template edit view.
  *
  * @param {Object}                             params
- * @param {string}                             [params.postId]                 ID of the template if we want to access template editor.
- * @param {'wp_template' | 'wp_template_part'} [params.postType='wp_template'] Type of template.
+ * @param {string}                             [params.postId]             ID of the template if we want to access template editor.
+ * @param {'wp_template' | 'wp_template_part'} [params.path='wp_template'] Type of template.
  */
 export async function goToTemplateEditor( {
 	postId,
-	postType = 'wp_template',
+	path = 'wp_template',
 } = {} ) {
 	await goToSiteEditor( {
-		postType,
+		path,
 		postId,
 	} );
 
@@ -193,15 +193,15 @@ export async function goToTemplateEditor( {
 /**
  * Visits the Site Editor templates list view.
  *
- * @param {Object}                             params
- * @param {'wp_template' | 'wp_template_part'} [params.postType='wp_template'] Type of template.
- * @param {'list' | 'actions'}                 [params.waitFor='false']        Wait for list or for actions to be present - tempalte actions can take a moment to load, we can wait for them to be present if needed.
+ * @param {Object}                                                  params
+ * @param {'wp_template' | 'wp_template_part' | '/wp_template/all'} [params.path='wp_template'] Type of template.
+ * @param {'list' | 'actions'}                                      [params.waitFor='false']    Wait for list or for actions to be present - tempalte actions can take a moment to load, we can wait for them to be present if needed.
  */
 export async function goToTemplatesList( {
-	postType = 'wp_template',
+	path = '/wp_template/all',
 	waitFor = 'list',
 } = {} ) {
-	await goToSiteEditor( { postType } );
+	await goToSiteEditor( { path } );
 
 	if ( waitFor === 'actions' ) {
 		await page.waitForSelector(
