@@ -420,7 +420,7 @@ class MiniCart extends AbstractBlock {
 		</span>';
 
 		if ( is_cart() || is_checkout() ) {
-			if ( $this->shouldNotRenderMiniCart( $attributes ) ) {
+			if ( $this->should_not_render_mini_cart( $attributes ) ) {
 				return '';
 			}
 
@@ -579,7 +579,7 @@ class MiniCart extends AbstractBlock {
 	 *
 	 * @return bool
 	 */
-	public function shouldNotRenderMiniCart( array $attributes ) {
+	public function should_not_render_mini_cart( array $attributes ) {
 		return isset( $attributes['makeInvisibleInCartAndCheckout'] ) && false === $attributes['makeInvisibleInCartAndCheckout'];
 	}
 }
