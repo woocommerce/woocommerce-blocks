@@ -110,6 +110,30 @@ class ProductQueryFilters {
 		";
 	}
 
+	/**
+	 * Get terms list for a given taxonomy.
+	 *
+	 * @param  string  $taxonomy  Taxonomy name.
+	 *
+	 * @return array
+	 */
+	public function get_terms_list( string $taxonomy ) {
+		global $wpdb;
+
+		$terms_list = "SELECT DISTINCT term_id as term_count_id, 0 as term_count
+         FROM {$wpdb->prefix}wc_product_attributes_lookup
+         WHERE taxonomy = '{$taxonomy}'";
+
+		return $wpdb->get_results( $wpdb->prepare( $terms_list ) );
+	}
+
+	/**
+	 * Get attribute and meta counts.
+	 *
+	 * @param WP_REST_Request $request Request data.
+	 * @param array           $attributes Attributes to count.
+	 * @return array
+	 */
 	public function get_attribute_and_meta_counts( $request, $attributes = [] ) {
 		global $wpdb;
 
@@ -124,10 +148,7 @@ class ProductQueryFilters {
 		}
 
 		if ( ! isset( $_REQUEST['attributes'] ) ) {
-			$empty_query = "SELECT DISTINCT term_id as term_count_id, 0 as term_tount
-         FROM wp_wc_product_attributes_lookup
-         WHERE taxonomy = '{$taxonomy}'";
-			$counts      = $wpdb->get_results( $empty_query );
+			$counts = $this->get_terms_list( $taxonomy );
 
 			return array_map( 'absint', wp_list_pluck( $counts, 'term_count', 'term_count_id' ) );
 		}
@@ -153,10 +174,7 @@ class ProductQueryFilters {
 		}
 
 		if ( empty( $term_ids ) ) {
-			$empty_query = "SELECT DISTINCT term_id as term_count_id, 0 as term_tount
-         FROM wp_wc_product_attributes_lookup
-         WHERE taxonomy = '{$taxonomy}'";
-			$counts      = $wpdb->get_results( $empty_query );
+			$counts = $this->get_terms_list( $taxonomy );
 
 			return array_map( 'absint', wp_list_pluck( $counts, 'term_count', 'term_count_id' ) );
 		}
