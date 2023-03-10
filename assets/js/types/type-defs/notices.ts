@@ -1,8 +1,12 @@
 /**
  * External dependencies
  */
-import type { Notice, Options } from '@wordpress/notices';
+import type { Notice } from '@wordpress/notices';
 
-export interface NoticeType extends Omit< Notice, 'status' >, Options {
+export interface NoticeType extends Partial< Omit< Notice, 'status' > > {
+	id: string;
+	content: string;
 	status: 'success' | 'error' | 'info' | 'warning' | 'default';
+	isDismissible: boolean;
+	context?: string | undefined;
 }
