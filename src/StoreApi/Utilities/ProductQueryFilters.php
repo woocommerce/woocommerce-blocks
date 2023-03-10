@@ -205,7 +205,7 @@ FROM (
          FROM wp_wc_product_attributes_lookup
          WHERE taxonomy = '{$taxonomy}') as attributes
          LEFT JOIN (
-    SELECT COUNT(product_attribute_lookup.product_id) as term_count, product_attribute_lookup.term_id
+    SELECT COUNT(DISTINCT product_attribute_lookup.product_or_parent_id) as term_count, product_attribute_lookup.term_id
     FROM wp_wc_product_attributes_lookup product_attribute_lookup
              INNER JOIN wp_posts posts
                         ON posts.ID = product_attribute_lookup.product_id
