@@ -78,7 +78,7 @@ Determines the level of politeness for the notice for assistive technology. Acce
 
 #### `spokenMessage`: `string`
 
-Optionally provided to change the spoken message for assistive technology. If not provided, the children prop will be used as the spoken message.
+Optionally provided to change the spoken message for assistive technology. If not provided, the `children` prop will be used as the spoken message.
 
 #### `status`: `'success' | 'error' | 'info' | 'warning' | 'default'`
 
