@@ -61,8 +61,8 @@ describe( 'LocalPickupSelect', () => {
 				},
 			] }
 			onSelectRate={ onSelectRateOverride || jest.fn() }
-			// eslint-disable-next-line @typescript-eslint/no-unused-vars
-			renderPickupLocation={ ( location, pickupLocationsCount ) => {
+			packageCount={ 1 }
+			renderPickupLocation={ ( location ) => {
 				return {
 					value: `${ location.rate_id }`,
 					onChange: jest.fn(),
