@@ -2,7 +2,7 @@
 /**
  * Context data implementation.
  *
- * @package block-hydration-experiments
+ * @package block-interactivity-experiments
  */
 
 /**
