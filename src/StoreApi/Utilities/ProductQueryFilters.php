@@ -113,18 +113,21 @@ class ProductQueryFilters {
 	/**
 	 * Get terms list for a given taxonomy.
 	 *
-	 * @param  string  $taxonomy  Taxonomy name.
+	 * @param string $taxonomy Taxonomy name.
 	 *
 	 * @return array
 	 */
 	public function get_terms_list( string $taxonomy ) {
 		global $wpdb;
 
-		$terms_list = "SELECT DISTINCT term_id as term_count_id, 0 as term_count
-         FROM {$wpdb->prefix}wc_product_attributes_lookup
-         WHERE taxonomy = '{$taxonomy}'";
-
-		return $wpdb->get_results( $wpdb->prepare( $terms_list ) );
+		return $wpdb->get_results(
+			$wpdb->prepare(
+				"SELECT DISTINCT term_id as term_count_id, 0 as term_count
+         	FROM {$wpdb->prefix}wc_product_attributes_lookup
+         	WHERE taxonomy = %s",
+				$taxonomy
+			)
+		);
 	}
 
 	/**
@@ -207,33 +210,33 @@ class ProductQueryFilters {
           AND term_id IN ({$term_ids})";
 		}
 
-		$products = $wpdb->get_col( $condition_query );
-		$products = implode( ',', array_map( 'intval', $products ) );
+		$product_attributes = $wpdb->get_col( $condition_query );
+		$product_attributes = implode( ',', array_map( 'intval', $product_attributes ) );
 
 
 		$where_clause = "posts.post_type IN ('product', 'product_variation') AND posts.post_status = 'publish'";
 
-		if ( ! empty( $products ) ) {
-			$where_clause .= " AND product_attribute_lookup.product_or_parent_id IN ({$products})";
+		if ( ! empty( $product_attributes ) ) {
+			$where_clause .= " AND product_attribute_lookup.product_or_parent_id IN ({$product_attributes})";
 		}
 
 		if ( ! empty( $product_metas ) ) {
 			$where_clause .= " AND product_attribute_lookup.product_id IN ({$product_metas})";
 		}
 
-		$query = "SELECT attributes.term_id as term_count_id, coalesce(term_count, 0) as term_count
+		$query = $wpdb->prepare( "SELECT attributes.term_id as term_count_id, coalesce(term_count, 0) as term_count
 FROM (
          SELECT DISTINCT term_id
-         FROM wp_wc_product_attributes_lookup
-         WHERE taxonomy = '{$taxonomy}') as attributes
+         FROM {$wpdb->prefix}wc_product_attributes_lookup
+         WHERE taxonomy = '%s') as attributes
          LEFT JOIN (
     SELECT COUNT(DISTINCT product_attribute_lookup.product_or_parent_id) as term_count, product_attribute_lookup.term_id
-    FROM wp_wc_product_attributes_lookup product_attribute_lookup
-             INNER JOIN wp_posts posts
+    FROM {$wpdb->prefix}wc_product_attributes_lookup product_attribute_lookup
+             INNER JOIN {$wpdb->posts} posts
                         ON posts.ID = product_attribute_lookup.product_id
     WHERE {$where_clause}
     GROUP BY product_attribute_lookup.term_id
-) summarize ON attributes.term_id = summarize.term_id";
+) summarize ON attributes.term_id = summarize.term_id", $taxonomy );
 
 		$counts = $wpdb->get_results( $query );
 
