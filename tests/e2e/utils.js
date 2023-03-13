@@ -161,15 +161,9 @@ export const isBlockInsertedInWidgetsArea = async ( blockName ) => {
 export async function goToSiteEditor( params = {} ) {
 	await visitAdminPage(
 		'site-editor.php',
-		addQueryArgs( '', { ...params } )
+		addQueryArgs( '', { ...params, canvas: 'edit' } )
 	);
 	await enterEditMode();
-	await page.click(
-		'.edit-site-layout__header [aria-label="Show template details"]'
-	);
-	await page.click(
-		'.edit-site-document-actions__info-dropdown .edit-site-template-details__show-all-button'
-	);
 }
 
 /**
