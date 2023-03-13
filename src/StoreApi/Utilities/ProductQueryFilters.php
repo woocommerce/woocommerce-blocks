@@ -158,7 +158,7 @@ class ProductQueryFilters {
 
 		$product_metas = $this->get_product_by_metas( $product_metas );
 
-		if ( ! isset( $_REQUEST['attributes'] ) || ( ! isset( $_REQUEST['min_price'] ) && ! isset( $_REQUEST['max_price'] ) ) ) {
+		if ( ! isset( $_REQUEST['attributes'] ) ) {
 			$counts = $this->get_terms_list( $taxonomy );
 
 			return array_map( 'absint', wp_list_pluck( $counts, 'term_count', 'term_count_id' ) );
@@ -210,6 +210,17 @@ class ProductQueryFilters {
 		$products = $wpdb->get_col( $condition_query );
 		$products = implode( ',', array_map( 'intval', $products ) );
 
+
+		$where_clause = "posts.post_type IN ('product', 'product_variation') AND posts.post_status = 'publish'";
+
+		if ( ! empty( $products ) ) {
+			$where_clause .= " AND product_attribute_lookup.product_or_parent_id IN ({$products})";
+		}
+
+		if ( ! empty( $product_metas ) ) {
+			$where_clause .= " AND product_attribute_lookup.product_id IN ({$product_metas})";
+		}
+
 		$query = "SELECT attributes.term_id as term_count_id, coalesce(term_count, 0) as term_count
 FROM (
          SELECT DISTINCT term_id
@@ -220,10 +231,7 @@ FROM (
     FROM wp_wc_product_attributes_lookup product_attribute_lookup
              INNER JOIN wp_posts posts
                         ON posts.ID = product_attribute_lookup.product_id
-    WHERE posts.post_type IN ('product', 'product_variation')
-      AND posts.post_status = 'publish'
-      AND product_attribute_lookup.product_or_parent_id IN ({$products})
-      AND product_attribute_lookup.product_id IN ({$product_metas})
+    WHERE {$where_clause}
     GROUP BY product_attribute_lookup.term_id
 ) summarize ON attributes.term_id = summarize.term_id";
 
