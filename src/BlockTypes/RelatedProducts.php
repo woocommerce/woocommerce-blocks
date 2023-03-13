@@ -19,7 +19,6 @@ class RelatedProducts extends AbstractBlock {
 	 */
 	protected $parsed_block;
 
-
 	/**
 	 * Initialize this block type.
 	 *
@@ -35,7 +34,13 @@ class RelatedProducts extends AbstractBlock {
 			10,
 			2
 		);
+	}
 
+	/**
+	 * It isn't necessary register block assets because it is a server side block.
+	 */
+	protected function register_block_type_assets() {
+		return null;
 	}
 
 	/**
@@ -62,8 +67,6 @@ class RelatedProducts extends AbstractBlock {
 		}
 	}
 
-
-
 	/**
 	 * Return a custom query based on attributes, filters and global WP_Query.
 	 *
@@ -84,6 +87,4 @@ class RelatedProducts extends AbstractBlock {
 			'post_status' => 'publish',
 		);
 	}
-
-
 }
