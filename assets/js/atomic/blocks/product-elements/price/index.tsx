@@ -2,7 +2,7 @@
  * External dependencies
  */
 import { registerBlockType } from '@wordpress/blocks';
-import type { BlockConfiguration } from '@wordpress/blocks';
+import classnames from 'classnames';
 
 /**
  * Internal dependencies
@@ -17,25 +17,32 @@ import {
 	BLOCK_DESCRIPTION as description,
 } from './constants';
 
-type CustomBlockConfiguration = BlockConfiguration & {
-	ancestor: string[];
-};
+const { ancestor, ...configuration } = sharedConfig;
 
-const blockConfig: CustomBlockConfiguration = {
-	...sharedConfig,
+const blockConfig = {
+	...configuration,
 	apiVersion: 2,
 	title,
 	description,
-	ancestor: [
-		'woocommerce/all-products',
-		'woocommerce/single-product',
-		'core/post-template',
-	],
 	usesContext: [ 'query', 'queryId', 'postId' ],
 	icon: { src: icon },
 	attributes,
 	supports,
 	edit,
+	save: () => {
+		if (
+			attributes.isDescendentOfQueryLoop ||
+			attributes.isDescendentOfSingleProductTemplate
+		) {
+			return null;
+		}
+
+		return (
+			<div
+				className={ classnames( 'is-loading', attributes.className ) }
+			/>
+		);
+	},
 };
 
 registerBlockType( 'woocommerce/product-price', blockConfig );
