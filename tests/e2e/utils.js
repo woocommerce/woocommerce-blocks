@@ -98,7 +98,10 @@ export async function insertBlockDontWaitForInsertClose( searchTerm ) {
 	const insertButton = (
 		await page.$x( `//button//span[text()='${ searchTerm }']` )
 	 )[ 0 ];
-	await insertButton.click();
+
+	await page.evaluate( ( element ) => {
+		element.click();
+	}, insertButton );
 }
 
 export const closeInserter = async () => {
