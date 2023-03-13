@@ -117,12 +117,20 @@ const Form = ( {
 					'Country / State',
 					'woo-gutenberg-products-block'
 				) }
-				value={ `${ selectedCountry }${
-					selectedState &&
-					states[ selectedCountry ]?.[ selectedState ]
-						? ':' + selectedState
-						: ''
-				}` }
+				value={ ( () => {
+					if ( ! selectedState && countryHasStates ) {
+						return `${ selectedCountry }:${
+							Object.keys( states[ selectedCountry ] )[ 0 ]
+						}`;
+					}
+
+					return `${ selectedCountry }${
+						selectedState &&
+						states[ selectedCountry ]?.[ selectedState ]
+							? ':' + selectedState
+							: ''
+					}`;
+				} )() }
 				onChange={ ( val: string ) => {
 					const [ country, state = '' ] = val.split( ':' );
 					setLocationAddressField( 'country' )( country );
