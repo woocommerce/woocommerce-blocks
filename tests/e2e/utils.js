@@ -161,16 +161,15 @@ export const isBlockInsertedInWidgetsArea = async ( blockName ) => {
 export async function goToSiteEditor( params = {} ) {
 	await visitAdminPage(
 		'site-editor.php',
-		addQueryArgs( '', { ...params, canvas: 'edit' } )
+		addQueryArgs( '', { ...params } )
 	);
-
-	// @todo Remove the Gutenberg guard clause in goToSiteEditor when WP 6.2 is released.
-	if (
-		GUTENBERG_EDITOR_CONTEXT === 'gutenberg' &&
-		( params?.postId || Object.keys( params ).length === 0 )
-	) {
-		await enterEditMode();
-	}
+	await enterEditMode();
+	await page.click(
+		'.edit-site-layout__header [aria-label="Show template details"]'
+	);
+	await page.click(
+		'.edit-site-document-actions__info-dropdown .edit-site-template-details__show-all-button'
+	);
 }
 
 /**
@@ -204,8 +203,7 @@ export async function goToTemplatesList( {
 	postType = 'wp_template',
 	waitFor = 'list',
 } = {} ) {
-	// @ts-ignore
-	await goToSiteEditor( { path: `/${ postType }/all` } );
+	await goToSiteEditor( { postType } );
 
 	if ( waitFor === 'actions' ) {
 		await page.waitForSelector(
