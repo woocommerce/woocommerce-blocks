@@ -8,6 +8,7 @@ import { useSelect } from '@wordpress/data';
 import { addFilter } from '@wordpress/hooks';
 import { ProductQueryFeedbackPrompt } from '@woocommerce/editor-components/feedback-prompt';
 import { EditorBlock } from '@woocommerce/types';
+import { usePrevious } from '@woocommerce/base-hooks';
 import {
 	FormTokenField,
 	ToggleControl,
@@ -33,6 +34,7 @@ import {
 } from './utils';
 import {
 	ALL_PRODUCT_QUERY_CONTROLS,
+	QUERY_DEFAULT_ATTRIBUTES,
 	QUERY_LOOP_ID,
 	STOCK_STATUS_OPTIONS,
 } from './constants';
@@ -149,7 +151,14 @@ export const TOOLS_PANEL_CONTROLS = {
 			</ToolsPanelItem>
 		);
 	},
-	wooInherit: ( props: ProductQueryBlock ) => {
+	wooInherit: (
+		props: ProductQueryBlock & {
+			queryObjectBeforeInheritEnabled:
+				| ProductQueryBlock[ 'attributes' ][ 'query' ]
+				| undefined;
+			defaultWooQueryParams: Partial< ProductQueryArguments >;
+		}
+	) => {
 		return (
 			<ToggleControl
 				className="woo-inherit-query-toggle"
@@ -169,10 +178,23 @@ export const TOOLS_PANEL_CONTROLS = {
 				onChange={ ( inherit ) => {
 					if ( isCustomInheritGlobalQueryImplementationEnabled ) {
 						return setQueryAttribute( props, {
+							...QUERY_DEFAULT_ATTRIBUTES.query,
 							__woocommerceInherit: inherit,
+							// Restore the query object value before inherit was enabled.
+							...( inherit === false && {
+								...props.queryObjectBeforeInheritEnabled,
+							} ),
 						} );
 					}
-					return setQueryAttribute( props, { inherit } );
+
+					setQueryAttribute( props, {
+						...props.defaultWooQueryParams,
+						inherit,
+						// Restore the query object value before inherit was enabled.
+						...( inherit === false && {
+							...props.queryObjectBeforeInheritEnabled,
+						} ),
+					} );
 				} }
 			/>
 		);
@@ -184,6 +206,13 @@ const ProductQueryControls = ( props: ProductQueryBlock ) => {
 	const defaultWooQueryParams = useDefaultWooQueryParamsForVariation(
 		props.attributes.namespace
 	);
+	const queryObjectBeforeInheritEnabled = usePrevious(
+		props.attributes.query,
+		( value ) => {
+			return value.inherit === false;
+		}
+	);
+
 	return (
 		<>
 			<InspectorControls>
@@ -203,7 +232,16 @@ const ProductQueryControls = ( props: ProductQueryBlock ) => {
 					{ Object.entries( TOOLS_PANEL_CONTROLS ).map(
 						( [ key, Control ] ) =>
 							allowedControls?.includes( key ) ? (
-								<Control { ...props } key={ key } />
+								<Control
+									{ ...props }
+									queryObjectBeforeInheritEnabled={
+										queryObjectBeforeInheritEnabled
+									}
+									defaultWooQueryParams={
+										defaultWooQueryParams
+									}
+									key={ key }
+								/>
 							) : null
 					) }
 				</ToolsPanel>
