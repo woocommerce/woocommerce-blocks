@@ -13,6 +13,7 @@ import { getIconsFromPaymentMethods } from '@woocommerce/base-utils';
 import { getSetting } from '@woocommerce/settings';
 import { PaymentEventsProvider } from '@woocommerce/base-context';
 import classNames from 'classnames';
+import { select } from '@wordpress/data';
 import { isObject } from '@woocommerce/types';
 
 /**
@@ -37,6 +38,11 @@ interface Props {
 	checkoutButtonLabel: string;
 }
 
+const isCartItemUpdating = () => {
+	const store = select( 'wc/store/cart' );
+	return store.getItemsPendingQuantityUpdate()?.length !== 0;
+};
+
 const hasChildren = ( children ): boolean => {
 	return children.some( ( child ) => {
 		if ( Array.isArray( child ) ) {
@@ -58,6 +64,7 @@ const Block = ( {
 		  parseInt( cartTotals.total_items_tax, 10 )
 		: parseInt( cartTotals.total_items, 10 );
 
+	const cartItemUpdating = isCartItemUpdating();
 	const hasButtons = hasChildren( children );
 
 	return (
@@ -79,9 +86,15 @@ const Block = ( {
 					children
 				) : (
 					<>
-						<CartButton cartButtonLabel={ cartButtonLabel } />
+						<CartButton
+							cartButtonLabel={ cartButtonLabel }
+							disabled={ cartItemUpdating }
+							showSpinner={ cartItemUpdating }
+						/>
 						<CheckoutButton
 							checkoutButtonLabel={ checkoutButtonLabel }
+							disabled={ cartItemUpdating }
+							showSpinner={ cartItemUpdating }
 						/>
 					</>
 				) }

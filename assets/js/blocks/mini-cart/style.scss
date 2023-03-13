@@ -180,6 +180,12 @@ h2.wc-block-mini-cart__title {
 		.wp-block-button {
 			flex-grow: 1;
 			display: inline-flex;
+
+			&:disabled {
+				padding: $gap-large;
+				opacity: 0.6;
+				cursor: auto;
+			}
 		}
 
 		.wc-block-components-button.outlined {
