@@ -81,7 +81,7 @@ class ProductQuery extends AbstractBlock {
 	 * @param array $parsed_block The block being rendered.
 	 * @return boolean
 	 */
-	private function is_woocommerce_variation( $parsed_block ) {
+	public static function is_woocommerce_variation( $parsed_block ) {
 		return isset( $parsed_block['attrs']['namespace'] )
 		&& substr( $parsed_block['attrs']['namespace'], 0, 11 ) === 'woocommerce';
 	}
@@ -99,7 +99,7 @@ class ProductQuery extends AbstractBlock {
 
 		$this->parsed_block = $parsed_block;
 
-		if ( $this->is_woocommerce_variation( $parsed_block ) ) {
+		if ( self::is_woocommerce_variation( $parsed_block ) ) {
 			// Set this so that our product filters can detect if it's a PHP template.
 			$this->asset_data_registry->add( 'has_filterable_products', true, true );
 			$this->asset_data_registry->add( 'is_rendering_php_template', true, true );
@@ -111,6 +111,22 @@ class ProductQuery extends AbstractBlock {
 				1
 			);
 		}
+	}
+
+	/**
+	 * Merge tax_queries from various queries.
+	 *
+	 * @param array ...$queries Query arrays to be merged.
+	 * @return array
+	 */
+	private function merge_tax_queries( ...$queries ) {
+		$tax_query = [];
+		foreach ( $queries as $query ) {
+			if ( ! empty( $query['tax_query'] ) ) {
+				$tax_query = array_merge( $tax_query, $query['tax_query'] );
+			}
+		}
+		return [ 'tax_query' => $tax_query ];
 	}
 
 	/**
@@ -128,8 +144,9 @@ class ProductQuery extends AbstractBlock {
 		$attributes_query = is_array( $woo_attributes ) ? $this->get_product_attributes_query( $woo_attributes ) : array();
 		$stock_query      = is_array( $woo_stock_status ) ? $this->get_stock_status_query( $woo_stock_status ) : array();
 		$visibility_query = $this->get_product_visibility_query( $stock_query );
+		$tax_query        = $this->merge_tax_queries( $attributes_query, $visibility_query );
 
-		return array_merge( $args, $on_sale_query, $orderby_query, $attributes_query, $stock_query, $visibility_query );
+		return array_merge( $args, $on_sale_query, $orderby_query, $stock_query, $tax_query );
 	}
 
 	/**

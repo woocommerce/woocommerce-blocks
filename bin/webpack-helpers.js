@@ -23,7 +23,6 @@ const wcDepMap = {
 const wcHandleMap = {
 	'@woocommerce/blocks-registry': 'wc-blocks-registry',
 	'@woocommerce/settings': 'wc-settings',
-	'@woocommerce/block-settings': 'wc-settings',
 	'@woocommerce/block-data': 'wc-blocks-data-store',
 	'@woocommerce/data': 'wc-store-data',
 	'@woocommerce/shared-context': 'wc-blocks-shared-context',
@@ -80,10 +79,6 @@ const getAlias = ( options = {} ) => {
 		'@woocommerce/block-hocs': path.resolve(
 			__dirname,
 			`../assets/js/${ pathPart }hocs`
-		),
-		'@woocommerce/blocks-registry': path.resolve(
-			__dirname,
-			'../assets/js/blocks-registry'
 		),
 		'@woocommerce/block-settings': path.resolve(
 			__dirname,

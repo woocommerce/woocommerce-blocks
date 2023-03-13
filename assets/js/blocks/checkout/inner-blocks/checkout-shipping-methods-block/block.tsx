@@ -20,12 +20,15 @@ import type {
 	PackageRateOption,
 	CartShippingPackageShippingRate,
 } from '@woocommerce/types';
+import type { ReactElement } from 'react';
+import { useSelect } from '@wordpress/data';
+import { CART_STORE_KEY } from '@woocommerce/block-data';
 
 /**
  * Internal dependencies
  */
-import NoShippingPlaceholder from './no-shipping-placeholder';
 import './style.scss';
+import { shippingAddressHasValidationErrors } from '../../../../data/cart/utils';
 
 /**
  * Renders a shipping rate control option.
@@ -52,7 +55,10 @@ const renderShippingRatesControlOption = (
 	};
 };
 
-const Block = (): JSX.Element | null => {
+const Block = ( {
+	noShippingPlaceholder = null,
+	shippingCostRequiresAddress = false,
+} ): ReactElement | null => {
 	const { isEditor } = useEditorContext();
 
 	const {
@@ -62,6 +68,10 @@ const Block = (): JSX.Element | null => {
 		hasCalculatedShipping,
 		isCollectable,
 	} = useShippingData();
+
+	const shippingAddressPushed = useSelect( ( select ) => {
+		return select( CART_STORE_KEY ).getFullShippingAddressPushed();
+	} );
 
 	const filteredShippingRates = isCollectable
 		? shippingRates.map( ( shippingRatesPackage ) => {
@@ -81,13 +91,15 @@ const Block = (): JSX.Element | null => {
 		return null;
 	}
 
+	const shippingAddressIsComplete = ! shippingAddressHasValidationErrors();
+
 	const shippingRatesPackageCount =
 		getShippingRatesPackageCount( shippingRates );
 
 	if (
-		! isEditor &&
-		! hasCalculatedShipping &&
-		! shippingRatesPackageCount
+		( ! hasCalculatedShipping && ! shippingRatesPackageCount ) ||
+		( shippingCostRequiresAddress &&
+			( ! shippingAddressPushed || ! shippingAddressIsComplete ) )
 	) {
 		return (
 			<p>
@@ -105,7 +117,7 @@ const Block = (): JSX.Element | null => {
 				context={ noticeContexts.SHIPPING_METHODS }
 			/>
 			{ isEditor && ! shippingRatesPackageCount ? (
-				<NoShippingPlaceholder />
+				noShippingPlaceholder
 			) : (
 				<ShippingRatesControl
 					noResultsMessage={

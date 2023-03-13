@@ -2,11 +2,11 @@
 
 require_once  __DIR__ . '/class-woo-directive-store.php';
 
-function store( $data ) {
+function woo_directives_store( $data ) {
 	Woo_Directive_Store::merge_data( $data );
 }
 
-function evaluate( string $path, array $context = array() ) {
+function woo_directives_evaluate( string $path, array $context = array() ) {
 	$current = array_merge(
 		Woo_Directive_Store::get_data(),
 		array( 'context' => $context )
@@ -23,7 +23,7 @@ function evaluate( string $path, array $context = array() ) {
 	return $current;
 }
 
-function set_style( $style, $name, $value ) {
+function woo_directives_set_style( $style, $name, $value ) {
 	$style_assignments = explode( ';', $style );
 	$modified          = false;
 	foreach ( $style_assignments as $style_assignment ) {

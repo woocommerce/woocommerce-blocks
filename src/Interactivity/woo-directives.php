@@ -1,6 +1,4 @@
 <?php
-include_once __DIR__ . '/../../../gutenberg/lib/experimental/html/wp-html.php';
-
 require_once __DIR__ . '/directives/class-woo-directive-context.php';
 require_once __DIR__ . '/directives/class-woo-directive-store.php';
 require_once __DIR__ . '/directives/woo-process-directives.php';
@@ -13,20 +11,20 @@ require_once __DIR__ . '/directives/tags/woo-context.php';
 
 /**
  * Register the Interactivity API scripts. These files are enqueued when a block
- * defines `wc-interactivity` as a dependency.
+ * defines `woo-directives-runtime` as a dependency.
  */
 function woo_directives_register_scripts() {
 	wp_register_script(
-		'wc-interactivity-vendors',
-		plugins_url( '../../build/wc-interactivity-vendors.js', __FILE__ ),
+		'woo-directives-vendors',
+		plugins_url( '../../build/woo-directives-vendors.js', __FILE__ ),
 		array(),
 		'1.0.0',
 		true
 	);
 	wp_register_script(
-		'wc-interactivity',
-		plugins_url( '../../build/wc-interactivity.js', __FILE__ ),
-		array( 'wc-interactivity-vendors' ),
+		'woo-directives-runtime',
+		plugins_url( '../../build/woo-directives-runtime.js', __FILE__ ),
+		array( 'woo-directives-vendors' ),
 		'1.0.0',
 		true
 	);
@@ -59,7 +57,7 @@ function woo_directives_mark_interactive_blocks( $block_content, $block, $instan
 	if ( isset( $instance->parsed_block['isolated'] ) ) {
 		$w = new WP_HTML_Tag_Processor( $block_content );
 		$w->next_tag();
-		$w->set_attribute( 'data-woo-ignore', '' );
+		$w->set_attribute( 'data-woo-ignore', true );
 		$block_content = (string) $w;
 	}
 
@@ -71,7 +69,7 @@ function woo_directives_mark_interactive_blocks( $block_content, $block, $instan
 	// Add the `data-woo-island` attribute if it's interactive.
 	$w = new WP_HTML_Tag_Processor( $block_content );
 	$w->next_tag();
-	$w->set_attribute( 'data-woo-island', '' );
+	$w->set_attribute( 'data-woo-island', true );
 
 	return (string) $w;
 }

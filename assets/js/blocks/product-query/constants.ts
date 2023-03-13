@@ -20,6 +20,9 @@ function objectOmit< T, K extends keyof T >( obj: T, key: K ) {
 	return rest;
 }
 
+export const EDIT_ATTRIBUTES_URL =
+	'/wp-admin/edit.php?post_type=product&page=product_attributes';
+
 export const QUERY_LOOP_ID = 'core/query';
 
 export const DEFAULT_CORE_ALLOWED_CONTROLS = [ 'taxQuery', 'search' ];
@@ -77,13 +80,34 @@ export const INNER_BLOCKS_TEMPLATE: InnerBlockTemplate[] = [
 		'core/post-template',
 		{ __woocommerceNamespace: PRODUCT_TEMPLATE_ID },
 		[
-			[ 'woocommerce/product-image' ],
+			[
+				'woocommerce/product-image',
+				{
+					style: {
+						spacing: {
+							margin: {
+								bottom: '0.75rem',
+								top: '0',
+							},
+						},
+					},
+				},
+			],
 			[
 				'core/post-title',
 				{
 					textAlign: 'center',
 					level: 3,
 					fontSize: 'medium',
+					style: {
+						spacing: {
+							margin: {
+								bottom: '0.75rem',
+								top: '0',
+							},
+						},
+					},
+					isLink: true,
 					__woocommerceNamespace: PRODUCT_TITLE_ID,
 				},
 				[],
@@ -95,7 +119,10 @@ export const INNER_BLOCKS_TEMPLATE: InnerBlockTemplate[] = [
 					fontSize: 'small',
 					style: {
 						spacing: {
-							margin: { bottom: '1rem' },
+							margin: {
+								bottom: '0.75rem',
+								top: '0',
+							},
 						},
 					},
 				},
@@ -108,7 +135,10 @@ export const INNER_BLOCKS_TEMPLATE: InnerBlockTemplate[] = [
 					fontSize: 'small',
 					style: {
 						spacing: {
-							margin: { bottom: '1rem' },
+							margin: {
+								bottom: '0.75rem',
+								top: '0',
+							},
 						},
 					},
 				},
