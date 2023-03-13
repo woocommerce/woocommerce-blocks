@@ -96,19 +96,15 @@ function woo_directives_inner_blocks( $parsed_block, $source_block, $parent_bloc
 add_filter( 'render_block_data', 'woo_directives_inner_blocks', 10, 3 );
 
 function woo_process_directives_in_block( $block_content ) {
-	$tag_directives = array(
-		'woo-context' => 'process_woo_context_tag',
-	);
-
-	$attribute_directives = array(
-		'data-woo-context' => 'process_woo_context_attribute',
+	$directives = array(
+		'data-woo-context' => 'process_woo_context',
 		'data-woo-bind'    => 'process_woo_bind',
 		'data-woo-class'   => 'process_woo_class',
 		'data-woo-style'   => 'process_woo_style',
 	);
 
 	$tags = new WP_HTML_Tag_Processor( $block_content );
-	$tags = woo_process_directives( $tags, 'data-woo-', $tag_directives, $attribute_directives );
+	$tags = woo_process_directives( $tags, 'data-woo-', $directives );
 	return $tags->get_updated_html();
 }
 add_filter(

@@ -1,6 +1,6 @@
 <?php
 
-function process_woo_context_attribute( $tags, $context ) {
+function process_woo_context( $tags, $context ) {
 	if ( $tags->is_tag_closer() ) {
 		$context->rewind_context();
 		return;
