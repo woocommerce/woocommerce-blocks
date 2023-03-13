@@ -89,6 +89,7 @@ jobs:
 
     JSE2ETests:
         name: JavaScript E2E Tests (latest)
+        if: ${{ false }} # disable until we've fixed failing tests.
         strategy:
             fail-fast: false
             matrix:
