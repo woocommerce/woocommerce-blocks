@@ -2,6 +2,7 @@
 namespace Automattic\WooCommerce\Blocks;
 
 use Automattic\WooCommerce\Blocks\Domain\Package;
+use Automattic\WooCommerce\Blocks\Templates\BlockTemplatesCompatibility;
 use Automattic\WooCommerce\Blocks\Templates\ProductAttributeTemplate;
 use Automattic\WooCommerce\Blocks\Templates\SingleProductTemplateCompatibility;
 use Automattic\WooCommerce\Blocks\Utils\BlockTemplateUtils;
@@ -326,7 +327,8 @@ class BlockTemplatesController {
 				}
 
 				if ( 'single-product' === $template->slug ) {
-					if ( ! is_admin() ) {
+					if ( ! is_admin() && ! BlockTemplateUtils::template_has_legacy_template_block( $template ) ) {
+
 						$new_content       = SingleProductTemplateCompatibility::add_compatibility_layer( $template->content );
 						$template->content = $new_content;
 					}
