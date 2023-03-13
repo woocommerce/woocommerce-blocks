@@ -22,6 +22,7 @@ import {
 	openWidgetEditor,
 	closeModalIfExists,
 } from '../../utils.js';
+import { merchant as merchantUtils } from '../../../utils/merchant';
 
 const block = {
 	name: 'Checkout',
@@ -82,6 +83,58 @@ describe( `${ block.name } Block`, () => {
 				await toggleLabel.click();
 				await expect( page ).toMatchElement(
 					'.wc-block-components-shipping-rates-control'
+				);
+			} );
+
+			it( 'toggles the same setting in shipping method and shipping methods blocks', async () => {
+				await merchantUtils.goToLocalPickupSettingsPage();
+				await merchantUtils.enableLocalPickup();
+				await merchantUtils.saveLocalPickupSettingsPageWithRefresh();
+
+				await visitBlockPage( `${ block.name } Block` );
+				await expect( page ).toClick(
+					'.wc-block-checkout__shipping-method button',
+					{ text: 'Shipping' }
+				);
+				await openDocumentSettingsSidebar();
+				const toggleLabel = await findLabelWithText(
+					'Hide shipping costs until an address is entered'
+				);
+				await toggleLabel.click();
+				const [ label ] = await page.$x(
+					'//label[contains(., "Hide shipping costs until an address is entered")]'
+				);
+				const shippingMethodForValue = await page.evaluate(
+					( passedLabel ) => passedLabel.getAttribute( 'for' ),
+					label
+				);
+				const shippingMethodSettingIsChecked = await page.evaluate(
+					( passedShippingMethodForValue ) =>
+						document.getElementById( passedShippingMethodForValue )
+							.checked,
+					shippingMethodForValue
+				);
+				await expect( shippingMethodSettingIsChecked ).toBe( true );
+				await selectBlockByName(
+					'woocommerce/checkout-shipping-methods-block'
+				);
+				const [ shippingMethodsLabel ] = await page.$x(
+					'//label[contains(., "Hide shipping costs until an address is entered")]'
+				);
+				const shippingMethodsLabelForValue = await page.evaluate(
+					( passedShippingMethodsLabel ) =>
+						passedShippingMethodsLabel.getAttribute( 'for' ),
+					shippingMethodsLabel
+				);
+				const shippingMethodLabelIsChecked = await page.evaluate(
+					( passedShippingMethodsLabelForValue ) =>
+						document.getElementById(
+							passedShippingMethodsLabelForValue
+						).checked,
+					shippingMethodsLabelForValue
+				);
+				expect( shippingMethodSettingIsChecked ).toBe(
+					shippingMethodLabelIsChecked
 				);
 			} );
 

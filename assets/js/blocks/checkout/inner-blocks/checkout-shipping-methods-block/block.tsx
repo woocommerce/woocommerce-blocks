@@ -21,11 +21,14 @@ import type {
 	CartShippingPackageShippingRate,
 } from '@woocommerce/types';
 import type { ReactElement } from 'react';
+import { useSelect } from '@wordpress/data';
+import { CART_STORE_KEY } from '@woocommerce/block-data';
 
 /**
  * Internal dependencies
  */
 import './style.scss';
+import { shippingAddressHasValidationErrors } from '../../../../data/cart/utils';
 
 /**
  * Renders a shipping rate control option.
@@ -66,6 +69,10 @@ const Block = ( {
 		isCollectable,
 	} = useShippingData();
 
+	const shippingAddressPushed = useSelect( ( select ) => {
+		return select( CART_STORE_KEY ).getFullShippingAddressPushed();
+	} );
+
 	const filteredShippingRates = isCollectable
 		? shippingRates.map( ( shippingRatesPackage ) => {
 				return {
@@ -84,12 +91,15 @@ const Block = ( {
 		return null;
 	}
 
+	const shippingAddressIsComplete = ! shippingAddressHasValidationErrors();
+
 	const shippingRatesPackageCount =
 		getShippingRatesPackageCount( shippingRates );
 
 	if (
 		( ! hasCalculatedShipping && ! shippingRatesPackageCount ) ||
-		( shippingCostRequiresAddress && isEditor )
+		( shippingCostRequiresAddress &&
+			( ! shippingAddressPushed || ! shippingAddressIsComplete ) )
 	) {
 		return (
 			<p>
