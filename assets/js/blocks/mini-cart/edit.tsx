@@ -125,14 +125,14 @@ const Edit = ( { attributes, setAttributes }: Props ): ReactElement => {
 							<ToggleGroupControlOption
 								value={ 'hidden' }
 								label={ __(
-									'Make invisible',
+									'Hide',
 									'woo-gutenberg-products-block'
 								) }
 							/>
 							<ToggleGroupControlOption
 								value={ 'removed' }
 								label={ __(
-									"Don't render",
+									'Remove',
 									'woo-gutenberg-products-block'
 								) }
 							/>
