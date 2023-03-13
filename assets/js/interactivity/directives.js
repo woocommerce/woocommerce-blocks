@@ -173,4 +173,61 @@ export default () => {
 			}
 		}
 	);
+
+	// wp-show
+	directive(
+		'show',
+		( {
+			directives: {
+				show: { default: show },
+			},
+			element,
+			evaluate,
+			context,
+		} ) => {
+			const contextValue = useContext( context );
+			if ( ! evaluate( show, { context: contextValue } ) )
+				element.props.children = (
+					<template>{ element.props.children }</template>
+				);
+		}
+	);
+
+	// wp-ignore
+	directive(
+		'ignore',
+		( {
+			element: {
+				type: Type,
+				props: { innerHTML, ...rest },
+			},
+		} ) => {
+			// Preserve the initial inner HTML.
+			const cached = useMemo( () => innerHTML, [] );
+			return (
+				<Type
+					dangerouslySetInnerHTML={ { __html: cached } }
+					{ ...rest }
+				/>
+			);
+		}
+	);
+
+	// wp-text
+	directive(
+		'text',
+		( {
+			directives: {
+				text: { default: text },
+			},
+			element,
+			evaluate,
+			context,
+		} ) => {
+			const contextValue = useContext( context );
+			element.props.children = evaluate( text, {
+				context: contextValue,
+			} );
+		}
+	);
 };

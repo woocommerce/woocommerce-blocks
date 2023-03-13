@@ -48,7 +48,9 @@ export function toVdom( node ) {
 
 	if ( ignore && ! island )
 		return h( node.localName, {
-			dangerouslySetInnerHTML: { __html: node.innerHTML },
+			...props,
+			innerHTML: node.innerHTML,
+			directives: { ignore: true },
 		} );
 	if ( island ) hydratedIslands.add( node );
 
