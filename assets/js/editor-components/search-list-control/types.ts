@@ -43,6 +43,9 @@ export type SearchListItem = {
 	parent: number;
 	termId?: string | number;
 	value: string;
+	// This is to avoid a problem with overlapping
+	// ids with terms and their parents.
+	// For more context: https://github.com/woocommerce/woocommerce-blocks/pull/8720
 } & (
 	| { id: string | number; termId?: never }
 	| { id?: never; termId: string | number }

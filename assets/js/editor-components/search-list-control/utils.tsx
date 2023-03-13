@@ -61,6 +61,7 @@ export const buildTermsTree = (
 			// If the object has `termId` property, it is an `AttributeTerm`.
 			// Those can't have children, but sometimes they have the same `id`
 			// as an `AttributeObject`, causing possible overlaps.
+			// For more context: https://github.com/woocommerce/woocommerce-blocks/pull/8720
 			const children = term.termId ? null : termsByParent[ id ];
 			builtParents.push( '' + id );
 			return {
