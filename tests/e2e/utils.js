@@ -204,7 +204,8 @@ export async function goToTemplatesList( {
 	postType = 'wp_template',
 	waitFor = 'list',
 } = {} ) {
-	await goToSiteEditor( { postType } );
+	// @ts-ignore
+	await goToSiteEditor( { path: `/${ postType }/all` } );
 
 	if ( waitFor === 'actions' ) {
 		await page.waitForSelector(
