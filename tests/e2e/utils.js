@@ -257,7 +257,7 @@ export async function getAllTemplates() {
 		rows.map( async ( row ) => ( {
 			addedBy: (
 				await getTextContent( templatesListTable.cells, row )
-			 )[ 1 ],
+			 )[ 1 ].replace( 'Customized', '' ),
 			hasActions: await elementExists(
 				templatesListTable.actionsContainer,
 				row

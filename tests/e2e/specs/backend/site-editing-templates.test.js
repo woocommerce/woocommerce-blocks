@@ -241,6 +241,7 @@ describe( 'Store Editing Templates', () => {
 			const EXPECTED_TEMPLATE = defaultTemplateProps( 'Product Catalog' );
 
 			await goToTemplatesList();
+			await page.waitForNetworkIdle();
 
 			const templates = await getAllTemplates();
 
