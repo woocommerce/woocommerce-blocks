@@ -38,11 +38,15 @@ export type SearchListItem = {
 	breadcrumbs: string[];
 	children?: SearchListItem[];
 	count: number;
-	id: string | number;
+	id?: string | number;
 	name: string;
 	parent: number;
+	termId?: string | number;
 	value: string;
-};
+} & (
+	| { id: string | number; termId?: never }
+	| { id?: never; termId: string | number }
+ );
 
 export interface SearchListItemsContainerProps
 	extends SearchListControlProps,

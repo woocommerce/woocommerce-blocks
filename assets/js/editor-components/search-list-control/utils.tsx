@@ -57,8 +57,12 @@ export const buildTermsTree = (
 
 	const fillWithChildren = ( terms: SearchListItem[] ): SearchListItem[] => {
 		return terms.map( ( term ) => {
-			const children = termsByParent[ term.id ];
-			builtParents.push( '' + term.id );
+			const id = ( term.id ?? term.termId ) as string | number;
+			// If the object has `termId` property, it is an `AttributeTerm`.
+			// Those can't have children, but sometimes they have the same `id`
+			// as an `AttributeObject`, causing possible overlaps.
+			const children = term.termId ? null : termsByParent[ id ];
+			builtParents.push( '' + id );
 			return {
 				...term,
 				breadcrumbs: getParentsName( listById[ term.parent ] ),
