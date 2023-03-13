@@ -580,6 +580,6 @@ class MiniCart extends AbstractBlock {
 	 * @return bool
 	 */
 	public function should_not_render_mini_cart( array $attributes ) {
-		return isset( $attributes['makeInvisibleInCartAndCheckout'] ) && false === $attributes['makeInvisibleInCartAndCheckout'];
+		return isset( $attributes['cartAndCheckoutRenderStyle'] ) && 'hidden' !== $attributes['cartAndCheckoutRenderStyle'];
 	}
 }

@@ -61,14 +61,12 @@ const settings: BlockConfiguration = {
 			type: 'boolean',
 			default: false,
 		},
-		makeInvisibleInCartAndCheckout: {
-			type: 'boolean',
-			default: true,
+		cartAndCheckoutRenderStyle: {
+			type: 'string',
+			default: 'hidden',
 		},
 	},
-
 	edit,
-
 	save() {
 		return null;
 	},

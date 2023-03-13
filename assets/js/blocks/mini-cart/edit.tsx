@@ -24,7 +24,7 @@ import QuantityBadge from './quantity-badge';
 interface Attributes {
 	addToCartBehaviour: string;
 	hasHiddenPrice: boolean;
-	makeInvisibleInCartAndCheckout: boolean;
+	cartAndCheckoutRenderStyle: boolean;
 }
 
 interface Props {
@@ -33,11 +33,8 @@ interface Props {
 }
 
 const Edit = ( { attributes, setAttributes }: Props ): ReactElement => {
-	const {
-		addToCartBehaviour,
-		hasHiddenPrice,
-		makeInvisibleInCartAndCheckout,
-	} = attributes;
+	const { addToCartBehaviour, hasHiddenPrice, cartAndCheckoutRenderStyle } =
+		attributes;
 	const blockProps = useBlockProps( {
 		className: `wc-block-mini-cart`,
 	} );
@@ -114,10 +111,10 @@ const Edit = ( { attributes, setAttributes }: Props ): ReactElement => {
 								'Mini Cart in cart and checkout pages',
 								'woo-gutenberg-products-block'
 							) }
-							value={ makeInvisibleInCartAndCheckout }
+							value={ cartAndCheckoutRenderStyle }
 							onChange={ ( value ) => {
 								setAttributes( {
-									makeInvisibleInCartAndCheckout: value,
+									cartAndCheckoutRenderStyle: value,
 								} );
 							} }
 							help={ __(
@@ -126,14 +123,14 @@ const Edit = ( { attributes, setAttributes }: Props ): ReactElement => {
 							) }
 						>
 							<ToggleGroupControlOption
-								value={ true }
+								value={ 'hidden' }
 								label={ __(
 									'Make invisible',
 									'woo-gutenberg-products-block'
 								) }
 							/>
 							<ToggleGroupControlOption
-								value={ false }
+								value={ 'removed' }
 								label={ __(
 									"Don't render",
 									'woo-gutenberg-products-block'
