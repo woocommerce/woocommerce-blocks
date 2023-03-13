@@ -2,7 +2,6 @@
 namespace Automattic\WooCommerce\Blocks\BlockTypes;
 
 use Automattic\WooCommerce\Blocks\Package;
-use Automattic\WooCommerce\StoreApi\Utilities\CartController;
 use Automattic\WooCommerce\Blocks\Payments\PaymentMethodRegistry;
 use Automattic\WooCommerce\Blocks\Assets\AssetDataRegistry;
 use Automattic\WooCommerce\Blocks\Assets\Api as AssetApi;
@@ -71,6 +70,9 @@ class MiniCart extends AbstractBlock {
 	protected function initialize() {
 		parent::initialize();
 		add_action( 'wp_loaded', array( $this, 'register_empty_cart_message_block_pattern' ) );
+		add_action( 'wp_print_footer_scripts', array( $this, 'enqueue_wc_settings' ), 1 );
+		// We need this action to run after the equivalent in AssetDataRegistry.
+		add_action( 'wp_print_footer_scripts', array( $this, 'print_lazy_load_scripts' ), 3 );
 	}
 
 	/**
@@ -150,45 +152,6 @@ class MiniCart extends AbstractBlock {
 			);
 		}
 
-		$script_data = $this->asset_api->get_script_data( 'build/mini-cart-component-frontend.js' );
-
-		$num_dependencies = count( $script_data['dependencies'] );
-		$wp_scripts       = wp_scripts();
-
-		for ( $i = 0; $i < $num_dependencies; $i++ ) {
-			$dependency = $script_data['dependencies'][ $i ];
-
-			foreach ( $wp_scripts->registered as $script ) {
-				if ( $script->handle === $dependency ) {
-					$this->append_script_and_deps_src( $script );
-					break;
-				}
-			}
-		}
-
-		$payment_method_registry = Package::container()->get( PaymentMethodRegistry::class );
-		$payment_methods         = $payment_method_registry->get_all_active_payment_method_script_dependencies();
-
-		foreach ( $payment_methods as $payment_method ) {
-			$payment_method_script = $this->get_script_from_handle( $payment_method );
-
-			if ( ! is_null( $payment_method_script ) ) {
-				$this->append_script_and_deps_src( $payment_method_script );
-			}
-		}
-
-		$this->scripts_to_lazy_load['wc-block-mini-cart-component-frontend'] = array(
-			'src'          => $script_data['src'],
-			'version'      => $script_data['version'],
-			'translations' => $this->get_inner_blocks_translations(),
-		);
-
-		$this->asset_data_registry->add(
-			'mini_cart_block_frontend_dependencies',
-			$this->scripts_to_lazy_load,
-			true
-		);
-
 		$this->asset_data_registry->add(
 			'displayCartPricesIncludingTax',
 			$this->display_cart_prices_including_tax,
@@ -239,6 +202,102 @@ class MiniCart extends AbstractBlock {
 		 * @since 5.8.0
 		 */
 		do_action( 'woocommerce_blocks_cart_enqueue_data' );
+	}
+
+	/**
+	 * Function to enqueue `wc-settings` script and dequeue it later on so when
+	 * AssetDataRegistry runs, it appears enqueued- This allows the necessary
+	 * data to be printed to the page.
+	 */
+	public function enqueue_wc_settings() {
+		// Return early if another block has already enqueued `wc-settings`.
+		if ( wp_script_is( 'wc-settings', 'enqueued' ) ) {
+			return;
+		}
+		// We are lazy-loading `wc-settings`, but we need to enqueue it here so
+		// AssetDataRegistry knows it's going to load.
+		wp_enqueue_script( 'wc-settings' );
+		// After AssetDataRegistry function runs, we dequeue `wc-settings`.
+		add_action( 'wp_print_footer_scripts', array( $this, 'dequeue_wc_settings' ), 4 );
+	}
+
+	/**
+	 * Function to dequeue `wc-settings` script.
+	 */
+	public function dequeue_wc_settings() {
+		wp_dequeue_script( 'wc-settings' );
+	}
+
+	/**
+	 * Prints the variable containing information about the scripts to lazy load.
+	 */
+	public function print_lazy_load_scripts() {
+		$script_data = $this->asset_api->get_script_data( 'build/mini-cart-component-frontend.js' );
+
+		$num_dependencies = count( $script_data['dependencies'] );
+		$wp_scripts       = wp_scripts();
+
+		for ( $i = 0; $i < $num_dependencies; $i++ ) {
+			$dependency = $script_data['dependencies'][ $i ];
+
+			foreach ( $wp_scripts->registered as $script ) {
+				if ( $script->handle === $dependency ) {
+					$this->append_script_and_deps_src( $script );
+					break;
+				}
+			}
+		}
+
+		$payment_method_registry = Package::container()->get( PaymentMethodRegistry::class );
+		$payment_methods         = $payment_method_registry->get_all_active_payment_method_script_dependencies();
+
+		foreach ( $payment_methods as $payment_method ) {
+			$payment_method_script = $this->get_script_from_handle( $payment_method );
+
+			if ( ! is_null( $payment_method_script ) ) {
+				$this->append_script_and_deps_src( $payment_method_script );
+			}
+		}
+
+		$this->scripts_to_lazy_load['wc-block-mini-cart-component-frontend'] = array(
+			'src'          => $script_data['src'],
+			'version'      => $script_data['version'],
+			'translations' => $this->get_inner_blocks_translations(),
+		);
+
+		$inner_blocks_frontend_scripts = array();
+		$cart                          = $this->get_cart_instance();
+		if ( $cart ) {
+			// Preload inner blocks frontend scripts.
+			$inner_blocks_frontend_scripts = $cart->is_empty() ? array(
+				'empty-cart-frontend',
+				'filled-cart-frontend',
+				'shopping-button-frontend',
+			) : array(
+				'empty-cart-frontend',
+				'filled-cart-frontend',
+				'title-frontend',
+				'items-frontend',
+				'footer-frontend',
+				'products-table-frontend',
+			);
+		}
+		foreach ( $inner_blocks_frontend_scripts as $inner_block_frontend_script ) {
+			$script_data = $this->asset_api->get_script_data( 'build/mini-cart-contents-block/' . $inner_block_frontend_script . '.js' );
+			$this->scripts_to_lazy_load[ 'wc-block-' . $inner_block_frontend_script ] = array(
+				'src'     => $script_data['src'],
+				'version' => $script_data['version'],
+			);
+		}
+
+		$data                          = rawurlencode( wp_json_encode( $this->scripts_to_lazy_load ) );
+		$mini_cart_dependencies_script = "var wcBlocksMiniCartFrontendDependencies = JSON.parse( decodeURIComponent( '" . esc_js( $data ) . "' ) );";
+
+		wp_add_inline_script(
+			'wc-mini-cart-block-frontend',
+			$mini_cart_dependencies_script,
+			'before'
+		);
 	}
 
 	/**
@@ -309,8 +368,7 @@ class MiniCart extends AbstractBlock {
 			return;
 		}
 
-		$cart_controller     = $this->get_cart_controller();
-		$cart                = $cart_controller->get_cart_instance();
+		$cart                = $this->get_cart_instance();
 		$cart_contents_total = $cart->get_subtotal();
 
 		if ( $cart->display_prices_including_tax() ) {
@@ -327,8 +385,7 @@ class MiniCart extends AbstractBlock {
 	 * @return string
 	 */
 	protected function get_include_tax_label_markup() {
-		$cart_controller     = $this->get_cart_controller();
-		$cart                = $cart_controller->get_cart_instance();
+		$cart                = $this->get_cart_instance();
 		$cart_contents_total = $cart->get_subtotal();
 
 		return ( ! empty( $this->tax_label ) && 0 !== $cart_contents_total ) ? ( "<small class='wc-block-mini-cart__tax-label'>" . esc_html( $this->tax_label ) . '</small>' ) : '';
@@ -360,8 +417,7 @@ class MiniCart extends AbstractBlock {
 			return '';
 		}
 
-		$cart_controller     = $this->get_cart_controller();
-		$cart                = $cart_controller->get_cart_instance();
+		$cart                = $this->get_cart_instance();
 		$cart_contents_count = $cart->get_cart_contents_count();
 		$cart_contents_total = $cart->get_subtotal();
 
@@ -441,12 +497,18 @@ class MiniCart extends AbstractBlock {
 	}
 
 	/**
-	 * Return an instace of the CartController class.
+	 * Return the main instance of WC_Cart class.
 	 *
-	 * @return CartController CartController class instance.
+	 * @return \WC_Cart CartController class instance.
 	 */
-	protected function get_cart_controller() {
-		return new CartController();
+	protected function get_cart_instance() {
+		$cart = WC()->cart;
+
+		if ( $cart && $cart instanceof \WC_Cart ) {
+			return $cart;
+		}
+
+		return null;
 	}
 
 	/**
@@ -457,9 +519,9 @@ class MiniCart extends AbstractBlock {
 	 * @return array;
 	 */
 	protected function get_tax_label() {
-		$cart = WC()->cart;
+		$cart = $this->get_cart_instance();
 
-		if ( $cart->display_prices_including_tax() ) {
+		if ( $cart && $cart->display_prices_including_tax() ) {
 			if ( ! wc_prices_include_tax() ) {
 				$tax_label                         = WC()->countries->inc_tax_or_vat();
 				$display_cart_prices_including_tax = true;
