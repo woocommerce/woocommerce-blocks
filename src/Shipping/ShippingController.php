@@ -107,22 +107,29 @@ class ShippingController {
 	 * @return string
 	 */
 	public function show_local_pickup_details( $return, $order ) {
+		// Confirm order is valid before proceeding further.
+		if ( ! $order instanceof \WC_Order ) {
+			return $return;
+		}
+
 		$shipping_method_ids = ArrayUtil::select( $order->get_shipping_methods(), 'get_method_id', ArrayUtil::SELECT_BY_OBJECT_METHOD );
 		$shipping_method_id  = current( $shipping_method_ids );
 
-		if ( 'pickup_location' === $shipping_method_id ) {
-			$shipping_method = current( $order->get_shipping_methods() );
-			$details         = $shipping_method->get_meta( 'pickup_details' );
-			$location        = $shipping_method->get_meta( 'pickup_location' );
-			$address         = $shipping_method->get_meta( 'pickup_address' );
-			$return          = sprintf(
-				// Translators: %s location name.
-				__( 'Pickup from <strong>%s</strong>:', 'woo-gutenberg-products-block' ),
-				$location
-			) . '<br/><address>' . str_replace( ',', ',<br/>', $address ) . '</address><br/>' . $details;
+		// Ensure order used pickup location method, otherwise bail.
+		if ( 'pickup_location' !== $shipping_method_id ) {
+			return $return;
 		}
 
-		return $return;
+		$shipping_method = current( $order->get_shipping_methods() );
+		$details         = $shipping_method->get_meta( 'pickup_details' );
+		$location        = $shipping_method->get_meta( 'pickup_location' );
+		$address         = $shipping_method->get_meta( 'pickup_address' );
+
+		return sprintf(
+			// Translators: %s location name.
+			__( 'Pickup from <strong>%s</strong>:', 'woo-gutenberg-products-block' ),
+			$location
+		) . '<br/><address>' . str_replace( ',', ',<br/>', $address ) . '</address><br/>' . $details;
 	}
 
 	/**
