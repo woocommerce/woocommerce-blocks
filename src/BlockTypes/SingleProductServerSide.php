@@ -11,6 +11,7 @@ class SingleProductServerSide extends AbstractBlock {
 	 * @var string
 	 */
 	protected $block_name = 'single-product-server-side';
+	protected $product_id = 0;
 
 	protected function initialize() {
 		parent::initialize();
@@ -40,10 +41,12 @@ class SingleProductServerSide extends AbstractBlock {
 	}
 
 	function update_context( $context, $block, $parent_block ) {
-		if( $block['blockName'] === 'woocommerce/single-product-server-side' ) {
-			if ( isset( $block['attrs']['productId'] ) ) {
-				$context['postId'] = $block['attrs']['productId'];
-			}
+		if( $block['blockName'] === 'woocommerce/single-product-server-side'
+			&& isset( $block['attrs']['productId'] ) ) {
+				$this->product_id = $block['attrs']['productId'];
+		}
+		if( $this->product_id > 0 ){
+			$context['postId'] = $this->product_id;
 		}
 
 		return $context;
