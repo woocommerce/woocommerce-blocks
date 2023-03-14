@@ -59,6 +59,7 @@ class ShippingController {
 		add_action( 'admin_enqueue_scripts', [ $this, 'hydrate_client_settings' ] );
 		add_action( 'woocommerce_load_shipping_methods', array( $this, 'register_local_pickup' ) );
 		add_filter( 'woocommerce_local_pickup_methods', array( $this, 'register_local_pickup_method' ) );
+		add_filter( 'woocommerce_order_hide_shipping_address', array( $this, 'hide_shipping_address_for_local_pickup' ), 10 );
 		add_filter( 'woocommerce_customer_taxable_address', array( $this, 'filter_taxable_address' ) );
 		add_filter( 'woocommerce_shipping_packages', array( $this, 'filter_shipping_packages' ) );
 		add_filter( 'pre_update_option_woocommerce_pickup_location_settings', array( $this, 'flush_cache' ) );
@@ -339,6 +340,16 @@ class ShippingController {
 	public function register_local_pickup_method( $methods ) {
 		$methods[] = 'pickup_location';
 		return $methods;
+	}
+
+	/**
+	 * Hides the shipping address on the order confirmation page when local pickup is selected.
+	 *
+	 * @param array $pickup_methods Method ids.
+	 * @return array
+	 */
+	public function hide_shipping_address_for_local_pickup( $pickup_methods ) {
+		return array_merge( $pickup_methods, LocalPickupUtils::get_local_pickup_method_ids() );
 	}
 
 	/**
