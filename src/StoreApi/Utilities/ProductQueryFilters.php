@@ -123,9 +123,11 @@ class ProductQueryFilters {
 
 		return $wpdb->get_results(
 			$wpdb->prepare(
-				"SELECT DISTINCT term_id as term_count_id, 0 as term_count
-         	FROM {$wpdb->prefix}wc_product_attributes_lookup
-         	WHERE taxonomy = %s",
+				'SELECT term_id as term_count_id,
+            count(DISTINCT product_or_parent_id) as term_count
+			FROM wp_wc_product_attributes_lookup
+			WHERE taxonomy = %s
+			GROUP BY term_id',
 				$taxonomy
 			)
 		);
@@ -143,7 +145,6 @@ class ProductQueryFilters {
 
 		$attributes_data            = $request->get_param( 'attributes' );
 		$calculate_attribute_counts = $request->get_param( 'calculate_attribute_counts' );
-		$query_type                 = $calculate_attribute_counts[0]['query_type'] ?? 'or';
 		$taxonomy                   = $attributes[0] ?? '';
 
 		if ( empty( $attributes_data ) ) {
@@ -173,6 +174,13 @@ class ProductQueryFilters {
 
 			if ( empty( $term_ids ) ) {
 				continue;
+			}
+
+			$query_type = 'or';
+			foreach ( $calculate_attribute_counts as $calculate_attribute_count ) {
+				if ( isset( $calculate_attribute_count['taxonomy'] ) && $calculate_attribute_count['taxonomy'] === $taxonomy ) {
+					$query_type = $calculate_attribute_count['query_type'];
+				}
 			}
 
 			$filtered_products_by_terms = array_merge( $filtered_products_by_terms, $this->get_product_by_filtered_terms( $taxonomy, $term_ids, $query_type ) );
