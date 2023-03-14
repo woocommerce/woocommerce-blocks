@@ -5,6 +5,7 @@ import { getQueryArg } from '@wordpress/url';
 import { getSettingWithCoercion } from '@woocommerce/settings';
 import { isBoolean } from '@woocommerce/types';
 import { navigate } from '@woocommerce/interactivity';
+import { canDoClientSideNavigation } from '@woocommerce/interactivity/router';
 
 const filteringForPhpTemplate = getSettingWithCoercion(
 	'is_rendering_php_template',
@@ -34,8 +35,10 @@ export function getUrlParameter( name: string ) {
  * @param {string} newUrl New URL to be set.
  */
 export function changeUrl( newUrl: string ) {
-	if ( filteringForPhpTemplate ) {
+	if ( filteringForPhpTemplate && canDoClientSideNavigation( document ) ) {
 		navigate( newUrl );
+	} else if ( filteringForPhpTemplate ) {
+		window.location.href = newUrl;
 	} else {
 		window.history.replaceState( {}, '', newUrl );
 	}
