@@ -144,25 +144,21 @@ const AddressForm = ( {
 
 	id = id || instanceId;
 
-	type customValidationHandlerType = (
+	/**
+	 * Custom validation handler for fields with field specific handling.
+	 */
+	const customValidationHandler = (
 		inputObject: HTMLInputElement,
 		field: string,
 		customValues: {
 			country: string;
-			postcode: string;
 		}
-	) => boolean;
-
-	const customValidationHandler: customValidationHandlerType = (
-		inputObject,
-		field,
-		customValues
-	) => {
+	): boolean => {
 		if (
 			field === 'postcode' &&
 			customValues.country &&
 			! isPostcode( {
-				postcode: customValues.postcode,
+				postcode: inputObject.value,
 				country: customValues.country,
 			} )
 		) {
