@@ -229,34 +229,32 @@ class ProductQueryFilters {
 		$where   = array();
 		$results = array();
 
+		$params = array();
 		foreach ( $metas as $column => $value ) {
-			if ( 'min_price' === $column ) {
-				$value   = number_format( (float) $value, 4 );
-				$where[] = $wpdb->prepare( "{$column} >= %s", $value ); // phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared
+			if ( $column === 'min_price' ) {
+				$where[]  = "{$column} >= %f";
+				$params[] = (float) $value;
 				continue;
 			}
 
-			if ( 'max_price' === $column ) {
-				$value   = number_format( (float) $value, 4 );
-				$where[] = $wpdb->prepare( "{$column} <= %s", $value ); // phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared
+			if ( $column === 'max_price' ) {
+				$where[]  = "{$column} <= %f";
+				$params[] = (float) $value;
 				continue;
 			}
 
-			$where[] = $wpdb->prepare( "{$column} = %s", $value ); // phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared
+			$where[]  = "{$column} = %s";
+			$params[] = $value;
 		}
 
 		if ( ! empty( $where ) ) {
 			$where_clause = implode( ' AND ', $where );
-
-			// phpcs:disable
+			// Use a parameterized query
 			$results = $wpdb->get_col(
-				"
-				SELECT DISTINCT `product_id`
-				FROM {$wpdb->prefix}wc_product_meta_lookup
-				WHERE {$where_clause}
-				"
+					$wpdb->prepare( "SELECT DISTINCT product_id FROM {$wpdb->prefix}wc_product_meta_lookup WHERE {$where_clause}",
+					$params
+				)
 			);
-			// phpcs:enable
 		}
 
 		return $results;
