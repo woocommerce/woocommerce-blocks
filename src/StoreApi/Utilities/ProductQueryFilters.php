@@ -228,16 +228,16 @@ class ProductQueryFilters {
 
 		$where   = array();
 		$results = array();
+		$params  = array();
 
-		$params = array();
 		foreach ( $metas as $column => $value ) {
-			if ( $column === 'min_price' ) {
+			if ( 'min_price' === $column ) {
 				$where[]  = "{$column} >= %f";
 				$params[] = (float) $value;
 				continue;
 			}
 
-			if ( $column === 'max_price' ) {
+			if ( 'max_price' === $column ) {
 				$where[]  = "{$column} <= %f";
 				$params[] = (float) $value;
 				continue;
@@ -249,9 +249,9 @@ class ProductQueryFilters {
 
 		if ( ! empty( $where ) ) {
 			$where_clause = implode( ' AND ', $where );
-			// Use a parameterized query
+			// Use a parameterized query.
 			$results = $wpdb->get_col(
-					$wpdb->prepare( "SELECT DISTINCT product_id FROM {$wpdb->prefix}wc_product_meta_lookup WHERE {$where_clause}",
+				$wpdb->prepare( "SELECT DISTINCT product_id FROM {$wpdb->prefix}wc_product_meta_lookup WHERE {$where_clause}", // phpcs:ignore
 					$params
 				)
 			);
