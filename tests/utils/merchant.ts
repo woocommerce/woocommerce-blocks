@@ -101,7 +101,7 @@ export const merchant = {
 		);
 		await expect( page ).toSelect(
 			'select[name="location_country_state"]',
-			'US'
+			'United States (US) — California'
 		);
 		await expect( page ).toClick( 'button', { text: 'Done' } );
 		await merchant.saveLocalPickupSettingsPageWithRefresh();
