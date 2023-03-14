@@ -73,17 +73,28 @@ const renderPickupLocation = (
 	const address = getPickupAddress( option );
 	const details = getPickupDetails( option );
 
-	return {
-		value: option.rate_id,
-		label: location
-			? decodeEntities( location )
-			: decodeEntities( option.name ),
-		secondaryLabel:
-			parseInt( priceWithTaxes, 10 ) > 0 ? (
-				createInterpolateElement(
-					/* translators: %1$s name of the product (ie: Sunglasses), %2$d number of units in the current cart package */
+	// Default to showing "free" as the secondary label. Price checks below will update it if needed.
+	let secondaryLabel = (
+		<em>{ __( 'free', 'woo-gutenberg-products-block' ) }</em>
+	);
+
+	// If there is a cost for local pickup, show the cost per package.
+	if ( parseInt( priceWithTaxes, 10 ) > 0 ) {
+		switch ( packageCount ) {
+			// If only one package, show the price and not the package count.
+			case 1:
+				secondaryLabel = (
+					<FormattedMonetaryAmount
+						currency={ getCurrencyFromPriceResponse( option ) }
+						value={ priceWithTaxes }
+					/>
+				);
+				break;
+			default:
+				secondaryLabel = createInterpolateElement(
+					/* translators: <price/> is the price of the package, <packageCount/> is the number of packages. These must appear in the translated string. */
 					_n(
-						'<price/>',
+						'<price/> x <packageCount/> package',
 						'<price/> x <packageCount/> packages',
 						packageCount,
 						'woo-gutenberg-products-block'
@@ -99,10 +110,16 @@ const renderPickupLocation = (
 						),
 						packageCount: <>{ packageCount }</>,
 					}
-				)
-			) : (
-				<em>{ __( 'free', 'woo-gutenberg-products-block' ) }</em>
-			),
+				);
+		}
+	}
+
+	return {
+		value: option.rate_id,
+		label: location
+			? decodeEntities( location )
+			: decodeEntities( option.name ),
+		secondaryLabel,
 		description: decodeEntities( details ),
 		secondaryDescription: address ? (
 			<>
