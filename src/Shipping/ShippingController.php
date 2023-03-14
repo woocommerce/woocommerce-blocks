@@ -3,7 +3,6 @@ namespace Automattic\WooCommerce\Blocks\Shipping;
 
 use Automattic\WooCommerce\Blocks\Assets\Api as AssetApi;
 use Automattic\WooCommerce\Blocks\Assets\AssetDataRegistry;
-use Automattic\WooCommerce\Blocks\Tests\BlockTypes\Cart;
 use Automattic\WooCommerce\Blocks\Utils\CartCheckoutUtils;
 use Automattic\WooCommerce\StoreApi\Utilities\LocalPickupUtils;
 use Automattic\WooCommerce\Utilities\ArrayUtil;
@@ -66,6 +65,7 @@ class ShippingController {
 		add_filter( 'pre_update_option_pickup_location_pickup_locations', array( $this, 'flush_cache' ) );
 		add_filter( 'woocommerce_shipping_settings', array( $this, 'remove_shipping_settings' ) );
 		add_filter( 'wc_shipping_enabled', array( $this, 'force_shipping_enabled' ), 100, 1 );
+		add_filter( 'woocommerce_order_shipping_to_display', array( $this, 'show_local_pickup_details' ), 10, 2 );
 
 		// This is required to short circuit `show_shipping` from class-wc-cart.php - without it, that function
 		// returns based on the option's value in the DB and we can't override it any other way.
@@ -97,6 +97,32 @@ class ShippingController {
 			return true;
 		}
 		return $enabled;
+	}
+
+	/**
+	 * Inject collection details onto the order received page.
+	 *
+	 * @param string    $return Return value.
+	 * @param \WC_Order $order Order object.
+	 * @return string
+	 */
+	public function show_local_pickup_details( $return, $order ) {
+		$shipping_method_ids = ArrayUtil::select( $order->get_shipping_methods(), 'get_method_id', ArrayUtil::SELECT_BY_OBJECT_METHOD );
+		$shipping_method_id  = current( $shipping_method_ids );
+
+		if ( 'pickup_location' === $shipping_method_id ) {
+			$shipping_method = current( $order->get_shipping_methods() );
+			$details         = $shipping_method->get_meta( 'pickup_details' );
+			$location        = $shipping_method->get_meta( 'pickup_location' );
+			$address         = $shipping_method->get_meta( 'pickup_address' );
+			$return          = sprintf(
+				// Translators: %s location name.
+				__( 'Pickup from <strong>%s</strong>:', 'woo-gutenberg-products-block' ),
+				$location
+			) . '<br/><address>' . str_replace( ',', ',<br/>', $address ) . '</address><br/>' . $details;
+		}
+
+		return $return;
 	}
 
 	/**
