@@ -108,20 +108,7 @@ class ProductCollectionData extends AbstractRoute {
 			// Or type queries need special handling because the attribute, if set, needs removing from the query first otherwise counts would not be correct.
 			if ( $taxonomy__or_queries ) {
 				foreach ( $taxonomy__or_queries as $taxonomy ) {
-					$filter_request    = clone $request;
-					$filter_attributes = $filter_request->get_param( 'attributes' );
-
-					if ( ! empty( $filter_attributes ) ) {
-						$filter_attributes = array_filter(
-							$filter_attributes,
-							function( $query ) use ( $taxonomy ) {
-								return $query['attribute'] !== $taxonomy;
-							}
-						);
-					}
-
-					$filter_request->set_param( 'attributes', $filter_attributes );
-					$counts = $filters->get_attribute_and_meta_counts( $filter_request, [ $taxonomy ] );
+					$counts = $filters->get_attribute_and_meta_counts( $request, [ $taxonomy ] );
 
 					foreach ( $counts as $key => $value ) {
 						$data['attribute_counts'][] = (object) [

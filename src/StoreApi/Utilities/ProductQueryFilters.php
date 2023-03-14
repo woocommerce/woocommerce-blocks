@@ -2,6 +2,7 @@
 namespace Automattic\WooCommerce\StoreApi\Utilities;
 
 use Automattic\WooCommerce\StoreApi\Utilities\ProductQuery;
+use Exception;
 
 /**
  * Product Query filters class.
@@ -137,18 +138,47 @@ class ProductQueryFilters {
 	 * @param array           $attributes Attributes to count.
 	 * @return array
 	 */
-	public function get_attribute_and_meta_counts( $request, $attributes = [] ) {
+	public function get_attribute_and_meta_counts( $request, $attributes ) {
 		global $wpdb;
 
-		$attributes = array_map( 'esc_sql', $attributes );
-		$taxonomy   = $attributes[0];
+		$attributes_data            = $request->get_param( 'attributes' );
+		$calculate_attribute_counts = $request->get_param( 'calculate_attribute_counts' );
+		$query_type                 = $calculate_attribute_counts[0]['query_type'] ?? 'or';
 
-		$query_type = 'or';
-		foreach ( $request['calculate_attribute_counts'] as $attributes_to_count ) {
-			if ( ! empty( $attributes_to_count['query_type'] ) ) {
-				$query_type = $attributes_to_count['query_type'];
-			}
+		if ( empty( $attributes_data ) ) {
+			$taxonomy = $attributes[0] ?? '';
+			$counts   = $this->get_terms_list( $taxonomy );
+
+			return array_map( 'absint', wp_list_pluck( $counts, 'term_count', 'term_count_id' ) );
 		}
+
+		$filtered_products_by_terms = [];
+		foreach ( $attributes_data as $attribute ) {
+			$taxonomy       = $attribute['attribute'] ?? '';
+			$filtered_terms = $attribute['slug'] ?? '';
+
+			if ( empty( $filtered_terms ) ) {
+				continue;
+			}
+
+			$term_ids = [];
+			if ( in_array( $taxonomy, wc_get_attribute_taxonomy_names(), true ) ) {
+				foreach ( $filtered_terms as $filtered_term ) {
+					$term = get_term_by( 'slug', $filtered_term, $taxonomy );
+					if ( is_object( $term ) ) {
+						$term_ids[] = $term->term_id;
+					}
+				}
+			}
+
+			if ( empty( $term_ids ) ) {
+				continue;
+			}
+
+			$filtered_products_by_terms = array_merge( $filtered_products_by_terms, $this->get_product_by_filtered_terms( $taxonomy, $term_ids, $query_type ) );
+		}
+
+		$formatted_filtered_products_by_terms = implode( ',', array_map( 'intval', $filtered_products_by_terms ) );
 
 		$product_metas = [];
 		if ( isset( $_REQUEST['min_price'] ) ) {
@@ -160,45 +190,12 @@ class ProductQueryFilters {
 		}
 
 		$product_metas = $this->get_product_by_metas( $product_metas );
-
-		if ( ! isset( $_REQUEST['attributes'] ) ) {
-			$counts = $this->get_terms_list( $taxonomy );
-
-			return array_map( 'absint', wp_list_pluck( $counts, 'term_count', 'term_count_id' ) );
-		}
-
-		$term_ids = [];
-		foreach ( $_REQUEST['attributes'] as $attribute ) {
-			if ( empty( $attribute['term_id'] ) && empty( $attribute['slug'] ) ) {
-				continue;
-			}
-
-			if ( in_array( $attribute['attribute'], wc_get_attribute_taxonomy_names(), true ) ) {
-				if ( ! empty( $attribute['term_id'] ) ) {
-					$term_ids[] = $attribute['term_id'];
-				} elseif ( ! empty( $attribute['slug'] ) ) {
-					foreach ( $attribute['slug'] as $slug ) {
-						$term = get_term_by( 'slug', $slug, $attribute['attribute'] );
-						if ( is_object( $term ) ) {
-							$term_ids[] = $term->term_id;
-						}
-					}
-				}
-			}
-		}
-
-		if ( empty( $term_ids ) ) {
-			$counts = $this->get_terms_list( $taxonomy );
-
-			return array_map( 'absint', wp_list_pluck( $counts, 'term_count', 'term_count_id' ) );
-		}
-
-		$product_attributes = $this->get_product_by_filtered_terms( $taxonomy, $term_ids, $query_type );
+		$product_metas = implode( ',', array_map( 'intval', $product_metas ) );
 
 		$where_clause = "posts.post_type IN ('product', 'product_variation') AND posts.post_status = 'publish'";
 
-		if ( ! empty( $product_attributes ) ) {
-			$where_clause .= " AND product_attribute_lookup.product_or_parent_id IN ({$product_attributes})";
+		if ( ! empty( $formatted_filtered_products_by_terms ) ) {
+			$where_clause .= " AND product_attribute_lookup.product_or_parent_id IN ({$formatted_filtered_products_by_terms})";
 		}
 
 		if ( ! empty( $product_metas ) ) {
