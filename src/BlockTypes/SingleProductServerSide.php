@@ -13,6 +13,7 @@ class SingleProductServerSide extends AbstractBlock {
 	protected $block_name = 'single-product-server-side';
 
 	protected function initialize() {
+		parent::initialize();
 		add_filter( 'render_block_context', array( $this, 'update_context' ), 10, 3 );
 	}
 
