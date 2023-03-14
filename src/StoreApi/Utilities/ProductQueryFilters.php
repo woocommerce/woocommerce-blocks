@@ -144,10 +144,10 @@ class ProductQueryFilters {
 		$attributes_data            = $request->get_param( 'attributes' );
 		$calculate_attribute_counts = $request->get_param( 'calculate_attribute_counts' );
 		$query_type                 = $calculate_attribute_counts[0]['query_type'] ?? 'or';
+		$taxonomy                   = $attributes[0] ?? '';
 
 		if ( empty( $attributes_data ) ) {
-			$taxonomy = $attributes[0] ?? '';
-			$counts   = $this->get_terms_list( $taxonomy );
+			$counts = $this->get_terms_list( $taxonomy );
 
 			return array_map( 'absint', wp_list_pluck( $counts, 'term_count', 'term_count_id' ) );
 		}
@@ -180,17 +180,13 @@ class ProductQueryFilters {
 
 		$formatted_filtered_products_by_terms = implode( ',', array_map( 'intval', $filtered_products_by_terms ) );
 
-		$product_metas = [];
-		if ( isset( $_REQUEST['min_price'] ) ) {
-			$product_metas['min_price'] = intval( $_REQUEST['min_price'] ) / 100;
-		}
+		$product_metas = [
+			'min_price' => $request->get_param( 'min_price' ),
+			'max_price' => $request->get_param( 'max_price' ),
+		];
 
-		if ( isset( $_REQUEST['max_price'] ) ) {
-			$product_metas['max_price'] = intval( $_REQUEST['max_price'] ) / 100;
-		}
-
-		$product_metas = $this->get_product_by_metas( $product_metas );
-		$product_metas = implode( ',', array_map( 'intval', $product_metas ) );
+		$filtered_products_by_metas           = $this->get_product_by_metas( $product_metas );
+		$formatted_filtered_products_by_metas = implode( ',', array_map( 'intval', $filtered_products_by_metas ) );
 
 		$where_clause = "posts.post_type IN ('product', 'product_variation') AND posts.post_status = 'publish'";
 
@@ -198,8 +194,8 @@ class ProductQueryFilters {
 			$where_clause .= " AND product_attribute_lookup.product_or_parent_id IN ({$formatted_filtered_products_by_terms})";
 		}
 
-		if ( ! empty( $product_metas ) ) {
-			$where_clause .= " AND product_attribute_lookup.product_id IN ({$product_metas})";
+		if ( ! empty( $formatted_filtered_products_by_metas ) ) {
+			$where_clause .= " AND product_attribute_lookup.product_id IN ({$formatted_filtered_products_by_metas})";
 		}
 
 		$counts = $wpdb->get_results(
