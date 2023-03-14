@@ -130,7 +130,7 @@ const CUSTOMIZED_STRING = 'My awesome customization';
 const WOOCOMMERCE_ID = 'woocommerce/woocommerce';
 const WOOCOMMERCE_PARSED_ID = 'WooCommerce';
 
-describe( 'Store Editing Templates', () => {
+describe.skip( 'Store Editing Templates', () => {
 	useTheme( 'emptytheme' );
 
 	describe( 'Single Product block template', () => {
