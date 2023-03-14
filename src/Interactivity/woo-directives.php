@@ -6,7 +6,7 @@ require_once __DIR__ . '/directives/woo-process-directives.php';
 require_once __DIR__ . '/directives/attributes/woo-bind.php';
 require_once __DIR__ . '/directives/attributes/woo-class.php';
 require_once __DIR__ . '/directives/attributes/woo-style.php';
-require_once __DIR__ . '/directives/tags/woo-context.php';
+require_once __DIR__ . '/directives/attributes/woo-context.php';
 
 
 /**
