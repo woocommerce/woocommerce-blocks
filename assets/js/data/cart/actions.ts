@@ -417,7 +417,7 @@ export const selectShippingRate =
 				},
 				cache: 'no-store',
 			} );
-			dispatch.receiveCart( response );
+			dispatch.receiveCartContents( response );
 			return response as CartResponse;
 		} catch ( error ) {
 			dispatch.receiveError( error );
