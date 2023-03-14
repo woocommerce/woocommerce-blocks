@@ -249,6 +249,8 @@ export async function getAllTemplates() {
 
 	const table = await page.waitForSelector( templatesListTable.root );
 
+	await page.waitForTimeout( 5000 );
+
 	if ( ! table ) throw new Error( 'Templates table not found' );
 
 	const rows = await table.$$( templatesListTable.rows );
