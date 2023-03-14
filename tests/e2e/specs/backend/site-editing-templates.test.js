@@ -142,7 +142,9 @@ describe( 'Store Editing Templates', () => {
 		it( 'default template from WooCommerce Blocks is available on an FSE theme', async () => {
 			const EXPECTED_TEMPLATE = defaultTemplateProps( 'Single Product' );
 
-			await page.reload();
+			await page.reload({
+				waitUntil: 'networkidle0',
+			});
 			await goToTemplatesList();
 
 			const templates = await getAllTemplates();
