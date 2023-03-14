@@ -4,7 +4,7 @@
 import { __ } from '@wordpress/i18n';
 import { TotalsItem } from '@woocommerce/blocks-checkout';
 import Button from '@woocommerce/base-components/button';
-import { useBlockProps, RichText } from '@wordpress/block-editor';
+import { useBlockProps, RichText, InnerBlocks } from '@wordpress/block-editor';
 import { getCurrencyFromPriceResponse } from '@woocommerce/price-format';
 import {
 	usePaymentMethods,
@@ -14,6 +14,7 @@ import PaymentMethodIcons from '@woocommerce/base-components/cart-checkout/payme
 import { getIconsFromPaymentMethods } from '@woocommerce/base-utils';
 import { getSetting } from '@woocommerce/settings';
 import { PaymentEventsProvider } from '@woocommerce/base-context';
+import { useSelect } from '@wordpress/data';
 
 /**
  * Internal dependencies
@@ -50,6 +51,15 @@ export const Edit = ( {
 		  parseInt( cartTotals.total_items_tax, 10 )
 		: parseInt( cartTotals.total_items, 10 );
 
+	const CHECKOUT_BUTTON = 'Checkout button';
+	const reusableBlocks = useSelect( ( select ) =>
+		select( 'core' ).getEntityRecords( 'postType', 'wp_block' )
+	);
+	const checkoutButton = reusableBlocks.find(
+		( block ) => block.title.raw === CHECKOUT_BUTTON
+	);
+	const TEMPLATE = [ [ 'core/block', { ref: checkoutButton?.id } ] ];
+
 	return (
 		<div { ...blockProps }>
 			<div className="wc-block-mini-cart__footer">
@@ -63,6 +73,7 @@ export const Edit = ( {
 						'woo-gutenberg-products-block'
 					) }
 				/>
+				<InnerBlocks template={ TEMPLATE } />
 				<div className="wc-block-mini-cart__footer-actions">
 					<Button
 						className="wc-block-mini-cart__footer-cart"
