@@ -7,6 +7,7 @@ import { useBlockProps, InspectorControls } from '@wordpress/block-editor';
 import type { BlockEditProps } from '@wordpress/blocks';
 import {
 	Disabled,
+	Notice,
 	PanelBody,
 	ToggleControl,
 	withSpokenMessages,
@@ -21,6 +22,18 @@ import {
  */
 import Block from './block';
 import { Attributes } from './types';
+import './editor.scss';
+
+const noRatingsNotice = (
+	<Notice status="warning" isDismissible={ false }>
+		<p>
+			{ __(
+				"Your store doesn't have any products with ratings yet. This filter option will display when a product receives a review.",
+				'woo-gutenberg-products-block'
+			) }
+		</p>
+	</Notice>
+);
 
 const Edit = ( {
 	attributes,
@@ -120,17 +133,10 @@ const Edit = ( {
 							"Show 'Apply filters' button",
 							'woo-gutenberg-products-block'
 						) }
-						help={
-							showFilterButton
-								? __(
-										'Products will only update when the button is clicked.',
-										'woo-gutenberg-products-block'
-								  )
-								: __(
-										'Products will update as soon as attributes are selected.',
-										'woo-gutenberg-products-block'
-								  )
-						}
+						help={ __(
+							'Products will update when the button is clicked.',
+							'woo-gutenberg-products-block'
+						) }
 						checked={ showFilterButton }
 						onChange={ ( value ) =>
 							setAttributes( {
@@ -149,7 +155,11 @@ const Edit = ( {
 			{
 				<div { ...blockProps }>
 					<Disabled>
-						<Block attributes={ attributes } isEditor={ true } />
+						<Block
+							attributes={ attributes }
+							isEditor={ true }
+							noRatingsNotice={ noRatingsNotice }
+						/>
 					</Disabled>
 				</div>
 			}

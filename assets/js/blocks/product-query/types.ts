@@ -1,18 +1,7 @@
 /**
  * External dependencies
  */
-import type {
-	AttributeSetting,
-	AttributeTerm,
-	EditorBlock,
-} from '@woocommerce/types';
-
-export interface AttributeMetadata {
-	taxonomy: string;
-	termId: number;
-}
-
-export type AttributeWithTerms = AttributeSetting & { terms: AttributeTerm[] };
+import type { AttributeMetadata, EditorBlock } from '@woocommerce/types';
 
 // The interface below disables the forbidden underscores
 // naming convention because we are namespacing our
@@ -112,4 +101,5 @@ export interface ProductQueryContext {
 export enum QueryVariation {
 	/** The main, fully customizable, Product Query block */
 	PRODUCT_QUERY = 'woocommerce/product-query',
+	RELATED_PRODUCTS = 'woocommerce/related-products',
 }

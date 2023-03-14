@@ -82,6 +82,8 @@ class Api {
 	public function add_payment_method_script_data() {
 		// Enqueue the order of enabled gateways as `paymentGatewaySortOrder`.
 		if ( ! $this->asset_registry->exists( 'paymentGatewaySortOrder' ) ) {
+			// We use payment_gateways() here to get the sort order of all enabled gateways. Some may be
+			// programmatically disabled later on, but we still need to know where the enabled ones are in the list.
 			$payment_gateways = WC()->payment_gateways->payment_gateways();
 			$enabled_gateways = array_filter( $payment_gateways, array( $this, 'is_payment_gateway_enabled' ) );
 			$this->asset_registry->add( 'paymentGatewaySortOrder', array_keys( $enabled_gateways ) );
@@ -123,6 +125,11 @@ class Api {
 	 * an error in the admin.
 	 */
 	public function verify_payment_methods_dependencies() {
+		// Check that the wc-blocks script is registered before continuing. Some extensions may cause this function to run
+		// before the payment method scripts' dependencies are registered.
+		if ( ! wp_script_is( 'wc-blocks', 'registered' ) ) {
+			return;
+		}
 		$wp_scripts             = wp_scripts();
 		$payment_method_scripts = $this->payment_method_registry->get_all_active_payment_method_script_dependencies();
 

@@ -4,7 +4,10 @@
 import { __ } from '@wordpress/i18n';
 import { useShippingData } from '@woocommerce/base-context/hooks';
 import { ShippingRatesControl } from '@woocommerce/base-components/cart-checkout';
-import { getShippingRatesPackageCount } from '@woocommerce/base-utils';
+import {
+	getShippingRatesPackageCount,
+	hasCollectableRate,
+} from '@woocommerce/base-utils';
 import { getCurrencyFromPriceResponse } from '@woocommerce/price-format';
 import FormattedMonetaryAmount from '@woocommerce/base-components/formatted-monetary-amount';
 import { useEditorContext, noticeContexts } from '@woocommerce/base-context';
@@ -17,12 +20,15 @@ import type {
 	PackageRateOption,
 	CartShippingPackageShippingRate,
 } from '@woocommerce/types';
+import type { ReactElement } from 'react';
+import { useSelect } from '@wordpress/data';
+import { CART_STORE_KEY } from '@woocommerce/block-data';
 
 /**
  * Internal dependencies
  */
-import NoShippingPlaceholder from './no-shipping-placeholder';
 import './style.scss';
+import { shippingAddressHasValidationErrors } from '../../../../data/cart/utils';
 
 /**
  * Renders a shipping rate control option.
@@ -49,7 +55,10 @@ const renderShippingRatesControlOption = (
 	};
 };
 
-const Block = (): JSX.Element | null => {
+const Block = ( {
+	noShippingPlaceholder = null,
+	shippingCostRequiresAddress = false,
+} ): ReactElement | null => {
 	const { isEditor } = useEditorContext();
 
 	const {
@@ -60,14 +69,19 @@ const Block = (): JSX.Element | null => {
 		isCollectable,
 	} = useShippingData();
 
+	const shippingAddressPushed = useSelect( ( select ) => {
+		return select( CART_STORE_KEY ).getFullShippingAddressPushed();
+	} );
+
 	const filteredShippingRates = isCollectable
 		? shippingRates.map( ( shippingRatesPackage ) => {
 				return {
 					...shippingRatesPackage,
 					shipping_rates: shippingRatesPackage.shipping_rates.filter(
 						( shippingRatesPackageRate ) =>
-							shippingRatesPackageRate.method_id !==
-							'pickup_location'
+							! hasCollectableRate(
+								shippingRatesPackageRate.method_id
+							)
 					),
 				};
 		  } )
@@ -77,13 +91,15 @@ const Block = (): JSX.Element | null => {
 		return null;
 	}
 
+	const shippingAddressIsComplete = ! shippingAddressHasValidationErrors();
+
 	const shippingRatesPackageCount =
 		getShippingRatesPackageCount( shippingRates );
 
 	if (
-		! isEditor &&
-		! hasCalculatedShipping &&
-		! shippingRatesPackageCount
+		( ! hasCalculatedShipping && ! shippingRatesPackageCount ) ||
+		( shippingCostRequiresAddress &&
+			( ! shippingAddressPushed || ! shippingAddressIsComplete ) )
 	) {
 		return (
 			<p>
@@ -101,7 +117,7 @@ const Block = (): JSX.Element | null => {
 				context={ noticeContexts.SHIPPING_METHODS }
 			/>
 			{ isEditor && ! shippingRatesPackageCount ? (
-				<NoShippingPlaceholder />
+				noShippingPlaceholder
 			) : (
 				<ShippingRatesControl
 					noResultsMessage={

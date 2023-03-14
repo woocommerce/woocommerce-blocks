@@ -6,8 +6,11 @@
 -   [Order Summary Items](#order-summary-items)
 -   [Totals footer item (in Mini Cart, Cart and Checkout)](#totals-footer-item-in-mini-cart-cart-and-checkout)
 -   [Coupons](#coupons)
+-   [Proceed to Checkout Button Label](#proceed-to-checkout-button-label)
+-   [Proceed to Checkout Button Link](#proceed-to-checkout-button-link)
 -   [Place Order Button Label](#place-order-button-label)
 -   [Examples](#examples)
+    -   [Changing the wording and the link on the "Proceed to Checkout" button when a specific item is in the Cart](#changing-the-wording-and-the-link-on-the--proceed-to-checkout--button-when-a-specific-item-is-in-the-cart)
     -   [Changing the wording of the Totals label in the Mini Cart, Cart and Checkout](#changing-the-wording-of-the-totals-label-in-the-mini-cart-cart-and-checkout)
     -   [Changing the format of the item's single price](#changing-the-format-of-the-items-single-price)
     -   [Change the name of a coupon](#change-the-name-of-a-coupon)
@@ -90,15 +93,70 @@ CartCoupon {
 }
 ```
 
+## Proceed to Checkout Button Label
+
+The Cart block contains a button which is labelled 'Proceed to Checkout' by default. It can be changed using the following filter.
+
+| Filter name                    | Description                                         | Return type |
+|--------------------------------|-----------------------------------------------------| ----------- |
+| `proceedToCheckoutButtonLabel` | The wanted label of the Proceed to Checkout button. | `string`    |
+
+## Proceed to Checkout Button Link
+
+The Cart block contains a button which is labelled 'Proceed to Checkout' and links to the Checkout page by default, but can be changed using the following filter. This filter has the current cart passed to it in the third parameter.
+
+| Filter name                   | Description                                                 | Return type |
+|-------------------------------|-------------------------------------------------------------| ----------- |
+| `proceedToCheckoutButtonLink` | The URL that the Proceed to Checkout button should link to. | `string`    |
+
 ## Place Order Button Label
 
-The Checkout block contains a button which is labelled 'Place Order' by default, but can be changed using the following filter.
+The Checkout block contains a button which is labelled 'Place Order' by default, but can be changed using the following filter. This filter has the current cart passed to it in the third parameter.
 
 | Filter name             | Description                                 | Return type |
 | ----------------------- | ------------------------------------------- | ----------- |
 | `placeOrderButtonLabel` | The wanted label of the Place Order button. | `string`    |
 
 ## Examples
+
+### Changing the wording and the link on the "Proceed to Checkout" button when a specific item is in the Cart
+
+For this example, let's say our store has a checkout page for regular items, and one set up specifically for users purchasing sunglasses. We will use the `wc/store/cart` data store to check whether a specific item (Sunglasses) is in the cart, and if it is, we will change the URL and text on the "Proceed to Checkout" button in the Cart block.
+
+```ts
+registerCheckoutFilters( 'sunglasses-store-extension', {
+	proceedToCheckoutButtonLabel: ( value, extensions, { cart } ) => {
+		if ( ! cart.items ) {
+			return value;
+		}
+		const isSunglassesInCart = cart.items.some(
+			( item ) => item.name === 'Sunglasses'
+		);
+		// Return the default value if sunglasses is not in the cart.
+		if ( ! isSunglassesInCart ) {
+			return value;
+		}
+		return 'Proceed to 😎 checkout';
+	},
+	proceedToCheckoutButtonLink: ( value, extensions, { cart } ) => {
+		if ( ! cart.items ) {
+			return value;
+		}
+		const isSunglassesInCart = cart.items.some(
+			( item ) => item.name === 'Sunglasses'
+		);
+		// Return the default value if sunglasses is not in the cart.
+		if ( ! isSunglassesInCart ) {
+			return value;
+		}
+		return '/sunglasses-checkout';
+	},
+} );
+```
+
+| Before                                                                                                                                    | After |
+|-------------------------------------------------------------------------------------------------------------------------------------------| ----- |
+| <img width="789" alt="image" src="https://user-images.githubusercontent.com/5656702/222575670-a7d1dab8-c93e-477a-b2cc-e463a5de77a6.png">  | <img width="761" alt="image" src="https://user-images.githubusercontent.com/5656702/222572409-de7a6bd6-5a2d-406b-ada9-cc60cc5cca54.png"> |
 
 ### Changing the wording of the Totals label in the Mini Cart, Cart and Checkout
 
@@ -110,11 +168,11 @@ For this example, let's suppose we are building an extension that lets customers
 const replaceTotalWithDeposit = () => 'Deposit due today';
 ```
 
-2. Now we need to register this filter function, and have it executed when the `totalLabel` filter is applied. We can access the `__experimentalRegisterCheckoutFilters` function on the `window.wc.blocksCheckout` object. As long as your extension's script is enqueued _after_ WooCommerce Blocks' scripts (i.e. by registering `wc-blocks-checkout` as a dependency), then this will be available.
+2. Now we need to register this filter function, and have it executed when the `totalLabel` filter is applied. We can access the `registerCheckoutFilters` function on the `window.wc.blocksCheckout` object. As long as your extension's script is enqueued _after_ WooCommerce Blocks' scripts (i.e. by registering `wc-blocks-checkout` as a dependency), then this will be available.
 
 ```ts
-const { __experimentalRegisterCheckoutFilters } = window.wc.blocksCheckout;
-__experimentalRegisterCheckoutFilters( 'my-hypothetical-deposit-plugin', {
+const { registerCheckoutFilters } = window.wc.blocksCheckout;
+registerCheckoutFilters( 'my-hypothetical-deposit-plugin', {
 	totalLabel: replaceTotalWithDeposit,
 } );
 ```
@@ -140,11 +198,11 @@ const appendTextToPriceInCart = ( value, extensions, args ) => {
 };
 ```
 
-2. Now we must register it. Refer to the first example for information about `__experimentalRegisterCheckoutFilters`.
+2. Now we must register it. Refer to the first example for information about `registerCheckoutFilters`.
 
 ```ts
-const { __experimentalRegisterCheckoutFilters } = window.wc.blocksCheckout;
-__experimentalRegisterCheckoutFilters( 'my-hypothetical-price-plugin', {
+const { registerCheckoutFilters } = window.wc.blocksCheckout;
+registerCheckoutFilters( 'my-hypothetical-price-plugin', {
 	subtotalPriceFormat: appendTextToPriceInCart,
 } );
 ```
@@ -175,9 +233,9 @@ const filterCoupons = ( coupons ) => {
 We'd register our filter like this:
 
 ```ts
-import { __experimentalRegisterCheckoutFilters } from '@woocommerce/blocks-checkout';
+import { registerCheckoutFilters } from '@woocommerce/blocks-checkout';
 
-__experimentalRegisterCheckoutFilters( 'automatic-coupon-extension', {
+registerCheckoutFilters( 'automatic-coupon-extension', {
 	coupons: filterCoupons,
 } );
 ```
@@ -193,9 +251,9 @@ If you want to prevent a coupon apply notice from appearing, you can use the `sh
 The same can be done with the `showRemoveCouponNotice` filter to prevent a notice when a coupon is removed from the cart.
 
 ```ts
-import { __experimentalRegisterCheckoutFilters } from '@woocommerce/blocks-checkout';
+import { registerCheckoutFilters } from '@woocommerce/blocks-checkout';
 
-__experimentalRegisterCheckoutFilters( 'example-extension', {
+registerCheckoutFilters( 'example-extension', {
 	showApplyCouponNotice: ( value, extensions, { couponCode } ) => {
 		// Prevent a couponCode called '10off' from creating a notice.
 		return couponCode === '10off' ? false : value;
@@ -215,9 +273,9 @@ An important caveat to note is this does _not_ prevent the item from being remov
 removing it in the Mini Cart, or traditional shortcode cart.
 
 ```ts
-import { __experimentalRegisterCheckoutFilters } from '@woocommerce/blocks-checkout';
+import { registerCheckoutFilters } from '@woocommerce/blocks-checkout';
 
-__experimentalRegisterCheckoutFilters( 'example-extension', {
+registerCheckoutFilters( 'example-extension', {
 	showRemoveItemLink: ( value, extensions, { cartItem } ) => {
 		// Prevent items with ID 1 being removed from the cart.
 		return cartItem.id !== 1;
@@ -235,11 +293,11 @@ Let's assume a merchant want to change the label of the Place Order button _Plac
 const label = () => `Pay now`;
 ```
 
-2. Now we have to register this filter function, and have it executed when the `placeOrderButtonLabel` filter is applied. We can access the `__experimentalRegisterCheckoutFilters` function on the `window.wc.blocksCheckout` object. As long as your extension's script is enqueued _after_ WooCommerce Blocks' scripts (i.e. by registering `wc-blocks-checkout` as a dependency), then this will be available.
+2. Now we have to register this filter function, and have it executed when the `placeOrderButtonLabel` filter is applied. We can access the `registerCheckoutFilters` function on the `window.wc.blocksCheckout` object. As long as your extension's script is enqueued _after_ WooCommerce Blocks' scripts (i.e. by registering `wc-blocks-checkout` as a dependency), then this will be available.
 
 ```ts
-const { __experimentalRegisterCheckoutFilters } = window.wc.blocksCheckout;
-__experimentalRegisterCheckoutFilters( 'custom-place-order-button-label', {
+const { registerCheckoutFilters } = window.wc.blocksCheckout;
+registerCheckoutFilters( 'custom-place-order-button-label', {
 	placeOrderButtonLabel: label,
 } );
 ```
@@ -266,3 +324,4 @@ The error will also be shown in your console.
 🐞 Found a mistake, or have a suggestion? [Leave feedback about this document here.](https://github.com/woocommerce/woocommerce-blocks/issues/new?assignees=&labels=type%3A+documentation&template=--doc-feedback.md&title=Feedback%20on%20./docs/third-party-developers/extensibility/checkout-block/available-filters.md)
 
 <!-- /FEEDBACK -->
+

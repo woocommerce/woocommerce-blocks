@@ -31,8 +31,8 @@ export interface StoreCartItemQuantity {
 export interface StoreCartCoupon {
 	appliedCoupons: CartResponseCouponItem[];
 	isLoading: boolean;
-	applyCoupon: ( coupon: string ) => void;
-	removeCoupon: ( coupon: string ) => void;
+	applyCoupon: ( coupon: string ) => Promise< boolean >;
+	removeCoupon: ( coupon: string ) => Promise< boolean >;
 	isApplyingCoupon: boolean;
 	isRemovingCoupon: boolean;
 }
@@ -56,8 +56,10 @@ export interface StoreCart {
 	extensions: Record< string, unknown >;
 	isLoadingRates: boolean;
 	cartHasCalculatedShipping: boolean;
+	paymentMethods: string[];
 	paymentRequirements: string[];
 	receiveCart: ( cart: CartResponse ) => void;
+	receiveCartContents: ( cart: CartResponse ) => void;
 }
 
 export type Query = {
