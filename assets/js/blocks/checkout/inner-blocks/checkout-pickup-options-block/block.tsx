@@ -16,7 +16,10 @@ import { getSetting } from '@woocommerce/settings';
 import { Icon, mapMarker } from '@wordpress/icons';
 import type { RadioControlOption } from '@woocommerce/base-components/radio-control/types';
 import { CartShippingPackageShippingRate } from '@woocommerce/types';
-import { isPackageRateCollectable } from '@woocommerce/base-utils';
+import {
+	isPackageRateCollectable,
+	getShippingRatesPackageCount,
+} from '@woocommerce/base-utils';
 import { ExperimentalOrderLocalPickupPackages } from '@woocommerce/blocks-checkout';
 import { LocalPickupSelect } from '@woocommerce/base-components/cart-checkout/local-pickup-select';
 
@@ -169,7 +172,7 @@ const Block = (): JSX.Element | null => {
 			onSelectRate( pickupLocations[ 0 ].rate_id );
 		}
 	}, [ onSelectRate, pickupLocations, selectedOption ] );
-
+	const packageCount = getShippingRatesPackageCount( shippingRates );
 	return (
 		<>
 			<ExperimentalOrderLocalPickupPackages.Slot { ...slotFillProps } />
@@ -181,6 +184,7 @@ const Block = (): JSX.Element | null => {
 					selectedOption={ selectedOption }
 					renderPickupLocation={ renderPickupLocation }
 					pickupLocations={ pickupLocations }
+					packageCount={ packageCount }
 				/>
 			</ExperimentalOrderLocalPickupPackages>
 		</>
