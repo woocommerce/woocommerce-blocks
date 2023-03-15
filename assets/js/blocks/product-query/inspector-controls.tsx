@@ -90,6 +90,59 @@ function getStockStatusIdByLabel( statusLabel: FormTokenField.Value ) {
 	)?.[ 0 ];
 }
 
+export const WooInheritToggleControl = (
+	props: ProductQueryBlock & {
+		defaultWooQueryParams: Partial< ProductQueryArguments >;
+	}
+) => {
+	const queryObjectBeforeInheritEnabled = usePrevious(
+		props.attributes.query,
+		( value ) => {
+			return value.inherit === false;
+		}
+	);
+
+	return (
+		<ToggleControl
+			className="woo-inherit-query-toggle"
+			label={ __(
+				'Inherit query from template',
+				'woo-gutenberg-products-block'
+			) }
+			help={ __(
+				'Toggle to use the global query context that is set with the current template, such as variations of the product catalog or search. Disable to customize the filtering independently.',
+				'woo-gutenberg-products-block'
+			) }
+			checked={
+				isCustomInheritGlobalQueryImplementationEnabled
+					? props.attributes.query.__woocommerceInherit || false
+					: props.attributes.query.inherit || false
+			}
+			onChange={ ( inherit ) => {
+				if ( isCustomInheritGlobalQueryImplementationEnabled ) {
+					return setQueryAttribute( props, {
+						...QUERY_DEFAULT_ATTRIBUTES.query,
+						__woocommerceInherit: inherit,
+						// Restore the query object value before inherit was enabled.
+						...( inherit === false && {
+							...queryObjectBeforeInheritEnabled,
+						} ),
+					} );
+				}
+
+				setQueryAttribute( props, {
+					...props.defaultWooQueryParams,
+					inherit,
+					// Restore the query object value before inherit was enabled.
+					...( inherit === false && {
+						...queryObjectBeforeInheritEnabled,
+					} ),
+				} );
+			} }
+		/>
+	);
+};
+
 export const TOOLS_PANEL_CONTROLS = {
 	attributes: AttributesFilter,
 	onSale: ( props: ProductQueryBlock ) => {
@@ -151,66 +204,13 @@ export const TOOLS_PANEL_CONTROLS = {
 			</ToolsPanelItem>
 		);
 	},
-	wooInherit: (
-		props: ProductQueryBlock & {
-			queryObjectBeforeInheritEnabled:
-				| ProductQueryBlock[ 'attributes' ][ 'query' ]
-				| undefined;
-			defaultWooQueryParams: Partial< ProductQueryArguments >;
-		}
-	) => {
-		return (
-			<ToggleControl
-				className="woo-inherit-query-toggle"
-				label={ __(
-					'Inherit query from template',
-					'woo-gutenberg-products-block'
-				) }
-				help={ __(
-					'Toggle to use the global query context that is set with the current template, such as variations of the product catalog or search. Disable to customize the filtering independently.',
-					'woo-gutenberg-products-block'
-				) }
-				checked={
-					isCustomInheritGlobalQueryImplementationEnabled
-						? props.attributes.query.__woocommerceInherit || false
-						: props.attributes.query.inherit || false
-				}
-				onChange={ ( inherit ) => {
-					if ( isCustomInheritGlobalQueryImplementationEnabled ) {
-						return setQueryAttribute( props, {
-							...QUERY_DEFAULT_ATTRIBUTES.query,
-							__woocommerceInherit: inherit,
-							// Restore the query object value before inherit was enabled.
-							...( inherit === false && {
-								...props.queryObjectBeforeInheritEnabled,
-							} ),
-						} );
-					}
-
-					setQueryAttribute( props, {
-						...props.defaultWooQueryParams,
-						inherit,
-						// Restore the query object value before inherit was enabled.
-						...( inherit === false && {
-							...props.queryObjectBeforeInheritEnabled,
-						} ),
-					} );
-				} }
-			/>
-		);
-	},
+	wooInherit: WooInheritToggleControl,
 };
 
 const ProductQueryControls = ( props: ProductQueryBlock ) => {
 	const allowedControls = useAllowedControls( props.attributes );
 	const defaultWooQueryParams = useDefaultWooQueryParamsForVariation(
 		props.attributes.namespace
-	);
-	const queryObjectBeforeInheritEnabled = usePrevious(
-		props.attributes.query,
-		( value ) => {
-			return value.inherit === false;
-		}
 	);
 
 	return (
@@ -234,9 +234,6 @@ const ProductQueryControls = ( props: ProductQueryBlock ) => {
 							allowedControls?.includes( key ) ? (
 								<Control
 									{ ...props }
-									queryObjectBeforeInheritEnabled={
-										queryObjectBeforeInheritEnabled
-									}
 									defaultWooQueryParams={
 										defaultWooQueryParams
 									}
