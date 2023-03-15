@@ -12,9 +12,9 @@ type Props = {
 };
 
 export const Save = ( { attributes }: Props ): JSX.Element | null => {
-	if ( attributes.renderOnServerSide ) {
-		return null;
-	}
+	// if ( attributes.renderOnServerSide ) {
+	// 	return null;
+	// }
 
 	return (
 		<div

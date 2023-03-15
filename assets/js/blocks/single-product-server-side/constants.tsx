@@ -9,6 +9,8 @@ import type { InnerBlockTemplate } from '@wordpress/blocks';
  * Internal dependencies
  */
 import metadata from './block.json';
+import { VARIATION_NAME as PRODUCT_TITLE_VARIATION_NAME } from '../product-query/variations/elements/product-title';
+import { VARIATION_NAME as PRODUCT_SUMMARY_VARIATION_NAME } from '../product-query/variations/elements/product-summary';
 
 export const BLOCK_ICON = (
 	<Icon
@@ -41,8 +43,13 @@ export const DEFAULT_INNER_BLOCKS: InnerBlockTemplate[] = [
 						{ renderOnServerSide: true },
 					],
 					[
-						'woocommerce/product-title',
-						{ headingLevel: 2, renderOnServerSide: true },
+						'core/post-title',
+						{
+							headingLevel: 2,
+							renderOnServerSide: true,
+							__woocommerceNamespace:
+								PRODUCT_TITLE_VARIATION_NAME,
+						},
 					],
 					[
 						'woocommerce/product-rating',
@@ -53,8 +60,12 @@ export const DEFAULT_INNER_BLOCKS: InnerBlockTemplate[] = [
 						{ renderOnServerSide: true },
 					],
 					[
-						'woocommerce/product-summary',
-						{ renderOnServerSide: true },
+						'core/post-excerpt',
+						{
+							renderOnServerSide: true,
+							__woocommerceNamespace:
+								PRODUCT_SUMMARY_VARIATION_NAME,
+						},
 					],
 					[
 						'woocommerce/product-stock-indicator',
