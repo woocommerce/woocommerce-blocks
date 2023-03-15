@@ -163,7 +163,7 @@ export async function goToSiteEditor( params = {} ) {
 		'site-editor.php',
 		addQueryArgs( '', { ...params, canvas: 'edit' } )
 	);
-	await enterEditMode();
+	// await enterEditMode();
 }
 
 /**
@@ -198,13 +198,12 @@ export async function goToTemplatesList( {
 	waitFor = 'list',
 } = {} ) {
 	await goToSiteEditor( { postType } );
-	const selector =
-		'.edit-site-layout__header [aria-label="Show template details"]';
+	const selector = 'button[id*="wp_template"]';
 
 	await page.waitForSelector( selector );
 	await page.click( selector );
 	await page.click(
-		'.edit-site-document-actions__info-dropdown .edit-site-template-details__show-all-button'
+		'.edit-site-sidebar-navigation-screen-templates__see-all'
 	);
 
 	if ( waitFor === 'actions' ) {
