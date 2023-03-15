@@ -132,6 +132,7 @@ This only needs to be done if this release is the last release of the feature pl
     -   Ping porters from each team to know which changelog entries need to be highlighted. Ask them to write a short text and optionally provide a screenshot. They can use previous posts for inspiration, we usually try to highlight new features or API changes.
     -   Ensure the release notes are included in the post verbatim.
     -   Don't forget to use category `WooCommerce Blocks Release Notes` for the post.
+    -   If any of the PRs in this release is labelled with `needs dev-note`, include it in the post.
 -   [ ] Add highlights to the WC core release post (do this even if the release you are doing is not merged into WC core):
     -   Check which WC core version will include the WC Blocks release you just did (reference: PdToLP-K-p2).
     -   Go to its Release Thread and search the _Feature Highlights_ comment (example: p6q8Tx-2gl-p2).
