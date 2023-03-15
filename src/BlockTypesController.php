@@ -224,9 +224,6 @@ final class BlockTypesController {
 			MiniCartContents::get_mini_cart_block_types()
 		);
 
-		if ( Package::feature()->is_experimental_build() ) {
-		}
-
 		/**
 		 * This disables specific blocks in Widget Areas by not registering them.
 		 */
