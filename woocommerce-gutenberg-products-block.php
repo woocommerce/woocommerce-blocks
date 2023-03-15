@@ -315,6 +315,36 @@ function woocommerce_blocks_interactivity_setup() {
 
 	if ( $is_enabled ) {
 		require_once __DIR__ . '/src/Interactivity/woo-directives.php';
+
+		/**
+		 * Add a `data-woo-ignore` directive to ignore a block and its children
+		 * from being processed by the Block Interactivity runtime.
+		 *
+		 * @param string $block_content The block content.
+		 * @return string Modified block content.
+		 */
+		function woocommerce_blocks_add_ignore_directive( $block_content ) {
+			$tags = new WP_HTML_Tag_Processor( $block_content );
+			$tags->next_tag();
+			$tags->set_attribute( 'data-woo-ignore', true );
+
+			$output = $tags->get_updated_html();
+
+			return $output;
+		};
+
+		/*
+		 * Use previous function to ignore Filter blocks.
+		 *
+		 * Ideally, the best way of doing this would be to simply render the
+		 * `data-woo-ignore` directive inside the `save` function, but, as that
+		 * causes block validation issues that would force us to use
+		 * deprecations, this approach seems a better choice.
+		 */
+		add_filter(
+			'render_block_woocommerce/filter-wrapper',
+			'woocommerce_blocks_add_ignore_directive'
+		);
 	}
 }
 add_action( 'plugins_loaded', 'woocommerce_blocks_interactivity_setup' );
