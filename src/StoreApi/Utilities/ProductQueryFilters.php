@@ -145,9 +145,11 @@ class ProductQueryFilters {
 
 		$attributes_data            = $request->get_param( 'attributes' );
 		$calculate_attribute_counts = $request->get_param( 'calculate_attribute_counts' );
+		$min_price                  = $request->get_param( 'min_price' );
+		$max_price                  = $request->get_param( 'max_price' );
 		$taxonomy                   = $attributes[0] ?? '';
 
-		if ( empty( $attributes_data ) ) {
+		if ( empty( $attributes_data ) && empty( $min_price ) && empty( $max_price ) ) {
 			$counts = $this->get_terms_list( $taxonomy );
 
 			return array_map( 'absint', wp_list_pluck( $counts, 'term_count', 'term_count_id' ) );
@@ -189,8 +191,8 @@ class ProductQueryFilters {
 		$formatted_filtered_products_by_terms = implode( ',', array_map( 'intval', $filtered_products_by_terms ) );
 
 		$product_metas = [
-			'min_price' => $request->get_param( 'min_price' ),
-			'max_price' => $request->get_param( 'max_price' ),
+			'min_price' => $min_price,
+			'max_price' => $max_price,
 		];
 
 		$filtered_products_by_metas           = $this->get_product_by_metas( $product_metas );
