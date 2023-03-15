@@ -13,6 +13,9 @@ const filteringForPhpTemplate = getSettingWithCoercion(
 	isBoolean
 );
 
+const supportsClientSideNavigation =
+	filteringForPhpTemplate && canDoClientSideNavigation( document );
+
 /**
  * Returns specified parameter from URL
  *
@@ -35,7 +38,7 @@ export function getUrlParameter( name: string ) {
  * @param {string} newUrl New URL to be set.
  */
 export function changeUrl( newUrl: string ) {
-	if ( filteringForPhpTemplate && canDoClientSideNavigation( document ) ) {
+	if ( supportsClientSideNavigation ) {
 		navigate( newUrl );
 	} else if ( filteringForPhpTemplate ) {
 		window.location.href = newUrl;
