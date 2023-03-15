@@ -123,11 +123,11 @@ class ProductQueryFilters {
 
 		return $wpdb->get_results(
 			$wpdb->prepare(
-				'SELECT term_id as term_count_id,
+				"SELECT term_id as term_count_id,
             count(DISTINCT product_or_parent_id) as term_count
-			FROM wp_wc_product_attributes_lookup
+			FROM {$wpdb->prefix}wc_product_attributes_lookup
 			WHERE taxonomy = %s
-			GROUP BY term_id',
+			GROUP BY term_id",
 				$taxonomy
 			)
 		);
