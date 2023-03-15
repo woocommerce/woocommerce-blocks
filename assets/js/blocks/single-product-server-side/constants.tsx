@@ -72,16 +72,13 @@ export const DEFAULT_INNER_BLOCKS: InnerBlockTemplate[] = [
 						{ renderOnServerSide: true },
 					],
 					[
-						'woocommerce/product-add-to-cart',
-						{ showFormElements: true, renderOnServerSide: true },
-					],
-					[ 'woocommerce/product-sku', { renderOnServerSide: true } ],
-					[
-						'woocommerce/product-category-list',
-						{ renderOnServerSide: true },
+						'woocommerce/add-to-cart-form',
+						{
+							showFormElements: true,
+						},
 					],
 					[
-						'woocommerce/product-tag-list',
+						'woocommerce/product-meta',
 						{ renderOnServerSide: true },
 					],
 				],
