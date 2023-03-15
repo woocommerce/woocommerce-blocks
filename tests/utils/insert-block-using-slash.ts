@@ -9,7 +9,7 @@ import { canvas, insertBlock } from '@wordpress/e2e-test-utils';
 import SELECTORS from './selectors';
 
 export const insertBlockUsingSlash = async ( blockTitle: string ) => {
-	// await insertBlock( 'Paragraph' );
+	await insertBlock( 'Heading' );
 	await canvas().keyboard.type( `/${ blockTitle }` );
 	await canvas().waitForSelector( SELECTORS.popover );
 	await canvas().keyboard.press( 'Enter' );
