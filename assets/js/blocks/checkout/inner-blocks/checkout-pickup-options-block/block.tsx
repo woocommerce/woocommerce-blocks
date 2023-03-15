@@ -80,37 +80,33 @@ const renderPickupLocation = (
 
 	// If there is a cost for local pickup, show the cost per package.
 	if ( parseInt( priceWithTaxes, 10 ) > 0 ) {
-		switch ( packageCount ) {
-			// If only one package, show the price and not the package count.
-			case 1:
-				secondaryLabel = (
-					<FormattedMonetaryAmount
-						currency={ getCurrencyFromPriceResponse( option ) }
-						value={ priceWithTaxes }
-					/>
-				);
-				break;
-			default:
-				secondaryLabel = createInterpolateElement(
-					/* translators: <price/> is the price of the package, <packageCount/> is the number of packages. These must appear in the translated string. */
-					_n(
-						'<price/> x <packageCount/> package',
-						'<price/> x <packageCount/> packages',
-						packageCount,
-						'woo-gutenberg-products-block'
+		// If only one package, show the price and not the package count.
+		if ( packageCount === 1 ) {
+			secondaryLabel = (
+				<FormattedMonetaryAmount
+					currency={ getCurrencyFromPriceResponse( option ) }
+					value={ priceWithTaxes }
+				/>
+			);
+		} else {
+			secondaryLabel = createInterpolateElement(
+				/* translators: <price/> is the price of the package, <packageCount/> is the number of packages. These must appear in the translated string. */
+				_n(
+					'<price/> x <packageCount/> package',
+					'<price/> x <packageCount/> packages',
+					packageCount,
+					'woo-gutenberg-products-block'
+				),
+				{
+					price: (
+						<FormattedMonetaryAmount
+							currency={ getCurrencyFromPriceResponse( option ) }
+							value={ priceWithTaxes }
+						/>
 					),
-					{
-						price: (
-							<FormattedMonetaryAmount
-								currency={ getCurrencyFromPriceResponse(
-									option
-								) }
-								value={ priceWithTaxes }
-							/>
-						),
-						packageCount: <>{ packageCount }</>,
-					}
-				);
+					packageCount: <>{ packageCount }</>,
+				}
+			);
 		}
 	}
 
