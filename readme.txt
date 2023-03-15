@@ -80,7 +80,14 @@ Release and roadmap notes available on the [WooCommerce Developers Blog](https:/
 
 == Changelog ==
 
-= 9.8.0 - 2023-03-13 =
+= 9.8.1 - 2023-03-15 =
+
+#### Bug Fixes
+
+- Fix Single Product page not visible in block themes that provided a custom template. ([8758](https://github.com/woocommerce/woocommerce-blocks/pull/8758))
+- Products by Attributes: Fix the block rendered empty in the Editor. ([8759](https://github.com/woocommerce/woocommerce-blocks/pull/8759))
+
+= 9.8.0 - 2023-03-14 =
 
 #### Enhancements
 
