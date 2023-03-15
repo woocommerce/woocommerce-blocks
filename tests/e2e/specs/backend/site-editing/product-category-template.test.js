@@ -38,6 +38,7 @@ import {
 } from './utils';
 
 describe( 'Product by Category block template', () => {
+	useTheme( 'emptytheme' );
 	beforeAll( async () => {
 		await deleteAllTemplates( 'wp_template' );
 		await deleteAllTemplates( 'wp_template_part' );
