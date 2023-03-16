@@ -22,8 +22,6 @@ import type {
 import { CART_STORE_KEY } from '@woocommerce/block-data';
 import { useSelect } from '@wordpress/data';
 import type { ReactElement } from 'react';
-import { useSelect } from '@wordpress/data';
-import { CART_STORE_KEY } from '@woocommerce/block-data';
 
 /**
  * Internal dependencies
@@ -96,7 +94,9 @@ const Block = ( {
 		return null;
 	}
 
-	const shippingAddressIsComplete = ! shippingAddressHasValidationErrors() && isAddressComplete( shippingAddress );
+	const shippingAddressIsComplete =
+		! shippingAddressHasValidationErrors() &&
+		isAddressComplete( shippingAddress );
 
 	const shippingRatesPackageCount =
 		getShippingRatesPackageCount( shippingRates );
