@@ -7,34 +7,30 @@ import Button from '@woocommerce/base-components/button';
 /**
  * Internal dependencies
  */
-import { defaultCartButtonLabel } from './constants';
+import { defaultCheckoutButtonLabel } from './constants';
 
 export const Edit = ( {
 	attributes,
 	setAttributes,
 }: {
 	attributes: {
-		cartButtonLabel: string;
+		checkoutButtonLabel: string;
 	};
 	setAttributes: ( attributes: Record< string, unknown > ) => void;
 } ): JSX.Element => {
 	const blockProps = useBlockProps();
-	const { cartButtonLabel } = attributes;
+	const { checkoutButtonLabel } = attributes;
 
 	return (
-		<Button
-			{ ...blockProps }
-			className="wc-block-mini-cart__cart-button"
-			variant="outlined"
-		>
+		<Button { ...blockProps } className="checkout">
 			<RichText
 				multiline={ false }
 				allowedFormats={ [] }
-				value={ cartButtonLabel }
-				placeholder={ defaultCartButtonLabel }
+				value={ checkoutButtonLabel }
+				placeholder={ defaultCheckoutButtonLabel }
 				onChange={ ( content ) => {
 					setAttributes( {
-						cartButtonLabel: content,
+						checkoutButtonLabel: content,
 					} );
 				} }
 			/>
