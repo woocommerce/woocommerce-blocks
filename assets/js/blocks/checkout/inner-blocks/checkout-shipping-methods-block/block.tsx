@@ -22,11 +22,14 @@ import type {
 import { CART_STORE_KEY } from '@woocommerce/block-data';
 import { useSelect } from '@wordpress/data';
 import type { ReactElement } from 'react';
+import { useSelect } from '@wordpress/data';
+import { CART_STORE_KEY } from '@woocommerce/block-data';
 
 /**
  * Internal dependencies
  */
 import './style.scss';
+import { shippingAddressHasValidationErrors } from '../../../../data/cart/utils';
 
 /**
  * Renders a shipping rate control option.
@@ -53,7 +56,10 @@ const renderShippingRatesControlOption = (
 	};
 };
 
-const Block = ( { noShippingPlaceholder = null } ): ReactElement | null => {
+const Block = ( {
+	noShippingPlaceholder = null,
+	shippingCostRequiresAddress = false,
+} ): ReactElement | null => {
 	const { isEditor } = useEditorContext();
 
 	const {
@@ -63,6 +69,10 @@ const Block = ( { noShippingPlaceholder = null } ): ReactElement | null => {
 		hasCalculatedShipping,
 		isCollectable,
 	} = useShippingData();
+
+	const shippingAddressPushed = useSelect( ( select ) => {
+		return select( CART_STORE_KEY ).getFullShippingAddressPushed();
+	} );
 
 	const filteredShippingRates = isCollectable
 		? shippingRates.map( ( shippingRatesPackage ) => {
@@ -86,14 +96,15 @@ const Block = ( { noShippingPlaceholder = null } ): ReactElement | null => {
 		return null;
 	}
 
-	const addressComplete = isAddressComplete( shippingAddress );
+	const shippingAddressIsComplete = ! shippingAddressHasValidationErrors() && isAddressComplete( shippingAddress );
+
 	const shippingRatesPackageCount =
 		getShippingRatesPackageCount( shippingRates );
 
 	if (
-		! isEditor &&
-		! hasCalculatedShipping &&
-		! shippingRatesPackageCount
+		( ! hasCalculatedShipping && ! shippingRatesPackageCount ) ||
+		( shippingCostRequiresAddress &&
+			( ! shippingAddressPushed || ! shippingAddressIsComplete ) )
 	) {
 		return (
 			<p>
@@ -116,7 +127,7 @@ const Block = ( { noShippingPlaceholder = null } ): ReactElement | null => {
 				<ShippingRatesControl
 					noResultsMessage={
 						<>
-							{ addressComplete
+							{ shippingAddressIsComplete
 								? __(
 										'There are no shipping options available. Please check your shipping address.',
 										'woo-gutenberg-products-block'
