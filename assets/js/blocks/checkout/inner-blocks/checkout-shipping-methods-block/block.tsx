@@ -94,9 +94,8 @@ const Block = ( {
 		return null;
 	}
 
-	const shippingAddressIsComplete =
-		! shippingAddressHasValidationErrors() &&
-		isAddressComplete( shippingAddress );
+	const shippingAddressHasErrors = ! shippingAddressHasValidationErrors();
+	const addressComplete = isAddressComplete( shippingAddress );
 
 	const shippingRatesPackageCount =
 		getShippingRatesPackageCount( shippingRates );
@@ -104,7 +103,7 @@ const Block = ( {
 	if (
 		( ! hasCalculatedShipping && ! shippingRatesPackageCount ) ||
 		( shippingCostRequiresAddress &&
-			( ! shippingAddressPushed || ! shippingAddressIsComplete ) )
+			( ! shippingAddressPushed || ! shippingAddressHasErrors ) )
 	) {
 		return (
 			<p>
@@ -127,7 +126,7 @@ const Block = ( {
 				<ShippingRatesControl
 					noResultsMessage={
 						<>
-							{ shippingAddressIsComplete
+							{ addressComplete
 								? __(
 										'There are no shipping options available. Please check your shipping address.',
 										'woo-gutenberg-products-block'
