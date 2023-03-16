@@ -4,7 +4,7 @@
 import { __ } from '@wordpress/i18n';
 import { TotalsItem } from '@woocommerce/blocks-checkout';
 import EditableButton from '@woocommerce/editor-components/editable-button';
-import { useBlockProps } from '@wordpress/block-editor';
+import { useBlockProps, InnerBlocks } from '@wordpress/block-editor';
 import { getCurrencyFromPriceResponse } from '@woocommerce/price-format';
 import {
 	usePaymentMethods,
@@ -18,10 +18,7 @@ import { PaymentEventsProvider } from '@woocommerce/base-context';
 /**
  * Internal dependencies
  */
-import {
-	defaultCartButtonLabel,
-	defaultCheckoutButtonLabel,
-} from './constants';
+import { defaultCheckoutButtonLabel } from './constants';
 
 const PaymentMethodIconsElement = (): JSX.Element => {
 	const { paymentMethods } = usePaymentMethods();
@@ -43,13 +40,13 @@ export const Edit = ( {
 	setAttributes: ( attributes: Record< string, unknown > ) => void;
 } ): JSX.Element => {
 	const blockProps = useBlockProps();
-	const { cartButtonLabel, checkoutButtonLabel } = attributes;
+	const { checkoutButtonLabel } = attributes;
 	const { cartTotals } = useStoreCart();
 	const subTotal = getSetting( 'displayCartPricesIncludingTax', false )
 		? parseInt( cartTotals.total_items, 10 ) +
 		  parseInt( cartTotals.total_items_tax, 10 )
 		: parseInt( cartTotals.total_items, 10 );
-
+	const TEMPLATE = [ [ 'woocommerce/mini-cart-cart-button-block', {} ] ];
 	return (
 		<div { ...blockProps }>
 			<div className="wc-block-mini-cart__footer">
@@ -64,17 +61,7 @@ export const Edit = ( {
 					) }
 				/>
 				<div className="wc-block-mini-cart__footer-actions">
-					<EditableButton
-						className="wc-block-mini-cart__footer-cart"
-						variant="outlined"
-						value={ cartButtonLabel }
-						placeholder={ defaultCartButtonLabel }
-						onChange={ ( content ) => {
-							setAttributes( {
-								cartButtonLabel: content,
-							} );
-						} }
-					/>
+					<InnerBlocks template={ TEMPLATE } />
 					<EditableButton
 						className="wc-block-mini-cart__footer-checkout"
 						value={ checkoutButtonLabel }
