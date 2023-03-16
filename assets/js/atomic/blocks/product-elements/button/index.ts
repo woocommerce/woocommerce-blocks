@@ -32,6 +32,10 @@ const blockConfig: BlockConfiguration = {
 	attributes,
 	supports,
 	edit,
+	styles: [
+		{ name: 'fill', label: 'Fill', isDefault: true },
+		{ name: 'outline', label: 'Outline' },
+	],
 };
 
 registerBlockType( 'woocommerce/product-button', { ...blockConfig } );

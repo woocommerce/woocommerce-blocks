@@ -91,6 +91,7 @@ class ProductButton extends AbstractBlock {
 			$html_element                  = $is_ajax_button ? 'button' : 'a';
 			$styles_and_classes            = StyleAttributesUtils::get_classes_and_styles_by_attributes( $attributes, array( 'border_radius', 'font_size', 'font_weight', 'margin', 'padding', 'text_color' ) );
 			$text_align_styles_and_classes = StyleAttributesUtils::get_text_align_class_and_style( $attributes );
+			$classname                     = isset( $attributes['className'] ) ? $attributes['className'] : '';
 			$html_classes                  = implode(
 				' ',
 				array_filter(
@@ -137,10 +138,11 @@ class ProductButton extends AbstractBlock {
 			return apply_filters(
 				'woocommerce_loop_add_to_cart_link',
 				sprintf(
-					'<div class="wp-block-button wc-block-components-product-button wc-block-grid__product-add-to-cart %1$s">
-					<%2$s href="%3$s" class="%4$s" style="%5$s" %6$s>%7$s</%2$s>
+					'<div class="wp-block-button wc-block-components-product-button wc-block-grid__product-add-to-cart %1$s %2$s">
+					<%3$s href="%4$s" class="%5$s" style="%6$s" %7$s>%8$s</%3$s>
 				</div>',
 					esc_attr( $text_align_styles_and_classes['class'] ?? '' ),
+					esc_attr( $classname ),
 					$html_element,
 					esc_url( $product->add_to_cart_url() ),
 					isset( $args['class'] ) ? esc_attr( $args['class'] ) : '',
