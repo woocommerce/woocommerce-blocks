@@ -20,7 +20,7 @@ export const blockAttributes: BlockAttributes = {
 		type: 'boolean',
 		default: false,
 	},
-	renderOnServerSide: {
+	isDescendentOfSingleProductBlock: {
 		type: 'boolean',
 		default: false,
 	},

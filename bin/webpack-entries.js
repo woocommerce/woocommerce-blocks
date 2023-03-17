@@ -64,7 +64,7 @@ const blocks = {
 	'reviews-by-product': {
 		customDir: 'reviews/reviews-by-product',
 	},
-	'single-product-server-side': {},
+	'single-product': {},
 	'stock-filter': {},
 };
 

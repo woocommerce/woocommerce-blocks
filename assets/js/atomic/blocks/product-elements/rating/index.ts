@@ -26,7 +26,6 @@ const blockConfig: BlockConfiguration = {
 	ancestor: [
 		'woocommerce/all-products',
 		'woocommerce/single-product',
-		'woocommerce/single-product-server-side',
 		'core/post-template',
 	],
 	icon: { src: icon },

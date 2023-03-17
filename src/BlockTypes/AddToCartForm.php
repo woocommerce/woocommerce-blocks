@@ -25,18 +25,26 @@ class AddToCartForm extends AbstractBlock {
 	 * @return string | void Rendered block output.
 	 */
 	protected function render( $attributes, $content, $block ) {
+		$post_id = $block->context['postId'] ?? 0;
+
+		if ( ! $post_id ) {
+			return;
+		}
+
+		$product = wc_get_product( $post_id );
+
+		if ( ! $product ) {
+			return;
+		}
+
 		ob_start();
 
-		while ( have_posts() ) {
-			the_post();
-			global $product;
-			/**
-			 * Trigger the single product add to cart action for each product type.
-			 *
-			 * @since 9.7.0
-			 */
-			do_action( 'woocommerce_' . $product->get_type() . '_add_to_cart' );
-		}
+		/**
+		 * Trigger the single product add to cart action for each product type.
+		*
+		* @since 9.7.0
+		*/
+		do_action( 'woocommerce_' . $product->get_type() . '_add_to_cart' );
 
 		$product = ob_get_clean();
 

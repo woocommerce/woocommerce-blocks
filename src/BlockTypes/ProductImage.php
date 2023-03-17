@@ -192,6 +192,8 @@ class ProductImage extends AbstractBlock {
 		$margin        = StyleAttributesUtils::get_margin_class_and_style( $attributes );
 
 		$post_id = $block->context['postId'];
+		do_action( 'qm/debug', $post_id );
+
 		$product = wc_get_product( $post_id );
 
 		if ( $product ) {

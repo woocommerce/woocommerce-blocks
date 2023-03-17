@@ -4,7 +4,11 @@
 import classnames from 'classnames';
 
 const save = ( { attributes } ) => {
-	if ( attributes.isDescendentOfQueryLoop || attributes.renderOnServerSide ) {
+	if (
+		attributes.isDescendentOfQueryLoop ||
+		attributes.isDescendentOfSingleProductBlock ||
+		attributes.isDescendentOfSingleProductTemplate
+	) {
 		return null;
 	}
 

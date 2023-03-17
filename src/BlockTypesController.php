@@ -214,7 +214,7 @@ final class BlockTypesController {
 			'ReviewsByProduct',
 			'RelatedProducts',
 			'ProductDetails',
-			'SingleProductServerSide',
+			'SingleProduct',
 			'StockFilter',
 		];
 

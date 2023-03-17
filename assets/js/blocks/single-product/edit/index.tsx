@@ -7,7 +7,6 @@ import { Placeholder, Button, PanelBody } from '@wordpress/components';
 import { withProduct } from '@woocommerce/block-hocs';
 import BlockErrorBoundary from '@woocommerce/base-components/block-error-boundary';
 import EditProductLink from '@woocommerce/editor-components/edit-product-link';
-import { singleProductBlockPreview } from '@woocommerce/resource-previews';
 import { InspectorControls } from '@wordpress/block-editor';
 import { ProductResponseItem } from '@woocommerce/types';
 
@@ -129,6 +128,7 @@ const Editor = ( {
 								/>
 							</PanelBody>
 						</InspectorControls>
+
 						<EditProductLink productId={ productId } />
 						<LayoutEditor
 							clientId={ clientId }

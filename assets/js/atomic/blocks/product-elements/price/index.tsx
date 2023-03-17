@@ -29,21 +29,6 @@ const blockConfig = {
 	attributes,
 	supports,
 	edit,
-	save: () => {
-		if (
-			attributes.isDescendentOfQueryLoop ||
-			attributes.isDescendentOfSingleProductTemplate ||
-			attributes.renderOnServerSide
-		) {
-			return null;
-		}
-
-		return (
-			<div
-				className={ classnames( 'is-loading', attributes.className ) }
-			/>
-		);
-	},
 };
 
 registerBlockType( 'woocommerce/product-price', blockConfig );

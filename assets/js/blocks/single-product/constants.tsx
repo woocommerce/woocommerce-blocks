@@ -30,7 +30,10 @@ export const DEFAULT_INNER_BLOCKS: InnerBlockTemplate[] = [
 				[
 					[
 						'woocommerce/product-image',
-						{ showSaleBadge: false, renderOnServerSide: true },
+						{
+							showSaleBadge: false,
+							isDescendentOfSingleProductBlock: true,
+						},
 					],
 				],
 			],
@@ -39,37 +42,27 @@ export const DEFAULT_INNER_BLOCKS: InnerBlockTemplate[] = [
 				{},
 				[
 					[
-						'woocommerce/product-sale-badge',
-						{ renderOnServerSide: true },
-					],
-					[
 						'core/post-title',
 						{
 							headingLevel: 2,
-							renderOnServerSide: true,
 							__woocommerceNamespace:
 								PRODUCT_TITLE_VARIATION_NAME,
 						},
 					],
 					[
 						'woocommerce/product-rating',
-						{ renderOnServerSide: true },
+						{ isDescendentOfSingleProductBlock: true },
 					],
 					[
 						'woocommerce/product-price',
-						{ renderOnServerSide: true },
+						{ isDescendentOfSingleProductBlock: true },
 					],
 					[
 						'core/post-excerpt',
 						{
-							renderOnServerSide: true,
 							__woocommerceNamespace:
 								PRODUCT_SUMMARY_VARIATION_NAME,
 						},
-					],
-					[
-						'woocommerce/product-stock-indicator',
-						{ renderOnServerSide: true },
 					],
 					[
 						'woocommerce/add-to-cart-form',
@@ -77,10 +70,7 @@ export const DEFAULT_INNER_BLOCKS: InnerBlockTemplate[] = [
 							showFormElements: true,
 						},
 					],
-					[
-						'woocommerce/product-meta',
-						{ renderOnServerSide: true },
-					],
+					[ 'woocommerce/product-meta' ],
 				],
 			],
 		],

@@ -16,7 +16,7 @@ export const blockAttributes: BlockAttributes = {
 		type: 'string',
 		default: '',
 	},
-	renderOnServerSide: {
+	isDescendentOfSingleProductBlock: {
 		type: 'boolean',
 		default: false,
 	},

@@ -13,6 +13,7 @@ import { createBlocksFromTemplate } from '@woocommerce/atomic-utils';
 import { PanelBody, Button } from '@wordpress/components';
 import { Icon, backup } from '@wordpress/icons';
 import { ProductResponseItem } from '@woocommerce/types';
+import { BlockContextProvider } from '@wordpress/block-editor';
 
 /**
  * Internal dependencies
@@ -74,12 +75,16 @@ const LayoutEditor = ( {
 					</PanelBody>
 				</InspectorControls>
 				<div className={ baseClassName }>
-					<InnerBlocks
-						template={ DEFAULT_INNER_BLOCKS }
-						allowedBlocks={ ALLOWED_INNER_BLOCKS }
-						templateLock={ false }
-						renderAppender={ false }
-					/>
+					<BlockContextProvider
+						value={ { postId: product?.id, postType: 'product' } }
+					>
+						<InnerBlocks
+							template={ DEFAULT_INNER_BLOCKS }
+							allowedBlocks={ ALLOWED_INNER_BLOCKS }
+							templateLock={ false }
+							renderAppender={ false }
+						/>
+					</BlockContextProvider>
 				</div>
 			</ProductDataContextProvider>
 		</InnerBlockLayoutContextProvider>

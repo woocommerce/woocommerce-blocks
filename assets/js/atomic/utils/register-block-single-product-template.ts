@@ -14,13 +14,20 @@ export const registerBlockSingleProductTemplate = ( {
 	blockName: string;
 } ) => {
 	let currentTemplateId: string | undefined;
+	let stop = false;
 
 	subscribe( () => {
 		const previousTemplateId = currentTemplateId;
 		const store = select( 'core/edit-site' );
 		currentTemplateId = store?.getEditedPostId() as string | undefined;
 
+		if ( stop === true ) {
+			return;
+		}
+
 		if ( previousTemplateId === currentTemplateId ) {
+			stop = true;
+			unregisterBlockFn();
 			return;
 		}
 
@@ -42,5 +49,5 @@ export const registerBlockSingleProductTemplate = ( {
 		if ( block !== undefined ) {
 			unregisterBlockFn();
 		}
-	}, 'core/edit-site' );
+	} );
 };
