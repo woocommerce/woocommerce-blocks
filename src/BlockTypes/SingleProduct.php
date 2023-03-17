@@ -49,7 +49,8 @@ class SingleProduct extends AbstractBlock {
 	}
 
 	/**
-	 * Update the context for the block.
+	 * Update the context by injecting the correct post data
+	 * for the Single Product inner blocks.
 	 *
 	 * @param array    $context Block context.
 	 * @param array    $block Block attributes.
@@ -70,6 +71,14 @@ class SingleProduct extends AbstractBlock {
 		return $context;
 	}
 
+	/**
+	 * Extract the inner block names for the Single Product block.
+	 *
+	 * @param array $block Block attributes.
+	 * @param array $result Array of inner block names.
+	 *
+	 * @return array Array of inner block names.
+	 */
 	protected function extract_single_product_inner_block_names($block, &$result = []) {
 		if(isset($block['blockName'])){
 			$result[] = $block['blockName'];
@@ -83,6 +92,12 @@ class SingleProduct extends AbstractBlock {
 		return $result;
 	}
 
+	/**
+	 * Replace the global post for the Single Product inner blocks and reset it after.
+	 *
+	 * @param array $block Block attributes.
+	 * @param array $context Block context.
+	 */
 	protected function replace_post_for_single_product_inner_block( $block, &$context ) {
 		if( $this->single_product_inner_blocks_names ){
 			$block_name = array_pop( $this->single_product_inner_blocks_names);
