@@ -80,6 +80,12 @@ Release and roadmap notes available on the [WooCommerce Developers Blog](https:/
 
 == Changelog ==
 
+= 9.6.6 - 2023-03-17 =
+
+#### Bug Fixes
+
+- Product Image Gallery: fix 404 error. ([8445](https://github.com/woocommerce/woocommerce-blocks/pull/8445))
+
 = 9.6.5 - 2023-03-06 =
 
 #### Bug Fixes
