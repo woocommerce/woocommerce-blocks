@@ -322,8 +322,8 @@ export const shopper = {
 		},
 
 		// prettier-ignore
-		verifyBillingDetails: async ( customerBillingDetails ) => {
-			await page.waitForSelector( '.woocommerce-customer-details address' );
+		verifyBillingDetails: async ( customerBillingDetails, selector = '.woocommerce-column--billing-address' ) => {
+			await page.waitForSelector( selector );
 			await Promise.all( [
 				expect( page ).toMatch(
 					customerBillingDetails.firstname
@@ -347,7 +347,7 @@ export const shopper = {
 		// prettier-ignore
 		verifyShippingDetails: async ( customerShippingDetails ) => {
 			await page.waitForSelector(
-				'.woocommerce-customer-details address'
+				'.woocommerce-column--shipping-address'
 			);
 			await Promise.all( [
 				expect( page ).toMatch(
