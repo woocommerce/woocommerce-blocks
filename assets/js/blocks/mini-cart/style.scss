@@ -179,6 +179,7 @@ h2.wc-block-mini-cart__title {
 		.wc-block-components-button,
 		.wp-block-button {
 			flex-grow: 1;
+			display: inline-flex;
 		}
 
 		.wc-block-components-button.outlined {
