@@ -58,8 +58,6 @@ class SingleProduct extends AbstractBlock {
 	 * @return array Updated block context.
 	 */
 	public function update_context( $context, $block, $parent_block ) {
-		// var_dump($block['blockName']);
-
 		if( $block['blockName'] === 'woocommerce/single-product'
 			&& isset( $block['attrs']['productId'] ) ) {
 				$this->product_id = $block['attrs']['productId'];
