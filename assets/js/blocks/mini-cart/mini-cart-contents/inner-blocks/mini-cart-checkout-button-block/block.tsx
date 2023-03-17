@@ -1,7 +1,7 @@
 /**
  * External dependencies
  */
-import { SHOP_URL } from '@woocommerce/block-settings';
+import { CHECKOUT_URL } from '@woocommerce/block-settings';
 import Button from '@woocommerce/base-components/button';
 import classNames from 'classnames';
 import { useColorProps } from '@woocommerce/base-hooks';
@@ -26,17 +26,19 @@ const Block = ( {
 
 	return (
 		<div className="wp-block-button has-text-align-center">
-			<Button
-				className={ classNames(
-					className,
-					colorProps.className,
-					'wc-block-mini-cart__checkout-button'
-				) }
-				style={ { ...colorProps.style } }
-				href={ SHOP_URL }
-			>
-				{ checkoutButtonLabel || defaultCheckoutButtonLabel }
-			</Button>
+			{ CHECKOUT_URL && (
+				<Button
+					className={ classNames(
+						className,
+						colorProps.className,
+						'wc-block-mini-cart__checkout-button'
+					) }
+					style={ { ...colorProps.style } }
+					href={ CHECKOUT_URL }
+				>
+					{ checkoutButtonLabel || defaultCheckoutButtonLabel }
+				</Button>
+			) }
 		</div>
 	);
 };

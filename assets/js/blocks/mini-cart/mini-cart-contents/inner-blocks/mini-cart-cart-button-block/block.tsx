@@ -1,7 +1,7 @@
 /**
  * External dependencies
  */
-import { SHOP_URL } from '@woocommerce/block-settings';
+import { CART_URL } from '@woocommerce/block-settings';
 import Button from '@woocommerce/base-components/button';
 import classNames from 'classnames';
 import { useColorProps } from '@woocommerce/base-hooks';
@@ -26,18 +26,20 @@ const Block = ( {
 
 	return (
 		<div className="wp-block-button has-text-align-center">
-			<Button
-				className={ classNames(
-					className,
-					colorProps.className,
-					'wc-block-mini-cart__cart-button'
-				) }
-				style={ { ...colorProps.style } }
-				href={ SHOP_URL }
-				variant="outlined"
-			>
-				{ cartButtonLabel || defaultCartButtonLabel }
-			</Button>
+			{ CART_URL && (
+				<Button
+					className={ classNames(
+						className,
+						colorProps.className,
+						'wc-block-mini-cart__cart-button'
+					) }
+					style={ { ...colorProps.style } }
+					href={ CART_URL }
+					variant="outlined"
+				>
+					{ cartButtonLabel || defaultCartButtonLabel }
+				</Button>
+			) }
 		</div>
 	);
 };
