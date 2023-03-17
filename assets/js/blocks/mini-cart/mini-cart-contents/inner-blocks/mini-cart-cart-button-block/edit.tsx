@@ -1,8 +1,8 @@
 /**
  * External dependencies
  */
-import { useBlockProps, RichText } from '@wordpress/block-editor';
-import Button from '@woocommerce/base-components/button';
+import { useBlockProps } from '@wordpress/block-editor';
+import EditableButton from '@woocommerce/editor-components/editable-button';
 
 /**
  * Internal dependencies
@@ -22,23 +22,18 @@ export const Edit = ( {
 	const { cartButtonLabel } = attributes;
 
 	return (
-		<Button
+		<EditableButton
 			{ ...blockProps }
 			className="wc-block-mini-cart__footer-cart"
 			variant="outlined"
-		>
-			<RichText
-				multiline={ false }
-				allowedFormats={ [] }
-				value={ cartButtonLabel }
-				placeholder={ defaultCartButtonLabel }
-				onChange={ ( content ) => {
-					setAttributes( {
-						cartButtonLabel: content,
-					} );
-				} }
-			/>
-		</Button>
+			value={ cartButtonLabel }
+			placeholder={ defaultCartButtonLabel }
+			onChange={ ( content ) => {
+				setAttributes( {
+					cartButtonLabel: content,
+				} );
+			} }
+		/>
 	);
 };
 
