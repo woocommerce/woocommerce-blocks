@@ -24,7 +24,7 @@ export const Edit = ( {
 	return (
 		<Button
 			{ ...blockProps }
-			className="wc-block-mini-cart__cart-button"
+			className="wc-block-mini-cart__footer-cart"
 			variant="outlined"
 		>
 			<RichText

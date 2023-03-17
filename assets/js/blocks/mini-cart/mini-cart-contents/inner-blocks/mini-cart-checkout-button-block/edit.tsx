@@ -22,7 +22,10 @@ export const Edit = ( {
 	const { checkoutButtonLabel } = attributes;
 
 	return (
-		<Button { ...blockProps } className="checkout">
+		<Button
+			{ ...blockProps }
+			className="wc-block-mini-cart__footer-checkout"
+		>
 			<RichText
 				multiline={ false }
 				allowedFormats={ [] }
