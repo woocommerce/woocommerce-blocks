@@ -15,7 +15,8 @@ class SingleProduct extends AbstractBlock {
 	protected $single_product_inner_blocks_names = [];
 
 	/**
-	 * API version name.
+	 * Initialize the block and Hook into the `render_block_context` filter
+	 * to update the context with the correct data.
 	 *
 	 * @var string
 	 */
@@ -26,7 +27,7 @@ class SingleProduct extends AbstractBlock {
 
 
 	/**
-	 * Render the block.
+	 * Render the Single Product block
 	 *
 	 * @param array    $attributes Block attributes.
 	 * @param string   $content Block content.
@@ -44,13 +45,13 @@ class SingleProduct extends AbstractBlock {
 			esc_attr( $classname ),
 			$content
 		);
-		wp_reset_postdata();
+
 		return $html;
 	}
 
 	/**
 	 * Update the context by injecting the correct post data
-	 * for the Single Product inner blocks.
+	 * for each one of the Single Product inner blocks.
 	 *
 	 * @param array    $context Block context.
 	 * @param array    $block Block attributes.
@@ -72,12 +73,13 @@ class SingleProduct extends AbstractBlock {
 	}
 
 	/**
-	 * Extract the inner block names for the Single Product block.
+	 * Extract the inner block names for the Single Product block. This way it's possible
+	 * to map all the inner blocks for a Single Product block and manipulate the data as needed.
 	 *
-	 * @param array $block Block attributes.
+	 * @param array $block The Single Product block or its inner blocks
 	 * @param array $result Array of inner block names.
 	 *
-	 * @return array Array of inner block names.
+	 * @return array Array containing all the inner block names of a Single Product block
 	 */
 	protected function extract_single_product_inner_block_names($block, &$result = []) {
 		if(isset($block['blockName'])){
@@ -94,6 +96,10 @@ class SingleProduct extends AbstractBlock {
 
 	/**
 	 * Replace the global post for the Single Product inner blocks and reset it after.
+	 *
+	 * This is needed because some of the inner blocks may use the global post
+	 * instead of fetching the product through the `productId` attribute, so even if the
+	 * `productId` is passed to the inner block, it will still use the global post.
 	 *
 	 * @param array $block Block attributes.
 	 * @param array $context Block context.
