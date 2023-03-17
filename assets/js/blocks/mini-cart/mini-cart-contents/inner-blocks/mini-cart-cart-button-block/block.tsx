@@ -27,6 +27,7 @@ const Block = ( {
 					'wc-block-mini-cart__cart-button'
 				) }
 				href={ SHOP_URL }
+				variant="outlined"
 			>
 				{ cartButtonLabel || defaultCartButtonLabel }
 			</Button>
