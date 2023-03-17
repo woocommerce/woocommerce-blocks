@@ -94,3 +94,11 @@ export const prefersCollection = ( state: CheckoutState ) => {
 	}
 	return state.prefersCollection;
 };
+
+export const isEditingShippingAddress = ( state: CheckoutState ) => {
+	return state.editingShippingAddress;
+};
+
+export const isEditingBillingAddress = ( state: CheckoutState ) => {
+	return state.editingBillingAddress;
+};

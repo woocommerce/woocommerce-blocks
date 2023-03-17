@@ -82,7 +82,7 @@ const Block = ( {
 					addressFieldsConfig={ addressFieldsConfig }
 					showPhoneField={ showPhoneField }
 					requirePhoneField={ requirePhoneField }
-					hasAddress={ hasAddress }
+					noticeContext={ noticeContexts.BILLING_ADDRESS }
 				/>
 			</WrapperComponent>
 		</>

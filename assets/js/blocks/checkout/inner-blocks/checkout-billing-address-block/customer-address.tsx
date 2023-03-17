@@ -1,15 +1,27 @@
 /**
  * External dependencies
  */
-import { useState } from '@wordpress/element';
+import { __ } from '@wordpress/i18n';
+import { useState, useEffect } from '@wordpress/element';
+import { ValidationInputError } from '@woocommerce/blocks-checkout';
+import Button from '@woocommerce/base-components/button';
 import { AddressForm } from '@woocommerce/base-components/cart-checkout';
 import { useCheckoutAddress, useStoreEvents } from '@woocommerce/base-context';
+import { removeNoticesWithContext } from '@woocommerce/base-utils';
 import { receipt } from '@wordpress/icons';
 import type {
 	BillingAddress,
 	AddressField,
 	AddressFields,
 } from '@woocommerce/settings';
+import { dispatch, useDispatch } from '@wordpress/data';
+import {
+	getInvalidAddressKeys,
+	showValidationErrorsForAddressKeys,
+	CART_STORE_KEY,
+	VALIDATION_STORE_KEY,
+	processErrorResponse,
+} from '@woocommerce/block-data';
 
 /**
  * Internal dependencies
@@ -21,54 +33,118 @@ const CustomerAddress = ( {
 	addressFieldsConfig,
 	showPhoneField,
 	requirePhoneField,
-	hasAddress,
+	noticeContext,
 }: {
 	addressFieldsConfig: Record< keyof AddressFields, Partial< AddressField > >;
 	showPhoneField: boolean;
 	requirePhoneField: boolean;
-	hasAddress: boolean;
+	noticeContext: string;
 } ) => {
 	const {
 		defaultAddressFields,
 		billingAddress,
-		setShippingAddress,
-		setBillingAddress,
-		setBillingPhone,
-		setShippingPhone,
 		useBillingAsShipping,
+		isEditingBillingAddress,
+		setEditingBillingAddress,
 	} = useCheckoutAddress();
 	const { dispatchCheckoutEvent } = useStoreEvents();
+	const { setValidationErrors, clearValidationError } =
+		useDispatch( VALIDATION_STORE_KEY );
 
-	const [ editing, setEditing ] = useState( ! hasAddress );
+	const [ addressState, setAddressState ] =
+		useState< BillingAddress >( billingAddress );
+	const [ isSaving, setIsSaving ] = useState( false );
+
 	const addressFieldKeys = Object.keys(
 		defaultAddressFields
 	) as ( keyof AddressFields )[];
 
+	const onSaveAddress = () => {
+		const invalidProps = getInvalidAddressKeys(
+			[ ...addressFieldKeys, 'phone' ],
+			'billing'
+		);
+
+		if ( invalidProps.length ) {
+			showValidationErrorsForAddressKeys( invalidProps, 'billing' );
+			return;
+		}
+
+		const newAddress = {
+			...addressState,
+			phone: showPhoneField ? addressState.phone : '',
+		};
+
+		setIsSaving( true );
+
+		// Updates the address and waits for the result.
+		dispatch( CART_STORE_KEY )
+			.updateCustomerData(
+				{
+					billing_address: newAddress,
+					...( useBillingAsShipping
+						? {
+								shipping_address: newAddress,
+						  }
+						: {} ),
+				},
+				false
+			)
+			.then( () => {
+				removeNoticesWithContext( noticeContext );
+				dispatchCheckoutEvent( 'set-billing-address' );
+				setEditingBillingAddress( false );
+			} )
+			.catch( ( response ) => {
+				processErrorResponse( response, noticeContext );
+			} )
+			.finally( () => {
+				setIsSaving( false );
+			} );
+	};
+
+	const hasAddress = !! (
+		addressState.address_1 &&
+		( addressState.first_name || addressState.last_name )
+	);
+
+	const errorId = 'billing-address';
+
+	useEffect( () => {
+		if ( ! isEditingBillingAddress ) {
+			clearValidationError( errorId );
+		} else {
+			setValidationErrors( {
+				[ errorId ]: {
+					message: __(
+						'Please complete the billing address form before continuing.',
+						'woo-gutenberg-products-block'
+					),
+					hidden: true,
+				},
+			} );
+		}
+	}, [ isEditingBillingAddress, clearValidationError, setValidationErrors ] );
+
+	useEffect(
+		() => () => void clearValidationError( errorId ),
+		[ clearValidationError ]
+	);
+
 	return (
 		<>
-			{ hasAddress && ! editing && (
-				<AddressCard
-					address={ billingAddress }
-					target="billing"
-					onEdit={ () => {
-						setEditing( true );
-					} }
-					icon={ receipt }
-				/>
-			) }
-			{ ( editing || ! hasAddress ) && (
+			{ isEditingBillingAddress || ! hasAddress ? (
 				<>
 					<AddressForm
 						id="billing"
 						type="billing"
 						onChange={ ( values: Partial< BillingAddress > ) => {
-							setBillingAddress( values );
-							if ( useBillingAsShipping ) {
-								setShippingAddress( values );
-							}
-							dispatchCheckoutEvent( 'set-shipping-address' );
+							setAddressState( {
+								...addressState,
+								...values,
+							} );
 						} }
-						values={ billingAddress }
+						values={ addressState }
 						fields={ addressFieldKeys }
 						fieldConfig={ addressFieldsConfig }
 					/>
@@ -77,22 +153,29 @@ const CustomerAddress = ( {
 							id="billing-phone"
 							errorId={ 'billing_phone' }
 							isRequired={ requirePhoneField }
-							value={ billingAddress.phone }
+							value={ addressState.phone }
 							onChange={ ( value ) => {
-								setBillingPhone( value );
-								dispatchCheckoutEvent( 'set-phone-number', {
-									step: 'shipping',
+								setAddressState( {
+									...addressState,
+									phone: value,
 								} );
-								if ( useBillingAsShipping ) {
-									setShippingPhone( value );
-									dispatchCheckoutEvent( 'set-phone-number', {
-										step: 'shipping',
-									} );
-								}
 							} }
 						/>
 					) }
+					<Button onClick={ onSaveAddress } showSpinner={ isSaving }>
+						{ __( 'Save address', 'woo-gutenberg-products-block' ) }
+					</Button>
+					<ValidationInputError propertyName={ errorId } />
 				</>
+			) : (
+				<AddressCard
+					address={ billingAddress }
+					target="billing"
+					onEdit={ () => {
+						setEditingBillingAddress( true );
+					} }
+					icon={ receipt }
+				/>
 			) }
 		</>
 	);

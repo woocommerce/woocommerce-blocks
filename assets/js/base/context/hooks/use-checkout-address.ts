@@ -8,7 +8,7 @@ import {
 	BillingAddress,
 	getSetting,
 } from '@woocommerce/settings';
-import { useCallback } from '@wordpress/element';
+import { useCallback, useState } from '@wordpress/element';
 import { useDispatch, useSelect } from '@wordpress/data';
 import { CHECKOUT_STORE_KEY } from '@woocommerce/block-data';
 
@@ -35,6 +35,10 @@ interface CheckoutAddress {
 	useBillingAsShipping: boolean;
 	needsShipping: boolean;
 	showShippingMethods: boolean;
+	isEditingShippingAddress: boolean;
+	setEditingShippingAddress: ( isEditing: boolean ) => void;
+	isEditingBillingAddress: boolean;
+	setEditingBillingAddress: ( isEditing: boolean ) => void;
 }
 
 /**
@@ -42,15 +46,25 @@ interface CheckoutAddress {
  */
 export const useCheckoutAddress = (): CheckoutAddress => {
 	const { needsShipping } = useShippingData();
-	const { useShippingAsBilling, prefersCollection } = useSelect(
-		( select ) => ( {
-			useShippingAsBilling:
-				select( CHECKOUT_STORE_KEY ).getUseShippingAsBilling(),
-			prefersCollection: select( CHECKOUT_STORE_KEY ).prefersCollection(),
-		} )
-	);
-	const { __internalSetUseShippingAsBilling } =
-		useDispatch( CHECKOUT_STORE_KEY );
+	const {
+		useShippingAsBilling,
+		prefersCollection,
+		isEditingShippingAddress,
+		isEditingBillingAddress,
+	} = useSelect( ( select ) => ( {
+		useShippingAsBilling:
+			select( CHECKOUT_STORE_KEY ).getUseShippingAsBilling(),
+		prefersCollection: select( CHECKOUT_STORE_KEY ).prefersCollection(),
+		isEditingShippingAddress:
+			select( CHECKOUT_STORE_KEY ).isEditingShippingAddress(),
+		isEditingBillingAddress:
+			select( CHECKOUT_STORE_KEY ).isEditingBillingAddress(),
+	} ) );
+	const {
+		__internalSetUseShippingAsBilling,
+		setEditingShippingAddress,
+		setEditingBillingAddress,
+	} = useDispatch( CHECKOUT_STORE_KEY );
 	const {
 		billingAddress,
 		setBillingAddress,
@@ -85,6 +99,12 @@ export const useCheckoutAddress = (): CheckoutAddress => {
 		'forcedBillingAddress',
 		false
 	);
+	const showShippingFields = needsShipping && ! prefersCollection;
+	const showShippingMethods = needsShipping && ! prefersCollection;
+	const showBillingFields =
+		! needsShipping || ! useShippingAsBilling || prefersCollection || false;
+	const useBillingAsShipping =
+		forcedBillingAddress || prefersCollection || false;
 	return {
 		shippingAddress,
 		billingAddress,
@@ -97,12 +117,14 @@ export const useCheckoutAddress = (): CheckoutAddress => {
 		useShippingAsBilling,
 		setUseShippingAsBilling: __internalSetUseShippingAsBilling,
 		needsShipping,
-		showShippingFields:
-			! forcedBillingAddress && needsShipping && ! prefersCollection,
-		showShippingMethods: needsShipping && ! prefersCollection,
-		showBillingFields:
-			! needsShipping || ! useShippingAsBilling || prefersCollection,
+		showShippingFields,
+		showShippingMethods,
+		showBillingFields,
 		forcedBillingAddress,
-		useBillingAsShipping: forcedBillingAddress || prefersCollection,
+		useBillingAsShipping,
+		isEditingShippingAddress,
+		setEditingShippingAddress,
+		isEditingBillingAddress,
+		setEditingBillingAddress,
 	};
 };

@@ -134,6 +134,23 @@ const reducer = ( state = defaultState, action: CheckoutAction ) => {
 			}
 			break;
 
+		case types.SET_EDITING_SHIPPING_ADDRESS:
+		case types.SET_EDITING_BILLING_ADDRESS:
+			const field =
+				action.type === types.SET_EDITING_SHIPPING_ADDRESS
+					? 'editingShippingAddress'
+					: 'editingBillingAddress';
+			if (
+				action.editing !== undefined &&
+				action.editing !== state[ field ]
+			) {
+				newState = {
+					...state,
+					[ field ]: action.editing,
+				};
+			}
+			break;
+
 		case types.SET_ORDER_NOTES:
 			if (
 				action.orderNotes !== undefined &&

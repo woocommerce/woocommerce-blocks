@@ -130,6 +130,16 @@ export const setPrefersCollection = ( prefersCollection: boolean ) => ( {
 	prefersCollection,
 } );
 
+export const setEditingShippingAddress = ( editing: boolean ) => ( {
+	type: types.SET_EDITING_SHIPPING_ADDRESS,
+	editing,
+} );
+
+export const setEditingBillingAddress = ( editing: boolean ) => ( {
+	type: types.SET_EDITING_BILLING_ADDRESS,
+	editing,
+} );
+
 /**
  * Registers additional data under an extension namespace.
  */
@@ -164,5 +174,7 @@ export type CheckoutAction =
 			| typeof __internalSetOrderNotes
 			| typeof setPrefersCollection
 			| typeof __internalSetExtensionData
+			| typeof setEditingShippingAddress
+			| typeof setEditingBillingAddress
 	  >
 	| Record< string, never >;

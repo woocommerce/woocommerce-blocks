@@ -10,7 +10,11 @@ import {
 } from '@woocommerce/base-utils';
 import { getCurrencyFromPriceResponse } from '@woocommerce/price-format';
 import FormattedMonetaryAmount from '@woocommerce/base-components/formatted-monetary-amount';
-import { useEditorContext, noticeContexts } from '@woocommerce/base-context';
+import {
+	useEditorContext,
+	noticeContexts,
+	useCheckoutAddress,
+} from '@woocommerce/base-context';
 import { StoreNoticesContainer } from '@woocommerce/blocks-checkout';
 import { decodeEntities } from '@wordpress/html-entities';
 import { Notice } from 'wordpress-components';
@@ -60,7 +64,7 @@ const Block = ( {
 	shippingCostRequiresAddress = false,
 } ): ReactElement | null => {
 	const { isEditor } = useEditorContext();
-
+	const { isEditingShippingAddress } = useCheckoutAddress();
 	const {
 		shippingRates,
 		needsShipping,
@@ -99,12 +103,13 @@ const Block = ( {
 	if (
 		( ! hasCalculatedShipping && ! shippingRatesPackageCount ) ||
 		( shippingCostRequiresAddress &&
-			( ! shippingAddressPushed || ! shippingAddressIsComplete ) )
+			( ! shippingAddressPushed || ! shippingAddressIsComplete ) ) ||
+		isEditingShippingAddress
 	) {
 		return (
 			<p>
 				{ __(
-					'Shipping options will be displayed here after entering your full shipping address.',
+					'Available shipping options will be shown after entering your shipping address.',
 					'woo-gutenberg-products-block'
 				) }
 			</p>

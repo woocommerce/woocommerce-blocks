@@ -43,6 +43,7 @@ const Block = ( {
 		shippingAddress,
 		useShippingAsBilling,
 		setUseShippingAsBilling,
+		isEditingShippingAddress,
 	} = useCheckoutAddress();
 	const { isEditor } = useEditorContext();
 
@@ -83,10 +84,6 @@ const Block = ( {
 		: [ noticeContexts.SHIPPING_ADDRESS ];
 
 	const WrapperComponent = isEditor ? Noninteractive : Fragment;
-	const hasAddress = !! (
-		shippingAddress.address_1 &&
-		( shippingAddress.first_name || shippingAddress.last_name )
-	);
 
 	return (
 		<>
@@ -96,10 +93,10 @@ const Block = ( {
 					addressFieldsConfig={ addressFieldsConfig }
 					showPhoneField={ showPhoneField }
 					requirePhoneField={ requirePhoneField }
-					hasAddress={ hasAddress }
+					noticeContext={ noticeContexts.SHIPPING_ADDRESS }
 				/>
 			</WrapperComponent>
-			{ hasAddress && (
+			{ ! isEditingShippingAddress && (
 				<CheckboxControl
 					className="wc-block-checkout__use-address-for-billing"
 					label={ __(

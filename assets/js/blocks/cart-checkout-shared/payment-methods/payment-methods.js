@@ -1,8 +1,6 @@
 /**
  * External dependencies
  */
-import { __ } from '@wordpress/i18n';
-import Label from '@woocommerce/base-components/label';
 import { useSelect } from '@wordpress/data';
 import { PAYMENT_STORE_KEY } from '@woocommerce/block-data';
 
@@ -19,18 +17,16 @@ import SavedPaymentMethodOptions from './saved-payment-method-options';
  * @return {*} The rendered component.
  */
 const PaymentMethods = () => {
-	const {
-		paymentMethodsInitialized,
-		availablePaymentMethods,
-		savedPaymentMethods,
-	} = useSelect( ( select ) => {
-		const store = select( PAYMENT_STORE_KEY );
-		return {
-			paymentMethodsInitialized: store.paymentMethodsInitialized(),
-			availablePaymentMethods: store.getAvailablePaymentMethods(),
-			savedPaymentMethods: store.getSavedPaymentMethods(),
-		};
-	} );
+	const { paymentMethodsInitialized, availablePaymentMethods } = useSelect(
+		( select ) => {
+			const store = select( PAYMENT_STORE_KEY );
+			return {
+				paymentMethodsInitialized: store.paymentMethodsInitialized(),
+				availablePaymentMethods: store.getAvailablePaymentMethods(),
+				savedPaymentMethods: store.getSavedPaymentMethods(),
+			};
+		}
+	);
 
 	if (
 		paymentMethodsInitialized &&
@@ -42,24 +38,6 @@ const PaymentMethods = () => {
 	return (
 		<>
 			<SavedPaymentMethodOptions />
-			{ Object.keys( savedPaymentMethods ).length > 0 && (
-				<Label
-					label={ __(
-						'Use another payment method.',
-						'woo-gutenberg-products-block'
-					) }
-					screenReaderLabel={ __(
-						'Other available payment methods',
-						'woo-gutenberg-products-block'
-					) }
-					wrapperElement="p"
-					wrapperProps={ {
-						className: [
-							'wc-block-components-checkout-step__description wc-block-components-checkout-step__description-payments-aligned',
-						],
-					} }
-				/>
-			) }
 			<PaymentMethodOptions />
 		</>
 	);

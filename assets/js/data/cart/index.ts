@@ -13,7 +13,7 @@ import * as actions from './actions';
 import * as resolvers from './resolvers';
 import reducer, { State } from './reducers';
 import type { SelectFromMap, DispatchFromMap } from '../mapped-types';
-import { pushChanges, flushChanges } from './push-changes';
+// import { pushChanges, flushChanges } from './push-changes';
 import {
 	updatePaymentMethods,
 	debouncedUpdatePaymentMethods,
@@ -32,7 +32,8 @@ const registeredStore = registerStore< State >( STORE_KEY, {
 	__experimentalUseThunks: true,
 } );
 
-registeredStore.subscribe( pushChanges );
+// @todo Do we need this?
+/*registeredStore.subscribe( pushChanges );
 
 // This will skip the debounce and immediately push changes to the server when a field is blurred.
 document.body.addEventListener( 'focusout', ( event: FocusEvent ) => {
@@ -43,7 +44,7 @@ document.body.addEventListener( 'focusout', ( event: FocusEvent ) => {
 	) {
 		flushChanges();
 	}
-} );
+} );*/
 
 // First we will run the updatePaymentMethods function without any debounce to ensure payment methods are ready as soon
 // as the cart is loaded. After that, we will unsubscribe this function and instead run the

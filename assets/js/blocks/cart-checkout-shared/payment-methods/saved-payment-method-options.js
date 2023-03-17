@@ -2,6 +2,7 @@
  * External dependencies
  */
 import { useMemo, cloneElement } from '@wordpress/element';
+import Label from '@woocommerce/base-components/label';
 import { __, sprintf } from '@wordpress/i18n';
 import { noticeContexts } from '@woocommerce/base-context';
 import RadioControl from '@woocommerce/base-components/radio-control';
@@ -144,6 +145,22 @@ const SavedPaymentMethodOptions = () => {
 				onChange={ () => void 0 }
 			/>
 			{ savedPaymentMethodHandler }
+			<Label
+				label={ __(
+					'Use another payment method.',
+					'woo-gutenberg-products-block'
+				) }
+				screenReaderLabel={ __(
+					'Other available payment methods',
+					'woo-gutenberg-products-block'
+				) }
+				wrapperElement="p"
+				wrapperProps={ {
+					className: [
+						'wc-block-components-checkout-step__description wc-block-components-checkout-step__description-payments-aligned',
+					],
+				} }
+			/>
 		</>
 	) : null;
 };

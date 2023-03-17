@@ -29,6 +29,10 @@ export type CheckoutState = {
 	shouldCreateAccount: boolean;
 	// If customer wants to checkout with a local pickup option.
 	prefersCollection?: boolean | undefined;
+	// If the customer is currently editing the shipping address. Address data may not have persisted to the data store yet.
+	editingShippingAddress: boolean;
+	// If the customer is currently editing the billing address. Address data may not have persisted to the data store yet.
+	editingBillingAddress: boolean;
 	// Custom checkout data passed to the store API on processing.
 	extensionData: Record< string, Record< string, unknown > >;
 };
@@ -47,5 +51,7 @@ export const defaultState: CheckoutState = {
 	),
 	shouldCreateAccount: false,
 	prefersCollection: undefined,
+	editingShippingAddress: false,
+	editingBillingAddress: false,
 	extensionData: {},
 };

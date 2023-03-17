@@ -75,6 +75,7 @@ const CheckoutProcessor = () => {
 	const { __internalSetHasError, __internalProcessCheckoutResponse } =
 		useDispatch( CHECKOUT_STORE_KEY );
 
+	const { showAllValidationErrors } = useDispatch( VALIDATION_STORE_KEY );
 	const hasValidationErrors = useSelect(
 		( select ) => select( VALIDATION_STORE_KEY ).hasValidationErrors
 	);
@@ -160,6 +161,7 @@ const CheckoutProcessor = () => {
 
 	const checkValidation = useCallback( () => {
 		if ( hasValidationErrors() ) {
+			showAllValidationErrors();
 			return false;
 		}
 		if ( hasPaymentError ) {
@@ -182,7 +184,12 @@ const CheckoutProcessor = () => {
 		}
 
 		return true;
-	}, [ hasValidationErrors, hasPaymentError, shippingErrorStatus.hasError ] );
+	}, [
+		showAllValidationErrors,
+		hasValidationErrors,
+		hasPaymentError,
+		shippingErrorStatus.hasError,
+	] );
 
 	// Validate the checkout using the CHECKOUT_VALIDATION_BEFORE_PROCESSING event
 	useEffect( () => {
