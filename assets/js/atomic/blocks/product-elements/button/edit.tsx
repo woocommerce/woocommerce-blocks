@@ -106,14 +106,13 @@ const Edit = ( {
 			</InspectorControls>
 			<div { ...blockProps }>
 				<Disabled>
-					<div
-						className={ classnames( {
+					<Block
+						{ ...{ ...attributes, ...context } }
+						className={ classnames( attributes.className, {
 							[ `has-custom-width wp-block-button__width-${ width }` ]:
 								width,
 						} ) }
-					>
-						<Block { ...{ ...attributes, ...context } } />
-					</div>
+					/>
 				</Disabled>
 			</div>
 		</>
