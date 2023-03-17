@@ -9,7 +9,7 @@ import type { RefObject } from 'react';
 export interface EditableButtonProps
 	extends Omit< ButtonProps, 'onChange' | 'placeholder' | 'value' > {
 	/**
-	 * Button variant
+	 * On change callback.
 	 */
 	onChange: ( value: string ) => void;
 	/**
@@ -40,7 +40,7 @@ const EditableButton = ( {
 		}
 
 		const onKeyDown = ( event: KeyboardEvent ) => {
-			// If the user typed something different than space. Abort.
+			// If the user typed something different than space, do nothing.
 			if ( event.code !== 'Space' ) {
 				return;
 			}
