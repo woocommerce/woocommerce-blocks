@@ -31,7 +31,7 @@ const Block = ( {
 					className={ classNames(
 						className,
 						colorProps.className,
-						'wc-block-mini-cart__cart-button'
+						'wc-block-mini-cart__footer-cart'
 					) }
 					style={ { ...colorProps.style } }
 					href={ CART_URL }
