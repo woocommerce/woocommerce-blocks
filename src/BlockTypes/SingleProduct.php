@@ -11,6 +11,7 @@ class SingleProduct extends AbstractBlock {
 	 * @var string
 	 */
 	protected $block_name = 'single-product';
+	protected $product_id = 0;
 
 	/**
 	 * API version name.
@@ -56,12 +57,15 @@ class SingleProduct extends AbstractBlock {
 	 * @return array Updated block context.
 	 */
 	public function update_context( $context, $block, $parent_block ) {
-		if ( 'woocommerce/single-product' === $block['blockName'] && isset( $block['attrs']['productId'] ) ) {
+		if( $block['blockName'] === 'woocommerce/single-product-server-side'
+			&& isset( $block['attrs']['productId'] ) ) {
+				$this->product_id = $block['attrs']['productId'];
+		}
+		if( $this->product_id > 0 ){
 			global $post;
-			$post = get_post( $block['attrs']['productId'] );
+			$post = get_post( $this->product_id );
 			setup_postdata( $post );
-			$context['postId'] = $block['attrs']['productId'];
-			return $context;
+			$context['postId'] = $this->product_id;
 		}
 
 		return $context;
