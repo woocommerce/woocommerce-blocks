@@ -12,10 +12,6 @@ export const blockAttributes: BlockAttributes = {
 		type: 'boolean',
 		default: false,
 	},
-	renderOnServerSide: {
-		type: 'boolean',
-		default: false,
-	},
 	isDescendentOfSingleProductTemplate: {
 		type: 'boolean',
 		default: false,
