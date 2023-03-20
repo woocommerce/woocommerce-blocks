@@ -51,13 +51,15 @@ export const Edit = ( {
 		  parseInt( cartTotals.total_items_tax, 10 )
 		: parseInt( cartTotals.total_items, 10 );
 
-	const CHECKOUT_BUTTON = 'Checkout button';
+	const CHECKOUT_BUTTON_SLUG = 'checkout-button';
 	const reusableBlocks = useSelect( ( select ) =>
 		select( 'core' ).getEntityRecords( 'postType', 'wp_block' )
 	);
+
 	const checkoutButton = reusableBlocks.find(
-		( block ) => block.title.raw === CHECKOUT_BUTTON
+		( block ) => block.slug === CHECKOUT_BUTTON_SLUG
 	);
+
 	const TEMPLATE = [ [ 'core/block', { ref: checkoutButton?.id } ] ];
 
 	return (

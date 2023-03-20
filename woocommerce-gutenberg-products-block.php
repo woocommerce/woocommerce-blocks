@@ -326,13 +326,15 @@ add_action( 'init', 'create_reusable_block' );
  */
 function create_reusable_block() {
 	$block_title = 'Checkout button';
+	$block_slug  = 'checkout-button';
 
-	$block = get_page_by_title( $block_title, 'OBJECT', 'wp_block' );
+	$block = get_page_by_path( $block_slug, 'OBJECT', 'wp_block' );
 
 	if ( empty( $block ) ) {
 		wp_insert_post(
 			array(
 				'post_title'   => $block_title,
+				'post_name'    => $block_slug,
 				'post_status'  => 'publish',
 				'post_type'    => 'wp_block',
 				'post_content' => '<!-- wp:buttons --><div class="wp-block-buttons"><!-- wp:button {"backgroundColor":"foreground","width":100,"style":{"spacing":{"padding":{"left":"var:preset|spacing|50","right":"var:preset|spacing|50","top":"var:preset|spacing|50","bottom":"var:preset|spacing|50"}}}} --><div class="wp-block-button has-custom-width wp-block-button__width-100"><a class="wp-block-button__link has-foreground-background-color has-background wp-element-button" style="padding-top:var(--wp--preset--spacing--50);padding-right:var(--wp--preset--spacing--50);padding-bottom:var(--wp--preset--spacing--50);padding-left:var(--wp--preset--spacing--50)">Proceed to checkout</a></div><!-- /wp:button --></div><!-- /wp:buttons -->',
