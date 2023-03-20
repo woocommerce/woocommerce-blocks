@@ -35,7 +35,7 @@ import { addQueryArgs, removeQueryArgs } from '@wordpress/url';
 import {
 	changeUrl,
 	PREFIX_QUERY_ARG_FILTER_TYPE,
-	encodeSearchTerm,
+	normalizeQueryParams,
 } from '@woocommerce/utils';
 import { difference } from 'lodash';
 import classnames from 'classnames';
@@ -228,7 +228,7 @@ const StockStatusFilterBlock = ( {
 				QUERY_PARAM_KEY
 			);
 
-			if ( url !== encodeSearchTerm( window.location.href ) ) {
+			if ( url !== normalizeQueryParams( window.location.href ) ) {
 				changeUrl( url );
 			}
 
@@ -239,7 +239,7 @@ const StockStatusFilterBlock = ( {
 			[ QUERY_PARAM_KEY ]: checkedOptions.join( ',' ),
 		} );
 
-		if ( newUrl === encodeSearchTerm( window.location.href ) ) {
+		if ( newUrl === normalizeQueryParams( window.location.href ) ) {
 			return;
 		}
 
