@@ -1,7 +1,7 @@
 {
 	"name": "woocommerce/mini-cart-cart-button-block",
 	"version": "1.0.0",
-	"title": "Mini Cart Cart Button",
+	"title": "Mini Cart View Cart Button",
 	"description": "Block that displays the cart button when the Mini Cart has products.",
 	"category": "woocommerce",
 	"supports": {
