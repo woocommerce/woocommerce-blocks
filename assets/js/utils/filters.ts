@@ -1,7 +1,7 @@
 /**
  * External dependencies
  */
-import { getQueryArg } from '@wordpress/url';
+import { getQueryArg, addQueryArgs } from '@wordpress/url';
 import { getSettingWithCoercion } from '@woocommerce/settings';
 import { isBoolean } from '@woocommerce/types';
 
@@ -39,3 +39,18 @@ export function changeUrl( newUrl: string ) {
 		window.history.replaceState( {}, '', newUrl );
 	}
 }
+
+/**
+ * Extract the search term from query params and encode it.
+ *
+ * @param {string} url URL to encode the search param from.
+ */
+export const encodeSearchTerm = ( url: string ) => {
+	const searchTerm = getQueryArg( url, 's' );
+	if ( searchTerm ) {
+		return addQueryArgs( url, {
+			s: searchTerm,
+		} );
+	}
+	return url;
+};

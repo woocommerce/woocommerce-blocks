@@ -32,7 +32,11 @@ import isShallowEqual from '@wordpress/is-shallow-equal';
 import { decodeEntities } from '@wordpress/html-entities';
 import { isBoolean, objectHasProp } from '@woocommerce/types';
 import { addQueryArgs, removeQueryArgs } from '@wordpress/url';
-import { changeUrl, PREFIX_QUERY_ARG_FILTER_TYPE } from '@woocommerce/utils';
+import {
+	changeUrl,
+	PREFIX_QUERY_ARG_FILTER_TYPE,
+	encodeSearchTerm,
+} from '@woocommerce/utils';
 import { difference } from 'lodash';
 import classnames from 'classnames';
 
@@ -219,19 +223,12 @@ const StockStatusFilterBlock = ( {
 			return;
 		}
 		if ( checkedOptions.length === 0 ) {
-			/**
-			 * .replace() was added as removeQueryArgs() function uses decodeURIcomponent method
-			 * which doesn't encode single quotes (') while it was still encoded in the original URL (%27).
-			 * So when the single quote was in a query param, for example as a search term, it caused
-			 * endless redirection loop.
-			 * More context: https://github.com/woocommerce/woocommerce-blocks/issues/8707
-			 */
 			const url = removeQueryArgs(
 				window.location.href,
 				QUERY_PARAM_KEY
-			).replace( /'/g, '%27' );
+			);
 
-			if ( url !== window.location.href ) {
+			if ( url !== encodeSearchTerm( window.location.href ) ) {
 				changeUrl( url );
 			}
 
@@ -242,7 +239,7 @@ const StockStatusFilterBlock = ( {
 			[ QUERY_PARAM_KEY ]: checkedOptions.join( ',' ),
 		} );
 
-		if ( newUrl === window.location.href ) {
+		if ( newUrl === encodeSearchTerm( window.location.href ) ) {
 			return;
 		}
 
