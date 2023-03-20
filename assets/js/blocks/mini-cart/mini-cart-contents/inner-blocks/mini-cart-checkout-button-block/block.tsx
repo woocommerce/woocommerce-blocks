@@ -24,22 +24,22 @@ const Block = ( {
 }: MiniCartCheckoutButtonBlockProps ): JSX.Element | null => {
 	const colorProps = useColorProps( { style } );
 
+	if ( ! CHECKOUT_URL ) {
+		return null;
+	}
+
 	return (
-		<div className="wp-block-button has-text-align-center">
-			{ CHECKOUT_URL && (
-				<Button
-					className={ classNames(
-						className,
-						colorProps.className,
-						'wc-block-mini-cart__footer-checkout'
-					) }
-					style={ { ...colorProps.style } }
-					href={ CHECKOUT_URL }
-				>
-					{ checkoutButtonLabel || defaultCheckoutButtonLabel }
-				</Button>
+		<Button
+			className={ classNames(
+				className,
+				colorProps.className,
+				'wc-block-mini-cart__footer-checkout'
 			) }
-		</div>
+			style={ { ...colorProps.style } }
+			href={ CHECKOUT_URL }
+		>
+			{ checkoutButtonLabel || defaultCheckoutButtonLabel }
+		</Button>
 	);
 };
 

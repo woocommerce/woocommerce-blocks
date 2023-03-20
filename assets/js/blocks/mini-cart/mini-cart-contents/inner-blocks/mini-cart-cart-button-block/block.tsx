@@ -24,23 +24,23 @@ const Block = ( {
 }: MiniCartCartButtonBlockProps ): JSX.Element | null => {
 	const colorProps = useColorProps( { style } );
 
+	if ( ! CART_URL ) {
+		return null;
+	}
+
 	return (
-		<div className="wp-block-button has-text-align-center">
-			{ CART_URL && (
-				<Button
-					className={ classNames(
-						className,
-						colorProps.className,
-						'wc-block-mini-cart__footer-cart'
-					) }
-					style={ { ...colorProps.style } }
-					href={ CART_URL }
-					variant="outlined"
-				>
-					{ cartButtonLabel || defaultCartButtonLabel }
-				</Button>
+		<Button
+			className={ classNames(
+				className,
+				colorProps.className,
+				'wc-block-mini-cart__footer-cart'
 			) }
-		</div>
+			style={ { ...colorProps.style } }
+			href={ CART_URL }
+			variant="outlined"
+		>
+			{ cartButtonLabel || defaultCartButtonLabel }
+		</Button>
 	);
 };
 
