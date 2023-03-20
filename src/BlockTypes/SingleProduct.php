@@ -11,7 +11,21 @@ class SingleProduct extends AbstractBlock {
 	 * @var string
 	 */
 	protected $block_name = 'single-product';
+
+	/**
+	 * Product ID of the current product to be displayed in the Single Product block.
+	 * This is used to replace the global post for the Single Product inner blocks.
+	 *
+	 * @var int
+	 */
 	protected $product_id = 0;
+
+	/**
+	 * Single Product inner blocks names.
+	 * This is used to map all the inner blocks for a Single Product block.
+	 *
+	 * @var array
+	 */
 	protected $single_product_inner_blocks_names = [];
 
 	/**
@@ -60,11 +74,13 @@ class SingleProduct extends AbstractBlock {
 	 * @return array Updated block context.
 	 */
 	public function update_context( $context, $block, $parent_block ) {
-		if( $block['blockName'] === 'woocommerce/single-product'
+		if ( $block['blockName'] === 'woocommerce/single-product'
 			&& isset( $block['attrs']['productId'] ) ) {
 				$this->product_id = $block['attrs']['productId'];
 
-				$this->single_product_inner_blocks_names = array_reverse($this->extract_single_product_inner_block_names( $block ));
+				$this->single_product_inner_blocks_names = array_reverse(
+					$this->extract_single_product_inner_block_names( $block )
+				);
 		}
 
 		$this->replace_post_for_single_product_inner_block( $block, $context );
@@ -79,16 +95,16 @@ class SingleProduct extends AbstractBlock {
 	 * @param array $block The Single Product block or its inner blocks
 	 * @param array $result Array of inner block names.
 	 *
-	 * @return array Array containing all the inner block names of a Single Product block
+	 * @return array Array containing all the inner block names of a Single Product block.
 	 */
-	protected function extract_single_product_inner_block_names($block, &$result = []) {
+	protected function extract_single_product_inner_block_names( $block, &$result = [] ) {
 		if(isset($block['blockName'])){
 			$result[] = $block['blockName'];
 		}
 
 		if(isset($block['innerBlocks'])){
 			foreach ($block['innerBlocks'] as $inner_block) {
-				$this->extract_single_product_inner_block_names($inner_block, $result);
+				$this->extract_single_product_inner_block_names( $inner_block, $result );
 			}
 		}
 		return $result;
