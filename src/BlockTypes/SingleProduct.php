@@ -92,18 +92,18 @@ class SingleProduct extends AbstractBlock {
 	 * Extract the inner block names for the Single Product block. This way it's possible
 	 * to map all the inner blocks for a Single Product block and manipulate the data as needed.
 	 *
-	 * @param array $block The Single Product block or its inner blocks
+	 * @param array $block The Single Product block or its inner blocks.
 	 * @param array $result Array of inner block names.
 	 *
 	 * @return array Array containing all the inner block names of a Single Product block.
 	 */
 	protected function extract_single_product_inner_block_names( $block, &$result = [] ) {
-		if(isset($block['blockName'])){
+		if( isset($block['blockName']) ){
 			$result[] = $block['blockName'];
 		}
 
-		if(isset($block['innerBlocks'])){
-			foreach ($block['innerBlocks'] as $inner_block) {
+		if( isset($block['innerBlocks']) ){
+			foreach ( $block['innerBlocks'] as $inner_block ) {
 				$this->extract_single_product_inner_block_names( $inner_block, $result );
 			}
 		}
