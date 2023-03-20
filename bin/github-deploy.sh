@@ -151,6 +151,10 @@ if [ "$(echo "${PROCEED:-n}" | tr "[:upper:]" "[:lower:]")" != "y" ]; then
   exit 1
 fi
 
+# Update versions in files in case they were not updated.
+output 2 "Updating version numbers in files and regenerating php autoload classmap (note pre-releases will not have the readme.txt stable tag updated)..."
+run_command "source '$RELEASER_PATH/bin/change-versions.sh'" true
+
 composer dump-autoload
 
 # remove composer.json version bump after autoload regen (we don't commit it)

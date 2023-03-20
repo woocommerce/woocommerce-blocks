@@ -27,8 +27,10 @@ output() {
   echo "$(tput setaf "$1")$2$(tput sgr0)"
 }
 
-output 3 "Please enter the version number, for example, 1.0.0:"
-read -r VERSION
+if [ ! $VERSION ]; then
+	output 3 "Please enter the version number, for example, 1.0.0:"
+	read -r VERSION
+fi
 
 output 2 "Updating version numbers in files..."
 
