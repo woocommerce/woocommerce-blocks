@@ -139,10 +139,17 @@ const RatingFilterBlock = ( {
 		}
 
 		if ( checkedRatings.length === 0 ) {
+			/**
+			 * .replace() was added as removeQueryArgs() function uses decodeURIcomponent method
+			 * which doesn't encode single quotes (') while it was still encoded in the original URL (%27).
+			 * So when the single quote was in a query param, for example as a search term, it caused
+			 * endless redirection loop.
+			 * More context: https://github.com/woocommerce/woocommerce-blocks/issues/8707
+			 */
 			const url = removeQueryArgs(
 				window.location.href,
 				QUERY_PARAM_KEY
-			);
+			).replace( /'/g, '%27' );
 
 			if ( url !== window.location.href ) {
 				changeUrl( url );
