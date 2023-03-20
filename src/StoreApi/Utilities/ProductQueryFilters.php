@@ -211,4 +211,106 @@ class ProductQueryFilters {
 
 		return array_map( 'absint', wp_list_pluck( $results, 'product_count', 'rounded_average_rating' ) );
 	}
+
+	/**
+	 * Gets product by metas.
+	 *
+	 * @since TBD
+	 * @param array $metas Array of metas to query.
+	 * @return array $results
+	 */
+	public function get_product_by_metas( $metas = array() ) {
+		global $wpdb;
+
+		if ( empty( $metas ) ) {
+			return array();
+		}
+
+		$where   = array();
+		$results = array();
+		$params  = array();
+
+		foreach ( $metas as $column => $value ) {
+			if ( 'min_price' === $column ) {
+				$where[]  = "{$column} >= %f";
+				$params[] = (float) $value;
+				continue;
+			}
+
+			if ( 'max_price' === $column ) {
+				$where[]  = "{$column} <= %f";
+				$params[] = (float) $value;
+				continue;
+			}
+
+			$where[]  = "{$column} = %s";
+			$params[] = $value;
+		}
+
+		if ( ! empty( $where ) ) {
+			$where_clause = implode( ' AND ', $where );
+			// Use a parameterized query.
+			$results = $wpdb->get_col(
+				$wpdb->prepare( "SELECT DISTINCT product_id FROM {$wpdb->prefix}wc_product_meta_lookup WHERE {$where_clause}", // phpcs:ignore
+					$params
+				)
+			);
+		}
+
+		return $results;
+	}
+
+	/**
+	 * Gets product by filtered terms.
+	 *
+	 * @since TBD
+	 * @param string $taxonomy Taxonomy name.
+	 * @param array  $term_ids Term IDs.
+	 * @param string $query_type or | and.
+	 * @return array Product IDs.
+	 */
+	public function get_product_by_filtered_terms( $taxonomy = '', $term_ids = array(), $query_type = 'or' ) {
+		global $wpdb;
+
+		$term_count = count( $term_ids );
+		$results    = array();
+		$term_ids   = implode( ',', array_map( 'intval', $term_ids ) );
+
+		if ( 'or' === $query_type ) {
+			// phpcs:disable
+			$results = $wpdb->get_col(
+				$wpdb->prepare(
+					"
+					SELECT DISTINCT `product_or_parent_id`
+					FROM {$wpdb->prefix}wc_product_attributes_lookup
+					WHERE `taxonomy` = %s
+					AND `term_id` IN ({$term_ids})
+					",
+					$taxonomy
+				)
+			);
+			// phpcs:enable
+		}
+
+		if ( 'and' === $query_type ) {
+			// phpcs:disable
+			$results = $wpdb->get_col(
+				$wpdb->prepare(
+					"
+					SELECT DISTINCT `product_or_parent_id`
+					FROM {$wpdb->prefix}wc_product_attributes_lookup
+					WHERE `taxonomy` = %s
+					AND `term_id` IN ({$term_ids})
+					GROUP BY `product_or_parent_id`
+					HAVING COUNT( DISTINCT `term_id` ) >= %d
+					",
+					$taxonomy,
+					$term_count
+				)
+			);
+			// phpcs:enable
+		}
+
+		return $results;
+	}
 }

@@ -27,12 +27,6 @@ class SingleProductTemplateCompatibility extends AbstractTemplateCompatibility {
 
 		$this->remove_default_hooks();
 
-		$first_or_last_block_content = $this->inject_hook_to_first_and_last_blocks( $block_content, $block );
-
-		if ( isset( $first_or_last_block_content ) ) {
-			return $first_or_last_block_content;
-		}
-
 		$block_name = $block['blockName'];
 
 		$block_hooks = array_filter(
@@ -41,6 +35,12 @@ class SingleProductTemplateCompatibility extends AbstractTemplateCompatibility {
 				return $hook['block_name'] === $block_name;
 			}
 		);
+
+		$first_or_last_block_content = $this->inject_hook_to_first_and_last_blocks( $block_content, $block, $block_hooks );
+
+		if ( isset( $first_or_last_block_content ) ) {
+			return $first_or_last_block_content;
+		}
 
 		return sprintf(
 			'%1$s%2$s%3$s',
@@ -63,9 +63,10 @@ class SingleProductTemplateCompatibility extends AbstractTemplateCompatibility {
 	 *
 	 * @param mixed $block_content The rendered block content.
 	 * @param mixed $block         The parsed block data.
+	 * @param array $block_hooks   The hooks that should be injected to the block.
 	 * @return string
 	 */
-	private function inject_hook_to_first_and_last_blocks( $block_content, $block ) {
+	private function inject_hook_to_first_and_last_blocks( $block_content, $block, $block_hooks ) {
 		$first_block_hook = array(
 			'before' => array(
 				'woocommerce_before_main_content'    => $this->hook_data['woocommerce_before_main_content'],
@@ -87,18 +88,19 @@ class SingleProductTemplateCompatibility extends AbstractTemplateCompatibility {
 
 		if ( isset( $block['attrs'][ self::IS_FIRST_BLOCK ] ) && isset( $block['attrs'][ self::IS_LAST_BLOCK ] ) ) {
 			return sprintf(
-				'%1$s%2$s%3$s',
-				$this->get_hooks_buffer(
+				'%1$s%2$s',
+				$this->inject_hooks_after_the_wrapper(
+					$block_content,
 					array_merge(
 						$first_block_hook['before'],
+						$block_hooks,
 						$last_block_hook['before']
-					),
-					'before'
+					)
 				),
-				$block_content,
 				$this->get_hooks_buffer(
 					array_merge(
 						$first_block_hook['after'],
+						$block_hooks,
 						$last_block_hook['after']
 					),
 					'after'
@@ -108,14 +110,19 @@ class SingleProductTemplateCompatibility extends AbstractTemplateCompatibility {
 
 		if ( isset( $block['attrs'][ self::IS_FIRST_BLOCK ] ) ) {
 			return sprintf(
-				'%1$s%2$s%3$s',
-				$this->get_hooks_buffer(
-					$first_block_hook['before'],
-					'before'
+				'%1$s%2$s',
+				$this->inject_hooks_after_the_wrapper(
+					$block_content,
+					array_merge(
+						$first_block_hook['before'],
+						$block_hooks
+					)
 				),
-				$block_content,
 				$this->get_hooks_buffer(
-					$first_block_hook['after'],
+					array_merge(
+						$first_block_hook['after'],
+						$block_hooks
+					),
 					'after'
 				)
 			);
@@ -124,10 +131,19 @@ class SingleProductTemplateCompatibility extends AbstractTemplateCompatibility {
 		if ( isset( $block['attrs'][ self::IS_LAST_BLOCK ] ) ) {
 			return sprintf(
 				'%1$s%2$s%3$s',
-				$this->get_hooks_buffer( $last_block_hook['before'], 'before' ),
+				$this->get_hooks_buffer(
+					array_merge(
+						$last_block_hook['before'],
+						$block_hooks
+					),
+					'before'
+				),
 				$block_content,
 				$this->get_hooks_buffer(
-					$last_block_hook['after'],
+					array_merge(
+						$block_hooks,
+						$last_block_hook['after']
+					),
 					'after'
 				)
 			);
@@ -208,6 +224,16 @@ class SingleProductTemplateCompatibility extends AbstractTemplateCompatibility {
 				'position'   => 'after',
 				'hooked'     => array(),
 			),
+			'woocommerce_product_meta_start'            => array(
+				'block_name' => 'woocommerce/product-meta',
+				'position'   => 'before',
+				'hooked'     => array(),
+			),
+			'woocommerce_product_meta_end'              => array(
+				'block_name' => 'woocommerce/product-meta',
+				'position'   => 'after',
+				'hooked'     => array(),
+			),
 			'woocommerce_share'                         => array(
 				'block_name' => 'woocommerce/product-details',
 				'position'   => 'before',
@@ -259,8 +285,7 @@ class SingleProductTemplateCompatibility extends AbstractTemplateCompatibility {
 		$parsed_blocks  = parse_blocks( $template_content );
 		$grouped_blocks = self::group_blocks( $parsed_blocks );
 
-		// @todo Check this list before terminating the Blockfied Single Product Template project.
-		$single_product_template_blocks = array( 'woocommerce/product-image-gallery', 'woocommerce/product-details', 'woocommerce/add-to-cart-form' );
+		$single_product_template_blocks = array( 'woocommerce/product-image-gallery', 'woocommerce/product-details', 'woocommerce/add-to-cart-form', 'woocommerce/product-meta', 'woocommerce/product-price', 'woocommerce/breadcrumbs' );
 
 		$wrapped_blocks = array_map(
 			function( $blocks ) use ( $single_product_template_blocks ) {
@@ -421,5 +446,28 @@ class SingleProductTemplateCompatibility extends AbstractTemplateCompatibility {
 			},
 			array()
 		);
+	}
+
+	/**
+	 * Inject the hooks after the div wrapper.
+	 *
+	 * @param string $block_content Block Content.
+	 * @param array  $hooks Hooks to inject.
+	 * @return array
+	 */
+	private function inject_hooks_after_the_wrapper( $block_content, $hooks ) {
+		$closing_tag_position = strpos( $block_content, '>' );
+
+		return substr_replace(
+			$block_content,
+			$this->get_hooks_buffer(
+				$hooks,
+				'before'
+			),
+			// Add 1 to the position to inject the content after the closing tag.
+			$closing_tag_position + 1,
+			0
+		);
+
 	}
 }

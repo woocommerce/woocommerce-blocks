@@ -9,6 +9,9 @@ import {
 } from 'wordpress-components';
 import classnames from 'classnames';
 import { Icon, store, shipping } from '@wordpress/icons';
+import { useEffect } from '@wordpress/element';
+import { VALIDATION_STORE_KEY } from '@woocommerce/block-data';
+import { useDispatch } from '@wordpress/data';
 
 /**
  * Internal dependencies
@@ -17,6 +20,15 @@ import './style.scss';
 import { RatePrice, getLocalPickupPrices, getShippingPrices } from './shared';
 import type { minMaxPrices } from './shared';
 import { defaultLocalPickupText, defaultShippingText } from './constants';
+import { shippingAddressHasValidationErrors } from '../../../../data/cart/utils';
+
+const SHIPPING_RATE_ERROR = {
+	hidden: true,
+	message: __(
+		'Shipping options are not available',
+		'woo-gutenberg-products-block'
+	),
+};
 
 const LocalPickupSelector = ( {
 	checked,
@@ -71,15 +83,36 @@ const ShippingSelector = ( {
 	showPrice,
 	showIcon,
 	toggleText,
+	shippingCostRequiresAddress = false,
 }: {
 	checked: string;
 	rate: minMaxPrices;
 	showPrice: boolean;
 	showIcon: boolean;
+	shippingCostRequiresAddress: boolean;
 	toggleText: string;
 } ) => {
+	const rateShouldBeHidden =
+		shippingCostRequiresAddress && shippingAddressHasValidationErrors();
+	const hasShippingPrices = rate.min !== undefined && rate.max !== undefined;
+	const { setValidationErrors, clearValidationError } =
+		useDispatch( VALIDATION_STORE_KEY );
+	useEffect( () => {
+		if ( checked === 'shipping' && ! hasShippingPrices ) {
+			setValidationErrors( {
+				'shipping-rates-error': SHIPPING_RATE_ERROR,
+			} );
+		} else {
+			clearValidationError( 'shipping-rates-error' );
+		}
+	}, [
+		checked,
+		clearValidationError,
+		hasShippingPrices,
+		setValidationErrors,
+	] );
 	const Price =
-		rate.min === undefined ? (
+		rate.min === undefined || rateShouldBeHidden ? (
 			<span className="wc-block-checkout__shipping-method-option-price">
 				{ __(
 					'calculated with an address',
@@ -122,11 +155,13 @@ const Block = ( {
 	showIcon,
 	localPickupText,
 	shippingText,
+	shippingCostRequiresAddress = false,
 }: {
 	checked: string;
 	onChange: ( value: string ) => void;
 	showPrice: boolean;
 	showIcon: boolean;
+	shippingCostRequiresAddress: boolean;
 	localPickupText: string;
 	shippingText: string;
 } ): JSX.Element | null => {
@@ -145,6 +180,7 @@ const Block = ( {
 				rate={ getShippingPrices( shippingRates[ 0 ]?.shipping_rates ) }
 				showPrice={ showPrice }
 				showIcon={ showIcon }
+				shippingCostRequiresAddress={ shippingCostRequiresAddress }
 				toggleText={ shippingText || defaultShippingText }
 			/>
 			<LocalPickupSelector
