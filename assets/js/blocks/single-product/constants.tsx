@@ -64,12 +64,7 @@ export const DEFAULT_INNER_BLOCKS: InnerBlockTemplate[] = [
 								PRODUCT_SUMMARY_VARIATION_NAME,
 						},
 					],
-					[
-						'woocommerce/add-to-cart-form',
-						{
-							showFormElements: true,
-						},
-					],
+					[ 'woocommerce/add-to-cart-form' ],
 					[ 'woocommerce/product-meta' ],
 				],
 			],

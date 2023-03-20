@@ -2,7 +2,12 @@
  * External dependencies
  */
 import { registerBlockSingleProductTemplate } from '@woocommerce/atomic-utils';
-import { registerBlockType, unregisterBlockType } from '@wordpress/blocks';
+import {
+	getBlockType,
+	registerBlockType,
+	unregisterBlockType,
+} from '@wordpress/blocks';
+import { subscribe, select } from '@wordpress/data';
 import { Icon, button } from '@wordpress/icons';
 
 /**
@@ -11,34 +16,29 @@ import { Icon, button } from '@wordpress/icons';
 import metadata from './block.json';
 import edit from './edit';
 
-let currentTemplateId: string | undefined;
+// When the post/page editor loads, register the block with the ancestor key.
+subscribe( () => {
+	const block = getBlockType( metadata.name );
 
-// subscribe( () => {
-// 	const previousTemplateId = currentTemplateId;
-// 	const store = select( 'core/edit-site' );
-// 	currentTemplateId = store?.getEditedPostId() as string | undefined;
+	const store = select( 'core/edit-post' );
 
-// 	if ( previousTemplateId === currentTemplateId ) {
-// 		return;
-// 	}
+	if ( block === undefined && store !== undefined ) {
+		registerBlockType( metadata, {
+			edit,
+			icon: {
+				src: (
+					<Icon
+						icon={ button }
+						className="wc-block-editor-components-block-icon"
+					/>
+				),
+			},
+			ancestor: [ 'woocommerce/single-product' ],
+		} );
+	}
+}, 'core/edit-post' );
 
-// 	const parsedTemplate = currentTemplateId?.split( '//' )[ 1 ];
-
-// 	if ( parsedTemplate === null || parsedTemplate === undefined ) {
-// 		return;
-// 	}
-
-// 	const block = getBlockType( blockName );
-
-// 	if ( block === undefined && parsedTemplate.includes( 'single-product' ) ) {
-// 		registerBlockFn();
-// 	}
-
-// 	if ( block !== undefined ) {
-// 		unregisterBlockFn();
-// 	}
-// }, 'core/edit-site' );
-
+// When the site editor loads, register the block as a global block on the single product template, otherwise register it as block with the ancestor key.
 registerBlockSingleProductTemplate( {
 	registerBlockFn: () => {
 		// @ts-expect-error: `registerBlockType` is a function that is typed in WordPress core.
@@ -58,6 +58,7 @@ registerBlockSingleProductTemplate( {
 		} );
 	},
 	unregisterBlockFn: () => {
+		unregisterBlockType( metadata.name );
 		registerBlockType( metadata, {
 			edit,
 			icon: {
