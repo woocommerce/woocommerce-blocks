@@ -4,7 +4,11 @@
 import { __ } from '@wordpress/i18n';
 import { useCallback } from '@wordpress/element';
 import { useDispatch } from '@wordpress/data';
-import { InnerBlocks, InspectorControls } from '@wordpress/block-editor';
+import {
+	InnerBlocks,
+	InspectorControls,
+	BlockContextProvider,
+} from '@wordpress/block-editor';
 import {
 	InnerBlockLayoutContextProvider,
 	ProductDataContextProvider,
@@ -13,7 +17,6 @@ import { createBlocksFromTemplate } from '@woocommerce/atomic-utils';
 import { PanelBody, Button } from '@wordpress/components';
 import { Icon, backup } from '@wordpress/icons';
 import { ProductResponseItem } from '@woocommerce/types';
-import { BlockContextProvider } from '@wordpress/block-editor';
 
 /**
  * Internal dependencies

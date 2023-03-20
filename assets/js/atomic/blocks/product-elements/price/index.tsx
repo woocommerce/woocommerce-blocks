@@ -2,7 +2,6 @@
  * External dependencies
  */
 import { registerBlockType } from '@wordpress/blocks';
-import classnames from 'classnames';
 
 /**
  * Internal dependencies
