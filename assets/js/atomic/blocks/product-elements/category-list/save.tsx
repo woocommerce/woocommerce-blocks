@@ -10,7 +10,7 @@ type Props = {
 	};
 };
 
-export const Save = ( { attributes }: Props ): JSX.Element | null => {
+export const Save = ( { attributes }: Props ): JSX.Element => {
 	return (
 		<div
 			{ ...useBlockProps.save( {
