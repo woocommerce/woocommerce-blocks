@@ -4,6 +4,7 @@
 import { Icon, payment } from '@wordpress/icons';
 import { createBlock, registerBlockType } from '@wordpress/blocks';
 import { useBlockProps } from '@wordpress/block-editor';
+import { objectHasProp } from '@woocommerce/types';
 
 /**
  * Internal dependencies
