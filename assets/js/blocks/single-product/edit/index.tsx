@@ -7,7 +7,8 @@ import { Placeholder, Button, PanelBody } from '@wordpress/components';
 import { withProduct } from '@woocommerce/block-hocs';
 import BlockErrorBoundary from '@woocommerce/base-components/block-error-boundary';
 import EditProductLink from '@woocommerce/editor-components/edit-product-link';
-import { InspectorControls } from '@wordpress/block-editor';
+import { singleProductBlockPreview } from '@woocommerce/resource-previews';
+import { InspectorControls, useBlockProps } from '@wordpress/block-editor';
 import { ProductResponseItem } from '@woocommerce/types';
 
 /**
@@ -63,6 +64,7 @@ const Editor = ( {
 }: EditorProps ) => {
 	const { productId, isPreview } = attributes;
 	const [ isEditing, setIsEditing ] = useState( ! productId );
+	const blockProps = useBlockProps();
 
 	if ( isPreview ) {
 		return singleProductBlockPreview;
@@ -113,7 +115,7 @@ const Editor = ( {
 						</div>
 					</Placeholder>
 				) : (
-					<>
+					<div { ...blockProps }>
 						<InspectorControls>
 							<PanelBody
 								title={ __(
@@ -135,7 +137,7 @@ const Editor = ( {
 							product={ product }
 							isLoading={ isLoading }
 						/>
-					</>
+					</div>
 				) }
 			</BlockErrorBoundary>
 		</div>
