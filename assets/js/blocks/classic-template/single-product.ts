@@ -16,9 +16,14 @@ const getBlockifiedTemplate = () =>
 				align: 'wide',
 			},
 			[
-				createBlock( 'core/column', {}, [
-					createBlock( 'woocommerce/product-image-gallery' ),
-				] ),
+				createBlock(
+					'core/column',
+					{
+						type: 'constrained',
+						justifyContent: 'right',
+					},
+					[ createBlock( 'woocommerce/product-image-gallery' ) ]
+				),
 				createBlock( 'core/column', {}, [
 					createBlock( 'core/post-title', {
 						__woocommerceNamespace: PRODUCT_TITLE_VARIATION_NAME,
@@ -33,7 +38,9 @@ const getBlockifiedTemplate = () =>
 			]
 		),
 		createBlock( 'woocommerce/product-details' ),
-		createBlock( 'woocommerce/related-products' ),
+		createBlock( 'woocommerce/related-products', {
+			align: 'wide',
+		} ),
 	].filter( Boolean ) as BlockInstance[];
 
 const isConversionPossible = () => {
