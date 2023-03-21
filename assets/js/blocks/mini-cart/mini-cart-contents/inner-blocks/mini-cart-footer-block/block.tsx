@@ -14,6 +14,12 @@ import { getSetting } from '@woocommerce/settings';
 import { PaymentEventsProvider } from '@woocommerce/base-context';
 import classNames from 'classnames';
 
+/**
+ * Internal dependencies
+ */
+import CartButton from '../mini-cart-cart-button-block/block';
+import CheckoutButton from '../mini-cart-checkout-button-block/block';
+
 const PaymentMethodIconsElement = (): JSX.Element => {
 	const { paymentMethods } = usePaymentMethods();
 	return (
@@ -26,15 +32,60 @@ const PaymentMethodIconsElement = (): JSX.Element => {
 interface Props {
 	children: JSX.Element | JSX.Element[];
 	className?: string;
+	cartButtonLabel: string;
+	checkoutButtonLabel: string;
 }
+//
+// const CartButton = ( {
+// 	url,
+// 	label,
+// }: {
+// 	url: string;
+// 	label: string;
+// } ): JSX.Element | null => {
+// 	if ( ! url ) {
+// 		return null;
+// 	}
+//
+// 	return (
+// 		<Button
+// 			className="wc-block-mini-cart__footer-cart"
+// 			href={ url }
+// 			variant="outlined"
+// 		>
+// 			{ label }
+// 		</Button>
+// 	);
+// };
+// const CheckoutButton = ( {
+// 	url,
+// 	label,
+// }: {
+// 	url: string;
+// 	label: string;
+// } ): JSX.Element | null => {
+// 	if ( ! url ) {
+// 		return null;
+// 	}
+// 	return (
+// 		<Button className="wc-block-mini-cart__footer-checkout" href={ url }>
+// 			{ label }
+// 		</Button>
+// 	);
+// };
 
-const Block = ( { children, className }: Props ): JSX.Element => {
+const Block = ( {
+	children,
+	className,
+	cartButtonLabel,
+	checkoutButtonLabel,
+}: Props ): JSX.Element => {
 	const { cartTotals } = useStoreCart();
 	const subTotal = getSetting( 'displayCartPricesIncludingTax', false )
 		? parseInt( cartTotals.total_items, 10 ) +
 		  parseInt( cartTotals.total_items_tax, 10 )
 		: parseInt( cartTotals.total_items, 10 );
-
+	console.log( { children }, cartButtonLabel, checkoutButtonLabel );
 	return (
 		<div
 			className={ classNames( className, 'wc-block-mini-cart__footer' ) }
@@ -51,6 +102,14 @@ const Block = ( { children, className }: Props ): JSX.Element => {
 			/>
 			<div className="wc-block-mini-cart__footer-actions">
 				{ children }
+				{ cartButtonLabel && (
+					<CartButton cartButtonLabel={ cartButtonLabel } />
+				) }
+				{ checkoutButtonLabel && (
+					<CheckoutButton
+						checkoutButtonLabel={ checkoutButtonLabel }
+					/>
+				) }
 			</div>
 			<PaymentEventsProvider>
 				<PaymentMethodIconsElement />
