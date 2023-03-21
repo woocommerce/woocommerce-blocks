@@ -147,10 +147,10 @@ class ProductQueryFilters {
 		$calculate_attribute_counts = $request->get_param( 'calculate_attribute_counts' );
 		$min_price                  = $request->get_param( 'min_price' );
 		$max_price                  = $request->get_param( 'max_price' );
-		$taxonomy                   = $attributes[0] ?? '';
+		$filtered_taxonomy          = $attributes[0] ?? '';
 
 		if ( empty( $attributes_data ) && empty( $min_price ) && empty( $max_price ) ) {
-			$counts = $this->get_terms_list( $taxonomy );
+			$counts = $this->get_terms_list( $filtered_taxonomy );
 
 			return array_map( 'absint', wp_list_pluck( $counts, 'term_count', 'term_count_id' ) );
 		}
@@ -223,7 +223,7 @@ class ProductQueryFilters {
 	    WHERE {$where_clause}
 	    GROUP BY product_attribute_lookup.term_id
 	) summarize ON attributes.term_id = summarize.term_id",
-				$taxonomy
+				$filtered_taxonomy
 			)
 		);
 
@@ -292,14 +292,14 @@ class ProductQueryFilters {
 
 		foreach ( $metas as $column => $value ) {
 			if ( 'min_price' === $column ) {
-				$where[]  = "{$column} >= %f";
-				$params[] = (float) $value;
+				$where[]  = "{$column} >= %d";
+				$params[] = intval( $value ) / 100;
 				continue;
 			}
 
 			if ( 'max_price' === $column ) {
-				$where[]  = "{$column} <= %f";
-				$params[] = (float) $value;
+				$where[]  = "{$column} <= %d";
+				$params[] = intval( $value ) / 100;
 				continue;
 			}
 
