@@ -198,6 +198,7 @@ export const SearchListControl = ( props: SearchListControlProps ) => {
 		className = '',
 		isCompact,
 		isHierarchical,
+		isNested,
 		isLoading,
 		isSingle,
 		list,
@@ -217,8 +218,8 @@ export const SearchListControl = ( props: SearchListControlProps ) => {
 		[ customMessages ]
 	);
 	const filteredList = useMemo( () => {
-		return getFilteredList( list, search, isHierarchical );
-	}, [ list, search, isHierarchical ] );
+		return getFilteredList( list, search, isHierarchical, isNested );
+	}, [ list, search, isHierarchical, isNested ] );
 
 	useEffect( () => {
 		if ( debouncedSpeak ) {

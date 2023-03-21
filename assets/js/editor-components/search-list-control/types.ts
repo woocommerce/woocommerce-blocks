@@ -97,6 +97,8 @@ export interface SearchListControlProps {
 	className?: string;
 	// Whether it should be displayed in a compact way, so it occupies less space.
 	isCompact: boolean;
+	// Whether the list is already nested or not. If true, the list will be taken as is to render a tree. isHierarchical will be ignored.
+	isNested?: boolean;
 	// Whether the list of items is hierarchical or not. If true, each list item is expected to have a parent property.
 	isHierarchical?: boolean;
 	// Whether the list of items is still loading.

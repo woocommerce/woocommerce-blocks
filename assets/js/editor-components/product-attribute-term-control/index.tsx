@@ -131,15 +131,17 @@ const ProductAttributeTermControl = ( {
 		);
 	};
 
-	const list = productsAttributes.reduce( ( acc, curr ) => {
-		const { terms, ...props } = curr;
+	// const list = productsAttributes.reduce( ( acc, curr ) => {
+	// 	const { terms, ...props } = curr;
 
-		return [
-			...acc,
-			convertAttributeObjectToSearchItem( props ),
-			...terms.map( convertAttributeObjectToSearchItem ),
-		];
-	}, [] as SearchListItemProps[] );
+	// 	return [
+	// 		...acc,
+	// 		convertAttributeObjectToSearchItem( props ),
+	// 		...terms.map( convertAttributeObjectToSearchItem ),
+	// 	];
+	// }, [] as SearchListItemProps[] );
+
+	const list = productsAttributes.map( convertAttributeObjectToSearchItem );
 
 	messages = {
 		clear: __(
@@ -181,7 +183,8 @@ const ProductAttributeTermControl = ( {
 			<SearchListControl
 				className="woocommerce-product-attributes"
 				isCompact={ isCompact }
-				isHierarchical
+				isNested
+				// isHierarchical
 				isLoading={ isLoadingAttributes }
 				isSingle={ false }
 				list={ list }

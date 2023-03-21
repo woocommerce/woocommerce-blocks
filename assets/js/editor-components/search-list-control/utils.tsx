@@ -85,9 +85,11 @@ export const buildTermsTree = (
 export const getFilteredList = (
 	list: SearchListItem[],
 	search: string,
-	isHierarchical?: boolean | undefined
+	isHierarchical?: boolean | undefined,
+	isNested?: boolean | undefined
 ) => {
 	if ( ! search ) {
+		if ( isNested ) return list;
 		return isHierarchical ? buildTermsTree( list ) : list;
 	}
 	const re = new RegExp(

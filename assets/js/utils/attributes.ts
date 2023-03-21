@@ -54,6 +54,7 @@ export const convertAttributeObjectToSearchItem = (
 	attribute: AttributeObject | AttributeTerm | AttributeWithTerms
 ): SearchListItem => {
 	const { count, id, name, parent } = attribute;
+	const terms = attribute?.terms || [];
 
 	return {
 		count,
@@ -61,7 +62,7 @@ export const convertAttributeObjectToSearchItem = (
 		name,
 		parent,
 		breadcrumbs: [],
-		children: [],
+		children: terms.map( convertAttributeObjectToSearchItem ),
 		value: isAttributeTerm( attribute ) ? attribute.attr_slug : '',
 	};
 };
