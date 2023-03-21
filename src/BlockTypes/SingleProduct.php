@@ -74,7 +74,7 @@ class SingleProduct extends AbstractBlock {
 	 * @return array Updated block context.
 	 */
 	public function update_context( $context, $block, $parent_block ) {
-		if ( $block['blockName'] === 'woocommerce/single-product'
+		if ( $block['blockName'] == 'woocommerce/single-product'
 			&& isset( $block['attrs']['productId'] ) ) {
 				$this->product_id = $block['attrs']['productId'];
 
@@ -98,11 +98,11 @@ class SingleProduct extends AbstractBlock {
 	 * @return array Array containing all the inner block names of a Single Product block.
 	 */
 	protected function extract_single_product_inner_block_names( $block, &$result = [] ) {
-		if( isset($block['blockName']) ){
+		if( isset( $block['blockName'] ) ){
 			$result[] = $block['blockName'];
 		}
 
-		if( isset($block['innerBlocks']) ){
+		if( isset( $block['innerBlocks'] ) ){
 			foreach ( $block['innerBlocks'] as $inner_block ) {
 				$this->extract_single_product_inner_block_names( $inner_block, $result );
 			}
