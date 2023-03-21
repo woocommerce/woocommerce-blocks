@@ -69,8 +69,8 @@ const LayoutEditor = ( {
 							onClick={ resetInnerBlocks }
 							isTertiary
 							className=".wc-block-editor-single-product__reset-layout"
+							icon={ backup }
 						>
-							<Icon icon={ backup } />{ ' ' }
 							{ __(
 								'Reset layout',
 								'woo-gutenberg-products-block'

@@ -3,16 +3,12 @@
 }
 .wc-block-editor-single-product__reset-layout {
 	padding: 0;
-
-	svg {
-		margin-right: 4px;
-	}
 }
-.wc-block-editor-single-product__edit-card {
+.wc-block-single-product__edit-card {
 	padding: 16px;
 	border-top: 1px solid $gray-200;
 
-	.wc-block-editor-single-product__edit-card-title {
+	.wc-block-single-product__edit-card-title {
 		margin: 0 0 $gap;
 	}
 }
