@@ -23,8 +23,6 @@ if ( ! $notices ) {
 	return;
 }
 
-$notices[] = $notices[0];
-
 $multiple = count( $notices ) > 1;
 
 if ( ! $multiple ) {
