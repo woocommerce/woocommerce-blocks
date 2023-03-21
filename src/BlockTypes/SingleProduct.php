@@ -98,11 +98,11 @@ class SingleProduct extends AbstractBlock {
 	 * @return array Array containing all the inner block names of a Single Product block.
 	 */
 	protected function extract_single_product_inner_block_names( $block, &$result = [] ) {
-		if( isset( $block['blockName'] ) ){
+		if ( isset( $block['blockName'] ) ) {
 			$result[] = $block['blockName'];
 		}
 
-		if( isset( $block['innerBlocks'] ) ){
+		if ( isset( $block['innerBlocks'] ) ) {
 			foreach ( $block['innerBlocks'] as $inner_block ) {
 				$this->extract_single_product_inner_block_names( $inner_block, $result );
 			}
@@ -121,10 +121,10 @@ class SingleProduct extends AbstractBlock {
 	 * @param array $context Block context.
 	 */
 	protected function replace_post_for_single_product_inner_block( $block, &$context ) {
-		if( $this->single_product_inner_blocks_names ){
+		if ( $this->single_product_inner_blocks_names ) {
 			$block_name = array_pop( $this->single_product_inner_blocks_names);
 
-			if( $block_name === $block['blockName']){
+			if ( $block_name === $block['blockName']) {
 				global $post;
 				$post = get_post( $this->product_id );
 				setup_postdata( $post );
