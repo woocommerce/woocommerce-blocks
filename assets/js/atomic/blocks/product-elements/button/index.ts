@@ -11,6 +11,7 @@ import { supports } from './supports';
 import attributes from './attributes';
 import sharedConfig from '../shared/config';
 import edit from './edit';
+import save from './save';
 import {
 	BLOCK_TITLE as title,
 	BLOCK_ICON as icon,
@@ -32,6 +33,7 @@ const blockConfig: BlockConfiguration = {
 	attributes,
 	supports,
 	edit,
+	save,
 	styles: [
 		{ name: 'fill', label: 'Fill', isDefault: true },
 		{ name: 'outline', label: 'Outline' },
