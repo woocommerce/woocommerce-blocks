@@ -48,6 +48,9 @@ const settings: BlockConfiguration = {
 				width: true,
 			},
 		} ),
+		spacing: {
+			margin: true,
+		},
 	},
 	attributes,
 	example: {

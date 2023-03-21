@@ -175,10 +175,27 @@ window.addEventListener( 'load', () => {
 	const style = document.createElement( 'style' );
 	const backgroundColor = getComputedStyle( document.body ).backgroundColor;
 
+	/**
+	 * Prevent the Mini Cart drawer overflowing the viewport if it has top or
+	 * bottom margins.
+	 */
+	const miniCartContents = document.querySelector(
+		'.wp-block-woocommerce-mini-cart-contents'
+	);
+	let miniCartContentsMarginTop = '0';
+	let miniCartContentsMarginBottom = '0';
+	if ( miniCartContents ) {
+		miniCartContentsMarginTop =
+			getComputedStyle( miniCartContents ).marginTop;
+		miniCartContentsMarginBottom =
+			getComputedStyle( miniCartContents ).marginBottom;
+	}
+
 	style.appendChild(
 		document.createTextNode(
 			`:where(.wp-block-woocommerce-mini-cart-contents) {
 				background-color: ${ backgroundColor };
+				max-height: calc(100% - ${ miniCartContentsMarginTop } - ${ miniCartContentsMarginBottom });
 			}`
 		)
 	);

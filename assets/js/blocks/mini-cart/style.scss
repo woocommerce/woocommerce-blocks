@@ -85,11 +85,16 @@
 	}
 }
 
+.wc-block-mini-cart__template-part {
+	display: flex;
+	flex-direction: column;
+	height: 100dvh;
+}
 .wp-block-woocommerce-mini-cart-contents {
 	box-sizing: border-box;
-	height: 100dvh;
+	flex-grow: 1;
+	overflow: hidden;
 	padding: 0;
-	justify-content: center;
 }
 :where(.wp-block-woocommerce-mini-cart-contents) {
 	background: #fff;
@@ -222,13 +227,13 @@ h2.wc-block-mini-cart__title {
 	}
 }
 
-.admin-bar .wp-block-woocommerce-mini-cart-contents {
+.admin-bar .wc-block-mini-cart__template-part {
 	margin-top: 46px;
 	height: calc(100dvh - 46px);
 }
 
 @media only screen and (min-width: 783px) {
-	.admin-bar .wp-block-woocommerce-mini-cart-contents {
+	.admin-bar .wc-block-mini-cart__template-part {
 		margin-top: 32px;
 		height: calc(100dvh - 32px);
 	}
