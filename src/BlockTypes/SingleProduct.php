@@ -74,7 +74,7 @@ class SingleProduct extends AbstractBlock {
 	 * @return array Updated block context.
 	 */
 	public function update_context( $context, $block, $parent_block ) {
-		if ( $block['blockName'] == 'woocommerce/single-product'
+		if ( 'woocommerce/single-product' == $block['blockName']
 			&& isset( $block['attrs']['productId'] ) ) {
 				$this->product_id = $block['attrs']['productId'];
 
@@ -122,9 +122,10 @@ class SingleProduct extends AbstractBlock {
 	 */
 	protected function replace_post_for_single_product_inner_block( $block, &$context ) {
 		if ( $this->single_product_inner_blocks_names ) {
-			$block_name = array_pop( $this->single_product_inner_blocks_names);
+			$block_name = array_pop( $this->single_product_inner_blocks_names );
 
-			if ( $block_name === $block['blockName']) {
+			if ( $block_name === $block['blockName'] ) {
+				// phpcs:ignore WordPress.WP.GlobalVariablesOverride.OverrideProhibited
 				global $post;
 				$post = get_post( $this->product_id );
 				setup_postdata( $post );
