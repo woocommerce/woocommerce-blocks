@@ -59,8 +59,7 @@ class Notices {
 			),
 		);
 
-		$allowed_tags = array_merge( $allowed_tags, $svg_args );
-		return $allowed_tags;
+		return array_merge( $allowed_tags, $svg_args );
 	}
 
 	/**
