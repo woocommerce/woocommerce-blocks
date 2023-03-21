@@ -17,6 +17,17 @@ class Notices {
 	private $package;
 
 	/**
+	 * Templates used for notices.
+	 *
+	 * @var array
+	 */
+	private $notice_templates = array(
+		'notices/error.php',
+		'notices/notice.php',
+		'notices/success.php',
+	);
+
+	/**
 	 * Constructor
 	 *
 	 * @param Package $package An instance of the package class.
@@ -77,20 +88,8 @@ class Notices {
 	 * @return string
 	 */
 	public function get_notices_template( $template, $template_name, $args, $template_path, $default_path ) {
-		$found_block_template = false;
-		if ( 'notices/error.php' === $template_name ) {
-			$template             = $this->package->get_path( 'templates/notices/error.php' );
-			$found_block_template = true;
-		}
-		if ( 'notices/notice.php' === $template_name ) {
-			$template             = $this->package->get_path( 'templates/notices/notice.php' );
-			$found_block_template = true;
-		}
-		if ( 'notices/success.php' === $template_name ) {
-			$template             = $this->package->get_path( 'templates/notices/success.php' );
-			$found_block_template = true;
-		}
-		if ( $found_block_template ) {
+		if ( in_array( $template_name, $this->notice_templates, true ) ) {
+			$template = $this->package->get_path( 'templates/' . $template_name );
 			wp_enqueue_style( 'wc-blocks-style' );
 		}
 		return $template;
