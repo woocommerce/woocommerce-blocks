@@ -45,6 +45,7 @@ export const DEFAULT_INNER_BLOCKS: InnerBlockTemplate[] = [
 						'core/post-title',
 						{
 							headingLevel: 2,
+							isLink: true,
 							__woocommerceNamespace:
 								PRODUCT_TITLE_VARIATION_NAME,
 						},
