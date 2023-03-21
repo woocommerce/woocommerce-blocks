@@ -11,6 +11,7 @@ export interface BlockAttributes {
 	textAlign?: string | undefined;
 	isDescendentOfQueryLoop?: boolean | undefined;
 	width?: number | undefined;
+	isEditor?: boolean | undefined;
 }
 
 export interface AddToCartButtonPlaceholderAttributes {
@@ -35,4 +36,5 @@ export interface AddToCartButtonAttributes
 		is_in_stock: boolean;
 	};
 	textAlign?: ( WithClass & WithStyle ) | undefined;
+	isEditor?: boolean | undefined;
 }

@@ -39,6 +39,13 @@ export const supports = {
 		},
 		__experimentalSelector:
 			'.wp-block-button.wc-block-components-product-button .wc-block-components-product-button__button',
+		__experimentalLayout: {
+			allowSwitching: false,
+			allowInheriting: false,
+			default: {
+				type: 'flex',
+			},
+		},
 	} ),
 	...( typeof __experimentalGetSpacingClassesAndStyles === 'function' &&
 		! isFeaturePluginBuild() && {

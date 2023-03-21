@@ -42,6 +42,7 @@ import type {
  * @param {Object} [props.typographyStyles] Object contains CSS class and CSS style for typography.
  * @param {Object} [props.spacingStyles]    Object contains CSS style for spacing.
  * @param {Object} [props.textAlign]        Text alignment.
+ * @param {Object} [props.isEditor]         Whether the block is being rendered in the editor.
  *
  * @return {*} The component.
  */
@@ -52,6 +53,7 @@ const AddToCartButton = ( {
 	typographyStyles,
 	spacingStyles,
 	textAlign,
+	isEditor,
 }: AddToCartButtonAttributes ): JSX.Element => {
 	const {
 		id,
@@ -114,6 +116,7 @@ const AddToCartButton = ( {
 
 	return (
 		<ButtonTag
+			{ ...buttonProps }
 			aria-label={ buttonAriaLabel }
 			className={ classnames(
 				'wp-block-button__link',
@@ -135,9 +138,13 @@ const AddToCartButton = ( {
 				...borderStyles.style,
 				...typographyStyles.style,
 				...spacingStyles.style,
+				// Disable the button in Editor
+				...( isEditor && {
+					userSelect: 'none',
+					pointerEvents: 'none',
+				} ),
 			} }
-			disabled={ addingToCart }
-			{ ...buttonProps }
+			disabled={ addingToCart || isEditor }
 		>
 			{ buttonText }
 		</ButtonTag>
@@ -189,9 +196,13 @@ const AddToCartButtonPlaceholder = ( {
  * @param {Object} props             Incoming props.
  * @param {string} [props.className] CSS Class name for the component.
  * @param {string} [props.textAlign] Text alignment.
+ * @param {string} [props.isEditor]  Whether the component is being rendered in the editor.
  * @return {*} The component.
  */
-export const Block = ( props: BlockAttributes ): JSX.Element => {
+export const Block = ( {
+	isEditor,
+	...props
+}: BlockAttributes ): JSX.Element => {
 	const { className, textAlign } = props;
 	const { parentClassName } = useInnerBlockLayoutContext();
 	const { product } = useProductDataContext();
@@ -222,6 +233,7 @@ export const Block = ( props: BlockAttributes ): JSX.Element => {
 					borderStyles={ borderProps }
 					typographyStyles={ typographyProps }
 					spacingStyles={ spacingProps }
+					isEditor
 				/>
 			) : (
 				<AddToCartButtonPlaceholder

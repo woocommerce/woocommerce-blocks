@@ -59,11 +59,12 @@
 
 // Width setting
 .wp-block-button {
+	.wp-block-button__link {
+		width: 100%;
+	}
 	@for $i from 1 through 4 {
 		&.wp-block-button__width-#{$i * 25} {
-			.wp-block-button__link {
-				width: $i * 25%; // 25%, 50%, 75%, 100%
-			}
+			width: $i * 25%; // 25%, 50%, 75%, 100%
 		}
 	}
 }

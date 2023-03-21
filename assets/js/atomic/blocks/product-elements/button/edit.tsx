@@ -2,12 +2,7 @@
  * External dependencies
  */
 import classnames from 'classnames';
-import {
-	Disabled,
-	Button,
-	ButtonGroup,
-	PanelBody,
-} from '@wordpress/components';
+import { Button, ButtonGroup, PanelBody } from '@wordpress/components';
 import { __ } from '@wordpress/i18n';
 import {
 	AlignmentToolbar,
@@ -105,15 +100,14 @@ const Edit = ( {
 				/>
 			</InspectorControls>
 			<div { ...blockProps }>
-				<Disabled>
-					<Block
-						{ ...{ ...attributes, ...context } }
-						className={ classnames( attributes.className, {
-							[ `has-custom-width wp-block-button__width-${ width }` ]:
-								width,
-						} ) }
-					/>
-				</Disabled>
+				<Block
+					{ ...{ ...attributes, ...context } }
+					className={ classnames( attributes.className, {
+						[ `has-custom-width wp-block-button__width-${ width }` ]:
+							width,
+					} ) }
+					isEditor
+				/>
 			</div>
 		</>
 	);
