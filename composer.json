@@ -19,7 +19,7 @@
 		"automattic/jetpack-autoloader": "^2.9.1"
 	},
 	"require-dev": {
-		"phpunit/phpunit": "^6.5",
+		"phpunit/phpunit": "^8",
 		"woocommerce/woocommerce-sniffs": "0.1.3",
 		"yoast/phpunit-polyfills": "^1.0",
 		"mockery/mockery": "^1",
