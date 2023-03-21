@@ -85,7 +85,7 @@ const Block = ( {
 		? parseInt( cartTotals.total_items, 10 ) +
 		  parseInt( cartTotals.total_items_tax, 10 )
 		: parseInt( cartTotals.total_items, 10 );
-	console.log( { children }, cartButtonLabel, checkoutButtonLabel );
+
 	return (
 		<div
 			className={ classNames( className, 'wc-block-mini-cart__footer' ) }

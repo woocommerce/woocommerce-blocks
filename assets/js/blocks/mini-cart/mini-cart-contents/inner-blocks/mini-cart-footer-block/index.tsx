@@ -4,18 +4,13 @@
 import { Icon, payment } from '@wordpress/icons';
 import { createBlock, registerBlockType } from '@wordpress/blocks';
 import { useBlockProps } from '@wordpress/block-editor';
+import { objectHasProp } from '@woocommerce/types';
 
 /**
  * Internal dependencies
  */
 import { Edit, Save } from './edit';
 import deprecatedAttributes from './attributes';
-import { objectHasProp } from '@woocommerce/types';
-
-const deprecatedSave = (): JSX.Element => {
-	console.log( 'deprecatedSave' );
-	return <div { ...useBlockProps.save() }></div>;
-};
 
 // eslint-disable-next-line @typescript-eslint/ban-ts-comment
 // @ts-ignore -- TypeScript expects some required properties which we already
@@ -34,7 +29,6 @@ registerBlockType( 'woocommerce/mini-cart-footer-block', {
 			attributes: deprecatedAttributes,
 
 			migrate( attributes, innerBlocks ) {
-				console.log( 'migrate' );
 				const {
 					cartButtonLabel,
 					checkoutButtonLabel,
@@ -66,7 +60,9 @@ registerBlockType( 'woocommerce/mini-cart-footer-block', {
 					objectHasProp( attributes, 'checkoutButtonLabel' )
 				);
 			},
-			save: deprecatedSave,
+			save: (): JSX.Element => {
+				return <div { ...useBlockProps.save() }></div>;
+			},
 		},
 	],
 	edit: Edit,
