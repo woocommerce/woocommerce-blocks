@@ -25,24 +25,13 @@ if ( ! $notices ) {
 
 $multiple = count( $notices ) > 1;
 
-if ( ! $multiple ) {
-	?>
-	<div class="wc-block-components-notice-banner is-error"<?php echo wc_get_notice_data_attr( $notices[0] ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?> role="alert">
-		<svg xmlns="http://www.w3.org/2000/svg" view-box="0 0 24 24" width="24" height="24" aria-hidden="true" focusable="false">
-			<path d="M12 3.2c-4.8 0-8.8 3.9-8.8 8.8 0 4.8 3.9 8.8 8.8 8.8 4.8 0 8.8-3.9 8.8-8.8 0-4.8-4-8.8-8.8-8.8zm0 16c-4 0-7.2-3.3-7.2-7.2C4.8 8 8 4.8 12 4.8s7.2 3.3 7.2 7.2c0 4-3.2 7.2-7.2 7.2zM11 17h2v-6h-2v6zm0-8h2V7h-2v2z"></path>
-		</svg>
-		<div class="wc-block-components-notice-banner__content">
-			<?php echo wc_kses_notice( $notices[0]['notice'] ); ?>
-		</div>
-	</div>
-	<?php
-} else {
-	?>
-	<div class="wc-block-components-notice-banner is-error" role="alert">
-		<svg xmlns="http://www.w3.org/2000/svg" view-box="0 0 24 24" width="24" height="24" aria-hidden="true" focusable="false">
-			<path d="M12 3.2c-4.8 0-8.8 3.9-8.8 8.8 0 4.8 3.9 8.8 8.8 8.8 4.8 0 8.8-3.9 8.8-8.8 0-4.8-4-8.8-8.8-8.8zm0 16c-4 0-7.2-3.3-7.2-7.2C4.8 8 8 4.8 12 4.8s7.2 3.3 7.2 7.2c0 4-3.2 7.2-7.2 7.2zM11 17h2v-6h-2v6zm0-8h2V7h-2v2z"></path>
-		</svg>
-		<div class="wc-block-components-notice-banner__content">
+?>
+<div class="wc-block-components-notice-banner is-error" role="alert"<?php echo $multiple ? '' : wc_get_notice_data_attr( $notices[0] ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?>>
+	<svg xmlns="http://www.w3.org/2000/svg" view-box="0 0 24 24" width="24" height="24" aria-hidden="true" focusable="false">
+		<path d="M12 3.2c-4.8 0-8.8 3.9-8.8 8.8 0 4.8 3.9 8.8 8.8 8.8 4.8 0 8.8-3.9 8.8-8.8 0-4.8-4-8.8-8.8-8.8zm0 16c-4 0-7.2-3.3-7.2-7.2C4.8 8 8 4.8 12 4.8s7.2 3.3 7.2 7.2c0 4-3.2 7.2-7.2 7.2zM11 17h2v-6h-2v6zm0-8h2V7h-2v2z"></path>
+	</svg>
+	<div class="wc-block-components-notice-banner__content">
+		<?php if ( $multiple ) { ?>
 			<p class="wc-block-components-notice-banner__summary"><?php esc_html_e( 'The following problems were found:', 'woo-gutenberg-products-block' ); ?></p>
 			<ul>
 			<?php foreach ( $notices as $notice ) : ?>
@@ -51,7 +40,11 @@ if ( ! $multiple ) {
 				</li>
 			<?php endforeach; ?>
 			</ul>
-		</div>
+			<?php
+		} else {
+			echo wc_kses_notice( $notices[0]['notice'] );
+		}
+		?>
 	</div>
-	<?php
-}
+</div>
+<?php
