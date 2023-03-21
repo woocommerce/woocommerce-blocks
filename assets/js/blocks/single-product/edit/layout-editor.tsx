@@ -35,7 +35,8 @@ const LayoutEditor = ( {
 	product,
 	clientId,
 }: LayoutEditorProps ) => {
-	const baseClassName = 'wc-block-single-product wc-block-layout';
+	const baseClassName =
+		'.wc-block-editor-single-product .wc-block-editor-layout';
 	const { replaceInnerBlocks } = useDispatch( 'core/block-editor' );
 
 	const resetInnerBlocks = useCallback( () => {
@@ -67,7 +68,7 @@ const LayoutEditor = ( {
 							) }
 							onClick={ resetInnerBlocks }
 							isTertiary
-							className="wc-block-single-product__reset-layout"
+							className=".wc-block-editor-single-product__reset-layout"
 						>
 							<Icon icon={ backup } />{ ' ' }
 							{ __(

@@ -21,7 +21,7 @@ interface ApiErrorProps {
  */
 const ApiError = ( { error, isLoading, getProduct }: ApiErrorProps ) => (
 	<ErrorPlaceholder
-		className="wc-block-single-product-error"
+		className="wc-block-editor-single-product-error"
 		error={ error }
 		isLoading={ isLoading }
 		onRetry={ getProduct }
