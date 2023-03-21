@@ -2836,8 +2836,5 @@
         "ext-json": "*"
     },
     "platform-dev": [],
-    "platform-overrides": {
-        "php": "7.4.32"
-    },
     "plugin-api-version": "2.3.0"
 }
