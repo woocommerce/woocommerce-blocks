@@ -1,13 +1,13 @@
 .woocommerce .wp-block-woocommerce-product-image-gallery {
 	position: relative;
 
-	div.images {
-		width: initial;
-	}
-
 	span.onsale {
 		right: unset;
 		z-index: 1;
 		left: -1rem;
 	}
+}
+
+.woocommerce .wp-block-woocommerce-product-image-gallery div.images {
+	width: initial !important;
 }
