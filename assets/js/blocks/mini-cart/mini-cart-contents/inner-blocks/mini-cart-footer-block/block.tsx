@@ -42,44 +42,6 @@ interface Props {
 	cartButtonLabel: string;
 	checkoutButtonLabel: string;
 }
-//
-// const CartButton = ( {
-// 	url,
-// 	label,
-// }: {
-// 	url: string;
-// 	label: string;
-// } ): JSX.Element | null => {
-// 	if ( ! url ) {
-// 		return null;
-// 	}
-//
-// 	return (
-// 		<Button
-// 			className="wc-block-mini-cart__footer-cart"
-// 			href={ url }
-// 			variant="outlined"
-// 		>
-// 			{ label }
-// 		</Button>
-// 	);
-// };
-// const CheckoutButton = ( {
-// 	url,
-// 	label,
-// }: {
-// 	url: string;
-// 	label: string;
-// } ): JSX.Element | null => {
-// 	if ( ! url ) {
-// 		return null;
-// 	}
-// 	return (
-// 		<Button className="wc-block-mini-cart__footer-checkout" href={ url }>
-// 			{ label }
-// 		</Button>
-// 	);
-// };
 
 const hasChildren = ( children ): boolean => {
 	return children.some( ( child ) => {
