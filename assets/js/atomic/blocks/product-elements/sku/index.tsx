@@ -3,7 +3,6 @@
  */
 import { registerBlockType } from '@wordpress/blocks';
 import type { BlockConfiguration } from '@wordpress/blocks';
-import classnames from 'classnames';
 
 /**
  * Internal dependencies
