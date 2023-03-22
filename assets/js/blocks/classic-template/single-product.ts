@@ -28,16 +28,20 @@ const getBlockifiedTemplate = () =>
 					createBlock( 'core/post-title', {
 						__woocommerceNamespace: PRODUCT_TITLE_VARIATION_NAME,
 					} ),
+					createBlock( 'woocommerce/product-price', {
+						fontSize: 'large',
+					} ),
 					createBlock( 'core/post-excerpt', {
 						__woocommerceNamespace: PRODUCT_SUMMARY_VARIATION_NAME,
 					} ),
-					createBlock( 'woocommerce/product-price' ),
 					createBlock( 'woocommerce/add-to-cart-form' ),
 					createBlock( 'woocommerce/product-meta' ),
 				] ),
 			]
 		),
-		createBlock( 'woocommerce/product-details' ),
+		createBlock( 'woocommerce/product-details', {
+			align: 'wide',
+		} ),
 		createBlock( 'woocommerce/related-products', {
 			align: 'wide',
 		} ),
