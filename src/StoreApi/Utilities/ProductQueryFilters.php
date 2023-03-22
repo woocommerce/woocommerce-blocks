@@ -3,6 +3,7 @@ namespace Automattic\WooCommerce\StoreApi\Utilities;
 
 use Automattic\WooCommerce\StoreApi\Utilities\ProductQuery;
 use Exception;
+use WP_REST_Request;
 
 /**
  * Product Query filters class.
@@ -137,20 +138,20 @@ class ProductQueryFilters {
 	 * Get attribute and meta counts.
 	 *
 	 * @param WP_REST_Request $request Request data.
-	 * @param array           $attributes Attributes to count.
+	 * @param string          $filtered_attribute The attribute to count.
+	 *
 	 * @return array
 	 */
-	public function get_attribute_and_meta_counts( $request, $attributes ) {
+	public function get_attribute_and_meta_counts( $request, $filtered_attribute ) {
 		global $wpdb;
 
 		$attributes_data            = $request->get_param( 'attributes' );
 		$calculate_attribute_counts = $request->get_param( 'calculate_attribute_counts' );
 		$min_price                  = $request->get_param( 'min_price' );
 		$max_price                  = $request->get_param( 'max_price' );
-		$filtered_taxonomy          = $attributes[0] ?? '';
 
 		if ( empty( $attributes_data ) && empty( $min_price ) && empty( $max_price ) ) {
-			$counts = $this->get_terms_list( $filtered_taxonomy );
+			$counts = $this->get_terms_list( $filtered_attribute );
 
 			return array_map( 'absint', wp_list_pluck( $counts, 'term_count', 'term_count_id' ) );
 		}
@@ -179,12 +180,12 @@ class ProductQueryFilters {
 			}
 
 			foreach ( $calculate_attribute_counts as $calculate_attribute_count ) {
-				$query_type = 'or';
-				if ( isset( $calculate_attribute_count['taxonomy'] ) && $calculate_attribute_count['taxonomy'] === $taxonomy ) {
-					$query_type = $calculate_attribute_count['query_type'];
+				if ( ! isset( $calculate_attribute_count['taxonomy'] ) && ! isset( $calculate_attribute_count['query_type'] ) ) {
+					continue;
 				}
 
-				$filtered_products_by_terms           = $this->get_product_by_filtered_terms( $taxonomy, $term_ids, $query_type );
+				$query_type                           = $calculate_attribute_count['query_type'];
+				$filtered_products_by_terms           = $this->get_product_by_filtered_terms( $calculate_attribute_count['taxonomy'], $term_ids, $query_type );
 				$formatted_filtered_products_by_terms = implode( ',', array_map( 'intval', $filtered_products_by_terms ) );
 
 				if ( ! empty( $formatted_filtered_products_by_terms ) ) {
@@ -220,7 +221,7 @@ class ProductQueryFilters {
 	    WHERE {$where_clause}
 	    GROUP BY product_attribute_lookup.term_id
 	) summarize ON attributes.term_id = summarize.term_id",
-				$filtered_taxonomy
+				$filtered_attribute
 			)
 		);
 
