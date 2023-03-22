@@ -58,6 +58,12 @@
 
 // Width setting
 .wp-block-button {
+	&.has-custom-width {
+		.wp-block-button__link {
+			box-sizing: border-box;
+		}
+	}
+
 	@for $i from 1 through 4 {
 		&.wp-block-button__width-#{$i * 25} {
 			.wp-block-button__link {
