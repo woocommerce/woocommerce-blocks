@@ -1,4 +1,10 @@
 <?php
+/**
+ * PHPUnit bootstrap file
+ *
+ * @package WooCommerce Blocks
+ */
+
 namespace Automattic\WooCommerce\Blocks\Tests;
 
 // Require composer dependencies.
@@ -7,7 +13,7 @@ require_once dirname( __DIR__ ) . '/vendor/autoload.php';
 // Determine the tests directory (from a WP dev checkout).
 // Try the WP_TESTS_DIR environment variable first.
 $_wc_tests_framework_dir = dirname( dirname( __DIR__ ) ) . '/woocommerce/tests/legacy';
-$_tests_dir = getenv( 'WP_TESTS_DIR' );
+$_tests_dir              = getenv( 'WP_TESTS_DIR' );
 
 // Next, try the WP_PHPUNIT composer package.
 if ( ! $_tests_dir ) {
