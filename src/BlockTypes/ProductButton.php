@@ -98,6 +98,7 @@ class ProductButton extends AbstractBlock {
 				array_filter(
 					array(
 						'wp-block-button__link',
+						'wp-element-button',
 						'wc-block-components-product-button__button',
 						$product->is_purchasable() && $product->is_in_stock() ? 'add_to_cart_button' : '',
 						$is_ajax_button ? 'ajax_add_to_cart' : '',
