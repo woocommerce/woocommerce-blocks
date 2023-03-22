@@ -139,7 +139,7 @@ class ProductButton extends AbstractBlock {
 			return apply_filters(
 				'woocommerce_loop_add_to_cart_link',
 				sprintf(
-					'<div class="wp-block-button wc-block-components-product-button wc-block-grid__product-add-to-cart %1$s %2$s">
+					'<div class="wp-block-button wc-block-components-product-button %1$s %2$s">
 					<%3$s href="%4$s" class="%5$s" style="%6$s" %7$s>%8$s</%3$s>
 				</div>',
 					esc_attr( $text_align_styles_and_classes['class'] ?? '' ),
