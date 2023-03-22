@@ -1,8 +1,8 @@
 /**
  * External dependencies
  */
-import { useBlockProps, RichText } from '@wordpress/block-editor';
-import Button from '@woocommerce/base-components/button';
+import { useBlockProps } from '@wordpress/block-editor';
+import EditableButton from '@woocommerce/editor-components/editable-button';
 
 /**
  * Internal dependencies
@@ -22,22 +22,18 @@ export const Edit = ( {
 	const { startShoppingButtonLabel } = attributes;
 
 	return (
-		<div { ...blockProps }>
-			<div className="wp-block-button aligncenter">
-				<Button className="wc-block-mini-cart__shopping-button">
-					<RichText
-						multiline={ false }
-						allowedFormats={ [] }
-						value={ startShoppingButtonLabel }
-						placeholder={ defaultStartShoppingButtonLabel }
-						onChange={ ( content ) => {
-							setAttributes( {
-								startShoppingButtonLabel: content,
-							} );
-						} }
-					/>
-				</Button>
-			</div>
+		<div className="wp-block-button aligncenter">
+			<EditableButton
+				{ ...blockProps }
+				className="wc-block-mini-cart__shopping-button"
+				value={ startShoppingButtonLabel }
+				placeholder={ defaultStartShoppingButtonLabel }
+				onChange={ ( content ) => {
+					setAttributes( {
+						startShoppingButtonLabel: content,
+					} );
+				} }
+			/>
 		</div>
 	);
 };
