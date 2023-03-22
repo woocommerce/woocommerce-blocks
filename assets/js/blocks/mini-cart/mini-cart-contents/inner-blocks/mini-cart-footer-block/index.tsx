@@ -4,7 +4,6 @@
 import { Icon, payment } from '@wordpress/icons';
 import { createBlock, registerBlockType } from '@wordpress/blocks';
 import { useBlockProps } from '@wordpress/block-editor';
-import { objectHasProp } from '@woocommerce/types';
 
 /**
  * Internal dependencies
@@ -54,11 +53,8 @@ registerBlockType( 'woocommerce/mini-cart-footer-block', {
 					],
 				];
 			},
-			isEligible: ( attributes ) => {
-				return (
-					objectHasProp( attributes, 'cartButtonLabel' ) ||
-					objectHasProp( attributes, 'checkoutButtonLabel' )
-				);
+			isEligible: ( attributes, innerBlocks ) => {
+				return ! innerBlocks.length;
 			},
 			save: (): JSX.Element => {
 				return <div { ...useBlockProps.save() }></div>;

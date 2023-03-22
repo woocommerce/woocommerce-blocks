@@ -37,10 +37,10 @@ interface Props {
 	checkoutButtonLabel: string;
 }
 
-const hasChildrenButton = ( children ): boolean => {
+const hasChildren = ( children ): boolean => {
 	return children.some( ( child ) => {
 		if ( Array.isArray( child ) ) {
-			return hasChildrenButton( child );
+			return hasChildren( child );
 		}
 		return child !== null && ! isString( child ) && child.key !== null;
 	} );
@@ -58,7 +58,7 @@ const Block = ( {
 		  parseInt( cartTotals.total_items_tax, 10 )
 		: parseInt( cartTotals.total_items, 10 );
 
-	const hasButtons = hasChildrenButton( children );
+	const hasButtons = hasChildren( children );
 
 	return (
 		<div
