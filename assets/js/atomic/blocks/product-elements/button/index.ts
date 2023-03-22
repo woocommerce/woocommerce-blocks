@@ -16,6 +16,7 @@ import {
 	BLOCK_TITLE as title,
 	BLOCK_ICON as icon,
 	BLOCK_DESCRIPTION as description,
+	BLOCK_NAME,
 } from './constants';
 
 const blockConfig: BlockConfiguration = {
@@ -40,4 +41,4 @@ const blockConfig: BlockConfiguration = {
 	],
 };
 
-registerBlockType( 'woocommerce/product-button', { ...blockConfig } );
+registerBlockType( BLOCK_NAME, { ...blockConfig } );

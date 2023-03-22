@@ -1,4 +1,9 @@
 /**
+ * Internal dependencies
+ */
+import { BLOCK_NAME as PRODUCT_BUTTON_BLOCK_NAME } from '../../atomic/blocks/product-elements/button/constants';
+
+/**
  * The default layout built from the default template.
  */
 export const DEFAULT_PRODUCT_LIST_LAYOUT = [
@@ -29,6 +34,17 @@ export const getProductLayoutConfig = ( innerBlocks ) => {
 					block.innerBlocks.length > 0
 						? getProductLayoutConfig( block.innerBlocks )
 						: [],
+				/**
+				 * Add custom width class to Add to cart button,
+				 * This is needed to support "Width Setting" controls available in
+				 * "woocommerce/product-button" block.
+				 */
+				...( block.name === PRODUCT_BUTTON_BLOCK_NAME &&
+					block.attributes?.width && {
+						className: block.attributes?.width
+							? `has-custom-width wp-block-button__width-${ block.attributes.width }`
+							: undefined,
+					} ),
 			},
 		];
 	} );
