@@ -152,7 +152,7 @@ export const isBlockInsertedInWidgetsArea = async ( blockName ) => {
 };
 
 /**
- * Visits site editor dependening on used WordPress version and how Gutenberg is installed.
+ * Visits site editor depending on used WordPress version and how Gutenberg is installed.
  *
  * @param {Object}                             params                          Query parameters to add to the URL.
  * @param {string}                             [params.postId]                 ID of the template if we want to access template editor.
@@ -191,7 +191,7 @@ export async function goToTemplateEditor( {
  *
  * @param {Object}                             params
  * @param {'wp_template' | 'wp_template_part'} [params.postType='wp_template'] Type of template.
- * @param {'list' | 'actions'}                 [params.waitFor='false']        Wait for list or for actions to be present - tempalte actions can take a moment to load, we can wait for them to be present if needed.
+ * @param {'list' | 'actions'}                 [params.waitFor='false']        Wait for list or for actions to be present - template actions can take a moment to load, we can wait for them to be present if needed.
  */
 export async function goToTemplatesList( {
 	postType = 'wp_template',
