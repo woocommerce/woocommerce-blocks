@@ -29,17 +29,20 @@ const blockConfig = {
 	attributes,
 	supports,
 	edit,
-	save: () => {
+	save: ( { attributes: saveAttributes } ) => {
 		if (
-			attributes.isDescendentOfQueryLoop ||
-			attributes.isDescendentOfSingleProductTemplate
+			saveAttributes.isDescendentOfQueryLoop ||
+			saveAttributes.isDescendentOfSingleProductTemplate
 		) {
 			return null;
 		}
 
 		return (
 			<div
-				className={ classnames( 'is-loading', attributes.className ) }
+				className={ classnames(
+					'is-loading',
+					saveAttributes.className
+				) }
 			/>
 		);
 	},
