@@ -56,7 +56,7 @@ registerBlockType( 'woocommerce/mini-cart-footer-block', {
 			},
 			isEligible: ( attributes ) => {
 				return (
-					objectHasProp( attributes, 'cartButtonLabel' ) &&
+					objectHasProp( attributes, 'cartButtonLabel' ) ||
 					objectHasProp( attributes, 'checkoutButtonLabel' )
 				);
 			},
