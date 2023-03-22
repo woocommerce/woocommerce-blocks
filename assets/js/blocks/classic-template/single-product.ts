@@ -82,7 +82,10 @@ const getDescription = ( templateTitle: string, canConvert: boolean ) => {
 };
 
 const getButtonLabel = () =>
-	__( 'Upgrade to Single Product block', 'woo-gutenberg-products-block' );
+	__(
+		'Upgrade to Blockified Single Product template',
+		'woo-gutenberg-products-block'
+	);
 
 export {
 	getBlockifiedTemplate,
