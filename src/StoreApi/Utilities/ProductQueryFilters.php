@@ -155,7 +155,7 @@ class ProductQueryFilters {
 			return array_map( 'absint', wp_list_pluck( $counts, 'term_count', 'term_count_id' ) );
 		}
 
-		$filtered_products_by_terms = [];
+		$where_clause = "posts.post_type IN ('product', 'product_variation') AND posts.post_status = 'publish'";
 		foreach ( $attributes_data as $attribute ) {
 			$taxonomy       = $attribute['attribute'] ?? '';
 			$filtered_terms = $attribute['slug'] ?? '';
@@ -178,17 +178,20 @@ class ProductQueryFilters {
 				continue;
 			}
 
-			$query_type = 'or';
 			foreach ( $calculate_attribute_counts as $calculate_attribute_count ) {
+				$query_type = 'or';
 				if ( isset( $calculate_attribute_count['taxonomy'] ) && $calculate_attribute_count['taxonomy'] === $taxonomy ) {
 					$query_type = $calculate_attribute_count['query_type'];
 				}
+
+				$filtered_products_by_terms           = $this->get_product_by_filtered_terms( $taxonomy, $term_ids, $query_type );
+				$formatted_filtered_products_by_terms = implode( ',', array_map( 'intval', $filtered_products_by_terms ) );
+
+				if ( ! empty( $formatted_filtered_products_by_terms ) ) {
+					$where_clause .= " AND product_attribute_lookup.product_or_parent_id IN ({$formatted_filtered_products_by_terms})";
+				}
 			}
-
-			$filtered_products_by_terms = array_merge( $filtered_products_by_terms, $this->get_product_by_filtered_terms( $taxonomy, $term_ids, $query_type ) );
 		}
-
-		$formatted_filtered_products_by_terms = implode( ',', array_map( 'intval', $filtered_products_by_terms ) );
 
 		$product_metas = [
 			'min_price' => $min_price,
@@ -197,12 +200,6 @@ class ProductQueryFilters {
 
 		$filtered_products_by_metas           = $this->get_product_by_metas( $product_metas );
 		$formatted_filtered_products_by_metas = implode( ',', array_map( 'intval', $filtered_products_by_metas ) );
-
-		$where_clause = "posts.post_type IN ('product', 'product_variation') AND posts.post_status = 'publish'";
-
-		if ( ! empty( $formatted_filtered_products_by_terms ) ) {
-			$where_clause .= " AND product_attribute_lookup.product_or_parent_id IN ({$formatted_filtered_products_by_terms})";
-		}
 
 		if ( ! empty( $formatted_filtered_products_by_metas ) ) {
 			$where_clause .= " AND product_attribute_lookup.product_id IN ({$formatted_filtered_products_by_metas})";
