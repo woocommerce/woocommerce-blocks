@@ -74,8 +74,17 @@ export const TotalsShipping = ( {
 				.flatMap( ( rate ) => rate.name );
 		}
 	);
-
 	const addressComplete = isAddressComplete( shippingAddress );
+	const areShippingMethodsMissing =
+		! hasRates ||
+		( ! prefersCollection &&
+			shippingRates.some(
+				( shippingRatePackage ) =>
+					! shippingRatePackage.shipping_rates.some(
+						( shippingRate ) =>
+							shippingRate.method_id !== 'pickup_location'
+					)
+			) );
 
 	return (
 		<div
@@ -105,7 +114,8 @@ export const TotalsShipping = ( {
 				}
 				description={
 					// If address is complete, display the shipping address.
-					( hasRates && cartHasCalculatedShipping ) ||
+					( areShippingMethodsMissing &&
+						cartHasCalculatedShipping ) ||
 					addressComplete ? (
 						<>
 							<ShippingVia
