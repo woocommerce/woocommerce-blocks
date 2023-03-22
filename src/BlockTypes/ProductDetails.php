@@ -1,8 +1,7 @@
 <?php
-
 namespace Automattic\WooCommerce\Blocks\BlockTypes;
-use Automattic\WooCommerce\Blocks\Utils\StyleAttributesUtils;
 
+use Automattic\WooCommerce\Blocks\Utils\StyleAttributesUtils;
 
 /**
  * ProductDetails class.
