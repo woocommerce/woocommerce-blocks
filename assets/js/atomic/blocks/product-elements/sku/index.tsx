@@ -34,20 +34,6 @@ const blockConfig: BlockConfiguration = {
 		'woocommerce/product-meta',
 	],
 	edit,
-	save: () => {
-		if (
-			attributes.isDescendentOfQueryLoop ||
-			attributes.isDescendentOfSingleProductTemplate
-		) {
-			return null;
-		}
-
-		return (
-			<div
-				className={ classnames( 'is-loading', attributes.className ) }
-			/>
-		);
-	},
 };
 
 registerBlockType( 'woocommerce/product-sku', { ...blockConfig } );

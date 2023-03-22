@@ -29,23 +29,6 @@ const blockConfig = {
 	attributes,
 	supports,
 	edit,
-	save: ( { attributes: saveAttributes } ) => {
-		if (
-			saveAttributes.isDescendentOfQueryLoop ||
-			saveAttributes.isDescendentOfSingleProductTemplate
-		) {
-			return null;
-		}
-
-		return (
-			<div
-				className={ classnames(
-					'is-loading',
-					saveAttributes.className
-				) }
-			/>
-		);
-	},
 };
 
 registerBlockType( 'woocommerce/product-price', blockConfig );
