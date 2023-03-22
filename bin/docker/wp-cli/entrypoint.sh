@@ -50,7 +50,7 @@ fi
 wp rewrite structure "/%postname%/" --hard
 # we cannot create API keys for the API, so we using basic auth, this plugin allows that.
 wp plugin install https://github.com/WP-API/Basic-Auth/archive/master.zip --activate
-wp plugin install woocommerce --activate --context=admin
+wp plugin install woocommerce --activate
 wp plugin activate woocommerce-gutenberg-products-block
 wp theme install storefront --activate
 declare -p GUTENBERG_LATEST
