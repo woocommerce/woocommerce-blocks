@@ -13,6 +13,7 @@ import { getIconsFromPaymentMethods } from '@woocommerce/base-utils';
 import { getSetting } from '@woocommerce/settings';
 import { PaymentEventsProvider } from '@woocommerce/base-context';
 import classNames from 'classnames';
+import { isString } from '@woocommerce/types';
 
 /**
  * Internal dependencies
@@ -36,6 +37,15 @@ interface Props {
 	checkoutButtonLabel: string;
 }
 
+const hasChildrenButton = ( children ): boolean => {
+	return children.some( ( child ) => {
+		if ( Array.isArray( child ) ) {
+			return hasChildrenButton( child );
+		}
+		return child !== null && ! isString( child ) && child.key !== null;
+	} );
+};
+
 const Block = ( {
 	children,
 	className,
@@ -47,6 +57,8 @@ const Block = ( {
 		? parseInt( cartTotals.total_items, 10 ) +
 		  parseInt( cartTotals.total_items_tax, 10 )
 		: parseInt( cartTotals.total_items, 10 );
+
+	const hasButtons = hasChildrenButton( children );
 
 	return (
 		<div
@@ -63,14 +75,15 @@ const Block = ( {
 				) }
 			/>
 			<div className="wc-block-mini-cart__footer-actions">
-				{ children }
-				{ cartButtonLabel && (
-					<CartButton cartButtonLabel={ cartButtonLabel } />
-				) }
-				{ checkoutButtonLabel && (
-					<CheckoutButton
-						checkoutButtonLabel={ checkoutButtonLabel }
-					/>
+				{ hasButtons ? (
+					children
+				) : (
+					<>
+						<CartButton cartButtonLabel={ cartButtonLabel } />
+						<CheckoutButton
+							checkoutButtonLabel={ checkoutButtonLabel }
+						/>
+					</>
 				) }
 			</div>
 			<PaymentEventsProvider>
