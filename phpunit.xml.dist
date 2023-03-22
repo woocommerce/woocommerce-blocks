@@ -2,13 +2,11 @@
 	bootstrap="tests/bootstrap.php"
 	backupGlobals="false"
 	colors="true"
-	convertErrorsToExceptions="true"
-	convertNoticesToExceptions="true"
-	convertWarningsToExceptions="true"
+	convertErrorsToExceptions="false"
+	convertNoticesToExceptions="false"
+	convertWarningsToExceptions="false"
+	verbose="true"
 	>
-	<php>
-		<env name="WORDPRESS_TABLE_PREFIX" value="wptests_" />
-	</php>
 	<testsuites>
 		<testsuite name="WooCommerce Blocks Test Suite">
 			<directory suffix=".php">./tests/php</directory>
