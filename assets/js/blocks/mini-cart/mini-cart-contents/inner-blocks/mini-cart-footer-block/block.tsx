@@ -42,7 +42,7 @@ const hasChildren = ( children ): boolean => {
 		if ( Array.isArray( child ) ) {
 			return hasChildren( child );
 		}
-		return child !== null && ! isString( child ) && child.key !== null;
+		return isObject( child ) && child.key !== null;
 	} );
 };
 
