@@ -1,6 +1,7 @@
 /**
  * External dependencies
  */
+import { __ } from '@wordpress/i18n';
 import {
 	defaultAddressFields,
 	AddressFields,
@@ -8,7 +9,7 @@ import {
 	BillingAddress,
 	getSetting,
 } from '@woocommerce/settings';
-import { useCallback, useState } from '@wordpress/element';
+import { useCallback, useEffect } from '@wordpress/element';
 import { useDispatch, useSelect } from '@wordpress/data';
 import { CHECKOUT_STORE_KEY } from '@woocommerce/block-data';
 
@@ -17,6 +18,7 @@ import { CHECKOUT_STORE_KEY } from '@woocommerce/block-data';
  */
 import { useCustomerData } from './use-customer-data';
 import { useShippingData } from './shipping/use-shipping-data';
+import { useCheckoutEventsContext } from '../providers/cart-checkout/checkout-events';
 
 interface CheckoutAddress {
 	shippingAddress: ShippingAddress;
@@ -45,23 +47,24 @@ interface CheckoutAddress {
  * Custom hook for exposing address related functionality for the checkout address form.
  */
 export const useCheckoutAddress = (): CheckoutAddress => {
+	const { onCheckoutValidation } = useCheckoutEventsContext();
 	const { needsShipping } = useShippingData();
 	const {
 		useShippingAsBilling,
 		prefersCollection,
 		isEditingShippingAddress,
 		isEditingBillingAddress,
-	} = useSelect( ( select ) => ( {
-		useShippingAsBilling:
-			select( CHECKOUT_STORE_KEY ).getUseShippingAsBilling(),
-		prefersCollection: select( CHECKOUT_STORE_KEY ).prefersCollection(),
-		isEditingShippingAddress:
-			select( CHECKOUT_STORE_KEY ).isEditingShippingAddress(),
-		isEditingBillingAddress:
-			select( CHECKOUT_STORE_KEY ).isEditingBillingAddress(),
-	} ) );
+	} = useSelect( ( select ) => {
+		const store = select( CHECKOUT_STORE_KEY );
+		return {
+			useShippingAsBilling: store.getUseShippingAsBilling(),
+			prefersCollection: store.prefersCollection(),
+			isEditingShippingAddress: store.isEditingShippingAddress(),
+			isEditingBillingAddress: store.isEditingBillingAddress(),
+		};
+	} );
 	const {
-		__internalSetUseShippingAsBilling,
+		__internalSetUseShippingAsBilling: setUseShippingAsBilling,
 		setEditingShippingAddress,
 		setEditingBillingAddress,
 	} = useDispatch( CHECKOUT_STORE_KEY );
@@ -95,16 +98,57 @@ export const useCheckoutAddress = (): CheckoutAddress => {
 			} ),
 		[ setShippingAddress ]
 	);
+
+	// This is a core setting which determines if the user must ship to their billing address.
 	const forcedBillingAddress: boolean = getSetting(
 		'forcedBillingAddress',
 		false
 	);
+
+	// Shipping fields (address form) are shown when the cart needs shipping and the customer has not chosen local pickup.
 	const showShippingFields = needsShipping && ! prefersCollection;
-	const showShippingMethods = needsShipping && ! prefersCollection;
+	const showShippingMethods = showShippingFields;
+
+	// Billing fields are shown when there is no need for a shipping address or the user has a different billing address to their chosen shipping address.
 	const showBillingFields =
 		! needsShipping || ! useShippingAsBilling || prefersCollection || false;
+
+	// Billing is used for shipping if forced via the core setting, or if the user has chosen local pickup.
 	const useBillingAsShipping =
 		forcedBillingAddress || prefersCollection || false;
+
+	useEffect( () => {
+		const unsubscribeProcessing = onCheckoutValidation( () => {
+			if ( isEditingShippingAddress && showShippingFields ) {
+				return {
+					errorMessage: __(
+						'Save your shipping address to continue',
+						'woo-gutenberg-products-block'
+					),
+					context: 'wc/checkout/shipping-address',
+				};
+			}
+			if ( isEditingBillingAddress && showBillingFields ) {
+				return {
+					errorMessage: __(
+						'Save your billing address to continue',
+						'woo-gutenberg-products-block'
+					),
+					context: 'wc/checkout/billing-address',
+				};
+			}
+		}, 0 );
+		return () => {
+			unsubscribeProcessing();
+		};
+	}, [
+		onCheckoutValidation,
+		isEditingShippingAddress,
+		isEditingBillingAddress,
+		showShippingFields,
+		showBillingFields,
+	] );
+
 	return {
 		shippingAddress,
 		billingAddress,
@@ -115,7 +159,7 @@ export const useCheckoutAddress = (): CheckoutAddress => {
 		setShippingPhone,
 		defaultAddressFields,
 		useShippingAsBilling,
-		setUseShippingAsBilling: __internalSetUseShippingAsBilling,
+		setUseShippingAsBilling,
 		needsShipping,
 		showShippingFields,
 		showShippingMethods,

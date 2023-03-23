@@ -15,8 +15,8 @@ import Block from './block';
 import attributes from './attributes';
 import { useCheckoutBlockContext } from '../../context';
 import {
-	getBillingAddresssBlockTitle,
-	getBillingAddresssBlockDescription,
+	getBillingAddressBlockTitle,
+	getBillingAddressBlockDescription,
 } from './utils';
 
 const FrontendBlock = ( {
@@ -48,8 +48,8 @@ const FrontendBlock = ( {
 	if ( ! showBillingFields && ! useBillingAsShipping ) {
 		return null;
 	}
-	title = getBillingAddresssBlockTitle( title, forcedBillingAddress );
-	description = getBillingAddresssBlockDescription(
+	title = getBillingAddressBlockTitle( title, forcedBillingAddress );
+	description = getBillingAddressBlockDescription(
 		description,
 		forcedBillingAddress
 	);
