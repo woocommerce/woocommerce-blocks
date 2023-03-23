@@ -3,6 +3,7 @@
  */
 import { registerBlockType } from '@wordpress/blocks';
 import type { BlockConfiguration } from '@wordpress/blocks';
+import { __ } from '@wordpress/i18n';
 
 /**
  * Internal dependencies
@@ -36,8 +37,15 @@ const blockConfig: BlockConfiguration = {
 	edit,
 	save,
 	styles: [
-		{ name: 'fill', label: 'Fill', isDefault: true },
-		{ name: 'outline', label: 'Outline' },
+		{
+			name: 'fill',
+			label: __( 'Fill', 'woo-gutenberg-products-block' ),
+			isDefault: true,
+		},
+		{
+			name: 'outline',
+			label: __( 'Outline', 'woo-gutenberg-products-block' ),
+		},
 	],
 };
 
