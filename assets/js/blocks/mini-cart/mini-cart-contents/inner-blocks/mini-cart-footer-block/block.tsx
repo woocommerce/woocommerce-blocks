@@ -13,7 +13,7 @@ import { getIconsFromPaymentMethods } from '@woocommerce/base-utils';
 import { getSetting } from '@woocommerce/settings';
 import { PaymentEventsProvider } from '@woocommerce/base-context';
 import classNames from 'classnames';
-import { isString } from '@woocommerce/types';
+import { isObject } from '@woocommerce/types';
 
 /**
  * Internal dependencies
