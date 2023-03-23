@@ -2,8 +2,7 @@
  * External dependencies
  */
 import { __ } from '@wordpress/i18n';
-import { useState, useEffect } from '@wordpress/element';
-import { ValidationInputError } from '@woocommerce/blocks-checkout';
+import { useState } from '@wordpress/element';
 import Button from '@woocommerce/base-components/button';
 import { AddressForm } from '@woocommerce/base-components/cart-checkout';
 import { useCheckoutAddress, useStoreEvents } from '@woocommerce/base-context';
@@ -14,12 +13,11 @@ import type {
 	AddressField,
 	AddressFields,
 } from '@woocommerce/settings';
-import { dispatch, useDispatch } from '@wordpress/data';
+import { dispatch } from '@wordpress/data';
 import {
 	getInvalidAddressKeys,
 	showValidationErrorsForAddressKeys,
 	CART_STORE_KEY,
-	VALIDATION_STORE_KEY,
 	processErrorResponse,
 } from '@woocommerce/block-data';
 
@@ -48,9 +46,6 @@ const CustomerAddress = ( {
 		setEditingShippingAddress,
 	} = useCheckoutAddress();
 	const { dispatchCheckoutEvent } = useStoreEvents();
-	const { setValidationErrors, clearValidationError } =
-		useDispatch( VALIDATION_STORE_KEY );
-
 	const [ addressState, setAddressState ] =
 		useState< ShippingAddress >( shippingAddress );
 	const [ isSaving, setIsSaving ] = useState( false );
@@ -108,33 +103,6 @@ const CustomerAddress = ( {
 		( addressState.first_name || addressState.last_name )
 	);
 
-	const errorId = 'shipping_address';
-
-	useEffect( () => {
-		if ( ! isEditingShippingAddress ) {
-			clearValidationError( errorId );
-		} else {
-			setValidationErrors( {
-				[ errorId ]: {
-					message: __(
-						'Please complete the shipping address form before continuing.',
-						'woo-gutenberg-products-block'
-					),
-					hidden: true,
-				},
-			} );
-		}
-	}, [
-		isEditingShippingAddress,
-		clearValidationError,
-		setValidationErrors,
-	] );
-
-	useEffect(
-		() => () => void clearValidationError( errorId ),
-		[ clearValidationError ]
-	);
-
 	return (
 		<>
 			{ isEditingShippingAddress || ! hasAddress ? (
@@ -167,9 +135,11 @@ const CustomerAddress = ( {
 						/>
 					) }
 					<Button onClick={ onSaveAddress } showSpinner={ isSaving }>
-						{ __( 'Save address', 'woo-gutenberg-products-block' ) }
+						{ __(
+							'Save address and continue',
+							'woo-gutenberg-products-block'
+						) }
 					</Button>
-					<ValidationInputError propertyName={ errorId } />
 				</>
 			) : (
 				<AddressCard
