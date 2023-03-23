@@ -28,6 +28,10 @@ const Block = ( {
 		return null;
 	}
 
+	const variant = className.includes( 'is-style-fill' )
+		? 'contained'
+		: 'outlined';
+
 	return (
 		<Button
 			className={ classNames(
@@ -37,7 +41,7 @@ const Block = ( {
 			) }
 			style={ { ...colorProps.style } }
 			href={ CART_URL }
-			variant="outlined"
+			variant={ variant }
 		>
 			{ cartButtonLabel || defaultCartButtonLabel }
 		</Button>

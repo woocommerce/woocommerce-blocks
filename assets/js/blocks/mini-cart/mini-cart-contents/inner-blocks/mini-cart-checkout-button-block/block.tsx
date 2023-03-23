@@ -28,6 +28,10 @@ const Block = ( {
 		return null;
 	}
 
+	const variant = className.includes( 'is-style-outline' )
+		? 'outlined'
+		: 'contained';
+
 	return (
 		<Button
 			className={ classNames(
@@ -35,6 +39,7 @@ const Block = ( {
 				colorProps.className,
 				'wc-block-mini-cart__footer-checkout'
 			) }
+			variant={ variant }
 			style={ { ...colorProps.style } }
 			href={ CHECKOUT_URL }
 		>

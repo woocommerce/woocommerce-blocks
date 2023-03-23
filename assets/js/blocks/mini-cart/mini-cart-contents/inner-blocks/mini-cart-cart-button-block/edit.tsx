@@ -21,11 +21,15 @@ export const Edit = ( {
 	const blockProps = useBlockProps();
 	const { cartButtonLabel } = attributes;
 
+	const variant = blockProps.className.includes( 'is-style-fill' )
+		? 'contained'
+		: 'outlined';
+
 	return (
 		<EditableButton
 			{ ...blockProps }
 			className="wc-block-mini-cart__footer-cart"
-			variant="outlined"
+			variant={ variant }
 			value={ cartButtonLabel }
 			placeholder={ defaultCartButtonLabel }
 			onChange={ ( content ) => {

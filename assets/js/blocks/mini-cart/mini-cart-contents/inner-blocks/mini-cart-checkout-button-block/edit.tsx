@@ -3,6 +3,7 @@
  */
 import { useBlockProps } from '@wordpress/block-editor';
 import EditableButton from '@woocommerce/editor-components/editable-button';
+import classNames from 'classnames';
 
 /**
  * Internal dependencies
@@ -21,10 +22,18 @@ export const Edit = ( {
 	const blockProps = useBlockProps();
 	const { checkoutButtonLabel } = attributes;
 
+	const variant = blockProps.className.includes( 'is-style-outline' )
+		? 'outlined'
+		: 'contained';
+
 	return (
 		<EditableButton
 			{ ...blockProps }
-			className="wc-block-mini-cart__footer-checkout"
+			className={ classNames(
+				'wc-block-mini-cart__footer-checkout',
+				blockProps.className
+			) }
+			variant={ variant }
 			value={ checkoutButtonLabel }
 			placeholder={ defaultCheckoutButtonLabel }
 			onChange={ ( content ) => {
