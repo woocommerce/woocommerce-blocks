@@ -12,9 +12,9 @@ import { useColorProps } from '@woocommerce/base-hooks';
 import { defaultCartButtonLabel } from './constants';
 
 type MiniCartCartButtonBlockProps = {
-	cartButtonLabel: string;
-	className: string;
-	style: string;
+	cartButtonLabel?: string;
+	className?: string;
+	style?: string;
 };
 
 const Block = ( {
