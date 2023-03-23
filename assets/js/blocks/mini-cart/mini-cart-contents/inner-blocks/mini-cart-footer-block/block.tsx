@@ -21,12 +21,6 @@ import { isObject } from '@woocommerce/types';
 import CartButton from '../mini-cart-cart-button-block/block';
 import CheckoutButton from '../mini-cart-checkout-button-block/block';
 
-/**
- * Internal dependencies
- */
-import CartButton from '../mini-cart-cart-button-block/block';
-import CheckoutButton from '../mini-cart-checkout-button-block/block';
-
 const PaymentMethodIconsElement = (): JSX.Element => {
 	const { paymentMethods } = usePaymentMethods();
 	return (
