@@ -3,6 +3,7 @@
  */
 import { __ } from '@wordpress/i18n';
 import { useState } from '@wordpress/element';
+import { useEffectOnce } from 'usehooks-ts';
 import Button from '@woocommerce/base-components/button';
 import { AddressForm } from '@woocommerce/base-components/cart-checkout';
 import { useCheckoutAddress, useStoreEvents } from '@woocommerce/base-context';
@@ -98,14 +99,20 @@ const CustomerAddress = ( {
 			} );
 	};
 
-	const hasAddress = !! (
-		addressState.address_1 &&
-		( addressState.first_name || addressState.last_name )
-	);
+	useEffectOnce( () => {
+		const hasAddress = !! (
+			addressState.address_1 &&
+			( addressState.first_name || addressState.last_name )
+		);
+
+		if ( ! hasAddress ) {
+			setEditingShippingAddress( true );
+		}
+	} );
 
 	return (
 		<>
-			{ isEditingShippingAddress || ! hasAddress ? (
+			{ isEditingShippingAddress ? (
 				<>
 					<AddressForm
 						id="shipping"
