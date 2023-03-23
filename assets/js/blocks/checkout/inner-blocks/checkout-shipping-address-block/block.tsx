@@ -44,6 +44,7 @@ const Block = ( {
 		useShippingAsBilling,
 		setUseShippingAsBilling,
 		isEditingShippingAddress,
+		setEditingBillingAddress,
 	} = useCheckoutAddress();
 	const { isEditor } = useEditorContext();
 
@@ -108,6 +109,8 @@ const Block = ( {
 						setUseShippingAsBilling( checked );
 						if ( checked ) {
 							syncBillingWithShipping();
+						} else {
+							setEditingBillingAddress( true );
 						}
 					} }
 				/>
