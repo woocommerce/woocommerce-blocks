@@ -49,11 +49,10 @@ tests_add_filter( 'muplugins_loaded', __NAMESPACE__ . '\\manually_load_plugins' 
  * Manually install plugins being tested.
  */
 function manually_install_plugins() {
-	\WC_Install::install();
 	\Automattic\WooCommerce\Blocks\Package::container()->get( \Automattic\WooCommerce\Blocks\Installer::class )->maybe_create_tables();
 }
 
-tests_add_filter( 'init', __NAMESPACE__ . '\\manually_install_plugins' );
+tests_add_filter( 'setup_theme', __NAMESPACE__ . '\\manually_install_plugins' );
 
 // Start up the WP testing environment.
 require $_tests_dir . '/includes/bootstrap.php';
