@@ -51,6 +51,7 @@
 		.wc-block-components-panel > h2 {
 			@include font-size(regular);
 			@include reset-box();
+			@include reset-color();
 			@include reset-typography();
 			.wc-block-components-panel__button {
 				font-weight: 400;
