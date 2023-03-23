@@ -8,6 +8,7 @@ import EditableButton from '@woocommerce/editor-components/editable-button';
  * Internal dependencies
  */
 import { defaultStartShoppingButtonLabel } from './constants';
+import { getVariant } from '../utils';
 
 export const Edit = ( {
 	attributes,
@@ -21,10 +22,6 @@ export const Edit = ( {
 	const blockProps = useBlockProps();
 	const { startShoppingButtonLabel } = attributes;
 
-	const variant = blockProps.className.includes( 'is-style-outline' )
-		? 'outlined'
-		: 'contained';
-
 	return (
 		<div className="wp-block-button aligncenter">
 			<EditableButton
@@ -37,7 +34,7 @@ export const Edit = ( {
 						startShoppingButtonLabel: content,
 					} );
 				} }
-				variant={ variant }
+				variant={ getVariant( blockProps.className, 'contained' ) }
 			/>
 		</div>
 	);

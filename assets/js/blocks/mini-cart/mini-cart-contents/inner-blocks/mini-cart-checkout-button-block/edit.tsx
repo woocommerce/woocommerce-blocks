@@ -9,6 +9,7 @@ import classNames from 'classnames';
  * Internal dependencies
  */
 import { defaultCheckoutButtonLabel } from './constants';
+import { getVariant } from '../utils';
 
 export const Edit = ( {
 	attributes,
@@ -22,10 +23,6 @@ export const Edit = ( {
 	const blockProps = useBlockProps();
 	const { checkoutButtonLabel } = attributes;
 
-	const variant = blockProps.className.includes( 'is-style-outline' )
-		? 'outlined'
-		: 'contained';
-
 	return (
 		<EditableButton
 			{ ...blockProps }
@@ -33,7 +30,7 @@ export const Edit = ( {
 				'wc-block-mini-cart__footer-checkout',
 				blockProps.className
 			) }
-			variant={ variant }
+			variant={ getVariant( blockProps.className, 'contained' ) }
 			value={ checkoutButtonLabel }
 			placeholder={ defaultCheckoutButtonLabel }
 			onChange={ ( content ) => {
