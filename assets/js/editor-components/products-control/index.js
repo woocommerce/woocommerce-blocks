@@ -73,7 +73,9 @@ const ProductsControl = ( {
 					: '';
 				return {
 					...product,
-					name: `${ decodeEntities( product.name ) }${ formattedSku }`,
+					name: `${ decodeEntities(
+						product.name
+					) }${ formattedSku }`,
 				};
 			} ) }
 			isCompact={ isCompact }
