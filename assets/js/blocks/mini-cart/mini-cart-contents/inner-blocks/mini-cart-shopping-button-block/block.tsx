@@ -23,6 +23,10 @@ const Block = ( {
 		return null;
 	}
 
+	const variant = className.includes( 'is-style-outline' )
+		? 'outlined'
+		: 'contained';
+
 	return (
 		<div className="wp-block-button has-text-align-center">
 			<Button
@@ -30,6 +34,7 @@ const Block = ( {
 					className,
 					'wc-block-mini-cart__shopping-button'
 				) }
+				variant={ variant }
 				href={ SHOP_URL }
 			>
 				{ startShoppingButtonLabel || defaultStartShoppingButtonLabel }

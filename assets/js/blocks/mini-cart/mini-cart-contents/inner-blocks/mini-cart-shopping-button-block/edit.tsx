@@ -21,6 +21,10 @@ export const Edit = ( {
 	const blockProps = useBlockProps();
 	const { startShoppingButtonLabel } = attributes;
 
+	const variant = blockProps.className.includes( 'is-style-outline' )
+		? 'outlined'
+		: 'contained';
+
 	return (
 		<div className="wp-block-button aligncenter">
 			<EditableButton
@@ -33,6 +37,7 @@ export const Edit = ( {
 						startShoppingButtonLabel: content,
 					} );
 				} }
+				variant={ variant }
 			/>
 		</div>
 	);
