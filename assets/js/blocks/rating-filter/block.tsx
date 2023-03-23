@@ -26,7 +26,7 @@ import FilterSubmitButton from '@woocommerce/base-components/filter-submit-butto
 import FilterResetButton from '@woocommerce/base-components/filter-reset-button';
 import FormTokenField from '@woocommerce/base-components/form-token-field';
 import { addQueryArgs, removeQueryArgs } from '@wordpress/url';
-import { changeUrl } from '@woocommerce/utils';
+import { changeUrl, supportsClientSideNavigation } from '@woocommerce/utils';
 import classnames from 'classnames';
 import { difference } from 'lodash';
 import type { ReactElement } from 'react';
@@ -173,7 +173,10 @@ const RatingFilterBlock = ( {
 			if ( isEditor ) {
 				return;
 			}
-			if ( checkedOptions && ! filteringForPhpTemplate ) {
+			if (
+				checkedOptions &&
+				( supportsClientSideNavigation || ! filteringForPhpTemplate )
+			) {
 				setProductRatingsQuery( checkedOptions );
 			}
 

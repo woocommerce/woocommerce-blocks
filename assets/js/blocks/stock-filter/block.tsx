@@ -32,7 +32,11 @@ import isShallowEqual from '@wordpress/is-shallow-equal';
 import { decodeEntities } from '@wordpress/html-entities';
 import { isBoolean, objectHasProp } from '@woocommerce/types';
 import { addQueryArgs, removeQueryArgs } from '@wordpress/url';
-import { changeUrl, PREFIX_QUERY_ARG_FILTER_TYPE } from '@woocommerce/utils';
+import {
+	changeUrl,
+	PREFIX_QUERY_ARG_FILTER_TYPE,
+	supportsClientSideNavigation,
+} from '@woocommerce/utils';
 import { difference } from 'lodash';
 import classnames from 'classnames';
 
@@ -249,7 +253,10 @@ const StockStatusFilterBlock = ( {
 			if ( isEditor ) {
 				return;
 			}
-			if ( checkedOptions && ! filteringForPhpTemplate ) {
+			if (
+				checkedOptions &&
+				( supportsClientSideNavigation || ! filteringForPhpTemplate )
+			) {
 				setProductStockStatusQuery( checkedOptions );
 			}
 

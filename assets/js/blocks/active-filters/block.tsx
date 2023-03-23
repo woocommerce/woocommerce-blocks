@@ -15,7 +15,10 @@ import {
 	isStockStatusQueryCollection,
 	isStockStatusOptions,
 } from '@woocommerce/types';
-import { getUrlParameter } from '@woocommerce/utils';
+import {
+	getUrlParameter,
+	supportsClientSideNavigation,
+} from '@woocommerce/utils';
 import FilterTitlePlaceholder from '@woocommerce/base-components/filter-placeholder';
 import { useIsMounted } from '@woocommerce/base-hooks';
 
@@ -111,7 +114,10 @@ const ActiveFiltersBlock = ( {
 								removeArgsFromFilterUrl( {
 									filter_stock_status: slug,
 								} );
-								if ( ! filteringForPhpTemplate ) {
+								if (
+									supportsClientSideNavigation ||
+									! filteringForPhpTemplate
+								) {
 									const newStatuses =
 										productStockStatus.filter(
 											( status ) => {
@@ -149,7 +155,10 @@ const ActiveFiltersBlock = ( {
 			name: formatPriceRange( minPrice, maxPrice ),
 			removeCallback: () => {
 				removeArgsFromFilterUrl( 'max_price', 'min_price' );
-				if ( ! filteringForPhpTemplate ) {
+				if (
+					supportsClientSideNavigation ||
+					! filteringForPhpTemplate
+				) {
 					setMinPrice( undefined );
 					setMaxPrice( undefined );
 				}
@@ -215,7 +224,7 @@ const ActiveFiltersBlock = ( {
 	 * This code should be moved to Rating Filter block once it's implemented.
 	 */
 	useEffect( () => {
-		if ( ! filteringForPhpTemplate ) {
+		if ( supportsClientSideNavigation || ! filteringForPhpTemplate ) {
 			return;
 		}
 
@@ -264,7 +273,10 @@ const ActiveFiltersBlock = ( {
 								removeArgsFromFilterUrl( {
 									rating_filter: slug,
 								} );
-								if ( ! filteringForPhpTemplate ) {
+								if (
+									supportsClientSideNavigation ||
+									! filteringForPhpTemplate
+								) {
 									const newRatings = productRatings.filter(
 										( rating ) => {
 											return rating !== slug;
@@ -387,7 +399,10 @@ const ActiveFiltersBlock = ( {
 						className="wc-block-active-filters__clear-all"
 						onClick={ () => {
 							cleanFilterUrl();
-							if ( ! filteringForPhpTemplate ) {
+							if (
+								supportsClientSideNavigation ||
+								! filteringForPhpTemplate
+							) {
 								setMinPrice( undefined );
 								setMaxPrice( undefined );
 								setProductAttributes( [] );

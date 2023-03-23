@@ -13,7 +13,7 @@ const filteringForPhpTemplate = getSettingWithCoercion(
 	isBoolean
 );
 
-const supportsClientSideNavigation =
+export const supportsClientSideNavigation =
 	filteringForPhpTemplate && canDoClientSideNavigation( document );
 
 /**

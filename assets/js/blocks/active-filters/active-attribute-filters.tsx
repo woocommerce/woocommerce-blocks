@@ -15,6 +15,7 @@ import {
 	isAttributeTermCollection,
 	isBoolean,
 } from '@woocommerce/types';
+import { supportsClientSideNavigation } from '@woocommerce/utils';
 
 /**
  * Internal dependencies
@@ -128,7 +129,10 @@ const ActiveAttributeFilters = ( {
 								} );
 							}
 
-							if ( ! filteringForPhpTemplate ) {
+							if (
+								supportsClientSideNavigation ||
+								! filteringForPhpTemplate
+							) {
 								removeAttributeFilterBySlug(
 									productAttributes,
 									setProductAttributes,

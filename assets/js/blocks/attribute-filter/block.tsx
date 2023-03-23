@@ -33,6 +33,7 @@ import {
 	changeUrl,
 	PREFIX_QUERY_ARG_FILTER_TYPE,
 	PREFIX_QUERY_ARG_QUERY_TYPE,
+	supportsClientSideNavigation,
 } from '@woocommerce/utils';
 import { difference } from 'lodash';
 import FormTokenField from '@woocommerce/base-components/form-token-field';
@@ -463,7 +464,7 @@ const AttributeFilterBlock = ( {
 			return;
 		}
 
-		if ( ! filteringForPhpTemplate ) {
+		if ( supportsClientSideNavigation || ! filteringForPhpTemplate ) {
 			setHasSetFilterDefaultsFromUrl( true );
 		}
 	}, [
