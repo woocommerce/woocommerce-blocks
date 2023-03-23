@@ -3,7 +3,9 @@
  */
 import { useBlockProps } from '@wordpress/block-editor';
 import { __ } from '@wordpress/i18n';
-import { Button, Disabled, Notice } from '@wordpress/components';
+import { Button, Disabled } from '@wordpress/components';
+import { Skeleton } from '@woocommerce/base-components/skeleton';
+
 /**
  * Internal dependencies
  */
@@ -19,19 +21,8 @@ const Edit = () => {
 
 	return (
 		<div { ...blockProps }>
+			<Skeleton numberOfLines={ 3 } />
 			<Disabled>
-				<Notice
-					className={ 'wc-block-add-to-cart-form__notice' }
-					status={ 'warning' }
-					isDismissible={ false }
-				>
-					<p>
-						{ __(
-							'Customers will see product add-to-cart options displayed here, dependent on the product type.',
-							'woo-gutenberg-products-block'
-						) }
-					</p>
-				</Notice>
 				<input
 					type={ 'number' }
 					value={ '1' }

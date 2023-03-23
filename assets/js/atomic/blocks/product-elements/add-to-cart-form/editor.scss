@@ -1,6 +1,7 @@
 .wc-block-add-to-cart-form {
 	display: flex;
-	flex-direction: row;
+	flex-direction: column;
+	row-gap: $default-block-margin;
 }
 
 .wc-block-add-to-cart-form__notice.components-notice {
