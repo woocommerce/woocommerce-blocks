@@ -1,7 +1,7 @@
 .wc-block-components-form .wc-block-components-text-input,
 .wc-block-components-text-input {
 	position: relative;
-	margin-top: em($gap-large);
+	margin-top: $gap;
 	white-space: nowrap;
 
 	label {

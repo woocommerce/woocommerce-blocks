@@ -15,8 +15,8 @@
 	.wc-block-checkout__shipping-fields,
 	.wc-block-checkout__billing-fields {
 		.wc-block-components-address-form {
-			margin-left: #{-$gap-small * 0.5};
-			margin-right: #{-$gap-small * 0.5};
+			margin-left: #{-$gap * 0.5};
+			margin-right: #{-$gap * 0.5};
 
 			&::after {
 				content: "";
@@ -28,10 +28,10 @@
 			.wc-block-components-country-input,
 			.wc-block-components-state-input {
 				float: left;
-				margin-left: #{$gap-small * 0.5};
-				margin-right: #{$gap-small * 0.5};
+				margin-left: #{$gap * 0.5};
+				margin-right: #{$gap * 0.5};
 				position: relative;
-				width: calc(50% - #{$gap-small});
+				width: calc(50% - #{$gap});
 
 				&:nth-of-type(2),
 				&:first-of-type {
@@ -42,7 +42,7 @@
 			.wc-block-components-address-form__company,
 			.wc-block-components-address-form__address_1,
 			.wc-block-components-address-form__address_2 {
-				width: calc(100% - #{$gap-small});
+				width: calc(100% - #{$gap});
 			}
 
 			.wc-block-components-checkbox {
