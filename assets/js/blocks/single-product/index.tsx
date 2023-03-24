@@ -11,6 +11,7 @@ import metadata from './block.json';
 import edit from './edit';
 import save from './save';
 
+// @ts-expect-error: `registerBlockType` is a function that is typed in WordPress core.
 registerBlockType( metadata, {
 	icon: BLOCK_ICON,
 	edit,
