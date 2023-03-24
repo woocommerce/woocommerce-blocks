@@ -10,6 +10,7 @@ import EditProductLink from '@woocommerce/editor-components/edit-product-link';
 import { singleProductBlockPreview } from '@woocommerce/resource-previews';
 import { InspectorControls, useBlockProps } from '@wordpress/block-editor';
 import { ProductResponseItem } from '@woocommerce/types';
+import { ErrorObject } from '@woocommerce/editor-components/error-placeholder';
 
 /**
  * Internal dependencies
@@ -21,6 +22,7 @@ import EditorBlockControls from './editor-block-controls';
 import LayoutEditor from './layout-editor';
 import { BLOCK_ICON } from '../constants';
 import metadata from '../block.json';
+import { Attributes } from '../types';
 
 interface EditorProps {
 	className: string;
@@ -28,11 +30,8 @@ interface EditorProps {
 		productId: number;
 		isPreview: boolean;
 	};
-	setAttributes: ( attributes: {
-		productId: number;
-		isPreview: boolean;
-	} ) => void;
-	error: string;
+	setAttributes: ( attributes: Attributes ) => void;
+	error: string | ErrorObject;
 	getProduct: () => void;
 	product: ProductResponseItem;
 	isLoading: boolean;
@@ -73,7 +72,7 @@ const Editor = ( {
 	if ( error ) {
 		return (
 			<ApiError
-				error={ error }
+				error={ error as ErrorObject }
 				isLoading={ isLoading }
 				getProduct={ getProduct }
 			/>
@@ -82,6 +81,8 @@ const Editor = ( {
 
 	return (
 		<div className={ className }>
+			{ /* eslint-disable-next-line @typescript-eslint/ban-ts-comment */ }
+			{ /* @ts-ignore */ }
 			<BlockErrorBoundary
 				header={ __(
 					'Single Product Block Error',
