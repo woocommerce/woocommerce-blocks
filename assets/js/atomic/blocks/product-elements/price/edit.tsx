@@ -28,6 +28,8 @@ interface BlockAttributes {
 interface Attributes {
 	textAlign: 'left' | 'center' | 'right';
 	isDescendentOfSingleProduct: boolean;
+	isDescendentOfSingleProductBlock: boolean;
+	productId: number;
 }
 
 interface Context {
