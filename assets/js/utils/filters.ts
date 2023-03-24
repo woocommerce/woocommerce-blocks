@@ -1,7 +1,7 @@
 /**
  * External dependencies
  */
-import { getQueryArg } from '@wordpress/url';
+import { getQueryArg, getQueryArgs, addQueryArgs } from '@wordpress/url';
 import { getSettingWithCoercion } from '@woocommerce/settings';
 import { isBoolean } from '@woocommerce/types';
 
@@ -51,3 +51,13 @@ export function changeUrl( newUrl: string ) {
 		window.history.replaceState( {}, '', newUrl );
 	}
 }
+
+/**
+ * Run the query params through buildQueryString to normalise the params.
+ *
+ * @param {string} url URL to encode the search param from.
+ */
+export const normalizeQueryParams = ( url: string ) => {
+	const queryArgs = getQueryArgs( url );
+	return addQueryArgs( url, queryArgs );
+};
