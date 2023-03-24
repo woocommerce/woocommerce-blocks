@@ -95,7 +95,7 @@ const Editor = ( {
 				{ isEditing ? (
 					<Placeholder
 						icon={ BLOCK_ICON }
-						label={ metadata.name }
+						label={ metadata.title }
 						className="wc-block-editor-single-product"
 					>
 						{ metadata.description }
