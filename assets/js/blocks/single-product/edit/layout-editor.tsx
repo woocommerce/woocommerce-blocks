@@ -68,7 +68,7 @@ const LayoutEditor = ( {
 							) }
 							onClick={ resetInnerBlocks }
 							isTertiary
-							className=".wc-block-editor-single-product__reset-layout"
+							className="wc-block-editor-single-product__reset-layout"
 							icon={ backup }
 						>
 							{ __(

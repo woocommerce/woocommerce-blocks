@@ -96,10 +96,10 @@ const Editor = ( {
 					<Placeholder
 						icon={ BLOCK_ICON }
 						label={ metadata.name }
-						className=".wc-block-editor-single-product"
+						className="wc-block-editor-single-product"
 					>
 						{ metadata.description }
-						<div className=".wc-block-editor-single-product__selection">
+						<div className="wc-block-editor-single-product__selection">
 							<SharedProductControl
 								attributes={ attributes }
 								setAttributes={ setAttributes }
