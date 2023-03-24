@@ -13,9 +13,7 @@ import { getIconsFromPaymentMethods } from '@woocommerce/base-utils';
 import { getSetting } from '@woocommerce/settings';
 import { PaymentEventsProvider } from '@woocommerce/base-context';
 import classNames from 'classnames';
-import { useSelect, select } from '@wordpress/data';
 import { isObject } from '@woocommerce/types';
-import { CHECKOUT_STORE_KEY } from '@woocommerce/block-data';
 
 /**
  * Internal dependencies
@@ -39,11 +37,6 @@ interface Props {
 	checkoutButtonLabel: string;
 }
 
-const isCartItemUpdating = () => {
-	const store = select( 'wc/store/cart' );
-	return store.getItemsPendingQuantityUpdate()?.length !== 0;
-};
-
 const hasChildren = ( children ): boolean => {
 	return children.some( ( child ) => {
 		if ( Array.isArray( child ) ) {
@@ -64,10 +57,6 @@ const Block = ( {
 		? parseInt( cartTotals.total_items, 10 ) +
 		  parseInt( cartTotals.total_items_tax, 10 )
 		: parseInt( cartTotals.total_items, 10 );
-
-	const isCalculating = useSelect( ( select ) =>
-		select( CHECKOUT_STORE_KEY ).isCalculating()
-	);
 
 	const hasButtons = hasChildren( children );
 
@@ -90,15 +79,9 @@ const Block = ( {
 					children
 				) : (
 					<>
-						<CartButton
-							cartButtonLabel={ cartButtonLabel }
-							disabled={ isCalculating }
-							showSpinner={ isCalculating }
-						/>
+						<CartButton cartButtonLabel={ cartButtonLabel } />
 						<CheckoutButton
 							checkoutButtonLabel={ checkoutButtonLabel }
-							disabled={ isCalculating }
-							showSpinner={ isCalculating }
 						/>
 					</>
 				) }

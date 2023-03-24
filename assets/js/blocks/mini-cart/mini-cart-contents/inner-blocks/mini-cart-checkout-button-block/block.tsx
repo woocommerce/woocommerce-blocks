@@ -5,6 +5,8 @@ import { CHECKOUT_URL } from '@woocommerce/block-settings';
 import Button from '@woocommerce/base-components/button';
 import classNames from 'classnames';
 import { useColorProps } from '@woocommerce/base-hooks';
+import { useSelect } from '@wordpress/data';
+import { CHECKOUT_STORE_KEY } from '@woocommerce/block-data';
 
 /**
  * Internal dependencies
@@ -19,11 +21,15 @@ type MiniCartCheckoutButtonBlockProps = {
 };
 
 const Block = ( {
-	className,
 	checkoutButtonLabel,
+	className,
 	style,
 }: MiniCartCheckoutButtonBlockProps ): JSX.Element | null => {
 	const colorProps = useColorProps( { style } );
+
+	const isCalculating = useSelect( ( select ) =>
+		select( CHECKOUT_STORE_KEY ).isCalculating()
+	);
 
 	if ( ! CHECKOUT_URL ) {
 		return null;
@@ -39,6 +45,8 @@ const Block = ( {
 			variant={ getVariant( className, 'contained' ) }
 			style={ { ...colorProps.style } }
 			href={ CHECKOUT_URL }
+			showSpinner={ isCalculating }
+			disabled={ isCalculating }
 		>
 			{ checkoutButtonLabel || defaultCheckoutButtonLabel }
 		</Button>
