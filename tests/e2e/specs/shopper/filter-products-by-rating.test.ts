@@ -11,7 +11,7 @@ import {
 } from '@wordpress/e2e-test-utils';
 import {
 	selectBlockByName,
-	insertBlockUsingSlash,
+	insertBlockUsingQuickInserter,
 	saveOrPublish,
 	getToggleIdByLabel,
 	switchBlockInspectorTabWhenGutenbergIsInstalled,
@@ -70,7 +70,7 @@ describe( `${ block.name } Block`, () => {
 			} );
 
 			await insertBlock( block.name );
-			await insertBlockUsingSlash( 'All Products' );
+			await insertBlockUsingQuickInserter( 'All Products' );
 			await publishPost();
 
 			link = await page.evaluate( () =>

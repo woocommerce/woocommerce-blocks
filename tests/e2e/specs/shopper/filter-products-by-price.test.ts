@@ -11,7 +11,7 @@ import {
 } from '@wordpress/e2e-test-utils';
 import {
 	selectBlockByName,
-	insertBlockUsingSlash,
+	insertBlockUsingQuickInserter,
 	switchBlockInspectorTabWhenGutenbergIsInstalled,
 } from '@woocommerce/blocks-test-utils';
 
@@ -75,7 +75,7 @@ describe( `${ block.name } Block`, () => {
 			} );
 
 			await insertBlock( block.name );
-			await insertBlockUsingSlash( 'All Products' );
+			await insertBlockUsingQuickInserter( 'All Products' );
 			await insertBlock( 'Active Filters' );
 			await publishPost();
 
