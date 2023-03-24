@@ -5,11 +5,6 @@ import { __ } from '@wordpress/i18n';
 import { useCallback } from '@wordpress/element';
 import { useDispatch } from '@wordpress/data';
 import {
-	InnerBlocks,
-	InspectorControls,
-	BlockContextProvider,
-} from '@wordpress/block-editor';
-import {
 	InnerBlockLayoutContextProvider,
 	ProductDataContextProvider,
 } from '@woocommerce/shared-context';
@@ -17,6 +12,13 @@ import { createBlocksFromTemplate } from '@woocommerce/atomic-utils';
 import { PanelBody, Button } from '@wordpress/components';
 import { backup } from '@wordpress/icons';
 import { ProductResponseItem } from '@woocommerce/types';
+import {
+	InnerBlocks,
+	InspectorControls,
+	// eslint-disable-next-line @typescript-eslint/ban-ts-comment
+	// @ts-ignore
+	BlockContextProvider,
+} from '@wordpress/block-editor';
 
 /**
  * Internal dependencies
@@ -86,7 +88,6 @@ const LayoutEditor = ( {
 							template={ DEFAULT_INNER_BLOCKS }
 							allowedBlocks={ ALLOWED_INNER_BLOCKS }
 							templateLock={ false }
-							renderAppender={ false }
 						/>
 					</BlockContextProvider>
 				</div>
