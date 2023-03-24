@@ -2,6 +2,7 @@
 namespace Automattic\WooCommerce\Blocks\BlockTypes;
 
 use Automattic\WooCommerce\Blocks\Package;
+use Automattic\WooCommerce\StoreApi\Utilities\LocalPickupUtils;
 
 /**
  * Checkout class.
@@ -277,7 +278,7 @@ class Checkout extends AbstractBlock {
 			$formatted_shipping_methods = array_reduce(
 				$shipping_methods,
 				function( $acc, $method ) {
-					if ( 'pickup_location' === $method->id ) {
+					if ( in_array( $method->id, LocalPickupUtils::get_local_pickup_method_ids(), true ) ) {
 						return $acc;
 					}
 					if ( $method->supports( 'settings' ) ) {
@@ -317,17 +318,17 @@ class Checkout extends AbstractBlock {
 		}
 
 		if ( $is_block_editor && ! $this->asset_data_registry->exists( 'globalPaymentMethods' ) ) {
-			$payment_gateways          = $this->get_enabled_payment_gateways();
+			// These are used to show options in the sidebar. We want to get the full list of enabled payment methods,
+			// not just the ones that are available for the current cart (which may not exist yet).
+			$payment_methods           = $this->get_enabled_payment_gateways();
 			$formatted_payment_methods = array_reduce(
-				$payment_gateways,
+				$payment_methods,
 				function( $acc, $method ) {
-					if ( 'yes' === $method->enabled ) {
-						$acc[] = [
-							'id'          => $method->id,
-							'title'       => $method->method_title,
-							'description' => $method->method_description,
-						];
-					}
+					$acc[] = [
+						'id'          => $method->id,
+						'title'       => $method->method_title,
+						'description' => $method->method_description,
+					];
 					return $acc;
 				},
 				[]

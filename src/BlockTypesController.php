@@ -8,6 +8,7 @@ use Automattic\WooCommerce\Blocks\Assets\Api as AssetApi;
 use Automattic\WooCommerce\Blocks\Integrations\IntegrationRegistry;
 use Automattic\WooCommerce\Blocks\BlockTypes\Cart;
 use Automattic\WooCommerce\Blocks\BlockTypes\Checkout;
+use Automattic\WooCommerce\Blocks\BlockTypes\MiniCartContents;
 
 /**
  * BlockTypesController class.
@@ -182,7 +183,6 @@ final class BlockTypesController {
 			'FilterWrapper',
 			'HandpickedProducts',
 			'MiniCart',
-			'MiniCartContents',
 			'StoreNotices',
 			'PriceFilter',
 			'ProductAddToCart',
@@ -190,7 +190,6 @@ final class BlockTypesController {
 			'ProductButton',
 			'ProductCategories',
 			'ProductCategory',
-			'ProductCategoryList',
 			'ProductImage',
 			'ProductImageGallery',
 			'ProductNew',
@@ -205,7 +204,6 @@ final class BlockTypesController {
 			'ProductStockIndicator',
 			'ProductSummary',
 			'ProductTag',
-			'ProductTagList',
 			'ProductTitle',
 			'ProductTopRated',
 			'ProductsByAttribute',
@@ -217,11 +215,12 @@ final class BlockTypesController {
 			'StockFilter',
 		];
 
-		$block_types = array_merge( $block_types, Cart::get_cart_block_types(), Checkout::get_checkout_block_types() );
-
-		if ( Package::feature()->is_experimental_build() ) {
-			$block_types[] = 'SingleProduct';
-		}
+		$block_types = array_merge(
+			$block_types,
+			Cart::get_cart_block_types(),
+			Checkout::get_checkout_block_types(),
+			MiniCartContents::get_mini_cart_block_types()
+		);
 
 		/**
 		 * This disables specific blocks in Widget Areas by not registering them.
