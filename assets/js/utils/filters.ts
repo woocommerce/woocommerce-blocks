@@ -38,9 +38,12 @@ export function getUrlParameter( name: string ) {
  * @param {string} newUrl New URL to be set.
  */
 export function changeUrl( newUrl: string ) {
+	/**
+	 * In order not to enqueue the Interactivity runtime if it is disabled, we
+	 * cannot import `@woocommerce/interactivity` here. That's why we call
+	 * `navigate` from `window.wc.interactivity` directly.
+	 */
 	if ( supportsClientSideNavigation && window.wc?.interactivity ) {
-		// In order not to enqueue the Interactivity runtime if it is disabled,
-		// we need to call here the function from window directly.
 		window.wc.interactivity.navigate( newUrl );
 	} else if ( filteringForPhpTemplate ) {
 		window.location.href = newUrl;
