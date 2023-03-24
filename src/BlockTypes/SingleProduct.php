@@ -126,6 +126,7 @@ class SingleProduct extends AbstractBlock {
 
 			if ( $block_name === $block['blockName'] ) {
 				global $post;
+				// phpcs:ignore WordPress.WP.GlobalVariablesOverride.Prohibited
 				$post = get_post( $this->product_id );
 				setup_postdata( $post );
 				$context['postId'] = $this->product_id;
