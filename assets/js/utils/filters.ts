@@ -4,8 +4,6 @@
 import { getQueryArg } from '@wordpress/url';
 import { getSettingWithCoercion } from '@woocommerce/settings';
 import { isBoolean } from '@woocommerce/types';
-import { navigate } from '@woocommerce/interactivity';
-import { canDoClientSideNavigation } from '@woocommerce/interactivity/router';
 
 const filteringForPhpTemplate = getSettingWithCoercion(
 	'is_rendering_php_template',
@@ -14,7 +12,9 @@ const filteringForPhpTemplate = getSettingWithCoercion(
 );
 
 export const supportsClientSideNavigation =
-	filteringForPhpTemplate && canDoClientSideNavigation( document );
+	document
+		.querySelector( `meta[itemprop='woo-client-side-navigation']` )
+		?.getAttribute( 'content' ) === 'active';
 
 /**
  * Returns specified parameter from URL
@@ -38,8 +38,10 @@ export function getUrlParameter( name: string ) {
  * @param {string} newUrl New URL to be set.
  */
 export function changeUrl( newUrl: string ) {
-	if ( supportsClientSideNavigation ) {
-		navigate( newUrl );
+	if ( supportsClientSideNavigation && window.wc?.interactivity ) {
+		// In order not to enqueue the Interactivity runtime if it is disabled,
+		// we need to call here the function from window directly.
+		window.wc.interactivity.navigate( newUrl );
 	} else if ( filteringForPhpTemplate ) {
 		window.location.href = newUrl;
 	} else {
