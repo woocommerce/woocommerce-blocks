@@ -61,7 +61,7 @@ const Block = ( {
 		  parseInt( cartTotals.total_items_tax, 10 )
 		: parseInt( cartTotals.total_items, 10 );
 
-	// The buttons `Cart` and `Checkout` buttons were converted to inner blocks, but we still need to render the buttons
+	// The `Cart` and `Checkout` buttons were converted to inner blocks, but we still need to render the buttons
 	// for themes that have the old `mini-cart.html` template. So we check if there are any inner blocks (buttons) and
 	// if not, render the buttons.
 	const hasButtons = hasChildren( children );
