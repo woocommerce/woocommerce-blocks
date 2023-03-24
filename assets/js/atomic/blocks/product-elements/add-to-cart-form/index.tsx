@@ -23,6 +23,7 @@ subscribe( () => {
 	const store = select( 'core/edit-post' );
 
 	if ( block === undefined && store !== undefined ) {
+		// @ts-expect-error: `registerBlockType` is a function that is typed in WordPress core.
 		registerBlockType( metadata, {
 			edit,
 			icon: {
@@ -59,6 +60,7 @@ registerBlockSingleProductTemplate( {
 	},
 	unregisterBlockFn: () => {
 		unregisterBlockType( metadata.name );
+		// @ts-expect-error: `registerBlockType` is a function that is typed in WordPress core.
 		registerBlockType( metadata, {
 			edit,
 			icon: {
