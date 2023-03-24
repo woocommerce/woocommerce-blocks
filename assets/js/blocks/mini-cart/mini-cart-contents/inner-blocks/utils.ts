@@ -1,7 +1,7 @@
 type Variant = 'text' | 'contained' | 'outlined';
 
 export const getVariant = (
-	className: string,
+	className = '',
 	defaultVariant: Variant
 ): Variant => {
 	if ( className.includes( 'is-style-outline' ) ) {
