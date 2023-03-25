@@ -1,8 +1,8 @@
 {
-	"name": "woocommerce/mini-cart-shopping-button-block",
+	"name": "woocommerce/mini-cart-cart-button-block",
 	"version": "1.0.0",
-	"title": "Mini Cart Shopping Button",
-	"description": "Block that displays the shopping button when the Mini Cart is empty.",
+	"title": "Mini Cart View Cart Button",
+	"description": "Block that displays the cart button when the Mini Cart has products.",
 	"category": "woocommerce",
 	"supports": {
 		"align": false,
@@ -27,15 +27,15 @@
 	"styles": [
 		{
 			"name": "fill",
-			"label": "Fill",
-			"isDefault": true
+			"label": "Fill"
 		},
 		{
 			"name": "outline",
-			"label": "Outline"
+			"label": "Outline",
+			"isDefault": true
 		}
 	],
-	"parent": [ "woocommerce/empty-mini-cart-contents-block" ],
+	"parent": [ "woocommerce/mini-cart-footer-block" ],
 	"textdomain": "woo-gutenberg-products-block",
 	"apiVersion": 2
 }
