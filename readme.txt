@@ -80,6 +80,17 @@ Release and roadmap notes available on the [WooCommerce Developers Blog](https:/
 
 == Changelog ==
 
+= 9.8.2 - 2023-03-22 =
+
+#### Enhancements
+
+- Display the link to add the shipping address when the shipping address is not available. ([8141](https://github.com/woocommerce/woocommerce-blocks/pull/8141))
+
+#### Bug Fixes
+
+- Fix Customer Account block doing a 404 request in the frontend. ([8798](https://github.com/woocommerce/woocommerce-blocks/pull/8798))
+- Fix issue that prevented spaces being added to Mini Cart, Cart and Checkout buttons in Firefox. ([8777](https://github.com/woocommerce/woocommerce-blocks/pull/8777))
+
 = 9.8.1 - 2023-03-15 =
 
 #### Bug Fixes
@@ -169,6 +180,24 @@ Release and roadmap notes available on the [WooCommerce Developers Blog](https:/
 #### Technical debt
 
 - Rename the checkout events. ([8381](https://github.com/woocommerce/woocommerce-blocks/pull/8381))
+
+= 9.6.6 - 2023-03-17 =
+
+#### Bug Fixes
+
+- Product Image Gallery: fix 404 error. ([8445](https://github.com/woocommerce/woocommerce-blocks/pull/8445))
+
+= 9.6.5 - 2023-03-06 =
+
+#### Bug Fixes
+
+- Checkout: Fix state validation after changing shipping country. ([8633](https://github.com/woocommerce/woocommerce-blocks/pull/8633)
+
+= 9.6.4 - 2023-03-03 =
+
+#### Bug Fixes
+
+- Fix: Show up to three Express Payments buttons next to each other. ([8601](https://github.com/woocommerce/woocommerce-blocks/pull/8601))
 
 = 9.6.3 - 2023-02-27 =
 
