@@ -194,16 +194,18 @@ class ProductQueryFilters {
 			}
 		}
 
-		$product_metas = [
-			'min_price' => $min_price,
-			'max_price' => $max_price,
-		];
+		if ( ! empty( $min_price ) || ! empty( $max_price ) ) {
+			$product_metas = [
+				'min_price' => $min_price,
+				'max_price' => $max_price,
+			];
 
-		$filtered_products_by_metas           = $this->get_product_by_metas( $product_metas );
-		$formatted_filtered_products_by_metas = implode( ',', array_map( 'intval', $filtered_products_by_metas ) );
+			$filtered_products_by_metas           = $this->get_product_by_metas( $product_metas );
+			$formatted_filtered_products_by_metas = implode( ',', array_map( 'intval', $filtered_products_by_metas ) );
 
-		if ( ! empty( $formatted_filtered_products_by_metas ) ) {
-			$where_clause .= " AND product_attribute_lookup.product_id IN ({$formatted_filtered_products_by_metas})";
+			if ( ! empty( $formatted_filtered_products_by_metas ) ) {
+				$where_clause .= " AND product_attribute_lookup.product_id IN ({$formatted_filtered_products_by_metas})";
+			}
 		}
 
 		$counts = $wpdb->get_results(
