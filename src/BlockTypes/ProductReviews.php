@@ -44,8 +44,8 @@ class ProductReviews extends AbstractBlock {
 		);
 
 		// Ovewriting the globals, because we need it in the template.
-		$GLOBALS[ 'product' ] = wc_get_product( $post_id );
-		$GLOBALS[ 'wp_query' ] = $new_query;
+		$GLOBALS['product'] = wc_get_product( $post_id );
+		$GLOBALS['wp_query'] = $new_query; // phpcs:ignore
 
 		wc_get_template( 'single-product-reviews.php' );
 
@@ -53,7 +53,7 @@ class ProductReviews extends AbstractBlock {
 
 		// Resetting the globals to what it was.
 		$GLOBALS['product'] = $old_global_product;
-		$GLOBALS['wp_query'] = $old_global_query;
+		$GLOBALS['wp_query'] = $old_global_query; // phpcs:ignore
 
 		$classname = $attributes['className'] ?? '';
 
