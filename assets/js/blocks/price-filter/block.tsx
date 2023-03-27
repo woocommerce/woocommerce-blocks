@@ -299,6 +299,28 @@ const PriceFilterBlock = ( {
 		previousMaxPriceQuery,
 	] );
 
+	// Track `popstate` events to update the internal state from the URL.
+	useEffect( () => {
+		const onLocationChange = () => {
+			setMinPriceQuery(
+				formatPrice(
+					getUrlParameter( 'min_price' ),
+					currency.minorUnit
+				)
+			);
+			setMaxPriceQuery(
+				formatPrice(
+					getUrlParameter( 'max_price' ),
+					currency.minorUnit
+				)
+			);
+			setHasSetFilterDefaultsFromUrl( true );
+		};
+
+		window.addEventListener( 'popstate', onLocationChange );
+		return () => window.removeEventListener( 'popstate', onLocationChange );
+	}, [ currency.minorUnit, setMaxPriceQuery, setMinPriceQuery ] );
+
 	if ( ! hasFilterableProducts ) {
 		setWrapperVisibility( false );
 		return null;
