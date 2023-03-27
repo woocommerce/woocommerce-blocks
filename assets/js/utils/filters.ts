@@ -47,7 +47,9 @@ export function changeUrl( newUrl: string ) {
 		supportsClientSideNavigation &&
 		window.wc?.__experimentalInteractivity
 	) {
-		window.wc.__experimentalInteractivity.navigate( newUrl );
+		window.wc.__experimentalInteractivity.navigate( newUrl, {
+			replace: true,
+		} );
 	} else if ( filteringForPhpTemplate ) {
 		window.location.href = newUrl;
 	} else {

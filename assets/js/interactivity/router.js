@@ -70,14 +70,18 @@ export const prefetch = ( url ) => {
 };
 
 // Navigate to a new page.
-export const navigate = async ( href ) => {
+export const navigate = async ( href, { replace = false } = {} ) => {
 	const url = cleanUrl( href );
 	prefetch( url );
 	const page = await pages.get( url );
 	if ( page ) {
 		document.head.replaceChildren( ...page.head );
 		render( page.body, rootFragment );
-		window.history.pushState( {}, '', href );
+		if ( replace ) {
+			window.history.replaceState( {}, '', href );
+		} else {
+			window.history.pushState( {}, '', href );
+		}
 	} else {
 		window.location.assign( href );
 	}
