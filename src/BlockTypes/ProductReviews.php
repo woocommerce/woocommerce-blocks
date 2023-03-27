@@ -30,30 +30,15 @@ class ProductReviews extends AbstractBlock {
 	 * @return string Rendered block output.
 	 */
 	protected function render( $attributes, $content, $block ) {
-		$post_id = $block->context['postId'];
-		$old_global_product = $GLOBALS['product'];
-		$old_global_query = $GLOBALS['wp_query'];
+		ob_start();
 
-		$new_query = new \WP_Query(
-			array(
-				'feed'         => 1,
-				'p'            => $post_id,
-				'post_type'    => 'product',
-				'withcomments' => 1,
-			)
-		);
-
-		// Ovewriting the globals, because we need it in the template.
-		$GLOBALS['product'] = wc_get_product( $post_id );
-		$GLOBALS['wp_query'] = $new_query; // phpcs:ignore
-
-		wc_get_template( 'single-product-reviews.php' );
+		rewind_posts();
+		while ( have_posts() ) {
+			the_post();
+			comments_template();
+		}
 
 		$reviews = ob_get_clean();
-
-		// Resetting the globals to what it was.
-		$GLOBALS['product'] = $old_global_product;
-		$GLOBALS['wp_query'] = $old_global_query; // phpcs:ignore
 
 		$classname = $attributes['className'] ?? '';
 
