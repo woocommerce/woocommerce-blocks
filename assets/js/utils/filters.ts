@@ -41,10 +41,13 @@ export function changeUrl( newUrl: string ) {
 	/**
 	 * In order not to enqueue the Interactivity runtime if it is disabled, we
 	 * cannot import `@woocommerce/interactivity` here. That's why we call
-	 * `navigate` from `window.wc.interactivity` directly.
+	 * `navigate` from `window.wc.__experimentalInteractivity` directly.
 	 */
-	if ( supportsClientSideNavigation && window.wc?.interactivity ) {
-		window.wc.interactivity.navigate( newUrl );
+	if (
+		supportsClientSideNavigation &&
+		window.wc?.__experimentalInteractivity
+	) {
+		window.wc.__experimentalInteractivity.navigate( newUrl );
 	} else if ( filteringForPhpTemplate ) {
 		window.location.href = newUrl;
 	} else {

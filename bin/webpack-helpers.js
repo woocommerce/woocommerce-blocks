@@ -17,7 +17,7 @@ const wcDepMap = {
 	'@woocommerce/shared-hocs': [ 'wc', 'wcBlocksSharedHocs' ],
 	'@woocommerce/price-format': [ 'wc', 'priceFormat' ],
 	'@woocommerce/blocks-checkout': [ 'wc', 'blocksCheckout' ],
-	'@woocommerce/interactivity': [ 'wc', 'interactivity' ],
+	'@woocommerce/interactivity': [ 'wc', '__experimentalInteractivity' ],
 };
 
 const wcHandleMap = {
