@@ -15,11 +15,7 @@ import PropTypes from 'prop-types';
 import { getCurrencyFromPriceResponse } from '@woocommerce/price-format';
 import { getSettingWithCoercion } from '@woocommerce/settings';
 import { addQueryArgs, removeQueryArgs } from '@wordpress/url';
-import {
-	changeUrl,
-	getUrlParameter,
-	supportsClientSideNavigation,
-} from '@woocommerce/utils';
+import { changeUrl, getUrlParameter } from '@woocommerce/utils';
 import {
 	CurrencyResponse,
 	isBoolean,
@@ -251,10 +247,7 @@ const PriceFilterBlock = ( {
 
 	// Track price STATE changes - if state changes, update the query.
 	useEffect( () => {
-		if (
-			! attributes.showFilterButton &&
-			( supportsClientSideNavigation || ! filteringForPhpTemplate )
-		) {
+		if ( ! attributes.showFilterButton && ! filteringForPhpTemplate ) {
 			debouncedUpdateQuery( minPrice, maxPrice );
 		}
 	}, [

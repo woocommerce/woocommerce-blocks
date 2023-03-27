@@ -36,7 +36,6 @@ import {
 	changeUrl,
 	PREFIX_QUERY_ARG_FILTER_TYPE,
 	normalizeQueryParams,
-	supportsClientSideNavigation,
 } from '@woocommerce/utils';
 import { difference } from 'lodash';
 import classnames from 'classnames';
@@ -254,10 +253,7 @@ const StockStatusFilterBlock = ( {
 			if ( isEditor ) {
 				return;
 			}
-			if (
-				checkedOptions &&
-				( supportsClientSideNavigation || ! filteringForPhpTemplate )
-			) {
+			if ( checkedOptions && ! filteringForPhpTemplate ) {
 				setProductStockStatusQuery( checkedOptions );
 			}
 
