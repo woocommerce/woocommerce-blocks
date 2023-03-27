@@ -20,7 +20,7 @@ An informational UI displayed near the top of the store pages.
 
 ## Design Guidelines
 
-Notices are informational UI displayed near the top of store pages. WooCommerce blocks, themes, and plugins all use notices to indicate the result of an action, or to draw the user’s attention to necessary information.
+Notices are informational UI displayed near the top of store pages. Notices are used to indicate the result of an action, or to draw the user’s attention to necessary information.
 
 Notices are color-coded to indicate the type of message being communicated, and also show an icon to reinforce the meaning of the message. The color and icon used for a notice are determined by the `status` prop.
 
