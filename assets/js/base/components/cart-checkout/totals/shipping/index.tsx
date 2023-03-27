@@ -8,10 +8,12 @@ import { useStoreCart } from '@woocommerce/base-context/hooks';
 import { TotalsItem } from '@woocommerce/blocks-checkout';
 import type { Currency } from '@woocommerce/price-format';
 import { ShippingVia } from '@woocommerce/base-components/cart-checkout/totals/shipping/shipping-via';
-import { isAddressComplete } from '@woocommerce/base-utils';
+import {
+	isAddressComplete,
+	isPackageRateCollectable,
+} from '@woocommerce/base-utils';
 import { CHECKOUT_STORE_KEY } from '@woocommerce/block-data';
 import { useSelect } from '@wordpress/data';
-import { isPackageRateCollectable } from '@woocommerce/base-utils';
 
 /**
  * Internal dependencies
