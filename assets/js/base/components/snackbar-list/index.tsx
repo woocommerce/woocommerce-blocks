@@ -24,7 +24,7 @@ export type SnackbarListProps = {
 };
 
 /**
- * A temporary informational UI displayed at the bottom left of store pages.
+ * A temporary informational UI displayed at the bottom of store pages.
  */
 const SnackbarList = ( {
 	notices,
