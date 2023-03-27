@@ -1,6 +1,6 @@
 # SnackbarList Component <!-- omit in toc -->
 
-A temporary informational UI displayed at the bottom left of store pages.
+A temporary informational UI displayed at the bottom of store pages.
 
 ## Table of contents <!-- omit in toc -->
 
@@ -14,7 +14,7 @@ A temporary informational UI displayed at the bottom left of store pages.
 
 ## Design Guidelines
 
-The buyer notice snackbar is temporary informational UI displayed at the bottom left of store pages. WooCommerce blocks, themes, and plugins all use snackbar notices to indicate the result of a successful action.
+The buyer notice snackbar is temporary informational UI displayed at the bottom of store pages. WooCommerce blocks, themes, and plugins all use snackbar notices to indicate the result of a successful action.
 
 Snackbar notices work in the same way as the NoticeBanner component, and support the same statuses and styles.
 
