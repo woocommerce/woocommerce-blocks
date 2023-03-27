@@ -56,12 +56,15 @@
 		flex-shrink: 0;
 	}
 
-	> .wc-block-components-button {
+	> .wc-block-components-button,
+	> .wc-block-components-button:hover,
+	> .wc-block-components-button:focus {
 		margin: 6px 0 0;
 		margin-left: auto;
 		background: transparent none !important;
 		box-shadow: none;
 		outline: none;
+		border: 0 !important;
 		padding: 0 !important;
 		height: 16px;
 		width: 16px;
