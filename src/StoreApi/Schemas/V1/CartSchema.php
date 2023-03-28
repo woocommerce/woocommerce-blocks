@@ -348,7 +348,27 @@ class CartSchema extends AbstractSchema {
 		// Get visible cross sells products.
 		$cross_sells = array_filter( array_map( 'wc_get_product', $cart->get_cross_sells() ), 'wc_products_array_filter_visible' );
 
+		$wc_checkout     = \WC_Checkout::instance();
+		$checkout_fields = $wc_checkout->get_checkout_fields();
+
+		$fields = array();
+		foreach ( $checkout_fields as $area_id => $area ) {
+			foreach ( $area as $field_id => $field ) {
+				if ( $field['custom'] && $field['enabled'] ) {
+					$fields[ $area_id ][] = array(
+						'id'       => $field_id,
+						'label'    => $field['label'],
+						'required' => $field['required'],
+						'type'     => $field['type'],
+						'validate' => $field['validate'],
+						'priority' => $field['priority'],
+					);
+				}
+			}
+		}
+
 		return [
+			'fields'                  => $fields,
 			'coupons'                 => $this->get_item_responses_from_schema( $this->coupon_schema, $cart->get_applied_coupons() ),
 			'shipping_rates'          => $this->get_item_responses_from_schema( $this->shipping_rate_schema, $shipping_packages ),
 			'shipping_address'        => $this->shipping_address_schema->get_item_response( wc()->customer ),
