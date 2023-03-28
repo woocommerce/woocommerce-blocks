@@ -37,11 +37,22 @@ class Notices {
 	}
 
 	/**
-	 * Set all hooks related to adding Checkout Draft order functionality to Woo Core.
+	 * Set all hooks related to adding Checkout Draft order functionality to Woo Core. This is only enabled if the user
+	 * is using the new block based cart/checkout.
 	 */
 	public function init() {
-		add_filter( 'woocommerce_kses_notice_allowed_tags', [ $this, 'add_kses_notice_allowed_tags' ] );
-		add_filter( 'wc_get_template', [ $this, 'get_notices_template' ], 10, 5 );
+		// Core page IDs.
+		$cart_page_id     = wc_get_page_id( 'cart' );
+		$checkout_page_id = wc_get_page_id( 'checkout' );
+
+		// Checks a specific page (by ID) to see if it contains the named block.
+		$has_block_cart     = $cart_page_id && has_block( 'woocommerce/cart', $cart_page_id );
+		$has_block_checkout = $checkout_page_id && has_block( 'woocommerce/checkout', $checkout_page_id );
+
+		if ( $has_block_cart || $has_block_checkout ) {
+			add_filter( 'woocommerce_kses_notice_allowed_tags', [ $this, 'add_kses_notice_allowed_tags' ] );
+			add_filter( 'wc_get_template', [ $this, 'get_notices_template' ], 10, 5 );
+		}
 	}
 
 	/**
