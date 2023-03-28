@@ -167,9 +167,21 @@ const ValidatedTextInput = ( {
 		if ( focusOnMount ) {
 			inputRef.current?.focus();
 		}
+
+		// Skip validation only if validateOnFirstFocus is false and focusOnMount is true.
+		if ( ! validateOnFirstFocus && focusOnMount ) {
+			setIsPristine( false );
+			return;
+		}
 		validateInput( true );
 		setIsPristine( false );
-	}, [ focusOnMount, isPristine, setIsPristine, validateInput ] );
+	}, [
+		validateOnFirstFocus,
+		focusOnMount,
+		isPristine,
+		setIsPristine,
+		validateInput,
+	] );
 
 	// Remove validation errors when unmounted.
 	useEffect( () => {
