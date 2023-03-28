@@ -49,6 +49,8 @@ interface ValidatedTextInputProps
 	customValidation?:
 		| ( ( inputObject: HTMLInputElement ) => boolean )
 		| undefined;
+	// Whether validation should run when focused - only has an effect when focusOnMount is also true.
+	validateOnFirstFocus?: boolean | undefined;
 }
 
 const ValidatedTextInput = ( {
@@ -64,6 +66,7 @@ const ValidatedTextInput = ( {
 	value = '',
 	customValidation,
 	label,
+	validateOnFirstFocus = true,
 	...rest
 }: ValidatedTextInputProps ): JSX.Element => {
 	const [ isPristine, setIsPristine ] = useState( true );
