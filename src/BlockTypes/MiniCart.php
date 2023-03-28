@@ -70,6 +70,7 @@ class MiniCart extends AbstractBlock {
 	protected function initialize() {
 		parent::initialize();
 		add_action( 'wp_loaded', array( $this, 'register_empty_cart_message_block_pattern' ) );
+		add_action( 'wp_loaded', array( $this, 'register_title_block_pattern' ) );
 		add_action( 'wp_print_footer_scripts', array( $this, 'enqueue_wc_settings' ), 1 );
 		// We need this action to run after the equivalent in AssetDataRegistry.
 		add_action( 'wp_print_footer_scripts', array( $this, 'print_lazy_load_scripts' ), 3 );
@@ -605,6 +606,20 @@ class MiniCart extends AbstractBlock {
 				'title'    => __( 'Empty Mini Cart Message', 'woo-gutenberg-products-block' ),
 				'inserter' => false,
 				'content'  => '<!-- wp:paragraph {"align":"center"} --><p class="has-text-align-center"><strong>' . __( 'Your cart is currently empty!', 'woo-gutenberg-products-block' ) . '</strong></p><!-- /wp:paragraph -->',
+			)
+		);
+	}
+
+	/**
+	 * Register block pattern to make the Mini Cart Title translatable.
+	 */
+	public function register_title_block_pattern() {
+		register_block_pattern(
+			'woocommerce/filled-mini-cart-title-block',
+			array(
+				'title'    => __( 'Filled Mini Cart Title Message', 'woo-gutenberg-products-block' ),
+				'inserter' => false,
+				'content'  => '<!-- wp:heading --><h2>' . __( 'Your cart', 'woo-gutenberg-products-block' ) . '</h2><!-- /wp:heading -->',
 			)
 		);
 	}

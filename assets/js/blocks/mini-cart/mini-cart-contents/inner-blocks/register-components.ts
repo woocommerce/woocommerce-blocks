@@ -10,6 +10,7 @@ import { lazy } from '@wordpress/element';
 import emptyMiniCartContentsMetadata from './empty-mini-cart-contents-block/block.json';
 import filledMiniCartMetadata from './filled-mini-cart-contents-block/block.json';
 import miniCartTitleMetadata from './mini-cart-title-block/block.json';
+import miniCartTitleItemsCounterMetadata from './mini-cart-title-items-counter-block/block.json';
 import miniCartProductsTableMetadata from './mini-cart-products-table-block/block.json';
 import miniCartFooterMetadata from './mini-cart-footer-block/block.json';
 import miniCartItemsMetadata from './mini-cart-items-block/block.json';
@@ -48,6 +49,17 @@ registerCheckoutBlock( {
 		() =>
 			import(
 				/* webpackChunkName: "mini-cart-contents-block/title" */ './mini-cart-title-block/block'
+			)
+	),
+} );
+
+registerCheckoutBlock( {
+	metadata: miniCartTitleItemsCounterMetadata,
+	force: false,
+	component: lazy(
+		() =>
+			import(
+				/* webpackChunkName: "mini-cart-contents-block/title-items-counter" */ './mini-cart-title-items-counter-block/block'
 			)
 	),
 } );

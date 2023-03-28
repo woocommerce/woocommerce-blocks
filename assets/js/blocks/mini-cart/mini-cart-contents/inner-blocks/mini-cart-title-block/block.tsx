@@ -1,35 +1,27 @@
 /**
  * External dependencies
  */
-import { sprintf, _n, __ } from '@wordpress/i18n';
 import { useStoreCart } from '@woocommerce/base-context/hooks';
 import classNames from 'classnames';
 
-/**
- * Internal dependencies
- */
-
 type MiniCartTitleBlockProps = {
 	className: string;
+	children: JSX.Element;
 };
 
-const Block = ( { className }: MiniCartTitleBlockProps ): JSX.Element => {
-	const { cartItemsCount, cartIsLoading } = useStoreCart();
+const Block = ( {
+	children,
+	className,
+}: MiniCartTitleBlockProps ): JSX.Element | null => {
+	const { cartIsLoading } = useStoreCart();
+	if ( cartIsLoading ) {
+		return null;
+	}
+
 	return (
-		<h2 className={ classNames( className, 'wc-block-mini-cart__title' ) }>
-			{ cartIsLoading
-				? __( 'Your cart', 'woo-gutenberg-products-block' )
-				: sprintf(
-						/* translators: %d is the count of items in the cart. */
-						_n(
-							'Your cart (%d item)',
-							'Your cart (%d items)',
-							cartItemsCount,
-							'woo-gutenberg-products-block'
-						),
-						cartItemsCount
-				  ) }
-		</h2>
+		<div className={ classNames( className, 'wc-block-mini-cart__title' ) }>
+			{ children }
+		</div>
 	);
 };
 
