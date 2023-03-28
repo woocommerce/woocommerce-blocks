@@ -99,7 +99,7 @@ export const TotalsShipping = ( {
 					( ! areShippingMethodsMissing &&
 						cartHasCalculatedShipping ) ||
 					// if address is not complete, display the link to add an address.
-					! addressComplete ? (
+					addressComplete ? (
 						totalShippingValue
 					) : (
 						<ShippingPlaceholder
@@ -115,10 +115,10 @@ export const TotalsShipping = ( {
 					)
 				}
 				description={
-					// If address is complete, display the shipping address.
 					( ! areShippingMethodsMissing &&
 						cartHasCalculatedShipping ) ||
-					! addressComplete ? (
+					// If address is complete, display the shipping address.
+					addressComplete ? (
 						<>
 							<ShippingVia
 								selectedShippingRates={ selectedShippingRates }
