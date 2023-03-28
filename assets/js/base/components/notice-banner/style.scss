@@ -15,14 +15,11 @@
 	background-color: #fff;
 	box-sizing: border-box;
 
-	&:last-child {
-		margin-bottom: 0;
-	}
-
 	> .wc-block-components-notice-banner__content {
 		padding-right: $gap;
 		align-self: center;
 		white-space: normal;
+		flex-basis: 100%;
 
 		&:last-child {
 			padding-right: 0;
@@ -37,6 +34,23 @@
 		ol {
 			margin: 0 0 0 $gap-large;
 			padding: 0;
+
+			li::after {
+				content: "";
+				clear: both;
+				display: block;
+			}
+		}
+
+		// Legacy notice compatibility.
+		.wc-forward.wp-element-button {
+			float: right;
+			color: $gray-800 !important;
+			background: transparent;
+			padding: 0 !important;
+			margin: 0;
+			border: 0;
+			appearance: none;
 		}
 	}
 
@@ -46,6 +60,7 @@
 		padding: 2px;
 		background-color: $gray-800;
 		flex-shrink: 0;
+		flex-grow: 0;
 	}
 
 	> .wc-block-components-button,
