@@ -2,7 +2,9 @@
  * External dependencies
  */
 import {
+	BlockAttributes,
 	BlockConfiguration,
+	BlockVariation,
 	getBlockType,
 	registerBlockType,
 	registerBlockVariation,
@@ -74,4 +76,21 @@ export const registerBlockSingleProductTemplate = ( {
 			}
 		}
 	}, 'core/edit-site' );
+
+	subscribe( () => {
+		const isBlockRegistered = Boolean( getBlockType( blockName ) );
+		const editPostStoreExists = Boolean( select( 'core/edit-post' ) );
+
+		if ( ! isBlockRegistered && editPostStoreExists ) {
+			if ( isVariationBlock ) {
+				registerBlockVariation(
+					blockName,
+					blockSettings as BlockVariation< BlockAttributes >
+				);
+			} else {
+				// @ts-expect-error: `registerBlockType` is typed in WordPress core
+				registerBlockType( blockMetadata, blockSettings );
+			}
+		}
+	}, 'core/edit-post' );
 };
