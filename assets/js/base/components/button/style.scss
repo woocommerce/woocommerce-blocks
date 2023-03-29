@@ -54,12 +54,6 @@
 			opacity: 1;
 		}
 	}
-
-	&.contained {
-		&:hover {
-			opacity: 0.9;
-		}
-	}
 }
 
 body:not(.woocommerce-block-theme-has-button-styles) .wc-block-components-button:not(.is-link) {
@@ -79,12 +73,6 @@ body:not(.woocommerce-block-theme-has-button-styles) .wc-block-components-button
 	&.text {
 		color: $gray-900;
 
-		&:hover {
-			opacity: 0.9;
-		}
-	}
-
-	&.contained {
 		&:hover {
 			opacity: 0.9;
 		}
