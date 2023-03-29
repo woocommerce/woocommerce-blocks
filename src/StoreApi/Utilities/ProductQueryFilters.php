@@ -156,7 +156,7 @@ class ProductQueryFilters {
 			return array_map( 'absint', wp_list_pluck( $counts, 'term_count', 'term_count_id' ) );
 		}
 
-		$where_clause = "posts.post_type IN ('product', 'product_variation') AND posts.post_status = 'publish'";
+		$where_clause = '';
 		if ( ! empty( $min_price ) || ! empty( $max_price ) ) {
 			$product_metas = [
 				'min_price' => $min_price,
@@ -167,7 +167,7 @@ class ProductQueryFilters {
 			$formatted_filtered_products_by_metas = implode( ',', array_map( 'intval', $filtered_products_by_metas ) );
 
 			if ( ! empty( $formatted_filtered_products_by_metas ) ) {
-				$where_clause .= $wpdb->prepare( ' AND product_attribute_lookup.product_id IN (%1s)', $formatted_filtered_products_by_metas );
+				$where_clause .= sprintf( ' AND product_attribute_lookup.product_id IN (%1s)', $formatted_filtered_products_by_metas );
 			}
 		}
 
@@ -204,7 +204,7 @@ class ProductQueryFilters {
 				$formatted_filtered_products_by_terms = implode( ',', array_map( 'intval', $filtered_products_by_terms ) );
 
 				if ( ! empty( $formatted_filtered_products_by_terms ) ) {
-					$where_clause .= $wpdb->prepare( ' AND product_attribute_lookup.product_or_parent_id IN (%1s)', $formatted_filtered_products_by_terms );
+					$where_clause .= sprintf( ' AND product_attribute_lookup.product_or_parent_id IN (%1s)', $formatted_filtered_products_by_terms );
 				}
 
 				if ( $calculate_attribute_count['taxonomy'] === $filtered_attribute ) {
@@ -225,11 +225,12 @@ class ProductQueryFilters {
 	    FROM {$wpdb->prefix}wc_product_attributes_lookup product_attribute_lookup
 	             INNER JOIN {$wpdb->posts} posts
 	                        ON posts.ID = product_attribute_lookup.product_id
-	    WHERE {$where_clause}
+	    WHERE posts.post_type IN ('product', 'product_variation') AND posts.post_status = 'publish'%1s
 	    GROUP BY product_attribute_lookup.term_id
 	) summarize ON attributes.term_id = summarize.term_id",
 				$filtered_attribute,
-				$join_type
+				$join_type,
+				$where_clause
 			)
 		);
 
@@ -316,7 +317,7 @@ class ProductQueryFilters {
 		if ( ! empty( $where ) ) {
 			$where_clause = implode( ' AND ', $where );
 			$where_clause = sprintf( $where_clause, ...$params );
-			$results = $wpdb->get_col(
+			$results      = $wpdb->get_col(
 				$wpdb->prepare(
 					"SELECT DISTINCT product_id FROM {$wpdb->prefix}wc_product_meta_lookup WHERE %1s",
 					$where_clause
