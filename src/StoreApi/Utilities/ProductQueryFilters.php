@@ -167,7 +167,7 @@ class ProductQueryFilters {
 			$formatted_filtered_products_by_metas = implode( ',', array_map( 'intval', $filtered_products_by_metas ) );
 
 			if ( ! empty( $formatted_filtered_products_by_metas ) ) {
-				$where_clause .= " AND product_attribute_lookup.product_id IN ({$formatted_filtered_products_by_metas})";
+				$where_clause .= $wpdb->prepare( ' AND product_attribute_lookup.product_id IN (%1s)', $formatted_filtered_products_by_metas );
 			}
 		}
 
@@ -204,7 +204,7 @@ class ProductQueryFilters {
 				$formatted_filtered_products_by_terms = implode( ',', array_map( 'intval', $filtered_products_by_terms ) );
 
 				if ( ! empty( $formatted_filtered_products_by_terms ) ) {
-					$where_clause .= " AND product_attribute_lookup.product_or_parent_id IN ({$formatted_filtered_products_by_terms})";
+					$where_clause .= $wpdb->prepare( ' AND product_attribute_lookup.product_or_parent_id IN (%1s)', $formatted_filtered_products_by_terms );
 				}
 
 				if ( $calculate_attribute_count['taxonomy'] === $filtered_attribute ) {
