@@ -8,7 +8,7 @@ import classNames from 'classnames';
  * Internal dependencies
  */
 import TitleItemsCounter from '../mini-cart-title-items-counter-block/block';
-import TitleYourCart from '../mini-cart-title-your-cart-block/block';
+import TitleYourCart from '../mini-cart-title-label-block/block';
 import { hasChildren } from '../utils';
 
 type MiniCartTitleBlockProps = {

@@ -11,7 +11,7 @@ import emptyMiniCartContentsMetadata from './empty-mini-cart-contents-block/bloc
 import filledMiniCartMetadata from './filled-mini-cart-contents-block/block.json';
 import miniCartTitleMetadata from './mini-cart-title-block/block.json';
 import miniCartTitleItemsCounterMetadata from './mini-cart-title-items-counter-block/block.json';
-import miniCartTitleYourCartBlockMetadata from './mini-cart-title-your-cart-block/block.json';
+import miniCartTitleLabelBlockMetadata from './mini-cart-title-label-block/block.json';
 import miniCartProductsTableMetadata from './mini-cart-products-table-block/block.json';
 import miniCartFooterMetadata from './mini-cart-footer-block/block.json';
 import miniCartItemsMetadata from './mini-cart-items-block/block.json';
@@ -66,12 +66,12 @@ registerCheckoutBlock( {
 } );
 
 registerCheckoutBlock( {
-	metadata: miniCartTitleYourCartBlockMetadata,
+	metadata: miniCartTitleLabelBlockMetadata,
 	force: false,
 	component: lazy(
 		() =>
 			import(
-				/* webpackChunkName: "mini-cart-contents-block/title-items-counter" */ './mini-cart-title-your-cart-block/block'
+				/* webpackChunkName: "mini-cart-contents-block/title-label" */ './mini-cart-title-label-block/block'
 			)
 	),
 } );

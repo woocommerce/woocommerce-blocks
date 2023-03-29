@@ -7,7 +7,7 @@ export const Edit = (): JSX.Element => {
 	const blockProps = useBlockProps();
 
 	const TEMPLATE = [
-		[ 'woocommerce/mini-cart-title-your-cart-block', {} ],
+		[ 'woocommerce/mini-cart-title-label-block', {} ],
 		[ 'woocommerce/mini-cart-title-items-counter-block', {} ],
 	];
 

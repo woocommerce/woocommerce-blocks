@@ -19,6 +19,7 @@ export const Edit = ( {
 	return (
 		<h2 { ...blockProps }>
 			<RichText
+				allowedFormats={ [] }
 				value={ label }
 				onChange={ ( newLabel ) =>
 					setAttributes( { label: newLabel } )
