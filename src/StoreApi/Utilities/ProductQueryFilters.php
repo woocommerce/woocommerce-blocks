@@ -155,8 +155,6 @@ class ProductQueryFilters {
 		);
 	}
 
-
-
 	/**
 	 * Get attribute and meta counts.
 	 *
@@ -173,19 +171,21 @@ class ProductQueryFilters {
 		$min_price                  = $request->get_param( 'min_price' );
 		$max_price                  = $request->get_param( 'max_price' );
 		$rating                     = $request->get_param( 'rating' );
+		$stock_status               = $request->get_param( 'stock_status' );
 
-		if ( empty( $attributes_data ) && empty( $min_price ) && empty( $max_price ) && empty( $rating ) ) {
+		if ( empty( $attributes_data ) && empty( $min_price ) && empty( $max_price ) && empty( $rating ) && empty( $stock_status ) ) {
 			$counts = $this->get_terms_list( $filtered_attribute );
 
 			return array_map( 'absint', wp_list_pluck( $counts, 'term_count', 'term_count_id' ) );
 		}
 
 		$where_clause = '';
-		if ( ! empty( $min_price ) || ! empty( $max_price ) || ! empty( $rating ) ) {
+		if ( ! empty( $min_price ) || ! empty( $max_price ) || ! empty( $rating ) || ! empty( $stock_status ) ) {
 			$product_metas = [
-				'min_price' => $min_price,
-				'max_price' => $max_price,
-				'rating'    => $rating,
+				'min_price'      => $min_price,
+				'max_price'      => $max_price,
+				'average_rating' => $rating,
+				'stock_status'   => $stock_status,
 			];
 
 			$filtered_products_by_metas           = $this->get_product_by_metas( $product_metas );
@@ -325,9 +325,20 @@ class ProductQueryFilters {
 		$where   = array();
 		$results = array();
 		$params  = array();
-
 		foreach ( $metas as $column => $value ) {
 			if ( empty( $value ) ) {
+				continue;
+			}
+
+			$value = is_array( $value ) ? implode( ',', $value ) : $value;
+
+			if ( 'stock_status' === $column ) {
+				$stock_product_ids = $wpdb->get_col(
+					$wpdb->prepare(
+						"SELECT DISTINCT product_id FROM {$wpdb->prefix}wc_product_meta_lookup WHERE stock_status = %s",
+						$value
+					)
+				);
 				continue;
 			}
 
@@ -343,20 +354,23 @@ class ProductQueryFilters {
 				continue;
 			}
 
-			if ( 'rating' === $column ) {
-				$value    = is_array( $value ) ? implode( ',', $value ) : $value;
-				$where[]  = sprintf( 'average_rating BETWEEN %s - 0.5 AND %s + 0.5', $value, $value );
+			if ( 'average_rating' === $column ) {
+				$value   = is_array( $value ) ? implode( ',', $value ) : $value;
+				$where[] = sprintf( 'average_rating BETWEEN %s - 0.5 AND %s + 0.5', $value, $value );
 				continue;
 			}
 
-			$where[]  = "{$column} = %s";
-			$params[] = is_array( $value ) ? implode( ',', $value ) : $value;
+			$where[]  = sprintf( "%1s = '%s'", $column, $value );
+			$params[] = $value;
+		}
+
+		if ( isset( $stock_product_ids ) && ! empty( $stock_product_ids ) ) {
+			$where[] = 'product_id IN (' . implode( ',', $stock_product_ids ) . ')';
 		}
 
 		if ( ! empty( $where ) ) {
 			$where_clause = implode( ' AND ', $where );
 			$where_clause = sprintf( $where_clause, ...$params );
-
 			$results      = $wpdb->get_col(
 				$wpdb->prepare(
 					"SELECT DISTINCT product_id FROM {$wpdb->prefix}wc_product_meta_lookup WHERE %1s",
