@@ -19,7 +19,11 @@ import { useSelect } from '@wordpress/data';
  * Internal dependencies
  */
 import ShippingCalculator from '../../shipping-calculator';
-import { hasShippingRate, getTotalShippingValue } from './utils';
+import {
+	hasShippingRate,
+	getTotalShippingValue,
+	areShippingMethodsMissing,
+} from './utils';
 import ShippingPlaceholder from './shipping-placeholder';
 import ShippingAddress from './shipping-address';
 import ShippingRateSelector from './shipping-rate-selector';
@@ -75,16 +79,11 @@ export const TotalsShipping = ( {
 		}
 	);
 	const addressComplete = isAddressComplete( shippingAddress );
-	const areShippingMethodsMissing =
-		! hasRates ||
-		( ! prefersCollection &&
-			shippingRates.some(
-				( shippingRatePackage ) =>
-					! shippingRatePackage.shipping_rates.some(
-						( shippingRate ) =>
-							shippingRate.method_id !== 'pickup_location'
-					)
-			) );
+	const shippingMethodsMissing = areShippingMethodsMissing(
+		hasRates,
+		prefersCollection,
+		shippingRates
+	);
 
 	return (
 		<div
@@ -96,7 +95,7 @@ export const TotalsShipping = ( {
 			<TotalsItem
 				label={ __( 'Shipping', 'woo-gutenberg-products-block' ) }
 				value={
-					! areShippingMethodsMissing && cartHasCalculatedShipping
+					! shippingMethodsMissing && cartHasCalculatedShipping
 						? // if address is not complete, display the link to add an address.
 						  totalShippingValue
 						: ( ! addressComplete || isCheckout ) && (
@@ -113,8 +112,7 @@ export const TotalsShipping = ( {
 						  )
 				}
 				description={
-					( ! areShippingMethodsMissing &&
-						cartHasCalculatedShipping ) ||
+					( ! shippingMethodsMissing && cartHasCalculatedShipping ) ||
 					// If address is complete, display the shipping address.
 					( addressComplete && ! isCheckout ) ? (
 						<>
