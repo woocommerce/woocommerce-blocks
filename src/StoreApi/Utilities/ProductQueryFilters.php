@@ -315,10 +315,11 @@ class ProductQueryFilters {
 
 		if ( ! empty( $where ) ) {
 			$where_clause = implode( ' AND ', $where );
-			// Use a parameterized query.
+			$where_clause = sprintf( $where_clause, ...$params );
 			$results = $wpdb->get_col(
-				$wpdb->prepare( "SELECT DISTINCT product_id FROM {$wpdb->prefix}wc_product_meta_lookup WHERE {$where_clause}", // phpcs:ignore
-					$params
+				$wpdb->prepare(
+					"SELECT DISTINCT product_id FROM {$wpdb->prefix}wc_product_meta_lookup WHERE %1s",
+					$where_clause
 				)
 			);
 		}
