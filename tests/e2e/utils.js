@@ -151,9 +151,10 @@ export const isBlockInsertedInWidgetsArea = async ( blockName ) => {
 /**
  * Visits site editor dependening on used WordPress version and how Gutenberg is installed.
  *
- * @param {Object}                             params                          Query parameters to add to the URL.
- * @param {string}                             [params.postId]                 ID of the template if we want to access template editor.
- * @param {'wp_template' | 'wp_template_part'} [params.postType='wp_template'] Type of template.
+ * @param {Object}                                            params                          Query parameters to add to the URL.
+ * @param {string}                                            [params.postId]                 ID of the template if we want to access template editor.
+ * @param {'wp_template' | 'wp_template_part'}                [params.postType='wp_template'] Type of template.
+ * @param {'wp_template' | 'wp_template_part' | 'navigation'} [params.path='wp_template']     Navigation path.
  */
 export async function goToSiteEditor( params = {} ) {
 	await visitAdminPage( 'site-editor.php', addQueryArgs( '', params ) );
@@ -181,6 +182,9 @@ export async function goToTemplateEditor( {
 	await goToSiteEditor( {
 		postType,
 		postId,
+		// In WP 6.2, if postId is not defined, the route expects `path` instead
+		// of `postId`.
+		path: postId,
 	} );
 
 	await disableSiteEditorWelcomeGuide();
