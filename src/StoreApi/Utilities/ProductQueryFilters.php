@@ -157,14 +157,29 @@ class ProductQueryFilters {
 		}
 
 		$where_clause = "posts.post_type IN ('product', 'product_variation') AND posts.post_status = 'publish'";
+		if ( ! empty( $min_price ) || ! empty( $max_price ) ) {
+			$product_metas = [
+				'min_price' => $min_price,
+				'max_price' => $max_price,
+			];
+
+			$filtered_products_by_metas           = $this->get_product_by_metas( $product_metas );
+			$formatted_filtered_products_by_metas = implode( ',', array_map( 'intval', $filtered_products_by_metas ) );
+
+			if ( ! empty( $formatted_filtered_products_by_metas ) ) {
+				$where_clause .= " AND product_attribute_lookup.product_id IN ({$formatted_filtered_products_by_metas})";
+			}
+		}
+
+		$join_type = 'LEFT';
 		foreach ( $attributes_data as $attribute ) {
-			$taxonomy       = $attribute['attribute'] ?? '';
 			$filtered_terms = $attribute['slug'] ?? '';
 
 			if ( empty( $filtered_terms ) ) {
 				continue;
 			}
 
+			$taxonomy = $attribute['attribute'] ?? '';
 			$term_ids = [];
 			if ( in_array( $taxonomy, wc_get_attribute_taxonomy_names(), true ) ) {
 				foreach ( $filtered_terms as $filtered_term ) {
@@ -191,20 +206,10 @@ class ProductQueryFilters {
 				if ( ! empty( $formatted_filtered_products_by_terms ) ) {
 					$where_clause .= " AND product_attribute_lookup.product_or_parent_id IN ({$formatted_filtered_products_by_terms})";
 				}
-			}
-		}
 
-		if ( ! empty( $min_price ) || ! empty( $max_price ) ) {
-			$product_metas = [
-				'min_price' => $min_price,
-				'max_price' => $max_price,
-			];
-
-			$filtered_products_by_metas           = $this->get_product_by_metas( $product_metas );
-			$formatted_filtered_products_by_metas = implode( ',', array_map( 'intval', $filtered_products_by_metas ) );
-
-			if ( ! empty( $formatted_filtered_products_by_metas ) ) {
-				$where_clause .= " AND product_attribute_lookup.product_id IN ({$formatted_filtered_products_by_metas})";
+				if ( $calculate_attribute_count['taxonomy'] === $filtered_attribute ) {
+					$join_type = 'or' === $query_type ? 'LEFT' : 'INNER';
+				}
 			}
 		}
 
@@ -215,7 +220,7 @@ class ProductQueryFilters {
 	         SELECT DISTINCT term_id
 	         FROM {$wpdb->prefix}wc_product_attributes_lookup
 	         WHERE taxonomy = %s) as attributes
-	         LEFT JOIN (
+	         %1s JOIN (
 	    SELECT COUNT(DISTINCT product_attribute_lookup.product_or_parent_id) as term_count, product_attribute_lookup.term_id
 	    FROM {$wpdb->prefix}wc_product_attributes_lookup product_attribute_lookup
 	             INNER JOIN {$wpdb->posts} posts
@@ -223,7 +228,8 @@ class ProductQueryFilters {
 	    WHERE {$where_clause}
 	    GROUP BY product_attribute_lookup.term_id
 	) summarize ON attributes.term_id = summarize.term_id",
-				$filtered_attribute
+				$filtered_attribute,
+				$join_type
 			)
 		);
 
