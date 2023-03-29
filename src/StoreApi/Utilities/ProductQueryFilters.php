@@ -135,6 +135,29 @@ class ProductQueryFilters {
 	}
 
 	/**
+	 * Get the empty terms list for a given taxonomy.
+	 *
+	 * @param string $taxonomy Taxonomy name.
+	 *
+	 * @return array
+	 */
+	public function get_empty_terms_list( string $taxonomy ) {
+		global $wpdb;
+
+		return $wpdb->get_results(
+			$wpdb->prepare(
+				"SELECT DISTINCT term_id as term_count_id,
+            0 as term_count
+			FROM {$wpdb->prefix}wc_product_attributes_lookup
+			WHERE taxonomy = %s",
+				$taxonomy
+			)
+		);
+	}
+
+
+
+	/**
 	 * Get attribute and meta counts.
 	 *
 	 * @param WP_REST_Request $request Request data.
@@ -149,18 +172,20 @@ class ProductQueryFilters {
 		$calculate_attribute_counts = $request->get_param( 'calculate_attribute_counts' );
 		$min_price                  = $request->get_param( 'min_price' );
 		$max_price                  = $request->get_param( 'max_price' );
+		$rating                     = $request->get_param( 'rating' );
 
-		if ( empty( $attributes_data ) && empty( $min_price ) && empty( $max_price ) ) {
+		if ( empty( $attributes_data ) && empty( $min_price ) && empty( $max_price ) && empty( $rating ) ) {
 			$counts = $this->get_terms_list( $filtered_attribute );
 
 			return array_map( 'absint', wp_list_pluck( $counts, 'term_count', 'term_count_id' ) );
 		}
 
 		$where_clause = '';
-		if ( ! empty( $min_price ) || ! empty( $max_price ) ) {
+		if ( ! empty( $min_price ) || ! empty( $max_price ) || ! empty( $rating ) ) {
 			$product_metas = [
 				'min_price' => $min_price,
 				'max_price' => $max_price,
+				'rating'    => $rating,
 			];
 
 			$filtered_products_by_metas           = $this->get_product_by_metas( $product_metas );
@@ -168,6 +193,10 @@ class ProductQueryFilters {
 
 			if ( ! empty( $formatted_filtered_products_by_metas ) ) {
 				$where_clause .= sprintf( ' AND product_attribute_lookup.product_id IN (%1s)', $formatted_filtered_products_by_metas );
+			} else {
+				$counts = $this->get_empty_terms_list( $filtered_attribute );
+
+				return array_map( 'absint', wp_list_pluck( $counts, 'term_count', 'term_count_id' ) );
 			}
 		}
 
@@ -298,6 +327,10 @@ class ProductQueryFilters {
 		$params  = array();
 
 		foreach ( $metas as $column => $value ) {
+			if ( empty( $value ) ) {
+				continue;
+			}
+
 			if ( 'min_price' === $column ) {
 				$where[]  = "{$column} >= %d";
 				$params[] = intval( $value ) / 100;
@@ -310,13 +343,20 @@ class ProductQueryFilters {
 				continue;
 			}
 
+			if ( 'rating' === $column ) {
+				$where[]  = 'average_rating >= %s - 0.5 AND average_rating <= %s + 0.5';
+				$params[] = is_array( $value ) ? implode( ',', $value ) : $value;
+				continue;
+			}
+
 			$where[]  = "{$column} = %s";
-			$params[] = $value;
+			$params[] = is_array( $value ) ? implode( ',', $value ) : $value;
 		}
 
 		if ( ! empty( $where ) ) {
 			$where_clause = implode( ' AND ', $where );
 			$where_clause = sprintf( $where_clause, ...$params );
+
 			$results      = $wpdb->get_col(
 				$wpdb->prepare(
 					"SELECT DISTINCT product_id FROM {$wpdb->prefix}wc_product_meta_lookup WHERE %1s",
