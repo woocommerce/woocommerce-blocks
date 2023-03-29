@@ -93,7 +93,7 @@ export async function searchForBlock( searchTerm ) {
  * @param {string} searchTerm The text to search the inserter for.
  */
 export async function insertBlockDontWaitForInsertClose( searchTerm ) {
-	await searchForBlock( searchTerm );
+	await searchForFSEBlock( searchTerm );
 	await page.waitForXPath( `//button//span[text()='${ searchTerm }']` );
 	const insertButton = (
 		await page.$x( `//button//span[text()='${ searchTerm }']` )
