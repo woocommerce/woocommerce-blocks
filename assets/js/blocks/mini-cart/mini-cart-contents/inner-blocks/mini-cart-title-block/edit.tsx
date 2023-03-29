@@ -13,7 +13,7 @@ export const Edit = (): JSX.Element => {
 
 	return (
 		<div { ...blockProps }>
-			<InnerBlocks template={ TEMPLATE } />
+			<InnerBlocks template={ TEMPLATE } templateLock="insert" />
 		</div>
 	);
 };

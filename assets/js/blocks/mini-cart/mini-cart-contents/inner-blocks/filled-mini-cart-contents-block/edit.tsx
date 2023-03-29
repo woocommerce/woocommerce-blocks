@@ -46,6 +46,7 @@ export const Edit = ( { clientId }: { clientId: string } ): JSX.Element => {
 				<InnerBlocks
 					template={ defaultTemplate }
 					allowedBlocks={ allowedBlocks }
+					templateLock="insert"
 				/>
 			</EditorProvider>
 		</div>

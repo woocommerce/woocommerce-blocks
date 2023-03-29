@@ -9,8 +9,15 @@
 		"html": false,
 		"multiple": false,
 		"reusable": false,
-		"inserter": true,
-		"lock": false
+		"inserter": false,
+		"lock": false,
+		"color": {
+			"text": true,
+			"background": true
+		},
+		"typography": {
+			"fontSize": true
+		}
 	},
 	"attributes": {
 		"lock": {
