@@ -31,10 +31,10 @@ describe( `${ block.name } Block`, () => {
 		describe( 'Attributes', () => {
 			beforeEach( async () => {
 				await openDocumentSettingsSidebar();
+				await selectBlockByName( block.slug );
 				await switchBlockInspectorTabWhenGutenbergIsInstalled(
 					'Settings'
 				);
-				await selectBlockByName( block.slug );
 			} );
 
 			it( "allows changing the block's title", async () => {

@@ -11,7 +11,6 @@ import {
 	visitBlockPage,
 	selectBlockByName,
 	saveOrPublish,
-	switchBlockInspectorTabWhenGutenbergIsInstalled,
 } from '@woocommerce/blocks-test-utils';
 
 /**
@@ -67,7 +66,6 @@ describe( 'Merchant → Checkout → Can adjust T&S and Privacy Policy options',
 		await merchant.login();
 		await visitBlockPage( 'Checkout Block' );
 		await openDocumentSettingsSidebar();
-		await switchBlockInspectorTabWhenGutenbergIsInstalled( 'Settings' );
 		await selectBlockByName( 'woocommerce/checkout-terms-block' );
 		const [ termsCheckboxLabel ] = await page.$x(
 			`//label[contains(text(), "Require checkbox") and contains(@class, "components-toggle-control__label")]`
@@ -107,7 +105,6 @@ describe( 'Merchant → Checkout → Can adjust T&S and Privacy Policy options',
 		// Deactivate checkboxes for T&S and Privacy Policy links.
 		await visitBlockPage( 'Checkout Block' );
 		await openDocumentSettingsSidebar();
-		await switchBlockInspectorTabWhenGutenbergIsInstalled( 'Settings' );
 		await selectBlockByName( 'woocommerce/checkout-terms-block' );
 		await unsetCheckbox( termsCheckboxId );
 		await saveOrPublish();

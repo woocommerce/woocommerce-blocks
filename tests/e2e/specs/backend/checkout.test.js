@@ -11,7 +11,6 @@ import {
 	findLabelWithText,
 	visitBlockPage,
 	selectBlockByName,
-	switchBlockInspectorTabWhenGutenbergIsInstalled,
 } from '@woocommerce/blocks-test-utils';
 import { merchant } from '@woocommerce/e2e-utils';
 
@@ -126,9 +125,6 @@ describe( `${ block.name } Block`, () => {
 		describe( 'attributes', () => {
 			beforeEach( async () => {
 				await openDocumentSettingsSidebar();
-				await switchBlockInspectorTabWhenGutenbergIsInstalled(
-					'Settings'
-				);
 				await selectBlockByName( block.slug );
 			} );
 
@@ -226,9 +222,6 @@ describe( `${ block.name } Block`, () => {
 		describe( 'shipping address block attributes', () => {
 			beforeEach( async () => {
 				await openDocumentSettingsSidebar();
-				await switchBlockInspectorTabWhenGutenbergIsInstalled(
-					'Settings'
-				);
 				await selectBlockByName(
 					'woocommerce/checkout-shipping-address-block'
 				);
@@ -278,9 +271,6 @@ describe( `${ block.name } Block`, () => {
 		describe( 'action block attributes', () => {
 			beforeEach( async () => {
 				await openDocumentSettingsSidebar();
-				await switchBlockInspectorTabWhenGutenbergIsInstalled(
-					'Settings'
-				);
 				await selectBlockByName( 'woocommerce/checkout-actions-block' );
 			} );
 
