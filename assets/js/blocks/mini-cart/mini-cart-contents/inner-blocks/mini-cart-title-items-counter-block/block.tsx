@@ -5,7 +5,7 @@ import { useStoreCart } from '@woocommerce/base-context';
 import classNames from 'classnames';
 import { _n, sprintf } from '@wordpress/i18n';
 
-const Block = ( { className }: { className: string } ): JSX.Element => {
+const Block = ( { className }: { className?: string } ): JSX.Element => {
 	const { cartItemsCount } = useStoreCart();
 
 	return (

@@ -156,6 +156,7 @@ class MiniCartContents extends AbstractBlock {
 		$block_types[] = 'MiniCartCheckoutButtonBlock';
 		$block_types[] = 'MiniCartTitleBlock';
 		$block_types[] = 'MiniCartTitleItemsCounterBlock';
+		$block_types[] = 'MiniCartTitleYourCartBlock';
 
 		return $block_types;
 	}
