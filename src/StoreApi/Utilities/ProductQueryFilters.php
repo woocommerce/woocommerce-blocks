@@ -343,38 +343,36 @@ class ProductQueryFilters {
 		$term_ids   = implode( ',', array_map( 'intval', $term_ids ) );
 
 		if ( 'or' === $query_type ) {
-			// phpcs:disable
 			$results = $wpdb->get_col(
 				$wpdb->prepare(
 					"
 					SELECT DISTINCT `product_or_parent_id`
 					FROM {$wpdb->prefix}wc_product_attributes_lookup
 					WHERE `taxonomy` = %s
-					AND `term_id` IN ({$term_ids})
+					AND `term_id` IN (%1s)
 					",
-					$taxonomy
+					$taxonomy,
+					$term_ids
 				)
 			);
-			// phpcs:enable
 		}
 
 		if ( 'and' === $query_type ) {
-			// phpcs:disable
 			$results = $wpdb->get_col(
 				$wpdb->prepare(
 					"
 					SELECT DISTINCT `product_or_parent_id`
 					FROM {$wpdb->prefix}wc_product_attributes_lookup
 					WHERE `taxonomy` = %s
-					AND `term_id` IN ({$term_ids})
+					AND `term_id` IN (%1s)
 					GROUP BY `product_or_parent_id`
 					HAVING COUNT( DISTINCT `term_id` ) >= %d
 					",
 					$taxonomy,
+					$term_ids,
 					$term_count
 				)
 			);
-			// phpcs:enable
 		}
 
 		return $results;
