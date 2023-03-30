@@ -80,6 +80,20 @@ Release and roadmap notes available on the [WooCommerce Developers Blog](https:/
 
 == Changelog ==
 
+= 9.8.4 - 2023-03-29 =
+
+#### Bug Fixes
+
+- Fix unlinked border widths not being applied correctly in the frontend in WP 6.2 for some blocks. ([8893](https://github.com/woocommerce/woocommerce-blocks/pull/8893))
+
+= 9.8.3 - 2023-03-28 =
+
+#### Bug Fixes
+
+- Fixed an issue where extensions were unable to programatically set the shipping address during payment processing. ([8878](https://github.com/woocommerce/woocommerce-blocks/pull/8878))
+- Fix border styles not visible in the editor in Featured Product and Featured Category blocks. ([8838](https://github.com/woocommerce/woocommerce-blocks/pull/8838))
+- Fix Local Pickup "Save changes" default behavior bug in the Firefox browser. ([8754](https://github.com/woocommerce/woocommerce-blocks/pull/8754))
+
 = 9.8.2 - 2023-03-22 =
 
 #### Enhancements
