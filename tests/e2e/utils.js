@@ -12,6 +12,7 @@ import {
 	searchForBlock as searchForFSEBlock,
 	enterEditMode,
 	getAllBlocks,
+	openDocumentSettingsSidebar,
 } from '@wordpress/e2e-test-utils';
 import { addQueryArgs } from '@wordpress/url';
 import { WP_ADMIN_DASHBOARD } from '@woocommerce/e2e-utils';
@@ -469,4 +470,19 @@ export const removeAllBlocks = async () => {
 			.dispatch( 'core/block-editor' )
 			.removeBlocks( passedAllBlocksIds );
 	}, allBlocksIds );
+};
+
+export const openSettingsSidebar = async () => {
+	// WP <= 6.1
+	const openButton = await page.$(
+		'.edit-post-header__settings button[aria-label="Settings"][aria-expanded="false"]'
+	);
+
+	if ( openButton ) {
+		await openButton.click();
+		await page.waitForSelector( '.edit-post-sidebar' );
+	} else {
+		// WP 6.2
+		openDocumentSettingsSidebar();
+	}
 };
