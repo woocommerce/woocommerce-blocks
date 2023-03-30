@@ -33,8 +33,8 @@ describe( `${ block.name } Block`, () => {
 	describe( 'attributes', () => {
 		beforeEach( async () => {
 			await openDocumentSettingsSidebar();
-			await switchBlockInspectorTabWhenGutenbergIsInstalled( 'Settings' );
 			await page.click( block.class );
+			await switchBlockInspectorTabWhenGutenbergIsInstalled( 'Settings' );
 		} );
 
 		it( 'product count can be toggled', async () => {
