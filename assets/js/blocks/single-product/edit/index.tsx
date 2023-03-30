@@ -10,13 +10,14 @@ import EditProductLink from '@woocommerce/editor-components/edit-product-link';
 import { singleProductBlockPreview } from '@woocommerce/resource-previews';
 import { InspectorControls, useBlockProps } from '@wordpress/block-editor';
 import { ProductResponseItem } from '@woocommerce/types';
-import { ErrorObject } from '@woocommerce/editor-components/error-placeholder';
+import ErrorPlaceholder, {
+	ErrorObject,
+} from '@woocommerce/editor-components/error-placeholder';
 
 /**
  * Internal dependencies
  */
 import './editor.scss';
-import ApiError from './api-error';
 import SharedProductControl from './shared-product-control';
 import EditorBlockControls from './editor-block-controls';
 import LayoutEditor from './layout-editor';
@@ -58,10 +59,11 @@ const Editor = ( {
 
 	if ( error ) {
 		return (
-			<ApiError
+			<ErrorPlaceholder
+				className="wc-block-editor-single-product-error"
 				error={ error as ErrorObject }
 				isLoading={ isLoading }
-				getProduct={ getProduct }
+				onRetry={ getProduct }
 			/>
 		);
 	}
