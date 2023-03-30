@@ -22,15 +22,18 @@ const Preview = ( {
 	parentClassName,
 	sku,
 	className,
+	style,
 }: {
 	parentClassName: string;
 	sku: string;
 	className?: string | undefined;
+	style?: React.CSSProperties | undefined;
 } ) => (
 	<div
 		className={ classnames( className, 'wc-block-components-product-sku', {
 			[ `${ parentClassName }__product-sku` ]: parentClassName,
 		} ) }
+		style={ style }
 	>
 		{ __( 'SKU:', 'woo-gutenberg-products-block' ) }{ ' ' }
 		<strong>{ sku }</strong>
@@ -38,7 +41,7 @@ const Preview = ( {
 );
 
 const Block = ( props: Props ): JSX.Element | null => {
-	const { className } = props;
+	const { className, style } = props;
 	const { parentClassName } = useInnerBlockLayoutContext();
 	const { product } = useProductDataContext();
 	const sku = product.sku;
@@ -62,6 +65,7 @@ const Block = ( props: Props ): JSX.Element | null => {
 			className={ className }
 			parentClassName={ parentClassName }
 			sku={ sku }
+			style={ style }
 		/>
 	);
 };

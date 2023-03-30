@@ -33,7 +33,12 @@ const Edit = ( {
 	return (
 		<div { ...blockProps }>
 			<EditProductLink />
-			<Block { ...blockAttrs } />
+			<Block
+				{ ...blockAttrs }
+				style={ {
+					textTransform: blockProps.style?.textTransform,
+				} }
+			/>
 		</div>
 	);
 };
