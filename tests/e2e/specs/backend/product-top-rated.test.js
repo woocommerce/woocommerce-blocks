@@ -32,6 +32,7 @@ describe( `${ block.name } Block`, () => {
 
 	it( 'can be inserted more than once', async () => {
 		await insertBlock( block.name );
+		await insertBlock( block.name );
 		expect( await getBlocksBySlug( block.slug ) ).toHaveLength( 2 );
 	} );
 } );
