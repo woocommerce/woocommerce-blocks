@@ -3,7 +3,6 @@
  */
 import {
 	merchant,
-	openDocumentSettingsSidebar,
 	setCheckbox,
 	unsetCheckbox,
 	withRestApi,
@@ -29,7 +28,7 @@ import {
 	BASE_URL,
 } from '../../../../utils';
 import { merchant as merchantUtils } from '../../../../utils/merchant';
-import { createCoupon } from '../../../utils';
+import { createCoupon, openSettingsSidebar } from '../../../utils';
 
 let coupon;
 
@@ -153,7 +152,7 @@ describe( 'Shopper → Checkout', () => {
 			await preventCompatibilityNotice();
 			await merchant.login();
 			await visitBlockPage( 'Checkout Block' );
-			await openDocumentSettingsSidebar();
+			await openSettingsSidebar();
 			await selectBlockByName(
 				'woocommerce/checkout-shipping-address-block'
 			);
@@ -166,7 +165,7 @@ describe( 'Shopper → Checkout', () => {
 		afterAll( async () => {
 			await shopper.block.emptyCart();
 			await visitBlockPage( 'Checkout Block' );
-			await openDocumentSettingsSidebar();
+			await openSettingsSidebar();
 			await selectBlockByName(
 				'woocommerce/checkout-shipping-address-block'
 			);
@@ -307,7 +306,7 @@ describe( 'Shopper → Checkout', () => {
 		afterAll( async () => {
 			await merchant.login();
 			await visitBlockPage( 'Checkout Block' );
-			await openDocumentSettingsSidebar();
+			await openSettingsSidebar();
 			await selectBlockByName(
 				'woocommerce/checkout-shipping-methods-block'
 			);
@@ -375,7 +374,7 @@ describe( 'Shopper → Checkout', () => {
 			await preventCompatibilityNotice();
 			await merchant.login();
 			await visitBlockPage( 'Checkout Block' );
-			await openDocumentSettingsSidebar();
+			await openSettingsSidebar();
 			await selectBlockByName(
 				'woocommerce/checkout-shipping-methods-block'
 			);
@@ -433,7 +432,7 @@ describe( 'Shopper → Checkout', () => {
 			await preventCompatibilityNotice();
 			await merchant.login();
 			await visitBlockPage( 'Checkout Block' );
-			await openDocumentSettingsSidebar();
+			await openSettingsSidebar();
 			await selectBlockByName(
 				'woocommerce/checkout-shipping-methods-block'
 			);
@@ -463,7 +462,7 @@ describe( 'Shopper → Checkout', () => {
 			await merchantUtils.enableLocalPickup();
 			await merchantUtils.addLocalPickupLocation();
 			await visitBlockPage( 'Checkout Block' );
-			await openDocumentSettingsSidebar();
+			await openSettingsSidebar();
 			await selectBlockByName(
 				'woocommerce/checkout-shipping-methods-block'
 			);
@@ -507,7 +506,7 @@ describe( 'Shopper → Checkout', () => {
 			await preventCompatibilityNotice();
 			await merchant.login();
 			await visitBlockPage( 'Checkout Block' );
-			await openDocumentSettingsSidebar();
+			await openSettingsSidebar();
 			await selectBlockByName(
 				'woocommerce/checkout-shipping-methods-block'
 			);

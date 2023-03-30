@@ -3,7 +3,6 @@
  */
 import {
 	clickBlockToolbarButton,
-	openDocumentSettingsSidebar,
 	switchUserToAdmin,
 	searchForBlock,
 	openGlobalBlockInserter,
@@ -19,7 +18,11 @@ import { merchant } from '@woocommerce/e2e-utils';
 /**
  * Internal dependencies
  */
-import { openWidgetEditor, closeModalIfExists } from '../../utils.js';
+import {
+	openSettingsSidebar,
+	openWidgetEditor,
+	closeModalIfExists,
+} from '../../utils.js';
 
 const block = {
 	name: 'Cart',
@@ -178,7 +181,7 @@ describe( `${ block.name } Block`, () => {
 
 		describe( 'attributes', () => {
 			beforeEach( async () => {
-				await openDocumentSettingsSidebar();
+				await openSettingsSidebar();
 				await selectBlockByName(
 					'woocommerce/cart-order-summary-shipping-block'
 				);
