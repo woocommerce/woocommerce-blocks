@@ -15,14 +15,6 @@
 	background-color: #fff;
 	box-sizing: border-box;
 
-	&:first-child {
-		margin-top: 0;
-	}
-
-	&:last-child {
-		margin-bottom: 0;
-	}
-
 	> .wc-block-components-notice-banner__content {
 		padding-right: $gap;
 		align-self: center;
