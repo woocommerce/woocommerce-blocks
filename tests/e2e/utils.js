@@ -186,7 +186,7 @@ export async function goToTemplateEditor( {
 		postId,
 		// In WP 6.2, if postId is not defined, the route expects `path` instead
 		// of `postId`.
-		path: postId,
+		path: `/${ postId }/all`,
 	} );
 
 	await disableSiteEditorWelcomeGuide();
