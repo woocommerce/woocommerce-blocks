@@ -18,7 +18,7 @@ const Edit = ( {
 	setAttributes,
 	context,
 }: BlockEditProps< Attributes > & { context: Context } ): JSX.Element => {
-	const blockProps = useBlockProps();
+	const { style, ...blockProps } = useBlockProps();
 	const blockAttrs = {
 		...attributes,
 		...context,
@@ -31,15 +31,12 @@ const Edit = ( {
 	);
 
 	return (
-		<div { ...blockProps }>
+		<>
 			<EditProductLink />
-			<Block
-				{ ...blockAttrs }
-				style={ {
-					textTransform: blockProps.style?.textTransform,
-				} }
-			/>
-		</div>
+			<div { ...blockProps }>
+				<Block { ...blockAttrs } />
+			</div>
+		</>
 	);
 };
 

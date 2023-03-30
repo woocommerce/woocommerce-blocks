@@ -9,6 +9,11 @@ import {
 } from '@woocommerce/shared-context';
 import { withProductDataContext } from '@woocommerce/shared-hocs';
 import type { HTMLAttributes } from 'react';
+import {
+	useColorProps,
+	useSpacingProps,
+	useTypographyProps,
+} from '@woocommerce/base-hooks';
 
 /**
  * Internal dependencies
@@ -41,10 +46,14 @@ const Preview = ( {
 );
 
 const Block = ( props: Props ): JSX.Element | null => {
-	const { className, style } = props;
+	const { className } = props;
 	const { parentClassName } = useInnerBlockLayoutContext();
 	const { product } = useProductDataContext();
 	const sku = product.sku;
+
+	const colorProps = useColorProps( props );
+	const typographyProps = useTypographyProps( props );
+	const spacingProps = useSpacingProps( props );
 
 	if ( props.isDescendentOfSingleProductTemplate ) {
 		return (
@@ -62,10 +71,17 @@ const Block = ( props: Props ): JSX.Element | null => {
 
 	return (
 		<Preview
-			className={ className }
+			className={ classnames( {
+				[ colorProps.className ]: colorProps.className,
+				[ typographyProps.className ]: typographyProps.className,
+			} ) }
 			parentClassName={ parentClassName }
 			sku={ sku }
-			style={ style }
+			style={ {
+				...colorProps.style,
+				...typographyProps.style,
+				...spacingProps.style,
+			} }
 		/>
 	);
 };
