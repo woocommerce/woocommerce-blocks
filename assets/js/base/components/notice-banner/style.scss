@@ -51,6 +51,13 @@
 			margin: 0;
 			border: 0;
 			appearance: none;
+			opacity: 0.6;
+
+			&:hover,
+			&:focus,
+			&:active {
+				opacity: 1;
+			}
 		}
 	}
 
@@ -63,26 +70,29 @@
 		flex-grow: 0;
 	}
 
-	> .wc-block-components-button,
-	> .wc-block-components-button:hover,
-	> .wc-block-components-button:focus {
-		margin: 6px 0 0;
-		margin-left: auto;
+	> .wc-block-components-button {
+		margin: 6px 0 0 auto !important;
 		background: transparent none !important;
-		box-shadow: none;
-		outline: none;
+		box-shadow: none !important;
+		outline: none !important;
 		border: 0 !important;
 		padding: 0 !important;
-		height: 16px;
-		width: 16px;
-		min-height: auto;
+		height: 16px !important;
+		width: 16px !important;
+		min-height: auto !important;
 		color: $gray-800 !important;
-		flex-shrink: 0;
-		flex-grow: 0;
 		min-width: 0 !important;
+		flex: 0 0 16px;
+		opacity: 0.6;
 
 		> svg {
 			margin: 0 !important;
+		}
+
+		&:hover,
+		&:focus,
+		&:active {
+			opacity: 1;
 		}
 	}
 
