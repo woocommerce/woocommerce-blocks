@@ -462,11 +462,8 @@ export const getBlocksBySlug = async ( slug ) => {
 
 export const removeAllBlocks = async () => {
 	const allBlocks = await getAllBlocks();
-	console.log( 'allBlocks' );
-	console.log( allBlocks );
 	const allBlocksIds = allBlocks.map( ( block ) => block.clientId );
-	console.log( 'allBlocksIds' );
-	console.log( allBlocksIds );
+
 	return page.evaluate( ( passedAllBlocksIds ) => {
 		window.wp.data
 			.dispatch( 'core/block-editor' )
