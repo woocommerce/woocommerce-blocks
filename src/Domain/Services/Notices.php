@@ -63,24 +63,18 @@ class Notices {
 	 */
 	public function add_kses_notice_allowed_tags( $allowed_tags ) {
 		$svg_args = array(
-			'svg'   => array(
-				'class'           => true,
-				'aria-hidden'     => true,
-				'aria-labelledby' => true,
-				'role'            => true,
-				'xmlns'           => true,
-				'width'           => true,
-				'height'          => true,
-				'viewbox'         => true,
+			'svg'  => array(
+				'aria-hidden' => true,
+				'xmlns'       => true,
+				'width'       => true,
+				'height'      => true,
+				'viewbox'     => true,
+				'focusable'   => true,
 			),
-			'g'     => array( 'fill' => true ),
-			'title' => array( 'title' => true ),
-			'path'  => array(
-				'd'    => true,
-				'fill' => true,
+			'path' => array(
+				'd' => true,
 			),
 		);
-
 		return array_merge( $allowed_tags, $svg_args );
 	}
 
