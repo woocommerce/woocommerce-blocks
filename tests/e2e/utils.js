@@ -184,9 +184,6 @@ export async function goToTemplateEditor( {
 	await goToSiteEditor( {
 		postType,
 		postId,
-		// In WP 6.2, if postId is not defined, the route expects `path` instead
-		// of `postId`.
-		path: `/${ postId }/all`,
 	} );
 
 	await disableSiteEditorWelcomeGuide();
@@ -204,7 +201,12 @@ export async function goToTemplatesList( {
 	postType = 'wp_template',
 	waitFor = 'list',
 } = {} ) {
-	await goToSiteEditor( { postType } );
+	await goToSiteEditor( {
+		postType,
+		// In WP 6.2, if postId is not defined, the route expects `path` instead
+		// of `postType`.
+		path: `/${ postType }/all`,
+	} );
 
 	if ( waitFor === 'actions' ) {
 		await page.waitForSelector(
