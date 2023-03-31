@@ -42,6 +42,8 @@ const block = {
 			queryProductsList: '.wp-block-post-template > li',
 			classicProductsList: '.products.columns-3 > li',
 			submitButton: '.wc-block-components-filter-submit-button',
+			XPathSubmitButton:
+				"//button[contains(@class,'wc-block-components-filter-submit-button')]",
 		},
 	},
 	urlSearchParamWhenFilterIsApplied: '?max_price=2',
@@ -197,6 +199,9 @@ describe( `${ block.name } Block`, () => {
 				block.selectors.editor.filterButtonToggle
 			);
 			await filterButtonToggle.click();
+
+			await page.waitForXPath( selectors.frontend.XPathSubmitButton );
+
 			await saveTemplate();
 			await goToShopPage();
 
@@ -309,7 +314,7 @@ describe( `${ block.name } Block`, () => {
 			);
 			await filterButtonToggle.click();
 
-			await page.waitForXPath( selectors.frontend.submitButton );
+			await page.waitForXPath( selectors.frontend.XPathSubmitButton );
 
 			await saveOrPublish();
 			await page.goto( frontedPageUrl );
