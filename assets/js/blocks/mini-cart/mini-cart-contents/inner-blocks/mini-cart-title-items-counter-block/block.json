@@ -23,7 +23,7 @@
 		"lock": {
 			"type": "object",
 			"default": {
-				"remove": true,
+				"remove": false,
 				"move": true
 			}
 		}
