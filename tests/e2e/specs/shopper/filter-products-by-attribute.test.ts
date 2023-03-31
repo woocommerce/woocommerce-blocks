@@ -48,6 +48,8 @@ const block = {
 			classicProductsList: '.products.columns-3 > li',
 			filter: "input[id='128gb']",
 			submitButton: '.wc-block-components-filter-submit-button',
+			XPathSubmitButton:
+				"//*[contains(@class,'wc-block-components-filter-submit-button')]",
 		},
 	},
 	urlSearchParamWhenFilterIsApplied:
@@ -71,8 +73,8 @@ describe( `${ block.name } Block`, () => {
 				title: block.name,
 			} );
 
-			await insertBlockUsingQuickInserter( 'All Products' );
 			await insertBlock( block.name );
+			await insertBlockUsingQuickInserter( 'All Products' );
 			const canvasEl = canvas();
 
 			// It seems that .click doesn't work well with radio input element.
@@ -198,6 +200,9 @@ describe( `${ block.name } Block`, () => {
 				block.selectors.editor.filterButtonToggle
 			);
 			await filterButtonToggle.click();
+
+			await canvas().waitForXPath( selectors.frontend.XPathSubmitButton );
+
 			await saveTemplate();
 			await goToShopPage();
 
@@ -317,6 +322,9 @@ describe( `${ block.name } Block`, () => {
 				block.selectors.editor.filterButtonToggle
 			);
 			await filterButtonToggle.click();
+
+			await canvas().waitForXPath( selectors.frontend.XPathSubmitButton );
+
 			await saveOrPublish();
 			await page.goto( frontedPageUrl );
 

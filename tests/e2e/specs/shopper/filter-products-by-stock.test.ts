@@ -2,6 +2,7 @@
  * External dependencies
  */
 import {
+	canvas,
 	createNewPost,
 	deleteAllTemplates,
 	insertBlock,
@@ -44,6 +45,8 @@ const block = {
 			classicProductsList: '.products.columns-3 > li',
 			filter: 'input[id=outofstock]',
 			submitButton: '.wc-block-components-filter-submit-button',
+			XPathSubmitButton:
+				"//*[contains(@class,'wc-block-components-filter-submit-button')]",
 			queryProductsList: '.wp-block-post-template > li',
 		},
 	},
@@ -178,6 +181,9 @@ describe( `${ block.name } Block`, () => {
 				selectors.editor.filterButtonToggle
 			);
 			await filterButtonToggle.click();
+
+			await canvas().waitForXPath( selectors.frontend.XPathSubmitButton );
+
 			await saveTemplate();
 			await goToShopPage();
 
@@ -230,8 +236,8 @@ describe( `${ block.name } Block`, () => {
 				title: block.name,
 			} );
 
-			await insertBlock( 'Products (Beta)' );
 			await insertBlock( block.name );
+			await insertBlock( 'Products (Beta)' );
 			await publishPost();
 
 			editorPageUrl = page.url();

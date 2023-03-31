@@ -2,6 +2,7 @@
  * External dependencies
  */
 import {
+	canvas,
 	createNewPost,
 	deleteAllTemplates,
 	insertBlock,
@@ -43,7 +44,7 @@ const block = {
 			classicProductsList: '.products.columns-3 > li',
 			submitButton: '.wc-block-components-filter-submit-button',
 			XPathSubmitButton:
-				"//button[contains(@class,'wc-block-components-filter-submit-button')]",
+				"//*[contains(@class,'wc-block-components-filter-submit-button')]",
 		},
 	},
 	urlSearchParamWhenFilterIsApplied: '?max_price=2',
@@ -77,8 +78,8 @@ describe( `${ block.name } Block`, () => {
 			} );
 
 			await insertBlock( block.name );
-			await insertBlockUsingSlash( 'All Products' );
 			await insertBlock( 'Active Filters' );
+			await insertBlockUsingSlash( 'All Products' );
 			await publishPost();
 
 			const link = await page.evaluate( () =>
@@ -200,7 +201,7 @@ describe( `${ block.name } Block`, () => {
 			);
 			await filterButtonToggle.click();
 
-			await page.waitForXPath( selectors.frontend.XPathSubmitButton );
+			await canvas().waitForXPath( selectors.frontend.XPathSubmitButton );
 
 			await saveTemplate();
 			await goToShopPage();
@@ -249,9 +250,9 @@ describe( `${ block.name } Block`, () => {
 				title: block.name,
 			} );
 
-			await insertBlock( 'Products (Beta)' );
 			await insertBlock( block.name );
 			await insertBlock( 'Active Filters' );
+			await insertBlock( 'Products (Beta)' );
 			await page.waitForNetworkIdle();
 			await publishPost();
 
@@ -314,7 +315,7 @@ describe( `${ block.name } Block`, () => {
 			);
 			await filterButtonToggle.click();
 
-			await page.waitForXPath( selectors.frontend.XPathSubmitButton );
+			await canvas().waitForXPath( selectors.frontend.XPathSubmitButton );
 
 			await saveOrPublish();
 			await page.goto( frontedPageUrl );

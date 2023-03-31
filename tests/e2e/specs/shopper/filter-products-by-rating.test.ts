@@ -2,6 +2,7 @@
  * External dependencies
  */
 import {
+	canvas,
 	createNewPost,
 	deleteAllTemplates,
 	insertBlock,
@@ -45,6 +46,8 @@ const block = {
 			classicProductsList: '.products.columns-3 > li',
 			fiveStarInput: ".wc-block-rating-filter label[for='5'] input",
 			submitButton: '.wc-block-components-filter-submit-button',
+			XPathSubmitButton:
+				"//*[contains(@class,'wc-block-components-filter-submit-button')]",
 		},
 	},
 	urlSearchParamWhenFilterIsApplied: '?rating_filter=5',
@@ -173,6 +176,9 @@ describe( `${ block.name } Block`, () => {
 				selectors.editor.filterButtonToggle
 			);
 			await filterButtonToggle.click();
+
+			await canvas().waitForXPath( selectors.frontend.XPathSubmitButton );
+
 			await saveTemplate();
 			await goToShopPage();
 
@@ -224,8 +230,8 @@ describe( `${ block.name } Block`, () => {
 				title: block.name,
 			} );
 
-			await insertBlock( 'Products (Beta)' );
 			await insertBlock( block.name );
+			await insertBlock( 'Products (Beta)' );
 			await page.waitForNetworkIdle();
 			await publishPost();
 
