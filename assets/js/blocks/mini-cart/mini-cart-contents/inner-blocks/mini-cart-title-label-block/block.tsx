@@ -1,7 +1,11 @@
 /**
  * External dependencies
  */
-import { useColorProps, useTypographyProps } from '@woocommerce/base-hooks';
+import {
+	useColorProps,
+	useSpacingProps,
+	useTypographyProps,
+} from '@woocommerce/base-hooks';
 import classNames from 'classnames';
 
 /**
@@ -17,6 +21,7 @@ type Props = {
 const Block = ( props: Props ): JSX.Element => {
 	const colorProps = useColorProps( props );
 	const typographyProps = useTypographyProps( props );
+	const spacingProps = useSpacingProps( props );
 
 	return (
 		<h2
@@ -28,6 +33,7 @@ const Block = ( props: Props ): JSX.Element => {
 			style={ {
 				...colorProps.style,
 				...typographyProps.style,
+				...spacingProps.style,
 			} }
 		>
 			{ props.label || defaultYourCartLabel }

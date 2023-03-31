@@ -4,7 +4,11 @@
 import { useStoreCart } from '@woocommerce/base-context';
 import classNames from 'classnames';
 import { _n, sprintf } from '@wordpress/i18n';
-import { useColorProps, useTypographyProps } from '@woocommerce/base-hooks';
+import {
+	useColorProps,
+	useSpacingProps,
+	useTypographyProps,
+} from '@woocommerce/base-hooks';
 
 type Props = {
 	className?: string;
@@ -14,6 +18,7 @@ const Block = ( props: Props ): JSX.Element => {
 	const { cartItemsCount } = useStoreCart();
 	const colorProps = useColorProps( props );
 	const typographyProps = useTypographyProps( props );
+	const spacingProps = useSpacingProps( props );
 
 	return (
 		<h2
@@ -25,6 +30,7 @@ const Block = ( props: Props ): JSX.Element => {
 			style={ {
 				...colorProps.style,
 				...typographyProps.style,
+				...spacingProps.style,
 			} }
 		>
 			{ sprintf(
