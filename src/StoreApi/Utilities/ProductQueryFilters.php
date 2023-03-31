@@ -194,9 +194,9 @@ class ProductQueryFilters {
 			if ( ! empty( $formatted_filtered_products_by_metas ) ) {
 				if ( ! empty( $rating ) ) {
 					$where_clause .= sprintf( ' AND product_attribute_lookup.product_or_parent_id IN (%1s)', $formatted_filtered_products_by_metas );
+				} else {
+					$where_clause .= sprintf( ' AND product_attribute_lookup.product_id IN (%1s)', $formatted_filtered_products_by_metas );
 				}
-
-				$where_clause .= sprintf( ' AND product_attribute_lookup.product_id IN (%1s)', $formatted_filtered_products_by_metas );
 			} else {
 				$counts = $this->get_empty_terms_list( $filtered_attribute );
 
