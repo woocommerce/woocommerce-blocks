@@ -245,8 +245,8 @@ describe( `${ block.name } Block`, () => {
 				title: block.name,
 			} );
 
-			await insertBlock( 'Products (Beta)' );
 			await insertBlock( block.name );
+			await insertBlock( 'Products (Beta)' );
 			await page.waitForNetworkIdle();
 
 			await canvas().waitForSelector(
