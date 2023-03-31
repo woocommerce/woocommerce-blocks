@@ -14,6 +14,14 @@ export const switchBlockInspectorTabWhenGutenbergIsInstalled = async (
 	// Open the sidebar in case it was closed.
 	await openSettingsSidebar();
 
+	const blockButton = await page.waitForXPath(
+		"//button[contains(text(), 'Block')]"
+	);
+	if ( ! blockButton ) {
+		throw new Error( `Could not find Block button` );
+	}
+	blockButton?.click();
+
 	// Switch to the tab.
 	await switchBlockInspectorTab( tabName );
 };
