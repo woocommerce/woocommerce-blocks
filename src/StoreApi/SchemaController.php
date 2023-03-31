@@ -44,6 +44,7 @@ class SchemaController {
 				Schemas\V1\CartSchema::IDENTIFIER          => Schemas\V1\CartSchema::class,
 				Schemas\V1\CartExtensionsSchema::IDENTIFIER => Schemas\V1\CartExtensionsSchema::class,
 				Schemas\V1\CheckoutSchema::IDENTIFIER      => Schemas\V1\CheckoutSchema::class,
+				Schemas\V1\OrderSchema::IDENTIFIER         => Schemas\V1\OrderSchema::class,
 				Schemas\V1\ProductSchema::IDENTIFIER       => Schemas\V1\ProductSchema::class,
 				Schemas\V1\ProductAttributeSchema::IDENTIFIER => Schemas\V1\ProductAttributeSchema::class,
 				Schemas\V1\ProductCategorySchema::IDENTIFIER => Schemas\V1\ProductCategorySchema::class,
