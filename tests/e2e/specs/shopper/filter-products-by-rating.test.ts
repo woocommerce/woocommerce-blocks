@@ -28,6 +28,7 @@ import {
 	waitForAllProductsBlockLoaded,
 	waitForCanvas,
 	insertAllProductsBlock,
+	enableApplyFiltersButton,
 } from '../../utils';
 
 const block = {
@@ -35,18 +36,12 @@ const block = {
 	slug: 'woocommerce/rating-filter',
 	class: '.wc-block-rating-filter',
 	selectors: {
-		editor: {
-			filterButtonToggle:
-				'//label[text()="Show \'Apply filters\' button"]/preceding-sibling::span[1]//input',
-		},
 		frontend: {
 			productsList: '.wc-block-grid__products > li',
 			queryProductsList: '.wp-block-post-template > li',
 			classicProductsList: '.products.columns-3 > li',
 			fiveStarInput: ".wc-block-rating-filter label[for='5'] input",
 			submitButton: '.wc-block-components-filter-submit-button',
-			XPathSubmitButton:
-				"//*[contains(@class,'wc-block-components-filter-submit-button')]",
 		},
 	},
 	urlSearchParamWhenFilterIsApplied: '?rating_filter=5',
@@ -164,20 +159,7 @@ describe( `${ block.name } Block`, () => {
 
 			await waitForCanvas();
 			await selectBlockByName( block.slug );
-			await ensureSidebarOpened();
-			await switchBlockInspectorTabWhenGutenbergIsInstalled( 'Settings' );
-
-			await page.evaluate( () => {
-				const toggle = document.querySelector(
-					'.components-toggle-control:last-child .components-form-toggle__input'
-				);
-				if ( ! toggle ) {
-					throw new Error( "'Apply filters' toggle not found" );
-				}
-				toggle.click();
-			} );
-
-			await page.waitForXPath( selectors.frontend.XPathSubmitButton );
+			await enableApplyFiltersButton();
 
 			await saveTemplate();
 			await goToShopPage();

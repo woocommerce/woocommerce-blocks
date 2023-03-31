@@ -28,6 +28,7 @@ import {
 	waitForAllProductsBlockLoaded,
 	waitForCanvas,
 	insertAllProductsBlock,
+	enableApplyFiltersButton,
 } from '../../utils';
 
 const block = {
@@ -35,17 +36,11 @@ const block = {
 	slug: 'woocommerce/stock-filter',
 	class: '.wc-block-stock-filter',
 	selectors: {
-		editor: {
-			filterButtonToggle:
-				'//label[text()="Show \'Apply filters\' button"]/preceding-sibling::span[1]//input',
-		},
 		frontend: {
 			productsList: '.wc-block-grid__products > li',
 			classicProductsList: '.products.columns-3 > li',
 			filter: 'input[id=outofstock]',
 			submitButton: '.wc-block-components-filter-submit-button',
-			XPathSubmitButton:
-				"//*[contains(@class,'wc-block-components-filter-submit-button')]",
 			queryProductsList: '.wp-block-post-template > li',
 		},
 	},
@@ -170,18 +165,7 @@ describe( `${ block.name } Block`, () => {
 
 			await waitForCanvas();
 			await selectBlockByName( block.slug );
-			await ensureSidebarOpened();
-			await switchBlockInspectorTabWhenGutenbergIsInstalled( 'Settings' );
-
-			await page.evaluate( () => {
-				const toggle = document.querySelector(
-					'.components-toggle-control:last-child .components-form-toggle__input'
-				);
-				if ( ! toggle ) {
-					throw new Error( "'Apply filters' toggle not found" );
-				}
-				toggle.click();
-			} );
+			await enableApplyFiltersButton();
 
 			await saveTemplate();
 			await goToShopPage();

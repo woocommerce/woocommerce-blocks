@@ -2,18 +2,13 @@
  * External dependencies
  */
 import {
-	canvas,
 	createNewPost,
 	deleteAllTemplates,
 	insertBlock,
 	switchUserToAdmin,
 	publishPost,
-	ensureSidebarOpened,
 } from '@wordpress/e2e-test-utils';
-import {
-	selectBlockByName,
-	switchBlockInspectorTabWhenGutenbergIsInstalled,
-} from '@woocommerce/blocks-test-utils';
+import { selectBlockByName } from '@woocommerce/blocks-test-utils';
 
 /**
  * Internal dependencies
@@ -25,6 +20,7 @@ import {
 	useTheme,
 	waitForAllProductsBlockLoaded,
 	insertAllProductsBlock,
+	enableApplyFiltersButton,
 } from '../../utils';
 import { clickLink, saveOrPublish } from '../../../utils';
 
@@ -33,18 +29,12 @@ const block = {
 	slug: 'woocommerce/price-filter',
 	class: '.wc-block-price-filter',
 	selectors: {
-		editor: {
-			filterButtonToggle:
-				'//label[text()="Show \'Apply filters\' button"]/preceding-sibling::span[1]//input',
-		},
 		frontend: {
 			priceMaxAmount: '.wc-block-price-filter__amount--max',
 			productsList: '.wc-block-grid__products > li',
 			queryProductsList: '.wp-block-post-template > li',
 			classicProductsList: '.products.columns-3 > li',
 			submitButton: '.wc-block-components-filter-submit-button',
-			XPathSubmitButton:
-				"//*[contains(@class,'wc-block-components-filter-submit-button')]",
 		},
 	},
 	urlSearchParamWhenFilterIsApplied: '?max_price=2',
@@ -190,20 +180,8 @@ describe( `${ block.name } Block`, () => {
 			} );
 
 			await selectBlockByName( block.slug );
-			await ensureSidebarOpened();
-			await switchBlockInspectorTabWhenGutenbergIsInstalled( 'Settings' );
 
-			await page.evaluate( () => {
-				const toggle = document.querySelector(
-					'.components-toggle-control:last-child .components-form-toggle__input'
-				);
-				if ( ! toggle ) {
-					throw new Error( "'Apply filters' toggle not found" );
-				}
-				toggle.click();
-			} );
-
-			await page.waitForXPath( selectors.frontend.XPathSubmitButton );
+			await enableApplyFiltersButton();
 
 			await saveTemplate();
 			await goToShopPage();
@@ -306,18 +284,8 @@ describe( `${ block.name } Block`, () => {
 		it( 'should refresh the page only if the user click on button', async () => {
 			await page.goto( editorPageUrl );
 
-			await ensureSidebarOpened();
 			await selectBlockByName( block.slug );
-			await switchBlockInspectorTabWhenGutenbergIsInstalled( 'Settings' );
-			await page.waitForXPath(
-				block.selectors.editor.filterButtonToggle
-			);
-			const [ filterButtonToggle ] = await page.$x(
-				block.selectors.editor.filterButtonToggle
-			);
-			await filterButtonToggle.click();
-
-			await canvas().waitForXPath( selectors.frontend.XPathSubmitButton );
+			await enableApplyFiltersButton();
 
 			await saveOrPublish();
 			await page.goto( frontedPageUrl );

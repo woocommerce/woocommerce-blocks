@@ -4,6 +4,7 @@
 import { Coupon, HTTPClientFactory } from '@woocommerce/api';
 import config from 'config';
 import {
+	canvas,
 	disableSiteEditorWelcomeGuide,
 	openGlobalBlockInserter,
 	switchUserToAdmin,
@@ -17,6 +18,7 @@ import {
 import { addQueryArgs } from '@wordpress/url';
 import { WP_ADMIN_DASHBOARD } from '@woocommerce/e2e-utils';
 import fs from 'fs';
+import { switchBlockInspectorTabWhenGutenbergIsInstalled } from '@woocommerce/blocks-test-utils';
 
 /**
  * Internal dependencies
@@ -70,6 +72,13 @@ const SELECTORS = {
 	templateEditor: {
 		editButton:
 			'.edit-site-site-hub__edit-button[aria-label="Open the editor"]',
+	},
+	editor: {
+		filterButtonToggle: '//label[text()="Show \'Apply filters\' button"]',
+	},
+	frontend: {
+		XPathSubmitButton:
+			"//*[contains(@class,'wc-block-components-filter-submit-button')]",
 	},
 };
 
@@ -493,4 +502,33 @@ export const insertAllProductsBlock = async () => {
 		throw new Error( `Could not find the "${ searchTerm }" block` );
 	}
 	insertButton?.click();
+};
+
+export const enableApplyFiltersButton = async () => {
+	await ensureSidebarOpened();
+	await switchBlockInspectorTabWhenGutenbergIsInstalled( 'Settings' );
+
+	await page.waitForXPath( SELECTORS.editor.filterButtonToggle );
+
+	const [ filterButtonToggle ] = await page.$x(
+		SELECTORS.editor.filterButtonToggle
+	);
+	if ( ! filterButtonToggle ) {
+		throw new Error( "'Apply filters' toggle not found via XPath." );
+	}
+	await filterButtonToggle.click();
+
+	await page.evaluate( () => {
+		const toggle = document.querySelector(
+			'.components-toggle-control:last-child .components-form-toggle__input'
+		);
+		if ( ! toggle ) {
+			throw new Error( "'Apply filters' toggle not found via CSS." );
+		}
+		if ( ! toggle.checked ) {
+			toggle.click();
+		}
+	} );
+
+	await canvas().waitForXPath( SELECTORS.frontend.XPathSubmitButton );
 };
