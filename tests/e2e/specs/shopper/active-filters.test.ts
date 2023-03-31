@@ -8,7 +8,6 @@ import {
 	createNewPost,
 	switchUserToAdmin,
 	publishPost,
-	insertBlock,
 } from '@wordpress/e2e-test-utils';
 import { SHOP_PAGE } from '@woocommerce/e2e-utils';
 import { Frame, Page } from 'puppeteer';

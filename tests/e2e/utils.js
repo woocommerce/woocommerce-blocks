@@ -12,7 +12,7 @@ import {
 	searchForBlock as searchForFSEBlock,
 	enterEditMode,
 	getAllBlocks,
-	openDocumentSettingsSidebar,
+	ensureSidebarOpened,
 } from '@wordpress/e2e-test-utils';
 import { addQueryArgs } from '@wordpress/url';
 import { WP_ADMIN_DASHBOARD } from '@woocommerce/e2e-utils';
@@ -471,5 +471,5 @@ export const removeAllBlocks = async () => {
 };
 
 export const openSettingsSidebar = async () => {
-	openDocumentSettingsSidebar();
+	ensureSidebarOpened();
 };
