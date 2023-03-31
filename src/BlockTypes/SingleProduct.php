@@ -125,7 +125,7 @@ class SingleProduct extends AbstractBlock {
 			$block_name = array_pop( $this->single_product_inner_blocks_names );
 
 			if ( $block_name === $block['blockName'] ) {
-				if( 'core/post-excerpt' === $block_name ) {
+				if ( 'core/post-excerpt' === $block_name ) {
 					global $post;
 					// phpcs:ignore WordPress.WP.GlobalVariablesOverride.Prohibited
 					$post = get_post( $this->product_id );
@@ -134,7 +134,8 @@ class SingleProduct extends AbstractBlock {
 				$context['postId'] = $this->product_id;
 				if ( ! $this->single_product_inner_blocks_names ) {
 					wp_reset_postdata();
-				}			}
+				}
+			}
 		}
 	}
 }
