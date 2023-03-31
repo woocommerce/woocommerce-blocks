@@ -25,16 +25,19 @@ class AddToCartForm extends AbstractBlock {
 	 * @return string | void Rendered block output.
 	 */
 	protected function render( $attributes, $content, $block ) {
-		$post_id = $block->context['postId'] ?? 0;
+		global $product;
 
-		if ( ! $post_id ) {
-			return;
+		$post_id = $block->context['postId'];
+
+		if ( ! isset( $post_id ) ) {
+			return '';
 		}
 
-		$product = wc_get_product( $post_id );
-
-		if ( ! $product ) {
-			return;
+		if ( ! $product instanceof \WC_Product ) {
+			$product = wc_get_product( $post_id );
+			if ( ! $product instanceof \WC_Product ) {
+				return '';
+			}
 		}
 
 		ob_start();
@@ -49,7 +52,7 @@ class AddToCartForm extends AbstractBlock {
 		$product = ob_get_clean();
 
 		if ( ! $product ) {
-			return;
+			return '';
 		}
 
 		$classname          = $attributes['className'] ?? '';
