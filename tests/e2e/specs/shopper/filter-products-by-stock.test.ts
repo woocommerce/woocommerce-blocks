@@ -180,7 +180,8 @@ describe( `${ block.name } Block`, () => {
 			const [ filterButtonToggle ] = await page.$x(
 				selectors.editor.filterButtonToggle
 			);
-			await filterButtonToggle.click();
+			await filterButtonToggle.focus();
+			await page.keyboard.press( 'Space' );
 
 			await canvas().waitForXPath( selectors.frontend.XPathSubmitButton );
 
