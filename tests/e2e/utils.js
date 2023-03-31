@@ -471,21 +471,5 @@ export const removeAllBlocks = async () => {
 };
 
 export const openSettingsSidebar = async () => {
-	// This button is only available in WP 6.2 or higher.
-	const toggleButton = await page.$(
-		'.edit-post-header__settings button[aria-label="Settings"][aria-disabled="false"]'
-	);
-	if ( toggleButton ) {
-		openDocumentSettingsSidebar();
-	} else {
-		// WP <= 6.1 fallback.
-		const openButton = await page.$(
-			'.edit-post-header__settings button[aria-label="Settings"][aria-expanded="false"]'
-		);
-
-		if ( openButton ) {
-			await openButton.click();
-			await page.waitForSelector( '.edit-post-sidebar' );
-		}
-	}
+	openDocumentSettingsSidebar();
 };
