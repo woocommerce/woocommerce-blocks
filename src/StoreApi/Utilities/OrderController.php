@@ -39,6 +39,18 @@ class OrderController {
 	}
 
 	/**
+	 * Get order.
+	 *
+	 * @throws RouteException Exception if invalid data is detected.
+	 *
+	 * @param integer $order_id Order ID.
+	 * @return \WC_Order A new order object.
+	 */
+	public function get_order( $order_id ) {
+		return wc_get_order( $order_id );
+	}
+
+	/**
 	 * Update an order using data from the current cart.
 	 *
 	 * @param \WC_Order $order The order object to update.
