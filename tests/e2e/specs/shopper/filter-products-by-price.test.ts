@@ -35,7 +35,7 @@ const block = {
 	selectors: {
 		editor: {
 			filterButtonToggle:
-				'//label[text()="Show \'Apply filters\' button"]',
+				'//label[text()="Show \'Apply filters\' button"]/preceding-sibling::span[1]//input',
 		},
 		frontend: {
 			priceMaxAmount: '.wc-block-price-filter__amount--max',

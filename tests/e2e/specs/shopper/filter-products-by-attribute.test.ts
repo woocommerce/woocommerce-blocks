@@ -37,7 +37,7 @@ const block = {
 			firstAttributeInTheList:
 				'.woocommerce-search-list__list > li > label > input.woocommerce-search-list__item-input',
 			filterButtonToggle:
-				'//label[text()="Show \'Apply filters\' button"]',
+				'//label[text()="Show \'Apply filters\' button"]/preceding-sibling::span[1]//input',
 			doneButton: '.wc-block-attribute-filter__selection > button',
 		},
 		frontend: {
