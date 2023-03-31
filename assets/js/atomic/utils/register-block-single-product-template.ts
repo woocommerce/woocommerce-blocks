@@ -62,7 +62,7 @@ export const registerBlockSingleProductTemplate = ( {
 					...blockSettings,
 					// @ts-expect-error: `ancestor` key is typed in WordPress core
 					ancestor: ! currentTemplateId?.includes( 'single-product' )
-						? blockSettings.ancestor
+						? blockSettings?.ancestor
 						: undefined,
 				} );
 			} else {
@@ -70,7 +70,7 @@ export const registerBlockSingleProductTemplate = ( {
 				registerBlockType( blockMetadata, {
 					...blockSettings,
 					ancestor: ! currentTemplateId?.includes( 'single-product' )
-						? blockSettings.ancestor
+						? blockSettings?.ancestor
 						: undefined,
 				} );
 			}
