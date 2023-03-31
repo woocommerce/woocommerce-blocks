@@ -35,7 +35,7 @@ const Preview = ( {
 	style?: React.CSSProperties | undefined;
 } ) => (
 	<div
-		className={ classnames( className, 'wc-block-components-product-sku', {
+		className={ classnames( className, {
 			[ `${ parentClassName }__product-sku` ]: parentClassName,
 		} ) }
 		style={ style }
@@ -71,17 +71,28 @@ const Block = ( props: Props ): JSX.Element | null => {
 
 	return (
 		<Preview
-			className={ classnames( {
-				[ colorProps.className ]: colorProps.className,
-				[ typographyProps.className ]: typographyProps.className,
-			} ) }
+			className={ className }
 			parentClassName={ parentClassName }
 			sku={ sku }
-			style={ {
-				...colorProps.style,
-				...typographyProps.style,
-				...spacingProps.style,
-			} }
+			{ ...( props.isDescendantOfAllProducts && {
+				className: classnames(
+					className,
+					'wp-block-woocommerce-product-sku',
+					{
+						[ colorProps.className ]: colorProps.className,
+						[ typographyProps.className ]:
+							typographyProps.className,
+					}
+				),
+				style: {
+					...colorProps.style,
+					...typographyProps.style,
+					...spacingProps.style,
+					// Default value of textTransform is uppercase.
+					textTransform:
+						typographyProps.style?.textTransform || 'uppercase',
+				},
+			} ) }
 		/>
 	);
 };
