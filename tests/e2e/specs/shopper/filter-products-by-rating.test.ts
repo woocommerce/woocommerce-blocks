@@ -69,8 +69,8 @@ describe( `${ block.name } Block`, () => {
 				title: block.name,
 			} );
 
-			await insertBlock( block.name );
 			await insertBlockUsingSlash( 'All Products' );
+			await insertBlock( block.name );
 			await publishPost();
 
 			link = await page.evaluate( () =>
