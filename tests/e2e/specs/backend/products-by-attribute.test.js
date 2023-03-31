@@ -15,7 +15,7 @@ const block = {
 	class: '.wc-block-products-by-attribute',
 };
 
-describe( `${ block.name } Block`, () => {
+describe( `${ block.name } Block `, () => {
 	beforeAll( async () => {
 		await switchUserToAdmin();
 		await visitBlockPage( `${ block.name } Block` );

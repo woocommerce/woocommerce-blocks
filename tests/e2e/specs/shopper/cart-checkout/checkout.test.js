@@ -14,6 +14,7 @@ import {
 	getToggleIdByLabel,
 } from '@woocommerce/blocks-test-utils';
 import { visitAdminPage } from '@wordpress/e2e-test-utils';
+
 /**
  * Internal dependencies
  */
