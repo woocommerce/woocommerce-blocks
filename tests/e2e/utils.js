@@ -473,3 +473,24 @@ export const removeAllBlocks = async () => {
 export const openSettingsSidebar = async () => {
 	ensureSidebarOpened();
 };
+
+export const insertAllProductsBlock = async () => {
+	const searchTerm = 'All Products';
+
+	await searchForBlock( searchTerm );
+
+	// Wait for the default block list to disappear to prevent its items from
+	// being considered as search results. This is needed since we're debouncing
+	// search request.
+	await page.waitForSelector( '.block-editor-inserter__block-list', {
+		hidden: true,
+	} );
+
+	const insertButton = await page.waitForXPath(
+		`//*[@role='option' and contains(., '${ searchTerm }')]`
+	);
+	if ( ! insertButton ) {
+		throw new Error( `Could not find the "${ searchTerm }" block` );
+	}
+	insertButton?.click();
+};

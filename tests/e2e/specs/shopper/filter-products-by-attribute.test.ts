@@ -24,6 +24,7 @@ import {
 	saveTemplate,
 	useTheme,
 	waitForAllProductsBlockLoaded,
+	insertAllProductsBlock,
 } from '../../utils';
 import { saveOrPublish } from '../../../utils';
 
@@ -73,7 +74,7 @@ describe( `${ block.name } Block`, () => {
 			} );
 
 			await insertBlock( block.name );
-			await insertBlock( 'All Products' );
+			await insertAllProductsBlock();
 			const canvasEl = canvas();
 
 			// It seems that .click doesn't work well with radio input element.

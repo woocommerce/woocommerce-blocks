@@ -16,6 +16,7 @@ import { Frame, Page } from 'puppeteer';
  * Internal dependencies
  */
 import {
+	insertAllProductsBlock,
 	goToTemplateEditor,
 	useTheme,
 	saveTemplate,
@@ -95,7 +96,7 @@ describe( 'Shopper → Active Filters Block', () => {
 			} );
 
 			await insertBlocks();
-			await insertBlock( 'All Products' );
+			await insertAllProductsBlock();
 			await configureAttributeFilterBlock( page );
 			await publishPost();
 
