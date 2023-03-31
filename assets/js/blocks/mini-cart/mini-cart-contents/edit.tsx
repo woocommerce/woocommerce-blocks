@@ -23,9 +23,12 @@ const ALLOWED_BLOCKS = [
 
 interface Props {
 	clientId: string;
+	attributes: Record< string, unknown >;
 }
 
 const Edit = ( { clientId, attributes }: Props ): ReactElement => {
+	const { currentView, width } = attributes;
+
 	const blockProps = useBlockProps( {
 		/**
 		 * This is a workaround for the Site Editor to calculate the
@@ -35,15 +38,15 @@ const Edit = ( { clientId, attributes }: Props ): ReactElement => {
 		 */
 		style: {
 			minHeight: '100vh',
+			maxWidth: width,
 		},
 	} );
+	console.log( { width } );
 
 	const defaultTemplate = [
 		[ 'woocommerce/filled-mini-cart-contents-block', {}, [] ],
 		[ 'woocommerce/empty-mini-cart-contents-block', {}, [] ],
 	] as TemplateArray;
-
-	const { currentView } = attributes;
 
 	useForcedLayout( {
 		clientId,

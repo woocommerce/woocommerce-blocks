@@ -4,7 +4,10 @@
 import { renderParentBlock } from '@woocommerce/atomic-utils';
 import Drawer from '@woocommerce/base-components/drawer';
 import { useStoreCart } from '@woocommerce/base-context/hooks';
-import { translateJQueryEventToNative } from '@woocommerce/base-utils';
+import {
+	getValidBlockAttributes,
+	translateJQueryEventToNative,
+} from '@woocommerce/base-utils';
 import { getRegisteredBlockComponents } from '@woocommerce/blocks-registry';
 import {
 	formatPrice,
@@ -34,7 +37,10 @@ import classnames from 'classnames';
 import QuantityBadge from './quantity-badge';
 import { MiniCartContentsBlock } from './mini-cart-contents/block';
 import './style.scss';
-import { blockName } from './mini-cart-contents/attributes';
+import {
+	blockName,
+	attributes as miniCartContentsAttributes,
+} from './mini-cart-contents/attributes';
 
 interface Props {
 	isInitiallyOpen?: boolean;
@@ -44,6 +50,15 @@ interface Props {
 	addToCartBehaviour: string;
 	hasHiddenPrice: boolean;
 }
+const getProps = ( el: Element ) => {
+	return {
+		attributes: getValidBlockAttributes(
+			miniCartContentsAttributes,
+			/* eslint-disable @typescript-eslint/no-explicit-any */
+			( el instanceof HTMLElement ? el.dataset : {} ) as any
+		),
+	};
+};
 
 const MiniCartBlock = ( attributes: Props ): JSX.Element => {
 	const {
@@ -105,6 +120,7 @@ const MiniCartBlock = ( attributes: Props ): JSX.Element => {
 				renderParentBlock( {
 					Block: MiniCartContentsBlock,
 					blockName,
+					getProps,
 					selector: '.wp-block-woocommerce-mini-cart-contents',
 					blockMap: getRegisteredBlockComponents( blockName ),
 				} );

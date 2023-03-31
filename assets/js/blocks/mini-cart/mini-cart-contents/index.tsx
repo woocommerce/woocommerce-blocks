@@ -12,8 +12,46 @@ import { isFeaturePluginBuild } from '@woocommerce/block-settings';
  * Internal dependencies
  */
 import edit, { Save as save } from './edit';
-import { blockName } from './attributes';
+import { blockName, attributes } from './attributes';
 import './inner-blocks';
+
+// export const attributes = {
+// 	isPreview: {
+// 		type: 'boolean',
+// 		default: false,
+// 	},
+// 	lock: {
+// 		type: 'object',
+// 		default: {
+// 			remove: true,
+// 			move: true,
+// 		},
+// 	},
+// 	currentView: {
+// 		type: 'string',
+// 		default: 'woocommerce/filled-mini-cart-contents-block',
+// 		source: 'readonly', // custom source to prevent saving to post content
+// 	},
+// 	editorViews: {
+// 		type: 'object',
+// 		default: [
+// 			{
+// 				view: 'woocommerce/filled-mini-cart-contents-block',
+// 				label: __( 'Filled Mini Cart', 'woo-gutenberg-products-block' ),
+// 				icon: <Icon icon={ filledCart } />,
+// 			},
+// 			{
+// 				view: 'woocommerce/empty-mini-cart-contents-block',
+// 				label: __( 'Empty Mini Cart', 'woo-gutenberg-products-block' ),
+// 				icon: <Icon icon={ removeCart } />,
+// 			},
+// 		],
+// 	},
+// 	width: {
+// 		type: 'number',
+// 		default: 600,
+// 	},
+// };
 
 const settings: BlockConfiguration = {
 	apiVersion: 2,
@@ -49,45 +87,7 @@ const settings: BlockConfiguration = {
 			},
 		} ),
 	},
-	attributes: {
-		isPreview: {
-			type: 'boolean',
-			default: false,
-		},
-		lock: {
-			type: 'object',
-			default: {
-				remove: true,
-				move: true,
-			},
-		},
-		currentView: {
-			type: 'string',
-			default: 'woocommerce/filled-mini-cart-contents-block',
-			source: 'readonly', // custom source to prevent saving to post content
-		},
-		editorViews: {
-			type: 'object',
-			default: [
-				{
-					view: 'woocommerce/filled-mini-cart-contents-block',
-					label: __(
-						'Filled Mini Cart',
-						'woo-gutenberg-products-block'
-					),
-					icon: <Icon icon={ filledCart } />,
-				},
-				{
-					view: 'woocommerce/empty-mini-cart-contents-block',
-					label: __(
-						'Empty Mini Cart',
-						'woo-gutenberg-products-block'
-					),
-					icon: <Icon icon={ removeCart } />,
-				},
-			],
-		},
-	},
+	attributes,
 	example: {
 		attributes: {
 			isPreview: true,
