@@ -15,10 +15,6 @@ const SnackbarNotices = ( {
 } ): JSX.Element | null => {
 	const { removeNotice } = useDispatch( 'core/notices' );
 
-	if ( ! notices.length ) {
-		return null;
-	}
-
 	return (
 		<SnackbarList
 			className={ classnames(

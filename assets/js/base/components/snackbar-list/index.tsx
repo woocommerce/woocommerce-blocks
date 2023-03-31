@@ -5,14 +5,13 @@ import classnames from 'classnames';
 import type { NoticeType } from '@woocommerce/types';
 import { useReducedMotion } from '@wordpress/compose';
 import { useRef } from '@wordpress/element';
-import { motion, AnimatePresence } from 'framer-motion/dist/framer-motion';
+import { CSSTransition, TransitionGroup } from 'react-transition-group';
 
 /**
  * Internal dependencies
  */
 import './style.scss';
 import Snackbar from './snackbar';
-import { SNACKBAR_VARIANTS } from './constants';
 
 export type SnackbarListProps = {
 	// Class name to be added to the container.
@@ -46,38 +45,42 @@ const SnackbarList = ( {
 			tabIndex={ -1 }
 			ref={ listRef }
 		>
-			<AnimatePresence>
-				{ notices.map( ( notice ) => {
+			{ isReducedMotion ? (
+				notices.map( ( notice ) => {
 					const { content, ...restNotice } = notice;
-
-					return isReducedMotion ? (
+					return (
 						<Snackbar
 							{ ...restNotice }
 							onRemove={ removeNotice( notice ) }
 							listRef={ listRef }
+							key={ notice.id }
 						>
 							{ notice.content }
 						</Snackbar>
-					) : (
-						<motion.div
-							layout={ ! isReducedMotion }
-							initial={ 'init' }
-							animate={ 'open' }
-							exit={ 'exit' }
-							key={ notice.id }
-							variants={ SNACKBAR_VARIANTS }
-						>
-							<Snackbar
-								{ ...restNotice }
-								onRemove={ removeNotice( notice ) }
-								listRef={ listRef }
-							>
-								{ notice.content }
-							</Snackbar>
-						</motion.div>
 					);
-				} ) }
-			</AnimatePresence>
+				} )
+			) : (
+				<TransitionGroup>
+					{ notices.map( ( notice ) => {
+						const { content, ...restNotice } = notice;
+						return (
+							<CSSTransition
+								key={ 'snackbar-' + notice.id }
+								timeout={ 500 }
+								classNames="notice-transition"
+							>
+								<Snackbar
+									{ ...restNotice }
+									onRemove={ removeNotice( notice ) }
+									listRef={ listRef }
+								>
+									{ content }
+								</Snackbar>
+							</CSSTransition>
+						);
+					} ) }
+				</TransitionGroup>
+			) }
 		</div>
 	);
 };

@@ -31,3 +31,24 @@
 		}
 	}
 }
+
+.notice-transition-enter {
+	max-height: 0;
+}
+.notice-transition-enter.notice-transition-enter-active {
+	max-height: 99em;
+	transition: max-height 0.5s ease-in;
+}
+.notice-transition-enter-done {
+	max-height: auto;
+}
+.notice-transition-exit {
+	opacity: 1;
+}
+.notice-transition-exit.notice-transition-exit-active {
+	opacity: 0;
+	transition: opacity 0.5s ease-in;
+}
+.notice-transition-exit-done {
+	opacity: 0;
+}

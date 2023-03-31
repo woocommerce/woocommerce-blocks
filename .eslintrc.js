@@ -52,7 +52,7 @@ module.exports = {
 			'prop-types',
 			'react',
 			'requireindex',
-			'framer-motion/dist/framer-motion',
+			'react-transition-group',
 		],
 		'import/resolver': {
 			node: {},
