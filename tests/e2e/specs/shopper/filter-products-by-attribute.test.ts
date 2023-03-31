@@ -12,7 +12,6 @@ import {
 } from '@wordpress/e2e-test-utils';
 import {
 	selectBlockByName,
-	insertBlockUsingQuickInserter,
 	switchBlockInspectorTabWhenGutenbergIsInstalled,
 } from '@woocommerce/blocks-test-utils';
 
@@ -74,7 +73,7 @@ describe( `${ block.name } Block`, () => {
 			} );
 
 			await insertBlock( block.name );
-			await insertBlockUsingQuickInserter( 'All Products' );
+			await insertBlock( 'All Products' );
 			const canvasEl = canvas();
 
 			// It seems that .click doesn't work well with radio input element.

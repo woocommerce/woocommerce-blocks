@@ -11,7 +11,6 @@ import {
 	ensureSidebarOpened,
 } from '@wordpress/e2e-test-utils';
 import {
-	insertBlockUsingQuickInserter,
 	selectBlockByName,
 	switchBlockInspectorTabWhenGutenbergIsInstalled,
 } from '@woocommerce/blocks-test-utils';
@@ -79,7 +78,7 @@ describe( `${ block.name } Block`, () => {
 
 			await insertBlock( block.name );
 			await insertBlock( 'Active Filters' );
-			await insertBlockUsingQuickInserter( 'All Products' );
+			await insertBlock( 'All Products' );
 			await publishPost();
 
 			const link = await page.evaluate( () =>

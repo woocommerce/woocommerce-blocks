@@ -11,7 +11,6 @@ import {
 	ensureSidebarOpened,
 } from '@wordpress/e2e-test-utils';
 import {
-	insertBlockUsingQuickInserter,
 	selectBlockByName,
 	saveOrPublish,
 	getToggleIdByLabel,
@@ -73,7 +72,7 @@ describe( `${ block.name } Block`, () => {
 			} );
 
 			await insertBlock( block.name );
-			await insertBlockUsingQuickInserter( 'All Products' );
+			await insertBlock( 'All Products' );
 			await publishPost();
 
 			link = await page.evaluate( () =>
