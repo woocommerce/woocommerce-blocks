@@ -309,6 +309,8 @@ describe( `${ block.name } Block`, () => {
 			);
 			await filterButtonToggle.click();
 
+			await page.waitForXPath( selectors.frontend.submitButton );
+
 			await saveOrPublish();
 			await page.goto( frontedPageUrl );
 
