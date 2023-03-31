@@ -2,7 +2,6 @@
  * External dependencies
  */
 import {
-	canvas,
 	createNewPost,
 	deleteAllTemplates,
 	insertBlock,
@@ -168,17 +167,17 @@ describe( `${ block.name } Block`, () => {
 			await ensureSidebarOpened();
 			await switchBlockInspectorTabWhenGutenbergIsInstalled( 'Settings' );
 
-			await page.waitForXPath(
-				block.selectors.editor.filterButtonToggle
-			);
+			await page.evaluate( () => {
+				const toggle = document.querySelector(
+					'.components-toggle-control:last-child .components-form-toggle__input'
+				);
+				if ( ! toggle ) {
+					throw new Error( "'Apply filters' toggle not found" );
+				}
+				toggle.click();
+			} );
 
-			const [ filterButtonToggle ] = await page.$x(
-				selectors.editor.filterButtonToggle
-			);
-			await filterButtonToggle.focus();
-			await page.keyboard.press( 'Space' );
-
-			await canvas().waitForXPath( selectors.frontend.XPathSubmitButton );
+			await page.waitForXPath( selectors.frontend.XPathSubmitButton );
 
 			await saveTemplate();
 			await goToShopPage();

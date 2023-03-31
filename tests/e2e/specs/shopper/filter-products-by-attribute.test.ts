@@ -196,13 +196,17 @@ describe( `${ block.name } Block`, () => {
 			await selectBlockByName( block.slug );
 			await switchBlockInspectorTabWhenGutenbergIsInstalled( 'Settings' );
 
-			const [ filterButtonToggle ] = await page.$x(
-				block.selectors.editor.filterButtonToggle
-			);
-			await filterButtonToggle.focus();
-			await page.keyboard.press( 'Space' );
+			await page.evaluate( () => {
+				const toggle = document.querySelector(
+					'.components-toggle-control:last-child .components-form-toggle__input'
+				);
+				if ( ! toggle ) {
+					throw new Error( "'Apply filters' toggle not found" );
+				}
+				toggle.click();
+			} );
 
-			await canvas().waitForXPath( selectors.frontend.XPathSubmitButton );
+			await page.waitForXPath( selectors.frontend.XPathSubmitButton );
 
 			await saveTemplate();
 			await goToShopPage();
