@@ -14,11 +14,11 @@ import {
 	enterEditMode,
 	getAllBlocks,
 	ensureSidebarOpened,
+	switchBlockInspectorTab,
 } from '@wordpress/e2e-test-utils';
 import { addQueryArgs } from '@wordpress/url';
 import { WP_ADMIN_DASHBOARD } from '@woocommerce/e2e-utils';
 import fs from 'fs';
-import { switchBlockInspectorTabWhenGutenbergIsInstalled } from '@woocommerce/blocks-test-utils';
 
 /**
  * Internal dependencies
@@ -506,7 +506,7 @@ export const insertAllProductsBlock = async () => {
 
 export const enableApplyFiltersButton = async () => {
 	await ensureSidebarOpened();
-	await switchBlockInspectorTabWhenGutenbergIsInstalled( 'Settings' );
+	await switchBlockInspectorTab( 'Settings' );
 
 	await page.waitForXPath( SELECTORS.editor.filterButtonToggle );
 
