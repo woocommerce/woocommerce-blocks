@@ -9,7 +9,6 @@ import {
 	switchUserToAdmin,
 	publishPost,
 } from '@wordpress/e2e-test-utils';
-import { selectBlockByName } from '@woocommerce/blocks-test-utils';
 
 /**
  * Internal dependencies
@@ -20,6 +19,7 @@ import {
 	saveTemplate,
 	useTheme,
 	waitForAllProductsBlockLoaded,
+	waitForCanvas,
 	insertAllProductsBlock,
 	enableApplyFiltersButton,
 } from '../../utils';
@@ -185,9 +185,8 @@ describe( `${ block.name } Block`, () => {
 				postId: productCatalogTemplateId,
 			} );
 
-			await selectBlockByName( block.slug );
-
-			await enableApplyFiltersButton();
+			await waitForCanvas();
+			await enableApplyFiltersButton( block.slug );
 
 			await saveTemplate();
 			await goToShopPage();
@@ -300,9 +299,9 @@ describe( `${ block.name } Block`, () => {
 
 		it( 'should refresh the page only if the user clicks on button', async () => {
 			await page.goto( editorPageUrl );
-			await selectBlockByName( block.slug );
 
-			await enableApplyFiltersButton();
+			await waitForCanvas();
+			await enableApplyFiltersButton( block.slug );
 
 			await saveOrPublish();
 			await page.goto( frontedPageUrl );

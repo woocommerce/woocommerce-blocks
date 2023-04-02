@@ -164,8 +164,7 @@ describe( `${ block.name } Block`, () => {
 			} );
 
 			await waitForCanvas();
-			await selectBlockByName( block.slug );
-			await enableApplyFiltersButton();
+			await enableApplyFiltersButton( block.slug );
 
 			await saveTemplate();
 			await goToShopPage();

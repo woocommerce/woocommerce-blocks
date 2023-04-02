@@ -18,6 +18,7 @@ import {
 } from '@wordpress/e2e-test-utils';
 import { addQueryArgs } from '@wordpress/url';
 import { WP_ADMIN_DASHBOARD } from '@woocommerce/e2e-utils';
+import { selectBlockByName } from '@woocommerce/blocks-test-utils';
 import fs from 'fs';
 
 /**
@@ -504,7 +505,8 @@ export const insertAllProductsBlock = async () => {
 	insertButton?.click();
 };
 
-export const enableApplyFiltersButton = async () => {
+export const enableApplyFiltersButton = async ( blockSlug ) => {
+	await selectBlockByName( blockSlug );
 	await ensureSidebarOpened();
 	await switchBlockInspectorTab( 'Settings' );
 
