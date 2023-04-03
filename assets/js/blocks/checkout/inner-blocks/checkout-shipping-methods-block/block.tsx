@@ -27,7 +27,6 @@ import NoticeBanner from '@woocommerce/base-components/notice-banner';
  * Internal dependencies
  */
 import './style.scss';
-import { shippingAddressHasValidationErrors } from '../../../../data/cart/utils';
 
 /**
  * Renders a shipping rate control option.
@@ -56,7 +55,6 @@ const renderShippingRatesControlOption = (
 
 const Block = ( {
 	noShippingPlaceholder = null,
-	shippingCostRequiresAddress = false,
 } ): React.ReactElement | null => {
 	const { isEditor } = useEditorContext();
 
@@ -68,8 +66,8 @@ const Block = ( {
 		isCollectable,
 	} = useShippingData();
 
-	const shippingAddressPushed = useSelect( ( select ) => {
-		return select( CART_STORE_KEY ).getFullShippingAddressPushed();
+	const shippingAddress = useSelect( ( select ) => {
+		return select( CART_STORE_KEY ).getCustomerData().shippingAddress;
 	} );
 
 	const filteredShippingRates = isCollectable
@@ -86,25 +84,14 @@ const Block = ( {
 		  } )
 		: shippingRates;
 
-	const shippingAddress = useSelect( ( select ) => {
-		return select( CART_STORE_KEY ).getCustomerData()?.shippingAddress;
-	} );
-
 	if ( ! needsShipping ) {
 		return null;
 	}
 
-	const shippingAddressHasErrors = ! shippingAddressHasValidationErrors();
-	const addressComplete = isAddressComplete( shippingAddress );
-
 	const shippingRatesPackageCount =
 		getShippingRatesPackageCount( shippingRates );
 
-	if (
-		( ! hasCalculatedShipping && ! shippingRatesPackageCount ) ||
-		( shippingCostRequiresAddress &&
-			( ! shippingAddressPushed || ! shippingAddressHasErrors ) )
-	) {
+	if ( ! hasCalculatedShipping && ! shippingRatesPackageCount ) {
 		return (
 			<p>
 				{ __(
@@ -114,6 +101,7 @@ const Block = ( {
 			</p>
 		);
 	}
+	const addressComplete = isAddressComplete( shippingAddress );
 
 	return (
 		<>
