@@ -12,7 +12,6 @@ import {
 } from '@wordpress/e2e-test-utils';
 import {
 	selectBlockByName,
-	insertBlockUsingSlash,
 	getToggleIdByLabel,
 	saveOrPublish,
 } from '@woocommerce/blocks-test-utils';
@@ -24,6 +23,7 @@ import { setCheckbox } from '@woocommerce/e2e-utils';
 import {
 	BASE_URL,
 	goToTemplateEditor,
+	insertAllProductsBlock,
 	saveTemplate,
 	useTheme,
 	waitForAllProductsBlockLoaded,
@@ -69,7 +69,7 @@ describe( `${ block.name } Block`, () => {
 			} );
 
 			await insertBlock( block.name );
-			await insertBlockUsingSlash( 'All Products' );
+			await insertAllProductsBlock();
 			await publishPost();
 
 			link = await page.evaluate( () =>

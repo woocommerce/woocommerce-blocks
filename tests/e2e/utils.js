@@ -451,9 +451,35 @@ export const describeOrSkip = ( condition ) =>
  * @param {string} slug Slug of the blocks to get.
  *
  * @return {Promise<{}>} Promise resolving with an array containing all blocks in
- * the document that match a certain slug .
+ * the document that match a certain slug.
  */
 export const getBlocksBySlug = async ( slug ) => {
 	const blocks = await getAllBlocks();
 	return blocks.filter( ( { name } ) => name === slug );
+};
+
+/**
+ * Insert the All Products block using the global inserter. This util is needed
+ * because inserting the All Products block using the `insertBlock()` util
+ * causes time outs.
+ */
+export const insertAllProductsBlock = async () => {
+	const searchTerm = 'All Products';
+
+	await searchForBlock( searchTerm );
+
+	// Wait for the default block list to disappear to prevent its items from
+	// being considered as search results. This is needed since we're debouncing
+	// search request.
+	await page.waitForSelector( '.block-editor-inserter__block-list', {
+		hidden: true,
+	} );
+
+	const insertButton = await page.waitForXPath(
+		`//*[@role='option' and contains(., '${ searchTerm }')]`
+	);
+	if ( ! insertButton ) {
+		throw new Error( `Could not find the "${ searchTerm }" block` );
+	}
+	insertButton?.click();
 };

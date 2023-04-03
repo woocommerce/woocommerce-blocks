@@ -11,10 +11,7 @@ import {
 	publishPost,
 	ensureSidebarOpened,
 } from '@wordpress/e2e-test-utils';
-import {
-	selectBlockByName,
-	insertBlockUsingSlash,
-} from '@woocommerce/blocks-test-utils';
+import { selectBlockByName } from '@woocommerce/blocks-test-utils';
 
 /**
  * Internal dependencies
@@ -22,6 +19,7 @@ import {
 import {
 	BASE_URL,
 	goToTemplateEditor,
+	insertAllProductsBlock,
 	saveTemplate,
 	useTheme,
 	waitForAllProductsBlockLoaded,
@@ -71,7 +69,7 @@ describe( `${ block.name } Block`, () => {
 				title: block.name,
 			} );
 
-			await insertBlockUsingSlash( 'All Products' );
+			await insertAllProductsBlock();
 			await insertBlock( block.name );
 			const canvasEl = canvas();
 
