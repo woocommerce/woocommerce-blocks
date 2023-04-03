@@ -104,7 +104,7 @@ class ShippingController {
 	 * @return boolean Whether shipping should continue to be enabled/disabled.
 	 */
 	public function force_shipping_enabled( $enabled ) {
-		if ( CartCheckoutUtils::is_checkout_block_default() ) {
+		if ( CartCheckoutUtils::is_checkout_block_default() && $this->local_pickup_enabled ) {
 			return true;
 		}
 		return $enabled;
