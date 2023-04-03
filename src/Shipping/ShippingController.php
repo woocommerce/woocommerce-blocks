@@ -44,8 +44,7 @@ class ShippingController {
 		$this->asset_api           = $asset_api;
 		$this->asset_data_registry = $asset_data_registry;
 
-		$pickup_location_settings   = get_option( 'woocommerce_pickup_location_settings', [] );
-		$this->local_pickup_enabled = wc_string_to_bool( $pickup_location_settings['enabled'] ?? 'no' );
+		$this->local_pickup_enabled = LocalPickupUtils::is_local_pickup_enabled();
 	}
 
 	/**
