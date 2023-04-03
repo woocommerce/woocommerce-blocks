@@ -190,7 +190,6 @@ final class BlockTypesController {
 			'ProductButton',
 			'ProductCategories',
 			'ProductCategory',
-			'ProductCategoryList',
 			'ProductImage',
 			'ProductImageGallery',
 			'ProductNew',
@@ -199,13 +198,13 @@ final class BlockTypesController {
 			'ProductQuery',
 			'ProductRating',
 			'ProductResultsCount',
+			'ProductReviews',
 			'ProductSaleBadge',
 			'ProductSearch',
 			'ProductSKU',
 			'ProductStockIndicator',
 			'ProductSummary',
 			'ProductTag',
-			'ProductTagList',
 			'ProductTitle',
 			'ProductTopRated',
 			'ProductsByAttribute',
@@ -223,10 +222,6 @@ final class BlockTypesController {
 			Checkout::get_checkout_block_types(),
 			MiniCartContents::get_mini_cart_block_types()
 		);
-
-		if ( Package::feature()->is_experimental_build() ) {
-			$block_types[] = 'SingleProduct';
-		}
 
 		/**
 		 * This disables specific blocks in Widget Areas by not registering them.

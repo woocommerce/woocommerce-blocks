@@ -11,7 +11,8 @@ The release pull request has been created! This checklist is a guide to follow f
 -   [ ] Ensure you pull your changes from the remote, since GitHub Actions will have added new commits to the branch.
     -   [ ] Check the version and date in the changelog section within `readme.txt`, e.g. `= {{version}} - YYYY-MM-DD =`
     -   [ ] Check the changelog matches the one in the pull request description above.
--   [ ] Update compatibility sections (if applicable). **Note:** Do not change the stable tag or plugin version; this is automated.
+-   [ ] Run `npm run change-versions` to update the version numbers in several files. Write the version number you are releasing: {{version}}.
+-   [ ] Update compatibility sections (if applicable).
 -   [ ] Push above changes to the release branch.
 
 ## Create the Testing Notes
@@ -42,11 +43,9 @@ Each porter is responsible for testing the PRs that fall under the focus of thei
     -   If some PRs are not testing as expected but they are not blockers: revert the relevant commits, remove the changes from testing steps and changelog, open an issue (or reopen the original one) and proceed with the release.
     -   If minor issues are discovered during the testing, each team is responsible for logging them in Github.
 
-## Update Pull Request description and get approvals
+## Push the button - Deploy
 
--   [ ] Go through the description of the release pull request and edit it to update all the sections and checklist instructions there.
 -   [ ] Execute `npm run deploy`
-    -   Note: the script automatically updates version numbers (commits on your behalf).
     -   **ALERT**: This script will ask you if this release will be deployed to WordPress.org. You should only answer yes for this release **if it's the latest release and you want to deploy to WordPress.org**. Otherwise, answer no. If you answer yes, you will get asked additional verification by the `npm run deploy` script about deploying a patch release to WordPress.org.
 
 ## If this release is deployed to WordPress.org
@@ -55,8 +54,8 @@ Each porter is responsible for testing the PRs that fall under the focus of thei
 -   [ ] Edit the [GitHub release](https://github.com/woocommerce/woocommerce-gutenberg-products-block/releases) and copy changelog into the release notes.
 -   [ ] The `#woo-blocks-repo` slack instance will be notified about the progress with the WordPress.org deploy. Watch for that. If anything goes wrong, an error will be reported and you can followup via the GitHub actions tab and the log for that workflow.
 -   [ ] After the wp.org workflow completes, confirm the following
-    -   [ ] Changelog, Version, and Last Updated on [WP.org plugin page](https://wordpress.org/plugins/woo-gutenberg-products-block/) is correct.
     -   [ ] Confirm svn tag is correct, e.g. [{{version}}](https://plugins.svn.wordpress.org/woo-gutenberg-products-block/tags/{{version}}/)
+    -   [ ] Changelog, Version, and Last Updated on [WP.org plugin page](https://wordpress.org/plugins/woo-gutenberg-products-block/) is correct.
     -   [ ] Confirm [WooCommerce.com plugin page](https://woocommerce.com/products/woocommerce-gutenberg-products-block/) is updated. Note: this can take several hours, feel free to check it the following day.
     -   [ ] Download zip and smoke test.
     -   [ ] Test updating plugin from previous version.
@@ -111,3 +110,4 @@ You only need to post public release announcements and update relevant public fa
     -   Ensure the release notes are included in the post verbatim.
     -   Don't forget to use category `WooCommerce Blocks Release Notes` for the post.
 -   [ ] Announce the release internally (`#woo-announcements` slack).
+-   [ ] Go through the description of the release pull request and edit it to update all the sections and checklist instructions there.

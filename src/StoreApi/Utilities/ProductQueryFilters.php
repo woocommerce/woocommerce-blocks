@@ -2,6 +2,8 @@
 namespace Automattic\WooCommerce\StoreApi\Utilities;
 
 use Automattic\WooCommerce\StoreApi\Utilities\ProductQuery;
+use Exception;
+use WP_REST_Request;
 
 /**
  * Product Query filters class.
@@ -122,9 +124,32 @@ class ProductQueryFilters {
 
 		return $wpdb->get_results(
 			$wpdb->prepare(
-				"SELECT DISTINCT term_id as term_count_id, 0 as term_count
-         	FROM {$wpdb->prefix}wc_product_attributes_lookup
-         	WHERE taxonomy = %s",
+				"SELECT term_id as term_count_id,
+            count(DISTINCT product_or_parent_id) as term_count
+			FROM {$wpdb->prefix}wc_product_attributes_lookup
+			WHERE taxonomy = %s
+			GROUP BY term_id",
+				$taxonomy
+			)
+		);
+	}
+
+	/**
+	 * Get the empty terms list for a given taxonomy.
+	 *
+	 * @param string $taxonomy Taxonomy name.
+	 *
+	 * @return array
+	 */
+	public function get_empty_terms_list( string $taxonomy ) {
+		global $wpdb;
+
+		return $wpdb->get_results(
+			$wpdb->prepare(
+				"SELECT DISTINCT term_id as term_count_id,
+            0 as term_count
+			FROM {$wpdb->prefix}wc_product_attributes_lookup
+			WHERE taxonomy = %s",
 				$taxonomy
 			)
 		);
@@ -134,75 +159,91 @@ class ProductQueryFilters {
 	 * Get attribute and meta counts.
 	 *
 	 * @param WP_REST_Request $request Request data.
-	 * @param array           $attributes Attributes to count.
+	 * @param string          $filtered_attribute The attribute to count.
+	 *
 	 * @return array
 	 */
-	public function get_attribute_and_meta_counts( $request, $attributes = [] ) {
+	public function get_attribute_and_meta_counts( $request, $filtered_attribute ) {
 		global $wpdb;
 
-		$attributes = array_map( 'esc_sql', $attributes );
-		$taxonomy   = $attributes[0];
+		$attributes_data            = $request->get_param( 'attributes' );
+		$calculate_attribute_counts = $request->get_param( 'calculate_attribute_counts' );
+		$min_price                  = $request->get_param( 'min_price' );
+		$max_price                  = $request->get_param( 'max_price' );
+		$rating                     = $request->get_param( 'rating' );
+		$stock_status               = $request->get_param( 'stock_status' );
 
-		$query_type = 'or';
-		foreach ( $request['calculate_attribute_counts'] as $attributes_to_count ) {
-			if ( ! empty( $attributes_to_count['query_type'] ) ) {
-				$query_type = $attributes_to_count['query_type'];
-			}
-		}
-
-		$product_metas = [];
-		if ( isset( $_REQUEST['min_price'] ) ) {
-			$product_metas['min_price'] = intval( $_REQUEST['min_price'] ) / 100;
-		}
-
-		if ( isset( $_REQUEST['max_price'] ) ) {
-			$product_metas['max_price'] = intval( $_REQUEST['max_price'] ) / 100;
-		}
-
-		$product_metas = $this->get_product_by_metas( $product_metas );
-
-		if ( ! isset( $_REQUEST['attributes'] ) ) {
-			$counts = $this->get_terms_list( $taxonomy );
+		if ( empty( $attributes_data ) && empty( $min_price ) && empty( $max_price ) && empty( $rating ) && empty( $stock_status ) ) {
+			$counts = $this->get_terms_list( $filtered_attribute );
 
 			return array_map( 'absint', wp_list_pluck( $counts, 'term_count', 'term_count_id' ) );
 		}
 
-		$term_ids = [];
-		foreach ( $_REQUEST['attributes'] as $attribute ) {
-			if ( empty( $attribute['term_id'] ) && empty( $attribute['slug'] ) ) {
+		$where_clause = '';
+		if ( ! empty( $min_price ) || ! empty( $max_price ) || ! empty( $rating ) || ! empty( $stock_status ) ) {
+			$product_metas = [
+				'min_price'      => $min_price,
+				'max_price'      => $max_price,
+				'average_rating' => $rating,
+				'stock_status'   => $stock_status,
+			];
+
+			$filtered_products_by_metas           = $this->get_product_by_metas( $product_metas );
+			$formatted_filtered_products_by_metas = implode( ',', array_map( 'intval', $filtered_products_by_metas ) );
+
+			if ( ! empty( $formatted_filtered_products_by_metas ) ) {
+				if ( ! empty( $rating ) ) {
+					$where_clause .= sprintf( ' AND product_attribute_lookup.product_or_parent_id IN (%1s)', $formatted_filtered_products_by_metas );
+				} else {
+					$where_clause .= sprintf( ' AND product_attribute_lookup.product_id IN (%1s)', $formatted_filtered_products_by_metas );
+				}
+			} else {
+				$counts = $this->get_empty_terms_list( $filtered_attribute );
+
+				return array_map( 'absint', wp_list_pluck( $counts, 'term_count', 'term_count_id' ) );
+			}
+		}
+
+		$join_type = 'LEFT';
+		foreach ( $attributes_data as $attribute ) {
+			$filtered_terms = $attribute['slug'] ?? '';
+
+			if ( empty( $filtered_terms ) ) {
 				continue;
 			}
 
-			if ( in_array( $attribute['attribute'], wc_get_attribute_taxonomy_names(), true ) ) {
-				if ( ! empty( $attribute['term_id'] ) ) {
-					$term_ids[] = $attribute['term_id'];
-				} elseif ( ! empty( $attribute['slug'] ) ) {
-					foreach ( $attribute['slug'] as $slug ) {
-						$term = get_term_by( 'slug', $slug, $attribute['attribute'] );
-						if ( is_object( $term ) ) {
-							$term_ids[] = $term->term_id;
-						}
+			$taxonomy = $attribute['attribute'] ?? '';
+			$term_ids = [];
+			if ( in_array( $taxonomy, wc_get_attribute_taxonomy_names(), true ) ) {
+				foreach ( $filtered_terms as $filtered_term ) {
+					$term = get_term_by( 'slug', $filtered_term, $taxonomy );
+					if ( is_object( $term ) ) {
+						$term_ids[] = $term->term_id;
 					}
 				}
 			}
-		}
 
-		if ( empty( $term_ids ) ) {
-			$counts = $this->get_terms_list( $taxonomy );
+			if ( empty( $term_ids ) ) {
+				continue;
+			}
 
-			return array_map( 'absint', wp_list_pluck( $counts, 'term_count', 'term_count_id' ) );
-		}
+			foreach ( $calculate_attribute_counts as $calculate_attribute_count ) {
+				if ( ! isset( $calculate_attribute_count['taxonomy'] ) && ! isset( $calculate_attribute_count['query_type'] ) ) {
+					continue;
+				}
 
-		$product_attributes = $this->get_product_by_filtered_terms( $taxonomy, $term_ids, $query_type );
+				$query_type                           = $calculate_attribute_count['query_type'];
+				$filtered_products_by_terms           = $this->get_product_by_filtered_terms( $calculate_attribute_count['taxonomy'], $term_ids, $query_type );
+				$formatted_filtered_products_by_terms = implode( ',', array_map( 'intval', $filtered_products_by_terms ) );
 
-		$where_clause = "posts.post_type IN ('product', 'product_variation') AND posts.post_status = 'publish'";
+				if ( ! empty( $formatted_filtered_products_by_terms ) ) {
+					$where_clause .= sprintf( ' AND product_attribute_lookup.product_or_parent_id IN (%1s)', $formatted_filtered_products_by_terms );
+				}
 
-		if ( ! empty( $product_attributes ) ) {
-			$where_clause .= " AND product_attribute_lookup.product_or_parent_id IN ({$product_attributes})";
-		}
-
-		if ( ! empty( $product_metas ) ) {
-			$where_clause .= " AND product_attribute_lookup.product_id IN ({$product_metas})";
+				if ( $calculate_attribute_count['taxonomy'] === $filtered_attribute ) {
+					$join_type = 'or' === $query_type ? 'LEFT' : 'INNER';
+				}
+			}
 		}
 
 		$counts = $wpdb->get_results(
@@ -212,15 +253,17 @@ class ProductQueryFilters {
 	         SELECT DISTINCT term_id
 	         FROM {$wpdb->prefix}wc_product_attributes_lookup
 	         WHERE taxonomy = %s) as attributes
-	         LEFT JOIN (
+	         %1s JOIN (
 	    SELECT COUNT(DISTINCT product_attribute_lookup.product_or_parent_id) as term_count, product_attribute_lookup.term_id
 	    FROM {$wpdb->prefix}wc_product_attributes_lookup product_attribute_lookup
 	             INNER JOIN {$wpdb->posts} posts
 	                        ON posts.ID = product_attribute_lookup.product_id
-	    WHERE {$where_clause}
+	    WHERE posts.post_type IN ('product', 'product_variation') AND posts.post_status = 'publish'%1s
 	    GROUP BY product_attribute_lookup.term_id
 	) summarize ON attributes.term_id = summarize.term_id",
-				$taxonomy
+				$filtered_attribute,
+				$join_type,
+				$where_clause
 			)
 		);
 
@@ -267,5 +310,131 @@ class ProductQueryFilters {
 		$results = $wpdb->get_results( $rating_count_sql ); // phpcs:ignore
 
 		return array_map( 'absint', wp_list_pluck( $results, 'product_count', 'rounded_average_rating' ) );
+	}
+
+	/**
+	 * Gets product by metas.
+	 *
+	 * @since TBD
+	 * @param array $metas Array of metas to query.
+	 * @return array $results
+	 */
+	public function get_product_by_metas( $metas = array() ) {
+		global $wpdb;
+
+		if ( empty( $metas ) ) {
+			return array();
+		}
+
+		$where   = array();
+		$results = array();
+		$params  = array();
+		foreach ( $metas as $column => $value ) {
+			if ( empty( $value ) ) {
+				continue;
+			}
+
+			$value = is_array( $value ) ? implode( ',', $value ) : $value;
+
+			if ( 'stock_status' === $column ) {
+				$stock_product_ids = $wpdb->get_col(
+					$wpdb->prepare(
+						"SELECT DISTINCT product_id FROM {$wpdb->prefix}wc_product_meta_lookup WHERE stock_status = %s",
+						$value
+					)
+				);
+				continue;
+			}
+
+			if ( 'min_price' === $column ) {
+				$where[]  = "{$column} >= %d";
+				$params[] = intval( $value ) / 100;
+				continue;
+			}
+
+			if ( 'max_price' === $column ) {
+				$where[]  = "{$column} <= %d";
+				$params[] = intval( $value ) / 100;
+				continue;
+			}
+
+			if ( 'average_rating' === $column ) {
+				$value   = is_array( $value ) ? implode( ',', $value ) : $value;
+				$where[] = sprintf( 'average_rating BETWEEN %s - 0.5 AND %s + 0.5', $value, $value );
+				continue;
+			}
+
+			$where[]  = sprintf( "%1s = '%s'", $column, $value );
+			$params[] = $value;
+		}
+
+		if ( isset( $stock_product_ids ) && ! empty( $stock_product_ids ) ) {
+			$where[] = 'product_id IN (' . implode( ',', $stock_product_ids ) . ')';
+		}
+
+		if ( ! empty( $where ) ) {
+			$where_clause = implode( ' AND ', $where );
+			$where_clause = sprintf( $where_clause, ...$params );
+			$results      = $wpdb->get_col(
+				$wpdb->prepare(
+					"SELECT DISTINCT product_id FROM {$wpdb->prefix}wc_product_meta_lookup WHERE %1s",
+					$where_clause
+				)
+			);
+		}
+
+		return $results;
+	}
+
+	/**
+	 * Gets product by filtered terms.
+	 *
+	 * @since TBD
+	 * @param string $taxonomy Taxonomy name.
+	 * @param array  $term_ids Term IDs.
+	 * @param string $query_type or | and.
+	 * @return array Product IDs.
+	 */
+	public function get_product_by_filtered_terms( $taxonomy = '', $term_ids = array(), $query_type = 'or' ) {
+		global $wpdb;
+
+		$term_count = count( $term_ids );
+		$results    = array();
+		$term_ids   = implode( ',', array_map( 'intval', $term_ids ) );
+
+		if ( 'or' === $query_type ) {
+			$results = $wpdb->get_col(
+				$wpdb->prepare(
+					"
+					SELECT DISTINCT `product_or_parent_id`
+					FROM {$wpdb->prefix}wc_product_attributes_lookup
+					WHERE `taxonomy` = %s
+					AND `term_id` IN (%1s)
+					",
+					$taxonomy,
+					$term_ids
+				)
+			);
+		}
+
+		if ( 'and' === $query_type ) {
+			$results = $wpdb->get_col(
+				$wpdb->prepare(
+					"
+					SELECT DISTINCT `product_or_parent_id`
+					FROM {$wpdb->prefix}wc_product_attributes_lookup
+					WHERE `taxonomy` = %s
+					AND `term_id` IN (%1s)
+					GROUP BY `product_or_parent_id`
+					HAVING COUNT( DISTINCT `term_id` ) >= %d
+					",
+					$taxonomy,
+					$term_ids,
+					$term_count
+				)
+			);
+		}
+
+		return $results;
 	}
 }

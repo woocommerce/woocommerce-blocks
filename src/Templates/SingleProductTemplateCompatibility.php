@@ -88,16 +88,15 @@ class SingleProductTemplateCompatibility extends AbstractTemplateCompatibility {
 
 		if ( isset( $block['attrs'][ self::IS_FIRST_BLOCK ] ) && isset( $block['attrs'][ self::IS_LAST_BLOCK ] ) ) {
 			return sprintf(
-				'%1$s%2$s%3$s',
-				$this->get_hooks_buffer(
+				'%1$s%2$s',
+				$this->inject_hooks_after_the_wrapper(
+					$block_content,
 					array_merge(
 						$first_block_hook['before'],
 						$block_hooks,
 						$last_block_hook['before']
-					),
-					'before'
+					)
 				),
-				$block_content,
 				$this->get_hooks_buffer(
 					array_merge(
 						$first_block_hook['after'],
@@ -111,15 +110,14 @@ class SingleProductTemplateCompatibility extends AbstractTemplateCompatibility {
 
 		if ( isset( $block['attrs'][ self::IS_FIRST_BLOCK ] ) ) {
 			return sprintf(
-				'%1$s%2$s%3$s',
-				$this->get_hooks_buffer(
+				'%1$s%2$s',
+				$this->inject_hooks_after_the_wrapper(
+					$block_content,
 					array_merge(
 						$first_block_hook['before'],
 						$block_hooks
-					),
-					'before'
+					)
 				),
-				$block_content,
 				$this->get_hooks_buffer(
 					array_merge(
 						$first_block_hook['after'],
@@ -287,8 +285,7 @@ class SingleProductTemplateCompatibility extends AbstractTemplateCompatibility {
 		$parsed_blocks  = parse_blocks( $template_content );
 		$grouped_blocks = self::group_blocks( $parsed_blocks );
 
-		// @todo Check this list before terminating the Blockfied Single Product Template project.
-		$single_product_template_blocks = array( 'woocommerce/product-image-gallery', 'woocommerce/product-details', 'woocommerce/add-to-cart-form' );
+		$single_product_template_blocks = array( 'woocommerce/product-image-gallery', 'woocommerce/product-details', 'woocommerce/add-to-cart-form', 'woocommerce/product-meta', 'woocommerce/product-price', 'woocommerce/breadcrumbs' );
 
 		$wrapped_blocks = array_map(
 			function( $blocks ) use ( $single_product_template_blocks ) {
@@ -449,5 +446,28 @@ class SingleProductTemplateCompatibility extends AbstractTemplateCompatibility {
 			},
 			array()
 		);
+	}
+
+	/**
+	 * Inject the hooks after the div wrapper.
+	 *
+	 * @param string $block_content Block Content.
+	 * @param array  $hooks Hooks to inject.
+	 * @return array
+	 */
+	private function inject_hooks_after_the_wrapper( $block_content, $hooks ) {
+		$closing_tag_position = strpos( $block_content, '>' );
+
+		return substr_replace(
+			$block_content,
+			$this->get_hooks_buffer(
+				$hooks,
+				'before'
+			),
+			// Add 1 to the position to inject the content after the closing tag.
+			$closing_tag_position + 1,
+			0
+		);
+
 	}
 }
