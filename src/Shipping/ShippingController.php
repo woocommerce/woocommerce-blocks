@@ -90,7 +90,7 @@ class ShippingController {
 	 * @return boolean Whether shipping cost calculation should require an address to be entered before calculating.
 	 */
 	public function override_cost_requires_address_option( $value ) {
-		if ( CartCheckoutUtils::is_checkout_block_default() ) {
+		if ( CartCheckoutUtils::is_checkout_block_default() && $this->local_pickup_enabled ) {
 			return 'no';
 		}
 		return $value;
