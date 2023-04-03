@@ -25,7 +25,7 @@ class OrderReceivedTemplate {
 	}
 
 	/**
-	 * When it's the Order Received poge and a block theme is active, render the Order Received Template.
+	 * When it's the Order Received page and a block theme is active, render the Order Received Template.
 	 *
 	 * @param array $templates Templates that match the pages_template_hierarchy.
 	 */
