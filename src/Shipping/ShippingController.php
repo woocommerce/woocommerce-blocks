@@ -206,6 +206,18 @@ class ShippingController {
 				}
 			);
 		}
+
+		if ( CartCheckoutUtils::is_checkout_block_default() && $this->local_pickup_enabled ) {
+			foreach ( $settings as $index => $setting ) {
+				if ( 'woocommerce_shipping_cost_requires_address' === $setting['id'] ) {
+					$settings[ $index ]['desc']    .= ' (' . __( 'Not available when using WooCommerce Blocks Local Pickup', 'woo-gutenberg-products-block' ) . ')';
+					$settings[ $index ]['disabled'] = true;
+					$settings[ $index ]['value']    = 'no';
+					break;
+				}
+			}
+		}
+
 		return $settings;
 	}
 
