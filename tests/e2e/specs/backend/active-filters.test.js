@@ -31,8 +31,8 @@ describe( `${ block.name } Block`, () => {
 	describe( 'attributes', () => {
 		beforeEach( async () => {
 			await openDocumentSettingsSidebar();
-			await switchBlockInspectorTab( 'Settings' );
 			await selectBlockByName( block.slug );
+			await switchBlockInspectorTab( 'Settings' );
 		} );
 
 		it( "allows changing the block's title", async () => {

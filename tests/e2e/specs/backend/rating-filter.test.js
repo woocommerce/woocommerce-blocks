@@ -31,8 +31,8 @@ describe( `${ block.name } Block`, () => {
 	describe( 'attributes', () => {
 		beforeEach( async () => {
 			await openDocumentSettingsSidebar();
-			await switchBlockInspectorTab( 'Settings' );
 			await page.click( block.class );
+			await switchBlockInspectorTab( 'Settings' );
 		} );
 
 		it( 'product count can be toggled', async () => {
