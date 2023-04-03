@@ -31,7 +31,7 @@ const Block = ( {
 	const hasTitleInnerBlocks = hasChildren( children );
 
 	return (
-		<div className={ classNames( className, 'wc-block-mini-cart__title' ) }>
+		<h2 className={ classNames( className, 'wc-block-mini-cart__title' ) }>
 			{ hasTitleInnerBlocks ? (
 				children
 			) : (
@@ -40,7 +40,7 @@ const Block = ( {
 					<TitleItemsCounter />
 				</>
 			) }
-		</div>
+		</h2>
 	);
 };
 

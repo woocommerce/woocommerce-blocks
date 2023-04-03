@@ -24,7 +24,7 @@ const Block = ( props: Props ): JSX.Element => {
 	const spacingProps = useSpacingProps( props );
 
 	return (
-		<h2
+		<span
 			className={ classNames(
 				props.className,
 				colorProps.className,
@@ -37,7 +37,7 @@ const Block = ( props: Props ): JSX.Element => {
 			} }
 		>
 			{ props.label || defaultYourCartLabel }
-		</h2>
+		</span>
 	);
 };
 

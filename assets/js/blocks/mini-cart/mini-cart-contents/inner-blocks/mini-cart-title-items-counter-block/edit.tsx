@@ -10,7 +10,7 @@ export const Edit = (): JSX.Element => {
 	const { cartItemsCount } = useStoreCart();
 
 	return (
-		<h2 { ...blockProps }>
+		<span { ...blockProps }>
 			{ sprintf(
 				/* translators: %d is the count of items in the cart. */
 				_n(
@@ -21,7 +21,7 @@ export const Edit = (): JSX.Element => {
 				),
 				cartItemsCount
 			) }
-		</h2>
+		</span>
 	);
 };
 

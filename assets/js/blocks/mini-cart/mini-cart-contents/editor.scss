@@ -44,14 +44,14 @@
 		display: flex;
 		margin: $gap $gap $gap * -2;
 		padding-bottom: $gap * 2;
+	}
 
-		h2 {
-			margin: 0;
-			@include font-size(larger);
+	h2.wp-block-woocommerce-mini-cart-title-block {
+		margin: 0;
+		@include font-size(larger);
 
-			&:first-child {
-				margin-right: $gap-smaller;
-			}
+		span {
+			margin-right: $gap-smaller;
 		}
 	}
 

@@ -17,7 +17,7 @@ export const Edit = ( {
 	const blockProps = useBlockProps();
 
 	return (
-		<h2 { ...blockProps }>
+		<span { ...blockProps }>
 			<RichText
 				allowedFormats={ [] }
 				value={ label }
@@ -25,7 +25,7 @@ export const Edit = ( {
 					setAttributes( { label: newLabel } )
 				}
 			/>
-		</h2>
+		</span>
 	);
 };
 
