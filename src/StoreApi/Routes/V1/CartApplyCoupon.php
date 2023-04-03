@@ -33,7 +33,7 @@ class CartApplyCoupon extends AbstractCartRoute {
 			[
 				'methods'             => \WP_REST_Server::CREATABLE,
 				'callback'            => [ $this, 'get_response' ],
-				'permission_callback' => '__return_true',
+				'permission_callback' => [ $this, 'permission_callback' ],
 				'args'                => [
 					'code' => [
 						'description' => __( 'Unique identifier for the coupon within the cart.', 'woo-gutenberg-products-block' ),

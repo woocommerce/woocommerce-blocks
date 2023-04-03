@@ -41,7 +41,7 @@ class Products extends AbstractRoute {
 			[
 				'methods'             => \WP_REST_Server::READABLE,
 				'callback'            => [ $this, 'get_response' ],
-				'permission_callback' => '__return_true',
+				'permission_callback' => [ $this, 'permission_callback' ],
 				'args'                => $this->get_collection_params(),
 			],
 			'schema' => [ $this->schema, 'get_public_item_schema' ],

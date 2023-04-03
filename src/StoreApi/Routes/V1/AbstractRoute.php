@@ -323,4 +323,35 @@ abstract class AbstractRoute implements RouteInterface {
 			'context' => $this->get_context_param(),
 		);
 	}
+
+	/**
+	 * Determines whether the current user can make the request. By default the Store API allows all
+	 * requests--its a public API.
+	 */
+	public function permission_callback() {
+		/**
+		 * Filter the permission callback for the Store API either globally, or for specific endpoints.
+		 *
+		 * Example:
+		 *
+		 *  add_filter(
+		 *      'woocommerce_store_api_permission_callback',
+		 *      function( $permission, $namespace, $path ) {
+		 *          if ( $path === '/checkout' ) {
+		 *              return false;
+		 *          }
+		 *          return $permission;
+		 *      },
+		 *      10,
+		 *      3
+		 *  );
+		 *
+		 * @since 10.0.0
+		 * @param bool $permission_callback Whether the request has permission. Default true.
+		 * @param string $namespace The namespace for the route.
+		 * @param string $path The route path.
+		 * @param AbstractRoute $route_instance The route instance.
+		 */
+		return apply_filters( 'woocommerce_store_api_permission_callback', true, $this->get_namespace(), $this->get_path(), $this );
+	}
 }

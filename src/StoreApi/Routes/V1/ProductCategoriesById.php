@@ -46,7 +46,7 @@ class ProductCategoriesById extends AbstractRoute {
 			[
 				'methods'             => \WP_REST_Server::READABLE,
 				'callback'            => [ $this, 'get_response' ],
-				'permission_callback' => '__return_true',
+				'permission_callback' => [ $this, 'permission_callback' ],
 				'args'                => array(
 					'context' => $this->get_context_param(
 						array(
