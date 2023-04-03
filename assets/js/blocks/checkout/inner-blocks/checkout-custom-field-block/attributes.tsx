@@ -4,11 +4,7 @@
 import type { BlockAttributes } from '@wordpress/blocks';
 
 const attributes: BlockAttributes = {
-	className: {
-		type: 'string',
-		default: '',
-	},
-	key: {
+	name: {
 		type: 'string',
 		default: 'the_custom_field_name',
 	},
@@ -23,10 +19,6 @@ const attributes: BlockAttributes = {
 	type: {
 		type: 'string',
 		default: 'text',
-	},
-	errorMessage: {
-		type: 'string',
-		default: 'Please enter a valid value',
 	},
 	required: {
 		type: 'boolean',

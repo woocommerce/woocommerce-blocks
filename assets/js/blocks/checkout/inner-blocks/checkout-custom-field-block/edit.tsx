@@ -20,17 +20,15 @@ export const Edit = ( {
 	setAttributes,
 }: {
 	attributes: {
-		key: string;
+		name: string;
 		label: string;
 		size: string;
 		type: string;
-		errorMessage: string;
 		required: boolean;
-		className: string;
 	};
 	setAttributes: ( attributes: Record< string, unknown > ) => void;
 } ): JSX.Element | null => {
-	const { key, label, required, errorMessage } = attributes;
+	const { name, label, required } = attributes;
 
 	const FieldControls = (): JSX.Element => (
 		<InspectorControls>
@@ -52,9 +50,9 @@ export const Edit = ( {
 					<PlainText
 						id="wc-block-checkout__field-name"
 						className={ '' }
-						value={ key }
+						value={ name }
 						onChange={ ( value ) =>
-							setAttributes( { key: value } )
+							setAttributes( { name: value } )
 						}
 					/>
 				</label>
@@ -76,18 +74,6 @@ export const Edit = ( {
 					checked={ required }
 					onChange={ () => setAttributes( { required: ! required } ) }
 				/>
-
-				<label htmlFor="wc-block-checkout__field-error-message">
-					{ __( 'Error Message', 'woo-gutenberg-products-block' ) }
-					<PlainText
-						id="wc-block-checkout__field-error-message"
-						className={ '' }
-						value={ errorMessage }
-						onChange={ ( value ) =>
-							setAttributes( { errorMessage: value } )
-						}
-					/>
-				</label>
 			</PanelBody>
 		</InspectorControls>
 	);
