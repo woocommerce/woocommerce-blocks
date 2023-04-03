@@ -2,6 +2,7 @@
  * External dependencies
  */
 import {
+	switchBlockInspectorTab,
 	switchUserToAdmin,
 	openDocumentSettingsSidebar,
 } from '@wordpress/e2e-test-utils';
@@ -10,7 +11,6 @@ import {
 	visitBlockPage,
 	saveOrPublish,
 	selectBlockByName,
-	switchBlockInspectorTabWhenGutenbergIsInstalled,
 } from '@woocommerce/blocks-test-utils';
 
 const block = {
@@ -65,7 +65,7 @@ describe( `${ block.name } Block`, () => {
 		beforeEach( async () => {
 			await openDocumentSettingsSidebar();
 			await selectBlockByName( block.slug );
-			await switchBlockInspectorTabWhenGutenbergIsInstalled( 'Settings' );
+			await switchBlockInspectorTab( 'Settings' );
 		} );
 
 		it( "allows changing the block's title", async () => {

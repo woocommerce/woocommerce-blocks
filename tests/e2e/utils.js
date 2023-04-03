@@ -158,11 +158,7 @@ export const isBlockInsertedInWidgetsArea = async ( blockName ) => {
 export async function goToSiteEditor( params = {} ) {
 	await visitAdminPage( 'site-editor.php', addQueryArgs( '', params ) );
 
-	// @todo Remove the Gutenberg guard clause in goToSiteEditor when WP 6.2 is released.
-	if (
-		GUTENBERG_EDITOR_CONTEXT === 'gutenberg' &&
-		( params?.postId || Object.keys( params ).length === 0 )
-	) {
+	if ( params?.postId || Object.keys( params ).length === 0 ) {
 		await enterEditMode();
 	}
 }

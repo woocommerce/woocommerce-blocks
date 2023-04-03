@@ -5,6 +5,7 @@ import {
 	merchant,
 	openDocumentSettingsSidebar,
 	setCheckbox,
+	switchBlockInspectorTab,
 	unsetCheckbox,
 	withRestApi,
 } from '@woocommerce/e2e-utils';
@@ -13,7 +14,6 @@ import {
 	selectBlockByName,
 	saveOrPublish,
 	getToggleIdByLabel,
-	switchBlockInspectorTabWhenGutenbergIsInstalled,
 } from '@woocommerce/blocks-test-utils';
 import { visitAdminPage } from '@wordpress/e2e-test-utils';
 /**
@@ -155,7 +155,7 @@ describe( 'Shopper → Checkout', () => {
 			await merchant.login();
 			await visitBlockPage( 'Checkout Block' );
 			await openDocumentSettingsSidebar();
-			await switchBlockInspectorTabWhenGutenbergIsInstalled( 'Settings' );
+			await switchBlockInspectorTab( 'Settings' );
 			await selectBlockByName(
 				'woocommerce/checkout-shipping-address-block'
 			);
@@ -169,7 +169,7 @@ describe( 'Shopper → Checkout', () => {
 			await shopper.block.emptyCart();
 			await visitBlockPage( 'Checkout Block' );
 			await openDocumentSettingsSidebar();
-			await switchBlockInspectorTabWhenGutenbergIsInstalled( 'Settings' );
+			await switchBlockInspectorTab( 'Settings' );
 			await selectBlockByName(
 				'woocommerce/checkout-shipping-address-block'
 			);
@@ -311,7 +311,7 @@ describe( 'Shopper → Checkout', () => {
 			await merchant.login();
 			await visitBlockPage( 'Checkout Block' );
 			await openDocumentSettingsSidebar();
-			await switchBlockInspectorTabWhenGutenbergIsInstalled( 'Settings' );
+			await switchBlockInspectorTab( 'Settings' );
 			await selectBlockByName(
 				'woocommerce/checkout-shipping-methods-block'
 			);
@@ -380,7 +380,7 @@ describe( 'Shopper → Checkout', () => {
 			await merchant.login();
 			await visitBlockPage( 'Checkout Block' );
 			await openDocumentSettingsSidebar();
-			await switchBlockInspectorTabWhenGutenbergIsInstalled( 'Settings' );
+			await switchBlockInspectorTab( 'Settings' );
 			await selectBlockByName(
 				'woocommerce/checkout-shipping-methods-block'
 			);
@@ -439,7 +439,7 @@ describe( 'Shopper → Checkout', () => {
 			await merchant.login();
 			await visitBlockPage( 'Checkout Block' );
 			await openDocumentSettingsSidebar();
-			await switchBlockInspectorTabWhenGutenbergIsInstalled( 'Settings' );
+			await switchBlockInspectorTab( 'Settings' );
 			await selectBlockByName(
 				'woocommerce/checkout-shipping-methods-block'
 			);
@@ -470,7 +470,7 @@ describe( 'Shopper → Checkout', () => {
 			await merchantUtils.addLocalPickupLocation();
 			await visitBlockPage( 'Checkout Block' );
 			await openDocumentSettingsSidebar();
-			await switchBlockInspectorTabWhenGutenbergIsInstalled( 'Settings' );
+			await switchBlockInspectorTab( 'Settings' );
 			await selectBlockByName(
 				'woocommerce/checkout-shipping-methods-block'
 			);
@@ -515,7 +515,7 @@ describe( 'Shopper → Checkout', () => {
 			await merchant.login();
 			await visitBlockPage( 'Checkout Block' );
 			await openDocumentSettingsSidebar();
-			await switchBlockInspectorTabWhenGutenbergIsInstalled( 'Settings' );
+			await switchBlockInspectorTab( 'Settings' );
 			await selectBlockByName(
 				'woocommerce/checkout-shipping-methods-block'
 			);

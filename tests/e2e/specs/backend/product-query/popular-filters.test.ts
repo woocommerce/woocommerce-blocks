@@ -6,12 +6,12 @@ import {
 	canvas,
 	ensureSidebarOpened,
 	findSidebarPanelWithTitle,
+	switchBlockInspectorTab,
 } from '@wordpress/e2e-test-utils';
 import {
 	selectBlockByName,
 	visitBlockPage,
 	saveOrPublish,
-	switchBlockInspectorTabWhenGutenbergIsInstalled,
 } from '@woocommerce/blocks-test-utils';
 
 /**
@@ -29,7 +29,7 @@ import {
 const getPopularFilterPanel = async () => {
 	await ensureSidebarOpened();
 	await selectBlockByName( block.slug );
-	await switchBlockInspectorTabWhenGutenbergIsInstalled( 'Settings' );
+	await switchBlockInspectorTab( 'Settings' );
 	return await findSidebarPanelWithTitle( 'Popular Filters' );
 };
 

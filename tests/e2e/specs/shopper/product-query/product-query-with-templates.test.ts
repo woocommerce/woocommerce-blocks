@@ -4,9 +4,8 @@
 import {
 	deleteAllTemplates,
 	ensureSidebarOpened,
+	switchBlockInspectorTab,
 } from '@wordpress/e2e-test-utils';
-
-import { switchBlockInspectorTabWhenGutenbergIsInstalled } from '@woocommerce/blocks-test-utils';
 
 /**
  * Internal dependencies
@@ -39,7 +38,7 @@ describe( `${ block.name } Block`, () => {
 			} );
 			await ensureSidebarOpened();
 			await addProductQueryBlock();
-			await switchBlockInspectorTabWhenGutenbergIsInstalled( 'Settings' );
+			await switchBlockInspectorTab( 'Settings' );
 		} );
 
 		it( 'when Inherit Query from template is disabled all the settings that customize the query should be hidden', async () => {

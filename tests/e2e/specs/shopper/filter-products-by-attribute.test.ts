@@ -6,6 +6,7 @@ import {
 	createNewPost,
 	deleteAllTemplates,
 	insertBlock,
+	switchBlockInspectorTab,
 	switchUserToAdmin,
 	publishPost,
 	ensureSidebarOpened,
@@ -13,7 +14,6 @@ import {
 import {
 	selectBlockByName,
 	insertBlockUsingSlash,
-	switchBlockInspectorTabWhenGutenbergIsInstalled,
 } from '@woocommerce/blocks-test-utils';
 
 /**
@@ -192,7 +192,7 @@ describe( `${ block.name } Block`, () => {
 
 			await ensureSidebarOpened();
 			await selectBlockByName( block.slug );
-			await switchBlockInspectorTabWhenGutenbergIsInstalled( 'Settings' );
+			await switchBlockInspectorTab( 'Settings' );
 
 			const [ filterButtonToggle ] = await page.$x(
 				block.selectors.editor.filterButtonToggle
@@ -311,7 +311,7 @@ describe( `${ block.name } Block`, () => {
 			await page.goto( editorPageUrl );
 			await ensureSidebarOpened();
 			await selectBlockByName( block.slug );
-			await switchBlockInspectorTabWhenGutenbergIsInstalled( 'Settings' );
+			await switchBlockInspectorTab( 'Settings' );
 
 			const [ filterButtonToggle ] = await page.$x(
 				block.selectors.editor.filterButtonToggle

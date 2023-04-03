@@ -4,6 +4,7 @@
 import {
 	clickBlockToolbarButton,
 	openDocumentSettingsSidebar,
+	switchBlockInspectorTab,
 	switchUserToAdmin,
 	searchForBlock,
 	openGlobalBlockInserter,
@@ -13,7 +14,6 @@ import {
 	findLabelWithText,
 	visitBlockPage,
 	selectBlockByName,
-	switchBlockInspectorTabWhenGutenbergIsInstalled,
 } from '@woocommerce/blocks-test-utils';
 import { merchant } from '@woocommerce/e2e-utils';
 
@@ -180,9 +180,7 @@ describe( `${ block.name } Block`, () => {
 		describe( 'attributes', () => {
 			beforeEach( async () => {
 				await openDocumentSettingsSidebar();
-				await switchBlockInspectorTabWhenGutenbergIsInstalled(
-					'Settings'
-				);
+				await switchBlockInspectorTab( 'Settings' );
 				await selectBlockByName(
 					'woocommerce/cart-order-summary-shipping-block'
 				);
