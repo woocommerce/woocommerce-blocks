@@ -26,7 +26,6 @@ import type {
  * Internal dependencies
  */
 import PhoneNumber from '../../phone-number';
-import CustomFields from '../../custom-fields';
 
 const Block = ( {
 	showCompanyField = false,
@@ -138,7 +137,6 @@ const Block = ( {
 						} }
 					/>
 				) }
-				<CustomFields block={ 'shipping' } />
 			</AddressFormWrapperComponent>
 			<CheckboxControl
 				className="wc-block-checkout__use-address-for-billing"
