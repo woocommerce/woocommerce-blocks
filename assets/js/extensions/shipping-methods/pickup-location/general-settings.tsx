@@ -78,10 +78,19 @@ const GeneralSettings = () => {
 						'Enable local pickup',
 						'woo-gutenberg-products-block'
 					) }
-					help={ __(
-						'When enabled, local pickup will appear as an option on the block based checkout.',
-						'woo-gutenberg-products-block'
-					) }
+					help={
+						<div>
+							{ __(
+								'When enabled, local pickup will appear as an option on the block based checkout.',
+								'woo-gutenberg-products-block'
+							) }
+							<br />
+							{ __(
+								'If local pickup is enabled, the "Hide shipping costs until an address is entered" setting will be ignored.',
+								'woo-gutenberg-products-block'
+							) }
+						</div>
+					}
 				/>
 				<TextControl
 					label={ __( 'Title', 'woo-gutenberg-products-block' ) }
