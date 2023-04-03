@@ -28,6 +28,13 @@ class ShippingController {
 	protected $asset_data_registry;
 
 	/**
+	 * Whether local pickup is enabled.
+	 *
+	 * @var bool
+	 */
+	private $local_pickup_enabled;
+
+	/**
 	 * Constructor.
 	 *
 	 * @param AssetApi          $asset_api Instance of the asset API.
@@ -36,6 +43,9 @@ class ShippingController {
 	public function __construct( AssetApi $asset_api, AssetDataRegistry $asset_data_registry ) {
 		$this->asset_api           = $asset_api;
 		$this->asset_data_registry = $asset_data_registry;
+
+		$pickup_location_settings   = get_option( 'woocommerce_pickup_location_settings', [] );
+		$this->local_pickup_enabled = wc_string_to_bool( $pickup_location_settings['enabled'] ?? 'no' );
 	}
 
 	/**
