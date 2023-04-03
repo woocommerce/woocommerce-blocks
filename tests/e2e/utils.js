@@ -155,6 +155,7 @@ export const isBlockInsertedInWidgetsArea = async ( blockName ) => {
  * @param {Object}                             params                          Query parameters to add to the URL.
  * @param {string}                             [params.postId]                 ID of the template if we want to access template editor.
  * @param {'wp_template' | 'wp_template_part'} [params.postType='wp_template'] Type of template.
+ * @param {string}                             [params.path]                   Navigation path.
  */
 export async function goToSiteEditor( params = {} ) {
 	await visitAdminPage( 'site-editor.php', addQueryArgs( '', params ) );
@@ -195,7 +196,12 @@ export async function goToTemplatesList( {
 	postType = 'wp_template',
 	waitFor = 'list',
 } = {} ) {
-	await goToSiteEditor( { postType } );
+	await goToSiteEditor( {
+		postType,
+		// In WP 6.2, if postId is not defined, the route expects `path` instead
+		// of `postType`.
+		path: `/${ postType }/all`,
+	} );
 
 	if ( waitFor === 'actions' ) {
 		await page.waitForSelector(
