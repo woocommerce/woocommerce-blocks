@@ -11,7 +11,7 @@ import { __ } from '@wordpress/i18n';
 import { Edit, Save } from './edit';
 import attributes from './attributes';
 
-registerBlockType( 'woocommerce/checkout-field-block', {
+registerBlockType( 'woocommerce/checkout-custom-field-block', {
 	title: __( 'Checkout Field', 'woo-gutenberg-products-block' ),
 	description: __( 'Custom checkout field', 'woo-gutenberg-products-block' ),
 	keywords: [
