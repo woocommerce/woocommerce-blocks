@@ -9,16 +9,18 @@ import { innerBlockAreas } from '@woocommerce/blocks-checkout';
 /**
  * Internal dependencies
  */
-import {
-	FormStepBlock,
-	AdditionalFields,
-	AdditionalFieldsContent,
-} from '../../form-step';
+import { FormStepBlock } from '../../form-step';
+import { CustomFields, CustomFieldsContent } from '../../custom-fields';
 import {
 	useCheckoutBlockContext,
 	useCheckoutBlockControlsContext,
 } from '../../context';
 import Block from './block';
+// import {
+// 	FormStepBlock,
+// 	AdditionalFields,
+// 	AdditionalFieldsContent,
+// } from '../../form-step';
 
 export const Edit = ( {
 	attributes,
@@ -64,7 +66,8 @@ export const Edit = ( {
 				showPhoneField={ showPhoneField }
 				requirePhoneField={ requirePhoneField }
 			/>
-			<AdditionalFields block={ innerBlockAreas.SHIPPING_ADDRESS } />
+			<CustomFields block={ innerBlockAreas.SHIPPING_ADDRESS } />
+			{ /* <AdditionalFields block={ innerBlockAreas.SHIPPING_ADDRESS } /> */ }
 		</FormStepBlock>
 	);
 };
@@ -72,7 +75,8 @@ export const Edit = ( {
 export const Save = (): JSX.Element => {
 	return (
 		<div { ...useBlockProps.save() }>
-			<AdditionalFieldsContent />
+			<CustomFieldsContent />
+			{ /* <AdditionalFieldsContent /> */ }
 		</div>
 	);
 };
