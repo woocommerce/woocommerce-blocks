@@ -14,10 +14,12 @@ export const TYPES = {
 	productCatalog: 'product-catalog',
 	productTaxonomy: 'product-taxonomy',
 	productSearchResults: 'product-search-results',
+	orderReceived: 'order-received',
 };
 export const PLACEHOLDERS = {
 	singleProduct: 'single-product',
 	archiveProduct: 'archive-product',
+	orderReceived: 'order-received',
 };
 
 export const TEMPLATES: TemplateDetails = {
@@ -68,5 +70,13 @@ export const TEMPLATES: TemplateDetails = {
 			'woo-gutenberg-products-block'
 		),
 		placeholder: PLACEHOLDERS.archiveProduct,
+	},
+	'order-received': {
+		types: TYPES.orderReceived,
+		title: __(
+			'WooCommerce Order Received Block',
+			'woo-gutenberg-products-block'
+		),
+		placeholder: PLACEHOLDERS.orderReceived,
 	},
 };
