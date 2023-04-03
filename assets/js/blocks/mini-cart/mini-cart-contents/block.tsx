@@ -19,11 +19,7 @@ export const MiniCartContentsBlock = (
 		children,
 		attributes: { width },
 	} = props;
-	console.log( props.attributes );
-	document.documentElement.style.setProperty(
-		'--drawer-width',
-		`${ width }px`
-	);
+	document.documentElement.style.setProperty( '--drawer-width', width );
 	// console.log(
 	// 	getComputedStyle( document.documentElement ).getPropertyValue(
 	// 		'--drawer-width'

@@ -1,10 +1,5 @@
 :root {
-	//--drawer-width: 580px;
-	--neg-drawer-width: calc(var(--drawer-width)*-1);
-}
-
-.wc-block-components-drawer {
-	width: var(--drawer-width);
+	--neg-drawer-width: calc(var(--drawer-width) * -1);
 }
 
 $drawer-animation-duration: 0.3s;

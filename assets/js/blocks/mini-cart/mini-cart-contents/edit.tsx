@@ -2,11 +2,21 @@
 /**
  * External dependencies
  */
-import { useBlockProps, InnerBlocks } from '@wordpress/block-editor';
+import {
+	useBlockProps,
+	InnerBlocks,
+	InspectorControls,
+} from '@wordpress/block-editor';
 import { EditorProvider } from '@woocommerce/base-context';
 import type { TemplateArray } from '@wordpress/blocks';
 import { useEffect } from '@wordpress/element';
 import type { ReactElement } from 'react';
+import { __ } from '@wordpress/i18n';
+import {
+	PanelBody,
+	// eslint-disable-next-line @wordpress/no-unsafe-wp-apis
+	__experimentalUnitControl as UnitControl,
+} from '@wordpress/components';
 
 /**
  * Internal dependencies
@@ -14,6 +24,7 @@ import type { ReactElement } from 'react';
 import { useForcedLayout } from '../../cart-checkout-shared';
 import { MiniCartInnerBlocksStyle } from './inner-blocks-style';
 import './editor.scss';
+import { attributes as defaultAttributes } from './attributes';
 
 // Array of allowed block names.
 const ALLOWED_BLOCKS = [
@@ -24,9 +35,14 @@ const ALLOWED_BLOCKS = [
 interface Props {
 	clientId: string;
 	attributes: Record< string, unknown >;
+	setAttributes: ( attributes: Record< string, unknown > ) => void;
 }
 
-const Edit = ( { clientId, attributes }: Props ): ReactElement => {
+const Edit = ( {
+	clientId,
+	attributes,
+	setAttributes,
+}: Props ): ReactElement => {
 	const { currentView, width } = attributes;
 
 	const blockProps = useBlockProps( {
@@ -41,7 +57,6 @@ const Edit = ( { clientId, attributes }: Props ): ReactElement => {
 			maxWidth: width,
 		},
 	} );
-	console.log( { width } );
 
 	const defaultTemplate = [
 		[ 'woocommerce/filled-mini-cart-contents-block', {}, [] ],
@@ -109,6 +124,26 @@ const Edit = ( { clientId, attributes }: Props ): ReactElement => {
 
 	return (
 		<div { ...blockProps }>
+			<InspectorControls key="inspector">
+				<PanelBody
+					title={ __( 'Dimensions', 'woo-gutenberg-products-block' ) }
+					initialOpen
+				>
+					<UnitControl
+						onChange={ ( value ) => {
+							setAttributes( { width: value } );
+						} }
+						value={ width }
+						units={ [
+							{
+								value: 'px',
+								label: 'px',
+								default: defaultAttributes.width.default,
+							},
+						] }
+					/>
+				</PanelBody>
+			</InspectorControls>
 			<EditorProvider currentView={ currentView }>
 				<InnerBlocks
 					allowedBlocks={ ALLOWED_BLOCKS }

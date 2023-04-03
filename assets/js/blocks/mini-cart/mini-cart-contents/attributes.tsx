@@ -40,7 +40,7 @@ export const attributes = {
 		],
 	},
 	width: {
-		type: 'number',
-		default: 900,
+		type: 'string',
+		default: '480px',
 	},
 };
