@@ -6,7 +6,6 @@ import {
 	canvas,
 	ensureSidebarOpened,
 	findSidebarPanelWithTitle,
-	switchBlockInspectorTab,
 } from '@wordpress/e2e-test-utils';
 import {
 	selectBlockByName,
@@ -29,7 +28,6 @@ import {
 const getPopularFilterPanel = async () => {
 	await ensureSidebarOpened();
 	await selectBlockByName( block.slug );
-	await switchBlockInspectorTab( 'Settings' );
 	return await findSidebarPanelWithTitle( 'Popular Filters' );
 };
 

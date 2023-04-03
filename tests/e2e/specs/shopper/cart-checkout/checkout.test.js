@@ -5,7 +5,6 @@ import {
 	merchant,
 	openDocumentSettingsSidebar,
 	setCheckbox,
-	switchBlockInspectorTab,
 	unsetCheckbox,
 	withRestApi,
 } from '@woocommerce/e2e-utils';
@@ -155,7 +154,6 @@ describe( 'Shopper → Checkout', () => {
 			await merchant.login();
 			await visitBlockPage( 'Checkout Block' );
 			await openDocumentSettingsSidebar();
-			await switchBlockInspectorTab( 'Settings' );
 			await selectBlockByName(
 				'woocommerce/checkout-shipping-address-block'
 			);
@@ -169,7 +167,6 @@ describe( 'Shopper → Checkout', () => {
 			await shopper.block.emptyCart();
 			await visitBlockPage( 'Checkout Block' );
 			await openDocumentSettingsSidebar();
-			await switchBlockInspectorTab( 'Settings' );
 			await selectBlockByName(
 				'woocommerce/checkout-shipping-address-block'
 			);
@@ -311,7 +308,6 @@ describe( 'Shopper → Checkout', () => {
 			await merchant.login();
 			await visitBlockPage( 'Checkout Block' );
 			await openDocumentSettingsSidebar();
-			await switchBlockInspectorTab( 'Settings' );
 			await selectBlockByName(
 				'woocommerce/checkout-shipping-methods-block'
 			);
@@ -380,7 +376,6 @@ describe( 'Shopper → Checkout', () => {
 			await merchant.login();
 			await visitBlockPage( 'Checkout Block' );
 			await openDocumentSettingsSidebar();
-			await switchBlockInspectorTab( 'Settings' );
 			await selectBlockByName(
 				'woocommerce/checkout-shipping-methods-block'
 			);
@@ -439,7 +434,6 @@ describe( 'Shopper → Checkout', () => {
 			await merchant.login();
 			await visitBlockPage( 'Checkout Block' );
 			await openDocumentSettingsSidebar();
-			await switchBlockInspectorTab( 'Settings' );
 			await selectBlockByName(
 				'woocommerce/checkout-shipping-methods-block'
 			);
@@ -470,7 +464,6 @@ describe( 'Shopper → Checkout', () => {
 			await merchantUtils.addLocalPickupLocation();
 			await visitBlockPage( 'Checkout Block' );
 			await openDocumentSettingsSidebar();
-			await switchBlockInspectorTab( 'Settings' );
 			await selectBlockByName(
 				'woocommerce/checkout-shipping-methods-block'
 			);
@@ -515,7 +508,6 @@ describe( 'Shopper → Checkout', () => {
 			await merchant.login();
 			await visitBlockPage( 'Checkout Block' );
 			await openDocumentSettingsSidebar();
-			await switchBlockInspectorTab( 'Settings' );
 			await selectBlockByName(
 				'woocommerce/checkout-shipping-methods-block'
 			);

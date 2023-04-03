@@ -24,4 +24,3 @@ export { getToggleIdByLabel } from './get-toggle-id-by-label';
 export { insertBlockUsingQuickInserter } from './insert-block-using-quick-inserter';
 export { insertBlockUsingSlash } from './insert-block-using-slash';
 export { insertShortcodeBlock } from './insert-shortcode-block';
-export { switchBlockInspectorTabWhenGutenbergIsInstalled } from './switch-block-inspector-tab-when-gutenberg-is-installed';

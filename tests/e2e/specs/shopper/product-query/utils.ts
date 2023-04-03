@@ -1,11 +1,7 @@
 /**
  * External dependencies
  */
-import {
-	insertBlock,
-	ensureSidebarOpened,
-	switchBlockInspectorTab,
-} from '@wordpress/e2e-test-utils';
+import { insertBlock } from '@wordpress/e2e-test-utils';
 
 /**
  * Internal dependencies
@@ -40,11 +36,6 @@ export const toggleInheritQueryFromTemplateSetting = async () => {
 		block.selectors.editor.inheritQueryFromTemplateSetting
 	);
 	await button.click();
-};
-
-export const configureProductQueryBlock = async () => {
-	await ensureSidebarOpened();
-	await switchBlockInspectorTab( 'Settings' );
 };
 
 export const getProductsNameFromClassicTemplate = async () => {

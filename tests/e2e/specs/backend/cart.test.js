@@ -4,7 +4,6 @@
 import {
 	clickBlockToolbarButton,
 	openDocumentSettingsSidebar,
-	switchBlockInspectorTab,
 	switchUserToAdmin,
 	searchForBlock,
 	openGlobalBlockInserter,
@@ -180,7 +179,6 @@ describe( `${ block.name } Block`, () => {
 		describe( 'attributes', () => {
 			beforeEach( async () => {
 				await openDocumentSettingsSidebar();
-				await switchBlockInspectorTab( 'Settings' );
 				await selectBlockByName(
 					'woocommerce/cart-order-summary-shipping-block'
 				);

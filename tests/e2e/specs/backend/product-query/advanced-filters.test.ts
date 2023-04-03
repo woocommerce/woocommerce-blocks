@@ -1,11 +1,7 @@
 /**
  * External dependencies
  */
-import {
-	ensureSidebarOpened,
-	canvas,
-	switchBlockInspectorTab,
-} from '@wordpress/e2e-test-utils';
+import { ensureSidebarOpened, canvas } from '@wordpress/e2e-test-utils';
 import {
 	saveOrPublish,
 	selectBlockByName,
@@ -51,7 +47,6 @@ describeOrSkip( GUTENBERG_EDITOR_CONTEXT === 'gutenberg' )(
 			await resetProductQueryBlockPage();
 			await ensureSidebarOpened();
 			await selectBlockByName( block.slug );
-			await switchBlockInspectorTab( 'Settings' );
 			$productFiltersPanel = await findToolsPanelWithTitle(
 				'Advanced Filters'
 			);

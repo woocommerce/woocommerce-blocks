@@ -3,7 +3,6 @@
  */
 import {
 	openDocumentSettingsSidebar,
-	switchBlockInspectorTab,
 	switchUserToAdmin,
 	openGlobalBlockInserter,
 	insertBlock,
@@ -126,7 +125,6 @@ describe( `${ block.name } Block`, () => {
 		describe( 'attributes', () => {
 			beforeEach( async () => {
 				await openDocumentSettingsSidebar();
-				await switchBlockInspectorTab( 'Settings' );
 				await selectBlockByName( block.slug );
 			} );
 
@@ -224,7 +222,6 @@ describe( `${ block.name } Block`, () => {
 		describe( 'shipping address block attributes', () => {
 			beforeEach( async () => {
 				await openDocumentSettingsSidebar();
-				await switchBlockInspectorTab( 'Settings' );
 				await selectBlockByName(
 					'woocommerce/checkout-shipping-address-block'
 				);
@@ -274,7 +271,6 @@ describe( `${ block.name } Block`, () => {
 		describe( 'action block attributes', () => {
 			beforeEach( async () => {
 				await openDocumentSettingsSidebar();
-				await switchBlockInspectorTab( 'Settings' );
 				await selectBlockByName( 'woocommerce/checkout-actions-block' );
 			} );
 
