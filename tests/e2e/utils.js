@@ -11,6 +11,7 @@ import {
 	pressKeyWithModifier,
 	searchForBlock as searchForFSEBlock,
 	enterEditMode,
+	getAllBlocks,
 } from '@wordpress/e2e-test-utils';
 import { addQueryArgs } from '@wordpress/url';
 import { WP_ADMIN_DASHBOARD } from '@woocommerce/e2e-utils';
@@ -437,3 +438,16 @@ export const waitForAllProductsBlockLoaded = async () => {
  */
 export const describeOrSkip = ( condition ) =>
 	condition ? describe : describe.skip;
+
+/**
+ * Get all blocks in the document that match a certain slug.
+ *
+ * @param {string} slug Slug of the blocks to get.
+ *
+ * @return {Promise<{}>} Promise resolving with an array containing all blocks in
+ * the document that match a certain slug .
+ */
+export const getBlocksBySlug = async ( slug ) => {
+	const blocks = await getAllBlocks();
+	return blocks.filter( ( { name } ) => name === slug );
+};
