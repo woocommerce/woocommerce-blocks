@@ -13,7 +13,14 @@ export const Edit = (): JSX.Element => {
 
 	return (
 		<div { ...blockProps }>
-			<InnerBlocks template={ TEMPLATE } templateLock="insert" />
+			<InnerBlocks
+				allowedBlocks={ [
+					'woocommerce/mini-cart-title-label-block',
+					'woocommerce/mini-cart-title-items-counter-block',
+				] }
+				template={ TEMPLATE }
+				templateLock={ false }
+			/>
 		</div>
 	);
 };

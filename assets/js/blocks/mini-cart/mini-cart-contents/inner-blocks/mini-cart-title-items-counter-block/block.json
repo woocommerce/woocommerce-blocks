@@ -9,7 +9,7 @@
 		"html": false,
 		"multiple": false,
 		"reusable": false,
-		"inserter": false,
+		"inserter": true,
 		"lock": false,
 		"color": {
 			"text": true,
