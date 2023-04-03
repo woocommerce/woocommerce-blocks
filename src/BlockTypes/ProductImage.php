@@ -145,7 +145,7 @@ class ProductImage extends AbstractBlock {
 	 * @return string
 	 */
 	private function render_image( $product, $attributes ) {
-		$image_type = $attributes['imageSizing'] == 'full-size' ? 'woocommerce_single' : 'woocommerce_thumbnail';
+		$image_type = 'full-size' == $attributes['imageSizing']  ? 'woocommerce_single' : 'woocommerce_thumbnail';
 		$image_info = wp_get_attachment_image_src( get_post_thumbnail_id( $product->get_id() ), $image_type );
 
 		if ( ! isset( $image_info[0] ) ) {
@@ -154,8 +154,6 @@ class ProductImage extends AbstractBlock {
 			// Github discussion for a context: https://github.com/woocommerce/woocommerce-blocks/pull/7651#discussion_r1019560494.
 			return sprintf( '<img src="%s" alt="" />', wc_placeholder_img_src( $image_type ) );
 		}
-
-
 
 		return sprintf(
 			'<img data-testid="product-image" alt="%s" src="%s">',
