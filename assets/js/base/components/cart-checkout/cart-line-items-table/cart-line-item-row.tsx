@@ -237,13 +237,16 @@ const CartLineItemRow: React.ForwardRefExoticComponent<
 				</td>
 				<td className="wc-block-cart-item__product">
 					<div className="wc-block-cart-item__wrap">
-						<ProductName
-							disabled={
-								isPendingDelete || isProductHiddenFromCatalog
-							}
-							name={ name }
-							permalink={ permalink }
-						/>
+						<span className="wc-block-components-product-title">
+							<ProductName
+								disabled={
+									isPendingDelete ||
+									isProductHiddenFromCatalog
+								}
+								name={ name }
+								permalink={ permalink }
+							/>
+						</span>
 						{ showBackorderBadge ? (
 							<ProductBackorderBadge />
 						) : (
