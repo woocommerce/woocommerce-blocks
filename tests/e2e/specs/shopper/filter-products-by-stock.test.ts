@@ -22,6 +22,7 @@ import { setCheckbox } from '@woocommerce/e2e-utils';
  */
 import {
 	BASE_URL,
+	enableApplyFiltersButton,
 	goToTemplateEditor,
 	insertAllProductsBlock,
 	saveTemplate,
@@ -35,10 +36,6 @@ const block = {
 	slug: 'woocommerce/stock-filter',
 	class: '.wc-block-stock-filter',
 	selectors: {
-		editor: {
-			filterButtonToggle:
-				'//label[text()="Show \'Apply filters\' button"]',
-		},
 		frontend: {
 			productsList: '.wc-block-grid__products > li',
 			classicProductsList: '.products.columns-3 > li',
@@ -168,16 +165,7 @@ describe( `${ block.name } Block`, () => {
 
 			await waitForCanvas();
 			await selectBlockByName( block.slug );
-			await ensureSidebarOpened();
-			await switchBlockInspectorTab( 'Settings' );
-			await page.waitForXPath(
-				block.selectors.editor.filterButtonToggle
-			);
-
-			const [ filterButtonToggle ] = await page.$x(
-				selectors.editor.filterButtonToggle
-			);
-			await filterButtonToggle.click();
+			await enableApplyFiltersButton();
 			await saveTemplate();
 			await goToShopPage();
 

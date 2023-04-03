@@ -22,6 +22,7 @@ import { setCheckbox } from '@woocommerce/e2e-utils';
  */
 import {
 	BASE_URL,
+	enableApplyFiltersButton,
 	goToTemplateEditor,
 	insertAllProductsBlock,
 	saveTemplate,
@@ -35,10 +36,6 @@ const block = {
 	slug: 'woocommerce/rating-filter',
 	class: '.wc-block-rating-filter',
 	selectors: {
-		editor: {
-			filterButtonToggle:
-				'//label[text()="Show \'Apply filters\' button"]',
-		},
 		frontend: {
 			productsList: '.wc-block-grid__products > li',
 			queryProductsList: '.wp-block-post-template > li',
@@ -162,17 +159,7 @@ describe( `${ block.name } Block`, () => {
 
 			await waitForCanvas();
 			await selectBlockByName( block.slug );
-			await ensureSidebarOpened();
-			await switchBlockInspectorTab( 'Settings' );
-
-			await page.waitForXPath(
-				block.selectors.editor.filterButtonToggle
-			);
-
-			const [ filterButtonToggle ] = await page.$x(
-				selectors.editor.filterButtonToggle
-			);
-			await filterButtonToggle.click();
+			await enableApplyFiltersButton();
 			await saveTemplate();
 			await goToShopPage();
 

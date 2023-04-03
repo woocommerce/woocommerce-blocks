@@ -4,8 +4,11 @@
 import { Coupon, HTTPClientFactory } from '@woocommerce/api';
 import config from 'config';
 import {
+	canvas,
 	disableSiteEditorWelcomeGuide,
+	ensureSidebarOpened,
 	openGlobalBlockInserter,
+	switchBlockInspectorTab,
 	switchUserToAdmin,
 	visitAdminPage,
 	pressKeyWithModifier,
@@ -69,6 +72,13 @@ const SELECTORS = {
 	templateEditor: {
 		editButton:
 			'.edit-site-site-hub__edit-button[aria-label="Open the editor"]',
+	},
+	editor: {
+		filterButtonToggle: '//label[text()="Show \'Apply filters\' button"]',
+	},
+	frontend: {
+		XPathSubmitButton:
+			"//*[contains(@class,'wc-block-components-filter-submit-button')]",
 	},
 };
 
@@ -504,3 +514,37 @@ export async function openSettingsSidebar() {
 		await page.waitForSelector( '.edit-post-sidebar' );
 	}
 }
+
+/**
+ * Enables the `Show 'Apply filters' button` toggle.
+ */
+export const enableApplyFiltersButton = async () => {
+	await ensureSidebarOpened();
+	await switchBlockInspectorTab( 'Settings' );
+
+	await page.waitForXPath( SELECTORS.editor.filterButtonToggle );
+
+	const [ filterButtonToggle ] = await page.$x(
+		SELECTORS.editor.filterButtonToggle
+	);
+	if ( ! filterButtonToggle ) {
+		throw new Error( "'Apply filters' toggle not found via XPath." );
+	}
+	await filterButtonToggle.click();
+
+	// If for some reason click didn't work (it seems to happen intermittently),
+	// click on the toggle via JS.
+	await page.evaluate( () => {
+		const toggle = document.querySelector(
+			'.components-toggle-control:last-child .components-form-toggle__input'
+		);
+		if ( ! toggle ) {
+			throw new Error( "'Apply filters' toggle not found via CSS." );
+		}
+		if ( ! toggle.checked ) {
+			toggle.click();
+		}
+	} );
+
+	await canvas().waitForXPath( SELECTORS.frontend.XPathSubmitButton );
+};
