@@ -483,3 +483,24 @@ export const insertAllProductsBlock = async () => {
 	}
 	insertButton?.click();
 };
+
+/**
+ * Clicks on the button in the header which opens Document Settings sidebar when it is closed.
+ * Based on https://github.com/WordPress/gutenberg/blob/trunk/packages/e2e-test-utils/src/open-document-settings-sidebar.js,
+ * but updates the selector so it works in WP 6.2 without GB.
+ */
+export async function openSettingsSidebar() {
+	const toggleButton = await page.waitForSelector(
+		'.edit-post-header__settings button[aria-label="Settings"]'
+	);
+
+	const isClosed = await page.evaluate(
+		( element ) => element.getAttribute( 'aria-expanded' ) === 'false',
+		toggleButton
+	);
+
+	if ( isClosed ) {
+		await toggleButton.click();
+		await page.waitForSelector( '.edit-post-sidebar' );
+	}
+}

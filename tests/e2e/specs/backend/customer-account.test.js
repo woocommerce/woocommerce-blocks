@@ -4,9 +4,13 @@
 import {
 	switchBlockInspectorTab,
 	switchUserToAdmin,
-	openDocumentSettingsSidebar,
 } from '@wordpress/e2e-test-utils';
 import { visitBlockPage } from '@woocommerce/blocks-test-utils';
+
+/**
+ * Internal dependencies
+ */
+import { openSettingsSidebar } from '../../utils.js';
 
 const block = {
 	name: 'Customer account',
@@ -33,7 +37,7 @@ describe( `${ block.name } Block`, () => {
 
 	describe( 'attributes', () => {
 		beforeEach( async () => {
-			await openDocumentSettingsSidebar();
+			await openSettingsSidebar();
 			await switchBlockInspectorTab( 'Settings' );
 			await page.click( block.class );
 		} );

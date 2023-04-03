@@ -4,7 +4,6 @@
 import {
 	switchBlockInspectorTab,
 	switchUserToAdmin,
-	openDocumentSettingsSidebar,
 } from '@wordpress/e2e-test-utils';
 
 import {
@@ -12,6 +11,11 @@ import {
 	saveOrPublish,
 	selectBlockByName,
 } from '@woocommerce/blocks-test-utils';
+
+/**
+ * Internal dependencies
+ */
+import { openSettingsSidebar } from '../../utils.js';
 
 const block = {
 	name: 'Filter by Attribute',
@@ -63,7 +67,7 @@ describe( `${ block.name } Block`, () => {
 
 	describe( 'Attributes', () => {
 		beforeEach( async () => {
-			await openDocumentSettingsSidebar();
+			await openSettingsSidebar();
 			await selectBlockByName( block.slug );
 			await switchBlockInspectorTab( 'Settings' );
 		} );

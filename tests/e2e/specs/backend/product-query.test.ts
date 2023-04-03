@@ -5,7 +5,6 @@ import {
 	getAllBlocks,
 	switchUserToAdmin,
 	canvas,
-	openDocumentSettingsSidebar,
 	openListView,
 } from '@wordpress/e2e-test-utils';
 import { visitBlockPage } from '@woocommerce/blocks-test-utils';
@@ -17,6 +16,7 @@ import {
 	insertBlockDontWaitForInsertClose,
 	GUTENBERG_EDITOR_CONTEXT,
 	describeOrSkip,
+	openSettingsSidebar,
 } from '../../utils';
 
 const block = {
@@ -50,7 +50,7 @@ describeOrSkip( GUTENBERG_EDITOR_CONTEXT === 'gutenberg' )(
 		it.skip( 'Editor preview shows only on sale products after enabling `Show only products on sale`', async () => {
 			await visitBlockPage( `${ block.name } Block` );
 			const canvasEl = canvas();
-			await openDocumentSettingsSidebar();
+			await openSettingsSidebar();
 			await openListView();
 			await page.click(
 				'.block-editor-list-view-block__contents-container a.components-button'
