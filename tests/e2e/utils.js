@@ -149,7 +149,7 @@ export const isBlockInsertedInWidgetsArea = async ( blockName ) => {
 };
 
 /**
- * Visits site editor dependening on used WordPress version and how Gutenberg is installed.
+ * Visits site editor depending on used WordPress version and how Gutenberg is installed.
  *
  * @param {Object}                             params                          Query parameters to add to the URL.
  * @param {string}                             [params.postId]                 ID of the template if we want to access template editor.

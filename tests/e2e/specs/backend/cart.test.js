@@ -185,7 +185,7 @@ describe( `${ block.name } Block`, () => {
 			} );
 
 			it( 'can toggle Shipping calculator', async () => {
-				const selector = ` .wc-block-components-totals-shipping__change-address__link`;
+				const selector = `.wc-block-components-totals-shipping__change-address__link`;
 				const toggleLabel = await findLabelWithText(
 					'Shipping calculator'
 				);

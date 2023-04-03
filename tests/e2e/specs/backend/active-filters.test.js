@@ -6,7 +6,6 @@ import {
 	switchUserToAdmin,
 	openDocumentSettingsSidebar,
 } from '@wordpress/e2e-test-utils';
-
 import {
 	visitBlockPage,
 	selectBlockByName,

@@ -43,7 +43,7 @@ expect.extend( {
 		if ( blockElement === null ) {
 			return {
 				message: () =>
-					`the ${ block.name || 'block' } with classname \`${
+					`${ block.name || 'block' } with classname \`${
 						block.class
 					}\` did not render.`,
 				pass: false,
