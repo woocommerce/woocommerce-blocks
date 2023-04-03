@@ -42,6 +42,7 @@
 
 	.wp-block-woocommerce-mini-cart-title-block .block-editor-block-list__layout {
 		display: flex;
+		align-items: baseline;
 		margin: $gap $gap $gap * -2;
 		padding-bottom: $gap * 2;
 	}

@@ -122,11 +122,11 @@
 
 .wc-block-mini-cart__title {
 	display: flex;
+	align-items: baseline;
 	background: inherit;
 	padding-bottom: $gap * 2;
 	mask-image: linear-gradient(#000 calc(100% - #{$gap * 1.5}), transparent);
 	z-index: 1;
-
 }
 
 h2.wc-block-mini-cart__title {
