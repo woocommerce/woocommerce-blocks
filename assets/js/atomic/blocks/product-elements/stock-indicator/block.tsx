@@ -7,7 +7,11 @@ import {
 	useInnerBlockLayoutContext,
 	useProductDataContext,
 } from '@woocommerce/shared-context';
-import { useColorProps, useTypographyProps } from '@woocommerce/base-hooks';
+import {
+	useColorProps,
+	useTypographyProps,
+	useSpacingProps,
+} from '@woocommerce/base-hooks';
 import { withProductDataContext } from '@woocommerce/shared-hocs';
 import type { HTMLAttributes } from 'react';
 
@@ -43,6 +47,7 @@ export const Block = ( props: Props ): JSX.Element | null => {
 	const { product } = useProductDataContext();
 	const colorProps = useColorProps( props );
 	const typographyProps = useTypographyProps( props );
+	const spacingProps = useSpacingProps( props );
 
 	if ( ! product.id || ! product.is_purchasable ) {
 		return null;
@@ -56,8 +61,7 @@ export const Block = ( props: Props ): JSX.Element | null => {
 		<div
 			className={ classnames(
 				className,
-				colorProps.className,
-				'wc-block-components-product-stock-indicator',
+				'wc-block-components-product-stock-indicator wp-block-woocommerce-product-stock-indicator',
 				{
 					[ `${ parentClassName }__stock-indicator` ]:
 						parentClassName,
@@ -69,9 +73,22 @@ export const Block = ( props: Props ): JSX.Element | null => {
 						!! lowStock,
 					'wc-block-components-product-stock-indicator--available-on-backorder':
 						!! isBackordered,
+					// When inside All products block
+					...( props.isDescendantOfAllProducts && {
+						[ colorProps.className ]: colorProps.className,
+						[ typographyProps.className ]:
+							typographyProps.className,
+					} ),
 				}
 			) }
-			style={ { ...colorProps.style, ...typographyProps.style } }
+			// When inside All products block
+			{ ...( props.isDescendantOfAllProducts && {
+				style: {
+					...colorProps.style,
+					...typographyProps.style,
+					...spacingProps.style,
+				},
+			} ) }
 		>
 			{ lowStock
 				? lowStockText( lowStock )
