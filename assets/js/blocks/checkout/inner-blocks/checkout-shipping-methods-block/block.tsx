@@ -22,6 +22,7 @@ import type {
 import { CART_STORE_KEY } from '@woocommerce/block-data';
 import { useSelect } from '@wordpress/data';
 import NoticeBanner from '@woocommerce/base-components/notice-banner';
+import type { ReactElement } from 'react';
 
 /**
  * Internal dependencies
@@ -53,9 +54,7 @@ const renderShippingRatesControlOption = (
 	};
 };
 
-const Block = ( {
-	noShippingPlaceholder = null,
-} ): React.ReactElement | null => {
+const Block = ( { noShippingPlaceholder = null } ): ReactElement | null => {
 	const { isEditor } = useEditorContext();
 
 	const {
