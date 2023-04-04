@@ -164,14 +164,31 @@ class ProductQueryFilters {
 	 * @return array
 	 */
 	public function get_attribute_and_meta_counts( $request, $filtered_attribute ) {
-		global $wpdb;
-
 		$attributes_data            = $request->get_param( 'attributes' );
 		$calculate_attribute_counts = $request->get_param( 'calculate_attribute_counts' );
 		$min_price                  = $request->get_param( 'min_price' );
 		$max_price                  = $request->get_param( 'max_price' );
 		$rating                     = $request->get_param( 'rating' );
 		$stock_status               = $request->get_param( 'stock_status' );
+
+		$transient_key = 'wc_get_attribute_and_meta_counts_' . md5(
+			wp_json_encode(
+				array(
+					'attributes_data'            => $attributes_data,
+					'calculate_attribute_counts' => $calculate_attribute_counts,
+					'min_price'                  => $min_price,
+					'max_price'                  => $max_price,
+					'rating'                     => $rating,
+					'stock_status'               => $stock_status,
+				)
+			)
+		);
+
+		$cached_results = get_transient( $transient_key );
+
+		if ( ! empty( $cached_results ) ) {
+			return $cached_results;
+		}
 
 		if ( empty( $attributes_data ) && empty( $min_price ) && empty( $max_price ) && empty( $rating ) && empty( $stock_status ) ) {
 			$counts = $this->get_terms_list( $filtered_attribute );
@@ -246,6 +263,7 @@ class ProductQueryFilters {
 			}
 		}
 
+		global $wpdb;
 		$counts = $wpdb->get_results(
 			$wpdb->prepare(
 				"SELECT attributes.term_id as term_count_id, coalesce(term_count, 0) as term_count
@@ -267,7 +285,11 @@ class ProductQueryFilters {
 			)
 		);
 
-		return array_map( 'absint', wp_list_pluck( $counts, 'term_count', 'term_count_id' ) );
+		$results = array_map( 'absint', wp_list_pluck( $counts, 'term_count', 'term_count_id' ) );
+
+		set_transient( $transient_key, $results, 24 * HOUR_IN_SECONDS );
+
+		return $results;
 	}
 
 	/**
