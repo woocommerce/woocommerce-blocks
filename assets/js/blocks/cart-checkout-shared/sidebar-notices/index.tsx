@@ -45,36 +45,24 @@ const withSidebarNotices = createHigherOrderComponent(
 			setIsIncompatiblePaymentGatewaysNoticeDismissed( isDismissed );
 		};
 
-		const addressFieldOrAccountBlocks = [
-			'woocommerce/checkout-shipping-address-block',
-			'woocommerce/checkout-billing-address-block',
-			'woocommerce/checkout-contact-information-block',
-			'woocommerce/checkout-fields-block',
-		];
 		const { clientId } = props;
-		const { isCart, isCheckout, isAddressFieldBlock } = useSelect(
-			( select ) => {
-				const { getBlockParentsByBlockName, getBlockName } =
-					select( blockEditorStore );
-				const parent = getBlockParentsByBlockName( clientId, [
-					'woocommerce/cart',
-					'woocommerce/checkout',
-				] ).map( getBlockName );
-				const currentBlockName = getBlockName( clientId );
-				return {
-					isCart:
-						parent.includes( 'woocommerce/cart' ) ||
-						currentBlockName === 'woocommerce/cart',
-					isCheckout:
-						parent.includes( 'woocommerce/checkout' ) ||
-						currentBlockName === 'woocommerce/checkout',
-					isAddressFieldBlock:
-						addressFieldOrAccountBlocks.includes(
-							currentBlockName
-						),
-				};
-			}
-		);
+		const { isCart, isCheckout } = useSelect( ( select ) => {
+			const { getBlockParentsByBlockName, getBlockName } =
+				select( blockEditorStore );
+			const parent = getBlockParentsByBlockName( clientId, [
+				'woocommerce/cart',
+				'woocommerce/checkout',
+			] ).map( getBlockName );
+			const currentBlockName = getBlockName( clientId );
+			return {
+				isCart:
+					parent.includes( 'woocommerce/cart' ) ||
+					currentBlockName === 'woocommerce/cart',
+				isCheckout:
+					parent.includes( 'woocommerce/checkout' ) ||
+					currentBlockName === 'woocommerce/checkout',
+			};
+		} );
 		const MakeAsDefaultNotice = () => (
 			<>
 				{ isWcVersion( '6.9.0', '>=' ) ? (
@@ -114,9 +102,7 @@ const withSidebarNotices = createHigherOrderComponent(
 							</>
 						) : null }
 
-						{ isAddressFieldBlock ? null : (
-							<CartCheckoutFeedbackPrompt />
-						) }
+						<CartCheckoutFeedbackPrompt />
 					</InspectorControls>
 				) }
 
