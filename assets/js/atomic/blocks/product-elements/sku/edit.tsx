@@ -33,10 +33,6 @@ const Edit = ( {
 		[ setAttributes, isDescendentOfQueryLoop ]
 	);
 
-	const textTransformStyle = {
-		textTransform: style?.textTransform || 'uppercase',
-	};
-
 	return (
 		<>
 			<EditProductLink />
@@ -48,9 +44,7 @@ const Edit = ( {
 				 * useColors, useTypography, and useSpacing hooks.
 				 */
 				style={
-					attributes.isDescendantOfAllProducts
-						? textTransformStyle
-						: { ...style, ...textTransformStyle }
+					attributes.isDescendantOfAllProducts ? undefined : style
 				}
 			>
 				<Block { ...blockAttrs } />

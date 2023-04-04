@@ -77,7 +77,7 @@ const Block = ( props: Props ): JSX.Element | null => {
 			{ ...( props.isDescendantOfAllProducts && {
 				className: classnames(
 					className,
-					'wp-block-woocommerce-product-sku',
+					'wc-block-components-product-sku wp-block-woocommerce-product-sku',
 					{
 						[ colorProps.className ]: colorProps.className,
 						[ typographyProps.className ]:
@@ -88,9 +88,6 @@ const Block = ( props: Props ): JSX.Element | null => {
 					...colorProps.style,
 					...typographyProps.style,
 					...spacingProps.style,
-					// Default value of textTransform is uppercase.
-					textTransform:
-						typographyProps.style?.textTransform || 'uppercase',
 				},
 			} ) }
 		/>
