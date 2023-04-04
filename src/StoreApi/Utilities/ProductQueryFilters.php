@@ -163,7 +163,7 @@ class ProductQueryFilters {
 	 *
 	 * @return array
 	 */
-	public function get_attribute_and_meta_counts( $request, $filtered_attribute ) {
+	public function get_attribute_counts( $request, $filtered_attribute ) {
 		$attributes_data            = $request->get_param( 'attributes' );
 		$calculate_attribute_counts = $request->get_param( 'calculate_attribute_counts' );
 		$min_price                  = $request->get_param( 'min_price' );
@@ -390,7 +390,7 @@ class ProductQueryFilters {
 			$params[] = $value;
 		}
 
-		if ( isset( $stock_product_ids ) && ! empty( $stock_product_ids ) ) {
+		if ( ! empty( $stock_product_ids ) ) {
 			$where[] = 'product_id IN (' . implode( ',', $stock_product_ids ) . ')';
 		}
 

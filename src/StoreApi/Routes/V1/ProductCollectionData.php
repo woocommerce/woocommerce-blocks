@@ -96,7 +96,7 @@ class ProductCollectionData extends AbstractRoute {
 					continue;
 				}
 
-				$counts = $filters->get_attribute_and_meta_counts( $request, $attributes_to_count['taxonomy'] );
+				$counts = $filters->get_attribute_counts( $request, $attributes_to_count['taxonomy'] );
 
 				foreach ( $counts as $key => $value ) {
 					$data['attribute_counts'][] = (object) [
