@@ -382,7 +382,7 @@ class ProductQueryFilters {
 
 			if ( 'average_rating' === $column ) {
 				$value   = is_array( $value ) ? implode( ',', $value ) : $value;
-				$where[] = sprintf( 'average_rating BETWEEN %s - 0.5 AND %s + 0.5', $value, $value );
+				$where[] = sprintf( 'average_rating >= %s - 0.5 AND average_rating < %s + 0.5', $value, $value );
 				continue;
 			}
 
