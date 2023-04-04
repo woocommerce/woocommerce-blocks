@@ -4,7 +4,9 @@
 import { InnerBlocks, useBlockProps } from '@wordpress/block-editor';
 
 export const Edit = (): JSX.Element => {
-	const blockProps = useBlockProps();
+	const blockProps = useBlockProps( {
+		className: 'wc-block-mini-cart__title',
+	} );
 
 	const TEMPLATE = [
 		[ 'woocommerce/mini-cart-title-label-block', {} ],
