@@ -3,7 +3,7 @@
  */
 import { isFeaturePluginBuild } from '@woocommerce/block-settings';
 import {
-	// @ts-expect-error Using experimental API for spacing
+	// @ts-expect-error We check if this exists before using it.
 	// eslint-disable-next-line @wordpress/no-unsafe-wp-apis
 	__experimentalGetSpacingClassesAndStyles,
 } from '@wordpress/block-editor';
