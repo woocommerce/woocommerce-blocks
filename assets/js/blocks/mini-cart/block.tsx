@@ -50,15 +50,6 @@ interface Props {
 	addToCartBehaviour: string;
 	hasHiddenPrice: boolean;
 }
-const getProps = ( el: Element ) => {
-	return {
-		attributes: getValidBlockAttributes(
-			miniCartContentsAttributes,
-			/* eslint-disable @typescript-eslint/no-explicit-any */
-			( el instanceof HTMLElement ? el.dataset : {} ) as any
-		),
-	};
-};
 
 const MiniCartBlock = ( attributes: Props ): JSX.Element => {
 	const {
@@ -120,7 +111,17 @@ const MiniCartBlock = ( attributes: Props ): JSX.Element => {
 				renderParentBlock( {
 					Block: MiniCartContentsBlock,
 					blockName,
-					getProps,
+					getProps: ( el: Element ) => {
+						return {
+							attributes: getValidBlockAttributes(
+								miniCartContentsAttributes,
+								/* eslint-disable @typescript-eslint/no-explicit-any */
+								( el instanceof HTMLElement
+									? el.dataset
+									: {} ) as any
+							),
+						};
+					},
 					selector: '.wp-block-woocommerce-mini-cart-contents',
 					blockMap: getRegisteredBlockComponents( blockName ),
 				} );
