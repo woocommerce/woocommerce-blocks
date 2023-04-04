@@ -82,7 +82,7 @@ const StoreNoticesContainer = ( {
 		};
 	}, [ contexts, registerContainer, unregisterContainer ] );
 
-	if ( suppressNotices || ! notices.length ) {
+	if ( suppressNotices ) {
 		return null;
 	}
 
