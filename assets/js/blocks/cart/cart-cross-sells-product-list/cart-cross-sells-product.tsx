@@ -16,7 +16,6 @@ import { Block as ProductRating } from '../../../atomic/blocks/product-elements/
 import { Block as ProductSaleBadge } from '../../../atomic/blocks/product-elements/sale-badge/block';
 import { Block as ProductPrice } from '../../../atomic/blocks/product-elements/price/block';
 import { Block as ProductButton } from '../../../atomic/blocks/product-elements/button/block';
-import AddToCartButton from '../../../atomic/blocks/product-elements/add-to-cart/block';
 
 interface CrossSellsProductProps {
 	product: ProductResponseItem;
@@ -59,11 +58,7 @@ const CartCrossSellsProduct = ( {
 						/>
 						<ProductPrice />
 					</div>
-					{ product.is_in_stock ? (
-						<AddToCartButton />
-					) : (
-						<ProductButton />
-					) }
+					<ProductButton />
 				</ProductDataContextProvider>
 			</InnerBlockLayoutContextProvider>
 		</div>
