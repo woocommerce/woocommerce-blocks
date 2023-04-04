@@ -2,7 +2,11 @@
  * External dependencies
  */
 import { isFeaturePluginBuild } from '@woocommerce/block-settings';
-import { __experimentalGetSpacingClassesAndStyles } from '@wordpress/block-editor';
+import {
+	// @ts-expect-error Using experimental API for spacing
+	// eslint-disable-next-line @wordpress/no-unsafe-wp-apis
+	__experimentalGetSpacingClassesAndStyles,
+} from '@wordpress/block-editor';
 
 /**
  * Internal dependencies
@@ -11,23 +15,22 @@ import sharedConfig from '../shared/config';
 
 export const supports = {
 	...sharedConfig.supports,
-	...( isFeaturePluginBuild() && {
-		color: {
-			text: true,
-			background: true,
-		},
-		typography: {
-			fontSize: true,
-			lineHeight: true,
+	color: {
+		text: true,
+		background: true,
+	},
+	typography: {
+		fontSize: true,
+		lineHeight: true,
+		...( isFeaturePluginBuild() && {
 			__experimentalFontWeight: true,
 			__experimentalFontFamily: true,
 			__experimentalFontStyle: true,
 			__experimentalTextTransform: true,
 			__experimentalTextDecoration: true,
 			__experimentalLetterSpacing: true,
-		},
-		__experimentalSelector: '.wc-block-components-product-sku',
-	} ),
+		} ),
+	},
 	...( typeof __experimentalGetSpacingClassesAndStyles === 'function' && {
 		spacing: {
 			margin: true,
