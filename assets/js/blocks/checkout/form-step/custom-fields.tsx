@@ -5,6 +5,8 @@ import { __ } from '@wordpress/i18n';
 import { InspectorControls } from '@wordpress/block-editor';
 import { Button, PanelBody, TextControl } from '@wordpress/components';
 import { useState } from '@wordpress/element';
+import { useEffect } from 'react';
+const { dispatch } = wp.data;
 
 /**
  * Internal dependencies
@@ -21,11 +23,18 @@ export interface FormStepBlockProps {
  * Custom Fields list for use in the editor.
  */
 export const CustomFields = (): JSX.Element => {
-	const [ fields, setFields ] = useState( [] );
+	const post = wp.data.select( 'core/editor' ).getCurrentPost();
+	const [ fields, setFields ] = useState( post.checkout_custom_fields );
 
 	const addField = () => {
 		setFields( [ ...fields, { name: 'test-field' } ] );
 	};
+
+	useEffect( () => {
+		dispatch( 'core/editor' ).editPost( {
+			checkout_custom_fields: fields,
+		} );
+	}, [ fields ] );
 
 	return (
 		<InspectorControls>
@@ -51,9 +60,6 @@ export const CustomFields = (): JSX.Element => {
 				>
 					{ __( 'Add Custom Field', 'woo-gutenberg-products-block' ) }
 				</Button>
-				<p className="wc-block-checkout__controls-text">
-					{ __( 'Test.', 'woo-gutenberg-products-block' ) }
-				</p>
 			</PanelBody>
 		</InspectorControls>
 	);
