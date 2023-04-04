@@ -62,6 +62,10 @@ class ClassicTemplate extends AbstractDynamicBlock {
 			$frontend_scripts::load_scripts();
 		}
 
+		if ( 'order-received' === $attributes['template'] ) {
+			echo 'Add template here';
+		}
+
 		$archive_templates = array( 'archive-product', 'taxonomy-product_cat', 'taxonomy-product_tag', ProductAttributeTemplate::SLUG, ProductSearchResultsTemplate::SLUG );
 
 		if ( 'single-product' === $attributes['template'] ) {
