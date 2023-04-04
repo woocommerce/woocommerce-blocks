@@ -57,7 +57,7 @@ See [`package.json` `engines`](../../../package.json) and [`readme.txt`](../../.
 Once you the above setup, install the dependencies from the command line:
 
 -   Change directory to your repo folder, e.g. `$ cd woocommerce-blocks`.
--   Ensure the correct version of Node and NPM are installed - `nvm use`
+-   Ensure the correct version of Node and NPM are installed - `$ nvm use`
 -   Install JavaScript and PHP dependencies - `$ npm install && composer install`.
 
 ## Building the plugin files
