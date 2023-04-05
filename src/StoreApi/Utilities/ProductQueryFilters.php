@@ -357,22 +357,17 @@ class ProductQueryFilters {
 			}
 
 			if ( 'stock_status' === $column ) {
-				if ( is_array( $value ) ) {
-					$where_stock = array();
-					foreach ( $value as $stock_status ) {
-						$where_stock[] = sprintf( 'stock_status = "%s"', $stock_status );
-					}
-					$where_stock_part = '(' . implode( ' OR ', $where_stock ) . ')';
-				} else {
-					$where_stock_part = sprintf( 'stock_status = "%s"', $value );
+				$stock_product_ids = array();
+				foreach ( $value as $stock_status ) {
+					$stock_product_ids[] = $wpdb->get_col(
+						$wpdb->prepare(
+							"SELECT DISTINCT product_id FROM {$wpdb->prefix}wc_product_meta_lookup WHERE stock_status = %s",
+							$stock_status
+						)
+					);
 				}
 
-				$stock_product_ids = $wpdb->get_col(
-					$wpdb->prepare(
-						"SELECT DISTINCT product_id FROM {$wpdb->prefix}wc_product_meta_lookup WHERE %s",
-						$where_stock_part
-					)
-				);
+				$where[] = 'product_id IN (' . implode( ',', array_merge( ...$stock_product_ids ) ) . ')';
 				continue;
 			}
 
@@ -406,14 +401,11 @@ class ProductQueryFilters {
 			$params[] = $value;
 		}
 
-		if ( ! empty( $stock_product_ids ) ) {
-			$where[] = 'product_id IN (' . implode( ',', $stock_product_ids ) . ')';
-		}
-
 		if ( ! empty( $where ) ) {
 			$where_clause = implode( ' AND ', $where );
 			$where_clause = sprintf( $where_clause, ...$params );
-			$results      = $wpdb->get_col(
+
+			$results = $wpdb->get_col(
 				$wpdb->prepare(
 					"SELECT DISTINCT product_id FROM {$wpdb->prefix}wc_product_meta_lookup WHERE %1s",
 					$where_clause
