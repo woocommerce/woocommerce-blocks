@@ -4,6 +4,7 @@ namespace Automattic\WooCommerce\StoreApi\Routes\V1;
 use Automattic\WooCommerce\StoreApi\Payments\PaymentContext;
 use Automattic\WooCommerce\StoreApi\Payments\PaymentResult;
 use Automattic\WooCommerce\StoreApi\Exceptions\InvalidStockLevelsInCartException;
+use Automattic\WooCommerce\StoreApi\Exceptions\InvalidCartException;
 use Automattic\WooCommerce\StoreApi\Exceptions\RouteException;
 use Automattic\WooCommerce\StoreApi\Utilities\DraftOrderTrait;
 use Automattic\WooCommerce\Checkout\Helpers\ReserveStock;
@@ -98,6 +99,43 @@ class Checkout extends AbstractCartRoute {
 			'schema'      => [ $this->schema, 'get_public_item_schema' ],
 			'allow_batch' => [ 'v1' => true ],
 		];
+	}
+
+	/**
+	 * Get the route response based on the type of request.
+	 *
+	 * @param \WP_REST_Request $request Request object.
+	 *
+	 * @return \WP_REST_Response
+	 */
+	public function get_response( \WP_REST_Request $request ) {
+		$this->load_cart_session( $request );
+		$this->cart_controller->calculate_totals();
+
+		$response    = null;
+		$nonce_check = $this->requires_nonce( $request ) ? $this->check_nonce( $request ) : null;
+
+		if ( is_wp_error( $nonce_check ) ) {
+			$response = $nonce_check;
+		}
+
+		if ( ! $response ) {
+			try {
+				$response = $this->get_response_by_request_method( $request );
+			} catch ( InvalidCartException $error ) {
+				$response = $this->get_route_error_response_from_object( $error->getError(), $error->getCode(), $error->getAdditionalData() );
+			} catch ( RouteException $error ) {
+				$response = $this->get_route_error_response( $error->getErrorCode(), $error->getMessage(), $error->getCode(), $error->getAdditionalData() );
+			} catch ( \Exception $error ) {
+				$response = $this->get_route_error_response( 'woocommerce_rest_unknown_server_error', $error->getMessage(), 500 );
+			}
+		}
+
+		if ( is_wp_error( $response ) ) {
+			$response = $this->error_to_response( $response );
+		}
+
+		return $this->add_response_headers( $response );
 	}
 
 	/**

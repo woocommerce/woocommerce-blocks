@@ -6,11 +6,17 @@
 -   [Order Summary Items](#order-summary-items)
 -   [Totals footer item (in Mini Cart, Cart and Checkout)](#totals-footer-item-in-mini-cart-cart-and-checkout)
 -   [Coupons](#coupons)
+-   [Proceed to Checkout Button Label](#proceed-to-checkout-button-label)
+-   [Proceed to Checkout Button Link](#proceed-to-checkout-button-link)
 -   [Place Order Button Label](#place-order-button-label)
+-   [Additional Cart Checkout inner block types](#additional-cart-checkout-inner-block-types)
 -   [Examples](#examples)
+    -   [Changing the wording and the link on the "Proceed to Checkout" button when a specific item is in the Cart](#changing-the-wording-and-the-link-on-the-proceed-to-checkout-button-when-a-specific-item-is-in-the-cart)
+    -   [Allowing blocks in specific areas in the Cart and Checkout blocks](#allowing-blocks-in-specific-areas-in-the-cart-and-checkout-blocks)
     -   [Changing the wording of the Totals label in the Mini Cart, Cart and Checkout](#changing-the-wording-of-the-totals-label-in-the-mini-cart-cart-and-checkout)
     -   [Changing the format of the item's single price](#changing-the-format-of-the-items-single-price)
     -   [Change the name of a coupon](#change-the-name-of-a-coupon)
+    -   [Prevent a snackbar notice from appearing for coupons](#prevent-a-snackbar-notice-from-appearing-for-coupons)
     -   [Hide the "Remove item" link on a cart item](#hide-the-remove-item-link-on-a-cart-item)
     -   [Change the label of the Place Order button](#change-the-label-of-the-place-order-button)
 -   [Troubleshooting](#troubleshooting)
@@ -90,15 +96,112 @@ CartCoupon {
 }
 ```
 
+## Proceed to Checkout Button Label
+
+The Cart block contains a button which is labelled 'Proceed to Checkout' by default. It can be changed using the following filter.
+
+| Filter name                    | Description                                         | Return type |
+| ------------------------------ | --------------------------------------------------- | ----------- |
+| `proceedToCheckoutButtonLabel` | The wanted label of the Proceed to Checkout button. | `string`    |
+
+## Proceed to Checkout Button Link
+
+The Cart block contains a button which is labelled 'Proceed to Checkout' and links to the Checkout page by default, but can be changed using the following filter. This filter has the current cart passed to it in the third parameter.
+
+| Filter name                   | Description                                                 | Return type |
+| ----------------------------- | ----------------------------------------------------------- | ----------- |
+| `proceedToCheckoutButtonLink` | The URL that the Proceed to Checkout button should link to. | `string`    |
+
 ## Place Order Button Label
 
-The Checkout block contains a button which is labelled 'Place Order' by default, but can be changed using the following filter.
+The Checkout block contains a button which is labelled 'Place Order' by default, but can be changed using the following filter. This filter has the current cart passed to it in the third parameter.
 
 | Filter name             | Description                                 | Return type |
 | ----------------------- | ------------------------------------------- | ----------- |
 | `placeOrderButtonLabel` | The wanted label of the Place Order button. | `string`    |
 
+## Additional Cart Checkout inner block types
+
+The Cart and Checkout blocks are made up of inner blocks. These inner blocks areas allow certain block types to be added as children. By default, only `core/paragraph`, `core/image`, and `core/separator` are available to add.
+
+By using the `additionalCartCheckoutInnerBlockTypes` filter it is possible to add items to this array to control what the editor can insert into an inner block.
+
+This filter is called once for each inner block area, so it is possible to be very granular when determining what blocks can be added where. See the [Allowing blocks in specific areas in the Cart and Checkout blocks.](#allowing-blocks-in-specific-areas-in-the-cart-and-checkout-blocks) example for more information.
+
+| Filter name                             | Description                              | Return type   |
+| --------------------------------------- | ---------------------------------------- | ------------- |
+| `allowedBlockTypes`                     | The new array of allowwed block types.   | `string[]`    |
+| -------------------                     | ---------------------------------------- | ------------- |
+| `additionalCartCheckoutInnerBlockTypes` | The new array of allowwed block types.   | `string[]`    |
+
 ## Examples
+
+### Changing the wording and the link on the "Proceed to Checkout" button when a specific item is in the Cart
+
+For this example, let's say our store has a checkout page for regular items, and one set up specifically for users purchasing sunglasses. We will use the `wc/store/cart` data store to check whether a specific item (Sunglasses) is in the cart, and if it is, we will change the URL and text on the "Proceed to Checkout" button in the Cart block.
+
+```ts
+registerCheckoutFilters( 'sunglasses-store-extension', {
+	proceedToCheckoutButtonLabel: ( value, extensions, { cart } ) => {
+		if ( ! cart.items ) {
+			return value;
+		}
+		const isSunglassesInCart = cart.items.some(
+			( item ) => item.name === 'Sunglasses'
+		);
+		// Return the default value if sunglasses is not in the cart.
+		if ( ! isSunglassesInCart ) {
+			return value;
+		}
+		return 'Proceed to 😎 checkout';
+	},
+	proceedToCheckoutButtonLink: ( value, extensions, { cart } ) => {
+		if ( ! cart.items ) {
+			return value;
+		}
+		const isSunglassesInCart = cart.items.some(
+			( item ) => item.name === 'Sunglasses'
+		);
+		// Return the default value if sunglasses is not in the cart.
+		if ( ! isSunglassesInCart ) {
+			return value;
+		}
+		return '/sunglasses-checkout';
+	},
+} );
+```
+
+| Before                                                                                                                                   | After                                                                                                                                    |
+| ---------------------------------------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------- |
+| <img width="789" alt="image" src="https://user-images.githubusercontent.com/5656702/222575670-a7d1dab8-c93e-477a-b2cc-e463a5de77a6.png"> | <img width="761" alt="image" src="https://user-images.githubusercontent.com/5656702/222572409-de7a6bd6-5a2d-406b-ada9-cc60cc5cca54.png"> |
+
+### Allowing blocks in specific areas in the Cart and Checkout blocks
+
+Let's suppose we want to allow the editor to add some blocks in specific places in the Cart and Checkout blocks.
+
+1. Allow `core/table` to be inserted in the Shipping Address block in the Checkout.
+2. Allow `core/quote` to be inserted in every block area in the Cart and Checkout blocks.
+
+In our extension we could register a filter satisfy both of these conditions like so:
+
+```tsx
+registerCheckoutFilters( 'newsletter-plugin', {
+	allowedBlockTypes: ( value, extensions, { block } ) => {
+		// Remove the ability to add `core/separator`
+		value = value.filter( ( blockName ) => blockName !== 'core/separator' );
+
+		// Add core/quote to any inner block area.
+		value.push( 'core/quote' );
+
+		// If the block we're checking is `woocommerce/checkout-shipping-address-block then allow `core/table`.
+		if ( block === 'woocommerce/checkout-shipping-address-block' ) {
+			value.push( 'core/table' );
+		}
+
+		return value;
+	},
+} );
+```
 
 ### Changing the wording of the Totals label in the Mini Cart, Cart and Checkout
 
@@ -266,4 +369,3 @@ The error will also be shown in your console.
 🐞 Found a mistake, or have a suggestion? [Leave feedback about this document here.](https://github.com/woocommerce/woocommerce-blocks/issues/new?assignees=&labels=type%3A+documentation&template=--doc-feedback.md&title=Feedback%20on%20./docs/third-party-developers/extensibility/checkout-block/available-filters.md)
 
 <!-- /FEEDBACK -->
-

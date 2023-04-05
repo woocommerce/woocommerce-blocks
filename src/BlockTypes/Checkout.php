@@ -143,8 +143,8 @@ class Checkout extends AbstractBlock {
 			<div data-block-name="woocommerce/checkout-order-summary-taxes-block" class="wp-block-woocommerce-checkout-order-summary-taxes-block"></div>
 		';
 		// Order summary subtotal block was added in i3, so we search for it to see if we have a Checkout i2 template.
-		$regex_for_order_summary_subtotal = '/<div[\n\r\s\ta-zA-Z0-9_\-=\'"]*data-block-name="woocommerce\/checkout-order-summary-subtotal-block"[\n\r\s\ta-zA-Z0-9_\-=\'"]*>/mi';
-		$regex_for_order_summary          = '/<div[\n\r\s\ta-zA-Z0-9_\-=\'"]*data-block-name="woocommerce\/checkout-order-summary-block"[\n\r\s\ta-zA-Z0-9_\-=\'"]*>/mi';
+		$regex_for_order_summary_subtotal = '/<div[^<]*?data-block-name="woocommerce\/checkout-order-summary-subtotal-block"[^>]*?>/mi';
+		$regex_for_order_summary          = '/<div[^<]*?data-block-name="woocommerce\/checkout-order-summary-block"[^>]*?>/mi';
 		$has_i2_template                  = ! preg_match( $regex_for_order_summary_subtotal, $content );
 
 		if ( $has_i2_template ) {
@@ -155,11 +155,11 @@ class Checkout extends AbstractBlock {
 		 * Add the Local Pickup toggle to checkouts missing this forced template.
 		 */
 		$local_pickup_inner_blocks = '<div data-block-name="woocommerce/checkout-shipping-method-block" class="wp-block-woocommerce-checkout-shipping-method-block"></div>' . PHP_EOL . PHP_EOL . '<div data-block-name="woocommerce/checkout-pickup-options-block" class="wp-block-woocommerce-checkout-pickup-options-block"></div>' . PHP_EOL . PHP_EOL . '$0';
-		$has_local_pickup_regex    = '/<div[\n\r\s\ta-zA-Z0-9_\-=\'"]*data-block-name="woocommerce\/checkout-shipping-method-block"[\n\r\s\ta-zA-Z0-9_\-=\'"]*>/mi';
+		$has_local_pickup_regex    = '/<div[^<]*?data-block-name="woocommerce\/checkout-shipping-method-block"[^>]*?>/mi';
 		$has_local_pickup          = preg_match( $has_local_pickup_regex, $content );
 
 		if ( ! $has_local_pickup ) {
-			$shipping_address_block_regex = '/<div[\n\r\s\ta-zA-Z0-9_\-=\'"]*data-block-name="woocommerce\/checkout-shipping-address-block" class="wp-block-woocommerce-checkout-shipping-address-block"[\n\r\s\ta-zA-Z0-9_\-=\'"]*><\/div>/mi';
+			$shipping_address_block_regex = '/<div[^<]*?data-block-name="woocommerce\/checkout-shipping-address-block" class="wp-block-woocommerce-checkout-shipping-address-block"[^>]*?><\/div>/mi';
 			$content                      = preg_replace( $shipping_address_block_regex, $local_pickup_inner_blocks, $content );
 		}
 
@@ -318,17 +318,17 @@ class Checkout extends AbstractBlock {
 		}
 
 		if ( $is_block_editor && ! $this->asset_data_registry->exists( 'globalPaymentMethods' ) ) {
-			$payment_gateways          = $this->get_enabled_payment_gateways();
+			// These are used to show options in the sidebar. We want to get the full list of enabled payment methods,
+			// not just the ones that are available for the current cart (which may not exist yet).
+			$payment_methods           = $this->get_enabled_payment_gateways();
 			$formatted_payment_methods = array_reduce(
-				$payment_gateways,
+				$payment_methods,
 				function( $acc, $method ) {
-					if ( 'yes' === $method->enabled ) {
-						$acc[] = [
-							'id'          => $method->id,
-							'title'       => $method->method_title,
-							'description' => $method->method_description,
-						];
-					}
+					$acc[] = [
+						'id'          => $method->id,
+						'title'       => $method->method_title,
+						'description' => $method->method_description,
+					];
 					return $acc;
 				},
 				[]

@@ -11,18 +11,15 @@ import {
 import PaymentMethodIcons from '@woocommerce/base-components/cart-checkout/payment-method-icons';
 import { getIconsFromPaymentMethods } from '@woocommerce/base-utils';
 import { getSetting } from '@woocommerce/settings';
-import { CART_URL, CHECKOUT_URL } from '@woocommerce/block-settings';
-import Button from '@woocommerce/base-components/button';
 import { PaymentEventsProvider } from '@woocommerce/base-context';
 import classNames from 'classnames';
+import { isObject } from '@woocommerce/types';
 
 /**
  * Internal dependencies
  */
-import {
-	defaultCartButtonLabel,
-	defaultCheckoutButtonLabel,
-} from './constants';
+import CartButton from '../mini-cart-cart-button-block/block';
+import CheckoutButton from '../mini-cart-checkout-button-block/block';
 
 const PaymentMethodIconsElement = (): JSX.Element => {
 	const { paymentMethods } = usePaymentMethods();
@@ -34,12 +31,26 @@ const PaymentMethodIconsElement = (): JSX.Element => {
 };
 
 interface Props {
+	children: JSX.Element | JSX.Element[];
 	className?: string;
 	cartButtonLabel: string;
 	checkoutButtonLabel: string;
 }
 
+/**
+ * Checks if there are any children that are blocks.
+ */
+const hasChildren = ( children ): boolean => {
+	return children.some( ( child ) => {
+		if ( Array.isArray( child ) ) {
+			return hasChildren( child );
+		}
+		return isObject( child ) && child.key !== null;
+	} );
+};
+
 const Block = ( {
+	children,
 	className,
 	cartButtonLabel,
 	checkoutButtonLabel,
@@ -49,6 +60,11 @@ const Block = ( {
 		? parseInt( cartTotals.total_items, 10 ) +
 		  parseInt( cartTotals.total_items_tax, 10 )
 		: parseInt( cartTotals.total_items, 10 );
+
+	// The `Cart` and `Checkout` buttons were converted to inner blocks, but we still need to render the buttons
+	// for themes that have the old `mini-cart.html` template. So we check if there are any inner blocks (buttons) and
+	// if not, render the buttons.
+	const hasButtons = hasChildren( children );
 
 	return (
 		<div
@@ -65,22 +81,15 @@ const Block = ( {
 				) }
 			/>
 			<div className="wc-block-mini-cart__footer-actions">
-				{ CART_URL && (
-					<Button
-						className="wc-block-mini-cart__footer-cart"
-						href={ CART_URL }
-						variant="outlined"
-					>
-						{ cartButtonLabel || defaultCartButtonLabel }
-					</Button>
-				) }
-				{ CHECKOUT_URL && (
-					<Button
-						className="wc-block-mini-cart__footer-checkout"
-						href={ CHECKOUT_URL }
-					>
-						{ checkoutButtonLabel || defaultCheckoutButtonLabel }
-					</Button>
+				{ hasButtons ? (
+					children
+				) : (
+					<>
+						<CartButton cartButtonLabel={ cartButtonLabel } />
+						<CheckoutButton
+							checkoutButtonLabel={ checkoutButtonLabel }
+						/>
+					</>
 				) }
 			</div>
 			<PaymentEventsProvider>
