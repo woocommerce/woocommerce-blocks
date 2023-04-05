@@ -588,9 +588,8 @@ class MiniCart extends AbstractBlock {
 
 		$chunks        = $this->get_chunks_paths( $this->chunks_folder );
 		$vendor_chunks = $this->get_chunks_paths( 'vendors--mini-cart-contents-block' );
-		$shared_chunks = [ 'cart-blocks/cart-line-items--mini-cart-contents-block/products-table-frontend' ];
 
-		foreach ( array_merge( $chunks, $vendor_chunks, $shared_chunks ) as $chunk ) {
+		foreach ( array_merge( $chunks, $vendor_chunks ) as $chunk ) {
 			$handle = 'wc-blocks-' . $chunk . '-chunk';
 			$this->asset_api->register_script( $handle, $this->asset_api->get_block_asset_build_path( $chunk ), [], true );
 			$translations[] = $wp_scripts->print_translations( $handle, false );
