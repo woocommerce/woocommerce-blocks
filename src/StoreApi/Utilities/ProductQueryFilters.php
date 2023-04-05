@@ -384,16 +384,11 @@ class ProductQueryFilters {
 			}
 
 			if ( 'average_rating' === $column ) {
-				if ( is_array( $value ) ) {
-					$where_rating = array();
-					foreach ( $value as $rating ) {
-						$where_rating[] = sprintf( '(average_rating >= %f - 0.5 AND average_rating < %f + 0.5)', $rating, $rating );
-					}
-					$where[] = '(' . implode( ' OR ', $where_rating ) . ')';
-				} else {
-					$where[] = sprintf( 'average_rating >= %f - 0.5 AND average_rating < %f + 0.5', $value, $value );
+				$where_rating = array();
+				foreach ( $value as $rating ) {
+					$where_rating[] = sprintf( '(average_rating >= %f - 0.5 AND average_rating < %f + 0.5)', $rating, $rating );
 				}
-
+				$where[] = '(' . implode( ' OR ', $where_rating ) . ')';
 				continue;
 			}
 
