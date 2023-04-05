@@ -2,15 +2,14 @@
  * External dependencies
  */
 import {
-	openDocumentSettingsSidebar,
 	switchUserToAdmin,
 	openGlobalBlockInserter,
+	insertBlock,
 } from '@wordpress/e2e-test-utils';
 import {
 	findLabelWithText,
 	visitBlockPage,
 	selectBlockByName,
-	switchBlockInspectorTabWhenGutenbergIsInstalled,
 } from '@woocommerce/blocks-test-utils';
 import { merchant } from '@woocommerce/e2e-utils';
 
@@ -19,6 +18,7 @@ import { merchant } from '@woocommerce/e2e-utils';
  */
 import {
 	searchForBlock,
+	openSettingsSidebar,
 	openWidgetEditor,
 	closeModalIfExists,
 } from '../../utils.js';
@@ -52,16 +52,79 @@ describe( `${ block.name } Block`, () => {
 			expect( button ).toHaveLength( 0 );
 		} );
 
+		it( 'inner blocks can be added/removed by filters', async () => {
+			// Begin by removing the block.
+			await selectBlockByName( block.slug );
+			const options = await page.$x(
+				'//div[@class="block-editor-block-toolbar"]//button[@aria-label="Options"]'
+			);
+			await options[ 0 ].click();
+			const removeButton = await page.$x(
+				'//button[contains(., "Remove Checkout")]'
+			);
+			await removeButton[ 0 ].click();
+			// Expect block to have been removed.
+			await expect( page ).not.toMatchElement( block.class );
+
+			// Register a checkout filter to allow `core/table` block in the Checkout block's inner blocks.
+			await page.evaluate(
+				"wc.blocksCheckout.registerCheckoutFilters( 'woo-test-namespace'," +
+					'{ additionalCartCheckoutInnerBlockTypes: ( value, extensions, { block } ) => {' +
+					"    value.push('core/table');" +
+					"    if ( block === 'woocommerce/checkout-shipping-address-block' ) {" +
+					"        value.push( 'core/audio' );" +
+					'    }' +
+					'    return value;' +
+					'}' +
+					'}' +
+					');'
+			);
+
+			await insertBlock( block.name );
+
+			// Select the shipping address block and try to insert a block. Check the Table block is available.
+			await selectBlockByName(
+				'woocommerce/checkout-shipping-address-block'
+			);
+			const addBlockButton = await page.waitForXPath(
+				'//div[@data-type="woocommerce/checkout-shipping-address-block"]//button[@aria-label="Add block"]'
+			);
+			expect( addBlockButton ).not.toBeNull();
+			await addBlockButton.click();
+			const tableButton = await page.waitForXPath(
+				'//*[@role="option" and contains(., "Table")]'
+			);
+			const audioButton = await page.waitForXPath(
+				'//*[@role="option" and contains(., "Audio")]'
+			);
+			expect( tableButton ).not.toBeNull();
+			expect( audioButton ).not.toBeNull();
+
+			// Now check the contact information block and expect only the Table block to be available there.
+			await selectBlockByName(
+				'woocommerce/checkout-contact-information-block'
+			);
+			const contactInformationAddBlockButton = await page.waitForXPath(
+				'//div[@data-type="woocommerce/checkout-contact-information-block"]//button[@aria-label="Add block"]'
+			);
+			await contactInformationAddBlockButton.click();
+			const contactInformationTableButton = await page.waitForXPath(
+				'//*[@role="option" and contains(., "Table")]'
+			);
+			const contactInformationAudioButton = await page.$x(
+				'//*[@role="option" and contains(., "Audio")]'
+			);
+			expect( contactInformationTableButton ).not.toBeNull();
+			expect( contactInformationAudioButton ).toHaveLength( 0 );
+		} );
+
 		it( 'renders without crashing', async () => {
 			await expect( page ).toRenderBlock( block );
 		} );
 
 		describe( 'attributes', () => {
 			beforeEach( async () => {
-				await openDocumentSettingsSidebar();
-				await switchBlockInspectorTabWhenGutenbergIsInstalled(
-					'Settings'
-				);
+				await openSettingsSidebar();
 				await selectBlockByName( block.slug );
 			} );
 
@@ -96,7 +159,7 @@ describe( `${ block.name } Block`, () => {
 					'.wc-block-checkout__shipping-method button',
 					{ text: 'Shipping' }
 				);
-				await openDocumentSettingsSidebar();
+				await openSettingsSidebar();
 				const toggleLabel = await findLabelWithText(
 					'Hide shipping costs until an address is entered'
 				);
@@ -158,10 +221,7 @@ describe( `${ block.name } Block`, () => {
 
 		describe( 'shipping address block attributes', () => {
 			beforeEach( async () => {
-				await openDocumentSettingsSidebar();
-				await switchBlockInspectorTabWhenGutenbergIsInstalled(
-					'Settings'
-				);
+				await openSettingsSidebar();
 				await selectBlockByName(
 					'woocommerce/checkout-shipping-address-block'
 				);
@@ -210,10 +270,7 @@ describe( `${ block.name } Block`, () => {
 
 		describe( 'action block attributes', () => {
 			beforeEach( async () => {
-				await openDocumentSettingsSidebar();
-				await switchBlockInspectorTabWhenGutenbergIsInstalled(
-					'Settings'
-				);
+				await openSettingsSidebar();
 				await selectBlockByName( 'woocommerce/checkout-actions-block' );
 			} );
 
