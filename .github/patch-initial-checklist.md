@@ -13,6 +13,7 @@ The release pull request has been created! This checklist is a guide to follow f
     -   [ ] Check the changelog matches the one in the pull request description above.
 -   [ ] Run `npm run change-versions` to update the version numbers in several files. Write the version number you are releasing: {{version}}.
 -   [ ] Update compatibility sections (if applicable).
+-   [ ] Cherry-pick into the release branch all fixes that need to be included in this release (assuming they were merged into `trunk`).
 -   [ ] Push above changes to the release branch.
 
 ## Create the Testing Notes
