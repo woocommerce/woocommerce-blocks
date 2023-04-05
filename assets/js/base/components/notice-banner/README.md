@@ -24,11 +24,35 @@ Notices are informational UI displayed near the top of store pages. Notices are 
 
 Notices are color-coded to indicate the type of message being communicated, and also show an icon to reinforce the meaning of the message. The color and icon used for a notice are determined by the `status` prop.
 
--   Informational - Blue notices used for general information for buyers that are not blocking and do not require action.
--   Error - Red notices to show that an error has occurred and that the user needs to take action.
--   Success - Green notices that show an action was successful.
--   Warning - Yellow notices that show that the user may need to take action, or needs to be aware of something important.
--   Default - Gray notice, similar to info, but used for less important messaging.
+### Informational
+
+Blue notices used for general information for buyers that are not blocking and do not require action.
+
+![Informational notice](./screenshots/info.png)
+
+### Error
+
+Red notices to show that an error has occurred and that the user needs to take action.
+
+![Error notice](./screenshots/error.png)
+
+### Success
+
+Green notices that show an action was successful.
+
+![Success notice](./screenshots/success.png)
+
+### Warning
+
+Yellow notices that show that the user may need to take action, or needs to be aware of something important.
+
+![Warning notice](./screenshots/warning.png)
+
+### Default
+
+Gray notice, similar to info, but used for less important messaging.
+
+![Default notice](./screenshots/default.png)
 
 ## Development Guidelines
 
