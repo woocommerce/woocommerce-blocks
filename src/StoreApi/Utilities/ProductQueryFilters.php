@@ -190,6 +190,7 @@ class ProductQueryFilters {
 					'max_price'                  => $max_price,
 					'rating'                     => $rating,
 					'stock_status'               => $stock_status,
+					'filtered_attribute'         => $filtered_attribute,
 				)
 			)
 		);
