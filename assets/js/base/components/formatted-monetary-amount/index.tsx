@@ -25,7 +25,8 @@ interface FormattedMonetaryAmountProps
 	currency: Currency | Record< string, never >; // Currency configuration object.
 	onValueChange?: ( unit: number ) => void; // Function to call when value changes.
 	style?: React.CSSProperties | undefined;
-	renderText?: ( value: string ) => JSX.Element;
+	renderText?: ( value: string, props?: object ) => JSX.Element;
+	customInput?: ( props: object ) => JSX.Element;
 }
 
 /**

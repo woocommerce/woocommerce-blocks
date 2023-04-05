@@ -396,6 +396,21 @@ const PriceSlider = ( {
 		</div>
 	);
 
+	const customInput = ( { value, ...props } ) => {
+		const { suffix, prefix } = currency;
+		const formattedValue = value
+			.replace( suffix, '' )
+			.replace( prefix, '' );
+
+		return (
+			<div>
+				{ prefix && <span>{ prefix }</span> }
+				<input value={ formattedValue } { ...props } />
+				{ suffix && <span>{ suffix }</span> }
+			</div>
+		);
+	};
+
 	return (
 		<div className={ classes } ref={ wrapper }>
 			{ ( ! inlineInputAvailable || ! showInputFields ) && slider }
@@ -411,6 +426,7 @@ const PriceSlider = ( {
 								'woo-gutenberg-products-block'
 							) }
 							allowNegative={ false }
+							customInput={ customInput }
 							isAllowed={ isValidMinValue( {
 								minConstraint,
 								minorUnit: currency.minorUnit,
@@ -439,10 +455,12 @@ const PriceSlider = ( {
 								'Filter products by maximum price',
 								'woo-gutenberg-products-block'
 							) }
+							allowNegative={ false }
 							isAllowed={ isValidMaxValue( {
 								maxConstraint,
 								minorUnit: currency.minorUnit,
 							} ) }
+							customInput={ customInput }
 							onValueChange={ ( value ) => {
 								if ( value === maxPriceInput ) {
 									return;
