@@ -7,6 +7,7 @@ import {
 	type BlockInstance,
 } from '@wordpress/blocks';
 import { isWpVersion } from '@woocommerce/settings';
+import { isExperimentalBuild } from '@woocommerce/block-settings';
 import { __, sprintf } from '@wordpress/i18n';
 
 /**
@@ -20,16 +21,8 @@ import { VARIATION_NAME as productsVariationName } from '../product-query/variat
 import { createArchiveTitleBlock, createRowBlock } from './utils';
 import { type InheritedAttributes } from './types';
 
-const createProductsBlock = (
-	inheritedAttributes: InheritedAttributes,
-	templateInnerBlocks: BlockInstance[]
-) => {
-	const innerBlocks = [
-		...templateInnerBlocks,
-		...createBlocksFromInnerBlocksTemplate( productsInnerBlocksTemplate ),
-	];
-
-	return createBlock(
+const createProductsBlock = ( inheritedAttributes: InheritedAttributes ) =>
+	createBlock(
 		'core/query',
 		{
 			...productsQueryDefaultAttributes,
@@ -40,15 +33,14 @@ const createProductsBlock = (
 				inherit: true,
 			},
 		},
-		innerBlocks
+		createBlocksFromInnerBlocksTemplate( productsInnerBlocksTemplate )
 	);
-};
 
 const getBlockifiedTemplate = (
 	inheritedAttributes: InheritedAttributes,
 	withTermDescription = false
-) => {
-	const templateInnerBlocks = [
+) =>
+	[
 		createBlock( 'woocommerce/breadcrumbs', inheritedAttributes ),
 		createArchiveTitleBlock( 'archive-title', inheritedAttributes ),
 		withTermDescription
@@ -62,10 +54,8 @@ const getBlockifiedTemplate = (
 			],
 			inheritedAttributes
 		),
+		createProductsBlock( inheritedAttributes ),
 	].filter( Boolean ) as BlockInstance[];
-
-	return createProductsBlock( inheritedAttributes, templateInnerBlocks );
-};
 
 const getBlockifiedTemplateWithTermDescription = (
 	inheritedAttributes: InheritedAttributes
@@ -74,7 +64,7 @@ const getBlockifiedTemplateWithTermDescription = (
 const isConversionPossible = () => {
 	// Blockification is possible for the WP version 6.1 and above,
 	// which are the versions the Products block supports.
-	return isWpVersion( '6.1', '>=' );
+	return isExperimentalBuild() && isWpVersion( '6.1', '>=' );
 };
 
 const getDescriptionAllowingConversion = ( templateTitle: string ) =>

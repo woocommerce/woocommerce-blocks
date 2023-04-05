@@ -24,14 +24,6 @@ class ArchiveProductTemplatesCompatibility extends AbstractTemplateCompatibility
 	protected $hook_data;
 
 	/**
-	 * Constructor.
-	 */
-	public function __construct() {
-		$this->set_hook_data();
-		$this->init();
-	}
-
-	/**
 	 * Update the render block data to inject our custom attribute needed to
 	 * determine which blocks belong to an inherited Products block.
 	 *
@@ -188,7 +180,7 @@ class ArchiveProductTemplatesCompatibility extends AbstractTemplateCompatibility
 			),
 			'woocommerce_after_shop_loop_item_title'  => array(
 				'block_name' => 'core/post-title',
-				'position'   => 'before',
+				'position'   => 'after',
 				'hooked'     => array(
 					'woocommerce_template_loop_rating' => 5,
 					'woocommerce_template_loop_price'  => 10,
