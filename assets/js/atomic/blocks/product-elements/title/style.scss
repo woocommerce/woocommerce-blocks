@@ -11,7 +11,14 @@
 		color: inherit;
 		font-size: inherit;
 	}
+}
 
+.wc-block-cart-items,
+.cross-sells-product {
+	.wc-block-components-product-title {
+		margin: unset;
+		margin-bottom: $gap-small;
+	}
 }
 
 .is-loading {
