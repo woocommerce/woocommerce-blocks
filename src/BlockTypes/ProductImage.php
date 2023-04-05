@@ -75,7 +75,7 @@ class ProductImage extends AbstractBlock {
 			'showProductLink'         => true,
 			'showSaleBadge'           => true,
 			'saleBadgeAlign'          => 'right',
-			'imageSizing'             => 'full-size',
+			'imageSizing'             => 'single',
 			'productId'               => 'number',
 			'isDescendentOfQueryLoop' => 'false',
 		);
@@ -145,7 +145,7 @@ class ProductImage extends AbstractBlock {
 	 * @return string
 	 */
 	private function render_image( $product, $attributes ) {
-		$image_type = 'full-size' == $attributes['imageSizing']  ? 'woocommerce_single' : 'woocommerce_thumbnail';
+		$image_type = 'single' == $attributes['imageSizing']  ? 'woocommerce_single' : 'woocommerce_thumbnail';
 		$image_info = wp_get_attachment_image_src( get_post_thumbnail_id( $product->get_id() ), $image_type );
 
 		if ( ! isset( $image_info[0] ) ) {
