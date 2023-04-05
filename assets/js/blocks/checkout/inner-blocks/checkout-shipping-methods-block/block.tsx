@@ -2,7 +2,10 @@
  * External dependencies
  */
 import { __ } from '@wordpress/i18n';
-import { useShippingData } from '@woocommerce/base-context/hooks';
+import {
+	useCustomerData,
+	useShippingData,
+} from '@woocommerce/base-context/hooks';
 import { ShippingRatesControl } from '@woocommerce/base-components/cart-checkout';
 import {
 	getShippingRatesPackageCount,
@@ -19,8 +22,6 @@ import type {
 	PackageRateOption,
 	CartShippingPackageShippingRate,
 } from '@woocommerce/types';
-import { CART_STORE_KEY } from '@woocommerce/block-data';
-import { useSelect } from '@wordpress/data';
 import NoticeBanner from '@woocommerce/base-components/notice-banner';
 import type { ReactElement } from 'react';
 
@@ -65,9 +66,7 @@ const Block = ( { noShippingPlaceholder = null } ): ReactElement | null => {
 		isCollectable,
 	} = useShippingData();
 
-	const shippingAddress = useSelect( ( select ) => {
-		return select( CART_STORE_KEY ).getCustomerData().shippingAddress;
-	} );
+	const { shippingAddress } = useCustomerData();
 
 	const filteredShippingRates = isCollectable
 		? shippingRates.map( ( shippingRatesPackage ) => {
