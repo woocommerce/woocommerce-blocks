@@ -356,8 +356,6 @@ class ProductQueryFilters {
 				continue;
 			}
 
-			$value = is_array( $value ) ? implode( ',', $value ) : $value;
-
 			if ( 'stock_status' === $column ) {
 				$stock_product_ids = $wpdb->get_col(
 					$wpdb->prepare(
@@ -381,8 +379,16 @@ class ProductQueryFilters {
 			}
 
 			if ( 'average_rating' === $column ) {
-				$value   = is_array( $value ) ? implode( ',', $value ) : $value;
-				$where[] = sprintf( 'average_rating >= %s - 0.5 AND average_rating < %s + 0.5', $value, $value );
+				if ( is_array( $value ) ) {
+					$where_rating = array();
+					foreach ( $value as $rating ) {
+						$where_rating[]  = sprintf( '(average_rating >= %f - 0.5 AND average_rating < %f + 0.5)', $rating, $rating );
+					}
+					$where[] = '(' . implode( ' OR ', $where_rating ) . ')';
+				} else {
+					$where[] = sprintf( 'average_rating >= %f - 0.5 AND average_rating < %f + 0.5', $value, $value );
+				}
+
 				continue;
 			}
 
