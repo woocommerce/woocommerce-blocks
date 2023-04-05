@@ -26,11 +26,100 @@ class OrderSchema extends AbstractSchema {
 	 */
 	public function get_properties() {
 		return [
-			'id' => [
+			'id'         => [
 				'description' => __( 'The order ID to process during checkout.', 'woo-gutenberg-products-block' ),
 				'type'        => 'integer',
 				'context'     => [ 'view', 'edit' ],
 				'readonly'    => true,
+			],
+			'line_items' => [
+				'description' => __( 'Line items data.', 'woo-gutenberg-products-block' ),
+				'type'        => 'array',
+				'context'     => [ 'view', 'edit' ],
+				'items'       => [
+					'type'       => 'object',
+					'properties' => [
+						'id'        => [
+							'description' => __( 'Item ID.', 'woo-gutenberg-products-block' ),
+							'type'        => 'integer',
+							'context'     => [ 'view', 'edit' ],
+							'readonly'    => true,
+						],
+						'name'      => [
+							'description' => __( 'Product name.', 'woo-gutenberg-products-block' ),
+							'type'        => 'mixed',
+							'context'     => [ 'view', 'edit' ],
+						],
+						'quantity'  => [
+							'description' => __( 'Quantity ordered.', 'woo-gutenberg-products-block' ),
+							'type'        => 'integer',
+							'context'     => [ 'view', 'edit' ],
+						],
+						'subtotal'  => [
+							'description' => __( 'Line subtotal (before discounts).', 'woo-gutenberg-products-block' ),
+							'type'        => 'string',
+							'context'     => [ 'view', 'edit' ],
+						],
+						'meta_data' => [
+							'description' => __( 'Meta data.', 'woo-gutenberg-products-block' ),
+							'type'        => 'array',
+							'context'     => [ 'view', 'edit' ],
+							'items'       => [
+								'type'       => 'object',
+								'properties' => [
+									'id'            => [
+										'description' => __( 'Meta ID.', 'woo-gutenberg-products-block' ),
+										'type'        => 'integer',
+										'context'     => [ 'view', 'edit' ],
+										'readonly'    => true,
+									],
+									'key'           => [
+										'description' => __( 'Meta key.', 'woo-gutenberg-products-block' ),
+										'type'        => 'string',
+										'context'     => [ 'view', 'edit' ],
+									],
+									'value'         => [
+										'description' => __( 'Meta value.', 'woo-gutenberg-products-block' ),
+										'type'        => 'mixed',
+										'context'     => [ 'view', 'edit' ],
+									],
+									'display_key'   => [
+										'description' => __( 'Meta key for UI display.', 'woo-gutenberg-products-block' ),
+										'type'        => 'string',
+										'context'     => [ 'view', 'edit' ],
+									],
+									'display_value' => [
+										'description' => __( 'Meta value for UI display.', 'woo-gutenberg-products-block' ),
+										'type'        => 'string',
+										'context'     => [ 'view', 'edit' ],
+									],
+								],
+							],
+						],
+					],
+				],
+			],
+			'totals'     => [
+				'description' => __( 'Order totals.', 'woo-gutenberg-products-block' ),
+				'type'        => 'object',
+				'context'     => [ 'view', 'edit' ],
+				'items'       => [
+					'type'       => 'object',
+					'properties' => [
+						'label' => [
+							'description' => __( 'Label.', 'woo-gutenberg-products-block' ),
+							'type'        => 'string',
+							'context'     => [ 'view', 'edit' ],
+							'readonly'    => true,
+						],
+						'value' => [
+							'description' => __( 'Value.', 'woo-gutenberg-products-block' ),
+							'type'        => 'string',
+							'context'     => [ 'view', 'edit' ],
+							'readonly'    => true,
+						],
+					],
+				],
 			],
 		];
 	}
@@ -43,15 +132,9 @@ class OrderSchema extends AbstractSchema {
 	 */
 	public function get_item_response( $order ) {
 		return [
-			'id'             => $order->get_id(),
-			'line_items'     => $this->get_item_data( $order ),
-			'total_tax'      => $order->get_total_tax(),
-			'subtotal'       => $order->get_subtotal(),
-			'discount_total' => $order->get_discount_total(),
-			'shipping_total' => $order->get_shipping_total(),
-			'shipping_tax'   => $order->get_shipping_tax(),
-			'total_refunded' => $order->get_total_refunded(),
-			'fees_total'     => $this->get_fees_total( $order ),
+			'id'         => $order->get_id(),
+			'line_items' => $this->get_item_data( $order ),
+			'totals'     => $order->get_order_item_totals(),
 		];
 	}
 
@@ -74,35 +157,5 @@ class OrderSchema extends AbstractSchema {
 		}
 
 		return array_values( $data );
-	}
-
-	/**
-	 * Get fee.
-	 *
-	 * @param \WC_Order $order Order instance.
-	 * @return array
-	 */
-	private function get_fees_total( $order ) {
-		$fees       = $order->get_fees();
-		$total_fees = 0;
-
-		if ( $fees ) {
-			foreach ( $fees as $id => $fee ) {
-				/**
-				 * Filters whether or not free fees should be excluded.
-				 *
-				 * @param boolean True to skip the fee, false to include the fee.
-				 * @param integer $id Fee ID.
-				 *
-				 * @since 9.8.0-dev
-				 */
-				if ( apply_filters( 'woocommerce_get_order_item_totals_excl_free_fees', empty( $fee['line_total'] ) && empty( $fee['line_tax'] ), $id ) ) {
-					continue;
-				}
-				$total_fees += $fee->get_total();
-			}
-		}
-
-		return $total_fees;
 	}
 }
