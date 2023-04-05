@@ -164,6 +164,16 @@ class ProductQueryFilters {
 	 * @return array
 	 */
 	public function get_attribute_counts( $request, $filtered_attribute ) {
+		if ( is_array( $filtered_attribute ) ) {
+			wc_deprecated_argument( 'attributes', 'TBD', 'get_attribute_counts does not require an array of attributes as the second parameter anymore. Provide the filtered attribute as a string instead.' );
+
+			$filtered_attribute = ! empty( $filtered_attribute[0] ) ? $filtered_attribute[0] : '';
+
+			if ( empty( $filtered_attribute ) ) {
+				return array();
+			}
+		}
+
 		$attributes_data            = $request->get_param( 'attributes' );
 		$calculate_attribute_counts = $request->get_param( 'calculate_attribute_counts' );
 		$min_price                  = $request->get_param( 'min_price' );
