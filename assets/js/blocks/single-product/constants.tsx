@@ -33,6 +33,7 @@ export const DEFAULT_INNER_BLOCKS: InnerBlockTemplate[] = [
 						{
 							showSaleBadge: false,
 							isDescendentOfSingleProductBlock: true,
+							imageSizing: 'full-size',
 						},
 					],
 				],

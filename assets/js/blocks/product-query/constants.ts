@@ -91,6 +91,7 @@ export const INNER_BLOCKS_TEMPLATE: InnerBlockTemplate[] = [
 							},
 						},
 					},
+					imageSizing: 'cropped',
 				},
 			],
 			[

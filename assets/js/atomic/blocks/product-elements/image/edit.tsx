@@ -57,12 +57,6 @@ const Edit = ( {
 		[ setAttributes, isDescendentOfQueryLoop ]
 	);
 
-	useEffect( () => {
-		if ( isBlockThemeEnabled && attributes.imageSizing !== 'full-size' ) {
-			setAttributes( { imageSizing: 'full-size' } );
-		}
-	}, [ attributes.imageSizing, isBlockThemeEnabled, setAttributes ] );
-
 	return (
 		<div { ...blockProps }>
 			<InspectorControls>
