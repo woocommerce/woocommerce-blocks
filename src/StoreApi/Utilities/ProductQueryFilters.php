@@ -357,10 +357,20 @@ class ProductQueryFilters {
 			}
 
 			if ( 'stock_status' === $column ) {
+				if ( is_array( $value ) ) {
+					$where_stock = array();
+					foreach ( $value as $stock_status ) {
+						$where_stock[] = sprintf( 'stock_status = "%s"', $stock_status );
+					}
+					$where_stock_part = '(' . implode( ' OR ', $where_stock ) . ')';
+				} else {
+					$where_stock_part = sprintf( 'stock_status = "%s"', $value );
+				}
+
 				$stock_product_ids = $wpdb->get_col(
 					$wpdb->prepare(
-						"SELECT DISTINCT product_id FROM {$wpdb->prefix}wc_product_meta_lookup WHERE stock_status = %s",
-						$value
+						"SELECT DISTINCT product_id FROM {$wpdb->prefix}wc_product_meta_lookup WHERE %s",
+						$where_stock_part
 					)
 				);
 				continue;
@@ -382,7 +392,7 @@ class ProductQueryFilters {
 				if ( is_array( $value ) ) {
 					$where_rating = array();
 					foreach ( $value as $rating ) {
-						$where_rating[]  = sprintf( '(average_rating >= %f - 0.5 AND average_rating < %f + 0.5)', $rating, $rating );
+						$where_rating[] = sprintf( '(average_rating >= %f - 0.5 AND average_rating < %f + 0.5)', $rating, $rating );
 					}
 					$where[] = '(' . implode( ' OR ', $where_rating ) . ')';
 				} else {
