@@ -334,7 +334,7 @@ describe( 'Shopper → Checkout', () => {
 		const NORMAL_SHIPPING_NAME = 'Normal Shipping';
 		const NORMAL_SHIPPING_PRICE = '$20.00';
 
-		afterAll( async () => {
+		afterEach( async () => {
 			await merchant.login();
 			await merchantUtils.disableLocalPickup();
 		} );
