@@ -79,50 +79,20 @@ const PriceEdit = ( {
 		]
 	);
 
-	const showProductSelector =
-		! isDescendentOfQueryLoop && ! isDescendentOfSingleProductTemplate;
-
-	if ( ! showProductSelector ) {
-		return (
-			<>
-				<BlockControls>
-					<AlignmentToolbar
-						value={ attributes.textAlign }
-						onChange={ ( textAlign: AllowedAlignments ) => {
-							setAttributes( { textAlign } );
-						} }
-					/>
-				</BlockControls>
-				<div { ...blockProps }>
-					<Block { ...blockAttrs } />
-				</div>
-			</>
-		);
-	}
-
 	return (
-		<div { ...blockProps }>
-			<ProductSelector
-				productId={ attributes.productId }
-				setAttributes={ setAttributes }
-				icon={ BLOCK_ICON }
-				label={ BLOCK_TITLE }
-				description={ __(
-					'Choose a product to display its price.',
-					'woo-gutenberg-products-block'
-				) }
-			>
-				<BlockControls>
-					<AlignmentToolbar
-						value={ attributes.textAlign }
-						onChange={ ( textAlign: AllowedAlignments ) => {
-							setAttributes( { textAlign } );
-						} }
-					/>
-				</BlockControls>
+		<>
+			<BlockControls>
+				<AlignmentToolbar
+					value={ attributes.textAlign }
+					onChange={ ( textAlign: AllowedAlignments ) => {
+						setAttributes( { textAlign } );
+					} }
+				/>
+			</BlockControls>
+			<div { ...blockProps }>
 				<Block { ...blockAttrs } />
-			</ProductSelector>
-		</div>
+			</div>
+		</>
 	);
 };
 
