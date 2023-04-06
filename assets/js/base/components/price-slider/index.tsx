@@ -425,6 +425,7 @@ const PriceSlider = ( {
 							onBlur={ priceInputOnBlur }
 							disabled={ isLoading || ! hasValidConstraints }
 							value={ minPriceInput }
+							decimalScale={ 0 }
 						/>
 					) : (
 						<div className="input-loading"></div>
@@ -452,6 +453,7 @@ const PriceSlider = ( {
 							onBlur={ priceInputOnBlur }
 							disabled={ isLoading || ! hasValidConstraints }
 							value={ maxPriceInput }
+							decimalScale={ 0 }
 						/>
 					) : (
 						<div className="input-loading"></div>
@@ -467,10 +469,12 @@ const PriceSlider = ( {
 						<FormattedMonetaryAmount
 							currency={ currency }
 							value={ minPrice }
+							decimalScale={ 0 }
 						/>
 						<FormattedMonetaryAmount
 							currency={ currency }
 							value={ maxPrice }
+							decimalScale={ 0 }
 						/>
 					</div>
 				) }
