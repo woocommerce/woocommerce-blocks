@@ -168,12 +168,11 @@ const ValidatedTextInput = ( {
 			inputRef.current?.focus();
 		}
 
-		// Skip validation only if validateOnMount is false and focusOnMount is true.
-		if ( ! validateOnMount && focusOnMount ) {
-			setIsPristine( false );
-			return;
+		// if validateOnMount is false, only validate input if focusOnMount is also false
+		if ( validateOnMount || ! focusOnMount ) {
+			validateInput( true );
 		}
-		validateInput( true );
+
 		setIsPristine( false );
 	}, [
 		validateOnMount,
