@@ -43,6 +43,14 @@ export const registerBlockSingleProductTemplate = ( {
 
 		let isBlockRegistered = Boolean( getBlockType( blockName ) );
 
+		/**
+		 * We need to unregister the block each time the user visits or leaves the Single Product template.
+		 *
+		 * The Single Product template is the only template where the `ancestor` property is not needed because it provides the context
+		 * for the product blocks. We need to unregister and re-register the block to remove or add the `ancestor` property depending on which
+		 * location (template, post, page, etc.) the user is in.
+		 *
+		 */
 		if (
 			isBlockRegistered &&
 			( currentTemplateId?.includes( 'single-product' ) ||
