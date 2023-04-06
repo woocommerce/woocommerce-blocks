@@ -24,7 +24,9 @@ const Edit = ( {
 	setAttributes,
 	context,
 }: BlockEditProps< BlockAttributes > & { context: Context } ): JSX.Element => {
-	const { style, ...blockProps } = useBlockProps();
+	const { style, ...blockProps } = useBlockProps( {
+		className: 'wc-block-components-product-stock-indicator',
+	} );
 
 	const blockAttrs = {
 		...attributes,
