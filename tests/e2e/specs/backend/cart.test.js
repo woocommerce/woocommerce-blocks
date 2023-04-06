@@ -68,10 +68,8 @@ describe( `${ block.name } Block`, () => {
 		it( 'can only be inserted once', async () => {
 			await openGlobalBlockInserter();
 			await page.keyboard.type( block.name );
-			const button = await page.$x(
-				block.selectors.disabledInsertButton
-			);
-			expect( button ).toHaveLength( 1 );
+			const button = await page.$x( block.selectors.insertButton );
+			expect( button ).toHaveLength( 0 );
 		} );
 
 		it( 'inner blocks can be added/removed by filters', async () => {
