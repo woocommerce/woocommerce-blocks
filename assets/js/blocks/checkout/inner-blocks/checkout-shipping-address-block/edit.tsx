@@ -10,7 +10,7 @@ import { innerBlockAreas } from '@woocommerce/blocks-checkout';
  * Internal dependencies
  */
 import { FormStepBlock } from '../../form-step';
-import { CustomFields, CustomFieldsContent } from '../../custom-fields';
+import { CustomFields } from '../../custom-fields';
 import {
 	useCheckoutBlockContext,
 	useCheckoutBlockControlsContext,
@@ -75,7 +75,6 @@ export const Edit = ( {
 export const Save = (): JSX.Element => {
 	return (
 		<div { ...useBlockProps.save() }>
-			<CustomFieldsContent />
 			{ /* <AdditionalFieldsContent /> */ }
 		</div>
 	);

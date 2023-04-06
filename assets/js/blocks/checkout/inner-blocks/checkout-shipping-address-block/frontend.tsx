@@ -13,6 +13,7 @@ import { CHECKOUT_STORE_KEY } from '@woocommerce/block-data';
 import Block from './block';
 import attributes from './attributes';
 import { useCheckoutBlockContext } from '../../context';
+import { CustomFieldsFrontend } from '../../custom-fields';
 
 const FrontendBlock = ( {
 	title,
@@ -63,6 +64,7 @@ const FrontendBlock = ( {
 				showPhoneField={ showPhoneField }
 			/>
 			{ children }
+			<CustomFieldsFrontend section="shipping" />
 		</FormStep>
 	);
 };

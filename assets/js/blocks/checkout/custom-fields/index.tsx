@@ -8,6 +8,16 @@ import { InnerBlocks, useBlockProps } from '@wordpress/block-editor';
  * Internal dependencies
  */
 import { useForcedLayout } from '../../cart-checkout-shared';
+import Frontend from '../inner-blocks/checkout-custom-field-block/frontend';
+
+const templateField = {
+	name: 'the_default_field_name',
+	label: 'The default field',
+	size: '',
+	required: false,
+};
+
+const storedFields = [ templateField, templateField ];
 
 export const CustomFields = ( {
 	block,
@@ -15,30 +25,22 @@ export const CustomFields = ( {
 	// Name of the parent block.
 	block: string;
 } ): JSX.Element => {
-	const templateField = {
-		name: 'the_default_field_name',
-		label: 'The default field',
-		size: '',
-		required: false,
-	};
-
 	const { 'data-block': clientId } = useBlockProps();
 	const allowedBlocks = [ 'woocommerce/checkout-custom-field-block' ];
-	const defaultTemplate = [
-		[
-			'woocommerce/checkout-custom-field-block',
-			{
-				section: 'shipping',
-				field: templateField,
-			},
-			[],
-		],
-	] as TemplateArray;
+
+	const template = storedFields.map( ( field ) => [
+		'woocommerce/checkout-custom-field-block',
+		{
+			section: 'shipping',
+			field,
+		},
+		[],
+	] ) as TemplateArray;
 
 	useForcedLayout( {
 		clientId,
 		registeredBlocks: allowedBlocks,
-		defaultTemplate,
+		defaultTemplate: template,
 	} );
 
 	return (
@@ -46,10 +48,23 @@ export const CustomFields = ( {
 			{ `Custom Fields section: ${ block }` }
 			<InnerBlocks
 				allowedBlocks={ allowedBlocks }
-				template={ defaultTemplate }
+				template={ template }
 			/>
 		</div>
 	);
 };
 
-export const CustomFieldsContent = (): JSX.Element => <InnerBlocks.Content />;
+export const CustomFieldsFrontend = ( {
+	section,
+}: {
+	section: string;
+} ): JSX.Element => {
+	return (
+		<div className="wc-block-checkout__custom_fields">
+			{ `Custom Fields section` }
+			{ storedFields.map( ( field, index ) => (
+				<Frontend key={ index } field={ field } section={ section } />
+			) ) }
+		</div>
+	);
+};
