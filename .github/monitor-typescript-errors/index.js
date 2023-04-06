@@ -58,7 +58,8 @@ const runner = async () => {
 	}
 
 	/**
-	 * TODO: Airtable integration is failing auth, so we're disabling it for now.
+	 * @todo: Airtable integration is failing auth, so we're disabling it for now.
+	 * Issue opened: https://github.com/woocommerce/woocommerce-blocks/issues/8961
 	 */
 	// if ( process.env[ 'CURRENT_BRANCH' ] === 'trunk' ) {
 	// 	try {
