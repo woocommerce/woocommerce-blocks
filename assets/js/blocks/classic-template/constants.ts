@@ -19,6 +19,7 @@ export const TYPES = {
 export const PLACEHOLDERS = {
 	singleProduct: 'single-product',
 	archiveProduct: 'archive-product',
+	orderReceived: 'fallback',
 };
 
 export const TEMPLATES: TemplateDetails = {
@@ -71,10 +72,11 @@ export const TEMPLATES: TemplateDetails = {
 		placeholder: PLACEHOLDERS.archiveProduct,
 	},
 	'order-received': {
-		types: TYPES.orderReceived,
+		type: TYPES.orderReceived,
 		title: __(
 			'WooCommerce Order Received Block',
 			'woo-gutenberg-products-block'
 		),
+		placeholder: PLACEHOLDERS.orderReceived,
 	},
 };
