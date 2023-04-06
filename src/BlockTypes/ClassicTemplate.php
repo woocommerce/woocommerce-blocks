@@ -111,14 +111,18 @@ class ClassicTemplate extends AbstractDynamicBlock {
 	protected function render_order_received() {
 		ob_start();
 
+		echo '<div class="wp-block-group">';
+
 		echo sprintf(
 			'<%1$s %2$s>%3$s</%1$s>',
 			'h1',
-			esc_attr( get_block_wrapper_attributes() ),
+			get_block_wrapper_attributes(), // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
 			esc_html__( 'Order received', 'woo-gutenberg-products-block' )
 		);
 
 		WC_Shortcode_Checkout::output( array() );
+
+		echo '</div>';
 
 		return ob_get_clean();
 	}
