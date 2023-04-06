@@ -72,8 +72,8 @@ class ProductCollectionData extends AbstractRoute {
 			$filter_request->set_param( 'max_price', null );
 
 			$price_results     = $filters->get_filtered_price( $filter_request );
-			$data['min_price'] = $price_results->min_price;
-			$data['max_price'] = $price_results->max_price;
+			$data['min_price'] = apply_filters( 'woocommerce_blocks_get_min_price', $price_results->min_price );
+			$data['max_price'] = apply_filters( 'woocommerce_blocks_get_max_price', $price_results->max_price );
 		}
 
 		if ( ! empty( $request['calculate_stock_status_counts'] ) ) {
