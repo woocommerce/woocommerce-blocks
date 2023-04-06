@@ -396,6 +396,22 @@ const PriceSlider = ( {
 		</div>
 	);
 
+	const getInputClassName = ( type: 'min' | 'max' ) =>
+		`wc-block-price-filter__amount wc-block-price-filter__amount--${ type } wc-block-form-text-input wc-block-components-price-slider__amount wc-block-components-price-slider__amount--${ type }`;
+
+	const commonFormattedMonetaryAmountProps = {
+		currency,
+		decimalScale: 0,
+	};
+
+	const commonFormattedMonetaryAmountInputProps = {
+		...commonFormattedMonetaryAmountProps,
+		displayType: 'input',
+		allowNegative: false,
+		disabled: isLoading || ! hasValidConstraints,
+		onBlur: priceInputOnBlur,
+	};
+
 	return (
 		<div className={ classes } ref={ wrapper }>
 			{ ( ! inlineInputAvailable || ! showInputFields ) && slider }
@@ -403,14 +419,12 @@ const PriceSlider = ( {
 				<div className="wc-block-price-filter__controls wc-block-components-price-slider__controls">
 					{ ! isUpdating ? (
 						<FormattedMonetaryAmount
-							currency={ currency }
-							displayType="input"
-							className="wc-block-price-filter__amount wc-block-price-filter__amount--min wc-block-form-text-input wc-block-components-price-slider__amount wc-block-components-price-slider__amount--min"
+							{ ...commonFormattedMonetaryAmountInputProps }
+							className={ getInputClassName( 'min' ) }
 							aria-label={ __(
 								'Filter products by minimum price',
 								'woo-gutenberg-products-block'
 							) }
-							allowNegative={ false }
 							isAllowed={ isValidMinValue( {
 								minConstraint,
 								minorUnit: currency.minorUnit,
@@ -422,10 +436,7 @@ const PriceSlider = ( {
 								}
 								setMinPriceInput( value );
 							} }
-							onBlur={ priceInputOnBlur }
-							disabled={ isLoading || ! hasValidConstraints }
 							value={ minPriceInput }
-							decimalScale={ 0 }
 						/>
 					) : (
 						<div className="input-loading"></div>
@@ -433,9 +444,8 @@ const PriceSlider = ( {
 					{ inlineInputAvailable && slider }
 					{ ! isUpdating ? (
 						<FormattedMonetaryAmount
-							currency={ currency }
-							displayType="input"
-							className="wc-block-price-filter__amount wc-block-price-filter__amount--max wc-block-form-text-input wc-block-components-price-slider__amount wc-block-components-price-slider__amount--max"
+							{ ...commonFormattedMonetaryAmountInputProps }
+							className={ getInputClassName( 'max' ) }
 							aria-label={ __(
 								'Filter products by maximum price',
 								'woo-gutenberg-products-block'
@@ -450,10 +460,7 @@ const PriceSlider = ( {
 								}
 								setMaxPriceInput( value );
 							} }
-							onBlur={ priceInputOnBlur }
-							disabled={ isLoading || ! hasValidConstraints }
 							value={ maxPriceInput }
-							decimalScale={ 0 }
 						/>
 					) : (
 						<div className="input-loading"></div>
@@ -467,14 +474,12 @@ const PriceSlider = ( {
 				Number.isFinite( maxPrice ) && (
 					<div className="wc-block-price-filter__range-text wc-block-components-price-slider__range-text">
 						<FormattedMonetaryAmount
-							currency={ currency }
+							{ ...commonFormattedMonetaryAmountProps }
 							value={ minPrice }
-							decimalScale={ 0 }
 						/>
 						<FormattedMonetaryAmount
-							currency={ currency }
+							{ ...commonFormattedMonetaryAmountProps }
 							value={ maxPrice }
-							decimalScale={ 0 }
 						/>
 					</div>
 				) }
