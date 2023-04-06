@@ -43,6 +43,14 @@ export const registerBlockSingleProductTemplate = ( {
 
 		let isBlockRegistered = Boolean( getBlockType( blockName ) );
 
+		/**
+		 * We need to unregister the block each time the user visits or leaves the Single Product template.
+		 *
+		 * The Single Product template is the only template where the `ancestor` property is not needed because it provides the context
+		 * for the product blocks. We need to unregister and re-register the block to remove or add the `ancestor` property depending on which
+		 * location (template, post, page, etc.) the user is in.
+		 *
+		 */
 		if (
 			isBlockRegistered &&
 			( currentTemplateId?.includes( 'single-product' ) ||
@@ -62,7 +70,7 @@ export const registerBlockSingleProductTemplate = ( {
 					...blockSettings,
 					// @ts-expect-error: `ancestor` key is typed in WordPress core
 					ancestor: ! currentTemplateId?.includes( 'single-product' )
-						? blockSettings.ancestor
+						? blockSettings?.ancestor
 						: undefined,
 				} );
 			} else {
@@ -70,7 +78,7 @@ export const registerBlockSingleProductTemplate = ( {
 				registerBlockType( blockMetadata, {
 					...blockSettings,
 					ancestor: ! currentTemplateId?.includes( 'single-product' )
-						? blockSettings.ancestor
+						? blockSettings?.ancestor
 						: undefined,
 				} );
 			}

@@ -125,6 +125,7 @@ class SingleProduct extends AbstractBlock {
 			$block_name = array_pop( $this->single_product_inner_blocks_names );
 
 			if ( $block_name === $block['blockName'] ) {
+				// @todo This is a temporary fix to make the Post Excerpt block work while https://github.com/WordPress/gutenberg/pull/49495 is not merged
 				if ( 'core/post-excerpt' === $block_name ) {
 					global $post;
 					// phpcs:ignore WordPress.WP.GlobalVariablesOverride.Prohibited
@@ -132,10 +133,22 @@ class SingleProduct extends AbstractBlock {
 					setup_postdata( $post );
 				}
 				$context['postId'] = $this->product_id;
-				if ( ! $this->single_product_inner_blocks_names ) {
-					wp_reset_postdata();
-				}
+			}
+
+			if ( ! $this->single_product_inner_blocks_names ) {
+				wp_reset_postdata();
 			}
 		}
+	}
+
+	/**
+	 * Get the frontend script handle for this block type.
+	 *
+	 * @param string $key Data to get, or default to everything.
+	 *
+	 * @return null This block has no frontend script.
+	 */
+	protected function get_block_type_script( $key = null ) {
+		return null;
 	}
 }
