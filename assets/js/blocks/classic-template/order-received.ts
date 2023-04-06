@@ -20,7 +20,7 @@ const getDescriptionAllowingConversion = ( templateTitle: string ) =>
 	sprintf(
 		/* translators: %s is the template title */
 		__(
-			"This block serves as a placeholder for your %s. We recommend upgrading to the Products block for more features to edit your products visually. Don't worry, you can always revert back.",
+			"This block serves as a placeholder for your %s. We recommend upgrading to the Order Received block for more features and to edit it visually. Don't worry, you can always revert back.",
 			'woo-gutenberg-products-block'
 		),
 		templateTitle
@@ -30,7 +30,7 @@ const getDescriptionDisallowingConversion = ( templateTitle: string ) =>
 	sprintf(
 		/* translators: %s is the template title */
 		__(
-			'This block serves as a placeholder for your %s. It will display the actual product image, title, price in your store. You can move this placeholder around and add more blocks around to customize the template.',
+			'This block serves as a placeholder for your %s. It will display the thankyou.php template. You can move this placeholder around and add more blocks around to customize the template.',
 			'woo-gutenberg-products-block'
 		),
 		templateTitle
