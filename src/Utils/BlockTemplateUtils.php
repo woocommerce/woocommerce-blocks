@@ -1,11 +1,12 @@
 <?php
 namespace Automattic\WooCommerce\Blocks\Utils;
 
-use Automattic\WooCommerce\Blocks\Templates\ProductAttributeTemplate;
-use Automattic\WooCommerce\Blocks\Templates\ProductSearchResultsTemplate;
 use Automattic\WooCommerce\Blocks\Domain\Services\FeatureGating;
 use Automattic\WooCommerce\Blocks\Options;
 use Automattic\WooCommerce\Blocks\Templates\MiniCartTemplate;
+use Automattic\WooCommerce\Blocks\Templates\OrderReceivedTemplate;
+use Automattic\WooCommerce\Blocks\Templates\ProductAttributeTemplate;
+use Automattic\WooCommerce\Blocks\Templates\ProductSearchResultsTemplate;
 
 /**
  * Utility methods used for serving block templates from WooCommerce Blocks.
@@ -330,6 +331,10 @@ class BlockTemplateUtils {
 			MiniCartTemplate::SLUG             => array(
 				'title'       => _x( 'Mini Cart', 'Template name', 'woo-gutenberg-products-block' ),
 				'description' => __( 'Template used to display the Mini Cart drawer.', 'woo-gutenberg-products-block' ),
+			),
+			OrderReceivedTemplate::SLUG        => array(
+				'title'       => _x( 'Order Received', 'Template name', 'woo-gutenberg-products-block' ),
+				'description' => __( 'Displays the order confirmation page.', 'woo-gutenberg-products-block' ),
 			),
 		);
 
