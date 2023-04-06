@@ -158,14 +158,17 @@ describe( 'ValidatedTextInput', () => {
 					onChange={ ( value ) => setInputValue( value ) }
 					value={ inputValue }
 					label={ 'Test Input' }
+					required={ true }
 				/>
 			);
 		};
 		render( <TestComponent /> );
 		const textInputElement = await screen.getByLabelText( 'Test Input' );
+		await userEvent.type( textInputElement, 'test' );
 		await userEvent.type( textInputElement, '{selectall}{del}' );
+		await textInputElement.blur();
 		await expect(
-			select( VALIDATION_STORE_KEY ).getValidationError( 'test-input' )
-		).not.toBe( 'Please enter a valid test input' );
+			screen.queryByText( 'Please enter a valid test input' )
+		).not.toBeNull();
 	} );
 } );
