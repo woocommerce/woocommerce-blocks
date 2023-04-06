@@ -276,19 +276,20 @@ class ProductQueryFilters {
 		global $wpdb;
 		$counts = $wpdb->get_results(
 			$wpdb->prepare(
-				"SELECT attributes.term_id as term_count_id, coalesce(term_count, 0) as term_count
-	FROM (
-	         SELECT DISTINCT term_id
-	         FROM {$wpdb->prefix}wc_product_attributes_lookup
-	         WHERE taxonomy = %s) as attributes
-	         %1s JOIN (
-	    SELECT COUNT(DISTINCT product_attribute_lookup.product_or_parent_id) as term_count, product_attribute_lookup.term_id
-	    FROM {$wpdb->prefix}wc_product_attributes_lookup product_attribute_lookup
-	             INNER JOIN {$wpdb->posts} posts
-	                        ON posts.ID = product_attribute_lookup.product_id
-	    WHERE posts.post_type IN ('product', 'product_variation') AND posts.post_status = 'publish'%1s
-	    GROUP BY product_attribute_lookup.term_id
-	) summarize ON attributes.term_id = summarize.term_id",
+				"
+				SELECT attributes.term_id as term_count_id, coalesce(term_count, 0) as term_count
+				FROM (SELECT DISTINCT term_id
+				      FROM {$wpdb->prefix}wc_product_attributes_lookup
+				      WHERE taxonomy = %s) as attributes %1s JOIN (
+					    SELECT COUNT(DISTINCT product_attribute_lookup.product_or_parent_id) as term_count, product_attribute_lookup.term_id
+					    FROM {$wpdb->prefix}wc_product_attributes_lookup product_attribute_lookup
+					             INNER JOIN {$wpdb->posts} posts
+					                        ON posts.ID = product_attribute_lookup.product_id
+					    WHERE posts.post_type IN ('product', 'product_variation') AND posts.post_status = 'publish'%1s
+					    GROUP BY product_attribute_lookup.term_id
+					) summarize
+				ON attributes.term_id = summarize.term_id
+				",
 				$filtered_attribute,
 				$join_type,
 				$where_clause
