@@ -19,7 +19,6 @@ export const TYPES = {
 export const PLACEHOLDERS = {
 	singleProduct: 'single-product',
 	archiveProduct: 'archive-product',
-	orderReceived: 'order-received',
 };
 
 export const TEMPLATES: TemplateDetails = {
@@ -77,6 +76,5 @@ export const TEMPLATES: TemplateDetails = {
 			'WooCommerce Order Received Block',
 			'woo-gutenberg-products-block'
 		),
-		placeholder: PLACEHOLDERS.orderReceived,
 	},
 };
