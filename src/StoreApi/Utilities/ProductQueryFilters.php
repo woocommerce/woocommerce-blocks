@@ -196,8 +196,7 @@ class ProductQueryFilters {
 		);
 
 		$cached_results = get_transient( $transient_key );
-
-		if ( ! empty( $cached_results ) ) {
+		if ( ! empty( $cached_results ) && defined( 'WP_DEBUG' ) && ! WP_DEBUG ) {
 			return $cached_results;
 		}
 
