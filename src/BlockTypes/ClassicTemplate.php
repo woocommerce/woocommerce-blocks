@@ -111,6 +111,13 @@ class ClassicTemplate extends AbstractDynamicBlock {
 	protected function render_order_received() {
 		ob_start();
 
+		echo sprintf(
+			'<%1$s %2$s>%3$s</%1$s>',
+			'h1',
+			esc_attr( get_block_wrapper_attributes() ),
+			esc_html__( 'Order received', 'woo-gutenberg-products-block' )
+		);
+
 		WC_Shortcode_Checkout::output( array() );
 
 		return ob_get_clean();
