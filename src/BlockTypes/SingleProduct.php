@@ -133,9 +133,10 @@ class SingleProduct extends AbstractBlock {
 					setup_postdata( $post );
 				}
 				$context['postId'] = $this->product_id;
-				if ( ! $this->single_product_inner_blocks_names ) {
-					wp_reset_postdata();
-				}
+			}
+
+			if ( ! $this->single_product_inner_blocks_names ) {
+				wp_reset_postdata();
 			}
 		}
 	}
