@@ -51,8 +51,9 @@ export const areShippingMethodsMissing = (
 	if ( ! prefersCollection ) {
 		return shippingRates.some(
 			( shippingRatePackage ) =>
-				! shippingRatePackage.shipping_rates.some( ( shippingRate ) =>
-					hasCollectableRate( shippingRate.method_id )
+				! shippingRatePackage.shipping_rates.some(
+					( shippingRate ) =>
+						! hasCollectableRate( shippingRate.method_id )
 				)
 		);
 	}
