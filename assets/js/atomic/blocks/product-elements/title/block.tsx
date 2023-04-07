@@ -1,15 +1,12 @@
 /**
  * External dependencies
  */
-import classnames from 'classnames';
 import {
 	useInnerBlockLayoutContext,
 	useProductDataContext,
 } from '@woocommerce/shared-context';
-import { isFeaturePluginBuild } from '@woocommerce/block-settings';
 import { withProductDataContext } from '@woocommerce/shared-hocs';
-import ProductName from '@woocommerce/base-components/product-name';
-import { useStoreEvents } from '@woocommerce/base-context/hooks';
+import ProductTitle from '@woocommerce/base-components/product-title';
 import {
 	useSpacingProps,
 	useTypographyProps,
@@ -24,21 +21,6 @@ import './style.scss';
 import { Attributes } from './types';
 
 type Props = Attributes & HTMLAttributes< HTMLDivElement >;
-
-interface TagNameProps extends HTMLAttributes< HTMLOrSVGElement > {
-	headingLevel: number;
-	elementType?: keyof JSX.IntrinsicElements;
-}
-
-const TagName = ( {
-	children,
-	headingLevel,
-	elementType:
-		ElementType = `h${ headingLevel }` as keyof JSX.IntrinsicElements,
-	...props
-}: TagNameProps ): JSX.Element => {
-	return <ElementType { ...props }>{ children }</ElementType>;
-};
 
 /**
  * Product Title Block Component.
@@ -63,75 +45,24 @@ export const Block = ( props: Props ): JSX.Element => {
 
 	const { parentClassName } = useInnerBlockLayoutContext();
 	const { product } = useProductDataContext();
-	const { dispatchStoreEvent } = useStoreEvents();
 
 	const colorProps = useColorProps( props );
 	const spacingProps = useSpacingProps( props );
 	const typographyProps = useTypographyProps( props );
 
-	if ( ! product.id ) {
-		return (
-			<TagName
-				headingLevel={ headingLevel }
-				className={ classnames(
-					className,
-					colorProps.className,
-					'wc-block-components-product-title',
-					{
-						[ `${ parentClassName }__product-title` ]:
-							parentClassName,
-						[ `wc-block-components-product-title--align-${ align }` ]:
-							align && isFeaturePluginBuild(),
-					}
-				) }
-				style={
-					isFeaturePluginBuild()
-						? {
-								...spacingProps.style,
-								...typographyProps.style,
-								...colorProps.style,
-						  }
-						: {}
-				}
-			/>
-		);
-	}
-
 	return (
-		<TagName
+		<ProductTitle
 			headingLevel={ headingLevel }
-			className={ classnames(
-				className,
-				colorProps.className,
-				'wc-block-components-product-title',
-				{
-					[ `${ parentClassName }__product-title` ]: parentClassName,
-					[ `wc-block-components-product-title--align-${ align }` ]:
-						align && isFeaturePluginBuild(),
-				}
-			) }
-			style={
-				isFeaturePluginBuild()
-					? {
-							...spacingProps.style,
-							...typographyProps.style,
-							...colorProps.style,
-					  }
-					: {}
-			}
-		>
-			<ProductName
-				disabled={ ! showProductLink }
-				name={ product.name }
-				permalink={ product.permalink }
-				target={ linkTarget }
-				onClick={ () => {
-					dispatchStoreEvent( 'product-view-link', {
-						product,
-					} );
-				} }
-			/>
-		</TagName>
+			className={ className }
+			colorProps={ colorProps }
+			spacingProps={ spacingProps }
+			typographyProps={ typographyProps }
+			align={ align }
+			parentClassName={ parentClassName }
+			product={ product }
+			showProductLink={ showProductLink }
+			linkTarget={ linkTarget }
+		/>
 	);
 };
 

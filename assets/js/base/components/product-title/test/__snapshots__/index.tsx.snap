@@ -1,0 +1,101 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`ProductTitle should not render a link if showProductLink is false 1`] = `
+<span
+  className="wc-block-components-product-title"
+  style={Object {}}
+>
+  <span
+    className="wc-block-components-product-name"
+    dangerouslySetInnerHTML={
+      Object {
+        "__html": "Test Product",
+      }
+    }
+  />
+</span>
+`;
+
+exports[`ProductTitle should render a link if showProductLink is true 1`] = `
+<span
+  className="wc-block-components-product-title"
+  style={Object {}}
+>
+  <a
+    className="wc-block-components-product-name"
+    dangerouslySetInnerHTML={
+      Object {
+        "__html": "Test Product",
+      }
+    }
+    href="/"
+  />
+</span>
+`;
+
+exports[`ProductTitle should render a span when heading level is false 1`] = `
+<span
+  className="wc-block-components-product-title"
+  style={Object {}}
+>
+  <span
+    className="wc-block-components-product-name"
+    dangerouslySetInnerHTML={
+      Object {
+        "__html": "Test Product",
+      }
+    }
+  />
+</span>
+`;
+
+exports[`ProductTitle should render an H2 when heading level is 2 1`] = `
+<h2
+  className="wc-block-components-product-title"
+  style={Object {}}
+>
+  <span
+    className="wc-block-components-product-name"
+    dangerouslySetInnerHTML={
+      Object {
+        "__html": "Test Product",
+      }
+    }
+  />
+</h2>
+`;
+
+exports[`ProductTitle should render correct link target 1`] = `
+<span
+  className="wc-block-components-product-title"
+  style={Object {}}
+>
+  <a
+    className="wc-block-components-product-name"
+    dangerouslySetInnerHTML={
+      Object {
+        "__html": "Test Product",
+      }
+    }
+    href="/"
+    target="_blank"
+  />
+</span>
+`;
+
+exports[`ProductTitle should render custom class name 1`] = `
+<span
+  className="lorem-ipsum wc-block-components-product-title"
+  style={Object {}}
+>
+  <a
+    className="wc-block-components-product-name"
+    dangerouslySetInnerHTML={
+      Object {
+        "__html": "Test Product",
+      }
+    }
+    href="/"
+  />
+</span>
+`;

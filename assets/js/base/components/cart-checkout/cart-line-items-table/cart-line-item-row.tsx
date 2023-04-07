@@ -6,7 +6,7 @@ import { __, sprintf } from '@wordpress/i18n';
 import { speak } from '@wordpress/a11y';
 import QuantitySelector from '@woocommerce/base-components/quantity-selector';
 import ProductPrice from '@woocommerce/base-components/product-price';
-import ProductName from '@woocommerce/base-components/product-name';
+import ProductTitle from '@woocommerce/base-components/product-title';
 import {
 	useStoreCartItemQuantity,
 	useStoreEvents,
@@ -50,6 +50,12 @@ interface CartLineItemRowProps {
 	lineItem: CartItem | Record< string, never >;
 	onRemove?: () => void;
 	tabIndex?: number;
+}
+
+interface ProductTitleProps {
+	id: number;
+	name: string;
+	permalink: string;
 }
 
 /**
@@ -201,6 +207,8 @@ const CartLineItemRow: React.ForwardRefExoticComponent<
 			arg,
 		} );
 
+		// console.log( { lineItem } );
+
 		return (
 			<tr
 				className={ classnames(
@@ -237,16 +245,20 @@ const CartLineItemRow: React.ForwardRefExoticComponent<
 				</td>
 				<td className="wc-block-cart-item__product">
 					<div className="wc-block-cart-item__wrap">
-						<span className="wc-block-components-product-title">
-							<ProductName
-								disabled={
-									isPendingDelete ||
-									isProductHiddenFromCatalog
-								}
-								name={ name }
-								permalink={ permalink }
-							/>
-						</span>
+						<ProductTitle
+							headingLevel={ false }
+							className={ '' }
+							product={ lineItem as ProductTitleProps }
+							showProductLink={ true }
+						/>
+
+						{ /* <ProductName
+							disabled={
+								isPendingDelete || isProductHiddenFromCatalog
+							}
+							name={ name }
+							permalink={ permalink }
+						/> */ }
 						{ showBackorderBadge ? (
 							<ProductBackorderBadge />
 						) : (
@@ -256,7 +268,6 @@ const CartLineItemRow: React.ForwardRefExoticComponent<
 								/>
 							)
 						) }
-
 						<div className="wc-block-cart-item__prices">
 							<ProductPrice
 								currency={ priceCurrency }
@@ -271,7 +282,6 @@ const CartLineItemRow: React.ForwardRefExoticComponent<
 								format={ subtotalPriceFormat }
 							/>
 						</div>
-
 						<ProductSaleBadge
 							currency={ priceCurrency }
 							saleAmount={ getAmountFromRawPrice(
@@ -280,14 +290,12 @@ const CartLineItemRow: React.ForwardRefExoticComponent<
 							) }
 							format={ saleBadgePriceFormat }
 						/>
-
 						<ProductMetadata
 							shortDescription={ shortDescription }
 							fullDescription={ fullDescription }
 							itemData={ itemData }
 							variation={ variation }
 						/>
-
 						<div className="wc-block-cart-item__quantity">
 							{ ! soldIndividually &&
 								!! quantityLimits.editable && (
