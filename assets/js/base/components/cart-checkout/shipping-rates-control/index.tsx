@@ -8,6 +8,7 @@ import { ExperimentalOrderShippingPackages } from '@woocommerce/blocks-checkout'
 import {
 	getShippingRatesPackageCount,
 	getShippingRatesRateCount,
+	isPackageRateCollectable,
 } from '@woocommerce/base-utils';
 import {
 	useStoreCart,
@@ -15,6 +16,7 @@ import {
 	useShippingData,
 } from '@woocommerce/base-context';
 import NoticeBanner from '@woocommerce/base-components/notice-banner';
+import { CartShippingPackageShippingRate } from '@woocommerce/type-defs/cart';
 
 /**
  * Internal dependencies
@@ -94,6 +96,18 @@ const ShippingRatesControl = ( {
 		},
 		context,
 	};
+
+	const allPackagesUsingLocalPickup = shippingRates.every(
+		( packageRate ) => {
+			const selectedRate = packageRate.shipping_rates.find(
+				( rate ) => rate.selected
+			) as CartShippingPackageShippingRate;
+			if ( ! selectedRate ) {
+				return false;
+			}
+			return isPackageRateCollectable( selectedRate );
+		}
+	);
 	const { isEditor } = useEditorContext();
 	const { hasSelectedLocalPickup } = useShippingData();
 	return (
@@ -107,7 +121,8 @@ const ShippingRatesControl = ( {
 		>
 			<ExperimentalOrderShippingPackages.Slot { ...slotFillProps } />
 			{ hasSelectedLocalPickup &&
-				shippingRates.length > 1 &&
+				context !== 'woocommerce/checkout' &&
+				! allPackagesUsingLocalPickup &&
 				! isEditor && (
 					<NoticeBanner
 						className="wc-block-components-notice"
