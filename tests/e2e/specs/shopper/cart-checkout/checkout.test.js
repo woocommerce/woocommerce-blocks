@@ -207,24 +207,18 @@ describe( 'Shopper → Checkout', () => {
 			await unsetCheckbox(
 				'.wc-block-checkout__use-address-for-billing input[type="checkbox"]'
 			);
-			await shopper.block.fillShippingDetails(
-				{
-					...SHIPPING_DETAILS,
-					country: 'Albania',
-					state: 'Berat',
-					postcode: '1234',
-				},
-				true
-			);
+			await shopper.block.fillShippingDetails( {
+				...SHIPPING_DETAILS,
+				country: 'Albania',
+				state: 'Berat',
+				postcode: '1234',
+			} );
 
-			await shopper.block.fillBillingDetails(
-				{
-					...BILLING_DETAILS,
-					country: 'United Kingdom',
-					postcode: 'SW1 1AA',
-				},
-				true
-			);
+			await shopper.block.fillBillingDetails( {
+				...BILLING_DETAILS,
+				country: 'United Kingdom',
+				postcode: 'SW1 1AA',
+			} );
 
 			await expect( page ).not.toMatchElement(
 				'.wc-block-components-validation-error p',
