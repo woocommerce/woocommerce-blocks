@@ -146,6 +146,7 @@ const Block = (): JSX.Element | null => {
 
 	const onSelectRate = useCallback(
 		( rateId: string ) => {
+			// Do not pass a packageId because we want this pickup rate to apply to all packages.
 			selectShippingRate( rateId );
 		},
 		[ selectShippingRate ]
