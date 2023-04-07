@@ -385,7 +385,7 @@ export const changeCartItemQuantity =
  * @param {number | string} [packageId] The key of the packages that we will select within.
  */
 export const selectShippingRate =
-	( rateId: string, packageId = 0 ) =>
+	( rateId: string, packageId?: number | undefined ) =>
 	async ( {
 		dispatch,
 		select,
@@ -406,15 +406,18 @@ export const selectShippingRate =
 		if ( selectedShippingRate?.rate_id === rateId ) {
 			return;
 		}
+		const data: { rate_id: string; package_id?: number } = {
+			rate_id: rateId,
+		};
+		if ( typeof packageId !== 'undefined' ) {
+			data.package_id = packageId;
+		}
 		try {
 			dispatch.shippingRatesBeingSelected( true );
 			const { response } = await apiFetchWithHeaders( {
 				path: `/wc/store/v1/cart/select-shipping-rate`,
 				method: 'POST',
-				data: {
-					package_id: packageId,
-					rate_id: rateId,
-				},
+				data,
 				cache: 'no-store',
 			} );
 			// Remove shipping and billing address from the response, so we don't overwrite what the shopper is
