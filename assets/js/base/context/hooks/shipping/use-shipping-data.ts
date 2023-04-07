@@ -99,10 +99,8 @@ export const useShippingData = (): ShippingData => {
 			 *
 			 * Forces pickup location to be selected for all packages since we don't allow a mix of shipping and pickup.
 			 */
-			if (
+			if ( hasCollectableRate( newShippingRateId.split( ':' )[ 0 ] ) ) {
 				// Do not pass a packageId because we want this pickup rate to apply to all packages.
-				hasSelectedLocalPickup
-			) {
 				selectPromise = dispatchSelectShippingRate( newShippingRateId );
 			} else {
 				selectPromise = dispatchSelectShippingRate(
