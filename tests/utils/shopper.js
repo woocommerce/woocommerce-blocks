@@ -276,7 +276,7 @@ export const shopper = {
 			await page.evaluate( 'document.activeElement.blur()' );
 		},
 		// prettier-ignore
-		fillBillingDetails: async ( customerBillingDetails ) => {
+		fillBillingDetails: async ( customerBillingDetails, skipPushCheck = false ) => {
 			await page.waitForSelector( '#billing-fields' );
 			const companyInputField = await page.$( '#billing-company' );
 
@@ -290,17 +290,24 @@ export const shopper = {
 			await expect( page ).toFill( '#billing-address_1', customerBillingDetails.addressfirstline );
 			await expect( page ).toFill( '#billing-address_2', customerBillingDetails.addresssecondline );
 			await expect( page ).toFill( '#billing-city', customerBillingDetails.city );
-			await expect( page ).toFill( '#billing-state input', customerBillingDetails.state );
+
+			const stateInputField = await page.$( '#billing-state input' );
+			if ( stateInputField ) {
+				await expect( page ).toFill( '#billing-state input', customerBillingDetails.state );
+			}
 			await expect( page ).toFill( '#billing-postcode', customerBillingDetails.postcode );
 			await expect( page ).toFill( '#billing-phone', customerBillingDetails.phone );
 			await expect( page ).toFill( '#email', customerBillingDetails.email );
 			// Blur active field to trigger customer address update, then wait for requests to finish.
 			await page.evaluate( 'document.activeElement.blur()' );
-			await checkCustomerPushCompleted( 'billing', customerBillingDetails );
+			if ( ! skipPushCheck ) {
+				await checkCustomerPushCompleted( 'billing', customerBillingDetails );
+
+			}
 		},
 
 		// prettier-ignore
-		fillShippingDetails: async ( customerShippingDetails ) => {
+		fillShippingDetails: async ( customerShippingDetails, skipPushCheck = false ) => {
 			const companyInputField = await page.$( '#shipping-company' );
 
 			if ( companyInputField ) {
@@ -313,12 +320,17 @@ export const shopper = {
 			await expect( page ).toFill( '#shipping-address_1', customerShippingDetails.addressfirstline );
 			await expect( page ).toFill( '#shipping-address_2', customerShippingDetails.addresssecondline );
 			await expect( page ).toFill( '#shipping-city', customerShippingDetails.city );
-			await expect( page ).toFill( '#shipping-state input', customerShippingDetails.state );
+			const stateInputField = await page.$( '#shipping-state input' );
+			if ( stateInputField ) {
+				await expect( page ).toFill( '#shipping-state input', customerShippingDetails.state );
+			}
 			await expect( page ).toFill( '#shipping-postcode', customerShippingDetails.postcode );
 			await expect( page ).toFill( '#shipping-phone', customerShippingDetails.phone );
 			// Blur active field to customer address update, then wait for requests to finish.
 			await page.evaluate( 'document.activeElement.blur()' );
-			await checkCustomerPushCompleted( 'shipping', customerShippingDetails );
+			if ( ! skipPushCheck ) {
+				await checkCustomerPushCompleted( 'shipping', customerShippingDetails );
+			}
 		},
 
 		// prettier-ignore
