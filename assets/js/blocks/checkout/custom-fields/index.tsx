@@ -1,13 +1,17 @@
 /**
  * External dependencies
  */
-import { TemplateArray } from '@wordpress/blocks';
+import { useEffect } from '@wordpress/element';
+import { useDispatch, useSelect } from '@wordpress/data';
+import {
+	TemplateArray,
+	createBlocksFromInnerBlocksTemplate,
+} from '@wordpress/blocks';
 import { InnerBlocks, useBlockProps } from '@wordpress/block-editor';
 
 /**
  * Internal dependencies
  */
-import { useForcedLayout } from '../../cart-checkout-shared';
 import Frontend from '../inner-blocks/checkout-custom-field-block/frontend';
 
 const templateField = {
@@ -27,25 +31,38 @@ export const CustomFields = ( {
 } ): JSX.Element => {
 	const { 'data-block': clientId } = useBlockProps();
 	const allowedBlocks = [ 'woocommerce/checkout-custom-field-block' ];
+	const section = 'shipping';
+	const { insertBlocks } = useDispatch( 'core/block-editor' );
+
+	const blockEditor = useSelect( ( select ) => {
+		return select( 'core/block-editor' );
+	} );
 
 	const template = storedFields.map( ( field ) => [
 		'woocommerce/checkout-custom-field-block',
 		{
-			section: 'shipping',
+			section,
 			field,
 		},
 		[],
 	] ) as TemplateArray;
 
-	useForcedLayout( {
-		clientId,
-		registeredBlocks: allowedBlocks,
-		defaultTemplate: template,
-	} );
+	useEffect( () => {
+		const blocksToInsert = createBlocksFromInnerBlocksTemplate( template );
+
+		const parentBlock = blockEditor?.getBlock( clientId );
+
+		insertBlocks(
+			blocksToInsert,
+			parentBlock?.innerBlocks.length,
+			clientId
+		);
+	}, [ blockEditor, clientId, insertBlocks, template ] );
 
 	return (
 		<div className="wc-block-checkout__custom_fields">
 			{ `Custom Fields section: ${ block }` }
+
 			<InnerBlocks
 				allowedBlocks={ allowedBlocks }
 				template={ template }
