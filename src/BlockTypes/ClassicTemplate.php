@@ -3,6 +3,7 @@ namespace Automattic\WooCommerce\Blocks\BlockTypes;
 
 use Automattic\WooCommerce\Blocks\Templates\ProductAttributeTemplate;
 use Automattic\WooCommerce\Blocks\Templates\ProductSearchResultsTemplate;
+use Automattic\WooCommerce\Blocks\Templates\OrderReceivedTemplate;
 use Automattic\WooCommerce\Blocks\Utils\StyleAttributesUtils;
 use WC_Shortcode_Checkout;
 
@@ -62,7 +63,7 @@ class ClassicTemplate extends AbstractDynamicBlock {
 			$frontend_scripts::load_scripts();
 		}
 
-		if ( 'order-received' === $attributes['template'] ) {
+		if ( OrderReceivedTemplate::SLUG === $attributes['template'] ) {
 			return $this->render_order_received();
 		}
 
