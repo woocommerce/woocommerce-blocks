@@ -12,3 +12,28 @@
 		margin-left: $gap-smaller;
 	}
 }
+
+/**
+ * Default styling for `product elements` inside the 'Products Block'.
+ * These styles adhere to the Gutenberg styling hierarchy:
+ * Editor Styles > Global Styles > Child Theme > Parent Theme > This styles
+ *
+ * Ensure that the styles below have the lowest precedence in the hierarchy:
+ * - Do not use `!important` to override any other styles.
+ */
+.products-block-post-template li.wp-block-post > * {
+	margin-bottom: 0;
+	margin-top: 0;
+}
+
+.products-block-post-template .wp-block-post > * > {
+	* {
+		margin-bottom: $gap-small;
+		margin-top: 0;
+		background-color: #f0f0f1;
+	}
+
+	a {
+		display: inline-block;
+	}
+}
