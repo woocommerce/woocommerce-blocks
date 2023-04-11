@@ -251,14 +251,6 @@ const CartLineItemRow: React.ForwardRefExoticComponent<
 							product={ lineItem as ProductTitleProps }
 							showProductLink={ true }
 						/>
-
-						{ /* <ProductName
-							disabled={
-								isPendingDelete || isProductHiddenFromCatalog
-							}
-							name={ name }
-							permalink={ permalink }
-						/> */ }
 						{ showBackorderBadge ? (
 							<ProductBackorderBadge />
 						) : (
