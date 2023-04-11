@@ -75,8 +75,9 @@ $drawer-width-mobile: 100vw;
 	position: fixed;
 	right: 0;
 	top: 0;
-	transform: translateX(var(--neg-drawer-width));
+	transform: translateX(max(-100%, var(--neg-drawer-width)));
 	width: var(--drawer-width);
+	max-width: 100%;
 
 	@media only screen and (max-width: 480px) {
 		transform: translateX(-$drawer-width-mobile);
