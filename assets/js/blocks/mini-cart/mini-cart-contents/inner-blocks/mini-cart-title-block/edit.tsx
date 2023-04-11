@@ -21,7 +21,6 @@ export const Edit = (): JSX.Element => {
 					'woocommerce/mini-cart-title-items-counter-block',
 				] }
 				template={ TEMPLATE }
-				templateLock={ false }
 			/>
 		</h2>
 	);

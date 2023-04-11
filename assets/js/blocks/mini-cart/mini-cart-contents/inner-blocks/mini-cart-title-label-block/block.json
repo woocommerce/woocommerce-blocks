@@ -10,7 +10,6 @@
 		"multiple": false,
 		"reusable": false,
 		"inserter": true,
-		"lock": false,
 		"color": {
 			"text": true,
 			"background": true
@@ -25,13 +24,6 @@
 	"attributes": {
 		"label": {
 			"type": "string"
-		},
-		"lock": {
-			"type": "object",
-			"default": {
-				"remove": true,
-				"move": true
-			}
 		}
 	},
 	"parent": [ "woocommerce/mini-cart-title-block" ],
