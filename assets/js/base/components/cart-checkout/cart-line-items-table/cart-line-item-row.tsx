@@ -207,8 +207,6 @@ const CartLineItemRow: React.ForwardRefExoticComponent<
 			arg,
 		} );
 
-		// console.log( { lineItem } );
-
 		return (
 			<tr
 				className={ classnames(
