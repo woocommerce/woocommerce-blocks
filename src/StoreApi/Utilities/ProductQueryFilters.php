@@ -283,8 +283,8 @@ class ProductQueryFilters {
 						WHERE taxonomy = %s) as attributes %1s JOIN (
 						SELECT COUNT(DISTINCT product_attribute_lookup.product_or_parent_id) as term_count, product_attribute_lookup.term_id
 						FROM {$wpdb->prefix}wc_product_attributes_lookup product_attribute_lookup
-						INNER JOIN {$wpdb->posts} posts
-						ON posts.ID = product_attribute_lookup.product_id
+							INNER JOIN {$wpdb->posts} posts
+								ON posts.ID = product_attribute_lookup.product_id
 						WHERE posts.post_type IN ('product', 'product_variation') AND posts.post_status = 'publish'%1s
 						GROUP BY product_attribute_lookup.term_id
 					) summarize
