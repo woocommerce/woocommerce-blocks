@@ -335,15 +335,6 @@ class BlockTemplatesController {
 					return $template;
 				}
 
-				if ( 'archive-product' === $template->slug ) {
-					if ( ! is_admin() && ! BlockTemplateUtils::template_has_legacy_template_block( $template ) ) {
-
-						$new_content       = ArchiveProductTemplatesCompatibility::add_compatibility_layer( $template->content );
-						$template->content = $new_content;
-					}
-					return $template;
-				}
-
 				return $template;
 			},
 			$query_result
