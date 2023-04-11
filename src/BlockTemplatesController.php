@@ -351,32 +351,7 @@ class BlockTemplatesController {
 	 * @return int[]|\WP_Post[] An array of found templates.
 	 */
 	public function get_block_templates_from_db( $slugs = array(), $template_type = 'wp_template' ) {
-		$check_query_args = array(
-			'post_type'      => $template_type,
-			'posts_per_page' => -1,
-			'no_found_rows'  => true,
-			'tax_query'      => array( // phpcs:ignore WordPress.DB.SlowDBQuery.slow_db_query_tax_query
-				array(
-					'taxonomy' => 'wp_theme',
-					'field'    => 'name',
-					'terms'    => array( BlockTemplateUtils::DEPRECATED_PLUGIN_SLUG, BlockTemplateUtils::PLUGIN_SLUG, get_stylesheet() ),
-				),
-			),
-		);
-
-		if ( is_array( $slugs ) && count( $slugs ) > 0 ) {
-			$check_query_args['post_name__in'] = $slugs;
-		}
-
-		$check_query         = new \WP_Query( $check_query_args );
-		$saved_woo_templates = $check_query->posts;
-
-		return array_map(
-			function( $saved_woo_template ) {
-				return BlockTemplateUtils::build_template_result_from_post( $saved_woo_template );
-			},
-			$saved_woo_templates
-		);
+		return BlockTemplateUtils::get_block_templates_from_db( $slugs, $template_type );
 	}
 
 	/**
