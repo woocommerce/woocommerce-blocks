@@ -59,6 +59,24 @@ When you're done, you may want to shut down the test environment:
 
 **Note:** There are a number of other useful `wp-env` commands. You can find out more in the [wp-env docs](https://github.com/WordPress/gutenberg/blob/master/packages/env/README.md).
 
+### Debugging e2e tests using generated reports
+
+When e2e test suites are run in a GitHub automation, a report is generated automatically for every suite that failed. This can be a useful tool to debug failing tests, as it provides a visual way to inspect the tests that failed and, additionally, it includes some screenshots.
+
+To access the reports, you should go to the _Details_ of a failed e2e test suite:
+
+<img src="https://user-images.githubusercontent.com/3616980/231486295-26b1d8fd-2420-4890-b143-a249cc990d20.png" alt="PR showing a failing test suite and the cursor over the Details button of that suite" width="780" />
+
+From there, you can open the _Summary_ of the e2e test jobs:
+
+<img src="https://user-images.githubusercontent.com/3616980/231486308-8f85779b-8ede-440d-a250-6ff612d6ea20.png" alt="Log of an e2e test suite that failed, highlighting the Summary button" width="780" />
+
+From the _Summmary_ page, if you scroll down, you can download the reports of each test suite that failed:
+
+<img src="https://user-images.githubusercontent.com/3616980/231486320-c52a0e10-c80e-4d3a-ae0f-b3998013f528.png" alt="Report summary showing the Artifacts list, including the e2e reports" width="780" />
+
+That will download a ZIP that you can open in your browser locally.
+
 ### Modify the local environment used by end-to-end tests
 
 To modify the environment used by tests locally, you will need to modify `.wp-env.json`. For example, you can set a specific WP version and install the latest Gutenberg version with these two lines:
