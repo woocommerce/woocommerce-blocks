@@ -9,7 +9,8 @@
 		"html": false,
 		"multiple": false,
 		"reusable": false,
-		"inserter": true,
+		"inserter": false,
+		"lock": false,
 		"color": {
 			"text": true,
 			"background": true
