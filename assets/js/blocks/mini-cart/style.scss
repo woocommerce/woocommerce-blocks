@@ -228,14 +228,12 @@ h2.wc-block-mini-cart__title {
 }
 
 .admin-bar .wc-block-mini-cart__template-part {
-	margin-top: 46px;
-	height: calc(100dvh - 46px);
+	padding-top: 46px;
 }
 
 @media only screen and (min-width: 783px) {
 	.admin-bar .wc-block-mini-cart__template-part {
-		margin-top: 32px;
-		height: calc(100dvh - 32px);
+		padding-top: 32px;
 	}
 }
 
