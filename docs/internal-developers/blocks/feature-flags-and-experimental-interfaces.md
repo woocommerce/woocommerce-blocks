@@ -35,15 +35,6 @@ The majority of our feature flagging is blocks, this is a list of them:
 
 ### Experimental flag
 
--   Cart block ([JS flag](https://github.com/woocommerce/woocommerce-gutenberg-products-block/blob/8516e87bddee6c07a080c934f3d8cc0683adef06/assets/js/blocks/cart-checkout/cart-i2/index.js#L44) | [PHP flag](https://github.com/woocommerce/woocommerce-gutenberg-products-block/blob/961c0c476d4228a218859c658c42f9b6eebfdec4/src/BlockTypesController.php#L182)).
--   Cart Express Checkout block ([JS flag](https://github.com/woocommerce/woocommerce-gutenberg-products-block/blob/8516e87bddee6c07a080c934f3d8cc0683adef06/assets/js/blocks/cart-checkout/cart-i2/inner-blocks/cart-express-payment-block/index.tsx#L13)).
--   Cart Items block ([JS flag](https://github.com/woocommerce/woocommerce-gutenberg-products-block/blob/8516e87bddee6c07a080c934f3d8cc0683adef06/assets/js/blocks/cart-checkout/cart-i2/inner-blocks/cart-items-block/index.tsx#L13)).
--   Cart Line Items block ([JS flag](https://github.com/woocommerce/woocommerce-gutenberg-products-block/blob/8516e87bddee6c07a080c934f3d8cc0683adef06/assets/js/blocks/cart-checkout/cart-i2/inner-blocks/cart-line-items-block/index.tsx#L13)).
--   Cart Order Summary block ([JS flag](https://github.com/woocommerce/woocommerce-gutenberg-products-block/blob/8516e87bddee6c07a080c934f3d8cc0683adef06/assets/js/blocks/cart-checkout/cart-i2/inner-blocks/cart-order-summary-block/index.tsx#L14)).
--   Cart Totals block ([JS flag](https://github.com/woocommerce/woocommerce-gutenberg-products-block/blob/8516e87bddee6c07a080c934f3d8cc0683adef06/assets/js/blocks/cart-checkout/cart-i2/inner-blocks/cart-totals-block/index.tsx#L13)).
--   Empty Cart block ([JS flag](https://github.com/woocommerce/woocommerce-gutenberg-products-block/blob/8516e87bddee6c07a080c934f3d8cc0683adef06/assets/js/blocks/cart-checkout/cart-i2/inner-blocks/empty-cart-block/index.tsx#L13)).
--   Filled Cart block ([JS flag](https://github.com/woocommerce/woocommerce-gutenberg-products-block/blob/8516e87bddee6c07a080c934f3d8cc0683adef06/assets/js/blocks/cart-checkout/cart-i2/inner-blocks/filled-cart-block/index.tsx#L13)).
--   Cart Proceed to checkout block ([JS flag](https://github.com/woocommerce/woocommerce-gutenberg-products-block/blob/8516e87bddee6c07a080c934f3d8cc0683adef06/assets/js/blocks/cart-checkout/cart-i2/inner-blocks/proceed-to-checkout-block/index.tsx#L14)).
 -   Single Product block ([PHP flag](https://github.com/woocommerce/woocommerce-blocks/blob/cb11cd2537e35561a9c930f893ee72d82ab6bc75/src/BlockTypesController.php#L227) | [webpack flag](https://github.com/woocommerce/woocommerce-blocks/blob/cb11cd2537e35561a9c930f893ee72d82ab6bc75/bin/webpack-entries.js#L68)).
 -   ⚛️ Add to cart ([JS flag](https://github.com/woocommerce/woocommerce-blocks/blob/dfd2902bd8a247b5d048577db6753c5e901fc60f/assets/js/atomic/blocks/product-elements/add-to-cart/index.ts#L26-L29)).
 
