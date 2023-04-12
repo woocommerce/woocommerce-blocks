@@ -14,7 +14,6 @@ import {
 	useSpacingProps,
 	useTypographyProps,
 } from '@woocommerce/base-hooks';
-import { withProductDataContext } from '@woocommerce/shared-hocs';
 import type { HTMLAttributes } from 'react';
 
 /**
@@ -74,4 +73,4 @@ export const Block = ( props: Props ): JSX.Element | null => {
 	);
 };
 
-export default withProductDataContext( Block );
+export default Block;
