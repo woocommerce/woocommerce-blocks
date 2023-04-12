@@ -62,6 +62,7 @@ const { selectors } = block;
 const insertBlocks = async () => {
 	await insertBlock( 'Filter by Price' );
 	await insertBlock( 'Filter by Stock' );
+	await insertBlock( 'Filter by Attribute' );
 	await insertBlock( block.name );
 };
 
