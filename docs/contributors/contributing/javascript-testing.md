@@ -97,60 +97,11 @@ To modify the environment used by tests locally, you will need to modify `.wp-en
 
 You will need to stop `wp-env` and start it again. In some cases, you will also need to clean the database: `npm run wp-env clean all`.
 
-### How to update end-to-end tests suites
+### WordPress versions and end-to-end tests suites
 
-We follow the same WordPress support policy as WooCommerce, this means we need to support the latest version, and the two previous ones (L-2).
+Currently, we only run e2e tests with the most recent version of WordPress. We also have the infrastructure in place to run e2e tests with the most recent version of WordPress with Gutenberg installed, but [it's currently disabled](https://github.com/woocommerce/woocommerce-blocks/blob/07605450ffa4e460543980b7011b3bf8a8e82ff4/.github/workflows/php-js-e2e-tests.yml#L10).
 
-For that, we run end-to-end tests against all of those versions, and because we use packages published by Gutenberg, we also run tests against the latest version of Gutenberg plugin.
-
-When a new version of WordPress is released, we drop support for the oldest version we have, so if the latest version is 5.6, we would test against:
-
--   WordPress 5.4
--   WordPress 5.5
--   WordPress 5.6
--   WordPress 5.6 + Gutenberg
-
-When 5.7 is released, we would drop support for 5.4, and update our `./.github/workflows/php-js-e2e-tests.yml` file.
-
-You need to bump the test version, so
-
-```yml
-  JSE2ETestsWP54:
-    name: JavaScipt E2E Tests (WP 5.4)
-      ...
-      - name: E2E Tests (WP 5.4)
-        env:
-          WOOCOMMERCE_BLOCKS_PHASE: 3
-          WP_VERSION: 5.4-branch
-        run: |
-          JSON='{"core": "WordPress/WordPress#'"$WP_VERSION"'"}'
-          echo $JSON > .wp-env.override.json
-          npm run wp-env start
-          npm run wp-env clean all
-          npm run test:e2e
-```
-
-Would become
-
-```yml
-  JSE2ETestsWP55:
-    name: JavaScipt E2E Tests (WP 5.5)
-      ...
-      - name: E2E Tests (WP 5.5)
-        env:
-          WOOCOMMERCE_BLOCKS_PHASE: 3
-          WP_VERSION: 5.5-branch
-        run: |
-          JSON='{"core": "WordPress/WordPress#'"$WP_VERSION"'"}'
-          echo $JSON > .wp-env.override.json
-          npm run wp-env start
-          npm run wp-env clean all
-          npm run test:e2e
-```
-
-You also need to check any existing tests that checks the WP version.
-
-In `./tests/e2e/specs`, verify for conditions like `if ( process.env.WP_VERSION < 5.4 )` and remove them if they're not relevant anymore.
+When preparing for a new version of WordPress, it's a good practice to search for conditions in our tests that check for specific WP versions (with the variable `WP_VERSION`) or that check whether Gutenberg is installed (with the variable `GUTENBERG_EDITOR_CONTEXT`).
 
 <!-- FEEDBACK -->
 
