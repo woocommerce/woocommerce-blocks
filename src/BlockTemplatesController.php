@@ -445,7 +445,7 @@ class BlockTemplatesController {
 	 * @return array WP_Block_Template[] An array of block template objects.
 	 */
 	public function get_block_templates( $slugs = array(), $template_type = 'wp_template' ) {
-		$templates_from_db  = $this->get_block_templates_from_db( $slugs, $template_type );
+		$templates_from_db  = BlockTemplateUtils::get_block_templates_from_db( $slugs, $template_type );
 		$templates_from_woo = $this->get_block_templates_from_woocommerce( $slugs, $templates_from_db, $template_type );
 		$templates          = array_merge( $templates_from_db, $templates_from_woo );
 
