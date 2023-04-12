@@ -67,12 +67,49 @@ class ProductsBySlug extends AbstractRoute {
 	 * @return \WP_REST_Response
 	 */
 	protected function get_route_response( \WP_REST_Request $request ) {
-		$object = wc_get_product( get_page_by_path( $request['slug'], OBJECT, 'product' ) );
+		$object = $this->get_product_by_slug( $request['slug'] );
+		if ( ! $object ) {
+			$object = $this->get_product_variation_by_slug( $request['slug'] );
+		}
 
 		if ( ! $object || 0 === $object->get_id() ) {
 			throw new RouteException( 'woocommerce_rest_product_invalid_slug', __( 'Invalid product slug.', 'woo-gutenberg-products-block' ), 404 );
 		}
 
 		return rest_ensure_response( $this->schema->get_item_response( $object ) );
+	}
+
+	/**
+	 * Get a product  by slug.
+	 *
+	 * @param string $slug The slug of the product.
+	 */
+	public function get_product_by_slug( $slug ) {
+		return wc_get_product( get_page_by_path( $slug, OBJECT, 'product' ) );
+	}
+
+	/**
+	 * Get a product variation by slug.
+	 *
+	 * @param string $slug The slug of the product variation.
+	 */
+	private function get_product_variation_by_slug( $slug ) {
+		global $wpdb;
+
+		$result = $wpdb->get_results(
+			$wpdb->prepare(
+				"SELECT ID, post_name, post_parent, post_type
+				FROM $wpdb->posts
+				WHERE post_name = %s
+				AND post_type = 'product_variation'",
+				$slug
+			)
+		);
+
+		if ( ! $result ) {
+			return null;
+		}
+
+		return wc_get_product( $result[0]->ID );
 	}
 }

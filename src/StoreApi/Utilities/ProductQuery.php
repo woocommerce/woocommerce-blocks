@@ -35,8 +35,8 @@ class ProductQuery {
 			'post_type'           => 'product',
 		];
 
-		// If searching for a specific SKU, allow any post type.
-		if ( ! empty( $request['sku'] ) ) {
+		// If searching for a specific SKU or slug, allow any post type.
+		if ( ! empty( $request['sku'] ) || ! empty( $request['slug'] ) ) {
 			$args['post_type'] = [ 'product', 'product_variation' ];
 		}
 
