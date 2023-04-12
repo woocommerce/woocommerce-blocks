@@ -19,7 +19,10 @@ const Edit = ( {
 	setAttributes,
 	context,
 }: BlockEditProps< Attributes > & { context: Context } ): JSX.Element => {
-	const blockProps = useBlockProps();
+	const { style, ...blockProps } = useBlockProps( {
+		className:
+			'wc-block-components-product-sku wp-block-woocommerce-product-sku',
+	} );
 	const blockAttrs = {
 		...attributes,
 		...context,
@@ -57,10 +60,22 @@ const Edit = ( {
 	);
 
 	return (
-		<div { ...blockProps }>
+		<>
 			<EditProductLink />
-			<Block { ...blockAttrs } />
-		</div>
+			<div
+				{ ...blockProps }
+				/**
+				 * If block is decendant of the All Products block, we don't want to
+				 * apply style here because it will be applied inside Block using
+				 * useColors, useTypography, and useSpacing hooks.
+				 */
+				style={
+					attributes.isDescendantOfAllProducts ? undefined : style
+				}
+			>
+				<Block { ...blockAttrs } />
+			</div>
+		</>
 	);
 };
 
