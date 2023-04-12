@@ -44,13 +44,17 @@ export const normalizeAddress = ( address: BillingOrShippingAddress ) => {
 			//Skip normalizing for any non string field
 			if ( typeof value !== 'string' ) {
 				acc[ key as keyof BillingOrShippingAddress ] = value;
-			} else if ( key === 'postcode' ) {
+				return acc;
+			}
+
+			if ( key === 'postcode' ) {
 				acc[ key as keyof BillingOrShippingAddress ] = value
 					.replace( ' ', '' )
 					.toUpperCase();
-			} else {
-				acc[ key as keyof BillingOrShippingAddress ] = value.trim();
+				return acc;
 			}
+
+			acc[ key as keyof BillingOrShippingAddress ] = value.trim();
 			return acc;
 		},
 		{} as BillingOrShippingAddress
