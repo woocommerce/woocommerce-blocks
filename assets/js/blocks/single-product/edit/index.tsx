@@ -40,7 +40,6 @@ interface EditorProps {
 }
 
 const Editor = ( {
-	className,
 	attributes,
 	setAttributes,
 	error,
