@@ -67,9 +67,11 @@ class ProductsBySlug extends AbstractRoute {
 	 * @return \WP_REST_Response
 	 */
 	protected function get_route_response( \WP_REST_Request $request ) {
-		$object = $this->get_product_by_slug( $request['slug'] );
+		$slug = sanitize_title( $request['slug'] );
+
+		$object = $this->get_product_by_slug( $slug );
 		if ( ! $object ) {
-			$object = $this->get_product_variation_by_slug( $request['slug'] );
+			$object = $this->get_product_variation_by_slug( $slug );
 		}
 
 		if ( ! $object || 0 === $object->get_id() ) {
