@@ -80,6 +80,9 @@ export const INNER_BLOCKS_TEMPLATE: InnerBlockTemplate[] = [
 		'core/post-template',
 		{
 			__woocommerceNamespace: PRODUCT_TEMPLATE_ID,
+			/**
+			 * This class is used to add default styles for inner blocks.
+			 */
 			className: 'products-block-post-template',
 		},
 		[

@@ -21,13 +21,13 @@
  * To ensure that the styles below have the lowest precedence in the hierarchy,
  * we use the :where() selector to decrease the specificity of the CSS selector.
  */
-:where(.products-block-post-template) .wp-block-post > * {
+:where(.products-block-post-template .wp-block-post) > * {
 	margin-bottom: $gap-small;
 	margin-top: 0;
 	background-color: #f0f0f1;
 }
 
-.editor-styles-wrapper :where(.products-block-post-template) .wp-block-post > * > * {
+:where(.editor-styles-wrapper .products-block-post-template .wp-block-post) > * > * {
 	margin-bottom: 0;
 	margin-top: 0;
 }
