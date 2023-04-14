@@ -3,6 +3,6 @@
  */
 export interface BlockTestingProperties {
 	title: string;
-	selector: string;
+	selectors: Record< string, string >;
 	slug: string;
 }
