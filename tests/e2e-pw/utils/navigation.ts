@@ -29,8 +29,9 @@ export const closeModalIfExists = async (
  */
 export const editBlockPage = async (
 	page: PlaywrightTestArgs[ 'page' ],
-	{ title, selector }: BlockTestingProperties
+	{ title, selectors }: BlockTestingProperties
 ) => {
+	const { block: blockSelector } = selectors;
 	await page.goto(
 		`/wp-admin/edit.php?post_type=page&s=${ encodeURIComponent( title ) }`
 	);
@@ -41,6 +42,6 @@ export const editBlockPage = async (
 		.getByText( title, { exact: true } )
 		.click();
 	await page.waitForLoadState( 'networkidle' );
-	await page.waitForSelector( selector );
+	await page.waitForSelector( blockSelector );
 	await closeModalIfExists( page );
 };
