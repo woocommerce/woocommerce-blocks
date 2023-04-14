@@ -3,6 +3,11 @@
  */
 import type { BlockAttributes } from '@wordpress/blocks';
 
+/**
+ * Internal dependencies
+ */
+import { ImageSizing } from './types';
+
 export const blockAttributes: BlockAttributes = {
 	showProductLink: {
 		type: 'boolean',
@@ -18,13 +23,17 @@ export const blockAttributes: BlockAttributes = {
 	},
 	imageSizing: {
 		type: 'string',
-		default: 'full-size',
+		default: ImageSizing.SINGLE,
 	},
 	productId: {
 		type: 'number',
 		default: 0,
 	},
 	isDescendentOfQueryLoop: {
+		type: 'boolean',
+		default: false,
+	},
+	isDescendentOfSingleProductBlock: {
 		type: 'boolean',
 		default: false,
 	},
