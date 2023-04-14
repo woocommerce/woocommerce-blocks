@@ -58,7 +58,7 @@ module.exports = async ( config ) => {
 	const adminPage = await adminContext.newPage();
 	const customerPage = await customerContext.newPage();
 
-	// Sign in as admin user and save state
+	// Sign in as admin user and save state.
 	const adminRetries = 5;
 	for ( let i = 0; i < adminRetries; i++ ) {
 		try {
@@ -92,11 +92,10 @@ module.exports = async ( config ) => {
 		console.error(
 			'Cannot proceed e2e test, as admin login failed. Please check if the test site has been setup correctly.'
 		);
-
 		process.exit( 1 );
 	}
 
-	// Sign in as customer user and save state
+	// Sign in as customer user and save state.
 	const customerRetries = 5;
 	for ( let i = 0; i < customerRetries; i++ ) {
 		try {
