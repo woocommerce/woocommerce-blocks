@@ -8,6 +8,7 @@ import { test, expect } from '@playwright/test';
  */
 import { editBlockPage } from '../../../utils/navigation';
 import { BlockTestingProperties } from '../../../types';
+import { openGlobalBlockInserter } from '../../../utils/editor';
 
 const blockProperties: BlockTestingProperties = {
 	title: 'Cart',
@@ -26,5 +27,18 @@ test.describe( 'Merchant → Cart', () => {
 			blockProperties.selectors.className
 		);
 		expect( blockPresence ).toBeTruthy();
+	} );
+
+	test( 'can only be inserted once', async ( { page } ) => {
+		await editBlockPage( page, blockProperties );
+		await openGlobalBlockInserter( page );
+		await page.getByPlaceholder( 'Search' ).fill( blockProperties.slug );
+		const cartBlockButton = await page.locator( 'button', {
+			has: page.locator( `text="${ blockProperties.title }"` ),
+		} );
+		await expect( cartBlockButton ).toHaveAttribute(
+			'aria-disabled',
+			'true'
+		);
 	} );
 } );
