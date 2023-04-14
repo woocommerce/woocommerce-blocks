@@ -22,9 +22,8 @@
  * we use the :where() selector to decrease the specificity of the CSS selector.
  */
 :where(.products-block-post-template .wp-block-post) > * {
-	margin-bottom: $gap-small;
+	margin-bottom: 0.75rem;
 	margin-top: 0;
-	background-color: #f0f0f1;
 }
 
 :where(.editor-styles-wrapper .products-block-post-template .wp-block-post) > * > * {
