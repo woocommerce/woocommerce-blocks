@@ -4,7 +4,6 @@
 import { __ } from '@wordpress/i18n';
 import classnames from 'classnames';
 import Label from '@woocommerce/base-components/label';
-import { withProductDataContext } from '@woocommerce/shared-hocs';
 import {
 	useInnerBlockLayoutContext,
 	useProductDataContext,
@@ -15,6 +14,7 @@ import {
 	useSpacingProps,
 	useTypographyProps,
 } from '@woocommerce/base-hooks';
+import { withProductDataContext } from '@woocommerce/shared-hocs';
 import type { HTMLAttributes } from 'react';
 
 /**
