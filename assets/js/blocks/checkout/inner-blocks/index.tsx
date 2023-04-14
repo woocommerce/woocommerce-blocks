@@ -7,6 +7,7 @@ import './checkout-shipping-address-block';
 import './checkout-terms-block';
 import './checkout-contact-information-block';
 import './checkout-custom-field-block';
+import './checkout-custom-fields-block';
 import './checkout-billing-address-block';
 import './checkout-actions-block';
 import './checkout-order-note-block';
