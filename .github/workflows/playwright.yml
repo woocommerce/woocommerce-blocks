@@ -6,7 +6,8 @@ on:
   pull_request:
 
 jobs:
-  test:
+  PlaywrightE2ETests:
+    name: Playwright E2E tests
     timeout-minutes: 60
     runs-on: ubuntu-latest
     steps:
@@ -14,6 +15,7 @@ jobs:
     - uses: actions/setup-node@v3
       with:
         node-version: 16
+        cache: 'npm' # Cache npm dependencies
     - name: Install dependencies
       run: npm ci
     - name: Load wp-env
