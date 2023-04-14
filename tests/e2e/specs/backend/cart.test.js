@@ -3,7 +3,6 @@
  */
 import {
 	clickBlockToolbarButton,
-	openDocumentSettingsSidebar,
 	switchUserToAdmin,
 	searchForBlock,
 	openGlobalBlockInserter,
@@ -13,20 +12,25 @@ import {
 	findLabelWithText,
 	visitBlockPage,
 	selectBlockByName,
-	switchBlockInspectorTabWhenGutenbergIsInstalled,
 } from '@woocommerce/blocks-test-utils';
 import { merchant } from '@woocommerce/e2e-utils';
 
 /**
  * Internal dependencies
  */
-import { openWidgetEditor, closeModalIfExists } from '../../utils.js';
+import {
+	openSettingsSidebar,
+	openWidgetEditor,
+	closeModalIfExists,
+} from '../../utils.js';
 
 const block = {
 	name: 'Cart',
 	slug: 'woocommerce/cart',
 	class: '.wp-block-woocommerce-cart',
 	selectors: {
+		disabledInsertButton:
+			"//button[@aria-disabled='true']//span[text()='Cart']",
 		insertButton: "//button//span[text()='Cart']",
 	},
 };
@@ -107,14 +111,22 @@ describe( `${ block.name } Block`, () => {
 				'//div[@data-type="woocommerce/cart-order-summary-block"]//button[@aria-label="Add block"]'
 			);
 			await addBlockButton.click();
+			await expect( page ).toFill(
+				'input.components-search-control__input',
+				'Table'
+			);
 			const tableButton = await page.waitForXPath(
 				'//*[@role="option" and contains(., "Table")]'
+			);
+			await expect( tableButton ).not.toBeNull();
+			await expect( page ).toFill(
+				'input.components-search-control__input',
+				'Audio'
 			);
 			const audioButton = await page.waitForXPath(
 				'//*[@role="option" and contains(., "Audio")]'
 			);
-			expect( tableButton ).not.toBeNull();
-			expect( audioButton ).not.toBeNull();
+			await expect( audioButton ).not.toBeNull();
 
 			// // Now check the filled cart block and expect only the Table block to be available there.
 			await selectBlockByName( 'woocommerce/filled-cart-block' );
@@ -122,13 +134,14 @@ describe( `${ block.name } Block`, () => {
 				'//div[@data-type="woocommerce/filled-cart-block"]//button[@aria-label="Add block"]'
 			);
 			await filledCartAddBlockButton.click();
+
 			const filledCartTableButton = await page.waitForXPath(
 				'//*[@role="option" and contains(., "Table")]'
 			);
+			expect( filledCartTableButton ).not.toBeNull();
 			const filledCartAudioButton = await page.$x(
 				'//*[@role="option" and contains(., "Audio")]'
 			);
-			expect( filledCartTableButton ).not.toBeNull();
 			expect( filledCartAudioButton ).toHaveLength( 0 );
 		} );
 
@@ -179,17 +192,14 @@ describe( `${ block.name } Block`, () => {
 
 		describe( 'attributes', () => {
 			beforeEach( async () => {
-				await openDocumentSettingsSidebar();
-				await switchBlockInspectorTabWhenGutenbergIsInstalled(
-					'Settings'
-				);
+				await openSettingsSidebar();
 				await selectBlockByName(
 					'woocommerce/cart-order-summary-shipping-block'
 				);
 			} );
 
 			it( 'can toggle Shipping calculator', async () => {
-				const selector = ` .wc-block-components-totals-shipping__change-address__link`;
+				const selector = `.wc-block-components-totals-shipping__change-address__link`;
 				const toggleLabel = await findLabelWithText(
 					'Shipping calculator'
 				);

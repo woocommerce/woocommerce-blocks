@@ -8,6 +8,7 @@ import {
 	type InnerBlockTemplate,
 } from '@wordpress/blocks';
 import { isWpVersion } from '@woocommerce/settings';
+import { isExperimentalBuild } from '@woocommerce/block-settings';
 import { __, sprintf } from '@wordpress/i18n';
 
 /**
@@ -71,22 +72,12 @@ const extendInnerBlocksWithNoResultsContent = (
 	];
 };
 
-const createProductsBlock = (
-	inheritedAttributes: InheritedAttributes,
-	templateInnerBlocks: BlockInstance[]
-) => {
+const createProductsBlock = ( inheritedAttributes: InheritedAttributes ) => {
 	const productsInnerBlocksWithNoResults =
 		extendInnerBlocksWithNoResultsContent(
 			productsInnerBlocksTemplate,
 			inheritedAttributes
 		);
-
-	const innerBlocks = [
-		...templateInnerBlocks,
-		...createBlocksFromInnerBlocksTemplate(
-			productsInnerBlocksWithNoResults
-		),
-	];
 
 	return createBlock(
 		'core/query',
@@ -99,12 +90,12 @@ const createProductsBlock = (
 				inherit: true,
 			},
 		},
-		innerBlocks
+		createBlocksFromInnerBlocksTemplate( productsInnerBlocksWithNoResults )
 	);
 };
 
-const getBlockifiedTemplate = ( inheritedAttributes: InheritedAttributes ) => {
-	const templateInnerBlocks = [
+const getBlockifiedTemplate = ( inheritedAttributes: InheritedAttributes ) =>
+	[
 		createArchiveTitleBlock( 'search-title', inheritedAttributes ),
 		createBlock( 'woocommerce/store-notices', inheritedAttributes ),
 		createRowBlock(
@@ -114,15 +105,13 @@ const getBlockifiedTemplate = ( inheritedAttributes: InheritedAttributes ) => {
 			],
 			inheritedAttributes
 		),
+		createProductsBlock( inheritedAttributes ),
 	].filter( Boolean ) as BlockInstance[];
-
-	return createProductsBlock( inheritedAttributes, templateInnerBlocks );
-};
 
 const isConversionPossible = () => {
 	// Blockification is possible for the WP version 6.1 and above,
 	// which are the versions the Products block supports.
-	return isWpVersion( '6.1', '>=' );
+	return isExperimentalBuild() && isWpVersion( '6.1', '>=' );
 };
 
 const getDescriptionAllowingConversion = ( templateTitle: string ) =>
