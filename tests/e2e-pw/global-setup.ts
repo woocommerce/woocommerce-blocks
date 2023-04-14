@@ -2,7 +2,7 @@
  * External dependencies
  */
 import { chromium, expect } from '@playwright/test';
-import fs from 'fs';
+import * as fs from 'fs';
 
 /**
  * Internal dependencies
