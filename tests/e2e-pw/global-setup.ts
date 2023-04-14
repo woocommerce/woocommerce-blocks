@@ -1,8 +1,8 @@
 /**
  * External dependencies
  */
-import { chromium, expect } from '@playwright/test';
 import * as fs from 'fs';
+import { chromium, expect } from '@playwright/test';
 
 /**
  * Internal dependencies
@@ -11,9 +11,11 @@ import { admin, customer } from './test-data/data/data';
 
 /* eslint-disable no-console */
 
-module.exports = async ( config ) => {
-	const { stateDir, baseURL, userAgent } = config.projects[ 0 ].use;
+/* eslint-disable no-console */
 
+module.exports = async ( config ) => {
+	console.log( 'Global setup' ); // eslint-disable-line no-console
+	const { stateDir, baseURL, userAgent } = config.projects[ 0 ].use;
 	console.log( `State Dir: ${ stateDir }` );
 	console.log( `Base URL: ${ baseURL }` );
 
@@ -21,7 +23,6 @@ module.exports = async ( config ) => {
 	process.env.ADMINSTATE = `${ stateDir }adminState.json`;
 	process.env.CUSTOMERSTATE = `${ stateDir }customerState.json`;
 
-	// Clear out the previous save states
 	try {
 		fs.unlinkSync( process.env.ADMINSTATE );
 		console.log( 'Admin state file deleted successfully.' );
@@ -43,7 +44,7 @@ module.exports = async ( config ) => {
 		}
 	}
 
-	// Pre-requisites
+	// Pre-requisites.
 	let adminLoggedIn = false;
 	let customerLoggedIn = false;
 
