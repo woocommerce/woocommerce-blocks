@@ -4,6 +4,7 @@
 import { __ } from '@wordpress/i18n';
 import classnames from 'classnames';
 import Label from '@woocommerce/base-components/label';
+import { withProductDataContext } from '@woocommerce/shared-hocs';
 import {
 	useInnerBlockLayoutContext,
 	useProductDataContext,
@@ -73,4 +74,4 @@ export const Block = ( props: Props ): JSX.Element | null => {
 	);
 };
 
-export default Block;
+export default withProductDataContext( Block );
