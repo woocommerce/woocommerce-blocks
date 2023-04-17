@@ -21,8 +21,12 @@ const blockProperties: BlockTestingProperties = {
 
 test.describe( 'Merchant → Cart', () => {
 	test.use( { storageState: process.env.ADMINSTATE } );
-	test( 'it renders without crashing', async ( { page } ) => {
+
+	test.beforeEach( async ( { page } ) => {
 		await editBlockPage( page, blockProperties );
+	} );
+
+	test( 'it renders without crashing', async ( { page } ) => {
 		const blockPresence = page.locator(
 			blockProperties.selectors.className
 		);
@@ -30,7 +34,6 @@ test.describe( 'Merchant → Cart', () => {
 	} );
 
 	test( 'can only be inserted once', async ( { page } ) => {
-		await editBlockPage( page, blockProperties );
 		await openGlobalBlockInserter( page );
 		await page.getByPlaceholder( 'Search' ).fill( blockProperties.slug );
 		const cartBlockButton = await page.locator( 'button', {
