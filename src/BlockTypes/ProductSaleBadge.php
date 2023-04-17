@@ -64,6 +64,59 @@ class ProductSaleBadge extends AbstractBlock {
 	}
 
 	/**
+	 * Initialize this block.
+	 */
+	protected function initialize() {
+		parent::initialize();
+		add_filter(
+			'wp_theme_json_data_theme',
+			array( $this, 'add_default_sale_badge_styles' )
+		);
+	}
+
+	/**
+	 * Add default styles for Sale Badge block.
+	 *
+	 * @param WP_Theme_JSON_Data $theme_data theme data.
+	 * @return array
+	 */
+	public function add_default_sale_badge_styles( $theme_data ) {
+		$block_styles = isset( $theme_data->get_data()['styles']['blocks']['woocommerce/product-sale-badge'] )
+		? $theme_data->get_data()['styles']['blocks']['woocommerce/product-sale-badge']
+		: array();
+
+		$default_styles = array(
+			'styles' => array(
+				'blocks' => array(
+					'woocommerce/product-sale-badge' => array(
+						'color' => array(),
+					),
+				),
+			),
+		);
+
+		if ( ! isset( $block_styles['color'] ) || ! isset( $block_styles['color']['background'] ) ) {
+			$default_styles['styles']['blocks']['woocommerce/product-sale-badge']['color']['background'] = array(
+				'ref' => 'styles.elements.button.color.background',
+			);
+		}
+
+		if ( ! isset( $block_styles['color'] ) || ! isset( $block_styles['color']['text'] ) ) {
+			$default_styles['styles']['blocks']['woocommerce/product-sale-badge']['color']['text'] = array(
+				'ref' => 'styles.elements.button.color.text',
+			);
+		}
+
+		if ( ! empty( $default_styles['styles']['blocks']['woocommerce/product-sale-badge']['color'] ) ) {
+			$theme_data = $theme_data->update_with( $default_styles );
+		}
+
+		return $theme_data;
+	}
+
+
+
+	/**
 	 * Overwrite parent method to prevent script registration.
 	 *
 	 * It is necessary to register and enqueues assets during the render
