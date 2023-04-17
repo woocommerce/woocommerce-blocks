@@ -86,7 +86,8 @@ class ProductSaleBadge extends AbstractBlock {
 		: array();
 
 		$default_styles = array(
-			'styles' => array(
+			'version' => 2,
+			'styles'  => array(
 				'blocks' => array(
 					'woocommerce/product-sale-badge' => array(
 						'color' => array(),
