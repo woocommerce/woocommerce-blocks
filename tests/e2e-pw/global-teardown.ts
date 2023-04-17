@@ -1,3 +1,5 @@
+/* eslint-disable no-console */
+
 module.exports = async () => {
-	console.log( 'Global teardown' ); // eslint-disable-line no-console
+	console.log( 'Global teardown' );
 };

@@ -9,11 +9,13 @@ import fs from 'fs';
  */
 import { admin, customer } from './test-data/data/data';
 
+/* eslint-disable no-console */
+
 module.exports = async ( config ) => {
 	const { stateDir, baseURL, userAgent } = config.projects[ 0 ].use;
 
-	console.log( `State Dir: ${ stateDir }` ); // eslint-disable-line no-console
-	console.log( `Base URL: ${ baseURL }` ); // eslint-disable-line no-console
+	console.log( `State Dir: ${ stateDir }` );
+	console.log( `Base URL: ${ baseURL }` );
 
 	// used throughout tests for authentication
 	process.env.ADMINSTATE = `${ stateDir }adminState.json`;
@@ -22,22 +24,22 @@ module.exports = async ( config ) => {
 	// Clear out the previous save states
 	try {
 		fs.unlinkSync( process.env.ADMINSTATE );
-		console.log( 'Admin state file deleted successfully.' ); // eslint-disable-line no-console
+		console.log( 'Admin state file deleted successfully.' );
 	} catch ( err ) {
 		if ( err.code === 'ENOENT' ) {
-			console.log( 'Admin state file does not exist.' ); // eslint-disable-line no-console
+			console.log( 'Admin state file does not exist.' );
 		} else {
-			console.log( 'Admin state file could not be deleted: ' + err ); // eslint-disable-line no-console
+			console.log( 'Admin state file could not be deleted: ' + err );
 		}
 	}
 	try {
 		fs.unlinkSync( process.env.CUSTOMERSTATE );
-		console.log( 'Customer state file deleted successfully.' ); // eslint-disable-line no-console
+		console.log( 'Customer state file deleted successfully.' );
 	} catch ( err ) {
 		if ( err.code === 'ENOENT' ) {
-			console.log( 'Customer state file does not exist.' ); // eslint-disable-line no-console
+			console.log( 'Customer state file does not exist.' );
 		} else {
-			console.log( 'Customer state file could not be deleted: ' + err ); // eslint-disable-line no-console
+			console.log( 'Customer state file could not be deleted: ' + err );
 		}
 	}
 
@@ -59,7 +61,7 @@ module.exports = async ( config ) => {
 	const adminRetries = 5;
 	for ( let i = 0; i < adminRetries; i++ ) {
 		try {
-			console.log( 'Trying to log-in as admin...' ); // eslint-disable-line no-console
+			console.log( 'Trying to log-in as admin...' );
 			await adminPage.goto( `/wp-admin` );
 			await adminPage.fill( 'input[name="log"]', admin.username );
 			await adminPage.fill( 'input[name="pwd"]', admin.password );
@@ -74,20 +76,18 @@ module.exports = async ( config ) => {
 			await adminPage
 				.context()
 				.storageState( { path: process.env.ADMINSTATE } );
-			console.log( 'Logged-in as admin successfully.' ); // eslint-disable-line no-console
+			console.log( 'Logged-in as admin successfully.' );
 			adminLoggedIn = true;
 			break;
 		} catch ( e ) {
-			// eslint-disable-next-line no-console
 			console.log(
 				`Admin log-in failed, Retrying... ${ i }/${ adminRetries }`
 			);
-			console.log( e ); // eslint-disable-line no-console
+			console.log( e );
 		}
 	}
 
 	if ( ! adminLoggedIn ) {
-		// eslint-disable-next-line no-console
 		console.error(
 			'Cannot proceed e2e test, as admin login failed. Please check if the test site has been setup correctly.'
 		);
@@ -99,7 +99,7 @@ module.exports = async ( config ) => {
 	const customerRetries = 5;
 	for ( let i = 0; i < customerRetries; i++ ) {
 		try {
-			console.log( 'Trying to log-in as customer...' ); // eslint-disable-line no-console
+			console.log( 'Trying to log-in as customer...' );
 			await customerPage.goto( `/wp-admin` );
 			await customerPage.fill( 'input[name="log"]', customer.username );
 			await customerPage.fill( 'input[name="pwd"]', customer.password );
@@ -120,20 +120,18 @@ module.exports = async ( config ) => {
 			await customerPage
 				.context()
 				.storageState( { path: process.env.CUSTOMERSTATE } );
-			console.log( 'Logged-in as customer successfully.' ); // eslint-disable-line no-console
+			console.log( 'Logged-in as customer successfully.' );
 			customerLoggedIn = true;
 			break;
 		} catch ( e ) {
-			// eslint-disable-next-line no-console
 			console.log(
 				`Customer log-in failed. Retrying... ${ i }/${ customerRetries }`
 			);
-			console.log( e ); // eslint-disable-line no-console
+			console.log( e );
 		}
 	}
 
 	if ( ! customerLoggedIn ) {
-		// eslint-disable-next-line no-console
 		console.error(
 			'Cannot proceed e2e test, as customer login failed. Please check if the test site has been setup correctly.'
 		);
