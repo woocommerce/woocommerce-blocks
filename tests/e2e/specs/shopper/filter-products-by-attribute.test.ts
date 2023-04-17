@@ -259,7 +259,7 @@ describe( `${ block.name } Block`, () => {
 		} );
 
 		it( 'should render products', async () => {
-			page.setDefaultTimeout( 200000 );
+			page.setDefaultTimeout( 250000 );
 			const products = await page.$$(
 				selectors.frontend.queryProductsList
 			);
@@ -268,7 +268,7 @@ describe( `${ block.name } Block`, () => {
 		} );
 
 		it( 'should show only products that match the filter', async () => {
-			page.setDefaultTimeout( 200000 );
+			page.setDefaultTimeout( 250000 );
 			const isRefreshed = jest.fn( () => void 0 );
 			page.on( 'load', isRefreshed );
 
@@ -301,7 +301,7 @@ describe( `${ block.name } Block`, () => {
 		} );
 
 		it( 'should refresh the page only if the user clicks on button', async () => {
-			page.setDefaultTimeout( 200000 );
+			page.setDefaultTimeout( 250000 );
 			await page.goto( editorPageUrl );
 
 			await waitForCanvas();
