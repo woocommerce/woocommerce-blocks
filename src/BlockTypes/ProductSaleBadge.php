@@ -77,13 +77,21 @@ class ProductSaleBadge extends AbstractBlock {
 	/**
 	 * Add default styles for Sale Badge block.
 	 *
-	 * @param WP_Theme_JSON_Data $theme_data theme data.
+	 * @param WP_Theme_JSON_Data $theme_data The theme data object that is passed as a parameter.
 	 * @return array
 	 */
 	public function add_default_sale_badge_styles( $theme_data ) {
+		// Get the existing Sale Badge block styles.
 		$block_styles = isset( $theme_data->get_data()['styles']['blocks']['woocommerce/product-sale-badge'] )
 		? $theme_data->get_data()['styles']['blocks']['woocommerce/product-sale-badge']
 		: array();
+
+		// Return if there are no styles for button element.
+		// Because in this case Sale badge will use styles from style.scss.
+		$button_element = $theme_data->get_data()['styles']['elements']['button'] ?? null;
+		if ( ! $button_element ) {
+			return $theme_data;
+		}
 
 		$default_styles = array(
 			'version' => 2,
