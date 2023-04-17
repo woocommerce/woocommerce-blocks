@@ -57,7 +57,7 @@ wp-env run tests-cli "wp post create \
 	--post_type=page \
 	--post_status=publish \
 	--post_author=1 \
-	--post_title='Shop' \
+	--post_title='All Products block' \
 	--post_content=\"$post_content\"
 "
 
@@ -68,7 +68,7 @@ post_id=$(wp-env run tests-cli "wp post create \
 	--post_type=page \
 	--post_status=publish \
 	--post_author=1 \
-	--post_title='Cart' \
+	--post_title='Cart block' \
 	--post_content=\"$post_content\"
 ")
 wp-env run tests-cli "wp option update woocommerce_cart_page_id $post_id"
@@ -80,7 +80,7 @@ post_id=$(wp-env run tests-cli "wp post create \
 	--post_type=page \
 	--post_status=publish \
 	--post_author=1 \
-	--post_title='Checkout' \
+	--post_title='Checkout block' \
 	--post_content=\"$post_content\"
 ")
 wp-env run tests-cli "wp option update woocommerce_checkout_page_id $post_id"
@@ -120,7 +120,7 @@ post_content=$(cat "${script_dir}/all-reviews.txt" | sed 's/"/\\"/g')
 wp-env run tests-cli "wp post create \
 	--post_status=publish \
 	--post_author=1 \
-	--post_title='All Reviews' \
+	--post_title='All Reviews block' \
 	--post_content=\"$post_content\"
 "
 
@@ -129,7 +129,7 @@ if [ "$pa_color" ] && [ "$pa_size" ]; then
 	wp-env run tests-cli "wp post create \
 		--post_status=publish \
 		--post_author=1 \
-		--post_title='Active Filters' \
+		--post_title='Active Filters block' \
 		--post_content=\"$post_content\"
 	"
 fi
@@ -138,7 +138,7 @@ post_content=$(cat "${script_dir}/mini-cart.txt" | sed 's/"/\\"/g')
 wp-env run tests-cli "wp post create \
 	--post_status=publish \
 	--post_author=1 \
-	--post_title='Mini Cart' \
+	--post_title='Mini Cart block' \
 	--post_content=\"$post_content\"
 "
 
@@ -146,7 +146,7 @@ post_content=$(cat "${script_dir}/product-best-sellers.txt" | sed 's/"/\\"/g')
 wp-env run tests-cli "wp post create \
 	--post_status=publish \
 	--post_author=1 \
-	--post_title='Best Selling Products' \
+	--post_title='Best Selling Products block' \
 	--post_content=\"$post_content\"
 "
 
@@ -154,7 +154,7 @@ post_content=$(cat "${script_dir}/products-by-attribute.txt" | sed 's/"/\\"/g')
 wp-env run tests-cli "wp post create \
 	--post_status=publish \
 	--post_author=1 \
-	--post_title='Products by Attribute' \
+	--post_title='Products by Attribute block' \
 	--post_content=\"$post_content\"
 "
 
@@ -162,7 +162,7 @@ post_content=$(cat "${script_dir}/single-product.txt" | sed 's/"/\\"/g')
 wp-env run tests-cli "wp post create \
 	--post_status=publish \
 	--post_author=1 \
-	--post_title='Single Product' \
+	--post_title='Single Product block' \
 	--post_content=\"$post_content\"
 "
 
@@ -170,7 +170,7 @@ post_content=$(cat "${script_dir}/customer-account.txt" | sed 's/"/\\"/g')
 wp-env run tests-cli "wp post create \
 	--post_status=publish \
 	--post_author=1 \
-	--post_title='Customer Account' \
+	--post_title='Customer Account block' \
 	--post_content=\"$post_content\"
 "
 
@@ -178,7 +178,7 @@ post_content=$(cat "${script_dir}/featured-category.txt" | sed 's/"/\\"/g')
 wp-env run tests-cli "wp post create \
 	--post_status=publish \
 	--post_author=1 \
-	--post_title='Featured Category' \
+	--post_title='Featured Category block' \
 	--post_content=\"$post_content\"
 "
 
@@ -186,7 +186,7 @@ post_content=$(cat "${script_dir}/featured-product.txt" | sed 's/"/\\"/g')
 wp-env run tests-cli "wp post create \
 	--post_status=publish \
 	--post_author=1 \
-	--post_title='Featured Product' \
+	--post_title='Featured Product block' \
 	--post_content=\"$post_content\"
 "
 
@@ -194,7 +194,7 @@ post_content=$(cat "${script_dir}/handpicked-products.txt" | sed 's/"/\\"/g')
 wp-env run tests-cli "wp post create \
 	--post_status=publish \
 	--post_author=1 \
-	--post_title='Hand-picked Products' \
+	--post_title='Hand-picked Products block' \
 	--post_content=\"$post_content\"
 "
 
@@ -202,7 +202,7 @@ post_content=$(cat "${script_dir}/product-new.txt" | sed 's/"/\\"/g')
 wp-env run tests-cli "wp post create \
 	--post_status=publish \
 	--post_author=1 \
-	--post_title='Newest Products' \
+	--post_title='Newest Products block' \
 	--post_content=\"$post_content\"
 "
 
@@ -210,7 +210,7 @@ post_content=$(cat "${script_dir}/product-on-sale.txt" | sed 's/"/\\"/g')
 wp-env run tests-cli "wp post create \
 	--post_status=publish \
 	--post_author=1 \
-	--post_title='On Sale Products' \
+	--post_title='On Sale Products block' \
 	--post_content=\"$post_content\"
 "
 
@@ -218,7 +218,7 @@ post_content=$(cat "${script_dir}/product-category.txt" | sed 's/"/\\"/g')
 wp-env run tests-cli "wp post create \
 	--post_status=publish \
 	--post_author=1 \
-	--post_title='Products by Category' \
+	--post_title='Products by Category block' \
 	--post_content=\"$post_content\"
 "
 
@@ -226,7 +226,7 @@ post_content=$(cat "${script_dir}/product-category.txt" | sed 's/"/\\"/g')
 wp-env run tests-cli "wp post create \
 	--post_status=publish \
 	--post_author=1 \
-	--post_title='Products by Category' \
+	--post_title='Products by Category block' \
 	--post_content=\"$post_content\"
 "
 
@@ -234,7 +234,7 @@ post_content=$(cat "${script_dir}/product-categories.txt" | sed 's/"/\\"/g')
 wp-env run tests-cli "wp post create \
 	--post_status=publish \
 	--post_author=1 \
-	--post_title='Product Categories List' \
+	--post_title='Product Categories List block' \
 	--post_content=\"$post_content\"
 "
 
@@ -242,7 +242,7 @@ post_content=$(cat "${script_dir}/product-search.txt" | sed 's/"/\\"/g')
 wp-env run tests-cli "wp post create \
 	--post_status=publish \
 	--post_author=1 \
-	--post_title='Product Search' \
+	--post_title='Product Search block' \
 	--post_content=\"$post_content\"
 "
 
@@ -250,7 +250,7 @@ post_content=$(cat "${script_dir}/reviews-by-category.txt" | sed 's/"/\\"/g')
 wp-env run tests-cli "wp post create \
 	--post_status=publish \
 	--post_author=1 \
-	--post_title='Reviews by Category' \
+	--post_title='Reviews by Category block' \
 	--post_content=\"$post_content\"
 "
 
@@ -258,7 +258,7 @@ post_content=$(cat "${script_dir}/reviews-by-product.txt" | sed 's/"/\\"/g')
 wp-env run tests-cli "wp post create \
 	--post_status=publish \
 	--post_author=1 \
-	--post_title='Reviews by Product' \
+	--post_title='Reviews by Product block' \
 	--post_content=\"$post_content\"
 "
 
@@ -266,7 +266,7 @@ post_content=$(cat "${script_dir}/product-top-rated.txt" | sed 's/"/\\"/g')
 wp-env run tests-cli "wp post create \
 	--post_status=publish \
 	--post_author=1 \
-	--post_title='Top Rated Products' \
+	--post_title='Top Rated Products block' \
 	--post_content=\"$post_content\"
 "
 
