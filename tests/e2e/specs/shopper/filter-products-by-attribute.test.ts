@@ -59,6 +59,18 @@ const goToShopPage = () =>
 	} );
 
 describe( `${ block.name } Block`, () => {
+	const insertFilterByAttributeBlock = async () => {
+		await insertBlock( block.name );
+		const canvasEl = canvas();
+
+		// It seems that .click doesn't work well with radio input element.
+		await canvasEl.$eval(
+			block.selectors.editor.firstAttributeInTheList,
+			( el ) => ( el as HTMLInputElement ).click()
+		);
+		await canvasEl.click( selectors.editor.doneButton );
+	};
+
 	describe( 'with All Products Block', () => {
 		beforeAll( async () => {
 			await switchUserToAdmin();
@@ -68,15 +80,7 @@ describe( `${ block.name } Block`, () => {
 			} );
 
 			await insertAllProductsBlock();
-			await insertBlock( block.name );
-			const canvasEl = canvas();
-
-			// It seems that .click doesn't work well with radio input element.
-			await canvasEl.$eval(
-				block.selectors.editor.firstAttributeInTheList,
-				( el ) => ( el as HTMLInputElement ).click()
-			);
-			await canvasEl.click( selectors.editor.doneButton );
+			await insertFilterByAttributeBlock();
 			await publishPost();
 
 			const link = await page.evaluate( () =>
@@ -120,15 +124,7 @@ describe( `${ block.name } Block`, () => {
 			await goToTemplateEditor( {
 				postId: productCatalogTemplateId,
 			} );
-			await insertBlock( block.name );
-			const canvasEl = canvas();
-
-			// It seems that .click doesn't work well with radio input element.
-			await canvasEl.$eval(
-				block.selectors.editor.firstAttributeInTheList,
-				( el ) => ( el as HTMLInputElement ).click()
-			);
-			await canvasEl.click( selectors.editor.doneButton );
+			await insertFilterByAttributeBlock();
 			await saveTemplate();
 		} );
 
@@ -237,15 +233,7 @@ describe( `${ block.name } Block`, () => {
 			} );
 
 			await insertBlock( 'Products (Beta)' );
-			await insertBlock( block.name );
-			const canvasEl = canvas();
-
-			// It seems that .click doesn't work well with radio input element.
-			await canvasEl.$eval(
-				block.selectors.editor.firstAttributeInTheList,
-				( el ) => ( el as HTMLInputElement ).click()
-			);
-			await canvasEl.click( selectors.editor.doneButton );
+			await insertFilterByAttributeBlock();
 			await publishPost();
 
 			editorPageUrl = page.url();
