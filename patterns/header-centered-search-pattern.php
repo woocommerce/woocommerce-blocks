@@ -15,10 +15,6 @@
 		<div class="wp-block-group">
 			<!-- wp:site-logo {"shouldSyncIcon":false} /-->
 			<!-- wp:site-title /-->
-
-			<!-- wp:spacer -->
-			<div style="height:100px" aria-hidden="true" class="wp-block-spacer"></div>
-			<!-- /wp:spacer -->
 		</div>
 		<!-- /wp:group -->
 
@@ -32,9 +28,9 @@
 			</div>
 			<!-- /wp:group -->
 
-			<!-- wp:search {"label":"Search","showLabel":false,"placeholder":"Search for products or brands","width":100,"widthUnit":"%","buttonText":"Search","buttonPosition":"button-inside","buttonUseIcon":true,"style":{"color":{"background":"#ffffff00"}},"textColor":"foreground"} /-->
+			<!-- wp:search {"label":"Search","showLabel":false,"placeholder":"Search for products or brands","width":350,"widthUnit":"px","buttonText":"Search","buttonPosition":"button-inside","buttonUseIcon":true,"style":{"color":{"background":"#ffffff00"}},"textColor":"foreground"} /-->
 
-			<!-- wp:woocommerce/customer-account {"displayStyle":"icon_only","iconClass":"wc-block-customer-account__account-icon","style":{"spacing":{"margin":{"left":"18px"}}}} /-->
+			<!-- wp:woocommerce/customer-account {"displayStyle":"icon_only","iconClass":"wc-block-customer-account__account-icon","style":{"spacing":{"margin":{"left":"10px"}}}} /-->
 
 			<!-- wp:woocommerce/mini-cart {"style":{"typography":{"fontSize":"14px"}}} /-->
 		</div>
