@@ -15,9 +15,9 @@
 <!-- wp:query {"queryId":2,"query":{"perPage":"5","pages":0,"offset":0,"postType":"product","order":"desc","orderBy":"date","author":"","search":"","exclude":[],"sticky":"","inherit":false,"__woocommerceAttributes":[],"__woocommerceStockStatus":["instock","onbackorder"]},"displayLayout":{"type":"flex","columns":5},"namespace":"woocommerce/product-query","align":"wide","layout":{"type":"default"}} -->
 <div class="wp-block-query alignwide">
 	<!-- wp:post-template {"__woocommerceNamespace":"woocommerce/product-query/product-template"} -->
-	<!-- wp:woocommerce/product-image {"isDescendentOfQueryLoop":true,"style":{"spacing":{"margin":{"bottom":"0.75rem","top":"0"}}}} /-->
+	<!-- wp:woocommerce/product-image {"isDescendentOfQueryLoop":true,"imageSizing":"thumbnail","style":{"spacing":{"margin":{"bottom":"0.75rem","top":"0"}}}} /-->
 
-	<!-- wp:columns -->
+	<!-- wp:columns {"isStackedOnMobile":false} -->
 	<div class="wp-block-columns">
 		<!-- wp:column -->
 		<div class="wp-block-column">
