@@ -238,17 +238,14 @@ describe( `${ block.name } Block`, () => {
 
 			await insertBlock( 'Products (Beta)' );
 			await insertBlock( block.name );
-			await page.waitForNetworkIdle();
+			const canvasEl = canvas();
 
-			await canvas().waitForSelector(
-				block.selectors.editor.firstAttributeInTheList
-			);
 			// It seems that .click doesn't work well with radio input element.
-			await canvas().$eval(
+			await canvasEl.$eval(
 				block.selectors.editor.firstAttributeInTheList,
 				( el ) => ( el as HTMLInputElement ).click()
 			);
-			await canvas().click( selectors.editor.doneButton );
+			await canvasEl.click( selectors.editor.doneButton );
 			await publishPost();
 
 			editorPageUrl = page.url();
