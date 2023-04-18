@@ -19,6 +19,13 @@ class Api {
 	private $inline_scripts = [];
 
 	/**
+	 * Stores cached script data from the transient.
+	 *
+	 * @var array|null
+	 */
+	private $cached_script_data = null;
+
+	/**
 	 * Reference to the Package instance
 	 *
 	 * @var Package
@@ -32,6 +39,7 @@ class Api {
 	 */
 	public function __construct( Package $package ) {
 		$this->package = $package;
+		add_action( 'shutdown', array( $this, 'save_cached_script_data' ), 20 );
 	}
 
 	/**
@@ -77,6 +85,49 @@ class Api {
 	}
 
 	/**
+	 * Initialize and load cached script data from the transient cache.
+	 *
+	 * @param string $relative_src Relative src to the script.
+	 * @return array|false
+	 */
+	private function get_cached_script_data( $relative_src ) {
+		if ( is_null( $this->cached_script_data ) ) {
+			$transient_value = get_transient( 'woocommerce_blocks_asset_api_script_data' ) ?? [];
+
+			if ( empty( $transient_value['script_data'] ) || empty( $transient_value['version'] ) || $transient_value['version'] !== $this->package->get_version() ) {
+				$transient_value = [
+					'script_data' => [],
+					'version'     => $this->package->get_version(),
+				];
+			}
+
+			$this->cached_script_data = $transient_value;
+		}
+		return $this->cached_script_data['script_data'][ $relative_src ] ?? false;
+	}
+
+	/**
+	 * Update transient cache with script data.
+	 *
+	 * @param string $relative_src Relative src to the script.
+	 * @param array  $data Script data.
+	 */
+	private function set_cached_script_data( $relative_src, $data ) {
+		$this->cached_script_data['script_data'][ $relative_src ] = $data;
+	}
+
+	/**
+	 * Store all cached script data in the transient cache.
+	 */
+	public function save_cached_script_data() {
+		if ( $this->package->feature()->is_development_environment() ) {
+			delete_transient( 'woocommerce_blocks_asset_api_script_data' );
+		} else {
+			set_transient( 'woocommerce_blocks_asset_api_script_data', $this->cached_script_data, DAY_IN_SECONDS * 30 );
+		}
+	}
+
+	/**
 	 * Get src, version and dependencies given a script relative src.
 	 *
 	 * @param string $relative_src Relative src to the script.
@@ -85,10 +136,17 @@ class Api {
 	 * @return array src, version and dependencies of the script.
 	 */
 	public function get_script_data( $relative_src, $dependencies = [] ) {
-		$src     = '';
-		$version = '1';
+		if ( ! $relative_src ) {
+			return array(
+				'src'          => '',
+				'version'      => '1',
+				'dependencies' => $dependencies,
+			);
+		}
 
-		if ( $relative_src ) {
+		$script_data = $this->get_cached_script_data( $relative_src );
+
+		if ( ! $script_data ) {
 			$src        = $this->get_asset_url( $relative_src );
 			$asset_path = $this->package->get_path(
 				str_replace( '.js', '.asset.php', $relative_src )
@@ -103,13 +161,17 @@ class Api {
 			} else {
 				$version = $this->get_file_version( $relative_src );
 			}
+
+			$script_data = array(
+				'src'          => $src,
+				'version'      => $version,
+				'dependencies' => $dependencies,
+			);
+
+			$this->set_cached_script_data( $relative_src, $script_data );
 		}
 
-		return array(
-			'src'          => $src,
-			'version'      => $version,
-			'dependencies' => $dependencies,
-		);
+		return $script_data;
 	}
 
 	/**
