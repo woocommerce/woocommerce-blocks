@@ -102,20 +102,24 @@ jobs:
               id: cache-node-modules
               uses: actions/cache@v3
               env:
-                  cache-name: cache-node-modules
+                cache-name: cache-node-modules
               with:
-                  path: node_modules
-                  key: ${{ runner.os }}-build-${{ env.cache-name }}-${{ hashFiles('**/package-lock.json') }}
-
+                path: node_modules
+                key: ${{ runner.os }}-build-${{ hashFiles('**/package-lock.json') }}
+                restore-keys: |
+                  ${{ runner.os }}-build-${{ env.cache-name }}-
+                  ${{ runner.os }}-build-
+                  ${{ runner.os }}-
+            
             - name: Setup node version and npm cache
               uses: actions/setup-node@v3
               with:
                   node-version-file: '.nvmrc'
                   cache: 'npm'
 
-            - name: Install Node Dependencies
+            - name: Install Node dependencies
               if: steps.cache-node-modules.outputs.cache-hit != 'true'
-              run: npm ci --no-optional
+              run: npm install --no-optional --no-audit
 
             - name: Build Assets
               run: FORCE_REDUCED_MOTION=true npm run build:e2e-test
@@ -142,14 +146,20 @@ jobs:
                   tools: composer
 
             - name: Composer install
-              run: |
-                  composer install
+              run: composer install
 
+            - name: Setup Permissions
+              run: |
+                  mkdir -p ./wp-content/uploads/wc-logs
+                  mkdir -p ./wp-content/languages/     
+                  echo 'deny from all' > ./wp-content/uploads/wc-logs/.htaccess
+                  chmod -R 777 ./
+                  
             - name: E2E Tests (WP latest)
               env:
                   WOOCOMMERCE_BLOCKS_PHASE: 3
               run: |
-                  npm run wp-env start
+                  npm run wp-env start --update
                   npm run wp-env:config && npx cross-env NODE_CONFIG_DIR=tests/e2e/config wp-scripts test-e2e --config tests/e2e/config/jest.config.js --listTests > ~/.jest-e2e-tests
                   npx cross-env JEST_PUPPETEER_CONFIG=tests/e2e/config/jest-puppeteer.config.js cross-env NODE_CONFIG_DIR=tests/e2e/config wp-scripts test-e2e --config tests/e2e/config/jest.config.js --runInBand --runTestsByPath $( awk 'NR % 5 == ${{ matrix.part }} - 1' < ~/.jest-e2e-tests )
 
