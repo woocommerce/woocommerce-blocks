@@ -34,7 +34,7 @@
 
 			<!-- wp:search {"label":"Search","showLabel":false,"placeholder":"Search for products or brands","width":100,"widthUnit":"%","buttonText":"Search","buttonPosition":"button-inside","buttonUseIcon":true,"style":{"color":{"background":"#ffffff00"}},"textColor":"foreground"} /-->
 
-			<!-- wp:woocommerce/customer-account {"displayStyle":"icon_only","iconClass":"wc-block-customer-account__account-icon","style":{"spacing":{"margin":{"left":"var:preset|spacing|30"}}}} /-->
+			<!-- wp:woocommerce/customer-account {"displayStyle":"icon_only","iconClass":"wc-block-customer-account__account-icon","style":{"spacing":{"margin":{"left":"18px"}}}} /-->
 
 			<!-- wp:woocommerce/mini-cart {"style":{"typography":{"fontSize":"14px"}}} /-->
 		</div>
