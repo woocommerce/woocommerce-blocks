@@ -147,13 +147,6 @@ jobs:
 
             - name: Composer install
               run: composer install
-
-            - name: Setup Permissions
-              run: |
-                  mkdir -p ./wp-content/uploads/wc-logs
-                  mkdir -p ./wp-content/languages/     
-                  echo 'deny from all' > ./wp-content/uploads/wc-logs/.htaccess
-                  chmod -R 777 ./
                   
             - name: E2E Tests (WP latest)
               env:
