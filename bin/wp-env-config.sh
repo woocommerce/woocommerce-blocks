@@ -20,6 +20,8 @@ wp plugin list
 wp theme activate storefront
 wp wc customer update 1 --user=1 --billing='{"first_name":"John","last_name":"Doe","company":"Automattic","country":"US","address_1":"addr 1","address_2":"addr 2","city":"San Francisco","state":"CA","postcode":"94107","phone":"123456789"}' --shipping='{"first_name":"John","last_name":"Doe","company":"Automattic","country":"US","address_1":"addr 1","address_2":"addr 2","city":"San Francisco","state":"CA","postcode":"94107","phone":"123456789"}'
 ## Prepare translation for the test suite
+wp language core list
+wp language core update
 wp language core install nl_NL
 wp language plugin install woocommerce nl_NL
 ## We download a full version of .po (that has translation for js files as well).
