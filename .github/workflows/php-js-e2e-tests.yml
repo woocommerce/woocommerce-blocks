@@ -150,6 +150,7 @@ jobs:
           WOOCOMMERCE_BLOCKS_PHASE: 3
         run: |
           npm run wp-env start
+          WP_ENV_DIR=$(npm run wp-env install-path --silent 2>&1 | head -1)
           cd $WP_ENV_DIR
           mkdir -p tests-WordPress/wp-content/languages tests-WordPress/wp-content/upgrade
           chmod -R 767 tests-WordPress/wp-content/languages tests-WordPress/wp-content/upgrade
