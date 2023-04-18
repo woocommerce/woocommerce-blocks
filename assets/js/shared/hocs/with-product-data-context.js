@@ -21,7 +21,7 @@ const OriginalComponentWithContext = ( props ) => {
 	const id = props?.isDescendentOfQueryLoop ? postId : productId;
 
 	const { products, productsLoading } = useStoreProducts( {
-		include: [ 18, 10, 27, 11, 12, 15, 28, 7, 8 ],
+		include: id,
 	} );
 
 	const productFromAPI = {
