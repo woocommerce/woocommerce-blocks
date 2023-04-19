@@ -12,11 +12,7 @@
 	<!-- wp:group {"style":{"spacing":{"blockGap":"40px"}},"layout":{"type":"flex","flexWrap":"wrap"}} -->
 	<div class="wp-block-group">
 		<!-- wp:site-logo {"shouldSyncIcon":false} /-->
-		<!-- wp:site-title /-->
-
-		<!-- wp:spacer -->
-		<div style="height:100px" aria-hidden="true" class="wp-block-spacer"></div>
-		<!-- /wp:spacer -->
+		<!-- wp:site-title {"style":{"typography":{"fontStyle":"normal","fontWeight":"600","fontSize":"1.5rem"}}} /-->
 
 		<!-- wp:navigation /-->
 	</div>
