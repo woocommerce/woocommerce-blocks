@@ -112,4 +112,4 @@ You only need to post public release announcements and update relevant public fa
     -   Don't forget to use category `WooCommerce Blocks Release Notes` for the post.
 -   [ ] Announce the release internally (`#woo-announcements` slack).
 -   [ ] Go through the description of the release pull request and edit it to update all the sections and checklist instructions there.
--   [ ] Close this PR.
+-   [ ] Merge this PR into the base `release/x.y.0` branch.
