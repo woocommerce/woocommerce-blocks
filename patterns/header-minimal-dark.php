@@ -17,7 +17,7 @@
 <div class="wp-block-group" style="font-size:13px"><!-- wp:woocommerce/mini-cart {"hasHiddenPrice":true,"textColor":"background","style":{"typography":{"fontSize":"13px"}}} /-->
 
 <!-- wp:group {"style":{"spacing":{"blockGap":"16px"}},"layout":{"type":"flex","flexWrap":"nowrap"},"fontSize":"small"} -->
-<div class="wp-block-group has-small-font-size"><!-- wp:navigation {"ref":679,"textColor":"background","overlayMenu":"always","layout":{"type":"flex","justifyContent":"left"},"style":{"typography":{"fontSize":"24px"}}} /-->
+<div class="wp-block-group has-small-font-size"><!-- wp:navigation {"textColor":"background","overlayMenu":"always","layout":{"type":"flex","justifyContent":"left"},"style":{"typography":{"fontSize":"24px"}}} /-->
 
 <!-- wp:separator {"className":"is-style-wide"} -->
 <hr class="wp-block-separator has-alpha-channel-opacity is-style-wide"/>
