@@ -16,6 +16,10 @@ import { subscribe, select } from '@wordpress/data';
 // Creating a local cache to prevent multiple registration tries.
 const blocksRegistered = new Set();
 
+function parseTemplateId( templateId: string | undefined ) {
+	return templateId?.split( '//' )[ 1 ];
+}
+
 export const registerBlockSingleProductTemplate = ( {
 	blockName,
 	blockMetadata,
@@ -34,9 +38,7 @@ export const registerBlockSingleProductTemplate = ( {
 	subscribe( () => {
 		const previousTemplateId = currentTemplateId;
 		const store = select( 'core/edit-site' );
-		currentTemplateId = store?.getEditedPostContext< {
-			templateSlug?: string;
-		} >()?.templateSlug;
+		currentTemplateId = parseTemplateId( store?.getEditedPostId() );
 		const hasChangedTemplate = previousTemplateId !== currentTemplateId;
 		const hasTemplateId = Boolean( currentTemplateId );
 
