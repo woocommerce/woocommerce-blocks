@@ -92,9 +92,9 @@ class Api {
 	 */
 	private function get_cached_script_data( $relative_src ) {
 		if ( is_null( $this->cached_script_data ) ) {
-			$transient_value = get_transient( 'woocommerce_blocks_asset_api_script_data' ) ?? [];
+			$transient_value = json_decode( (string) get_transient( 'woocommerce_blocks_asset_api_script_data' ), true );
 
-			if ( empty( $transient_value['script_data'] ) || empty( $transient_value['version'] ) || $transient_value['version'] !== $this->package->get_version() ) {
+			if ( empty( $transient_value ) || empty( $transient_value['script_data'] ) || empty( $transient_value['version'] ) || $transient_value['version'] !== $this->package->get_version() ) {
 				$transient_value = [
 					'script_data' => [],
 					'version'     => $this->package->get_version(),
@@ -123,7 +123,7 @@ class Api {
 		if ( $this->package->feature()->is_development_environment() ) {
 			delete_transient( 'woocommerce_blocks_asset_api_script_data' );
 		} else {
-			set_transient( 'woocommerce_blocks_asset_api_script_data', $this->cached_script_data, DAY_IN_SECONDS * 30 );
+			set_transient( 'woocommerce_blocks_asset_api_script_data', wp_json_encode( $this->cached_script_data ), DAY_IN_SECONDS * 30 );
 		}
 	}
 
