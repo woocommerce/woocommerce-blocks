@@ -9,7 +9,7 @@ jobs:
         runs-on: ubuntu-latest
         steps:
             - name: Check config and assign reviews
-              uses: acq688/Request-Reviewer-For-Team-Action@v1.1
+              uses: roykho/Request-Reviewer-For-Team-Action@v2
               with:
                   config: '.github/automate-team-review-assignment-config.yml'
                   GITHUB_TOKEN: ${{ secrets.FINE_GRAINED_TOKEN_ACTIONS }}
