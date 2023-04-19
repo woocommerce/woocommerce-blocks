@@ -28,10 +28,6 @@
 				<!-- /wp:column --></div>
 			<!-- /wp:columns -->
 
-			<!-- wp:separator {"style":{"spacing":{"margin":{"top":"0","bottom":"var:preset|spacing|30"}}},"className":"is-style-wide"} -->
-			<hr class="wp-block-separator has-alpha-channel-opacity is-style-wide"
-				style="margin-top:0;margin-bottom:var(--wp--preset--spacing--30)" />
-			<!-- /wp:separator -->
 			<!-- /wp:post-template -->
 
 			<!-- wp:query-no-results -->
