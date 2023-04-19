@@ -1,6 +1,6 @@
 <?php
 /**
- * Title: WooCommerce Header Centered Search
+ * Title: Header Centered Search
  * Slug: woocommerce-blocks/header-centered-search
  * Categories: WooCommerce
  * Block Types: core/template-part/header
@@ -20,14 +20,6 @@
 
 		<!-- wp:group {"style":{"spacing":{"blockGap":"8px"},"typography":{"fontSize":"13px"}},"layout":{"type":"flex","flexWrap":"nowrap","justifyContent":"right"}} -->
 		<div class="wp-block-group" style="font-size:13px">
-			<!-- wp:group {"style":{"spacing":{"blockGap":"16px"}},"layout":{"type":"flex","flexWrap":"nowrap"}} -->
-			<div class="wp-block-group">
-				<!-- wp:separator {"className":"is-style-wide"} -->
-				<hr class="wp-block-separator has-alpha-channel-opacity is-style-wide" />
-				<!-- /wp:separator -->
-			</div>
-			<!-- /wp:group -->
-
 			<!-- wp:search {"label":"Search","showLabel":false,"placeholder":"Search for products or brands","width":350,"widthUnit":"px","buttonText":"Search","buttonPosition":"button-inside","buttonUseIcon":true,"style":{"color":{"background":"#ffffff00"}},"textColor":"foreground"} /-->
 
 			<!-- wp:woocommerce/customer-account {"displayStyle":"icon_only","iconClass":"wc-block-customer-account__account-icon","style":{"spacing":{"margin":{"left":"10px"}}}} /-->
